@@ -21,10 +21,34 @@ const umbrella = JSON.parse(readFileSync(join(here, 'tamagui-lsp/package.json'),
 const TARGETS = [
   { rust: 'aarch64-apple-darwin', pkg: 'lsp-darwin-arm64', os: 'darwin', cpu: 'arm64' },
   { rust: 'x86_64-apple-darwin', pkg: 'lsp-darwin-x64', os: 'darwin', cpu: 'x64' },
-  { rust: 'aarch64-unknown-linux-gnu', pkg: 'lsp-linux-arm64-gnu', os: 'linux', cpu: 'arm64', libc: 'glibc' },
-  { rust: 'aarch64-unknown-linux-musl', pkg: 'lsp-linux-arm64-musl', os: 'linux', cpu: 'arm64', libc: 'musl' },
-  { rust: 'x86_64-unknown-linux-gnu', pkg: 'lsp-linux-x64-gnu', os: 'linux', cpu: 'x64', libc: 'glibc' },
-  { rust: 'x86_64-unknown-linux-musl', pkg: 'lsp-linux-x64-musl', os: 'linux', cpu: 'x64', libc: 'musl' },
+  {
+    rust: 'aarch64-unknown-linux-gnu',
+    pkg: 'lsp-linux-arm64-gnu',
+    os: 'linux',
+    cpu: 'arm64',
+    libc: 'glibc',
+  },
+  {
+    rust: 'aarch64-unknown-linux-musl',
+    pkg: 'lsp-linux-arm64-musl',
+    os: 'linux',
+    cpu: 'arm64',
+    libc: 'musl',
+  },
+  {
+    rust: 'x86_64-unknown-linux-gnu',
+    pkg: 'lsp-linux-x64-gnu',
+    os: 'linux',
+    cpu: 'x64',
+    libc: 'glibc',
+  },
+  {
+    rust: 'x86_64-unknown-linux-musl',
+    pkg: 'lsp-linux-x64-musl',
+    os: 'linux',
+    cpu: 'x64',
+    libc: 'musl',
+  },
   { rust: 'aarch64-pc-windows-msvc', pkg: 'lsp-win32-arm64', os: 'win32', cpu: 'arm64' },
   { rust: 'x86_64-pc-windows-msvc', pkg: 'lsp-win32-x64', os: 'win32', cpu: 'x64' },
 ]
@@ -46,10 +70,14 @@ if (wanted.length === 0) {
 
 for (const target of wanted) {
   console.info(`building ${target.rust}`)
-  execFileSync('cargo', ['build', '--release', '-p', 'tamagui-lsp', '--target', target.rust], {
-    cwd: workspace,
-    stdio: 'inherit',
-  })
+  execFileSync(
+    'cargo',
+    ['build', '--release', '-p', 'tamagui-lsp', '--target', target.rust],
+    {
+      cwd: workspace,
+      stdio: 'inherit',
+    }
+  )
 
   const exe = target.os === 'win32' ? 'tamagui-lsp.exe' : 'tamagui-lsp'
   const outDir = join(here, target.pkg)
