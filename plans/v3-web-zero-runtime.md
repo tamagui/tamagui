@@ -5,6 +5,13 @@ is carried over from an older record. Claims are labeled **READ** (I ran it,
 receipt inline), **INFERRED** (follows from named readings), or **GUESS** (fits
 the shape, unverified).
 
+**Scope, decided by Nate and not open (§11):** the mode targets greenfield apps
+written under stricter authoring rules, not migrations of existing large apps.
+Coverage failures are a hard build error with a per-site list, never a
+per-component fallback. Every component that needs real runtime (sheet, dialog,
+select, toast, popover, slider, tooltip and the rest) is a declared async island
+and is out of the mode. CSS animation driver only. Web only.
+
 Two baselines appear below, both real:
 
 - **`f33ced24bc`**, where the decomposition and all the probes were taken.
@@ -120,7 +127,8 @@ The per-module decomposition reproduces almost exactly. Marginal gzip
 
 One number worth calling out that the brief did not: **`getSplitStyles` is
 −188 in V3** (3,667 vs V2's 3,855). `directStyle` is purely additive on top of
-it. Two style engines ship in every compiled bundle.
+it. Neither shrank when the other arrived, so a compiled app carries the full
+9.1KB of both. This is not two competing emitters, see §9 item 4.
 
 ---
 
@@ -158,19 +166,65 @@ in both builds), while the JS loses the design-system CSS entirely:
 The design-system rules (`:where(.is_View){display:flex;…}`, the scrollbar and
 pointer-events rules) and every `:root` theme-variable block live as string
 literals in `createDesignSystem.ts` / `getThemeCSSRules.ts` and are injected into
-`document.head` at `createTamagui()` time. The flag deletes them from JS and
-puts them nowhere. The vite plugin only ever emits per-module atomic CSS through
-its virtual `.tamagui.css` modules; it never writes the config-level CSS.
+`document.head` at `createTamagui()` time. The flag deletes them from JS and puts
+them nowhere, because the vite plugin emits only per-module atomic CSS through
+its virtual `.tamagui.css` modules.
 
-That is what `outputCSS` is for, and **READ**, the vite plugin passes
-`outputCSS: undefined` on the native path and never wires it for web at all.
-`Static.loadTamagui` will write the file when `props.outputCSS` is set
-(`code/compiler/static/src/extractor/loadTamagui.ts:160`), and the `generate`
-command in `code/core/cli/src/cli.ts` already drives exactly that path.
+### The artifact generator already exists, only vite is missing
 
-**So this is not "flip a flag". It is "make the compiler emit the design-system
-and theme CSS as a build artifact, then flip the flag."** Which is the same work
-zero-runtime needs. Items 3 and the mode are one problem, not two.
+An earlier draft of this plan said the fix was "make the compiler emit the CSS
+artifact". That was wrong and the correction matters, because the real fix is
+much smaller. **READ:**
+
+- `writeTamaguiCSS` (`code/compiler/static/src/extractor/bundleConfig.ts:587`)
+  calls `config.getCSS()` and writes it, gated on `props.outputCSS`. It is
+  reached from `loadTamagui.ts:161`, `:192`, `:402` and `bundleConfig.ts:522`.
+- Five in-repo build configs already set it: `code/tamagui.dev`,
+  `code/starters/expo-router`, `code/sandbox`, `code/tests/next-site`,
+  `code/tests/next-turbopack`.
+- The artifacts exist and contain exactly the right thing.
+  `code/sandbox/app/tamagui.generated.css` is 422,550 bytes and opens with
+  `._ovs-contain`, `.is_View {display:flex;…}`, `.is_Text`, the `@scope` rule,
+  then 792 `:root` blocks and 1,276 `t_light`/`t_dark` occurrences.
+- Webpack/Next reach it through the shared `Static.loadTamagui`, which writes
+  the file as a side effect of loading. **The vite plugin does not**: it uses its
+  own loader (`createViteTamaguiLoader` → `Static.loadTamaguiBuildConfigAsync` /
+  `Static.loadTamaguiFromModules`), which never calls the write path. In
+  `code/compiler/vite-plugin/src/plugin.ts` the string `outputCSS` appears only
+  as `outputCSS: undefined` twice (lines 482 and 484, both on the native branch)
+  and once inside a comment on line 739.
+
+**So item 1 is "wire `outputCSS` through the vite plugin's web path, then set the
+flag", not "build the artifact".** The breakage evidence above still stands: with
+the flag on and no artifact wired, the CSS goes nowhere.
+
+### The artifact is not free, and nobody has priced it
+
+**READ**, `gzip -9` of the three generated artifacts in this repo:
+
+| project | raw | gzip |
+| --- | ---: | ---: |
+| `code/sandbox/app/tamagui.generated.css` | 422,550 | **25,035** |
+| `code/tamagui.dev/tamagui.generated.css` | 464,965 | **34,803** |
+| `code/starters/expo-router/tamagui.generated.css` | 350,414 | **27,558** |
+
+And **READ**, decomposing the sandbox artifact: **90% of it is theme-class
+blocks** (301 blocks, 382,483 bytes). `:root` token and font blocks are 7%.
+Atomic rules are 0%, since those come from per-module compiler output rather
+than this file.
+
+This is a first-order fact for the mode and it was not in anyone's model. Today
+an app ships its config as a JS object and expands it to CSS at boot. The mode
+ships the expansion on the wire instead. Both scale with theme count, so on these
+configs the CSS side is 25 to 35KB gzip, which is the same order as the entire
+JS saving. **Theme count becomes a bundle-size decision.** The mode needs a story
+for shipping only the themes an app actually uses, and a greenfield app under
+the mode's contract should be declaring far fewer than 301 theme blocks.
+
+`TAMAGUI_OPTIMIZE_THEMES` and the names-only theme projection in
+`createTamagui.ts:133` (`scanAllSheets`) are the existing machinery for "the CSS
+is authoritative, the config ships names only". That is the right hook. Whether
+it can also prune unreferenced themes is open (§11).
 
 ---
 
@@ -183,17 +237,47 @@ one static CSS file. `react` and `react-dom` remain.
 
 **Given constraints** (from Nate): CSS animation driver only. Web only.
 
-**Delivery shape.** Three artifacts have to exist before the mode can be
-claimed:
+**Audience: greenfield apps written under a stricter contract.** This is the
+decision that shapes everything else. The mode is not a migration path for an
+existing large app, and the 18.6% bail rate on tamagui.dev (§7) is calibration
+data about legacy code rather than a work list to burn down. An app opts into
+the mode and accepts authoring rules in exchange for the guarantee.
 
-1. **`app.css`** containing, in this order: design-system base rules, `:root`
-   token variables, font rules, every theme's `.t_*` variable block, and the
-   compiler's atomic rules. Today only the last group is emitted.
+**The contract**, stated as rules a developer follows, because that is how it
+has to be documented:
+
+1. **No prop spreading onto styled components.** `{...props}` is the single
+   largest recoverable bail class (142 sites on tamagui.dev) and it is
+   unrecoverable in general because the compiler cannot prove the spread carries
+   no style props. Under the mode it is a build error, and the developer passes
+   props explicitly.
+2. **No dynamic component types.** `const C = cond ? View : Text` cannot lower.
+   Elements are literal.
+3. **Static style values.** Every style prop evaluates at build time. A value
+   that depends on runtime state uses the CSS-variable escape (§11 q3) if that
+   lands, or the component becomes an island.
+4. **Static themes and static config.** No runtime theme mutation, no runtime
+   theme builder. Themes are a fixed build-time set; switching them is a class
+   name on an ancestor.
+5. **CSS animation driver only.**
+6. **Components drawn from the lowerable set** (Tier A in §6), with anything
+   else declared as an island.
+7. **No JS reads of design state.** No `useMedia()`, `useTheme()`,
+   `getTokens()`, `getVariableValue()`. Media, group and pseudo state remain
+   fully expressible, but only as CSS.
+
+Rules 1, 2 and 3 want lint rules and ideally types, not just a build error at
+the end. An `eslint-plugin` already exists in `code/core/eslint-plugin`, which
+is the natural home.
+
+**Delivery shape.** Three things have to exist before the mode can be claimed:
+
+1. **`app.css`**: design-system base rules, `:root` token variables, font rules,
+   the theme `.t_*` blocks, and the compiler's atomic rules. The generator
+   exists; vite needs wiring (§3). Watch its size (§3).
 2. **Lowered JSX** for every call site. Already works (§1).
 3. **No provider.** `TamaguiProvider` costs 21,119 gzip on a tree with zero
-   un-lowered children. In the mode it must not be imported at all; theme
-   switching becomes "put `t_dark` on an ancestor element", which is what the
-   CSS already keys off.
+   un-lowered children. In the mode it must not be imported at all.
 
 ---
 
@@ -232,7 +316,12 @@ helpers.
 
 ---
 
-## 6. Component tiers
+## 6. Which components are in the mode
+
+**DECIDED by Nate: the mode covers the components that already lower to
+`div` + class. Every component that pulls real runtime is an island and is out
+of the mode.** No intermediate runtime, no scheme to bring the runtime-dependent
+set in. His words on the split: "kk thats a fine tradeoff still".
 
 The audit below is **p22394's READ** of runtime (non-type) imports from
 `@tamagui/web` and `@tamagui/core` across `code/ui/*/src`. I spot-checked five
@@ -240,37 +329,39 @@ packages (`card`, `accordion`, `sheet`, `select`, `toast`) and my reading agrees
 with theirs, so I am relaying it as their reading corroborated, not as my own
 full audit.
 
-**Tier A, erases today (15 of 49 audited packages).** Import only stylable /
+**In the mode: 15 of 49 audited packages.** They import only stylable /
 compile-time surface: `styled`, `View`, `Text`, `createStyledHOC`,
 `createStyledContext`, `withStaticProperties`, `createRefComponent`,
 `composeRefs`, `composeEventHandlers`, `isWeb`/`isIos`/`isAndroid`. These are
 `accordion avatar card collapsible elements form label radio-group
 react-native-web scroll-view separator shapes text toggle-group
-visually-hidden`. A Tier A component vanishes the moment all of its call sites
-lower, exactly as `View` did in probe P1.
+visually-hidden`, plus the `View`/`Text`/stack primitives themselves. Each
+vanishes the moment all of its call sites lower, exactly as `View` did in probe
+P1. That set covers layout, text, cards, forms, lists and disclosure, which is
+most of a content or marketing site: the greenfield target.
 
-**Tier B, needs a small runtime (the bulk of the remaining 34).** The recurring
-runtime dependencies across the whole set are a short list: `useEvent`,
-`useThemeName`, `Theme`, `useConfiguration`, `getVariableValue`,
-`useAnimationDriver` / `useAnimatedNumber`, `useIsTouchDevice`,
-`useDidFinishSSR`, `Slot`, `LayoutMeasurementController`,
-`createChangeEventDetails`. **That is the actual question to answer, and it is
-much narrower than "gut the core":** can those eleven symbols be satisfied by a
-standalone package that does not transitively reach the style engine? Several
-are trivially independent (`useEvent`, `useDidFinishSSR`, `useIsTouchDevice`,
-`Slot`, `composeRefs`). `useThemeName` / `Theme` / `useConfiguration` /
-`getVariableValue` are the ones that reach config and theme state and need real
-design work.
-
-**Tier C, out of scope for the mode.** `sheet` (8 runtime imports), `toast` (7),
-`select` (6), `portal` (6), `slider` (5), `dialog` (4), then
+**Islands, the other 34.** `sheet` (8 runtime imports), `toast` (7), `select`
+(6), `portal` (6), `slider` (5), `dialog` (4), then
 `tooltip switch stacks roving-focus popper menu linear-gradient input
-dismissable create-menu` at 3 each. Anything needing measurement, portals,
-animation drivers beyond CSS, or focus management. These become islands (§7).
+dismissable create-menu` at 3 each, and the remainder. Anything needing
+measurement, portals, animation drivers beyond CSS, or focus management. They
+keep working exactly as they do today, in a lazily-loaded chunk that carries
+`@tamagui/*`, and the main bundle keeps its guarantee.
 
-**Open, needs a decision.** Whether Tier B is worth building at all in v1, or
-whether v1 is "Tier A only, everything else is an island". The Tier A set covers
-layout, text, cards, forms and lists, which is most of a content site.
+For the record, since it shaped the decision: the runtime dependencies these 34
+share are a short list of eleven symbols (`useEvent`, `useThemeName`, `Theme`,
+`useConfiguration`, `getVariableValue`, `useAnimationDriver` /
+`useAnimatedNumber`, `useIsTouchDevice`, `useDidFinishSSR`, `Slot`,
+`LayoutMeasurementController`, `createChangeEventDetails`). A standalone
+mini-runtime satisfying those was the alternative to islands. It is rejected,
+so nothing in this plan depends on it.
+
+**The remaining work here is a boundary, not a rewrite.** The mode needs to know
+which components are island-only, and to say so at build time with a useful
+message rather than through a generic bailout. The cleanest source of truth is
+the `acceptsClassName` flag the compiler already reads
+(`compilerHost.ts:1091-1092`, `:1295-1299`), since that is exactly the property
+that decides lowerability.
 
 ---
 
@@ -279,8 +370,13 @@ layout, text, cards, forms and lists, which is most of a content site.
 Two gates, because neither alone is sufficient.
 
 **Gate 1, compiler-local.** The compiler already produces exactly the accounting
-this needs. **READ**, `code/comparisons/output/v3-site-compiler-stats.json`,
-whole tamagui.dev at the v3 compiler:
+this needs. The numbers below are **calibration, not a backlog**: tamagui.dev is
+a large app written years before any of these rules existed, and the mode targets
+greenfield code (§4). Read them as "here is what unconstrained authoring looks
+like, and here is which contract rule each bucket corresponds to".
+
+**READ**, `code/comparisons/output/v3-site-compiler-stats.json`, whole
+tamagui.dev at the v3 compiler:
 
 ```
 found 2564   lowered 2086   flattened 2073   partial 13   bailed 478   flattenRate 0.809
@@ -290,20 +386,24 @@ local/dynamic-style-value  115
 linked/unresolved-binding    5
 ```
 
-The homepage alone: 277 found, 225 flattened, 52 bailed. **18.6% of call sites
-on a real app do not lower today.** In zero-runtime mode, every bailout becomes
-a build error carrying file, line, component and code. The plumbing exists
-(`compilerStats.ts`, `TAMAGUI_COMPILER_STATS_FILE`); the mode adds a threshold of
-zero.
+Homepage alone: 277 found, 225 flattened, 52 bailed. Mapping the buckets onto
+the contract:
 
-The largest bailout bucket is `local/unsupported-target` at 221, and it is
-mostly "X does not accept className": `Spinner` 26, `Input` 20, `ScrollView` 18,
-`Label` 17, `XGroup` 16, `Button`, `EnsureFlexed`. **INFERRED**: these are Tier
-B/C components whose implementation is not a plain styled view, so no compiler
-improvement fixes them. They are fixed by rewriting the component or by
-declaring it an island. Seventeen more are "Animated candidates remain on the
-runtime path", which the CSS-driver-only constraint partly addresses and partly
-does not.
+| bucket | n | contract rule | greenfield expectation |
+| --- | ---: | --- | --- |
+| `local/unsupported-target` | 221 | rule 6 (lowerable set) | mostly "X does not accept className": `Spinner` 26, `Input` 20, `ScrollView` 18, `Label` 17, `XGroup` 16. **INFERRED**: no compiler improvement fixes these; they are component rewrites or islands. 17 more are "Animated candidates remain on the runtime path", which rule 5 addresses. |
+| `local/unsafe-style-spread` | 142 | rule 1 (no spreading) | goes to zero by construction |
+| `local/dynamic-style-value` | 115 | rule 3 (static values) | goes to zero by construction, minus whatever the CSS-variable escape can recover |
+| `linked/unresolved-binding` | 5 | rule 2 | goes to zero by construction |
+
+So under the contract, 262 of the 478 disappear because the code is written
+differently, and the residual problem is the 221 component-shaped bails. That
+makes §6's component tiers the real work, and it is why "audit the components"
+was the right instinct.
+
+In the mode, every bailout becomes a build error carrying file, line, component
+and code. The plumbing exists (`compilerStats.ts`,
+`TAMAGUI_COMPILER_STATS_FILE`); the mode adds a threshold of zero.
 
 **Gate 2, bundler-level.** After bundling, assert no emitted module id matches
 `/(@)?tamagui/`. This is the only gate that actually proves the claim, because
@@ -312,10 +412,12 @@ the compiler's accounting is blind to non-JSX entry points: a stray `useTheme()`
 a component imported for its type that also has a runtime export. Gate 1 without
 Gate 2 will report success on a bundle that still ships 40KB of runtime.
 
-### Failure policy
+### Failure policy: decided
 
-Recommendation, **not** a survey: **hard build failure with a full list, no
-per-site fallback.**
+**DECIDED by Nate: hard build failure listing every offending site. No
+per-component fallback. The escape hatch is declared async islands.** The
+reasoning is kept below because it is what the error message and the docs have
+to explain.
 
 A per-component fallback that silently reintroduces the import is the wrong
 design and should be rejected outright. It makes the mode's guarantee
@@ -346,28 +448,35 @@ class emission. I do not have a confident answer and it needs Nate's call.
 
 ---
 
-## 8. What an app gives up
+## 8. What the contract costs in practice
 
-Stated concretely, since this is what determines whether anyone can use the mode:
+§4 states the rules. This is what they feel like to write against, which is what
+the docs have to say honestly:
 
-- **Runtime theme mutation.** `_mutateTheme`, the runtime theme builder, and the
-  `getOrCreateMutatedVariable` path in `getThemeCSSRules` all require the CSS
-  generator to be live. Themes become a static, build-time set. Theme *switching*
-  survives (it is a class name), theme *authoring at runtime* does not.
-- **Dynamic style values.** 115 sites on tamagui.dev today, things like
-  `opacity={someExpr}` and `color={props.color}`. A CSS custom property escape
-  (`style={{'--x': v}}` plus an atomic rule reading `var(--x)`) covers some of
-  these and is worth investigating, but not all.
-- **Unprovable spreads.** 142 sites. `{...props}` where the compiler cannot
-  prove the spread contains no style props. This is the bucket most likely to
-  shrink with compiler work, since a typed spread from a known component's props
-  is analyzable.
-- **JS access to design tokens.** `useMedia()`, `useTheme()`, `getTokens()`,
-  `getVariableValue()`. Media, group and pseudo state stay expressible, but only
-  as CSS. Anything that needs the current media state as a JS boolean is out.
-- **Every animation driver except CSS.** Given.
-- **`asChild` / `Slot`, `Adapt`, context-dependent variants**, and `styled()`
-  variants whose functions read theme at render.
+- **Themes are frozen at build time.** `_mutateTheme`, the runtime theme
+  builder, and the `getOrCreateMutatedVariable` path in `getThemeCSSRules` all
+  need the CSS generator live. Switching themes survives, since it is a class
+  name on an ancestor. Authoring or deriving a theme at runtime does not.
+- **No prop spreading onto styled components.** This is the rule people will hit
+  first and complain about most, because `({...props}) => <View {...props} />`
+  is idiomatic React. Under the mode a wrapper component names its style props
+  explicitly, or it is an island.
+- **Style values are literals.** `opacity={0.5}` yes, `opacity={someExpr}` no.
+  Whether the CSS-variable escape softens this is open (§11 q3).
+- **No JS reads of design state.** `useMedia()`, `useTheme()`, `getTokens()`,
+  `getVariableValue()`. Media, group and pseudo state stay fully expressible,
+  but only as CSS. Anything that needs the current breakpoint as a JS boolean
+  is out.
+- **CSS animation driver only.**
+- **No `asChild` / `Slot`, no `Adapt`**, no context-dependent variants, no
+  `styled()` variant functions that read theme at render.
+- **Sheets, dialogs, selects, toasts, tooltips, popovers, sliders and the rest
+  of the interactive set are islands.** They work, they lazy-load, and their
+  cost is visible as a chunk instead of a silent tax on every page.
+
+The honest summary: this is a mode for content and marketing surfaces, app
+shells, and the static 90% of a product, with the interactive 10% behind an
+island boundary. It is not a mode for an app that is mostly interactive.
 
 ---
 
@@ -377,10 +486,10 @@ Ordered by gzip per unit of risk. "Measured" means I built it and read the bytes
 
 | # | item | Δ gzip | confidence | risk |
 | --- | --- | ---: | --- | --- |
-| 1 | Emit design-system + theme CSS as a build artifact from the vite and next plugins, then set `TAMAGUI_DID_OUTPUT_CSS` | **−2,928** | measured (READ) | medium: needs the CSS file wired into both plugins and an SSR story; must be off in dev and off when themes mutate at runtime |
+| 1 | Wire `outputCSS` through the vite plugin's web path, then set `TAMAGUI_DID_OUTPUT_CSS` | **−2,928** | measured (READ) | low-medium: the generator and the artifact already exist and webpack/Next already get them (§3); vite is the gap. Must stay off in dev and off when themes mutate at runtime |
 | 2 | ~~Move `normalize-css-color` off the web runtime~~ **LANDED** in `359e29cc83` + `5e3b31bca9` | **−2,468** | measured (READ) | done |
 | 3 | Correct the docs' "~6KB" claim to the measured ~2.9KB | 0 | READ | none |
-| 4 | Ship one style engine on the compiled path, not two | ~−3,667 | estimated (INFERRED from `getSplitStyles` marginal 3,667) | high: needs a design for how the compiled path drops prop-walking |
+| 4 | Keep the runtime prop walker out of a fully compiled build (see below) | ~−3,667 | estimated (INFERRED from `getSplitStyles` marginal 3,667) | high: needs a design for how the compiled path drops prop-walking |
 | 5 | `resolveSafeArea` + `tokenCategories` + `core::runtime` off the web hot path | ~−1,025 | marginals (READ), mechanism unverified | medium |
 | 6 | Defer or drop the `Variables` feature on web | ~−1,231 | marginal (READ) | product decision, not a leak |
 | 7 | **Zero-runtime mode** | up to **−44,899** | see below | the actual project |
@@ -390,6 +499,30 @@ and 2 measured individually at −2,939 and −2,277 (predicted sum −5,216) an
 together at −5,168, a 1% error. And item 1 re-measured on the post-item-2
 baseline gives −2,928, within 11 bytes of its pre-item-2 figure. Treat sums here
 as good to about ±5%.
+
+### Item 4, stated correctly
+
+An earlier draft called this "two style engines ship in every compiled bundle".
+That is wrong and I am withdrawing it. **READ**, `getSplitStyles.tsx`: the style
+emission sites are `contributeStyleValue` (496, 888, 973, 1093) and
+`flushDirectStyles` (509, 1170), all of which delegate to `directStyle`. The two
+other `addStyleToInsertRules` calls (637, 646) emit container-query registration
+(`container-name` / `container-type`), not styles. There is exactly one
+duplicated emission site, lines 1174-1203, gated on
+`!noMergeStyle && style && !shouldDoClasses && isAnimated && !driver?.isReactNative`,
+i.e. inline animation drivers on web only. It calls `getCSSStyleAtomic` with an
+explicit `directStyleSignature(key, value)` so its output matches `directStyle`
+byte for byte, and its own comment says it exists to "reproduce the
+direct-emission identity so the surviving class matches its server-rendered
+counterpart exactly". That is one engine plus a 30-line mirror for one driver
+mode. I found no second independent path.
+
+The real cost claim, which is the one that argues for the mode: `getSplitStyles`
+is the runtime prop walker at 3,667 gzip and it ships in full alongside
+`directStyle` at 5,451. Neither shrank when the other arrived. In a fully
+compiled app most of those 9.1KB are unreachable and unremovable, because
+nothing in the build tells the bundler that no un-lowered call site survives.
+That is the whole argument in one sentence.
 
 ### Does anything short of the mode get v3 below v2?
 
@@ -446,50 +579,78 @@ catch it.
 
 ## 10. Sequencing
 
-**Phase 0, this week.** Fix the docs claim. Run `zeroRuntime: 'report'` (or
-just `TAMAGUI_COMPILER_STATS_FILE`, which already exists) against tamagui.dev
-and against a second real app, and publish the bailout histogram. Everything
-after this is scoped by that number.
+**Phase 0.** Fix the docs claim. Write the greenfield starter that the mode
+targets (§4's contract, in-mode components only) and measure it end to end: JS
+gzip, CSS gzip, and the compiler's bailout count. This replaces "run the report
+against tamagui.dev" from the earlier draft, because tamagui.dev is no longer
+the target and its numbers are calibration rather than scope.
 
-**Phase 1, the CSS artifact.** Wire `outputCSS` for web through the vite plugin
-and the next plugin, emit design-system + tokens + fonts + themes into it, set
-`TAMAGUI_DID_OUTPUT_CSS` when and only when that file is being produced and no
-runtime theme mutation is declared. Gate it off in dev. **−2,928 measured**, and
-it is a hard prerequisite for the mode. Item 2 already landed and needs only the
-hydration check noted in §9.
+**Phase 1, the CSS artifact.** Wire `outputCSS` through the vite plugin's web
+path, set `TAMAGUI_DID_OUTPUT_CSS` when and only when that file is being
+produced and no runtime theme mutation is declared, gate it off in dev. Confirm
+Next and metro already do the equivalent through `Static.loadTamagui`.
+**−2,928 measured**, and it is a hard prerequisite for the mode. Item 2 already
+landed and needs only the hydration check noted in §9.
 
-**Phase 2, provider elimination.** Make a zero-runtime root need no
+**Phase 2, the CSS artifact's size.** Do not skip this. On the three in-repo
+configs the artifact is 25 to 35KB gzip and 90% of it is theme blocks (§3). Get
+a real number for a two-theme greenfield config, and if it is still large,
+design theme pruning before the mode ships. Trading 45KB of JS for 30KB of CSS
+is not the win anyone is promising.
+
+**Phase 3, provider elimination.** Make a zero-runtime root need no
 `TamaguiProvider`. Theme switching becomes a class name on an ancestor.
 Worth 21,119 gzip on a clean tree.
 
-**Phase 3, the two gates.** `zeroRuntime: true` fails on any bailout; the
-bundler assertion fails on any emitted `@tamagui/*` module. Ship them together,
-because Gate 1 alone gives false confidence.
+**Phase 4, the two gates and the island boundary.** `zeroRuntime: true` fails on
+any bailout with a per-site list; the bundler assertion fails on any emitted
+`@tamagui/*` module. Ship them together, because Gate 1 alone gives false
+confidence. Alongside them, make island-only components fail with a message that
+names the component and says "island", driven off `acceptsClassName` (§6).
 
-**Phase 4, Tier B.** Decide whether the eleven recurring runtime symbols get a
-standalone package or whether v1 is Tier A only. Then islands.
+**Phase 5, the authoring rules as lint.** Rules 1, 2 and 3 of the contract in
+`code/core/eslint-plugin`, so a developer sees them while typing rather than at
+build time.
 
-Items 4, 5 and 6 are independent of all of this and improve the non-zero-runtime
-path, which is the path most apps will stay on. They should not block the mode
-and the mode should not block them.
+Items 4, 5 and 6 in §9 are independent of all of this and improve the ordinary
+compiled path, which is where every non-greenfield app stays. They should not
+block the mode and the mode should not block them.
 
 ---
 
-## 11. Open questions
+## 11. Settled, and still open
 
-1. Can an island share a provider with a zero-runtime root, or does each island
-   mount its own? (§7)
-2. Is v1 Tier A only, or does Tier B get a standalone runtime package? (§6)
+**Settled by Nate, do not reopen:**
+
+- Failure policy: hard build failure with a full site list, no per-component
+  fallback, islands as the escape hatch (§7).
+- Audience: greenfield apps under stricter authoring rules, not tamagui.dev (§4).
+- Component split: the runtime-dependent set is islands and is out of the mode.
+  No intermediate mini-runtime (§6).
+
+**Still open:**
+
+1. **Theme CSS size.** The artifact is 25 to 35KB gzip on in-repo configs and
+   90% theme blocks (§3). Can `TAMAGUI_OPTIMIZE_THEMES` / the names-only
+   projection be extended to ship only referenced themes? If not, what is the
+   real number for a two-theme config? This is the one open question that could
+   materially change whether the mode is worth it, so it should be answered
+   before anything else is built.
+2. Can an island share a provider with a zero-runtime root, or does each island
+   mount its own? Sharing puts the provider in the main chunk and the guarantee
+   is gone. Per-island providers mean repeated config parsing and possibly
+   duplicate theme class emission.
 3. Does the CSS-custom-property escape (`style={{'--x': v}}` plus an atomic rule
-   reading `var(--x)`) cover enough of the 115 `dynamic-style-value` bailouts to
-   be worth building? I have not measured this and would not guess.
+   reading `var(--x)`) recover enough dynamic values to be worth building, or is
+   contract rule 3 enough on its own? I have not measured it and would not guess.
 4. `TAMAGUI_DOES_SSR_CSS` already has a `'mutates-themes'` value that keeps
    `getThemeCSSRules` live. Is that the right existing switch to hang the
    "runtime theme mutation is declared" gate off, rather than adding a new one?
-5. Item 4 (one style engine) is the largest non-mode win at ~3.7KB and I have no
-   design for it. Does the compiled path have a coherent story where
-   `getSplitStyles` never loads, or do the two emitters serve genuinely different
-   call sites?
+5. Item 4 is the largest non-mode win at ~3.7KB and I have no design for it. Is
+   there a coherent story where a fully compiled build never loads
+   `getSplitStyles`, or does the prop walker serve call sites the direct emitter
+   structurally cannot?
+6. The hydration check on `359e29cc83` (§9). Small, but nobody owns it yet.
 
 ---
 
