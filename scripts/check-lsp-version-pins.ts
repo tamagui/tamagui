@@ -64,4 +64,6 @@ if (stale.length > 0) {
   process.exit(1)
 }
 
-console.info(`✓ @tamagui/lsp pins ${pins.length} platform binaries at ${umbrella.version}`)
+console.info(
+  `✓ @tamagui/lsp pins ${pins.length} platform binaries at ${umbrella.version}`
+)
