@@ -1,9 +1,26 @@
 # v3 web: a real zero-runtime mode, and the road below v2
 
-Branch `v3-beta`. Every number below was re-measured at `f33ced24bc` in this
-worktree; nothing is carried over from an older record. Claims are labeled
-**READ** (I ran it, receipt inline), **INFERRED** (follows from named readings),
-or **GUESS** (fits the shape, unverified).
+Branch `v3-beta`. Every number below was re-measured in this worktree; nothing
+is carried over from an older record. Claims are labeled **READ** (I ran it,
+receipt inline), **INFERRED** (follows from named readings), or **GUESS** (fits
+the shape, unverified).
+
+Two baselines appear below, both real:
+
+- **`f33ced24bc`**, where the decomposition and all the probes were taken.
+- **`5e3b31bca9`**, one commit before this plan landed. `359e29cc83` and
+  `5e3b31bca9` removed `normalize-css-color` from web mid-write, so the gap is
+  now smaller than the decomposition table shows. Item 2 in §9 is done.
+
+**READ**, current bench, single emitted chunk, `gzip -9`:
+
+| | at `f33ced24bc` | at `5e3b31bca9` |
+| --- | ---: | ---: |
+| V3 | 104,796 | **102,328** |
+| V2 | 92,961 | 92,961 |
+| gap | +11,835 | **+9,367** |
+
+`aliceblue` (the CSS color-name table) no longer appears in the emitted chunk.
 
 Companion record: [`code/comparisons/V3_BETA_MEASUREMENT_STATE.md`](../code/comparisons/V3_BETA_MEASUREMENT_STATE.md).
 That file's headline `+12,052` is correct for `605a1659d3` and is now stale by
@@ -197,10 +214,11 @@ and `directStyle.ts:39-41` pulls `propMapper`, `resolveSafeArea` and
 `resolveSafeAreaVariable`. You cannot lift the style-grammar tables out
 separately while `directStyle` ships.
 
-**Cluster B, config and CSS generation (~5.8KB gzip).** `createTamagui` 1,337,
-`insertStyleRule`'s share, `createDesignSystem` 905, `variables` 1,231,
-`normalize-css-color` 2,315, `core::runtime` 379. Most of this is what the
-`TAMAGUI_DID_OUTPUT_CSS` measurement removes.
+**Cluster B, config and CSS generation (~5.8KB gzip at `f33ced24bc`, ~3.5KB
+now).** `createTamagui` 1,337, `insertStyleRule`'s share, `createDesignSystem`
+905, `variables` 1,231, `core::runtime` 379, plus `normalize-css-color` 2,315
+which `359e29cc83` has since removed. Most of the remainder is what the
+`TAMAGUI_DID_OUTPUT_CSS` measurement takes out.
 
 **Cluster C, the component runtime (~7KB gzip).** `createComponent` 3,923,
 `useThemeState` 1,656, `useComponentState` 852, `getThemeProxied` 238,
@@ -359,29 +377,33 @@ Ordered by gzip per unit of risk. "Measured" means I built it and read the bytes
 
 | # | item | Δ gzip | confidence | risk |
 | --- | --- | ---: | --- | --- |
-| 1 | Emit design-system + theme CSS as a build artifact from the vite and next plugins, then set `TAMAGUI_DID_OUTPUT_CSS` | **−2,939** | measured (READ) | medium: needs the CSS file wired into both plugins and an SSR story; must be off in dev and off when themes mutate at runtime |
-| 2 | Move `normalize-css-color` off the web runtime | **−2,277** | measured (READ) | low, see below |
+| 1 | Emit design-system + theme CSS as a build artifact from the vite and next plugins, then set `TAMAGUI_DID_OUTPUT_CSS` | **−2,928** | measured (READ) | medium: needs the CSS file wired into both plugins and an SSR story; must be off in dev and off when themes mutate at runtime |
+| 2 | ~~Move `normalize-css-color` off the web runtime~~ **LANDED** in `359e29cc83` + `5e3b31bca9` | **−2,468** | measured (READ) | done |
 | 3 | Correct the docs' "~6KB" claim to the measured ~2.9KB | 0 | READ | none |
 | 4 | Ship one style engine on the compiled path, not two | ~−3,667 | estimated (INFERRED from `getSplitStyles` marginal 3,667) | high: needs a design for how the compiled path drops prop-walking |
 | 5 | `resolveSafeArea` + `tokenCategories` + `core::runtime` off the web hot path | ~−1,025 | marginals (READ), mechanism unverified | medium |
 | 6 | Defer or drop the `Variables` feature on web | ~−1,231 | marginal (READ) | product decision, not a leak |
 | 7 | **Zero-runtime mode** | up to **−44,899** | see below | the actual project |
 
-Items 1 and 2 are additive with 1% error: measured individually at −2,939 and
-−2,277 (predicted sum −5,216), measured together at **−5,168**. **READ.** So
-summing the marginals in this table is legitimate to about ±5%.
+Marginals in this table sum honestly. **READ**: before item 2 landed, items 1
+and 2 measured individually at −2,939 and −2,277 (predicted sum −5,216) and
+together at −5,168, a 1% error. And item 1 re-measured on the post-item-2
+baseline gives −2,928, within 11 bytes of its pre-item-2 figure. Treat sums here
+as good to about ±5%.
 
 ### Does anything short of the mode get v3 below v2?
 
-No. **INFERRED**, from the measured items above:
+No. **INFERRED**, from the measured items above, starting from the current
++9,367:
 
-- Items 1+2+4 = −8,883, leaving **+2,724 above V2**.
-- Items 1+2+4+5+6 = −11,139, leaving **+468 above V2**, and that requires
-  removing a v3 feature.
+- Item 1 alone: **READ**, 102,328 → 99,400, leaving **+6,439 above V2**.
+- Items 1+4: −6,595, leaving **+2,772 above V2**.
+- Items 1+4+5+6: −8,851, leaving **+516 above V2**, and that requires removing
+  a v3 feature.
 
-Every identified leak, plus a feature deletion, lands at rough parity. There is
-no combination of leak-fixes that puts v3 under v2. **Below v2 requires the
-mode.**
+Every remaining identified leak, plus a feature deletion, lands at rough parity.
+There is no combination of leak-fixes that puts v3 under v2. **Below v2 requires
+the mode.**
 
 ### What the mode is worth
 
@@ -396,31 +418,29 @@ number is set by how much of it is Tier A, and the `zeroRuntime: 'report'` run
 against tamagui.dev is what turns that into a real figure. Do that report early;
 it is cheap and it decides whether the mode is a headline feature or a niche one.
 
-### Note on item 2
+### Note on item 2, which landed while this was being written
 
-The two remaining web consumers of `normalize-css-color` are
-`helpers/themes.ts::normalizeThemeValue` (canonicalizes theme colors to
-`rgba(r,g,b,a)` so equivalent spellings collapse to one CSS variable and
-SSR-hydrated values compare equal) and `helpers/propMapper.ts::isCSSColorName`
-(name-table membership for variant resolver matching). Both are build-time moves:
+The two web consumers were `helpers/themes.ts::normalizeThemeValue` and
+`helpers/propMapper.ts::isCSSColorName`. Both are gone:
 
-- `normalizeThemeValue` runs over the config's themes. Under item 1 the themes
-  are already being serialized to CSS at build time, so the canonicalization can
-  happen there and the runtime receives pre-canonical values. The runtime-mutated
-  theme path (`code/core/theme/src/_mutateTheme.ts`, theme builder) is the one
-  case that still needs a live normalizer, and it is also the case that already
-  disqualifies `TAMAGUI_DID_OUTPUT_CSS`. Same gate, same escape: when a config
-  declares runtime theme mutation, both item 1 and item 2 stay off.
-- `isCSSColorName` is a membership test against a fixed 150-name table
-  (**READ**: 150 entries, 1,493 source bytes of names plus a 2,400-byte parallel
-  hex-value string). The compiler resolves variants at build time for lowered
-  sites. For the runtime residue, only membership is needed, so the value string
-  and the whole parser can go and just the name list stays.
+- `359e29cc83` deleted `normalizeThemeValue`. `ensureThemeVariable` now stores
+  the authored value as written.
+- `5e3b31bca9` made the Color variant resolver treat any string as a color, so
+  the 150-name membership table is no longer consulted.
 
-A third import site, `helpers/normalizeColor.ts::getRgba`, was dead on web (it
-tree-shook to 63 gzip of `normalizeColor` alone) and has since been removed from
-that file in this checkout. The brief's "exactly two web consumers" is now
-literally true in source.
+A third import site, `helpers/normalizeColor.ts::getRgba`, was already dead on
+web (it tree-shook to 63 gzip of `normalizeColor` alone) and was removed in the
+same pass. The brief's "exactly two web consumers" was right.
+
+**One consequence to verify, INFERRED, not measured.** `normalizeThemeValue`
+existed so that equivalent spellings of a color (`#fff`, `white`,
+`rgb(255,255,255)`) collapsed to one CSS variable and so that an SSR-hydrated
+value compared equal to the client-computed one. Without it, a config that
+spells the same color two ways now emits two variables, and any place that
+compares a hydrated theme value against a freshly computed one is comparing raw
+strings. Worth a hydration test on a config with mixed color spellings before
+this is considered closed. Neither of the two commits carries a test that would
+catch it.
 
 ---
 
@@ -434,9 +454,9 @@ after this is scoped by that number.
 **Phase 1, the CSS artifact.** Wire `outputCSS` for web through the vite plugin
 and the next plugin, emit design-system + tokens + fonts + themes into it, set
 `TAMAGUI_DID_OUTPUT_CSS` when and only when that file is being produced and no
-runtime theme mutation is declared. Gate it off in dev. Land item 2 alongside,
-since it shares the same "is the config static" gate. **−5,168 measured**, and
-it is a hard prerequisite for the mode.
+runtime theme mutation is declared. Gate it off in dev. **−2,928 measured**, and
+it is a hard prerequisite for the mode. Item 2 already landed and needs only the
+hydration check noted in §9.
 
 **Phase 2, provider elimination.** Make a zero-runtime root need no
 `TamaguiProvider`. Theme switching becomes a class name on an ancestor.
