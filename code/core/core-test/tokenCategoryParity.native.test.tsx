@@ -43,9 +43,10 @@ test('React Native directional radii bind the radius category', () => {
     'borderBottomStartRadius',
     'borderBottomEndRadius',
   ]) {
-    expect(split({ [property]: '4' }, View.staticConfig).style?.[property], property).toBe(
-      radiusToken.val
-    )
+    expect(
+      split({ [property]: '4' }, View.staticConfig).style?.[property],
+      property
+    ).toBe(radiusToken.val)
   }
 })
 

@@ -4,11 +4,7 @@ import type { RootThemeName } from './types'
 
 describe('flat value types', () => {
   test('theme modifiers only include root theme names', () => {
-    type ConfigThemeName =
-      | 'light'
-      | 'dark'
-      | 'dark_blue'
-      | 'dark_ProgressIndicator'
+    type ConfigThemeName = 'light' | 'dark' | 'dark_blue' | 'dark_ProgressIndicator'
 
     expectTypeOf<RootThemeName<ConfigThemeName>>().toEqualTypeOf<'light' | 'dark'>()
   })
