@@ -5,6 +5,13 @@ is carried over from an older record. Claims are labeled **READ** (I ran it,
 receipt inline), **INFERRED** (follows from named readings), or **GUESS** (fits
 the shape, unverified).
 
+**Two axes, kept separate on purpose.** Goal A is "core must not grow from v2 to
+v3": that is the +9,367 gap and the JS items in §9, and it is the question this
+plan is primarily answering. Goal B is the zero-runtime mode, where the CSS
+artifact becomes a real transferred cost. Theme CSS weight (§3) is worth 17KB
+and belongs only to Goal B and to app authoring; it moves Goal A by zero and is
+deliberately kept out of that arithmetic.
+
 **Scope, decided by Nate and not open (§11):** the mode targets greenfield apps
 written under stricter authoring rules, not migrations of existing large apps.
 Coverage failures are a hard build error with a per-site list, never a
@@ -198,70 +205,118 @@ much smaller. **READ:**
 flag", not "build the artifact".** The breakage evidence above still stands: with
 the flag on and no artifact wired, the CSS goes nowhere.
 
-### The artifact costs 25-35KB gzip today, and almost all of it is waste
+### First, a retraction: the checked-in artifacts are stale
 
-**READ**, `gzip -9` of the three generated artifacts in this repo, decomposed
-with a real CSS parser (postcss), classified per top-level rule, at-rules
-recursing into their children. Reported as **marginal gzip**, `gzip(file) −
-gzip(file without that bucket)`, because raw byte share badly overstates theme
-blocks: they are extremely repetitive and compress far better than the rest.
+Two earlier rounds of this plan priced the CSS artifact off the
+`tamagui.generated.css` files committed in this repo. **Those files do not match
+current source and every number derived from them is withdrawn**, including a
+−17,620 pruning figure that p22394 and I independently reproduced to within 60
+bytes. We agreed because we ran different implementations against the same wrong
+input. Agreement between two measurements of the same stale file validates
+nothing, which is exactly the trap it looks like.
 
-| project | total gzip | theme | `:root` | base | atomic |
+**READ**, the receipt: `code/starters/expo-router/tamagui.generated.css` carries
+300 distinct `.t_` names. The current config
+(`createTamagui(defaultConfig).getCSS()`, regenerated from source) has 128 theme
+keys, and **only 10 of the 300 names on disk exist in it**. The disk names are
+v5-era component sub-themes (`black_Button`, `surface1`, `surface2`, `Slider`,
+`TextArea`); the current v6 suite is surface-level composition (`light_level2`,
+`light_accent`, `dark_brand`, `dark_inverse_level3`). Regenerating also gives a
+different size: 934,134 raw / 17,243 gzip versus 350,414 / 27,550 on disk.
+
+So the real artifact for a default v6 config is **17,243 gzip, not 27,536**. The
+CSS side of the mode was already ~10KB cheaper than either of us had it.
+
+Everything below is regenerated from current source.
+
+### What the artifact is made of
+
+**READ**, `createTamagui(defaultConfig).getCSS()` decomposed with postcss,
+classified per top-level rule with at-rules recursing into their children, and
+reported as **marginal gzip** (`gzip(file) − gzip(file without that bucket)`)
+because theme blocks are repetitive enough that raw byte share badly overstates
+them:
+
+| bucket | n | raw | raw% | marginal gzip | gz% |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| `starters/expo-router` | 27,536 | **17,845** (65%) | 7,462 (27%) | 513 | 146 |
-| `sandbox/app` | 25,035 | **17,673** (71%) | 5,257 (21%) | 564 | 145 |
-| `tamagui.dev` | 34,781 | **27,748** (80%) | 4,863 (14%) | 444 | 147 |
+| theme | 109 | 896,783 | 96% | **11,952** | 69% |
+| `:root` | 3 | 11,428 | 1% | **3,183** | 18% |
+| base | 8 | 25,455 | 3% | 543 | 3% |
+| atomic | 7 | 340 | 0% | 138 | 1% |
 
-An earlier draft of this section said "90% of it is theme-class blocks, `:root`
-7%, atomic 0%", derived from a regex over `{…}`. **Withdrawn.** That regex
-required `{` immediately after the selector, so `._ovs-contain {…}` never
-matched and "atomic 0%" was an artifact of the pattern. It was also raw-byte
-share rather than gzip. The parser numbers above supersede it. The direction
-survives, the shape does not: on gzip, themes are 65-80% rather than ~90%, and
-`:root` is a much bigger share (14-27%) than raw bytes suggested.
+An even earlier draft said "90% theme blocks, `:root` 7%, atomic 0%" from a
+regex over `{…}`. Also withdrawn: the regex required `{` immediately after the
+selector, so `._ovs-contain {…}` never matched.
 
-**The greenfield case is already the expensive one.** A greenfield app does not
-get a hand-rolled two-theme config, it gets `defaultConfig` from
-`@tamagui/config/v6`, which is what `code/starters/expo-router/tamagui.config.ts`
-does. **READ**: that starter's artifact carries **300 distinct `.t_` names**, and
-grepping all 15 of its source files for `<Theme`, `Theme name=` and `theme=`
-returns nothing but React Navigation's unrelated `ThemeProvider`. It ships 300
-theme selectors and 17.8KB gzip of theme CSS for themes it never names.
+**The greenfield app is the one paying for this.** It does not hand-roll a
+two-theme config, it does what `code/starters/expo-router/tamagui.config.ts`
+does in four lines: import `defaultConfig` from `@tamagui/config/v6` and pass it
+straight to `createTamagui`. **READ**: grepping all 15 of that starter's source
+files for `<Theme`, `Theme name=` and `theme=` returns nothing but React
+Navigation's unrelated `ThemeProvider`. It ships 128 themes and 306 color tokens
+for themes it never names.
 
-**So this is unused-theme shipping, not an inherent cost of moving CSS out of
-JS.** It is being paid today by every app that uses `outputCSS`. The mode does
-not create it.
+### This is app authoring, and the pattern already exists
 
-### Pruning is the single biggest lever in this plan
+Before the numbers, the framing, because it decides where this belongs.
+**READ**: `createV6Config(colors)` takes `{ themes, colorTokens }`
+(`code/core/config/src/v6-base.ts:106`), `defaultConfig` is just
+`createV6Config(colors)` with the full pack (`v6.ts:30`), and passing your own
+narrower pack is a **documented v6 capability** with a worked example at
+`code/tamagui.dev/data/docs/core/config-v6-colors.mdx:52`.
 
-**READ.** Pruning the starter's artifact to only the theme names it can reach,
-by dropping every rule whose selector references a `.t_` name outside the kept
-set:
+So the 128 themes and 306 color tokens in the starter are the default config
+being generous, not `@tamagui/web` growing. Nate's read, and he is right:
+theme narrowing already worked in v2 and an app author opts into it. **This
+contributes zero to "did core grow from v2 to v3", which is the question the
+rest of this plan is about.** It is a defaults, docs and starter-template
+question on a different axis.
 
-| variant | raw | gzip |
-| --- | ---: | ---: |
-| full artifact | 350,414 | **27,536** |
-| light + dark only | 53,473 | **9,916** |
-| light/dark plus their sub-themes | 55,384 | 10,073 |
-| no themes at all (floor) | 42,783 | 9,691 |
+It still matters for the mode, because there the artifact is real transferred
+bytes, so the numbers live in the mode's accounting rather than in the ordering.
 
-**Pruning to light + dark takes the artifact from 27,536 to 9,916 gzip, a
-−17,620 saving.** And the zero-theme floor is 9,691, so light and dark
-themselves cost 225 gzip: essentially the entire theme mass is the 298
-sub-themes the starter never references.
+**READ**, each variant built in its own process to defeat config caching:
 
-−17,620 gzip is larger than every JS item in §9 combined except the mode itself.
+| variant | themes | colorTokens | raw | gzip | Δ |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| `defaultConfig` | 128 | 306 | 934,134 | **17,243** | |
+| themes → light + dark | 2 | 306 | 66,349 | **6,279** | −10,964 |
+| themes → light/dark + surface levels | 26 | 306 | 219,456 | 8,376 | −8,867 |
+| colorTokens → 24 | 128 | 24 | 165,725 | 7,796 | −9,447 |
+| both slimmed | 2 | 24 | 15,542 | **2,592** | **−14,651** |
 
-**This composes with the mode rather than competing with it.** Pruning is only
-sound if you know every theme name an app can reach, which is exactly the
-whole-program call-site analysis the mode already requires, and contract rule 4
-(static themes, §4) already forbids the dynamic theme names that would make
-reachability undecidable. The mode makes pruning provable; pruning pays for the
-mode's CSS side. They enable each other.
+**Config authoring alone recovers −14,651 gzip, 85% of the artifact**, using an
+API that already exists. Theme count and color-token count are independent
+levers of similar size and they compose. The residual after both is 2,592 gzip,
+base rules plus a small `:root`, which is a genuinely cheap CSS side for the
+mode.
 
-The residual 9,691 gzip floor is dominated by `:root` custom properties (7,462
-marginal gzip in the starter). Token reachability is the same analysis one level
-down, and is the obvious follow-on once theme pruning lands.
+Two pieces of work fall out, neither on the core-size axis:
+
+- **Defaults, docs and starter.** The starter template could pass an explicit
+  `{ themes, colorTokens }` instead of the full pack, and the docs could put the
+  size consequence next to the pattern at `config-v6-colors.mdx`. Worth up to
+  −14,651 gzip to an app that opts in, needs no compiler work, and helps every
+  app using `outputCSS` today. Whether the default itself should get narrower is
+  a product call, not a bundle call.
+- **Compiler theme reachability, only if the mode needs it.** Automatic pruning
+  for an app that keeps authoring against the full suite. Its value is
+  convenience rather than bytes, since config authoring already gets 85%. It
+  composes with the mode: reachability is sound only if you know every theme
+  name an app can reach, which is the whole-program analysis the mode already
+  performs, and contract rule 4 already forbids the dynamic theme names that
+  would make it undecidable.
+
+### Why none of this contaminated the v2-vs-v3 numbers
+
+Worth stating explicitly, since a 17KB theme finding next to an 11KB core delta
+invites the question. **READ**:
+`code/comparisons/tamagui-bench/src/tamagui.config.ts` and
+`code/comparisons/tamagui-v2-bench/src/tamagui.config.ts` are byte-identical: a
+single hand-written `light` theme with two values, every token category empty,
+`media: {}`, `shorthands: {}`. Both arms hold theme CSS tiny and constant, so
+the entire measurement series in §2 is core JS with theme weight held out.
+Nothing measured needs redoing.
 
 ### The existing theme-slimming machinery is not connected
 
@@ -555,13 +610,14 @@ Ordered by gzip per unit of risk. "Measured" means I built it and read the bytes
 | 4 | Keep the runtime prop walker out of a fully compiled build (see below) | ~−3,667 | estimated (INFERRED from `getSplitStyles` marginal 3,667) | high: needs a design for how the compiled path drops prop-walking |
 | 5 | `resolveSafeArea` + `tokenCategories` + `core::runtime` off the web hot path | ~−1,025 | marginals (READ), mechanism unverified | medium |
 | 6 | Defer or drop the `Variables` feature on web | ~−1,231 | marginal (READ) | product decision, not a leak |
-| 7 | **Prune unreachable themes from the CSS artifact** | **−17,620 CSS gzip** | measured (READ, §3) | medium: needs whole-program theme reachability, which the mode already computes |
-| 8 | **Zero-runtime mode** | up to **−44,899 JS gzip** | see below | the actual project |
+| 7 | **Zero-runtime mode** | up to **−44,899 JS gzip** | see below | the actual project |
 
-Item 7 is CSS, not JS, so it does not appear in the JS arithmetic below. It is
-listed here because it is the largest single number in this plan after the mode,
-it benefits every app that uses `outputCSS` today whether or not the mode ever
-ships, and it is what makes the mode's CSS side affordable.
+**Theme CSS is deliberately not in this table.** It is a real 17KB and it is
+measured in §3, but it sits on a different axis: it is app authoring against an
+API that already existed in v2, and it moves the core delta by exactly zero.
+Mixing it in here would make the "did v3 grow" arithmetic look better without
+any of it being true. It belongs in the mode's accounting, below, where
+transferred CSS bytes are a genuine cost.
 
 Marginals in this table sum honestly. **READ**: before item 2 landed, items 1
 and 2 measured individually at −2,939 and −2,277 (predicted sum −5,216) and
@@ -618,12 +674,13 @@ upper bound). The direct evidence that the endpoint is reachable is P1 vs P3:
 Upper bound, because the fixture is 100% flattenable primitives, which is
 exactly what a greenfield app under the contract is supposed to look like.
 
-The CSS side is now measured too, at least for the existing starter's config: a
-pruned artifact is **9,916 gzip** (§3), against 27,536 unpruned. So the trade is
-roughly "remove up to 44.9KB of JS, add ~10KB of CSS", not "add 27.5KB", and the
-CSS number is one an app pays today anyway. The figure to publish still comes
-from building the Phase 0 starter and measuring both sides on the same app, but
-the shape of the answer is no longer in doubt.
+The CSS side is measured too, regenerated from current source (§3): **17,243
+gzip** on a default v6 config, **2,592** with themes and color tokens narrowed
+through the existing `createV6Config` argument. So the mode's trade is "remove
+up to 44.9KB of JS, add 2.6 to 17.2KB of CSS depending on how the app authors
+its config", and the CSS is a cost the app pays today anyway once it uses
+`outputCSS`. The figure to publish still comes from building the Phase 0 starter
+and measuring both sides on the same app.
 
 ### Note on item 2, which landed while this was being written
 
@@ -666,12 +723,12 @@ Next and metro already do the equivalent through `Static.loadTamagui`.
 **−2,928 measured**, and it is a hard prerequisite for the mode. Item 2 already
 landed and needs only the hydration check noted in §9.
 
-**Phase 2, theme pruning.** Measured at **−17,620 gzip** on the expo-router
-starter (§3), which makes it the largest single item in this plan after the mode
-itself, and it stands alone: every app using `outputCSS` today is shipping
-~18KB gzip of themes it never names, mode or no mode. Compute reachable theme
-names from the call-site analysis, emit only those. Then do the same one level
-down for `:root` tokens, which are the remaining 7.5KB.
+**Phase 2, the artifact's size, on the app-authoring axis.** Not on the critical
+path for core size, and not ahead of anything else here. The mode's CSS side is
+17,243 gzip on a default v6 config and 2,592 with a narrowed one (§3), using an
+API that already exists. Update the starter template and put the size
+consequence next to the pattern in `config-v6-colors.mdx`. Revisit compiler
+theme reachability only if the mode turns out to need it.
 
 **Phase 3, provider elimination.** Make a zero-runtime root need no
 `TamaguiProvider`. Theme switching becomes a class name on an ancestor.
@@ -705,16 +762,15 @@ block the mode and the mode should not block them.
 
 **Still open:**
 
-1. **Theme reachability.** The size question is answered: pruning is worth
-   −17,620 gzip on the greenfield starter (§3), so this reframes the CSS cost
-   rather than threatening the mode. What is open is the analysis. Can the
-   compiler prove reachability for `<Theme name=>`, the `theme=` prop,
-   component sub-theme names (`black_Button`, `surface2` and the other 298 in
-   the default v6 suite), and inherited/nested theme composition? Contract rule
-   4 already forbids dynamic theme names, which is what makes this decidable at
-   all. There is no existing mechanism to extend, since the current
-   theme-slimming flags are unwired (§3), so this is new analysis on top of the
-   call-site data the mode already collects.
+1. **Does the mode need compiler theme reachability at all?** The size question
+   is answered and it is smaller than two rounds of this plan claimed: the
+   artifact is 17,243 gzip on a default v6 config, and narrowing themes and
+   color tokens through the existing `createV6Config` argument gets it to 2,592
+   (§3). If telling app authors to narrow their pack is enough, the compiler
+   analysis is unnecessary. If it is not enough, the open part is whether
+   reachability can be proven for `<Theme name=>`, the `theme=` prop, and nested
+   theme composition. Note there is no existing mechanism to extend, since the
+   theme-slimming flags are unwired (§3).
 2. Can an island share a provider with a zero-runtime root, or does each island
    mount its own? Sharing puts the provider in the main chunk and the guarantee
    is gone. Per-island providers mean repeated config parsing and possibly
