@@ -174,9 +174,34 @@ toolchain collapses into a single package
       Levenshtein "did you mean" diagnostics
 - [x] `tamagui-lsp`: stdio server, incremental sync, config watcher, completion,
       hover, document colours, diagnostics. **1.1 MB release binary, 68 tests.**
+- [x] distribution: `@tamagui/lsp` umbrella with per-platform
+      `optionalDependencies`, a launcher, and editor setup docs for VS Code,
+      Neovim, Helix, Zed, Emacs, Sublime and JetBrains
 - [ ] swap the lexical site scanner for `oxc_parser`
-- [ ] editor configs and VS Code extension conversion
-- [ ] distribution
+- [ ] convert the VS Code extension to spawn the binary
+- [ ] cross-compile the seven non-host targets in CI and publish the leaves
+
+### Distribution, verified
+
+`node build-platform-packages.mjs` builds the host leaf and asserts the
+umbrella's `optionalDependencies` still match the target list, so a platform
+whose leaf was never published cannot silently resolve to nothing.
+
+Proven against a real `node_modules` layout rather than a dry run:
+
+```
+leaf: {"name":"@tamagui/lsp-darwin-arm64","os":["darwin"],"cpu":["arm64"],"files":["tamagui-lsp"]}
+binaryPath -> node_modules/@tamagui/lsp-darwin-arm64/tamagui-lsp
+LSP handshake through bin.js -> exit 0, textDocumentSync: 2 = Incremental
+```
+
+**Open release-plumbing gap.** `code/lsp/` is outside the bun workspace globs in
+the root `package.json`, which is correct (a Rust workspace has no business in
+the JS one) but means the release script does not bump
+`code/lsp/npm/tamagui-lsp/package.json`. Its version is currently pinned by
+hand at 2.7.7 and will drift. Either add it to the release script's explicit
+list or generate its version at publish time. Do this before the first publish,
+not after.
 
 ### Verified end to end
 
