@@ -1218,7 +1218,7 @@ const PlanTab = ({
               size="3"
               variant="quiet"
               onPress={() => {
-                window.open('https://tamagui.dev/pro', '_blank')
+                window.open('https://tamagui.dev/takeout', '_blank')
               }}
             >
               Learn More

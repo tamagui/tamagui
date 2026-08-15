@@ -1,6 +1,6 @@
 import type { StripeError } from '@stripe/stripe-js'
 import { X } from '@tamagui/lucide-icons-2'
-import { lazy, Suspense, useEffect, useMemo, useState } from 'react'
+import { lazy, Suspense, useEffect, useState } from 'react'
 import type { TabsProps } from 'tamagui'
 import {
   Dialog,
@@ -22,7 +22,6 @@ import {
 import { Button } from '~/components/Button'
 import { useUser } from '~/features/user/useUser'
 import { useParityDiscount } from '~/hooks/useParityDiscount'
-import { ProductName } from '~/shared/types/subscription'
 import { navigateToInternalPath } from '~/features/security/navigation'
 import { Link } from '../../../components/Link'
 import { sendEvent } from '../../analytics/sendEvent'
@@ -48,6 +47,7 @@ export { purchaseModal, usePurchaseModal } from './purchaseModalStore'
 import { FaqTabContent } from './FaqTabContent'
 import { SUPPORT_TIERS, type SupportTier } from './paymentModalStore'
 import { V2_LICENSE_PRICE } from '~/features/stripe/pricing'
+import { isExpiredSubscription } from '~/features/user/subscriptionFilters'
 import { calculatePromoPrice } from './promoConfig'
 
 export const NewPurchaseModal = () => {
@@ -70,19 +70,8 @@ export function PurchaseModalContents() {
   const { data: userData, subscriptionStatus } = useUser()
   const { parityDeals } = useParityDiscount()
 
-  const hasSubscribedBefore = useMemo(() => {
-    return (
-      userData?.subscriptions?.some((sub) =>
-        sub.subscription_items?.some(
-          (item) =>
-            (item.price?.product?.name === ProductName.TamaguiBento ||
-              item.price?.product?.name === ProductName.TamaguiTakeoutStack) &&
-            sub.ended_at &&
-            new Date(sub.ended_at) < new Date()
-        )
-      ) ?? false
-    )
-  }, [userData])
+  const hasSubscribedBefore =
+    userData?.subscriptions?.some(isExpiredSubscription) ?? false
 
   useEffect(() => {
     if (parityDeals) {

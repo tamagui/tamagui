@@ -17,10 +17,12 @@ on:
 permissions:
   contents: read
 
-# cancel in-progress runs on the same branch (avoids duplicate PR + push runs)
+# a stable release accepts only the current main sha, so an older main run can
+# never approve it. cancel obsolete work instead of letting one hung dependency
+# install hold every newer check behind github's concurrency slot.
 concurrency:
   group: checks-${{ github.ref }}
-  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+  cancel-in-progress: true
 
 jobs:
   checks:
@@ -102,7 +104,9 @@ jobs:
 
       - name: Get Playwright version
         id: pw-version
-        run: echo "version=$(bunx playwright --version | awk '{print $2}')" >> $GITHUB_OUTPUT
+        run: |
+          version=$(node -p "require('./package.json').devDependencies['@playwright/test']")
+          echo "version=$version" >> "$GITHUB_OUTPUT"
 
       - name: Cache Playwright browsers
         uses: actions/cache@v4
@@ -217,7 +221,9 @@ jobs:
 
       - name: Get Playwright version
         id: pw-version
-        run: echo "version=$(bunx playwright --version | awk '{print $2}')" >> $GITHUB_OUTPUT
+        run: |
+          version=$(node -p "require('./package.json').devDependencies['@playwright/test']")
+          echo "version=$version" >> "$GITHUB_OUTPUT"
 
       - name: Cache Playwright browsers
         uses: actions/cache@v4

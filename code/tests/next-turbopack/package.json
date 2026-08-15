@@ -1,6 +1,6 @@
 {
   "name": "test-next-turbopack",
-  "version": "2.7.4",
+  "version": "2.7.7",
   "private": true,
   "scripts": {
     "dev": "node ../../core/cli/dist/index.cjs build --target web ./src -- next dev --turbopack --port 3456",
