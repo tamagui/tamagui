@@ -137,15 +137,19 @@ import { Dialog } from 'tamagui'
 
 ### Sheet
 
+v3 splits the old `Sheet.Frame` into `Sheet.Container` (layout, gets the
+content) and `Sheet.Background` (the visual surface, rendered inside it):
+
 ```tsx
 import { Sheet } from 'tamagui'
 
 <Sheet open={open} onOpenChange={setOpen} snapPoints={[80]} dismissOnSnapToBottom>
   <Sheet.Overlay />
-  <Sheet.Frame padding="4">
+  <Sheet.Container padding="4">
+    <Sheet.Background />
     <Sheet.Handle />
     {/* content */}
-  </Sheet.Frame>
+  </Sheet.Container>
 </Sheet>
 ```
 
@@ -266,7 +270,7 @@ import { Separator } from 'tamagui'
 import { Spinner } from 'tamagui'
 
 <Spinner />
-<Spinner size="large" color="blue10" />
+<Spinner size="large" color="blue-500" />
 ```
 
 ### Progress
@@ -275,7 +279,7 @@ import { Spinner } from 'tamagui'
 import { Progress } from 'tamagui'
 
 <Progress value={60}>
-  <Progress.Indicator animation="bouncy" />
+  <Progress.Indicator transition="bouncy" />
 </Progress>
 ```
 
@@ -341,11 +345,13 @@ import { Adapt, Dialog, Sheet } from 'tamagui'
 
 <Dialog>
   {/* On small touch screens, render as Sheet instead */}
-  <Adapt when="sm" platform="touch">
-    <Sheet modal>
-      <Sheet.Frame>
+  <Adapt when="max-md" platform="touch">
+    <Sheet modal dismissOnSnapToBottom transition="medium">
+      <Sheet.Container padding="4">
+        <Sheet.Background />
         <Adapt.Contents />
-      </Sheet.Frame>
+      </Sheet.Container>
+      <Sheet.Overlay />
     </Sheet>
   </Adapt>
 
@@ -356,3 +362,6 @@ import { Adapt, Dialog, Sheet } from 'tamagui'
   </Dialog.Portal>
 </Dialog>
 ```
+
+Note `when` takes a media key; with v6 media that means a `max-*` key for
+"small screens" (`sm` alone is min-width 640 and would adapt on desktop).
