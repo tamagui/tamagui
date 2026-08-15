@@ -75,6 +75,13 @@ pub struct ConfigSnapshot {
     /// property names. Derived from the config rather than hardcoded, so it
     /// cannot drift from what the runtime accepts.
     pub style_props: FxHashSet<Box<str>>,
+    /// style prop -> the token category its values come from, so `bg=""` can
+    /// offer colors rather than every token in the config.
+    ///
+    /// Emitted by the compiler from the style-grammar registry, the same table
+    /// the runtime resolver is pinned to. A prop that is absent here has no
+    /// single category (or predates this field) and offers everything.
+    pub prop_categories: FxHashMap<Box<str>, Box<str>>,
     pub only_allow_shorthands: bool,
     /// bumped on every successful load, so callers can tell snapshots apart
     pub revision: u64,
@@ -94,6 +101,20 @@ impl ConfigSnapshot {
     /// resolve a shorthand like `bg` to its long property name
     pub fn expand_shorthand<'a>(&'a self, name: &'a str) -> &'a str {
         self.shorthands.get(name).map(|s| &**s).unwrap_or(name)
+    }
+
+    /// The token category a prop draws its values from, as written or via its
+    /// shorthand.
+    ///
+    /// Two lookups because the two tables disagree about spelling and both are
+    /// right: the registry knows `bg` and `backgroundColor`, while a user
+    /// config can name any shorthand it likes (`zi` -> `zIndex`), and only the
+    /// artifact knows those.
+    pub fn prop_category(&self, prop: &str) -> Option<&str> {
+        if let Some(category) = self.prop_categories.get(prop) {
+            return Some(category);
+        }
+        self.prop_categories.get(self.expand_shorthand(prop)).map(|c| &**c)
     }
 
     /// a one-line summary for the load log, so the win is visible in the wild
@@ -164,6 +185,12 @@ pub fn load_from_slice(bytes: &[u8]) -> Result<ConfigSnapshot, LoadError> {
     for long in raw.inverse_shorthands.keys() {
         style_props.insert(long.as_str().into());
     }
+    // the shorthand tables only mention props that HAVE a shorthand, so on
+    // their own they miss `gap`, `backgroundColor` and every other long-form
+    // prop, and the server offered nothing at all inside those
+    for prop in &raw.style_props {
+        style_props.insert(prop.as_str().into());
+    }
 
     let shorthands = raw
         .shorthands
@@ -177,6 +204,11 @@ pub fn load_from_slice(bytes: &[u8]) -> Result<ConfigSnapshot, LoadError> {
         media,
         shorthands,
         style_props,
+        prop_categories: raw
+            .prop_categories
+            .into_iter()
+            .map(|(prop, category)| (prop.into_boxed_str(), category.into_boxed_str()))
+            .collect(),
         only_allow_shorthands: raw.only_allow_shorthands,
         revision: REVISION.fetch_add(1, Ordering::Relaxed) + 1,
         source: None,
@@ -224,6 +256,14 @@ struct RawConfig {
     inverse_shorthands: FxHashMap<String, String>,
     #[serde(default, rename = "onlyAllowShorthands")]
     only_allow_shorthands: bool,
+    /// style prop -> the token category it draws values from, emitted by the
+    /// compiler from the style-grammar registry
+    #[serde(default, rename = "propCategories")]
+    prop_categories: FxHashMap<String, String>,
+    /// every prop that can carry a style value, emitted by the compiler from
+    /// the runtime's own validity table
+    #[serde(default, rename = "styleProps")]
+    style_props: Vec<String>,
 }
 
 #[derive(Deserialize)]

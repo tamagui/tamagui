@@ -2,6 +2,8 @@ import { dirname, join } from 'node:path'
 import { createRequire } from 'node:module'
 
 import { generateThemes, writeGeneratedThemes } from '@tamagui/generate-themes'
+import { stylePropsAll } from '@tamagui/helpers'
+import { grammarEntries } from '@tamagui/style-grammar'
 import type { TamaguiOptions } from '@tamagui/types'
 import FS from 'fs-extra'
 
@@ -120,6 +122,40 @@ function cloneDeepSafe(x: any, excludeKeys = {}) {
   )
 }
 
+/**
+ * Which token category each style prop draws its values from, emitted so the
+ * language server can offer `bg=""` colors and `p=""` spaces instead of every
+ * token in the config.
+ *
+ * Derived from the style-grammar registry rather than restated here: that
+ * registry is already the contract the runtime resolver is pinned to
+ * (see core-test/tokenCategoryParity.web.test.tsx), so a second table would be
+ * a second thing to keep true.
+ *
+ * A prefix shared by props of different categories (`border` is both
+ * borderWidth/space and borderColor/color) is left out rather than guessed at;
+ * an unmapped prop offers the whole vocabulary, which is the honest answer.
+ */
+function buildPropCategories(): Record<string, string> {
+  const out: Record<string, string> = {}
+  const byPrefix: Record<string, Set<string | undefined>> = {}
+
+  for (const entry of grammarEntries) {
+    if (entry.tokenCategory) out[entry.prop] = entry.tokenCategory
+    if (entry.prefix) (byPrefix[entry.prefix] ||= new Set()).add(entry.tokenCategory)
+  }
+
+  for (const [prefix, categories] of Object.entries(byPrefix)) {
+    // `out[prefix]` may already be set when a prop is its own prefix (`gap`,
+    // `color`); the registry agrees with itself there, so this is a no-op
+    if (categories.size !== 1) continue
+    const [only] = categories
+    if (only) out[prefix] = only
+  }
+
+  return out
+}
+
 function transformConfig(config: BundledConfig, platform: TamaguiPlatform) {
   if (!config) {
     return null
@@ -192,6 +228,11 @@ function transformConfig(config: BundledConfig, platform: TamaguiPlatform) {
       ...cleanedConfig,
       // Output userShorthands as shorthands (excludes built-ins)
       shorthands: userShorthands,
+      propCategories: buildPropCategories(),
+      // every prop that can carry a style value. the shorthand tables alone
+      // miss any long-form prop with no shorthand (`gap`, `backgroundColor`),
+      // and the language server was silent inside exactly those.
+      styleProps: Object.keys(stylePropsAll),
     },
   }
 }

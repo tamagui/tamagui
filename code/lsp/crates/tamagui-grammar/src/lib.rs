@@ -36,20 +36,32 @@ pub struct Completions<'a> {
 }
 
 /// Complete at `offset` within `value`.
+///
+/// `category` is the token category the owning prop draws from, so `bg` offers
+/// colors and `p` offers spaces. `None` offers everything, which is the right
+/// answer for a prop with no single category (`border` takes both a width and a
+/// color) and for an artifact written before the compiler emitted the map.
 pub fn complete<'a>(
     vocabulary: &'a Vocabulary,
     value: &str,
     offset: usize,
+    category: Option<&str>,
 ) -> Completions<'a> {
     let parsed = value::parse(value);
     let offset = offset.min(value.len());
+
+    // a category the config declares no tokens for cannot narrow anything, so
+    // the whole vocabulary is the answer rather than an empty list
+    let values = category
+        .and_then(|c| vocabulary.category(c))
+        .unwrap_or(&vocabulary.values);
 
     let Some(clause) = parsed.clause_at(offset) else {
         // between clauses, or at the very start: offer a fresh value
         return Completions {
             replace: Span::new(offset, offset),
             context: CursorContext::Value,
-            entries: vocabulary.values.starting_with(""),
+            entries: values.starting_with(""),
         };
     };
 
@@ -68,7 +80,7 @@ pub fn complete<'a>(
     Completions {
         replace: clause.payload,
         context: CursorContext::Value,
-        entries: vocabulary.values.starting_with(typed),
+        entries: values.starting_with(typed),
     }
 }
 
@@ -210,7 +222,7 @@ mod tests {
     fn completes_a_value_from_its_typed_prefix() {
         let (_, v) = setup();
         let value = "background-h";
-        let c = complete(&v, value, value.len());
+        let c = complete(&v, value, value.len(), None);
         assert_eq!(c.context, CursorContext::Value);
         assert_eq!(names(&c), vec!["background-hover"]);
     }
@@ -220,7 +232,7 @@ mod tests {
         let (_, v) = setup();
         let value = "background hov:x";
         // cursor right after `hov`
-        let c = complete(&v, value, 14);
+        let c = complete(&v, value, 14, None);
         assert_eq!(c.context, CursorContext::Modifier);
         assert_eq!(names(&c), vec!["hover"]);
     }
@@ -231,7 +243,7 @@ mod tests {
         // not: accepting an entry must preserve the other clauses
         let (_, v) = setup();
         let value = "background hover:background-h";
-        let c = complete(&v, value, value.len());
+        let c = complete(&v, value, value.len(), None);
         assert_eq!(c.replace, Span::new(17, 29));
         assert_eq!(c.replace.of(value), "background-h");
 
@@ -247,7 +259,7 @@ mod tests {
     fn completes_after_a_trailing_colon() {
         let (_, v) = setup();
         let value = "4 sm:";
-        let c = complete(&v, value, value.len());
+        let c = complete(&v, value, value.len(), None);
         assert_eq!(c.context, CursorContext::Value);
         // the payload is empty, so everything is on offer, inserted after the colon
         assert_eq!(c.replace, Span::new(5, 5));
@@ -257,8 +269,91 @@ mod tests {
     #[test]
     fn an_empty_value_offers_the_whole_vocabulary() {
         let (_, v) = setup();
-        let c = complete(&v, "", 0);
+        let c = complete(&v, "", 0, None);
         assert_eq!(c.entries.len(), v.values.len());
+    }
+
+    #[test]
+    fn a_colour_prop_offers_theme_keys_and_not_the_space_scale() {
+        let (_, v) = setup();
+        let c = complete(&v, "", 0, Some("color"));
+        let offered = names(&c);
+        assert!(offered.contains(&"background"), "expected theme keys in {offered:?}");
+        // `4` is the space token; under a background prop it is noise
+        assert!(!offered.contains(&"4"), "space token leaked into a colour prop: {offered:?}");
+    }
+
+    #[test]
+    fn a_space_prop_offers_the_space_scale_and_not_theme_keys() {
+        let (_, v) = setup();
+        let c = complete(&v, "", 0, Some("space"));
+        assert_eq!(names(&c), vec!["4"]);
+    }
+
+    #[test]
+    fn filtering_still_narrows_by_the_typed_prefix() {
+        let (_, v) = setup();
+        let value = "background-h";
+        let c = complete(&v, value, value.len(), Some("color"));
+        assert_eq!(names(&c), vec!["background-hover"]);
+    }
+
+    #[test]
+    fn scales_that_share_token_names_stay_separately_completable() {
+        // the real shape: space, size and radius all define `4`. a single
+        // name-keyed index keeps one of them, so filtering it by category
+        // answered for one scale and came up empty for the other two.
+        // r##: the `#fff` below would close an `r#"` string
+        const SHARED: &str = r##"{
+          "tamaguiConfig": {
+            "tokens": {
+              "space": { "4": { "key": "4", "val": 16 }, "true": { "key": "true", "val": 8 } },
+              "size":  { "4": { "key": "4", "val": 44 } },
+              "radius": { "4": { "key": "4", "val": 6 } }
+            },
+            "themes": { "light": { "background": "#fff" } }
+          }
+        }"##;
+        let config = tamagui_config::load_from_slice(SHARED.as_bytes()).unwrap();
+        let v = Vocabulary::from_config(&config);
+
+        for (category, expected) in
+            [("space", vec!["4", "true"]), ("size", vec!["4"]), ("radius", vec!["4"])]
+        {
+            let c = complete(&v, "", 0, Some(category));
+            assert_eq!(names(&c), expected, "category {category}");
+        }
+
+        // and each scale reports its OWN resolved value, not the winner's
+        assert_eq!(&*v.category("size").unwrap().get("4").unwrap().detail, "44");
+        assert_eq!(&*v.category("radius").unwrap().get("4").unwrap().detail, "6");
+        assert_eq!(&*v.category("space").unwrap().get("4").unwrap().detail, "16");
+    }
+
+    #[test]
+    fn a_category_the_config_has_no_tokens_for_offers_everything() {
+        // `fontSize` is a real category in the registry, but a config that
+        // declares no fontSize tokens must not answer with an empty list
+        let (_, v) = setup();
+        let c = complete(&v, "", 0, Some("fontSize"));
+        assert_eq!(c.entries.len(), v.values.len());
+    }
+
+    #[test]
+    fn a_modifier_is_offered_regardless_of_the_props_category() {
+        // modifiers are a grammar position, not a value category: `bg` is a
+        // colour prop but `hover:` is still legal in it
+        let (_, v) = setup();
+        let value = "hov";
+        let c = complete(&v, value, value.len(), Some("color"));
+        // `hov` is a value prefix here (no colon yet), so nothing matches; the
+        // point is that filtering does not crash or swallow the modifier path
+        assert_eq!(c.context, CursorContext::Value);
+
+        let with_colon = "hov:";
+        let c = complete(&v, with_colon, 3, Some("color"));
+        assert_eq!(c.context, CursorContext::Modifier);
+        assert_eq!(names(&c), vec!["hover"]);
     }
 
     #[test]

@@ -42,7 +42,7 @@ fn main() {
         let t = Instant::now();
         let mut count = 0;
         for _ in 0..1000 {
-            let c = complete(&vocabulary, typed, typed.len());
+            let c = complete(&vocabulary, typed, typed.len(), None);
             count = c.entries.len();
         }
         println!(
@@ -76,7 +76,7 @@ fn main() {
     // proof the clause-replacement property holds on a real value
     println!();
     let value = "background hover:background-h";
-    let c = complete(&vocabulary, value, value.len());
+    let c = complete(&vocabulary, value, value.len(), None);
     let accepted = &c.entries[0].name;
     let next = format!("{}{}{}", &value[..c.replace.start], accepted, &value[c.replace.end..]);
     println!("accepting a completion at the end of a multi-clause value:");

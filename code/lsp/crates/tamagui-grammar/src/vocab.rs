@@ -14,6 +14,7 @@
 
 use fst::automaton::{Automaton, Levenshtein, Str};
 use fst::{IntoStreamer, Map, MapBuilder, Streamer};
+use rustc_hash::FxHashMap;
 use tamagui_config::ConfigSnapshot;
 
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
@@ -46,6 +47,11 @@ pub struct Entry {
     pub detail: Box<str>,
     /// which token category this came from, for filtering by property
     pub category: Option<Box<str>>,
+    /// position in config order, kept because the FST stores names sorted
+    /// lexically and a scale read lexically is nonsense: `1, 10, 11, 2`. The
+    /// config already sorts each category numerically, so this is what a person
+    /// expects to see.
+    pub order: u32,
 }
 
 /// state modifiers are grammar-owned rather than config-owned, so they are
@@ -137,12 +143,28 @@ impl Index {
 pub struct Vocabulary {
     pub values: Index,
     pub modifiers: Index,
+    /// one index per token category.
+    ///
+    /// These cannot be a filtered view over `values`, because the scales share
+    /// names: `space`, `size` and `radius` all define `4`, and `values` keeps a
+    /// single entry per name for the FST. Filtering that merged index by
+    /// category returns whichever scale happened to win the dedupe and nothing
+    /// for the others, which is how `w=""` ended up offering the whole
+    /// vocabulary while `rounded=""` offered only the handful of radius names
+    /// no other scale had claimed.
+    by_category: FxHashMap<Box<str>, Index>,
     /// the config revision this was built from, so a stale vocabulary is
     /// detectable rather than silently served
     pub revision: u64,
 }
 
 impl Vocabulary {
+    /// The index a prop of this category should complete from, or `None` when
+    /// the config declares no such category.
+    pub fn category(&self, category: &str) -> Option<&Index> {
+        self.by_category.get(category)
+    }
+
     pub fn from_config(config: &ConfigSnapshot) -> Self {
         let mut values = Vec::new();
 
@@ -161,6 +183,7 @@ impl Vocabulary {
                 kind: EntryKind::ThemeKey,
                 detail: detail.into_boxed_str(),
                 category: Some("color".into()),
+                order: values.len() as u32,
             });
         }
 
@@ -172,6 +195,7 @@ impl Vocabulary {
                     kind: EntryKind::Token,
                     detail: token.value.clone(),
                     category: Some(category.clone()),
+                    order: values.len() as u32,
                 });
             }
         }
@@ -183,6 +207,7 @@ impl Vocabulary {
                 kind: EntryKind::Modifier(ModifierKind::State),
                 detail: "state".into(),
                 category: None,
+                order: modifiers.len() as u32,
             });
         }
         for name in PLATFORM_MODIFIERS {
@@ -191,6 +216,7 @@ impl Vocabulary {
                 kind: EntryKind::Modifier(ModifierKind::Platform),
                 detail: "platform".into(),
                 category: None,
+                order: modifiers.len() as u32,
             });
         }
         for (name, query) in &config.media {
@@ -199,6 +225,7 @@ impl Vocabulary {
                 kind: EntryKind::Modifier(ModifierKind::Media),
                 detail: query.clone(),
                 category: None,
+                order: modifiers.len() as u32,
             });
         }
         for theme in config.themes.theme_names() {
@@ -212,12 +239,24 @@ impl Vocabulary {
                 kind: EntryKind::Modifier(ModifierKind::Theme),
                 detail: "theme".into(),
                 category: None,
+                order: modifiers.len() as u32,
             });
         }
+
+        let mut grouped: FxHashMap<Box<str>, Vec<Entry>> = FxHashMap::default();
+        for entry in &values {
+            let Some(category) = entry.category.clone() else { continue };
+            grouped.entry(category).or_default().push(entry.clone());
+        }
+        let by_category = grouped
+            .into_iter()
+            .map(|(category, entries)| (category, Index::build(entries)))
+            .collect();
 
         Self {
             values: Index::build(values),
             modifiers: Index::build(modifiers),
+            by_category,
             revision: config.revision,
         }
     }

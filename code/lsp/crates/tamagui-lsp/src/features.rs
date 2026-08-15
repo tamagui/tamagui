@@ -64,7 +64,8 @@ impl State {
         self.ensure_vocabulary(&config);
         let vocabulary = self.vocabulary.as_ref()?;
         let cursor = offset - site.value_start;
-        let completions = tamagui_grammar::complete(vocabulary, &site.value, cursor);
+        let category = config.prop_category(&site.prop);
+        let completions = tamagui_grammar::complete(vocabulary, &site.value, cursor, category);
 
         let document = self.workspace.get(&uri)?;
         let replace = lsp_range(
@@ -86,6 +87,15 @@ impl State {
                     label: entry.name.to_string(),
                     kind: Some(kind),
                     detail: Some(entry.detail.to_string()),
+                    // without this a client sorts by label, which reads a scale
+                    // as `1, 10, 11, 2` and puts the negative half of the space
+                    // tokens above everything. the leading digit demotes
+                    // negatives; the rest is config order.
+                    sort_text: Some(format!(
+                        "{}{:05}",
+                        u8::from(entry.name.starts_with('-')),
+                        entry.order
+                    )),
                     label_details: Some(CompletionItemLabelDetails {
                         description: Some(match entry.kind {
                             EntryKind::Modifier(ModifierKind::Media) => "Tamagui media".into(),
