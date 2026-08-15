@@ -40,6 +40,7 @@ export const Theme = createRefComponent(function Theme(
   const [_, themeState] = useThemeWithState(props, isRoot, true)
 
   useIsomorphicLayoutEffect(() => {
+    if (process.env.TAMAGUI_TARGET !== 'native') return
     updateNativeStyleScope(themeState.id, themeState.name, themeState.theme)
     return () => removeNativeStyleScope(themeState.id)
   }, [themeState.id, themeState.name, themeState.theme])
