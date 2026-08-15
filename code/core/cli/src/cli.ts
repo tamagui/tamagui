@@ -426,5 +426,6 @@ async function main() {
     process.exit(1) // a thrown command error must be a NON-ZERO exit (safety: --write aborts)
   }
 
-  process.exit(0)
+  // `check` sets exitCode when it finds problems; a literal 0 would erase it
+  process.exit(process.exitCode ?? 0)
 }

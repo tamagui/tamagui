@@ -118,8 +118,8 @@ an in-browser IDE embeds them directly:
 import { createStyleTooling } from '@tamagui/language-service/core'
 import { createDocumentStyleTooling } from '@tamagui/language-service/document'
 import { createSucraseStyleSiteExtractor } from '@tamagui/language-service/extract-sucrase'
-import { parse } from 'sucrase/dist/parser'
-import { TokenType } from 'sucrase/dist/parser/tokenizer/types'
+import { parse } from 'sucrase/dist/parser/index.js'
+import { TokenType } from 'sucrase/dist/parser/tokenizer/types.js'
 
 const tooling = createStyleTooling(configJson)
 const document = createDocumentStyleTooling(

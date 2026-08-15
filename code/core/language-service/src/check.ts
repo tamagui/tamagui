@@ -5,8 +5,11 @@
 // editor plugin and eslint rule produce, formatted as readable code frames.
 
 import { readdirSync, readFileSync } from 'node:fs'
-import { createRequire } from 'node:module'
 import { join, relative } from 'node:path'
+// deep paths, spelled down to the file: sucrase publishes no `exports` map, and
+// a bare `sucrase/dist/parser` is a directory import that ESM cannot resolve
+import { parse } from 'sucrase/dist/parser/index.js'
+import { TokenType } from 'sucrase/dist/parser/tokenizer/types.js'
 
 import { createStyleTooling, type SerializedConfigFile } from './core'
 import {
@@ -15,8 +18,6 @@ import {
   type ExtractStyleSites,
 } from './document'
 import { createSucraseStyleSiteExtractor } from './extract-sucrase'
-
-const require = createRequire(import.meta.url)
 
 const sourceExtensions = /\.(tsx|jsx)$/
 const skippedDirectories = new Set([
@@ -77,8 +78,6 @@ function walkSourceFiles(directory: string, results: string[]): void {
 export function createProjectExtractor(
   isStyleProp: (name: string) => boolean
 ): ExtractStyleSites {
-  const { parse } = require('sucrase/dist/parser')
-  const { TokenType } = require('sucrase/dist/parser/tokenizer/types')
   return createSucraseStyleSiteExtractor({ parse, TokenType }, { isStyleProp })
 }
 

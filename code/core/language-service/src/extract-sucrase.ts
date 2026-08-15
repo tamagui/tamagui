@@ -6,8 +6,8 @@
 // injected rather than imported so a host that already bundles sucrase reuses
 // its copy:
 //
-//   import { parse } from 'sucrase/dist/parser'
-//   import { TokenType } from 'sucrase/dist/parser/tokenizer/types'
+//   import { parse } from 'sucrase/dist/parser/index.js'
+//   import { TokenType } from 'sucrase/dist/parser/tokenizer/types.js'
 //   const extract = createSucraseStyleSiteExtractor({ parse, TokenType })
 //
 // Two site shapes are recognized, matching the eslint rule and the tsserver
