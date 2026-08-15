@@ -16,6 +16,11 @@
   "peerDependencies": {
     "react-native": "*"
   },
+  "peerDependenciesMeta": {
+    "react-native": {
+      "optional": true
+    }
+  },
   "publishConfig": {
     "access": "public"
   }

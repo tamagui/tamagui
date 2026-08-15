@@ -212,6 +212,12 @@
     "burnt": {
       "optional": true
     },
+    "react-native": {
+      "optional": true
+    },
+    "react-native-web": {
+      "optional": true
+    },
     "expo-linear-gradient": {
       "optional": true
     },
