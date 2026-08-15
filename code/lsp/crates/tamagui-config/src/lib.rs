@@ -23,6 +23,7 @@ use serde::de::{DeserializeSeed, MapAccess, Visitor};
 use serde::{Deserialize, Deserializer};
 
 pub mod color;
+mod color_names;
 pub mod themes;
 
 pub use color::Rgba;
@@ -403,6 +404,41 @@ mod tests {
             c.themes.value_by_name("dark", "background").unwrap().rgba,
             Some(Rgba::new(0, 0, 0, 255))
         );
+    }
+
+    #[test]
+    fn resolves_colors_in_every_spelling_a_config_can_author() {
+        // tamagui used to rewrite every theme value to `rgba(...)` in
+        // `ensureThemeVariable`. that normalisation was removed to drop
+        // `normalize-css-color` from the web bundle, so values now reach the
+        // artifact exactly as authored, and the theme sources emit hsla far
+        // more often than rgba. this walks the real load path rather than
+        // `color::parse` alone, since it is the loader that fills `rgba`.
+        // `r##` because a hex colour would otherwise close an `r#` string
+        const MIXED: &str = r##"{
+          "tamaguiConfig": {
+            "themes": {
+              "light": {
+                "hsl": "hsla(0, 0%, 10%, 1)",
+                "hex": "#090909",
+                "rgb": "rgba(255,255,255,1)",
+                "named": "white",
+                "clear": "transparent",
+                "notacolor": "linear-gradient(red, blue)"
+              }
+            }
+          }
+        }"##;
+        let c = load_from_slice(MIXED.as_bytes()).unwrap();
+        let rgba = |k: &str| c.themes.value_by_name("light", k).unwrap().rgba;
+        assert_eq!(rgba("hsl"), Some(Rgba::new(26, 26, 26, 255)));
+        assert_eq!(rgba("hex"), Some(Rgba::new(9, 9, 9, 255)));
+        assert_eq!(rgba("rgb"), Some(Rgba::new(255, 255, 255, 255)));
+        assert_eq!(rgba("named"), Some(Rgba::new(255, 255, 255, 255)));
+        assert_eq!(rgba("clear"), Some(Rgba::new(0, 0, 0, 0)));
+        // a non-colour still loads as a value, it just gets no swatch
+        assert_eq!(rgba("notacolor"), None);
+        assert!(c.themes.value_by_name("light", "notacolor").is_some());
     }
 
     #[test]
