@@ -12,36 +12,59 @@
 //!   publishes it through an `ArcSwap`, so a rebuild is visible to every
 //!   in-flight and future request without any reader taking a lock.
 
+use std::path::PathBuf;
 use std::sync::Arc;
 
 use rustc_hash::FxHashMap;
 use tamagui_config::ConfigHandle;
 
 pub mod documents;
+pub mod projects;
 pub mod watcher;
 
 pub use documents::{Document, EditError, Position, PositionEncoding, Range};
+pub use projects::{Project, Projects};
 pub use watcher::{ConfigWatcher, ReloadOutcome};
 
-/// Open documents plus the live config.
+/// Open documents plus the live config of every project in the workspace.
 ///
 /// Documents are owned exclusively by the request loop (LSP requires
 /// notifications to be processed in order, so `didChange` is never concurrent
-/// with itself), while the config is shared and read lock-free.
+/// with itself), while each config is shared and read lock-free.
 #[derive(Default)]
 pub struct Workspace {
     documents: FxHashMap<String, Document>,
-    config: Arc<ConfigHandle>,
+    projects: Projects,
     encoding: PositionEncoding,
 }
 
 impl Workspace {
-    pub fn new(config: Arc<ConfigHandle>) -> Self {
-        Self { documents: FxHashMap::default(), config, encoding: PositionEncoding::Utf16 }
+    pub fn new(projects: Projects) -> Self {
+        Self {
+            documents: FxHashMap::default(),
+            projects,
+            encoding: PositionEncoding::Utf16,
+        }
     }
 
-    pub fn config(&self) -> &Arc<ConfigHandle> {
-        &self.config
+    pub fn projects(&self) -> &Projects {
+        &self.projects
+    }
+
+    /// The project a document belongs to.
+    ///
+    /// `None` means the file sits outside every project. Answering from some
+    /// other project's config would be worse than answering nothing: in a
+    /// monorepo the native app's theme set differs from the web app's, so the
+    /// wrong config reports real theme values as unknown ones.
+    pub fn project_for(&self, uri: &str) -> Option<&projects::Project> {
+        let path = file_uri_to_path(uri)?;
+        self.projects.for_path(&path)
+    }
+
+    /// The live config governing a document.
+    pub fn config_for(&self, uri: &str) -> Option<&Arc<ConfigHandle>> {
+        self.project_for(uri).map(|p| &p.config)
     }
 
     pub fn set_encoding(&mut self, encoding: PositionEncoding) {
@@ -103,13 +126,43 @@ impl std::fmt::Display for ChangeError {
 
 impl std::error::Error for ChangeError {}
 
+/// `file:///a/b%20c` -> `/a/b c`. lsp-types 0.97 models a URI with fluent-uri,
+/// which has no filesystem conversion, so percent-decoding is ours to do.
+pub fn file_uri_to_path(uri: &str) -> Option<PathBuf> {
+    let rest = uri.strip_prefix("file://")?;
+    // skip an empty authority, keeping the leading slash of the path
+    let rest = rest.strip_prefix("localhost").unwrap_or(rest);
+    let bytes = rest.as_bytes();
+    // decode to BYTES, not chars: `é` is percent-encoded as `%C3%A9`, so
+    // pushing each decoded byte as a `char` would widen it to `Ã©`. reading the
+    // hex digits from the byte slice rather than slicing the `&str` also keeps
+    // a stray `%` in front of a multi-byte character from panicking on a
+    // non-boundary slice.
+    let mut out = Vec::with_capacity(bytes.len());
+    let hex = |b: u8| (b as char).to_digit(16);
+    let mut i = 0;
+    while i < bytes.len() {
+        if bytes[i] == b'%'
+            && i + 2 < bytes.len()
+            && let (Some(hi), Some(lo)) = (hex(bytes[i + 1]), hex(bytes[i + 2]))
+        {
+            out.push((hi * 16 + lo) as u8);
+            i += 3;
+            continue;
+        }
+        out.push(bytes[i]);
+        i += 1;
+    }
+    Some(PathBuf::from(String::from_utf8(out).ok()?))
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
 
     #[test]
     fn tracks_open_documents_through_edits() {
-        let mut ws = Workspace::new(Arc::new(ConfigHandle::empty()));
+        let mut ws = Workspace::new(Projects::default());
         ws.open("file:///a.tsx", "<View bg=\"\" />", 1);
         let pos = Position { line: 0, character: 10 };
         ws.change("file:///a.tsx", Some(Range { start: pos, end: pos }), "red", 2)
@@ -121,7 +174,7 @@ mod tests {
 
     #[test]
     fn a_change_to_an_unopened_document_is_an_error() {
-        let mut ws = Workspace::new(Arc::new(ConfigHandle::empty()));
+        let mut ws = Workspace::new(Projects::default());
         let pos = Position { line: 0, character: 0 };
         assert!(matches!(
             ws.change("file:///ghost.tsx", Some(Range { start: pos, end: pos }), "x", 1),

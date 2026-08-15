@@ -20,6 +20,24 @@ It reads `.tamagui/tamagui.config.json`, the artifact the compiler writes, and
 picks up changes the moment they land: a rebuild is republished to every open
 file without restarting the editor.
 
+## Monorepos
+
+Open the repository root. The server finds every app under it and keeps them
+separate, so a file in `apps/native` completes against the native config and a
+file in `apps/web` against the web one. Each app reloads independently when its
+own build finishes.
+
+An app is recognised by its `tamagui.build.ts` or its built
+`.tamagui/tamagui.config.json`, so a freshly cloned app is registered before the
+compiler has ever run and starts answering as soon as you run the dev server.
+`node_modules` is never searched: installed packages ship their own artifacts,
+and treating one as your project points the whole editor at a dependency's
+theme.
+
+A file that belongs to no app gets no completions rather than another app's.
+Guessing there is worse than silence, because a sibling's config reports your
+real theme values as unknown ones.
+
 ## Install
 
 VS Code needs nothing here; install the **Tamagui** extension and it resolves

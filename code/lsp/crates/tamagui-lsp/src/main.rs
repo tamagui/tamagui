@@ -7,7 +7,6 @@
 // user-visible cost every time an editor opens a project.
 
 use std::path::PathBuf;
-use std::sync::Arc;
 
 use lsp_server::{Connection, ExtractError, Message, Notification, Request, RequestId, Response};
 use lsp_types::notification::{
@@ -18,9 +17,11 @@ use lsp_types::request::{
     ColorPresentationRequest, Completion, DocumentColor, HoverRequest, Request as _, Shutdown,
 };
 use lsp_types::*;
-use tamagui_config::ConfigHandle;
 
-use tamagui_lsp::{ConfigWatcher, PositionEncoding, Range as DocRange, ReloadOutcome, Workspace};
+use tamagui_lsp::{
+    ConfigWatcher, PositionEncoding, Projects, Range as DocRange, ReloadOutcome, Workspace,
+    file_uri_to_path, projects,
+};
 
 mod features;
 mod sites;
@@ -62,8 +63,7 @@ fn run(
     connection: Connection,
     params: InitializeParams,
 ) -> Result<(), Box<dyn std::error::Error + Sync + Send>> {
-    let root = workspace_root(&params);
-    let artifact = root.join(tamagui_config::ARTIFACT_RELATIVE_PATH);
+    let roots = workspace_roots(&params);
 
     // negotiating utf-8 removes the position conversion entirely. most clients
     // only offer utf-16, so this is an optimisation, never a requirement.
@@ -76,40 +76,51 @@ fn run(
         .map(|_| PositionEncoding::Utf8)
         .unwrap_or(PositionEncoding::Utf16);
 
-    let config = Arc::new(match tamagui_config::load_from_path(&artifact) {
-        Ok(snapshot) => {
-            eprintln!("tamagui-lsp: loaded {}", snapshot.describe());
-            ConfigHandle::new(snapshot)
-        }
-        Err(error) => {
-            // starting without a config is normal: the compiler may not have
-            // run yet. the watcher picks it up the moment it appears, so this
-            // is a log line and not a failure.
-            eprintln!("tamagui-lsp: no config yet ({error}); watching {}", artifact.display());
-            ConfigHandle::empty()
-        }
-    });
+    let found = projects::discover(&roots);
+    if found.is_empty() {
+        // the folder that was opened is still the best guess: it makes a
+        // project whose artifact does not exist yet, which the watcher fills in
+        // as soon as the compiler runs
+        eprintln!("tamagui-lsp: no tamagui project found under any workspace folder");
+    }
+    let projects =
+        Projects::new(if found.is_empty() { roots.clone() } else { found });
+    eprintln!("tamagui-lsp: {} project(s)", projects.len());
 
-    let mut workspace = Workspace::new(config.clone());
+    // instant config pickup: each watcher swaps its own project's snapshot,
+    // then asks the loop to refresh diagnostics for whatever is open.
+    let mut watchers = Vec::with_capacity(projects.len());
+    for project in projects.iter() {
+        let artifact = project.artifact();
+        let sender = connection.sender.clone();
+        let label = project.root.clone();
+        let watcher = ConfigWatcher::spawn(&artifact, project.config.clone(), move |outcome| {
+            match outcome {
+                ReloadOutcome::Reloaded { revision } => {
+                    eprintln!(
+                        "tamagui-lsp: {} config reloaded (revision {revision})",
+                        label.display()
+                    );
+                    // an empty notification the loop treats as "revalidate everything"
+                    let _ = sender.send(Message::Notification(Notification {
+                        method: REVALIDATE.into(),
+                        params: serde_json::Value::Null,
+                    }));
+                }
+                ReloadOutcome::Failed(error) => {
+                    eprintln!(
+                        "tamagui-lsp: {} config reload failed, keeping previous snapshot: {error}",
+                        label.display()
+                    );
+                }
+            }
+        })
+        .map_err(|e| format!("watching {}: {e}", artifact.display()))?;
+        watchers.push(watcher);
+    }
+
+    let mut workspace = Workspace::new(projects);
     workspace.set_encoding(encoding);
-
-    // instant config pickup: the watcher swaps the snapshot, then asks the loop
-    // to refresh diagnostics for whatever is open.
-    let sender = connection.sender.clone();
-    let _watcher = ConfigWatcher::spawn(&artifact, config.clone(), move |outcome| match outcome {
-        ReloadOutcome::Reloaded { revision } => {
-            eprintln!("tamagui-lsp: config reloaded (revision {revision})");
-            // an empty notification the loop treats as "revalidate everything"
-            let _ = sender.send(Message::Notification(Notification {
-                method: REVALIDATE.into(),
-                params: serde_json::Value::Null,
-            }));
-        }
-        ReloadOutcome::Failed(error) => {
-            eprintln!("tamagui-lsp: config reload failed, keeping previous snapshot: {error}");
-        }
-    })
-    .map_err(|e| format!("watching {}: {e}", artifact.display()))?;
 
     let mut state = features::State::new(workspace);
 
@@ -133,45 +144,30 @@ fn run(
 /// internal notification the watcher thread uses to wake the loop
 const REVALIDATE: &str = "tamagui/revalidate";
 
-fn workspace_root(params: &InitializeParams) -> PathBuf {
+/// Every folder the editor opened.
+///
+/// All of them, not just the first: VS Code multi-root workspaces and
+/// `nvim`'s workspace folders both hand over several, and taking only the first
+/// silently drops the rest.
+fn workspace_roots(params: &InitializeParams) -> Vec<PathBuf> {
     #[allow(deprecated)]
-    params
+    let folders: Vec<PathBuf> = params
         .workspace_folders
         .as_ref()
-        .and_then(|folders| folders.first())
-        .and_then(|folder| file_uri_to_path(folder.uri.as_str()))
-        .or_else(|| params.root_uri.as_ref().and_then(|u| file_uri_to_path(u.as_str())))
-        .unwrap_or_else(|| std::env::current_dir().unwrap_or_default())
-}
-
-/// `file:///a/b%20c` -> `/a/b c`. lsp-types 0.97 models a URI with fluent-uri,
-/// which has no filesystem conversion, so percent-decoding is ours to do.
-fn file_uri_to_path(uri: &str) -> Option<PathBuf> {
-    let rest = uri.strip_prefix("file://")?;
-    // skip an empty authority, keeping the leading slash of the path
-    let rest = rest.strip_prefix("localhost").unwrap_or(rest);
-    let bytes = rest.as_bytes();
-    // decode to BYTES, not chars: `é` is percent-encoded as `%C3%A9`, so
-    // pushing each decoded byte as a `char` would widen it to `Ã©`. reading the
-    // hex digits from the byte slice rather than slicing the `&str` also keeps
-    // a stray `%` in front of a multi-byte character from panicking on a
-    // non-boundary slice.
-    let mut out = Vec::with_capacity(bytes.len());
-    let hex = |b: u8| (b as char).to_digit(16);
-    let mut i = 0;
-    while i < bytes.len() {
-        if bytes[i] == b'%'
-            && i + 2 < bytes.len()
-            && let (Some(hi), Some(lo)) = (hex(bytes[i + 1]), hex(bytes[i + 2]))
-        {
-            out.push((hi * 16 + lo) as u8);
-            i += 3;
-            continue;
-        }
-        out.push(bytes[i]);
-        i += 1;
+        .map(|folders| {
+            folders.iter().filter_map(|f| file_uri_to_path(f.uri.as_str())).collect()
+        })
+        .unwrap_or_default();
+    if !folders.is_empty() {
+        return folders;
     }
-    Some(PathBuf::from(String::from_utf8(out).ok()?))
+    #[allow(deprecated)]
+    let single = params
+        .root_uri
+        .as_ref()
+        .and_then(|u| file_uri_to_path(u.as_str()))
+        .unwrap_or_else(|| std::env::current_dir().unwrap_or_default());
+    vec![single]
 }
 
 fn handle_request(

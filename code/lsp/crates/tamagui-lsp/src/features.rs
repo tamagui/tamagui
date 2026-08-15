@@ -5,9 +5,11 @@
 // inconsistent. The vocabulary is rebuilt lazily and only when the config
 // revision it was derived from has moved.
 
+use std::path::{Path, PathBuf};
 use std::sync::Arc;
 
 use lsp_types::*;
+use rustc_hash::FxHashMap;
 use tamagui_config::ConfigSnapshot;
 use tamagui_grammar::{CursorContext, EntryKind, ModifierKind, Vocabulary};
 
@@ -17,52 +19,61 @@ use crate::sites;
 
 pub struct State {
     pub workspace: Workspace,
-    vocabulary: Option<Vocabulary>,
+    /// one vocabulary per project root.
+    ///
+    /// Keyed rather than single because a monorepo's apps have genuinely
+    /// different vocabularies, and editing a file in each in turn would
+    /// otherwise rebuild from scratch on every switch.
+    vocabularies: FxHashMap<PathBuf, Vocabulary>,
 }
 
 impl State {
     pub fn new(workspace: Workspace) -> Self {
-        Self { workspace, vocabulary: None }
+        Self { workspace, vocabularies: FxHashMap::default() }
     }
 
-    /// drop the cached vocabulary so the next request rebuilds it
+    /// drop the cached vocabularies so the next request rebuilds them
     pub fn invalidate_vocabulary(&mut self) {
-        self.vocabulary = None;
+        self.vocabularies.clear();
     }
 
-    /// Rebuild the vocabulary if the config revision has moved past the one it
-    /// was derived from.
+    /// Rebuild a project's vocabulary if its config revision has moved past the
+    /// one the cached copy was derived from.
     ///
     /// This is split from reading it so callers can hold an immutable borrow of
     /// the vocabulary and the document at the same time; a single `&mut self`
     /// accessor would keep the whole `State` mutably borrowed for the rest of
     /// the request.
-    fn ensure_vocabulary(&mut self, config: &ConfigSnapshot) {
+    fn ensure_vocabulary(&mut self, root: &Path, config: &ConfigSnapshot) {
         let stale = self
-            .vocabulary
-            .as_ref()
+            .vocabularies
+            .get(root)
             .is_none_or(|v| v.revision != config.revision);
         if stale {
-            self.vocabulary = Some(Vocabulary::from_config(config));
+            self.vocabularies
+                .insert(root.to_path_buf(), Vocabulary::from_config(config));
         }
     }
 
-    fn snapshot(&self) -> Arc<ConfigSnapshot> {
-        self.workspace.config().snapshot()
+    /// The project root and live config for a document, or `None` when the file
+    /// belongs to no project in this workspace.
+    fn context(&self, uri: &str) -> Option<(PathBuf, Arc<ConfigSnapshot>)> {
+        let project = self.workspace.project_for(uri)?;
+        Some((project.root.clone(), project.config.snapshot()))
     }
 
     pub fn completion(&mut self, params: CompletionParams) -> Option<CompletionResponse> {
         let uri = params.text_document_position.text_document.uri.to_string();
         let position = params.text_document_position.position;
-        let config = self.snapshot();
+        let (root, config) = self.context(&uri)?;
 
         let document = self.workspace.get(&uri)?;
         let text = document.to_string();
         let offset = byte_offset(document, position)?;
         let site = sites::at(&text, offset, &config.style_props)?;
 
-        self.ensure_vocabulary(&config);
-        let vocabulary = self.vocabulary.as_ref()?;
+        self.ensure_vocabulary(&root, &config);
+        let vocabulary = self.vocabularies.get(&root)?;
         let cursor = offset - site.value_start;
         let category = config.prop_category(&site.prop);
         let completions = tamagui_grammar::complete(vocabulary, &site.value, cursor, category);
@@ -140,7 +151,7 @@ impl State {
             .uri
             .to_string();
         let position = params.text_document_position_params.position;
-        let config = self.snapshot();
+        let (root, config) = self.context(&uri)?;
 
         let document = self.workspace.get(&uri)?;
         let text = document.to_string();
@@ -148,8 +159,8 @@ impl State {
         let site = sites::at(&text, offset, &config.style_props)?;
         let cursor = offset - site.value_start;
 
-        self.ensure_vocabulary(&config);
-        let vocabulary = self.vocabulary.as_ref()?;
+        self.ensure_vocabulary(&root, &config);
+        let vocabulary = self.vocabularies.get(&root)?;
         let parsed = tamagui_grammar::value::parse(&site.value);
         let clause = parsed.clause_at(cursor)?;
 
@@ -232,12 +243,12 @@ impl State {
     /// editor gutter can meaningfully show for a theme-dependent value.
     pub fn document_colors(&mut self, params: DocumentColorParams) -> Vec<ColorInformation> {
         let uri = params.text_document.uri.to_string();
-        let config = self.snapshot();
+        let Some((root, config)) = self.context(&uri) else { return Vec::new() };
 
         let Some(document) = self.workspace.get(&uri) else { return Vec::new() };
         let text = document.to_string();
-        self.ensure_vocabulary(&config);
-        let Some(vocabulary) = self.vocabulary.as_ref() else { return Vec::new() };
+        self.ensure_vocabulary(&root, &config);
+        let Some(vocabulary) = self.vocabularies.get(&root) else { return Vec::new() };
         let preview = config
             .themes
             .theme_names()
@@ -281,7 +292,7 @@ impl State {
     }
 
     pub fn diagnostics(&mut self, uri: &str) -> Vec<Diagnostic> {
-        let config = self.snapshot();
+        let Some((root, config)) = self.context(uri) else { return Vec::new() };
         // an empty config means the compiler has not run; reporting every value
         // as unknown would bury the editor in noise that is not the user's fault
         if config.themes.theme_count() == 0 {
@@ -289,8 +300,8 @@ impl State {
         }
         let Some(document) = self.workspace.get(uri) else { return Vec::new() };
         let text = document.to_string();
-        self.ensure_vocabulary(&config);
-        let Some(vocabulary) = self.vocabulary.as_ref() else { return Vec::new() };
+        self.ensure_vocabulary(&root, &config);
+        let Some(vocabulary) = self.vocabularies.get(&root) else { return Vec::new() };
 
         let mut found = Vec::new();
         for site in sites::all(&text, &config.style_props) {
