@@ -347,8 +347,8 @@ describe('first-render optimization mode', () => {
     const reader = getByTestId('first-render-reader')
     const initialBackground = reader.style.background
 
-    expect(reader.dataset.background).toBe('rgba(255, 255, 255, 1)')
-    expect(reader.dataset.backgroundAlias).toBe('rgba(255, 255, 255, 1)')
+    expect(reader.dataset.background).toBe('#fff')
+    expect(reader.dataset.backgroundAlias).toBe('#fff')
     expect(reader.dataset.backgroundGet).toContain('var(--')
     expect(reader.dataset.sm).toBe('false')
 
@@ -357,7 +357,7 @@ describe('first-render optimization mode', () => {
       setName('dark')
     })
 
-    expect(reader.dataset.background).toBe('rgba(0, 0, 0, 1)')
+    expect(reader.dataset.background).toBe('#000')
     expect(reader.style.background).not.toBe(initialBackground)
     expect(dormantThemeReader.current).toBeGreaterThan(dormantThemeBaseline)
 

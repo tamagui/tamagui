@@ -7,7 +7,6 @@ import type {
   ThemeParsed,
   TokensParsed,
 } from '../types'
-import { normalizeThemeValue } from './themes'
 
 // only cache tamagui styles
 // TODO merge totalSelectorsInserted and allSelectors?
@@ -243,7 +242,7 @@ function addThemesFromCSS(cssStyleRule: CSSStyleRule, tokens?: TokensParsed) {
       {
         key,
         name: key,
-        val: normalizeThemeValue(value),
+        val: value,
       },
       true
     ) as any
