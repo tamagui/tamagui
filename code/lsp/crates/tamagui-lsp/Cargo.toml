@@ -1,0 +1,15 @@
+[package]
+name = "tamagui-lsp"
+description = "The Tamagui language server: one binary, every editor"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[dependencies]
+tamagui-config = { path = "../tamagui-config" }
+
+arc-swap.workspace = true
+rustc-hash.workspace = true
+ropey = "1.6"
+notify = { version = "8", default-features = false, features = ["macos_fsevent"] }
