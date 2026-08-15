@@ -198,33 +198,92 @@ much smaller. **READ:**
 flag", not "build the artifact".** The breakage evidence above still stands: with
 the flag on and no artifact wired, the CSS goes nowhere.
 
-### The artifact is not free, and nobody has priced it
+### The artifact costs 25-35KB gzip today, and almost all of it is waste
 
-**READ**, `gzip -9` of the three generated artifacts in this repo:
+**READ**, `gzip -9` of the three generated artifacts in this repo, decomposed
+with a real CSS parser (postcss), classified per top-level rule, at-rules
+recursing into their children. Reported as **marginal gzip**, `gzip(file) −
+gzip(file without that bucket)`, because raw byte share badly overstates theme
+blocks: they are extremely repetitive and compress far better than the rest.
 
-| project | raw | gzip |
+| project | total gzip | theme | `:root` | base | atomic |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| `starters/expo-router` | 27,536 | **17,845** (65%) | 7,462 (27%) | 513 | 146 |
+| `sandbox/app` | 25,035 | **17,673** (71%) | 5,257 (21%) | 564 | 145 |
+| `tamagui.dev` | 34,781 | **27,748** (80%) | 4,863 (14%) | 444 | 147 |
+
+An earlier draft of this section said "90% of it is theme-class blocks, `:root`
+7%, atomic 0%", derived from a regex over `{…}`. **Withdrawn.** That regex
+required `{` immediately after the selector, so `._ovs-contain {…}` never
+matched and "atomic 0%" was an artifact of the pattern. It was also raw-byte
+share rather than gzip. The parser numbers above supersede it. The direction
+survives, the shape does not: on gzip, themes are 65-80% rather than ~90%, and
+`:root` is a much bigger share (14-27%) than raw bytes suggested.
+
+**The greenfield case is already the expensive one.** A greenfield app does not
+get a hand-rolled two-theme config, it gets `defaultConfig` from
+`@tamagui/config/v6`, which is what `code/starters/expo-router/tamagui.config.ts`
+does. **READ**: that starter's artifact carries **300 distinct `.t_` names**, and
+grepping all 15 of its source files for `<Theme`, `Theme name=` and `theme=`
+returns nothing but React Navigation's unrelated `ThemeProvider`. It ships 300
+theme selectors and 17.8KB gzip of theme CSS for themes it never names.
+
+**So this is unused-theme shipping, not an inherent cost of moving CSS out of
+JS.** It is being paid today by every app that uses `outputCSS`. The mode does
+not create it.
+
+### Pruning is the single biggest lever in this plan
+
+**READ.** Pruning the starter's artifact to only the theme names it can reach,
+by dropping every rule whose selector references a `.t_` name outside the kept
+set:
+
+| variant | raw | gzip |
 | --- | ---: | ---: |
-| `code/sandbox/app/tamagui.generated.css` | 422,550 | **25,035** |
-| `code/tamagui.dev/tamagui.generated.css` | 464,965 | **34,803** |
-| `code/starters/expo-router/tamagui.generated.css` | 350,414 | **27,558** |
+| full artifact | 350,414 | **27,536** |
+| light + dark only | 53,473 | **9,916** |
+| light/dark plus their sub-themes | 55,384 | 10,073 |
+| no themes at all (floor) | 42,783 | 9,691 |
 
-And **READ**, decomposing the sandbox artifact: **90% of it is theme-class
-blocks** (301 blocks, 382,483 bytes). `:root` token and font blocks are 7%.
-Atomic rules are 0%, since those come from per-module compiler output rather
-than this file.
+**Pruning to light + dark takes the artifact from 27,536 to 9,916 gzip, a
+−17,620 saving.** And the zero-theme floor is 9,691, so light and dark
+themselves cost 225 gzip: essentially the entire theme mass is the 298
+sub-themes the starter never references.
 
-This is a first-order fact for the mode and it was not in anyone's model. Today
-an app ships its config as a JS object and expands it to CSS at boot. The mode
-ships the expansion on the wire instead. Both scale with theme count, so on these
-configs the CSS side is 25 to 35KB gzip, which is the same order as the entire
-JS saving. **Theme count becomes a bundle-size decision.** The mode needs a story
-for shipping only the themes an app actually uses, and a greenfield app under
-the mode's contract should be declaring far fewer than 301 theme blocks.
+−17,620 gzip is larger than every JS item in §9 combined except the mode itself.
 
-`TAMAGUI_OPTIMIZE_THEMES` and the names-only theme projection in
-`createTamagui.ts:133` (`scanAllSheets`) are the existing machinery for "the CSS
-is authoritative, the config ships names only". That is the right hook. Whether
-it can also prune unreferenced themes is open (§11).
+**This composes with the mode rather than competing with it.** Pruning is only
+sound if you know every theme name an app can reach, which is exactly the
+whole-program call-site analysis the mode already requires, and contract rule 4
+(static themes, §4) already forbids the dynamic theme names that would make
+reachability undecidable. The mode makes pruning provable; pruning pays for the
+mode's CSS side. They enable each other.
+
+The residual 9,691 gzip floor is dominated by `:root` custom properties (7,462
+marginal gzip in the starter). Token reachability is the same analysis one level
+down, and is the obvious follow-on once theme pruning lands.
+
+### The existing theme-slimming machinery is not connected
+
+p22394 asked what `TAMAGUI_OPTIMIZE_THEMES` and the names-only projection
+already do. **READ**, and the answer is unwelcome: `TAMAGUI_OPTIMIZE_THEMES`
+appears in exactly two source files, `vite-plugin/src/plugin.ts:894` (defines it
+`true` in production) and `next-plugin/src/withTamagui.ts:90` (defines it
+`false`), plus their compiled dist. **Nothing reads it.** `TAMAGUI_KEEP_THEMES`
+is assigned in five places and never read as a condition. `@tamagui/config` has
+no theme stripping keyed on either.
+
+**INFERRED**, and worth one confirmation pass before anyone relies on it: the
+names-only projection at `createTamagui.ts:133` therefore has no producer in
+this repo, so `scanAllSheets(true, tokensParsed)` only ever fires for a config a
+user hand-wrote in that shape. This is the same failure as
+`TAMAGUI_DID_OUTPUT_CSS`: a flag defined at the plugin edge with nothing behind
+it. Two dead flags, same disease, and it suggests looking for a third.
+
+The consequence for pruning: there is no existing mechanism to extend. The
+projection machinery does the JS half (ship theme names, not values) and leaves
+100% of the CSS-side unused-theme mass untouched, because it was never about
+the CSS artifact in the first place.
 
 ---
 
@@ -269,6 +328,10 @@ has to be documented:
 Rules 1, 2 and 3 want lint rules and ideally types, not just a build error at
 the end. An `eslint-plugin` already exists in `code/core/eslint-plugin`, which
 is the natural home.
+
+Calibration on how strict this is: **READ**, the official `expo-router` starter
+calls `useTheme()` in `app/_layout.tsx:55`, so today's starter violates rule 7.
+The contract is real work for the templates, not only for users.
 
 **Delivery shape.** Three things have to exist before the mode can be claimed:
 
@@ -492,7 +555,13 @@ Ordered by gzip per unit of risk. "Measured" means I built it and read the bytes
 | 4 | Keep the runtime prop walker out of a fully compiled build (see below) | ~−3,667 | estimated (INFERRED from `getSplitStyles` marginal 3,667) | high: needs a design for how the compiled path drops prop-walking |
 | 5 | `resolveSafeArea` + `tokenCategories` + `core::runtime` off the web hot path | ~−1,025 | marginals (READ), mechanism unverified | medium |
 | 6 | Defer or drop the `Variables` feature on web | ~−1,231 | marginal (READ) | product decision, not a leak |
-| 7 | **Zero-runtime mode** | up to **−44,899** | see below | the actual project |
+| 7 | **Prune unreachable themes from the CSS artifact** | **−17,620 CSS gzip** | measured (READ, §3) | medium: needs whole-program theme reachability, which the mode already computes |
+| 8 | **Zero-runtime mode** | up to **−44,899 JS gzip** | see below | the actual project |
+
+Item 7 is CSS, not JS, so it does not appear in the JS arithmetic below. It is
+listed here because it is the largest single number in this plan after the mode,
+it benefits every app that uses `outputCSS` today whether or not the mode ever
+ships, and it is what makes the mode's CSS side affordable.
 
 Marginals in this table sum honestly. **READ**: before item 2 landed, items 1
 and 2 measured individually at −2,939 and −2,277 (predicted sum −5,216) and
@@ -547,10 +616,14 @@ upper bound). The direct evidence that the endpoint is reachable is P1 vs P3:
 +7 bytes over hand-written React.
 
 Upper bound, because the fixture is 100% flattenable primitives, which is
-exactly what a greenfield app under the contract is supposed to look like. The
-figure to publish comes from the Phase 0 starter, measured on both sides: JS
-gzip against V2, and CSS gzip against the artifact question in §11 q1. Until
-that second number exists, "−33KB" is half a claim.
+exactly what a greenfield app under the contract is supposed to look like.
+
+The CSS side is now measured too, at least for the existing starter's config: a
+pruned artifact is **9,916 gzip** (§3), against 27,536 unpruned. So the trade is
+roughly "remove up to 44.9KB of JS, add ~10KB of CSS", not "add 27.5KB", and the
+CSS number is one an app pays today anyway. The figure to publish still comes
+from building the Phase 0 starter and measuring both sides on the same app, but
+the shape of the answer is no longer in doubt.
 
 ### Note on item 2, which landed while this was being written
 
@@ -593,11 +666,12 @@ Next and metro already do the equivalent through `Static.loadTamagui`.
 **−2,928 measured**, and it is a hard prerequisite for the mode. Item 2 already
 landed and needs only the hydration check noted in §9.
 
-**Phase 2, the CSS artifact's size.** Do not skip this. On the three in-repo
-configs the artifact is 25 to 35KB gzip and 90% of it is theme blocks (§3). Get
-a real number for a two-theme greenfield config, and if it is still large,
-design theme pruning before the mode ships. Trading 45KB of JS for 30KB of CSS
-is not the win anyone is promising.
+**Phase 2, theme pruning.** Measured at **−17,620 gzip** on the expo-router
+starter (§3), which makes it the largest single item in this plan after the mode
+itself, and it stands alone: every app using `outputCSS` today is shipping
+~18KB gzip of themes it never names, mode or no mode. Compute reachable theme
+names from the call-site analysis, emit only those. Then do the same one level
+down for `:root` tokens, which are the remaining 7.5KB.
 
 **Phase 3, provider elimination.** Make a zero-runtime root need no
 `TamaguiProvider`. Theme switching becomes a class name on an ancestor.
@@ -631,12 +705,16 @@ block the mode and the mode should not block them.
 
 **Still open:**
 
-1. **Theme CSS size.** The artifact is 25 to 35KB gzip on in-repo configs and
-   90% theme blocks (§3). Can `TAMAGUI_OPTIMIZE_THEMES` / the names-only
-   projection be extended to ship only referenced themes? If not, what is the
-   real number for a two-theme config? This is the one open question that could
-   materially change whether the mode is worth it, so it should be answered
-   before anything else is built.
+1. **Theme reachability.** The size question is answered: pruning is worth
+   −17,620 gzip on the greenfield starter (§3), so this reframes the CSS cost
+   rather than threatening the mode. What is open is the analysis. Can the
+   compiler prove reachability for `<Theme name=>`, the `theme=` prop,
+   component sub-theme names (`black_Button`, `surface2` and the other 298 in
+   the default v6 suite), and inherited/nested theme composition? Contract rule
+   4 already forbids dynamic theme names, which is what makes this decidable at
+   all. There is no existing mechanism to extend, since the current
+   theme-slimming flags are unwired (§3), so this is new analysis on top of the
+   call-site data the mode already collects.
 2. Can an island share a provider with a zero-runtime root, or does each island
    mount its own? Sharing puts the provider in the main chunk and the guarantee
    is gone. Per-island providers mean repeated config parsing and possibly
