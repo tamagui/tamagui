@@ -1,30 +1,70 @@
-# V3 beta measurement state (2026-08-03)
+# V3 beta measurement state (updated 2026-08-15)
 
-Written at machine-move time. Records which retained numbers are trustworthy,
-which are load-caveated, and which are known invalid, so nobody re-derives this
-from scattered logs.
+Records which retained numbers are trustworthy, which are load-caveated, and
+which are known invalid, so nobody re-derives this from scattered logs.
 
 ## Trustworthy: byte measurements
 
 Bundle output is deterministic. It does not depend on machine load, so
 everything here stands regardless of how busy the box was.
 
-- V3 costs **+9,534 compiled whole-app gzip** vs V2 (runtime +9,409).
-  Measured on the combined tree at `55a0c80c7c` (post-V6 + v3-engine),
-  `metadata.dirty: false`.
-- Tamagui-attributable gzip: V3 42,827, V2 33,418.
-- Two independent controls reproduce the earlier retained record byte for byte:
-  the V2 arm at 33,418, and the React control at 466,060 V3 / 465,924 V2.
-  Neither should move, because no commit in this range touches V2 or React.
-  If either moves in a future run, suspect the run, not the tree.
-- Classifier audit resolved 478 module entries with 0 mismatches; all 26
-  "other" entries are enumerated.
-- V3 emits 106 Tamagui modules vs V2's 100; `directStyle` is 34,960 rendered
-  bytes per V3 mode.
+Current, at `605a1659d3` on `v3-beta`, `metadata.dirty: false`, retained in
+[`output/v3-v2-web-bundle-attribution.json`](./output/v3-v2-web-bundle-attribution.json):
 
-**This supersedes the previously retained +27,096 gzip figure**, which was
-measured against built `dist` that predated the direct-emission merge
-`12f7e0e981`. Do not cite +27,096.
+- V3 costs **+12,052 compiled whole-app gzip** vs V2 (runtime +11,900).
+- Tamagui-attributable gzip: V3 45,324, V2 33,424. Emitted JS +35,384.
+- Compiled CSS is 986 bytes *smaller* than V2.
+- The V2 arm (33,424 vs 33,418 twelve days earlier) and the React control
+  (+2 raw bytes) both reproduce, so the run is valid and the movement is ours.
+
+**Do not cite +9,534 or +27,096.** +9,534 was the same measurement at
+`55a0c80c7c` on 2026-08-03; V3 has grown **+2,518 gzip since then**. +27,096
+predated the direct-emission merge `12f7e0e981` entirely.
+
+### Where the +11,900 lives
+
+Per-module marginal gzip (`gzip(chunk) - gzip(chunk without the module)`),
+from `bun code/comparisons/attribute-bundle-gzip.ts <v3out> --against=<v2out>`.
+The marginals sum to 11,844 against a measured 11,900, so this decomposition is
+complete to within 0.5%. Rendered (pre-minify) bytes rank modules wrong here:
+`normalize-css-color` renders 7,249 bytes but is mostly a lookup table.
+
+| Δ gzip | module | what it is |
+| ---: | --- | --- |
+| +5,451 | `web/helpers/directStyle.mjs` | the direct emitter, added *alongside* getSplitStyles rather than replacing it |
+| +2,280 | `@tamagui/normalize-css-color` | 2,709 minified bytes of it is the CSS color-name table (theme determinism, `55980590f1`) |
+| +1,326 | `web/helpers/propMapper.mjs` | variant resolvers |
+| +1,228 | `web/helpers/variables.mjs` | Variables feature |
+| +1,110 | `@tamagui/style-grammar` runtime | clausePrecedence 488, modifierRegistry 292, states 287, stateModifiers 43 |
+| +745 | `animations-css/createAnimations.mjs` | transition prop |
+| +434 | `resolveSafeArea` + `resolveSafeAreaVariable` | |
+| +377 | `@tamagui/core::runtime.mjs` | |
+| +268 | `web/helpers/nativeStyleEngine.mjs` | native-only, was reaching web (fixed, see below) |
+| +207 | `helpers/tokenCategories.mjs` | |
+| ~+900 | createTamagui, insertStyleRule, createComponent, useComponentState, others | |
+| −2,900 | deleted V2 helpers | createMediaStyle 518, getTokenForKey 518, core/index 367, themeable 276, pseudoTransitions 232, getSplitStyles 197, pseudoDescriptors 182, validStyleProps 180, others |
+
+Two things this rules out, both previously suspected:
+
+- **`isWeb` does fold.** Rolldown constant-propagates `export const isWeb = true`
+  across modules, so `!isWeb` branches in `directStyle` are already gone in a web
+  build (`fontVariant` and `parseNativeTransform` do not appear in the emitted
+  chunk). Only 963 of directStyle's 1,782 source lines survive. Its 17,582
+  minified bytes are real web emitter work, spread evenly across `emitValue`
+  (2,500), `directAtomic` (1,656), `getCondition` (1,611), and ~30 smaller
+  functions. There is no dead lump to cut.
+- **The legacy-object-syntax deletion is already priced in.** `96f6d5574a`
+  landed 2026-08-01, before the +9,534 baseline. It bought nothing further.
+
+What *did* regress since 2026-08-03 (rendered bytes): style-grammar's runtime
+tables went 0 → 7,375 via `d2aaf8b8b4` (clause merge precedence), propMapper
++2,638, directStyle +2,514, nativeStyleEngine 0 → 1,610.
+
+`nativeStyleEngine` reaching web was a real leak, not feature weight:
+`views/Theme.tsx` called `updateNativeStyleScope` on every platform, and on web
+those calls only mutate a Map no engine ever reads. Gating the effect body on
+`process.env.TAMAGUI_TARGET === 'native'` drops the module entirely and measures
+**−236 whole-app gzip** (105,032 → 104,796).
 
 ### Freshness trap that produced that stale number
 

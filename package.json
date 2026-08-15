@@ -123,6 +123,7 @@
     "repair:exports": "node scripts/repair-exports.js"
   },
   "devDependencies": {
+    "@jridgewell/trace-mapping": "^0.3.31",
     "@manypkg/cli": "^0.23.0",
     "@playwright/test": "1.58.2",
     "@take-out/cli": "0.0.65",

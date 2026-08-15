@@ -1,5 +1,10 @@
 # V3 bundle-slim measurement record
 
+**Historical. Every byte figure here is superseded by
+[`V3_BETA_MEASUREMENT_STATE.md`](./V3_BETA_MEASUREMENT_STATE.md).** The +27,096
+gzip below was measured against a `dist` predating the direct-emission merge
+`12f7e0e981`; do not cite it.
+
 This record covers W4 on `validate/v3-bundle-slim-measure`. All byte claims below
 come from `code/comparisons/run-benchmarks.ts`. The native section preserves the
 failed W4 smoke and adds the later source-bound retained campaign.
