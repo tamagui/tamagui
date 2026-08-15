@@ -307,6 +307,46 @@ impl State {
             })
             .collect()
     }
+
+    /// What the colour picker may write back over a swatch.
+    ///
+    /// Every swatch this server emits sits on a theme VALUE NAME (`background`),
+    /// never on a colour literal, because `document_colors` only resolves names
+    /// it found in the config. So the answer is always the text that is already
+    /// there: the swatch is a preview of what the theme resolves to, not an
+    /// editing surface. Handing VS Code the picked colour instead would let a
+    /// stray click replace `background` with `#ffffff` and silently unhook that
+    /// value from the theme.
+    pub fn color_presentation(
+        &mut self,
+        params: ColorPresentationParams,
+    ) -> Vec<ColorPresentation> {
+        let uri = params.text_document.uri.to_string();
+        let Some(document) = self.workspace.get(&uri) else {
+            return Vec::new();
+        };
+        let (Ok(start), Ok(end)) = (
+            document.byte_of(tamagui_lsp::Position {
+                line: params.range.start.line,
+                character: params.range.start.character,
+            }),
+            document.byte_of(tamagui_lsp::Position {
+                line: params.range.end.line,
+                character: params.range.end.character,
+            }),
+        ) else {
+            return Vec::new();
+        };
+        let text = document.to_string();
+        let Some(original) = text.get(start..end) else {
+            return Vec::new();
+        };
+        vec![ColorPresentation {
+            label: original.to_string(),
+            text_edit: None,
+            additional_text_edits: None,
+        }]
+    }
 }
 
 fn modifier_label(kind: ModifierKind) -> &'static str {

@@ -15,7 +15,7 @@ use lsp_types::notification::{
     PublishDiagnostics,
 };
 use lsp_types::request::{
-    Completion, DocumentColor, HoverRequest, Request as _, Shutdown,
+    ColorPresentationRequest, Completion, DocumentColor, HoverRequest, Request as _, Shutdown,
 };
 use lsp_types::*;
 use tamagui_config::ConfigHandle;
@@ -186,6 +186,8 @@ fn handle_request(
         HoverRequest::METHOD => {
             cast::<HoverRequest>(request).map(|(id, params)| reply(id, state.hover(params)))
         }
+        ColorPresentationRequest::METHOD => cast::<ColorPresentationRequest>(request)
+            .map(|(id, params)| reply(id, state.color_presentation(params))),
         DocumentColor::METHOD => cast::<DocumentColor>(request)
             .map(|(id, params)| reply(id, state.document_colors(params))),
         Shutdown::METHOD => Ok(Response::new_ok(id, serde_json::Value::Null)),
