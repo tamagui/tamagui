@@ -203,7 +203,12 @@ function forEachPropInForwardOrder(
     if (processedBaseStyle) {
       for (const key in processedBaseStyle) contribute(key, processedBaseStyle[key])
     }
-    contributeDisplacedStyledDefaults(styledDefaults, processedProps, shorthands, contribute)
+    contributeDisplacedStyledDefaults(
+      styledDefaults,
+      processedProps,
+      shorthands,
+      contribute
+    )
     for (const key in processedProps) contribute(key, processedProps[key])
     return
   }
@@ -262,7 +267,8 @@ function forEachPropInForwardOrder(
     contribute(propEntries[index][0], propEntries[index][1])
     const compounds = compoundsByAnchor.get(index)
     if (compounds) {
-      for (let i = 0; i < compounds.length; i++) contribute(compounds[i][0], compounds[i][1])
+      for (let i = 0; i < compounds.length; i++)
+        contribute(compounds[i][0], compounds[i][1])
     }
   }
 }
