@@ -150,14 +150,16 @@ function getStyledDefaults(staticConfig: StaticConfig): OrderedPropEntry[] | nul
 }
 
 function pushDisplacedStyledDefaults(
-  orderedEntries: OrderedPropEntry[],
+  keys: string[],
+  values: any[],
   styledDefaults: OrderedPropEntry[] | null,
   processedProps: Record<string, any>,
   shorthands: Record<string, string>
 ) {
   if (!styledDefaults) return
   for (let index = 0; index < styledDefaults.length; index++) {
-    const [key, styledValue] = styledDefaults[index]
+    const key = styledDefaults[index][0]
+    const styledValue = styledDefaults[index][1]
     const propValue = processedProps[key]
     if (!(key in stylePropsAll) && !(key in shorthands)) continue
     // equal means the default flowed through the merge untouched and will be
@@ -170,7 +172,8 @@ function pushDisplacedStyledDefaults(
       ((typeof styledValue === 'string' && styledValue.includes(':')) ||
         (typeof propValue === 'string' && propValue.includes(':')))
     ) {
-      orderedEntries.push(styledDefaults[index])
+      keys.push(key)
+      values.push(styledValue)
     }
   }
 }
@@ -184,34 +187,51 @@ function getPropEntriesInForwardOrder(
   const compoundVariants = staticConfig.compoundVariants
   const styledDefaults = getStyledDefaults(staticConfig)
 
-  // fast path: with no compound variants (the common case) build the forward-ordered
-  // [key, value] list in a single for...in pass — skip the two Object.entries arrays
-  // and the spread that only the compound path needs. base style first, then props.
+  // Parallel key/value arrays rather than a list of [key, value] tuples: the
+  // tuple form allocated one array PER PROP on every render, so a ten-prop
+  // component made eleven arrays before the main loop had run once. Two arrays
+  // hold the same forward order and the loop reads them by index, which also
+  // drops the for...of iterator.
+  const keys: string[] = []
+  const values: any[] = []
+
+  // fast path: with no compound variants (the common case) fill them in a
+  // single for...in pass each — skip the two Object.entries arrays and the
+  // spread that only the compound path needs. base style first, then props.
   if (!compoundVariants?.length) {
-    const orderedEntries: OrderedPropEntry[] = []
     if (processedBaseStyle) {
       for (const key in processedBaseStyle) {
-        orderedEntries.push([key, processedBaseStyle[key]])
+        keys.push(key)
+        values.push(processedBaseStyle[key])
       }
     }
-    pushDisplacedStyledDefaults(
-      orderedEntries,
-      styledDefaults,
-      processedProps,
-      shorthands
-    )
+    pushDisplacedStyledDefaults(keys, values, styledDefaults, processedProps, shorthands)
     for (const key in processedProps) {
-      orderedEntries.push([key, processedProps[key]])
+      keys.push(key)
+      values.push(processedProps[key])
     }
-    return orderedEntries
+    return { keys, values }
   }
 
-  // compound path needs indexed prop entries to resolve each compound's anchor
+  // compound path needs indexed prop entries to resolve each compound's anchor,
+  // so it keeps the tuple form internally and flattens into the same two arrays
+  // at the end. this is the uncommon branch; the cost stays here.
   const propEntries = Object.entries(processedProps) as OrderedPropEntry[]
   const orderedEntries = processedBaseStyle
     ? (Object.entries(processedBaseStyle) as OrderedPropEntry[])
     : []
-  pushDisplacedStyledDefaults(orderedEntries, styledDefaults, processedProps, shorthands)
+  const displacedKeys: string[] = []
+  const displacedValues: any[] = []
+  pushDisplacedStyledDefaults(
+    displacedKeys,
+    displacedValues,
+    styledDefaults,
+    processedProps,
+    shorthands
+  )
+  for (let index = 0; index < displacedKeys.length; index++) {
+    orderedEntries.push([displacedKeys[index], displacedValues[index]])
+  }
 
   // Compounds are ordinary contributions in the same authored forward pass. A
   // matching compound runs immediately after its last selector entry, then any
@@ -252,7 +272,12 @@ function getPropEntriesInForwardOrder(
     const compounds = compoundsByAnchor.get(index)
     if (compounds) orderedEntries.push(...compounds)
   }
-  return orderedEntries
+
+  for (let index = 0; index < orderedEntries.length; index++) {
+    keys.push(orderedEntries[index][0])
+    values.push(orderedEntries[index][1])
+  }
+  return { keys, values }
 }
 
 // if you need and easier way to test performance, you can do something like this
@@ -465,7 +490,7 @@ export const getSplitStyles: StyleSplitter = (
   }
   const { webContainerType } = conf.settings
   const parentVariants = parentStaticConfig?.variants
-  const orderedProcessedProps = getPropEntriesInForwardOrder(
+  const { keys: orderedKeys, values: orderedValues } = getPropEntriesInForwardOrder(
     processedProps,
     staticConfig,
     shorthands
@@ -509,7 +534,9 @@ export const getSplitStyles: StyleSplitter = (
     flushDirectStyles(styleState, true)
   }
 
-  for (const [keyOg, valOg] of orderedProcessedProps) {
+  for (let propIndex = 0; propIndex < orderedKeys.length; propIndex++) {
+    const keyOg = orderedKeys[propIndex]
+    const valOg = orderedValues[propIndex]
     let keyInit = keyOg
     let valInit = valOg
 
