@@ -138,6 +138,54 @@ A group exposes parent state. A query container supplies dimensions.
 Plain `sm:` is a viewport query. `@sm:` measures the nearest query container.
 Only size-measuring media keys register a container form.
 
+## Editor support
+
+Flat values are strings, so TypeScript can only take autocomplete so far. It
+offers each prop's token union plus every bare modifier prefix (`hover:`,
+`sm:`, `dark:`), but not the cross product: that union is over a million
+members, which TypeScript rejects outright and then returns *no* completions at
+all. So the vocabulary lives in a language server instead.
+
+```bash
+npm install --save-dev @tamagui/lsp
+```
+
+It reads `.tamagui/tamagui.config.json`, the artifact the compiler already
+writes, and gives you completions filtered as you type, diagnostics for unknown
+modifiers and misspelled values with "did you mean" suggestions, hover showing a
+token's resolved value per theme, and inline color swatches.
+
+Completing a clause replaces only that clause, so accepting `background-hover`
+in `bg="background hover:back"` keeps the `background` you already wrote.
+
+It speaks stdio LSP, so every editor needs a few lines and no plugin code. In
+VS Code, install the Tamagui extension and it spawns the binary for you. For
+Neovim:
+
+```lua
+vim.lsp.config.tamagui = {
+  cmd = { 'tamagui-lsp' },
+  filetypes = { 'typescriptreact', 'javascriptreact' },
+  root_markers = { 'tamagui.config.ts', 'package.json' },
+}
+vim.lsp.enable('tamagui')
+```
+
+Helix, Zed, Emacs, Sublime and JetBrains are all a similar few lines; see the
+[package README](https://github.com/tamagui/tamagui/blob/main/code/lsp/npm/tamagui-lsp/README.md).
+
+If completions never appear, the server is waiting for the config artifact: run
+your dev server or `tamagui generate` once so the compiler emits it. When the
+config changes the server picks it up and republishes on its own, with no
+editor restart.
+
+For CI and pre-commit, `tamagui check` validates every flat value in a project
+and exits non-zero, which is also the right hook for coding agents:
+
+```bash
+tamagui check
+```
+
 ## Migrate an existing app
 
 The codemod in the Tamagui repository is the migration path. It recognizes old

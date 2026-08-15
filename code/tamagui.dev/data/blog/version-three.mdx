@@ -95,6 +95,37 @@ mode first, then use `--write` for conversions it can prove safe. The
 [v3 upgrade guide](/docs/guides/how-to-upgrade) lists the commands, the full
 rename table, and the cases that still need manual review.
 
+## A language server, for every editor
+
+Moving conditions into the value means TypeScript can no longer describe the
+whole grammar. We measured it: the full cross product is over a million union
+members, which TypeScript refuses to represent, and it then returns *zero*
+completions rather than a partial list. Types still give you each prop's tokens
+and the bare modifier prefixes, but the rest had to move.
+
+So it moved into a language server, written in Rust and shipped as a single
+binary:
+
+```bash
+npm install --save-dev @tamagui/lsp
+```
+
+Completions filtered as you type, diagnostics with "did you mean" for a
+misspelled value, hover that resolves a token per theme, and inline color
+swatches. Completing a clause replaces only that clause, so `bg="background
+hover:back"` finishes without eating the `background` you already wrote.
+
+Because it speaks LSP rather than plugging into tsserver, it is not a VS Code
+feature. Neovim, Helix, Zed, Emacs, Sublime and JetBrains all get the same
+engine from a few lines of config, and the VS Code extension is now a thin
+wrapper that spawns the same binary, so none of them can drift from each other.
+
+Two details we cared about. It picks up config changes the moment the compiler
+writes them, with no editor restart. And it keeps working while you type: a file
+mid-edit is usually syntactically invalid, so the sites you already wrote have
+to survive that, which is why it parses with tree-sitter rather than a
+conventional parser that discards the whole file on the first error.
+
 ## Style precedence is authored order
 
 Because Tamagui props, `style`, `className`, and Tailwind utilities all flow
