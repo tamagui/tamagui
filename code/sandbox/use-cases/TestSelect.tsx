@@ -57,7 +57,7 @@ export function SelectDemoContents(
         </Select.Trigger>
       )}
 
-      <Adapt when="maxMd" platform="touch">
+      <Adapt when="max-md" platform="touch">
         <Sheet native={!!props.native} modal dismissOnSnapToBottom transition="medium">
           <Sheet.Container>
             <Sheet.Background />

@@ -18,7 +18,7 @@ export const DialogTest = () => {
         <Button>Open</Button>
       </Dialog.Trigger>
 
-      <Dialog.Adapt when="maxMd">
+      <Dialog.Adapt when="max-md">
         <Sheet zIndex={200000} modal dismissOnSnapToBottom transition="medium">
           <Sheet.Container padding={0} gap="4">
             <Sheet.Background bg="color2" />

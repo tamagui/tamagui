@@ -23,7 +23,7 @@ export default function TestSelectAdapt(props: SelectProps) {
         <Select.Value placeholder="Something" />
       </Select.Trigger>
 
-      <Adapt when="maxMd" platform="touch">
+      <Adapt when="max-md" platform="touch">
         <Sheet
           native={!!props.native}
           modal

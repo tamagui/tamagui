@@ -740,7 +740,7 @@ const Motion = () => {
       {/* animateOnly */}
       <Square
         transition={['superBouncy', { opacity: '100ms' }]}
-        bg="red maxMd:blue"
+        bg="red max-md:blue"
         opacity="0.25 hover:1"
         borderWidth={2}
         scale="hover:1.5 press:0.8"

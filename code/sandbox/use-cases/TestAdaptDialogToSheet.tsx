@@ -18,7 +18,7 @@ export default function TestAdaptDialogToSheet() {
           </Button>
         </Dialog.Trigger>
 
-        <Adapt when="maxMd">
+        <Adapt when="max-md">
           <Sheet
             snapPointsMode="fit"
             modal
