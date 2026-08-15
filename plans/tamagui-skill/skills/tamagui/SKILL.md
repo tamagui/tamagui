@@ -124,20 +124,25 @@ console.log(theme.color11.val)     // high contrast text
 
 ### Responsive Styles
 
-Use media query props (check your `tamagui-prompt.md` for actual breakpoint names):
+The v6 defaults use Tailwind-style, mobile-first keys: `sm:` is min-width,
+`max-sm:` is max-width, plus `touchable`/`hoverable` capability keys (check
+`tamagui-prompt.md` for the project's actual keys):
 
 ```tsx
 <YStack
-  padding="4 gtSm:6 gtMd:8"
-  flexDirection="column gtLg:row"
+  padding="4 sm:6 md:8"
+  flexDirection="column lg:row"
 />
 
-// or with hook
+// hook only for render logic, never for styles
 const media = useMedia()
-if (media.gtMd) {
-  // render for medium+ screens
+if (media.md) {
+  // render a different tree for medium+ screens
 }
 ```
+
+Prefer media clauses in values for styling; reach for `useMedia()` only when
+the rendered tree itself changes.
 
 ### Animations
 
@@ -148,13 +153,15 @@ import { AnimatePresence } from 'tamagui'
   {show && (
     <YStack
       key="modal"  // key required for exit animations
-      animation="quick"
+      transition="quick"
       opacity="1 enter:0 exit:0"
       y="0 enter:-20px exit:20px"
     />
   )}
 </AnimatePresence>
 ```
+
+The prop is `transition` in v2+ (`animation` is the removed v1 name).
 
 **Animation drivers:**
 - `@tamagui/animations-css` - web only, CSS transitions
@@ -227,24 +234,25 @@ import { Dialog, Sheet, Adapt, Button } from 'tamagui'
     <Button>Open</Button>
   </Dialog.Trigger>
 
-  <Adapt when="sm" platform="touch">
+  <Adapt when="max-sm" platform="touch">
     <Sheet modal dismissOnSnapToBottom>
-      <Sheet.Frame padding="4">
-        <Adapt.Contents />
-      </Sheet.Frame>
       <Sheet.Overlay />
+      <Sheet.Container padding="4">
+        <Sheet.Background />
+        <Adapt.Contents />
+      </Sheet.Container>
     </Sheet>
   </Adapt>
 
   <Dialog.Portal>
     <Dialog.Overlay
       key="overlay"
-      animation="quick"
+      transition="quick"
       opacity="0.5 enter:0 exit:0"
     />
     <Dialog.Content
       key="content"
-      animation="quick"
+      transition="quick"
       opacity="1 enter:0 exit:0"
       scale="1 enter:0.95 exit:0.95"
     >
@@ -418,15 +426,48 @@ interface ExtendedProps extends MyComponentProps {
 | Token | `padding="4"` |
 | Theme value | `backgroundColor="background"` |
 | Color scale | `color="color11"` (high contrast text) |
-| Responsive | `padding="4 gtSm:6"` |
+| Responsive | `padding="4 sm:6"` |
 | Variant | `<Button size="large" variant="outlined" />` |
-| Animation | `animation="quick" opacity="1 enter:0"` |
+| Animation | `transition="quick" opacity="1 enter:0"` |
 | Theme switch | `<Theme name="dark"><Theme name="blue">` |
 | Compound | `<Card><Card.Title>` with `createStyledContext` |
 
 ---
 
+## Working in an Existing App
+
+Rules learned from real production Tamagui codebases; follow them before
+writing any component code:
+
+1. **Use the project's wrapper layer, not raw Tamagui imports.** Most apps
+   have their own Button, Dialog, Sheet, Popover, Menu, and Input wrappers
+   (commonly under `interface/` or a design-system package) carrying product
+   behavior: adapt breakpoints, haptics, hosted portal roots, focus handling.
+   Importing the Tamagui compound component directly bypasses all of it.
+   Search for the local wrapper first.
+2. **Prop and spread order is semantic.** Later contributions replace only the
+   base or exact clauses they restate. Never reorder `...props`, conditional
+   spreads, variant props, or wrapper defaults during cleanup; destructuring
+   and re-spreading can change which style wins.
+3. **Know the token escape-hatch map** for values leaving the style system:
+   `useTheme().token.val` for native modules and third-party APIs,
+   `getTokenValue()` for numeric consumers, CSS `var(--token)` for SVG and raw
+   DOM. Use these instead of hardcoding resolved values.
+4. **Preserve commented workarounds.** Direct DOM listeners, class-based CSS
+   for properties Tamagui cannot express, and geometry workarounds exist for
+   measured reasons; removing them during unrelated work reintroduces bugs.
+5. **Validate at runtime.** Flat values are broad string types, so a typo can
+   typecheck. Rely on the language-service plugin and the
+   `valid-flat-values` lint rule while writing, and verify hover/press/media/
+   theme states in the running app for anything non-trivial.
+
+---
+
 ## Migrating Existing Code
+
+For a full v2 (or v1) app migration, use the dedicated `tamagui-upgrade-v3`
+skill, which covers inventory, migration order, the flag playbook, hard-case
+recipes, and platform validation. The core mechanics:
 
 Use the flat-values codemod; do not add compatibility settings or runtime
 fallbacks. Run it in report mode first, then write the full source corpus in one
