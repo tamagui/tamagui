@@ -149,12 +149,11 @@ function getStyledDefaults(staticConfig: StaticConfig): OrderedPropEntry[] | nul
   return entries
 }
 
-function pushDisplacedStyledDefaults(
-  keys: string[],
-  values: any[],
+function contributeDisplacedStyledDefaults(
   styledDefaults: OrderedPropEntry[] | null,
   processedProps: Record<string, any>,
-  shorthands: Record<string, string>
+  shorthands: Record<string, string>,
+  contribute: (key: string, value: any) => void
 ) {
   if (!styledDefaults) return
   for (let index = 0; index < styledDefaults.length; index++) {
@@ -172,66 +171,51 @@ function pushDisplacedStyledDefaults(
       ((typeof styledValue === 'string' && styledValue.includes(':')) ||
         (typeof propValue === 'string' && propValue.includes(':')))
     ) {
-      keys.push(key)
-      values.push(styledValue)
+      contribute(key, styledValue)
     }
   }
 }
 
-function getPropEntriesInForwardOrder(
+/**
+ * Walks every style contribution in authored forward order and hands each one
+ * to `contribute`, without building an intermediate list.
+ *
+ * Order is base style, then any styled default a call-site value displaced,
+ * then the props. That is the cascade: last writer wins, so the props must come
+ * last.
+ *
+ * The common case touches each source object exactly once and allocates
+ * nothing. Only compound variants need a materialised list, because a matching
+ * compound has to run immediately after the LAST prop that selected it, and
+ * that anchor is not known until the props have been indexed.
+ */
+function forEachPropInForwardOrder(
   processedProps: Record<string, any>,
   staticConfig: StaticConfig,
-  shorthands: Record<string, string>
+  shorthands: Record<string, string>,
+  contribute: (key: string, value: any) => void
 ) {
   const processedBaseStyle = staticConfig.baseStyle
   const compoundVariants = staticConfig.compoundVariants
   const styledDefaults = getStyledDefaults(staticConfig)
 
-  // Parallel key/value arrays rather than a list of [key, value] tuples: the
-  // tuple form allocated one array PER PROP on every render, so a ten-prop
-  // component made eleven arrays before the main loop had run once. Two arrays
-  // hold the same forward order and the loop reads them by index, which also
-  // drops the for...of iterator.
-  const keys: string[] = []
-  const values: any[] = []
-
-  // fast path: with no compound variants (the common case) fill them in a
-  // single for...in pass each — skip the two Object.entries arrays and the
-  // spread that only the compound path needs. base style first, then props.
   if (!compoundVariants?.length) {
     if (processedBaseStyle) {
-      for (const key in processedBaseStyle) {
-        keys.push(key)
-        values.push(processedBaseStyle[key])
-      }
+      for (const key in processedBaseStyle) contribute(key, processedBaseStyle[key])
     }
-    pushDisplacedStyledDefaults(keys, values, styledDefaults, processedProps, shorthands)
-    for (const key in processedProps) {
-      keys.push(key)
-      values.push(processedProps[key])
-    }
-    return { keys, values }
+    contributeDisplacedStyledDefaults(styledDefaults, processedProps, shorthands, contribute)
+    for (const key in processedProps) contribute(key, processedProps[key])
+    return
   }
 
-  // compound path needs indexed prop entries to resolve each compound's anchor,
-  // so it keeps the tuple form internally and flattens into the same two arrays
-  // at the end. this is the uncommon branch; the cost stays here.
+  // compound path: needs indexed prop entries to resolve each compound's anchor
   const propEntries = Object.entries(processedProps) as OrderedPropEntry[]
   const orderedEntries = processedBaseStyle
     ? (Object.entries(processedBaseStyle) as OrderedPropEntry[])
     : []
-  const displacedKeys: string[] = []
-  const displacedValues: any[] = []
-  pushDisplacedStyledDefaults(
-    displacedKeys,
-    displacedValues,
-    styledDefaults,
-    processedProps,
-    shorthands
+  contributeDisplacedStyledDefaults(styledDefaults, processedProps, shorthands, (k, v) =>
+    orderedEntries.push([k, v])
   )
-  for (let index = 0; index < displacedKeys.length; index++) {
-    orderedEntries.push([displacedKeys[index], displacedValues[index]])
-  }
 
   // Compounds are ordinary contributions in the same authored forward pass. A
   // matching compound runs immediately after its last selector entry, then any
@@ -265,19 +249,22 @@ function getPropEntriesInForwardOrder(
     compoundsByAnchor.set(anchor, entries)
   }
 
-  const beforeProps = compoundsByAnchor.get(-1)
-  if (beforeProps) orderedEntries.push(...beforeProps)
-  for (let index = 0; index < propEntries.length; index++) {
-    orderedEntries.push(propEntries[index])
-    const compounds = compoundsByAnchor.get(index)
-    if (compounds) orderedEntries.push(...compounds)
-  }
-
   for (let index = 0; index < orderedEntries.length; index++) {
-    keys.push(orderedEntries[index][0])
-    values.push(orderedEntries[index][1])
+    contribute(orderedEntries[index][0], orderedEntries[index][1])
   }
-  return { keys, values }
+  const beforeProps = compoundsByAnchor.get(-1)
+  if (beforeProps) {
+    for (let index = 0; index < beforeProps.length; index++) {
+      contribute(beforeProps[index][0], beforeProps[index][1])
+    }
+  }
+  for (let index = 0; index < propEntries.length; index++) {
+    contribute(propEntries[index][0], propEntries[index][1])
+    const compounds = compoundsByAnchor.get(index)
+    if (compounds) {
+      for (let i = 0; i < compounds.length; i++) contribute(compounds[i][0], compounds[i][1])
+    }
+  }
 }
 
 // if you need and easier way to test performance, you can do something like this
@@ -490,11 +477,6 @@ export const getSplitStyles: StyleSplitter = (
   }
   const { webContainerType } = conf.settings
   const parentVariants = parentStaticConfig?.variants
-  const { keys: orderedKeys, values: orderedValues } = getPropEntriesInForwardOrder(
-    processedProps,
-    staticConfig,
-    shorthands
-  )
 
   const mergeStylePropAtCurrentPosition = (styleProp: any) => {
     if (styleProps.noMergeStyle || !styleProp) return
@@ -534,9 +516,10 @@ export const getSplitStyles: StyleSplitter = (
     flushDirectStyles(styleState, true)
   }
 
-  for (let propIndex = 0; propIndex < orderedKeys.length; propIndex++) {
-    const keyOg = orderedKeys[propIndex]
-    const valOg = orderedValues[propIndex]
+  // ONE forward pass over the props. the body is a closure so base style,
+  // displaced styled defaults and the props themselves feed it directly from
+  // their own objects — nothing is copied into an intermediate list first.
+  const contributeProp = (keyOg: string, valOg: any) => {
     let keyInit = keyOg
     let valInit = valOg
 
@@ -546,13 +529,13 @@ export const getSplitStyles: StyleSplitter = (
 
     if (keyInit === 'children') {
       viewProps[keyInit] = valInit
-      continue
+      return
     }
 
     if (keyInit === 'ref') {
       // ref is composed and assigned explicitly onto viewProps in createComponent;
       // never forward the incoming ref through the style split onto the host element
-      continue
+      return
     }
 
     // native: data-* attributes never become native props (they're stripped
@@ -564,7 +547,7 @@ export const getSplitStyles: StyleSplitter = (
       keyInit[0] === 'd' &&
       keyInit.startsWith('data-')
     ) {
-      continue
+      return
     }
 
     if (
@@ -576,7 +559,7 @@ export const getSplitStyles: StyleSplitter = (
     }
 
     if (process.env.NODE_ENV === 'test' && keyInit === 'jestAnimatedStyle') {
-      continue
+      return
     }
 
     if (
@@ -588,7 +571,7 @@ export const getSplitStyles: StyleSplitter = (
         keyInit === 'transitionDelay' ||
         keyInit === 'transitionBehavior')
     ) {
-      continue
+      return
     }
 
     // for custom accept sub-styles
@@ -600,7 +583,7 @@ export const getSplitStyles: StyleSplitter = (
         typeof valInit === 'object'
       ) {
         viewProps[keyInit] = getSubStyle(styleState, keyInit, valInit, styleProps.noClass)
-        continue
+        return
       }
     }
 
@@ -625,12 +608,12 @@ export const getSplitStyles: StyleSplitter = (
           styleState.flatShouldDoClasses = false
         }
       }
-      continue
+      return
     }
 
     if (keyInit === 'style') {
       mergeStylePropAtCurrentPosition(valInit)
-      continue
+      return
     }
 
     // when asChild, skip default props - they shouldn't be passed down to children
@@ -640,7 +623,7 @@ export const getSplitStyles: StyleSplitter = (
         // check both original key and expanded key (after shorthand expansion)
         const defaultVal = defaults[keyOg] ?? defaults[keyInit]
         if (defaultVal !== undefined && valInit === defaultVal) {
-          continue
+          return
         }
       }
     }
@@ -691,10 +674,10 @@ export const getSplitStyles: StyleSplitter = (
           valInit = `all ${animationConfig}`
         } else if (animationConfig) {
           // animation drivers consume configured preset names directly
-          continue
+          return
         }
       } else {
-        continue
+        return
       }
     }
 
@@ -711,7 +694,7 @@ export const getSplitStyles: StyleSplitter = (
           `[tamagui] "${valInit.property}" is not a valid style on this component; the frontend value is dropped.`
         )
       }
-      continue
+      return
     }
 
     let isValidStyleKeyInit = isValidStyleKey(keyInit, validStyles, accept)
@@ -730,7 +713,7 @@ export const getSplitStyles: StyleSplitter = (
         keyInit = keyInit.replace('data-', '')
         viewProps['dataSet'] ||= {}
         viewProps['dataSet'][keyInit] = valInit
-        continue
+        return
       }
 
       // standard data attributes are view props, never styles or styled-context
@@ -738,7 +721,7 @@ export const getSplitStyles: StyleSplitter = (
       // these before a provider value can make the key look style-like.
       if (keyInit.startsWith('data-')) {
         viewProps[keyInit] = valInit
-        continue
+        return
       }
     }
 
@@ -746,7 +729,7 @@ export const getSplitStyles: StyleSplitter = (
       if (!isValidStyleKeyInit) {
         if (!isAndroid) {
           // only works in android
-          if (keyInit === 'elevationAndroid') continue
+          if (keyInit === 'elevationAndroid') return
         }
 
         // map userSelect to native prop
@@ -760,9 +743,9 @@ export const getSplitStyles: StyleSplitter = (
             viewProps.numberOfLines ??= 1
             viewProps.ellipsizeMode ??= 'tail'
           }
-          continue
+          return
         } else if (keyInit.startsWith('data-')) {
-          continue
+          return
         }
       }
     }
@@ -789,7 +772,7 @@ export const getSplitStyles: StyleSplitter = (
             viewProps.disabled = true
           }
           if (!variants?.disabled) {
-            continue
+            return
           }
         }
 
@@ -808,12 +791,12 @@ export const getSplitStyles: StyleSplitter = (
               viewProps.testID = valInit
             }
           }
-          continue
+          return
         }
 
         if (keyInit === 'id') {
           viewProps.id = valInit
-          continue
+          return
         }
       }
     }
@@ -823,7 +806,7 @@ export const getSplitStyles: StyleSplitter = (
     const isStyleProp = isValidStyleKeyInit || (isVariant && !noExpand)
 
     if (isStyleProp && (asChild === 'except-style' || asChild === 'except-style-web')) {
-      continue
+      return
     }
 
     const shouldPassProp =
@@ -868,7 +851,7 @@ export const getSplitStyles: StyleSplitter = (
       // a styled child can pass through a parent variant and define the same key
       // itself, so keep applying its own definition when the variants differ
       if (!isVariant) {
-        continue
+        return
       }
     }
 
@@ -885,7 +868,7 @@ export const getSplitStyles: StyleSplitter = (
         if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
           console.groupEnd()
         }
-        continue
+        return
       }
     }
 
@@ -913,7 +896,7 @@ export const getSplitStyles: StyleSplitter = (
       !(styledContext && keyInit in styledContext)
     ) {
       contributeStyleValue(styleState, keyInit, valInit, mergeStyle)
-      continue
+      return
     }
 
     propMapper(
@@ -1062,7 +1045,9 @@ export const getSplitStyles: StyleSplitter = (
       }
       console.groupEnd()
     }
-  } // end prop loop
+  } // end prop contribution
+
+  forEachPropInForwardOrder(processedProps, staticConfig, shorthands, contributeProp)
 
   if (
     process.env.NODE_ENV === 'development' &&
