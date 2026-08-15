@@ -1,16 +1,29 @@
 // Finding style value sites in a TSX document.
 //
-// SCOPE, stated plainly: this is a lexical scanner over JSX attributes and
-// `styled()` object literals, not a parser. It is deliberately the first
-// version. The intended end state is `oxc_parser`, so the server and oxlint
-// agree on what parses by construction rather than by convention (see
-// `plans/v3-lsp-rust.md`). What is here is enough to drive completion, hover,
-// colours and diagnostics on real files, and it is structured so the extractor
-// can be swapped without touching any feature code.
+// This parses with tree-sitter, and the reason is measured rather than
+// stylistic. The obvious choice was `oxc_parser`, the engine oxlint runs on, so
+// that the server and the lint rule would agree by construction. It cannot do
+// this job: oxc has no error recovery, and on a parse error it returns an EMPTY
+// program rather than a partial one. Replaying a realistic edit (typing one new
+// component into a file that already had two style props) one keystroke at a
+// time, 73 of 84 intermediate states produced no AST at all, and 59 of 84 even
+// after modelling the editor's auto-closing of brackets and quotes. Every
+// colour swatch and every completion in the ALREADY-VALID part of the file
+// would blink out on most keystrokes. The same replay through tree-sitter loses
+// the earlier sites in 0 of 84 states.
+//
+// That is the whole argument: a file being typed into is invalid most of the
+// time, so error tolerance is the requirement here, not a nicety.
 //
 // It errs toward MISSING a site rather than inventing one: a false site would
 // put a squiggle under ordinary TypeScript, which is far worse than a missing
 // completion.
+
+use std::cell::RefCell;
+use std::sync::OnceLock;
+
+use streaming_iterator::StreamingIterator;
+use tree_sitter::{Node, Query, QueryCursor};
 
 /// one authored style value found in a document
 #[derive(Clone, Debug, PartialEq, Eq)]
@@ -23,146 +36,114 @@ pub struct Site {
     pub value_start: usize,
 }
 
+thread_local! {
+    /// reused across calls: constructing a parser and loading the language is
+    /// far more expensive than the parse itself
+    static PARSER: RefCell<tree_sitter::Parser> = RefCell::new({
+        let mut parser = tree_sitter::Parser::new();
+        parser
+            .set_language(&tree_sitter_typescript::LANGUAGE_TSX.into())
+            .expect("the tsx grammar ships with the binary");
+        parser
+    });
+}
+
+/// The four shapes a style value is authored in. `(string)` is captured whole
+/// rather than its `string_fragment`, because an EMPTY string has no fragment
+/// child, and `bg=""` with the cursor between the quotes is the single most
+/// important completion position there is.
+const QUERY_SOURCE: &str = r#"
+(jsx_attribute (property_identifier) @prop (string) @value)
+(jsx_attribute (property_identifier) @prop (jsx_expression (string) @value))
+(pair key: (property_identifier) @prop value: (string) @value)
+(pair key: (string) @prop value: (string) @value)
+"#;
+
+fn query() -> &'static Query {
+    static QUERY: OnceLock<Query> = OnceLock::new();
+    QUERY.get_or_init(|| {
+        Query::new(&tree_sitter_typescript::LANGUAGE_TSX.into(), QUERY_SOURCE)
+            .expect("the site query is a constant and is tested")
+    })
+}
+
 /// Every `name="value"` and `name: 'value'` in the document.
 ///
 /// Callers filter by the config's style-prop set; this returns candidates so
 /// the prop vocabulary stays owned by the config rather than by the scanner.
 pub fn all_candidates(text: &str) -> Vec<Site> {
-    let bytes = text.as_bytes();
+    let Some(tree) = PARSER.with(|p| p.borrow_mut().parse(text, None)) else {
+        // only happens if the parser was cancelled or the timeout fired, and we
+        // set neither
+        return Vec::new();
+    };
+
+    let query = query();
+    let mut cursor = QueryCursor::new();
     let mut out = Vec::new();
-    let mut i = 0;
+    let mut matches = cursor.matches(query, tree.root_node(), text.as_bytes());
 
-    while i < bytes.len() {
-        match bytes[i] {
-            // skip over strings we are not inspecting as attribute values, and
-            // over comments, so their contents can never look like an attribute
-            b'/' if i + 1 < bytes.len() && bytes[i + 1] == b'/' => {
-                while i < bytes.len() && bytes[i] != b'\n' {
-                    i += 1;
-                }
+    while let Some(m) = matches.next() {
+        let mut prop_node = None;
+        let mut value_node = None;
+        for capture in m.captures {
+            match query.capture_names()[capture.index as usize] {
+                "prop" => prop_node = Some(capture.node),
+                "value" => value_node = Some(capture.node),
+                _ => {}
             }
-            b'/' if i + 1 < bytes.len() && bytes[i + 1] == b'*' => {
-                i += 2;
-                while i + 1 < bytes.len() && !(bytes[i] == b'*' && bytes[i + 1] == b'/') {
-                    i += 1;
-                }
-                i = (i + 2).min(bytes.len());
-            }
-            // template literals can contain anything, including `="..."`
-            b'`' => {
-                i += 1;
-                while i < bytes.len() && bytes[i] != b'`' {
-                    if bytes[i] == b'\\' {
-                        i += 1;
-                    }
-                    i += 1;
-                }
-                i += 1;
-            }
-            c if is_ident_start(c) => {
-                let name_start = i;
-                while i < bytes.len() && is_ident_part(bytes[i]) {
-                    i += 1;
-                }
-                let name_end = i;
-
-                let mut j = i;
-                // a JSX attribute is written `bg="x"` with no space before the
-                // `=`. requiring that is what separates it from a variable
-                // assignment (`const x = "background"`), which is otherwise the
-                // identical shape. an object property (`bg: 'x'`) may be spaced.
-                let spaced = j < bytes.len() && (bytes[j] as char).is_ascii_whitespace();
-                while j < bytes.len() && (bytes[j] as char).is_ascii_whitespace() {
-                    j += 1;
-                }
-                if j >= bytes.len() || (bytes[j] != b'=' && bytes[j] != b':') {
-                    continue;
-                }
-                if bytes[j] == b'=' && spaced {
-                    continue;
-                }
-                // `==`, `=>` and `::` are not assignments to a string
-                if bytes[j] == b'=' && j + 1 < bytes.len() && matches!(bytes[j + 1], b'=' | b'>') {
-                    continue;
-                }
-                // a binding keyword before the name means this is a declaration,
-                // not a prop, even when written without spaces (`let x="y"`)
-                if preceded_by_binding_keyword(text, name_start) {
-                    continue;
-                }
-                j += 1;
-
-                // an optional `{` for the `prop={"value"}` form
-                let mut braced = false;
-                while j < bytes.len() && (bytes[j] as char).is_ascii_whitespace() {
-                    j += 1;
-                }
-                if j < bytes.len() && bytes[j] == b'{' {
-                    braced = true;
-                    j += 1;
-                    while j < bytes.len() && (bytes[j] as char).is_ascii_whitespace() {
-                        j += 1;
-                    }
-                }
-
-                if j >= bytes.len() || (bytes[j] != b'"' && bytes[j] != b'\'') {
-                    continue;
-                }
-                let quote = bytes[j];
-                let value_start = j + 1;
-                let mut k = value_start;
-                let mut escaped = false;
-                while k < bytes.len() && bytes[k] != quote {
-                    if bytes[k] == b'\\' {
-                        escaped = true;
-                        k += 1;
-                    }
-                    k += 1;
-                }
-                if k >= bytes.len() {
-                    continue;
-                }
-                // an escaped value's byte offsets stop matching the decoded
-                // string, so it is skipped rather than reported at wrong spans
-                if escaped {
-                    i = k + 1;
-                    continue;
-                }
-                // a braced form must actually close
-                if braced {
-                    let mut m = k + 1;
-                    while m < bytes.len() && (bytes[m] as char).is_ascii_whitespace() {
-                        m += 1;
-                    }
-                    if m >= bytes.len() || bytes[m] != b'}' {
-                        i = k + 1;
-                        continue;
-                    }
-                }
-
-                out.push(Site {
-                    prop: text[name_start..name_end].to_string(),
-                    value: text[value_start..k].to_string(),
-                    value_start,
-                });
-                i = k + 1;
-            }
-            b'"' | b'\'' => {
-                // a bare string that was not an attribute value: skip it whole
-                let quote = bytes[i];
-                i += 1;
-                while i < bytes.len() && bytes[i] != quote {
-                    if bytes[i] == b'\\' {
-                        i += 1;
-                    }
-                    i += 1;
-                }
-                i += 1;
-            }
-            _ => i += 1,
         }
+        let (Some(prop_node), Some(value_node)) = (prop_node, value_node) else {
+            continue;
+        };
+        // a quoted key is still a style prop: { 'backgroundColor': '...' }
+        let prop = match prop_node.kind() {
+            "string" => match inner_range(prop_node, text) {
+                Some(range) => &text[range],
+                None => continue,
+            },
+            _ => &text[prop_node.byte_range()],
+        };
+        let Some(range) = inner_range(value_node, text) else {
+            continue;
+        };
+        out.push(Site {
+            prop: prop.to_string(),
+            value: text[range.clone()].to_string(),
+            value_start: range.start,
+        });
     }
+
+    // query matches arrive in pattern order, not source order
+    out.sort_by_key(|s| s.value_start);
     out
+}
+
+/// The byte range INSIDE a `string` node's quotes.
+///
+/// Returns None for a value carrying an escape: the decoded string is shorter
+/// than its source span, so every offset after the escape would be wrong, and
+/// reporting a wrong span is worse than reporting nothing. Style values do not
+/// contain escapes in practice.
+fn inner_range(node: Node, text: &str) -> Option<std::ops::Range<usize>> {
+    let range = node.byte_range();
+    let bytes = text.as_bytes();
+    let quote = *bytes.get(range.start)?;
+    if quote != b'"' && quote != b'\'' {
+        return None;
+    }
+    // while a string is being typed its closing quote does not exist yet, and
+    // the node ends at the end of the text it covers
+    let closed = range.end > range.start + 1 && bytes.get(range.end - 1) == Some(&quote);
+    let end = if closed { range.end - 1 } else { range.end };
+    if end < range.start + 1 {
+        return None;
+    }
+    let inner = range.start + 1..end;
+    if text.get(inner.clone())?.contains('\\') {
+        return None;
+    }
+    Some(inner)
 }
 
 /// Candidates whose prop is a configured style prop.
@@ -179,36 +160,9 @@ pub fn at(
     offset: usize,
     style_props: &rustc_hash::FxHashSet<Box<str>>,
 ) -> Option<Site> {
-    all(text, style_props).into_iter().find(|s| {
-        offset >= s.value_start && offset <= s.value_start + s.value.len()
-    })
-}
-
-/// is the identifier starting at `at` immediately preceded by `const`/`let`/`var`?
-fn preceded_by_binding_keyword(text: &str, at: usize) -> bool {
-    let head = text[..at].trim_end();
-    for keyword in ["const", "let", "var"] {
-        if let Some(before) = head.strip_suffix(keyword) {
-            // the keyword must be a whole word, not the tail of an identifier
-            let boundary = before
-                .chars()
-                .next_back()
-                .is_none_or(|c| !c.is_alphanumeric() && c != '_' && c != '$');
-            // and it must actually have been separated from the name
-            if boundary && head.len() < at {
-                return true;
-            }
-        }
-    }
-    false
-}
-
-fn is_ident_start(c: u8) -> bool {
-    c.is_ascii_alphabetic() || c == b'_' || c == b'$'
-}
-
-fn is_ident_part(c: u8) -> bool {
-    c.is_ascii_alphanumeric() || c == b'_' || c == b'$' || c == b'-'
+    all(text, style_props)
+        .into_iter()
+        .find(|s| offset >= s.value_start && offset <= s.value_start + s.value.len())
 }
 
 #[cfg(test)]
@@ -304,9 +258,15 @@ mod tests {
 
     #[test]
     fn a_name_ending_in_a_keyword_is_still_a_site() {
-        // `constant` ends with `const`; the boundary check must not eat it
+        // `constant` ends with `const`. the lexical scanner needed a word
+        // boundary check to avoid eating it; the parser cannot make the mistake
+        // at all, since a declaration and an attribute are different nodes.
         assert_eq!(
-            props(r#"<View constant:"4" />"#),
+            props(r#"<View constant="4" />"#),
+            vec![("constant".into(), "4".into())]
+        );
+        assert_eq!(
+            props(r#"styled(View, { constant: "4" })"#),
             vec![("constant".into(), "4".into())]
         );
     }
@@ -320,6 +280,172 @@ mod tests {
                 ("bg".into(), "background".into()),
                 ("p".into(), "4 sm:6".into())
             ]
+        );
+    }
+}
+
+#[cfg(test)]
+mod parser_tests {
+    use super::*;
+
+    fn props(text: &str) -> Vec<(String, String)> {
+        all_candidates(text).into_iter().map(|s| (s.prop, s.value)).collect()
+    }
+
+    #[test]
+    fn recovers_from_the_syntax_errors_an_editor_actually_sees() {
+        // this is the common case, not the exotic one: a file is invalid for
+        // most of the time someone is typing into it. if sites vanished on
+        // every keystroke the completions would flicker out exactly when they
+        // are wanted.
+        let half_typed = r#"
+            export function App() {
+              return <View bg="background" p="
+            }
+        "#;
+        assert!(
+            props(half_typed).iter().any(|(prop, _)| prop == "bg"),
+            "an unterminated string later in the file must not lose earlier sites"
+        );
+
+        // an unclosed brace, the other half of typing
+        let unclosed = r#"const F = styled(View, { backgroundColor: "background","#;
+        assert_eq!(
+            props(unclosed),
+            vec![("backgroundColor".into(), "background".into())]
+        );
+    }
+
+    #[test]
+    fn finds_attributes_the_lexer_could_not_reach() {
+        // a multi-line attribute list, which is how real components are written
+        let multiline = r#"
+            <View
+              bg="background"
+              hoverStyle={{ backgroundColor: "background-hover" }}
+            />
+        "#;
+        assert_eq!(
+            props(multiline),
+            vec![
+                ("bg".into(), "background".into()),
+                ("backgroundColor".into(), "background-hover".into()),
+            ]
+        );
+    }
+
+    #[test]
+    fn finds_nested_and_quoted_keys() {
+        let variants = r#"
+            styled(View, {
+              variants: {
+                size: {
+                  large: { 'backgroundColor': "background-strong" },
+                },
+              },
+            })
+        "#;
+        assert_eq!(
+            props(variants),
+            vec![("backgroundColor".into(), "background-strong".into())]
+        );
+    }
+
+    #[test]
+    fn does_not_invent_sites_in_ordinary_typescript() {
+        // every one of these contains a string next to a name, and none is a
+        // style site. a squiggle in any of them would be worse than a missed
+        // completion.
+        assert!(props(r#"type T = { background: "literal" }"#).is_empty());
+        assert!(props(r#"import { background } from "./theme""#).is_empty());
+        assert!(props(r#"export * from "background""#).is_empty());
+        assert!(props(r#"const m = new Map([["background", 1]])"#).is_empty());
+        assert!(props(r#"if (x === "background") {}"#).is_empty());
+        assert!(props(r#"function f(background = "x") {}"#).is_empty());
+        // a computed key is not statically known
+        assert!(props(r#"({ [key]: "background" })"#).is_empty());
+        // JSX text is not an attribute
+        assert!(props(r#"<View>bg="background"</View>"#).is_empty());
+    }
+
+    #[test]
+    fn offsets_survive_multibyte_characters_earlier_in_the_file() {
+        // oxc reports byte spans, and so does the rope; a char-based offset
+        // would drift by one per emoji and land the completion in the wrong
+        // place
+        // the semicolon matters: `"…"` followed by `<` on the next line parses
+        // as a less-than, not as JSX, so its absence would make this a test of
+        // ASI rather than of offsets
+        let source = "const label = \"🎨 palette\";\n<View bg=\"background\" />;";
+        let site = all_candidates(source).into_iter().find(|s| s.prop == "bg").unwrap();
+        assert_eq!(
+            &source[site.value_start..site.value_start + site.value.len()],
+            "background"
+        );
+    }
+}
+
+#[cfg(test)]
+mod tolerance_tests {
+    use super::*;
+
+    fn props(text: &str) -> Vec<(String, String)> {
+        all_candidates(text).into_iter().map(|s| (s.prop, s.value)).collect()
+    }
+
+    #[test]
+    fn an_empty_value_is_a_site() {
+        // `bg="` with the editor auto-closing the quote is THE completion
+        // position. an empty string has no `string_fragment` child, so querying
+        // for the fragment instead of the string would miss exactly the case
+        // the feature exists to serve.
+        assert_eq!(props(r#"<View bg="" />"#), vec![("bg".into(), String::new())]);
+        let site = &all_candidates(r#"<View bg="" />"#)[0];
+        assert_eq!(site.value_start, 10);
+
+        // and the cursor between those quotes must resolve to that site
+        let props_set: rustc_hash::FxHashSet<Box<str>> =
+            [Box::from("bg")].into_iter().collect();
+        assert!(at(r#"<View bg="" />"#, 10, &props_set).is_some());
+    }
+
+    #[test]
+    fn keeps_valid_sites_while_the_rest_of_the_file_is_half_typed() {
+        // the property tree-sitter was chosen for, as a regression test. under
+        // oxc every one of these returned nothing at all.
+        let existing = "export function Card() {\n  return <View bg=\"background\" p=\"4\" />\n}\n";
+        let typed = "\nexport function Badge() {\n  return <View bg=\"accent\" rounded=\"$4\" />\n}\n";
+
+        for n in 0..=typed.len() {
+            if !typed.is_char_boundary(n) {
+                continue;
+            }
+            let source = format!("{existing}{}", &typed[..n]);
+            let found = props(&source);
+            assert!(
+                found.contains(&("bg".to_string(), "background".to_string()))
+                    && found.contains(&("p".to_string(), "4".to_string())),
+                "typing {n} chars lost the untouched sites above it: {found:?}"
+            );
+        }
+    }
+
+    #[test]
+    fn an_unterminated_value_costs_only_itself() {
+        // a string with no closing quote collapses its whole enclosing element
+        // into one flat ERROR node, with no `jsx_attribute` and no `string` for
+        // the query to match, so that one site is not reported. recovering it
+        // would mean a second query against ERROR-node internals, which is
+        // fragile, and an editor that auto-closes quotes produces `bg=""`
+        // instead, which does work (see `an_empty_value_is_a_site`).
+        assert!(props("<View bg=\"backgro").is_empty());
+
+        // what must NOT happen is the rest of the file paying for it
+        let source = "<View bg=\"background\" />;\n<Text color=\"colo";
+        assert_eq!(
+            props(source),
+            vec![("bg".into(), "background".into())],
+            "an unterminated value later in the file must not cost earlier sites"
         );
     }
 }

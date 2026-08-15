@@ -24,3 +24,6 @@ notify = { version = "8", default-features = false, features = ["macos_fsevent"]
 # time is a user-visible cost for an editor binary, so the leaner stack wins.
 lsp-server = "0.10"
 lsp-types = "0.97"
+tree-sitter = "0.26.12"
+tree-sitter-typescript = "0.23.2"
+streaming-iterator = "0.1.9"
