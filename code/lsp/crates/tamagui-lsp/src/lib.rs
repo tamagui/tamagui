@@ -35,14 +35,6 @@ pub struct Workspace {
     encoding: PositionEncoding,
 }
 
-impl Default for PositionEncoding {
-    fn default() -> Self {
-        // the LSP default; renegotiated at initialize when the client offers
-        // utf-8, which removes the conversion entirely
-        PositionEncoding::Utf16
-    }
-}
-
 impl Workspace {
     pub fn new(config: Arc<ConfigHandle>) -> Self {
         Self { documents: FxHashMap::default(), config, encoding: PositionEncoding::Utf16 }

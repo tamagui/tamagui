@@ -72,7 +72,7 @@ fn run(
         .general
         .as_ref()
         .and_then(|g| g.position_encodings.as_ref())
-        .filter(|e| e.iter().any(|e| *e == PositionEncodingKind::UTF8))
+        .filter(|e| e.contains(&PositionEncodingKind::UTF8))
         .map(|_| PositionEncoding::Utf8)
         .unwrap_or(PositionEncoding::Utf16);
 
@@ -150,21 +150,28 @@ fn file_uri_to_path(uri: &str) -> Option<PathBuf> {
     let rest = uri.strip_prefix("file://")?;
     // skip an empty authority, keeping the leading slash of the path
     let rest = rest.strip_prefix("localhost").unwrap_or(rest);
-    let mut out = String::with_capacity(rest.len());
     let bytes = rest.as_bytes();
+    // decode to BYTES, not chars: `é` is percent-encoded as `%C3%A9`, so
+    // pushing each decoded byte as a `char` would widen it to `Ã©`. reading the
+    // hex digits from the byte slice rather than slicing the `&str` also keeps
+    // a stray `%` in front of a multi-byte character from panicking on a
+    // non-boundary slice.
+    let mut out = Vec::with_capacity(bytes.len());
+    let hex = |b: u8| (b as char).to_digit(16);
     let mut i = 0;
     while i < bytes.len() {
-        if bytes[i] == b'%' && i + 2 < bytes.len() {
-            if let Ok(byte) = u8::from_str_radix(&rest[i + 1..i + 3], 16) {
-                out.push(byte as char);
-                i += 3;
-                continue;
-            }
+        if bytes[i] == b'%'
+            && i + 2 < bytes.len()
+            && let (Some(hi), Some(lo)) = (hex(bytes[i + 1]), hex(bytes[i + 2]))
+        {
+            out.push((hi * 16 + lo) as u8);
+            i += 3;
+            continue;
         }
-        out.push(bytes[i] as char);
+        out.push(bytes[i]);
         i += 1;
     }
-    Some(PathBuf::from(out))
+    Some(PathBuf::from(String::from_utf8(out).ok()?))
 }
 
 fn handle_request(
@@ -294,5 +301,53 @@ fn reply<T: serde::Serialize>(id: RequestId, value: T) -> Response {
     match serde_json::to_value(value) {
         Ok(value) => Response::new_ok(id, value),
         Err(error) => Response::new_err(id, -32603, error.to_string()),
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn decodes_file_uris_including_non_ascii_paths() {
+        assert_eq!(
+            file_uri_to_path("file:///Users/n8/dev/app"),
+            Some(PathBuf::from("/Users/n8/dev/app"))
+        );
+        // a space is the encoding every editor produces on a real project path
+        assert_eq!(
+            file_uri_to_path("file:///Users/n8/My%20Projects/app"),
+            Some(PathBuf::from("/Users/n8/My Projects/app"))
+        );
+        // multi-byte characters arrive as several percent-escapes and have to
+        // be reassembled as bytes; decoding each as a char yields `cafÃ©`
+        assert_eq!(
+            file_uri_to_path("file:///Users/n8/caf%C3%A9"),
+            Some(PathBuf::from("/Users/n8/café"))
+        );
+        assert_eq!(
+            file_uri_to_path("file:///%E6%97%A5%E6%9C%AC/app"),
+            Some(PathBuf::from("/日本/app"))
+        );
+        // an empty authority is dropped, keeping the leading slash
+        assert_eq!(
+            file_uri_to_path("file://localhost/srv/app"),
+            Some(PathBuf::from("/srv/app"))
+        );
+    }
+
+    #[test]
+    fn malformed_escapes_survive_instead_of_panicking() {
+        // a bare `%` is not an escape, and one sitting in front of a multi-byte
+        // character used to slice through a char boundary and panic
+        assert_eq!(
+            file_uri_to_path("file:///tmp/100%25"),
+            Some(PathBuf::from("/tmp/100%"))
+        );
+        assert_eq!(file_uri_to_path("file:///tmp/%é"), Some(PathBuf::from("/tmp/%é")));
+        assert_eq!(file_uri_to_path("file:///tmp/%zz"), Some(PathBuf::from("/tmp/%zz")));
+        assert_eq!(file_uri_to_path("file:///tmp/%"), Some(PathBuf::from("/tmp/%")));
+        // a non-file scheme is not ours to resolve
+        assert_eq!(file_uri_to_path("untitled:Untitled-1"), None);
     }
 }

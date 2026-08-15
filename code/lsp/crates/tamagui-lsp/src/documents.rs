@@ -15,9 +15,11 @@
 use ropey::Rope;
 
 /// how the client encodes positions. negotiated at initialize.
-#[derive(Clone, Copy, PartialEq, Eq, Debug)]
+#[derive(Clone, Copy, PartialEq, Eq, Debug, Default)]
 pub enum PositionEncoding {
-    /// the LSP default, and what VS Code uses
+    /// the LSP default, and what VS Code uses. renegotiated at initialize when
+    /// the client offers utf-8, which removes the conversion entirely.
+    #[default]
     Utf16,
     /// preferred when the client supports it: no conversion at all
     Utf8,
@@ -86,11 +88,6 @@ impl Document {
         &self.text
     }
 
-    /// materialise the whole document. callers that only need a slice should
-    /// take one from [`Self::rope`] instead of paying this.
-    pub fn to_string(&self) -> String {
-        self.text.to_string()
-    }
 
     /// Apply one incremental change. `range` of `None` is a full replace, which
     /// clients send for the first sync and after certain refactors.
@@ -186,6 +183,18 @@ impl Document {
 
     pub fn position_of_byte(&self, byte: usize) -> Position {
         self.position_of(self.text.byte_to_char(byte.min(self.text.len_bytes())))
+    }
+}
+
+/// materialises the whole document. callers that only need a slice should take
+/// one from [`Document::rope`] instead of paying this.
+impl std::fmt::Display for Document {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        // chunks avoid building a second copy of the rope just to print it
+        for chunk in self.text.chunks() {
+            f.write_str(chunk)?;
+        }
+        Ok(())
     }
 }
 
