@@ -190,9 +190,19 @@ through `'../types'`, so that grep came back clean before the fix and comes back
 dirty after it, on prose in the doc comments. And `skipLibCheck: true`, which
 nearly every consumer sets, hides the failure rather than surfacing it: the
 unresolved import silently degrades `StyleDefinition` to `any`, so
-`style({ notAStyleProperty: 1, padding: true })` typechecked. The real checks are
-a transitive import walk over the emitted `.d.ts` files, and `tsc` on a scratch
-project that has no react-native installed.
+`style({ notAStyleProperty: 1, padding: true })` typechecked. There is no
+consumer-side error to rely on here at all.
+
+So the real check is a transitive import walk over the emitted `.d.ts` files, and
+it now lives in the repo as `bun run check:dom-types`
+(`scripts/check-dom-types-standalone.ts`), part of `bun run check` and so part of
+CI. It walks all three published entries — `tamagui/dom`, `@tamagui/core/dom`,
+`@tamagui/web/dom`, default and `react-native` conditions — following relative
+imports and workspace package specifiers, and fails if react-native appears
+anywhere in the closure. Like `check:paths` next to it, it self-tests against
+in-memory fixtures of the leak's real shape before it will claim the repo is
+clean. Run against the pre-change types it exits 1 and names `types/types.d.ts`
+as the source.
 
 The same treatment is still available for `ViewProps`/`PressableProps` on the
 regular entry if that peer is ever worth dropping, but the owner's bar was "so
