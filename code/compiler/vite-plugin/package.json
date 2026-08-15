@@ -60,6 +60,11 @@
   "peerDependencies": {
     "vite": "^8.0.3"
   },
+  "peerDependenciesMeta": {
+    "vite": {
+      "optional": true
+    }
+  },
   "tamagui": {
     "build": {
       "skipEnvToMeta": true

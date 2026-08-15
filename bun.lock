@@ -213,6 +213,9 @@
       "peerDependencies": {
         "vite": "^8.0.3",
       },
+      "optionalPeers": [
+        "vite",
+      ],
     },
     "code/compiler/vite-plugin-cjs": {
       "name": "@tamagui/vite-plugin-cjs",
@@ -347,6 +350,7 @@
       "dependencies": {
         "@tamagui/generate-themes": "workspace:*",
         "@tamagui/language-service": "workspace:*",
+        "@tamagui/metro-plugin": "workspace:*",
         "@tamagui/static": "workspace:*",
         "@tamagui/to-tailwind": "workspace:*",
         "@tamagui/types": "workspace:*",
@@ -925,10 +929,12 @@
       "optionalPeers": [
         "burnt",
         "expo-linear-gradient",
+        "react-native",
         "react-native-gesture-handler",
         "react-native-keyboard-controller",
         "react-native-safe-area-context",
         "react-native-teleport",
+        "react-native-web",
         "react-native-worklets-core",
         "zeego",
       ],
@@ -974,6 +980,9 @@
       "peerDependencies": {
         "react-native": "*",
       },
+      "optionalPeers": [
+        "react-native",
+      ],
     },
     "code/core/react-native-media-driver": {
       "name": "@tamagui/react-native-media-driver",

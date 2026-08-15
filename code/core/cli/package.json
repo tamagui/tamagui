@@ -9,11 +9,36 @@
   "files": [
     "src",
     "types",
-    "dist"
+    "dist",
+    "vite.cjs",
+    "vite.mjs",
+    "vite.d.ts",
+    "metro.cjs",
+    "metro.mjs",
+    "metro.d.ts"
   ],
   "sideEffects": false,
   "main": "dist/index.cjs",
   "types": "./types/index.d.ts",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./types/index.d.ts",
+      "default": "./dist/index.cjs"
+    },
+    "./vite": {
+      "types": "./vite.d.ts",
+      "import": "./vite.mjs",
+      "require": "./vite.cjs",
+      "default": "./vite.cjs"
+    },
+    "./metro": {
+      "types": "./metro.d.ts",
+      "import": "./metro.mjs",
+      "require": "./metro.cjs",
+      "default": "./metro.cjs"
+    }
+  },
   "publishConfig": {
     "access": "public"
   },
@@ -27,6 +52,7 @@
   },
   "dependencies": {
     "@tamagui/generate-themes": "workspace:*",
+    "@tamagui/metro-plugin": "workspace:*",
     "@tamagui/static": "workspace:*",
     "@tamagui/to-tailwind": "workspace:*",
     "@tamagui/types": "workspace:*",

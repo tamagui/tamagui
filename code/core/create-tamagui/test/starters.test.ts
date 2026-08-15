@@ -4,7 +4,7 @@ import path from 'node:path'
 import { describe, expect, it } from 'vitest'
 
 const startersDir = path.join(__dirname, '../../../starters')
-const tamaguiCliPath = require.resolve('@tamagui/cli/dist/index.cjs')
+const tamaguiCliPath = require.resolve('@tamagui/cli')
 
 describe('expo-router starter', () => {
   const dir = path.join(startersDir, 'expo-router')
