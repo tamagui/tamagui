@@ -49,6 +49,34 @@ files) and breaks starters, docs and external configs, while changing install
 cost by zero. Keep the specialized packages published; a Vite-only user who is
 pushed onto the umbrella regresses by ~61 MiB, and a Metro-only user by ~100 MiB.
 
+### Landed
+
+`./vite` and `./metro` ship as of this change. `./lsp` is deliberately absent:
+the Rust language server binary does not exist yet (see `plans/v3-lsp-rust.md`),
+and a subpath resolving to nothing is worse than no subpath. Add it in the same
+change that ships the binary.
+
+Shape, for whoever adds `./lsp`. The CLI builds flat CJS into `dist/` because
+`pkgMain` is set and `pkgModule` is not; adding `module` flips `tamagui-build`
+to `dist/cjs` + `dist/esm`, which moves `dist/index.cjs` out from under `bin`
+and breaks `src/cli.ts`'s `require('../package.json')`. So the subpaths are not
+built from `src/`. They are three checked-in one-liners per entry at the package
+root (`vite.cjs`, `vite.mjs`, `vite.d.ts`), listed in `files` and wired through
+`exports`. This was not cosmetic: routing `./vite` at a bundler-built CJS file
+first, Node's `cjs-module-lexer` could not follow the `__reExport` chain, and
+`import('@tamagui/cli/vite')` exposed only `default` and `module.exports` with
+zero named exports. Real `.mjs` files fixed it; the namespace now matches
+importing `@tamagui/vite-plugin` directly, name for name.
+
+One pre-existing gap surfaced, not caused by this change and confirmed with a
+control that imports the plugins directly: under TypeScript
+`moduleResolution: node16` the generated types fail with "no exported member
+'tamaguiPlugin'". `@tamagui/vite-plugin` is `"type": "module"`, and its
+`types/index.d.ts` re-exports extensionless (`export * from './plugin'`), which
+node16 rejects in ESM. The repo and its consumers use `moduleResolution:
+Bundler`, which resolves clean. Fixing it means teaching `tamagui-build` to
+emit fully specified declaration re-exports, which touches every package.
+
 ### Free cleanup, independent of the above
 
 Packages with **zero runtime references** to declared dependencies:

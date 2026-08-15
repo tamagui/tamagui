@@ -13,10 +13,12 @@ First, create a new One project:
 npx one
 ```
 
-Add Tamagui and its dependencies:
+Add Tamagui and its dependencies. `@tamagui/cli` carries the Vite plugin used
+below, alongside the CLI and the other bundler integrations:
 
 ```bash
 yarn add tamagui @tamagui/config
+yarn add -D @tamagui/cli
 ```
 
 ## Configuration
@@ -43,7 +45,7 @@ Update your `vite.config.ts`:
 
 ```tsx fileName="vite.config.ts"
 import { one } from 'one/vite'
-import { tamaguiPlugin } from '@tamagui/vite-plugin'
+import { tamaguiPlugin } from '@tamagui/cli/vite'
 import type { UserConfig } from 'vite'
 
 export default {

@@ -113,6 +113,25 @@ does not replace that path.
 
 ## Install
 
+The recommended install is one package. `@tamagui/cli` carries the CLI and the
+bundler integrations together, each behind a subpath:
+
+```bash
+yarn add -D @tamagui/cli
+```
+
+| Import               | Gives you                                   |
+| -------------------- | ------------------------------------------- |
+| `@tamagui/cli/vite`  | the same exports as `@tamagui/vite-plugin`  |
+| `@tamagui/cli/metro` | the same exports as `@tamagui/metro-plugin` |
+
+One dependency means one version to keep in sync, so the CLI and your bundler
+plugin can't drift apart on an upgrade.
+
+You can still install the standalone plugin instead, and if your project only
+ever uses one bundler that is the smaller install. Both packages stay published
+and the exports are identical, so the setup below is the same either way.
+
 There are plugins for a variety of bundlers, or you can use the `@tamagui/cli`
 to compile in-place:
 
@@ -226,14 +245,14 @@ Some notes on the options:
 See the [Vite guide](/docs/guides/vite) for more complete setup.
 
 <Notice theme="yellow">
-  `@tamagui/vite-plugin` is ESM-only. Your project must have `"type": "module"` in its `package.json` (or use `.mjs`/`.mts` config files).
+  The Vite plugin is ESM-only. Your project must have `"type": "module"` in its `package.json` (or use `.mjs`/`.mts` config files).
 </Notice>
 
-Add `@tamagui/vite-plugin` and update your `vite.config.ts`. If you have a
-`tamagui.build.ts`, no options are needed:
+Update your `vite.config.ts`. If you have a `tamagui.build.ts`, no options are
+needed:
 
 ```tsx
-import { tamaguiPlugin } from '@tamagui/vite-plugin'
+import { tamaguiPlugin } from '@tamagui/cli/vite'
 
 export default defineConfig({
   plugins: [
@@ -243,10 +262,12 @@ export default defineConfig({
 })
 ```
 
+If you installed `@tamagui/vite-plugin` on its own, import from there instead.
+
 Or pass options inline:
 
 ```tsx
-import { tamaguiPlugin } from '@tamagui/vite-plugin'
+import { tamaguiPlugin } from '@tamagui/cli/vite'
 
 export default defineConfig({
   plugins: [
@@ -299,25 +320,23 @@ your app.
 The Metro integration runs the same shared compiler used by the other bundler
 adapters after your configured Babel transformer.
 
-```bash
-yarn add @tamagui/metro-plugin
-```
-
 Wrap your existing Metro config. With a `tamagui.build.ts`, you can omit the
 inline options:
 
 ```js
 const { getDefaultConfig } = require('expo/metro-config')
-const { withTamagui } = require('@tamagui/metro-plugin')
+const { withTamagui } = require('@tamagui/cli/metro')
 
 module.exports = withTamagui(getDefaultConfig(__dirname))
 ```
+
+If you installed `@tamagui/metro-plugin` on its own, require from there instead.
 
 Or pass options inline:
 
 ```js
 const { getDefaultConfig } = require('expo/metro-config')
-const { withTamagui } = require('@tamagui/metro-plugin')
+const { withTamagui } = require('@tamagui/cli/metro')
 
 module.exports = withTamagui(getDefaultConfig(__dirname), {
   components: ['tamagui'],

@@ -40,11 +40,16 @@ yarn dlx create-expo-app -t expo-template-blank-typescript
 
 The following steps enable the optimizing compiler while preserving your existing Expo Babel configuration.
 
-Add `@tamagui/metro-plugin`:
+Add `@tamagui/cli`, which carries the Metro plugin along with the CLI and the
+other bundler integrations:
 
 ```bash
-yarn add @tamagui/metro-plugin
+yarn add -D @tamagui/cli
 ```
+
+If Metro is the only bundler this project will ever use, `yarn add
+@tamagui/metro-plugin` on its own is a smaller install and exports exactly the
+same things.
 
 If you have a `tamagui.build.ts` (recommended — see
 [compiler install docs](/docs/intro/compiler-install#configuration-with-tamaguibuildts)),
@@ -54,7 +59,7 @@ Wrap the Expo Metro config with `withTamagui`:
 
 ```js fileName="metro.config.js"
 const { getDefaultConfig } = require('expo/metro-config')
-const { withTamagui } = require('@tamagui/metro-plugin')
+const { withTamagui } = require('@tamagui/cli/metro')
 
 module.exports = withTamagui(getDefaultConfig(__dirname), {
   components: ['tamagui'],

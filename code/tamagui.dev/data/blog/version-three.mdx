@@ -645,6 +645,13 @@ replaces `createTamagui({ defaultProps })`, which is deprecated in v3.
 Start with the [v3 upgrade guide](/docs/guides/how-to-upgrade). It includes the
 breaking change checklist, codemod commands, and verification steps.
 
+Tooling now installs as one package. `@tamagui/cli` exports the bundler
+integrations behind subpaths, so `@tamagui/cli/vite` and `@tamagui/cli/metro`
+give you exactly what `@tamagui/vite-plugin` and `@tamagui/metro-plugin` do.
+One dependency, one version to keep in sync across the CLI and your bundler
+plugin. The standalone packages are still published and stay the smaller
+install for a project that only ever uses one bundler.
+
 The short version:
 
 ```bash
