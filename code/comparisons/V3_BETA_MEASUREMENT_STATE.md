@@ -18,8 +18,25 @@ Current, at `605a1659d3` on `v3-beta`, `metadata.dirty: false`, retained in
   (+2 raw bytes) both reproduce, so the run is valid and the movement is ours.
 
 **Do not cite +9,534 or +27,096.** +9,534 was the same measurement at
-`55a0c80c7c` on 2026-08-03; V3 has grown **+2,518 gzip since then**. +27,096
+`55a0c80c7c` on 2026-08-03; V3 had grown **+2,518 gzip since then**. +27,096
 predated the direct-emission merge `12f7e0e981` entirely.
+
+### Landed against that baseline
+
+Whole-app gzip on the compiled bench arm, each step measured on the same
+fixture, so these subtract from the +12,052 above:
+
+| commit | change | whole-app gzip |
+| --- | --- | ---: |
+| (baseline `605a1659d3`) | | 105,032 |
+| `5bc6b34d7f` | gate the native style engine out of web | 104,796 |
+| `5e3b31bca9` | Color variant resolver takes any string | 104,696 |
+| `359e29cc83` | stop normalizing theme colors, drop normalize-css-color from web | 102,328 |
+
+**−2,704 gzip so far, putting the V2 delta near +9,350.** `normalize-css-color`
+no longer appears in the web decomposition at all. The remaining ranking is
+directStyle 5,478, variables 1,232, propMapper 1,224, animations-css 747,
+style-grammar 1,058 combined, resolveSafeArea 386, core/runtime 377.
 
 ### Where the +11,900 lives
 
