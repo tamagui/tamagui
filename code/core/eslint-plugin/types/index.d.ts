@@ -4,6 +4,9 @@ export interface TamaguiEslintRules {
 	"valid-flat-values": Rule.RuleModule;
 }
 export interface TamaguiEslintPlugin {
+	meta: {
+		name: string;
+	};
 	rules: TamaguiEslintRules;
 }
 export declare const rules: TamaguiEslintRules;

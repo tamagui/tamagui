@@ -25,6 +25,39 @@ export default [
 ]
 ```
 
+Oxlint 1.56 and newer can load the same rule as an external JavaScript plugin.
+Point `specifier` at the installed package and pass the serializable grammar
+configuration as the rule option:
+
+```json
+{
+  "jsPlugins": [
+    {
+      "name": "tamagui",
+      "specifier": "@tamagui/eslint-plugin"
+    }
+  ],
+  "rules": {
+    "tamagui/valid-flat-values": [
+      "error",
+      {
+        "config": {
+          "shorthands": {
+            "bg": "backgroundColor"
+          },
+          "mediaNames": ["sm"],
+          "themeNames": ["dark"],
+          "tokenNames": {
+            "color": ["red", "blue"],
+            "space": ["4", "6"]
+          }
+        }
+      }
+    ]
+  }
+}
+```
+
 `valid-flat-values` checks static string values on imported Tamagui components
 and `styled()` configs. It reports invalid clause grammar, configured
 candidate/property mismatches, invalid payload shapes through the shared

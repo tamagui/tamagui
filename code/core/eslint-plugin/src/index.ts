@@ -8,6 +8,9 @@ export interface TamaguiEslintRules {
 }
 
 export interface TamaguiEslintPlugin {
+  meta: {
+    name: string
+  }
   rules: TamaguiEslintRules
 }
 
@@ -15,6 +18,11 @@ export const rules: TamaguiEslintRules = {
   'valid-flat-values': validFlatValues,
 }
 
-const plugin: TamaguiEslintPlugin = { rules }
+const plugin: TamaguiEslintPlugin = {
+  meta: {
+    name: '@tamagui/eslint-plugin',
+  },
+  rules,
+}
 
 export default plugin
