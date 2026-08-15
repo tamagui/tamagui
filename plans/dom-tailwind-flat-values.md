@@ -5,6 +5,11 @@
 Design plan, July 2026. Revised 2026-07-29: universal value grammar (colon
 clause detection over CSS component values), per-longhand program merging,
 value variables, migration compat setting, and the compiled static fast path.
+Revised 2026-08-14: decision 23 is superseded — `legacyConditionObjects` and
+the old condition-object parsers are deleted in V3 itself per
+`plans/v3-rip-token-sigil.md` ruling 2, and that deletion has been executed
+(no runtime compat code remains). Migration is the write-mode codemod plus
+the tamagui skill.
 This consolidates the current direction for:
 
 - regular Tamagui and its future inline style syntax;
@@ -94,9 +99,12 @@ boundaries.
 22. Configured variables may hold composite values (a full box-shadow list),
     parsed at config time by the same value parser. A variable covers one
     property's value; multi-property presets remain variants and `styled()`.
-23. V3 ships a `legacyConditionObjects` compatibility setting. Old condition
-    objects parse into the same IR with a development warning. The setting
-    gates input parsing only, and v4 removes it together with the old parsers.
+23. Superseded 2026-07-31 by `plans/v3-rip-token-sigil.md` ruling 2: V3 ships
+    flat-only. The `legacyConditionObjects` compatibility setting and the old
+    condition-object parsers are deleted in V3, not v4. It existed briefly as
+    an engine-contraction staging gate (see "The engine contraction") and is
+    gone. Migration is the write-mode codemod plus the tamagui skill, never
+    runtime compat code.
 24. When every contribution is statically known, the compiler emits a plain
     element and skips the runtime component path entirely. Closing the
     rendering-cost gap to plain CSS is a stated deliverable of the flat-value
@@ -1600,18 +1608,14 @@ There is no global switch and no combined mode.
 
 ### Conditional objects to flat values
 
-V3 makes the flat value grammar canonical. There is one resolution engine and
-one IR; during migration there are two accepted input spellings, one of them
-deprecated.
-
-The `legacyConditionObjects` setting keeps the old condition objects
-(`hoverStyle`, `pressStyle`, `$theme-*`, `$platform-*`, media and group
-objects) parsing into the same IR with a development warning. The setting
-gates input parsing only; it never forks resolution, ordering, or output. New
-apps default to off. The migration guide enables it for incremental
-migration, the final codemod step turns it off, and v4 removes it together
-with the old parsers. The compiler understands both spellings for as long as
-the setting exists.
+V3 makes the flat value grammar canonical. There is one resolution engine,
+one IR, and one accepted input spelling: flat values. The old condition
+objects (`hoverStyle`, `pressStyle`, `$theme-*`, `$platform-*`, media and
+group objects) and their parsers are deleted in V3 per
+`plans/v3-rip-token-sigil.md` ruling 2. The `legacyConditionObjects` setting
+that briefly bridged them into the IR during the engine contraction is
+deleted with them. The write-mode codemod (`code/core/codemod-flat-values`)
+plus its report rows are the entire migration story.
 
 First corpus numbers (2026-07-29 dry-run spike over kitchen-sink usecases
 plus the Button skin): 1702 conversion sites, 1411 clean (83%), 291
@@ -1697,8 +1701,8 @@ The codemod can convert statically local cases. It must report cases where:
 - dynamic theme, platform, media, or group objects cannot be resolved;
 - structured React Native values lack a CSS-shaped equivalent.
 
-V3 deprecates the old condition-object path behind `legacyConditionObjects`
-with a codemod and diagnostics; v4 removes it.
+V3 deletes the old condition-object path outright; the codemod's write mode
+and report rows carry the migration (`plans/v3-rip-token-sigil.md` ruling 2).
 
 ### Background shorthand migration
 
@@ -1815,8 +1819,10 @@ with raw values in place of parsed programs.
   repeat names skip lowering entirely; `classNames[longhand] = programClass`.
 - W3: native evaluation with granular subscriptions derived from the union
   of clause modifiers across accumulated programs.
-- W5: the `legacyConditionObjects` gate in the prop loop, feeding converted
-  clauses through the same `contributeProgram` path.
+- W5 (historical staging): the `legacyConditionObjects` gate in the prop
+  loop, feeding converted clauses through the same `contributeProgram` path.
+  It served the A/B comparison below and is deleted along with the legacy
+  parsers.
 
 W1 and W2 are hot-path core surgery and get the closest review; W4 is
 self-contained and precedes them.
@@ -1844,10 +1850,10 @@ claims are measured, never asserted.
 ### The engine contraction
 
 The program model is not a layer beside the engine; at cutover it deletes a
-large slice of it, in V3, not v4. Because `legacyConditionObjects` gates
-input parsing only (decision 23) and old condition objects convert to
-program clauses at the loop entry, the condition machinery inside
-getSplitStyles dies even while the compat setting exists:
+large slice of it, in V3, not v4. Because the `legacyConditionObjects`
+staging gate touched input parsing only and old condition objects converted
+to program clauses at the loop entry, the condition machinery inside
+getSplitStyles died even while the staging gate existed:
 
 - the pseudo-object blocks and `getSubStyle` recursion;
 - the media-object sub-style path and media importance ordering;
@@ -1875,19 +1881,20 @@ attaches the right events, referenced media keys riding the existing
 `hasMedia` subscription, and the theme chain matched by progressive
 underscore prefixes. W3 v1 skips group and container clauses on native with
 a development note each (component-tree wiring and measurement are plan
-item 4). W5 is in progress as the engine-contraction test bed: with
-`legacyConditionObjects` on, old condition objects convert to clauses and
-run through the program engine instead of the legacy machinery, so the two
-engines can be A/B-compared on the same test suites before the deletion.
-Staging contract while the migration runs: only clause-bearing string values
-divert to programs, and only where the class flush can express them —
-noClass/animated-inline configurations keep the legacy path untouched until
+item 4). W5 served as the engine-contraction test bed: with the staging gate
+on, old condition objects converted to clauses and ran through the program
+engine instead of the legacy machinery, so the two engines were A/B-compared
+on the same test suites before the deletion. The gate and the legacy parsers
+are now deleted; v3 ships flat-only.
+Staging contract while the migration ran: only clause-bearing string values
+diverted to programs, and only where the class flush could express them —
+noClass/animated-inline configurations kept the legacy path untouched until
 W3. Two accepted staging limitations, both resolved by the cutover rather
 than by more machinery: mixing a program with a legacy condition object on
 the SAME longhand (`backgroundColor="red hover:blue"` plus
-`$sm={{ backgroundColor }}`) gives the legacy class the win through its old
-specificity ladder — the codemod never produces that mix, and W5's
-`legacyConditionObjects` gate will warn on it; and the `bg` config shorthand
+`$sm={{ backgroundColor }}`) gave the legacy class the win through its old
+specificity ladder — the codemod never produced that mix, and W5's
+staging gate warned on it; and the `bg` config shorthand
 expands to `backgroundColor` before the program hook, so the background
 family split (url + color in one value) currently requires authoring
 `background` — the v6 config makes `bg` the family prop itself.
@@ -1897,8 +1904,9 @@ family split (url + color in one value) currently requires authoring
 2. Implement per-longhand program expansion and the forward program merge.
 3. Parse and lower literal programs; define and cache runtime parsing for
    permitted dynamic strings.
-4. Land `legacyConditionObjects`, lowering the old condition objects into the
-   same IR with deprecation diagnostics.
+4. Land the `legacyConditionObjects` staging gate, lowering the old condition
+   objects into the same IR for the A/B comparison (done, then deleted with
+   the legacy parsers per `plans/v3-rip-token-sigil.md`).
 5. Make the compiler emit plain elements, skipping the runtime component
    path, when every contribution is static. Track the bailout rate on
    kitchen-sink as a standing metric; the group-workload benchmark gap is the
@@ -1906,7 +1914,8 @@ family split (url + color in one value) currently requires authoring
 6. Add compiler diagnostics, canonical formatting, the ESLint rule, and
    language-service completions backed by the same engine.
 7. Build the static codemod for `$`, camelCase V6 built-ins, and conditional
-   objects; its final step disables `legacyConditionObjects`.
+   objects; it is the entire migration story now that no compat setting
+   exists.
 8. Migrate representative internal components.
 9. Measure type, runtime, CSS, and bundle effects.
 
