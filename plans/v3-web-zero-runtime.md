@@ -260,8 +260,8 @@ has to be documented:
    theme builder. Themes are a fixed build-time set; switching them is a class
    name on an ancestor.
 5. **CSS animation driver only.**
-6. **Components drawn from the lowerable set** (Tier A in §6), with anything
-   else declared as an island.
+6. **Components drawn from the lowerable set** (§6), with anything else declared
+   as an island.
 7. **No JS reads of design state.** No `useMedia()`, `useTheme()`,
    `getTokens()`, `getVariableValue()`. Media, group and pseudo state remain
    fully expressible, but only as CSS.
@@ -546,10 +546,11 @@ V2's 94,153. That is **−33,292 vs V2, or 35% of the whole app** (**INFERRED**,
 upper bound). The direct evidence that the endpoint is reachable is P1 vs P3:
 +7 bytes over hand-written React.
 
-Upper bound, because the fixture is 100% flattenable primitives. A real app's
-number is set by how much of it is Tier A, and the `zeroRuntime: 'report'` run
-against tamagui.dev is what turns that into a real figure. Do that report early;
-it is cheap and it decides whether the mode is a headline feature or a niche one.
+Upper bound, because the fixture is 100% flattenable primitives, which is
+exactly what a greenfield app under the contract is supposed to look like. The
+figure to publish comes from the Phase 0 starter, measured on both sides: JS
+gzip against V2, and CSS gzip against the artifact question in §11 q1. Until
+that second number exists, "−33KB" is half a claim.
 
 ### Note on item 2, which landed while this was being written
 
