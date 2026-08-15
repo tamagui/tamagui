@@ -6,10 +6,21 @@ edition.workspace = true
 license.workspace = true
 repository.workspace = true
 
+[[bin]]
+name = "tamagui-lsp"
+path = "src/main.rs"
+
 [dependencies]
 tamagui-config = { path = "../tamagui-config" }
+tamagui-grammar = { path = "../tamagui-grammar" }
 
 arc-swap.workspace = true
 rustc-hash.workspace = true
+serde.workspace = true
+serde_json.workspace = true
 ropey = "1.6"
 notify = { version = "8", default-features = false, features = ["macos_fsevent"] }
+# transport only: crossbeam + serde, no async runtime and no tower. startup
+# time is a user-visible cost for an editor binary, so the leaner stack wins.
+lsp-server = "0.10"
+lsp-types = "0.97"

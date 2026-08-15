@@ -18,7 +18,7 @@ use std::sync::Arc;
 use std::sync::atomic::{AtomicU64, Ordering};
 
 use arc_swap::ArcSwap;
-use rustc_hash::FxHashMap;
+use rustc_hash::{FxHashMap, FxHashSet};
 use serde::de::{DeserializeSeed, MapAccess, Visitor};
 use serde::{Deserialize, Deserializer};
 
@@ -70,6 +70,10 @@ pub struct ConfigSnapshot {
     /// media key -> its query, rendered as compact JSON for hover
     pub media: Vec<(Box<str>, Box<str>)>,
     pub shorthands: FxHashMap<Box<str>, Box<str>>,
+    /// every name that may carry a style value: the shorthands plus the long
+    /// property names. Derived from the config rather than hardcoded, so it
+    /// cannot drift from what the runtime accepts.
+    pub style_props: FxHashSet<Box<str>>,
     pub only_allow_shorthands: bool,
     /// bumped on every successful load, so callers can tell snapshots apart
     pub revision: u64,
@@ -151,6 +155,15 @@ pub fn load_from_slice(bytes: &[u8]) -> Result<ConfigSnapshot, LoadError> {
         .map(|(name, query)| (name.into(), query.to_string().into_boxed_str()))
         .collect();
 
+    let mut style_props: FxHashSet<Box<str>> = FxHashSet::default();
+    for (short, long) in &raw.shorthands {
+        style_props.insert(short.as_str().into());
+        style_props.insert(long.as_str().into());
+    }
+    for long in raw.inverse_shorthands.keys() {
+        style_props.insert(long.as_str().into());
+    }
+
     let shorthands = raw
         .shorthands
         .into_iter()
@@ -162,6 +175,7 @@ pub fn load_from_slice(bytes: &[u8]) -> Result<ConfigSnapshot, LoadError> {
         tokens,
         media,
         shorthands,
+        style_props,
         only_allow_shorthands: raw.only_allow_shorthands,
         revision: REVISION.fetch_add(1, Ordering::Relaxed) + 1,
         source: None,
@@ -203,6 +217,10 @@ struct RawConfig {
     media: FxHashMap<String, serde_json::Value>,
     #[serde(default)]
     shorthands: FxHashMap<String, String>,
+    /// long property name -> its shorthand. the KEYS are the long style prop
+    /// names, which is the only config-derived source for "is this a style prop"
+    #[serde(default, rename = "inverseShorthands")]
+    inverse_shorthands: FxHashMap<String, String>,
     #[serde(default, rename = "onlyAllowShorthands")]
     only_allow_shorthands: bool,
 }

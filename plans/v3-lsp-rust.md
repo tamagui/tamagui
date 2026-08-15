@@ -169,11 +169,40 @@ toolchain collapses into a single package
 ## Status
 
 - [x] `tamagui-config`: dense theme matrix, streaming loader, `ArcSwap` handle,
-      14 tests, benchmarked against the real artifact
-- [ ] `tamagui-grammar`: flat value parse, vocabulary, completion, diagnostics
-- [ ] `tamagui-lsp`: server, incremental sync, config watcher
+      benchmarked against the real artifact
+- [x] `tamagui-grammar`: flat value parse, FST vocabulary, completion,
+      Levenshtein "did you mean" diagnostics
+- [x] `tamagui-lsp`: stdio server, incremental sync, config watcher, completion,
+      hover, document colours, diagnostics. **1.1 MB release binary, 68 tests.**
+- [ ] swap the lexical site scanner for `oxc_parser`
 - [ ] editor configs and VS Code extension conversion
 - [ ] distribution
+
+### Verified end to end
+
+Driving the release binary over stdio against the real
+`code/tamagui.dev/.tamagui/tamagui.config.json`:
+
+```
+tamagui-lsp: loaded 1152 themes x 236 keys, 578 distinct values, 1062 KB resident cells
+COMPLETION: 15 items -> background, background-focus, background-hover, background-press, ...
+  textEdit range 10..20 (the clause, not the whole literal)
+HOVER: **background** - Tamagui theme value | dark: rgba(20, 20, 20, 1) | light: rgba(247, 247, 247, 1)
+COLORS: 1
+DIAGNOSTICS: 0
+```
+
+The hover line is the part with no Tailwind analogue: one token resolved across
+themes, which is only cheap because of the dense matrix.
+
+### Transport: `lsp-server`, not `async-lsp`
+
+Revised from the initial sketch after checking dependencies. `lsp-server` is
+transport only (crossbeam plus serde, no tokio and no tower). LSP requires
+notifications to be processed in order, which a single synchronous loop gives
+for free where an async framework has to reimpose it, and startup cost is
+user-visible every time an editor opens a project. The result is a 1.1 MB
+binary.
 
 ## Notes worth keeping
 
