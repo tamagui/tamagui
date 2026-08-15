@@ -24,9 +24,37 @@ use tamagui_lsp::{
 };
 
 mod features;
+mod setup;
 mod sites;
 
 fn main() -> Result<(), Box<dyn std::error::Error + Sync + Send>> {
+    // argv is checked before stdio is claimed: an editor launches this with no
+    // arguments, and anything else is a person at a terminal who wants an
+    // answer rather than a JSON-RPC stream.
+    let args: Vec<String> = std::env::args().skip(1).collect();
+    match args.first().map(String::as_str) {
+        Some("setup") => {
+            return if setup::run(args.get(1).map(String::as_str)) {
+                Ok(())
+            } else {
+                std::process::exit(1)
+            };
+        }
+        Some("--version" | "-V") => {
+            println!("tamagui-lsp {}", env!("CARGO_PKG_VERSION"));
+            return Ok(());
+        }
+        Some("--help" | "-h") => {
+            println!("tamagui-lsp {}\n", env!("CARGO_PKG_VERSION"));
+            println!("The Tamagui language server. Speaks LSP over stdio.\n");
+            println!("With no arguments it serves; an editor launches it that way.\n");
+            println!("  setup [editor]   print the config for an editor");
+            println!("  --version        print the version");
+            return Ok(());
+        }
+        _ => {}
+    }
+
     eprintln!("tamagui-lsp {}", env!("CARGO_PKG_VERSION"));
 
     let (connection, io_threads) = Connection::stdio();
@@ -76,15 +104,31 @@ fn run(
         .map(|_| PositionEncoding::Utf8)
         .unwrap_or(PositionEncoding::Utf16);
 
-    let found = projects::discover(&roots);
-    if found.is_empty() {
-        // the folder that was opened is still the best guess: it makes a
-        // project whose artifact does not exist yet, which the watcher fills in
-        // as soon as the compiler runs
-        eprintln!("tamagui-lsp: no tamagui project found under any workspace folder");
-    }
-    let projects =
-        Projects::new(if found.is_empty() { roots.clone() } else { found });
+    let projects = Projects::new(match &roots {
+        Roots::Declared(roots) => {
+            let found = projects::discover(roots);
+            if found.is_empty() {
+                // the folders that were opened are still the best guess: they
+                // make projects whose artifacts do not exist yet, which the
+                // watcher fills in as soon as the compiler runs
+                eprintln!("tamagui-lsp: no tamagui project found under any workspace folder");
+                roots.clone()
+            } else {
+                found
+            }
+        }
+        // the client named no workspace, so this is the process working
+        // directory, which for an editor launched from a launcher is routinely
+        // `$HOME`. Searching it would walk an unrelated tree five levels deep,
+        // so take it as the one project and let the watcher do the rest.
+        Roots::Assumed(cwd) => {
+            eprintln!(
+                "tamagui-lsp: client declared no workspace; assuming {}",
+                cwd.display()
+            );
+            vec![cwd.clone()]
+        }
+    });
     eprintln!("tamagui-lsp: {} project(s)", projects.len());
 
     // instant config pickup: each watcher swaps its own project's snapshot,
@@ -144,12 +188,32 @@ fn run(
 /// internal notification the watcher thread uses to wake the loop
 const REVALIDATE: &str = "tamagui/revalidate";
 
+/// What the client told us about the workspace, and how sure we are.
+///
+/// The distinction matters because it decides whether to go looking for other
+/// projects. A client that named a workspace is inviting a search of it; a
+/// client that named nothing is not, and the working directory of an editor
+/// process is frequently `$HOME`.
+enum Roots {
+    /// the client named the workspace, so discovery may search it
+    Declared(Vec<PathBuf>),
+    /// nothing was declared and this is the process working directory
+    Assumed(PathBuf),
+}
+
 /// Every folder the editor opened.
 ///
-/// All of them, not just the first: VS Code multi-root workspaces and
-/// `nvim`'s workspace folders both hand over several, and taking only the first
-/// silently drops the rest.
-fn workspace_roots(params: &InitializeParams) -> Vec<PathBuf> {
+/// LSP has accumulated three ways to say this and clients in the wild use all
+/// of them, so all three are read, newest first:
+///
+/// * `workspaceFolders` — every folder, not just the first. VS Code multi-root
+///   and Neovim both send several and taking one silently drops the rest.
+/// * `rootUri` — the single-folder form.
+/// * `rootPath` — deprecated in LSP 3.0 and still the only thing some minimal
+///   clients send. It is a plain path rather than a URI. Ignoring it used to
+///   land those clients on the working-directory branch below, which is how a
+///   correctly configured editor ends up finding no project.
+fn workspace_roots(params: &InitializeParams) -> Roots {
     #[allow(deprecated)]
     let folders: Vec<PathBuf> = params
         .workspace_folders
@@ -159,15 +223,18 @@ fn workspace_roots(params: &InitializeParams) -> Vec<PathBuf> {
         })
         .unwrap_or_default();
     if !folders.is_empty() {
-        return folders;
+        return Roots::Declared(folders);
     }
     #[allow(deprecated)]
-    let single = params
+    let declared = params
         .root_uri
         .as_ref()
         .and_then(|u| file_uri_to_path(u.as_str()))
-        .unwrap_or_else(|| std::env::current_dir().unwrap_or_default());
-    vec![single]
+        .or_else(|| params.root_path.as_ref().map(PathBuf::from));
+    match declared {
+        Some(root) => Roots::Declared(vec![root]),
+        None => Roots::Assumed(std::env::current_dir().unwrap_or_default()),
+    }
 }
 
 fn handle_request(
@@ -305,6 +372,66 @@ fn reply<T: serde::Serialize>(id: RequestId, value: T) -> Response {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// The three shapes real clients send. Each is what that family actually
+    /// puts on the wire, so a regression here is an editor that silently finds
+    /// no project rather than a failing assertion somewhere abstract.
+    fn init_params(json: serde_json::Value) -> InitializeParams {
+        serde_json::from_value(json).expect("valid InitializeParams")
+    }
+
+    fn declared(roots: Roots) -> Vec<PathBuf> {
+        match roots {
+            Roots::Declared(paths) => paths,
+            Roots::Assumed(path) => panic!("expected declared roots, got assumed {path:?}"),
+        }
+    }
+
+    #[test]
+    fn reads_workspace_folders_the_way_vscode_and_neovim_send_them() {
+        let roots = workspace_roots(&init_params(serde_json::json!({
+            "capabilities": {},
+            "workspaceFolders": [
+                { "uri": "file:///repo/apps/web", "name": "web" },
+                { "uri": "file:///repo/apps/native", "name": "native" }
+            ]
+        })));
+        // both, not just the first: a multi-root workspace loses half its
+        // projects otherwise
+        assert_eq!(
+            declared(roots),
+            vec![PathBuf::from("/repo/apps/web"), PathBuf::from("/repo/apps/native")]
+        );
+    }
+
+    #[test]
+    fn reads_root_uri_when_that_is_all_the_client_sends() {
+        let roots = workspace_roots(&init_params(serde_json::json!({
+            "capabilities": {},
+            "rootUri": "file:///repo"
+        })));
+        assert_eq!(declared(roots), vec![PathBuf::from("/repo")]);
+    }
+
+    #[test]
+    fn reads_the_deprecated_root_path_rather_than_giving_up() {
+        // some minimal clients still send only this. it is a plain path, not a
+        // URI, and treating its absence as "no workspace" sends a correctly
+        // configured editor down the working-directory branch.
+        let roots = workspace_roots(&init_params(serde_json::json!({
+            "capabilities": {},
+            "rootPath": "/repo"
+        })));
+        assert_eq!(declared(roots), vec![PathBuf::from("/repo")]);
+    }
+
+    #[test]
+    fn a_client_that_declares_nothing_is_not_a_licence_to_search() {
+        let roots = workspace_roots(&init_params(serde_json::json!({ "capabilities": {} })));
+        // the working directory of an editor launched from a launcher is
+        // routinely $HOME; searching it five levels deep is not acceptable
+        assert!(matches!(roots, Roots::Assumed(_)));
+    }
 
     #[test]
     fn decodes_file_uris_including_non_ascii_paths() {

@@ -40,35 +40,13 @@ real theme values as unknown ones.
 
 ## Install
 
-VS Code needs nothing here; install the **Tamagui** extension and it resolves
-this package itself.
-
-Every other editor spawns the binary by name, so install it globally:
-
-```sh
-npm install -g @tamagui/lsp
-```
-
-That puts `tamagui-lsp` on your `PATH`, which is what the editor configs below
-assume.
-
-A project-local install works too, and is the better choice if you want the
-server version pinned per project:
-
 ```sh
 npm install --save-dev @tamagui/lsp
 ```
 
-but npm only links it into `node_modules/.bin`, which is **not** on your `PATH`
-outside npm scripts. So point your editor at the full path instead of the bare
-name:
-
-```
-./node_modules/.bin/tamagui-lsp
-```
-
-Whether a relative path resolves depends on the editor's working directory; an
-absolute path always works.
+Then wire up your editor with one command; see [Editor setup](#editor-setup).
+VS Code needs neither: install the **Tamagui** extension and it resolves this
+package itself.
 
 The binary ships as a prebuilt platform package (the esbuild model), so there is
 no download step and no postinstall. npm installs exactly the one matching your
@@ -79,70 +57,28 @@ platform.
 
 ## Editor setup
 
-The server speaks stdio LSP, so every editor needs a few lines and no plugin
-code.
+One command, every editor:
 
-### VS Code
-
-Install the **Tamagui** extension. It spawns this binary for you.
-
-### Neovim
-
-```lua
-vim.lsp.config.tamagui = {
-  cmd = { 'tamagui-lsp' },
-  filetypes = { 'typescriptreact', 'javascriptreact' },
-  root_markers = { 'tamagui.config.ts', 'package.json' },
-}
-vim.lsp.enable('tamagui')
+```sh
+npx tamagui-lsp setup neovim
 ```
 
-### Helix
+It prints the configuration for that editor with this binary's **absolute path
+already filled in**, which is the part that otherwise goes wrong: the config has
+to name a command, and `node_modules/.bin` is not on your `PATH`. Run it with no
+editor to see the list:
 
-```toml
-# languages.toml
-[language-server.tamagui]
-command = "tamagui-lsp"
-
-[[language]]
-name = "tsx"
-language-servers = ["typescript-language-server", "tamagui"]
+```
+neovim     Neovim
+helix      Helix
+zed        Zed
+sublime    Sublime Text (LSP package)
+emacs      Emacs (eglot)
+jetbrains  JetBrains (LSP4IJ)
 ```
 
-### Zed
-
-```json
-// settings.json
-{
-  "lsp": { "tamagui": { "binary": { "path": "tamagui-lsp" } } }
-}
-```
-
-### Emacs (eglot)
-
-```elisp
-(add-to-list 'eglot-server-programs
-             '((tsx-ts-mode typescript-ts-mode) . ("tamagui-lsp")))
-```
-
-### Sublime Text (LSP)
-
-```json
-{
-  "clients": {
-    "tamagui": {
-      "enabled": true,
-      "command": ["tamagui-lsp"],
-      "selector": "source.tsx | source.jsx"
-    }
-  }
-}
-```
-
-### JetBrains
-
-Use [LSP4IJ](https://plugins.jetbrains.com/plugin/23257-lsp4ij) and add
-`tamagui-lsp` as a new language server for TSX and JSX files.
+Paste the output into the file it names. VS Code needs none of this: install the
+**Tamagui** extension and it resolves this package itself.
 
 ## Programmatic use
 
@@ -170,9 +106,9 @@ change had no effect.
 ## Troubleshooting
 
 **`tamagui-lsp: command not found`, or the editor never starts the server.**
-The package is installed as a devDependency rather than globally. npm puts it in
-`node_modules/.bin`, which your editor does not search. Either install it
-globally or give the editor the full path; see [Install](#install).
+The editor config names a bare command, and `node_modules/.bin` is not on your
+`PATH`. Re-run `npx tamagui-lsp setup <editor>` and use its output, which names
+an absolute path.
 
 **Completions ignore the prop, or a prop offers nothing.** Both come from an
 old config artifact. The server learns which props take which token scale from
