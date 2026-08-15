@@ -218,8 +218,8 @@ toolchain collapses into a single package
 - [x] `tamagui-grammar`: flat value parse, FST vocabulary, completion,
       Levenshtein "did you mean" diagnostics
 - [x] `tamagui-lsp`: stdio server, incremental sync, config watcher, completion,
-      hover, document colours, colour presentation, diagnostics.
-      **1.1 MB release binary, 85 tests.**
+      hover, document colours, colour presentation, diagnostics,
+      prop-aware completion, multi-project routing. **106 tests.**
 - [x] distribution: `@tamagui/lsp` umbrella with per-platform
       `optionalDependencies`, a launcher, `TAMAGUI_LSP_BINARY` for source
       builds, and editor setup docs for VS Code, Neovim, Helix, Zed, Emacs,
@@ -228,7 +228,10 @@ toolchain collapses into a single package
       reason above
 - [x] the VS Code extension spawns the binary; the tsserver plugin and its
       sucrase extractor are gone, so VS Code cannot drift from other editors
-- [ ] cross-compile the seven non-host targets in CI and publish the leaves
+- [x] cross-compile the seven non-host targets in CI: `LSP Binaries` is green on
+      all eight, and the three natively-runnable ones assert an LSP handshake
+      advertising incremental sync
+- [ ] publish the eight leaves, then the umbrella (needs the owner)
 
 ### Distribution, verified
 
@@ -286,3 +289,97 @@ lexical ordering per comparison, which is intransitive (`2 < 10` numerically,
 panics; it surfaced only against the real artifact, never against the unit
 fixtures. Numeric keys now sort as numbers and ahead of all non-numeric keys.
 There is an exhaustive total-order test over a mixed key set.
+
+
+## Editor integration: what "one binary, every editor" actually costs
+
+LSP abstracts the protocol. It does not abstract the installation, and that is
+where this breaks for real people. Every editor still wants its own file, in its
+own language, naming a command, and the obvious instruction is wrong: the docs
+said `tamagui-lsp`, npm installs it to `node_modules/.bin`, and nothing outside
+an npm script has that on `PATH`. The editor then reports no server, which is
+indistinguishable from a broken one. Verified directly: `which tamagui-lsp` finds
+nothing while `node_modules/.bin/tamagui-lsp` exists and serves.
+
+So the config is emitted rather than documented. `tamagui-lsp setup <editor>`
+prints it with `std::env::current_exe()` filled in, for Neovim, Helix, Zed,
+Sublime, Emacs and JetBrains. A path the running process resolved for itself
+cannot be wrong about where it is. Tests parse the JSON emitters back and assert
+the path round-trips, and check the Lua emitter doubles backslashes, because a
+Windows path pasted raw is `\U` and an editor reports that as a parse error
+somewhere unrelated.
+
+### The client handshake is the real compatibility surface
+
+Without the editors installed, what can still be tested is the shape each one
+puts on the wire, and there are three because LSP accumulated three ways to name
+a workspace:
+
+| field | who sends it |
+| --- | --- |
+| `workspaceFolders` | VS Code (incl. multi-root), Neovim |
+| `rootUri` | the single-folder form, most clients |
+| `rootPath` | deprecated in LSP 3.0, still the only thing some minimal clients send |
+
+`rootPath` was unread, so those clients fell through to
+`std::env::current_dir()` — confirmed by negative control, which reported the
+crate directory instead of the declared root. A correctly configured editor
+would have found no project, with nothing in the log to say why.
+
+That fallback is also why the working-directory case must NOT trigger project
+discovery. An editor launched from a launcher routinely has `$HOME` as its
+working directory, and searching it five levels deep is not something to do on
+the strength of a guess. A client that declares a workspace is inviting a
+search; a client that declares nothing is not, and gets exactly one project.
+
+## Monorepos
+
+One server, one project per app, documents routed by longest-prefix. This is
+Tailwind's model (`packages/tailwindcss-language-server/src/projects.ts`) minus
+the glob selectors, which it needs only because a Tailwind config names its own
+`content` globs.
+
+The subtlety is what marks a root, because two paths are involved and only one
+is fixed:
+
+- The config SOURCE is unpredictable and sometimes not a path: `tamagui.build.ts`
+  names it, and it can be `./src/tamagui.config.ts`, a bare `tamagui.config.ts`
+  in root/src/app/config, a package (`@tamagui/tamagui-dev-config`), or a package
+  subpath export. Resolving it would mean reimplementing node resolution and
+  reading TypeScript.
+- The compiled ARTIFACT does not move. `getConfigFile` is
+  `join(options.root, '.tamagui', 'tamagui.config.json')`.
+
+So the server reads only the artifact, and accepts `tamagui.build.ts` OR the
+artifact as a root marker. The build file is checked in, so a fresh clone is
+registered before the compiler has ever run and starts answering the moment the
+dev server writes the artifact. `node_modules` is never walked: installed
+packages ship their own artifacts, and treating one as the project points the
+editor at a dependency's theme.
+
+A file under no project gets nothing rather than a sibling's vocabulary. In a
+monorepo the wrong config is a confidently wrong answer, reporting real theme
+values as unknown ones.
+
+Verified on a two-app fixture with deliberately divergent configs: each app
+returns only its own theme keys and space tokens, `node_modules` was skipped, and
+rewriting one app's artifact reloaded only that project.
+
+## Prop-aware completion
+
+`complete()` never received the prop, so `bg=""` and `p=""` both returned all 418
+entries, led by the negative space scale. Two things were wrong underneath.
+
+The compiler emits `propCategories` and `styleProps` now, both derived from
+existing tables rather than restated: the style-grammar registry (which
+`core-test/tokenCategoryParity.web.test.tsx` already pins the runtime resolver
+to) and `stylePropsAll`. The shorthand tables alone were the only source for "is
+this a style prop", and they only mention props that HAVE a shorthand, so `gap`
+and `backgroundColor` returned nothing at all.
+
+The deeper bug: `Index::build` dedupes by name for the FST, and `space`, `size`
+and `radius` all define `0,1,2,3…`. One scale swallowed the others, so `rounded`
+offered 9 of its 22 radius tokens and `w` found no surviving `size` entry and
+fell back to all 418. Fixed with one index per category; each scale now reports
+its own resolved value. Measured after: p50 0.94 ms, p99 1.22 ms warm completion
+over 300 requests, 32.6 ms startup including the 5.4 MB artifact load.
