@@ -22,9 +22,35 @@ file without restarting the editor.
 
 ## Install
 
+VS Code needs nothing here; install the **Tamagui** extension and it resolves
+this package itself.
+
+Every other editor spawns the binary by name, so install it globally:
+
+```sh
+npm install -g @tamagui/lsp
+```
+
+That puts `tamagui-lsp` on your `PATH`, which is what the editor configs below
+assume.
+
+A project-local install works too, and is the better choice if you want the
+server version pinned per project:
+
 ```sh
 npm install --save-dev @tamagui/lsp
 ```
+
+but npm only links it into `node_modules/.bin`, which is **not** on your `PATH`
+outside npm scripts. So point your editor at the full path instead of the bare
+name:
+
+```
+./node_modules/.bin/tamagui-lsp
+```
+
+Whether a relative path resolves depends on the editor's working directory; an
+absolute path always works.
 
 The binary ships as a prebuilt platform package (the esbuild model), so there is
 no download step and no postinstall. npm installs exactly the one matching your
@@ -124,6 +150,16 @@ packaged binary, so a typo shows up immediately instead of looking like your
 change had no effect.
 
 ## Troubleshooting
+
+**`tamagui-lsp: command not found`, or the editor never starts the server.**
+The package is installed as a devDependency rather than globally. npm puts it in
+`node_modules/.bin`, which your editor does not search. Either install it
+globally or give the editor the full path; see [Install](#install).
+
+**Completions ignore the prop, or a prop offers nothing.** Both come from an
+old config artifact. The server learns which props take which token scale from
+`propCategories` and `styleProps`, which the compiler started emitting in v3
+beta 3. Rebuild once and the artifact gains them.
 
 **No completions.** The server needs the compiler's config artifact. Run your
 dev server or `tamagui generate` once so `.tamagui/tamagui.config.json` exists.
