@@ -50,7 +50,7 @@ export const BentoLogo = ({
       <XStack position="relative">
         <BentoLogoTheme offset={-1 + offsetAdjust}>
           <H1
-            className="is_span"
+            className="is_span bento-shadow"
             fontFamily="cherryBomb"
             px="3"
             mx="-3"
@@ -64,7 +64,6 @@ export const BentoLogo = ({
             fontSize={180}
             userSelect="none"
             pointerEvents="none"
-            className="bento-shadow"
           >
             {children}&nbsp;
           </H1>
