@@ -3,14 +3,28 @@ name: LSP Binaries
 # Cross-compiles the language server for every platform `@tamagui/lsp` claims to
 # support, and proves each one actually runs an LSP handshake.
 #
-# This deliberately does NOT publish. The eight platform packages are the part
-# of the release that cannot be validated locally (nobody has all eight
-# toolchains), so they get continuously built here first. Publishing is wired in
-# only once these are reliably green; a leaf that fails to build is otherwise
-# discovered at release time, when the umbrella is already on npm pinning it.
+# Building is continuous. PUBLISHING IS OPT-IN and never happens on a push:
+# it requires a manual dispatch with `publish: yes`, because releasing is the
+# owner's decision, not CI's.
+#
+# The eight platform packages are the part of the release that cannot be
+# validated locally (nobody has all eight toolchains), so they build on every
+# change and a broken target is found now rather than at release time, when the
+# umbrella would already be on npm pinning it.
+#
+# Order matters and is enforced below: the eight leaves publish FIRST, then the
+# umbrella. npm treats a missing optionalDependency as success, so an umbrella
+# published ahead of its leaves installs with no binary at all and every editor
+# silently reports no server.
 
 on:
   workflow_dispatch:
+    inputs:
+      publish:
+        description: 'Publish the 8 leaves then the umbrella to npm. Type yes to confirm.'
+        required: false
+        default: 'no'
+        type: string
   pull_request:
     paths:
       - 'code/lsp/**'
@@ -183,3 +197,71 @@ jobs:
           name: ${{ matrix.pkg }}
           path: code/lsp/npm/${{ matrix.pkg }}
           if-no-files-found: error
+
+  publish:
+    name: publish to npm
+    # opt-in only: a push can never reach this, and a dispatch must say `yes`
+    if: github.event_name == 'workflow_dispatch' && inputs.publish == 'yes'
+    needs: build
+    runs-on: ubuntu-latest
+    environment: npm-publish
+    permissions:
+      contents: read
+      # npm trusted publishing via OIDC; no npm token lives in this repo
+      id-token: write
+    steps:
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+        with:
+          node-version: 22
+          registry-url: 'https://registry.npmjs.org'
+
+      # npm 11.5.1+ is required for trusted publishing
+      - run: npm install -g npm@latest
+
+      - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5.0.0
+        with:
+          path: code/lsp/npm
+
+      - name: Check the pins match before anything is published
+        run: bun ./scripts/check-lsp-version-pins.ts || node -e "
+          const { readFileSync } = require('node:fs')
+          const u = JSON.parse(readFileSync('code/lsp/npm/tamagui-lsp/package.json', 'utf8'))
+          const bad = Object.entries(u.optionalDependencies).filter(([, r]) => r !== u.version)
+          if (bad.length) { console.error('stale pins:', bad); process.exit(1) }
+          console.log('pins ok at', u.version)
+          "
+
+      - name: Publish the eight leaves first
+        run: |
+          set -euo pipefail
+          UMBRELLA_VERSION=$(node -p "require('./code/lsp/npm/tamagui-lsp/package.json').version")
+          for pkg in lsp-darwin-arm64 lsp-darwin-x64 lsp-linux-x64-gnu lsp-linux-arm64-gnu \
+                     lsp-linux-x64-musl lsp-linux-arm64-musl lsp-win32-x64 lsp-win32-arm64; do
+            DIR="code/lsp/npm/$pkg"
+            test -d "$DIR" || { echo "missing artifact for $pkg"; exit 1; }
+            LEAF_VERSION=$(node -p "require('./$DIR/package.json').version")
+            # a leaf at a different version than the umbrella pins is the exact
+            # failure this whole ordering exists to prevent
+            if [ "$LEAF_VERSION" != "$UMBRELLA_VERSION" ]; then
+              echo "$pkg is $LEAF_VERSION but the umbrella is $UMBRELLA_VERSION"
+              exit 1
+            fi
+            echo "publishing @tamagui/$pkg@$LEAF_VERSION"
+            npm publish "$DIR" --access public --provenance
+          done
+
+      - name: Publish the umbrella only after every leaf resolved
+        run: |
+          set -euo pipefail
+          VERSION=$(node -p "require('./code/lsp/npm/tamagui-lsp/package.json').version")
+          for pkg in lsp-darwin-arm64 lsp-darwin-x64 lsp-linux-x64-gnu lsp-linux-arm64-gnu \
+                     lsp-linux-x64-musl lsp-linux-arm64-musl lsp-win32-x64 lsp-win32-arm64; do
+            # npm treats a missing optional dep as success at install time, so
+            # the only place this can be caught is here, before the umbrella ships
+            npm view "@tamagui/$pkg@$VERSION" version > /dev/null
+          done
+          npm publish code/lsp/npm/tamagui-lsp --access public --provenance
