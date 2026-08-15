@@ -442,6 +442,10 @@ describe('TS-style variant resolvers', () => {
       ['Space', '12px'],
       ['Color', 'red'],
       ['Color', 'white/50'],
+      ['Color', '#fff'],
+      ['Color', 'rgb(0,0,0)'],
+      ['Color', 'hsl(0, 0%, 0%)'],
+      ['Color', 'transparent'],
       ['Radius', 6],
       ['Radius', '+.5rem'],
       ['Radius', '0.5rem'],
@@ -473,12 +477,10 @@ describe('TS-style variant resolvers', () => {
   })
 
   test('resolver domains reject representative values outside exported domains', () => {
+    // Color is deliberately absent: any string it is handed is taken to be a
+    // raw CSS color rather than checked against a color-name table, so it has
+    // no reject domain. See matchesVariantResolver.
     const cases = [
-      ['Color', 'not-a-color'],
-      ['Color', '#fff'],
-      ['Color', 'rgb(0,0,0)'],
-      ['Color', 'hsl(0, 0%, 0%)'],
-      ['Color', 'transparent'],
       ['FontSize', '16px'],
       ['FontSize', 'calc(1rem)'],
       ['FontSize', 'largeish'],

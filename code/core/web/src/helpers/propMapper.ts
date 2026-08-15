@@ -11,7 +11,6 @@ import type {
   VariantSpreadFunction,
 } from '../types'
 import { variantResolverNames } from '../types'
-import { isKnownColorName } from '@tamagui/normalize-css-color'
 import { expandStyle } from './expandStyle'
 import { resolveVariableValue } from './resolveVariableValue'
 import { getFontsForLanguage, getVariantExtras } from './getVariantExtras'
@@ -690,10 +689,6 @@ const remStringPattern = new RegExp(`^(?:${numberStringPattern.source})rem$`)
 const viewportValuePattern = new RegExp(
   `^(?:${numberStringPattern.source})(vw|dvw|lvw|svw|vh|dvh|lvh|svh)$`
 )
-// the normalize-css-color table also holds RN-only extras absent from the
-// CSSColorNames type; exclude them so resolver matching stays type-accurate
-const isCSSColorName = (value: string) =>
-  value !== 'transparent' && value !== 'burntsienna' && isKnownColorName(value)
 
 function matchesVariantResolver(
   resolverName: VariantResolverName,
@@ -760,20 +755,13 @@ function matchesVariantResolver(
         allowed(category)
       )
     }
-    case 'Color': {
-      const slash = string ? value.lastIndexOf('/') : -1
-      const opacity = slash === -1 ? NaN : Number(value.slice(slash + 1))
-      const name = slash === -1 ? value : value.slice(0, slash)
-      return (
-        token('color') ||
-        themed ||
-        (Number.isInteger(opacity) &&
-          opacity >= 0 &&
-          opacity <= 100 &&
-          (name in conf.tokensParsed.color || (!!theme && name in theme))) ||
-        (string && isCSSColorName(value))
-      )
-    }
+    // a token or theme color, otherwise any string is taken to be a raw CSS
+    // color and left for the browser to resolve. checking that against a CSS
+    // color-name table costs 2.3KB gzip to reject values that were never valid
+    // anyway. `red/50` opacity modifiers stay limited to token and theme
+    // colors, which the branches above already covered.
+    case 'Color':
+      return token('color') || string
     case 'Theme':
       return themed
     case 'FontSize':
