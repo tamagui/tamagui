@@ -9,6 +9,10 @@ export const tokenCategories = {
     borderTopRightRadius: true,
     borderBottomLeftRadius: true,
     borderBottomRightRadius: true,
+    borderTopStartRadius: true,
+    borderTopEndRadius: true,
+    borderBottomStartRadius: true,
+    borderBottomEndRadius: true,
 
     // logical
     borderStartStartRadius: true,
@@ -29,6 +33,7 @@ export const tokenCategories = {
     inlineSize: true,
     minInlineSize: true,
     maxInlineSize: true,
+    shadowRadius: true,
   },
   zIndex: {
     zIndex: true,

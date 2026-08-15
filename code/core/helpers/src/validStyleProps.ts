@@ -183,8 +183,6 @@ export const stylePropsTransform = {
 
 export const stylePropsView = {
   ...nonAnimatableViewProps,
-  borderBottomEndRadius: true,
-  borderBottomStartRadius: true,
   borderBottomWidth: true,
   borderLeftWidth: true,
   borderRightWidth: true,
@@ -194,8 +192,6 @@ export const stylePropsView = {
   borderInlineWidth: true,
   borderInlineEndWidth: true,
   borderInlineStartWidth: true,
-  borderTopEndRadius: true,
-  borderTopStartRadius: true,
   borderTopWidth: true,
   borderWidth: true,
   transform: true,
@@ -228,6 +224,7 @@ export const stylePropsView = {
   paddingBottom: true,
   paddingInline: true,
   paddingBlock: true,
+  paddingBlockEnd: true,
   paddingBlockStart: true,
   paddingInlineEnd: true,
   paddingInlineStart: true,
@@ -249,7 +246,6 @@ export const stylePropsView = {
   insetInlineEnd: true,
   insetInlineStart: true,
   shadowOffset: true,
-  shadowRadius: true,
   ...viewColorCategoryProps,
   ...tokenCategories.radius,
   ...tokenCategories.size,

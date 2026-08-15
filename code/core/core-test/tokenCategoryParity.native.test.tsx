@@ -27,6 +27,35 @@ test('borderWidth binds the space category on native', () => {
   expect(result.style?.borderTopWidth).toBe(spaceToken.val)
 })
 
+test('shadowRadius and shar bind the size category on native', () => {
+  const sizeToken = (config.getDefaultTamaguiConfig() as any).tokens.size['4']
+  expect(split({ shadowRadius: '4' }, View.staticConfig).style?.shadowRadius).toBe(
+    sizeToken.val
+  )
+  expect(split({ shar: '4' }, View.staticConfig).style?.shadowRadius).toBe(sizeToken.val)
+})
+
+test('React Native directional radii bind the radius category', () => {
+  const radiusToken = (config.getDefaultTamaguiConfig() as any).tokens.radius['4']
+  for (const property of [
+    'borderTopStartRadius',
+    'borderTopEndRadius',
+    'borderBottomStartRadius',
+    'borderBottomEndRadius',
+  ]) {
+    expect(split({ [property]: '4' }, View.staticConfig).style?.[property], property).toBe(
+      radiusToken.val
+    )
+  }
+})
+
+test('paddingBlockEnd reaches native hosts with its resolved space token', () => {
+  const spaceToken = (config.getDefaultTamaguiConfig() as any).tokens.space['4']
+  expect(split({ paddingBlockEnd: '4' }, View.staticConfig).style?.paddingBottom).toBe(
+    spaceToken.val
+  )
+})
+
 test('fontFamily resolves the configured family value, not the literal name', () => {
   const result = split({ fontFamily: 'heading' })
   expect(result.fontFamily).toBe('heading')

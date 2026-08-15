@@ -156,6 +156,10 @@ export declare const stylePropsView: {
     borderTopRightRadius: boolean;
     borderBottomLeftRadius: boolean;
     borderBottomRightRadius: boolean;
+    borderTopStartRadius: boolean;
+    borderTopEndRadius: boolean;
+    borderBottomStartRadius: boolean;
+    borderBottomEndRadius: boolean;
     borderStartStartRadius: boolean;
     borderStartEndRadius: boolean;
     borderEndStartRadius: boolean;
@@ -172,6 +176,7 @@ export declare const stylePropsView: {
     inlineSize: boolean;
     minInlineSize: boolean;
     maxInlineSize: boolean;
+    shadowRadius: boolean;
     backgroundColor: boolean;
     borderColor: boolean;
     borderBlockStartColor: boolean;
@@ -319,8 +324,6 @@ export declare const stylePropsView: {
     rotateY: boolean;
     rotateX: boolean;
     rotateZ: boolean;
-    borderBottomEndRadius: boolean;
-    borderBottomStartRadius: boolean;
     borderBottomWidth: boolean;
     borderLeftWidth: boolean;
     borderRightWidth: boolean;
@@ -330,8 +333,6 @@ export declare const stylePropsView: {
     borderInlineWidth: boolean;
     borderInlineEndWidth: boolean;
     borderInlineStartWidth: boolean;
-    borderTopEndRadius: boolean;
-    borderTopStartRadius: boolean;
     borderTopWidth: boolean;
     borderWidth: boolean;
     transform: boolean;
@@ -364,6 +365,7 @@ export declare const stylePropsView: {
     paddingBottom: boolean;
     paddingInline: boolean;
     paddingBlock: boolean;
+    paddingBlockEnd: boolean;
     paddingBlockStart: boolean;
     paddingInlineEnd: boolean;
     paddingInlineStart: boolean;
@@ -385,7 +387,6 @@ export declare const stylePropsView: {
     insetInlineEnd: boolean;
     insetInlineStart: boolean;
     shadowOffset: boolean;
-    shadowRadius: boolean;
     elevationAndroid?: boolean | undefined;
     boxShadow: boolean;
     border: boolean;
@@ -435,6 +436,10 @@ export declare const stylePropsText: {
     borderTopRightRadius: boolean;
     borderBottomLeftRadius: boolean;
     borderBottomRightRadius: boolean;
+    borderTopStartRadius: boolean;
+    borderTopEndRadius: boolean;
+    borderBottomStartRadius: boolean;
+    borderBottomEndRadius: boolean;
     borderStartStartRadius: boolean;
     borderStartEndRadius: boolean;
     borderEndStartRadius: boolean;
@@ -451,6 +456,7 @@ export declare const stylePropsText: {
     inlineSize: boolean;
     minInlineSize: boolean;
     maxInlineSize: boolean;
+    shadowRadius: boolean;
     backgroundColor: boolean;
     borderColor: boolean;
     borderBlockStartColor: boolean;
@@ -611,8 +617,6 @@ export declare const stylePropsText: {
     rotateY: boolean;
     rotateX: boolean;
     rotateZ: boolean;
-    borderBottomEndRadius: boolean;
-    borderBottomStartRadius: boolean;
     borderBottomWidth: boolean;
     borderLeftWidth: boolean;
     borderRightWidth: boolean;
@@ -622,8 +626,6 @@ export declare const stylePropsText: {
     borderInlineWidth: boolean;
     borderInlineEndWidth: boolean;
     borderInlineStartWidth: boolean;
-    borderTopEndRadius: boolean;
-    borderTopStartRadius: boolean;
     borderTopWidth: boolean;
     borderWidth: boolean;
     transform: boolean;
@@ -656,6 +658,7 @@ export declare const stylePropsText: {
     paddingBottom: boolean;
     paddingInline: boolean;
     paddingBlock: boolean;
+    paddingBlockEnd: boolean;
     paddingBlockStart: boolean;
     paddingInlineEnd: boolean;
     paddingInlineStart: boolean;
@@ -677,7 +680,6 @@ export declare const stylePropsText: {
     insetInlineEnd: boolean;
     insetInlineStart: boolean;
     shadowOffset: boolean;
-    shadowRadius: boolean;
     elevationAndroid?: boolean | undefined;
     boxShadow: boolean;
     border: boolean;
@@ -708,6 +710,10 @@ export declare const stylePropsAll: {
     borderTopRightRadius: boolean;
     borderBottomLeftRadius: boolean;
     borderBottomRightRadius: boolean;
+    borderTopStartRadius: boolean;
+    borderTopEndRadius: boolean;
+    borderBottomStartRadius: boolean;
+    borderBottomEndRadius: boolean;
     borderStartStartRadius: boolean;
     borderStartEndRadius: boolean;
     borderEndStartRadius: boolean;
@@ -724,6 +730,7 @@ export declare const stylePropsAll: {
     inlineSize: boolean;
     minInlineSize: boolean;
     maxInlineSize: boolean;
+    shadowRadius: boolean;
     backgroundColor: boolean;
     borderColor: boolean;
     borderBlockStartColor: boolean;
@@ -884,8 +891,6 @@ export declare const stylePropsAll: {
     rotateY: boolean;
     rotateX: boolean;
     rotateZ: boolean;
-    borderBottomEndRadius: boolean;
-    borderBottomStartRadius: boolean;
     borderBottomWidth: boolean;
     borderLeftWidth: boolean;
     borderRightWidth: boolean;
@@ -895,8 +900,6 @@ export declare const stylePropsAll: {
     borderInlineWidth: boolean;
     borderInlineEndWidth: boolean;
     borderInlineStartWidth: boolean;
-    borderTopEndRadius: boolean;
-    borderTopStartRadius: boolean;
     borderTopWidth: boolean;
     borderWidth: boolean;
     transform: boolean;
@@ -929,6 +932,7 @@ export declare const stylePropsAll: {
     paddingBottom: boolean;
     paddingInline: boolean;
     paddingBlock: boolean;
+    paddingBlockEnd: boolean;
     paddingBlockStart: boolean;
     paddingInlineEnd: boolean;
     paddingInlineStart: boolean;
@@ -950,7 +954,6 @@ export declare const stylePropsAll: {
     insetInlineEnd: boolean;
     insetInlineStart: boolean;
     shadowOffset: boolean;
-    shadowRadius: boolean;
     elevationAndroid?: boolean | undefined;
     boxShadow: boolean;
     border: boolean;
@@ -981,6 +984,10 @@ export declare const validStyles: {
     borderTopRightRadius: boolean;
     borderBottomLeftRadius: boolean;
     borderBottomRightRadius: boolean;
+    borderTopStartRadius: boolean;
+    borderTopEndRadius: boolean;
+    borderBottomStartRadius: boolean;
+    borderBottomEndRadius: boolean;
     borderStartStartRadius: boolean;
     borderStartEndRadius: boolean;
     borderEndStartRadius: boolean;
@@ -997,6 +1004,7 @@ export declare const validStyles: {
     inlineSize: boolean;
     minInlineSize: boolean;
     maxInlineSize: boolean;
+    shadowRadius: boolean;
     backgroundColor: boolean;
     borderColor: boolean;
     borderBlockStartColor: boolean;
@@ -1144,8 +1152,6 @@ export declare const validStyles: {
     rotateY: boolean;
     rotateX: boolean;
     rotateZ: boolean;
-    borderBottomEndRadius: boolean;
-    borderBottomStartRadius: boolean;
     borderBottomWidth: boolean;
     borderLeftWidth: boolean;
     borderRightWidth: boolean;
@@ -1155,8 +1161,6 @@ export declare const validStyles: {
     borderInlineWidth: boolean;
     borderInlineEndWidth: boolean;
     borderInlineStartWidth: boolean;
-    borderTopEndRadius: boolean;
-    borderTopStartRadius: boolean;
     borderTopWidth: boolean;
     borderWidth: boolean;
     transform: boolean;
@@ -1189,6 +1193,7 @@ export declare const validStyles: {
     paddingBottom: boolean;
     paddingInline: boolean;
     paddingBlock: boolean;
+    paddingBlockEnd: boolean;
     paddingBlockStart: boolean;
     paddingInlineEnd: boolean;
     paddingInlineStart: boolean;
@@ -1210,7 +1215,6 @@ export declare const validStyles: {
     insetInlineEnd: boolean;
     insetInlineStart: boolean;
     shadowOffset: boolean;
-    shadowRadius: boolean;
     elevationAndroid?: boolean | undefined;
     boxShadow: boolean;
     border: boolean;

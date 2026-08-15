@@ -5,6 +5,10 @@ export declare const tokenCategories: {
         borderTopRightRadius: boolean;
         borderBottomLeftRadius: boolean;
         borderBottomRightRadius: boolean;
+        borderTopStartRadius: boolean;
+        borderTopEndRadius: boolean;
+        borderBottomStartRadius: boolean;
+        borderBottomEndRadius: boolean;
         borderStartStartRadius: boolean;
         borderStartEndRadius: boolean;
         borderEndStartRadius: boolean;
@@ -23,6 +27,7 @@ export declare const tokenCategories: {
         inlineSize: boolean;
         minInlineSize: boolean;
         maxInlineSize: boolean;
+        shadowRadius: boolean;
     };
     zIndex: {
         zIndex: boolean;
