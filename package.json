@@ -11,6 +11,7 @@
     "./code/demos",
     "./code/kitchen-sink",
     "./code/kitchen-sink-go",
+    "./code/lsp/npm/tamagui-lsp",
     "./code/kitchen-sink-shared",
     "./code/starters/*",
     "./code/tests/**/*",

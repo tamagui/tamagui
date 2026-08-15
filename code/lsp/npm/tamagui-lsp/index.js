@@ -6,6 +6,7 @@
 // So there is no download step, no postinstall, and no network access at
 // install time beyond the registry itself.
 
+import { existsSync } from 'node:fs'
 import { createRequire } from 'node:module'
 
 const require = createRequire(import.meta.url)
@@ -50,6 +51,20 @@ export function platformKey() {
  * both need the user to do something.
  */
 export function binaryPath() {
+  // an explicit override, the same escape hatch esbuild offers as
+  // ESBUILD_BINARY_PATH. it serves two real cases: developing this repo, where
+  // the platform package is a build artifact that was never published, and
+  // running on a platform with no prebuilt binary. it is checked FIRST and
+  // never falls through on failure, so a typo in the path is an error rather
+  // than a silent switch back to the packaged binary.
+  const override = process.env.TAMAGUI_LSP_BINARY
+  if (override) {
+    if (!existsSync(override)) {
+      throw new Error(`TAMAGUI_LSP_BINARY is set to ${override}, which does not exist.`)
+    }
+    return override
+  }
+
   const key = platformKey()
   const pkg = PACKAGES[key]
   if (!pkg) {

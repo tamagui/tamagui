@@ -1,7 +1,7 @@
 {
   "name": "tamagui-language-service",
   "displayName": "Tamagui Language Service",
-  "description": "Flat value completions, diagnostics, hover, and inline color swatches for Tamagui.",
+  "description": "Flat value completions, diagnostics, hover, and inline color swatches for Tamagui, powered by the tamagui-lsp binary.",
   "version": "0.0.1",
   "private": true,
   "publisher": "tamagui",
@@ -27,16 +27,8 @@
     "README.md"
   ],
   "main": "./extension.cjs",
-  "contributes": {
-    "typescriptServerPlugins": [
-      {
-        "name": "@tamagui/language-service",
-        "enableForWorkspaceTypeScriptVersions": true
-      }
-    ]
-  },
   "dependencies": {
-    "@tamagui/language-service": "workspace:*",
-    "sucrase": "3.35.1"
+    "@tamagui/lsp": "workspace:*",
+    "vscode-languageclient": "^9.0.1"
   }
 }

@@ -109,6 +109,20 @@ binaryPath() // absolute path to the executable, or throws with a fix
 platformKey() // e.g. "darwin arm64", "linux x64 glibc"
 ```
 
+## Building from source
+
+Set `TAMAGUI_LSP_BINARY` to point every editor and `binaryPath()` at your own
+build. This is also the answer for a platform with no prebuilt binary.
+
+```sh
+cd code/lsp && cargo build --release -p tamagui-lsp
+export TAMAGUI_LSP_BINARY="$PWD/target/release/tamagui-lsp"
+```
+
+A path that does not exist throws, rather than quietly falling back to the
+packaged binary, so a typo shows up immediately instead of looking like your
+change had no effect.
+
 ## Troubleshooting
 
 **No completions.** The server needs the compiler's config artifact. Run your

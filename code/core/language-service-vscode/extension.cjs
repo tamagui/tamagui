@@ -1,141 +1,53 @@
-const { readFileSync } = require('node:fs')
-const { join } = require('node:path')
+// The VS Code side of the Tamagui language server.
+//
+// There is almost nothing here on purpose. Everything the extension used to do
+// in JavaScript (parse the file, project the config, compute completions,
+// diagnostics, hovers and colour swatches) now lives in the `tamagui-lsp`
+// binary, which every other editor talks to the same way. This file starts that
+// process and gets out of the way, so VS Code cannot drift from Neovim, Helix,
+// Zed or anything else.
 
 const vscode = require('vscode')
 
-const { createStyleTooling } = require('@tamagui/language-service/core')
-const { createDocumentStyleTooling } = require('@tamagui/language-service/document')
-const {
-  createSucraseStyleSiteExtractor,
-} = require('@tamagui/language-service/extract-sucrase')
-const { parse } = require('sucrase/dist/parser')
-const { TokenType } = require('sucrase/dist/parser/tokenizer/types')
+/** @type {import('vscode-languageclient/node').LanguageClient | undefined} */
+let client
 
-const configRelativePath = join('.tamagui', 'tamagui.config.json')
-const selector = [{ language: 'javascriptreact' }, { language: 'typescriptreact' }]
+async function activate(context) {
+  const { LanguageClient, TransportKind } = require('vscode-languageclient/node')
 
-/** @type {Map<string, ReturnType<typeof loadFolderTooling>>} */
-const toolingByFolder = new Map()
-
-function loadFolderTooling(folder) {
+  let command
   try {
-    const contents = readFileSync(join(folder.uri.fsPath, configRelativePath), 'utf8')
-    const tooling = createStyleTooling(JSON.parse(contents))
-    if (!tooling) return null
-    const extract = createSucraseStyleSiteExtractor(
-      { parse, TokenType },
-      { isStyleProp: (name) => tooling.isStyleProp(name) }
-    )
-    return createDocumentStyleTooling(tooling, extract)
-  } catch {
-    return null
+    // `@tamagui/lsp` is ESM-only, and an extension host is CJS
+    const { binaryPath } = await import('@tamagui/lsp')
+    command = binaryPath()
+  } catch (error) {
+    // the launcher throws with the actual fix (usually --omit=optional, or an
+    // unsupported platform), so show that rather than a generic failure
+    vscode.window.showErrorMessage(`Tamagui: ${error.message}`)
+    return
   }
-}
 
-function documentTooling(document) {
-  const folder = vscode.workspace.getWorkspaceFolder(document.uri)
-  if (!folder) return null
-  const key = folder.uri.toString()
-  if (!toolingByFolder.has(key)) {
-    toolingByFolder.set(key, loadFolderTooling(folder))
-  }
-  return toolingByFolder.get(key)
-}
-
-function activate(context) {
-  let requesting = false
-
-  // the compiler rewrites the config artifact; drop the cached projection
-  const watcher = vscode.workspace.createFileSystemWatcher(
-    '**/.tamagui/tamagui.config.json'
-  )
-  const invalidate = (uri) => {
-    const folder = vscode.workspace.getWorkspaceFolder(uri)
-    if (folder) toolingByFolder.delete(folder.uri.toString())
-  }
-  watcher.onDidChange(invalidate)
-  watcher.onDidCreate(invalidate)
-  watcher.onDidDelete(invalidate)
-  context.subscriptions.push(watcher)
-
-  // inline color swatches for theme values, color tokens, and literal colors
-  context.subscriptions.push(
-    vscode.languages.registerColorProvider(selector, {
-      provideDocumentColors(document, token) {
-        const tooling = documentTooling(document)
-        if (!tooling || token.isCancellationRequested) return []
-        return tooling
-          .colors(document.getText())
-          .map(
-            (entry) =>
-              new vscode.ColorInformation(
-                new vscode.Range(
-                  document.positionAt(entry.start),
-                  document.positionAt(entry.end)
-                ),
-                new vscode.Color(
-                  entry.color.r / 255,
-                  entry.color.g / 255,
-                  entry.color.b / 255,
-                  entry.color.a
-                )
-              )
-          )
-      },
-      provideColorPresentations(color, { document, range }) {
-        const original = document.getText(range)
-        // literal hex colors follow the picker; token names never rewrite —
-        // the swatch is a preview of config values, not an editing surface
-        if (original.startsWith('#')) {
-          const hex = (channel) =>
-            Math.round(channel * 255)
-              .toString(16)
-              .padStart(2, '0')
-          const alpha = color.alpha < 1 ? hex(color.alpha) : ''
-          return [
-            new vscode.ColorPresentation(
-              `#${hex(color.red)}${hex(color.green)}${hex(color.blue)}${alpha}`
-            ),
-          ]
-        }
-        return [new vscode.ColorPresentation(original)]
-      },
-    })
+  client = new LanguageClient(
+    'tamagui',
+    'Tamagui',
+    { command, transport: TransportKind.stdio },
+    {
+      documentSelector: [
+        { scheme: 'file', language: 'typescriptreact' },
+        { scheme: 'file', language: 'javascriptreact' },
+      ],
+      // the server watches the artifact itself and republishes on its own, so
+      // there is no client-side invalidation to keep in sync
+      outputChannelName: 'Tamagui',
+    }
   )
 
-  context.subscriptions.push(
-    vscode.languages.registerCompletionItemProvider(
-      selector,
-      {
-        async provideCompletionItems(document, position, token) {
-          if (requesting) return
-          requesting = true
-          try {
-            // let VS Code's TypeScript extension synchronize the just-authored
-            // colon before asking its provider for the delegated result
-            await new Promise((resolve) => setTimeout(resolve, 0))
-            if (token.isCancellationRequested) return
-            const result = await vscode.commands.executeCommand(
-              'vscode.executeCompletionItemProvider',
-              document.uri,
-              position
-            )
-            if (token.isCancellationRequested || !result) return
-            const items = result.items.filter((item) => {
-              const label = item.label
-              return (
-                typeof label !== 'string' && label.description?.startsWith('Tamagui ')
-              )
-            })
-            return items.length === 0 ? undefined : new vscode.CompletionList(items, true)
-          } finally {
-            requesting = false
-          }
-        },
-      },
-      ':'
-    )
-  )
+  await client.start()
+  context.subscriptions.push(client)
 }
 
-module.exports = { activate }
+function deactivate() {
+  return client?.stop()
+}
+
+module.exports = { activate, deactivate }
