@@ -19,6 +19,7 @@ import {
   yellowDark,
 } from '@tamagui/colors'
 import { createThemes, type CreateThemesProps } from '@tamagui/theme-builder'
+import { lazyThemes } from './lazyThemes'
 import { opacify } from './opacify'
 import { v5Templates } from './v5-templates'
 
@@ -614,13 +615,16 @@ export function createV5Theme<
   })
 }
 
-// Default themes using the createV5Theme function
-export const themes = createV5Theme()
+// Default themes using the createV5Theme function, built on first access
+export const themes = lazyThemes(() => createV5Theme())
 
-// don't remove this - type sanity checks - these should not cause type errors:
-themes.dark.background0075
-themes.dark_yellow.background0075
-themes.dark.background
-themes.dark.accent1
+// don't remove this - type sanity checks - these should not cause type errors.
+// they are type-level so they do not force the lazy build at import time:
+type _V5ThemeChecks = [
+  typeof themes.dark.background0075,
+  typeof themes.dark_yellow.background0075,
+  typeof themes.dark.background,
+  typeof themes.dark.accent1,
+]
 // @ts-expect-error
-themes.dark.nonValid
+type _V5ThemeInvalid = typeof themes.dark.nonValid
