@@ -396,7 +396,9 @@ describe('<Theme> inline values', () => {
   test('cache keys preserve the value type', async () => {
     const ReadType = () => {
       const theme = useTheme()
-      return <span data-testid="inline-value-type">{typeof theme.surfaceBorder?.val}</span>
+      return (
+        <span data-testid="inline-value-type">{typeof theme.surfaceBorder?.val}</span>
+      )
     }
     const make = (surfaceBorder: string | number) => (
       <TamaguiProvider config={conf} defaultTheme="light">
