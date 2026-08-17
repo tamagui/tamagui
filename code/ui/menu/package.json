@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/menu",
-  "version": "2.7.4",
+  "version": "2.7.7",
   "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
   "source": "src/index.tsx",
   "files": [
@@ -40,6 +40,7 @@
     "@tamagui/helpers": "workspace:*",
     "@tamagui/popover": "workspace:*",
     "@tamagui/popper": "workspace:*",
+    "@tamagui/scroll-view": "workspace:*",
     "@tamagui/use-controllable-state": "workspace:*",
     "@tamagui/web": "workspace:*"
   },

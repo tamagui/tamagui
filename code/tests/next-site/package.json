@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/next-site",
-  "version": "2.7.4",
+  "version": "2.7.7",
   "private": true,
   "source": "src",
   "scripts": {
@@ -36,7 +36,7 @@
   "devDependencies": {
     "@babel/preset-react": "^7.24.7",
     "@babel/preset-typescript": "^7.26.0",
-    "@playwright/test": "^1.49.1",
+    "@playwright/test": "1.58.2",
     "@tamagui/build": "workspace:*",
     "tamagui-loader": "workspace:*"
   }

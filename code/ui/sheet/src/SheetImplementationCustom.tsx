@@ -456,6 +456,13 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       }
 
       const animationCompleteCallback = () => {
+        // a newer animateTo supersedes this one: drivers still fire the owed
+        // completion callback when a new setValue replaces an in-flight one.
+        // the sheet has already retargeted at.current, so syncing it back to
+        // this stale toValue would make the next animateTo to this position
+        // no-op (at === toValue) while the dom sits somewhere else — on web
+        // that leaves a reopened sheet parked offscreen at its close target.
+        if (at.current !== toValue) return
         syncAnimatedPosition(toValue)
         if (opacityFallbackTimer.current) {
           clearTimeout(opacityFallbackTimer.current)

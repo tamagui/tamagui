@@ -15,10 +15,12 @@ on:
 permissions:
   contents: read
 
-# cancel in-progress runs on the same branch (avoids duplicate PR + push runs)
+# a stable release accepts only the current main sha, so an older main run can
+# never approve it. cancel obsolete work instead of letting one hung dependency
+# install hold every newer check behind github's concurrency slot.
 concurrency:
   group: checks-${{ github.ref }}
-  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+  cancel-in-progress: true
 
 jobs:
   checks:
@@ -49,7 +51,43 @@ jobs:
       - name: Lint
         run: bun run lint
 
+  playwright-browsers:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    concurrency:
+      group: playwright-browser-cache-checks-${{ github.head_ref || github.ref_name }}
+      cancel-in-progress: false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Get Playwright version
+        id: pw-version
+        run: |
+          version=$(node -p "require('./package.json').devDependencies['@playwright/test']")
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
+      - name: Cache Playwright browsers
+        id: playwright-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ steps.pw-version.outputs.version }}-chromium-webkit
+
+      - name: Setup Bun
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2
+        with:
+          bun-version-file: 'package.json'
+
+      - name: Install Playwright browsers
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: bunx -p @playwright/test@${{ steps.pw-version.outputs.version }} playwright install chromium webkit
+
   unit-tests:
+    needs: playwright-browsers
     runs-on: ubuntu-latest
     env:
       NODE_OPTIONS: '--max-old-space-size=6144'
@@ -64,16 +102,15 @@ jobs:
 
       - name: Get Playwright version
         id: pw-version
-        run: echo "version=$(bunx playwright --version | awk '{print $2}')" >> $GITHUB_OUTPUT
+        run: |
+          version=$(node -p "require('./package.json').devDependencies['@playwright/test']")
+          echo "version=$version" >> "$GITHUB_OUTPUT"
 
       - name: Cache Playwright browsers
         uses: actions/cache@v4
         with:
           path: ~/.cache/ms-playwright
-          key: playwright-${{ runner.os }}-${{ steps.pw-version.outputs.version }}
-
-      - name: Install playwright
-        run: bunx playwright install
+          key: playwright-${{ runner.os }}-${{ steps.pw-version.outputs.version }}-chromium-webkit
 
       - name: Restore Turbo cache
         uses: actions/cache@v4
@@ -144,7 +181,7 @@ jobs:
           fi
 
   integration-tests:
-    needs: changes
+    needs: [changes, playwright-browsers]
     if: needs.changes.outputs.integration-relevant == 'true'
     # gate is turbo's actual workspace dependency graph — no manual path list to maintain
     runs-on: ubuntu-latest
@@ -165,16 +202,18 @@ jobs:
 
       - name: Get Playwright version
         id: pw-version
-        run: echo "version=$(bunx playwright --version | awk '{print $2}')" >> $GITHUB_OUTPUT
+        run: |
+          version=$(node -p "require('./package.json').devDependencies['@playwright/test']")
+          echo "version=$version" >> "$GITHUB_OUTPUT"
 
       - name: Cache Playwright browsers
         uses: actions/cache@v4
         with:
           path: ~/.cache/ms-playwright
-          key: playwright-${{ runner.os }}-${{ steps.pw-version.outputs.version }}
+          key: playwright-${{ runner.os }}-${{ steps.pw-version.outputs.version }}-chromium-webkit
 
-      - name: Install playwright
-        run: bunx playwright install --with-deps
+      - name: Install Playwright system dependencies
+        run: bunx playwright install-deps chromium webkit
 
       - name: Restore Turbo cache
         uses: actions/cache@v4
