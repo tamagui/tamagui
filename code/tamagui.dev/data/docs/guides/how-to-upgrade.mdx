@@ -959,9 +959,10 @@ coverage and known gaps.
 `createTamagui({ defaultProps })` is deprecated in v3 and slated for removal.
 Each of its uses has a more direct replacement:
 
-- **Styling defaults** move to [Variables](/docs/core/variables): declare the
-  value once in `variables`, read it in your component styles, and redefine it
-  per subtree instead of forcing props onto every instance of a component.
+- **Styling defaults** move to [theme values](/docs/core/variables): declare
+  the value once in `variables`, read it in your component styles, and
+  redefine it per subtree on `<Theme>` instead of forcing props onto every
+  instance of a component.
 - **A component's default look** belongs in the component itself — v3
   components are behavior primitives plus styles you own, so edit your copied
   component instead of patching it from config.

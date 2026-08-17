@@ -68,19 +68,19 @@ them together.
 Component skins do not extend Surface. Card, Select content, ListItem, and other
 skins use the same generic values and choose their own default level.
 
-## Variables is the one-off escape hatch
+## Inline theme values are the one-off escape hatch
 
-Use [`Variables`](/docs/core/variables) when a patch belongs in exactly one
-place:
+Set the value on [`Theme`](/docs/core/variables) when a patch belongs in
+exactly one place:
 
 ```tsx
-<Variables values={{ 'background-hover': 'blue-400' }}>
+<Theme background-hover="blue-400">
   <YStack>{/* this subtree receives the patch */}</YStack>
-</Variables>
+</Theme>
 ```
 
-Create a named theme when the same patch appears in multiple places. Use
-`Variables` when it is local.
+Create a named theme when the same patch appears in multiple places. Set it
+inline when it is local.
 
 ## Custom levels
 
@@ -119,6 +119,6 @@ old contrast was important, add another level to your own scale and tree.
 - Style reusable skins against semantic generics.
 - Use `theme="level2"` for the common one-step relative boundary.
 - Nest levels freely; the recipe tree carries the current absolute level.
-- Use `Variables` for a one-off patch.
+- Set the value on `Theme` for a one-off patch.
 - Use the copied Surface fixture for layout chrome.
 - Customize scales and `levels()` in normal application code.
