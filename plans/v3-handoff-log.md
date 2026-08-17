@@ -1793,6 +1793,25 @@ behavior is not exercised by any suite, so "native tests pass" is weaker evidenc
 than it looks for anything that differs by platform extension. Treat a passing
 native suite as insufficient proof for `.native.ts` behavior until this is fixed.
 
+**Root cause, found 2026-08-17.** Vite concatenates the extension arrays
+contributed by each plugin config. The Tamagui plugin contributes its WEB
+extension list, and the native-test extensions are appended after it, so the web
+entries win relative-import resolution before the native entries are ever
+reached. `optimizeDeps` alone gets a native-first list, which is why the config
+looks correct in isolation. Probe receipt: a native core run and a native
+compiler-static run both loaded
+`code/core/web/src/helpers/webPropsToSkip.ts`, the web variant.
+
+**And fixing it is not a one-line change.** Trialing `disableResolveConfig` for
+the Tamagui plugin on native does produce a native-first resolved list, and the
+core native suite then fails 5 files: one suite-load failure plus 9 test
+failures across refs, native fast-path links, Tailwind Dimensions, stable-style
+rendering, and color expectations. Those areas have been running against WEB
+variants all along. Either those 9 tests assert web behavior while claiming to
+be native, or the product is genuinely wrong on native in those areas. Nobody
+has established which, and that question is the actual work here. Do not flip
+the resolution without budgeting for it.
+
 ### Named follow-ups
 
 - `primitives.native.tsx`'s four `DOMRuntime*Frames` do not declare
