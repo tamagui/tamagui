@@ -1674,3 +1674,138 @@ Named follow-ups, none blocking:
   `numberOfLines`) are dropped with a dev warning, same as the program version.
 - `getCondition` runs once per resolved property per clause; a per-styleState
   condition cache would cut that to once per clause if profiling ever shows it.
+
+## 14. Runtime native `html.*`, Theme inline values, zero-runtime design (2026-08-17)
+
+Three blocks landed on `v3-beta` and the zero-runtime mode moved from an
+unanswered question to an accepted design. Tip after this batch: `bef1786a76`.
+
+- `73c96de6c4` feat(core): render html.* through the dom primitives at runtime on native
+- `fe4a03e3b8` / `e40ee469cf` / `0904fa3c1f` Theme inline values, merged as `d374146ee1`
+- `b03c4d0e01` / `19252e97bb` / `bef1786a76` the zero-runtime design document
+
+Validation at the merged tip, READ: core-test web 465 passed, core-test native
+292 passed with 7 expected-fail, `./scripts/typecheck.sh` passed,
+`domHtmlRuntime.native` 24/24, `domCompiledRuntime.native` 4/4.
+
+### `html.*` works at runtime on native, and why it did not before
+
+Three independent causes, none of them the one the symptom suggested:
+
+- `writingDirection` was never in the valid style props
+  (`@tamagui/helpers` `nonAnimatableTextOnlyProps`), though it is in
+  `TextStylePropsBase` and `expandStyle` already had a web mapping. So `dir`
+  renamed correctly and then got classified as a non-style prop, reaching the RN
+  host as something it ignores. `compilerHost` now carries a table-driven rule:
+  a dom attribute whose `nativeProp` renames to a valid style key is aliased into
+  the style props before the split.
+- `onClick` was destructured out of `viewProps` and only invoked inside the
+  `TAMAGUI_TARGET === 'web'` press branch, so native dropped it before the
+  primitive. Separately, `webPropsToSkip.native.ts` puts the whole web event
+  family into `skipProps`, which would drop it earlier still in a real Metro
+  bundle. Both are fixed by a new `StaticConfig.neverSkipProps`, GENERATED into
+  `html.native.tsx` from the EVENTS table (every row with `native !== 'none'`)
+  and honored at both `skipProps` sites in `getSplitStyles`.
+- The DOM-shaped ref facade was already correct. `createDOMRefCallback` wraps the
+  host instance, and `react-test-renderer`'s default `createNodeMock` returns
+  null, so the callback received null. The TEST harness was wrong, not the
+  runtime. The compiled path would have failed identically.
+
+Do not hand-maintain a second copy of the event list and do not special-case
+individual prop names at the `skipProps` sites. The table is generated from
+`code/core/dom/src/tables/` and that is the only source of truth.
+
+`domCompiledRuntime.native.test.tsx` now asserts runtime/compiled parity
+directly: the same authored tree is compiled-and-executed and rendered through
+`html.native`, and the normalized host trees are compared. It records two
+divergences rather than hiding them (`suppressHighlighting` on Text,
+`objectFit` on img reach the host only at runtime, because the compiler reads
+defaultProps for their styles). That drop is compiler-wide for all flattened
+Tamagui Text, not DOM-specific.
+
+### Theme inline values
+
+Theme values are now props on `<Theme>` itself, scoped by its theme prop, with
+theme targeting through the value grammar's own modifier
+(`<Theme background="blue4 dark:blue2">`). There is no `values` object and no
+`themes` map. `plans/variables.md` carries the full surface; its 2026-08-16
+section at the top is the binding one.
+
+The cache under `getInlineValuesFromProps` is a WeakMap keyed by `conf.themes`
+holding an inner Map bounded at 10,000 with clear-on-limit, reusing the existing
+pattern in `code/core/simple-hash/src/index.ts`. Two properties are load
+bearing and easy to break:
+
+- the no-value path returns `null` after one `for...in` over reserved props and
+  allocates nothing, so a plain `<Theme name="dark">` pays no per-render cost.
+  Measured: 0 retained bytes across 10.1M calls.
+- cache keys are length-delimited and type-aware, so numeric `123.456` does not
+  collide with the string `'123.456'`.
+
+`values` is not in `reservedThemeProps`, so a prop named `values` is read as an
+ordinary theme key. Anything written against the old `<Theme values={{...}}>`
+shape is wrong and will silently mean something else.
+
+### Zero-runtime: guards do not create module absence, erasure does
+
+This is the finding worth carrying forward, because the obvious design is wrong.
+
+The natural approach is a first-statement `process.env.TAMAGUI_RUNTIME === 'zero'`
+guard that throws, letting each bundler fold the body away and drop its imports.
+Measured, with a barrel-import fixture and a mandatory negative control
+(fixture and logs recorded under the campaign scratchpad):
+
+- **Metro 0.83.7 does not drop them.** All three marker deps survive in the zero
+  build exactly as in the full build. The literal folds and the throw is present
+  in the minified output, and the imports remain anyway. Metro fixes its
+  dependency graph at resolution time, before minification, and does no
+  export-level shaking.
+- **webpack 5.108.4 does drop them, but its success state still ships a stub**
+  of about 154 bytes containing the throw, so the guarded module id remains in
+  the module graph. Any gate defined as "no forbidden module ids" therefore fails
+  in the guard model's best case.
+- A first fixture was inconclusive because webpack's ordinary used-export
+  analysis removed everything in both builds before the guard mattered. If a
+  control cannot discriminate, it proves nothing; the fixture was rebuilt to keep
+  the guarded module genuinely observable.
+- No bundler drops an unused module-scope call to an imported function by
+  default, so an app-local `const Card = styled(View, {...})` in a module with
+  other live exports survives and drags the component runtime in, even for code
+  that fully follows the contract.
+
+The mechanism that does work is compiler reference ERASURE before the bundler
+records dependencies, which zero mode can do safely because every use either
+lowered or the build already hard-failed. Removing the reference is exactly what
+made the Metro markers disappear in the probe. Guards remain only as a secondary
+loud failure for Vite and webpack, and no byte-removal claim is made for Metro.
+
+### Test resolution gap, repo-wide
+
+READ: in `code/core/core-test` under `TAMAGUI_TARGET=native`, and in
+`code/compiler/static-tests`, `./webPropsToSkip` resolves to the WEB variant
+(`Object.keys(webPropsToSkip).length === 0`), even though
+`code/packages/vite-plugin-internal/src/getConfig.ts` lists `.native.ts` and
+`.native.tsx` first for the default native branch. A pre-existing comment in that
+file already notes `vitest isnt doing .native.js`.
+
+The consequence is broader than one prop list: a class of native-only module
+behavior is not exercised by any suite, so "native tests pass" is weaker evidence
+than it looks for anything that differs by platform extension. Treat a passing
+native suite as insufficient proof for `.native.ts` behavior until this is fixed.
+
+### Named follow-ups
+
+- `primitives.native.tsx`'s four `DOMRuntime*Frames` do not declare
+  `neverSkipProps`, so on the COMPILED path a native element with a runtime style
+  program plus `onClick`/`onChange` still drops the handler. The fix is to
+  generate the event table into a leaf module that both `html.native.tsx` and
+  `primitives.native.tsx` import, since the table is currently a module-local
+  const and a direct import would create a cycle.
+- `img` `objectFit: 'fill'` is a web-only style key, so native never turns it
+  into `resizeMode` and `expandStyle`'s native `objectFit` case is unreachable.
+- `hidden={dynamic}` on a dom tag is consumed by the compiler with nothing static
+  to lower and is silently dropped. The static-value diagnostic added in this
+  batch covers only style-lowering attributes.
+- The public name for the Theme inline-values API is an open owner decision. The
+  only source flip point is the exported alias at
+  `code/core/web/src/views/Theme.tsx:53`; the `.d.ts` regenerates from a build.
