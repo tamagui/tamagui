@@ -25,6 +25,8 @@ const conf = createTamagui({
   },
 })
 
+const inlineSelector = (identifier: string) => `.${identifier}:not(#t_theme_full_name)`
+
 describe('createTamagui variables', () => {
   test('merges variables into base themes with per-theme reference resolution', () => {
     expect(conf.themes.light.surfaceBorder.val).toBe(conf.themes.light.color.val)
@@ -75,7 +77,7 @@ describe('getVariablesCSSRules', () => {
     const b = getVariablesCSSRules({ values: { surfaceBorder: 'background' } }, conf)!
     expect(a.identifier).toBe(b.identifier)
     expect(a.identifier).toMatch(/^tvar_\d+$/)
-    expect(a.rules[0]).toContain(`:root .${a.identifier} {`)
+    expect(a.rules[0]).toContain(`:root ${inlineSelector(a.identifier)} {`)
     expect(a.rules[0]).toContain('--surfaceBorder:var(--background);')
   })
 
@@ -98,7 +100,7 @@ describe('getVariablesCSSRules', () => {
       { values: { accent: '#111' }, themes: { dark: { accent: '#eee' } } },
       conf
     )!
-    const cls = `.${res.identifier}`
+    const cls = inlineSelector(res.identifier)
     expect(res.rules[0]).toBe(`:root ${cls} {--accent:#111;}`)
     const darkRule = res.rules.find((rule) => rule.includes('.t_dark'))!
     expect(darkRule).toContain(`:root .t_dark ${cls}`)
@@ -123,7 +125,7 @@ describe('getVariablesCSSRules', () => {
       },
       conf
     )!
-    const cls = `.${res.identifier}`
+    const cls = inlineSelector(res.identifier)
     expect(res.rules[0]).toBe(`:root ${cls} {--accent:#111;}`)
     const blueIndex = res.rules.findIndex((rule) => rule.includes('.t_blue'))
     expect(res.rules[blueIndex]).toBe(
@@ -251,7 +253,9 @@ describe('<Theme> inline values', () => {
     )
     const identifier = identifierOf(container)!
     expect(identifier).toBeTruthy()
-    expect(conf.getCSS()).toContain(`:root .${identifier} {--surfaceBorder:red;}`)
+    expect(conf.getCSS()).toContain(
+      `:root ${inlineSelector(identifier)} {--surfaceBorder:red;}`
+    )
   })
 
   test('cache keys preserve the value type', async () => {
@@ -273,7 +277,7 @@ describe('<Theme> inline values', () => {
     const numericIdentifier = identifierOf(view.container)!
     expect(view.getByTestId('inline-value-type').textContent).toBe('number')
     expect(conf.getCSS()).toContain(
-      `:root .${numericIdentifier} {--surfaceBorder:123.456px;}`
+      `:root ${inlineSelector(numericIdentifier)} {--surfaceBorder:123.456px;}`
     )
 
     view.rerender(make('123.456'))
@@ -298,6 +302,21 @@ describe('<Theme> inline values', () => {
     expect(className).toContain('t_dark')
   })
 
+  test('an inline value overrides the named theme on their shared span', () => {
+    const { container } = render(
+      <>
+        <style>{conf.getCSS()}</style>
+        <TamaguiProvider config={conf} defaultTheme="light">
+          <Theme name="dark" background="#0b2545">
+            <View />
+          </Theme>
+        </TamaguiProvider>
+      </>
+    )
+    const span = layerSpan(container)!
+    expect(getComputedStyle(span).getPropertyValue('--background').trim()).toBe('#0b2545')
+  })
+
   test('a theme modifier scopes the value to that theme', () => {
     const { container } = render(
       <TamaguiProvider config={conf} defaultTheme="light">
@@ -308,12 +327,16 @@ describe('<Theme> inline values', () => {
     )
     const identifier = identifierOf(container)!
     const css = conf.getCSS()
-    expect(css).toContain(`:root .${identifier} {--surfaceBorder:red;}`)
+    expect(css).toContain(`:root ${inlineSelector(identifier)} {--surfaceBorder:red;}`)
     expect(css).toMatch(
-      new RegExp(`:root \\.t_dark \\.${identifier}[^{]*\\{--surfaceBorder:blue;\\}`)
+      new RegExp(
+        `:root \\.t_dark \\.${identifier}:not\\(#t_theme_full_name\\)[^{]*\\{--surfaceBorder:blue;\\}`
+      )
     )
     expect(css).toMatch(
-      new RegExp(`:root \\.t_blue \\.${identifier}[^{]*\\{--surfaceBorder:green;\\}`)
+      new RegExp(
+        `:root \\.t_blue \\.${identifier}:not\\(#t_theme_full_name\\)[^{]*\\{--surfaceBorder:green;\\}`
+      )
     )
   })
 
@@ -331,7 +354,7 @@ describe('<Theme> inline values', () => {
       .split('\n')
       .filter((rule) => rule.includes(identifier))
       .join('\n')
-    expect(own).toContain(`:root .${identifier} {--surfaceBorder:orange;}`)
+    expect(own).toContain(`:root ${inlineSelector(identifier)} {--surfaceBorder:orange;}`)
     // the ios: clause contributes nothing on web
     expect(own).not.toContain('purple')
   })
@@ -391,7 +414,7 @@ describe('<Theme> inline values', () => {
       .split('\n')
       .filter((rule) => rule.includes(identifier))
       .join('\n')
-    expect(own).toContain(`:root .${identifier} {--surfaceBorder:red;}`)
+    expect(own).toContain(`:root ${inlineSelector(identifier)} {--surfaceBorder:red;}`)
     expect(own).not.toContain('blue')
   })
 
@@ -405,7 +428,7 @@ describe('<Theme> inline values', () => {
     )
     const identifier = identifierOf(container)!
     expect(conf.getCSS()).toContain(
-      `:root .${identifier} {--surfaceBorder:url(http://x/y.png);}`
+      `:root ${inlineSelector(identifier)} {--surfaceBorder:url(http://x/y.png);}`
     )
   })
 })

@@ -367,18 +367,22 @@ export function getVariablesCSSRules(
   }
 
   const identifier = `tvar_${simpleHash(payload, 'strict')}`
-  const cls = `.${identifier}`
+  // inline values patch named themes, so their selector family must meet or
+  // exceed the theme rules' id-anchored specificity. keeping the same
+  // always-matching anchor on the inline class raises the whole ladder while
+  // preserving its base, themed, and scheme ordering.
+  const cls = `.${identifier}:not(#t_theme_full_name)`
   const rules: string[] = []
 
   if (base.length) {
     rules.push(`:root ${cls} {${toDeclarationBlock(base)}}`)
   }
 
-  // non-scheme theme buckets: plain theme-class scoping (0,3,0). the class can
+  // non-scheme theme buckets: plain theme-class scoping (1,3,0). the class can
   // sit on :root itself (addThemeClassName 'html') or below it, so emit both
   // shapes. nested inversion is a scheme concept and doesn't apply here.
   // emitted before the scheme rules so scheme buckets win overlapping keys —
-  // required for consistency, since the scheme inversion selector (0,4,0)
+  // required for consistency, since the scheme inversion selector (1,4,0)
   // outranks these regardless of order.
   for (const [name, declarations] of themed) {
     rules.push(
@@ -386,8 +390,8 @@ export function getVariablesCSSRules(
     )
   }
 
-  // explicit scheme classes: one level (0,3,0) then the two-level inversion
-  // override (0,4,0). the scheme class can sit on :root itself (addThemeClassName
+  // explicit scheme classes: one level (1,3,0) then the two-level inversion
+  // override (1,4,0). the scheme class can sit on :root itself (addThemeClassName
   // 'html') or below it, so emit both shapes. deeper alternation is undefined,
   // same two-level limit as getThemeCSSRules.
   const schemeRule = (scheme: 'dark' | 'light', declarations: ResolvedDeclarations) => {
@@ -409,8 +413,8 @@ export function getVariablesCSSRules(
   }
 
   // when the app relies on prefers-color-scheme with no explicit root class,
-  // scheme values apply via media query at base-rule specificity (0,2,0),
-  // after the base rule so they win the tie; explicit classes (0,3,0+) win over
+  // scheme values apply via media query at base-rule specificity (1,2,0),
+  // after the base rule so they win the tie; explicit classes (1,3,0+) win over
   // the media rule in both directions
   if (prefersColorThemes) {
     if (light.length) {
