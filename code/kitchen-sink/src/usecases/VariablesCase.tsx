@@ -1,8 +1,8 @@
 import React from 'react'
-import { Button, Text, Theme, Variables, View, YStack } from 'tamagui'
+import { Button, Text, Theme, View, YStack } from 'tamagui'
 
 // module-level so the memoized child can prove it never re-renders while
-// Variables patches and scheme flips restyle it via CSS custom properties
+// inline theme values and scheme flips restyle it via CSS custom properties
 const counts = { child: 0 }
 
 const PatchedChild = React.memo(() => {
@@ -17,14 +17,14 @@ const PatchedChild = React.memo(() => {
         height={40}
         backgroundColor="background"
       />
-      <Variables values={{ caseAccent: 'rgb(1, 2, 3)' }}>
+      <Theme caseAccent="rgb(1, 2, 3)">
         <View
           testID="vars-nested-square"
           width={80}
           height={40}
           backgroundColor="caseAccent"
         />
-      </Variables>
+      </Theme>
       <Theme name="dark">
         <View
           testID="vars-reset-square"
@@ -34,14 +34,14 @@ const PatchedChild = React.memo(() => {
         />
       </Theme>
       <Theme name="blue">
-        <Variables themes={{ blue: { caseAccent: 'rgb(7, 7, 77)' } }}>
+        <Theme caseAccent="blue:rgb(7, 7, 77)">
           <View
             testID="vars-themed-square"
             width={80}
             height={40}
             backgroundColor="caseAccent"
           />
-        </Variables>
+        </Theme>
       </Theme>
     </YStack>
   )
@@ -63,12 +63,11 @@ export function VariablesCase() {
         toggle scheme
       </Button>
       <Theme name={scheme}>
-        <Variables
-          values={patched ? { caseAccent: 'rgb(200, 0, 0)' } : undefined}
-          themes={patched ? { dark: { caseAccent: 'rgb(200, 100, 100)' } } : undefined}
+        <Theme
+          caseAccent={patched ? 'rgb(200, 0, 0) dark:rgb(200, 100, 100)' : undefined}
         >
           <PatchedChild />
-        </Variables>
+        </Theme>
       </Theme>
     </YStack>
   )
