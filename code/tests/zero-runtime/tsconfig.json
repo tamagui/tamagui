@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "jsx": "react-jsx",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "skipLibCheck": true,
+    "strict": true,
+    "target": "es2020",
+    "types": ["node", "react"],
+    "lib": ["dom", "esnext"]
+  },
+  "exclude": ["dist", "dist-negative", ".tamagui-zero"]
+}

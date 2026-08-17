@@ -1,0 +1,27 @@
+{
+  "name": "zero-runtime-fixture",
+  "version": "2.7.7",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "vite build",
+    "build:negative": "TAMAGUI_ZERO_NEGATIVE_CONTROL=1 vite build --outDir dist-negative",
+    "preview": "vite preview --port 7878 --strictPort",
+    "test": "playwright test"
+  },
+  "dependencies": {
+    "@tamagui/config": "workspace:*",
+    "@tamagui/core": "workspace:*",
+    "@tamagui/sheet": "workspace:*",
+    "tamagui": "workspace:*"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.58.2",
+    "@tamagui/vite-plugin": "workspace:*",
+    "react-dom": "*",
+    "vite": "^8.0.3"
+  },
+  "peerDependencies": {
+    "react-dom": "*"
+  }
+}

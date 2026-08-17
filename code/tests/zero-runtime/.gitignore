@@ -1,0 +1,4 @@
+dist
+dist-*
+.tamagui-zero
+test-results
