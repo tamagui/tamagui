@@ -1,7 +1,7 @@
 process.env.TAMAGUI_TARGET = 'web'
 
 import { getDefaultTamaguiConfig } from '@tamagui/config-default'
-import { render } from '@testing-library/react'
+import { render, waitFor } from '@testing-library/react'
 import { describe, expect, test } from 'vitest'
 
 import {
@@ -355,5 +355,194 @@ describe('<Variables>', () => {
       rule.cssText.includes(identifier)
     )
     expect(inserted.length).toBe(1)
+  })
+})
+
+describe('<Theme> inline values', () => {
+  // the provider renders its own root .is_Theme span, so find the one actually
+  // carrying an inline layer
+  const layerSpan = (container: HTMLElement) =>
+    container.querySelector('[class*="tvar_"]') as HTMLElement | null
+
+  const identifierOf = (container: HTMLElement) => {
+    const span = layerSpan(container)
+    return span ? [...span.classList].find((c) => c.startsWith('tvar_')) : undefined
+  }
+
+  test('a plain <Theme> emits no inline layer', () => {
+    const { container } = render(
+      <TamaguiProvider config={conf} defaultTheme="light">
+        <Theme name="dark">
+          <View />
+        </Theme>
+      </TamaguiProvider>
+    )
+    expect(identifierOf(container)).toBeUndefined()
+  })
+
+  test('theme-key props emit custom properties on the theme span', () => {
+    const { container } = render(
+      <TamaguiProvider config={conf} defaultTheme="light">
+        <Theme surfaceBorder="red">
+          <View borderColor="surfaceBorder" />
+        </Theme>
+      </TamaguiProvider>
+    )
+    const identifier = identifierOf(container)!
+    expect(identifier).toBeTruthy()
+    expect(conf.getCSS()).toContain(`:root .${identifier} {--surfaceBorder:red;}`)
+  })
+
+  test('cache keys preserve the value type', async () => {
+    const ReadType = () => {
+      const theme = useTheme()
+      return <span data-testid="inline-value-type">{typeof theme.surfaceBorder?.val}</span>
+    }
+    const make = (surfaceBorder: string | number) => (
+      <TamaguiProvider config={conf} defaultTheme="light">
+        <Theme surfaceBorder={surfaceBorder}>
+          <ReadType />
+          <View borderColor="surfaceBorder" />
+        </Theme>
+      </TamaguiProvider>
+    )
+    const view = render(make(123.456))
+    const numericIdentifier = identifierOf(view.container)!
+    expect(view.getByTestId('inline-value-type').textContent).toBe('number')
+    expect(conf.getCSS()).toContain(
+      `:root .${numericIdentifier} {--surfaceBorder:123.456px;}`
+    )
+
+    view.rerender(make('123.456'))
+    const stringIdentifier = identifierOf(view.container)!
+    expect(stringIdentifier).not.toBe(numericIdentifier)
+    await waitFor(() => {
+      expect(view.getByTestId('inline-value-type').textContent).toBe('string')
+    })
+  })
+
+  test('a name and inline values share one span', () => {
+    const { container } = render(
+      <TamaguiProvider config={conf} defaultTheme="light">
+        <Theme name="dark" surfaceBorder="red">
+          <View />
+        </Theme>
+      </TamaguiProvider>
+    )
+    // the theme class and the inline layer ride the same node
+    const className = layerSpan(container)!.className
+    expect(className).toContain('is_Theme')
+    expect(className).toContain('t_dark')
+  })
+
+  test('a theme modifier scopes the value to that theme', () => {
+    const { container } = render(
+      <TamaguiProvider config={conf} defaultTheme="light">
+        <Theme surfaceBorder="red dark:blue blue:green">
+          <View />
+        </Theme>
+      </TamaguiProvider>
+    )
+    const identifier = identifierOf(container)!
+    const css = conf.getCSS()
+    expect(css).toContain(`:root .${identifier} {--surfaceBorder:red;}`)
+    expect(css).toMatch(
+      new RegExp(`:root \\.t_dark \\.${identifier}[^{]*\\{--surfaceBorder:blue;\\}`)
+    )
+    expect(css).toMatch(
+      new RegExp(`:root \\.t_blue \\.${identifier}[^{]*\\{--surfaceBorder:green;\\}`)
+    )
+  })
+
+  test('platform modifiers resolve for the running platform', () => {
+    const { container } = render(
+      <TamaguiProvider config={conf} defaultTheme="light">
+        <Theme surfaceBorder="red web:orange ios:purple">
+          <View />
+        </Theme>
+      </TamaguiProvider>
+    )
+    const identifier = identifierOf(container)!
+    const own = conf
+      .getCSS()
+      .split('\n')
+      .filter((rule) => rule.includes(identifier))
+      .join('\n')
+    expect(own).toContain(`:root .${identifier} {--surfaceBorder:orange;}`)
+    // the ios: clause contributes nothing on web
+    expect(own).not.toContain('purple')
+  })
+
+  test('inline values reach JS theme readers', () => {
+    const ReadVal = () => {
+      const theme = useTheme()
+      return <span data-testid="read-flat">{String(theme.surfaceBorder?.val)}</span>
+    }
+    const make = (value: string) => (
+      <TamaguiProvider config={conf} defaultTheme="light">
+        <Theme surfaceBorder={value}>
+          <ReadVal />
+        </Theme>
+      </TamaguiProvider>
+    )
+    const view = render(make('rgb(5, 5, 5)'))
+    expect(view.getByTestId('read-flat').textContent).toBe('rgb(5, 5, 5)')
+
+    view.rerender(make('rgb(6, 6, 6)'))
+    expect(view.getByTestId('read-flat').textContent).toBe('rgb(6, 6, 6)')
+    view.unmount()
+  })
+
+  test('a scheme modifier follows the resolved scheme for JS readers', () => {
+    const ReadVal = () => {
+      const theme = useTheme()
+      return <span data-testid="read-scheme">{String(theme.surfaceBorder?.val)}</span>
+    }
+    const make = (scheme: 'light' | 'dark') => (
+      <TamaguiProvider config={conf} defaultTheme={scheme}>
+        <Theme surfaceBorder="rgb(1, 1, 1) dark:rgb(2, 2, 2)">
+          <ReadVal />
+        </Theme>
+      </TamaguiProvider>
+    )
+    const light = render(make('light'))
+    expect(light.getByTestId('read-scheme').textContent).toBe('rgb(1, 1, 1)')
+    light.unmount()
+
+    const dark = render(make('dark'))
+    expect(dark.getByTestId('read-scheme').textContent).toBe('rgb(2, 2, 2)')
+    dark.unmount()
+  })
+
+  test('modifiers a subtree cannot honor are dropped', () => {
+    const { container } = render(
+      <TamaguiProvider config={conf} defaultTheme="light">
+        <Theme surfaceBorder="red hover:blue">
+          <View />
+        </Theme>
+      </TamaguiProvider>
+    )
+    const identifier = identifierOf(container)!
+    const own = conf
+      .getCSS()
+      .split('\n')
+      .filter((rule) => rule.includes(identifier))
+      .join('\n')
+    expect(own).toContain(`:root .${identifier} {--surfaceBorder:red;}`)
+    expect(own).not.toContain('blue')
+  })
+
+  test('a colon inside a function is value content, not a modifier', () => {
+    const { container } = render(
+      <TamaguiProvider config={conf} defaultTheme="light">
+        <Theme surfaceBorder="url(http://x/y.png)">
+          <View />
+        </Theme>
+      </TamaguiProvider>
+    )
+    const identifier = identifierOf(container)!
+    expect(conf.getCSS()).toContain(
+      `:root .${identifier} {--surfaceBorder:url(http://x/y.png);}`
+    )
   })
 })

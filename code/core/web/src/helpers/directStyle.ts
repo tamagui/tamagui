@@ -246,7 +246,7 @@ function stateIsActive(state: GetStyleState, name: string): boolean {
   return false
 }
 
-function platformMatches(name: string): boolean {
+export function platformMatches(name: string): boolean {
   if (name === 'web') return isWeb
   if (name === 'native') return !isWeb
   if (name === 'ios') return isIos
