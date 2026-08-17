@@ -46,7 +46,6 @@ export const docsRoutes = [
       { title: 'Props', route: '/docs/intro/props' },
       { title: 'View & Text', route: '/docs/core/view-and-text' },
       { title: 'Theme', route: '/docs/core/theme' },
-      { title: 'Variables', route: '/docs/core/variables' },
       { title: 'Surfaces & levels', route: '/docs/core/surfaces' },
       { title: 'FontLanguage', route: '/docs/core/font-language' },
     ],

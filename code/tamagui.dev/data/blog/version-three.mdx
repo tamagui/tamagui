@@ -627,11 +627,8 @@ apply correctly in both modes, they just re-render more coarsely under
 
 ## Inline theme values
 
-Themes are tables keyed by name, which made one common thing harder than it
-should be: changing a couple of values for one part of the tree. In v2 that
-meant defining another named theme, or passing override props down manually.
-
-In v3 you set them on `<Theme>` directly:
+Themes are tables keyed by name, while local adjustments belong directly on
+`<Theme>`:
 
 ```tsx
 <Theme background-hover="blue4 dark:blue2">
@@ -673,6 +670,9 @@ convention-by-copy-paste: define your focus ring once, read `focusRingColor`
 in the components you own, and redefine it per section when a screen wants a
 different accent. Together with the component changes above, this also
 replaces `createTamagui({ defaultProps })`, which is deprecated in v3.
+
+See the [Theme inline values documentation](/docs/core/theme#inline-values)
+for references, units, nesting, and platform behavior.
 
 ## Migrating
 

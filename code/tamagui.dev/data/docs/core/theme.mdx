@@ -21,6 +21,113 @@ export default () => (
 )
 ```
 
+## Inline values
+
+Set theme values directly on `<Theme>` to override them for a subtree, much
+like redefining a CSS custom property on one node. Listed keys override and
+everything else inherits from the parent theme. This does not require a named
+theme or a config change.
+
+```tsx
+import { Theme, View } from 'tamagui' // or '@tamagui/core'
+
+export default () => (
+  <Theme background-hover="blue4 dark:blue2">
+    <View backgroundColor="background hover:background-hover" />
+  </Theme>
+)
+```
+
+Values use the same flat grammar as style props. `<Theme>` applies its values
+to a whole subtree, so it supports modifiers that describe a subtree:
+
+- **Theme:** `dark:`, `light:`, or any configured theme name. `blue:` applies
+  under `dark_blue`, `light_blue`, or a theme named `blue`.
+- **Platform:** `ios:`, `android:`, `web:`, and `native:`.
+
+Interaction states such as `hover:` and `press:`, and media queries such as
+`sm:`, describe an element rather than a subtree. They warn in development and
+are dropped here.
+
+A name and inline values compose on the same node:
+
+```tsx
+<Theme name="dark" background="red">
+  {/* dark, with background overridden */}
+</Theme>
+```
+
+Keys must be theme keys or [custom variables](#custom-variables) declared in
+the config. Unknown keys warn in development and are dropped so web and native
+behave the same. Props owned by `<Theme>`, including `name`, `reset`, `debug`,
+`forceClassName`, `shallow`, `className`, `children`, `passThrough`, and
+`contain`, cannot also be theme keys. Tamagui reports these collisions in
+development.
+
+### Custom variables
+
+Declare design-system values in `createTamagui` to make them work anywhere a
+theme key works: style props, `useTheme()`, and inline `<Theme>` values.
+
+```tsx
+const config = createTamagui({
+  // ...tokens, themes
+  variables: {
+    surfaceBorder: 'border-color',
+    disabledOpacity: 0.5,
+    focusRingColor: 'blue10',
+    focusRingWidth: 2,
+    pressScale: 0.97,
+    accent: { light: '#005ac8', dark: '#78b4ff' },
+  },
+})
+```
+
+Use and redefine them like any other theme value:
+
+```tsx
+<View borderColor="surfaceBorder" />
+
+<Theme surfaceBorder="red8">
+  {/* this subtree sees the red surface border */}
+</Theme>
+```
+
+### References and units
+
+Inline values can reference theme keys and tokens:
+
+- `background` finds the theme key or custom variable visible at the `<Theme>`
+  node.
+- `size.4` and `color.blue10` reference tokens by category.
+- A bare token name such as `blue10` checks theme keys first, then scans color,
+  space, size, radius, and zIndex tokens. Use the qualified form when a name
+  exists in more than one category.
+
+References resolve at the `<Theme>` node and descendants inherit the result.
+Chains are supported, while a reference cycle drops the involved keys on both
+platforms with a development warning.
+
+Numbers become `px` on web and stay numbers on native, matching numeric style
+props. Keys ending in `opacity`, `scale`, `zIndex`, `weight`, `flex`, `grow`,
+`shrink`, `ratio`, or `elevation` stay unitless. Use a string such as `"10px"`
+or `px(10)` for an explicit pixel value.
+
+### Nesting and updates
+
+Inline values stack, with the nearest definition winning per key. A `<Theme>`
+that resolves a new name resets keys defined by that theme. Put an inline value
+inside that boundary when it should survive the switch. Custom variables are
+defined on base themes, so sub-themes inherit their inline overrides.
+
+Changing inline values leaves unrelated descendants alone. Tamagui tracks
+which keys each component reads, and only readers of a changed key update. On
+web, styled components restyle through CSS custom properties without a
+JavaScript render. JavaScript readers such as `useTheme()` and animation
+drivers see the same values on both platforms. With `settings.fastSchemeChange`
+on iOS, keys whose light and dark values are literals retain the
+`DynamicColorIOS` fast path.
+
 ## Defining Themes
 
 Themes live one level below tokens. Tokens are your static variables, where

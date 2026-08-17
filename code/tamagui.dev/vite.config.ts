@@ -362,6 +362,11 @@ export function useGroupMedia() {
             permanent: true,
           },
           {
+            source: '/docs/core/variables',
+            destination: '/docs/core/theme#inline-values',
+            permanent: true,
+          },
+          {
             source: '/vite',
             destination: 'https://vxrn.dev',
             permanent: true,
