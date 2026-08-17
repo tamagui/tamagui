@@ -1,5 +1,5 @@
 import type { MutableRefObject } from 'react';
-import type { ReservedThemePropName, ThemeKeys, ThemeState, UseThemeWithStateProps, VariablesValues } from '../types';
+import type { ReservedThemePropName, ThemeKeys, ThemeState, UseThemeWithStateProps, VariableValIn } from '../types';
 /**
  * Theme values set inline for a subtree: `<Theme background-hover="blue4">`.
  * Values use the same flat grammar as style props, narrowed to the modifiers a
@@ -10,8 +10,9 @@ import type { ReservedThemePropName, ThemeKeys, ThemeState, UseThemeWithStatePro
  * with. There are no known theme keys to offer in that case, so it contributes
  * nothing instead.
  */
-type InlineThemeValueProps = string extends ThemeKeys ? {} : Omit<VariablesValues, ReservedThemePropName>;
-export type ThemeValueProps = InlineThemeValueProps;
+type InlineThemeValueProps = string extends ThemeKeys ? {} : {
+    [Key in Exclude<ThemeKeys, ReservedThemePropName>]?: VariableValIn;
+};
 type ThemeComponentPropsOnly = UseThemeWithStateProps & InlineThemeValueProps & {
     contain?: boolean;
 };

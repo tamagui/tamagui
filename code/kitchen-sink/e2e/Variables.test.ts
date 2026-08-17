@@ -1,5 +1,5 @@
 /**
- * Detox E2E for <Variables> inline theme patches on native (plans/variables.md).
+ * Detox E2E for inline `<Theme>` values on native.
  *
  * Validates the native inline theme layer end to end on a real simulator/emulator:
  * - config custom variables resolve through useTheme() per scheme
@@ -8,7 +8,7 @@
  * - DynamicColorIOS: config variables and literal-pair patches report dynamic
  *   colors once the appearance gate is open; referenced patches deopt
  *
- * Launch-state quirk (pre-existing, not Variables): App.native.tsx calls
+ * Launch-state quirk: App.native.tsx calls
  * Appearance.setColorScheme('unspecified') for the RN 0.83 Android null
  * issue, which makes Appearance.getColorScheme() return 'unspecified' until
  * the simulator appearance changes at runtime. doesRootSchemeMatchSystem()
@@ -49,7 +49,7 @@ const CONFIG_DARK_ACCENT = 'val:rgb(90, 90, 255)'
 const PATCH_ACCENT = 'val:rgb(200, 0, 0)'
 const PATCH_DARK_ACCENT = 'val:rgb(200, 100, 100)'
 
-describe('Variables', () => {
+describe('inline Theme values', () => {
   beforeAll(async () => {
     setDeviceAppearance('light')
     await safeLaunchApp({

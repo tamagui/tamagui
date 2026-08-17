@@ -335,7 +335,7 @@ function getThemesDeduped(
 
     // custom variables merge into base themes only; sub-themes inherit them
     // via proxyThemesToParents (native) and the CSS cascade (web), so a
-    // <Variables> patch survives sub-theme switches below it
+    // inline <Theme> patch survives sub-theme switches below it
     if (variables && variablesCtx && !themeName.includes('_')) {
       mergeConfigVariablesIntoTheme(
         theme as any,

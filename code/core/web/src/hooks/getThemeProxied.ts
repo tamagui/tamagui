@@ -50,7 +50,7 @@ type ThemeGettable<Val> = Val & {
 
 // only proxy each theme one time, after that we know that renders are sync,
 // so we can just change the focus of the proxied theme and it can be re-used.
-// WeakMap so dynamically created theme objects (inline <Variables> layers)
+// WeakMap so dynamically created theme objects (inline <Theme> layers)
 // don't retain their proxies after the layer is gone
 const trackingCache: WeakMap<ThemeParsed, ThemeProxied> = new WeakMap()
 const untrackedCache: WeakMap<ThemeParsed, ThemeProxied> = new WeakMap()
@@ -148,7 +148,7 @@ export function getThemeProxied(
             )
           }
 
-          // an inline <Variables> layer overrides this key: the config.themes
+          // an inline <Theme> layer overrides this key: the config.themes
           // pair below would bypass it. use the layer's literal light/dark
           // pair when it has one, otherwise deopt to normal tracking
           const inlineLayer = (curState.theme as any)?.[inlineLayerKey] as

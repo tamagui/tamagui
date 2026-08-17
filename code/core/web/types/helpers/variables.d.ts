@@ -1,19 +1,29 @@
-import type { GenericVariables, TamaguiInternalConfig, TokensParsed, Variable, VariablesProps, VariableValIn } from '../types';
+import type { GenericVariables, TamaguiInternalConfig, ThemeKeys, ThemeName, TokensParsed, Variable, VariableValIn } from '../types';
+export type InlineValues = {
+    values?: {
+        [Key in ThemeKeys]?: VariableValIn;
+    };
+    themes?: {
+        [Name in ThemeName]?: {
+            [Key in ThemeKeys]?: VariableValIn;
+        };
+    };
+};
 export declare const isUnitlessVariableKey: (key: string) => boolean;
 export declare const getThemeKeySet: (conf: TamaguiInternalConfig) => Set<string>;
 /**
- * Resolves one <Variables> value to a CSS value string.
+ * Resolves one inline `<Theme>` value to a CSS value string.
  * References emit var() so they stay live in the cascade; literals serialize
  * with the same unit rule numeric style props use (px unless unitless key).
  * Configured names resolve first; a lookup miss stays literal.
  */
 export declare function resolveVariableValueToCSS(key: string, value: VariableValIn, conf: TamaguiInternalConfig): string | undefined;
-export type VariablesCSS = {
+type VariablesCSS = {
     identifier: string;
     rules: string[];
 };
 /**
- * Builds the deterministic identifier + CSS rules for a <Variables> node.
+ * Builds the deterministic identifier and CSS rules for inline `<Theme>` values.
  * Identifier is a pure function of the resolved declarations so SSR and
  * client agree, and a build-time extractor can precompute it.
  *
@@ -22,8 +32,7 @@ export type VariablesCSS = {
  * the prefers-color-scheme fallback, matching getThemeCSSRules); other names
  * scope by plain theme class.
  */
-export declare function getVariablesCSSRules(props: VariablesProps, conf: TamaguiInternalConfig): VariablesCSS | null;
-export type InlineValues = Pick<VariablesProps, 'values' | 'themes'>;
+export declare function getVariablesCSSRules(props: InlineValues, conf: TamaguiInternalConfig): VariablesCSS | null;
 export declare const inlineLayerKey = "_tmgInlineLayer";
 export type InlineLayerInfo = {
     key: string;
@@ -54,8 +63,8 @@ export declare const reservedThemeProps: Record<string, true>;
  */
 export declare function getInlineValuesFromProps(props: Record<string, any>, conf: TamaguiInternalConfig): InlineValues | null;
 /**
- * Builds the merged theme for a <Variables> layer: parent theme spread plus
- * overridden keys as Variables, resolved per the shared contract (effective
+ * Builds the merged theme for an inline `<Theme>` layer: parent theme spread plus
+ * overridden keys as variables, resolved per the shared contract (effective
  * map = values + matching non-scheme theme buckets + scheme bucket,
  * fixed-point references, cycle-involved keys dropped everywhere). Non-scheme
  * buckets match the subtree's resolved theme name by segment (bucket "blue"
@@ -73,4 +82,5 @@ export declare function getMergedInlineTheme(parentTheme: Record<string, Variabl
  * proxyThemesToParents (native) and the cascade (web).
  */
 export declare function mergeConfigVariablesIntoTheme(theme: Record<string, Variable>, themeName: string, variables: GenericVariables, tokensParsed: TokensParsed): void;
+export {};
 //# sourceMappingURL=variables.d.ts.map

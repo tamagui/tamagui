@@ -13,11 +13,7 @@ import {
   removeNativeStyleScope,
   updateNativeStyleScope,
 } from '../helpers/nativeStyleEngine'
-import {
-  getInlineValuesFromProps,
-  getVariablesCSSRules,
-  type VariablesCSS,
-} from '../helpers/variables'
+import { getInlineValuesFromProps, getVariablesCSSRules } from '../helpers/variables'
 import { useThemeWithState } from '../hooks/useTheme'
 import {
   getThemeState,
@@ -31,7 +27,7 @@ import type {
   ThemeProps,
   ThemeState,
   UseThemeWithStateProps,
-  VariablesValues,
+  VariableValIn,
 } from '../types'
 import { ThemeDebug } from './ThemeDebug'
 
@@ -47,10 +43,9 @@ import { ThemeDebug } from './ThemeDebug'
  */
 type InlineThemeValueProps = string extends ThemeKeys
   ? {}
-  : Omit<VariablesValues, ReservedThemePropName>
-
-// provisional public name. changing this alias does not touch the implementation.
-export type ThemeValueProps = InlineThemeValueProps
+  : {
+      [Key in Exclude<ThemeKeys, ReservedThemePropName>]?: VariableValIn
+    }
 
 type ThemeComponentPropsOnly = UseThemeWithStateProps &
   InlineThemeValueProps & { contain?: boolean }
@@ -81,7 +76,7 @@ export const Theme = createRefComponent(function Theme(
 
   // on web the same layer also compiles to custom properties on this node, so
   // styled descendants restyle through the cascade instead of re-rendering
-  let inlineCSS: VariablesCSS | null = null
+  let inlineCSS: ReturnType<typeof getVariablesCSSRules> = null
   let rulesToInsert: RulesToInsert | null = null
   if (process.env.TAMAGUI_TARGET !== 'native' && inlineValues) {
     inlineCSS = getVariablesCSSRules(inlineValues, config)

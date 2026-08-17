@@ -10,10 +10,8 @@ import {
   TamaguiProvider,
   Theme,
   useTheme,
-  Variables,
   View,
 } from '@tamagui/core'
-import type { VariablesProps } from '@tamagui/core'
 
 const conf = createTamagui({
   ...getDefaultTamaguiConfig(),
@@ -218,143 +216,6 @@ describe('getVariablesCSSRules', () => {
     expect(res.rules[0]).toContain('--accent:#123;')
     expect(res.rules[0]).not.toContain('--surfaceBorder')
     expect(res.rules[0]).not.toContain('--chained')
-  })
-})
-
-describe('<Variables>', () => {
-  test('renders display:contents span with identifier class and registers SSR rules', () => {
-    const { container } = render(
-      <TamaguiProvider config={conf} defaultTheme="light">
-        <Variables values={{ surfaceBorder: 'red' }}>
-          <View testID="child" borderColor="surfaceBorder" />
-        </Variables>
-      </TamaguiProvider>
-    )
-    const span = container.querySelector('.is_Variables') as HTMLElement
-    expect(span).toBeTruthy()
-    const identifier = [...span.classList].find((c) => c.startsWith('tvar_'))!
-    expect(identifier).toBeTruthy()
-    expect(span.className).toContain('_dsp_contents')
-    // registered for SSR collection
-    expect(conf.getCSS()).toContain(`:root .${identifier} {--surfaceBorder:red;}`)
-    // inserted into the runtime sheet exactly once
-    const sheet = document.getElementById('_tamagui-styles') as HTMLStyleElement
-    const inserted = [...(sheet.sheet?.cssRules ?? [])].filter((rule) =>
-      rule.cssText.includes(identifier)
-    )
-    expect(inserted.length).toBe(1)
-  })
-
-  test('inline layer patches JS theme readers (useTheme().val)', () => {
-    const ReadVal = () => {
-      const theme = useTheme()
-      return <span data-testid="read-val">{String(theme.surfaceBorder?.val)}</span>
-    }
-    const make = (value: string) => (
-      <TamaguiProvider config={conf} defaultTheme="light">
-        <Variables values={{ surfaceBorder: value }}>
-          <ReadVal />
-        </Variables>
-      </TamaguiProvider>
-    )
-    const view = render(make('rgb(9, 9, 9)'))
-    expect(view.getByTestId('read-val').textContent).toBe('rgb(9, 9, 9)')
-
-    // changing the patch updates subscribed readers
-    view.rerender(make('rgb(8, 8, 8)'))
-    expect(view.getByTestId('read-val').textContent).toBe('rgb(8, 8, 8)')
-
-    // removing the patch restores the config value (regression: the merge
-    // must base on the parent theme, not the provider's own merged output)
-    view.rerender(
-      <TamaguiProvider config={conf} defaultTheme="light">
-        <Variables>
-          <ReadVal />
-        </Variables>
-      </TamaguiProvider>
-    )
-    expect(view.getByTestId('read-val').textContent).toBe(
-      String(conf.themes.light.surfaceBorder.val)
-    )
-    view.unmount()
-  })
-
-  test('themes-map bucket applies via JS merge when the subtree theme matches', () => {
-    const ReadVal = () => {
-      const theme = useTheme()
-      return <span data-testid="read-themed">{String(theme.surfaceBorder?.val)}</span>
-    }
-    const make = (themeName: string) => (
-      <TamaguiProvider config={conf} defaultTheme="dark">
-        <Theme name={themeName as any}>
-          <Variables
-            values={{ surfaceBorder: 'rgb(1, 1, 1)' }}
-            themes={{ blue: { surfaceBorder: 'rgb(2, 2, 2)' } }}
-          >
-            <ReadVal />
-          </Variables>
-        </Theme>
-      </TamaguiProvider>
-    )
-
-    // theme dark_blue: the blue bucket matches by segment and wins over values
-    const view = render(make('blue'))
-    expect(view.getByTestId('read-themed').textContent).toBe('rgb(2, 2, 2)')
-    view.unmount()
-
-    // theme dark_red: blue doesn't match, base values apply
-    const other = render(make('red'))
-    expect(other.getByTestId('read-themed').textContent).toBe('rgb(1, 1, 1)')
-    other.unmount()
-  })
-
-  test('patch-remove-restore with the themes map restores config values', () => {
-    const ReadVal = () => {
-      const theme = useTheme()
-      return <span data-testid="read-restore">{String(theme.surfaceBorder?.val)}</span>
-    }
-    const make = (props: VariablesProps) => (
-      <TamaguiProvider config={conf} defaultTheme="dark">
-        <Variables {...props}>
-          <ReadVal />
-        </Variables>
-      </TamaguiProvider>
-    )
-
-    const view = render(make({ themes: { dark: { surfaceBorder: 'rgb(3, 3, 3)' } } }))
-    expect(view.getByTestId('read-restore').textContent).toBe('rgb(3, 3, 3)')
-
-    // changing the bucket updates subscribed readers
-    view.rerender(make({ themes: { dark: { surfaceBorder: 'rgb(4, 4, 4)' } } }))
-    expect(view.getByTestId('read-restore').textContent).toBe('rgb(4, 4, 4)')
-
-    // removing the map restores the config value (merge must base on the
-    // parent theme, not the provider's own merged output)
-    view.rerender(make({}))
-    expect(view.getByTestId('read-restore').textContent).toBe(
-      String(conf.themes.dark.surfaceBorder.val)
-    )
-    view.unmount()
-  })
-
-  test('re-mounting the same values does not duplicate rules', () => {
-    const el = (
-      <TamaguiProvider config={conf} defaultTheme="light">
-        <Variables values={{ surfaceBorder: 'rebeccapurple' }}>
-          <View />
-        </Variables>
-      </TamaguiProvider>
-    )
-    const first = render(el)
-    const span = first.container.querySelector('.is_Variables') as HTMLElement
-    const identifier = [...span.classList].find((c) => c.startsWith('tvar_'))!
-    first.unmount()
-    render(el)
-    const sheet = document.getElementById('_tamagui-styles') as HTMLStyleElement
-    const inserted = [...(sheet.sheet?.cssRules ?? [])].filter((rule) =>
-      rule.cssText.includes(identifier)
-    )
-    expect(inserted.length).toBe(1)
   })
 })
 

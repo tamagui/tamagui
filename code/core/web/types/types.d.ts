@@ -571,7 +571,7 @@ export type ThemeKeys = keyof ThemeDefinition;
 export type ThemeParsed = {
     [key in ThemeKeys]: CoerceToVariable<ThemeDefinition[key]>;
 };
-export type VariablesValues = {
+type InlineThemeValues = {
     [Key in ThemeKeys]?: VariableValIn;
 };
 /**
@@ -580,18 +580,6 @@ export type VariablesValues = {
  * of these names. development builds report the collision.
  */
 export type ReservedThemePropName = '_isRoot' | 'children' | 'className' | 'contain' | 'debug' | 'deopt' | 'disable' | 'disable-child-theme' | 'forceClassName' | 'inlineClassName' | 'inlineValues' | 'name' | 'nativeUpdate' | 'needsUpdate' | 'passThrough' | 'reset' | 'shallow';
-export type VariablesProps = {
-    values?: VariablesValues;
-    /**
-     * per theme name: applied additionally when the subtree's resolved theme
-     * matches that name (by theme-name segment, so `blue` matches `dark_blue`).
-     * `dark`/`light` keys follow the subtree's color scheme.
-     */
-    themes?: {
-        [Name in ThemeName]?: VariablesValues;
-    };
-    children?: ReactNode;
-};
 export type Tokens = TamaguiConfig['tokens'];
 export type TokensParsed = {
     [Key in keyof Required<Tokens>]: TokenifyRecord<NonNullable<Tokens[Key]>>;
@@ -630,7 +618,12 @@ export type UseThemeWithStateProps = ThemeProps & {
     disable?: boolean;
     needsUpdate?: () => boolean;
     /** inline theme layer: patches merged over the parent theme */
-    inlineValues?: Pick<VariablesProps, 'values' | 'themes'>;
+    inlineValues?: {
+        values?: InlineThemeValues;
+        themes?: {
+            [Name in ThemeName]?: InlineThemeValues;
+        };
+    };
     /** the `tvar_` class carrying this layer's custom properties on web */
     inlineClassName?: string;
     /**
@@ -866,7 +859,7 @@ export type CreateTamaguiProps = {
     /**
      * Custom variables: merged into every base theme at createTamagui time, so
      * they resolve like theme keys everywhere (bare names in style props, useTheme(),
-     * CSS variable emission) and can be redefined per-subtree via <Variables>.
+     * CSS variable emission) and can be redefined per-subtree via `<Theme>` props.
      * Values may reference theme keys or tokens by bare name or
      * be literals; per-scheme values via { light, dark }.
      */

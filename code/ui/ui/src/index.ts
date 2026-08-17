@@ -105,8 +105,6 @@ export type {
   MediaQueries,
   MediaQueryState,
   GenericVariables,
-  VariablesProps,
-  VariablesValues,
   RadiusTokens,
   ResolvedFontMetric,
   ResolvedFrameMetric,
@@ -166,7 +164,6 @@ export {
   FontLanguage,
   // components
   Theme,
-  Variables,
   View,
   // the raw, unstyled text primitive (no font scale) — the atomic pair for View
   // on the unstyled surface. Paragraph/SizableText (with the font scale) come

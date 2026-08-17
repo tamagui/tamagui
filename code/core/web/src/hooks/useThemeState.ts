@@ -354,7 +354,7 @@ const getSnapshotImpl = (r: SnapshotRef): ThemeState => {
     PendingUpdate.get(id)
   )
 
-  // <Variables> inline theme layer: swap in the merged theme so descendants
+  // inline <Theme> layer: swap in the merged theme so descendants
   // (which read states.get(parentId).theme) see the patched values. The base
   // is always the PARENT state's theme, never this state's own theme —
   // getNextState can return our previous (already-merged) state, and merging

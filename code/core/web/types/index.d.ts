@@ -71,7 +71,6 @@ export * from './views/Slot';
 export * from './views/TamaguiProvider';
 export * from './views/Text';
 export * from './views/Theme';
-export * from './views/Variables';
 export * from './views/ThemeProvider';
 export * from './views/View';
 export * from '@tamagui/compose-refs';

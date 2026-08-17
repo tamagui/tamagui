@@ -11,11 +11,19 @@ import { platformMatches } from './directStyle'
 import type {
   GenericVariables,
   TamaguiInternalConfig,
+  ThemeKeys,
+  ThemeName,
   TokensParsed,
   Variable,
-  VariablesProps,
   VariableValIn,
 } from '../types'
+
+export type InlineValues = {
+  values?: { [Key in ThemeKeys]?: VariableValIn }
+  themes?: {
+    [Name in ThemeName]?: { [Key in ThemeKeys]?: VariableValIn }
+  }
+}
 
 // keys whose numeric values stay unitless on web. audited against RN numeric
 // style keys: opacity, zIndex, flex/flexGrow/flexShrink, aspectRatio, scale*,
@@ -91,7 +99,7 @@ const findToken = (tokensParsed: TokensParsed, name: string): Variable | undefin
     } else {
       warnOnce(
         `ambiguous:${name}`,
-        `Variables: "${name}" exists in multiple token categories; using "${foundCategory}". Rename one of the colliding tokens.`
+        `Theme inline value: "${name}" exists in multiple token categories; using "${foundCategory}". Rename one of the colliding tokens.`
       )
       break
     }
@@ -106,7 +114,7 @@ const cssVariablePrefix = process.env.TAMAGUI_CSS_VARIABLE_PREFIX || ''
 const themeKeyVar = (key: string) => `var(--${cssVariablePrefix}${simpleHash(key, 40)})`
 
 /**
- * Resolves one <Variables> value to a CSS value string.
+ * Resolves one inline `<Theme>` value to a CSS value string.
  * References emit var() so they stay live in the cascade; literals serialize
  * with the same unit rule numeric style props use (px unless unitless key).
  * Configured names resolve first; a lookup miss stays literal.
@@ -139,7 +147,7 @@ export function resolveVariableValueToCSS(
   return value
 }
 
-export type VariablesCSS = {
+type VariablesCSS = {
   identifier: string
   rules: string[]
 }
@@ -147,7 +155,7 @@ export type VariablesCSS = {
 type ResolvedDeclarations = [key: string, cssValue: string][]
 
 const resolveDeclarations = (
-  valuesIn: VariablesProps['values'],
+  valuesIn: InlineValues['values'],
   conf: TamaguiInternalConfig,
   skip?: Set<string> | null
 ): ResolvedDeclarations => {
@@ -162,7 +170,7 @@ const resolveDeclarations = (
     if (!keySet.has(key)) {
       warnOnce(
         `unknown:${key}`,
-        `Variables: "${key}" is not a theme key or config-declared variable (createTamagui({ variables })) — dropping. Native can't resolve undeclared keys, so declaring them keeps platforms in sync.`
+        `Theme inline value: "${key}" is not a theme key or config-declared variable (createTamagui({ variables })) — dropping. Native can't resolve undeclared keys, so declaring it keeps platforms in sync.`
       )
       continue
     }
@@ -195,7 +203,7 @@ const bucketMatchesThemeName = (bucketName: string, themeName: string): boolean 
 // non-scheme bucket names of a themes map, sorted so prefix chains apply
 // least-specific first (blue before blue_surface1) — the same order the CSS
 // rules are emitted in, where the later equal-specificity rule wins
-const getThemedBucketNames = (themes: VariablesProps['themes']): string[] => {
+const getThemedBucketNames = (themes: InlineValues['themes']): string[] => {
   if (!themes) return []
   const names: string[] = []
   for (const name in themes) {
@@ -231,7 +239,7 @@ const warnOnUnknownThemeBucket = (name: string, conf: TamaguiInternalConfig) => 
   if (!getThemeBucketNames(conf).has(name)) {
     warnOnce(
       `unknown-theme:${name}`,
-      `Variables: themes["${name}"] doesn't match any theme name in your config — it will never apply.`
+      `Theme inline value: modifier "${name}:" doesn't match any theme name in your config, so it will never apply.`
     )
   }
 }
@@ -301,7 +309,7 @@ const getCycleDroppedKeys = (props: InlineValues): Set<string> | null => {
   if (dropped && process.env.NODE_ENV === 'development') {
     warnOnce(
       `cycle:${[...dropped].join(',')}`,
-      `Variables: reference cycle involving "${[...dropped].join('", "')}" — dropping these keys (they cannot resolve on either platform).`
+      `Theme inline values: reference cycle involving "${[...dropped].join('", "')}". These keys cannot resolve on either platform and are dropped.`
     )
   }
 
@@ -311,7 +319,7 @@ const getCycleDroppedKeys = (props: InlineValues): Set<string> | null => {
 const rulesCache = new Map<string, VariablesCSS | null>()
 
 /**
- * Builds the deterministic identifier + CSS rules for a <Variables> node.
+ * Builds the deterministic identifier and CSS rules for inline `<Theme>` values.
  * Identifier is a pure function of the resolved declarations so SSR and
  * client agree, and a build-time extractor can precompute it.
  *
@@ -321,12 +329,12 @@ const rulesCache = new Map<string, VariablesCSS | null>()
  * scope by plain theme class.
  */
 export function getVariablesCSSRules(
-  props: VariablesProps,
+  props: InlineValues,
   conf: TamaguiInternalConfig
 ): VariablesCSS | null {
   const cycleDropped = getCycleDroppedKeys(props)
   const themes = props.themes as
-    | Record<string, VariablesProps['values'] | undefined>
+    | Record<string, InlineValues['values'] | undefined>
     | undefined
 
   const base = resolveDeclarations(props.values, conf, cycleDropped)
@@ -425,9 +433,7 @@ export function getVariablesCSSRules(
   return result
 }
 
-// ---- inline theme layer (<Variables> on native + JS theme readers on web) ----
-
-export type InlineValues = Pick<VariablesProps, 'values' | 'themes'>
+// ---- inline theme layer (native + JS theme readers on web) ----
 
 // non-enumerable marker on merged theme objects: cache key for idempotency,
 // overridden key set, and literal light/dark pairs for the iOS fast-scheme path
@@ -444,7 +450,7 @@ const serializeInlineValue = (value: VariableValIn): string =>
     ? `object:px${value.val}`
     : `${typeof value}:${String(value)}`
 
-const serializeBucket = (bucket: VariablesProps['values']): string => {
+const serializeBucket = (bucket: InlineValues['values']): string => {
   if (!bucket) return ''
   const map = bucket as Record<string, VariableValIn>
   return Object.keys(map)
@@ -466,7 +472,7 @@ export const getInlineValuesKey = (inline: InlineValues): string => {
   if (cached !== undefined) return cached
   let key = serializeBucket(inline.values)
   if (inline.themes) {
-    const themes = inline.themes as Record<string, VariablesProps['values']>
+    const themes = inline.themes as Record<string, InlineValues['values']>
     for (const name of Object.keys(themes).sort()) {
       key += `;${name}=${serializeBucket(themes[name])}`
     }
@@ -678,8 +684,8 @@ export function getInlineValuesFromProps(
 const mergedThemeCache = new WeakMap<object, Map<string, Record<string, Variable>>>()
 
 /**
- * Builds the merged theme for a <Variables> layer: parent theme spread plus
- * overridden keys as Variables, resolved per the shared contract (effective
+ * Builds the merged theme for an inline `<Theme>` layer: parent theme spread plus
+ * overridden keys as variables, resolved per the shared contract (effective
  * map = values + matching non-scheme theme buckets + scheme bucket,
  * fixed-point references, cycle-involved keys dropped everywhere). Non-scheme
  * buckets match the subtree's resolved theme name by segment (bucket "blue"
@@ -785,7 +791,7 @@ export function getMergedInlineTheme(
     if (!keySet.has(key)) {
       warnOnce(
         `unknown:${key}`,
-        `Variables: "${key}" is not a theme key or config-declared variable (createTamagui({ variables })) — dropping. Native can't resolve undeclared keys, so declaring them keeps platforms in sync.`
+        `Theme inline value: "${key}" is not a theme key or config-declared variable (createTamagui({ variables })) — dropping. Native can't resolve undeclared keys, so declaring it keeps platforms in sync.`
       )
       continue
     }
