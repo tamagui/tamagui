@@ -18,6 +18,9 @@ import {
   type TamaguiInternalConfig,
 } from '@tamagui/web'
 
+import { createHash } from 'node:crypto'
+import path from 'node:path'
+
 import type { IslandThemeBridge, IslandThemeBridgeLayer } from './islands'
 
 /**
@@ -31,6 +34,8 @@ import type { IslandThemeBridge, IslandThemeBridgeLayer } from './islands'
 
 export interface ZeroModuleTransformInput {
   id: string
+  /** Project root, so bridge ids are stable and unique across modules. */
+  root: string
   source: string
   /** The module's lowering plan. Erasure only runs on a plan with no violations. */
   plan: LoweredModulePlan
@@ -228,27 +233,25 @@ export function transformZeroModule(
       })
       continue
     }
-    // The theme class and the inline-value class go on separate nested nodes.
-    // A theme rule is anchored with `:not(#t_theme_full_name)`, so it carries an
-    // id-level specificity that an inline-value rule on the same element cannot
-    // outrank. On a descendant node the theme rule does not match at all, so the
-    // inline layer wins the custom property cleanly.
-    const themeClass = [typeof nameValue === 'string' ? `t_${nameValue}` : '', 'is_Theme']
+    // one node carrying the theme class and the inline-value class, the same
+    // composition the runtime Theme emits
+    const classNames = [
+      typeof nameValue === 'string' ? `t_${nameValue}` : '',
+      'is_Theme',
+      inlineCSS?.identifier ?? '',
+    ]
       .filter(Boolean)
       .join(' ')
-    const open = inlineCSS
-      ? `<span className="${themeClass}"><span className="${inlineCSS.identifier}">`
-      : `<span className="${themeClass}">`
     edits.push({
       start: opening.start,
       end: opening.end,
-      content: open,
+      content: `<span className="${classNames}">`,
       origin: { id: moduleId, start: opening.start, end: opening.end },
     })
     edits.push({
       start: closing.start,
       end: closing.end,
-      content: inlineCSS ? `</span></span>` : `</span>`,
+      content: `</span>`,
       origin: { id: moduleId, start: closing.start, end: closing.end },
     })
   }
@@ -262,6 +265,10 @@ export function transformZeroModule(
     .sort((left, right) => left.start - right.start)
 
   const defaultThemeName = Object.keys(config.themes)[0] ?? 'light'
+  const moduleBridgePrefix = createHash('sha256')
+    .update(path.relative(input.root, id).replace(/\\/g, '/'))
+    .digest('hex')
+    .slice(0, 8)
 
   mounts.forEach((element, index) => {
     const islandId = islandLocals.get(jsxNameOf(element)!)!
@@ -287,7 +294,9 @@ export function transformZeroModule(
       .map((themeElement) => themeInfo.get(themeElement)?.layer)
       .filter((layer): layer is IslandThemeBridgeLayer => !!layer)
 
-    const bridgeId = `b${index}`
+    // unique across modules and stable across the server and client
+    // compilations of the same entry, because both see the same module path
+    const bridgeId = `b${moduleBridgePrefix}_${index}`
     const bridge: IslandThemeBridge = {
       id: bridgeId,
       name: names[0] ?? defaultThemeName,

@@ -8,8 +8,6 @@ import { createPortal } from 'react-dom'
 import { getStackedZIndexProps } from './helpers'
 import type { PortalProps } from './PortalProps'
 
-const contentsStyle = { display: 'contents' } as const
-
 export const Portal = React.memo((propsIn: PortalProps) => {
   const { children, passThrough, style, open, hidden } = propsIn
 
@@ -52,14 +50,13 @@ export const Portal = React.memo((propsIn: PortalProps) => {
           replayed here or portaled content silently falls back to the theme */}
       {themeLayers.reduceRight(
         (node, layer, index) => (
-          <Theme key={index} inlineValues={layer.inlineValues}>
-            {/* the layer's class goes on its own node, below whatever node holds
-                the theme class: a theme rule is anchored with
-                `:not(#t_theme_full_name)`, so it outranks an inline-value rule
-                that shares its element */}
-            <span className={layer.inlineClassName} style={contentsStyle}>
-              {node}
-            </span>
+          <Theme
+            key={index}
+            forceClassName
+            inlineValues={layer.inlineValues}
+            inlineClassName={layer.inlineClassName}
+          >
+            {node}
           </Theme>
         ),
         // provide computed z-index to children so nested portals can stack above

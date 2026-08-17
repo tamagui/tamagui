@@ -99,17 +99,21 @@ function shortestChain(
   const entrySet = new Set(entries)
   const seen = new Set([target])
   const queue: string[][] = [[target]]
+  // an adapter may not expose its entry modules by the same id it uses for the
+  // rest of the graph, so fall back to the longest ancestor chain we can walk
+  let longest: string[] = [target]
   while (queue.length) {
     const chain = queue.shift()!
     const head = chain[0]!
     if (entrySet.has(head)) return chain
+    if (chain.length > longest.length) longest = chain
     for (const importer of importersOf.get(head) ?? []) {
       if (seen.has(importer)) continue
       seen.add(importer)
       queue.push([importer, ...chain])
     }
   }
-  return [target]
+  return longest
 }
 
 export function checkZeroGraph(input: {

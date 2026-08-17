@@ -33,7 +33,9 @@ export interface ZeroRuntimeResolved {
   cssPath: string
 }
 
-export const ZERO_OUT_DIRNAME = '.tamagui-zero'
+// under the project's existing generated-output directory, which the repository
+// already excludes from git and from the formatter
+export const ZERO_OUT_DIRNAME = '.tamagui/zero'
 
 /**
  * Island id is the module's basename, which is also the generated loader's
@@ -43,10 +45,47 @@ export function islandIdFor(moduleId: string): string {
   return path.basename(moduleId).replace(/\.[jt]sx?$/, '')
 }
 
+type ZeroRuntimeInput = Pick<TamaguiOptions, 'experimental' | 'outputCSS' | 'platform'>
+
 export async function resolveZeroRuntime(
-  options: Pick<TamaguiOptions, 'experimental' | 'outputCSS' | 'platform'>,
+  options: ZeroRuntimeInput,
   root: string
 ): Promise<ZeroRuntimeResolved> {
+  const early = resolveZeroRuntimeEarly(options, root)
+  if (early.done) return early.resolved
+  return finishZeroRuntime(
+    options,
+    root,
+    early.islandGlobs,
+    early.islandGlobs.length
+      ? await glob(early.islandGlobs, { cwd: root, absolute: true, dot: false })
+      : []
+  )
+}
+
+/** The webpack adapter configures itself synchronously, before any hook runs. */
+export function resolveZeroRuntimeSync(
+  options: ZeroRuntimeInput,
+  root: string
+): ZeroRuntimeResolved {
+  const early = resolveZeroRuntimeEarly(options, root)
+  if (early.done) return early.resolved
+  return finishZeroRuntime(
+    options,
+    root,
+    early.islandGlobs,
+    early.islandGlobs.length
+      ? glob.sync(early.islandGlobs, { cwd: root, absolute: true, dot: false })
+      : []
+  )
+}
+
+function resolveZeroRuntimeEarly(
+  options: ZeroRuntimeInput,
+  root: string
+):
+  | { done: true; resolved: ZeroRuntimeResolved }
+  | { done: false; islandGlobs: string[] } {
   const requested = options.experimental?.zeroRuntime
   const outDir = path.join(root, ZERO_OUT_DIRNAME)
   const off: ZeroRuntimeResolved = {
@@ -56,10 +95,10 @@ export async function resolveZeroRuntime(
     outDir,
     cssPath: '',
   }
-  if (!requested) return off
+  if (!requested) return { done: true, resolved: off }
 
   if (requested === 'report') {
-    return { ...off, mode: 'report' }
+    return { done: true, resolved: { ...off, mode: 'report' } }
   }
 
   if (options.platform === 'native') {
@@ -74,10 +113,18 @@ export async function resolveZeroRuntime(
     )
   }
 
-  const islandGlobs = requested === true ? [] : requested.islands
-  const matches = islandGlobs.length
-    ? await glob(islandGlobs, { cwd: root, absolute: true, dot: false })
-    : []
+  return { done: false, islandGlobs: requested === true ? [] : requested.islands }
+}
+
+function finishZeroRuntime(
+  options: ZeroRuntimeInput,
+  root: string,
+  islandGlobs: string[],
+  matches: string[]
+): ZeroRuntimeResolved {
+  const outDir = path.join(root, ZERO_OUT_DIRNAME)
+  // resolveZeroRuntimeEarly already rejected a missing outputCSS
+  const outputCSS = options.outputCSS as string
   const islands = [...new Set(matches.map((match) => path.normalize(match)))]
     .sort()
     .map((module): ZeroIsland => {
@@ -113,9 +160,7 @@ export async function resolveZeroRuntime(
     islandGlobs,
     islands,
     outDir,
-    cssPath: path.isAbsolute(options.outputCSS)
-      ? options.outputCSS
-      : path.resolve(root, options.outputCSS),
+    cssPath: path.isAbsolute(outputCSS) ? outputCSS : path.resolve(root, outputCSS),
   }
 }
 

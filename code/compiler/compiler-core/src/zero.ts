@@ -1,7 +1,7 @@
-import { childNode, childNodes } from './ast'
+import { childNode, childNodes, walkAst } from './ast'
 import type { AstNode, ResolvedModuleId, SourceSpan } from './contracts'
 import type { SourceEdit } from './output'
-import { yukuFactory } from './yuku'
+import { parseModuleAst } from './yuku'
 
 /**
  * Zero-runtime reference erasure.
@@ -54,6 +54,62 @@ interface ImportBinding {
   moduleSpecifier: string
 }
 
+/**
+ * Every value-position occurrence of each identifier name in the module,
+ * excluding binding sites and non-reference positions such as member property
+ * names, object keys, and JSX attribute names.
+ */
+function collectNameOccurrences(program: AstNode): Map<string, Range[]> {
+  const occurrences = new Map<string, Range[]>()
+  walkAst(program, (node, parent, key) => {
+    if (node.type !== 'Identifier' && node.type !== 'JSXIdentifier') return
+    const name = typeof node.name === 'string' ? node.name : null
+    if (!name) return
+    if (parent) {
+      // binding sites, not references
+      if (
+        parent.type === 'ImportSpecifier' ||
+        parent.type === 'ImportDefaultSpecifier' ||
+        parent.type === 'ImportNamespaceSpecifier' ||
+        parent.type === 'ExportSpecifier'
+      ) {
+        return
+      }
+      // property names, not references
+      if (
+        (parent.type === 'MemberExpression' ||
+          parent.type === 'JSXMemberExpression' ||
+          parent.type === 'OptionalMemberExpression') &&
+        key === 'property' &&
+        !parent.computed
+      ) {
+        return
+      }
+      if (
+        (parent.type === 'Property' || parent.type === 'PropertyDefinition') &&
+        key === 'key' &&
+        !parent.computed
+      ) {
+        return
+      }
+      if (parent.type === 'JSXAttribute' && key === 'name') return
+      // declaration binding sites, not references
+      if (
+        (parent.type === 'VariableDeclarator' ||
+          parent.type === 'FunctionDeclaration' ||
+          parent.type === 'ClassDeclaration') &&
+        key === 'id'
+      ) {
+        return
+      }
+    }
+    const list = occurrences.get(name)
+    if (list) list.push({ start: node.start, end: node.end })
+    else occurrences.set(name, [{ start: node.start, end: node.end }])
+  })
+  return occurrences
+}
+
 function coversRange(outer: Range, inner: Range): boolean {
   return outer.start <= inner.start && outer.end >= inner.end
 }
@@ -102,12 +158,7 @@ function collectStyledDeclarators(
 
 export function planZeroErasure(input: ZeroErasureInput): ZeroErasureResult {
   const { id, source, loweredEdits } = input
-  const analyzer = yukuFactory.create({
-    files: new Map([[id, source]]),
-    resolutions: new Map(),
-  })
-  analyzer.link()
-  const program = analyzer.programOf(id)
+  const program = parseModuleAst(source, id)
 
   const violations: ZeroViolation[] = []
   const span = (node: Range): SourceSpan => ({ id, start: node.start, end: node.end })
@@ -172,14 +223,11 @@ export function planZeroErasure(input: ZeroErasureInput): ZeroErasureResult {
     .filter((edit) => edit.end > edit.start)
     .map((edit) => ({ start: edit.start, end: edit.end }))
 
-  const referencesOf = (local: string): Range[] => {
-    const definition = analyzer.definitionOf(id, local)
-    if (!definition) return []
-    return analyzer
-      .referencesOf(definition)
-      .filter((reference) => reference.id === id)
-      .map((reference) => ({ start: reference.start, end: reference.end }))
-  }
+  // Name occurrences, collected in one walk. This deliberately over-counts a
+  // shadowed name: over-counting keeps an import that could have been dropped,
+  // while under-counting would erase a live one and break the app at runtime.
+  const occurrences = collectNameOccurrences(program)
+  const referencesOf = (local: string): Range[] => occurrences.get(local) ?? []
 
   const isConsumed = (reference: Range) =>
     consumed.some((range) => coversRange(range, reference))

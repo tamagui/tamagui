@@ -25,13 +25,16 @@ export interface ZeroRuntimeResolved {
     /** Absolute path of the single generated CSS artifact. */
     cssPath: string;
 }
-export declare const ZERO_OUT_DIRNAME = ".tamagui-zero";
+export declare const ZERO_OUT_DIRNAME = ".tamagui/zero";
 /**
  * Island id is the module's basename, which is also the generated loader's
  * filename. Two declared islands may not share a basename.
  */
 export declare function islandIdFor(moduleId: string): string;
-export declare function resolveZeroRuntime(options: Pick<TamaguiOptions, 'experimental' | 'outputCSS' | 'platform'>, root: string): Promise<ZeroRuntimeResolved>;
+type ZeroRuntimeInput = Pick<TamaguiOptions, 'experimental' | 'outputCSS' | 'platform'>;
+export declare function resolveZeroRuntime(options: ZeroRuntimeInput, root: string): Promise<ZeroRuntimeResolved>;
+/** The webpack adapter configures itself synchronously, before any hook runs. */
+export declare function resolveZeroRuntimeSync(options: ZeroRuntimeInput, root: string): ZeroRuntimeResolved;
 export type ZeroIntegration = 'vite' | 'next-webpack' | 'metro-web';
 /**
  * Base and island support are enabled per integration after that integration
@@ -42,4 +45,5 @@ export declare const ZERO_INTEGRATION_SUPPORT: Record<ZeroIntegration, {
     islands: boolean;
 }>;
 export declare function assertZeroIntegrationSupport(integration: ZeroIntegration, resolved: ZeroRuntimeResolved): void;
+export {};
 //# sourceMappingURL=options.d.ts.map

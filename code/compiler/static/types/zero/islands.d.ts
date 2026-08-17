@@ -35,8 +35,20 @@ export declare function generateIslandLoaderSource(input: IslandGenerationInput)
 export declare function generateIslandEntrySource(input: IslandGenerationInput): string;
 export declare function writeIslandModules(input: IslandGenerationInput): void;
 /**
- * Rollup/webpack globals for the island child build. React is externalized to
- * the handoff the loader publishes, so one React instance serves both graphs.
+ * The island child build externalizes React to the handoff the generated loader
+ * publishes, so one React instance serves both graphs.
+ *
+ * Property paths are the source of truth: webpack needs the segments (a dotted
+ * string becomes one literal property name), rollup needs the joined expression.
  */
+export declare const ISLAND_EXTERNAL_GLOBAL_PATHS: Record<string, string[]>;
 export declare const ISLAND_EXTERNAL_GLOBALS: Record<string, string>;
+/**
+ * Merges one module's bridge descriptors into the build-wide manifest.
+ *
+ * A module is transformed once per compilation (webpack builds a server and a
+ * client pass over the same source), so a bridge id must replace its previous
+ * record rather than append a duplicate.
+ */
+export declare function mergeIslandBridges(target: Map<string, IslandThemeBridge[]>, incoming: Map<string, IslandThemeBridge[]>): void;
 //# sourceMappingURL=islands.d.ts.map

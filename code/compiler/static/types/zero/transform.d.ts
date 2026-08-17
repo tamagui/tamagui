@@ -11,6 +11,8 @@ import type { IslandThemeBridge } from './islands';
  */
 export interface ZeroModuleTransformInput {
     id: string;
+    /** Project root, so bridge ids are stable and unique across modules. */
+    root: string;
     source: string;
     /** The module's lowering plan. Erasure only runs on a plan with no violations. */
     plan: LoweredModulePlan;

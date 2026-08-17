@@ -193,11 +193,44 @@ export function writeIslandModules(input: IslandGenerationInput): void {
 }
 
 /**
- * Rollup/webpack globals for the island child build. React is externalized to
- * the handoff the loader publishes, so one React instance serves both graphs.
+ * The island child build externalizes React to the handoff the generated loader
+ * publishes, so one React instance serves both graphs.
+ *
+ * Property paths are the source of truth: webpack needs the segments (a dotted
+ * string becomes one literal property name), rollup needs the joined expression.
  */
-export const ISLAND_EXTERNAL_GLOBALS: Record<string, string> = {
-  react: `globalThis.${ISLAND_RUNTIME_KEY}.react`,
-  'react-dom': `globalThis.${ISLAND_RUNTIME_KEY}.reactDom`,
-  'react/jsx-runtime': `globalThis.${ISLAND_RUNTIME_KEY}.jsxRuntime`,
+export const ISLAND_EXTERNAL_GLOBAL_PATHS: Record<string, string[]> = {
+  react: [ISLAND_RUNTIME_KEY, 'react'],
+  'react-dom': [ISLAND_RUNTIME_KEY, 'reactDom'],
+  'react/jsx-runtime': [ISLAND_RUNTIME_KEY, 'jsxRuntime'],
+}
+
+export const ISLAND_EXTERNAL_GLOBALS: Record<string, string> = Object.fromEntries(
+  Object.entries(ISLAND_EXTERNAL_GLOBAL_PATHS).map(([name, segments]) => [
+    name,
+    `globalThis.${segments.join('.')}`,
+  ])
+)
+
+/**
+ * Merges one module's bridge descriptors into the build-wide manifest.
+ *
+ * A module is transformed once per compilation (webpack builds a server and a
+ * client pass over the same source), so a bridge id must replace its previous
+ * record rather than append a duplicate.
+ */
+export function mergeIslandBridges(
+  target: Map<string, IslandThemeBridge[]>,
+  incoming: Map<string, IslandThemeBridge[]>
+): void {
+  for (const [islandId, bridges] of incoming) {
+    const list = target.get(islandId) ?? []
+    for (const bridge of bridges) {
+      const index = list.findIndex((existing) => existing.id === bridge.id)
+      if (index >= 0) list[index] = bridge
+      else list.push(bridge)
+    }
+    list.sort((left, right) => (left.id < right.id ? -1 : left.id > right.id ? 1 : 0))
+    target.set(islandId, list)
+  }
 }
