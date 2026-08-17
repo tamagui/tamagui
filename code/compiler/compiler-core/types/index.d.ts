@@ -9,5 +9,6 @@ export * from './materialize';
 export * from './output';
 export * from './session';
 export { normalizeElements } from './normalize';
+export * from './zero';
 export { parseModuleAst, yukuFactory } from './yuku';
 //# sourceMappingURL=index.d.ts.map

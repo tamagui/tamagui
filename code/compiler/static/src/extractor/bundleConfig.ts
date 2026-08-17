@@ -587,6 +587,7 @@ export async function bundleConfig(props: TamaguiOptions, rebuild = false) {
 export async function writeTamaguiCSS(outputCSS: string, config: TamaguiInternalConfig) {
   const flush = async () => {
     colorLog(Color.FgYellow, `  ➡ [tamagui] output css: ${outputCSS}`)
+    await FS.mkdirp(dirname(outputCSS))
     await FS.writeFile(outputCSS, css)
   }
 

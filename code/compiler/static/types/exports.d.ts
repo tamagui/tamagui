@@ -10,4 +10,5 @@ export * from './registerRequire';
 export { detectModuleFormat, clearFormatCache } from './extractor/detectModuleFormat';
 export { esbundleTamaguiConfig } from './extractor/bundle';
 export * from './getPragmaOptions';
+export * from './zero';
 //# sourceMappingURL=exports.d.ts.map

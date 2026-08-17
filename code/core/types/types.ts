@@ -145,6 +145,17 @@ export interface TamaguiBuildOptions {
      * native style engine. Web output is unaffected.
      */
     nativeFastPath?: boolean
+
+    /**
+     * (Experimental, web only) Build a zero-runtime web entry graph.
+     *
+     * - `'report'` runs every zero analysis and writes the report, but keeps the
+     *   full runtime and exits successfully.
+     * - `true` enforces the contract and builds one zero-runtime entry graph.
+     * - `{ islands }` also treats each listed module glob as the root of a
+     *   separately compiled full-runtime entry.
+     */
+    zeroRuntime?: true | 'report' | { islands: string[] }
   }
 }
 
