@@ -1,10 +1,18 @@
 import Static from '@tamagui/static'
 import type { TamaguiOptions } from '@tamagui/types'
-import { existsSync } from 'node:fs'
+import { createHash } from 'node:crypto'
+import { existsSync, mkdirSync, writeFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
+import { gzipSync } from 'node:zlib'
 import type { Compiler, RuleSetRule } from 'webpack'
 import webpack from 'webpack'
 import { requireResolve } from './requireResolve'
+import {
+  buildWebpackIsland,
+  collectDefinitions,
+  getWebpackZeroController,
+  ZERO_CSS_FILENAME,
+} from './zeroRuntime'
 
 export type PluginOptions = TamaguiOptions & {
   isServer?: boolean
@@ -27,6 +35,155 @@ export class TamaguiPlugin {
       components: ['@tamagui/core'],
     }
   ) {}
+
+  /**
+   * The zero-runtime half: the plugin owns the one generated CSS artifact, runs
+   * each declared island as a separate full-runtime compilation, and proves the
+   * emitted client graph carries no forbidden Tamagui module.
+   */
+  applyZeroRuntime(compiler: Compiler) {
+    const root = this.options.root || compiler.context || process.cwd()
+    const zero = getWebpackZeroController({ platform: 'web', ...this.options }, root)
+    if (!zero || zero.islandBuild) return
+
+    compiler.hooks.beforeCompile.tapPromise(this.pluginName, async () => {
+      const projectInfo = await Static.loadTamagui({
+        components: ['tamagui'],
+        platform: 'web',
+        ...this.options,
+        outputCSS: undefined,
+      })
+      if (!projectInfo?.tamaguiConfig) {
+        throw new Error(
+          `[tamagui zero-runtime] the Tamagui config did not evaluate, so no CSS artifact can be generated`
+        )
+      }
+      const configCSS = projectInfo.tamaguiConfig.getCSS()
+      zero.configHash = createHash('sha256').update(configCSS).digest('hex').slice(0, 16)
+      zero.artifact.setConfigCSS(configCSS)
+    })
+
+    // the client compilation is the zero entry graph and owns the gates
+    if (this.options.isServer) return
+
+    compiler.hooks.afterEmit.tapPromise(this.pluginName, async (compilation) => {
+      if (zero.violations.length) {
+        throw new Error(Static.formatZeroViolations(zero.violations))
+      }
+
+      const islandOutputHashes: Record<string, string> = {}
+      for (const island of zero.resolved.islands) {
+        const built = await buildWebpackIsland({
+          island,
+          controller: zero,
+          webpack,
+          mode: compiler.options.mode === 'development' ? 'development' : 'production',
+          resolve: compiler.options.resolve,
+          defines: collectDefinitions(compiler),
+          moduleRules: [
+            {
+              test: /\.tsx?$/,
+              exclude: /node_modules/,
+              use: [
+                {
+                  loader: requireResolve('esbuild-loader'),
+                  options: { target: 'es2020', jsx: 'automatic', loader: 'tsx' },
+                },
+                {
+                  loader: requireResolve('tamagui-loader'),
+                  options: { ...this.options, isServer: false },
+                },
+              ],
+            },
+          ],
+        })
+        islandOutputHashes[island.id] = built.hash
+      }
+
+      const written = zero.artifact.write()
+      if (!written.complete) {
+        throw new Error(
+          `[tamagui zero-runtime] cannot derive TAMAGUI_DID_OUTPUT_CSS: the generated CSS artifact is missing ${written.missing.join(
+            ', '
+          )}`
+        )
+      }
+      const css = zero.artifact.css()
+      mkdirSync(zero.publicDir, { recursive: true })
+      writeFileSync(join(zero.publicDir, ZERO_CSS_FILENAME), css)
+
+      // a generated or virtual module has no resource, so fall back to its
+      // webpack identifier: the graph check ignores non-absolute ids, and the
+      // importer chain still needs those nodes to reach an entry
+      const moduleId = (module: unknown) =>
+        ((module as any)?.resource as string | undefined) ??
+        ((module as any)?.identifier?.() as string | undefined)
+
+      const modules: { id: string; importers: string[] }[] = []
+      const importerEdges = new Map<string, string[]>()
+      for (const module of compilation.modules) {
+        const id = moduleId(module)
+        if (!id) continue
+        const importers: string[] = []
+        const issuer = moduleId(compilation.moduleGraph.getIssuer(module))
+        if (issuer) importers.push(issuer)
+        for (const connection of compilation.moduleGraph.getIncomingConnections(module)) {
+          const origin = moduleId(connection.originModule)
+          if (origin && !importers.includes(origin)) importers.push(origin)
+        }
+        importerEdges.set(id, importers)
+        modules.push({ id, importers })
+      }
+      const entries: string[] = []
+      for (const [, entry] of compilation.entries) {
+        for (const dependency of entry.dependencies) {
+          const id = moduleId(compilation.moduleGraph.getModule(dependency))
+          if (id) entries.push(id)
+        }
+      }
+
+      const checked = Static.checkZeroGraph({ entries, modules, importerEdges })
+      const bridgeManifest = Object.fromEntries(
+        [...zero.bridges.entries()].sort(([left], [right]) => (left < right ? -1 : 1))
+      )
+      const identityInputs = {
+        runtimeLiteral: 'zero' as const,
+        target: 'web' as const,
+        configGeneration: zero.configHash,
+        cssHash: written.hash,
+        compilerVersion: Static.ZERO_COMPILER_VERSION,
+        islandEntries: zero.resolved.islands.map((island) => island.module),
+        bridgeManifestHash: Static.hashBridgeManifest(bridgeManifest),
+        islandOutputHashes,
+      }
+      const receipt = {
+        integration: 'next-webpack',
+        graph: 'zero' as const,
+        entries: entries.sort(),
+        moduleCount: modules.length,
+        tamaguiModules: checked.tamaguiModules,
+        forbidden: checked.forbidden,
+        cssArtifact: { path: zero.cssHref, hash: written.hash },
+        identity: Static.hashZeroIdentity(identityInputs),
+        gzip: {
+          [ZERO_CSS_FILENAME]: gzipSync(Buffer.from(css), { level: 9 }).length,
+        },
+      }
+      Static.writeZeroGraphReceipt(zero.resolved.outDir, 'next-zero', receipt)
+      writeFileSync(
+        join(zero.resolved.outDir, 'next-zero.bridges.json'),
+        `${JSON.stringify({ identity: receipt.identity, identityInputs, bridges: bridgeManifest }, null, 2)}\n`
+      )
+      if (receipt.forbidden.length) {
+        throw new Error(Static.formatZeroGraphFailure(receipt))
+      }
+      console.info(
+        `  ➡ [tamagui zero-runtime] ${modules.length} modules, 0 forbidden, css ${receipt.gzip[ZERO_CSS_FILENAME]} gzip, islands: ${
+          zero.resolved.islands.map((island) => island.id).join(', ') || 'none'
+        }`
+      )
+    })
+  }
 
   safeResolves = (resolves: [string, string][], multiple = false) => {
     const res: string[][] = []
@@ -116,6 +273,8 @@ export class TamaguiPlugin {
       platform: 'web',
       ...this.options,
     })
+
+    this.applyZeroRuntime(compiler)
 
     if (compiler.options.mode === 'development' && !this.options.disableWatchConfig) {
       void Static.watchTamaguiConfig(this.options).then((watcher) => {

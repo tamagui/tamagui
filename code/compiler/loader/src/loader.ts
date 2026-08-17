@@ -5,6 +5,7 @@ import { readFile } from 'node:fs/promises'
 import path from 'node:path'
 import type { LoaderContext } from 'webpack'
 import { requireResolve } from './requireResolve'
+import { getWebpackZeroController, zeroModuleKey } from './zeroRuntime'
 
 const { getPragmaOptions } = Static
 
@@ -76,7 +77,20 @@ export const loader = async function loader(
       compiler = new Static.CompilerFrontend()
       compilerFrontends.set(key, compiler)
     }
-    const projectInfo = await Static.loadTamagui(options)
+    const zero = getWebpackZeroController(options, root)
+    if (zero) {
+      // A zero build's loader has a side effect webpack's module cache does not
+      // capture: it contributes this module's atomic CSS and theme-bridge rules
+      // to the one generated artifact. A warm cache skips the loader and the
+      // artifact silently loses those rules, so the stripping fact and its
+      // replacement asset would diverge on every incremental build.
+      this.cacheable(false)
+    }
+    const projectInfo = await Static.loadTamagui(
+      // in zero mode the integration owns the one generated CSS artifact, so
+      // config-only CSS is never written to that path
+      zero ? { ...options, outputCSS: undefined } : options
+    )
     if (!projectInfo) {
       throw new Error('Unable to load the Tamagui project for webpack compilation')
     }
@@ -114,6 +128,63 @@ export const loader = async function loader(
         }
       },
     })
+
+    // island child compilation: the parent owns the one CSS artifact, so route
+    // this module's atomic rules there and inject nothing
+    if (zero?.islandBuild) {
+      zero.artifact.setIslandModuleCSS(zero.islandBuild, sourcePath, extracted.plan.css)
+      return callback(null, extracted.output.code, extracted.output.map as any)
+    }
+
+    if (zero) {
+      // Only app-authored modules are zero-transformed. A workspace dependency
+      // resolves outside node_modules in this monorepo, and erasing Tamagui's own
+      // re-exports inside its dist would break the package itself.
+      const relative = path.relative(root, sourcePath)
+      const isAppSource =
+        relative !== '' &&
+        !relative.startsWith(`..${path.sep}`) &&
+        !relative.split(path.sep).includes('node_modules')
+      if (!isAppSource) {
+        return callback(null, extracted.output.code, extracted.output.map as any)
+      }
+
+      const zeroResult = Static.transformZeroModule({
+        id: sourcePath,
+        root,
+        source,
+        plan: extracted.plan,
+        config: projectInfo.tamaguiConfig!,
+        isTamaguiSpecifier: (specifier) =>
+          specifier === 'tamagui' || specifier.startsWith('@tamagui/'),
+        resolveIslandLoader: (specifier) => {
+          const islandId = zero.loaderIds.get(
+            zeroModuleKey(path.resolve(path.dirname(sourcePath), specifier))
+          )
+          return islandId ? { islandId } : null
+        },
+        resolveIslandModule: (specifier) =>
+          zero.islandModuleIds.get(
+            zeroModuleKey(path.resolve(path.dirname(sourcePath), specifier))
+          ) ?? null,
+      })
+      for (const violation of zeroResult.violations) {
+        const { line, column } = Static.offsetToLineColumn(source, violation.span.start)
+        zero.violations.push({
+          file: path.relative(root, sourcePath),
+          line,
+          column,
+          code: violation.code,
+          message: violation.message,
+        })
+      }
+      Static.mergeIslandBridges(zero.bridges, zeroResult.bridges)
+      for (const [identifier, rules] of zeroResult.bridgeCSS) {
+        zero.artifact.setBridgeRules(identifier, rules)
+      }
+      zero.artifact.setZeroModuleCSS(sourcePath, extracted.plan.css)
+      return callback(null, zeroResult.output.code, zeroResult.output.map as any)
+    }
 
     // add import to css
     let code = extracted.output.code

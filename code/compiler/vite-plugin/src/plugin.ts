@@ -1345,6 +1345,7 @@ export function createTamaguiPlugins({
         if (zero) {
           const zeroResult = Static.transformZeroModule({
             id: validId,
+            root: config.root,
             source: code,
             plan: result.plan,
             config: (await tamaguiLoader.getTamaguiConfig())!,
@@ -1371,9 +1372,7 @@ export function createTamaguiPlugins({
               message: violation.message,
             })
           }
-          for (const [islandId, list] of zeroResult.bridges) {
-            zero.bridges.set(islandId, [...(zero.bridges.get(islandId) ?? []), ...list])
-          }
+          Static.mergeIslandBridges(zero.bridges, zeroResult.bridges)
           for (const [identifier, rules] of zeroResult.bridgeCSS) {
             zero.artifact.setBridgeRules(identifier, rules)
           }

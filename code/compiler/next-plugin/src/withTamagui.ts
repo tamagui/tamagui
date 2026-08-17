@@ -75,7 +75,18 @@ export const withTamagui = (tamaguiOptionsIn?: WithTamaguiProps) => {
           ...tamaguiOptions,
         })
 
+        const zeroMode = Static.resolveZeroRuntimeSync(
+          { platform: 'web', ...tamaguiOptions },
+          dir
+        ).mode
+
         const defines = {
+          // An enforced zero entry gets 'zero' on both its client and its server
+          // compilation, so SSR never imports a runtime hydration removed. Config
+          // evaluation, report builds, and island child builds keep 'full'.
+          'process.env.TAMAGUI_RUNTIME': JSON.stringify(
+            zeroMode === 'enforce' ? 'zero' : 'full'
+          ),
           'process.env.IS_STATIC': JSON.stringify(''),
           'process.env.TAMAGUI_TARGET': '"web"',
           'process.env.TAMAGUI_IS_SERVER': JSON.stringify(isServer ? 'true' : ''),
