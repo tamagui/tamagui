@@ -426,7 +426,16 @@ const applyAnimation = (
   // wrapper substitutes the seed for whatever start value reanimated passes.
   // color history gets the same treatment only when reanimated's own parser
   // rejects it, preserving valid in-flight values during interruption.
-  if (seedValue !== undefined || validateStartAsColor) {
+  // during an initial updater run withTiming/withSpring return the plain
+  // starting value instead of a descriptor — nothing starts, so there is no
+  // onStart to wrap (and creating a property on a primitive throws). checked
+  // as not-string/not-number: comparing typeof against 'object' compiles to a
+  // _type_of helper that is a remote function on the UI runtime
+  if (
+    (seedValue !== undefined || validateStartAsColor) &&
+    typeof animatedValue !== 'string' &&
+    typeof animatedValue !== 'number'
+  ) {
     const innerOnStart = animatedValue.onStart
     animatedValue.onStart = (
       animation: unknown,
