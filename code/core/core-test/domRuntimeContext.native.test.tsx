@@ -10,12 +10,20 @@ import { act, create, type ReactTestRenderer } from 'react-test-renderer'
 import { expect, test, vi } from 'vitest'
 
 import configDefault from '../config-default'
+import { skipProps } from '../web/src/helpers/skipProps'
+import { webPropsToSkip } from '../web/src/helpers/webPropsToSkip.native'
 import {
+  DOMRuntimeImage,
   DOMRuntimeText,
+  DOMRuntimeTextInput,
   DOMRuntimeView,
   DOMText,
   DOMView,
 } from '../web/src/dom/primitives.native'
+
+// vitest currently resolves skipProps' extensionless import to the web module.
+// apply the table a real native bundle loads so this file exercises native prop filtering.
+Object.assign(skipProps, webPropsToSkip)
 
 vi.mock('react-native', async (importOriginal) => {
   const original = await importOriginal<typeof import('react-native')>()
@@ -224,4 +232,63 @@ test('native hover, focus and active events drive context style transitions', ()
   expect(opacity()).toBe(0.8)
   act(() => findEvent(renderer!, 'interactive-context', 'onMouseLeave')({}))
   expect(opacity()).toBe(1)
+})
+
+test('compiled runtime frames keep the DOM events their primitives adapt', () => {
+  const onViewClick = vi.fn()
+  const onTextClick = vi.fn()
+  const onImageClick = vi.fn()
+  const onInputChange = vi.fn()
+  let renderer: ReactTestRenderer
+  act(() => {
+    renderer = create(
+      <TamaguiProvider config={config} defaultTheme="light">
+        <DOMRuntimeView
+          __styles={[{ opacity: 1 }]}
+          onClick={onViewClick}
+          testID="runtime-view"
+        />
+        <DOMRuntimeText
+          __styles={[{ opacity: 1 }]}
+          onClick={onTextClick}
+          testID="runtime-text"
+        >
+          text
+        </DOMRuntimeText>
+        <DOMRuntimeImage
+          __styles={[{ opacity: 1 }]}
+          onClick={onImageClick}
+          source={{ uri: 'square.png' }}
+          testID="runtime-image"
+        />
+        <DOMRuntimeTextInput
+          __styles={[{ opacity: 1 }]}
+          onChange={onInputChange}
+          testID="runtime-input"
+        />
+      </TamaguiProvider>
+    )
+  })
+
+  act(() =>
+    findPrimitive(renderer!, 'Pressable', 'runtime-view').props.onPress({
+      nativeEvent: {},
+    })
+  )
+  act(() =>
+    findPrimitive(renderer!, 'Text', 'runtime-text').props.onPress({ nativeEvent: {} })
+  )
+  act(() =>
+    findPrimitive(renderer!, 'Image', 'runtime-image').props.onPress({ nativeEvent: {} })
+  )
+  act(() =>
+    findPrimitive(renderer!, 'TextInput', 'runtime-input').props.onChange({
+      nativeEvent: { text: 'next' },
+    })
+  )
+
+  expect(onViewClick).toHaveBeenCalledOnce()
+  expect(onTextClick).toHaveBeenCalledOnce()
+  expect(onImageClick).toHaveBeenCalledOnce()
+  expect(onInputChange).toHaveBeenCalledOnce()
 })

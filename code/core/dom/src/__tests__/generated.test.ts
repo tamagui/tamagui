@@ -3,7 +3,11 @@ import { join } from 'node:path'
 
 import { describe, expect, test } from 'vitest'
 
-import { generateHtml, generateHtmlNative } from '../../scripts/generate-html'
+import {
+  generateDomEventPropsNative,
+  generateHtml,
+  generateHtmlNative,
+} from '../../scripts/generate-html'
 import { generateProps } from '../../scripts/generate-props'
 import { ATTRIBUTES } from '../tables/attributes'
 import { TAGS, TAG_NAMES } from '../tables/tags'
@@ -60,6 +64,7 @@ describe('the generated html namespace', () => {
     )
 
   test('is what the tables produce right now, on both platforms', () => {
+    expect(generateDomEventPropsNative()).toBe(read('domEventProps.native.ts'))
     expect(generateHtml()).toBe(read('html.tsx'))
     expect(generateHtmlNative()).toBe(read('html.native.tsx'))
   })

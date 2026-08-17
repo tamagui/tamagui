@@ -28,6 +28,7 @@ import type {
 import { textStaticConfig } from '../views/Text'
 import type { ViewProps } from '../views/View'
 import { viewStaticConfig } from '../views/View'
+import { domEventProps } from './domEventProps.native'
 import { createDOMTagFactory, unsupportedDOMTag } from './htmlRuntime.native'
 import { DOMImage, DOMText, DOMTextInput, DOMView } from './primitives.native'
 
@@ -167,43 +168,6 @@ const domTag = createDOMTagFactory({
 const domValidStyles = {
   ...viewStaticConfig.validStyles,
   ...textStaticConfig.validStyles,
-}
-
-/**
- * The events with a native equivalent reach the primitive, which forwards or
- * adapts each one. Tamagui otherwise drops these as web-only props on native,
- * and here the primitive is what carries them.
- */
-const domEventProps: Record<string, 1> = {
-  onPointerCancel: 1,
-  onPointerDown: 1,
-  onPointerEnter: 1,
-  onPointerLeave: 1,
-  onPointerMove: 1,
-  onPointerOut: 1,
-  onPointerOver: 1,
-  onPointerUp: 1,
-  onGotPointerCapture: 1,
-  onLostPointerCapture: 1,
-  onTouchCancel: 1,
-  onTouchEnd: 1,
-  onTouchMove: 1,
-  onTouchStart: 1,
-  onClick: 1,
-  onBlur: 1,
-  onFocus: 1,
-  onKeyDown: 1,
-  onScroll: 1,
-  onMouseDown: 1,
-  onMouseEnter: 1,
-  onMouseLeave: 1,
-  onMouseOut: 1,
-  onMouseOver: 1,
-  onMouseUp: 1,
-  onError: 1,
-  onLoad: 1,
-  onChange: 1,
-  onInput: 1,
 }
 
 /**

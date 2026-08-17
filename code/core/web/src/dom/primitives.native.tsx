@@ -24,6 +24,7 @@ import {
   loadFromImage,
   textEntryChange,
 } from './adapters'
+import { domEventProps } from './domEventProps.native'
 import type {
   DOMImageProps,
   DOMTextInputProps,
@@ -557,6 +558,7 @@ const DOMRuntimeViewFrame = setComponentDisplayName(
   createComponent({
     ...viewStaticConfig,
     validStyles: { ...viewStaticConfig.validStyles, ...textStaticConfig.validStyles },
+    neverSkipProps: domEventProps,
     Component: DOMView as any,
     neverFlatten: true,
   }),
@@ -565,6 +567,7 @@ const DOMRuntimeViewFrame = setComponentDisplayName(
 const DOMRuntimeTextFrame = setComponentDisplayName(
   createComponent({
     ...textStaticConfig,
+    neverSkipProps: domEventProps,
     Component: DOMText as any,
     neverFlatten: true,
   }),
@@ -574,6 +577,7 @@ const DOMRuntimeImageFrame = setComponentDisplayName(
   createComponent({
     ...viewStaticConfig,
     validStyles: { ...viewStaticConfig.validStyles, ...textStaticConfig.validStyles },
+    neverSkipProps: domEventProps,
     Component: DOMImage as any,
     neverFlatten: true,
   }),
@@ -582,6 +586,7 @@ const DOMRuntimeImageFrame = setComponentDisplayName(
 const DOMRuntimeTextInputFrame = setComponentDisplayName(
   createComponent({
     ...textStaticConfig,
+    neverSkipProps: domEventProps,
     Component: DOMTextInput as any,
     neverFlatten: true,
   }),
