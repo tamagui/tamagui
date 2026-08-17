@@ -59,7 +59,11 @@ const negativeGraph = read('vite-dist-negative.graph.json')
 receipts.negativeControl = {
   buildFailed: !negative.ok,
   forbidden: negativeGraph.forbidden,
-  failureContainsChain: negative.output.includes('opaqueDesignState'),
+  // the dynamic import lands the runtime in a lazy chunk, so what the failure
+  // must name is the forbidden module itself
+  failureNamesForbiddenModule: negativeGraph.forbidden.every((entry) =>
+    negative.output.includes(entry.id)
+  ),
 }
 if (negative.ok)
   throw new Error('the negative control built successfully; the graph check cannot fail')
