@@ -4,9 +4,8 @@ Status: design for Block 2. This document does not implement the mode.
 
 This design incorporates the owner's direction from 2026-08-16. It keeps the
 settled failure policy, greenfield audience, and component split from
-`plans/v3-web-zero-runtime.md`. It also treats the runtime native `html.*`
-mapping from Block 1 and the inline-values form of `Theme` from Block 3 as
-prerequisites.
+`plans/v3-web-zero-runtime.md`. It also treats Block 1's runtime native `html.*`
+mapping and Block 3's direct theme-value prop form of `Theme` as prerequisites.
 
 Evidence labels have the same meaning as the measured foundation:
 
@@ -54,7 +53,7 @@ relayed from `plans/v3-web-zero-runtime.md`, with that source named beside it.
     compatible, receive no new frontend features, and are no longer recommended.
 11. Theme reachability pruning is deferred. Apps narrow themes and color tokens
     through the existing config API. The mode accepts literal or statically
-    bounded theme-name choices and static Block 3 inline values.
+    bounded theme-name choices and static Block 3 theme-value props.
 12. The CSS-custom-property escape for dynamic style values is deferred from the
     first release. Dynamic Tamagui style values fail and the developer uses a
     full-runtime island.
@@ -249,7 +248,8 @@ one entry artifact.
    webpack's module graph and issuer chains for the zero bundle gate.
 5. A configured island is submitted as a separate full-runtime child build and
    entered in an island manifest. An ordinary async webpack chunk from the zero
-   compilation does not qualify because `DefinePlugin` is compilation-wide.
+   compilation does not qualify because it shares the zero graph's resolved
+   Tamagui module ids.
 
 The deprecated webpack adapter is still the current Next integration in this
 repo. The CLI/Turbopack path must implement the same artifact and module-graph
@@ -310,7 +310,7 @@ global sits between the bundler and the comparison.
 | Component runtime, Cluster C | The remainder of `createComponent.tsx`, `useComponentState.ts`, `useThemeState.ts`, `getThemeProxied.ts`, `useTheme.tsx`, styled contexts | `createComponent`'s direct guard owns the branch; direct calls to forbidden hooks get compiler diagnostics | No component hook path remains in the zero graph. Static `Theme` is compiler syntax and becomes host markup plus classes. | Module graphs omit the hook/context files. An executable fixture switches static theme classes without importing a provider. |
 | Provider and root injection | `views/TamaguiProvider.tsx`, `ThemeProvider.tsx`, `TamaguiRoot.tsx` | No fallback guard. Their use is illegal in a zero graph and the compiler reports it. | The zero root is ordinary React markup. Generated CSS is loaded by the bundler integration. | Bundle graph rejects these modules and prints their importer chain. |
 | Media runtime | `hooks/useMedia.tsx`, `helpers/mediaState.ts`, `matchMedia` and component media subscriptions | Owned by the two top-level guards; `useMedia` is also a rule 7 diagnostic | Media clauses remain CSS. No matchMedia listener or per-component subscription ships. | Graph absence plus a Playwright viewport fixture proving emitted CSS still changes computed style. |
-| Theme runtime and mutation | `useThemeState.ts`, `getThemeCSSRules.ts`, `_mutateTheme.ts`, `registerCSSVariable.ts`, Block 3 Theme runtime | Owned by both top-level guards; artifact tier retains existing `TAMAGUI_DID_OUTPUT_CSS` guards | Static theme classes and static inline values survive as CSS. Theme mutation and JS theme reads fail. | Graph absence, static theme-switch browser fixture, and a mutation negative control that must fail the compiler. |
+| Theme runtime and mutation | `useThemeState.ts`, `getThemeCSSRules.ts`, `_mutateTheme.ts`, `registerCSSVariable.ts`, Block 3 Theme runtime | Owned by both top-level guards; artifact tier retains existing `TAMAGUI_DID_OUTPUT_CSS` guards | Static theme classes and direct theme-value props survive as CSS. Theme mutation and JS theme reads fail. | Graph absence, static theme-switch browser fixture, and a mutation negative control that must fail the compiler. |
 | Component animation machinery, Cluster D | `createComponent.tsx`, `useComponentState.ts`, `@tamagui/animations-css/createAnimations`, `@tamagui/animation-helpers`, `@tamagui/use-presence`, `@tamagui/use-element-layout` | Component paths sit after the `createComponent` guard. `createAnimations` gets its own first-statement `if (process.env.TAMAGUI_RUNTIME === 'zero')` branch returning only the animated-number surface. | Static transitions are CSS. Presence, enter/exit orchestration, driver selection, layout measurement, WAAPI completion, and non-CSS drivers disappear. | Graphs omit every named module except the optional animated-number leaf. Static transition and AnimatedNumber browser fixtures run separately. |
 | CSS animated-number leaf | New leaf in `@tamagui/animations-css`, re-exported through regular Tamagui and targeted by compiler import rewrite | No guard in the leaf. Reachability is the opt-in. | `useAnimatedNumber`, `useAnimatedNumberStyle`, `useAnimatedNumbersStyle`, and `useAnimatedNumberReaction` survive when imported. | A bundle with no hook omits the leaf. A bundle with one hook contains only the leaf plus React/React DOM dependencies and runs its completion test. |
 | Native runtime DOM mapping | Block 1's `html.native.tsx`, `htmlRuntime.native.tsx`, primitives, and generated `@tamagui/dom` tables | No zero guard because native receives `'full'` | Runtime native `html.*` continues to map supported non-style DOM props and reject unsupported behavior. | Native runtime-versus-compiler conformance fixtures compare host props and rejection behavior per generated table row. |
@@ -372,8 +372,8 @@ Fix every site or move the owning module to a declared full-runtime island. Zero
 | --- | --- | --- |
 | 1. No prop spreading onto styled components | Detectable for every compiler-recognized Tamagui or `html.*` element from its materialized spread entries. Zero mode rejects static and dynamic spreads alike. | `Zero-runtime rule 1: <COMPONENT> cannot receive a prop spread because the compiler cannot prove it is style-free. Pass non-style props explicitly or move this module to a full-runtime island.` |
 | 2. No dynamic component types | Detectable when the binding graph traces the JSX/call target to one or more Tamagui component imports. `linked/unresolved-binding` and dynamic union targets become this rule. A wholly opaque React component with no Tamagui provenance is outside this rule. | `Zero-runtime rule 2: component expression <EXPRESSION> does not resolve to one literal lowerable host component. Use a literal Tamagui or html.* component, or move this module to a full-runtime island.` |
-| 3. Static style values | Detectable for Tamagui style props, `style` handles, styled definitions, variants, and Block 3 Theme inline values when the compiler owns the expression. Existing `local/dynamic-style-value` sites map here. Plain host `style` and opaque user-component internals are not detectable as Tamagui style. | `Zero-runtime rule 3: style prop <PROP> on <COMPONENT> is not statically evaluable. Use a build-time value or move this module to a full-runtime island.` |
-| 4. Static themes and static config | Detectable at config evaluation, at every recognized `Theme` name/inline-values site, at `TamaguiProvider`, and for imports/calls of the theme mutation API. A name may be a literal or a statically enumerable conditional over literal names. Indirect mutation hidden inside opaque third-party code is only visible to the bundle gate. | `Zero-runtime rule 4: <DETAIL> requires runtime theme or config state. Theme names must be statically enumerable, Theme inline values and config must be build-time data, and runtime mutation belongs in a full-runtime island.` |
+| 3. Static style values | Detectable for Tamagui style props, `style` handles, styled definitions, variants, and the values of Block 3 direct `Theme` theme-key props when the compiler owns the expression. The compiler classifies those props with the shared `reservedThemeProps` exported by `@tamagui/helpers`; it does not maintain a second reserved-name list. Existing `local/dynamic-style-value` sites map here. Plain host `style` and opaque user-component internals are not detectable as Tamagui style. | `Zero-runtime rule 3: value for <PROP> on <COMPONENT> cannot be lowered: <DETAIL>. Use a supported build-time value or move this module to a full-runtime island.` |
+| 4. Static themes and static config | Detectable at config evaluation, at every recognized `Theme` name and direct theme-key-prop site, at `TamaguiProvider`, and for imports/calls of the theme mutation API. A name may be a literal or a statically enumerable conditional over literal names. The compiler parses static theme and platform modifiers in each direct prop value with Block 3's value grammar. An element modifier such as `hover:` or `sm:` is a hard error because it cannot describe a subtree value. Indirect mutation hidden inside opaque third-party code is only visible to the bundle gate. | `Zero-runtime rule 4: <DETAIL> requires runtime theme or config state. Theme names and modifier targets must be statically enumerable, Theme value props and config must be build-time data, and runtime mutation belongs in a full-runtime island.` |
 | 5. CSS animation driver only | Detectable from evaluated config and from `animatedBy`, `transition`, lifecycle, and animation props. Static CSS transitions lower. Non-CSS drivers, dynamic driver choice, presence lifecycle, and layout-driven animation fail. | `Zero-runtime rule 5: <DETAIL> requires a component animation runtime. Use a static CSS transition or move this module to a full-runtime island.` |
 | 6. Lowerable components only | Detectable after component resolution. `compilerHost.ts` already derives `acceptsClassName` from `staticConfig.acceptsClassName`, `neverFlatten`, and context. This boolean is the only authority. | `Zero-runtime rule 6: <COMPONENT> does not lower to one host element with className and is island-only. Move this module to a declared full-runtime island.` |
 | 7. No JavaScript reads of design state | Detectable for direct, aliased, namespace, and re-exported references whose module provenance reaches `useMedia`, `useTheme`, `getTokens`, `useTokens`, `getVariableValue`, `getToken`, `getTokenValue`, `useConfiguration`, or theme mutation exports. A computed property hidden behind opaque code may only reach the bundle gate. | `Zero-runtime rule 7: <API> reads Tamagui design state in JavaScript. Express the condition in CSS or move this module to a full-runtime island.` |
@@ -426,27 +426,49 @@ This is why the local compiler gate and final bundler gate both remain required.
 
 ### Static Theme after Block 3
 
-This block must consume the Block 3 shape, where inline values belong to
-`Theme`. It must not add a new `<Variables>` lowering path around today's tree.
+This block must consume the Block 3 shape, where theme keys are props directly
+on `Theme`. It must not add a new `<Variables>` lowering path or a `values`
+object.
+
+**READ, Block 3 worktree `plans/variables.md`, the 2026-08-16 binding section,
+and `code/core/web/src/helpers/variables.ts`:** there is no `values` object on
+the new surface. `getInlineValuesFromProps` reads every prop absent from
+`reservedThemeProps` as a theme key. Theme and platform targeting use the value
+grammar, while element conditions such as `hover:` and `sm:` are invalid for a
+subtree-wide value.
 
 Accepted zero-mode forms include:
 
 ```tsx
 <Theme name="light">...</Theme>
 
-<Theme
-  name="brand"
-  values={{ color: '#111', background: '#fff' }}
->
+<Theme name="brand" color="#111" background="#fff">
   ...
 </Theme>
+
+<Theme background="blue4 dark:blue2">...</Theme>
 ```
 
 The name must be a literal or a bounded conditional whose branches are literal
-theme names. Every inline value must be statically evaluable. The compiler emits
-the theme class and, for inline values, a deterministic class plus rules in the
-owned CSS artifact. A theme name computed from an open-ended runtime string, a
-runtime theme builder, or mutation fails rule 4.
+theme names. Every direct theme-value prop must be statically evaluable. The
+compiler uses the shared `reservedThemeProps` classification, parses each
+unique static raw value once with Block 3's grammar, consumes its clauses in one
+forward pass, and emits the theme class plus a deterministic value class and
+rules in the owned CSS artifact. The lowering never emits a client
+`parseValue`. A prop named
+`values` is a theme key literally named `values`; zero-runtime does not give it
+special object semantics, and an object passed there fails rule 3 as an invalid
+theme value. A theme name computed from an open-ended runtime string, a runtime
+theme builder, or mutation fails rule 4.
+
+Phase 4 moves `reservedThemeProps` unchanged from Block 3's
+`helpers/variables.ts` into the side-effect-free
+`code/core/helpers/src/reservedThemeProps.ts` and exports it through
+`@tamagui/helpers`. The Theme runtime and compiler both consume that table.
+**READ, `code/compiler/static/package.json` and `compilerHost.ts`:** the compiler
+already depends on `@tamagui/helpers` and `@tamagui/style-grammar`. This keeps
+prop classification and parsing shared without importing the Theme runtime into
+the compiler.
 
 The zero root does not import `TamaguiProvider`. Config evaluation happens only
 inside the bundler's full evaluation environment. The client receives classes
@@ -466,8 +488,8 @@ versus V3 core delta.
 The author narrows the pack. Automatic reachability can be reconsidered only if
 a representative zero-runtime starter shows that manual narrowing is the
 dominant adoption failure. The deciding evidence is a whole-program inventory
-of static `Theme name`, theme props, and Block 3 inline composition that proves
-there is no hidden name source.
+of static `Theme name`, direct theme-key props, and their theme modifiers that
+proves there is no hidden name source.
 
 ### Media
 
@@ -629,10 +651,29 @@ package. Block 1's generated `.native` mapping is part of this ownership model.
 
 ## 10. Islands and provider ownership
 
-The first experimental release refuses same-compilation islands. The reason is
-mechanical: Vite define values and webpack `DefinePlugin` values apply to one
-compilation. Setting `'zero'` for an async chunk would fold out the same
-`createComponent` and `createTamagui` bodies that the island needs.
+The first experimental release refuses same-compilation islands. A
+module-identity constraint forces this choice. Changing how an integration
+injects the environment literal does not change that constraint.
+
+**INFERRED from the Vite/Rollup chunk module ids, webpack module graph, and
+Metro dependency graph used by the gates in section 3:** one resolved module id
+has one transformed body in a module graph. `createComponent.tsx`,
+`createTamagui.ts`, and their transitive imports have the same ids when reached
+from the zero entry and an ordinary lazy island. The zero path needs those
+bodies folded away, while the island needs them intact. An importer-sensitive
+Babel, Rollup, or webpack transform cannot assign both bodies to one id;
+transform caching and dependency deduplication converge on that id again.
+
+Module duplication through virtual ids or resource queries is a possible later
+architecture, but it is rejected for the first release. Duplicating only
+`createComponent.tsx` is insufficient. The full-runtime identity must propagate
+through its transitive runtime closure, keep Tamagui config, theme, and styled
+context singletons coherent inside the island, share exactly one React
+instance, and still leave the zero importer chain free of forbidden modules.
+The evidence that can reopen this decision is one same-compilation prototype in
+each integration whose module graph proves those properties and passes every
+fixture below. A per-module literal transform without that deliberate closure
+duplication is closed as an alternative.
 
 The chosen first-release boundary is:
 
@@ -673,22 +714,28 @@ Dependencies:
 
 - Block 1 must merge its runtime native `html.*` prop mapping and native
   rejection behavior into `v3-beta`.
-- Block 3 must merge Theme inline values into `v3-beta` before this block edits
-  theme machinery. This block must not build against today's separate
-  `<Variables values={...}>` shape.
+- Block 3 must merge direct Theme value props into `v3-beta` before this block
+  edits theme machinery. This block must build against the direct-prop surface.
+  The older `<Variables values={...}>` and `<Theme values={...}>` shapes are not
+  compiler targets.
 
 Validation:
 
 - run Block 1's runtime and compiler native DOM fixtures against the same table
   rows;
-- run Block 3's web and native Theme inline-value fixtures;
+- run Block 3's web and native direct Theme value-prop fixtures;
 - build the relevant packages before dependent tests, per `CONTRIBUTING.md`.
 
-### Phase 1: prove the island and per-build flag architecture
+### Phase 1: prove the island, per-build flag, and minimum artifact architecture
 
 Build the smallest zero root plus one full Sheet island for Vite, Next, and
 Metro web. Add the exact `TAMAGUI_RUNTIME` literal plumbing and graph receipts,
-but do not yet remove subsystems.
+but do not yet remove subsystems. This phase also owns the minimum shared
+artifact path needed by that fixture: evaluate config in the full environment,
+combine its config CSS with the fixture's compiler atomic CSS, import that one
+artifact from the zero entry and island, disable island runtime CSS injection,
+and derive `TAMAGUI_DID_OUTPUT_CSS='1'` only after both entries resolve the
+artifact. This is fixture-scoped proof that the two graphs can share CSS.
 
 Validation:
 
@@ -699,10 +746,12 @@ Validation:
 This phase is a hard gate. Failure changes the integration availability, not
 the all-or-nothing contract.
 
-### Phase 2: make global CSS artifact ownership real
+### Phase 2: productionize global CSS artifact ownership
 
-Wire the Vite web path to `writeTamaguiCSS`, connect Next and Metro validation,
-and derive `TAMAGUI_DID_OUTPUT_CSS` only inside the integrations.
+Generalize Phase 1's minimum artifact path to all entries and to the
+compiled-global-CSS tier. Wire the Vite web path to `writeTamaguiCSS`, connect
+Next and Metro validation, add deterministic multi-module collection and cache
+identity, and keep `TAMAGUI_DID_OUTPUT_CSS` integration-owned.
 
 Validation:
 
@@ -731,14 +780,19 @@ Validation:
 
 ### Phase 4: remove provider and compile Theme
 
-Teach the compiler to lower static Block 3 `Theme` nodes and their inline values
-into markup and CSS. Remove `TamaguiProvider` from the zero starter.
+Move `reservedThemeProps` to the side-effect-free shared helper described in
+section 6. Teach the compiler to classify static Block 3 `Theme` nodes with
+that table, then lower `name` plus direct theme-key props and their
+theme/platform value modifiers into markup and CSS. Remove `TamaguiProvider`
+from the zero starter.
 
 Validation:
 
 - static light/dark switching and nested static themes in Playwright;
-- inline values change descendant computed styles;
-- dynamic name and dynamic inline value negative controls fail rule 4;
+- direct theme-value props change descendant computed styles;
+- theme modifiers select the expected static rule without a runtime theme read;
+- dynamic name and dynamic theme-value negative controls fail rules 4 and 3,
+  respectively;
 - the provider/config modules are absent from every zero graph.
 
 ### Phase 5: add the runtime guards and split CSS AnimatedNumber
@@ -809,10 +863,11 @@ integration lacks its graph receipt or artifact identity.
 | Metro serializer graph gate and AST literal injection | **GUESS:** existing transformer and serializer seams appear sufficient | Emitted Metro web graph with a full negative control |
 | Direct early guards remove every body-only value import in webpack and Metro | **INFERRED:** Vite's existing CSS guard folds, but the larger bodies are untested | Per-bundler machine-readable module graphs, zero and full control |
 | AnimatedNumber leaf keeps existing completion and linked-style behavior without config/provider | **INFERRED from current method boundaries** | Existing browser completion test retargeted to the leaf plus new gzip receipts |
-| Static Block 3 Theme can replace every zero-root provider use | **GUESS until Block 3 lands in this worktree** | Nested theme, inline values, SSR, hydration, and class-switch fixtures |
+| Static Block 3 Theme can replace every zero-root provider use | **GUESS until Block 3 lands in this worktree** | Nested theme, direct theme-value props and modifiers, SSR, hydration, and class-switch fixtures |
 | Config narrowing is sufficient without theme reachability analysis | **INFERRED from the measured 17,243 to 2,592 byte authoring result** | Contract-compliant starter feedback and CSS transfer measurement |
 
 The weakest link is the island build architecture. It is deliberately first in
-the sequence because a compilation-wide literal cannot give an ordinary lazy
-chunk the full runtime. No runtime guard or per-component fallback is allowed to
-paper over that conflict.
+the sequence because one module id cannot supply a folded body to the zero
+entry and a full body to an ordinary lazy island. No runtime guard,
+importer-sensitive transform, or per-component fallback is allowed to hide that
+conflict.
