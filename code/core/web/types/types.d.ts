@@ -574,6 +574,12 @@ export type ThemeParsed = {
 export type VariablesValues = {
     [Key in ThemeKeys]?: VariableValIn;
 };
+/**
+ * Prop names `<Theme>` owns. Every other prop it receives is read as a theme
+ * key, so a theme key or a `createTamagui({ variables })` entry can't use one
+ * of these names. development builds report the collision.
+ */
+export type ReservedThemePropName = '_isRoot' | 'children' | 'className' | 'contain' | 'debug' | 'deopt' | 'disable' | 'disable-child-theme' | 'forceClassName' | 'inlineClassName' | 'inlineValues' | 'name' | 'nativeUpdate' | 'needsUpdate' | 'passThrough' | 'reset' | 'shallow';
 export type VariablesProps = {
     values?: VariablesValues;
     /**
@@ -623,8 +629,10 @@ export type UseThemeWithStateProps = ThemeProps & {
     passThrough?: boolean;
     disable?: boolean;
     needsUpdate?: () => boolean;
-    /** <Variables> inline theme layer: patches merged over the parent theme */
+    /** inline theme layer: patches merged over the parent theme */
     inlineValues?: Pick<VariablesProps, 'values' | 'themes'>;
+    /** the `tvar_` class carrying this layer's custom properties on web */
+    inlineClassName?: string;
     /**
      * native fast path (experimental): called on a theme update instead of
      * re-rendering; return true when the update was committed natively so the

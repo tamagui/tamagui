@@ -1,6 +1,13 @@
 import { simpleHash } from '@tamagui/helpers'
+import {
+  grammarPlatformNames,
+  isRootThemeName,
+  parseValue,
+  type ModifierRegistryView,
+} from '@tamagui/style-grammar/runtime'
 import { getSetting } from '../config'
 import { createVariable, isVariable } from '../createVariable'
+import { platformMatches } from './directStyle'
 import type {
   GenericVariables,
   TamaguiInternalConfig,
@@ -43,6 +50,18 @@ export const getThemeKeySet = (conf: TamaguiInternalConfig): Set<string> => {
   for (const themeName in conf.themes) {
     for (const key in conf.themes[themeName]) {
       set.add(key)
+    }
+  }
+  if (process.env.NODE_ENV === 'development') {
+    // <Theme> reads every non-reserved prop as a theme key, so a theme key or
+    // config variable sharing a name with one of Theme's own props could never
+    // be set inline. Caught once per config, at the source.
+    for (const key of set) {
+      if (reservedThemeProps[key]) {
+        console.error(
+          `[tamagui] theme key "${key}" collides with a <Theme> prop, so it can never be set inline (<Theme ${key}="...">). Rename it.`
+        )
+      }
     }
   }
   themeKeySets.set(conf.themes, set)
@@ -187,11 +206,13 @@ const getThemedBucketNames = (themes: VariablesProps['themes']): string[] => {
   return names.sort()
 }
 
-// dev-only: the names a themes-map bucket can ever match — every '_'-joined
-// prefix of every scheme-stripped theme name in the config
+// the names a theme bucket can ever match: every '_'-joined prefix of every
+// scheme-stripped theme name in the config. broader than the style grammar's
+// theme modifiers, which require a top-level conf.themes key and so can't
+// target a `blue` that only exists as `dark_blue`/`light_blue`
 const themeBucketNameSets = new WeakMap<object, Set<string>>()
 
-const warnOnUnknownThemeBucket = (name: string, conf: TamaguiInternalConfig) => {
+const getThemeBucketNames = (conf: TamaguiInternalConfig): Set<string> => {
   let set = themeBucketNameSets.get(conf.themes)
   if (!set) {
     set = new Set()
@@ -203,7 +224,11 @@ const warnOnUnknownThemeBucket = (name: string, conf: TamaguiInternalConfig) => 
     }
     themeBucketNameSets.set(conf.themes, set)
   }
-  if (!set.has(name)) {
+  return set
+}
+
+const warnOnUnknownThemeBucket = (name: string, conf: TamaguiInternalConfig) => {
+  if (!getThemeBucketNames(conf).has(name)) {
     warnOnce(
       `unknown-theme:${name}`,
       `Variables: themes["${name}"] doesn't match any theme name in your config — it will never apply.`
@@ -393,13 +418,16 @@ export function getVariablesCSSRules(
   }
 
   const result = { identifier, rules }
+  if (rulesCache.size >= 10_000) {
+    rulesCache.clear()
+  }
   rulesCache.set(payload, result)
   return result
 }
 
 // ---- inline theme layer (<Variables> on native + JS theme readers on web) ----
 
-type InlineValues = Pick<VariablesProps, 'values' | 'themes'>
+export type InlineValues = Pick<VariablesProps, 'values' | 'themes'>
 
 // non-enumerable marker on merged theme objects: cache key for idempotency,
 // overridden key set, and literal light/dark pairs for the iOS fast-scheme path
@@ -411,20 +439,31 @@ export type InlineLayerInfo = {
   pairs: Record<string, { light: string | number; dark: string | number }>
 }
 
+const serializeInlineValue = (value: VariableValIn): string =>
+  value && typeof value === 'object'
+    ? `object:px${value.val}`
+    : `${typeof value}:${String(value)}`
+
 const serializeBucket = (bucket: VariablesProps['values']): string => {
   if (!bucket) return ''
   const map = bucket as Record<string, VariableValIn>
   return Object.keys(map)
     .sort()
     .map((key) => {
-      const value = map[key]
-      if (value && typeof value === 'object') return `${key}:px${value.val}`
-      return `${key}:${value}`
+      const value = serializeInlineValue(map[key])
+      return `${key.length}:${key}${value.length}:${value}`
     })
-    .join(',')
+    .join('')
 }
 
+// memoized per layer object: the flat-props path hands back identity-stable
+// layers, so this is one serialization per distinct value set instead of one
+// per render (getPropsKey calls it on every render of every <Theme>)
+const inlineKeys = new WeakMap<InlineValues, string>()
+
 export const getInlineValuesKey = (inline: InlineValues): string => {
+  const cached = inlineKeys.get(inline)
+  if (cached !== undefined) return cached
   let key = serializeBucket(inline.values)
   if (inline.themes) {
     const themes = inline.themes as Record<string, VariablesProps['values']>
@@ -432,7 +471,208 @@ export const getInlineValuesKey = (inline: InlineValues): string => {
       key += `;${name}=${serializeBucket(themes[name])}`
     }
   }
+  inlineKeys.set(inline, key)
   return key
+}
+
+// ---- flat theme-value props: <Theme background-hover="blue4 dark:blue2"> ----
+
+/**
+ * The props <Theme> owns. Every other prop is read as a theme key, so these
+ * names can't be used as theme keys or config variables. development builds
+ * report a collision instead of silently dropping the value.
+ */
+export const reservedThemeProps: Record<string, true> = {
+  _isRoot: true,
+  children: true,
+  className: true,
+  contain: true,
+  debug: true,
+  deopt: true,
+  disable: true,
+  'disable-child-theme': true,
+  forceClassName: true,
+  inlineClassName: true,
+  inlineValues: true,
+  name: true,
+  nativeUpdate: true,
+  needsUpdate: true,
+  passThrough: true,
+  reset: true,
+  shallow: true,
+}
+
+const registryViews = new WeakMap<object, ModifierRegistryView>()
+
+/**
+ * Theme and platform are the only modifiers a subtree-wide value can honor.
+ * Everything else still parses as a modifier so it can be rejected by name
+ * below, rather than coming back as a generic "unregistered modifier".
+ */
+const getModifierRegistry = (conf: TamaguiInternalConfig): ModifierRegistryView => {
+  let view = registryViews.get(conf.themes)
+  if (!view) {
+    view = {
+      get(name: string) {
+        if (grammarPlatformNames.has(name)) return 'platform'
+        if (isRootThemeName(name) && getThemeBucketNames(conf).has(name)) return 'theme'
+        return 'state'
+      },
+    }
+    registryViews.set(conf.themes, view)
+  }
+  return view
+}
+
+type FlatBuckets = {
+  values: Record<string, VariableValIn>
+  themes: Record<string, Record<string, VariableValIn>> | null
+}
+
+const parsedInlineValues = new WeakMap<
+  object,
+  Map<string, ReturnType<typeof parseValue>>
+>()
+
+const addFlatValue = (
+  out: FlatBuckets,
+  key: string,
+  raw: VariableValIn,
+  conf: TamaguiInternalConfig
+) => {
+  if (typeof raw !== 'string') {
+    out.values[key] = raw
+    return
+  }
+
+  let configValues = parsedInlineValues.get(conf.themes)
+  if (!configValues) {
+    configValues = new Map()
+    parsedInlineValues.set(conf.themes, configValues)
+  }
+
+  let parsed = configValues.get(raw)
+  if (!parsed) {
+    parsed = parseValue(raw, getModifierRegistry(conf))
+    if (configValues.size >= 10_000) {
+      configValues.clear()
+    }
+    configValues.set(raw, parsed)
+  }
+
+  if (!parsed.ok) {
+    warnOnce(
+      `parse:${key}:${raw}`,
+      `<Theme ${key}="${raw}">: ${parsed.errors[0].message}. Dropping.`
+    )
+    return
+  }
+
+  const { base, clauses } = parsed.value
+  if (base !== null) {
+    out.values[key] = base
+  }
+
+  for (const clause of clauses) {
+    let themeName: string | undefined
+    let applies = true
+
+    for (const modifier of clause.modifiers) {
+      if (grammarPlatformNames.has(modifier)) {
+        // platform is fixed for the process, so this resolves once per value
+        applies &&= platformMatches(modifier)
+        continue
+      }
+      if (isRootThemeName(modifier) && getThemeBucketNames(conf).has(modifier)) {
+        if (themeName !== undefined) {
+          warnOnce(
+            `two-themes:${key}:${raw}`,
+            `<Theme ${key}="${raw}">: "${themeName}:${modifier}:" targets two themes at once, which a subtree value can't express. Name the composed theme instead. Dropping the clause.`
+          )
+          applies = false
+          break
+        }
+        themeName = modifier
+        continue
+      }
+      warnOnce(
+        `unsupported-modifier:${modifier}`,
+        `<Theme ${key}="${raw}">: "${modifier}:" isn't supported here. Theme values apply to a whole subtree, so only theme (dark:) and platform (ios:) modifiers work. Dropping the clause.`
+      )
+      applies = false
+      break
+    }
+
+    if (!applies) continue
+    if (themeName === undefined) {
+      out.values[key] = clause.payload
+    } else {
+      ;((out.themes ||= {})[themeName] ||= {})[key] = clause.payload
+    }
+  }
+}
+
+// keyed by config and raw prop values, so repeat renders of the same <Theme>
+// reuse one layer object. downstream identity caches and snapshot bailouts key
+// off this object. each config cache is bounded with the same clear-on-limit
+// pattern as simpleHash's string cache.
+const flatLayers = new WeakMap<object, Map<string, InlineValues>>()
+
+/**
+ * Reads theme-key props off a <Theme> into the inline layer shape the rest of
+ * the system already consumes. Returns null when the element carries no theme
+ * key props at all, which is one loop over its props (two entries for a plain
+ * `<Theme name="dark">`) and no allocation.
+ *
+ * A key that is present but currently undefined still produces an empty
+ * layer. Presence, not value, is what makes an element a theme-updating
+ * one (the same rule `hasThemeUpdatingProps` applies to `name`), and it is
+ * what keeps `<Theme background={on ? 'red' : undefined}>` rendering the same
+ * tree in both states instead of remounting its subtree when a value appears.
+ */
+export function getInlineValuesFromProps(
+  props: Record<string, any>,
+  conf: TamaguiInternalConfig
+): InlineValues | null {
+  let hasKey = false
+  let cacheKey = ''
+  for (const key in props) {
+    if (reservedThemeProps[key]) continue
+    hasKey = true
+    const value = props[key]
+    if (value == null) continue
+    const serialized = serializeInlineValue(value)
+    cacheKey += `${key.length}:${key}${serialized.length}:${serialized}`
+  }
+
+  if (!hasKey) return null
+
+  let configLayers = flatLayers.get(conf.themes)
+  if (!configLayers) {
+    configLayers = new Map()
+    flatLayers.set(conf.themes, configLayers)
+  }
+
+  const cached = configLayers.get(cacheKey)
+  if (cached) return cached
+
+  const out: FlatBuckets = { values: {}, themes: null }
+  for (const key in props) {
+    if (reservedThemeProps[key]) continue
+    const value = props[key]
+    if (value == null) continue
+    addFlatValue(out, key, value, conf)
+  }
+
+  const layer: InlineValues = {
+    values: out.values as InlineValues['values'],
+    themes: (out.themes || undefined) as InlineValues['themes'],
+  }
+  if (configLayers.size >= 10_000) {
+    configLayers.clear()
+  }
+  configLayers.set(cacheKey, layer)
+  return layer
 }
 
 const mergedThemeCache = new WeakMap<object, Map<string, Record<string, Variable>>>()
@@ -593,6 +833,9 @@ export function getMergedInlineTheme(
 
   byKey ||= new Map()
   mergedThemeCache.set(parentTheme, byKey)
+  if (byKey.size >= 10_000) {
+    byKey.clear()
+  }
   byKey.set(cacheKey, merged)
   return merged
 }

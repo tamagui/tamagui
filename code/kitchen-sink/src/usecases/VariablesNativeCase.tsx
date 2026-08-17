@@ -1,10 +1,11 @@
 import React from 'react'
 import { Appearance } from 'react-native'
-import { Text, useTheme, useThemeName, Variables, View, YStack } from 'tamagui'
+import { Text, Theme, useTheme, useThemeName, View, YStack } from 'tamagui'
 
-// unwrapped by any <Theme> so the subtree follows the OS scheme — required to
-// exercise the DynamicColorIOS fast path (inverses must be 0). detox asserts
-// the text values across patch toggles and simulator appearance flips.
+// this subtree follows the OS scheme because no named <Theme> wraps it. that is
+// required to exercise the DynamicColorIOS fast path (inverses must be 0).
+// detox asserts the text values across patch toggles and simulator appearance
+// flips.
 const ReadValues = () => {
   const theme = useTheme()
   const themeName = useThemeName()
@@ -41,14 +42,12 @@ export function VariablesNativeCase() {
       >
         <Text color="#000">toggle patch</Text>
       </View>
-      <Variables
-        values={
-          patched ? { caseAccent: 'rgb(200, 0, 0)', caseSurface: 'color' } : undefined
-        }
-        themes={patched ? { dark: { caseAccent: 'rgb(200, 100, 100)' } } : undefined}
+      <Theme
+        caseAccent={patched ? 'rgb(200, 0, 0) dark:rgb(200, 100, 100)' : undefined}
+        caseSurface={patched ? 'color' : undefined}
       >
         <ReadValues />
-      </Variables>
+      </Theme>
     </YStack>
   )
 }

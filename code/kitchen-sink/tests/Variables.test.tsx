@@ -29,8 +29,8 @@ test('config variables resolve through themes, nested patch wins nearest', async
   expect(reset.backgroundColor).not.toBe(inherit.backgroundColor)
 })
 
-test('themes-map bucket scoped to a named theme applies via CSS', async ({ page }) => {
-  // the blue bucket matches the light_blue theme resolved by <Theme name="blue">
+test('theme modifier scoped to a named theme applies via CSS', async ({ page }) => {
+  // the blue modifier matches the light_blue theme resolved by <Theme name="blue">
   const themed = await getStyles(page.getByTestId('vars-themed-square'))
   expect(themed.backgroundColor).toBe(THEMED_ACCENT)
 

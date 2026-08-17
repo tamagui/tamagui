@@ -23,7 +23,7 @@ export type VariablesCSS = {
  * scope by plain theme class.
  */
 export declare function getVariablesCSSRules(props: VariablesProps, conf: TamaguiInternalConfig): VariablesCSS | null;
-type InlineValues = Pick<VariablesProps, 'values' | 'themes'>;
+export type InlineValues = Pick<VariablesProps, 'values' | 'themes'>;
 export declare const inlineLayerKey = "_tmgInlineLayer";
 export type InlineLayerInfo = {
     key: string;
@@ -34,6 +34,25 @@ export type InlineLayerInfo = {
     }>;
 };
 export declare const getInlineValuesKey: (inline: InlineValues) => string;
+/**
+ * The props <Theme> owns. Every other prop is read as a theme key, so these
+ * names can't be used as theme keys or config variables. development builds
+ * report a collision instead of silently dropping the value.
+ */
+export declare const reservedThemeProps: Record<string, true>;
+/**
+ * Reads theme-key props off a <Theme> into the inline layer shape the rest of
+ * the system already consumes. Returns null when the element carries no theme
+ * key props at all, which is one loop over its props (two entries for a plain
+ * `<Theme name="dark">`) and no allocation.
+ *
+ * A key that is present but currently undefined still produces an empty
+ * layer. Presence, not value, is what makes an element a theme-updating
+ * one (the same rule `hasThemeUpdatingProps` applies to `name`), and it is
+ * what keeps `<Theme background={on ? 'red' : undefined}>` rendering the same
+ * tree in both states instead of remounting its subtree when a value appears.
+ */
+export declare function getInlineValuesFromProps(props: Record<string, any>, conf: TamaguiInternalConfig): InlineValues | null;
 /**
  * Builds the merged theme for a <Variables> layer: parent theme spread plus
  * overridden keys as Variables, resolved per the shared contract (effective
@@ -54,5 +73,4 @@ export declare function getMergedInlineTheme(parentTheme: Record<string, Variabl
  * proxyThemesToParents (native) and the cascade (web).
  */
 export declare function mergeConfigVariablesIntoTheme(theme: Record<string, Variable>, themeName: string, variables: GenericVariables, tokensParsed: TokensParsed): void;
-export {};
 //# sourceMappingURL=variables.d.ts.map

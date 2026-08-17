@@ -16,6 +16,12 @@ const useInsertEffectCompat = isWeb
   : () => {}
 
 /**
+ * @deprecated Set theme values directly on `<Theme>` instead. The objects
+ * collapse into props and the `themes` map becomes the same `dark:` modifier
+ * the style grammar already uses:
+ * `<Theme background-hover="blue4 dark:blue2">`. This component is a thin
+ * front door on the same inline layer and will be removed.
+ *
  * Anonymous inline theme patch: redefines theme keys and config-declared
  * custom variables for the subtree. See plans/variables.md.
  *
