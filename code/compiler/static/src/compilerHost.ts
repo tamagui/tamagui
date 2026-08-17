@@ -591,6 +591,25 @@ const runtimeEventProps = new Set([
   'onPressOut',
 ])
 
+/**
+ * DOM attributes whose react native spelling is a style key, so they lower into
+ * the style rather than onto the host: `dir` is the text style
+ * `writingDirection`. An attribute already named like its style key needs no
+ * entry, because the split recognizes it by name. The runtime reaches the same
+ * place for free: its frame classifies the renamed prop against validStyles.
+ */
+const DOM_STYLE_ATTRIBUTES = new Map(
+  Object.entries(ATTRIBUTES)
+    .filter(
+      ([name, row]) =>
+        row.native !== 'none' &&
+        row.nativeProp &&
+        row.nativeProp !== name &&
+        row.nativeProp in stylePropsText
+    )
+    .map(([name, row]) => [name, row.nativeProp as string])
+)
+
 // native-only: usePointerEvents maps these to touch events at runtime; a
 // flattened bare RN View ignores them (RN's W3C pointer events are flag-gated
 // off). on web they are real DOM events and pass through, so no bail there.
@@ -733,6 +752,20 @@ function nativeDOMProps(input: LoweringCandidateInput, tag: TagName) {
     }
     if (!attribute || attribute.native === 'none' || entry.name === 'style') continue
 
+    if (DOM_STYLE_ATTRIBUTES.has(entry.name)) {
+      // the style resolution above already read it under its style key
+      if (entry.value.kind !== 'static') {
+        return {
+          consumed,
+          edits,
+          additions,
+          diagnostic: `html.${tag} ${entry.name} must be statically known for native lowering`,
+          diagnosticSpan: entry.span,
+        }
+      }
+      consume(entry)
+      continue
+    }
     if (entry.name === 'hidden') {
       consume(entry)
       continue
@@ -1328,6 +1361,14 @@ export function createTamaguiCompilerHost(
         )
       }
       if (component.domTag && props.hidden) props.display = 'none'
+      if (component.domTag && platform === 'native') {
+        for (const [name, styleKey] of DOM_STYLE_ATTRIBUTES) {
+          if (name in props) {
+            props[styleKey] = props[name]
+            delete props[name]
+          }
+        }
+      }
       if (
         platform === 'native' &&
         component.domTag === 'input' &&

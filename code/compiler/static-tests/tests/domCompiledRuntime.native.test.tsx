@@ -1,4 +1,4 @@
-process.env.TAMAGUI_TARGET = 'native'
+import './lib/nativeTarget'
 
 import { transform } from 'esbuild'
 import * as ReactModule from 'react'
@@ -9,6 +9,10 @@ import { expect, test, vi } from 'vitest'
 import * as NativeDOM from '../../../core/web/src/dom/index.native'
 import configDefault from '../../../core/config-default'
 import { TamaguiProvider, createTamagui } from '../../../core/web/src'
+// the module a native bundler picks for `html` from @tamagui/core, which is
+// what runs when the compiler did not: the vitest resolver does not do the
+// platform extension swap for this pair
+import { html } from '../../../core/web/src/dom/html.native'
 import { extractForNative } from './lib/extract'
 
 vi.mock('react-native', async (importOriginal) => {
@@ -78,7 +82,13 @@ async function executeCompiled(source: string) {
   const localRequire = (specifier: string) => {
     if (specifier === 'react') return ReactModule
     if (specifier === 'react/jsx-runtime') return JSXRuntime
-    if (specifier === '@tamagui/core/dom' || specifier === 'tamagui/dom') {
+    // the lowered file keeps its `html` import; every member of it throws, so a
+    // tag the compiler failed to replace fails the test rather than rendering
+    if (
+      specifier === '@tamagui/core' ||
+      specifier === '@tamagui/core/dom' ||
+      specifier === 'tamagui/dom'
+    ) {
       return NativeDOM
     }
     throw new Error(`Unexpected compiled dependency: ${specifier}`)
@@ -91,6 +101,118 @@ async function executeCompiled(source: string) {
   )(localRequire, compiledModule, compiledModule.exports)
   return compiledModule.exports
 }
+
+/**
+ * Element defaults that reach the host only at runtime: the frame passes a
+ * component's non-style default props through (`suppressHighlighting`, and
+ * `objectFit`, a web-only style key native never resolves), while the compiler
+ * reads defaults for the styles they carry and emits no leftover view props.
+ * Both are asserted on each tree below rather than quietly dropped here.
+ */
+const defaultPropsOnlyTheFrameApplies = new Set(['objectFit', 'suppressHighlighting'])
+
+/** what a rendered host tree is, with the parts a comparison cannot see removed */
+function hostTree(node: any): unknown {
+  if (!node || typeof node !== 'object') return node
+  if (Array.isArray(node)) return node.map(hostTree)
+  const props: Record<string, unknown> = {}
+  for (const key in node.props) {
+    const value = node.props[key]
+    // a handler and a ref are identities, not values: the two trees reach the
+    // same host through a different number of components, so only their effect
+    // is comparable (asserted below by pressing both)
+    if (value === undefined || key === 'style' || typeof value === 'function') continue
+    if (defaultPropsOnlyTheFrameApplies.has(key)) continue
+    props[key] = value
+  }
+  const styles = (
+    Array.isArray(node.props?.style) ? node.props.style : [node.props?.style]
+  )
+    .flat(Number.POSITIVE_INFINITY)
+    .filter(Boolean) as Record<string, unknown>[]
+  return {
+    type: node.type,
+    props,
+    style: styles.length ? Object.assign({}, ...styles) : undefined,
+    children: node.children ? node.children.map(hostTree) : node.children,
+  }
+}
+
+function render(ui: ReactModule.ReactNode) {
+  let renderer: ReactTestRenderer
+  act(() => {
+    renderer = create(
+      ReactModule.createElement(
+        TamaguiProvider,
+        { config, defaultTheme: 'light' },
+        ui as ReactModule.ReactElement
+      )
+    )
+  })
+  return renderer!
+}
+
+test('the runtime tag renders the tree the compiler emits for the same source', async () => {
+  const compiled = await executeCompiled(`
+    import { html } from '@tamagui/core'
+    export const Fixture = ({ onClick }) => (
+      <html.main aria-label="fixture" data-testid="main" dir="rtl" padding={8}>
+        <html.h1 color="red" data-testid="heading">Heading</html.h1>
+        <html.div data-testid="clickable" onClick={onClick} />
+        <html.img alt="Square" data-testid="image" height={20} src="square.png" width={20} />
+        <html.input data-testid="field" disabled type="text" />
+      </html.main>
+    )
+  `)
+
+  // the extract pipeline flips TAMAGUI_TARGET while bundling configs; pin it
+  // back so the runtime render below behaves like a real native bundle
+  process.env.TAMAGUI_TARGET = 'native'
+
+  const compiledClick = vi.fn()
+  const runtimeClick = vi.fn()
+  const compiledTree = render(
+    ReactModule.createElement(compiled.Fixture!, { onClick: compiledClick })
+  )
+  const runtimeTree = render(
+    <html.main aria-label="fixture" data-testid="main" dir="rtl" padding={8}>
+      <html.h1 color="red" data-testid="heading">
+        Heading
+      </html.h1>
+      <html.div data-testid="clickable" onClick={runtimeClick} />
+      <html.img
+        alt="Square"
+        data-testid="image"
+        height={20}
+        src="square.png"
+        width={20}
+      />
+      <html.input data-testid="field" disabled type="text" />
+    </html.main>
+  )
+
+  expect(hostTree(runtimeTree.toJSON())).toEqual(hostTree(compiledTree.toJSON()))
+
+  // the two element defaults the comparison above cannot hold both trees to
+  expect(findPrimitive(runtimeTree, 'Text', 'heading').props.suppressHighlighting).toBe(
+    true
+  )
+  expect(
+    findPrimitive(compiledTree, 'Text', 'heading').props.suppressHighlighting
+  ).toBeUndefined()
+  expect(findPrimitive(runtimeTree, 'Image', 'image').props.objectFit).toBe('fill')
+  expect(findPrimitive(compiledTree, 'Image', 'image').props.objectFit).toBeUndefined()
+
+  for (const [renderer, onClick] of [
+    [compiledTree, compiledClick],
+    [runtimeTree, runtimeClick],
+  ] as const) {
+    const clickable = findPrimitive(renderer, 'Pressable', 'clickable')
+    act(() => clickable.props.onPress({ nativeEvent: { pageX: 1, pageY: 2 } }))
+    expect(onClick).toHaveBeenCalledOnce()
+    expect(onClick.mock.calls[0]![0].type).toBe('click')
+  }
+})
 
 test('compiled JSX and createElement literals render with inherited text styles', async () => {
   const compiled = await executeCompiled(`

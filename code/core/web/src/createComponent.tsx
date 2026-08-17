@@ -1472,6 +1472,17 @@ export function createComponent<
 
     viewProps.ref = stateRef.current.composedRef
 
+    if (
+      process.env.TAMAGUI_TARGET === 'native' &&
+      onClick !== undefined &&
+      staticConfig.neverSkipProps?.onClick
+    ) {
+      // native has no click of its own: a component that declares onClick as its
+      // own prop (the DOM primitives, which build the payload from a press)
+      // receives it untouched, rather than through the web press path below
+      viewProps.onClick = onClick
+    }
+
     // handle pointer events (native: maps to touch events, web: no-op)
     usePointerEvents(props, viewProps)
 
@@ -1643,7 +1654,8 @@ export function createComponent<
       onMouseDown ||
       onMouseUp ||
       onLongPress ||
-      onClick
+      // only web routes onClick through the press path (see onPress below)
+      (process.env.TAMAGUI_TARGET === 'web' && onClick)
     )
 
     const runtimeHoverStyle = !disabled && conditionalStates?.has('hover')

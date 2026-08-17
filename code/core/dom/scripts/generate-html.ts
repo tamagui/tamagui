@@ -14,8 +14,8 @@
  * On web each tag is an ordinary Tamagui component rendering the literal
  * element, so it gets the whole regular Tamagui prop surface plus the strict
  * DOM props for that tag. On native the compiler rewrites these to the DOM
- * primitives, and a build with no compiler fails rather than rendering: see
- * `html.native.tsx`.
+ * primitives, and where it did not run each tag renders the primitive through
+ * the same kind of component: see `html.native.tsx`.
  */
 
 import { writeFileSync } from 'node:fs'
@@ -23,6 +23,14 @@ import { join } from 'node:path'
 
 import { format } from './format'
 
+import { ATTRIBUTES, NATIVE_INPUT_TYPES } from '../src/tables/attributes'
+import { EVENTS } from '../src/tables/events'
+import {
+  NATIVE_BACKING,
+  NATIVE_BLOCK_DEFAULTS,
+  NATIVE_ELEMENT_DEFAULTS,
+  NATIVE_FLEX_DEFAULTS,
+} from '../src/tables/nativeBacking'
 import { DISPLAY_WEB_RESET, TAGS, TAG_NAMES, TAG_WEB_DEFAULTS } from '../src/tables/tags'
 import type { TagName } from '../src/tables/types'
 
@@ -144,43 +152,223 @@ function htmlSource(): string {
 }
 
 /**
- * The native half. Every member throws, and that is the whole design: on native
- * the compiler rewrites `html.*` into the DOM primitives before the app runs,
- * so a member that survives to render proves the compiler did not run. Failing
- * loudly with the tag named is the specified behaviour — silently rendering
- * something approximate is what the DOM contract exists to prevent.
+ * Props whose native mapping is a rule rather than a rename, so
+ * `htmlRuntime.native` resolves them itself and they stay out of the tables.
+ */
+const RUNTIME_RESOLVED_PROPS = new Set([
+  'aria-hidden',
+  'aria-live',
+  'disabled',
+  'hidden',
+  'readOnly',
+  'tabIndex',
+  'type',
+])
+
+/**
+ * Events the DOM primitives adapt from the react native payload, which does not
+ * exist until the event fires: the table gives them a cross-platform payload
+ * type and no host that carries it. They reach the primitive under their DOM
+ * name, so they stay out of the rename table.
+ */
+const PRIMITIVE_ADAPTED_EVENTS = new Set(
+  Object.entries(EVENTS)
+    .filter(([, row]) => row.native === 'polyfill' && row.payload !== 'unknown')
+    .map(([name]) => name)
+)
+
+const nativeRows = () =>
+  [...Object.entries(ATTRIBUTES), ...Object.entries(EVENTS)].filter(
+    ([name]) => !RUNTIME_RESOLVED_PROPS.has(name) && !PRIMITIVE_ADAPTED_EVENTS.has(name)
+  )
+
+/** the element defaults for one tag on native, matching what the compiler applies */
+const nativeDefaultsFor = (tag: TagName) => ({
+  ...NATIVE_ELEMENT_DEFAULTS,
+  ...(TAGS[tag].display === 'block' ? NATIVE_BLOCK_DEFAULTS : null),
+  ...TAGS[tag].defaults,
+  ...TAGS[tag].nativeDefaults,
+})
+
+const record = (entries: [string, string][]) =>
+  `{ ${entries.map(([key, value]) => `${JSON.stringify(key)}: ${value}`).join(', ')} }`
+
+const set = (values: readonly string[]) =>
+  `new Set([${values.map((value) => JSON.stringify(value)).join(', ')}])`
+
+/**
+ * The native half. Each tag is the same regular Tamagui component the web half
+ * builds, rendering the native DOM primitive its backing names instead of a
+ * literal element, wrapped by the runtime prop mapping in
+ * `htmlRuntime.native.tsx`. The compiler still replaces all of it when it runs;
+ * this is what `html.*` does in a native build where it did not.
  */
 export function generateHtmlNative(): string {
   return format(htmlNativeSource(), 'html.native.tsx')
 }
 
 function htmlNativeSource(): string {
+  const supported = TAG_NAMES.filter((tag) => TAGS[tag].native !== 'none')
+
+  const components = TAG_NAMES.map((tag) => {
+    const row = TAGS[tag]
+    if (row.native === 'none') {
+      return [
+        `const ${tag} = unsupportedDOMTag(`,
+        `  '${tag}',`,
+        `  ${JSON.stringify(row.note ?? 'no native backing')}`,
+        `)`,
+      ].join('\n')
+    }
+    const { backing } = row
+    const isText = backing !== 'view' && backing !== 'image'
+    const base = isText ? 'textStaticConfig' : 'viewStaticConfig'
+    const element = isText ? 'TamaguiTextElement' : 'TamaguiElement'
+    const props = isText ? 'TextProps' : 'ViewProps'
+    const nonStyle = isText ? 'TextNonStyleProps' : 'StackNonStyleProps'
+    const styleBase = isText ? 'TextStylePropsBase' : 'StackStyleBase'
+    const defaults = Object.entries(nativeDefaultsFor(tag))
+      .map(([key, value]) => `${key}: ${literal(value)}`)
+      .join(', ')
+    const spec = [
+      ...(isText ? ['inherits: true'] : []),
+      ...(NATIVE_BACKING[backing].wrapsLiteralText ? ['wrapsLiteralText: true'] : []),
+      ...(row.role ? [`role: '${row.role}'`] : []),
+      ...(backing === 'textinput' ? [`entry: '${tag}'`] : []),
+    ]
+
+    return [
+      `const ${tag} = domTag(`,
+      `  '${tag}',`,
+      `  createComponent<`,
+      `    ${propsFor(tag)} & ${props},`,
+      `    ${element},`,
+      `    ${propsFor(tag)} & ${nonStyle},`,
+      `    ${styleBase}`,
+      `  >({`,
+      `    ...${base},`,
+      `    validStyles: domValidStyles,`,
+      `    neverSkipProps: domEventProps,`,
+      `    Component: primitive(${NATIVE_BACKING[backing].primitive}),`,
+      // a text-entry control takes the text style props and the native input path
+      ...(backing === 'textinput' ? ['    isInput: true,'] : []),
+      `    defaultProps: { ...${base}.defaultProps${defaults ? `, ${defaults}` : ''} },`,
+      `  })${spec.length ? `,\n  { ${spec.join(', ')} }` : ''}`,
+      `)`,
+    ].join('\n')
+  })
+
+  const interfaces = [...new Set(supported.map(propsFor))].sort()
+  const primitives = [
+    ...new Set(supported.map((tag) => NATIVE_BACKING[TAGS[tag].backing].primitive)),
+  ].sort()
+
+  const renamed = nativeRows()
+    .filter(
+      ([name, row]) =>
+        row.native !== 'none' &&
+        row.nativeProp &&
+        row.nativeProp !== name &&
+        !row.nativeProp.includes('.')
+    )
+    .map(([name, row]) => [name, JSON.stringify(row.nativeProp)] as [string, string])
+  const nested = nativeRows()
+    .filter(([, row]) => row.native !== 'none' && row.nativeProp?.includes('.'))
+    .map(([name, row]) => {
+      const [parent, child] = row.nativeProp!.split('.')
+      return [name, `[${JSON.stringify(parent)}, ${JSON.stringify(child)}]`] as [
+        string,
+        string,
+      ]
+    })
+  const unsupportedProps = nativeRows()
+    .filter(
+      ([name, row]) =>
+        row.native === 'none' && name !== 'data-*' && !Object.hasOwn(EVENTS, name)
+    )
+    .map(
+      ([name, row]) =>
+        [name, JSON.stringify(row.note ?? 'no native equivalent')] as [string, string]
+    )
+  const unsupportedEvents = Object.entries(EVENTS)
+    .filter(([, row]) => row.native === 'none')
+    .map(([name]) => name)
+  const supportedEvents = Object.entries(EVENTS)
+    .filter(([, row]) => row.native !== 'none')
+    .map(([name]) => [name, '1'] as [string, string])
+
   return `${[
     '// Generated by @tamagui/dom scripts/generate-html.ts from the tables in',
     '// that package. Run `bun run generate:html` there after changing a table.',
     '// Do not edit by hand.',
     '',
+    `import type {\n${interfaces.map((name) => `  ${name},`).join('\n')}\n} from '@tamagui/dom'`,
+    '',
+    `import { createComponent } from '../createComponent'`,
+    `import type {`,
+    `  StackNonStyleProps,`,
+    `  StackStyleBase,`,
+    `  StaticConfig,`,
+    `  TamaguiElement,`,
+    `  TamaguiTextElement,`,
+    `  TextNonStyleProps,`,
+    `  TextProps,`,
+    `  TextStylePropsBase,`,
+    `} from '../types'`,
+    `import { textStaticConfig } from '../views/Text'`,
+    `import type { ViewProps } from '../views/View'`,
+    `import { viewStaticConfig } from '../views/View'`,
+    `import { createDOMTagFactory, unsupportedDOMTag } from './htmlRuntime.native'`,
+    `import {\n${primitives.map((name) => `  ${name},`).join('\n')}\n} from './primitives.native'`,
+    '',
     '/**',
     ' * The semantic elements of the Tamagui DOM contract, on native.',
     ' *',
-    ' * There is no runtime here. Tag classification, native primitive injection',
-    ' * and literal text wrapping are structural rewrites the compiler performs at',
-    ' * build time, and none of them can be done while the app runs. So on native',
-    ' * the compiler is required, and reaching one of these means it did not run.',
+    ' * The compiler rewrites these into the DOM primitives at build time and that',
+    ' * stays the fast path. Without it each tag is the same regular Tamagui',
+    " * component the web half builds, rendering its backing's primitive rather",
+    ' * than a literal element: the element defaults below are what the compiler',
+    ' * would have inlined, and `htmlRuntime.native.tsx` does the DOM prop mapping',
+    ' * and literal-text wrapping the compiler would have done structurally.',
     ' */',
-    'const requireCompiler = (tag: string) => () => {',
-    '  throw new Error(',
-    '    `<html.${tag}> reached the runtime on native, which means the Tamagui ` +',
-    '      `compiler did not run. DOM mode is a build-time contract on native: the ` +',
-    '      `compiler classifies each tag, injects the native primitive it lowers to ` +',
-    '      `and wraps literal text, none of which can happen at runtime. Add the ` +',
-    '      `Tamagui compiler to the native build, or use the regular Tamagui ` +',
-    '      `components instead of html.*.`',
-    '  )',
+    'const domTag = createDOMTagFactory({',
+    `  renamed: ${record(renamed)},`,
+    `  nested: ${record(nested)},`,
+    `  unsupportedProps: ${record(unsupportedProps)},`,
+    `  unsupportedEvents: ${set(unsupportedEvents)},`,
+    `  dataPropNote: ${JSON.stringify(ATTRIBUTES['data-*']!.note ?? 'no native equivalent')},`,
+    `  nativeInputTypes: ${set(NATIVE_INPUT_TYPES)},`,
+    `  flexDefaults: ${record(Object.entries(NATIVE_FLEX_DEFAULTS).map(([key, value]) => [key, literal(value)]))},`,
+    '})',
+    '',
+    '/**',
+    ' * CSS text properties may be authored on any element and inherited by',
+    ' * descendant text, including from a view-backed tag, which is why every tag',
+    ' * takes the text style props as well. The compiler builds the same set.',
+    ' */',
+    'const domValidStyles = {',
+    '  ...viewStaticConfig.validStyles,',
+    '  ...textStaticConfig.validStyles,',
     '}',
     '',
+    '/**',
+    ' * The events with a native equivalent reach the primitive, which forwards or',
+    ' * adapts each one. Tamagui otherwise drops these as web-only props on native,',
+    ' * and here the primitive is what carries them.',
+    ' */',
+    `const domEventProps: Record<string, 1> = ${record(supportedEvents)}`,
+    '',
+    '/**',
+    ' * `StaticConfig.Component` is typed for Tamagui components, and the DOM',
+    ' * primitives are plain function components; the compiler injects them the',
+    ' * same way.',
+    ' */',
+    `const primitive = (component: unknown) => component as StaticConfig['Component']`,
+    '',
+    components.join('\n\n'),
+    '',
     'export const html = {',
-    TAG_NAMES.map((tag) => `  ${tag}: requireCompiler('${tag}'),`).join('\n'),
+    TAG_NAMES.map((tag) => `  ${tag},`).join('\n'),
     '}',
     '',
   ].join('\n')}`

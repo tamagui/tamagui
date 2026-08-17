@@ -104,6 +104,9 @@ const nonAnimatableTextOnlyProps = {
   textDecorationLine: true,
   textDecorationStyle: true,
   userSelect: true,
+  // react native carries text direction as a style, and it inherits: the DOM
+  // `dir` attribute lowers to it (expandStyle maps it to `direction` on web)
+  writingDirection: true,
 }
 
 // discrete (non-animatable) unitless properties

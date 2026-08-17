@@ -91,6 +91,7 @@ export declare const nonAnimatableStyleProps: {
     textDecorationLine: boolean;
     textDecorationStyle: boolean;
     userSelect: boolean;
+    writingDirection: boolean;
     WebkitLineClamp: boolean;
     lineClamp: boolean;
     gridTemplateColumns: boolean;
@@ -419,6 +420,7 @@ export declare const stylePropsTextOnly: {
     textDecorationLine: boolean;
     textDecorationStyle: boolean;
     userSelect: boolean;
+    writingDirection: boolean;
     fontSize: boolean;
     fontWeight: boolean;
     letterSpacing: boolean;
@@ -571,6 +573,7 @@ export declare const stylePropsText: {
     textDecorationLine: boolean;
     textDecorationStyle: boolean;
     userSelect: boolean;
+    writingDirection: boolean;
     WebkitLineClamp: boolean;
     lineClamp: boolean;
     gridTemplateColumns: boolean;
@@ -845,6 +848,7 @@ export declare const stylePropsAll: {
     textDecorationLine: boolean;
     textDecorationStyle: boolean;
     userSelect: boolean;
+    writingDirection: boolean;
     WebkitLineClamp: boolean;
     lineClamp: boolean;
     gridTemplateColumns: boolean;

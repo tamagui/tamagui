@@ -21,9 +21,10 @@ import type { ReactNode, Ref } from 'react'
  * adapting event payloads, exposing the documented DOM-shaped ref facade and
  * carrying compiler-marked inherited text. Dynamic style() clauses lower to
  * separate runtime variants that subscribe to Tamagui theme, media and
- * interaction state. The ref-free, static common path stays hook-free. Native
- * builds still require the compiler; the generated html.native stubs
- * deliberately throw when lowering did not run.
+ * interaction state. The ref-free, static common path stays hook-free. The
+ * compiler is the fast path rather than a requirement: where it did not run,
+ * the generated `html.native` renders these same primitives through a regular
+ * Tamagui component (see `htmlRuntime.native.tsx`).
  */
 
 /**

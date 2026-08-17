@@ -468,7 +468,7 @@ export const getSplitStyles: StyleSplitter = (
   }
 
   const { asChild } = props
-  const { accept } = staticConfig
+  const { accept, neverSkipProps } = staticConfig
   const { noSkip, disableExpandShorthands, noExpand, styledContext } = styleProps
 
   // frontend preprocessing runs once per render: createComponent already ran the
@@ -635,7 +635,7 @@ export const getSplitStyles: StyleSplitter = (
     }
 
     // keyInit === 'style' is handled in skipProps
-    if (keyInit in skipProps && !noSkip && !isHOC) {
+    if (keyInit in skipProps && !noSkip && !isHOC && !neverSkipProps?.[keyInit]) {
       if (keyInit === 'group') {
         if (process.env.TAMAGUI_TARGET === 'web') {
           // add container style
@@ -862,7 +862,7 @@ export const getSplitStyles: StyleSplitter = (
     }
 
     // after shouldPassThrough
-    if (!noSkip) {
+    if (!noSkip && !neverSkipProps?.[keyInit]) {
       if (
         keyInit in skipProps &&
         !(

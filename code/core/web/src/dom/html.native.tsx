@@ -2,73 +2,1440 @@
 // that package. Run `bun run generate:html` there after changing a table.
 // Do not edit by hand.
 
+import type {
+  StrictDOMAnchorProps,
+  StrictDOMButtonProps,
+  StrictDOMImageProps,
+  StrictDOMInputProps,
+  StrictDOMLabelProps,
+  StrictDOMListItemProps,
+  StrictDOMProps,
+  StrictDOMTextAreaProps,
+  StrictDOMVoidProps,
+} from '@tamagui/dom'
+
+import { createComponent } from '../createComponent'
+import type {
+  StackNonStyleProps,
+  StackStyleBase,
+  StaticConfig,
+  TamaguiElement,
+  TamaguiTextElement,
+  TextNonStyleProps,
+  TextProps,
+  TextStylePropsBase,
+} from '../types'
+import { textStaticConfig } from '../views/Text'
+import type { ViewProps } from '../views/View'
+import { viewStaticConfig } from '../views/View'
+import { createDOMTagFactory, unsupportedDOMTag } from './htmlRuntime.native'
+import { DOMImage, DOMText, DOMTextInput, DOMView } from './primitives.native'
+
 /**
  * The semantic elements of the Tamagui DOM contract, on native.
  *
- * There is no runtime here. Tag classification, native primitive injection
- * and literal text wrapping are structural rewrites the compiler performs at
- * build time, and none of them can be done while the app runs. So on native
- * the compiler is required, and reaching one of these means it did not run.
+ * The compiler rewrites these into the DOM primitives at build time and that
+ * stays the fast path. Without it each tag is the same regular Tamagui
+ * component the web half builds, rendering its backing's primitive rather
+ * than a literal element: the element defaults below are what the compiler
+ * would have inlined, and `htmlRuntime.native.tsx` does the DOM prop mapping
+ * and literal-text wrapping the compiler would have done structurally.
  */
-const requireCompiler = (tag: string) => () => {
-  throw new Error(
-    `<html.${tag}> reached the runtime on native, which means the Tamagui ` +
-      `compiler did not run. DOM mode is a build-time contract on native: the ` +
-      `compiler classifies each tag, injects the native primitive it lowers to ` +
-      `and wraps literal text, none of which can happen at runtime. Add the ` +
-      `Tamagui compiler to the native build, or use the regular Tamagui ` +
-      `components instead of html.*.`
-  )
+const domTag = createDOMTagFactory({
+  renamed: {
+    'aria-label': 'accessibilityLabel',
+    'aria-labelledby': 'accessibilityLabelledBy',
+    'aria-modal': 'accessibilityViewIsModal',
+    dir: 'writingDirection',
+    'data-testid': 'testID',
+    rows: 'numberOfLines',
+  },
+  nested: {
+    'aria-busy': ['accessibilityState', 'busy'],
+    'aria-checked': ['accessibilityState', 'checked'],
+    'aria-disabled': ['accessibilityState', 'disabled'],
+    'aria-expanded': ['accessibilityState', 'expanded'],
+    'aria-selected': ['accessibilityState', 'selected'],
+    'aria-valuemax': ['accessibilityValue', 'max'],
+    'aria-valuemin': ['accessibilityValue', 'min'],
+    'aria-valuenow': ['accessibilityValue', 'now'],
+    'aria-valuetext': ['accessibilityValue', 'text'],
+  },
+  unsupportedProps: {
+    'aria-activedescendant': 'no native equivalent',
+    'aria-atomic': 'no native equivalent',
+    'aria-autocomplete': 'no native equivalent',
+    'aria-colcount': 'no native equivalent',
+    'aria-colindex': 'no native equivalent',
+    'aria-colindextext': 'no native equivalent',
+    'aria-colspan': 'no native equivalent',
+    'aria-controls': 'no native equivalent',
+    'aria-current': 'no native equivalent',
+    'aria-describedby':
+      'react native has no described-by relationship; put the description in aria-label instead',
+    'aria-details': 'no native equivalent',
+    'aria-errormessage': 'no native equivalent',
+    'aria-flowto': 'no native equivalent',
+    'aria-haspopup': 'no native equivalent',
+    'aria-invalid': 'no native equivalent',
+    'aria-keyshortcuts': 'no native equivalent',
+    'aria-level': 'no native equivalent',
+    'aria-multiline': 'no native equivalent',
+    'aria-multiselectable': 'no native equivalent',
+    'aria-orientation': 'no native equivalent',
+    'aria-owns': 'no native equivalent',
+    'aria-placeholder': 'no native equivalent',
+    'aria-posinset': 'no native equivalent',
+    'aria-pressed': 'no native equivalent',
+    'aria-readonly': 'no native equivalent',
+    'aria-required': 'no native equivalent',
+    'aria-roledescription': 'no native equivalent',
+    'aria-rowcount': 'no native equivalent',
+    'aria-rowindex': 'no native equivalent',
+    'aria-rowindextext': 'no native equivalent',
+    'aria-rowspan': 'no native equivalent',
+    'aria-setsize': 'no native equivalent',
+    'aria-sort': 'no native equivalent',
+    autoFocus: 'focus a native element through a ref in an effect instead',
+    elementTiming: 'element timing is a browser performance api',
+    inert: 'no native equivalent',
+    lang: 'no native equivalent',
+    suppressHydrationWarning: 'no native equivalent',
+    download: 'no native equivalent',
+    href: 'native has no navigation; handle onClick and call your router or Linking',
+    rel: 'no native equivalent',
+    target: 'no native equivalent',
+    decoding: 'no native equivalent',
+    draggable: 'no native equivalent',
+    fetchPriority: 'no native equivalent',
+    loading: 'no native equivalent',
+    checked: 'checkbox and radio inputs have no native rendering',
+    defaultChecked: 'checkbox and radio inputs have no native rendering',
+    for: 'native has no label association; wrap the control or drive it from your own state',
+    label: 'no native equivalent',
+    max: 'no native equivalent',
+    min: 'no native equivalent',
+    minLength: 'no native equivalent',
+    multiple: 'no native equivalent',
+    name: 'form field names only matter to a form submission, which native does not have',
+    required: 'native has no form validation',
+    step: 'no native equivalent',
+  },
+  unsupportedEvents: new Set([
+    'onAuxClick',
+    'onContextMenu',
+    'onFocusIn',
+    'onFocusOut',
+    'onKeyUp',
+    'onCopy',
+    'onCut',
+    'onPaste',
+    'onFullscreenChange',
+    'onFullscreenError',
+    'onWheel',
+    'onMouseMove',
+    'onBeforeInput',
+    'onInvalid',
+    'onSelect',
+  ]),
+  dataPropNote: 'data-testid is the one exception and reaches testID on native',
+  nativeInputTypes: new Set([
+    'email',
+    'number',
+    'password',
+    'search',
+    'tel',
+    'text',
+    'url',
+  ]),
+  flexDefaults: {
+    alignContent: 'stretch',
+    alignItems: 'stretch',
+    flexBasis: 'auto',
+    flexDirection: 'row',
+    flexShrink: 1,
+    flexWrap: 'nowrap',
+    justifyContent: 'flex-start',
+  },
+})
+
+/**
+ * CSS text properties may be authored on any element and inherited by
+ * descendant text, including from a view-backed tag, which is why every tag
+ * takes the text style props as well. The compiler builds the same set.
+ */
+const domValidStyles = {
+  ...viewStaticConfig.validStyles,
+  ...textStaticConfig.validStyles,
 }
 
+/**
+ * The events with a native equivalent reach the primitive, which forwards or
+ * adapts each one. Tamagui otherwise drops these as web-only props on native,
+ * and here the primitive is what carries them.
+ */
+const domEventProps: Record<string, 1> = {
+  onPointerCancel: 1,
+  onPointerDown: 1,
+  onPointerEnter: 1,
+  onPointerLeave: 1,
+  onPointerMove: 1,
+  onPointerOut: 1,
+  onPointerOver: 1,
+  onPointerUp: 1,
+  onGotPointerCapture: 1,
+  onLostPointerCapture: 1,
+  onTouchCancel: 1,
+  onTouchEnd: 1,
+  onTouchMove: 1,
+  onTouchStart: 1,
+  onClick: 1,
+  onBlur: 1,
+  onFocus: 1,
+  onKeyDown: 1,
+  onScroll: 1,
+  onMouseDown: 1,
+  onMouseEnter: 1,
+  onMouseLeave: 1,
+  onMouseOut: 1,
+  onMouseOver: 1,
+  onMouseUp: 1,
+  onError: 1,
+  onLoad: 1,
+  onChange: 1,
+  onInput: 1,
+}
+
+/**
+ * `StaticConfig.Component` is typed for Tamagui components, and the DOM
+ * primitives are plain function components; the compiler injects them the
+ * same way.
+ */
+const primitive = (component: unknown) => component as StaticConfig['Component']
+
+const a = domTag(
+  'a',
+  createComponent<
+    StrictDOMAnchorProps & TextProps,
+    TamaguiTextElement,
+    StrictDOMAnchorProps & TextNonStyleProps,
+    TextStylePropsBase
+  >({
+    ...textStaticConfig,
+    validStyles: domValidStyles,
+    neverSkipProps: domEventProps,
+    Component: primitive(DOMText),
+    defaultProps: {
+      ...textStaticConfig.defaultProps,
+      boxSizing: 'content-box',
+      position: 'static',
+    },
+  }),
+  { inherits: true, role: 'link' }
+)
+
+const article = domTag(
+  'article',
+  createComponent<
+    StrictDOMProps & ViewProps,
+    TamaguiElement,
+    StrictDOMProps & StackNonStyleProps,
+    StackStyleBase
+  >({
+    ...viewStaticConfig,
+    validStyles: domValidStyles,
+    neverSkipProps: domEventProps,
+    Component: primitive(DOMView),
+    defaultProps: {
+      ...viewStaticConfig.defaultProps,
+      boxSizing: 'content-box',
+      position: 'static',
+      alignItems: 'stretch',
+      display: 'flex',
+      flexBasis: 'auto',
+      flexDirection: 'column',
+      flexShrink: 0,
+      flexWrap: 'nowrap',
+      justifyContent: 'flex-start',
+    },
+  }),
+  { wrapsLiteralText: true }
+)
+
+const aside = domTag(
+  'aside',
+  createComponent<
+    StrictDOMProps & ViewProps,
+    TamaguiElement,
+    StrictDOMProps & StackNonStyleProps,
+    StackStyleBase
+  >({
+    ...viewStaticConfig,
+    validStyles: domValidStyles,
+    neverSkipProps: domEventProps,
+    Component: primitive(DOMView),
+    defaultProps: {
+      ...viewStaticConfig.defaultProps,
+      boxSizing: 'content-box',
+      position: 'static',
+      alignItems: 'stretch',
+      display: 'flex',
+      flexBasis: 'auto',
+      flexDirection: 'column',
+      flexShrink: 0,
+      flexWrap: 'nowrap',
+      justifyContent: 'flex-start',
+    },
+  }),
+  { wrapsLiteralText: true }
+)
+
+const b = domTag(
+  'b',
+  createComponent<
+    StrictDOMProps & TextProps,
+    TamaguiTextElement,
+    StrictDOMProps & TextNonStyleProps,
+    TextStylePropsBase
+  >({
+    ...textStaticConfig,
+    validStyles: domValidStyles,
+    neverSkipProps: domEventProps,
+    Component: primitive(DOMText),
+    defaultProps: {
+      ...textStaticConfig.defaultProps,
+      boxSizing: 'content-box',
+      position: 'static',
+      fontWeight: 'bold',
+    },
+  }),
+  { inherits: true }
+)
+
+const bdi = domTag(
+  'bdi',
+  createComponent<
+    StrictDOMProps & TextProps,
+    TamaguiTextElement,
+    StrictDOMProps & TextNonStyleProps,
+    TextStylePropsBase
+  >({
+    ...textStaticConfig,
+    validStyles: domValidStyles,
+    neverSkipProps: domEventProps,
+    Component: primitive(DOMText),
+    defaultProps: {
+      ...textStaticConfig.defaultProps,
+      boxSizing: 'content-box',
+      position: 'static',
+    },
+  }),
+  { inherits: true }
+)
+
+const bdo = domTag(
+  'bdo',
+  createComponent<
+    StrictDOMProps & TextProps,
+    TamaguiTextElement,
+    StrictDOMProps & TextNonStyleProps,
+    TextStylePropsBase
+  >({
+    ...textStaticConfig,
+    validStyles: domValidStyles,
+    neverSkipProps: domEventProps,
+    Component: primitive(DOMText),
+    defaultProps: {
+      ...textStaticConfig.defaultProps,
+      boxSizing: 'content-box',
+      position: 'static',
+    },
+  }),
+  { inherits: true }
+)
+
+const blockquote = domTag(
+  'blockquote',
+  createComponent<
+    StrictDOMProps & ViewProps,
+    TamaguiElement,
+    StrictDOMProps & StackNonStyleProps,
+    StackStyleBase
+  >({
+    ...viewStaticConfig,
+    validStyles: domValidStyles,
+    neverSkipProps: domEventProps,
+    Component: primitive(DOMView),
+    defaultProps: {
+      ...viewStaticConfig.defaultProps,
+      boxSizing: 'content-box',
+      position: 'static',
+      alignItems: 'stretch',
+      display: 'flex',
+      flexBasis: 'auto',
+      flexDirection: 'column',
+      flexShrink: 0,
+      flexWrap: 'nowrap',
+      justifyContent: 'flex-start',
+    },
+  }),
+  { wrapsLiteralText: true }
+)
+
+const br = domTag(
+  'br',
+  createComponent<
+    StrictDOMVoidProps & TextProps,
+    TamaguiTextElement,
+    StrictDOMVoidProps & TextNonStyleProps,
+    TextStylePropsBase
+  >({
+    ...textStaticConfig,
+    validStyles: domValidStyles,
+    neverSkipProps: domEventProps,
+    Component: primitive(DOMText),
+    defaultProps: {
+      ...textStaticConfig.defaultProps,
+      boxSizing: 'content-box',
+      position: 'static',
+    },
+  }),
+  { inherits: true }
+)
+
+const button = domTag(
+  'button',
+  createComponent<
+    StrictDOMButtonProps & ViewProps,
+    TamaguiElement,
+    StrictDOMButtonProps & StackNonStyleProps,
+    StackStyleBase
+  >({
+    ...viewStaticConfig,
+    validStyles: domValidStyles,
+    neverSkipProps: domEventProps,
+    Component: primitive(DOMView),
+    defaultProps: {
+      ...viewStaticConfig.defaultProps,
+      boxSizing: 'content-box',
+      position: 'static',
+      borderWidth: 1,
+    },
+  }),
+  { wrapsLiteralText: true, role: 'button' }
+)
+
+const code = domTag(
+  'code',
+  createComponent<
+    StrictDOMProps & TextProps,
+    TamaguiTextElement,
+    StrictDOMProps & TextNonStyleProps,
+    TextStylePropsBase
+  >({
+    ...textStaticConfig,
+    validStyles: domValidStyles,
+    neverSkipProps: domEventProps,
+    Component: primitive(DOMText),
+    defaultProps: {
+      ...textStaticConfig.defaultProps,
+      boxSizing: 'content-box',
+      position: 'static',
+      fontFamily: 'monospace',
+    },
+  }),
+  { inherits: true }
+)
+
+const del = domTag(
+  'del',
+  createComponent<
+    StrictDOMProps & TextProps,
+    TamaguiTextElement,
+    StrictDOMProps & TextNonStyleProps,
+    TextStylePropsBase
+  >({
+    ...textStaticConfig,
+    validStyles: domValidStyles,
+    neverSkipProps: domEventProps,
+    Component: primitive(DOMText),
+    defaultProps: {
+      ...textStaticConfig.defaultProps,
+      boxSizing: 'content-box',
+      position: 'static',
+      textDecorationLine: 'line-through',
+    },
+  }),
+  { inherits: true }
+)
+
+const div = domTag(
+  'div',
+  createComponent<
+    StrictDOMProps & ViewProps,
+    TamaguiElement,
+    StrictDOMProps & StackNonStyleProps,
+    StackStyleBase
+  >({
+    ...viewStaticConfig,
+    validStyles: domValidStyles,
+    neverSkipProps: domEventProps,
+    Component: primitive(DOMView),
+    defaultProps: {
+      ...viewStaticConfig.defaultProps,
+      boxSizing: 'content-box',
+      position: 'static',
+      alignItems: 'stretch',
+      display: 'flex',
+      flexBasis: 'auto',
+      flexDirection: 'column',
+      flexShrink: 0,
+      flexWrap: 'nowrap',
+      justifyContent: 'flex-start',
+    },
+  }),
+  { wrapsLiteralText: true }
+)
+
+const em = domTag(
+  'em',
+  createComponent<
+    StrictDOMProps & TextProps,
+    TamaguiTextElement,
+    StrictDOMProps & TextNonStyleProps,
+    TextStylePropsBase
+  >({
+    ...textStaticConfig,
+    validStyles: domValidStyles,
+    neverSkipProps: domEventProps,
+    Component: primitive(DOMText),
+    defaultProps: {
+      ...textStaticConfig.defaultProps,
+      boxSizing: 'content-box',
+      position: 'static',
+      fontStyle: 'italic',
+    },
+  }),
+  { inherits: true }
+)
+
+const fieldset = domTag(
+  'fieldset',
+  createComponent<
+    StrictDOMProps & ViewProps,
+    TamaguiElement,
+    StrictDOMProps & StackNonStyleProps,
+    StackStyleBase
+  >({
+    ...viewStaticConfig,
+    validStyles: domValidStyles,
+    neverSkipProps: domEventProps,
+    Component: primitive(DOMView),
+    defaultProps: {
+      ...viewStaticConfig.defaultProps,
+      boxSizing: 'content-box',
+      position: 'static',
+      alignItems: 'stretch',
+      display: 'flex',
+      flexBasis: 'auto',
+      flexDirection: 'column',
+      flexShrink: 0,
+      flexWrap: 'nowrap',
+      justifyContent: 'flex-start',
+    },
+  }),
+  { wrapsLiteralText: true }
+)
+
+const footer = domTag(
+  'footer',
+  createComponent<
+    StrictDOMProps & ViewProps,
+    TamaguiElement,
+    StrictDOMProps & StackNonStyleProps,
+    StackStyleBase
+  >({
+    ...viewStaticConfig,
+    validStyles: domValidStyles,
+    neverSkipProps: domEventProps,
+    Component: primitive(DOMView),
+    defaultProps: {
+      ...viewStaticConfig.defaultProps,
+      boxSizing: 'content-box',
+      position: 'static',
+      alignItems: 'stretch',
+      display: 'flex',
+      flexBasis: 'auto',
+      flexDirection: 'column',
+      flexShrink: 0,
+      flexWrap: 'nowrap',
+      justifyContent: 'flex-start',
+    },
+  }),
+  { wrapsLiteralText: true }
+)
+
+const form = domTag(
+  'form',
+  createComponent<
+    StrictDOMProps & ViewProps,
+    TamaguiElement,
+    StrictDOMProps & StackNonStyleProps,
+    StackStyleBase
+  >({
+    ...viewStaticConfig,
+    validStyles: domValidStyles,
+    neverSkipProps: domEventProps,
+    Component: primitive(DOMView),
+    defaultProps: {
+      ...viewStaticConfig.defaultProps,
+      boxSizing: 'content-box',
+      position: 'static',
+      alignItems: 'stretch',
+      display: 'flex',
+      flexBasis: 'auto',
+      flexDirection: 'column',
+      flexShrink: 0,
+      flexWrap: 'nowrap',
+      justifyContent: 'flex-start',
+    },
+  }),
+  { wrapsLiteralText: true }
+)
+
+const h1 = domTag(
+  'h1',
+  createComponent<
+    StrictDOMProps & TextProps,
+    TamaguiTextElement,
+    StrictDOMProps & TextNonStyleProps,
+    TextStylePropsBase
+  >({
+    ...textStaticConfig,
+    validStyles: domValidStyles,
+    neverSkipProps: domEventProps,
+    Component: primitive(DOMText),
+    defaultProps: {
+      ...textStaticConfig.defaultProps,
+      boxSizing: 'content-box',
+      position: 'static',
+      alignItems: 'stretch',
+      display: 'flex',
+      flexBasis: 'auto',
+      flexDirection: 'column',
+      flexShrink: 0,
+      flexWrap: 'nowrap',
+      justifyContent: 'flex-start',
+      fontSize: '1.5rem',
+      fontWeight: 'bold',
+    },
+  }),
+  { inherits: true, role: 'heading' }
+)
+
+const h2 = domTag(
+  'h2',
+  createComponent<
+    StrictDOMProps & TextProps,
+    TamaguiTextElement,
+    StrictDOMProps & TextNonStyleProps,
+    TextStylePropsBase
+  >({
+    ...textStaticConfig,
+    validStyles: domValidStyles,
+    neverSkipProps: domEventProps,
+    Component: primitive(DOMText),
+    defaultProps: {
+      ...textStaticConfig.defaultProps,
+      boxSizing: 'content-box',
+      position: 'static',
+      alignItems: 'stretch',
+      display: 'flex',
+      flexBasis: 'auto',
+      flexDirection: 'column',
+      flexShrink: 0,
+      flexWrap: 'nowrap',
+      justifyContent: 'flex-start',
+      fontSize: '1.5rem',
+      fontWeight: 'bold',
+    },
+  }),
+  { inherits: true, role: 'heading' }
+)
+
+const h3 = domTag(
+  'h3',
+  createComponent<
+    StrictDOMProps & TextProps,
+    TamaguiTextElement,
+    StrictDOMProps & TextNonStyleProps,
+    TextStylePropsBase
+  >({
+    ...textStaticConfig,
+    validStyles: domValidStyles,
+    neverSkipProps: domEventProps,
+    Component: primitive(DOMText),
+    defaultProps: {
+      ...textStaticConfig.defaultProps,
+      boxSizing: 'content-box',
+      position: 'static',
+      alignItems: 'stretch',
+      display: 'flex',
+      flexBasis: 'auto',
+      flexDirection: 'column',
+      flexShrink: 0,
+      flexWrap: 'nowrap',
+      justifyContent: 'flex-start',
+      fontSize: '1.5rem',
+      fontWeight: 'bold',
+    },
+  }),
+  { inherits: true, role: 'heading' }
+)
+
+const h4 = domTag(
+  'h4',
+  createComponent<
+    StrictDOMProps & TextProps,
+    TamaguiTextElement,
+    StrictDOMProps & TextNonStyleProps,
+    TextStylePropsBase
+  >({
+    ...textStaticConfig,
+    validStyles: domValidStyles,
+    neverSkipProps: domEventProps,
+    Component: primitive(DOMText),
+    defaultProps: {
+      ...textStaticConfig.defaultProps,
+      boxSizing: 'content-box',
+      position: 'static',
+      alignItems: 'stretch',
+      display: 'flex',
+      flexBasis: 'auto',
+      flexDirection: 'column',
+      flexShrink: 0,
+      flexWrap: 'nowrap',
+      justifyContent: 'flex-start',
+      fontSize: '1.5rem',
+      fontWeight: 'bold',
+    },
+  }),
+  { inherits: true, role: 'heading' }
+)
+
+const h5 = domTag(
+  'h5',
+  createComponent<
+    StrictDOMProps & TextProps,
+    TamaguiTextElement,
+    StrictDOMProps & TextNonStyleProps,
+    TextStylePropsBase
+  >({
+    ...textStaticConfig,
+    validStyles: domValidStyles,
+    neverSkipProps: domEventProps,
+    Component: primitive(DOMText),
+    defaultProps: {
+      ...textStaticConfig.defaultProps,
+      boxSizing: 'content-box',
+      position: 'static',
+      alignItems: 'stretch',
+      display: 'flex',
+      flexBasis: 'auto',
+      flexDirection: 'column',
+      flexShrink: 0,
+      flexWrap: 'nowrap',
+      justifyContent: 'flex-start',
+      fontSize: '1.5rem',
+      fontWeight: 'bold',
+    },
+  }),
+  { inherits: true, role: 'heading' }
+)
+
+const h6 = domTag(
+  'h6',
+  createComponent<
+    StrictDOMProps & TextProps,
+    TamaguiTextElement,
+    StrictDOMProps & TextNonStyleProps,
+    TextStylePropsBase
+  >({
+    ...textStaticConfig,
+    validStyles: domValidStyles,
+    neverSkipProps: domEventProps,
+    Component: primitive(DOMText),
+    defaultProps: {
+      ...textStaticConfig.defaultProps,
+      boxSizing: 'content-box',
+      position: 'static',
+      alignItems: 'stretch',
+      display: 'flex',
+      flexBasis: 'auto',
+      flexDirection: 'column',
+      flexShrink: 0,
+      flexWrap: 'nowrap',
+      justifyContent: 'flex-start',
+      fontSize: '1.5rem',
+      fontWeight: 'bold',
+    },
+  }),
+  { inherits: true, role: 'heading' }
+)
+
+const header = domTag(
+  'header',
+  createComponent<
+    StrictDOMProps & ViewProps,
+    TamaguiElement,
+    StrictDOMProps & StackNonStyleProps,
+    StackStyleBase
+  >({
+    ...viewStaticConfig,
+    validStyles: domValidStyles,
+    neverSkipProps: domEventProps,
+    Component: primitive(DOMView),
+    defaultProps: {
+      ...viewStaticConfig.defaultProps,
+      boxSizing: 'content-box',
+      position: 'static',
+      alignItems: 'stretch',
+      display: 'flex',
+      flexBasis: 'auto',
+      flexDirection: 'column',
+      flexShrink: 0,
+      flexWrap: 'nowrap',
+      justifyContent: 'flex-start',
+    },
+  }),
+  { wrapsLiteralText: true, role: 'header' }
+)
+
+const hr = domTag(
+  'hr',
+  createComponent<
+    StrictDOMVoidProps & ViewProps,
+    TamaguiElement,
+    StrictDOMVoidProps & StackNonStyleProps,
+    StackStyleBase
+  >({
+    ...viewStaticConfig,
+    validStyles: domValidStyles,
+    neverSkipProps: domEventProps,
+    Component: primitive(DOMView),
+    defaultProps: {
+      ...viewStaticConfig.defaultProps,
+      boxSizing: 'content-box',
+      position: 'static',
+      alignItems: 'stretch',
+      display: 'flex',
+      flexBasis: 'auto',
+      flexDirection: 'column',
+      flexShrink: 0,
+      flexWrap: 'nowrap',
+      justifyContent: 'flex-start',
+      backgroundColor: 'black',
+      height: 1,
+    },
+  }),
+  { wrapsLiteralText: true }
+)
+
+const i = domTag(
+  'i',
+  createComponent<
+    StrictDOMProps & TextProps,
+    TamaguiTextElement,
+    StrictDOMProps & TextNonStyleProps,
+    TextStylePropsBase
+  >({
+    ...textStaticConfig,
+    validStyles: domValidStyles,
+    neverSkipProps: domEventProps,
+    Component: primitive(DOMText),
+    defaultProps: {
+      ...textStaticConfig.defaultProps,
+      boxSizing: 'content-box',
+      position: 'static',
+      fontStyle: 'italic',
+    },
+  }),
+  { inherits: true }
+)
+
+const img = domTag(
+  'img',
+  createComponent<
+    StrictDOMImageProps & ViewProps,
+    TamaguiElement,
+    StrictDOMImageProps & StackNonStyleProps,
+    StackStyleBase
+  >({
+    ...viewStaticConfig,
+    validStyles: domValidStyles,
+    neverSkipProps: domEventProps,
+    Component: primitive(DOMImage),
+    defaultProps: {
+      ...viewStaticConfig.defaultProps,
+      boxSizing: 'content-box',
+      position: 'static',
+      objectFit: 'fill',
+    },
+  })
+)
+
+const input = domTag(
+  'input',
+  createComponent<
+    StrictDOMInputProps & TextProps,
+    TamaguiTextElement,
+    StrictDOMInputProps & TextNonStyleProps,
+    TextStylePropsBase
+  >({
+    ...textStaticConfig,
+    validStyles: domValidStyles,
+    neverSkipProps: domEventProps,
+    Component: primitive(DOMTextInput),
+    isInput: true,
+    defaultProps: {
+      ...textStaticConfig.defaultProps,
+      boxSizing: 'content-box',
+      position: 'static',
+      borderWidth: 1,
+    },
+  }),
+  { inherits: true, entry: 'input' }
+)
+
+const ins = domTag(
+  'ins',
+  createComponent<
+    StrictDOMProps & TextProps,
+    TamaguiTextElement,
+    StrictDOMProps & TextNonStyleProps,
+    TextStylePropsBase
+  >({
+    ...textStaticConfig,
+    validStyles: domValidStyles,
+    neverSkipProps: domEventProps,
+    Component: primitive(DOMText),
+    defaultProps: {
+      ...textStaticConfig.defaultProps,
+      boxSizing: 'content-box',
+      position: 'static',
+      textDecorationLine: 'underline',
+    },
+  }),
+  { inherits: true }
+)
+
+const kbd = domTag(
+  'kbd',
+  createComponent<
+    StrictDOMProps & TextProps,
+    TamaguiTextElement,
+    StrictDOMProps & TextNonStyleProps,
+    TextStylePropsBase
+  >({
+    ...textStaticConfig,
+    validStyles: domValidStyles,
+    neverSkipProps: domEventProps,
+    Component: primitive(DOMText),
+    defaultProps: {
+      ...textStaticConfig.defaultProps,
+      boxSizing: 'content-box',
+      position: 'static',
+      fontFamily: 'monospace',
+    },
+  }),
+  { inherits: true }
+)
+
+const label = domTag(
+  'label',
+  createComponent<
+    StrictDOMLabelProps & TextProps,
+    TamaguiTextElement,
+    StrictDOMLabelProps & TextNonStyleProps,
+    TextStylePropsBase
+  >({
+    ...textStaticConfig,
+    validStyles: domValidStyles,
+    neverSkipProps: domEventProps,
+    Component: primitive(DOMText),
+    defaultProps: {
+      ...textStaticConfig.defaultProps,
+      boxSizing: 'content-box',
+      position: 'static',
+    },
+  }),
+  { inherits: true }
+)
+
+const li = domTag(
+  'li',
+  createComponent<
+    StrictDOMListItemProps & ViewProps,
+    TamaguiElement,
+    StrictDOMListItemProps & StackNonStyleProps,
+    StackStyleBase
+  >({
+    ...viewStaticConfig,
+    validStyles: domValidStyles,
+    neverSkipProps: domEventProps,
+    Component: primitive(DOMView),
+    defaultProps: {
+      ...viewStaticConfig.defaultProps,
+      boxSizing: 'content-box',
+      position: 'static',
+      alignItems: 'stretch',
+      display: 'flex',
+      flexBasis: 'auto',
+      flexDirection: 'column',
+      flexShrink: 0,
+      flexWrap: 'nowrap',
+      justifyContent: 'flex-start',
+    },
+  }),
+  { wrapsLiteralText: true, role: 'listitem' }
+)
+
+const main = domTag(
+  'main',
+  createComponent<
+    StrictDOMProps & ViewProps,
+    TamaguiElement,
+    StrictDOMProps & StackNonStyleProps,
+    StackStyleBase
+  >({
+    ...viewStaticConfig,
+    validStyles: domValidStyles,
+    neverSkipProps: domEventProps,
+    Component: primitive(DOMView),
+    defaultProps: {
+      ...viewStaticConfig.defaultProps,
+      boxSizing: 'content-box',
+      position: 'static',
+      alignItems: 'stretch',
+      display: 'flex',
+      flexBasis: 'auto',
+      flexDirection: 'column',
+      flexShrink: 0,
+      flexWrap: 'nowrap',
+      justifyContent: 'flex-start',
+    },
+  }),
+  { wrapsLiteralText: true }
+)
+
+const mark = domTag(
+  'mark',
+  createComponent<
+    StrictDOMProps & TextProps,
+    TamaguiTextElement,
+    StrictDOMProps & TextNonStyleProps,
+    TextStylePropsBase
+  >({
+    ...textStaticConfig,
+    validStyles: domValidStyles,
+    neverSkipProps: domEventProps,
+    Component: primitive(DOMText),
+    defaultProps: {
+      ...textStaticConfig.defaultProps,
+      boxSizing: 'content-box',
+      position: 'static',
+      backgroundColor: 'yellow',
+      color: 'black',
+    },
+  }),
+  { inherits: true }
+)
+
+const nav = domTag(
+  'nav',
+  createComponent<
+    StrictDOMProps & ViewProps,
+    TamaguiElement,
+    StrictDOMProps & StackNonStyleProps,
+    StackStyleBase
+  >({
+    ...viewStaticConfig,
+    validStyles: domValidStyles,
+    neverSkipProps: domEventProps,
+    Component: primitive(DOMView),
+    defaultProps: {
+      ...viewStaticConfig.defaultProps,
+      boxSizing: 'content-box',
+      position: 'static',
+      alignItems: 'stretch',
+      display: 'flex',
+      flexBasis: 'auto',
+      flexDirection: 'column',
+      flexShrink: 0,
+      flexWrap: 'nowrap',
+      justifyContent: 'flex-start',
+    },
+  }),
+  { wrapsLiteralText: true }
+)
+
+const ol = domTag(
+  'ol',
+  createComponent<
+    StrictDOMProps & ViewProps,
+    TamaguiElement,
+    StrictDOMProps & StackNonStyleProps,
+    StackStyleBase
+  >({
+    ...viewStaticConfig,
+    validStyles: domValidStyles,
+    neverSkipProps: domEventProps,
+    Component: primitive(DOMView),
+    defaultProps: {
+      ...viewStaticConfig.defaultProps,
+      boxSizing: 'content-box',
+      position: 'static',
+      alignItems: 'stretch',
+      display: 'flex',
+      flexBasis: 'auto',
+      flexDirection: 'column',
+      flexShrink: 0,
+      flexWrap: 'nowrap',
+      justifyContent: 'flex-start',
+    },
+  }),
+  { wrapsLiteralText: true, role: 'list' }
+)
+
+const optgroup = unsupportedDOMTag(
+  'optgroup',
+  'native has no menu-based select control, so this tag is a native build error'
+)
+
+const option = unsupportedDOMTag(
+  'option',
+  'native has no menu-based select control, so this tag is a native build error'
+)
+
+const p = domTag(
+  'p',
+  createComponent<
+    StrictDOMProps & TextProps,
+    TamaguiTextElement,
+    StrictDOMProps & TextNonStyleProps,
+    TextStylePropsBase
+  >({
+    ...textStaticConfig,
+    validStyles: domValidStyles,
+    neverSkipProps: domEventProps,
+    Component: primitive(DOMText),
+    defaultProps: {
+      ...textStaticConfig.defaultProps,
+      boxSizing: 'content-box',
+      position: 'static',
+      alignItems: 'stretch',
+      display: 'flex',
+      flexBasis: 'auto',
+      flexDirection: 'column',
+      flexShrink: 0,
+      flexWrap: 'nowrap',
+      justifyContent: 'flex-start',
+    },
+  }),
+  { inherits: true }
+)
+
+const pre = domTag(
+  'pre',
+  createComponent<
+    StrictDOMProps & TextProps,
+    TamaguiTextElement,
+    StrictDOMProps & TextNonStyleProps,
+    TextStylePropsBase
+  >({
+    ...textStaticConfig,
+    validStyles: domValidStyles,
+    neverSkipProps: domEventProps,
+    Component: primitive(DOMText),
+    defaultProps: {
+      ...textStaticConfig.defaultProps,
+      boxSizing: 'content-box',
+      position: 'static',
+      alignItems: 'stretch',
+      display: 'flex',
+      flexBasis: 'auto',
+      flexDirection: 'column',
+      flexShrink: 0,
+      flexWrap: 'nowrap',
+      justifyContent: 'flex-start',
+      fontFamily: 'monospace',
+    },
+  }),
+  { inherits: true }
+)
+
+const s = domTag(
+  's',
+  createComponent<
+    StrictDOMProps & TextProps,
+    TamaguiTextElement,
+    StrictDOMProps & TextNonStyleProps,
+    TextStylePropsBase
+  >({
+    ...textStaticConfig,
+    validStyles: domValidStyles,
+    neverSkipProps: domEventProps,
+    Component: primitive(DOMText),
+    defaultProps: {
+      ...textStaticConfig.defaultProps,
+      boxSizing: 'content-box',
+      position: 'static',
+      textDecorationLine: 'line-through',
+    },
+  }),
+  { inherits: true }
+)
+
+const section = domTag(
+  'section',
+  createComponent<
+    StrictDOMProps & ViewProps,
+    TamaguiElement,
+    StrictDOMProps & StackNonStyleProps,
+    StackStyleBase
+  >({
+    ...viewStaticConfig,
+    validStyles: domValidStyles,
+    neverSkipProps: domEventProps,
+    Component: primitive(DOMView),
+    defaultProps: {
+      ...viewStaticConfig.defaultProps,
+      boxSizing: 'content-box',
+      position: 'static',
+      alignItems: 'stretch',
+      display: 'flex',
+      flexBasis: 'auto',
+      flexDirection: 'column',
+      flexShrink: 0,
+      flexWrap: 'nowrap',
+      justifyContent: 'flex-start',
+    },
+  }),
+  { wrapsLiteralText: true }
+)
+
+const select = unsupportedDOMTag(
+  'select',
+  'native has no menu-based select control, so this tag is a native build error'
+)
+
+const span = domTag(
+  'span',
+  createComponent<
+    StrictDOMProps & TextProps,
+    TamaguiTextElement,
+    StrictDOMProps & TextNonStyleProps,
+    TextStylePropsBase
+  >({
+    ...textStaticConfig,
+    validStyles: domValidStyles,
+    neverSkipProps: domEventProps,
+    Component: primitive(DOMText),
+    defaultProps: {
+      ...textStaticConfig.defaultProps,
+      boxSizing: 'content-box',
+      position: 'static',
+    },
+  }),
+  { inherits: true }
+)
+
+const strong = domTag(
+  'strong',
+  createComponent<
+    StrictDOMProps & TextProps,
+    TamaguiTextElement,
+    StrictDOMProps & TextNonStyleProps,
+    TextStylePropsBase
+  >({
+    ...textStaticConfig,
+    validStyles: domValidStyles,
+    neverSkipProps: domEventProps,
+    Component: primitive(DOMText),
+    defaultProps: {
+      ...textStaticConfig.defaultProps,
+      boxSizing: 'content-box',
+      position: 'static',
+      fontWeight: 'bold',
+    },
+  }),
+  { inherits: true }
+)
+
+const sub = domTag(
+  'sub',
+  createComponent<
+    StrictDOMProps & TextProps,
+    TamaguiTextElement,
+    StrictDOMProps & TextNonStyleProps,
+    TextStylePropsBase
+  >({
+    ...textStaticConfig,
+    validStyles: domValidStyles,
+    neverSkipProps: domEventProps,
+    Component: primitive(DOMText),
+    defaultProps: {
+      ...textStaticConfig.defaultProps,
+      boxSizing: 'content-box',
+      position: 'static',
+    },
+  }),
+  { inherits: true }
+)
+
+const sup = domTag(
+  'sup',
+  createComponent<
+    StrictDOMProps & TextProps,
+    TamaguiTextElement,
+    StrictDOMProps & TextNonStyleProps,
+    TextStylePropsBase
+  >({
+    ...textStaticConfig,
+    validStyles: domValidStyles,
+    neverSkipProps: domEventProps,
+    Component: primitive(DOMText),
+    defaultProps: {
+      ...textStaticConfig.defaultProps,
+      boxSizing: 'content-box',
+      position: 'static',
+    },
+  }),
+  { inherits: true }
+)
+
+const textarea = domTag(
+  'textarea',
+  createComponent<
+    StrictDOMTextAreaProps & TextProps,
+    TamaguiTextElement,
+    StrictDOMTextAreaProps & TextNonStyleProps,
+    TextStylePropsBase
+  >({
+    ...textStaticConfig,
+    validStyles: domValidStyles,
+    neverSkipProps: domEventProps,
+    Component: primitive(DOMTextInput),
+    isInput: true,
+    defaultProps: {
+      ...textStaticConfig.defaultProps,
+      boxSizing: 'content-box',
+      position: 'static',
+      borderWidth: 1,
+      verticalAlign: 'top',
+    },
+  }),
+  { inherits: true, entry: 'textarea' }
+)
+
+const u = domTag(
+  'u',
+  createComponent<
+    StrictDOMProps & TextProps,
+    TamaguiTextElement,
+    StrictDOMProps & TextNonStyleProps,
+    TextStylePropsBase
+  >({
+    ...textStaticConfig,
+    validStyles: domValidStyles,
+    neverSkipProps: domEventProps,
+    Component: primitive(DOMText),
+    defaultProps: {
+      ...textStaticConfig.defaultProps,
+      boxSizing: 'content-box',
+      position: 'static',
+      textDecorationLine: 'underline',
+    },
+  }),
+  { inherits: true }
+)
+
+const ul = domTag(
+  'ul',
+  createComponent<
+    StrictDOMProps & ViewProps,
+    TamaguiElement,
+    StrictDOMProps & StackNonStyleProps,
+    StackStyleBase
+  >({
+    ...viewStaticConfig,
+    validStyles: domValidStyles,
+    neverSkipProps: domEventProps,
+    Component: primitive(DOMView),
+    defaultProps: {
+      ...viewStaticConfig.defaultProps,
+      boxSizing: 'content-box',
+      position: 'static',
+      alignItems: 'stretch',
+      display: 'flex',
+      flexBasis: 'auto',
+      flexDirection: 'column',
+      flexShrink: 0,
+      flexWrap: 'nowrap',
+      justifyContent: 'flex-start',
+    },
+  }),
+  { wrapsLiteralText: true, role: 'list' }
+)
+
 export const html = {
-  a: requireCompiler('a'),
-  article: requireCompiler('article'),
-  aside: requireCompiler('aside'),
-  b: requireCompiler('b'),
-  bdi: requireCompiler('bdi'),
-  bdo: requireCompiler('bdo'),
-  blockquote: requireCompiler('blockquote'),
-  br: requireCompiler('br'),
-  button: requireCompiler('button'),
-  code: requireCompiler('code'),
-  del: requireCompiler('del'),
-  div: requireCompiler('div'),
-  em: requireCompiler('em'),
-  fieldset: requireCompiler('fieldset'),
-  footer: requireCompiler('footer'),
-  form: requireCompiler('form'),
-  h1: requireCompiler('h1'),
-  h2: requireCompiler('h2'),
-  h3: requireCompiler('h3'),
-  h4: requireCompiler('h4'),
-  h5: requireCompiler('h5'),
-  h6: requireCompiler('h6'),
-  header: requireCompiler('header'),
-  hr: requireCompiler('hr'),
-  i: requireCompiler('i'),
-  img: requireCompiler('img'),
-  input: requireCompiler('input'),
-  ins: requireCompiler('ins'),
-  kbd: requireCompiler('kbd'),
-  label: requireCompiler('label'),
-  li: requireCompiler('li'),
-  main: requireCompiler('main'),
-  mark: requireCompiler('mark'),
-  nav: requireCompiler('nav'),
-  ol: requireCompiler('ol'),
-  optgroup: requireCompiler('optgroup'),
-  option: requireCompiler('option'),
-  p: requireCompiler('p'),
-  pre: requireCompiler('pre'),
-  s: requireCompiler('s'),
-  section: requireCompiler('section'),
-  select: requireCompiler('select'),
-  span: requireCompiler('span'),
-  strong: requireCompiler('strong'),
-  sub: requireCompiler('sub'),
-  sup: requireCompiler('sup'),
-  textarea: requireCompiler('textarea'),
-  u: requireCompiler('u'),
-  ul: requireCompiler('ul'),
+  a,
+  article,
+  aside,
+  b,
+  bdi,
+  bdo,
+  blockquote,
+  br,
+  button,
+  code,
+  del,
+  div,
+  em,
+  fieldset,
+  footer,
+  form,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  header,
+  hr,
+  i,
+  img,
+  input,
+  ins,
+  kbd,
+  label,
+  li,
+  main,
+  mark,
+  nav,
+  ol,
+  optgroup,
+  option,
+  p,
+  pre,
+  s,
+  section,
+  select,
+  span,
+  strong,
+  sub,
+  sup,
+  textarea,
+  u,
+  ul,
 }

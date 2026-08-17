@@ -3014,6 +3014,13 @@ export type StaticConfigPublic = {
   inlineProps?: Set<string>
 
   /**
+   * Props that reach `Component` even though the platform prop-skip list drops
+   * them. The native DOM primitives build their own event payloads, so a DOM
+   * frame's `onClick` is the primitive's input, not a web-only prop.
+   */
+  neverSkipProps?: Record<string, 1>
+
+  /**
    * Auto-detected, but can override. Wraps children to space them on top
    */
   isZStack?: boolean
