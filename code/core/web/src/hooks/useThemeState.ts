@@ -42,6 +42,30 @@ export const forceUpdateThemes = () => {
 
 export const getThemeState = (id: ID) => states.get(id)
 
+/**
+ * Direct theme-value layers and the provider chain, both keyed by the id a
+ * `<Theme>` pushes into `ThemeStateContext`.
+ *
+ * A portal renders outside its mount ancestry, so it cannot inherit the CSS
+ * custom properties a `<Theme background="...">` put on an ancestor node. The
+ * portal bridge walks this chain and replays exactly those layers. It cannot
+ * use `ThemeState.parentId`: a state that resolves to the same theme as its
+ * parent is a copy of the parent state, so its `parentId` skips a level.
+ *
+ * Only `<Theme>` providers are recorded, which is also the only kind of state
+ * whose id can appear in `ThemeStateContext`.
+ */
+const inlineThemeLayers = new Map<ID, InlineThemeLayer>()
+const themeProviderParents = new Map<ID, ID>()
+
+export type InlineThemeLayer = {
+  inlineValues: NonNullable<UseThemeWithStateProps['inlineValues']>
+  inlineClassName: string | undefined
+}
+
+export const getInlineThemeLayer = (id: ID) => inlineThemeLayers.get(id)
+export const getThemeProviderParent = (id: ID) => themeProviderParents.get(id)
+
 let cacheVersion = 0
 
 // cache for getNewThemeName - invalidated on cacheVersion change
@@ -105,6 +129,20 @@ Looked for theme${props.name ? ` "${props.name}"` : ''}, but no parent theme con
   // states Map entry was never populated in multi-root/native surfaces.
   const id = useId()
   const propsKey = getPropsKey(props)
+
+  // only a <Theme> provider pushes its id into ThemeStateContext, so only it can
+  // be a step in the chain the portal bridge replays
+  if (cascadeOnChange) {
+    themeProviderParents.set(id, parentId)
+    if (props.inlineValues) {
+      inlineThemeLayers.set(id, {
+        inlineValues: props.inlineValues,
+        inlineClassName: props.inlineClassName,
+      })
+    } else {
+      inlineThemeLayers.delete(id)
+    }
+  }
 
   // stable ref-bag for render inputs and the optional subscription cleanup.
   // lastSnap caches the last getSnapshot result for the subscription bailout.
@@ -281,6 +319,8 @@ function cleanupThemeState(r: ThemeStateRef) {
     localStates.delete(r.id)
     states.delete(r.id)
     PendingUpdate.delete(r.id)
+    inlineThemeLayers.delete(r.id)
+    themeProviderParents.delete(r.id)
   }
 }
 

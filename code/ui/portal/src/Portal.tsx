@@ -1,17 +1,19 @@
 import '@tamagui/polyfill-dev'
 
 import { isServer } from '@tamagui/constants'
-import { TamaguiRoot, useDidFinishSSR, useThemeName } from '@tamagui/web'
+import { TamaguiRoot, Theme, useDidFinishSSR, usePortalThemeState } from '@tamagui/web'
 import { useStackedZIndex, ZIndexHardcodedContext } from '@tamagui/z-index-stack'
 import * as React from 'react'
 import { createPortal } from 'react-dom'
 import { getStackedZIndexProps } from './helpers'
 import type { PortalProps } from './PortalProps'
 
+const contentsStyle = { display: 'contents' } as const
+
 export const Portal = React.memo((propsIn: PortalProps) => {
   const { children, passThrough, style, open, hidden } = propsIn
 
-  const themeName = useThemeName()
+  const { name: themeName, layers: themeLayers } = usePortalThemeState()
   const didHydrate = useDidFinishSSR()
   const zIndex = useStackedZIndex(getStackedZIndexProps(propsIn))
 
@@ -46,10 +48,27 @@ export const Portal = React.memo((propsIn: PortalProps) => {
         ...style,
       }}
     >
-      {/* provide computed z-index to children so nested portals can stack above */}
-      <ZIndexHardcodedContext.Provider value={zIndex}>
-        {children}
-      </ZIndexHardcodedContext.Provider>
+      {/* the portal escapes its mount ancestry, so direct theme values have to be
+          replayed here or portaled content silently falls back to the theme */}
+      {themeLayers.reduceRight(
+        (node, layer, index) => (
+          <Theme key={index} inlineValues={layer.inlineValues}>
+            {/* the layer's class goes on its own node, below whatever node holds
+                the theme class: a theme rule is anchored with
+                `:not(#t_theme_full_name)`, so it outranks an inline-value rule
+                that shares its element */}
+            <span className={layer.inlineClassName} style={contentsStyle}>
+              {node}
+            </span>
+          </Theme>
+        ),
+        // provide computed z-index to children so nested portals can stack above
+        (
+          <ZIndexHardcodedContext.Provider value={zIndex}>
+            {children}
+          </ZIndexHardcodedContext.Provider>
+        ) as React.ReactNode
+      )}
     </TamaguiRoot>,
     globalThis.document?.body
   )

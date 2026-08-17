@@ -102,6 +102,7 @@ export {
 export * from './hooks/useAnimationDriver'
 export * from './hooks/useProps'
 export * from './hooks/useTheme'
+export * from './hooks/usePortalThemeState'
 export * from './hooks/useThemeName'
 export { forceUpdateThemes } from './hooks/useThemeState'
 
