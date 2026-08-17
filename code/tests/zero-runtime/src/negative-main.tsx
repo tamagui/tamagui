@@ -5,9 +5,13 @@ import { countSpaceTokens } from './opaqueDesignState'
 function NegativeControl() {
   return (
     <View data-testid="zero-root" padding={24}>
-      <Text data-testid="zero-text">space tokens: {countSpaceTokens()}</Text>
+      <Text data-testid="zero-text">opaque design state</Text>
     </View>
   )
 }
+
+void countSpaceTokens().then((count) => {
+  document.title = `space tokens: ${count}`
+})
 
 createRoot(document.getElementById('root')!).render(<NegativeControl />)

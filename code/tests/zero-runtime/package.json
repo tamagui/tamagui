@@ -5,8 +5,10 @@
   "type": "module",
   "scripts": {
     "build": "vite build",
-    "build:negative": "TAMAGUI_ZERO_NEGATIVE_CONTROL=1 vite build --outDir dist-negative",
+    "build:next": "NEXT_TELEMETRY_DISABLED=1 NODE_ENV=production next build --webpack",
     "preview": "vite preview --port 7878 --strictPort",
+    "start:next": "NEXT_TELEMETRY_DISABLED=1 NODE_ENV=production next start --port 7879",
+    "receipts": "node scripts/zero-receipts.mjs && node scripts/next-receipts.mjs",
     "test": "playwright test"
   },
   "dependencies": {
@@ -17,7 +19,9 @@
   },
   "devDependencies": {
     "@playwright/test": "1.58.2",
+    "@tamagui/next-plugin": "workspace:*",
     "@tamagui/vite-plugin": "workspace:*",
+    "next": "16.1.1",
     "react-dom": "*",
     "vite": "^8.0.3"
   },

@@ -1,4 +1,7 @@
 dist
 dist-*
-.tamagui-zero
+.next
+.tamagui
+next-env.d.ts
+public
 test-results

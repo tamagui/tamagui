@@ -1,5 +1,5 @@
 import { styled, Text, Theme, View } from 'tamagui'
-import SheetIsland from '../.tamagui-zero/SheetIsland.loader'
+import SheetIsland from '../.tamagui/zero/SheetIsland.loader'
 
 // app-local styled definition in a module with another live export: the styled
 // scoping probe. `Card` is used only in lowered JSX.

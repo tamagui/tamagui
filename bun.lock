@@ -104,6 +104,7 @@
       },
       "devDependencies": {
         "@tamagui/build": "workspace:*",
+        "@tamagui/next-plugin": "workspace:*",
         "next": "16.1.1",
         "webpack": "^5.88.2",
       },
@@ -2355,7 +2356,9 @@
       },
       "devDependencies": {
         "@playwright/test": "1.58.2",
+        "@tamagui/next-plugin": "workspace:*",
         "@tamagui/vite-plugin": "workspace:*",
+        "next": "16.1.1",
         "react-dom": "*",
         "vite": "^8.0.3",
       },
