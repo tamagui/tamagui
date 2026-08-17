@@ -1,7 +1,8 @@
 import Static from '@tamagui/static'
-import type { TamaguiOptions } from '@tamagui/static'
+import type { TamaguiOptions, ZeroGraphReceipt } from '@tamagui/static'
 import { createHash } from 'node:crypto'
 import { existsSync, readdirSync, writeFileSync } from 'node:fs'
+import { gzipSync } from 'node:zlib'
 import { readFile } from 'node:fs/promises'
 import { createRequire } from 'node:module'
 import path from 'node:path'
@@ -30,6 +31,15 @@ import {
   formatCompilerStatsReport,
   type CompilerModuleReport,
 } from './compilerStats'
+import {
+  assertZeroGraph,
+  buildIsland,
+  createZeroRuntimeController,
+  finalizeZeroCSS,
+  zeroModuleKey,
+  type ZeroIslandBuildContext,
+  type ZeroRuntimeController,
+} from './zeroRuntime'
 
 const environmentSpecificTransformPluginNames = new Set([
   'one:compiler',
@@ -655,6 +665,12 @@ export type TamaguiInternalPluginOptions = TamaguiVitePluginOptions & {
    * what orders them against official Tailwind's `theme`/`utilities` layers.
    */
   wrapExtractedCSS?: (css: string) => string
+  /**
+   * Set by the zero-runtime controller when this invocation is an island child
+   * build. The island keeps the full runtime and contributes its compiler atomic
+   * CSS to the parent's single artifact instead of injecting its own.
+   */
+  zeroIslandBuild?: ZeroIslandBuildContext
 }
 
 /**
@@ -666,6 +682,7 @@ export type TamaguiInternalPluginOptions = TamaguiVitePluginOptions & {
 export function createTamaguiPlugins({
   disableResolveConfig,
   wrapExtractedCSS = (css) => css,
+  zeroIslandBuild,
   ...tamaguiOptionsIn
 }: TamaguiInternalPluginOptions = {}): {
   plugins: PluginOption[]
@@ -736,6 +753,9 @@ export function createTamaguiPlugins({
       'process.env.TAMAGUI_IS_SERVER': JSON.stringify(true),
       'process.env.TAMAGUI_TARGET': JSON.stringify('web'),
       'process.env.TAMAGUI_ENVIRONMENT': JSON.stringify(TAMAGUI_EVALUATION_ENVIRONMENT),
+      // Config evaluation must retain createTamagui and CSS generation even when
+      // the client graph is zero.
+      'process.env.TAMAGUI_RUNTIME': JSON.stringify('full'),
       // Client configs may strip theme values. Compiler evaluation and outputCSS
       // must use the full config regardless of which outer Vite environment runs last.
       'process.env.VITE_ENVIRONMENT': JSON.stringify('ssr'),
@@ -783,6 +803,8 @@ export function createTamaguiPlugins({
   const compilerHotReloadSignatures = new Map<string, string>()
   let config: ResolvedConfig
   let server: ViteDevServer
+  let zero: ZeroRuntimeController | null = null
+  let zeroReceipt: ZeroGraphReceipt | null = null
   const virtualExt = `.tamagui.css`
 
   const getAbsoluteVirtualFileId = (filePath: string) => {
@@ -852,7 +874,7 @@ export function createTamaguiPlugins({
       await releaseBuildEnvironment(this.environment)
     },
 
-    async config(_, env) {
+    async config(userConfig, env) {
       const options = await ensureLoaded()
 
       if (!options) {
@@ -868,6 +890,16 @@ export function createTamaguiPlugins({
         }
       }
 
+      // An island child build is the full-runtime half of the same project, so it
+      // never re-enters zero mode even though it reads the same tamagui.build.ts.
+      zero = zeroIslandBuild
+        ? null
+        : await createZeroRuntimeController(
+            options,
+            userConfig.root ? path.resolve(userConfig.root) : process.cwd(),
+            userConfig.base || '/'
+          )
+
       return {
         envPrefix: ['TAMAGUI_'],
 
@@ -876,12 +908,20 @@ export function createTamaguiPlugins({
             define: {
               'process.env.TAMAGUI_IS_CLIENT': JSON.stringify(true),
               'process.env.TAMAGUI_ENVIRONMENT': '"client"',
+              // An enforced zero client and its SSR peer both receive 'zero', so
+              // SSR never imports a runtime hydration removed.
+              ...(zero && {
+                'process.env.TAMAGUI_RUNTIME': JSON.stringify('zero'),
+              }),
             },
           },
           [TAMAGUI_EVALUATION_ENVIRONMENT]: getEvaluationEnvironmentOptions(),
         },
 
         define: {
+          // Config evaluation, report builds, native builds, and full-runtime
+          // island child builds all keep ordinary Tamagui runtime behavior.
+          'process.env.TAMAGUI_RUNTIME': JSON.stringify('full'),
           // reanimated support
           _frameTimestamp: undefined,
           _WORKLET: false,
@@ -1289,6 +1329,60 @@ export function createTamaguiPlugins({
           if (path.isAbsolute(dependency)) this.addWatchFile(dependency)
         }
 
+        // Island child build: the parent owns the one CSS artifact, so route this
+        // module's atomic rules there and inject nothing.
+        if (zeroIslandBuild) {
+          zeroIslandBuild.artifact.setIslandModuleCSS(
+            zeroIslandBuild.islandId,
+            validId,
+            wrapExtractedCSS(result.plan.css)
+          )
+          return result.output.changed
+            ? { code: result.output.code, map: result.output.map as any }
+            : undefined
+        }
+
+        if (zero) {
+          const zeroResult = Static.transformZeroModule({
+            id: validId,
+            source: code,
+            plan: result.plan,
+            config: (await tamaguiLoader.getTamaguiConfig())!,
+            isTamaguiSpecifier: (specifier) =>
+              specifier === 'tamagui' || specifier.startsWith('@tamagui/'),
+            resolveIslandLoader: (specifier) => {
+              const islandId = zero!.loaderIds.get(
+                zeroModuleKey(path.resolve(path.dirname(validId), specifier))
+              )
+              return islandId ? { islandId } : null
+            },
+            resolveIslandModule: (specifier) =>
+              zero!.islandModuleIds.get(
+                zeroModuleKey(path.resolve(path.dirname(validId), specifier))
+              ) ?? null,
+          })
+          for (const violation of zeroResult.violations) {
+            const { line, column } = Static.offsetToLineColumn(code, violation.span.start)
+            zero.violations.push({
+              file: path.relative(config.root, validId),
+              line,
+              column,
+              code: violation.code,
+              message: violation.message,
+            })
+          }
+          for (const [islandId, list] of zeroResult.bridges) {
+            zero.bridges.set(islandId, [...(zero.bridges.get(islandId) ?? []), ...list])
+          }
+          for (const [identifier, rules] of zeroResult.bridgeCSS) {
+            zero.artifact.setBridgeRules(identifier, rules)
+          }
+          zero.artifact.setZeroModuleCSS(validId, wrapExtractedCSS(result.plan.css))
+          return zeroResult.output.changed
+            ? { code: zeroResult.output.code, map: zeroResult.output.map as any }
+            : undefined
+        }
+
         const isSSR = isNotClient(this.environment)
         let cssImport: string | null = null
         if (result.plan.css) {
@@ -1308,12 +1402,156 @@ export function createTamaguiPlugins({
     },
   }
 
+  // Owns the single CSS artifact, the island child builds, and the module-graph
+  // gate that is the only thing that actually proves the zero guarantee.
+  const zeroRuntimePlugin: Plugin = {
+    name: 'tamagui-zero-runtime',
+    enforce: 'post',
+    apply: 'build',
+
+    async buildStart() {
+      if (!zero || this.environment.name !== 'client') return
+      await tamaguiLoader.ensureFullConfigLoaded()
+      const tamaguiConfig = await tamaguiLoader.getTamaguiConfig()
+      if (!tamaguiConfig) {
+        throw new Error(
+          `[tamagui zero-runtime] the Tamagui config did not evaluate, so no CSS artifact can be generated`
+        )
+      }
+      zero.artifact.clearGraphs()
+      zero.bridges.clear()
+      zero.violations.length = 0
+      zero.artifact.setConfigCSS(tamaguiConfig.getCSS())
+    },
+
+    transformIndexHtml: {
+      order: 'post',
+      handler(html) {
+        if (!zero) return
+        return {
+          html,
+          tags: [
+            {
+              tag: 'link',
+              attrs: { rel: 'stylesheet', href: zero.cssHref },
+              injectTo: 'head',
+            },
+          ],
+        }
+      },
+    },
+
+    generateBundle(_outputOptions, bundle) {
+      if (!zero || this.environment.name !== 'client') return
+      // rolldown reports the modules that contributed rendered code per chunk,
+      // which is exactly what shipped. Importer edges come from the whole
+      // resolved graph so a forbidden module can name its shortest chain.
+      const importers = new Map<string, string[]>()
+      for (const moduleId of this.getModuleIds()) {
+        for (const imported of this.getModuleInfo(moduleId)?.importedIds ?? []) {
+          const list = importers.get(imported)
+          if (list) list.push(moduleId)
+          else importers.set(imported, [moduleId])
+        }
+      }
+      const entries: string[] = []
+      const modules: { id: string; importers: readonly string[] }[] = []
+      for (const chunk of Object.values(bundle)) {
+        if (chunk.type !== 'chunk') continue
+        for (const moduleId of Object.keys(chunk.modules)) {
+          modules.push({ id: moduleId, importers: importers.get(moduleId) ?? [] })
+          if (this.getModuleInfo(moduleId)?.isEntry) entries.push(moduleId)
+        }
+      }
+      const checked = Static.checkZeroGraph({
+        entries,
+        modules,
+        importerEdges: importers,
+      })
+      zeroReceipt = {
+        integration: 'vite',
+        graph: 'zero',
+        entries: entries.sort(),
+        moduleCount: modules.length,
+        tamaguiModules: checked.tamaguiModules,
+        forbidden: checked.forbidden,
+        cssArtifact: null,
+        identity: '',
+        gzip: Object.fromEntries(
+          Object.values(bundle)
+            .filter((chunk) => chunk.type === 'chunk')
+            .map((chunk) => [
+              chunk.fileName,
+              gzipSync(Buffer.from((chunk as any).code), { level: 9 }).length,
+            ])
+        ),
+      }
+    },
+
+    async closeBundle() {
+      if (!zero || this.environment.name !== 'client') return
+      if (zero.violations.length) {
+        throw new Error(Static.formatZeroViolations(zero.violations))
+      }
+      const outDir = path.resolve(config.root, this.environment.config.build.outDir)
+      // one receipt per output directory, so a zero build and its negative
+      // control never overwrite each other's evidence
+      const receiptName = `vite-${path.basename(outDir)}`
+      const islandOutputHashes: Record<string, string> = {}
+      for (const island of zero.resolved.islands) {
+        const built = await buildIsland({
+          island,
+          controller: zero,
+          root: config.root,
+          outDir,
+          mode: config.mode,
+        })
+        islandOutputHashes[island.id] = built.hash
+      }
+
+      const css = finalizeZeroCSS(zero, outDir)
+      const bridgeManifest = Object.fromEntries(
+        [...zero.bridges.entries()].sort(([left], [right]) => (left < right ? -1 : 1))
+      )
+      const identityInputs = {
+        runtimeLiteral: 'zero' as const,
+        target: 'web' as const,
+        configGeneration: `${pluginInstanceId}:${tamaguiLoader.getGeneration()}`,
+        cssHash: css.hash,
+        compilerVersion: Static.ZERO_COMPILER_VERSION,
+        islandEntries: zero.resolved.islands.map((island) => island.module),
+        bridgeManifestHash: Static.hashBridgeManifest(bridgeManifest),
+        islandOutputHashes,
+      }
+      const identity = Static.hashZeroIdentity(identityInputs)
+
+      if (!zeroReceipt) {
+        throw new Error(
+          `[tamagui zero-runtime] no module graph was recorded for the zero entry`
+        )
+      }
+      zeroReceipt.cssArtifact = { path: css.href, hash: css.hash }
+      zeroReceipt.identity = identity
+      Static.writeZeroGraphReceipt(zero.resolved.outDir, receiptName, zeroReceipt)
+      writeFileSync(
+        path.join(zero.resolved.outDir, `${receiptName}.bridges.json`),
+        `${JSON.stringify(
+          { identity, identityInputs, cssGzip: css.gzip, bridges: bridgeManifest },
+          null,
+          2
+        )}\n`
+      )
+      assertZeroGraph(zeroReceipt)
+    },
+  }
+
   return {
     plugins: [
       basePlugin,
       rnwLitePlugin,
       extractPlugin,
       sharedCompilerPlugin,
+      zeroRuntimePlugin,
       tamaguiNativePlugin(tamaguiOptionsIn),
     ],
     loader: tamaguiLoader,

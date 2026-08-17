@@ -1,6 +1,7 @@
 import type { TamaguiOptions } from '@tamagui/static';
 import type { Plugin, PluginOption } from 'vite';
 import type { ViteTamaguiLoader } from './loadTamagui';
+import { type ZeroIslandBuildContext } from './zeroRuntime';
 type AliasOptions = {
     /** use @tamagui/react-native-web-lite, 'without-animated' for smaller bundle */
     rnwLite?: boolean | 'without-animated';
@@ -27,6 +28,12 @@ export type TamaguiInternalPluginOptions = TamaguiVitePluginOptions & {
      * what orders them against official Tailwind's `theme`/`utilities` layers.
      */
     wrapExtractedCSS?: (css: string) => string;
+    /**
+     * Set by the zero-runtime controller when this invocation is an island child
+     * build. The island keeps the full runtime and contributes its compiler atomic
+     * CSS to the parent's single artifact instead of injecting its own.
+     */
+    zeroIslandBuild?: ZeroIslandBuildContext;
 };
 /**
  * The base Tamagui Vite plugins plus the one config loader they evaluate through.
@@ -34,7 +41,7 @@ export type TamaguiInternalPluginOptions = TamaguiVitePluginOptions & {
  * `@tamagui/tailwind/vite` wraps this: it reuses the returned loader for its own
  * scanner plugin, so the Tamagui config is evaluated exactly once for both.
  */
-export declare function createTamaguiPlugins({ disableResolveConfig, wrapExtractedCSS, ...tamaguiOptionsIn }?: TamaguiInternalPluginOptions): {
+export declare function createTamaguiPlugins({ disableResolveConfig, wrapExtractedCSS, zeroIslandBuild, ...tamaguiOptionsIn }?: TamaguiInternalPluginOptions): {
     plugins: PluginOption[];
     loader: ViteTamaguiLoader;
 };

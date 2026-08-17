@@ -164,13 +164,22 @@ export function createViteTamaguiLoader(
       })
       projectModules = evaluated
 
-      return Static.loadTamaguiFromModules(options, {
-        config: evaluated.config.module,
-        components: evaluated.components.map(({ moduleName, module }) => ({
-          moduleName,
-          module,
-        })),
-      })
+      return Static.loadTamaguiFromModules(
+        {
+          ...options,
+          // In zero-runtime mode the integration owns the one generated CSS
+          // artifact, so config-only CSS is never written to that path.
+          ...(options.experimental?.zeroRuntime &&
+            options.experimental.zeroRuntime !== 'report' && { outputCSS: undefined }),
+        },
+        {
+          config: evaluated.config.module,
+          components: evaluated.components.map(({ moduleName, module }) => ({
+            moduleName,
+            module,
+          })),
+        }
+      )
     })()
 
     return projectPromise
