@@ -35,6 +35,7 @@ code/kitchen-sink/ios
 
 # published zero-runtime island bundles and CSS artifacts
 code/tests/zero-runtime/public
+code/tests/zero-runtime/.next-global*
 code/tests/zero-runtime/public-metro
 
 .tamagui
