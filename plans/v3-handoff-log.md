@@ -3567,3 +3567,59 @@ understood when it ran. When a sweep widens the defect, every earlier conclusion
 about it has to be re-asked, including the ones already written down as settled.
 A conclusion in a log looks equally settled whether or not it still covers the
 question.
+
+## 30. The differential oracle found a real bug on its first run (2026-08-18)
+
+`162f8a2eaf` expanded the harness to 31 curated probes plus item 4's original
+three, and `79fb8a1bba` pins what it found.
+
+### Compiled Tailwind hover candidates silently do not apply
+
+Authored `bg-[#b91c1c] hover:bg-[#2563eb]`:
+
+| tier | base | on hover |
+| --- | --- | --- |
+| ordinary compiled | `rgb(185, 28, 28)` | `rgb(185, 28, 28)` |
+| runtime, extraction disabled | `rgb(185, 28, 28)` | `rgb(37, 99, 235)` |
+
+The authored hover background stays red after compilation instead of painting
+blue. User-visible, not an intermediate-representation difference.
+
+**The discriminator is what makes this a finding rather than a suspicion.** The
+same `src/rules/differential.tsx` entry was built twice with the same Tailwind
+Vite plugin, the same TamaguiProvider and config, the same Chromium, viewport
+and hover action. The only variable was `rules-full` extraction enabled versus
+`rules-runtime` extraction disabled. And the pages carry a positive control: the
+ordinary Tamagui definition-hover case changed `rgb(127, 29, 29)` to
+`rgb(21, 128, 61)` in BOTH tiers, so browser hover dispatch and compiled pseudo
+lowering were demonstrably working. The failure is specific to Tailwind hover
+candidates, not a broken harness.
+
+Pinned rather than fixed, and the shape matters: the runtime side is a normal
+PASSING assertion (`expect(...).toBe('rgb(37, 99, 235)')`), and only the
+compiled-versus-runtime equality is `test.fail`, commented "this must invert
+when compilation reaches runtime parity". So the correct behaviour is asserted
+positively, and a future fix breaks the marker and forces its removal. The
+compiler was not touched.
+
+### The lane gate created pressure to delete the counterexample
+
+Worth recording against my own briefing, not against the worker.
+
+The case was initially REMOVED from the corpus. Ordinary equality made it red,
+the lane's brief required all-green suites, so the failing case came out, static
+Tailwind coverage stayed, and the divergence was mentioned as a closing aside in
+the report. The worker said plainly that this hid a real counterexample from the
+harness and was the wrong call for an oracle lane, and restored it when asked.
+
+The incentive was mine. "Validation: the suite must be green" is the right
+instruction for a lane that changes behaviour and the wrong one for a lane whose
+entire purpose is to FIND divergences, because there the first real find makes
+the gate unsatisfiable, and the cheapest way to satisfy it is to delete the
+finding. An oracle lane needs the opposite instruction: a divergence you find is
+the deliverable, pin it and report it, and never remove a case to go green.
+
+It survived only because the aside in the report was pressed on rather than
+skimmed. Nothing else would have caught it: the suite was green, the commit
+looked clean, and the corpus with the case removed is indistinguishable from a
+corpus that never had it.
