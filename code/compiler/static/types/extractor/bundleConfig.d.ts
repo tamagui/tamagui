@@ -46,8 +46,8 @@ export declare function bundleConfig(props: TamaguiOptions, rebuild?: boolean): 
 export declare function writeTamaguiCSS(outputCSS: string, config: TamaguiInternalConfig): Promise<void>;
 export declare function loadComponents(props: TamaguiOptions, forceExports?: boolean): Promise<LoadedComponents[]>;
 export declare function loadComponentsSync(props: TamaguiOptions, forceExports?: boolean): LoadedComponents[];
-export declare function loadComponentsInner(props: TamaguiOptions, forceExports?: boolean): Promise<null | LoadedComponents[]>;
-export declare function loadComponentsInnerSync(props: TamaguiOptions, forceExports?: boolean): null | LoadedComponents[];
+export declare function loadComponentsInner(props: TamaguiOptions, forceExports?: boolean): Promise<LoadedComponents[]>;
+export declare function loadComponentsInnerSync(props: TamaguiOptions, forceExports?: boolean): LoadedComponents[];
 export declare function getComponentStaticConfigByName(name: string, exported: any): Record<string, {
     staticConfig: StaticConfig;
     displayName?: string;

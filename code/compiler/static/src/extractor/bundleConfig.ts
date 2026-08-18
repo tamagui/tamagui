@@ -23,9 +23,9 @@ import type { TamaguiOptions } from '../types'
 import { addLocalExports } from './addLocalExports'
 import { esbuildLoaderConfig, esbundleTamaguiConfig } from './bundle'
 import { getTamaguiConfigPathFromOptionsConfig } from './getTamaguiConfigPathFromOptionsConfig'
-import { hasTopLevelAwait } from './hasTopLevelAwait'
 import { requireTamaguiCore } from '../helpers/requireTamaguiCore'
 import { detectModuleFormat } from './detectModuleFormat'
+import { staticEvaluationIgnorePlugin } from '../staticEvaluationIgnoredModules'
 
 const nodeRequire = createRequire(
   typeof __filename === 'string' ? __filename : import.meta.url
@@ -173,19 +173,6 @@ const handleEsmFeaturesPlugin: esbuild.Plugin = {
         modified = true
       }
 
-      // stub files with top-level await - they're typically runtime-only
-      if (hasTopLevelAwait(contents, args.path)) {
-        if (process.env.DEBUG?.startsWith('tamagui')) {
-          console.info(`[tamagui] stubbing file with top-level await: ${args.path}`)
-        }
-        return {
-          // Keep this as an ESM-shaped stub so esbuild doesn't inline a top-level
-          // `module.exports = {}` into the parent bundle and wipe its exports.
-          contents: `// stubbed - contains top-level await\nexport default {}`,
-          loader: 'js',
-        }
-      }
-
       if (modified) {
         return {
           contents,
@@ -254,6 +241,8 @@ function getBundleKey(props: TamaguiOptions) {
     components: props.components,
     config: props.config,
     platform: props.platform,
+    dangerouslyIgnoreStaticEvaluationModules:
+      props.dangerouslyIgnoreStaticEvaluationModules,
   })
 }
 
@@ -399,6 +388,8 @@ export async function bundleConfig(props: TamaguiOptions, rebuild = false) {
                 format: configFormat,
                 absWorkingDir: root,
                 metafile: true,
+                dangerouslyIgnoreStaticEvaluationModules:
+                  props.dangerouslyIgnoreStaticEvaluationModules,
                 ...esbuildExtraOptions,
               },
               props.platform || 'web'
@@ -421,6 +412,8 @@ export async function bundleConfig(props: TamaguiOptions, rebuild = false) {
               format: componentFormats[i],
               absWorkingDir: root,
               metafile: true,
+              dangerouslyIgnoreStaticEvaluationModules:
+                props.dangerouslyIgnoreStaticEvaluationModules,
               ...esbuildExtraOptions,
             },
             props.platform || 'web'
@@ -496,13 +489,6 @@ export async function bundleConfig(props: TamaguiOptions, rebuild = false) {
       throw new Error(`No config: ${config}`)
     }
 
-    // check for ProxyWorm - indicates a module loading error
-    if (config._isProxyWorm) {
-      throw new Error(
-        `Got a proxied config - likely a module loading error. Set DEBUG=tamagui for details.`
-      )
-    }
-
     loadedConfig = config
 
     if (!config.parsed) {
@@ -571,12 +557,10 @@ export async function bundleConfig(props: TamaguiOptions, rebuild = false) {
 
     return res
   } catch (err: any) {
-    console.error(
-      `Error bundling tamagui config: ${err?.message} (run with DEBUG=tamagui to see stack)`
+    throw new Error(
+      `[tamagui] Failed to bundle and evaluate the Tamagui config and configured components. ${err instanceof Error ? err.message : String(err)}`,
+      { cause: err }
     )
-    if (process.env.DEBUG?.includes('tamagui')) {
-      console.error(err.stack)
-    }
   } finally {
     isBundling = false
     waitForBundle.forEach((cb) => cb())
@@ -609,13 +593,13 @@ export async function writeTamaguiCSS(outputCSS: string, config: TamaguiInternal
 export async function loadComponents(props: TamaguiOptions, forceExports = false) {
   const coreComponents = getCoreComponentsSync(props)
   const otherComponents = await loadComponentsInner(props, forceExports)
-  return [...coreComponents, ...(otherComponents || [])]
+  return [...coreComponents, ...otherComponents]
 }
 
 export function loadComponentsSync(props: TamaguiOptions, forceExports = false) {
   const coreComponents = getCoreComponentsSync(props)
   const otherComponents = loadComponentsInnerSync(props, forceExports)
-  return [...coreComponents, ...(otherComponents || [])]
+  return [...coreComponents, ...otherComponents]
 }
 
 function getCoreComponentsSync(props: TamaguiOptions) {
@@ -624,7 +608,7 @@ function getCoreComponentsSync(props: TamaguiOptions) {
     components: ['@tamagui/core'],
   })
 
-  if (!loaded) {
+  if (!loaded[0]) {
     throw new Error(`Core should always load`)
   }
 
@@ -640,17 +624,21 @@ function getCoreComponentsSync(props: TamaguiOptions) {
 export async function loadComponentsInner(
   props: TamaguiOptions,
   forceExports = false
-): Promise<null | LoadedComponents[]> {
+): Promise<LoadedComponents[]> {
   const componentsModules = props.components || []
 
-  const key = componentsModules.join('\0')
+  const key = JSON.stringify([
+    props.platform,
+    componentsModules,
+    props.dangerouslyIgnoreStaticEvaluationModules,
+  ])
 
   if (!forceExports && cacheComponents[key]) {
     return cacheComponents[key]
   }
 
   const { unregister } = registerRequire(props.platform || 'web', {
-    proxyWormImports: forceExports,
+    ignoredModules: props.dangerouslyIgnoreStaticEvaluationModules,
   })
 
   try {
@@ -665,7 +653,6 @@ export async function loadComponentsInner(
       const fileContents = isDynamic ? readFileSync(name, 'utf-8') : ''
       let loadModule = name
       let writtenContents = fileContents
-      let didAddExports = false
 
       const attemptLoad = async ({ forceExports = false } = {}) => {
         if (isDynamic) {
@@ -679,6 +666,12 @@ export async function loadComponentsInner(
 
           await esbuild.build({
             ...esbuildOptionsWithPlugins,
+            plugins: [
+              ...(esbuildOptionsWithPlugins.plugins || []),
+              staticEvaluationIgnorePlugin(
+                props.dangerouslyIgnoreStaticEvaluationModules
+              ),
+            ],
             format,
             outfile: loadModule,
             stdin: {
@@ -748,9 +741,14 @@ export async function loadComponentsInner(
       let loaded: LoadedComponents | LoadedComponents[] | undefined
 
       try {
-        loaded = await attemptLoad({ forceExports: true })
-        didAddExports = true
+        loaded = await attemptLoad({ forceExports: isDynamic })
       } catch (err) {
+        if (!isDynamic) {
+          throw new Error(
+            `[tamagui] Failed to statically evaluate configured component module "${name}". ${err instanceof Error ? err.message : String(err)}`,
+            { cause: err }
+          )
+        }
         writtenContents = fileContents
         if (process.env.DEBUG?.startsWith('tamagui')) {
           console.info(`Error adding local component exports`, err)
@@ -759,21 +757,10 @@ export async function loadComponentsInner(
         try {
           loaded = await attemptLoad({ forceExports: false })
         } catch (err2) {
-          if (process.env.TAMAGUI_ENABLE_WARN_DYNAMIC_LOAD) {
-            console.info(
-              `\nTamagui attempted but failed to dynamically optimize components in:\n  ${name}\n`
-            )
-            console.info(err2)
-            console.info(
-              `At: ${loadModule}`,
-              `\ndidAddExports: ${didAddExports}`,
-              `\nIn:`,
-              writtenContents,
-              `\nisDynamic: `,
-              isDynamic
-            )
-          }
-          loaded = []
+          throw new Error(
+            `[tamagui] Failed to statically evaluate configured component module "${name}" at "${loadModule}". ${err2 instanceof Error ? err2.message : String(err2)}`,
+            { cause: err2 }
+          )
         }
       } finally {
         dispose()
@@ -788,9 +775,6 @@ export async function loadComponentsInner(
 
     cacheComponents[key] = results
     return results
-  } catch (err: any) {
-    console.info(`Tamagui error bundling components`, err.message, err.stack)
-    return null
   } finally {
     unregister()
   }
@@ -800,17 +784,21 @@ export async function loadComponentsInner(
 export function loadComponentsInnerSync(
   props: TamaguiOptions,
   forceExports = false
-): null | LoadedComponents[] {
+): LoadedComponents[] {
   const componentsModules = props.components || []
 
-  const key = componentsModules.join('\0')
+  const key = JSON.stringify([
+    props.platform,
+    componentsModules,
+    props.dangerouslyIgnoreStaticEvaluationModules,
+  ])
 
   if (!forceExports && cacheComponents[key]) {
     return cacheComponents[key]
   }
 
   const { unregister } = registerRequire(props.platform || 'web', {
-    proxyWormImports: forceExports,
+    ignoredModules: props.dangerouslyIgnoreStaticEvaluationModules,
   })
 
   try {
@@ -822,7 +810,6 @@ export function loadComponentsInnerSync(
       const fileContents = isDynamic ? readFileSync(name, 'utf-8') : ''
       let loadModule = name
       let writtenContents = fileContents
-      let didAddExports = false
 
       function attemptLoad({ forceExports = false } = {}) {
         if (isDynamic) {
@@ -894,10 +881,15 @@ export function loadComponentsInnerSync(
       }
 
       try {
-        const res = attemptLoad({ forceExports: true })
-        didAddExports = true
+        const res = attemptLoad({ forceExports: isDynamic })
         return res
       } catch (err) {
+        if (!isDynamic) {
+          throw new Error(
+            `[tamagui] Failed to statically evaluate configured component module "${name}". ${err instanceof Error ? err.message : String(err)}`,
+            { cause: err }
+          )
+        }
         writtenContents = fileContents
         if (process.env.DEBUG?.startsWith('tamagui')) {
           console.info(`Error adding local component exports`, err)
@@ -909,30 +901,16 @@ export function loadComponentsInnerSync(
       try {
         return attemptLoad({ forceExports: false })
       } catch (err) {
-        if (process.env.TAMAGUI_ENABLE_WARN_DYNAMIC_LOAD) {
-          console.info(
-            `\nTamagui attempted but failed to dynamically optimize components in:\n  ${name}\n`
-          )
-          console.info(err)
-          console.info(
-            `At: ${loadModule}`,
-            `\ndidAddExports: ${didAddExports}`,
-            `\nIn:`,
-            writtenContents,
-            `\nisDynamic: `,
-            isDynamic
-          )
-        }
-        return []
+        throw new Error(
+          `[tamagui] Failed to statically evaluate configured component module "${name}" at "${loadModule}". ${err instanceof Error ? err.message : String(err)}`,
+          { cause: err }
+        )
       } finally {
         dispose()
       }
     })
     cacheComponents[key] = info
     return info
-  } catch (err: any) {
-    console.info(`Tamagui error bundling components`, err.message, err.stack)
-    return null
   } finally {
     unregister()
   }
@@ -954,28 +932,19 @@ const esbuildit = (src: string, target?: 'modern') => {
 export function getComponentStaticConfigByName(name: string, exported: any) {
   const components: Record<string, { staticConfig: StaticConfig; displayName?: string }> =
     {}
-  try {
-    if (!exported || typeof exported !== 'object' || Array.isArray(exported)) {
-      throw new Error(`Invalid export from package ${name}: ${typeof exported}`)
-    }
+  if (!exported || typeof exported !== 'object' || Array.isArray(exported)) {
+    throw new Error(`Invalid export from package ${name}: ${typeof exported}`)
+  }
 
-    for (const key in exported) {
-      const found = getTamaguiComponent(key, exported[key])
-      if (found) {
-        // remove non-stringifyable
-        const { Component, ...sc } = found.staticConfig
-        components[key] = {
-          staticConfig: sc,
-          ...(found.displayName && { displayName: found.displayName }),
-        }
+  for (const key in exported) {
+    const found = getTamaguiComponent(key, exported[key])
+    if (found) {
+      // remove non-stringifyable
+      const { Component, ...sc } = found.staticConfig
+      components[key] = {
+        staticConfig: sc,
+        ...(found.displayName && { displayName: found.displayName }),
       }
-    }
-  } catch (err) {
-    if (process.env.TAMAGUI_ENABLE_WARN_DYNAMIC_LOAD) {
-      console.error(
-        `Tamagui failed getting components from ${name} (Disable error by setting environment variable TAMAGUI_ENABLE_WARN_DYNAMIC_LOAD=1)`
-      )
-      console.error(err)
     }
   }
   return components

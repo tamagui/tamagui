@@ -3,6 +3,7 @@ import { createRequire } from 'node:module'
 
 import { esbuildIgnoreFilesRegex } from './extractor/bundle'
 import { requireTamaguiCore } from './helpers/requireTamaguiCore'
+import { isIgnoredStaticEvaluationModule } from './staticEvaluationIgnoredModules'
 import type { TamaguiPlatform } from './types'
 
 const nameToPaths = {}
@@ -13,13 +14,12 @@ const nodeRequire = createRequire(
 export const getNameToPaths = () => nameToPaths
 
 const Module = nodeRequire('node:module')
-const proxyWorm = nodeRequire('@tamagui/proxy-worm')
 
 let isRegistered = false
 let og: any
 
-const whitelisted = {
-  react: true,
+class StaticEvaluationError extends Error {
+  code = 'TAMAGUI_STATIC_EVALUATION_ERROR' as const
 }
 
 const compiled = {}
@@ -59,8 +59,8 @@ function getStaticExtractionStub(path: string) {
 
 export function registerRequire(
   platform: TamaguiPlatform,
-  { proxyWormImports } = {
-    proxyWormImports: false,
+  { ignoredModules = [] }: { ignoredModules?: string[] } = {
+    ignoredModules: [],
   }
 ) {
   // already registered
@@ -126,12 +126,12 @@ export function registerRequire(
       })
     }
 
-    if (
-      path in knownIgnorableModules ||
-      path.startsWith('react-native-reanimated') ||
-      esbuildIgnoreFilesRegex.test(path)
-    ) {
-      return proxyWorm
+    if (isIgnoredStaticEvaluationModule(path, ignoredModules)) {
+      return {}
+    }
+
+    if (esbuildIgnoreFilesRegex.test(path)) {
+      return {}
     }
 
     if (path in compiled) {
@@ -160,118 +160,28 @@ export function registerRequire(
       }
     }
 
-    if (!whitelisted[path]) {
-      if (proxyWormImports && !path.includes('.tamagui-dynamic-eval')) {
-        // allow tamagui and its sub-packages through - they re-export components
-        // with staticConfig needed for dynamic eval optimization.
-        // also allow requires FROM within tamagui packages (relative imports like ./Separator.cjs)
-        const callerFile = this?.filename || this?.id || ''
-        const isFromTamaguiPkg =
-          callerFile.includes('@tamagui') ||
-          callerFile.includes('node_modules/tamagui/') ||
-          /\/tamagui\/code\/(core|ui|packages)\//.test(callerFile)
-        const isFromStaticLoader =
-          !callerFile ||
-          callerFile === '.' ||
-          callerFile === '[eval]' ||
-          callerFile.endsWith('/[eval]') ||
-          callerFile.includes('/code/compiler/static/') ||
-          callerFile.includes('/.tamagui/')
-        // relative requires from within a whitelisted package's own files
-        // (e.g. react/index.js does require('./cjs/react.development.js')).
-        // proxy-worming these breaks the package's own internals.
-        const isRelativeFromWhitelisted =
-          path.startsWith('.') &&
-          Object.keys(whitelisted).some((pkg) =>
-            callerFile.includes(`/node_modules/${pkg}/`)
-          )
-
-        if (
-          path === 'tamagui' ||
-          path.startsWith('@tamagui/') ||
-          isRelativeFromWhitelisted ||
-          isFromTamaguiPkg ||
-          isFromStaticLoader
-        ) {
-          return og.apply(this, [path])
-        }
-        return proxyWorm
-      }
-    }
-
     try {
       const out = og.apply(this, arguments)
       return out
     } catch (err: any) {
-      if (
-        !process.env.TAMAGUI_ENABLE_WARN_DYNAMIC_LOAD &&
-        path.includes('tamagui-dynamic-eval')
-      ) {
-        // ok, dynamic eval fails
-        return
+      if (err?.code === 'TAMAGUI_STATIC_EVALUATION_ERROR') {
+        throw err
       }
-      if (allowedIgnores[path] || IGNORES === 'true') {
-        // ignore
-      } else if (!process.env.TAMAGUI_SHOW_FULL_BUNDLE_ERRORS && !process.env.DEBUG) {
-        if (hasWarnedForModules.has(path)) {
-          // ignore
-        } else {
-          hasWarnedForModules.add(path)
-        }
-      } else {
-        /**
-         * Allow errors to happen, we're just reading config and components but sometimes external modules cause problems
-         * We can't fix every problem, so just swap them out with proxyWorm which is a sort of generic object that can be read.
-         */
-
-        console.warn(
-          `  [tamagui] skipped "${path}": ${err?.message} (set TAMAGUI_IGNORE_BUNDLE_ERRORS="${path}" to silence)`
-        )
-      }
-
-      return proxyWorm
+      const importer = this?.filename || this?.id || '<unknown module>'
+      const reason = err instanceof Error ? err.message : String(err)
+      throw new StaticEvaluationError(
+        `[tamagui] Failed to evaluate module "${path}" imported from "${importer}" while loading the Tamagui config and configured components.\nReason: ${reason}\nFix the module so it can run in Node during the build. If it is runtime-only and none of its exports create your Tamagui config or components, add "${path}" to dangerouslyIgnoreStaticEvaluationModules in tamagui.build.ts.`,
+        { cause: err }
+      )
     }
   }
 
   return {
     tamaguiRequire,
     unregister: () => {
-      if (hasWarnedForModules.size) {
-        console.info(
-          `  [tamagui] skipped loading ${hasWarnedForModules.size} module, see: https://tamagui.dev/docs/intro/errors#warning-001`
-        )
-        hasWarnedForModules.clear()
-      }
-
       unregister()
       isRegistered = false
       Module.prototype.require = og
     },
   }
-}
-
-const IGNORES = process.env.TAMAGUI_IGNORE_BUNDLE_ERRORS
-const extraIgnores =
-  IGNORES === 'true' ? [] : process.env.TAMAGUI_IGNORE_BUNDLE_ERRORS?.split(',')
-
-const knownIgnorableModules = {
-  '@gorhom/bottom-sheet': true,
-  'expo-modules': true,
-  solito: true,
-  'expo-linear-gradient': true,
-  '@expo/vector-icons': true,
-  'tamagui/linear-gradient': true,
-  // animation libraries not needed for static extraction
-  '@emotion/is-prop-valid': true,
-  'framer-motion': true,
-  motion: true,
-  ...Object.fromEntries(extraIgnores?.map((k) => [k, true]) || []),
-}
-
-const hasWarnedForModules = new Set<string>()
-
-const allowedIgnores = {
-  'expo-constants': true,
-  './ExpoHaptics': true,
-  './js/MaskedView': true,
 }

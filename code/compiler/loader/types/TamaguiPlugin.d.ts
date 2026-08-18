@@ -29,7 +29,7 @@ export declare class TamaguiPlugin {
      * emitted client graph carries no forbidden Tamagui module.
      */
     applyZeroRuntime(compiler: Compiler): void;
-    safeResolves: (resolves: [string, string][], multiple?: boolean) => string[][];
+    resolveModules: (resolves: [string, string][], purpose: 'configured component' | 'webpack alias') => string[][];
     get componentsFullPaths(): string[][];
     get componentsBaseDirs(): string[];
     isInComponentModule: (fullPath: string) => boolean;

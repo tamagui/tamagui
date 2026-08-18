@@ -6,6 +6,15 @@ export interface TamaguiBuildOptions {
      * */
     components?: string[];
     /**
+     * Dangerous escape hatch for runtime-only modules that the compiler should
+     * not evaluate while loading the Tamagui config and configured components.
+     *
+     * Ignored modules receive an empty object during static evaluation, which
+     * weakens the compiler's correctness check. Only add a module when its
+     * exports are not used to create the config or components.
+     */
+    dangerouslyIgnoreStaticEvaluationModules?: string[];
+    /**
      * relative path to your tamagui.config.ts
      */
     config?: string;

@@ -308,36 +308,38 @@ export class TamaguiPlugin {
     })
   }
 
-  safeResolves = (resolves: [string, string][], multiple = false) => {
+  resolveModules = (
+    resolves: [string, string][],
+    purpose: 'configured component' | 'webpack alias'
+  ) => {
     const res: string[][] = []
     for (const [out, mod] of resolves) {
+      if (this.options.dangerouslyIgnoreStaticEvaluationModules?.includes(mod)) {
+        continue
+      }
       if (out.endsWith('$')) {
         res.push([out, mod])
         continue
       }
       try {
         res.push([out, requireResolve(mod)])
-        if (multiple) {
-          res.push([out, requireResolve(mod)])
-        }
       } catch (err) {
-        if (out.includes(`@gorhom/bottom-sheet`)) {
-          continue
-        }
-        if (process.env.DEBUG?.startsWith('tamagui')) {
-          console.info(`  withTamagui skipping resolving ${out}`, err)
-        }
+        const reason = err instanceof Error ? err.message : String(err)
+        throw new Error(
+          `[tamagui] Failed to resolve ${purpose} "${mod}" for "${out}".\nReason: ${reason}\nFix the module name or install it. If it is runtime-only and none of its exports create your Tamagui config or components, add "${mod}" to dangerouslyIgnoreStaticEvaluationModules in tamagui.build.ts.`,
+          { cause: err }
+        )
       }
     }
     return res
   }
 
   get componentsFullPaths() {
-    return this.safeResolves(
+    return this.resolveModules(
       this.options.components?.map(
         (moduleName) => [moduleName, moduleName] as [string, string]
       ) || [],
-      true
+      'configured component'
     )
   }
 
@@ -364,28 +366,31 @@ export class TamaguiPlugin {
 
   get defaultAliases() {
     return Object.fromEntries(
-      this.safeResolves([
-        ['@tamagui/core/reset.css', '@tamagui/core/reset.css'],
+      this.resolveModules(
+        [
+          ['@tamagui/core/reset.css', '@tamagui/core/reset.css'],
 
-        // fixes https://github.com/kentcdodds/mdx-bundler/issues/143
-        // `react/jsx-runtime` and `react/jsx-dev-runtime` will break the build in nextjs 15 + app router
-        ['react/jsx-runtime.js', 'react/jsx-runtime'],
-        ['react/jsx-dev-runtime.js', 'react/jsx-dev-runtime'],
+          // fixes https://github.com/kentcdodds/mdx-bundler/issues/143
+          // `react/jsx-runtime` and `react/jsx-dev-runtime` will break the build in nextjs 15 + app router
+          ['react/jsx-runtime.js', 'react/jsx-runtime'],
+          ['react/jsx-dev-runtime.js', 'react/jsx-dev-runtime'],
 
-        ...(this.options.useTamaguiSVG
-          ? [['react-native-svg', '@tamagui/react-native-svg'] as [string, string]]
-          : ([] as any)),
+          ...(this.options.useTamaguiSVG
+            ? [['react-native-svg', '@tamagui/react-native-svg'] as [string, string]]
+            : ([] as any)),
 
-        ...(this.options.useReactNativeWebLite
-          ? [
-              ['react-native$', '@tamagui/react-native-web-lite'],
-              ['react-native-web$', '@tamagui/react-native-web-lite'],
-            ]
-          : [
-              ['react-native$', 'react-native-web'],
-              ['react-native-web$', 'react-native-web'],
-            ]),
-      ])
+          ...(this.options.useReactNativeWebLite
+            ? [
+                ['react-native$', '@tamagui/react-native-web-lite'],
+                ['react-native-web$', '@tamagui/react-native-web-lite'],
+              ]
+            : [
+                ['react-native$', 'react-native-web'],
+                ['react-native-web$', 'react-native-web'],
+              ]),
+        ],
+        'webpack alias'
+      )
     )
   }
 

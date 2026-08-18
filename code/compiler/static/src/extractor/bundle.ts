@@ -4,9 +4,9 @@ import { createRequire } from 'node:module'
 import esbuild from 'esbuild'
 import FS from 'fs-extra'
 import type { TamaguiPlatform } from '../types'
+import { staticEvaluationIgnorePlugin } from '../staticEvaluationIgnoredModules'
 import { detectModuleFormat } from './detectModuleFormat'
 import { esbuildAliasPlugin } from './esbuildAliasPlugin'
-import { hasTopLevelAwait } from './hasTopLevelAwait'
 import { resolveWebOrNativeSpecificEntry } from './loadTamagui'
 import { TsconfigPathsPlugin } from './esbuildTsconfigPaths'
 
@@ -56,12 +56,14 @@ type Props = Omit<Partial<esbuild.BuildOptions>, 'entryPoints'> & {
   outfile: string
   entryPoints: string[]
   resolvePlatformSpecificEntries?: boolean
+  dangerouslyIgnoreStaticEvaluationModules?: string[]
 }
 
 function getESBuildConfig(
   {
     entryPoints,
     resolvePlatformSpecificEntries,
+    dangerouslyIgnoreStaticEvaluationModules = [],
     define: callerDefine,
     ...options
   }: Props,
@@ -140,6 +142,7 @@ function getESBuildConfig(
     logLevel: 'warning',
     plugins: [
       TsconfigPathsPlugin(),
+      staticEvaluationIgnorePlugin(dangerouslyIgnoreStaticEvaluationModules),
 
       // handle ESM-only features that can't be used with CJS output
       {
@@ -181,19 +184,6 @@ function getESBuildConfig(
               modified = true
             }
 
-            // stub files with top-level await - they're typically runtime-only
-            if (hasTopLevelAwait(contents, args.path)) {
-              if (process.env.DEBUG?.startsWith('tamagui')) {
-                console.info(`[tamagui] stubbing file with top-level await: ${args.path}`)
-              }
-              return {
-                // Keep this as an ESM-shaped stub so esbuild doesn't inline a
-                // top-level `module.exports = {}` into the parent bundle.
-                contents: `// stubbed - contains top-level await\nexport default {}`,
-                loader: 'js',
-              }
-            }
-
             if (modified) {
               return {
                 contents,
@@ -215,8 +205,6 @@ function getESBuildConfig(
       {
         name: 'external',
         setup(build) {
-          const proxyWormPath = nodeRequire.resolve('@tamagui/proxy-worm')
-
           // only externalize @tamagui/core and @tamagui/web - these are provided at runtime
           // other @tamagui/* packages (like @tamagui/config/v6) must be bundled in to avoid
           // ESM race conditions when multiple threads require() them concurrently
@@ -241,18 +229,6 @@ function getESBuildConfig(
             return {
               path: args.path.replace(/^react-native/, '@tamagui/react-native-web-lite'),
               external: true,
-            }
-          })
-
-          build.onResolve({ filter: /^react-native-reanimated(?:\/.*)?$/ }, () => {
-            return {
-              path: proxyWormPath,
-            }
-          })
-
-          build.onResolve({ filter: /^react-native-worklets(?:\/.*)?$/ }, () => {
-            return {
-              path: proxyWormPath,
             }
           })
 

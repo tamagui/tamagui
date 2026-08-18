@@ -7,7 +7,6 @@ import type { TamaguiInternalConfig } from '@tamagui/web'
 import esbuild from 'esbuild'
 import fsExtra from 'fs-extra'
 
-import { SHOULD_DEBUG } from '../constants'
 import { requireTamaguiCore } from '../helpers/requireTamaguiCore'
 import { getNameToPaths, registerRequire, setRequireResult } from '../registerRequire'
 import {
@@ -47,23 +46,14 @@ export async function loadTamagui(
 ): Promise<TamaguiProjectInfo | null> {
   if (isLoadingPromise) return await isLoadingPromise
 
-  let resolvePromise
-  let rejectPromise
-  isLoadingPromise = new Promise((res, rej) => {
-    resolvePromise = res
-    rejectPromise = rej
-  })
-
-  try {
+  isLoadingPromise = (async () => {
     const props = getFilledOptions(propsIn)
 
     const bundleInfo = await getBundledConfig(props, rebuild)
     if (!bundleInfo) {
-      console.warn(
-        `No bundled config generated, maybe an error in bundling. Set DEBUG=tamagui and re-run to get logs.`
+      throw new Error(
+        `[tamagui] The config and component bundle completed without a project result`
       )
-      resolvePromise(null)
-      return null
     }
 
     // this affects the bundled config so run it first
@@ -77,17 +67,16 @@ export async function loadTamagui(
     }
 
     if (!hasBundledConfigChanged()) {
-      resolvePromise(bundleInfo)
       return bundleInfo
     }
 
     await regenerateConfig(props, bundleInfo)
 
-    resolvePromise(bundleInfo)
     return bundleInfo
-  } catch (err) {
-    rejectPromise()
-    throw err
+  })()
+
+  try {
+    return await isLoadingPromise
   } finally {
     isLoadingPromise = null
   }
@@ -127,7 +116,7 @@ export async function loadTamaguiFromModules(
     tamaguiConfig = tamaguiConfig.config
   }
 
-  if (!tamaguiConfig || (tamaguiConfig as any)._isProxyWorm) {
+  if (!tamaguiConfig) {
     throw new Error(`The Vite module runner did not return a valid Tamagui config`)
   }
 
@@ -286,7 +275,9 @@ export function loadTamaguiBuildConfigSync(
   const root = tamaguiOptions?.root || process.cwd()
   const absolutePath = resolve(root, buildFilePath)
   if (fsExtra.existsSync(absolutePath)) {
-    const registered = registerRequire('web')
+    const registered = registerRequire('web', {
+      ignoredModules: tamaguiOptions?.dangerouslyIgnoreStaticEvaluationModules,
+    })
     try {
       const out = nodeRequire(absolutePath).default
       if (!out) {
@@ -333,6 +324,9 @@ export function loadTamaguiSync({
   lastVersion[key] = cacheKey || ''
 
   const props = getFilledOptions(propsIn)
+  const previousIsStatic = process.env.IS_STATIC
+  const previousIsServer = process.env.TAMAGUI_IS_SERVER
+  const previousDev = globalThis['__DEV__' as any]
 
   // lets shim require and avoid importing react-native + react-native-web
   // we just need to read the config around them
@@ -340,100 +334,76 @@ export function loadTamaguiSync({
   process.env.TAMAGUI_IS_SERVER = 'true'
 
   const { unregister } = registerRequire(props.platform || 'web', {
-    proxyWormImports: !!forceExports,
+    ignoredModules: props.dangerouslyIgnoreStaticEvaluationModules,
   })
 
   try {
-    const devValueOG = globalThis['__DEV__' as any]
     globalThis['__DEV__' as any] = process.env.NODE_ENV === 'development'
+    // config
+    let tamaguiConfig: TamaguiInternalConfig | null = null
+    if (propsIn.config) {
+      const configPath = getTamaguiConfigPathFromOptionsConfig(
+        propsIn.config,
+        propsIn.root
+      )
+      const exp = nodeRequire(configPath)
 
-    try {
-      // config
-      let tamaguiConfig: TamaguiInternalConfig | null = null
-      if (propsIn.config) {
-        const configPath = getTamaguiConfigPathFromOptionsConfig(
-          propsIn.config,
-          propsIn.root
-        )
-        const exp = nodeRequire(configPath)
+      if (!exp) {
+        throw new Error(`The Tamagui config module did not export a value`)
+      }
 
-        if (!exp || exp._isProxyWorm) {
-          throw new Error(`Got a empty / proxied config!`)
-        }
+      tamaguiConfig = (exp['default'] || exp['config'] || exp) as TamaguiInternalConfig
 
-        tamaguiConfig = (exp['default'] || exp['config'] || exp) as TamaguiInternalConfig
-
-        if (!tamaguiConfig || !tamaguiConfig.parsed) {
-          const confPath = nodeRequire.resolve(configPath)
-          throw new Error(`Can't find valid config in ${confPath}:
+      if (!tamaguiConfig || !tamaguiConfig.parsed) {
+        const confPath = nodeRequire.resolve(configPath)
+        throw new Error(`Can't find valid config in ${confPath}:
           
   Be sure you "export default" or "export const config" the config.`)
-        }
-
-        // set up core
-        if (tamaguiConfig) {
-          const { createTamagui } = requireTamaguiCore(props.platform || 'web')
-          createTamagui(tamaguiConfig as any)
-        }
       }
 
-      // components
-      const components = loadComponentsSync(props, forceExports)
-      if (!components) {
-        throw new Error(`No components loaded`)
-      }
-      if (process.env.DEBUG === 'tamagui') {
-        console.info(`components`, components)
-      }
-
-      // undo shims
-      process.env.IS_STATIC = undefined
-      globalThis['__DEV__' as any] = devValueOG
-
-      const info = {
-        components,
-        tamaguiConfig,
-        nameToPaths: getNameToPaths(),
-      } satisfies TamaguiProjectInfo
-
+      // set up core
       if (tamaguiConfig) {
-        const { outputCSS } = props
-        if (outputCSS) {
-          writeTamaguiCSS(outputCSS, tamaguiConfig)
-        }
-
-        regenerateConfigSync(props, info)
-      }
-
-      last[key] = {
-        ...info,
-        cached: true,
-      }
-
-      return info as any
-    } catch (err) {
-      if (err instanceof Error) {
-        if (!SHOULD_DEBUG && !forceExports) {
-          console.warn(
-            `Error loading tamagui.config.ts (set DEBUG=tamagui to see full stack), running tamagui without custom config`
-          )
-          console.info(`\n\n    ${err.message}\n\n`)
-        } else {
-          if (SHOULD_DEBUG) {
-            console.error(err)
-          }
-        }
-      } else {
-        console.error(`Error loading tamagui.config.ts`, err)
-      }
-
-      return {
-        components: [],
-        tamaguiConfig: null,
-        nameToPaths: {},
+        const { createTamagui } = requireTamaguiCore(props.platform || 'web')
+        createTamagui(tamaguiConfig as any)
       }
     }
+
+    // components
+    const components = loadComponentsSync(props, forceExports)
+    if (!components) {
+      throw new Error(`No components loaded`)
+    }
+    if (process.env.DEBUG === 'tamagui') {
+      console.info(`components`, components)
+    }
+
+    const info = {
+      components,
+      tamaguiConfig,
+      nameToPaths: getNameToPaths(),
+    } satisfies TamaguiProjectInfo
+
+    if (tamaguiConfig) {
+      const { outputCSS } = props
+      if (outputCSS) {
+        writeTamaguiCSS(outputCSS, tamaguiConfig)
+      }
+
+      regenerateConfigSync(props, info)
+    }
+
+    last[key] = {
+      ...info,
+      cached: true,
+    }
+
+    return info as any
   } finally {
+    if (previousIsStatic === undefined) delete process.env.IS_STATIC
+    else process.env.IS_STATIC = previousIsStatic
+    if (previousIsServer === undefined) delete process.env.TAMAGUI_IS_SERVER
+    else process.env.TAMAGUI_IS_SERVER = previousIsServer
+    globalThis['__DEV__' as any] = previousDev
     unregister()
   }
 }
@@ -534,9 +504,8 @@ export async function esbuildWatchFiles(entry: string, onChanged: () => void) {
     write: false,
 
     alias: {
-      '@react-native/normalize-color': '@tamagui/proxy-worm',
       'react-native-web': '@tamagui/react-native-web-lite',
-      'react-native': '@tamagui/proxy-worm',
+      'react-native': '@tamagui/react-native-web-lite',
     },
 
     plugins: [

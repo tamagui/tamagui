@@ -125,7 +125,6 @@
         "@tamagui/generate-themes": "workspace:*",
         "@tamagui/helpers": "workspace:*",
         "@tamagui/helpers-node": "workspace:*",
-        "@tamagui/proxy-worm": "workspace:*",
         "@tamagui/react-native-web-internals": "workspace:*",
         "@tamagui/react-native-web-lite": "workspace:*",
         "@tamagui/shorthands": "workspace:*",

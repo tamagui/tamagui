@@ -33,6 +33,7 @@ type Props = Omit<Partial<esbuild.BuildOptions>, 'entryPoints'> & {
     outfile: string;
     entryPoints: string[];
     resolvePlatformSpecificEntries?: boolean;
+    dangerouslyIgnoreStaticEvaluationModules?: string[];
 };
 export declare function esbundleTamaguiConfig(props: Props, platform: TamaguiPlatform, aliases?: Record<string, string>): Promise<esbuild.BuildResult<{
     sourcemap?: boolean | 'linked' | 'inline' | 'external' | 'both';
