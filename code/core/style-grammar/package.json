@@ -28,6 +28,7 @@
     "src/resolvePayload.ts",
     "src/runtime.ts",
     "src/safeAreaVariables.ts",
+    "src/scanFlatValue.ts",
     "src/serializePayload.ts",
     "src/stateModifiers.ts",
     "src/states.ts",
@@ -87,6 +88,8 @@
   },
   "scripts": {
     "bench": "bun bench/parse-cost.mjs",
+    "generate:rust": "bun scripts/generateRustGrammar.ts",
+    "check:rust": "bun scripts/generateRustGrammar.ts --check",
     "build": "tamagui-build --exclude __tests__",
     "test": "vitest --run src",
     "test:web": "vitest --run src"

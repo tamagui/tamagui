@@ -3,7 +3,7 @@
 // clause-free string is a base-only program resolving config-first; only
 // unparseable colon-free strings keep the legacy path.
 
-import { beforeAll, expect, test } from 'vitest'
+import { beforeAll, expect, test, vi } from 'vitest'
 import { H4 } from '../../ui/text/src/Headings'
 import config from '../config-default'
 import { Text, View, createTamagui, getSplitStyles, styled } from '../web/src'
@@ -307,19 +307,31 @@ test('an overloaded-family mismatch is a diagnostic, never a silent bind', () =>
   }
 })
 
-test('aspectRatio colon values pass through; other parse failures throw in dev', () => {
+test('aspectRatio colon values pass through; other parse failures warn in dev', () => {
   // RN accepts aspectRatio="16:9"; it is the one legitimate colon value
   const result = split({ aspectRatio: '16:9' })
   const className = result.classNames.aspectRatio
   expect(rulesFor(result, className)[0]).toContain('aspect-ratio:16:9')
 
-  // v3 cutover: a clause-shaped typo is loud where the author can see it
+  // v3 cutover: a clause-shaped typo is loud where the author can see it.
+  //
+  // It warns rather than throws since item 12. A style value is an ordinary
+  // place to put a string the app did not write — an image URL, a colour from a
+  // CMS — so a refusal is reachable from content, and an exception on content
+  // takes the whole render down for one bad prop. The value is still dropped
+  // whole, which is the part that matters, and the message now names the
+  // property and the reason.
   const previousNodeEnv = process.env.NODE_ENV
+  const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
   process.env.NODE_ENV = 'development'
   try {
-    expect(() => split({ backgroundColor: 'red hver:blue' })).toThrow(/does not parse/)
+    const typo = split({ backgroundColor: 'red hver:blue' })
+    expect(typo.style?.backgroundColor).toBeUndefined()
+    expect(typo.classNames.backgroundColor).toBeUndefined()
+    expect(warn.mock.calls.map(String).join('\n')).toContain('hver')
   } finally {
     process.env.NODE_ENV = previousNodeEnv
+    warn.mockRestore()
   }
 })
 

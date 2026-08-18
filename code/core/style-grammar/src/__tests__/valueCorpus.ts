@@ -110,17 +110,24 @@ export function urlValue(random: Random): string {
   return `url(${protocol}://example.test/${suffix})`
 }
 
-export function escapedIdent(random: Random): string {
-  return pick(random, [
-    'custom\\:part',
-    'safe\\;tail',
-    'brace\\{value',
-    'end\\}brace',
-    'escaped\\ space',
-  ])
+export type EscapeMode = boolean | 'delimiter-free'
+
+export function escapedIdent(random: Random, mode: EscapeMode = true): string {
+  const escaped = ['custom\\:part', 'escaped\\ space']
+  // an escaped `;`, `{` or `}` is ordinary payload content to the grammar, and
+  // the web lowering's injection guard refuses it outright, which is a pinned
+  // divergence rather than something a generated corpus should assert about
+  if (mode !== 'delimiter-free') {
+    escaped.push('safe\\;tail', 'brace\\{value', 'end\\}brace')
+  }
+  return pick(random, escaped)
 }
 
-export function component(random: Random, depth = 0, allowEscapes = true): string {
+export function component(
+  random: Random,
+  depth = 0,
+  allowEscapes: EscapeMode = true
+): string {
   const primitiveCount = 6
   const choice = integer(random, depth < 3 ? primitiveCount + 1 : primitiveCount)
   if (choice === 0) return ident(random)
@@ -128,7 +135,9 @@ export function component(random: Random, depth = 0, allowEscapes = true): strin
   if (choice === 2) return hexColor(random)
   if (choice === 3) return quotedString(random)
   if (choice === 4) return urlValue(random)
-  if (choice === 5) return allowEscapes ? escapedIdent(random) : ident(random)
+  if (choice === 5) {
+    return allowEscapes ? escapedIdent(random, allowEscapes) : ident(random)
+  }
 
   const name = pick(random, ['calc', 'min', 'color-mix', 'linear-gradient', 'var'])
   const argumentCount = 1 + integer(random, 3)
@@ -139,7 +148,7 @@ export function component(random: Random, depth = 0, allowEscapes = true): strin
   return `${name}(${arguments_.join(`,${whitespace(random)}`)})`
 }
 
-export function componentValue(random: Random, allowEscapes = true): string {
+export function componentValue(random: Random, allowEscapes: EscapeMode = true): string {
   const count = 1 + integer(random, 3)
   let value = component(random, 0, allowEscapes)
   for (let index = 1; index < count; index++) {
@@ -172,13 +181,14 @@ export interface ConstructOptions {
    */
   distinctSingleModifiers?: boolean
   /**
-   * emit `custom\\:part`-style escaped identifiers. Escapes belong in the
-   * grammar's own corpus; the agreement corpus turns them off because a
-   * top-level backslash is itself a known divergence between the canonical
-   * parser and the runtime scanners, and one pinned case says that more
-   * clearly than a thousand generated ones.
+   * Emit `custom\\:part`-style escaped identifiers.
+   *
+   * `'delimiter-free'` keeps them but drops the ones that escape a `;`, `{` or
+   * `}`. Every scanner reads those the same way and the web lowering then
+   * refuses the value at its injection guard, so they are a divergence one
+   * pinned case states better than a thousand generated ones.
    */
-  escapes?: boolean
+  escapes?: EscapeMode
 }
 
 export function constructCase(
@@ -261,7 +271,7 @@ export function constructCase(
   return { source, base, clauses, unregistered, invalid }
 }
 
-export const chaosAlphabet = [
+export const chaosAlphabet: readonly string[] = [
   ...'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789',
   ':',
   '#',

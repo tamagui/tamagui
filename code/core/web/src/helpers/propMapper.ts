@@ -1,5 +1,5 @@
 import { isAndroid } from '@tamagui/constants'
-import { tokenCategories } from '@tamagui/helpers'
+import { scanFlatValue } from '@tamagui/style-grammar/runtime'
 import { isVariable } from '../createVariable'
 import type {
   GetStyleState,
@@ -11,6 +11,7 @@ import type {
   VariantSpreadFunction,
 } from '../types'
 import { variantResolverNames } from '../types'
+import { getCondition } from './directStyle'
 import { expandStyle } from './expandStyle'
 import { resolveVariableValue } from './resolveVariableValue'
 import { getFontsForLanguage, getVariantExtras } from './getVariantExtras'
@@ -166,89 +167,61 @@ const resolveVariants: StyleResolver = (
       value in variantDefinition
     )
   ) {
-    // one forward pass, the same lexing contributeStyleString uses: words split
-    // on top-level whitespace, the last top-level colon in a word splits clause
-    // modifiers from the variant payload. each clause's resolved entries carry
-    // the raw modifier source (entry[3]) so emission gates them per condition
-    let quote = 0
-    let depth = 0
-    let wordStart = -1
-    let lastColon = -1
-    let segmentStart = 0
-    let modifierSource: string | undefined
-    let entries: [string, any, any?, string?][] | undefined
+    // `scanFlatValue` is the same lexer `contributeStyleString` and the
+    // canonical `parseValue` run, and `getCondition` is the same modifier
+    // resolver the style path uses. Both matter: the two paths used to lose
+    // different amounts of a value the grammar refuses, so which one styled a
+    // component decided how much of a typo survived.
+    const starts: number[] = []
+    const ends: number[] = []
+    const modifiers: (string | undefined)[] = []
+    let pendingModifier: string | undefined
     let sawClause = false
+    let refused = false
 
-    for (let index = 0; index <= value.length; index++) {
-      const code = index === value.length ? 32 : value.charCodeAt(index)
-      if (quote) {
-        if (code === 92) index++
-        else if (code === quote) quote = 0
-        continue
-      }
-      if (code === 34 || code === 39) {
-        quote = code
-        continue
-      }
-      if (code === 40) {
-        depth++
-        continue
-      }
-      if (code === 41) {
-        depth--
-        continue
-      }
-      if (depth) continue
-      if (code > 32) {
-        if (wordStart === -1) wordStart = index
-        if (code === 58) lastColon = index
-        continue
-      }
-      if (wordStart === -1) continue
-      if (lastColon !== -1) {
-        // this word begins a new clause, so the running segment's payload ends
-        // where this word starts
-        const payload = value.slice(segmentStart, wordStart).trim()
-        if (payload) {
-          const resolved = resolveVariantValue(
-            key,
-            payload,
-            styleProps,
-            styleState,
-            parentVariantKey
-          )
-          if (resolved) {
-            entries ||= []
-            for (const entry of resolved) {
-              if (modifierSource !== undefined) entry[3] = modifierSource
-              entries.push(entry)
-            }
-          }
+    scanFlatValue(value, {
+      segment(start, end, isBase) {
+        if (start === end) {
+          if (!isBase) refused = true
+          return
         }
+        starts.push(start)
+        ends.push(end)
+        modifiers.push(pendingModifier)
+      },
+      chain(start, end) {
+        if (refused) return false
+        const source = value.slice(start, end)
+        if (!getCondition(styleState, source)) {
+          refused = true
+          return false
+        }
+        pendingModifier = source
         sawClause = true
-        modifierSource = value.slice(wordStart, lastColon)
-        segmentStart = lastColon + 1
-      }
-      wordStart = -1
-      lastColon = -1
-    }
+        return true
+      },
+      error() {
+        refused = true
+      },
+    })
 
+    if (refused) return []
     if (sawClause) {
-      const payload = value.slice(segmentStart).trim()
-      if (payload) {
+      let entries: [string, any, any?, string?][] | undefined
+      for (let index = 0; index < starts.length; index++) {
         const resolved = resolveVariantValue(
           key,
-          payload,
+          value.slice(starts[index], ends[index]),
           styleProps,
           styleState,
           parentVariantKey
         )
-        if (resolved) {
-          entries ||= []
-          for (const entry of resolved) {
-            if (modifierSource !== undefined) entry[3] = modifierSource
-            entries.push(entry)
-          }
+        if (!resolved) continue
+        entries ||= []
+        const modifier = modifiers[index]
+        for (const entry of resolved) {
+          if (modifier !== undefined) entry[3] = modifier
+          entries.push(entry)
         }
       }
       return entries || []
@@ -517,101 +490,9 @@ const resolveTokensAndVariants: StyleResolver<object> = (
   return res
 }
 
-export type StyleTokenCategory = 'size' | 'space' | 'radius' | 'zIndex' | 'fontSize'
-
-function mapTokenCategory(keys: Record<string, boolean>, category: StyleTokenCategory) {
-  return Object.fromEntries(Object.keys(keys).map((key) => [key, category]))
-}
-
-// exported so the flat-value grammar adapter binds props to the same token
-// categories the bare-token path already uses, rather than keeping a second table
-export const tokenCategoryByProperty: Record<string, StyleTokenCategory> = {
-  ...mapTokenCategory(tokenCategories.size, 'size'),
-  ...mapTokenCategory(tokenCategories.radius, 'radius'),
-  ...mapTokenCategory(tokenCategories.zIndex, 'zIndex'),
-  // the transform family's x/y are lengths from the space scale (v6 decision:
-  // `x="4"` resolves like `p="4"`), never the size category
-  x: 'space',
-  y: 'space',
-  fontSize: 'fontSize',
-  borderWidth: 'space',
-  borderTopWidth: 'space',
-  borderRightWidth: 'space',
-  borderBottomWidth: 'space',
-  borderLeftWidth: 'space',
-  borderBlockWidth: 'space',
-  borderBlockStartWidth: 'space',
-  borderBlockEndWidth: 'space',
-  borderInlineWidth: 'space',
-  borderInlineStartWidth: 'space',
-  borderInlineEndWidth: 'space',
-  outlineOffset: 'space',
-  outlineWidth: 'space',
-  gap: 'space',
-  rowGap: 'space',
-  columnGap: 'space',
-  top: 'space',
-  right: 'space',
-  bottom: 'space',
-  left: 'space',
-  inset: 'space',
-  insetBlock: 'space',
-  insetBlockEnd: 'space',
-  insetBlockStart: 'space',
-  insetInline: 'space',
-  insetInlineEnd: 'space',
-  insetInlineStart: 'space',
-  margin: 'space',
-  marginBlock: 'space',
-  marginBlockEnd: 'space',
-  marginBlockStart: 'space',
-  marginInline: 'space',
-  marginInlineEnd: 'space',
-  marginInlineStart: 'space',
-  marginTop: 'space',
-  marginRight: 'space',
-  marginBottom: 'space',
-  marginEnd: 'space',
-  marginLeft: 'space',
-  marginHorizontal: 'space',
-  marginStart: 'space',
-  marginVertical: 'space',
-  padding: 'space',
-  paddingBlock: 'space',
-  paddingBlockEnd: 'space',
-  paddingBlockStart: 'space',
-  paddingInline: 'space',
-  paddingInlineEnd: 'space',
-  paddingInlineStart: 'space',
-  paddingTop: 'space',
-  paddingRight: 'space',
-  paddingBottom: 'space',
-  paddingEnd: 'space',
-  paddingLeft: 'space',
-  paddingHorizontal: 'space',
-  paddingStart: 'space',
-  paddingVertical: 'space',
-}
-
-export type RuntimeTokenCategory = StyleTokenCategory | 'color' | 'font' | 'fontFamily'
-
-export function getTokenCategoryForProperty(
-  property: string
-): RuntimeTokenCategory | undefined {
-  if (property === 'fontFamily') return 'fontFamily'
-  if (
-    property === 'fontSize' ||
-    property === 'fontWeight' ||
-    property === 'lineHeight' ||
-    property === 'letterSpacing'
-  ) {
-    return 'font'
-  }
-  return (
-    tokenCategoryByProperty[property] ||
-    (property in tokenCategories.color ? 'color' : undefined)
-  )
-}
+// the prop -> token-category tables live in their own module; re-exported
+// here because they have always been part of this module's public surface
+export * from './tokenCategories'
 
 // goes through specificity finding best matching variant function
 function getVariantDefinition(

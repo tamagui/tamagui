@@ -19,6 +19,7 @@ import {
   createClausePrecedenceOrder,
   getClausePrecedenceKeyFromKinds,
   isRootThemeName,
+  scanFlatValue,
   type ClausePrecedenceKey,
   type ClausePrecedenceOrder,
   type ModifierKind,
@@ -29,6 +30,7 @@ import { isVariable } from '../createVariable'
 import { mediaKeyMatch } from '../hooks/useMedia'
 import type { GetStyleState } from '../types'
 import { carriesTopLevelInjection } from './carriesTopLevelInjection'
+import { warnOnce, warnRefusedInjection, warnRefusedValue } from './warnOnce'
 import { expandStyle } from './expandStyle'
 import { getCSSStyleAtomic } from './getCSSStylesAtomic'
 import { isColorStyleKey } from './getDynamicVal'
@@ -37,7 +39,7 @@ import { mediaObjectToString } from './mediaObjectToString'
 import { normalizeColor } from './normalizeColor'
 import { parseNativeStyle } from './parseNativeStyle.native'
 import { parseNativeTransform } from './parseNativeTransform.native'
-import { getTokenCategoryForProperty, tokenCategoryByProperty } from './propMapper'
+import { getTokenCategoryForProperty, tokenCategoryByProperty } from './tokenCategories'
 import { resolveSafeAreaVariable } from './resolveSafeAreaVariable'
 import { expandSafeAreaValue, isSafeAreaKey } from './resolveSafeArea'
 import { resolveVariableValue } from './resolveVariableValue'
@@ -95,10 +97,12 @@ type DirectState = GetStyleState & {
 
 const baseClausePrecedence = [0, 0, 0, 0] as const
 
+// keyed by the CANONICAL modifier spelling: `canonicalClauseModifier` has
+// already folded `active`, `pressed`, `starting` and `ending` into their one
+// spelling before anything looks in here
 const stateSelectors: Record<string, string> = {
   hover: ':hover',
   press: ':active',
-  pressed: ':active',
   focus: ':focus',
   'focus-visible': ':focus-visible',
   'focus-within': ':focus-within',
@@ -203,15 +207,6 @@ const borderStyleDefaults: Record<string, string> = {
 
 const mediaQueries = new WeakMap<object, Record<string, string>>()
 const clausePrecedenceOrders = new WeakMap<object, ClausePrecedenceOrder>()
-const warned = process.env.NODE_ENV !== 'production' ? new Set<string>() : null
-
-function warnOnce(message: string) {
-  if (process.env.NODE_ENV === 'development' && !warned?.has(message)) {
-    warned?.add(message)
-    console.warn(`[tamagui] ${message}`)
-  }
-}
-
 function queryFor(state: GetStyleState, name: string): string | undefined {
   let queries = mediaQueries.get(state.conf)
   if (!queries) {
@@ -257,9 +252,8 @@ export function platformMatches(name: string): boolean {
 
 function groupCondition(state: GetStyleState, modifier: string, out: Condition) {
   const slash = modifier.indexOf('/')
-  let stateName = modifier.slice(6, slash === -1 ? undefined : slash)
+  const stateName = modifier.slice(6, slash === -1 ? undefined : slash)
   const groupName = slash === -1 ? 'true' : modifier.slice(slash + 1)
-  if (stateName === 'pressed') stateName = 'press'
   const selector = stateSelectors[stateName]
   if (!selector || !groupName) return false
   out.selector += `:where(.t_group_${groupName}${selector} *)`
@@ -293,7 +287,14 @@ function containerCondition(state: GetStyleState, modifier: string, out: Conditi
   return true
 }
 
-function getCondition(state: GetStyleState, source: string): Condition | null {
+/**
+ * Resolve one modifier chain against the live state, or null when the runtime
+ * has no such modifier. Exported because the variant scanner in `propMapper`
+ * has to refuse exactly the chains this one refuses; two answers to "is this a
+ * modifier" is how the prop and variant paths came to disagree about how much
+ * of a bad value survives.
+ */
+export function getCondition(state: GetStyleState, source: string): Condition | null {
   const out = { key: '', active: true, emit: true, selector: '' } as Condition
   const canonical: string[] = []
   const kinds: ModifierKind[] = []
@@ -320,21 +321,7 @@ function getCondition(state: GetStyleState, source: string): Condition | null {
       kinds.push('container')
       continue
     }
-    if (
-      modifier in stateSelectors ||
-      modifier === 'enter' ||
-      modifier === 'exit' ||
-      modifier === 'starting' ||
-      modifier === 'ending'
-    ) {
-      modifier =
-        modifier === 'pressed'
-          ? 'press'
-          : modifier === 'starting'
-            ? 'enter'
-            : modifier === 'ending'
-              ? 'exit'
-              : modifier
+    if (modifier in stateSelectors || modifier === 'enter' || modifier === 'exit') {
       canonical.push(modifier)
       kinds.push('state')
       selfStateSpecificity++
@@ -1133,7 +1120,10 @@ function emitValue(
     // whole guarantee for the inline style object, where a `;` still buys extra
     // declarations on the element; the class path is checked again where the
     // CSS text is built, which is where producers outside this grammar arrive.
-    if (carriesTopLevelInjection(raw)) return
+    if (carriesTopLevelInjection(raw)) {
+      if (process.env.NODE_ENV === 'development') warnRefusedInjection(property, raw)
+      return
+    }
   }
 
   if (isVariable(raw)) {
@@ -1524,95 +1514,61 @@ export function contributeStyleString(
     return true
   }
 
-  let quote = 0
-  let depth = 0
-  let wordStart = -1
-  let lastColon = -1
-  let segmentStart = 0
-  let condition: Condition | null = null
-  let hasBase = false
+  // The scan collects and the emit happens after it, because `parseValue`
+  // reports a refused modifier or a rule-breaking character as one failure over
+  // the WHOLE value: there is no such thing as the good half of a value the
+  // grammar rejects. Emitting as the scan went is what used to make this path
+  // lose the base it had already read while the variant path kept it.
+  const conditions: (Condition | null)[] = []
+  const starts: number[] = []
+  const ends: number[] = []
+  let pending: Condition | null = null
+  // the first thing that made the value unusable, and the whole refusal test
+  let refused = ''
   let lifecycle = false
 
-  const boundary = (wordEnd: number) => {
-    if (wordStart === -1 || lastColon === -1) return true
-    const next = getCondition(state, source.slice(wordStart, lastColon))
-    if (!next) return false
-    if (process.env.NODE_ENV === 'development' && next.unsupportedState) {
-      warnOnce(
-        `${property}: "${next.unsupportedState}:" has no native component-state source; dropping the clause`
-      )
-    }
-    const emitted = emitSegment(
-      state,
-      property,
-      source,
-      segmentStart,
-      wordStart,
-      condition,
-      merge,
-      originalValue,
-      contextOnly
-    )
-    if (!condition && emitted) hasBase = true
-    condition = next
-    lifecycle ||= !!(next.enter || next.exit)
-    segmentStart = lastColon + 1
-    wordStart = wordEnd
-    lastColon = -1
-    return true
-  }
-
-  for (let index = 0; index < source.length; index++) {
-    const code = source.charCodeAt(index)
-    if (quote) {
-      if (code === 92) index++
-      else if (code === quote) quote = 0
-      continue
-    }
-    if (code === 34 || code === 39) {
-      quote = code
-      continue
-    }
-    if (code === 40) {
-      depth++
-      continue
-    }
-    if (code === 41) {
-      depth--
-      continue
-    }
-    if (depth) continue
-    if (code === 59 || code === 123 || code === 125) return true
-    if (code <= 32) {
-      if (!boundary(-1)) {
-        if (property === 'aspectRatio') {
-          emitValue(
-            state,
-            property,
-            source,
-            null,
-            merge,
-            originalValue ?? source,
-            contextOnly
-          )
-          return true
-        }
-        if (process.env.NODE_ENV === 'development') {
-          throw new Error(
-            `[tamagui] ${property}="${source}" does not parse: unknown modifier`
-          )
-        }
-        return true
+  scanFlatValue(source, {
+    segment(start, end, isBase) {
+      if (start === end) {
+        // an empty base is simply no base; an empty clause payload is a clause
+        // with nothing in it, which parseValue reports as `empty-payload`
+        if (!isBase && !refused) refused = 'a conditional clause has no value'
+        return
       }
-      wordStart = -1
-      lastColon = -1
-    } else {
-      if (wordStart === -1) wordStart = index
-      if (code === 58) lastColon = index
-    }
-  }
+      conditions.push(pending)
+      starts.push(start)
+      ends.push(end)
+    },
+    chain(start, end) {
+      if (refused) return false
+      const next = getCondition(state, source.slice(start, end))
+      if (!next) {
+        refused = `unknown modifier "${source.slice(start, end)}"`
+        return false
+      }
+      if (process.env.NODE_ENV === 'development' && next.unsupportedState) {
+        warnOnce(
+          `${property}: "${next.unsupportedState}:" has no native component-state source; dropping the clause`
+        )
+      }
+      pending = next
+      lifecycle ||= !!(next.enter || next.exit)
+      return true
+    },
+    error(code, index) {
+      if (refused) return
+      refused =
+        code === 'invalid-character'
+          ? `"${source[index]}" would end the declaration or rule`
+          : code === 'unterminated-string'
+            ? 'an unterminated string'
+            : 'an unterminated "("'
+    },
+  })
 
-  if (!boundary(-1)) {
+  if (refused) {
+    // `16:9` is the one value whose top-level colon is content rather than a
+    // clause, and only this property can hold it
     if (property === 'aspectRatio') {
       emitValue(
         state,
@@ -1626,31 +1582,36 @@ export function contributeStyleString(
       return true
     }
     if (process.env.NODE_ENV === 'development') {
-      throw new Error(
-        `[tamagui] ${property}="${source}" does not parse: unknown modifier`
-      )
+      warnRefusedValue(property, source, refused)
     }
     return true
   }
-  const emitted = emitSegment(
-    state,
-    property,
-    source,
-    segmentStart,
-    source.length,
-    condition,
-    merge,
-    originalValue,
-    contextOnly
-  )
-  if (!condition && emitted) hasBase = true
+
+  let hasBase = false
+  let lastPayloadStart = 0
+  for (let index = 0; index < conditions.length; index++) {
+    const condition = conditions[index]
+    lastPayloadStart = starts[index]
+    const emitted = emitSegment(
+      state,
+      property,
+      source,
+      starts[index],
+      ends[index],
+      condition,
+      merge,
+      originalValue,
+      contextOnly
+    )
+    if (!condition && emitted) hasBase = true
+  }
 
   if (
     process.env.NODE_ENV === 'development' &&
     !hasBase &&
-    condition &&
+    conditions.length > 0 &&
     (property in tokenCategories.color || property in tokenCategoryByProperty) &&
-    splitComponents(source.slice(segmentStart)).length > 1
+    splitComponents(source.slice(lastPayloadStart)).length > 1
   ) {
     warnOnce(
       `${property}="${source}" has multiple values after its first conditional. Write the base value before the first conditional.`
@@ -1725,9 +1686,7 @@ export function contributeVariantClauseValue(
   const condition = getCondition(state, conditionSource)
   if (!condition) {
     if (process.env.NODE_ENV === 'development') {
-      throw new Error(
-        `[tamagui] ${property} "${conditionSource}:" does not parse: unknown modifier`
-      )
+      warnRefusedValue(property, value, `unknown modifier "${conditionSource}"`)
     }
     return
   }

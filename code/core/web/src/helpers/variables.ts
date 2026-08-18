@@ -8,6 +8,7 @@ import {
 import { getSetting } from '../config'
 import { createVariable, isVariable } from '../createVariable'
 import { platformMatches } from './directStyle'
+import { warnOnce } from './warnOnce'
 import type {
   GenericVariables,
   TamaguiInternalConfig,
@@ -74,16 +75,6 @@ export const getThemeKeySet = (conf: TamaguiInternalConfig): Set<string> => {
   }
   themeKeySets.set(conf.themes, set)
   return set
-}
-
-const warned = new Set<string>()
-const warnOnce = (key: string, message: string) => {
-  if (process.env.NODE_ENV === 'development') {
-    if (!warned.has(key)) {
-      warned.add(key)
-      console.warn(`[tamagui] ${message}`)
-    }
-  }
 }
 
 const findToken = (tokensParsed: TokensParsed, name: string): Variable | undefined => {

@@ -1,5 +1,6 @@
 import { getPlatformDriver, isServer, isWeb } from '@tamagui/constants'
 import { stylePropsAll } from '@tamagui/helpers'
+import { canonicalClauseModifier, scanFlatValue } from '@tamagui/style-grammar/runtime'
 import { mergeIfNotShallowEqual } from '@tamagui/is-equal-shallow'
 import { useDidFinishSSR, useIsClientOnly } from '@tamagui/use-did-finish-ssr'
 import { useRef, useState } from 'react'
@@ -24,9 +25,50 @@ import type {
 } from '../types'
 import type { ViewProps } from '../views/View'
 
-const platformPseudoModifiers = new Set(['hover', 'press', 'active', 'focus'])
+// canonical spellings only: `canonicalClauseModifier` folds `active` and
+// `pressed` into `press` and `starting` into `enter` before the lookup, so the
+// alias table in @tamagui/style-grammar stays the only place they are listed
+const platformPseudoModifiers = new Set(['hover', 'press', 'focus'])
 const enterModifier = new Set(['enter'])
 
+// One live scan at a time, so the visitor and its state are hoisted rather than
+// rebuilt per prop: this runs on every render of every component, and the whole
+// point of an index-based scanner is that asking the question costs nothing.
+let scanSource = ''
+let scanWanted: ReadonlySet<string> = enterModifier
+let scanFound = false
+let scanRefused = false
+
+const lifecycleVisitor = {
+  segment(start: number, end: number, isBase: boolean) {
+    // a clause with no payload is a value parseValue refuses, so nothing in it
+    // reaches the style object and nothing in it can start an animation
+    if (start === end && !isBase) scanRefused = true
+  },
+  chain(start: number, end: number) {
+    if (scanRefused) return false
+    for (let index = start; index <= end; index++) {
+      if (index !== end && scanSource.charCodeAt(index) !== 58) continue
+      if (scanWanted.has(canonicalClauseModifier(scanSource.slice(start, index)))) {
+        scanFound = true
+      }
+      start = index + 1
+    }
+    return true
+  },
+  error() {
+    scanRefused = true
+  },
+}
+
+/**
+ * Does any flat style value on this component carry one of `modifiers`?
+ *
+ * It runs the same `scanFlatValue` lexer the style scanner runs, which is the
+ * whole reason it exists in this shape: a value the style scanner throws away
+ * used to still put the component on the should-enter path here, so it rendered
+ * an enter frame for a style that never arrived.
+ */
 function hasFlatModifier(
   props: Record<string, any>,
   config: TamaguiInternalConfig,
@@ -37,26 +79,12 @@ function hasFlatModifier(
     if (typeof value !== 'string' || value.indexOf(':') === -1) continue
     const property = config.shorthands[key] || key
     if (!(property in stylePropsAll) && property !== 'transition') continue
-    let wordStart = 0
-    let quote = 0
-    let depth = 0
-    for (let index = 0; index < value.length; index++) {
-      const code = value.charCodeAt(index)
-      if (quote) {
-        if (code === 92) index++
-        else if (code === quote) quote = 0
-        continue
-      }
-      if (code === 34 || code === 39) quote = code
-      else if (code === 40) depth++
-      else if (code === 41) depth--
-      else if (!depth && code <= 32) wordStart = index + 1
-      else if (!depth && code === 58) {
-        const modifier = value.slice(wordStart, index)
-        const start = modifier.lastIndexOf(':') + 1
-        if (modifiers.has(modifier.slice(start))) return true
-      }
-    }
+    scanSource = value
+    scanWanted = modifiers
+    scanFound = false
+    scanRefused = false
+    scanFlatValue(value, lifecycleVisitor)
+    if (scanFound && !scanRefused) return true
   }
   return false
 }
