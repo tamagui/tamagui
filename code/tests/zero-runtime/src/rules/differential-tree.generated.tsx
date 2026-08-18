@@ -335,6 +335,19 @@ export function DifferentialCorpus() {
         className="bg-[#a855f7]"
       />
       <TailwindView
+        data-testid="differential-tailwind-hover"
+        data-differential-probe=""
+        data-differential-id="tailwind-hover"
+        data-differential-expected={
+          '{"base":{"backgroundColor":"rgb(185, 28, 28)"},"hover":{"backgroundColor":"rgb(37, 99, 235)"}}'
+        }
+        minWidth={24}
+        minHeight={24}
+        data-differential-action="hover"
+        data-differential-expected-failure="compiled-tailwind-hover"
+        className="bg-[#b91c1c] hover:bg-[#2563eb]"
+      />
+      <TailwindView
         data-testid="differential-tailwind-opacity"
         data-differential-probe=""
         data-differential-id="tailwind-opacity"

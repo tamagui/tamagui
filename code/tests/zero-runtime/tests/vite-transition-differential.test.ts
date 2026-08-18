@@ -48,7 +48,12 @@ const LONGHANDS = [
 type Longhand = (typeof LONGHANDS)[number]
 type Values = Record<Longhand, string>
 type Expected = Record<string, Partial<Values>>
-type Probe = { action?: string; expected: Expected; values: Values }
+type Probe = {
+  action?: string
+  expected: Expected
+  expectedFailure?: string
+  values: Values
+}
 type Snapshot = Record<string, Probe>
 
 const normalize = (value: string) =>
@@ -97,6 +102,7 @@ async function sampleAll(page: Page): Promise<Snapshot> {
         out[id] = {
           action: node.dataset.differentialAction,
           expected: JSON.parse(serializedExpected),
+          expectedFailure: node.dataset.differentialExpectedFailure,
           values,
         }
       }
@@ -148,7 +154,7 @@ function expectPhase(snapshot: Snapshot, phase: string) {
 async function sampleActions(page: Page, baseline: Snapshot) {
   const out: Record<string, Values> = {}
   for (const [id, probe] of Object.entries(baseline)) {
-    if (!probe.action) continue
+    if (!probe.action || probe.expectedFailure) continue
     const target = page.getByTestId(`differential-${id}`)
     if (probe.action === 'wide-hover') {
       await page.setViewportSize({ width: 900, height: 900 })
@@ -201,7 +207,7 @@ async function sampleActions(page: Page, baseline: Snapshot) {
 async function observeTier(page: Page, url: string) {
   await open(page, url, 500)
   const base = await sampleAll(page)
-  expect(Object.keys(base)).toHaveLength(31)
+  expect(Object.keys(base)).toHaveLength(32)
   expectPhase(base, 'base')
   const transitions = await sampleTransitions(page)
   // item 4's first slice stays explicit: plain View call-site prop, styled()
@@ -223,4 +229,24 @@ test('the compiled and runtime trees compute the same longhands for the curated 
   const compiled = await observeTier(page, COMPILED_URL)
   const runtime = await observeTier(page, RUNTIME_URL)
   expect(runtime).toEqual(compiled)
+})
+
+async function hoverTailwindCandidate(page: Page, url: string) {
+  await open(page, url, 500)
+  const target = page.getByTestId('differential-tailwind-hover')
+  await target.hover()
+  return target.evaluate((node) => getComputedStyle(node).backgroundColor)
+}
+
+test('the runtime tier applies the Tailwind hover candidate', async ({ page }) => {
+  expect(await hoverTailwindCandidate(page, RUNTIME_URL)).toBe('rgb(37, 99, 235)')
+})
+
+// known divergence: the ordinary compiled tier retains the base candidate on
+// hover while the compiler-disabled runtime applies the authored hover color.
+// this must invert when compilation reaches runtime parity.
+test.fail('the compiled tier applies the Tailwind hover candidate', async ({ page }) => {
+  const compiled = await hoverTailwindCandidate(page, COMPILED_URL)
+  const runtime = await hoverTailwindCandidate(page, RUNTIME_URL)
+  expect(compiled).toBe(runtime)
 })

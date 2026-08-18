@@ -45,6 +45,11 @@ function element(case_, index) {
   if (case_.action) {
     attributes.push(`data-differential-action=${JSON.stringify(case_.action)}`)
   }
+  if (case_.expectedFailure) {
+    attributes.push(
+      `data-differential-expected-failure=${JSON.stringify(case_.expectedFailure)}`
+    )
+  }
   if (case_.action === 'focus') attributes.push('tabIndex={0}')
 
   let component = 'View'

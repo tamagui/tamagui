@@ -258,6 +258,17 @@ export const differentialCases = [
     expected: { base: { backgroundColor: 'rgb(168, 85, 247)' } },
   },
   {
+    id: 'tailwind-hover',
+    placement: 'tailwind',
+    payload: 'bg-[#b91c1c] hover:bg-[#2563eb]',
+    action: 'hover',
+    expectedFailure: 'compiled-tailwind-hover',
+    expected: {
+      base: { backgroundColor: 'rgb(185, 28, 28)' },
+      hover: { backgroundColor: 'rgb(37, 99, 235)' },
+    },
+  },
+  {
     id: 'tailwind-opacity',
     placement: 'tailwind',
     payload: 'opacity-50',
