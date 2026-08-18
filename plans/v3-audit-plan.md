@@ -185,6 +185,12 @@ compiler then classifies differently. Also `directStyle.ts:1572-1573` early-retu
 on top-level `;`, `{`, `}` while `valueParser.ts:221-260` reports those as invalid
 characters, an untested error-contract divergence.
 
+**DONE, 2026-08-18** (item 12, wave B). One lexer `scanFlatValue.ts` that
+`parseValue` and all three runtime scanners drive; the Rust tables and 645
+conformance vectors are generated from this package and gated in `checks.yaml`;
+D3, D4 and D5 close as agreement. Two divergences remain, both pinned with
+reasons, and the dev-time throw became a warning. See handoff-log section 31.
+
 **Proposed.** Make `@tamagui/style-grammar` the one owner of clause meaning.
 Generate the Rust modifier registry, aliases, parameterized-modifier rules and
 conformance vectors from that package, and make the Rust parser pass those

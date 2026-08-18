@@ -1653,6 +1653,21 @@ both fixed:
 `tamagui` also re-exports the `Popover` ref-handle type again (skin file
 declares `export type Popover = UiPopover`), keeping `useRef<Popover>` working.
 
+### The visitor cost real time until the closures came out
+
+Worth writing down because the first version looked fine and was not. The
+extracted lexer created two closures per call (`fail` and `closeSegment`), on
+top of the visitor object each consumer allocates. `bench/parse-cost.mjs` read
+2-3x slower than the old parser on every shape, and six `codemod-flat-values`
+tests that normally take 2-4s hit their 20s timeout. Hoisting `closeSegment`
+to a module function and inlining the two-line `fail` put it back at parity
+(plain 113 to 95 ns/op, gradient 406 to 367, six clauses 1952 to 1877, two
+clauses 686 to 755), and those six tests run at ~2s again.
+
+The general shape: a per-call closure inside a function called once per style
+prop per render is not free, and a benchmark that already exists is the cheapest
+way to find out.
+
 ### Validation state at handoff
 
 READ (ran, output confirmed): all core-test suites green (web 454, native 265,
@@ -3623,3 +3638,152 @@ It survived only because the aside in the report was pressed on rather than
 skimmed. Nothing else would have caught it: the suite was green, the commit
 looked clean, and the corpus with the case removed is indistinguishable from a
 corpus that never had it.
+
+## 31. Item 12: one grammar owner, and the throw that had to go (2026-08-18)
+
+`@tamagui/style-grammar` now owns the flat value grammar for real, on both
+sides.
+
+### One lexer, four callers
+
+`scanFlatValue.ts` is the split: one left-to-right pass that hands a visitor
+index ranges and never allocates a slice. Everything else drives it.
+`parseValue` is now what the split MEANS rather than a second copy of how it
+works, and its 439 tests passed unchanged through the rewrite, which is the
+evidence that the extraction was behaviour-preserving.
+
+The three runtime scanners drive the same lexer:
+
+- `contributeStyleString` scans, buffers, and emits after the scan finishes.
+- `resolveVariants` does the same, and resolves modifiers through
+  `getCondition`, the style path's own resolver, rather than not checking.
+- `hasFlatModifier` drives the lexer with a hoisted visitor, so the lifecycle
+  question costs no allocation.
+
+**Buffering is the fix, not a detail.** `parseValue` reports a refused modifier
+or a rule-breaking character as one failure over the WHOLE value; there is no
+good half of a value the grammar rejects. Emitting as the scan went is exactly
+what made the prop path lose the base it had already read while the variant path
+kept it (D5), and it is why no amount of patching one scanner would have closed
+D3, D4 and D5, because they are three faces of "each scanner refuses a different amount
+at a different moment".
+
+Pinned as agreement in `parserAgreement.web.test.tsx`, all previously failing:
+D1 (top-level `;`), D3 (backslash escape), D4 (the lifecycle scanner firing on a
+value the style scanner drops), D5 (unregistered modifier), plus a clause with
+no payload, which every scanner used to skip silently while `parseValue` called
+it an error. The generated corpus now runs with escapes ON
+(`escapes: 'delimiter-free'`), so the escape branch is fuzzed across all four
+implementations rather than asserted once.
+
+### Two divergences remain, both pinned, neither a scanner fork
+
+- **D6.** `parseValue` reads `safe\;tail` as one payload with an escaped
+  semicolon and accepts it; `carriesTopLevelInjection` has no escape branch and
+  refuses it. The guard stays the stricter one **and its logic was not touched**:
+  CSS honours `\;` only inside an ident or a string, a backslash before a
+  newline is not a valid escape at all, and the guard is the last thing between
+  an authored value and text interpolated into a rule. Refusing a rare valid
+  value costs an author one edit; teaching the guard to trust an escape costs a
+  bypass. All 62 injection tests still pass, unchanged.
+- **D7.** `hasFlatModifier` runs the shared lexer but not the shared modifier
+  resolver. It answers before any style state exists, so it has no
+  `getCondition` to ask, and pulling the canonical registry into `@tamagui/web`
+  would put the completion trie in every app bundle for one boolean. So
+  `0 hver:1 enter:2` still enters for a style that never arrives. Same shape as
+  D4, much narrower: D4 took any rule-breaking character, this takes a typo'd
+  modifier standing next to a real `enter:` clause. It is PRE-EXISTING, not
+  introduced here: that value produced no style before this item either.
+
+### The alias table had a third owner, and it was the runtime
+
+`stateModifiers.ts` listed only `active`. `getCondition` mapped `pressed`,
+`starting` and `ending` inline, and `groupCondition` mapped `pressed` again. So
+`parseValue` called `starting:red` an unregistered modifier while the runtime
+styled it, and nothing noticed because nothing compared them. `modifierAliases`
+now carries all four (`states.ts`'s `stateVocabulary` already did), both inline
+mappings are deleted, and `stateSelectors` is keyed by canonical spelling only.
+The compiler and the editor accept the three spellings now too.
+
+### The dev throw is now a warning, and this reverses a pinned decision
+
+**Read this one.** `contributeStyleString` used to `throw` in development for a
+value it could not parse, pinned by `flatValuePrograms.web.test.tsx` as "a
+clause-shaped typo is loud where the author can see it". That test now asserts a
+warning and a dropped value instead. The reasons:
+
+- A style value is an ordinary place to put a string the app did not write: an
+  image URL, a colour from a CMS, anything a user typed. `bg={cmsString}` with a
+  colon in it reached that throw, so hostile content could take down a dev build.
+  That was already true before this item; widening the throw to cover the
+  `;{}` refusal (which is the injection alphabet) would have made it worse, and
+  `styleInjection.web.test.tsx` went red in dev mode when it did.
+- One prop's typo took the whole render down. A dropped style plus a console
+  line naming the property and the reason is louder in practice, because the
+  component still renders.
+- There were three behaviours for one class of mistake: throw on the prop path,
+  throw in `contributeVariantClauseValue`, silent drop on the invalid-character
+  path. Now there is one.
+
+Item 5b's deferred question (should a refused value warn in development) is
+answered the same way and for the same reason: yes, warn, never throw. One
+`warnOnce` helper (`helpers/warnOnce.ts`) replaces the two copies that had grown
+in `directStyle.ts` and `variables.ts`, and the refusal warning keys on the
+PROPERTY rather than the value, because `getCSSStylesAtomic` takes
+attacker-varied strings and a value-keyed set would grow forever.
+
+**If the owner wants the throw back, it is one line in `contributeStyleString`.**
+It was a deliberate v3 cutover decision and this reverses it.
+
+### The Rust side is generated now
+
+`bun scripts/generateRustGrammar.ts` in `code/core/style-grammar` writes
+`crates/tamagui-grammar/src/generated.rs` (state modifiers, aliases, component
+states, platforms, group and container prefixes, max depth) and
+`tests/vectors.json` (645 parse vectors and 53 modifier vectors, produced by
+running this package's own `parseValue` and registry over a fixed config).
+`--check` fails when what is on disk differs, and `checks.yaml` runs both that
+and `cargo test --workspace`. It is in `checks.yaml` rather than
+`lsp-build.yml` on purpose: that workflow only triggers on `code/lsp/**`, so a
+grammar change would have moved the source of truth without running the check
+that the copy still agrees, which is how they forked the first time.
+
+The vectors immediately found more drift than the audit had listed. Beyond the
+camelCase spellings, the missing `active` alias and the absent group/container
+registry:
+
+- **A payload was cut at every space.** `hover:1px solid red` came back as three
+  clauses, so `base()` answered `solid`. A payload runs to the next CLAUSE word.
+- **`[` and `{` were treated as nesting.** `sm:[color:red]` read as one payload;
+  the grammar reads a clause whose modifier is `[color`, and a top-level `{` is
+  refused outright.
+- **No escape handling and no errors at all.** The Rust parser could not report
+  an invalid character, an unterminated string, an empty payload or an
+  unregistered chain, so `diagnose` was checking modifier names against the
+  COMPLETION index, which does not enumerate `group-hover` or `@sm` and
+  therefore flagged both as unknown.
+
+Fixing the payload rule forced the editor features onto word granularity, which
+they should have had anyway: completion replaces the WORD under the cursor
+(accepting an entry in `hover:1px solid backgr|` no longer eats `1px solid`),
+and hover and colour swatches resolve each component of a payload instead of the
+payload as one string, which found nothing at all for `1px solid background`.
+
+Both negative controls were run rather than assumed: restoring camelCase
+`focusVisible` fails the modifier vectors, and restoring brace nesting fails the
+parse vectors with `unterminated-function` where the grammar says
+`invalid-character`. A one-character edit to `generated.rs` fails `--check`.
+
+### Validation
+
+Root typecheck 0, lint clean, `bun run build` 0. core-test web 65 files / 556
+passed, core-test native 30 files / 294 passed with 7 expected fail,
+style-grammar 27 files / 439 passed, `styleInjection.web.test.tsx` 62 passed,
+`cargo test --workspace` 117 passed.
+
+One pre-existing dev-mode failure is NOT mine and is worth recording so the next
+person does not chase it: running the web suite with `NODE_ENV=development`
+fails `View.web.test.tsx > renders once on mount` (`expected +0 to be 1`). READ:
+it fails identically in a clean worktree at HEAD, and that test uses no flat
+value with a colon, so no scanner in this item runs on it. CI runs `NODE_ENV=test`
+and is unaffected.
