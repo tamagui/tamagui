@@ -461,6 +461,7 @@ Fix every site or move the owning module to a declared full-runtime island. Zero
 | 5. CSS animation driver only | Detectable from evaluated config and from `animatedBy`, `transition`, lifecycle, and animation props. Static CSS transitions lower. Non-CSS drivers, dynamic driver choice, presence lifecycle, and layout-driven animation fail. | `Zero-runtime rule 5: <DETAIL> requires a component animation runtime. Use a static CSS transition or move this module to a full-runtime island.` |
 | 6. Lowerable components only | Detectable after component resolution. `compilerHost.ts` already derives `acceptsClassName` from `staticConfig.acceptsClassName`, `neverFlatten`, and context. This boolean is the only authority. | `Zero-runtime rule 6: <COMPONENT> does not lower to one host element with className and is island-only. Move this module to a declared full-runtime island.` |
 | 7. No JavaScript reads of design state | Detectable for direct, aliased, namespace, and re-exported references whose module provenance reaches `useMedia`, `useTheme`, `useThemeName`, `useProps`, `getConfig`, `getTokens`, `useTokens`, `getVariableValue`, `getToken`, `getTokenValue`, `useConfiguration`, `useAnimationDriver`, or theme mutation exports. A computed property hidden behind opaque code may only reach the bundle gate. | `Zero-runtime rule 7: <API> reads Tamagui design state in JavaScript. Express the condition in CSS or move this module to a full-runtime island.` |
+| 8. No module-level imports that defeat the zero graph | Detectable at erasure for a bare side-effect Tamagui import and for a static import of a declared island module. Both are module-level facts, not element sites, and neither is fixed by moving the module to an island, so each code carries its own remediation. | `Zero-runtime rule 8: <DETAIL> defeats the zero-runtime graph. <REMEDIATION>` where the two codes are `zero/side-effect-import` (remediation: `Remove it, or import the values this module uses so the compiler can lower and erase them.`) and `zero/static-island-import` (remediation: `Import the generated island loader instead; the island is a separately built entry and the zero graph never contains it.`) |
 
 **READ, manager verification:** `compilerHost.ts:1558` currently routes
 `theme` and `themeInverse` through `local/unsupported-target`. Zero mode changes
@@ -1519,10 +1520,11 @@ zero without AnimatedNumber, zero with one hook).
 
 A bare side-effect Tamagui import and a static import of a declared island are
 erasure-level contract errors, not rule-map entries. The failure format requires
-a rule number, so both carry rule 6, because rule 6's resolution is also theirs:
-move the owning module to a declared full-runtime island. Their codes
-(`zero/side-effect-import`, `zero/static-island-import`) are what identifies
-them, and both have controls.
+a rule number, so Phase 3 gave both rule 6. That was wrong: rule 6's remediation
+is "move the owning module to an island", which fixes neither. **Phase 4 added
+rule 8 for exactly these two codes, each with its own remediation.** Their codes
+(`zero/side-effect-import`, `zero/static-island-import`) are unchanged and both
+still have controls.
 
 ### Corrections Phase 3 forced
 
@@ -1557,3 +1559,165 @@ not evidence of no importers.
 **`report` must run the same mode-aware host as `enforce`.** With the host's
 zero-mode diagnostics gated on `enforce`, report mode silently dropped every rule
 1 site and emitted a shorter list than the mode it is supposed to preview.
+
+## Phase 4 record: the providerless root and compiled static Theme
+
+Evidence added after Phase 4 ran. Same fixture, `code/tests/zero-runtime`, and
+the same three integrations.
+
+### One table, one name resolution, one span
+
+**READ.** `reservedThemeProps` now lives in `code/core/helpers/src/reservedThemeProps.ts`
+and is exported through `@tamagui/helpers`, which `@tamagui/web` re-exports, so
+its public name is unchanged. The compiler classifies `<Theme>` props with that
+table rather than a second list.
+
+Two more pieces had to be shared for the compiled span to mean what the runtime
+span means, and both are now single implementations:
+
+- `resolveThemeName(parentName, name, reset, themes)` in `useThemeState.ts`. It
+  was the body of `getNewThemeName`, which is pure apart from its cache and
+  `getConfig()`. The compiler walks a `<Theme>` chain through the same function,
+  so `<Theme name="dark"><Theme name="level2">` compiles to `dark_level2`, the
+  name the runtime would have produced, instead of a guess about composition.
+- `getThemeClassNames(name, isRoot)` in `@tamagui/helpers`. It was inline in
+  `Theme.tsx`'s `getThemeClassNameAndColor`.
+
+The compiled span is now byte-for-byte the composition the runtime emits:
+
+```html
+<span class="t_sub_theme t_dark is_Theme tvar_1782898843"
+      style="color:var(--color);display:contents">
+```
+
+Phase 1's lowering emitted `t_dark is_Theme tvar_…` and no style. Two of those
+three differences were real defects, found by writing the parity down:
+
+- **no `display: contents` meant the theme span was a layout box.** Inside a
+  flex parent the runtime's span contributes nothing and its child is the flex
+  item; the compiled span was an extra flex item.
+- **no `color` meant `currentColor` differed** under a compiled theme from the
+  same authored tree at runtime.
+
+`variableToString(theme.color)` is `var(--color)` for every theme, so the style
+is a constant and the parity costs one attribute.
+
+### A name may be a conditional, and the compiler enumerates it
+
+**READ.** `<Theme name={dark ? 'dark' : 'light'}>` lowers to one span whose
+`className` and `style` are the same condition folded over the enumerated
+branches. Nested conditionals and a conditional above a nested `<Theme>` take the
+product of their branches, capped at 8, past which rule 4 fires naming the count.
+The condition's source text is repeated in both attributes, so a condition
+containing a call, assignment, `await`, or `new` is rejected rather than
+evaluated twice.
+
+Branches that agree collapse, so an ordinary literal `<Theme name="dark">` still
+emits a plain string with no ternary.
+
+An island mount under a conditional theme gets one bridge descriptor per branch
+and selects its id with the same condition.
+
+### The island provider was re-theming the whole page
+
+**READ, and the most valuable thing this phase found.** `ThemeProvider` writes
+`t_<defaultTheme>` onto `document.documentElement` (or `body`, per the
+`addThemeClassName` setting). The generated island entry mounts a
+`TamaguiProvider` with `defaultTheme` from its bridge, so a page with one dark
+island stamped `<html class="t_dark">` from an async chunk.
+
+Everything below it then resolved against dark. `<Theme name="light">` in the
+zero page produced a correct `t_light` span, and its subtree still read the dark
+values, because `:root.t_dark .tvar_x` matched from above. This was silent: the
+Phase 1 island receipts all pass with it, because that fixture's only theme was
+the island's own.
+
+`ThemeProviderProps.isSubtreeRoot` fixes it at the source. A provider that
+declares itself a subtree root writes no document-level class and carries its
+theme on its own node instead. The generated island entry sets it. The receipt
+is a Playwright assertion that no `t_*` class reaches `html` or `body` after the
+island mounts, which fails on the previous build.
+
+### Rule 8, and why rule 6 was wrong for these two
+
+**READ.** `zero/side-effect-import` and `zero/static-island-import` moved from
+rule 6 to rule 8. The codes and their controls are unchanged; the rule number and
+the remediation text are what changed, because rule 6 told a developer with a
+stray `import '@tamagui/core'` to move the module to an island, which does not
+fix it. Rule 8 gives each code its own remediation: remove the import, or import
+the generated loader. Both controls still fail and their receipts now assert
+`Rule 8 <code>` plus the remediation sentence, on all three integrations.
+
+### Every Phase 4 diagnostic has a control that fails
+
+**READ.** Four new pairs in `src/rules/`, each one authored fact apart:
+
+| Control | Fails with | Its fix |
+| --- | --- | --- |
+| `<Theme name={themeName}>` from a URL | Rule 4, naming the value | `name={wantsDark ? 'dark' : 'light'}` |
+| `<Theme background={runtimeBackground}>` | Rule 3, naming the prop | a literal |
+| `<Theme background="#112233 hover:#445566">` | Rule 3, quoting the parser | `dark:#445566` |
+| `<TamaguiProvider>` at a zero root | Rule 4 `zero/runtime-provider`, verbatim | a static `<Theme>` |
+
+The `hover:` control is the one that would have been missed. The runtime warns
+and drops an unusable clause, so a compiler that called
+`getInlineValuesFromProps` and took its result would have built that module
+green with the modifier silently gone. `getInlineValuesFromProps` now takes an
+optional issue sink: the runtime passes none and keeps warn-and-drop, the
+compiler passes one and turns each issue into rule 3. One clause loop, two
+dispositions.
+
+`theme` and `themeInverse` already reported rule 4 with the static `<Theme>`
+wrapper remediation from Phase 3; its control and exact message assertion are
+unchanged.
+
+### What the browser proves
+
+**READ, Playwright, `tests/vite-theme.test.ts`, 5 tests, and the extended island
+test.** Every assertion reads computed style or the page's own CSSOM:
+
+- clicking a plain React button switches the compiled subtree between the
+  `t_light` and `t_dark` values and back, with an empty `tamaguiModules` list for
+  the graph it runs in, so nothing subscribed to anything;
+- a nested `<Theme name="level2">` under `<Theme name="dark">` resolves to the
+  `dark_level2` values, and not to `light_level2`;
+- `<Theme name="dark" background="#0b2545">` puts `--background:#0b2545` on its
+  subtree, beating the named theme it sits inside;
+- one authored `"#112233 dark:#445566"` compiles to one class used by both
+  placements, and the browser reports `rgb(17, 34, 51)` under `t_light` and
+  `rgb(68, 85, 102)` under `t_dark`, choosing between two static rules;
+- the island's portaled content reports `dark|#0b2545` from `useThemeName()` and
+  `useTheme()` inside the portal, which is the JavaScript half of the bridge that
+  the computed-CSS assertion cannot see.
+
+The modifier test pins `colorScheme: 'light'`. The config emits a
+`prefers-color-scheme` fallback for scheme buckets at the base rule's
+specificity, so an unpinned runner decides that assertion instead of the theme
+classes under test. That fallback is `getVariablesCSSRules` output and is
+identical at runtime; the compiled path does not change it.
+
+### The provider and config modules are absent, and the check can see them
+
+**READ.** The zero graph gate already forbids every Tamagui module, so absence
+follows. What was missing was proof the matcher works: the same matcher over an
+unminified compiled-global build, which mounts a real `TamaguiProvider` over an
+evaluated config, finds 12 modules including `createTamagui.mjs`,
+`TamaguiProvider.mjs` and `ThemeProvider.mjs`. Over the zero build it finds none,
+in a graph of 16 emitted modules.
+
+### A Next build could fail before generating its own artifact
+
+**READ, found while running the baseline.** The compiled-global tier generated
+its owned CSS artifact only in the client compilation. Next builds server and
+client together and both resolve the app module that imports the artifact, so a
+build whose artifact did not exist yet could fail with
+`Module not found: Can't resolve '../.tamagui/global/tamagui-global.css'` on
+whichever pass resolved first. It reproduced as an intermittent failure of the
+stale-artifact control, which runs right after the missing-artifact control
+deletes the file.
+
+`TamaguiPlugin` now generates it once per build process, before any compilation
+resolves modules, and every compilation awaits that one generation. Generating it
+per compilation instead would have let a later pass recreate a file the build had
+deliberately invalidated, which would have made the missing and stale controls
+unable to fail.

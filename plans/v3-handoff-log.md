@@ -2332,3 +2332,94 @@ Context that makes the trade sensible here: the engine audit found that
 `directStyle`'s five mechanical wins removed allocations AND bytes together, so
 the two goals mostly do not conflict. This directive governs the minority of
 cases where they do.
+
+## 19. Zero-runtime Phase 4: the providerless root and compiled static Theme (2026-08-17)
+
+Continues section 17. Block 2 Phase 4 is implemented and proven on Vite,
+Next/webpack and Metro web. The per-receipt record is the "Phase 4 record"
+section of `plans/v3-zero-runtime-mode.md`; this is what a future reader needs
+that the code does not say.
+
+### An island provider stamps the document, and that is a page-wide fact
+
+`ThemeProvider` adds `t_<defaultTheme>` to `document.documentElement` or
+`document.body`, per the `addThemeClassName` setting. That is correct for an app
+root and wrong for anything mounted inside a page it does not own. The
+zero-runtime island entry is exactly that, so one dark island re-themed an entire
+zero page from an async chunk, and did it silently: the compiled `<Theme
+name="light">` span was correct, and `:root.t_dark .tvar_x` matched from above it
+anyway.
+
+`ThemeProviderProps.isSubtreeRoot` is the fix and the generated island entry sets
+it. Anyone mounting a second `TamaguiProvider` inside an existing Tamagui page
+wants the same flag; without it the inner provider silently re-themes the outer
+one's modals, portals, and anything reading a variable from `html`.
+
+The general lesson is worth more than the fix: an assertion about a subtree can
+pass while a document-level write makes it meaningless. The Phase 1 island
+receipts were all green with this bug because that fixture had no theme of its
+own to lose.
+
+### Three things had to become one implementation, not two
+
+The compiled `<Theme>` span has to be indistinguishable from the runtime's or the
+same authored tree renders differently in the two modes. That meant sharing:
+
+- `reservedThemeProps` (now `@tamagui/helpers`, re-exported by `@tamagui/web`),
+- `resolveThemeName` (extracted from `getNewThemeName`'s pure body),
+- `getThemeClassNames` (extracted from `Theme.tsx`).
+
+Writing the parity down is what found two real defects in Phase 1's lowering: the
+compiled span had no `display: contents`, so it was a layout box the runtime span
+is not, and no `color`, so `currentColor` differed. Neither had a failing test,
+because nothing had asked what the compiled span was supposed to be.
+
+### A warn-and-drop runtime cannot be a build-time check
+
+`getInlineValuesFromProps` warns and drops a clause it cannot use, which is right
+for a render. A compiler that calls it and takes the result inherits the drop, so
+`<Theme background="#112233 hover:#445566">` would have compiled green with the
+modifier gone. The design says an element modifier is a hard error; the code
+would have said otherwise.
+
+It now takes an optional issue sink. The runtime passes none and keeps warning;
+the compiler passes one and turns each issue into rule 3. The clause loop, the
+diagnosis text, and the modifier classification stay in one place; only the
+disposition differs. A caller that passes a sink also bypasses the layer memo,
+because a cache hit reports nothing.
+
+This is the fourth shape of "a check that cannot fail" this campaign has found,
+and the first one where the check was borrowed rather than written.
+
+### Rule 8 exists because a remediation is part of a diagnostic
+
+`zero/side-effect-import` and `zero/static-island-import` carried rule 6 for one
+reason: the failure format needs a number and rule 6 was the closest. Its
+remediation, "move the owning module to an island", fixes neither, and sending a
+developer to do island work that cannot help is worse than a generic message.
+Rule 8 covers module-level imports that defeat the zero graph and carries a
+remediation per code.
+
+### Next generated its owned CSS artifact too late
+
+The compiled-global tier generated its artifact in the client compilation only,
+while Next resolves the app module that imports it in both compilations at once.
+A build whose artifact did not exist yet could fail with `Module not found`
+instead of writing it. It surfaced as an intermittent failure of the
+stale-artifact receipt, which runs directly after the control that deletes the
+file.
+
+Generation is now once per build process, awaited by every compilation before it
+resolves modules. The per-compilation alternative is worse than it looks: a later
+compilation would recreate a file the build had deliberately invalidated, which
+would leave the missing and stale controls unable to fail.
+
+### Byte-versus-speed, since the directive landed mid-phase
+
+Phase 4 did not have to make that trade. The theme bridge already carries
+normalized layers computed at build time, so the island's provider replays them
+without running `parseValue` in the client, and nothing in this phase moved work
+from build time to runtime to save bytes. The one added per-element cost is the
+compiled span's `style` attribute, which buys runtime parity rather than speed.
+Zero fixture at the end of the phase: 58,862 bytes gzip of JavaScript over a
+React baseline, 17,803 bytes gzip of CSS, 16 emitted modules, no Tamagui module.
