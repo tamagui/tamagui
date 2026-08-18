@@ -1,0 +1,40 @@
+{
+  "name": "zero-runtime-starter",
+  "version": "2.7.7",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build:vite": "NODE_ENV=production vite build --outDir dist-vite",
+    "build:next": "NEXT_TELEMETRY_DISABLED=1 NODE_ENV=production next build --webpack",
+    "build:metro:island": "TAMAGUI_ZERO_ISLAND=DetailsIsland NODE_ENV=production metro build .tamagui/zero/DetailsIsland.entry.js --out public-metro/tamagui-islands/DetailsIsland.js --platform web --dev false --config metro.config.cjs",
+    "build:metro": "NODE_ENV=production metro build src/metro-main.tsx --out dist-metro/main.js --platform web --dev false --config metro.config.cjs",
+    "measure": "node scripts/measure.mjs",
+    "start:vite": "vite preview --outDir dist-vite --port 7890 --strictPort",
+    "start:next": "NEXT_TELEMETRY_DISABLED=1 NODE_ENV=production next start --port 7891",
+    "start:metro": "node scripts/metro-serve.mjs",
+    "test": "playwright test"
+  },
+  "dependencies": {
+    "@tamagui/config": "workspace:*",
+    "@tamagui/core": "workspace:*",
+    "@tamagui/sheet": "workspace:*",
+    "tamagui": "workspace:*"
+  },
+  "devDependencies": {
+    "@babel/preset-react": "^7.24.7",
+    "@babel/preset-typescript": "^7.26.0",
+    "@playwright/test": "1.58.2",
+    "@tamagui/metro-plugin": "workspace:*",
+    "@tamagui/next-plugin": "workspace:*",
+    "@tamagui/static": "workspace:*",
+    "@tamagui/vite-plugin": "workspace:*",
+    "metro": "^0.83.7",
+    "metro-config": "^0.83.7",
+    "next": "16.1.1",
+    "react-dom": "*",
+    "vite": "^8.0.3"
+  },
+  "peerDependencies": {
+    "react-dom": "*"
+  }
+}

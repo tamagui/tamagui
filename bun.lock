@@ -2083,6 +2083,33 @@
         "vite-tsconfig-paths": "^5.1.4",
       },
     },
+    "code/starters/zero-runtime": {
+      "name": "zero-runtime-starter",
+      "version": "2.7.7",
+      "dependencies": {
+        "@tamagui/config": "workspace:*",
+        "@tamagui/core": "workspace:*",
+        "@tamagui/sheet": "workspace:*",
+        "tamagui": "workspace:*",
+      },
+      "devDependencies": {
+        "@babel/preset-react": "^7.24.7",
+        "@babel/preset-typescript": "^7.26.0",
+        "@playwright/test": "1.58.2",
+        "@tamagui/metro-plugin": "workspace:*",
+        "@tamagui/next-plugin": "workspace:*",
+        "@tamagui/static": "workspace:*",
+        "@tamagui/vite-plugin": "workspace:*",
+        "metro": "^0.83.7",
+        "metro-config": "^0.83.7",
+        "next": "16.1.1",
+        "react-dom": "*",
+        "vite": "^8.0.3",
+      },
+      "peerDependencies": {
+        "react-dom": "*",
+      },
+    },
     "code/tamagui.dev": {
       "name": "@tamagui/dot-dev",
       "version": "2.7.7",
@@ -9284,6 +9311,8 @@
     "zeego": ["zeego@3.0.6", "", { "dependencies": { "@radix-ui/react-context-menu": "^2.0.1", "@radix-ui/react-dropdown-menu": "^2.0.1", "sf-symbols-typescript": "^2.0.0" }, "peerDependencies": { "@react-native-menu/menu": "1.2.2", "react": "*", "react-native": "*", "react-native-ios-context-menu": "3.1.0", "react-native-ios-utilities": "5.1.2" } }, "sha512-vg0GCMPYg6or/J91bwRnUpIYwz7QnhkyeKOdd3FjvICg+Gzq2D5QhD8k5RUSv1B+048LpNmNYdLm8qJVIbBONw=="],
 
     "zero-runtime-fixture": ["zero-runtime-fixture@workspace:code/tests/zero-runtime"],
+
+    "zero-runtime-starter": ["zero-runtime-starter@workspace:code/starters/zero-runtime"],
 
     "zip-stream": ["zip-stream@6.0.1", "", { "dependencies": { "archiver-utils": "^5.0.0", "compress-commons": "^6.0.2", "readable-stream": "^4.0.0" } }, "sha512-zK7YHHz4ZXpW89AHXUPbQVGKI7uvkd3hzusTdotCg1UxyaVtg0zFJSTfW/Dq5f7OBBVnq6cZIaC8Ti4hb6dtCA=="],
 
