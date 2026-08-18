@@ -108,8 +108,55 @@ const illegal = build('illegal', 'dist-illegal')
 receipts.illegalStaticImport = {
   buildFailed: !illegal.ok,
   message: illegal.output.includes('zero/static-island-import'),
+  reportedRule8: illegal.output.includes('Rule 8 zero/static-island-import'),
+  // its remediation is the generated loader, which is nothing like rule 6's
+  remediationIsTheLoader: illegal.output.includes(
+    'Import the generated island loader instead'
+  ),
 }
 if (illegal.ok) throw new Error('a static island import built successfully')
+if (!receipts.illegalStaticImport.reportedRule8) {
+  throw new Error('the illegal island import control did not report rule 8')
+}
+if (!receipts.illegalStaticImport.remediationIsTheLoader) {
+  throw new Error('the illegal island import control did not print rule 8 remediation')
+}
+
+// 3b. an island mounted under a conditional static theme. The compiler cannot
+// pick one theme for it, so it emits one descriptor per enumerated branch and
+// the mount selects its id with the same condition the classes use. The `zero`
+// build above is the other half: a literal theme there yields exactly one.
+const islandBranch = build('island-branch', 'dist-island-branch', ['--minify', 'false'])
+if (!islandBranch.ok) {
+  throw new Error(`the island-branch build failed:\n${islandBranch.output}`)
+}
+const branchBridges = read('vite-dist-island-branch.bridges.json').bridges.SheetIsland
+const branchCode = emittedModules('dist-island-branch').code
+receipts.conditionalIslandBridge = {
+  descriptors: branchBridges.map((bridge) => ({ id: bridge.id, name: bridge.name })),
+  underLiteralTheme: zeroIdentity.bridges.SheetIsland.length,
+  selectsBothIds: branchBridges.every((bridge) => branchCode.includes(bridge.id)),
+}
+if (branchBridges.length !== 2) {
+  throw new Error(
+    `a conditional island theme emitted ${branchBridges.length} bridge descriptors, expected one per branch`
+  )
+}
+if (branchBridges.map((bridge) => bridge.name).join() !== 'dark,light') {
+  throw new Error(
+    `the conditional island bridges do not name both enumerated themes: ${JSON.stringify(
+      branchBridges
+    )}`
+  )
+}
+if (receipts.conditionalIslandBridge.underLiteralTheme !== 1) {
+  throw new Error(
+    'a literal island theme emitted more than one bridge, so the branch count proves nothing'
+  )
+}
+if (!receipts.conditionalIslandBridge.selectsBothIds) {
+  throw new Error('the compiled mount does not carry both branch ids')
+}
 
 // 4. cache identity: end-to-end for island atomic CSS, then per tuple member
 const islandFile = path.join(root, 'src/islands/SheetIsland.tsx')
@@ -184,6 +231,35 @@ const zeroEmitted = emittedModules('dist-probe-zero')
 const probeFull = build('full', 'dist-probe-full', ['--minify', 'false'])
 if (!probeFull.ok) throw new Error(`probe full build failed:\n${probeFull.output}`)
 const fullEmitted = emittedModules('dist-probe-full')
+
+// The provider and config modules, by the module ids that define them. An
+// absence check needs a positive: the compiled-global tier mounts a real
+// TamaguiProvider over a real evaluated config, so the same matcher over its
+// emitted modules is what proves it can see them at all.
+const isProviderOrConfigModule = (id) =>
+  /(TamaguiProvider|ThemeProvider|createTamagui|config\/dist)/.test(id)
+
+const probeGlobal = build('global', 'dist-probe-global', ['--minify', 'false'])
+if (!probeGlobal.ok) throw new Error(`probe global build failed:\n${probeGlobal.output}`)
+
+receipts.providerAndConfigModules = {
+  inProviderBuild: emittedModules('dist-probe-global').modules.filter(
+    isProviderOrConfigModule
+  ),
+  inZeroGraph: zeroEmitted.modules.filter(isProviderOrConfigModule),
+}
+if (!receipts.providerAndConfigModules.inProviderBuild.length) {
+  throw new Error(
+    'the provider/config matcher found nothing in a build that mounts a provider, so its absence from the zero graph proves nothing'
+  )
+}
+if (receipts.providerAndConfigModules.inZeroGraph.length) {
+  throw new Error(
+    `the zero graph contains provider or config modules: ${JSON.stringify(
+      receipts.providerAndConfigModules.inZeroGraph
+    )}`
+  )
+}
 
 receipts.styledScopingProbe = {
   beforeErasure: {
@@ -381,6 +457,71 @@ for (const control of RULE_CONTROLS) {
   }
 }
 
+// Phase 4: static Theme and the providerless root. Each control is one authored
+// fact away from its fix, so the pair proves the classification, not just the
+// failure.
+const THEME_CONTROLS = [
+  {
+    entry: 'theme-name',
+    rule: 4,
+    message:
+      'Zero-runtime rule 4: the <Theme name> value name={themeName}, which is not a literal theme name or a conditional over literal theme names, requires runtime theme or config state.',
+  },
+  {
+    entry: 'theme-value',
+    rule: 3,
+    message:
+      'Zero-runtime rule 3: value for background on Theme cannot be lowered: a theme value must be a string or number literal at build time.',
+  },
+  {
+    entry: 'provider',
+    rule: 4,
+    message:
+      '[tamagui zero-runtime] Rule 4: TamaguiProvider is not used by a zero-runtime root. The bundler loads generated CSS and the compiler lowers static Theme nodes. Remove this provider or make this entry full-runtime.',
+  },
+  {
+    entry: 'theme-modifier',
+    rule: 3,
+    message:
+      'Zero-runtime rule 3: value for background on Theme cannot be lowered: <Theme background="#112233 hover:#445566">: "hover:" isn\'t supported here.',
+  },
+]
+
+const perThemeControl = {}
+for (const control of THEME_CONTROLS) {
+  const violating = ruleBuild(control.entry)
+  const fixed = ruleBuild(`${control.entry}.fixed`)
+  const fixedGraph = read(`vite-dist-${control.entry}.fixed.graph.json`)
+  perThemeControl[control.entry] = {
+    violatingBuildFailed: !violating.ok,
+    printedExactMessage: violating.output.includes(control.message),
+    namedItsRule: violating.output.includes(`Rule ${control.rule} `),
+    fixedBuilds: fixed.ok,
+    fixedForbidden: fixedGraph.forbidden.length,
+    fixedTamaguiModules: fixedGraph.tamaguiModules.length,
+  }
+  const result = perThemeControl[control.entry]
+  if (!result.violatingBuildFailed) {
+    throw new Error(`${control.entry} built successfully`)
+  }
+  if (!result.printedExactMessage) {
+    throw new Error(
+      `${control.entry} did not print its rule ${control.rule} message:\n${violating.output}`
+    )
+  }
+  if (!result.namedItsRule) {
+    throw new Error(`${control.entry} did not name rule ${control.rule}`)
+  }
+  if (!result.fixedBuilds) {
+    throw new Error(`${control.entry}.fixed did not build:\n${fixed.output}`)
+  }
+  if (result.fixedForbidden || result.fixedTamaguiModules) {
+    throw new Error(
+      `${control.entry}.fixed shipped Tamagui modules, so it is not a zero graph`
+    )
+  }
+}
+
 // every violating site in every module, collected before failing, in one order
 const multi = ruleBuild('multi')
 const multiReport = build('rules-report', 'dist-multi-report', [], {
@@ -412,6 +553,7 @@ const animatedNumberGraph = read('vite-dist-animated-number.graph.json')
 
 receipts.compilerContract = {
   perRule,
+  perThemeControl,
   multiFile: {
     buildFailed: !multi.ok,
     violations: multiEnforceJSON.violations.map((violation) => ({
@@ -439,6 +581,12 @@ receipts.compilerContract = {
   sideEffectImport: {
     buildFailed: !sideEffect.ok,
     reportedItsOwnReason: sideEffect.output.includes('zero/side-effect-import'),
+    // rule 8, not rule 6: nothing about this is fixed by moving the module to
+    // an island, so it must not carry rule 6's remediation
+    reportedRule8: sideEffect.output.includes('Rule 8 zero/side-effect-import'),
+    remediationIsRemoveTheImport: sideEffect.output.includes(
+      'Remove it, or import the values this module uses so the compiler can lower and erase them.'
+    ),
   },
   exportedStyledErasure: {
     buildFailed: !styledExport.ok,
@@ -475,6 +623,12 @@ if (!receipts.compilerContract.configDriverControl.reportedItsOwnReason) {
 if (sideEffect.ok) throw new Error('a bare side-effect Tamagui import built successfully')
 if (!receipts.compilerContract.sideEffectImport.reportedItsOwnReason) {
   throw new Error('the side-effect import control did not report its own diagnostic')
+}
+if (!receipts.compilerContract.sideEffectImport.reportedRule8) {
+  throw new Error('the side-effect import control did not report rule 8')
+}
+if (!receipts.compilerContract.sideEffectImport.remediationIsRemoveTheImport) {
+  throw new Error('the side-effect import control did not print rule 8 remediation')
 }
 if (!styledExport.ok) {
   throw new Error(`the exported styled fixture did not build:\n${styledExport.output}`)

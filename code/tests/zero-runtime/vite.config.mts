@@ -36,6 +36,8 @@ const ruleHtml = () => {
 const inputs = {
   zero: 'index.html',
   'zero-no-html': 'src/main.tsx',
+  // an island mounted under a conditional static theme: one bridge per branch
+  'island-branch': 'island-branch.html',
   full: 'index.html',
   negative: 'negative-control.html',
   live: 'live-reference.html',

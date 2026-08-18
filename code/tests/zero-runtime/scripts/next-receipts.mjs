@@ -71,10 +71,14 @@ receipts.serverHtml = {
     `<div data-tamagui-island="SheetIsland" data-tamagui-bridge="${bridgeId}"></div>`
   ),
   noIslandRuntimeMarkup: !html.includes('is_SheetContainer'),
-  // one node carrying the theme class and the inline-value class, the same
-  // composition the runtime Theme emits
+  // one node carrying the theme classes and the inline-value class, with the
+  // same style the runtime Theme span carries: same classes, same layout
   loweredZeroMarkup: html.includes(
-    `class="t_dark is_Theme ${Object.values(zeroIdentity.bridges)[0][0].layers[0].inlineClassName}"`
+    `class="t_sub_theme t_dark is_Theme ${Object.values(zeroIdentity.bridges)[0][0].layers[0].inlineClassName}" style="color:var(--color);display:contents"`
+  ),
+  // a nested static Theme composed against the scheme above it at build time
+  loweredNestedTheme: html.includes(
+    'class="t_sub_theme t_level2 t_dark_level2 is_Theme"'
   ),
 }
 for (const [key, value] of Object.entries(receipts.serverHtml)) {
@@ -145,10 +149,20 @@ const illegal = buildWithControlPage('next-illegal-static.tsx', 'illegal-static.
 receipts.illegalStaticImport = {
   buildFailed: !illegal.ok,
   message: illegal.output.includes('zero/static-island-import'),
+  reportedRule8: illegal.output.includes('Rule 8 zero/static-island-import'),
+  remediationIsTheLoader: illegal.output.includes(
+    'Import the generated island loader instead'
+  ),
 }
 if (illegal.ok) throw new Error('a static island import built successfully')
 if (!receipts.illegalStaticImport.message) {
   throw new Error('the illegal static import did not report the zero-runtime rule')
+}
+if (!receipts.illegalStaticImport.reportedRule8) {
+  throw new Error('the illegal island import control did not report rule 8')
+}
+if (!receipts.illegalStaticImport.remediationIsTheLoader) {
+  throw new Error('the illegal island import control did not print rule 8 remediation')
 }
 
 // 4. cache identity: end-to-end for island atomic CSS, then per tuple member
@@ -314,7 +328,9 @@ for (const [name, fixture] of [
   }
   if (result.ok) throw new Error(`the ${name} artifact control built successfully`)
   if (!artifactControls[name].reportedItsOwnReason) {
-    throw new Error(`the ${name} artifact control did not report its own diagnostic`)
+    throw new Error(
+      `the ${name} artifact control did not report its own diagnostic:\n${result.output}`
+    )
   }
 }
 // leave the tier's own build output in the state the browser assertions read

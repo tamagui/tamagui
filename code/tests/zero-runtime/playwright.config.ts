@@ -10,7 +10,7 @@ export default defineConfig({
   projects: [
     {
       name: 'vite',
-      testMatch: /vite-island\.test\.ts/,
+      testMatch: /vite-(island|theme)\.test\.ts/,
       use: { baseURL: 'http://localhost:7878' },
     },
     {

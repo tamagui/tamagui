@@ -37,7 +37,10 @@ test('server HTML has the deterministic placeholder and no full-runtime island m
   // inline-value class, matching what the runtime Theme composes
   const inlineClassName = Object.values<any>(bridges().bridges)[0][0].layers[0]
     .inlineClassName
-  expect(html).toContain(`class="t_dark is_Theme ${inlineClassName}"`)
+  // the same classes and the same style the runtime Theme span carries
+  expect(html).toContain(
+    `class="t_sub_theme t_dark is_Theme ${inlineClassName}" style="color:var(--color);display:contents"`
+  )
 })
 
 test('the island mounts only after hydration, with no hydration mismatch', async ({
@@ -104,6 +107,13 @@ test('portaled island content inherits the static theme and the direct theme val
   expect(await frame.evaluate((node) => getComputedStyle(node).backgroundColor)).toBe(
     'rgb(11, 37, 69)'
   )
+
+  // the JavaScript half: what the island's own theme state says inside the
+  // portal, which is what a full-runtime descendant resolves `$background` from
+  const themeState = await page
+    .locator('[data-testid="island-portal-theme-state"]')
+    .textContent()
+  expect(themeState).toBe('dark|#0b2545')
 
   const color = await page
     .locator('[data-testid="island-portal-text"]')

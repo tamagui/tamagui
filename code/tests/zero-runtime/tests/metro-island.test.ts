@@ -81,6 +81,13 @@ test('portaled island content inherits the static theme and the direct theme val
   )
   expect(background).toBe('rgb(11, 37, 69)')
 
+  // the JavaScript half: what the island's own theme state says inside the
+  // portal, which is what a full-runtime descendant resolves `$background` from
+  const themeState = await page
+    .locator('[data-testid="island-portal-theme-state"]')
+    .textContent()
+  expect(themeState).toBe('dark|#0b2545')
+
   const color = await page
     .locator('[data-testid="island-portal-text"]')
     .evaluate((node) => getComputedStyle(node).color)

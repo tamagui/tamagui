@@ -144,10 +144,20 @@ const illegal = buildZero('src/illegal-static.tsx')
 receipts.illegalStaticImport = {
   buildFailed: !illegal.ok,
   message: illegal.output.includes('zero/static-island-import'),
+  reportedRule8: illegal.output.includes('Rule 8 zero/static-island-import'),
+  remediationIsTheLoader: illegal.output.includes(
+    'Import the generated island loader instead'
+  ),
 }
 if (illegal.ok) throw new Error('a static island import built successfully')
 if (!receipts.illegalStaticImport.message) {
   throw new Error('the illegal static import did not report the zero-runtime rule')
+}
+if (!receipts.illegalStaticImport.reportedRule8) {
+  throw new Error('the illegal island import control did not report rule 8')
+}
+if (!receipts.illegalStaticImport.remediationIsTheLoader) {
+  throw new Error('the illegal island import control did not print rule 8 remediation')
 }
 
 // 4. cache identity
