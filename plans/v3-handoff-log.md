@@ -1828,3 +1828,149 @@ the resolution without budgeting for it.
 - The public name for the Theme inline-values API is an open owner decision. The
   only source flip point is the exported alias at
   `code/core/web/src/views/Theme.tsx:53`; the `.d.ts` regenerates from a build.
+
+## 15. Zero-runtime Phase 1, Variables removal, engine audit (2026-08-17, later)
+
+Continues section 14. Written partly so a reader can tell finished work from
+work in flight, and so known-open items are not rediscovered as findings.
+
+### Zero-runtime mode: design accepted, Phase 1 proven on all three integrations
+
+`plans/v3-zero-runtime-mode.md` is the accepted design. It went through review
+and two findings changed it materially:
+
+- **Guards do not create module absence; compiler reference ERASURE does.** The
+  original design stripped subsystems with a first-statement
+  `process.env.TAMAGUI_RUNTIME === 'zero'` guard and expected each bundler to
+  fold the body and drop its imports. Measured, that fails three ways: Metro
+  fixes dependencies at resolution time and does no export-level shaking;
+  webpack's success case still ships a stub containing the throw, so the module
+  id remains in the graph and the design's own module-absence gate fails in its
+  best case; and no bundler drops an unused module-scope `styled()` call, so an
+  app-local `const Card = styled(View, {...})` in a module with other live
+  exports drags the runtime in even for compliant code. Erasure is the
+  mechanism; guards remain only as a loud secondary failure on Vite and webpack,
+  and no byte-removal claim is made for Metro.
+- **Static theme context does not cross an island boundary by itself.** An
+  island's provider starts at its own defaultTheme, and `Portal` re-themes
+  portaled content from JS theme state (`Portal.tsx` reads `useThemeName()` and
+  re-applies it), so a Sheet island inside a zero root `<Theme name="dark">`
+  portals light content onto a dark page: green build, both gates pass, wrong
+  colors. Fixed with a compiler-generated theme bridge carried in the island
+  manifest.
+
+Phase 1 is complete and proven on Vite, Next/webpack and Metro web. Fixture,
+receipts scripts and both gate controls live in `code/tests/zero-runtime/`.
+A zero entry ships at the React baseline with zero Tamagui modules, against
+95,490 gzip and 85 Tamagui modules for the same entry built full-runtime.
+
+Four bugs Phase 1 found, all fixed at the source, worth knowing because each is
+a shape that recurs:
+
+1. **Erasure was not evidence-based.** The planner asked for each imported
+   binding's references; the API returns nothing for an import binding in an
+   unlinked single-module project, so "no references" was read as "dead" and
+   every Tamagui import was erased unconditionally. The Vite fixture happened to
+   lower everything, so its output was correct BY LUCK; Next's negative control
+   exposed it as a ReferenceError at prerender. The fix counts occurrences from
+   the AST and deliberately OVER-counts shadowed names, because over-counting
+   keeps an import that could have dropped while under-counting ships a
+   ReferenceError.
+2. **Warm-cache builds silently lost the CSS artifact**, on both webpack and
+   Metro: the loader/scan that collects per-module atomic CSS is skipped on a
+   rebuild, so a second build emitted an artifact missing every rule while still
+   deriving `TAMAGUI_DID_OUTPUT_CSS`. Correctness-first fix forces the re-run;
+   making it cheap without reintroducing the divergence is Phase 2 work.
+3. **The zero transform ran on Tamagui's own dist**, because the webpack loader
+   guarded only on a `node_modules` substring and workspace packages resolve
+   outside `node_modules` in this monorepo.
+4. **The zero contract is a property of an ENTRY GRAPH, not a project.** Metro
+   plans every project source by directory walk, so judged per file the app's own
+   config, the generated island entry and unrelated control fixtures all
+   "violate" the contract: 16 violations on a correct build. Any per-file
+   enforcement is wrong.
+
+Two fixture-hygiene traps of one class, two integrations sharing a directory
+fighting over a file: Metro and Next both published to `public/`, so whichever
+built last silently decided what the OTHER integration asserted; and a Metro
+babel config at the fixture root disabled Next's SWC entirely. Publish
+directories are isolated now. A fourth integration must take its own directory
+and must not add a config file at the fixture root that another integration
+reads.
+
+Also worth carrying: **oxfmt honours the ROOT `.gitignore` only.** A nested
+`.gitignore` does nothing, which has now broken root lint twice from this
+fixture's generated output. Generated directories go in the root file.
+
+### `<Variables>` is gone; `<Theme>` inline values are the whole API
+
+There is no separate component. Theme values are props on `<Theme>`, scoped by
+its theme prop, with theme targeting through the value grammar's own modifier.
+`<Variables>` was never publicly released and is removed outright rather than
+deprecated, so nothing documents it and no migration note exists anywhere by
+deliberate decision.
+
+Two things a future reader will otherwise get wrong:
+
+- The **config** `variables` key (`createTamagui({ variables: {...} })`) is a
+  DIFFERENT feature and it stays. It is what makes `$focusRingColor`-style keys
+  behave like theme keys everywhere. Its similar name makes it an easy
+  accidental deletion.
+- `values` is not in `reservedThemeProps`, so a prop named `values` is read as an
+  ordinary theme key. Anything written against the old `<Theme values={{...}}>`
+  shape silently means something else.
+
+A real defect was found and fixed here: theme rules carry an id-level anchor
+(`:not(#t_theme_full_name)`, specificity 1,2,0) while the base inline-value rule
+was `:root .tvar_x` (0,2,0), and both classes land on ONE span, so
+`<Theme name="dark" background="#0b2545">` silently ignored the authored value.
+Every selector family in `getVariablesCSSRules` now shares the same anchor, which
+raises the whole ladder while preserving its base/themed/scheme order. Do not
+"simplify" that anchor away.
+
+### Engine bundle audit: the growth is capability, not fat
+
+Byte-level post-minify audit of `directStyle` and `getSplitStyles` against the V2
+baseline, using the existing attribution harness.
+
+- `directStyle` was +5,520 gzip marginal against V2. Five mechanical wins removed
+  **115 gzip bytes** (2.08%), and each also removed an allocation without adding
+  a render pass, scanner or per-render allocation.
+- The remaining 5,405 is feature weight: composite emitters 1,236, condition
+  precedence and routing 1,123, atomic merge and rule identity 932, generic value
+  routing 656, token/theme/safe-area semantics 606.
+- **`getSplitStyles` has no defensible deletion and is already 112 gzip SMALLER
+  than its V2 counterpart.** It is the file people assume is bloated. It is not.
+  This is recorded so nobody re-audits it.
+
+Closing the remaining gap from these two modules would require dropping a
+capability, which is a product decision. The measured levers are elsewhere:
+wiring `outputCSS` through the vite plugin was measured at −2,928, and
+zero-runtime mode removes the whole 44,899 of Tamagui-attributable JS.
+
+### In flight right now, NOT gaps
+
+- Block 2 Phase 2, productionizing global CSS artifact ownership, plus
+  zero-runtime dev mode (Phase 1 shipped production builds only).
+- A V2-counterpart measurement answering "V2 had most of these features, so why
+  is V3 bigger": per-group v3-vs-v2 byte mapping, and whether any V2-era helper
+  still ships alongside `directStyle` doing the same work.
+
+### Known open items, deliberately not yet done
+
+- **Native vitest resolution.** Vite concatenates the extension arrays each
+  plugin config contributes, so the Tamagui plugin's WEB list wins relative-import
+  resolution before the native-test extensions are reached. Correct native-first
+  resolution makes 5 core-native files fail with 9 test failures across refs,
+  native fast-path links, Tailwind Dimensions, stable-style rendering and colors.
+  Those areas have been running against web variants all along. Either those
+  tests assert web behavior while claiming native, or the product is wrong on
+  native there, and establishing which IS the work. Do not flip the resolution
+  without budgeting for it.
+- The zero-runtime fixture's playwright suite and receipts scripts are not wired
+  into CI yet, deliberately, until the fixture stops moving at the end of block 2.
+- Block 2 Phases 3 through 7 are designed but not implemented.
+- Two tests are load-sensitive and each produced one false failure under parallel
+  builds: `motionDriverConversion` (10x ceiling, hit 11.93x) and
+  `safeAreaVariables.native` (5s limit, hit 10s). Re-run in isolation before
+  treating either as a regression, and never raise a threshold to make one pass.
