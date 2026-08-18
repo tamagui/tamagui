@@ -24,6 +24,15 @@
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
       "default": "./dist/esm/index.mjs"
+    },
+    "./animated-number": {
+      "types": "./types/animated-number.d.ts",
+      "react-native": "./dist/esm/animated-number.native.js",
+      "browser": "./dist/esm/animated-number.mjs",
+      "module": "./dist/esm/animated-number.mjs",
+      "import": "./dist/esm/animated-number.mjs",
+      "require": "./dist/cjs/animated-number.cjs",
+      "default": "./dist/esm/animated-number.mjs"
     }
   },
   "publishConfig": {
