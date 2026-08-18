@@ -3254,3 +3254,79 @@ standalone, and must be named explicitly in that review's scope.
 and `style-grammar` do not exist on `main`, so no published v2 package carries
 this. The v3-beta fix closes it, and no release action is needed. Worth
 recording because "is this shipped" is the first question anyone will ask.
+
+## 26. Wave B, first four items (2026-08-18)
+
+### Item 20: the duplication had already drifted into bugs
+
+`7c0b9a02cf`. One shared `loadCompilerProject` in `@tamagui/static` now owns
+root/target/component normalization, flags and generation, project validation
+and the zero CSS rule. Resolution stays in adapter callbacks, which was the
+whole design constraint: each bundler genuinely resolves differently and that
+difference is real, while the normalization around it was copied four times.
+
+The shape is right: the integrations lost 220 lines and the shared entry gained
+73. Duplication removed rather than a layer added.
+
+Writing down what each integration did BEFORE touching anything is what made the
+item worth doing, because three of the differences were bugs nobody had noticed:
+
+- **Next stripped zero CSS in report mode from its zero hook, but its own warmup
+  load did not.** Two paths in one integration disagreeing about the same
+  policy.
+- **Metro stripped CSS for report** as well, same class of bug.
+- **Component default, ordering and dedup had drifted** between integrations.
+  Now one core-first unique list.
+- Duplicate outer sync config merges in Next and Metro were removed.
+
+Preserved as deliberate, and worth naming so nobody "simplifies" them later:
+Vite's async build config with ModuleRunner resolve/import and its tracked
+evaluation deps; Next's synchronous bootstrap and its CSS hook doing no
+resolution; Metro's platform-driven web/native choice, its sequential platform
+resolver, its report-and-continue on resolution failure, and its hashing of
+CSS/modules/tool versions for generation.
+
+Validated end to end: `bun run receipts` exits 0 across Vite, Next and Metro,
+with all three negative controls failing as intended. That run also exercises
+the report-mode assert added earlier in this campaign, and both Next and Metro
+report `sameViolations=true` through it.
+
+### Items 13, 14, 18
+
+- **13, `a9013c24a5`.** Docs for root `html.*`, the compiler tier ladder, and
+  zero-runtime mode, plus sidebar routes. Verified by rendering all three pages,
+  not just by writing files. Two things checked on review: it does not
+  reintroduce `<Stack>`, which item 1 had just removed, and its flatten
+  condition states all three terms (accepts `className`, not a `neverFlatten`
+  behaviour HOC, provides no styled context). That last point matters, because
+  it is the corrected predicate from item 3 rather than the single-term framing
+  that mislabelled 340 bailout rows.
+- **14, `da3b46454b`.** Native animations-motion returns a typed
+  `AnimationDriverStub<A>`; the `@ts-expect-error` is genuinely gone rather than
+  relocated.
+- **18, `35c4764f9a`.** Native vitest resolution assertion, proved by failing
+  first on the broken ordering (`nativeIndex 12`, `webIndex 4`). Seven of the
+  nine handoff failures were test-harness defects, not product defects: native
+  resolution was selecting the ESM fake-react-native whose hosts return null.
+  Two were genuinely stale web expectations, since native `normalizeColor`
+  canonicalizes `red` to `rgb(255,0,0)`.
+
+### An interface change turned the shared tree red, which is worth a rule
+
+Item 20 briefly narrowed `CompilerProject.projectInfo` to require non-optional
+`components`, leaving `code/core/cli/src/build.ts:196` (a committed caller)
+unconverted. Root typecheck then failed for every other worker, and one spent
+time reporting it as a mystery failure before it was traced.
+
+`origin` was never broken; only the shared working tree was, transiently. That
+distinction is the useful part: in a shared checkout an uncommitted interface
+change is effectively a broadcast, so **change an interface and update every
+caller in the same unit**, by grepping rather than assuming. Every worker brief
+now carries that line.
+
+The narrowing was reverted rather than patched. It was never needed for item 20,
+and satisfying it had required casting `projectInfo as CompilerProject['projectInfo']`
+after a runtime guard. TS narrows the properties after such a guard but does not
+retype the containing object as an intersection at a return boundary, so the
+cast was structural, not incidental. Dropping the unnecessary interface change
+beat keeping a cast to justify it.
