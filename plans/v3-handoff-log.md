@@ -2957,3 +2957,52 @@ clean. metro-plugin `test:web` 6/6, static-tests `test:web` 20/20, core-test
 
 `bun run build` regenerates `code/tamagui.dev/tamagui.generated.css` with ~180
 changed lines. It predates this unit (`79e79b1eea`) and is not block-3 work.
+
+### The stash stack is shared with the user's, and a freeze instruction nearly ate his work
+
+Recorded because it cost real recovery work and the next manager will otherwise
+reach for the same instruction.
+
+A cross-campaign benchmark lane needed a clean tree for about an hour. The
+campaign manager told its four workers to "stash your own files, by explicit
+path". Three did. That instruction was wrong, and the reason is worth stating
+exactly: **`refs/stash` is not per-worktree.** It lives in the shared git common
+dir (`/Users/n8/tamagui/.git`), so every worktree on the machine shares one
+stash stack, and this one already held 29 of the owner's own stashes going back
+months on other branches.
+
+Three agent holds went onto that stack. Then the pops happened concurrently and
+by index. `stash@{0}` means whatever is on top RIGHT NOW, so as each pop
+succeeded every other worker's idea of its own index went stale. One pop took
+`18d859fec0`, `WIP on main: b86317e74c fix(compiler): retain css-only transition
+extraction for flattened components`, which belonged to the owner, dropped it,
+and the worker reported it as another lane's hold. Two of the three workers
+reported pops that had not happened the way they described.
+
+Recovery, for anyone who has to repeat it: a popped stash's commit object
+survives unreferenced until gc, so nothing is lost if you move fast.
+`git fsck --unreachable` lists them, stash commits are recognisable by a subject
+of `WIP on <branch>:` or `On <branch>:`, and `git update-ref refs/recovered/<x>
+<sha>` pins them out of gc's reach. Restoring one to the stack is
+`git update-ref -m "<original subject>" refs/stash <sha>`, which is what
+`git stash store` does under the hood and does not touch the working tree. The
+entry comes back at `stash@{0}` rather than its original position; content is
+byte-identical, verified by diffing against the working-tree copy before moving
+anything.
+
+Two of the owner's files were left staged in the index by the pops
+(`plans/v2-toggle-accordion-autoheight-review.md` and
+`plans/v3-overnight-achievements-2026-07-13.md`). They were unstaged and left on
+disk rather than deleted: provenance for the second one could not be established
+with certainty, and unstaging is reversible where deleting is not.
+
+**The rule now, for every worker in this campaign: never use `git stash` in a
+shared checkout.** Park work on a narrow WIP commit by explicit pathspec. Worth
+knowing that the repo guardrail already refuses `git stash` for Claude sessions
+but did not stop the Codex workers, so the protection is uneven across harnesses
+and cannot be relied on to catch this.
+
+The lane work itself was never at risk: item 3 was committed, items 2 and 6 were
+in the tree, items 4 and 5 had authored nothing. That was confirmed against the
+stash objects rather than from the workers' own reports, which is what surfaced
+the two inaccurate ones.
