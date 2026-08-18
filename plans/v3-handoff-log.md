@@ -2188,14 +2188,23 @@ absence, and splitting is necessary groundwork with no useful effect by itself.*
 Metro fixes its dependency graph before minification, so no env flag removes it
 there; webpack's best case still ships a stub.
 
-**Proposal, not shipped, needs an owner decision.** Do not add a generic public
-env guard: it pays off on two bundlers out of three and leaves the API carrying a
-flag that does not do what its name implies on native. Real cross-bundler absence
-needs the compiler or resolver to select a no-inline `Theme`/theme-state graph
-before Metro records dependencies, after splitting
-`mergeConfigVariablesIntoTheme` out into the always-needed leaf. The other viable
-mechanism is a separate opt-in inline-Theme entry so ordinary `Theme` never
-imports the heavy graph, which changes the binding public API.
+**DECIDED by the owner, 2026-08-17: not scheduled. No compiler DCE, no env
+flag.** Neither mechanism ships and neither should be re-proposed.
+
+A generic public env guard is out because it pays off on two bundlers of three
+and leaves the API carrying a flag that does not do what its name implies on
+native. The compiler/resolver route is ALSO out, and that was the recommendation
+this campaign originally carried: reliably proving NON-USE of something tied to
+`<Theme>` is not sound, because a spread (`<Theme {...props}>`) defeats static
+detection, so the compiler would fail open too often for the win to be bankable.
+
+**Logged as a potential future optimization, owner-initiated only:** the one
+shape that works is to not tie inline values to `<Theme>` at all, but to a
+separate component (working name `ThemeUpdate`) that tree-shakes away when
+nobody imports it, since absence of an import IS the proof and nothing has to be
+proven un-used. Prize is the ~3,700-4,500 gzip measured above. It revisits the
+settled `<Theme>` inline-props API, so do not start it off the back of this
+entry.
 
 Full measurements, the per-bundler fixture layout, and the exact opt-out wiring
 are recorded in `code/comparisons/V3_INLINE_VALUES_DCE.md` so the implementing
