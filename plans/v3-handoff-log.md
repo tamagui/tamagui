@@ -3411,3 +3411,62 @@ predicate and the same principle the predicate already states.
 - D1's pin changed deliberately. Its base `'none; hover:red'` is exactly a
   payload the fix now refuses, so it reads null; the divergence it pinned still
   exists and is still pinned.
+
+## 28. Wave B items 15 and 19 (2026-08-18)
+
+### Item 15: the inventory was the deliverable, and it found twelve more
+
+`472b7c4edb`, with the enumeration committed as
+`plans/v3-audit-findings/compiler-consumed-props.md`. Insisting the inventory
+come first was what made the item work: the audit named `onBeforeInput`,
+`onInvalid`, `onSelect`, `hidden={dynamic}` and `neverSkipProps`, and the sweep
+found **fifteen** event props carrying `native: 'none'` that the compiler
+consumed and dropped with no compiled form at all - `onAuxClick`,
+`onContextMenu`, `onFocusIn`, `onFocusOut`, `onKeyUp`, `onCopy`, `onCut`,
+`onPaste`, `onFullscreenChange`, `onFullscreenError`, `onWheel`, `onMouseMove`
+and the three already known.
+
+Each now returns a blocking lowering diagnostic and leaves the original `html.*`
+element and its handler intact, so the prop reaches the runtime instead of
+vanishing. Two more classes went the same way: `hidden={dynamic}`, and text-only
+style props on a non-text host, which previously flattened successfully while
+erasing the value and attaching a merely non-blocking diagnostic.
+
+The document classifies every consume site as retained or dropped across
+`styleEntries`, partial web extraction, `nativeDOMProps` and zero-runtime Theme
+props. It is the thing to read before anyone touches prop consumption again.
+
+### Item 19: generations that archive, not an LRU that evicts
+
+`c9401f7092`. The plan warned that a blind LRU would be wrong here because a CSS
+variable can outlive the component that requested it, so recency eviction drops
+variables that live CSS still references, and it would pass every test while
+failing in a long-lived app.
+
+The implementation respects that. Completed generations are **serialized and
+archived** rather than dropped: `archivedAutoVariableCSS` holds the serialized
+declarations, and the accessor composes archive plus current generation, so
+nothing referenced disappears. The current generation stays object-backed for
+dedupe. Same shape for the mutated-variable and native mapping caches.
+
+Validation went past asserting a number. Probes drove theme-name, normal and
+mutated CSS-variable, and native mapping and state memos past 10k; the
+disabled-rollover **negative controls failed at 10002-10106**, which is what
+shows the bound is doing the work rather than the test never reaching it;
+restored rollovers held at 10000 or under; archived declarations retained both
+first and latest live CSS names; and a mounted native link still received its
+post-rollover theme-table update.
+
+### The accumulating gap: almost nothing has a green CI run
+
+Reported independently by four workers now. Every push to `v3-beta` cancels the
+in-flight runs for the previous SHA, and with several lanes landing in the same
+hour the branch has produced a long series of `cancelled` conclusions and almost
+no completed ones. Item 20, item 19, item 2's guard and item 6 all landed
+without a completed `Checks` result for their exact SHA.
+
+A cancelled run is **not** a pass and must never be recorded as one: a run killed
+by a newer push may have died before reaching the step that would have failed.
+The one real signal available is a completed run on a settled tip, which is why
+pushes get held once the remaining lanes land rather than watching individual
+SHAs that will be superseded before they finish.
