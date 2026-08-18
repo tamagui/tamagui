@@ -1326,6 +1326,119 @@ export function createTamaguiCompilerHost(
     return owners
   }
 
+  const developmentDebugInstrumentation = (
+    input: LoweringCandidateInput,
+    result: LoweringCandidateResult
+  ) => {
+    if (process.env.NODE_ENV !== 'development') return
+    const debugEntry = input.element.entries.find(
+      (entry) =>
+        entry.kind === 'prop' &&
+        entry.name === 'debug' &&
+        entry.value.kind === 'static' &&
+        entry.value.value === 'verbose'
+    )
+    if (!debugEntry) return
+
+    const component = input.component as TamaguiLoweringComponent
+    const styleEntries = input.element.entries.filter(
+      (entry): entry is DOMPropEntry =>
+        entry.kind === 'prop' &&
+        entry.name !== 'debug' &&
+        (entry.name === 'style' || isStyleProp(entry.name, component))
+    )
+    const flattened = result.ok && !!result.flattened
+    const tiers = result.ok
+      ? [
+          'lowered' as const,
+          ...(flattened ? (['flattened'] as const) : []),
+          ...(input.styledDefinition ? (['styled'] as const) : []),
+        ]
+      : (['bailed'] as const)
+    const why = result.ok
+      ? flattened
+        ? 'Static styles were lowered and the component was flattened to a host element.'
+        : 'Static styles were lowered while the Tamagui component remained at runtime.'
+      : result.bailout.message
+
+    const styles = styleEntries.map((entry) => {
+      if (!result.ok) {
+        return {
+          prop: entry.name,
+          tier: 'bailed' as const,
+          runtime: true as const,
+          why: `${result.bailout.message}. The Tamagui runtime resolved this prop.`,
+        }
+      }
+
+      const edited = result.edits.some(
+        (edit) => edit.start < entry.span.end && edit.end > entry.span.start
+      )
+      if (!flattened && !edited) {
+        return {
+          prop: entry.name,
+          tier: 'bailed' as const,
+          runtime: true as const,
+          why: 'This prop remained for Tamagui runtime resolution.',
+        }
+      }
+
+      if (entry.value.kind === 'static') {
+        const split = resolveSplitStyles(
+          { [entry.name]: entry.value.value },
+          partialStaticConfig(component.staticConfig)
+        )
+        const hasOutput = Boolean(
+          split &&
+          (Object.keys(split.classNames ?? {}).length > 0 ||
+            Object.keys(split.rulesToInsert ?? {}).length > 0 ||
+            (staticObject(split.style) && Object.keys(split.style).length > 0) ||
+            (staticObject(split.viewProps?.style) &&
+              Object.keys(split.viewProps.style).length > 0))
+        )
+        if (!hasOutput) {
+          return {
+            prop: entry.name,
+            tier: flattened ? ('flattened' as const) : ('lowered' as const),
+            dropped: true as const,
+            why: `No ${platform} style output was produced for this prop.`,
+          }
+        }
+      }
+
+      return {
+        prop: entry.name,
+        tier: flattened ? ('flattened' as const) : ('lowered' as const),
+        why: flattened
+          ? 'The compiler emitted this prop on the flattened host element.'
+          : 'The compiler lowered this prop while retaining the Tamagui component.',
+      }
+    })
+
+    const receipt = JSON.stringify({
+      component: input.element.component.name,
+      tiers,
+      why,
+      styles,
+    })
+    const content = flattened
+      ? input.element.form === 'jsx'
+        ? `{...(console.info('🔹 Tamagui style receipt', ${receipt}), {})}`
+        : `...(console.info('🔹 Tamagui style receipt', ${receipt}), {})`
+      : input.element.form === 'jsx'
+        ? `debug="verbose" __tamaguiStyleDebugReceipt={${receipt}}`
+        : `debug: "verbose", __tamaguiStyleDebugReceipt: ${receipt}`
+
+    return [
+      {
+        start: debugEntry.span.start,
+        end: debugEntry.span.end,
+        content,
+        origin: debugEntry.span,
+      },
+    ]
+  }
+
   return {
     resolveComponent: resolve,
     isStyleProp,
@@ -1345,6 +1458,7 @@ export function createTamaguiCompilerHost(
           (platform === 'native' && directStyleName(name, component) === 'opacity'))
       )
     },
+    developmentDebugInstrumentation,
     lowerCandidate(input): LoweringCandidateResult {
       const component = input.component as TamaguiLoweringComponent
       if (!component.canFlatten) {

@@ -76,6 +76,11 @@ export interface CompilerLoweringHost {
     valueKind?: 'bailout' | 'conditional'
   ): boolean
   lowerCandidate(input: LoweringCandidateInput): LoweringCandidateResult
+  /** Development-only source instrumentation for an existing component debug channel. */
+  developmentDebugInstrumentation?(
+    input: LoweringCandidateInput,
+    result: LoweringCandidateResult
+  ): SourceEdit[] | undefined
 }
 
 export interface LowerModuleOptions {
@@ -277,11 +282,37 @@ export function lowerModule({
     if (!component) continue
     stats.found++
 
+    const input: LoweringCandidateInput = {
+      id: module.id,
+      source,
+      target,
+      module,
+      element,
+      styledDefinition,
+      component,
+    }
+
+    const commitDevelopmentDebug = (result: LoweringCandidateResult) => {
+      const debugEdits = host.developmentDebugInstrumentation?.(input, result)
+      if (!debugEdits) return
+      validateSourceEdits(source, debugEdits)
+      if (
+        !editsAreCandidateLocal(element, debugEdits) ||
+        overlapsCommitted(debugEdits, edits)
+      ) {
+        throw new Error('Development debug instrumentation must stay candidate-local')
+      }
+      edits.push(...debugEdits)
+    }
+
     if (!element.complete || (styledDefinition && !styledDefinition.complete)) {
-      diagnostics.push(
+      const reasons = [
         ...element.bailouts.map(blocking),
-        ...(styledDefinition?.bailouts ?? []).map(blocking)
-      )
+        ...(styledDefinition?.bailouts ?? []).map(blocking),
+      ]
+      diagnostics.push(...reasons)
+      const reason = reasons[0]
+      if (reason) commitDevelopmentDebug({ ok: false, bailout: reason })
       stats.bailed++
       continue
     }
@@ -290,21 +321,14 @@ export function lowerModule({
       .find((result): result is BailoutReason => result !== null)
     if (unsafe) {
       diagnostics.push(blocking(unsafe))
+      commitDevelopmentDebug({ ok: false, bailout: blocking(unsafe) })
       stats.bailed++
       continue
     }
 
     let result: LoweringCandidateResult
     try {
-      result = host.lowerCandidate({
-        id: module.id,
-        source,
-        target,
-        module,
-        element,
-        styledDefinition,
-        component,
-      })
+      result = host.lowerCandidate(input)
     } catch (error) {
       result = {
         ok: false,
@@ -317,21 +341,22 @@ export function lowerModule({
     }
     if (!result.ok) {
       diagnostics.push(blocking(result.bailout))
+      commitDevelopmentDebug(result)
       stats.bailed++
       continue
     }
     try {
       validateSourceEdits(source, result.edits)
     } catch (error) {
-      diagnostics.push(
-        blocking(
-          diagnostic(
-            'local/overlapping-edit',
-            element,
-            error instanceof Error ? error.message : String(error)
-          )
+      const reason = blocking(
+        diagnostic(
+          'local/overlapping-edit',
+          element,
+          error instanceof Error ? error.message : String(error)
         )
       )
+      diagnostics.push(reason)
+      commitDevelopmentDebug({ ok: false, bailout: reason })
       stats.bailed++
       continue
     }
@@ -339,21 +364,22 @@ export function lowerModule({
       !editsAreCandidateLocal(element, result.edits) ||
       overlapsCommitted(result.edits, edits)
     ) {
-      diagnostics.push(
-        blocking(
-          diagnostic(
-            'local/overlapping-edit',
-            element,
-            'Candidate edits overlap another candidate or escape the element span'
-          )
+      const reason = blocking(
+        diagnostic(
+          'local/overlapping-edit',
+          element,
+          'Candidate edits overlap another candidate or escape the element span'
         )
       )
+      diagnostics.push(reason)
+      commitDevelopmentDebug({ ok: false, bailout: reason })
       stats.bailed++
       continue
     }
 
     diagnostics.push(...(result.diagnostics ?? []))
     edits.push(...result.edits)
+    commitDevelopmentDebug(result)
     for (const rule of result.css) css.add(rule)
     for (const candidateImport of result.imports) {
       if (!imports.has(candidateImport.content)) {

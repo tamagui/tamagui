@@ -135,3 +135,9 @@ TAMAGUI_COMPILER_STATS_FILE=.tamagui/compiler-stats.json vite build
 The report includes totals, partial and flattened counts, bailout codes,
 grouped reasons, and per-module diagnostics. These counters describe compiler
 handling. They do not by themselves measure bundle size or runtime speed.
+
+For one element, set `debug="verbose"`. In development, the existing verbose
+console group includes a `receipt` with the element's `lowered`, `flattened`,
+`styled`, or `bailed` tiers, each authored style prop, and the reason it was
+emitted, resolved at runtime, or dropped. A fully flattened element prints the
+same receipt when it renders. Receipt code is omitted from production output.

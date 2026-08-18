@@ -2,7 +2,7 @@ import type { AllGroupContexts, AnimationDriverLike, ComponentContextI, DebugPro
 import { styleOriginalValues } from './styleOriginalValues';
 export { styleOriginalValues };
 export { getStyleTokenProvenance, STYLE_TOKEN_PROVENANCE_KEY } from './styleProvenance';
-export type { StyleTokenBinding, StyleTokenProvenance } from './styleProvenance';
+export type { StyleDebugReceipt, StyleDebugTier, StyleTokenBinding, StyleTokenProvenance, } from './styleProvenance';
 export type SplitStyles = ReturnType<typeof getSplitStyles>;
 export type SplitStyleResult = ReturnType<typeof getSplitStyles>;
 type StyleSplitter = (props: {

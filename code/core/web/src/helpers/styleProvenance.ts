@@ -32,6 +32,21 @@ export type StyleTokenBinding = {
 
 export type StyleTokenProvenance = Record<string, StyleTokenBinding>
 
+export type StyleDebugTier = 'lowered' | 'flattened' | 'styled' | 'bailed'
+
+export type StyleDebugReceipt = {
+  component: string
+  tiers: StyleDebugTier[]
+  why: string
+  styles: {
+    prop: string
+    tier: StyleDebugTier
+    why: string
+    dropped?: true
+    runtime?: true
+  }[]
+}
+
 export function setStyleTokenProvenance(style: object, provenance: StyleTokenProvenance) {
   Object.defineProperty(style, provenanceSymbol, {
     value: provenance,

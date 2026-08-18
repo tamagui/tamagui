@@ -16,6 +16,18 @@ export const Root = () => {
     <TamaguiProvider config={config} defaultTheme="light">
       <View flexDirection="column" flex={1} alignItems="center" justifyContent="center">
         <Text render="h1">Hello world</Text>
+        <View id="receipt-flattened" debug="verbose" padding={10} />
+        <View
+          id="receipt-runtime"
+          debug="verbose"
+          disableOptimization
+          backgroundColor="red"
+        />
+        <View
+          id="receipt-dropped"
+          debug="verbose"
+          backgroundColor="native:red ios:green"
+        />
         <TailwindView
           id="hybrid-cascade"
           backgroundColor="dark9"

@@ -52,6 +52,8 @@ export interface CompilerLoweringHost {
     /** The host can retain this dynamic prop while committing other safe candidate edits. */
     canLowerDynamicStyleProp?(name: string, component: LoweringComponent, valueKind?: 'bailout' | 'conditional'): boolean;
     lowerCandidate(input: LoweringCandidateInput): LoweringCandidateResult;
+    /** Development-only source instrumentation for an existing component debug channel. */
+    developmentDebugInstrumentation?(input: LoweringCandidateInput, result: LoweringCandidateResult): SourceEdit[] | undefined;
 }
 export interface LowerModuleOptions {
     projectGeneration: string;

@@ -6,6 +6,19 @@ export type StyleTokenBinding = {
     theme: string;
 };
 export type StyleTokenProvenance = Record<string, StyleTokenBinding>;
+export type StyleDebugTier = 'lowered' | 'flattened' | 'styled' | 'bailed';
+export type StyleDebugReceipt = {
+    component: string;
+    tiers: StyleDebugTier[];
+    why: string;
+    styles: {
+        prop: string;
+        tier: StyleDebugTier;
+        why: string;
+        dropped?: true;
+        runtime?: true;
+    }[];
+};
 export declare function setStyleTokenProvenance(style: object, provenance: StyleTokenProvenance): void;
 export declare function getStyleTokenProvenance(style: object | null | undefined): StyleTokenProvenance | undefined;
 //# sourceMappingURL=styleProvenance.d.ts.map

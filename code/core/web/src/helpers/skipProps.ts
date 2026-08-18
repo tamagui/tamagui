@@ -26,6 +26,10 @@ if (process.env.NODE_ENV === 'test') {
   skipProps['data-test-renders'] = 1
 }
 
+if (process.env.NODE_ENV === 'development') {
+  skipProps['__tamaguiStyleDebugReceipt'] = 1
+}
+
 // Skip web-only props on native
 if (process.env.TAMAGUI_TARGET === 'native') {
   Object.assign(skipProps, webPropsToSkip)

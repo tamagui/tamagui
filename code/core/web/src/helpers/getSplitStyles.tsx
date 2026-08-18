@@ -60,12 +60,21 @@ import { contributeFrontendProgram, isFrontendProgram } from './frontendProgram'
 import { skipProps } from './skipProps'
 import { sortString } from './sortString'
 import { styleOriginalValues } from './styleOriginalValues'
-import { type StyleTokenProvenance, setStyleTokenProvenance } from './styleProvenance'
+import {
+  type StyleDebugReceipt,
+  type StyleTokenProvenance,
+  setStyleTokenProvenance,
+} from './styleProvenance'
 import { transformsToString } from './transformsToString'
 
 export { styleOriginalValues }
 export { getStyleTokenProvenance, STYLE_TOKEN_PROVENANCE_KEY } from './styleProvenance'
-export type { StyleTokenBinding, StyleTokenProvenance } from './styleProvenance'
+export type {
+  StyleDebugReceipt,
+  StyleDebugTier,
+  StyleTokenBinding,
+  StyleTokenProvenance,
+} from './styleProvenance'
 
 export type SplitStyles = ReturnType<typeof getSplitStyles>
 
@@ -1403,6 +1412,9 @@ export const getSplitStyles: StyleSplitter = (
       try {
         // prettier-ignore
         const logs = {
+          ...((props as any).__tamaguiStyleDebugReceipt && {
+            receipt: (props as any).__tamaguiStyleDebugReceipt as StyleDebugReceipt,
+          }),
           ...result,
           className,
           componentState,

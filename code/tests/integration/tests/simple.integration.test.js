@@ -126,10 +126,65 @@ async function waitForContent(page, port) {
 }
 
 test(`loads dev mode no error or warning logs`, async ({ page }) => {
+  const receipts = []
+  page.on('console', async (message) => {
+    const values = await Promise.all(
+      message.args().map(async (argument) => await argument.jsonValue())
+    )
+    if (values[0] === '🔹 Tamagui style receipt' || values[0] === 'receipt') {
+      receipts.push(values[1])
+    }
+  })
   const server = spawnServer('bun', ['run', 'dev', '--port', String(devPort)])
   try {
     await waitPort({ port: devPort, host: 'localhost' })
     await waitForContent(page, devPort)
+    await expect.poll(() => receipts.length).toBe(3)
+    await expect(page.locator('#receipt-flattened')).toHaveCSS('padding', '10px')
+    await expect(page.locator('#receipt-runtime')).toHaveCSS(
+      'background-color',
+      'rgb(255, 0, 0)'
+    )
+    await expect(page.locator('#receipt-dropped')).toHaveCSS(
+      'background-color',
+      'rgba(0, 0, 0, 0)'
+    )
+
+    const flattened = receipts.find(
+      (receipt) =>
+        receipt.component === 'View' &&
+        receipt.styles.some((style) => style.prop === 'padding')
+    )
+    expect(flattened.tiers).toEqual(['lowered', 'flattened'])
+    expect(flattened.styles).toEqual([
+      {
+        prop: 'padding',
+        tier: 'flattened',
+        why: 'The compiler emitted this prop on the flattened host element.',
+      },
+    ])
+
+    const runtime = receipts.find((receipt) =>
+      receipt.styles.some((style) => style.runtime)
+    )
+    expect(runtime.tiers).toEqual(['bailed'])
+    expect(runtime.styles[0]).toEqual({
+      prop: 'backgroundColor',
+      tier: 'bailed',
+      runtime: true,
+      why: 'disableOptimization keeps the component on the runtime path. The Tamagui runtime resolved this prop.',
+    })
+
+    const dropped = receipts.find((receipt) =>
+      receipt.styles.some((style) => style.dropped)
+    )
+    expect(dropped.tiers).toEqual(['lowered', 'flattened'])
+    expect(dropped.styles[0]).toEqual({
+      prop: 'backgroundColor',
+      tier: 'flattened',
+      dropped: true,
+      why: 'No web style output was produced for this prop.',
+    })
   } finally {
     await killServer(server)
   }
