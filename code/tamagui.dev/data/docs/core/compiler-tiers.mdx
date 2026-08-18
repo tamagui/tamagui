@@ -1,0 +1,137 @@
+---
+title: Compiler tiers
+description: How Tamagui moves from runtime components to extracted host output
+---
+
+Tamagui compilation is a ladder. An app can keep the full runtime, move
+configuration-static CSS into a build artifact, or enforce a web entry with no
+Tamagui component runtime. Inside an ordinary compiled app, each component is
+also handled independently. One dynamic component does not turn extraction off
+for the rest of the file.
+
+## The build ladder
+
+| Tier | What the build emits | What remains at runtime |
+| --- | --- | --- |
+| Ordinary compiled Tamagui | Extracted CSS and flattened host elements wherever analysis succeeds | Provider, config, style engine, theme and media state, animation driver, and component runtime for residual sites |
+| Compiled global CSS | Ordinary compiled output plus the `outputCSS` artifact owned by the integration | Residual components and dynamic theme or media behavior remain; configuration-static CSS generation is removed |
+| Strict zero-runtime | Lowered React host JSX plus one generated CSS artifact | No Tamagui renderer, provider, style engine, config parser, theme state, media state, or component animation runtime in the zero entry |
+
+The compiler is optional for ordinary Tamagui. Without it, components use the
+runtime path. Strict zero-runtime is an experimental web-only contract and
+turns every residual Tamagui site into a build error. See
+[Zero-runtime mode](/docs/guides/zero-runtime).
+
+## Candidate outcomes
+
+The compiler records five counters for every module:
+
+| Counter | Meaning |
+| --- | --- |
+| `found` | A JSX or component-call candidate resolved to a compiler-known component |
+| `lowered` | The compiler safely committed edits and any extracted CSS for that candidate |
+| `flattened` | A lowered candidate became a platform host element |
+| `styled` | A successfully lowered candidate came from an app-local `styled()` definition |
+| `bailed` | The candidate stayed on its runtime path because analysis or the component contract prevented lowering |
+
+`styled` describes where a lowered candidate came from, so it is not a separate
+result alongside `flattened`. A partially lowered candidate is `lowered` without
+being `flattened`.
+
+### Flattened
+
+A component can flatten when its static contract accepts `className`, it is not
+a behavior HOC marked `neverFlatten`, and it does not provide a styled context.
+The compiler can then replace it with one host element. On web the output may
+contain extracted classes plus an inline `style` object for values that must
+stay dynamic.
+
+```tsx
+const tone = selected ? 'red' : 'blue'
+
+// static layout and spacing can extract while the dynamic color remains a
+// narrow host style value
+<View display="flex" padding="4" color={tone} />
+```
+
+Conditional expressions whose branches are both static can also lower as
+conditional classes. The JavaScript condition remains, while both style
+branches are compiled.
+
+### Partially lowered
+
+Partial extraction lets safe static work leave the runtime even when one style
+value remains dynamic. Only properties the host can receive directly qualify.
+If a dynamic value needs Tamagui theme, media, interaction, event, or component
+behavior, the candidate stays on the runtime path.
+
+Set `disablePartialExtraction: true` in `tamagui.build.ts` when you need dynamic
+candidates to remain completely runtime-owned:
+
+```ts fileName="tamagui.build.ts"
+import type { TamaguiBuildOptions } from 'tamagui'
+
+export default {
+  config: './tamagui.config.ts',
+  components: ['tamagui'],
+  disablePartialExtraction: true,
+} satisfies TamaguiBuildOptions
+```
+
+### Runtime bailout
+
+A candidate bails out when the compiler cannot prove a complete, safe rewrite.
+Common causes include an unresolved component target, a dynamic style spread,
+runtime event mapping, overlapping source edits, or a component whose static
+contract requires its runtime wrapper.
+
+A bailout is valid in ordinary compiled Tamagui. The component renders through
+the same runtime that an uncompiled app uses. In strict zero-runtime, the same
+residual site is a contract violation because that entry has no component
+runtime to receive it.
+
+## What you control
+
+Authoring and build configuration influence the result:
+
+- Put packages whose components should be evaluated in `components`.
+- Keep component targets literal and style values statically analyzable when
+  you want flattening.
+- Use flat CSS conditions for theme, media, interaction, group, and container
+  behavior that should extract.
+- Set `disableOptimization` on one element to keep that element on the runtime
+  path.
+- Set `disableExtraction` for a file set or the whole build to use runtime
+  components, commonly during development.
+- Set `disablePartialExtraction` to prevent the compiler from splitting a
+  dynamic candidate between extracted and host-owned styles.
+- Set `outputCSS` and load that artifact to enter the compiled-global-CSS tier.
+- Set `experimental.zeroRuntime` to audit or enforce the strict tier.
+
+There is no per-component switch that forces a component to flatten. The
+component's static contract and the actual authored values decide whether a
+safe host replacement exists.
+
+## Inspect the result
+
+The Vite integration can print the compiler counters and bailout codes:
+
+```bash
+TAMAGUI_COMPILER_STATS=1 vite build
+```
+
+Use verbose mode for per-module counters:
+
+```bash
+TAMAGUI_COMPILER_STATS=verbose vite build
+```
+
+Write the same report as JSON by setting a project-relative output path:
+
+```bash
+TAMAGUI_COMPILER_STATS_FILE=.tamagui/compiler-stats.json vite build
+```
+
+The report includes totals, partial and flattened counts, bailout codes,
+grouped reasons, and per-module diagnostics. These counters describe compiler
+handling. They do not by themselves measure bundle size or runtime speed.

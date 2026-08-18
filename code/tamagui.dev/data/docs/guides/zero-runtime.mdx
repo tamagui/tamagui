@@ -1,0 +1,222 @@
+---
+title: Zero-runtime mode
+description: Build a web entry with generated CSS and no Tamagui component runtime
+---
+
+Zero-runtime mode is an experimental, web-only compiler tier for pages whose
+Tamagui styling can be fully resolved at build time. A successful zero entry
+contains lowered React host JSX and one generated CSS artifact. Its JavaScript
+graph contains no Tamagui renderer, provider, style engine, config parser,
+theme state, media state, or component animation machinery.
+
+React and React DOM remain. Ordinary React host elements can still use React's
+`style` prop, which sits outside the Tamagui zero-runtime contract.
+
+Use this mode for static product, documentation, content, and marketing
+surfaces. Put behavior that needs the full Tamagui runtime in a separately built
+island.
+
+## Supported integrations
+
+The v3 beta qualifies zero entries and full-runtime islands on:
+
+- Vite web
+- Next.js with the webpack Tamagui integration
+- Metro web
+
+Native builds always use the full runtime. A cross-platform project can enable
+the option in its shared build config because the integration keeps native on
+the full path.
+
+## Audit an app first
+
+Start with report mode in the same `tamagui.build.ts` used by your bundler:
+
+```ts fileName="tamagui.build.ts"
+import type { TamaguiBuildOptions } from 'tamagui'
+
+export default {
+  config: './tamagui.config.ts',
+  components: ['tamagui'],
+  experimental: {
+    zeroRuntime: 'report',
+  },
+} satisfies TamaguiBuildOptions
+```
+
+Report mode performs zero-runtime analysis and writes its receipts, while the
+build keeps the full runtime and exits successfully. It is an audit tool rather
+than a runtime tier. Fix each reported site or assign its owning module to an
+island before enforcing the mode.
+
+## Enforce the zero entry
+
+Enforcement requires an `outputCSS` path:
+
+```ts fileName="tamagui.build.ts"
+import type { TamaguiBuildOptions } from 'tamagui'
+
+export default {
+  config: './tamagui.config.ts',
+  components: ['tamagui'],
+  outputCSS: './.tamagui/zero/tamagui-zero.css',
+  experimental: {
+    zeroRuntime: true,
+  },
+} satisfies TamaguiBuildOptions
+```
+
+Keep the generated `.tamagui` directory out of source control. The bundler owns
+the CSS artifact and only marks the JavaScript graph as zero-runtime after that
+artifact exists. Vite injects the zero stylesheet from its entry. Next and
+Metro publish the artifact for the application document to link:
+
+```html
+<link rel="stylesheet" href="/tamagui-zero.css" />
+```
+
+Do not set `TAMAGUI_RUNTIME` in the shell. It is generated output owned by the
+integration, which inlines either `"full"` or `"zero"` after resolving the
+public build option and artifact.
+
+The zero root has no `TamaguiProvider`. Configuration evaluation happens in a
+separate full-runtime build environment, and the integration turns its tokens,
+fonts, themes, root rules, and extracted atomic rules into the generated
+stylesheet.
+
+```tsx
+import { useState } from 'react'
+import { Theme, Text, View } from 'tamagui'
+
+export function Page() {
+  const [dark, setDark] = useState(false)
+
+  return (
+    <Theme name={dark ? 'dark' : 'light'}>
+      <View backgroundColor="background" padding="6">
+        <Text color="color">This component tree lowers completely.</Text>
+        <button onClick={() => setDark((value) => !value)}>toggle theme</button>
+      </View>
+    </Theme>
+  )
+}
+```
+
+The compiler can enumerate the two literal theme names in this example. Theme
+switching becomes a class change and does not ship Tamagui theme state.
+
+## The eight authoring rules
+
+An enforced build collects every violation, sorts the report by source
+location, then fails. The contract is:
+
+1. Pass props explicitly. Prop spreads on Tamagui and `html.*` elements are
+   rejected because the compiler cannot prove they are style-free.
+2. Use literal component targets. A dynamic component expression must resolve
+   to one lowerable host component.
+3. Keep Tamagui style values build-time data. This covers element props,
+   `styled()` definitions, variants, and direct `Theme` values.
+4. Keep config and themes static. Use compiler-visible `Theme` names and direct
+   theme values. Runtime theme mutation and `TamaguiProvider` belong in an
+   island.
+5. Use the CSS animation driver. Static CSS transitions lower; presence,
+   layout-driven animation, dynamic driver selection, and non-CSS drivers need
+   an island.
+6. Use lowerable components. A component that cannot become one host element
+   is island-only.
+7. Express design state in CSS. JavaScript reads such as `useMedia`, `useTheme`,
+   `getConfig`, `getToken`, and `useAnimationDriver` need the full runtime.
+8. Keep the module graph erasable. Bare side-effect Tamagui imports are
+   rejected, and an island must be reached through its generated loader rather
+   than a static import.
+
+The final bundler gate checks the emitted module graph as well as compiler
+diagnostics. A build fails if any forbidden Tamagui module remains reachable,
+even when the compiler could not attribute that path to a precise source site.
+
+## Full-runtime islands
+
+Declare island roots as project-relative globs:
+
+```ts fileName="tamagui.build.ts"
+export default {
+  config: './tamagui.config.ts',
+  components: ['tamagui'],
+  outputCSS: './.tamagui/zero/tamagui-zero.css',
+  experimental: {
+    zeroRuntime: {
+      islands: ['src/islands/DetailsIsland.tsx'],
+    },
+  },
+}
+```
+
+The integration generates a loader and a separate full-runtime entry for each
+island. Import the loader from zero code:
+
+```tsx
+import DetailsIsland from '../.tamagui/zero/DetailsIsland.loader'
+
+export function Page() {
+  return <DetailsIsland productId="42" />
+}
+```
+
+A direct import of `src/islands/DetailsIsland.tsx` is a build error. The island
+is compiled with the full runtime, mounts its own provider, and receives the
+static theme context at its compiler-visible mount point. Island server output
+is a deterministic placeholder. The client loads and mounts the island after
+hydration, so content that must appear in server HTML needs a full-runtime route
+or a lowerable zero component.
+
+All declared island CSS is included in the same generated stylesheet as the
+zero entry. Island JavaScript remains a separate download.
+
+## Animation scope
+
+Static CSS transitions remain CSS. Component animation machinery does not ship
+in the zero entry. Four numeric hooks are the one optional Tamagui client leaf:
+
+```ts
+useAnimatedNumber
+useAnimatedNumberStyle
+useAnimatedNumbersStyle
+useAnimatedNumberReaction
+```
+
+When one of these hooks is imported from `tamagui` or `@tamagui/core`, the
+compiler rewrites it directly to the small CSS animated-number entry. No other
+Tamagui client module is allowlisted.
+
+## Keep generated CSS small
+
+Zero-runtime moves design-system work from client JavaScript into CSS, so theme
+reachability matters. The first release does not automatically prune a broad
+theme pack. Narrow themes and tokens in `tamagui.config.ts` to what the entry
+uses.
+
+The repository starter's two-theme, five-color-token config produced 2,695
+bytes gzip of CSS for its real screen. The unnarrowed v6 config measured 17,243
+bytes gzip. These are configuration outcomes, so use your emitted artifact as
+the measurement for your app.
+
+## Start from the working fixture
+
+`code/starters/zero-runtime` in the Tamagui repository contains one source tree
+built with Vite, Next webpack, and Metro web. It demonstrates a providerless
+root, static theme switching, a CSS transition, a narrowed config, one modal
+island, graph receipts, size ceilings, and Playwright coverage.
+
+Run its complete measurement and browser checks with:
+
+```bash
+cd code/starters/zero-runtime
+bun run measure
+bun run test
+```
+
+The retained 2026-08-18 receipt found zero Tamagui modules, zero forbidden
+modules, and zero compiler violations in all six base and island builds. A
+separate fully flattened probe measured seven gzip bytes above its hand-written
+React control. That number describes the conforming probe, not an ordinary
+full-runtime Tamagui app.

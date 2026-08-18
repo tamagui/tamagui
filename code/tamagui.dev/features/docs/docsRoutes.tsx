@@ -45,6 +45,7 @@ export const docsRoutes = [
     pages: [
       { title: 'Props', route: '/docs/intro/props' },
       { title: 'View & Text', route: '/docs/core/view-and-text' },
+      { title: 'HTML primitives', route: '/docs/core/html-primitives' },
       { title: 'Theme', route: '/docs/core/theme' },
       { title: 'Surfaces & levels', route: '/docs/core/surfaces' },
       { title: 'FontLanguage', route: '/docs/core/font-language' },
@@ -78,6 +79,8 @@ export const docsRoutes = [
     title: 'Compiler',
     pages: [
       { title: 'Installation', route: '/docs/intro/compiler-install' },
+      { title: 'Compiler tiers', route: '/docs/core/compiler-tiers' },
+      { title: 'Zero-runtime mode', route: '/docs/guides/zero-runtime' },
       { title: 'Benchmarks', route: '/docs/intro/benchmarks' },
       { title: 'Background', route: '/docs/intro/why-a-compiler' },
     ],
