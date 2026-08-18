@@ -778,6 +778,54 @@ if (receipts.animationSplit.survivingLeafGzip <= 0) {
   )
 }
 
+// 12. the DOM demotion: `@tamagui/dom` is implementation plumbing, so a regular
+// web client must not carry its generated tables. `dom-client` reaches the
+// runtime `html.*` path (one tag is selected at runtime, so the compiler cannot
+// replace it), which is what makes the absence able to fail: the tables are a
+// type-only import of that runtime module, and a value import would ship them.
+// `dom-tables` is the same client plus one value import of the tables, so the
+// matcher is shown finding them in a build where they are reachable.
+const domPackageRoot = path.dirname(
+  path.dirname(path.dirname(fileURLToPath(import.meta.resolve('@tamagui/dom'))))
+)
+const runtimeHtmlModule = path.join(
+  path.dirname(
+    path.dirname(path.dirname(fileURLToPath(import.meta.resolve('@tamagui/web'))))
+  ),
+  'dist/esm/dom/html.mjs'
+)
+const isDomPackageModule = (id) => id.startsWith(`${domPackageRoot}${path.sep}`)
+
+const domClient = build('dom-client', 'dist-dom-client', ['--minify', 'false'])
+if (!domClient.ok) throw new Error(`dom client build failed:\n${domClient.output}`)
+const domTables = build('dom-tables', 'dist-dom-tables', ['--minify', 'false'])
+if (!domTables.ok) throw new Error(`dom tables build failed:\n${domTables.output}`)
+const domClientModules = emittedModules('dist-dom-client').modules
+const domTablesModules = emittedModules('dist-dom-tables').modules
+
+receipts.domPackageGraph = {
+  regularClientReachesRuntimeHtml: domClientModules.includes(runtimeHtmlModule),
+  inRegularClient: domClientModules.filter(isDomPackageModule),
+  inTablesControl: domTablesModules.filter(isDomPackageModule),
+}
+if (!receipts.domPackageGraph.regularClientReachesRuntimeHtml) {
+  throw new Error(
+    'the regular client never reached the runtime html.* module, so @tamagui/dom being absent from it proves nothing'
+  )
+}
+if (!receipts.domPackageGraph.inTablesControl.length) {
+  throw new Error(
+    'the @tamagui/dom matcher found nothing in a build that imports the tables, so it cannot detect them anywhere'
+  )
+}
+if (receipts.domPackageGraph.inRegularClient.length) {
+  throw new Error(
+    `a regular web client shipped @tamagui/dom: ${JSON.stringify(
+      receipts.domPackageGraph.inRegularClient
+    )}`
+  )
+}
+
 writeFileSync(
   path.join(zeroDir, 'vite-receipts.json'),
   `${JSON.stringify(receipts, null, 2)}\n`

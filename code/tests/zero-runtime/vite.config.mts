@@ -39,6 +39,11 @@ const inputs = {
   // an island mounted under a conditional static theme: one bridge per branch
   'island-branch': 'island-branch.html',
   full: 'index.html',
+  // the DOM demotion receipts: a regular full-runtime web client on the
+  // recommended `html.*`, and the same client with a value import of the
+  // generated tables as its positive control
+  'dom-client': 'src/dom-client.tsx',
+  'dom-tables': 'src/dom-tables.tsx',
   negative: 'negative-control.html',
   live: 'live-reference.html',
   illegal: 'illegal-static.html',

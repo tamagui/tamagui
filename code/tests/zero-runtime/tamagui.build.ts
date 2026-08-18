@@ -13,7 +13,15 @@ const fixture = process.env.TAMAGUI_ZERO_FIXTURE
 // `rules-full` is the full-driver half of the three-artifact animation
 // measurement: the same authored rule module, ordinary compiled Tamagui, so
 // createAnimations and the component animation path stay reachable.
-const isFullRuntimeProbe = fixture === 'full' || fixture === 'rules-full'
+//
+// `dom-client` and `dom-tables` are the DOM demotion receipts: both are regular
+// full-runtime web clients, and the second one adds the value import of
+// @tamagui/dom that proves the absence check on the first one can fail.
+const isFullRuntimeProbe =
+  fixture === 'full' ||
+  fixture === 'rules-full' ||
+  fixture === 'dom-client' ||
+  fixture === 'dom-tables'
 const isGlobalCSSTier = fixture?.startsWith('global') === true
 
 // The rule fixtures build one authored module at a time, with no island, so the
