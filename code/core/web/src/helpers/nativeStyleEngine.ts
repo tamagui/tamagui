@@ -68,6 +68,8 @@ interface CompiledMapping {
 
 const mappingKeys = new WeakMap<object, string>()
 const compiledMappings = new Map<string, CompiledMapping>()
+// linked mappings remain update owners across memo-generation rollovers
+const activeCompiledMappings = new Set<CompiledMapping>()
 const processedBases = new WeakMap<
   object,
   { engine: NativeStyleEngine; props: Record<string, unknown> }
@@ -86,6 +88,9 @@ function getCompiledMapping(mapping: NativeStyleThemeMapping): CompiledMapping {
   let compiled = compiledMappings.get(key)
   if (!compiled) {
     compiled = { mapping, states: new Map(), links: new Set() }
+    if (compiledMappings.size >= 10_000) {
+      compiledMappings.clear()
+    }
     compiledMappings.set(key, compiled)
   }
   return compiled
@@ -105,6 +110,12 @@ function resolveCompiledMapping(
     props[styleKey] = value === undefined ? null : getVariableValue(value)
   }
   const processed = engine?.processStyleColors(props) ?? props
+  if (compiled.states.size >= 10_000) {
+    compiled.states.clear()
+    for (const link of compiled.links) {
+      link.stateThemes.clear()
+    }
+  }
   compiled.states.set(stateName, { theme, props: processed })
   return processed
 }
@@ -112,6 +123,7 @@ function resolveCompiledMapping(
 export function setNativeStyleEngine(next: NativeStyleEngine | null): void {
   if (engine !== next) {
     compiledMappings.clear()
+    activeCompiledMappings.clear()
   }
   engine = next
   if (next) {
@@ -136,7 +148,7 @@ export function updateNativeStyleScope(
 
   if (engine) {
     const entries: NativeViewStateTableUpdate[] = []
-    for (const compiled of compiledMappings.values()) {
+    for (const compiled of activeCompiledMappings) {
       let props: Record<string, unknown> | undefined
       for (const link of compiled.links) {
         if (link.scopeId !== scopeId) continue
@@ -203,14 +215,28 @@ export function linkNativeStyleMapping(
     stateThemes,
   }
   compiled.links.add(link)
+  activeCompiledMappings.add(compiled)
   return {
     id: handle.id,
     unlink: () => {
       compiled.links.delete(link)
+      if (!compiled.links.size) {
+        activeCompiledMappings.delete(compiled)
+      }
       handle.unlink()
     },
   }
 }
+
+/** memo-generation and live-owner sizes for development diagnostics and probes */
+export const getNativeStyleEngineCacheStats = () => ({
+  mappings: compiledMappings.size,
+  activeMappings: activeCompiledMappings.size,
+  states: [...new Set([...compiledMappings.values(), ...activeCompiledMappings])].reduce(
+    (total, compiled) => total + compiled.states.size,
+    0
+  ),
+})
 
 let pending: NativeViewStateUpdate[] | null = null
 let flushListener: ((entries: NativeViewStateUpdate[]) => void) | null = null

@@ -16,7 +16,7 @@ export { setNativeStyleEngine, getNativeStyleEngine, setNativeStyleEngineFlushLi
 export * from './helpers/getThemeCSSRules';
 export * from './helpers/variables';
 export * from './helpers/getVariantExtras';
-export { autoVariables, mutatedAutoVariables } from './helpers/registerCSSVariable';
+export { autoVariables, getAutoVariableCSS, getMutatedAutoVariableCSS, mutatedAutoVariables, } from './helpers/registerCSSVariable';
 export { insertStyleRules } from './helpers/insertStyleRule';
 export * from './helpers/isTamaguiComponent';
 export * from './helpers/isTamaguiElement';

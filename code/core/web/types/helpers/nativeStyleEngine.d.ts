@@ -44,6 +44,12 @@ export declare function updateNativeStyleScope(scopeId: string, stateName: strin
 export declare function removeNativeStyleScope(scopeId: string): void;
 export declare function resolveNativeStyleMapping(mapping: NativeStyleThemeMapping, stateName: string, theme: Record<string, unknown>): Record<string, unknown>;
 export declare function linkNativeStyleMapping(ref: unknown, baseStyle: Record<string, unknown>, mapping: NativeStyleThemeMapping, scopeId: string, stateName: string, theme: Record<string, unknown>): NativeStyleEngineLinkHandle | null;
+/** memo-generation and live-owner sizes for development diagnostics and probes */
+export declare const getNativeStyleEngineCacheStats: () => {
+    mappings: number;
+    activeMappings: number;
+    states: number;
+};
 /**
  * instrumentation hook: called after each batched native flush with the
  * flushed entries (benchmarks, parity tests)

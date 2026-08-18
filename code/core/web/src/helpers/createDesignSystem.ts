@@ -1,6 +1,10 @@
 import { isWeb } from '@tamagui/constants'
 import type { CreateTamaguiProps, Variable } from '../types'
-import { autoVariables, registerCSSVariable, variableToCSS } from './registerCSSVariable'
+import {
+  getAutoVariableCSS,
+  registerCSSVariable,
+  variableToCSS,
+} from './registerCSSVariable'
 import { getThemeCSSRules } from './getThemeCSSRules'
 import { getAllRules, wrapStyleRules } from './insertStyleRule'
 
@@ -192,9 +196,8 @@ export function getCSS(
     const themeRules = exclude ? '' : themeConfig.getThemeRulesSets().join(separator)
 
     // auto-generated vars from theme values not in tokens
-    const autoVarCSS = autoVariables.length
-      ? `:root{${autoVariables.map((v) => `--${v.name}:${v.val}`).join(';')}}`
-      : ''
+    const autoVariableCSS = getAutoVariableCSS()
+    const autoVarCSS = autoVariableCSS ? `:root{${autoVariableCSS}}` : ''
 
     // notes:
     // @scope (.is_Text) to (.is_View) - inherit text styles in nested Text without View boundary

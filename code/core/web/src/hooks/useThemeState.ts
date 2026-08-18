@@ -91,7 +91,8 @@ const registerThemeProviderChain = (
 
 let cacheVersion = 0
 
-// cache for getNewThemeName - invalidated on cacheVersion change
+// config-generation cache for getNewThemeName. values are derived strings, so
+// the whole memo generation can roll without invalidating mounted ThemeState.
 const themeNameCache = new Map<string, string | null>()
 let themeNameCacheVer = -1
 
@@ -641,7 +642,7 @@ function getScheme(name: string) {
   return validSchemes[name.split('_')[0]]
 }
 
-function getNewThemeName(
+export function getNewThemeName(
   parentName = '',
   props: UseThemeWithStateProps,
   forceUpdate = false
@@ -678,9 +679,15 @@ function getNewThemeName(
     getConfig().themes,
     forceUpdate
   )
+  if (themeNameCache.size >= 10_000) {
+    themeNameCache.clear()
+  }
   themeNameCache.set(cacheKey, result)
   return result
 }
+
+/** current config-generation size for development diagnostics and behavior probes */
+export const getThemeNameCacheSize = () => themeNameCache.size
 
 /**
  * Which theme a `<Theme>` node resolves to, given the theme it sits under.

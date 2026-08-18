@@ -23,7 +23,11 @@ const variableKey = (val: Variable | VariableVal) => {
 
 export const registerCSSVariable = (v: Variable | VariableVal) => {
   if (!process.env.TAMAGUI_DID_OUTPUT_CSS) {
-    tokensValueToVariable.set(variableKey(getVariableValue(v)), v)
+    const key = variableKey(getVariableValue(v))
+    if (!tokensValueToVariable.has(key) && tokensValueToVariable.size >= 10_000) {
+      rollAutoVariableGeneration()
+    }
+    tokensValueToVariable.set(key, v)
   }
 }
 
@@ -39,14 +43,36 @@ export const variableToCSS = (v: Variable, unitless = false) => {
 
 export const tokensValueToVariable = new Map<any, any>()
 
-// auto-generated vars for theme values not in tokens
+// auto-generated vars for theme values not in tokens. the current generation
+// stays object-backed for dedupe; completed generations are serialized because
+// emitted CSS may retain their variable names for the rest of this CSS session.
 let autoVarId = 0
 export const autoVariables: Variable[] = []
+const archivedAutoVariableCSS: string[] = []
+
+const serializeVariables = (variables: Variable[]) =>
+  variables.map((v) => `--${v.name}:${v.val}`).join(';')
+
+const rollAutoVariableGeneration = () => {
+  if (autoVariables.length) {
+    archivedAutoVariableCSS.push(serializeVariables(autoVariables))
+    autoVariables.length = 0
+  }
+  tokensValueToVariable.clear()
+}
+
+export const getAutoVariableCSS = () =>
+  [...archivedAutoVariableCSS, serializeVariables(autoVariables)]
+    .filter(Boolean)
+    .join(';')
 
 export const getOrCreateVariable = (val: any): Variable => {
   const key = variableKey(val)
   if (tokensValueToVariable.has(key)) {
     return tokensValueToVariable.get(key)!
+  }
+  if (tokensValueToVariable.size >= 10_000) {
+    rollAutoVariableGeneration()
   }
   const name = `t${autoVarId++}`
   const variable = `var(--${name})`
@@ -61,11 +87,28 @@ export const getOrCreateVariable = (val: any): Variable => {
 let mutatedVarId = 10000
 export const mutatedAutoVariables: Variable[] = []
 const mutatedTokensValueToVariable = new Map<any, any>()
+const archivedMutatedAutoVariableCSS: string[] = []
+
+const rollMutatedAutoVariableGeneration = () => {
+  if (mutatedAutoVariables.length) {
+    archivedMutatedAutoVariableCSS.push(serializeVariables(mutatedAutoVariables))
+    mutatedAutoVariables.length = 0
+  }
+  mutatedTokensValueToVariable.clear()
+}
+
+export const getMutatedAutoVariableCSS = () =>
+  [...archivedMutatedAutoVariableCSS, serializeVariables(mutatedAutoVariables)]
+    .filter(Boolean)
+    .join(';')
 
 export const getOrCreateMutatedVariable = (val: any): Variable => {
   const key = variableKey(val)
   if (mutatedTokensValueToVariable.has(key)) {
     return mutatedTokensValueToVariable.get(key)!
+  }
+  if (mutatedTokensValueToVariable.size >= 10_000) {
+    rollMutatedAutoVariableGeneration()
   }
   const name = `t${mutatedVarId++}`
   const variable = `var(--${name})`
@@ -74,3 +117,11 @@ export const getOrCreateMutatedVariable = (val: any): Variable => {
   mutatedAutoVariables.push(v)
   return v
 }
+
+/** cache-generation sizes for development diagnostics and behavior probes */
+export const getCSSVariableCacheStats = () => ({
+  auto: tokensValueToVariable.size,
+  autoDeclarations: autoVariables.length,
+  mutated: mutatedTokensValueToVariable.size,
+  mutatedDeclarations: mutatedAutoVariables.length,
+})
