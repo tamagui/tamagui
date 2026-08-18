@@ -1,5 +1,6 @@
 import { createRefComponent } from '@tamagui/compose-refs'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
+import { getThemeClassNames } from '@tamagui/helpers'
 import type { MutableRefObject } from 'react'
 import React, { Children, cloneElement, isValidElement, useRef } from 'react'
 import { getConfig, getSetting } from '../config'
@@ -303,36 +304,5 @@ function getThemeClassNameAndColor(
   const themeColor =
     themeState?.theme && themeState.isNew ? variableToString(themeState.theme.color) : ''
 
-  const style = themeColor
-    ? {
-        color: themeColor,
-      }
-    : undefined
-
-  const themeClassName = themeState.name.replace(schemePrefix, '')
-  const fullThemeClassName =
-    themeState.name === themeClassName ? '' : ` t_${themeState.name}`
-
-  // Build full hierarchy of theme classes for CSS variable inheritance
-  // Examples:
-  // - "red_surface1" → "t_red t_red_surface1"
-  // - "green_active_Button" → "t_green t_green_active t_green_active_Button"
-  const themeNameParts = themeClassName.split('_')
-  let themeClasses = `t_${themeClassName}${fullThemeClassName}`
-
-  if (themeNameParts.length > 1) {
-    // Build full hierarchy for all multi-part themes (sub-themes, component themes, etc.)
-    // This enables CSS variable inheritance through all levels
-    const hierarchyClasses: string[] = []
-    for (let i = 1; i <= themeNameParts.length; i++) {
-      hierarchyClasses.push(`t_${themeNameParts.slice(0, i).join('_')}`)
-    }
-    themeClasses = `${hierarchyClasses.join(' ')}${fullThemeClassName}`
-  }
-
-  const className = `${isRoot ? '' : 't_sub_theme'} ${themeClasses}`
-
-  return { color: themeColor, className }
+  return { color: themeColor, className: getThemeClassNames(themeState.name, isRoot) }
 }
-
-const schemePrefix = /^(dark|light)_/

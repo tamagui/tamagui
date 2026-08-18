@@ -1,4 +1,4 @@
-import { simpleHash } from '@tamagui/helpers'
+import { reservedThemeProps, simpleHash } from '@tamagui/helpers'
 import {
   grammarPlatformNames,
   isRootThemeName,
@@ -474,31 +474,6 @@ export const getInlineValuesKey = (inline: InlineValues): string => {
 
 // ---- flat theme-value props: <Theme background-hover="blue4 dark:blue2"> ----
 
-/**
- * The props <Theme> owns. Every other prop is read as a theme key, so these
- * names can't be used as theme keys or config variables. development builds
- * report a collision instead of silently dropping the value.
- */
-export const reservedThemeProps: Record<string, true> = {
-  _isRoot: true,
-  children: true,
-  className: true,
-  contain: true,
-  debug: true,
-  deopt: true,
-  disable: true,
-  'disable-child-theme': true,
-  forceClassName: true,
-  inlineClassName: true,
-  inlineValues: true,
-  name: true,
-  nativeUpdate: true,
-  needsUpdate: true,
-  passThrough: true,
-  reset: true,
-  shallow: true,
-}
-
 const registryViews = new WeakMap<object, ModifierRegistryView>()
 
 /**
@@ -521,6 +496,13 @@ const getModifierRegistry = (conf: TamaguiInternalConfig): ModifierRegistryView 
   return view
 }
 
+/**
+ * One authored theme-value clause the parser could not use. The runtime warns
+ * and drops; zero-runtime turns each one into a rule 3 violation.
+ */
+export type InlineValueIssue = { key: string; raw: string; message: string }
+export type InlineValueIssueSink = (issue: InlineValueIssue) => void
+
 type FlatBuckets = {
   values: Record<string, VariableValIn>
   themes: Record<string, Record<string, VariableValIn>> | null
@@ -535,8 +517,19 @@ const addFlatValue = (
   out: FlatBuckets,
   key: string,
   raw: VariableValIn,
-  conf: TamaguiInternalConfig
+  conf: TamaguiInternalConfig,
+  onIssue?: InlineValueIssueSink
 ) => {
+  // one authored value, one place that decides whether each clause is usable.
+  // the runtime warns and says what it dropped; a build-time caller takes the
+  // same diagnosis and makes it a hard error, where nothing is dropped because
+  // nothing is built. so the disposition is the caller's and the diagnosis is
+  // shared, and the two can never diverge on what is legal.
+  const report = (once: string, message: string, dropped: string) => {
+    const diagnosis = message.replace(/\.$/, '')
+    if (onIssue) onIssue({ key, raw: String(raw), message: diagnosis })
+    else warnOnce(once, `${diagnosis}. ${dropped}`)
+  }
   if (typeof raw !== 'string') {
     out.values[key] = raw
     return
@@ -558,9 +551,10 @@ const addFlatValue = (
   }
 
   if (!parsed.ok) {
-    warnOnce(
+    report(
       `parse:${key}:${raw}`,
-      `<Theme ${key}="${raw}">: ${parsed.errors[0].message}. Dropping.`
+      `<Theme ${key}="${raw}">: ${parsed.errors[0].message}`,
+      'Dropping.'
     )
     return
   }
@@ -582,9 +576,10 @@ const addFlatValue = (
       }
       if (isRootThemeName(modifier) && getThemeBucketNames(conf).has(modifier)) {
         if (themeName !== undefined) {
-          warnOnce(
+          report(
             `two-themes:${key}:${raw}`,
-            `<Theme ${key}="${raw}">: "${themeName}:${modifier}:" targets two themes at once, which a subtree value can't express. Name the composed theme instead. Dropping the clause.`
+            `<Theme ${key}="${raw}">: "${themeName}:${modifier}:" targets two themes at once, which a subtree value can't express. Name the composed theme instead.`,
+            'Dropping the clause.'
           )
           applies = false
           break
@@ -592,9 +587,10 @@ const addFlatValue = (
         themeName = modifier
         continue
       }
-      warnOnce(
+      report(
         `unsupported-modifier:${modifier}`,
-        `<Theme ${key}="${raw}">: "${modifier}:" isn't supported here. Theme values apply to a whole subtree, so only theme (dark:) and platform (ios:) modifiers work. Dropping the clause.`
+        `<Theme ${key}="${raw}">: "${modifier}:" isn't supported here. Theme values apply to a whole subtree, so only theme (dark:) and platform (ios:) modifiers work.`,
+        'Dropping the clause.'
       )
       applies = false
       break
@@ -629,7 +625,8 @@ const flatLayers = new WeakMap<object, Map<string, InlineValues>>()
  */
 export function getInlineValuesFromProps(
   props: Record<string, any>,
-  conf: TamaguiInternalConfig
+  conf: TamaguiInternalConfig,
+  onIssue?: InlineValueIssueSink
 ): InlineValues | null {
   let hasKey = false
   let cacheKey = ''
@@ -650,7 +647,10 @@ export function getInlineValuesFromProps(
     flatLayers.set(conf.themes, configLayers)
   }
 
-  const cached = configLayers.get(cacheKey)
+  // a caller that asked for issues has to see them for every call, and a cache
+  // hit reports nothing. the render path never passes a sink, so it keeps the
+  // memo; the compiler calls this once per authored element.
+  const cached = onIssue ? undefined : configLayers.get(cacheKey)
   if (cached) return cached
 
   const out: FlatBuckets = { values: {}, themes: null }
@@ -658,17 +658,19 @@ export function getInlineValuesFromProps(
     if (reservedThemeProps[key]) continue
     const value = props[key]
     if (value == null) continue
-    addFlatValue(out, key, value, conf)
+    addFlatValue(out, key, value, conf, onIssue)
   }
 
   const layer: InlineValues = {
     values: out.values as InlineValues['values'],
     themes: (out.themes || undefined) as InlineValues['themes'],
   }
-  if (configLayers.size >= 10_000) {
-    configLayers.clear()
+  if (!onIssue) {
+    if (configLayers.size >= 10_000) {
+      configLayers.clear()
+    }
+    configLayers.set(cacheKey, layer)
   }
-  configLayers.set(cacheKey, layer)
   return layer
 }
 

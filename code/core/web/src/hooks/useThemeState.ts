@@ -640,8 +640,32 @@ function getNewThemeName(
     if (cached !== undefined) return cached
   }
 
-  const { themes } = getConfig()
+  const result = resolveThemeName(
+    parentName,
+    name ?? undefined,
+    reset,
+    getConfig().themes,
+    forceUpdate
+  )
+  themeNameCache.set(cacheKey, result)
+  return result
+}
 
+/**
+ * Which theme a `<Theme>` node resolves to, given the theme it sits under.
+ *
+ * Pure: parent name, authored name, and the config's theme map are the whole
+ * input. That is what lets the zero-runtime compiler resolve a nested static
+ * `<Theme>` chain to the same names the runtime would, instead of guessing at
+ * how the composition works. `null` means the node did not change the theme.
+ */
+export function resolveThemeName(
+  parentName: string,
+  name: string | undefined,
+  reset: boolean | undefined,
+  themes: Record<string, any>,
+  forceUpdate = false
+): string | null {
   if (reset) {
     // For reset, we need to go back to the grandparent theme
     // If parentName is just a scheme (like "dark" or "light"),
@@ -649,19 +673,15 @@ function getNewThemeName(
     const isSchemeOnly = parentName === 'light' || parentName === 'dark'
     if (isSchemeOnly) {
       // If parent is just a scheme, go to the opposite scheme
-      const result = parentName === 'light' ? 'dark' : 'light'
-      themeNameCache.set(cacheKey, result)
-      return result
+      return parentName === 'light' ? 'dark' : 'light'
     }
 
     // For compound themes like "dark_blue", extract the scheme
     const lastPartIndex = parentName.lastIndexOf('_')
     // parentName will have format light_{name} or dark_{name}
-    const name = lastPartIndex <= 0 ? parentName : parentName.slice(lastPartIndex)
+    const resetName = lastPartIndex <= 0 ? parentName : parentName.slice(lastPartIndex)
     const scheme = parentName.slice(0, lastPartIndex)
-    const result = themes[name] ? name : scheme
-    themeNameCache.set(cacheKey, result)
-    return result
+    return themes[resetName] ? resetName : scheme
   }
 
   const parentParts = parentName ? parentName.split('_') : []
@@ -695,11 +715,9 @@ function getNewThemeName(
     // and we want to avoid reparenting
     !validSchemes[found]
   ) {
-    themeNameCache.set(cacheKey, null)
     return null
   }
 
-  themeNameCache.set(cacheKey, found)
   return found
 }
 

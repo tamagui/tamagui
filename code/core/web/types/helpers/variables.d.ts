@@ -44,11 +44,15 @@ export type InlineLayerInfo = {
 };
 export declare const getInlineValuesKey: (inline: InlineValues) => string;
 /**
- * The props <Theme> owns. Every other prop is read as a theme key, so these
- * names can't be used as theme keys or config variables. development builds
- * report a collision instead of silently dropping the value.
+ * One authored theme-value clause the parser could not use. The runtime warns
+ * and drops; zero-runtime turns each one into a rule 3 violation.
  */
-export declare const reservedThemeProps: Record<string, true>;
+export type InlineValueIssue = {
+    key: string;
+    raw: string;
+    message: string;
+};
+export type InlineValueIssueSink = (issue: InlineValueIssue) => void;
 /**
  * Reads theme-key props off a <Theme> into the inline layer shape the rest of
  * the system already consumes. Returns null when the element carries no theme
@@ -61,7 +65,7 @@ export declare const reservedThemeProps: Record<string, true>;
  * what keeps `<Theme background={on ? 'red' : undefined}>` rendering the same
  * tree in both states instead of remounting its subtree when a value appears.
  */
-export declare function getInlineValuesFromProps(props: Record<string, any>, conf: TamaguiInternalConfig): InlineValues | null;
+export declare function getInlineValuesFromProps(props: Record<string, any>, conf: TamaguiInternalConfig, onIssue?: InlineValueIssueSink): InlineValues | null;
 /**
  * Builds the merged theme for an inline `<Theme>` layer: parent theme spread plus
  * overridden keys as variables, resolved per the shared contract (effective

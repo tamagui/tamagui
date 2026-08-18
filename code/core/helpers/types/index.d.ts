@@ -1,5 +1,7 @@
 export * from '@tamagui/simple-hash';
 export * from './clamp';
+export * from './reservedThemeProps';
+export * from './themeClassNames';
 export * from './composeEventHandlers';
 export * from './types';
 export * from './shouldRenderNativePlatform';

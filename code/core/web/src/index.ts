@@ -104,7 +104,7 @@ export * from './hooks/useProps'
 export * from './hooks/useTheme'
 export * from './hooks/usePortalThemeState'
 export * from './hooks/useThemeName'
-export { forceUpdateThemes } from './hooks/useThemeState'
+export { forceUpdateThemes, resolveThemeName } from './hooks/useThemeState'
 
 export * from './dom/html'
 export * from './views/Configuration'
