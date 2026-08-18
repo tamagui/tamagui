@@ -2808,12 +2808,19 @@ It is worth **13 gzip bytes** on the starter (11,944 raw to 11,750, 2,745 gzip
 to 2,732). Gzip compresses a repeated rule almost perfectly. The gain is CSSOM
 size, not transfer. Do not quote it as a bundle win.
 
-Cross-module duplicates are deliberately left. `ZeroCSSArtifact` holds each
-module's CSS as one joined string that a user's `wrapExtractedCSS` may have
-wrapped in anything, so deduping there means parsing strings back into rules.
-The robust version changes the plan schema (`css: string` to
+Cross-module duplicates are a KNOWN LIMIT, ruled on 2026-08-18, and the ruling
+matters more than the limit. `ZeroCSSArtifact` holds each module's CSS as one
+joined string that a user's `wrapExtractedCSS` may have wrapped in anything, so
+deduping there means parsing strings back into rules, which can silently corrupt
+output. The robust version changes the plan schema (`css: string` to
 `cssRules: string[]`), invalidating Metro's plan cache and touching all three
-integrations, for 57 raw bytes on the starter.
+integrations, for 2 rules and 57 raw bytes on the starter.
+
+Do not open that schema for this alone. Pick it up only as a rider: if the plan
+schema is ever revised for another reason, the rules are a list at that point
+and cross-module dedupe falls out nearly free, since the artifact would hold
+rule arrays and `css()` would compose them through the same `Set` that
+`lowerModule` already uses.
 
 ### The zero graph gate matched a name; ownership is the rule that holds
 
@@ -2831,6 +2838,23 @@ exclusion silently does nothing on Next while looking correct on Vite and Metro.
 
 Forbidden modules now also name their owning package, which the path often does
 not show: `@tamagui/web` resolves to `code/core/web/dist/...` here.
+
+### A receipt can be green because a build artifact from another day is lying around
+
+Wiring the fixture into CI found that `dist-hydration` was never built by
+`bun run receipts` at all. Phase 7 built it by hand, and the hydration
+Playwright project passed every day since against that leftover directory. On a
+fresh checkout there is no server to preview, and Playwright reports that as a
+webServer failure, which reads as CI infrastructure flaking rather than as the
+hydration premise going untested. So a premise this campaign recorded as closed
+was resting on a stale artifact nobody would have questioned.
+
+The standard this sets, and it applies to any receipt anyone claims is green:
+**clear every ignored artifact and run the exact sequence cold before believing
+it.** `git clean -nXd` lists what to remove (keep `node_modules`), then run the
+package script the way CI runs it. Nothing else finds this class of failure,
+because the passing run and the vacuous run are indistinguishable from the
+outside.
 
 ### Erasure-reported rules cannot share a module with lowering-reported rules
 
@@ -2855,4 +2879,5 @@ goes unreliable in CI, isolate it further. Do not raise a threshold.
 The Vite island publish writes both `tamagui-islands/DetailsIsland.js` and
 `tamagui-islands/tamagui-islands/DetailsIsland.js`. The page fetches the first
 and never the second. Recorded in Phase 7, still true, harmless, and nobody has
-looked at why.
+looked at why. Carried forward as an open item on 2026-08-18 rather than chased
+during close-out.

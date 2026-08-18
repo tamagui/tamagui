@@ -2368,7 +2368,20 @@ it in anything, `@layer` included. Deduping at that level means parsing those
 strings back into rules, which can silently corrupt output for 57 raw bytes.
 The robust version is a plan schema change, `css: string` becoming
 `cssRules: string[]`, which invalidates Metro's plan cache and touches all three
-integrations. That trade is the owner's to make, not a close-out's.
+integrations.
+
+**Ruled on 2026-08-18: do not do this, now or as a standalone item.** 2 rules
+and 57 raw bytes against a schema change across three integrations and a cache
+invalidation is a bad trade by an order of magnitude, and buying it with a
+parser that can silently corrupt a user's `wrapExtractedCSS` output is the worst
+available shape of that trade.
+
+The way to pick it up is as a rider. If the plan schema is ever revised for some
+other reason, the rules are already a list at that point and deduping across
+modules falls out nearly free: the artifact would hold rule arrays instead of
+joined strings, and `css()` would compose them through the same `Set` that
+`lowerModule` already uses. Whoever revises that schema should do it then, and
+nobody should open it for this alone.
 
 ### Defect 3 was a gate bug, not a missing message
 
