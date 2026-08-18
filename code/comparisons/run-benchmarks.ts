@@ -974,6 +974,18 @@ async function main() {
             path !== 'code/comparisons/output/benchmarks.html'
         )
       if (changedPaths.length) {
+        if (report.metadata.currency === 'historical') {
+          const html = readFileSync(HTML_PATH, 'utf8')
+          if (!html.includes('data-benchmark-currency="historical"')) {
+            throw new Error(
+              `${OUTPUT_PATH} declares historical data, but ${HTML_PATH} lacks the required historical marker`
+            )
+          }
+          console.warn(
+            `${OUTPUT_PATH} is HISTORICAL: it benchmarks ${recordedCommit}, while current tip is ${currentCommit}`
+          )
+          return
+        }
         throw new Error(
           `${OUTPUT_PATH} benchmarks ${recordedCommit}, but current tip is ${currentCommit}; changed paths outside the generated report:\n${changedPaths.join('\n')}`
         )
