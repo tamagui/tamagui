@@ -737,9 +737,23 @@ The package boundaries are:
 | `tamagui` and `@tamagui/core` roots | Own the recommended runtime `html.*` API on web and native. The compiler optimizes it in every tier and must fully lower it in zero mode. |
 
 The `@tamagui/dom` package.json export map is not narrowed in V3 because that
-would break direct imports. The root declarations and standalone subpath
-declarations receive `@deprecated` JSDoc directing new code to regular
-`html.*`. There is no runtime console warning, package-install warning, or
+would break direct imports. The standalone subpath declarations receive
+`@deprecated` JSDoc directing new code to regular `html.*`.
+
+**`@tamagui/dom`'s own root declarations deliberately do NOT carry the tag, and
+this clause originally contradicted the one above it.** Two facts settle it,
+both measured in Phase 6. First, TypeScript only surfaces `@deprecated` from the
+DECLARATION site: the tag is inert on a module's top JSDoc and inert on a
+re-export alias, and it flows through `export *`. Second, `@tamagui/dom`'s
+exports are the generated tables, which this same section names as the one source
+of truth and names Tamagui's own compiler and runtime as the intended consumer —
+nine files import them, one being `dom/html.tsx`, the implementation of the
+RECOMMENDED API. So there is no form of the tag that reaches an outside importer
+without striking through Tamagui's own internal use of its own tables, including
+the recommended frontend's implementation. A hint that fires on internal code
+trains people to ignore hints. The ownership clause wins; demotion is carried by
+the docs (which reference none of these entries) and by the standalone entries'
+own tags. There is no runtime console warning, package-install warning, or
 throw added as part of demotion.
 
 A user who imports these entries today sees the same runtime/compiler behavior
