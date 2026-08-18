@@ -48,9 +48,18 @@ measure stale dist and report a fake win.
 
 Use the tooling that already exists, do not build your own:
 
+- `code/comparisons/profile-hotpath.ts` — function-level CPU self time AND
+  per-render allocation, from one production build. Start here; it is the tool
+  that answers "which function allocates".
 - `code/comparisons/profile-getsplitstyles.ts` — per-label hot-path timing.
   Needs the runtime bench on :9106
   (`cd code/comparisons/tamagui-bench && EXTRACT=0 npx vite --port 9106`).
+  It sent `?skip=` for scenario selection, which `shared/bench.ts` has never
+  read (it reads `?scenario=`), so every run since that rename profiled ALL
+  FIVE scenarios and labelled the result with one scenario's name. Fixed now,
+  but any pre-existing number from this tool is suspect. Its
+  "theme-prep-uses" row is also an artifact of interval-timer placement, not a
+  real cost; do not act on it.
 - `code/comparisons/profile-web-regressions.ts` — v3-vs-v2 render timing.
 - `code/comparisons/run-benchmarks.ts` — the full suite.
 
