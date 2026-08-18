@@ -10,8 +10,23 @@ export default defineConfig({
   projects: [
     {
       name: 'vite',
-      testMatch: /vite-.*\.test\.ts/,
+      testMatch: /vite-island\.test\.ts/,
       use: { baseURL: 'http://localhost:7878' },
+    },
+    {
+      name: 'vite-dev',
+      testMatch: /vite-dev\.test\.ts/,
+      use: { baseURL: 'http://localhost:7883' },
+    },
+    {
+      name: 'vite-global-css',
+      testMatch: /vite-global-css\.test\.ts/,
+      use: { baseURL: 'http://localhost:7881' },
+    },
+    {
+      name: 'vite-global-css-mutates',
+      testMatch: /vite-global-css-mutates\.test\.ts/,
+      use: { baseURL: 'http://localhost:7882' },
     },
     {
       name: 'next',
@@ -28,6 +43,24 @@ export default defineConfig({
     {
       command: 'npx vite preview --port 7878 --strictPort',
       url: 'http://localhost:7878',
+      reuseExistingServer: true,
+      stdout: 'ignore',
+    },
+    {
+      command: 'npx vite dev --port 7883 --strictPort',
+      url: 'http://localhost:7883',
+      reuseExistingServer: true,
+      stdout: 'ignore',
+    },
+    {
+      command: 'npx vite preview --outDir dist-global --port 7881 --strictPort',
+      url: 'http://localhost:7881/global.html',
+      reuseExistingServer: true,
+      stdout: 'ignore',
+    },
+    {
+      command: 'npx vite preview --outDir dist-global-mutates --port 7882 --strictPort',
+      url: 'http://localhost:7882/global.html',
       reuseExistingServer: true,
       stdout: 'ignore',
     },

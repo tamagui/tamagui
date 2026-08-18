@@ -4,7 +4,7 @@
 // REQUEST: it is built first, leaves its CSS fragment on disk, and the zero
 // build finalizes the one artifact from those fragments plus its own rules.
 import { execFileSync } from 'node:child_process'
-import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
+import { mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { hashZeroIdentity } from '@tamagui/static'
@@ -176,18 +176,51 @@ if (!receipts.cacheIdentity.matchesBuild) {
   throw new Error('the recorded identity does not match its own inputs')
 }
 
-// 5. a warm rebuild must produce the identical artifact
+// 5. the warm-cache path: a cold build scans and publishes, a warm build reuses
+// those plans AND rehydrates the artifact from the sidecar published with them.
+// Both halves matter. Identity stability alone would pass on a build that
+// silently rescanned; plan reuse alone is the exact divergence Phase 1 found,
+// where a warm build emitted an artifact missing every rule it never collected
+// while still deriving TAMAGUI_DID_OUTPUT_CSS from it.
+rmSync(path.join(root, 'node_modules/.cache/tamagui/metro-compiler'), {
+  recursive: true,
+  force: true,
+})
+const cold = buildZero()
+if (!cold.ok) throw new Error(`cold rebuild failed:\n${cold.output}`)
+const coldGraph = read('metro-zero.graph.json')
+const coldIdentity = read('metro-zero.bridges.json')
+const coldCSS = readFileSync(path.join(root, '.tamagui/zero/tamagui-zero.css'), 'utf8')
+
 const warm = buildZero()
 if (!warm.ok) throw new Error(`warm rebuild failed:\n${warm.output}`)
+const warmGraph = read('metro-zero.graph.json')
 const warmIdentity = read('metro-zero.bridges.json')
+
 receipts.warmCacheRebuild = {
-  identityStable: warmIdentity.identity === zeroIdentity.identity,
+  coldBuildScanned: coldGraph.plansRestoredFromCache === false,
+  warmBuildReusedPlans: warmGraph.plansRestoredFromCache === true,
+  identityStable: warmIdentity.identity === coldIdentity.identity,
   bridgesStable:
-    JSON.stringify(warmIdentity.bridges) === JSON.stringify(zeroIdentity.bridges),
+    JSON.stringify(warmIdentity.bridges) === JSON.stringify(coldIdentity.bridges),
+  artifactBytesStable:
+    readFileSync(path.join(root, '.tamagui/zero/tamagui-zero.css'), 'utf8') === coldCSS,
+  artifactCarriesIslandRule: coldCSS.includes('width:137px'),
+  artifactCarriesZeroRule: coldCSS.includes('.is_View'),
+}
+if (!receipts.warmCacheRebuild.coldBuildScanned) {
+  throw new Error('the cold build reported reused plans, so the receipt cannot fail')
+}
+if (!receipts.warmCacheRebuild.warmBuildReusedPlans) {
+  throw new Error('the warm rebuild rescanned, so the warm path proves nothing')
+}
+if (!receipts.warmCacheRebuild.artifactCarriesIslandRule) {
+  throw new Error('the cold artifact has no island rule, so stability proves nothing')
 }
 if (
   !receipts.warmCacheRebuild.identityStable ||
-  !receipts.warmCacheRebuild.bridgesStable
+  !receipts.warmCacheRebuild.bridgesStable ||
+  !receipts.warmCacheRebuild.artifactBytesStable
 ) {
   throw new Error('a warm rebuild changed the artifact')
 }

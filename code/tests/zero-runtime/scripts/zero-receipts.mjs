@@ -7,6 +7,7 @@
 // changes.
 import { execFileSync } from 'node:child_process'
 import { readdirSync, readFileSync, writeFileSync } from 'node:fs'
+import { gzipSync } from 'node:zlib'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { hashZeroIdentity, isTamaguiModuleId } from '@tamagui/static'
@@ -14,7 +15,7 @@ import { hashZeroIdentity, isTamaguiModuleId } from '@tamagui/static'
 const root = path.dirname(path.dirname(fileURLToPath(import.meta.url)))
 const zeroDir = path.join(root, '.tamagui/zero')
 
-function build(fixture, outDir, extraArgs = []) {
+function build(fixture, outDir, extraArgs = [], extraEnv = {}) {
   try {
     const stdout = execFileSync(
       'npx',
@@ -23,7 +24,12 @@ function build(fixture, outDir, extraArgs = []) {
         cwd: root,
         encoding: 'utf8',
         stdio: ['ignore', 'pipe', 'pipe'],
-        env: { ...process.env, NODE_ENV: 'production', TAMAGUI_ZERO_FIXTURE: fixture },
+        env: {
+          ...process.env,
+          NODE_ENV: 'production',
+          TAMAGUI_ZERO_FIXTURE: fixture,
+          ...extraEnv,
+        },
       }
     )
     return { ok: true, output: stdout }
@@ -178,6 +184,112 @@ receipts.styledScopingProbe = {
     retainsStyledCall: zeroEmitted.code.includes('ZeroCard'),
   },
   neighborLiveExportSurvives: zeroEmitted.code.includes('zero-runtime fixture'),
+}
+
+// 6. the zero tier's own load ownership: the plugin injects the artifact's
+// stylesheet link into each HTML entry, so a zero entry graph with no HTML
+// entry strips the rules and loads nothing
+const noHtml = build('zero-no-html', 'dist-zero-no-html')
+receipts.zeroArtifactLoad = {
+  buildFailed: !noHtml.ok,
+  reportedItsOwnReason: noHtml.output.includes('has no HTML entry'),
+}
+if (noHtml.ok) throw new Error('a zero build with no HTML entry succeeded')
+if (!receipts.zeroArtifactLoad.reportedItsOwnReason) {
+  throw new Error('the no-HTML-entry control did not report its own diagnostic')
+}
+
+// 7. TAMAGUI_DOES_SSR_CSS='mutates-themes' declares runtime theme mutation, so
+// zero mode must refuse it outright rather than strip themes that get mutated
+const zeroMutates = build('zero', 'dist-zero-mutates', [], {
+  TAMAGUI_DOES_SSR_CSS: 'mutates-themes',
+})
+receipts.zeroRejectsThemeMutation = {
+  buildFailed: !zeroMutates.ok,
+  reportedRule4: zeroMutates.output.includes(
+    'Rule 4: TAMAGUI_DOES_SSR_CSS="mutates-themes"'
+  ),
+}
+if (zeroMutates.ok) throw new Error('zero mode accepted a runtime theme mutation claim')
+if (!receipts.zeroRejectsThemeMutation.reportedRule4) {
+  throw new Error('zero mode rejected mutates-themes without naming rule 4')
+}
+
+// 8. the compiled-global-CSS tier: the derived flag's measured effect on the
+// same fixture, and the three ways the artifact and the stripping fact diverge
+const clientBytes = (outDir) => {
+  const assets = path.join(root, outDir, 'assets')
+  const file = readdirSync(assets)
+    .filter((name) => name.endsWith('.js'))
+    .sort()
+  let raw = 0
+  let gzip = 0
+  let isView = 0
+  let rootRules = 0
+  for (const name of file) {
+    const buffer = readFileSync(path.join(assets, name))
+    raw += buffer.length
+    gzip += gzipSync(buffer, { level: 9 }).length
+    const text = buffer.toString('utf8')
+    isView += text.split('is_View').length - 1
+    rootRules += text.split(':root').length - 1
+  }
+  return { raw, gzip, isView, rootRules }
+}
+
+const globalBuild = build('global', 'dist-global')
+if (!globalBuild.ok)
+  throw new Error(`compiled-global-css build failed:\n${globalBuild.output}`)
+const derivedBytes = clientBytes('dist-global')
+
+// same source, same entry, same imported artifact: mutates-themes declares
+// runtime theme mutation, so the compiled-global claim is refused
+const ordinaryBuild = build('global', 'dist-global-mutates', [], {
+  TAMAGUI_DOES_SSR_CSS: 'mutates-themes',
+})
+if (!ordinaryBuild.ok)
+  throw new Error(`ordinary-tier build failed:\n${ordinaryBuild.output}`)
+const ordinaryBytes = clientBytes('dist-global-mutates')
+
+const artifactControls = {}
+for (const [name, fixture, phrase] of [
+  ['unimported', 'global-unimported', 'the entry graph never loads it'],
+  ['missing', 'global-missing', 'does not exist'],
+  ['stale', 'global-stale', 'is stale'],
+]) {
+  const result = build(fixture, `dist-${fixture}`)
+  artifactControls[name] = {
+    buildFailed: !result.ok,
+    reportedItsOwnReason: result.output.includes(phrase),
+  }
+  if (result.ok) throw new Error(`the ${name} artifact control built successfully`)
+  if (!artifactControls[name].reportedItsOwnReason) {
+    throw new Error(`the ${name} artifact control did not report its own diagnostic`)
+  }
+}
+// the missing and stale controls leave the artifact clobbered, so put the
+// tier's own output back in the state the browser assertions read
+const globalRestore = build('global', 'dist-global')
+if (!globalRestore.ok) {
+  throw new Error(`compiled-global-css restore failed:\n${globalRestore.output}`)
+}
+const mutatesRestore = build('global', 'dist-global-mutates', [], {
+  TAMAGUI_DOES_SSR_CSS: 'mutates-themes',
+})
+if (!mutatesRestore.ok) {
+  throw new Error(`ordinary-tier restore failed:\n${mutatesRestore.output}`)
+}
+
+receipts.compiledGlobalCSS = {
+  ordinaryTier: ordinaryBytes,
+  flagDerived: derivedBytes,
+  gzipRemoved: ordinaryBytes.gzip - derivedBytes.gzip,
+  designSystemRulesRemovedFromJS: ordinaryBytes.isView - derivedBytes.isView,
+  rootBlocksRemovedFromJS: ordinaryBytes.rootRules - derivedBytes.rootRules,
+  artifactControls,
+}
+if (receipts.compiledGlobalCSS.gzipRemoved <= 0) {
+  throw new Error('deriving TAMAGUI_DID_OUTPUT_CSS removed no JavaScript')
 }
 
 writeFileSync(
