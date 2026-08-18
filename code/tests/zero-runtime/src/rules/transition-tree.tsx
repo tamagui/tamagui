@@ -4,11 +4,10 @@ import { styled, View } from 'tamagui'
 /**
  * The authored tree behind the transition receipts.
  *
- * It lives in its own module because two builds render it: the zero entry
- * beside this file compiles it, and `transition.runtime.tsx` mounts the same
- * component through the ordinary runtime with the compiler switched off. The
- * differential test then compares what the browser computes for each, which is
- * only meaningful if both tiers are given the identical tree.
+ * It lives in its own module because the zero transition receipt and both
+ * differential routes render it. `differential.tsx` compiles it and
+ * `differential.runtime.tsx` mounts the same component with extraction off, so
+ * the browser comparison receives the identical authored tree.
  *
  * Three boxes, one variable: where the transition is written. A preset in a
  * `styled()` definition used to flatten with the prop dropped, so the element

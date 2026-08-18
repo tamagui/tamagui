@@ -19,6 +19,7 @@
     "@tamagui/core": "workspace:*",
     "@tamagui/dom": "workspace:*",
     "@tamagui/sheet": "workspace:*",
+    "@tamagui/tailwind": "workspace:*",
     "@tamagui/web": "workspace:*",
     "tamagui": "workspace:*"
   },

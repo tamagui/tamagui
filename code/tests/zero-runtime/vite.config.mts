@@ -1,8 +1,10 @@
 import { tamaguiPlugin } from '@tamagui/vite-plugin'
+import { tamaguiPlugin as tailwindTamaguiPlugin } from '@tamagui/tailwind/vite'
 import { mkdirSync, unlinkSync, writeFileSync } from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { defineConfig, type Plugin } from 'vite'
+import { generateDifferentialTree } from './scripts/generate-differential-tree.mjs'
 
 const entry = (name: string) => fileURLToPath(new URL(name, import.meta.url))
 
@@ -13,6 +15,11 @@ const entry = (name: string) => fileURLToPath(new URL(name, import.meta.url))
  * tier's stylesheet link is injected into an HTML entry.
  */
 const ruleEntry = process.env.TAMAGUI_ZERO_RULE
+const isDifferentialRule =
+  ruleEntry === 'differential' || ruleEntry === 'differential.runtime'
+if (isDifferentialRule) {
+  generateDifferentialTree()
+}
 const ruleHtml = () => {
   const dir = entry('.tamagui/rules')
   mkdirSync(dir, { recursive: true })
@@ -99,7 +106,7 @@ export default defineConfig({
   // silently describe each other's builds.
   publicDir: false,
   plugins: [
-    tamaguiPlugin(),
+    isDifferentialRule ? tailwindTamaguiPlugin() : tamaguiPlugin(),
     ...(fixture === 'global-missing' ? [artifactAdversary('missing')] : []),
     ...(fixture === 'global-stale' ? [artifactAdversary('stale')] : []),
   ],

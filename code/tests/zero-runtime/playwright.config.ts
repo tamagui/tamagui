@@ -92,10 +92,18 @@ export default defineConfig({
       stdout: 'ignore',
     },
     {
-      // the runtime half of the differential oracle, same authored tree as 7885
+      // the compiler-disabled half of the expanded differential oracle
       command:
-        'npx vite preview --outDir dist-transition-runtime --port 7887 --strictPort',
-      url: 'http://localhost:7887/.tamagui/rules/transition.runtime.html',
+        'npx vite preview --outDir dist-differential-runtime --port 7887 --strictPort',
+      url: 'http://localhost:7887/.tamagui/rules/differential.runtime.html',
+      reuseExistingServer: true,
+      stdout: 'ignore',
+    },
+    {
+      // ordinary compiled Tamagui retains the intentional bailout controls
+      command:
+        'npx vite preview --outDir dist-differential-compiled --port 7888 --strictPort',
+      url: 'http://localhost:7888/.tamagui/rules/differential.html',
       reuseExistingServer: true,
       stdout: 'ignore',
     },

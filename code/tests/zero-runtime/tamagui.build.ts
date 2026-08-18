@@ -46,7 +46,7 @@ const isRuleFixture = fixture?.startsWith('rules') === true
 const isReportFixture = fixture === 'report'
 
 export default {
-  components: ['tamagui'],
+  components: ['tamagui', '@tamagui/tailwind'],
   config:
     fixture === 'rules-motion' ? './tamagui.motion.config.ts' : './tamagui.config.ts',
   ...(fixture === 'rules-runtime' ? { disableExtraction: true } : {}),
