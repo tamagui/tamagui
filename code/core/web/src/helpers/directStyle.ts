@@ -77,7 +77,6 @@ type DirectAtomic = {
       default?: boolean
     }
   >
-  identifier: string
   signature: string
   styleObject: StyleObject
 }
@@ -98,7 +97,6 @@ const baseClausePrecedence = [0, 0, 0, 0] as const
 const stateSelectors: Record<string, string> = {
   hover: ':hover',
   press: ':active',
-  active: ':active',
   pressed: ':active',
   focus: ':focus',
   'focus-visible': ':focus-visible',
@@ -260,7 +258,7 @@ function groupCondition(state: GetStyleState, modifier: string, out: Condition) 
   const slash = modifier.indexOf('/')
   let stateName = modifier.slice(6, slash === -1 ? undefined : slash)
   const groupName = slash === -1 ? 'true' : modifier.slice(slash + 1)
-  if (stateName === 'active' || stateName === 'pressed') stateName = 'press'
+  if (stateName === 'pressed') stateName = 'press'
   const selector = stateSelectors[stateName]
   if (!selector || !groupName) return false
   out.selector += `:where(.t_group_${groupName}${selector} *)`
@@ -329,7 +327,7 @@ function getCondition(state: GetStyleState, source: string): Condition | null {
       modifier === 'ending'
     ) {
       modifier =
-        modifier === 'active' || modifier === 'pressed'
+        modifier === 'pressed'
           ? 'press'
           : modifier === 'starting'
             ? 'enter'
@@ -481,26 +479,23 @@ function tokenVariable(
       lookupName = lookupName.slice(dot + 1)
     }
   }
-  const themeValue = () => {
-    const value =
-      state.theme?.[lookupName] ||
-      state.conf.themes?.[state.flatThemeName || '']?.[lookupName]
-    return value ? fillTokenLookup(value, true, lookupName) : undefined
-  }
   if (category) {
     const own = state.conf.tokensParsed[category]?.[lookupName]
     if (own) return fillTokenLookup(own, false, lookupName)
     for (const sibling of ['color', 'space', 'size', 'radius', 'zIndex'] as const) {
       if (sibling !== category && state.conf.tokensParsed[sibling]?.[lookupName]) return
     }
-    return themeValue()
+  } else {
+    const first = lookupName.charCodeAt(0)
+    if ((first >= 48 && first <= 57) || first === 43 || first === 45 || first === 46) {
+      return
+    }
   }
-  const first = lookupName.charCodeAt(0)
-  if ((first >= 48 && first <= 57) || first === 43 || first === 45 || first === 46) {
-    return
-  }
-  const fromTheme = themeValue()
-  if (fromTheme) return fromTheme
+  const theme =
+    state.theme?.[lookupName] ||
+    state.conf.themes?.[state.flatThemeName || '']?.[lookupName]
+  if (theme) return fillTokenLookup(theme, true, lookupName)
+  if (category) return
   const token =
     state.conf.tokensParsed.space?.[lookupName] ||
     state.conf.tokensParsed.color?.[lookupName]
@@ -694,12 +689,12 @@ function directAtomic(
           },
         },
       }),
-      identifier,
       signature,
       styleObject: next,
     }
   } else {
-    const oldSelector = `.${existing.identifier}`
+    const previousIdentifier = existing.styleObject[StyleObjectIdentifier]
+    const oldSelector = `.${previousIdentifier}`
     const newSelector = `.${identifier}`
     const rules = existing.styleObject[StyleObjectRules]
     if (!condition && !isDefault && existing.conditions) {
@@ -714,7 +709,7 @@ function directAtomic(
         }
       }
     }
-    if (existing.identifier !== identifier) {
+    if (previousIdentifier !== identifier) {
       for (let index = 0; index < rules.length; index++) {
         rules[index] = rules[index].split(oldSelector).join(newSelector)
       }
@@ -770,7 +765,6 @@ function directAtomic(
       }
       existing.baseRules = nextRules.length
     }
-    existing.identifier = identifier
     existing.signature = signature
     existing.styleObject[StyleObjectIdentifier] = identifier
     existing.styleObject[1] = next[1]
@@ -1037,24 +1031,6 @@ function emitTransform(
   }
 }
 
-// hoisted: these are constants, and rebuilding them per call allocated five
-// objects on the way to answering a question about four integers
-const SLOT_PATTERNS_4: Record<number, number[]> = {
-  1: [0, 0, 0, 0],
-  2: [0, 1, 0, 1],
-  3: [0, 1, 2, 1],
-  4: [0, 1, 2, 3],
-}
-const SLOT_PATTERNS_2: Record<number, number[]> = { 1: [0, 0], 2: [0, 1] }
-
-function slotValues(parts: string[], count: number): string[] | null {
-  const pattern = (count === 4 ? SLOT_PATTERNS_4 : SLOT_PATTERNS_2)[parts.length]
-  if (!pattern) return null
-  const out = new Array<string>(pattern.length)
-  for (let i = 0; i < pattern.length; i++) out[i] = parts[pattern[i]]
-  return out
-}
-
 function emitResolved(
   state: GetStyleState,
   property: string,
@@ -1078,6 +1054,10 @@ function emitResolved(
   emitProperty(state, property, value, condition, merge, originalValue, contextOnly)
 }
 
+function shadowUnit(part: any) {
+  return typeof part === 'number' ? `${part}px` : part || '0px'
+}
+
 function emitWebShadow(
   state: DirectState,
   property: string,
@@ -1091,8 +1071,7 @@ function emitWebShadow(
   const offset = shadow.shadowOffset || { width: 0, height: 0 }
   const color = normalizeColor(shadow.shadowColor, shadow.shadowOpacity ?? 1)
   if (!color) return
-  const unit = (part: any) => (typeof part === 'number' ? `${part}px` : part || '0px')
-  const next = `${unit(offset.width)} ${unit(offset.height)} ${unit(shadow.shadowRadius)} ${color}`
+  const next = `${shadowUnit(offset.width)} ${shadowUnit(offset.height)} ${shadowUnit(shadow.shadowRadius)} ${color}`
   emitProperty(
     state,
     'boxShadow',
@@ -1116,11 +1095,10 @@ function emitWebTextShadow(
   shadow[property] = value
   const offset = shadow.textShadowOffset || { width: 0, height: 0 }
   if (!shadow.textShadowColor) return
-  const unit = (part: any) => (typeof part === 'number' ? `${part}px` : part || '0px')
   emitProperty(
     state,
     'textShadow',
-    `${unit(offset.width)} ${unit(offset.height)} ${unit(shadow.textShadowRadius)} ${shadow.textShadowColor}`,
+    `${shadowUnit(offset.width)} ${shadowUnit(offset.height)} ${shadowUnit(shadow.textShadowRadius)} ${shadow.textShadowColor}`,
     null,
     merge,
     originalValue,
@@ -1436,13 +1414,20 @@ function emitValue(
 
   if (typeof raw === 'string' && expanded.length > 1) {
     const parts = splitComponents(raw)
-    const slots = slotValues(parts, expanded.length)
-    if (slots) {
+    if (parts.length > 0 && parts.length <= (expanded.length === 4 ? 4 : 2)) {
       for (let index = 0; index < expanded.length; index++) {
+        const partIndex =
+          index === 0 || parts.length === 1
+            ? 0
+            : index === 1 || (index === 3 && parts.length < 4)
+              ? 1
+              : index === 2 && parts.length < 3
+                ? 0
+                : index
         emitResolved(
           state,
           expanded[index][0],
-          slots[index],
+          parts[partIndex],
           condition,
           merge,
           originalValue,

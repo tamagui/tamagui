@@ -234,6 +234,9 @@ test.each(tokenClauseCases)(
 test('press state matches press and active spellings', () => {
   const pressed = split({ opacity: '0.5 press:1' }, { press: true })
   expect(pressed.style?.opacity).toBe(1)
+
+  const active = split({ opacity: '0.5 active:1' }, { press: true })
+  expect(active.style?.opacity).toBe(1)
 })
 
 test('theme clauses follow the theme name chain', () => {
