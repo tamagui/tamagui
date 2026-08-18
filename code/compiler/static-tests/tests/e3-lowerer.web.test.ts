@@ -1043,6 +1043,31 @@ export const App = () => <Restricted padding={12} data-runtime="yes" />
   })
 })
 
+describe('atomic rule emission', () => {
+  test('emits one rule per identifier however many elements use it', () => {
+    const source = `
+import { View } from '@tamagui/core'
+export const App = () => (
+  <>
+    <View transition="medium" height={20} />
+    <View transition="medium" height={20} />
+    <View transition="medium" height={20} width={50} />
+  </>
+)
+`
+    const { plan } = compile(source)
+
+    expect(codes(plan)).toEqual([])
+    expect(plan.stats).toMatchObject({ lowered: 3, flattened: 3, bailed: 0 })
+    // three elements, one rule each. the width proves the fixture can still
+    // grow rules, so a plan that emitted nothing would not pass this
+    const occurrences = (rule: string) => plan.css.split(rule).length - 1
+    expect(occurrences('{height:20px}')).toBe(1)
+    expect(occurrences('{transition:all 300ms cubic-bezier(0.25, 0.1, 0.25, 1)}')).toBe(1)
+    expect(occurrences('{width:50px}')).toBe(1)
+  })
+})
+
 describe('animation props written in a styled() definition', () => {
   // The lowering decision reads the call site AND the styled definition's
   // defaults. A definition-only transition used to flatten with the prop

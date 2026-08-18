@@ -256,7 +256,12 @@ export function lowerModule({
   module = structural.module
   validateSourceEdits(source, structural.edits)
   const edits: SourceEdit[] = [...structural.edits]
-  const css: string[] = []
+  // One rule per identifier, first use wins, which is exactly what the runtime
+  // does: insertStyleRule's shouldInsertStyleRules skips an identifier already
+  // in the sheet (maxToInsert is 1) and appends the rest in first-use order.
+  // Emitting a rule once per element instead put the same
+  // `._t-1731853650{...}` into the output for every element that used it.
+  const css = new Set<string>()
   const diagnostics = [...module.diagnostics, ...structural.diagnostics]
   const dependencies = new Set([...module.dependencies, ...structural.dependencies])
   const imports = new Map<string, CandidateImport>(
@@ -349,7 +354,7 @@ export function lowerModule({
 
     diagnostics.push(...(result.diagnostics ?? []))
     edits.push(...result.edits)
-    css.push(...result.css)
+    for (const rule of result.css) css.add(rule)
     for (const candidateImport of result.imports) {
       if (!imports.has(candidateImport.content)) {
         imports.set(candidateImport.content, candidateImport)
@@ -379,7 +384,7 @@ export function lowerModule({
     projectGeneration: options.projectGeneration,
     structuralPassHash: structuralPass?.versionHash ?? `${target}-noop-v1`,
     edits,
-    css: css.join(''),
+    css: [...css].join(''),
     diagnostics,
     dependencies: [...dependencies].sort(compareCodeUnits),
     stats,
