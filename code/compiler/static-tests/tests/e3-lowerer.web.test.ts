@@ -1042,3 +1042,73 @@ export const App = () => <Restricted padding={12} data-runtime="yes" />
     expect(plan.css).toBe('')
   })
 })
+
+describe('animation props written in a styled() definition', () => {
+  // The lowering decision reads the call site AND the styled definition's
+  // defaults. A definition-only transition used to flatten with the prop
+  // dropped, so the element shipped with no transition, no CSS and no
+  // diagnostic. Three presets rather than one: the emitted CSS then names which
+  // of the three places was lowered, and the plain-View case is the control —
+  // if it ever stops emitting, the fixture is broken rather than passing.
+  test('lowers a configured preset from all three places it can be written', () => {
+    const source = `
+import { View, styled } from '@tamagui/core'
+const DefinitionCard = styled(View, { transition: 'medium', height: 20 })
+const PlainCard = styled(View, { height: 20 })
+export const App = () => (
+  <>
+    <View data-box="plain" transition="quick" height={20} />
+    <DefinitionCard data-box="definition" />
+    <PlainCard data-box="call-site" transition="lazy" />
+  </>
+)
+`
+    const { plan, output } = compile(source)
+
+    expect(codes(plan)).toEqual([])
+    expect(plan.stats).toMatchObject({ found: 3, lowered: 3, flattened: 3, bailed: 0 })
+    expect(output.code).not.toContain('transition="quick"')
+    expect(output.code).not.toContain('transition="lazy"')
+    const css = compactCss(plan.css)
+    expect(css).toContain('transition:all150mscubic-bezier(0.25,0.1,0.25,1)')
+    expect(css).toContain('transition:all300mscubic-bezier(0.25,0.1,0.25,1)')
+    expect(css).toContain('transition:all500mscubic-bezier(0.25,0.1,0.25,1)')
+  })
+
+  test('reports an animation that needs a runtime instead of dropping it', () => {
+    for (const definition of [
+      `animateOnly: ['opacity'], transition: 'all 200ms ease', opacity: 0.5`,
+      `animation: 'medium'`,
+      `animatePresence: true`,
+    ]) {
+      const source = `
+import { View, styled } from '@tamagui/core'
+const Card = styled(View, { ${definition}, height: 20 })
+export const App = () => <Card data-box="definition" />
+`
+      const { plan, output } = compile(source)
+
+      expect(codes(plan)).toEqual(['local/unsupported-target'])
+      expect(plan.diagnostics[0]?.zeroRule).toBe(5)
+      expect(plan.stats).toMatchObject({ lowered: 0, flattened: 0, bailed: 1 })
+      expect(output.changed).toBe(false)
+    }
+  })
+
+  test('names the styled definition when animateOnly is not on the element', () => {
+    const atCallSite = compile(`
+import { View } from '@tamagui/core'
+export const App = () => <View animateOnly={['opacity']} transition="medium" opacity={0.5} />
+`)
+    const inDefinition = compile(`
+import { View, styled } from '@tamagui/core'
+const Card = styled(View, { animateOnly: ['opacity'], transition: 'medium', opacity: 0.5 })
+export const App = () => <Card />
+`)
+
+    expect(atCallSite.plan.diagnostics[0]?.zeroMessage).toContain('animateOnly on View')
+    expect(inDefinition.plan.diagnostics[0]?.zeroMessage).toContain(
+      'animateOnly in the styled() definition of Card'
+    )
+  })
+})

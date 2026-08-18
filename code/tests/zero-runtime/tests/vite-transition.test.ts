@@ -48,3 +48,36 @@ test('a configured transition preset resolves to CSS and interpolates', async ({
     })
     .toBe('200px')
 })
+
+// The lowering decision reads the styled definition's defaults as well as the
+// call site. A definition-only preset used to flatten with the prop dropped, so
+// the element rendered with no transition and the build stayed green. Each box
+// carries a different preset, so the duration the browser reports names which
+// of the three places was lowered; the plain box above is the control, and a
+// run where it reads no transition is a broken fixture rather than a finding.
+test('a preset lowers from every place it can be written', async ({ page }) => {
+  const duration = (testId: string) =>
+    page
+      .locator(`[data-testid="${testId}"]`)
+      .evaluate((node) => getComputedStyle(node).transitionDuration)
+
+  expect(await duration('transition-box')).toBe('0.3s')
+  expect(await duration('definition-box')).toBe('0.5s')
+  expect(await duration('call-site-box')).toBe('0.15s')
+
+  const definition = page.locator('[data-testid="definition-box"]')
+  await page.click('[data-testid="transition-toggle"]')
+  // 120ms into `lazy`'s 500ms. without the transition this reads 200 already
+  await page.waitForTimeout(120)
+  const midFlight = await definition.evaluate((node) =>
+    Number.parseFloat(getComputedStyle(node).width)
+  )
+  expect(midFlight).toBeGreaterThan(50)
+  expect(midFlight).toBeLessThan(200)
+
+  await expect
+    .poll(async () => definition.evaluate((node) => getComputedStyle(node).width), {
+      timeout: 2000,
+    })
+    .toBe('200px')
+})

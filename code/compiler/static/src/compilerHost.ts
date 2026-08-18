@@ -1444,13 +1444,24 @@ export function createTamaguiCompilerHost(
           )
         }
       }
+      // A styled() definition's animation props decide the same things the call
+      // site's do, so the lowering decision reads both. completeProps merges
+      // them far below, long after this point, and reading only the call site
+      // here decided a definition's transition/animation/animateOnly as if it
+      // had never been written: the element flattened and the prop was dropped
+      // with no diagnostic. Same merge function and same precedence as
+      // completeProps, so there is one answer to "what is this prop's value".
+      const animationDefaultProps = core.getDefaultProps(component.staticConfig) ?? {}
+      const animationProps = core.mergeProps(animationDefaultProps, props)
       const animationNames = new Set([
         ...input.element.entries.flatMap((entry) =>
           entry.kind === 'prop' && runtimeAnimationProps.has(entry.name)
             ? [entry.name]
             : []
         ),
-        ...Object.keys(props).filter((name) => runtimeAnimationProps.has(name)),
+        ...Object.keys(animationProps).filter(
+          (name) => runtimeAnimationProps.has(name) && animationProps[name] !== undefined
+        ),
       ])
       const animateOnlyEntry = input.element.entries.find(
         (entry) => entry.kind === 'prop' && entry.name === 'animateOnly'
@@ -1464,7 +1475,11 @@ export function createTamaguiCompilerHost(
           {
             rule: 5,
             message: zeroRuleMessage(5, {
-              detail: `animateOnly on ${input.element.component.name}`,
+              // without the origin an author reads this against JSX that does
+              // not carry the prop, because the styled() definition does
+              detail: animateOnlyEntry
+                ? `animateOnly on ${input.element.component.name}`
+                : `animateOnly in the styled() definition of ${input.element.component.name}`,
             }),
           }
         )
@@ -1473,7 +1488,9 @@ export function createTamaguiCompilerHost(
         (entry) => entry.kind === 'prop' && entry.name === 'transition'
       )
       const animatedBy =
-        typeof props.animatedBy === 'string' ? props.animatedBy.trim() : null
+        typeof animationProps.animatedBy === 'string'
+          ? animationProps.animatedBy.trim()
+          : null
       const namedAnimationDriver =
         animatedBy === null ? null : options.tamaguiConfig.animationDrivers?.[animatedBy]
       const namedCssAnimationDriver =
@@ -1488,10 +1505,13 @@ export function createTamaguiCompilerHost(
       const resolvedCssTransition =
         animationNames.has('transition') && cssAnimationDriver
           ? resolveStaticCssTransition(
-              props.transition,
+              animationProps.transition,
               cssAnimationDriver.animations ?? {}
             )
           : null
+      // onto props, not animationProps: props is what completeProps merges over
+      // the defaults, so this is also how a resolved definition transition wins
+      // over the preset name the definition wrote
       if (resolvedCssTransition !== null) {
         props.transition = resolvedCssTransition
       }
@@ -1499,12 +1519,12 @@ export function createTamaguiCompilerHost(
         animationNames.has('animatedBy') &&
         !animationNames.has('transition') &&
         (dynamicStyleEntries.length > 0 ||
-          Object.keys(props).some(
+          Object.keys(animationProps).some(
             (name) =>
               name !== 'animatedBy' &&
               ((isStyleProp(name, component) &&
-                typeof props[name] === 'string' &&
-                props[name].includes(':')) ||
+                typeof animationProps[name] === 'string' &&
+                animationProps[name].includes(':')) ||
                 name === 'animationConfig' ||
                 name === 'forceStyle' ||
                 name === 'onTransition')
