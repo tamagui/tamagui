@@ -109,11 +109,8 @@ impl State {
                     )),
                     label_details: Some(CompletionItemLabelDetails {
                         description: Some(match entry.kind {
-                            EntryKind::Modifier(ModifierKind::Media) => "Tamagui media".into(),
-                            EntryKind::Modifier(ModifierKind::Theme) => "Tamagui theme".into(),
-                            EntryKind::Modifier(ModifierKind::State) => "Tamagui state".into(),
-                            EntryKind::Modifier(ModifierKind::Platform) => {
-                                "Tamagui platform".into()
+                            EntryKind::Modifier(kind) => {
+                                format!("Tamagui {}", modifier_label(kind))
                             }
                             _ => format!(
                                 "Tamagui {}",
@@ -162,10 +159,9 @@ impl State {
         self.ensure_vocabulary(&root, &config);
         let vocabulary = self.vocabularies.get(&root)?;
         let parsed = tamagui_grammar::value::parse(&site.value);
-        let clause = parsed.clause_at(cursor)?;
 
         // a modifier under the cursor explains itself and its media query
-        if let Some(modifier) = clause.modifiers.iter().find(|m| m.span.contains(cursor)) {
+        if let Some(modifier) = parsed.modifier_at(cursor) {
             let name = modifier.span.of(&site.value);
             let entry = vocabulary.modifiers.get(name)?;
             let body = match entry.kind {
@@ -192,8 +188,11 @@ impl State {
             });
         }
 
-        // otherwise the payload: show what it resolves to, per theme
-        let name = clause.payload.of(&site.value);
+        // otherwise the word under the cursor. A payload is a CSS component-value
+        // sequence, so `1px solid background` holds one name and two lengths,
+        // and hovering the whole payload found nothing at all.
+        let word = tamagui_grammar::value::word_at(&site.value, cursor);
+        let name = word.of(&site.value);
         let entry = vocabulary.values.get(name)?;
         let mut lines = Vec::new();
         match entry.kind {
@@ -226,8 +225,8 @@ impl State {
         let document = self.workspace.get(&uri)?;
         let range = lsp_range(
             document,
-            site.value_start + clause.payload.start,
-            site.value_start + clause.payload.end,
+            site.value_start + word.start,
+            site.value_start + word.end,
         )?;
         Some(Hover {
             contents: HoverContents::Markup(MarkupContent {
@@ -258,8 +257,14 @@ impl State {
         let mut out = Vec::new();
         for site in sites::all(&text, &config.style_props) {
             let parsed = tamagui_grammar::value::parse(&site.value);
-            for clause in &parsed.clauses {
-                let name = clause.payload.of(&site.value);
+            // one swatch per WORD of the base and of every payload: a value
+            // like `1px solid background` names one colour and two lengths
+            let spans: Vec<_> = parsed
+                .payloads()
+                .flat_map(|payload| tamagui_grammar::value::words(&site.value, payload))
+                .collect();
+            for span in spans {
+                let name = span.of(&site.value);
                 if name.is_empty() || !vocabulary.values.contains(name) {
                     continue;
                 }
@@ -272,8 +277,8 @@ impl State {
                 let Some(document) = self.workspace.get(&uri) else { continue };
                 let Some(range) = lsp_range(
                     document,
-                    site.value_start + clause.payload.start,
-                    site.value_start + clause.payload.end,
+                    site.value_start + span.start,
+                    site.value_start + span.end,
                 ) else {
                     continue;
                 };
@@ -371,12 +376,9 @@ impl State {
 }
 
 fn modifier_label(kind: ModifierKind) -> &'static str {
-    match kind {
-        ModifierKind::State => "state",
-        ModifierKind::Media => "media",
-        ModifierKind::Platform => "platform",
-        ModifierKind::Theme => "theme",
-    }
+    // the grammar names its own kinds, so a kind added there shows up here
+    // rather than needing a second table to be remembered
+    kind.as_str()
 }
 
 fn byte_offset(document: &Document, position: Position) -> Option<usize> {

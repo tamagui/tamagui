@@ -17,6 +17,8 @@ use fst::{IntoStreamer, Map, MapBuilder, Streamer};
 use rustc_hash::FxHashMap;
 use tamagui_config::ConfigSnapshot;
 
+use crate::modifier::{ModifierKind, ModifierRegistry};
+
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
 pub enum EntryKind {
     /// a theme key, e.g. `background`, `accent-color`
@@ -25,18 +27,6 @@ pub enum EntryKind {
     Token,
     /// a modifier usable as a `name:` prefix
     Modifier(ModifierKind),
-}
-
-#[derive(Clone, Copy, PartialEq, Eq, Debug)]
-pub enum ModifierKind {
-    /// `hover`, `press`, `focus`, ...
-    State,
-    /// a configured media key, e.g. `sm`, `gtMd`
-    Media,
-    /// `web`, `native`, `ios`, `android`
-    Platform,
-    /// a configured theme name, e.g. `dark`
-    Theme,
 }
 
 #[derive(Clone, Debug)]
@@ -53,13 +43,6 @@ pub struct Entry {
     /// expects to see.
     pub order: u32,
 }
-
-/// state modifiers are grammar-owned rather than config-owned, so they are
-/// fixed. these mirror `stateModifierNames` in @tamagui/style-grammar.
-pub const STATE_MODIFIERS: &[&str] =
-    &["hover", "press", "focus", "focusVisible", "focusWithin", "disabled", "enter", "exit"];
-
-pub const PLATFORM_MODIFIERS: &[&str] = &["web", "native", "ios", "android"];
 
 /// One searchable set: the entries plus an FST over their names.
 pub struct Index {
@@ -156,6 +139,9 @@ pub struct Vocabulary {
     /// the config revision this was built from, so a stale vocabulary is
     /// detectable rather than silently served
     pub revision: u64,
+    /// the one modifier namespace this vocabulary was built from, so parsing
+    /// and completion cannot disagree about which names exist
+    pub registry: ModifierRegistry,
 }
 
 impl Vocabulary {
@@ -200,44 +186,23 @@ impl Vocabulary {
             }
         }
 
+        // the registry decides which names exist and what kind each one is,
+        // including the group and container forms nobody stores; this only
+        // decides what to SHOW beside each one
+        let registry = ModifierRegistry::from_config(config);
         let mut modifiers = Vec::new();
-        for name in STATE_MODIFIERS {
+        for (name, kind) in registry.completion_names() {
+            let detail = match kind {
+                ModifierKind::Media => config
+                    .media_query(&name)
+                    .map(str::to_string)
+                    .unwrap_or_else(|| "media".to_string()),
+                other => other.as_str().to_string(),
+            };
             modifiers.push(Entry {
-                name: (*name).into(),
-                kind: EntryKind::Modifier(ModifierKind::State),
-                detail: "state".into(),
-                category: None,
-                order: modifiers.len() as u32,
-            });
-        }
-        for name in PLATFORM_MODIFIERS {
-            modifiers.push(Entry {
-                name: (*name).into(),
-                kind: EntryKind::Modifier(ModifierKind::Platform),
-                detail: "platform".into(),
-                category: None,
-                order: modifiers.len() as u32,
-            });
-        }
-        for (name, query) in &config.media {
-            modifiers.push(Entry {
-                name: name.clone(),
-                kind: EntryKind::Modifier(ModifierKind::Media),
-                detail: query.clone(),
-                category: None,
-                order: modifiers.len() as u32,
-            });
-        }
-        for theme in config.themes.theme_names() {
-            // sub-themes (`dark_accent_Button`) are real theme names but are
-            // not what anyone writes as a modifier, so only roots are offered
-            if theme.contains('_') {
-                continue;
-            }
-            modifiers.push(Entry {
-                name: theme.into(),
-                kind: EntryKind::Modifier(ModifierKind::Theme),
-                detail: "theme".into(),
+                name: name.into(),
+                kind: EntryKind::Modifier(kind),
+                detail: detail.into_boxed_str(),
                 category: None,
                 order: modifiers.len() as u32,
             });
@@ -258,6 +223,7 @@ impl Vocabulary {
             modifiers: Index::build(modifiers),
             by_category,
             revision: config.revision,
+            registry,
         }
     }
 }

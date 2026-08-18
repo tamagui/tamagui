@@ -12,3 +12,7 @@ tamagui-config = { path = "../tamagui-config" }
 # levenshtein powers the "did you mean" suggestions in diagnostics
 fst = { version = "0.4", features = ["levenshtein"] }
 rustc-hash.workspace = true
+
+[dev-dependencies]
+# the conformance vectors are JSON the grammar package generates
+serde_json.workspace = true

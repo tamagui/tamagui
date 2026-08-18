@@ -53,6 +53,39 @@ jobs:
       - name: Lint
         run: bun run lint
 
+  grammar-conformance:
+    # @tamagui/style-grammar owns what a flat value means, and the Rust LSP's
+    # tables and conformance vectors are GENERATED from it. This job is what
+    # makes that true rather than aspirational: it fails when the generated
+    # files on disk no longer match what the grammar would emit, and it runs the
+    # Rust suite that checks the parser against those vectors.
+    #
+    # It lives here rather than in lsp-build.yml on purpose. That workflow only
+    # triggers on `code/lsp/**`, so a change to the grammar would have moved the
+    # source of truth without ever running the check that the copy still agrees,
+    # which is exactly how the two forked the first time.
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Install
+        uses: ./.github/actions/install
+
+      - name: Install Rust
+        run: rustup toolchain install stable --profile minimal --no-self-update
+
+      - name: The generated Rust tables and vectors are current
+        working-directory: code/core/style-grammar
+        run: bun scripts/generateRustGrammar.ts --check
+
+      - name: The Rust parser passes the generated vectors
+        working-directory: code/lsp
+        run: cargo test --workspace
+
   playwright-browsers:
     runs-on: ubuntu-latest
     timeout-minutes: 20

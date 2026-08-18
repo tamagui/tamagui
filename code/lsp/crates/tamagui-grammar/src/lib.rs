@@ -7,11 +7,17 @@
 
 use tamagui_config::ConfigSnapshot;
 
+pub mod generated;
+pub mod modifier;
 pub mod value;
 pub mod vocab;
 
-pub use value::{Clause, FlatValue, Modifier, Span};
-pub use vocab::{Entry, EntryKind, Index, ModifierKind, Vocabulary};
+pub use modifier::{
+    canonical_modifier, ContainerModifier, GroupModifier, ModifierKind, ModifierLookup,
+    ModifierRegistry,
+};
+pub use value::{words, word_at, Clause, FlatValue, Modifier, ParseErrorCode, Span};
+pub use vocab::{Entry, EntryKind, Index, Vocabulary};
 
 /// What the cursor is sitting in, which decides what may be offered.
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
@@ -56,17 +62,8 @@ pub fn complete<'a>(
         .and_then(|c| vocabulary.category(c))
         .unwrap_or(&vocabulary.values);
 
-    let Some(clause) = parsed.clause_at(offset) else {
-        // between clauses, or at the very start: offer a fresh value
-        return Completions {
-            replace: Span::new(offset, offset),
-            context: CursorContext::Value,
-            entries: values.starting_with(""),
-        };
-    };
-
     // a cursor inside one of the `modifier:` prefixes completes a modifier
-    if let Some(modifier) = clause.modifiers.iter().find(|m| m.span.contains(offset)) {
+    if let Some(modifier) = parsed.modifier_at(offset) {
         let typed = &value[modifier.span.start..offset];
         return Completions {
             replace: modifier.span,
@@ -75,10 +72,13 @@ pub fn complete<'a>(
         };
     }
 
-    // otherwise the cursor is in the payload
-    let typed = &value[clause.payload.start..offset.max(clause.payload.start)];
+    // otherwise the cursor is in a value, and the unit it replaces is the WORD
+    // it sits in rather than the whole payload: `hover:1px solid re|` has three
+    // components and accepting an entry may only touch the third
+    let word = value::word_at(value, offset);
+    let typed = &value[word.start..offset.max(word.start)];
     Completions {
-        replace: clause.payload,
+        replace: word,
         context: CursorContext::Value,
         entries: values.starting_with(typed),
     }
@@ -104,41 +104,75 @@ pub fn diagnose(
     value: &str,
 ) -> Vec<Diagnostic> {
     let mut out = Vec::new();
-    let parsed = value::parse(value);
+    // parsed against the registry, so an unknown modifier is the GRAMMAR's
+    // verdict rather than a second opinion from the completion index: those
+    // two disagreed about `group-hover` and `@sm`, which the index does not
+    // enumerate and the grammar accepts
+    let parsed = value::parse_with(value, &vocabulary.registry);
 
-    for clause in &parsed.clauses {
-        for modifier in &clause.modifiers {
-            let name = modifier.span.of(value);
-            if name.is_empty() || vocabulary.modifiers.contains(name) {
+    for error in &parsed.errors {
+        // a delimiter left open and a clause with no payload yet are what a
+        // half-typed value LOOKS like, and an editor that squiggles `hover:`
+        // and `rgba(1, ` while they are being typed is noise rather than help.
+        // The compiler still refuses both; this is a diagnostic, not the gate.
+        if matches!(
+            error.code,
+            value::ParseErrorCode::EmptyPayload
+                | value::ParseErrorCode::UnterminatedString
+                | value::ParseErrorCode::UnterminatedFunction
+        ) {
+            continue;
+        }
+        let span = match error.modifier {
+            Some(span) => span,
+            None => Span::new(error.index, (error.index + 1).min(value.len())),
+        };
+        let message = match error.code {
+            value::ParseErrorCode::UnregisteredModifier => {
+                let name = span.of(value);
+                let mut message = format!("unknown modifier `{name}`");
+                if let Some(best) = vocabulary.modifiers.did_you_mean(name, 2).first() {
+                    message.push_str(&format!(", did you mean `{}`?", best.name));
+                }
+                message
+            }
+            value::ParseErrorCode::EmptyModifier => "a modifier chain has an empty segment".into(),
+            value::ParseErrorCode::InvalidCharacter => format!(
+                "`{}` cannot appear in a value: it would end the declaration or rule",
+                span.of(value)
+            ),
+            // filtered above
+            _ => continue,
+        };
+        out.push(Diagnostic { span, message });
+    }
+
+    // a payload is a CSS component-value sequence, so each WORD in it is a
+    // candidate name; checking the whole payload meant `1px solid red` was
+    // never checked at all
+    for payload in parsed.payloads() {
+        for word in value::words(value, payload) {
+            let text = word.of(value);
+            if text.is_empty() || !is_bare_identifier(text) {
                 continue;
             }
-            let mut message = format!("unknown modifier `{name}`");
-            if let Some(best) = vocabulary.modifiers.did_you_mean(name, 2).first() {
-                message.push_str(&format!(", did you mean `{}`?", best.name));
+            if vocabulary.values.contains(text) || config.themes.has_key(text) {
+                continue;
             }
-            out.push(Diagnostic { span: modifier.span, message });
-        }
-
-        let payload = clause.payload.of(value);
-        if payload.is_empty() || !is_bare_identifier(payload) {
-            continue;
-        }
-        if vocabulary.values.contains(payload) || config.themes.has_key(payload) {
-            continue;
-        }
-        // a bare identifier that is not in the vocabulary is only worth
-        // reporting when something close exists; otherwise it is a CSS keyword
-        // this grammar does not enumerate (`auto`, `inherit`, `red`, ...).
-        //
-        // distance 2 rather than 1 because a transposition (`backgorund`) is
-        // two Levenshtein edits and is one of the most common real typos; at
-        // distance 1 it produced no suggestion and therefore no diagnostic at
-        // all, so the misspelling passed silently.
-        if let Some(best) = nearest(&vocabulary.values, payload) {
-            out.push(Diagnostic {
-                span: clause.payload,
-                message: format!("unknown value `{payload}`, did you mean `{}`?", best.name),
-            });
+            // a bare identifier that is not in the vocabulary is only worth
+            // reporting when something close exists; otherwise it is a CSS
+            // keyword this grammar does not enumerate (`auto`, `red`, ...).
+            //
+            // distance 2 rather than 1 because a transposition (`backgorund`)
+            // is two Levenshtein edits and is one of the most common real
+            // typos; at distance 1 it produced no suggestion and therefore no
+            // diagnostic at all, so the misspelling passed silently.
+            if let Some(best) = nearest(&vocabulary.values, text) {
+                out.push(Diagnostic {
+                    span: word,
+                    message: format!("unknown value `{text}`, did you mean `{}`?", best.name),
+                });
+            }
         }
     }
 
@@ -395,6 +429,87 @@ mod tests {
         for value in ["background", "background hover:background-hover", "4", "sm:4"] {
             assert!(diagnose(&v, &config, value).is_empty(), "flagged {value}");
         }
+    }
+
+    #[test]
+    fn accepting_a_completion_inside_a_multi_word_payload_keeps_its_siblings() {
+        // the property that makes flat values completable where className is
+        // not, one level deeper than the clause: a payload is several CSS
+        // components, and only the one under the cursor may be replaced
+        let (_, v) = setup();
+        let value = "hover:1px solid background-h";
+        let c = complete(&v, value, value.len(), None);
+        assert_eq!(c.context, CursorContext::Value);
+        assert_eq!(c.replace.of(value), "background-h");
+        assert_eq!(names(&c), vec!["background-hover"]);
+
+        let accepted = &c.entries[0].name;
+        let mut next = String::from(&value[..c.replace.start]);
+        next.push_str(accepted);
+        next.push_str(&value[c.replace.end..]);
+        assert_eq!(next, "hover:1px solid background-hover");
+    }
+
+    #[test]
+    fn the_grammars_own_modifier_spellings_are_the_ones_offered() {
+        // the drift this crate carried: camelCase `focusVisible`, no `active`,
+        // and no parameterized forms at all
+        let (_, v) = setup();
+        let offered: Vec<&str> = v.modifiers.entries().iter().map(|e| &*e.name).collect();
+        assert!(offered.contains(&"focus-visible"), "{offered:?}");
+        assert!(offered.contains(&"focus-within"), "{offered:?}");
+        assert!(offered.contains(&"group-hover"), "{offered:?}");
+        assert!(offered.contains(&"@sm"), "{offered:?}");
+        assert!(!offered.contains(&"focusVisible"), "{offered:?}");
+    }
+
+    #[test]
+    fn a_parameterized_or_aliased_modifier_is_not_diagnosed_as_unknown() {
+        let (config, v) = setup();
+        for value in [
+            "active:red",
+            "pressed:red",
+            "starting:red",
+            "focus-visible:red",
+            "group-hover:red",
+            "group-hover/card:red",
+            "@sm:red",
+            "@sm/card:red",
+        ] {
+            assert!(diagnose(&v, &config, value).is_empty(), "flagged {value}");
+        }
+    }
+
+    #[test]
+    fn a_multi_word_payload_is_diagnosed_component_by_component() {
+        // checking the payload whole meant `1px solid backgorund` was never
+        // checked at all, because the payload is not an identifier
+        let (config, v) = setup();
+        let value = "1px solid backgorund";
+        let d = diagnose(&v, &config, value);
+        assert_eq!(d.len(), 1, "{d:?}");
+        assert_eq!(d[0].span.of(value), "backgorund");
+    }
+
+    #[test]
+    fn a_half_typed_value_is_not_diagnosed() {
+        // every one of these is a state the cursor passes through on the way to
+        // a valid value, and the editor sees all of them
+        let (config, v) = setup();
+        for value in ["hover:", "rgba(1, ", "url(\"http://x", "background hover:"] {
+            assert!(diagnose(&v, &config, value).is_empty(), "flagged {value}");
+        }
+    }
+
+    #[test]
+    fn a_value_that_would_escape_its_declaration_is_diagnosed() {
+        let (config, v) = setup();
+        let value = "red; position: fixed";
+        let d = diagnose(&v, &config, value);
+        assert!(
+            d.iter().any(|x| x.message.contains("end the declaration or rule")),
+            "{d:?}"
+        );
     }
 
     #[test]
