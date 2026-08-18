@@ -1,4 +1,14 @@
+import Module from 'node:module'
 import { join } from 'node:path'
+
+// resolver internals used to purge caches between invocations, absent from
+// @types/node and, in _pathCache's case, from bun. imported rather than read
+// off the ambient `module`, which does not exist when this package is loaded
+// as ESM.
+const ModuleInternals = Module as unknown as {
+  _resolveFilename(request: string, ...args: any[]): string
+  _pathCache?: Record<string, string>
+}
 
 let didRegisterOnce = false
 
@@ -7,8 +17,7 @@ export async function generateThemes(inputFile: string) {
 
   if (!didRegisterOnce) {
     didRegisterOnce = true
-    const Module = require('node:module')
-    const nodeResolve = Module._resolveFilename
+    const nodeResolve = ModuleInternals._resolveFilename
     // the unregsiter does basically nothing and keeps a process running
     require('esbuild-register/dist/node').register({
       hookIgnoreNodeModules: false,
@@ -18,8 +27,8 @@ export async function generateThemes(inputFile: string) {
     // prefer real node
     // resolution (package exports) for bare specifiers, falling back to the
     // tsconfig-paths chain for packages whose dist isn't built.
-    const chained = Module._resolveFilename
-    Module._resolveFilename = function (request: string, ...args: any[]) {
+    const chained = ModuleInternals._resolveFilename
+    ModuleInternals._resolveFilename = function (request: string, ...args: any[]) {
       if (request[0] !== '.' && !request.startsWith('/')) {
         try {
           return nodeResolve.call(this, request, ...args)
@@ -56,12 +65,10 @@ export async function generateThemes(inputFile: string) {
   }
 }
 
-/**
- * value -> name of variable
- */
-const dedupedTokens = new Map<string, string>()
-
 function generatedThemesToTypescript(themes: Record<string, any>) {
+  // value -> name of variable. per invocation: a process-wide map would emit
+  // the previous run's colors into this run's `colors` array.
+  const dedupedTokens = new Map<string, string>()
   const dedupedThemes = new Map<string, object>()
   const dedupedThemeToNames = new Map<string, string[]>()
 
@@ -188,19 +195,16 @@ function purgeCache(moduleName) {
     delete require.cache[mod.id]
   })
 
-  // @ts-ignore
-  if (!module.constructor || !module.constructor._pathCache) {
-    // bun doesn't have this
+  const pathCache = ModuleInternals._pathCache
+  if (!pathCache) {
     return
   }
 
   // Remove cached paths to the module.
   // Thanks to @bentael for pointing this out.
-  // @ts-ignore
-  Object.keys(module.constructor._pathCache).forEach((cacheKey) => {
+  Object.keys(pathCache).forEach((cacheKey) => {
     if (cacheKey.indexOf(moduleName) > 0) {
-      // @ts-ignore
-      delete module.constructor._pathCache[cacheKey]
+      delete pathCache[cacheKey]
     }
   })
 }

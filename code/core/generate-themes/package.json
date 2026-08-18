@@ -31,7 +31,9 @@
     "build": "tamagui-build",
     "watch": "bun run build --watch",
     "clean": "tamagui-build clean",
-    "clean:build": "tamagui-build clean:build"
+    "clean:build": "tamagui-build clean:build",
+    "test": "bun run build && bun ./test/generate-themes-twice.mjs && bun ./test/generate-themes-twice.mjs ../src/generate-themes.ts && node ./test/generate-themes-twice.mjs ../dist/cjs/generate-themes.cjs",
+    "test:web": "bun run test"
   },
   "dependencies": {
     "@tamagui/types": "workspace:*",
