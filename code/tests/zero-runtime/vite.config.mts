@@ -1,9 +1,28 @@
 import { tamaguiPlugin } from '@tamagui/vite-plugin'
-import { unlinkSync, writeFileSync } from 'node:fs'
+import { mkdirSync, unlinkSync, writeFileSync } from 'node:fs'
+import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { defineConfig, type Plugin } from 'vite'
 
 const entry = (name: string) => fileURLToPath(new URL(name, import.meta.url))
+
+/**
+ * The rule fixtures. Each one is a single authored module built as its own zero
+ * entry, so a failure names exactly one rule. `TAMAGUI_ZERO_RULE` picks the
+ * module; the HTML document that loads it is generated here because the zero
+ * tier's stylesheet link is injected into an HTML entry.
+ */
+const ruleEntry = process.env.TAMAGUI_ZERO_RULE
+const ruleHtml = () => {
+  const dir = entry('.tamagui/rules')
+  mkdirSync(dir, { recursive: true })
+  const file = path.join(dir, `${ruleEntry}.html`)
+  writeFileSync(
+    file,
+    `<!doctype html>\n<html>\n  <head><meta charset="utf-8" /><title>zero rule ${ruleEntry}</title></head>\n  <body>\n    <div id="root"></div>\n    <script type="module" src="/src/rules/${ruleEntry}.tsx"></script>\n  </body>\n</html>\n`
+  )
+  return file
+}
 
 // One fixture, several builds. `zero` is the gate. `negative` reaches the runtime
 // through a dynamic import the compiler-local accounting cannot attribute, which
@@ -25,9 +44,14 @@ const inputs = {
   'global-unimported': 'global-unimported.html',
   'global-missing': 'global.html',
   'global-stale': 'global.html',
+  // generated per rule, see ruleHtml
+  rules: 'index.html',
+  'rules-report': 'index.html',
+  'rules-motion': 'index.html',
 } as const
 
 const fixture = (process.env.TAMAGUI_ZERO_FIXTURE || 'zero') as keyof typeof inputs
+const isRuleFixture = (fixture as string).startsWith('rules')
 
 const artifact = entry('.tamagui/global/tamagui-global.css')
 
@@ -66,6 +90,6 @@ export default defineConfig({
     ...(fixture === 'global-stale' ? [artifactAdversary('stale')] : []),
   ],
   build: {
-    rollupOptions: { input: entry(inputs[fixture]) },
+    rollupOptions: { input: isRuleFixture ? ruleHtml() : entry(inputs[fixture]) },
   },
 })

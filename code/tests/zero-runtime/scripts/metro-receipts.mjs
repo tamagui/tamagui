@@ -104,12 +104,39 @@ if (!receipts.negativeControl.failureNamesForbiddenModule) {
 const live = buildZero('src/live-reference.tsx')
 receipts.liveReferenceControl = {
   buildFailed: !live.ok,
-  reportedByCompiler: live.output.includes('zero/live-tamagui-reference'),
-  namedTheBinding: live.output.includes('"getTokens"'),
+  reportedByCompiler: live.output.includes('Rule 7 zero/design-state-read'),
+  namedTheBinding: live.output.includes(
+    'Zero-runtime rule 7: getTokens reads Tamagui design state in JavaScript.'
+  ),
 }
 if (live.ok) throw new Error('a live Tamagui reference built successfully')
 if (!receipts.liveReferenceControl.reportedByCompiler) {
   throw new Error('a live Tamagui reference was not reported by the compiler gate')
+}
+if (!receipts.liveReferenceControl.namedTheBinding) {
+  throw new Error('the live-reference control did not name the design-state API it read')
+}
+
+// 2c. every violating site in every module of the entry graph, collected before
+// failing, in one deterministic order
+const multi = buildZero('src/rules/multi.tsx')
+const multiViolations = read('metro-zero.violations.json')
+receipts.multiFileAggregation = {
+  buildFailed: !multi.ok,
+  mode: multiViolations.mode,
+  violations: multiViolations.violations.map((violation) => ({
+    file: violation.file,
+    line: violation.line,
+    column: violation.column,
+    rule: violation.rule,
+    code: violation.code,
+  })),
+}
+if (multi.ok) throw new Error('the multi-file rule fixture built successfully')
+if (multiViolations.violations.length !== 4) {
+  throw new Error(
+    `the multi-file fixture reported ${multiViolations.violations.length} violations, expected 4`
+  )
 }
 
 // 3. an illegal static import of a declared island

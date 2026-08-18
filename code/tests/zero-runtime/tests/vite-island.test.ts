@@ -134,3 +134,44 @@ test('both entries load the same single CSS artifact', async ({ page }) => {
   expect(css).toContain('--background:#0b2545')
   expect(css).toContain('width:137px')
 })
+
+test('the island loader recovers a missing artifact link, and says so loudly', async ({
+  page,
+}) => {
+  // The one accepted runtime recovery in this mode. It exists because
+  // "unimported" is not decidable at build time for a published zero artifact on
+  // every integration, so this drives the state it exists for and asserts both
+  // halves: it recovers, and it names the artifact, the island and the
+  // integration rather than fixing the page in silence.
+  const errors: string[] = []
+  page.on('console', (message) => {
+    if (message.type() === 'error') errors.push(message.text())
+  })
+  await page.addInitScript(() => {
+    document.addEventListener('DOMContentLoaded', () => {
+      for (const link of document.querySelectorAll('link[rel="stylesheet"]')) {
+        if ((link.getAttribute('href') || '').includes('tamagui-zero.css')) link.remove()
+      }
+    })
+  })
+  await page.goto('/')
+  await page.waitForSelector('[data-testid="island-open"]')
+  await page.click('[data-testid="island-open"]')
+  await page.waitForSelector('[data-testid="island-portal-frame"]')
+
+  const recovered = await page.evaluate(() =>
+    [...document.querySelectorAll('link[data-tamagui-zero-css]')].map((link) =>
+      link.getAttribute('href')
+    )
+  )
+  expect(recovered).toHaveLength(1)
+  expect(recovered[0]).toContain('tamagui-zero.css')
+
+  const loud = errors.find((text) => text.includes('[tamagui zero-runtime]'))
+  expect(loud).toBeTruthy()
+  expect(loud).toContain('did not link the generated CSS artifact')
+  expect(loud).toContain('tamagui-zero.css')
+  expect(loud).toContain('SheetIsland')
+  expect(loud).toContain('vite')
+  expect(loud).toContain('On a correct build this never happens')
+})

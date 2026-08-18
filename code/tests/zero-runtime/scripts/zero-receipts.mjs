@@ -62,8 +62,12 @@ if (zeroGraph.forbidden.length) throw new Error('zero build shipped forbidden mo
 // 2. the negative control: the same check must fail
 const negative = build('negative', 'dist-negative')
 const negativeGraph = read('vite-dist-negative.graph.json')
+const negativeViolations = read('vite-dist-negative.violations.json')
 receipts.negativeControl = {
   buildFailed: !negative.ok,
+  // the point of this control: the compiler-local accounting has nothing to
+  // attribute, so the two gates really are independent variables
+  compilerViolations: negativeViolations.count,
   forbidden: negativeGraph.forbidden,
   // the dynamic import lands the runtime in a lazy chunk, so what the failure
   // must name is the forbidden module itself
@@ -75,18 +79,28 @@ if (negative.ok)
   throw new Error('the negative control built successfully; the graph check cannot fail')
 if (!negativeGraph.forbidden.length)
   throw new Error('the negative control reported no forbidden module')
+if (negativeViolations.count !== 0) {
+  throw new Error(
+    'the compiler-local gate reported the opaque access, so it is not the graph gate that caught it'
+  )
+}
 
 // 2b. a live design-state read the compiler CAN see: it must be reported, and
 // above all it must NOT be silently erased into a runtime ReferenceError
 const live = build('live', 'dist-live')
 receipts.liveReferenceControl = {
   buildFailed: !live.ok,
-  reportedByCompiler: live.output.includes('zero/live-tamagui-reference'),
-  namedTheBinding: live.output.includes('"getTokens"'),
+  reportedByCompiler: live.output.includes('Rule 7 zero/design-state-read'),
+  namedTheBinding: live.output.includes(
+    'Zero-runtime rule 7: getTokens reads Tamagui design state in JavaScript.'
+  ),
 }
 if (live.ok) throw new Error('a live Tamagui reference built successfully')
 if (!receipts.liveReferenceControl.reportedByCompiler) {
   throw new Error('a live Tamagui reference was not reported by the compiler gate')
+}
+if (!receipts.liveReferenceControl.namedTheBinding) {
+  throw new Error('the live-reference control did not name the design-state API it read')
 }
 
 // 3. an illegal static import of a declared island
@@ -290,6 +304,205 @@ receipts.compiledGlobalCSS = {
 }
 if (receipts.compiledGlobalCSS.gzipRemoved <= 0) {
   throw new Error('deriving TAMAGUI_DID_OUTPUT_CSS removed no JavaScript')
+}
+
+// 9. Phase 3: the compiler contract. Every rule gets one behavioral fixture and
+// the authored fix beside it, so each control has an independent variable: the
+// violating module must fail with that rule's exact message, and the fixed
+// module must build green with an empty forbidden-module list.
+const ruleBuild = (entry, fixture = 'rules') =>
+  build(fixture, `dist-${entry}`, [], { TAMAGUI_ZERO_RULE: entry })
+
+const RULE_CONTROLS = [
+  {
+    rule: 1,
+    message:
+      'Zero-runtime rule 1: View cannot receive a prop spread because the compiler cannot prove it is style-free. Pass non-style props explicitly or move this module to a full-runtime island.',
+  },
+  {
+    rule: 2,
+    message:
+      'Zero-runtime rule 2: component expression isWide ? View : Text does not resolve to one literal lowerable host component. Use a literal Tamagui or html.* component, or move this module to a full-runtime island.',
+  },
+  {
+    rule: 3,
+    message:
+      'Zero-runtime rule 3: value for fontFamily on Text cannot be lowered: Style prop fontFamily could not be evaluated. Use a supported build-time value or move this module to a full-runtime island.',
+  },
+  {
+    rule: 4,
+    message:
+      '[tamagui zero-runtime] Rule 4: View uses theme, which creates a runtime component theme boundary. Replace it with a static <Theme name="..."> wrapper (use name="inverse" for themeInverse) or move this module to a full-runtime island.',
+  },
+  {
+    rule: 5,
+    message:
+      'Zero-runtime rule 5: animateOnly on View requires a component animation runtime. Use a static CSS transition or move this module to a full-runtime island.',
+  },
+  {
+    rule: 6,
+    message:
+      'Zero-runtime rule 6: ZStack does not lower to one host element with className and is island-only. Move this module to a declared full-runtime island.',
+  },
+  {
+    rule: 7,
+    message:
+      'Zero-runtime rule 7: useTheme reads Tamagui design state in JavaScript. Express the condition in CSS or move this module to a full-runtime island.',
+  },
+]
+
+const perRule = {}
+for (const control of RULE_CONTROLS) {
+  const entry = `rule${control.rule}`
+  const violating = ruleBuild(entry)
+  const fixed = ruleBuild(`${entry}.fixed`)
+  const fixedGraph = read(`vite-dist-${entry}.fixed.graph.json`)
+  perRule[entry] = {
+    violatingBuildFailed: !violating.ok,
+    printedExactMessage: violating.output.includes(control.message),
+    namedItsRule: violating.output.includes(`Rule ${control.rule} `),
+    fixedBuilds: fixed.ok,
+    fixedForbidden: fixedGraph.forbidden.length,
+    fixedTamaguiModules: fixedGraph.tamaguiModules.length,
+  }
+  const result = perRule[entry]
+  if (!result.violatingBuildFailed) throw new Error(`${entry} built successfully`)
+  if (!result.printedExactMessage) {
+    throw new Error(
+      `${entry} did not print the rule ${control.rule} message:\n${violating.output}`
+    )
+  }
+  if (!result.namedItsRule) throw new Error(`${entry} did not name rule ${control.rule}`)
+  if (!result.fixedBuilds) {
+    throw new Error(`${entry}.fixed did not build:\n${fixed.output}`)
+  }
+  if (result.fixedForbidden || result.fixedTamaguiModules) {
+    throw new Error(`${entry}.fixed shipped Tamagui modules, so it is not a zero graph`)
+  }
+}
+
+// every violating site in every module, collected before failing, in one order
+const multi = ruleBuild('multi')
+const multiReport = build('rules-report', 'dist-multi-report', [], {
+  TAMAGUI_ZERO_RULE: 'multi',
+})
+const multiEnforceJSON = read('vite-dist-multi.violations.json')
+const multiReportJSON = read('vite-dist-multi-report.violations.json')
+
+// the config-level rule 5 control: the same fixture with a non-CSS driver
+const motionDriver = build('rules-motion', 'dist-rules-motion', [], {
+  TAMAGUI_ZERO_RULE: 'rule1.fixed',
+})
+
+// a bare side-effect Tamagui import: unknown effects, so it fails rather than
+// being erased
+const sideEffect = ruleBuild('side-effect')
+
+// an exported app-local styled() used only in lowered JSX, and the escape
+// control: a `.ts` module the zero transform never runs on that reads the same
+// exported binding as a value
+const styledExport = ruleBuild('styled-export')
+const styledExportGraph = read('vite-dist-styled-export.graph.json')
+const styledExportEscape = ruleBuild('styled-export-escape')
+
+// the four animated-number hooks, imported from the public barrel and rewritten
+// to the leaf
+const animatedNumber = ruleBuild('animated-number')
+const animatedNumberGraph = read('vite-dist-animated-number.graph.json')
+
+receipts.compilerContract = {
+  perRule,
+  multiFile: {
+    buildFailed: !multi.ok,
+    violations: multiEnforceJSON.violations.map((violation) => ({
+      file: violation.file,
+      line: violation.line,
+      column: violation.column,
+      rule: violation.rule,
+      code: violation.code,
+    })),
+  },
+  reportMode: {
+    exitedSuccessfully: multiReport.ok,
+    sameViolations:
+      JSON.stringify(multiEnforceJSON.violations) ===
+      JSON.stringify(multiReportJSON.violations),
+    enforceMode: multiEnforceJSON.mode,
+    reportMode: multiReportJSON.mode,
+  },
+  configDriverControl: {
+    buildFailed: !motionDriver.ok,
+    reportedItsOwnReason: motionDriver.output.includes(
+      '[tamagui zero-runtime] Rule 5: createTamagui animations must resolve to the CSS driver.'
+    ),
+  },
+  sideEffectImport: {
+    buildFailed: !sideEffect.ok,
+    reportedItsOwnReason: sideEffect.output.includes('zero/side-effect-import'),
+  },
+  exportedStyledErasure: {
+    buildFailed: !styledExport.ok,
+    forbidden: styledExportGraph.forbidden.length,
+    tamaguiModules: styledExportGraph.tamaguiModules.length,
+    escapeControlFailed: !styledExportEscape.ok,
+    escapeControlNamedTheImporter: styledExportEscape.output.includes(
+      'importer(s) in this entry graph were never zero-transformed'
+    ),
+  },
+  animatedNumberLeaf: {
+    built: animatedNumber.ok,
+    tamaguiModules: animatedNumberGraph.tamaguiModules,
+    forbidden: animatedNumberGraph.forbidden.length,
+  },
+}
+
+if (multi.ok) throw new Error('the multi-file rule fixture built successfully')
+if (multiEnforceJSON.violations.length !== 4) {
+  throw new Error(
+    `the multi-file fixture reported ${multiEnforceJSON.violations.length} violations, expected 4`
+  )
+}
+if (!receipts.compilerContract.reportMode.exitedSuccessfully) {
+  throw new Error(`report mode did not exit successfully:\n${multiReport.output}`)
+}
+if (!receipts.compilerContract.reportMode.sameViolations) {
+  throw new Error('report mode emitted a different violation list than enforce mode')
+}
+if (motionDriver.ok) throw new Error('zero mode accepted a non-CSS animation driver')
+if (!receipts.compilerContract.configDriverControl.reportedItsOwnReason) {
+  throw new Error('the config driver control did not report the rule 5 config message')
+}
+if (sideEffect.ok) throw new Error('a bare side-effect Tamagui import built successfully')
+if (!receipts.compilerContract.sideEffectImport.reportedItsOwnReason) {
+  throw new Error('the side-effect import control did not report its own diagnostic')
+}
+if (!styledExport.ok) {
+  throw new Error(`the exported styled fixture did not build:\n${styledExport.output}`)
+}
+if (styledExportGraph.tamaguiModules.length) {
+  throw new Error('the exported styled definition was not erased from the zero graph')
+}
+if (styledExportEscape.ok) {
+  throw new Error('an untransformed importer of an erased export built successfully')
+}
+if (!receipts.compilerContract.exportedStyledErasure.escapeControlNamedTheImporter) {
+  throw new Error('the erased-export gate did not name the untransformed importer')
+}
+if (!animatedNumber.ok) {
+  throw new Error(`the animated-number fixture did not build:\n${animatedNumber.output}`)
+}
+if (
+  animatedNumberGraph.tamaguiModules.length !== 1 ||
+  !animatedNumberGraph.tamaguiModules[0].includes('animated-number')
+) {
+  throw new Error(
+    `the animated-number fixture did not resolve to the leaf alone: ${JSON.stringify(
+      animatedNumberGraph.tamaguiModules
+    )}`
+  )
+}
+if (animatedNumberGraph.forbidden.length) {
+  throw new Error('the animated-number fixture shipped a forbidden module')
 }
 
 writeFileSync(

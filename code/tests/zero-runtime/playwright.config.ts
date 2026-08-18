@@ -29,6 +29,11 @@ export default defineConfig({
       use: { baseURL: 'http://localhost:7882' },
     },
     {
+      name: 'vite-animated-number',
+      testMatch: /vite-animated-number\.test\.ts/,
+      use: { baseURL: 'http://localhost:7884' },
+    },
+    {
       name: 'next',
       testMatch: /next-.*\.test\.ts/,
       use: { baseURL: 'http://localhost:7879' },
@@ -61,6 +66,12 @@ export default defineConfig({
     {
       command: 'npx vite preview --outDir dist-global-mutates --port 7882 --strictPort',
       url: 'http://localhost:7882/global.html',
+      reuseExistingServer: true,
+      stdout: 'ignore',
+    },
+    {
+      command: 'npx vite preview --outDir dist-animated-number --port 7884 --strictPort',
+      url: 'http://localhost:7884/.tamagui/rules/animated-number.html',
       reuseExistingServer: true,
       stdout: 'ignore',
     },

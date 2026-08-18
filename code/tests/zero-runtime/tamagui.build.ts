@@ -13,9 +13,15 @@ const fixture = process.env.TAMAGUI_ZERO_FIXTURE
 const isFullRuntimeProbe = fixture === 'full'
 const isGlobalCSSTier = fixture?.startsWith('global') === true
 
+// The rule fixtures build one authored module at a time, with no island, so the
+// enforce and report builds see the identical input and can be compared. `rules`
+// enforces; `rules-report` runs the same analysis and exits successfully.
+const isRuleFixture = fixture?.startsWith('rules') === true
+
 export default {
   components: ['tamagui'],
-  config: './tamagui.config.ts',
+  config:
+    fixture === 'rules-motion' ? './tamagui.motion.config.ts' : './tamagui.config.ts',
   ...(isFullRuntimeProbe
     ? { experimental: {} }
     : isGlobalCSSTier
@@ -23,8 +29,18 @@ export default {
           outputCSS: './.tamagui/global/tamagui-global.css',
           experimental: {},
         }
-      : {
-          outputCSS: './.tamagui/zero/tamagui-zero.css',
-          experimental: { zeroRuntime: { islands: ['src/islands/SheetIsland.tsx'] } },
-        }),
+      : isRuleFixture
+        ? // `report` keeps the full runtime and owns no artifact, so it sets no
+          // outputCSS: the compiled-global tier is a separate feature and would
+          // otherwise require these entries to import an artifact they do not own
+          fixture === 'rules-report'
+          ? { experimental: { zeroRuntime: 'report' as const } }
+          : {
+              outputCSS: './.tamagui/zero/tamagui-zero.css',
+              experimental: { zeroRuntime: true },
+            }
+        : {
+            outputCSS: './.tamagui/zero/tamagui-zero.css',
+            experimental: { zeroRuntime: { islands: ['src/islands/SheetIsland.tsx'] } },
+          }),
 } satisfies TamaguiBuildOptions
