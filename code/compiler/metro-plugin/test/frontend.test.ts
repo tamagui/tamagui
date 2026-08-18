@@ -748,6 +748,7 @@ export const App = () => <View padding={12} />
 import { View } from '@fixture/ui'
 export const App = () => <View width={20} height={10} />
 `
+    await write(join(projectRoot, '.gitignore'), 'dist/\n')
     await write(join(projectRoot, 'package.json'), '{"name":"e4-router-entry"}\n')
     await write(appPath, appSource)
     await write(distPath, appSource)
@@ -816,6 +817,101 @@ export const App = () => <View width={20} height={10} />
       expect(reported).not.toContain('metro/transform-failed')
     } finally {
       await frontend.close()
+    }
+  })
+
+  test('keeps the plan-cache options hash stable when a sibling bundler re-emits content-hashed output', async () => {
+    const projectRoot = await mkdtemp(join(packageRoot, 'test/.e4-emitted-output-'))
+    temporaryRoots.push(projectRoot)
+    const appPath = join(projectRoot, 'src/App.tsx')
+    const entryPath = join(projectRoot, 'src/index.tsx')
+    const uiPath = join(projectRoot, 'ui/index.ts')
+    const cacheRoot = join(projectRoot, 'cache')
+    const appSource = `
+import { View } from '@fixture/ui'
+export const App = () => <View width={20} height={10} />
+`
+    // a web bundler's output directory, declared by the project the same way
+    // every real project declares one, sitting beside the app's own source
+    await write(join(projectRoot, '.gitignore'), 'cache/\ndist-web/\n')
+    await write(join(projectRoot, 'package.json'), '{"name":"e4-emitted-output"}\n')
+    await write(appPath, appSource)
+    await write(entryPath, "export { App } from './App'\n")
+    await write(uiPath, 'export const View = (_props) => null\n')
+    const emitted = (hash: string) => join(projectRoot, `dist-web/main.${hash}.js`)
+    await write(emitted('a1b2c3'), 'console.log(1)\n')
+
+    const loadedProject = loadTamaguiSync({
+      platform: 'native',
+      config: tamaguiConfigPath,
+      components: ['@tamagui/core'],
+    })
+    const viewInfo = loadedProject.components?.find(
+      ({ moduleName }) => moduleName === '@tamagui/core'
+    )?.nameToInfo.View
+    expect(viewInfo).toBeTruthy()
+
+    const createFrontend = () =>
+      new MetroCompilerFrontend({
+        projectRoot,
+        cacheRoot,
+        watch: false,
+        originalBabelTransformerPath: transformerPath,
+        loadCompilerProject: async () => ({
+          projectInfo: {
+            ...loadedProject,
+            components: [{ moduleName: '@fixture/ui', nameToInfo: { View: viewInfo! } }],
+          },
+          componentModules: [{ moduleName: '@fixture/ui', id: uiPath }],
+          generation: 'e4-emitted-output-v1',
+        }),
+        resolver: {
+          resolveRequest: (context: any, specifier: string, platform: string) => {
+            if (specifier === '@fixture/ui') {
+              return { type: 'sourceFile', filePath: uiPath }
+            }
+            return context.resolveRequest(context, specifier, platform)
+          },
+          sourceExts: ['js', 'jsx', 'ts', 'tsx'],
+          unstable_enablePackageExports: true,
+        },
+      })
+
+    const scanOptions = {
+      dev: false,
+      entryFiles: [entryPath],
+      hot: false,
+      platform: 'ios',
+      transform: { experimentalImportSupport: true },
+    }
+
+    const cold = createFrontend()
+    let firstHash: string | null
+    try {
+      await cold.ensureValidCache(scanOptions)
+      const cache = new MetroCompilerCache(cold.cacheRootFor('ios'))
+      firstHash = (await cache.validate()).optionsHash
+      // the control: the walk still reaches authored source, so a stable hash
+      // below cannot come from a walk that found nothing
+      expect((await cache.read(appPath, appSource))?.plan.stats.lowered).toBe(1)
+      // and the emitted bundle is not planned
+      expect(await cache.read(emitted('a1b2c3'), 'console.log(1)\n')).toBeNull()
+    } finally {
+      await cold.close()
+    }
+    expect(firstHash).toBeTruthy()
+
+    // the sibling web build runs again and emits under a new content hash
+    await rm(emitted('a1b2c3'), { force: true })
+    await write(emitted('d4e5f6'), 'console.log(2)\n')
+
+    const warm = createFrontend()
+    try {
+      await warm.ensureValidCache(scanOptions)
+      const cache = new MetroCompilerCache(warm.cacheRootFor('ios'))
+      expect((await cache.validate()).optionsHash).toBe(firstHash)
+    } finally {
+      await warm.close()
     }
   })
 })

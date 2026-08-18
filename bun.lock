@@ -80,6 +80,7 @@
         "@jridgewell/trace-mapping": "0.3.31",
         "@tamagui/compiler-core": "workspace:*",
         "@tamagui/static": "workspace:*",
+        "ignore": "^5.3.2",
       },
       "devDependencies": {
         "@tamagui/build": "workspace:*",
@@ -2350,7 +2351,9 @@
       "dependencies": {
         "@tamagui/config": "workspace:*",
         "@tamagui/core": "workspace:*",
+        "@tamagui/dom": "workspace:*",
         "@tamagui/sheet": "workspace:*",
+        "@tamagui/web": "workspace:*",
         "tamagui": "workspace:*",
       },
       "devDependencies": {

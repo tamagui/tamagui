@@ -1,7 +1,9 @@
-import { watch, type FSWatcher } from 'node:fs'
+import { existsSync, watch, type FSWatcher } from 'node:fs'
 import { readFile, readdir, realpath } from 'node:fs/promises'
 import { createRequire } from 'node:module'
-import { basename, join, relative, resolve } from 'node:path'
+import { basename, dirname, join, relative, resolve, sep } from 'node:path'
+
+import ignore, { type Ignore } from 'ignore'
 
 import {
   ProjectGraph,
@@ -121,39 +123,74 @@ function scanOptionsHash(
 // source only through require.context), so reachability from the entry alone
 // discovers nothing there. Project source is walked directly and seeded into
 // the scan alongside the entry; imports then extend the graph outside the
-// project root (workspace packages) exactly as before. Build output and
-// platform scaffolding are pruned: they hold no authored JSX, and seeding
-// compiled artifacts by walk would plan files nothing imports.
-const walkExcludedDirs = new Set([
-  'node_modules',
-  'ios',
-  'android',
-  'dist',
-  'build',
-  'coverage',
-  'types',
-  'web-build',
-])
+// project root (workspace packages) exactly as before.
+//
+// The walked list is both the seed set and the plan cache's options hash, so it
+// has to be authored source only. Build output is whatever the project already
+// declares as ignored, read with git's own rules: a directory-name list cannot
+// know that `dist-metro`, `out` or `public/assets` are output, and a sibling
+// bundler's content-hashed filenames then re-key the plan cache on every
+// unrelated rebuild, forcing Metro to rescan a project that never changed.
+// `node_modules` is skipped structurally instead, because that is the same
+// externality boundary the resolver draws and it must hold with or without a
+// declaration.
+interface IgnoreScope {
+  dir: string
+  matcher: Ignore
+}
 
 async function walkProjectSources(root: string): Promise<string[]> {
+  // git reads every .gitignore from the repository root down to the file, so an
+  // app nested in a monorepo inherits the declarations made above it
+  const inherited: string[] = []
+  let ancestor = root
+  while (!existsSync(join(ancestor, '.git'))) {
+    const parent = dirname(ancestor)
+    if (parent === ancestor) break
+    inherited.unshift(parent)
+    ancestor = parent
+  }
+  const rootScopes: IgnoreScope[] = []
+  for (const dir of inherited) {
+    const source = await readFile(join(dir, '.gitignore'), 'utf8').catch(() => null)
+    if (source) rootScopes.push({ dir, matcher: ignore().add(source) })
+  }
+
   const found: string[] = []
-  const stack = [root]
+  const stack: { dir: string; scopes: IgnoreScope[] }[] = [
+    { dir: root, scopes: rootScopes },
+  ]
   while (stack.length) {
-    const dir = stack.pop()!
+    const { dir, scopes } = stack.pop()!
     let entries
     try {
       entries = await readdir(dir, { withFileTypes: true })
     } catch {
       continue
     }
+    let active = scopes
+    if (entries.some((entry) => entry.isFile() && entry.name === '.gitignore')) {
+      const source = await readFile(join(dir, '.gitignore'), 'utf8').catch(() => null)
+      if (source) active = [...scopes, { dir, matcher: ignore().add(source) }]
+    }
     for (const entry of entries) {
-      if (entry.name.startsWith('.')) continue
+      if (entry.name.startsWith('.') || entry.name === 'node_modules') continue
+      const isDirectory = entry.isDirectory()
+      if (!isDirectory && !(entry.isFile() && isCompilerSourceFile(entry.name))) continue
       const path = join(dir, entry.name)
-      if (entry.isDirectory()) {
-        if (!walkExcludedDirs.has(entry.name)) stack.push(path)
-      } else if (entry.isFile() && isCompilerSourceFile(path)) {
-        found.push(path)
+      let ignored = false
+      for (const scope of active) {
+        const relativePath = relative(scope.dir, path)
+        if (!relativePath || relativePath.startsWith('..')) continue
+        const candidate = relativePath.split(sep).join('/') + (isDirectory ? '/' : '')
+        if (scope.matcher.ignores(candidate)) {
+          ignored = true
+          break
+        }
       }
+      if (ignored) continue
+      if (isDirectory) stack.push({ dir: path, scopes: active })
+      else found.push(path)
     }
   }
   return found.sort(compareCodeUnits)
