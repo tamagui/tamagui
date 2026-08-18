@@ -3006,3 +3006,46 @@ The lane work itself was never at risk: item 3 was committed, items 2 and 6 were
 in the tree, items 4 and 5 had authored nothing. That was confirmed against the
 stash objects rather than from the workers' own reports, which is what surfaced
 the two inaccurate ones.
+
+### Item 3 landed: the bailout diagnostic now names the term that actually failed
+
+`9503af1d71`. The compiler's derived predicate is renamed to `canFlatten`, and
+the bailout picks its message from whichever of the three terms failed, in the
+same order as the AND: `acceptsClassName === false`, then `neverFlatten`, then
+`context`. The public `staticConfig.acceptsClassName` field is untouched and is
+still what the predicate reads. Renaming that would be a breaking change to
+public surface and was explicitly out of scope.
+
+Verified against the regenerated metric rather than the worker's summary: zero
+rows still claim `does not accept className`, and the former 206 Button rows now
+read `Button is never flattened (behavior HOC)`.
+
+**Two things about that metric that anyone quoting it needs to know.** The
+regenerated fixture is not a like-for-like successor to the audited one, so the
+before/after numbers cannot be subtracted:
+
+- The corpus grew from 253 files to 265, and found elements from 2,595 to 2,645.
+  Other campaign work added files the scanner picks up.
+- `animation runtime` bailouts fell from 81 to 34, which has nothing to do with
+  this change. That is `0d28fe6707` (reading a `styled()` definition's animation
+  props when deciding lowering) finally showing up in a baseline that had been
+  stale since before it landed. Total bailed fell 517 to 497 for the same
+  reason, not because this diagnostic fixed anything.
+
+The diagnostic change itself moves no element between lowered and bailed. It
+only relabels. `component runtime contract` went 340 to 346, which is corpus
+growth.
+
+Also worth noting for the plan's own record: section 1.2 inferred Button fails
+on both `neverFlatten` and `context`. It does, and the ordering reports
+`neverFlatten` first, so `provides a styled context` does not appear in the
+metric at all. That is correct behaviour, not a missing branch.
+
+### Gate 4 verdict, for the record
+
+Received from p25843 at `93950e9540`: the published 15x mount gap is gone. Mount
+`medianPairedRatio` 1.464x with a spread wide enough that it is not publishable
+as a precise figure, and rerender 0.826x in v3's favour. Item 10 closes when
+p26092's republished artifacts and the staleness guard land. A precision re-run
+is optional and owner-gated. Already relayed to the owner; recorded here only so
+the campaign has it.
