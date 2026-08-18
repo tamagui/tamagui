@@ -271,6 +271,18 @@ export function createComponent<
   BaseProps = never,
   BaseStyles extends object = never,
 >(staticConfig: StaticConfig) {
+  // Zero-runtime mode: compiler reference erasure is what removes this module
+  // from the graph, and the bundle gate is what proves it. This is the loud
+  // secondary failure for a reference erasure missed, and it lets Vite and
+  // webpack fold the body to a stub. The full `process.env` comparison is
+  // written out here on purpose: anything between it and the bundler (a helper,
+  // a const, a config read) makes it unfoldable.
+  if (process.env.TAMAGUI_RUNTIME === 'zero') {
+    throw new Error(
+      `[tamagui zero-runtime] createComponent ran in a zero-runtime graph. No Tamagui component renderer ships in this mode, so a component reference survived compilation. Fix the site or move the owning module to a declared full-runtime island.`
+    )
+  }
+
   let config: TamaguiInternalConfig | null = null
   let resolvedDefaultProps: Record<string, any> | undefined
   let didResolveDefaultProps = false

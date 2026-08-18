@@ -96,6 +96,18 @@ function isNamesOnlyThemeProjection(
 export function createTamagui<Conf extends CreateTamaguiProps>(
   configIn: Conf
 ): InferTamaguiConfig<Conf> {
+  // Zero-runtime mode: config parsing and CSS generation run in the separate
+  // 'full' evaluation environment that produces the owned CSS artifact, so
+  // reaching this from a zero client graph means a config reference survived
+  // compilation. Reference erasure is what removes the module; this throw is the
+  // loud secondary failure and the seam Vite and webpack fold the body at. The
+  // full `process.env` comparison is written out here on purpose.
+  if (process.env.TAMAGUI_RUNTIME === 'zero') {
+    throw new Error(
+      `[tamagui zero-runtime] createTamagui ran in a zero-runtime graph. Config parsing and CSS generation happen at build time in this mode and the bundler loads the generated CSS artifact. Remove the client config reference or make this entry full-runtime.`
+    )
+  }
+
   // if config already exists (e.g., from another copy of tamagui in vite ssr), reuse it
   const existingConfig = getConfigMaybe()
 
