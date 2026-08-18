@@ -910,7 +910,7 @@ export type CreateTamaguiConfig<
   // Support both single driver and multi-driver config
   // Multi-driver: { default: cssDriver, spring: motiDriver }
   // Single: AnimationDriver<E>
-  animations: AnimationDriver<E> | AnimationsConfigObject
+  animations: AnimationDriverLike<E> | AnimationsConfigObject
   // phantom type for preserving driver keys - never set at runtime, only for type inference
   animationDriverKeys?: AnimDriverKeys
   settings: H
@@ -986,9 +986,9 @@ type EmptyTamaguiSettings = {
 
 // Helper to extract animation config from AnimationDriver<Config> or multi-driver object
 type ExtractAnimationConfig<E> =
-  E extends AnimationDriver<infer Config>
+  E extends AnimationDriverLike<infer Config>
     ? Config
-    : E extends { default: AnimationDriver<infer Config> }
+    : E extends { default: AnimationDriverLike<infer Config> }
       ? Config
       : E extends GenericAnimations
         ? E
@@ -998,9 +998,9 @@ type ExtractAnimationConfig<E> =
 // Single driver: returns 'default'
 // Multi-driver { default: x, css: y }: returns 'default' | 'css'
 type ExtractAnimationDriverKeys<E> =
-  E extends AnimationDriver<any>
+  E extends AnimationDriverLike<any>
     ? 'default'
-    : E extends { default: AnimationDriver<any> }
+    : E extends { default: AnimationDriverLike<any> }
       ? Extract<keyof E, string>
       : 'default'
 
@@ -1413,11 +1413,11 @@ export type BaseStyleProps = {
  * Animation drivers config - can be a single driver or named drivers object.
  * If object, must include a 'default' key.
  */
-export type AnimationsConfig = AnimationDriver<any> | AnimationsConfigObject
+export type AnimationsConfig = AnimationDriverLike<any> | AnimationsConfigObject
 
 export type AnimationsConfigObject = {
-  default: AnimationDriver<any>
-  [key: string]: AnimationDriver<any>
+  default: AnimationDriverLike<any>
+  [key: string]: AnimationDriverLike<any>
 }
 
 export type CreateTamaguiProps = {
@@ -3450,7 +3450,7 @@ export type UseAnimatedNumber<
   N extends UniversalAnimatedNumber<any> = UniversalAnimatedNumber<any>,
 > = (initial: number) => N
 
-export type AnimationDriver<A extends AnimationConfig = AnimationConfig> = {
+type AnimationDriverBase<A extends AnimationConfig = AnimationConfig> = {
   isReactNative?: boolean
   /** What style format the driver expects as input: 'css' (CSS variables) or 'value' (resolved values) */
   inputStyle?: 'css' | 'value'
@@ -3459,22 +3459,35 @@ export type AnimationDriver<A extends AnimationConfig = AnimationConfig> = {
   needsCustomComponent?: boolean
   avoidReRenders?: boolean
   onMount?: () => void
-  /** When true, this is a stub driver with no real animation support */
-  isStub?: boolean
-  useAnimations: UseAnimationHook
-  usePresence: () => UsePresenceResult
-  ResetPresence: (props: {
-    children?: React.ReactNode
-    disabled?: boolean
-  }) => React.ReactNode
-  useAnimatedNumber: UseAnimatedNumber
-  useAnimatedNumberStyle: UseAnimatedNumberStyle
-  useAnimatedNumbersStyle: UseAnimatedNumbersStyle
-  useAnimatedNumberReaction: UseAnimatedNumberReaction
   animations: A
   View?: any
   Text?: any
 }
+
+export type AnimationDriver<A extends AnimationConfig = AnimationConfig> =
+  AnimationDriverBase<A> & {
+    /** When true, this is a stub driver with no real animation support */
+    isStub?: boolean
+    useAnimations: UseAnimationHook
+    usePresence: () => UsePresenceResult
+    ResetPresence: (props: {
+      children?: React.ReactNode
+      disabled?: boolean
+    }) => React.ReactNode
+    useAnimatedNumber: UseAnimatedNumber
+    useAnimatedNumberStyle: UseAnimatedNumberStyle
+    useAnimatedNumbersStyle: UseAnimatedNumbersStyle
+    useAnimatedNumberReaction: UseAnimatedNumberReaction
+  }
+
+export type AnimationDriverStub<A extends AnimationConfig = AnimationConfig> =
+  AnimationDriverBase<A> & {
+    isStub: true
+  }
+
+export type AnimationDriverLike<A extends AnimationConfig = AnimationConfig> =
+  | AnimationDriver<A>
+  | AnimationDriverStub<A>
 
 export type UseAnimationProps = TamaguiComponentPropsBase & Record<string, any>
 

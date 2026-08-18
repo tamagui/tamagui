@@ -21,6 +21,7 @@ import { mediaState as globalMediaState } from './mediaState'
 import type {
   AllGroupContexts,
   AnimationDriver,
+  AnimationDriverLike,
   ClassNamesObject,
   ComponentContextI,
   DebugProp,
@@ -94,7 +95,7 @@ type StyleSplitter = (
   startedUnhydrated?: boolean,
   debug?: DebugProp,
   // resolved animation driver (respects animatedBy prop)
-  animationDriver?: AnimationDriver | null
+  animationDriver?: AnimationDriverLike | null
 ) => null | GetStyleResult
 
 function isPlainObject(value: unknown): value is Record<string, any> {
@@ -341,7 +342,8 @@ export const getSplitStyles: StyleSplitter = (
   const driver =
     animationDriver ||
     componentContext?.animationDriver ||
-    (conf.animations as AnimationDriver)
+    (conf.animations as AnimationDriverLike)
+  const resolvedDriver = driver?.isStub ? null : (driver as AnimationDriver | null)
 
   if (props.passThrough) {
     return null
@@ -425,7 +427,7 @@ export const getSplitStyles: StyleSplitter = (
     flatMediaState: mediaState,
     flatGroupContext: groupContext,
     // resolved animation driver (respects animatedBy prop)
-    animationDriver: driver,
+    animationDriver: resolvedDriver,
   }
 
   // only used by compiler

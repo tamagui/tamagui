@@ -518,7 +518,7 @@ export type CreateTamaguiConfig<A extends GenericTokens, B extends GenericThemes
     };
     shorthands: C;
     media: D;
-    animations: AnimationDriver<E> | AnimationsConfigObject;
+    animations: AnimationDriverLike<E> | AnimationsConfigObject;
     animationDriverKeys?: AnimDriverKeys;
     settings: H;
 };
@@ -561,11 +561,11 @@ type EmptyFonts = {};
 type EmptyTamaguiSettings = {
     allowedStyleValues: false;
 };
-type ExtractAnimationConfig<E> = E extends AnimationDriver<infer Config> ? Config : E extends {
-    default: AnimationDriver<infer Config>;
+type ExtractAnimationConfig<E> = E extends AnimationDriverLike<infer Config> ? Config : E extends {
+    default: AnimationDriverLike<infer Config>;
 } ? Config : E extends GenericAnimations ? E : EmptyAnimations;
-type ExtractAnimationDriverKeys<E> = E extends AnimationDriver<any> ? 'default' : E extends {
-    default: AnimationDriver<any>;
+type ExtractAnimationDriverKeys<E> = E extends AnimationDriverLike<any> ? 'default' : E extends {
+    default: AnimationDriverLike<any>;
 } ? Extract<keyof E, string> : 'default';
 export type InferTamaguiConfig<Conf> = Conf extends ConfProps<infer A, infer B, infer C, infer D, infer E, infer F, infer H, infer V> ? TamaguiInternalConfig<A extends GenericTokens ? A : EmptyTokens, B extends GenericThemes ? ThemesWithVariables<B, V> : EmptyThemes, C extends GenericShorthands ? C : EmptyShorthands, D extends GenericMedia ? D : EmptyMedia, ExtractAnimationConfig<E>, F extends GenericFonts ? F : EmptyFonts, H extends GenericTamaguiSettings ? H : EmptyTamaguiSettings, ExtractAnimationDriverKeys<E>> : unknown;
 export type GenericTamaguiConfig = CreateTamaguiConfig<GenericTokens, GenericThemes, GenericShorthands, GenericMedia, GenericAnimations, GenericFonts>;
@@ -836,10 +836,10 @@ export type BaseStyleProps = {
  * Animation drivers config - can be a single driver or named drivers object.
  * If object, must include a 'default' key.
  */
-export type AnimationsConfig = AnimationDriver<any> | AnimationsConfigObject;
+export type AnimationsConfig = AnimationDriverLike<any> | AnimationsConfigObject;
 export type AnimationsConfigObject = {
-    default: AnimationDriver<any>;
-    [key: string]: AnimationDriver<any>;
+    default: AnimationDriverLike<any>;
+    [key: string]: AnimationDriverLike<any>;
 };
 export type CreateTamaguiProps = {
     reactNative?: any;
@@ -1982,7 +1982,7 @@ export type UseAnimatedNumberReaction<V extends UniversalAnimatedNumber<any> = U
 export type UseAnimatedNumberStyle<V extends UniversalAnimatedNumber<any> = UniversalAnimatedNumber<any>> = (val: V, getStyle: (current: any) => any) => any;
 export type UseAnimatedNumbersStyle<V extends UniversalAnimatedNumber<any> = UniversalAnimatedNumber<any>> = (vals: V[], getStyle: (...currentValues: any[]) => any) => any;
 export type UseAnimatedNumber<N extends UniversalAnimatedNumber<any> = UniversalAnimatedNumber<any>> = (initial: number) => N;
-export type AnimationDriver<A extends AnimationConfig = AnimationConfig> = {
+type AnimationDriverBase<A extends AnimationConfig = AnimationConfig> = {
     isReactNative?: boolean;
     /** What style format the driver expects as input: 'css' (CSS variables) or 'value' (resolved values) */
     inputStyle?: 'css' | 'value';
@@ -1991,6 +1991,11 @@ export type AnimationDriver<A extends AnimationConfig = AnimationConfig> = {
     needsCustomComponent?: boolean;
     avoidReRenders?: boolean;
     onMount?: () => void;
+    animations: A;
+    View?: any;
+    Text?: any;
+};
+export type AnimationDriver<A extends AnimationConfig = AnimationConfig> = AnimationDriverBase<A> & {
     /** When true, this is a stub driver with no real animation support */
     isStub?: boolean;
     useAnimations: UseAnimationHook;
@@ -2003,10 +2008,11 @@ export type AnimationDriver<A extends AnimationConfig = AnimationConfig> = {
     useAnimatedNumberStyle: UseAnimatedNumberStyle;
     useAnimatedNumbersStyle: UseAnimatedNumbersStyle;
     useAnimatedNumberReaction: UseAnimatedNumberReaction;
-    animations: A;
-    View?: any;
-    Text?: any;
 };
+export type AnimationDriverStub<A extends AnimationConfig = AnimationConfig> = AnimationDriverBase<A> & {
+    isStub: true;
+};
+export type AnimationDriverLike<A extends AnimationConfig = AnimationConfig> = AnimationDriver<A> | AnimationDriverStub<A>;
 export type UseAnimationProps = TamaguiComponentPropsBase & Record<string, any>;
 type UseStyleListener = (nextStyle: Record<string, unknown>, effectiveTransition?: TransitionProp | null, pseudoActive?: boolean) => void;
 export type UseStyleEmitter = (cb: UseStyleListener) => void;

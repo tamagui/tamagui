@@ -498,15 +498,17 @@ export function createComponent<
     // Get animation driver - either from animatedBy prop lookup or context/config fallback
     const animationDriver = (() => {
       if (props.animatedBy && config) {
+        let selectedDriver
         // check animationDrivers for multi-driver config
         if (config.animationDrivers) {
-          return (
+          selectedDriver =
             (config.animationDrivers as Record<string, any>)[props.animatedBy] ??
             config.animations
-          )
+        } else {
+          // single driver config - only 'default' makes sense
+          selectedDriver = props.animatedBy === 'default' ? config.animations : null
         }
-        // single driver config - only 'default' makes sense
-        return props.animatedBy === 'default' ? config.animations : null
+        return resolveAnimationDriver(selectedDriver)
       }
       // fall back to context driver, then config.animations
       // resolveAnimationDriver validates it's a real driver (not a raw multi-driver object)
@@ -517,7 +519,9 @@ export function createComponent<
       )
     })()
 
-    const useAnimations = animationDriver?.useAnimations as UseAnimationHook | undefined
+    const useAnimations = animationDriver?.isStub
+      ? undefined
+      : (animationDriver?.useAnimations as UseAnimationHook | undefined)
 
     const componentState = useComponentState(
       props,
@@ -1999,7 +2003,9 @@ export function createComponent<
 
     // needs to reset the presence state for nested children
     // Use the resolved animationDriver (handles multi-driver config)
-    const ResetPresence = animationDriver?.ResetPresence
+    const ResetPresence = animationDriver?.isStub
+      ? undefined
+      : animationDriver?.ResetPresence
     const needsReset = Boolean(
       // not when passing down to child
       !asChild &&

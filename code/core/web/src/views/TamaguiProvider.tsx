@@ -51,10 +51,10 @@ export function TamaguiProvider({
   // Get the default animation driver from config
   // config.animations is already normalized to the default driver in createTamagui
   // resolveAnimationDriver handles edge cases where raw multi-driver object leaks through
-  const defaultAnimationDriver: AnimationDriver | null = React.useMemo(
-    () => resolveAnimationDriver(config?.animations),
-    [config?.animations]
-  )
+  const defaultAnimationDriver: AnimationDriver | null = React.useMemo(() => {
+    const driver = resolveAnimationDriver(config?.animations)
+    return driver?.isStub ? null : (driver as AnimationDriver | null)
+  }, [config?.animations])
 
   useEffect(() => {
     defaultAnimationDriver?.onMount?.()
