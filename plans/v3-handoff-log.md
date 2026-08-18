@@ -3825,3 +3825,96 @@ transform the component frame is on it, so replacing the throw does not cost the
 author the pointer to their component. That follows from how the transform
 works; nobody opened a browser to watch it. It was judged not worth a browser
 session to convert, which is a decision about cost, not evidence.
+
+## 32. Wave B close-out: items 16 and 21, and what the cross-lane breaks taught (2026-08-18)
+
+### Item 16: the recovery was hiding more than it was helping
+
+`58db5ccb69`, `fac2cdf9fb`, `b17a199004`. `proxyWorm`, `safeResolves`,
+top-level-await stubbing, empty-project recovery and
+`TAMAGUI_IGNORE_BUNDLE_ERRORS` are gone. What replaced them is a diagnostic
+naming the failing module, the importer that pulled it in, the reason, and the
+exact option plus exact value to set.
+
+**The inventory is the finding, and it cuts both ways.** The old blanket skipped
+`@gorhom/bottom-sheet`, `expo-modules`, `solito`, `expo-linear-gradient`,
+`@expo/vector-icons`, `tamagui/linear-gradient`, `@emotion/is-prop-valid`,
+`framer-motion`, `motion`, every reanimated and worklets subpath, `./ExpoHaptics`
+and `./js/MaskedView` **without attempting any of them**. Probed individually:
+`tamagui/linear-gradient`, `framer-motion` and `motion` evaluate fine. So the
+blanket was not only hiding failures, it was declining work the compiler could
+have done, and nobody could have known either way.
+
+Two Tamagui-owned defaults, exact names with reasons at a single source:
+`react-native-safe-area-context` (native codegen unavailable in Node) and
+`react-native-worklets` (native JSI unavailable). No user-owned module became a
+default.
+
+**The reanimated case is the one to remember.** Removing the blanket broke the
+real Kitchen Sink config using `@tamagui/animations-reanimated`, which is a
+first-party driver: a user selecting our own documented driver would have hit a
+build failure. Isolated probes had said reanimated "fails", but only a realistic
+config showed it was actually reached. **Isolated probes establish that a module
+fails if evaluated, never that anything evaluates it.**
+
+The fix is better than the one authorized. `module.exports = {}` fails
+`createSerializable`, and ignoring reanimated entirely fails
+`createAnimatedComponent`; mapping only `react-native-worklets` to **its own
+shipped `lib/module/mock.js`** works, because the mock is the vendor's artifact
+for this purpose rather than our guess at their surface. And it was accepted only
+on CONTENT: the evaluated config was compared against a baseline needing no
+substitution and came back equal across every field and all 20 animation
+definitions. An exit code would not have been evidence, since the whole failure
+mode being removed was evaluation succeeding with less.
+
+Reverted deliberately: an `AssetSourceResolver` implementation for
+`@tamagui/react-native-web-lite`. The manager had diagnosed the vector-icons
+failure as our missing export entry; **that was wrong** - no such file exists, so
+the error was correct. Writing one to unblock a probe would have shipped
+unvalidated runtime code to fix a narrow configured-only case already covered by
+the diagnostic. That `web-lite` does not implement it stays recorded as a real
+gap.
+
+### Item 21: receipts that cost nothing
+
+`15cf8b9ac9`. `debug="verbose"` now reports which tier handled each style and
+why, using `styleProvenance` and the existing console channel rather than a
+second provenance system, and only the four tier words the compiler metric and
+the docs already use.
+
+Production cost is **zero, proven by construction**: the same fixture built with
+the receipt lines enabled and disabled produced byte-identical assets, 506,204
+raw and 160,836 gzip, delta 0/0, with no receipt marker in the production bundle.
+That is the standard for a "development only" claim - not a `NODE_ENV` guard
+someone read and believed.
+
+### Three cross-lane breaks, one shape
+
+Within a few hours, three lanes broke work they did not own, each the same way:
+a thing was removed or changed, and a consumer elsewhere was not updated.
+
+- Item 20 narrowed `CompilerProject.projectInfo` and orphaned
+  `code/core/cli/src/build.ts:196`, turning root typecheck red for four workers.
+- Item 16 deleted `hasTopLevelAwait` and left
+  `vite-plugin/test/static-parser.test.ts` importing it, turning the branch red
+  on a job its own suites did not cover.
+- Item 21 added three probes to `tests/integration/src/Root.tsx` and left
+  `cli/tests/buildCompiler.test.ts` asserting the old flattened count.
+
+None was caught by the lane that caused it, because each lane ran the suites
+near its own work and all three of those were green. Two were found by other
+lanes tripping over them; one by a manager audit of a check-in.
+
+The rule already in every brief - change an interface, update every caller in the
+same unit, by grepping rather than assuming - is right but insufficient on its
+own, because none of these felt like an interface change from inside the lane.
+Deleting a helper, narrowing a type and adding a fixture element all read as
+local edits. What actually finds them is `turbo run test:web` across the whole
+workspace, which no single lane runs and which is exactly what the CI freeze at
+the end of the wave exists to do.
+
+The flattened count is worth one more line, because it is the good case: 10 to 12
+looked like a compiler regression, and it was three probes joining the fixture,
+two of which flatten while `receipt-runtime` bails by design on
+`disableOptimization`. Arithmetic that explains the delta exactly is what
+separates updating an expectation from papering over one.
