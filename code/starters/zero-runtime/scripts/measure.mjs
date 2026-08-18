@@ -19,10 +19,21 @@ const root = path.dirname(path.dirname(fileURLToPath(import.meta.url)))
 const zeroDir = path.join(root, '.tamagui/zero')
 const baselinePath = path.join(root, 'size-baseline.json')
 const updateBaseline = process.argv.includes('--update-baseline')
+const requiredNodeVersion = readFileSync(
+  path.join(root, '../../../.node-version'),
+  'utf8'
+).trim()
+const actualNodeVersion = process.version.replace(/^v/, '')
 
 if (process.argv.length > (updateBaseline ? 3 : 2)) {
   console.error('Usage: measure.mjs [--update-baseline]')
   process.exit(1)
+}
+
+if (actualNodeVersion !== requiredNodeVersion) {
+  throw new Error(
+    `Node version mismatch: .node-version requires ${requiredNodeVersion}, current process is ${actualNodeVersion}. Bundle gzip bytes depend on Node's bundled zlib, so use the pinned Node version before checking or updating size-baseline.json.`
+  )
 }
 
 const run = (command, args, env = {}) => {
@@ -233,6 +244,8 @@ if (updateBaseline) {
           cwd: root,
           encoding: 'utf8',
         }).trim(),
+        nodeVersion: requiredNodeVersion,
+        compression: "Node gzipSync level 9; output depends on Node's bundled zlib",
         thresholds: previous.thresholds,
         baseline,
       },
@@ -248,6 +261,11 @@ if (updateBaseline) {
     )
   }
   const expected = JSON.parse(readFileSync(baselinePath, 'utf8'))
+  if (expected.nodeVersion !== requiredNodeVersion) {
+    throw new Error(
+      `Baseline Node version mismatch: size-baseline.json records ${expected.nodeVersion ?? 'no version'}, but .node-version requires ${requiredNodeVersion}. Regenerate it with \`node scripts/measure.mjs --update-baseline\` under the pinned Node version.`
+    )
+  }
   const failures = []
   for (const [name, tiers] of Object.entries(receipts)) {
     for (const [tierName, tier] of Object.entries(tiers)) {

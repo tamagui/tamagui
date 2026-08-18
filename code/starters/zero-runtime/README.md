@@ -32,6 +32,11 @@ reports a compiler violation. It also compares every gzip figure with the
 committed `size-baseline.json` and fails when a figure exceeds its byte
 threshold.
 
+Gzip bytes depend on the zlib bundled with Node. The measurement script reads
+the repository's `.node-version` and refuses to check or update the baseline
+under another Node version. The baseline records the Node version and gzip
+settings that produced it.
+
 When an intentional size change should become the new expectation, regenerate
 the baseline explicitly and commit its diff:
 

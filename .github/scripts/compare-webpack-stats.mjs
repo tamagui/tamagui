@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 import { execFileSync } from 'node:child_process'
 import { existsSync, readFileSync, statSync, writeFileSync } from 'node:fs'
-import { basename, join } from 'node:path'
+import { basename, dirname, join, resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { gzipSync } from 'node:zlib'
 
 const args = new Map()
@@ -23,6 +24,23 @@ const baselinePath = args.get('baseline')
 const updateBaselinePath = args.get('update-baseline')
 
 if (baselinePath && updateBaselinePath) usage()
+
+const requiredNodeVersion =
+  baselinePath || updateBaselinePath
+    ? readFileSync(
+        resolve(dirname(fileURLToPath(import.meta.url)), '../../.node-version'),
+        'utf8'
+      ).trim()
+    : null
+
+if (requiredNodeVersion) {
+  const actualNodeVersion = process.version.replace(/^v/, '')
+  if (actualNodeVersion !== requiredNodeVersion) {
+    throw new Error(
+      `Node version mismatch: .node-version requires ${requiredNodeVersion}, current process is ${actualNodeVersion}. Bundle gzip bytes depend on Node's bundled zlib, so use the pinned Node version before checking or updating the bundle baseline.`
+    )
+  }
+}
 
 const base = summarizeStats(baseStatsPath, baseDist)
 const head = summarizeStats(headStatsPath, headDist)
@@ -56,6 +74,8 @@ if (updateBaselinePath) {
         measuredAtCommit: execFileSync('git', ['rev-parse', 'HEAD'], {
           encoding: 'utf8',
         }).trim(),
+        nodeVersion: requiredNodeVersion,
+        compression: "Node gzipSync default level; output depends on Node's bundled zlib",
         thresholds: previous.thresholds,
         baseline: baselineValues(head),
       },
@@ -66,6 +86,11 @@ if (updateBaselinePath) {
   console.log(`Updated committed bundle baseline: ${updateBaselinePath}`)
 } else if (baselinePath) {
   const expected = JSON.parse(readFileSync(baselinePath, 'utf8'))
+  if (expected.nodeVersion !== requiredNodeVersion) {
+    throw new Error(
+      `Baseline Node version mismatch: ${baselinePath} records ${expected.nodeVersion ?? 'no version'}, but .node-version requires ${requiredNodeVersion}. Regenerate it with --update-baseline under the pinned Node version.`
+    )
+  }
   const actual = baselineValues(head)
   const failures = []
   if (head.totals.gzipAssetCount !== head.assetCount) {
