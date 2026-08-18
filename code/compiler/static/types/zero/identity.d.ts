@@ -19,5 +19,15 @@ export interface ZeroArtifactIdentity {
     islandOutputHashes: Record<string, string>;
 }
 export declare function hashZeroIdentity(identity: ZeroArtifactIdentity): string;
+/**
+ * A key-sorted deep copy.
+ *
+ * The bridge manifest is compared and hashed across processes and across a
+ * persisted cache, and a round trip through JSON reorders object keys. Hashing
+ * insertion order makes the same manifest produce two identities depending on
+ * whether the build scanned or restored, which is a cache miss that looks like
+ * a real change.
+ */
+export declare function canonicalizeBridgeManifest<T>(manifest: T): T;
 export declare function hashBridgeManifest(manifest: unknown): string;
 //# sourceMappingURL=identity.d.ts.map

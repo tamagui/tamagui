@@ -1,7 +1,7 @@
 import Static from '@tamagui/static'
 import type { TamaguiOptions, ZeroGraphReceipt } from '@tamagui/static'
 import { createHash } from 'node:crypto'
-import { existsSync, readdirSync, writeFileSync } from 'node:fs'
+import { existsSync, readdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { gzipSync } from 'node:zlib'
 import { readFile } from 'node:fs/promises'
 import { createRequire } from 'node:module'
@@ -37,6 +37,8 @@ import {
   createZeroRuntimeController,
   finalizeZeroCSS,
   zeroModuleKey,
+  ZERO_CSS_FILENAME,
+  ZERO_ISLAND_DIRNAME,
   type ZeroIslandBuildContext,
   type ZeroRuntimeController,
 } from './zeroRuntime'
@@ -754,8 +756,10 @@ export function createTamaguiPlugins({
       'process.env.TAMAGUI_TARGET': JSON.stringify('web'),
       'process.env.TAMAGUI_ENVIRONMENT': JSON.stringify(TAMAGUI_EVALUATION_ENVIRONMENT),
       // Config evaluation must retain createTamagui and CSS generation even when
-      // the client graph is zero.
+      // the client graph is zero or the client claims the artifact. Inheriting
+      // either literal from the outer build empties the artifact it generates.
       'process.env.TAMAGUI_RUNTIME': JSON.stringify('full'),
+      'process.env.TAMAGUI_DID_OUTPUT_CSS': JSON.stringify(''),
       // Client configs may strip theme values. Compiler evaluation and outputCSS
       // must use the full config regardless of which outer Vite environment runs last.
       'process.env.VITE_ENVIRONMENT': JSON.stringify('ssr'),
@@ -805,6 +809,14 @@ export function createTamaguiPlugins({
   let server: ViteDevServer
   let zero: ZeroRuntimeController | null = null
   let zeroReceipt: ZeroGraphReceipt | null = null
+  // The compiled-global-CSS tier: an ordinary compiled build that also owns an
+  // `outputCSS` artifact and therefore derives TAMAGUI_DID_OUTPUT_CSS from it.
+  let globalCSS: Static.GlobalCSSOwnership | null = null
+  let globalCSSExpected: string | null = null
+  // How many HTML entries received the zero artifact's stylesheet link. A zero
+  // build with no HTML entry strips the rules and loads nothing.
+  let zeroHtmlEntries = 0
+  let zeroDevIslands: Promise<unknown> = Promise.resolve()
   const virtualExt = `.tamagui.css`
 
   const getAbsoluteVirtualFileId = (filePath: string) => {
@@ -890,15 +902,21 @@ export function createTamaguiPlugins({
         }
       }
 
+      const resolvedRoot = userConfig.root ? path.resolve(userConfig.root) : process.cwd()
+
       // An island child build is the full-runtime half of the same project, so it
       // never re-enters zero mode even though it reads the same tamagui.build.ts.
       zero = zeroIslandBuild
         ? null
-        : await createZeroRuntimeController(
-            options,
-            userConfig.root ? path.resolve(userConfig.root) : process.cwd(),
-            userConfig.base || '/'
-          )
+        : await createZeroRuntimeController(options, resolvedRoot, userConfig.base || '/')
+
+      // The island child build's artifact is the parent's, and a dev server has
+      // no final graph to prove the relationship against, so both keep runtime
+      // CSS generation. Production is where the claim is made and gated.
+      globalCSS =
+        zeroIslandBuild || env.command !== 'build'
+          ? null
+          : Static.resolveGlobalCSSOwnership(options, resolvedRoot)
 
       return {
         envPrefix: ['TAMAGUI_'],
@@ -912,6 +930,12 @@ export function createTamaguiPlugins({
               // SSR never imports a runtime hydration removed.
               ...(zero && {
                 'process.env.TAMAGUI_RUNTIME': JSON.stringify('zero'),
+              }),
+              // Derived, never author-set. generateBundle proves the artifact
+              // exists, matches this build's config, and is in the client graph;
+              // a build that cannot prove it fails instead of shipping.
+              ...(globalCSS && {
+                'process.env.TAMAGUI_DID_OUTPUT_CSS': JSON.stringify('1'),
               }),
             },
           },
@@ -1373,6 +1397,31 @@ export function createTamaguiPlugins({
             })
           }
           Static.mergeIslandBridges(zero.bridges, zeroResult.bridges)
+          const moduleCSS = [
+            wrapExtractedCSS(result.plan.css),
+            ...[...zeroResult.bridgeCSS.values()],
+          ]
+            .filter(Boolean)
+            .join('\n')
+
+          // Production combines every module's rules into the one artifact the
+          // entry loads. Development keeps them on Vite's per-module CSS
+          // modules, where the importer owns the ordering and hot replacement
+          // already works.
+          if (config.command !== 'build') {
+            let cssImport = ''
+            if (moduleCSS) {
+              const rootRelativeId = `${validId}${virtualExt}`
+              cssMap.set(getAbsoluteVirtualFileId(rootRelativeId), moduleCSS)
+              this.addWatchFile(rootRelativeId)
+              cssImport = `\nimport "${rootRelativeId}";`
+            }
+            return {
+              code: `${zeroResult.output.code}${cssImport}`,
+              map: zeroResult.output.map as any,
+            }
+          }
+
           for (const [identifier, rules] of zeroResult.bridgeCSS) {
             zero.artifact.setBridgeRules(identifier, rules)
           }
@@ -1403,10 +1452,17 @@ export function createTamaguiPlugins({
 
   // Owns the single CSS artifact, the island child builds, and the module-graph
   // gate that is the only thing that actually proves the zero guarantee.
+  //
+  // Development runs the same lowering and reference erasure, so the runtime
+  // that generates design-system, :root, font and theme CSS is gone there too.
+  // The dev server therefore has to serve that CSS itself: it publishes the
+  // config half at the same href production uses and builds the islands once at
+  // startup. Per-module atomic rules keep Vite's own `.tamagui.css` modules in
+  // dev, which is where hot replacement already works; production combines them
+  // into the one artifact instead.
   const zeroRuntimePlugin: Plugin = {
     name: 'tamagui-zero-runtime',
     enforce: 'post',
-    apply: 'build',
 
     async buildStart() {
       if (!zero || this.environment.name !== 'client') return
@@ -1420,13 +1476,64 @@ export function createTamaguiPlugins({
       zero.artifact.clearGraphs()
       zero.bridges.clear()
       zero.violations.length = 0
+      zeroHtmlEntries = 0
       zero.artifact.setConfigCSS(tamaguiConfig.getCSS())
+
+      // Production builds the islands at the end, once the zero graph is known.
+      // Development has no such end, so they are built here, after the reset
+      // that would otherwise discard their rules, and the dev server's artifact
+      // route waits on this.
+      if (config.command !== 'build') {
+        const islands = zero
+        zeroDevIslands = Promise.all(
+          islands.resolved.islands.map((island) =>
+            buildIsland({
+              island,
+              controller: islands,
+              root: config.root,
+              outDir: zeroDevIslandDir(islands),
+              mode: 'development',
+            })
+          )
+        )
+        await zeroDevIslands
+      }
+    },
+
+    async configureServer(devServer) {
+      if (!zero) return
+      const islandBase = `${zero.cssHref.replace(ZERO_CSS_FILENAME, '')}${ZERO_ISLAND_DIRNAME}/`
+      devServer.middlewares.use(async (request, response, next) => {
+        const url = (request.url || '').split('?')[0]
+        if (url !== zero!.cssHref && !url.startsWith(islandBase)) return next()
+        // buildStart owns the artifact's contents and the island builds, so a
+        // request that arrives first waits for it rather than reading a
+        // half-populated artifact
+        await zeroDevIslands
+        if (url === zero!.cssHref) {
+          response.setHeader('content-type', 'text/css; charset=utf-8')
+          response.setHeader('cache-control', 'no-cache')
+          response.end(zero!.artifact.css())
+          return
+        }
+        const islandId = url.slice(islandBase.length).replace(/\.js$/, '')
+        const file = path.join(
+          zeroDevIslandDir(zero!),
+          ZERO_ISLAND_DIRNAME,
+          `${islandId}.js`
+        )
+        if (!existsSync(file)) return next()
+        response.setHeader('content-type', 'text/javascript; charset=utf-8')
+        response.setHeader('cache-control', 'no-cache')
+        response.end(readFileSync(file))
+      })
     },
 
     transformIndexHtml: {
       order: 'post',
       handler(html) {
         if (!zero) return
+        zeroHtmlEntries++
         return {
           html,
           tags: [
@@ -1508,9 +1615,19 @@ export function createTamaguiPlugins({
         islandOutputHashes[island.id] = built.hash
       }
 
+      // The plugin, not the app, injects the zero artifact's stylesheet link, so
+      // an entry graph with no HTML entry strips the rules and loads nothing.
+      if (zeroHtmlEntries === 0) {
+        throw new Error(
+          `[tamagui zero-runtime] the zero entry graph has no HTML entry, so the one generated CSS artifact ${zero.cssHref} is never loaded. Build a zero entry through its HTML document.`
+        )
+      }
+
       const css = finalizeZeroCSS(zero, outDir)
-      const bridgeManifest = Object.fromEntries(
-        [...zero.bridges.entries()].sort(([left], [right]) => (left < right ? -1 : 1))
+      const bridgeManifest = Static.canonicalizeBridgeManifest(
+        Object.fromEntries(
+          [...zero.bridges.entries()].sort(([left], [right]) => (left < right ? -1 : 1))
+        )
       )
       const identityInputs = {
         runtimeLiteral: 'zero' as const,
@@ -1544,6 +1661,40 @@ export function createTamaguiPlugins({
     },
   }
 
+  // The compiled-global-CSS tier. `TAMAGUI_DID_OUTPUT_CSS` was already inlined
+  // in the client environment, so this proves the artifact that replaces those
+  // stripped rules exists, matches this build's config, and is in the graph.
+  const globalCSSPlugin: Plugin = {
+    name: 'tamagui-global-css',
+    enforce: 'post',
+    apply: 'build',
+
+    async buildStart() {
+      if (!globalCSS || this.environment.name !== 'client') return
+      await tamaguiLoader.ensureFullConfigLoaded()
+      const tamaguiConfig = await tamaguiLoader.getTamaguiConfig()
+      if (!tamaguiConfig) {
+        throw new Error(
+          `[tamagui] outputCSS is set but the Tamagui config did not evaluate, so no CSS artifact can be generated`
+        )
+      }
+      globalCSSExpected = tamaguiConfig.getCSS()
+    },
+
+    generateBundle() {
+      if (!globalCSS || this.environment.name !== 'client') return
+      const failure = Static.checkGlobalCSSArtifact({
+        cssPath: globalCSS.cssPath,
+        expectedCSS: globalCSSExpected ?? '',
+        loadedModuleIds: this.getModuleIds(),
+        importHint: `Import it once from your client entry: import ${JSON.stringify(
+          relativeImportSpecifier(config.root, globalCSS.cssPath)
+        )}`,
+      })
+      if (failure) throw new Error(failure.message)
+    },
+  }
+
   return {
     plugins: [
       basePlugin,
@@ -1551,10 +1702,21 @@ export function createTamaguiPlugins({
       extractPlugin,
       sharedCompilerPlugin,
       zeroRuntimePlugin,
+      globalCSSPlugin,
       tamaguiNativePlugin(tamaguiOptionsIn),
     ],
     loader: tamaguiLoader,
   }
+}
+
+/** Where the dev server's island bundles are built and served from. */
+function zeroDevIslandDir(zero: ZeroRuntimeController) {
+  return path.join(zero.resolved.outDir, 'dev')
+}
+
+function relativeImportSpecifier(from: string, to: string) {
+  const relative = normalizePath(path.relative(from, to))
+  return relative.startsWith('.') ? relative : `./${relative}`
 }
 
 export function tamaguiPlugin(options: TamaguiVitePluginOptions = {}): PluginOption {

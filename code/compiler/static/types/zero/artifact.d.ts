@@ -19,6 +19,9 @@ export declare class ZeroCSSArtifact {
     islandCSS(islandId: string): string[];
     /** Marks an island as compiled even when it contributed no atomic rules. */
     markIslandComplete(islandId: string): void;
+    /** Collected zero-graph module CSS, for an integration that persists it. */
+    zeroModuleEntries(): [string, string][];
+    bridgeEntries(): [string, string][];
     setBridgeRules(bridgeId: string, css: string): void;
     clearGraphs(): void;
     /** The missing pieces that block deriving TAMAGUI_DID_OUTPUT_CSS. */

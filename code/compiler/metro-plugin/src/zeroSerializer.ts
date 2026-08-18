@@ -78,7 +78,17 @@ export function applyMetroZeroRuntime(
       if (!zero.islandBuild) {
         mkdirSync(zero.publicDir, { recursive: true })
         const css = zero.artifact.css()
-        writeFileSync(path.join(zero.publicDir, ZERO_CSS_FILENAME), css)
+        const published = path.join(zero.publicDir, ZERO_CSS_FILENAME)
+        writeFileSync(published, css)
+        // the served copy is what the page loads, so it is the one the claim
+        // depends on: read it back rather than trusting the write
+        const publishFailure = Static.checkGlobalCSSArtifact({
+          cssPath: published,
+          expectedCSS: css,
+          loadedModuleIds: [published],
+          importHint: '',
+        })
+        if (publishFailure) throw new Error(publishFailure.message)
         receipt.cssArtifact = { path: zero.cssHref, hash: finalized.hash }
         receipt.gzip = {
           [ZERO_CSS_FILENAME]: gzipSync(Buffer.from(css), { level: 9 }).length,
@@ -86,8 +96,10 @@ export function applyMetroZeroRuntime(
             level: 9,
           }).length,
         }
-        const bridgeManifest = Object.fromEntries(
-          [...zero.bridges.entries()].sort(([left], [right]) => (left < right ? -1 : 1))
+        const bridgeManifest = Static.canonicalizeBridgeManifest(
+          Object.fromEntries(
+            [...zero.bridges.entries()].sort(([left], [right]) => (left < right ? -1 : 1))
+          )
         )
         const identityInputs = {
           runtimeLiteral: 'zero' as const,
@@ -100,6 +112,7 @@ export function applyMetroZeroRuntime(
           islandOutputHashes: finalized.islandOutputHashes,
         }
         receipt.identity = Static.hashZeroIdentity(identityInputs)
+        receipt.plansRestoredFromCache = zero.plansRestoredFromCache
         Static.writeZeroGraphReceipt(zero.resolved.outDir, 'metro-zero', receipt)
         writeFileSync(
           path.join(zero.resolved.outDir, 'metro-zero.bridges.json'),

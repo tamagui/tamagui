@@ -10,7 +10,7 @@ import type {
 import { createHash } from 'node:crypto'
 import { readFileSync } from 'node:fs'
 import path from 'node:path'
-import type { Compiler } from 'webpack'
+import type { Compiler, LoaderContext, Module } from 'webpack'
 
 /**
  * Webpack's half of the zero-runtime mode.
@@ -38,6 +38,8 @@ export interface WebpackZeroController {
   islandModuleIds: Map<string, string>
   /** Set while an island child compilation runs, so it never re-enters zero mode. */
   islandBuild: string | null
+  /** Modules whose loader actually ran this build, for the warm-cache receipt. */
+  loaderModules: Set<string>
   /** Content hash of the evaluated config's CSS, part of the artifact identity. */
   configHash: string
 }
@@ -104,10 +106,99 @@ export function getWebpackZeroController(
       resolved.islands.map((island) => [zeroModuleKey(island.module), island.id])
     ),
     islandBuild: null,
+    loaderModules: new Set(),
     configHash: '',
   }
   controllers.set(root, controller)
   return controller
+}
+
+/**
+ * One module's zero-build side effects, carried on webpack's own module record.
+ *
+ * The loader contributes a module's atomic CSS, theme-bridge rules and contract
+ * violations to the build; webpack's module cache skips the loader on a warm
+ * build, so a build that read those only from the loader's return path emitted
+ * an artifact missing every rule it never collected while still deriving
+ * TAMAGUI_DID_OUTPUT_CSS from it, and silently dropped violations that must
+ * fail the build. `buildInfo` is restored with the cached module, so the facts
+ * travel with the thing they describe instead of in a second cache that could
+ * disagree with it.
+ */
+export interface ZeroModuleBuildInfo {
+  /** Island id when this module belongs to an island compilation, else null. */
+  island: string | null
+  css: string
+  bridgeCSS: [string, string][]
+  bridges: [string, IslandThemeBridge[]][]
+  violations: ZeroViolationSite[]
+}
+
+const BUILD_INFO_KEY = 'tamaguiZero'
+
+export function publishZeroBuildInfo(
+  controller: WebpackZeroController,
+  context: LoaderContext<unknown>,
+  info: ZeroModuleBuildInfo
+): void {
+  const buildInfo = (context as any)._module?.buildInfo
+  if (!buildInfo) {
+    throw new Error(
+      `[tamagui zero-runtime] webpack gave the Tamagui loader no module record for ${context.resourcePath}, so this module's CSS could not be carried into the one generated artifact.`
+    )
+  }
+  buildInfo[BUILD_INFO_KEY] = info
+  controller.loaderModules.add(context.resourcePath)
+}
+
+export function readZeroBuildInfo(module: Module): ZeroModuleBuildInfo | null {
+  return ((module as any)?.buildInfo?.[BUILD_INFO_KEY] as ZeroModuleBuildInfo) ?? null
+}
+
+/**
+ * Every module in a compilation, including the ones scope hoisting swallowed.
+ *
+ * `compilation.modules` reports a ConcatenatedModule in place of the modules it
+ * merged, and in a production Next build most app pages are inside one. Reading
+ * only the top level finds `_app` but not the page that imported the violation,
+ * which reads as a clean build.
+ */
+export function* flattenModules(modules: Iterable<Module>): Generator<Module> {
+  for (const module of modules) {
+    yield module
+    const inner = (module as any).modules as Module[] | undefined
+    if (inner) yield* flattenModules(inner)
+  }
+}
+
+/**
+ * Replays every module's recorded side effects into the artifact, whether its
+ * loader ran this build or webpack restored it from cache.
+ */
+export function collectZeroBuildInfo(
+  controller: WebpackZeroController,
+  modules: Iterable<Module>
+): { modules: number; restored: number } {
+  let seen = 0
+  let restored = 0
+  for (const module of flattenModules(modules)) {
+    const info = readZeroBuildInfo(module)
+    if (!info) continue
+    seen++
+    const resource = (module as any).resource as string
+    if (!controller.loaderModules.has(resource)) restored++
+    if (info.island) {
+      controller.artifact.setIslandModuleCSS(info.island, resource, info.css)
+      continue
+    }
+    controller.artifact.setZeroModuleCSS(resource, info.css)
+    for (const [identifier, rules] of info.bridgeCSS) {
+      controller.artifact.setBridgeRules(identifier, rules)
+    }
+    Static.mergeIslandBridges(controller.bridges, new Map(info.bridges))
+    controller.violations.push(...info.violations)
+  }
+  return { modules: seen, restored }
 }
 
 /**
@@ -171,6 +262,9 @@ export async function buildWebpackIsland(input: {
           if (stats?.hasErrors()) {
             return reject(new Error(stats.toString({ all: false, errors: true })))
           }
+          // the island's own modules carry their atomic CSS the same way the
+          // zero graph's do, so a cached island module still contributes
+          if (stats) collectZeroBuildInfo(controller, stats.compilation.modules)
           resolve()
         }
       )

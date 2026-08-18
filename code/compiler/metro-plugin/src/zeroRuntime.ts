@@ -43,6 +43,13 @@ export interface MetroZeroController {
   islandModuleIds: Map<string, string>
   /** The evaluated config's CSS, set once the frontend has loaded the project. */
   configCSS: string
+  /**
+   * True when this build restored the artifact from the plan cache's CSS
+   * sidecar instead of rescanning. Recorded in the receipt so a warm rebuild
+   * that silently stopped reusing plans, or one that reused them without
+   * restoring the artifact, is visible rather than inferred from timing.
+   */
+  plansRestoredFromCache: boolean
 }
 
 const normalizePath = (value: string) => value.replace(/\\/g, '/')
@@ -102,6 +109,7 @@ export function createMetroZeroController(
       resolved.islands.map((island) => [zeroModuleKey(island.module), island.id])
     ),
     configCSS: '',
+    plansRestoredFromCache: false,
   }
 }
 

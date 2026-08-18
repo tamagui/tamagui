@@ -16,6 +16,14 @@ export declare class TamaguiPlugin {
     pluginName: string;
     constructor(options?: PluginOptions);
     /**
+     * The compiled-global-CSS tier: ordinary compiled Tamagui plus an owned
+     * `outputCSS` artifact. `withTamagui` already inlined
+     * `TAMAGUI_DID_OUTPUT_CSS='1'`, so this proves the artifact that replaces the
+     * stripped rules exists, matches this build's config, and is in the client
+     * graph. A build that cannot prove all three fails instead of shipping.
+     */
+    applyGlobalCSS(compiler: Compiler): void;
+    /**
      * The zero-runtime half: the plugin owns the one generated CSS artifact, runs
      * each declared island as a separate full-runtime compilation, and proves the
      * emitted client graph carries no forbidden Tamagui module.

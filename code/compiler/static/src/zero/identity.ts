@@ -42,6 +42,32 @@ export function hashZeroIdentity(identity: ZeroArtifactIdentity): string {
   return createHash('sha256').update(JSON.stringify(canonical)).digest('hex').slice(0, 24)
 }
 
+/**
+ * A key-sorted deep copy.
+ *
+ * The bridge manifest is compared and hashed across processes and across a
+ * persisted cache, and a round trip through JSON reorders object keys. Hashing
+ * insertion order makes the same manifest produce two identities depending on
+ * whether the build scanned or restored, which is a cache miss that looks like
+ * a real change.
+ */
+export function canonicalizeBridgeManifest<T>(manifest: T): T {
+  if (Array.isArray(manifest)) {
+    return manifest.map((entry) => canonicalizeBridgeManifest(entry)) as T
+  }
+  if (manifest && typeof manifest === 'object') {
+    const sorted: Record<string, unknown> = {}
+    for (const key of Object.keys(manifest as Record<string, unknown>).sort()) {
+      sorted[key] = canonicalizeBridgeManifest((manifest as Record<string, unknown>)[key])
+    }
+    return sorted as T
+  }
+  return manifest
+}
+
 export function hashBridgeManifest(manifest: unknown): string {
-  return createHash('sha256').update(JSON.stringify(manifest)).digest('hex').slice(0, 16)
+  return createHash('sha256')
+    .update(JSON.stringify(canonicalizeBridgeManifest(manifest)))
+    .digest('hex')
+    .slice(0, 16)
 }

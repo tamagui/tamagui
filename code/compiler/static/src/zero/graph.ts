@@ -31,6 +31,11 @@ export interface ZeroGraphReceipt {
   cssArtifact: { path: string; hash: string } | null
   identity: string
   gzip?: Record<string, number>
+  /**
+   * Whether this build restored its artifact from a persisted plan cache
+   * instead of rescanning. Only integrations that cache plans set it.
+   */
+  plansRestoredFromCache?: boolean
 }
 
 /**

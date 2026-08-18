@@ -5,7 +5,11 @@ import { readFile } from 'node:fs/promises'
 import path from 'node:path'
 import type { LoaderContext } from 'webpack'
 import { requireResolve } from './requireResolve'
-import { getWebpackZeroController, zeroModuleKey } from './zeroRuntime'
+import {
+  getWebpackZeroController,
+  publishZeroBuildInfo,
+  zeroModuleKey,
+} from './zeroRuntime'
 
 const { getPragmaOptions } = Static
 
@@ -78,14 +82,6 @@ export const loader = async function loader(
       compilerFrontends.set(key, compiler)
     }
     const zero = getWebpackZeroController(options, root)
-    if (zero) {
-      // A zero build's loader has a side effect webpack's module cache does not
-      // capture: it contributes this module's atomic CSS and theme-bridge rules
-      // to the one generated artifact. A warm cache skips the loader and the
-      // artifact silently loses those rules, so the stripping fact and its
-      // replacement asset would diverge on every incremental build.
-      this.cacheable(false)
-    }
     const projectInfo = await Static.loadTamagui(
       // in zero mode the integration owns the one generated CSS artifact, so
       // config-only CSS is never written to that path
@@ -132,7 +128,13 @@ export const loader = async function loader(
     // island child compilation: the parent owns the one CSS artifact, so route
     // this module's atomic rules there and inject nothing
     if (zero?.islandBuild) {
-      zero.artifact.setIslandModuleCSS(zero.islandBuild, sourcePath, extracted.plan.css)
+      publishZeroBuildInfo(zero, this, {
+        island: zero.islandBuild,
+        css: extracted.plan.css,
+        bridgeCSS: [],
+        bridges: [],
+        violations: [],
+      })
       return callback(null, extracted.output.code, extracted.output.map as any)
     }
 
@@ -168,21 +170,22 @@ export const loader = async function loader(
             zeroModuleKey(path.resolve(path.dirname(sourcePath), specifier))
           ) ?? null,
       })
-      for (const violation of zeroResult.violations) {
-        const { line, column } = Static.offsetToLineColumn(source, violation.span.start)
-        zero.violations.push({
-          file: path.relative(root, sourcePath),
-          line,
-          column,
-          code: violation.code,
-          message: violation.message,
-        })
-      }
-      Static.mergeIslandBridges(zero.bridges, zeroResult.bridges)
-      for (const [identifier, rules] of zeroResult.bridgeCSS) {
-        zero.artifact.setBridgeRules(identifier, rules)
-      }
-      zero.artifact.setZeroModuleCSS(sourcePath, extracted.plan.css)
+      publishZeroBuildInfo(zero, this, {
+        island: null,
+        css: extracted.plan.css,
+        bridgeCSS: [...zeroResult.bridgeCSS],
+        bridges: [...zeroResult.bridges],
+        violations: zeroResult.violations.map((violation) => {
+          const { line, column } = Static.offsetToLineColumn(source, violation.span.start)
+          return {
+            file: path.relative(root, sourcePath),
+            line,
+            column,
+            code: violation.code,
+            message: violation.message,
+          }
+        }),
+      })
       return callback(null, zeroResult.output.code, zeroResult.output.map as any)
     }
 

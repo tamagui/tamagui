@@ -16,7 +16,11 @@ import {
   type ResolvedModuleId,
 } from '@tamagui/compiler-core'
 import Static, { createTamaguiCompilerHost, loadTamagui } from '@tamagui/static'
-import type { TamaguiOptions, TamaguiProjectInfo } from '@tamagui/static'
+import type {
+  IslandThemeBridge,
+  TamaguiOptions,
+  TamaguiProjectInfo,
+} from '@tamagui/static'
 
 import { compileWithUserBabel, type MetroBabelTransformArgs } from './babel'
 import { zeroModuleKey, type MetroZeroController } from './zeroRuntime'
@@ -291,6 +295,7 @@ export class MetroCompilerFrontend {
     this.#tamaguiConfig = compilerProject.projectInfo.tamaguiConfig
     const zero = this.config.zero
     if (zero) {
+      zero.plansRestoredFromCache = false
       zero.configCSS = compilerProject.projectInfo.tamaguiConfig.getCSS?.() ?? ''
       zero.artifact.clearGraphs()
       zero.bridges.clear()
@@ -375,18 +380,18 @@ export class MetroCompilerFrontend {
       metroCompilerContentHash(JSON.stringify(projectSources))
     )
     if (
-      // A zero build owns the one CSS artifact, and the artifact's contents are
-      // produced by the scan. Reusing a published plan would emit an artifact
-      // missing every rule this process never collected, while still deriving
-      // TAMAGUI_DID_OUTPUT_CSS from it. Phase 2 can make this cheap by
-      // persisting the per-module plan CSS beside the plan cache.
-      !this.config.zero &&
       validation.valid &&
       validation.generation &&
       validation.optionsHash === optionsHash &&
       (await this.#sourcesAreFresh(validation.sourceHashes)) &&
       ((!retainsLiveGraph(options) && !this.#graph) ||
-        (this.#publishedGeneration && this.#scanOptionsHash === optionsHash))
+        (this.#publishedGeneration && this.#scanOptionsHash === optionsHash)) &&
+      // A zero build owns the one CSS artifact, and its contents are produced by
+      // the scan. Reusing a published plan without restoring the artifact would
+      // emit one missing every rule this process never collected, while still
+      // deriving TAMAGUI_DID_OUTPUT_CSS from it. The sidecar carries exactly
+      // those side effects; without it there is nothing safe to reuse.
+      (await this.#rehydrateZeroCSS(cache, validation.generation))
     ) {
       this.#publishedGeneration = validation.generation
       this.#scanOptions = options
@@ -802,8 +807,48 @@ export class MetroCompilerFrontend {
       [...this.#entries.values()],
       this.#scanOptionsHash ?? ''
     )
+    const zero = this.config.zero
+    if (zero && !zero.islandBuild) {
+      // the plans and the artifact are the same scan's output, so they are
+      // published together or the warm path has nothing safe to reuse
+      await cache.publishZeroCSS({
+        schemaVersion: METRO_COMPILER_CACHE_VERSION,
+        generation,
+        configCSS: zero.configCSS,
+        zeroModuleCSS: Object.fromEntries(zero.artifact.zeroModuleEntries()),
+        bridgeCSS: Object.fromEntries(zero.artifact.bridgeEntries()),
+        bridges: Object.fromEntries(zero.bridges),
+      })
+    }
     this.#publishedGeneration = generation
     return generation
+  }
+
+  /**
+   * Restores the zero build's CSS side effects from the sidecar published with
+   * this plan generation. Returns false when there is nothing trustworthy to
+   * restore, which sends the caller to a full scan.
+   */
+  async #rehydrateZeroCSS(cache: MetroCompilerCache, generation: string) {
+    const zero = this.config.zero
+    if (!zero || zero.islandBuild) return true
+    const sidecar = await cache.readZeroCSS(generation)
+    if (!sidecar) return false
+    zero.artifact.clearGraphs()
+    zero.bridges.clear()
+    zero.violations.length = 0
+    zero.configCSS = sidecar.configCSS
+    for (const [moduleId, css] of Object.entries(sidecar.zeroModuleCSS)) {
+      zero.artifact.setZeroModuleCSS(moduleId, css)
+    }
+    for (const [bridgeId, css] of Object.entries(sidecar.bridgeCSS)) {
+      zero.artifact.setBridgeRules(bridgeId, css)
+    }
+    for (const [islandId, bridges] of Object.entries(sidecar.bridges)) {
+      zero.bridges.set(islandId, bridges as IslandThemeBridge[])
+    }
+    zero.plansRestoredFromCache = true
+    return true
   }
 
   #installWatchers(): void {

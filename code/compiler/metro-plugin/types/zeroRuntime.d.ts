@@ -29,6 +29,13 @@ export interface MetroZeroController {
 	islandModuleIds: Map<string, string>;
 	/** The evaluated config's CSS, set once the frontend has loaded the project. */
 	configCSS: string;
+	/**
+	* True when this build restored the artifact from the plan cache's CSS
+	* sidecar instead of rescanning. Recorded in the receipt so a warm rebuild
+	* that silently stopped reusing plans, or one that reused them without
+	* restoring the artifact, is visible rather than inferred from timing.
+	*/
+	plansRestoredFromCache: boolean;
 }
 export declare const zeroModuleKey: (value: string) => string;
 /** Where an island build leaves its CSS fragment for the zero build to collect. */

@@ -80,6 +80,15 @@ export const withTamagui = (tamaguiOptionsIn?: WithTamaguiProps) => {
           dir
         ).mode
 
+        // The compiled-global-CSS tier. Derived, never author-set: TamaguiPlugin
+        // proves on the client compilation that the artifact exists, matches
+        // this build's config, and is imported, and fails the build otherwise.
+        // A dev compilation has no final graph to prove that against, so it
+        // keeps runtime CSS generation.
+        const claimsGlobalCSS =
+          !dev &&
+          !!Static.resolveGlobalCSSOwnership({ platform: 'web', ...tamaguiOptions }, dir)
+
         const defines = {
           // An enforced zero entry gets 'zero' on both its client and its server
           // compilation, so SSR never imports a runtime hydration removed. Config
@@ -92,6 +101,9 @@ export const withTamagui = (tamaguiOptionsIn?: WithTamaguiProps) => {
           'process.env.TAMAGUI_IS_SERVER': JSON.stringify(isServer ? 'true' : ''),
           'process.env.TAMAGUI_ENVIRONMENT': JSON.stringify(isServer ? 'ssr' : 'client'),
           __DEV__: JSON.stringify(dev),
+          ...(claimsGlobalCSS && {
+            'process.env.TAMAGUI_DID_OUTPUT_CSS': JSON.stringify('1'),
+          }),
           ...(process.env.TAMAGUI_DOES_SSR_CSS && {
             'process.env.TAMAGUI_DOES_SSR_CSS': JSON.stringify(
               process.env.TAMAGUI_DOES_SSR_CSS

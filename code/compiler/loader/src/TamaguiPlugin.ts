@@ -2,7 +2,7 @@ import Static from '@tamagui/static'
 import type { TamaguiOptions } from '@tamagui/types'
 import { createHash } from 'node:crypto'
 import { existsSync, mkdirSync, writeFileSync } from 'node:fs'
-import { dirname, join } from 'node:path'
+import { dirname, join, relative } from 'node:path'
 import { gzipSync } from 'node:zlib'
 import type { Compiler, RuleSetRule } from 'webpack'
 import webpack from 'webpack'
@@ -10,6 +10,8 @@ import { requireResolve } from './requireResolve'
 import {
   buildWebpackIsland,
   collectDefinitions,
+  collectZeroBuildInfo,
+  flattenModules,
   getWebpackZeroController,
   ZERO_CSS_FILENAME,
 } from './zeroRuntime'
@@ -35,6 +37,56 @@ export class TamaguiPlugin {
       components: ['@tamagui/core'],
     }
   ) {}
+
+  /**
+   * The compiled-global-CSS tier: ordinary compiled Tamagui plus an owned
+   * `outputCSS` artifact. `withTamagui` already inlined
+   * `TAMAGUI_DID_OUTPUT_CSS='1'`, so this proves the artifact that replaces the
+   * stripped rules exists, matches this build's config, and is in the client
+   * graph. A build that cannot prove all three fails instead of shipping.
+   */
+  applyGlobalCSS(compiler: Compiler) {
+    const root = this.options.root || compiler.context || process.cwd()
+    // the client compilation is the entry graph that has to load the artifact
+    if (this.options.isServer || compiler.options.mode === 'development') return
+    const globalCSS = Static.resolveGlobalCSSOwnership(
+      { platform: 'web', ...this.options },
+      root
+    )
+    if (!globalCSS) return
+
+    let expectedCSS = ''
+    compiler.hooks.beforeCompile.tapPromise(this.pluginName, async () => {
+      const projectInfo = await Static.loadTamagui({
+        components: ['tamagui'],
+        platform: 'web',
+        ...this.options,
+      })
+      if (!projectInfo?.tamaguiConfig) {
+        throw new Error(
+          `[tamagui] outputCSS is set but the Tamagui config did not evaluate, so no CSS artifact can be generated`
+        )
+      }
+      expectedCSS = projectInfo.tamaguiConfig.getCSS()
+    })
+
+    compiler.hooks.afterEmit.tap(this.pluginName, (compilation) => {
+      const loadedModuleIds: string[] = []
+      for (const module of flattenModules(compilation.modules)) {
+        const resource = (module as any)?.resource as string | undefined
+        if (resource) loadedModuleIds.push(resource)
+      }
+      const failure = Static.checkGlobalCSSArtifact({
+        cssPath: globalCSS.cssPath,
+        expectedCSS,
+        loadedModuleIds,
+        importHint: `Import it once from your root layout or _app: import ${JSON.stringify(
+          relativeImportSpecifier(root, globalCSS.cssPath)
+        )}`,
+      })
+      if (failure) throw new Error(failure.message)
+    })
+  }
 
   /**
    * The zero-runtime half: the plugin owns the one generated CSS artifact, runs
@@ -67,6 +119,17 @@ export class TamaguiPlugin {
     if (this.options.isServer) return
 
     compiler.hooks.afterEmit.tapPromise(this.pluginName, async (compilation) => {
+      // Replay every module's recorded CSS, bridge rules and violations. A warm
+      // webpack cache skips the loader, so reading these off the loader's own
+      // return path would emit an artifact missing every rule this process never
+      // collected and silently drop violations that must fail the build.
+      // The client compilation is the whole zero entry graph, so its modules are
+      // the complete set: reset first rather than accumulate across compilations.
+      zero.artifact.clearGraphs()
+      zero.bridges.clear()
+      zero.violations.length = 0
+      const collected = collectZeroBuildInfo(zero, compilation.modules)
+
       if (zero.violations.length) {
         throw new Error(Static.formatZeroViolations(zero.violations))
       }
@@ -110,7 +173,17 @@ export class TamaguiPlugin {
       }
       const css = zero.artifact.css()
       mkdirSync(zero.publicDir, { recursive: true })
-      writeFileSync(join(zero.publicDir, ZERO_CSS_FILENAME), css)
+      const published = join(zero.publicDir, ZERO_CSS_FILENAME)
+      writeFileSync(published, css)
+      // the served copy is what the page loads, so it is the one the claim
+      // depends on: read it back rather than trusting the write
+      const publishFailure = Static.checkGlobalCSSArtifact({
+        cssPath: published,
+        expectedCSS: css,
+        loadedModuleIds: [published],
+        importHint: '',
+      })
+      if (publishFailure) throw new Error(publishFailure.message)
 
       // a generated or virtual module has no resource, so fall back to its
       // webpack identifier: the graph check ignores non-absolute ids, and the
@@ -121,7 +194,9 @@ export class TamaguiPlugin {
 
       const modules: { id: string; importers: string[] }[] = []
       const importerEdges = new Map<string, string[]>()
-      for (const module of compilation.modules) {
+      // scope hoisting reports one ConcatenatedModule in place of everything it
+      // merged, so the top level alone hides most of what actually shipped
+      for (const module of flattenModules(compilation.modules)) {
         const id = moduleId(module)
         if (!id) continue
         const importers: string[] = []
@@ -143,8 +218,10 @@ export class TamaguiPlugin {
       }
 
       const checked = Static.checkZeroGraph({ entries, modules, importerEdges })
-      const bridgeManifest = Object.fromEntries(
-        [...zero.bridges.entries()].sort(([left], [right]) => (left < right ? -1 : 1))
+      const bridgeManifest = Static.canonicalizeBridgeManifest(
+        Object.fromEntries(
+          [...zero.bridges.entries()].sort(([left], [right]) => (left < right ? -1 : 1))
+        )
       )
       const identityInputs = {
         runtimeLiteral: 'zero' as const,
@@ -168,6 +245,7 @@ export class TamaguiPlugin {
         gzip: {
           [ZERO_CSS_FILENAME]: gzipSync(Buffer.from(css), { level: 9 }).length,
         },
+        plansRestoredFromCache: collected.restored > 0,
       }
       Static.writeZeroGraphReceipt(zero.resolved.outDir, 'next-zero', receipt)
       writeFileSync(
@@ -267,14 +345,24 @@ export class TamaguiPlugin {
   }
 
   apply(compiler: Compiler) {
+    const isZero =
+      Static.resolveZeroRuntimeSync(
+        { platform: 'web', ...this.options },
+        this.options.root || compiler.context || process.cwd()
+      ).mode === 'enforce'
+
     // Prime the same main-process config used by the shared compiler frontend.
+    // In zero mode the combined artifact owns that path, so priming must not
+    // write config-only CSS over it.
     void Static.loadTamagui({
       components: ['tamagui'],
       platform: 'web',
       ...this.options,
+      ...(isZero && { outputCSS: undefined }),
     })
 
     this.applyZeroRuntime(compiler)
+    this.applyGlobalCSS(compiler)
 
     if (compiler.options.mode === 'development' && !this.options.disableWatchConfig) {
       void Static.watchTamaguiConfig(this.options).then((watcher) => {
@@ -415,4 +503,9 @@ export class TamaguiPlugin {
       }
     }
   }
+}
+
+function relativeImportSpecifier(from: string, to: string) {
+  const path = relative(from, to).replace(/\\/g, '/')
+  return path.startsWith('.') ? path : `./${path}`
 }

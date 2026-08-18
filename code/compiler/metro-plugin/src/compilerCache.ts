@@ -40,6 +40,27 @@ export interface MetroCompilerCacheValidation {
   optionsHash: string | null
 }
 
+/**
+ * The zero build's CSS side effects, persisted beside the plan cache.
+ *
+ * A published plan generation and its artifact contents are the same fact
+ * observed twice: the scan produces both. Persisting only the plans means a
+ * warm build reuses them while emitting an artifact missing every rule it never
+ * collected, and still derives TAMAGUI_DID_OUTPUT_CSS from it. This is what lets
+ * the warm path skip the scan without that divergence.
+ */
+export interface MetroZeroCSSSidecar {
+  schemaVersion: typeof METRO_COMPILER_CACHE_VERSION
+  generation: string
+  configCSS: string
+  /** Per-module compiler atomic CSS, by resolved module id. */
+  zeroModuleCSS: Record<string, string>
+  /** Theme-bridge class rules, by bridge id. */
+  bridgeCSS: Record<string, string>
+  /** The bridge manifest, by island id. */
+  bridges: Record<string, unknown[]>
+}
+
 export class MetroCompilerCacheError extends Error {
   constructor(readonly diagnostic: MetroCompilerDiagnostic) {
     super(diagnostic.message)
@@ -234,6 +255,48 @@ export class MetroCompilerCache {
 
   async discardManifest(): Promise<void> {
     await rm(this.#manifestPath, { force: true })
+  }
+
+  #zeroSidecarPath(generation: string): string {
+    return join(
+      this.root,
+      `v${METRO_COMPILER_CACHE_VERSION}`,
+      `zero-${generation.slice(0, 32)}.json`
+    )
+  }
+
+  async publishZeroCSS(sidecar: MetroZeroCSSSidecar): Promise<void> {
+    await mkdir(join(this.root, `v${METRO_COMPILER_CACHE_VERSION}`), { recursive: true })
+    const file = this.#zeroSidecarPath(sidecar.generation)
+    const temporaryPath = `${file}.${process.pid}-${randomBytes(6).toString('hex')}.tmp`
+    await writeFile(temporaryPath, `${requiredStableStringify(sidecar)}\n`, 'utf8')
+    await rename(temporaryPath, file)
+  }
+
+  /** Null whenever the sidecar is absent or does not describe this generation. */
+  async readZeroCSS(generation: string): Promise<MetroZeroCSSSidecar | null> {
+    let source: string
+    try {
+      source = await readFile(this.#zeroSidecarPath(generation), 'utf8')
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException).code === 'ENOENT') return null
+      throw error
+    }
+    const sidecar = parseJson<MetroZeroCSSSidecar>(source, 'Zero CSS sidecar')
+    if (
+      sidecar.schemaVersion !== METRO_COMPILER_CACHE_VERSION ||
+      sidecar.generation !== generation ||
+      typeof sidecar.configCSS !== 'string' ||
+      !sidecar.zeroModuleCSS ||
+      typeof sidecar.zeroModuleCSS !== 'object' ||
+      !sidecar.bridgeCSS ||
+      typeof sidecar.bridgeCSS !== 'object' ||
+      !sidecar.bridges ||
+      typeof sidecar.bridges !== 'object'
+    ) {
+      return null
+    }
+    return sidecar
   }
 
   async #readManifest(): Promise<MetroCompilerCacheManifest | null> {

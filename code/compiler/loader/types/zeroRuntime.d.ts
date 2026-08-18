@@ -1,5 +1,5 @@
 import type { IslandThemeBridge, TamaguiOptions, ZeroCSSArtifact, ZeroIsland, ZeroRuntimeResolved, ZeroViolationSite } from '@tamagui/static';
-import type { Compiler } from 'webpack';
+import type { Compiler, LoaderContext, Module } from 'webpack';
 /**
  * Webpack's half of the zero-runtime mode.
  *
@@ -24,12 +24,53 @@ export interface WebpackZeroController {
     islandModuleIds: Map<string, string>;
     /** Set while an island child compilation runs, so it never re-enters zero mode. */
     islandBuild: string | null;
+    /** Modules whose loader actually ran this build, for the warm-cache receipt. */
+    loaderModules: Set<string>;
     /** Content hash of the evaluated config's CSS, part of the artifact identity. */
     configHash: string;
 }
 export declare const zeroModuleKey: (value: string) => string;
 /** One controller per project root, shared across this build's compilations. */
 export declare function getWebpackZeroController(options: TamaguiOptions, root: string): WebpackZeroController | null;
+/**
+ * One module's zero-build side effects, carried on webpack's own module record.
+ *
+ * The loader contributes a module's atomic CSS, theme-bridge rules and contract
+ * violations to the build; webpack's module cache skips the loader on a warm
+ * build, so a build that read those only from the loader's return path emitted
+ * an artifact missing every rule it never collected while still deriving
+ * TAMAGUI_DID_OUTPUT_CSS from it, and silently dropped violations that must
+ * fail the build. `buildInfo` is restored with the cached module, so the facts
+ * travel with the thing they describe instead of in a second cache that could
+ * disagree with it.
+ */
+export interface ZeroModuleBuildInfo {
+    /** Island id when this module belongs to an island compilation, else null. */
+    island: string | null;
+    css: string;
+    bridgeCSS: [string, string][];
+    bridges: [string, IslandThemeBridge[]][];
+    violations: ZeroViolationSite[];
+}
+export declare function publishZeroBuildInfo(controller: WebpackZeroController, context: LoaderContext<unknown>, info: ZeroModuleBuildInfo): void;
+export declare function readZeroBuildInfo(module: Module): ZeroModuleBuildInfo | null;
+/**
+ * Every module in a compilation, including the ones scope hoisting swallowed.
+ *
+ * `compilation.modules` reports a ConcatenatedModule in place of the modules it
+ * merged, and in a production Next build most app pages are inside one. Reading
+ * only the top level finds `_app` but not the page that imported the violation,
+ * which reads as a clean build.
+ */
+export declare function flattenModules(modules: Iterable<Module>): Generator<Module>;
+/**
+ * Replays every module's recorded side effects into the artifact, whether its
+ * loader ran this build or webpack restored it from cache.
+ */
+export declare function collectZeroBuildInfo(controller: WebpackZeroController, modules: Iterable<Module>): {
+    modules: number;
+    restored: number;
+};
 /**
  * Builds one island as a separate webpack compilation with
  * `TAMAGUI_RUNTIME='full'`. React is externalized to the handoff the generated

@@ -62,6 +62,15 @@ export class ZeroCSSArtifact {
     if (!this.#islands.has(islandId)) this.#islands.set(islandId, new Map())
   }
 
+  /** Collected zero-graph module CSS, for an integration that persists it. */
+  zeroModuleEntries(): [string, string][] {
+    return [...this.#zero.entries()].sort(([left], [right]) => (left < right ? -1 : 1))
+  }
+
+  bridgeEntries(): [string, string][] {
+    return [...this.#bridges.entries()].sort(([left], [right]) => (left < right ? -1 : 1))
+  }
+
   setBridgeRules(bridgeId: string, css: string) {
     if (css) this.#bridges.set(bridgeId, css)
     else this.#bridges.delete(bridgeId)

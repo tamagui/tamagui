@@ -113,6 +113,12 @@ function resolveZeroRuntimeEarly(
     )
   }
 
+  if (process.env.TAMAGUI_DOES_SSR_CSS === 'mutates-themes') {
+    throw new Error(
+      `[tamagui zero-runtime] Rule 4: TAMAGUI_DOES_SSR_CSS="mutates-themes" declares runtime theme mutation. Zero-runtime themes are build-time data. Remove runtime mutation or move that surface to a full-runtime island.`
+    )
+  }
+
   return { done: false, islandGlobs: requested === true ? [] : requested.islands }
 }
 
