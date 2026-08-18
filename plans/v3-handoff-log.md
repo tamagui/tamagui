@@ -2123,7 +2123,7 @@ by serving another clause's CSS, so do not weaken those tests.
   genuinely free piece is the border-defaults table, which exists identically in
   both `directStyle` and `expandStyles` on web, worth ~30-43.
 
-### The next measured lever, deliberately not taken
+### The next measured lever: DECLINED, with the reason
 
 `directAtomic` is now the biggest single Tamagui allocator: **1,266,794 bytes per
 iteration, 19% of everything the heavy scenario allocates**, almost entirely the
@@ -2131,7 +2131,11 @@ per-contribution signature string plus the `DirectAtomic` record. Hoisting the
 identity cache up into `directAtomic` so the signature string is built only on a
 miss would recover roughly 0.6 MB/iteration (INFERRED from ~6,700 calls times
 ~90-byte strings, NOT measured). It costs a three-level Map in `directStyle` and
-would thrash on genuinely dynamic values such as an animated width. Not taken.
+would thrash on genuinely dynamic values such as an animated width. **Declined
+by the campaign (p25843, 2026-08-17): a three-level Map that thrashes on animated
+values is the exact regression shape the brief warns about.** Do not re-propose it
+without first showing the thrash does not happen for dynamic values; the measured
+0.6 MB is the ceiling, not the expected win.
 
 Also flagged and not taken: `simple-hash`'s `${hashMin}:${strIn}` cache key is
 0.66 ms/iteration of self time and one string allocation per call.
@@ -2192,6 +2196,10 @@ before Metro records dependencies, after splitting
 `mergeConfigVariablesIntoTheme` out into the always-needed leaf. The other viable
 mechanism is a separate opt-in inline-Theme entry so ordinary `Theme` never
 imports the heavy graph, which changes the binding public API.
+
+Full measurements, the per-bundler fixture layout, and the exact opt-out wiring
+are recorded in `code/comparisons/V3_INLINE_VALUES_DCE.md` so the implementing
+worker does not rebuild them.
 
 **Do not collapse the three reference resolvers.** They look like one function
 written three times and they are not: the CSS path resolves theme keys to live
