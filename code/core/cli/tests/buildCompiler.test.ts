@@ -41,7 +41,10 @@ describe('CLI shared compiler runtime', () => {
       })
       expect(result.status, result.stderr).toBe(0)
       expect(result.stdout).toContain('E5_STATS=')
-      expect(result.stdout).toContain('"flattened":10')
+      // 12, not 10, since 15cf8b9ac9 added three receipt probes to
+      // tests/integration/src/Root.tsx: receipt-flattened and receipt-dropped
+      // flatten, receipt-runtime bails by design on disableOptimization.
+      expect(result.stdout).toContain('"flattened":12')
 
       const [compiled, css] = await Promise.all([
         readFile(join(output, 'Root.tsx'), 'utf8'),
