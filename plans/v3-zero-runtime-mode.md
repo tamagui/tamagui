@@ -1866,3 +1866,131 @@ from an immediate teardown rather than just observing that a sheet closes.
 The public `useAnimatedNumber` behavior the leaf now backs is unchanged:
 `code/kitchen-sink/tests/PublicAnimatedNumber.animated.test.tsx` passes on all
 four animation drivers, `animated-css` included.
+
+## Phase 6 record: the demoted DOM surfaces, and one plan-cache fix
+
+Evidence added after Phase 6 ran. Same fixture, `code/tests/zero-runtime`.
+
+### Nothing about the package boundaries moved, which is the point
+
+**READ.** Section 9's grep still returns nothing:
+
+```sh
+rg -n --glob '*.mdx' --glob '*.md' --glob '!plans/**' \
+  '@tamagui/dom|tamagui/dom|@tamagui/core/dom|Tamagui DOM|DOM mode' \
+  code/tamagui.dev docs README.md
+```
+
+Exit 1, no matches, so no public page needed a removal edit and none was made.
+
+No export map was narrowed, no runtime warning or throw was added, and no table
+was copied anywhere. `code/core/dom/src/__tests__/exports.test.ts` resolves
+`@tamagui/dom`, `@tamagui/web/dom`, `@tamagui/core/dom` and `tamagui/dom` under
+the default, `browser`, `react-native` and `require` conditions through Node's
+own resolver (a child `node --conditions` process per condition set), asserts
+every target exists, asserts the native condition is a genuinely different file,
+and then loads the three standalone entries and checks they still throw the
+compile-only error from `style()` and from a tag. The three entries' export name
+sets are compared and must be identical, which is what "alias" means here.
+
+### The deprecation had to go on the declarations, not on the entries
+
+**READ, and it changed the implementation.** A `@deprecated` JSDoc on a module's
+top comment produces no hint at all, and a `@deprecated` on a re-export alias
+(`/** @deprecated */ export { style } from './base'`) produces no hint either.
+Only a tag on the declaration itself reaches the import site, and it does reach
+through `export *`. Probed with the TypeScript API on a three-module fixture
+before writing anything: suggestion diagnostic 6385 on the tagged symbol, none on
+the aliased one, zero semantic errors in both cases.
+
+So the tag lives on `style`, `CompiledStyle`, `ConditionalCompiledStyle`,
+`DOMStyleProps` and `StyleDefinition` in `@tamagui/web`'s `dom/standalone.ts`,
+and on `html` in the generated `dom/standaloneHtml.ts` (the generator emits it,
+`code/core/dom/scripts/generate-html.ts`). Every demoted entry re-exports those,
+so one declaration site serves all three aliases.
+
+**`@tamagui/dom` itself got no symbol-level tag, deliberately.** Its exports are
+the generated tables, and the same section 9 names Tamagui's own compiler and
+runtime as their intended consumer and the tables as the one source of truth.
+Nine files in this repo import them; tagging them would strike through
+`dom/html.tsx`, which is the *recommended* API's implementation, and would tell
+maintainers to stop using the source of truth. Since the alias-level tag is
+inert, there is no form of the tag that reaches an outside importer without
+reaching those nine. The package's demotion is therefore what the rest of section
+9 already says: no product name, no documentation, no recommendation, no new
+user-facing API, and out of the web client graph.
+
+### `import { html } from 'tamagui'` did not work
+
+**READ.** Section 9's own public example was broken. `tamagui`'s root re-exports
+an explicit allowlist from `@tamagui/core`, and `html` was not on it, so
+`import { html } from 'tamagui'` was a TypeScript error and `undefined` at
+runtime, while `@tamagui/core` and `@tamagui/web` both exported it. The
+deprecation fixture caught it: the control that asserts regular `html.*` carries
+no hint failed with "Module 'tamagui' has no exported member 'html'". `html` is
+now on the allowlist, and the recommended frontend exists at the recommended
+name.
+
+### A regular web client does not carry the tables
+
+**READ**, `domPackageGraph` in `vite-receipts.json`, two new fixture entries
+built unminified so rolldown's `//#region` markers are the emitted module list:
+
+| build | runtime `html.*` module | `@tamagui/dom` modules |
+| --- | --- | --- |
+| `dom-client` | present | none |
+| `dom-tables` | present | `dist/esm/tables/tags.mjs` |
+
+`dom-client` selects one of its tags at runtime (`wide ? html.section :
+html.article`), so the compiler cannot replace it and
+`core/web/dist/esm/dom/html.mjs` is genuinely in the graph. That is the assertion
+that lets the absence fail: the tables reach that module as `import type` only,
+and a value import would ship them with it. The first build with the tag lowered
+in both places emitted 13 modules and no `html.mjs` at all, which would have made
+the absence check unfalsifiable.
+
+`dom-tables` is the same client plus one value import of `TAG_NAMES`, and the
+matcher finds the package there, so it can detect the package it claims is
+absent. Both halves throw with their own message if they come out wrong.
+
+Compiler-side evaluation is unchanged and still loads the tables: the compiler
+dom suites pass (`domConformance.native`, `domCompiledRuntime.native` inside
+static-tests native 79), `domHtmlRuntime.native` is 24/24, and both new builds
+only compile because the compiler read the tables to classify their tags.
+
+### The plan-cache walk hashed build output
+
+This is not a Phase 6 subject; it is the cause behind Phase 5's one flaked
+metro-receipts run, verified and fixed here.
+
+`walkProjectSources` in the Metro plugin feeds both the plan cache's options hash
+and the speculative-root seed set. It excluded directories by exact name
+(`node_modules`, `ios`, `android`, `dist`, `build`, `coverage`, `types`,
+`web-build`), so `dist-metro`, `dist-full`, `public/`, `out/` and every other
+output directory contributed their emitted JS. Vite and webpack emit
+content-hashed filenames, so any unrelated rebuild in the project root changed
+the path list and invalidated the cache.
+
+**READ, before the fix**: a temp project with `dist-web/main.a1b2c3.js` produced
+options hash `f6fbb65e…`; renaming that one emitted file to `main.d4e5f6.js`
+produced `b1899cbc…`. Nothing else changed.
+
+**The rule is now the project's own ignore configuration**, read with git's
+semantics: every `.gitignore` from the repository root down to the walked
+directory, patterns relative to the file that declares them. It was chosen over
+adding names to the list because a name list cannot know that `dist-metro` or
+`out` is output, and over excluding only what the plugin writes because the
+directory that broke this belongs to a different bundler. Every project already
+declares its generated directories in exactly one place. `node_modules` stays
+skipped structurally rather than by declaration: it is the same externality
+boundary the resolver already draws, and it has to hold in a project with no
+`.gitignore`, where the walk would otherwise seed every dependency file as a
+speculative root.
+
+**READ, after the fix**: the same rename produces the same hash, and the emitted
+bundle is no longer planned, while the authored module still is (the control that
+makes a stable hash mean something rather than an empty walk). At the fixture
+level, `metro-receipts` was run with a background writer re-emitting
+content-hashed files into `dist-full/assets` throughout: it passes with the fix
+(`warmBuildReusedPlans: true`) and fails without it with Phase 5's exact message,
+"the warm rebuild rescanned, so the warm path proves nothing".

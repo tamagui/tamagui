@@ -2514,3 +2514,91 @@ key that builds a rule module as ordinary compiled Tamagui.
 transition behavior receipt, and it uses the config preset `medium` rather than a
 literal duration string on purpose, so the browser reporting `0.3s` proves the
 compiler resolved the preset against the config.
+
+## 21. Zero-runtime Phase 6: the demoted DOM surfaces and a plan-cache fix (2026-08-18)
+
+Block 2's DOM demotion, plus the cache-correctness bug Phase 5 found and could
+not validate inside its own phase. Both landed on `v3-beta`.
+
+- `9ecd0a80ab` fix(metro-plugin): hash and seed only authored project sources
+- `269c8aad10` feat(core): deprecate the standalone DOM entries and export the
+  recommended html from tamagui
+- `1233f7b194` test(dom): cover every DOM import path, the deprecation hint, and
+  a regular web client's module graph
+
+### `@deprecated` only works on a declaration
+
+Worth knowing before anyone tries to deprecate a module entry point again. A tag
+on a module's top JSDoc does nothing. A tag on a re-export alias
+(`/** @deprecated */ export { x } from './y'`) does nothing. Only a tag on the
+declaration itself produces the hint, and it then flows through `export *` to
+every alias. Probed with the TypeScript API before writing any of it.
+
+The consequence is that you cannot deprecate an entry point for outside importers
+without deprecating it for your own. That is why `@tamagui/dom` has no tag: its
+exports are the generated tables, nine files in this repo import them, and one of
+those is `dom/html.tsx`, the implementation of the API the deprecation is meant
+to point people toward.
+
+Also, the hint is a language-service suggestion, not a compiler diagnostic.
+`ts.Program` has no public `getSuggestionDiagnostics`; use
+`ts.createLanguageService(...).getSuggestionDiagnostics(file)`, which is what an
+editor calls and what the test asserts, alongside zero semantic diagnostics.
+
+### `import { html } from 'tamagui'` was broken, and a control caught it
+
+`tamagui`'s root re-exports an explicit allowlist from `@tamagui/core` (the file
+says why: overlap with `ViewProps` and friends). `html` was missing from it, so
+the frontend the plan recommends everywhere did not exist under the name it
+recommends, while `@tamagui/core` and `@tamagui/web` both had it. It surfaced
+because the deprecation fixture asserts regular `html.*` carries *no* hint, so it
+had to resolve it; a fixture that only checked the deprecated imports would have
+been green. Fixed by adding `html` to the allowlist.
+
+### Absence checks need the thing to be reachable first
+
+The `@tamagui/dom` graph receipt looked fine on the first attempt and proved
+nothing. The fixture authored `<html.div {...spread}>`, the compiler lowered it
+anyway, the build emitted 13 modules, and the runtime `html.*` module was not in
+the graph at all. Of course the tables were absent. The check only became real
+once a tag was selected at runtime (`wide ? html.section : html.article`), which
+puts `core/web/dist/esm/dom/html.mjs` in the graph and makes the absence a claim
+about that module's imports. The receipt now asserts that module's presence and
+throws its own message if it is missing.
+
+### The Metro plan cache was invalidated by other bundlers' output
+
+Phase 5's flaked receipt was real and this is its cause. `walkProjectSources`
+feeds the plan cache's options hash and excluded build output by exact directory
+name, so `dist-metro`, `dist-full`, `public/` and `out/` all contributed their
+emitted JS. Content-hashed filenames mean every unrelated web rebuild re-keyed
+the cache, and every Metro build then rescanned the project.
+
+The walk now honours the project's ignore configuration with git's semantics
+(every `.gitignore` from the repo root down, patterns relative to their own
+directory, via the `ignore` package). `node_modules` stays skipped structurally,
+because it is the externality boundary the resolver already draws and it has to
+hold in a project with no `.gitignore` at all.
+
+Two things this changes for anyone working on that file:
+
+- a project that does not declare its output directory in a `.gitignore` gets it
+  walked, by design. The declaration is the contract.
+- `ios/` and `android/` are no longer excluded by name. Expo prebuild ignores
+  them wholesale and the bare React Native template ignores `ios/Pods` and the
+  gradle build directories, so the declaration covers the real cases.
+
+Receipts: a temp project's options hash went `f6fbb65e…` to `b1899cbc…` on
+renaming one emitted file before the fix, and is stable after. Running
+`metro-receipts` with a background writer re-emitting content-hashed files into
+`dist-full/assets` reproduces Phase 5's exact failure on the old walk and passes
+on the new one.
+
+### Baselines at `1233f7b194`
+
+core-test web 468 passed / 2 skipped / 1 todo; core-test native 293 passed / 7
+expected fail / 9 skipped; static-tests native 79, web 165, webpack 20;
+`domHtmlRuntime.native` 24/24; metro-plugin 6; `@tamagui/dom` package 36 plus its
+type tests; zero-runtime Playwright 41/41; `bun run receipts` exit 0 across all
+three integrations; root typecheck, lint, `check:deps`, `check:dom-types` and
+`check:exports:web` clean.
