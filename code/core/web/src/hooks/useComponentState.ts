@@ -4,6 +4,7 @@ import { mergeIfNotShallowEqual } from '@tamagui/is-equal-shallow'
 import { useDidFinishSSR, useIsClientOnly } from '@tamagui/use-did-finish-ssr'
 import { useRef, useState } from 'react'
 import { getSetting } from '../config'
+import { formatDiagnostic } from '../helpers/formatDiagnostic'
 import { isOptimizedForFirstRender } from './isOptimizedForFirstRender'
 import {
   defaultComponentState,
@@ -262,7 +263,18 @@ export const useComponentState = (
   let outProps: typeof props = props
   if (presenceState && isAnimated && isHydrated && staticConfig.variants) {
     if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') {
-      console.warn(`has presenceState ${JSON.stringify(presenceState)}`)
+      console.warn(
+        formatDiagnostic(
+          'TAMAGUI_PRESENCE_STATE',
+          staticConfig.Component?.displayName ||
+            staticConfig.Component?.name ||
+            'TamaguiComponent',
+          'AnimatePresence supplied lifecycle state to an animated component',
+          'Remove debug="verbose" after inspecting the animation state',
+          'presenceState',
+          presenceState
+        )
+      )
     }
     const { custom } = presenceState
     if (isObj(custom)) {

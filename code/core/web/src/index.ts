@@ -10,6 +10,7 @@ export * from './helpers/getDefaultProps'
 export * from './helpers/expandStyles'
 export * from './helpers/getCSSStylesAtomic'
 export * from './helpers/getExpandedShorthands'
+export * from './helpers/formatDiagnostic'
 export * from './helpers/getShorthandValue'
 export * from './helpers/getSplitStyles'
 export {

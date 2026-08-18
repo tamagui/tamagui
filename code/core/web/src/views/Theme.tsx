@@ -5,6 +5,7 @@ import type { MutableRefObject } from 'react'
 import React, { Children, cloneElement, isValidElement, useRef } from 'react'
 import { getConfig, getSetting } from '../config'
 import { variableToString } from '../createVariable'
+import { formatDiagnostic } from '../helpers/formatDiagnostic'
 import {
   insertStyleRules,
   shouldInsertStyleRules,
@@ -211,7 +212,18 @@ export function getThemedChildren(
       const parentState = getThemeState(
         themeState.isNew ? themeState.id : themeState.parentId
       )
-      if (!parentState) throw new Error(`‼️010`)
+      if (!parentState) {
+        throw new Error(
+          formatDiagnostic(
+            '‼️010',
+            'Theme',
+            'parent theme state is missing for shallow rendering',
+            'Keep <Theme shallow> inside its mounted parent Theme',
+            'name,parentId',
+            { name: themeState.name, parentId: themeState.parentId }
+          )
+        )
+      }
       children = Children.toArray(children).map((child) => {
         return isValidElement(child)
           ? passThrough

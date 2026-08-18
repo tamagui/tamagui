@@ -9,6 +9,7 @@ import {
   type MutableRefObject,
 } from 'react'
 import { getConfig, getSetting } from '../config'
+import { formatDiagnostic } from '../helpers/formatDiagnostic'
 import { getInlineValuesKey, getMergedInlineTheme } from '../helpers/variables'
 import { MISSING_THEME_MESSAGE } from '../constants/constants'
 import type {
@@ -649,9 +650,14 @@ function getNewThemeName(
 
   if (name && reset) {
     throw new Error(
-      process.env.NODE_ENV === 'production'
-        ? `❌004`
-        : 'Cannot reset and set a new name at the same time.'
+      formatDiagnostic(
+        '❌004',
+        'Theme',
+        'props name and reset are mutually exclusive',
+        'Pass either name or reset, not both',
+        'name,reset',
+        { name, reset }
+      )
     )
   }
 

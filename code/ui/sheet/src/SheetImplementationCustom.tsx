@@ -12,6 +12,7 @@ import {
   useEvent,
   useThemeName,
   createRefComponent,
+  formatDiagnostic,
 } from '@tamagui/core'
 import { needsPortalRepropagation, Portal } from '@tamagui/portal'
 import React, { useState } from 'react'
@@ -1293,12 +1294,30 @@ function getYPositions(
     if (point.endsWith('%')) {
       const pct = Math.min(100, Math.max(0, Number(point.slice(0, -1)))) / 100
       if (Number.isNaN(pct)) {
-        console.warn('Invalid snapPoint percentage string')
+        console.warn(
+          formatDiagnostic(
+            'TAMAGUI_SHEET_SNAP_POINT',
+            'Sheet',
+            'snapPoints contains an invalid percentage string',
+            'Use "fit", a pixel number, or a percentage such as "50%"',
+            'snapPoint',
+            point
+          )
+        )
         return 0
       }
       return Math.round(screenSize - pct * screenSize)
     }
-    console.warn('Invalid snapPoint unknown value')
+    console.warn(
+      formatDiagnostic(
+        'TAMAGUI_SHEET_SNAP_POINT',
+        'Sheet',
+        'snapPoints contains an unsupported mixed-mode value',
+        'Use "fit", a pixel number, or a percentage such as "50%"',
+        'snapPoint',
+        point
+      )
+    )
     return 0
   }
 
@@ -1313,7 +1332,16 @@ function getYPositions(
 
   const pct = Math.min(100, Math.max(0, Number(point))) / 100
   if (Number.isNaN(pct)) {
-    console.warn('Invalid snapPoint percentage')
+    console.warn(
+      formatDiagnostic(
+        'TAMAGUI_SHEET_SNAP_POINT',
+        'Sheet',
+        'snapPoints contains a value that cannot be converted to a percentage',
+        'Use a numeric percentage such as 50',
+        'snapPoint',
+        point
+      )
+    )
     return 0
   }
 

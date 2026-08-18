@@ -1,5 +1,6 @@
 import { StyleObjectIdentifier, StyleObjectRules } from '@tamagui/helpers'
 import { createVariable } from '../createVariable'
+import { formatDiagnostic } from './formatDiagnostic'
 import type {
   DedupedTheme,
   DedupedThemes,
@@ -381,7 +382,26 @@ export function insertStyleRules(rulesToInsert: RulesToInsert) {
       }
     } catch (err) {
       if (process.env.NODE_ENV === 'production') {
-        console.error(`Error inserting style rule`, rules)
+        const rule = rules[0] || ''
+        const selectorEnd = rule.indexOf('{')
+        const owner =
+          'ownerNode' in sheet ? (sheet.ownerNode as HTMLElement | null) : null
+        console.error(
+          formatDiagnostic(
+            'TAMAGUI_STYLE_INSERT',
+            'insertStyleRules',
+            'the stylesheet rejected a generated rule',
+            'Fix or remove the invalid style declaration',
+            'identifier,selector,target',
+            {
+              identifier,
+              selector: (selectorEnd === -1 ? rule : rule.slice(0, selectorEnd)).trim(),
+              target: owner
+                ? `${owner.nodeName.toLowerCase()}${owner.id ? `#${owner.id}` : ''}`
+                : sheet.constructor?.name || 'CSSStyleSheet',
+            }
+          )
+        )
       }
       // in dev throw to show error clearly
     }

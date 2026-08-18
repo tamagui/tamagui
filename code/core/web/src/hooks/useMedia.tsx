@@ -1,6 +1,7 @@
 import { isServer, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { useEffect, useReducer, useRef } from 'react'
 import { getSetting } from '../config'
+import { formatDiagnostic } from '../helpers/formatDiagnostic'
 import { isOptimizedForFirstRender } from './isOptimizedForFirstRender'
 import { matchMedia } from '../helpers/matchMedia'
 import { mediaObjectToString } from '../helpers/mediaObjectToString'
@@ -69,7 +70,16 @@ export function setupMediaListeners() {
     const getMatch = () => matchMedia(str)
     const match = getMatch()
     if (!match) {
-      throw new Error('⚠️ No match')
+      throw new Error(
+        formatDiagnostic(
+          'TAMAGUI_MEDIA_MATCH',
+          'useMedia',
+          'matchMedia returned no MediaQueryList',
+          'Provide a matchMedia implementation that returns a MediaQueryList',
+          'key,query,platform',
+          { key, query: str, platform: isWeb ? 'web' : 'native' }
+        )
+      )
     }
 
     // react native needs these deprecated apis for now
