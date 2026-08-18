@@ -271,8 +271,7 @@ const resolveVariantValue: StyleResolver = (
   if (!variants) return
 
   const variant = variants[key]
-  const variantMatch = getVariantDefinition(variant, value, conf, styleState)
-  let variantValue = variantMatch?.value
+  let variantValue = getVariantDefinition(variant, value, conf, styleState)
 
   if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
     console.groupCollapsed(`♦️♦️♦️ resolve variant ${key}`)
@@ -615,28 +614,24 @@ export function getTokenCategoryForProperty(
 }
 
 // goes through specificity finding best matching variant function
-type VariantDefinitionMatch = {
-  value: any
-}
-
 function getVariantDefinition(
   variant: any,
   value: any,
   conf: TamaguiInternalConfig,
   { theme }: Partial<GetStyleState>
-): VariantDefinitionMatch | undefined {
+): any {
   if (!variant) return
   if (value === undefined) return
   if (typeof variant === 'function') {
-    return { value: variant }
+    return variant
   }
   if (Object.prototype.hasOwnProperty.call(variant, value)) {
-    return { value: variant[value] }
+    return variant[value]
   }
   for (const { key, parts } of getCompiledVariantResolvers(variant)) {
     for (const part of parts) {
       if (matchesVariantResolver(part, value, conf, theme)) {
-        return { value: variant[key] }
+        return variant[key]
       }
     }
   }
@@ -690,6 +685,43 @@ const viewportValuePattern = new RegExp(
   `^(?:${numberStringPattern.source})(vw|dvw|lvw|svw|vh|dvh|lvh|svh)$`
 )
 
+function isAllowedStyleValue(
+  category: 'size' | 'space' | 'radius' | 'zIndex',
+  value: any,
+  conf: TamaguiInternalConfig,
+  string: boolean,
+  number: boolean,
+  rem: boolean
+) {
+  const hasSetting = Object.prototype.hasOwnProperty.call(
+    conf.settings,
+    'allowedStyleValues'
+  )
+  const configured = conf.settings.allowedStyleValues
+  const setting =
+    configured && typeof configured === 'object' ? configured[category] : configured
+  const web =
+    value === 'unset' ||
+    value === 'inherit' ||
+    (string && /^var\(.*\)$/.test(value)) ||
+    ((category === 'size' || category === 'space') &&
+      (value === 'max-content' ||
+        value === 'min-content' ||
+        (string &&
+          (viewportValuePattern.test(value) || /^(calc|min|max)\(.*\)$/.test(value)))))
+  const somewhat =
+    category === 'size' || category === 'space'
+      ? value === 'auto' || number || rem || (string && value.endsWith('%'))
+      : number
+  if (setting === 'strict') return false
+  if (setting === 'strict-web') return web
+  if (setting === 'somewhat-strict') return somewhat
+  if (setting === 'somewhat-strict-web') return somewhat || web
+  return (
+    number || (string && (category === 'size' || category === 'space' || !hasSetting))
+  )
+}
+
 function matchesVariantResolver(
   resolverName: VariantResolverName,
   value: any,
@@ -699,41 +731,6 @@ function matchesVariantResolver(
   const string = typeof value === 'string'
   const number = typeof value === 'number'
   const rem = string && remStringPattern.test(value)
-  const token = (category: 'size' | 'space' | 'color' | 'radius' | 'zIndex') =>
-    value != null && value in conf.tokensParsed[category]
-  const themed = string && !!theme && value in theme
-  const font = (
-    category: 'size' | 'style' | 'transform' | 'lineHeight' | 'letterSpacing'
-  ) => string && !!conf.fontsParsed.body?.[category]?.[value]
-  const allowed = (category: 'size' | 'space' | 'radius' | 'zIndex') => {
-    const hasSetting = Object.prototype.hasOwnProperty.call(
-      conf.settings,
-      'allowedStyleValues'
-    )
-    const configured = conf.settings.allowedStyleValues
-    const setting =
-      configured && typeof configured === 'object' ? configured[category] : configured
-    const web =
-      value === 'unset' ||
-      value === 'inherit' ||
-      (string && /^var\(.*\)$/.test(value)) ||
-      ((category === 'size' || category === 'space') &&
-        (value === 'max-content' ||
-          value === 'min-content' ||
-          (string &&
-            (viewportValuePattern.test(value) || /^(calc|min|max)\(.*\)$/.test(value)))))
-    const somewhat =
-      category === 'size' || category === 'space'
-        ? value === 'auto' || number || rem || (string && value.endsWith('%'))
-        : number
-    if (setting === 'strict') return false
-    if (setting === 'strict-web') return web
-    if (setting === 'somewhat-strict') return somewhat
-    if (setting === 'somewhat-strict-web') return somewhat || web
-    return (
-      number || (string && (category === 'size' || category === 'space' || !hasSetting))
-    )
-  }
 
   switch (resolverName) {
     case 'Size':
@@ -746,13 +743,13 @@ function matchesVariantResolver(
           : (resolverName.toLowerCase() as 'size' | 'space' | 'radius')
       return (
         value === true ||
-        token(category) ||
+        (value != null && value in conf.tokensParsed[category]) ||
         ((resolverName === 'Space' ||
           resolverName === 'Radius' ||
           resolverName === 'ZIndex') &&
           isVariable(value)) ||
         ((resolverName === 'Radius' || resolverName === 'ZIndex') && (number || rem)) ||
-        allowed(category)
+        isAllowedStyleValue(category, value, conf, string, number, rem)
       )
     }
     // a token or theme color, otherwise any string is taken to be a raw CSS
@@ -761,25 +758,29 @@ function matchesVariantResolver(
     // anyway. `red/50` opacity modifiers stay limited to token and theme
     // colors, which the branches above already covered.
     case 'Color':
-      return token('color') || string
+      return (value != null && value in conf.tokensParsed.color) || string
     case 'Theme':
-      return themed
+      return string && !!theme && value in theme
     case 'FontSize':
-      return value === true || font('size') || number || rem
+      return value === true || !!conf.fontsParsed.body?.size?.[value] || number || rem
     case 'FontStyle':
-      return font('style') || value === 'normal' || value === 'italic'
+      return (
+        !!conf.fontsParsed.body?.style?.[value] ||
+        value === 'normal' ||
+        value === 'italic'
+      )
     case 'FontTransform':
       return (
-        font('transform') ||
+        !!conf.fontsParsed.body?.transform?.[value] ||
         value === 'none' ||
         value === 'capitalize' ||
         value === 'uppercase' ||
         value === 'lowercase'
       )
     case 'FontLineHeight':
-      return font('lineHeight') || number || rem
+      return !!conf.fontsParsed.body?.lineHeight?.[value] || number || rem
     case 'FontLetterSpacing':
-      return font('letterSpacing') || number || rem
+      return !!conf.fontsParsed.body?.letterSpacing?.[value] || number || rem
     case 'number':
     case 'string':
     case 'boolean':

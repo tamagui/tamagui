@@ -27,9 +27,7 @@ export const createVariables = <A extends DeepTokenObject>(
   if (cache.has(tokens)) return tokens
 
   const res: any = {}
-  let i = 0
   for (const key in tokens) {
-    i++
     const val = tokens[key]
 
     if (isVariable(val)) {
@@ -57,15 +55,10 @@ export const createVariables = <A extends DeepTokenObject>(
 
     if (val && typeof val === 'object') {
       // recurse
-      res[key] = createVariables(
-        tokens[key] as any,
-        name,
-        false /* note: don't pass isFont down, we want to avoid it past the first level */
-      )
+      res[key] = createVariables(tokens[key] as any, name)
       continue
     }
-    const finalValue = isVariable(val) ? val : createVariable({ val, name, key })
-    res[key] = finalValue
+    res[key] = createVariable({ val, name, key })
   }
 
   cache.set(res, true)

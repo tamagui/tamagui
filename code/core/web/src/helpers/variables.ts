@@ -193,13 +193,6 @@ const toDeclarationBlock = (declarations: ResolvedDeclarations) =>
 // "blue" theme. scheme names never reach this (they resolve by scheme).
 const schemePrefix = /^(light|dark)_/
 
-const isSchemeName = (name: string) => name === 'light' || name === 'dark'
-
-const bucketMatchesThemeName = (bucketName: string, themeName: string): boolean => {
-  const base = themeName.replace(schemePrefix, '')
-  return base === bucketName || base.startsWith(`${bucketName}_`)
-}
-
 // non-scheme bucket names of a themes map, sorted so prefix chains apply
 // least-specific first (blue before blue_surface1) — the same order the CSS
 // rules are emitted in, where the later equal-specificity rule wins
@@ -207,7 +200,7 @@ const getThemedBucketNames = (themes: InlineValues['themes']): string[] => {
   if (!themes) return []
   const names: string[] = []
   for (const name in themes) {
-    if (!isSchemeName(name) && themes[name]) {
+    if (name !== 'light' && name !== 'dark' && themes[name]) {
       names.push(name)
     }
   }
@@ -291,7 +284,7 @@ const getCycleDroppedKeys = (props: InlineValues): Set<string> | null => {
     check({ ...base, ...dark })
   }
 
-  checkWithSchemes({ ...values })
+  checkWithSchemes(values || {})
 
   const bucketNames = getThemedBucketNames(props.themes)
   for (const name of bucketNames) {
@@ -307,16 +300,17 @@ const getCycleDroppedKeys = (props: InlineValues): Set<string> | null => {
   }
 
   if (dropped && process.env.NODE_ENV === 'development') {
+    const names = [...dropped]
     warnOnce(
-      `cycle:${[...dropped].join(',')}`,
-      `Theme inline values: reference cycle involving "${[...dropped].join('", "')}". These keys cannot resolve on either platform and are dropped.`
+      `cycle:${names.join(',')}`,
+      `Theme inline values: reference cycle involving "${names.join('", "')}". These keys cannot resolve on either platform and are dropped.`
     )
   }
 
   return dropped
 }
 
-const rulesCache = new Map<string, VariablesCSS | null>()
+const rulesCache = new Map<string, VariablesCSS>()
 
 /**
  * Builds the deterministic identifier and CSS rules for inline `<Theme>` values.
@@ -362,9 +356,7 @@ export function getVariablesCSSRules(
   const payload = JSON.stringify([base, themed, dark, light, prefersColorThemes])
 
   const cached = rulesCache.get(payload)
-  if (cached !== undefined) {
-    return cached
-  }
+  if (cached) return cached
 
   const identifier = `tvar_${simpleHash(payload, 'strict')}`
   // inline values patch named themes, so their selector family must meet or
@@ -394,22 +386,17 @@ export function getVariablesCSSRules(
   // override (1,4,0). the scheme class can sit on :root itself (addThemeClassName
   // 'html') or below it, so emit both shapes. deeper alternation is undefined,
   // same two-level limit as getThemeCSSRules.
-  const schemeRule = (scheme: 'dark' | 'light', declarations: ResolvedDeclarations) => {
+  const schemeRule = (scheme: 'dark' | 'light') => {
     const opposite = scheme === 'dark' ? 'light' : 'dark'
-    const selectors = [
-      `:root .t_${scheme} ${cls}`,
-      `:root.t_${scheme} ${cls}`,
-      `:root .t_${opposite} .t_${scheme} ${cls}`,
-      `:root.t_${opposite} .t_${scheme} ${cls}`,
-    ]
-    return `${selectors.join(', ')} {${toDeclarationBlock(declarations)}}`
+    const declarations = scheme === 'light' ? light : dark
+    return `:root .t_${scheme} ${cls}, :root.t_${scheme} ${cls}, :root .t_${opposite} .t_${scheme} ${cls}, :root.t_${opposite} .t_${scheme} ${cls} {${toDeclarationBlock(declarations)}}`
   }
 
   if (light.length) {
-    rules.push(schemeRule('light', light))
+    rules.push(schemeRule('light'))
   }
   if (dark.length) {
-    rules.push(schemeRule('dark', dark))
+    rules.push(schemeRule('dark'))
   }
 
   // when the app relies on prefers-color-scheme with no explicit root class,
@@ -706,17 +693,20 @@ export function getMergedInlineTheme(
   conf: TamaguiInternalConfig
 ): Record<string, Variable> {
   const name = themeName || 'light'
-  const activeScheme = name.split('_')[0] === 'dark' ? 'dark' : 'light'
+  const activeScheme = name === 'dark' || name.startsWith('dark_') ? 'dark' : 'light'
 
   const bucketNames = getThemedBucketNames(inline.themes)
   let matched: string[] | undefined
-  for (const bucketName of bucketNames) {
-    if (process.env.NODE_ENV === 'development') {
-      warnOnUnknownThemeBucket(bucketName, conf)
-    }
-    if (bucketMatchesThemeName(bucketName, name)) {
-      matched ||= []
-      matched.push(bucketName)
+  if (bucketNames.length) {
+    const baseName = name.replace(schemePrefix, '')
+    for (const bucketName of bucketNames) {
+      if (process.env.NODE_ENV === 'development') {
+        warnOnUnknownThemeBucket(bucketName, conf)
+      }
+      if (baseName === bucketName || baseName.startsWith(`${bucketName}_`)) {
+        matched ||= []
+        matched.push(bucketName)
+      }
     }
   }
 
@@ -729,9 +719,8 @@ export function getMergedInlineTheme(
   }
 
   let byKey = mergedThemeCache.get(parentTheme)
-  if (byKey?.has(cacheKey)) {
-    return byKey.get(cacheKey)!
-  }
+  const cached = byKey?.get(cacheKey)
+  if (cached) return cached
 
   const values = (inline.values || {}) as Record<string, VariableValIn>
   const themes = (inline.themes || {}) as Record<

@@ -53,11 +53,11 @@ async function profileScenario(scenario: Scenario) {
     }
   })
 
-  // skip every scenario EXCEPT the target. the bench app reads ?skip= from the
-  // URL and filters allScenarios down — only the target runs, so the auto-print
-  // happens with timings attributable to ONE scenario.
-  const skip = ALL_SCENARIOS.filter((s) => s !== scenario).join(',')
-  const url = `http://localhost:${PORT}/?scale=${SCALE}&skip=${skip}`
+  // run ONLY the target scenario, so the auto-print carries timings attributable
+  // to one scenario. shared/bench.ts filters allScenarios by ?scenario=; it has
+  // never read ?skip=, so the old skip list silently profiled all five and
+  // labelled the result with one scenario's name.
+  const url = `http://localhost:${PORT}/?scale=${SCALE}&scenario=${scenario}`
 
   // inject the timer onto window BEFORE any module evaluates. we inline the
   // timer impl (copied from @tamagui/timer's dist/esm/index.mjs) so we don't

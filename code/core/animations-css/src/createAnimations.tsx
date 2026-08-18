@@ -89,6 +89,7 @@ const getCSSProperties = (key: string) => {
 }
 
 const hyphenatedPropertyCache: Record<string, string> = {}
+const emptyProperties: string[] = []
 
 function hyphenateProperty(property: string): string {
   if (property.startsWith('--')) return property
@@ -99,7 +100,7 @@ function hyphenateProperty(property: string): string {
 }
 
 function getLifecycleCSSProperties(keys: Set<string> | undefined): string[] {
-  if (!keys?.size) return []
+  if (!keys?.size) return emptyProperties
   const properties = new Set<string>()
   for (const key of keys) {
     for (const property of getCSSProperties(key)) {
@@ -163,15 +164,14 @@ function useAnimatedNumberStyles(
   token.current ||= {}
   const [, renderLinkedValue] = React.useReducer((value) => value + 1, 0)
   const instances = values.map((value) => value.getInstance())
-  const hostValues = instances.map((instance) => {
+  for (const instance of instances) {
     if (!instance.styleHost) instance.styleHost = token.current
-    return instance.styleHost === token.current
-  })
+  }
 
   React.useEffect(() => {
     const listener = () => renderLinkedValue()
-    for (let index = 0; index < instances.length; index++) {
-      if (!hostValues[index]) instances[index].listeners.add(listener)
+    for (const instance of instances) {
+      if (instance.styleHost !== token.current) instance.listeners.add(listener)
     }
     return () => {
       for (const instance of instances) {
@@ -182,8 +182,8 @@ function useAnimatedNumberStyles(
   }, instances)
 
   return getStyle(
-    ...instances.map((instance, index) =>
-      hostValues[index] ? instance.target : instance.current
+    ...instances.map((instance) =>
+      instance.styleHost === token.current ? instance.target : instance.current
     )
   )
 }

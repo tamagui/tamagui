@@ -2037,3 +2037,165 @@ a real refactor, not the deletion of a dead legacy engine.
   charCode loop and is not a target.
 - If you measure differently from the method above, your numbers cannot be
   compared to anything in this record and the exercise is wasted.
+## 16. Core golf: hot-path allocation, and what the byte seams are actually worth (2026-08-17, later still)
+
+A code-golf pass over all of core, on `v3-golf` off `v3-beta`. Batch 1 is the
+allocation work plus two small byte wins. The headline is uncomfortable and is
+stated plainly: **batch 1 costs +93 gzip and buys a measured 29.7% reduction in
+runtime allocation per component render.** That is a deliberate trade, not a
+miss.
+
+### The compiled path already allocates nothing; every allocation number is the runtime path
+
+READ, Chrome HeapProfiler sampling at 1024B with
+`includeObjectsCollectedBy{Major,Minor}GC` so garbage counts and not just
+retained: on the COMPILED path (`extract=1`, animated, 400 renders)
+`@tamagui/web` allocates **54 bytes per iteration, total**. Anyone reasoning
+about engine allocation needs this first, because it means the compiler already
+takes it to zero when it can flatten, and every optimization below applies only
+to apps and code paths the compiler did not lower.
+
+### The engine rebuilt atomic CSS it had already inserted
+
+`insertStyleRules` inserts the FIRST rule set it sees for an identifier and
+discards every later one. The direct path nonetheless rebuilt every atomic rule
+string on every render of every component, so in steady state that work was
+~100% waste, and it was the single biggest allocator in the engine.
+
+Fixed by reusing the whole atomic identity keyed on the identifier. Measured,
+heavy scenario, 840 component renders per iteration:
+
+| arm | bytes/iteration | per component render |
+| --- | ---: | ---: |
+| before | 9,521,824 / 9,476,918 | 11,309 |
+| rules cache | ~7,511,000 (4 runs) | 8,942 |
+| identity cache | 6,672,976 / 6,693,365 | 7,956 |
+
+**−29.7% overall; `getCSSStylesAtomic` alone −78%** (3,386,321 → 734,605). The
+simple scenario moves −28.4%. Render time, quoted only inside matched windows
+because the machine had other tenants: mount median 9.05 → 6.40 → 5.05 ms,
+update 7.15 → 5.05 → 4.00 ms. A DUPLICATED-ARM control (the identical dist run
+under two labels in one interleave) put the noise floor at ≤0.2 ms mount and
+≤0.1 ms update, so the gains sit well outside it.
+
+Byte cost, assembled and measured against the pristine baseline:
+`getCSSStylesAtomic` +110, `getSplitStyles` +14, whole bundle +93.
+
+The cache is bounded at 10,000 with the same clear-on-limit pattern as
+`simple-hash`, and it clears when the config identity changes, because media
+queries and shorthands come from config and an identifier built under one config
+says nothing about rules under another.
+
+**The correctness premise was tested, not asserted.** `identifier -> rules` is
+only safe if two different rule sets can never share an identifier.
+`core-test/atomicIdentifierRuleIdentity.web.test.tsx` covers 13 clause shapes and
+five properties, and each cache key got its own NEGATIVE CONTROL: keying on
+`shortProp` instead of the full identifier fails 2 of 5, keying the inner map on
+`identityKey` instead of the identity fails 2 of 5, both with the exact symptom a
+wrong cache produces in the product ("clause hover: is missing selector :hover",
+"reused the identifier already emitted for clause"). A cache here fails silently
+by serving another clause's CSS, so do not weaken those tests.
+
+### Seams that are exhausted, recorded so nobody re-audits them
+
+- **`createComponent` is at parity with V2: +157** (3,971 vs 3,814). It is the
+  largest single declaration in the whole bundle (3,578 gzip in one function) and
+  had never been size-audited, which makes it a standing temptation. It is not
+  bloated.
+- **`use-element-layout` (1,359) is neither growth nor dead code.** It is within
+  60 of V2, and `core/src/runtime.tsx` runs `setupHooks` at module scope with a
+  `usePropsTransform` that calls `useElementLayout` for every DOM element, so it
+  is live per-element code. A first reading suggested it was retained only by a
+  barrel re-export; that was wrong.
+- **`propMapper`'s conditional-variant parser (216) and `tokenCategoryByProperty`
+  (280) are done.** The parser is already the required single forward charCode
+  pass, and the table compresses 1,347 min bytes to ~280, so shortening its
+  encoding is near-worthless; only removing entries would pay.
+- **The 436-gzip object-vs-string duplication is not the cheap win it looks
+  like.** Measured per declaration, the object side is ~348 (`styleToCSS` 205,
+  `normalizeShadow` 51, `fixStyles` 49, border table 43) and the directStyle side
+  ~215, and unification can only delete ONE of them, so the ceiling is ~215-348
+  rather than 436. They are not one algorithm written twice: `directStyle` emits
+  incrementally as each shadow part streams in, `styleToCSS` is a batch pass over
+  a complete object. Collapsing them needs an end-of-properties pass, which is
+  exactly the extra-pass shape this campaign counts as a regression, and it
+  changes `boxShadow` emission order and therefore atomic rule identity. The one
+  genuinely free piece is the border-defaults table, which exists identically in
+  both `directStyle` and `expandStyles` on web, worth ~30-43.
+
+### The next measured lever, deliberately not taken
+
+`directAtomic` is now the biggest single Tamagui allocator: **1,266,794 bytes per
+iteration, 19% of everything the heavy scenario allocates**, almost entirely the
+per-contribution signature string plus the `DirectAtomic` record. Hoisting the
+identity cache up into `directAtomic` so the signature string is built only on a
+miss would recover roughly 0.6 MB/iteration (INFERRED from ~6,700 calls times
+~90-byte strings, NOT measured). It costs a three-level Map in `directStyle` and
+would thrash on genuinely dynamic values such as an animated width. Not taken.
+
+Also flagged and not taken: `simple-hash`'s `${hashMin}:${strIn}` cache key is
+0.66 ms/iteration of self time and one string allocation per call.
+
+### Measurement notes that cost time to learn
+
+- **The harness is deterministic to the byte across worktrees.** Control: the
+  baseline commit rebuilt in a separate throwaway worktree with its own
+  `bun install` reproduced **104,768 exactly**. So a whole-bundle total delta is
+  trustworthy; per-module `marginalGzip` still drifts ±11 on untouched modules
+  because gzip shares a dictionary across the chunk.
+- **Validate an assembled batch in a DETACHED worktree at the batch tip.** The
+  shared golf worktree carries other lanes' in-flight edits, and measuring there
+  silently mixes them into your delta.
+- **`profile-getsplitstyles.ts` was profiling everything.** It sent `?skip=` to
+  select a scenario; `shared/bench.ts` reads `?scenario=` and has never read
+  `skip`, so since that rename every run profiled ALL FIVE scenarios and labelled
+  the result with one scenario's name. Fixed. Any pre-existing number from that
+  tool is suspect, including its "theme-prep-uses = 70% of render" row, which is
+  an artifact of where its interval marker sits.
+- `attribute-bundle-gzip.ts` now takes `--within=<module>` and buckets the same
+  marginal-gzip method per top-level declaration, which is how the dead seams
+  above were identified.
+
+### Inline theme values: splitting alone does nothing, and no env flag fixes Metro
+
+The owner's question was whether `variables.mjs` (2,347 gzip) can be made
+dead-code-eliminable, so an app that never writes an inline theme value ships
+none of it. That would be worth more than any internal golf of the file, and the
+internal golf bears that out: a full allocation-and-bytes pass over it returned
+**−16 gzip on `variables.mjs` and −19 on `createVariables.mjs`, 35 total.**
+
+Measured first, with a dedicated fixture whose only theme use is
+`<Theme name="dark">` and zero inline values (74,823 gzip total): **the entire
+module is retained, 2,293 marginal / 6,722 min bytes**, plus `useThemeState`
+1,616 and `Theme` 791. `Theme.tsx` calls `getInlineValuesFromProps` on every
+enabled render, so the static edge is real and rollup cannot shake it.
+
+Three mechanisms were then built and measured:
+
+| mechanism | result |
+| --- | --- |
+| leaf/heavy split alone | 74,823 → 74,815. **No useful effect**, both modules retained (heavy 1,941, leaf 328) |
+| split + compile-time opt-out, Vite/Rollup | 74,823 → **71,077, −3,746**, heavy module ABSENT |
+| split + opt-out, Next/webpack | 144,213 → **139,677, −4,536**, heavy reduced to a 37-byte stub |
+| same literal-folded flag, Metro 0.83.7 | 2,245,105 → 2,245,001, **−104 only**; module retained with all three inline markers in both builds |
+
+This reproduces section 15's finding on new ground: **guards do not create module
+absence, and splitting is necessary groundwork with no useful effect by itself.**
+Metro fixes its dependency graph before minification, so no env flag removes it
+there; webpack's best case still ships a stub.
+
+**Proposal, not shipped, needs an owner decision.** Do not add a generic public
+env guard: it pays off on two bundlers out of three and leaves the API carrying a
+flag that does not do what its name implies on native. Real cross-bundler absence
+needs the compiler or resolver to select a no-inline `Theme`/theme-state graph
+before Metro records dependencies, after splitting
+`mergeConfigVariablesIntoTheme` out into the always-needed leaf. The other viable
+mechanism is a separate opt-in inline-Theme entry so ordinary `Theme` never
+imports the heavy graph, which changes the binding public API.
+
+**Do not collapse the three reference resolvers.** They look like one function
+written three times and they are not: the CSS path resolves theme keys to live
+CSS `var()`s, merged inline values resolve sibling then parent theme then tokens,
+and config variables resolve config siblings before theme then tokens. Only the
+theme/token suffix is shared, and factoring just that suffix was trialled and
+INCREASED output, so it was reverted.
