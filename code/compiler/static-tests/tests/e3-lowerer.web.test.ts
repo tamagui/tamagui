@@ -608,21 +608,21 @@ export const Card = ({ width }) => <View width={width} padding={12} />
     expect(output.map?.sourcesContent).toEqual([source])
   })
 
-  test('drops a text-only style prop while preserving a successful View flatten', () => {
+  test('keeps a text-only style prop on the runtime path', () => {
     const source = `
 import { View } from '@tamagui/core'
 export const Card = () => (
   <View backgroundColor="white" color="blue" data-invalid-host-style="yes" />
 )
 `
-    const { plan } = compile(source)
+    const { plan, output } = compile(source)
 
     expect(plan.stats).toEqual({
       found: 1,
-      lowered: 1,
-      flattened: 1,
+      lowered: 0,
+      flattened: 0,
       styled: 0,
-      bailed: 0,
+      bailed: 1,
     })
     expect(plan.diagnostics).toMatchObject([
       {
@@ -631,8 +631,33 @@ export const Card = () => (
         message:
           '"color" is a text style prop and this component is not text. Use a Text-based component, or html.* for raw web elements.',
         component: 'View',
+        blocking: true,
       },
     ])
+    expect(output.changed).toBe(false)
+    expect(output.code).toBe(source)
+  })
+
+  test('keeps a text-only style prop in a static spread on the runtime path', () => {
+    const source = `
+import { View } from '@tamagui/core'
+export const Card = () => (
+  <View {...{ backgroundColor: 'white', color: 'blue' }} data-invalid-host-style="spread" />
+)
+`
+    const { plan, output } = compile(source)
+
+    expect(plan.stats).toMatchObject({ lowered: 0, flattened: 0, bailed: 1 })
+    expect(plan.diagnostics).toMatchObject([
+      {
+        code: 'local/unsupported-target',
+        message:
+          '"color" is a text style prop and this component is not text. Use a Text-based component, or html.* for raw web elements.',
+        blocking: true,
+      },
+    ])
+    expect(output.changed).toBe(false)
+    expect(output.code).toBe(source)
   })
 
   test('keeps an opaque dynamic style object byte-identical', () => {

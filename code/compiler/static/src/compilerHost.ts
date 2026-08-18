@@ -732,8 +732,13 @@ function nativeDOMProps(input: LoweringCandidateInput, tag: TagName) {
     const event = Object.hasOwn(EVENTS, entry.name) ? EVENTS[entry.name] : undefined
     if (event) {
       if (event.native === 'none') {
-        consume(entry)
-        continue
+        return {
+          consumed,
+          edits,
+          additions,
+          diagnostic: `${entry.name} has no native DOM event equivalent`,
+          diagnosticSpan: entry.span,
+        }
       }
       if (entry.name === 'onKeyDown' && tag !== 'input' && tag !== 'textarea') {
         return {
@@ -775,6 +780,15 @@ function nativeDOMProps(input: LoweringCandidateInput, tag: TagName) {
       continue
     }
     if (entry.name === 'hidden') {
+      if (entry.value.kind !== 'static') {
+        return {
+          consumed,
+          edits,
+          additions,
+          diagnostic: `html.${tag} hidden must be statically known for native lowering`,
+          diagnosticSpan: entry.span,
+        }
+      }
       consume(entry)
       continue
     }
@@ -1945,20 +1959,39 @@ export function createTamaguiCompilerHost(
                 isStyleProp(name, component) || isInvalidHostStyleProp(name, component)
             ))
       )
-      const invalidHostStyleDiagnostics = input.element.entries.flatMap((entry) => {
-        if (entry.kind !== 'prop' || !isInvalidHostStyleProp(entry.name, component)) {
-          return []
+      let invalidHostStyle:
+        | { entry: MaterializedElement['entries'][number]; name: string }
+        | undefined
+      for (const entry of input.element.entries) {
+        if (entry.kind === 'prop') {
+          if (isInvalidHostStyleProp(entry.name, component)) {
+            invalidHostStyle = { entry, name: entry.name }
+            break
+          }
+          continue
         }
-        return [
-          {
-            code: 'local/unsupported-target' as const,
-            kind: 'local' as const,
-            message: `"${entry.name}" is a text style prop and this component is not text. Use a Text-based component, or html.* for raw web elements.`,
-            span: entry.span,
-            component: input.element.component.name,
-          },
-        ]
-      })
+        if (
+          entry.kind === 'spread' &&
+          entry.value.kind === 'static' &&
+          staticObject(entry.value.value)
+        ) {
+          const name = Object.keys(entry.value.value).find((name) =>
+            isInvalidHostStyleProp(name, component)
+          )
+          if (name) {
+            invalidHostStyle = { entry, name }
+            break
+          }
+        }
+      }
+      if (invalidHostStyle) {
+        return bailout(
+          input,
+          'local/unsupported-target',
+          `"${invalidHostStyle.name}" is a text style prop and this component is not text. Use a Text-based component, or html.* for raw web elements.`,
+          invalidHostStyle.entry.span
+        )
+      }
       const webPropEdits: SourceEdit[] =
         platform === 'web'
           ? input.element.entries.flatMap((entry) => {
@@ -2323,7 +2356,6 @@ export function createTamaguiCompilerHost(
             ],
             css: [],
             imports,
-            diagnostics: invalidHostStyleDiagnostics,
             flattened: true,
           }
         }
@@ -2414,7 +2446,6 @@ export function createTamaguiCompilerHost(
                   origin: input.element.component.span,
                 },
               ],
-              diagnostics: invalidHostStyleDiagnostics,
               flattened: true,
             }
           }
@@ -2612,7 +2643,6 @@ export function createTamaguiCompilerHost(
                 origin: input.element.component.span,
               },
             ],
-            diagnostics: invalidHostStyleDiagnostics,
             flattened: true,
           }
         }
@@ -2648,7 +2678,6 @@ export function createTamaguiCompilerHost(
                 origin: input.element.component.span,
               },
             ],
-            diagnostics: invalidHostStyleDiagnostics,
             flattened: true,
           }
         }
@@ -2672,7 +2701,6 @@ export function createTamaguiCompilerHost(
                 origin: input.element.component.span,
               },
             ],
-            diagnostics: invalidHostStyleDiagnostics,
             flattened: true,
           }
         }
@@ -2703,7 +2731,6 @@ export function createTamaguiCompilerHost(
               origin: input.element.component.span,
             },
           ],
-          diagnostics: invalidHostStyleDiagnostics,
           flattened: true,
         }
       }
@@ -2905,7 +2932,6 @@ export function createTamaguiCompilerHost(
           edits: [...tagEdits, ...webPropEdits, ...propsEdits],
           css: webCSS,
           imports: [],
-          diagnostics: invalidHostStyleDiagnostics,
           flattened: true,
         }
       }
@@ -2927,7 +2953,6 @@ export function createTamaguiCompilerHost(
             : [...tagEdits, ...webPropEdits],
           css: webCSS,
           imports: [],
-          diagnostics: invalidHostStyleDiagnostics,
           flattened: true,
         }
       }
@@ -2954,7 +2979,6 @@ export function createTamaguiCompilerHost(
         ],
         css: webCSS,
         imports: [],
-        diagnostics: invalidHostStyleDiagnostics,
         flattened: true,
       }
     },

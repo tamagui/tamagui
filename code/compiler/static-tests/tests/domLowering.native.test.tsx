@@ -40,32 +40,40 @@ test('native diagnostics reject unsupported table semantics without inventing ou
     )
   `)
 
-  expect(output.diagnostics.map(({ code, message }) => ({ code, message }))).toEqual([
+  expect(
+    output.diagnostics.map(({ blocking, code, message }) => ({ blocking, code, message }))
+  ).toEqual([
     {
-      code: 'local/unsupported-prop-key',
-      message: 'onMouseMove has no native DOM event equivalent',
-    },
-    {
+      blocking: undefined,
       code: 'local/unsupported-target',
       message:
         'html.select is not supported on native: native has no menu-based select control, so this tag is a native build error',
     },
     {
+      blocking: true,
+      code: 'local/unsupported-target',
+      message: 'onMouseMove has no native DOM event equivalent',
+    },
+    {
+      blocking: true,
       code: 'local/unsupported-child',
       message:
         'html.div has a direct child that may render unwrapped native text; write a literal as JSX text or wrap the child in html.span',
     },
     {
+      blocking: true,
       code: 'local/unsupported-child',
       message:
         'html.div has a direct child that may render unwrapped native text; write a literal as JSX text or wrap the child in html.span',
     },
     {
+      blocking: true,
       code: 'local/unsupported-child',
       message:
         'html.div has a direct child that may render unwrapped native text; write a literal as JSX text or wrap the child in html.span',
     },
     {
+      blocking: true,
       code: 'local/unsupported-child',
       message:
         'html.div has a direct child that may render unwrapped native text; write a literal as JSX text or wrap the child in html.span',

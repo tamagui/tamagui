@@ -198,10 +198,37 @@ test('every declared event either lowers or produces its documented native diagn
   const unsupported = entries.filter(({ row }) => row.native === 'none')
 
   expect(output.diagnostics).toHaveLength(unsupported.length)
-  expect(output.diagnostics.map(({ message }) => message).sort()).toEqual(
-    unsupported.map(({ name }) => `${name} has no native DOM event equivalent`).sort()
+  expect(
+    output.diagnostics
+      .map(({ blocking, message }) => ({ blocking, message }))
+      .sort((left, right) => left.message.localeCompare(right.message))
+  ).toEqual(
+    unsupported
+      .map(({ name }) => ({
+        blocking: true,
+        message: `${name} has no native DOM event equivalent`,
+      }))
+      .sort((left, right) => left.message.localeCompare(right.message))
   )
   for (const { name, row } of entries) {
-    if (row.native !== 'none') expect(output.code, name).toContain(name)
+    expect(output.code, name).toContain(name)
   }
+})
+
+test('dynamic hidden stays on the native runtime path', async () => {
+  const output = await extractForNative(`
+    import { html } from '@tamagui/core'
+    declare const hidden: true | 'hidden' | 'until-found'
+    export const App = () => <html.div hidden={hidden} />
+  `)
+
+  expect(
+    output.diagnostics.map(({ blocking, message }) => ({ blocking, message }))
+  ).toEqual([
+    {
+      blocking: true,
+      message: 'html.div hidden must be statically known for native lowering',
+    },
+  ])
+  expect(output.code).toContain('<html.div hidden={hidden}')
 })

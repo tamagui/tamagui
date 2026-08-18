@@ -106,13 +106,12 @@ export const domStructuralPass: StructuralModulePass = {
           continue
         }
         if (target === 'native' && row.native === 'none') {
+          if (event) continue
           diagnostics.push(
             localBailout(
               'local/unsupported-prop-key',
               entry.span,
-              event
-                ? `${entry.name} has no native DOM event equivalent`
-                : `${entry.name} is not supported on native html.${tagName}: ${row.note ?? 'no native equivalent'}`
+              `${entry.name} is not supported on native html.${tagName}: ${row.note ?? 'no native equivalent'}`
             )
           )
         }
