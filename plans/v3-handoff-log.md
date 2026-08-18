@@ -3806,3 +3806,22 @@ fails `View.web.test.tsx > renders once on mount` (`expected +0 to be 1`). READ:
 it fails identically in a clean worktree at HEAD, and that test uses no flat
 value with a colon, so no scanner in this item runs on it. CI runs `NODE_ENV=test`
 and is unaffected.
+
+### Closed, with two escalations deliberately declined
+
+p26422 closed item 12 on 2026-08-18 after the warning-key fix. Two follow-ups
+were offered and REFUSED, recorded here so nobody proposes them again as an
+improvement:
+
+- **An env flag making a refusal fatal.** That is a second path for one
+  behaviour, and this campaign has spent itself removing exactly that kind of
+  optionality.
+- **A grouped one-time summary for console noise.** The greppable
+  `[tamagui] <prop>="<value>" was dropped:` prefix is a reasonable answer.
+
+**One claim in this section stays INFERRED and must not be cited as observed.**
+`console.warn` gives an expandable stack in devtools, and with React 19's
+transform the component frame is on it, so replacing the throw does not cost the
+author the pointer to their component. That follows from how the transform
+works; nobody opened a browser to watch it. It was judged not worth a browser
+session to convert, which is a decision about cost, not evidence.
