@@ -3470,3 +3470,53 @@ by a newer push may have died before reaching the step that would have failed.
 The one real signal available is a completed run on a settled tip, which is why
 pushes get held once the remaining lanes land rather than watching individual
 SHAs that will be superseded before they finish.
+
+### 5b follow-up: a third bypass, and it was full rule injection
+
+`da73a5e6df`. The comment fix landed as asked, and looking for a third bypass
+found one that matters more than the thing it was sent to fix.
+
+**Unterminated strings.** CSS ends a bad string at a **newline**, not at the
+matching quote. The scan believed it was still inside a string; the browser sees
+a bad-string, then a top-level `;`, then `}` closing the rule, then a new rule:
+
+    '"abc\n;}.injected{opacity 0"'
+      -> ._bi-1891784477{background-image:"abc
+         ;}.injected{opacity 0"}
+
+That is **full rule injection**, the same class as the original D2 defect, not
+the lesser style-deletion the comment hole was. It is reachable from any
+user-controlled string containing a newline, which is most of them, and it also
+fires through `url("a\n;}...")`. It survived two earlier passes over this same
+predicate. LF, CR and FF inside a string are now refused, with a backslash line
+continuation still counting as inside the string and pinned as its own control.
+
+**The comment fix also revealed the predicate was broken in the permissive AND
+the restrictive direction.** The required positive control `red /* ; } { */ blue`
+was RED before this commit: the old scan saw the `;}` inside a comment as top
+level and refused a legitimate value. Requiring a positive control for every
+refusal caught a real bug rather than a hypothetical one. The fast-reject regex
+had to grow to `/[;{}]|\/\*|\*\//` as well, since neither `red/*` nor `red*/`
+contains any of the original three characters, so the old fast path never
+entered the loop at all.
+
+A third comment case nobody named: `url(a/*b.png)`. A comment is lexical, so
+paren depth does not contain one.
+
+**Verified independently by the manager, not accepted on report.** A probe with
+two vectors the worker had not named - an unquoted `url(a\n;}.x{y` and
+`/* " */ ;}.x{y` - refused both. Positive controls all still emit: closed
+comments, `"/*"`, `16/9`, `rgb(0 0 0 / 50%)`, backslash line continuations,
+escaped quotes inside strings, and U+2028 (correctly emitted, since it is not a
+CSS newline). No fourth bypass found, which is not the same as none existing.
+
+**The frame that found two of the three**, worth keeping for anyone who touches
+this predicate: the productive question is not "can this add a selector" but
+**name every construct where CSS's tokenizer exits something this scan is still
+inside**. Fake paren depth, comment delimiters and unterminated strings were all
+exactly that shape. Two of the three were found by looking rather than by a test
+failing, so the absence of a failing test here means very little.
+
+Suites at `da73a5e6df`: core-test all six targets (native 294, provenance 7, web
+548, ios 26, androidtv 12, tvos 12), style-grammar 439, tailwind 458 + 275,
+static-tests 180, typecheck clean. `styleInjection.web.test.tsx` is 62 tests.
