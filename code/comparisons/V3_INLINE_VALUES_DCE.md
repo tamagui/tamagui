@@ -46,17 +46,32 @@ dependency graph at resolution time, before minification, and does no
 export-level shaking. webpack's success case still ships a stub, so any gate
 defined as "no forbidden module ids" fails in its best case.
 
-## Recommendation (endorsed by p25940, p25843; owner decision pending)
+## DECISION: not scheduled. No compiler DCE, no env flag. (owner, 2026-08-17)
 
-Do **not** ship a generic public env guard. It pays off on two bundlers out of
-three and leaves the public API carrying a flag that does not do what its name
-implies on native.
+**Final.** Neither mechanism ships. Do not re-propose either one.
 
-Real cross-bundler absence needs the compiler or resolver to select a no-inline
-`Theme`/theme-state graph **before Metro records dependencies**, after splitting
-`mergeConfigVariablesIntoTheme` out into the always-needed leaf. The alternative
-is a separate opt-in inline-`Theme` entry so ordinary `Theme` never imports the
-heavy graph; that changes the settled public API.
+- **No generic public env guard.** It pays off on two bundlers out of three and
+  leaves the public API carrying a flag that does not do what its name implies on
+  native.
+- **No compiler/resolver route either**, which was the recommendation this
+  document originally carried. The owner's reasoning matches the data above:
+  reliably proving NON-USE of something tied to `<Theme>` is not sound, because
+  a spread (`<Theme {...props}>`) defeats static detection. The compiler would
+  have to fail open, and it would fail open too often for the win to be bankable.
+
+### Logged potential optimization: a separate component
+
+The one shape that would work is to **not tie inline values to `<Theme>` at
+all**: a separate component, working name **`ThemeUpdate`**, which tree-shakes
+away automatically when nobody imports it. No proving of non-use is required,
+because absence of an import IS the proof.
+
+The prize is the **~3,700-4,500 gzip** measured above, for every app that never
+writes an inline theme value.
+
+This is a POTENTIAL FUTURE OPTIMIZATION, not scheduled work. It would revisit the
+settled `<Theme>` inline-props API, so it is **owner-initiated only**. Do not
+start it off the back of this document.
 
 ## Fixture layout, to reproduce
 
