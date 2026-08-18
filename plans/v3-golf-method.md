@@ -90,3 +90,43 @@ bun code/comparisons/attribute-bundle-gzip.ts /tmp/<yourname>-bench --within=var
 Marginals are measured against the same chunk, so per-declaration numbers RANK
 the declarations, they do not decompose the module's total. Line numbers are from
 the built `sourcesContent`, not the `.ts`, so match on the declaration NAME.
+
+## Whole-bundle v3-vs-v2 module diff, captured 2026-08-17
+
+`code/comparisons/output/v3-golf-v3-vs-v2-modules.txt`. v3 104,768 gzip, v2
+93,321, delta **+11,447** (the record's +11,467, reproduced). Built from
+`tamagui-v2-bench` (tamagui 2.6.2 from npm, its own `npm install`) against the
+same fixture.
+
+Where the growth actually is, ranked:
+
+| Δgzip | v3 | v2 | module |
+| ---: | ---: | ---: | --- |
+| +5405 | 5405 | 0 | `web::helpers/directStyle.mjs` |
+| +2339 | 2339 | 0 | `web::helpers/variables.mjs` |
+| +1238 | 2307 | 1069 | `web::helpers/propMapper.mjs` |
+| +783 | 783 | 0 | `style-grammar::valueParser.mjs` |
+| +758 | 2351 | 1593 | `animations-css::createAnimations.mjs` |
+| +472 | 472 | 0 | `style-grammar::clausePrecedence.mjs` |
+| +383 | 383 | 0 | `core::runtime.mjs` |
+| +363 | 363 | 0 | `web::helpers/resolveSafeArea.mjs` |
+| +264 | 1352 | 1088 | `web::createTamagui.mjs` |
+| **+157** | 3971 | 3814 | `web::createComponent.mjs` |
+
+And what v3 DELETED, which is why directStyle's +5,405 overstates the real cost:
+`createMediaStyle` −656, `getTokenForKey` −518, `themeable` −276,
+`pseudoTransitions` −232, `validStyleProps` −229, `pseudoDescriptors` −182,
+`getGroupPropParts` −133, `getSplitStyles` −121, `createDesignSystem` −115,
+`isActivePlatform` −79, `platformResolveValue` −66. Roughly 2,600 of V2-era code
+is gone.
+
+Two conclusions that should stop work rather than start it:
+
+- **`createComponent` is NOT a target.** It is the largest single declaration in
+  the bundle (3,578 gzip in one function) and it was never size-audited against
+  V2, but measured it is only **+157** over its V2 counterpart. It is at parity,
+  not bloated.
+- **`use-element-layout` (1,359) is not growth either** (below the diff
+  threshold, so within 60 of V2) and it is not dead code: `core/src/runtime.tsx`
+  runs `setupHooks` at module scope and its `usePropsTransform` calls
+  `useElementLayout` for every DOM element, so it is live per-element code.
