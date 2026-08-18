@@ -32,7 +32,7 @@ theme or a config change.
 import { Theme, View } from 'tamagui' // or '@tamagui/core'
 
 export default () => (
-  <Theme background-hover="blue4 dark:blue2">
+  <Theme background-hover="blue-500 dark:blue-300">
     <View backgroundColor="background hover:background-hover" />
   </Theme>
 )
@@ -75,7 +75,7 @@ const config = createTamagui({
   variables: {
     surfaceBorder: 'border-color',
     disabledOpacity: 0.5,
-    focusRingColor: 'blue10',
+    focusRingColor: 'blue-500',
     focusRingWidth: 2,
     pressScale: 0.97,
     accent: { light: '#005ac8', dark: '#78b4ff' },
@@ -88,7 +88,7 @@ Use and redefine them like any other theme value:
 ```tsx
 <View borderColor="surfaceBorder" />
 
-<Theme surfaceBorder="red8">
+<Theme surfaceBorder="red-500">
   {/* this subtree sees the red surface border */}
 </Theme>
 ```
@@ -99,8 +99,8 @@ Inline values can reference theme keys and tokens:
 
 - `background` finds the theme key or custom variable visible at the `<Theme>`
   node.
-- `size.4` and `color.blue10` reference tokens by category.
-- A bare token name such as `blue10` checks theme keys first, then scans color,
+- `size.4` and `color.blue-500` reference tokens by category.
+- A bare token name such as `blue-500` checks theme keys first, then scans color,
   space, size, radius, and zIndex tokens. Use the qualified form when a name
   exists in more than one category.
 
@@ -136,9 +136,9 @@ themes are more dynamic like CSS variables.
 You can define themes however you want, but for the `tamagui` UI kit, the
 components default styling will use a set of pre-defined keys. Those keys are:
 
-- `background`, `backgroundHover`,`backgroundPress`, `backgroundFocus`
-- `borderColor`, `borderColorHover`,`borderColorPress`, `borderColorFocus`
-- `shadowColor`
+- `background`, `background-hover`, `background-press`, `background-focus`
+- `border-color`, `border-color-hover`, `border-color-press`, `border-color-focus`
+- `shadow-color`
 
 These are optional, as you can always set `unstyled` on any Tamagui component to
 use your own styles.

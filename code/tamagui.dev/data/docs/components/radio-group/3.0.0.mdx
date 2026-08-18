@@ -257,7 +257,7 @@ function App() {
 
 <Tabs.Content value="styled">
 
-RadioGroup extends Stack views inheriting all the [Tamagui standard props](/docs/intro/props), plus:
+RadioGroup extends View, inheriting all the [Tamagui standard props](/docs/intro/props), plus:
 
 </Tabs.Content>
 <Tabs.Content value="unstyled">
@@ -351,12 +351,6 @@ The `useRadioGroup` hook accepts these options:
       name: 'id',
       type: 'string',
       description: `ID used on the web.`,
-    },
-    {
-      name: 'scaleSize',
-      type: 'number',
-      default: '0.5',
-      description: `Scale factor for the radio item size. Tamagui size tokens map to button heights, so you typically want smaller radio buttons.`,
     },
     {
       name: 'unstyled',

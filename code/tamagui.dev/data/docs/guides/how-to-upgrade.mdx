@@ -913,8 +913,8 @@ not pass `activeStyle`, and a supplied `activeStyle` wins because it is applied
 last. Override the active color per-instance with `activeStyle`:
 
 ```tsx
-<Checkbox activeStyle={{ backgroundColor: 'blue9' }} />
-<Tabs.Tab activeStyle={{ backgroundColor: 'blue9' }} />
+<Checkbox activeStyle={{ backgroundColor: 'blue-500' }} />
+<Tabs.Tab activeStyle={{ backgroundColor: 'blue-500' }} />
 ```
 
 If a custom theme defined `backgroundActive` to color these states, move that
@@ -946,7 +946,7 @@ style props.
 import { View as TamaguiView } from 'tamagui'
 import { View as TailwindView } from '@tamagui/tailwind'
 
-<TamaguiView backgroundColor="blue5">
+<TamaguiView backgroundColor="blue-100">
   <TailwindView className="rounded-lg p-4" />
 </TamaguiView>
 ```
@@ -978,7 +978,7 @@ createTamagui({
 
 // after
 createTamagui({
-  variables: { squareBackground: 'violet6' },
+  variables: { squareBackground: 'violet-500' },
 })
 // in your Square styles
 styled(View, { backgroundColor: 'squareBackground' })

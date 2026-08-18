@@ -91,7 +91,7 @@ If you are confused by Tamagui themes, don't be. You can avoid them altogether, 
 
 ## Using Tokens with Components
 
-When using `styled` or any Tamagui component like `Stack`, you can access tokens directly. Just like with `useTheme`, it will first look for a theme value that matches, and if not it will fall back to a token.
+When using `styled` or any Tamagui component like `View`, you can access tokens directly. Just like with `useTheme`, it will first look for a theme value that matches, and if not it will fall back to a token.
 
 Tokens are automatically applied to certain properties. For example, `size` tokens are applied to width and height. And of course `radius` to borderRadius.
 
@@ -144,7 +144,7 @@ And then access them using the new "specific tokens" syntax:
 
 ```tsx
 export default () => (
-  <Stack
+  <View
     // access with the category first:
     width="icon.small"
   />

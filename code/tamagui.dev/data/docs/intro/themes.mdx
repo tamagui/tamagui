@@ -151,14 +151,14 @@ In the `tamagui` UI kit, all components use these main theme keys:
   interact with it)
 
 It also uses special versions of these for when you hover, press, or focus on
-something. For example, `backgroundHover` or `colorPress`.
+something. For example, `background-hover` or `color-press`.
 
 These keys help standardize how you style components, and make for easy
 re-theming. They are also optional, if you find the theme system too complex for
 your use case, you can always just use plain old style props
 
-...plus all the pseudo variants for each, eg, `backgroundHover`,
-`backgroundPress`, and `backgroundFocus`.
+...plus all the pseudo variants for each, eg, `background-hover`,
+`background-press`, and `background-focus`.
 
 This means that you can easily re-theme `tamagui`'s UI kit and your own
 components together in both light and dark mode.
@@ -169,49 +169,43 @@ A minimal theme might look like this:
 const dark = {
   // Standard keys for all components
   background: '#000',
-  backgroundHover: '#111',
-  backgroundPress: '#222',
-  backgroundFocus: '#333',
-  backgroundStrong: '#444',
-  backgroundTransparent: 'rgba(0, 0, 0, 0.5)',
+  'background-hover': '#111',
+  'background-press': '#222',
+  'background-focus': '#333',
   color: '#fff',
-  colorHover: '#eee',
-  colorPress: '#ddd',
-  colorFocus: '#ccc',
-  colorTransparent: 'rgba(255, 255, 255, 0.5)',
-  borderColor: '#555',
-  borderColorHover: '#666',
-  borderColorFocus: '#777',
-  borderColorPress: '#888',
-  placeholderColor: '#999',
-  outlineColor: '#aaa',
+  'color-hover': '#eee',
+  'color-press': '#ddd',
+  'color-focus': '#ccc',
+  'border-color': '#555',
+  'border-color-hover': '#666',
+  'border-color-focus': '#777',
+  'border-color-press': '#888',
+  'placeholder-color': '#999',
+  'outline-color': '#aaa',
   // Custom tokens like "brand"
-  brandBackground: '#000', // You can add your own tokens like "brand"
-  brandColor: '#fff', // and use them in your components
+  'brand-background': '#000', // You can add your own tokens like "brand"
+  'brand-color': '#fff', // and use them in your components
 }
 
 const light = {
   // Standard keys for all components
   background: '#fff',
-  backgroundHover: '#f5f5f5',
-  backgroundPress: '#e0e0e0',
-  backgroundFocus: '#d5d5d5',
-  backgroundStrong: '#ccc',
-  backgroundTransparent: 'rgba(255, 255, 255, 0.5)',
+  'background-hover': '#f5f5f5',
+  'background-press': '#e0e0e0',
+  'background-focus': '#d5d5d5',
   color: '#000',
-  colorHover: '#111',
-  colorPress: '#222',
-  colorFocus: '#333',
-  colorTransparent: 'rgba(0, 0, 0, 0.5)',
-  borderColor: '#444',
-  borderColorHover: '#555',
-  borderColorFocus: '#666',
-  borderColorPress: '#777',
-  placeholderColor: '#888',
-  outlineColor: '#999',
+  'color-hover': '#111',
+  'color-press': '#222',
+  'color-focus': '#333',
+  'border-color': '#444',
+  'border-color-hover': '#555',
+  'border-color-focus': '#666',
+  'border-color-press': '#777',
+  'placeholder-color': '#888',
+  'outline-color': '#999',
   // Custom tokens like "brand"
-  brandBackground: '#000', // You can add your own tokens like "brand"
-  brandColor: '#fff', // and use them in your components
+  'brand-background': '#000', // You can add your own tokens like "brand"
+  'brand-color': '#fff', // and use them in your components
 }
 ```
 
@@ -339,17 +333,16 @@ import { tokens } from './tokens'
 
 const light = {
   background: '#fff',
-  backgroundHover: tokens.color.gray3,
-  backgroundPress: tokens.color.gray4,
-  backgroundFocus: tokens.color.gray5,
-  borderColor: tokens.color.gray4,
-  borderColorHover: tokens.color.gray6,
-  color: tokens.color.gray12,
-  colorHover: tokens.color.gray11,
-  colorPress: tokens.color.gray10,
-  colorFocus: tokens.color.gray6,
-  shadowColor: tokens.color.grayA5,
-  shadowColorHover: tokens.color.grayA6,
+  'background-hover': tokens.color['gray-100'],
+  'background-press': tokens.color['gray-200'],
+  'background-focus': tokens.color['gray-300'],
+  'border-color': tokens.color['gray-200'],
+  'border-color-hover': tokens.color['gray-400'],
+  color: tokens.color['gray-950'],
+  'color-hover': tokens.color['gray-800'],
+  'color-press': tokens.color['gray-700'],
+  'color-focus': tokens.color['gray-400'],
+  'shadow-color': 'rgba(0, 0, 0, 0.12)',
 }
 
 // note: we set up a single consistent base type to validate the rest:
@@ -358,33 +351,32 @@ type BaseTheme = typeof light
 // the rest of the themes use BaseTheme
 const dark: BaseTheme = {
   background: '#000',
-  backgroundHover: tokens.color.gray2Dark,
-  backgroundPress: tokens.color.gray3Dark,
-  backgroundFocus: tokens.color.gray4Dark,
-  borderColor: tokens.color.gray3Dark,
-  borderColorHover: tokens.color.gray4Dark,
+  'background-hover': tokens.color['gray-900'],
+  'background-press': tokens.color['gray-800'],
+  'background-focus': tokens.color['gray-700'],
+  'border-color': tokens.color['gray-800'],
+  'border-color-hover': tokens.color['gray-700'],
   color: '#ddd',
-  colorHover: tokens.color.gray11Dark,
-  colorPress: tokens.color.gray10Dark,
-  colorFocus: tokens.color.gray6Dark,
-  shadowColor: tokens.color.grayA6,
-  shadowColorHover: tokens.color.grayA7,
+  'color-hover': tokens.color['gray-100'],
+  'color-press': tokens.color['gray-200'],
+  'color-focus': tokens.color['gray-400'],
+  'shadow-color': 'rgba(0, 0, 0, 0.25)',
 }
 
 const dark_translucent: BaseTheme = {
   ...dark,
   background: 'rgba(0,0,0,0.7)',
-  backgroundHover: 'rgba(0,0,0,0.5)',
-  backgroundPress: 'rgba(0,0,0,0.25)',
-  backgroundFocus: 'rgba(0,0,0,0.1)',
+  'background-hover': 'rgba(0,0,0,0.5)',
+  'background-press': 'rgba(0,0,0,0.25)',
+  'background-focus': 'rgba(0,0,0,0.1)',
 }
 
 const light_translucent: BaseTheme = {
   ...light,
   background: 'rgba(255,255,255,0.85)',
-  backgroundHover: 'rgba(250,250,250,0.85)',
-  backgroundPress: 'rgba(240,240,240,0.85)',
-  backgroundFocus: 'rgba(240,240,240,0.7)',
+  'background-hover': 'rgba(250,250,250,0.85)',
+  'background-press': 'rgba(240,240,240,0.85)',
+  'background-focus': 'rgba(240,240,240,0.7)',
 }
 
 export const allThemes = {

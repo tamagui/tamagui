@@ -237,12 +237,6 @@ function MyCheckbox({ defaultChecked, onCheckedChange, ...props }) {
       description: `Scale the indicator icon more than usual by this number.`,
     },
     {
-      name: 'scaleSize',
-      type: 'number',
-      default: '0.5',
-      description: `The Tamagui size tokens should map to the height of a button at any given step. This means you want somewhat smaller checkboxes typically.`,
-    },
-    {
       name: 'unstyled',
       required: false,
       type: `boolean`,
@@ -275,12 +269,6 @@ function MyCheckbox({ defaultChecked, onCheckedChange, ...props }) {
       required: false,
       type: `boolean`,
       description: `Used to force mounting when more control is needed.`,
-    },
-    {
-      name: 'disablePassStyles',
-      required: false,
-      type: 'boolean',
-      description: `Used to disable passing styles down to children.`,
     },
   ]}
 />

@@ -121,7 +121,7 @@ type FlatTransformStyles = {
 // Every style value may also be a flat program string. A program combines its
 // base value with state, viewport, theme, platform, group, or container clauses:
 //
-//   backgroundColor="background hover:background-hover dark:gray12"
+//   backgroundColor="background hover:background-hover dark:gray-950"
 //   padding="2 sm:4"
 
 // Text style starts with this base but builds up the same:
@@ -176,10 +176,10 @@ Add state clauses directly to the property they change:
 <View
   backgroundColor="background hover:background-hover press:background-press"
   scale="press:0.98"
-  outlineColor="focus:blue10 focus-visible:blue10"
+  outlineColor="focus:blue-500 focus-visible:blue-500"
   outlineWidth="focus:2px focus-visible:2px"
   outlineStyle="focus:solid"
-  borderColor="focus-within:blue10"
+  borderColor="focus-within:blue-500"
   opacity="disabled:0.5"
 />
 ```

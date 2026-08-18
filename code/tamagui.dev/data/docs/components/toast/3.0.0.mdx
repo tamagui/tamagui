@@ -196,7 +196,7 @@ toast.promise(saveData(), {
 
 ### Toast.Viewport
 
-The portal container for toasts. Extends Stack.
+The portal container for toasts. Extends View.
 
 <PropsTable
   data={[
@@ -223,7 +223,7 @@ The portal container for toasts. Extends Stack.
 
 ### Toast.Item
 
-Individual toast wrapper with stacking and drag support. Extends Stack.
+Individual toast wrapper with stacking and drag support. Extends View.
 
 <PropsTable
   data={[
@@ -265,11 +265,11 @@ Styled text for the toast description. Extends SizableText.
 
 ### Toast.Close
 
-Close button. Extends Stack.
+Close button. Extends View.
 
 ### Toast.Action
 
-Action button. Extends Stack.
+Action button. Extends View.
 
 ### useToasts
 
@@ -347,11 +347,11 @@ The toast reads insets from `TamaguiProvider` via `useConfiguration().insets` â€
 Each part can be styled independently:
 
 ```tsx
-<Toast.Item toast={t} index={i} backgroundColor="blue5" borderRadius="6">
-  <Toast.Title color="blue12" fontWeight="bold">
+<Toast.Item toast={t} index={i} backgroundColor="blue-100" borderRadius="6">
+  <Toast.Title color="blue-950" fontWeight="bold">
     {t.title}
   </Toast.Title>
-  <Toast.Description color="blue11">
+  <Toast.Description color="blue-800">
     {t.description}
   </Toast.Description>
 </Toast.Item>

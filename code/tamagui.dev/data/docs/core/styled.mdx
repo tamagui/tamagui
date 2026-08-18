@@ -117,7 +117,7 @@ const Button = styled(View, {
 
 const Anchor = styled(Text, {
   render: 'a',
-  color: 'blue10',
+  color: 'blue-500',
 })
 
 const Nav = styled(View, {
@@ -132,13 +132,13 @@ This is the recommended approach for semantic HTML and accessibility. String ren
 Pass a JSX element to clone with Tamagui's computed props:
 
 ```tsx
-<Stack
+<View
   render={<a href="/about" target="_blank" />}
   padding="4"
   backgroundColor="background"
 >
   About Page
-</Stack>
+</View>
 ```
 
 The JSX element's props are merged with Tamagui's computed styles, classNames, and event handlers. This is useful when you need to pass element-specific props like `href` or `target`.
@@ -153,15 +153,15 @@ For full control, pass a render function that receives props and component state
 
 ```tsx
 import { TamaguiComponentState } from '@tamagui/core'
-;<Stack
+;<View
   render={(props, state: TamaguiComponentState) => (
     <CustomButton {...props} isHovered={state.hover} isPressed={state.press} />
   )}
   padding="4"
-  backgroundColor="hover:blue5"
+  backgroundColor="hover:blue-200"
 >
   Custom Button
-</Stack>
+</View>
 ```
 
 The state object includes:

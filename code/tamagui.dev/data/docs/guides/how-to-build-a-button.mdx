@@ -58,6 +58,7 @@ import {
   View,
   Text,
   createStyledContext,
+  getVariableValue,
   styled,
   useTheme,
   withStaticProperties,
@@ -81,13 +82,10 @@ export const ButtonFrame = styled(View, {
         return {
           height: tokens.size[name],
           borderRadius: tokens.radius[name],
-          // note the getSpace and getSize helpers will let you shift down/up token sizes
-          // whereas with gap we just multiply by 0.2
-          // this is a stylistic choice, and depends on your design system values
+          // scale the resolved token values to fit this component's proportions
+          // these multipliers are a stylistic choice for this design system
           gap: tokens.space[name].val * 0.2,
-          paddingHorizontal: getSpace(name, {
-            shift: -1,
-          }),
+          paddingHorizontal: getVariableValue(getSpace(name)) * 0.8,
         }
       },
     },
@@ -117,13 +115,11 @@ export const ButtonText = styled(Text, {
 
 const ButtonIcon = (props: { children: any }) => {
   const { size } = useContext(ButtonContext.context)
-  const smaller = getSize(size, {
-    shift: -2,
-  })
+  const smaller = getVariableValue(getSize(size)) * 0.5
   const theme = useTheme()
   return isValidElement(props.children)
     ? cloneElement(props.children, {
-        size: smaller.val * 0.5,
+        size: smaller,
         color: theme.color.get(),
       })
     : null

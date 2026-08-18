@@ -208,18 +208,16 @@ and `rotate` also accept clauses. Flat `x` and `y` values bind the space scale.
 Legacy `$` values for `x` and `y` used the size scale, so review converted
 offsets when a custom config gives its size and space tokens different values.
 
-Legacy `exitStyle` works on web through the animation driver. A flat `exit:`
-clause currently evaluates on native, while web lowering rejects it because
-there is no web exit selector. Converting shared `exitStyle` to `exit:` is
-therefore a behavior regression. The codemod now keeps `exitStyle` authored in
-a shared or web file and reports `needs-relocation`. The same conversion is
-clean in a `.native.tsx` file. `enter:` supports both targets.
+V3 has no `enterStyle` or `exitStyle` props. Mount and unmount values use flat
+`enter:` and `exit:` clauses on each animated property. The codemod converts
+both legacy prop names to those clauses.
 
 The inverse limit applies to component-tier states such as `open`, `checked`,
 `highlighted`, and `invalid`: web can lower their attribute selectors, while
 native cannot source them until the behavior packages feed component state.
 Shared source therefore needs relocation to `.web.tsx`. Plain interaction
-states, media, themes, platforms, containers, and `enter` support both targets.
+states, media, themes, platforms, containers, `enter`, and `exit` support both
+targets.
 
 ## Run the codemod report-first
 
@@ -322,13 +320,7 @@ The other outcomes keep the unsafe source authored:
 - `ineligible`: the property has no flat clause spelling;
 - syntax and ordering flags: the tool cannot produce an equivalent program.
 
-For shared `exitStyle`, the current report says:
-
-```text
-- **needs-relocation: opacity**: "exit:" cannot lower to web CSS — there is no exited-state class in the DOM to select; exit is animation-driver territory. Remedy: keep the driver-evaluated pseudo prop, or move this usage to a .native.tsx file.
-```
-
-It can still convert an independent `enterStyle` at the same site:
+Lifecycle props convert together at the same site:
 
 ```tsx
 // before
@@ -338,8 +330,8 @@ It can still convert an independent `enterStyle` at the same site:
   exitStyle={{ opacity: 0 }}
 />
 
-// report suggestion
-<View opacity="0.5 enter:0" exitStyle={{ opacity: 0 }} />
+// after
+<View opacity="0.5 enter:0 exit:0" />
 ```
 
 The default corpus measurement on July 31, 2026 found 1,768 sites: 1,484 clean,
@@ -614,9 +606,8 @@ consumer CSS should prefer a stable authored class or selector.
    source directory.
 4. Run the same source directory with `--write` and inspect the resulting diff.
    Review converted `x` and `y` values against custom space and size scales.
-5. Resolve `needs-relocation`: keep shared `exitStyle` driver-evaluated or move
-   the use to native-only source, move web-only component states to
-   `.web.tsx`, and move text-only View styles to a text or DOM host.
+5. Resolve `needs-relocation`: move web-only component states to `.web.tsx`,
+   and move text-only View styles to a text or DOM host.
 6. Review `unknown-host` sites before changing them.
 7. Rebuild shadow and transform part conditions as complete composites.
 8. Review property-specific structured-value diagnostics. Keep dynamic,
@@ -673,9 +664,8 @@ contracts:
   reserved tokens, and text-only `View` props;
 - focused native integration tests for flat programs, transforms, and
   eligibility;
-- a rebuilt real-browser CSS-driver presence test proving that legacy
-  `exitStyle` keeps the element mounted, transitions opacity, and unmounts only
-  after the web transition;
+- `code/core/codemod-flat-values/src/legacyConditions.ts` for the mapping from
+  legacy lifecycle props to flat `enter:` and `exit:` clauses;
 - a direct style-grammar lowering probe showing that `active:` and `press:`
   emit `_bc-1119250615`, while `group-active/card:` and `group-press/card:`
   emit `_bc-1493322902`, with identical rule text in each pair;
