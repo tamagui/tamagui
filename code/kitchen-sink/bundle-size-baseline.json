@@ -1,0 +1,31 @@
+{
+  "measuredAtCommit": "d26429a906f9b22cdf0f6a6bf487b32cf5b1e53d",
+  "thresholds": {
+    "all": {
+      "raw": 0,
+      "gzip": 0
+    },
+    "js": {
+      "raw": 0,
+      "gzip": 0
+    },
+    "css": {
+      "raw": 0,
+      "gzip": 0
+    }
+  },
+  "baseline": {
+    "all": {
+      "raw": 10825200,
+      "gzip": 1323369
+    },
+    "js": {
+      "raw": 10825200,
+      "gzip": 1323369
+    },
+    "css": {
+      "raw": 0,
+      "gzip": 0
+    }
+  }
+}

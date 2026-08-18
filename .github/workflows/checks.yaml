@@ -415,7 +415,8 @@ jobs:
             --base-dist /tmp/tamagui-base/code/kitchen-sink/dist \
             --head /tmp/tamagui-head-dist/compilation-stats.json \
             --head-dist /tmp/tamagui-head-dist \
-            --out /tmp/v3-bundle-delta.md
+            --out /tmp/v3-bundle-delta.md \
+            --baseline code/kitchen-sink/bundle-size-baseline.json
 
           mkdir -p bundle-delta-artifacts
           cp /tmp/v3-bundle-delta.md bundle-delta-artifacts/v3-bundle-delta.md

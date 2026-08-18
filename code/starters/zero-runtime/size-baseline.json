@@ -1,0 +1,46 @@
+{
+  "measuredAtCommit": "d26429a906f9b22cdf0f6a6bf487b32cf5b1e53d",
+  "thresholds": {
+    "jsGzip": 0,
+    "cssGzip": 0,
+    "islandJsGzip": 0
+  },
+  "baseline": {
+    "vite": {
+      "base": {
+        "jsGzip": 58136,
+        "cssGzip": 2695,
+        "islandJsGzip": null
+      },
+      "islands": {
+        "jsGzip": 59057,
+        "cssGzip": 2726,
+        "islandJsGzip": 91056
+      }
+    },
+    "next-webpack": {
+      "base": {
+        "jsGzip": 138694,
+        "cssGzip": 2695,
+        "islandJsGzip": null
+      },
+      "islands": {
+        "jsGzip": 139719,
+        "cssGzip": 2726,
+        "islandJsGzip": 90778
+      }
+    },
+    "metro-web": {
+      "base": {
+        "jsGzip": 60066,
+        "cssGzip": 2695,
+        "islandJsGzip": null
+      },
+      "islands": {
+        "jsGzip": 60828,
+        "cssGzip": 2862,
+        "islandJsGzip": 380750
+      }
+    }
+  }
+}

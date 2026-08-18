@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { execFileSync } from 'node:child_process'
 import { existsSync, readFileSync, statSync, writeFileSync } from 'node:fs'
 import { basename, join } from 'node:path'
 import { gzipSync } from 'node:zlib'
@@ -18,6 +19,10 @@ const headStatsPath = requiredArg('head')
 const baseDist = args.get('base-dist')
 const headDist = args.get('head-dist')
 const outPath = args.get('out')
+const baselinePath = args.get('baseline')
+const updateBaselinePath = args.get('update-baseline')
+
+if (baselinePath && updateBaselinePath) usage()
 
 const base = summarizeStats(baseStatsPath, baseDist)
 const head = summarizeStats(headStatsPath, headDist)
@@ -34,11 +39,79 @@ if (gzipDelta > 0) {
   console.log(`::warning::Bundle gzip total increased by ${formatBytes(gzipDelta)}`)
 }
 
+if (updateBaselinePath) {
+  const previous = existsSync(updateBaselinePath)
+    ? JSON.parse(readFileSync(updateBaselinePath, 'utf8'))
+    : {
+        thresholds: {
+          all: { raw: 0, gzip: 0 },
+          js: { raw: 0, gzip: 0 },
+          css: { raw: 0, gzip: 0 },
+        },
+      }
+  writeFileSync(
+    updateBaselinePath,
+    `${JSON.stringify(
+      {
+        measuredAtCommit: execFileSync('git', ['rev-parse', 'HEAD'], {
+          encoding: 'utf8',
+        }).trim(),
+        thresholds: previous.thresholds,
+        baseline: baselineValues(head),
+      },
+      null,
+      2
+    )}\n`
+  )
+  console.log(`Updated committed bundle baseline: ${updateBaselinePath}`)
+} else if (baselinePath) {
+  const expected = JSON.parse(readFileSync(baselinePath, 'utf8'))
+  const actual = baselineValues(head)
+  const failures = []
+  if (head.totals.gzipAssetCount !== head.assetCount) {
+    failures.push(
+      `gzip assets: expected ${head.assetCount}, actual ${head.totals.gzipAssetCount}, threshold 0 missing files`
+    )
+  }
+  for (const scope of ['all', 'js', 'css']) {
+    for (const metric of ['raw', 'gzip']) {
+      const baseline = expected.baseline?.[scope]?.[metric]
+      const threshold = expected.thresholds?.[scope]?.[metric]
+      const value = actual[scope][metric]
+      if (!Number.isFinite(baseline) || !Number.isFinite(threshold)) {
+        failures.push(`${scope} ${metric}: expected baseline and threshold are missing`)
+      } else if (value > baseline + threshold) {
+        failures.push(
+          `${scope} ${metric}: expected ${baseline} bytes, actual ${value} bytes, threshold +${threshold} bytes (max ${baseline + threshold} bytes)`
+        )
+      }
+    }
+  }
+  if (failures.length) {
+    console.error(
+      `Bundle size baseline exceeded:\n${failures.map((failure) => `- ${failure}`).join('\n')}\nIf the growth is intentional, rerun this command with --update-baseline ${baselinePath} instead of --baseline ${baselinePath}, then commit the baseline.`
+    )
+    process.exitCode = 1
+  } else {
+    console.log(
+      `Bundle size baseline passed (${baselinePath}; all raw ${actual.all.raw} bytes, all gzip ${actual.all.gzip} bytes)`
+    )
+  }
+}
+
 function usage() {
   console.error(
-    'Usage: compare-webpack-stats.mjs --base <stats.json> --head <stats.json> [--base-dist <dir>] [--head-dist <dir>] [--out <markdown>]'
+    'Usage: compare-webpack-stats.mjs --base <stats.json> --head <stats.json> [--base-dist <dir>] [--head-dist <dir>] [--out <markdown>] [--baseline <baseline.json> | --update-baseline <baseline.json>]'
   )
   process.exit(1)
+}
+
+function baselineValues(summary) {
+  return {
+    all: { raw: summary.totals.raw, gzip: summary.totals.gzip },
+    js: { raw: summary.byKind.js.raw, gzip: summary.byKind.js.gzip },
+    css: { raw: summary.byKind.css.raw, gzip: summary.byKind.css.gzip },
+  }
 }
 
 function requiredArg(name) {

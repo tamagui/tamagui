@@ -35,6 +35,7 @@
     "detox:run:ios": "./run-detox.sh ios",
     "detox:run:android": "./run-detox.sh android",
     "prod:web": "NODE_ENV=production webpack --json=dist/compilation-stats.json",
+    "bundle:update-baseline": "bun run prod:web && node ../../.github/scripts/compare-webpack-stats.mjs --base dist/compilation-stats.json --base-dist dist --head dist/compilation-stats.json --head-dist dist --update-baseline bundle-size-baseline.json",
     "test:native": "bun run test:native:ios && bun run test:native:maestro",
     "test": "bun run test:web && ./run-native-tests.sh"
   },

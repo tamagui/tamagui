@@ -9,6 +9,7 @@
     "build:metro:island": "TAMAGUI_ZERO_ISLAND=DetailsIsland NODE_ENV=production metro build .tamagui/zero/DetailsIsland.entry.js --out public-metro/tamagui-islands/DetailsIsland.js --platform web --dev false --config metro.config.cjs",
     "build:metro": "NODE_ENV=production metro build src/metro-main.tsx --out dist-metro/main.js --platform web --dev false --config metro.config.cjs",
     "measure": "node scripts/measure.mjs",
+    "measure:update-baseline": "node scripts/measure.mjs --update-baseline",
     "start:vite": "vite preview --outDir dist-vite --port 7890 --strictPort",
     "start:next": "NEXT_TELEMETRY_DISABLED=1 NODE_ENV=production next start --port 7891",
     "start:metro": "node scripts/metro-serve.mjs",

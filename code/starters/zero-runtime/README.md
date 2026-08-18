@@ -28,7 +28,16 @@ Builds each integration twice, once with no declared island and once with one,
 and writes `receipts.json`. Every figure is gzip level 9 over the emitted
 files, so the three integrations are measured the same way. The script exits
 non-zero if any tier fails to build, ships a forbidden Tamagui module, or
-reports a compiler violation.
+reports a compiler violation. It also compares every gzip figure with the
+committed `size-baseline.json` and fails when a figure exceeds its byte
+threshold.
+
+When an intentional size change should become the new expectation, regenerate
+the baseline explicitly and commit its diff:
+
+```sh
+bun run measure:update-baseline
+```
 
 ```sh
 bun run test

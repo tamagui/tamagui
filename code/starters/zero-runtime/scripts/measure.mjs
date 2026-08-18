@@ -17,6 +17,13 @@ import { gzipSync } from 'node:zlib'
 
 const root = path.dirname(path.dirname(fileURLToPath(import.meta.url)))
 const zeroDir = path.join(root, '.tamagui/zero')
+const baselinePath = path.join(root, 'size-baseline.json')
+const updateBaseline = process.argv.includes('--update-baseline')
+
+if (process.argv.length > (updateBaseline ? 3 : 2)) {
+  console.error('Usage: measure.mjs [--update-baseline]')
+  process.exit(1)
+}
 
 const run = (command, args, env = {}) => {
   try {
@@ -199,4 +206,80 @@ const unqualified = Object.entries(receipts).flatMap(([name, tiers]) =>
 )
 if (unqualified.length) {
   throw new Error(`unqualified: ${unqualified.join(', ')}`)
+}
+
+const sizeMetrics = ['jsGzip', 'cssGzip', 'islandJsGzip']
+
+if (updateBaseline) {
+  const previous = existsSync(baselinePath)
+    ? JSON.parse(readFileSync(baselinePath, 'utf8'))
+    : {
+        thresholds: { jsGzip: 0, cssGzip: 0, islandJsGzip: 0 },
+      }
+  const baseline = {}
+  for (const [name, tiers] of Object.entries(receipts)) {
+    baseline[name] = {}
+    for (const [tierName, tier] of Object.entries(tiers)) {
+      baseline[name][tierName] = Object.fromEntries(
+        sizeMetrics.map((metric) => [metric, tier[metric]])
+      )
+    }
+  }
+  writeFileSync(
+    baselinePath,
+    `${JSON.stringify(
+      {
+        measuredAtCommit: execFileSync('git', ['rev-parse', 'HEAD'], {
+          cwd: root,
+          encoding: 'utf8',
+        }).trim(),
+        thresholds: previous.thresholds,
+        baseline,
+      },
+      null,
+      2
+    )}\n`
+  )
+  console.info(`Updated committed size baseline: ${path.relative(root, baselinePath)}`)
+} else {
+  if (!existsSync(baselinePath)) {
+    throw new Error(
+      'Missing committed size baseline. Run `node scripts/measure.mjs --update-baseline` and commit size-baseline.json.'
+    )
+  }
+  const expected = JSON.parse(readFileSync(baselinePath, 'utf8'))
+  const failures = []
+  for (const [name, tiers] of Object.entries(receipts)) {
+    for (const [tierName, tier] of Object.entries(tiers)) {
+      for (const metric of sizeMetrics) {
+        const actual = tier[metric]
+        const baseline = expected.baseline?.[name]?.[tierName]?.[metric]
+        const threshold = expected.thresholds?.[metric]
+        if (actual === null && baseline === null) continue
+        if (
+          !Number.isFinite(actual) ||
+          !Number.isFinite(baseline) ||
+          !Number.isFinite(threshold)
+        ) {
+          failures.push(
+            `${name}/${tierName} ${metric}: expected ${baseline ?? 'missing'} bytes, actual ${actual ?? 'missing'} bytes, threshold ${Number.isFinite(threshold) ? `+${threshold} bytes` : 'missing'}`
+          )
+          continue
+        }
+        if (actual > baseline + threshold) {
+          failures.push(
+            `${name}/${tierName} ${metric}: expected ${baseline} bytes, actual ${actual} bytes, threshold +${threshold} bytes (max ${baseline + threshold} bytes)`
+          )
+        }
+      }
+    }
+  }
+  if (failures.length) {
+    throw new Error(
+      `Size baseline exceeded:\n${failures.map((failure) => `- ${failure}`).join('\n')}\nIf the growth is intentional, run \`node scripts/measure.mjs --update-baseline\` and commit size-baseline.json.`
+    )
+  }
+  console.info(
+    `Size baseline passed (${path.relative(root, baselinePath)}; thresholds: ${sizeMetrics.map((metric) => `${metric} +${expected.thresholds[metric]} bytes`).join(', ')})`
+  )
 }
