@@ -1,7 +1,8 @@
 # Inline theme values: can an app that never uses them ship none of it?
 
-Measured 2026-08-17 on `v3-beta`. Recorded so the worker who implements the
-approved mechanism does not rebuild these fixtures or re-derive these numbers.
+Measured 2026-08-17 on `v3-beta`. **The work is NOT scheduled** (see the decision
+below). This is recorded so that nobody rebuilds these fixtures or re-derives
+these numbers if the idea is ever revisited.
 
 ## The question
 

@@ -2207,8 +2207,8 @@ settled `<Theme>` inline-props API, so do not start it off the back of this
 entry.
 
 Full measurements, the per-bundler fixture layout, and the exact opt-out wiring
-are recorded in `code/comparisons/V3_INLINE_VALUES_DCE.md` so the implementing
-worker does not rebuild them.
+are recorded in `code/comparisons/V3_INLINE_VALUES_DCE.md`, so if the
+`ThemeUpdate` idea is ever picked up nobody rebuilds them.
 
 **Do not collapse the three reference resolvers.** They look like one function
 written three times and they are not: the CSS path resolves theme keys to live
