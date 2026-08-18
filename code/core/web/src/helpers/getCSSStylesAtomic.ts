@@ -52,7 +52,17 @@ export function getCSSStyleAtomic(
 
 let conf: TamaguiInternalConfig | null = null
 
-// this could be cached for performance?
+// the direct path rebuilds the same atomic rule strings on every render of every
+// component, and insertStyleRules only ever inserts the FIRST set it sees for an
+// identifier and discards the rest. identifier -> rules is already the engine's
+// insertion invariant, so reusing on it adds no assumption. bounded and cleared
+// the same way simpleHash's cache is.
+const directRules = new Map<string, string[]>()
+let directRulesSize = 0
+
+// the direct identifier prefix is a per-character reduction of the identity key
+const directShortProps: Record<string, string> = {}
+
 const getStyleObject = (
   style: ViewStyleObject,
   key: string,
@@ -74,37 +84,65 @@ const getStyleObject = (
   // this content hash is the atomic CSS class identity shared by server output
   // and client hydration. it is not a parser cache or a runtime lookup key.
   const hash = simpleHash(identity ?? rawValue, direct ? 'strict' : 10) || '0'
-  conf ||= getConfigMaybe()
-  let shortProp = conf?.inverseShorthands[key] || key
+  // media queries and shorthands come from the config, so an identifier built
+  // under one config says nothing about rules under another
+  const nextConf = getConfigMaybe()
+  if (nextConf !== conf) {
+    conf = nextConf
+    directRules.clear()
+    directRulesSize = 0
+  }
+  let shortProp: string
   if (direct) {
-    shortProp = ''
-    for (let index = 0; index < identityKey.length; index++) {
-      const code = identityKey.charCodeAt(index)
-      if (
-        (index === 0 ||
-          (code >= 65 && code <= 90) ||
-          identityKey.charCodeAt(index - 1) === 45) &&
-        ((code >= 65 && code <= 90) || (code >= 97 && code <= 122))
-      ) {
-        shortProp += identityKey[index].toLowerCase()
+    shortProp = directShortProps[identityKey]
+    if (shortProp === undefined) {
+      shortProp = ''
+      for (let index = 0; index < identityKey.length; index++) {
+        const code = identityKey.charCodeAt(index)
+        if (
+          (index === 0 ||
+            (code >= 65 && code <= 90) ||
+            identityKey.charCodeAt(index - 1) === 45) &&
+          ((code >= 65 && code <= 90) || (code >= 97 && code <= 122))
+        ) {
+          shortProp += identityKey[index].toLowerCase()
+        }
       }
+      shortProp ||= 'x'
+      directShortProps[identityKey] = shortProp
     }
-    shortProp ||= 'x'
+  } else {
+    shortProp = conf?.inverseShorthands[key] || key
   }
   let identifier = `_${shortProp}-${hash}`
   if (key === 'pointerEvents' && !condition) {
     if (value === 'box-none') identifier = '_pe-boxnone'
     else if (value === 'box-only') identifier = '_pe-boxonly'
   }
-  const rules = createAtomicRules(
-    identifier,
-    key,
-    value,
-    condition,
-    wrappers,
-    direct,
-    classRepetitions
-  )
+  // callers own the array they get back (directAtomic splices into it,
+  // addComposition unshifts), so the cache keeps its own copy
+  let rules = direct ? directRules.get(identifier) : undefined
+  if (rules) {
+    rules = rules.slice()
+  } else {
+    rules = createAtomicRules(
+      identifier,
+      key,
+      value,
+      condition,
+      wrappers,
+      direct,
+      classRepetitions
+    )
+    if (direct) {
+      if (directRulesSize > 10_000) {
+        directRules.clear()
+        directRulesSize = 0
+      }
+      directRules.set(identifier, rules.slice())
+      directRulesSize++
+    }
+  }
   return [
     // array for performance
     key,

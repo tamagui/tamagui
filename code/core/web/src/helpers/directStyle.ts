@@ -659,7 +659,8 @@ function directAtomic(
   const atomics = (state.flatAtomics ||= {})
   const atomicKey = property.startsWith('transition') ? 'transition' : property
   const existing = atomics[atomicKey]
-  const signature = `${existing?.signature || ''}${directStyleSignature(property, value, condition?.key || '')}`
+  const contribution = directStyleSignature(property, value, condition?.key || '')
+  const signature = existing ? existing.signature + contribution : contribution
   const next = getCSSStyleAtomic(
     property,
     value,
@@ -674,28 +675,33 @@ function directAtomic(
   const identifier = next[StyleObjectIdentifier]
   const nextRules = next[StyleObjectRules]
 
+  const slotted = condition || atomicKey === 'transition'
+
   if (!existing) {
-    atomics[atomicKey] = {
-      baseRules: condition || atomicKey === 'transition' ? 0 : nextRules.length,
-      ...((condition || atomicKey === 'transition') && {
-        conditions: {
-          [atomicKey === 'transition'
-            ? `${condition?.key || ''}\0${property}`
-            : condition!.key]: {
-            count: nextRules.length,
-            index: 0,
-            precedence: condition?.precedence ?? baseClausePrecedence,
-            default: isDefault,
-          },
-        },
-      }),
+    // one shape for every DirectAtomic: a conditional object spread here gives
+    // conditioned and unconditioned atomics different hidden classes, and every
+    // read of the record downstream goes polymorphic
+    const atomic: DirectAtomic = {
+      baseRules: slotted ? 0 : nextRules.length,
+      conditions: undefined,
       signature,
       styleObject: next,
     }
+    if (slotted) {
+      atomic.conditions = {
+        [atomicKey === 'transition'
+          ? `${condition?.key || ''}\0${property}`
+          : condition!.key]: {
+          count: nextRules.length,
+          index: 0,
+          precedence: condition?.precedence ?? baseClausePrecedence,
+          default: isDefault,
+        },
+      }
+    }
+    atomics[atomicKey] = atomic
   } else {
     const previousIdentifier = existing.styleObject[StyleObjectIdentifier]
-    const oldSelector = `.${previousIdentifier}`
-    const newSelector = `.${identifier}`
     const rules = existing.styleObject[StyleObjectRules]
     if (!condition && !isDefault && existing.conditions) {
       for (const key in existing.conditions) {
@@ -710,11 +716,13 @@ function directAtomic(
       }
     }
     if (previousIdentifier !== identifier) {
+      const oldSelector = `.${previousIdentifier}`
+      const newSelector = `.${identifier}`
       for (let index = 0; index < rules.length; index++) {
-        rules[index] = rules[index].split(oldSelector).join(newSelector)
+        rules[index] = rules[index].replaceAll(oldSelector, newSelector)
       }
     }
-    if (condition || atomicKey === 'transition') {
+    if (slotted) {
       const slot =
         atomicKey === 'transition'
           ? `${condition?.key || ''}\0${property}`
