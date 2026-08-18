@@ -537,6 +537,30 @@ a cleanup, because this repo cannot see npm consumers, that caveat applies to
 `calc`, `use-keyboard-visible`, `config-base` and `theme-base`. Removing the dead
 Sheet dependency edge and the dead `debug="break"` branch is not.
 
+**DECIDED 2026-08-18 by the owner — the removal hold is LIFTED.** Remove
+`@tamagui/calc`, `@tamagui/use-keyboard-visible`, `@tamagui/config-base` and
+`@tamagui/theme-base` from the repo and from the workspace/build graph, and delete
+the dead dependency edges (Sheet's `use-keyboard-visible` dep and the tsconfig
+ref). The reasoning that lifts the caveat: v3 is a MAJOR release boundary, so
+package removal is in policy, and the npm-side effect only lands at release time,
+which stays owner-gated exactly as it always has. Removing them here does not
+publish anything.
+
+**`useEvent` collision — resolution, and it is narrower than "fix the collision".**
+READ, verified by the coordinator: the vendored `rnw-internals`
+`useEvent(event, options)` is consumed ONLY by `useHover`, inside the same
+package, through a relative import. So stop exporting it from
+`@tamagui/react-native-web-internals`' root barrel, or rename it to
+`useEventHandle` there. **`@tamagui/use-event` and the core re-export stay
+untouched** — they are not the problem and changing them would be the expensive
+way to fix a barrel export.
+
+**`getToken` vs `getSize` is NOT a removal.** It stays the consolidation item the
+plan already describes: one canonical API, alias the rest, re-export the supported
+surface from the root.
+
+Still owner-pending, and ONLY this: item 28, the RSC-safe zero entry.
+
 ---
 
 ## Dimension 2: Improvements
