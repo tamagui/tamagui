@@ -28,6 +28,24 @@ export type PluginOptions = TamaguiOptions & {
   useTamaguiSVG?: boolean
 }
 
+/**
+ * One generation of the owned CSS artifact per build process, shared by every
+ * compilation in it.
+ */
+const globalCSSGeneration = new Map<string, Promise<string>>()
+
+function generateGlobalCSSOnce(
+  cssPath: string,
+  generate: () => Promise<string>
+): Promise<string> {
+  let pending = globalCSSGeneration.get(cssPath)
+  if (!pending) {
+    pending = generate()
+    globalCSSGeneration.set(cssPath, pending)
+  }
+  return pending
+}
+
 export class TamaguiPlugin {
   pluginName = 'TamaguiPlugin'
 
@@ -47,28 +65,39 @@ export class TamaguiPlugin {
    */
   applyGlobalCSS(compiler: Compiler) {
     const root = this.options.root || compiler.context || process.cwd()
-    // the client compilation is the entry graph that has to load the artifact
-    if (this.options.isServer || compiler.options.mode === 'development') return
+    if (compiler.options.mode === 'development') return
     const globalCSS = Static.resolveGlobalCSSOwnership(
       { platform: 'web', ...this.options },
       root
     )
     if (!globalCSS) return
 
+    // Every compilation waits on the same generation, because Next builds the
+    // server and client together and both resolve the app module that imports
+    // the artifact. Generating it only on the client fails a build whose
+    // artifact does not exist yet with "Module not found" on whichever pass
+    // resolves first. Generating it once, before either resolves, is also what
+    // keeps a later compilation from silently recreating a file this build
+    // deliberately invalidated.
     let expectedCSS = ''
     compiler.hooks.beforeCompile.tapPromise(this.pluginName, async () => {
-      const projectInfo = await Static.loadTamagui({
-        components: ['tamagui'],
-        platform: 'web',
-        ...this.options,
+      expectedCSS = await generateGlobalCSSOnce(globalCSS.cssPath, async () => {
+        const projectInfo = await Static.loadTamagui({
+          components: ['tamagui'],
+          platform: 'web',
+          ...this.options,
+        })
+        if (!projectInfo?.tamaguiConfig) {
+          throw new Error(
+            `[tamagui] outputCSS is set but the Tamagui config did not evaluate, so no CSS artifact can be generated`
+          )
+        }
+        return projectInfo.tamaguiConfig.getCSS()
       })
-      if (!projectInfo?.tamaguiConfig) {
-        throw new Error(
-          `[tamagui] outputCSS is set but the Tamagui config did not evaluate, so no CSS artifact can be generated`
-        )
-      }
-      expectedCSS = projectInfo.tamaguiConfig.getCSS()
     })
+
+    // the client compilation is the entry graph that has to load the artifact
+    if (this.options.isServer) return
 
     compiler.hooks.afterEmit.tap(this.pluginName, (compilation) => {
       const loadedModuleIds: string[] = []
