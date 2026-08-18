@@ -139,3 +139,19 @@ Two conclusions that should stop work rather than start it:
   threshold, so within 60 of V2) and it is not dead code: `core/src/runtime.tsx`
   runs `setupHooks` at module scope and its `usePropsTransform` calls
   `useElementLayout` for every DOM element, so it is live per-element code.
+
+## The harness is deterministic across worktrees — control run, 2026-08-17
+
+Before treating any measured delta as real, this control was run: the BASELINE
+commit `1a777a322a` was rebuilt in a separate throwaway worktree with its own
+`bun install`, and attributed with the same recipe. It reproduced
+**104,768 exactly**, the same total measured in the original worktree.
+
+So a whole-bundle total delta is trustworthy to the byte and is not an install
+or worktree artifact. Per-module `marginalGzip` still drifts by roughly ±11 on
+modules nobody touched, because gzip shares a dictionary across the chunk and
+any edit shifts it. Read per-module numbers with that band in mind; read the
+`bundle gzip total` as exact.
+
+Validate an assembled batch in a detached worktree at the batch tip, not in the
+shared golf worktree, or other lanes' in-flight edits land in your measurement.
