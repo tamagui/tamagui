@@ -138,7 +138,7 @@ more. Every row is expanded in the dimension sections below.
 | --- | --- | --- | ---: |
 | 22 | Precompute the static half of `getCSS()` so SSR stops regenerating it per render | Improve | M |
 | 23 | Key media subscriptions by touched key instead of broadcasting to every subscriber | Improve | M |
-| 24 | Decide the fate of `tabs-headless` vs `tabs` (two complete controllers) | Cleanup | L |
+| 24 | Restore the headless-base pattern for Tabs (DECIDED 2026-08-18, see detail) | Cleanup | L |
 | 25 | Collapse the internal-only `use-*` micro-packages; retire dead package shells | Cleanup | M |
 | 26 | Metro diagnostics lose the source span the compiler already computed | Improve | S–M |
 | 27 | Build-time performance harness for the real plugins through real bundlers | Testing | M |
@@ -397,6 +397,25 @@ visible.
   and `code/kitchen-sink-shared/src` found no consumer of the headless package
   outside its own source. Pick one owner; the external-consumer question makes
   removal a release decision.
+
+  **DECIDED 2026-08-18 by the owner — this is no longer an open "pick one".**
+  Headless packages are the intended BASE LAYER and skinned components consume
+  them, which `switch`, `checkbox` and `radio-group` already do (READ: each
+  package.json depends on its `-headless` sibling). Tabs is the drift, not the
+  design: `code/ui/tabs` has no `tabs-headless` dependency and reimplements the
+  controller.
+
+  The fix RESTORES the pattern rather than removing headless. Extract the
+  SKINNED Tabs controller logic — the battle-tested one, covered by kitchen-sink
+  — into `@tamagui/tabs-headless`, replacing that package's divergent orphan
+  implementation, then rebuild `Tabs.tsx` to consume it. Current Tabs behavior
+  is the behavioral reference: existing tabs tests must pass UNCHANGED, and add
+  coverage proving the headless hook is actually the layer under the skin,
+  mirroring how `useSwitch`/`useCheckbox` are consumed.
+
+  Note the direction carefully — the orphan implementation is the one that goes,
+  and the code that survives is the one already proven in the skin. Doing it the
+  other way round would ship the untested controller.
 - **Native `useSwitch` drops behavior [med] [M] READ.**
   `code/ui/switch-headless/src/useSwitch.tsx:84-93` returns only a toggling
   `onPress`, the ref and a null bubble input on native, while the web branch
