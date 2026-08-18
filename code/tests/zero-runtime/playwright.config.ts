@@ -18,6 +18,11 @@ export default defineConfig({
       testMatch: /next-.*\.test\.ts/,
       use: { baseURL: 'http://localhost:7879' },
     },
+    {
+      name: 'metro',
+      testMatch: /metro-.*\.test\.ts/,
+      use: { baseURL: 'http://localhost:7880' },
+    },
   ],
   webServer: [
     {
@@ -29,6 +34,12 @@ export default defineConfig({
     {
       command: 'npx next start --port 7879',
       url: 'http://localhost:7879',
+      reuseExistingServer: true,
+      stdout: 'ignore',
+    },
+    {
+      command: 'node scripts/metro-serve.mjs',
+      url: 'http://localhost:7880',
       reuseExistingServer: true,
       stdout: 'ignore',
     },

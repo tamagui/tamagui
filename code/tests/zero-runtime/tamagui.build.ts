@@ -8,7 +8,7 @@ const isFullRuntimeProbe = process.env.TAMAGUI_ZERO_FIXTURE === 'full'
 export default {
   components: ['tamagui'],
   config: './tamagui.config.ts',
-  outputCSS: './.tamagui-zero/tamagui.generated.css',
+  outputCSS: './.tamagui/zero/tamagui-zero.css',
   experimental: isFullRuntimeProbe
     ? {}
     : { zeroRuntime: { islands: ['src/islands/SheetIsland.tsx'] } },

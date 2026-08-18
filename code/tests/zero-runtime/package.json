@@ -6,9 +6,12 @@
   "scripts": {
     "build": "vite build",
     "build:next": "NEXT_TELEMETRY_DISABLED=1 NODE_ENV=production next build --webpack",
+    "build:metro:island": "TAMAGUI_ZERO_ISLAND=SheetIsland NODE_ENV=production metro build .tamagui/zero/SheetIsland.entry.js --out public-metro/tamagui-islands/SheetIsland.js --platform web --dev false --config metro.config.cjs",
+    "build:metro": "NODE_ENV=production metro build src/metro-main.tsx --out dist-metro/main.js --platform web --dev false --config metro.config.cjs",
     "preview": "vite preview --port 7878 --strictPort",
     "start:next": "NEXT_TELEMETRY_DISABLED=1 NODE_ENV=production next start --port 7879",
-    "receipts": "node scripts/zero-receipts.mjs && node scripts/next-receipts.mjs",
+    "start:metro": "node scripts/metro-serve.mjs",
+    "receipts": "node scripts/zero-receipts.mjs && node scripts/next-receipts.mjs && node scripts/metro-receipts.mjs",
     "test": "playwright test"
   },
   "dependencies": {
@@ -18,9 +21,14 @@
     "tamagui": "workspace:*"
   },
   "devDependencies": {
+    "@babel/preset-react": "^7.24.7",
+    "@babel/preset-typescript": "^7.26.0",
     "@playwright/test": "1.58.2",
+    "@tamagui/metro-plugin": "workspace:*",
     "@tamagui/next-plugin": "workspace:*",
     "@tamagui/vite-plugin": "workspace:*",
+    "metro": "^0.83.7",
+    "metro-config": "^0.83.7",
     "next": "16.1.1",
     "react-dom": "*",
     "vite": "^8.0.3"

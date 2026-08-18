@@ -33,8 +33,9 @@ node_modules
 
 code/kitchen-sink/ios
 
-# published zero-runtime island bundles and CSS artifact
+# published zero-runtime island bundles and CSS artifacts
 code/tests/zero-runtime/public
+code/tests/zero-runtime/public-metro
 
 .tamagui
 
@@ -58,9 +59,6 @@ code/tests/zero-runtime/public
 **/serviceAccount*.json
 
 code/kitchen-sink/ios
-
-# published zero-runtime island bundles and CSS artifact
-code/tests/zero-runtime/public
 code/kitchen-sink/android
 
 code/studio/types/**
