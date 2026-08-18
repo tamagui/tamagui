@@ -3049,3 +3049,44 @@ as a precise figure, and rerender 0.826x in v3's favour. Item 10 closes when
 p26092's republished artifacts and the staleness guard land. A precision re-run
 is optional and owner-gated. Already relayed to the owner; recorded here only so
 the campaign has it.
+
+### Item 6 landed: production now gets the same message development does
+
+`997c6c4914`. All ten of section 2.7's messages route through one new
+`code/core/web/src/helpers/formatDiagnostic.ts`. Each keeps its stable machine
+code and gains the component, the received value, and one recovery action.
+
+The part worth understanding is what it did to the prod/dev split, because it is
+the opposite of what "add more text" usually means. The old shape was a ternary:
+
+    process.env.NODE_ENV !== 'production' ? <long explanation> : 'Err0'
+
+That fork is **deleted**, not extended. One message now ships in both builds.
+This is the plan's complaint fixed at the source: production was where the user
+had the least context and got the least text, and a second branch would have
+kept that asymmetry while adding weight to both sides.
+
+**It costs bytes and that is the deliberate trade.** On the same 9-module
+minified entry: 166,676 raw / 59,221 gzip before, 170,818 / 60,291 after, so
+**+4,142 raw and +1,070 gzip**. Anyone reading a size regression on
+`@tamagui/web` around this commit should stop here rather than hunting. The
+dev-only diagnostics (portal host, native matchMedia, presence state) still
+strip out of the production build, so the cost is only the messages that
+genuinely ship.
+
+Item 10 of the list, the debug warning that could dump an unbounded serialized
+object, is bounded rather than relabelled: values cap at 160 characters, objects
+stop at depth 2, arrays show 5 entries, keys show 6, and circular references
+resolve to `[Circular]` instead of throwing.
+
+The Sheet package has no test script, so its three snapPoint messages are
+covered only by an ad-hoc run. That run shows one failure, a `Sheet.Root !== Sheet`
+identity assertion. It is not from this change: the commit's entire sheet diff is
+three `console.warn` string replacements plus an import, with no path to a
+component identity or an export.
+
+**Sequencing note for item 2.** This landed while the size-ceiling lane was still
+generating its baselines. Any baseline measured before `997c6c4914` is stale by
+1,070 gzip, and committing one would fail the gate it is meant to define. The
+lane was told to regenerate at a tip containing it and to record the measured SHA
+in the baseline file.
