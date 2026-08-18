@@ -667,6 +667,11 @@ if (animatedNumberGraph.forbidden.length) {
 // the zero graphs have to omit the modules AND this build has to contain them.
 const staticTransition = ruleBuild('transition')
 const staticTransitionGraph = read('vite-dist-transition.graph.json')
+// the runtime half of the differential oracle: the same authored tree with the
+// compiler off, so a browser can be asked what each tier computed for one tree
+const runtimeTransition = build('rules-runtime', 'dist-transition-runtime', [], {
+  TAMAGUI_ZERO_RULE: 'transition.runtime',
+})
 const animatedNumberAbsent = ruleBuild('animated-number.absent')
 const animatedNumberAbsentGraph = read('vite-dist-animated-number.absent.graph.json')
 const animatedNumberFull = ruleBuild('animated-number.full', 'rules-full')
@@ -679,6 +684,11 @@ const animatedNumberFullProbe = build(
 if (!staticTransition.ok) {
   throw new Error(
     `the static transition fixture did not build:\n${staticTransition.output}`
+  )
+}
+if (!runtimeTransition.ok) {
+  throw new Error(
+    `the runtime transition fixture did not build:\n${runtimeTransition.output}`
   )
 }
 if (!animatedNumberAbsent.ok) {

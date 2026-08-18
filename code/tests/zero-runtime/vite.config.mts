@@ -60,6 +60,8 @@ const inputs = {
   'rules-motion': 'index.html',
   // the full-driver half of the animation measurement, same rule module
   'rules-full': 'index.html',
+  // the runtime half of the differential oracle: same rule module, compiler off
+  'rules-runtime': 'index.html',
 } as const
 
 const fixture = (process.env.TAMAGUI_ZERO_FIXTURE || 'zero') as keyof typeof inputs

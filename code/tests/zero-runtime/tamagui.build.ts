@@ -14,6 +14,10 @@ const fixture = process.env.TAMAGUI_ZERO_FIXTURE
 // measurement: the same authored rule module, ordinary compiled Tamagui, so
 // createAnimations and the component animation path stay reachable.
 //
+// `rules-runtime` is the runtime half of the differential oracle: the same
+// authored rule module, ordinary Tamagui with the compiler switched off, so a
+// browser can be asked what each tier computed for one authored tree.
+//
 // `dom-client` and `dom-tables` are the DOM demotion receipts: both are regular
 // full-runtime web clients, and the second one adds the value import of
 // @tamagui/dom that proves the absence check on the first one can fail.
@@ -24,6 +28,7 @@ const fixture = process.env.TAMAGUI_ZERO_FIXTURE
 const isFullRuntimeProbe =
   fixture === 'full' ||
   fixture === 'rules-full' ||
+  fixture === 'rules-runtime' ||
   fixture === 'dom-client' ||
   fixture === 'dom-tables' ||
   fixture === 'hydration'
@@ -44,6 +49,7 @@ export default {
   components: ['tamagui'],
   config:
     fixture === 'rules-motion' ? './tamagui.motion.config.ts' : './tamagui.config.ts',
+  ...(fixture === 'rules-runtime' ? { disableExtraction: true } : {}),
   ...(isReportFixture
     ? { experimental: { zeroRuntime: 'report' as const } }
     : isFullRuntimeProbe

@@ -35,7 +35,7 @@ export default defineConfig({
     },
     {
       name: 'vite-transition',
-      testMatch: /vite-transition\.test\.ts/,
+      testMatch: /vite-transition.*\.test\.ts/,
       use: { baseURL: 'http://localhost:7885' },
     },
     {
@@ -88,6 +88,14 @@ export default defineConfig({
     {
       command: 'npx vite preview --outDir dist-transition --port 7885 --strictPort',
       url: 'http://localhost:7885/.tamagui/rules/transition.html',
+      reuseExistingServer: true,
+      stdout: 'ignore',
+    },
+    {
+      // the runtime half of the differential oracle, same authored tree as 7885
+      command:
+        'npx vite preview --outDir dist-transition-runtime --port 7887 --strictPort',
+      url: 'http://localhost:7887/.tamagui/rules/transition.runtime.html',
       reuseExistingServer: true,
       stdout: 'ignore',
     },
