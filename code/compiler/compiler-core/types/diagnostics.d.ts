@@ -4,7 +4,7 @@ export type BailoutCode = 'local/invalid-element-call' | 'local/unsupported-elem
  * The zero-runtime rule a diagnostic belongs to. Set by whichever site knows the
  * reason; `zeroRuleForBailout` supplies the default for the rest.
  */
-export type ZeroRule = 1 | 2 | 3 | 4 | 5 | 6 | 7;
+export type ZeroRule = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
 export interface BailoutReason {
     code: BailoutCode;
     kind: 'local' | 'linked';

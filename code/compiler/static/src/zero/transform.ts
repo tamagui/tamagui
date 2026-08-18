@@ -7,7 +7,6 @@ import {
   resolvedModuleId,
   walkAst,
   zeroIslandThemeMessage,
-  zeroRuleMessage,
   zeroViolationsFromPlan,
   type AppliedLoweredModule,
   type AstNode,
@@ -15,16 +14,19 @@ import {
   type SourceEdit,
   type ZeroViolation,
 } from '@tamagui/compiler-core'
-import {
-  getInlineValuesFromProps,
-  getVariablesCSSRules,
-  type TamaguiInternalConfig,
-} from '@tamagui/web'
+import { type TamaguiInternalConfig } from '@tamagui/web'
 
 import { createHash } from 'node:crypto'
 import path from 'node:path'
 
 import type { IslandThemeBridge, IslandThemeBridgeLayer } from './islands'
+import {
+  foldBranches,
+  lowerStaticTheme,
+  readStaticTheme,
+  resolveThemeChain,
+  type StaticThemeNode,
+} from './theme'
 
 /**
  * The zero-mode source transform.
@@ -90,65 +92,6 @@ function jsxNameOf(element: AstNode): string | null {
     : null
 }
 
-/** Literal prop values only. Anything else is a zero-runtime contract error. */
-function staticAttributes(
-  element: AstNode,
-  id: string
-): { values: Record<string, string | number | boolean>; error: ZeroViolation | null } {
-  const opening = childNode(element, 'openingElement')!
-  const values: Record<string, string | number | boolean> = {}
-  for (const attribute of childNodes(opening, 'attributes')) {
-    if (attribute.type !== 'JSXAttribute') {
-      return {
-        values,
-        error: {
-          rule: 1,
-          code: 'local/unsafe-style-spread',
-          span: { id: resolvedModuleId(id), start: attribute.start, end: attribute.end },
-          component: 'Theme',
-          message: zeroRuleMessage(1, { component: 'Theme' }),
-        },
-      }
-    }
-    const name = childNode(attribute, 'name')
-    const key = name && typeof name.name === 'string' ? name.name : null
-    if (!key) continue
-    const value = childNode(attribute, 'value')
-    if (!value) {
-      values[key] = true
-      continue
-    }
-    if (value.type === 'Literal' && typeof value.value !== 'object') {
-      values[key] = value.value as string | number | boolean
-      continue
-    }
-    if (value.type === 'JSXExpressionContainer') {
-      const expression = childNode(value, 'expression')
-      if (
-        expression &&
-        expression.type === 'Literal' &&
-        typeof expression.value !== 'object'
-      ) {
-        values[key] = expression.value as string | number | boolean
-        continue
-      }
-    }
-    return {
-      values,
-      error: {
-        rule: 4,
-        code: 'local/dynamic-style-value',
-        span: { id: resolvedModuleId(id), start: attribute.start, end: attribute.end },
-        component: 'Theme',
-        message: zeroRuleMessage(4, {
-          detail: `the value of ${key} on <Theme>`,
-        }),
-      },
-    }
-  }
-  return { values, error: null }
-}
-
 export function transformZeroModule(
   input: ZeroModuleTransformInput
 ): ZeroModuleTransformResult {
@@ -198,92 +141,43 @@ export function transformZeroModule(
     ? elements.filter((element) => jsxNameOf(element) === themeLocal)
     : []
 
-  const themeInfo = new Map<
-    AstNode,
-    { name: string | null; layer: IslandThemeBridgeLayer | null }
-  >()
+  // Each <Theme> is read once, then lowered against its own ancestry, so a
+  // nested node resolves against whatever its parent resolved to.
+  const themeNodes = new Map<AstNode, StaticThemeNode>()
+  for (const element of themeElements) {
+    const read = readStaticTheme(element, id, source, config)
+    for (const [identifier, rules] of read.css) bridgeCSS.set(identifier, rules)
+    violations.push(...read.violations)
+    if (read.node) themeNodes.set(element, read.node)
+  }
+
+  const themeChainOf = (element: AstNode): StaticThemeNode[] => {
+    const chain: StaticThemeNode[] = []
+    let cursor: AstNode | undefined = element
+    while (cursor) {
+      const node = themeNodes.get(cursor)
+      if (node) chain.unshift(node)
+      cursor = parents.get(cursor)
+    }
+    return chain
+  }
+
+  // With no provider in the zero graph, the document's theme is the config's
+  // first theme: that is the one the generated artifact writes to `:root`.
+  const rootThemeName = Object.keys(config.themes)[0] ?? 'light'
 
   for (const element of themeElements) {
-    const { values, error } = staticAttributes(element, id)
-    if (error) {
-      violations.push(error)
-      continue
-    }
-    const nameValue = values.name
-    if (nameValue !== undefined && typeof nameValue !== 'string') {
-      violations.push({
-        rule: 4,
-        code: 'local/dynamic-style-value',
-        span: { id: moduleId, start: element.start, end: element.end },
-        component: 'Theme',
-        message: zeroRuleMessage(4, { detail: 'a non-literal <Theme name>' }),
-      })
-      continue
-    }
-    if (typeof nameValue === 'string' && nameValue.includes('_')) {
-      violations.push({
-        rule: 4,
-        code: 'local/unsupported-target',
-        span: { id: moduleId, start: element.start, end: element.end },
-        component: 'Theme',
-        message: zeroRuleMessage(4, {
-          detail: `the compound theme name "${nameValue}", which this phase does not lower`,
-        }),
-      })
-      continue
-    }
-
-    const inlineValues = getInlineValuesFromProps(values, config)
-    const inlineCSS = inlineValues ? getVariablesCSSRules(inlineValues, config) : null
-    if (inlineCSS) bridgeCSS.set(inlineCSS.identifier, inlineCSS.rules.join(''))
-
-    themeInfo.set(element, {
-      name: typeof nameValue === 'string' ? nameValue : null,
-      layer:
-        inlineValues && inlineCSS
-          ? {
-              inlineValues: inlineValues as IslandThemeBridgeLayer['inlineValues'],
-              inlineClassName: inlineCSS.identifier,
-            }
-          : null,
-    })
-
-    // lower the static Theme node into host markup plus classes
-    const opening = childNode(element, 'openingElement')!
-    const closing = childNode(element, 'closingElement')
-    if (!closing) {
-      violations.push({
-        rule: 4,
-        code: 'local/unsupported-target',
-        span: { id: moduleId, start: element.start, end: element.end },
-        component: 'Theme',
-        message: zeroRuleMessage(4, {
-          detail: 'a self-closing <Theme>, which has no subtree to theme,',
-        }),
-      })
-      continue
-    }
-    // one node carrying the theme class and the inline-value class, the same
-    // composition the runtime Theme emits
-    const classNames = [
-      typeof nameValue === 'string' ? `t_${nameValue}` : '',
-      'is_Theme',
-      inlineCSS?.identifier ?? '',
-    ]
-      .filter(Boolean)
-      .join(' ')
-    edits.push({
-      start: opening.start,
-      end: opening.end,
-      content: `<span className="${classNames}">`,
-      origin: { id: moduleId, start: opening.start, end: opening.end },
-    })
-    edits.push({
-      start: closing.start,
-      end: closing.end,
-      content: `</span>`,
-      origin: { id: moduleId, start: closing.start, end: closing.end },
-    })
+    const node = themeNodes.get(element)
+    if (!node) continue
+    const lowered = lowerStaticTheme(
+      node,
+      themeChainOf(element),
+      rootThemeName,
+      config,
+      id
+    )
+    violations.push(...lowered.violations)
+    edits.push(...lowered.edits)
   }
 
   // island mounts: assign each site a stable bridge from its static Theme chain
@@ -294,25 +188,34 @@ export function transformZeroModule(
     })
     .sort((left, right) => left.start - right.start)
 
-  const defaultThemeName = Object.keys(config.themes)[0] ?? 'light'
   const moduleBridgePrefix = createHash('sha256')
     .update(path.relative(input.root, id).replace(/\\/g, '/'))
     .digest('hex')
     .slice(0, 8)
 
+  // Lowering rewrites the component name of every element it turned into a host
+  // element, so an uppercase JSX name that no edit covers is an opaque component
+  // call: what it renders around its children is not visible from this module.
+  const loweredRanges = input.plan.edits.filter((edit) => edit.end > edit.start)
+  const isOpaqueAncestor = (element: AstNode): boolean => {
+    if (themeNodes.has(element)) return false
+    const name = jsxNameOf(element)
+    if (!name || islandLocals.has(name)) return false
+    if (name[0] !== name[0].toUpperCase()) return false
+    const nameNode = childNode(childNode(element, 'openingElement')!, 'name')!
+    return !loweredRanges.some(
+      (edit) => edit.start <= nameNode.start && edit.end >= nameNode.end
+    )
+  }
+
   mounts.forEach((element, index) => {
     const islandId = islandLocals.get(jsxNameOf(element)!)!
-    const chain: AstNode[] = []
-    let cursor: AstNode | undefined = parents.get(element)
-    while (cursor) {
-      if (themeElements.includes(cursor)) chain.unshift(cursor)
-      cursor = parents.get(cursor)
-    }
 
-    const names = chain
-      .map((themeElement) => themeInfo.get(themeElement)?.name)
-      .filter((name): name is string => !!name)
-    if (names.length > 1) {
+    let opaque: AstNode | null = null
+    for (let cursor = parents.get(element); cursor; cursor = parents.get(cursor)) {
+      if (cursor.type === 'JSXElement' && isOpaqueAncestor(cursor)) opaque = cursor
+    }
+    if (opaque) {
       violations.push({
         rule: 4,
         code: 'local/unsupported-target',
@@ -322,32 +225,50 @@ export function transformZeroModule(
       })
       return
     }
-    const layers = chain
-      .map((themeElement) => themeInfo.get(themeElement)?.layer)
-      .filter((layer): layer is IslandThemeBridgeLayer => !!layer)
 
-    // unique across modules and stable across the server and client
-    // compilations of the same entry, because both see the same module path
-    const bridgeId = `b${moduleBridgePrefix}_${index}`
-    const bridge: IslandThemeBridge = {
-      id: bridgeId,
-      name: names[0] ?? defaultThemeName,
-      layers,
-    }
+    const chain = themeChainOf(element)
+    const layers = chain
+      .map((node) => node.layer)
+      .filter((layer): layer is IslandThemeBridgeLayer => !!layer)
+    const branches = resolveThemeChain(chain, rootThemeName, config)
+
+    // One descriptor per enumerated theme name, and the mount selects its id
+    // with the same condition the compiled classes use.
+    const descriptors = branches.map((branch, branchIndex) => ({
+      test: branch.test,
+      bridge: {
+        // unique across modules and stable across the server and client
+        // compilations of the same entry, because both see the same module path
+        id:
+          branches.length === 1
+            ? `b${moduleBridgePrefix}_${index}`
+            : `b${moduleBridgePrefix}_${index}_${branchIndex}`,
+        name: branch.name,
+        layers,
+      } satisfies IslandThemeBridge,
+    }))
+
     const list = bridges.get(islandId) ?? []
-    list.push(bridge)
+    for (const descriptor of descriptors) list.push(descriptor.bridge)
     bridges.set(islandId, list)
 
     // The descriptor travels inline as data, so nothing in the zero graph has to
     // import a manifest module and no build ordering can desynchronize them.
+    const fold = (value: (bridge: IslandThemeBridge) => string) =>
+      foldBranches(
+        descriptors.map((descriptor) => ({
+          test: descriptor.test,
+          value: value(descriptor.bridge),
+        }))
+      )
     const opening = childNode(element, 'openingElement')!
     const nameNode = childNode(opening, 'name')!
     edits.push({
       start: nameNode.end,
       end: nameNode.end,
-      content: ` data-tamagui-bridge="${bridgeId}" __tamaguiBridge={${JSON.stringify(
-        bridge
-      )}}`,
+      content: ` data-tamagui-bridge={${fold((bridge) =>
+        JSON.stringify(bridge.id)
+      )}} __tamaguiBridge={${fold((bridge) => JSON.stringify(bridge))}}`,
       origin: { id: moduleId, start: nameNode.start, end: nameNode.end },
     })
   })

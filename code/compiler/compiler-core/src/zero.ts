@@ -89,6 +89,8 @@ export interface ZeroRuleParams {
   prop?: string
   detail?: string
   api?: string
+  /** Rule 8 only: what to do about this import, which differs per code. */
+  remediation?: string
 }
 
 /** The rule map's developer messages, verbatim. */
@@ -109,7 +111,34 @@ export function zeroRuleMessage(rule: ZeroRule, params: ZeroRuleParams): string 
       return `Zero-runtime rule 6: ${component} does not lower to one host element with className and is island-only. Move this module to a declared full-runtime island.`
     case 7:
       return `Zero-runtime rule 7: ${params.api ?? component} reads Tamagui design state in JavaScript. Express the condition in CSS or move this module to a full-runtime island.`
+    case 8:
+      return `Zero-runtime rule 8: ${params.detail ?? 'a module-level import'} defeats the zero-runtime graph. ${params.remediation ?? ''}`.trimEnd()
   }
+}
+
+/**
+ * Rule 8's two codes.
+ *
+ * They are module-level imports rather than element sites, and neither one is
+ * fixed by moving the module to an island: a stray side-effect import wants
+ * deleting, and an island import wants the generated loader. Reporting them as
+ * rule 6 sent developers to do island work that would not have helped.
+ */
+export function zeroSideEffectImportMessage(specifier: string): string {
+  return zeroRuleMessage(8, {
+    detail: `the bare side-effect import of "${specifier}", whose effects zero-runtime cannot prove or erase,`,
+    remediation: `Remove it, or import the values this module uses so the compiler can lower and erase them.`,
+  })
+}
+
+export function zeroStaticIslandImportMessage(
+  specifier: string,
+  islandId: string
+): string {
+  return zeroRuleMessage(8, {
+    detail: `the static import of "${specifier}", which is declared as full-runtime island "${islandId}",`,
+    remediation: `Import the generated island loader instead; the island is a separately built entry and the zero graph never contains it.`,
+  })
 }
 
 export const ZERO_PROVIDER_MESSAGE =
@@ -348,10 +377,10 @@ export function planZeroErasure(input: ZeroErasureInput): ZeroErasureResult {
     const islandId = input.islandIdFor(moduleSpecifier)
     if (islandId) {
       violations.push({
-        rule: 6,
+        rule: 8,
         code: 'zero/static-island-import',
         span: span(statement),
-        message: `Zero-runtime islands are separately built full-runtime entries. "${moduleSpecifier}" is declared as island "${islandId}" and cannot be imported from the zero graph. Import the generated island loader instead.`,
+        message: zeroStaticIslandImportMessage(moduleSpecifier, islandId),
       })
       continue
     }
@@ -362,10 +391,10 @@ export function planZeroErasure(input: ZeroErasureInput): ZeroErasureResult {
     const specifiers = childNodes(statement, 'specifiers')
     if (specifiers.length === 0) {
       violations.push({
-        rule: 6,
+        rule: 8,
         code: 'zero/side-effect-import',
         span: span(statement),
-        message: `Zero-runtime cannot erase a bare side-effect import of "${moduleSpecifier}" because its effects are unknown. Remove it or move this module to a full-runtime island.`,
+        message: zeroSideEffectImportMessage(moduleSpecifier),
       })
       continue
     }

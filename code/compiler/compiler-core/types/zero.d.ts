@@ -42,9 +42,21 @@ export interface ZeroRuleParams {
     prop?: string;
     detail?: string;
     api?: string;
+    /** Rule 8 only: what to do about this import, which differs per code. */
+    remediation?: string;
 }
 /** The rule map's developer messages, verbatim. */
 export declare function zeroRuleMessage(rule: ZeroRule, params: ZeroRuleParams): string;
+/**
+ * Rule 8's two codes.
+ *
+ * They are module-level imports rather than element sites, and neither one is
+ * fixed by moving the module to an island: a stray side-effect import wants
+ * deleting, and an island import wants the generated loader. Reporting them as
+ * rule 6 sent developers to do island work that would not have helped.
+ */
+export declare function zeroSideEffectImportMessage(specifier: string): string;
+export declare function zeroStaticIslandImportMessage(specifier: string, islandId: string): string;
 export declare const ZERO_PROVIDER_MESSAGE = "[tamagui zero-runtime] Rule 4: TamaguiProvider is not used by a zero-runtime root. The bundler loads generated CSS and the compiler lowers static Theme nodes. Remove this provider or make this entry full-runtime.";
 export declare function zeroThemeBoundaryMessage(component: string, prop: string): string;
 export declare function zeroConfigDriverMessage(name: string, outputStyle: unknown): string;
