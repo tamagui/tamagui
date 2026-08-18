@@ -1,6 +1,9 @@
 # V3 zero-runtime mode and DOM package retirement
 
-Status: design for Block 2. This document does not implement the mode.
+Status: Block 2 is implemented and closed. Phases 1 through 7 built the mode;
+phase 8 closed it out. The design below is the accepted one and still
+describes what shipped; each phase's receipts are recorded in its own
+"Phase N record" section at the end.
 
 This design incorporates the owner's direction from 2026-08-16. It keeps the
 settled failure policy, greenfield audience, and component split from

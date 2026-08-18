@@ -823,6 +823,16 @@ if (receipts.domPackageGraph.inRegularClient.length) {
   )
 }
 
+// 13. the hydration premise's build. Its claims are the Playwright spec's, so
+// what belongs here is the build itself: nothing else produced it, and without
+// it the browser suite has no server to preview, which reads as an infra
+// failure rather than as the premise going untested.
+const hydration = build('hydration', 'dist-hydration')
+receipts.hydrationFixture = { built: hydration.ok }
+if (!hydration.ok) {
+  throw new Error(`the hydration fixture did not build:\n${hydration.output}`)
+}
+
 writeFileSync(
   path.join(zeroDir, 'vite-receipts.json'),
   `${JSON.stringify(receipts, null, 2)}\n`
