@@ -2761,7 +2761,7 @@ The generalisation: `compilerHost.ts` decided lowering from call-site props
 while `completeProps` merged the styled definition's defaults 350 lines later.
 Every prop in `runtimeAnimationProps` had that hole. In zero mode `animateOnly`
 in a styled definition **built green**, which is a missed VIOLATION, not a
-missed emit — the gate that exists to make contract breaches unshippable had a
+missed emit. The gate that exists to make contract breaches unshippable had a
 hole in it.
 
 ### A probe of a prop that does not exist cannot fail informatively
@@ -2772,7 +2772,7 @@ before it was caught.
 Asked to check the blast radius on `enterStyle` and `exitStyle`, the sweep
 probed them, found them dropped in every compiled build, and reported that
 enter/exit animations do not run anywhere. They are V2 prop names. V3 does not
-implement them — `enterStyle` appears nowhere in `code/core/web/src` — and
+implement them (`enterStyle` appears nowhere in `code/core/web/src`) and
 expresses the same thing as clause modifiers, `opacity="1 enter:0 exit:0"`,
 which `directStyle.ts:354` resolves into `.t_unmounted` / `.t_exiting` CSS.
 `tsc` rejects the old spelling. Re-probed with the real shape, both positions
@@ -2791,8 +2791,8 @@ decision about a feature that works.
 
 ### Deduping compiled CSS is only safe because the runtime already does it
 
-Atomic rules were emitted once per element. The obvious fix — drop later
-duplicates — is NOT obviously safe: rules at equal specificity are ordered by
+Atomic rules were emitted once per element. The obvious fix, dropping later
+duplicates, is NOT obviously safe: rules at equal specificity are ordered by
 position, and a global first-wins dedupe can move a media rule ahead of a base
 rule that a third element carries alongside it. Constructing that case takes two
 elements and one shared clause.
@@ -2820,17 +2820,24 @@ integrations, for 57 raw bytes on the starter.
 An app named `@tamagui/*` failed the gate because `isTamaguiModuleId` read the
 nearest package.json name. The fix is not a carve-out list: Tamagui reaches a
 build as a resolved dependency, so its modules are owned by a **different**
-package.json than the one being built. `checkZeroGraph` derives the project's
-manifest from its entries and excludes it. Forbidden modules now also name their
-owning package, which the path often does not show — `@tamagui/web` resolves to
-`code/core/web/dist/...` here.
+package.json than the one being built. `checkZeroGraph` takes the project ROOT
+and excludes the package that owns it.
+
+Not the entries, and that is worth knowing before anyone "simplifies" it back:
+webpack's entry for a Next app is `node_modules/next/dist/client/next.js`, which
+belongs to `next`. An entry-derived project reads `next` as the project, so the
+exclusion silently does nothing on Next while looking correct on Vite and Metro.
+`ZeroRuntimeResolved` carries `root` for this.
+
+Forbidden modules now also name their owning package, which the path often does
+not show: `@tamagui/web` resolves to `code/core/web/dist/...` here.
 
 ### Erasure-reported rules cannot share a module with lowering-reported rules
 
 Found while extending per-rule coverage to Next and Metro, and it constrains any
 future rule fixture. Erasure runs only on a module with **no** violations
 (section 17), so a module carrying a compiler-local violation never reaches it.
-Putting rules 2, 5 and 7 in one module yields only rule 5 — and 5 violations
+Putting rules 2, 5 and 7 in one module yields only rule 5, and 5 violations
 looks like a working fixture, which is why this nearly shipped as a passing
 control. The multi-file fixture is five modules for that reason.
 
@@ -2841,7 +2848,7 @@ cosmetic: the Metro receipts key their plan cache on the project's own sources,
 so another integration building in the same root re-keys it mid-run (section
 21), and `motionDriverConversion` and `safeAreaVariables.native` measure real
 time, so they must not share a runner with 45 minutes of bundling. If either
-goes unreliable in CI, isolate it further — do not raise a threshold.
+goes unreliable in CI, isolate it further. Do not raise a threshold.
 
 ### Not fixed, and not in this block's scope
 

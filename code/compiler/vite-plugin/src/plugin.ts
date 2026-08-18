@@ -1622,6 +1622,7 @@ export function createTamaguiPlugins({
         entries,
         modules,
         importerEdges: importers,
+        root: zero.resolved.root,
       })
       zeroReceipt = {
         integration: 'vite',

@@ -262,7 +262,12 @@ export class TamaguiPlugin {
         importersOf: importerEdges,
       })
       if (escape) throw new Error(escape)
-      const checked = Static.checkZeroGraph({ entries, modules, importerEdges })
+      const checked = Static.checkZeroGraph({
+        entries,
+        modules,
+        importerEdges,
+        root: zero.resolved.root,
+      })
       const bridgeManifest = Static.canonicalizeBridgeManifest(
         Object.fromEntries(
           [...zero.bridges.entries()].sort(([left], [right]) => (left < right ? -1 : 1))

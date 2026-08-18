@@ -51,6 +51,8 @@ export interface OwningPackage {
  * whole runtime.
  */
 export declare function owningPackageOf(id: string): OwningPackage | null;
+/** The same walk from a directory, for the project root itself. */
+export declare function owningPackageOfDir(from: string): OwningPackage | null;
 /**
  * `ownManifest` is the building project's own package.json.
  *
@@ -74,6 +76,15 @@ export declare function checkZeroGraph(input: {
      * shipped set alone cannot reconstruct it.
      */
     importerEdges?: ReadonlyMap<string, readonly string[]>;
+    /**
+     * The project being built. Its own package.json is what
+     * `isTamaguiModuleId` excludes, so a project named `@tamagui/something` does
+     * not report every one of its own modules as a forbidden Tamagui module.
+     *
+     * It cannot be derived from the entries: webpack's entry for a Next app is
+     * `node_modules/next/dist/client/next.js`, which belongs to `next`.
+     */
+    root?: string;
 }): {
     tamaguiModules: string[];
     forbidden: ZeroForbiddenModule[];

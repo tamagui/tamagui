@@ -36,6 +36,7 @@ describe('the zero graph gate', () => {
     const app = project('@tamagui/app')
 
     const checked = checkZeroGraph({
+      root: app.root,
       entries: [app.entry],
       modules: [{ id: app.entry, importers: [] }],
     })
@@ -48,6 +49,7 @@ describe('the zero graph gate', () => {
     const app = project('@tamagui/app')
 
     const checked = checkZeroGraph({
+      root: app.root,
       entries: [app.entry],
       modules: [
         { id: app.entry, importers: [] },
@@ -60,9 +62,43 @@ describe('the zero graph gate', () => {
     expect(checked.forbidden[0]?.owner).toBe('@tamagui/web')
   })
 
+  test("holds when the entry is not the project's own module", () => {
+    const app = project('@tamagui/app')
+    // webpack's entry for a Next app is node_modules/next/dist/client/next.js,
+    // so deriving the project from its entries reads `next` as the project and
+    // the exclusion never applies
+    const frameworkEntry = path.join(
+      app.root,
+      'node_modules',
+      'next',
+      'dist',
+      'client',
+      'next.js'
+    )
+    mkdirSync(path.dirname(frameworkEntry), { recursive: true })
+    writeFileSync(
+      path.join(app.root, 'node_modules', 'next', 'package.json'),
+      '{"name":"next"}'
+    )
+    writeFileSync(frameworkEntry, '')
+
+    const checked = checkZeroGraph({
+      root: app.root,
+      entries: [frameworkEntry],
+      modules: [
+        { id: frameworkEntry, importers: [] },
+        { id: app.entry, importers: [frameworkEntry] },
+      ],
+    })
+
+    expect(checked.tamaguiModules).toEqual([])
+    expect(checked.forbidden).toEqual([])
+  })
+
   test('names the owning package in the failure, which the path does not show', () => {
     const app = project('my-app')
     const checked = checkZeroGraph({
+      root: app.root,
       entries: [app.entry],
       modules: [
         { id: app.entry, importers: [] },

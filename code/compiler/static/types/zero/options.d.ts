@@ -19,6 +19,8 @@ export interface ZeroIsland {
 }
 export interface ZeroRuntimeResolved {
     mode: ZeroRuntimeMode;
+    /** The project being built. The graph gate excludes its own package. */
+    root: string;
     islandGlobs: string[];
     islands: ZeroIsland[];
     /** Absolute directory holding generated loaders, entries, and receipts. */

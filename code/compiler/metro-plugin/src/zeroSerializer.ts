@@ -160,6 +160,7 @@ function checkGraph(
     entries: [entryPoint],
     modules,
     importerEdges,
+    root: zero.resolved.root,
   })
   return {
     integration: 'metro-web',

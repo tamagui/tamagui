@@ -27,6 +27,8 @@ export interface ZeroIsland {
 
 export interface ZeroRuntimeResolved {
   mode: ZeroRuntimeMode
+  /** The project being built. The graph gate excludes its own package. */
+  root: string
   islandGlobs: string[]
   islands: ZeroIsland[]
   /** Absolute directory holding generated loaders, entries, and receipts. */
@@ -92,6 +94,7 @@ function resolveZeroRuntimeEarly(
   const outDir = path.join(root, ZERO_OUT_DIRNAME)
   const off: ZeroRuntimeResolved = {
     mode: 'off',
+    root,
     islandGlobs: [],
     islands: [],
     outDir,
@@ -170,6 +173,7 @@ function finishZeroRuntime(
 
   return {
     mode: options.experimental?.zeroRuntime === 'report' ? 'report' : 'enforce',
+    root,
     islandGlobs,
     islands,
     outDir,

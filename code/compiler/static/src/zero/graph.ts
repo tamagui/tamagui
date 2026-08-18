@@ -66,7 +66,13 @@ const owningPackageCache = new Map<string, OwningPackage | null>()
 export function owningPackageOf(id: string): OwningPackage | null {
   const clean = id.split(/[?#]/, 1)[0]!
   if (!clean || clean.startsWith('\0') || !path.isAbsolute(clean)) return null
-  let dir = path.dirname(clean)
+  return owningPackageOfDir(path.dirname(clean))
+}
+
+/** The same walk from a directory, for the project root itself. */
+export function owningPackageOfDir(from: string): OwningPackage | null {
+  if (!from || !path.isAbsolute(from)) return null
+  let dir = from
   const visited: string[] = []
   while (true) {
     const cached = owningPackageCache.get(dir)
@@ -159,15 +165,23 @@ export function checkZeroGraph(input: {
    * shipped set alone cannot reconstruct it.
    */
   importerEdges?: ReadonlyMap<string, readonly string[]>
+  /**
+   * The project being built. Its own package.json is what
+   * `isTamaguiModuleId` excludes, so a project named `@tamagui/something` does
+   * not report every one of its own modules as a forbidden Tamagui module.
+   *
+   * It cannot be derived from the entries: webpack's entry for a Next app is
+   * `node_modules/next/dist/client/next.js`, which belongs to `next`.
+   */
+  root?: string
 }): { tamaguiModules: string[]; forbidden: ZeroForbiddenModule[] } {
   const importersOf = new Map<string, readonly string[]>(input.importerEdges)
   for (const module of input.modules) {
     if (!importersOf.has(module.id)) importersOf.set(module.id, module.importers ?? [])
   }
-  // the project's own package.json, taken from its entries. Nothing else in
-  // the graph can tell the gate which package is being built.
-  const ownManifest =
-    input.entries.map((entry) => owningPackageOf(entry)?.manifest).find(Boolean) ?? null
+  const ownManifest = input.root
+    ? (owningPackageOfDir(input.root)?.manifest ?? null)
+    : null
   const tamaguiModules = input.modules
     .map((module) => module.id)
     .filter((id) => isTamaguiModuleId(id, ownManifest))

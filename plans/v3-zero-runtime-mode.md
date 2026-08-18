@@ -2338,7 +2338,7 @@ Identical atomic rules were emitted once per element rather than once per
 identifier. The fix is at the source, in `lowerModule`: accumulate rules into a
 `Set` instead of an array.
 
-First use wins, which is not a judgement call — it is what the runtime already
+First use wins, which is not a judgement call: it is what the runtime already
 does. READ: `insertStyleRule.tsx`'s `shouldInsertStyleRules` skips an identifier
 already in the sheet (`maxToInsert` is 1) and appends the rest in first-use
 order. So the compiled artifact now matches the runtime's own ordering model
@@ -2377,8 +2377,16 @@ An app whose own package is named `@tamagui/*` failed the graph gate because
 message instead of a fix "unless you find a principled way to tell an app's own
 package from a Tamagui one". There is one, and it needs no name list:
 **Tamagui reaches a build as a resolved dependency, so its modules are owned by
-a different package.json than the one being built.** `checkZeroGraph` derives
-the project's own manifest from its entries and excludes it.
+a different package.json than the one being built.** `checkZeroGraph` takes the
+project root and excludes the package that owns it.
+
+It takes the ROOT rather than deriving it from the entries, and that distinction
+was a bug before it was a design. READ: webpack's entry for a Next app is
+`node_modules/next/dist/client/next.js`, which belongs to `next`, so an
+entry-derived project would have read `next` as the project and the exclusion
+would have done nothing on one of the three integrations while looking correct
+on the other two. `ZeroRuntimeResolved` now carries `root`, which every
+integration already had. `zeroGraph.web.test.ts` has that case as its own test.
 
 The message improved too, for the failures that remain real: each forbidden
 module now names its owning package, which the path frequently does not show
