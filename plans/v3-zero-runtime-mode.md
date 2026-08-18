@@ -2008,3 +2008,211 @@ level, `metro-receipts` was run with a background writer re-emitting
 content-hashed files into `dist-full/assets` throughout: it passes with the fix
 (`warmBuildReusedPlans: true`) and fails without it with Phase 5's exact message,
 "the warm rebuild rescanned, so the warm path proves nothing".
+
+## Phase 7 record: theme-variable collapsing, the hydration premise, and the starter
+
+Block 2's last phase. Three commits on `v3-beta`:
+
+- `ed9f40f366` fix(core): collapse equivalent theme color spellings onto one CSS
+  variable
+- `79e79b1eea` site: regenerate theme css, 709 to 577 theme variables and 35,443
+  to 34,376 gzip
+- `83071aa3e0` test(zero-runtime): prove the SSR hydration premise for a
+  mixed-color-spelling config
+- `79753ce1b4` feat(starters): add the contract-compliant zero-runtime starter
+  and its end-to-end size gate
+
+### The collapse is a dedupe key, not a rewrite
+
+`getOrCreateVariable` keyed the auto-variable map on the value's spelling, so
+`#333`, `hsl(0, 0%, 20%)` and `hsla(0, 0%, 20%, 1)` each got their own variable.
+The fix keys the map on the parsed color instead, written as `#rrggbbaa`, which
+is itself a color spelling and therefore can never collide with a raw non-color
+value. `registerCSSVariable` uses the same key, so a theme value also collapses
+onto a color token that spells the same color differently.
+
+Only the KEY is canonical. The emitted declaration keeps whatever spelling was
+registered first, so nothing is rewritten into a longer form; that is why the
+artifact came out 405 gzip smaller than it was before `359e29cc83` removed
+`normalizeThemeValue`, rather than merely returning to it.
+
+Keying on the parsed integer directly is wrong and the test proves it:
+`rgba(0, 0, 0, 0.039)` parses to the 32-bit integer 10, and a `space` token
+whose value is the number 10 registers under the same key, so the theme value
+silently resolves to `var(--c-space-4)`. Flipping the key to the raw integer
+fails that assertion and passes everything else.
+
+**READ, on `code/tamagui.dev/tamagui.generated.css`, regenerated with
+`npx tamagui generate-css` and measured with `gzip -9`:**
+
+| | distinct `--t*` variables | canonical color groups | gzip |
+| --- | ---: | ---: | ---: |
+| before `359e29cc83` (`f2a9f4a533^`) | 577 | 577 | 34,781 |
+| at `0d1f49690c` | 709 | 577 | 35,443 |
+| after the collapse | 577 | 577 | 34,376 |
+
+132 duplicates removed, none left. The artifact keeps 359 lines and loses
+exactly 132 semicolon-separated declarations. Resolving every `var(--t*)`
+reference through the auto-variable table and canonicalizing each result, the
+before and after artifacts differ on **0** of 154 declaration lines; perturbing
+one auto variable by one hex digit makes that same comparison report 62
+differing lines, so the zero is a result rather than a check that cannot fail.
+
+### What the collapse costs, per tier, measured
+
+The parser lives where CSS is generated, so a build that owns its CSS artifact
+drops it with the rest of the generator, and a build that generates theme CSS in
+the browser pays for it.
+
+**READ**, same fixture entry on both sides, `gzip -9` on the emitted chunk:
+
+| Tier | Fixture | Before | After | Delta |
+| --- | --- | ---: | ---: | ---: |
+| owns an `outputCSS` artifact | `TAMAGUI_ZERO_FIXTURE=global` | 107,837 | 107,837 | **0** |
+| generates theme CSS at runtime | `TAMAGUI_ZERO_FIXTURE=rules-full` | 78,646 | 80,755 | **+2,109** |
+
+The two builds are the discriminating pair: both parse the config on the client,
+and the only difference is whether `TAMAGUI_DID_OUTPUT_CSS` is derived. The
+outputCSS build is byte-identical, content hash included, and contains no color
+name from the table; the runtime-CSS build contains them.
+
+**So zero-runtime mode and every compiled-global-CSS app pay nothing, and the
+no-compiler tier pays 2,109 gzip for 132 fewer inserted declarations.** That is
+the honest shape of the owner's "not by bringing the runtime dependency back to
+web": for every tier this mode is about, it is not back. There is no way to have
+the collapse in one tier and not the other without an environment fork that
+would give a server and a client different variable identity, which is worse
+than either number.
+
+### The hydration premise, in a real browser
+
+`code/tests/zero-runtime/hydration.html` plus `src/hydration.tsx` and
+`tamagui.hydration.config.ts`. jsdom cannot host this: it returns `""` from
+`getComputedStyle(body).getPropertyValue('--x')` and reformats a rule's
+`cssText`, and both are load bearing for the path that reads theme values back
+out of the document.
+
+The page parses exactly ONE config for rendering. A second `createTamagui` in
+the same page does not take over global theme state, so a "client config" built
+alongside renders the first config's values and every render assertion is
+vacuous. The first attempt at the mismatch control did exactly that and reported
+no hydration error at all. The control that works changes the SERVER PAYLOAD
+instead, which is what a divergence looks like from the client's side anyway;
+React then reports error 418 and corrects the markup.
+
+Four scenarios, one per page load because `scanAllSheets` caches per stylesheet:
+
+- `same-config`, what every app does since the names-only projection has no
+  producer: no recoverable errors, no console errors, the probe markup survives
+  hydration byte for byte, zero spelling and zero color differences.
+- `render-mismatch`: React 418, probe corrected. The render pass can fail.
+- `css-roundtrip`, the names-only client projection: every theme value rebuilt
+  from the document CSS, zero color differences.
+- `css-roundtrip-mismatch`: a perturbed sheet, reported. It has to be a
+  DIFFERENT sheet with a different rule count, because `scanAllSheets` caches on
+  rule count plus first and last selector and an edited declaration in place is
+  answered from the cache.
+
+**The finding, and it is a consequence of the collapse.** On the names-only
+projection the client's rebuilt values are the same COLORS but no longer the
+same SPELLINGS. Measured on the same fixture with the collapse neutralized and
+rebuilt:
+
+| | spelling differences | color differences |
+| --- | --- | --- |
+| before the collapse | none | none |
+| after the collapse | `color`, `borderColor`, `placeholderColor`, `outlineColor` | none |
+
+`rgb(26, 43, 60)`, `hsl(210, 39.5%, 16.9%)` and `rgba(26,43,60,1)` all come back
+as `#1a2b3c`, and `white` comes back as the `pureWhite` token's `#ffffff`. The
+information needed to spell a particular key's value the way its author wrote it
+is genuinely no longer in the CSS once the values collapse.
+
+The consequence is bounded and worth stating exactly: an app that hand-writes a
+names-only client theme projection AND renders a raw theme value string into
+markup would get a hydration mismatch on that string. Nothing in this repo
+produces that projection (foundation, READ), the colors are identical, and the
+render half of that combination is not covered by a receipt here, because one
+page cannot render with two configs. Do not read the round-trip pass as proving
+the render half of the projection path.
+
+### The end-to-end size gate
+
+`code/starters/zero-runtime` is the contract-compliant starter the foundation's
+Phase 0 asked for and nothing had yet written: one source tree, built through
+Vite, Next webpack and Metro web, with a narrowed two-theme config, a static CSS
+transition, static theme switching over two literal names, and one modal-sheet
+island. `bun run measure` builds every integration twice, base and islands, and
+`bun run test` runs one Playwright spec against all three.
+
+Byte figures come from the emitted files at `gzip -9`, not from the plugins'
+bookkeeping: each integration reports a different subset there, and a table
+whose columns were measured three ways is not a comparison.
+
+**READ, 2026-08-18, `node scripts/measure.mjs` (exit 0) then `npx playwright
+test` (12/12):**
+
+| Integration | Tier | Modules | Tamagui modules | Forbidden | Violations | JS gzip | CSS gzip | Island JS gzip |
+| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| Vite | base | 16 | 0 | 0 | 0 | 58,178 | 2,714 | - |
+| Vite | islands | 17 | 0 | 0 | 0 | 59,124 | 2,745 | 90,413 |
+| Next webpack | base | 132 | 0 | 0 | 0 | 138,979 | 2,714 | - |
+| Next webpack | islands | 135 | 0 | 0 | 0 | 140,015 | 2,745 | 90,103 |
+| Metro web | base | 13 | 0 | 0 | 0 | 60,150 | 2,714 | - |
+| Metro web | islands | 14 | 0 | 0 | 0 | 60,916 | 2,883 | 381,006 |
+
+Qualification, stated per integration and never blended:
+
+| Integration | Base `true` | `{ islands }` |
+| --- | --- | --- |
+| Vite | qualified: 0 violations, 0 forbidden modules, 0 Tamagui modules, first paint and theme switch from the artifact | qualified: island receipts and the 4 Playwright assertions pass |
+| Next webpack | qualified, same receipts | qualified, same receipts |
+| Metro web | qualified, same receipts | qualified, same receipts |
+
+`ZERO_INTEGRATION_SUPPORT` therefore stays `{ base: true, islands: true }` for
+all three. Nothing here changes it.
+
+Three things the starter's numbers say that the fixture's did not:
+
+- **The CSS is the transferred cost and narrowing controls it.** 2,714 gzip for
+  a real screen, against the foundation's 17,243 on an unnarrowed v6 config and
+  2,592 on its narrowed one. The narrowing lever is the whole story.
+- **Next's JavaScript figure is not comparable to the other two.** It is 138,979
+  because it includes Next's framework, main, webpack-runtime and polyfill
+  chunks. Compare it to another Next app, not to Vite's 58,178.
+- **Metro's island bundle is 4.2x the same island on Vite or Next**, 381,006
+  against 90,413 and 90,103, and it is 772 Metro modules against a rolled-up
+  chunk. INFERRED, from the Phase 1 finding that Metro does no export-level
+  shaking: the island carries every module of every package it touches. The
+  fixture's own island shows the same ratio (377,385 against 94,746), so this is
+  pre-existing and not something the starter introduced.
+
+### Two defects the starter found
+
+- **A `transition` inside a `styled()` definition emits no transition CSS and
+  reports no violation.** READ: `transition="medium"` on a plain `View` emits
+  `transition:all 300ms cubic-bezier(0.25, 0.1, 0.25, 1)`; the identical value
+  in a `styled(View, {...})` definition, or passed to that styled component at
+  its call site, emits nothing and the build stays green with 0 violations. In
+  zero mode there is no runtime to recover it, so the transition silently does
+  not happen. Whether ordinary compiled Tamagui recovers it at runtime was NOT
+  tested. The starter authors the transition on the base component.
+- **Identical atomic rules are emitted once per element, not once per artifact.**
+  READ: two elements carrying `transition="medium"` put the same
+  `._t-1731853650{...}` rule into the artifact twice.
+
+Two smaller observations, both pre-existing and both visible in the fixture:
+the Vite island publish writes `tamagui-islands/DetailsIsland.js` and
+`tamagui-islands/tamagui-islands/DetailsIsland.js`, a duplicated nesting in the
+dist that the page never fetches; and an app whose own package is named
+`@tamagui/*` fails the graph gate, because `isTamaguiModuleId` reads the nearest
+package.json name and every module in that app then looks like Tamagui's.
+
+### Baselines at `79753ce1b4`
+
+core-test web 471 passed (468 plus this phase's 3) / 2 skipped / 1 todo;
+core-test native 293 passed / 7 expected fail / 9 skipped; static-tests native
+79, web 165, webpack 20; metro-plugin 6; zero-runtime Playwright **45/45** (41
+plus this phase's 4); `bun run receipts` exit 0 across all three integrations;
+starter `measure` exit 0 across all six builds and its Playwright 12/12; root
+typecheck, lint, `check:deps`, `check:dom-types` and `check:exports:web` clean.

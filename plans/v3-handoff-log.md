@@ -2602,3 +2602,132 @@ expected fail / 9 skipped; static-tests native 79, web 165, webpack 20;
 type tests; zero-runtime Playwright 41/41; `bun run receipts` exit 0 across all
 three integrations; root typecheck, lint, `check:deps`, `check:dom-types` and
 `check:exports:web` clean.
+
+## 22. Zero-runtime Phase 7: theme-variable collapsing, hydration, and the starter (2026-08-18)
+
+Block 2's last phase, and with it the block is implemented. The per-receipt
+record is the "Phase 7 record" section of `plans/v3-zero-runtime-mode.md`; this
+is what a future reader needs that the code does not say.
+
+- `ed9f40f366` fix(core): collapse equivalent theme color spellings onto one
+  CSS variable
+- `79e79b1eea` site: regenerate theme css, 709 to 577 theme variables
+- `83071aa3e0` test(zero-runtime): prove the SSR hydration premise
+- `79753ce1b4` feat(starters): add the contract-compliant zero-runtime starter
+
+### The collapse is free in every tier this mode is about, and 2,109 gzip in one
+
+`359e29cc83` was right to drop `normalize-css-color` from the web style path,
+and that win stands. What it also removed was the collapsing of equivalent color
+spellings onto one variable, which cost `code/tamagui.dev/tamagui.generated.css`
+132 duplicate variables and 662 gzip.
+
+The restored collapse keys the variable map on the parsed color rather than on
+the spelling, and only the KEY is canonical: the emitted declaration keeps the
+first spelling registered. So the artifact came out at 34,376 gzip, 405 BELOW
+where it sat before the regression, rather than merely returning to it.
+
+The byte question people will ask is where the parser now ships. Measured, same
+fixture entry on both sides: a build that owns an `outputCSS` artifact is
+byte-identical, content hash included, because the whole CSS generator folds
+away behind `TAMAGUI_DID_OUTPUT_CSS`; a build that generates theme CSS in the
+browser gains 2,109 gzip. Zero-runtime mode and every compiled-global-CSS app
+are in the first group. There is no way to split the difference without giving a
+server and a client different variable identity, so do not go looking for one.
+
+### Keying a color map on the parsed integer is a bug with a real collision
+
+`rgba(0, 0, 0, 0.039)` parses to the 32-bit integer 10, and a `space` token
+whose value is the number 10 lands on the same map key, so the theme value
+silently resolves to `var(--c-space-4)`. The key is written as `#rrggbbaa`,
+which is itself a color spelling and therefore unreachable as a raw non-color
+value. `themeVariableCollapsing.web.test.tsx` fails on the integer key and
+passes on the hex key, so that assertion is a control and not decoration.
+
+### The collapse costs exact spelling on one hydration path, and colors are the guarantee
+
+The premise the foundation flagged is now measured rather than inferred. Same
+config on both sides, which is what every app in this repo does, hydrates clean:
+no recoverable errors, probe markup identical, zero spelling and zero color
+differences, with four spellings of one color in the config.
+
+On the names-only client theme projection, where the client rebuilds theme
+values out of the document CSS, the collapse changes the answer. Before it, the
+round-trip returned every spelling exactly. After it, four of five keys come
+back spelled differently and every one is the same color, because several keys
+now share one variable and `white` lands on a color token spelled `#ffffff`.
+That information is genuinely not in the CSS any more.
+
+The consequence is bounded: an app would have to hand-write that projection AND
+render a raw theme value string into markup. Nothing in this repo produces the
+projection. But if someone later builds a theme-pruning client config, this is
+the thing that breaks, and the fix is not to canonicalize on the client, which
+is the dependency the owner ruled out.
+
+### One page cannot render with two configs, and that ate a control
+
+A second `createTamagui` in the same page does not take over global theme state.
+A "client config" built alongside a server config renders the SERVER config's
+values, so every render assertion against it is vacuous: the first mismatch
+control reported no hydration error while the two configs genuinely differed.
+The control that works changes the server PAYLOAD instead, which is what a
+divergence looks like from the client's side anyway. Anyone writing another
+hydration fixture should start there rather than rediscovering it.
+
+Also, jsdom cannot host any of this. It returns `""` from
+`getComputedStyle(body).getPropertyValue('--x')` and reformats a rule's
+`cssText`, and both are load bearing for the read-back path.
+
+### `code/starters/zero-runtime` exists now, and it is the number to quote
+
+The foundation's Phase 0 asked for a contract-compliant starter and nothing had
+written one. It is one source tree built through Vite, Next webpack and Metro
+web, with a narrowed two-theme config, a static CSS transition, static theme
+switching, and one modal-sheet island. `bun run measure` builds all six
+combinations and writes `receipts.json`; `bun run test` runs one Playwright spec
+against all three servers.
+
+All six qualified: 0 compiler violations, 0 forbidden modules, 0 Tamagui modules
+in every graph. **2,714 gzip of CSS** for a real screen, against 17,243 on an
+unnarrowed v6 config. Narrowing is the whole CSS story and the starter shows how.
+
+Three things to carry forward about the numbers:
+
+- Next's JavaScript figure (138,979) includes Next's own framework, main,
+  webpack-runtime and polyfill chunks. Compare it to another Next app, never to
+  Vite's 58,178. Blending the three would describe an app nobody built.
+- Metro's island bundle is 381,006 gzip against 90,413 on Vite, 4.2x, and 772
+  Metro modules. INFERRED from the Phase 1 finding that Metro does no
+  export-level shaking. The fixture's island shows the same ratio, so it is
+  pre-existing.
+- Byte figures come from the emitted files at `gzip -9`. The plugins' own graph
+  receipts report a different subset per integration, and a table whose columns
+  came from three different sources is not a comparison.
+
+### Two defects worth fixing, found by building a real app
+
+- **A `transition` in a `styled()` definition emits nothing and reports
+  nothing.** READ: `transition="medium"` on a plain `View` emits the rule; the
+  same value in a `styled(View, {...})` definition, or passed to that styled
+  component at its call site, emits no transition CSS and the build stays green
+  with 0 violations. In zero mode nothing recovers it at runtime, so the
+  transition silently does not happen. This is the warn-and-drop shape Phase 4
+  ruled out, arrived at by omission rather than by choice.
+- **Identical atomic rules are emitted per element, not per artifact.** Two
+  elements carrying `transition="medium"` put the same `._t-1731853650{...}`
+  rule into the artifact twice.
+
+And one trap for whoever writes the next fixture or example: an app whose own
+package is named `@tamagui/*` fails the zero graph gate, because
+`isTamaguiModuleId` reads the nearest package.json name and every module in that
+app then looks like Tamagui's. The starter is named `zero-runtime-starter` for
+that reason, like `zero-runtime-fixture` before it.
+
+### Baselines at `79753ce1b4`
+
+core-test web 471 passed / 2 skipped / 1 todo; core-test native 293 passed / 7
+expected fail / 9 skipped; static-tests native 79, web 165, webpack 20;
+metro-plugin 6; zero-runtime Playwright 45/45; `bun run receipts` exit 0 across
+all three integrations; starter `measure` exit 0 across all six builds and its
+Playwright 12/12; root typecheck, lint, `check:deps`, `check:dom-types` and
+`check:exports:web` clean.
