@@ -3163,3 +3163,74 @@ to attempt at all.
 D4 should be named explicitly in the wave B brief, since a wrong enter frame is
 the kind of thing a user reports as an animation bug with no idea it started in
 a value parser.
+
+## 25. Wave A complete, and a CSS injection defect found on the way (2026-08-18)
+
+All eleven items closed at `d7c620bd5b`. Item 9 needed no work: the streaming
+test was already collected by the glob CI runs and already green.
+
+| item | commit | what landed |
+| --- | --- | --- |
+| 2 | `bf0bb4b082` | committed size baselines, CI gate, one-directional ceiling |
+| 3 | `9503af1d71` | bailout reports the real reason; zero rows still claim className |
+| 4 | `d7c620bd5b` | differential first slice over `getComputedStyle` longhands |
+| 5 | `705610ace6` | parser agreement; five divergences pinned, three are defects |
+| 6 | `997c6c4914`, `e8cdd8adae` | one diagnostic formatter; prod/dev fork deleted |
+| 10 | `2ab3e6bc4b` | historical benchmark artifact plus a staleness guard |
+
+Receipts taken at the tip by the manager rather than relayed: root typecheck
+exit 0, core-test web 63 files / 483 passed, core-test native 29 files / 293
+passed with 7 expected fail.
+
+### The injection defect, D2
+
+`code/core/web/src/helpers/directStyle.ts:1509` returns early when a value holds
+no top-level colon and emits it verbatim. The scanner that refuses top-level
+`;`, `{` and `}` never runs on that path.
+
+That check is not a style preference. `valueParser.ts:14-19` says why those
+characters are refused, in its own words: refusing them "is what makes rule and
+selector injection through a payload structurally impossible in the web
+lowering, which emits payloads verbatim by contract". So the guarantee is
+written down, and this path does not hold it.
+
+Reproduced and pinned: `backgroundImage="none;}.injected{opacity 0"` emits one
+rule carrying two selector blocks.
+
+**It is CSS injection, not XSS**, and nobody should escalate it as script
+execution. What it yields is arbitrary selectors and declarations in the page
+stylesheet, which covers UI redressing and the attribute-selector plus
+`background-image` pattern that exfiltrates DOM content. It is reachable from
+any user-controlled string that reaches a style prop, which is an ordinary thing
+for an app to do with an image URL or a CMS-supplied color.
+
+**Deliberately not fixed yet, and it should not wait for wave B.** The plan
+routes scanner divergences into item 12's convergence, which is right for D3,
+D4 and D5 because those are correctness inconsistencies. This one is a security
+boundary that is documented as holding and does not, so it was escalated to
+p25843 for its own item. The fix is local: the early return must run the same
+character check before emitting.
+
+### The other two defects, which do wait for the convergence
+
+- **D4** `hasFlatModifier` has no invalid-character branch, so a value the style
+  scanner discards still puts the component on the should-enter path. It renders
+  an enter frame for a style that never arrives, which a user reports as an
+  animation bug with no idea a value parser caused it.
+- **D3** the canonical parser treats a top-level backslash as an escape and
+  neither runtime scanner does; `directStyle` drops the whole declaration and
+  throws in development, `propMapper` drops only the clause.
+
+### Two worker claims that did not survive checking
+
+Both were caught by verifying against artifacts rather than reading reports, and
+both would have gone into a report to the owner as fact.
+
+- Item 3's regenerated metric is **not** comparable to the audited one. The
+  corpus grew from 253 files to 265, and `animation runtime` bailouts fell 81 to
+  34 because of `0d28fe6707`, which had been landed but unmeasured. Total bailed
+  moving 517 to 497 is that, not this change. The diagnostic only relabels.
+- Item 6 costs **+4,142 raw / +1,070 gzip** in production, on purpose. It
+  deletes the `NODE_ENV !== 'production' ? long : 'Err0'` ternary so production
+  stops getting bare codes. Anyone reading a size regression on `@tamagui/web`
+  around that commit should stop there.
