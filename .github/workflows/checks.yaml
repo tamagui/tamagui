@@ -80,7 +80,7 @@ jobs:
 
       - name: The generated Rust tables and vectors are current
         working-directory: code/core/style-grammar
-        run: bun scripts/generateRustGrammar.ts --check
+        run: bun run check:rust
 
       - name: The Rust parser passes the generated vectors
         working-directory: code/lsp
