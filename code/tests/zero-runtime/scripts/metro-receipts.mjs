@@ -145,6 +145,15 @@ const multiReport = bundle('src/rules/multi.tsx', 'dist-metro-report/main.js', {
 // overwrites the enforce one on disk. `multiViolations` was read before it ran,
 // which is what makes the comparison below a comparison at all.
 const multiReportViolations = read('metro-zero.violations.json')
+// the read above only means anything if the report build wrote it. on the
+// shared filename a report build that never reached analysis leaves the
+// enforce file in place, and every assertion below then passes against the
+// enforce build's own output.
+if (multiReportViolations.mode !== 'report') {
+  throw new Error(
+    `metro report receipt is not the report build's: mode is ${multiReportViolations.mode}`
+  )
+}
 receipts.reportMode = {
   exitedSuccessfully: multiReport.ok,
   enforceMode: multiViolations.mode,
