@@ -7,6 +7,11 @@ import type { DOMStyleProps } from './standalone';
  * handle, and nothing else — the regular Tamagui style props are not part
  * of this entry. All of them throw: the compiler replaces them, so reaching
  * one means it did not run.
+ *
+ * @deprecated The standalone Tamagui DOM entries are demoted implementation
+ * plumbing in V3. They keep working unchanged; new code should import `html`
+ * from `tamagui` or `@tamagui/core`, where a tag is an ordinary Tamagui
+ * component the compiler optimizes.
  */
 export declare const html: {
     a: (props: StrictDOMAnchorProps & DOMStyleProps) => never;

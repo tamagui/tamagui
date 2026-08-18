@@ -21,13 +21,32 @@ declare const handle: unique symbol;
  * The opaque result of `style()`. It has no readable shape on purpose: the
  * compiler replaces the call with whatever the target needs, and nothing in
  * user code should depend on what that is.
+ *
+ * @deprecated The standalone Tamagui DOM entries are demoted implementation
+ * plumbing in V3. They keep working unchanged; new code should import `html`
+ * from `tamagui` or `@tamagui/core`, where a tag is an ordinary Tamagui
+ * component the compiler optimizes.
  */
 export type CompiledStyle = {
     readonly [handle]: 'compiled-style';
 };
-/** a handle that may be switched off, for `style={[base, active && overrides]}` */
+/**
+ * a handle that may be switched off, for `style={[base, active && overrides]}`
+ *
+ * @deprecated The standalone Tamagui DOM entries are demoted implementation
+ * plumbing in V3. They keep working unchanged; new code should import `html`
+ * from `tamagui` or `@tamagui/core`, where a tag is an ordinary Tamagui
+ * component the compiler optimizes.
+ */
 export type ConditionalCompiledStyle = CompiledStyle | false | null | undefined;
-/** the `style` prop every standalone DOM tag accepts */
+/**
+ * the `style` prop every standalone DOM tag accepts
+ *
+ * @deprecated The standalone Tamagui DOM entries are demoted implementation
+ * plumbing in V3. They keep working unchanged; new code should import `html`
+ * from `tamagui` or `@tamagui/core`, where a tag is an ordinary Tamagui
+ * component the compiler optimizes.
+ */
 export type DOMStyleProps = {
     style?: CompiledStyle | readonly ConditionalCompiledStyle[];
 };
@@ -39,6 +58,11 @@ export type DOMStyleProps = {
  * entry typechecks in a project with no react-native installed.
  * `styleTypes.test-d.ts` asserts it still matches `StackStyleBase &
  * TextStylePropsBase` property for property.
+ *
+ * @deprecated The standalone Tamagui DOM entries are demoted implementation
+ * plumbing in V3. They keep working unchanged; new code should import `html`
+ * from `tamagui` or `@tamagui/core`, where a tag is an ordinary Tamagui
+ * component the compiler optimizes.
  */
 export type StyleDefinition = TamaguiStyleProps;
 /**
@@ -52,6 +76,11 @@ export type StyleDefinition = TamaguiStyleProps;
  * programs consumed by compiler-injected primitives. Reaching this author API
  * therefore remains a useful missing-compiler error rather than a runtime
  * implementation.
+ *
+ * @deprecated The standalone Tamagui DOM entries are demoted implementation
+ * plumbing in V3. They keep working unchanged; new code should import `html`
+ * from `tamagui` or `@tamagui/core`, where a tag is an ordinary Tamagui
+ * component the compiler optimizes.
  */
 export declare function style(_definition: StyleDefinition): CompiledStyle;
 /** builds the standalone tag stubs; see `standaloneHtml.ts`, which is generated */
