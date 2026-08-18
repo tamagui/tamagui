@@ -1046,7 +1046,26 @@ Validation:
   evaluation can still load its tables;
 - runtime native `html.*` continues to pass Block 1's conformance suite.
 
-### Phase 7: hydration premise and end-to-end size gate
+### Phase 7: hydration premise, theme-variable collapsing, and end-to-end size gate
+
+**Theme-variable collapsing belongs to this phase too, and it is measured, not
+hypothetical.** `359e29cc83` stopped normalizing theme colors and dropped
+`normalize-css-color` from the web runtime, which is a real byte win that stands.
+What it also removed, unintentionally, is the collapsing of equivalent color
+spellings into one variable. Regenerating `code/tamagui.dev/tamagui.generated.css`
+against current source measures the cost: distinct theme variables go from 577 to
+709, so 132 duplicate variables, and the artifact grows 34,794 to 35,443 gzip
+(+649) on that site alone. Structure is otherwise unchanged; every difference is a
+color literal or one of the new duplicates.
+
+That inflates exactly the number this mode exists to shrink, since theme CSS is
+the zero-runtime build's transferred cost (the foundation measured 17,243 gzip on
+a default v6 config). Owner direction, 2026-08-17: restore the collapsing at
+config-parse / CSS-generation time, NOT by bringing the runtime dependency back to
+web. The two belong in one phase because the hydration-equality property and the
+collapsing property have the same cause and the same fixture. **If the collapse
+turns out to genuinely require runtime normalization on web, stop and raise it
+rather than adding the dependency back.**
 
 Before relying on static theme CSS for release, add the mixed-color-spelling
 hydration check named in the foundation for the earlier
