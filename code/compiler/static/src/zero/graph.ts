@@ -20,6 +20,8 @@ export interface ZeroForbiddenModule {
   id: string
   /** Shortest importer chain from an entry to the forbidden module. */
   chain: string[]
+  /** The package that owns the module, which is what the gate matched on. */
+  owner: string
 }
 
 export interface ZeroGraphReceipt {
@@ -45,55 +47,74 @@ export interface ZeroGraphReceipt {
  */
 const ALLOWED_ZERO_MODULE = /animated-number/
 
-const packageNameCache = new Map<string, string | null>()
+/** A module's owning package: the nearest package.json and the name in it. */
+export interface OwningPackage {
+  name: string | null
+  manifest: string
+}
+
+const owningPackageCache = new Map<string, OwningPackage | null>()
 
 /**
- * A module's owning package name, read from the nearest package.json.
+ * The package that owns a module, read from the nearest package.json.
  *
  * Path matching is not enough: in this monorepo `@tamagui/web` resolves to
  * `code/core/web/dist/...`, which contains no `@tamagui` path segment at all. A
  * gate that greps ids would report a clean graph on a bundle that ships the
  * whole runtime.
  */
-export function packageNameOf(id: string): string | null {
+export function owningPackageOf(id: string): OwningPackage | null {
   const clean = id.split(/[?#]/, 1)[0]!
   if (!clean || clean.startsWith('\0') || !path.isAbsolute(clean)) return null
   let dir = path.dirname(clean)
   const visited: string[] = []
   while (true) {
-    const cached = packageNameCache.get(dir)
+    const cached = owningPackageCache.get(dir)
     if (cached !== undefined) {
-      for (const seen of visited) packageNameCache.set(seen, cached)
+      for (const seen of visited) owningPackageCache.set(seen, cached)
       return cached
     }
     visited.push(dir)
     const manifest = path.join(dir, 'package.json')
     if (existsSync(manifest)) {
-      let name: string | null = null
+      let owner: OwningPackage | null = null
       try {
-        name = JSON.parse(readFileSync(manifest, 'utf8')).name ?? null
+        owner = { name: JSON.parse(readFileSync(manifest, 'utf8')).name ?? null, manifest }
       } catch {
-        name = null
+        owner = { name: null, manifest }
       }
-      for (const seen of visited) packageNameCache.set(seen, name)
-      return name
+      for (const seen of visited) owningPackageCache.set(seen, owner)
+      return owner
     }
     const parent = path.dirname(dir)
     if (parent === dir) {
-      for (const seen of visited) packageNameCache.set(seen, null)
+      for (const seen of visited) owningPackageCache.set(seen, null)
       return null
     }
     dir = parent
   }
 }
 
-export function isTamaguiModuleId(id: string): boolean {
-  const name = packageNameOf(id)
-  return !!name && (name === 'tamagui' || name.startsWith('@tamagui/'))
+/**
+ * `ownManifest` is the building project's own package.json.
+ *
+ * A project may legitimately name itself `tamagui` or `@tamagui/something` —
+ * this repo's own site and examples do — and then every one of its modules
+ * answers this question the same way Tamagui's do. The distinction that
+ * actually holds is ownership, not spelling: Tamagui reaches a build as a
+ * resolved dependency, so its modules are owned by a different package.json
+ * than the one being built. Excluding the project's own manifest keeps the gate
+ * a name-free rule rather than a list of names to carve out.
+ */
+export function isTamaguiModuleId(id: string, ownManifest?: string | null): boolean {
+  const owner = owningPackageOf(id)
+  if (!owner?.name) return false
+  if (ownManifest && owner.manifest === ownManifest) return false
+  return owner.name === 'tamagui' || owner.name.startsWith('@tamagui/')
 }
 
-export function isForbiddenZeroModuleId(id: string): boolean {
-  if (!isTamaguiModuleId(id)) return false
+export function isForbiddenZeroModuleId(id: string, ownManifest?: string | null): boolean {
+  if (!isTamaguiModuleId(id, ownManifest)) return false
   return !ALLOWED_ZERO_MODULE.test(id)
 }
 
@@ -137,13 +158,21 @@ export function checkZeroGraph(input: {
   for (const module of input.modules) {
     if (!importersOf.has(module.id)) importersOf.set(module.id, module.importers ?? [])
   }
+  // the project's own package.json, taken from its entries. Nothing else in
+  // the graph can tell the gate which package is being built.
+  const ownManifest =
+    input.entries.map((entry) => owningPackageOf(entry)?.manifest).find(Boolean) ?? null
   const tamaguiModules = input.modules
     .map((module) => module.id)
-    .filter(isTamaguiModuleId)
+    .filter((id) => isTamaguiModuleId(id, ownManifest))
     .sort()
   const forbidden = tamaguiModules
-    .filter(isForbiddenZeroModuleId)
-    .map((id) => ({ id, chain: shortestChain(id, input.entries, importersOf) }))
+    .filter((id) => isForbiddenZeroModuleId(id, ownManifest))
+    .map((id) => ({
+      id,
+      chain: shortestChain(id, input.entries, importersOf),
+      owner: owningPackageOf(id)?.name ?? '',
+    }))
   return { tamaguiModules, forbidden }
 }
 
@@ -153,7 +182,9 @@ export function formatZeroGraphFailure(receipt: ZeroGraphReceipt): string {
     '',
   ]
   for (const entry of receipt.forbidden) {
-    lines.push(entry.id)
+    // the package name is what the gate matched on, and the path often does not
+    // show it: `@tamagui/web` resolves to `code/core/web/dist/...` here
+    lines.push(entry.owner ? `${entry.id} (package ${entry.owner})` : entry.id)
     lines.push(
       entry.chain.length > 1
         ? `  ${entry.chain.join('\n    -> ')}`
