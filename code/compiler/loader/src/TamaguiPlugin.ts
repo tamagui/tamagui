@@ -82,17 +82,15 @@ export class TamaguiPlugin {
     let expectedCSS = ''
     compiler.hooks.beforeCompile.tapPromise(this.pluginName, async () => {
       expectedCSS = await generateGlobalCSSOnce(globalCSS.cssPath, async () => {
-        const projectInfo = await Static.loadTamagui({
-          components: ['tamagui'],
-          platform: 'web',
-          ...this.options,
+        const { projectInfo } = await Static.loadCompilerProject({
+          root,
+          target: 'web',
+          options: { components: ['tamagui'], ...this.options },
+          generation: 'next-webpack:global-css',
+          missingProjectMessage:
+            '[tamagui] outputCSS is set but the Tamagui config did not evaluate, so no CSS artifact can be generated',
         })
-        if (!projectInfo?.tamaguiConfig) {
-          throw new Error(
-            `[tamagui] outputCSS is set but the Tamagui config did not evaluate, so no CSS artifact can be generated`
-          )
-        }
-        return projectInfo.tamaguiConfig.getCSS()
+        return projectInfo.tamaguiConfig!.getCSS()
       })
     })
 
@@ -128,19 +126,16 @@ export class TamaguiPlugin {
     if (!zero || zero.islandBuild) return
 
     compiler.hooks.beforeCompile.tapPromise(this.pluginName, async () => {
-      const projectInfo = await Static.loadTamagui({
-        components: ['tamagui'],
-        platform: 'web',
-        ...this.options,
-        outputCSS: undefined,
+      const { projectInfo } = await Static.loadCompilerProject({
+        root,
+        target: 'web',
+        options: { components: ['tamagui'], ...this.options },
+        generation: 'next-webpack:zero-runtime',
+        missingProjectMessage:
+          '[tamagui zero-runtime] the Tamagui config did not evaluate, so no CSS artifact can be generated',
       })
-      if (!projectInfo?.tamaguiConfig) {
-        throw new Error(
-          `[tamagui zero-runtime] the Tamagui config did not evaluate, so no CSS artifact can be generated`
-        )
-      }
-      if (zero.isEnforcing) Static.assertZeroConfigDrivers(projectInfo.tamaguiConfig)
-      const configCSS = projectInfo.tamaguiConfig.getCSS()
+      if (zero.isEnforcing) Static.assertZeroConfigDrivers(projectInfo.tamaguiConfig!)
+      const configCSS = projectInfo.tamaguiConfig!.getCSS()
       zero.configHash = createHash('sha256').update(configCSS).digest('hex').slice(0, 16)
       zero.artifact.setConfigCSS(configCSS)
     })
@@ -395,20 +390,14 @@ export class TamaguiPlugin {
   }
 
   apply(compiler: Compiler) {
-    const isZero =
-      Static.resolveZeroRuntimeSync(
-        { platform: 'web', ...this.options },
-        this.options.root || compiler.context || process.cwd()
-      ).mode === 'enforce'
-
     // Prime the same main-process config used by the shared compiler frontend.
     // In zero mode the combined artifact owns that path, so priming must not
     // write config-only CSS over it.
-    void Static.loadTamagui({
-      components: ['tamagui'],
-      platform: 'web',
-      ...this.options,
-      ...(isZero && { outputCSS: undefined }),
+    void Static.loadCompilerProject({
+      root: this.options.root || compiler.context || process.cwd(),
+      target: 'web',
+      options: { components: ['tamagui'], ...this.options },
+      generation: 'next-webpack:warmup',
     })
 
     this.applyZeroRuntime(compiler)

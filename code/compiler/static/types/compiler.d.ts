@@ -1,4 +1,5 @@
 import { type AppliedLoweredModule, type CompilerTarget, type LoweredModulePlan, type ResolvedModuleId } from '@tamagui/compiler-core';
+import type { TamaguiOptions } from '@tamagui/types';
 import type { TamaguiProjectInfo } from './extractor/bundleConfig';
 export interface CompilerProjectComponentModule {
     moduleName: string;
@@ -15,6 +16,21 @@ export interface CompilerProject {
     /** Zero-runtime mode, which makes the host's diagnostics mode-aware. */
     zeroRuntime?: boolean;
 }
+export interface LoadCompilerProjectInput {
+    root: string;
+    target: CompilerTarget;
+    options: Partial<TamaguiOptions>;
+    generation: string | ((projectInfo: TamaguiProjectInfo, componentModules: CompilerProjectComponentModule[], options: TamaguiOptions) => string);
+    rebuild?: boolean;
+    missingProjectMessage?: string;
+    load?: (options: TamaguiOptions, rebuild: boolean) => Promise<TamaguiProjectInfo | null>;
+    resolveComponents?: (moduleNames: readonly string[], projectInfo: TamaguiProjectInfo, options: TamaguiOptions) => Promise<CompilerProjectComponentModule[]>;
+}
+/**
+ * normalize and load the compiler-owned project contract. module resolution and
+ * evaluation stay with the adapter through the two callbacks.
+ */
+export declare function loadCompilerProject({ root, target, options: optionsIn, generation, rebuild, missingProjectMessage, load, resolveComponents, }: LoadCompilerProjectInput): Promise<CompilerProject>;
 export interface CompilerResolution {
     id: string;
     external?: boolean;

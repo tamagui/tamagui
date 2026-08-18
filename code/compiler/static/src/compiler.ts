@@ -8,11 +8,14 @@ import {
   type LoweredModulePlan,
   type ResolvedModuleId,
 } from '@tamagui/compiler-core'
+import type { TamaguiOptions } from '@tamagui/types'
 import path from 'node:path'
 
 import { createTamaguiCompilerHost } from './compilerHost'
 import { domStructuralPass } from './domStructuralPass'
 import type { TamaguiProjectInfo } from './extractor/bundleConfig'
+import { loadTamagui } from './extractor/loadTamagui'
+import { resolveZeroRuntimeSync } from './zero/options'
 
 export interface CompilerProjectComponentModule {
   moduleName: string
@@ -29,6 +32,76 @@ export interface CompilerProject {
   experimentalNativeFastPath?: boolean
   /** Zero-runtime mode, which makes the host's diagnostics mode-aware. */
   zeroRuntime?: boolean
+}
+
+export interface LoadCompilerProjectInput {
+  root: string
+  target: CompilerTarget
+  options: Partial<TamaguiOptions>
+  generation:
+    | string
+    | ((
+        projectInfo: TamaguiProjectInfo,
+        componentModules: CompilerProjectComponentModule[],
+        options: TamaguiOptions
+      ) => string)
+  rebuild?: boolean
+  missingProjectMessage?: string
+  load?: (options: TamaguiOptions, rebuild: boolean) => Promise<TamaguiProjectInfo | null>
+  resolveComponents?: (
+    moduleNames: readonly string[],
+    projectInfo: TamaguiProjectInfo,
+    options: TamaguiOptions
+  ) => Promise<CompilerProjectComponentModule[]>
+}
+
+/**
+ * normalize and load the compiler-owned project contract. module resolution and
+ * evaluation stay with the adapter through the two callbacks.
+ */
+export async function loadCompilerProject({
+  root,
+  target,
+  options: optionsIn,
+  generation,
+  rebuild = false,
+  missingProjectMessage = 'Unable to load the Tamagui compiler project',
+  load = loadTamagui,
+  resolveComponents,
+}: LoadCompilerProjectInput): Promise<CompilerProject> {
+  const components = [
+    ...new Set(['@tamagui/core', ...(optionsIn.components || ['tamagui'])]),
+  ]
+  const options = {
+    ...optionsIn,
+    root,
+    platform: target,
+    components,
+  } as TamaguiOptions
+  const zeroRuntime = resolveZeroRuntimeSync(options, root).mode
+  if (zeroRuntime === 'enforce') options.outputCSS = undefined
+
+  const projectInfo = await load(options, rebuild)
+  if (!projectInfo?.tamaguiConfig || !projectInfo.components) {
+    throw new Error(missingProjectMessage)
+  }
+
+  const componentModules = resolveComponents
+    ? await resolveComponents(components, projectInfo, options)
+    : []
+
+  return {
+    projectInfo,
+    componentModules,
+    generation:
+      typeof generation === 'function'
+        ? generation(projectInfo, componentModules, options)
+        : generation,
+    disablePartialExtraction: !!options.disablePartialExtraction,
+    experimentalNativeFastPath:
+      target === 'native' && options.experimental?.nativeFastPath === true,
+    zeroRuntime: zeroRuntime !== 'off',
+  }
 }
 
 export interface CompilerResolution {

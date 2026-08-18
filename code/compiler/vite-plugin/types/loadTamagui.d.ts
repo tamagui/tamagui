@@ -1,3 +1,4 @@
+import Static from '@tamagui/static';
 import type { TamaguiProjectInfo } from '@tamagui/static';
 import type { TamaguiOptions } from '@tamagui/types';
 import type { RunnableDevEnvironment } from 'vite';
@@ -17,15 +18,7 @@ export type ViteTamaguiLoader = {
     getLoadPromise(): Promise<TamaguiOptions> | null;
     getTamaguiOptions(): TamaguiOptions | null;
     getTamaguiConfig(): Promise<TamaguiProjectInfo['tamaguiConfig']>;
-    getCompilerProject(): Promise<{
-        projectInfo: TamaguiProjectInfo;
-        componentModules: {
-            moduleName: string;
-            id: string;
-        }[];
-        disablePartialExtraction?: boolean;
-        experimentalNativeFastPath?: boolean;
-    }>;
+    getCompilerProject(): Promise<Static.CompilerProject>;
     getEvaluationDependencies(): string[];
     isEvaluationDependency(id: string): boolean;
     evaluateProjectModules(options: TamaguiOptions): Promise<EvaluatedProjectModules>;

@@ -39,10 +39,9 @@ export type WithTamaguiProps = LoaderPluginOptions & {
  */
 export const withTamagui = (tamaguiOptionsIn?: WithTamaguiProps) => {
   return (nextConfig: any = {}) => {
-    const tamaguiOptions = {
-      ...tamaguiOptionsIn,
-      ...loadTamaguiBuildConfigSync(tamaguiOptionsIn),
-    }
+    const tamaguiOptions = loadTamaguiBuildConfigSync(
+      tamaguiOptionsIn
+    ) as WithTamaguiProps
     const isAppDir = tamaguiOptions?.appDir || nextConfig.experimental?.appDir
 
     return {

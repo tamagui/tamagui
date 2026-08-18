@@ -6,6 +6,7 @@ import { defaultConfig } from '@tamagui/config/v6'
 import { createTamagui, mediaQueryConfig } from '@tamagui/core'
 import {
   esbundleTamaguiConfig,
+  loadCompilerProject,
   loadTamaguiFromModules,
   resolveWebOrNativeSpecificEntry,
 } from '@tamagui/static'
@@ -201,4 +202,62 @@ describe('loadTamaguiFromModules', () => {
     expect(hostCore.getConfig()).toBe(previousHostConfig)
     expect(hostMediaQueryConfig.sm).toEqual(previousHostConfig.media.sm)
   })
+})
+
+describe('loadCompilerProject', () => {
+  test.each([
+    { zeroRuntime: true as const, expectedOutputCSS: undefined },
+    { zeroRuntime: 'report' as const, expectedOutputCSS: 'generated.css' },
+    { zeroRuntime: undefined, expectedOutputCSS: 'generated.css' },
+  ])(
+    'normalizes one project and applies the $zeroRuntime zero CSS policy',
+    async ({ zeroRuntime, expectedOutputCSS }) => {
+      const projectInfo = {
+        components: [],
+        nameToPaths: {},
+        tamaguiConfig: createTamagui(defaultConfig),
+      }
+      let loadedOptions: any
+      let resolvedNames: readonly string[] = []
+
+      const project = await loadCompilerProject({
+        root: tempDir,
+        target: 'web',
+        generation: 'test-generation',
+        options: {
+          components: ['design-system', 'design-system'],
+          outputCSS: 'generated.css',
+          experimental: zeroRuntime ? { zeroRuntime } : undefined,
+        },
+        async load(options) {
+          loadedOptions = options
+          return projectInfo
+        },
+        async resolveComponents(moduleNames) {
+          resolvedNames = moduleNames
+          return moduleNames.map((moduleName) => ({
+            moduleName,
+            id: join(tempDir, `${moduleName.replace('/', '-')}.js`),
+          }))
+        },
+      })
+
+      expect(loadedOptions).toMatchObject({
+        root: tempDir,
+        platform: 'web',
+        components: ['@tamagui/core', 'design-system'],
+        outputCSS: expectedOutputCSS,
+      })
+      expect(resolvedNames).toEqual(['@tamagui/core', 'design-system'])
+      expect(project).toMatchObject({
+        projectInfo,
+        generation: 'test-generation',
+        zeroRuntime: zeroRuntime !== undefined,
+        componentModules: [
+          { moduleName: '@tamagui/core' },
+          { moduleName: 'design-system' },
+        ],
+      })
+    }
+  )
 })

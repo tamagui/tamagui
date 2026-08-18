@@ -1,5 +1,6 @@
 import { type CompilerTarget } from "@tamagui/compiler-core";
-import type { TamaguiOptions, TamaguiProjectInfo } from "@tamagui/static";
+import Static from "@tamagui/static";
+import type { TamaguiOptions } from "@tamagui/static";
 import { type MetroZeroController } from "./zeroRuntime";
 import { type MetroCompilerDiagnostic } from "./diagnostics";
 import { type MetroResolverConfig } from "./metroResolver";
@@ -14,15 +15,7 @@ export interface MetroCompilerFrontendConfig extends MetroResolverConfig {
 	watch?: boolean;
 	reportDiagnostic?: (diagnostic: MetroCompilerDiagnostic) => void;
 }
-export interface MetroCompilerProject {
-	projectInfo: TamaguiProjectInfo;
-	componentModules: {
-		moduleName: string;
-		id: string;
-	}[];
-	generation: string;
-	experimentalNativeFastPath?: boolean;
-}
+export interface MetroCompilerProject extends Static.CompilerProject {}
 export interface MetroCompilerScanOptions {
 	dev: boolean;
 	entryFiles: readonly string[];

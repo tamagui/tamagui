@@ -17,7 +17,7 @@ import {
   type HostResolvedImport,
   type ResolvedModuleId,
 } from '@tamagui/compiler-core'
-import Static, { createTamaguiCompilerHost, loadTamagui } from '@tamagui/static'
+import Static, { createTamaguiCompilerHost } from '@tamagui/static'
 import type {
   IslandThemeBridge,
   TamaguiOptions,
@@ -63,12 +63,7 @@ export interface MetroCompilerFrontendConfig extends MetroResolverConfig {
   reportDiagnostic?: (diagnostic: MetroCompilerDiagnostic) => void
 }
 
-export interface MetroCompilerProject {
-  projectInfo: TamaguiProjectInfo
-  componentModules: { moduleName: string; id: string }[]
-  generation: string
-  experimentalNativeFastPath?: boolean
-}
+export interface MetroCompilerProject extends Static.CompilerProject {}
 
 export interface MetroCompilerScanOptions {
   dev: boolean
@@ -326,9 +321,9 @@ export class MetroCompilerFrontend {
         moduleName,
         resolvedId: id,
       })),
-      disablePartialExtraction: this.config.tamaguiOptions?.disablePartialExtraction,
+      disablePartialExtraction: compilerProject.disablePartialExtraction,
       experimentalNativeFastPath: compilerProject.experimentalNativeFastPath,
-      zeroRuntime: !!this.config.zero,
+      zeroRuntime: compilerProject.zeroRuntime,
     })
     this.#tamaguiConfig = compilerProject.projectInfo.tamaguiConfig
     const zero = this.config.zero
@@ -576,64 +571,53 @@ export class MetroCompilerFrontend {
     if (this.config.loadCompilerProject) {
       return await this.config.loadCompilerProject(target, options.platform)
     }
-    const projectInfo = await loadTamagui({
-      ...this.config.tamaguiOptions,
-      platform: target,
-      // in zero mode the integration owns the one generated CSS artifact, so
-      // config-only CSS is never written to that path
-      ...(this.config.zero && { outputCSS: undefined }),
+    return Static.loadCompilerProject({
+      root: this.config.projectRoot,
+      target,
+      options: this.config.tamaguiOptions ?? {},
+      missingProjectMessage: 'Unable to load the Tamagui project for Metro compilation',
+      generation: (projectInfo, componentModules, normalizedOptions) => {
+        return metroCompilerContentHash(
+          JSON.stringify({
+            cacheVersion: METRO_COMPILER_CACHE_VERSION,
+            compilerImplementationVersions,
+            componentModules,
+            configCss: projectInfo.tamaguiConfig?.getCSS?.() ?? '',
+            disablePartialExtraction: !!normalizedOptions.disablePartialExtraction,
+            experimentalNativeFastPath:
+              target === 'native' &&
+              normalizedOptions.experimental?.nativeFastPath === true,
+            target,
+            // the host's diagnostics are mode-aware, so a plan built in one mode is
+            // not a plan the other mode may reuse
+            zeroRuntime: !!this.config.zero,
+          })
+        )
+      },
+      resolveComponents: async (moduleNames) => {
+        const componentModules: MetroCompilerProject['componentModules'] = []
+        for (const moduleName of moduleNames) {
+          try {
+            const resolution = this.#resolver.resolve(
+              importer,
+              { specifier: moduleName, isESMImport: true },
+              options.platform
+            )
+            if (!resolution) continue
+            componentModules.push({ moduleName, id: resolution.resolvedId })
+          } catch (error) {
+            const diagnostic = metroDiagnostic(
+              'metro/resolve-failed',
+              `Failed to resolve compiler component ${moduleName}: ${error instanceof Error ? error.message : String(error)}`,
+              { moduleId: importer, dependency: moduleName }
+            )
+            diagnostics.push(diagnostic)
+            this.#report(diagnostic)
+          }
+        }
+        return componentModules
+      },
     })
-    if (!projectInfo?.tamaguiConfig || !projectInfo.components) {
-      throw new Error('Unable to load the Tamagui project for Metro compilation')
-    }
-    const componentModules: MetroCompilerProject['componentModules'] = []
-    for (const component of projectInfo.components) {
-      try {
-        const resolution = this.#resolver.resolve(
-          importer,
-          { specifier: component.moduleName, isESMImport: true },
-          options.platform
-        )
-        if (!resolution) continue
-        componentModules.push({
-          moduleName: component.moduleName,
-          id: resolution.resolvedId,
-        })
-      } catch (error) {
-        const diagnostic = metroDiagnostic(
-          'metro/resolve-failed',
-          `Failed to resolve compiler component ${component.moduleName}: ${error instanceof Error ? error.message : String(error)}`,
-          { moduleId: importer, dependency: component.moduleName }
-        )
-        diagnostics.push(diagnostic)
-        this.#report(diagnostic)
-      }
-    }
-    const configCss = projectInfo.tamaguiConfig.getCSS?.() ?? ''
-    const generation = metroCompilerContentHash(
-      JSON.stringify({
-        cacheVersion: METRO_COMPILER_CACHE_VERSION,
-        compilerImplementationVersions,
-        componentModules,
-        configCss,
-        disablePartialExtraction: !!this.config.tamaguiOptions?.disablePartialExtraction,
-        experimentalNativeFastPath:
-          target === 'native' &&
-          this.config.tamaguiOptions?.experimental?.nativeFastPath === true,
-        target,
-        // the host's diagnostics are mode-aware, so a plan built in one mode is
-        // not a plan the other mode may reuse
-        zeroRuntime: !!this.config.zero,
-      })
-    )
-    return {
-      projectInfo,
-      componentModules,
-      generation,
-      experimentalNativeFastPath:
-        target === 'native' &&
-        this.config.tamaguiOptions?.experimental?.nativeFastPath === true,
-    }
   }
 
   async #compileRecord(

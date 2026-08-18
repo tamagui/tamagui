@@ -82,35 +82,29 @@ export const loader = async function loader(
       compilerFrontends.set(key, compiler)
     }
     const zero = getWebpackZeroController(options, root)
-    const projectInfo = await Static.loadTamagui(
-      // in enforced zero mode the integration owns the one generated CSS
-      // artifact, so config-only CSS is never written to that path
-      zero?.isEnforcing ? { ...options, outputCSS: undefined } : options
-    )
-    if (!projectInfo) {
-      throw new Error('Unable to load the Tamagui project for webpack compilation')
-    }
     const webpackResolve = this.getResolve({})
-    const componentModules = await Promise.all(
-      [...new Set(['@tamagui/core', ...(options.components || [])])].map(
-        async (moduleName) => ({
-          moduleName,
-          id: await webpackResolve(path.dirname(sourcePath), moduleName),
-        })
-      )
-    )
+    const project = await Static.loadCompilerProject({
+      root,
+      target: 'web',
+      options,
+      generation: key,
+      missingProjectMessage: 'Unable to load the Tamagui project for webpack compilation',
+      async resolveComponents(moduleNames) {
+        return Promise.all(
+          moduleNames.map(async (moduleName) => ({
+            moduleName,
+            id: await webpackResolve(path.dirname(sourcePath), moduleName),
+          }))
+        )
+      },
+    })
+    const { projectInfo } = project
     const extracted = await compiler.compile({
       id: sourcePath,
       source,
       root,
       target: 'web',
-      project: {
-        projectInfo,
-        componentModules,
-        generation: key,
-        // `report` runs the same analysis as `enforce`
-        zeroRuntime: zero !== null,
-      },
+      project,
       resolve: async (specifier, importer) => {
         try {
           return { id: await webpackResolve(path.dirname(importer), specifier) }

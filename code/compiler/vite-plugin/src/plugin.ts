@@ -498,25 +498,27 @@ function createTamaguiNativePlugin(
         projectDependencies.add(normalizePath(dependency))
       }
       if (options.disable || options.disableExtraction) return null
-      const projectInfo = await Static.loadTamagui(
-        { ...options, platform: 'native' },
-        shouldRebuild
-      )
-      if (!projectInfo) {
-        throw new Error('Unable to load the Tamagui project for Vite native compilation')
-      }
-      for (const dependency of projectInfo.dependencies ?? []) {
+      const project = await Static.loadCompilerProject({
+        root,
+        target: 'native',
+        options,
+        rebuild: shouldRebuild,
+        generation: `vite-native:${generation + 1}`,
+        missingProjectMessage:
+          'Unable to load the Tamagui project for Vite native compilation',
+        async resolveComponents(moduleNames) {
+          return Promise.all(
+            moduleNames.map(async (moduleName) => {
+              const id = await resolveModule(moduleName)
+              projectDependencies.add(normalizePath(id.split(/[?#]/, 1)[0]))
+              return { moduleName, id }
+            })
+          )
+        },
+      })
+      for (const dependency of project.projectInfo.dependencies ?? []) {
         projectDependencies.add(normalizePath(dependency.split(/[?#]/, 1)[0]))
       }
-      const componentModules = await Promise.all(
-        [...new Set(['@tamagui/core', ...(options.components || [])])].map(
-          async (moduleName) => {
-            const id = await resolveModule(moduleName)
-            projectDependencies.add(normalizePath(id.split(/[?#]/, 1)[0]))
-            return { moduleName, id }
-          }
-        )
-      )
       const configPath = options.config || 'tamagui.config.ts'
       projectDependencies.add(
         normalizePath(
@@ -539,12 +541,7 @@ function createTamaguiNativePlugin(
         )
       }
       generation++
-      return {
-        projectInfo,
-        componentModules,
-        generation: `vite-native:${generation}`,
-        experimentalNativeFastPath: options.experimental?.nativeFastPath === true,
-      }
+      return project
     })()
     const guarded = pending.catch((error) => {
       if (projectPromise === guarded) projectPromise = null

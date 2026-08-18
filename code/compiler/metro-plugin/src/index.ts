@@ -84,10 +84,7 @@ export function withTamagui(
     ...tamaguiOptionsIn
   } = optionsIn || {}
 
-  const options = {
-    ...tamaguiOptionsIn,
-    ...loadTamaguiBuildConfigSync(tamaguiOptionsIn),
-  }
+  const options = loadTamaguiBuildConfigSync(tamaguiOptionsIn)
 
   // Ensure CSS files can be resolved
   metroConfig.resolver = {

@@ -23,12 +23,7 @@ export type ViteTamaguiLoader = {
   getLoadPromise(): Promise<TamaguiOptions> | null
   getTamaguiOptions(): TamaguiOptions | null
   getTamaguiConfig(): Promise<TamaguiProjectInfo['tamaguiConfig']>
-  getCompilerProject(): Promise<{
-    projectInfo: TamaguiProjectInfo
-    componentModules: { moduleName: string; id: string }[]
-    disablePartialExtraction?: boolean
-    experimentalNativeFastPath?: boolean
-  }>
+  getCompilerProject(): Promise<Static.CompilerProject>
   getEvaluationDependencies(): string[]
   isEvaluationDependency(id: string): boolean
   evaluateProjectModules(options: TamaguiOptions): Promise<EvaluatedProjectModules>
@@ -46,8 +41,7 @@ export function createViteTamaguiLoader(
   let ownsEnvironment = false
   let loadPromise: Promise<TamaguiOptions> | null = null
   let loadedOptions: TamaguiOptions | null = null
-  let projectPromise: Promise<TamaguiProjectInfo> | null = null
-  let projectModules: EvaluatedProjectModules | null = null
+  let projectPromise: Promise<Static.CompilerProject> | null = null
   const evaluationDependencies = new Set<string>()
   let generation = 0
 
@@ -148,7 +142,9 @@ export function createViteTamaguiLoader(
     return { config, components }
   }
 
-  const loadProject = async (options: TamaguiOptions): Promise<TamaguiProjectInfo> => {
+  const loadProject = async (
+    options: TamaguiOptions
+  ): Promise<Static.CompilerProject> => {
     if (projectPromise) return projectPromise
 
     projectPromise = (async () => {
@@ -158,28 +154,36 @@ export function createViteTamaguiLoader(
         )
       }
 
-      const evaluated = await evaluateProjectModules({
-        ...options,
-        components: [...new Set(['@tamagui/core', ...(options.components || [])])],
-      })
-      projectModules = evaluated
-
-      return Static.loadTamaguiFromModules(
-        {
-          ...options,
-          // In zero-runtime mode the integration owns the one generated CSS
-          // artifact, so config-only CSS is never written to that path.
-          ...(options.experimental?.zeroRuntime &&
-            options.experimental.zeroRuntime !== 'report' && { outputCSS: undefined }),
+      let evaluated: EvaluatedProjectModules | null = null
+      return Static.loadCompilerProject({
+        root: environment.config.root,
+        target: 'web',
+        options,
+        generation: `vite:${generation}`,
+        async load(normalizedOptions) {
+          evaluated = await evaluateProjectModules(normalizedOptions)
+          return Static.loadTamaguiFromModules(normalizedOptions, {
+            config: evaluated.config.module,
+            components: evaluated.components.map(({ moduleName, module }) => ({
+              moduleName,
+              module,
+            })),
+          })
         },
-        {
-          config: evaluated.config.module,
-          components: evaluated.components.map(({ moduleName, module }) => ({
-            moduleName,
-            module,
-          })),
-        }
-      )
+        async resolveComponents(moduleNames) {
+          if (!evaluated) {
+            throw new Error('The Tamagui compiler project modules were not evaluated')
+          }
+          const byName = new Map(
+            evaluated.components.map(({ moduleName, id }) => [moduleName, id])
+          )
+          return moduleNames.map((moduleName) => {
+            const id = byName.get(moduleName)
+            if (!id) throw new Error(`Unable to resolve compiler component ${moduleName}`)
+            return { moduleName, id }
+          })
+        },
+      })
     })()
 
     return projectPromise
@@ -193,24 +197,11 @@ export function createViteTamaguiLoader(
     async getTamaguiConfig() {
       const options = await loadTamaguiBuildConfig()
       if (options.disable) return null
-      return (await loadProject(options)).tamaguiConfig
+      return (await loadProject(options)).projectInfo.tamaguiConfig
     },
     async getCompilerProject() {
       const options = await loadTamaguiBuildConfig()
-      const projectInfo = await loadProject(options)
-      if (!projectModules) {
-        throw new Error('The Tamagui compiler project modules were not evaluated')
-      }
-      return {
-        projectInfo,
-        componentModules: projectModules.components.map(({ moduleName, id }) => ({
-          moduleName,
-          id,
-        })),
-        disablePartialExtraction: !!options.disablePartialExtraction,
-        experimentalNativeFastPath:
-          options.platform === 'native' && options.experimental?.nativeFastPath === true,
-      }
+      return loadProject(options)
     },
     getEvaluationDependencies: () => [...evaluationDependencies],
     isEvaluationDependency: (id: string) =>
@@ -224,7 +215,6 @@ export function createViteTamaguiLoader(
       ownsEnvironment = options?.owned === true
       generation++
       projectPromise = null
-      projectModules = null
     },
 
     invalidate(file?: string) {
@@ -233,7 +223,6 @@ export function createViteTamaguiLoader(
       }
       generation++
       projectPromise = null
-      projectModules = null
     },
 
     async ensureFullConfigLoaded() {
@@ -255,7 +244,6 @@ export function createViteTamaguiLoader(
         loadPromise = null
         loadedOptions = null
         projectPromise = null
-        projectModules = null
       }
     },
   }
