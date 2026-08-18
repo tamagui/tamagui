@@ -84,7 +84,7 @@ export declare function checkZeroGraph(input: {
      * It cannot be derived from the entries: webpack's entry for a Next app is
      * `node_modules/next/dist/client/next.js`, which belongs to `next`.
      */
-    root?: string;
+    root: string;
 }): {
     tamaguiModules: string[];
     forbidden: ZeroForbiddenModule[];
