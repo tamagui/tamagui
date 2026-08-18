@@ -1,0 +1,78 @@
+# v3 core golf: shared measurement method
+
+Every byte number in this campaign uses THIS recipe. Numbers produced any other
+way cannot be compared to the record in `plans/v3-handoff-log.md` sections 14
+and 15, and are wasted work.
+
+Branch: `v3-golf`, worktree `~/.worktrees/tamagui-v3-golf`. Never touch
+`~/tamagui` (stays on main).
+
+## Byte measurement (post-minify marginal gzip)
+
+```sh
+cd ~/.worktrees/tamagui-v3-golf
+bun run build                       # rebuild changed packages first, always
+cd code/comparisons/tamagui-bench
+EXTRACT=1 npx vite build --sourcemap --outDir /tmp/<yourname>-bench
+cd ~/.worktrees/tamagui-v3-golf
+bun code/comparisons/attribute-bundle-gzip.ts /tmp/<yourname>-bench --filter=@tamagui/
+```
+
+`marginalGzip` is the number that counts: gzip(chunk) minus gzip(chunk with that
+module's bytes removed), i.e. what deleting the module actually saves. Report
+before AND after for the modules you touched, plus `bundle gzip total`.
+
+A rebuild of the workspace package is REQUIRED before the bench build or you
+measure stale dist and report a fake win.
+
+## Baseline, captured 2026-08-17 at v3-beta 1a777a322a
+
+`bundle gzip total: 104768`. Full table:
+`code/comparisons/output/v3-golf-baseline-attr.txt`. Top modules:
+
+| marginalGzip | minBytes | module |
+| ---: | ---: | --- |
+| 5405 | 17404 | `@tamagui/web::helpers/directStyle.mjs` |
+| 3971 | 11277 | `@tamagui/web::createComponent.mjs` |
+| 3734 | 10714 | `@tamagui/web::helpers/getSplitStyles.mjs` |
+| 2351 | 6744 | `@tamagui/animations-css::createAnimations.mjs` |
+| 2339 | 6722 | `@tamagui/web::helpers/variables.mjs` |
+| 2307 | 7290 | `@tamagui/web::helpers/propMapper.mjs` |
+| 1648 | 4340 | `@tamagui/web::hooks/useThemeState.mjs` |
+| 1359 | 3742 | `@tamagui/use-element-layout::index.mjs` |
+| 1352 | 3369 | `@tamagui/web::createTamagui.mjs` |
+| 1290 | 3363 | `@tamagui/web::helpers/insertStyleRule.mjs` |
+| 1141 | 3030 | `@tamagui/web::hooks/useMedia.mjs` |
+
+## Perf measurement
+
+Use the tooling that already exists, do not build your own:
+
+- `code/comparisons/profile-getsplitstyles.ts` — per-label hot-path timing.
+  Needs the runtime bench on :9106
+  (`cd code/comparisons/tamagui-bench && EXTRACT=0 npx vite --port 9106`).
+- `code/comparisons/profile-web-regressions.ts` — v3-vs-v2 render timing.
+- `code/comparisons/run-benchmarks.ts` — the full suite.
+
+Report ops/sec or ms-per-render before/after with iteration counts, or
+allocations-per-render. Reasoning about allocation is not a measurement.
+
+## The bar
+
+- Bytes AND allocations go down together. A byte win that adds a per-render
+  allocation, an extra pass, or a second scanner is a REGRESSION, not a win.
+- Behavior identical. Any behavior-adjacent change needs a DISCRIMINATING test:
+  one that FAILS if the code you removed was load bearing. Run it before and
+  after. A code reading is not evidence.
+- Before any batch merges: `bun run typecheck` at root, plus core tests web and
+  native, all green, logs redirected to a file (never piped through tail/grep).
+
+## Off limits
+
+- `code/compiler/vite-plugin`, `loader`, `next-plugin`, `metro-plugin`,
+  `code/compiler/static/src/zero` — owned by another team. Ask before touching.
+- The style-grammar clause parser's single-pass charCode loop. Reintroducing a
+  runtime `parseValue` or a second scanner is forbidden by CONTRIBUTING.md.
+- Mechanics-only size passes inside `directStyle` condition routing, atomic
+  merge, or value routing, and any size pass over `getSplitStyles`. Measured
+  already leaner than V2; that seam is exhausted. Perf work there is still open.
