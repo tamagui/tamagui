@@ -2299,3 +2299,36 @@ is generated into `.tamagui/rules/` by the fixture's own vite config, because
 the zero tier injects its stylesheet link into an HTML entry and a module-only
 entry fails by design. A new rule fixture is two files and one row in
 `RULE_CONTROLS` in `scripts/zero-receipts.mjs`.
+
+### Standing trade: runtime performance beats small bundle size
+
+Owner, 2026-08-17, ratifying the first core golf batch and generalizing it:
+"i would definitely take significant performance wins for small bundle size
+improvement 10/10 times."
+
+Treat this as the default. A measured hot-path or allocation win justifies a
+small gzip regression, and you do not need to ask before taking it.
+
+What it does NOT change:
+
+- **The measurement bar is unchanged.** Before/after receipts are still required,
+  measured the same way on both sides. "This should be faster" is not a
+  performance win, and a regression you did not measure is not a small one. The
+  trade is only available to a change whose both halves are quantified.
+- **It does not authorize behavior changes.** The suites remain the gate. If a
+  perf win requires changing an assertion, that is a behavior change and it stops
+  being a free trade.
+- **It is not symmetric, and this is the part people get backwards.** Taking
+  bytes to gain runtime speed is now the default. Taking runtime cost to save
+  bytes is still a REGRESSION, not a win: a "smaller" refactor that adds a
+  per-render allocation, an extra pass, or a second scanner is rejected on those
+  grounds regardless of what it does to gzip. Both halves of that rule point the
+  same way, toward runtime performance; they are not in tension.
+- "Small" is doing real work in that sentence. A large regression for a marginal
+  win is not what was ratified, and the honest thing when the ratio looks bad is
+  to report both numbers and ask.
+
+Context that makes the trade sensible here: the engine audit found that
+`directStyle`'s five mechanical wins removed allocations AND bytes together, so
+the two goals mostly do not conflict. This directive governs the minority of
+cases where they do.
