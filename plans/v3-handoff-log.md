@@ -2881,3 +2881,79 @@ The Vite island publish writes both `tamagui-islands/DetailsIsland.js` and
 and never the second. Recorded in Phase 7, still true, harmless, and nobody has
 looked at why. Carried forward as an open item on 2026-08-18 rather than chased
 during close-out.
+
+## 24. Block 3 wave A: the block-2 review's three follow-ups (2026-08-18)
+
+Campaign manager handover: p25848 hit a Claude account spend limit and p26422
+took over the same mandate. Block 2 stays closed; its assigned review returned
+APPROVE WITH NOTES and the three notes are folded in here, self-validated, no
+re-review.
+
+### The report-mode receipt was vacuous on Next and Metro, and the code said so
+
+Both `next-receipts.mjs` and `metro-receipts.mjs` read the enforce and report
+violation lists from the SAME filename, relying on read-ordering: the enforce
+file is read before the report build overwrites it. The existing comment even
+documents the collision. What was missing is that nothing asserted the second
+read came from the report build at all, so a report build that never reached
+analysis leaves the enforce file in place and every assertion below passes
+against the enforce build's own output. `sameViolations` is then trivially true.
+
+Fixed by asserting `multiReportViolations.mode === 'report'` before the
+comparison. Vite is genuinely unaffected: it reads
+`vite-dist-multi.violations.json` and `vite-dist-multi-report.violations.json`,
+two distinct files.
+
+Considered and rejected: giving the report build its own `outDir` so the
+collision cannot happen. `outDir` is derived (`path.join(root, ZERO_OUT_DIRNAME)`)
+with no override, so this would mean adding an override to the public
+experimental zero config purely for a test fixture's benefit. The assert gives
+the check a real independent variable at a fraction of the cost.
+
+### Bumping the plan version alone would have left the Metro cache reading stale plans as valid
+
+`LOWERED_MODULE_PLAN_VERSION` moved 1 to 2 because the plan.css shape changed in
+`1d855ece47` and the version did not follow. But `compilerCache.ts:351` guarded
+with a hardcoded `entry.plan.version !== 1`, a second copy of the same number.
+Bumping the constant on its own would have left that guard accepting version-1
+plans forever, which is the exact failure the bump exists to prevent. The guard
+now reads `LOWERED_MODULE_PLAN_VERSION`, so there is one owner.
+
+`METRO_COMPILER_CACHE_VERSION` went 4 to 5 in the same commit. It namespaces the
+cache directory (`v4/blobs`, `v4/manifest.json`), so a fresh directory means a
+plan-version change lands on empty state instead of reporting every stale entry
+through `cacheCorrupt`. That path degrades to a warning and a recompile rather
+than a build failure, so this is about not printing corruption warnings at every
+user who upgrades, not about correctness.
+
+The bump propagates as designed: `ZERO_COMPILER_VERSION` is `zero-1/plan-2`,
+which is what makes a compiler change invalidate zero caches too.
+
+### `root` is now required on `checkZeroGraph`
+
+All seven call sites already passed it (vite-plugin, metro-plugin zeroSerializer,
+loader TamaguiPlugin, and four in `zeroGraph.web.test.ts`), so making it required
+is mechanical. It removes the state section 22 describes, where an entry-derived
+project silently reads `next` as the project on Next while looking correct on
+Vite and Metro.
+
+### Item 9 needed no work
+
+The plan lists "wire `core-test/flatValueProgramsStreaming.web.test.tsx` into CI"
+as open. It is already wired. `vitest list` collects all 7 of its tests under the
+`*.web.test.ts*` glob that `core-test`'s `test:web` script expands, and CI runs
+that script through `bun turbo run test:web --filter='!@tamagui/kitchen-sink'`.
+The full suite is green at 62 files / 475 tests. Checked by listing collected
+tests rather than grepping the run output, because vitest does not print passing
+filenames and the grep would have read as absence either way.
+
+### Validation
+
+`bun run typecheck` passed. compiler-core, static and metro-plugin all rebuilt
+clean. metro-plugin `test:web` 6/6, static-tests `test:web` 20/20, core-test
+`test:web` 475 passed.
+
+### Carried forward, not chased
+
+`bun run build` regenerates `code/tamagui.dev/tamagui.generated.css` with ~180
+changed lines. It predates this unit (`79e79b1eea`) and is not block-3 work.
