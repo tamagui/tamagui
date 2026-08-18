@@ -155,11 +155,13 @@ function agreementCorpus(seed: number, count: number) {
 
 describe('divergences', () => {
   // D1. `directStyle` abandons the whole declaration at the first top-level
-  // `;`, `{` or `}` (directStyle.ts:1572), while `propMapper` has no such rule
-  // and keeps splitting clauses around it, semicolon and all. The canonical
-  // parser reports an invalid character. Three implementations, three answers,
-  // and the value a variant produces is not the value the same string produces
-  // as a prop.
+  // `;`, `{` or `}`, while `propMapper` has no such rule and keeps splitting
+  // clauses around it, semicolon and all. The canonical parser reports an
+  // invalid character. Three implementations, three answers. The base the
+  // variant scanner cuts out is `none;`, and `emitValue` now refuses that
+  // payload rather than emitting it verbatim, so what survives the disagreement
+  // is the clause: the prop path loses `hover:red` along with the base, the
+  // variant path keeps it.
   test('a top-level ";" ends the value for the prop scanner and not the variant scanner', () => {
     const source = 'none; hover:red'
     expect(parseValue(source, registry).ok).toBe(false)
@@ -167,26 +169,23 @@ describe('divergences', () => {
     expect(propValue(source)).toBe(null)
     expect(propValue(source, ['hover'])).toBe(null)
 
-    expect(variantValue(source)).toBe('none;')
+    expect(variantValue(source)).toBe(null)
     expect(variantValue(source, ['hover'])).toBe('red')
   })
 
-  // D2. DEFECT. `contributeStyleString` returns early when the value holds no
-  // top-level colon at all (directStyle.ts:1510), so the scanner that refuses
-  // `;{}` never runs and the payload reaches CSS verbatim. valueParser.ts:14-19
-  // states the reason those characters are refused: a payload is emitted
-  // verbatim by contract, so refusing them is what makes rule and selector
-  // injection structurally impossible. On this path it is not.
-  test('a value with no top-level colon skips the character check entirely', () => {
+  // D2. RESOLVED. `contributeStyleString` still returns early when the value
+  // holds no top-level colon, so the clause scanner below it never runs, but
+  // the `;{}` refusal that scanner would have applied now lives in `emitValue`,
+  // the one point every contributor reaches. valueParser.ts:14-19 states why:
+  // a payload is emitted verbatim by contract, so refusing those characters is
+  // what makes rule and selector injection structurally impossible. It is.
+  // Every emit path is pinned in styleInjection.web.test.tsx.
+  test('a value with no top-level colon is refused like every other value', () => {
     const source = 'none;}.injected{opacity 0'
     expect(parseValue(source, registry).ok).toBe(false)
 
-    expect(propValue(source)).toBe(source)
-
-    // one authored declaration, two emitted rule blocks
-    const rules = propRules(source)
-    expect(rules).toHaveLength(1)
-    expect(rules[0].split('{')).toHaveLength(3)
+    expect(propValue(source)).toBe(null)
+    expect(propRules(source)).toEqual([])
   })
 
   // D3. DEFECT. The canonical parser treats a top-level backslash as an escape
