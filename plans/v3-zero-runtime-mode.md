@@ -1224,3 +1224,134 @@ the fixture root that another integration also reads.
 - **Next 16 defaults to Turbopack.** The webpack adapter needs `next build
   --webpack`, matching this document's note that the CLI/Turbopack path must
   implement the same gates before it advertises the mode.
+
+## Phase 2 record: global CSS artifact ownership
+
+Evidence added after Phase 2 ran. Every figure below is a build, a browser run,
+or a control that was executed; the fixture is `code/tests/zero-runtime` and the
+receipts are in its `.tamagui/zero` directory.
+
+### The compiled-global-CSS tier is live, and this is what it is worth
+
+**READ.** `outputCSS` was already wired through the Vite web path before this
+phase: `loadTamaguiFromModules` calls `writeTamaguiCSS`, and a `full`-runtime
+Vite build of the fixture wrote a 934,134-byte artifact. What was missing was
+the ownership: nothing derived `TAMAGUI_DID_OUTPUT_CSS` and nothing proved the
+artifact was real, current and loaded. Both integrations now do.
+
+Same fixture, same entry, same imported artifact, with
+`TAMAGUI_DOES_SSR_CSS='mutates-themes'` as the ordinary-tier control:
+
+| integration | ordinary tier | flag derived | Δ gzip |
+| --- | ---: | ---: | ---: |
+| Vite | 110,360 | 107,347 | **−3,013** |
+| Next webpack | 190,868 | 188,240 | **−2,628** |
+
+Both removed the same rules: 4 `is_View` occurrences and 8 `:root` blocks left
+the JavaScript, matching the foundation's 6→2 and 8→0 counts exactly. The
+foundation measured −2,928 on its own fixtures; these bracket it.
+
+### The three failure modes, and the proof each check can fail
+
+Missing, stale and unimported are three separate causes, so they are three
+separate diagnostics from one shared checker
+(`code/compiler/static/src/zero/ownership.ts`). Each has a control that produces
+that exact state and each control fails the build naming its own reason, on both
+Vite and Next:
+
+- **unimported**: an entry that never imports the artifact. Nothing simulated.
+- **missing**: a fixture plugin deletes the artifact after it is generated.
+- **stale**: the same plugin rewrites it with different bytes.
+
+Two more artifact-load controls, both proven to fail:
+
+- a zero build whose entry graph has no HTML entry never receives the plugin's
+  stylesheet link, so it now fails instead of shipping stripped JavaScript with
+  no replacement;
+- `TAMAGUI_DOES_SSR_CSS='mutates-themes'` in zero mode fails with rule 4, and on
+  the compiled-global tier it refuses the claim and keeps the runtime generator,
+  which the browser confirms: the provider's injected sheet is 0 bytes with the
+  flag and 934,134 bytes without it, from the same source and the same entry.
+
+### What the browser proves
+
+The compiled-global fixture renders with JavaScript CSS generation absent:
+`.is_View`, `:root` variables, `.font_body`, `.t_dark` and compiler atomic rules
+from two different app modules all reach the loaded stylesheets, computed styles
+are correct, and a nested `Theme` really switches. The zero fixture's island
+rule (`width:137px`) is in the same artifact and applies. 27 Playwright
+assertions across five projects.
+
+### Correction: webpack hides most of a production graph
+
+**READ.** `compilation.modules` reports one `ConcatenatedModule` in place of
+everything scope hoisting merged. Reading only the top level found `_app` but
+not the page that imported a contract violation, so the live-reference control
+built past the compiler gate and only tripped the graph gate. Every webpack walk
+now flattens concatenated modules. The zero build's module count went from 131
+to 134 with the same 0 forbidden, so the forbidden-module gate was seeing three
+fewer modules than shipped.
+
+### Correction: an identity hash must be canonical
+
+**READ.** `hashBridgeManifest` used plain `JSON.stringify`, so the same manifest
+hashed differently depending on object key insertion order. A manifest that made
+a round trip through a cache came back key-sorted and produced a different
+artifact identity, which reads as a real change. The manifest is canonicalized
+before hashing and before it is written to a receipt.
+
+### The warm-cache optimisation
+
+Phase 1 forced a full re-run every build because the caches skipped exactly the
+work that fills the artifact. Both integrations now cache again without the
+divergence, and both receipts assert the reuse actually happens, so a
+speedup that silently stops engaging fails the receipt rather than passing it.
+
+- **Metro** publishes a CSS sidecar beside the plan cache in the same
+  transaction, carrying config CSS, per-module atomic CSS, bridge rules and the
+  bridge manifest for that exact plan generation. A warm build rehydrates it; a
+  missing or mismatched sidecar sends the build to a full scan. Median of three
+  cold/warm pairs: **41,492 ms cold, 15,624 ms warm**.
+- **Webpack** carries the same facts on `module.buildInfo`, which webpack
+  restores with the cached module, so there is one cache rather than two that
+  could disagree. Contract violations ride it too: without that, a warm build
+  would drop a violation the cold build failed on. `this.cacheable(false)` is
+  gone.
+
+The receipts caught a real regression while this was being written: before the
+identity canonicalization above, the warm Metro rebuild changed the artifact
+identity and the receipt failed. That is the proof it can.
+
+### Zero-runtime development, which was silently broken
+
+**READ.** Development inlined `'zero'` and ran reference erasure, but the Vite
+plugin's zero half was `apply: 'build'`, so nothing served the config CSS and
+nothing built the islands. The first probe of `vite dev` looked correct, and it
+was reading the Next build's published output out of `public/`. With `public/`
+moved aside the same probe reported `display: block` on a `View`, no compiler
+atomic rules, zero style tags, and a 404 for the island bundle.
+
+Development now serves what it strips. The config half of the artifact is
+published at the same href production uses, the islands are built once at
+startup and served by the dev server, and per-module atomic rules stay on Vite's
+own `.tamagui.css` modules, where the importer owns the ordering and hot
+replacement already works. That is the one dev/production difference and it is
+the transport, not the contract. The fixture's Vite `publicDir` is now off, so a
+dev assertion cannot be answered by another integration's published output.
+
+Next and Metro development remain unvalidated for zero mode. Neither was changed
+and neither should be advertised until it has its own receipts.
+
+### Honest limits
+
+- **Metro cannot decide "unimported".** It emits a JS bundle and owns no HTML or
+  CSS module pipeline, so it verifies that the published copy exists and matches
+  the artifact it generated, and cannot verify that the page links it. Next zero
+  has the same limit for its `public/`-published copy: the design's "import the
+  normalized outputCSS module" works for the compiled-global tier, where the
+  content is final before the compilation reads it, but a zero artifact is not
+  final until its islands are built. The compiled-global tier is where the
+  import check is real, and it is checked there on both Vite and Next.
+- The island loader still ensures its stylesheet at runtime. On a correct build
+  it never fires, and the Playwright assertion that no island-injected link
+  exists still holds.
