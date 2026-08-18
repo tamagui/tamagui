@@ -3330,3 +3330,84 @@ after a runtime guard. TS narrows the properties after such a guard but does not
 retype the containing object as an intersection at a return boundary, so the
 cast was structural, not incidental. Dropping the unnecessary interface change
 beat keeping a cast to justify it.
+
+## 27. Item 5b: the injection fix, and what the sweep actually found (2026-08-18)
+
+`e995c3bfe6` and `e7c72f2a74`.
+
+The reported defect was one fast path in `directStyle.ts`. Requiring a sweep of
+every emit path, including the ones expected to be clean, is what made this item
+worth its cost: **seven paths were vulnerable, not one.**
+
+The one nobody predicted is `getCSSStylesAtomic`, which sits outside
+`directStyle` and outside the flat-value grammar entirely. react-native-web's
+`createDOMProps` hands it a flattened user style object, react-native-web-lite
+inserts the result and SSR-serializes it into style tags, and it is public API
+off `tamagui` and `@tamagui/ui`. Every `createAtomicRules` branch was injectable,
+and the generated **class identifier** carried attacker text as well.
+
+The other six were the colonless fast path, the `style={{}}` prop object, a
+variant base with no modifier, `contributeVariantClauseValue`,
+`contributeFrontendValue`'s base and its clause (which is `@tamagui/tailwind`'s
+channel). Clean-but-now-pinned: the clause scanner itself, non-string values,
+and composite lowering for border, transform, boxShadow, transition,
+textDecoration, borderRadius and padding.
+
+The fix is one predicate, `carriesTopLevelInjection`, called from `emitValue`
+and from `getStyleObject`: one call per producer, on a platform-neutral module
+because `directStyle` imports `getCSSStylesAtomic`, whose native stub would
+otherwise make the import undefined.
+
+### The first version of the fix was bypassable, and finding that was the point
+
+Leave a paren or quote open and every dangerous character sits at fake depth.
+`url(none;}.injected{opacity 0` and `"none;}.injected{opacity 0` both emitted a
+full rule, and `a);}.x{y` worked too because a stray `)` drove depth to -1 so the
+`!depth` test stopped matching. The scan now clamps depth at zero and refuses an
+unbalanced value **that carries one of the three characters**, leaving values
+without them untouched however their parens sit.
+
+Assume the next bypass exists until someone has looked. That is why the wave B
+review gets 5b's full scope with instructions to probe the predicate
+adversarially rather than read it.
+
+### A second hole, found by probing rather than reading
+
+Manager probe against `getCSSStylesAtomic` after the fix landed:
+
+    backgroundImage: 'red/*'  ->  ._backgroundImage-red1499{background-image:red/*;}
+    backgroundImage: 'red*/'  ->  ._backgroundImage-red1349{background-image:red*/;}
+
+Comment delimiters were not tracked, so they reached CSS verbatim. READ:
+`insertStyleRule.tsx:20` `getAllRules()` returns rule strings that SSR joins into
+one style tag, so rules share a text blob.
+
+**INFERRED, and it must stay INFERRED:** an unterminated `/*` therefore comments
+out every following rule until a `*/`, and two attacker-controlled values can
+bracket an arbitrary range. This follows from CSS comment semantics, but no one
+rendered an SSR page to watch it, and the fix does not depend on proving it.
+Nobody should upgrade this label without making that observation.
+
+**Severity is lower than the original and should not be inflated.** It cannot add
+selectors or declarations, so it is style DELETION, not rule injection. It earns
+a fix because deleting a rule is not harmless when the rule is doing the hiding:
+dropping a `display:none` reveals what it covered.
+
+Folded into 5b as a follow-up rather than filed separately, since it is the same
+predicate and the same principle the predicate already states.
+
+### Known and deliberately left
+
+- Refusal is **silent**, matching the clause scanner's existing behaviour. An
+  author who typos a `;` gets nothing back. Whether these should warn belongs to
+  item 12's convergence.
+- The check runs on the **authored** payload, before `configuredValue` and
+  `resolveEmbeddedTokens` expand config tokens. Config tokens are
+  developer-authored and were treated as trusted. If a token value could ever be
+  user-controlled, that is uncovered.
+- Unbalanced values carrying none of the three characters (`url(a`) still emit,
+  while `parseValue` refuses them. A scanner divergence, not an injection, and
+  it belongs to item 12.
+- D1's pin changed deliberately. Its base `'none; hover:red'` is exactly a
+  payload the fix now refuses, so it reads null; the divergence it pinned still
+  exists and is still pinned.
