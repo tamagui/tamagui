@@ -2,18 +2,19 @@ import { useAnimatedNumberReaction, useAnimatedNumbersStyle } from '@tamagui/cor
 import * as React from 'react'
 import { createRoot } from 'react-dom/client'
 import { useAnimatedNumber, useAnimatedNumberStyle, View } from 'tamagui'
+import '../../tamagui.config'
 
 /**
- * The one opt-in runtime a zero graph may keep, exercising all four public
- * hooks. They are imported from the public `tamagui` and `@tamagui/core`
- * barrels, since both are rewritten to the animated-number leaf and neither
- * barrel may enter the client graph.
+ * The full-driver half of the three-artifact animation measurement: the same
+ * module as `animated-number.tsx`, built as ordinary compiled Tamagui.
  *
- * The animated styles are applied to literal host elements, which is the only
- * shape the design allows: applying one to a Tamagui component as a dynamic
- * style prop is a rule 3 error.
+ * The config import is what makes the driver reachable, and it is the one line
+ * that differs. `useAnimationDriver` resolves the driver off parsed config at
+ * runtime, so nothing statically imports `createAnimations` until the config
+ * does; a full-runtime entry that never imports its config ships no driver at
+ * all and would measure nothing.
  */
-function AnimatedNumberFixture() {
+function AnimatedNumberFullFixture() {
   const offset = useAnimatedNumber(0)
   const scale = useAnimatedNumber(1)
   const [reaction, setReaction] = React.useState({ count: 0, value: 0 })
@@ -22,8 +23,6 @@ function AnimatedNumberFixture() {
     transform: `translateX(${value}px)`,
   }))
 
-  // offset already has a style host, so this hook subscribes to its live value
-  // and hosts scale itself. one call covers both branches of the linked render.
   const pairStyle = useAnimatedNumbersStyle([offset, scale], (x, s) => ({
     transform: `translateX(${x}px) scale(${s})`,
   }))
@@ -53,4 +52,4 @@ function AnimatedNumberFixture() {
   )
 }
 
-createRoot(document.getElementById('root')!).render(<AnimatedNumberFixture />)
+createRoot(document.getElementById('root')!).render(<AnimatedNumberFullFixture />)

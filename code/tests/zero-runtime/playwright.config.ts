@@ -34,6 +34,11 @@ export default defineConfig({
       use: { baseURL: 'http://localhost:7884' },
     },
     {
+      name: 'vite-transition',
+      testMatch: /vite-transition\.test\.ts/,
+      use: { baseURL: 'http://localhost:7885' },
+    },
+    {
       name: 'next',
       testMatch: /next-.*\.test\.ts/,
       use: { baseURL: 'http://localhost:7879' },
@@ -72,6 +77,12 @@ export default defineConfig({
     {
       command: 'npx vite preview --outDir dist-animated-number --port 7884 --strictPort',
       url: 'http://localhost:7884/.tamagui/rules/animated-number.html',
+      reuseExistingServer: true,
+      stdout: 'ignore',
+    },
+    {
+      command: 'npx vite preview --outDir dist-transition --port 7885 --strictPort',
+      url: 'http://localhost:7885/.tamagui/rules/transition.html',
       reuseExistingServer: true,
       stdout: 'ignore',
     },

@@ -659,6 +659,125 @@ if (animatedNumberGraph.forbidden.length) {
   throw new Error('the animated-number fixture shipped a forbidden module')
 }
 
+// 10. Phase 5: what a zero app pays for the animation split.
+//
+// Three artifacts from one authored module. `animated-number.absent` is the
+// identical fixture with the four hooks removed and nothing else changed, so
+// the gzip difference between the two zero builds is the surviving leaf cost
+// with no other variable moving. `animated-number.full` is the same module
+// again as ordinary compiled Tamagui, plus the config import that makes the
+// driver reachable at all, which is also the containment half of the DCE pair:
+// the zero graphs have to omit the modules AND this build has to contain them.
+const staticTransition = ruleBuild('transition')
+const staticTransitionGraph = read('vite-dist-transition.graph.json')
+const animatedNumberAbsent = ruleBuild('animated-number.absent')
+const animatedNumberAbsentGraph = read('vite-dist-animated-number.absent.graph.json')
+const animatedNumberFull = ruleBuild('animated-number.full', 'rules-full')
+const animatedNumberFullProbe = build(
+  'rules-full',
+  'dist-animated-number.full-probe',
+  ['--minify', 'false'],
+  { TAMAGUI_ZERO_RULE: 'animated-number.full' }
+)
+if (!staticTransition.ok) {
+  throw new Error(
+    `the static transition fixture did not build:\n${staticTransition.output}`
+  )
+}
+if (!animatedNumberAbsent.ok) {
+  throw new Error(
+    `the animated-number absent fixture did not build:\n${animatedNumberAbsent.output}`
+  )
+}
+if (!animatedNumberFull.ok) {
+  throw new Error(`the full-driver fixture did not build:\n${animatedNumberFull.output}`)
+}
+if (!animatedNumberFullProbe.ok) {
+  throw new Error(
+    `the full-driver module probe did not build:\n${animatedNumberFullProbe.output}`
+  )
+}
+
+const fullDriverModules = emittedModules('dist-animated-number.full-probe')
+  .modules.filter(isTamaguiModuleId)
+  .map((id) => path.relative(root, id))
+const containsFullDriver = fullDriverModules.some((id) =>
+  /animations-css\/dist\/esm\/createAnimations/.test(id)
+)
+// the same fixture reaches createTamagui through its config import, which is
+// the other module Phase 5 guards. It does NOT reach createComponent: the
+// compiler lowered its only Tamagui component, so the renderer has no importer
+// even with the full runtime. The main negative control covers that one.
+const containsConfigParser = fullDriverModules.some((id) =>
+  /web\/dist\/esm\/createTamagui/.test(id)
+)
+
+const withAnimatedNumber = clientBytes('dist-animated-number')
+const withoutAnimatedNumber = clientBytes('dist-animated-number.absent')
+const fullDriver = clientBytes('dist-animated-number.full')
+
+receipts.staticTransition = {
+  built: staticTransition.ok,
+  forbidden: staticTransitionGraph.forbidden.length,
+  // a configured transition preset lowers to CSS, so not even the leaf ships
+  tamaguiModules: staticTransitionGraph.tamaguiModules,
+}
+receipts.animationSplit = {
+  fullDriver: { raw: fullDriver.raw, gzip: fullDriver.gzip },
+  zeroWithoutAnimatedNumber: {
+    raw: withoutAnimatedNumber.raw,
+    gzip: withoutAnimatedNumber.gzip,
+    tamaguiModules: animatedNumberAbsentGraph.tamaguiModules,
+  },
+  zeroWithAnimatedNumber: {
+    raw: withAnimatedNumber.raw,
+    gzip: withAnimatedNumber.gzip,
+    tamaguiModules: animatedNumberGraph.tamaguiModules,
+  },
+  // what importing the four hooks costs a zero app, whole chunk
+  survivingLeafGzip: withAnimatedNumber.gzip - withoutAnimatedNumber.gzip,
+  fullControl: {
+    containsFullDriver,
+    containsConfigParser,
+    tamaguiModuleCount: fullDriverModules.length,
+  },
+}
+
+if (
+  staticTransitionGraph.forbidden.length ||
+  staticTransitionGraph.tamaguiModules.length
+) {
+  throw new Error(
+    `a static transition shipped Tamagui modules: ${JSON.stringify(
+      staticTransitionGraph.tamaguiModules
+    )}`
+  )
+}
+if (animatedNumberAbsentGraph.tamaguiModules.length) {
+  throw new Error(
+    `the fixture without the hooks still shipped Tamagui modules: ${JSON.stringify(
+      animatedNumberAbsentGraph.tamaguiModules
+    )}`
+  )
+}
+// the containment half. Without it the three absence checks above are just
+// three builds that happened to be empty.
+if (!containsFullDriver) {
+  throw new Error(
+    'the full-runtime control does not contain createAnimations, so the animation absence checks prove nothing'
+  )
+}
+if (!containsConfigParser) {
+  throw new Error(
+    'the full-runtime control does not contain createTamagui, so the config absence checks prove nothing'
+  )
+}
+if (receipts.animationSplit.survivingLeafGzip <= 0) {
+  throw new Error(
+    `importing the animated-number leaf measured as free (${receipts.animationSplit.survivingLeafGzip} gzip), which means the two builds are not the pair they claim to be`
+  )
+}
+
 writeFileSync(
   path.join(zeroDir, 'vite-receipts.json'),
   `${JSON.stringify(receipts, null, 2)}\n`

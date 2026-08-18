@@ -35,3 +35,35 @@ test('the leaf animates the value and runs its completion callback', async ({ pa
   const settled = await box.evaluate((node) => (node as HTMLElement).style.transform)
   expect(settled).toBe('translateX(120px)')
 })
+
+test('the linked multi-value style renders both a hosted and a subscribed value', async ({
+  page,
+}) => {
+  const pair = page.locator('[data-testid="animated-pair"]')
+  await expect
+    .poll(async () => page.title(), { timeout: 5000 })
+    .toBe('animated-number settled')
+  // scale is hosted by this hook so it renders its target; offset is hosted by
+  // the single-value hook above, so this one only sees it through a listener
+  await expect
+    .poll(async () => pair.evaluate((node) => (node as HTMLElement).style.transform), {
+      timeout: 2000,
+    })
+    .toBe('translateX(120px) scale(2)')
+})
+
+test('the reaction hook is notified while the value is in flight', async ({ page }) => {
+  await expect
+    .poll(async () => page.title(), { timeout: 5000 })
+    .toBe('animated-number settled')
+  const count = await page
+    .locator('[data-testid="reaction-count"]')
+    .evaluate((node) => Number(node.textContent))
+  // more than one notification is what separates a live reaction from a single
+  // settle callback
+  expect(count).toBeGreaterThan(1)
+  const value = await page
+    .locator('[data-testid="reaction-value"]')
+    .evaluate((node) => Number(node.textContent))
+  expect(value).toBe(120)
+})

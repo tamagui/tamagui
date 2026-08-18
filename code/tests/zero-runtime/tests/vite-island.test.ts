@@ -182,3 +182,42 @@ test('the island loader recovers a missing artifact link, and says so loudly', a
   expect(loud).toContain('vite')
   expect(loud).toContain('On a correct build this never happens')
 })
+
+test('the island keeps an exiting subtree mounted for its presence animation', async ({
+  page,
+}) => {
+  await page.click('[data-testid="island-open"]')
+  const frame = page.locator('[data-testid="island-portal-frame"]')
+  await expect(frame).toBeVisible()
+  await page.waitForTimeout(500)
+  const openTop = await frame.evaluate((node) => node.getBoundingClientRect().top)
+
+  // a discrete click flushes React before evaluate() returns, so this reads what
+  // the runtime decided to render for the closed state. presence keeps the
+  // exiting subtree laid out and visible; collapsing straight to the closed
+  // state would report it hidden with no box here.
+  const onClose = await page.evaluate(() => {
+    ;(document.querySelector('[data-testid="island-close"]') as HTMLElement).click()
+    const node = document.querySelector('[data-testid="island-portal-frame"]')!
+    return {
+      visibility: getComputedStyle(node).visibility,
+      height: Math.round(node.getBoundingClientRect().height),
+    }
+  })
+  expect(onClose.visibility).toBe('visible')
+  expect(onClose.height).toBeGreaterThan(0)
+
+  // and it animates out rather than jumping: the frame travels down first
+  await expect
+    .poll(async () => frame.evaluate((node) => node.getBoundingClientRect().top), {
+      timeout: 2000,
+    })
+    .toBeGreaterThan(openTop)
+
+  // then the exit completes and the runtime takes it out of layout
+  await expect
+    .poll(async () => frame.evaluate((node) => getComputedStyle(node).visibility), {
+      timeout: 3000,
+    })
+    .toBe('hidden')
+})

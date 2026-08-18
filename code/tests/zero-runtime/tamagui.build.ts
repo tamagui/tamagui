@@ -10,7 +10,10 @@ const fixture = process.env.TAMAGUI_ZERO_FIXTURE
 // owned outputCSS artifact, from which the build derives TAMAGUI_DID_OUTPUT_CSS.
 // It writes to its own path so a zero build and a global build never decide
 // what the other's assertions read.
-const isFullRuntimeProbe = fixture === 'full'
+// `rules-full` is the full-driver half of the three-artifact animation
+// measurement: the same authored rule module, ordinary compiled Tamagui, so
+// createAnimations and the component animation path stay reachable.
+const isFullRuntimeProbe = fixture === 'full' || fixture === 'rules-full'
 const isGlobalCSSTier = fixture?.startsWith('global') === true
 
 // The rule fixtures build one authored module at a time, with no island, so the

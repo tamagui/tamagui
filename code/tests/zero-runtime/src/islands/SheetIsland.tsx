@@ -46,6 +46,9 @@ export default function SheetIsland() {
             </Text>
             <PortalThemeProbe />
             <View data-testid="island-unique" width={137} height={19} />
+            <Button data-testid="island-close" onPress={() => setOpen(false)}>
+              close sheet
+            </Button>
           </View>
         </Sheet.Container>
       </Sheet>

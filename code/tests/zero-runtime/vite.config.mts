@@ -50,6 +50,8 @@ const inputs = {
   rules: 'index.html',
   'rules-report': 'index.html',
   'rules-motion': 'index.html',
+  // the full-driver half of the animation measurement, same rule module
+  'rules-full': 'index.html',
 } as const
 
 const fixture = (process.env.TAMAGUI_ZERO_FIXTURE || 'zero') as keyof typeof inputs
