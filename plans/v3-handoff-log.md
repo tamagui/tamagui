@@ -2423,3 +2423,94 @@ from build time to runtime to save bytes. The one added per-element cost is the
 compiled span's `style` attribute, which buys runtime parity rather than speed.
 Zero fixture at the end of the phase: 58,862 bytes gzip of JavaScript over a
 React baseline, 17,803 bytes gzip of CSS, 16 emitted modules, no Tamagui module.
+
+## 20. Zero-runtime Phase 5: the guards and the animated-number leaf (2026-08-18)
+
+Continues section 19. Block 2 Phase 5 is implemented. The per-receipt record is
+the "Phase 5 record" section of `plans/v3-zero-runtime-mode.md`; this is what a
+future reader needs that the code does not say.
+
+### The honest AnimatedNumber number, since the design asked for it by name
+
+An app that imports the animated-number hooks in zero mode pays **1,090 gzip**,
+measured as the whole-chunk difference between two builds of one module that
+differ only by those hooks. Per-module attribution puts the leaf at 944 in that
+bundle and 860 in the foundation's bench.
+
+The recorded pre-split figure for `createAnimations` was 2,344. Post-split, in
+the same bench with the same command, the two modules together attribute 2,342,
+of which 860 is the leaf and 1,482 is the component animation machinery. **So
+about a third of the driver survives an AnimatedNumber import, and claiming the
+whole 2,344 drops would have been false.** The design predicted this and refused
+the claim in advance; the measurement agrees with the refusal.
+
+Two things about the method matter more than the numbers:
+
+- **A full-runtime build of a module that never imports its config ships no
+  driver.** `useAnimationDriver` resolves off parsed config at runtime, so the
+  only static path to `createAnimations` runs through the config. The first
+  full-driver artifact built here came out the same size as the zero build with
+  zero animation modules in it, which reads like an enormous saving and is
+  actually an empty control. The fixture had to gain
+  `import '../../tamagui.config'` before it measured anything.
+- **Whole-chunk deltas and attributed marginals answer different questions.** The
+  full artifact is 78,476 against the zero pair's 57,659 and 58,749, but most of
+  that gap is config parsing and CSS generation, not animation. Only the
+  attribution decomposes it. Quoting the chunk delta as the animation saving
+  would inflate it by an order of magnitude.
+
+### The guards' receipt is behavioral, and both halves run
+
+`createComponent` and `createTamagui` open with the literal
+`process.env.TAMAGUI_RUNTIME === 'zero'` comparison and throw. Section 4's
+position is unchanged and was not re-derived: erasure creates module absence,
+guards do not, and Metro gets no byte-removal claim.
+
+That leaves the question of what a guard receipt can even assert without being
+vacuous. The answer used here is a test that calls each function twice, once
+under each literal, so the passing case proves the failing case was caused by the
+guard rather than by anything else in a large function. Disarming both guards
+fails both tests. The island builds are the same fact from the other side: an
+island entry is a client bundle full of `createComponent` calls running under
+`'full'`, and it renders.
+
+### Absence is cheap to assert and easy to make meaningless
+
+Three of this phase's builds assert an empty or one-element Tamagui module list.
+None of them means anything without the containment half, so the receipts build a
+fourth artifact, unminified, and fail if it does **not** contain
+`createAnimations` and `createTamagui`.
+
+That control also could not prove what it was first asked to. It does not contain
+`createComponent`, because the compiler lowered the module's only Tamagui
+component and the renderer has no importer even with the full runtime. The check
+was wrong, not the build. Component-renderer containment lives on the Phase 1
+negative control and the Phase 4 compiled-global probe, and asking a fixture for a
+fact it cannot have is how a control ends up quietly relaxed instead of moved.
+
+### Presence is observable synchronously, and that is the whole assertion
+
+The island's exit animation is the one animation behavior the zero work could
+plausibly disturb, and "the sheet closes" is not a test of it. A discrete click
+flushes React before `page.evaluate` returns, so the DOM at that instant is what
+the runtime decided for the closed state: with presence the exiting subtree is
+still visible with a real box, then travels, then goes `visibility: hidden`.
+
+Two candidate controls did not discriminate and are recorded so nobody retries
+them. Removing `transition="quick"` from the Sheet changes nothing, because the
+Sheet animates regardless. Waiting for the frame to leave the DOM never fires: it
+stays mounted and hidden. The control that works is rendering the sheet as
+`{open && <Sheet/>}`, which tears the subtree down on the same commit.
+
+### The rules tier gained two fixtures and the fixture map gained a full lane
+
+`src/rules/animated-number.absent.tsx` and `src/rules/animated-number.full.tsx`
+exist only for the measurement; keep them byte-identical to `animated-number.tsx`
+apart from the one line each is supposed to differ by, or the delta stops meaning
+what the record says it means. `TAMAGUI_ZERO_FIXTURE=rules-full` is a new fixture
+key that builds a rule module as ordinary compiled Tamagui.
+
+`src/rules/transition.tsx` is not a measurement fixture: it is the static
+transition behavior receipt, and it uses the config preset `medium` rather than a
+literal duration string on purpose, so the browser reporting `0.3s` proves the
+compiler resolved the preset against the config.

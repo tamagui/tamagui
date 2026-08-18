@@ -1721,3 +1721,148 @@ resolves modules, and every compilation awaits that one generation. Generating i
 per compilation instead would have let a later pass recreate a file the build had
 deliberately invalidated, which would have made the missing and stale controls
 unable to fail.
+
+## Phase 5 record: the runtime guards and the animated-number leaf
+
+Evidence added after Phase 5 ran. Same fixture, `code/tests/zero-runtime`, and
+the same attribution harness the foundation used.
+
+### The guards, and the only thing they are allowed to claim
+
+**READ.** `createComponent` and `createTamagui` each open with the literal
+`if (process.env.TAMAGUI_RUNTIME === 'zero')` and throw. Nothing sits between the
+bundler and the comparison. `createAnimations` got no branch, as decided: it is
+reachable only from config evaluation and full-runtime islands, both of which run
+under `'full'`.
+
+Section 4 is what these guards are for and it has not moved. Erasure removes the
+modules; the guards are a loud secondary failure for a reference that survived,
+and the seam Vite and webpack fold a large body at. No byte-removal claim is made
+for any of it, and no receipt in this phase treats guard folding as a mechanism.
+
+The receipt is behavioral and runs both halves, in
+`code/core/core-test/zeroRuntimeGuards.web.test.tsx`: under the `'zero'` literal
+each call throws its own message, and the identical call under `'full'` returns a
+component and a parsed config. Disarming both guards (comparing against a literal
+nothing sets) fails both tests, so the assertion has an independent variable
+rather than a throw that could have come from anywhere.
+
+The island receipts are the other half of the same fact from the opposite side. An
+island entry is a real client bundle full of `createComponent` calls, built with
+`TAMAGUI_RUNTIME='full'`; if that literal were wrong or missing, every island in
+the fixture would throw at module init instead of rendering a sheet.
+
+**READ, what the guards cost an ordinary app: nothing.** The message strings do
+not appear in the bench build (`code/comparisons/tamagui-bench`, single-chunk
+`gzip -9` 104,783) or in the fixture's own full-runtime build. Every integration
+defines the literal as `'full'` outside a zero client, so the comparison folds
+and both blocks are dropped. A build with no Tamagui bundler plugin leaves the
+`process.env` read in place and ships them; that is the only configuration where
+they cost anything.
+
+### What an app that imports AnimatedNumber actually pays
+
+Three artifacts, one authored module, same command, gzip level 9 on the emitted
+single chunk (`clientBytes` in `scripts/zero-receipts.mjs`, recorded as
+`animationSplit` in `vite-receipts.json`):
+
+| artifact | raw | gzip |
+| --- | ---: | ---: |
+| full driver: `animated-number.full`, ordinary compiled Tamagui | 246,223 | 78,476 |
+| zero, no AnimatedNumber: `animated-number.absent` | 184,101 | 57,659 |
+| zero, all four hooks: `animated-number` | 186,904 | 58,749 |
+
+`animated-number.absent` is the identical fixture with the hooks, their style
+callbacks and their driving effect removed and nothing else changed, so **1,090
+gzip is what a zero app pays for reaching for AnimatedNumber**, whole chunk, with
+no other variable moving. The leaf module's own share of that is 944 by
+attribution below; the rest is the call sites, which any real use would have too.
+
+The full artifact differs by one more line, `import '../../tamagui.config'`,
+because `useAnimationDriver` resolves the driver off parsed config at runtime:
+nothing statically imports `createAnimations` until the config does, and a
+full-runtime build of this module without its config ships no driver at all and
+measures nothing. Its 78,476 therefore carries config parsing and CSS generation
+as well as the driver, so the gap to either zero build overstates the animation
+saving by a wide margin.
+
+The number that decomposes cleanly comes from the attribution harness,
+`code/comparisons/attribute-bundle-gzip.ts`, marginal gzip per original module:
+
+| module | full driver | zero + hooks | zero, no hooks |
+| --- | ---: | ---: | ---: |
+| `animations-css::createAnimations.mjs` | 1,624 | absent | absent |
+| `animations-css::animated-number.mjs` | 903 | 944 | absent |
+| `config::animations-css.mjs` | 227 | absent | absent |
+
+**So claiming the whole driver drops for an app that uses AnimatedNumber is
+false, and the design was right to forbid it.** Roughly a third of it survives.
+What genuinely drops is `createAnimations` plus the config's driver construction.
+
+### The same measurement in the fixture the 2,344 came from
+
+**READ.** The foundation's figure was measured in `code/comparisons/tamagui-bench`
+with `EXTRACT=1 npx vite build --sourcemap`, so the post-split modules were
+measured there too, same command:
+
+```
+marginalGzip  minBytes  module
+        1482      4364  @tamagui/animations-css::createAnimations.mjs
+         860      2453  @tamagui/animations-css::animated-number.mjs
+        2342      6817  TOTAL
+```
+
+Single-chunk `gzip -9`: 104,783.
+
+2,342 against the recorded 2,344 for the unsplit `createAnimations`. **INFERRED,
+and worth stating as inference:** this is one measurement against a figure taken
+at an older commit, so the fair reading is that the split added no meaningful
+weight. Treating the two-byte gap as the split's exact cost would be reading more
+into it than the method supports. What it does establish directly is how the
+driver's cost divides: 860 in the leaf, 1,482 in the component animation
+machinery.
+
+### The DCE pair for the animation cluster
+
+**READ.** Absence checks over three builds prove nothing on their own, so the
+containment half is a fourth, unminified build of `animated-number.full` whose
+emitted module list is read from rolldown's `//#region` markers. It contains
+`animations-css/dist/esm/createAnimations.mjs` and `web/dist/esm/createTamagui.mjs`
+among 54 Tamagui modules; the receipts fail if it does not.
+
+It does **not** contain `createComponent.mjs`, and that is not a defect: the
+compiler lowered the module's only Tamagui component, so the renderer has no
+importer even with the full runtime. Component-renderer containment stays where it
+already was, on the Phase 1 negative control and the Phase 4 compiled-global probe.
+
+### What the browser proves
+
+**READ, Playwright.** `tests/vite-animated-number.test.ts`, 4 tests, on a graph
+whose only Tamagui module is the leaf:
+
+- the four hooks are imported from both the `tamagui` and `@tamagui/core` barrels
+  and both rewrite to the leaf, so `tamaguiModules` stays one entry;
+- the value animates and its completion callback fires;
+- `useAnimatedNumbersStyle` renders a value it hosts and a value it only
+  subscribes to, in one call, ending at `translateX(120px) scale(2)`;
+- `useAnimatedNumberReaction` is notified more than once before the settle, which
+  is what separates a live reaction from a single completion callback.
+
+`tests/vite-transition.test.ts`, 2 tests, static transitions with the component
+animation path absent: `transition="medium"` is a config preset, so `0.3s` in the
+browser is proof the compiler resolved it against the config rather than copying
+an authored string; the box then reads strictly between its two widths partway
+through, and settles. That graph ships **no** Tamagui module, not even the leaf.
+Both halves discriminate: deleting the prop reports `0s`, and swapping `medium`
+for the 80ms `quickest` makes the mid-flight sample read the settled width.
+
+`tests/vite-island.test.ts` gained the presence assertion. A discrete click flushes
+React before `evaluate` returns, so what the DOM holds at that moment is what the
+runtime decided: the exiting sheet is still visible with a real box, then travels
+down, then goes `visibility: hidden` when the exit completes. Rendering the sheet
+as `{open && <Sheet/>}` instead makes it fail, so the assertion separates presence
+from an immediate teardown rather than just observing that a sheet closes.
+
+The public `useAnimatedNumber` behavior the leaf now backs is unchanged:
+`code/kitchen-sink/tests/PublicAnimatedNumber.animated.test.tsx` passes on all
+four animation drivers, `animated-css` included.
