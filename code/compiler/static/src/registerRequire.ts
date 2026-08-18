@@ -20,6 +20,19 @@ let og: any
 
 class StaticEvaluationError extends Error {
   code = 'TAMAGUI_STATIC_EVALUATION_ERROR' as const
+
+  constructor(
+    readonly moduleName: string,
+    readonly importer: string,
+    readonly failedModule: string,
+    readonly reason: string,
+    options: ErrorOptions
+  ) {
+    super(
+      `[tamagui] Failed to evaluate module "${failedModule}" imported from "${importer}" while loading the Tamagui config and configured components.\nReason: ${reason}\nFix the module so it can run in Node during the build. If it is runtime-only and none of its exports create your Tamagui config or components, add "${moduleName}" to dangerouslyIgnoreStaticEvaluationModules in tamagui.build.ts.`,
+      options
+    )
+  }
 }
 
 const compiled = {}
@@ -169,10 +182,11 @@ export function registerRequire(
       }
       const importer = this?.filename || this?.id || '<unknown module>'
       const reason = err instanceof Error ? err.message : String(err)
-      throw new StaticEvaluationError(
-        `[tamagui] Failed to evaluate module "${path}" imported from "${importer}" while loading the Tamagui config and configured components.\nReason: ${reason}\nFix the module so it can run in Node during the build. If it is runtime-only and none of its exports create your Tamagui config or components, add "${path}" to dangerouslyIgnoreStaticEvaluationModules in tamagui.build.ts.`,
-        { cause: err }
-      )
+      const failedModule =
+        reason.match(/Cannot find native module ['"]([^'"]+)['"]/)?.[1] || path
+      throw new StaticEvaluationError(path, importer, failedModule, reason, {
+        cause: err,
+      })
     }
   }
 

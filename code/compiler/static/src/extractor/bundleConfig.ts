@@ -246,6 +246,48 @@ function getBundleKey(props: TamaguiOptions) {
   })
 }
 
+function getPackageNameFromPath(modulePath: string) {
+  const normalized = modulePath.split(sep).join('/')
+  const nodeModulesIndex = normalized.lastIndexOf('/node_modules/')
+  if (nodeModulesIndex === -1) {
+    return normalized.startsWith('.') || isAbsolute(normalized)
+      ? undefined
+      : normalized
+  }
+  const packagePath = normalized.slice(nodeModulesIndex + '/node_modules/'.length)
+  const parts = packagePath.split('/')
+  return parts[0]?.startsWith('@') ? parts.slice(0, 2).join('/') : parts[0]
+}
+
+function findStaticEvaluationError(error: unknown):
+  | {
+      moduleName: string
+      importer: string
+      failedModule: string
+      reason: string
+    }
+  | undefined {
+  let current = error
+  while (current instanceof Error) {
+    if (
+      'code' in current &&
+      current.code === 'TAMAGUI_STATIC_EVALUATION_ERROR' &&
+      'moduleName' in current &&
+      'importer' in current &&
+      'failedModule' in current &&
+      'reason' in current
+    ) {
+      return current as Error & {
+        moduleName: string
+        importer: string
+        failedModule: string
+        reason: string
+      }
+    }
+    current = current.cause
+  }
+}
+
 export async function getBundledConfig(props: TamaguiOptions, rebuild = false) {
   const bundleKey = getBundleKey(props)
   if (isBundling) {
@@ -278,6 +320,13 @@ let hasLoggedBuild = false
 
 export async function bundleConfig(props: TamaguiOptions, rebuild = false) {
   const bundleKey = getBundleKey(props)
+  const root = props.root || process.cwd()
+  const configEntry = props.config
+    ? getTamaguiConfigPathFromOptionsConfig(props.config, root)
+    : ''
+  const baseComponents = (props.components || []).filter((x) => x !== '@tamagui/core')
+  let componentOutPaths: string[] = []
+  let componentImports: string[][] = []
   // webpack is calling this a ton for no reason
   if (
     !rebuild &&
@@ -292,11 +341,7 @@ export async function bundleConfig(props: TamaguiOptions, rebuild = false) {
   try {
     isBundling = true
 
-    const root = props.root || process.cwd()
     const rootRequire = createRequire(join(root, 'package.json'))
-    const configEntry = props.config
-      ? getTamaguiConfigPathFromOptionsConfig(props.config, root)
-      : ''
     const tmpDir = join(root, '.tamagui')
     // esbuild inlines process.env.TAMAGUI_TARGET into these bundles (see bundle.ts),
     // so their contents are platform-specific. keep web and native on separate paths:
@@ -307,7 +352,6 @@ export async function bundleConfig(props: TamaguiOptions, rebuild = false) {
     const configFormat = configEntry ? detectModuleFormat(configEntry) : 'cjs'
     const configExt = configFormat === 'esm' ? '.mjs' : '.cjs'
     const configOutPath = join(tmpDir, `tamagui.config${platformSuffix}${configExt}`)
-    const baseComponents = (props.components || []).filter((x) => x !== '@tamagui/core')
     // resolve from the consumer root, then walk from the exported subpath because
     // packages are not required to export their package.json
     const componentFormats: Array<'esm' | 'cjs'> = baseComponents.map((mod) => {
@@ -326,7 +370,7 @@ export async function bundleConfig(props: TamaguiOptions, rebuild = false) {
         return 'cjs'
       }
     })
-    const componentOutPaths = baseComponents.map((componentModule, i) => {
+    componentOutPaths = baseComponents.map((componentModule, i) => {
       const ext = componentFormats[i] === 'esm' ? '.mjs' : '.cjs'
       return join(
         tmpDir,
@@ -426,6 +470,25 @@ export async function bundleConfig(props: TamaguiOptions, rebuild = false) {
           ? Object.keys(result.metafile.inputs).map((input) => resolve(root, input))
           : []
       )
+
+      componentImports = buildResults.slice(1).map((result) => {
+        if (!result?.metafile) {
+          return []
+        }
+        const entryPoint = Object.values(result.metafile.outputs).find(
+          (output) => output.entryPoint
+        )?.entryPoint
+        if (!entryPoint) {
+          return []
+        }
+        return [
+          ...new Set(
+            result.metafile.inputs[entryPoint]?.imports
+              .map((item) => getPackageNameFromPath(item.path))
+              .filter((moduleName): moduleName is string => Boolean(moduleName)) || []
+          ),
+        ]
+      })
 
       // only log once per process to avoid duplicate messages
       // also skip if _skipBuildLog is set (used during worker recycle warmup)
@@ -557,8 +620,26 @@ export async function bundleConfig(props: TamaguiOptions, rebuild = false) {
 
     return res
   } catch (err: any) {
+    const failure = findStaticEvaluationError(err)
+    const componentIndex = failure
+      ? componentOutPaths.findIndex(
+          (outputPath) =>
+            outputPath === failure.moduleName || outputPath === failure.importer
+        )
+      : -1
+    const configuredComponent = baseComponents[componentIndex]
+    if (failure && configuredComponent) {
+      const configuredImport =
+        configuredComponent.startsWith('.') || isAbsolute(configuredComponent)
+          ? componentImports[componentIndex]?.[0] || configuredComponent
+          : configuredComponent
+      throw new Error(
+        `[tamagui] Static evaluation could not proceed for configured component "${configuredComponent}".\nThe import "${configuredImport}" reached module "${failure.failedModule}", which failed during Node evaluation.\nReason: ${failure.reason}\nFix the failing module so it can run in Node during the build. If "${configuredImport}" is runtime-only and none of its exports create your Tamagui config or components, add "${configuredImport}" to dangerouslyIgnoreStaticEvaluationModules in tamagui.build.ts.`,
+        { cause: err }
+      )
+    }
     throw new Error(
-      `[tamagui] Failed to bundle and evaluate the Tamagui config and configured components. ${err instanceof Error ? err.message : String(err)}`,
+      `[tamagui] Static evaluation could not proceed for configured Tamagui config "${configEntry || '<default config>'}".\nReason: ${err instanceof Error ? err.message : String(err)}\nFix the failing import so it can run in Node during the build. If it is runtime-only and none of its exports create your Tamagui config or components, add its exact module name to dangerouslyIgnoreStaticEvaluationModules in tamagui.build.ts.`,
       { cause: err }
     )
   } finally {

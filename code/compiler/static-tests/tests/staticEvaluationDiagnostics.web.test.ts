@@ -1,4 +1,4 @@
-import { mkdtempSync, rmSync, writeFileSync } from 'node:fs'
+import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterAll, describe, expect, test } from 'vitest'
@@ -6,6 +6,7 @@ import { afterAll, describe, expect, test } from 'vitest'
 import { TamaguiPlugin } from '../../loader/src/TamaguiPlugin'
 import { esbundleTamaguiConfig } from '../../static/src/extractor/bundle'
 import {
+  bundleConfig,
   loadComponentsInner,
   loadComponentsInnerSync,
 } from '../../static/src/extractor/bundleConfig'
@@ -15,6 +16,18 @@ const root = mkdtempSync(join(tmpdir(), 'tamagui-static-evaluation-'))
 const componentPath = join(root, 'components.cjs')
 const esmComponentPath = join(root, 'components.mjs')
 const topLevelAwaitPath = join(root, 'top-level-await.mjs')
+const configuredComponentPath = join(root, 'configured-component.ts')
+const dependencyPath = join(root, 'node_modules', 'audit-vector-icons')
+mkdirSync(dependencyPath, { recursive: true })
+writeFileSync(
+  join(dependencyPath, 'package.json'),
+  JSON.stringify({ name: 'audit-vector-icons', main: 'index.js' })
+)
+writeFileSync(
+  join(dependencyPath, 'index.js'),
+  `throw new Error("Cannot find native module 'AuditNative'")\n`
+)
+writeFileSync(configuredComponentPath, `export * from 'audit-vector-icons'\n`)
 writeFileSync(
   componentPath,
   `require('audit-runtime-only-module')\nmodule.exports = { PlainValue: {} }\n`
@@ -46,6 +59,26 @@ describe('static evaluation diagnostics', () => {
     expect(message).toContain("Cannot find module 'audit-runtime-only-module'")
     expect(message).toContain(
       'add "audit-runtime-only-module" to dangerouslyIgnoreStaticEvaluationModules'
+    )
+  })
+
+  test('connects a bundled dependency failure to the configured import', async () => {
+    await expect(
+      bundleConfig(
+        {
+          root: process.cwd(),
+          config: 'tests/lib/tamagui.config.cjs',
+          components: [configuredComponentPath],
+          platform: 'web',
+        },
+        true
+      )
+    ).rejects.toThrowError(
+      expect.objectContaining({
+        message: expect.stringMatching(
+          /Static evaluation could not proceed for configured component .*configured-component\.ts.*The import "audit-vector-icons" reached module "AuditNative".*dangerouslyIgnoreStaticEvaluationModules/s
+        ),
+      })
     )
   })
 
