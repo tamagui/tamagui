@@ -6,6 +6,7 @@
  *   bun code/comparisons/run-benchmarks.ts
  *   bun code/comparisons/run-benchmarks.ts --samples=10 --seed=1234
  *   bun code/comparisons/run-benchmarks.ts --output=/tmp/benchmarks.json
+ *   bun code/comparisons/run-benchmarks.ts --check-current
  */
 
 import { execFileSync, spawn, type ChildProcess } from 'child_process'
@@ -34,6 +35,7 @@ import { acquireBenchmarkLock } from './shared/benchmarkLock'
 const args = process.argv.slice(2)
 const VERIFY_WORKLOAD_ONLY = args.includes('--verify-workload')
 const BUILD_ONLY = args.includes('--build-only')
+const CHECK_ARTIFACT_CURRENT = args.includes('--check-current')
 const BUNDLE_ATTRIBUTION_PATH = args
   .find((arg) => arg.startsWith('--bundle-attribution='))
   ?.slice(21)
@@ -950,6 +952,40 @@ ${rows('rerender')}
 }
 
 async function main() {
+  if (CHECK_ARTIFACT_CURRENT) {
+    const report = JSON.parse(readFileSync(OUTPUT_PATH, 'utf8')) as BenchmarkReport
+    const recordedCommit = String(report.metadata.commit ?? '')
+    if (!/^[0-9a-f]{40}$/.test(recordedCommit)) {
+      throw new Error(`${OUTPUT_PATH} does not record a full Git commit`)
+    }
+
+    const currentCommit = git('rev-parse', 'HEAD')
+    if (recordedCommit !== currentCommit) {
+      const changedPaths = git(
+        'diff',
+        '--name-only',
+        `${recordedCommit}..${currentCommit}`
+      )
+        .split('\n')
+        .filter(Boolean)
+        .filter(
+          (path) =>
+            path !== 'code/comparisons/output/benchmarks.json' &&
+            path !== 'code/comparisons/output/benchmarks.html'
+        )
+      if (changedPaths.length) {
+        throw new Error(
+          `${OUTPUT_PATH} benchmarks ${recordedCommit}, but current tip is ${currentCommit}; changed paths outside the generated report:\n${changedPaths.join('\n')}`
+        )
+      }
+    }
+
+    console.log(
+      `${OUTPUT_PATH} is current for ${recordedCommit}; later commits only republish its generated JSON and HTML`
+    )
+    return
+  }
+
   const tamaguiWorkload = verifyTamaguiWorkload()
   if (VERIFY_WORKLOAD_ONLY) {
     console.log(JSON.stringify(tamaguiWorkload, null, 2))
@@ -958,10 +994,12 @@ async function main() {
   if (!Number.isInteger(NUM_SAMPLES) || NUM_SAMPLES < 3) {
     throw new Error('--samples must be an integer of at least 3')
   }
-  if (!Number.isInteger(NUM_WARMUPS) || NUM_WARMUPS < 2) {
-    throw new Error('--warmups must be an integer of at least 2')
+  if (!Number.isInteger(NUM_WARMUPS) || NUM_WARMUPS < 1) {
+    throw new Error('--warmups must be an integer of at least 1')
   }
 
+  const benchmarkCommit = git('rev-parse', 'HEAD')
+  const benchmarkDirty = git('status', '--porcelain').length > 0
   const buildRoot = mkdtempSync(join(tmpdir(), 'tamagui-production-bench-'))
   const previews: ChildProcess[] = []
   const random = createRandom(SEED)
@@ -1193,13 +1231,19 @@ async function main() {
       const metadataPage = await context.newPage()
       const userAgent = await metadataPage.evaluate(() => navigator.userAgent)
       await metadataPage.close()
+      const finalCommit = git('rev-parse', 'HEAD')
+      if (finalCommit !== benchmarkCommit) {
+        throw new Error(
+          `Git tip changed during the benchmark (${benchmarkCommit} -> ${finalCommit}); refusing to publish mixed-tree results`
+        )
+      }
       const report: BenchmarkReport = {
         schemaVersion: 2,
         metadata: {
           generatedAt: new Date().toISOString(),
-          commit: git('rev-parse', 'HEAD'),
+          commit: benchmarkCommit,
           branch: git('branch', '--show-current'),
-          dirty: git('status', '--porcelain').length > 0,
+          dirty: benchmarkDirty,
           platform: platform(),
           osRelease: release(),
           architecture: arch(),
@@ -1252,7 +1296,7 @@ async function main() {
 }
 
 const releaseBenchmarkLock =
-  VERIFY_WORKLOAD_ONLY || BUILD_ONLY || BEHAVIOR_VALIDATION_PATH
+  VERIFY_WORKLOAD_ONLY || BUILD_ONLY || CHECK_ARTIFACT_CURRENT || BEHAVIOR_VALIDATION_PATH
     ? undefined
     : acquireBenchmarkLock(
         `web benchmark timing with ${NUM_WARMUPS} warmups and ${NUM_SAMPLES} samples`
