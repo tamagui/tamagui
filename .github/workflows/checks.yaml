@@ -297,6 +297,78 @@ jobs:
           retention-days: 7
           include-hidden-files: true
 
+  # The zero-runtime fixture and starter were kept out of CI while the fixture
+  # was still moving. One runner each: the Metro receipts read the plan cache's
+  # options hash off the project's own sources, so a second integration building
+  # in the same root re-keys the cache mid-run, and core-test's
+  # motionDriverConversion and safeAreaVariables.native measure real time and go
+  # unreliable under CPU contention. Separate runners keep both apart.
+  v3-zero-runtime:
+    needs: playwright-browsers
+    if: >-
+      (github.event_name == 'push' && startsWith(github.ref_name, 'v3')) ||
+      (github.event_name == 'pull_request' && (github.base_ref == 'v3-beta' || startsWith(github.base_ref, 'v3-') || startsWith(github.head_ref, 'v3-')))
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # every gate, control and per-rule receipt across Vite, Next and Metro
+          - name: fixture
+            dir: code/tests/zero-runtime
+            build: bun run receipts
+          # the contract-compliant app, built six ways, with its size gate
+          - name: starter
+            dir: code/starters/zero-runtime
+            build: node scripts/measure.mjs
+    env:
+      NODE_OPTIONS: '--max-old-space-size=6144'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 1
+
+      - name: Install
+        uses: ./.github/actions/install
+
+      - name: Get Playwright version
+        id: pw-version
+        run: |
+          version=$(node -p "require('./package.json').devDependencies['@playwright/test']")
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ steps.pw-version.outputs.version }}-chromium-webkit
+
+      - name: Install Playwright system dependencies
+        run: bunx playwright install-deps chromium
+
+      - name: Build every graph and record its receipts
+        working-directory: ${{ matrix.dir }}
+        run: ${{ matrix.build }}
+
+      - name: Run the browser contract
+        working-directory: ${{ matrix.dir }}
+        run: npx playwright test
+
+      - name: Upload receipts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: v3-zero-runtime-${{ matrix.name }}
+          path: |
+            ${{ matrix.dir }}/.tamagui/zero/*.json
+            ${{ matrix.dir }}/receipts.json
+            ${{ matrix.dir }}/test-results
+          retention-days: 7
+          include-hidden-files: true
+
   v3-bundle-delta:
     if: github.event_name == 'pull_request' && (github.base_ref == 'v3-beta' || startsWith(github.base_ref, 'v3-') || startsWith(github.head_ref, 'v3-'))
     runs-on: ubuntu-latest
