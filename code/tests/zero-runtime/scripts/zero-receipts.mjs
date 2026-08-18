@@ -11,6 +11,7 @@ import { gzipSync } from 'node:zlib'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { hashZeroIdentity, isTamaguiModuleId } from '@tamagui/static'
+import { assertMultiFileRules } from './multiFileRules.mjs'
 
 const root = path.dirname(path.dirname(fileURLToPath(import.meta.url)))
 const zeroDir = path.join(root, '.tamagui/zero')
@@ -605,11 +606,7 @@ receipts.compilerContract = {
 }
 
 if (multi.ok) throw new Error('the multi-file rule fixture built successfully')
-if (multiEnforceJSON.violations.length !== 4) {
-  throw new Error(
-    `the multi-file fixture reported ${multiEnforceJSON.violations.length} violations, expected 4`
-  )
-}
+assertMultiFileRules('vite', multiEnforceJSON.violations)
 if (!receipts.compilerContract.reportMode.exitedSuccessfully) {
   throw new Error(`report mode did not exit successfully:\n${multiReport.output}`)
 }

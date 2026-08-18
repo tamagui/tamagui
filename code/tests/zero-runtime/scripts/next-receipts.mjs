@@ -8,6 +8,7 @@ import { gzipSync } from 'node:zlib'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { hashZeroIdentity } from '@tamagui/static'
+import { assertMultiFileRules } from './multiFileRules.mjs'
 
 const root = path.dirname(path.dirname(fileURLToPath(import.meta.url)))
 const zeroDir = path.join(root, '.tamagui/zero')
@@ -138,10 +139,38 @@ receipts.multiFileAggregation = {
   })),
 }
 if (multi.ok) throw new Error('the multi-file rule fixture built successfully')
-if (multiViolations.violations.length !== 4) {
-  throw new Error(
-    `the multi-file fixture reported ${multiViolations.violations.length} violations, expected 4`
-  )
+assertMultiFileRules('next', multiViolations.violations)
+
+// 2d. report mode. The same control page, every analysis run, and the build
+// exits successfully: an integration whose preview quietly reported less than
+// its enforcing build would send an author to fix a list that is not the list.
+const multiReport = (() => {
+  const target = path.join(root, 'pages', 'rule-multi.report.tsx')
+  copyFileSync(path.join(root, 'fixtures', 'next-rule-multi.tsx'), target)
+  try {
+    return build({ TAMAGUI_ZERO_FIXTURE: 'report' })
+  } finally {
+    rmSync(target, { force: true })
+  }
+})()
+// both modes write the same hardcoded receipt name, so the report build
+// overwrites the enforce one on disk. `multiViolations` was read before it ran,
+// which is what makes the comparison below a comparison at all.
+const multiReportViolations = read('next-zero.violations.json')
+receipts.reportMode = {
+  exitedSuccessfully: multiReport.ok,
+  enforceMode: multiViolations.mode,
+  reportMode: multiReportViolations.mode,
+  sameViolations:
+    JSON.stringify(multiViolations.violations.map(({ file, ...rest }) => rest)) ===
+    JSON.stringify(multiReportViolations.violations.map(({ file, ...rest }) => rest)),
+}
+if (!multiReport.ok) {
+  throw new Error(`report mode did not exit successfully:\n${multiReport.output}`)
+}
+assertMultiFileRules('next report', multiReportViolations.violations)
+if (!receipts.reportMode.sameViolations) {
+  throw new Error('report mode emitted a different violation list than enforce mode')
 }
 
 // 3. an illegal static import of a declared island

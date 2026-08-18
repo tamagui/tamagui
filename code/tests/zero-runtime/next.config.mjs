@@ -9,7 +9,13 @@ import { fileURLToPath } from 'node:url'
 const fixture = process.env.TAMAGUI_ZERO_FIXTURE || 'zero'
 
 const pageSuffix =
-  fixture === 'zero' ? 'zero' : fixture === 'global-unimported' ? fixture : 'global'
+  fixture === 'zero'
+    ? 'zero'
+    : fixture === 'report'
+      ? 'report'
+      : fixture === 'global-unimported'
+        ? fixture
+        : 'global'
 
 const artifact = fileURLToPath(
   new URL('.tamagui/global/tamagui-global.css', import.meta.url)

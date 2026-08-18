@@ -2216,3 +2216,217 @@ core-test native 293 passed / 7 expected fail / 9 skipped; static-tests native
 plus this phase's 4); `bun run receipts` exit 0 across all three integrations;
 starter `measure` exit 0 across all six builds and its Playwright 12/12; root
 typecheck, lint, `check:deps`, `check:dom-types` and `check:exports:web` clean.
+
+## Phase 8 record: the close-out, and what the starter's two defects turned out to be
+
+Block 2's close-out. It fixed the two defects Phase 7 found, one it found while
+looking, wired the fixture and the starter into CI, and extended per-rule
+coverage to Next and Metro. The headline is that Phase 7 got the scope of its
+first defect wrong in both directions, and finding that out changed what was
+fixed.
+
+### Ordinary compiled Tamagui does not recover a `styled()` transition either
+
+Phase 7 recorded the defect and did not test the ordinary compiled path. That
+answer decides whether it is a zero-mode bug or an engine-wide one, so it was
+the first thing measured.
+
+READ, three boxes in one module differing only in where the transition is
+written, built as ordinary compiled Tamagui (`TAMAGUI_ZERO_FIXTURE=rules-full`,
+`experimental: {}`, 777 modules, no zero mode anywhere), served, and read in
+Chromium. The positive was declared first: the plain `View` case must read
+`0.3s` and interpolate, or the probe is broken rather than the engine.
+
+| where the transition is written | before | after |
+| --- | --- | --- |
+| on a plain `View` (the control) | 0.3s, 156.8px at 120ms | unchanged |
+| in a `styled()` definition | **0s, snapped to 200px** | **0.3s, 155.9px at 120ms** |
+| at a styled component's call site | 0.3s, 156.8px at 120ms | unchanged |
+
+So Phase 7 was wrong in both directions at once. The call site was never broken,
+which makes it the regression guard for the fix rather than a second symptom.
+And ordinary compiled Tamagui does not recover the definition case, so this was
+never a zero-mode bug.
+
+The runtime is not what is broken. READ: rendered through the pure runtime with
+no compiler at all, all three shapes put
+`transition: all 300ms cubic-bezier(0.25, 0.1, 0.25, 1)` on the host element.
+`styled({ transition })` is a supported authoring shape the engine implements;
+the compiler loses it and then flattens the element to a `div`, leaving nothing
+to recover it.
+
+### One root cause, and it was never only about `transition`
+
+`compilerHost.ts` decided lowering from the call site's props alone.
+`completeProps` merges the styled definition's `defaultProps` about 350 lines
+further down, so `animationNames` never saw a definition's animation props and
+the lowering proceeded as if they had not been written.
+
+Every prop in `runtimeAnimationProps` had the same hole. READ, one prop per
+module, each written once in a definition and once at a call site, built in both
+tiers:
+
+| prop in a `styled()` definition | ordinary compiled | the same prop at the CALL SITE |
+| --- | --- | --- |
+| `transition` (preset) | flattened, prop dropped | emits its `_t-` class |
+| `animateOnly` | flattened, prop dropped | RETAINS the component |
+| `animation` | flattened, prop dropped | RETAINS the component |
+| `animatePresence` | flattened, prop dropped | RETAINS the component |
+| `animatedBy` | lowered correctly | lowered correctly |
+
+The call site being correct for the identical value is what makes this
+conclusive; no assertion written from first principles would have been as good
+an oracle.
+
+`animatedBy` escapes for a reason worth stating exactly, because it is not that
+it was handled: the probe used `animatedBy="default"`, which resolves to the
+same configured CSS driver either way, so the correct answer and the dropped
+answer are identical. INFERRED, not READ. The fix covers it regardless.
+
+**In zero mode all of them built GREEN**, and one of those is a missed
+violation, not a missed emit: `animateOnly` in a styled definition shipped a
+zero build while the identical value at the call site is a hard Rule 5 error.
+
+The fix merges the component's `defaultProps` into the animation decision with
+the same `core.mergeProps` and the same precedence `completeProps` uses below,
+so there is one answer to what a prop's value is. Both halves are now receipted:
+the emit half by the transition boxes, the report half by `animateOnly`,
+`animation` and `animatePresence` each failing their build.
+
+The diagnostic names the origin, which matters more than it sounds:
+`animateOnly in the styled() definition of Card requires a component animation
+runtime`. Without it an author reads the message against JSX that does not carry
+the prop.
+
+One divergence recorded rather than smoothed over: from a styled definition
+`animation` and `animatePresence` report Rule 5, while at a call site they
+report Rule 2. That is pre-existing. A bare `View` at a call site is
+`partialRuntimeSafe`, so it takes the retained-with-runtime-style-program path
+and the retained live reference is what Rule 2 catches; a styled component has
+`defaultProps`, so it is not `partialRuntimeSafe` and hits the Rule 5 bailout
+directly. Rule 5 is the more accurate of the two, so they were not equalised.
+
+### `enterStyle` / `exitStyle` were a false finding, and the lesson generalises
+
+A blast-radius sweep reported that enter/exit animations do not run in any
+compiled web build. **That was wrong and is retracted.** `enterStyle` and
+`exitStyle` are V2 prop names. V3 does not implement them: the string
+`enterStyle` appears nowhere in `code/core/web/src`. V3 expresses the same thing
+as clause modifiers on the style value, `opacity="1 enter:0 exit:0"`, resolved
+by `directStyle.ts:354` into `.t_unmounted` / `.t_exiting` scoped CSS, with
+`codemod-flat-values/src/legacyConditions.ts:15` mapping the old spelling to the
+new one. `tsc` rejects the V2 spelling outright.
+
+READ, re-probed with the real V3 shape: `opacity="1 enter:0 exit:0"` is a Rule 5
+violation in zero mode and retains the component in ordinary compiled mode, in
+both authoring positions. Already correct.
+
+The lesson is worth more than the bug would have been. **A probe of a prop that
+does not exist cannot fail informatively.** Green means not-implemented, red
+would also have meant not-implemented, so the result carries no information and
+looks exactly like a finding. It is the same shape as a control that cannot
+discriminate, one level further up: validating the behavior of a thing before
+validating that the thing exists. One grep of `code/core/web/src` would have
+settled it before any build ran.
+
+### Defect 2 is real, and it is worth 17 gzip bytes on the starter
+
+Identical atomic rules were emitted once per element rather than once per
+identifier. The fix is at the source, in `lowerModule`: accumulate rules into a
+`Set` instead of an array.
+
+First use wins, which is not a judgement call — it is what the runtime already
+does. READ: `insertStyleRule.tsx`'s `shouldInsertStyleRules` skips an identifier
+already in the sheet (`maxToInsert` is 1) and appends the rest in first-use
+order. So the compiled artifact now matches the runtime's own ordering model
+rather than diverging from it, which is a stronger justification than "identical
+strings are safe to drop" and was the reason to prefer it over a bucket-aware
+reorder.
+
+Measured on the starter's artifact, which is the transferred-bytes question the
+defect was raised about:
+
+| | raw | gzip | duplicate rules |
+| --- | --- | --- | --- |
+| before | 11,944 | 2,745 | 8 |
+| after | 11,750 | 2,732 | 2 |
+
+**13 gzip bytes.** Gzip compresses a repeated rule almost perfectly, so the raw
+saving of 194 bytes is nearly all it is worth on the wire; the real gain is
+fewer CSSOM rules to parse. Do not quote this as a bundle win. On the fixture's
+own zero build the same change removed all 13 duplicates.
+
+The remaining 2 are cross-module (`._g-2002439909{gap:16px}` and
+`._c-533586090{color:var(--color)}`, shared between `Screen.tsx`, `Dashboard.tsx`
+and the island). **They are deliberately not fixed, and the reason is not
+laziness.** The artifact holds each module's CSS as one already-joined string,
+and by the time it gets there a user's `wrapExtractedCSS` hook may have wrapped
+it in anything, `@layer` included. Deduping at that level means parsing those
+strings back into rules, which can silently corrupt output for 57 raw bytes.
+The robust version is a plan schema change, `css: string` becoming
+`cssRules: string[]`, which invalidates Metro's plan cache and touches all three
+integrations. That trade is the owner's to make, not a close-out's.
+
+### Defect 3 was a gate bug, not a missing message
+
+An app whose own package is named `@tamagui/*` failed the graph gate because
+`isTamaguiModuleId` read the nearest package.json name. The brief allowed a
+message instead of a fix "unless you find a principled way to tell an app's own
+package from a Tamagui one". There is one, and it needs no name list:
+**Tamagui reaches a build as a resolved dependency, so its modules are owned by
+a different package.json than the one being built.** `checkZeroGraph` derives
+the project's own manifest from its entries and excludes it.
+
+The message improved too, for the failures that remain real: each forbidden
+module now names its owning package, which the path frequently does not show
+(`@tamagui/web` resolves to `code/core/web/dist/...` in this monorepo).
+
+### Coverage beyond Vite, at no extra build
+
+The seven per-rule fixtures and the report-mode receipt were Vite-only. Rather
+than 28 more builds, the multi-file fixture grew to cover every rule in one
+build, and all three integrations assert the same per-site list through one
+shared `scripts/multiFileRules.mjs`.
+
+It needed five modules, not one, and the reason is a real constraint:
+**a module that already has a compiler-local violation never reaches reference
+erasure**, so the rules erasure reports cannot share a module with the rules the
+lowering pass reports. A first attempt put rules 2, 5 and 7 in one module and
+got only rule 5; that near-miss is exactly the "control that cannot fail" shape,
+since 5 violations would have looked like a working fixture. `delta.tsx` (rule 2)
+and `epsilon.tsx` (rule 7) exist for that reason.
+
+Eight sites, rules 1 through 7, in one build per integration. Rule 2 appears
+twice at one source position because both `View` and `Text` are live references
+on that line, and each unerasable binding is named separately.
+
+Next and Metro also gained the report-mode receipt they lacked: the same control
+input, every analysis run, exit 0, and the identical violation list. Both
+integrations write their enforce and report receipts to the same hardcoded
+filename, so the enforce list is read before the report build runs; that
+ordering is what makes the comparison a comparison.
+
+### CI
+
+`v3-zero-runtime` in `.github/workflows/checks.yaml`, a two-entry matrix so the
+fixture and the starter get a runner each. That is deliberate on both counts the
+brief named: the Metro receipts key their plan cache on the project's own
+sources, so a second integration building in the same root re-keys it mid-run;
+and `motionDriverConversion` and `safeAreaVariables.native` measure real time, so
+they must not share a runner with 45 minutes of bundling. Neither threshold was
+touched.
+
+### Baselines at the close-out
+
+core-test web **471 passed** / 2 skipped / 1 todo; core-test native **293
+passed** / 7 expected fail / 9 skipped; static-tests native **79**, web **172**
+(165 plus this phase's 7), webpack **20**; metro-plugin **6**; zero-runtime
+Playwright **46/46** (45 plus this phase's 1); `bun run receipts` exit 0 across
+all three integrations, each now asserting all seven rules and its own
+report-mode preview; starter `node scripts/measure.mjs` exit 0 across all six
+builds and its Playwright **12/12**; root typecheck, lint, `check:deps`,
+`check:dom-types` and `check:exports:web` clean.
+
+The starter's CSS moved with the dedupe: base **2,714 to 2,701 gzip**, islands
+2,745 to 2,732, Metro islands 2,883 to 2,867. Every other figure in the Phase 7
+table is unchanged.

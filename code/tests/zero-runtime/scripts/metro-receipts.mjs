@@ -8,6 +8,7 @@ import { mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { hashZeroIdentity } from '@tamagui/static'
+import { assertMultiFileRules } from './multiFileRules.mjs'
 
 const root = path.dirname(path.dirname(fileURLToPath(import.meta.url)))
 const zeroDir = path.join(root, '.tamagui/zero')
@@ -133,10 +134,31 @@ receipts.multiFileAggregation = {
   })),
 }
 if (multi.ok) throw new Error('the multi-file rule fixture built successfully')
-if (multiViolations.violations.length !== 4) {
-  throw new Error(
-    `the multi-file fixture reported ${multiViolations.violations.length} violations, expected 4`
-  )
+assertMultiFileRules('metro', multiViolations.violations)
+
+// report mode: the same control module, every analysis run, exits successfully
+// its own out path so the enforcing zero bundle stays on disk for later steps
+const multiReport = bundle('src/rules/multi.tsx', 'dist-metro-report/main.js', {
+  TAMAGUI_ZERO_FIXTURE: 'report',
+})
+// both modes write the same hardcoded receipt name, so the report build
+// overwrites the enforce one on disk. `multiViolations` was read before it ran,
+// which is what makes the comparison below a comparison at all.
+const multiReportViolations = read('metro-zero.violations.json')
+receipts.reportMode = {
+  exitedSuccessfully: multiReport.ok,
+  enforceMode: multiViolations.mode,
+  reportMode: multiReportViolations.mode,
+  sameViolations:
+    JSON.stringify(multiViolations.violations.map(({ file, ...rest }) => rest)) ===
+    JSON.stringify(multiReportViolations.violations.map(({ file, ...rest }) => rest)),
+}
+if (!multiReport.ok) {
+  throw new Error(`report mode did not exit successfully:\n${multiReport.output}`)
+}
+assertMultiFileRules('metro report', multiReportViolations.violations)
+if (!receipts.reportMode.sameViolations) {
+  throw new Error('report mode emitted a different violation list than enforce mode')
 }
 
 // 3. an illegal static import of a declared island

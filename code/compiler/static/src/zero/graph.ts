@@ -79,7 +79,10 @@ export function owningPackageOf(id: string): OwningPackage | null {
     if (existsSync(manifest)) {
       let owner: OwningPackage | null = null
       try {
-        owner = { name: JSON.parse(readFileSync(manifest, 'utf8')).name ?? null, manifest }
+        owner = {
+          name: JSON.parse(readFileSync(manifest, 'utf8')).name ?? null,
+          manifest,
+        }
       } catch {
         owner = { name: null, manifest }
       }
@@ -113,7 +116,10 @@ export function isTamaguiModuleId(id: string, ownManifest?: string | null): bool
   return owner.name === 'tamagui' || owner.name.startsWith('@tamagui/')
 }
 
-export function isForbiddenZeroModuleId(id: string, ownManifest?: string | null): boolean {
+export function isForbiddenZeroModuleId(
+  id: string,
+  ownManifest?: string | null
+): boolean {
   if (!isTamaguiModuleId(id, ownManifest)) return false
   return !ALLOWED_ZERO_MODULE.test(id)
 }

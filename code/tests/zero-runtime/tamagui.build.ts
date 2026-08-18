@@ -34,29 +34,37 @@ const isGlobalCSSTier = fixture?.startsWith('global') === true
 // enforces; `rules-report` runs the same analysis and exits successfully.
 const isRuleFixture = fixture?.startsWith('rules') === true
 
+// `report` is the same preview for the integrations whose entry is not a rule
+// module: Next builds one control page under its own page extension and Metro
+// builds the control module directly, so neither needs the island loader or the
+// artifact an enforcing build owns.
+const isReportFixture = fixture === 'report'
+
 export default {
   components: ['tamagui'],
   config:
     fixture === 'rules-motion' ? './tamagui.motion.config.ts' : './tamagui.config.ts',
-  ...(isFullRuntimeProbe
-    ? { experimental: {} }
-    : isGlobalCSSTier
-      ? {
-          outputCSS: './.tamagui/global/tamagui-global.css',
-          experimental: {},
-        }
-      : isRuleFixture
-        ? // `report` keeps the full runtime and owns no artifact, so it sets no
-          // outputCSS: the compiled-global tier is a separate feature and would
-          // otherwise require these entries to import an artifact they do not own
-          fixture === 'rules-report'
-          ? { experimental: { zeroRuntime: 'report' as const } }
+  ...(isReportFixture
+    ? { experimental: { zeroRuntime: 'report' as const } }
+    : isFullRuntimeProbe
+      ? { experimental: {} }
+      : isGlobalCSSTier
+        ? {
+            outputCSS: './.tamagui/global/tamagui-global.css',
+            experimental: {},
+          }
+        : isRuleFixture
+          ? // `report` keeps the full runtime and owns no artifact, so it sets no
+            // outputCSS: the compiled-global tier is a separate feature and would
+            // otherwise require these entries to import an artifact they do not own
+            fixture === 'rules-report'
+            ? { experimental: { zeroRuntime: 'report' as const } }
+            : {
+                outputCSS: './.tamagui/zero/tamagui-zero.css',
+                experimental: { zeroRuntime: true },
+              }
           : {
               outputCSS: './.tamagui/zero/tamagui-zero.css',
-              experimental: { zeroRuntime: true },
-            }
-        : {
-            outputCSS: './.tamagui/zero/tamagui-zero.css',
-            experimental: { zeroRuntime: { islands: ['src/islands/SheetIsland.tsx'] } },
-          }),
+              experimental: { zeroRuntime: { islands: ['src/islands/SheetIsland.tsx'] } },
+            }),
 } satisfies TamaguiBuildOptions

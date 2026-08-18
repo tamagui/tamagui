@@ -2731,3 +2731,121 @@ metro-plugin 6; zero-runtime Playwright 45/45; `bun run receipts` exit 0 across
 all three integrations; starter `measure` exit 0 across all six builds and its
 Playwright 12/12; root typecheck, lint, `check:deps`, `check:dom-types` and
 `check:exports:web` clean.
+
+## 23. Zero-runtime Phase 8: block 2 close-out (2026-08-18)
+
+Block 2 is closed. The per-receipt record is the "Phase 8 record" section of
+`plans/v3-zero-runtime-mode.md`; this is what a future reader needs that the
+code does not say.
+
+### Phase 7's first defect was mis-scoped in both directions
+
+Worth carrying forward because the correction changed what got fixed, not just
+how it was described.
+
+Phase 7 reported that a `transition` written in a `styled()` definition **or**
+passed to that styled component at its call site emits nothing. READ, ordinary
+compiled Tamagui in a real browser: **the call site was never broken.** Only the
+`styled()` definition drops it. The call site is therefore the regression guard
+for the fix rather than a second symptom, and it is a better oracle than
+anything written from first principles, because it is the identical value going
+through the same compiler on the same element.
+
+Phase 7 also left the scope question open, and the answer was the load-bearing
+one: **ordinary compiled Tamagui does not recover it either.** So it was never a
+zero-mode bug. The runtime is fine (uncompiled, all three shapes emit the
+transition); the compiler drops the prop and then flattens the element to a
+`div`, so there is no runtime left to recover it in any tier.
+
+The generalisation: `compilerHost.ts` decided lowering from call-site props
+while `completeProps` merged the styled definition's defaults 350 lines later.
+Every prop in `runtimeAnimationProps` had that hole. In zero mode `animateOnly`
+in a styled definition **built green**, which is a missed VIOLATION, not a
+missed emit — the gate that exists to make contract breaches unshippable had a
+hole in it.
+
+### A probe of a prop that does not exist cannot fail informatively
+
+The most reusable thing in this phase, and it cost a false finding sent onward
+before it was caught.
+
+Asked to check the blast radius on `enterStyle` and `exitStyle`, the sweep
+probed them, found them dropped in every compiled build, and reported that
+enter/exit animations do not run anywhere. They are V2 prop names. V3 does not
+implement them — `enterStyle` appears nowhere in `code/core/web/src` — and
+expresses the same thing as clause modifiers, `opacity="1 enter:0 exit:0"`,
+which `directStyle.ts:354` resolves into `.t_unmounted` / `.t_exiting` CSS.
+`tsc` rejects the old spelling. Re-probed with the real shape, both positions
+and both tiers were already correct.
+
+Green meant "not implemented". Red would also have meant "not implemented". The
+result could not discriminate, and it looked exactly like a finding. This is the
+control-that-cannot-fail trap one level up: validating the behavior of a thing
+before validating that the thing exists. One grep before the first build would
+have settled it.
+
+Retract immediately and loudly when this happens. The false claim had already
+been forwarded; reporting it within minutes is what limited the damage to one
+message rather than a block 3 planning item and an owner-level architecture
+decision about a feature that works.
+
+### Deduping compiled CSS is only safe because the runtime already does it
+
+Atomic rules were emitted once per element. The obvious fix — drop later
+duplicates — is NOT obviously safe: rules at equal specificity are ordered by
+position, and a global first-wins dedupe can move a media rule ahead of a base
+rule that a third element carries alongside it. Constructing that case takes two
+elements and one shared clause.
+
+What settles it is that the runtime has always done exactly this. READ:
+`insertStyleRule.tsx`'s `shouldInsertStyleRules` skips an identifier already in
+the sheet (`maxToInsert` defaults to 1) and appends the rest in first-use order.
+So first-wins in the compiler makes the two paths agree; any ordering hazard is
+pre-existing and shared. Anyone tempted to "fix" the ordering should change both
+or neither.
+
+It is worth **13 gzip bytes** on the starter (11,944 raw to 11,750, 2,745 gzip
+to 2,732). Gzip compresses a repeated rule almost perfectly. The gain is CSSOM
+size, not transfer. Do not quote it as a bundle win.
+
+Cross-module duplicates are deliberately left. `ZeroCSSArtifact` holds each
+module's CSS as one joined string that a user's `wrapExtractedCSS` may have
+wrapped in anything, so deduping there means parsing strings back into rules.
+The robust version changes the plan schema (`css: string` to
+`cssRules: string[]`), invalidating Metro's plan cache and touching all three
+integrations, for 57 raw bytes on the starter.
+
+### The zero graph gate matched a name; ownership is the rule that holds
+
+An app named `@tamagui/*` failed the gate because `isTamaguiModuleId` read the
+nearest package.json name. The fix is not a carve-out list: Tamagui reaches a
+build as a resolved dependency, so its modules are owned by a **different**
+package.json than the one being built. `checkZeroGraph` derives the project's
+manifest from its entries and excludes it. Forbidden modules now also name their
+owning package, which the path often does not show — `@tamagui/web` resolves to
+`code/core/web/dist/...` here.
+
+### Erasure-reported rules cannot share a module with lowering-reported rules
+
+Found while extending per-rule coverage to Next and Metro, and it constrains any
+future rule fixture. Erasure runs only on a module with **no** violations
+(section 17), so a module carrying a compiler-local violation never reaches it.
+Putting rules 2, 5 and 7 in one module yields only rule 5 — and 5 violations
+looks like a working fixture, which is why this nearly shipped as a passing
+control. The multi-file fixture is five modules for that reason.
+
+### CI, and the two things it must not do
+
+`v3-zero-runtime` runs the fixture and the starter on **separate runners**. Not
+cosmetic: the Metro receipts key their plan cache on the project's own sources,
+so another integration building in the same root re-keys it mid-run (section
+21), and `motionDriverConversion` and `safeAreaVariables.native` measure real
+time, so they must not share a runner with 45 minutes of bundling. If either
+goes unreliable in CI, isolate it further — do not raise a threshold.
+
+### Not fixed, and not in this block's scope
+
+The Vite island publish writes both `tamagui-islands/DetailsIsland.js` and
+`tamagui-islands/tamagui-islands/DetailsIsland.js`. The page fetches the first
+and never the second. Recorded in Phase 7, still true, harmless, and nobody has
+looked at why.

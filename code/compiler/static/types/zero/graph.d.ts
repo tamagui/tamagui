@@ -15,6 +15,8 @@ export interface ZeroForbiddenModule {
     id: string;
     /** Shortest importer chain from an entry to the forbidden module. */
     chain: string[];
+    /** The package that owns the module, which is what the gate matched on. */
+    owner: string;
 }
 export interface ZeroGraphReceipt {
     integration: string;
@@ -35,17 +37,33 @@ export interface ZeroGraphReceipt {
      */
     plansRestoredFromCache?: boolean;
 }
+/** A module's owning package: the nearest package.json and the name in it. */
+export interface OwningPackage {
+    name: string | null;
+    manifest: string;
+}
 /**
- * A module's owning package name, read from the nearest package.json.
+ * The package that owns a module, read from the nearest package.json.
  *
  * Path matching is not enough: in this monorepo `@tamagui/web` resolves to
  * `code/core/web/dist/...`, which contains no `@tamagui` path segment at all. A
  * gate that greps ids would report a clean graph on a bundle that ships the
  * whole runtime.
  */
-export declare function packageNameOf(id: string): string | null;
-export declare function isTamaguiModuleId(id: string): boolean;
-export declare function isForbiddenZeroModuleId(id: string): boolean;
+export declare function owningPackageOf(id: string): OwningPackage | null;
+/**
+ * `ownManifest` is the building project's own package.json.
+ *
+ * A project may legitimately name itself `tamagui` or `@tamagui/something` —
+ * this repo's own site and examples do — and then every one of its modules
+ * answers this question the same way Tamagui's do. The distinction that
+ * actually holds is ownership, not spelling: Tamagui reaches a build as a
+ * resolved dependency, so its modules are owned by a different package.json
+ * than the one being built. Excluding the project's own manifest keeps the gate
+ * a name-free rule rather than a list of names to carve out.
+ */
+export declare function isTamaguiModuleId(id: string, ownManifest?: string | null): boolean;
+export declare function isForbiddenZeroModuleId(id: string, ownManifest?: string | null): boolean;
 export declare function checkZeroGraph(input: {
     entries: readonly string[];
     /** The modules that actually shipped in the emitted chunks. */
