@@ -192,9 +192,17 @@ export function Island(props) {
       node
     )
   }
+  // isSubtreeRoot: the island shares a document with a zero page that already
+  // has its own compiled theme spans, so its provider must not write a theme
+  // class onto html or body and must carry its own theme on its own node.
   return React.createElement(
     TamaguiProvider,
-    { config, defaultTheme: (bridge && bridge.name) || 'light', disableInjectCSS: true },
+    {
+      config,
+      defaultTheme: (bridge && bridge.name) || 'light',
+      disableInjectCSS: true,
+      isSubtreeRoot: true,
+    },
     node
   )
 }

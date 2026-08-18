@@ -457,6 +457,12 @@ export type ThemeProviderProps = {
   defaultTheme: string | null | undefined
   children?: any
   reset?: boolean
+  /**
+   * This provider is mounted inside a page it does not own, so it must not write
+   * its theme class onto `html` or `body`. Its theme class goes on its own node
+   * instead. Set by the generated zero-runtime island entry.
+   */
+  isSubtreeRoot?: boolean
 }
 
 export type ThemeState = {

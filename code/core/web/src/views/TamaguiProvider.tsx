@@ -32,6 +32,7 @@ export function TamaguiProvider({
   defaultTheme: defaultThemeProp,
   reset,
   insets,
+  isSubtreeRoot,
 }: TamaguiProviderProps) {
   // fall back to first theme when defaultTheme is null/undefined
   // (e.g. useColorScheme() returns null on first render in RN 0.83+)
@@ -64,7 +65,12 @@ export function TamaguiProvider({
       animationDriver={defaultAnimationDriver}
       insets={memoizedInsets}
     >
-      <ThemeProvider defaultTheme={defaultTheme} reset={reset} className={className}>
+      <ThemeProvider
+        defaultTheme={defaultTheme}
+        reset={reset}
+        className={className}
+        isSubtreeRoot={isSubtreeRoot}
+      >
         <TamaguiRoot theme={defaultTheme} isRootRoot>
           {children}
         </TamaguiRoot>
