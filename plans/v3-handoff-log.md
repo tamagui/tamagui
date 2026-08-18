@@ -3250,10 +3250,13 @@ and no widening into D3, D4 or D5, which stay in item 12's convergence.
 5b is reviewed as part of wave B's single assigned review rather than
 standalone, and must be named explicitly in that review's scope.
 
-**Released exposure: none.** p25843 checked directly (READ): `directStyle.ts`
-and `style-grammar` do not exist on `main`, so no published v2 package carries
-this. The v3-beta fix closes it, and no release action is needed. Worth
-recording because "is this shipped" is the first question anyone will ask.
+**Released exposure: RETRACTED, see below.** p25843 checked directly (READ) that
+`directStyle.ts` and `style-grammar` do not exist on `main`, and concluded no
+published v2 package carries this. That check was correct for the defect as
+understood at the time, and it was overtaken within the hour: 5b's sweep then
+found `getCSSStylesAtomic`, a different file, which **does** exist on `main`.
+The nil-exposure conclusion was recorded here before anyone noticed it no longer
+covered the whole defect. See section 29.
 
 ## 26. Wave B, first four items (2026-08-18)
 
@@ -3520,3 +3523,47 @@ failing, so the absence of a failing test here means very little.
 Suites at `da73a5e6df`: core-test all six targets (native 294, provenance 7, web
 548, ios 26, androidtv 12, tvos 12), style-grammar 439, tailwind 458 + 275,
 static-tests 180, typecheck clean. `styleInjection.web.test.tsx` is 62 tests.
+
+## 29. The released-exposure claim was wrong, and how it got wrong (2026-08-18)
+
+**Recorded because the mechanism matters more than the fact.** A scoped check was
+made, was correct, and was then quietly overtaken by a later discovery. Nobody
+re-ran it, because it had already been written down as settled.
+
+The sequence: the injection defect was found in `directStyle.ts`. p25843 checked
+whether it was shipped, READ that `directStyle.ts` and `style-grammar` do not
+exist on `main`, and correctly concluded no published package carries **that**.
+That went into this log as "released exposure: none". Item 5b's sweep then found
+six more vulnerable paths, one of which is `getCSSStylesAtomic` - a different
+file, in `code/core/web/src/helpers/`, that the original check never covered.
+
+READ, from `origin/main`:
+
+- `code/core/web/src/helpers/getCSSStylesAtomic.ts` **exists on main**.
+- Its `createDeclarationBlock` interpolates the value with no filtering:
+  `next += \`${hyphenateStyleName(key)}:${value}${important ? ' !important' : ''};\``,
+  wrapped as `{${next}}`.
+- That file on `main` contains no guard: grepping it for
+  inject/refuse/carriesTopLevel/sanitiz returns nothing.
+- `code/core/web/src/index.ts` on main has
+  `export * from './helpers/getCSSStylesAtomic'`, so it is public API.
+
+**INFERRED, and it must stay INFERRED until someone drives a published
+package:** a user-controlled string reaching a style value on released v2
+injects CSS the same way it did on v3-beta, because the value is interpolated
+verbatim into `.cls{prop:VALUE;}`. Nobody has run `npm pack tamagui@<version>`
+and reproduced it, and until they do this is reasoning from source, not a
+demonstrated finding.
+
+Not claimed: that any particular app is exploitable, that a released version is
+known-vulnerable in the field, or that this is XSS. It is CSS injection and it
+needs an app to put user-controlled text into a style value.
+
+The v2 question is with p25843 and the owner. Release decisions are not this
+campaign's to make, and nothing outside `v3-beta` has been touched.
+
+**The transferable lesson:** a scope check inherits the scope of the defect as
+understood when it ran. When a sweep widens the defect, every earlier conclusion
+about it has to be re-asked, including the ones already written down as settled.
+A conclusion in a log looks equally settled whether or not it still covers the
+question.
