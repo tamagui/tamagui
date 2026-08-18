@@ -3122,3 +3122,44 @@ There is a second failure branch: an artifact declaring historical data while
 files cannot drift apart silently.
 
 Wave A is now complete except items 2, 4 and 5.
+
+### Item 5 landed: the scanner divergences are now pinned, and two of them are defects
+
+`705610ace6`, plus item 6's follow-up `e8cdd8adae` which added the generated
+formatter declarations the first commit omitted.
+
+`code/core/core-test/parserAgreement.web.test.tsx` runs the canonical
+`valueParser` against the three runtime scanners over a corpus extracted into
+`code/core/style-grammar/src/__tests__/valueCorpus.ts`, which the existing fuzz
+test now reuses rather than carrying its own copy. Five divergences are pinned as
+behaviour tests with the source lines that cause them. None of them assert on
+source text.
+
+**Two are real product defects, recorded here so wave B does not rediscover
+them:**
+
+- **D4, user-visible.** `hasFlatModifier` has no invalid-character branch, so a
+  value the style scanner throws away still puts the component on the
+  should-enter path. `'0; enter:1'` fails the canonical parse and yields no
+  style, and the component still renders an enter frame for a style that never
+  arrives. This is a rendering bug, not just a parser inconsistency.
+- **D3.** The canonical parser treats a top-level backslash as an escape
+  (`valueParser.ts:230`); neither runtime scanner has that branch. Both read the
+  escaped colon as a clause separator and fail to resolve the result.
+  `directStyle` drops the whole declaration including the base it had already
+  scanned, and throws outright in a development build; `propMapper` drops only
+  the clause.
+- D5 is the same shape, less severe: both scanners refuse an unregistered
+  modifier, but the prop path loses the base it had already scanned while the
+  variant path keeps it.
+
+**Deliberately not fixed in wave A.** The plan's sequencing in section 1.1 is
+agreement tests first, then converge the three scanners onto one shared scanner,
+which is item 12 in wave B. That convergence is the fix for D3, D4 and D5
+together. Patching one scanner now would fix a symptom, add a fourth behaviour
+to reconcile, and make the convergence harder. The tests are what make it safe
+to attempt at all.
+
+D4 should be named explicitly in the wave B brief, since a wrong enter frame is
+the kind of thing a user reports as an animation bug with no idea it started in
+a value parser.
