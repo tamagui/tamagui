@@ -3,6 +3,19 @@ import { MetroCompilerFrontend } from "./frontend";
 export type MetroTamaguiOptions = TamaguiOptions & {
 	/** Override the ignored on-disk handoff used by Metro transform workers. */
 	compilerCacheRoot?: string;
+	/**
+	* Set by the zero-runtime island bundle request. An island is a second Metro
+	* bundle with `TAMAGUI_RUNTIME='full'` and its own entry, so this invocation
+	* keeps the full runtime and only contributes its CSS fragment.
+	*/
+	zeroIslandBuild?: string;
+	/**
+	* Directory the zero CSS artifact and island bundles are published from,
+	* relative to the project root.
+	*
+	* @default 'public'
+	*/
+	zeroPublicDir?: string;
 };
 type MetroConfigInput = {
 	projectRoot?: string;

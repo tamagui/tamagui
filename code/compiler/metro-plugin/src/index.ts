@@ -1,10 +1,12 @@
 import { createRequire } from 'node:module'
-import { join } from 'node:path'
+import { isAbsolute, join } from 'node:path'
 
 import Static from '@tamagui/static'
 import type { TamaguiOptions } from '@tamagui/static'
 
 import { defaultMetroCompilerCacheRoot } from './compilerCache'
+import { applyMetroZeroRuntime } from './zeroSerializer'
+import { createMetroZeroController } from './zeroRuntime'
 import { MetroCompilerFrontend } from './frontend'
 import { writeMetroCompilerTransformerBridge } from './transformer'
 import { composeMetroGetTransformOptions } from './transformOptions'
@@ -12,6 +14,19 @@ import { composeMetroGetTransformOptions } from './transformOptions'
 export type MetroTamaguiOptions = TamaguiOptions & {
   /** Override the ignored on-disk handoff used by Metro transform workers. */
   compilerCacheRoot?: string
+  /**
+   * Set by the zero-runtime island bundle request. An island is a second Metro
+   * bundle with `TAMAGUI_RUNTIME='full'` and its own entry, so this invocation
+   * keeps the full runtime and only contributes its CSS fragment.
+   */
+  zeroIslandBuild?: string
+  /**
+   * Directory the zero CSS artifact and island bundles are published from,
+   * relative to the project root.
+   *
+   * @default 'public'
+   */
+  zeroPublicDir?: string
 }
 
 // Use a loose type for metro config to avoid version-specific type incompatibilities
@@ -62,7 +77,12 @@ export function withTamagui(
   metroConfig: MetroConfigInput,
   optionsIn?: MetroTamaguiOptions
 ): MetroConfigInput {
-  const { compilerCacheRoot, ...tamaguiOptionsIn } = optionsIn || {}
+  const {
+    compilerCacheRoot,
+    zeroIslandBuild,
+    zeroPublicDir = 'public',
+    ...tamaguiOptionsIn
+  } = optionsIn || {}
 
   const options = {
     ...tamaguiOptionsIn,
@@ -81,12 +101,28 @@ export function withTamagui(
     tamagui: options,
   }
 
+  const zeroProjectRoot = metroConfig.projectRoot ?? process.cwd()
+  const zero = createMetroZeroController(
+    options,
+    zeroProjectRoot,
+    zeroIslandBuild ?? null,
+    zeroPublicDir
+  )
+
+  if (zero) {
+    applyMetroZeroRuntime(metroConfig, zero)
+  }
+
   if (!options.disable) {
     const projectRoot = metroConfig.projectRoot ?? process.cwd()
     const requireFromProject = createRequire(join(projectRoot, 'package.json'))
-    const originalBabelTransformerPath =
-      metroConfig.transformer.babelTransformerPath ??
-      requireFromProject.resolve('metro-babel-transformer')
+    // getDefaultConfig sets this to the bare specifier 'metro-babel-transformer',
+    // and createRequire needs an absolute path, so resolve either shape here
+    const configuredBabelTransformerPath =
+      metroConfig.transformer.babelTransformerPath ?? 'metro-babel-transformer'
+    const originalBabelTransformerPath = isAbsolute(configuredBabelTransformerPath)
+      ? configuredBabelTransformerPath
+      : requireFromProject.resolve(configuredBabelTransformerPath)
     const cacheBaseRoot = compilerCacheRoot ?? defaultMetroCompilerCacheRoot(projectRoot)
     const frontend = new MetroCompilerFrontend({
       projectRoot,
@@ -95,6 +131,7 @@ export function withTamagui(
       tamaguiOptions: options,
       originalBabelTransformerPath,
       cacheRoot: cacheBaseRoot,
+      zero,
       reportDiagnostic(diagnostic) {
         console.warn(`[@tamagui/metro-plugin] ${diagnostic.code}: ${diagnostic.message}`)
       },
@@ -108,6 +145,8 @@ export function withTamagui(
         cacheBaseRoot,
         originalBabelTransformerPath,
         projectRoot,
+        // an integration-owned literal, never an ambient shell value
+        runtimeLiteral: zero && !zero.islandBuild ? 'zero' : 'full',
       }
     )
     const userGetTransformOptions = metroConfig.transformer.getTransformOptions

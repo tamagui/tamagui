@@ -1,9 +1,12 @@
 import { type CompilerTarget } from "@tamagui/compiler-core";
 import type { TamaguiOptions, TamaguiProjectInfo } from "@tamagui/static";
+import { type MetroZeroController } from "./zeroRuntime";
 import { type MetroCompilerDiagnostic } from "./diagnostics";
 import { type MetroResolverConfig } from "./metroResolver";
 export interface MetroCompilerFrontendConfig extends MetroResolverConfig {
 	cacheRoot?: string;
+	/** Present only for an enforced zero-runtime web build. */
+	zero?: MetroZeroController | null;
 	originalBabelTransformerPath: string;
 	transformer?: Record<string, any>;
 	tamaguiOptions?: Partial<TamaguiOptions>;

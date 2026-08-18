@@ -15,6 +15,8 @@ export declare class ZeroCSSArtifact {
     setConfigCSS(css: string): void;
     setZeroModuleCSS(moduleId: string, css: string): void;
     setIslandModuleCSS(islandId: string, moduleId: string, css: string): void;
+    /** This island's collected rules, in deterministic module order. */
+    islandCSS(islandId: string): string[];
     /** Marks an island as compiled even when it contributed no atomic rules. */
     markIslandComplete(islandId: string): void;
     setBridgeRules(bridgeId: string, css: string): void;

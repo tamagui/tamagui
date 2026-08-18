@@ -50,6 +50,13 @@ export class ZeroCSSArtifact {
     else bucket.delete(moduleId)
   }
 
+  /** This island's collected rules, in deterministic module order. */
+  islandCSS(islandId: string): string[] {
+    const bucket = this.#islands.get(islandId)
+    if (!bucket) return []
+    return [...bucket.keys()].sort().map((moduleId) => bucket.get(moduleId)!)
+  }
+
   /** Marks an island as compiled even when it contributed no atomic rules. */
   markIslandComplete(islandId: string) {
     if (!this.#islands.has(islandId)) this.#islands.set(islandId, new Map())

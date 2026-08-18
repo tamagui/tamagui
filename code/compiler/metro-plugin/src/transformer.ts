@@ -21,6 +21,12 @@ export interface MetroCompilerTransformerOptions {
   cacheBaseRoot: string
   originalBabelTransformerPath: string
   projectRoot: string
+  /**
+   * The integration-owned `TAMAGUI_RUNTIME` literal for this bundle request.
+   * Metro never reads an ambient value: the literal is decided by the build and
+   * inlined here so every guard is a constant.
+   */
+  runtimeLiteral?: 'full' | 'zero'
 }
 
 export interface MetroCompilerTransformMetadata {
@@ -65,8 +71,34 @@ export function createMetroCompilerTransformer(config: MetroCompilerTransformerO
       existsSync(moduleId)
     )
   }
+  // Replaces only the exact member expression `process.env.TAMAGUI_RUNTIME`.
+  // Metro has no define mechanism, so this is the transform-level equivalent.
+  const runtimeLiteral = config.runtimeLiteral ?? 'full'
+  const inlineRuntimeLiteral = ({ types }: { types: any }) => ({
+    visitor: {
+      MemberExpression(nodePath: any) {
+        const node = nodePath.node
+        if (
+          node.computed ||
+          !types.isIdentifier(node.property, { name: 'TAMAGUI_RUNTIME' }) ||
+          !types.isMemberExpression(node.object) ||
+          node.object.computed ||
+          !types.isIdentifier(node.object.object, { name: 'process' }) ||
+          !types.isIdentifier(node.object.property, { name: 'env' })
+        ) {
+          return
+        }
+        nodePath.replaceWith(types.stringLiteral(runtimeLiteral))
+      },
+    },
+  })
+
   return {
-    async transform(args) {
+    async transform(argsIn) {
+      const args = {
+        ...argsIn,
+        plugins: [...(argsIn.plugins ?? []), inlineRuntimeLiteral],
+      }
       const platform =
         typeof args.options.platform === 'string' ? args.options.platform : 'default'
       const cache = new MetroCompilerCache(join(config.cacheBaseRoot, platform))
@@ -148,6 +180,8 @@ export function createMetroCompilerTransformer(config: MetroCompilerTransformerO
     getCacheKey() {
       return createHash('sha256')
         .update(`tamagui-metro-compiler-v${METRO_COMPILER_CACHE_VERSION}`)
+        .update('\0')
+        .update(runtimeLiteral)
         .update('\0')
         .update(userBabelCacheKey(config.originalBabelTransformerPath))
         .digest('hex')

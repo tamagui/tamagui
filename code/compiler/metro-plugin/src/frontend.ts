@@ -15,10 +15,11 @@ import {
   type HostResolvedImport,
   type ResolvedModuleId,
 } from '@tamagui/compiler-core'
-import { createTamaguiCompilerHost, loadTamagui } from '@tamagui/static'
+import Static, { createTamaguiCompilerHost, loadTamagui } from '@tamagui/static'
 import type { TamaguiOptions, TamaguiProjectInfo } from '@tamagui/static'
 
 import { compileWithUserBabel, type MetroBabelTransformArgs } from './babel'
+import { zeroModuleKey, type MetroZeroController } from './zeroRuntime'
 import {
   METRO_COMPILER_CACHE_VERSION,
   MetroCompilerCache,
@@ -43,6 +44,8 @@ interface CompiledRecord {
 
 export interface MetroCompilerFrontendConfig extends MetroResolverConfig {
   cacheRoot?: string
+  /** Present only for an enforced zero-runtime web build. */
+  zero?: MetroZeroController | null
   originalBabelTransformerPath: string
   transformer?: Record<string, any>
   tamaguiOptions?: Partial<TamaguiOptions>
@@ -173,6 +176,8 @@ export class MetroCompilerFrontend {
   #scanOptions: MetroCompilerScanOptions | null = null
   #scanOptionsHash: string | null = null
   #operationQueue: Promise<void> = Promise.resolve()
+  #tamaguiConfig: TamaguiProjectInfo['tamaguiConfig'] | null = null
+  #zeroEntryGraph: Set<ResolvedModuleId> | null = null
 
   constructor(readonly config: MetroCompilerFrontendConfig) {
     this.#cacheBaseRoot =
@@ -283,8 +288,24 @@ export class MetroCompilerFrontend {
       disablePartialExtraction: this.config.tamaguiOptions?.disablePartialExtraction,
       experimentalNativeFastPath: compilerProject.experimentalNativeFastPath,
     })
+    this.#tamaguiConfig = compilerProject.projectInfo.tamaguiConfig
+    const zero = this.config.zero
+    if (zero) {
+      zero.configCSS = compilerProject.projectInfo.tamaguiConfig.getCSS?.() ?? ''
+      zero.artifact.clearGraphs()
+      zero.bridges.clear()
+      zero.violations.length = 0
+      // The zero contract applies to an ENTRY GRAPH. Metro's frontend plans
+      // every project source by directory walk, so a config module, a control
+      // fixture, or another entry's page would otherwise be judged against a
+      // contract they are not part of.
+      this.#zeroEntryGraph = this.#reachableFrom(entryRoots.map(resolvedModuleId))
+    }
     this.#entries.clear()
     for (const id of this.#graph.moduleIds()) this.#refreshEntry(id)
+    if (zero && zero.violations.length) {
+      throw new Error(Static.formatZeroViolations(zero.violations))
+    }
     const totalFound = [...this.#entries.values()].reduce(
       (sum, entry) => sum + entry.plan.stats.found,
       0
@@ -354,6 +375,12 @@ export class MetroCompilerFrontend {
       metroCompilerContentHash(JSON.stringify(projectSources))
     )
     if (
+      // A zero build owns the one CSS artifact, and the artifact's contents are
+      // produced by the scan. Reusing a published plan would emit an artifact
+      // missing every rule this process never collected, while still deriving
+      // TAMAGUI_DID_OUTPUT_CSS from it. Phase 2 can make this cheap by
+      // persisting the per-module plan CSS beside the plan cache.
+      !this.config.zero &&
       validation.valid &&
       validation.generation &&
       validation.optionsHash === optionsHash &&
@@ -495,6 +522,9 @@ export class MetroCompilerFrontend {
     const projectInfo = await loadTamagui({
       ...this.config.tamaguiOptions,
       platform: target,
+      // in zero mode the integration owns the one generated CSS artifact, so
+      // config-only CSS is never written to that path
+      ...(this.config.zero && { outputCSS: undefined }),
     })
     if (!projectInfo?.tamaguiConfig || !projectInfo.components) {
       throw new Error('Unable to load the Tamagui project for Metro compilation')
@@ -661,6 +691,11 @@ export class MetroCompilerFrontend {
       host,
       options: { projectGeneration: this.#projectGeneration },
     })
+    // Zero-mode reference erasure rides the same plan. Metro fixes a module's
+    // dependencies at resolution time and does no export-level shaking, so the
+    // plan a worker applies before Babel is the only point early enough to
+    // remove an import from the graph.
+    const zeroPlan = this.#zeroPlanFor(id, record.input.source, plan)
     const diagnostics = plan.diagnostics.map(({ code, message, dependencyId }) =>
       metroDiagnostic(
         code.startsWith('linked/') ? 'metro/resolve-failed' : 'metro/transform-failed',
@@ -672,9 +707,92 @@ export class MetroCompilerFrontend {
       schemaVersion: METRO_COMPILER_CACHE_VERSION,
       moduleId: id,
       sourceHash: record.sourceHash,
-      plan,
+      plan: zeroPlan ?? plan,
       diagnostics,
     })
+  }
+
+  /** Modules reachable from the bundle's entry, over the frontend's own graph. */
+  #reachableFrom(roots: readonly ResolvedModuleId[]): Set<ResolvedModuleId> {
+    const reached = new Set<ResolvedModuleId>()
+    const queue = [...roots]
+    while (queue.length) {
+      const id = queue.pop()!
+      if (reached.has(id)) continue
+      reached.add(id)
+      for (const dependency of this.#records.get(id)?.input.imports ?? []) {
+        if (!dependency.external) queue.push(dependency.resolvedId)
+      }
+    }
+    return reached
+  }
+
+  /**
+   * The zero transform for one module, returning a plan whose edits also carry
+   * the static Theme lowering, the island bridge, and reference erasure.
+   */
+  #zeroPlanFor(
+    id: ResolvedModuleId,
+    source: string,
+    plan: ReturnType<typeof lowerModule>
+  ): ReturnType<typeof lowerModule> | null {
+    const zero = this.config.zero
+    const config = this.#tamaguiConfig
+    if (!zero || !config) return null
+
+    // An island build is a full-runtime graph: it contributes its compiler
+    // atomic CSS to the one artifact and is never erased or judged.
+    if (zero.islandBuild) {
+      zero.artifact.setIslandModuleCSS(zero.islandBuild, id, plan.css)
+      return null
+    }
+
+    if (this.#zeroEntryGraph && !this.#zeroEntryGraph.has(id)) return null
+    // only app-authored modules: a workspace dependency resolves outside
+    // node_modules here, and erasing Tamagui's own re-exports would break it
+    const relativePath = relative(this.config.projectRoot, id)
+    if (
+      relativePath === '' ||
+      relativePath.startsWith('..') ||
+      relativePath.split(/[\\/]/).includes('node_modules')
+    ) {
+      return null
+    }
+
+    const result = Static.transformZeroModule({
+      id,
+      root: this.config.projectRoot,
+      source,
+      plan,
+      config,
+      isTamaguiSpecifier: (specifier) =>
+        specifier === 'tamagui' || specifier.startsWith('@tamagui/'),
+      resolveIslandLoader: (specifier) => {
+        const islandId = zero.loaderIds.get(zeroModuleKey(resolve(id, '..', specifier)))
+        return islandId ? { islandId } : null
+      },
+      resolveIslandModule: (specifier) =>
+        zero.islandModuleIds.get(zeroModuleKey(resolve(id, '..', specifier))) ?? null,
+    })
+
+    for (const violation of result.violations) {
+      const { line, column } = Static.offsetToLineColumn(source, violation.span.start)
+      zero.violations.push({
+        file: relativePath,
+        line,
+        column,
+        code: violation.code,
+        message: violation.message,
+      })
+    }
+    if (result.violations.length) return null
+
+    Static.mergeIslandBridges(zero.bridges, result.bridges)
+    for (const [identifier, rules] of result.bridgeCSS) {
+      zero.artifact.setBridgeRules(identifier, rules)
+    }
+    zero.artifact.setZeroModuleCSS(id, plan.css)
+    return { ...plan, edits: [...plan.edits, ...result.edits] }
   }
 
   async #publish(platform: string | null): Promise<string> {
