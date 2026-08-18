@@ -142,7 +142,7 @@ more. Every row is expanded in the dimension sections below.
 | 25 | Collapse the internal-only `use-*` micro-packages; retire dead package shells | Cleanup | M |
 | 26 | Metro diagnostics lose the source span the compiler already computed | Improve | S–M |
 | 27 | Build-time performance harness for the real plugins through real bundlers | Testing | M |
-| 28 | RSC-safe zero/DOM entry | Feature | L |
+| 28 | RSC-safe zero entry — VALIDATION + design proposal only (owner, 2026-08-18) | Feature | L |
 
 ---
 
@@ -559,7 +559,30 @@ way to fix a barrel export.
 plan already describes: one canonical API, alias the rest, re-export the supported
 surface from the root.
 
-Still owner-pending, and ONLY this: item 28, the RSC-safe zero entry.
+**Item 28 REFRAMED 2026-08-18 by the owner — the last hold is lifted, but the
+green light is for VALIDATION, not implementation.**
+
+Preconditions, per the owner and confirmed against the repo:
+- **Providerless root already SHIPPED** in block 2 Phase 4 (handoff section 19):
+  zero roots are ordinary markup, `TamaguiProvider` is illegal in a zero graph,
+  and `TamaguiRoot` exists with `TamaguiProvider` wrapping it — that layering is
+  the back-compat the owner wants KEPT for full-runtime users.
+- **One-global-config is designed but NOT implemented**
+  (`plans/v3-single-config-loading.md` is design-only).
+
+The lane answers three questions and writes a design proposal, nothing more:
+1. Are the zero entry's modules importable from React Server Components as-is —
+   no client-only imports, no module-scope hook machinery? **PROBE this, do not
+   reason it.** The audit records that server output is currently a placeholder,
+   so a reading-based answer here is worth nothing.
+2. Is implementing the single-config design a HARD PREREQUISITE for RSC, or
+   independent of it?
+3. What exactly is the client boundary — islands stay client, what else?
+
+**Deliverable: a design proposal with probe receipts, routed to the coordinator
+for the owner BEFORE any implementation. This is a design-proposal boundary, so
+no code beyond probes.** `TamaguiProvider` back-compat is a hard constraint of
+any proposal. Scheduled in wave C alongside item 24.
 
 ---
 
