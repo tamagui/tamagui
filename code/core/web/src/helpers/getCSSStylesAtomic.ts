@@ -7,6 +7,7 @@ import type { StyleObject } from '@tamagui/helpers'
 import { cssShorthandLonghands, simpleHash } from '@tamagui/helpers'
 import { getConfigMaybe } from '../config'
 import type { TamaguiInternalConfig, ViewStyleObject } from '../types'
+import { carriesTopLevelInjection } from './carriesTopLevelInjection'
 import { defaultOffset } from './defaultOffset'
 import { normalizeColor } from './normalizeColor'
 import { normalizeValueWithProperty } from './normalizeValueWithProperty'
@@ -80,6 +81,7 @@ const getStyleObject = (
     val = transformsToString(val)
   }
   const value = normalizeValueWithProperty(val, key)
+  if (typeof value === 'string' && carriesTopLevelInjection(value)) return
   // media queries and shorthands come from the config, so an identity built
   // under one config says nothing about the rules under another
   const nextConf = getConfigMaybe()
