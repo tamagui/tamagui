@@ -3090,3 +3090,35 @@ generating its baselines. Any baseline measured before `997c6c4914` is stale by
 1,070 gzip, and committing one would fail the gate it is meant to define. The
 lane was told to regenerate at a tip containing it and to record the measured SHA
 in the baseline file.
+
+### Item 10 landed: the benchmark artifact is honest about what it is
+
+`2ab3e6bc4b`, exactly three files: the runner, `benchmarks.json`,
+`benchmarks.html`. The lane ran through p25843 and returned on completion.
+
+The artifact is stamped with the SHA it measured (`93950e9540`), the date, the
+machine, browser and Bun versions, `randomSeed: 72002`, the shuffle policy
+("framework/scenario tasks reshuffled independently in every warmup and sample
+round"), `dirty: false`, and a byte-identical workload hash. It also carries a
+`publicationQualification` string saying in plain words that absolute
+millisecond timings are not publishable, because the start gate excluded
+measurement-apparatus and agent-harness CPU, and that only same-round paired
+ratio medians support directional reading. The idle-probe exception and who
+authorized it are recorded in the artifact itself rather than in someone's
+memory.
+
+**The staleness guard is a real check, verified by running the control rather
+than by reading the code.** `bun run-benchmarks.ts --check-current` against the
+committed artifact at a moved tip prints
+`is HISTORICAL: it benchmarks 93950e9540..., while current tip is 2ab3e6bc4b...`
+and exits 0, which is the correct outcome for a correctly-labelled historical
+file. Removing `metadata.currency` and re-running exits **1**. So the guard has
+an independent variable and can fail. The artifact was then restored from git's
+own blob and confirmed byte-identical to the committed version. A guard that
+only ever passes would have looked exactly the same from the outside.
+
+There is a second failure branch: an artifact declaring historical data while
+`benchmarks.html` lacks `data-benchmark-currency="historical"` throws. The two
+files cannot drift apart silently.
+
+Wave A is now complete except items 2, 4 and 5.
