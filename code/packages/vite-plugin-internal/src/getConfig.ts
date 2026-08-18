@@ -76,6 +76,7 @@ export function getConfig(tamaguiPlugin: any) {
       tamaguiPlugin({
         components: ['tamagui'],
         config: './tamagui.config.ts',
+        disableResolveConfig: isNative,
         disableWatchTamaguiConfig: true,
         disable: true,
       }),
@@ -123,12 +124,20 @@ export function getConfig(tamaguiPlugin: any) {
       alias: isNative
         ? [
             {
+              find: /^react-native-reanimated$/,
+              replacement: requireResolve('react-native-reanimated/src/mock.ts'),
+            },
+            {
+              find: /^react-native-worklets$/,
+              replacement: requireResolve('react-native-worklets/lib/module/mock.js'),
+            },
+            {
               find: /^react-native$/,
-              replacement: '@tamagui/fake-react-native',
+              replacement: requireResolve('@tamagui/fake-react-native'),
             },
             {
               find: /^react-native\//,
-              replacement: '@tamagui/fake-react-native',
+              replacement: requireResolve('@tamagui/fake-react-native'),
             },
           ]
         : {

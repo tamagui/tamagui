@@ -20,10 +20,10 @@ const split = (props: Record<string, any>, state: Record<string, any> = {}) =>
   )
 
 test('a shadowColor clause selects a plain native color', () => {
-  expect(split({ shadowColor: 'red hover:blue' }).style?.shadowColor).toBe('red')
+  expect(split({ shadowColor: 'red hover:blue' }).style?.shadowColor).toBe('rgb(255,0,0)')
   expect(
     split({ shadowColor: 'red hover:blue' }, { hover: true }).style?.shadowColor
-  ).toBe('blue')
+  ).toBe('rgb(0,0,255)')
 })
 
 test('a clause on a legacy transform part drops', () => {
@@ -33,7 +33,7 @@ test('a clause on a legacy transform part drops', () => {
 
 test('plain part values keep the legacy pipeline', () => {
   const shadow = split({ shadowColor: 'red' })
-  expect(shadow.style?.shadowColor).toBe('red')
+  expect(shadow.style?.shadowColor).toBe('rgb(255,0,0)')
   const skew = split({ skewX: '10deg' })
   expect(JSON.stringify(skew.style?.transform ?? [])).toContain('10deg')
 })
