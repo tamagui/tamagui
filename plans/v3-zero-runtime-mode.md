@@ -1101,3 +1101,126 @@ sequence. Reference erasure solves the zero entry's forbidden imports, while an
 ordinary lazy chunk still inherits the zero compilation's literal and standard
 module identities. No runtime guard, importer-sensitive transform, or
 per-component fallback is allowed to hide that conflict.
+
+---
+
+## Phase 1 record: what the fixtures proved
+
+This section is evidence, added after Phase 1 ran. Every claim here is a build or
+a browser run that was executed; the fixture is `code/tests/zero-runtime` and the
+receipts are written to its `.tamagui/zero` directory.
+
+### Verdict per integration
+
+| Integration | Base zero | Islands | Receipt |
+| --- | --- | --- | --- |
+| Vite | yes | yes | `.tamagui/zero/vite-receipts.json`, `vite-dist.graph.json` |
+| Next webpack | yes | yes | `.tamagui/zero/next-receipts.json`, `next-zero.graph.json` |
+| Metro web | yes | yes | `.tamagui/zero/metro-receipts.json`, `metro-zero.graph.json` |
+
+The island architecture holds. No design-contradicting failure was found.
+
+### Corrections the fixtures forced
+
+These are the parts of the design that were wrong or underspecified, found by
+running it rather than by reading it.
+
+**Reference erasure must be evidence-based, and the analyzer would not supply
+the evidence.** The first implementation asked the module analyzer for the
+references of each imported binding. It returns no definition for an *import*
+binding in an unlinked single-module project, so every lookup returned zero
+references, and "no references" was read as "dead". Every Tamagui import
+specifier was being erased unconditionally; a fixture whose sites all lowered
+looked correct by luck. Erasure now counts name occurrences from the AST
+directly, and deliberately over-counts a shadowed name: over-counting keeps an
+import that could have dropped, under-counting ships a `ReferenceError`. The
+standing control is a module that statically reads `getTokens`, which must fail
+with rule `zero/live-tamagui-reference` and must never build green.
+
+**The zero transform applies to app-authored modules only.** A workspace package
+resolves outside `node_modules` in this repository, so a `node_modules` guard is
+not enough. Running erasure inside `@tamagui/web`'s own dist breaks its
+re-exports.
+
+**A build's CSS artifact cannot depend on work a cache skips.** Webpack's module
+cache skips the loader on a rebuild, and Metro's plan cache skips the scan, but
+those are exactly where each module's atomic CSS and bridge rules are collected.
+Both integrations emitted an artifact missing every zero and island rule on the
+second build while still deriving `TAMAGUI_DID_OUTPUT_CSS` from it, which is the
+divergence section 3 forbids. Both now do the work every time: webpack marks the
+loader non-cacheable in zero mode, Metro always scans. **Phase 2 should make this
+cheap by persisting the per-module plan CSS beside the existing plan cache and
+rehydrating it in the plugin, instead of re-running the transform.** The
+warm-rebuild receipt in each integration's receipts file is that change's
+regression test.
+
+**The zero contract is a property of an entry graph, not of a project.** Metro's
+frontend plans every project source by directory walk. Judged per file, the app's
+own `tamagui.config.ts`, the generated island entry, and unrelated control
+fixtures all violate the contract while being entirely legitimate. Metro now
+applies the zero transform only to modules reachable from the bundle's entry.
+
+**Bridge ids must be unique across modules.** A per-module index collides between
+modules and duplicates across webpack's server and client compilations. Ids are
+now derived from the root-relative module path, and the manifest merges by id.
+
+**Loader and plugin cannot share module-level state.** The webpack plugin is
+imported as ESM while webpack resolves the loader through the CJS entry, so a
+module-scoped registry gives them different objects and the artifact silently
+loses everything the loader wrote. The registry is process-level.
+
+### Section 10 assertions, per integration
+
+All eight hold on all three integrations, except that assertion 7 (server HTML)
+is Next-only by nature. Assertion 2 is checked by identity of `useState`,
+`createElement`, and React's client-internals object, not by identity of the
+namespace object: webpack hands `import * as React` a per-context namespace
+wrapper, so comparing wrappers is a check that fails on a correct build.
+
+### The styled scoping probe, answered
+
+The nonblocking probe from this section is resolved and its answer strengthens
+the erasure design. With one app-local `const Card = styled(View, {...})` used
+only in lowered JSX, in a module with another live export:
+
+- before erasure, an ordinary compiled Vite build drops the `Card` *binding* but
+  keeps the call as a bare effectful expression statement, and retains 85
+  Tamagui modules;
+- after erasure, the same fixture emits zero Tamagui modules, no styled options
+  object, and the neighbouring export still works.
+
+So bundler shaking does not cover this leg on Vite either. Compiler reference
+removal is required everywhere, not only on Metro.
+
+### One fixture, three integrations: keep them isolated
+
+The fixture builds the same source through all three integrations, and twice it
+produced green receipts that described a different integration's build.
+
+- Next and Metro both published the CSS artifact and the island bundle to
+  `public/`, so whichever built last silently decided what the *other*
+  integration's assertions read. Metro now publishes to its own directory
+  through the `zeroPublicDir` option.
+- A root `babel.config.cjs` added for Metro broke the Next build in the same
+  fixture: Next's Babel loader rejects `.cjs`, and any root babel config switches
+  Next off SWC entirely. Metro now carries its presets inside its own
+  `metro-babel-transformer.cjs` with `configFile: false`.
+
+Both are the same shape as an assertion that cannot fail: the check runs, it
+passes, and it was never looking at the thing it claims to describe. A fourth
+integration must get its own publish directory and must not add a config file at
+the fixture root that another integration also reads.
+
+### Integration-specific constraints found
+
+- **Metro has no externals mechanism.** The island bundle redirects `react`,
+  `react-dom`, and `react/jsx-runtime` through generated shim modules via
+  `resolver.resolveRequest`; those read the same handoff the generated loader
+  publishes.
+- **Metro islands are a second bundle request in a separate process**, so the CSS
+  coordinator hands island fragments over on disk: the island build writes its
+  fragment, the zero build refuses to finalize until every declared fragment is
+  present.
+- **Next 16 defaults to Turbopack.** The webpack adapter needs `next build
+  --webpack`, matching this document's note that the CLI/Turbopack path must
+  implement the same gates before it advertises the mode.
