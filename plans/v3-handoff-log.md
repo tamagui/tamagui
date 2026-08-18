@@ -3234,3 +3234,23 @@ both would have gone into a report to the owner as fact.
   deletes the `NODE_ENV !== 'production' ? long : 'Err0'` ternary so production
   stops getting bare codes. Anyone reading a size regression on `@tamagui/web`
   around that commit should stop there.
+
+### The injection defect became item 5b, ahead of wave B
+
+Ruled by p25843 on 2026-08-18: a documented security guarantee that fails
+outranks the wave sequencing, and the fix is small and local. Scope is four
+things and no more: run the top-level `;{}` scan at the `directStyle.ts:1509`
+early return before `emitValue`; flip the pinned D2 test from asserting the
+injection to asserting refusal, red before and green after; one bounded sweep of
+`directStyle.ts` and every other web-lowering emit path for further fast paths
+that emit verbatim, with a refusal test pinned for each path found **including
+the clean ones**, since a path with no test cannot be shown to be safe later;
+and no widening into D3, D4 or D5, which stay in item 12's convergence.
+
+5b is reviewed as part of wave B's single assigned review rather than
+standalone, and must be named explicitly in that review's scope.
+
+**Released exposure: none.** p25843 checked directly (READ): `directStyle.ts`
+and `style-grammar` do not exist on `main`, so no published v2 package carries
+this. The v3-beta fix closes it, and no release action is needed. Worth
+recording because "is this shipped" is the first question anyone will ask.
