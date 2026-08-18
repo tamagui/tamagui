@@ -3,7 +3,7 @@ import type { TamaguiRuntimeLiteral } from './options';
  * Bumped whenever the zero transform's emitted output changes shape. It rides
  * the lowering plan version so a compiler change also invalidates zero caches.
  */
-export declare const ZERO_COMPILER_VERSION = "zero-1/plan-1";
+export declare const ZERO_COMPILER_VERSION = "zero-1/plan-2";
 /**
  * Every integration records this tuple in its cache and build identity. The CSS
  * path alone is insufficient because the artifact's content can change in place.

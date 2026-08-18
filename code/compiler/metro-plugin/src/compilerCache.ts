@@ -2,11 +2,12 @@ import { createHash, randomBytes } from 'node:crypto'
 import { mkdir, readFile, rename, rm, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 
+import { LOWERED_MODULE_PLAN_VERSION } from '@tamagui/compiler-core'
 import type { LoweredModulePlan } from '@tamagui/compiler-core'
 
 import { metroDiagnostic, type MetroCompilerDiagnostic } from './diagnostics'
 
-export const METRO_COMPILER_CACHE_VERSION = 4
+export const METRO_COMPILER_CACHE_VERSION = 5
 
 export interface MetroCompilerCacheEntry {
   schemaVersion: typeof METRO_COMPILER_CACHE_VERSION
@@ -348,7 +349,7 @@ export class MetroCompilerCache {
       typeof entry.sourceHash !== 'string' ||
       entry.sourceHash !== descriptor.sourceHash ||
       !entry.plan ||
-      entry.plan.version !== 1 ||
+      entry.plan.version !== LOWERED_MODULE_PLAN_VERSION ||
       entry.plan.id !== moduleId ||
       entry.plan.sourceHash !== entry.sourceHash ||
       !Array.isArray(entry.plan.edits) ||

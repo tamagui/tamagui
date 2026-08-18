@@ -3,7 +3,11 @@ import { join } from 'node:path'
 
 import { describe, expect, test } from 'vitest'
 
-import { resolvedModuleId, sourceContentHash } from '@tamagui/compiler-core'
+import {
+  LOWERED_MODULE_PLAN_VERSION,
+  resolvedModuleId,
+  sourceContentHash,
+} from '@tamagui/compiler-core'
 
 import {
   METRO_COMPILER_CACHE_VERSION,
@@ -24,7 +28,7 @@ describe('Metro compiler cache', () => {
       moduleId: id,
       sourceHash: metroCompilerContentHash(source),
       plan: {
-        version: 1,
+        version: LOWERED_MODULE_PLAN_VERSION,
         id,
         target: 'native',
         inputHash: metroCompilerContentHash(source),
