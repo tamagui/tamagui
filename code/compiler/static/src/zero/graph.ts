@@ -1,3 +1,4 @@
+import { ZERO_FAILURE_FOOTER, type ZeroRule } from '@tamagui/compiler-core'
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import path from 'node:path'
 
@@ -160,9 +161,7 @@ export function formatZeroGraphFailure(receipt: ZeroGraphReceipt): string {
     )
   }
   lines.push('')
-  lines.push(
-    'Fix every site or move the owning module to a declared full-runtime island. Zero-runtime never retains one component as a fallback.'
-  )
+  lines.push(ZERO_FAILURE_FOOTER)
   return lines.join('\n')
 }
 
@@ -181,37 +180,115 @@ export interface ZeroViolationSite {
   file: string
   line: number
   column: number
+  rule: ZeroRule
   code: string
+  component?: string
   message: string
 }
 
 /**
- * The compiler collects every violation before failing, sorted by normalized
- * file path, source offset, rule, then message.
+ * One deterministic order for every integration: normalized file path, source
+ * offset, rule, then message. A build that reports its violations in a
+ * different order on a different machine is not a receipt anyone can diff.
  */
-export function formatZeroViolations(sites: readonly ZeroViolationSite[]): string {
-  const sorted = [...sites].sort(
+export function sortZeroViolations(
+  sites: readonly ZeroViolationSite[]
+): ZeroViolationSite[] {
+  return [...sites].sort(
     (left, right) =>
       (left.file < right.file ? -1 : left.file > right.file ? 1 : 0) ||
       left.line - right.line ||
       left.column - right.column ||
-      (left.code < right.code ? -1 : left.code > right.code ? 1 : 0) ||
+      left.rule - right.rule ||
       (left.message < right.message ? -1 : left.message > right.message ? 1 : 0)
   )
+}
+
+/** The compiler collects every violation before failing. */
+export function formatZeroViolations(sites: readonly ZeroViolationSite[]): string {
+  const sorted = sortZeroViolations(sites)
   const lines = [
     `[tamagui zero-runtime] build failed with ${sorted.length} violations`,
     '',
   ]
   for (const site of sorted) {
-    lines.push(site.code)
-    lines.push(`${site.file}:${site.line}:${site.column}`)
+    lines.push(`Rule ${site.rule} ${site.code}`)
+    lines.push(
+      `${site.file}:${site.line}:${site.column}${site.component ? ` ${site.component}` : ''}`
+    )
     lines.push(`  ${site.message}`)
     lines.push('')
   }
-  lines.push(
-    'Fix every site or move the owning module to a declared full-runtime island. Zero-runtime never retains one component as a fallback.'
-  )
+  lines.push(ZERO_FAILURE_FOOTER)
   return lines.join('\n')
+}
+
+/**
+ * The machine-readable half of the same list. `report` mode writes it and exits
+ * successfully; `enforce` writes it and then fails, so the two are comparable.
+ */
+export function writeZeroViolationReport(
+  outDir: string,
+  name: string,
+  report: {
+    integration: string
+    mode: 'report' | 'enforce'
+    violations: readonly ZeroViolationSite[]
+  }
+): string {
+  mkdirSync(outDir, { recursive: true })
+  const file = path.join(outDir, `${name}.violations.json`)
+  writeFileSync(
+    file,
+    `${JSON.stringify(
+      {
+        integration: report.integration,
+        mode: report.mode,
+        count: report.violations.length,
+        violations: sortZeroViolations(report.violations),
+      },
+      null,
+      2
+    )}\n`
+  )
+  return file
+}
+
+/**
+ * An exported `styled()` declarator is only erasable because every importer in
+ * this entry graph was itself transformed, and therefore lowered its uses. That
+ * is a build-wide fact, so it is checked once here rather than guessed per
+ * module.
+ */
+export function erasedExportEscape(input: {
+  integration: string
+  /** Module ids the zero transform actually ran on. */
+  transformed: ReadonlySet<string>
+  /** Erased exported binding names, by the module that declared them. */
+  erasedExports: ReadonlyMap<string, readonly string[]>
+  importersOf: ReadonlyMap<string, readonly string[]>
+}): string | null {
+  for (const [moduleId, names] of input.erasedExports) {
+    if (names.length === 0) continue
+    // An empty importer set here would mean the graph query saw nothing, which
+    // is not the same as seeing no importers: this module is in the graph, so
+    // its own entry must be there too.
+    if (!input.importersOf.has(moduleId)) {
+      return `[tamagui zero-runtime] ${input.integration} erased the exported definition(s) ${names.join(
+        ', '
+      )} from ${moduleId}, and then could not find that module in its own graph, so nothing proved the erasure was safe.\n\n${ZERO_FAILURE_FOOTER}`
+    }
+    const untransformed = (input.importersOf.get(moduleId) ?? []).filter(
+      (importer) => !input.transformed.has(importer)
+    )
+    if (untransformed.length === 0) continue
+    return `[tamagui zero-runtime] ${input.integration} erased the exported definition(s) ${names.join(
+      ', '
+    )} from ${moduleId}, but ${untransformed.length} importer(s) in this entry graph were never zero-transformed and may still reference them:\n  ${untransformed.join(
+      '\n  '
+    )}\n\n${ZERO_FAILURE_FOOTER}`
+  }
+  return null
 }
 
 /** UTF-16 offset to 1-based line/column, for diagnostic sites. */

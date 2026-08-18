@@ -27,6 +27,8 @@ export interface CompilerProject {
   disablePartialExtraction?: boolean
   /** emit native theme-token mappings for the native style engine */
   experimentalNativeFastPath?: boolean
+  /** Zero-runtime mode, which makes the host's diagnostics mode-aware. */
+  zeroRuntime?: boolean
 }
 
 export interface CompilerResolution {
@@ -135,6 +137,7 @@ export class CompilerFrontend {
       })),
       disablePartialExtraction: input.project.disablePartialExtraction,
       experimentalNativeFastPath: input.project.experimentalNativeFastPath,
+      zeroRuntime: input.project.zeroRuntime,
     })
     const result = await this.session.compile({
       module: rootModule,

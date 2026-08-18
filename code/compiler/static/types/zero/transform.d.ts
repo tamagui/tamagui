@@ -10,6 +10,11 @@ import type { IslandThemeBridge } from './islands';
  * references lowering consumed.
  */
 export interface ZeroModuleTransformInput {
+    /**
+     * `report` runs every analysis and returns the source unchanged, so a project
+     * can see its violations without moving off the full runtime.
+     */
+    mode: 'report' | 'enforce';
     id: string;
     /** Project root, so bridge ids are stable and unique across modules. */
     root: string;
@@ -38,7 +43,11 @@ export interface ZeroModuleTransformResult {
         modules: string[];
         bindings: string[];
         styledDefinitions: string[];
+        /** Erased declarators this module also exported. */
+        exports: string[];
     };
+    /** Animated-number hooks rewritten from the public barrel to the leaf. */
+    rewrittenAnimatedNumberHooks: string[];
 }
 export declare function transformZeroModule(input: ZeroModuleTransformInput): ZeroModuleTransformResult;
 //# sourceMappingURL=transform.d.ts.map

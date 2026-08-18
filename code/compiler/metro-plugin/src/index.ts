@@ -109,7 +109,9 @@ export function withTamagui(
     zeroPublicDir
   )
 
-  if (zero) {
+  // `report` runs the analysis through the frontend and changes nothing else,
+  // so it never installs the serializer that owns the artifact and the gate.
+  if (zero?.isEnforcing) {
     applyMetroZeroRuntime(metroConfig, zero)
   }
 
@@ -146,7 +148,7 @@ export function withTamagui(
         originalBabelTransformerPath,
         projectRoot,
         // an integration-owned literal, never an ambient shell value
-        runtimeLiteral: zero && !zero.islandBuild ? 'zero' : 'full',
+        runtimeLiteral: zero?.isEnforcing && !zero.islandBuild ? 'zero' : 'full',
       }
     )
     const userGetTransformOptions = metroConfig.transformer.getTransformOptions

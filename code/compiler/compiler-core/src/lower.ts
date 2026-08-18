@@ -126,6 +126,15 @@ function compareCodeUnits(left: string, right: string): number {
   return left < right ? -1 : left > right ? 1 : 0
 }
 
+/**
+ * A diagnostic that stopped its candidate from lowering. Zero mode reports
+ * exactly these; the ones recorded next to a successful lowering describe a
+ * dropped prop and leave no runtime behind.
+ */
+function blocking(reason: BailoutReason): BailoutReason {
+  return { ...reason, blocking: true }
+}
+
 function diagnostic(
   code: Extract<BailoutReason['code'], `local/${string}`>,
   element: MaterializedElement,
@@ -264,7 +273,10 @@ export function lowerModule({
     stats.found++
 
     if (!element.complete || (styledDefinition && !styledDefinition.complete)) {
-      diagnostics.push(...element.bailouts, ...(styledDefinition?.bailouts ?? []))
+      diagnostics.push(
+        ...element.bailouts.map(blocking),
+        ...(styledDefinition?.bailouts ?? []).map(blocking)
+      )
       stats.bailed++
       continue
     }
@@ -272,7 +284,7 @@ export function lowerModule({
       .map((entry) => unsafeEntry(element, entry, component, host))
       .find((result): result is BailoutReason => result !== null)
     if (unsafe) {
-      diagnostics.push(unsafe)
+      diagnostics.push(blocking(unsafe))
       stats.bailed++
       continue
     }
@@ -299,7 +311,7 @@ export function lowerModule({
       }
     }
     if (!result.ok) {
-      diagnostics.push(result.bailout)
+      diagnostics.push(blocking(result.bailout))
       stats.bailed++
       continue
     }
@@ -307,10 +319,12 @@ export function lowerModule({
       validateSourceEdits(source, result.edits)
     } catch (error) {
       diagnostics.push(
-        diagnostic(
-          'local/overlapping-edit',
-          element,
-          error instanceof Error ? error.message : String(error)
+        blocking(
+          diagnostic(
+            'local/overlapping-edit',
+            element,
+            error instanceof Error ? error.message : String(error)
+          )
         )
       )
       stats.bailed++
@@ -321,10 +335,12 @@ export function lowerModule({
       overlapsCommitted(result.edits, edits)
     ) {
       diagnostics.push(
-        diagnostic(
-          'local/overlapping-edit',
-          element,
-          'Candidate edits overlap another candidate or escape the element span'
+        blocking(
+          diagnostic(
+            'local/overlapping-edit',
+            element,
+            'Candidate edits overlap another candidate or escape the element span'
+          )
         )
       )
       stats.bailed++

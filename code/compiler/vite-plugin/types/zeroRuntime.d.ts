@@ -21,6 +21,10 @@ export interface ZeroRuntimeController {
     bridges: Map<string, IslandThemeBridge[]>;
     /** Every zero-contract violation seen this build, aggregated before failing. */
     violations: ZeroViolationSite[];
+    /** Modules the zero transform ran on, for the erased-export gate. */
+    transformed: Set<string>;
+    /** Erased exported declarator names, by declaring module. */
+    erasedExports: Map<string, string[]>;
     loaderIds: Map<string, string>;
     islandModuleIds: Map<string, string>;
     isEnforcing: boolean;

@@ -6,6 +6,9 @@ import {
   planZeroErasure,
   resolvedModuleId,
   walkAst,
+  zeroIslandThemeMessage,
+  zeroRuleMessage,
+  zeroViolationsFromPlan,
   type AppliedLoweredModule,
   type AstNode,
   type LoweredModulePlan,
@@ -33,6 +36,11 @@ import type { IslandThemeBridge, IslandThemeBridgeLayer } from './islands'
  */
 
 export interface ZeroModuleTransformInput {
+  /**
+   * `report` runs every analysis and returns the source unchanged, so a project
+   * can see its violations without moving off the full runtime.
+   */
+  mode: 'report' | 'enforce'
   id: string
   /** Project root, so bridge ids are stable and unique across modules. */
   root: string
@@ -60,7 +68,11 @@ export interface ZeroModuleTransformResult {
     modules: string[]
     bindings: string[]
     styledDefinitions: string[]
+    /** Erased declarators this module also exported. */
+    exports: string[]
   }
+  /** Animated-number hooks rewritten from the public barrel to the leaf. */
+  rewrittenAnimatedNumberHooks: string[]
 }
 
 function identifierNameOf(node: AstNode | null): string | null {
@@ -90,9 +102,11 @@ function staticAttributes(
       return {
         values,
         error: {
-          code: 'zero/live-tamagui-reference',
+          rule: 1,
+          code: 'local/unsafe-style-spread',
           span: { id: resolvedModuleId(id), start: attribute.start, end: attribute.end },
-          message: `Zero-runtime rule 1: <Theme> cannot receive a prop spread because the compiler cannot prove it is style-free. Pass props explicitly or move this module to a full-runtime island.`,
+          component: 'Theme',
+          message: zeroRuleMessage(1, { component: 'Theme' }),
         },
       }
     }
@@ -122,9 +136,13 @@ function staticAttributes(
     return {
       values,
       error: {
-        code: 'zero/live-tamagui-reference',
+        rule: 4,
+        code: 'local/dynamic-style-value',
         span: { id: resolvedModuleId(id), start: attribute.start, end: attribute.end },
-        message: `Zero-runtime rule 4: value for ${key} on <Theme> requires runtime theme state. Theme names and theme value props must be statically evaluable, or move this module to a full-runtime island.`,
+        component: 'Theme',
+        message: zeroRuleMessage(4, {
+          detail: `the value of ${key} on <Theme>`,
+        }),
       },
     }
   }
@@ -138,7 +156,9 @@ export function transformZeroModule(
   const moduleId = resolvedModuleId(id)
   const program = parseModuleAst(source, id)
 
-  const violations: ZeroViolation[] = []
+  // The lowering plan's own blocking diagnostics are the rule 1-6 sites. A
+  // candidate that did not lower left a runtime behind, which is the violation.
+  const violations: ZeroViolation[] = zeroViolationsFromPlan(input.plan)
   const edits: SourceEdit[] = []
   const bridges = new Map<string, IslandThemeBridge[]>()
   const bridgeCSS = new Map<string, string>()
@@ -192,17 +212,23 @@ export function transformZeroModule(
     const nameValue = values.name
     if (nameValue !== undefined && typeof nameValue !== 'string') {
       violations.push({
-        code: 'zero/live-tamagui-reference',
+        rule: 4,
+        code: 'local/dynamic-style-value',
         span: { id: moduleId, start: element.start, end: element.end },
-        message: `Zero-runtime rule 4: <Theme name> must be a literal theme name.`,
+        component: 'Theme',
+        message: zeroRuleMessage(4, { detail: 'a non-literal <Theme name>' }),
       })
       continue
     }
     if (typeof nameValue === 'string' && nameValue.includes('_')) {
       violations.push({
-        code: 'zero/live-tamagui-reference',
+        rule: 4,
+        code: 'local/unsupported-target',
         span: { id: moduleId, start: element.start, end: element.end },
-        message: `Zero-runtime rule 4: compound theme name "${nameValue}" is not lowered in this phase. Use a single-segment theme name.`,
+        component: 'Theme',
+        message: zeroRuleMessage(4, {
+          detail: `the compound theme name "${nameValue}", which this phase does not lower`,
+        }),
       })
       continue
     }
@@ -227,9 +253,13 @@ export function transformZeroModule(
     const closing = childNode(element, 'closingElement')
     if (!closing) {
       violations.push({
-        code: 'zero/live-tamagui-reference',
+        rule: 4,
+        code: 'local/unsupported-target',
         span: { id: moduleId, start: element.start, end: element.end },
-        message: `Zero-runtime rule 4: a self-closing <Theme> has no subtree to theme.`,
+        component: 'Theme',
+        message: zeroRuleMessage(4, {
+          detail: 'a self-closing <Theme>, which has no subtree to theme,',
+        }),
       })
       continue
     }
@@ -284,9 +314,11 @@ export function transformZeroModule(
       .filter((name): name is string => !!name)
     if (names.length > 1) {
       violations.push({
-        code: 'zero/live-tamagui-reference',
+        rule: 4,
+        code: 'local/unsupported-target',
         span: { id: moduleId, start: element.start, end: element.end },
-        message: `Zero-runtime rule 4: island "${islandId}" is nested under ${names.length} named themes. Nested theme composition is not lowered in this phase.`,
+        component: islandId,
+        message: zeroIslandThemeMessage(islandId),
       })
       return
     }
@@ -320,35 +352,48 @@ export function transformZeroModule(
     })
   })
 
-  // reference erasure runs last so it sees the Theme edits as consumed ranges
-  const erasure = planZeroErasure({
-    id: moduleId,
-    source,
-    loweredEdits: [...input.plan.edits, ...edits],
-    isTamaguiSpecifier: input.isTamaguiSpecifier,
-    islandIdFor: input.resolveIslandModule,
-  })
-  edits.push(...erasure.edits)
-  violations.push(...erasure.violations)
-
-  const output = violations.length
-    ? { changed: false, code: source, map: null }
-    : applyLoweredModule(source, moduleId, {
+  // Reference erasure runs last, so it sees the Theme edits as consumed ranges,
+  // and only on a plan that already has nothing to report: erasure's whole
+  // licence is that every use in this module lowered.
+  const erasure = violations.length
+    ? null
+    : planZeroErasure({
         id: moduleId,
-        sourceHash: input.plan.sourceHash,
-        edits: [...input.plan.edits, ...edits],
+        source,
+        loweredEdits: [...input.plan.edits, ...edits],
+        isTamaguiSpecifier: input.isTamaguiSpecifier,
+        islandIdFor: input.resolveIslandModule,
       })
+  if (erasure) {
+    edits.push(...erasure.edits)
+    violations.push(...erasure.violations)
+  }
+
+  // `report` leaves the source alone by contract, so its output is whatever
+  // ordinary lowering produced.
+  const output =
+    input.mode === 'report'
+      ? applyLoweredModule(source, moduleId, input.plan)
+      : violations.length
+        ? { changed: false, code: source, map: null }
+        : applyLoweredModule(source, moduleId, {
+            id: moduleId,
+            sourceHash: input.plan.sourceHash,
+            edits: [...input.plan.edits, ...edits],
+          })
 
   return {
     output,
-    edits,
-    bridges,
-    bridgeCSS,
+    edits: input.mode === 'report' ? [] : edits,
+    bridges: input.mode === 'report' ? new Map() : bridges,
+    bridgeCSS: input.mode === 'report' ? new Map() : bridgeCSS,
     violations,
     erased: {
-      modules: erasure.removedModules,
-      bindings: erasure.removedBindings,
-      styledDefinitions: erasure.erasedStyledDefinitions,
+      modules: erasure?.removedModules ?? [],
+      bindings: erasure?.removedBindings ?? [],
+      styledDefinitions: erasure?.erasedStyledDefinitions ?? [],
+      exports: erasure?.erasedExports ?? [],
     },
+    rewrittenAnimatedNumberHooks: erasure?.rewrittenAnimatedNumberHooks ?? [],
   }
 }

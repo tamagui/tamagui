@@ -38,6 +38,10 @@ export interface ZeroRuntimeController {
   bridges: Map<string, IslandThemeBridge[]>
   /** Every zero-contract violation seen this build, aggregated before failing. */
   violations: ZeroViolationSite[]
+  /** Modules the zero transform ran on, for the erased-export gate. */
+  transformed: Set<string>
+  /** Erased exported declarator names, by declaring module. */
+  erasedExports: Map<string, string[]>
   loaderIds: Map<string, string>
   islandModuleIds: Map<string, string>
   isEnforcing: boolean
@@ -58,7 +62,7 @@ export async function createZeroRuntimeController(
   base: string
 ): Promise<ZeroRuntimeController | null> {
   const resolved = await Static.resolveZeroRuntime(options, root)
-  if (resolved.mode !== 'enforce') return null
+  if (resolved.mode === 'off') return null
   Static.assertZeroIntegrationSupport('vite', resolved)
 
   const cssHref = `${base.endsWith('/') ? base : `${base}/`}${ZERO_CSS_FILENAME}`
@@ -72,6 +76,7 @@ export async function createZeroRuntimeController(
   for (const island of resolved.islands) {
     Static.writeIslandModules({
       island,
+      integration: 'vite',
       configPath,
       scriptUrl: `${base.endsWith('/') ? base : `${base}/`}${ZERO_ISLAND_DIRNAME}/${island.id}.js`,
       cssHref,
@@ -85,13 +90,15 @@ export async function createZeroRuntimeController(
     cssHref,
     bridges: new Map(),
     violations: [],
+    transformed: new Set(),
+    erasedExports: new Map(),
     loaderIds: new Map(
       resolved.islands.map((island) => [zeroModuleKey(island.loader), island.id])
     ),
     islandModuleIds: new Map(
       resolved.islands.map((island) => [zeroModuleKey(island.module), island.id])
     ),
-    isEnforcing: true,
+    isEnforcing: resolved.mode === 'enforce',
   }
 }
 

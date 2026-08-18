@@ -40,6 +40,8 @@ export interface WebpackZeroController {
   islandBuild: string | null
   /** Modules whose loader actually ran this build, for the warm-cache receipt. */
   loaderModules: Set<string>
+  /** False in `report` mode, where the analysis runs and nothing else changes. */
+  isEnforcing: boolean
   /** Content hash of the evaluated config's CSS, part of the artifact identity. */
   configHash: string
 }
@@ -66,7 +68,7 @@ export function getWebpackZeroController(
   root: string
 ): WebpackZeroController | null {
   const resolved = Static.resolveZeroRuntimeSync(options, root)
-  if (resolved.mode !== 'enforce') return null
+  if (resolved.mode === 'off') return null
   Static.assertZeroIntegrationSupport('next-webpack', resolved)
 
   const existing = controllers.get(root)
@@ -84,6 +86,7 @@ export function getWebpackZeroController(
   for (const island of resolved.islands) {
     Static.writeIslandModules({
       island,
+      integration: 'next-webpack',
       configPath,
       scriptUrl: `/${ZERO_ISLAND_DIRNAME}/${island.id}.js`,
       cssHref,
@@ -107,6 +110,7 @@ export function getWebpackZeroController(
     ),
     islandBuild: null,
     loaderModules: new Set(),
+    isEnforcing: resolved.mode === 'enforce',
     configHash: '',
   }
   controllers.set(root, controller)
@@ -132,6 +136,8 @@ export interface ZeroModuleBuildInfo {
   bridgeCSS: [string, string][]
   bridges: [string, IslandThemeBridge[]][]
   violations: ZeroViolationSite[]
+  /** Exported declarators erasure removed from this module. */
+  erasedExports: string[]
 }
 
 const BUILD_INFO_KEY = 'tamaguiZero'
@@ -178,19 +184,34 @@ export function* flattenModules(modules: Iterable<Module>): Generator<Module> {
 export function collectZeroBuildInfo(
   controller: WebpackZeroController,
   modules: Iterable<Module>
-): { modules: number; restored: number } {
+): {
+  modules: number
+  restored: number
+  transformed: Set<string>
+  erasedExports: Map<string, string[]>
+} {
   let seen = 0
   let restored = 0
+  const transformed = new Set<string>()
+  const erasedExports = new Map<string, string[]>()
+  // One module can appear twice in a flattened walk: concatenated inside one
+  // chunk and standalone in another. Its CSS is keyed by resource and would
+  // survive that, but its violations would be reported once per appearance.
+  const visited = new Set<string>()
   for (const module of flattenModules(modules)) {
     const info = readZeroBuildInfo(module)
     if (!info) continue
-    seen++
     const resource = (module as any).resource as string
+    if (visited.has(resource)) continue
+    visited.add(resource)
+    seen++
     if (!controller.loaderModules.has(resource)) restored++
     if (info.island) {
       controller.artifact.setIslandModuleCSS(info.island, resource, info.css)
       continue
     }
+    transformed.add(resource)
+    if (info.erasedExports.length) erasedExports.set(resource, info.erasedExports)
     controller.artifact.setZeroModuleCSS(resource, info.css)
     for (const [identifier, rules] of info.bridgeCSS) {
       controller.artifact.setBridgeRules(identifier, rules)
@@ -198,7 +219,7 @@ export function collectZeroBuildInfo(
     Static.mergeIslandBridges(controller.bridges, new Map(info.bridges))
     controller.violations.push(...info.violations)
   }
-  return { modules: seen, restored }
+  return { modules: seen, restored, transformed, erasedExports }
 }
 
 /**

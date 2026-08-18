@@ -110,6 +110,7 @@ export class TamaguiPlugin {
           `[tamagui zero-runtime] the Tamagui config did not evaluate, so no CSS artifact can be generated`
         )
       }
+      if (zero.isEnforcing) Static.assertZeroConfigDrivers(projectInfo.tamaguiConfig)
       const configCSS = projectInfo.tamaguiConfig.getCSS()
       zero.configHash = createHash('sha256').update(configCSS).digest('hex').slice(0, 16)
       zero.artifact.setConfigCSS(configCSS)
@@ -130,6 +131,14 @@ export class TamaguiPlugin {
       zero.violations.length = 0
       const collected = collectZeroBuildInfo(zero, compilation.modules)
 
+      // Written in both modes and before the failure, so `report` and `enforce`
+      // emit the identical list and only their exit differs.
+      Static.writeZeroViolationReport(zero.resolved.outDir, 'next-zero', {
+        integration: 'next-webpack',
+        mode: zero.isEnforcing ? 'enforce' : 'report',
+        violations: zero.violations,
+      })
+      if (!zero.isEnforcing) return
       if (zero.violations.length) {
         throw new Error(Static.formatZeroViolations(zero.violations))
       }
@@ -217,6 +226,13 @@ export class TamaguiPlugin {
         }
       }
 
+      const escape = Static.erasedExportEscape({
+        integration: 'next-webpack',
+        transformed: collected.transformed,
+        erasedExports: collected.erasedExports,
+        importersOf: importerEdges,
+      })
+      if (escape) throw new Error(escape)
       const checked = Static.checkZeroGraph({ entries, modules, importerEdges })
       const bridgeManifest = Static.canonicalizeBridgeManifest(
         Object.fromEntries(

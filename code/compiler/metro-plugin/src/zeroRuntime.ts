@@ -39,8 +39,14 @@ export interface MetroZeroController {
   islandBuild: string | null
   bridges: Map<string, IslandThemeBridge[]>
   violations: ZeroViolationSite[]
+  /** Modules the zero transform ran on, for the erased-export gate. */
+  transformed: Set<string>
+  /** Erased exported declarator names, by declaring module. */
+  erasedExports: Map<string, string[]>
   loaderIds: Map<string, string>
   islandModuleIds: Map<string, string>
+  /** False in `report` mode, where the analysis runs and nothing else changes. */
+  isEnforcing: boolean
   /** The evaluated config's CSS, set once the frontend has loaded the project. */
   configCSS: string
   /**
@@ -73,7 +79,7 @@ export function createMetroZeroController(
   publicDirName: string
 ): MetroZeroController | null {
   const resolved = Static.resolveZeroRuntimeSync(options, root)
-  if (resolved.mode !== 'enforce') return null
+  if (resolved.mode === 'off') return null
   Static.assertZeroIntegrationSupport('metro-web', resolved)
 
   const cssHref = `/${ZERO_CSS_FILENAME}`
@@ -87,6 +93,7 @@ export function createMetroZeroController(
   for (const island of resolved.islands) {
     Static.writeIslandModules({
       island,
+      integration: 'metro-web',
       configPath,
       scriptUrl: `/${ZERO_ISLAND_DIRNAME}/${island.id}.js`,
       cssHref,
@@ -102,6 +109,9 @@ export function createMetroZeroController(
     islandBuild,
     bridges: new Map(),
     violations: [],
+    transformed: new Set(),
+    erasedExports: new Map(),
+    isEnforcing: resolved.mode === 'enforce',
     loaderIds: new Map(
       resolved.islands.map((island) => [zeroModuleKey(island.loader), island.id])
     ),

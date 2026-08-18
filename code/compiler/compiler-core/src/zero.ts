@@ -1,10 +1,13 @@
 import { childNode, childNodes, walkAst } from './ast'
 import type { AstNode, ResolvedModuleId, SourceSpan } from './contracts'
+import type { BailoutReason, ZeroRule } from './diagnostics'
+import { zeroRuleForBailout } from './diagnostics'
+import type { LoweredModulePlan } from './lower'
 import type { SourceEdit } from './output'
 import { parseModuleAst } from './yuku'
 
 /**
- * Zero-runtime reference erasure.
+ * Zero-runtime reference erasure and the rule-mapped diagnostics that gate it.
  *
  * A passing lowering plan already proved every Tamagui use in this module became
  * host markup. That fact is stronger than anything a bundler can derive, so the
@@ -13,13 +16,144 @@ import { parseModuleAst } from './yuku'
  * does no export-level shaking, so nothing later in the pipeline can do this.
  */
 
+export type { ZeroRule }
+
+export type ZeroViolationCode =
+  | 'zero/static-island-import'
+  | 'zero/side-effect-import'
+  | 'zero/live-tamagui-reference'
+  | 'zero/design-state-read'
+  | 'zero/runtime-provider'
+  | BailoutReason['code']
+
 export interface ZeroViolation {
-  code:
-    | 'zero/static-island-import'
-    | 'zero/side-effect-import'
-    | 'zero/live-tamagui-reference'
+  rule: ZeroRule
+  code: ZeroViolationCode
   span: SourceSpan
   message: string
+  component?: string
+}
+
+/** The last line of every zero-runtime failure, in both gates. */
+export const ZERO_FAILURE_FOOTER =
+  'Fix every site or move the owning module to a declared full-runtime island. Zero-runtime never retains one component as a fallback.'
+
+/**
+ * The JavaScript design-state surface. A reference to any of these in a zero
+ * graph is rule 7: the value only exists once a runtime has parsed the config.
+ */
+export const ZERO_DESIGN_STATE_APIS = new Set([
+  'useMedia',
+  'useTheme',
+  'useThemeName',
+  'useProps',
+  'usePropsAndStyle',
+  'getConfig',
+  'getTokens',
+  'useTokens',
+  'getVariableValue',
+  'getToken',
+  'getTokenValue',
+  'useConfiguration',
+  'useAnimationDriver',
+  'updateTheme',
+  'addTheme',
+  'replaceTheme',
+  'forceUpdateThemes',
+])
+
+/** Root providers. Their use is illegal in a zero graph, never erasable. */
+export const ZERO_PROVIDER_EXPORTS = new Set([
+  'TamaguiProvider',
+  'ThemeProvider',
+  'TamaguiRoot',
+])
+
+/**
+ * The four public animated-number hooks. They are the one opt-in runtime a zero
+ * graph may keep, and only through the leaf module: the public barrel would drag
+ * the config-bound driver resolution in with them.
+ */
+export const ZERO_ANIMATED_NUMBER_HOOKS = new Set([
+  'useAnimatedNumber',
+  'useAnimatedNumberStyle',
+  'useAnimatedNumbersStyle',
+  'useAnimatedNumberReaction',
+])
+
+export const ZERO_ANIMATED_NUMBER_MODULE = '@tamagui/animations-css/animated-number'
+
+export interface ZeroRuleParams {
+  component?: string
+  expression?: string
+  prop?: string
+  detail?: string
+  api?: string
+}
+
+/** The rule map's developer messages, verbatim. */
+export function zeroRuleMessage(rule: ZeroRule, params: ZeroRuleParams): string {
+  const component = params.component ?? 'this component'
+  switch (rule) {
+    case 1:
+      return `Zero-runtime rule 1: ${component} cannot receive a prop spread because the compiler cannot prove it is style-free. Pass non-style props explicitly or move this module to a full-runtime island.`
+    case 2:
+      return `Zero-runtime rule 2: component expression ${params.expression ?? component} does not resolve to one literal lowerable host component. Use a literal Tamagui or html.* component, or move this module to a full-runtime island.`
+    case 3:
+      return `Zero-runtime rule 3: value for ${params.prop ?? 'a style prop'} on ${component} cannot be lowered: ${params.detail ?? 'the compiler could not evaluate it'}. Use a supported build-time value or move this module to a full-runtime island.`
+    case 4:
+      return `Zero-runtime rule 4: ${params.detail ?? component} requires runtime theme or config state. Theme names and modifier targets must be statically enumerable, Theme value props and config must be build-time data, and runtime mutation belongs in a full-runtime island.`
+    case 5:
+      return `Zero-runtime rule 5: ${params.detail ?? component} requires a component animation runtime. Use a static CSS transition or move this module to a full-runtime island.`
+    case 6:
+      return `Zero-runtime rule 6: ${component} does not lower to one host element with className and is island-only. Move this module to a declared full-runtime island.`
+    case 7:
+      return `Zero-runtime rule 7: ${params.api ?? component} reads Tamagui design state in JavaScript. Express the condition in CSS or move this module to a full-runtime island.`
+  }
+}
+
+export const ZERO_PROVIDER_MESSAGE =
+  '[tamagui zero-runtime] Rule 4: TamaguiProvider is not used by a zero-runtime root. The bundler loads generated CSS and the compiler lowers static Theme nodes. Remove this provider or make this entry full-runtime.'
+
+export function zeroThemeBoundaryMessage(component: string, prop: string): string {
+  return `[tamagui zero-runtime] Rule 4: ${component} uses ${prop}, which creates a runtime component theme boundary. Replace it with a static <Theme name="..."> wrapper (use name="inverse" for themeInverse) or move this module to a full-runtime island.`
+}
+
+export function zeroConfigDriverMessage(name: string, outputStyle: unknown): string {
+  return `[tamagui zero-runtime] Rule 5: createTamagui animations must resolve to the CSS driver. Driver ${name} has outputStyle=${String(outputStyle)}. Remove it from the zero entry or move its consumers to a full-runtime island.`
+}
+
+export function zeroIslandThemeMessage(entry: string): string {
+  return `[tamagui zero-runtime] Rule 4: island ${entry} has no statically resolved theme context at this mount. Place the island boundary under a compiler-visible static <Theme> or make this entry full-runtime.`
+}
+
+/**
+ * The lowering plan's own diagnostics, read as zero-runtime violations.
+ *
+ * Only the diagnostics that stopped a candidate from lowering count: one
+ * recorded next to a successful lowering describes a dropped prop and leaves no
+ * runtime behind.
+ */
+export function zeroViolationsFromPlan(plan: LoweredModulePlan): ZeroViolation[] {
+  const violations: ZeroViolation[] = []
+  for (const diagnostic of plan.diagnostics) {
+    if (!diagnostic.blocking) continue
+    const rule = zeroRuleForBailout(diagnostic)
+    violations.push({
+      rule,
+      code: diagnostic.code,
+      span: diagnostic.span,
+      component: diagnostic.component,
+      message:
+        diagnostic.zeroMessage ??
+        zeroRuleMessage(rule, {
+          component: diagnostic.component,
+          prop: diagnostic.prop,
+          detail: diagnostic.message,
+        }),
+    })
+  }
+  return violations
 }
 
 export interface ZeroErasureInput {
@@ -38,6 +172,13 @@ export interface ZeroErasureResult {
   removedModules: string[]
   removedBindings: string[]
   erasedStyledDefinitions: string[]
+  /**
+   * Erased declarators this module also exported. The build-wide gate proves
+   * every importer of them inside the zero entry graph was itself transformed.
+   */
+  erasedExports: string[]
+  /** Hooks rewritten to the animated-number leaf, by their imported name. */
+  rewrittenAnimatedNumberHooks: string[]
   liveBindings: string[]
   violations: ZeroViolation[]
 }
@@ -47,8 +188,13 @@ interface Range {
   end: number
 }
 
+interface Occurrence extends Range {
+  parent: AstNode | null
+}
+
 interface ImportBinding {
   local: string
+  imported: string
   specifierNode: AstNode
   declaration: AstNode
   moduleSpecifier: string
@@ -59,8 +205,8 @@ interface ImportBinding {
  * excluding binding sites and non-reference positions such as member property
  * names, object keys, and JSX attribute names.
  */
-function collectNameOccurrences(program: AstNode): Map<string, Range[]> {
-  const occurrences = new Map<string, Range[]>()
+function collectNameOccurrences(program: AstNode): Map<string, Occurrence[]> {
+  const occurrences = new Map<string, Occurrence[]>()
   walkAst(program, (node, parent, key) => {
     if (node.type !== 'Identifier' && node.type !== 'JSXIdentifier') return
     const name = typeof node.name === 'string' ? node.name : null
@@ -103,9 +249,10 @@ function collectNameOccurrences(program: AstNode): Map<string, Range[]> {
         return
       }
     }
+    const entry: Occurrence = { start: node.start, end: node.end, parent: parent ?? null }
     const list = occurrences.get(name)
-    if (list) list.push({ start: node.start, end: node.end })
-    else occurrences.set(name, [{ start: node.start, end: node.end }])
+    if (list) list.push(entry)
+    else occurrences.set(name, [entry])
   })
   return occurrences
 }
@@ -122,6 +269,26 @@ function identifierNameOf(node: AstNode | null): string | null {
   return node && node.type === 'Identifier' && typeof node.name === 'string'
     ? node.name
     : null
+}
+
+/**
+ * The smallest source text that names what a surviving reference is doing. A
+ * bare identifier says nothing about why it could not lower, so the enclosing
+ * expression is reported when there is one.
+ */
+function referenceExpression(source: string, reference: Occurrence): string {
+  const parent = reference.parent
+  const node =
+    parent &&
+    (parent.type === 'ConditionalExpression' ||
+      parent.type === 'LogicalExpression' ||
+      parent.type === 'CallExpression' ||
+      parent.type === 'MemberExpression' ||
+      parent.type === 'ArrayExpression')
+      ? parent
+      : reference
+  const text = source.slice(node.start, node.end).replace(/\s+/g, ' ').trim()
+  return text.length > 80 ? `${text.slice(0, 77)}...` : text
 }
 
 /**
@@ -151,7 +318,13 @@ function collectStyledDeclarators(
     if (!name || !init || init.type !== 'CallExpression') continue
     const callee = identifierNameOf(childNode(init, 'callee'))
     if (!callee || !styledLocals.has(callee)) continue
-    found.push({ name, declarator, declaration, exported })
+    // an exported declarator's whole statement carries the export keyword
+    found.push({
+      name,
+      declarator,
+      declaration: exported ? statement : declaration,
+      exported,
+    })
   }
   return found
 }
@@ -175,6 +348,7 @@ export function planZeroErasure(input: ZeroErasureInput): ZeroErasureResult {
     const islandId = input.islandIdFor(moduleSpecifier)
     if (islandId) {
       violations.push({
+        rule: 6,
         code: 'zero/static-island-import',
         span: span(statement),
         message: `Zero-runtime islands are separately built full-runtime entries. "${moduleSpecifier}" is declared as island "${islandId}" and cannot be imported from the zero graph. Import the generated island loader instead.`,
@@ -188,6 +362,7 @@ export function planZeroErasure(input: ZeroErasureInput): ZeroErasureResult {
     const specifiers = childNodes(statement, 'specifiers')
     if (specifiers.length === 0) {
       violations.push({
+        rule: 6,
         code: 'zero/side-effect-import',
         span: span(statement),
         message: `Zero-runtime cannot erase a bare side-effect import of "${moduleSpecifier}" because its effects are unknown. Remove it or move this module to a full-runtime island.`,
@@ -200,6 +375,7 @@ export function planZeroErasure(input: ZeroErasureInput): ZeroErasureResult {
       if (!local) continue
       bindings.push({
         local,
+        imported: identifierNameOf(childNode(specifier, 'imported')) ?? local,
         specifierNode: specifier,
         declaration: statement,
         moduleSpecifier,
@@ -213,6 +389,8 @@ export function planZeroErasure(input: ZeroErasureInput): ZeroErasureResult {
       removedModules: [],
       removedBindings: [],
       erasedStyledDefinitions: [],
+      erasedExports: [],
+      rewrittenAnimatedNumberHooks: [],
       liveBindings: [],
       violations,
     }
@@ -227,7 +405,7 @@ export function planZeroErasure(input: ZeroErasureInput): ZeroErasureResult {
   // shadowed name: over-counting keeps an import that could have been dropped,
   // while under-counting would erase a live one and break the app at runtime.
   const occurrences = collectNameOccurrences(program)
-  const referencesOf = (local: string): Range[] => occurrences.get(local) ?? []
+  const referencesOf = (local: string): Occurrence[] => occurrences.get(local) ?? []
 
   const isConsumed = (reference: Range) =>
     consumed.some((range) => coversRange(range, reference))
@@ -236,12 +414,12 @@ export function planZeroErasure(input: ZeroErasureInput): ZeroErasureResult {
   // consumed. Their spans then count as consumed for the import pass, which is
   // what lets `styled` and its base component drop with them.
   const styledLocals = new Set(
-    bindings.filter((binding) => binding.local === 'styled').map((b) => b.local)
+    bindings.filter((binding) => binding.imported === 'styled').map((b) => b.local)
   )
   const erasedStyledDefinitions: string[] = []
+  const erasedExports: string[] = []
   const styledEdits: SourceEdit[] = []
   for (const definition of collectStyledDeclarators(program, styledLocals)) {
-    if (definition.exported) continue
     const references = referencesOf(definition.name)
     if (references.length === 0) continue
     if (!references.every(isConsumed)) continue
@@ -256,24 +434,60 @@ export function planZeroErasure(input: ZeroErasureInput): ZeroErasureResult {
       end: definition.declaration.end,
     })
     erasedStyledDefinitions.push(definition.name)
+    if (definition.exported) erasedExports.push(definition.name)
   }
 
-  // Pass 2: drop every Tamagui import specifier with no surviving reference, and
+  // Pass 2: the animated-number hooks are rewritten to the leaf before any dead
+  // specifier is dropped, so the public barrel never enters the client graph for
+  // them. They are the one runtime a zero entry may keep.
+  const animatedNumberBindings = bindings.filter(
+    (binding) =>
+      ZERO_ANIMATED_NUMBER_HOOKS.has(binding.imported) &&
+      referencesOf(binding.local).some((reference) => !isConsumed(reference))
+  )
+  const rewrittenAnimatedNumberHooks = animatedNumberBindings.map(
+    (binding) => binding.imported
+  )
+  const animatedNumberSpecifiers = new Set(
+    animatedNumberBindings.map((binding) => binding.specifierNode)
+  )
+  const leafImportEdits: SourceEdit[] = []
+  for (const declaration of tamaguiDeclarations) {
+    const rewritten = animatedNumberBindings.filter(
+      (binding) => binding.declaration === declaration
+    )
+    if (rewritten.length === 0) continue
+    leafImportEdits.push({
+      start: declaration.start,
+      end: declaration.start,
+      content: `import { ${rewritten
+        .map((binding) =>
+          binding.imported === binding.local
+            ? binding.imported
+            : `${binding.imported} as ${binding.local}`
+        )
+        .join(', ')} } from ${JSON.stringify(ZERO_ANIMATED_NUMBER_MODULE)};\n`,
+      origin: span(declaration),
+    })
+  }
+
+  // Pass 3: drop every Tamagui import specifier with no surviving reference, and
   // the whole declaration when none survives.
-  const deadBindings = new Set<AstNode>()
+  const deadBindings = new Set<AstNode>(animatedNumberSpecifiers)
   const removedBindings: string[] = []
-  const liveBindings: string[] = []
+  const liveBindings: ImportBinding[] = []
   for (const binding of bindings) {
+    if (animatedNumberSpecifiers.has(binding.specifierNode)) continue
     const references = referencesOf(binding.local)
     if (references.length > 0 && !references.every(isConsumed)) {
-      liveBindings.push(binding.local)
+      liveBindings.push(binding)
       continue
     }
     deadBindings.add(binding.specifierNode)
     removedBindings.push(binding.local)
   }
 
-  const edits: SourceEdit[] = [...styledEdits]
+  const edits: SourceEdit[] = [...styledEdits, ...leafImportEdits]
   const removedModules: string[] = []
   for (const declaration of tamaguiDeclarations) {
     const specifiers = childNodes(declaration, 'specifiers').filter(
@@ -307,15 +521,39 @@ export function planZeroErasure(input: ZeroErasureInput): ZeroErasureResult {
     })
   }
 
-  if (liveBindings.length > 0) {
-    for (const binding of bindings) {
-      if (!liveBindings.includes(binding.local)) continue
+  // A binding lowering could not consume is a retained runtime. Which rule it is
+  // depends on what the binding names, so the message names the API or the
+  // expression rather than the import.
+  for (const binding of liveBindings) {
+    const live = referencesOf(binding.local).filter(
+      (reference) => !isConsumed(reference)
+    )[0]!
+    if (ZERO_DESIGN_STATE_APIS.has(binding.imported)) {
       violations.push({
-        code: 'zero/live-tamagui-reference',
-        span: span(binding.specifierNode),
-        message: `Zero-runtime cannot erase "${binding.local}" from "${binding.moduleSpecifier}" because a reference survived lowering. Express it with a lowerable component or move this module to a full-runtime island.`,
+        rule: 7,
+        code: 'zero/design-state-read',
+        span: span(live),
+        message: zeroRuleMessage(7, { api: binding.imported }),
       })
+      continue
     }
+    if (ZERO_PROVIDER_EXPORTS.has(binding.imported)) {
+      violations.push({
+        rule: 4,
+        code: 'zero/runtime-provider',
+        span: span(live),
+        component: binding.imported,
+        message: ZERO_PROVIDER_MESSAGE,
+      })
+      continue
+    }
+    violations.push({
+      rule: 2,
+      code: 'zero/live-tamagui-reference',
+      span: span(live),
+      component: binding.local,
+      message: zeroRuleMessage(2, { expression: referenceExpression(source, live) }),
+    })
   }
 
   return {
@@ -323,7 +561,9 @@ export function planZeroErasure(input: ZeroErasureInput): ZeroErasureResult {
     removedModules,
     removedBindings,
     erasedStyledDefinitions,
-    liveBindings,
+    erasedExports,
+    rewrittenAnimatedNumberHooks,
+    liveBindings: liveBindings.map((binding) => binding.local),
     violations,
   }
 }

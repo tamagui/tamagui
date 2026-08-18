@@ -149,6 +149,13 @@ function checkGraph(
     importerEdges.set(id, importers)
     modules.push({ id, importers })
   }
+  const escape = Static.erasedExportEscape({
+    integration: 'metro-web',
+    transformed: zero.transformed,
+    erasedExports: zero.erasedExports,
+    importersOf: importerEdges,
+  })
+  if (escape) throw new Error(escape)
   const checked = Static.checkZeroGraph({
     entries: [entryPoint],
     modules,

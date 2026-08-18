@@ -7,7 +7,9 @@ import type {
   MaterializedElement,
   MaterializedStyledDefinition,
   SourceEdit,
+  ZeroRule,
 } from '@tamagui/compiler-core'
+import { zeroRuleMessage, zeroThemeBoundaryMessage } from '@tamagui/compiler-core'
 import {
   StyleObjectIdentifier,
   StyleObjectProperty,
@@ -56,6 +58,12 @@ export interface TamaguiCompilerHostOptions {
   disablePartialExtraction?: boolean
   /** emit native theme-token mappings for the native style engine */
   experimentalNativeFastPath?: boolean
+  /**
+   * Zero-runtime mode. The diagnostics stay the same shape; what changes is that
+   * a spread the compiler cannot prove style-free is rejected instead of merged,
+   * and the sites whose rule differs from their code's default say so.
+   */
+  zeroRuntime?: boolean
 }
 
 interface TamaguiLoweringComponent extends LoweringComponent {
@@ -1329,8 +1337,28 @@ export function createTamaguiCompilerHost(
         return bailout(
           input,
           'local/unsupported-target',
-          `${component.key} does not accept className`
+          `${component.key} does not accept className`,
+          input.element.span,
+          { rule: 6 }
         )
+      }
+      // A zero graph has no runtime left to merge a spread into, and a spread the
+      // compiler evaluated is still a prop set it cannot attribute to an author's
+      // style intent. Both shapes are rejected, so the message is one message.
+      if (options.zeroRuntime) {
+        const spread = input.element.entries.find((entry) => entry.kind === 'spread')
+        if (spread) {
+          return bailout(
+            input,
+            'local/unsafe-style-spread',
+            'Zero-runtime rejects prop spreads',
+            spread.span,
+            {
+              rule: 1,
+              message: zeroRuleMessage(1, { component: input.element.component.name }),
+            }
+          )
+        }
       }
       const props: Record<string, unknown> = {}
       for (const entry of input.element.entries) {
@@ -1432,7 +1460,13 @@ export function createTamaguiCompilerHost(
           input,
           'local/unsupported-target',
           'Animated candidates remain on the runtime path',
-          animateOnlyEntry?.span
+          animateOnlyEntry?.span,
+          {
+            rule: 5,
+            message: zeroRuleMessage(5, {
+              detail: `animateOnly on ${input.element.component.name}`,
+            }),
+          }
         )
       }
       const transitionEntry = input.element.entries.find(
@@ -1556,10 +1590,16 @@ export function createTamaguiCompilerHost(
             canLowerConditionalStyleProp(entry.name, component)
         )
       if ('theme' in props || 'themeInverse' in props) {
+        const themeProp = 'theme' in props ? 'theme' : 'themeInverse'
         return bailout(
           input,
           'local/unsupported-target',
-          'Theme boundary candidates remain on the runtime path'
+          'Theme boundary candidates remain on the runtime path',
+          input.element.span,
+          {
+            rule: 4,
+            message: zeroThemeBoundaryMessage(input.element.component.name, themeProp),
+          }
         )
       }
       // asChild makes createComponent render a Slot: it merges its props into
@@ -1600,7 +1640,13 @@ export function createTamaguiCompilerHost(
           input,
           'local/unsupported-target',
           'Animated candidates remain on the runtime path',
-          transitionEntry?.span
+          transitionEntry?.span,
+          {
+            rule: 5,
+            message: zeroRuleMessage(5, {
+              detail: `the animation configured on ${input.element.component.name}`,
+            }),
+          }
         )
       }
       if (
@@ -1724,7 +1770,13 @@ export function createTamaguiCompilerHost(
           input,
           'local/unsupported-target',
           'Animated candidates remain on the runtime path',
-          transitionEntry?.span
+          transitionEntry?.span,
+          {
+            rule: 5,
+            message: zeroRuleMessage(5, {
+              detail: `the animation configured on ${input.element.component.name}`,
+            }),
+          }
         )
       }
       const supportsNativeDynamicStyles =
@@ -1823,7 +1875,14 @@ export function createTamaguiCompilerHost(
         return bailout(
           input,
           'local/unsupported-target',
-          'Lifecycle value programs remain on the runtime path'
+          'Lifecycle value programs remain on the runtime path',
+          input.element.span,
+          {
+            rule: 5,
+            message: zeroRuleMessage(5, {
+              detail: `an enter or exit style program on ${input.element.component.name}`,
+            }),
+          }
         )
       }
       const domStyleProgram = input.element.entries.find(
@@ -2889,7 +2948,8 @@ function bailout(
     | 'local/style-resolution-failed'
     | 'local/unsupported-child',
   message: string,
-  span = input.element.span
+  span = input.element.span,
+  zero?: { rule: ZeroRule; message?: string }
 ): LoweringCandidateResult {
   return {
     ok: false,
@@ -2899,6 +2959,7 @@ function bailout(
       message,
       span,
       component: input.element.component.name,
+      ...(zero && { zeroRule: zero.rule, zeroMessage: zero.message }),
     },
   }
 }

@@ -291,15 +291,21 @@ export class MetroCompilerFrontend {
       })),
       disablePartialExtraction: this.config.tamaguiOptions?.disablePartialExtraction,
       experimentalNativeFastPath: compilerProject.experimentalNativeFastPath,
+      zeroRuntime: !!this.config.zero,
     })
     this.#tamaguiConfig = compilerProject.projectInfo.tamaguiConfig
     const zero = this.config.zero
     if (zero) {
+      if (zero.isEnforcing) {
+        Static.assertZeroConfigDrivers(compilerProject.projectInfo.tamaguiConfig)
+      }
       zero.plansRestoredFromCache = false
       zero.configCSS = compilerProject.projectInfo.tamaguiConfig.getCSS?.() ?? ''
       zero.artifact.clearGraphs()
       zero.bridges.clear()
       zero.violations.length = 0
+      zero.transformed.clear()
+      zero.erasedExports.clear()
       // The zero contract applies to an ENTRY GRAPH. Metro's frontend plans
       // every project source by directory walk, so a config module, a control
       // fixture, or another entry's page would otherwise be judged against a
@@ -308,8 +314,17 @@ export class MetroCompilerFrontend {
     }
     this.#entries.clear()
     for (const id of this.#graph.moduleIds()) this.#refreshEntry(id)
-    if (zero && zero.violations.length) {
-      throw new Error(Static.formatZeroViolations(zero.violations))
+    if (zero) {
+      // Written in both modes and before the failure, so `report` and `enforce`
+      // emit the identical list and only their exit differs.
+      Static.writeZeroViolationReport(zero.resolved.outDir, 'metro-zero', {
+        integration: 'metro-web',
+        mode: zero.isEnforcing ? 'enforce' : 'report',
+        violations: zero.violations,
+      })
+      if (zero.isEnforcing && zero.violations.length) {
+        throw new Error(Static.formatZeroViolations(zero.violations))
+      }
     }
     const totalFound = [...this.#entries.values()].reduce(
       (sum, entry) => sum + entry.plan.stats.found,
@@ -569,6 +584,9 @@ export class MetroCompilerFrontend {
           target === 'native' &&
           this.config.tamaguiOptions?.experimental?.nativeFastPath === true,
         target,
+        // the host's diagnostics are mode-aware, so a plan built in one mode is
+        // not a plan the other mode may reuse
+        zeroRuntime: !!this.config.zero,
       })
     )
     return {
@@ -765,6 +783,7 @@ export class MetroCompilerFrontend {
     }
 
     const result = Static.transformZeroModule({
+      mode: zero.isEnforcing ? 'enforce' : 'report',
       id,
       root: this.config.projectRoot,
       source,
@@ -780,17 +799,23 @@ export class MetroCompilerFrontend {
         zero.islandModuleIds.get(zeroModuleKey(resolve(id, '..', specifier))) ?? null,
     })
 
+    zero.transformed.add(id)
+    if (result.erased.exports.length) {
+      zero.erasedExports.set(id, result.erased.exports)
+    }
     for (const violation of result.violations) {
       const { line, column } = Static.offsetToLineColumn(source, violation.span.start)
       zero.violations.push({
         file: relativePath,
         line,
         column,
+        rule: violation.rule,
         code: violation.code,
+        component: violation.component,
         message: violation.message,
       })
     }
-    if (result.violations.length) return null
+    if (result.violations.length || !zero.isEnforcing) return null
 
     Static.mergeIslandBridges(zero.bridges, result.bridges)
     for (const [identifier, rules] of result.bridgeCSS) {

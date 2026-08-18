@@ -809,6 +809,9 @@ export function createTamaguiPlugins({
   let server: ViteDevServer
   let zero: ZeroRuntimeController | null = null
   let zeroReceipt: ZeroGraphReceipt | null = null
+  // closeBundle runs even when the build already failed, so a check there would
+  // replace the real error with a derived one
+  let zeroBuildFailed = false
   // The compiled-global-CSS tier: an ordinary compiled build that also owns an
   // `outputCSS` artifact and therefore derives TAMAGUI_DID_OUTPUT_CSS from it.
   let globalCSS: Static.GlobalCSSOwnership | null = null
@@ -928,7 +931,7 @@ export function createTamaguiPlugins({
               'process.env.TAMAGUI_ENVIRONMENT': '"client"',
               // An enforced zero client and its SSR peer both receive 'zero', so
               // SSR never imports a runtime hydration removed.
-              ...(zero && {
+              ...(zero?.isEnforcing && {
                 'process.env.TAMAGUI_RUNTIME': JSON.stringify('zero'),
               }),
               // Derived, never author-set. generateBundle proves the artifact
@@ -1327,6 +1330,9 @@ export function createTamaguiPlugins({
           project: {
             ...compilerProject,
             generation: `${pluginInstanceId}:${tamaguiLoader.getGeneration()}`,
+            // `report` runs the same analysis as `enforce`, including the
+            // mode-aware diagnostics, so both emit the identical violation list
+            zeroRuntime: zero !== null,
           },
           resolve: async (specifier, importer) => {
             const resolution = await this.resolve(specifier, importer, { skipSelf: true })
@@ -1368,6 +1374,7 @@ export function createTamaguiPlugins({
 
         if (zero) {
           const zeroResult = Static.transformZeroModule({
+            mode: zero.isEnforcing ? 'enforce' : 'report',
             id: validId,
             root: config.root,
             source: code,
@@ -1386,49 +1393,60 @@ export function createTamaguiPlugins({
                 zeroModuleKey(path.resolve(path.dirname(validId), specifier))
               ) ?? null,
           })
+          zero.transformed.add(validId)
+          if (zeroResult.erased.exports.length) {
+            zero.erasedExports.set(validId, zeroResult.erased.exports)
+          }
           for (const violation of zeroResult.violations) {
             const { line, column } = Static.offsetToLineColumn(code, violation.span.start)
             zero.violations.push({
               file: path.relative(config.root, validId),
               line,
               column,
+              rule: violation.rule,
               code: violation.code,
+              component: violation.component,
               message: violation.message,
             })
           }
-          Static.mergeIslandBridges(zero.bridges, zeroResult.bridges)
-          const moduleCSS = [
-            wrapExtractedCSS(result.plan.css),
-            ...[...zeroResult.bridgeCSS.values()],
-          ]
-            .filter(Boolean)
-            .join('\n')
+          // `report` runs the same analysis and then leaves everything else
+          // alone: full runtime, ordinary CSS handling, unchanged source. So it
+          // falls through to the ordinary path below.
+          if (zero.isEnforcing) {
+            Static.mergeIslandBridges(zero.bridges, zeroResult.bridges)
+            const moduleCSS = [
+              wrapExtractedCSS(result.plan.css),
+              ...[...zeroResult.bridgeCSS.values()],
+            ]
+              .filter(Boolean)
+              .join('\n')
 
-          // Production combines every module's rules into the one artifact the
-          // entry loads. Development keeps them on Vite's per-module CSS
-          // modules, where the importer owns the ordering and hot replacement
-          // already works.
-          if (config.command !== 'build') {
-            let cssImport = ''
-            if (moduleCSS) {
-              const rootRelativeId = `${validId}${virtualExt}`
-              cssMap.set(getAbsoluteVirtualFileId(rootRelativeId), moduleCSS)
-              this.addWatchFile(rootRelativeId)
-              cssImport = `\nimport "${rootRelativeId}";`
+            // Production combines every module's rules into the one artifact the
+            // entry loads. Development keeps them on Vite's per-module CSS
+            // modules, where the importer owns the ordering and hot replacement
+            // already works.
+            if (config.command !== 'build') {
+              let cssImport = ''
+              if (moduleCSS) {
+                const rootRelativeId = `${validId}${virtualExt}`
+                cssMap.set(getAbsoluteVirtualFileId(rootRelativeId), moduleCSS)
+                this.addWatchFile(rootRelativeId)
+                cssImport = `\nimport "${rootRelativeId}";`
+              }
+              return {
+                code: `${zeroResult.output.code}${cssImport}`,
+                map: zeroResult.output.map as any,
+              }
             }
-            return {
-              code: `${zeroResult.output.code}${cssImport}`,
-              map: zeroResult.output.map as any,
-            }
-          }
 
-          for (const [identifier, rules] of zeroResult.bridgeCSS) {
-            zero.artifact.setBridgeRules(identifier, rules)
+            for (const [identifier, rules] of zeroResult.bridgeCSS) {
+              zero.artifact.setBridgeRules(identifier, rules)
+            }
+            zero.artifact.setZeroModuleCSS(validId, wrapExtractedCSS(result.plan.css))
+            return zeroResult.output.changed
+              ? { code: zeroResult.output.code, map: zeroResult.output.map as any }
+              : undefined
           }
-          zero.artifact.setZeroModuleCSS(validId, wrapExtractedCSS(result.plan.css))
-          return zeroResult.output.changed
-            ? { code: zeroResult.output.code, map: zeroResult.output.map as any }
-            : undefined
         }
 
         const isSSR = isNotClient(this.environment)
@@ -1473,9 +1491,13 @@ export function createTamaguiPlugins({
           `[tamagui zero-runtime] the Tamagui config did not evaluate, so no CSS artifact can be generated`
         )
       }
+      zero.violations.length = 0
+      zero.transformed.clear()
+      zero.erasedExports.clear()
+      if (!zero.isEnforcing) return
+      Static.assertZeroConfigDrivers(tamaguiConfig)
       zero.artifact.clearGraphs()
       zero.bridges.clear()
-      zero.violations.length = 0
       zeroHtmlEntries = 0
       zero.artifact.setConfigCSS(tamaguiConfig.getCSS())
 
@@ -1501,7 +1523,7 @@ export function createTamaguiPlugins({
     },
 
     async configureServer(devServer) {
-      if (!zero) return
+      if (!zero?.isEnforcing) return
       const islandBase = `${zero.cssHref.replace(ZERO_CSS_FILENAME, '')}${ZERO_ISLAND_DIRNAME}/`
       devServer.middlewares.use(async (request, response, next) => {
         const url = (request.url || '').split('?')[0]
@@ -1529,10 +1551,37 @@ export function createTamaguiPlugins({
       })
     },
 
+    // The last hook that still sees the resolved graph and runs before rolldown
+    // renders chunks. An erased export that some module still imports has to be
+    // reported here: by render time the bundler has already failed on it with a
+    // message about a missing export, which says nothing about why it is missing.
+    buildEnd(error) {
+      if (!zero || this.environment.name !== 'client') return
+      if (error) {
+        zeroBuildFailed = true
+        return
+      }
+      if (!zero.isEnforcing) return
+      const importers = new Map<string, readonly string[]>()
+      for (const moduleId of this.getModuleIds()) {
+        importers.set(moduleId, this.getModuleInfo(moduleId)?.importers ?? [])
+      }
+      const escape = Static.erasedExportEscape({
+        integration: 'vite',
+        transformed: zero.transformed,
+        erasedExports: zero.erasedExports,
+        importersOf: importers,
+      })
+      if (escape) {
+        zeroBuildFailed = true
+        throw new Error(escape)
+      }
+    },
+
     transformIndexHtml: {
       order: 'post',
       handler(html) {
-        if (!zero) return
+        if (!zero?.isEnforcing) return
         zeroHtmlEntries++
         return {
           html,
@@ -1548,7 +1597,7 @@ export function createTamaguiPlugins({
     },
 
     generateBundle(_outputOptions, bundle) {
-      if (!zero || this.environment.name !== 'client') return
+      if (!zero?.isEnforcing || this.environment.name !== 'client') return
       // rolldown reports the modules that contributed rendered code per chunk,
       // which is exactly what shipped. Importer edges come from the whole
       // resolved graph so a forbidden module can name its shortest chain.
@@ -1596,13 +1645,21 @@ export function createTamaguiPlugins({
 
     async closeBundle() {
       if (!zero || this.environment.name !== 'client') return
-      if (zero.violations.length) {
-        throw new Error(Static.formatZeroViolations(zero.violations))
-      }
       const outDir = path.resolve(config.root, this.environment.config.build.outDir)
       // one receipt per output directory, so a zero build and its negative
       // control never overwrite each other's evidence
       const receiptName = `vite-${path.basename(outDir)}`
+      // Written in both modes and before the failure, so `report` and `enforce`
+      // emit the identical list and only their exit differs.
+      Static.writeZeroViolationReport(zero.resolved.outDir, receiptName, {
+        integration: 'vite',
+        mode: zero.isEnforcing ? 'enforce' : 'report',
+        violations: zero.violations,
+      })
+      if (!zero.isEnforcing || zeroBuildFailed) return
+      if (zero.violations.length) {
+        throw new Error(Static.formatZeroViolations(zero.violations))
+      }
       const islandOutputHashes: Record<string, string> = {}
       for (const island of zero.resolved.islands) {
         const built = await buildIsland({

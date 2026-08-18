@@ -83,9 +83,9 @@ export const loader = async function loader(
     }
     const zero = getWebpackZeroController(options, root)
     const projectInfo = await Static.loadTamagui(
-      // in zero mode the integration owns the one generated CSS artifact, so
-      // config-only CSS is never written to that path
-      zero ? { ...options, outputCSS: undefined } : options
+      // in enforced zero mode the integration owns the one generated CSS
+      // artifact, so config-only CSS is never written to that path
+      zero?.isEnforcing ? { ...options, outputCSS: undefined } : options
     )
     if (!projectInfo) {
       throw new Error('Unable to load the Tamagui project for webpack compilation')
@@ -108,6 +108,8 @@ export const loader = async function loader(
         projectInfo,
         componentModules,
         generation: key,
+        // `report` runs the same analysis as `enforce`
+        zeroRuntime: zero !== null,
       },
       resolve: async (specifier, importer) => {
         try {
@@ -134,6 +136,7 @@ export const loader = async function loader(
         bridgeCSS: [],
         bridges: [],
         violations: [],
+        erasedExports: [],
       })
       return callback(null, extracted.output.code, extracted.output.map as any)
     }
@@ -152,6 +155,7 @@ export const loader = async function loader(
       }
 
       const zeroResult = Static.transformZeroModule({
+        mode: zero.isEnforcing ? 'enforce' : 'report',
         id: sourcePath,
         root,
         source,
@@ -181,12 +185,17 @@ export const loader = async function loader(
             file: path.relative(root, sourcePath),
             line,
             column,
+            rule: violation.rule,
             code: violation.code,
+            component: violation.component,
             message: violation.message,
           }
         }),
+        erasedExports: zeroResult.erased.exports,
       })
-      return callback(null, zeroResult.output.code, zeroResult.output.map as any)
+      if (zero.isEnforcing) {
+        return callback(null, zeroResult.output.code, zeroResult.output.map as any)
+      }
     }
 
     // add import to css

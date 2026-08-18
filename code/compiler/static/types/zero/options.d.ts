@@ -1,3 +1,4 @@
+import type { TamaguiInternalConfig } from '@tamagui/web';
 import type { TamaguiOptions } from '../types';
 /**
  * `TAMAGUI_RUNTIME` has exactly two integration-owned literal values. The public
@@ -35,6 +36,12 @@ type ZeroRuntimeInput = Pick<TamaguiOptions, 'experimental' | 'outputCSS' | 'pla
 export declare function resolveZeroRuntime(options: ZeroRuntimeInput, root: string): Promise<ZeroRuntimeResolved>;
 /** The webpack adapter configures itself synchronously, before any hook runs. */
 export declare function resolveZeroRuntimeSync(options: ZeroRuntimeInput, root: string): ZeroRuntimeResolved;
+/**
+ * Rule 5 at config level. A non-CSS driver in the zero entry's own config means
+ * every animated component in that graph needs a component animation runtime,
+ * which is exactly what the mode removes.
+ */
+export declare function assertZeroConfigDrivers(config: TamaguiInternalConfig): void;
 export type ZeroIntegration = 'vite' | 'next-webpack' | 'metro-web';
 /**
  * Base and island support are enabled per integration after that integration

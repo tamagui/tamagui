@@ -1,3 +1,4 @@
+import { type ZeroRule } from '@tamagui/compiler-core';
 /**
  * The zero-runtime bundle gate.
  *
@@ -65,14 +66,42 @@ export interface ZeroViolationSite {
     file: string;
     line: number;
     column: number;
+    rule: ZeroRule;
     code: string;
+    component?: string;
     message: string;
 }
 /**
- * The compiler collects every violation before failing, sorted by normalized
- * file path, source offset, rule, then message.
+ * One deterministic order for every integration: normalized file path, source
+ * offset, rule, then message. A build that reports its violations in a
+ * different order on a different machine is not a receipt anyone can diff.
  */
+export declare function sortZeroViolations(sites: readonly ZeroViolationSite[]): ZeroViolationSite[];
+/** The compiler collects every violation before failing. */
 export declare function formatZeroViolations(sites: readonly ZeroViolationSite[]): string;
+/**
+ * The machine-readable half of the same list. `report` mode writes it and exits
+ * successfully; `enforce` writes it and then fails, so the two are comparable.
+ */
+export declare function writeZeroViolationReport(outDir: string, name: string, report: {
+    integration: string;
+    mode: 'report' | 'enforce';
+    violations: readonly ZeroViolationSite[];
+}): string;
+/**
+ * An exported `styled()` declarator is only erasable because every importer in
+ * this entry graph was itself transformed, and therefore lowered its uses. That
+ * is a build-wide fact, so it is checked once here rather than guessed per
+ * module.
+ */
+export declare function erasedExportEscape(input: {
+    integration: string;
+    /** Module ids the zero transform actually ran on. */
+    transformed: ReadonlySet<string>;
+    /** Erased exported binding names, by the module that declared them. */
+    erasedExports: ReadonlyMap<string, readonly string[]>;
+    importersOf: ReadonlyMap<string, readonly string[]>;
+}): string | null;
 /** UTF-16 offset to 1-based line/column, for diagnostic sites. */
 export declare function offsetToLineColumn(source: string, offset: number): {
     line: number;

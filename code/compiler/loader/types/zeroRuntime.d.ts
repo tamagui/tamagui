@@ -26,6 +26,8 @@ export interface WebpackZeroController {
     islandBuild: string | null;
     /** Modules whose loader actually ran this build, for the warm-cache receipt. */
     loaderModules: Set<string>;
+    /** False in `report` mode, where the analysis runs and nothing else changes. */
+    isEnforcing: boolean;
     /** Content hash of the evaluated config's CSS, part of the artifact identity. */
     configHash: string;
 }
@@ -51,6 +53,8 @@ export interface ZeroModuleBuildInfo {
     bridgeCSS: [string, string][];
     bridges: [string, IslandThemeBridge[]][];
     violations: ZeroViolationSite[];
+    /** Exported declarators erasure removed from this module. */
+    erasedExports: string[];
 }
 export declare function publishZeroBuildInfo(controller: WebpackZeroController, context: LoaderContext<unknown>, info: ZeroModuleBuildInfo): void;
 export declare function readZeroBuildInfo(module: Module): ZeroModuleBuildInfo | null;
@@ -70,6 +74,8 @@ export declare function flattenModules(modules: Iterable<Module>): Generator<Mod
 export declare function collectZeroBuildInfo(controller: WebpackZeroController, modules: Iterable<Module>): {
     modules: number;
     restored: number;
+    transformed: Set<string>;
+    erasedExports: Map<string, string[]>;
 };
 /**
  * Builds one island as a separate webpack compilation with

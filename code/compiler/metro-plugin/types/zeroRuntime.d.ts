@@ -25,8 +25,14 @@ export interface MetroZeroController {
 	islandBuild: string | null;
 	bridges: Map<string, IslandThemeBridge[]>;
 	violations: ZeroViolationSite[];
+	/** Modules the zero transform ran on, for the erased-export gate. */
+	transformed: Set<string>;
+	/** Erased exported declarator names, by declaring module. */
+	erasedExports: Map<string, string[]>;
 	loaderIds: Map<string, string>;
 	islandModuleIds: Map<string, string>;
+	/** False in `report` mode, where the analysis runs and nothing else changes. */
+	isEnforcing: boolean;
 	/** The evaluated config's CSS, set once the frontend has loaded the project. */
 	configCSS: string;
 	/**

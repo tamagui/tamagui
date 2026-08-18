@@ -1,3 +1,5 @@
+import { zeroConfigDriverMessage } from '@tamagui/compiler-core'
+import type { TamaguiInternalConfig } from '@tamagui/web'
 import glob from 'fast-glob'
 import path from 'node:path'
 
@@ -97,7 +99,7 @@ function resolveZeroRuntimeEarly(
   }
   if (!requested) return { done: true, resolved: off }
 
-  if (requested === 'report') {
+  if (options.platform === 'native' && requested === 'report') {
     return { done: true, resolved: { ...off, mode: 'report' } }
   }
 
@@ -107,19 +109,24 @@ function resolveZeroRuntimeEarly(
     )
   }
 
-  if (!options.outputCSS) {
+  // `report` keeps the full runtime, so it owns no generated artifact and needs
+  // no outputCSS. It still runs every per-module analysis.
+  if (requested !== 'report' && !options.outputCSS) {
     throw new Error(
       `[tamagui zero-runtime] experimental.zeroRuntime requires outputCSS. The bundler owns one generated CSS artifact and derives TAMAGUI_DID_OUTPUT_CSS from it.`
     )
   }
 
-  if (process.env.TAMAGUI_DOES_SSR_CSS === 'mutates-themes') {
+  if (requested !== 'report' && process.env.TAMAGUI_DOES_SSR_CSS === 'mutates-themes') {
     throw new Error(
       `[tamagui zero-runtime] Rule 4: TAMAGUI_DOES_SSR_CSS="mutates-themes" declares runtime theme mutation. Zero-runtime themes are build-time data. Remove runtime mutation or move that surface to a full-runtime island.`
     )
   }
 
-  return { done: false, islandGlobs: requested === true ? [] : requested.islands }
+  return {
+    done: false,
+    islandGlobs: requested === true || requested === 'report' ? [] : requested.islands,
+  }
 }
 
 function finishZeroRuntime(
@@ -129,8 +136,8 @@ function finishZeroRuntime(
   matches: string[]
 ): ZeroRuntimeResolved {
   const outDir = path.join(root, ZERO_OUT_DIRNAME)
-  // resolveZeroRuntimeEarly already rejected a missing outputCSS
-  const outputCSS = options.outputCSS as string
+  // resolveZeroRuntimeEarly already rejected a missing outputCSS in enforce mode
+  const outputCSS = (options.outputCSS ?? '') as string
   const islands = [...new Set(matches.map((match) => path.normalize(match)))]
     .sort()
     .map((module): ZeroIsland => {
@@ -162,11 +169,35 @@ function finishZeroRuntime(
   }
 
   return {
-    mode: 'enforce',
+    mode: options.experimental?.zeroRuntime === 'report' ? 'report' : 'enforce',
     islandGlobs,
     islands,
     outDir,
-    cssPath: path.isAbsolute(outputCSS) ? outputCSS : path.resolve(root, outputCSS),
+    cssPath: !outputCSS
+      ? ''
+      : path.isAbsolute(outputCSS)
+        ? outputCSS
+        : path.resolve(root, outputCSS),
+  }
+}
+
+/**
+ * Rule 5 at config level. A non-CSS driver in the zero entry's own config means
+ * every animated component in that graph needs a component animation runtime,
+ * which is exactly what the mode removes.
+ */
+export function assertZeroConfigDrivers(config: TamaguiInternalConfig): void {
+  // `animationDrivers` is set only for a multi-driver config; a single-driver
+  // config resolves to `animations`, and reading only the map would make this
+  // check silently unable to fail for the ordinary shape
+  const drivers: [string, { outputStyle?: unknown } | undefined][] = (
+    config.animationDrivers
+      ? Object.entries(config.animationDrivers)
+      : [['default', config.animations]]
+  ) as [string, { outputStyle?: unknown } | undefined][]
+  for (const [name, driver] of drivers) {
+    if (!driver || driver.outputStyle === 'css') continue
+    throw new Error(zeroConfigDriverMessage(name, driver.outputStyle))
   }
 }
 

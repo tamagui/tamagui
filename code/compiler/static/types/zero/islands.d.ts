@@ -24,6 +24,8 @@ export interface IslandThemeBridge {
 }
 export interface IslandGenerationInput {
     island: ZeroIsland;
+    /** Names the integration in the loader's recovery diagnostic. */
+    integration: string;
     /** Absolute path of the app's tamagui config module. */
     configPath: string;
     /** URL the loader fetches the built island bundle from. */
