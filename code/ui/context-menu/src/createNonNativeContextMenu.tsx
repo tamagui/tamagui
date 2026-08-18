@@ -46,6 +46,7 @@ type ContextMenuContextValue = {
 
 interface ContextMenuProps extends BaseMenuTypes.MenuProps {
   children?: React.ReactNode
+  defaultOpen?: boolean
   onOpenChange?(open: boolean, event?: ContextMenuOpenChangeEvent): void
   dir?: Direction
   modal?: boolean
@@ -103,8 +104,22 @@ export function createNonNativeContextMenu() {
     createStyledContext<ContextMenuContextValue>()
 
   const ContextMenuComp = (props: ScopedProps<ContextMenuProps>) => {
-    const { scope, children, onOpenChange, dir, modal = true, ...rest } = props
-    const [open, setOpen] = React.useState(false)
+    const {
+      scope,
+      children,
+      onOpenChange,
+      open: openProp,
+      defaultOpen,
+      dir,
+      modal = true,
+      ...rest
+    } = props
+    // onOpenChange carries an event a caller can cancel, so it is called from
+    // handleOpenChange instead of through useControllableState's onChange
+    const [open, setOpen] = useControllableState({
+      prop: openProp,
+      defaultProp: defaultOpen ?? false,
+    })
     const triggerRef = React.useRef<TamaguiElement>(null)
 
     const handleOpenChange = React.useCallback(
@@ -113,7 +128,7 @@ export function createNonNativeContextMenu() {
         if (event?.defaultPrevented) return
         setOpen(open)
       },
-      [onOpenChange]
+      [onOpenChange, setOpen]
     )
 
     return (

@@ -118,6 +118,7 @@ interface MenuProps extends BaseMenuTypes.MenuProps {
  * -----------------------------------------------------------------------------------------------*/
 
 interface MenuTriggerProps extends ViewProps {
+  /** @deprecated misspelled, use `onKeyDown` (this alias is honored when `onKeyDown` is absent) */
   onKeydown?(event: React.KeyboardEvent): void
 }
 
@@ -288,6 +289,7 @@ export function createNonNativeMenu() {
         children,
         disabled = false,
         onKeydown,
+        onKeyDown = onKeydown,
         ...triggerProps
       } = props
       const context = useMenuContext(scope)
@@ -341,6 +343,12 @@ export function createNonNativeMenu() {
             data-disabled={disabled ? '' : undefined}
             aria-disabled={disabled || undefined}
             ref={composeRefs(forwardedRef, context.triggerRef, triggerElRef)}
+            // caller props come first: the composed handlers below already call
+            // the caller's own handler, so spreading them after would let a
+            // caller's onPointerDown/onClick/onPress or onKeyDown replace the
+            // one that opens the menu. the press prop stays read off `props`
+            // because which of the three opens the menu is decided at runtime.
+            {...triggerProps}
             {...{
               [pressEvent]: composeEventHandlers(
                 //@ts-ignore
@@ -370,7 +378,7 @@ export function createNonNativeMenu() {
               ),
             }}
             {...(isWeb && {
-              onKeyDown: composeEventHandlers(onKeydown, (event) => {
+              onKeyDown: composeEventHandlers(onKeyDown, (event) => {
                 if (disabled) return
                 if (['Enter', ' '].includes(event.key)) {
                   if (context.openRef.current) {
@@ -390,7 +398,6 @@ export function createNonNativeMenu() {
                   event.preventDefault()
               }),
             })}
-            {...triggerProps}
           >
             {children}
           </Comp>

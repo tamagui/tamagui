@@ -17,6 +17,7 @@ interface MenuProps extends BaseMenuTypes.MenuProps {
     modal?: boolean;
 }
 interface MenuTriggerProps extends ViewProps {
+    /** @deprecated misspelled, use `onKeyDown` (this alias is honored when `onKeyDown` is absent) */
     onKeydown?(event: React.KeyboardEvent): void;
 }
 type MenuPortalProps = BaseMenuPortalProps;

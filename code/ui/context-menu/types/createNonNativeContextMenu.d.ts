@@ -14,6 +14,7 @@ type ContextMenuOpenChangeEvent = {
 };
 interface ContextMenuProps extends BaseMenuTypes.MenuProps {
     children?: React.ReactNode;
+    defaultOpen?: boolean;
     onOpenChange?(open: boolean, event?: ContextMenuOpenChangeEvent): void;
     dir?: Direction;
     modal?: boolean;

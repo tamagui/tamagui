@@ -142,6 +142,10 @@ const loaders: Record<string, () => ComponentType<any>> = {
   MenuAnimatePositionToggleCase: () =>
     require('./MenuAnimatePositionToggleCase').MenuAnimatePositionToggleCase,
   MenuAccessibilityCase: () => require('./MenuAccessibilityCase').MenuAccessibilityCase,
+  MenuTriggerHandlersCase: () =>
+    require('./MenuTriggerHandlersCase').MenuTriggerHandlersCase,
+  ContextMenuControlledCase: () =>
+    require('./ContextMenuControlledCase').ContextMenuControlledCase,
   MenuItemFocusCase: () => require('./MenuItemFocusCase').MenuItemFocusCase,
   MenuArrowAnimatePresenceCase: () =>
     require('./MenuArrowAnimatePresenceCase').MenuArrowAnimatePresenceCase,
