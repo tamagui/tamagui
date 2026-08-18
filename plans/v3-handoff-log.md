@@ -1974,3 +1974,66 @@ zero-runtime mode removes the whole 44,899 of Tamagui-attributable JS.
   builds: `motionDriverConversion` (10x ceiling, hit 11.93x) and
   `safeAreaVariables.native` (5s limit, hit 10s). Re-run in isolation before
   treating either as a regression, and never raise a threshold to make one pass.
+
+### The V2-counterpart measurement, and what it means for anyone golfing the engine
+
+Read this before spending effort shrinking `directStyle` or `getSplitStyles`.
+
+The obvious objection to calling directStyle's remaining 5,405 gzip "feature
+weight" is that V2 shipped most of those features too. Measured, group by group,
+same fixtures and same gzip level 9 and the same source-map span subtraction on
+both sides, each V2 group computed as ONE union deletion rather than a sum of
+per-function marginals:
+
+| group | V3 directStyle | V2 counterpart | V3 − V2 |
+| --- | ---: | ---: | ---: |
+| composite emitters | 1236 | 623 | +613 |
+| condition routing | 1123 | 2696 | **−1573** |
+| atomic merge | 932 | 1057 | −125 |
+| value routing | 656 | 980 | −324 |
+| token semantics | 606 | 563 | +43 |
+
+Marginals over shared generic code, so they are not additive and there is no
+total. **Three of the five groups are smaller in V3 than the V2 code that bought
+the same capability.** V3 routes state, media, group, container, theme and
+platform conditions in 1,123 bytes where V2 spent 2,696.
+
+The V2 counterparts are genuinely deleted, not shipping alongside. Confirmed from
+the emitted source map rather than by reading imports: `createMediaStyle`,
+`pseudoDescriptors`, `getGroupPropParts`, `isActivePlatform`, `isActiveTheme`,
+`getTokenForKey` and `resolveCompoundTokens` have zero occurrences in the V3
+chunk.
+
+Things that LOOK like duplication and are not: `getCSSStyleAtomic`/
+`getStyleObject` (246), `createAtomicRules` (392), `expandStyle` (596) and
+`transformsToString` (55) all still emit, but `directStyle` calls them. They are
+one shared generator, not two engines. The unused `getCSSStylesAtomic` wrapper
+owns zero generated spans and is already tree-shaken.
+
+Real duplication that does still ship, total 436 gzip: object/fallback composite
+normalization (`styleToCSS` + `fixStyles` + `normalizeShadow`, 365) which
+parallels directStyle's shadow/border emission for a different input
+representation, and the `getSplitStyles` inline web-animation atomic mirror (70)
+which reproduces direct identity for the inline-animation driver case. Removing
+either means unifying the object/fallback and direct-string input paths. That is
+a real refactor, not the deletion of a dead legacy engine.
+
+**Consequences for engine size work:**
+
+- Mechanics-only golfing inside condition routing, atomic merge or value routing
+  targets code that is ALREADY leaner than V2's. Do not spend there.
+- A pass over `directStyle` removing genuinely dead mechanics has already been
+  done and yielded 115 gzip (2.08% of the gap) across five changes, every one of
+  which also removed an allocation. Assume that seam is close to exhausted.
+- `getSplitStyles` has no defensible deletion and is 112 gzip smaller than its V2
+  counterpart. It is the file people assume is bloated. It is not.
+- The genuine growth is elsewhere and has no V2 counterpart at all: the clause
+  grammar (style-grammar runtime 1,936, plus directStyle's parser 378, plus
+  propMapper's conditional-variant parser 212) and the inline variables system
+  (`variables.mjs` 2,347). `directStyle` is only 5,520 of the 11,467 whole-chunk
+  gap.
+- A byte win that adds a per-render allocation, an extra pass, or a second
+  scanner is a regression, not a win. The clause parser is already a single-pass
+  charCode loop and is not a target.
+- If you measure differently from the method above, your numbers cannot be
+  compared to anything in this record and the exercise is wasted.
