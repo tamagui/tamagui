@@ -66,6 +66,28 @@ export type InlineThemeLayer = {
 export const getInlineThemeLayer = (id: ID) => inlineThemeLayers.get(id)
 export const getThemeProviderParent = (id: ID) => themeProviderParents.get(id)
 
+/** introspection for devtools and leak probes: entries retained per map */
+export const getThemeProviderChainSizes = () => ({
+  layers: inlineThemeLayers.size,
+  parents: themeProviderParents.size,
+})
+
+const registerThemeProviderChain = (
+  id: ID,
+  parentId: ID,
+  props: UseThemeWithStateProps
+) => {
+  themeProviderParents.set(id, parentId)
+  if (props.inlineValues) {
+    inlineThemeLayers.set(id, {
+      inlineValues: props.inlineValues,
+      inlineClassName: props.inlineClassName,
+    })
+  } else {
+    inlineThemeLayers.delete(id)
+  }
+}
+
 let cacheVersion = 0
 
 // cache for getNewThemeName - invalidated on cacheVersion change
@@ -133,15 +155,7 @@ Looked for theme${props.name ? ` "${props.name}"` : ''}, but no parent theme con
   // only a <Theme> provider pushes its id into ThemeStateContext, so only it can
   // be a step in the chain the portal bridge replays
   if (cascadeOnChange) {
-    themeProviderParents.set(id, parentId)
-    if (props.inlineValues) {
-      inlineThemeLayers.set(id, {
-        inlineValues: props.inlineValues,
-        inlineClassName: props.inlineClassName,
-      })
-    } else {
-      inlineThemeLayers.delete(id)
-    }
+    registerThemeProviderChain(id, parentId, props)
   }
 
   // stable ref-bag for render inputs and the optional subscription cleanup.
@@ -198,6 +212,14 @@ Looked for theme${props.name ? ` "${props.name}"` : ''}, but no parent theme con
     if (r.lastSnap && !states.has(r.id)) {
       states.set(r.id, r.lastSnap)
       localStates.set(r.id, r.lastSnap)
+    }
+
+    // same strict-mode contract for the portal-bridge chain: cleanupThemeState
+    // retires both maps, and only a render re-registers them, so a provider torn
+    // down between the two effect invocations would lose its layer until it
+    // happened to re-render, breaking portal bridging mid-lifecycle.
+    if (cascadeOnChange && !themeProviderParents.has(r.id)) {
+      registerThemeProviderChain(r.id, r.parentId, r.props)
     }
 
     if (r.unsubscribe && r.subscribedParentId !== r.parentId) {
@@ -319,9 +341,12 @@ function cleanupThemeState(r: ThemeStateRef) {
     localStates.delete(r.id)
     states.delete(r.id)
     PendingUpdate.delete(r.id)
-    inlineThemeLayers.delete(r.id)
-    themeProviderParents.delete(r.id)
   }
+  // both branches retire the id, and a subscribed <Theme> provider only ever
+  // takes the first one, so the portal-bridge chain has to be cleared here
+  // rather than inside the unsubscribed branch.
+  inlineThemeLayers.delete(r.id)
+  themeProviderParents.delete(r.id)
 }
 
 const getSnapshotImpl = (r: SnapshotRef): ThemeState => {

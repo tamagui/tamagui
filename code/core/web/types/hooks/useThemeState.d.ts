@@ -10,6 +10,11 @@ export type InlineThemeLayer = {
 };
 export declare const getInlineThemeLayer: (id: ID) => InlineThemeLayer | undefined;
 export declare const getThemeProviderParent: (id: ID) => string | undefined;
+/** introspection for devtools and leak probes: entries retained per map */
+export declare const getThemeProviderChainSizes: () => {
+    layers: number;
+    parents: number;
+};
 export declare const getRootThemeState: () => ThemeState | null;
 export declare const useThemeState: (props: UseThemeWithStateProps, isRoot: boolean | undefined, keys: MutableRefObject<Set<string> | null>, schemeKeys?: MutableRefObject<Set<string> | null>, cascadeOnChange?: boolean, optimizeForFirstRender?: boolean) => ThemeState;
 /**
