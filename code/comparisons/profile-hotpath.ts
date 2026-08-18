@@ -17,7 +17,14 @@
  */
 
 import { execFileSync, spawn, type ChildProcess } from 'node:child_process'
-import { mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs'
+import {
+  mkdirSync,
+  mkdtempSync,
+  readFileSync,
+  readdirSync,
+  rmSync,
+  writeFileSync,
+} from 'node:fs'
 import { dirname, join } from 'node:path'
 import { tmpdir } from 'node:os'
 import { TraceMap, originalPositionFor } from '@jridgewell/trace-mapping'
@@ -40,7 +47,12 @@ const HEAP_SAMPLING_BYTES = 1024
 
 const OUTPUT = arg(
   'output',
-  join(import.meta.dir, 'output', 'hotpath', `${LABEL}-${SCENARIO}-extract${EXTRACT}.json`)
+  join(
+    import.meta.dir,
+    'output',
+    'hotpath',
+    `${LABEL}-${SCENARIO}-extract${EXTRACT}.json`
+  )
 )
 
 function findSourceMap(directory: string): string {
@@ -178,7 +190,17 @@ async function main() {
     )
     preview = spawn(
       'bunx',
-      ['vite', 'preview', '--host', '127.0.0.1', '--port', String(PORT), '--strictPort', '--outDir', outDir],
+      [
+        'vite',
+        'preview',
+        '--host',
+        '127.0.0.1',
+        '--port',
+        String(PORT),
+        '--strictPort',
+        '--outDir',
+        outDir,
+      ],
       { cwd, env: process.env, stdio: 'ignore' }
     )
     await waitForServer(PORT)
@@ -187,10 +209,9 @@ async function main() {
     const browser = await chromium.launch()
     const context = await browser.newContext({ viewport: { width: 1280, height: 900 } })
     const page = await context.newPage()
-    await page.goto(
-      `http://127.0.0.1:${PORT}/?scenario=${SCENARIO}&scale=${SCALE}`,
-      { waitUntil: 'networkidle' }
-    )
+    await page.goto(`http://127.0.0.1:${PORT}/?scenario=${SCENARIO}&scale=${SCALE}`, {
+      waitUntil: 'networkidle',
+    })
 
     for (let i = 0; i < WARMUPS; i++) await runOnce(page)
 
@@ -254,7 +275,9 @@ async function main() {
       warmups: WARMUPS,
       cpuSamplingUs: CPU_SAMPLING_US,
       heapSamplingBytes: HEAP_SAMPLING_BYTES,
-      commit: execFileSync('git', ['rev-parse', '--short', 'HEAD'], { cwd: import.meta.dir })
+      commit: execFileSync('git', ['rev-parse', '--short', 'HEAD'], {
+        cwd: import.meta.dir,
+      })
         .toString()
         .trim(),
       hostsPerMount,
@@ -270,7 +293,9 @@ async function main() {
       allocation: {
         totalSampledBytes: heap.totalBytes,
         bytesPerIteration: Math.round(heap.totalBytes / ITERATIONS),
-        bytesPerRender: Number((heap.totalBytes / ITERATIONS / (hostsPerMount * 2)).toFixed(1)),
+        bytesPerRender: Number(
+          (heap.totalBytes / ITERATIONS / (hostsPerMount * 2)).toFixed(1)
+        ),
         bySourceBytesPerIteration: rank(heap.selfBySource, 25, ITERATIONS),
         byFrameBytesPerIteration: rank(heap.selfByKey, 40, ITERATIONS),
       },
@@ -285,14 +310,18 @@ async function main() {
     mkdirSync(dirname(OUTPUT), { recursive: true })
     writeFileSync(OUTPUT, `${JSON.stringify(result, null, 2)}\n`)
 
-    console.log(`\n══ ${LABEL} · ${SCENARIO} · extract=${EXTRACT} · scale=${SCALE} · ${ITERATIONS} iters ══`)
+    console.log(
+      `\n══ ${LABEL} · ${SCENARIO} · extract=${EXTRACT} · scale=${SCALE} · ${ITERATIONS} iters ══`
+    )
     console.log(
       `mount median ${result.timings.mountMedianMs}ms  update median ${result.timings.updateMedianMs}ms`
     )
     console.log(
       `allocation ${result.allocation.bytesPerIteration} bytes/iteration, ${result.allocation.bytesPerRender} bytes/render over ${result.rendersPerIteration} renders (sampled @${HEAP_SAMPLING_BYTES}B)`
     )
-    console.log(`cpu ${result.cpu.msPerIteration}ms/iteration (sampled @${CPU_SAMPLING_US}us)\n`)
+    console.log(
+      `cpu ${result.cpu.msPerIteration}ms/iteration (sampled @${CPU_SAMPLING_US}us)\n`
+    )
     console.log('── allocation bytes/iteration by source ──')
     for (const r of result.allocation.bySourceBytesPerIteration) {
       console.log(`${String(Math.round(r.value)).padStart(9)}  ${r.name}`)

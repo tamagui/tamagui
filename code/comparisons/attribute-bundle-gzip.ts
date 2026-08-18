@@ -264,7 +264,8 @@ if (within) {
       }
       stripped += code.slice(pos)
       marginalGzip +=
-        left.baseGzip.get(file)! - gzipSync(Buffer.from(stripped), { level: 9 }).byteLength
+        left.baseGzip.get(file)! -
+        gzipSync(Buffer.from(stripped), { level: 9 }).byteLength
     }
     rows.push({
       name: decls[b]!.name,
@@ -276,9 +277,7 @@ if (within) {
   rows.sort((a, b) => b.marginalGzip - a.marginalGzip)
 
   console.info(`per-declaration attribution for ${id}`)
-  console.info(
-    'marginals are measured against the same chunk, so they do NOT sum to the'
-  )
+  console.info('marginals are measured against the same chunk, so they do NOT sum to the')
   console.info("module's own marginal — they rank, they don't decompose.\n")
   console.info('marginalGzip  minBytes  src:line  declaration')
   for (const row of rows) {

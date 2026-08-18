@@ -52,16 +52,16 @@ export function getCSSStyleAtomic(
 
 let conf: TamaguiInternalConfig | null = null
 
-// the direct path rebuilds the same atomic rule strings on every render of every
-// component, and insertStyleRules only ever inserts the FIRST set it sees for an
-// identifier and discards the rest. identifier -> rules is already the engine's
-// insertion invariant, so reusing on it adds no assumption. bounded and cleared
-// the same way simpleHash's cache is.
-const directRules = new Map<string, string[]>()
-let directRulesSize = 0
+// the direct path rebuilds the same identifier and the same rule strings on
+// every render of every component, and insertStyleRules only ever inserts the
+// FIRST set it sees for an identifier and discards the rest. the accumulated
+// identity is the whole input to both, so one lookup replaces the hash, the
+// identifier build and every rule string. two levels so a lookup allocates
+// nothing. bounded and cleared the same way simpleHash's cache is.
+const directIdentities = new Map<string, Map<string, DirectIdentity>>()
+let directIdentitiesSize = 0
 
-// the direct identifier prefix is a per-character reduction of the identity key
-const directShortProps: Record<string, string> = {}
+type DirectIdentity = { identifier: string; rules: string[] }
 
 const getStyleObject = (
   style: ViewStyleObject,
@@ -80,37 +80,43 @@ const getStyleObject = (
     val = transformsToString(val)
   }
   const value = normalizeValueWithProperty(val, key)
+  // media queries and shorthands come from the config, so an identity built
+  // under one config says nothing about the rules under another
+  const nextConf = getConfigMaybe()
+  if (nextConf !== conf) {
+    conf = nextConf
+    directIdentities.clear()
+    directIdentitiesSize = 0
+  }
+  // callers own the array they get back: directAtomic splices into it and
+  // addComposition unshifts, so the reuse hands out a copy
+  let byKey: Map<string, DirectIdentity> | undefined
+  if (direct && identity !== undefined) {
+    byKey = directIdentities.get(identityKey)
+    const known = byKey?.get(identity)
+    if (known) {
+      return [key, value, known.identifier, undefined, known.rules.slice()]
+    }
+  }
   const rawValue = typeof value === 'string' ? value : `${value}`
   // this content hash is the atomic CSS class identity shared by server output
   // and client hydration. it is not a parser cache or a runtime lookup key.
   const hash = simpleHash(identity ?? rawValue, direct ? 'strict' : 10) || '0'
-  // media queries and shorthands come from the config, so an identifier built
-  // under one config says nothing about rules under another
-  const nextConf = getConfigMaybe()
-  if (nextConf !== conf) {
-    conf = nextConf
-    directRules.clear()
-    directRulesSize = 0
-  }
   let shortProp: string
   if (direct) {
-    shortProp = directShortProps[identityKey]
-    if (shortProp === undefined) {
-      shortProp = ''
-      for (let index = 0; index < identityKey.length; index++) {
-        const code = identityKey.charCodeAt(index)
-        if (
-          (index === 0 ||
-            (code >= 65 && code <= 90) ||
-            identityKey.charCodeAt(index - 1) === 45) &&
-          ((code >= 65 && code <= 90) || (code >= 97 && code <= 122))
-        ) {
-          shortProp += identityKey[index].toLowerCase()
-        }
+    shortProp = ''
+    for (let index = 0; index < identityKey.length; index++) {
+      const code = identityKey.charCodeAt(index)
+      if (
+        (index === 0 ||
+          (code >= 65 && code <= 90) ||
+          identityKey.charCodeAt(index - 1) === 45) &&
+        ((code >= 65 && code <= 90) || (code >= 97 && code <= 122))
+      ) {
+        shortProp += identityKey[index].toLowerCase()
       }
-      shortProp ||= 'x'
-      directShortProps[identityKey] = shortProp
     }
+    shortProp ||= 'x'
   } else {
     shortProp = conf?.inverseShorthands[key] || key
   }
@@ -119,29 +125,27 @@ const getStyleObject = (
     if (value === 'box-none') identifier = '_pe-boxnone'
     else if (value === 'box-only') identifier = '_pe-boxonly'
   }
-  // callers own the array they get back (directAtomic splices into it,
-  // addComposition unshifts), so the cache keeps its own copy
-  let rules = direct ? directRules.get(identifier) : undefined
-  if (rules) {
-    rules = rules.slice()
-  } else {
-    rules = createAtomicRules(
-      identifier,
-      key,
-      value,
-      condition,
-      wrappers,
-      direct,
-      classRepetitions
-    )
-    if (direct) {
-      if (directRulesSize > 10_000) {
-        directRules.clear()
-        directRulesSize = 0
-      }
-      directRules.set(identifier, rules.slice())
-      directRulesSize++
+  const rules = createAtomicRules(
+    identifier,
+    key,
+    value,
+    condition,
+    wrappers,
+    direct,
+    classRepetitions
+  )
+  if (direct && identity !== undefined) {
+    if (directIdentitiesSize > 10_000) {
+      directIdentities.clear()
+      directIdentitiesSize = 0
+      byKey = undefined
     }
+    if (!byKey) {
+      byKey = new Map()
+      directIdentities.set(identityKey, byKey)
+    }
+    byKey.set(identity, { identifier, rules: rules.slice() })
+    directIdentitiesSize++
   }
   return [
     // array for performance
