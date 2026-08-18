@@ -316,11 +316,12 @@ test('aspectRatio colon values pass through; other parse failures warn in dev', 
   // v3 cutover: a clause-shaped typo is loud where the author can see it.
   //
   // It warns rather than throws since item 12. A style value is an ordinary
-  // place to put a string the app did not write — an image URL, a colour from a
-  // CMS — so a refusal is reachable from content, and an exception on content
-  // takes the whole render down for one bad prop. The value is still dropped
-  // whole, which is the part that matters, and the message now names the
-  // property and the reason.
+  // place to put a string the app did not write (an image URL, a colour from a
+  // CMS), so a refusal is reachable from content, and an exception on content
+  // takes the whole render down for one bad prop.
+  //
+  // The intent of the throw is what this pins, not its mechanism: the value is
+  // dropped whole, and the report carries everything needed to find and fix it.
   const previousNodeEnv = process.env.NODE_ENV
   const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
   process.env.NODE_ENV = 'development'
@@ -328,7 +329,25 @@ test('aspectRatio colon values pass through; other parse failures warn in dev', 
     const typo = split({ backgroundColor: 'red hver:blue' })
     expect(typo.style?.backgroundColor).toBeUndefined()
     expect(typo.classNames.backgroundColor).toBeUndefined()
-    expect(warn.mock.calls.map(String).join('\n')).toContain('hver')
+
+    // the property, the whole authored value, and WHICH modifier failed. The
+    // throw it replaced said "unknown modifier" without naming one.
+    const reported = warn.mock.calls.map(String).join('\n')
+    expect(reported).toContain('backgroundColor')
+    expect(reported).toContain('red hver:blue')
+    expect(reported).toContain('hver')
+
+    // repeating the same mistake stays at one line...
+    warn.mockClear()
+    split({ backgroundColor: 'red hver:blue' })
+    expect(warn.mock.calls).toHaveLength(0)
+
+    // ...but a DIFFERENT mistake in the same property still reports, which is
+    // what keying the warning on the property alone used to swallow
+    warn.mockClear()
+    const second = split({ backgroundColor: 'red fcus:blue' })
+    expect(second.style?.backgroundColor).toBeUndefined()
+    expect(warn.mock.calls.map(String).join('\n')).toContain('fcus')
   } finally {
     process.env.NODE_ENV = previousNodeEnv
     warn.mockRestore()

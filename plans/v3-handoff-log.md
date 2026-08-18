@@ -3728,12 +3728,31 @@ warning and a dropped value instead. The reasons:
 Item 5b's deferred question (should a refused value warn in development) is
 answered the same way and for the same reason: yes, warn, never throw. One
 `warnOnce` helper (`helpers/warnOnce.ts`) replaces the two copies that had grown
-in `directStyle.ts` and `variables.ts`, and the refusal warning keys on the
-PROPERTY rather than the value, because `getCSSStylesAtomic` takes
-attacker-varied strings and a value-keyed set would grow forever.
+in `directStyle.ts` and `variables.ts`.
 
 **If the owner wants the throw back, it is one line in `contributeStyleString`.**
 It was a deliberate v3 cutover decision and this reverses it.
+
+### The warning key was wrong on the first pass, and the review caught it
+
+The refusal warning first keyed on the PROPERTY, because `getCSSStylesAtomic`
+takes attacker-varied strings and a value-keyed set would grow forever. p26422
+accepted the reversal but asked whether one warning per property is quiet enough
+to miss. It is, and worse than "quiet": keyed that way, a SECOND different typo
+in the same prop printed nothing at all, and a property that had warned once
+stayed silent for the rest of the session, so a typo reintroduced through HMR
+never reported. Proven rather than argued: with the property key, the assertion
+that `backgroundColor="red fcus:blue"` reports after `backgroundColor="red
+hver:blue"` already did fails with `expected '' to contain 'fcus'`.
+
+The set is now BOUNDED (500 keys) and keyed on property plus value, which was
+the right shape all along: the bound is what makes quoting the value safe, and
+unbounded growth was the only reason to drop the value from the key. Same
+mistake across a hundred renders still reports once; a different mistake
+reports. `flatValuePrograms.web.test.tsx` pins all three: the value is dropped
+whole, the message names the property, the whole authored value and which
+modifier failed (the throw only said "unknown modifier" without naming one), a
+repeat is silent, and a distinct mistake is not.
 
 ### The Rust side is generated now
 
