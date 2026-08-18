@@ -1,3 +1,4 @@
+import { randomBytes } from 'node:crypto'
 import { readFileSync } from 'node:fs'
 import { createRequire } from 'node:module'
 import esbuild from 'esbuild'
@@ -297,8 +298,11 @@ export async function esbundleTamaguiConfig(
   const config = getESBuildConfig(props, platform, aliases)
 
   // build to memory first, then write atomically (temp file + rename)
-  // to prevent other threads from reading partially-written files
-  const tmpFile = props.outfile + '.tmp.' + process.pid
+  // to prevent other threads from reading partially-written files.
+  // The suffix is per call, not per process: two bundles of the same config in
+  // one process shared a temp path, and whichever renamed first left the other
+  // renaming a file that no longer existed.
+  const tmpFile = `${props.outfile}.tmp.${process.pid}-${randomBytes(6).toString('hex')}`
   const result = await esbuild.build({
     ...config,
     outfile: tmpFile,
