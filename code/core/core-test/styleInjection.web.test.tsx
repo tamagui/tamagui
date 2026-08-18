@@ -231,6 +231,99 @@ describe('containment the value does not actually have', () => {
   })
 })
 
+describe('comment delimiters', () => {
+  // `/*` is the third delimiter that has to close, alongside a quote and a
+  // paren. An unterminated one comments out everything after it, and
+  // insertStyleRule's getAllRules joins rules into one text blob that SSR emits
+  // as a single style tag, so what follows is other components' rules. Two
+  // values can bracket a range between them.
+  //
+  // Severity, stated plainly: this is style DELETION, not rule injection. It
+  // cannot add a selector or a declaration. It is worth refusing because
+  // deleting a rule is not harmless when the rule is the one doing the hiding —
+  // drop a `display:none` and you reveal whatever it covered.
+  const unclosed = [
+    // opens a comment that never closes
+    'red/*',
+    // closes one that was never opened
+    'red*/',
+    // a comment is lexical, so paren depth does not contain one: this opens a
+    // comment that eats the closing paren and everything after it
+    'url(a/*b.png)',
+  ]
+
+  for (const source of unclosed) {
+    test(`refuses ${JSON.stringify(source)}`, () => {
+      expect(rules({ [PROBE]: source })).toEqual([])
+      expect(getCSSStylesAtomic({ [PROBE]: source } as any)).toEqual([])
+    })
+  }
+
+  test('a closed comment is ordinary content and still emits', () => {
+    const source = 'red /* fine */ blue'
+    expect(onlyRule({ [PROBE]: source })).toContain(`background-image:${source}`)
+    expect(inlineValue({ [PROBE]: source })).toBe(source)
+  })
+
+  test('a comment opener inside a string is not a comment', () => {
+    // CSS tokenizes strings before comments, so `"/*"` is a two-character
+    // string, and refusing it would be the check broken in the other direction
+    const source = '"/*"'
+    expect(onlyRule({ [PROBE]: source })).toContain(`background-image:${source}`)
+  })
+
+  test('a closed comment can hold the characters it would otherwise be refused for', () => {
+    // the browser strips the comment before parsing the declaration, so these
+    // never reach the value at all
+    const source = 'red /* ; } { */ blue'
+    expect(onlyRule({ [PROBE]: source })).toContain(`background-image:${source}`)
+  })
+})
+
+describe('a string that ends without its quote', () => {
+  // CSS terminates an unterminated string at a newline, as a parse error rather
+  // than a close, so a scan that only looks for the matching quote reads the
+  // rest of the line as quoted content while the browser reads it as top level.
+  // Unlike the comment case this is full rule injection: the emitted text is
+  //   ._bi-x{background-image:"abc
+  //   ;}.injected{opacity 0"}
+  // and the browser takes `;` as the end of the declaration and `}` as the end
+  // of the rule.
+  for (const [label, newline] of [
+    ['line feed', '\n'],
+    ['carriage return', '\r'],
+    ['form feed', '\f'],
+  ] as const) {
+    test(`refuses a payload after a ${label} in a double-quoted string`, () => {
+      const source = `"abc${newline};}.injected{opacity 0"`
+      expect(rules({ [PROBE]: source })).toEqual([])
+      expect(getCSSStylesAtomic({ [PROBE]: source } as any)).toEqual([])
+    })
+  }
+
+  test('refuses a payload after a newline in a single-quoted string', () => {
+    expect(rules({ [PROBE]: "'abc\n;}.injected{opacity 0'" })).toEqual([])
+  })
+
+  test('refuses a payload after a newline in a quoted url', () => {
+    expect(rules({ [PROBE]: 'url("a\n;}.injected{opacity 0")' })).toEqual([])
+  })
+
+  test('a comment still spans newlines', () => {
+    // a comment is not a string: it runs to its `*/` however many lines that
+    // takes, so refusing this would be the check broken in the other direction
+    const source = 'red /* a\nb */ blue'
+    expect(onlyRule({ [PROBE]: source })).toContain(`background-image:${source}`)
+  })
+
+  test('a backslash before a newline is a line continuation, not an end', () => {
+    // CSS lets a string span lines when the newline is escaped, so the quote
+    // does still close and nothing here is top level
+    const source = '"abc\\\ndef;}x"'
+    expect(onlyRule({ [PROBE]: source })).toContain(`background-image:${source}`)
+  })
+})
+
 test('a refused payload takes the whole declaration, never part of one', () => {
   // the value is dropped, not truncated at the offending character: a partial
   // emit would still be an authored declaration the author never wrote
