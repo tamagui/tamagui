@@ -143,7 +143,7 @@ function assertLowererContract(graph: ProjectGraph): void {
         return element.component.provenance?.specifier === '@fixture/ui'
           ? {
               key: `${element.component.provenance.resolvedId}#${element.component.provenance.importedName}`,
-              acceptsClassName: true,
+              canFlatten: true,
               staticConfig: {},
             }
           : null

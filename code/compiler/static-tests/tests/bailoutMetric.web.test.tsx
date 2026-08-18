@@ -40,7 +40,6 @@ const structurallyRetainedComponents: Record<string, string> = {
   TextArea: 'inherits the Input behavior HOC',
   TextInput2: 'inherits the Input behavior HOC',
   TransparentInput: 'inherits the Input behavior HOC',
-  X1: 'inherits the Label behavior HOC',
   XGroup: 'behavior HOC: orientation, child indexing, and group context',
 }
 
@@ -123,15 +122,21 @@ test.skipIf(!process.env.BAILOUT_METRIC)(
           })),
         })
         for (const diagnostic of output.diagnostics) {
+          const component = diagnostic.component ?? 'unknown component'
           const message = diagnostic.message.endsWith(' does not accept className')
-            ? `${diagnostic.component ?? 'unknown component'} does not accept className`
-            : diagnostic.message
+            ? `${component} does not accept className`
+            : diagnostic.message.endsWith(' is never flattened (behavior HOC)')
+              ? `${component} is never flattened (behavior HOC)`
+              : diagnostic.message.endsWith(' provides a styled context')
+                ? `${component} provides a styled context`
+                : diagnostic.message
           const reason = `${diagnostic.code}: ${message}`
           reasons.set(reason, (reasons.get(reason) ?? 0) + 1)
-          const component = diagnostic.component ?? 'unknown component'
           const isStructuralCandidate =
             diagnostic.code === 'local/unsupported-target' &&
-            diagnostic.message.endsWith(' does not accept className')
+            (diagnostic.message.endsWith(' does not accept className') ||
+              diagnostic.message.endsWith(' is never flattened (behavior HOC)') ||
+              diagnostic.message.endsWith(' provides a styled context'))
           let structuralClass: keyof typeof structuralClassJustifications | undefined
           if (isStructuralCandidate && component in structurallyRetainedComponents) {
             structuralClass = 'component runtime contract'

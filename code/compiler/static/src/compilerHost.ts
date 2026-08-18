@@ -1129,7 +1129,7 @@ export function createTamaguiCompilerHost(
     const defaultProps = core.getDefaultProps(resolved.staticConfig) ?? {}
     return {
       key: resolved.key,
-      acceptsClassName:
+      canFlatten:
         resolved.staticConfig.acceptsClassName !== false &&
         !resolved.staticConfig.neverFlatten &&
         !resolved.staticConfig.context,
@@ -1333,14 +1333,16 @@ export function createTamaguiCompilerHost(
     },
     lowerCandidate(input): LoweringCandidateResult {
       const component = input.component as TamaguiLoweringComponent
-      if (!component.acceptsClassName) {
-        return bailout(
-          input,
-          'local/unsupported-target',
-          `${component.key} does not accept className`,
-          input.element.span,
-          { rule: 6 }
-        )
+      if (!component.canFlatten) {
+        const reason =
+          component.staticConfig.acceptsClassName === false
+            ? `${component.key} does not accept className`
+            : component.staticConfig.neverFlatten
+              ? `${component.key} is never flattened (behavior HOC)`
+              : `${component.key} provides a styled context`
+        return bailout(input, 'local/unsupported-target', reason, input.element.span, {
+          rule: 6,
+        })
       }
       // A zero graph has no runtime left to merge a spread into, and a spread the
       // compiler evaluated is still a prop set it cannot attribute to an author's

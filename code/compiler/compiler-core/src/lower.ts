@@ -28,7 +28,7 @@ export interface LoweredModuleStats {
 export interface LoweringComponent {
   /** Canonical resolved module id plus export name, supplied by the host registry. */
   key: string
-  acceptsClassName: boolean
+  canFlatten: boolean
   staticConfig: unknown
 }
 
