@@ -847,6 +847,37 @@ declared island fragments are present. This intentionally loads island CSS with
 the page in the first experimental release; lazy island CSS would create a
 second artifact and is deferred.
 
+### The one accepted runtime recovery
+
+Zero-runtime mode is otherwise a hard-error mode: no fallbacks, no feature
+detection, no recovery paths. There is exactly one exception, and it is
+deliberate.
+
+The generated island loader calls `ensureZeroStylesheet` before it fetches the
+island bundle. If the document does not already link the generated CSS artifact,
+the loader links it and prints an error naming the artifact path, the island id
+and the integration, and saying that a correct build never reaches this code.
+
+It exists because **"unimported" is not decidable at build time for a published
+zero artifact.** Phase 2 established this rather than faking a check: Metro emits
+a JS bundle and owns no HTML or CSS module pipeline, and Next's zero tier
+publishes its artifact to `public/`, which is not final until the islands are
+built. Both can verify that the published copy exists and matches what they
+generated; neither can verify that the page links it. Removing robustness that
+nothing replaces would be worse than keeping it, and a silent recovery would
+contradict the mode's own posture, so it is loud and documented instead.
+
+It is removed when *both* integrations gain a build-time way to verify the link:
+Metro by owning or being handed the document that loads its bundle, Next by
+resolving the published artifact through the compilation's own module graph.
+Vite already has that check (`checkGlobalCSSArtifact` on the compiled-global
+tier, and the HTML-entry check on the zero tier), so Vite alone is not enough.
+
+The Playwright receipt drives the state it exists for: it removes the artifact
+link before the island mounts, then asserts both halves, that the stylesheet is
+recovered and that the console error names the artifact, the island and the
+integration.
+
 ### Client-only SSR contract
 
 Islands are client-only in the first experimental release. The zero server
@@ -1373,4 +1404,156 @@ and neither should be advertised until it has its own receipts.
   import check is real, and it is checked there on both Vite and Next.
 - The island loader still ensures its stylesheet at runtime. On a correct build
   it never fires, and the Playwright assertion that no island-injected link
-  exists still holds.
+  exists still holds. Phase 3 made that recovery loud and documented it as the
+  one accepted runtime recovery in this mode; see section 10.
+
+## Phase 3 record: the compiler contract, erasure, and both gates
+
+Evidence added after Phase 3 ran. Every claim is a build, a browser run, or a
+control that was executed; the fixture is `code/tests/zero-runtime` and the
+receipts are in its `.tamagui/zero` directory.
+
+### Every rule has a control, and every control fails
+
+**READ.** Section 5's rule map is live. Each rule has one behavioral fixture in
+`src/rules/` and the authored fix beside it, so each control has an independent
+variable rather than only a failure:
+
+| Rule | Fixture | Fails with | Its fix |
+| --- | --- | --- | --- |
+| 1 | `<View {...boxProps} />`, a *static* spread | `Rule 1 local/unsafe-style-spread` | explicit props |
+| 2 | `const Which = isWide ? View : Text` | `Rule 2 zero/live-tamagui-reference`, naming the expression | one literal component |
+| 3 | `fontFamily={runtimeFont}` | `Rule 3 local/dynamic-style-value`, naming the prop | `fontFamily="$body"` |
+| 4 | `<View theme="dark" />` | `Rule 4 local/unsupported-target` | a static `<Theme name>` wrapper |
+| 5 | `animateOnly={['opacity']}` | `Rule 5 local/unsupported-target` | a static CSS transition |
+| 6 | `<ZStack />`, which declares `neverFlatten` | `Rule 6 local/unsupported-target` | `<View position="relative">` |
+| 7 | `useTheme()` | `Rule 7 zero/design-state-read`, naming the API | a static color |
+
+All seven violating builds fail printing section 5's exact message. All seven
+fixed builds succeed with an empty forbidden-module list and zero Tamagui
+modules, so each pair differs in one authored fact.
+
+Four more controls, all proven to fail, and all naming their own reason:
+
+- a bare side-effect `import '@tamagui/core'` fails with `zero/side-effect-import`
+  rather than being erased, because its effects are unknown;
+- a config whose driver is not the CSS driver fails at config level with the
+  fixed rule 5 message, while the same fixture on `animationsCSS` builds green;
+- an exported app-local `styled()` that some untransformed module still reads as
+  a value fails the build-wide erased-export gate, which names the importer;
+- the `mutates-themes` and no-HTML-entry controls from Phase 2 still fail.
+
+### One violation list, three integrations, one order
+
+**READ.** The multi-file fixture puts four violations across two modules behind a
+third. Vite, Next/webpack and Metro each report all four, in the identical order,
+with identical rule numbers, files, lines and columns:
+
+```text
+src/rules/multi/alpha.tsx 7:31 rule 1 local/unsafe-style-spread
+src/rules/multi/alpha.tsx 8:7  rule 4 local/unsupported-target
+src/rules/multi/beta.tsx  7:5  rule 6 local/unsupported-target
+src/rules/multi/beta.tsx  8:7  rule 3 local/dynamic-style-value
+```
+
+Each integration also writes that list as `<name>.violations.json` before it
+fails, which is what makes `report` and `enforce` comparable rather than a claim.
+
+### `report` runs the same analysis and exits successfully
+
+**READ.** The same fixture built with `zeroRuntime: 'report'` exits 0 and emits a
+byte-identical `violations` array. It keeps the full runtime: 288,910 bytes of
+JavaScript against the zero build's React baseline, no erasure, no artifact
+ownership, no island builds, and `TAMAGUI_RUNTIME` stays `'full'`.
+
+Two honest limits of `report`:
+
+- it runs the mode-aware compiler host, so a site zero mode rejects does not
+  lower in a report build either. Its output is a working full-runtime build,
+  but it is not byte-identical to an ordinary compiled build at those sites;
+- config-level rejections (`mutates-themes`, a non-CSS driver, a native target)
+  stay `enforce`-only hard errors. `report` does not list them.
+
+### The two gates have separate independent variables
+
+**READ.** The opaque-access control reaches `getTokens` through a dynamic import,
+which has no import declaration for the compiler-local accounting to attribute.
+Its `violations.json` records **0** compiler violations while the module-graph
+gate fails with 8 forbidden modules on Vite and 171 on Metro, each naming its
+importer chain. The receipt asserts both halves, so a compiler-local gate that
+started catching this would fail the receipt rather than quietly making the
+graph gate redundant.
+
+### Exported `styled()` erasure, and the gate that makes it safe
+
+**READ.** An exported app-local `styled()` used only in lowered JSX inside its own
+module is erased, the module's neighbouring live exports still work, and the zero
+graph carries no Tamagui module.
+
+That erasure is only sound because every importer in the entry graph was itself
+transformed, which no single module can see, so it is checked once per build. The
+escape control is a `.ts` module, which the zero transform never runs on, reading
+the same exported binding as a value: the build fails naming the untransformed
+importer. Without the gate the bundler fails later with a missing-export message
+that says nothing about why the export is missing.
+
+### The animated-number leaf
+
+**READ.** The four public animated-number hooks moved to
+`@tamagui/animations-css/animated-number`, which imports React and React DOM at
+value level and Tamagui only as types. `createAnimations` consumes the same
+functions, so there is one implementation.
+
+A fixture that imports `useAnimatedNumber` and `useAnimatedNumberStyle` from the
+public `tamagui` barrel builds a zero graph whose only Tamagui module is
+`animations-css/dist/esm/animated-number.mjs`: the compiler rewrote those two
+specifiers to the leaf before import cleanup, so no barrel enters the graph. In
+the browser the hook animates a literal host element and its completion callback
+runs.
+
+Phase 5 still owns the rest of that work: the `createComponent` and
+`createTamagui` guards, and the three-artifact gzip measurement (full driver,
+zero without AnimatedNumber, zero with one hook).
+
+### Two contract errors section 5 does not have a rule for
+
+A bare side-effect Tamagui import and a static import of a declared island are
+erasure-level contract errors, not rule-map entries. The failure format requires
+a rule number, so both carry rule 6, because rule 6's resolution is also theirs:
+move the owning module to a declared full-runtime island. Their codes
+(`zero/side-effect-import`, `zero/static-island-import`) are what identifies
+them, and both have controls.
+
+### Corrections Phase 3 forced
+
+These are the parts that were wrong when written and were found by running them.
+
+**A driver check that reads only `animationDrivers` cannot fail.** That field is
+set only for a multi-driver config; an ordinary single-driver config resolves to
+`animations` and leaves it `undefined`. The first config-level rule 5 check
+iterated the map, so it passed on every single-driver config, including a
+`motion` driver whose `outputStyle` is `inline`. It now reads the resolved
+driver as well, and the control proves it.
+
+**A flattened webpack walk reports the same module twice.** The multi-file
+control reported 8 violations for 4 sites: a module concatenated into one chunk
+and standalone in another appears twice in the flattened walk. Per-module CSS is
+keyed by resource and survived that, so nothing before this control could see
+it. The walk now visits each resource once.
+
+**A `closeBundle` check replaces the real build error.** Vite runs `closeBundle`
+even when the build already failed, so the zero tier's own no-HTML-entry check
+was reporting a missing stylesheet link on builds that failed for a completely
+different reason. It now records the failure from `buildEnd(error)` and stays
+quiet.
+
+**The erased-export gate has to run before the bundler resolves exports.** Placed
+in `generateBundle`, it never ran on the build it exists for: rolldown had
+already failed on the missing export, so the gate saw an empty importer map and
+passed. It runs in `buildEnd` now, and it refuses to pass when the module it is
+asked about is not in the graph it was handed, because an empty result there is
+not evidence of no importers.
+
+**`report` must run the same mode-aware host as `enforce`.** With the host's
+zero-mode diagnostics gated on `enforce`, report mode silently dropped every rule
+1 site and emitted a shorter list than the mode it is supposed to preview.

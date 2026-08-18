@@ -2216,3 +2216,86 @@ CSS `var()`s, merged inline values resolve sibling then parent theme then tokens
 and config variables resolve config siblings before theme then tokens. Only the
 theme/token suffix is shared, and factoring just that suffix was trialled and
 INCREASED output, so it was reverted.
+
+## 17. Zero-runtime Phase 3: the compiler contract, erasure, and both gates (2026-08-17)
+
+Continues section 15. Block 2 Phase 3 is implemented and proven on Vite,
+Next/webpack and Metro web. The full record with per-rule receipts is the
+"Phase 3 record" section of `plans/v3-zero-runtime-mode.md`; this is what a
+future reader needs that is not obvious from the code.
+
+### Rule classification belongs to the site, not to a string match
+
+`BailoutReason` now carries an optional `zeroRule` and `zeroMessage`, and a
+default rule per bailout code fills in the rest. That matters because
+`local/unsupported-target` covers roughly thirty distinct reasons in
+`compilerHost.ts`, from "does not accept className" to "animateOnly". Matching
+its message text to pick a rule would have been a second source of truth that
+drifts the moment someone rewords a diagnostic. Four sites set an explicit rule
+today (theme boundary, three animation paths); everything else takes its code's
+default.
+
+`blocking` is the other half. `plan.diagnostics` mixes diagnostics that stopped
+a candidate from lowering with ones recorded next to a SUCCESSFUL lowering (a
+text style prop dropped from a non-text component, for instance). Only the first
+kind is a zero violation: the second leaves no runtime behind. Reporting the
+whole list would have failed builds that are correct.
+
+### Erasure runs only on a module with no violations, and that ordering is load bearing
+
+`transformZeroModule` collects the plan's violations first and skips erasure
+entirely when there are any. Without that, one bad element reports twice: once
+with its real rule, and once as a generic surviving-reference error from
+erasure. It also means erasure's own licence is never in doubt, which is the
+whole reason it is allowed to delete references at all.
+
+### Three shapes of "a check that cannot fail" showed up in one phase
+
+Worth carrying because each looked fine while being written:
+
+- **Reading a field only one config shape populates.** `animationDrivers` is set
+  only for a multi-driver config, so a config-level driver check that iterated it
+  passed on every ordinary single-driver config. Nothing failed; the check was
+  simply never asked a question.
+- **An empty graph query reading as a pass.** The erased-export gate ran in
+  `generateBundle`, which never runs when the bundler already failed. It got an
+  empty importer map and passed on exactly the build it exists to catch. It now
+  runs in `buildEnd`, and it refuses to pass when the module it is asked about is
+  not in the graph it was handed.
+- **A late hook masking the real error.** Vite runs `closeBundle` even on a
+  failed build, so the zero tier's no-HTML-entry check was replacing genuine
+  build errors with a wrong one. Anything asserted in `closeBundle` needs the
+  `buildEnd(error)` flag first.
+
+### `report` mode is a preview, not an ordinary build
+
+It runs the same mode-aware compiler host, so a site zero mode rejects does not
+lower in a report build either. The output is a working full-runtime build, not
+a byte-identical copy of an ordinary compiled build. Gating the host on
+`enforce` was tried first and made report emit a shorter list than the mode it
+previews, which is worse than useless.
+
+Config-level rejections stay enforce-only: a non-CSS driver, `mutates-themes`,
+and a native target are hard errors, and `report` does not list them.
+
+### The animated-number leaf exists now, but Phase 5 still owns the rest
+
+`@tamagui/animations-css/animated-number` is a real module with a package export
+subpath, and `createAnimations` consumes it, so there is one implementation of
+the rAF/spring engine rather than two. Phase 3 needed it because its acceptance
+is that the fixture resolves to the leaf with no public barrel in the graph.
+Phase 5 still owes the `createComponent`/`createTamagui` guards and the
+three-artifact gzip measurement.
+
+The leaf's path must keep the string `animated-number` in it: the zero graph
+gate's allowlist is a regex on the module id, and renaming the file to
+`animatedNumber.tsx` would make every zero build containing it fail.
+
+### The fixture grew a rules tier
+
+`code/tests/zero-runtime/src/rules/` holds one module per rule plus the authored
+fix beside it, and `TAMAGUI_ZERO_RULE` picks which one builds. Its HTML document
+is generated into `.tamagui/rules/` by the fixture's own vite config, because
+the zero tier injects its stylesheet link into an HTML entry and a module-only
+entry fails by design. A new rule fixture is two files and one row in
+`RULE_CONTROLS` in `scripts/zero-receipts.mjs`.
