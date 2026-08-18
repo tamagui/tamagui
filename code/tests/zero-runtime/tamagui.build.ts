@@ -17,11 +17,16 @@ const fixture = process.env.TAMAGUI_ZERO_FIXTURE
 // `dom-client` and `dom-tables` are the DOM demotion receipts: both are regular
 // full-runtime web clients, and the second one adds the value import of
 // @tamagui/dom that proves the absence check on the first one can fail.
+//
+// `hydration` is the hydration-premise receipt. It owns no artifact on purpose:
+// the client has to generate theme CSS and read it back, which is the only path
+// where a server value and a client value can be spelled differently.
 const isFullRuntimeProbe =
   fixture === 'full' ||
   fixture === 'rules-full' ||
   fixture === 'dom-client' ||
-  fixture === 'dom-tables'
+  fixture === 'dom-tables' ||
+  fixture === 'hydration'
 const isGlobalCSSTier = fixture?.startsWith('global') === true
 
 // The rule fixtures build one authored module at a time, with no island, so the

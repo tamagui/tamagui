@@ -39,6 +39,11 @@ export default defineConfig({
       use: { baseURL: 'http://localhost:7885' },
     },
     {
+      name: 'vite-hydration',
+      testMatch: /vite-hydration\.test\.ts/,
+      use: { baseURL: 'http://localhost:7886' },
+    },
+    {
       name: 'next',
       testMatch: /next-.*\.test\.ts/,
       use: { baseURL: 'http://localhost:7879' },
@@ -83,6 +88,12 @@ export default defineConfig({
     {
       command: 'npx vite preview --outDir dist-transition --port 7885 --strictPort',
       url: 'http://localhost:7885/.tamagui/rules/transition.html',
+      reuseExistingServer: true,
+      stdout: 'ignore',
+    },
+    {
+      command: 'npx vite preview --outDir dist-hydration --port 7886 --strictPort',
+      url: 'http://localhost:7886/hydration.html',
       reuseExistingServer: true,
       stdout: 'ignore',
     },

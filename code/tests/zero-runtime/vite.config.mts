@@ -44,6 +44,9 @@ const inputs = {
   // generated tables as its positive control
   'dom-client': 'src/dom-client.tsx',
   'dom-tables': 'src/dom-tables.tsx',
+  // the hydration premise: a real browser SSRs, hydrates, and reads theme
+  // values back out of the document CSS
+  hydration: 'hydration.html',
   negative: 'negative-control.html',
   live: 'live-reference.html',
   illegal: 'illegal-static.html',
