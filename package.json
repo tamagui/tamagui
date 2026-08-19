@@ -30,6 +30,7 @@
     "build:types": "SKIP_JS=1 bun run build",
     "build:verbose": "bun run build -vvv",
     "build": "turbo run build",
+    "benchmark:build-time": "bun code/comparisons/run-build-time-benchmarks.ts",
     "check:deps": "manypkg check",
     "check:exports:web": "node ./scripts/check-package-exports-web-alignment.mjs",
     "check:unused": "knip --dependencies --workspace .",
