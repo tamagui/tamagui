@@ -1,5 +1,25 @@
 # Item 29: lexer faithfulness, then retiring the bespoke injection predicate
 
+> **STATUS UPDATE 2026-08-19.** Two things below are now out of date; see
+> handoff-log section 40 for the evidence.
+>
+> 1. **The "retire the bespoke injection predicate" half is DONE.** The owner
+>    chose to DROP the guard outright (`991d23eab4`), so
+>    `carriesTopLevelInjection.ts` and `styleInjection.web.test.tsx` no longer
+>    exist. Everything in this document about relocating, keeping or feeding the
+>    guard is moot. What remains is lexer faithfulness, on correctness grounds
+>    alone.
+> 2. **The "emitted CSS" column below was measured WITH the guard present and is
+>    now wrong.** `red /* hover:x */ blue` no longer "emits nothing": both halves
+>    of the mis-parse now emit, and the base rule ends in an unterminated `/*`
+>    that swallows following CSS. The defect got worse, not better.
+>
+> Also under-scoped: the 0-verdict-change blast radius against
+> `tests/vectors.json` holds only because the Rust `tamagui-grammar` crate has no
+> comment handling and the vectors contain no comment cases. A TypeScript-only
+> fix would silently fork TS from Rust. Real scope is `scanFlatValue`,
+> `tamagui-grammar/src/value.rs`, and new comment vectors, as one change.
+
 Design proposal. Owner sign-off required before any code, same gate as item 28.
 No source was changed to write this: every measurement below comes from a
 scratchpad copy of the lexer, the repo's own corpora, and headless Chromium.

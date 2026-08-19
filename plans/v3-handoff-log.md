@@ -4461,3 +4461,69 @@ owner: with warm only ~8% off and compile time already deprioritized, this
 likely does not warrant a fix lane now. If cold is pursued it is a DESIGN
 question - what the prepass can cache or defer across cold builds - not more
 profiling. The profiling is done and says the work is real, not wasted.
+
+## 40. Dropping the guard unmasked the item 29 mis-parse, and it emits rule-swallowing CSS (2026-08-19)
+
+Section 38 recorded the owner's DROP decision and section 38's update recorded
+what shipped. This is what dropping it exposed, probed on the post-removal tree
+at `5aa4c7e2b4` rather than reasoned about.
+
+### The prop path now emits broken CSS for a legitimate authored value
+
+READ, through the real `getSplitStyles` and `getCSSStylesAtomic`:
+
+| value | prop path emits | `getCSSStylesAtomic` emits |
+| --- | --- | --- |
+| `red /* hover:x */ blue` | `._bi-…{background-image:red /*}` **plus** `@media (hover: hover){._bi-…:hover{background-image:x */ blue}}` | `background-image:red /* hover:x */ blue;` (correct) |
+| `red/*` | `._bi-…{background-image:red/*}` | `background-image:red/*;` |
+| `red /* ; } { */ blue` | `background-image:red /* ; } { */ blue` (correct) | same (correct) |
+| `red hover:blue /* a:b */` | nothing (`parseValue` refuses) | emits verbatim |
+
+The first row is the one that matters. `scanFlatValue` is not comment-aware, so
+it reads the `hover:` INSIDE the comment as a clause separator and cuts the value
+into base `red /*` and clause `hover` payload `x */ blue`. Both halves then emit.
+
+**The base rule ends in an unterminated `/*`.** A rule reading
+`{background-image:red /*}` does not close its comment, so it swallows whatever
+CSS follows it in the stylesheet. This is the same mechanism as the sixth bypass
+in section 38 (a payload that eats the emitter's own terminator), except it needs
+no adversarial input at all: it is what a developer gets for writing an ordinary
+CSS comment in a style value.
+
+### This is a change in failure mode, not a new bug
+
+The mis-parse pre-dates the guard. Section 38 already recorded that the guard
+"permits it and the prop path drops it anyway". What the guard was doing was
+refusing both halves at `emitValue`, so the value produced NOTHING. Now the
+halves emit.
+
+So the honest ledger on the drop: it did what the owner asked for the security
+question, and it converted one silent-drop bug into one broken-output bug. The
+owner's stated reasoning ("we could tell people not to do it") answers untrusted
+input; it does not cover an authored comment, which is what this is.
+
+### Item 29's real scope is bigger than the design doc says
+
+`plans/v3-item29-lexer-design.md` measured its blast radius against
+`tests/vectors.json` and found 0 verdict changes. That number is doing less work
+than it looks:
+
+- **The Rust crate has no comment handling at all.** READ,
+  `code/lsp/crates/tamagui-grammar/src/` (`value.rs`, `modifier.rs`, `vocab.rs`,
+  `generated.rs`): no comment or `/*` handling anywhere.
+- **`tests/vectors.json` contains zero comment cases.** `grep -c '/\*'` is 0
+  across all 215KB.
+
+Those two facts together are why the conformance number is 0, and they mean a
+TS-only fix would make the TS lexer and the Rust lexer disagree on exactly the
+inputs no vector covers. That is audit item 1.1's failure mode (five
+implementations of one grammar, drifting) reproduced deliberately.
+
+**So item 29 is one change across two languages plus new vectors**, not the
+TypeScript edit the design doc's blast-radius table implies. Its "retire the
+bespoke injection predicate" half is already done and should be struck; what
+remains is lexer faithfulness in `scanFlatValue`, the same in
+`tamagui-grammar`'s `value.rs`, and comment vectors added to `vectors.json` so
+the two cannot drift again.
+
+Not started. Still owner-gated per the design doc's own header.
