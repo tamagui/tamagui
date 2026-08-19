@@ -250,9 +250,7 @@ function getPackageNameFromPath(modulePath: string) {
   const normalized = modulePath.split(sep).join('/')
   const nodeModulesIndex = normalized.lastIndexOf('/node_modules/')
   if (nodeModulesIndex === -1) {
-    return normalized.startsWith('.') || isAbsolute(normalized)
-      ? undefined
-      : normalized
+    return normalized.startsWith('.') || isAbsolute(normalized) ? undefined : normalized
   }
   const packagePath = normalized.slice(nodeModulesIndex + '/node_modules/'.length)
   const parts = packagePath.split('/')
