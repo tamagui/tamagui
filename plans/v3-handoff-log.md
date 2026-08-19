@@ -4217,3 +4217,63 @@ had not merely preserved its lines but CORRECTED them - moving the generation bu
 inside the under-cap branch so an over-cap registration that mutates nothing no
 longer invalidates the cache. Re-deriving from its saved copy would have silently
 reverted a real improvement.
+
+## 37. Item 27: the build-time gap is real and points the wrong way (2026-08-18)
+
+`e351f4a3c1`, artifact `code/comparisons/output/build-time-benchmarks.json`. This
+closes the gap section 2.8 recorded as blocking compiler-speed claims: nothing
+measured cold and warm wall-clock through real bundlers. Now something does, and
+the answer is that **V3 builds slower than V2 on every arm**.
+
+Medians, ms, with Q1-Q3:
+
+| arm | V3 | V2 |
+| --- | --- | --- |
+| Vite cold | 933.8 [924.2-948.4] | 875.9 [869.1-889.3] |
+| Vite warm | 916.5 [899.7-922.9] | 775.9 [765.9-777.3] |
+| Metro cold | 16002.3 [15970-16256] | 9687.3 [9655-9769] |
+| Metro warm | 6391.2 [6374-6428] | 5944.0 [5916-5967] |
+
+Metro cold is roughly **1.65x and exceeded V2 in every retained sample**, so it is
+not spread. Vite warm is about 1.18x.
+
+**What this is and is not.** End-to-end user build wall-clock, NOT a
+compiler-speed claim. It includes bundler startup, graph traversal, transforms,
+emit and filesystem access, and the V2 and V3 dependency trees differ. The
+artifact carries a `publicationQualification` saying so, so it cannot be quoted
+as a compiler benchmark. No tuning was attempted: the lane's brief said a slow
+result is a finding to report, not a problem to tune away in a harness lane.
+
+Method: same start and end SHA on a frozen branch, seed 27003, shuffled arm
+order, 1 warmup, 5 retained samples, every raw trial kept, mean/SD/95% CI/median/
+quartiles/min/max, corpus file hashes, and a cold definition precise enough to
+reproduce - including that OS filesystem caches are explicitly NOT flushed.
+
+**Ruled by p25843: do not weaken the artifact or re-run for a friendlier number.**
+A slow honest result stands.
+
+### Item 30: attribution before anyone tries to fix it
+
+Metro cold becomes its own item, attribution only, no fix lane until the owner
+weighs in - because a real Metro-cold fix trades against perf and byte decisions
+he has already ratified.
+
+**Its first test is a confound, not a profile.** Item 26 bumped the Metro compiler
+cache version 5 to 6 in this same wave (`4a69243ba7`), so a cold V3 run now
+rebuilds plans a pre-wave cold run might have reused. Before any of the 1.65x is
+attributed to something inherent, that variable gets removed and re-measured. If
+the bump explains a large share, the finding changes from a regression into a
+measurement artifact, and that outcome is as valuable as a profile.
+
+Only if the confound clears does it profile transforms versus graph versus cache
+to name one layer.
+
+Recorded as a hazard for that lane and any future one: measuring a historical SHA
+means checking one out, and this worktree is shared with several agents. It gets
+its own `git worktree`; the shared tree is never switched.
+
+### Vite's gap: logged, not chased
+
+1.18x warm does not earn a lane yet. Written down so the next person does not
+rediscover it, and so nobody quietly attributes it to the Metro cause once item
+30 names one.
