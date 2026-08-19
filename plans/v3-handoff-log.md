@@ -4527,3 +4527,71 @@ remains is lexer faithfulness in `scanFlatValue`, the same in
 the two cannot drift again.
 
 Not started. Still owner-gated per the design doc's own header.
+
+## 41. Item 24: the orphan Tabs controller was broken, not merely divergent (2026-08-19)
+
+Shipped at `161a86b324`. The owner's 2026-08-18 decision was to restore the
+headless base-layer pattern rather than delete `@tamagui/tabs-headless`, keeping
+the SKINNED controller and retiring the orphan. Reading both implementations
+first changed how strong that call looks.
+
+### The orphan could not have worked
+
+READ, `code/ui/tabs-headless/src/useTabs.tsx` at its previous revision:
+
+- It built its tab registry inside `getTabProps`'s `onFocus`, so a trigger only
+  entered `tabValues` after it had been focused at least once.
+- `getNextTab` starts with `tabValues.indexOf(currentValue)` and returns `null`
+  on `-1`. On a freshly mounted tablist the list is empty, so **every arrow key
+  did nothing** until the user had already focused the tabs by other means.
+- It was web-only regardless: `HTMLElement`, `element.focus()`,
+  `React.MouseEvent` / `FocusEvent` / `KeyboardEvent`, and a `hidden` boolean.
+- It carried a second React context (`TabsContext` + `TabsProvider`) parallel to
+  the skin's `createStyledContext`, so the two could never share state.
+
+So this was not two reasonable implementations that drifted. The skin's
+`RovingFocusGroup` path is the only one that ever handled arrow navigation, and
+it handles it cross-platform.
+
+### What actually moved
+
+The extracted hooks are `useTabs` (controllable value, `baseId`, direction,
+trigger counting), `useTabsList`, `useTab`, and `useTabContent`, mirroring how
+`useSwitch` / `useCheckbox` are consumed: the hook returns prop bags and the
+skin spreads them onto its styled frames. `@tamagui/core` stays out of the
+headless package; it depends only on `constants`, `use-controllable-state` and
+`use-direction`.
+
+`makeTriggerId` / `makeContentId` had been **duplicated in both packages**.
+They now live in the headless package alone, which is what keeps `aria-controls`
+and `aria-labelledby` pointing at each other across the two layers.
+
+What deliberately stayed in the skin: the `styled()` frames, `SizeContext`,
+`RovingFocusGroup` wiring, and everything feeding `onInteraction` (the
+`ResizeObserver`, `onLayout`, hover/focus layout emission). Those are visual
+concerns and a headless consumer does not want them.
+
+### The negative control is the part worth keeping
+
+A test asserting "Tabs.tsx imports tabs-headless" would be a source-string test
+and worthless. Instead: break `useTab`'s focus activation in the headless
+package, rebuild, and run both suites.
+
+Both `tests/TabsHeadless.test.tsx` (new, drives the hooks on plain `div` /
+`button` with no Tamagui skin) and `tests/TabsActivation.test.tsx` (the existing
+SKINNED test, unmodified) **fail together**. That is runtime proof the skin sits
+on the hook. Reverting returns both to green.
+
+Note the headless packages had **zero** direct test coverage before this, across
+all sixteen of them. That absence is exactly how this one drifted into a broken
+orphan nobody noticed, so the new suite exercises the package standalone rather
+than only through the skin.
+
+### Validation
+
+Existing Tabs tests passed UNCHANGED, which was the plan's stated bar:
+kitchen-sink default 715 passed (baseline match), `TabHoverAnimation` /
+`TabHoverPositionSmooth` green on css (20) / motion (20) / reanimated (15) and
+skipped on the native driver as they already were, core-test web 511 and native
+294 (both baseline matches), `typecheck` 0 errors, `lint` clean, `bun run check`
+green including `check:references`.

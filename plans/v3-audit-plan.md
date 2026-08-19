@@ -152,7 +152,7 @@ was the dead Sheet dependency edge, the empty `debug="break"` branch, the three
 | --- | --- | --- | ---: |
 | 22 | Precompute the static half of `getCSS()` so SSR stops regenerating it per render | Improve | M |
 | 23 | Key media subscriptions by touched key instead of broadcasting to every subscriber | Improve | M |
-| 24 | Restore the headless-base pattern for Tabs (DECIDED 2026-08-18, see detail) | Cleanup | L |
+| 24 | Restore the headless-base pattern for Tabs (**DONE 2026-08-19**, `161a86b324`) | Cleanup | L |
 | 25 | Collapse the internal-only `use-*` micro-packages; retire dead package shells | Cleanup | M |
 | 26 | Metro diagnostics lose the source span the compiler already computed | Improve | S–M |
 | 27 | Build-time performance harness for the real plugins through real bundlers | Testing | M |
@@ -436,6 +436,12 @@ visible.
   Note the direction carefully — the orphan implementation is the one that goes,
   and the code that survives is the one already proven in the skin. Doing it the
   other way round would ship the untested controller.
+
+  **DONE 2026-08-19, `161a86b324`.** `@tamagui/tabs-headless` now exports
+  `useTabs` / `useTabsList` / `useTab` / `useTabContent` plus the shared
+  `makeTriggerId` / `makeContentId`, and `code/ui/tabs` consumes them. See
+  handoff-log section 41 for what the orphan actually got wrong and for the
+  negative control that proves the skin sits on the hook.
 - **Native `useSwitch` drops behavior [med] [M] READ.**
   `code/ui/switch-headless/src/useSwitch.tsx:84-93` returns only a toggling
   `onPress`, the ref and a null bubble input on native, while the web branch
