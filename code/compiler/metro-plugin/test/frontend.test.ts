@@ -11,6 +11,7 @@ import { afterEach, describe, expect, test } from 'vitest'
 import { loadTamaguiSync } from '@tamagui/static'
 
 import { METRO_COMPILER_CACHE_VERSION, MetroCompilerCache } from '../src/compilerCache'
+import { formatMetroCompilerDiagnostic } from '../src/diagnostics'
 import { MetroCompilerFrontend } from '../src/frontend'
 import { createMetroCompilerTransformer } from '../src/transformer'
 import { composeMetroGetTransformOptions } from '../src/transformOptions'
@@ -429,6 +430,21 @@ export const App = ({ dynamic }) => <>
         sourceMapComposed: true,
         stats: { found: 2, lowered: 1, flattened: 1, bailed: 1 },
       })
+      const diagnostic = first.metadata?.tamagui.diagnostics.find(
+        ({ code }) => code === 'metro/transform-failed'
+      )
+      if (!diagnostic?.span) throw new Error('Expected a spanned Metro diagnostic')
+      expect(diagnostic).toMatchObject({
+        line: 6,
+        column: 3,
+        component: 'View',
+      })
+      expect(appSource.slice(diagnostic.span.start, diagnostic.span.end)).toBe(
+        '<View padding={dynamic} data-runtime="preserved" />'
+      )
+      expect(formatMetroCompilerDiagnostic(diagnostic, projectRoot)).toBe(
+        '[@tamagui/metro-plugin] src/App.tsx:6:3: metro/transform-failed: Style prop padding could not be evaluated'
+      )
       const firstCode = outputCode(first)
       expect(firstCode).toContain(
         "const __TamaguiNativeView = require('react-native').View"

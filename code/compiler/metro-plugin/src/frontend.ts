@@ -740,12 +740,25 @@ export class MetroCompilerFrontend {
     // plan a worker applies before Babel is the only point early enough to
     // remove an import from the graph.
     const zeroPlan = this.#zeroPlanFor(id, record.input.source, plan)
-    const diagnostics = plan.diagnostics.map(({ code, message, dependencyId }) =>
-      metroDiagnostic(
-        code.startsWith('linked/') ? 'metro/resolve-failed' : 'metro/transform-failed',
-        message,
-        { moduleId: id, dependency: dependencyId }
-      )
+    const diagnostics = plan.diagnostics.map(
+      ({ code, message, dependencyId, span, component }) => {
+        const { line, column } = Static.offsetToLineColumn(
+          record.input.source,
+          span.start
+        )
+        return metroDiagnostic(
+          code.startsWith('linked/') ? 'metro/resolve-failed' : 'metro/transform-failed',
+          message,
+          {
+            moduleId: id,
+            dependency: dependencyId,
+            span,
+            line,
+            column,
+            component,
+          }
+        )
+      }
     )
     this.#entries.set(id, {
       schemaVersion: METRO_COMPILER_CACHE_VERSION,

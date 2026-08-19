@@ -13,7 +13,11 @@ import {
   MetroCompilerCache,
   MetroCompilerCacheError,
 } from './compilerCache'
-import { metroDiagnostic } from './diagnostics'
+import {
+  formatMetroCompilerDiagnostic,
+  metroDiagnostic,
+  type MetroCompilerDiagnostic,
+} from './diagnostics'
 import { isCompilerSourceFile } from './metroResolver'
 import { applyMetroCompilerPlan, type MetroCompilerLoweringResult } from './lowering'
 
@@ -31,7 +35,7 @@ export interface MetroCompilerTransformerOptions {
 
 export interface MetroCompilerTransformMetadata {
   cacheHit: boolean
-  diagnostics: unknown[]
+  diagnostics: MetroCompilerDiagnostic[]
   lowering?: MetroCompilerLoweringResult
 }
 
@@ -121,9 +125,7 @@ export function createMetroCompilerTransformer(config: MetroCompilerTransformerO
             { moduleId }
           )
           tamagui.diagnostics.push(diagnostic)
-          console.warn(
-            `[@tamagui/metro-plugin] ${diagnostic.code}: ${diagnostic.message}`
-          )
+          console.warn(formatMetroCompilerDiagnostic(diagnostic, config.projectRoot))
         })
         if (entry) {
           try {
@@ -153,17 +155,13 @@ export function createMetroCompilerTransformer(config: MetroCompilerTransformerO
               cacheHit: true,
               diagnostics: [...entry.diagnostics, diagnostic],
             }
-            console.warn(
-              `[@tamagui/metro-plugin] ${diagnostic.code}: ${diagnostic.message}`
-            )
+            console.warn(formatMetroCompilerDiagnostic(diagnostic, config.projectRoot))
           }
         }
       } catch (error) {
         if (!(error instanceof MetroCompilerCacheError)) throw error
         tamagui.diagnostics.push(error.diagnostic)
-        console.warn(
-          `[@tamagui/metro-plugin] ${error.diagnostic.code}: ${error.diagnostic.message}`
-        )
+        console.warn(formatMetroCompilerDiagnostic(error.diagnostic, config.projectRoot))
       }
       const compiled = await compileWithUserBabel(
         config.originalBabelTransformerPath,

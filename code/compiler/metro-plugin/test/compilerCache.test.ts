@@ -44,6 +44,10 @@ describe('Metro compiler cache', () => {
       diagnostics: [
         metroDiagnostic('metro/resolve-failed', 'optional dependency omitted', {
           moduleId: '/fixture.ts',
+          span: { id, start: 13, end: 18 },
+          line: 1,
+          column: 14,
+          component: 'Fixture',
         }),
       ],
     } satisfies MetroCompilerCacheEntry
@@ -60,7 +64,16 @@ describe('Metro compiler cache', () => {
         optionsHash: 'fixture-options',
       })
       expect(await cache.read(entry.moduleId, source)).toMatchObject({
-        diagnostics: [{ code: 'metro/resolve-failed', moduleId: '/fixture.ts' }],
+        diagnostics: [
+          {
+            code: 'metro/resolve-failed',
+            moduleId: '/fixture.ts',
+            span: { id, start: 13, end: 18 },
+            line: 1,
+            column: 14,
+            component: 'Fixture',
+          },
+        ],
       })
       expect(
         await readdir(join(root, `v${METRO_COMPILER_CACHE_VERSION}`, 'blobs'))

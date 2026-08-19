@@ -1,4 +1,5 @@
 import { type MetroBabelTransformArgs, type MetroBabelTransformResult } from "./babel";
+import { type MetroCompilerDiagnostic } from "./diagnostics";
 import { type MetroCompilerLoweringResult } from "./lowering";
 export interface MetroCompilerTransformerOptions {
 	cacheBaseRoot: string;
@@ -13,7 +14,7 @@ export interface MetroCompilerTransformerOptions {
 }
 export interface MetroCompilerTransformMetadata {
 	cacheHit: boolean;
-	diagnostics: unknown[];
+	diagnostics: MetroCompilerDiagnostic[];
 	lowering?: MetroCompilerLoweringResult;
 }
 export declare function createMetroCompilerTransformer(config: MetroCompilerTransformerOptions): {

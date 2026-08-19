@@ -7,6 +7,7 @@ import type { TamaguiOptions } from '@tamagui/static'
 import { defaultMetroCompilerCacheRoot } from './compilerCache'
 import { applyMetroZeroRuntime } from './zeroSerializer'
 import { createMetroZeroController } from './zeroRuntime'
+import { formatMetroCompilerDiagnostic } from './diagnostics'
 import { MetroCompilerFrontend } from './frontend'
 import { writeMetroCompilerTransformerBridge } from './transformer'
 import { composeMetroGetTransformOptions } from './transformOptions'
@@ -132,7 +133,7 @@ export function withTamagui(
       cacheRoot: cacheBaseRoot,
       zero,
       reportDiagnostic(diagnostic) {
-        console.warn(`[@tamagui/metro-plugin] ${diagnostic.code}: ${diagnostic.message}`)
+        console.warn(formatMetroCompilerDiagnostic(diagnostic, projectRoot))
       },
     })
     const transformerFactoryPath = requireFromPlugin.resolve(
