@@ -45,17 +45,3 @@ export function warnRefusedValue(property: string, value: string, reason: string
     `${property}="${value}" was dropped: ${reason}`
   )
 }
-
-/**
- * A value the injection guard refused. Its own function because two producers
- * refuse on the same rule and the sentence describing it belongs in one place:
- * `emitValue` for the flat-value pipeline, and `getCSSStylesAtomic` for the
- * flattened style objects react-native-web hands it.
- */
-export function warnRefusedInjection(property: string, value: string) {
-  warnRefusedValue(
-    property,
-    value,
-    'it would escape its declaration (a top-level ";", "{" or "}", a comment delimiter, or an unclosed quote or paren)'
-  )
-}

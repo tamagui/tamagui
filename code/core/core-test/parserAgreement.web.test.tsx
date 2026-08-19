@@ -169,19 +169,17 @@ describe('agreement', () => {
     expect(variantValue(source, ['hover'])).toBe(null)
   })
 
-  // D2. `contributeStyleString` still returns early when the value holds no
-  // top-level colon, so the clause scanner below it never runs, but the `;{}`
-  // refusal that scanner would have applied lives in `emitValue`, the one point
-  // every contributor reaches. valueParser.ts states why: a payload is emitted
-  // verbatim by contract, so refusing those characters is what makes rule and
-  // selector injection structurally impossible. It is. Every emit path is
-  // pinned in styleInjection.web.test.tsx.
-  test('a value with no top-level colon is refused like every other value', () => {
-    const source = 'none;}.injected{opacity 0'
-    expect(parseValue(source, registry).ok).toBe(false)
+  // D6. Was: the canonical parser reads a top-level backslash as an escape, so
+  // `safe\;tail` is one payload with an escaped semicolon in it and the value
+  // parses, while the injection guard had no escape branch and refused it. The
+  // guard is gone, so both sides read the escape the same way.
+  test('a top-level escaped ";" is payload content for parser and prop path alike', () => {
+    const source = 'safe\\;tail'
+    const parsed = parseValue(source, registry)
+    expect(parsed.ok).toBe(true)
+    expect(parsed.ok && parsed.value.base).toBe('safe\\;tail')
 
-    expect(propValue(source)).toBe(null)
-    expect(propRules(source)).toEqual([])
+    expect(propValue(source)).toBe('safe\\;tail')
   })
 
   // D3. Was: a top-level backslash escaped the next character only in the
@@ -278,25 +276,23 @@ describe('agreement', () => {
 })
 
 describe('divergences', () => {
-  // D6. The canonical parser reads a top-level backslash as an escape, so
-  // `safe\;tail` is one payload with an escaped semicolon in it and the value
-  // parses. `carriesTopLevelInjection` has no escape branch and refuses it.
+  // D2. `contributeStyleString` returns early when the value holds no top-level
+  // colon, so the clause scanner below it never runs. The `;{}` refusal that
+  // scanner would have applied used to live in `emitValue`, the one point every
+  // contributor reaches; that guard was removed by owner decision, on the
+  // grounds that a style value is authored rather than user input. So a
+  // colonless value the canonical parser refuses now reaches CSS verbatim, and
+  // a payload carrying `;}` closes its own rule and opens another.
   //
-  // The guard is deliberately the stricter of the two and stays that way. CSS
-  // only honours `\;` as an escape inside an ident or a string, a backslash
-  // before a newline is not a valid escape at all, and the guard is the last
-  // thing standing between an authored value and text interpolated straight
-  // into a rule. Refusing a rare valid value costs an author one edit; teaching
-  // the guard to trust an escape costs a bypass. So this stays a divergence,
-  // and the corpus generates delimiter-free escapes for that reason.
-  test('the injection guard refuses an escaped ";" the canonical parser accepts', () => {
-    const source = 'safe\\;tail'
-    const parsed = parseValue(source, registry)
-    expect(parsed.ok).toBe(true)
-    expect(parsed.ok && parsed.value.base).toBe('safe\\;tail')
+  // This is the cost of dropping the guard, pinned so it stays a decision
+  // rather than a surprise: do not put a user-controlled string in a style
+  // value.
+  test('a colonless value the canonical parser refuses still emits verbatim', () => {
+    const source = 'none;}.injected{opacity 0'
+    expect(parseValue(source, registry).ok).toBe(false)
 
-    expect(propValue(source)).toBe(null)
-    expect(propRules(source)).toEqual([])
+    expect(propValue(source)).toBe(source)
+    expect(propRules(source).length).toBeGreaterThan(0)
   })
 
   // D7. `hasFlatModifier` runs the shared lexer but not the shared modifier

@@ -17,11 +17,4 @@ export declare function warnOnce(key: string, message?: string): void;
  * mistake across a hundred renders still reports once.
  */
 export declare function warnRefusedValue(property: string, value: string, reason: string): void;
-/**
- * A value the injection guard refused. Its own function because two producers
- * refuse on the same rule and the sentence describing it belongs in one place:
- * `emitValue` for the flat-value pipeline, and `getCSSStylesAtomic` for the
- * flattened style objects react-native-web hands it.
- */
-export declare function warnRefusedInjection(property: string, value: string): void;
 //# sourceMappingURL=warnOnce.d.ts.map

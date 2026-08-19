@@ -29,8 +29,7 @@ import {
 import { isVariable } from '../createVariable'
 import { mediaKeyMatch } from '../hooks/useMedia'
 import type { GetStyleState } from '../types'
-import { carriesTopLevelInjection } from './carriesTopLevelInjection'
-import { warnOnce, warnRefusedInjection, warnRefusedValue } from './warnOnce'
+import { warnOnce, warnRefusedValue } from './warnOnce'
 import { expandStyle } from './expandStyle'
 import { getCSSStyleAtomic } from './getCSSStylesAtomic'
 import { isColorStyleKey } from './getDynamicVal'
@@ -1113,17 +1112,6 @@ function emitValue(
 ) {
   if (typeof raw === 'string') {
     raw = raw.trim()
-    // the payload rule the clause scanner enforces mid-pass, applied to every
-    // contributor. three of the four public entries below reach here without
-    // that scanner ever running: `contributeStyleString`'s colonless fast path,
-    // `contributeVariantClauseValue` and `contributeFrontendValue`. this is the
-    // whole guarantee for the inline style object, where a `;` still buys extra
-    // declarations on the element; the class path is checked again where the
-    // CSS text is built, which is where producers outside this grammar arrive.
-    if (carriesTopLevelInjection(raw)) {
-      if (process.env.NODE_ENV === 'development') warnRefusedInjection(property, raw)
-      return
-    }
   }
 
   if (isVariable(raw)) {

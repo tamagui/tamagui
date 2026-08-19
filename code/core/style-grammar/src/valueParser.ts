@@ -51,14 +51,15 @@ export interface ValueParseWithSourceSpans {
  *   '"abc\n;}.injected{opacity 0"'   a string CSS ends at the newline
  *   'red/*'                            an unterminated comment
  *
- * That is not a live hole today, and the reason is worth stating so nobody
- * removes it by accident: `emitValue` and `getStyleObject` call
- * `carriesTopLevelInjection` INDEPENDENTLY, and nothing treats this function's
- * verdict as a safety signal.
+ * Nothing refuses those any more. `emitValue` and `getStyleObject` used to call
+ * a `carriesTopLevelInjection` guard independently; it was removed by owner
+ * decision, on the grounds that a style value is authored rather than user
+ * input, and the web lowering emits payloads verbatim by contract.
  *
- * So: never gate emission on `parseValue(...).ok`. The day something does, both
- * payloads above ship. Item 29 makes the lexer faithful on strings, comments and
- * url-tokens, after which the guard can consume it and this warning goes away.
+ * So the rule lives upstream of this file: never put a user-controlled string
+ * in a style value. A payload carrying `;}` closes its own rule and everything
+ * after it is a selector block the author never wrote. Do not gate emission on
+ * `parseValue(...).ok` either; it answers a syntax question, not a safety one.
  */
 export function parseValue(
   input: string,
