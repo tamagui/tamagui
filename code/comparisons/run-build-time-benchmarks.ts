@@ -414,6 +414,8 @@ try {
     metadata: {
       generatedAt: new Date().toISOString(),
       commit: measuredCommit,
+      startCommit: measuredCommit,
+      endCommit: endingCommit,
       branch: git('branch', '--show-current'),
       sourceDirtyBeforeOutput,
       untrackedFilesPresent: untrackedFilesAtStart,
