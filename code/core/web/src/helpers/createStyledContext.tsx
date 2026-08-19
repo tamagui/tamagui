@@ -1,6 +1,7 @@
 import type { Context, ReactNode } from 'react'
 import React from 'react'
 import type { StyledContext, StyledContextOptions } from '../types'
+import { isPlainObject } from './isObj'
 import { mergeProps } from './mergeProps'
 import { objectIdentityKey } from './objectIdentityKey'
 
@@ -61,14 +62,6 @@ type StyledContextFactory = {
     defaultValues?: undefined,
     namespaceOrOptions?: string
   ): StyledContext<VariantProps, never>
-}
-
-function isPlainObject(value: unknown): value is Record<string, any> {
-  if (!value || typeof value !== 'object' || Array.isArray(value)) {
-    return false
-  }
-  const proto = Object.getPrototypeOf(value)
-  return proto === Object.prototype || proto === null
 }
 
 // use const (not function declaration) to prevent esbuild from hoisting

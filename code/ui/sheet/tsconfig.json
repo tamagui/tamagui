@@ -27,9 +27,6 @@
       "path": "../../core/use-controllable-state"
     },
     {
-      "path": "../../core/use-keyboard-visible"
-    },
-    {
       "path": "../animate-presence"
     },
     {

@@ -1,14 +1,7 @@
 import { mergeFlatValues } from '@tamagui/style-grammar/runtime'
 
 import type { GenericVariantDefinitions } from '../types'
-
-function isPlainObject(value: unknown): value is Record<string, any> {
-  if (!value || typeof value !== 'object' || Array.isArray(value)) {
-    return false
-  }
-  const proto = Object.getPrototypeOf(value)
-  return proto === Object.prototype || proto === null
-}
+import { isPlainObject } from './isObj'
 
 // same key ordering as mergeProps (parent keys first, then ours), but a key
 // present on both sides merges its clauses instead of being replaced outright

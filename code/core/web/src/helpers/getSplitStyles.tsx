@@ -44,6 +44,7 @@ import { fixStyles } from './expandStyles'
 import { getCSSStyleAtomic, styleToCSS } from './getCSSStylesAtomic'
 import { getDefaultProps } from './getDefaultProps'
 import { insertStyleRules, shouldInsertStyleRules, updateRules } from './insertStyleRule'
+import { isPlainObject } from './isObj'
 import { log } from './log'
 import { normalizeValueWithProperty } from './normalizeValueWithProperty'
 import { appendFlatClause, propMapper } from './propMapper'
@@ -106,14 +107,6 @@ type StyleSplitter = (
   // resolved animation driver (respects animatedBy prop)
   animationDriver?: AnimationDriverLike | null
 ) => null | GetStyleResult
-
-function isPlainObject(value: unknown): value is Record<string, any> {
-  if (!value || typeof value !== 'object' || Array.isArray(value)) {
-    return false
-  }
-  const proto = Object.getPrototypeOf(value)
-  return proto === Object.prototype || proto === null
-}
 
 function compoundMatcherMatches(expected: any, actual: any) {
   if (Array.isArray(expected)) {
@@ -282,25 +275,6 @@ function forEachPropInForwardOrder(
     }
   }
 }
-
-// if you need and easier way to test performance, you can do something like this
-// add this early return somewhere in this file and you can see roughly where it slows down:
-
-// return {
-//   space,
-//   hasMedia,
-//   fontFamily: styleState.fontFamily,
-//   viewProps: {
-//     children: props.children,
-//   },
-//   style: {
-//     borderColor: props.borderColor,
-//     borderWidth: props.borderWidth,
-//     padding: props.padding,
-//   },
-//   classNames,
-//   rulesToInsert,
-// }
 
 // exported so the compiler applies the SAME host-validity decision when it
 // flattens: a style-shaped key that fails this check must be dropped with a

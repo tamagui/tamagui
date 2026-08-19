@@ -2169,9 +2169,6 @@ export function createComponent<
             console.groupEnd()
           }
         }
-        if (debugProp === 'break') {
-          // debugger intentionally here for debugging
-        }
       }
     }
 
