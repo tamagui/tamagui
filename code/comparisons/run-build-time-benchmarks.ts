@@ -386,7 +386,11 @@ try {
       ),
     ])
   )
-  const sourceDirtyBeforeOutput = git('status', '--porcelain').length > 0
+  const sourceDirtyBeforeOutput =
+    git('status', '--porcelain', '--untracked-files=no').length > 0
+  const untrackedFilesPresent = git('ls-files', '--others', '--exclude-standard')
+    .split('\n')
+    .filter(Boolean)
   const report = {
     schemaVersion: 1,
     metadata: {
@@ -394,6 +398,7 @@ try {
       commit: git('rev-parse', 'HEAD'),
       branch: git('branch', '--show-current'),
       sourceDirtyBeforeOutput,
+      untrackedFilesPresent,
       publicationQualification:
         'Baseline harness receipt only. Do not publish a compiler-speed claim from these results. The arms use their supported real bundlers and pinned package trees, so bundler versions and compiler versions both differ. Cold runs clear named software caches but do not flush the operating system filesystem cache. The owner must decide whether later measurements are quotable.',
       measurementBoundary:
