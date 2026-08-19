@@ -1,4 +1,6 @@
-import { resolve } from 'node:path'
+import { mkdtemp, rm } from 'node:fs/promises'
+import { tmpdir } from 'node:os'
+import { join, resolve } from 'node:path'
 
 import {
   CompilerSession,
@@ -10,7 +12,7 @@ import {
   createTamaguiCompilerHost,
   loadTamaguiSync,
 } from '@tamagui/static'
-import { beforeAll, expect, test } from 'vitest'
+import { afterAll, beforeAll, expect, test } from 'vitest'
 
 const root = resolve(import.meta.dirname, 'fixtures/compiler')
 const appId = resolve(root, 'App.compiled.jsx')
@@ -23,6 +25,13 @@ const configPath = resolve(
 )
 
 let projectInfo: ReturnType<typeof loadTamaguiSync>
+const temporaryRoots: string[] = []
+
+afterAll(async () => {
+  await Promise.all(
+    temporaryRoots.splice(0).map((path) => rm(path, { recursive: true, force: true }))
+  )
+})
 
 beforeAll(() => {
   projectInfo = loadTamaguiSync({
@@ -217,4 +226,72 @@ test('generic compiler session serializes updates behind an active compile', asy
   expect(await update).toContain(tokenId)
   expect(session.dependentsOf(tokenId)).toEqual([module.id])
   expect(await session.update(newTokens)).toEqual([])
+})
+
+test('a fresh frontend reuses plans off disk and recompiles what a dependency edit reached', async () => {
+  // the plan cache is rooted at the project root, so each run gets its own
+  const cacheRoot = await mkdtemp(join(tmpdir(), 'tamagui-vite-plan-cache-'))
+  temporaryRoots.push(cacheRoot)
+  const cachedAppId = join(cacheRoot, 'App.compiled.jsx')
+  const cachedTokensId = join(cacheRoot, 'tokens.ts')
+  const source = `
+import { jsx } from 'react/jsx-runtime'
+import { View } from '@tamagui/core'
+import { space } from '~/tokens'
+export const App = () => jsx(View, { padding: space })
+`
+  let tokenSource = 'export const space = 12\n'
+  const compile = (frontend: CompilerFrontend, cacheStamp: string | null) =>
+    frontend.compile({
+      id: cachedAppId,
+      source,
+      root: cacheRoot,
+      target: 'web',
+      project: {
+        projectInfo,
+        componentModules: [{ moduleName: '@tamagui/core', id: coreId }],
+        generation: 'vite-plan-cache-v1',
+        cacheStamp,
+      },
+      async resolve(specifier) {
+        if (specifier === '@tamagui/core') return { id: coreId }
+        if (specifier === 'react/jsx-runtime') return { id: runtimeId, external: true }
+        if (specifier === '~/tokens') return { id: cachedTokensId }
+        return null
+      },
+      async load(id) {
+        return id === cachedTokensId ? tokenSource : null
+      },
+    })
+
+  const first = new CompilerFrontend()
+  const cold = await compile(first, 'stamp-one')
+  expect(cold.plan.css).toContain('padding-top:12px')
+  expect(first.planCacheStats).toMatchObject({ hits: 0, writes: 1 })
+
+  // a new frontend is a new process: the plan comes off disk and is identical
+  const second = new CompilerFrontend()
+  const restored = await compile(second, 'stamp-one')
+  expect(second.planCacheStats).toMatchObject({ hits: 1, misses: 0, writes: 0 })
+  expect(restored.plan).toEqual(cold.plan)
+  expect(restored.output.code).toBe(cold.output.code)
+
+  // the dependency changes and the consumer's own source does not, so a key
+  // over its own bytes would serve the stale 12px here
+  tokenSource = 'export const space = 16\n'
+  const third = new CompilerFrontend()
+  const afterEdit = await compile(third, 'stamp-one')
+  expect(afterEdit.plan.css).toContain('padding-top:16px')
+  expect(afterEdit.plan.css).not.toContain('padding-top:12px')
+  expect(third.planCacheStats).toMatchObject({ hits: 0, misses: 1, writes: 1 })
+
+  // a different compiler or config identity reuses nothing
+  const fourth = new CompilerFrontend()
+  await compile(fourth, 'stamp-two')
+  expect(fourth.planCacheStats).toMatchObject({ hits: 0, misses: 1 })
+
+  // and a project that cannot name its stamp sources caches nothing at all
+  const fifth = new CompilerFrontend()
+  await compile(fifth, null)
+  expect(fifth.planCacheStats).toEqual({ hits: 0, misses: 0, writes: 0 })
 })
