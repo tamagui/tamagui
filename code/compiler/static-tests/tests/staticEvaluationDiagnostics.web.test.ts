@@ -11,6 +11,8 @@ import {
   loadComponentsInnerSync,
 } from '../../static/src/extractor/bundleConfig'
 import { getTamaguiConfigPathFromOptionsConfig } from '../../static/src/extractor/getTamaguiConfigPathFromOptionsConfig'
+import { registerRequire } from '../../static/src/registerRequire'
+import { tamaguiStaticEvaluationModules } from '../../static/src/staticEvaluationIgnoredModules'
 
 const root = mkdtempSync(join(tmpdir(), 'tamagui-static-evaluation-'))
 const componentPath = join(root, 'components.cjs')
@@ -43,6 +45,40 @@ afterAll(() => {
 })
 
 describe('static evaluation diagnostics', () => {
+  test('keeps the built-in ignore list exact and reviewable', () => {
+    expect(Object.isFrozen(tamaguiStaticEvaluationModules)).toBe(true)
+    expect(Object.keys(tamaguiStaticEvaluationModules)).toEqual([
+      'react-native-safe-area-context',
+      'react-native-worklets',
+    ])
+  })
+
+  test('evaluates a bare reanimated component package on the sync path', () => {
+    expect(
+      loadComponentsInnerSync({
+        platform: 'native',
+        components: ['@tamagui/animations-reanimated'],
+      })
+    ).toEqual([
+      {
+        moduleName: '@tamagui/animations-reanimated',
+        nameToInfo: {},
+      },
+    ])
+
+    const animations = {
+      '100ms': { type: 'timing' as const, duration: 100 },
+      quick: { type: 'spring' as const, damping: 20, mass: 1.2, stiffness: 250 },
+    }
+    const { tamaguiRequire, unregister } = registerRequire('native')
+    try {
+      const evaluated = tamaguiRequire('@tamagui/animations-reanimated')
+      expect(evaluated.createAnimations(animations).animations).toEqual(animations)
+    } finally {
+      unregister()
+    }
+  })
+
   test('reports the failed module, importer, reason, and remediation', () => {
     let message = ''
     try {

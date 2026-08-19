@@ -3,7 +3,10 @@ import { createRequire } from 'node:module'
 
 import { esbuildIgnoreFilesRegex } from './extractor/bundle'
 import { requireTamaguiCore } from './helpers/requireTamaguiCore'
-import { isIgnoredStaticEvaluationModule } from './staticEvaluationIgnoredModules'
+import {
+  getStaticEvaluationModuleReplacement,
+  isIgnoredStaticEvaluationModule,
+} from './staticEvaluationIgnoredModules'
 import type { TamaguiPlatform } from './types'
 
 const nameToPaths = {}
@@ -139,7 +142,15 @@ export function registerRequire(
       })
     }
 
-    if (isIgnoredStaticEvaluationModule(path, ignoredModules)) {
+    const staticEvaluationReplacement = getStaticEvaluationModuleReplacement(path)
+    if (staticEvaluationReplacement) {
+      return og.apply(this, [staticEvaluationReplacement])
+    }
+
+    if (
+      staticEvaluationReplacement === null ||
+      isIgnoredStaticEvaluationModule(path, ignoredModules)
+    ) {
       return {}
     }
 
