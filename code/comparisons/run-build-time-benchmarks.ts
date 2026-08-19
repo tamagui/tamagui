@@ -276,6 +276,12 @@ const scratchDirectory = mkdtempSync(join(tmpdir(), 'tamagui-build-time-'))
 const logDirectory = join(scratchDirectory, 'logs')
 mkdirSync(logDirectory)
 const releaseLock = acquireBenchmarkLock('V2/V3 cold and warm Vite and Metro builds')
+const measuredCommit = git('rev-parse', 'HEAD')
+const trackedDirtyAtStart =
+  git('status', '--porcelain', '--untracked-files=no').length > 0
+const untrackedFilesAtStart = git('ls-files', '--others', '--exclude-standard')
+  .split('\n')
+  .filter(Boolean)
 
 function clearColdState(arm: Arm) {
   const projectRoot = join(repositoryRoot, arm.project)
@@ -341,6 +347,9 @@ function statistics(values: readonly number[]) {
 }
 
 try {
+  if (trackedDirtyAtStart) {
+    throw new Error('refusing to measure a worktree with tracked changes')
+  }
   const random = createRandom(seed)
   const trials: Trial[] = []
   let sequence = 0
@@ -389,19 +398,25 @@ try {
       ),
     ])
   )
+  const endingCommit = git('rev-parse', 'HEAD')
+  if (endingCommit !== measuredCommit) {
+    throw new Error(
+      `HEAD changed during measurement: started ${measuredCommit}, ended ${endingCommit}`
+    )
+  }
   const sourceDirtyBeforeOutput =
     git('status', '--porcelain', '--untracked-files=no').length > 0
-  const untrackedFilesPresent = git('ls-files', '--others', '--exclude-standard')
-    .split('\n')
-    .filter(Boolean)
+  if (sourceDirtyBeforeOutput) {
+    throw new Error('tracked files changed during measurement')
+  }
   const report = {
     schemaVersion: 1,
     metadata: {
       generatedAt: new Date().toISOString(),
-      commit: git('rev-parse', 'HEAD'),
+      commit: measuredCommit,
       branch: git('branch', '--show-current'),
       sourceDirtyBeforeOutput,
-      untrackedFilesPresent,
+      untrackedFilesPresent: untrackedFilesAtStart,
       publicationQualification:
         'Baseline harness receipt only. Do not publish a compiler-speed claim from these results. These are complete user-build wall clocks and do not isolate compiler work from bundler startup, graph traversal, transforms, emit, or filesystem access. The versioned compiler implementations and dependency trees also differ. Cold runs clear named software caches but do not flush the operating system filesystem cache. The owner must decide whether later measurements are quotable.',
       measurementBoundary:
