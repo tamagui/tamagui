@@ -1,5 +1,3 @@
-import { createHash } from 'node:crypto'
-
 import {
   GenMapping,
   addSegment,
@@ -9,6 +7,7 @@ import {
 import MagicString from 'magic-string'
 
 import type { ResolvedModuleId, SourceSpan } from './contracts'
+import { contentHash } from './hash'
 
 export interface SourceEdit {
   /** UTF-16 source-string index, inclusive. */
@@ -48,7 +47,7 @@ function compareEdits(
 }
 
 export function sourceContentHash(source: string): string {
-  return createHash('sha256').update(source).digest('hex')
+  return contentHash(source)
 }
 
 export function validateSourceEdits(source: string, edits: readonly SourceEdit[]): void {

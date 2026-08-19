@@ -118,6 +118,14 @@ export type TamaguiProjectInfo = {
   nameToPaths?: NameToPaths
   cached?: boolean
   dependencies?: string[]
+  /**
+   * The files whose bytes determine every compiler input this project produced:
+   * the evaluated config and each component's static config. The compile cache
+   * stamp is hashed from them, so they must be complete - a project that cannot
+   * name them gets no stamp and no cache rather than a stamp that misses a
+   * config change.
+   */
+  stampSources?: string[]
 }
 
 const external = [
@@ -610,6 +618,10 @@ export async function bundleConfig(props: TamaguiOptions, rebuild = false) {
       nameToPaths: {},
       tamaguiConfig: config,
       dependencies: compilerDependencies,
+      // the generated bundles inline every source they were built from,
+      // including the component packages resolved out of node_modules, so their
+      // bytes are a complete description of what the compiler host will read
+      stampSources: [...(configEntry ? [configOutPath] : []), ...componentOutPaths],
     }
 
     currentBundle = res

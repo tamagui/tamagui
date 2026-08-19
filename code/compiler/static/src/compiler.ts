@@ -1,6 +1,12 @@
 import {
   CompilerSession,
+  LOWERED_MODULE_PLAN_VERSION,
+  ModulePlanCache,
+  PLAN_CACHE_SCHEMA_VERSION,
+  contentHash,
+  defaultPlanCacheRoot,
   resolvedModuleId,
+  stableStringify,
   yukuFactory,
   type AppliedLoweredModule,
   type CompilerTarget,
@@ -9,6 +15,8 @@ import {
   type ResolvedModuleId,
 } from '@tamagui/compiler-core'
 import type { TamaguiOptions } from '@tamagui/types'
+import { readFileSync } from 'node:fs'
+import { createRequire } from 'node:module'
 import path from 'node:path'
 
 import { createTamaguiCompilerHost } from './compilerHost'
@@ -32,6 +40,13 @@ export interface CompilerProject {
   experimentalNativeFastPath?: boolean
   /** Zero-runtime mode, which makes the host's diagnostics mode-aware. */
   zeroRuntime?: boolean
+  /**
+   * Content identity of everything a lowering plan depends on that is not a
+   * module: the compiler build, the evaluated config and component registry,
+   * the platform, and the modes. Null when the project could not name the files
+   * that determine it, in which case nothing is cached to disk.
+   */
+  cacheStamp: string | null
 }
 
 export interface LoadCompilerProjectInput {
@@ -46,6 +61,11 @@ export interface LoadCompilerProjectInput {
         options: TamaguiOptions
       ) => string)
   rebuild?: boolean
+  /**
+   * `name@version` for the host integration package, folded into the cache
+   * stamp so a plugin upgrade cannot reuse plans built by the previous one.
+   */
+  hostVersions?: readonly string[]
   missingProjectMessage?: string
   load?: (options: TamaguiOptions, rebuild: boolean) => Promise<TamaguiProjectInfo | null>
   resolveComponents?: (
@@ -65,6 +85,7 @@ export async function loadCompilerProject({
   options: optionsIn,
   generation,
   rebuild = false,
+  hostVersions = [],
   missingProjectMessage = 'Unable to load the Tamagui compiler project',
   load = loadTamagui,
   resolveComponents,
@@ -90,6 +111,10 @@ export async function loadCompilerProject({
     ? await resolveComponents(components, projectInfo, options)
     : []
 
+  const disablePartialExtraction = !!options.disablePartialExtraction
+  const experimentalNativeFastPath =
+    target === 'native' && options.experimental?.nativeFastPath === true
+
   return {
     projectInfo,
     componentModules,
@@ -97,11 +122,73 @@ export async function loadCompilerProject({
       typeof generation === 'function'
         ? generation(projectInfo, componentModules, options)
         : generation,
-    disablePartialExtraction: !!options.disablePartialExtraction,
-    experimentalNativeFastPath:
-      target === 'native' && options.experimental?.nativeFastPath === true,
+    disablePartialExtraction,
+    experimentalNativeFastPath,
     zeroRuntime: zeroRuntime !== 'off',
+    cacheStamp: compilerProjectStamp({
+      stampSources: projectInfo.stampSources ?? [],
+      hostVersions,
+      target,
+      componentModules,
+      disablePartialExtraction,
+      experimentalNativeFastPath,
+      zeroRuntime: zeroRuntime !== 'off',
+    }),
   }
+}
+
+const requireFromCompiler = createRequire(
+  typeof __filename === 'string' ? __filename : import.meta.url
+)
+
+// upgrading the compiler must invalidate cached plans even when nothing about
+// the project changed
+const compilerPackageVersions = ['@tamagui/compiler-core', '@tamagui/static'].map(
+  (name) =>
+    `${name}@${(requireFromCompiler(`${name}/package.json`) as { version: string }).version}`
+)
+
+/**
+ * The non-module half of every plan cache key. Null when the project named no
+ * stamp sources: a stamp that cannot see a config change is worse than no
+ * cache, so that project simply does not cache.
+ */
+export function compilerProjectStamp(input: {
+  stampSources: readonly string[]
+  hostVersions: readonly string[]
+  target: CompilerTarget
+  componentModules: readonly CompilerProjectComponentModule[]
+  disablePartialExtraction: boolean
+  experimentalNativeFastPath: boolean
+  zeroRuntime: boolean
+}): string | null {
+  if (!input.stampSources.length) return null
+  const sources: [string, string][] = []
+  for (const file of [...new Set(input.stampSources)].sort()) {
+    try {
+      sources.push([file, contentHash(readFileSync(file))])
+    } catch {
+      // a source the project named but that is not readable makes the stamp
+      // incomplete, and an incomplete stamp is what ships stale styles
+      return null
+    }
+  }
+  return contentHash(
+    stableStringify({
+      schema: PLAN_CACHE_SCHEMA_VERSION,
+      plan: LOWERED_MODULE_PLAN_VERSION,
+      packages: [...compilerPackageVersions, ...input.hostVersions].sort(),
+      target: input.target,
+      componentModules: input.componentModules.map(({ moduleName, id }) => [
+        moduleName,
+        cleanId(id),
+      ]),
+      disablePartialExtraction: input.disablePartialExtraction,
+      experimentalNativeFastPath: input.experimentalNativeFastPath,
+      zeroRuntime: input.zeroRuntime,
+      sources,
+    })
+  )
 }
 
 export interface CompilerResolution {
@@ -150,6 +237,37 @@ function sourceCanBeLinked(root: string, id: string): boolean {
 export class CompilerFrontend {
   private readonly session = new CompilerSession()
   private queue: Promise<unknown> = Promise.resolve()
+  private readonly planCaches = new Map<string, ModulePlanCache>()
+
+  /**
+   * One cache per project root and platform. Absent when the project produced
+   * no content stamp, in which case plans are never persisted rather than
+   * persisted under an identity that cannot see a config change.
+   */
+  private planCacheFor(
+    input: CompilerInput
+  ): { store: ModulePlanCache; stamp: string } | undefined {
+    const stamp = input.project.cacheStamp
+    if (!stamp) return undefined
+    const root = defaultPlanCacheRoot(input.root, input.target)
+    let store = this.planCaches.get(root)
+    if (!store) {
+      store = new ModulePlanCache(root)
+      this.planCaches.set(root, store)
+    }
+    return { store, stamp }
+  }
+
+  /** Hits, misses and writes across every plan cache this frontend has used. */
+  get planCacheStats(): { hits: number; misses: number; writes: number } {
+    const total = { hits: 0, misses: 0, writes: 0 }
+    for (const store of this.planCaches.values()) {
+      total.hits += store.stats.hits
+      total.misses += store.stats.misses
+      total.writes += store.stats.writes
+    }
+    return total
+  }
 
   compile(input: CompilerInput): Promise<CompilerResult> {
     const operation = this.queue.then(() => this.compileNow(input))
@@ -218,6 +336,7 @@ export class CompilerFrontend {
         target: input.target,
         projectGeneration: input.project.generation,
         host,
+        planCache: this.planCacheFor(input),
         async load(id) {
           return modules.get(id) ?? null
         },

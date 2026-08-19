@@ -58,7 +58,23 @@ for (const bundler of selectedBundlers) {
 }
 
 type Phase = 'warmup' | 'sample'
-type CacheState = 'cold' | 'warm'
+type CacheState = 'cold' | 'cold-cached' | 'warm'
+
+// `cold` and `warm` are the states this artifact has always reported and their
+// definitions are unchanged. `cold-cached` is the second-start-cold case the
+// per-file compile cache exists for: a brand new bundler process whose bundler
+// caches are gone but whose Tamagui compile cache survived, which is what CI
+// with a restored cache directory and a restarted dev server actually look like.
+const cacheStates = (
+  args
+    .find((arg) => arg.startsWith('--cache-states='))
+    ?.slice('--cache-states='.length) ?? 'cold,warm'
+).split(',') as CacheState[]
+for (const cacheState of cacheStates) {
+  if (cacheState !== 'cold' && cacheState !== 'cold-cached' && cacheState !== 'warm') {
+    throw new Error(`unknown cache state: ${cacheState}`)
+  }
+}
 
 interface Arm {
   id: string
@@ -69,6 +85,7 @@ interface Arm {
   commandArgs: (cacheState: CacheState, outputDirectory: string) => string[]
   env: Record<string, string>
   clearedForCold: string[]
+  clearedForColdCached: string[]
   clearedBeforeEveryBuild: string[]
   versions: Record<string, string>
 }
@@ -180,6 +197,7 @@ const arms: Arm[] = [
       'node_modules/.vite',
       'project build output',
     ],
+    clearedForColdCached: ['node_modules/.vite', 'project build output'],
     clearedBeforeEveryBuild: ['project build output'],
     versions: {},
   },
@@ -199,6 +217,7 @@ const arms: Arm[] = [
       'project node_modules/.vite',
       'project build output',
     ],
+    clearedForColdCached: ['project node_modules/.vite', 'project build output'],
     clearedBeforeEveryBuild: ['project build output'],
     versions: {},
   },
@@ -216,12 +235,17 @@ const arms: Arm[] = [
       outputDirectory,
       '--max-workers',
       '4',
-      ...(cacheState === 'cold' ? ['--clear'] : []),
+      ...(cacheState === 'warm' ? [] : ['--clear']),
     ],
     env: { NODE_ENV: 'production', EXPO_NO_TELEMETRY: '1' },
     clearedForCold: [
       'os.tmpdir()/metro-cache and the project-keyed os.tmpdir()/metro-file-map-* entry via expo export --clear',
       'project node_modules/.cache/tamagui, including metro-compiler cache version 6 plans',
+      'project .tamagui generated config artifacts',
+      'project export output',
+    ],
+    clearedForColdCached: [
+      'os.tmpdir()/metro-cache and the project-keyed os.tmpdir()/metro-file-map-* entry via expo export --clear',
       'project .tamagui generated config artifacts',
       'project export output',
     ],
@@ -242,12 +266,17 @@ const arms: Arm[] = [
       outputDirectory,
       '--max-workers',
       '4',
-      ...(cacheState === 'cold' ? ['--clear'] : []),
+      ...(cacheState === 'warm' ? [] : ['--clear']),
     ],
     env: { NODE_ENV: 'production', EXPO_NO_TELEMETRY: '1' },
     clearedForCold: [
       'os.tmpdir()/metro-cache and the project-keyed os.tmpdir()/metro-file-map-* entry via expo export --clear',
       'project node_modules/.cache/tamagui',
+      'project .tamagui generated config artifacts',
+      'project export output',
+    ],
+    clearedForColdCached: [
+      'os.tmpdir()/metro-cache and the project-keyed os.tmpdir()/metro-file-map-* entry via expo export --clear',
       'project .tamagui generated config artifacts',
       'project export output',
     ],
@@ -283,26 +312,30 @@ const untrackedFilesAtStart = git('ls-files', '--others', '--exclude-standard')
   .split('\n')
   .filter(Boolean)
 
-function clearColdState(arm: Arm) {
+function clearColdState(arm: Arm, keepCompileCache: boolean) {
   const projectRoot = join(repositoryRoot, arm.project)
   if (arm.bundler === 'vite') {
     const dependencyRoot = arm.version === 'v2' ? projectRoot : repositoryRoot
-    rmSync(join(dependencyRoot, 'node_modules/.cache/tamagui'), {
-      recursive: true,
-      force: true,
-    })
+    if (!keepCompileCache) {
+      rmSync(join(dependencyRoot, 'node_modules/.cache/tamagui'), {
+        recursive: true,
+        force: true,
+      })
+    }
     rmSync(join(dependencyRoot, 'node_modules/.vite'), { recursive: true, force: true })
   } else {
-    rmSync(join(projectRoot, 'node_modules/.cache/tamagui'), {
-      recursive: true,
-      force: true,
-    })
+    if (!keepCompileCache) {
+      rmSync(join(projectRoot, 'node_modules/.cache/tamagui'), {
+        recursive: true,
+        force: true,
+      })
+    }
     rmSync(join(projectRoot, '.tamagui'), { recursive: true, force: true })
   }
 }
 
 function runBuild(arm: Arm, cacheState: CacheState, sequence: number) {
-  if (cacheState === 'cold') clearColdState(arm)
+  if (cacheState !== 'warm') clearColdState(arm, cacheState === 'cold-cached')
   const outputDirectory = join(scratchDirectory, `${arm.id}-${sequence}-${cacheState}`)
   rmSync(outputDirectory, { recursive: true, force: true })
   const logPath = join(logDirectory, `${arm.id}-${sequence}-${cacheState}.log`)
@@ -357,7 +390,7 @@ try {
     const rounds = phase === 'warmup' ? warmups : samples
     for (let round = 0; round < rounds; round++) {
       for (const arm of shuffle(arms, random)) {
-        for (const cacheState of ['cold', 'warm'] as const) {
+        for (const cacheState of cacheStates) {
           const milliseconds = runBuild(arm, cacheState, sequence)
           trials.push({
             sequence,
@@ -382,7 +415,7 @@ try {
     arms.map((arm) => [
       arm.id,
       Object.fromEntries(
-        (['cold', 'warm'] as const).map((cacheState) => [
+        cacheStates.map((cacheState) => [
           cacheState,
           statistics(
             trials
@@ -425,10 +458,13 @@ try {
         'wall-clock from spawning the production bundler command until that command exits after writing its complete build output; dependency installation is excluded',
       coldDefinition:
         "a new bundler process after removing every arm-specific path in arms[].clearedForCold; Vite loses its optimizer and Tamagui compiler caches; Metro loses its generated .tamagui directory and complete node_modules/.cache/tamagui tree (including V3 metro-compiler cache version 6 plans), then expo export --clear resets os.tmpdir()/metro-cache and that project configuration's os.tmpdir()/metro-file-map-* entry; operating system filesystem caches are not flushed",
+      coldCachedDefinition:
+        'a new bundler process after removing every arm-specific path in arms[].clearedForColdCached, which is the cold list minus node_modules/.cache/tamagui; the bundler starts with no caches of its own while the Tamagui per-file compile cache survives, matching CI with a restored cache directory or a restarted dev server; operating system filesystem caches are not flushed. Absent from a run unless --cache-states includes it',
       warmDefinition:
         'a new bundler process immediately after the same arm cold build, preserving compiler, transform, dependency, and operating system filesystem caches; only the previous build output directory is absent',
       ordering:
-        'one seeded PRNG shuffles arms independently in every warmup and retained round; each arm always runs cold then warm so warm cache provenance is exact',
+        'one seeded PRNG shuffles arms independently in every warmup and retained round; each arm always runs its cache states in the configured order so warm cache provenance is exact',
+      cacheStates,
       randomSeed: seed,
       machine: {
         platform: platform(),

@@ -1,10 +1,21 @@
 import Static from '@tamagui/static'
 import type { TamaguiProjectInfo } from '@tamagui/static'
 import type { TamaguiOptions } from '@tamagui/types'
+import { createRequire } from 'node:module'
 import path from 'node:path'
 import type { RunnableDevEnvironment } from 'vite'
 
 export const TAMAGUI_EVALUATION_ENVIRONMENT = 'tamagui'
+
+const requireFromLoader = createRequire(
+  typeof __filename === 'string' ? __filename : import.meta.url
+)
+
+// upgrading the plugin must invalidate cached plans even when the project did
+// not change
+const vitePluginVersions = [
+  `@tamagui/vite-plugin@${(requireFromLoader('@tamagui/vite-plugin/package.json') as { version: string }).version}`,
+]
 
 type ResolvedEvaluationModule = {
   moduleName: string
@@ -43,21 +54,29 @@ export function createViteTamaguiLoader(
   let loadedOptions: TamaguiOptions | null = null
   let projectPromise: Promise<Static.CompilerProject> | null = null
   const evaluationDependencies = new Set<string>()
+  const stampSources = new Set<string>()
   let generation = 0
 
   const normalizeDependency = (id: string) => id.split('?')[0]
 
   const captureEvaluationDependencies = (modules: ResolvedEvaluationModule[]) => {
+    stampSources.clear()
     for (const { id } of modules) {
       const dependency = normalizeDependency(id)
       if (path.isAbsolute(dependency)) {
         evaluationDependencies.add(dependency)
+        stampSources.add(dependency)
       }
     }
     if (environment) {
       for (const module of environment.runner.evaluatedModules.urlToIdModuleMap.values()) {
         const dependency = normalizeDependency(module.file)
-        if (path.isAbsolute(dependency) && !dependency.includes('/node_modules/')) {
+        if (!path.isAbsolute(dependency)) continue
+        // watching node_modules is pointless, but the compile cache stamp has to
+        // see them: a component package defines every staticConfig the compiler
+        // lowers against, so bumping one in place must invalidate cached plans
+        stampSources.add(dependency)
+        if (!dependency.includes('/node_modules/')) {
           evaluationDependencies.add(dependency)
         }
       }
@@ -160,6 +179,7 @@ export function createViteTamaguiLoader(
         target: 'web',
         options,
         generation: `vite:${generation}`,
+        hostVersions: vitePluginVersions,
         async load(normalizedOptions) {
           evaluated = await evaluateProjectModules(normalizedOptions)
           return Static.loadTamaguiFromModules(normalizedOptions, {
@@ -168,6 +188,7 @@ export function createViteTamaguiLoader(
               moduleName,
               module,
             })),
+            stampSources: [...stampSources],
           })
         },
         async resolveComponents(moduleNames) {

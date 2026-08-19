@@ -2,11 +2,21 @@ import type { HostModuleInput, ResolvedModuleId } from './contracts';
 import type { GraphInvalidation } from './graph';
 import type { CompilerLoweringHost, CompilerTarget, LoweredModulePlan, StructuralModulePass } from './lower';
 import type { AppliedLoweredModule } from './output';
+import type { ModulePlanCache } from './planCache';
 export interface CompilerAdapter {
     target: CompilerTarget;
     projectGeneration: string;
     host: CompilerLoweringHost;
     load(id: ResolvedModuleId): Promise<HostModuleInput | null>;
+    /**
+     * Persistent per-module plan reuse across processes. Absent means the host
+     * could not produce a content stamp for this project, so nothing is cached
+     * rather than cached under a stamp that does not describe the config.
+     */
+    planCache?: {
+        store: ModulePlanCache;
+        stamp: string;
+    };
 }
 export interface CompileModuleInput {
     module: HostModuleInput;

@@ -5,6 +5,7 @@ import { describe, expect, test } from 'vitest'
 
 import {
   LOWERED_MODULE_PLAN_VERSION,
+  contentHash,
   resolvedModuleId,
   sourceContentHash,
 } from '@tamagui/compiler-core'
@@ -12,7 +13,6 @@ import {
 import {
   METRO_COMPILER_CACHE_VERSION,
   MetroCompilerCache,
-  metroCompilerContentHash,
   type MetroCompilerCacheEntry,
 } from '../src/compilerCache'
 import { metroDiagnostic } from '../src/diagnostics'
@@ -26,12 +26,12 @@ describe('Metro compiler cache', () => {
     const entry = {
       schemaVersion: METRO_COMPILER_CACHE_VERSION,
       moduleId: id,
-      sourceHash: metroCompilerContentHash(source),
+      sourceHash: contentHash(source),
       plan: {
         version: LOWERED_MODULE_PLAN_VERSION,
         id,
         target: 'native',
-        inputHash: metroCompilerContentHash(source),
+        inputHash: contentHash(source),
         sourceHash: sourceContentHash(source),
         projectGeneration: 'fixture-project',
         structuralPassHash: 'native-noop-v1',

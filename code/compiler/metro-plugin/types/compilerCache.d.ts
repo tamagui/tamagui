@@ -42,7 +42,6 @@ export declare class MetroCompilerCacheError extends Error {
 	readonly diagnostic: MetroCompilerDiagnostic;
 	constructor(diagnostic: MetroCompilerDiagnostic);
 }
-export declare function metroCompilerContentHash(value: string | Uint8Array): string;
 export declare function defaultMetroCompilerCacheRoot(projectRoot: string): string;
 /**
 * Filesystem handoff shared by the Metro main process and isolated transform workers.

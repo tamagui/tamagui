@@ -2,6 +2,7 @@ import {
   CompilerFrontend,
   loadTamagui,
   loadTamaguiBuildConfigSync,
+  compilerProjectStamp,
   type CompilerProject,
 } from '@tamagui/static'
 import type { CLIResolvedOptions, TamaguiOptions } from '@tamagui/types'
@@ -20,6 +21,12 @@ import {
   readConfigFile,
   sys,
 } from 'typescript'
+
+const cliVersion = (
+  createRequire(typeof __filename === 'string' ? __filename : import.meta.url)(
+    '@tamagui/cli/package.json'
+  ) as { version: string }
+).version
 
 export type BuildStats = {
   filesProcessed: number
@@ -212,6 +219,16 @@ export const build = async (
         disablePartialExtraction: targetOptions.disablePartialExtraction,
         experimentalNativeFastPath:
           target === 'native' && targetOptions.experimental?.nativeFastPath === true,
+        cacheStamp: compilerProjectStamp({
+          stampSources: projectInfo.stampSources ?? [],
+          hostVersions: [`@tamagui/cli@${cliVersion}`],
+          target,
+          componentModules,
+          disablePartialExtraction: !!targetOptions.disablePartialExtraction,
+          experimentalNativeFastPath:
+            target === 'native' && targetOptions.experimental?.nativeFastPath === true,
+          zeroRuntime: false,
+        }),
       })
       compilerFrontends.set(target, new CompilerFrontend())
     }

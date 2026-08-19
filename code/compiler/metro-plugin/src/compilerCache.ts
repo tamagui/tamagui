@@ -1,8 +1,13 @@
-import { createHash, randomBytes } from 'node:crypto'
+import { randomBytes } from 'node:crypto'
 import { mkdir, readFile, rename, rm, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 
-import { LOWERED_MODULE_PLAN_VERSION } from '@tamagui/compiler-core'
+import {
+  LOWERED_MODULE_PLAN_VERSION,
+  contentHash,
+  stableStringify,
+  tamaguiCacheRoot,
+} from '@tamagui/compiler-core'
 import type { LoweredModulePlan } from '@tamagui/compiler-core'
 
 import { metroDiagnostic, type MetroCompilerDiagnostic } from './diagnostics'
@@ -77,31 +82,6 @@ function stableEntries<T>(record: Record<string, T>): [string, T][] {
   return Object.entries(record).sort(([left], [right]) => compareCodeUnits(left, right))
 }
 
-function stableStringify(value: unknown): string | undefined {
-  if (Array.isArray(value)) {
-    return `[${value.map((child) => stableStringify(child) ?? 'null').join(',')}]`
-  }
-  if (value && typeof value === 'object') {
-    const entries = stableEntries(value as Record<string, unknown>)
-      .map(([key, child]) => [key, stableStringify(child)] as const)
-      .filter((entry): entry is readonly [string, string] => entry[1] !== undefined)
-    return `{${entries
-      .map(([key, child]) => `${JSON.stringify(key)}:${child}`)
-      .join(',')}}`
-  }
-  return JSON.stringify(value)
-}
-
-function requiredStableStringify(value: unknown): string {
-  const serialized = stableStringify(value)
-  if (serialized === undefined) throw new Error('Cannot serialize undefined cache root')
-  return serialized
-}
-
-export function metroCompilerContentHash(value: string | Uint8Array): string {
-  return createHash('sha256').update(value).digest('hex')
-}
-
 function cacheCorrupt(message: string, moduleId?: string): MetroCompilerCacheError {
   return new MetroCompilerCacheError(
     metroDiagnostic('metro/cache-corrupt', message, { moduleId })
@@ -120,7 +100,7 @@ function parseJson<T>(source: string, description: string, moduleId?: string): T
 }
 
 export function defaultMetroCompilerCacheRoot(projectRoot: string): string {
-  return join(projectRoot, 'node_modules', '.cache', 'tamagui', 'metro-compiler')
+  return join(tamaguiCacheRoot(projectRoot), 'metro-compiler')
 }
 
 /**
@@ -150,15 +130,15 @@ export class MetroCompilerCache {
       if (entry.schemaVersion !== METRO_COMPILER_CACHE_VERSION) {
         throw new Error(`Cannot publish cache schema ${entry.schemaVersion}`)
       }
-      const serialized = `${requiredStableStringify(entry)}\n`
-      const blobHash = metroCompilerContentHash(serialized)
+      const serialized = `${stableStringify(entry)}\n`
+      const blobHash = contentHash(serialized)
       const blobPath = join(this.#blobsDirectory, `${blobHash}.json`)
       try {
         await writeFile(blobPath, serialized, { encoding: 'utf8', flag: 'wx' })
       } catch (error) {
         if ((error as NodeJS.ErrnoException).code !== 'EEXIST') throw error
         const existing = await readFile(blobPath, 'utf8')
-        if (metroCompilerContentHash(existing) !== blobHash) {
+        if (contentHash(existing) !== blobHash) {
           const temporaryBlobPath = `${blobPath}.${process.pid}-${randomBytes(6).toString('hex')}.tmp`
           await writeFile(temporaryBlobPath, serialized, 'utf8')
           await rename(temporaryBlobPath, blobPath)
@@ -170,7 +150,7 @@ export class MetroCompilerCache {
       }
     }
 
-    const generation = metroCompilerContentHash(requiredStableStringify(descriptors))
+    const generation = contentHash(stableStringify(descriptors))
     const manifest: MetroCompilerCacheManifest = {
       schemaVersion: METRO_COMPILER_CACHE_VERSION,
       generation,
@@ -183,7 +163,7 @@ export class MetroCompilerCache {
       manifestDirectory,
       `.manifest-${process.pid}-${randomBytes(6).toString('hex')}.json`
     )
-    await writeFile(temporaryPath, `${requiredStableStringify(manifest)}\n`, 'utf8')
+    await writeFile(temporaryPath, `${stableStringify(manifest)}\n`, 'utf8')
     await rename(temporaryPath, this.#manifestPath)
     return generation
   }
@@ -200,7 +180,7 @@ export class MetroCompilerCache {
       onMiss?.('no-entry')
       return null
     }
-    const sourceHash = metroCompilerContentHash(rawSource)
+    const sourceHash = contentHash(rawSource)
     if (sourceHash !== descriptor.sourceHash) {
       onMiss?.(
         'source-hash-mismatch',
@@ -270,7 +250,7 @@ export class MetroCompilerCache {
     await mkdir(join(this.root, `v${METRO_COMPILER_CACHE_VERSION}`), { recursive: true })
     const file = this.#zeroSidecarPath(sidecar.generation)
     const temporaryPath = `${file}.${process.pid}-${randomBytes(6).toString('hex')}.tmp`
-    await writeFile(temporaryPath, `${requiredStableStringify(sidecar)}\n`, 'utf8')
+    await writeFile(temporaryPath, `${stableStringify(sidecar)}\n`, 'utf8')
     await rename(temporaryPath, file)
   }
 
@@ -335,7 +315,7 @@ export class MetroCompilerCache {
       }
       throw error
     }
-    if (metroCompilerContentHash(source) !== descriptor.blobHash) {
+    if (contentHash(source) !== descriptor.blobHash) {
       throw cacheCorrupt(`Cache blob ${descriptor.blobHash} failed its hash`, moduleId)
     }
     const entry = parseJson<MetroCompilerCacheEntry>(

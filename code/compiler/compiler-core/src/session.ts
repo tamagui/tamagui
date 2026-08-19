@@ -11,6 +11,8 @@ import { lowerModule } from './lower'
 import { materializeModule } from './materialize'
 import type { AppliedLoweredModule } from './output'
 import { applyLoweredModule } from './output'
+import type { ModulePlanCache } from './planCache'
+import { PLAN_CACHE_SCHEMA_VERSION, moduleClosureDigest, planCacheKey } from './planCache'
 import { yukuFactory } from './yuku'
 
 export interface CompilerAdapter {
@@ -18,6 +20,12 @@ export interface CompilerAdapter {
   projectGeneration: string
   host: CompilerLoweringHost
   load(id: ResolvedModuleId): Promise<HostModuleInput | null>
+  /**
+   * Persistent per-module plan reuse across processes. Absent means the host
+   * could not produce a content stamp for this project, so nothing is cached
+   * rather than cached under a stamp that does not describe the config.
+   */
+  planCache?: { store: ModulePlanCache; stamp: string }
 }
 
 export interface CompileModuleInput {
@@ -83,14 +91,57 @@ export class CompilerSession {
   }: CompileModuleInput): Promise<CompilerSessionResult> {
     const invalidated = new Set<ResolvedModuleId>()
     await this.#install(module, adapter, new Set(), invalidated)
-    const plan = lowerModule({
-      module: materializeModule(this.#graph, module.id),
-      source: module.source,
-      target: adapter.target,
-      host: adapter.host,
-      options: { projectGeneration: adapter.projectGeneration },
-      structuralPass,
-    })
+    const graph = this.#graph
+    // an empty stamp is not an identity: a key without one would be shared by
+    // every project and every config, so such a project simply does not cache
+    const cache = adapter.planCache?.stamp ? adapter.planCache : null
+    const closureDigest = cache
+      ? moduleClosureDigest(module.id, (id) => {
+          const hash = graph.contentHash(id)
+          return hash
+            ? { contentHash: hash, dependencies: graph.dependenciesOf(id) }
+            : null
+        })
+      : null
+    const entry =
+      cache && closureDigest
+        ? {
+            store: cache.store,
+            digest: closureDigest,
+            key: planCacheKey(
+              {
+                stamp: cache.stamp,
+                target: adapter.target,
+                structuralPassHash:
+                  structuralPass?.versionHash ?? `${adapter.target}-noop-v1`,
+              },
+              module.id,
+              closureDigest
+            ),
+          }
+        : null
+
+    const cached = entry
+      ? await entry.store.read(entry.key, module.id, entry.digest)
+      : null
+    const plan =
+      cached?.plan ??
+      lowerModule({
+        module: materializeModule(graph, module.id),
+        source: module.source,
+        target: adapter.target,
+        host: adapter.host,
+        options: { projectGeneration: adapter.projectGeneration },
+        structuralPass,
+      })
+    if (entry && !cached) {
+      await entry.store.write(entry.key, {
+        schemaVersion: PLAN_CACHE_SCHEMA_VERSION,
+        moduleId: module.id,
+        closureDigest: entry.digest,
+        plan,
+      })
+    }
     return {
       plan,
       output: applyLoweredModule(module.source, module.id, plan),

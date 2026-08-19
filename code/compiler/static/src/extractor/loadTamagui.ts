@@ -90,6 +90,13 @@ export type EvaluatedTamaguiModule = {
 export type EvaluatedTamaguiProject = {
   config: Record<string, unknown>
   components: EvaluatedTamaguiModule[]
+  /**
+   * Every file the host's module runner evaluated to produce this config and
+   * these components, node_modules included. The compile cache stamp is hashed
+   * from their bytes, so an incomplete list is worse than none: omit it and the
+   * project simply gets no cache.
+   */
+  stampSources?: string[]
 }
 
 /**
@@ -144,6 +151,7 @@ export async function loadTamaguiFromModules(
     components,
     nameToPaths: {},
     tamaguiConfig: tamaguiConfig as TamaguiInternalConfig,
+    stampSources: evaluated.stampSources,
   } satisfies TamaguiProjectInfo
 
   if (props.outputCSS) {

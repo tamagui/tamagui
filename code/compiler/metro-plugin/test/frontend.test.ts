@@ -645,6 +645,176 @@ export const App = ({ dynamic }) => <>
     }
   })
 
+  test('reuses per-file plans across processes and recompiles only what an edit reached', async () => {
+    const fixtureRoot = await mkdtemp(join(packageRoot, 'test/.e4-fscache-'))
+    temporaryRoots.push(fixtureRoot)
+    const projectRoot = join(fixtureRoot, 'app')
+    const appPath = join(projectRoot, 'src/App.tsx')
+    const tokensPath = join(projectRoot, 'src/tokens.ts')
+    const unrelatedPath = join(projectRoot, 'src/Unrelated.tsx')
+    const themePath = join(fixtureRoot, 'packages/theme/index.ts')
+    const uiPath = join(fixtureRoot, 'packages/ui/index.ts')
+    const cacheRoot = join(fixtureRoot, 'cache')
+
+    // App reaches theme only through tokens, so a theme edit is two hops away
+    await write(join(projectRoot, 'package.json'), '{"name":"e4-fscache"}\n')
+    await write(
+      appPath,
+      `import { View } from '@fixture/ui'\n` +
+        `import { spacing } from '~tokens'\n` +
+        `export const App = () => <View padding={spacing} />\n`
+    )
+    await write(tokensPath, `export { space as spacing } from '@fixture/theme'\n`)
+    await write(themePath, 'export const space = 12\n')
+    await write(uiPath, 'export const View = (_props) => null\n')
+    await write(
+      unrelatedPath,
+      `import { View } from '@fixture/ui'\n` +
+        `export const Unrelated = () => <View margin={3} />\n`
+    )
+
+    const loadedProject = loadTamaguiSync({
+      platform: 'native',
+      config: tamaguiConfigPath,
+      components: ['@tamagui/core'],
+    })
+    const viewInfo = loadedProject.components?.find(
+      ({ moduleName }) => moduleName === '@tamagui/core'
+    )?.nameToInfo.View
+    expect(viewInfo).toBeTruthy()
+    const compilerProject = (cacheStamp: string | null) => ({
+      projectInfo: {
+        ...loadedProject,
+        components: [{ moduleName: '@fixture/ui', nameToInfo: { View: viewInfo! } }],
+      },
+      componentModules: [{ moduleName: '@fixture/ui', id: uiPath }],
+      generation: 'e4-fscache-v1',
+      cacheStamp,
+    })
+
+    const resolveRequest = (context: any, specifier: string, platform: string) => {
+      if (specifier === '~tokens') return { type: 'sourceFile', filePath: tokensPath }
+      if (specifier === '@fixture/theme') {
+        return { type: 'sourceFile', filePath: themePath }
+      }
+      if (specifier === '@fixture/ui') return { type: 'sourceFile', filePath: uiPath }
+      return context.resolveRequest(context, specifier, platform)
+    }
+    const options = {
+      dev: false,
+      entryFiles: [appPath],
+      hot: false,
+      platform: 'ios',
+      transform: { experimentalImportSupport: true },
+    }
+    const newFrontend = (cacheStamp: string | null) =>
+      new MetroCompilerFrontend({
+        projectRoot,
+        cacheRoot,
+        watch: false,
+        originalBabelTransformerPath: transformerPath,
+        loadCompilerProject: async () => compilerProject(cacheStamp),
+        resolver: {
+          resolveRequest,
+          sourceExts: ['js', 'jsx', 'ts', 'tsx'],
+          unstable_enablePackageExports: true,
+        },
+      })
+
+    const planOf = async (id: string) => {
+      const manifest = JSON.parse(
+        await readFile(
+          join(cacheRoot, 'ios', `v${METRO_COMPILER_CACHE_VERSION}`, 'manifest.json'),
+          'utf8'
+        )
+      )
+      const blob = JSON.parse(
+        await readFile(
+          join(
+            cacheRoot,
+            'ios',
+            `v${METRO_COMPILER_CACHE_VERSION}`,
+            'blobs',
+            `${manifest.entries[id].blobHash}.json`
+          ),
+          'utf8'
+        )
+      )
+      return blob.plan
+    }
+
+    // first process: nothing on disk, everything compiles and is written
+    const first = newFrontend('stamp-one')
+    try {
+      await first.scan(options)
+      expect(first.compileCacheStats.plans.hits).toBe(0)
+      expect(first.compileCacheStats.plans.writes).toBeGreaterThanOrEqual(4)
+      expect(first.compileCacheStats.records.hits).toBe(0)
+    } finally {
+      await first.close()
+    }
+    const firstAppPlan = await planOf(appPath)
+    const firstUnrelatedPlan = await planOf(unrelatedPath)
+    expect(firstAppPlan.edits.length).toBeGreaterThan(0)
+
+    // second process, same tree: every module comes back off disk and the plan
+    // it produces is byte identical to the one that was compiled
+    const second = newFrontend('stamp-one')
+    try {
+      await second.scan(options)
+      expect(second.compileCacheStats.plans.misses).toBe(0)
+      expect(second.compileCacheStats.plans.writes).toBe(0)
+      expect(second.compileCacheStats.plans.hits).toBe(
+        first.compileCacheStats.plans.writes
+      )
+      expect(second.compileCacheStats.records.misses).toBe(0)
+    } finally {
+      await second.close()
+    }
+    expect(await planOf(appPath)).toEqual(firstAppPlan)
+    expect(await planOf(unrelatedPath)).toEqual(firstUnrelatedPlan)
+
+    // third process, one edit two hops below App and touching nothing else:
+    // App must recompile and its plan must change, while the module the edit
+    // never reached stays a hit
+    await write(themePath, 'export const space = 24\n')
+    const third = newFrontend('stamp-one')
+    try {
+      await third.scan(options)
+    } finally {
+      await third.close()
+    }
+    // the property that matters: App never changed, but the value it lowered did
+    const editedAppPlan = await planOf(appPath)
+    expect(JSON.stringify(editedAppPlan.edits)).toContain('24')
+    expect(editedAppPlan).not.toEqual(firstAppPlan)
+    // and the module the edit never reached is untouched
+    expect(await planOf(unrelatedPath)).toEqual(firstUnrelatedPlan)
+    // theme, tokens and App recompile; Unrelated and the ui package do not
+    expect(third.compileCacheStats.plans.misses).toBe(3)
+    expect(third.compileCacheStats.plans.hits).toBeGreaterThan(0)
+    // only the edited file's own bytes changed, so every other record is reused
+    expect(third.compileCacheStats.records.misses).toBe(1)
+
+    // a different stamp is a different compiler and config, so nothing is reused
+    const fourth = newFrontend('stamp-two')
+    try {
+      await fourth.scan(options)
+      expect(fourth.compileCacheStats.plans.hits).toBe(0)
+    } finally {
+      await fourth.close()
+    }
+
+    // and a project that cannot name its stamp sources caches nothing at all
+    const fifth = newFrontend(null)
+    try {
+      await fifth.scan(options)
+      expect(fifth.compileCacheStats.plans).toEqual({ hits: 0, misses: 0, writes: 0 })
+    } finally {
+      await fifth.close()
+    }
+  })
+
   test('warns loudly when CommonJS interop hides every component from the analyzer', async () => {
     const fixtureRoot = await mkdtemp(join(packageRoot, 'test/.e4-cjs-fixture-'))
     temporaryRoots.push(fixtureRoot)
