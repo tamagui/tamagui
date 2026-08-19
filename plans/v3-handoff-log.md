@@ -4144,3 +4144,76 @@ That also made the stated validation bar unfalsifiable - "archiveBytes plateaus"
 is trivially true when archiveBytes is 0 - so the bar was replaced with the
 properties that survive the redesign: bounded retained memory, bounded emitted
 `:root` CSS, no live variable dropped, and the `mutatedVarId` collision closed.
+
+## 36. Wave C: the lanes that needed no sign-off (2026-08-18)
+
+| item | commit | outcome |
+| --- | --- | --- |
+| 22 | `3702d8454b` + `42e4e0affa` | getCSS static half cached; 100 requests 1324.66 -> 4.48 ms |
+| 23 | `3f6581a561` | media subscriptions keyed by touched key |
+| 24 | `cd78c41f0b` | consumer receipt only, no code change |
+| 25 | `c632f6a890` | internal-only cleanup; deprecation plan written, nothing published touched |
+| 26 | `4a69243ba7` | Metro diagnostics carry the compiler's own source span |
+| 27 | in flight | build-time perf harness |
+
+Assembled pre-flight before any freeze this time, which was wave B's sequencing
+mistake: typecheck 0, `check` 0, `lint` 0, core-test web 584 passed, native 294
+passed plus 7 expected fail.
+
+### Item 23 measured the right number, and the wrong one would have shown nothing
+
+The fixture counts THREE numbers and never blends them: subscriber callbacks,
+committed renders, and render-function invocations. That separation was the whole
+item, because **committed renders were already correct before the change** -
+`getSnapshot` bailed out for every wrongly-woken subscriber. The defect is
+over-NOTIFICATION, not over-rendering.
+
+So a fixture reporting one blended number would have been green before and after
+and measured nothing. Failing-before evidence is on the callback number alone:
+`expected 5 to be 2` on an `sm` flip where five subscribers woke and two read
+`sm`. Anyone quoting this as a render-count win on web is wrong; the audit's 2.6
+wording ("wakes every media subscriber") is what it fixes.
+
+Strongest correctness evidence is the kitchen-sink Playwright `default` project
+against a real dev server, 715 passed, which exercises the production path:
+viewport resize, matchMedia listener, update, publish.
+
+Two honest gaps recorded rather than papered over: no win on the NATIVE default,
+because native's `first-render` mode hands out the raw state object with no getter
+tracking so those subscribers legitimately belong in the global bucket; and a
+pre-existing `setMediaShouldUpdate` bug where a component that loses its media
+clause keeps stale keys, deliberately not fixed because the new index
+over-subscribes identically to the old one.
+
+### Item 25's premise did not hold, and that is the finding
+
+The plan assumed some `use-*` hooks are internal-only and foldable. **All 16 are
+published**: none is `private`, every one declares entry points. Verified against
+all sixteen manifests.
+
+So there is no internal hook-folding half of item 25. Folding or renaming any of
+them is a release decision. What the internal portion actually contained was the
+dead Sheet dependency edge, the empty `debug="break"` branch, three
+`isPlainObject` copies collapsed onto `helpers/isObj.ts`, and a commented-out
+probe. The lane searched exact package names, source path fragments, the
+`useKeyboardVisible` symbol, and dynamic `require`/`import`/`resolve` patterns
+before deleting the Sheet edge, which is the standard for "prove it is dead
+first".
+
+### Coupled lanes: parking is not quarantine
+
+Items 19 and 22 both needed `registerCSSVariable.ts`, and item 22's hook does not
+build without item 19's export. It parked as a local commit - and a co-tenant's
+push carried it to origin, briefly breaking the branch, because `git push` is not
+scoped to your own commits.
+
+The rule that follows, in the lane's own words and better than the manager's:
+**a commit that cannot build standalone should not exist as a commit at all, even
+briefly.** When two lanes are coupled, hold the dependent half UNCOMMITTED and
+land both files in one commit once the other lane is done.
+
+Item 22 then verified rather than re-derived, which is what caught that item 19
+had not merely preserved its lines but CORRECTED them - moving the generation bump
+inside the under-cap branch so an over-cap registration that mutates nothing no
+longer invalidates the cache. Re-deriving from its saved copy would have silently
+reverted a real improvement.

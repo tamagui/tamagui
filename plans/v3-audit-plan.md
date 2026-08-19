@@ -107,6 +107,19 @@ more. Every row is expanded in the dimension sections below.
 | --- | --- | --- | ---: |
 | 1 | Fix docs that teach removed v3 APIs: camelCase theme keys, `blue10`-era palette, `<Stack>`, `getSize(x, {shift})` | Cleanup | S–M |
 | 2 | Add a size ceiling to `measure.mjs` (numbers already computed) and a budget to the kitchen-sink delta job | Improve | S then M |
+
+**Item 25 correction, READ 2026-08-18.** The ranked entry assumes some `use-*`
+hooks are INTERNAL-only and can be folded. They cannot: all **16** `use-*`
+packages are published, none is `private`, and every one declares entry points
+(`main`/`module`/`types`/`exports`). Verified by reading all sixteen manifests.
+
+So item 25 has no internal hook-folding half. Folding or renaming ANY of them is
+a published-surface change and therefore an owner release decision, not cleanup.
+What the internal portion actually contained, and what landed in `c632f6a890`,
+was the dead Sheet dependency edge, the empty `debug="break"` branch, the three
+`isPlainObject` copies collapsed onto `helpers/isObj.ts`, and the commented-out
+`getSplitStyles` probe.
+
 | 29 | Lexer faithfulness: strings terminated by newline, comment state, url-token; then the injection guard consumes `scanFlatValue` and the bespoke predicate retires | Security/Cleanup | M, DESIGN PROPOSAL FIRST |
 | 3 | Rename the compiler's `acceptsClassName` to `canFlatten` and report the term that actually failed | Cleanup | S |
 | 4 | Differential test, first slice: `styled()` definition vs call site vs runtime, compare `transitionDuration` | Testing | S |
