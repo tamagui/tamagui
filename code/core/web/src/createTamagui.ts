@@ -9,6 +9,7 @@ import {
   createThemeCSS,
   createTokenCSS,
   getCSS as getCSSHelper,
+  type GetCSSState,
 } from './helpers/createDesignSystem'
 import { scanAllSheets } from './helpers/insertStyleRule'
 import { proxyThemesToParents } from './helpers/proxyThemeToParents'
@@ -228,10 +229,10 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
   // Merge built-in shorthands with user shorthands (user takes precedence)
   const shorthands = { ...builtinShorthands, ...userShorthands }
 
-  const lastCSSIndex = { value: -1 }
+  const cssState: GetCSSState = { lastIndex: -1, static: null }
 
   const getCSS: GetCSS = (opts = {}) => {
-    return getCSSHelper(themeConfig, opts, lastCSSIndex)
+    return getCSSHelper(themeConfig, opts, cssState)
   }
 
   const getNewCSS: GetCSS = (opts) => getCSS({ ...opts, sinceLastCall: true })

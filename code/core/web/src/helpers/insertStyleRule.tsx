@@ -17,11 +17,20 @@ const allSelectors: Record<string, string> = {}
 const allRules: Record<string, string> = {}
 
 export const getAllSelectors = () => allSelectors
+
+// updateRules is the only writer, so one flag there covers every change
+let sortedRules: string[] = []
+let sortedRulesStale = true
+
 export const getAllRules = () => {
   if (!process.env.TAMAGUI_DID_OUTPUT_CSS) {
-    // Sort by identifier to ensure deterministic CSS output order
-    const sortedKeys = Object.keys(allRules).sort()
-    return sortedKeys.map((key) => allRules[key])
+    if (sortedRulesStale) {
+      // Sort by identifier to ensure deterministic CSS output order
+      const sortedKeys = Object.keys(allRules).sort()
+      sortedRules = sortedKeys.map((key) => allRules[key])
+      sortedRulesStale = false
+    }
+    return sortedRules
   }
   return []
 }
@@ -329,6 +338,7 @@ export function stopAccumulatingRules() {
 export function updateRules(identifier: string, rules: string[]) {
   if (trackAllRules) {
     allRules[identifier] = rules.join(' ')
+    sortedRulesStale = true
   }
   return true
 }

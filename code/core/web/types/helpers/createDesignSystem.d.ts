@@ -33,14 +33,33 @@ export declare function createThemeCSS(dedupedThemes: Array<{
     theme: any;
 }>, configIn: CreateTamaguiProps): string[];
 /**
+ * Everything `getCSS` emits ahead of the runtime rules. It is a pure function of
+ * the config, so a per-config slot holds it across calls and SSR stops
+ * regenerating every theme's variable block per request. It is NOT hoisted to
+ * `createTamagui` time: generating theme rules is what mints auto variables, so
+ * doing it eagerly would renumber them whenever a process builds more than one
+ * config, and the point of this cache is that nothing about the output moves.
+ */
+type StaticCSS = {
+    /** the variable generation these were built against */
+    generation: number;
+    /** the config whose settings `getThemeCSSRules` read while building them */
+    config: unknown;
+    /** keyed by separator and whether the theme rules are in the string */
+    byKey: Map<string, string>;
+};
+export type GetCSSState = {
+    /** index into the sorted rule list that `sinceLastCall` slices from */
+    lastIndex: number;
+    static: StaticCSS | null;
+};
+/**
  * Gets all generated CSS - design system + runtime styles
  */
 export declare function getCSS(themeConfig: ThemeConfig, opts: {
     separator?: string;
     sinceLastCall?: boolean;
     exclude?: 'themes' | 'design-system' | string | null;
-} | undefined, lastIndex: {
-    value: number;
-}): string;
+} | undefined, state: GetCSSState): string;
 export {};
 //# sourceMappingURL=createDesignSystem.d.ts.map
