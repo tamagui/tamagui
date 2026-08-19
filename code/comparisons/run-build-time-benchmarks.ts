@@ -220,8 +220,9 @@ const arms: Arm[] = [
     ],
     env: { NODE_ENV: 'production', EXPO_NO_TELEMETRY: '1' },
     clearedForCold: [
-      'Metro transform and file-map caches via expo export --clear',
-      'project node_modules/.cache/tamagui/metro-compiler',
+      'os.tmpdir()/metro-cache and the project-keyed os.tmpdir()/metro-file-map-* entry via expo export --clear',
+      'project node_modules/.cache/tamagui, including metro-compiler cache version 6 plans',
+      'project .tamagui generated config artifacts',
       'project export output',
     ],
     clearedBeforeEveryBuild: ['project export output'],
@@ -245,8 +246,9 @@ const arms: Arm[] = [
     ],
     env: { NODE_ENV: 'production', EXPO_NO_TELEMETRY: '1' },
     clearedForCold: [
-      'Metro transform and file-map caches via expo export --clear',
-      'project node_modules/.cache/tamagui/metro-compiler when present',
+      'os.tmpdir()/metro-cache and the project-keyed os.tmpdir()/metro-file-map-* entry via expo export --clear',
+      'project node_modules/.cache/tamagui',
+      'project .tamagui generated config artifacts',
       'project export output',
     ],
     clearedBeforeEveryBuild: ['project export output'],
@@ -285,10 +287,11 @@ function clearColdState(arm: Arm) {
     })
     rmSync(join(dependencyRoot, 'node_modules/.vite'), { recursive: true, force: true })
   } else {
-    rmSync(join(projectRoot, 'node_modules/.cache/tamagui/metro-compiler'), {
+    rmSync(join(projectRoot, 'node_modules/.cache/tamagui'), {
       recursive: true,
       force: true,
     })
+    rmSync(join(projectRoot, '.tamagui'), { recursive: true, force: true })
   }
 }
 
@@ -404,7 +407,7 @@ try {
       measurementBoundary:
         'wall-clock from spawning the production bundler command until that command exits after writing its complete build output; dependency installation is excluded',
       coldDefinition:
-        'a new bundler process after removing the arm-specific compiler cache and bundler cache named in arms[].clearedForCold; Metro additionally receives expo export --clear; operating system filesystem caches are not flushed',
+        "a new bundler process after removing every arm-specific path in arms[].clearedForCold; Vite loses its optimizer and Tamagui compiler caches; Metro loses its generated .tamagui directory and complete node_modules/.cache/tamagui tree (including V3 metro-compiler cache version 6 plans), then expo export --clear resets os.tmpdir()/metro-cache and that project configuration's os.tmpdir()/metro-file-map-* entry; operating system filesystem caches are not flushed",
       warmDefinition:
         'a new bundler process immediately after the same arm cold build, preserving compiler, transform, dependency, and operating system filesystem caches; only the previous build output directory is absent',
       ordering:
@@ -421,6 +424,7 @@ try {
       tools: {
         bun: Bun.version,
         node: commandVersion('node', ['--version']),
+        temporaryDirectory: tmpdir(),
       },
     },
     workload: {
