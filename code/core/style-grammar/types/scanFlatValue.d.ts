@@ -1,4 +1,4 @@
-export type FlatScanErrorCode = "invalid-character" | "unterminated-string" | "unterminated-function";
+export type FlatScanErrorCode = "invalid-character" | "unterminated-string" | "unterminated-function" | "unterminated-comment" | "stray-comment-close";
 /** why a scan stopped short, or null when it ran to the end cleanly */
 export type FlatScanFailure = FlatScanErrorCode | "refused-chain";
 export interface FlatValueVisitor {

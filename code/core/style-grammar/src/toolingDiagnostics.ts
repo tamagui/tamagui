@@ -250,11 +250,18 @@ function parseErrorSpan(
   if (error.code === 'unregistered-modifier' && error.modifier) {
     return { start: error.index, end: error.index + error.modifier.length }
   }
-  if (error.code === 'unterminated-string' || error.code === 'unterminated-function') {
+  if (
+    error.code === 'unterminated-string' ||
+    error.code === 'unterminated-function' ||
+    error.code === 'unterminated-comment'
+  ) {
+    // an unclosed delimiter owns everything after it, so the squiggle does too
     return { start: Math.max(0, Math.min(error.index, length - 1)), end: length }
   }
   const start = Math.max(0, Math.min(error.index, length - 1))
-  return { start, end: Math.min(length, start + 1) }
+  // `*/` is two characters; every other single-character code is one
+  const width = error.code === 'stray-comment-close' ? 2 : 1
+  return { start, end: Math.min(length, start + width) }
 }
 
 /** index just past the candidate and any attached `/suffix` run */

@@ -20,6 +20,12 @@
 > fix would silently fork TS from Rust. Real scope is `scanFlatValue`,
 > `tamagui-grammar/src/value.rs`, and new comment vectors, as one change.
 
+**IMPLEMENTED 2026-08-19.** The lexer half of this document shipped; see
+handoff-log section 42 for what landed and what was measured. The guard half
+(section 2 below, "The guard consumes it") is moot and did not ship: the owner
+dropped `carriesTopLevelInjection` outright, so there is no guard to feed. Read
+the rest as the design record, not as pending work.
+
 Design proposal. Owner sign-off required before any code, same gate as item 28.
 No source was changed to write this: every measurement below comes from a
 scratchpad copy of the lexer, the repo's own corpora, and headless Chromium.

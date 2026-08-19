@@ -45,14 +45,12 @@ export interface ValueParseWithSourceSpans {
  * NOT A SAFETY CHECK. A successful parse says the value is well-formed FLAT
  * VALUE SYNTAX. It does not say the value is safe to interpolate into CSS.
  *
- * `scanFlatValue` is a clause lexer, not a CSS tokenizer, and it currently
- * ACCEPTS two payloads that escape a declaration once emitted (verified 2026-08-18):
- *
- *   '"abc\n;}.injected{opacity 0"'   a string CSS ends at the newline
- *   'red/*'                            an unterminated comment
- *
- * Nothing refuses those any more. `emitValue` and `getStyleObject` used to call
- * a `carriesTopLevelInjection` guard independently; it was removed by owner
+ * `scanFlatValue` tracks the same constructs CSS's tokenizer does (comments,
+ * strings that a newline ends, `url()`, paren nesting), so a value whose
+ * delimiters do not actually close is an error rather than silently trusted.
+ * That covers the constructs a value can leave OPEN; it is not an injection
+ * guard. `emitValue` and `getStyleObject` used to call a
+ * `carriesTopLevelInjection` guard independently; it was removed by owner
  * decision, on the grounds that a style value is authored rather than user
  * input, and the web lowering emits payloads verbatim by contract.
  *
@@ -89,6 +87,12 @@ function scanErrorMessage(code: FlatScanErrorCode, input: string, index: number)
   }
   if (code === 'unterminated-string') {
     return `unterminated ${input[index]} string`
+  }
+  if (code === 'unterminated-comment') {
+    return 'unterminated "/*" comment: it would swallow the rules after this one'
+  }
+  if (code === 'stray-comment-close') {
+    return 'stray "*/": it would close a comment opened somewhere else'
   }
   return 'unterminated "(" in value'
 }

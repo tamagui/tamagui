@@ -892,6 +892,132 @@
       ]
     },
     {
+      "source": "red /* hover:x */ blue",
+      "ok": true,
+      "base": "red /* hover:x */ blue",
+      "clauses": []
+    },
+    {
+      "source": "red /* ; } { */ blue",
+      "ok": true,
+      "base": "red /* ; } { */ blue",
+      "clauses": []
+    },
+    {
+      "source": "red hover:blue /* a:b */",
+      "ok": true,
+      "base": "red",
+      "clauses": [
+        {
+          "modifiers": [
+            "hover"
+          ],
+          "payload": "blue /* a:b */"
+        }
+      ]
+    },
+    {
+      "source": "red hover:/*c*/blue",
+      "ok": true,
+      "base": "red",
+      "clauses": [
+        {
+          "modifiers": [
+            "hover"
+          ],
+          "payload": "/*c*/blue"
+        }
+      ]
+    },
+    {
+      "source": "calc(1px /* pad */ + 2px)",
+      "ok": true,
+      "base": "calc(1px /* pad */ + 2px)",
+      "clauses": []
+    },
+    {
+      "source": "/* leading */ red",
+      "ok": true,
+      "base": "/* leading */ red",
+      "clauses": []
+    },
+    {
+      "source": "\"/*\" red",
+      "ok": true,
+      "base": "\"/*\" red",
+      "clauses": []
+    },
+    {
+      "source": "/* \" */ red",
+      "ok": true,
+      "base": "/* \" */ red",
+      "clauses": []
+    },
+    {
+      "source": "red/*",
+      "ok": false,
+      "errors": [
+        {
+          "code": "unterminated-comment",
+          "index": 3
+        }
+      ]
+    },
+    {
+      "source": "red */ blue",
+      "ok": false,
+      "errors": [
+        {
+          "code": "stray-comment-close",
+          "index": 4
+        }
+      ]
+    },
+    {
+      "source": "calc(1px /*",
+      "ok": false,
+      "errors": [
+        {
+          "code": "unterminated-comment",
+          "index": 9
+        },
+        {
+          "code": "unterminated-function",
+          "index": 4
+        }
+      ]
+    },
+    {
+      "source": "url(a/*b.png)",
+      "ok": true,
+      "base": "url(a/*b.png)",
+      "clauses": []
+    },
+    {
+      "source": "url(a\"b.png)",
+      "ok": true,
+      "base": "url(a\"b.png)",
+      "clauses": []
+    },
+    {
+      "source": "url(\"a/*b\")",
+      "ok": true,
+      "base": "url(\"a/*b\")",
+      "clauses": []
+    },
+    {
+      "source": "myurl(a:b)",
+      "ok": true,
+      "base": "myurl(a:b)",
+      "clauses": []
+    },
+    {
+      "source": "image-set(url(a) 1x)",
+      "ok": true,
+      "base": "image-set(url(a) 1x)",
+      "clauses": []
+    },
+    {
       "source": "16:9",
       "ok": false,
       "errors": [
@@ -7455,6 +7581,10 @@
         {
           "code": "unterminated-string",
           "index": 7
+        },
+        {
+          "code": "invalid-character",
+          "index": 22
         }
       ]
     },

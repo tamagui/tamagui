@@ -183,6 +183,30 @@ const handWritten = [
   'pressed:red',
   'starting:red',
   'ending:red',
+  // comments are opaque content belonging to the segment they sit in, so a
+  // colon inside one is not a clause boundary and a `;{}` inside one is not a
+  // refused character. `red /* hover:x */ blue` is the case that used to split
+  // into `red /*` plus a bogus `hover` clause, emitting a rule whose
+  // unterminated comment swallowed the rules after it.
+  'red /* hover:x */ blue',
+  'red /* ; } { */ blue',
+  'red hover:blue /* a:b */',
+  'red hover:/*c*/blue',
+  'calc(1px /* pad */ + 2px)',
+  '/* leading */ red',
+  '"/*" red',
+  '/* " */ red',
+  // a comment or a string left open swallows whatever follows it in the blob,
+  // and a `*/` with nothing open closes one belonging to another rule
+  'red/*',
+  'red */ blue',
+  'calc(1px /*',
+  // `url()` is the one function CSS does not tokenize: no comments, no strings
+  'url(a/*b.png)',
+  'url(a"b.png)',
+  'url("a/*b")',
+  'myurl(a:b)',
+  'image-set(url(a) 1x)',
   // the one value whose top-level colon is content
   '16:9',
   '',

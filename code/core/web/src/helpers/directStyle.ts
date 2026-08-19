@@ -1495,8 +1495,11 @@ export function contributeStyleString(
     }
     return true
   }
-  // no clause to cut, so the scanner below never runs on this value. the
-  // top-level `;{}` refusal it would have applied lives in emitValue instead
+  // no clause to cut, so the scanner below never runs on this value. nothing
+  // validates it either: the `carriesTopLevelInjection` guard that used to
+  // refuse a rule-breaking value here was dropped by owner decision, so a value
+  // with no colon is emitted verbatim by contract. Keep the two paths in mind
+  // together when reading a bug report about one of them.
   if (source.indexOf(':') === -1) {
     emitValue(state, property, source, null, merge, originalValue ?? source, contextOnly)
     return true
@@ -1550,7 +1553,11 @@ export function contributeStyleString(
           ? `"${source[index]}" would end the declaration or rule`
           : code === 'unterminated-string'
             ? 'an unterminated string'
-            : 'an unterminated "("'
+            : code === 'unterminated-comment'
+              ? 'an unterminated "/*" comment'
+              : code === 'stray-comment-close'
+                ? 'a stray "*/"'
+                : 'an unterminated "("'
     },
   })
 

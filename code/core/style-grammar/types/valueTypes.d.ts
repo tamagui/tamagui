@@ -28,7 +28,7 @@ export interface ParsedValue {
 	base: string | null;
 	clauses: readonly ParsedClause[];
 }
-export type ValueParseErrorCode = "unregistered-modifier" | "empty-payload" | "empty-modifier" | "unterminated-string" | "unterminated-function" | "invalid-character";
+export type ValueParseErrorCode = "unregistered-modifier" | "empty-payload" | "empty-modifier" | "unterminated-string" | "unterminated-function" | "unterminated-comment" | "stray-comment-close" | "invalid-character";
 export interface ValueParseError {
 	code: ValueParseErrorCode;
 	/** character offset into the source string where the error was detected */

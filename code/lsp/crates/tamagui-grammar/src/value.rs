@@ -85,6 +85,8 @@ pub enum ParseErrorCode {
     InvalidCharacter,
     UnterminatedString,
     UnterminatedFunction,
+    UnterminatedComment,
+    StrayCommentClose,
     UnregisteredModifier,
     EmptyModifier,
     EmptyPayload,
@@ -97,6 +99,8 @@ impl ParseErrorCode {
             Self::InvalidCharacter => "invalid-character",
             Self::UnterminatedString => "unterminated-string",
             Self::UnterminatedFunction => "unterminated-function",
+            Self::UnterminatedComment => "unterminated-comment",
+            Self::StrayCommentClose => "stray-comment-close",
             Self::UnregisteredModifier => "unregistered-modifier",
             Self::EmptyModifier => "empty-modifier",
             Self::EmptyPayload => "empty-payload",
@@ -151,6 +155,38 @@ impl FlatValue {
 
 fn is_whitespace(byte: u8) -> bool {
     matches!(byte, b' ' | b'\t' | b'\n' | b'\r' | 0x0c)
+}
+
+/// `index` points at the `(`. A url token is the ident `url` followed directly
+/// by it, with no ident character before the `u` (`myurl(` is an ordinary
+/// function) and no quote after it (`url("a")` is one too). It is the one
+/// function CSS does not tokenize the contents of, so the lexer has to tell the
+/// two apart before deciding whether a `/*` or a quote inside means anything.
+fn opens_url_token(bytes: &[u8], index: usize) -> bool {
+    if index < 3 {
+        return false;
+    }
+    if bytes[index - 3] | 32 != b'u' || bytes[index - 2] | 32 != b'r' || bytes[index - 1] | 32 != b'l'
+    {
+        return false;
+    }
+    let before = if index > 3 { bytes[index - 4] } else { 0 };
+    if before == b'-'
+        || before == b'_'
+        || before >= 128
+        || before.is_ascii_digit()
+        || before.is_ascii_alphabetic()
+    {
+        return false;
+    }
+    let mut next = index + 1;
+    while next < bytes.len() && bytes[next] <= 32 {
+        next += 1;
+    }
+    match bytes.get(next) {
+        Some(&b'"') | Some(&b'\'') => false,
+        _ => true,
+    }
 }
 
 /// Parse without a registry: the split and the structural errors, with every
@@ -266,8 +302,11 @@ impl<'a> Parser<'a> {
 
     fn run(&mut self) {
         let length = self.bytes.len();
+        let mut comment = false;
+        let mut comment_start = 0usize;
         let mut quote = 0u8;
         let mut quote_start = 0usize;
+        let mut url = false;
         let mut depth = 0usize;
         let mut paren_start = 0usize;
         let mut word_start: Option<usize> = None;
@@ -277,14 +316,55 @@ impl<'a> Parser<'a> {
         while index < length {
             let byte = self.bytes[index];
 
+            if comment {
+                // no escapes inside a comment: `\*/` still closes it
+                if byte == b'*' && self.bytes.get(index + 1) == Some(&b'/') {
+                    comment = false;
+                    index += 1;
+                }
+                index += 1;
+                continue;
+            }
+
             if quote != 0 {
-                // inside a string only an unescaped matching quote ends it
+                // inside a string an unescaped matching quote ends it, and a
+                // newline ends it as a parse error the browser sees the same way
                 if byte == b'\\' {
                     index += 1;
                 } else if byte == quote {
                     quote = 0;
+                } else if byte == b'\n' || byte == b'\r' || byte == 0x0c {
+                    self.error(ParseErrorCode::UnterminatedString, quote_start);
+                    quote = 0;
+                    // re-read the newline at top level, where it is whitespace
+                    continue;
                 }
                 index += 1;
+                continue;
+            }
+
+            if url {
+                // the one function CSS does not tokenize: only an escape and `)`
+                if byte == b'\\' {
+                    index += 1;
+                } else if byte == b')' {
+                    url = false;
+                    depth -= 1;
+                }
+                index += 1;
+                continue;
+            }
+
+            // comments are lexical, so they open at any depth
+            if byte == b'/' && self.bytes.get(index + 1) == Some(&b'*') {
+                comment = true;
+                comment_start = index;
+                index += 2;
+                continue;
+            }
+            if byte == b'*' && self.bytes.get(index + 1) == Some(&b'/') {
+                self.error(ParseErrorCode::StrayCommentClose, index);
+                index += 2;
                 continue;
             }
 
@@ -296,6 +376,9 @@ impl<'a> Parser<'a> {
                     quote = byte;
                     quote_start = index;
                 } else if byte == b'(' {
+                    if opens_url_token(self.bytes, index) {
+                        url = true;
+                    }
                     depth += 1;
                 } else if byte == b')' {
                     depth -= 1;
@@ -329,6 +412,9 @@ impl<'a> Parser<'a> {
                     quote_start = index;
                 }
                 b'(' => {
+                    if opens_url_token(self.bytes, index) {
+                        url = true;
+                    }
                     depth = 1;
                     paren_start = index;
                 }
@@ -338,6 +424,9 @@ impl<'a> Parser<'a> {
             index += 1;
         }
 
+        if comment {
+            self.error(ParseErrorCode::UnterminatedComment, comment_start);
+        }
         if quote != 0 {
             self.error(ParseErrorCode::UnterminatedString, quote_start);
         }

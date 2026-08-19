@@ -275,6 +275,107 @@ describe('agreement', () => {
   })
 })
 
+describe('comments', () => {
+  // The lexer used to have no comment state, so a `:` inside a comment read as
+  // a clause separator. `red /* hover:x */ blue` split into base `red /*` and a
+  // `hover` clause with payload `x */ blue`, and BOTH halves emitted. The base
+  // rule then ended in an unterminated `/*`, which in the joined SSR blob
+  // swallows every rule after it until some later `*/` turns them back on.
+  test('a colon inside a comment is not a clause boundary', () => {
+    const source = 'red /* hover:x */ blue'
+    const parsed = parseValue(source, registry)
+    expect(parsed.ok).toBe(true)
+    expect(parsed.ok && parsed.value.base).toBe(source)
+    expect(parsed.ok && parsed.value.clauses).toEqual([])
+
+    expect(propValue(source)).toBe(source)
+    // the hover clause was fiction, so nothing is conditional on hover
+    expect(propValue(source, ['hover'])).toBe(source)
+
+    const rules = propRules(source)
+    expect(rules).toHaveLength(1)
+    expect(rules[0]).toContain(source)
+  })
+
+  // No rule may leave a comment open, whatever the value did, because
+  // `getAllRules()` joins them into one blob for SSR.
+  //
+  // Counting delimiters in the rule text only answers this for values where a
+  // `/*` really is a comment opener, so `url(a/*b.png)` is deliberately absent:
+  // its `/*` is URL content and is covered by its own test below.
+  test('no emitted rule leaves a comment open', () => {
+    for (const source of [
+      'red /* hover:x */ blue',
+      'red /* ; } { */ blue',
+      'red hover:blue /* a:b */',
+      'calc(1px /* pad */ + 2px)',
+    ]) {
+      for (const rule of propRules(source)) {
+        const opens = rule.split('/*').length - 1
+        const closes = rule.split('*/').length - 1
+        expect({ rule, opens, closes }).toEqual({ rule, opens, closes: opens })
+      }
+    }
+  })
+
+  // `;`, `{` and `}` are ordinary text inside a comment, so refusing them there
+  // was the mirror-image bug: a legitimate authored value produced nothing.
+  test('a rule-breaking character inside a comment is ordinary content', () => {
+    const source = 'red /* ; } { */ blue'
+    expect(parseValue(source, registry).ok).toBe(true)
+    expect(propValue(source)).toBe(source)
+  })
+
+  // A comment sitting in a payload belongs to that payload, and the clause
+  // around it still resolves.
+  test('a comment inside a payload stays in the payload', () => {
+    const source = 'red hover:blue /* a:b */'
+    const parsed = parseValue(source, registry)
+    expect(parsed.ok).toBe(true)
+    expect(parsed.ok && parsed.value.clauses).toEqual([
+      { modifiers: ['hover'], payload: 'blue /* a:b */' },
+    ])
+
+    expect(propValue(source)).toBe('red')
+    expect(propValue(source, ['hover'])).toBe('blue /* a:b */')
+  })
+
+  // A comment is lexical, so it opens inside parens too: `calc()` may hold one.
+  test('a comment opens at any paren depth', () => {
+    const source = 'calc(1px /* pad */ + 2px)'
+    expect(parseValue(source, registry).ok).toBe(true)
+    expect(propValue(source)).toBe(source)
+  })
+
+  // `url()` is the one function CSS does not tokenize the contents of, so a
+  // `/*` or a quote inside an unquoted url is part of the URL. Chromium parses
+  // `url(a/*b.png)` as that URL and the rule after it survives, so treating it
+  // as a comment would be the fix broken the other way.
+  test('a comment opener inside an unquoted url is part of the url', () => {
+    for (const source of ['url(a/*b.png)', 'url(a"b.png)']) {
+      expect(parseValue(source, registry).ok).toBe(true)
+      expect(propValue(source)).toBe(source)
+    }
+  })
+
+  // A string outranks a comment opener, and a comment outranks a quote.
+  test('strings and comments nest by CSS precedence, not by appearance', () => {
+    for (const source of ['"/*" red', '/* " */ red']) {
+      expect(parseValue(source, registry).ok).toBe(true)
+      expect(propValue(source)).toBe(source)
+    }
+  })
+
+  // A construct left open cannot be trusted for containment the emitted CSS
+  // will not honour, so the whole value is refused rather than emitted.
+  test('an unclosed comment and a stray close both refuse the value', () => {
+    for (const source of ['red/* hover:x', 'red */ hover:x']) {
+      expect(parseValue(source, registry).ok).toBe(false)
+      expect(propValue(source)).toBe(null)
+    }
+  })
+})
+
 describe('divergences', () => {
   // D2. `contributeStyleString` returns early when the value holds no top-level
   // colon, so the clause scanner below it never runs. The `;{}` refusal that

@@ -120,7 +120,7 @@ was the dead Sheet dependency edge, the empty `debug="break"` branch, the three
 `isPlainObject` copies collapsed onto `helpers/isObj.ts`, and the commented-out
 `getSplitStyles` probe.
 
-| 29 | Lexer faithfulness: strings terminated by newline, comment state, url-token; then the injection guard consumes `scanFlatValue` and the bespoke predicate retires | Security/Cleanup | M, DESIGN PROPOSAL FIRST |
+| 29 | Lexer faithfulness: strings terminated by newline, comment state, url-token (**DONE 2026-08-19**; the guard half was struck when the owner dropped it) | Security/Cleanup | M |
 | 3 | Rename the compiler's `acceptsClassName` to `canFlatten` and report the term that actually failed | Cleanup | S |
 | 4 | Differential test, first slice: `styled()` definition vs call site vs runtime, compare `transitionDuration` | Testing | S |
 | 5 | Parser-agreement tests between the canonical grammar and the runtime scanners | Testing | M |
@@ -1425,6 +1425,14 @@ closed as of `de0d1940`. Its own records are `plans/v3-zero-runtime-mode.md` and
 handoff-log sections 14-23.
 
 ### 29 Lexer faithfulness, then retire the bespoke injection predicate [high] [M, design proposal first]
+
+**DONE 2026-08-19.** `scanFlatValue` now tracks comments, strings that a newline
+ends, and the `url()` token, and the Rust `tamagui-grammar` crate got the same
+states in the same commit so the two cannot fork on inputs no vector covered.
+The "retire the bespoke injection predicate" half was struck when the owner
+dropped the guard outright (`991d23eab4`); what shipped is lexer faithfulness on
+correctness grounds. See handoff-log section 42.
+
 
 **Premise, READ and probed on 2026-08-18.** `carriesTopLevelInjection` has been
 bypassed **five** times, and every one was the same shape: a place where CSS's

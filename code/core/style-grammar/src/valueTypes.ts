@@ -79,6 +79,14 @@ export type ValueParseErrorCode =
   | 'unterminated-string'
   | 'unterminated-function'
   /**
+   * an opened comment that never closes. `getAllRules()` joins rules into one
+   * blob for SSR, so an open comment blanks the rules after it until some later
+   * close delimiter turns them back on
+   */
+  | 'unterminated-comment'
+  /** a close delimiter with nothing open, which closes another rule's comment */
+  | 'stray-comment-close'
+  /**
    * a top-level `{`, `}`, or `;` — never valid in a CSS component value, and
    * rejecting them here is what makes rule/selector injection through a
    * payload structurally impossible in the web lowering

@@ -120,6 +120,7 @@ pub fn diagnose(
             value::ParseErrorCode::EmptyPayload
                 | value::ParseErrorCode::UnterminatedString
                 | value::ParseErrorCode::UnterminatedFunction
+                | value::ParseErrorCode::UnterminatedComment
         ) {
             continue;
         }
@@ -137,6 +138,11 @@ pub fn diagnose(
                 message
             }
             value::ParseErrorCode::EmptyModifier => "a modifier chain has an empty segment".into(),
+            // unlike an unterminated comment, this is never what a half-typed
+            // one looks like: `/*` always precedes the `*/` being typed
+            value::ParseErrorCode::StrayCommentClose => {
+                "stray `*/`: it would close a comment opened somewhere else".into()
+            }
             value::ParseErrorCode::InvalidCharacter => format!(
                 "`{}` cannot appear in a value: it would end the declaration or rule",
                 span.of(value)

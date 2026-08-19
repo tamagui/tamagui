@@ -4595,3 +4595,76 @@ kitchen-sink default 715 passed (baseline match), `TabHoverAnimation` /
 skipped on the native driver as they already were, core-test web 511 and native
 294 (both baseline matches), `typecheck` 0 errors, `lint` clean, `bun run check`
 green including `check:references`.
+
+## 42. Item 29: the lexer learned CSS's constructs, in both languages (2026-08-19)
+
+Section 40 left item 29 with a live defect and a scope correction: the guard half
+was already struck, and what remained was lexer faithfulness across TypeScript
+AND Rust plus vectors, because the conformance corpus contained no comment cases
+at all. That is what shipped here.
+
+### What was actually broken, re-probed before touching anything
+
+READ, through `scanFlatValue` on the pre-fix tree, every row of section 40's
+table reproduced:
+
+| value | before | after |
+| --- | --- | --- |
+| `red /* hover:x */ blue` | base `red /*` + clause `hover` payload `x */ blue` | base is the whole value, no clause |
+| `red /* ; } { */ blue` | 3 x invalid-character | accepted |
+| `red/*` | accepted | `unterminated-comment` |
+| `red */ blue` | accepted | `stray-comment-close` |
+| `"abc\n;}.injected{opacity 0"` | accepted | `unterminated-string`, then the `;}` refused at top level |
+| `url(a` | `unterminated-function`@3 | unchanged, by design |
+
+The first row is the one that mattered. The base ended in an unterminated `/*`,
+and `getAllRules()` joins rules into one blob for SSR, so that rule swallowed
+whatever followed it until some later `*/`. It needed no adversarial input: it is
+what an ordinary authored CSS comment produced.
+
+### The states, lifted from the guard rather than reinvented
+
+`carriesTopLevelInjection` was deleted in `991d23eab4`, but it had survived five
+bypasses and had the precedence rules right, so its tokenizer was recovered from
+git and ported into `scanFlatValue` instead of being written again: a comment
+outranks paren depth, a string outranks a comment opener, a comment outranks a
+quote, and `url(` outranks both. `opensUrlToken` came across with it. Two error
+codes were added, `unterminated-comment` and `stray-comment-close`; an unclosed
+`url(` still reports `unterminated-function` at its `(`, so no diagnostic moved.
+
+`url()` opacity is the part worth not "fixing" later: `url(a/*b.png)` keeps the
+`/*` as URL content, because Chromium parses it as that URL and the rule after it
+survives. Treating it as a comment would be this change broken the other way.
+
+### Both languages in one commit, which the vectors now enforce
+
+The Rust crate had no comment handling at all, and `tests/vectors.json` had no
+comment cases, which is exactly why the design doc's blast radius measured 0: the
+two facts hid each other. Seventeen comment vectors were added to the generator's
+hand-written corpus and `value.rs` got the same states.
+
+The conformance test caught the drift on the first run, before the Rust port,
+which is the point of it. Negative control, RUN: disabling comment handling in
+Rust alone fails conformance on `red /* hover:x */ blue` specifically. It can
+fail, so its green means something.
+
+### Evidence
+
+- `cargo test --workspace`: green, 51 grammar unit + 2 conformance.
+- `@tamagui/style-grammar`: 439 tests green, fuzz suite included.
+- `core-test` all targets: 862 green, web went 511 -> 519.
+- Negative control, RUN: reverting only `scanFlatValue.ts` fails 7 of the 8 new
+  `parserAgreement` comment tests. The 8th (`calc(1px /* pad */ + 2px)`) passed
+  before too, because it holds no colon and so never reached the scanner.
+- Parse cost, old vs new on the same machine: `plain` -12.4%, `two clauses`
+  -13.5%, `gradient` -6.2%, `six clauses` +1.7%, `cold parse + split` +0.9%.
+  Nothing regressed against item 12's "do not repeat the 2-3x regression" budget.
+
+### What did NOT change, deliberately
+
+`contributeStyleString` still returns early when a value holds no top-level
+colon, so `red/*` written alone still reaches CSS unvalidated. That is the
+owner's `991d23eab4` decision (a style value is authored, and the web lowering
+emits verbatim), not an oversight, and `parserAgreement`'s divergence D2 already
+pins it. The stale comment claiming that refusal "lives in emitValue instead" was
+corrected: it lives nowhere now.
