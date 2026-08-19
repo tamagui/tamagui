@@ -51,6 +51,14 @@ Both were learned the expensive way: two of three CI cycles on the v3-beta wave
 B tip went red on exactly these, after every lane had reported its own suites
 green.
 
+In a shared checkout, both commands see the WHOLE worktree, including other
+agents' uncommitted and untracked files, so they can fail on a file you never
+opened. Read which files are named. Fix the ones that are yours; for anyone
+else's, say so in your report and leave them alone. Formatting a co-tenant's
+in-progress file is worse than the failure, because your edit lands inside their
+uncommitted work where they cannot see it. The rule asks that YOUR change not
+break the workspace, not that a tree five agents are editing is spotless.
+
 ---
 
 Please read ./CONTRIBUTING.md as well
