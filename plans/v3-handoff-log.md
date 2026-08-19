@@ -4348,3 +4348,79 @@ coverage.
 p25843 is recommending KEEP + guard-behind-cache + item 29, because the
 relocation dissolves the perf objection and item 29 pays for itself on
 correctness. Awaiting the owner. Nothing implemented.
+
+## 39. Item 30: the Metro cold gap is the compiler frontend prepass, not the cache (2026-08-18)
+
+### The confound cleared, and the method was better than the brief
+
+The brief said to measure a pre-item-26 SHA. The lane instead forced the cache
+constant 6 -> 5 at the pinned tip, which isolates the schema while preserving
+every later compiler and corpus commit - a pre-4a69243 measurement would have
+dragged in everything else that landed since. Both arms smoke-exported 1,090
+modules and wrote 569-entry manifests at their respective schema paths, which is
+what makes them comparable rather than merely similar. Three arms shuffled in one
+seed-27003 session on item 27's harness.
+
+Cold medians, ms [Q1-Q3]:
+
+| arm | median |
+| --- | --- |
+| v3 v6 | 15719.3 [15644.2-16219.8] |
+| v3 forced-v5 | 16564.8 [16207.4-16859.1] |
+| V2 | 9598.8 [9536.0-9725.4] |
+
+forced-v5 was **845.5 ms SLOWER** - the wrong direction to implicate item 26 -
+with overlapping ranges and paired round deltas of -16.3, +1856.9, +845.5,
+-2731.7, -12.4. Verdict by the predeclared criterion applied verbatim: PARTIAL.
+It misses implication by a wide margin and misses STRICT exoneration only because
+845.5 exceeds the 631.5 cutoff. Substantively: **the cache bump does not explain
+the gap.**
+
+**A second instrumented pass put forced-v5 only 93.8 ms below v6, which would
+have met the exoneration cutoff cleanly. The lane reported it and did NOT
+substitute it for the primary result.** Declaring the criterion in advance is
+only worth something if the inconvenient answer is the one that gets kept.
+
+### The layer
+
+Contemporaneous in the instrumented pass: v3 cold 15538.5, V2 cold 9334.6, gap
+6203.9 ms.
+
+| stage | ms | share of gap |
+| --- | --- | --- |
+| compiler frontend ensure path | 6364.2 | - |
+| its scan body | 6095.4 | **98.3%** |
+| compileRecords | 3437.4 | 55.4% |
+| graph plan construction/materialization | 2617.9 | 42.2% |
+| cache publication | 52.9 | - |
+| warm cache validation | 323.6 | - |
+
+Named layer: the **v3 compiler frontend cold prepass**, essentially the entire
+gap. At the finer resolution requested - transforms versus graph versus cache -
+the honest answer is **distributed, not attributable**: roughly 55% record
+compilation, 42% plan construction. Cache behaviour is not the source.
+
+### The reframing that matters more than the headline
+
+**This is cold-only.** Warm: v3 6376.2 versus V2 5894.5, about +482 ms, roughly
+**1.08x**. Cold is roughly **1.64x**.
+
+So the everyday dev loop is about 8% slower while cold builds - CI, fresh clone,
+cleared caches - carry nearly all of it. "v3 builds 1.65x slower" invited the
+wrong reading, and item 27's headline should always be quoted with the warm
+number beside it.
+
+### Baseline non-reproduction, flagged not smoothed
+
+The v6 cold median came in 283.0 ms FASTER than item 27's 16002.3 and below item
+27's retained minimum of 15945.1, IQRs overlapping. CPU idle was 72-84%
+throughout. Reported rather than averaged away, because a baseline that does not
+reproduce is a finding about the baseline.
+
+### Disposition
+
+No fix lane, per standing instruction, and none started. p25843's read to the
+owner: with warm only ~8% off and compile time already deprioritized, this
+likely does not warrant a fix lane now. If cold is pursued it is a DESIGN
+question - what the prepass can cache or defer across cold builds - not more
+profiling. The profiling is done and says the work is real, not wasted.
