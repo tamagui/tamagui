@@ -56,7 +56,7 @@ export { getConfig, getSetting, getStyleCompat, getThemes, getToken, getTokens, 
 export { setNonce } from './helpers/insertStyleRule';
 export * from './constants/constants';
 export * from './hooks/useIsTouchDevice';
-export { _disableMediaTouch, configureMedia, mediaKeyMatch, updateMediaListeners, useMedia, } from './hooks/useMedia';
+export { _disableMediaTouch, _mediaListenerStats, configureMedia, mediaKeyMatch, updateMediaListeners, useMedia, } from './hooks/useMedia';
 export { mediaObjectToString } from './helpers/mediaObjectToString';
 export { getMedia, mediaQueryConfig, mediaState, setMediaState, } from './helpers/mediaState';
 export * from './hooks/useAnimationDriver';

@@ -93,6 +93,7 @@ export * from './constants/constants'
 export * from './hooks/useIsTouchDevice'
 export {
   _disableMediaTouch,
+  _mediaListenerStats,
   configureMedia,
   mediaKeyMatch,
   updateMediaListeners,

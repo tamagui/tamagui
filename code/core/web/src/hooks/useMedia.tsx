@@ -34,6 +34,8 @@ export const configureMedia = (config: TamaguiInternalConfig) => {
   mediaVersion++
   // touch-tracker getter object depends on the current media key set
   resetMediaTouchTracker()
+  // a replaced key set invalidates the diff baseline
+  publishedState = null
   for (const key in media) {
     getMedia()[key] = mediaQueryDefaultActive?.[key] || false
     mediaKeys.add(key)
@@ -99,10 +101,58 @@ export function setupMediaListeners() {
   }
 }
 
-const listeners = new Set<any>()
+type MediaListener = (state: MediaQueryState) => void
+
+// subscribers indexed by the media key they actually read, so a breakpoint
+// change wakes only the components that read that breakpoint instead of every
+// media subscriber on the page. `globalListeners` holds the subscribers that
+// can't be keyed: first-render mode hands out the raw state object with no
+// getter tracking, so its snapshot compares by identity and any publish counts.
+const listenersByKey = new Map<string, Set<MediaListener>>()
+const globalListeners = new Set<MediaListener>()
+
+// last state published to subscribers, so a publish can wake only the buckets
+// whose key value actually changed. null means "no baseline": configureMedia
+// resets it so the first publish after a config swap reaches every bucket.
+let publishedState: MediaQueryState | null = null
+
+/**
+ * instrumentation for the media render-count fixture. `notified` counts
+ * subscriber callbacks actually invoked, which is a different number from
+ * committed React renders: a woken callback re-reads its snapshot and usually
+ * bails out, and the native fast path can commit a style without a render.
+ */
+export const _mediaListenerStats = {
+  publishes: 0,
+  notified: 0,
+}
 
 export function updateMediaListeners() {
-  listeners.forEach((cb) => cb(getMedia()))
+  _mediaListenerStats.publishes++
+  const media = getMedia()
+  const prev = publishedState
+  publishedState = media
+
+  if (listenersByKey.size) {
+    // dedupe: one subscriber can sit in several key buckets
+    const woken = new Set<MediaListener>()
+    for (const key of mediaKeys) {
+      if (prev !== null && media[key] === prev[key]) continue
+      const bucket = listenersByKey.get(key)
+      if (bucket) {
+        for (const cb of bucket) woken.add(cb)
+      }
+    }
+    for (const cb of woken) {
+      _mediaListenerStats.notified++
+      cb(media)
+    }
+  }
+
+  globalListeners.forEach((cb) => {
+    _mediaListenerStats.notified++
+    cb(media)
+  })
 }
 
 type MediaState = {
@@ -176,11 +226,91 @@ export function setMediaShouldUpdate(
   }
 }
 
-function subscribe(subscriber: () => void) {
-  listeners.add(subscriber)
-  return () => {
-    listeners.delete(subscriber)
+type MediaRef = {
+  keys: Set<string> | null
+  lastState: MediaQueryState
+  pendingState?: MediaQueryState
+  renderVersion: number
+  // the callback registered in the buckets, stable for the life of the hook
+  onChange?: MediaListener
+  // which buckets `onChange` currently sits in. a Set is a copy of the touched
+  // keys at the last commit (`keys` is cleared and refilled every render), null
+  // is the whole-object bucket, undefined means not subscribed at all.
+  listeningTo?: Set<string> | null
+  // stable per-component closures + reusable Proxy. allocating new ones each
+  // render (via useSyncExternalStore + `new Proxy(state, ...)`) was a real
+  // per-component-per-render cost; we hold one Proxy whose target is swapped
+  // by mutating `proxyTarget` and re-reading it in the get trap.
+  proxyTarget: MediaQueryState
+  proxy: UseMediaState
+  getSnapshot: () => MediaQueryState
+  componentContext?: ComponentContextI
+  uid?: object
+  debug?: DebugProp
+  optimizeForFirstRender: boolean
+}
+
+// the media keys a subscriber observes. null means the whole state object:
+// first-render mode has no getter tracking, so it can only compare identity.
+// getSnapshot and the bucket index MUST agree here, or a component gets skipped
+// for a key it reads.
+function mediaListenKeys(ref: MediaRef): Set<string> | null {
+  if (ref.optimizeForFirstRender) return null
+  return (ref.uid ? States.get(ref.uid)?.keys : undefined) || ref.keys!
+}
+
+function indexMediaListener(ref: MediaRef) {
+  const keys = mediaListenKeys(ref)
+  const cur = ref.listeningTo
+  if (cur !== undefined && sameMediaKeys(cur, keys)) return
+
+  unindexMediaListener(ref)
+  const cb = ref.onChange!
+
+  if (keys === null) {
+    globalListeners.add(cb)
+    ref.listeningTo = null
+    return
   }
+
+  ref.listeningTo = new Set(keys)
+  for (const key of keys) {
+    let bucket = listenersByKey.get(key)
+    if (!bucket) {
+      bucket = new Set()
+      listenersByKey.set(key, bucket)
+    }
+    bucket.add(cb)
+  }
+}
+
+function unindexMediaListener(ref: MediaRef) {
+  const keys = ref.listeningTo
+  if (keys === undefined) return
+  ref.listeningTo = undefined
+
+  const cb = ref.onChange!
+  if (keys === null) {
+    globalListeners.delete(cb)
+    return
+  }
+
+  for (const key of keys) {
+    const bucket = listenersByKey.get(key)
+    if (!bucket) continue
+    bucket.delete(cb)
+    // drop empties so a key removed by configureMedia leaves no bucket behind
+    if (!bucket.size) listenersByKey.delete(key)
+  }
+}
+
+function sameMediaKeys(a: Set<string> | null, b: Set<string> | null) {
+  if (a === null || b === null) return a === b
+  if (a.size !== b.size) return false
+  for (const key of b) {
+    if (!a.has(key)) return false
+  }
+  return true
 }
 
 export function useMedia(
@@ -191,25 +321,6 @@ export function useMedia(
   uid?: object
 ): UseMediaState {
   'use no memo'
-
-  type MediaRef = {
-    keys: Set<string> | null
-    lastState: MediaQueryState
-    pendingState?: MediaQueryState
-    renderVersion: number
-    unsubscribe?: () => void
-    // stable per-component closures + reusable Proxy. allocating new ones each
-    // render (via useSyncExternalStore + `new Proxy(state, ...)`) was a real
-    // per-component-per-render cost; we hold one Proxy whose target is swapped
-    // by mutating `proxyTarget` and re-reading it in the get trap.
-    proxyTarget: MediaQueryState
-    proxy: UseMediaState
-    getSnapshot: () => MediaQueryState
-    componentContext?: ComponentContextI
-    uid?: object
-    debug?: DebugProp
-    optimizeForFirstRender: boolean
-  }
 
   const internalRef = useRef<MediaRef | null>(null)
   if (!internalRef.current) {
@@ -264,7 +375,7 @@ export function useMedia(
         return ms
       }
 
-      const curKeys = (r.uid ? States.get(r.uid)?.keys : undefined) || r.keys!
+      const curKeys = mediaListenKeys(r)!
       const { lastState, pendingState } = r
 
       if (!curKeys.size) {
@@ -315,10 +426,11 @@ export function useMedia(
     ref.keys.clear()
   }
 
-  // manual subscription (same shape as useThemeStateSubscribed): same
-  // granular bailout via getSnapshot returning the same MediaQueryState ref
-  // when none of the component's touched keys changed, but fewer
-  // React-internal hook slots on Hermes than useSyncExternalStore.
+  // manual subscription (same shape as useThemeStateSubscribed): the
+  // subscription is indexed by the keys this component reads, so a breakpoint
+  // change never reaches a component that doesn't read it, and getSnapshot
+  // returns the same MediaQueryState ref for anything that slips through.
+  // fewer React-internal hook slots on Hermes than useSyncExternalStore.
   const [, forceUpdate] = useReducer(incReducer, 0)
   const state = isServer
     ? initState
@@ -348,27 +460,27 @@ export function useMedia(
       ref.optimizeForFirstRender || !ref.uid || !!States.get(ref.uid)?.enabled
 
     if (shouldSubscribe) {
-      if (!ref.unsubscribe) {
-        ref.unsubscribe = subscribe(() => {
-          const next = ref.getSnapshot()
-          if (next !== ref.proxyTarget) {
-            // mirrors update first either way, so a later natural render
-            // resolves the same media values the fast path committed
-            ref.proxyTarget = next
-            if (!ref.optimizeForFirstRender) {
-              ;(ref.proxy as any)[refSlot].proxyTarget = next
-            }
-            // native fast path (experimental): uid is createComponent's
-            // stateRef.current; when the component can commit the media-driven
-            // style change straight to the native tree, skip the re-render
-            if ((ref.uid as any)?.nativeMediaUpdate?.(forceUpdate)) return
-            forceUpdate()
+      ref.onChange ||= () => {
+        const next = ref.getSnapshot()
+        if (next !== ref.proxyTarget) {
+          // mirrors update first either way, so a later natural render
+          // resolves the same media values the fast path committed
+          ref.proxyTarget = next
+          if (!ref.optimizeForFirstRender) {
+            ;(ref.proxy as any)[refSlot].proxyTarget = next
           }
-        })
+          // native fast path (experimental): uid is createComponent's
+          // stateRef.current; when the component can commit the media-driven
+          // style change straight to the native tree, skip the re-render
+          if ((ref.uid as any)?.nativeMediaUpdate?.(forceUpdate)) return
+          forceUpdate()
+        }
       }
-    } else if (ref.unsubscribe) {
-      ref.unsubscribe()
-      ref.unsubscribe = undefined
+      // re-index every commit: the touched-key set is rebuilt each render, so a
+      // component that starts or stops reading a breakpoint changes buckets
+      indexMediaListener(ref)
+    } else {
+      unindexMediaListener(ref)
     }
 
     return () => {
@@ -376,8 +488,7 @@ export function useMedia(
       // a newer render bumps renderVersion before that cleanup, so equality here
       // means this is the final unmount cleanup.
       if (ref.renderVersion === renderVersion) {
-        ref.unsubscribe?.()
-        ref.unsubscribe = undefined
+        unindexMediaListener(ref)
       }
     }
   })
@@ -386,8 +497,6 @@ export function useMedia(
 }
 
 const incReducer = (c: number): number => c + 1
-
-const getServerSnapshot = () => initState
 
 let disableMediaTouch = false
 export function _disableMediaTouch(val: boolean) {
