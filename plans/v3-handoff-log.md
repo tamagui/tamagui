@@ -4277,3 +4277,74 @@ its own `git worktree`; the shared tree is never switched.
 1.18x warm does not earn a lane yet. Written down so the next person does not
 rediscover it, and so nobody quietly attributes it to the Metro cause once item
 30 names one.
+
+## 38. Should the injection guard exist at all? (2026-08-18)
+
+The owner questioned whether user-supplied strings in style props are worth
+defending against - "we could tell people not to do it" - weighed against effort
+and performance. That reframes 5b and item 29 from "finish the guard" to "keep
+the guard". Everything was held: the sixth-bypass stopgap, item 29's
+implementation, and the v2 backport.
+
+Three measurements at `bbb36d1afd`, run by the manager, nothing modified.
+
+### Dropping the guard buys back ONE over-refusal, not three
+
+| value | guard | prop path | `getCSSStylesAtomic` |
+| --- | --- | --- | --- |
+| `red /* hover:x */ blue` | allows | **nothing** | emits fine |
+| `red /* ; } { */ blue` | allows | emits | emits |
+| `font-family: my\;font` | **refuses** | nothing | nothing |
+
+The comment-with-colon case is NOT the guard. The guard permits it and the prop
+path drops it anyway, while `getCSSStylesAtomic` emits it correctly - **the two
+producers disagree on the same value**. Only D6's escaped semicolon is the
+guard's doing.
+
+### It costs 22.8 ns, and it is in the wrong place
+
+Benched over 8 representative real values: guard 22.8 ns per value against 435.8
+ns for a `getCSSStylesAtomic` call, so 5.23%.
+
+The detail that matters: READ, `getCSSStylesAtomic.ts:84-88`, the guard runs
+**before** the `directIdentities` cache lookup, so that 5.23% is paid on every
+call including cache hits rather than once per distinct value.
+
+**So there is a third option nobody had costed: move the guard behind the cache
+lookup.** A cache hit means that exact value already passed under this config,
+and the map clears on config change, so skipping it on a hit is sound. Repeat
+renders pay ~0 and only first sight pays 22.8 ns. If the objection is hot-path
+cost rather than the concept, that keeps the SSR defence for approximately
+nothing.
+
+### Item 29 is a correctness item, not only a security one
+
+`red /* hover:x */ blue` proves it: the defect survives guard removal untouched,
+because it is a parse/emit disagreement rather than a refusal. Even if the guard
+is dropped entirely, lexer faithfulness still buys one implementation instead of
+five (the Rust port is a fifth), the two producers agreeing, and this class of
+silent legitimate-value drop closed.
+
+### The sixth bypass, and why its test pinned it as safe
+
+`url(a` emits `._bi-...{background-image:url(a}` on the prop path and
+`{background-image:url(a;}` through the atomic path. Reproduced independently on
+both.
+
+The mechanism is the thing to remember: **the payload carries no dangerous
+character at all.** The unterminated url token swallows the `;}` that
+`createAtomicRules` itself appends, so the rule never closes and the next one is
+consumed. Every earlier bypass needed the value to contain something dangerous;
+this one eats the emitter's own terminator.
+
+That is exactly why `styleInjection.web.test.tsx` pins it as a value that must
+emit, with the comment "the scan has nothing to say about a value that carries
+none of the three characters". The test encodes the too-narrow framing - the same
+failure mode as the `'safe\;tail'` case, a pinned mistake that looks like
+coverage.
+
+### Recommendation on record
+
+p25843 is recommending KEEP + guard-behind-cache + item 29, because the
+relocation dissolves the perf objection and item 29 pays for itself on
+correctness. Awaiting the owner. Nothing implemented.
