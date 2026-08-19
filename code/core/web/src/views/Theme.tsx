@@ -43,14 +43,14 @@ import { ThemeDebug } from './ThemeDebug'
  * with. There are no known theme keys to offer in that case, so it contributes
  * nothing instead.
  */
-type InlineThemeValueProps = string extends ThemeKeys
+export type ThemeUpdate = string extends ThemeKeys
   ? {}
   : {
       [Key in Exclude<ThemeKeys, ReservedThemePropName>]?: VariableValIn
     }
 
 type ThemeComponentPropsOnly = UseThemeWithStateProps &
-  InlineThemeValueProps & { contain?: boolean }
+  ThemeUpdate & { contain?: boolean }
 
 const useInsertEffectCompat = isWeb
   ? React.useInsertionEffect || useIsomorphicLayoutEffect
