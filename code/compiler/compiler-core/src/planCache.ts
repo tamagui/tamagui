@@ -1,5 +1,13 @@
 import { randomBytes } from 'node:crypto'
-import { mkdir, readFile, rename, writeFile } from 'node:fs/promises'
+import {
+  mkdir,
+  readdir,
+  readFile,
+  rename,
+  stat,
+  unlink,
+  writeFile,
+} from 'node:fs/promises'
 import { dirname, join } from 'node:path'
 
 import type { HostModuleInput, ResolvedModuleId } from './contracts'
@@ -8,6 +16,23 @@ import { LOWERED_MODULE_PLAN_VERSION, type LoweredModulePlan } from './lower'
 import { moduleContentHash } from './graph'
 
 export const PLAN_CACHE_SCHEMA_VERSION = 1
+
+/**
+ * Entries are content addressed, so every edit of a shared module writes new
+ * files and nothing ever replaces the old ones. Twenty edits of one module a
+ * hundred consumers import leaves two thousand dead entries that would live
+ * forever. A pruned entry is just a miss, and a miss recompiles, so dropping
+ * entries can never be wrong - only slower.
+ *
+ * The cap has to sit well above the module count of a real project, or an
+ * unchanged rebuild of a project larger than the cap would miss on every module
+ * the last build evicted. Twenty thousand entries is a few hundred MB at the
+ * high end and comfortably holds a large app plus several generations of edits.
+ *
+ * It is a soft cap: pruning runs between batches of writes, so a store can sit
+ * up to one batch above it. Bounding growth is the point, not an exact size.
+ */
+export const PLAN_CACHE_MAX_ENTRIES = 20_000
 
 /**
  * The one on-disk cache location for a project. Metro's plan manifest already
@@ -139,11 +164,14 @@ export class JsonFileCache {
   #hits = 0
   #misses = 0
   #writes = 0
+  #writesSincePrune = 0
+  #prunedThisProcess = false
   readonly #created = new Set<string>()
 
   constructor(
     readonly root: string,
-    readonly schemaVersion: number
+    readonly schemaVersion: number,
+    readonly maxEntries: number = PLAN_CACHE_MAX_ENTRIES
   ) {}
 
   get stats(): { hits: number; misses: number; writes: number } {
@@ -195,6 +223,60 @@ export class JsonFileCache {
     await writeFile(temporaryPath, `${stableStringify(value)}\n`, 'utf8')
     await rename(temporaryPath, path)
     this.#writes++
+    // Once per process, plus once per cap-sized batch inside a long-lived one.
+    // Checking only the batch counter would never prune the common case, where
+    // every build is a fresh process writing far fewer entries than the cap.
+    this.#writesSincePrune++
+    const batch = Math.max(1, Math.floor(this.maxEntries / 4))
+    if (!this.#prunedThisProcess || this.#writesSincePrune >= batch) {
+      this.#prunedThisProcess = true
+      this.#writesSincePrune = 0
+      await this.#prune()
+    }
+  }
+
+  /**
+   * Drops the oldest entries once the store exceeds its cap, oldest by the later
+   * of read and write time so an entry a build keeps hitting is not treated as
+   * dead on filesystems that maintain access times.
+   */
+  async #prune(): Promise<void> {
+    const versionRoot = join(this.root, `v${this.schemaVersion}`)
+    let shards: string[]
+    try {
+      shards = await readdir(versionRoot)
+    } catch {
+      return
+    }
+    const paths: string[] = []
+    for (const shard of shards) {
+      const directory = join(versionRoot, shard)
+      let files: string[]
+      try {
+        files = await readdir(directory)
+      } catch {
+        continue
+      }
+      for (const file of files) {
+        if (file.endsWith('.json')) paths.push(join(directory, file))
+      }
+    }
+    // names are enough to know whether pruning is needed, so a store under its
+    // cap costs one readdir per shard and no stat at all
+    if (paths.length <= this.maxEntries) return
+    const entries: { path: string; usedAt: number }[] = []
+    for (const path of paths) {
+      try {
+        const stats = await stat(path)
+        entries.push({ path, usedAt: Math.max(stats.atimeMs, stats.mtimeMs) })
+      } catch {
+        // a concurrent build may have pruned it already
+      }
+    }
+    entries.sort((left, right) => left.usedAt - right.usedAt)
+    for (const entry of entries.slice(0, Math.max(0, entries.length - this.maxEntries))) {
+      await unlink(entry.path).catch(() => {})
+    }
   }
 }
 

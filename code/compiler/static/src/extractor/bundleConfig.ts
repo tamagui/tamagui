@@ -324,6 +324,55 @@ let hasBundledOnce = false
 // that's acceptable - better than nothing
 let hasLoggedBuild = false
 
+const packageNameByDirectory = new Map<string, string | null>()
+
+/** The name of the package a file belongs to, by nearest package.json. */
+function owningPackageName(file: string): string | null {
+  let directory = dirname(file)
+  const walked: string[] = []
+  while (true) {
+    const known = packageNameByDirectory.get(directory)
+    if (known !== undefined) {
+      for (const step of walked) packageNameByDirectory.set(step, known)
+      return known
+    }
+    walked.push(directory)
+    const manifest = join(directory, 'package.json')
+    if (existsSync(manifest)) {
+      let name: string | null = null
+      try {
+        name = JSON.parse(readFileSync(manifest, 'utf-8')).name ?? null
+      } catch {
+        name = null
+      }
+      for (const step of walked) packageNameByDirectory.set(step, name)
+      return name
+    }
+    const parent = dirname(directory)
+    if (parent === directory) {
+      for (const step of walked) packageNameByDirectory.set(step, null)
+      return null
+    }
+    directory = parent
+  }
+}
+
+/**
+ * Every Tamagui-owned file this process actually loaded, read off the one CJS
+ * module cache the compiler host requires through. Derived rather than listed:
+ * a hardcoded package list silently misses whatever the engine grows next, and
+ * this already covers 20+ packages the compiler reads through @tamagui/core.
+ */
+function requiredTamaguiPackageFiles(): string[] {
+  const found: string[] = []
+  for (const file of Object.keys(nodeRequire.cache)) {
+    if (!file.includes('.')) continue
+    const name = owningPackageName(file)
+    if (name === 'tamagui' || name?.startsWith('@tamagui/')) found.push(file)
+  }
+  return found
+}
+
 export async function bundleConfig(props: TamaguiOptions, rebuild = false) {
   const bundleKey = getBundleKey(props)
   const root = props.root || process.cwd()
@@ -621,7 +670,19 @@ export async function bundleConfig(props: TamaguiOptions, rebuild = false) {
       // the generated bundles inline every source they were built from,
       // including the component packages resolved out of node_modules, so their
       // bytes are a complete description of what the compiler host will read
-      stampSources: [...(configEntry ? [configOutPath] : []), ...componentOutPaths],
+      stampSources: [
+        ...(configEntry ? [configOutPath] : []),
+        ...componentOutPaths,
+        // The generated bundles inline the user's config and components, but
+        // `external` keeps @tamagui/core and @tamagui/web out of them, and
+        // everything reached only through those two is left out with them.
+        // Those packages hold the staticConfig and style engine every lowering
+        // is computed against, so without their bytes an in-place engine edit at
+        // the same version - exactly what `bun run watch` and
+        // `bun release --into` produce - would serve plans built by the
+        // previous engine.
+        ...requiredTamaguiPackageFiles(),
+      ],
     }
 
     currentBundle = res

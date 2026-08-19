@@ -2,6 +2,22 @@ import type { HostModuleInput, ResolvedModuleId } from './contracts';
 import { type LoweredModulePlan } from './lower';
 export declare const PLAN_CACHE_SCHEMA_VERSION = 1;
 /**
+ * Entries are content addressed, so every edit of a shared module writes new
+ * files and nothing ever replaces the old ones. Twenty edits of one module a
+ * hundred consumers import leaves two thousand dead entries that would live
+ * forever. A pruned entry is just a miss, and a miss recompiles, so dropping
+ * entries can never be wrong - only slower.
+ *
+ * The cap has to sit well above the module count of a real project, or an
+ * unchanged rebuild of a project larger than the cap would miss on every module
+ * the last build evicted. Twenty thousand entries is a few hundred MB at the
+ * high end and comfortably holds a large app plus several generations of edits.
+ *
+ * It is a soft cap: pruning runs between batches of writes, so a store can sit
+ * up to one batch above it. Bounding growth is the point, not an exact size.
+ */
+export declare const PLAN_CACHE_MAX_ENTRIES = 20000;
+/**
  * The one on-disk cache location for a project. Metro's plan manifest already
  * lives under it, and the build-time benchmark's "cold" state is defined as
  * deleting it, so everything the compiler persists belongs here and nowhere
@@ -64,7 +80,8 @@ export declare class JsonFileCache {
     #private;
     readonly root: string;
     readonly schemaVersion: number;
-    constructor(root: string, schemaVersion: number);
+    readonly maxEntries: number;
+    constructor(root: string, schemaVersion: number, maxEntries?: number);
     get stats(): {
         hits: number;
         misses: number;

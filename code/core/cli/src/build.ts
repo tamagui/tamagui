@@ -228,6 +228,7 @@ export const build = async (
           experimentalNativeFastPath:
             target === 'native' && targetOptions.experimental?.nativeFastPath === true,
           zeroRuntime: false,
+          development: process.env.NODE_ENV === 'development',
         }),
       })
       compilerFrontends.set(target, new CompilerFrontend())

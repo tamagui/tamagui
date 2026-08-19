@@ -65,7 +65,6 @@
     "esbuild": "^0.27.2",
     "esbuild-register": "^3.6.0",
     "fast-glob": "^3.2.11",
-    "find-cache-dir": "^3.3.2",
     "find-root": "^1.1.0",
     "fs-extra": "^11.2.0",
     "js-yaml": "^4.1.0",

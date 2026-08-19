@@ -194,6 +194,7 @@ const arms: Arm[] = [
     env: { EXTRACT: '1' },
     clearedForCold: [
       'node_modules/.cache/tamagui',
+      'project node_modules/.cache/tamagui',
       'node_modules/.vite',
       'project build output',
     ],
@@ -317,10 +318,16 @@ function clearColdState(arm: Arm, keepCompileCache: boolean) {
   if (arm.bundler === 'vite') {
     const dependencyRoot = arm.version === 'v2' ? projectRoot : repositoryRoot
     if (!keepCompileCache) {
-      rmSync(join(dependencyRoot, 'node_modules/.cache/tamagui'), {
-        recursive: true,
-        force: true,
-      })
+      // the compiler roots its cache at the Vite project root, which is where
+      // the command runs, while the optimizer cache lives beside the installed
+      // dependencies. clearing only the latter left cold and cold-cached in the
+      // same compile-cache state, so cold was never cold on this arm.
+      for (const root of new Set([dependencyRoot, projectRoot])) {
+        rmSync(join(root, 'node_modules/.cache/tamagui'), {
+          recursive: true,
+          force: true,
+        })
+      }
     }
     rmSync(join(dependencyRoot, 'node_modules/.vite'), { recursive: true, force: true })
   } else {

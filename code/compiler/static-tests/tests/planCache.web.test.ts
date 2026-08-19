@@ -1,8 +1,10 @@
-import { mkdtemp, rm, writeFile } from 'node:fs/promises'
-import { join, resolve } from 'node:path'
+import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises'
+import { createRequire } from 'node:module'
+import { dirname, join, resolve } from 'node:path'
 import { tmpdir } from 'node:os'
 
 import {
+  JsonFileCache,
   ModulePlanCache,
   PLAN_CACHE_SCHEMA_VERSION,
   ProjectGraph,
@@ -18,7 +20,7 @@ import {
   type ModuleClosureNode,
   type ResolvedModuleId,
 } from '@tamagui/compiler-core'
-import { compilerProjectStamp } from '@tamagui/static'
+import { compilerProjectStamp, loadCompilerProject, loadTamagui } from '@tamagui/static'
 import { afterEach, describe, expect, test } from 'vitest'
 
 const temporaryRoots: string[] = []
@@ -195,6 +197,91 @@ describe('compiler project stamp', () => {
         hostVersions: ['@tamagui/test-host@1.0.1'],
       })
     ).not.toBe(first)
+
+    // the host emits debug-receipt edits into plan.edits only in development,
+    // so a development plan is not one a production build may reuse
+    expect(
+      compilerProjectStamp({ ...base, stampSources: [artifact], development: true })
+    ).not.toBe(first)
+  })
+
+  test('the stamp reads engine package bytes, not just their version', async () => {
+    // @tamagui/core and @tamagui/web are esbuild-external, so the generated
+    // bundles carry none of their bytes. Editing the engine in place at the same
+    // version is what `bun run watch` and `bun release --into` do all day, and
+    // it has to move the stamp or every plan built by the previous engine is
+    // still served.
+    const project = await loadTamagui({
+      platform: 'web',
+      config: resolve(import.meta.dirname, 'lib/tamagui.config.cjs'),
+      components: ['@tamagui/core'],
+    })
+    const stampSources = project?.stampSources ?? []
+    const engineRoot = dirname(
+      createRequire(import.meta.url).resolve('@tamagui/web/package.json')
+    )
+    const engineFiles = stampSources.filter((file) => file.startsWith(`${engineRoot}/`))
+    expect(engineFiles.length).toBeGreaterThan(0)
+
+    const base = {
+      hostVersions: [],
+      target: 'web' as const,
+      componentModules: [],
+      disablePartialExtraction: false,
+      experimentalNativeFastPath: false,
+      zeroRuntime: false,
+      development: false,
+    }
+    const before = compilerProjectStamp({ ...base, stampSources })
+    expect(before).toBeTruthy()
+
+    const engineFile = engineFiles[0]!
+    const original = await readFile(engineFile)
+    try {
+      await writeFile(engineFile, Buffer.concat([original, Buffer.from('\n//edit\n')]))
+      expect(compilerProjectStamp({ ...base, stampSources })).not.toBe(before)
+    } finally {
+      await writeFile(engineFile, original)
+    }
+    expect(compilerProjectStamp({ ...base, stampSources })).toBe(before)
+  })
+
+  test('loadCompilerProject carries NODE_ENV into the stamp it hands every host', async () => {
+    const root = await mkdtemp(join(tmpdir(), 'tamagui-stamp-env-'))
+    temporaryRoots.push(root)
+    const artifact = join(root, 'components.config.cjs')
+    await writeFile(artifact, 'exports.shorthands = { p: "padding" }\n', 'utf8')
+
+    const stampFor = async (nodeEnv: string) => {
+      const previous = process.env.NODE_ENV
+      process.env.NODE_ENV = nodeEnv
+      try {
+        const project = await loadCompilerProject({
+          root,
+          target: 'web',
+          options: {},
+          generation: 'stamp-env-fixture',
+          async load() {
+            return {
+              tamaguiConfig: {} as any,
+              components: [],
+              stampSources: [artifact],
+            }
+          },
+        })
+        return project.cacheStamp
+      } finally {
+        if (previous === undefined) delete process.env.NODE_ENV
+        else process.env.NODE_ENV = previous
+      }
+    }
+
+    const development = await stampFor('development')
+    const production = await stampFor('production')
+    expect(development).toBeTruthy()
+    expect(production).toBeTruthy()
+    expect(development).not.toBe(production)
+    expect(await stampFor('production')).toBe(production)
   })
 })
 
@@ -238,6 +325,29 @@ describe('module plan cache storage', () => {
     expect(await cache.read(key, appId, 'digest-b')).toBeNull()
     expect(await cache.read(key, tokensId, 'digest-a')).toBeNull()
     expect(cache.stats).toMatchObject({ hits: 1, writes: 1 })
+  })
+
+  test('bounds its own growth instead of keeping every entry forever', async () => {
+    const root = await mkdtemp(join(tmpdir(), 'tamagui-plan-cache-cap-'))
+    temporaryRoots.push(root)
+    // entries are content addressed, so editing one shared module writes new
+    // files and never replaces the old ones
+    const cache = new JsonFileCache(root, PLAN_CACHE_SCHEMA_VERSION, 8)
+    const keys = Array.from({ length: 40 }, (_, index) => contentHash(`entry-${index}`))
+    for (const key of keys) await cache.write(key, { value: key })
+
+    const kept: string[] = []
+    for (const key of keys) {
+      if (await cache.read(key, (value) => value)) kept.push(key)
+    }
+    // a soft cap: pruning runs between batches of writes, so the store settles
+    // near the cap rather than exactly on it, and far below the 40 written
+    expect(kept.length).toBeLessThan(keys.length)
+    expect(kept.length).toBeLessThanOrEqual(8 + Math.floor(8 / 4))
+    // the most recent writes are the ones that survive
+    expect(kept).toContain(keys.at(-1))
+    // and a pruned entry is simply a miss, which is the path that recompiles
+    expect(await cache.read(keys[0]!, (value) => value)).toBeNull()
   })
 
   test('a different stamp or platform is a different key', () => {

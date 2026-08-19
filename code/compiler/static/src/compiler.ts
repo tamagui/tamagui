@@ -133,6 +133,7 @@ export async function loadCompilerProject({
       disablePartialExtraction,
       experimentalNativeFastPath,
       zeroRuntime: zeroRuntime !== 'off',
+      development: process.env.NODE_ENV === 'development',
     }),
   }
 }
@@ -161,6 +162,15 @@ export function compilerProjectStamp(input: {
   disablePartialExtraction: boolean
   experimentalNativeFastPath: boolean
   zeroRuntime: boolean
+  /**
+   * `process.env.NODE_ENV === 'development'` in the process that builds plans.
+   * The host emits debug-receipt edits into `plan.edits` only in development
+   * (compilerHost.ts's developmentDebugInstrumentation), so a development plan
+   * is not a plan a production build may reuse. This is the ONLY ambient input
+   * to a plan, and it lives in the stamp so every host inherits it rather than
+   * each one remembering to add it to its own key.
+   */
+  development: boolean
 }): string | null {
   if (!input.stampSources.length) return null
   const sources: [string, string][] = []
@@ -179,6 +189,7 @@ export function compilerProjectStamp(input: {
       plan: LOWERED_MODULE_PLAN_VERSION,
       packages: [...compilerPackageVersions, ...input.hostVersions].sort(),
       target: input.target,
+      development: input.development,
       componentModules: input.componentModules.map(({ moduleName, id }) => [
         moduleName,
         cleanId(id),
