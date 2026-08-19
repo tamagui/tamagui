@@ -4048,3 +4048,99 @@ left in this log: run `bun run lint` and `bun run check` at the REPO ROOT before
 calling anything done, because a package suite and `typecheck` cannot see either,
 and two of three CI cycles on the wave B tip went red on exactly those after
 every lane reported its own suites green.
+
+## 35. The wave B review, and a test that could not fail (2026-08-18)
+
+Three real defects, all READ on the reviewer's own build, fixed forward in the
+same wave (reviews do not chain).
+
+### Finding 1: the fourth and fifth injection bypasses
+
+`07c790466b`. Both were full rule injection, and both are the same shape as the
+first three: a place where CSS's tokenizer and the bespoke scan disagree about
+what construct they are inside.
+
+- **`url()` is its own tokenizer context.** CSS's consume-a-url-token recognises
+  NEITHER comments NOR strings inside an unquoted `url(`. The scan applied
+  comment and string containment there, so the real `)` hid inside the scan's
+  fake construct and the parens balanced.
+- **Backslash outside a string.** Escapes were handled only inside strings, so
+  `a\"` opened a fake string and `a\/*` a fake comment: scan inside, CSS outside.
+
+Six payloads returned false and injected, through BOTH producers, from a plain
+`<View backgroundImage={userString} />`. Confirmed independently of anyone's
+build by emitting each value the way `createAtomicRules` does with a sentinel
+rule after it and reading the CSSOM back in headless Chromium: all six produce a
+`.injected` rule the author never wrote, and four swallow the sentinel.
+
+**The fix refuses one thing LESS, and that is required rather than a shortcut.**
+An earlier report had pinned `url(a/*b.png)` as a comment bypass. Chromium
+disagrees: the URL is literally `a/*b.png` and the following rule survives. So
+modelling `url()` faithfully must let it through. The over-refusal was pinned as
+a refusal on reasoning that is correct for every function EXCEPT the one the fix
+is about. It was flipped with the reason in the test's comment, because
+over-refusal is not the safe direction, it is a different bug - this predicate
+already shipped one, refusing `red /* ; } { */ blue` until a positive control
+caught it.
+
+Suite is 73 tests, up from 62. Both directions quoted: eight payloads refused,
+all 21 permissive controls still emitting, and reverting only the two new
+mechanisms turns 7 red while the 21 stay green.
+
+### A test in that suite could not fail, and oxlint found it
+
+`styleInjection.web.test.tsx` contained a case written `'safe\;tail'`. In a JS
+string that is `'safe;tail'` - the backslash is not part of the value. So D6, the
+escaped-semicolon case, was never exercised. It passed the whole time because
+`'safe;tail'` is refused for an unrelated reason: a bare top-level `;`.
+
+Nothing was broken by it and no bypass hid behind it. What it means is that "62
+tests pass" was 61 tests plus one that could not fail, in the suite this campaign
+has been citing as the safety net for a predicate bypassed five times.
+
+Two things about how it was found are the point. It took **oxlint's
+no-useless-escape**, not a human reading the file - the author had read that line
+while writing it and again while quoting it. And oxlint only ran because the
+updated `AGENTS.md` requires `bun run lint` at the repo ROOT; a package suite
+cannot see it.
+
+### Finding 2: the mock was on one of two ignore paths
+
+`registerRequire.ts` still returned `{}` for every ignored module including
+worklets, so the `createSerializable` failure item 16 was written to fix was
+still live on the eval path used for every configured component given as a BARE
+PACKAGE NAME and for everything on the sync path, since `buildSync` takes no
+plugins.
+
+Item 16's original CONTENT_EQUAL evidence was real and exercised one of two
+paths, and both the worker and the manager read it as covering the feature. Item
+22's lane then hit the symptom independently - `staticEvaluationDiagnostics`
+failing with `createSerializable is not a function`, confirmed identical with all
+its own files reverted - so the diagnosis was reproduced by a lane that was not
+looking for it.
+
+Recorded as instructed: importing the vendor mock MUTATES the compiler's Node
+process globals (`mock.js` sets `_WORKLET`, `__RUNTIME_KIND` and overwrites
+`requestAnimationFrame`). A build-process side effect, judged acceptable, written
+down so nobody rediscovers it while debugging a strange build.
+
+### Finding 3: the bound was on the map, not on memory
+
+`42e4e0affa`. `archivedAutoVariableCSS` was never cleared or capped: cycling
+10001 values four times took archiveBytes 267,808 -> 546,727 -> 825,646 ->
+1,104,565, monotonic, while the dedupe map correctly stayed under 10k. The item
+was named for bounding memory and the cost landed on exactly that axis. Worse
+than heap: `createDesignSystem` inlines `getAutoVariableCSS()` into `:root` on
+every SSR assembly, so it grew SHIPPED CSS.
+
+The fix changed shape from what the review specified, and the change is an
+improvement: rather than clearing an archive at the generation boundary, the roll
+is deleted entirely and over-cap values stay literal. Clearing an archive manages
+a bad state; never minting unbounded variables avoids one, and it sidesteps the
+plan's LRU caveat completely, because a live-referenced variable cannot be
+dropped if nothing is ever dropped.
+
+That also made the stated validation bar unfalsifiable - "archiveBytes plateaus"
+is trivially true when archiveBytes is 0 - so the bar was replaced with the
+properties that survive the redesign: bounded retained memory, bounded emitted
+`:root` CSS, no live variable dropped, and the `mutatedVarId` collision closed.
