@@ -1840,9 +1840,12 @@ the resolution without budgeting for it.
 - `hidden={dynamic}` on a dom tag is consumed by the compiler with nothing static
   to lower and is silently dropped. The static-value diagnostic added in this
   batch covers only style-lowering attributes.
-- The public name for the Theme inline-values API is an open owner decision. The
-  only source flip point is the exported alias at
-  `code/core/web/src/views/Theme.tsx:53`; the `.d.ts` regenerates from a build.
+- The public name for the Theme inline-values API was an open owner decision.
+  DECIDED 2026-08-19: `ThemeUpdate`, shipped at 0c139ac308. The type was
+  internal (`InlineThemeValueProps`); it is now `export type ThemeUpdate` in
+  `code/core/web/src/views/Theme.tsx` and reaches the package surface through
+  the existing `export * from './views/Theme'`. The name matches the
+  `hasThemeUpdatingProps` vocabulary already in `useThemeState.ts`.
 
 ## 15. Zero-runtime Phase 1, Variables removal, engine audit (2026-08-17, later)
 
@@ -4347,7 +4350,41 @@ coverage.
 
 p25843 is recommending KEEP + guard-behind-cache + item 29, because the
 relocation dissolves the perf objection and item 29 pays for itself on
-correctness. Awaiting the owner. Nothing implemented.
+correctness.
+
+### DECIDED: DROP (owner, 2026-08-19). Shipped at 991d23eab4.
+
+The owner chose to drop the guard rather than keep or relocate it. The
+contract is now that a style value is AUTHORED, not user input.
+
+Removed: `carriesTopLevelInjection.ts`, both call sites (`emitValue` in
+`directStyle.ts` and `getStyleObject` in `getCSSStylesAtomic.ts`),
+`warnRefusedInjection` in `warnOnce.ts`, and the 493-line
+`styleInjection.web.test.tsx` that pinned every refusal path.
+
+What changed behaviourally, verified by running the suite rather than reasoned
+about. Two `parserAgreement.web.test.tsx` cases moved, in opposite directions:
+
+- **D2 moved agreement -> divergence.** `contributeStyleString`'s colonless
+  fast path never runs the clause scanner, and the guard was its only backstop.
+  `'none;}.injected{opacity 0'` now emits verbatim where `parseValue` refuses
+  it. That case is retained as a pinned divergence so the cost stays a decision
+  and not a rediscovery.
+- **D6 moved divergence -> agreement.** The guard was the strict one on
+  `'safe\;tail'`; with it gone the canonical parser and the prop path read the
+  escape the same way. The `escapes: 'delimiter-free'` corpus constraint exists
+  only because of the old divergence and could now be widened.
+
+`valueParser.ts`'s "NOT A SAFETY CHECK" doc block was rewritten: it used to say
+the two accepted-but-unsafe payloads were "not a live hole today" BECAUSE two
+producers called the guard independently. That sentence is now false, so it now
+states the real rule instead, which lives upstream of that file.
+
+**Item 29 is NOT closed by this.** Its security justification is gone, but the
+correctness half stands on its own: `red /* hover:x */ blue` is a parse/emit
+disagreement between the prop path and `getCSSStylesAtomic`, it was never the
+guard's doing, and it survives guard removal untouched. Do not read "guard
+dropped" as "item 29 dropped".
 
 ## 39. Item 30: the Metro cold gap is the compiler frontend prepass, not the cache (2026-08-18)
 
