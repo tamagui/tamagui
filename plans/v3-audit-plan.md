@@ -610,6 +610,14 @@ for the owner BEFORE any implementation. This is a design-proposal boundary, so
 no code beyond probes.** `TamaguiProvider` back-compat is a hard constraint of
 any proposal. Scheduled in wave C alongside item 24.
 
+**VALIDATION DONE 2026-08-19 — `plans/v3-item28-rsc-validation.md`.** All three
+questions answered with probe receipts; no code changed. Headline: `tamagui`
+fails to load under `--conditions=react-server` at `@tamagui/constants`, whose
+`useIsomorphicLayoutEffect` imports React hooks at module scope, while the zero
+build's emitted bundle already contains zero Tamagui runtime. Single-config is a
+structural prerequisite because RSC guarantees two core instances. **Awaiting
+owner sign-off; implementation still gated.**
+
 ---
 
 ## Dimension 2: Improvements
