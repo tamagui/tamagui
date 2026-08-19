@@ -107,6 +107,7 @@ more. Every row is expanded in the dimension sections below.
 | --- | --- | --- | ---: |
 | 1 | Fix docs that teach removed v3 APIs: camelCase theme keys, `blue10`-era palette, `<Stack>`, `getSize(x, {shift})` | Cleanup | S–M |
 | 2 | Add a size ceiling to `measure.mjs` (numbers already computed) and a budget to the kitchen-sink delta job | Improve | S then M |
+| 29 | Lexer faithfulness: strings terminated by newline, comment state, url-token; then the injection guard consumes `scanFlatValue` and the bespoke predicate retires | Security/Cleanup | M, DESIGN PROPOSAL FIRST |
 | 3 | Rename the compiler's `acceptsClassName` to `canFlatten` and report the term that actually failed | Cleanup | S |
 | 4 | Differential test, first slice: `styled()` definition vs call site vs runtime, compare `transitionDuration` | Testing | S |
 | 5 | Parser-agreement tests between the canonical grammar and the runtime scanners | Testing | M |
@@ -1395,3 +1396,54 @@ Two items already have campaign history worth knowing before you act on them:
 Status of the audited tree: block 2 (zero-runtime mode) is implemented and
 closed as of `de0d1940`. Its own records are `plans/v3-zero-runtime-mode.md` and
 handoff-log sections 14-23.
+
+### 29 Lexer faithfulness, then retire the bespoke injection predicate [high] [M, design proposal first]
+
+**Premise, READ and probed on 2026-08-18.** `carriesTopLevelInjection` has been
+bypassed **five** times, and every one was the same shape: a place where CSS's
+tokenizer EXITS a construct the bespoke scan still believes it is inside. Fake
+paren/quote depth, comment delimiters, an unterminated string at a newline, an
+unquoted `url(` (which recognises neither strings nor comments), and a backslash
+outside a string. Enumerating them is losing; the source-level answer is one
+faithful tokenizer that both `parseValue` and the guard consume.
+
+**Item 12 built the right scaffolding but it is not yet a safe foundation.**
+`scanFlatValue` is a clause lexer, not a CSS tokenizer. Probed directly:
+
+| input | `scanFlatValue` | correct for a guard? |
+| --- | --- | --- |
+| `red/*` | ACCEPTED | no, comment vector passes |
+| `red /* ; } { */ blue` | refused | no, over-refuses a legitimate value |
+| `"abc\n;}.x{y"` | ACCEPTED | **no, full rule injection passes** |
+| `a\";}.x{y` | refused | yes, escapes handled in all three states |
+| `url("a;b}c{d.png")`, `calc(100%/3)` | ACCEPTED | yes |
+
+So hanging the guard on it as it stands would fix one bypass class and
+**reintroduce two already closed**. That is why this is its own item and why the
+refuse-more patch shipped first as a stopgap.
+
+**Not a live hole today, and the reason must not be removed by accident.**
+`emitValue` and `getStyleObject` call the guard INDEPENDENTLY, and nothing treats
+`parseValue`'s verdict as a safety signal. The day something gates emission on
+`parseValue(...).ok`, both accepted payloads above ship. A standing warning now
+sits at `parseValue` itself (`valueParser.ts`), not only in this plan, so it is
+read at the call site.
+
+**Scope:** give `scanFlatValue` a comment state, terminate strings at a newline
+the way CSS does, and model `url(` as its own context where neither strings nor
+comments are recognised and `)` or bad-url-to-`)` ends it. Then the guard
+consumes it and the bespoke predicate retires.
+
+**Why this needs a design proposal before code, per p25843:** `scanFlatValue`
+now drives `parseValue` and all three runtime scanners, so changing what it
+accepts changes GRAMMAR SEMANTICS across four callers - D6-class decisions - and
+it runs on the native hot path, where item 12 already fought a 2-3x regression
+when the lexer was first extracted. The code is perhaps 40-60 lines; the risk is
+entirely in the semantics and the budget.
+
+**The safety net exists now and did not before**, which is the argument for doing
+it soon rather than never: item 12's parser-agreement corpus and 5b's 62
+injection tests both pin current behaviour in both directions.
+
+Owner sign-off gate, same as item 28: written proposal routed through p25843,
+no implementation before approval.
