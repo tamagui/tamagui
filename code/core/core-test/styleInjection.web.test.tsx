@@ -247,9 +247,6 @@ describe('comment delimiters', () => {
     'red/*',
     // closes one that was never opened
     'red*/',
-    // a comment is lexical, so paren depth does not contain one: this opens a
-    // comment that eats the closing paren and everything after it
-    'url(a/*b.png)',
   ]
 
   for (const source of unclosed) {
@@ -320,6 +317,96 @@ describe('a string that ends without its quote', () => {
     // CSS lets a string span lines when the newline is escaped, so the quote
     // does still close and nothing here is top level
     const source = '"abc\\\ndef;}x"'
+    expect(onlyRule({ [PROBE]: source })).toContain(`background-image:${source}`)
+  })
+})
+
+describe('url() is its own tokenizer context', () => {
+  // `url(` is the one function CSS does not tokenize the contents of. A quote
+  // does not open a string in there and `/*` does not open a comment: the token
+  // runs to the first unescaped `)`. A scan that applies ordinary containment
+  // inside it lets the REAL `)` hide in a fake string or a fake comment, so the
+  // parens look balanced and everything after the url is scanned as though it
+  // were still inside one.
+  //
+  // Verified in Chromium: each of these produces a `.injected` rule the author
+  // never wrote.
+  const escapes = [
+    // the `"` makes a bad-url token, which CSS still ends at the first `)`
+    'url(a"b);}.injected{opacity 0")',
+    "url(a'b);}.injected{opacity 0')",
+    // `/*` is literal inside a url, so the `)` right after `b` ends the token
+    'url(a/*b);}.injected{opacity 0*/)',
+  ]
+
+  for (const source of escapes) {
+    test(`refuses ${JSON.stringify(source)}`, () => {
+      expect(rules({ [PROBE]: source })).toEqual([])
+      expect(inlineValue({ [PROBE]: source })).toBe(null)
+      expect(getCSSStylesAtomic({ [PROBE]: source } as any)).toEqual([])
+    })
+  }
+
+  test('a comment opener inside a url is content, and still emits', () => {
+    // Chromium parses this as the URL `a/*b.png` and the rule after it survives,
+    // so there is no comment here to refuse. An earlier revision of this file
+    // pinned it as a refusal on the theory that a comment outranks paren depth;
+    // that is true of every function EXCEPT url(), which is the whole point of
+    // this block.
+    const source = 'url(a/*b.png)'
+    expect(onlyRule({ [PROBE]: source })).toContain(`background-image:${source}`)
+    expect(inlineValue({ [PROBE]: source })).toBe(source)
+  })
+
+  test('a semicolon inside a url is content, and still emits', () => {
+    const source = 'url(a;b.png)'
+    expect(onlyRule({ [PROBE]: source })).toContain(`background-image:${source}`)
+  })
+
+  test('a quoted url is an ordinary function whose string is real', () => {
+    // `url("...")` is a function token, not a url token, so the string inside it
+    // genuinely does contain its delimiters
+    const source = 'url("a;b}c{d.png")'
+    expect(onlyRule({ [PROBE]: source })).toContain(`background-image:${source}`)
+  })
+
+  test('a longer function name ending in url is not a url token', () => {
+    const source = 'myurl("a;b")'
+    expect(onlyRule({ [PROBE]: source })).toContain(`background-image:${source}`)
+  })
+})
+
+describe('a backslash outside a string', () => {
+  // CSS honours an escape wherever it appears, not only inside a string, so
+  // `a\"` is an escaped quote that opens nothing. A scan that only handles
+  // escapes inside strings reads it as a string opening and then treats the
+  // rest of the value as quoted content while the browser treats it as top
+  // level. Same for `a\/*` and a comment.
+  //
+  // Verified in Chromium: each of these produces a `.injected` rule.
+  const escapes = [
+    'a\\";}.injected{opacity 0"',
+    "a\\';}.injected{opacity 0'",
+    'a\\/*;}.injected{opacity 0*/',
+  ]
+
+  for (const source of escapes) {
+    test(`refuses ${JSON.stringify(source)}`, () => {
+      expect(rules({ [PROBE]: source })).toEqual([])
+      expect(inlineValue({ [PROBE]: source })).toBe(null)
+      expect(getCSSStylesAtomic({ [PROBE]: source } as any)).toEqual([])
+    })
+  }
+
+  test('an escape does not make a refused character safe', () => {
+    // consuming the escaped character stops it opening a delimiter; it does not
+    // buy the value a `;`. This is divergence D6, where the canonical parser
+    // accepts `safe\;tail` and the guard deliberately does not
+    expect(rules({ [PROBE]: 'safe\\;tail' })).toEqual([])
+  })
+
+  test('an escaped quote inside a url is still just content', () => {
+    const source = 'url(a\\"b.png)'
     expect(onlyRule({ [PROBE]: source })).toContain(`background-image:${source}`)
   })
 })
