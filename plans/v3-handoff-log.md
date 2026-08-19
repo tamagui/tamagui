@@ -3999,3 +3999,52 @@ against `MAESTRO_DRIVER_STARTUP_TIMEOUT: 360000`. INFERRED, from that shape plus
 the same job passing on the current tip alongside Detox: the known iOS harness
 flake. Checked rather than assumed, because "it passed elsewhere" is not a reason
 and this campaign has spent the day paying for unverified attributions.
+
+## 34. Wave B landed; wave C started (2026-08-18)
+
+**Wave B is landed and green at `c21b2dba9c`**, accepted by p25843 on the
+validation in section 33. Its one assigned lg review is spawned
+(`v3-waveB-review`), pointed at the ranked focus: 5b probed rather than read
+with a fourth bypass assumed and both directions checked, item 12's buffering
+and whether it can lose a partial emit that previously worked, item 16's ignore
+list as a potential next silent blanket plus the method behind its
+`CONTENT_EQUAL` claim, and the caller sweep for 19 and 20. The deliberate pins
+(D6, D7, compiled Tailwind hover, native `objectFit`) are marked
+do-not-relitigate.
+
+Eleven units: 5b, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21.
+
+### Wave C, started in parallel; the review boundary stays at c21b2dba9c
+
+Running, none needing owner sign-off:
+
+| item | lane | note |
+| --- | --- | --- |
+| 22 | getCSS precompute | risk carrier: must preserve since-last-call and exclude semantics |
+| 23 | media subs keyed by touched key | risk carrier: render-count fixture must count callbacks and committed renders separately |
+| 25 | internal-only cleanup | published surface explicitly excluded |
+| 26 | Metro source spans | carry the span the compiler already computed |
+| 27 | build-time perf harness | closes the gap that blocks compiler-speed claims |
+| 24 | evidence prep only | consumer receipt, no code change |
+
+Held, owner-gated, untouched: item 24's actual decision, and item 25's
+published-surface removals and renames (`calc`, `use-keyboard-visible`,
+`config-base`, `theme-base`, the `useEvent` collision, the `get-token` surface).
+The repo cannot see npm consumers, so those are release decisions. A deprecation
+plan may be written; nothing published gets removed or renamed.
+
+Both risk carriers were briefed with the failure mode named rather than the task
+alone. Item 22 is told that `getCSS` is not a pure function of current state and
+that one call proves nothing about since-last-call semantics, so the equality
+assertion runs at 1, 10 and 100 successive requests with an exclude case. Item 23
+is told that a callback firing is not a render, that React batches, bails out and
+double-invokes under StrictMode, and that a fixture reporting one number has not
+measured what it thinks. Both must show the fixture failing first.
+
+### The pre-flight rule is now in CLAUDE.md
+
+Wave B's most transferable lesson was written into the repo contract rather than
+left in this log: run `bun run lint` and `bun run check` at the REPO ROOT before
+calling anything done, because a package suite and `typecheck` cannot see either,
+and two of three CI cycles on the wave B tip went red on exactly those after
+every lane reported its own suites green.
