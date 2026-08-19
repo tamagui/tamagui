@@ -3918,3 +3918,84 @@ looked like a compiler regression, and it was three probes joining the fixture,
 two of which flatten while `receipt-runtime` bails by design on
 `disableOptimization`. Arithmetic that explains the delta exactly is what
 separates updating an expectation from papering over one.
+
+## 33. Wave B validated: the freeze, and what only a whole-workspace run finds (2026-08-18)
+
+Assembled wave green at `c21b2dba9c`. Checks (x2), Registry (x2), LSP Binaries
+and Native Tests (Detox) all `success`; iOS Maestro green on the tip.
+
+### The freeze was necessary and its first result was red
+
+Not one commit in wave B had a completed `Checks` run. Every push cancelled the
+previous run, so the branch had produced a long series of `cancelled`
+conclusions and almost no completed ones, and a share of that churn was the
+manager's own handoff-log commits. A cancelled run is not a pass: it may have
+died before reaching the step that would have failed.
+
+The first uncancelled run came back **red**, twice, for two different reasons,
+neither of which any lane could have caught:
+
+- **`check:unused` (knip).** Item 12 added `bun scripts/generateRustGrammar.ts`
+  to `checks.yaml` while a `check:rust` script already existed in
+  `style-grammar/package.json` doing exactly that. Knip flagged the raw path as
+  an unlisted binary. Fixed by invoking the declared script, which also leaves
+  one way to run it.
+- **`oxfmt --check`.** Item 16's `bundleConfig.ts` landed unformatted. Item 12
+  had reported this while the file was still uncommitted; the manager noted the
+  lane was "actively on it" and did not confirm. It wasn't.
+
+**Neither is findable from inside a lane.** No package suite runs `bun run check`
+or `bun run lint`; both are workspace-level. Combined with the three cross-lane
+breaks in section 32, that is five defects in one wave whose only detector is a
+whole-workspace run that no individual worker performs.
+
+**The sequencing error was the manager's.** Pre-flighting the workflow's own
+command list belongs at the START of a freeze, not after CI reports twice. The
+list is short and every entry runs locally: `bun audit --audit-level critical`,
+`bun run check`, `bun run typecheck`, `bun run lint`, `bun run check:rust`,
+`bun install --frozen-lockfile`, and the two `turbo run test:*` sweeps. All pass
+at the validated tip.
+
+### Measuring a shared checkout perturbs it
+
+Two false signals came from the manager's own verification runs:
+
+- `bun run receipts` failed at Metro's warm-cache assertion, "the warm rebuild
+  rescanned, so the warm path proves nothing". Cause: a `git restore` on a
+  source file INSIDE that package while receipts was still building, which
+  re-keys the plan cache. A clean re-run on the same tip exits 0 with
+  `warmBuildReusedModules` and `warmBuildReusedPlans` true. Same tip, same
+  command, only the interference differed.
+- That same restore dirtied the tree mid-measurement and blocked the size
+  baseline lane, which correctly stopped rather than measuring a state nobody
+  had authorized.
+
+The manager is a co-tenant like any other worker. Verification builds belong
+before a freeze, not during one.
+
+### `differential-tree.generated.tsx` should not be both committed and generated
+
+It has now silently rewritten itself during a receipts run, a baseline
+measurement and a plain `bun install`. Each time it reads as "someone edited the
+tree", and it has already cost one blocked measurement and one misattributed
+receipts failure.
+
+The content is stable; the churn is formatting. `vite.config.mts` regenerates it
+on every build and the generator emits unformatted output, while the committed
+copy is oxfmt-formatted, so regeneration always diverges by line breaks, quote
+style and a trailing comma. Chased to the byte, because a generated artifact that
+does not reproduce would have been a real finding: same 32 probes, same 12
+declarations, same values.
+
+Fix is one of: stop committing it, or have the generator emit formatted output.
+Carried as an item 17 follow-up.
+
+### The Maestro failure was infrastructure
+
+One iOS Maestro run failed on the pre-fix tip while its duplicate passed. READ:
+its log carries no product assertion failure at all; the errors are
+`NSPOSIXErrorDomain Code=13`, simulator references and a driver startup timeout
+against `MAESTRO_DRIVER_STARTUP_TIMEOUT: 360000`. INFERRED, from that shape plus
+the same job passing on the current tip alongside Detox: the known iOS harness
+flake. Checked rather than assumed, because "it passed elsewhere" is not a reason
+and this campaign has spent the day paying for unverified attributions.
