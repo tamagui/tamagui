@@ -1,5 +1,5 @@
 {
-  "measuredAtCommit": "579eb39ab6c243bc92cf3ba4c5a748b29efbdf56",
+  "measuredAtCommit": "e351f4a3c11b0504239dc156023e6e0476128d16",
   "nodeVersion": "24.16.0",
   "compression": "Node gzipSync default level; output depends on Node's bundled zlib",
   "thresholds": {
@@ -18,12 +18,12 @@
   },
   "baseline": {
     "all": {
-      "raw": 10832515,
-      "gzip": 1323458
+      "raw": 10836968,
+      "gzip": 1324420
     },
     "js": {
-      "raw": 10832515,
-      "gzip": 1323458
+      "raw": 10836968,
+      "gzip": 1324420
     },
     "css": {
       "raw": 0,
