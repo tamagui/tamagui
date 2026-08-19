@@ -54,7 +54,7 @@ describe('inline Theme values', () => {
     setDeviceAppearance('light')
     await safeLaunchApp({
       newInstance: true,
-      launchArgs: { directUseCase: 'VariablesNativeCase' },
+      launchArgs: { directUseCase: 'ThemeUpdateNativeCase' },
     })
     await waitFor(element(by.id('vars-native-val')))
       .toExist()

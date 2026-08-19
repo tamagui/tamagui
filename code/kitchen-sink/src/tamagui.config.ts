@@ -442,7 +442,7 @@ const tamaConf: InferTamaguiConfig<KitchenConfigInput> =
     media,
     animations, // default reanimated
 
-    // custom variables for VariablesCase (plans/variables.md)
+    // custom variables for ThemeUpdateCase (plans/variables.md)
     variables,
   })
 

@@ -47,7 +47,7 @@ const PatchedChild = React.memo(() => {
   )
 })
 
-export function VariablesCase() {
+export function ThemeUpdateCase() {
   const [patched, setPatched] = React.useState(false)
   const [scheme, setScheme] = React.useState<'light' | 'dark'>('light')
 

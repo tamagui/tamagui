@@ -3,7 +3,7 @@ import { setupPage } from './test-utils'
 import { getStyles } from './utils'
 
 test.beforeEach(async ({ page }) => {
-  await setupPage(page, { name: 'VariablesCase', type: 'useCase' })
+  await setupPage(page, { name: 'ThemeUpdateCase', type: 'useCase' })
 })
 
 const CONFIG_LIGHT_ACCENT = 'rgb(0, 90, 200)'

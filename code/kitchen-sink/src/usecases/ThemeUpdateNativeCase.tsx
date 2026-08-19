@@ -30,7 +30,7 @@ const ReadValues = () => {
   )
 }
 
-export function VariablesNativeCase() {
+export function ThemeUpdateNativeCase() {
   const [patched, setPatched] = React.useState(false)
   return (
     <YStack gap="4" padding="4">
