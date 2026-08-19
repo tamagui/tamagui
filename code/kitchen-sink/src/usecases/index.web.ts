@@ -288,6 +288,7 @@ const loaders: Record<string, () => ComponentType<any>> = {
   StyleProp: () => require('./StyleProp').StyleProp,
   SliderFormCase: () => require('./SliderFormCase').SliderFormCase,
   TabsOnInteraction: () => require('./TabsOnInteraction').TabsOnInteraction,
+  TabsHeadlessCase: () => require('./TabsHeadlessCase').TabsHeadlessCase,
   TextNestedInheritance: () => require('./TextNestedInheritance').TextNestedInheritance,
   TextOverflowEllipsis: () => require('./TextOverflowEllipsis').TextOverflowEllipsis,
   TabHoverAnimationCase: () => require('./TabHoverAnimationCase').TabHoverAnimationCase,

@@ -34,7 +34,7 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/helpers": "workspace:*",
+    "@tamagui/constants": "workspace:*",
     "@tamagui/use-controllable-state": "workspace:*",
     "@tamagui/use-direction": "workspace:*"
   },

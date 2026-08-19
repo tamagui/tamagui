@@ -4,8 +4,7 @@ import { createStyledHOC, styled, View } from '@tamagui/core'
 import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
 import { RovingFocusGroup, type RovingFocusGroupProps } from '@tamagui/roving-focus'
 import { SizeContext, type TokenSize } from '@tamagui/size'
-import { useControllableState } from '@tamagui/use-controllable-state'
-import { useDirection } from '@tamagui/use-direction'
+import { useTab, useTabContent, useTabs, useTabsList } from '@tamagui/tabs-headless'
 import type { GetProps, TamaguiElement } from '@tamagui/web'
 import { useEvent } from '@tamagui/web'
 import * as React from 'react'
@@ -119,6 +118,10 @@ export const TabsList = createStyledHOC(
   function TabsList(props: TabsListProps, forwardedRef) {
     const { __scopeTabs, loop = true, disabled = false, children, ...listProps } = props
     const context = useTabsContext(__scopeTabs)
+    const { listProps: headlessListProps } = useTabsList({
+      orientation: context.orientation,
+      disabled,
+    })
 
     return (
       <TabsListDisabledContext.Provider value={disabled}>
@@ -130,11 +133,7 @@ export const TabsList = createStyledHOC(
           asChild
         >
           <TabsListFrame
-            role="tablist"
-            aria-orientation={context.orientation}
-            aria-disabled={disabled || undefined}
-            data-orientation={context.orientation}
-            data-disabled={disabled ? '' : undefined}
+            {...headlessListProps}
             flexDirection={context.orientation === 'vertical' ? 'column' : 'row'}
             ref={forwardedRef}
             {...listProps}
@@ -169,9 +168,20 @@ export const TabsTab = createStyledHOC(
     const context = useTabsContext(__scopeTabs)
     const listDisabled = React.useContext(TabsListDisabledContext)
     const disabled = disabledProp ?? listDisabled
-    const triggerId = makeTriggerId(context.baseId, value)
-    const contentId = makeContentId(context.baseId, value)
-    const isSelected = value === context.value
+    const { isSelected, tabProps } = useTab({
+      baseId: context.baseId,
+      value,
+      selectedValue: context.value,
+      disabled,
+      activationMode: context.activationMode,
+      onChange: context.onChange,
+    })
+    const {
+      onPress: activateOnPress,
+      onKeyDown: activateOnKeyDown,
+      onFocus: activateOnFocus,
+      ...tabA11yProps
+    } = tabProps
     const [layout, setLayout] = React.useState<TabLayout | null>(null)
     const triggerRef = React.useRef<TamaguiElement>(null)
     const emitInteraction = useEvent(
@@ -244,45 +254,26 @@ export const TabsTab = createStyledHOC(
           onMouseLeave={composeEventHandlers(onMouseLeave, () => {
             emitInteraction('hover', null)
           })}
-          role="tab"
-          aria-selected={isSelected}
-          aria-controls={contentId}
-          data-state={isSelected ? 'active' : 'inactive'}
-          data-disabled={disabled ? '' : undefined}
-          id={triggerId}
+          {...tabA11yProps}
           theme={isSelected ? (activeTheme ?? null) : null}
           size={context.size}
-          disabled={disabled}
           {...triggerProps}
           // after triggerProps so active styles beat base styles from styled() skins
           {...(isSelected && activeStyle)}
           ref={composeRefs(forwardedRef, triggerRef)}
-          onPress={composeEventHandlers(onPress ?? undefined, (event) => {
-            const isPrimaryPointer =
-              !isWeb ||
-              ((event as unknown as React.MouseEvent).button === 0 &&
-                (event as unknown as React.MouseEvent).ctrlKey === false)
-
-            if (!disabled && !isSelected && isPrimaryPointer) {
-              context.onChange(value)
-            }
-          })}
+          onPress={composeEventHandlers(onPress ?? undefined, activateOnPress as any)}
           {...(isWeb && {
-            onKeyDown: composeEventHandlers(onKeyDown, (event) => {
-              if (!disabled && [' ', 'Enter'].includes(event.key)) {
-                context.onChange(value)
-                event.preventDefault()
-              }
-            }),
-            onFocus: composeEventHandlers(onFocus, () => {
-              if (layout) {
-                emitInteraction('focus', layout)
-              }
-              const isAutomaticActivation = context.activationMode !== 'manual'
-              if (!isSelected && !disabled && isAutomaticActivation) {
-                context.onChange(value)
-              }
-            }),
+            onKeyDown: composeEventHandlers(onKeyDown, activateOnKeyDown),
+            // emit the focus interaction before activating, matching the order
+            // the indicator animations were built against
+            onFocus: composeEventHandlers(
+              onFocus,
+              composeEventHandlers(() => {
+                if (layout) {
+                  emitInteraction('focus', layout)
+                }
+              }, activateOnFocus)
+            ),
             onBlur: composeEventHandlers(onBlur, () => {
               emitInteraction('focus', null)
             }),
@@ -298,24 +289,23 @@ export const TabsContent = createStyledHOC(
   function TabsContent(props: TabsContentProps, forwardedRef) {
     const { __scopeTabs, value, forceMount, children, ...contentProps } = props
     const context = useTabsContext(__scopeTabs)
-    const isSelected = value === context.value
-    const show = forceMount || isSelected
+    const { shouldMount, contentProps: headlessContentProps } = useTabContent({
+      baseId: context.baseId,
+      value,
+      selectedValue: context.value,
+      orientation: context.orientation,
+      forceMount,
+    })
 
-    if (!show) {
+    if (!shouldMount) {
       return null
     }
 
     return (
       <TabsContentFrame
         key={value}
-        data-state={isSelected ? 'active' : 'inactive'}
-        data-orientation={context.orientation}
-        role="tabpanel"
-        aria-labelledby={makeTriggerId(context.baseId, value)}
         // @ts-ignore hidden is a web-only accessibility attribute
-        hidden={!show}
-        id={makeContentId(context.baseId, value)}
-        tabIndex={0}
+        {...headlessContentProps}
         {...contentProps}
         ref={forwardedRef}
       >
@@ -339,21 +329,29 @@ const TabsComponent = createStyledHOC(
       size = true,
       ...tabsProps
     } = props
-    const direction = useDirection(dir)
-    const [value, setValue] = useControllableState({
-      prop: valueProp,
-      onChange: onValueChange,
-      defaultProp: defaultValue ?? '',
+    const {
+      value,
+      setValue,
+      baseId,
+      direction,
+      triggersCount,
+      registerTrigger,
+      unregisterTrigger,
+      tabsProps: headlessTabsProps,
+    } = useTabs({
+      value: valueProp,
+      onValueChange,
+      defaultValue,
+      orientation,
+      dir,
+      activationMode,
     })
-    const [triggersCount, setTriggersCount] = React.useState(0)
-    const registerTrigger = useEvent(() => setTriggersCount((count) => count + 1))
-    const unregisterTrigger = useEvent(() => setTriggersCount((count) => count - 1))
 
     return (
       <SizeContext.Provider size={size}>
         <TabsProvider
           scope={__scopeTabs}
-          baseId={React.useId()}
+          baseId={baseId}
           value={value}
           onChange={setValue}
           orientation={orientation}
@@ -366,7 +364,7 @@ const TabsComponent = createStyledHOC(
         >
           <TabsFrame
             direction={direction}
-            data-orientation={orientation}
+            {...headlessTabsProps}
             {...tabsProps}
             ref={forwardedRef}
           />
@@ -382,11 +380,3 @@ export const Tabs = withStaticProperties(TabsComponent, {
   Tab: TabsTab,
   Content: TabsContent,
 })
-
-function makeTriggerId(baseId: string, value: string) {
-  return `${baseId}-trigger-${value}`
-}
-
-function makeContentId(baseId: string, value: string) {
-  return `${baseId}-content-${value}`
-}

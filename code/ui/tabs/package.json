@@ -41,8 +41,7 @@
     "@tamagui/helpers": "workspace:*",
     "@tamagui/roving-focus": "workspace:*",
     "@tamagui/size": "workspace:*",
-    "@tamagui/use-controllable-state": "workspace:*",
-    "@tamagui/use-direction": "workspace:*",
+    "@tamagui/tabs-headless": "workspace:*",
     "@tamagui/web": "workspace:*"
   },
   "devDependencies": {

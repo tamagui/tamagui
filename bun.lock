@@ -3451,8 +3451,7 @@
         "@tamagui/helpers": "workspace:*",
         "@tamagui/roving-focus": "workspace:*",
         "@tamagui/size": "workspace:*",
-        "@tamagui/use-controllable-state": "workspace:*",
-        "@tamagui/use-direction": "workspace:*",
+        "@tamagui/tabs-headless": "workspace:*",
         "@tamagui/web": "workspace:*",
       },
       "devDependencies": {
@@ -3468,7 +3467,7 @@
       "name": "@tamagui/tabs-headless",
       "version": "2.7.7",
       "dependencies": {
-        "@tamagui/helpers": "workspace:*",
+        "@tamagui/constants": "workspace:*",
         "@tamagui/use-controllable-state": "workspace:*",
         "@tamagui/use-direction": "workspace:*",
       },
