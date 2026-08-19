@@ -115,9 +115,11 @@ jobs:
           path: ~/.cache/ms-playwright
           key: playwright-${{ runner.os }}-${{ steps.pw-version.outputs.version }}-chromium
 
-      - name: Install Playwright Chromium system dependencies
-        run: bunx playwright install-deps chromium
-        timeout-minutes: 10
+      # no `playwright install-deps` here: chromium's libraries are already on
+      # the ubuntu-latest image, and the only thing the command adds is CJK,
+      # Thai and Cyrillic fallback fonts nothing in this job renders. It also
+      # runs a full apt-get update, which is the step that intermittently hangs
+      # the runner. integration-tests still needs it for webkit.
 
       - name: Restore Turbo cache
         uses: actions/cache@v4
