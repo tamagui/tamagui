@@ -269,9 +269,10 @@ jobs:
           path: ~/.cache/ms-playwright
           key: playwright-${{ runner.os }}-${{ steps.pw-version.outputs.version }}-chromium-webkit
 
-      - name: Install Playwright system dependencies
-        run: bunx playwright install-deps chromium webkit
-        timeout-minutes: 10
+      # no `playwright install-deps` here: these shards are chromium-only and
+      # chromium's libraries are already on the ubuntu-latest image. webkit is
+      # what needs the 181-package apt install, and it lives in its own job
+      # below so 1708 of the 1738 tests never touch apt.
 
       - name: Restore Turbo cache
         uses: actions/cache@v4
@@ -282,7 +283,69 @@ jobs:
             turbo-${{ runner.os }}-
 
       - name: Run kitchen-sink web + render-count tests (shard ${{ matrix.shard }})
-        run: cd code/kitchen-sink && NODE_ENV=test npx playwright test --shard=${{ matrix.shard }}
+        run: |
+          cd code/kitchen-sink && NODE_ENV=test npx playwright test \
+            --shard=${{ matrix.shard }} \
+            --project=default \
+            --project=animated-css \
+            --project=animated-native \
+            --project=animated-reanimated \
+            --project=animated-motion
+        timeout-minutes: 20
+
+  # The four webkit projects are 30 tests across 6 files, and they are the only
+  # reason anything in this workflow runs `playwright install-deps`. Splitting
+  # them out keeps that apt call, which intermittently hangs on a slow Azure
+  # mirror, off the 1708 chromium tests. Unsharded: 30 tests do not need three
+  # runners.
+  integration-tests-webkit:
+    needs: [changes, playwright-browsers]
+    if: needs.changes.outputs.integration-relevant == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      NODE_OPTIONS: '--max-old-space-size=6144'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'pull_request' && (github.base_ref == 'v3-beta' || startsWith(github.base_ref, 'v3-') || startsWith(github.head_ref, 'v3-')) && github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 1
+
+      - name: Install
+        uses: ./.github/actions/install
+
+      - name: Get Playwright version
+        id: pw-version
+        run: |
+          version=$(node -p "require('./package.json').devDependencies['@playwright/test']")
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ steps.pw-version.outputs.version }}-chromium-webkit
+
+      - name: Install Playwright system dependencies
+        run: bunx playwright install-deps webkit
+        timeout-minutes: 10
+
+      - name: Restore Turbo cache
+        uses: actions/cache@v4
+        with:
+          path: .turbo/cache
+          key: turbo-${{ runner.os }}-${{ github.sha }}
+          restore-keys: |
+            turbo-${{ runner.os }}-
+
+      - name: Run kitchen-sink webkit projects
+        run: |
+          cd code/kitchen-sink && NODE_ENV=test npx playwright test \
+            --project=webkit \
+            --project=webkit-programs \
+            --project=webkit-select-native \
+            --project=webkit-sheet
         timeout-minutes: 20
 
   v3-ssr-hydration:
