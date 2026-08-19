@@ -27,6 +27,7 @@ concurrency:
 jobs:
   checks:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -120,10 +121,12 @@ jobs:
       - name: Install Playwright browsers
         if: steps.playwright-cache.outputs.cache-hit != 'true'
         run: bunx -p @playwright/test@${{ steps.pw-version.outputs.version }} playwright install chromium webkit
+        timeout-minutes: 10
 
   unit-tests:
     needs: playwright-browsers
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     env:
       NODE_OPTIONS: '--max-old-space-size=6144'
     steps:
@@ -171,6 +174,7 @@ jobs:
 
   changes:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     outputs:
       integration-relevant: ${{ steps.turbo-check.outputs.relevant }}
     steps:
@@ -236,6 +240,7 @@ jobs:
     if: needs.changes.outputs.integration-relevant == 'true'
     # gate is turbo's actual workspace dependency graph — no manual path list to maintain
     runs-on: ubuntu-latest
+    timeout-minutes: 45
     strategy:
       fail-fast: false
       matrix:
@@ -266,6 +271,7 @@ jobs:
 
       - name: Install Playwright system dependencies
         run: bunx playwright install-deps chromium webkit
+        timeout-minutes: 10
 
       - name: Restore Turbo cache
         uses: actions/cache@v4
@@ -283,6 +289,7 @@ jobs:
     needs: playwright-browsers
     if: github.event_name == 'pull_request' && (github.base_ref == 'v3-beta' || startsWith(github.base_ref, 'v3-') || startsWith(github.head_ref, 'v3-'))
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     env:
       NODE_OPTIONS: '--max-old-space-size=6144'
     steps:
@@ -307,6 +314,7 @@ jobs:
 
       - name: Install Playwright Chromium system dependencies
         run: bunx playwright install-deps chromium
+        timeout-minutes: 10
 
       - name: Run SSR hydration checks
         run: |
@@ -382,6 +390,7 @@ jobs:
 
       - name: Install Playwright system dependencies
         run: bunx playwright install-deps chromium
+        timeout-minutes: 10
 
       - name: Build every graph and record its receipts
         working-directory: ${{ matrix.dir }}

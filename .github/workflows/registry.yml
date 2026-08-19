@@ -59,11 +59,13 @@ jobs:
       - name: Install Playwright Chromium
         if: steps.playwright-cache.outputs.cache-hit != 'true'
         run: bunx -p @playwright/test@${{ steps.pw-version.outputs.version }} playwright install chromium
+        timeout-minutes: 10
 
   # fast, no workspace build needed — pure source reads (the generator reads the
   # A1 state vocabulary from style-grammar's committed src/states.ts).
   generate:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -91,6 +93,7 @@ jobs:
   web:
     needs: playwright-browsers
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     env:
       NODE_OPTIONS: '--max-old-space-size=6144'
     steps:
@@ -114,6 +117,7 @@ jobs:
 
       - name: Install Playwright Chromium system dependencies
         run: bunx playwright install-deps chromium
+        timeout-minutes: 10
 
       - name: Restore Turbo cache
         uses: actions/cache@v4
@@ -141,6 +145,7 @@ jobs:
 
   expo:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     env:
       NODE_OPTIONS: '--max-old-space-size=6144'
     steps:
