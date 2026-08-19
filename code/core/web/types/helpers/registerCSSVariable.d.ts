@@ -1,4 +1,5 @@
 import type { Variable, VariableVal } from '../types';
+export declare const getVariableGeneration: () => number;
 export declare const registerCSSVariable: (v: Variable | VariableVal) => void;
 export declare const variableToCSS: (v: Variable, unitless?: boolean) => string;
 export declare const tokensValueToVariable: Map<any, any>;
@@ -14,5 +15,7 @@ export declare const getCSSVariableCacheStats: () => {
     autoDeclarations: number;
     mutated: number;
     mutatedDeclarations: number;
+    autoRetainedBytes: number;
+    autoCSSBytes: number;
 };
 //# sourceMappingURL=registerCSSVariable.d.ts.map
