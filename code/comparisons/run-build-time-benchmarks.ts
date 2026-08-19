@@ -403,7 +403,7 @@ try {
       sourceDirtyBeforeOutput,
       untrackedFilesPresent,
       publicationQualification:
-        'Baseline harness receipt only. Do not publish a compiler-speed claim from these results. The arms use their supported real bundlers and pinned package trees, so bundler versions and compiler versions both differ. Cold runs clear named software caches but do not flush the operating system filesystem cache. The owner must decide whether later measurements are quotable.',
+        'Baseline harness receipt only. Do not publish a compiler-speed claim from these results. These are complete user-build wall clocks and do not isolate compiler work from bundler startup, graph traversal, transforms, emit, or filesystem access. The versioned compiler implementations and dependency trees also differ. Cold runs clear named software caches but do not flush the operating system filesystem cache. The owner must decide whether later measurements are quotable.',
       measurementBoundary:
         'wall-clock from spawning the production bundler command until that command exits after writing its complete build output; dependency installation is excluded',
       coldDefinition:
