@@ -4668,3 +4668,45 @@ owner's `991d23eab4` decision (a style value is authored, and the web lowering
 emits verbatim), not an oversight, and `parserAgreement`'s divergence D2 already
 pins it. The stale comment claiming that refusal "lives in emitValue instead" was
 corrected: it lives nowhere now.
+
+## 43. Five audit items were already fixed, and the rollup never said so (2026-08-19)
+
+Working down the un-gated remainder of `plans/v3-audit-plan.md`, the first item
+picked up (7, the theme provider registry leak) turned out to be fixed already.
+So did the next four. Every one was re-probed against the current tree rather
+than taken from the rollup.
+
+| item | claim in the rollup | actual state | fix |
+| --- | --- | --- | --- |
+| 7 | `cleanupThemeState` deletes the two maps only when `unsubscribe` is absent | both maps deleted outside the if/else, covering both branches, with a comment naming the portal-bridge reason | `5dd9b06f50` |
+| 8 | `Menu.Trigger` spreads `triggerProps` AFTER its composed handlers | `{...triggerProps}` spread FIRST; `onKeydown` deprecated in favour of `onKeyDown` with an alias fallback | `77f1bac400` |
+| 9 | `flatValueProgramsStreaming.web.test.tsx` is not wired into CI | core-test's `test:web` globs `*.web.test.ts*` and CI runs it through `bun turbo run test:web`; RUN locally, 7 tests pass | already covered |
+| 11 | `purgeCache` reads `module.constructor`, absent in Bun; `dedupedTokens` is module-global | `node:module` imported explicitly with an `if (!pathCache) return` guard, and `dedupedTokens` is function-local | `258bdd9de4` |
+| 14 | native motion driver is structurally incomplete | returns a typed `AnimationDriverStub` with explicit `isStub: true`, which is the fix the rollup prescribed | `da3b46454b` |
+
+`77f1bac400` also closed section 1.6's ContextMenu controlled-`open` bullet.
+
+### Why this happened, and the guard added
+
+Every one of those fixes landed on **2026-08-18**, the same day as the audit SHA
+`de0d1940`. The audit team read one tree while a fix wave landed on another, so
+the rollup was stale the day it was committed. Nothing went wrong in the audit;
+the two just raced.
+
+The cost is real though: this is exactly the setup for writing a fix that already
+exists, which slop commandment 2 exists to prevent. A staleness banner now sits
+at the top of the plan table telling the next reader to re-probe before working
+an item.
+
+### What is genuinely left, as of this commit
+
+- **1** docs teaching removed v3 APIs. Partly a false positive: the `1.0.0.mdx` /
+  `2.0.0.mdx` hits are versioned historical docs that SHOULD keep the old
+  spelling, and `how-to-upgrade.mdx` shows old APIs on purpose. The real targets
+  are current unversioned guides.
+- **13** document the three flagship surfaces [L], **17** full differential
+  harness [L], **18** native vitest resolution [L]. All genuinely open.
+- **2.8** the two KNOWN-OPEN measurement gaps.
+- **30** Metro cold-build gap: owner said leave it (2026-08-19).
+- **25** published `use-*` renames and **28** RSC implementation: both are owner
+  decisions, unchanged.

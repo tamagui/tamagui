@@ -97,6 +97,14 @@ true and priced here). Ideas are labeled **IDEA** and are not findings.
 
 ## The plan, ranked by impact against effort
 
+> **Staleness warning, verified 2026-08-19.** This rollup was written against
+> `de0d1940` and a wave of fixes landed on the SAME DAY, so several items were
+> already fixed before anyone read them here. Items 7, 8, 9, 11 and 14 were all
+> re-probed against the current tree and are DONE; the ContextMenu controlled-
+> `open` bullet in 1.6 went with item 8. **Re-probe an item before working it.**
+> Reading a stale row as open work is how the same fix gets written twice.
+
+
 Ranked as one list across all four dimensions, because the owner has to sequence
 one queue, not four. "Size" is S = under a day, M = a few days, L = a week or
 more. Every row is expanded in the dimension sections below.
@@ -125,11 +133,11 @@ was the dead Sheet dependency edge, the empty `debug="break"` branch, the three
 | 4 | Differential test, first slice: `styled()` definition vs call site vs runtime, compare `transitionDuration` | Testing | S |
 | 5 | Parser-agreement tests between the canonical grammar and the runtime scanners | Testing | M |
 | 6 | Rewrite the ten worst error messages; `throw new Error("‼️010")` is one of them | Improve | S |
-| 7 | Fix the theme provider registry leak (`themeProviderParents` survives normal cleanup) | Improve | S |
-| 8 | `Menu.Trigger` spreads caller event props over its own open/keyboard handlers | Cleanup | S |
-| 9 | Wire the existing streaming SSR test into CI | Testing | S |
+| 7 | Fix the theme provider registry leak (**ALREADY DONE**, `5dd9b06f50`) | Improve | S |
+| 8 | `Menu.Trigger` spreads caller event props over its own handlers (**ALREADY DONE**, `77f1bac400`) | Cleanup | S |
+| 9 | Wire the existing streaming SSR test into CI (**ALREADY DONE**, runs via turbo `test:web`) | Testing | S |
 | 10 | Re-run and republish the benchmark suite at this SHA; stamp and check artifact commits | Improve | M |
-| 11 | `generateThemes` crashes on its second call under Bun and leaks token state between runs | Cleanup | M |
+| 11 | `generateThemes` crashes on its second call under Bun (**ALREADY DONE**, `258bdd9de4`) | Cleanup | M |
 
 ### Do next: high impact, real effort
 
@@ -137,7 +145,7 @@ was the dead Sheet dependency edge, the empty `debug="break"` branch, the three
 | --- | --- | --- | ---: |
 | 12 | Make `@tamagui/style-grammar` the single owner of clause meaning; generate the Rust LSP tables from it and conformance-test them | Cleanup | M–L |
 | 13 | Document the three flagship v3 surfaces: root `html.*`, the compiler tier ladder, zero-runtime mode | Feature | L |
-| 14 | Native `@tamagui/config/animations-motion` returns an incomplete driver that the resolver silently rejects | Cleanup | M |
+| 14 | Native `animations-motion` returns an incomplete driver (**ALREADY DONE**, `da3b46454b`) | Cleanup | M |
 | 15 | Stop silently dropping props: native `onBeforeInput`/`onInvalid`/`onSelect`, `hidden={dynamic}`, `neverSkipProps` on native frames | Cleanup | M |
 | 16 | Replace compiler evaluation recovery (`proxyWorm`, `safeResolves`) with real diagnostics | Cleanup | M |
 | 17 | Full browser differential harness beyond the first slice | Testing | L |
