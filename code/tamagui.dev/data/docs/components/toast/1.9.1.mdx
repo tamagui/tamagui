@@ -219,7 +219,7 @@ Your toasts should be wrapped within a `ToastProvider`. This is usually done at 
 
 ### ToastViewport
 
-The portal for toasts to be directed to. Should be inside [ToastProvider](#toastprovider). Beyond [Stack Props](/docs/components/stacks/1.0.0), adds:
+The portal for toasts to be directed to. Should be inside [ToastProvider](#toastprovider). Beyond `View` props, adds:
 
 <PropsTable
   data={[
@@ -254,7 +254,7 @@ The portal for toasts to be directed to. Should be inside [ToastProvider](#toast
 
 ### Toast
 
-Contains the Title, Description, Action and Close component. Should be inside [ToastProvider](#toastprovider). Extends [Stack](/docs/components/stack#api) and adds:
+Contains the Title, Description, Action and Close component. Should be inside [ToastProvider](#toastprovider). Extends `View` and adds:
 
 <PropsTable
   data={[
@@ -356,11 +356,11 @@ Should be inside [Toast](#toast). Extends [SizableText](/docs/components/text/1.
 
 #### Toast.Close
 
-Should be inside [Toast](#toast). Extends [Stack](/docs/components/stacks/1.0.0). You can pass `asChild` to this component and use a custom `<Button>` inside.
+Should be inside [Toast](#toast). Extends `View`. You can pass `asChild` to this component and use a custom `<Button>` inside.
 
 #### Toast.Action
 
-Should be inside [Toast](#toast). Extends [Stack](/docs/components/stacks/1.0.0). You can pass `asChild` to this component and use a custom `<Button>` inside.
+Should be inside [Toast](#toast). Extends `View`. You can pass `asChild` to this component and use a custom `<Button>` inside.
 
 ### ToastImperativeProvider
 

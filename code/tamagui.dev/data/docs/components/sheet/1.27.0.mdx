@@ -61,10 +61,10 @@ Using the `createSheet` export, you can create a fully custom sheet without usin
 Here's an example:
 
 ```tsx
-import { Stack, styled } from '@tamagui/core'
+import { View, styled } from '@tamagui/core'
 import { createSheet } from '@tamagui/sheet'
 
-const Handle = styled(Stack, {
+const Handle = styled(View, {
   variants: {
     open: {
       true: {
@@ -77,7 +77,7 @@ const Handle = styled(Stack, {
   } as const,
 })
 
-const Overlay = styled(Stack, {
+const Overlay = styled(View, {
   variants: {
     open: {
       true: {
@@ -92,7 +92,7 @@ const Overlay = styled(Stack, {
   } as const,
 })
 
-const Frame = styled(Stack, {
+const Frame = styled(View, {
   backgroundColor: 'background',
   // can add open variant as well
 })

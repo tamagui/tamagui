@@ -59,10 +59,10 @@ If you define a `checked` variant, it will apply those styles.
 Here's an example:
 
 ```tsx
-import { Stack, styled } from '@tamagui/core'
+import { View, styled } from '@tamagui/core'
 import { createSwitch } from '@tamagui/switch'
 
-const Frame = styled(Stack, {
+const Frame = styled(View, {
   variants: {
     checked: {
       true: {
@@ -75,7 +75,7 @@ const Frame = styled(Stack, {
   } as const,
 })
 
-const Thumb = styled(Stack, {
+const Thumb = styled(View, {
   variants: {
     checked: {
       true: {
@@ -98,7 +98,7 @@ export const Switch = createSwitch({
 
 ### Switch
 
-`Switch` extends Stack views inheriting all the [Tamagui standard props](/docs/intro/props), plus:
+`Switch` extends View inheriting all the [Tamagui standard props](/docs/intro/props), plus:
 
 <PropsTable
   data={[
@@ -157,7 +157,7 @@ export const Switch = createSwitch({
 
 ### Switch.Thumb
 
-`Switch.Thumb` extends Stack views inheriting all the [Tamagui standard props](/docs/intro/props), plus:
+`Switch.Thumb` extends View inheriting all the [Tamagui standard props](/docs/intro/props), plus:
 
 <PropsTable
   data={[
