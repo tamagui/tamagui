@@ -4759,3 +4759,42 @@ So after re-probing every un-gated item, the genuine remainder of the audit is
 
 Plus the two KNOWN-OPEN measurement gaps in 2.8, item 30 (owner said leave it),
 and items 25 and 28, which are owner decisions rather than engineering work.
+
+## 44. Item 18 was fixed too, and its guard was never wired to run (2026-08-19)
+
+Item 18 was about to be started when the same re-probe habit paid off again.
+
+**The premise does not reproduce.** RUN, `vite.resolveConfig` against the real
+`code/packages/vite-plugin-internal/src/vite.config.ts`:
+
+| env | first web ext | first native ext |
+| --- | ---: | ---: |
+| `TAMAGUI_TARGET=native` | none | 0 |
+| `+ TEST_NATIVE_PLATFORM=ios` | none | 0 |
+| `+ TEST_NATIVE_PLATFORM=tvos` | none | 0 |
+| `+ TEST_NATIVE_PLATFORM=androidtv` | none | 0 |
+
+The audit measured `webIndex: 0, nativeIndex: 12`. Today there are no web
+extensions in a native resolve at all.
+
+**Why**, so the number is not just trusted: `code/compiler/vite-plugin/src/plugin.ts:961-964`
+contributes `resolve: {}` when `disableResolveConfig || enableNativeEnv`, and
+`getConfig.ts` passes `disableResolveConfig: isNative`. That second half landed
+in `35c4764f9a`, "test: make native Vitest resolution authoritative", on
+2026-08-18, alongside a triage of `domCompiledRuntime.native.test.tsx` and
+`programEligibility.native.test.tsx` and additions to `fake-react-native`.
+
+### The part that was actually broken
+
+That commit also added `src/getConfig.test.ts`, which is exactly the assertion
+the audit asked for: native extensions must precede web ones. **It had never
+run once.** `@tamagui/vite-plugin-internal` declared only `build`, `watch`,
+`clean` and `clean:build`, and CI runs `bun turbo run test:web`, so the package
+had no task in the graph.
+
+A regression guard nothing executes is not a guard. Added `test:web` to the
+package; `@tamagui/vite-plugin-internal#test:web` now appears in the turbo task
+graph and passes through the real CI command.
+
+Negative control, RUN: flipping `disableResolveConfig: isNative` to `false`
+fails the test with `expected false to be true`. Restored, green again.

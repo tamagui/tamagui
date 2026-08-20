@@ -149,7 +149,7 @@ was the dead Sheet dependency edge, the empty `debug="break"` branch, the three
 | 15 | Stop silently dropping props: native `onBeforeInput`/`onInvalid`/`onSelect`, `hidden={dynamic}`, `neverSkipProps` on native frames | Cleanup | M |
 | 16 | Replace compiler evaluation recovery (`proxyWorm`, `safeResolves`) with real diagnostics | Cleanup | M |
 | 17 | Full browser differential harness beyond the first slice | Testing | L |
-| 18 | Native vitest resolution: quantify how much "native" coverage is actually testing web, then fix and triage | Testing | L |
+| 18 | Native vitest resolution (**ALREADY DONE**, `35c4764f9a`; its guard test was never wired to run, fixed 2026-08-19) | Testing | L |
 | 19 | Bound the unbounded caches and give each a documented lifetime | Improve | M |
 | 20 | One `loadCompilerProject` entry point shared by Vite, Next, Metro and the loader | Cleanup | M–L |
 | 21 | Per-element "which tier handled this style, and why" developer receipt | Improve | M |
