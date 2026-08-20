@@ -306,6 +306,7 @@ const HeroH1 = styled(H1, {
 const HeroText = styled(Span, {
   position: 'absolute',
   text: 'center',
+  m: 0,
   fontFamily: 'inherit',
   fontSize: 'inherit',
   fontWeight: 'inherit',

@@ -6,7 +6,7 @@ import { ContainerLarge } from '~/components/Containers'
 const FeatureItem = ({ label, children }) => {
   return (
     <SizableText>
-      <SizableText fontFamily="mono" fontWeight="800" size="5">
+      <SizableText fontFamily="mono" size="5" fontWeight="800">
         {label}
       </SizableText>
       &nbsp;&nbsp;-&nbsp;&nbsp;

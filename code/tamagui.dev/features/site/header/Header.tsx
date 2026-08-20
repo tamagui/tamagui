@@ -948,6 +948,7 @@ const HeadAnchor = styled(Paragraph, {
   py: '3',
   cursor: 'pointer',
   fontSize: 18,
+  lineHeight: 25,
   color: 'color11 hover:color',
   rounded: 'hover:3',
   outlineColor: 'focus-visible:outline-color',

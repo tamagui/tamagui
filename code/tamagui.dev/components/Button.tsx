@@ -36,7 +36,7 @@ const buttonFrameSizeVariant = (val: ButtonSize, extras: VariantSpreadExtras<any
 }
 
 const buttonTextSizeVariant = (val: ButtonSize, extras: VariantSpreadExtras<any>) => {
-  const isSilkscreen = String(extras.font?.family).includes('Silkscreen')
+  const isSilkscreen = extras.props.fontFamily === 'silkscreen'
   const { text } = resolveTokenSize(val, {
     tokens: extras.tokens,
     font: extras.font!,
@@ -49,7 +49,7 @@ const buttonTextSizeVariant = (val: ButtonSize, extras: VariantSpreadExtras<any>
   })
   return {
     fontSize: text.fontSize,
-    ...(text.lineHeight !== undefined && { lineHeight: text.lineHeight }),
+    lineHeight: 25,
   }
 }
 

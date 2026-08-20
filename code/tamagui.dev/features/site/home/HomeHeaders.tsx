@@ -21,7 +21,7 @@ export const HomeH2 = styled(H2, {
   fontSize: 'sm:10 xs:9',
   lineHeight: 'sm:10 xs:9',
   size: '10',
-  letterSpacing: '-0.25px sm:-0.1px',
+  letterSpacing: '-0.25px xs:-0.1px',
 })
 
 export const HomeH3 = styled(H3, {
