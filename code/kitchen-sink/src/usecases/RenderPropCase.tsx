@@ -173,13 +173,13 @@ export function RenderPropCase() {
         <Text>Runtime Override to Anchor</Text>
       </RuntimeOverrideView>
 
-      {/* Test Stack with runtime render */}
-      <View data-testid="stack-as-section" render="section" padding="2">
-        <Text>Stack as Section</Text>
+      {/* Test View with runtime render */}
+      <View data-testid="view-as-section" render="section" padding="2">
+        <Text>View as Section</Text>
       </View>
 
-      <View data-testid="stack-as-aside" render="aside" padding="2">
-        <Text>Stack as Aside</Text>
+      <View data-testid="view-as-aside" render="aside" padding="2">
+        <Text>View as Aside</Text>
       </View>
 
       {/* Test Text with runtime render */}

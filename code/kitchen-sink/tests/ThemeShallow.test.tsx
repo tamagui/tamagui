@@ -89,7 +89,7 @@ test('themeShallow prop does not change element tag type', async ({ page }) => {
   const shallowContainer = page.locator(`#${TEST_IDS.themeShallowEnabled}`)
   await expect(shallowContainer).toBeVisible()
 
-  // The container itself should be a div (Stack renders as div)
+  // The container itself should be a div (View renders as div)
   const tagName = await shallowContainer.evaluate((el) => el.tagName.toLowerCase())
   expect(tagName).toBe('div')
 })

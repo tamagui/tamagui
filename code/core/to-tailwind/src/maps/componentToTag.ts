@@ -3,7 +3,6 @@ export const componentToTag: Readonly<Record<string, string>> = {
   XStack: 'div',
   YStack: 'div',
   ZStack: 'div',
-  Stack: 'div',
   Text: 'span',
   Paragraph: 'p',
   H1: 'h1',

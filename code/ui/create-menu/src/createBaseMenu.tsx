@@ -297,7 +297,6 @@ interface MenuItemIndicatorProps extends PrimitiveSpanProps {
  * MenuSeparator
  * -----------------------------------------------------------------------------------------------*/
 
-// type MenuSeparatorElement = React.ElementRef<typeof Stack>
 interface MenuSeparatorProps extends ViewProps {}
 
 /* -------------------------------------------------------------------------------------------------

@@ -687,63 +687,6 @@ function styledImpl<
   return component as any as StyledComponent
 }
 
-// type ParentV = GetVariantProps<typeof Text1>
-// type Props = GetProps<typeof Test>
-
-// const y = <Test someting>sadad</Test>
-// const z = <Test3 someting ork>sadad</Test3>
-
-//
-// merges variant types properly:
-
-// const OneVariant = styled(Stack, {
-//   variants: {
-//     variant: {
-//       test: { backgroundColor: 'gray' },
-//     },
-//   } as const,
-// })
-// const Second = styled(Stack, {
-//   variants: {
-//     variant: {
-//       simple: { backgroundColor: 'gray' },
-//       colorful: { backgroundColor: 'violet' },
-//     },
-//   } as const,
-// })
-// const TwoVariant = styled(OneVariant, {
-//   variants: {
-//     variant: {
-//       simple: { backgroundColor: 'gray' },
-//       colorful: { backgroundColor: 'violet' },
-//     },
-//   } as const,
-// })
-
-// type X = typeof OneVariant extends TamaguiComponent<any, any, any, infer V> ? V : any
-// type V = typeof Second extends TamaguiComponent<any, any, any, infer V> ? V : any
-
-// type V2 = VariantDefinitions<typeof OneVariant>
-
-// type R = typeof TwoVariant extends TamaguiComponent<any, any, any, infer V> ? V : any
-
-// type Keys = keyof X | keyof V
-// type Z = {
-//   [Key in Keys]: V[Key] | X[Key]
-// }
-
-// const a: Z = {
-//   variant: 'colorful',
-// }
-// const b: Z = {
-//   variant: 'simple',
-// }
-// const c: Z = {
-//   variant: 'invalid',
-// }
-
-// const y = <TwoVariant variant="colorful" />
-
 // ---- styled.a, styled.div, styled.button, etc. API ----
 
 type StyledHtmlFactory<Tag extends keyof HTMLElementTagNameMap> = <
