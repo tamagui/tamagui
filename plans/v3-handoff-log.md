@@ -4911,3 +4911,81 @@ engineering work:
 - **28** RSC implementation: owner-gated; validation delivered in
   `plans/v3-item28-rsc-validation.md`.
 - **2.8** two KNOWN-OPEN measurement gaps.
+
+## 47. The ThemeUpdate Detox flake, root-caused and fixed (2026-08-19)
+
+Closes the open item left by section 45. Two independent defects, both fixed in
+`b7df8cb07f`, both validated by running the file on a real simulator.
+
+### What actually made it flaky
+
+Detox reported `view is not hittable at its visible point` on
+`vars-native-toggle`, and the view it hit instead was a full-screen
+`_UIReplicantView` (402x874). That is the snapshot layer iOS puts over the
+window while it cross-fades a system appearance change. This suite runs with
+detox synchronization disabled (`detoxEnableSynchronization: 0` plus
+`device.disableSynchronization()` in `safeLaunchApp`, to dodge the
+KeyboardProvider hang), so nothing waited for that cross-fade and the tap that
+immediately follows an appearance flip landed on the snapshot.
+
+The repo already had the fix and this file was not using it. `withSync` in
+`e2e/utils/detox.ts` enables sync for one interaction and disables it again, and
+its own docblock says RN 0.83 Fabric needs sync for tap delivery. 12 e2e files
+use it. Wrapping both taps was the whole fix.
+
+Load explains the 50/50: the snapshot lingers longer on a busy CI runner.
+
+### The second bug, which was real but was not the flake
+
+`App.native.tsx` called `Appearance.setColorScheme('unspecified')` on every
+mount. Reading RN 0.83.2:
+
+- `Appearance.js` `setColorScheme(x)` sets its JS cache to `x` verbatim and
+  never consults native again.
+- `RCTAppearance.mm` `setColorScheme` only assigns
+  `window.overrideUserInterfaceStyle`. It does not touch the module's own
+  `_currentColorScheme`.
+- The only thing that re-syncs the two is an `appearanceChanged` event, which
+  the module suppresses whenever the recomputed scheme equals
+  `_currentColorScheme`, and which `RCTRootView` / `RCTSurfaceHostingView` do
+  not post at all while the app is backgrounded. There is no re-sync on
+  foreground.
+- `RCTConvert` maps `'unspecified'` to `UIUserInterfaceStyleUnspecified`, which
+  is already the ios window default.
+
+So on ios the call did nothing useful and made `useColorScheme()` return the
+literal string `'unspecified'`, which the app then papered over with
+`(scheme && scheme !== 'unspecified' ? scheme : null) || 'light'`. A device in
+dark mode launched the app in light mode. It is now gated to android, where RN
+0.83's kotlin conversion genuinely needs the explicit reset.
+
+Removing it opened the DynamicColorIOS gate at launch, so the test's
+`dynamic:false` launch expectation became `dynamicValue('dynamic', true)`. That
+is the correct behavior being asserted, not a relaxed assertion, and the
+"launch-state quirk" paragraph in the test header is gone.
+
+### Evidence
+
+Reused the main checkout's RN 0.83.2 dev client against the worktree's metro,
+so no ios rebuild was needed:
+
+    SKIP_BUILD=1 DETOX_IOS_APP_PATH=<main checkout .app> \
+      DETOX_DEVICE_UDID=<udid> npx detox test -c ios.sim.debug e2e/ThemeUpdate.test.ts
+
+- before: 6 runs, the tap failed every time, 3 of 5 tests red.
+- after: 4 runs (3 starting light, 1 starting dark), 5 of 5 green every time.
+- tests 3/4/5 went from 10898 / 15723 / 10769 ms of timeout-then-fail to
+  901 / 450 / 909 ms. The file is ~37s faster per shard as a side effect.
+
+### A hypothesis that was wrong, recorded so nobody retries it
+
+"The simulator was dark when the app launched, so the native cache was already
+dark and the equality guard swallowed the flip to dark." Tested directly by
+pinning the simulator appearance before launch and reading it back: 4 runs, 2
+starting light and 2 starting dark. Test 2 passed in every one (508-660 ms) and
+the failures were identical across both arms. The independent variable had no
+effect. Refuted.
+
+Section 45's other conclusions still hold: it is not detox synchronization at
+launch, there is no `device.setAppearance` in detox 20.47, and simctl applies
+the appearance before it returns.
