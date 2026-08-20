@@ -4798,3 +4798,58 @@ graph and passes through the real CI command.
 
 Negative control, RUN: flipping `disableResolveConfig: isNative` to `false`
 fails the test with `expected false to be true`. Restored, green again.
+
+## 45. The ThemeUpdate Detox flake is app-side, and the obvious fix is a no-op (2026-08-19)
+
+`e2e/ThemeUpdate.test.ts` fails roughly half the time on the iOS
+`auto-discovered` shard, always the same three tests, always the first one
+first:
+
+```
+✕ appearance flip applies dark config values and opens the dynamic gate (19015 ms)
+✕ patch under dark: dark bucket wins, literal pair stays dynamic, reference deopts
+✕ un-patching restores config values and the config pair
+Test Failed: Timed out while waiting for expectation:
+  TOHAVETEXT(text == "val:rgb(90, 90, 255)") WITH MATCHER(id == "vars-native-val") TIMEOUT(15s)
+```
+
+Tests 2 and 3 are cascades; test 1 is the only real failure. It is unrelated to
+any v3-beta work in flight, and it predates the current branch state (it also
+failed on `bf31ec9977`).
+
+### What is ruled out, with receipts
+
+- **It is not Detox synchronization.** `safeLaunchApp` already calls
+  `device.disableSynchronization()` after launch
+  (`e2e/utils/detox.ts:182,234,297,317`), so `waitFor` polls the view hierarchy
+  directly and a busy JS thread cannot stall it.
+- **There is no Detox API to switch to.** Detox 20.47.0 ships no
+  `setAppearance`; `grep` over `index.d.ts` and `src/` returns nothing, so
+  driving `xcrun simctl` is the only lever and the file's comment is accurate.
+- **It is NOT a race with `simctl`, which was the obvious theory and is wrong.**
+  MEASURED on a booted iPhone 16 Pro, 5 iterations: set the appearance, then
+  immediately read it back with `xcrun simctl ui <udid> appearance`. Every run
+  reported the NEW value on the very first read (`polls=0`). `simctl` has
+  already applied the style before it exits.
+
+  This matters because the natural fix, polling the `simctl` readback before
+  letting the app's 15s budget start, would have changed nothing at all. It
+  would have looked like a fix and shipped a no-op.
+
+### Where the remaining suspicion points
+
+The simulator applies the change synchronously and the app does not observe it
+within 15 seconds, so the gap is on the RN side. Test 1 of the file passes, so
+the app reads the scheme correctly AT LAUNCH; only a RUNTIME flip is missed.
+
+Concrete lead for whoever picks this up, labelled **GUESS**, not probed:
+`code/kitchen-sink/src/App.native.tsx:69-77` runs
+`Appearance.setColorScheme('unspecified')` in an effect on mount. On iOS that
+path sets `overrideUserInterfaceStyle`, and an installed override is a plausible
+reason a later system appearance change would not reach `useColorScheme()`. The
+file's own docblock already records that this call leaves
+`Appearance.getColorScheme()` returning `'unspecified'` at launch, so the call
+demonstrably has lasting effect on appearance reads.
+
+**Do not "fix" this by raising the 15s timeout.** The simulator applies the
+change in well under a second; a longer budget would only buy a slower red.
