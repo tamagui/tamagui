@@ -26,6 +26,7 @@ concurrency:
 
 jobs:
   checks:
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository || github.head_ref != 'v3-beta'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -55,6 +56,7 @@ jobs:
         run: bun run lint
 
   grammar-conformance:
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository || github.head_ref != 'v3-beta'
     # @tamagui/style-grammar owns what a flat value means, and the Rust LSP's
     # tables and conformance vectors are GENERATED from it. This job is what
     # makes that true rather than aspirational: it fails when the generated
@@ -88,6 +90,7 @@ jobs:
         run: cargo test --workspace
 
   playwright-browsers:
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository || github.head_ref != 'v3-beta'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     concurrency:
@@ -125,6 +128,7 @@ jobs:
 
   unit-tests:
     needs: playwright-browsers
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository || github.head_ref != 'v3-beta'
     runs-on: ubuntu-latest
     timeout-minutes: 30
     env:
@@ -173,6 +177,7 @@ jobs:
         run: bun turbo run test:native --filter=@tamagui/static-tests --filter=@tamagui/core-test --filter=@tamagui/components-test --concurrency=1
 
   changes:
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository || github.head_ref != 'v3-beta'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     outputs:
@@ -206,6 +211,10 @@ jobs:
               echo "::notice::Kitchen-sink integration forced for v3 PR ($HEAD_REF -> $BASE_REF)"
               exit 0
             fi
+          elif [ "${{ github.ref_name }}" = "v3-beta" ]; then
+            echo "relevant=true" >> $GITHUB_OUTPUT
+            echo "::notice::Kitchen-sink integration forced for v3-beta push"
+            exit 0
           else
             BASE="HEAD~1"
           fi
@@ -237,7 +246,9 @@ jobs:
 
   integration-tests:
     needs: [changes, playwright-browsers]
-    if: needs.changes.outputs.integration-relevant == 'true'
+    if: >-
+      (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository || github.head_ref != 'v3-beta') &&
+      needs.changes.outputs.integration-relevant == 'true'
     # gate is turbo's actual workspace dependency graph — no manual path list to maintain
     runs-on: ubuntu-latest
     timeout-minutes: 45
@@ -300,7 +311,9 @@ jobs:
   # runners.
   integration-tests-webkit:
     needs: [changes, playwright-browsers]
-    if: needs.changes.outputs.integration-relevant == 'true'
+    if: >-
+      (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository || github.head_ref != 'v3-beta') &&
+      needs.changes.outputs.integration-relevant == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 30
     env:
@@ -364,16 +377,19 @@ jobs:
 
   v3-ssr-hydration:
     needs: playwright-browsers
-    if: github.event_name == 'pull_request' && (github.base_ref == 'v3-beta' || startsWith(github.base_ref, 'v3-') || startsWith(github.head_ref, 'v3-'))
+    if: >-
+      (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository || github.head_ref != 'v3-beta') &&
+      ((github.event_name == 'push' && github.ref_name == 'v3-beta') ||
+      (github.event_name == 'pull_request' && (github.base_ref == 'v3-beta' || startsWith(github.base_ref, 'v3-') || startsWith(github.head_ref, 'v3-'))))
     runs-on: ubuntu-latest
     timeout-minutes: 20
     env:
       NODE_OPTIONS: '--max-old-space-size=6144'
     steps:
-      - name: Checkout PR head
+      - name: Checkout tested source
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.pull_request.head.sha }}
+          ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
           fetch-depth: 1
 
       - name: Install
@@ -426,8 +442,9 @@ jobs:
   v3-zero-runtime:
     needs: playwright-browsers
     if: >-
-      (github.event_name == 'push' && startsWith(github.ref_name, 'v3')) ||
-      (github.event_name == 'pull_request' && (github.base_ref == 'v3-beta' || startsWith(github.base_ref, 'v3-') || startsWith(github.head_ref, 'v3-')))
+      (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository || github.head_ref != 'v3-beta') &&
+      ((github.event_name == 'push' && startsWith(github.ref_name, 'v3')) ||
+      (github.event_name == 'pull_request' && (github.base_ref == 'v3-beta' || startsWith(github.base_ref, 'v3-') || startsWith(github.head_ref, 'v3-'))))
     runs-on: ubuntu-latest
     # ~8 minutes of bundling on a fast machine, and a CI runner has two cores
     timeout-minutes: 60

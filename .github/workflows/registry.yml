@@ -28,6 +28,7 @@ jobs:
   # fast, no workspace build needed — pure source reads (the generator reads the
   # A1 state vocabulary from style-grammar's committed src/states.ts).
   generate:
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository || github.head_ref != 'v3-beta'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -55,6 +56,7 @@ jobs:
         run: bun ./scripts/generate-registry.ts drift || true
 
   web:
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository || github.head_ref != 'v3-beta'
     runs-on: ubuntu-latest
     timeout-minutes: 30
     env:
@@ -117,6 +119,7 @@ jobs:
         timeout-minutes: 15
 
   expo:
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository || github.head_ref != 'v3-beta'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     env:
