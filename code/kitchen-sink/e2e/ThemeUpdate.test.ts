@@ -8,12 +8,12 @@
  * - DynamicColorIOS: config variables and literal-pair patches report dynamic
  *   colors once the appearance gate is open; referenced patches deopt
  *
- * Launch-state quirk: App.native.tsx calls
- * Appearance.setColorScheme('unspecified') for the RN 0.83 Android null
- * issue, which makes Appearance.getColorScheme() return 'unspecified' until
- * the simulator appearance changes at runtime. doesRootSchemeMatchSystem()
- * is conservatively false then, so DynamicColorIOS reports false at launch
- * for the whole app. The first runtime appearance flip opens the gate.
+ * Taps here go through withSync. Changing the simulator appearance makes iOS
+ * cross-fade the window through a full-screen _UIReplicantView snapshot, and
+ * this suite runs with detox synchronization disabled, so an unsynchronized tap
+ * right after a flip lands on that snapshot instead of the button and fails as
+ * "view is not hittable at its visible point". RN 0.83 Fabric needs sync for
+ * tap delivery anyway, which is what withSync is for.
  *
  * The case renders unwrapped by any <Theme> so the subtree follows the OS
  * scheme (inverses must be 0 for DynamicColorIOS to engage).
@@ -21,7 +21,7 @@
 
 import { execFileSync } from 'node:child_process'
 import { by, device, element, expect, waitFor } from 'detox'
-import { safeLaunchApp } from './utils/detox'
+import { safeLaunchApp, withSync } from './utils/detox'
 
 // detox 20.47 has no device.setAppearance; drive the native device directly
 const setDeviceAppearance = (mode: 'light' | 'dark') => {
@@ -67,9 +67,12 @@ describe('inline Theme values', () => {
 
   it('config variables resolve through useTheme at launch', async () => {
     await expect(element(by.id('vars-native-val'))).toHaveText(CONFIG_LIGHT_ACCENT)
-    // launch-state quirk: appearance override is 'unspecified' so the
-    // DynamicColorIOS gate is closed app-wide (see header comment)
-    await expect(element(by.id('vars-native-dynamic'))).toHaveText('dynamic:false')
+    // the gate is open from launch: the app no longer overrides the ios color
+    // scheme, so useTheme sees the real scheme and the config variable pair
+    // reports a DynamicColorIOS value without waiting for a flip
+    await expect(element(by.id('vars-native-dynamic'))).toHaveText(
+      dynamicValue('dynamic', true)
+    )
   })
 
   it('appearance flip applies dark config values and opens the dynamic gate', async () => {
@@ -88,7 +91,7 @@ describe('inline Theme values', () => {
   })
 
   it('patch under dark: dark bucket wins, literal pair stays dynamic, reference deopts', async () => {
-    await element(by.id('vars-native-toggle')).tap()
+    await withSync(() => element(by.id('vars-native-toggle')).tap())
     await waitFor(element(by.id('vars-native-val')))
       .toHaveText(PATCH_DARK_ACCENT)
       .withTimeout(10000)
@@ -108,7 +111,7 @@ describe('inline Theme values', () => {
   })
 
   it('un-patching restores config values and the config pair', async () => {
-    await element(by.id('vars-native-toggle')).tap()
+    await withSync(() => element(by.id('vars-native-toggle')).tap())
     await waitFor(element(by.id('vars-native-val')))
       .toHaveText(CONFIG_LIGHT_ACCENT)
       .withTimeout(10000)
