@@ -4710,3 +4710,27 @@ an item.
 - **30** Metro cold-build gap: owner said leave it (2026-08-19).
 - **25** published `use-*` renames and **28** RSC implementation: both are owner
   decisions, unchanged.
+
+### Item 1 was also nearly done (2026-08-19)
+
+Same story as the five above, checked claim by claim against the current docs
+rather than against the rollup:
+
+| claim | state |
+| --- | --- |
+| camelCase theme keys in `intro/themes.mdx`, `core/configuration.mdx`, `core/theme.mdx` | gone |
+| `blue10`/`gray10`-era palette in `styled.mdx`, `animations.mdx`, `intro/styles.mdx`, `tokens.mdx` | gone |
+| `getSize(x, { shift })` in the Button guide | gone; `tokens.mdx` documents the replacement (`getVariableValue(getSize(size)) * 0.6`) |
+| `Checkbox scaleSize`, `Checkbox.Indicator disablePassStyles`, `RadioGroup.Item scaleSize` | gone from the docs, and absent from source |
+| `getTokens({ prefixed })` in `core/tokens.mdx:38,40` | **was still there; fixed here** |
+
+`getTokens` is `(): TokensParsed` with no parameter
+(`code/core/web/src/config.ts:132`), and `directStyle.ts:437-440` states that
+v3's canonical token representation is unprefixed, so the option had no v3
+meaning at all. The paragraph now says that instead of showing a call that does
+not typecheck.
+
+**One deliberate non-change:** `guides/expo.mdx:115-117` uses `<Stack>` and
+`<Stack.Screen name="(tabs)">`. That is expo-router's navigator, not Tamagui's
+removed export, and changing it would break a correct example. The audit's F2
+did not distinguish the two.

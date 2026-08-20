@@ -113,7 +113,7 @@ more. Every row is expanded in the dimension sections below.
 
 | # | Item | Dim | Size |
 | --- | --- | --- | ---: |
-| 1 | Fix docs that teach removed v3 APIs: camelCase theme keys, `blue10`-era palette, `<Stack>`, `getSize(x, {shift})` | Cleanup | S–M |
+| 1 | Fix docs that teach removed v3 APIs (**DONE 2026-08-19**; all but `getTokens({ prefixed })` had already landed) | Cleanup | S–M |
 | 2 | Add a size ceiling to `measure.mjs` (numbers already computed) and a budget to the kitchen-sink delta job | Improve | S then M |
 
 **Item 25 correction, READ 2026-08-18.** The ranked entry assumes some `use-*`

@@ -31,14 +31,9 @@ or
 getTokens().size['small']
 ```
 
-If you'd like just an object containing the prefixed (starting with `$`) or non-prefixed values, you can use the `prefixed` option:
-
-```tsx
-// only non-$
-getTokens({ prefixed: false }).size.small
-// only $
-getTokens({ prefixed: true })['size'].small
-```
+`getTokens` takes no options in v3. Tokens are keyed by their unprefixed name,
+so `size.small` is the only spelling you need; the `prefixed` option that used to
+return a `$`-keyed copy is removed.
 
 What is returned is of type `Variable`, which is what Tamagui turns all tokens and theme values into internally in order to give them CSS variable names, as well as other things:
 
