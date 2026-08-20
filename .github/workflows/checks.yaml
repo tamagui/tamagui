@@ -328,8 +328,22 @@ jobs:
           key: playwright-${{ runner.os }}-${{ steps.pw-version.outputs.version }}-chromium-webkit
 
       - name: Install Playwright system dependencies
-        run: bunx playwright install-deps webkit
-        timeout-minutes: 10
+        run: |
+          sudo tee /etc/apt/apt.conf.d/80-ci-retries > /dev/null <<'APT'
+          Acquire::Retries "3";
+          Acquire::http::Timeout "30";
+          Acquire::https::Timeout "30";
+          APT
+
+          for attempt in 1 2; do
+            if bunx playwright install-deps webkit; then
+              exit 0
+            fi
+            echo "::warning::Playwright dependency install failed (attempt $attempt/2)"
+            sleep 10
+          done
+          exit 1
+        timeout-minutes: 12
 
       - name: Restore Turbo cache
         uses: actions/cache@v4
@@ -478,4 +492,3 @@ jobs:
             ${{ matrix.dir }}/test-results
           retention-days: 7
           include-hidden-files: true
-

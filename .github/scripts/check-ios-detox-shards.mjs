@@ -19,25 +19,25 @@ const seedShards = [
     name: '1/4',
     slug: '1-4',
     test_files:
-      'e2e/Accordion.test.ts e2e/CompilerExtraction.test.ts e2e/SheetKeyboardDrag.test.ts e2e/SheetFitKeyboardSafeArea.test.ts e2e/SheetPressResponderSheetRngh.test.ts',
+      'e2e/Accordion.test.ts e2e/CompilerExtraction.test.ts e2e/SheetKeyboardDrag.test.ts e2e/SheetFitKeyboardSafeArea.test.ts e2e/SheetPressResponderSheetRngh.test.ts e2e/ThemeUpdate.test.ts',
   },
   {
     name: '2/4',
     slug: '2-4',
     test_files:
-      'e2e/PressStyleNative.noRngh.test.ts e2e/CompilerTernaryActive.test.ts e2e/TabsOnInteraction.test.ts e2e/PointerEvents.test.ts e2e/GroupPressNative.test.ts e2e/ShorthandVariables.test.ts e2e/check-rngh-status.test.ts',
+      'e2e/PressStyleNative.noRngh.test.ts e2e/CompilerTernaryActive.test.ts e2e/TabsOnInteraction.test.ts e2e/PointerEvents.test.ts e2e/GroupPressNative.test.ts e2e/ShorthandVariables.test.ts e2e/check-rngh-status.test.ts e2e/AdaptLiveSlotSpike.test.ts e2e/FieldForm.test.ts',
   },
   {
     name: '3/4',
     slug: '3-4',
     test_files:
-      'e2e/SheetScrollableDrag.test.ts e2e/ThemeMutation.test.ts e2e/NativePortal.test.ts e2e/GroupPressTransitionMatrix.test.ts e2e/MenuRadioGroup.test.ts e2e/PressStyleScrollStuck.test.ts e2e/NativeMixedDriver.test.ts',
+      'e2e/SheetScrollableDrag.test.ts e2e/ThemeMutation.test.ts e2e/NativePortal.test.ts e2e/GroupPressTransitionMatrix.test.ts e2e/MenuRadioGroup.test.ts e2e/PressStyleScrollStuck.test.ts e2e/NativeMixedDriver.test.ts e2e/DialogSheetAdaptHandoff.test.ts e2e/SelectMultiple.test.ts e2e/ThemeLevels.test.ts',
   },
   {
     name: '4/4',
     slug: '4-4',
     test_files:
-      'e2e/PressStyleNative.test.ts e2e/SheetPressRegression.test.ts e2e/SheetKeyboardFitContent.test.ts e2e/SelectRemount.test.ts e2e/SheetDragResist.test.ts e2e/ThemeChangeBasic.test.ts e2e/NestedPressExclusive.test.ts e2e/MediaQueryGtMd.test.ts',
+      'e2e/PressStyleNative.test.ts e2e/SheetPressRegression.test.ts e2e/SheetKeyboardFitContent.test.ts e2e/SelectRemount.test.ts e2e/SheetDragResist.test.ts e2e/ThemeChangeBasic.test.ts e2e/NestedPressExclusive.test.ts e2e/MediaQueryGtMd.test.ts e2e/NativeRegistryCorrectness.test.ts',
   },
 ]
 

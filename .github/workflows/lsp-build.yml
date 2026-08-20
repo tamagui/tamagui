@@ -50,6 +50,9 @@ jobs:
     name: ${{ matrix.pkg }}
     runs-on: ${{ matrix.os }}
     timeout-minutes: 45
+    env:
+      CARGO_ZIGBUILD_VERSION: 0.23.0
+      ZIGLANG_VERSION: 0.16.0
     strategy:
       # one broken target should not hide the state of the other seven
       fail-fast: false
@@ -80,13 +83,6 @@ jobs:
           rustup toolchain install stable --profile minimal --no-self-update
           rustup target add ${{ matrix.target }}
 
-      - name: Install zig and cargo-zigbuild
-        if: matrix.zig
-        shell: bash
-        run: |
-          pip install ziglang
-          cargo install cargo-zigbuild --locked
-
       - name: Cache cargo
         uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
         with:
@@ -97,6 +93,22 @@ jobs:
             code/lsp/target
           key: lsp-${{ matrix.target }}-${{ hashFiles('code/lsp/Cargo.lock') }}
           restore-keys: lsp-${{ matrix.target }}-
+
+      - name: Cache cargo-zigbuild
+        if: matrix.zig
+        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
+        with:
+          path: ~/.cargo/bin/cargo-zigbuild
+          key: cargo-zigbuild-${{ runner.os }}-${{ runner.arch }}-${{ env.CARGO_ZIGBUILD_VERSION }}
+
+      - name: Install zig and cargo-zigbuild
+        if: matrix.zig
+        shell: bash
+        run: |
+          pip install "ziglang==$ZIGLANG_VERSION"
+          if ! command -v cargo-zigbuild > /dev/null; then
+            cargo install cargo-zigbuild --version "$CARGO_ZIGBUILD_VERSION" --locked
+          fi
 
       - name: Build
         working-directory: code/lsp

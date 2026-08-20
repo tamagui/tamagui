@@ -25,42 +25,6 @@ concurrency:
   cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 jobs:
-  playwright-browsers:
-    runs-on: ubuntu-latest
-    timeout-minutes: 20
-    concurrency:
-      group: playwright-browser-cache-registry-${{ github.head_ref || github.ref_name }}
-      cancel-in-progress: false
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 1
-
-      - name: Get Playwright version
-        id: pw-version
-        run: |
-          version=$(node -p "require('./package.json').devDependencies['@playwright/test']")
-          echo "version=$version" >> "$GITHUB_OUTPUT"
-
-      - name: Cache Playwright browsers
-        id: playwright-cache
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/ms-playwright
-          key: playwright-${{ runner.os }}-${{ steps.pw-version.outputs.version }}-chromium
-
-      - name: Setup Bun
-        if: steps.playwright-cache.outputs.cache-hit != 'true'
-        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2
-        with:
-          bun-version-file: 'package.json'
-
-      - name: Install Playwright Chromium
-        if: steps.playwright-cache.outputs.cache-hit != 'true'
-        run: bunx -p @playwright/test@${{ steps.pw-version.outputs.version }} playwright install chromium
-        timeout-minutes: 10
-
   # fast, no workspace build needed — pure source reads (the generator reads the
   # A1 state vocabulary from style-grammar's committed src/states.ts).
   generate:
@@ -91,7 +55,6 @@ jobs:
         run: bun ./scripts/generate-registry.ts drift || true
 
   web:
-    needs: playwright-browsers
     runs-on: ubuntu-latest
     timeout-minutes: 30
     env:
@@ -107,13 +70,21 @@ jobs:
 
       - name: Get Playwright version
         id: pw-version
-        run: echo "version=$(bunx playwright --version | awk '{print $2}')" >> $GITHUB_OUTPUT
+        run: |
+          version=$(node -p "require('./package.json').devDependencies['@playwright/test']")
+          echo "version=$version" >> "$GITHUB_OUTPUT"
 
       - name: Cache Playwright browsers
+        id: playwright-cache
         uses: actions/cache@v4
         with:
           path: ~/.cache/ms-playwright
           key: playwright-${{ runner.os }}-${{ steps.pw-version.outputs.version }}-chromium
+
+      - name: Install Playwright Chromium
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: bunx -p @playwright/test@${{ steps.pw-version.outputs.version }} playwright install chromium
+        timeout-minutes: 10
 
       # no `playwright install-deps` here: chromium's libraries are already on
       # the ubuntu-latest image, and the only thing the command adds is CJK,

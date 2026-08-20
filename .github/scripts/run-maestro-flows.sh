@@ -25,6 +25,8 @@
 #                  runner's 45-min cap                        (default: 360)
 #   MAESTRO_DEVICE_ID
 #                  simulator UDID to target explicitly        (default: booted)
+#   MAESTRO_APP_PATH
+#                  built app restored when clearState leaves it uninstalled
 #
 # pass one or more flow paths as arguments to run only those flows. with no
 # arguments, every yaml flow in FLOWS_DIR is discovered as before.
@@ -40,6 +42,7 @@ SKIP_FLOWS="${SKIP_FLOWS-OpenApp.yaml WarmUp.yaml}"
 METRO_PID_FILE="${METRO_PID_FILE:-/tmp/metro-pid}"
 FLOW_TIMEOUT="${FLOW_TIMEOUT:-360}"
 MAESTRO_DEVICE_ID="${MAESTRO_DEVICE_ID:-}"
+MAESTRO_APP_PATH="${MAESTRO_APP_PATH:-}"
 
 maestro_cmd=(maestro)
 if [ -n "$MAESTRO_DEVICE_ID" ]; then
@@ -56,6 +59,30 @@ metro_alive() {
 recover_sim() {
   echo "recovering simulator state (terminate app, keep Hermes bytecode cache)..."
   xcrun simctl terminate "${MAESTRO_DEVICE_ID:-booted}" "$BUNDLE_ID" 2>/dev/null || true
+
+  if [ -n "$MAESTRO_APP_PATH" ] && ! xcrun simctl get_app_container "${MAESTRO_DEVICE_ID:-booted}" "$BUNDLE_ID" app > /dev/null 2>&1; then
+    if [ ! -d "$MAESTRO_APP_PATH" ]; then
+      echo "::error::app is missing after the failed flow and MAESTRO_APP_PATH is invalid"
+      exit 1
+    fi
+
+    echo "restoring app removed by the interrupted clearState..."
+    xcrun simctl install "${MAESTRO_DEVICE_ID:-booted}" "$MAESTRO_APP_PATH"
+    app_ready=false
+    for attempt in $(seq 1 30); do
+      if xcrun simctl get_app_container "${MAESTRO_DEVICE_ID:-booted}" "$BUNDLE_ID" app > /dev/null 2>&1; then
+        app_ready=true
+        break
+      fi
+      echo "waiting for app registration (attempt $attempt/30)"
+      sleep 1
+    done
+    if [ "$app_ready" != "true" ]; then
+      echo "::error::restored app did not register within 30 seconds"
+      exit 1
+    fi
+  fi
+
   sleep 2
   if ! metro_alive; then
     echo "::error::Metro died during test run — aborting (every retry would fail)"
