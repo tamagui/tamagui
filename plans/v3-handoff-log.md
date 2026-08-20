@@ -4853,3 +4853,61 @@ demonstrably has lasting effect on appearance reads.
 
 **Do not "fix" this by raising the 15s timeout.** The simulator applies the
 change in well under a second; a longer budget would only buy a slower red.
+
+## 46. Item 17 was done as well; the audit's whole un-gated remainder is closed (2026-08-19)
+
+Item 17 read as the last open item, and it is not open either. I had also
+described it here as "transitions only", which was wrong: I read the test's
+FILENAME (`vite-transition-differential.test.ts`) instead of its corpus.
+
+**What actually exists**, READ from `fixtures/differential-corpus.mjs`: 32 cases
+across 8 placements.
+
+| dimension | covered |
+| --- | --- |
+| placement | `definition`, `prop`, `styled-call`, `nested-definition`, `dynamic-prop`, `style-object`, `style-array`, `tailwind` |
+| conditions | base, `hover`, `focus`, `wide` (media), `wide-hover`, `group-hover`, theme, platform |
+| precedence | same-slot-last-wins, depth-over-order, theme-over-media |
+| bailouts | dynamic prop, style object, style array |
+
+`tests/vite-transition-differential.test.ts` implements audit 4.1's design
+exactly: two routes from one generated authored tree, compared on computed CSS
+**longhands** rather than class names or emitted CSS, so the browser expands
+shorthands and resolves variables before either tier is read. It also runs
+`expectPhase`, which asserts ABSOLUTE values per phase, so the suite cannot pass
+by both tiers being equally wrong. Item 4's first slice is still explicitly
+marked in the file as the three `transitionDuration` probes; everything else is
+item 17.
+
+**It is CI-gated.** `checks.yaml:412-470`'s `v3-zero-runtime` matrix runs
+`npx playwright test` in `code/tests/zero-runtime`. RUN on the current tip
+`40986a8089`: `v3-zero-runtime (fixture, …)` and `(starter, …)` both success.
+
+History: `d7c620bd5b` is item 4's slice, `162f8a2eaf` "expand the browser
+differential style oracle" is item 17, `79fb8a1bba` pins the compiled Tailwind
+hover divergence as a `test.fail`. All 2026-08-18, the same wave as every other
+item in this ledger.
+
+### One genuine seam remains, and it is the authors' idea rather than the audit's
+
+`differential-corpus.mjs` says its shape "leaves a clean seam for style-grammar's
+value corpus to supply payloads in a later slice". That would swap the 32
+curated payloads for generated ones. Note that the primary assertion
+(`runtime` deep-equals `compiled`) needs no hand-authored expectations, so
+generated cases can be added with no `expected` and `expectPhase` skips them,
+keeping the curated 32 as the absolute anchor. `observeTier`'s
+`toHaveLength(32)` would have to move.
+
+That is an enhancement beyond what audit 4.1 specified, not an unfinished part
+of it. Audit 4.1's design is fully implemented.
+
+### Ledger
+
+Every un-gated item in `v3-audit-plan.md` is now closed. What remains is not
+engineering work:
+
+- **30** Metro cold-build gap: owner said leave it (2026-08-19).
+- **25** published `use-*` renames: a release decision.
+- **28** RSC implementation: owner-gated; validation delivered in
+  `plans/v3-item28-rsc-validation.md`.
+- **2.8** two KNOWN-OPEN measurement gaps.
