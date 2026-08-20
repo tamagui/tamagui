@@ -4734,3 +4734,28 @@ not typecheck.
 `<Stack.Screen name="(tabs)">`. That is expo-router's navigator, not Tamagui's
 removed export, and changing it would break a correct example. The audit's F2
 did not distinguish the two.
+
+### Item 13 had already shipped too, and what is actually left (2026-08-19)
+
+All three flagship surfaces have real, routed pages:
+`core/html-primitives.mdx` (108 lines), `core/compiler-tiers.mdx` (143), and
+`guides/zero-runtime.mdx` (222), listed in `features/docs/docsRoutes.tsx` at
+lines 48, 82 and 83. Finding F3 in `docs-drift.md` is closed.
+
+So after re-probing every un-gated item, the genuine remainder of the audit is
+**two items, both L, and both real**:
+
+- **17, the full browser differential harness.** The first slice from item 4
+  exists and is one dimension: `code/tests/zero-runtime/tests/vite-transition-differential.test.ts`
+  with `fixtures/differential-corpus.mjs` and
+  `scripts/generate-differential-tree.mjs`. Everything beyond transitions is
+  unbuilt.
+- **18, native vitest resolution.** Still live, and the config says so itself:
+  `code/packages/vite-plugin-internal/src/getConfig.ts:90-91` carries
+  `// 'react-native', breaks because vitest isnt doing .native.js`. The
+  platform extension lists are in place, but the resolution order block 1
+  diagnosed is not fixed, so the "how much native coverage is really web"
+  question is still unquantified.
+
+Plus the two KNOWN-OPEN measurement gaps in 2.8, item 30 (owner said leave it),
+and items 25 and 28, which are owner decisions rather than engineering work.

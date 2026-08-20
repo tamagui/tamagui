@@ -144,7 +144,7 @@ was the dead Sheet dependency edge, the empty `debug="break"` branch, the three
 | # | Item | Dim | Size |
 | --- | --- | --- | ---: |
 | 12 | Make `@tamagui/style-grammar` the single owner of clause meaning; generate the Rust LSP tables from it and conformance-test them | Cleanup | M–L |
-| 13 | Document the three flagship v3 surfaces: root `html.*`, the compiler tier ladder, zero-runtime mode | Feature | L |
+| 13 | Document the three flagship v3 surfaces (**ALREADY DONE**: `core/html-primitives.mdx`, `core/compiler-tiers.mdx`, `guides/zero-runtime.mdx`, all routed) | Feature | L |
 | 14 | Native `animations-motion` returns an incomplete driver (**ALREADY DONE**, `da3b46454b`) | Cleanup | M |
 | 15 | Stop silently dropping props: native `onBeforeInput`/`onInvalid`/`onSelect`, `hidden={dynamic}`, `neverSkipProps` on native frames | Cleanup | M |
 | 16 | Replace compiler evaluation recovery (`proxyWorm`, `safeResolves`) with real diagnostics | Cleanup | M |
