@@ -6,9 +6,10 @@
 // The package list is derived from the same workspace scan the release lane uses,
 // so it can never drift from what CI actually publishes.
 //
-// Both lanes in release.yml are covered by one trust entry: the beta job runs in
-// the npm-publish-beta environment and the stable job runs in none, so the entry
-// deliberately pins no environment. Adding one would break the other lane.
+// One trust entry covers both lanes in release.yml, and it deliberately pins no
+// environment. GitHub adds an `environment` claim to the OIDC token whenever a
+// job names one, so a job with an environment stops matching. Neither lane names
+// one, which is what keeps a single entry valid for both.
 //
 // Run it from a real terminal. npm asks for a fresh one-time password on trust
 // operations and answers it in a browser, so every npm call that can prompt
@@ -55,7 +56,18 @@ function runNpm(args: string[], cwd = root): void {
 function configureTrust(name: string): 'created' | 'already configured' {
   const result = spawnSync(
     process.execPath,
-    [npmCli, 'trust', 'github', name, '--repo', repository, '--file', workflowFile, '--allow-publish', '--yes'],
+    [
+      npmCli,
+      'trust',
+      'github',
+      name,
+      '--repo',
+      repository,
+      '--file',
+      workflowFile,
+      '--allow-publish',
+      '--yes',
+    ],
     { cwd: root, stdio: ['inherit', 'inherit', 'pipe'], encoding: 'utf8' }
   )
   if (result.error) throw result.error
@@ -77,10 +89,9 @@ function recordProgress(done: Set<string>): void {
 // the public registry answers this without auth, so 166 of them take seconds
 // where 166 npm subprocesses took ten minutes
 async function existsOnNpm(name: string): Promise<boolean> {
-  const response = await fetch(
-    `https://registry.npmjs.org/${name.replace('/', '%2F')}`,
-    { method: 'HEAD' }
-  )
+  const response = await fetch(`https://registry.npmjs.org/${name.replace('/', '%2F')}`, {
+    method: 'HEAD',
+  })
   if (response.status === 404) return false
   if (!response.ok) throw new Error(`registry returned ${response.status} for ${name}`)
   return true
@@ -141,7 +152,14 @@ async function main(): Promise<void> {
   mkdirSync(npmPrefix, { recursive: true })
   execFileSync(
     'npm',
-    ['install', '--prefix', npmPrefix, '--no-package-lock', '--no-save', `npm@${npmVersion}`],
+    [
+      'install',
+      '--prefix',
+      npmPrefix,
+      '--no-package-lock',
+      '--no-save',
+      `npm@${npmVersion}`,
+    ],
     { cwd: root, stdio: 'inherit' }
   )
   if (capture(process.execPath, [npmCli, '--version']) !== npmVersion) {
@@ -201,7 +219,15 @@ async function main(): Promise<void> {
       ) + '\n'
     )
     runNpm(
-      ['publish', '--workspaces', '--access', 'public', '--tag', 'bootstrap', '--ignore-scripts'],
+      [
+        'publish',
+        '--workspaces',
+        '--access',
+        'public',
+        '--tag',
+        'bootstrap',
+        '--ignore-scripts',
+      ],
       bootstrapDir
     )
     for (const name of missing) {
