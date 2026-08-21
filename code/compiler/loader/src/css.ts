@@ -1,5 +1,9 @@
 import type { TamaguiOptions } from '@tamagui/static'
 import type { LoaderContext } from 'webpack'
+import { fileURLToPath } from 'node:url'
+
+export const cssLoaderPath =
+  'url' in import.meta ? fileURLToPath(import.meta.url) : __filename
 
 export default function loader(this: LoaderContext<TamaguiOptions>) {
   this.async()

@@ -4,7 +4,7 @@ import { createHash } from 'node:crypto'
 import { readFile } from 'node:fs/promises'
 import path from 'node:path'
 import type { LoaderContext } from 'webpack'
-import { requireResolve } from './requireResolve'
+import { cssLoaderPath } from './css'
 import {
   getWebpackZeroController,
   publishZeroBuildInfo,
@@ -14,10 +14,6 @@ import {
 const { getPragmaOptions } = Static
 
 Error.stackTraceLimit = Number.POSITIVE_INFINITY
-
-// Resolve through the package export so both ESM and CJS entry points select a
-// real, requireable webpack loader artifact.
-const CSS_LOADER_PATH = requireResolve('tamagui-loader/css')
 
 let index = 0
 const compilerFrontends = new Map<string, InstanceType<typeof Static.CompilerFrontend>>()
@@ -197,7 +193,7 @@ export const loader = async function loader(
     if (extracted.plan.css) {
       const cssQuery = `cssData=${Buffer.from(extracted.plan.css).toString('base64url')}`
       const remReq = this.remainingRequest
-      const importPath = `${cssPath}!=!${CSS_LOADER_PATH}?${cssQuery}!${remReq}`
+      const importPath = `${cssPath}!=!${cssLoaderPath}?${cssQuery}!${remReq}`
       code = `${code}\n\nrequire(${JSON.stringify(importPath)})`
     }
 
