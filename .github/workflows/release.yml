@@ -36,15 +36,19 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     # this job publishes a beta automatically every time Checks goes green on a
-    # v3-beta push. the npm-publish-beta environment carries NO protection rules
-    # by owner instruction, so nothing pauses it. the environment is kept only
-    # because npmjs.com trusted publishing may pin an environment name for these
-    # packages, and it must match npm-publish-beta (or stay unset).
-    # protection rules live in repo settings, not here: Settings -> Environments.
-    # re-adding a required reviewer there silently reverts this to a manual gate,
-    # and queued runs are then evicted by the npm-release concurrency group
-    # rather than waiting, so betas stop being cut with no visible failure.
-    environment: npm-publish-beta
+    # v3-beta push.
+    #
+    # it deliberately declares NO environment. github adds an `environment` claim
+    # to the OIDC token whenever a job names one, and every package's trusted
+    # publisher on npmjs.com pins repository + release.yml with the environment
+    # left unset. declaring npm-publish-beta here made the token carry a claim
+    # those configs do not expect, so npm rejected the first publish with a 404
+    # and cut nothing. the stable job below names no environment either, which is
+    # why it matches the same configs and why one config serves both lanes.
+    #
+    # do not re-add an environment to get protection rules. that would have to be
+    # mirrored onto all 166 npm configs, and it would break the stable lane, which
+    # cannot carry the same claim.
     permissions:
       contents: read
       id-token: write
