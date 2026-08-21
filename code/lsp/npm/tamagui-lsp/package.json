@@ -9,6 +9,8 @@
     "directory": "code/lsp/npm/tamagui-lsp"
   },
   "type": "module",
+  "//skipPublish": "the language server releases through lsp-build.yml, which cross-compiles the eight platform leaves, publishes them, and only then publishes this umbrella. the main release lane cannot build those leaves, so an umbrella cut from it would pin optionalDependencies that do not exist on npm and every editor would silently get no server.",
+  "skipPublish": true,
   "main": "./index.js",
   "types": "./index.d.ts",
   "exports": {
