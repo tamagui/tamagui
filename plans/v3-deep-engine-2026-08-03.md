@@ -4,69 +4,8 @@ Branch `v3/engine-native-parity` (worktree `/Users/n8/.worktrees/v3-engine-nativ
 merged forward to `v3-beta` @ `09b3131b84`. Coordinator a2943. Predecessor
 checkpoint: `plans/v3-metro-lowering-2026-08-03.md` (read it first; its traps
 still apply). Items: A native runtime parity gap, B theme values in compiled
-native output, C domCompiledRuntime.native, D conditional font variants, plus
-the starter-discovery defect adjudicated mid-session (below).
+native output, C domCompiledRuntime.native, and D conditional font variants.
 
-## Starter discovery defect: FOUND, FIXED, LANDED (`b89a246648`)
-
-a2952 reported plan-lookup `no-entry` for workspace dist modules on a starter
-iOS export. Adjudicated with a bundle receipt, READ (reproduced in this
-worktree, metro-plugin dist verified schema 4 first): clean-cache
-`expo export:embed --platform ios --minify false` of `code/starters/expo-router`
-produced 2257 plan-misses (all `no-entry`, including the starter's own
-`app/*.tsx`), ZERO `__TamaguiNative` markers in the bundle, and a plan manifest
-containing exactly ONE entry: `node_modules/expo-router/entry.js`.
-
-Root cause (READ `frontend.ts #scan`): graph discovery was BFS from Metro
-`entryFiles` following scanned imports, and external (node_modules) deps are
-never followed. expo-router's entry lives in node_modules and reaches app
-source only through `require.context`, which an import scan cannot see, so the
-BFS died at depth 0. The bench app never hit this because its entry `index.js`
-is project source. Consequence stated plainly: until this fix, the compiled
-gate receipt (V3 4.37x) was taken on a topology no default Expo app has —
-**v3 had no evidence of compiled-native benefit for real users**, and 4.37x
-must not be quoted as a user-facing number for pre-fix builds.
-
-The fix: `#scan` seeds its roots with a walk of `projectRoot` for
-compiler-source files, in addition to entry BFS. Walk prunes `node_modules`,
-`ios`, `android`, `dist`, `build`, `coverage`, `types`, `web-build`, and every
-dot-directory. Walk-seeded files are speculative: compile failures there are
-silent (if the bundle really includes one, the transformer's plan-miss warning
-still fires — that signal is unchanged). The walked file list is hashed into
-`scanOptionsHash`, so adding/removing project files invalidates the plan cache
-correctly. Workspace packages still enter via imports exactly as before (the
-resolver realpaths before its node_modules test).
-
-Acceptance receipt post-fix, READ: plan-miss 2257 -> 0; bundle markers
-0 -> **114** `__TamaguiNative`; manifest 1 -> 2328 entries; monorepo typecheck
-green; metro-plugin tests 5/5 with a new regression test verified to FAIL on
-pre-fix code (frontend.ts swapped back: 1 failed / 4 passed).
-
-Dist scope, settled for a2952: workspace dist lands in compiler scope VIA REAL
-IMPORTS, never via walk. `Separator.native.js` plans clean with `found: 0`
-because a pure styled() definition file has nothing to lower — the app usage
-sites lower instead (`app/(tabs)/index.tsx`: 9 found / 7 flattened). Dist
-lowering itself is proven by ToastComposable.native.js (3 lowered),
-Switch.native.js and SheetScrollView.native.js carrying real edits. Starter
-aggregate: 52 found / 22 flattened / 30 bailed (mine the bail list for item D).
-
-Walk-cost timing (drained window, busiest-of-three 85.35% idle before; two
-independent A/B pairs 10 min apart agreeing within 1s): steady-state warm
-builds 7s pre-fix vs 7s post-fix — per-build walk overhead below 1s
-resolution. Plan-cache-cold builds 13s pre-fix vs 40-41s post-fix; the +27s is
-NOT walk overhead, it is one-time plan GENERATION for 2328 modules where the
-broken pre-fix discovery planned 1 (~12ms/module), paid only on plan-cache
-invalidation. First-ever builds (cold npx/haste) are minutes in either arm and
-were not A/B'd. Caveat recorded: one post-run idle sample read 61.9% about a
-minute after the last build; the cross-pair agreement is the evidence the
-numbers are clean.
-
-Scaling baseline for whoever optimises plan generation later: ~12ms/module,
-LINEAR in graph size (2328 modules -> ~27s). A 10k-module app pays roughly two
-minutes on every plan-cache invalidation (config edit, dependency change), and
-the documented cache-staleness workaround (clear Metro cache after config
-changes) triggers exactly that replan — the workaround is not free and the
-known-issues entry should say so.
 
 ## Cache-key staleness: instance 4 of a repeating defect pattern
 
@@ -125,10 +64,8 @@ session scratchpad):
   `$background`. A `$`-prefixed string is a plain literal now.
 
 Receipts so far: 3 native snapshots updated (each diff verified as the split
-working: frozen `"color":"#f9fafb"` etc. replaced by live theme reads);
-**the real starter bundle carries 11 live `_theme[...].get()` reads inside
-`_withStableStyle` wrappers** (item B demonstrating itself in production
-output). New `tests/themedFlatten.native.test.tsx` renders compiled output
+working: frozen `"color":"#f9fafb"` etc. replaced by live theme reads). New
+`tests/themedFlatten.native.test.tsx` renders compiled output
 under TamaguiProvider and asserts backgroundColor flips light->dark on theme
 change; the modifier-bailout test passes, the theme-switch test was being
 fixed (assertion shape, not behavior) when the timing window opened.
@@ -140,9 +77,6 @@ output); commit; then the item-2 housekeeping updates in
 
 ## Traps (new ones this session; predecessor's all still apply)
 
-- The starter workspace hoists expo to the MONOREPO root: `export:embed` needs
-  `--entry-file /abs/path/to/root/node_modules/expo-router/entry.js`; the
-  starter-local relative path does not resolve.
 - Plan blobs nest under a `plan` key: read `blob.plan.edits`, not
   `blob.edits` — the top level always has an empty-looking shape and reads as
   "zero edits everywhere" (cost me one wrong enumeration).

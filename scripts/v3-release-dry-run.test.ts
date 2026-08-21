@@ -361,6 +361,7 @@ describe('G1 tarball audits', () => {
       'react-native-safe-area-context',
       'react-native-teleport',
       'react-native-worklets-core',
+      '@expo/ui',
       'zeego',
     ]
 
@@ -373,7 +374,7 @@ describe('G1 tarball audits', () => {
       expect(manifest.peerDependenciesMeta[name]).toEqual({ optional: true })
       expect(manifest.devDependencies[name]).toBeDefined()
     }
-    expect(manifest.devDependencies['react-native']).toBe('0.83.2')
+    expect(manifest.devDependencies['react-native']).toBe('0.86.2')
     expect(manifest.devDependencies['react-native-web']).toBe('^0.21.0')
   })
 

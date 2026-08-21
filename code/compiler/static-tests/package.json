@@ -46,9 +46,9 @@
     "null-loader": "^4.0.1",
     "react": ">=19",
     "react-native-web": "^0.21.0",
-    "react-test-renderer": "^19.0.0",
+    "react-test-renderer": "19.2.3",
     "style-loader": "^3.3.3",
-    "typescript": "~5.9.2",
+    "typescript": "~6.0.3",
     "vitest": "4.0.4",
     "webpack": "^5.88.2"
   },

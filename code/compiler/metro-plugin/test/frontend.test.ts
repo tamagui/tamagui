@@ -363,7 +363,7 @@ export const App = ({ dynamic }) => <>
         platform: 'ios',
         transform: returnedOptions.transform,
       })
-      expect(frontend.metroResolverVersion).toMatch(/^0\.83\./)
+      expect(frontend.metroResolverVersion).toMatch(/^0\.84\./)
       expect(generation.moduleIds).toEqual(
         expect.arrayContaining([appPath, tokensPath, themePath, uiPath])
       )
@@ -918,14 +918,17 @@ export const App = () => <View padding={12} />
     }
   })
 
-  test('plans project source when the Metro entry lives in node_modules (expo-router topology)', async () => {
+  test('plans project source when the Metro entry lives in node_modules', async () => {
     const fixtureRoot = await mkdtemp(join(packageRoot, 'test/.e4-router-entry-'))
     temporaryRoots.push(fixtureRoot)
     const projectRoot = join(fixtureRoot, 'app')
     const appPath = join(projectRoot, 'src/App.tsx')
     const distPath = join(projectRoot, 'dist/Generated.tsx')
     const brokenPath = join(projectRoot, 'scripts/broken.tsx')
-    // the expo-router shape: the entry is a package file whose route imports
+    const testPath = join(projectRoot, 'e2e/excluded.test.ts')
+    const testRunnerPath = join(projectRoot, 'run-tests.ts')
+    const configPath = join(projectRoot, 'metro.config.js')
+    // the entry is a package file whose route imports
     // happen through require.context, invisible to import scanning
     const entryPath = join(projectRoot, 'node_modules/fake-router/entry.js')
     const uiPath = join(fixtureRoot, 'packages/ui/index.ts')
@@ -939,6 +942,9 @@ export const App = () => <View width={20} height={10} />
     await write(appPath, appSource)
     await write(distPath, appSource)
     await write(brokenPath, 'export const broken = <View\n')
+    await write(testPath, "import 'excluded-test-dependency'\n")
+    await write(testRunnerPath, "import 'excluded-test-runner-dependency'\n")
+    await write(configPath, "require('excluded-config-dependency')\n")
     await write(entryPath, 'module.exports = {}\n')
     await write(uiPath, 'export const View = (_props) => null\n')
 
@@ -952,6 +958,7 @@ export const App = () => <View width={20} height={10} />
     )?.nameToInfo.View
     expect(viewInfo).toBeTruthy()
     const reported: string[] = []
+    let excludedResolutionAttempts = 0
     const frontend = new MetroCompilerFrontend({
       projectRoot,
       cacheRoot,
@@ -970,6 +977,7 @@ export const App = () => <View width={20} height={10} />
       },
       resolver: {
         resolveRequest: (context: any, specifier: string, platform: string) => {
+          if (specifier.startsWith('excluded-')) excludedResolutionAttempts++
           if (specifier === '@fixture/ui') {
             return { type: 'sourceFile', filePath: uiPath }
           }
@@ -1001,6 +1009,7 @@ export const App = () => <View width={20} height={10} />
       expect(await cache.read(distPath, appSource)).toBeNull()
       // a walk-seeded file that fails to compile is speculative, not a build error
       expect(reported).not.toContain('metro/transform-failed')
+      expect(excludedResolutionAttempts).toBe(0)
     } finally {
       await frontend.close()
     }

@@ -272,7 +272,7 @@ describe('gradient transition hints', () => {
 })
 
 describe('gradient direction grammar', () => {
-  test('gradient directions accept the forms RN 0.83 accepts', () => {
+  test('gradient directions accept the forms React Native accepts', () => {
     // sourced from react-native/Libraries/StyleSheet/processBackgroundImage.js:
     // LINEAR_GRADIENT_ANGLE_UNIT_REGEX = /^([+-]?\d*\.?\d+)(deg|grad|rad|turn)$/i
     // LINEAR_GRADIENT_DIRECTION_REGEX = /^to\s+(top|bottom|left|right).../i

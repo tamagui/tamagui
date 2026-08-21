@@ -45,10 +45,10 @@ export declare const Popover: ((props: Omit<import("@tamagui/ui").PopperProps, "
         __tama: [import("@tamagui/web").TamaDefer, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & import("@tamagui/ui").PopoverContentTypeProps, import("@tamagui/web").StackStyleBase, {}, import("@tamagui/web").StaticConfigPublic];
     };
     Close: import("@tamagui/ui").RefComponent<import("@tamagui/ui").TamaguiElement, import("@tamagui/ui").PopoverCloseProps>;
-    Adapt: ((props: import("@tamagui/ui").AdaptProps) => import("react/jsx-runtime").JSX.Element) & {
+    Adapt: ((props: import("@tamagui/ui").AdaptProps) => React.JSX.Element) & {
         Contents: typeof import("@tamagui/ui").AdaptContents;
     };
     ScrollView: import("@tamagui/ui").RefComponent<import("@tamagui/ui").ScrollViewRef, import("@tamagui/ui").PopoverScrollViewProps>;
-    FocusScope: (props: import("@tamagui/focus-scope/types/types").ScopedProps<import("@tamagui/focus-scope").FocusScopeControllerProps>) => import("react/jsx-runtime").JSX.Element;
+    FocusScope: (props: import("@tamagui/focus-scope/types/types").ScopedProps<import("@tamagui/focus-scope").FocusScopeControllerProps>) => React.JSX.Element;
 };
 //# sourceMappingURL=Popover.d.ts.map

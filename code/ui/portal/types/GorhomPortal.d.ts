@@ -52,7 +52,7 @@ export interface PortalProviderProps {
     rootHostName?: string;
     children: ReactNode | ReactNode[];
 }
-declare const PortalProviderComponent: ({ rootHostName, shouldAddRootHost, children, }: PortalProviderProps) => import("react/jsx-runtime").JSX.Element;
+declare const PortalProviderComponent: ({ rootHostName, shouldAddRootHost, children, }: PortalProviderProps) => React.JSX.Element;
 export declare const PortalProvider: React.MemoExoticComponent<typeof PortalProviderComponent>;
 export interface PortalHostProps {
     /**
@@ -68,5 +68,5 @@ export interface PortalHostProps {
      */
     render?: (children: React.ReactNode) => React.ReactElement;
 }
-export declare const PortalHost: React.MemoExoticComponent<(props: PortalHostProps) => import("react/jsx-runtime").JSX.Element>;
+export declare const PortalHost: React.MemoExoticComponent<(props: PortalHostProps) => React.JSX.Element>;
 //# sourceMappingURL=GorhomPortal.d.ts.map

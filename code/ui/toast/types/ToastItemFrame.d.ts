@@ -52,5 +52,5 @@ export declare const ToastActionFrame: import("react").FunctionComponent<Omit<im
         elevation?: number | import("@tamagui/core").Size | undefined;
     }, import("@tamagui/core").StaticConfigPublic];
 };
-export declare const DefaultCloseIcon: () => import("react/jsx-runtime").JSX.Element;
+export declare const DefaultCloseIcon: () => import("react").JSX.Element;
 //# sourceMappingURL=ToastItemFrame.d.ts.map

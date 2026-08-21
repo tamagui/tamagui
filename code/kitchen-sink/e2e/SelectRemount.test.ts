@@ -4,7 +4,7 @@
  *
  * Using Detox for more reliable cross-platform native testing.
  *
- * IMPORTANT: Detox sync must be enabled for tap/gesture actions on RN 0.83 Fabric.
+ * IMPORTANT: Detox sync must be enabled for tap and gesture actions on Fabric.
  * With sync disabled, Detox doesn't properly deliver touch events through the
  * responder system. We keep sync disabled for sheet animations (spring animations
  * block sync) but enable it briefly around each tap interaction.

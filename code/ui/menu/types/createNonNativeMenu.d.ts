@@ -41,11 +41,11 @@ type MenuSubTriggerProps = BaseMenuSubTriggerProps;
 type MenuSubContentProps = BaseMenuSubContentProps;
 type MenuScrollViewProps = ScrollViewProps;
 export declare function createNonNativeMenu(): {
-    (props: ScopedProps<MenuProps>): import("react/jsx-runtime").JSX.Element;
+    (props: ScopedProps<MenuProps>): React.JSX.Element;
     displayName: string;
 } & {
     Root: {
-        (props: ScopedProps<MenuProps>): import("react/jsx-runtime").JSX.Element;
+        (props: ScopedProps<MenuProps>): React.JSX.Element;
         displayName: string;
     };
     Trigger: import("@tamagui/web").TamaguiComponent<Omit<ViewProps, "scope" | keyof MenuTriggerProps> & MenuTriggerProps & {
@@ -54,7 +54,7 @@ export declare function createNonNativeMenu(): {
         scope?: string;
     }, import("@tamagui/web").StackStyleBase, {}, {}>;
     Portal: {
-        (props: ScopedProps<MenuPortalProps>): import("react/jsx-runtime").JSX.Element;
+        (props: ScopedProps<MenuPortalProps>): React.JSX.Element;
         displayName: string;
     };
     Content: import("@tamagui/web").TamaguiComponent<Omit<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {}>, keyof BaseMenuContentProps> & BaseMenuContentProps & {
@@ -96,7 +96,7 @@ export declare function createNonNativeMenu(): {
     Separator: import("@tamagui/web").TamaguiComponent<Omit<ViewProps, keyof BaseMenuSeparatorProps> & BaseMenuSeparatorProps, TamaguiElement, import("@tamagui/web").StackNonStyleProps & BaseMenuSeparatorProps, import("@tamagui/web").StackStyleBase, {}, {}>;
     Arrow: import("@tamagui/web").RefComponent<TamaguiElement, Omit<import("@tamagui/web").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/popper").PopperArrowExtraProps & import("@tamagui/web").RefProp<TamaguiElement>, "ref">>;
     Sub: {
-        (props: ScopedProps<MenuSubProps>): import("react/jsx-runtime").JSX.Element;
+        (props: ScopedProps<MenuSubProps>): React.JSX.Element;
         displayName: string;
     };
     SubTrigger: import("@tamagui/web").RefComponent<TamaguiElement, BaseMenuSubTriggerProps & {

@@ -78,7 +78,7 @@ type Component = (props: any) => any;
 export declare const AdaptContext: import("@tamagui/core").StyledContext<AdaptParentContextI, "Contents" | "active" | "handoff" | "platform" | "portalName" | "rawActive" | "registerContents" | "registerRenderCallback" | "registerTarget" | "scopeName" | "setPlatform" | "setRawActive" | "setWhen" | "slot" | "targetFullyHidden" | "unregisterContents" | "unregisterRenderCallback" | "unregisterTarget" | "when">;
 export declare const ProvideAdaptContext: ({ children, ...context }: AdaptParentContextI & {
     children: any;
-}) => import("react/jsx-runtime").JSX.Element;
+}) => React.JSX.Element;
 export declare const useAdaptContext: (scope?: string) => AdaptParentContextI;
 /**
  * Hooks
@@ -94,26 +94,26 @@ type AdaptParentProps = {
         forwardProps?: any;
     };
 };
-export declare const AdaptParent: ({ children, Contents, scope, open, onOpenChange, state, }: AdaptParentProps) => import("react/jsx-runtime").JSX.Element;
+export declare const AdaptParent: ({ children, Contents, scope, open, onOpenChange, state, }: AdaptParentProps) => React.JSX.Element;
 export declare function AdaptContents({ scope, ...rest }: {
     scope?: string;
 }): React.FunctionComponentElement<any>;
 export declare namespace AdaptContents {
     var shouldForwardSpace: boolean;
 }
-export declare const Adapt: ((props: AdaptProps) => import("react/jsx-runtime").JSX.Element) & {
+export declare const Adapt: ((props: AdaptProps) => React.JSX.Element) & {
     Contents: typeof AdaptContents;
 };
 export declare const AdaptPortalContents: (props: {
     children: React.ReactNode;
     scope?: string;
     passThrough?: boolean;
-}) => import("react/jsx-runtime").JSX.Element;
+}) => React.JSX.Element;
 export declare const useAdaptIsActive: (scope?: string) => boolean;
 export declare function useAdaptTarget<State = unknown>(scope?: string): AdaptTarget<State> | null;
 export declare const AdaptCapabilities: ({ children, scroll, overlay, dismiss, }: AdaptCapabilitiesValue & {
     children?: React.ReactNode;
-}) => import("react/jsx-runtime").JSX.Element;
+}) => React.JSX.Element;
 export declare const useAdaptedCapabilities: () => AdaptCapabilitiesValue;
 export {};
 //# sourceMappingURL=Adapt.d.ts.map

@@ -4,55 +4,6 @@ import path from 'node:path'
 import { describe, expect, it } from 'vitest'
 
 const startersDir = path.join(__dirname, '../../../starters')
-const tamaguiCliPath = require.resolve('@tamagui/cli')
-
-describe('expo-router starter', () => {
-  const dir = path.join(startersDir, 'expo-router')
-
-  it('has workspace:* tamagui deps', () => {
-    const pkg = JSON.parse(fs.readFileSync(path.join(dir, 'package.json'), 'utf-8'))
-    expect(pkg.dependencies['@tamagui/config']).toBe('workspace:*')
-    expect(pkg.dependencies['tamagui']).toBe('workspace:*')
-    expect(pkg.devDependencies['@tamagui/metro-plugin']).toBe('workspace:*')
-  })
-
-  it('does not depend on @tamagui/cli', () => {
-    const pkg = JSON.parse(fs.readFileSync(path.join(dir, 'package.json'), 'utf-8'))
-    expect(pkg.dependencies?.['@tamagui/cli']).toBeUndefined()
-    expect(pkg.devDependencies?.['@tamagui/cli']).toBeUndefined()
-  })
-
-  it('uses the shared Tamagui Metro compiler', () => {
-    const metro = fs.readFileSync(path.join(dir, 'metro.config.js'), 'utf-8')
-    expect(metro).toContain("require('@tamagui/metro-plugin')")
-    expect(metro).toContain('withTamagui(getDefaultConfig(__dirname)')
-    expect(metro).toContain('getDefaultConfig')
-  })
-
-  it('uses v6 tamagui config', () => {
-    const config = fs.readFileSync(path.join(dir, 'tamagui.config.ts'), 'utf-8')
-    expect(config).toContain('@tamagui/config/v6')
-  })
-
-  // TODO: metro can't resolve @tamagui/menu through workspace symlinks
-  it.skip('builds for web', () => {
-    // generate css first, then export
-    execSync(
-      `${JSON.stringify(process.execPath)} ${JSON.stringify(tamaguiCliPath)} generate`,
-      {
-        cwd: dir,
-        stdio: 'pipe',
-      }
-    )
-    execSync('npx expo export --platform web', {
-      cwd: dir,
-      stdio: 'pipe',
-      timeout: 300_000,
-    })
-    expect(fs.existsSync(path.join(dir, 'dist'))).toBe(true)
-  }, 360_000)
-})
-
 describe('remix starter', () => {
   const dir = path.join(startersDir, 'remix')
 

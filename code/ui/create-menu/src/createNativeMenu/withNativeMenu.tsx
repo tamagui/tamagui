@@ -22,8 +22,7 @@ export function withNativeMenu<
     return Component as React.FC<Props>
   }
 
-  // On native platform, always use native component
-  // If NativeComponent is missing (zeego not set up), fall back to web Component
+  // use the native component when an adapter is registered
   if (!NativeComponent) {
     return Component as React.FC<Props>
   }

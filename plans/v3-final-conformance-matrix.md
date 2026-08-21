@@ -209,7 +209,6 @@ The web graph also runs these packages outside the local V3 matrix:
 
 - `@tamagui/cli`;
 - `@tamagui/create-system-font`;
-- `@tamagui/expo-router-starter`;
 - `@tamagui/input`;
 - `@tamagui/theme-builder`;
 - `@tamagui/v3-canary`;

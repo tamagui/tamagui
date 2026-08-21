@@ -306,7 +306,7 @@ export async function safeReloadApp(): Promise<void> {
 
 /**
  * Enable sync briefly for a tap interaction, then disable again.
- * RN 0.83 Fabric requires sync enabled for tap delivery;
+ * Fabric requires sync enabled for tap delivery;
  * swipe gestures work without sync.
  */
 export async function withSync<T>(fn: () => Promise<T>): Promise<T> {

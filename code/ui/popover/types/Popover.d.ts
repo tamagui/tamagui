@@ -123,7 +123,7 @@ export type PopoverContextProviderProps = {
  * Provider that sets up both PopoverContext and PopoverTriggerContext.
  * Use this in Tooltip or other components that need popover trigger behavior.
  */
-export declare const PopoverContextProvider: React.MemoExoticComponent<({ scope, children, open, onOpenChange, onOpenToggle, triggerRef, id, contentId, hasCustomAnchor, onCustomAnchorAdd, onCustomAnchorRemove, anchorTo, adaptScope, breakpointActive, keepChildrenMounted, disableDismissable, hoverable, }: PopoverContextProviderProps) => import("react/jsx-runtime").JSX.Element>;
+export declare const PopoverContextProvider: React.MemoExoticComponent<({ scope, children, open, onOpenChange, onOpenToggle, triggerRef, id, contentId, hasCustomAnchor, onCustomAnchorAdd, onCustomAnchorRemove, anchorTo, adaptScope, breakpointActive, keepChildrenMounted, disableDismissable, hoverable, }: PopoverContextProviderProps) => React.JSX.Element>;
 export type PopoverAnchorProps = ScopedPopoverProps<YStackProps>;
 export declare const PopoverAnchor: React.NamedExoticComponent<Omit<YStackProps, "scope"> & {
     scope?: PopoverScopes;
@@ -272,11 +272,11 @@ export declare const Popover: ((props: Omit<PopperProps, "scope"> & {
     } & import("@tamagui/compose-refs").RefProp<TamaguiElement>>;
     Content: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}>, keyof PopoverContentTypeProps> & PopoverContentTypeProps, import("react-native").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & PopoverContentTypeProps, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic>;
     Close: import("@tamagui/compose-refs").RefComponent<TamaguiElement, PopoverCloseProps>;
-    Adapt: ((props: import("@tamagui/adapt").AdaptProps) => import("react/jsx-runtime").JSX.Element) & {
+    Adapt: ((props: import("@tamagui/adapt").AdaptProps) => React.JSX.Element) & {
         Contents: typeof import("@tamagui/adapt").AdaptContents;
     };
     ScrollView: import("@tamagui/compose-refs").RefComponent<import("@tamagui/scroll-view").ScrollViewRef, PopoverScrollViewProps>;
-    FocusScope: (props: import("@tamagui/focus-scope/types/types").ScopedProps<import("@tamagui/focus-scope").FocusScopeControllerProps>) => import("react/jsx-runtime").JSX.Element;
+    FocusScope: (props: import("@tamagui/focus-scope/types/types").ScopedProps<import("@tamagui/focus-scope").FocusScopeControllerProps>) => React.JSX.Element;
 };
 export {};
 //# sourceMappingURL=Popover.d.ts.map

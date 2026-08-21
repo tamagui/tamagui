@@ -55,7 +55,7 @@ export declare const ButtonText: import("react").FunctionComponent<Omit<import("
         size?: string | number | boolean | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString | (string & {}) | undefined;
     }, import("@tamagui/web").StaticConfigPublic];
 };
-export declare const ButtonIcon: ({ size, ...props }: ButtonBehaviorIconProps) => import("react/jsx-runtime").JSX.Element;
+export declare const ButtonIcon: ({ size, ...props }: ButtonBehaviorIconProps) => import("react").JSX.Element;
 declare const ButtonComponent: import("@tamagui/ui").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/ui").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
     circular?: boolean | undefined;
     disabled?: boolean | undefined;

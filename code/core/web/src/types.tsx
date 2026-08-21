@@ -3516,7 +3516,7 @@ export type UseAnimationHook = (props: {
   onTransition?: OnTransition
   delay?: number
 }) => null | {
-  style?: StackStyleBase | StackStyleBase[]
+  style?: unknown
   className?: string
   ref?: any
 }

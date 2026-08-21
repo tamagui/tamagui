@@ -98,6 +98,3 @@ Also pre-existing on v3-beta and owned elsewhere:
   pattern is consistent with the v6 font and palette migration rather than with
   the compiler nondeterminism this test has a history of. Do not refresh those
   snapshots without settling that first.
-- `@tamagui/expo-router-starter` `test:web`. Root-caused elsewhere: the starter's
-  `app/(tabs)/_layout.tsx` still reads v5 keys (`theme.red10.val`,
-  `theme.borderColor.val`) while its config is `@tamagui/config/v6`.

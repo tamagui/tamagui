@@ -17,6 +17,8 @@
     "setup-burnt.cjs",
     "setup-expo-linear-gradient",
     "setup-expo-linear-gradient.cjs",
+    "setup-expo-ui-menu",
+    "setup-expo-ui-menu.cjs",
     "setup-gesture-handler",
     "setup-gesture-handler.cjs",
     "setup-keyboard-controller",
@@ -182,13 +184,14 @@
     "@tamagui/compose-refs": "workspace:*"
   },
   "devDependencies": {
+    "@expo/ui": "~57.0.12",
     "@tamagui/build": "workspace:*",
-    "burnt": "^0.12.2",
-    "expo-linear-gradient": "~55.0.8",
+    "burnt": "^0.13.0",
+    "expo-linear-gradient": "~57.0.1",
     "react": ">=19",
-    "react-native": "0.83.2",
-    "react-native-gesture-handler": "~2.30.0",
-    "react-native-keyboard-controller": "1.20.7",
+    "react-native": "0.86.2",
+    "react-native-gesture-handler": "~2.32.0",
+    "react-native-keyboard-controller": "1.21.9",
     "react-native-safe-area-context": "~5.7.0",
     "react-native-teleport": "^1.0.0",
     "react-native-web": "^0.21.0",
@@ -196,6 +199,7 @@
     "zeego": "^3.0.0"
   },
   "peerDependencies": {
+    "@expo/ui": "*",
     "burnt": "*",
     "expo-linear-gradient": "*",
     "react": "*",
@@ -209,6 +213,9 @@
     "zeego": "*"
   },
   "peerDependenciesMeta": {
+    "@expo/ui": {
+      "optional": true
+    },
     "burnt": {
       "optional": true
     },

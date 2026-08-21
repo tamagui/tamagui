@@ -25,7 +25,7 @@ export function MenuRadioGroupCase() {
         <H1 testID="menu-radio-title">Menu RadioGroup</H1>
         <Paragraph>
           Verifies that Menu.RadioGroup/RadioItem enforces single-selection on both web
-          and native (via zeego CheckboxItem mapping).
+          and native (via the registered menu adapter's CheckboxItem mapping).
         </Paragraph>
         <Text testID="menu-radio-selected-value" color="color10">
           Selected value: {color}

@@ -135,8 +135,8 @@
     "@testing-library/react": "^16.1.0",
     "csstype": "^3.0.10",
     "react": ">=19",
-    "react-native": "0.83.2",
-    "typescript": "~5.9.2",
+    "react-native": "0.86.2",
+    "typescript": "~6.0.3",
     "vitest": "4.0.4"
   },
   "peerDependencies": {

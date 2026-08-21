@@ -77,7 +77,7 @@
   "devDependencies": {
     "@tamagui/build": "workspace:*",
     "oxc-parser": "^0.112.0",
-    "typescript": "~5.9.2",
+    "typescript": "~6.0.3",
     "vitest": "4.0.4"
   }
 }

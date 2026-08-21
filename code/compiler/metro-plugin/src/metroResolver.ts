@@ -126,9 +126,9 @@ export function createMetroCompilerResolver(config: MetroResolverConfig): {
   const resolverPackage = requireFromProject('metro-resolver/package.json') as {
     version: string
   }
-  if (!resolverPackage.version.startsWith('0.83.')) {
+  if (!resolverPackage.version.startsWith('0.84.')) {
     throw new Error(
-      `@tamagui/metro-plugin requires the Metro 0.83 resolver contract, found ${resolverPackage.version}`
+      `@tamagui/metro-plugin requires the Metro 0.84 resolver contract, found ${resolverPackage.version}`
     )
   }
   const resolverModule = requireFromProject('metro-resolver')

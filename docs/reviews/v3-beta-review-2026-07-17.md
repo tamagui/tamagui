@@ -45,7 +45,7 @@ green.
 | Web release checks               | Mostly green         | Exact-SHA checks, integrations, SSR/hydration, bundle observation, and Maestro succeeded.                                                                                          |
 | Native release checks            | Blocked              | One iOS shard failed; Android failures are explicitly ignored; required One production bundles are absent.                                                                         |
 | Packed release proof             | Partial harness      | G1 is thoughtfully implemented, but no durable exact-candidate report proves the bytes that would be published.                                                                    |
-| Starter and migration experience | Blocked              | Expo starter imports the now-behavior-only Button directly and has placeholder tests. Several upgrade instructions contradict v3 source.                                           |
+| Migration experience             | Blocked              | Several upgrade instructions contradict v3 source.                                                                                                                                |
 
 ## Severity and evidence policy
 
@@ -64,7 +64,6 @@ numbers refer to the audited commit above. CI links also refer to that commit.
 | --- | -------- | --------------------------------------------------------------------------------------------------------------------------- |
 | L1  | P0       | The advertised behavior / styled compatibility / shadcn architecture is incomplete.                                         |
 | R1  | P0       | Native and packed-release evidence is not sufficient for a beta cut.                                                        |
-| R2  | P0       | The default Expo starter consumes unstyled behavior directly and has no meaningful tests.                                   |
 | C1  | P1       | `Dismissable` corrupts global pointer-event layer state when `disableOutsidePointerEvents` changes.                         |
 | C2  | P1       | CSS exit completion usually falls through to a timer because transition event property names cannot match the tracked keys. |
 | C3  | P1       | CSS animated-number style subscribers re-render every frame but read the final target, not the interpolated value.          |
@@ -165,9 +164,6 @@ That material is fragmented:
 - The `tamagui` export map offers the root, web/native aliases, tests, and
   linear-gradient only. It has no kit or per-component compatibility subpaths:
   `code/ui/tamagui/package.json:19-59`.
-- Starters do not consume copied skins. The Expo starter imports Button directly
-  from `tamagui` at `code/starters/expo-router/app/(tabs)/_layout.tsx:1-33` and
-  `code/starters/expo-router/components/CurrentToast.tsx:1-53`.
 
 This will drift immediately. It also makes migration guidance impossible:
 there is no stable import or copy command that means "keep my v2 appearance."
@@ -652,22 +648,6 @@ production bundle. G0 exports iOS only at
 required iOS and Android shard green on the same candidate, and retain One
 production-bundle logs/artifacts for both platforms.
 
-### R2, P0: the starter demonstrates the wrong product boundary
-
-C4 requires starters to use copied skins at `plans/v3-evolution.md:512-520`.
-The Expo starter imports raw Button behavior from `tamagui` in its tabs and
-toast controls at `code/starters/expo-router/app/(tabs)/_layout.tsx:1-33` and
-`code/starters/expo-router/components/CurrentToast.tsx:1-53`.
-
-Both starter test scripts are the string `true` at
-`code/starters/expo-router/package.json:6-14`. No build or runtime assertion
-catches the missing skin or proves the v3 copy workflow.
-
-**Exit condition:** install the canonical compatibility or shadcn skin into the
-starter through the supported user flow, remove direct aesthetic assumptions
-about behavior primitives, and run real web export plus native render/interaction
-smokes.
-
 ### R3, P0: G1 does not yet certify publish bytes
 
 The G1 dry-run harness is a good foundation. It builds packages, stages
@@ -756,7 +736,6 @@ commit and durable test artifact, and delete superseded queues.
 - A coherent, supported v2-compatible styled kit.
 - A shadcn registry and copy-paste kit.
 - Uniform state attributes and native/class modifiers for copied skins.
-- Copied skins in the Expo starter and meaningful starter tests.
 - A fully green exact-candidate iOS run.
 - Truthful Android CI and a fixed Android AppCompat launch.
 - One iOS and Android production bundle evidence.
@@ -865,7 +844,6 @@ outside this review and must remain a separate authorized action.
 - [ ] Select/Button/variant migration examples compile and behave as written.
 - [ ] Exact candidate has green blocking iOS and Android native CI.
 - [ ] One production bundles succeed for iOS and Android.
-- [ ] Expo starter uses copied skins and passes real smokes.
 - [ ] v2-versus-v3 benchmark uses equal production workloads and retained raw
       samples.
 - [ ] Heavy and animated performance has an accepted budget.

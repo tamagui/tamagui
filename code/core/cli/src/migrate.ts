@@ -344,7 +344,7 @@ Bring the app to the v2 baseline before applying v3 changes.
 - Tabs uses \`Tabs.Tab\` instead of \`Tabs.Trigger\`; \`activationMode\` defaults to \`manual\`.
 - Group requires \`Group.Item\`; remove old separator/space/scrollable auto-cloning props.
 - Replace old \`Popover.Sheet\` subcomponents with standalone \`Sheet\` inside \`Adapt\`.
-- Add native setup imports where needed: \`@tamagui/native/setup-teleport\`, \`setup-gesture-handler\`, \`setup-zeego\`, \`setup-burnt\`, and linear-gradient setup.
+- Add native setup imports where needed: \`@tamagui/native/setup-teleport\`, \`setup-gesture-handler\`, \`setup-expo-ui-menu\` or \`setup-zeego\`, \`setup-burnt\`, and linear-gradient setup.
 
 ### v1 -> v2 verification
 

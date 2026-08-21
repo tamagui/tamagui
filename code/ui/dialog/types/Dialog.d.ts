@@ -362,8 +362,8 @@ declare const Dialog: ((props: {
     } & {
         scope?: DialogScopes;
     }, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic>;
-    FocusScope: (props: import("@tamagui/focus-scope/types/types").ScopedProps<import("@tamagui/focus-scope").FocusScopeControllerProps>) => import("react/jsx-runtime").JSX.Element;
-    Adapt: ((props: import("@tamagui/adapt").AdaptProps) => import("react/jsx-runtime").JSX.Element) & {
+    FocusScope: (props: import("@tamagui/focus-scope/types/types").ScopedProps<import("@tamagui/focus-scope").FocusScopeControllerProps>) => React.JSX.Element;
+    Adapt: ((props: import("@tamagui/adapt").AdaptProps) => React.JSX.Element) & {
         Contents: typeof import("@tamagui/adapt").AdaptContents;
     };
 };

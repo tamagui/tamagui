@@ -1,5 +1,6 @@
+import React from 'react';
 import type { TamaguiInternalConfig } from '../types';
 export declare function ConfigRevisionCheck({ config }: {
     config: TamaguiInternalConfig;
-}): import("react/jsx-runtime").JSX.Element;
+}): React.JSX.Element;
 //# sourceMappingURL=ConfigRevisionCheck.d.ts.map

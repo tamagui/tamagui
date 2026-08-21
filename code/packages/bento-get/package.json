@@ -44,7 +44,7 @@
     "@tamagui/build": "workspace:*",
     "@types/copy-paste": "^1.1.33",
     "@types/ink": "^2.0.3",
-    "@types/react": "~19.1.10"
+    "@types/react": "~19.2.4"
   },
   "engines": {
     "node": ">=20"

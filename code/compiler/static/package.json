@@ -62,7 +62,7 @@
     "@tamagui/web": "workspace:*",
     "browserslist": "^4.28.1",
     "check-dependency-version-consistency": "^4.1.0",
-    "esbuild": "^0.27.2",
+    "esbuild": "0.28.1",
     "esbuild-register": "^3.6.0",
     "fast-glob": "^3.2.11",
     "find-root": "^1.1.0",
@@ -78,8 +78,8 @@
     "esbuild-loader": "^4.2.2",
     "null-loader": "^4.0.1",
     "react": ">=19",
-    "react-native": "0.83.2",
-    "typescript": "~5.9.2"
+    "react-native": "0.86.2",
+    "typescript": "~6.0.3"
   },
   "peerDependencies": {
     "react": ">=19"

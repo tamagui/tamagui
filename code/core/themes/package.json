@@ -4,6 +4,10 @@
   "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
   "type": "module",
   "sideEffects": false,
+  "main": "./dist/cjs/index.cjs",
+  "module": "./dist/esm/index.mjs",
+  "react-native": "./dist/esm/index.native.js",
+  "types": "./types/index.d.ts",
   "files": [
     "src",
     "types",

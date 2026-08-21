@@ -8,6 +8,6 @@ interface PresenceChildProps {
     custom?: any;
     presenceAffectsLayout?: boolean;
 }
-export declare const PresenceChild: React.MemoExoticComponent<({ children, initial, isPresent, onExitComplete, presenceAffectsLayout, custom, }: PresenceChildProps) => import("react/jsx-runtime").JSX.Element>;
+export declare const PresenceChild: React.MemoExoticComponent<({ children, initial, isPresent, onExitComplete, presenceAffectsLayout, custom, }: PresenceChildProps) => React.JSX.Element>;
 export {};
 //# sourceMappingURL=PresenceChild.d.ts.map

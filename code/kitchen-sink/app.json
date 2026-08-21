@@ -7,15 +7,12 @@
     "orientation": "default",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.tamagui.tamaguikitchensink"
@@ -37,12 +34,16 @@
     },
     "plugins": [
       "expo-font",
-      "./plugins/expo-modules-core-swift6",
       "./plugins/detox-metro-port",
-      "./plugins/detox-skip-splash"
-    ],
-    "experiments": {
-      "reactCanary": true
-    }
+      "./plugins/detox-skip-splash",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/splash.png",
+          "resizeMode": "contain",
+          "backgroundColor": "#ffffff"
+        }
+      ]
+    ]
   }
 }

@@ -46,6 +46,12 @@
     "ignore": "^5.3.2"
   },
   "devDependencies": {
-    "@tamagui/build": "workspace:*"
+    "@tamagui/build": "workspace:*",
+    "metro": "0.84.4",
+    "metro-resolver": "0.84.4"
+  },
+  "peerDependencies": {
+    "metro": "^0.84.4",
+    "metro-resolver": "^0.84.4"
   }
 }

@@ -4,7 +4,7 @@
  * This test runs with RNGH disabled via launch args to verify that press handling
  * works correctly when falling back to the responder system.
  *
- * IMPORTANT: Detox sync must be enabled for tap/gesture actions on RN 0.83 Fabric.
+ * IMPORTANT: Detox sync must be enabled for tap and gesture actions on Fabric.
  * With sync disabled, Detox doesn't properly deliver touch events through the
  * responder system. We keep sync disabled for navigation (animation driver blocks
  * it) but enable it briefly around each interaction.

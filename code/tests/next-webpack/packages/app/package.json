@@ -15,14 +15,14 @@
     "@tamagui/lucide-icons-2": "workspace:*",
     "@tamagui/shorthands": "workspace:*",
     "@tamagui/themes": "workspace:*",
-    "burnt": "^0.12.2",
-    "expo-constants": "~55.0.7",
-    "expo-linking": "~55.0.7",
+    "burnt": "^0.13.0",
+    "expo-constants": "~57.0.13",
+    "expo-linking": "~57.0.7",
     "react-native-safe-area-context": "~5.7.0",
     "solito": "^4.3.0"
   },
   "devDependencies": {
-    "@types/react": "~19.1.10",
+    "@types/react": "~19.2.4",
     "@types/react-native": "^0.73.0"
   }
 }

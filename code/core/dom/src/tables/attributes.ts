@@ -20,7 +20,7 @@ import type { AttributeRow, TagName } from './types'
  * them, `Text` handles seven, and neither handles `aria-modal`, `aria-posinset`
  * or `aria-setsize`. Since one row has to be right for every backing a tag can
  * lower to, the mapping that every host accepts unconditionally is the correct
- * one. Verified against react-native 0.83.2's `View.js` and `Text.js`, not
+ * one. Verified against react-native 0.86.2's `View.js` and `Text.js`, not
  * against its types. `id` is the exception: View, Text and TextInput all take
  * it, so that row passes it straight through.
  */
@@ -351,7 +351,7 @@ export const ATTRIBUTES: Readonly<Record<string, AttributeRow>> = {
   },
   'aria-owns': ariaRef(),
   'aria-placeholder': ariaText(),
-  // react-native 0.83.2 has no accessibilityPosInSet — checked View.js and
+  // react-native 0.86.2 has no accessibilityPosInSet — checked View.js and
   // ViewAccessibility.d.ts, it exists in neither. Mapping to it would have the
   // prop silently dropped at the host, which is worse than declaring it web-only
   'aria-posinset': ariaNumber(),
@@ -371,7 +371,7 @@ export const ATTRIBUTES: Readonly<Record<string, AttributeRow>> = {
   'aria-rowindextext': ariaText(),
   'aria-rowspan': ariaNumber(),
   'aria-selected': ariaState('aria-selected', 'accessibilityState.selected'),
-  // same: no accessibilitySetSize anywhere in react-native 0.83.2
+  // same: no accessibilitySetSize anywhere in react-native 0.86.2
   'aria-setsize': ariaNumber(),
   'aria-sort': {
     group: 'aria',

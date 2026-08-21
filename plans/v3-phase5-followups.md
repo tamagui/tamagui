@@ -116,13 +116,10 @@ branch.
    repo root, but the fixture cwd cannot resolve it. Vitest then reports 5
    obsolete snapshots downstream of the command failures.
 
-4. **`@tamagui/expo-router-starter` `tests/native-smoke.test.tsx:71`** — the
-   toast title is absent. Fails at the identical line at baseline.
-
-5. **kitchen-sink native `TooltipToolbarRow`** — 2 tests time out waiting on
+4. **kitchen-sink native `TooltipToolbarRow`** — 2 tests time out waiting on
    `[data-popper-animate-position]`. Both fail at baseline, retry included.
 
-6. **kitchen-sink `PopoverHoverableReposition`** (default/WebKit) — initial-to-
+5. **kitchen-sink `PopoverHoverableReposition`** (default/WebKit) — initial-to-
    final x drift exceeds the 20px threshold: 34.75px at the branch tip, 33.3px
    at baseline. Fails both places, so the threshold is the thing to revisit.
 
@@ -160,8 +157,8 @@ files were found and fixed during phase 5; the fifth is listed for a decision.
   `test:web:files`.
 - **Open:** `.github/workflows/checks.yaml` runs `test:native` filtered to
   `@tamagui/static-tests`, `@tamagui/core-test` and `@tamagui/components-test`.
-  Every other package's `test:native` is unreachable from CI, including the
-  Expo Router starter's. Decide whether those should run or be deleted.
+  Every other package's `test:native` is unreachable from CI. Decide whether
+  those should run or be deleted.
 
 Both classes have the same root cause: a pattern copied into a second place
 silently stops matching when the first one changes. Prefer calling the
@@ -263,11 +260,9 @@ repo ends up with two.
   starts but the page reports `Can't find Tamagui configuration` alongside a
   duplicate-instance warning. The Tailwind unit suites (web 456, native 275)
   are green, but the pixel-level check went unmeasured in phase 5.
-- Two configs independently paired a v5 config with **v6's actual theme set** and
-  broke at runtime: kitchen-sink (walked back in `e761914e27`) and the Expo
-  Router starter (`ba0f262924`, where `theme.red10.val` threw
-  `Cannot read properties of undefined`). The mechanism is that v5-era lookups
-  reach for values v6's palette does not contain.
+- Kitchen-sink paired a v5 config with **v6's actual theme set** and broke at
+  runtime before being walked back in `e761914e27`. The mechanism is that
+  v5-era lookups reach for values v6's palette does not contain.
 
   **This does not describe `toV6Themes`, and reading it that way has now cost two
   people time (2026-08-02).** `toV6Themes` renames a theme's camelCase keys to

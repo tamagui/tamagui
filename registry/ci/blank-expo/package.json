@@ -11,10 +11,10 @@
   },
   "dependencies": {
     "@tamagui/config": "workspace:*",
-    "expo": "~55.0.28",
+    "expo": "~57.0.15",
     "react": ">=19",
     "react-dom": "*",
-    "react-native": "0.83.2",
+    "react-native": "0.86.2",
     "react-native-safe-area-context": "~5.7.0",
     "tamagui": "workspace:*"
   },
@@ -22,10 +22,10 @@
     "@babel/core": "^7.25.2",
     "@tamagui/metro-plugin": "workspace:*",
     "@types/node": "^22.1.0",
-    "@types/react": "~19.1.10",
-    "babel-preset-expo": "~55.0.0",
-    "react-test-renderer": "^19.0.0",
-    "typescript": "~5.9.2",
+    "@types/react": "~19.2.4",
+    "babel-preset-expo": "~57.0.7",
+    "react-test-renderer": "19.2.3",
+    "typescript": "~6.0.3",
     "vitest-native": "npm:vitest@4.1.0"
   }
 }

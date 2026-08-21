@@ -34,7 +34,7 @@
     "@types/fs-extra": "^9.0.13",
     "baseline-browser-mapping": "^2.9.15",
     "chokidar": "^3.5.2",
-    "esbuild": "^0.27.2",
+    "esbuild": "0.28.1",
     "esbuild-register": "^3.6.0",
     "execa": "^5.0.0",
     "fast-glob": "^3.2.11",

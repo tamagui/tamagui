@@ -73,7 +73,7 @@ export declare const ToastAction: import("react").FunctionComponent<Omit<import(
         elevation?: number | import("@tamagui/web").Size | undefined;
     }, import("@tamagui/web").StaticConfigPublic];
 };
-declare function ToastList(props: ToastListProps): import("react/jsx-runtime").JSX.Element;
+declare function ToastList(props: ToastListProps): import("react").JSX.Element;
 export declare const Toast: ((props: ToastRootProps & import("@tamagui/ui").RefProp<TamaguiElement>) => import("react").ReactNode) & {
     displayName?: string;
     propTypes?: any;
@@ -177,7 +177,7 @@ export declare const Toast: ((props: ToastRootProps & import("@tamagui/ui").RefP
     };
     Icon: (props: {
         children?: React.ReactNode;
-    }) => import("react/jsx-runtime").JSX.Element | null;
+    }) => React.JSX.Element | null;
 };
 export { toast, useToastItem, useToasts };
 export type { ExternalToast, ToastPosition, ToastT };

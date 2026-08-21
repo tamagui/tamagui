@@ -105,7 +105,7 @@
   "devDependencies": {
     "@tamagui/build": "workspace:*",
     "react": ">=19",
-    "react-native": "0.83.2",
+    "react-native": "0.86.2",
     "react-native-web": "^0.21.0"
   },
   "peerDependencies": {

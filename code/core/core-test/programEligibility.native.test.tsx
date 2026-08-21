@@ -40,7 +40,7 @@ test('plain part values keep the legacy pipeline', () => {
 
 test('pointerEvents enters the program engine on native', () => {
   const base = split({ pointerEvents: 'auto hover:none' })
-  // repo pins RN 0.83: style.pointerEvents is the modern spelling
+  // style.pointerEvents is the modern React Native spelling
   expect(base.style?.pointerEvents).toBe('auto')
   expect(base.programStates?.has('hover')).toBe(true)
   const hovered = split({ pointerEvents: 'auto hover:none' }, { hover: true })

@@ -35,7 +35,7 @@ function resolveColor(raw: string, tokenMap?: TokenMap): any {
   return raw
 }
 
-// the direction grammar RN 0.83 itself accepts, sourced from
+// the direction grammar React Native itself accepts, sourced from
 // react-native/Libraries/StyleSheet/processBackgroundImage.js — signed and
 // leading-decimal angles, case-insensitive units and keywords. what matters
 // is what React Native reads, not what the CSS spec permits

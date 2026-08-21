@@ -81,7 +81,7 @@ const nonAnimatableViewProps = {
   outlineStyle: true,
   overflow: true,
   // a style on both platforms: CSS pointer-events on web, style.pointerEvents
-  // on RN (>= 0.71; repo pins 0.83) — the deprecated View prop spelling is
+  // on RN (>= 0.71) — the deprecated View prop spelling is
   // not used, so flat clause values evaluate through the program engine
   pointerEvents: true,
   position: true,

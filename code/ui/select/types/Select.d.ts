@@ -74,10 +74,10 @@ export declare const SelectSeparator: React.FunctionComponent<Omit<import("@tama
 }> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
     __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic];
 };
-export declare function SelectRoot<Value extends string = string, Multiple extends boolean | undefined = false>(props: SelectScopedProps<SelectProps<Value, Multiple>>): import("react/jsx-runtime").JSX.Element;
+export declare function SelectRoot<Value extends string = string, Multiple extends boolean | undefined = false>(props: SelectScopedProps<SelectProps<Value, Multiple>>): React.JSX.Element;
 export declare const Select: typeof SelectRoot & {
     Root: typeof SelectRoot;
-    Adapt: ((props: import("@tamagui/adapt").AdaptProps) => import("react/jsx-runtime").JSX.Element) & {
+    Adapt: ((props: import("@tamagui/adapt").AdaptProps) => React.JSX.Element) & {
         Contents: typeof import("@tamagui/adapt").AdaptContents;
     };
     Content: typeof SelectContent;
@@ -156,6 +156,6 @@ export declare const Select: typeof SelectRoot & {
     }, import("react-native").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
         scope?: import("./types").SelectScopes;
     }, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic>;
-    FocusScope: (props: import("@tamagui/focus-scope/types/types").ScopedProps<import("@tamagui/focus-scope").FocusScopeControllerProps>) => import("react/jsx-runtime").JSX.Element;
+    FocusScope: (props: import("@tamagui/focus-scope/types/types").ScopedProps<import("@tamagui/focus-scope").FocusScopeControllerProps>) => React.JSX.Element;
 };
 //# sourceMappingURL=Select.d.ts.map

@@ -5,7 +5,7 @@ interface SlotProps {
 export declare const Slot: import("react").NamedExoticComponent<SlotProps & import("@tamagui/compose-refs").RefProp<any>>;
 export declare function Slottable({ children }: {
     children: ReactNode;
-}): import("react/jsx-runtime").JSX.Element;
+}): import("react").JSX.Element;
 export declare namespace Slottable {
     var displayName: string;
 }

@@ -262,8 +262,8 @@ export declare const Dialog: ((props: {
     } & {
         scope?: import("@tamagui/ui").DialogScopes;
     }, import("@tamagui/web").StackStyleBase, {}, import("@tamagui/web").StaticConfigPublic>;
-    FocusScope: (props: import("@tamagui/focus-scope/types/types").ScopedProps<import("@tamagui/focus-scope").FocusScopeControllerProps>) => import("react/jsx-runtime").JSX.Element;
-    Adapt: ((props: import("@tamagui/ui").AdaptProps) => import("react/jsx-runtime").JSX.Element) & {
+    FocusScope: (props: import("@tamagui/focus-scope/types/types").ScopedProps<import("@tamagui/focus-scope").FocusScopeControllerProps>) => React.JSX.Element;
+    Adapt: ((props: import("@tamagui/ui").AdaptProps) => React.JSX.Element) & {
         Contents: typeof import("@tamagui/ui").AdaptContents;
     };
     Overlay: React.FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {

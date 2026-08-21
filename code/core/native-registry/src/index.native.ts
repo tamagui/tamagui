@@ -64,7 +64,7 @@ function getEngine(): Engine {
 
 /**
  * Extract the opaque ShadowNode JSI wrapper from a Fabric host component ref.
- * Same internals access as Unistyles; verified against RN 0.83.
+ * Same internals access as Unistyles; verified against RN 0.86.
  */
 function getShadowNode(ref: unknown): unknown | null {
   const handle = (ref as Record<string, unknown>)?.__internalInstanceHandle as

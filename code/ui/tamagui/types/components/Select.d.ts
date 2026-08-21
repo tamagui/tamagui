@@ -185,13 +185,13 @@ export declare const SelectSeparator: import("react").FunctionComponent<Omit<imp
 export type SelectRootProps<Value extends string, Multiple extends boolean | undefined = false> = Omit<SelectScopedProps<SelectBehaviorProps<Value, Multiple>>, 'size'> & {
     size?: SelectSize;
 };
-export declare function SelectRoot<Value extends string = string, Multiple extends boolean | undefined = false>({ size, ...props }: SelectRootProps<Value, Multiple>): import("react/jsx-runtime").JSX.Element;
+export declare function SelectRoot<Value extends string = string, Multiple extends boolean | undefined = false>({ size, ...props }: SelectRootProps<Value, Multiple>): import("react").JSX.Element;
 export declare const selectParts: {
-    Adapt: ((props: import("@tamagui/ui").AdaptProps) => import("react/jsx-runtime").JSX.Element) & {
+    Adapt: ((props: import("@tamagui/ui").AdaptProps) => React.JSX.Element) & {
         Contents: typeof import("@tamagui/ui").AdaptContents;
     };
-    Content: ({ children, scope, onEscapeKeyDown, onPointerDownOutside, onFocusOutside, onInteractOutside, ...focusScopeProps }: import("@tamagui/ui").SelectContentProps & import("@tamagui/focus-scope").FocusScopeProps) => import("react/jsx-runtime").JSX.Element | null;
-    FocusScope: (props: import("@tamagui/focus-scope/types/types").ScopedProps<import("@tamagui/focus-scope").FocusScopeControllerProps>) => import("react/jsx-runtime").JSX.Element;
+    Content: ({ children, scope, onEscapeKeyDown, onPointerDownOutside, onFocusOutside, onInteractOutside, ...focusScopeProps }: import("@tamagui/ui").SelectContentProps & import("@tamagui/focus-scope").FocusScopeProps) => import("react").JSX.Element | null;
+    FocusScope: (props: import("@tamagui/focus-scope/types/types").ScopedProps<import("@tamagui/focus-scope").FocusScopeControllerProps>) => React.JSX.Element;
     Group: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
         scope?: import("@tamagui/ui").SelectScopes;
     }, keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
@@ -376,11 +376,11 @@ export declare const selectParts: {
     };
 };
 export declare const Select: typeof SelectRoot & {
-    Adapt: ((props: import("@tamagui/ui").AdaptProps) => import("react/jsx-runtime").JSX.Element) & {
+    Adapt: ((props: import("@tamagui/ui").AdaptProps) => React.JSX.Element) & {
         Contents: typeof import("@tamagui/ui").AdaptContents;
     };
-    Content: ({ children, scope, onEscapeKeyDown, onPointerDownOutside, onFocusOutside, onInteractOutside, ...focusScopeProps }: import("@tamagui/ui").SelectContentProps & import("@tamagui/focus-scope").FocusScopeProps) => import("react/jsx-runtime").JSX.Element | null;
-    FocusScope: (props: import("@tamagui/focus-scope/types/types").ScopedProps<import("@tamagui/focus-scope").FocusScopeControllerProps>) => import("react/jsx-runtime").JSX.Element;
+    Content: ({ children, scope, onEscapeKeyDown, onPointerDownOutside, onFocusOutside, onInteractOutside, ...focusScopeProps }: import("@tamagui/ui").SelectContentProps & import("@tamagui/focus-scope").FocusScopeProps) => import("react").JSX.Element | null;
+    FocusScope: (props: import("@tamagui/focus-scope/types/types").ScopedProps<import("@tamagui/focus-scope").FocusScopeControllerProps>) => React.JSX.Element;
     Group: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
         scope?: import("@tamagui/ui").SelectScopes;
     }, keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {

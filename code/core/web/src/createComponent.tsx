@@ -361,12 +361,12 @@ export function createComponent<
     const componentContext = React.useContext(ComponentContext)
     const hasTextAncestor = !!(isWeb && isText ? componentContext.inText : false)
 
-    // On Android, skip RNGH GestureDetector inside native menus (zeego) and use
-    // direct press events instead — GestureDetector consumes touches before they
-    // reach MenuView's native handler, preventing the menu from opening
-    // NativeMenuContext only affects Android RNGH press arbitration inside zeego
-    // menus (see eventHandling.native.ts:182). isAndroid is constant for the whole
-    // app run, so on iOS we skip this context read for every component — the branch
+    // on Android, skip RNGH GestureDetector inside native menus and use direct
+    // press events instead. GestureDetector consumes touches before they reach the
+    // native menu handler, preventing the menu from opening. NativeMenuContext only
+    // affects Android RNGH press arbitration inside native menus (see
+    // eventHandling.native.ts:182). isAndroid is constant for the whole app run,
+    // so on iOS we skip this context read for every component. the branch
     // never flips at runtime, so hook order stays stable (rules-of-hooks safe).
     const isInsideNativeMenu =
       process.env.TAMAGUI_TARGET === 'native' && isAndroid

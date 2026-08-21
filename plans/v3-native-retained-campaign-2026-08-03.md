@@ -54,32 +54,3 @@ numbers must come from the final committed measurement HEAD.
 Keep the raw JSON and generated Markdown together. The established noise band
 is plus or minus 16 percent. Do not report a smaller delta as resolved by this
 instrument.
-
-## Starter bailout attribution
-
-The current starter manifest at
-`code/starters/expo-router/node_modules/.cache/tamagui/metro-compiler/ios/v4`
-contains 52 candidates: 22 lowered and 30 bailed. Reading every cached plan
-gives these 30 local bailout reasons:
-
-- 13 unsafe dynamic spreads
-- 6 unsupported Tamagui targets: three `Button` and three `Anchor`
-- 3 dynamic heights
-- 8 other dynamic or unsupported cases, one each for a conditional native
-  value program, `style`, `top`, `render`, `pointerEvents`, `direction`,
-  `width`, and `zIndex`
-
-`Popper.native.js` also carries four `@tamagui/floating` unresolved-export
-diagnostics for `arrow`, `flip`, `offset`, and `shift`. Those diagnostics are
-linker noise. Its five candidate bailouts each have an independent local
-reason: three unsafe spreads, dynamic `direction`, and dynamic `width`.
-The missing-export premise therefore identifies no starter element that would
-lower after fixing the linker diagnostics.
-
-The export warnings come from `Floating.native.js` forwarding the external
-`@floating-ui/react-native` namespace with `export *`. The compiler excludes
-ordinary external packages from its semantic graph, so it cannot enumerate
-that namespace for the named reexports in `index.native.js`. Changing the
-public package to a duplicated fixed export list would risk silently shrinking
-the API. Suppressing unresolved bindings globally would hide real component
-link failures. Neither change is justified by the current bailout evidence.
