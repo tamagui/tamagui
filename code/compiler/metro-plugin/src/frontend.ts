@@ -163,6 +163,18 @@ interface IgnoreScope {
   matcher: Ignore
 }
 
+const speculativeWalkExcludedDirs = new Set([
+  '__tests__',
+  'e2e',
+  'flows',
+  'plugins',
+  'screenshots',
+  'scripts',
+  'test',
+  'test-results',
+  'tests',
+])
+
 async function walkProjectSources(root: string): Promise<string[]> {
   // git reads every .gitignore from the repository root down to the file, so an
   // app nested in a monorepo inherits the declarations made above it
@@ -200,7 +212,15 @@ async function walkProjectSources(root: string): Promise<string[]> {
     for (const entry of entries) {
       if (entry.name.startsWith('.') || entry.name === 'node_modules') continue
       const isDirectory = entry.isDirectory()
+      if (isDirectory && speculativeWalkExcludedDirs.has(entry.name)) continue
       if (!isDirectory && !(entry.isFile() && isCompilerSourceFile(entry.name))) continue
+      if (
+        !isDirectory &&
+        (/(?:^|[-.])(?:probe|run|spec|tests?)(?:[-.]|$)/i.test(entry.name) ||
+          /\.(?:build|config|workspace)\.[cm]?[jt]sx?$/.test(entry.name))
+      ) {
+        continue
+      }
       const path = join(dir, entry.name)
       let ignored = false
       for (const scope of active) {

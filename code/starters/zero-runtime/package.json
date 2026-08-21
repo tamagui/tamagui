@@ -29,8 +29,8 @@
     "@tamagui/next-plugin": "workspace:*",
     "@tamagui/static": "workspace:*",
     "@tamagui/vite-plugin": "workspace:*",
-    "metro": "^0.83.7",
-    "metro-config": "^0.83.7",
+    "metro": "0.84.4",
+    "metro-config": "0.84.4",
     "next": "16.1.1",
     "react-dom": "*",
     "vite": "^8.0.3"
