@@ -10,6 +10,7 @@
   "react-native": "src/index.native.ts",
   "files": [
     "src",
+    "!src/__tests__",
     "types",
     "dist",
     "nitrogen",
