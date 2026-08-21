@@ -49,6 +49,22 @@ function runNpm(args: string[], cwd = root): void {
   }
 }
 
+// npm answers a create on an already-configured package with 409, which is the
+// only way to learn the config is there without spending a second slow call
+// reading it first. treated as success so the run is idempotent and resumable.
+function configureTrust(name: string): 'created' | 'already configured' {
+  const result = spawnSync(
+    process.execPath,
+    [npmCli, 'trust', 'github', name, '--repo', repository, '--file', workflowFile, '--allow-publish', '--yes'],
+    { cwd: root, stdio: ['inherit', 'inherit', 'pipe'], encoding: 'utf8' }
+  )
+  if (result.error) throw result.error
+  if (result.status === 0) return 'created'
+  process.stderr.write(result.stderr)
+  if (/\bE409\b|already exists/.test(result.stderr)) return 'already configured'
+  throw new Error(`could not configure ${name}`)
+}
+
 function readProgress(): Set<string> {
   if (!existsSync(progressFile)) return new Set()
   return new Set(JSON.parse(readFileSync(progressFile, 'utf8')) as string[])
@@ -199,17 +215,7 @@ async function main(): Promise<void> {
 
   for (const [index, name] of pending.entries()) {
     console.info(`\n[${index + 1}/${pending.length}] ${name}`)
-    runNpm([
-      'trust',
-      'github',
-      name,
-      '--repo',
-      repository,
-      '--file',
-      workflowFile,
-      '--allow-publish',
-      '--yes',
-    ])
+    console.info(`  ${configureTrust(name)}`)
     configured.add(name)
     recordProgress(configured)
   }
