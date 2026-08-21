@@ -1,5 +1,5 @@
 import { by, device, element, expect, waitFor } from 'detox'
-import { safeLaunchApp, withSync } from './utils/detox'
+import { runAdb, safeLaunchApp, withSync } from './utils/detox'
 import { remountDirectUseCase } from './utils/navigation'
 
 function getMenuItemMatcher(label: string) {
@@ -12,19 +12,17 @@ async function selectColor(label: 'Red' | 'Green' | 'Blue') {
     const { frame } = (await trigger.getAttributes()) as Detox.AndroidElementAttributes
     await withSync(() => trigger.tap())
 
-    // Compose popup contents are visible to Android accessibility, but they are
-    // outside Espresso's View hierarchy. Tap the Material menu row relative to
-    // the trigger: 8dp popup padding followed by 48dp rows. Detox reports the
-    // frame in physical pixels but accepts tap coordinates in dp, so the fixed
-    // 120dp trigger width provides the device density.
+    // Compose popup contents are outside Espresso's View hierarchy. Detox's
+    // screen tap also becomes relative to the popup root, so use Android's
+    // physical screen input for the 8dp padding and 48dp Material menu rows.
     const density = frame.width / 120
     const itemIndex = { Red: 0, Green: 1, Blue: 2 }[label]
-    await device.tap(
-      {
-        x: (frame.x + frame.width / 2) / density,
-        y: (frame.y + frame.height) / density + 32 + itemIndex * 48,
-      },
-      false
+    runAdb(
+      'shell',
+      'input',
+      'tap',
+      String(Math.round(frame.x + frame.width / 2)),
+      String(Math.round(frame.y + frame.height + (32 + itemIndex * 48) * density))
     )
     return
   }

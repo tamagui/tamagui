@@ -80,7 +80,7 @@ type LaunchAppParams = Parameters<typeof device.launchApp>[0]
 
 let lastLaunchParams: LaunchAppParams | undefined
 
-function runAdb(...args: string[]): string {
+export function runAdb(...args: string[]): string {
   return execFileSync('adb', ['-s', device.id, ...args], {
     encoding: 'utf8',
     maxBuffer: 4 * 1024 * 1024,
