@@ -43,6 +43,7 @@ export function SelectDemoContents(
       value={val}
       onValueChange={setVal}
       disablePreventBodyScroll
+      lazyMount
       {...props}
       // renderValue enables SSR support by providing the label synchronously
       renderValue={getItemLabel}
