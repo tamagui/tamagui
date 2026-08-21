@@ -10,11 +10,12 @@
 // the npm-publish-beta environment and the stable job runs in none, so the entry
 // deliberately pins no environment. Adding one would break the other lane.
 //
-// Run it from a real terminal. npm's trust endpoints require 2FA, so npm opens a
-// browser to authenticate; a piped or non-interactive shell fails with EOTP.
+// Run it from a real terminal. npm asks for a fresh one-time password on trust
+// operations and answers it in a browser, so every npm call that can prompt
+// inherits this terminal rather than being captured.
 
 import { execFileSync, spawnSync } from 'node:child_process'
-import { mkdirSync, writeFileSync } from 'node:fs'
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { relative, resolve } from 'node:path'
 import { createInterface } from 'node:readline/promises'
@@ -28,21 +29,18 @@ const scratch = resolve(tmpdir(), 'tamagui-v3-oidc-bootstrap')
 const npmPrefix = resolve(scratch, 'npm-runtime')
 const bootstrapDir = resolve(scratch, 'packages')
 const npmCli = resolve(npmPrefix, 'node_modules/npm/bin/npm-cli.js')
+// configuring 166 packages is a long single run, so each success is recorded and
+// a rerun resumes instead of repeating work that already succeeded
+const progressFile = resolve(scratch, 'configured.json')
 const owner = 'nwienert'
 const repository = 'tamagui/tamagui'
 const workflowFile = 'release.yml'
-// npm trust needs 11.15+; reads are parallel because 166 sequential round trips
-// take minutes, writes stay sequential so a 2FA prompt is never interleaved.
-const readConcurrency = 8
 
 function capture(command: string, args: string[], cwd = root): string {
   return execFileSync(command, args, { cwd, encoding: 'utf8' }).trim()
 }
 
-function npm(args: string[], cwd = root) {
-  return spawnSync(process.execPath, [npmCli, ...args], { cwd, encoding: 'utf8' })
-}
-
+// inherits the terminal so npm can run its browser one-time-password handshake
 function runNpm(args: string[], cwd = root): void {
   const result = spawnSync(process.execPath, [npmCli, ...args], { cwd, stdio: 'inherit' })
   if (result.error) throw result.error
@@ -51,105 +49,25 @@ function runNpm(args: string[], cwd = root): void {
   }
 }
 
-function assertNotAuthFailure(name: string, stderr: string): void {
-  if (/\bEOTP\b|one-time password|ENEEDAUTH/.test(stderr)) {
-    throw new Error(
-      `npm needs interactive 2FA to read ${name}.\n` +
-        `Run this from a real terminal (not a pipe or CI) so npm can open a browser.`
-    )
-  }
+function readProgress(): Set<string> {
+  if (!existsSync(progressFile)) return new Set()
+  return new Set(JSON.parse(readFileSync(progressFile, 'utf8')) as string[])
 }
 
-async function mapWithConcurrency<In, Out>(
-  items: readonly In[],
-  limit: number,
-  worker: (item: In, index: number) => Promise<Out>
-): Promise<Out[]> {
-  const results = new Array<Out>(items.length)
-  let cursor = 0
-  const runners = Array.from({ length: Math.min(limit, items.length) }, async () => {
-    while (cursor < items.length) {
-      const index = cursor++
-      results[index] = await worker(items[index], index)
-    }
-  })
-  await Promise.all(runners)
-  return results
+function recordProgress(done: Set<string>): void {
+  writeFileSync(progressFile, JSON.stringify([...done].sort(), null, 2) + '\n')
 }
 
-function packageExists(name: string): boolean {
-  const result = npm(['view', name, 'name', '--json'])
-  if (result.status === 0) return true
-  if (result.stderr.includes('E404')) return false
-  assertNotAuthFailure(name, result.stderr)
-  throw new Error(`could not check ${name}: ${result.stderr.trim()}`)
-}
-
-function verifyOwner(name: string): void {
-  const result = npm(['view', name, 'maintainers', '--json'])
-  if (result.status !== 0) {
-    throw new Error(`could not read ${name} maintainers: ${result.stderr.trim()}`)
-  }
-  const raw = JSON.parse(result.stdout)
-  const maintainers = (Array.isArray(raw) ? raw : [raw]).map(
-    (maintainer: string | { name?: string }) =>
-      typeof maintainer === 'string' ? maintainer.match(/^[^ <]+/)?.[0] : maintainer.name
+// the public registry answers this without auth, so 166 of them take seconds
+// where 166 npm subprocesses took ten minutes
+async function existsOnNpm(name: string): Promise<boolean> {
+  const response = await fetch(
+    `https://registry.npmjs.org/${name.replace('/', '%2F')}`,
+    { method: 'HEAD' }
   )
-  if (!maintainers.includes(owner)) {
-    throw new Error(`${name} exists but is not maintained by ${owner}`)
-  }
-}
-
-type TrustConfig = {
-  id?: string
-  type?: string
-  file?: string
-  repository?: string
-  environment?: string
-  permissions?: string[]
-}
-
-function readTrust(name: string): TrustConfig[] {
-  const result = npm(['trust', 'list', name, '--json'])
-  if (result.status !== 0) {
-    assertNotAuthFailure(name, result.stderr)
-    throw new Error(`could not read ${name} trust: ${result.stderr.trim()}`)
-  }
-  const raw = result.stdout.trim()
-  if (!raw) return []
-  const parsed = JSON.parse(raw)
-  const list = Array.isArray(parsed) ? parsed : [parsed]
-  return list.filter((entry) => entry && typeof entry === 'object')
-}
-
-// Verifies the parts that decide whether CI can publish, and deliberately does
-// not pin the exact permission spelling: npm names the grant behind
-// --allow-publish, and a future rename there must not make this script refuse a
-// config that works. An entry pinning an environment is reported as a mismatch
-// because the stable lane runs without one.
-function trustPermitsRelease(config: TrustConfig): boolean {
-  return (
-    config.type === 'github' &&
-    config.repository === repository &&
-    config.file === workflowFile &&
-    config.environment == null &&
-    (config.permissions ?? []).some((permission) => /publish/i.test(permission))
-  )
-}
-
-function describeTrust(entries: readonly TrustConfig[]): string {
-  if (entries.length === 0) return 'none'
-  return entries
-    .map((entry) => {
-      const scope = [
-        entry.type ?? '?',
-        entry.repository ?? '?',
-        entry.file ?? '?',
-        entry.environment ? `env=${entry.environment}` : 'env=any',
-      ].join(' ')
-      return `${scope} [${(entry.permissions ?? []).join(',') || 'no permissions'}]`
-    })
-    .join('; ')
+  if (response.status === 404) return false
+  if (!response.ok) throw new Error(`registry returned ${response.status} for ${name}`)
+  return true
 }
 
 async function main(): Promise<void> {
@@ -166,60 +84,31 @@ async function main(): Promise<void> {
     .sort()
   if (packages.length === 0) throw new Error('found no publishable workspace packages')
 
-  mkdirSync(npmPrefix, { recursive: true })
-  execFileSync(
-    'npm',
-    [
-      'install',
-      '--prefix',
-      npmPrefix,
-      '--no-package-lock',
-      '--no-save',
-      `npm@${npmVersion}`,
-    ],
-    { cwd: root, stdio: 'inherit' }
-  )
-  if (capture(process.execPath, [npmCli, '--version']) !== npmVersion) {
-    throw new Error(`failed to install npm ${npmVersion}`)
-  }
-  const whoami = spawnSync(process.execPath, [npmCli, 'whoami'], { encoding: 'utf8' })
-  if (whoami.status !== 0 || whoami.stdout.trim() !== owner) {
-    throw new Error(
-      `npm must be authenticated as ${owner} (got "${whoami.stdout.trim() || 'nobody'}").\n` +
-        `Run: node ${npmCli} login`
+  const configured = readProgress()
+  const pending = packages.filter((name) => !configured.has(name))
+
+  console.info(`\nChecking ${pending.length} packages against the registry...`)
+  const missing = (
+    await Promise.all(
+      pending.map(async (name) => ((await existsOnNpm(name)) ? undefined : name))
     )
+  ).filter((name): name is string => name !== undefined)
+
+  if (configured.size > 0) {
+    console.info(`\n${configured.size} already configured by an earlier run.`)
   }
-
-  console.info(`\nInspecting ${packages.length} packages on npm...`)
-  const state = await mapWithConcurrency(packages, readConcurrency, async (name) => {
-    const exists = packageExists(name)
-    const trust = exists ? readTrust(name) : []
-    return { name, exists, trust, ready: exists && trust.some(trustPermitsRelease) }
-  })
-
-  const missing = state.filter((entry) => !entry.exists)
-  const needsTrust = state.filter((entry) => entry.exists && !entry.ready)
-  const ready = state.filter((entry) => entry.ready)
-
   if (missing.length > 0) {
     console.info(`\nNot on npm, need a one-time bootstrap publish (${missing.length}):`)
-    for (const entry of missing) console.info(`  ${entry.name}`)
-  }
-  if (needsTrust.length > 0) {
-    console.info(`\nOn npm but cannot publish from CI (${needsTrust.length}):`)
-    for (const entry of needsTrust) {
-      console.info(`  ${entry.name}: ${describeTrust(entry.trust)}`)
-    }
+    for (const name of missing) console.info(`  ${name}`)
   }
   console.info(
-    `\n${ready.length} ready, ${needsTrust.length} need a trusted publisher, ${missing.length} need publishing first.`
+    `\n${pending.length} packages need a trusted publisher, ${missing.length} of them need publishing first.`
   )
 
-  if (missing.length === 0 && needsTrust.length === 0) {
-    console.info('\nEvery package is ready. CI can publish over OIDC.')
+  if (pending.length === 0) {
+    console.info('\nEvery package is ready. Rerun the Release workflow.')
     return
   }
-
   if (!execute) {
     console.info('\nRerun with --execute to apply this plan.')
     return
@@ -233,8 +122,26 @@ async function main(): Promise<void> {
     throw new Error(`local HEAD ${head} is not current origin/v3-beta ${remote}`)
   }
 
+  mkdirSync(npmPrefix, { recursive: true })
+  execFileSync(
+    'npm',
+    ['install', '--prefix', npmPrefix, '--no-package-lock', '--no-save', `npm@${npmVersion}`],
+    { cwd: root, stdio: 'inherit' }
+  )
+  if (capture(process.execPath, [npmCli, '--version']) !== npmVersion) {
+    throw new Error(`failed to install npm ${npmVersion}`)
+  }
+  const whoami = spawnSync(process.execPath, [npmCli, 'whoami'], { encoding: 'utf8' })
+  if (whoami.status !== 0 || whoami.stdout.trim() !== owner) {
+    throw new Error(
+      `npm must be authenticated as ${owner} (got "${whoami.stdout.trim() || 'nobody'}").\n` +
+        `Run: node ${npmCli} login --auth-type web`
+    )
+  }
+
   console.info(
-    `\nThis permanently claims ${missing.length} npm package names and grants ${repository} (${workflowFile}) publish rights on ${missing.length + needsTrust.length} packages.`
+    `\nThis permanently claims ${missing.length} npm package names and grants ${repository} (${workflowFile}) publish rights on ${pending.length} packages.` +
+      `\nnpm may ask for a one-time password in your browser; approve it when it does.`
   )
   const prompt = createInterface({ input: process.stdin, output: process.stdout })
   const confirmation = await prompt.question(
@@ -247,7 +154,7 @@ async function main(): Promise<void> {
 
   if (missing.length > 0) {
     const workspaceDirs: string[] = []
-    for (const { name } of missing) {
+    for (const name of missing) {
       const packageDir = resolve(bootstrapDir, name.replace('@', '').replace('/', '-'))
       mkdirSync(packageDir, { recursive: true })
       writeFileSync(
@@ -278,41 +185,20 @@ async function main(): Promise<void> {
       ) + '\n'
     )
     runNpm(
-      [
-        'publish',
-        '--workspaces',
-        '--access',
-        'public',
-        '--tag',
-        'bootstrap',
-        '--ignore-scripts',
-        '--auth-type',
-        'web',
-      ],
+      ['publish', '--workspaces', '--access', 'public', '--tag', 'bootstrap', '--ignore-scripts'],
       bootstrapDir
     )
+    for (const name of missing) {
+      for (let attempt = 1; !(await existsOnNpm(name)); attempt++) {
+        if (attempt > 30) throw new Error(`${name} never appeared on the registry`)
+        console.info(`${name}: waiting for npm registry propagation (${attempt}/30)`)
+        await Bun.sleep(10_000)
+      }
+    }
   }
 
-  for (const { name } of [...missing, ...needsTrust]) {
-    for (let attempt = 1; !packageExists(name); attempt++) {
-      if (attempt > 30) throw new Error(`${name} never appeared on the registry`)
-      console.info(`${name}: waiting for npm registry propagation (${attempt}/30)`)
-      await Bun.sleep(10_000)
-    }
-    verifyOwner(name)
-
-    const existing = readTrust(name)
-    if (existing.some(trustPermitsRelease)) {
-      console.info(`${name}: already configured`)
-      continue
-    }
-    if (existing.length > 0) {
-      throw new Error(
-        `${name} has a conflicting trusted publisher: ${describeTrust(existing)}\n` +
-          `Revoke it with: node ${npmCli} trust revoke ${name} --id=<trust-id>`
-      )
-    }
-
+  for (const [index, name] of pending.entries()) {
+    console.info(`\n[${index + 1}/${pending.length}] ${name}`)
     runNpm([
       'trust',
       'github',
@@ -324,13 +210,8 @@ async function main(): Promise<void> {
       '--allow-publish',
       '--yes',
     ])
-    const configured = readTrust(name)
-    if (!configured.some(trustPermitsRelease)) {
-      throw new Error(
-        `${name} trust did not take effect: ${describeTrust(configured)}`
-      )
-    }
-    console.info(`${name}: configured`)
+    configured.add(name)
+    recordProgress(configured)
   }
 
   console.info(`\nAll ${packages.length} packages are ready. Rerun the Release workflow.`)
@@ -339,5 +220,6 @@ async function main(): Promise<void> {
 main().catch((error) => {
   console.error(`\nBootstrap stopped: ${error instanceof Error ? error.message : error}`)
   console.error('Fix the reported problem, then rerun the same command.')
+  console.error('Packages already configured are recorded, so a rerun resumes.')
   process.exitCode = 1
 })
