@@ -200,7 +200,6 @@ jobs:
       - name: Warm up App (cold start + Hermes bytecode compile)
         if: env.SKIP_MAESTRO_TESTS != 'true'
         env:
-          FLOW_TIMEOUT: 180
           MAX_ATTEMPTS: 2
           SKIP_FLOWS: ''
         run: |
