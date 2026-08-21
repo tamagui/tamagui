@@ -44,8 +44,8 @@
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "react": ">=19",
-    "react-dom": "*"
+    "react": "19.2.3",
+    "react-dom": "19.2.3"
   },
   "peerDependencies": {
     "react": ">=19",
