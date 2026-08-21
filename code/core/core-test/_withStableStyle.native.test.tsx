@@ -42,9 +42,7 @@ describe('_withStableStyle', () => {
 
     const Wrapped = _withStableStyle(
       View,
-      (theme) => [
-        { width: 50, height: 50, backgroundColor: theme.background?.get() },
-      ],
+      (theme) => [{ width: 50, height: 50, backgroundColor: theme.background?.get() }],
       true
     )
 
