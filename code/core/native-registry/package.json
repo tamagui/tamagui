@@ -56,10 +56,14 @@
   "peerDependencies": {
     "react": "*",
     "react-native": ">=0.81.0",
-    "react-native-nitro-modules": ">=0.36.0"
+    "react-native-nitro-modules": ">=0.36.0",
+    "react-native-web": "*"
   },
   "peerDependenciesMeta": {
     "react-native-nitro-modules": {
+      "optional": true
+    },
+    "react-native-web": {
       "optional": true
     }
   },
