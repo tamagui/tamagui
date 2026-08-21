@@ -136,7 +136,7 @@ export interface ToastListProps {
      */
     renderItem?: (props: ToastItemRenderProps) => React.ReactNode;
 }
-declare function ToastList({ renderItem }: ToastListProps): import("react/jsx-runtime").JSX.Element;
+declare function ToastList({ renderItem }: ToastListProps): React.JSX.Element;
 export interface ToastItemProps extends GetProps<typeof ToastItemFrame> {
     toast: ToastT;
     index: number;
@@ -144,7 +144,7 @@ export interface ToastItemProps extends GetProps<typeof ToastItemFrame> {
 }
 declare function ToastIcon(props: {
     children?: React.ReactNode;
-}): import("react/jsx-runtime").JSX.Element | null;
+}): React.JSX.Element | null;
 export declare function useToasts(): {
     toasts: ToastT[];
     expanded: boolean;
