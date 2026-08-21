@@ -226,10 +226,12 @@ jobs:
         with:
           persist-credentials: false
 
+      # no registry-url: it writes an .npmrc holding a placeholder NODE_AUTH_TOKEN
+      # when no real token exists, which npm sends instead of using OIDC, and the
+      # registry answers a PUT with 404. same defect that stopped release.yml.
       - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
         with:
           node-version: 22
-          registry-url: 'https://registry.npmjs.org'
 
       # npm 11.5.1+ is required for trusted publishing
       - run: npm install -g npm@latest
