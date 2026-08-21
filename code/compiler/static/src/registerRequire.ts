@@ -1,3 +1,5 @@
+import { dirname } from 'node:path'
+import { buildSync } from 'esbuild'
 import { register } from 'esbuild-register/dist/node'
 import { createRequire } from 'node:module'
 
@@ -68,6 +70,35 @@ function getStaticExtractionStub(path: string) {
         fetchUpdateAsync: async () => ({ isNew: false }),
         reloadAsync: async () => {},
       }
+    case 'react-native-reanimated': {
+      const identity = <T>(value: T) => value
+      const sharedValue = <T>(value: T) => ({
+        value,
+        get: () => value,
+        set: (next: T | ((current: T) => T)) => {
+          value = typeof next === 'function' ? (next as (current: T) => T)(value) : next
+        },
+      })
+      const Animated = {
+        createAnimatedComponent: identity,
+        View: () => null,
+        Text: () => null,
+      }
+      return {
+        __esModule: true,
+        default: Animated,
+        cancelAnimation: () => {},
+        runOnJS: identity,
+        runOnUI: identity,
+        useAnimatedReaction: () => {},
+        useAnimatedStyle: (callback: () => unknown) => callback(),
+        useDerivedValue: (callback: () => unknown) => sharedValue(callback()),
+        useSharedValue: sharedValue,
+        withDelay: (_delay: number, animation: unknown) => animation,
+        withSpring: identity,
+        withTiming: identity,
+      }
+    }
     default:
       return null
   }
@@ -144,7 +175,22 @@ export function registerRequire(
 
     const staticEvaluationReplacement = getStaticEvaluationModuleReplacement(path)
     if (staticEvaluationReplacement) {
-      return og.apply(this, [staticEvaluationReplacement])
+      if (!(path in compiled)) {
+        const replacementPath = nodeRequire.resolve(staticEvaluationReplacement)
+        const output = buildSync({
+          entryPoints: [replacementPath],
+          bundle: true,
+          format: 'cjs',
+          platform: 'node',
+          write: false,
+        }).outputFiles[0].text
+        const replacementModule = new Module(replacementPath, this)
+        replacementModule.filename = replacementPath
+        replacementModule.paths = Module._nodeModulePaths(dirname(replacementPath))
+        replacementModule._compile(output, replacementPath)
+        compiled[path] = replacementModule.exports
+      }
+      return compiled[path]
     }
 
     if (

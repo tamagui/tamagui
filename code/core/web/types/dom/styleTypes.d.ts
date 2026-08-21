@@ -45,13 +45,49 @@ type SpaceValue = number | string | true;
 type FlexAlignType = 'flex-start' | 'flex-end' | 'center' | 'stretch' | 'baseline';
 type BorderStyleValue = 'solid' | 'dotted' | 'dashed';
 type FontVariantValue = 'small-caps' | 'oldstyle-nums' | 'lining-nums' | 'tabular-nums' | 'common-ligatures' | 'no-common-ligatures' | 'discretionary-ligatures' | 'no-discretionary-ligatures' | 'historical-ligatures' | 'no-historical-ligatures' | 'contextual' | 'no-contextual' | 'proportional-nums' | 'stylistic-one' | 'stylistic-two' | 'stylistic-three' | 'stylistic-four' | 'stylistic-five' | 'stylistic-six' | 'stylistic-seven' | 'stylistic-eight' | 'stylistic-nine' | 'stylistic-ten' | 'stylistic-eleven' | 'stylistic-twelve' | 'stylistic-thirteen' | 'stylistic-fourteen' | 'stylistic-fifteen' | 'stylistic-sixteen' | 'stylistic-seventeen' | 'stylistic-eighteen' | 'stylistic-nineteen' | 'stylistic-twenty';
-type GradientValue = {
+type LinearGradientValue = {
     type: 'linear-gradient';
     direction?: string | undefined;
     colorStops: ReadonlyArray<{
         color: ColorValue | null;
         positions?: ReadonlyArray<string> | undefined;
     }>;
+};
+type RadialGradientPosition = {
+    top: number | string;
+    left: number | string;
+} | {
+    top: number | string;
+    right: number | string;
+} | {
+    bottom: number | string;
+    left: number | string;
+} | {
+    bottom: number | string;
+    right: number | string;
+};
+type RadialGradientValue = {
+    type: 'radial-gradient';
+    shape: 'circle' | 'ellipse';
+    size: 'closest-corner' | 'closest-side' | 'farthest-corner' | 'farthest-side' | {
+        x: string | number;
+        y: string | number;
+    };
+    position: RadialGradientPosition;
+    colorStops: ReadonlyArray<{
+        color: ColorValue | null;
+        positions?: ReadonlyArray<string> | undefined;
+    }>;
+};
+type BackgroundImageValue = LinearGradientValue | RadialGradientValue;
+type BackgroundSizeValue = {
+    x: string | number;
+    y: string | number;
+};
+type BackgroundRepeatKeyword = 'repeat' | 'space' | 'round' | 'no-repeat';
+type BackgroundRepeatValue = {
+    x: BackgroundRepeatKeyword;
+    y: BackgroundRepeatKeyword;
 };
 /**
  * The transform functions, one per entry, mutually exclusive the way
@@ -251,10 +287,13 @@ interface PaintStyle {
     caretColor?: Properties['caretColor'];
     clipPath?: Properties['clipPath'];
     elevation?: number;
-    experimental_backgroundImage?: string | readonly GradientValue[];
+    experimental_backgroundImage?: string | readonly BackgroundImageValue[];
+    experimental_backgroundSize?: string | readonly BackgroundSizeValue[];
+    experimental_backgroundPosition?: string | readonly RadialGradientPosition[];
+    experimental_backgroundRepeat?: string | readonly BackgroundRepeatValue[];
     filter?: ShorthandString;
     isolation?: 'auto' | 'isolate';
-    mixBlendMode?: 'normal' | 'multiply' | 'screen' | 'overlay' | 'darken' | 'lighten' | 'color-dodge' | 'color-burn' | 'hard-light' | 'soft-light' | 'difference' | 'exclusion' | 'hue' | 'saturation' | 'color' | 'luminosity';
+    mixBlendMode?: 'normal' | 'multiply' | 'screen' | 'overlay' | 'darken' | 'lighten' | 'color-dodge' | 'color-burn' | 'hard-light' | 'soft-light' | 'difference' | 'exclusion' | 'hue' | 'saturation' | 'color' | 'luminosity' | 'plus-lighter';
     opacity?: number;
     shadowColor?: ColorValue;
     shadowOffset?: Readonly<{

@@ -88,13 +88,43 @@ type FontVariantValue =
   | 'stylistic-nineteen'
   | 'stylistic-twenty'
 
-type GradientValue = {
+type LinearGradientValue = {
   type: 'linear-gradient'
   direction?: string | undefined
   colorStops: ReadonlyArray<{
     color: ColorValue | null
     positions?: ReadonlyArray<string> | undefined
   }>
+}
+
+type RadialGradientPosition =
+  | { top: number | string; left: number | string }
+  | { top: number | string; right: number | string }
+  | { bottom: number | string; left: number | string }
+  | { bottom: number | string; right: number | string }
+
+type RadialGradientValue = {
+  type: 'radial-gradient'
+  shape: 'circle' | 'ellipse'
+  size:
+    | 'closest-corner'
+    | 'closest-side'
+    | 'farthest-corner'
+    | 'farthest-side'
+    | { x: string | number; y: string | number }
+  position: RadialGradientPosition
+  colorStops: ReadonlyArray<{
+    color: ColorValue | null
+    positions?: ReadonlyArray<string> | undefined
+  }>
+}
+
+type BackgroundImageValue = LinearGradientValue | RadialGradientValue
+type BackgroundSizeValue = { x: string | number; y: string | number }
+type BackgroundRepeatKeyword = 'repeat' | 'space' | 'round' | 'no-repeat'
+type BackgroundRepeatValue = {
+  x: BackgroundRepeatKeyword
+  y: BackgroundRepeatKeyword
 }
 
 /**
@@ -320,7 +350,10 @@ interface PaintStyle {
   caretColor?: Properties['caretColor']
   clipPath?: Properties['clipPath']
   elevation?: number
-  experimental_backgroundImage?: string | readonly GradientValue[]
+  experimental_backgroundImage?: string | readonly BackgroundImageValue[]
+  experimental_backgroundSize?: string | readonly BackgroundSizeValue[]
+  experimental_backgroundPosition?: string | readonly RadialGradientPosition[]
+  experimental_backgroundRepeat?: string | readonly BackgroundRepeatValue[]
   filter?: ShorthandString
   isolation?: 'auto' | 'isolate'
   mixBlendMode?:
@@ -340,6 +373,7 @@ interface PaintStyle {
     | 'saturation'
     | 'color'
     | 'luminosity'
+    | 'plus-lighter'
   opacity?: number
   shadowColor?: ColorValue
   shadowOffset?: Readonly<{ width: number; height: number }>

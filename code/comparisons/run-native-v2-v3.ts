@@ -582,7 +582,7 @@ ${rows.join('\n')}
 
 - ${report.workload.warmups} warmup rounds and ${report.workload.samples} retained rounds.
 - Every round contains every framework/scenario case once in seeded randomized order.
-- Runtime and compiler comparisons each use one shared versioned fixture. All four apps use Expo 55, React 19.1, React Native 0.83.2, and the same simulator.
+- Runtime and compiler comparisons each use one shared versioned fixture. All four apps use Expo 57, React 19.2, React Native 0.86.2, and the same simulator.
 - The V2 apps use npm 2.6.2 artifacts. The V3 apps use workspace source at ${report.metadata.sourceCommit}.
 - Transport: ${report.metadata.transport}. Hardware evidence: iOS Simulator, not a physical device.
 

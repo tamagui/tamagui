@@ -7,6 +7,12 @@
   },
   "workspaces": [
     "./code/compiler/**/*",
+    "./code/comparisons/conformance/native",
+    "./code/comparisons/nativewind-bench-native",
+    "./code/comparisons/rn-bench-native",
+    "./code/comparisons/tamagui-bench-native",
+    "./code/comparisons/tamagui-bench-native-compiled",
+    "./code/comparisons/uniwind-bench-native",
     "./code/core/**/*",
     "./code/demos",
     "./code/kitchen-sink",

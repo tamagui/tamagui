@@ -1,3 +1,5 @@
+import { readFile } from 'node:fs/promises'
+import { dirname } from 'node:path'
 import type { Plugin } from 'esbuild'
 
 export const tamaguiStaticEvaluationModules = Object.freeze({
@@ -5,7 +7,9 @@ export const tamaguiStaticEvaluationModules = Object.freeze({
   // calls codegenNativeComponent, which is unavailable during static evaluation.
   'react-native-safe-area-context': null,
   // react-native-worklets initializes native JSI in Node, so static evaluation
-  // uses the package's own mock while preserving the authored animation config.
+  // inlines the package's own mock while preserving the authored animation config.
+  // requiring the mock through an intermediate module loses its CommonJS exports
+  // because the vendor file mixes ESM imports with `module.exports`.
   // the vendor mock mutates _WORKLET, __RUNTIME_KIND, _log,
   // _getAnimationTimestamp, and requestAnimationFrame in the compiler process.
   'react-native-worklets': 'react-native-worklets/lib/module/mock.js',
@@ -43,12 +47,25 @@ export function staticEvaluationIgnorePlugin(
       })
       build.onLoad(
         { filter: /.*/, namespace: 'tamagui-static-evaluation-ignore' },
-        (args) => {
+        async (args) => {
           const replacement = getStaticEvaluationModuleReplacement(args.path)
+          if (replacement) {
+            const resolved = await build.resolve(replacement, {
+              kind: 'require-call',
+              resolveDir: build.initialOptions.absWorkingDir || process.cwd(),
+            })
+            if (resolved.errors.length) {
+              return { errors: resolved.errors, warnings: resolved.warnings }
+            }
+            return {
+              contents: await readFile(resolved.path, 'utf8'),
+              loader: 'js',
+              resolveDir: dirname(resolved.path),
+              warnings: resolved.warnings,
+            }
+          }
           return {
-            contents: replacement
-              ? `module.exports = require(${JSON.stringify(replacement)})`
-              : 'module.exports = {}',
+            contents: 'module.exports = {}',
             loader: 'js',
             resolveDir: build.initialOptions.absWorkingDir || process.cwd(),
           }

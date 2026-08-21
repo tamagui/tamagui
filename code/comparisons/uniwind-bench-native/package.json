@@ -7,10 +7,10 @@
     "start": "expo start --port 8103"
   },
   "dependencies": {
-    "expo": "~55.0.28",
-    "expo-linking": "~55.0.7",
-    "react": ">=19",
-    "react-native": "0.83.2",
+    "expo": "~57.0.15",
+    "expo-linking": "~57.0.7",
+    "react": "19.2.3",
+    "react-native": "0.86.2",
     "uniwind": "^1.9.0"
   },
   "devDependencies": {

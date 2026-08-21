@@ -7,13 +7,14 @@
     "start": "expo start --port 8102"
   },
   "dependencies": {
-    "expo": "~55.0.28",
-    "expo-linking": "~55.0.7",
+    "expo": "~57.0.15",
+    "expo-linking": "~57.0.7",
     "nativewind": "5.0.0-preview.4",
-    "react": ">=19",
-    "react-native": "0.83.2",
-    "react-native-reanimated": "~4.2.2",
-    "react-native-safe-area-context": "~5.7.0"
+    "react": "19.2.3",
+    "react-native": "0.86.2",
+    "react-native-reanimated": "4.5.1",
+    "react-native-safe-area-context": "~5.7.0",
+    "react-native-worklets": "0.10.1"
   },
   "devDependencies": {
     "tailwindcss": "^4.1.11"

@@ -5,7 +5,7 @@ This harness compares Tamagui 2.6.2, the package version on current V2 `main`, a
 - the runtime apps use `createElement` and no compiler plugin, which exercises unflattened runtime style resolution and real Tamagui `Button` components;
 - the compiled apps feed byte-identical static JSX to the V2 Babel native extractor and V3 Metro lowering pipeline.
 
-All four apps use the same checked-in fixture configuration, Expo 55.0.28, React 19.1.0, React Native 0.83.2, native module set, item counts, measurement boundary, and iOS simulator. The retained report includes raw warmups and samples, dispersion, paired confidence intervals, effect sizes, package integrity, source blobs, and embedded Release bundle hashes.
+All four apps use the same checked-in fixture configuration, Expo 57.0.15, React 19.2.3, React Native 0.86.2, native module set, item counts, measurement boundary, and iOS simulator. The retained report includes raw warmups and samples, dispersion, paired confidence intervals, effect sizes, package integrity, source blobs, and embedded Release bundle hashes.
 
 Standalone Release apps with embedded production JavaScript bundles are the evidence path. Expo Go remains available only for harness development and is labeled separately by the runner.
 

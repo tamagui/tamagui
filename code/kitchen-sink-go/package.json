@@ -22,7 +22,7 @@
     "@tamagui/web": "workspace:*",
     "expo": "~57.0.15",
     "expo-font": "~57.0.1",
-    "react": ">=19",
+    "react": "19.2.3",
     "react-native": "0.86.2",
     "tamagui": "workspace:*"
   },
