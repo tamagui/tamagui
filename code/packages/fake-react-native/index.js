@@ -30,6 +30,8 @@ const PanResponder = {
 const TurboModuleRegistry = {
   get: () => null,
 }
+const codegenNativeCommands = () => ({})
+const codegenNativeComponent = (name) => createMockComponent(name)
 
 function proxyWorm() {
   return new Proxy(
@@ -104,3 +106,5 @@ module.exports.TurboModuleRegistry = proxy.TurboModuleRegistry
 module.exports.processColor = proxy.processColor
 module.exports.Dimensions = proxy.Dimensions
 module.exports.Appearance = proxy.Appearance
+module.exports.codegenNativeCommands = codegenNativeCommands
+module.exports.codegenNativeComponent = codegenNativeComponent

@@ -32,7 +32,7 @@ module.exports = {
     // restart, so trade a little resolve speed for correctness
     unsafeCache: false,
     mainFields: ['module:jsx', 'browser', 'module', 'main'],
-    extensions: ['.web.tsx', '.web.ts', '.ts', '.tsx', '.js'],
+    extensions: ['.web.tsx', '.web.ts', '.web.js', '.ts', '.tsx', '.js'],
     alias: {
       'react/jsx-runtime': require.resolve('react/jsx-runtime'),
       'react/jsx-dev-runtime': require.resolve('react/jsx-dev-runtime'),

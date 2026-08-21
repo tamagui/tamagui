@@ -1,5 +1,6 @@
 import React, { useContext } from 'react'
 import { getConfigMaybe } from './config'
+import { getVariable } from './createVariable'
 import { useMedia } from './hooks/useMedia'
 import { useTheme } from './hooks/useTheme'
 import { ThemeStateContext } from './hooks/useThemeState'
@@ -8,6 +9,7 @@ import { ThemeStateContext } from './hooks/useThemeState'
 
 const EMPTY_EXPRESSIONS: any[] = []
 const EMPTY_THEME = {}
+const FALLBACK_THEME_CACHE = new WeakMap<object, Record<string, any>>()
 
 export const _withStableStyle = (
   Component: any,
@@ -45,7 +47,23 @@ export const _withStableStyle = (
       const themes = config?.themes
       if (themes) {
         for (const k in themes) {
-          resolvedTheme = themes.light || themes.dark || themes[k]
+          const fallbackTheme = themes.light || themes.dark || themes[k]
+          let gettableTheme = FALLBACK_THEME_CACHE.get(fallbackTheme)
+          if (!gettableTheme) {
+            gettableTheme = {}
+            for (const key in fallbackTheme) {
+              const value = fallbackTheme[key]
+              gettableTheme[key] =
+                typeof (value as any)?.get === 'function'
+                  ? value
+                  : {
+                      ...(value && typeof value === 'object' ? value : { val: value }),
+                      get: () => getVariable(value),
+                    }
+            }
+            FALLBACK_THEME_CACHE.set(fallbackTheme, gettableTheme)
+          }
+          resolvedTheme = gettableTheme
           break
         }
       }

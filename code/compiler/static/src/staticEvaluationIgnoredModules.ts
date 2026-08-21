@@ -8,8 +8,6 @@ export const tamaguiStaticEvaluationModules = Object.freeze({
   'react-native-safe-area-context': null,
   // react-native-worklets initializes native JSI in Node, so static evaluation
   // inlines the package's own mock while preserving the authored animation config.
-  // requiring the mock through an intermediate module loses its CommonJS exports
-  // because the vendor file mixes ESM imports with `module.exports`.
   // the vendor mock mutates _WORKLET, __RUNTIME_KIND, _log,
   // _getAnimationTimestamp, and requestAnimationFrame in the compiler process.
   'react-native-worklets': 'react-native-worklets/lib/module/mock.js',

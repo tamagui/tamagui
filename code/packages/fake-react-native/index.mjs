@@ -60,6 +60,8 @@ export const Appearance = proxy.Appearance
 export const findNodeHandle = proxy.findNodeHandle
 export const unstable_batchedUpdates = proxy.unstable_batchedUpdates
 export const unstable_TextAncestorContext = proxy.unstable_TextAncestorContext
+export const codegenNativeCommands = () => ({})
+export const codegenNativeComponent = () => emtpyComponent
 
 // Default export
 export default proxy

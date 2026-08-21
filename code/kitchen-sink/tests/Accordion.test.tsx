@@ -76,11 +76,15 @@ for (const animationDriver of ['css', 'reanimated', 'motion']) {
         await new Promise(requestAnimationFrame)
         heights.push(wrapper.getBoundingClientRect().height)
       } while (performance.now() - startedAt < 450)
-      return { openHeight, heights }
+      return {
+        openHeight,
+        heights,
+      }
     })
 
     expect(
-      closing.heights.some((height) => height > 1 && height < closing.openHeight - 1)
+      closing.heights.some((height) => height > 1 && height < closing.openHeight - 1),
+      JSON.stringify(closing)
     ).toBe(true)
     expect(closing.heights.at(-1)).toBeLessThanOrEqual(1)
   })

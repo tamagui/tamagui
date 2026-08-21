@@ -40,7 +40,13 @@ describe('_withStableStyle', () => {
   test('does not crash without TamaguiProvider (graceful fallback)', () => {
     const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
 
-    const Wrapped = _withStableStyle(View, () => [{ width: 50, height: 50 }], true)
+    const Wrapped = _withStableStyle(
+      View,
+      (theme) => [
+        { width: 50, height: 50, backgroundColor: theme.background?.get() },
+      ],
+      true
+    )
 
     expect(() => {
       render(<Wrapped />)
