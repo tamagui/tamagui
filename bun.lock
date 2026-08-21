@@ -542,6 +542,18 @@
         "@tamagui/build": "workspace:*",
       },
     },
+    "code/core/config-v5": {
+      "name": "@tamagui/config-v5",
+      "version": "2.7.7",
+      "dependencies": {
+        "@tamagui/colors": "workspace:*",
+        "@tamagui/web": "workspace:*",
+        "color2k": "^2.0.2",
+      },
+      "devDependencies": {
+        "@tamagui/build": "workspace:*",
+      },
+    },
     "code/core/constants": {
       "name": "@tamagui/constants",
       "version": "2.7.7",
@@ -5549,6 +5561,8 @@
     "@tamagui/config-base": ["@tamagui/config-base@workspace:code/core/config-base"],
 
     "@tamagui/config-default": ["@tamagui/config-default@workspace:code/core/config-default"],
+
+    "@tamagui/config-v5": ["@tamagui/config-v5@workspace:code/core/config-v5"],
 
     "@tamagui/configs-test": ["@tamagui/configs-test@workspace:code/tests/configs"],
 
