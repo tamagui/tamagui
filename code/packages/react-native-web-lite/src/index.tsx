@@ -28,6 +28,8 @@ export {
 export { createElement as unstable_createElement } from './createElement/index'
 export { NativeModules } from './NativeModules/index'
 export { render } from './render/index'
+export { codegenNativeCommands } from './codegenNativeCommands'
+export { codegenNativeComponent } from './codegenNativeComponent'
 
 // animated - keep default as these are vendor files
 export { default as Animated } from './vendor/react-native/Animated/Animated'

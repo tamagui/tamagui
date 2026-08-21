@@ -11,6 +11,7 @@ function listDeclarationFiles(entry: string) {
     [
       require.resolve('typescript/bin/tsc'),
       entry,
+      '--ignoreConfig',
       '--noEmit',
       '--skipLibCheck',
       '--jsx',

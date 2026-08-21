@@ -21,8 +21,8 @@
     "@tamagui/sheet": "workspace:*",
     "@tamagui/tailwind": "workspace:*",
     "expo": "~57.0.15",
-    "react": "19.2.3",
-    "react-dom": "19.2.3",
+    "react": ">=19",
+    "react-dom": "*",
     "react-native": "0.86.2",
     "react-native-safe-area-context": "~5.7.0",
     "tamagui": "workspace:*"

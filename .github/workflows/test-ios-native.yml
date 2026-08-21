@@ -47,7 +47,7 @@ jobs:
       fail-fast: false
       # full device/exports matrix on main only; single combo elsewhere to
       # keep hosted macOS runner load sane
-      matrix: ${{ github.ref == 'refs/heads/main' && fromJSON('{"package-exports":[true,false],"ios_device":[{"name":"iPhone 16","slug":"iphone-16"},{"name":"iPhone 16 Pro Max","slug":"iphone-16-pro-max"}]}') || fromJSON('{"package-exports":[true],"ios_device":[{"name":"iPhone 16","slug":"iphone-16"}]}') }}
+      matrix: ${{ github.ref == 'refs/heads/main' && fromJSON('{"package-exports":[true,false],"ios_device":[{"name":"iPhone 17","slug":"iphone-17"},{"name":"iPhone 17 Pro Max","slug":"iphone-17-pro-max"}]}') || fromJSON('{"package-exports":[true],"ios_device":[{"name":"iPhone 17","slug":"iphone-17"}]}') }}
     defaults:
       run:
         working-directory: ${{ env.test_container_app_path }}

@@ -97,6 +97,9 @@ module.exports = {
           /node_modules\/(react-native-reanimated|react-native-worklets)/,
           /code\/core\/animations-reanimated/,
         ],
+        resolve: {
+          fullySpecified: false,
+        },
         use: {
           loader: 'babel-loader',
           options: {
