@@ -959,13 +959,41 @@ if (intoIdx !== -1) {
     const tmpDir = `/tmp/tamagui-release-into`
     await ensureDir(tmpDir)
 
+    const byName = new Map(packages.map((pkg) => [pkg.name, pkg]))
+    const targetModules = join(targetDir, 'node_modules')
+
+    // start from what the target already has, then add the workspace packages
+    // those depend on. a major upgrade introduces new packages, and the target
+    // cannot install them from npm while the release is unpublished, so
+    // replacing only what is already present leaves its tree unresolvable.
+    const selected = new Set<string>()
+    const queue: string[] = []
+    for (const pkg of packages) {
+      if (await fs.pathExists(join(targetModules, pkg.name))) {
+        selected.add(pkg.name)
+        queue.push(pkg.name)
+      }
+    }
+    while (queue.length > 0) {
+      const current = byName.get(queue.pop()!)
+      if (!current) continue
+      const manifest = await fs.readJson(
+        join(path.resolve(current.location), 'package.json')
+      )
+      for (const dep of Object.keys(manifest.dependencies ?? {})) {
+        if (!byName.has(dep) || selected.has(dep)) continue
+        selected.add(dep)
+        queue.push(dep)
+      }
+    }
+
     let released = 0
 
     await pMap(
-      packages,
+      [...selected].map((name) => byName.get(name)!),
       async ({ name, location }) => {
-        const destDir = join(targetDir, 'node_modules', name)
-        if (!(await fs.pathExists(destDir))) return
+        const destDir = join(targetModules, name)
+        await ensureDir(destDir)
 
         const cwd = path.resolve(location)
 
