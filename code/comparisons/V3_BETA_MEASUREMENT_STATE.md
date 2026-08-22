@@ -8,7 +8,125 @@ which are known invalid, so nobody re-derives this from scattered logs.
 Bundle output is deterministic. It does not depend on machine load, so
 everything here stands regardless of how busy the box was.
 
-### Current compiled result
+### Current compiled and runtime result
+
+At `1da76fbab4` on `v3-beta`, `metadata.dirty: true` only because of three
+unrelated pre-existing untracked files:
+
+- V3 is **9,381 gzip smaller** than V2 on compiled whole-app JS: 86,637 vs
+  96,018. Tamagui-attributable gzip is 23,926 vs 33,417, a 9,491 byte
+  reduction.
+- Compiled CSS remains 67 gzip larger than V2: 1,107 vs 1,040.
+- V3 runtime whole-app JS is 109,086 vs V2 95,669, a **+13,417 gzip** delta.
+- The V2 compiled arm reproduced at 96,018 and its Tamagui chunk at 33,417.
+  The React control reproduced within +3 gzip, so the run is valid.
+
+Measured progression on the same four web arms and seed 73129:
+
+| commit | change | compiled whole-app gzip | V3 vs V2 | change |
+| --- | --- | ---: | ---: | ---: |
+| baseline `84bc8edc062` | 11 of 14 candidates flattened | 111,757 | +15,739 | |
+| `1c318a4cea` | flatten proven numeric and finite-literal dynamic host styles | 88,854 | -7,164 | **-22,903** |
+| `4544722b64` | remove equivalent-color-spelling dedupe and its color table | 86,637 | -9,381 | **-2,217** |
+| `26ee0b751a` | promote non-animatable animated styles in `directStyle` | 86,637 | -9,381 | 0 compiled, **-40 runtime** |
+
+The color change also removes 2,162 runtime gzip. Equivalent spellings now
+retain separate auto variables and declarations. A probe over `#1a2b3c`,
+`rgb(26, 43, 60)`, `rgba(26,43,60,1)`, and `#1a2b3cff` produced `--t0` through
+`--t3`, with each authored spelling preserved. The browser result is unchanged;
+generated CSS carries the extra declarations.
+
+### Runtime emitter audit
+
+Rendered runtime-arm bytes at `1da76fbab4`, `metadata.dirty: true` only for the
+three unrelated untracked files:
+
+| module | V3 | V2 |
+| --- | ---: | ---: |
+| `directStyle.mjs` | 36,938 | 0 |
+| `getSplitStyles.mjs` | 25,275 | 27,126 |
+| `propMapper.mjs` | 12,540 | 7,362 |
+| `variables.mjs` | 16,216 | 0 |
+
+The module names made this look like two emitters, but the current call graph
+does not contain two ordinary style emitters. Commit `12f7e0e981` replaced the
+old `contributePrograms` / `evaluateAccumulatedPrograms` /
+`lowerAccumulatedPrograms` backend with `directStyle`; it did not replace the
+component splitter. Every ordinary host style, variant clause, and frontend
+program reaches `contributeStyleValue` or its direct siblings, and
+`directStyle` owns condition precedence, configured token resolution, CSS
+normalization, and atomic generation.
+
+`getSplitStyles` is 1,851 rendered bytes smaller than V2. It owns the public
+splitter contract around the emitter: prop forwarding, HOC and `asChild`
+behavior, variant dispatch, accepted sub-styles, context propagation, animation
+handoff, parent-style merge, class assembly, and the React insertion effect.
+The audit found one remaining atomic operation there: non-animatable styles
+were emitted inline by `directStyle`, then promoted to an atomic class in a
+second pass. `26ee0b751a` moved that decision to `directStyle` and removed the
+second pass, saving 557 rendered bytes from `getSplitStyles` and 40 runtime
+gzip.
+
+Replacing the rest of `getSplitStyles` with `directStyle` cannot remove bytes
+without removing those component semantics. Moving the same splitter code into
+`directStyle` only changes its module name. An app with a genuinely
+unflattenable Tamagui component therefore needs both the component orchestrator
+and the single style emitter. Compiler specialization can remove both when it
+proves a host element, which is the 22,903 gzip win above.
+
+`propMapper` does not retain V2's configured token resolver beside the new one.
+V2's roughly 240-line `getTokenForKey` and `resolveVariableValue` block moved to
+`directStyle`; V3 `propMapper` hands ordinary strings to that backend and
+imports its shared `getCondition`. Its growth is new behavior: conditional
+variant clauses, the config-driven `Size | Space | Radius | ZIndex | Color |
+Theme | Font*` resolver grammar, safe-area expansion, native `unset`, and
+context/token provenance.
+
+`variables.mjs` is also feature weight rather than a second copy of V2 theme
+generation. V2 has no corresponding module. It implements config variables and
+inline `<Theme>` value layers, including conditional/theme buckets, fixed-point
+references, cycle handling, and native/web merged themes. It imports
+`platformMatches` from `directStyle` instead of hardcoding platform precedence.
+
+### Compiled plus global CSS output
+
+The retained fixture can now measure the global-CSS ownership path with:
+
+```sh
+cd code/comparisons/tamagui-bench
+EXTRACT=1 BENCH_OUTPUT_CSS=./generated.css \
+  BUNDLE_ATTRIBUTION_FILE=/tmp/v3-css-output.json \
+  bunx vite build --outDir /tmp/v3-css-output-build --emptyOutDir
+```
+
+At `1da76fbab4`, dirty only for the unrelated untracked files, the Tamagui JS
+chunk is 55,227 rendered bytes and 20,807 gzip. The ordinary compiled arm is
+63,776 rendered bytes and 23,926 gzip, so owning the global CSS artifact removes
+3,119 Tamagui gzip. The shipped global CSS is 1,570 gzip.
+
+Theme-related modules in the shipped JS:
+
+| module | rendered bytes | result |
+| --- | ---: | --- |
+| `variables.mjs` | 16,216 | present for runtime inline theme values |
+| `useThemeState.mjs` | 10,632 | present for runtime theme selection |
+| `createTamagui.mjs` | 6,646 | present because the application constructs its runtime config |
+| `Theme.mjs` | 4,636 | present for runtime theme scopes |
+| `insertStyleRule.mjs` | 2,625 | present for runtime component/animation rules |
+| `TamaguiProvider.mjs` | 2,085 | present |
+| `createVariable.mjs` | 1,633 | present for runtime theme values |
+| `createVariables.mjs` | 950 | present |
+| `ThemeProvider.mjs` | 831 | present |
+| `createDesignSystem.mjs` | 456 | generator branches stripped; small runtime setup remains |
+| `themes.mjs` | 381 | present for theme names/classes |
+| `getThemeCSSRules.mjs` | 0 | absent |
+| `registerCSSVariable.mjs` | 0 | absent |
+
+The CSS-generation modules are gone, while `createTamagui` and runtime theme
+selection remain. Global CSS output strips theme CSS generation rather than the
+runtime configuration and theme APIs.
+
+### Superseded first pass from 2026-08-22
 
 At `1c318a4cea` on `v3-beta`, `metadata.dirty: true` only because of three
 unrelated pre-existing untracked files:
