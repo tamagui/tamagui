@@ -10,6 +10,27 @@ import { setupPage } from './test-utils'
  * them or defer them to the end of a concurrently running animation.
  */
 
+// ownership contract for the discrete-application fix: the motion driver's
+// partition set is the inspectable place where "the driver does not animate
+// this prop" lives. if the driver DID manage a discrete prop, that prop would
+// be missing from this set and getMotionAnimatedProps would send it into
+// framer's animate(), whose committed values the flush never clears. asserting
+// the derivation here fails the moment anyone reverts the set to a hand list.
+test('motion driver declares every emitter-discrete prop as non-animated', async () => {
+  process.env.TAMAGUI_TARGET = 'web'
+  const { disableAnimationProps } = await import('@tamagui/animations-motion')
+  const { nonAnimatableStyleProps } = await import('@tamagui/helpers')
+  const missing = Object.keys(nonAnimatableStyleProps).filter(
+    (key) => !disableAnimationProps.has(key)
+  )
+  expect(missing, 'every non-animatable style prop is in the discrete set').toEqual([])
+  // the two props this contract exists for: the derived border default
+  // (fixStyles adds it inline on animated components) and the conditioned
+  // discrete regression this file pins
+  expect(disableAnimationProps.has('borderTopStyle')).toBe(true)
+  expect(disableAnimationProps.has('cursor')).toBe(true)
+})
+
 test.describe('Conditioned discrete props with inline animation driver', () => {
   test.beforeEach(async ({ page }) => {
     const driver = (test.info().project?.metadata as any)?.animationDriver
