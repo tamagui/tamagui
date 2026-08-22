@@ -5,6 +5,7 @@ export type BuildStats = {
     flattened: number;
     styled: number;
     found: number;
+    bailed: number;
 };
 export type TrackedFile = {
     path: string;
