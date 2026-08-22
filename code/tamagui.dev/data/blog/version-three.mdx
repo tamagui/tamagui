@@ -738,6 +738,54 @@ Then search for removed APIs:
 rg "focusable|fullscreen|themeInverse|<Theme inverse|Sheet\.Frame|styleable\(|inlineWhenUnflattened|\$true|getTokenRelative|stepTokenUpOrDown"
 ```
 
+### What a clean typecheck will not tell you
+
+The first large app through this migration reached zero type errors while
+several things were quietly broken. Plan for that: a flat value is a string
+program, so most of this grammar is not something the compiler can check for
+you. Budget time to actually look at the app.
+
+The specific things worth searching for, all of them found the hard way:
+
+**Code that detects tokens by their sigil.** Anything shaped like
+`value[0] !== '$'` was a correct token test in v2 and is wrong now, because a v3
+token has no sigil. One helper doing this passed every token through as a literal
+color and blanked every icon in the app, with no type error and no warning. Ask
+the theme whether it knows the name instead of inspecting the string.
+
+```bash
+rg "\[0\] [!=]== '\\\$'|startsWith\('\\\$'\)"
+```
+
+**Conditions that the codemod cannot see.** It converts a style object at a
+conversion site. A `hoverStyle` returned from a helper, or spread in
+conditionally, is neither, so it survives the pass, and v3 forwards an unknown
+`hoverStyle` prop rather than applying it. The interaction just stops happening.
+
+```bash
+rg "hoverStyle|pressStyle|focusStyle|enterStyle|exitStyle"
+```
+
+**Variants that look like style props.** On one element the codemod converted
+`color="$color12"` to `color="color12"` and left `size="$2"` untouched beside it.
+`size="$2"` still typechecks and resolves to nothing, since font sizes are
+spelled `1` through `14` with no sigil.
+
+```bash
+rg '\b(size|fontSize)="\$'
+```
+
+**Half steps are renamed, not removed.** `$0.5` becomes `0-5`, `$1.5` becomes
+`1-5`, and the values are identical across both packs, so this is a spelling
+change with no visual effect. Teaching the codemod this moved one app from 1007
+clean sites to 1212 and dropped its flagged sites from 279 to 72.
+
+**`SafeAreaProvider` has to wrap `TamaguiProvider`.** The v3 provider mounts a
+tracker that reads safe-area context to publish the inset tokens, so the old
+nesting throws `NO_INSETS_ERROR` and the whole app renders an error screen at
+startup. The message names `SafeAreaProvider`, which sends you looking in the
+wrong place.
+
 Finally, validate at the layer you changed: typecheck, build, run your web app,
 and exercise Dialog, Popover, Select, and Sheet flows on the breakpoints where
 you use Adapt.
