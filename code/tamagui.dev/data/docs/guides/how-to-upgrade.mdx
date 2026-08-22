@@ -1169,9 +1169,89 @@ Runtime checks:
 - If you use Tailwind mode, compare web and native output for your supported
   utility classes.
 
+## What a clean typecheck will not catch
+
+A flat value is a string program, so most of this grammar is not something
+TypeScript can check. The first large app through this migration reached zero
+type errors with several things quietly broken, and none of them would have been
+found without running it. Each item below is a real defect from that migration.
+
+**Token detection by sigil.** Code shaped like `value[0] !== '$'` was a correct
+way to tell a token from a raw color in v2 and is wrong in v3, where tokens have
+no sigil. One icon helper doing this passed every token straight through as a
+literal SVG fill and blanked every icon in the app. Resolve through the theme
+and treat what it does not know as a literal value:
+
+```tsx
+// before: the shape of the string decided
+const value = color[0] !== '$' ? color : theme[color]?.get()
+
+// after: the theme decides
+const value = theme[color]?.get() ?? color
+```
+
+**Conditions the codemod cannot reach.** The codemod converts a style object at
+a conversion site: a JSX attribute list, a `styled()` config, or a variant
+branch. A `hoverStyle` returned from a helper or spread in conditionally is none
+of those, so it survives, and v3 forwards an unrecognized `hoverStyle` prop
+rather than applying it. The interaction silently stops happening.
+
+Note that hover and press now ride the property they modify, so a helper that
+used to return a separate `hoverStyle` object has to own the resting value too.
+A caller that still sets its own `bg` next to the spread will overwrite the
+whole program:
+
+```tsx
+// v2: two different props, both applied
+<XStack bg={resting} {...rowStates(active)} />
+
+// v3: one program, so the helper returns all of it
+<XStack {...rowStates(active, resting)} />
+```
+
+Flat values are space separated, so any color spliced into a program has to be
+space free. `rgba(0,0,0,0.5)` is fine and `rgba(0, 0, 0, 0.5)` splits into
+garbage clauses.
+
+**Variants that look like style props.** The codemod converts style props and
+leaves variants, and the two sit side by side. On one element it rewrote
+`color="$color12"` to `color="color12"` and left `size="$2"` untouched.
+`size="$2"` typechecks and resolves to nothing, since font sizes are spelled `1`
+through `14`.
+
+**Half steps are renamed, not removed.** `$0.5` becomes `0-5` and `$1.5` becomes
+`1-5`, with identical values in both packs, so it is a spelling change with no
+visual effect.
+
+**`undefined` inside an interpolated value.** A conditional whose false branch is
+`undefined` becomes the literal string `"undefined"` once it is wrapped in a
+template literal, which produces invalid padding, color, and font values. Keep
+the conditional as an expression instead:
+
+```tsx
+// wrong: renders the string "undefined"
+py={`${compact ? undefined : '1'}`}
+
+// right
+py={compact ? undefined : '1'}
+```
+
+**Provider order.** `SafeAreaProvider` now has to wrap `TamaguiProvider`. The v3
+provider mounts a tracker that reads safe-area context to publish the inset
+tokens, so the v2 nesting throws `NO_INSETS_ERROR` at startup and the whole app
+renders an error screen. The message names `SafeAreaProvider`, which points away
+from the upgrade.
+
+
 ## Quick reference
 
 ```bash
+# things that typecheck and are still wrong
+rg "\[0\] [!=]== '\\\$'|startsWith\('\\\$'\)"        # token detection by sigil
+rg "hoverStyle|pressStyle|focusStyle|enterStyle|exitStyle"  # conditions the codemod missed
+rg '\b(size|fontSize)="\$'                          # variants left with a sigil
+rg '`\$\{[^`]*undefined[^`]*\}`'                    # "undefined" interpolated into a value
+
 # duplicate package / lockfile scan
 npx tamagui check
 
