@@ -216,7 +216,10 @@ jobs:
     if: github.event_name == 'workflow_dispatch' && inputs.publish == 'yes'
     needs: build
     runs-on: ubuntu-latest
-    environment: npm-publish
+    # no environment: it adds an `environment` claim to the OIDC token that the
+    # npm trusted publisher config does not carry, and `npm-publish` was never
+    # created on this repo anyway. release.yml's publish lane declares none for
+    # the same reason.
     permissions:
       contents: read
       # npm trusted publishing via OIDC; no npm token lives in this repo
