@@ -113,6 +113,14 @@ themed values, emit its static native style and a compact mapping such as
   resolves from the live `config.themes` object once per distinct mapping and
   theme object, then runs the engine's `processStyleColors`. Compiler mode and
   runtime mode therefore use the same value and color-processing path.
+- Colors cross into the engine as `{ space: 'srgb', r, g, b, a }`, each channel
+  a float in 0..1. That is the only shape both parsers a themed view can reach
+  will take. C++ `fromRawValueShared` also accepts a packed ARGB int and a
+  plain `[r, g, b, a]` array, but the int is misread there (alpha lands in red,
+  which tinted every themed surface pink), and Android mounts some of these
+  props through Java `ColorPropConverter`, which throws `ColorValue: the value
+  must be a number or Object` on an array and tears the React surface down.
+  Earlier entries in this log that quote a packed int (`-2294553`) predate that.
 - The first activation of a state fills every linked view's table through one
   `updateViewStateTables` batch, then publishes the scope name. Later toggles
   between warmed states publish only the scope name. A replaced theme object
