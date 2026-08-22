@@ -110,6 +110,15 @@ binary:
 npm install --save-dev @tamagui/lsp
 ```
 
+<Notice theme="yellow">
+  Not published yet. The eight platform binaries cross-compile and pass a
+  handshake test on every push, but publishing them is a deliberate manual step
+  that has not been run, so `@tamagui/lsp` is not on npm and the VS Code
+  extension has not reached the Marketplace. Until then the server runs from a
+  source build via `TAMAGUI_LSP_BINARY`, and `code/lsp/editors/neovim` is the only
+  committed editor config.
+</Notice>
+
 Completions filtered as you type, diagnostics with "did you mean" for a
 misspelled value, hover that resolves a token per theme, and inline color
 swatches. Completing a clause replaces only that clause, so `bg="background
@@ -147,6 +156,20 @@ props can change the result, including in the Tailwind class pipeline.
 // red9 wins: it is authored after the class
 <View className="bg-blue-500" backgroundColor="red9" />
 ```
+
+This is about which *contribution* wins, and it stops at the prop boundary. Inside
+a single flat value, clauses are not order-sensitive: they are ranked by platform
+first, then by how many conditions the clause carries, then by category
+(media, container, theme, group, state). So these two are identical, and `hover:`
+wins in both because state outranks media:
+
+```tsx
+<View bg="red hover:blue sm:green" />
+<View bg="red sm:green hover:blue" />
+```
+
+Moving a clause to the end of the string is not a way to make it win. Reach for a
+more specific clause instead, such as `hover:sm:`.
 
 ## Removed deprecated APIs
 
@@ -676,8 +699,20 @@ for references, units, nesting, and platform behavior.
 
 ## Migrating
 
-Start with the [v3 upgrade guide](/docs/guides/how-to-upgrade). It includes the
-breaking change checklist, codemod commands, and verification steps.
+If you are doing this through a coding agent, hand it the brief rather than a
+docs link. Both are printed by the CLI, so they describe the version you actually
+installed:
+
+```bash
+npx tamagui@beta setup              # a project that has never had Tamagui
+npx tamagui@beta migrate --from v2  # a project already on v2 (or --from v1)
+```
+
+[Set up with an agent](/docs/intro/agents) has the copy-paste prompts, including
+the one that makes the agent stop at the codemod report instead of writing
+straight through it. Doing it by hand instead? Start with the
+[v3 upgrade guide](/docs/guides/how-to-upgrade). It includes the breaking change
+checklist, codemod commands, and verification steps.
 
 Tooling now installs as one package. `@tamagui/cli` exports the bundler
 integrations behind subpaths, so `@tamagui/cli/vite` and `@tamagui/cli/metro`
