@@ -90,6 +90,14 @@ export function expandStyle(
         ]
       }
     }
+
+    // react-native's RTL-aware names are not CSS. `padding-start`, `border-end-color`,
+    // `border-top-start-radius`, `start` and friends come from a dropped draft that no
+    // browser implements, so the rules generated for them were inert and the props did
+    // nothing on web. map them onto the CSS logical properties that do the same job.
+    if (key in webInlineRenames) {
+      return [[webInlineRenames[key], value]]
+    }
   }
 
   if (process.env.TAMAGUI_TARGET === 'native') {
@@ -245,6 +253,30 @@ const universalExpansions: Record<string, string[]> = {
   maxInlineSize: ['maxWidth'],
   blockSize: ['height'],
   inlineSize: ['width'],
+}
+
+// react-native spells its RTL-aware props the way an old CSS draft did
+// (padding-start, border-end-color, border-top-start-radius, start/end). None of
+// those are real CSS, so on web they are renamed to the logical properties the
+// browser actually implements — which are RTL-aware in exactly the same way.
+const webInlineRenames: Record<string, string> = {
+  paddingStart: 'paddingInlineStart',
+  paddingEnd: 'paddingInlineEnd',
+  marginStart: 'marginInlineStart',
+  marginEnd: 'marginInlineEnd',
+  borderStartWidth: 'borderInlineStartWidth',
+  borderEndWidth: 'borderInlineEndWidth',
+  borderStartColor: 'borderInlineStartColor',
+  borderEndColor: 'borderInlineEndColor',
+  borderStartStyle: 'borderInlineStartStyle',
+  borderEndStyle: 'borderInlineEndStyle',
+  // css orders these block-then-inline, so top-start is start-start
+  borderTopStartRadius: 'borderStartStartRadius',
+  borderTopEndRadius: 'borderStartEndRadius',
+  borderBottomStartRadius: 'borderEndStartRadius',
+  borderBottomEndRadius: 'borderEndEndRadius',
+  start: 'insetInlineStart',
+  end: 'insetInlineEnd',
 }
 
 // Inline-axis logical expansions are native-only: their targets are RN-style
