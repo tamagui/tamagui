@@ -74,6 +74,47 @@ unflattenable Tamagui component therefore needs both the component orchestrator
 and the single style emitter. Compiler specialization can remove both when it
 proves a host element, which is the 22,903 gzip win above.
 
+### Independent verification of the audit (2026-08-22, second pass)
+
+A second session verified the conclusion above from source, call graph, git
+history (with a dedicated inventory agent), and runtime probes, rather than
+from the earlier prose. It holds. Findings that sharpen it:
+
+- Every style contribution routes through `contributeStyleValue`,
+  `contributeVariantClauseValue`, or `contributeFrontendProgram`, with three
+  deliberate exceptions that are orchestration, not emission: accepted
+  sub-styles (`getSubStyle`, pinned by the functional-variant overlay and
+  transform-conflict history), the `style`-prop merge wrapper (RNW `$$css`
+  map semantics, pinned by a new runtime probe), and final transform assembly
+  (`mergeFlatTransforms`, pinned by `transformFamily.native.test.tsx`).
+- The residual pre-direct lowering helpers (`styleToCSS`, `fixStyles`,
+  `normalizeShadow`, `normalizeStyle`) total under 2,000 rendered bytes in the
+  runtime chunk and are load-bearing for the inline path and for the motion
+  driver's own `getSplitStyles` calls. Deleting them requires `directStyle` to
+  own inline shadow/border lowering with identical outputs, a behavior-risk
+  change worth well under 500 gzip. Not attempted.
+- No internal caller passes a non-null `parentSplitStyles`; the parent-merge
+  block in `getSplitStyles` is reachable only through the exported API. Kept
+  for API compatibility, documented as lower priority.
+- `26ee0b751a` (promotion moved into the emitter) opened one real behavior
+  regression that neither the core web suite nor the pinning test covered:
+  hover/press-conditioned discrete props on the motion driver applied and then
+  stuck on the node after the condition ended. Root causes were in the driver,
+  not the emitter: `animations-motion` kept a stale 18-prop hand copy of
+  `nonAnimatableStyleProps`, so discrete values like `cursor` went through
+  motion's `animate()` (which commits values its flush never clears), and
+  `flushAnimation` skipped `removeRemovedStyles` when `dontAnimate` became
+  undefined. Fixed by deriving `disableAnimationProps` from
+  `nonAnimatableStyleProps` (deleting the duplicated list) and closing the
+  vanished-group removal hole. Pinned by
+  `DriverConditionedDiscrete.animated.test.tsx`. Before `26ee0b751a` these
+  props never applied at all on this path, because `useStyleListener` updates
+  discard classNames; the driver fix makes apply and revert both correct for
+  the first time. Neither `animations-motion` nor `react-native-web-internals`
+  appears in any retained bench arm (verified in the attribution at
+  `1da76fbab4`), so retained byte numbers are unchanged and `26ee0b751a`
+  stays net -40 runtime gzip.
+
 `propMapper` does not retain V2's configured token resolver beside the new one.
 V2's roughly 240-line `getTokenForKey` and `resolveVariableValue` block moved to
 `directStyle`; V3 `propMapper` hands ordinary strings to that backend and
