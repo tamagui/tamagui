@@ -1,25 +1,5 @@
-import { normalizeCSSColor } from '@tamagui/normalize-css-color'
 import { createCSSVariable, getVariableValue } from '../createVariable'
 import type { Variable, VariableVal } from '../types'
-
-/**
- * The dedupe key for a declared value. Equivalent color spellings are one
- * declaration, so `#333`, `hsl(0, 0%, 20%)` and `hsla(0, 0%, 20%, 1)` share a
- * variable and the artifact carries the color once. Non-colors key on
- * themselves, and a canonical key is written as `#rrggbbaa`, which is itself a
- * color spelling and therefore can never be a non-color raw value.
- *
- * Only the key is canonical. The emitted declaration keeps the spelling the
- * config author wrote, so nothing here rewrites bytes into a longer form.
- *
- * This runs where CSS is generated, so a build that owns its CSS artifact
- * drops it with the rest of the generator.
- */
-const variableKey = (val: Variable | VariableVal) => {
-  if (typeof val !== 'string') return val
-  const color = normalizeCSSColor(val)
-  return color == null ? val : `#${color.toString(16).padStart(8, '0')}`
-}
 
 /**
  * Bumped whenever anything the emitted CSS derives from the shared value map
@@ -32,7 +12,7 @@ export const getVariableGeneration = () => variableGeneration
 
 export const registerCSSVariable = (v: Variable | VariableVal) => {
   if (!process.env.TAMAGUI_DID_OUTPUT_CSS) {
-    const key = variableKey(getVariableValue(v))
+    const key = getVariableValue(v)
     if (tokensValueToVariable.has(key) || tokensValueToVariable.size < 10_000) {
       tokensValueToVariable.set(key, v)
       variableGeneration++
@@ -64,9 +44,8 @@ const serializeVariables = (variables: Variable[]) =>
 export const getAutoVariableCSS = () => serializeVariables(autoVariables)
 
 export const getOrCreateVariable = (val: any): Variable => {
-  const key = variableKey(val)
-  if (tokensValueToVariable.has(key)) {
-    return tokensValueToVariable.get(key)!
+  if (tokensValueToVariable.has(val)) {
+    return tokensValueToVariable.get(val)!
   }
   if (tokensValueToVariable.size >= 10_000) {
     return { val, name: '', variable: String(val) } as Variable
@@ -74,7 +53,7 @@ export const getOrCreateVariable = (val: any): Variable => {
   const name = `t${autoVarId++}`
   const variable = `var(--${name})`
   const v = { val, name, variable } as Variable
-  tokensValueToVariable.set(key, v)
+  tokensValueToVariable.set(val, v)
   autoVariables.push(v)
   variableGeneration++
   return v
@@ -89,9 +68,8 @@ const mutatedTokensValueToVariable = new Map<any, any>()
 export const getMutatedAutoVariableCSS = () => serializeVariables(mutatedAutoVariables)
 
 export const getOrCreateMutatedVariable = (val: any): Variable => {
-  const key = variableKey(val)
-  if (mutatedTokensValueToVariable.has(key)) {
-    return mutatedTokensValueToVariable.get(key)!
+  if (mutatedTokensValueToVariable.has(val)) {
+    return mutatedTokensValueToVariable.get(val)!
   }
   if (mutatedTokensValueToVariable.size >= 10_000) {
     return { val, name: '', variable: String(val) } as Variable
@@ -99,7 +77,7 @@ export const getOrCreateMutatedVariable = (val: any): Variable => {
   const name = `t${mutatedVarId++}`
   const variable = `var(--${name})`
   const v = { val, name, variable } as Variable
-  mutatedTokensValueToVariable.set(key, v)
+  mutatedTokensValueToVariable.set(val, v)
   mutatedAutoVariables.push(v)
   return v
 }
