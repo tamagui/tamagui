@@ -52,6 +52,14 @@ helper, a `react-native` component, and an intrinsic tag are all left alone —
   `background-hover`. User-defined names keep their authored spelling.
   `$backgroundActive` is the one non-mechanical migration: v3 removed it, so it
   becomes `background-press`, matching the corrected active-state component defaults.
+- Half-step size tokens are renamed, not dropped. V3 spells a numeric dot-path with a
+  dash, so `$0.5` becomes `0-5`, `$1.5` becomes `1-5`, and so on. The values are
+  unchanged across the two packs (`0.5`/`0-5` is 1, `1.5`/`1-5` is 4, `2.5`/`2-5` is
+  10, `3.5`/`3-5` is 16), so this is a spelling migration with no visual effect. It is
+  worth converting rather than flagging because it is the single largest flag category
+  on real corpora: on a mid-size app it moved 1007 clean sites to 1212 and dropped
+  flagged sites from 279 to 72. A dot-path that is not numeric is a rename nobody can
+  derive, so it stays flagged.
 - Group conditions split the way V3 splits them: `$group-card-hover` becomes
   `group-hover/card:`, and a container size (`$group-card-maxMd`) becomes
   `@max-md/card:` plus `container containerName="card"` on the element that declares
