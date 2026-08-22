@@ -901,7 +901,7 @@ export interface ToastItemProps extends GetProps<typeof ToastItemFrame> {
 
 const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
   function ToastItem(props, ref) {
-    const { toast, index, children, ...rest } = props
+    const { toast, index, children, accessibilityLabel, ...rest } = props
     const ctx = useToastContext('Toast.Item')
 
     const [mounted, setMounted] = React.useState(false)
@@ -1163,7 +1163,8 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
       <ToastPositionWrapper
         ref={ref}
         testID={rest.testID}
-        accessibilityLabel={rest.accessibilityLabel}
+        {...(accessibilityLabel != null &&
+          (isWeb ? { 'aria-label': accessibilityLabel } : { accessibilityLabel }))}
         {...dataAttributes}
         transition={
           isDragging || ctx.reducedMotion ? undefined : removed ? '200ms' : '400ms'
