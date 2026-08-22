@@ -352,14 +352,18 @@ describe('G1 tarball audits', () => {
     const manifest = JSON.parse(
       await readFile(new URL('../code/core/native/package.json', import.meta.url), 'utf8')
     )
-    const requiredPeers = ['react', 'react-native', 'react-native-web']
+    const requiredPeers = ['react']
+    // react-native and react-native-web are optional so a web or tooling install
+    // does not drag the 97 MiB react-native subtree in behind them
     const optionalPeers = [
       'burnt',
       'expo-linear-gradient',
+      'react-native',
       'react-native-gesture-handler',
       'react-native-keyboard-controller',
       'react-native-safe-area-context',
       'react-native-teleport',
+      'react-native-web',
       'react-native-worklets-core',
       '@expo/ui',
       'zeego',
