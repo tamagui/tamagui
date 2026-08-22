@@ -284,6 +284,8 @@ const loaders: Record<string, () => ComponentType<any>> = {
   VariantsOrder: () => require('./VariantsOrder').VariantsOrder,
   ZIndex: () => require('./ZIndex').ZIndex,
   NestedPressExclusive: () => require('./NestedPressExclusive').NestedPressExclusive,
+  SliderScrollOffsetCase: () =>
+    require('./SliderScrollOffsetCase').SliderScrollOffsetCase,
 }
 
 export const useCases: Record<string, ComponentType<any>> = {}
