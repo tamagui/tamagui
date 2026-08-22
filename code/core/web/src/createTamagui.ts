@@ -151,7 +151,11 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
 
     const themesIn = configIn.themes as ThemesLikeObject
     const dedupedThemes = foundThemes ?? getThemesDeduped(themesIn, tokens.color)
-    const themes = proxyThemesToParents(dedupedThemes)
+    // the CSS above is emitted in sorted order (its cascade is load-bearing), but the
+    // runtime themes object has to keep the order the config declared them in:
+    // TamaguiProvider falls back to Object.keys(config.themes)[0] when no defaultTheme
+    // is passed, and sorted order put `dark` ahead of `light` (#3764)
+    const themes = proxyThemesToParents(dedupedThemes, Object.keys(themesIn))
 
     return {
       themes,
