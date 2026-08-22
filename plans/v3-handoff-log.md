@@ -4989,3 +4989,38 @@ effect. Refuted.
 Section 45's other conclusions still hold: it is not detox synchronization at
 launch, there is no `device.setAppearance` in detox 20.47, and simctl applies
 the appearance before it returns.
+
+## 48. Compiler evaluation can load Reanimated configs and honor user inlining (2026-08-21)
+
+Landed in `b8cdf0b3c2`.
+
+The evaluation environment now resolves the `tamagui-compiler` package export
+condition and inlines every installed Tamagui package that declares it. The
+Reanimated animation driver publishes a runtime-free compiler entry containing
+the same normalized animation records and static driver flags as the real
+driver, without importing `react-native-reanimated` at module scope. This closes
+the web-dev 500 found during the team-machine v3 migration without removing the
+runtime animation driver from the app.
+
+User `resolve.noExternal` entries are merged into the generated evaluation
+environment and also suppress Tamagui's installed-package `external` entries.
+The latter is required because Vite gives explicit `external` entries precedence
+over `noExternal`; merging the list alone did not make the option effective for
+an installed `@tamagui/*` package.
+
+Regression coverage uses two distinct ESM packages with extensionless relative
+imports. `@tamagui/compiler-condition-fixture` proves condition selection plus
+automatic inlining, while `@tamagui/user-no-external-fixture` proves the user
+escape hatch through the installed-package scan. Both fail under direct Node
+loading with `ERR_MODULE_NOT_FOUND`, while Vite's evaluation runner loads both.
+
+Validation:
+
+- `@tamagui/animations-reanimated`: `bun run build` passed.
+- `@tamagui/vite-plugin`: `bun run build` passed.
+- `@tamagui/vite-plugin`: `bun run test:web` passed 15/15 tests.
+- Direct package export control: `node --conditions=tamagui-compiler` loaded
+  only `createAnimations`; default Node resolution still failed inside the real
+  Reanimated runtime as expected.
+- No new review was created because this was the explicitly handed-off
+  continuation of want-first-test-repo (m8281).
