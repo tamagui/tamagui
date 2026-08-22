@@ -5,6 +5,7 @@ export const docsRoutes = [
     pages: [
       { title: 'Introduction', route: '/docs/intro/introduction' },
       { title: 'Installation', route: '/docs/intro/installation' },
+      { title: 'Set up with an agent', route: '/docs/intro/agents' },
       { title: 'CLI', route: '/docs/guides/cli' },
       {
         title: 'Releases',
