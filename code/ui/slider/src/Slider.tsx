@@ -72,6 +72,14 @@ if (process.env.TAMAGUI_TARGET === 'web') {
   }
 }
 
+// a responder event's pageX/pageY come straight off the DOM event and are
+// document-relative, while `measure` reports the track via getBoundingClientRect
+// and is viewport-relative. subtracting the scroll puts both on the same origin —
+// otherwise the thumb lags the cursor by exactly the page scroll (#4146). native
+// measures both against the screen, so it needs no adjustment.
+const toTrackX = (pageX: number) => (isWeb ? pageX - window.scrollX : pageX)
+const toTrackY = (pageY: number) => (isWeb ? pageY - window.scrollY : pageY)
+
 /* -------------------------------------------------------------------------------------------------
  * SliderHorizontal
  * -----------------------------------------------------------------------------------------------*/
@@ -136,13 +144,17 @@ const SliderHorizontal = React.forwardRef<View, SliderHorizontalProps>(
             }
           }}
           onSlideMove={(event) => {
-            const value = getValueFromPointer(event.nativeEvent.pageX - state.offset)
+            const value = getValueFromPointer(
+              toTrackX(event.nativeEvent.pageX) - state.offset
+            )
             if (value) {
               onSlideMove?.(value, event)
             }
           }}
           onSlideEnd={(event) => {
-            const value = getValueFromPointer(event.nativeEvent.pageX - state.offset)
+            const value = getValueFromPointer(
+              toTrackX(event.nativeEvent.pageX) - state.offset
+            )
             if (value) {
               onSlideEnd?.(event, value)
             }
@@ -276,13 +288,17 @@ const SliderVertical = React.forwardRef<View, SliderVerticalProps>(
             }
           }}
           onSlideMove={(event) => {
-            const value = getValueFromPointer(event.nativeEvent.pageY - state.offset)
+            const value = getValueFromPointer(
+              toTrackY(event.nativeEvent.pageY) - state.offset
+            )
             if (value) {
               onSlideMove?.(value, event)
             }
           }}
           onSlideEnd={(event) => {
-            const value = getValueFromPointer(event.nativeEvent.pageY - state.offset)
+            const value = getValueFromPointer(
+              toTrackY(event.nativeEvent.pageY) - state.offset
+            )
             onSlideEnd?.(event, value)
           }}
           onStepKeyDown={(event) => {
