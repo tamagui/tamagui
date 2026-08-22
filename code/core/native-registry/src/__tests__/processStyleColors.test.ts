@@ -53,6 +53,12 @@ describe('processStyleColors', () => {
     })
   })
 
+  it('converts a color already written as a packed int', () => {
+    expect(processStyleColors({ backgroundColor: 0xff0000ff })).toEqual({
+      backgroundColor: { space: 'srgb', r: 0, g: 0, b: 1, a: 1 },
+    })
+  })
+
   it('passes a platform color object through untouched', () => {
     expect(processStyleColors({ color: 'platform' })).toEqual({
       color: { semantic: 'label' },

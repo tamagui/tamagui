@@ -46,24 +46,27 @@ export function processStyleColors(
 ): Record<string, unknown> {
   let out: Record<string, unknown> | null = null
   for (const key in props) {
+    if (!COLOR_PROPS.has(key)) continue
     const value = props[key]
-    if (COLOR_PROPS.has(key) && typeof value === 'string') {
+    // a style may already carry the packed int form RN accepts (`processColor`
+    // output written straight into a style), and that form is misread the same
+    // way, so it converts here too rather than only css strings
+    const processed = typeof value === 'string' ? processColor(value) : value
+    if (typeof processed === 'number') {
       out ??= { ...props }
-      const processed = processColor(value)
+      // processColor packs ARGB, and is signed on Android, hence >>>
+      out[key] = {
+        space: 'srgb',
+        r: ((processed >>> 16) & 0xff) / 255,
+        g: ((processed >>> 8) & 0xff) / 255,
+        b: (processed & 0xff) / 255,
+        a: ((processed >>> 24) & 0xff) / 255,
+      }
+    } else if (typeof value === 'string' && processed != null) {
       // a platform color resolves to an opaque object rather than a number, and
       // Fabric unpacks that shape itself, so it goes over untouched
-      if (typeof processed === 'number') {
-        // processColor packs ARGB, and is signed on Android, hence >>>
-        out[key] = {
-          space: 'srgb',
-          r: ((processed >>> 16) & 0xff) / 255,
-          g: ((processed >>> 8) & 0xff) / 255,
-          b: (processed & 0xff) / 255,
-          a: ((processed >>> 24) & 0xff) / 255,
-        }
-      } else if (processed != null) {
-        out[key] = processed
-      }
+      out ??= { ...props }
+      out[key] = processed
     }
   }
   return out ?? props
