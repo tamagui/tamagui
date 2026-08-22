@@ -348,22 +348,36 @@ export const Fixture = ({ active }) => (
     expect(report).toContain('`blue10`, `red10`')
   })
 
-  test('a dot-path token is reported instead of renamed, clauses or not', () => {
+  test('a numeric dot-path token is renamed to its dash spelling', () => {
+    // v5 spells the half-step $1.5, v3 spells the same token 1-5, and both
+    // resolve to 4. renaming is therefore value-neutral, where flagging left
+    // the single largest category of manual work in a real migration.
     const withClause = only(
       run(`import { Text, TextInput, View, styled } from 'tamagui'
 export const Fixture = () => (
         <View gap="$1.5" hoverStyle={{ gap: '$2' }} />
       )`)
     )
-    expect(codes(withClause)).toContain('legacy-token-dot-path')
-    expect(withClause.after).toContain('gap="$1.5"')
+    expect(codes(withClause)).not.toContain('legacy-token-dot-path')
+    expect(withClause.after).toContain('gap="1-5 hover:2"')
 
     const clauseFree = only(
       run(`import { Text, TextInput, View, styled } from 'tamagui'
 export const Fixture = () => <View gap="$1.5" bg="$blue10" hoverStyle={{ bg: 'red' }} />`)
     )
-    expect(codes(clauseFree)).toContain('legacy-token-dot-path')
+    expect(codes(clauseFree)).not.toContain('legacy-token-dot-path')
+    expect(clauseFree.after).toContain('gap="1-5"')
     // two runs in one test: each spawns the CLI over a fresh ts-morph project
+  }, 30_000)
+
+  test('a non-numeric dot-path token is still reported', () => {
+    // nothing can derive what `$brand.primary` was meant to become, so it
+    // stays the author's call.
+    const site = only(
+      run(`import { View } from 'tamagui'
+export const Fixture = () => <View bg="$brand.primary" hoverStyle={{ bg: 'red' }} />`)
+    )
+    expect(codes(site)).toContain('legacy-token-dot-path')
   }, 30_000)
 
   test('a site with no v1 syntax is not a conversion site', () => {
