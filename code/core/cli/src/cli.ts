@@ -242,6 +242,19 @@ const COMMAND_MAP = {
     },
   },
 
+  setup: {
+    shorthands: [],
+    description: `Print an AI-agent prompt for adding Tamagui to a project for the first time`,
+    usage: `$ tamagui setup`,
+    flags: {
+      '--help': Boolean,
+    },
+    async run() {
+      const { printSetupPrompt } = require('./setup-prompt')
+      printSetupPrompt()
+    },
+  },
+
   migrate: {
     shorthands: [],
     description: `Print an AI-agent prompt for migrating a Tamagui app to v3`,
