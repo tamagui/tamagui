@@ -596,6 +596,10 @@ export type TamaguiComponentStateRef = {
 
   host?: TamaguiElement
   composedRef?: (x: TamaguiElement) => void
+  // the forwarded ref composedRef currently writes to, so a swapped ref identity
+  // can be handed the host without rebuilding (and re-attaching) the composed ref
+  composedForwardedRef?: React.Ref<TamaguiElement>
+  composedRefAttached?: boolean
   willHydrate?: boolean
   hasMeasured?: boolean
   hasAnimated?: boolean
