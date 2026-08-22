@@ -1,6 +1,7 @@
 {
   "name": "@tamagui/react-native-svg",
   "version": "2.7.7",
+  "license": "MIT",
   "type": "module",
   "main": "dist/cjs",
   "module": "dist/esm/index.js",
