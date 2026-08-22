@@ -125,6 +125,7 @@ export async function buildIsland(input: {
     logLevel: 'warn',
     define: {
       'process.env.TAMAGUI_RUNTIME': JSON.stringify('full'),
+      ...Static.getWebRuntimeFeatureDefines(input.controller.options),
       'process.env.TAMAGUI_DID_OUTPUT_CSS': JSON.stringify('1'),
       // the island is a separately built artifact, never a dev asset, so it is
       // always a production build and always uses react/jsx-runtime

@@ -31,6 +31,11 @@ export interface MetroCompilerTransformerOptions {
    * inlined here so every guard is a constant.
    */
   runtimeLiteral?: 'full' | 'zero'
+  webRuntimeFeatures?: {
+    inlineThemeValues: 'enabled' | 'disabled'
+    styleValueGrammar: 'enabled' | 'disabled'
+    safeArea: 'enabled' | 'disabled'
+  }
 }
 
 export interface MetroCompilerTransformMetadata {
@@ -75,36 +80,60 @@ export function createMetroCompilerTransformer(config: MetroCompilerTransformerO
       existsSync(moduleId)
     )
   }
-  // Replaces only the exact member expression `process.env.TAMAGUI_RUNTIME`.
+  // Replaces only the integration-owned exact process.env member expressions.
   // Metro has no define mechanism, so this is the transform-level equivalent.
   const runtimeLiteral = config.runtimeLiteral ?? 'full'
-  const inlineRuntimeLiteral = ({ types }: { types: any }) => ({
-    visitor: {
-      MemberExpression(nodePath: any) {
-        const node = nodePath.node
-        if (
-          node.computed ||
-          !types.isIdentifier(node.property, { name: 'TAMAGUI_RUNTIME' }) ||
-          !types.isMemberExpression(node.object) ||
-          node.object.computed ||
-          !types.isIdentifier(node.object.object, { name: 'process' }) ||
-          !types.isIdentifier(node.object.property, { name: 'env' })
-        ) {
-          return
-        }
-        nodePath.replaceWith(types.stringLiteral(runtimeLiteral))
+  const inlineRuntimeLiterals = (platform: string, { types }: { types: any }) => {
+    const enabledFeatures = {
+      inlineThemeValues: 'enabled',
+      styleValueGrammar: 'enabled',
+      safeArea: 'enabled',
+    } as const
+    const features =
+      platform === 'web'
+        ? { ...enabledFeatures, ...config.webRuntimeFeatures }
+        : enabledFeatures
+    const featureByName: Record<string, string> = {
+      TAMAGUI_RUNTIME_INLINE_THEME_VALUES: features.inlineThemeValues,
+      TAMAGUI_RUNTIME_STYLE_VALUE_GRAMMAR: features.styleValueGrammar,
+      TAMAGUI_RUNTIME_SAFE_AREA: features.safeArea,
+    }
+    return {
+      visitor: {
+        MemberExpression(nodePath: any) {
+          const node = nodePath.node
+          if (
+            node.computed ||
+            !types.isMemberExpression(node.object) ||
+            node.object.computed ||
+            !types.isIdentifier(node.object.object, { name: 'process' }) ||
+            !types.isIdentifier(node.object.property, { name: 'env' })
+          ) {
+            return
+          }
+          const name = types.isIdentifier(node.property) ? node.property.name : ''
+          if (name === 'TAMAGUI_RUNTIME') {
+            nodePath.replaceWith(types.stringLiteral(runtimeLiteral))
+            return
+          }
+          const literal = featureByName[name]
+          if (literal) nodePath.replaceWith(types.stringLiteral(literal))
+        },
       },
-    },
-  })
+    }
+  }
 
   return {
     async transform(argsIn) {
+      const platform =
+        typeof argsIn.options.platform === 'string' ? argsIn.options.platform : 'default'
       const args = {
         ...argsIn,
-        plugins: [...(argsIn.plugins ?? []), inlineRuntimeLiteral],
+        plugins: [
+          ...(argsIn.plugins ?? []),
+          (babel: { types: any }) => inlineRuntimeLiterals(platform, babel),
+        ],
       }
-      const platform =
-        typeof args.options.platform === 'string' ? args.options.platform : 'default'
       const cache = new MetroCompilerCache(join(config.cacheBaseRoot, platform))
       let tamagui: MetroCompilerTransformMetadata = {
         cacheHit: false,
@@ -180,6 +209,8 @@ export function createMetroCompilerTransformer(config: MetroCompilerTransformerO
         .update(`tamagui-metro-compiler-v${METRO_COMPILER_CACHE_VERSION}`)
         .update('\0')
         .update(runtimeLiteral)
+        .update('\0')
+        .update(JSON.stringify(config.webRuntimeFeatures ?? {}))
         .update('\0')
         .update(userBabelCacheKey(config.originalBabelTransformerPath))
         .digest('hex')

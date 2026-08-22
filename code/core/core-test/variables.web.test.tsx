@@ -243,6 +243,27 @@ describe('<Theme> inline values', () => {
     expect(identifierOf(container)).toBeUndefined()
   })
 
+  test('the declared runtime gate keeps theme-key props disabled', () => {
+    const previous = process.env.TAMAGUI_RUNTIME_INLINE_THEME_VALUES
+    process.env.TAMAGUI_RUNTIME_INLINE_THEME_VALUES = 'disabled'
+    try {
+      const { container } = render(
+        <TamaguiProvider config={conf} defaultTheme="light">
+          <Theme surfaceBorder="red">
+            <View borderColor="surfaceBorder" />
+          </Theme>
+        </TamaguiProvider>
+      )
+      expect(identifierOf(container)).toBeUndefined()
+    } finally {
+      if (previous === undefined) {
+        delete process.env.TAMAGUI_RUNTIME_INLINE_THEME_VALUES
+      } else {
+        process.env.TAMAGUI_RUNTIME_INLINE_THEME_VALUES = previous
+      }
+    }
+  })
+
   test('theme-key props emit custom properties on the theme span', () => {
     const { container } = render(
       <TamaguiProvider config={conf} defaultTheme="light">

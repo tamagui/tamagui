@@ -349,7 +349,12 @@ function getThemesDeduped(
     // custom variables merge into base themes only; sub-themes inherit them
     // via proxyThemesToParents (native) and the CSS cascade (web), so a
     // inline <Theme> patch survives sub-theme switches below it
-    if (variables && variablesCtx && !themeName.includes('_')) {
+    if (
+      process.env.TAMAGUI_RUNTIME_INLINE_THEME_VALUES !== 'disabled' &&
+      variables &&
+      variablesCtx &&
+      !themeName.includes('_')
+    ) {
       mergeConfigVariablesIntoTheme(
         theme as any,
         themeName,

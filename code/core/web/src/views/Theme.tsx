@@ -74,7 +74,10 @@ export const Theme = createRefComponent(function Theme(
   // inline layer merged over the parent theme. null for a plain <Theme>, which
   // costs one loop over its two or three props and allocates nothing.
   const config = getConfig()
-  const inlineValues = getInlineValuesFromProps(props, config)
+  const inlineValues =
+    process.env.TAMAGUI_RUNTIME_INLINE_THEME_VALUES === 'disabled'
+      ? null
+      : getInlineValuesFromProps(props, config)
 
   // on web the same layer also compiles to custom properties on this node, so
   // styled descendants restyle through the cascade instead of re-rendering

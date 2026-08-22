@@ -151,9 +151,10 @@ export function getThemeProxied(
           // an inline <Theme> layer overrides this key: the config.themes
           // pair below would bypass it. use the layer's literal light/dark
           // pair when it has one, otherwise deopt to normal tracking
-          const inlineLayer = (curState.theme as any)?.[inlineLayerKey] as
-            | InlineLayerInfo
-            | undefined
+          const inlineLayer =
+            process.env.TAMAGUI_RUNTIME_INLINE_THEME_VALUES === 'disabled'
+              ? undefined
+              : ((curState.theme as any)?.[inlineLayerKey] as InlineLayerInfo | undefined)
           const inlineOverridden = !!inlineLayer?.overridden.has(key)
 
           if (shouldOptimize && inlineOverridden) {

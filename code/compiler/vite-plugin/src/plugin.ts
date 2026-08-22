@@ -756,6 +756,7 @@ export function createTamaguiPlugins({
       // the client graph is zero or the client claims the artifact. Inheriting
       // either literal from the outer build empties the artifact it generates.
       'process.env.TAMAGUI_RUNTIME': JSON.stringify('full'),
+      ...Static.getWebRuntimeFeatureDefines({}),
       'process.env.TAMAGUI_DID_OUTPUT_CSS': JSON.stringify(''),
       // Client configs may strip theme values. Compiler evaluation and outputCSS
       // must use the full config regardless of which outer Vite environment runs last.
@@ -946,6 +947,7 @@ export function createTamaguiPlugins({
           // Config evaluation, report builds, native builds, and full-runtime
           // island child builds all keep ordinary Tamagui runtime behavior.
           'process.env.TAMAGUI_RUNTIME': JSON.stringify('full'),
+          ...Static.getWebRuntimeFeatureDefines(enableNativeEnv ? {} : options),
           // reanimated support
           _frameTimestamp: undefined,
           _WORKLET: false,

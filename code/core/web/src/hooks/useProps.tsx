@@ -132,7 +132,10 @@ export function usePropsAndStyle<A extends PropsLikeObject>(
 
   useIsomorphicLayoutEffect(() => {
     let disposeSafeArea: (() => void) | undefined
-    if (splitStyles?.usesSafeArea) {
+    if (
+      process.env.TAMAGUI_RUNTIME_SAFE_AREA !== 'disabled' &&
+      splitStyles?.usesSafeArea
+    ) {
       const updateSafeArea = () => {
         setState((previous) => ({ ...previous }))
       }

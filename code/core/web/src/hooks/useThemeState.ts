@@ -428,7 +428,11 @@ const getSnapshotImpl = (r: SnapshotRef): ThemeState => {
   // over own output would keep removed patch keys alive. Merged objects are
   // identity-cached per (base theme, values, scheme) so bailouts stay stable.
   let next = nextRaw
-  if (props.inlineValues && nextRaw?.theme) {
+  if (
+    process.env.TAMAGUI_RUNTIME_INLINE_THEME_VALUES !== 'disabled' &&
+    props.inlineValues &&
+    nextRaw?.theme
+  ) {
     const parentTheme = states.get(parentId)?.theme || nextRaw.theme
     const merged = getMergedInlineTheme(
       parentTheme,
@@ -766,7 +770,9 @@ const getPropsKey = ({
   inlineValues,
 }: UseThemeWithStateProps) =>
   `${name || ''}${reset || ''}${forceClassName || ''}${
-    inlineValues ? getInlineValuesKey(inlineValues) : ''
+    process.env.TAMAGUI_RUNTIME_INLINE_THEME_VALUES !== 'disabled' && inlineValues
+      ? getInlineValuesKey(inlineValues)
+      : ''
   }`
 
 export const hasThemeUpdatingProps = (props: UseThemeWithStateProps) =>

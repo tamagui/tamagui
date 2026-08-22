@@ -674,7 +674,10 @@ export const getSplitStyles: StyleSplitter = (
     // contribution, so repeated clauses on one property and interleaving
     // with ordinary props survive in authored order). validity applies to
     // the value's real property, so the host ruling still holds
-    if (isFrontendProgram(valInit)) {
+    if (
+      process.env.TAMAGUI_RUNTIME_STYLE_VALUE_GRAMMAR !== 'disabled' &&
+      isFrontendProgram(valInit)
+    ) {
       if (isValidStyleKey(valInit.property, validStyles, accept)) {
         contributeFrontendProgram(styleState, valInit, mergeStyle)
       } else if (process.env.NODE_ENV === 'development') {
@@ -937,7 +940,10 @@ export const getSplitStyles: StyleSplitter = (
           (process.env.TAMAGUI_TARGET === 'native' && isAndroid && key === 'elevation')
         const isContextProgramKey = !isHOC && Boolean(isStyledContextProp)
 
-        if (conditionSource !== undefined) {
+        if (
+          process.env.TAMAGUI_RUNTIME_STYLE_VALUE_GRAMMAR !== 'disabled' &&
+          conditionSource !== undefined
+        ) {
           if (isHostStyleKey || isContextProgramKey) {
             contributeVariantClauseValue(
               styleState,

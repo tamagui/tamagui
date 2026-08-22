@@ -499,7 +499,10 @@ function configuredValue(state: GetStyleState, property: string, raw: string): a
     }
   }
 
-  const safeArea = resolveSafeAreaVariable(name)
+  const safeArea =
+    process.env.TAMAGUI_RUNTIME_SAFE_AREA === 'disabled'
+      ? undefined
+      : resolveSafeAreaVariable(name)
   if (safeArea !== undefined) {
     state.flatUsesSafeArea = true
     return safeArea
@@ -1487,6 +1490,10 @@ export function contributeStyleString(
   originalValue?: any,
   contextOnly = false
 ) {
+  if (process.env.TAMAGUI_RUNTIME_STYLE_VALUE_GRAMMAR === 'disabled') {
+    emitValue(state, property, source, null, merge, originalValue ?? source, contextOnly)
+    return true
+  }
   if (
     isWeb &&
     source.indexOf(':') !== -1 &&
@@ -1647,6 +1654,9 @@ export function contributeFrontendValue(
   merge: MergeStyle,
   contextOnly = false
 ) {
+  if (process.env.TAMAGUI_RUNTIME_STYLE_VALUE_GRAMMAR === 'disabled') {
+    return false
+  }
   if (value.base !== null) {
     emitValue(state, property, value.base, null, merge, value.base, contextOnly)
   }
@@ -1680,6 +1690,9 @@ export function contributeVariantClauseValue(
   originalValue?: any,
   contextOnly = false
 ) {
+  if (process.env.TAMAGUI_RUNTIME_STYLE_VALUE_GRAMMAR === 'disabled') {
+    return
+  }
   const condition = getCondition(state, conditionSource)
   if (!condition) {
     if (process.env.NODE_ENV === 'development') {
@@ -1705,7 +1718,11 @@ export function contributeStyleValue(
   originalValue?: any,
   contextOnly = false
 ) {
-  if (value === 'safe' && isSafeAreaKey(property)) {
+  if (
+    process.env.TAMAGUI_RUNTIME_SAFE_AREA !== 'disabled' &&
+    value === 'safe' &&
+    isSafeAreaKey(property)
+  ) {
     const expanded = expandSafeAreaValue(property)
     if (expanded) {
       state.flatUsesSafeArea = true

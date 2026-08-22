@@ -99,7 +99,11 @@ export const propMapper: PropMapper = (key, value, styleState, disabled, map) =>
   // "safe" value -> env(safe-area-inset-*) on web, numeric inset on native.
   // expands multi-edge props (padding, inset, marginHorizontal, ...) into
   // per-side keys so each side gets its own edge value.
-  if (value === 'safe' && isSafeAreaKey(key)) {
+  if (
+    process.env.TAMAGUI_RUNTIME_SAFE_AREA !== 'disabled' &&
+    value === 'safe' &&
+    isSafeAreaKey(key)
+  ) {
     const expanded = expandSafeAreaValue(key)
     if (expanded) {
       for (let i = 0; i < expanded.length; i++) {
@@ -157,6 +161,7 @@ const resolveVariants: StyleResolver = (
 ) => {
   const variantDefinition = styleState.staticConfig.variants?.[key]
   if (
+    process.env.TAMAGUI_RUNTIME_STYLE_VALUE_GRAMMAR !== 'disabled' &&
     typeof value === 'string' &&
     value.indexOf(':') !== -1 &&
     // a variant can define a literal colon key like "16:9" — an exact match

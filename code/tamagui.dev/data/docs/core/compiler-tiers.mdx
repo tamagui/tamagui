@@ -108,6 +108,40 @@ Authoring and build configuration influence the result:
 - Set `outputCSS` and load that artifact to enter the compiled-global-CSS tier.
 - Set `experimental.zeroRuntime` to audit or enforce the strict tier.
 
+### Gating optional web runtime features
+
+The Vite, Next.js, and Metro integrations can remove optional runtime features
+that your application does not use:
+
+```ts
+tamaguiPlugin({
+  experimental: {
+    webRuntimeFeatures: {
+      inlineThemeValues: false,
+      styleValueGrammar: false,
+      safeArea: false,
+    },
+  },
+})
+```
+
+Every capability is enabled by default, including builds that do not use a
+Tamagui bundler plugin. Disable a field only after checking the whole
+application:
+
+- `inlineThemeValues: false` removes inline theme-key props such as
+  `<Theme background="red">` and `createTamagui({ variables })`.
+- `styleValueGrammar: false` removes runtime parsing for modifier strings. A
+  dynamic value such as `backgroundColor="red hover:blue"` is then handled as
+  one ordinary value. Compiler-extracted static styles do not need this runtime
+  parser.
+- `safeArea: false` removes `safe`, `safe-area-*`, and the safe-area runtime
+  subscription from style resolution.
+
+These declarations are build capabilities. Tamagui does not infer them from
+source because a dynamic JavaScript value can produce any of these forms at
+runtime.
+
 There is no per-component switch that forces a component to flatten. The
 component's static contract and the actual authored values decide whether a
 safe host replacement exists.

@@ -17,7 +17,9 @@ function mergeStyleBranch(
   for (const key in ourBranch) {
     out[key] =
       key in parentBranch
-        ? mergeFlatValues(parentBranch[key], ourBranch[key])
+        ? process.env.TAMAGUI_RUNTIME_STYLE_VALUE_GRAMMAR === 'disabled'
+          ? ourBranch[key]
+          : mergeFlatValues(parentBranch[key], ourBranch[key])
         : ourBranch[key]
   }
   return out

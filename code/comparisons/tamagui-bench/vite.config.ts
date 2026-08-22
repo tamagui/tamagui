@@ -7,6 +7,14 @@ import { bundleAttributionPlugin } from '../shared/bundleAttributionPlugin'
 
 const extract = process.env.EXTRACT === '1'
 const outputCSS = process.env.BENCH_OUTPUT_CSS
+const webRuntimeFeatures =
+  extract || process.env.BENCH_RUNTIME_FEATURES === 'full'
+    ? undefined
+    : {
+        inlineThemeValues: false,
+        styleValueGrammar: false,
+        safeArea: false,
+      }
 
 export default defineConfig({
   plugins: [
@@ -29,6 +37,7 @@ export default defineConfig({
       optimize: extract,
       disableExtraction: !extract,
       outputCSS,
+      experimental: webRuntimeFeatures ? { webRuntimeFeatures } : undefined,
     }),
     bundleAttributionPlugin(process.env.BUNDLE_ATTRIBUTION_FILE, import.meta.dirname),
   ],
