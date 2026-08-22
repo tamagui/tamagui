@@ -1422,7 +1422,25 @@ function rewriteJsxSite(
   const last = attributes[attributes.length - 1]
   const prefix = source.slice(0, first.getStart() - start)
   const suffix = source.slice(last.getEnd() - start)
-  opening.replaceWithText(`${prefix}${rendered.join(' ')}${suffix}`)
+
+  // Keep the authored line structure. An element whose attributes were written
+  // one per line stays that way, because collapsing them onto a single line
+  // turns a readable element into a four-hundred column one and makes the diff
+  // impossible to review.
+  //
+  // The authored indentation is dropped from the prefix and the closing suffix
+  // so every emitted line is indented by replaceWithText alone. Keeping it would
+  // add to what ts-morph supplies and stagger the attributes, and taking control
+  // of the whitespace directly is not an option: SourceFile.replaceText forgets
+  // every node in the file and the rest of the pass then reads freed nodes.
+  const authoredMultiline =
+    prefix.includes('\n') ||
+    source.slice(first.getStart() - start, last.getEnd() - start).includes('\n')
+  opening.replaceWithText(
+    authoredMultiline
+      ? `${prefix.replace(/[ \t]+$/, '')}${rendered.join('\n')}${suffix.replace(/\n[ \t]+/, '\n')}`
+      : `${prefix}${rendered.join(' ')}${suffix}`
+  )
 }
 
 /**
