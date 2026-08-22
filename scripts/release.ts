@@ -776,7 +776,19 @@ async function run() {
 
         const command = publishCommand(artifact, publishTag)
         console.info(`Publishing ${name}: ${command}`)
-        await spawnify(command, { cwd: tmpDir, interactive })
+        await spawnify(command, {
+          cwd: tmpDir,
+          interactive,
+          env: {
+            ...process.env,
+            // npm's OIDC exchange is written to never throw: every failure path
+            // logs at verbose and returns undefined, so publish then dies with a
+            // bare ENEEDAUTH naming no cause. verbose is the only way to see why
+            // trusted publishing declined, and a release that cannot say why it
+            // could not authenticate is not debuggable.
+            ...(isCI ? { NPM_CONFIG_LOGLEVEL: 'verbose' } : {}),
+          },
+        })
       }
 
       if (pendingPackages.length > 0) {
