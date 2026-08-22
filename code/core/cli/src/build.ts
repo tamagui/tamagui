@@ -34,6 +34,7 @@ export type BuildStats = {
   flattened: number
   styled: number
   found: number
+  bailed: number
 }
 
 export type TrackedFile = {
@@ -362,6 +363,26 @@ export const build = async (
       flattened: 0,
       styled: 0,
       found: 0,
+      bailed: 0,
+    }
+
+    // both target passes report through here, so a `--target native` run stops
+    // summarizing itself as all zeros. a file counts once even when it compiles for
+    // both targets, otherwise `files` double-counts every shared component.
+    const countedFiles = new Set<string>()
+    const addStats = (
+      sourcePath: string,
+      fileStats: Awaited<ReturnType<typeof compileTarget>>['plan']['stats']
+    ) => {
+      if (!countedFiles.has(sourcePath)) {
+        countedFiles.add(sourcePath)
+        stats.filesProcessed++
+      }
+      stats.optimized += fileStats.lowered - fileStats.flattened
+      stats.flattened += fileStats.flattened
+      stats.styled += fileStats.styled
+      stats.found += fileStats.found
+      stats.bailed += fileStats.bailed
     }
 
     if (options.debug) {
@@ -384,11 +405,7 @@ export const build = async (
       const out = await compileTarget('web', sourcePath, originalSource)
 
       if (out.output.changed || out.plan.stats.found > 0) {
-        stats.filesProcessed++
-        stats.optimized += out.plan.stats.lowered - out.plan.stats.flattened
-        stats.flattened += out.plan.stats.flattened
-        stats.styled += out.plan.stats.styled
-        stats.found += out.plan.stats.found
+        addStats(sourcePath, out.plan.stats)
 
         if (isDryRun) {
           if (out.plan.css) {
@@ -459,6 +476,10 @@ export const build = async (
       }
       // Use the ORIGINAL source, not what was just written to disk
       const nativeOut = await compileTarget('native', sourcePath, originalSource)
+
+      if (nativeOut.output.changed || nativeOut.plan.stats.found > 0) {
+        addStats(sourcePath, nativeOut.plan.stats)
+      }
 
       if (isDryRun) {
         if (nativeOut.output.code) {
@@ -567,7 +588,7 @@ export const build = async (
 
     if (isDryRun) {
       console.info(
-        `\n${stats.filesProcessed} files | ${stats.found} found | ${stats.optimized} optimized | ${stats.flattened} flattened | ${stats.styled} styled\n`
+        `\n${stats.filesProcessed} files | ${stats.found} found | ${stats.optimized} optimized | ${stats.flattened} flattened | ${stats.styled} styled | ${stats.bailed} bailed\n`
       )
     }
 
