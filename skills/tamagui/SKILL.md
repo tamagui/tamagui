@@ -474,9 +474,8 @@ fallbacks. Run it in report mode first, then write the full source corpus in one
 pass:
 
 ```bash
-cd code/core/codemod-flat-values
-bun run dry-run --report /tmp/flat-values.md path/to/src
-bun run write --report /tmp/flat-values.md path/to/src
+npx @tamagui/codemod-flat-values --report /tmp/flat-values.md ./src
+npx @tamagui/codemod-flat-values --write --report /tmp/flat-values.md ./src
 ```
 
 The tool removes legacy token prefixes, folds condition objects into value

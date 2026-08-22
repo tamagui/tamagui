@@ -2,7 +2,7 @@
 
 Every row in the flat-values report is one of four assessments or a flag
 code. This is what each one means operationally and what you do about it.
-The full semantics live in `code/core/codemod-flat-values/README.md`; this
+The full semantics live in the [codemod README](https://github.com/tamagui/tamagui/blob/v3-beta/code/core/codemod-flat-values/README.md); this
 file is the action table.
 
 ## Assessments

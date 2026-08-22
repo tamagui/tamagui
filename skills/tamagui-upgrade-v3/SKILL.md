@@ -46,9 +46,8 @@ re-implement:
   the Sheet codemod, and every deprecated-API replacement with before/after.
   That prompt is the checklist of record. This skill tells you how to sequence
   it, what the codemod cannot do, and how to prove the result.
-- The flat-values codemod (`code/core/codemod-flat-values` in a Tamagui
-  checkout) converts `$` tokens and condition objects transactionally and
-  reports everything it cannot prove safe.
+- `npx @tamagui/codemod-flat-values` converts `$` tokens and condition objects
+  transactionally and reports everything it cannot prove safe.
 
 Real-corpus measurement across two apps: 80% of sites converted cleanly on the
 Bento corpus (1,681 of 2,113) and 67% on a mid-size control-room app (1,007 of
@@ -175,16 +174,15 @@ one-path architecture and doubles the review surface.
 
 ## Phase 2: codemod, report first
 
-From a Tamagui checkout:
+From the root of the app you are migrating, which is where its paths and its
+`tsconfig.json` resolve from:
 
 ```bash
-cd code/core/codemod-flat-values
-
 # 1. report only; read it before writing anything
-bun run dry-run --report /tmp/flat-report.md --json /tmp/flat-report.json path/to/app/src
+npx @tamagui/codemod-flat-values --report /tmp/flat-report.md --json /tmp/flat-report.json ./src
 
 # 2. after reading: apply the statically safe conversions
-bun src/index.ts --write --report /tmp/flat-write-report.md path/to/app/src
+npx @tamagui/codemod-flat-values --write --report /tmp/flat-write-report.md ./src
 ```
 
 Facts about the codemod that shape how you work with it:

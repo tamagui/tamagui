@@ -84,7 +84,7 @@ green. That trade is deliberate and approved.
 3. Codemod write mode. Then run it over `code/ui` skins, `code/kitchen-sink`,
    `code/demos`, starters. Hand-fix the flagged rows. This clears the 329
    files.
-4. Docs and skill. `plans/tamagui-skill` teaches sigil-free authoring and the
+4. Docs and skill. `skills/` teaches sigil-free authoring and the
    migration flow; docs examples rewritten sigil-free.
 5. Converge. Build all packages, one full typecheck, kitchen-sink web tests,
    rerun the conformance matrix against the new candidate. Fix forward until
