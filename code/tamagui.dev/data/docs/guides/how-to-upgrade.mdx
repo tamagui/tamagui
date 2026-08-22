@@ -19,14 +19,13 @@ behavior should be verified in real screens.
 
 V3 accepts bare token and theme names and flat property clauses only. There is
 no runtime compatibility path for sigil-prefixed values or condition objects.
-Run the repository codemod across your app before the API-specific steps below:
+Run the codemod from your project root before the API-specific steps below:
 
 ```bash
-cd code/core/codemod-flat-values
-bun src/index.ts --write \
-  --report /tmp/flat-values-report.md \
-  --json /tmp/flat-values-report.json \
-  path/to/your/app
+npx @tamagui/codemod-flat-values --write \
+  --report flat-values-report.md \
+  --json flat-values-report.json \
+  ./src
 ```
 
 For example, this V2 migration input:

@@ -690,11 +690,9 @@ The short version:
 
 ```bash
 npx tamagui check
-cd code/core/codemod-flat-values
-bun src/index.ts --write \
-  --report /tmp/flat-values-report.md \
-  path/to/your/app
-cd ../../..
+npx @tamagui/codemod-flat-values --write \
+  --report flat-values-report.md \
+  ./src
 node ./node_modules/tamagui/scripts/codemods/sheet-frame-to-container.js "src/**/*.{ts,tsx}"
 ```
 

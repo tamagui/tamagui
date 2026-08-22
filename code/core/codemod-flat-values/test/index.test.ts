@@ -22,6 +22,13 @@ import {
 } from '../src/grammar'
 
 const packageDir = resolve(dirname(fileURLToPath(import.meta.url)), '..')
+const repoRoot = resolve(packageDir, '../../..')
+const entry = 'code/core/codemod-flat-values/src/index.ts'
+// the corpus the migrated repo is held to: every v1 site here is a real regression
+const defaultCorpus = [
+  'code/kitchen-sink/src/usecases',
+  'code/ui/tamagui/src/components/Button.tsx',
+]
 const temporaryDirectories: string[] = []
 
 interface Result {
@@ -47,14 +54,14 @@ function runOn(inputs: readonly string[]): Result {
   const result = Bun.spawnSync({
     cmd: [
       process.execPath,
-      'src/index.ts',
+      entry,
       '--report',
       join(directory, 'report.md'),
       '--json',
       jsonPath,
       ...inputs,
     ],
-    cwd: packageDir,
+    cwd: repoRoot,
     stderr: 'pipe',
     stdout: 'pipe',
   })
@@ -73,13 +80,13 @@ function runWrite(source: string): string {
   const result = Bun.spawnSync({
     cmd: [
       process.execPath,
-      'src/index.ts',
+      entry,
       '--write',
       '--report',
       join(directory, 'report.md'),
       sourcePath,
     ],
-    cwd: packageDir,
+    cwd: repoRoot,
     stderr: 'pipe',
     stdout: 'pipe',
   })
@@ -107,8 +114,8 @@ function runRaw(inputs: readonly string[]): {
   temporaryDirectories.push(directory)
   const reportPath = join(directory, 'report.md')
   const result = Bun.spawnSync({
-    cmd: [process.execPath, 'src/index.ts', '--report', reportPath, ...inputs],
-    cwd: packageDir,
+    cmd: [process.execPath, entry, '--report', reportPath, ...inputs],
+    cwd: repoRoot,
     stderr: 'pipe',
     stdout: 'pipe',
   })
@@ -1476,13 +1483,13 @@ export const Fixture = () => <View bg="$blue10" hoverStyle={{ bg: '$blue11' }} /
     const result = Bun.spawnSync({
       cmd: [
         process.execPath,
-        'src/index.ts',
+        entry,
         '--write',
         '--report',
         join(reportDirectory, 'report.md'),
         directory,
       ],
-      cwd: packageDir,
+      cwd: repoRoot,
       stderr: 'pipe',
       stdout: 'pipe',
     })
@@ -1618,7 +1625,7 @@ export const Fixture = () => (
 
 describe('the kitchen-sink corpus', () => {
   test('the migrated default corpus has no v1 conversion sites', () => {
-    const result = runOn([])
+    const result = runOn(defaultCorpus)
     expect(result.summary.sites).toBe(0)
 
     const legacyNames = [

@@ -61,14 +61,14 @@ npx tamagui check
 ### 2. Migrate tokens and conditional styles
 
 V3 accepts bare token/theme names and flat clauses only. Run the transactional
-flat-values codemod across the whole app from a Tamagui checkout:
+flat-values codemod from your project root, dry run first:
 
 \`\`\`bash
-cd code/core/codemod-flat-values
-bun src/index.ts --write \\
-  --report /tmp/flat-values-report.md \\
-  --json /tmp/flat-values-report.json \\
-  path/to/your/app
+npx @tamagui/codemod-flat-values --report flat-values-report.md ./src
+npx @tamagui/codemod-flat-values --write \\
+  --report flat-values-report.md \\
+  --json flat-values-report.json \\
+  ./src
 \`\`\`
 
 For example, this V2 input:

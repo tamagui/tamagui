@@ -1,6 +1,6 @@
+#!/usr/bin/env node
 import { existsSync, mkdirSync, writeFileSync } from 'node:fs'
 import { dirname, relative, resolve } from 'node:path'
-import { fileURLToPath } from 'node:url'
 import { resolveTamaguiHost } from '@tamagui/language-service/host'
 import { stylePropsTextOnly } from '@tamagui/helpers'
 import {
@@ -31,21 +31,20 @@ import { renderReport, type FileReport } from './report'
 
 type Provenance = ReturnType<typeof createProvenance>
 
-const packageDir = resolve(dirname(fileURLToPath(import.meta.url)), '..')
-const repoRoot = resolve(packageDir, '../../..')
-const defaultReportPath = resolve(packageDir, 'dry-run-report.md')
+// every path is resolved against the directory the codemod is invoked from, so it
+// migrates the project you are standing in whether that is an app or this repo
+const projectRoot = process.cwd()
+const defaultReportPath = resolve(projectRoot, 'tamagui-flat-values-report.md')
 const ignoreMarker = '.tamagui-flat-values-ignore'
 const ignoredDirectories = new Map<string, boolean>()
-
-const defaultCorpus = [
-  'code/kitchen-sink/src/usecases',
-  'code/ui/tamagui/src/components/Button.tsx',
-]
 
 function isIgnored(filePath: string): boolean {
   let directory = dirname(filePath)
   const visited: string[] = []
-  while (directory === repoRoot || !relative(repoRoot, directory).startsWith('..')) {
+  while (
+    directory === projectRoot ||
+    !relative(projectRoot, directory).startsWith('..')
+  ) {
     const cached = ignoredDirectories.get(directory)
     if (cached !== undefined) {
       for (const seen of visited) ignoredDirectories.set(seen, cached)
@@ -56,7 +55,7 @@ function isIgnored(filePath: string): boolean {
       for (const seen of visited) ignoredDirectories.set(seen, true)
       return true
     }
-    if (directory === repoRoot) break
+    if (directory === projectRoot) break
     const parent = dirname(directory)
     if (parent === directory) break
     directory = parent
@@ -69,8 +68,17 @@ function collectFiles(inputs: readonly string[]): {
   sourceFiles: SourceFile[]
   ignoredFiles: number
 } {
+  // the checker is what proves a JSX tag resolves to a Tamagui component, so a
+  // project whose tsconfig cannot be read would silently convert nothing
+  const tsConfigFilePath = resolve(projectRoot, 'tsconfig.json')
+  if (!existsSync(tsConfigFilePath)) {
+    console.error(
+      `no tsconfig.json in ${projectRoot}; run the codemod from your project root`
+    )
+    process.exit(2)
+  }
   const project = new Project({
-    tsConfigFilePath: resolve(repoRoot, 'tsconfig.json'),
+    tsConfigFilePath,
     skipAddingFilesFromTsConfig: true,
     compilerOptions: {
       allowJs: false,
@@ -80,7 +88,7 @@ function collectFiles(inputs: readonly string[]): {
       moduleResolution: ModuleResolutionKind.NodeJs,
       skipLibCheck: true,
       strictNullChecks: true,
-      baseUrl: repoRoot,
+      baseUrl: projectRoot,
     },
   })
 
@@ -88,7 +96,7 @@ function collectFiles(inputs: readonly string[]): {
   const ignored = new Set<string>()
   const missing: string[] = []
   for (const input of inputs) {
-    const path = resolve(repoRoot, input)
+    const path = resolve(projectRoot, input)
     if (!existsSync(path)) {
       missing.push(input)
       continue
@@ -352,22 +360,22 @@ function inspectFile(
   sites.sort(
     (left, right) => left.line - right.line || left.label.localeCompare(right.label)
   )
-  return { file: relative(repoRoot, sourceFile.getFilePath()), sites }
+  return { file: relative(projectRoot, sourceFile.getFilePath()), sites }
 }
 
 const usage = `Converts Tamagui style syntax to V3 flat property values and reports what it cannot convert.
 
-  bun src/index.ts [options] [files or directories...]
+  npx @tamagui/codemod-flat-values [options] <files or directories...>
 
   --report <path>   where to write the Markdown report (default: ${relative(
-    repoRoot,
+    projectRoot,
     defaultReportPath
   )})
   --json <path>     also write the machine-readable report
   --write           rewrite every statically safe conversion in place
   --help            print this
 
-With no positional arguments the default corpus is ${defaultCorpus.join(' and ')}.
+Run it from your project root, which is where paths and the tsconfig resolve from.
 Source files are only written with --write.`
 
 function parseArguments(argv: readonly string[]): {
@@ -411,12 +419,14 @@ function parseArguments(argv: readonly string[]): {
     inputs.push(argument)
   }
 
-  return {
-    reportPath,
-    jsonPath,
-    inputs: inputs.length ? inputs : defaultCorpus,
-    write,
+  // no implicit corpus: migrating whatever happens to be under the working
+  // directory is not something anyone means to ask for
+  if (!inputs.length) {
+    console.error(`no files or directories given\n\n${usage}`)
+    process.exit(2)
   }
+
+  return { reportPath, jsonPath, inputs, write }
 }
 
 const { reportPath, jsonPath, inputs, write } = parseArguments(process.argv.slice(2))
@@ -429,7 +439,7 @@ for (const sourceFile of sourceFiles) {
   ).parseDiagnostics
   if (diagnostics?.length) {
     console.error(
-      `${relative(repoRoot, sourceFile.getFilePath())}: source has parse errors; no files were written`
+      `${relative(projectRoot, sourceFile.getFilePath())}: source has parse errors; no files were written`
     )
     process.exit(2)
   }
@@ -470,7 +480,7 @@ if (write) {
         })
         .join('\n')
       console.error(
-        `${relative(repoRoot, filePath)}: rewrite produced parse errors; no files were written\n${details}`
+        `${relative(projectRoot, filePath)}: rewrite produced parse errors; no files were written\n${details}`
       )
       process.exit(2)
     }
@@ -478,7 +488,7 @@ if (write) {
 }
 const { text, summary } = renderReport(
   files,
-  inputs.map((input) => relative(repoRoot, resolve(repoRoot, input))),
+  inputs.map((input) => relative(projectRoot, resolve(projectRoot, input))),
   modifierRegistry.diagnostics,
   ignoredFiles,
   write

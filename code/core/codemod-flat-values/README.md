@@ -4,22 +4,25 @@ Converts existing Tamagui style syntax to V3 flat property values. Dry-run mode
 reports every conversion; `--write` applies every flat-eligible rewrite in one
 transaction and records host or target assessments for manual review.
 
+Run it from the root of the project you are migrating. Paths, the report and the
+`tsconfig.json` it reads the type information from all resolve from there.
+
 ```sh
-cd code/core/codemod-flat-values
-bun run dry-run                              # the default corpus
-bun run dry-run --report /tmp/report.md path/to/src another/file.tsx
-bun run dry-run --json /tmp/report.json      # machine readable, used by the tests
-bun run write path/to/src                    # apply safe conversions in place
-bun src/index.ts --help
+npx @tamagui/codemod-flat-values ./src                       # dry run
+npx @tamagui/codemod-flat-values --json report.json ./src    # machine readable
+npx @tamagui/codemod-flat-values --write ./src               # apply safe conversions
+npx @tamagui/codemod-flat-values --help
 ```
 
-The default corpus is `code/kitchen-sink/src/usecases` plus the canonical
-`Button.tsx` skin. Its acceptance test now asserts that the migrated corpus has no
-V1 conversion sites. Focused fixtures still parse every emitted program back through
+Inside this repository the same two runs over the pinned corpus are
+`bun run dry-run` and `bun run write` from `code/core/codemod-flat-values`. That
+corpus is `code/kitchen-sink/src/usecases` plus the canonical `Button.tsx` skin,
+and its acceptance test asserts the migrated corpus has no V1 conversion sites.
+Focused fixtures still parse every emitted program back through
 `@tamagui/style-grammar`.
 
-A positional argument that matches no file exits 2 with no report, so a typo in a
-migration path can never read as a clean corpus.
+A run with no positional argument exits 2, and so does a positional argument that
+matches no file, so a typo in a migration path can never read as a clean corpus.
 
 A directory containing `.tamagui-flat-values-ignore` is excluded recursively from
 both dry-run and write mode. Use the marker only for intentionally pinned legacy

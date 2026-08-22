@@ -471,6 +471,10 @@
     },
     "code/core/codemod-flat-values": {
       "name": "@tamagui/codemod-flat-values",
+      "version": "2.7.7",
+      "bin": {
+        "tamagui-codemod-flat-values": "dist/index.mjs",
+      },
       "dependencies": {
         "@tamagui/helpers": "workspace:*",
         "@tamagui/language-service": "workspace:*",
@@ -479,6 +483,7 @@
         "ts-morph": "^28.0.0",
       },
       "devDependencies": {
+        "@tamagui/build": "workspace:*",
         "typescript": "~6.0.3",
       },
     },
@@ -1058,9 +1063,11 @@
         "react": "*",
         "react-native": ">=0.81.0",
         "react-native-nitro-modules": ">=0.36.0",
+        "react-native-web": "*",
       },
       "optionalPeers": [
         "react-native-nitro-modules",
+        "react-native-web",
       ],
     },
     "code/core/normalize-css-color": {
