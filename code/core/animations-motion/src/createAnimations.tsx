@@ -7,6 +7,7 @@ import {
   getConfig,
   getSplitStyles,
   hooks,
+  nonAnimatableStyleProps,
   normalizeValueWithProperty,
   type OnTransition,
   styleToCSS,
@@ -386,7 +387,10 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
             return
           }
 
-          // handle case where dontAnimate changes
+          // handle case where dontAnimate changes. removal also has to run
+          // when dontAnimate disappears entirely (undefined), or a style whose
+          // last member left (e.g. a hover-conditioned cursor on unhover)
+          // stays stuck on the node forever
           const prevDont = refs.current.lastDontAnimate
           if (dontAnimate) {
             if (prevDont) {
@@ -398,6 +402,8 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
             } else {
               assignInlineStyles(node, dontAnimate)
             }
+          } else if (prevDont) {
+            removeRemovedStyles(prevDont, {}, node, doAnimate)
           }
 
           if (doAnimate) {
@@ -1126,26 +1132,15 @@ function removeRemovedStyles(
   }
 }
 
-// truly non-animatable CSS properties (discrete, keyword-based, no interpolation)
-// properties like margin, maxHeight, zIndex, etc are animatable and intentionally excluded
+// truly non-animatable CSS properties (discrete, keyword-based, no
+// interpolation), from the same list the style emitter uses to promote base
+// values to atomic classes. handing one of these to motion's animate() leaves
+// its committed value stuck on the node after the style stops including it,
+// because only the dontAnimate path clears removed styles. flexBasis is
+// interpolable but applied discretely by driver choice.
 export const disableAnimationProps: Set<string> = new Set<string>([
-  'alignContent',
-  'alignItems',
-  'boxSizing',
-  'contain',
-  'containerType',
-  'display',
+  ...Object.keys(nonAnimatableStyleProps),
   'flexBasis',
-  'flexDirection',
-  'fontFamily',
-  'justifyContent',
-  'overflow',
-  'overflowX',
-  'overflowY',
-  'pointerEvents',
-  'position',
-  'textWrap',
-  'userSelect',
 ])
 
 // props equality for the getSplitStyles memo: functions and children can't

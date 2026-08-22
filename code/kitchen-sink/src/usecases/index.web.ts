@@ -70,6 +70,8 @@ const loaders: Record<string, () => ComponentType<any>> = {
     require('./CustomStyledAnimatedPopover').CustomStyledAnimatedPopover,
   CustomStyledAnimatedTooltip: () =>
     require('./CustomStyledAnimatedTooltip').CustomStyledAnimatedTooltip,
+  DriverConditionedDiscreteCase: () =>
+    require('./DriverConditionedDiscreteCase').DriverConditionedDiscreteCase,
   DriverDisableAnimationPropsCase: () =>
     require('./DriverDisableAnimationPropsCase').DriverDisableAnimationPropsCase,
   DOMNodeAPIs: () => require('./DOMNodeAPIs').DOMNodeAPIs,
