@@ -8,6 +8,7 @@ import {
 import {
   StyleObjectIdentifier,
   StyleObjectRules,
+  nonAnimatableStyleProps,
   tokenCategories,
   type StyleObject,
 } from '@tamagui/helpers'
@@ -625,9 +626,7 @@ function normalizeTransitionNames(state: GetStyleState, raw: string) {
   return copyFrom ? out + raw.slice(copyFrom) : raw
 }
 
-// one contribution's slice of an atomic identity; accumulated per atomicKey in
-// directAtomic, and reproduced standalone by the getSplitStyles class-strip
-// path so a surviving base style keeps its server-rendered identifier
+// one contribution's slice of an atomic identity, accumulated per atomicKey
 export function directStyleSignature(
   property: string,
   value: unknown,
@@ -840,7 +839,16 @@ function emitProperty(
     return
   }
 
-  if (isWeb && state.flatShouldDoClasses) {
+  const shouldPromoteAnimatedStyle =
+    isWeb &&
+    !condition &&
+    !state.flatShouldDoClasses &&
+    !state.styleProps.noMergeStyle &&
+    state.styleProps.isAnimated &&
+    !state.animationDriver?.isReactNative &&
+    property in nonAnimatableStyleProps
+
+  if (isWeb && (state.flatShouldDoClasses || shouldPromoteAnimatedStyle)) {
     if (!condition) {
       if (state.style) delete state.style[property]
     }

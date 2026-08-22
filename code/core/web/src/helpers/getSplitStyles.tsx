@@ -1,10 +1,8 @@
 import { isAndroid, isClient, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import {
   StyleObjectIdentifier,
-  StyleObjectProperty,
   StyleObjectPseudo,
   StyleObjectRules,
-  nonAnimatableStyleProps,
   stylePropsAll,
   stylePropsText,
   stylePropsTransform,
@@ -41,7 +39,7 @@ import type {
   ViewStyleObject,
 } from '../types'
 import { fixStyles } from './expandStyles'
-import { getCSSStyleAtomic, styleToCSS } from './getCSSStylesAtomic'
+import { styleToCSS } from './getCSSStylesAtomic'
 import { getDefaultProps } from './getDefaultProps'
 import { insertStyleRules, shouldInsertStyleRules, updateRules } from './insertStyleRule'
 import { isPlainObject } from './isObj'
@@ -53,7 +51,6 @@ import {
   contributeStyleValue,
   contributeStyleString,
   contributeVariantClauseValue,
-  directStyleSignature,
   flushDirectStyles,
   getDirectDynamicThemeAccess,
 } from './directStyle'
@@ -1171,40 +1168,6 @@ export const getSplitStyles: StyleSplitter = (
 
   if (process.env.TAMAGUI_TARGET === 'web') {
     flushDirectStyles(styleState)
-
-    // when noClass is true (inline animation driver) extract non-animatable
-    // base styles to atomic CSS classNames so the driver doesn't manage them
-    // skip for RNW animation drivers since their AnimatedView doesn't forward classNames
-    if (
-      !styleProps.noMergeStyle &&
-      styleState.style &&
-      !shouldDoClasses &&
-      styleProps.isAnimated &&
-      !driver?.isReactNative
-    ) {
-      if (!styleState.style['$$css']) {
-        for (const key in styleState.style) {
-          if (key in nonAnimatableStyleProps) {
-            // reproduce the direct-emission identity so the surviving class
-            // matches its server-rendered counterpart exactly
-            const atomicStyle = getCSSStyleAtomic(
-              key,
-              styleState.style[key],
-              '',
-              undefined,
-              directStyleSignature(key, styleState.style[key]),
-              true
-            )
-            delete styleState.style[key]
-            if (atomicStyle) {
-              addStyleToInsertRules(rulesToInsert, atomicStyle)
-              classNames[atomicStyle[StyleObjectProperty]] =
-                atomicStyle[StyleObjectIdentifier]
-            }
-          }
-        }
-      }
-    }
   }
 
   // native: swap out the right family based on weight/style
