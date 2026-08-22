@@ -1,9 +1,8 @@
-import { transformFamilyProps } from '../../style-grammar/src/transformFamily'
-import { unitlessNumberProperties } from '../../style-grammar/src/unitlessNumbers'
-import type {
-  ModifierRegistryView,
-  ParsedClause,
-} from '../../style-grammar/src/valueTypes'
+import {
+  transformFamilyProps,
+  unitlessNumberProperties,
+} from '@tamagui/style-grammar/tooling'
+import type { ModifierRegistryView, ParsedClause } from '@tamagui/style-grammar/tooling'
 
 export const pseudoToModifier: Readonly<Record<string, string>> = Object.freeze({
   hoverStyle: 'hover',

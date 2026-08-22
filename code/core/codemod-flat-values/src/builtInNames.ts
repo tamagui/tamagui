@@ -1,4 +1,4 @@
-import { v6ThemeNameReplacements } from '../../style-grammar/src/v6ThemeNames'
+import { v6ThemeNameReplacements } from '@tamagui/style-grammar/tooling'
 
 export const v6CodemodBuiltInNameReplacements = {
   ...v6ThemeNameReplacements,

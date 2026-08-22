@@ -6,10 +6,7 @@
 
 import { stylePropsAll } from '@tamagui/helpers'
 import { shorthands } from '@tamagui/shorthands/v6'
-// the source, not the package entry: the package entry resolves to `dist`, and a
-// codemod that reads a stale build of the grammar would emit values the current
-// grammar does not agree with
-import * as styleGrammarTooling from '../../style-grammar/src/tooling'
+import * as styleGrammarTooling from '@tamagui/style-grammar/tooling'
 import type {
   ConvertLegacyConditionOptions,
   LegacyConditionError,
@@ -19,12 +16,10 @@ import type {
   ConversionReason,
   ConversionTargets,
   HostView,
-} from '../../style-grammar/src/tooling'
-import type {
   ModifierRegistryView,
   ParsedClause,
   ParsedValue,
-} from '../../style-grammar/src/valueTypes'
+} from '@tamagui/style-grammar/tooling'
 import { replaceV6BuiltInTokens } from './builtInNames'
 import {
   convertLegacyConditionProp as convertLegacyConditionPropLocal,
