@@ -4,13 +4,20 @@
  * and runtime-mode pushes both use this exact runtime processor before props
  * cross into the engine.
  *
- * Colors go over as `[r, g, b, a]` floats in 0..1, not as the packed ARGB int
- * `processColor` returns. Both forms are accepted by Fabric
- * (`fromRawValueShared`), but the int form is misread through this path: an
- * opaque grey `0xFFE3E3E3` rendered as `rgb(254, 229, 229)`, taking `0xFF` as
- * red and the real red as alpha, so every themed surface in an app came out
- * tinted pink. The float branch carries each channel in its own array slot, so
- * there is no packing for the parser to disagree about.
+ * Colors go over as `{ space: 'srgb', r, g, b, a }` with each channel a float
+ * in 0..1. That shape is the only one both prop parsers a themed view can reach
+ * will accept:
+ *
+ *  - C++ `fromRawValueShared` reads it through its `space` branch. The packed
+ *    ARGB int `processColor` returns is misread here: an opaque grey
+ *    `0xFFE3E3E3` rendered as `rgb(254, 229, 229)`, taking `0xFF` as red and
+ *    the real red as alpha, so every themed surface came out tinted pink.
+ *  - Android additionally mounts some of these props through Java
+ *    `SurfaceMountingManager.updateProps` -> `ColorPropConverter`, which takes
+ *    a number or a map and throws `ColorValue: the value must be a number or
+ *    Object` on anything else. A plain `[r, g, b, a]` array satisfies the C++
+ *    parser but not this one, and the throw kills the mount-item dispatch and
+ *    tears the whole React surface down.
  */
 import { processColor } from 'react-native'
 
@@ -47,12 +54,13 @@ export function processStyleColors(
       // Fabric unpacks that shape itself, so it goes over untouched
       if (typeof processed === 'number') {
         // processColor packs ARGB, and is signed on Android, hence >>>
-        out[key] = [
-          ((processed >>> 16) & 0xff) / 255,
-          ((processed >>> 8) & 0xff) / 255,
-          (processed & 0xff) / 255,
-          ((processed >>> 24) & 0xff) / 255,
-        ]
+        out[key] = {
+          space: 'srgb',
+          r: ((processed >>> 16) & 0xff) / 255,
+          g: ((processed >>> 8) & 0xff) / 255,
+          b: (processed & 0xff) / 255,
+          a: ((processed >>> 24) & 0xff) / 255,
+        }
       } else if (processed != null) {
         out[key] = processed
       }

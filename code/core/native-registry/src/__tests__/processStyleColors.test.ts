@@ -17,28 +17,39 @@ vi.mock('react-native', () => ({
 const { processStyleColors } = await import('../processStyleColors')
 
 describe('processStyleColors', () => {
-  // the bug this guards: colors handed to fabric as a packed int came back with
-  // the alpha byte read as red, so an opaque grey rendered as rgb(254, 229, 229)
-  // and every themed surface in the app was tinted pink
-  it('unpacks a color into r, g, b, a floats in channel order', () => {
+  // two bugs this guards. handed to fabric as a packed int, the alpha byte was
+  // read as red, so an opaque grey rendered as rgb(254, 229, 229) and every
+  // themed surface was tinted pink. handed over as a plain [r,g,b,a] array,
+  // android's java ColorPropConverter rejects it outright ("must be a number or
+  // Object") and the throw tears the react surface down. the srgb map is the one
+  // shape both that converter and the c++ parser accept.
+  it('unpacks a color into an srgb map with each channel a float', () => {
     expect(processStyleColors({ backgroundColor: 'grey' })).toEqual({
-      backgroundColor: [0xe3 / 255, 0xe3 / 255, 0xe3 / 255, 1],
+      backgroundColor: {
+        space: 'srgb',
+        r: 0xe3 / 255,
+        g: 0xe3 / 255,
+        b: 0xe3 / 255,
+        a: 1,
+      },
     })
   })
 
   it('keeps blue in the blue channel', () => {
-    expect(processStyleColors({ color: 'blue' })).toEqual({ color: [0, 0, 1, 1] })
+    expect(processStyleColors({ color: 'blue' })).toEqual({
+      color: { space: 'srgb', r: 0, g: 0, b: 1, a: 1 },
+    })
   })
 
-  it('carries partial alpha through as the fourth component', () => {
+  it('carries partial alpha through as a', () => {
     expect(processStyleColors({ color: 'half-red' })).toEqual({
-      color: [1, 0, 0, 0x80 / 255],
+      color: { space: 'srgb', r: 1, g: 0, b: 0, a: 0x80 / 255 },
     })
   })
 
   it('reads a negative (android) packed int as the same channels', () => {
     expect(processStyleColors({ color: 'signed' })).toEqual({
-      color: [0xe3 / 255, 0xe3 / 255, 0xe3 / 255, 1],
+      color: { space: 'srgb', r: 0xe3 / 255, g: 0xe3 / 255, b: 0xe3 / 255, a: 1 },
     })
   })
 
