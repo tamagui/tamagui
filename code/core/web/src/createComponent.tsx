@@ -1,4 +1,4 @@
-import { composeRefs } from '@tamagui/compose-refs'
+import { composeRefs, setRef } from '@tamagui/compose-refs'
 import {
   getPlatformDriver,
   isAndroid,
@@ -1178,16 +1178,42 @@ export function createComponent<
         stateRef.current.willHydrate
       ) || nonTamaguiProps
 
+    // the composed ref keeps one identity for the life of the component so react
+    // never detaches and reattaches the host mid-life (an inline callback ref
+    // would otherwise thrash it every render). the forwarded ref is therefore
+    // read off stateRef rather than closed over — the cached callback used to
+    // capture the ref from the very first render forever, so a parent that swaps
+    // ref identity never reached the node again.
+    const prevForwardedRef = stateRef.current.composedForwardedRef
+    stateRef.current.composedForwardedRef = forwardedRef
+
     if (!stateRef.current.composedRef) {
       stateRef.current.composedRef = composeRefs<TamaguiElement>(
         (x) => (stateRef.current.host = x as TamaguiElement),
-        forwardedRef,
+        (x) => setRef<TamaguiElement>(stateRef.current.composedForwardedRef, x),
         setElementProps,
         animatedRef
       )
     }
 
     viewProps.ref = stateRef.current.composedRef
+
+    // react only re-runs a ref callback when its identity changes, and ours never
+    // does, so hand the host over by hand when the forwarded ref is swapped —
+    // react-hook-form re-registering a field after reset() is the common case.
+    useIsomorphicLayoutEffect(() => {
+      // on mount the composed ref already delivered — re-running setRef here would
+      // invoke a callback ref twice for a single attach
+      if (!stateRef.current.composedRefAttached) {
+        stateRef.current.composedRefAttached = true
+        return
+      }
+      if (prevForwardedRef === forwardedRef) return
+      setRef<TamaguiElement | null>(prevForwardedRef, null)
+      if (stateRef.current.host) {
+        setRef<TamaguiElement>(forwardedRef, stateRef.current.host)
+      }
+    }, [forwardedRef])
 
     // handle pointer events (native: maps to touch events, web: no-op)
     usePointerEvents(props, viewProps)

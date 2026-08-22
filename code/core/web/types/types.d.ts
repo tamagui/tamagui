@@ -300,6 +300,8 @@ export type TamaguiComponentStateRef = {
     startedUnhydrated: boolean;
     host?: TamaguiElement;
     composedRef?: (x: TamaguiElement) => void;
+    composedForwardedRef?: React.Ref<TamaguiElement>;
+    composedRefAttached?: boolean;
     willHydrate?: boolean;
     hasMeasured?: boolean;
     hasAnimated?: boolean;
