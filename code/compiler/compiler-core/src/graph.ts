@@ -17,8 +17,10 @@ import { linkedBailout, localBailout, type BailoutReason } from './diagnostics'
 import {
   evaluateBinding,
   evaluateConditionalExpression,
+  evaluateDynamicExpression,
   evaluateExpression,
   type ConditionalEvaluation,
+  type DynamicEvaluation,
   type EvaluationResult,
 } from './evaluate'
 import type { ElementIRResult } from './ir'
@@ -153,6 +155,28 @@ export class ProjectGraph implements SymbolResolver {
     }
   }
 
+  resolveReference(reference: ExpressionReference): SymbolDefinition | null {
+    const definition = this.#candidate.definitionAt(
+      reference.id,
+      reference.start,
+      reference.end
+    )
+    if (!definition) return null
+    return {
+      id: definition.id,
+      name: definition.name,
+      span: {
+        id: definition.id,
+        start: definition.start,
+        end: definition.end,
+      },
+      initializer: definition.initializer
+        ? expressionReference(definition.id, definition.initializer)
+        : null,
+      constant: definition.constant,
+    }
+  }
+
   expressionNode(reference: ExpressionReference) {
     if (!this.#modules.has(reference.id)) return null
     return nodeAtSpan(
@@ -168,6 +192,10 @@ export class ProjectGraph implements SymbolResolver {
 
   evaluateConditional(reference: ExpressionReference): ConditionalEvaluation | null {
     return evaluateConditionalExpression(this, reference)
+  }
+
+  evaluateDynamic(reference: ExpressionReference): DynamicEvaluation | null {
+    return evaluateDynamicExpression(this, reference)
   }
 
   evaluateBinding(id: ResolvedModuleId, localName: string): EvaluationResult {

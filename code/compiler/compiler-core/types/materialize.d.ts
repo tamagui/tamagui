@@ -19,6 +19,7 @@ export type MaterializedValue = {
     kind: 'bailout';
     bailout: BailoutReason;
     span: SourceSpan;
+    dynamic: ReturnType<ProjectGraph['evaluateDynamic']>;
 } | {
     /**
      * A conditional whose branches evaluated statically while the test did

@@ -1,6 +1,6 @@
 import type { CandidateFactory, ExpressionReference, HostModuleInput, HostResolvedProject, ResolvedModuleId, SymbolDefinition, SymbolResolver } from './contracts';
 import { type BailoutReason } from './diagnostics';
-import { type ConditionalEvaluation, type EvaluationResult } from './evaluate';
+import { type ConditionalEvaluation, type DynamicEvaluation, type EvaluationResult } from './evaluate';
 import type { ElementIRResult } from './ir';
 export interface GraphInvalidation {
     changed: boolean;
@@ -25,9 +25,11 @@ export declare class ProjectGraph implements SymbolResolver {
     affectedBy(id: ResolvedModuleId): ResolvedModuleId[];
     parseCount(id: ResolvedModuleId): number;
     resolveBinding(id: ResolvedModuleId, localName: string): SymbolDefinition | null;
+    resolveReference(reference: ExpressionReference): SymbolDefinition | null;
     expressionNode(reference: ExpressionReference): import("./contracts").AstNode | null;
     evaluate(reference: ExpressionReference): EvaluationResult;
     evaluateConditional(reference: ExpressionReference): ConditionalEvaluation | null;
+    evaluateDynamic(reference: ExpressionReference): DynamicEvaluation | null;
     evaluateBinding(id: ResolvedModuleId, localName: string): EvaluationResult;
     elementsOf(id: ResolvedModuleId): ElementIRResult;
     diagnostics(): BailoutReason[];

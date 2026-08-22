@@ -14,6 +14,7 @@ import {
   StyleObjectIdentifier,
   StyleObjectProperty,
   StyleObjectRules,
+  StyleObjectValue,
   stylePropsAll,
   stylePropsText,
   validStyles as validStylesView,
@@ -1668,7 +1669,9 @@ export function createTamaguiCompilerHost(
         animatedByNeedsRuntime
       let dynamicHostStyleProperties: string[] | null = null
       if (
-        resolvedCssTransition !== null &&
+        platform === 'web' &&
+        !options.disablePartialExtraction &&
+        (input.element.form === 'jsx' || input.element.propsSpan !== null) &&
         dynamicStyleEntries.length > 0 &&
         !input.element.entries.some((entry) => entry.kind === 'spread')
       ) {
@@ -1683,7 +1686,7 @@ export function createTamaguiCompilerHost(
             continue
           }
           const name = directStyleName(entry.name, component)
-          if ((name !== 'opacity' && name !== 'scale') || seen.has(name)) {
+          if (!name || seen.has(name)) {
             properties.length = 0
             break
           }
@@ -1692,17 +1695,56 @@ export function createTamaguiCompilerHost(
             properties.length = 0
             break
           }
-          seen.add(name)
-          for (const owner of owners) dynamicOwners.add(owner)
+          let property: string | null = null
           const expression = input.source.slice(
             entry.value.span.start,
             entry.value.span.end
           )
-          properties.push(
-            name === 'opacity'
-              ? `opacity: (${expression})`
-              : `transform: "scale(" + (${expression}) + ")"`
-          )
+          if (
+            resolvedCssTransition !== null &&
+            (name === 'opacity' || name === 'scale')
+          ) {
+            property =
+              name === 'opacity'
+                ? `opacity: (${expression})`
+                : `transform: "scale(" + (${expression}) + ")"`
+          } else if (
+            entry.value.kind === 'bailout' &&
+            owners.size === 1 &&
+            owners.has(name)
+          ) {
+            const dynamic = entry.value.dynamic
+            if (dynamic?.type === 'number') {
+              property = `${JSON.stringify(name)}: (${expression})`
+            } else if (dynamic?.type === 'string' && dynamic.values?.length) {
+              let valuesStayLiteral = true
+              for (const value of dynamic.values) {
+                const split = resolveSplitStyles(
+                  { [entry.name]: value },
+                  partialStaticConfig(component.staticConfig as StaticConfig)
+                )
+                const atomics = Object.values(split?.rulesToInsert ?? {}) as any[]
+                if (
+                  atomics.length !== 1 ||
+                  atomics[0]?.[StyleObjectProperty] !== name ||
+                  atomics[0]?.[StyleObjectValue] !== value
+                ) {
+                  valuesStayLiteral = false
+                  break
+                }
+              }
+              if (valuesStayLiteral) {
+                property = `${JSON.stringify(name)}: (${expression})`
+              }
+            }
+          }
+          if (!property) {
+            properties.length = 0
+            break
+          }
+          seen.add(name)
+          for (const owner of owners) dynamicOwners.add(owner)
+          properties.push(property)
         }
         if (
           properties.length === dynamicStyleEntries.length &&

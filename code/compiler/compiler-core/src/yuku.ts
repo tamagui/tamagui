@@ -11,7 +11,12 @@ import type {
 } from './contracts'
 import { resolveFromHost, resolvedModuleId } from './contracts'
 import { childNode, walkAst } from './ast'
-import { asAstNode, declarationForName, definitionFromDeclaration } from './normalize'
+import {
+  asAstNode,
+  declarationForName,
+  definitionFromDeclaration,
+  nodeAtSpan,
+} from './normalize'
 
 class YukuCandidate implements AnalyzerCandidate {
   readonly name = 'yuku' as const
@@ -50,9 +55,7 @@ class YukuCandidate implements AnalyzerCandidate {
     return symbol ? (this.#analyzer.definitionOf(symbol)?.symbol ?? null) : null
   }
 
-  definitionOf(id: string, localName: string): DefinitionSite | null {
-    const symbol = this.#canonicalSymbol(id, localName)
-    if (!symbol) return null
+  #definitionSite(symbol: YukuSymbol): DefinitionSite | null {
     const declaration = symbol.declarations[0]
     if (!declaration) return null
     const program = asAstNode(symbol.module.ast, `${symbol.module.path} program`)
@@ -65,6 +68,20 @@ class YukuCandidate implements AnalyzerCandidate {
       program,
       normalizedDeclaration
     )
+  }
+
+  definitionOf(id: string, localName: string): DefinitionSite | null {
+    const symbol = this.#canonicalSymbol(id, localName)
+    return symbol ? this.#definitionSite(symbol) : null
+  }
+
+  definitionAt(id: string, start: number, end: number): DefinitionSite | null {
+    const module = this.#module(id)
+    const node = nodeAtSpan(asAstNode(module.ast, `${module.path} program`), start, end)
+    if (!node) return null
+    const symbol = module.symbolOf(node as any)
+    const definition = symbol && this.#analyzer.definitionOf(symbol)?.symbol
+    return definition ? this.#definitionSite(definition) : null
   }
 
   referencesOf(definition: DefinitionSite): ReferenceSite[] {

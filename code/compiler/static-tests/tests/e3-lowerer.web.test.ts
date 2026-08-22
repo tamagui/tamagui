@@ -3,9 +3,16 @@ import { resolve } from 'node:path'
 import {
   ProjectGraph,
   applyLoweredModule,
+  childNode,
+  childNodes,
+  findAstNode,
+  identifierName,
+  literalValue,
   lowerModule,
   materializeModule,
+  parseModuleAst,
   resolvedModuleId,
+  unwrapExpression,
   yukuFactory,
   type CompilerTarget,
   type ResolvedModuleId,
@@ -272,6 +279,70 @@ export const Card = ({ width }) => (
     expect(output.code).not.toContain('padding={12}')
     expect(plan.css).toContain('padding-top:12px')
     expect(plan.css).not.toContain('width:')
+  })
+
+  test('flattens proven numeric expressions and finite literal lookups to host styles', () => {
+    const source = `
+import { View } from '@tamagui/core'
+const COLORS = ['rgb(147,197,253)', 'rgb(134,239,172)']
+export const Cards = ({ seed }) => {
+  const color = COLORS[seed % COLORS.length]
+  return (
+    <View
+      width={80 + ((seed * 17) % 60)}
+      backgroundColor={color}
+      padding={12}
+      data-dynamic-host="proven"
+    />
+  )
+}
+`
+    const { plan, output } = compile(source)
+
+    expect(codes(plan)).toEqual([])
+    expect(plan.stats).toMatchObject({ lowered: 1, flattened: 1, bailed: 0 })
+    const program = parseModuleAst(output.code)
+    const opening = findAstNode(
+      program,
+      (node) =>
+        node.type === 'JSXOpeningElement' &&
+        childNodes(node, 'attributes').some(
+          (attribute) =>
+            identifierName(childNode(attribute, 'name')) === 'data-dynamic-host'
+        )
+    )!
+    expect(identifierName(childNode(opening, 'name'))).toBe('div')
+    const styleAttribute = childNodes(opening, 'attributes').find(
+      (attribute) => identifierName(childNode(attribute, 'name')) === 'style'
+    )!
+    const style = childNode(childNode(styleAttribute, 'value')!, 'expression')!
+    const properties = childNodes(style, 'properties')
+    expect(
+      properties.map((property) => {
+        const key = childNode(property, 'key')
+        return identifierName(key) ?? literalValue(key)
+      })
+    ).toEqual(['width', 'backgroundColor'])
+    expect(unwrapExpression(childNode(properties[0]!, 'value')!).type).toBe(
+      'BinaryExpression'
+    )
+    expect(identifierName(unwrapExpression(childNode(properties[1]!, 'value')!))).toBe(
+      'color'
+    )
+    expect(plan.css).toContain('padding-top:12px')
+    expect(plan.css).not.toContain('width:')
+    expect(plan.css).not.toContain('background-color:')
+
+    const tokenSource = `
+import { View } from '@tamagui/core'
+const COLORS = ['$invalid-identifier']
+export const Card = ({ seed }) => (
+  <View backgroundColor={COLORS[seed % COLORS.length]} padding={12} />
+)
+`
+    const token = compile(tokenSource)
+    expect(token.plan.stats).toMatchObject({ lowered: 1, flattened: 0, bailed: 0 })
+    expect(token.plan.css).toContain('padding-top:12px')
   })
 
   test('keeps current transition candidates byte-identical for every animation driver', () => {

@@ -29,6 +29,12 @@ export type EvaluationResult =
       bailout: BailoutReason
     }
 
+export interface DynamicEvaluation {
+  type: 'number' | 'string' | 'boolean' | 'null'
+  values?: (number | string | boolean | null)[]
+  dependencies: ResolvedModuleId[]
+}
+
 type InternalResult =
   | { ok: true; value: StaticEvaluationValue }
   | { ok: false; bailout: BailoutReason }
@@ -381,6 +387,98 @@ function evaluateNode(
   }
 }
 
+function dynamicPrimitive(
+  value: StaticEvaluationValue
+): DynamicEvaluation['type'] | null {
+  if (value === null) return 'null'
+  if (typeof value === 'number') return 'number'
+  if (typeof value === 'string') return 'string'
+  if (typeof value === 'boolean') return 'boolean'
+  return null
+}
+
+function evaluateDynamicNode(
+  resolver: SymbolResolver,
+  id: ResolvedModuleId,
+  input: AstNode,
+  state: EvaluationState
+): Omit<DynamicEvaluation, 'dependencies'> | null {
+  const exact = evaluateNode(resolver, id, input, state)
+  if (exact.ok) {
+    const type = dynamicPrimitive(exact.value)
+    return type
+      ? { type, values: [exact.value as number | string | boolean | null] }
+      : null
+  }
+
+  const node = unwrapExpression(input)
+  if (node.type === 'Identifier') {
+    if (!identifierName(node)) return null
+    const definition = resolver.resolveReference(expressionReference(id, node))
+    if (!definition?.constant || !definition.initializer) return null
+    const key = `${definition.id}:${definition.span.start}`
+    if (state.activeDefinitions.has(key)) return null
+    const initializer = resolver.expressionNode(definition.initializer)
+    if (!initializer) return null
+    state.dependencies.add(definition.id)
+    state.activeDefinitions.add(key)
+    try {
+      return evaluateDynamicNode(resolver, definition.id, initializer, state)
+    } finally {
+      state.activeDefinitions.delete(key)
+    }
+  }
+
+  if (node.type === 'MemberExpression') {
+    const objectNode = childNode(node, 'object')
+    const propertyNode = childNode(node, 'property')
+    if (!objectNode || !propertyNode) return null
+    const object = evaluateNode(resolver, id, objectNode, state)
+    if (!object.ok || !Array.isArray(object.value)) return null
+    const property = evaluateDynamicNode(resolver, id, propertyNode, state)
+    if (property?.type !== 'number' || object.value.length > 32) return null
+    const values: (number | string | boolean | null)[] = []
+    let type: DynamicEvaluation['type'] | null = null
+    for (const value of object.value) {
+      const nextType = dynamicPrimitive(value)
+      if (!nextType || (type && type !== nextType)) return null
+      type = nextType
+      const primitive = value as number | string | boolean | null
+      if (!values.includes(primitive)) values.push(primitive)
+    }
+    return type ? { type, values } : null
+  }
+
+  if (node.type === 'BinaryExpression') {
+    const leftNode = childNode(node, 'left')
+    const rightNode = childNode(node, 'right')
+    if (!leftNode || !rightNode) return null
+    const left = evaluateDynamicNode(resolver, id, leftNode, state)
+    const right = evaluateDynamicNode(resolver, id, rightNode, state)
+    if (node.operator === '+') {
+      return left?.type === 'number' && right?.type === 'number'
+        ? { type: 'number' }
+        : null
+    }
+    if (
+      node.operator === '-' ||
+      node.operator === '*' ||
+      node.operator === '/' ||
+      node.operator === '%' ||
+      node.operator === '**'
+    ) {
+      // successful javascript arithmetic with a number operand produces a
+      // number. bigint mixed with the numeric literals used here throws before
+      // the style value exists, so it does not create another runtime domain.
+      if (left?.type === 'number' || right?.type === 'number') {
+        return { type: 'number' }
+      }
+    }
+  }
+
+  return null
+}
+
 export interface ConditionalEvaluation {
   /** Span of the test expression, sliced verbatim into compiled output. */
   test: SourceSpan
@@ -460,6 +558,26 @@ export function evaluateExpression(
         dependencies: [...state.dependencies].sort(),
       }
     : result
+}
+
+/**
+ * proves the runtime domain of a dynamic expression without evaluating its
+ * changing inputs. this is deliberately narrow: numeric arithmetic and a
+ * bounded lookup into a static primitive array are the two forms a host style
+ * can consume directly without retaining the full Tamagui resolver.
+ */
+export function evaluateDynamicExpression(
+  resolver: SymbolResolver,
+  reference: ExpressionReference
+): DynamicEvaluation | null {
+  const node = resolver.expressionNode(reference)
+  if (!node) return null
+  const state: EvaluationState = {
+    activeDefinitions: new Set(),
+    dependencies: new Set(),
+  }
+  const result = evaluateDynamicNode(resolver, reference.id, node, state)
+  return result ? { ...result, dependencies: [...state.dependencies].sort() } : null
 }
 
 export function evaluateBinding(

@@ -11,6 +11,11 @@ export type EvaluationResult = {
     ok: false;
     bailout: BailoutReason;
 };
+export interface DynamicEvaluation {
+    type: 'number' | 'string' | 'boolean' | 'null';
+    values?: (number | string | boolean | null)[];
+    dependencies: ResolvedModuleId[];
+}
 export interface ConditionalEvaluation {
     /** Span of the test expression, sliced verbatim into compiled output. */
     test: SourceSpan;
@@ -32,5 +37,12 @@ export interface ConditionalEvaluation {
  */
 export declare function evaluateConditionalExpression(resolver: SymbolResolver, reference: ExpressionReference): ConditionalEvaluation | null;
 export declare function evaluateExpression(resolver: SymbolResolver, reference: ExpressionReference): EvaluationResult;
+/**
+ * Proves the runtime domain of a dynamic expression without evaluating its
+ * changing inputs. This is deliberately narrow: numeric arithmetic and a
+ * bounded lookup into a static primitive array are the two forms a host style
+ * can consume directly without retaining the full Tamagui resolver.
+ */
+export declare function evaluateDynamicExpression(resolver: SymbolResolver, reference: ExpressionReference): DynamicEvaluation | null;
 export declare function evaluateBinding(resolver: SymbolResolver, id: ResolvedModuleId, localName: string): EvaluationResult;
 //# sourceMappingURL=evaluate.d.ts.map

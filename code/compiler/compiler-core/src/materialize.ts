@@ -29,6 +29,7 @@ export type MaterializedValue =
       kind: 'bailout'
       bailout: BailoutReason
       span: SourceSpan
+      dynamic: ReturnType<ProjectGraph['evaluateDynamic']>
     }
   | {
       /**
@@ -175,7 +176,12 @@ function materializeValue(
       span: value,
     }
   }
-  return { kind: 'bailout', bailout: result.bailout, span: value }
+  return {
+    kind: 'bailout',
+    bailout: result.bailout,
+    span: value,
+    dynamic: graph.evaluateDynamic(value),
+  }
 }
 
 function materializeEntry(
@@ -253,8 +259,11 @@ function collectDependencies(module: Omit<MaterializedModule, 'dependencies'>) {
       for (const dependency of value.dependencies) dependencies.add(dependency)
     } else if (value.kind === 'dom-style') {
       for (const item of value.items) collect(item.value)
-    } else if (value.bailout.dependencyId) {
-      dependencies.add(value.bailout.dependencyId)
+    } else {
+      for (const dependency of value.dynamic?.dependencies ?? []) {
+        dependencies.add(dependency)
+      }
+      if (value.bailout.dependencyId) dependencies.add(value.bailout.dependencyId)
     }
   }
   for (const element of module.elements) {

@@ -65,6 +65,7 @@ export interface AnalyzerCandidate {
   removeFile(id: string): boolean
   link(): void
   definitionOf(id: string, localName: string): DefinitionSite | null
+  definitionAt(id: string, start: number, end: number): DefinitionSite | null
   referencesOf(definition: DefinitionSite): ReferenceSite[]
   dependenciesOf(id: string): string[]
   dependentsOf(id: string): string[]
@@ -90,6 +91,7 @@ export interface SymbolDefinition {
 /** Parser-independent symbol access used by partial evaluation and element IR. */
 export interface SymbolResolver {
   resolveBinding(id: ResolvedModuleId, localName: string): SymbolDefinition | null
+  resolveReference(reference: ExpressionReference): SymbolDefinition | null
   expressionNode(reference: ExpressionReference): AstNode | null
   sourceOf(id: ResolvedModuleId): string
 }

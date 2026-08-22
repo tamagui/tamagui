@@ -5,6 +5,7 @@ import { tmpdir } from 'node:os'
 
 import {
   JsonFileCache,
+  LOWERED_MODULE_PLAN_VERSION,
   ModulePlanCache,
   PLAN_CACHE_SCHEMA_VERSION,
   ProjectGraph,
@@ -288,7 +289,7 @@ describe('compiler project stamp', () => {
 describe('module plan cache storage', () => {
   const plan = (id: ResolvedModuleId, css: string): LoweredModulePlan =>
     ({
-      version: 2,
+      version: LOWERED_MODULE_PLAN_VERSION,
       id,
       target: 'web',
       inputHash: 'input',
