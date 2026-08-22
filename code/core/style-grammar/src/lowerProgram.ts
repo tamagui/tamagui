@@ -247,9 +247,7 @@ export function lowerProgram(
         precedenceOrder
       ),
     }))
-    .sort(
-      (left, right) => left.precedence - right.precedence || left.index - right.index
-    )
+    .sort((left, right) => left.precedence - right.precedence || left.index - right.index)
 
   for (const { clause, precedence } of clauses) {
     let selectorSuffix = ''
