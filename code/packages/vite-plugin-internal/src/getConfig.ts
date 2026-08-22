@@ -88,10 +88,20 @@ export function getConfig(tamaguiPlugin: any) {
               resolve: {
                 // 'react-native', breaks because vitest isnt doing .native.js :/
                 conditions: ['react-native', 'require', 'default'],
-                alias: {
-                  '@tamagui/core': '@tamagui/core/native-test',
-                  '@tamagui/web': '@tamagui/core/native-test',
-                },
+                alias: [
+                  {
+                    find: /^react-native-worklets$/,
+                    replacement: requireResolve('react-native-worklets/src/index.ts'),
+                  },
+                  {
+                    find: '@tamagui/core',
+                    replacement: '@tamagui/core/native-test',
+                  },
+                  {
+                    find: '@tamagui/web',
+                    replacement: '@tamagui/core/native-test',
+                  },
+                ],
                 extensions: nativeExtensions,
               },
 
@@ -141,6 +151,13 @@ export function getConfig(tamaguiPlugin: any) {
       // happy-dom has issues with components-test
       environment: process.env.TEST_ENVIRONMENT || 'happy-dom',
       include: ['**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
+      server: isNative
+        ? {
+            deps: {
+              inline: [/react-native-(?:reanimated|worklets)/],
+            },
+          }
+        : undefined,
       // increase teardown timeout to avoid worker cleanup issues
       teardownTimeout: 10000,
     },

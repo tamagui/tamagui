@@ -43,7 +43,7 @@
     "null-loader": "^4.0.1",
     "react": "19.2.3",
     "react-native-web": "~0.21.0",
-    "react-test-renderer": "^19.0.0",
+    "react-test-renderer": "19.2.3",
     "style-loader": "^3.3.3",
     "typescript": "~5.9.2",
     "vitest": "4.0.4",

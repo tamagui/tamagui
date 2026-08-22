@@ -229,6 +229,7 @@
     "gray-matter@4.0.3": "patches/gray-matter@4.0.3.patch",
     "brace-expansion@5.0.6": "patches/brace-expansion@5.0.6.patch",
     "detox@20.47.0": "patches/detox@20.47.0.patch",
-    "react-native-reanimated@4.5.1": "patches/react-native-reanimated@4.5.1.patch"
+    "react-native-reanimated@4.5.1": "patches/react-native-reanimated@4.5.1.patch",
+    "react-native-ios-utilities@5.2.0": "patches/react-native-ios-utilities@5.2.0.patch"
   }
 }
