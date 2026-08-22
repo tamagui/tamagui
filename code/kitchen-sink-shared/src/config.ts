@@ -1,9 +1,11 @@
-import { defaultConfig } from '@tamagui/config/v5'
-import { animations } from '@tamagui/config/v5-rn'
+import { defaultConfig } from '@tamagui/config/v6'
+import { themes } from '@tamagui/config/v6'
+import { animations } from '@tamagui/config/animations-rn'
 import { createTamagui } from 'tamagui'
 
 export const config = createTamagui({
   ...defaultConfig,
+  themes,
   animations,
 })
 

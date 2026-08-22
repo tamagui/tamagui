@@ -20,7 +20,10 @@ const vitePluginDist = pathResolve(
   import.meta.dirname,
   '../compiler/vite-plugin/dist/esm/index.mjs'
 )
-const staticDist = pathResolve(import.meta.dirname, '../compiler/static/dist/index.cjs')
+const staticDist = pathResolve(
+  import.meta.dirname,
+  '../compiler/static/dist/cjs/index.cjs'
+)
 
 if (!existsSync(vitePluginDist) || !existsSync(staticDist)) {
   console.info('')
@@ -127,10 +130,23 @@ export default {
     preserveSymlinks: false,
 
     alias: [
+      // One's SSR navigation fork imports these internal contexts directly.
+      // Resolve them to files so Vite does not reject the package's public-only exports map.
+      {
+        find: /^@react-navigation\/core\/lib\/module\/(.+)$/,
+        replacement: `${pathResolve(
+          resolve('@react-navigation/core/package.json'),
+          '../lib/module'
+        )}/$1.js`,
+      },
       // when bento is unavailable, @tamagui/bento/component/* is stubbed by the
       // `stub-bento-components` plugin below (virtual module), not an alias
 
       // Standard string-based aliases
+      {
+        find: /^~\//,
+        replacement: `${import.meta.dirname}/`,
+      },
       {
         find: 'react-native-svg',
         replacement: '@tamagui/react-native-svg',
@@ -166,7 +182,7 @@ export default {
         replacement: pathResolve(import.meta.dirname, './helpers/dist/bento-proxy-data'),
       },
       {
-        find: '@tamagui/bento',
+        find: /^@tamagui\/bento$/,
         replacement: pathResolve(import.meta.dirname, './helpers/dist/bento-proxy'),
       },
 
@@ -222,23 +238,32 @@ export default {
         if (id.startsWith('\0bento-component-stub:')) {
           // Return stub component code
           return `
+import { createElement } from 'react'
 import { YStack, Paragraph } from 'tamagui'
 
 export default function BentoComponentStub() {
   if (process.env.NODE_ENV === 'production') {
     return null
   }
-  return (
-    <YStack p="$4" bc="$borderColor" br="$4">
-      <Paragraph size="$2" color="$color10">
-        Bento component not available
-      </Paragraph>
-    </YStack>
+  return createElement(
+    YStack,
+    { p: '4', bc: 'border-color', br: '4' },
+    createElement(
+      Paragraph,
+      { size: '2', color: 'color10' },
+      'Bento component not available'
+    )
   )
 }
 
-// Export as default and named for compatibility
+BentoComponentStub.fileName = ''
+
 export const LocationNotification = BentoComponentStub
+export const Calendar = BentoComponentStub
+
+export function useGroupMedia() {
+  return { sm: false }
+}
 `
         }
       },
@@ -250,6 +275,12 @@ export const LocationNotification = BentoComponentStub
 
     one({
       native: false,
+
+      config: {
+        // The repo tsconfig contains declaration-only package mappings that
+        // must not override runtime package exports.
+        tsConfigPaths: false,
+      },
 
       setupFile: {
         server: './setup.server.ts',
@@ -331,8 +362,20 @@ export const LocationNotification = BentoComponentStub
             permanent: true,
           },
           {
+            source: '/docs/core/variables',
+            destination: '/docs/core/theme#inline-values',
+            permanent: true,
+          },
+          {
             source: '/vite',
             destination: 'https://vxrn.dev',
+            permanent: true,
+          },
+          // the v3 composable toast replaced the old imperative one, so the
+          // temporary "toast-2" page folded back into /ui/toast
+          {
+            source: '/ui/toast-2',
+            destination: '/ui/toast',
             permanent: true,
           },
           {

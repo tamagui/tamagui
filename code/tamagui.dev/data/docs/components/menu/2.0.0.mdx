@@ -33,17 +33,23 @@ Menu is already installed in `tamagui`, or you can install it independently:
 yarn add @tamagui/menu
 ```
 
-If you want to use native menus, add these dependencies:
+For Expo 57 and React Native 0.86, use the Expo UI adapter:
 
 ```sh
-yarn add @react-native-menu/menu
-yarn add react-native-ios-context-menu
-yarn add react-native-ios-utilities
-yarn add zeego
-yarn add sf-symbols-typescript
+yarn add @expo/ui
 ```
 
 Then add the setup import at your app entry point:
+
+```tsx
+import '@tamagui/native/setup-expo-ui-menu'
+```
+
+The Zeego adapter remains available for apps on compatible React Native versions:
+
+```sh
+yarn add @react-native-menu/menu react-native-ios-context-menu react-native-ios-utilities zeego sf-symbols-typescript
+```
 
 ```tsx
 import '@tamagui/native/setup-zeego'
@@ -52,7 +58,7 @@ import '@tamagui/native/setup-zeego'
 <Notice theme="blue">
   On native, `Menu.Trigger` coordinates with parent Tamagui pressables
   automatically. You should not need extra wrapper views or empty `onPress`
-  handlers just to prevent a parent `pressStyle` from activating.
+  handlers just to prevent a parent `press:` clause from activating.
 </Notice>
 
 <Notice theme="yellow">
@@ -86,7 +92,7 @@ export default () => (
             <Text>Calendar</Text>
           </Menu.ItemTitle>
           <Menu.ItemIcon>
-            <Calendar color="gray" size="$1" />
+            <Calendar color="gray" size="1" />
           </Menu.ItemIcon>
         </Menu.Item>
         <Menu.Separator />
@@ -96,7 +102,7 @@ export default () => (
           </Menu.SubTrigger>
           <Menu.Portal zIndex={200}>
             <Menu.SubContent>
-              <Menu.Label fontSize={'$1'}>Note settings</Menu.Label>
+              <Menu.Label fontSize={'1'}>Note settings</Menu.Label>
               <Menu.Item onSelect={onSelect} key="create-note">
                 <Menu.ItemTitle>Create note</Menu.ItemTitle>
               </Menu.Item>
@@ -792,26 +798,24 @@ A scrollable container for menu items. Use this inside `Menu.Content` when you h
 
 ### Item Highlight Behavior
 
-Menu items use `focusStyle` for highlighting rather than `hoverStyle`. This ensures a unified highlight experience when switching between mouse and keyboard navigation - only one item is ever highlighted at a time.
+Menu items use a `focus:` clause for highlighting rather than a `hover:` clause. This ensures a unified highlight experience when switching between mouse and keyboard navigation - only one item is ever highlighted at a time.
 
-When you hover over an item, it receives focus, which triggers the `focusStyle`. When you use arrow keys to navigate, focus moves to the new item, removing the highlight from the previous one.
+When you hover over an item, it receives focus, which activates the `focus:` clause. When you use arrow keys to navigate, focus moves to the new item, removing the highlight from the previous one.
 
 ```jsx
-// Default behavior - uses focusStyle for highlight
+// Default behavior uses the focus clause for highlight
 <Menu.Item>
   <Menu.ItemTitle>Settings</Menu.ItemTitle>
 </Menu.Item>
 
-// Custom highlight styling - use focusStyle, not hoverStyle
-<Menu.Item
-  focusStyle={{ backgroundColor: '$blue5' }}
->
+// Custom highlight styling uses focus, not hover
+<Menu.Item backgroundColor="focus:blue5">
   <Menu.ItemTitle>Custom Highlight</Menu.ItemTitle>
 </Menu.Item>
 ```
 
 <Notice>
-  Avoid using `hoverStyle` for background highlights on Menu.Item. This can cause "double
+  Avoid using a `hover:` background clause on Menu.Item. This can cause "double
   highlighting" when switching between mouse and keyboard - where both the hovered item
   and the focused item appear highlighted simultaneously.
 </Notice>

@@ -1,5 +1,4 @@
 import type {
-  CreateBaseMenuProps,
   NativeMenuItemIconProps,
   NativeMenuSubTriggerProps,
 } from '@tamagui/create-menu'
@@ -19,9 +18,9 @@ const COMMON_PARAMS = {
   scope: CONTEXTMENU_CONTEXT,
 }
 
-export function createContextMenu(param: CreateBaseMenuProps) {
+export function createContextMenu() {
   const { Menu: NativeMenuRoot } = createNativeMenu('ContextMenu')
-  const NonNativeContextMenu = createNonNativeContextMenu(param)
+  const NonNativeContextMenu = createNonNativeContextMenu()
 
   const ContextMenuComp = withNativeMenu({
     ...COMMON_PARAMS,

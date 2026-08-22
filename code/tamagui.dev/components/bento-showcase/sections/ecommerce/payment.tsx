@@ -13,12 +13,24 @@ export function payment({ isProUser, showAppropriateModal }: BentoShowcaseContex
       isProUser={isProUser}
       showAppropriateModal={showAppropriateModal}
     >
-      <YStack pb="$10" gap="$12" padding="$2" $gtLg={{ padding: '$0' }}>
+      <YStack
+        paddingBottom="2 gtLg:0"
+        gap="12"
+        paddingTop="2 gtLg:0"
+        paddingRight="2 gtLg:0"
+        paddingLeft="2 gtLg:0"
+      >
         <Showcase fileName={Payment.Fullpage.fileName} title="Shopping Cart">
           <Payment.Fullpage />
         </Showcase>
 
-        <YStack pb="$10" gap="$12" padding="$2" $gtLg={{ padding: '$0' }}>
+        <YStack
+          paddingBottom="2 gtLg:0"
+          gap="12"
+          paddingTop="2 gtLg:0"
+          paddingRight="2 gtLg:0"
+          paddingLeft="2 gtLg:0"
+        >
           <Showcase fileName={Payment.Paywall.fileName} title={Payment.Paywall.title}>
             <Payment.Paywall />
           </Showcase>

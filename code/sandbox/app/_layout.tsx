@@ -1,4 +1,4 @@
-import { animationsMotion } from '@tamagui/config/v5-motion'
+import { animationsMotion } from '@tamagui/config/animations-motion'
 import { Image } from '@tamagui/image'
 import './_layout.css'
 import './tamagui.generated.css'
@@ -9,7 +9,8 @@ import { LoadProgressBar, SafeAreaView, Slot } from 'one'
 import { Configuration, isWeb, TamaguiProvider, XStack, YStack } from 'tamagui'
 import { ToggleThemeButton } from '~/components/ToggleThemeButton'
 import config from '~/config/tamagui/tamagui.config'
-import oneBall from '~/public/app-icon.png'
+
+const oneBall = '/app-icon.png'
 
 export default function Layout() {
   return (
@@ -29,11 +30,11 @@ export default function Layout() {
 
         <SchemeProvider>
           <TamaguiRootProvider>
-            <YStack bg="$color1" minH="100%" gap="$4" flex={1}>
+            <YStack bg="color1" minH="100%" gap="4" flex={1}>
               <SafeAreaView>
                 {/* <Toaster position="top-center" /> */}
 
-                <XStack items="center" justify="center" gap="$4" py="$4">
+                <XStack items="center" justify="center" gap="4" py="4">
                   <Image src={oneBall} width={42} height={42} />
                   <ToggleThemeButton />
                 </XStack>

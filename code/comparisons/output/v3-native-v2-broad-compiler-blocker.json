@@ -1,0 +1,111 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-08-03T03:46:52.574Z",
+  "campaignSource": {
+    "commit": "da80f52af4bf7eaf8af99195371d2cff644cc7eb",
+    "branch": "validate/v3-native-runtime",
+    "clean": true
+  },
+  "requestedComparison": "byte-identical broad Kitchen Sink native compiler corpus with pinned V2 2.6.2 versus V3",
+  "soundnessGate": {
+    "status": "blocked",
+    "stage": "load the byte-identical Kitchen Sink compiler configuration using pinned V2 dependencies",
+    "pinnedPackages": {
+      "@tamagui/config": "2.6.2",
+      "@tamagui/babel-plugin": "2.6.2"
+    },
+    "resolutionAttempts": [
+      {
+        "specifier": "@tamagui/config/v6",
+        "ok": false,
+        "errorName": "Error",
+        "errorCode": "ERR_PACKAGE_PATH_NOT_EXPORTED",
+        "message": "Package subpath './v6' is not defined by \"exports\" in /Users/n8/.worktrees/v3-validate-native/code/comparisons/tamagui-v2-bench-native-compiled/node_modules/@tamagui/config/package.json"
+      },
+      {
+        "specifier": "@tamagui/config/v6-base",
+        "ok": false,
+        "errorName": "Error",
+        "errorCode": "ERR_PACKAGE_PATH_NOT_EXPORTED",
+        "message": "Package subpath './v6-base' is not defined by \"exports\" in /Users/n8/.worktrees/v3-validate-native/code/comparisons/tamagui-v2-bench-native-compiled/node_modules/@tamagui/config/package.json"
+      }
+    ],
+    "v2ConfigExportKeys": [
+      "./package.json",
+      ".",
+      "./reanimated",
+      "./v3",
+      "./v4",
+      "./v5",
+      "./v5-css",
+      "./v5-rn",
+      "./v5-reanimated",
+      "./v5-motion",
+      "./v5-subtle"
+    ],
+    "sourceRequirements": [
+      {
+        "path": "code/kitchen-sink/src/tamagui.config.ts",
+        "bytes": 10216,
+        "sha256": "b98ce93c4c83199cc99da0bd271bbccea45bba5fd322649fa3cafacb5f896663",
+        "requiredSpecifier": "@tamagui/config/v6",
+        "present": true
+      },
+      {
+        "path": "code/kitchen-sink/src/themes/theme.dev.ts",
+        "bytes": 13583,
+        "sha256": "e07a8f5d0c7ab5816090c164dd45cf87a1ac2dd5c9191ada939d9fea35f8b537",
+        "requiredSpecifier": "@tamagui/config/v6-base",
+        "present": true
+      },
+      {
+        "path": "code/kitchen-sink/src/usecases/MediaQueries.tsx",
+        "bytes": 4223,
+        "sha256": "aa2f3340f93ddcd1308c64c74a5ad51fd7eabe53d29c5b4154ec0e32304910f9",
+        "requiredSpecifier": "@tamagui/config/v6-base",
+        "present": true
+      }
+    ],
+    "v2PackageLock": {
+      "path": "code/comparisons/tamagui-v2-bench-native-compiled/package-lock.json",
+      "bytes": 440749,
+      "sha256": "806a361ac69f35a4b5a2830ab7e74015e95ee77b2facc59c330301eed339cd62"
+    }
+  },
+  "whyNoSubstitution": [
+    "Resolving the Kitchen Sink configuration through workspace packages would feed V3 config and component metadata to the V2 Babel plugin, so it would not be a pinned V2 2.6.2 compiler path.",
+    "Replacing @tamagui/config/v6 and v6-base with a V2 configuration changes the checked-in tokens, themes, fonts, media, shorthands, settings, variables, default props, and resolved component metadata; counts would no longer describe a byte-identical semantic corpus.",
+    "V2 Babel per-file found/optimized/flattened totals and V3 graph-wide found/lowered/flattened/bailed plans have different discovery scopes, so aggregate counts from different dependency graphs are not direct effects."
+  ],
+  "fairCrossVersionCoverage": {
+    "artifact": "/tmp/v3-native-final-da80f52-compiler-evidence.json",
+    "staticSynthetic": {
+      "v2": {
+        "found": 6,
+        "optimized": 6,
+        "flattened": 6
+      },
+      "v3": {
+        "found": 7,
+        "lowered": 7,
+        "flattened": 7,
+        "bailed": 0
+      }
+    },
+    "dynamicSynthetic": {
+      "v2": {
+        "found": 2,
+        "optimized": 2,
+        "flattened": 2
+      },
+      "v3": {
+        "found": 3,
+        "lowered": 3,
+        "flattened": 3,
+        "bailed": 0
+      }
+    },
+    "reason": "These checked-in micro-corpora use one neutral shared configuration built only from createFont, createTokens, and createTamagui APIs supported by both dependency trees, and the verifier asserts equivalent host styles instead of treating the broader V3-only app graph as V2 coverage."
+  },
+  "limitation": "The 7-static plus 3-dynamic synthetic candidates are fair cross-version compiler controls, not real-app coverage. The separate V3 Kitchen Sink production export is real-app graph evidence only for V3."
+}

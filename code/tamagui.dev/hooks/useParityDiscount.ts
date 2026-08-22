@@ -84,7 +84,8 @@ export const useParityDiscount = () => {
           setParityDiscount(null)
         }
       } catch (err) {
-        console.error('Error fetching parity discount:', err)
+        // expected offline/dev degradation — not an app error
+        console.warn('Could not fetch parity discount:', err)
         setError(err instanceof Error ? err.message : 'Unknown error')
       } finally {
         setIsLoading(false)

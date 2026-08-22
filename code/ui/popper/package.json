@@ -39,17 +39,18 @@
     "@tamagui/core": "workspace:*",
     "@tamagui/floating": "workspace:*",
     "@tamagui/get-token": "workspace:*",
-    "@tamagui/stacks": "workspace:*",
     "@tamagui/start-transition": "workspace:*",
     "@tamagui/use-controllable-state": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
     "react": ">=19",
-    "react-native": "0.83.2"
+    "react-native": "0.86.2"
   },
   "peerDependencies": {
-    "react": ">=19"
+    "react": ">=19",
+    "react-dom": "*",
+    "react-native-web": "*"
   },
   "module:jsx": "dist/jsx"
 }

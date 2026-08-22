@@ -22,19 +22,19 @@ export default function DocSearch(props: DocSearchModalProps) {
 const docSearchCSS = `
 :root{
 .DocSearch {
-  --docsearch-primary-color: var(--colorPress);
+  --docsearch-primary-color: var(--color-press);
   --docsearch-highlight-color: var(--color);
-  --docsearch-text-color: var(--colorHover);
+  --docsearch-text-color: var(--color-hover);
   --docsearch-modal-background: var(--background);
   --docsearch-searchbox-shadow: none;
   --docsearch-searchbox-background: transparent;
   --docsearch-searchbox-focus-background: transparent;
-  --docsearch-hit-color: var(--colorHover);
-  --docsearch-muted-color: var(--colorFocus);
-  --docsearch-logo-color: var(--colorPress);
+  --docsearch-hit-color: var(--color-hover);
+  --docsearch-muted-color: var(--color-focus);
+  --docsearch-logo-color: var(--color-press);
   --docsearch-footer-background: transparent;
   --docsearch-footer-shadow: none;
-  --docsearch-modal-shadow: inset 0 0 1px 1px var(--borderColor), 0 5px 20px 0 var(--shadowColor);
+  --docsearch-modal-shadow: inset 0 0 1px 1px var(--border-color), 0 5px 20px 0 var(--shadow-color);
   z-index: 10000000;
 }
 
@@ -60,7 +60,7 @@ const docSearchCSS = `
 }
 
 .DocSearch-SearchBar {
-  border-bottom: 0.5px solid var(--borderColor);
+  border-bottom: 0.5px solid var(--border-color);
   padding-left: var(--space-1);
   padding-right: var(--space-1);
   padding-top: var(--space-2);

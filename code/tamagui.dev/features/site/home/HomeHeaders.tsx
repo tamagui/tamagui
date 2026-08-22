@@ -1,51 +1,43 @@
 import { H1, H2, H3, styled } from 'tamagui'
 
 export const HomeH1 = styled(H1, {
-  fontFamily: '$mono',
+  fontFamily: 'mono',
+  mb: '2',
+  color: 'color11',
+  fontSize: 'gtSm:10',
+  lineHeight: 'gtSm:10',
+  maxW: 'gtSm:90%',
   className: 'word-break-keep-all',
-  size: '$9',
-  mb: '$2',
-  color: '$color11',
-
-  $gtSm: {
-    size: '$10',
-    maxW: '90%',
-  },
+  size: '9',
 })
 
 export const HomeH2 = styled(H2, {
   className: 'word-break-keep-all',
-  name: 'HomeH2',
+  displayName: 'HomeH2',
   text: 'center',
   self: 'center',
-  size: '$10',
   maxW: 720,
-  mt: '$-2',
-  $sm: {
-    size: '$10',
-  },
-  $xs: {
-    size: '$9',
-  },
+  mt: '-2',
+  fontSize: 'sm:10 xs:9',
+  lineHeight: 'sm:10 xs:9',
+  size: '10',
+  letterSpacing: '-0.25px xs:-0.1px',
 })
 
 export const HomeH3 = styled(H3, {
   className: 'word-break-keep-all',
-  fontFamily: '$mono',
-  name: 'HomeH3',
+  fontFamily: 'mono',
+  size: '8',
   text: 'center',
-  color: '$color10',
+  color: 'color10 sm:color',
   self: 'center',
   px: 20,
-  size: '$8',
   opacity: 0.9,
-  letterSpacing: -0.5,
+  letterSpacing: '-0.5px sm:0px',
   maxW: 720,
-
-  $sm: {
-    size: '$6',
-    fontWeight: '400',
-    color: '$color',
-    textTransform: 'none',
-  },
+  fontSize: 'sm:6',
+  lineHeight: 'sm:6',
+  fontWeight: 'sm:400',
+  textTransform: 'sm:none',
+  displayName: 'HomeH3',
 })

@@ -102,21 +102,21 @@ const sponsors = [
 const CarouselWrapper = styled(YStack, {
   width: '100%',
   position: 'relative',
-  my: '$8',
+  my: '8',
 })
 
 const CarouselContainer = styled(YStack, {
   width: '100%',
   position: 'relative',
-  gap: '$4',
-  py: '$4',
+  gap: '4',
+  py: '4',
   items: 'center',
 })
 
 const SponsorCardStyled = styled(YStack, {
   width: 220,
   height: 220,
-  rounded: '$6',
+  rounded: '6',
   overflow: 'visible',
   position: 'relative',
   shrink: 0,
@@ -126,7 +126,7 @@ const SponsorCardStyled = styled(YStack, {
 const SponsorContent = styled(YStack, {
   width: '100%',
   height: '100%',
-  p: '$3',
+  p: '3',
   justify: 'space-between',
 })
 
@@ -134,18 +134,13 @@ const LogoContainer = styled(YStack, {
   items: 'center',
   justify: 'center',
   flex: 1,
-  rounded: '$4',
-  p: '$2',
+  rounded: '4',
+  p: '2',
   position: 'relative',
   width: '100%',
   height: '100%',
   transition: 'quick',
-  hoverStyle: {
-    scale: 1.15,
-  },
-  pressStyle: {
-    scale: 0.95,
-  },
+  scale: 'hover:1.15 press:0.95',
 })
 
 export function SponsorCarousel() {
@@ -153,15 +148,15 @@ export function SponsorCarousel() {
     <CarouselWrapper>
       <CarouselContainer>
         {/* Title section */}
-        <YStack mb="$4">
-          <H2 size="$10" text="center" color="$color">
+        <YStack mb="4">
+          <H2 size="10" text="center" color="color">
             Our Sponsors
           </H2>
-          <Paragraph text="center" color="$color10" size="$5" mt="$2">
+          <Paragraph text="center" color="color10" mt="2" size="5">
             Sponsors who made Tamagui possible
           </Paragraph>
         </YStack>
-        <XStack flexWrap="wrap" justify="center" gap="$6" px="$6" maxW={1200}>
+        <XStack flexWrap="wrap" justify="center" gap="6" px="6" maxW={1200}>
           {sponsors.map((sponsor) => (
             <SponsorCard key={sponsor.id} {...sponsor} />
           ))}
@@ -177,9 +172,9 @@ function SponsorCard({ link, image, gradient, name }: (typeof sponsors)[0]) {
   return (
     <Link href={link as any} target="_blank" style={{ textDecoration: 'none' }}>
       <SponsorCardStyled
-        background={gradient || '$background'}
+        background={gradient || 'background'}
         borderWidth={isIndividual ? 1 : 0}
-        borderColor={isIndividual ? '$gray6' : 'transparent'}
+        borderColor={`${isIndividual ? 'gray6' : 'transparent'}`}
       >
         <SponsorContent>
           <LogoContainer>
@@ -194,11 +189,10 @@ function SponsorCard({ link, image, gradient, name }: (typeof sponsors)[0]) {
             ) : (
               <YStack
                 cursor="pointer"
-                p="$2"
-                rounded="$4"
-                hoverStyle={{ bg: 'rgba(0,0,0,0.1)' }}
-                pressStyle={{ bg: 'rgba(0,0,0,0.2)' }}
-                gap="$4"
+                p="2"
+                rounded="4"
+                bg="hover:rgba(0,0,0,0.1) press:rgba(0,0,0,0.2)"
+                gap="4"
               >
                 <H5 cursor="inherit" self="center" items="center">
                   {name}

@@ -1,0 +1,2798 @@
+{
+  "schemaVersion": 2,
+  "metadata": {
+    "commit": "605a1659d343059876cedbf96397cb81edc296b5",
+    "branch": "v3-beta",
+    "dirty": false,
+    "workload": {
+      "byteIdentical": true,
+      "sha256": "56dd6ba8bb07f9ee8537096f8ab7a98f6f822c94b35bfbcf9ed33356e0a22c99",
+      "sourceSha256": "4bbf2de845876f99203484ee6ef4c1cdf22543407441b4b1494c07ba47b3ae9e",
+      "configSha256": "cc2569cc5a30c5df8ae3fca81451ebfbd0f9dceb9eff31911fa4f61f485e6324",
+      "files": [
+        {
+          "file": "src/index.tsx",
+          "bytes": 9717,
+          "sha256": "4bbf2de845876f99203484ee6ef4c1cdf22543407441b4b1494c07ba47b3ae9e"
+        },
+        {
+          "file": "src/tamagui.config.ts",
+          "bytes": 457,
+          "sha256": "cc2569cc5a30c5df8ae3fca81451ebfbd0f9dceb9eff31911fa4f61f485e6324"
+        }
+      ],
+      "sources": [
+        "tamagui-bench/src/index.tsx",
+        "tamagui-v2-bench/src/index.tsx",
+        "tamagui-bench/src/tamagui.config.ts",
+        "tamagui-v2-bench/src/tamagui.config.ts"
+      ]
+    },
+    "buildMode": "production"
+  },
+  "frameworks": [
+    {
+      "id": "tamagui-v3-compiled",
+      "name": "Tamagui v3 (compiled)",
+      "version": "workspace",
+      "mode": "compiled"
+    },
+    {
+      "id": "tamagui-v3-runtime",
+      "name": "Tamagui v3 (runtime)",
+      "version": "workspace",
+      "mode": "runtime"
+    },
+    {
+      "id": "tamagui-v2-compiled",
+      "name": "Tamagui v2.6.2 (compiled)",
+      "version": "2.6.2",
+      "mode": "compiled"
+    },
+    {
+      "id": "tamagui-v2-runtime",
+      "name": "Tamagui v2.6.2 (runtime)",
+      "version": "2.6.2",
+      "mode": "runtime"
+    }
+  ],
+  "artifacts": {
+    "tamagui-v3-compiled": {
+      "files": 6,
+      "totalBytes": 322883,
+      "jsBytes": 318781,
+      "cssBytes": 3441,
+      "versions": {
+        "react": "19.1.0",
+        "react-dom": "19.1.0",
+        "vite": "8.0.16",
+        "@vitejs/plugin-react": "6.0.4",
+        "@tamagui/animations-css": "2.7.7",
+        "tamagui": "2.7.7",
+        "@tamagui/vite-plugin": "2.7.7"
+      },
+      "dependencyMetadata": {
+        "packageJsonSha256": "eed500b4a4608f051f93dce4bab9b1fd141e309e7010269ff10b642e04d066e3",
+        "lockfile": {
+          "file": "../../bun.lock",
+          "sha256": "f1700ff669cef019554cd70bd66e949cf2f381ef65610cb83e550ea96998f49b"
+        }
+      },
+      "bundleAttribution": {
+        "schemaVersion": 2,
+        "decomposition": {
+          "method": "explicit Rollup chunks with onlyExplicitManualChunks, followed by production minification and independent gzip",
+          "tamaguiIncludes": "rendered modules from tamagui, @tamagui/*, Tamagui workspace core/packages/ui dist paths, and @react-native/normalize-color when pulled by the Tamagui runtime, plus their isolated chunk wrapper",
+          "tamaguiExcludes": "fixture code, shared benchmark code, React, react-dom, scheduler, Vite helpers, and dependencies other than the Tamagui runtime color normalizer",
+          "groups": {
+            "tamagui": {
+              "chunks": [
+                "assets/tamagui-CwkbUYpN.js"
+              ],
+              "codeBytes": 126829,
+              "gzipBytes": 45324
+            },
+            "react-control": {
+              "chunks": [
+                "assets/react-control-DOh_dsS2.js"
+              ],
+              "codeBytes": 182423,
+              "gzipBytes": 57081
+            },
+            "other": {
+              "chunks": [
+                "assets/index-C4juIaA6.js",
+                "assets/rolldown-runtime-jpDsebLB.js"
+              ],
+              "codeBytes": 9529,
+              "gzipBytes": 3794
+            }
+          }
+        },
+        "chunks": [
+          {
+            "fileName": "assets/index-C4juIaA6.js",
+            "name": "index",
+            "attributionGroup": "other",
+            "codeBytes": 8962,
+            "gzipBytes": 3434,
+            "modules": [
+              {
+                "id": "src/index.tsx",
+                "renderedBytes": 10552
+              },
+              {
+                "id": "../shared/bench.ts",
+                "renderedBytes": 2462
+              },
+              {
+                "id": "\u0000vite/modulepreload-polyfill.js",
+                "renderedBytes": 1205
+              },
+              {
+                "id": "src/tamagui.config.ts",
+                "renderedBytes": 413
+              },
+              {
+                "id": "src/index.tsx.tamagui.css",
+                "renderedBytes": 97
+              },
+              {
+                "id": "index.html",
+                "renderedBytes": 0
+              }
+            ]
+          },
+          {
+            "fileName": "assets/react-control-DOh_dsS2.js",
+            "name": "react-control",
+            "attributionGroup": "react-control",
+            "codeBytes": 182423,
+            "gzipBytes": 57081,
+            "modules": [
+              {
+                "id": "../../../node_modules/react-dom/cjs/react-dom-client.production.js",
+                "renderedBytes": 433819
+              },
+              {
+                "id": "../../../node_modules/react/cjs/react.production.js",
+                "renderedBytes": 15050
+              },
+              {
+                "id": "../../../node_modules/react-dom/node_modules/scheduler/cjs/scheduler.production.js",
+                "renderedBytes": 9026
+              },
+              {
+                "id": "../../../node_modules/react-dom/cjs/react-dom.production.js",
+                "renderedBytes": 5717
+              },
+              {
+                "id": "../../../node_modules/react/cjs/react-jsx-runtime.production.js",
+                "renderedBytes": 875
+              },
+              {
+                "id": "../../../node_modules/react-dom/client.js",
+                "renderedBytes": 482
+              },
+              {
+                "id": "../../../node_modules/react-dom/index.js",
+                "renderedBytes": 477
+              },
+              {
+                "id": "../../../node_modules/react-dom/node_modules/scheduler/index.js",
+                "renderedBytes": 220
+              },
+              {
+                "id": "../../../node_modules/react/jsx-runtime.js",
+                "renderedBytes": 209
+              },
+              {
+                "id": "../../../node_modules/react/index.js",
+                "renderedBytes": 185
+              }
+            ]
+          },
+          {
+            "fileName": "assets/rolldown-runtime-jpDsebLB.js",
+            "name": "rolldown-runtime",
+            "attributionGroup": "other",
+            "codeBytes": 567,
+            "gzipBytes": 360,
+            "modules": [
+              {
+                "id": "\u0000rolldown/runtime.js",
+                "renderedBytes": 1124
+              }
+            ]
+          },
+          {
+            "fileName": "assets/tamagui-CwkbUYpN.js",
+            "name": "tamagui",
+            "attributionGroup": "tamagui",
+            "codeBytes": 126829,
+            "gzipBytes": 45324,
+            "modules": [
+              {
+                "id": "../../core/web/dist/esm/helpers/directStyle.mjs",
+                "renderedBytes": 37474
+              },
+              {
+                "id": "../../core/web/dist/esm/createComponent.mjs",
+                "renderedBytes": 27195
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/getSplitStyles.mjs",
+                "renderedBytes": 25721
+              },
+              {
+                "id": "../../core/animations-css/dist/esm/createAnimations.mjs",
+                "renderedBytes": 17185
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/propMapper.mjs",
+                "renderedBytes": 15647
+              },
+              {
+                "id": "../../core/web/dist/esm/hooks/useThemeState.mjs",
+                "renderedBytes": 9813
+              },
+              {
+                "id": "../../core/use-element-layout/dist/esm/index.mjs",
+                "renderedBytes": 9514
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/variables.mjs",
+                "renderedBytes": 8036
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/insertStyleRule.mjs",
+                "renderedBytes": 7618
+              },
+              {
+                "id": "../../core/normalize-css-color/dist/esm/index.mjs",
+                "renderedBytes": 6960
+              },
+              {
+                "id": "../../core/web/dist/esm/createTamagui.mjs",
+                "renderedBytes": 6794
+              },
+              {
+                "id": "../../core/web/dist/esm/hooks/useMedia.mjs",
+                "renderedBytes": 6417
+              },
+              {
+                "id": "../../core/web/dist/esm/hooks/useComponentState.mjs",
+                "renderedBytes": 5714
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/getCSSStylesAtomic.mjs",
+                "renderedBytes": 5621
+              },
+              {
+                "id": "../../core/helpers/dist/esm/validStyleProps.mjs",
+                "renderedBytes": 5196
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/createDesignSystem.mjs",
+                "renderedBytes": 4911
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/getThemeCSSRules.mjs",
+                "renderedBytes": 4665
+              },
+              {
+                "id": "../../core/web/dist/esm/views/Theme.mjs",
+                "renderedBytes": 4208
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/expandStyle.mjs",
+                "renderedBytes": 3281
+              },
+              {
+                "id": "../../ui/portal/dist/esm/GorhomPortal.mjs",
+                "renderedBytes": 3255
+              },
+              {
+                "id": "../../core/style-grammar/dist/esm/clausePrecedence.mjs",
+                "renderedBytes": 3076
+              },
+              {
+                "id": "../../core/animation-helpers/dist/esm/normalizeTransition.mjs",
+                "renderedBytes": 2859
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/createStyledContext.mjs",
+                "renderedBytes": 2750
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/resolveSafeArea.mjs",
+                "renderedBytes": 2188
+              },
+              {
+                "id": "../../core/style-grammar/dist/esm/modifierRegistry.mjs",
+                "renderedBytes": 1998
+              },
+              {
+                "id": "../../core/web/dist/esm/views/TamaguiProvider.mjs",
+                "renderedBytes": 1988
+              },
+              {
+                "id": "../../core/web/dist/esm/createVariable.mjs",
+                "renderedBytes": 1943
+              },
+              {
+                "id": "../../core/style-grammar/dist/esm/states.mjs",
+                "renderedBytes": 1796
+              },
+              {
+                "id": "../../core/core/dist/esm/runtime.mjs",
+                "renderedBytes": 1750
+              },
+              {
+                "id": "../../core/helpers/dist/esm/webOnlyStyleProps.mjs",
+                "renderedBytes": 1642
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/getVariantExtras.mjs",
+                "renderedBytes": 1620
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/nativeStyleEngine.mjs",
+                "renderedBytes": 1610
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/subscribeToContextGroup.mjs",
+                "renderedBytes": 1587
+              },
+              {
+                "id": "../../core/web/dist/esm/hooks/getThemeProxied.mjs",
+                "renderedBytes": 1492
+              },
+              {
+                "id": "../../core/web/dist/esm/views/Slot.mjs",
+                "renderedBytes": 1369
+              },
+              {
+                "id": "../../core/helpers/dist/esm/tokenCategories.mjs",
+                "renderedBytes": 1312
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/registerCSSVariable.mjs",
+                "renderedBytes": 1263
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/wrapStyleTags.mjs",
+                "renderedBytes": 1249
+              },
+              {
+                "id": "../../core/simple-hash/dist/esm/index.mjs",
+                "renderedBytes": 1155
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/mergeProps.mjs",
+                "renderedBytes": 1057
+              },
+              {
+                "id": "../../core/web/dist/esm/insertFont.mjs",
+                "renderedBytes": 1052
+              },
+              {
+                "id": "../../core/web/dist/esm/createVariables.mjs",
+                "renderedBytes": 1003
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/defaultAnimationDriver.mjs",
+                "renderedBytes": 953
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/normalizeStyle.mjs",
+                "renderedBytes": 949
+              },
+              {
+                "id": "../../core/constants/dist/esm/constants.mjs",
+                "renderedBytes": 903
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/nativeOnlyProps.mjs",
+                "renderedBytes": 885
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/mergeSlotStyleProps.mjs",
+                "renderedBytes": 869
+              },
+              {
+                "id": "../../core/web/dist/esm/config.mjs",
+                "renderedBytes": 832
+              },
+              {
+                "id": "../../core/web/dist/esm/views/TamaguiRoot.mjs",
+                "renderedBytes": 824
+              },
+              {
+                "id": "../../core/web/dist/esm/views/ThemeProvider.mjs",
+                "renderedBytes": 792
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/normalizeValueWithProperty.mjs",
+                "renderedBytes": 789
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/proxyThemeToParents.mjs",
+                "renderedBytes": 729
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/mediaObjectToString.mjs",
+                "renderedBytes": 717
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/themes.mjs",
+                "renderedBytes": 710
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/expandStyles.mjs",
+                "renderedBytes": 661
+              },
+              {
+                "id": "../../core/web/dist/esm/hooks/useTheme.mjs",
+                "renderedBytes": 656
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/getDynamicVal.mjs",
+                "renderedBytes": 520
+              },
+              {
+                "id": "../../core/helpers/dist/esm/composeEventHandlers.mjs",
+                "renderedBytes": 507
+              },
+              {
+                "id": "../../core/use-presence/dist/esm/usePresence.mjs",
+                "renderedBytes": 501
+              },
+              {
+                "id": "../../core/compose-refs/dist/esm/compose-refs.mjs",
+                "renderedBytes": 479
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/objectIdentityKey.mjs",
+                "renderedBytes": 471
+              },
+              {
+                "id": "../../ui/tamagui/dist/esm/views/TamaguiProvider.mjs",
+                "renderedBytes": 448
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/extractPseudoState.mjs",
+                "renderedBytes": 447
+              },
+              {
+                "id": "../../core/web/dist/esm/eventHandling.mjs",
+                "renderedBytes": 441
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/resolveVariableValue.mjs",
+                "renderedBytes": 440
+              },
+              {
+                "id": "../../core/web/dist/esm/defaultComponentState.mjs",
+                "renderedBytes": 429
+              },
+              {
+                "id": "../../core/native/dist/esm/globalState.mjs",
+                "renderedBytes": 426
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/transformsToString.mjs",
+                "renderedBytes": 426
+              },
+              {
+                "id": "../../core/use-did-finish-ssr/dist/esm/ClientOnly.mjs",
+                "renderedBytes": 395
+              },
+              {
+                "id": "../../core/native/dist/esm/components.mjs",
+                "renderedBytes": 394
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/normalizeColor.mjs",
+                "renderedBytes": 390
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/normalizeShadow.mjs",
+                "renderedBytes": 390
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/frontendProgram.mjs",
+                "renderedBytes": 383
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/skipProps.mjs",
+                "renderedBytes": 380
+              },
+              {
+                "id": "../../core/use-presence/dist/esm/PresenceContext.mjs",
+                "renderedBytes": 378
+              },
+              {
+                "id": "../../packages/is-equal-shallow/dist/esm/index.mjs",
+                "renderedBytes": 376
+              },
+              {
+                "id": "../../core/use-did-finish-ssr/dist/esm/index.mjs",
+                "renderedBytes": 370
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/resolveSafeAreaVariable.mjs",
+                "renderedBytes": 362
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/componentDisplayName.mjs",
+                "renderedBytes": 358
+              },
+              {
+                "id": "../../core/web/dist/esm/contexts/ComponentContext.mjs",
+                "renderedBytes": 354
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/resolveAnimationDriver.mjs",
+                "renderedBytes": 335
+              },
+              {
+                "id": "../../core/native/dist/esm/portalState.mjs",
+                "renderedBytes": 326
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/matchMedia.mjs",
+                "renderedBytes": 296
+              },
+              {
+                "id": "../../core/normalize-css-color/dist/esm/rgba.mjs",
+                "renderedBytes": 289
+              },
+              {
+                "id": "../../core/style-grammar/dist/esm/stateModifiers.mjs",
+                "renderedBytes": 279
+              },
+              {
+                "id": "../../core/web/dist/esm/types.mjs",
+                "renderedBytes": 277
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/mergeRenderElementProps.mjs",
+                "renderedBytes": 269
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/mediaState.mjs",
+                "renderedBytes": 249
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/styleFrontend.mjs",
+                "renderedBytes": 242
+              },
+              {
+                "id": "../../core/style-grammar/dist/esm/config.mjs",
+                "renderedBytes": 226
+              },
+              {
+                "id": "../../core/web/dist/esm/views/View.mjs",
+                "renderedBytes": 209
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/resolveRem.mjs",
+                "renderedBytes": 207
+              },
+              {
+                "id": "../../ui/z-index-stack/dist/esm/context.mjs",
+                "renderedBytes": 198
+              },
+              {
+                "id": "../../core/web/dist/esm/internal-runtime.mjs",
+                "renderedBytes": 181
+              },
+              {
+                "id": "../../core/web/dist/esm/hooks/isOptimizedForFirstRender.mjs",
+                "renderedBytes": 178
+              },
+              {
+                "id": "../../core/web/dist/esm/views/SafeAreaTracker.mjs",
+                "renderedBytes": 167
+              },
+              {
+                "id": "../../core/start-transition/dist/esm/index.mjs",
+                "renderedBytes": 157
+              },
+              {
+                "id": "../../core/constants/dist/esm/platformDriver.mjs",
+                "renderedBytes": 156
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/setElementProps.mjs",
+                "renderedBytes": 144
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/getDefaultProps.mjs",
+                "renderedBytes": 142
+              },
+              {
+                "id": "../../core/web/dist/esm/setupHooks.mjs",
+                "renderedBytes": 139
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/styleOriginalValues.mjs",
+                "renderedBytes": 136
+              },
+              {
+                "id": "../../ui/portal/dist/esm/constants.mjs",
+                "renderedBytes": 136
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/isObj.mjs",
+                "renderedBytes": 133
+              },
+              {
+                "id": "../../core/web/dist/esm/contexts/GroupContext.mjs",
+                "renderedBytes": 131
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/sortString.mjs",
+                "renderedBytes": 125
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/pointerEvents.mjs",
+                "renderedBytes": 122
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/defaultOffset.mjs",
+                "renderedBytes": 120
+              },
+              {
+                "id": "../../core/web/dist/esm/constants/constants.mjs",
+                "renderedBytes": 117
+              },
+              {
+                "id": "../../core/core/dist/esm/setupMedia.mjs",
+                "renderedBytes": 109
+              },
+              {
+                "id": "../../core/core/dist/esm/getBaseViews.mjs",
+                "renderedBytes": 107
+              },
+              {
+                "id": "../../ui/tamagui/dist/esm/createTamagui.mjs",
+                "renderedBytes": 104
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/themeRef.mjs",
+                "renderedBytes": 102
+              },
+              {
+                "id": "../../core/core/dist/esm/index.mjs",
+                "renderedBytes": 77
+              }
+            ]
+          }
+        ],
+        "assets": [
+          {
+            "fileName": "assets/index-D8X9mjfQ.css",
+            "bytes": 3453,
+            "gzipBytes": 1087
+          }
+        ]
+      },
+      "compilerStats": {
+        "schemaVersion": 1,
+        "selector": {
+          "id": "all",
+          "include": [
+            "**"
+          ]
+        },
+        "totals": {
+          "modules": 1,
+          "found": 14,
+          "lowered": 14,
+          "flattened": 11,
+          "partial": 3,
+          "styled": 0,
+          "bailed": 0,
+          "notFlattened": 3,
+          "flattenRate": 0.7857142857142857
+        },
+        "bailoutCodes": {},
+        "bailoutReasons": [],
+        "modules": [
+          {
+            "id": "src/index.tsx",
+            "stats": {
+              "found": 14,
+              "lowered": 14,
+              "flattened": 11,
+              "styled": 0,
+              "bailed": 0,
+              "partial": 3,
+              "notFlattened": 3
+            },
+            "diagnostics": []
+          }
+        ]
+      }
+    },
+    "tamagui-v3-runtime": {
+      "files": 5,
+      "totalBytes": 317975,
+      "jsBytes": 317386,
+      "cssBytes": 0,
+      "versions": {
+        "react": "19.1.0",
+        "react-dom": "19.1.0",
+        "vite": "8.0.16",
+        "@vitejs/plugin-react": "6.0.4",
+        "@tamagui/animations-css": "2.7.7",
+        "tamagui": "2.7.7",
+        "@tamagui/vite-plugin": "2.7.7"
+      },
+      "dependencyMetadata": {
+        "packageJsonSha256": "eed500b4a4608f051f93dce4bab9b1fd141e309e7010269ff10b642e04d066e3",
+        "lockfile": {
+          "file": "../../bun.lock",
+          "sha256": "f1700ff669cef019554cd70bd66e949cf2f381ef65610cb83e550ea96998f49b"
+        }
+      },
+      "bundleAttribution": {
+        "schemaVersion": 2,
+        "decomposition": {
+          "method": "explicit Rollup chunks with onlyExplicitManualChunks, followed by production minification and independent gzip",
+          "tamaguiIncludes": "rendered modules from tamagui, @tamagui/*, Tamagui workspace core/packages/ui dist paths, and @react-native/normalize-color when pulled by the Tamagui runtime, plus their isolated chunk wrapper",
+          "tamaguiExcludes": "fixture code, shared benchmark code, React, react-dom, scheduler, Vite helpers, and dependencies other than the Tamagui runtime color normalizer",
+          "groups": {
+            "tamagui": {
+              "chunks": [
+                "assets/tamagui-CwkbUYpN.js"
+              ],
+              "codeBytes": 126829,
+              "gzipBytes": 45324
+            },
+            "react-control": {
+              "chunks": [
+                "assets/react-control-DOh_dsS2.js"
+              ],
+              "codeBytes": 182423,
+              "gzipBytes": 57081
+            },
+            "other": {
+              "chunks": [
+                "assets/index-mU8Z-bHe.js",
+                "assets/rolldown-runtime-jpDsebLB.js"
+              ],
+              "codeBytes": 8134,
+              "gzipBytes": 3281
+            }
+          }
+        },
+        "chunks": [
+          {
+            "fileName": "assets/index-mU8Z-bHe.js",
+            "name": "index",
+            "attributionGroup": "other",
+            "codeBytes": 7567,
+            "gzipBytes": 2921,
+            "modules": [
+              {
+                "id": "src/index.tsx",
+                "renderedBytes": 9553
+              },
+              {
+                "id": "../shared/bench.ts",
+                "renderedBytes": 2462
+              },
+              {
+                "id": "\u0000vite/modulepreload-polyfill.js",
+                "renderedBytes": 1205
+              },
+              {
+                "id": "src/tamagui.config.ts",
+                "renderedBytes": 413
+              },
+              {
+                "id": "index.html",
+                "renderedBytes": 0
+              }
+            ]
+          },
+          {
+            "fileName": "assets/react-control-DOh_dsS2.js",
+            "name": "react-control",
+            "attributionGroup": "react-control",
+            "codeBytes": 182423,
+            "gzipBytes": 57081,
+            "modules": [
+              {
+                "id": "../../../node_modules/react-dom/cjs/react-dom-client.production.js",
+                "renderedBytes": 433819
+              },
+              {
+                "id": "../../../node_modules/react/cjs/react.production.js",
+                "renderedBytes": 15050
+              },
+              {
+                "id": "../../../node_modules/react-dom/node_modules/scheduler/cjs/scheduler.production.js",
+                "renderedBytes": 9026
+              },
+              {
+                "id": "../../../node_modules/react-dom/cjs/react-dom.production.js",
+                "renderedBytes": 5717
+              },
+              {
+                "id": "../../../node_modules/react/cjs/react-jsx-runtime.production.js",
+                "renderedBytes": 875
+              },
+              {
+                "id": "../../../node_modules/react-dom/client.js",
+                "renderedBytes": 482
+              },
+              {
+                "id": "../../../node_modules/react-dom/index.js",
+                "renderedBytes": 477
+              },
+              {
+                "id": "../../../node_modules/react-dom/node_modules/scheduler/index.js",
+                "renderedBytes": 220
+              },
+              {
+                "id": "../../../node_modules/react/jsx-runtime.js",
+                "renderedBytes": 209
+              },
+              {
+                "id": "../../../node_modules/react/index.js",
+                "renderedBytes": 185
+              }
+            ]
+          },
+          {
+            "fileName": "assets/rolldown-runtime-jpDsebLB.js",
+            "name": "rolldown-runtime",
+            "attributionGroup": "other",
+            "codeBytes": 567,
+            "gzipBytes": 360,
+            "modules": [
+              {
+                "id": "\u0000rolldown/runtime.js",
+                "renderedBytes": 1124
+              }
+            ]
+          },
+          {
+            "fileName": "assets/tamagui-CwkbUYpN.js",
+            "name": "tamagui",
+            "attributionGroup": "tamagui",
+            "codeBytes": 126829,
+            "gzipBytes": 45324,
+            "modules": [
+              {
+                "id": "../../core/web/dist/esm/helpers/directStyle.mjs",
+                "renderedBytes": 37474
+              },
+              {
+                "id": "../../core/web/dist/esm/createComponent.mjs",
+                "renderedBytes": 27195
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/getSplitStyles.mjs",
+                "renderedBytes": 25721
+              },
+              {
+                "id": "../../core/animations-css/dist/esm/createAnimations.mjs",
+                "renderedBytes": 17185
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/propMapper.mjs",
+                "renderedBytes": 15647
+              },
+              {
+                "id": "../../core/web/dist/esm/hooks/useThemeState.mjs",
+                "renderedBytes": 9813
+              },
+              {
+                "id": "../../core/use-element-layout/dist/esm/index.mjs",
+                "renderedBytes": 9514
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/variables.mjs",
+                "renderedBytes": 8036
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/insertStyleRule.mjs",
+                "renderedBytes": 7618
+              },
+              {
+                "id": "../../core/normalize-css-color/dist/esm/index.mjs",
+                "renderedBytes": 6960
+              },
+              {
+                "id": "../../core/web/dist/esm/createTamagui.mjs",
+                "renderedBytes": 6794
+              },
+              {
+                "id": "../../core/web/dist/esm/hooks/useMedia.mjs",
+                "renderedBytes": 6417
+              },
+              {
+                "id": "../../core/web/dist/esm/hooks/useComponentState.mjs",
+                "renderedBytes": 5714
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/getCSSStylesAtomic.mjs",
+                "renderedBytes": 5621
+              },
+              {
+                "id": "../../core/helpers/dist/esm/validStyleProps.mjs",
+                "renderedBytes": 5196
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/createDesignSystem.mjs",
+                "renderedBytes": 4911
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/getThemeCSSRules.mjs",
+                "renderedBytes": 4665
+              },
+              {
+                "id": "../../core/web/dist/esm/views/Theme.mjs",
+                "renderedBytes": 4208
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/expandStyle.mjs",
+                "renderedBytes": 3281
+              },
+              {
+                "id": "../../ui/portal/dist/esm/GorhomPortal.mjs",
+                "renderedBytes": 3255
+              },
+              {
+                "id": "../../core/style-grammar/dist/esm/clausePrecedence.mjs",
+                "renderedBytes": 3076
+              },
+              {
+                "id": "../../core/animation-helpers/dist/esm/normalizeTransition.mjs",
+                "renderedBytes": 2859
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/createStyledContext.mjs",
+                "renderedBytes": 2750
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/resolveSafeArea.mjs",
+                "renderedBytes": 2188
+              },
+              {
+                "id": "../../core/style-grammar/dist/esm/modifierRegistry.mjs",
+                "renderedBytes": 1998
+              },
+              {
+                "id": "../../core/web/dist/esm/views/TamaguiProvider.mjs",
+                "renderedBytes": 1988
+              },
+              {
+                "id": "../../core/web/dist/esm/createVariable.mjs",
+                "renderedBytes": 1943
+              },
+              {
+                "id": "../../core/style-grammar/dist/esm/states.mjs",
+                "renderedBytes": 1796
+              },
+              {
+                "id": "../../core/core/dist/esm/runtime.mjs",
+                "renderedBytes": 1750
+              },
+              {
+                "id": "../../core/helpers/dist/esm/webOnlyStyleProps.mjs",
+                "renderedBytes": 1642
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/getVariantExtras.mjs",
+                "renderedBytes": 1620
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/nativeStyleEngine.mjs",
+                "renderedBytes": 1610
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/subscribeToContextGroup.mjs",
+                "renderedBytes": 1587
+              },
+              {
+                "id": "../../core/web/dist/esm/hooks/getThemeProxied.mjs",
+                "renderedBytes": 1492
+              },
+              {
+                "id": "../../core/web/dist/esm/views/Slot.mjs",
+                "renderedBytes": 1369
+              },
+              {
+                "id": "../../core/helpers/dist/esm/tokenCategories.mjs",
+                "renderedBytes": 1312
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/registerCSSVariable.mjs",
+                "renderedBytes": 1263
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/wrapStyleTags.mjs",
+                "renderedBytes": 1249
+              },
+              {
+                "id": "../../core/simple-hash/dist/esm/index.mjs",
+                "renderedBytes": 1155
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/mergeProps.mjs",
+                "renderedBytes": 1057
+              },
+              {
+                "id": "../../core/web/dist/esm/insertFont.mjs",
+                "renderedBytes": 1052
+              },
+              {
+                "id": "../../core/web/dist/esm/createVariables.mjs",
+                "renderedBytes": 1003
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/defaultAnimationDriver.mjs",
+                "renderedBytes": 953
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/normalizeStyle.mjs",
+                "renderedBytes": 949
+              },
+              {
+                "id": "../../core/constants/dist/esm/constants.mjs",
+                "renderedBytes": 903
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/nativeOnlyProps.mjs",
+                "renderedBytes": 885
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/mergeSlotStyleProps.mjs",
+                "renderedBytes": 869
+              },
+              {
+                "id": "../../core/web/dist/esm/config.mjs",
+                "renderedBytes": 832
+              },
+              {
+                "id": "../../core/web/dist/esm/views/TamaguiRoot.mjs",
+                "renderedBytes": 824
+              },
+              {
+                "id": "../../core/web/dist/esm/views/ThemeProvider.mjs",
+                "renderedBytes": 792
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/normalizeValueWithProperty.mjs",
+                "renderedBytes": 789
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/proxyThemeToParents.mjs",
+                "renderedBytes": 729
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/mediaObjectToString.mjs",
+                "renderedBytes": 717
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/themes.mjs",
+                "renderedBytes": 710
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/expandStyles.mjs",
+                "renderedBytes": 661
+              },
+              {
+                "id": "../../core/web/dist/esm/hooks/useTheme.mjs",
+                "renderedBytes": 656
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/getDynamicVal.mjs",
+                "renderedBytes": 520
+              },
+              {
+                "id": "../../core/helpers/dist/esm/composeEventHandlers.mjs",
+                "renderedBytes": 507
+              },
+              {
+                "id": "../../core/use-presence/dist/esm/usePresence.mjs",
+                "renderedBytes": 501
+              },
+              {
+                "id": "../../core/compose-refs/dist/esm/compose-refs.mjs",
+                "renderedBytes": 479
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/objectIdentityKey.mjs",
+                "renderedBytes": 471
+              },
+              {
+                "id": "../../ui/tamagui/dist/esm/views/TamaguiProvider.mjs",
+                "renderedBytes": 448
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/extractPseudoState.mjs",
+                "renderedBytes": 447
+              },
+              {
+                "id": "../../core/web/dist/esm/eventHandling.mjs",
+                "renderedBytes": 441
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/resolveVariableValue.mjs",
+                "renderedBytes": 440
+              },
+              {
+                "id": "../../core/web/dist/esm/defaultComponentState.mjs",
+                "renderedBytes": 429
+              },
+              {
+                "id": "../../core/native/dist/esm/globalState.mjs",
+                "renderedBytes": 426
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/transformsToString.mjs",
+                "renderedBytes": 426
+              },
+              {
+                "id": "../../core/use-did-finish-ssr/dist/esm/ClientOnly.mjs",
+                "renderedBytes": 395
+              },
+              {
+                "id": "../../core/native/dist/esm/components.mjs",
+                "renderedBytes": 394
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/normalizeColor.mjs",
+                "renderedBytes": 390
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/normalizeShadow.mjs",
+                "renderedBytes": 390
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/frontendProgram.mjs",
+                "renderedBytes": 383
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/skipProps.mjs",
+                "renderedBytes": 380
+              },
+              {
+                "id": "../../core/use-presence/dist/esm/PresenceContext.mjs",
+                "renderedBytes": 378
+              },
+              {
+                "id": "../../packages/is-equal-shallow/dist/esm/index.mjs",
+                "renderedBytes": 376
+              },
+              {
+                "id": "../../core/use-did-finish-ssr/dist/esm/index.mjs",
+                "renderedBytes": 370
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/resolveSafeAreaVariable.mjs",
+                "renderedBytes": 362
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/componentDisplayName.mjs",
+                "renderedBytes": 358
+              },
+              {
+                "id": "../../core/web/dist/esm/contexts/ComponentContext.mjs",
+                "renderedBytes": 354
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/resolveAnimationDriver.mjs",
+                "renderedBytes": 335
+              },
+              {
+                "id": "../../core/native/dist/esm/portalState.mjs",
+                "renderedBytes": 326
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/matchMedia.mjs",
+                "renderedBytes": 296
+              },
+              {
+                "id": "../../core/normalize-css-color/dist/esm/rgba.mjs",
+                "renderedBytes": 289
+              },
+              {
+                "id": "../../core/style-grammar/dist/esm/stateModifiers.mjs",
+                "renderedBytes": 279
+              },
+              {
+                "id": "../../core/web/dist/esm/types.mjs",
+                "renderedBytes": 277
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/mergeRenderElementProps.mjs",
+                "renderedBytes": 269
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/mediaState.mjs",
+                "renderedBytes": 249
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/styleFrontend.mjs",
+                "renderedBytes": 242
+              },
+              {
+                "id": "../../core/style-grammar/dist/esm/config.mjs",
+                "renderedBytes": 226
+              },
+              {
+                "id": "../../core/web/dist/esm/views/View.mjs",
+                "renderedBytes": 209
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/resolveRem.mjs",
+                "renderedBytes": 207
+              },
+              {
+                "id": "../../ui/z-index-stack/dist/esm/context.mjs",
+                "renderedBytes": 198
+              },
+              {
+                "id": "../../core/web/dist/esm/internal-runtime.mjs",
+                "renderedBytes": 181
+              },
+              {
+                "id": "../../core/web/dist/esm/hooks/isOptimizedForFirstRender.mjs",
+                "renderedBytes": 178
+              },
+              {
+                "id": "../../core/web/dist/esm/views/SafeAreaTracker.mjs",
+                "renderedBytes": 167
+              },
+              {
+                "id": "../../core/start-transition/dist/esm/index.mjs",
+                "renderedBytes": 157
+              },
+              {
+                "id": "../../core/constants/dist/esm/platformDriver.mjs",
+                "renderedBytes": 156
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/setElementProps.mjs",
+                "renderedBytes": 144
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/getDefaultProps.mjs",
+                "renderedBytes": 142
+              },
+              {
+                "id": "../../core/web/dist/esm/setupHooks.mjs",
+                "renderedBytes": 139
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/styleOriginalValues.mjs",
+                "renderedBytes": 136
+              },
+              {
+                "id": "../../ui/portal/dist/esm/constants.mjs",
+                "renderedBytes": 136
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/isObj.mjs",
+                "renderedBytes": 133
+              },
+              {
+                "id": "../../core/web/dist/esm/contexts/GroupContext.mjs",
+                "renderedBytes": 131
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/sortString.mjs",
+                "renderedBytes": 125
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/pointerEvents.mjs",
+                "renderedBytes": 122
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/defaultOffset.mjs",
+                "renderedBytes": 120
+              },
+              {
+                "id": "../../core/web/dist/esm/constants/constants.mjs",
+                "renderedBytes": 117
+              },
+              {
+                "id": "../../core/core/dist/esm/setupMedia.mjs",
+                "renderedBytes": 109
+              },
+              {
+                "id": "../../core/core/dist/esm/getBaseViews.mjs",
+                "renderedBytes": 107
+              },
+              {
+                "id": "../../ui/tamagui/dist/esm/createTamagui.mjs",
+                "renderedBytes": 104
+              },
+              {
+                "id": "../../core/web/dist/esm/helpers/themeRef.mjs",
+                "renderedBytes": 102
+              },
+              {
+                "id": "../../core/core/dist/esm/index.mjs",
+                "renderedBytes": 77
+              }
+            ]
+          }
+        ],
+        "assets": []
+      }
+    },
+    "tamagui-v2-compiled": {
+      "files": 6,
+      "totalBytes": 288491,
+      "jsBytes": 283397,
+      "cssBytes": 4427,
+      "versions": {
+        "react": "19.1.0",
+        "react-dom": "19.1.0",
+        "vite": "8.0.16",
+        "@vitejs/plugin-react": "6.0.4",
+        "@tamagui/animations-css": "2.6.2",
+        "tamagui": "2.6.2",
+        "@tamagui/vite-plugin": "2.6.2"
+      },
+      "dependencyMetadata": {
+        "packageJsonSha256": "61d53812722ef1c9969e43dcf3b5979d91a8a5772e821a2a9df30b494fa561b0",
+        "lockfile": {
+          "file": "tamagui-v2-bench/package-lock.json",
+          "sha256": "d0c843addf2173bcfc8f5391d078b75dac7850474f7ed5e802d61358bc638e04"
+        }
+      },
+      "bundleAttribution": {
+        "schemaVersion": 2,
+        "decomposition": {
+          "method": "explicit Rollup chunks with onlyExplicitManualChunks, followed by production minification and independent gzip",
+          "tamaguiIncludes": "rendered modules from tamagui, @tamagui/*, Tamagui workspace core/packages/ui dist paths, and @react-native/normalize-color when pulled by the Tamagui runtime, plus their isolated chunk wrapper",
+          "tamaguiExcludes": "fixture code, shared benchmark code, React, react-dom, scheduler, Vite helpers, and dependencies other than the Tamagui runtime color normalizer",
+          "groups": {
+            "tamagui": {
+              "chunks": [
+                "assets/tamagui-ks4GvddR.js"
+              ],
+              "codeBytes": 90923,
+              "gzipBytes": 33424
+            },
+            "react-control": {
+              "chunks": [
+                "assets/react-control-DvJh9EV3.js"
+              ],
+              "codeBytes": 182421,
+              "gzipBytes": 57078
+            },
+            "other": {
+              "chunks": [
+                "assets/index-CtN_AyXT.js",
+                "assets/rolldown-runtime-Bh1tDfsg.js"
+              ],
+              "codeBytes": 10053,
+              "gzipBytes": 3645
+            }
+          }
+        },
+        "chunks": [
+          {
+            "fileName": "assets/index-CtN_AyXT.js",
+            "name": "index",
+            "attributionGroup": "other",
+            "codeBytes": 9486,
+            "gzipBytes": 3285,
+            "modules": [
+              {
+                "id": "src/index.tsx",
+                "renderedBytes": 11272
+              },
+              {
+                "id": "../shared/bench.ts",
+                "renderedBytes": 2462
+              },
+              {
+                "id": "\u0000vite/modulepreload-polyfill.js",
+                "renderedBytes": 1205
+              },
+              {
+                "id": "src/tamagui.config.ts",
+                "renderedBytes": 461
+              },
+              {
+                "id": "index.html",
+                "renderedBytes": 0
+              },
+              {
+                "id": "src/index.tsx.tamagui.css",
+                "renderedBytes": 0
+              }
+            ]
+          },
+          {
+            "fileName": "assets/react-control-DvJh9EV3.js",
+            "name": "react-control",
+            "attributionGroup": "react-control",
+            "codeBytes": 182421,
+            "gzipBytes": 57078,
+            "modules": [
+              {
+                "id": "node_modules/react-dom/cjs/react-dom-client.production.js",
+                "renderedBytes": 433810
+              },
+              {
+                "id": "node_modules/react/cjs/react.production.js",
+                "renderedBytes": 15041
+              },
+              {
+                "id": "node_modules/scheduler/cjs/scheduler.production.js",
+                "renderedBytes": 8994
+              },
+              {
+                "id": "node_modules/react-dom/cjs/react-dom.production.js",
+                "renderedBytes": 5708
+              },
+              {
+                "id": "node_modules/react/cjs/react-jsx-runtime.production.js",
+                "renderedBytes": 866
+              },
+              {
+                "id": "node_modules/react-dom/client.js",
+                "renderedBytes": 473
+              },
+              {
+                "id": "node_modules/react-dom/index.js",
+                "renderedBytes": 468
+              },
+              {
+                "id": "node_modules/react/jsx-runtime.js",
+                "renderedBytes": 200
+              },
+              {
+                "id": "node_modules/scheduler/index.js",
+                "renderedBytes": 188
+              },
+              {
+                "id": "node_modules/react/index.js",
+                "renderedBytes": 176
+              }
+            ]
+          },
+          {
+            "fileName": "assets/rolldown-runtime-Bh1tDfsg.js",
+            "name": "rolldown-runtime",
+            "attributionGroup": "other",
+            "codeBytes": 567,
+            "gzipBytes": 360,
+            "modules": [
+              {
+                "id": "\u0000rolldown/runtime.js",
+                "renderedBytes": 1124
+              }
+            ]
+          },
+          {
+            "fileName": "assets/tamagui-ks4GvddR.js",
+            "name": "tamagui",
+            "attributionGroup": "tamagui",
+            "codeBytes": 90923,
+            "gzipBytes": 33424,
+            "modules": [
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/getSplitStyles.mjs",
+                "renderedBytes": 27126
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/createComponent.mjs",
+                "renderedBytes": 25322
+              },
+              {
+                "id": "node_modules/@tamagui/animations-css/dist/esm/createAnimations.mjs",
+                "renderedBytes": 12488
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/hooks/useThemeState.mjs",
+                "renderedBytes": 10084
+              },
+              {
+                "id": "node_modules/@tamagui/use-element-layout/dist/esm/index.mjs",
+                "renderedBytes": 9878
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/propMapper.mjs",
+                "renderedBytes": 7362
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/insertStyleRule.mjs",
+                "renderedBytes": 6402
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/hooks/useMedia.mjs",
+                "renderedBytes": 6273
+              },
+              {
+                "id": "node_modules/@tamagui/helpers/dist/esm/validStyleProps.mjs",
+                "renderedBytes": 6264
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/createTamagui.mjs",
+                "renderedBytes": 6121
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/createDesignSystem.mjs",
+                "renderedBytes": 5729
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/getCSSStylesAtomic.mjs",
+                "renderedBytes": 5430
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/hooks/useComponentState.mjs",
+                "renderedBytes": 4796
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/getThemeCSSRules.mjs",
+                "renderedBytes": 4548
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/createMediaStyle.mjs",
+                "renderedBytes": 3973
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/views/Theme.mjs",
+                "renderedBytes": 3856
+              },
+              {
+                "id": "node_modules/@tamagui/animation-helpers/dist/esm/normalizeTransition.mjs",
+                "renderedBytes": 3464
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/getTokenForKey.mjs",
+                "renderedBytes": 3332
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/expandStyle.mjs",
+                "renderedBytes": 3292
+              },
+              {
+                "id": "node_modules/tamagui/node_modules/@tamagui/portal/dist/esm/GorhomPortal.mjs",
+                "renderedBytes": 3289
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/createStyledContext.mjs",
+                "renderedBytes": 2153
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/themeable.mjs",
+                "renderedBytes": 2096
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/views/TamaguiProvider.mjs",
+                "renderedBytes": 1821
+              },
+              {
+                "id": "node_modules/@tamagui/core/dist/esm/index.mjs",
+                "renderedBytes": 1797
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/createVariable.mjs",
+                "renderedBytes": 1758
+              },
+              {
+                "id": "node_modules/@tamagui/helpers/dist/esm/webOnlyStyleProps.mjs",
+                "renderedBytes": 1619
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/subscribeToContextGroup.mjs",
+                "renderedBytes": 1598
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/getVariantExtras.mjs",
+                "renderedBytes": 1487
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/pseudoTransitions.mjs",
+                "renderedBytes": 1476
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/mergeProps.mjs",
+                "renderedBytes": 1456
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/views/Slot.mjs",
+                "renderedBytes": 1390
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/hooks/getThemeProxied.mjs",
+                "renderedBytes": 1281
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/registerCSSVariable.mjs",
+                "renderedBytes": 1274
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/pseudoDescriptors.mjs",
+                "renderedBytes": 1233
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/wrapStyleTags.mjs",
+                "renderedBytes": 1226
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/normalizeStyle.mjs",
+                "renderedBytes": 1216
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/createVariables.mjs",
+                "renderedBytes": 1202
+              },
+              {
+                "id": "node_modules/@tamagui/simple-hash/dist/esm/index.mjs",
+                "renderedBytes": 1116
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/insertFont.mjs",
+                "renderedBytes": 1039
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/defaultAnimationDriver.mjs",
+                "renderedBytes": 964
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/nativeOnlyProps.mjs",
+                "renderedBytes": 896
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/mergeSlotStyleProps.mjs",
+                "renderedBytes": 880
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/config.mjs",
+                "renderedBytes": 857
+              },
+              {
+                "id": "node_modules/@tamagui/constants/dist/esm/constants.mjs",
+                "renderedBytes": 850
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/views/TamaguiRoot.mjs",
+                "renderedBytes": 835
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/views/ThemeProvider.mjs",
+                "renderedBytes": 803
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/getGroupPropParts.mjs",
+                "renderedBytes": 794
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/proxyThemeToParents.mjs",
+                "renderedBytes": 740
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/mediaObjectToString.mjs",
+                "renderedBytes": 728
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/isActivePlatform.mjs",
+                "renderedBytes": 710
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/expandStyles.mjs",
+                "renderedBytes": 672
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/normalizeValueWithProperty.mjs",
+                "renderedBytes": 665
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/hooks/useTheme.mjs",
+                "renderedBytes": 540
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/getDefaultProps.mjs",
+                "renderedBytes": 529
+              },
+              {
+                "id": "node_modules/@tamagui/use-presence/dist/esm/usePresence.mjs",
+                "renderedBytes": 512
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/objectIdentityKey.mjs",
+                "renderedBytes": 482
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/eventHandling.mjs",
+                "renderedBytes": 452
+              },
+              {
+                "id": "node_modules/tamagui/dist/esm/views/TamaguiProvider.mjs",
+                "renderedBytes": 452
+              },
+              {
+                "id": "node_modules/@tamagui/helpers/dist/esm/composeEventHandlers.mjs",
+                "renderedBytes": 440
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/defaultComponentState.mjs",
+                "renderedBytes": 440
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/resolveCompoundTokens.mjs",
+                "renderedBytes": 439
+              },
+              {
+                "id": "node_modules/@tamagui/native/dist/esm/globalState.mjs",
+                "renderedBytes": 437
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/platformResolveValue.mjs",
+                "renderedBytes": 430
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/mediaState.mjs",
+                "renderedBytes": 428
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/transformsToString.mjs",
+                "renderedBytes": 413
+              },
+              {
+                "id": "node_modules/@tamagui/use-did-finish-ssr/dist/esm/ClientOnly.mjs",
+                "renderedBytes": 406
+              },
+              {
+                "id": "node_modules/@tamagui/native/dist/esm/components.mjs",
+                "renderedBytes": 405
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/normalizeColor.mjs",
+                "renderedBytes": 401
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/normalizeShadow.mjs",
+                "renderedBytes": 401
+              },
+              {
+                "id": "node_modules/@tamagui/use-presence/dist/esm/PresenceContext.mjs",
+                "renderedBytes": 389
+              },
+              {
+                "id": "node_modules/@tamagui/is-equal-shallow/dist/esm/index.mjs",
+                "renderedBytes": 383
+              },
+              {
+                "id": "node_modules/@tamagui/use-did-finish-ssr/dist/esm/index.mjs",
+                "renderedBytes": 381
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/skipProps.mjs",
+                "renderedBytes": 354
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/resolveAnimationDriver.mjs",
+                "renderedBytes": 346
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/matchMedia.mjs",
+                "renderedBytes": 340
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/themes.mjs",
+                "renderedBytes": 339
+              },
+              {
+                "id": "node_modules/@tamagui/native/dist/esm/portalState.mjs",
+                "renderedBytes": 337
+              },
+              {
+                "id": "node_modules/@tamagui/compose-refs/dist/esm/compose-refs.mjs",
+                "renderedBytes": 290
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/mergeRenderElementProps.mjs",
+                "renderedBytes": 280
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/contexts/ComponentContext.mjs",
+                "renderedBytes": 257
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/isActiveTheme.mjs",
+                "renderedBytes": 224
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/resolveRem.mjs",
+                "renderedBytes": 218
+              },
+              {
+                "id": "node_modules/@tamagui/z-index-stack/dist/esm/context.mjs",
+                "renderedBytes": 211
+              },
+              {
+                "id": "node_modules/@tamagui/react-native-media-driver/dist/esm/createMedia.mjs",
+                "renderedBytes": 173
+              },
+              {
+                "id": "node_modules/tamagui/node_modules/@tamagui/portal/dist/esm/constants.mjs",
+                "renderedBytes": 170
+              },
+              {
+                "id": "node_modules/@tamagui/start-transition/dist/esm/index.mjs",
+                "renderedBytes": 168
+              },
+              {
+                "id": "node_modules/@tamagui/constants/dist/esm/platformDriver.mjs",
+                "renderedBytes": 167
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/setElementProps.mjs",
+                "renderedBytes": 155
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/setupHooks.mjs",
+                "renderedBytes": 148
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/styleOriginalValues.mjs",
+                "renderedBytes": 147
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/views/View.mjs",
+                "renderedBytes": 146
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/isObj.mjs",
+                "renderedBytes": 144
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/contexts/GroupContext.mjs",
+                "renderedBytes": 142
+              },
+              {
+                "id": "node_modules/@tamagui/react-native-media-driver/dist/esm/matchMedia.mjs",
+                "renderedBytes": 138
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/sortString.mjs",
+                "renderedBytes": 136
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/pointerEvents.mjs",
+                "renderedBytes": 133
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/defaultOffset.mjs",
+                "renderedBytes": 131
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/constants/constants.mjs",
+                "renderedBytes": 128
+              },
+              {
+                "id": "node_modules/@tamagui/core/dist/esm/getBaseViews.mjs",
+                "renderedBytes": 118
+              },
+              {
+                "id": "node_modules/tamagui/dist/esm/createTamagui.mjs",
+                "renderedBytes": 108
+              }
+            ]
+          }
+        ],
+        "assets": [
+          {
+            "fileName": "assets/index-De0UOj4x.css",
+            "bytes": 4439,
+            "gzipBytes": 1042
+          }
+        ]
+      }
+    },
+    "tamagui-v2-runtime": {
+      "files": 5,
+      "totalBytes": 282078,
+      "jsBytes": 281483,
+      "cssBytes": 0,
+      "versions": {
+        "react": "19.1.0",
+        "react-dom": "19.1.0",
+        "vite": "8.0.16",
+        "@vitejs/plugin-react": "6.0.4",
+        "@tamagui/animations-css": "2.6.2",
+        "tamagui": "2.6.2",
+        "@tamagui/vite-plugin": "2.6.2"
+      },
+      "dependencyMetadata": {
+        "packageJsonSha256": "61d53812722ef1c9969e43dcf3b5979d91a8a5772e821a2a9df30b494fa561b0",
+        "lockfile": {
+          "file": "tamagui-v2-bench/package-lock.json",
+          "sha256": "d0c843addf2173bcfc8f5391d078b75dac7850474f7ed5e802d61358bc638e04"
+        }
+      },
+      "bundleAttribution": {
+        "schemaVersion": 2,
+        "decomposition": {
+          "method": "explicit Rollup chunks with onlyExplicitManualChunks, followed by production minification and independent gzip",
+          "tamaguiIncludes": "rendered modules from tamagui, @tamagui/*, Tamagui workspace core/packages/ui dist paths, and @react-native/normalize-color when pulled by the Tamagui runtime, plus their isolated chunk wrapper",
+          "tamaguiExcludes": "fixture code, shared benchmark code, React, react-dom, scheduler, Vite helpers, and dependencies other than the Tamagui runtime color normalizer",
+          "groups": {
+            "tamagui": {
+              "chunks": [
+                "assets/tamagui-BByIbgPd.js"
+              ],
+              "codeBytes": 90923,
+              "gzipBytes": 33424
+            },
+            "react-control": {
+              "chunks": [
+                "assets/react-control-Cutphfo4.js"
+              ],
+              "codeBytes": 182421,
+              "gzipBytes": 57085
+            },
+            "other": {
+              "chunks": [
+                "assets/index-Dr5-zKO7.js",
+                "assets/rolldown-runtime-Bh1tDfsg.js"
+              ],
+              "codeBytes": 8139,
+              "gzipBytes": 3277
+            }
+          }
+        },
+        "chunks": [
+          {
+            "fileName": "assets/index-Dr5-zKO7.js",
+            "name": "index",
+            "attributionGroup": "other",
+            "codeBytes": 7572,
+            "gzipBytes": 2917,
+            "modules": [
+              {
+                "id": "src/index.tsx",
+                "renderedBytes": 9553
+              },
+              {
+                "id": "../shared/bench.ts",
+                "renderedBytes": 2462
+              },
+              {
+                "id": "\u0000vite/modulepreload-polyfill.js",
+                "renderedBytes": 1205
+              },
+              {
+                "id": "src/tamagui.config.ts",
+                "renderedBytes": 413
+              },
+              {
+                "id": "index.html",
+                "renderedBytes": 0
+              }
+            ]
+          },
+          {
+            "fileName": "assets/react-control-Cutphfo4.js",
+            "name": "react-control",
+            "attributionGroup": "react-control",
+            "codeBytes": 182421,
+            "gzipBytes": 57085,
+            "modules": [
+              {
+                "id": "node_modules/react-dom/cjs/react-dom-client.production.js",
+                "renderedBytes": 433810
+              },
+              {
+                "id": "node_modules/react/cjs/react.production.js",
+                "renderedBytes": 15041
+              },
+              {
+                "id": "node_modules/scheduler/cjs/scheduler.production.js",
+                "renderedBytes": 8994
+              },
+              {
+                "id": "node_modules/react-dom/cjs/react-dom.production.js",
+                "renderedBytes": 5708
+              },
+              {
+                "id": "node_modules/react/cjs/react-jsx-runtime.production.js",
+                "renderedBytes": 866
+              },
+              {
+                "id": "node_modules/react-dom/client.js",
+                "renderedBytes": 473
+              },
+              {
+                "id": "node_modules/react-dom/index.js",
+                "renderedBytes": 468
+              },
+              {
+                "id": "node_modules/react/jsx-runtime.js",
+                "renderedBytes": 200
+              },
+              {
+                "id": "node_modules/scheduler/index.js",
+                "renderedBytes": 188
+              },
+              {
+                "id": "node_modules/react/index.js",
+                "renderedBytes": 176
+              }
+            ]
+          },
+          {
+            "fileName": "assets/rolldown-runtime-Bh1tDfsg.js",
+            "name": "rolldown-runtime",
+            "attributionGroup": "other",
+            "codeBytes": 567,
+            "gzipBytes": 360,
+            "modules": [
+              {
+                "id": "\u0000rolldown/runtime.js",
+                "renderedBytes": 1124
+              }
+            ]
+          },
+          {
+            "fileName": "assets/tamagui-BByIbgPd.js",
+            "name": "tamagui",
+            "attributionGroup": "tamagui",
+            "codeBytes": 90923,
+            "gzipBytes": 33424,
+            "modules": [
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/getSplitStyles.mjs",
+                "renderedBytes": 27126
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/createComponent.mjs",
+                "renderedBytes": 25322
+              },
+              {
+                "id": "node_modules/@tamagui/animations-css/dist/esm/createAnimations.mjs",
+                "renderedBytes": 12488
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/hooks/useThemeState.mjs",
+                "renderedBytes": 10084
+              },
+              {
+                "id": "node_modules/@tamagui/use-element-layout/dist/esm/index.mjs",
+                "renderedBytes": 9878
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/propMapper.mjs",
+                "renderedBytes": 7362
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/insertStyleRule.mjs",
+                "renderedBytes": 6402
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/hooks/useMedia.mjs",
+                "renderedBytes": 6273
+              },
+              {
+                "id": "node_modules/@tamagui/helpers/dist/esm/validStyleProps.mjs",
+                "renderedBytes": 6264
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/createTamagui.mjs",
+                "renderedBytes": 6121
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/createDesignSystem.mjs",
+                "renderedBytes": 5729
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/getCSSStylesAtomic.mjs",
+                "renderedBytes": 5430
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/hooks/useComponentState.mjs",
+                "renderedBytes": 4796
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/getThemeCSSRules.mjs",
+                "renderedBytes": 4548
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/createMediaStyle.mjs",
+                "renderedBytes": 3973
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/views/Theme.mjs",
+                "renderedBytes": 3856
+              },
+              {
+                "id": "node_modules/@tamagui/animation-helpers/dist/esm/normalizeTransition.mjs",
+                "renderedBytes": 3464
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/getTokenForKey.mjs",
+                "renderedBytes": 3332
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/expandStyle.mjs",
+                "renderedBytes": 3292
+              },
+              {
+                "id": "node_modules/tamagui/node_modules/@tamagui/portal/dist/esm/GorhomPortal.mjs",
+                "renderedBytes": 3289
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/createStyledContext.mjs",
+                "renderedBytes": 2153
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/themeable.mjs",
+                "renderedBytes": 2096
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/views/TamaguiProvider.mjs",
+                "renderedBytes": 1821
+              },
+              {
+                "id": "node_modules/@tamagui/core/dist/esm/index.mjs",
+                "renderedBytes": 1797
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/createVariable.mjs",
+                "renderedBytes": 1758
+              },
+              {
+                "id": "node_modules/@tamagui/helpers/dist/esm/webOnlyStyleProps.mjs",
+                "renderedBytes": 1619
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/subscribeToContextGroup.mjs",
+                "renderedBytes": 1598
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/getVariantExtras.mjs",
+                "renderedBytes": 1487
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/pseudoTransitions.mjs",
+                "renderedBytes": 1476
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/mergeProps.mjs",
+                "renderedBytes": 1456
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/views/Slot.mjs",
+                "renderedBytes": 1390
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/hooks/getThemeProxied.mjs",
+                "renderedBytes": 1281
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/registerCSSVariable.mjs",
+                "renderedBytes": 1274
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/pseudoDescriptors.mjs",
+                "renderedBytes": 1233
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/wrapStyleTags.mjs",
+                "renderedBytes": 1226
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/normalizeStyle.mjs",
+                "renderedBytes": 1216
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/createVariables.mjs",
+                "renderedBytes": 1202
+              },
+              {
+                "id": "node_modules/@tamagui/simple-hash/dist/esm/index.mjs",
+                "renderedBytes": 1116
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/insertFont.mjs",
+                "renderedBytes": 1039
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/defaultAnimationDriver.mjs",
+                "renderedBytes": 964
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/nativeOnlyProps.mjs",
+                "renderedBytes": 896
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/mergeSlotStyleProps.mjs",
+                "renderedBytes": 880
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/config.mjs",
+                "renderedBytes": 857
+              },
+              {
+                "id": "node_modules/@tamagui/constants/dist/esm/constants.mjs",
+                "renderedBytes": 850
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/views/TamaguiRoot.mjs",
+                "renderedBytes": 835
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/views/ThemeProvider.mjs",
+                "renderedBytes": 803
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/getGroupPropParts.mjs",
+                "renderedBytes": 794
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/proxyThemeToParents.mjs",
+                "renderedBytes": 740
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/mediaObjectToString.mjs",
+                "renderedBytes": 728
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/isActivePlatform.mjs",
+                "renderedBytes": 710
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/expandStyles.mjs",
+                "renderedBytes": 672
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/normalizeValueWithProperty.mjs",
+                "renderedBytes": 665
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/hooks/useTheme.mjs",
+                "renderedBytes": 540
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/getDefaultProps.mjs",
+                "renderedBytes": 529
+              },
+              {
+                "id": "node_modules/@tamagui/use-presence/dist/esm/usePresence.mjs",
+                "renderedBytes": 512
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/objectIdentityKey.mjs",
+                "renderedBytes": 482
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/eventHandling.mjs",
+                "renderedBytes": 452
+              },
+              {
+                "id": "node_modules/tamagui/dist/esm/views/TamaguiProvider.mjs",
+                "renderedBytes": 452
+              },
+              {
+                "id": "node_modules/@tamagui/helpers/dist/esm/composeEventHandlers.mjs",
+                "renderedBytes": 440
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/defaultComponentState.mjs",
+                "renderedBytes": 440
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/resolveCompoundTokens.mjs",
+                "renderedBytes": 439
+              },
+              {
+                "id": "node_modules/@tamagui/native/dist/esm/globalState.mjs",
+                "renderedBytes": 437
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/platformResolveValue.mjs",
+                "renderedBytes": 430
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/mediaState.mjs",
+                "renderedBytes": 428
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/transformsToString.mjs",
+                "renderedBytes": 413
+              },
+              {
+                "id": "node_modules/@tamagui/use-did-finish-ssr/dist/esm/ClientOnly.mjs",
+                "renderedBytes": 406
+              },
+              {
+                "id": "node_modules/@tamagui/native/dist/esm/components.mjs",
+                "renderedBytes": 405
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/normalizeColor.mjs",
+                "renderedBytes": 401
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/normalizeShadow.mjs",
+                "renderedBytes": 401
+              },
+              {
+                "id": "node_modules/@tamagui/use-presence/dist/esm/PresenceContext.mjs",
+                "renderedBytes": 389
+              },
+              {
+                "id": "node_modules/@tamagui/is-equal-shallow/dist/esm/index.mjs",
+                "renderedBytes": 383
+              },
+              {
+                "id": "node_modules/@tamagui/use-did-finish-ssr/dist/esm/index.mjs",
+                "renderedBytes": 381
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/skipProps.mjs",
+                "renderedBytes": 354
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/resolveAnimationDriver.mjs",
+                "renderedBytes": 346
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/matchMedia.mjs",
+                "renderedBytes": 340
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/themes.mjs",
+                "renderedBytes": 339
+              },
+              {
+                "id": "node_modules/@tamagui/native/dist/esm/portalState.mjs",
+                "renderedBytes": 337
+              },
+              {
+                "id": "node_modules/@tamagui/compose-refs/dist/esm/compose-refs.mjs",
+                "renderedBytes": 290
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/mergeRenderElementProps.mjs",
+                "renderedBytes": 280
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/contexts/ComponentContext.mjs",
+                "renderedBytes": 257
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/isActiveTheme.mjs",
+                "renderedBytes": 224
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/resolveRem.mjs",
+                "renderedBytes": 218
+              },
+              {
+                "id": "node_modules/@tamagui/z-index-stack/dist/esm/context.mjs",
+                "renderedBytes": 211
+              },
+              {
+                "id": "node_modules/@tamagui/react-native-media-driver/dist/esm/createMedia.mjs",
+                "renderedBytes": 173
+              },
+              {
+                "id": "node_modules/tamagui/node_modules/@tamagui/portal/dist/esm/constants.mjs",
+                "renderedBytes": 170
+              },
+              {
+                "id": "node_modules/@tamagui/start-transition/dist/esm/index.mjs",
+                "renderedBytes": 168
+              },
+              {
+                "id": "node_modules/@tamagui/constants/dist/esm/platformDriver.mjs",
+                "renderedBytes": 167
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/setElementProps.mjs",
+                "renderedBytes": 155
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/setupHooks.mjs",
+                "renderedBytes": 148
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/styleOriginalValues.mjs",
+                "renderedBytes": 147
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/views/View.mjs",
+                "renderedBytes": 146
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/isObj.mjs",
+                "renderedBytes": 144
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/contexts/GroupContext.mjs",
+                "renderedBytes": 142
+              },
+              {
+                "id": "node_modules/@tamagui/react-native-media-driver/dist/esm/matchMedia.mjs",
+                "renderedBytes": 138
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/sortString.mjs",
+                "renderedBytes": 136
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/pointerEvents.mjs",
+                "renderedBytes": 133
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/defaultOffset.mjs",
+                "renderedBytes": 131
+              },
+              {
+                "id": "node_modules/@tamagui/web/dist/esm/constants/constants.mjs",
+                "renderedBytes": 128
+              },
+              {
+                "id": "node_modules/@tamagui/core/dist/esm/getBaseViews.mjs",
+                "renderedBytes": 118
+              },
+              {
+                "id": "node_modules/tamagui/dist/esm/createTamagui.mjs",
+                "renderedBytes": 108
+              }
+            ]
+          }
+        ],
+        "assets": []
+      }
+    }
+  },
+  "comparison": {
+    "compiled": {
+      "artifactBytes": {
+        "v3": {
+          "js": 318781,
+          "css": 3441,
+          "jsGzipBytes": 106199,
+          "cssGzipBytes": 1087,
+          "tamaguiJsBytes": 126829,
+          "tamaguiJsGzipBytes": 45324,
+          "reactControlJsBytes": 182423,
+          "reactControlJsGzipBytes": 57081
+        },
+        "v2": {
+          "js": 283397,
+          "css": 4427,
+          "jsGzipBytes": 94147,
+          "cssGzipBytes": 1042,
+          "tamaguiJsBytes": 90923,
+          "tamaguiJsGzipBytes": 33424,
+          "reactControlJsBytes": 182421,
+          "reactControlJsGzipBytes": 57078
+        },
+        "delta": {
+          "js": 35384,
+          "css": -986,
+          "jsGzipBytes": 12052,
+          "cssGzipBytes": 45,
+          "tamaguiJsBytes": 35906,
+          "tamaguiJsGzipBytes": 11900,
+          "reactControlJsBytes": 2,
+          "reactControlJsGzipBytes": 3
+        }
+      },
+      "renderedModuleGroups": {
+        "@tamagui/web": {
+          "v3RenderedBytes": 215464,
+          "v2RenderedBytes": 165619,
+          "deltaRenderedBytes": 49845
+        },
+        "@tamagui/style-grammar": {
+          "v3RenderedBytes": 7375,
+          "v2RenderedBytes": 0,
+          "deltaRenderedBytes": 7375
+        },
+        "@tamagui/normalize-css-color": {
+          "v3RenderedBytes": 7249,
+          "v2RenderedBytes": 0,
+          "deltaRenderedBytes": 7249
+        },
+        "@tamagui/animations-css": {
+          "v3RenderedBytes": 17185,
+          "v2RenderedBytes": 12488,
+          "deltaRenderedBytes": 4697
+        },
+        "fixture": {
+          "v3RenderedBytes": 11062,
+          "v2RenderedBytes": 11733,
+          "deltaRenderedBytes": -671
+        },
+        "@tamagui/animation-helpers": {
+          "v3RenderedBytes": 2859,
+          "v2RenderedBytes": 3464,
+          "deltaRenderedBytes": -605
+        },
+        "@tamagui/use-element-layout": {
+          "v3RenderedBytes": 9514,
+          "v2RenderedBytes": 9878,
+          "deltaRenderedBytes": -364
+        },
+        "@tamagui/helpers": {
+          "v3RenderedBytes": 8657,
+          "v2RenderedBytes": 8323,
+          "deltaRenderedBytes": 334
+        },
+        "@tamagui/react-native-media-driver": {
+          "v3RenderedBytes": 0,
+          "v2RenderedBytes": 311,
+          "deltaRenderedBytes": -311
+        },
+        "@tamagui/compose-refs": {
+          "v3RenderedBytes": 479,
+          "v2RenderedBytes": 290,
+          "deltaRenderedBytes": 189
+        },
+        "@tamagui/core": {
+          "v3RenderedBytes": 2043,
+          "v2RenderedBytes": 1915,
+          "deltaRenderedBytes": 128
+        },
+        "@tamagui/portal": {
+          "v3RenderedBytes": 3391,
+          "v2RenderedBytes": 3459,
+          "deltaRenderedBytes": -68
+        },
+        "scheduler": {
+          "v3RenderedBytes": 9246,
+          "v2RenderedBytes": 9182,
+          "deltaRenderedBytes": 64
+        },
+        "@tamagui/constants": {
+          "v3RenderedBytes": 1059,
+          "v2RenderedBytes": 1017,
+          "deltaRenderedBytes": 42
+        },
+        "@tamagui/simple-hash": {
+          "v3RenderedBytes": 1155,
+          "v2RenderedBytes": 1116,
+          "deltaRenderedBytes": 39
+        },
+        "react": {
+          "v3RenderedBytes": 16319,
+          "v2RenderedBytes": 16283,
+          "deltaRenderedBytes": 36
+        },
+        "react-dom": {
+          "v3RenderedBytes": 440495,
+          "v2RenderedBytes": 440459,
+          "deltaRenderedBytes": 36
+        },
+        "@tamagui/native": {
+          "v3RenderedBytes": 1146,
+          "v2RenderedBytes": 1179,
+          "deltaRenderedBytes": -33
+        },
+        "@tamagui/use-did-finish-ssr": {
+          "v3RenderedBytes": 765,
+          "v2RenderedBytes": 787,
+          "deltaRenderedBytes": -22
+        },
+        "@tamagui/use-presence": {
+          "v3RenderedBytes": 879,
+          "v2RenderedBytes": 901,
+          "deltaRenderedBytes": -22
+        },
+        "@tamagui/z-index-stack": {
+          "v3RenderedBytes": 198,
+          "v2RenderedBytes": 211,
+          "deltaRenderedBytes": -13
+        },
+        "@tamagui/start-transition": {
+          "v3RenderedBytes": 157,
+          "v2RenderedBytes": 168,
+          "deltaRenderedBytes": -11
+        },
+        "tamagui": {
+          "v3RenderedBytes": 552,
+          "v2RenderedBytes": 560,
+          "deltaRenderedBytes": -8
+        },
+        "@tamagui/is-equal-shallow": {
+          "v3RenderedBytes": 376,
+          "v2RenderedBytes": 383,
+          "deltaRenderedBytes": -7
+        },
+        "build/runtime helpers": {
+          "v3RenderedBytes": 2329,
+          "v2RenderedBytes": 2329,
+          "deltaRenderedBytes": 0
+        },
+        "shared benchmark": {
+          "v3RenderedBytes": 2462,
+          "v2RenderedBytes": 2462,
+          "deltaRenderedBytes": 0
+        }
+      }
+    },
+    "runtime": {
+      "artifactBytes": {
+        "v3": {
+          "js": 317386,
+          "css": 0,
+          "jsGzipBytes": 105686,
+          "cssGzipBytes": 0,
+          "tamaguiJsBytes": 126829,
+          "tamaguiJsGzipBytes": 45324,
+          "reactControlJsBytes": 182423,
+          "reactControlJsGzipBytes": 57081
+        },
+        "v2": {
+          "js": 281483,
+          "css": 0,
+          "jsGzipBytes": 93786,
+          "cssGzipBytes": 0,
+          "tamaguiJsBytes": 90923,
+          "tamaguiJsGzipBytes": 33424,
+          "reactControlJsBytes": 182421,
+          "reactControlJsGzipBytes": 57085
+        },
+        "delta": {
+          "js": 35903,
+          "css": 0,
+          "jsGzipBytes": 11900,
+          "cssGzipBytes": 0,
+          "tamaguiJsBytes": 35906,
+          "tamaguiJsGzipBytes": 11900,
+          "reactControlJsBytes": 2,
+          "reactControlJsGzipBytes": -4
+        }
+      },
+      "renderedModuleGroups": {
+        "@tamagui/web": {
+          "v3RenderedBytes": 215464,
+          "v2RenderedBytes": 165619,
+          "deltaRenderedBytes": 49845
+        },
+        "@tamagui/style-grammar": {
+          "v3RenderedBytes": 7375,
+          "v2RenderedBytes": 0,
+          "deltaRenderedBytes": 7375
+        },
+        "@tamagui/normalize-css-color": {
+          "v3RenderedBytes": 7249,
+          "v2RenderedBytes": 0,
+          "deltaRenderedBytes": 7249
+        },
+        "@tamagui/animations-css": {
+          "v3RenderedBytes": 17185,
+          "v2RenderedBytes": 12488,
+          "deltaRenderedBytes": 4697
+        },
+        "@tamagui/animation-helpers": {
+          "v3RenderedBytes": 2859,
+          "v2RenderedBytes": 3464,
+          "deltaRenderedBytes": -605
+        },
+        "@tamagui/use-element-layout": {
+          "v3RenderedBytes": 9514,
+          "v2RenderedBytes": 9878,
+          "deltaRenderedBytes": -364
+        },
+        "@tamagui/helpers": {
+          "v3RenderedBytes": 8657,
+          "v2RenderedBytes": 8323,
+          "deltaRenderedBytes": 334
+        },
+        "@tamagui/react-native-media-driver": {
+          "v3RenderedBytes": 0,
+          "v2RenderedBytes": 311,
+          "deltaRenderedBytes": -311
+        },
+        "@tamagui/compose-refs": {
+          "v3RenderedBytes": 479,
+          "v2RenderedBytes": 290,
+          "deltaRenderedBytes": 189
+        },
+        "@tamagui/core": {
+          "v3RenderedBytes": 2043,
+          "v2RenderedBytes": 1915,
+          "deltaRenderedBytes": 128
+        },
+        "@tamagui/portal": {
+          "v3RenderedBytes": 3391,
+          "v2RenderedBytes": 3459,
+          "deltaRenderedBytes": -68
+        },
+        "scheduler": {
+          "v3RenderedBytes": 9246,
+          "v2RenderedBytes": 9182,
+          "deltaRenderedBytes": 64
+        },
+        "@tamagui/constants": {
+          "v3RenderedBytes": 1059,
+          "v2RenderedBytes": 1017,
+          "deltaRenderedBytes": 42
+        },
+        "@tamagui/simple-hash": {
+          "v3RenderedBytes": 1155,
+          "v2RenderedBytes": 1116,
+          "deltaRenderedBytes": 39
+        },
+        "react": {
+          "v3RenderedBytes": 16319,
+          "v2RenderedBytes": 16283,
+          "deltaRenderedBytes": 36
+        },
+        "react-dom": {
+          "v3RenderedBytes": 440495,
+          "v2RenderedBytes": 440459,
+          "deltaRenderedBytes": 36
+        },
+        "@tamagui/native": {
+          "v3RenderedBytes": 1146,
+          "v2RenderedBytes": 1179,
+          "deltaRenderedBytes": -33
+        },
+        "@tamagui/use-did-finish-ssr": {
+          "v3RenderedBytes": 765,
+          "v2RenderedBytes": 787,
+          "deltaRenderedBytes": -22
+        },
+        "@tamagui/use-presence": {
+          "v3RenderedBytes": 879,
+          "v2RenderedBytes": 901,
+          "deltaRenderedBytes": -22
+        },
+        "@tamagui/z-index-stack": {
+          "v3RenderedBytes": 198,
+          "v2RenderedBytes": 211,
+          "deltaRenderedBytes": -13
+        },
+        "@tamagui/start-transition": {
+          "v3RenderedBytes": 157,
+          "v2RenderedBytes": 168,
+          "deltaRenderedBytes": -11
+        },
+        "tamagui": {
+          "v3RenderedBytes": 552,
+          "v2RenderedBytes": 560,
+          "deltaRenderedBytes": -8
+        },
+        "@tamagui/is-equal-shallow": {
+          "v3RenderedBytes": 376,
+          "v2RenderedBytes": 383,
+          "deltaRenderedBytes": -7
+        },
+        "build/runtime helpers": {
+          "v3RenderedBytes": 2329,
+          "v2RenderedBytes": 2329,
+          "deltaRenderedBytes": 0
+        },
+        "fixture": {
+          "v3RenderedBytes": 9966,
+          "v2RenderedBytes": 9966,
+          "deltaRenderedBytes": 0
+        },
+        "shared benchmark": {
+          "v3RenderedBytes": 2462,
+          "v2RenderedBytes": 2462,
+          "deltaRenderedBytes": 0
+        }
+      }
+    }
+  },
+  "interpretation": {
+    "correctedHarness": "Both arms use byte-identical minimal Tamagui configs; the prior default-theme import mismatch was removed.",
+    "moduleLengths": "Rendered module lengths are pre-minification attribution, while artifact bytes and gzip bytes are exact emitted sizes.",
+    "tamaguiGzip": "Tamagui-attributable gzip is measured from an explicit production-minified Rollup chunk containing tamagui, @tamagui/*, workspace core/packages/ui dist modules, and @react-native/normalize-color when pulled by the Tamagui runtime. It excludes fixture code, shared benchmark code, React, react-dom, scheduler, Vite helpers, and other dependencies.",
+    "remainingDelta": "The remaining V3 delta is framework surface led by @tamagui/style-grammar and @tamagui/web, not fixture/config/theme code."
+  }
+}

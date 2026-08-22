@@ -1,0 +1,62 @@
+{
+  "name": "@tamagui/config-v5",
+  "version": "2.7.7",
+  "source": "src/index.ts",
+  "files": [
+    "src",
+    "types",
+    "dist"
+  ],
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/cjs/index.cjs",
+  "module": "./dist/esm/index.mjs",
+  "react-native": "./dist/esm/index.native.js",
+  "types": "./types/index.d.ts",
+  "tamagui-build": {
+    "outputs": [
+      "cjs",
+      "esm",
+      "types"
+    ]
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./types/index.d.ts",
+      "react-native": "./dist/esm/index.native.js",
+      "browser": "./dist/esm/index.mjs",
+      "module": "./dist/esm/index.mjs",
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.cjs",
+      "default": "./dist/esm/index.mjs"
+    },
+    "./builder": {
+      "types": "./types/builder.d.ts",
+      "react-native": "./dist/esm/builder.native.js",
+      "browser": "./dist/esm/builder.mjs",
+      "module": "./dist/esm/builder.mjs",
+      "import": "./dist/esm/builder.mjs",
+      "require": "./dist/cjs/builder.cjs",
+      "default": "./dist/esm/builder.mjs"
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tamagui-build",
+    "test": "bun test tests/v5.test.ts",
+    "watch": "tamagui-build --watch",
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build"
+  },
+  "dependencies": {
+    "@tamagui/colors": "workspace:*",
+    "@tamagui/web": "workspace:*",
+    "color2k": "^2.0.2"
+  },
+  "devDependencies": {
+    "@tamagui/build": "workspace:*"
+  }
+}

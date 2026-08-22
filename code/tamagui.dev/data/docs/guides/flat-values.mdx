@@ -1,0 +1,267 @@
+---
+title: Flat Conditional Values
+description: The V3 flat-value syntax and migration workflow
+---
+
+V3 puts every condition in the value of the property it changes. Tokens and
+theme values are bare names, and condition-object styling has no runtime path.
+
+```tsx
+<View
+  bg="background hover:background-hover dark:blue-500"
+  p="4 sm:6"
+  opacity="disabled:0.5"
+/>
+```
+
+## Value grammar
+
+Every conditional style value uses one grammar:
+
+```txt
+value  := base? clause*
+clause := modifier (":" modifier)* ":" payload
+```
+
+The base and each payload are ordinary property values. A registered modifier
+chain starts a new clause; the last matching clause wins.
+
+```tsx
+<View
+  p="4 sm:6"
+  backgroundColor="red hover:blue dark:hover:navy"
+  width="100% md:42rem"
+  boxShadow="0 2px 8px #0003 hover:0 4px 16px #0004"
+  scale="1 enter:0.9 exit:0.9"
+/>
+```
+
+Payloads run until the next registered modifier chain, including when they
+contain spaces. An empty payload is invalid; clear a property with a real value such as `none`,
+`transparent`, `initial`, or `unset`.
+
+Do not put clauses in the raw `transform` prop. Use the flattened transform
+family instead:
+
+```tsx
+<View scale="1 hover:1.05" rotate="0deg hover:5deg" />
+```
+
+## Token and theme lookup
+
+Quoted identifiers resolve config-first. A configured token, theme key, or
+variable wins; a miss remains literal text so CSS keywords and custom values
+pass through.
+
+```tsx
+<View
+  p="4"
+  bg="background"
+  borderColor="border-color"
+  width="max-content"
+/>
+```
+
+Use a qualified token when the same name exists in more than one category:
+
+```tsx
+<View width="size.4" color="color.blue-500" />
+```
+
+A raw number remains a platform value:
+
+```tsx
+<View p="4" />  // configured space token
+<View p={4} />   // 4 CSS pixels on web, 4 points on native
+```
+
+Built-in multi-part V3 names are kebab-case. The runtime does not guess aliases:
+
+| V2 name | V3 name |
+| --- | --- |
+| `backgroundHover` | `background-hover` |
+| `backgroundPress` | `background-press` |
+| `borderColor` | `border-color` |
+| `borderColorHover` | `border-color-hover` |
+| `placeholderColor` | `placeholder-color` |
+| `shadowColor` | `shadow-color` |
+
+## Modifiers
+
+The registry combines built-ins with names from your config.
+
+| Kind | Spellings |
+| --- | --- |
+| interaction | `hover:` `press:` `focus:` `focus-visible:` `focus-within:` `disabled:` |
+| presence | `enter:` `exit:` |
+| component state | `open:` `checked:` `selected:` `highlighted:` `invalid:` |
+| theme | `dark:` `light:` and configured theme names |
+| media | configured keys such as `sm:` `md:` `max-md:` |
+| platform | `web:` `native:` `ios:` `android:` `tv:` `androidtv:` `tvos:` |
+| group | `group-hover:` and named forms such as `group-hover/card:` |
+| container | `@sm:` and named forms such as `@sm/layout:` |
+
+Modifiers in one clause are an AND. For example, `dark:hover:` applies only
+while both conditions match.
+
+## Merging
+
+Shorthands and longhands merge one property program at a time. A later base
+replaces the earlier base without erasing unrelated clauses:
+
+```tsx
+<View backgroundColor="gray hover:blue" bg="red" />
+// backgroundColor is red; hover is blue
+
+<View p="4 sm:6" px="2" />
+// left and right bases are 2; their sm clauses remain 6
+```
+
+## Groups and containers
+
+A group exposes parent state. A query container supplies dimensions.
+
+```tsx
+<View group>
+  <Text color="gray group-hover:black" />
+</View>
+
+<View container>
+  <Text width="100% @sm:50%" />
+</View>
+
+<View group="card" container containerName="card">
+  <Text color="gray @sm/card:group-hover/card:black" />
+</View>
+```
+
+Plain `sm:` is a viewport query. `@sm:` measures the nearest query container.
+Only size-measuring media keys register a container form.
+
+## Editor support
+
+Flat values are strings, so TypeScript can only take autocomplete so far. It
+offers each prop's token union plus every bare modifier prefix (`hover:`,
+`sm:`, `dark:`), but not the cross product: that union is over a million
+members, which TypeScript rejects outright and then returns *no* completions at
+all. So the vocabulary lives in a language server instead.
+
+```bash
+npm install --save-dev @tamagui/lsp
+```
+
+It reads `.tamagui/tamagui.config.json`, the artifact the compiler already
+writes, and gives you completions filtered as you type, diagnostics for unknown
+modifiers and misspelled values with "did you mean" suggestions, hover showing a
+token's resolved value per theme, and inline color swatches.
+
+Completing a clause replaces only that clause, so accepting `background-hover`
+in `bg="background hover:back"` keeps the `background` you already wrote.
+
+It speaks stdio LSP, so every editor needs a few lines and no plugin code. In
+VS Code, install the Tamagui extension and it spawns the binary for you. For
+Neovim:
+
+```lua
+vim.lsp.config.tamagui = {
+  cmd = { 'tamagui-lsp' },
+  filetypes = { 'typescriptreact', 'javascriptreact' },
+  root_markers = { 'tamagui.config.ts', 'package.json' },
+}
+vim.lsp.enable('tamagui')
+```
+
+Helix, Zed, Emacs, Sublime and JetBrains are all a similar few lines; see the
+[package README](https://github.com/tamagui/tamagui/blob/main/code/lsp/npm/tamagui-lsp/README.md).
+
+If completions never appear, the server is waiting for the config artifact: run
+your dev server or `tamagui generate` once so the compiler emits it. When the
+config changes the server picks it up and republishes on its own, with no
+editor restart.
+
+For CI and pre-commit, `tamagui check` validates every flat value in a project
+and exits non-zero, which is also the right hook for coding agents:
+
+```bash
+tamagui check
+```
+
+## Migrate an existing app
+
+The codemod in the Tamagui repository is the migration path. It recognizes old
+token spellings and condition objects, rewrites every statically eligible site,
+and reports anything that still needs a human decision.
+
+For example, this V2 source is migration input only:
+
+```tsx
+<View
+  bg="$background"
+  hoverStyle={{ bg: '$backgroundHover' }}
+  $theme-dark={{ bg: '$blue10' }}
+  $sm={{ p: '$6' }}
+  p="$4"
+/>
+```
+
+It becomes:
+
+```tsx
+<View
+  bg="background hover:background-hover dark:blue10"
+  p="4 sm:6"
+/>
+```
+
+That output preserves the old palette name because the codemod cannot choose a
+new shade for a custom design system. Replace it with the intended v6 token,
+for example `dark:blue-500`, before running the converted application.
+
+Run write mode from your project root against one or more files or directories:
+
+```bash
+npx @tamagui/codemod-flat-values --write \
+  --report flat-values-report.md \
+  --json flat-values-report.json \
+  path/to/src path/to/app.tsx
+```
+
+The write is transactional. A source or generated parse error means no files
+are written. A path that matches no source file exits with status 2, so a typo
+cannot look like a clean migration.
+
+The report records host capability checks, values that require relocation, and
+syntax the tool cannot safely infer. Common manual cases include:
+
+- a condition that changes a component variant rather than a style property;
+- a dynamic condition object or value whose type is not provable;
+- a named container whose declaring parent is outside the scanned file;
+- a transform array or other structured native value;
+- ordering across an opaque spread that may set the same property.
+
+Fix those rows directly in flat syntax. Do not add a compatibility setting or
+restore a condition-object parser.
+
+After the write, search the migrated source for old authoring:
+
+```bash
+rg -n --glob '*.{ts,tsx,js,jsx}' \
+  'hoverStyle|pressStyle|focusStyle|focusVisibleStyle|focusWithinStyle|disabledStyle|enterStyle|exitStyle|\$[A-Za-z][A-Za-z0-9-]*\s*[:=]' \
+  path/to/src
+
+rg -n --glob '*.{ts,tsx,js,jsx}' \
+  '\$[A-Za-z0-9_.-]+' \
+  path/to/src
+```
+
+Legacy spellings should remain only in explicit migration fixtures or tooling
+that reads V2 source. Then typecheck, build, and exercise state, media, theme,
+group, container, platform, and presence behavior on every target your app
+ships.
+
+The codemod package itself can be checked with:
+
+```bash
+bun run test
+bun run typecheck
+```

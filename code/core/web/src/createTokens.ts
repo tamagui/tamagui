@@ -2,7 +2,23 @@ import { createVariables } from './createVariables'
 import type { CreateTokens, Variable } from './types'
 
 export function createTokens<T extends CreateTokens>(tokens: T): MakeTokens<T> {
+  if (process.env.NODE_ENV !== 'production') {
+    validateNoTrueTokenKeys(tokens)
+  }
   return createVariables(tokens, process.env.TAMAGUI_TOKEN_PREFIX ?? 't') as any
+}
+
+function validateNoTrueTokenKeys(tokens: CreateTokens) {
+  for (const category in tokens) {
+    const tokenSet = tokens[category]
+    if (!tokenSet || typeof tokenSet !== 'object') continue
+
+    if (Object.prototype.hasOwnProperty.call(tokenSet, 'true')) {
+      throw new Error(
+        `tokens.${category}.true is reserved because boolean values select component defaults. Use an explicit token name instead.`
+      )
+    }
+  }
 }
 
 type NormalizeTokens<A, Type = A[keyof A]> = {

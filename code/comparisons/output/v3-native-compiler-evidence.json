@@ -1,0 +1,148 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-03T03:31:26.334Z",
+  "fixture": {
+    "path": "code/comparisons/shared/native-compiled-bench.tsx",
+    "bytes": 7218,
+    "sha256": "0acf5a812a02b1fe901367758ff46dc672bde89cd3f823e1adf86bafff70c719",
+    "coverage": {
+      "kind": "representative synthetic native static JSX",
+      "directViewCandidates": 6,
+      "styledUsageCandidates": 1,
+      "totalCandidates": 7
+    }
+  },
+  "dynamicFixture": {
+    "path": "code/compiler/static-tests/fixtures/native-compiled-dynamic-corpus.tsx",
+    "bytes": 751,
+    "sha256": "a67f43c54c24bc07a0cf3ddc1e4256981a74f32b3346b3af14e2b4b8ee99fee6",
+    "coverage": {
+      "kind": "byte-identical dynamic native opacity corpus",
+      "directViewCandidates": 2,
+      "styledUsageCandidates": 1,
+      "totalCandidates": 3
+    },
+    "regressionControl": {
+      "command": "bun run test:run -- tests/dynamicPartial.native.test.tsx --reporter=verbose",
+      "disablePartialExtractionStats": {
+        "found": 3,
+        "lowered": 0,
+        "flattened": 0,
+        "styled": 0,
+        "bailed": 3
+      },
+      "diagnosticCode": "local/dynamic-style-value",
+      "diagnosticComponents": [
+        "View",
+        "View",
+        "DynamicFixtureCard"
+      ],
+      "diagnosticProp": "opacity"
+    },
+    "v2": {
+      "stats": {
+        "found": 2,
+        "optimized": 2,
+        "flattened": 2
+      },
+      "coverage": {
+        "recognized": 2,
+        "optimized": 2,
+        "flattened": 2,
+        "unrecognized": 1
+      },
+      "outputBytes": 1613,
+      "outputSha256": "dff8cd305e5a270b167e4266a85cec20b3f5468f7816c70583645e93bb843e98",
+      "diagnostics": [],
+      "behaviorAssertions": {
+        "expectedDirectHostStylesMatched": 2,
+        "stableStyleWrappers": 2,
+        "dynamicExpressionArrays": 2,
+        "styledUsageRemainsRuntime": 1
+      }
+    },
+    "v3": {
+      "generation": "3190f4470ce421e4c1e7d26105013a03319100c87ab2533254f999cf7a3b6a46",
+      "sourceHash": "a67f43c54c24bc07a0cf3ddc1e4256981a74f32b3346b3af14e2b4b8ee99fee6",
+      "compiledHash": "30b63331cbe6c5f8279e5c6df0e13e0844cd2d3dfcfd90a77ff31eeff3c5d6dd",
+      "loweredOutputSha256": "36068e2f85652eb6d640f3415b994709f7d3b6eb311e15e4279cedc7c107d5cd",
+      "planBlobHash": "67bad32458502813bb2e1aa871c1a9ff1bb6bbbc411cd83b0a9d9f7d2f44dea6",
+      "stats": {
+        "bailed": 0,
+        "flattened": 3,
+        "found": 3,
+        "lowered": 3,
+        "styled": 1
+      },
+      "diagnostics": [],
+      "behaviorAssertions": {
+        "babelInputMatchesPlanHash": true,
+        "appliedPlanParses": true,
+        "expectedDirectHostStylesMatched": 2,
+        "expectedStyledHostStylesMatched": 1,
+        "stableStyleWrappers": 3,
+        "dynamicExpressionArrays": 3,
+        "dynamicOpacityStyles": 3,
+        "metroFrontendCacheTest": "frontend.test.ts publishes and applies the post-Babel native opacity plan through the Metro cache worker",
+        "compileRenderUpdateTest": "dynamicPartial.native.test.tsx asserts stable host identity, static styles, and opacity 1 to 0.8"
+      }
+    }
+  },
+  "v2": {
+    "packages": {
+      "tamagui": "2.6.2",
+      "babelPlugin": "2.6.2"
+    },
+    "stats": {
+      "found": 6,
+      "optimized": 6,
+      "flattened": 6
+    },
+    "coverage": {
+      "recognized": 6,
+      "recognizedButNotOptimized": 0,
+      "unrecognized": 1
+    },
+    "outputBytes": 8412,
+    "outputSha256": "ef14cb12479094a83a92377d70f848736bb320e343c088c896be5ea5501dd2ba",
+    "nativeViewElements": 6,
+    "styleSheetCreates": 1,
+    "behaviorAssertions": {
+      "emittedNativeViewElements": true,
+      "emittedOneStyleSheet": true,
+      "expectedDirectHostStylesMatched": 6,
+      "stableKeyStyleUpdatesPreserved": 3
+    }
+  },
+  "v3": {
+    "generation": "3190f4470ce421e4c1e7d26105013a03319100c87ab2533254f999cf7a3b6a46",
+    "sourceHash": "0acf5a812a02b1fe901367758ff46dc672bde89cd3f823e1adf86bafff70c719",
+    "compiledHash": "0bc248e7a2399be6df5b3dc3a97080c124e1f7faf81b412f25fe8e3ad5ff0724",
+    "loweredOutputSha256": "b7d0bdb97bdaf437eb75036b32440f4fd161a5f1e3e1a9619aa3456b12399377",
+    "planBlobHash": "ffa9636d834610c62dcfe6bc2c53a5a91bcbab9f9505857c71cb56456d7b4d32",
+    "stats": {
+      "bailed": 0,
+      "flattened": 7,
+      "found": 7,
+      "lowered": 7,
+      "styled": 1
+    },
+    "coverage": {
+      "recognized": 7,
+      "lowered": 7,
+      "flattened": 7,
+      "styled": 1,
+      "bailed": 0
+    },
+    "diagnostics": [],
+    "behaviorAssertions": {
+      "planMatchesSourceHash": true,
+      "planHasLoweredEdits": true,
+      "babelInputMatchesPlanHash": true,
+      "appliedPlanParses": true,
+      "expectedDirectHostStylesMatched": 6,
+      "expectedStyledHostStylesMatched": 1,
+      "stableKeyStyleUpdatesPreserved": 3
+    }
+  }
+}

@@ -38,22 +38,16 @@
     "@tamagui/compose-refs": "workspace:*",
     "@tamagui/constants": "workspace:*",
     "@tamagui/core": "workspace:*",
-    "@tamagui/create-context": "workspace:*",
-    "@tamagui/element": "workspace:*",
-    "@tamagui/get-button-sized": "workspace:*",
-    "@tamagui/group": "workspace:*",
     "@tamagui/helpers": "workspace:*",
     "@tamagui/roving-focus": "workspace:*",
-    "@tamagui/sizable-context": "workspace:*",
-    "@tamagui/stacks": "workspace:*",
-    "@tamagui/use-controllable-state": "workspace:*",
-    "@tamagui/use-direction": "workspace:*",
+    "@tamagui/size": "workspace:*",
+    "@tamagui/tabs-headless": "workspace:*",
     "@tamagui/web": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
     "react": ">=19",
-    "react-native": "0.83.2"
+    "react-native": "0.86.2"
   },
   "peerDependencies": {
     "react": ">=19"

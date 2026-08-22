@@ -6,26 +6,15 @@ export const Tag = styled(Text, {
   fontFamily: 'inherit',
   // @ts-ignore
   fontSize: 'inherit',
-  borderRadius: '$2',
+  borderRadius: '2',
   cursor: 'pointer',
-  color: '$color',
-  backgroundColor: '$color2',
-
-  hoverStyle: {
-    color: '$color',
-    backgroundColor: '$color3',
-  },
-
+  color: 'color hover:color',
+  backgroundColor: 'color2 hover:color3',
   variants: {
     active: {
       true: {
-        color: '$color10',
-        backgroundColor: '$color5',
-
-        hoverStyle: {
-          color: '$color12',
-          backgroundColor: '$color5',
-        },
+        color: 'color10 hover:color12',
+        backgroundColor: 'color5 hover:color5',
       },
     },
   },

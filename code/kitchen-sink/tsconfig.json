@@ -6,9 +6,6 @@
   "exclude": ["e2e"],
   "references": [
     {
-      "path": "../compiler/babel-plugin"
-    },
-    {
       "path": "../core/cli"
     },
     {

@@ -1,5 +1,6 @@
 import { Heart } from '@tamagui/lucide-icons-2'
-import { Button, TooltipSimple, YStack } from 'tamagui'
+import { TooltipSimple, YStack } from 'tamagui'
+import { Button } from '~/components/Button'
 
 import { Link } from '~/components/Link'
 
@@ -15,16 +16,16 @@ export const SponsorButton = (props: { tiny?: boolean }) => {
         />
       }
       self="center"
-      elevation="$3"
+      boxShadow="0 4px 10px rgba(0, 0, 0, 0.2)"
       borderWidth={props.tiny ? 0 : 1}
-      borderColor="$borderColor"
-      size={props.tiny ? '$3' : '$4'}
-      rounded="$10"
+      borderColor="border-color"
+      size={props.tiny ? 'small' : 'medium'}
+      rounded="10"
       circular={props.tiny ? true : false}
-      chromeless={props.tiny ? true : false}
+      variant={props.tiny ? 'quiet' : undefined}
       aria-label="Support OSS development of Tamagui"
     >
-      <Button.Text fontFamily="$silkscreen">{props.tiny ? '' : 'Sponsor'}</Button.Text>
+      <Button.Text fontFamily="silkscreen">{props.tiny ? '' : 'Sponsor'}</Button.Text>
     </Button>
   )
   return (

@@ -13,7 +13,13 @@ export function inputs({ isProUser, showAppropriateModal }: BentoShowcaseContext
       isProUser={isProUser}
       showAppropriateModal={showAppropriateModal}
     >
-      <YStack pb="$10" gap="$12" p="$2" $gtLg={{ p: '$0' }}>
+      <YStack
+        paddingBottom="2 gtLg:0"
+        gap="12"
+        paddingTop="2 gtLg:0"
+        paddingRight="2 gtLg:0"
+        paddingLeft="2 gtLg:0"
+      >
         <Showcase
           unlock
           isInput
@@ -21,7 +27,7 @@ export function inputs({ isProUser, showAppropriateModal }: BentoShowcaseContext
           fileName={Inputs.InputWithLabelDemo.fileName}
           title="Input with Label"
         >
-          <View py="$8">
+          <View py="8">
             <WithSize>
               <Inputs.InputWithLabelDemo />
             </WithSize>
@@ -33,7 +39,7 @@ export function inputs({ isProUser, showAppropriateModal }: BentoShowcaseContext
           fileName={Inputs.OneTimeCodeInputExample.fileName}
           title="One-Time Code Input"
         >
-          <View py="$15">
+          <View py="15">
             <WithSize>
               <Inputs.OneTimeCodeInputExample />
             </WithSize>
@@ -45,7 +51,7 @@ export function inputs({ isProUser, showAppropriateModal }: BentoShowcaseContext
           fileName={Inputs.InputWithLabelAndMessageDemo.fileName}
           title="Input with Label and Message"
         >
-          <View py="$8">
+          <View py="8">
             <WithSize>
               <Inputs.InputWithLabelAndMessageDemo />
             </WithSize>
@@ -57,7 +63,7 @@ export function inputs({ isProUser, showAppropriateModal }: BentoShowcaseContext
           fileName={Inputs.InputWithErrorDemo.fileName}
           title="Input with Error"
         >
-          <View py="$8">
+          <View py="8">
             <WithSize>
               <Inputs.InputWithErrorDemo />
             </WithSize>
@@ -69,7 +75,7 @@ export function inputs({ isProUser, showAppropriateModal }: BentoShowcaseContext
           fileName={Inputs.InputWithLeftIconDemo.fileName}
           title="Input Left Adornment"
         >
-          <View py="$8">
+          <View py="8">
             <WithSize>
               <Inputs.InputWithLeftIconDemo />
             </WithSize>
@@ -81,7 +87,7 @@ export function inputs({ isProUser, showAppropriateModal }: BentoShowcaseContext
           fileName={Inputs.InputWithRightIconDemo.fileName}
           title="Input Right Adornment"
         >
-          <View py="$8">
+          <View py="8">
             <WithSize>
               <Inputs.InputWithRightIconDemo />
             </WithSize>
@@ -93,7 +99,7 @@ export function inputs({ isProUser, showAppropriateModal }: BentoShowcaseContext
           fileName={Inputs.InputBothSideIconsExample.fileName}
           title="Input Left/Right Adornment"
         >
-          <View py="$8">
+          <View py="8">
             <WithSize>
               <Inputs.InputBothSideIconsExample />
             </WithSize>
@@ -105,7 +111,7 @@ export function inputs({ isProUser, showAppropriateModal }: BentoShowcaseContext
           fileName={Inputs.InputGroupedIconsExample.fileName}
           title="Grouped Input with Buttons"
         >
-          <View py="$8">
+          <View py="8">
             <WithSize>
               <Inputs.InputGroupedIconsExample />
             </WithSize>
@@ -117,7 +123,7 @@ export function inputs({ isProUser, showAppropriateModal }: BentoShowcaseContext
           fileName={Inputs.InputWithRightAddOnDemo.fileName}
           title="Grouped Input with Buttons (Alt)"
         >
-          <View py="$8">
+          <View py="8">
             <WithSize>
               <Inputs.InputWithRightAddOnDemo />
             </WithSize>
@@ -129,7 +135,7 @@ export function inputs({ isProUser, showAppropriateModal }: BentoShowcaseContext
           fileName={Inputs.PhoneInputExample.fileName}
           title="Phone"
         >
-          <View py="$8">
+          <View py="8">
             <WithSize>
               <Inputs.PhoneInputExample />
             </WithSize>

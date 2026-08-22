@@ -44,7 +44,11 @@ export function getThemeCSSRules(props: {
 
     for (const themeKey in theme) {
       const variable = theme[themeKey] as Variable
-      const value = variableCreator(variable.val).variable
+      // needsPx values (px() config variables, "Npx" theme strings) must keep
+      // their unit in CSS while staying numeric for native
+      const value = variableCreator(
+        variable.needsPx ? `${variable.val}px` : variable.val
+      ).variable
       // Hash themeKey in case it has invalid chars too
       vars += `--${process.env.TAMAGUI_CSS_VARIABLE_PREFIX || ''}${simpleHash(
         themeKey,
@@ -56,6 +60,17 @@ export function getThemeCSSRules(props: {
     const isLightBase = themeName === 'light'
     const baseSelectors = names.map((name) => `${CNP}${name}`)
     const selectorsSet = new Set(isDarkBase || isLightBase ? baseSelectors : [])
+
+    // The full resolved name is authoritative. `:not(#t_theme_full_name)` is
+    // an always-matching specificity anchor: a bounded relative selector for
+    // another scheme can also match through intervening Theme scopes, but it
+    // must never override this exact name. The relative family below remains
+    // only for markup emitted by older runtimes/extractors that lacks the full
+    // class. It can go once mixed-version and previously extracted markup no
+    // longer need that class-shape compatibility.
+    for (const name of names) {
+      selectorsSet.add(`${CNP}${name}:not(#t_theme_full_name)`)
+    }
 
     // since we dont specify dark/light in classnames we have to do an awkward specificity war
     // hardcoded to support 2 levels of nesting (e.g. light > dark or dark > light)

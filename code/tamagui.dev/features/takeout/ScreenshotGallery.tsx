@@ -39,36 +39,27 @@ const screenshotImages = [
 ]
 
 const ScreenshotCard = styled(YStack, {
-  bg: '$background02',
-  rounded: '$5',
-  p: '$2',
-  pb: '$3',
+  bg: 'background02',
+  rounded: '5',
+  paddingTop: '2',
+  paddingRight: '2',
+  paddingLeft: '2',
+  pb: '3',
   cursor: 'pointer',
   borderWidth: 0.5,
-  borderColor: 'transparent',
+  borderColor: 'transparent hover:color6',
   overflow: 'hidden',
   transition: 'quick',
-
-  hoverStyle: {
-    scale: 1.05,
-    borderColor: '$color6',
-    z: 10,
-  },
-
-  pressStyle: {
-    scale: 0.98,
-  },
+  z: 'hover:10px',
+  scale: 'hover:1.05 press:0.98',
 })
 
 const ImageWrapper = styled(YStack, {
-  width: 140,
-  height: 140,
+  width: '140px md:120px sm:90px',
+  height: '140px md:120px sm:90px',
   overflow: 'hidden',
-  rounded: '$3',
-  bg: '$color2',
-
-  $md: { width: 120, height: 120 },
-  $sm: { width: 90, height: 90 },
+  rounded: '3',
+  bg: 'color2',
 })
 
 function ScreenshotItem({
@@ -93,8 +84,14 @@ function ScreenshotItem({
           />
         </ImageWrapper>
 
-        <YStack mt="$2" items="center">
-          <Paragraph fontSize={12} color="$color10" fontFamily="$mono" fontWeight="500">
+        <YStack mt="2" items="center">
+          <Paragraph
+            fontSize={12}
+            lineHeight={25}
+            color="color10"
+            fontFamily="mono"
+            fontWeight="500"
+          >
             {img.label}
           </Paragraph>
         </YStack>
@@ -109,11 +106,11 @@ export const ScreenshotGallery = () => {
   return (
     <YStack
       items="center"
-      gap="$6"
+      gap="6"
       maxW={1100}
       mx="auto"
-      py="$8"
-      px="$4"
+      py="8"
+      px="4"
       width="100%"
       position="relative"
     >
@@ -129,7 +126,7 @@ export const ScreenshotGallery = () => {
           width={600}
           height={400}
           rounded={999}
-          bg="$color8"
+          bg="color8"
           opacity={0.08}
           pointerEvents="none"
           style={{ filter: 'blur(100px)' }}
@@ -145,21 +142,20 @@ export const ScreenshotGallery = () => {
           width={400}
           height={300}
           rounded={999}
-          bg="$color7"
+          bg="color7"
           opacity={0.05}
           pointerEvents="none"
           style={{ filter: 'blur(80px)' }}
         />
       </ThemeTintAlt>
 
-      <YStack items="center" gap="$4" z={1}>
+      <YStack items="center" gap="4" z={1}>
         <H2
-          fontSize={32}
+          fontSize="32px sm:40px"
           fontWeight="700"
           text="center"
-          color="$color12"
+          color="color12"
           style={{ lineHeight: '1.2' }}
-          $sm={{ fontSize: 40 }}
         >
           See it in{' '}
           <ThemeTintAlt offset={2}>
@@ -173,7 +169,7 @@ export const ScreenshotGallery = () => {
         </SubTitle>
       </YStack>
 
-      <XStack gap="$4" justify="center" flexWrap="wrap" z={1} $sm={{ gap: '$3' }}>
+      <XStack gap="4 sm:3" justify="center" flexWrap="wrap" z={1}>
         {screenshotImages.map((img, i) => (
           <ScreenshotItem
             key={img.label}

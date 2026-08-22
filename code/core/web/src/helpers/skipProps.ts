@@ -10,18 +10,24 @@ export const skipProps = {
   space: 1,
   animateOnly: 1,
   animatedBy: 1,
+  displayName: 1,
   disableClassName: 1,
   debug: 1,
-  componentName: 1,
   disableOptimization: 1,
+  disableNativeStyle: 1,
   render: 1,
-  style: 1, // handled after loop so pseudos set usedKeys and override it if necessary
+  style: 1, // handled after the prop loop to preserve authored order
   group: 1,
+  container: 1,
   animatePresence: 1,
 }
 
 if (process.env.NODE_ENV === 'test') {
   skipProps['data-test-renders'] = 1
+}
+
+if (process.env.NODE_ENV === 'development') {
+  skipProps['__tamaguiStyleDebugReceipt'] = 1
 }
 
 // Skip web-only props on native

@@ -41,10 +41,11 @@
   "devDependencies": {
     "@tamagui/build": "workspace:*",
     "react": ">=19",
-    "react-native": "0.83.2"
+    "react-native": "0.86.2"
   },
   "peerDependencies": {
-    "react": ">=19"
+    "react": ">=19",
+    "react-native-web": "*"
   },
   "module:jsx": "dist/jsx"
 }

@@ -1,0 +1,188 @@
+---
+title: Surface
+description: A copy-paste panel, well, and toolbar primitive built from facets and theme levels
+name: surface
+component: Surface
+---
+
+Surface is a copied fixture, not a framework component. It is a `YStack` plus a
+`level` prop and a set of composable chrome and interaction facets. Nothing is on
+by default: a bare `<Surface />` renders no chrome and no interaction styling, and
+every facet is opt-in at the use site.
+
+```tsx
+import { Surface } from 'tamagui'
+
+export default () => <Surface level={2} filled outlined rounded interactive />
+```
+
+<Highlights
+  features={[
+    `A plain YStack with a level prop and opt-in facets — no hidden defaults.`,
+    `Facets read theme generics, never the color scale, so they restyle for free under any level or theme.`,
+    `A copy-paste fixture: fork it for CardSurface vs ListSurface and nothing in the framework cares.`,
+  ]}
+/>
+
+## Installation
+
+Surface ships with `tamagui`:
+
+```tsx
+import { Surface } from 'tamagui'
+```
+
+Or copy it into your own component layer from the registry, which is the intended
+way to own and fork it:
+
+```bash
+npx shadcn add surface
+```
+
+## Levels
+
+`level` shifts the subtree through the relative `level2`, `level3`, or `level4`
+sub-theme. Because facets read theme generics (`background`, `border-color`, …)
+and the level theme re-binds those generics, a level restyles every facet
+beneath it with no cooperation. Read [Surfaces and
+levels](/docs/core/surfaces) for the full theming model.
+
+```tsx
+<Surface level={1} filled>Base panel</Surface>
+<Surface level={2} filled>A step up</Surface>
+<Surface level={3} filled>A step further</Surface>
+<Surface level={4} filled>The highest default level</Surface>
+```
+
+`level` is a prop, not a variant, because a theme boundary can only be created by
+the `theme` prop or `<Theme>` component. `<Surface level={2}>` renders
+`<Theme name="level2">` around the frame.
+
+## Facets
+
+Facets are canonical boolean variants, each a pure function of theme generics plus
+standard tokens. Chrome facets own one property family each and set static
+styles only; the interaction facet owns pseudos only. Because family ownership
+keeps them from colliding, any combination composes with zero coordination.
+
+<PropsTable
+  data={[
+    {
+      name: 'level',
+      required: false,
+      type: '1 | 2 | 3 | 4',
+      description: `Shift the subtree through a relative level theme.`,
+    },
+    {
+      name: 'filled',
+      required: false,
+      type: 'boolean',
+      description: `Chrome: backgroundColor from background.`,
+    },
+    {
+      name: 'outlined',
+      required: false,
+      type: 'boolean',
+      description: `Chrome: 1px borderWidth with borderColor from borderColor.`,
+    },
+    {
+      name: 'elevated',
+      required: false,
+      type: 'boolean',
+      description: `Chrome: a shadow read from shadowColor.`,
+    },
+    {
+      name: 'rounded',
+      required: false,
+      type: 'boolean',
+      description: `Chrome: borderRadius from the optional @tamagui/size policy.`,
+    },
+    {
+      name: 'interactive',
+      required: false,
+      type: 'boolean',
+      description: `Interaction: hover, press, and focus-visible feedback read from the generics (backgroundHover, backgroundPress, borderColor* and outlineColor).`,
+    },
+  ]}
+/>
+
+There are no preset combinations. The Material-style border-minus-fill look is just
+`outlined` without `filled` — a documented composition, not a separate facet.
+
+## Copied source
+
+Surface is generated from a single definition. The `level` wrapper and the facet
+set are all it is:
+
+```tsx
+import { type GetProps, styled, Theme, YStack } from '@tamagui/ui'
+import { forwardRef } from 'react'
+
+import { elevated, filled, interactive, outlined, rounded } from './facets'
+
+export const SurfaceFrame = styled(YStack, {
+  displayName: 'Surface',
+  variants: {
+    filled,
+    outlined,
+    elevated,
+    rounded,
+    interactive,
+  } as const,
+})
+
+export type SurfaceProps = GetProps<typeof SurfaceFrame> & {
+  /** shift the subtree to a relative theme level. */
+  level?: 1 | 2 | 3 | 4
+}
+
+export const Surface = forwardRef<any, SurfaceProps>(function Surface(
+  { level, ...props },
+  ref
+) {
+  const frame = <SurfaceFrame ref={ref} {...props} />
+  if (!level || level === 1) return frame
+  return <Theme name={`level${level}` as 'level2' | 'level3' | 'level4'}>{frame}</Theme>
+})
+```
+
+The facets live in a sibling `facets.ts` so any skin can compose the same chrome:
+
+```tsx
+import { defaultTokenSizePolicy } from '@tamagui/ui'
+
+export const filled = {
+  true: { backgroundColor: 'background' },
+} as const
+
+export const outlined = {
+  true: { borderWidth: 1, borderColor: 'border-color' },
+} as const
+
+export const elevated = {
+  true: {
+    shadowColor: 'shadow-color',
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 2 },
+  },
+} as const
+
+export const rounded = {
+  true: { borderRadius: defaultTokenSizePolicy.radius },
+} as const
+
+export const interactive = {
+  true: {
+    backgroundColor: 'hover:background-hover press:background-press',
+    borderColor: 'hover:border-color-hover press:border-color-press',
+    scale: 'press:0.97',
+    outlineColor: 'focus-visible:outline-color',
+    outlineWidth: 'focus-visible:2px',
+    outlineStyle: 'focus-visible:solid',
+  },
+} as const
+```
+
+Component skins like Card and ListItem do not extend Surface. They get their
+family resemblance by styling against the same generics, so restyling a level
+recolors them too. Fork the copy when you want a differently-shaped panel.

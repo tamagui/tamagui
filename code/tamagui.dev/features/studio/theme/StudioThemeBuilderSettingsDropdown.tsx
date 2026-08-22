@@ -1,6 +1,5 @@
 import { Check, LogOut, Menu } from '@tamagui/lucide-icons-2'
 import {
-  Button,
   Checkbox,
   H6,
   Label,
@@ -10,6 +9,7 @@ import {
   YGroup,
   YStack,
 } from 'tamagui'
+import { Button } from '~/components/Button'
 import type { ThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
 import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
 import { weakKey } from '~/helpers/weakKey'
@@ -18,7 +18,7 @@ import type { WritableKeysOf } from './types'
 export const StudioThemeBuilderSettingsDropdown = () => {
   return (
     <Popover
-      size="$5"
+      size="5"
       allowFlip
       placement="bottom"
       stayInFrame={{
@@ -26,30 +26,24 @@ export const StudioThemeBuilderSettingsDropdown = () => {
       }}
     >
       <Popover.Trigger asChild>
-        <Button size="$2" scaleIcon={1.5} chromeless circular icon={Menu}></Button>
+        <Button size="2" scaleIcon={1.5} variant="quiet" circular icon={Menu}></Button>
       </Popover.Trigger>
 
       <Popover.Content
-        borderWidth="$0.5"
-        borderColor="$borderColor"
+        borderWidth="0-5"
+        borderColor="border-color"
         p={0}
-        trapFocus={false}
-        enterStyle={{ y: -10, opacity: 0 }}
-        exitStyle={{ y: -10, opacity: 0 }}
-        elevate
+        y="enter:-10px exit:-10px"
+        opacity="enter:0 exit:0"
+        backgroundColor="background"
+        boxShadow="0 4px 12px shadow-color"
         maxW={400}
-        transition={[
-          'quickest',
-          {
-            opacity: {
-              overshootClamping: true,
-            },
-          },
-        ]}
+        transition={['quickest', { opacity: { overshootClamping: true } }]}
+        trapFocus={false}
       >
         <Popover.ScrollView>
-          <YGroup self="center" width={320} size="$4">
-            <H6 size="$1" lineHeight={10} pt="$3" pb="$2" px="$3">
+          <YGroup self="center" width={320} size="4">
+            <H6 size="1" lineHeight={10} pt="3" pb="2" px="3">
               Quick Settings
             </H6>
 
@@ -57,7 +51,7 @@ export const StudioThemeBuilderSettingsDropdown = () => {
               return <MenuItem key={weakKey(item)} item={item} />
             })}
 
-            <H6 size="$1" lineHeight={10} pt="$3" pb="$2" px="$3">
+            <H6 size="1" lineHeight={10} pt="3" pb="2" px="3">
               Menu
             </H6>
 
@@ -66,7 +60,12 @@ export const StudioThemeBuilderSettingsDropdown = () => {
             })}
           </YGroup>
         </Popover.ScrollView>
-        <Popover.Arrow borderWidth={1} style={{ zIndex: 1 }} borderColor="$borderColor" />
+        <Popover.Arrow
+          backgroundColor="background"
+          borderWidth={1}
+          borderColor="border-color"
+          style={{ zIndex: 1 }}
+        />
       </Popover.Content>
     </Popover>
   )
@@ -78,7 +77,7 @@ const MenuItem = ({ item }: { item: MenuItem }) => {
       <ListItem
         icon={item.icon}
         justify="flex-start"
-        size="$4"
+        size="4"
         title={item.title}
         onPress={item.onPress as any}
         {...(!item.title && {
@@ -86,7 +85,7 @@ const MenuItem = ({ item }: { item: MenuItem }) => {
         })}
       >
         {Boolean(item.label || item.description) && (
-          <Label flex={1} p="$3" gap="$4" htmlFor={weakKey(item)}>
+          <Label flex={1} p="3" gap="4" htmlFor={weakKey(item)}>
             {item.type === 'toggle' && (
               <Checkbox
                 checked={!!store[item.toggleProperty]}
@@ -103,7 +102,7 @@ const MenuItem = ({ item }: { item: MenuItem }) => {
             <YStack flex={1}>
               <Paragraph>{item.label}</Paragraph>
               {!!item.description && (
-                <Paragraph color="$color10" size="$2">
+                <Paragraph color="color10" size="2">
                   {item.description}
                 </Paragraph>
               )}

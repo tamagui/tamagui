@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { Button, Paragraph, Tooltip, YStack, XStack } from 'tamagui'
+import { Paragraph, Tooltip, YStack, XStack } from 'tamagui'
+import { Button } from '../components/Button'
 
 /**
  * Test case for validating CSS tooltip animation behavior
@@ -18,13 +19,13 @@ export function TooltipAnimationCase() {
   return (
     <YStack
       flex={1}
-      gap="$8"
-      p="$4"
-      bg="$background"
+      gap="8"
+      p="4"
+      bg="background"
       alignItems="center"
       justifyContent="center"
     >
-      <XStack gap="$4">
+      <XStack gap="4">
         <Paragraph data-testid="show-count">Show count: {showCount}</Paragraph>
       </XStack>
 
@@ -38,60 +39,54 @@ export function TooltipAnimationCase() {
         }}
       >
         <Tooltip.Trigger data-testid="tooltip-trigger">
-          <Button size="$4">Hover for tooltip</Button>
+          <Button>Hover for tooltip</Button>
         </Tooltip.Trigger>
 
         <Tooltip.Content
           data-testid="tooltip-content"
-          enterStyle={{ y: -20, opacity: 0 }}
-          exitStyle={{ y: -20, opacity: 0 }}
-          y={0}
-          opacity={1}
+          y="0 enter:-20px exit:-20px"
+          opacity="1 enter:0 exit:0"
           transition="lazy"
           animateOnly={['transform', 'opacity']}
         >
-          <Tooltip.Arrow data-testid="tooltip-arrow" size="$2" />
-          <Paragraph size="$2">Tooltip content</Paragraph>
+          <Tooltip.Arrow data-testid="tooltip-arrow" size="2" />
+          <Paragraph size="2">Tooltip content</Paragraph>
         </Tooltip.Content>
       </Tooltip>
 
       {/* Second tooltip to test first vs subsequent shows */}
       <Tooltip placement="top" delay={0} restMs={0}>
         <Tooltip.Trigger data-testid="tooltip-trigger-2">
-          <Button size="$4">Second tooltip</Button>
+          <Button>Second tooltip</Button>
         </Tooltip.Trigger>
 
         <Tooltip.Content
           data-testid="tooltip-content-2"
-          enterStyle={{ y: 20, opacity: 0 }}
-          exitStyle={{ y: 20, opacity: 0 }}
-          y={0}
-          opacity={1}
+          y="0 enter:20px exit:20px"
+          opacity="1 enter:0 exit:0"
           transition="lazy"
           animateOnly={['transform', 'opacity']}
         >
-          <Tooltip.Arrow data-testid="tooltip-arrow-2" size="$2" />
-          <Paragraph size="$2">Second tooltip</Paragraph>
+          <Tooltip.Arrow data-testid="tooltip-arrow-2" size="2" />
+          <Paragraph size="2">Second tooltip</Paragraph>
         </Tooltip.Content>
       </Tooltip>
 
       {/* Quick animation tooltip for comparison - 100ms */}
       <Tooltip placement="right" delay={0} restMs={0}>
         <Tooltip.Trigger data-testid="tooltip-trigger-quick">
-          <Button size="$4">Quick animation (100ms)</Button>
+          <Button>Quick animation (100ms)</Button>
         </Tooltip.Trigger>
 
         <Tooltip.Content
           data-testid="tooltip-content-quick"
-          enterStyle={{ x: -20, opacity: 0 }}
-          exitStyle={{ x: -20, opacity: 0 }}
-          x={0}
-          opacity={1}
+          x="0 enter:-20px exit:-20px"
+          opacity="1 enter:0 exit:0"
           transition="100ms"
           animateOnly={['transform', 'opacity']}
         >
-          <Tooltip.Arrow data-testid="tooltip-arrow-quick" size="$3" />
-          <Paragraph size="$2">Quick tooltip</Paragraph>
+          <Tooltip.Arrow data-testid="tooltip-arrow-quick" size="3" />
+          <Paragraph size="2">Quick tooltip</Paragraph>
         </Tooltip.Content>
       </Tooltip>
     </YStack>

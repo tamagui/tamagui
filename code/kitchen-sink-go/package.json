@@ -20,10 +20,17 @@
     "@tamagui/metro-plugin": "workspace:*",
     "@tamagui/toast": "workspace:*",
     "@tamagui/web": "workspace:*",
-    "expo": "~55.0.6",
-    "expo-font": "~55.0.4",
+    "expo": "~57.0.15",
+    "expo-font": "~57.0.1",
     "react": ">=19",
-    "react-native": "0.83.2",
+    "react-native": "0.86.2",
     "tamagui": "workspace:*"
+  },
+  "expo": {
+    "doctor": {
+      "appConfigFieldsNotSyncedCheck": {
+        "enabled": false
+      }
+    }
   }
 }

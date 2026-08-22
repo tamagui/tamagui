@@ -32,7 +32,7 @@ describe('RN 0.76+ Style Alignment - Web', () => {
   describe('boxShadow', () => {
     test('boxShadow string with tokens resolves', () => {
       const styles = simplifiedGetSplitStyles(View, {
-        boxShadow: '0 0 10px $white',
+        boxShadow: '0 0 10px white',
       })
       const value = getStyleValue(styles, 'boxShadow')
       expect(value).toBeDefined()
@@ -60,17 +60,16 @@ describe('RN 0.76+ Style Alignment - Web', () => {
         boxShadow: 'inset 0 2px 4px black',
       })
       const value = getStyleValue(styles, 'boxShadow')
-      expect(value).toBe('inset 0 2px 4px black')
+      // config-first: 'black' resolves through the configured color token
+      expect(value).toBe('inset 0 2px 4px var(--c-black)')
     })
 
     test('boxShadow with multiple tokens resolves all', () => {
       const styles = simplifiedGetSplitStyles(View, {
-        boxShadow: '0 0 10px $white, 0 0 20px $black',
+        boxShadow: '0 0 10px white, 0 0 20px black',
       })
       const value = getStyleValue(styles, 'boxShadow')
-      expect(value).toBeDefined()
-      expect(value).not.toContain('$white')
-      expect(value).not.toContain('$black')
+      expect(value).toBe('0 0 10px var(--c-white), 0 0 20px var(--c-black)')
     })
   })
 
@@ -83,13 +82,12 @@ describe('RN 0.76+ Style Alignment - Web', () => {
       expect(value).toBe('brightness(1.2)')
     })
 
-    test('filter with embedded tokens resolves', () => {
+    test('filter with a migrated token value stays literal CSS', () => {
       const styles = simplifiedGetSplitStyles(View, {
-        filter: 'blur($2)',
+        filter: 'blur(7px)',
       })
       const value = getStyleValue(styles, 'filter')
-      // Token should be resolved
-      expect(value).not.toContain('$2')
+      expect(value).toBe('blur(7px)')
     })
 
     test('filter multiple functions', () => {
@@ -142,7 +140,7 @@ describe('RN 0.76+ Style Alignment - Web', () => {
   describe('outline props', () => {
     test('outlineColor with token resolves', () => {
       const styles = simplifiedGetSplitStyles(View, {
-        outlineColor: '$white',
+        outlineColor: 'white',
       })
       const value = getStyleValue(styles, 'outlineColor')
       expect(value).toContain('var(--')

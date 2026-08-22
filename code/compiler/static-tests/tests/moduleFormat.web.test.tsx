@@ -19,7 +19,7 @@ afterEach(() => {
 const componentSource = `
 import { styled, View } from '@tamagui/core'
 export const MyButton = styled(View, {
-  name: 'MyButton',
+  displayName: 'MyButton',
   backgroundColor: 'red',
 })
 `
@@ -83,7 +83,7 @@ describe('esbuild format based on detected module type', () => {
       srcFile,
       `
       import { styled, View } from '@tamagui/core'
-      export const Box = styled(View, { name: 'Box' })
+      export const Box = styled(View, { displayName: 'Box' })
     `
     )
 
@@ -113,7 +113,7 @@ describe('esbuild format based on detected module type', () => {
       srcFile,
       `
       const { styled, View } = require('@tamagui/core')
-      exports.Box = styled(View, { name: 'Box' })
+      exports.Box = styled(View, { displayName: 'Box' })
     `
     )
 

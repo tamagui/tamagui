@@ -11,6 +11,8 @@ import type { ReactNode } from 'react'
 import TestRenderer, { act } from 'react-test-renderer'
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest'
 
+import { Button as KitchenSinkButton } from '../../kitchen-sink/src/components/Button'
+
 const conf = createTamagui(getDefaultTamaguiConfig())
 const GESTURE_ENABLED_FREEZE_KEY = '__tamagui_gesture_enabled_freeze__'
 
@@ -263,5 +265,57 @@ describe('Button native text props', () => {
     expect(onPressIn).not.toHaveBeenCalled()
     expect(onPress).not.toHaveBeenCalled()
     expect(onPressOut).not.toHaveBeenCalled()
+  })
+})
+
+describe('copied Button skin native behavior', () => {
+  test('handles a press and removes disabled press responders', async () => {
+    vi.useFakeTimers()
+    const onPress = vi.fn()
+    const rendered = await renderButton(
+      <KitchenSinkButton
+        testID="button-skin-native"
+        minPressDuration={0}
+        onPress={onPress}
+      >
+        HELLO
+      </KitchenSinkButton>
+    )
+    const responder = rendered.root.find(
+      (node) =>
+        typeof node.props.onStartShouldSetResponder === 'function' &&
+        node.props.onStartShouldSetResponder({}) === true &&
+        typeof node.props.onResponderGrant === 'function' &&
+        typeof node.props.onResponderRelease === 'function'
+    )
+
+    await act(async () => {
+      responder.props.onResponderGrant({})
+      responder.props.onResponderRelease({})
+      vi.runAllTimers()
+    })
+
+    expect(onPress).toHaveBeenCalledTimes(1)
+
+    const disabled = await renderButton(
+      <KitchenSinkButton
+        testID="button-skin-native-disabled"
+        disabled
+        minPressDuration={0}
+        onPress={onPress}
+      >
+        HELLO
+      </KitchenSinkButton>
+    )
+    const activeDisabledResponders = disabled.root.findAll((node) => {
+      return (
+        typeof node.props.onStartShouldSetResponder === 'function' &&
+        node.props.onStartShouldSetResponder({}) === true &&
+        typeof node.props.onResponderRelease === 'function'
+      )
+    })
+
+    expect(activeDisabledResponders).toHaveLength(0)
+    expect(onPress).toHaveBeenCalledTimes(1)
   })
 })

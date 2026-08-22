@@ -1,0 +1,92 @@
+---
+title: 'Config v6'
+description: The v3 default config with Tailwind-aligned scales and recipe-tree themes
+---
+
+<IntroParagraph>
+  Config v6 is the default configuration for Tamagui v3. Its spacing, sizing,
+  radius, and type scales align with Tailwind CSS, while its themes use adaptive
+  11-shade ramps and composable relative levels.
+</IntroParagraph>
+
+```bash
+npm install @tamagui/config
+```
+
+```tsx fileName="tamagui.config.ts"
+import { defaultConfig } from '@tamagui/config/v6'
+import { createTamagui } from 'tamagui'
+
+export const config = createTamagui(defaultConfig)
+```
+
+## Defaults
+
+- `space` and `size` use Tailwind's 4px scale: `1` is 4, `4` is 16, and `8`
+  is 32. Half steps, `px`, negative space tokens, and the larger Tailwind keys
+  are included.
+- Radius tokens include Tailwind names from `xs` through `4xl` and `full`.
+- Font size and line height include Tailwind names from `xs` through `9xl`.
+- `w` and `h` are width and height shorthands.
+- `tokens.color` contains the full Tailwind palette with names such as
+  `blue-500` and `slate-200`.
+- Themes provide adaptive `color1` through `color11`, semantic generics,
+  relative `level2` through `level4`, `inverse`, `accent`, `brand`, `red`,
+  `yellow`, and `green`.
+- Z-index has no configured token scale. Bare values resolve a matching token
+  only when an application adds one; otherwise the literal unitless value is
+  preserved.
+
+The config does not choose a global component size. Styled controls get their
+defaults from the optional policy in `@tamagui/size`.
+
+## Package entries
+
+- `@tamagui/config/v6` contains the complete static default config.
+- `@tamagui/config/v6-base` exports the color-independent scales, fonts, media,
+  settings, and `createV6Config(colors)`.
+- `@tamagui/config/v6-builder` re-exports the recipe authoring API from
+  `@tamagui/themes/builder`.
+
+The static `v6` entry imports generated themes. It does not run theme generation
+in the browser.
+
+## Animations
+
+No animation driver is bundled. Import exactly one driver from its neutral
+entry and add it to the config:
+
+```tsx fileName="tamagui.config.ts"
+import { animationsCSS } from '@tamagui/config/animations-css'
+import { defaultConfig } from '@tamagui/config/v6'
+import { createTamagui } from 'tamagui'
+
+export const config = createTamagui({
+  ...defaultConfig,
+  animations: animationsCSS,
+})
+```
+
+The other entries are `animations-rn`, `animations-reanimated`, and
+`animations-motion`. See [Choosing an Animation Driver](/docs/core/animation-drivers)
+for their trade-offs.
+
+## Tailwind frontend
+
+Use the separate Tailwind component frontend when you want `className`
+authoring:
+
+```tsx
+import { Text, View, styled } from '@tamagui/tailwind'
+
+export function Notice() {
+  return <View className="rounded-lg bg-blue-500 p-4" />
+}
+```
+
+Regular components imported from `tamagui` continue to use Tamagui style props.
+The shared v6 color tokens make absolute utilities such as `bg-blue-500`
+resolve to the same values on web and native.
+
+Read [v6 Colors](/docs/core/config-v6-colors) to customize the palette and
+[Creating Themes](/docs/guides/theme-builder) to customize the tree and scales.

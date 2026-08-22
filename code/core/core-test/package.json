@@ -10,7 +10,7 @@
   "module": "dist/esm",
   "scripts": {
     "test:run": "vitest --run --config ../../packages/vite-plugin-internal/src/vite.config.ts",
-    "test:web": "TAMAGUI_TARGET=web vitest --run --config ../../packages/vite-plugin-internal/src/vite.config.ts *.web.test.tsx",
+    "test:web": "TAMAGUI_TARGET=web vitest --run --config ../../packages/vite-plugin-internal/src/vite.config.ts *.web.test.ts*",
     "test:ios": "TEST_NATIVE_PLATFORM=ios TAMAGUI_TARGET=native vitest --run --config ../../packages/vite-plugin-internal/src/vite.config.ts *.ios.test.tsx",
     "test:native": "TAMAGUI_TARGET=native vitest --run --config ../../packages/vite-plugin-internal/src/vite.config.ts *.native.test.tsx",
     "test:token-provenance": "NODE_ENV=development TAMAGUI_ENABLE_STYLE_TOKEN_PROVENANCE=1 TAMAGUI_TARGET=native vitest --run --config ../../packages/vite-plugin-internal/src/vite.config.ts getSplitStyles.tokenProvenance.native.test.tsx",
@@ -21,11 +21,13 @@
   },
   "devDependencies": {
     "@tamagui/core": "workspace:*",
+    "@tamagui/dialog": "workspace:*",
+    "@tamagui/use-controllable-state": "workspace:*",
     "@testing-library/react": "^16.1.0",
     "@testing-library/react-native": "^12.9.0",
     "csstype": "^3.0.10",
     "react": ">=19",
-    "typescript": "~5.9.2",
+    "typescript": "~6.0.3",
     "vitest": "4.0.4"
   },
   "peerDependencies": {

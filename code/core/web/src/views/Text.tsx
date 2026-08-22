@@ -1,7 +1,9 @@
 import { stylePropsTextOnly, validStyles } from '@tamagui/helpers'
 
 import { createComponent } from '../createComponent'
+import { setComponentDisplayName } from '../helpers/componentDisplayName'
 import type {
+  StaticConfig,
   TamaguiTextElement,
   TextNonStyleProps,
   TextProps,
@@ -23,13 +25,10 @@ const ellipsisStyle =
         lineBreakMode: 'clip',
       }
 
-export const Text = createComponent<
-  TextProps,
-  Text,
-  TextNonStyleProps,
-  TextStylePropsBase
->({
-  componentName: 'Text',
+/**
+ * Shared by every frontend's Text — see the note on `viewStaticConfig`.
+ */
+export const textStaticConfig: StaticConfig = {
   acceptsClassName: true,
   isText: true,
 
@@ -40,7 +39,6 @@ export const Text = createComponent<
           suppressHighlighting: true,
         },
 
-  inlineWhenUnflattened: new Set(['fontFamily']),
   inlineProps: new Set(['maxFontSizeMultiplier']),
 
   variants: {
@@ -48,7 +46,7 @@ export const Text = createComponent<
       numberOfLines: {
         1: ellipsisStyle,
 
-        ':number': (numberOfLines) =>
+        number: (numberOfLines) =>
           numberOfLines >= 1
             ? {
                 maxWidth: '100%',
@@ -70,4 +68,11 @@ export const Text = createComponent<
     ...validStyles,
     ...stylePropsTextOnly,
   },
-})
+}
+
+export const Text = setComponentDisplayName(
+  createComponent<TextProps, Text, TextNonStyleProps, TextStylePropsBase>(
+    textStaticConfig
+  ),
+  'Text'
+)

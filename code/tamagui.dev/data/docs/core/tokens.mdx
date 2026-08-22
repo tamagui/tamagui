@@ -28,17 +28,12 @@ getTokens().size.small
 or
 
 ```tsx
-getTokens().size['$small']
+getTokens().size['small']
 ```
 
-If you'd like just an object containing the prefixed (starting with `$`) or non-prefixed values, you can use the `prefixed` option:
-
-```tsx
-// only non-$
-getTokens({ prefixed: false }).size.small
-// only $
-getTokens({ prefixed: true })['$size'].small
-```
+`getTokens` takes no options in v3. Tokens are keyed by their unprefixed name,
+so `size.small` is the only spelling you need; the `prefixed` option that used to
+return a `$`-keyed copy is removed.
 
 What is returned is of type `Variable`, which is what Tamagui turns all tokens and theme values into internally in order to give them CSS variable names, as well as other things:
 
@@ -48,6 +43,35 @@ getTokens().size.small.variable // returns something like (--size-small), which 
 ```
 
 Tamagui has some helpers that make working with variables easier, which are documented in [Exports](/docs/core/exports), namely [`getVariable`](/docs/core/exports#getvariable) which will return the CSS variable on web, but raw value on native, and `getVariableValue` which always returns the raw value.
+
+## v3 token behavior
+
+The default v3 configs do not export `true` token keys. Component defaults still
+resolve to the default size, and that default size is `4`.
+
+```tsx
+// before v3
+<Button size="true" />
+
+// v3
+<Button size="4" />
+```
+
+`@tamagui/get-token` also no longer performs runtime token stepping. `getSize`,
+`getSpace`, and `getRadius` resolve the same key you pass in. The old
+`stepTokenUpOrDown`, `getTokenRelative`, and options such as `shift`, `bounds`,
+and `excludeHalfSteps` are removed.
+
+```tsx
+// before v3
+const padding = getSize(size, { shift: -2 })
+
+// v3
+const padding = getVariableValue(getSize(size)) * 0.6
+```
+
+If you need a smaller or larger named token, choose that token explicitly. If
+you need proportional sizing, multiply the resolved numeric value.
 
 ### Color Tokens as Fallback Values for Themes
 
@@ -62,7 +86,7 @@ If you are confused by Tamagui themes, don't be. You can avoid them altogether, 
 
 ## Using Tokens with Components
 
-When using `styled` or any Tamagui component like `Stack`, you can access tokens directly. Just like with `useTheme`, it will first look for a theme value that matches, and if not it will fall back to a token.
+When using `styled` or any Tamagui component like `View`, you can access tokens directly. Just like with `useTheme`, it will first look for a theme value that matches, and if not it will fall back to a token.
 
 Tokens are automatically applied to certain properties. For example, `size` tokens are applied to width and height. And of course `radius` to borderRadius.
 
@@ -115,9 +139,9 @@ And then access them using the new "specific tokens" syntax:
 
 ```tsx
 export default () => (
-  <Stack
+  <View
     // access with the category first:
-    width="$icon.small"
+    width="icon.small"
   />
 )
 ```
@@ -128,7 +152,7 @@ This, like all token values, works the same with `styled`:
 import { styled, View } from '@tamagui/core'
 
 export const MyView = styled(View, {
-  width: '$icon.small',
+  width: 'icon.small',
 })
 ```
 

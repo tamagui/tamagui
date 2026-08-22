@@ -64,7 +64,7 @@ export default createTamagui({
 The `transition` prop accepts the name of an animation you've configured. By default, animations will
 apply to all animatable styles, similar to setting `all` in a CSS `transition`.
 
-Here's an example animating `hoverStyle`:
+Here's an example animating a `hover:` clause:
 
 <HeroContainer>
   <AnimationsHoverDemo />
@@ -89,10 +89,10 @@ So, `<Square transition={isActive ? 'bouncy' : null} />` rather than
 If you'd like to remove or add a transition prop after a component has already rendered, you'd have
 to change the key.
 
-### enterStyle
+### Enter clauses
 
-Setting `enterStyle` on a component tells it to start with those styles,
-then animate to the base styles after mount:
+Setting an `enter:` clause tells a property to start at that value, then
+animate to its base value after mount:
 
 <HeroContainer>
   <AnimationsEnterDemo />
@@ -161,14 +161,16 @@ You can add a delay before animations start using the array syntax with a `delay
 import { Square, XStack } from 'tamagui'
 
 export default () => (
-  <XStack gap="$2">
+  <XStack gap="2">
     {[0, 1, 2, 3].map((i) => (
       <Square
         key={i}
         transition={['bouncy', { delay: i * 100 }]}
-        enterStyle={{ opacity: 0, scale: 0.5, y: 20 }}
+        opacity="enter:0"
+        scale="enter:0.5"
+        y="enter:20px"
         size={50}
-        bg="$color10"
+        bg="color10"
       />
     ))}
   </XStack>
@@ -190,8 +192,8 @@ export default ({ show }) => (
       <View
         key="panel"
         transition={{ enter: 'lazy', exit: 'quick' }}
-        enterStyle={{ opacity: 0, y: 20 }}
-        exitStyle={{ opacity: 0, y: -20 }}
+        opacity="enter:0 exit:0"
+        y="enter:20px exit:-20px"
       />
     )}
   </AnimatePresence>
@@ -204,8 +206,7 @@ The `enter` and `exit` keys accept any animation name from your config. You can 
 // enter slowly, exit quickly, property changes use medium speed
 <View
   transition={{ enter: 'lazy', exit: 'quick', default: 'bouncy' }}
-  enterStyle={{ opacity: 0 }}
-  exitStyle={{ opacity: 0 }}
+  opacity="enter:0 exit:0"
 />
 ```
 
@@ -215,8 +216,8 @@ Or use enter/exit with the array syntax to include delay and per-property animat
 // enter with lazy, exit with quick, delay 200ms, x uses its own animation
 <View
   transition={['bouncy', { enter: 'lazy', exit: 'quick', delay: 200, x: 'slow' }]}
-  enterStyle={{ opacity: 0, x: -100 }}
-  exitStyle={{ opacity: 0, x: 100 }}
+  opacity="enter:0 exit:0"
+  x="enter:-100px exit:100px"
 />
 ```
 
@@ -232,12 +233,8 @@ import { Square } from 'tamagui'
 export default () => (
   <Square
     size={100}
-    bg="$color5"
-    transition="1000ms"  // slow exit (returning to base)
-    hoverStyle={{
-      transition: '200ms',  // fast enter (going to hover)
-      bg: '$color10',
-    }}
+    bg="color5 hover:color10"
+    transition="1000ms hover:200ms"
   />
 )
 ```
@@ -250,19 +247,9 @@ This works with all pseudo styles:
 
 ```tsx
 <View
-  transition="slow"
-  hoverStyle={{
-    transition: 'quick',
-    scale: 1.1,
-  }}
-  pressStyle={{
-    transition: 'bouncy',
-    scale: 0.95,
-  }}
-  focusStyle={{
-    transition: 'quick',
-    borderColor: '$blue10',
-  }}
+  transition="slow hover:quick press:bouncy focus:quick"
+  scale="hover:1.1 press:0.95"
+  borderColor="focus:blue-500"
 />
 ```
 
@@ -272,12 +259,8 @@ And with group pseudo states:
 <View group="card">
   <Square
     size={50}
-    bg="$color5"
-    transition="1000ms"
-    $group-card-hover={{
-      transition: '200ms',
-      bg: '$color10',
-    }}
+    bg="color5 group-hover/card:color10"
+    transition="1000ms group-hover/card:200ms"
   />
 </View>
 ```
@@ -289,7 +272,137 @@ Priority follows CSS specificity intuition: press > hover > focus. This works wi
 The `animateOnly` prop will limit your animation config to certain keys. It
 accepts an array of strings that correspond to style property names.
 
+## The onTransition lifecycle
+
+Every animated component accepts `onTransition`, a typed callback that fires at
+the start and end of a transition. It replaces the untyped, enter-only
+`onDidAnimate` from v2.
+
+```tsx
+type TransitionEvent = {
+  phase: 'start' | 'end'
+  cause: 'enter' | 'exit' | 'update' // update = style change while mounted
+  finished?: boolean                 // on 'end': false when interrupted
+}
+
+<View transition="quick" onTransition={(e) => { ... }} />
+```
+
+`cause` is `enter` when the component mounts into an [AnimatePresence](/docs/core/animate-presence),
+`exit` when it unmounts, and `update` for any style change while it stays
+mounted. On the `end` phase, `finished` is `false` when the transition was
+interrupted, for example an exit canceled by a re-enter, or an update
+superseded by another before it settled.
+
+```tsx
+import { View } from 'tamagui'
+
+export default ({ on }) => (
+  <View
+    transition="300ms"
+    opacity={on ? 0.5 : 1}
+    onTransition={(e) => {
+      if (e.phase === 'end' && e.finished) {
+        // the style change finished without being interrupted
+      }
+    }}
+  />
+)
+```
+
+A driver may coalesce a multi-property update into one start/end pair per batch,
+but it never skips the end event. Exit `end` fires before or with presence
+removal, so you can observe exit completion without reaching into presence
+internals. There is a single callback rather than separate
+`onTransitionStart`/`onTransitionEnd` props because those names collide with the
+React DOM event props on web.
+
+## Imperative animation hooks
+
+The same animated-number primitives the drivers use internally are exported from
+`tamagui` (and `@tamagui/core`). Use them to drive an effect from a value you
+control instead of from style props, for example a drag-linked overlay fade.
+
+```tsx
+import {
+  useAnimationDriver,        // resolved driver from config, throws helpfully on the stub
+  useAnimatedNumber,         // (initial: number) => UniversalAnimatedNumber
+  useAnimatedNumberStyle,    // (value, worklet getStyle) => a style object
+  useAnimatedNumbersStyle,   // multiple values, one style
+  useAnimatedNumberReaction, // observe the value on the JS thread
+} from 'tamagui'
+```
+
+Each hook is a thin delegation to the configured driver, so first-party code and
+your code exercise the same surface. In development they throw a helpful error
+if no `animations` config is set. The resolved driver must not change identity
+mid-lifecycle, which is only a concern with `animatedBy` multi-driver setups.
+
+`useAnimatedNumberStyle` takes a value and a worklet that maps it to a style
+object. Spread that style onto the driver's animated view; on the CSS driver a
+plain Tamagui view with a `transition` prop interpolates the change.
+
+```tsx
+import { useRef } from 'react'
+import type { Animated } from 'react-native'
+import {
+  Button,
+  View as TamaguiView,
+  YStack,
+  useAnimatedNumber,
+  useAnimatedNumberStyle,
+  useAnimationDriver,
+} from 'tamagui'
+
+export function Toggle() {
+  const driver = useAnimationDriver()
+  // the driver's animated view consumes the returned style; on the css driver
+  // there is no driver View, so fall back to a Tamagui view + transition prop
+  const AnimatedView = (driver.View ?? TamaguiView) as typeof Animated.View
+
+  const x = useAnimatedNumber(0)
+  const openRef = useRef(false)
+
+  const style = useAnimatedNumberStyle(x, (value: number) => {
+    'worklet'
+    return { transform: [{ translateX: value }] }
+  })
+
+  const toggle = () => {
+    openRef.current = !openRef.current
+    x.setValue(openRef.current ? 200 : 0, { type: 'spring', damping: 20, stiffness: 90 })
+  }
+
+  return (
+    <YStack gap="4" padding="4">
+      <Button onPress={toggle}>Toggle</Button>
+      <AnimatedView
+        transition="slow"
+        style={[{ width: 60, height: 60, backgroundColor: 'royalblue' }, style]}
+      />
+    </YStack>
+  )
+}
+```
+
+`setValue(next, config, onFinished)` accepts an optional completion callback that
+fires once, with the value settled on the target. `useAnimatedNumberReaction`
+observes intermediate values on the JS thread.
+
+`UniversalAnimatedNumber`, `AnimatedNumberStrategy`, and the hook types are
+public API.
+
 ## What to know when animating
+
+### Driver completion
+
+Every driver reports real completion. The CSS driver drives its animated numbers
+with a `requestAnimationFrame` ticker and fires completion once when the value
+settles, so `onTransition` end events and `setValue` completion callbacks are
+accurate on web without an estimated-duration timer. Web completion detection
+uses the element's running animations rather than a guessed duration.
+
+
 
 ### Conditional animations and HMR
 

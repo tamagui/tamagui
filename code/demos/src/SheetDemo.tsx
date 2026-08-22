@@ -1,8 +1,15 @@
 import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons-2'
-import type { SheetProps } from '@tamagui/sheet'
-import { Sheet } from '@tamagui/sheet'
 import React, { memo } from 'react'
-import { Button, H2, Input, Paragraph, XStack, YStack } from 'tamagui'
+import {
+  Button,
+  H2,
+  Input,
+  Paragraph,
+  Sheet,
+  type SheetProps,
+  XStack,
+  YStack,
+} from 'tamagui'
 
 const spModes = ['percent', 'constant', 'fit', 'mixed'] as const
 
@@ -31,8 +38,8 @@ export const SheetDemo = () => {
 
   return (
     <>
-      <YStack gap="$4">
-        <XStack gap="$4" $maxMd={{ flexDirection: 'column', items: 'center' }}>
+      <YStack gap="4">
+        <XStack gap="4" flexDirection="max-md:column" items="max-md:center">
           <Button onPress={() => setOpen(true)}>Open</Button>
           <Button onPress={() => setModal((x) => !x)}>
             {modal ? 'Type: Modal' : 'Type: Inline'}
@@ -56,7 +63,7 @@ export const SheetDemo = () => {
             {`Snap Points: ${JSON.stringify(snapPoints)}`}
           </Button>
         ) : (
-          <XStack py="$2.5" justify="center">
+          <XStack py="2-5" justify="center">
             <Paragraph>
               {`Snap Points: ${isFit ? '(none)' : JSON.stringify(snapPoints)}`}
             </Paragraph>
@@ -76,17 +83,13 @@ export const SheetDemo = () => {
         zIndex={100_000}
         transition="medium"
       >
-        <Sheet.Overlay
-          transition="lazy"
-          bg="$shadow6"
-          enterStyle={{ opacity: 0 }}
-          exitStyle={{ opacity: 0 }}
-        />
+        <Sheet.Overlay transition="lazy" bg="shadow6" opacity="enter:0 exit:0" />
 
         <Sheet.Handle />
-        <Sheet.Frame p="$4" justify="center" items="center" gap="$5">
+        <Sheet.Container p="4" justify="center" items="center" gap="5">
+          <Sheet.Background />
           <SheetContents {...{ modal, isPercent, innerOpen, setInnerOpen, setOpen }} />
-        </Sheet.Frame>
+        </Sheet.Container>
       </Sheet>
     </>
   )
@@ -97,13 +100,13 @@ const SheetContents = memo(
   ({ modal, isPercent, innerOpen, setInnerOpen, setOpen }: any) => {
     return (
       <>
-        <Button size="$6" circular icon={ChevronDown} onPress={() => setOpen(false)} />
+        <Button size="6" circular icon={ChevronDown} onPress={() => setOpen(false)} />
         <Input width={200} />
         {modal && isPercent && (
           <>
             <InnerSheet open={innerOpen} onOpenChange={setInnerOpen} />
             <Button
-              size="$6"
+              size="6"
               circular
               icon={ChevronUp}
               onPress={() => setInnerOpen(true)}
@@ -118,19 +121,15 @@ const SheetContents = memo(
 function InnerSheet(props: SheetProps) {
   return (
     <Sheet transition="medium" modal snapPoints={[90]} dismissOnSnapToBottom {...props}>
-      <Sheet.Overlay
-        transition="medium"
-        bg="$shadow2"
-        enterStyle={{ opacity: 0 }}
-        exitStyle={{ opacity: 0 }}
-      />
+      <Sheet.Overlay transition="medium" bg="shadow2" opacity="enter:0 exit:0" />
 
       <Sheet.Handle />
-      <Sheet.Frame flex={1} justify="center" items="center" gap="$5">
+      <Sheet.Container flex={1} justify="center" items="center" gap="5">
+        <Sheet.Background />
         <Sheet.ScrollView>
-          <YStack p="$5" gap="$8">
+          <YStack p="5" gap="8">
             <Button
-              size="$6"
+              size="6"
               circular
               self="center"
               icon={ChevronDown}
@@ -139,7 +138,7 @@ function InnerSheet(props: SheetProps) {
 
             <H2>Hello world</H2>
             {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
-              <Paragraph key={i} size="$8">
+              <Paragraph key={i} size="8">
                 Eu officia sunt ipsum nisi dolore labore est laborum laborum in esse ad
                 pariatur. Dolor excepteur esse deserunt voluptate labore ea. Exercitation
                 ipsum deserunt occaecat cupidatat consequat est adipisicing velit
@@ -150,7 +149,7 @@ function InnerSheet(props: SheetProps) {
             ))}
           </YStack>
         </Sheet.ScrollView>
-      </Sheet.Frame>
+      </Sheet.Container>
     </Sheet>
   )
 }

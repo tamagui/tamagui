@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/env bun
 /**
  * CLI for @tamagui/native-ci
  *
@@ -33,8 +33,8 @@ import {
   ensureAppInstalled,
   getBootedSimulatorUDID,
   getMaestroBundleId,
-} from './ios'
-import { setupAndroidDevice, ensureAndroidFolder } from './android'
+} from './ios-utils'
+import { setupAndroidDevice, ensureAndroidFolder } from './android-utils'
 import type { Platform } from './constants'
 import { chmodSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'

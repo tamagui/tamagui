@@ -1,8 +1,6 @@
 import { expandStyle } from './expandStyle'
 import { fixStyles } from './expandStyles'
-import { isObj } from './isObj'
 import { normalizeValueWithProperty } from './normalizeValueWithProperty'
-import { pseudoDescriptors } from './pseudoDescriptors'
 import { styleOriginalValues } from './styleOriginalValues'
 
 /**
@@ -10,7 +8,7 @@ import { styleOriginalValues } from './styleOriginalValues'
  * It does the following:
  *   1. Shorthands into longhands, px = paddingHorizontal
  *   2. Expands flex, borderColor and other properties that can expand into sub-parts
- *   3. Normalizes all sub pseudo-media-etc styles
+ *   3. Preserves original-value provenance across expanded longhands
  */
 
 export function normalizeStyle(style: Record<string, any>, disableNormalize = false) {
@@ -22,18 +20,6 @@ export function normalizeStyle(style: Record<string, any>, disableNormalize = fa
     const prop = style[key]
     if (prop == null) continue
     const originalValue = originalValues?.[key]
-    if (
-      key in pseudoDescriptors ||
-      // this should capture all parent-based styles like media, group, etc
-      (key[0] === '$' && isObj(prop))
-    ) {
-      res[key] = normalizeStyle(prop, disableNormalize)
-      if (originalValue !== undefined) {
-        nextOriginalValues ||= {}
-        nextOriginalValues[key] = originalValue
-      }
-      continue
-    }
     const value = disableNormalize ? prop : normalizeValueWithProperty(prop, key)
     // expand react-native shorthands
     const out = expandStyle(key, value)

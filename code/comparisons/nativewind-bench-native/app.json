@@ -1,0 +1,12 @@
+{
+  "expo": {
+    "name": "nativewind-bench-native",
+    "slug": "nativewind-bench-native",
+    "version": "1.0.0",
+    "scheme": "nwbenchnative",
+    "platforms": ["ios"],
+    "ios": {
+      "bundleIdentifier": "dev.tamagui.nwbenchnative"
+    }
+  }
+}

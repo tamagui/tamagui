@@ -1,6 +1,7 @@
 import { Info } from '@tamagui/lucide-icons-2'
 import { useRef, useState } from 'react'
-import { Button, Heading, Input, Paragraph, TooltipSimple, XStack, YStack } from 'tamagui'
+import { Heading, Input, Paragraph, TooltipSimple, XStack, YStack } from 'tamagui'
+import { Button } from '~/components/Button'
 
 export type FieldsetWithLabelProps = {
   enableEditLabel?: boolean
@@ -29,16 +30,16 @@ export const FieldsetWithLabel = ({
   return (
     <YStack
       render="fieldset"
-      rounded="$4"
-      borderColor={isActive ? '$color9' : '$color6'}
+      rounded="4"
+      borderColor={`${isActive ? 'color9' : 'color6'}`}
       borderWidth={0}
-      px="$3"
-      onPress={onPress}
+      px="3"
       position="relative"
+      onPress={onPress}
     >
       <YStack
         z={100}
-        px="$3"
+        px="3"
         {...(enableEditLabel && {
           cur: 'pointer',
           onPress: () => {
@@ -48,7 +49,7 @@ export const FieldsetWithLabel = ({
       >
         {isEditing ? (
           <Input
-            size="$3"
+            size="3"
             autoFocus
             onBlur={() => {
               setIsEditing(false)
@@ -74,36 +75,36 @@ export const FieldsetWithLabel = ({
         ) : (
           <Heading
             select="none"
-            render="label"
-            size="$5"
-            color="$color11"
+            color="color11"
             text="center"
             {...(tooltip && {
-              pr: '$6',
+              pr: '6',
             })}
+            render="label"
+            size="5"
           >
             {label[0].toUpperCase()}
             {label.slice(1)}
 
             {!!tooltip && (
               <TooltipSimple
-                size="$3"
+                size="3"
                 label={
-                  <YStack p="$2" maxW={200}>
-                    <Paragraph size="$2" lineHeight="$1">
+                  <YStack p="2" maxW={200}>
+                    <Paragraph size="2" lineHeight="1">
                       {tooltip}
                     </Paragraph>
                   </YStack>
                 }
               >
                 <Button
-                  size="$1"
+                  size="1"
                   scaleIcon={1.2}
-                  ml="$2"
+                  ml="2"
                   circular
                   rounded={100}
-                  chromeless
-                  icon={<Info color="$color9" />}
+                  variant="quiet"
+                  icon={<Info color="color9" />}
                   position="absolute"
                   t={0}
                   r={8}
@@ -115,15 +116,7 @@ export const FieldsetWithLabel = ({
       </YStack>
 
       {!!afterLabel && (
-        <XStack
-          position="absolute"
-          t={0}
-          r="$4"
-          z={200}
-          bg="$color2"
-          rounded="$4"
-          px="$2"
-        >
+        <XStack position="absolute" t={0} r="4" z={200} bg="color2" rounded="4" px="2">
           {afterLabel}
         </XStack>
       )}

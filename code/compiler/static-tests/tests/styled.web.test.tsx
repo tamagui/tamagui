@@ -39,6 +39,52 @@ describe('styled() tests', () => {
     expect(output.js).toContain('className')
   })
 
+  // the class-string base, string variants, and string compound variants are the
+  // Tailwind frontend's surface: core `styled()` is object-only, and it is the import
+  // that selects which frontend interprets the base
+  test('extracts styled static strings with runtime precedence', async () => {
+    const output = await extractForWeb(
+      dedent`
+      import { styled, View } from '@tamagui/tailwind'
+
+      const InlineStyled = styled(View, 'p-4 rounded-4', {
+        variants: {
+          tone: {
+            red: 'h-8 px-3 bg-[red]'
+          }
+        },
+        compoundVariants: [
+          {
+            tone: 'red',
+            style: 'w-8 p-0 opacity-[0.5]'
+          }
+        ]
+      })
+
+      export function Test() {
+        return <InlineStyled tone="red" width={30} opacity={0.75} />
+      }
+    `,
+      {
+        options: {
+          enableDynamicEvaluation: true,
+          components: ['@tamagui/core', '@tamagui/tailwind'],
+        },
+      }
+    )
+    if (!output) {
+      throw new Error(`No output`)
+    }
+
+    expect(output.styles).toContain('padding-top:var(--c-space-0)')
+    expect(output.styles).toContain('border-top-left-radius')
+    expect(output.styles).toContain('height:var(--c-size-8)')
+    expect(output.styles).toContain('padding-left:var(--c-space-0)')
+    expect(output.styles).toContain('background-color:red')
+    expect(output.styles).toContain('opacity:0.75')
+    expect(output.styles).toContain('width:30px')
+  })
+
   test('extracts to className at call-site', async () => {
     const output = await extractForWeb(`
       import { MyStack } from '@tamagui/test-design-system'
@@ -96,7 +142,9 @@ describe('styled() tests', () => {
         options: { enableDynamicEvaluation: true },
       })
       expect(componentOutput).toBeTruthy()
-      expect(componentOutput!.styles).toContain('background-color')
+      // Definitions are graph metadata. CSS is emitted transactionally at a use site,
+      // so an unused definition does not write a global rule as a side effect.
+      expect(componentOutput!.styles).toBe('')
 
       // now process the consumer file - MyBox should be in the dynamic cache
       const consumerSource = dedent`
@@ -119,6 +167,7 @@ describe('styled() tests', () => {
 
       // the consumer file should get className optimization
       expect(output.js).toContain('className')
+      expect(output.styles).toContain('background-color')
     })
   })
 })

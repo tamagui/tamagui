@@ -1,5 +1,5 @@
 import { Platform } from 'react-native'
-import { Input as TamaguiInput, styled, useThemeName } from 'tamagui'
+import { Input as TamaguiInput, createStyledHOC, styled, useThemeName } from 'tamagui'
 
 export function StyledRNW() {
   return <Input id="styled-rnw-input" aria-label="ok" placeholder="search" />
@@ -10,12 +10,11 @@ const TextInput = styled(
   TamaguiInput,
   {
     fontSize: 16,
-    fontFamily: '$silkscreen',
-    color: '$color5',
+    color: 'color5',
     minWidth: 0,
     borderWidth: 0,
     borderColor: 'transparent',
-
+    margin: 'focus:0px',
     variants: {
       unset: {
         false: {
@@ -23,15 +22,10 @@ const TextInput = styled(
           py: 12,
           px: 14,
           borderRadius: 6,
-          bg: '$color3',
-          focusStyle: {
-            bg: '$color4',
-            margin: 0,
-          },
+          bg: 'color3 focus:color4',
         },
       },
     } as const,
-
     defaultVariants: {
       unset: false,
     },
@@ -41,16 +35,14 @@ const TextInput = styled(
   }
 )
 
-export const Input = TamaguiInput.styleable(function MyInput({ ...props }, ref) {
+export const Input = createStyledHOC(TamaguiInput, function MyInput({ ...props }, ref) {
   const parentTheme = useThemeName()
 
   return (
-    // @ts-ignore - complex type inference issue with styleable + styled combination
+    // @ts-ignore - complex type inference issue with createStyledHOC + styled combination
     <TextInput
-      unstyled
-      keyboardAppearance={parentTheme?.includes('dark') ? 'dark' : 'default'}
+      keyboardAppearance={String(parentTheme).includes('dark') ? 'dark' : 'default'}
       {...props}
-      focusStyle={{ margin: 0, ...props.focusStyle }}
       id={Platform.select({
         // on native, this leads to duplicates?
         web: props.id,

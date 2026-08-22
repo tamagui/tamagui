@@ -1,5 +1,6 @@
 import { memo } from 'react'
-import { Button, XStack, YStack, SizableText } from 'tamagui'
+import { XStack, YStack, SizableText } from 'tamagui'
+import { Button } from '~/components/Button'
 import { Trash2 } from '@tamagui/lucide-icons-2'
 import type { BuildTheme } from '../../types'
 
@@ -18,32 +19,29 @@ export const BuildThemeItem = memo((props: BuildThemeItemProps) => {
 
   return (
     <Button
-      size="$4"
+      size="4"
       theme={isActive ? 'accent' : undefined}
       onPress={onPress}
       borderWidth={1}
-      borderColor={isActive ? '$color8' : '$color5'}
-      bg={isActive ? '$color3' : '$color1'}
-      pressStyle={{
-        bg: '$color2',
-      }}
+      borderColor={isActive ? 'color8' : 'color5'}
+      bg={isActive ? 'color3 press:color2' : 'color1 press:color2'}
     >
-      <XStack flex={1} items="center" justify="space-between" gap="$3">
+      <XStack flex={1} items="center" justify="space-between" gap="3">
         <YStack flex={1} items="flex-start">
-          <SizableText size="$3" fontWeight="600">
+          <SizableText size="3" fontWeight="600">
             {label}
           </SizableText>
-          <SizableText size="$2" color="$color10">
+          <SizableText size="2" color="color10">
             {theme.type === 'theme' ? `Palette: ${theme.palette}` : 'Mask theme'}
           </SizableText>
         </YStack>
 
         {onDelete && (
           <Button
-            size="$2"
+            size="2"
             icon={Trash2}
             circular
-            chromeless
+            variant="quiet"
             onPress={(e) => {
               e.stopPropagation()
               onDelete()

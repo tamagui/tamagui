@@ -1,68 +1,29 @@
 // re-exports all of @tamagui/web just adds hooks
 export * from '@tamagui/web'
+export {
+  SizeContext,
+  createSizeContext,
+  createSizeTable,
+  defaultTokenSizePolicy,
+  resolveSizeToken,
+  resolveTokenSize,
+} from '@tamagui/size'
+export type * from '@tamagui/size'
+export { createRefComponent, type RefProp } from '@tamagui/compose-refs'
 
-import { createMedia } from '@tamagui/react-native-media-driver'
-import { isWeb } from '@tamagui/constants'
-import {
-  createMeasure,
-  createMeasureInWindow,
-  createMeasureLayout,
-  enable,
-  useElementLayout,
-} from '@tamagui/use-element-layout'
 import type {
   StackNonStyleProps,
   StackStyleBase,
   TamaDefer,
   TamaguiComponent,
   TamaguiElement,
-  TamaguiProviderProps,
   TamaguiTextElement,
   TextNonStyleProps,
   TextProps,
   TextStylePropsBase,
 } from '@tamagui/web'
-import {
-  TamaguiProvider as WebTamaguiProvider,
-  Text as WebText,
-  View as WebView,
-  createTamagui as createTamaguiWeb,
-  setupHooks,
-  useIsomorphicLayoutEffect,
-} from '@tamagui/web'
-import { createOptimizedView } from './createOptimizedView'
-import { getBaseViews } from './getBaseViews'
+import { Text as WebText, View as WebView } from '@tamagui/web'
 import type { RNTextProps, RNViewProps } from './reactNativeTypes'
-
-type GestureEnabledFreezeState = {
-  frozen: boolean
-  enabled: boolean
-  warned: boolean
-}
-
-const GESTURE_STATE_KEY = '__tamagui_gesture__'
-const GESTURE_ENABLED_FREEZE_KEY = '__tamagui_gesture_enabled_freeze__'
-
-function freezeGestureHandlerEnabledMode() {
-  const g = globalThis as typeof globalThis & {
-    [GESTURE_STATE_KEY]?: { enabled?: boolean }
-    [GESTURE_ENABLED_FREEZE_KEY]?: GestureEnabledFreezeState
-  }
-
-  const freezeState = (g[GESTURE_ENABLED_FREEZE_KEY] ??= {
-    frozen: false,
-    enabled: false,
-    warned: false,
-  })
-
-  if (freezeState.frozen) {
-    return
-  }
-
-  freezeState.frozen = true
-  freezeState.enabled = Boolean(g[GESTURE_STATE_KEY]?.enabled)
-  freezeState.warned = false
-}
 
 // helpful for usage outside of tamagui
 export {
@@ -102,125 +63,8 @@ type RNTamaguiText = TamaguiComponent<
 // see https://discord.com/channels/909986013848412191/1146150253490348112/1146150253490348112
 export * from './reactNativeTypes'
 
-// adds useElementLayout enable
-export const TamaguiProvider = (props: TamaguiProviderProps) => {
-  if (process.env.TAMAGUI_TARGET === 'native') {
-    freezeGestureHandlerEnabledMode()
-  }
-
-  useIsomorphicLayoutEffect(() => {
-    enable()
-  }, [])
-
-  return <WebTamaguiProvider {...props} />
-}
-
-// automate using the react native media driver
-export const createTamagui: typeof createTamaguiWeb = (conf) => {
-  if (!isWeb) {
-    if (conf.media) {
-      conf.media = createMedia(conf.media)
-    }
-  }
-  return createTamaguiWeb(conf)
-}
-
-const baseViews = getBaseViews()
-
-// setup internal hooks:
-
-setupHooks({
-  getBaseViews,
-
-  setElementProps: (node) => {
-    if (process.env.TAMAGUI_TARGET === 'web') {
-      // web only
-      if (node && !node['measure']) {
-        node.measure ||= createMeasure(node)
-        node.measureInWindow ||= createMeasureInWindow(node)
-        node.measureLayout ||= createMeasureLayout(node)
-      }
-    }
-  },
-
-  usePropsTransform(elementType, propsIn, stateRef, willHydrate) {
-    if (process.env.TAMAGUI_TARGET === 'web') {
-      const isDOM = typeof elementType === 'string'
-
-      // replicate react-native-web functionality
-      const {
-        // remove event props handles by useResponderEvents
-        onMoveShouldSetResponder,
-        onMoveShouldSetResponderCapture,
-        onResponderEnd,
-        onResponderGrant,
-        onResponderMove,
-        onResponderReject,
-        onResponderRelease,
-        onResponderStart,
-        onResponderTerminate,
-        onResponderTerminationRequest,
-        onScrollShouldSetResponder,
-        onScrollShouldSetResponderCapture,
-        onSelectionChangeShouldSetResponder,
-        onSelectionChangeShouldSetResponderCapture,
-        onStartShouldSetResponder,
-        onStartShouldSetResponderCapture,
-
-        // android
-        collapsable,
-        focusable,
-
-        // deprecated,
-        accessible,
-        accessibilityDisabled,
-
-        onLayout,
-        hrefAttrs,
-
-        ...plainDOMProps
-      } = propsIn
-
-      if (willHydrate || isDOM) {
-        useElementLayout(stateRef, !isDOM ? undefined : (onLayout as any))
-        // responder events removed for web - use native pointer/touch events instead
-        // the onResponder* props are stripped above and not passed to DOM
-      }
-
-      if (isDOM) {
-        // TODO move into getSplitStyles
-        if (plainDOMProps.href && hrefAttrs) {
-          const { download, rel, target } = hrefAttrs
-          if (download != null) {
-            plainDOMProps.download = download
-          }
-          if (rel) {
-            plainDOMProps.rel = rel
-          }
-          if (typeof target === 'string') {
-            plainDOMProps.target = target.charAt(0) !== '_' ? `_${target}` : target
-          }
-        }
-        return plainDOMProps
-      }
-    }
-  },
-
-  // attempt at properly fixing RN input, but <Pressable><TextInput /> just doesnt work on RN
-  ...(process.env.TAMAGUI_TARGET === 'native' && {
-    useChildren(elementType, children, viewProps) {
-      if (process.env.NODE_ENV === 'test') {
-        // test mode - just use regular views since optimizations cause weirdness
-        return
-      }
-
-      if (elementType === baseViews.View && baseViews.TextAncestor) {
-        // optimize view
-        return createOptimizedView(children, viewProps, baseViews)
-      }
-    },
-  }),
-})
+// the one platform setup path, shared with `@tamagui/core/internal-runtime`
+export { TamaguiProvider, createTamagui } from './runtime'
 
 // overwrite web versions:
 // putting at the end ensures it overwrites in dist/cjs/index.js
@@ -259,45 +103,22 @@ export const Text = WebText as any as RNTamaguiText
 
 // const zz = <A />
 
-// const variants = {
-//   fullscreen: {
-//     true: {},
-//   },
-//   elevation: {
-//     '...size': () => ({}),
-//     ':number': () => ({}),
-//   },
-// } as const
-
-// export const YStack = styled(View, {
-//   flexDirection: 'column',
-//   variants,
-// })
-
 // import { TextInput } from 'react-native'
 // export const InputFrame = styled(
 //   TextInput,
 //   {
-//     name: 'Input',
+//     displayName: 'Input',
 //     backgroundColor: 'green',
 
 //     variants: {
-//       // unstyled: {
-//       //   false: {},
-//       // },
-
 //       size: {
-//         '...size': () => ({}),
+//         Size: () => ({}),
 //       },
 
 //       // disabled: {
-//       //   ':boolean': () => ({})
+//       //   boolean: () => ({})
 //       // },
 //     } as const,
-
-//     // defaultVariants: {
-//     //   unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
-//     // },
 //   },
 //   {
 //     isText: true,
@@ -306,68 +127,3 @@ export const Text = WebText as any as RNTamaguiText
 //     },
 //   }
 // )
-
-// export const StyledInputFrame = styled(InputFrame, {
-//   fontSize: 16,
-//   fontFamily: '$silkscreen',
-//   color: '$color5',
-//   minWidth: 0,
-//   borderWidth: 0,
-//   borderColor: 'transparent',
-
-//   variants: {
-//     unset: {
-//       false: {
-//         borderWidth: 2,
-//         py: 12,
-//         px: 14,
-//         borderRadius: 6,
-//         bg: '$color3',
-//         focusStyle: {
-//           bg: '$color4',
-//           margin: 0,
-//         },
-//       },
-//     },
-//   } as const,
-
-//   defaultVariants: {
-//     unset: false,
-//   },
-// })
-
-// export const StyledStyledInputFrame = styled(
-//   StyledInputFrame,
-//   {
-//     fontSize: 16,
-//     fontFamily: '$silkscreen',
-//     color: '$color5',
-//     minWidth: 0,
-//     borderWidth: 0,
-//     borderColor: 'transparent',
-
-//     variants: {
-//       unset: {
-//         false: {
-//           borderWidth: 2,
-//           py: 12,
-//           px: 14,
-//           borderRadius: 6,
-//           bg: '$color3',
-//           focusStyle: {
-//             bg: '$color4',
-//             margin: 0,
-//           },
-//         },
-//       },
-//     } as const,
-
-//     defaultVariants: {
-//       unset: false,
-//     },
-//   },
-//   {
-//     inlineProps: new Set(['id', 'testID']),
-//   }
-// )
-// export const DepthTest = () => <StyledStyledInputFrame placeholder="" />

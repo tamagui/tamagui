@@ -17,6 +17,7 @@
   },
   "scripts": {
     "build": "tamagui-build",
+    "test:web": "vitest --run src",
     "watch": "tamagui-build --watch",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"

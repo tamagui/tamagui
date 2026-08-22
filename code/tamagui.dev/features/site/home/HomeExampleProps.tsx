@@ -6,11 +6,11 @@ import { ContainerLarge } from '~/components/Containers'
 const FeatureItem = ({ label, children }) => {
   return (
     <SizableText>
-      <SizableText fontFamily="$mono" size="$5" fontWeight="800">
+      <SizableText fontFamily="mono" size="5" fontWeight="800">
         {label}
       </SizableText>
       &nbsp;&nbsp;-&nbsp;&nbsp;
-      <SizableText size="$5" render="span" color="$color9">
+      <SizableText size="5" render="span" color="color9">
         {children}
       </SizableText>
     </SizableText>
@@ -19,14 +19,14 @@ const FeatureItem = ({ label, children }) => {
 
 const Features = ({ items, ...props }: any) => {
   return (
-    <YStack gap="$4" {...props}>
+    <YStack gap="4" {...props}>
       {items.map((feature, i) => (
-        <Card key={i} p="$6" elevation="$1" $sm={{ p: '$4' }}>
+        <Card key={i} p="6 sm:4" elevation="1">
           <XStack render="li">
-            <Text color="$green9">
+            <Text color="green9">
               <CheckCircle />
             </Text>
-            <Paragraph color="$gray11">{feature}</Paragraph>
+            <Paragraph color="gray11">{feature}</Paragraph>
           </XStack>
         </Card>
       ))}
@@ -37,10 +37,10 @@ const Features = ({ items, ...props }: any) => {
 export const HomeExampleProps = () => {
   return (
     <ContainerLarge position="relative">
-      <XStack px="$6" pt="$8" gap="$4" $sm={{ flexDirection: 'column', px: 0 }}>
-        <YStack width="50%" $sm={{ width: '100%' }}>
+      <XStack px="6 sm:0px" pt="8" gap="4" flexDirection="sm:column">
+        <YStack width="50% sm:100%">
           <Features
-            gap="$8"
+            gap="8"
             items={[
               <FeatureItem key="" label="Press & hover events">
                 onHoverIn, onHoverOut, onPressIn, and onPressOut.
@@ -54,9 +54,9 @@ export const HomeExampleProps = () => {
             ]}
           />
         </YStack>
-        <YStack width="50%" $sm={{ width: '100%' }}>
+        <YStack width="50% sm:100%">
           <Features
-            gap="$8"
+            gap="8"
             items={[
               <FeatureItem key="" label="Themes">
                 Change theme on any component.

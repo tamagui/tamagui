@@ -1,0 +1,12 @@
+{
+  "expo": {
+    "name": "uniwind-bench-native",
+    "slug": "uniwind-bench-native",
+    "version": "1.0.0",
+    "scheme": "uwbenchnative",
+    "platforms": ["ios"],
+    "ios": {
+      "bundleIdentifier": "dev.tamagui.uwbenchnative"
+    }
+  }
+}

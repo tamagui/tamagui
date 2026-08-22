@@ -4,12 +4,16 @@ import type {
   ViewProps,
   VariantSpreadExtras,
 } from '@tamagui/core'
-import { getVariableValue, isAndroid, isVariable } from '@tamagui/core'
+import { getVariableValue, isAndroid, isVariable, resolveSizeToken } from '@tamagui/core'
 
 export const getElevation: SizeVariantSpreadFunction<ViewProps> = (size, extras) => {
   if (!size) return
   const { tokens } = extras
-  const token = tokens.size[size]
+  const sizeToken = resolveSizeToken(size, 'size')
+  // elevation={10} means 10px, not size token '10'. the size scale is keyed by
+  // numeric-looking strings, so only a non-numeric token may be looked up.
+  if (typeof sizeToken === 'number') return getSizedElevation(sizeToken, extras)
+  const token = tokens.size[sizeToken]
   const sizeNum = (isVariable(token) ? +token.val : size) as number
   return getSizedElevation(sizeNum, extras)
 }
@@ -19,22 +23,25 @@ export const getSizedElevation = (
   { theme, tokens }: VariantSpreadExtras<any>
 ) => {
   let num = 0
-  if (val === true) {
-    const val = getVariableValue(tokens.size['true'])
-    if (typeof val === 'number') {
-      num = val
+  if (typeof val === 'number') {
+    num = val
+  } else if (val) {
+    const sizeToken = resolveSizeToken(val, 'size')
+    const token = typeof sizeToken === 'number' ? sizeToken : tokens.size[sizeToken]
+    const tokenValue = getVariableValue(token)
+    if (typeof tokenValue === 'number') {
+      num = tokenValue
     } else {
       num = 10
     }
-  } else {
-    num = +val
   }
   if (num === 0) {
     return
   }
   const [height, shadowRadius] = [Math.round(num / 4 + 1), Math.round(num / 2 + 2)]
+  const shadowColor = theme['shadow-color'] ?? theme.shadowColor
   const shadow = {
-    shadowColor: theme.shadowColor,
+    shadowColor,
     shadowRadius,
     shadowOffset: { height, width: 0 },
     ...(isAndroid

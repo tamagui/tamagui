@@ -15,15 +15,9 @@ window['React'] = React
 // whichever medias node considered active and emit the result as an
 // unconditional style, moving styles to the wrong breakpoint.
 
-function classNamesOf(js: string | undefined) {
-  return js?.match(/const _cn = "([^"]*)"/)?.[1] ?? ''
-}
-
 // MyMediaVariantText (see @tamagui/test-design-system):
-//   scale         sm=24px  md=35px  lg=58px
-//   base          fontWeight 200, scale sm
-//   $lg           scale md
-//   strength=large  scale md + fontWeight 800, and $lg: scale lg + fontWeight 800
+//   base             fontWeight 200, fontSize "24px lg:35px"
+//   strength=large   fontWeight 800, fontSize "35px lg:58px"
 const IMPORT = `import { MyMediaVariantText } from '@tamagui/test-design-system'`
 
 test('a variant carrying a media block keeps it at that breakpoint', async () => {
@@ -35,19 +29,19 @@ test('a variant carrying a media block keeps it at that breakpoint', async () =>
       }
     `
   )
-  const cn = classNamesOf(output?.js)
+  const styles = output?.styles ?? ''
 
-  // base is the variant's own base, not the value from inside its $lg
-  expect(cn).toContain('_fos-35px')
-  expect(cn).toContain('_fow-800')
-  expect(cn).not.toContain('_fos-58px ')
+  expect(output?.js).toContain('<span')
+  expect(output?.js).not.toContain('<MyMediaVariantText')
 
-  // and the variant's $lg beats the frame's $lg
-  expect(cn).toContain('_fos-_lg_58px')
-  expect(cn).toContain('_fow-_lg_800')
-  expect(cn).not.toContain('_fos-_lg_35px')
+  // base is the variant's own base, not the value from inside its lg clause
+  expect(styles).toContain('font-size:35px')
+  expect(styles).toContain('font-weight:800')
+  expect(styles.split('@media')[0]).not.toContain('font-size:58px')
 
-  expect(output?.styles).toContain('@media (max-width: 1280px)')
+  // and the variant's lg value beats the frame's lg value
+  expect(styles).toMatch(/@media \(min-width: 1024px\)[\s\S]*font-size:58px/)
+  expect(styles).not.toContain('font-size:24px')
 })
 
 test('without the variant the frame media still applies', async () => {
@@ -59,55 +53,53 @@ test('without the variant the frame media still applies', async () => {
       }
     `
   )
-  const cn = classNamesOf(output?.js)
-  expect(cn).toContain('_fos-24px')
-  expect(cn).toContain('_fow-200')
-  expect(cn).toContain('_fos-_lg_35px')
+  const styles = output?.styles ?? ''
+  expect(styles).toContain('font-size:24px')
+  expect(styles).toContain('font-weight:200')
+  expect(styles).toMatch(/@media \(min-width: 1024px\)[\s\S]*font-size:35px/)
 })
 
-test('a media prop setting a variant overrides the frame media', async () => {
+test('a flat media clause at the call site overrides the frame media', async () => {
   const output = await extractForWeb(
     dedent`
       import { styled, Paragraph } from 'tamagui'
 
       const Title = styled(Paragraph, {
-        size: '$7',
-        $lg: { size: '$9' },
+        fontSize: '7 lg:9',
       })
 
       export function Test() {
-        return <Title $lg={{ size: '$11' }} />
+        return <Title fontSize="7 lg:11" />
       }
     `,
     { options: { enableDynamicEvaluation: true } }
   )
-  const cn = classNamesOf(output?.js)
+  const styles = output?.styles ?? ''
 
-  expect(cn).toContain('_fos-f-size-7')
-  expect(cn).toContain('_fos-_lg_f-size-11')
-  expect(cn).not.toContain('_fos-_lg_f-size-9')
+  expect(styles.split('@media')[0]).toContain('var(--f-size-7)')
+  expect(styles).toMatch(/@media \(min-width: 1024px\)[\s\S]*var\(--f-size-11\)/)
+  expect(styles).not.toContain('var(--f-size-9)')
 })
 
-test('a media prop merges into the frame media rather than replacing it', async () => {
+test('a flat media clause merges into the frame media rather than replacing it', async () => {
   const output = await extractForWeb(
     dedent`
       import { styled, Paragraph } from 'tamagui'
 
       const Title = styled(Paragraph, {
-        size: '$7',
-        $lg: { size: '$9' },
+        fontSize: '7 lg:9',
       })
 
       export function Test() {
-        return <Title $lg={{ color: 'red' }} />
+        return <Title color="lg:red" />
       }
     `,
     { options: { enableDynamicEvaluation: true } }
   )
-  const cn = classNamesOf(output?.js)
+  const styles = output?.styles ?? ''
 
-  expect(cn).toContain('_col-_lg_red')
-  expect(cn).toContain('_fos-_lg_f-size-9')
+  expect(styles).toMatch(/@media \(min-width: 1024px\)[\s\S]*color:red/)
+  expect(styles).toMatch(/@media \(min-width: 1024px\)[\s\S]*var\(--f-size-9\)/)
 })
 
 // a styled() defined in the file being compiled is only known to the extractor
@@ -119,11 +111,10 @@ const localSource = dedent`
   import { styled, Paragraph } from 'tamagui'
 
   export const Title = styled(Paragraph, {
-    size: '$7',
-    $lg: { size: '$9' },
+    fontSize: '7 lg:9',
     variants: {
       strength: {
-        large: { size: '$9', $lg: { size: '$11' } },
+        large: { fontSize: '9 lg:11' },
       },
     },
   })
@@ -147,11 +138,11 @@ test('a locally defined styled() flattens when given one of its own variants', a
     sourcePath: localFile,
     options: { enableDynamicEvaluation: true },
   })
-  const cn = classNamesOf(output?.js)
+  const styles = output?.styles ?? ''
 
   expect(output?.js).toContain('className')
-  // the variant's size wins over the frame's, at both the base and $lg
-  expect(cn).toContain('_fos-f-size-9')
-  expect(cn).toContain('_fos-_lg_f-size-11')
-  expect(cn).not.toContain('_fos-f-size-7')
+  // the variant's size wins over the frame's at both base and lg
+  expect(styles.split('@media')[0]).toContain('var(--f-size-9)')
+  expect(styles).toMatch(/@media \(min-width: 1024px\)[\s\S]*var\(--f-size-11\)/)
+  expect(styles).not.toContain('var(--f-size-7)')
 })

@@ -25,18 +25,18 @@ export default function PaymentFinishedPage() {
     <>
       <HeadInfo title="Account" />
 
-      <Container py="$8">
-        <YStack gap="$4" maxWidth={600}>
-          <H1 fontFamily="$mono">Payment complete! 🎉</H1>
+      <Container py="8">
+        <YStack gap="4" maxWidth={600}>
+          <H1 fontFamily="mono">Payment complete! 🎉</H1>
 
-          <H4 fontFamily="$mono">We appreciate your support</H4>
+          <H4 fontFamily="mono">We appreciate your support</H4>
 
-          <Paragraph size="$5">
+          <Paragraph size="5">
             Your account and all assets are always available to access and manage via the
             account modal.
           </Paragraph>
 
-          <Paragraph size="$4" color="$color10">
+          <Paragraph size="4" color="color10">
             We're checking for the Stripe webhook, once complete your Account modal should
             open and you can set up your project.
           </Paragraph>

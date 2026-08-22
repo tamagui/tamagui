@@ -53,18 +53,18 @@
     "@tamagui/separator": "workspace:*",
     "@tamagui/sheet": "workspace:*",
     "@tamagui/stacks": "workspace:*",
+    "@tamagui/start-transition": "workspace:*",
     "@tamagui/text": "workspace:*",
     "@tamagui/use-controllable-state": "workspace:*",
     "@tamagui/use-debounce": "workspace:*",
     "@tamagui/use-event": "workspace:*",
-    "@tamagui/use-previous": "workspace:*",
     "@tamagui/z-index-stack": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
     "react": ">=19",
     "react-dom": "*",
-    "react-native": "0.83.2"
+    "react-native": "0.86.2"
   },
   "peerDependencies": {
     "react": ">=19",

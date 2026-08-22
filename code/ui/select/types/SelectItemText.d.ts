@@ -1,22 +1,18 @@
 import type { GetProps, TamaguiTextElement } from '@tamagui/core';
+import * as React from 'react';
 import type { SelectScopedProps } from './types';
 export declare const ITEM_TEXT_NAME = "SelectItemText";
-export declare const SelectItemTextFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiTextElement, import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
-    size?: import("@tamagui/core").FontSizeTokens | undefined;
-    unstyled?: boolean | undefined;
-}, import("@tamagui/core").StaticConfigPublic>;
+export declare const SelectItemTextFrame: React.FunctionComponent<Omit<import("@tamagui/core").RNTamaguiTextNonStyleProps, keyof import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & {
+    ref?: React.Ref<TamaguiTextElement> | undefined;
+}> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, TamaguiTextElement, import("@tamagui/core").RNTamaguiTextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {}, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
+    __tama: [import("@tamagui/core").TamaDefer, TamaguiTextElement, import("@tamagui/core").RNTamaguiTextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {}, import("@tamagui/core").StaticConfigPublic];
+};
 type SelectItemTextExtraProps = SelectScopedProps<{}>;
 export type SelectItemTextProps = GetProps<typeof SelectItemTextFrame> & SelectItemTextExtraProps;
-export declare const SelectItemText: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
-    size?: import("@tamagui/core").FontSizeTokens | undefined;
-    unstyled?: boolean | undefined;
-}>, "scope"> & {
+export declare const SelectItemText: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiTextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {}>, "accessibilityActions" | "accessibilityElementsHidden" | "accessibilityHint" | "accessibilityIgnoresInvertColors" | "accessibilityLabel" | "accessibilityLabelledBy" | "accessibilityLanguage" | "accessibilityLargeContentTitle" | "accessibilityLiveRegion" | "accessibilityRespondsToUserInteraction" | "accessibilityRole" | "accessibilityShowsLargeContentViewer" | "accessibilityState" | "accessibilityValue" | "accessibilityViewIsModal" | "accessible" | "adjustsFontSizeToFit" | "allowFontScaling" | "android_hyphenationFrequency" | "animatedBy" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-hidden" | "aria-label" | "aria-labelledby" | "aria-live" | "aria-modal" | "aria-selected" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "asChild" | "children" | "className" | "container" | "dangerouslySetInnerHTML" | "dataDetectorType" | "debug" | "dir" | "disableClassName" | "disableNativeStyle" | "disableOptimization" | "disabled" | "dynamicTypeRamp" | "elevationAndroid" | "ellipsizeMode" | "forceStyle" | "group" | "hitSlop" | "htmlFor" | "id" | "importantForAccessibility" | "lineBreakMode" | "lineBreakStrategyIOS" | "maxFontSizeMultiplier" | "minimumFontScale" | "name" | "nativeID" | "onAccessibilityAction" | "onAccessibilityEscape" | "onAccessibilityTap" | "onBeforeInput" | "onBlur" | "onChange" | "onClick" | "onContextMenu" | "onCopy" | "onCut" | "onDoubleClick" | "onDrag" | "onDragEnd" | "onDragEnter" | "onDragLeave" | "onDragOver" | "onDragStart" | "onDrop" | "onFocus" | "onInput" | "onKeyDown" | "onKeyUp" | "onLayout" | "onLongPress" | "onMagicTap" | "onMouseDown" | "onMouseEnter" | "onMouseLeave" | "onMouseMove" | "onMouseOut" | "onMouseOver" | "onMouseUp" | "onPaste" | "onPointerCancel" | "onPointerDown" | "onPointerMove" | "onPointerUp" | "onPress" | "onPressIn" | "onPressOut" | "onScroll" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "onTextLayout" | "onWheel" | "pressRetentionOffset" | "render" | "role" | "scope" | "screenReaderFocusable" | "selectionColor" | "style" | "suppressHighlighting" | "tabIndex" | "target" | "testID" | "textBreakStrategy" | "theme" | "themeShallow" | "untilMeasured" | keyof import("@tamagui/core").TextStylePropsBase> & Omit<import("@tamagui/core").RNTamaguiTextNonStyleProps, keyof import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & {
     scope?: import("./types").SelectScopes;
-}, TamaguiTextElement, import("@tamagui/core").TextNonStyleProps & {
+}, import("react-native").Text | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").RNTamaguiTextNonStyleProps & Omit<import("@tamagui/core").RNTamaguiTextNonStyleProps, keyof import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & {
     scope?: import("./types").SelectScopes;
-}, import("@tamagui/core").TextStylePropsBase, {
-    size?: import("@tamagui/core").FontSizeTokens | undefined;
-    unstyled?: boolean | undefined;
-}, import("@tamagui/core").StaticConfigPublic>;
+}, import("@tamagui/core").TextStylePropsBase, {}, import("@tamagui/core").StaticConfigPublic>;
 export {};
 //# sourceMappingURL=SelectItemText.d.ts.map

@@ -40,15 +40,7 @@ button,
   all: unset;
 }
 
-p,
-input,
-textarea,
-button,
-ul,
-ol,
-li,
-pre,
-dialog {
+:where(p, input, textarea, button, ul, ol, li, pre, dialog) {
   all: unset;
   box-sizing: border-box;
 }

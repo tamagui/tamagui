@@ -264,6 +264,36 @@ from available fonts or icons:
 [Tamagui Pro](https://tamagui.dev/takeout) membership for access to the font and
 icon repositories.
 
+### migrate
+
+Print an agent brief for migrating an existing app to v3.
+
+```bash
+npx tamagui migrate --from v2
+npx tamagui migrate --from v1
+```
+
+`--from v1` sequences the v1-to-v2 pass ahead of the v2-to-v3 one. The brief is
+the checklist of record for the upgrade: dependency updates, the config and theme
+moves, the flat-values codemod, the Sheet codemod, and every deprecated API with
+its before and after. The prose version is the
+[upgrade guide](/docs/guides/how-to-upgrade).
+
+### setup
+
+Print an agent brief for adding Tamagui to a project that does not use it yet.
+
+```bash
+npx tamagui setup
+```
+
+It covers the version baseline, a pinned install, the config and provider, the
+right bundler adapter, and the flat-value style grammar, and it ends by making
+the agent verify with `tamagui check` and a real run rather than a typecheck.
+
+Pair it with [migrate](#migrate) for projects already on v1 or v2. See
+[Set up with an agent](/docs/intro/agents) for the copy-paste prompts.
+
 ### generate-prompt
 
 Generate an LLM-friendly markdown file from your Tamagui configuration. This

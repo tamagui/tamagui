@@ -69,12 +69,12 @@ describe('ThemeChangeBasic', () => {
     console.log(`Blue theme color: ${formatRGB(blueColor)}`)
 
     // verify colors changed
-    // red theme $color4 should be reddish
+    // red theme color4 should be reddish
     assert.ok(
       isReddish(redColor),
       `Expected red color to be reddish, got ${formatRGB(redColor)}`
     )
-    // blue theme $color4 should be blueish
+    // blue theme color4 should be blueish
     assert.ok(
       isBlueish(blueColor),
       `Expected blue color to be blueish, got ${formatRGB(blueColor)}`

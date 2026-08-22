@@ -24,11 +24,11 @@ export function DialogDemo() {
   const [mode, setMode] = useState<DialogMode>('plain')
 
   return (
-    <View gap="$4" justify="center" items="center">
+    <View gap="4" justify="center" items="center">
       <XGroup>
         <XGroup.Item>
           <Button
-            size="$3"
+            size="3"
             theme={mode === 'plain' ? 'accent' : undefined}
             onPress={() => setMode('plain')}
           >
@@ -37,7 +37,7 @@ export function DialogDemo() {
         </XGroup.Item>
         <XGroup.Item>
           <Button
-            size="$3"
+            size="3"
             theme={mode === 'adapt' ? 'accent' : undefined}
             onPress={() => setMode('adapt')}
           >
@@ -46,7 +46,7 @@ export function DialogDemo() {
         </XGroup.Item>
         <XGroup.Item>
           <Button
-            size="$3"
+            size="3"
             theme={mode === 'keepMounted' ? 'accent' : undefined}
             onPress={() => setMode('keepMounted')}
           >
@@ -77,7 +77,7 @@ function DialogInstance({ mode }: { mode: DialogMode }) {
       </Dialog.Trigger>
 
       {mode === 'adapt' && (
-        <Adapt when="maxMd" platform="touch">
+        <Adapt when="max-md" platform="touch">
           <Sheet
             transition="medium"
             zIndex={200000}
@@ -85,15 +85,14 @@ function DialogInstance({ mode }: { mode: DialogMode }) {
             dismissOnSnapToBottom
             unmountChildrenWhenHidden
           >
-            <Sheet.Frame p="$4" gap="$4">
+            <Sheet.Container p="4" gap="4">
+              <Sheet.Background />
               <Adapt.Contents />
-            </Sheet.Frame>
+            </Sheet.Container>
             <Sheet.Overlay
-              bg="$background"
-              opacity={0.5}
+              bg="background"
+              opacity="0.5 enter:0 exit:0"
               transition="lazy"
-              enterStyle={{ opacity: 0 }}
-              exitStyle={{ opacity: 0 }}
             />
           </Sheet>
         </Adapt>
@@ -101,48 +100,34 @@ function DialogInstance({ mode }: { mode: DialogMode }) {
 
       <Dialog.Portal>
         <Dialog.Overlay
-          bg="$background"
-          opacity={0.5}
+          bg="background"
+          opacity="0.5 enter:0 exit:0"
+          transition={['quicker', { opacity: { overshootClamping: true } }]}
           animateOnly={['transform', 'opacity']}
-          transition={[
-            'quicker',
-            {
-              opacity: {
-                overshootClamping: true,
-              },
-            },
-          ]}
-          enterStyle={{ opacity: 0 }}
-          exitStyle={{ opacity: 0 }}
         />
 
         <Dialog.FocusScope focusOnIdle>
           <Dialog.Content
-            transition={[
-              'quicker',
-              {
-                opacity: {
-                  overshootClamping: true,
-                },
-              },
-            ]}
-            enterStyle={{ x: 0, y: 20, opacity: 0 }}
-            exitStyle={{ x: 0, y: 10, opacity: 0, scale: 0.95 }}
-            gap="$4"
+            transition={['quicker', { opacity: { overshootClamping: true } }]}
+            x="enter:0 exit:0"
+            y="enter:20px exit:10px"
+            opacity="enter:0 exit:0"
+            scale="exit:0.95"
+            gap="4"
           >
             <Dialog.Title>Edit profile</Dialog.Title>
             <Dialog.Description>
               Make changes to your profile here. Click save when you're done.
             </Dialog.Description>
 
-            <Fieldset gap="$4" horizontal>
+            <Fieldset gap="4" horizontal>
               <Label width={64} htmlFor="name">
                 Name
               </Label>
               <Input flex={1} id="name" defaultValue="Nate Wienert" />
             </Fieldset>
 
-            <Fieldset gap="$4" horizontal>
+            <Fieldset gap="4" horizontal>
               <Label width={64} htmlFor="username">
                 <TooltipSimple label="Pick your favorite" placement="bottom-start">
                   <Paragraph>Food</Paragraph>
@@ -151,15 +136,18 @@ function DialogInstance({ mode }: { mode: DialogMode }) {
               <XStack flex={1}>
                 <SelectDemoContents
                   trigger={
-                    <Select.Trigger flex={1} iconAfter={ChevronDown} borderRadius="$4">
+                    <Select.Trigger flex={1} borderRadius="4">
                       <Select.Value placeholder="Something" />
+                      <Select.Icon>
+                        <ChevronDown />
+                      </Select.Icon>
                     </Select.Trigger>
                   }
                 />
               </XStack>
             </Fieldset>
 
-            <XStack self="flex-end" gap="$4">
+            <XStack self="flex-end" gap="4">
               <Dialog.Close displayWhenAdapted asChild>
                 <Button theme="accent" aria-label="Close">
                   Save changes
@@ -169,7 +157,7 @@ function DialogInstance({ mode }: { mode: DialogMode }) {
 
             <Unspaced>
               <Dialog.Close asChild>
-                <Button position="absolute" r="$3" size="$2" circular icon={X} />
+                <Button position="absolute" r="3" size="2" circular icon={X} />
               </Dialog.Close>
             </Unspaced>
           </Dialog.Content>

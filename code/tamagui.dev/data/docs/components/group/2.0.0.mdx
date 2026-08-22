@@ -67,12 +67,12 @@ import { Button, XGroup } from 'tamagui'
 export default () => (
   <XGroup>
     <XGroup.Item>
-      <Button size="$3" $gtSm={{ size: '$5' }} icon={Activity}>
+      <Button size="3" height="gtSm:5" icon={Activity}>
         First
       </Button>
     </XGroup.Item>
     <XGroup.Item>
-      <Button size="$3" $gtSm={{ size: '$5' }} icon={Airplay}>
+      <Button size="3" height="gtSm:5" icon={Airplay}>
         Second
       </Button>
     </XGroup.Item>
@@ -86,7 +86,7 @@ The `size` prop on Group itself only affects the border radius of the group cont
 import { Button, XGroup } from 'tamagui'
 
 export default () => (
-  <XGroup size="$6">
+  <XGroup size="6">
     <XGroup.Item>
       <Button>First</Button>
     </XGroup.Item>

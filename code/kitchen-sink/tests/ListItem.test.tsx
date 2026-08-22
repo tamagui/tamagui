@@ -17,7 +17,9 @@ test('ListItem renders correctly with default theme', async ({ page }) => {
   await expect(subTitle).toBeVisible()
 
   const styles = await getStyles(listItem)
-  expect(styles.backgroundColor).toBe('rgb(242, 242, 242)')
+  expect(styles.backgroundColor).toBe('rgb(255, 255, 255)')
+
+  await expect(page.locator('#themed-list-item-default > svg')).toBeVisible()
 })
 
 test('ListItem renders correctly with light theme', async ({ page }) => {
@@ -30,7 +32,7 @@ test('ListItem renders correctly with light theme', async ({ page }) => {
   await expect(subTitle).toBeVisible()
 
   const styles = await getStyles(listItem)
-  expect(styles.backgroundColor).toBe('rgb(242, 242, 242)')
+  expect(styles.backgroundColor).toBe('rgb(255, 255, 255)')
 })
 
 test('ListItem renders correctly with dark theme', async ({ page }) => {
@@ -43,13 +45,13 @@ test('ListItem renders correctly with dark theme', async ({ page }) => {
   await expect(subTitle).toBeVisible()
 
   const styles = await getStyles(listItem)
-  expect(styles.backgroundColor).toBe('rgb(10, 10, 10)')
+  expect(styles.backgroundColor).toBe('rgb(3, 7, 18)')
 })
 
 test('ListItem with accent theme renders correctly in light theme', async ({ page }) => {
   const listItem = page.locator('#themed-list-item-light-accent')
   const title = listItem.getByText('<Theme name="accent">', { exact: true })
-  const subTitle = listItem.getByText('light + accent = light_accent (contrasting)', {
+  const subTitle = listItem.getByText('light + accent = light_accent brand tint', {
     exact: true,
   })
 
@@ -57,20 +59,14 @@ test('ListItem with accent theme renders correctly in light theme', async ({ pag
   await expect(title).toBeVisible()
   await expect(subTitle).toBeVisible()
 
-  // Accent theme inverts colors - light + accent = dark background
   const styles = await getStyles(listItem)
-  const match = styles.backgroundColor.match(/rgb\((\d+), (\d+), (\d+)\)/)
-  expect(match).toBeTruthy()
-  const [, r, g, b] = match!.map(Number)
-  expect(r).toBeLessThan(50)
-  expect(g).toBeLessThan(50)
-  expect(b).toBeLessThan(50)
+  expect(styles.backgroundColor).toBe('rgb(219, 234, 254)')
 })
 
 test('ListItem with accent theme renders correctly in dark theme', async ({ page }) => {
   const listItem = page.locator('#themed-list-item-dark-accent')
   const title = listItem.getByText('<Theme name="accent">', { exact: true })
-  const subTitle = listItem.getByText('dark + accent = dark_accent (contrasting)', {
+  const subTitle = listItem.getByText('dark + accent = dark_accent brand tint', {
     exact: true,
   })
 
@@ -78,14 +74,8 @@ test('ListItem with accent theme renders correctly in dark theme', async ({ page
   await expect(title).toBeVisible()
   await expect(subTitle).toBeVisible()
 
-  // Accent theme inverts colors - dark + accent = light background
   const styles = await getStyles(listItem)
-  const match = styles.backgroundColor.match(/rgb\((\d+), (\d+), (\d+)\)/)
-  expect(match).toBeTruthy()
-  const [, r, g, b] = match!.map(Number)
-  expect(r).toBeGreaterThan(200)
-  expect(g).toBeGreaterThan(200)
-  expect(b).toBeGreaterThan(200)
+  expect(styles.backgroundColor).toBe('rgb(28, 57, 142)')
 })
 
 test('ListItem renders correctly with outlined variant', async ({ page }) => {
@@ -126,4 +116,34 @@ test('ListItem.Apply passes variant to children', async ({ page }) => {
   // Outlined variant applied via Apply context
   expect(styles.backgroundColor).toBe('rgba(0, 0, 0, 0)')
   expect(styles.borderWidth).toBe('1px')
+})
+
+test('ListItem re-provides size and color context to child icons', async ({ page }) => {
+  const listItem = page.locator('#themed-list-item-child-icon')
+  const icon = listItem.locator('svg').first()
+  const path = icon.locator('path').first()
+
+  await expect(listItem).toBeVisible()
+  await expect(icon).toBeVisible()
+
+  const box = await icon.boundingBox()
+  expect(box?.width).toBeGreaterThanOrEqual(18)
+  expect(box?.height).toBeGreaterThanOrEqual(18)
+
+  const stroke = await path.evaluate((el) => getComputedStyle(el).stroke)
+  expect(stroke).toBeTruthy()
+  expect(stroke).not.toBe('none')
+  expect(stroke).not.toBe('rgb(0, 0, 0)')
+})
+
+test('explicit spacing overrides the injected size variant', async ({ page }) => {
+  const listItem = page.locator('#themed-list-item-explicit-spacing')
+
+  await expect(listItem).toBeVisible()
+
+  const styles = await getStyles(listItem)
+  expect(styles.paddingTop).toBe('12px')
+  expect(styles.paddingRight).toBe('0px')
+  expect(styles.paddingBottom).toBe('12px')
+  expect(styles.paddingLeft).toBe('0px')
 })

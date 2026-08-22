@@ -1,58 +1,27 @@
-import { isServer, isWeb } from '@tamagui/constants'
+import { isServer, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { useEffect, useReducer, useRef } from 'react'
 import { getSetting } from '../config'
-import { resetMediaStyleCache } from '../helpers/createMediaStyle'
+import { formatDiagnostic } from '../helpers/formatDiagnostic'
+import { isOptimizedForFirstRender } from './isOptimizedForFirstRender'
 import { matchMedia } from '../helpers/matchMedia'
 import { mediaObjectToString } from '../helpers/mediaObjectToString'
 import {
   getMedia,
   mediaKeys,
-  mediaKeysOrdered,
   mediaQueryConfig,
   setMediaState,
 } from '../helpers/mediaState'
 import type {
   ComponentContextI,
   DebugProp,
-  GetStyleState,
-  IsMediaType,
   MediaQueryState,
   TamaguiInternalConfig,
   UseMediaState,
   WidthHeight,
 } from '../types'
-import { defaultMediaImportance } from '../helpers/pseudoDescriptors'
-
-const mediaKeyRegex = /\$(platform|theme|group)-/
-
-export const isMediaKey = (key: string): boolean => {
-  if (key[0] !== '$') return false
-  if (mediaKeys.has(key)) return true
-  if (mediaKeyRegex.test(key)) return true
-  return false
-}
-
-export const getMediaKey = (key: string): IsMediaType => {
-  if (key[0] !== '$') return false
-  if (mediaKeys.has(key)) return true
-  const match = key.match(mediaKeyRegex)
-  if (match) return match[1] as 'platform' | 'theme' | 'group'
-  return false
-}
 
 // for SSR capture it at time of startup
 let initState: MediaQueryState
-
-export const getMediaKeyImportance = (key: string) => {
-  if (process.env.NODE_ENV === 'development' && key[0] === '$') {
-    throw new Error('use short key')
-  }
-
-  // + 100 because we set base usedKeys=1, pseudos are 2-N (however many we have)
-  // all media go above all pseudos so we need to pad it based on that
-  // right now theres 5 pseudos but in the future could be a few more
-  return mediaKeysOrdered.indexOf(key) + 100
-}
 
 const dispose = new Set<Function>()
 
@@ -63,20 +32,16 @@ export const configureMedia = (config: TamaguiInternalConfig) => {
   const mediaQueryDefaultActive = getSetting('mediaQueryDefaultActive')
   if (!media) return
   mediaVersion++
-  // reset cached media style prefixes/selectors so they get recalculated with new key order
-  resetMediaStyleCache()
   // touch-tracker getter object depends on the current media key set
   resetMediaTouchTracker()
+  // a replaced key set invalidates the diff baseline
+  publishedState = null
   for (const key in media) {
     getMedia()[key] = mediaQueryDefaultActive?.[key] || false
-    mediaKeys.add(`$${key}`)
+    mediaKeys.add(key)
   }
   Object.assign(mediaQueryConfig, media)
   initState = { ...getMedia() }
-  // in place: the array is shared across copies of this package, so replacing it
-  // would leave the other copies pointing at the old one
-  mediaKeysOrdered.length = 0
-  mediaKeysOrdered.push(...Object.keys(media))
   setupMediaListeners()
 }
 
@@ -107,7 +72,16 @@ export function setupMediaListeners() {
     const getMatch = () => matchMedia(str)
     const match = getMatch()
     if (!match) {
-      throw new Error('⚠️ No match')
+      throw new Error(
+        formatDiagnostic(
+          'TAMAGUI_MEDIA_MATCH',
+          'useMedia',
+          'matchMedia returned no MediaQueryList',
+          'Provide a matchMedia implementation that returns a MediaQueryList',
+          'key,query,platform',
+          { key, query: str, platform: isWeb ? 'web' : 'native' }
+        )
+      )
     }
 
     // react native needs these deprecated apis for now
@@ -127,10 +101,58 @@ export function setupMediaListeners() {
   }
 }
 
-const listeners = new Set<any>()
+type MediaListener = (state: MediaQueryState) => void
+
+// subscribers indexed by the media key they actually read, so a breakpoint
+// change wakes only the components that read that breakpoint instead of every
+// media subscriber on the page. `globalListeners` holds the subscribers that
+// can't be keyed: first-render mode hands out the raw state object with no
+// getter tracking, so its snapshot compares by identity and any publish counts.
+const listenersByKey = new Map<string, Set<MediaListener>>()
+const globalListeners = new Set<MediaListener>()
+
+// last state published to subscribers, so a publish can wake only the buckets
+// whose key value actually changed. null means "no baseline": configureMedia
+// resets it so the first publish after a config swap reaches every bucket.
+let publishedState: MediaQueryState | null = null
+
+/**
+ * instrumentation for the media render-count fixture. `notified` counts
+ * subscriber callbacks actually invoked, which is a different number from
+ * committed React renders: a woken callback re-reads its snapshot and usually
+ * bails out, and the native fast path can commit a style without a render.
+ */
+export const _mediaListenerStats = {
+  publishes: 0,
+  notified: 0,
+}
 
 export function updateMediaListeners() {
-  listeners.forEach((cb) => cb(getMedia()))
+  _mediaListenerStats.publishes++
+  const media = getMedia()
+  const prev = publishedState
+  publishedState = media
+
+  if (listenersByKey.size) {
+    // dedupe: one subscriber can sit in several key buckets
+    const woken = new Set<MediaListener>()
+    for (const key of mediaKeys) {
+      if (prev !== null && media[key] === prev[key]) continue
+      const bucket = listenersByKey.get(key)
+      if (bucket) {
+        for (const cb of bucket) woken.add(cb)
+      }
+    }
+    for (const cb of woken) {
+      _mediaListenerStats.notified++
+      cb(media)
+    }
+  }
+
+  globalListeners.forEach((cb) => {
+    _mediaListenerStats.notified++
+    cb(media)
+  })
 }
 
 type MediaState = {
@@ -138,6 +160,11 @@ type MediaState = {
   keys?: Set<string> | null
 }
 
+// per-component media-update state, keyed on a per-instance object
+// (createComponent passes stateRef.current). never key this on a shared object
+// like componentContext: every component under a provider would write to the
+// same entry and the last sibling to render would win, disabling media updates
+// for any earlier-rendered media-dependent sibling.
 const States = new WeakMap<any, MediaState>()
 
 // shared "touch tracker" prototype: one object whose enumerable getter
@@ -155,8 +182,7 @@ const refSlot = Symbol('mediaRefSlot')
 
 function buildTouchTrackerProto(): object {
   const proto: PropertyDescriptorMap = {}
-  for (const fullKey of mediaKeys) {
-    const key = fullKey[0] === '$' ? fullKey.slice(1) : fullKey
+  for (const key of mediaKeys) {
     proto[key] = {
       enumerable: true,
       configurable: true,
@@ -184,8 +210,11 @@ function resetMediaTouchTracker() {
 export function setMediaShouldUpdate(
   ref: any,
   enabled?: boolean,
-  keys?: MediaState['keys']
+  keys?: MediaState['keys'],
+  optimizeForFirstRender = false
 ) {
+  if (optimizeForFirstRender) return
+
   const cur = States.get(ref)
 
   if (!cur || cur.enabled !== enabled || keys) {
@@ -197,58 +226,156 @@ export function setMediaShouldUpdate(
   }
 }
 
-function subscribe(subscriber: () => void) {
-  listeners.add(subscriber)
-  return () => {
-    listeners.delete(subscriber)
+type MediaRef = {
+  keys: Set<string> | null
+  lastState: MediaQueryState
+  pendingState?: MediaQueryState
+  renderVersion: number
+  // the callback registered in the buckets, stable for the life of the hook
+  onChange?: MediaListener
+  // which buckets `onChange` currently sits in. a Set is a copy of the touched
+  // keys at the last commit (`keys` is cleared and refilled every render), null
+  // is the whole-object bucket, undefined means not subscribed at all.
+  listeningTo?: Set<string> | null
+  // stable per-component closures + reusable Proxy. allocating new ones each
+  // render (via useSyncExternalStore + `new Proxy(state, ...)`) was a real
+  // per-component-per-render cost; we hold one Proxy whose target is swapped
+  // by mutating `proxyTarget` and re-reading it in the get trap.
+  proxyTarget: MediaQueryState
+  proxy: UseMediaState
+  getSnapshot: () => MediaQueryState
+  componentContext?: ComponentContextI
+  uid?: object
+  debug?: DebugProp
+  optimizeForFirstRender: boolean
+}
+
+// the media keys a subscriber observes. null means the whole state object:
+// first-render mode has no getter tracking, so it can only compare identity.
+// getSnapshot and the bucket index MUST agree here, or a component gets skipped
+// for a key it reads.
+function mediaListenKeys(ref: MediaRef): Set<string> | null {
+  if (ref.optimizeForFirstRender) return null
+  return (ref.uid ? States.get(ref.uid)?.keys : undefined) || ref.keys!
+}
+
+function indexMediaListener(ref: MediaRef) {
+  const keys = mediaListenKeys(ref)
+  const cur = ref.listeningTo
+  if (cur !== undefined && sameMediaKeys(cur, keys)) return
+
+  unindexMediaListener(ref)
+  const cb = ref.onChange!
+
+  if (keys === null) {
+    globalListeners.add(cb)
+    ref.listeningTo = null
+    return
   }
+
+  ref.listeningTo = new Set(keys)
+  for (const key of keys) {
+    let bucket = listenersByKey.get(key)
+    if (!bucket) {
+      bucket = new Set()
+      listenersByKey.set(key, bucket)
+    }
+    bucket.add(cb)
+  }
+}
+
+function unindexMediaListener(ref: MediaRef) {
+  const keys = ref.listeningTo
+  if (keys === undefined) return
+  ref.listeningTo = undefined
+
+  const cb = ref.onChange!
+  if (keys === null) {
+    globalListeners.delete(cb)
+    return
+  }
+
+  for (const key of keys) {
+    const bucket = listenersByKey.get(key)
+    if (!bucket) continue
+    bucket.delete(cb)
+    // drop empties so a key removed by configureMedia leaves no bucket behind
+    if (!bucket.size) listenersByKey.delete(key)
+  }
+}
+
+function sameMediaKeys(a: Set<string> | null, b: Set<string> | null) {
+  if (a === null || b === null) return a === b
+  if (a.size !== b.size) return false
+  for (const key of b) {
+    if (!a.has(key)) return false
+  }
+  return true
 }
 
 export function useMedia(
   componentContext?: ComponentContextI,
-  debug?: DebugProp
+  debug?: DebugProp,
+  // per-component-instance key for the States map (createComponent passes
+  // stateRef.current, matching its setMediaShouldUpdate call)
+  uid?: object
 ): UseMediaState {
   'use no memo'
 
-  type MediaRef = {
-    keys: Set<string>
-    lastState: MediaQueryState
-    pendingState?: MediaQueryState
-    renderVersion: number
-    unsubscribe?: () => void
-    // stable per-component closures + reusable Proxy. allocating new ones each
-    // render (via useSyncExternalStore + `new Proxy(state, ...)`) was a real
-    // per-component-per-render cost; we hold one Proxy whose target is swapped
-    // by mutating `proxyTarget` and re-reading it in the get trap.
-    proxyTarget: MediaQueryState
-    proxy: UseMediaState
-    getSnapshot: () => MediaQueryState
-    componentContext?: ComponentContextI
-    debug?: DebugProp
-  }
-
   const internalRef = useRef<MediaRef | null>(null)
   if (!internalRef.current) {
-    const initial = getMedia()
+    // SSR contract (see settings.disableSSR docs): every first WEB render uses
+    // mediaQueryDefaultActive so hydration matches the server — including
+    // lazily-hydrated boundaries that mount long after the initial pass.
+    // a pre-paint layout effect then corrects to the real matchMedia values,
+    // so fresh client-only mounts never paint a wrong frame. Native has no
+    // hydration: starting from the defaults object made the sync effect's
+    // reference check fail on every mount and re-render the entire tree once.
+    const initial =
+      isWeb && !isServer && !getSetting('disableSSR') ? initState : getMedia()
+    const optimizeForFirstRender = isOptimizedForFirstRender()
     const r: MediaRef = {
-      keys: new Set<string>(),
+      keys: optimizeForFirstRender ? null : new Set<string>(),
       lastState: initial,
       renderVersion: 0,
       proxyTarget: initial,
       proxy: undefined as unknown as UseMediaState,
       getSnapshot: undefined as unknown as () => MediaQueryState,
       componentContext,
+      uid,
       debug,
+      optimizeForFirstRender,
     }
-    // proxy → Object.create(getterProto) with a Symbol slot. Per-key get is a
-    // monomorphic getter call (Hermes-fast) instead of a Proxy trap.
-    const tracker = Object.create(getTouchTrackerProto())
-    tracker[refSlot] = { proxyTarget: initial, keys: r.keys } as MediaRefSlot
-    r.proxy = tracker as UseMediaState
+    if (optimizeForFirstRender) {
+      r.proxy = initial as UseMediaState
+    } else {
+      // proxy → Object.create(getterProto) with a Symbol slot. Per-key get is a
+      // monomorphic getter call (Hermes-fast) instead of a Proxy trap.
+      const tracker = Object.create(getTouchTrackerProto())
+      tracker[refSlot] = {
+        proxyTarget: initial,
+        keys: r.keys!,
+      } as MediaRefSlot
+      r.proxy = tracker as UseMediaState
+    }
     r.getSnapshot = () => {
-      const curKeys = r.componentContext
-        ? States.get(r.componentContext)?.keys || r.keys
-        : r.keys
+      if (r.optimizeForFirstRender) {
+        const ms = getMedia()
+        if (ms === r.lastState) {
+          return r.lastState
+        }
+
+        if (r.componentContext?.mediaEmit) {
+          r.componentContext.mediaEmit(ms)
+          r.pendingState = ms
+          return r.lastState
+        }
+
+        r.lastState = ms
+        return ms
+      }
+
+      const curKeys = mediaListenKeys(r)!
       const { lastState, pendingState } = r
 
       if (!curKeys.size) {
@@ -281,6 +408,7 @@ export function useMedia(
   } else {
     // refresh per-render inputs the closures read through the ref
     internalRef.current.componentContext = componentContext
+    internalRef.current.uid = uid
     internalRef.current.debug = debug
   }
 
@@ -294,38 +422,65 @@ export function useMedia(
   }
 
   // clear each render to track only rendered touched keys
-  if (ref.keys.size) {
+  if (ref.keys?.size) {
     ref.keys.clear()
   }
 
-  // manual subscription (same shape as useThemeStateSubscribed): same
-  // granular bailout via getSnapshot returning the same MediaQueryState ref
-  // when none of the component's touched keys changed, but fewer
-  // React-internal hook slots on Hermes than useSyncExternalStore.
+  // manual subscription (same shape as useThemeStateSubscribed): the
+  // subscription is indexed by the keys this component reads, so a breakpoint
+  // change never reaches a component that doesn't read it, and getSnapshot
+  // returns the same MediaQueryState ref for anything that slips through.
+  // fewer React-internal hook slots on Hermes than useSyncExternalStore.
   const [, forceUpdate] = useReducer(incReducer, 0)
-  const state = isServer ? initState : ref.getSnapshot()
+  const state = isServer
+    ? initState
+    : ref.optimizeForFirstRender && ref.renderVersion === 1
+      ? ref.lastState
+      : ref.getSnapshot()
   ref.proxyTarget = state
-  ;(ref.proxy as any)[refSlot].proxyTarget = state
+  if (!ref.optimizeForFirstRender) {
+    ;(ref.proxy as any)[refSlot].proxyTarget = state
+  }
+
+  // correct the defaults-first render to real matchMedia values before paint
+  useIsomorphicLayoutEffect(() => {
+    const synced = ref.getSnapshot()
+    if (synced !== ref.proxyTarget) {
+      ref.proxyTarget = synced
+      if (!ref.optimizeForFirstRender) {
+        ;(ref.proxy as any)[refSlot].proxyTarget = synced
+      }
+      forceUpdate()
+    }
+  }, [])
 
   useEffect(() => {
     const renderVersion = ref.renderVersion
     const shouldSubscribe =
-      !ref.componentContext || !!States.get(ref.componentContext)?.enabled
+      ref.optimizeForFirstRender || !ref.uid || !!States.get(ref.uid)?.enabled
 
     if (shouldSubscribe) {
-      if (!ref.unsubscribe) {
-        ref.unsubscribe = subscribe(() => {
-          const next = ref.getSnapshot()
-          if (next !== ref.proxyTarget) {
-            ref.proxyTarget = next
+      ref.onChange ||= () => {
+        const next = ref.getSnapshot()
+        if (next !== ref.proxyTarget) {
+          // mirrors update first either way, so a later natural render
+          // resolves the same media values the fast path committed
+          ref.proxyTarget = next
+          if (!ref.optimizeForFirstRender) {
             ;(ref.proxy as any)[refSlot].proxyTarget = next
-            forceUpdate()
           }
-        })
+          // native fast path (experimental): uid is createComponent's
+          // stateRef.current; when the component can commit the media-driven
+          // style change straight to the native tree, skip the re-render
+          if ((ref.uid as any)?.nativeMediaUpdate?.(forceUpdate)) return
+          forceUpdate()
+        }
       }
-    } else if (ref.unsubscribe) {
-      ref.unsubscribe()
-      ref.unsubscribe = undefined
+      // re-index every commit: the touched-key set is rebuilt each render, so a
+      // component that starts or stops reading a breakpoint changes buckets
+      indexMediaListener(ref)
+    } else {
+      unindexMediaListener(ref)
     }
 
     return () => {
@@ -333,18 +488,15 @@ export function useMedia(
       // a newer render bumps renderVersion before that cleanup, so equality here
       // means this is the final unmount cleanup.
       if (ref.renderVersion === renderVersion) {
-        ref.unsubscribe?.()
-        ref.unsubscribe = undefined
+        unindexMediaListener(ref)
       }
     }
   })
 
-  return ref.proxy
+  return ref.optimizeForFirstRender ? (state as UseMediaState) : ref.proxy
 }
 
 const incReducer = (c: number): number => c + 1
-
-const getServerSnapshot = () => initState
 
 let disableMediaTouch = false
 export function _disableMediaTouch(val: boolean) {
@@ -366,19 +518,6 @@ export function getMediaState(mediaGroups: Set<string>, layout: WidthHeight) {
   return res
 }
 
-export const getMediaImportanceIfMoreImportant = (
-  mediaKey: string,
-  key: string,
-  styleState: GetStyleState,
-  isSizeMedia: boolean
-) => {
-  const importance = isSizeMedia
-    ? getMediaKeyImportance(mediaKey)
-    : defaultMediaImportance
-  const usedKeys = styleState.usedKeys
-  return !usedKeys[key] || importance > usedKeys[key] ? importance : null
-}
-
 const cachedMediaKeyToQuery: Record<string, string> = {}
 
 export function mediaKeyToQuery(key: string) {
@@ -393,13 +532,15 @@ export function mediaKeyMatch(
   dimensions: { width: number; height: number }
 ) {
   const mediaQueries = mediaQueryConfig[key]
-  const result = Object.keys(mediaQueries).every((query) => {
+  for (const query in mediaQueries) {
     const expectedVal = +mediaQueries[query]
     const isMax = query.startsWith('max')
     const isWidth = query.endsWith('Width')
     const givenVal = dimensions[isWidth ? 'width' : 'height']
     // if not max then min
-    return isMax ? givenVal < expectedVal : givenVal > expectedVal
-  })
-  return result
+    if (isMax ? givenVal >= expectedVal : givenVal <= expectedVal) {
+      return false
+    }
+  }
+  return true
 }

@@ -7,8 +7,9 @@ import type {
   TamaguiInternalConfig,
   Token,
   Tokens,
-  TokensMerged,
+  TokensParsed,
 } from './types'
+import { formatDiagnostic } from './helpers/formatDiagnostic'
 
 export type StyleCompat = 'legacy' | 'react-native' | 'web'
 
@@ -93,16 +94,21 @@ export const setConfigFont = (name: string, font: any, fontParsed: any) => {
     if (!config) throw new Error(haventCalledErrorMessage)
   }
   config!.fonts[name] = font
-  config!.fontsParsed[`$${name}`] = fontParsed
+  config!.fontsParsed[name] = fontParsed
 }
 
 export const getConfig = () => {
   const config = getConfigFromGlobalOrLocal()
   if (!config) {
     throw new Error(
-      process.env.NODE_ENV !== 'production'
-        ? `Missing tamagui config, you either have a duplicate config, or haven't set it up. Be sure createTamagui is called before rendering. Also, make sure all of your tamagui dependencies are on the same version (\`tamagui\`, \`@tamagui/package-name\`, etc.) not just in your package.json, but in your lockfile.`
-        : 'Err0'
+      formatDiagnostic(
+        'Err0',
+        'TamaguiConfig',
+        'no config is available',
+        'Call createTamagui before rendering and deduplicate Tamagui package versions',
+        'config',
+        config
+      )
     )
   }
   return config
@@ -112,44 +118,29 @@ export const getConfigMaybe = () => {
   return getConfigFromGlobalOrLocal()
 }
 
-// on globalThis for the same reason setConfig puts the config there: a project
-// can load two copies of this package, and only the one that ran createTamagui
-// would have this otherwise
-export function setTokens(next: TokensMerged) {
-  globalThis.__tamaguiTokensMerged = next
+let tokens: TokensParsed
+export function setTokens(next: TokensParsed) {
+  tokens = next
 }
 
-const getTokensMerged = (): TokensMerged => globalThis.__tamaguiTokensMerged
+// prefer the config over the module local: a project can load two copies of this
+// package, and only the one that ran createTamagui filled its local. the config
+// travels on globalThis so either copy reaches it
+const getTokensParsed = (): TokensParsed =>
+  getConfigFromGlobalOrLocal()?.tokensParsed ?? tokens
 
-export const getTokens = ({
-  prefixed,
-}: {
-  /**
-   * Force either with $ or without $ prefix
-   */
-  prefixed?: boolean
-} = {}): TokensMerged => {
-  const config = getConfigFromGlobalOrLocal()
+export const getTokens = (): TokensParsed => {
   if (process.env.NODE_ENV === 'development') {
-    if (!config) throw new Error(haventCalledErrorMessage)
+    if (!getConfigFromGlobalOrLocal()) throw new Error(haventCalledErrorMessage)
   }
-  const { tokens, tokensParsed } = config!
-  if (prefixed === false) return tokens as any
-  if (prefixed === true) return tokensParsed as any
-  return getTokensMerged()
+  return getTokensParsed()
 }
 
 export const getTokenObject = (value: Token, group?: keyof Tokens) => {
-  const config = getConfigFromGlobalOrLocal()
-  const tokensMerged = getTokensMerged()
-  return (
-    config!.specificTokens[value] ??
-    (group
-      ? tokensMerged[group]?.[value]
-      : tokensMerged[
-          Object.keys(tokensMerged).find((cat) => tokensMerged[cat][value]) || ''
-        ]?.[value])
-  )
+  const tokens = getTokensParsed()
+  return group
+    ? tokens[group]?.[value]
+    : tokens[Object.keys(tokens).find((cat) => tokens[cat][value]) || '']?.[value]
 }
 
 export const getToken = (value: Token, group?: keyof Tokens, useVariable = isWeb) => {

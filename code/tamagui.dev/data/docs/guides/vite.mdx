@@ -3,12 +3,12 @@ title: Vite Guide
 description: How to set up Tamagui with Vite
 ---
 
-Tamagui now has two plugins for Vite: one that sets up everything you need to get going, and a second that adds CSS compilation. Both are included in the `@tamagui/vite-plugin` package.
+Tamagui now has two plugins for Vite: one that sets up everything you need to get going, and a second that adds CSS compilation. Both are reached through `@tamagui/cli/vite`.
 
 ## Install
 
 <Notice theme="yellow">
-  `@tamagui/vite-plugin` is ESM-only. Your project must have `"type": "module"` in its
+  The Vite plugin is ESM-only. Your project must have `"type": "module"` in its
   `package.json` (or use `.mjs`/`.mts` config files). CJS (`require()`) is not supported.
 </Notice>
 
@@ -23,11 +23,13 @@ Create a new [Vite](https://vitejs.dev/guide/#scaffolding-your-first-vite-projec
 npm create vite@latest
 ```
 
-Add `@tamagui/vite-plugin`:
+Add `@tamagui/cli`, which carries the Vite plugin along with the CLI and the other bundler integrations:
 
 ```bash
-yarn add @tamagui/vite-plugin
+yarn add -D @tamagui/cli
 ```
+
+If Vite is the only bundler this project will ever use, `yarn add @tamagui/vite-plugin` on its own is a smaller install and exports exactly the same things. Swap the import in the examples below if you go that way.
 
 ### Configuration
 
@@ -36,7 +38,7 @@ see [compiler install docs](/docs/intro/compiler-install#configuration-with-tama
 no options are needed:
 
 ```tsx fileName="vite.config.ts"
-import { tamaguiPlugin } from '@tamagui/vite-plugin'
+import { tamaguiPlugin } from '@tamagui/cli/vite'
 
 export default {
   plugins: [
@@ -49,7 +51,7 @@ export default {
 Or pass options inline:
 
 ```tsx fileName="vite.config.ts"
-import { tamaguiPlugin } from '@tamagui/vite-plugin'
+import { tamaguiPlugin } from '@tamagui/cli/vite'
 
 export default {
   plugins: [
@@ -99,7 +101,7 @@ config.optimizeDeps.esbuildOptions = {
 For advanced use cases where you need more control over alias ordering in your Vite config, you can use the `tamaguiAliases` helper function:
 
 ```tsx fileName="vite.config.ts"
-import { tamaguiAliases } from '@tamagui/vite-plugin'
+import { tamaguiAliases } from '@tamagui/cli/vite'
 
 export default {
   resolve: {

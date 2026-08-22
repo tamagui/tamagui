@@ -1,10 +1,10 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`extract-tests > converts a style object to class names 1`] = `":root ._bg-red{background-color:red;}"`;
+exports[`extract-tests > converts a style object to class names 1`] = `"._bg-red{background-color:red;}"`;
 
-exports[`extract-tests > converts a style object to class names 2`] = `":root ._tr-rotateY10de41674{transform:rotateY(10deg);}"`;
+exports[`extract-tests > converts a style object to class names 2`] = `"._tr-rotateY10de41674{transform:rotateY(10deg);}"`;
 
-exports[`extract-tests > converts a style object to class names 3`] = `":root ._bxsh-0px0px10pxr30539967{box-shadow:0px 0px 10px red;}"`;
+exports[`extract-tests > converts a style object to class names 3`] = `"._bxsh-0px0px10pxr30539967{box-shadow:0px 0px 10px red;}"`;
 
 exports[`extract-tests > supports RTL properties 1`] = `
 [
@@ -14,7 +14,7 @@ exports[`extract-tests > supports RTL properties 1`] = `
     "_paddingStart-100px",
     undefined,
     [
-      ":root ._paddingStart-100px{padding-start:100px;}",
+      "._paddingStart-100px{padding-start:100px;}",
     ],
   ],
   [
@@ -23,7 +23,7 @@ exports[`extract-tests > supports RTL properties 1`] = `
     "_paddingEnd-10px",
     undefined,
     [
-      ":root ._paddingEnd-10px{padding-end:10px;}",
+      "._paddingEnd-10px{padding-end:10px;}",
     ],
   ],
   [
@@ -32,7 +32,7 @@ exports[`extract-tests > supports RTL properties 1`] = `
     "_marginStart-50px",
     undefined,
     [
-      ":root ._marginStart-50px{margin-start:50px;}",
+      "._marginStart-50px{margin-start:50px;}",
     ],
   ],
   [
@@ -41,7 +41,7 @@ exports[`extract-tests > supports RTL properties 1`] = `
     "_marginEnd-2px",
     undefined,
     [
-      ":root ._marginEnd-2px{margin-end:2px;}",
+      "._marginEnd-2px{margin-end:2px;}",
     ],
   ],
 ]

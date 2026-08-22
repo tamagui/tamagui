@@ -3,7 +3,6 @@ import { createContext, useContext, useEffect, useMemo, useState } from 'react'
 import type { YStackProps } from 'tamagui'
 import {
   Adapt,
-  Button,
   ListItem,
   Paragraph,
   Popover,
@@ -13,6 +12,7 @@ import {
   YGroup,
   YStack,
 } from 'tamagui'
+import { Button } from '~/components/Button'
 import { accentThemeName } from '../../accentThemeName'
 import { useHasAccent } from '../../hooks/useHasAccent'
 import { useThemeBuilderStore } from '../store/ThemeBuilderStore'
@@ -86,72 +86,63 @@ export function Panel({
           position="absolute"
           opacity={hovered ? 1 : 0}
           transition="100ms"
-          r="$-2"
-          t="$-2"
+          r="-2"
+          t="-2"
           z={100}
         >
-          <Popover size="$5" allowFlip placement="bottom">
+          <Popover size="5" allowFlip placement="bottom">
             <Popover.Trigger asChild>
               <Button
                 theme="accent"
                 onPress={(event) => {
                   event.stopPropagation()
                 }}
-                size="$2"
+                size="3"
                 circular
-                icon={<MoreVertical size="$1" />}
+                icon={<MoreVertical size="1" />}
               />
             </Popover.Trigger>
 
-            <Adapt when="maxMd" platform="touch">
+            <Adapt when="max-md" platform="touch">
               <Sheet modal dismissOnSnapToBottom>
-                <Sheet.Frame p="$4">
+                <Sheet.Container p="4">
+                  <Sheet.Background />
                   <Adapt.Contents />
-                </Sheet.Frame>
-                <Sheet.Overlay
-                  transition="quickest"
-                  enterStyle={{ opacity: 0 }}
-                  exitStyle={{ opacity: 0 }}
-                />
+                </Sheet.Container>
+                <Sheet.Overlay transition="quickest" opacity="enter:0 exit:0" />
               </Sheet>
             </Adapt>
 
             <Popover.Content
               borderWidth={1}
-              borderColor="$borderColor"
-              enterStyle={{ y: -3, opacity: 0 }}
-              exitStyle={{ y: -3, opacity: 0 }}
-              y={0}
-              opacity={1}
-              elevate
+              borderColor="border-color"
+              y="0 enter:-3px exit:-3px"
+              opacity="1 enter:0 exit:0"
+              backgroundColor="background"
+              boxShadow="0 4px 12px shadow-color"
               p={0}
+              transition={['quicker', { opacity: { overshootClamping: true } }]}
               animateOnly={['transform', 'opacity']}
-              transition={[
-                'quicker',
-                {
-                  opacity: {
-                    overshootClamping: true,
-                  },
-                },
-              ]}
             >
-              <Popover.Arrow borderWidth={1} borderColor="$borderColor" />
+              <Popover.Arrow
+                backgroundColor="background"
+                borderWidth={1}
+                borderColor="border-color"
+              />
 
               <YGroup>
                 {hasAccent && (
                   <ListItem
-                    bg="transparent"
-                    hoverStyle={{ bg: 'transparent' }}
-                    pressStyle={{ bg: 'transparent' }}
-                    gap="$3"
+                    bg="transparent hover:transparent press:transparent"
+                    gap="3"
                     onPress={() => setAccent((val) => !val)}
                   >
-                    <Paragraph size="$3" mr="$2" text="left" select="none">
+                    <Paragraph size="3" mr="2" text="left" select="none">
                       Accent
                     </Paragraph>
 
                     <Switch
-                      size="$1"
+                      size="1"
                       checked={!!accent}
                       onPress={(e) => e.stopPropagation()}
                       onCheckedChange={(val) => {

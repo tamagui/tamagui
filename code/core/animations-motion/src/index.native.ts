@@ -1,13 +1,13 @@
 // native stub - animations-motion only works on web (uses framer-motion/motion library)
 // on native, use @tamagui/animations-react-native or @tamagui/animations-reanimated
 
-import type { AnimationDriver } from '@tamagui/web'
+import type { AnimationDriverStub } from '@tamagui/web'
 
 let hasWarnedOnce = false
 
 export function createAnimations<A extends Record<string, any>>(
   _animations: A
-): AnimationDriver<A> {
+): AnimationDriverStub<A> {
   if (process.env.NODE_ENV === 'development') {
     if (!hasWarnedOnce) {
       hasWarnedOnce = true
@@ -17,10 +17,10 @@ export function createAnimations<A extends Record<string, any>>(
     }
   }
 
-  // return a noop driver
-  // @ts-expect-error its an error anyway
+  // return an explicit unsupported driver so config resolution can skip it
   return {
     isReactNative: false,
+    isStub: true,
     animations: _animations,
     View: undefined as any,
     Text: undefined as any,

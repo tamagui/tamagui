@@ -2,10 +2,10 @@
 // https://raw.githubusercontent.com/radix-ui/primitives/main/packages/react/compose-refs/src/composeRefs.tsx
 
 import * as React from 'react'
+import type { ReactNode, Ref } from 'react'
 
 type PossibleRef<T> =
   | React.Ref<T>
-  | React.ForwardedRef<T>
   | React.RefObject<T>
   | React.Dispatch<React.SetStateAction<T | null>>
   | undefined
@@ -36,4 +36,28 @@ export function composeRefs<T>(...refs: PossibleRef<T>[]) {
  */
 export function useComposedRefs<T>(...refs: PossibleRef<T>[]) {
   return React.useCallback(composeRefs(...refs), refs)
+}
+
+export type RefProp<RefType> = {
+  ref?: Ref<RefType>
+}
+
+export type RefComponent<RefType, Props extends object> = ((
+  props: Props & RefProp<RefType>
+) => ReactNode) & {
+  displayName?: string
+  propTypes?: any
+}
+
+export function createRefComponent<RefType, Props extends object>(
+  render: (props: Props, ref: Ref<RefType> | undefined) => ReactNode
+): RefComponent<RefType, Props> {
+  function RefComponent(props: Props & RefProp<RefType>) {
+    const { ref, ...rest } = props
+    return render(rest as Props, ref)
+  }
+
+  RefComponent.displayName = render.name
+
+  return RefComponent as RefComponent<RefType, Props>
 }

@@ -1,0 +1,439 @@
+import { type ButtonIconProps as ButtonBehaviorIconProps, type GetProps, type SizeTokens, type ThemeProps } from '@tamagui/ui';
+export type ButtonSize = SizeTokens;
+export declare const ButtonFrame: import("react").FunctionComponent<Omit<import("@tamagui/ui").StackNonStyleProps, "circular" | "disabled" | "ellipsis" | "fontFamily" | "fontSize" | "fontStyle" | "fontWeight" | "letterSpacing" | "maxFontSizeMultiplier" | "size" | "textAlign" | "variant" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+    circular?: boolean | undefined;
+    disabled?: boolean | undefined;
+    ellipsis?: import("@tamagui/web").FlatStyleValue<"unset" | boolean | undefined>;
+    fontFamily?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"fontFamily"> | undefined>;
+    fontSize?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"fontSize"> | undefined>;
+    fontStyle?: import("@tamagui/web").FlatStyleValue<"italic" | "normal" | "unset" | undefined>;
+    fontWeight?: import("@tamagui/web").FlatStyleValue<"unset" | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | import("@tamagui/ui").GetThemeValueForKey<"fontWeight"> | undefined>;
+    letterSpacing?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/ui").GetThemeValueForKey<"letterSpacing"> | undefined>;
+    maxFontSizeMultiplier?: number | undefined;
+    size?: string | number | boolean | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString | (string & {}) | undefined;
+    textAlign?: import("@tamagui/web").FlatStyleValue<"auto" | "center" | "justify" | "left" | "right" | "unset" | undefined>;
+    variant?: "outlined" | "quiet" | undefined;
+} & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
+    ref?: import("react").Ref<import("@tamagui/ui").TamaguiElement> | undefined;
+}> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/ui").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
+    circular?: boolean | undefined;
+    disabled?: boolean | undefined;
+    ellipsis?: import("@tamagui/web").FlatStyleValue<"unset" | boolean | undefined>;
+    fontFamily?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"fontFamily"> | undefined>;
+    fontSize?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"fontSize"> | undefined>;
+    fontStyle?: import("@tamagui/web").FlatStyleValue<"italic" | "normal" | "unset" | undefined>;
+    fontWeight?: import("@tamagui/web").FlatStyleValue<"unset" | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | import("@tamagui/ui").GetThemeValueForKey<"fontWeight"> | undefined>;
+    letterSpacing?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/ui").GetThemeValueForKey<"letterSpacing"> | undefined>;
+    maxFontSizeMultiplier?: number | undefined;
+    size?: string | number | boolean | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString | (string & {}) | undefined;
+    textAlign?: import("@tamagui/web").FlatStyleValue<"auto" | "center" | "justify" | "left" | "right" | "unset" | undefined>;
+    variant?: "outlined" | "quiet" | undefined;
+}, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
+    __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/ui").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
+        circular?: boolean | undefined;
+        disabled?: boolean | undefined;
+        ellipsis?: import("@tamagui/web").FlatStyleValue<"unset" | boolean | undefined>;
+        fontFamily?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"fontFamily"> | undefined>;
+        fontSize?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"fontSize"> | undefined>;
+        fontStyle?: import("@tamagui/web").FlatStyleValue<"italic" | "normal" | "unset" | undefined>;
+        fontWeight?: import("@tamagui/web").FlatStyleValue<"unset" | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | import("@tamagui/ui").GetThemeValueForKey<"fontWeight"> | undefined>;
+        letterSpacing?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/ui").GetThemeValueForKey<"letterSpacing"> | undefined>;
+        maxFontSizeMultiplier?: number | undefined;
+        size?: string | number | boolean | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString | (string & {}) | undefined;
+        textAlign?: import("@tamagui/web").FlatStyleValue<"auto" | "center" | "justify" | "left" | "right" | "unset" | undefined>;
+        variant?: "outlined" | "quiet" | undefined;
+    }, import("@tamagui/web").StaticConfigPublic];
+};
+export declare const ButtonText: import("react").FunctionComponent<Omit<import("@tamagui/ui").TextNonStyleProps, "size" | keyof import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & {
+    size?: string | number | boolean | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString | (string & {}) | undefined;
+} & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>> & {
+    ref?: import("react").Ref<import("@tamagui/ui").TamaguiTextElement> | undefined;
+}> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiTextElement, import("@tamagui/ui").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
+    size?: string | number | boolean | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString | (string & {}) | undefined;
+}, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
+    __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiTextElement, import("@tamagui/ui").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
+        size?: string | number | boolean | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString | (string & {}) | undefined;
+    }, import("@tamagui/web").StaticConfigPublic];
+};
+export declare const ButtonIcon: ({ size, ...props }: ButtonBehaviorIconProps) => import("react").JSX.Element;
+declare const ButtonComponent: import("@tamagui/ui").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/ui").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
+    circular?: boolean | undefined;
+    disabled?: boolean | undefined;
+    ellipsis?: import("@tamagui/web").FlatStyleValue<"unset" | boolean | undefined>;
+    fontFamily?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"fontFamily"> | undefined>;
+    fontSize?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"fontSize"> | undefined>;
+    fontStyle?: import("@tamagui/web").FlatStyleValue<"italic" | "normal" | "unset" | undefined>;
+    fontWeight?: import("@tamagui/web").FlatStyleValue<"unset" | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | import("@tamagui/ui").GetThemeValueForKey<"fontWeight"> | undefined>;
+    letterSpacing?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/ui").GetThemeValueForKey<"letterSpacing"> | undefined>;
+    maxFontSizeMultiplier?: number | undefined;
+    size?: string | number | boolean | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString | (string & {}) | undefined;
+    textAlign?: import("@tamagui/web").FlatStyleValue<"auto" | "center" | "justify" | "left" | "right" | "unset" | undefined>;
+    variant?: "outlined" | "quiet" | undefined;
+}>, "form" | "formAction" | "formEncType" | "formMethod" | "formNoValidate" | "formTarget" | "icon" | "iconAfter" | "iconSize" | "name" | "noTextWrap" | "scaleIcon" | "size" | "textProps" | "theme" | "type" | "value" | keyof import("@tamagui/ui").TextContextStyles> & import("@tamagui/ui").TextContextStyles & {
+    textProps?: Partial<import("@tamagui/ui").SizableTextProps>;
+    noTextWrap?: boolean;
+} & {
+    icon?: import("react").JSX.Element | import("react").FunctionComponent<{
+        color?: any;
+        size?: any;
+    }> | ((props: {
+        color?: any;
+        size?: any;
+    }) => import("react").ReactNode) | null;
+    iconAfter?: import("react").JSX.Element | import("react").FunctionComponent<{
+        color?: any;
+        size?: any;
+    }> | ((props: {
+        color?: any;
+        size?: any;
+    }) => import("react").ReactNode) | null;
+    iconSize?: number;
+    scaleIcon?: number;
+    type?: 'submit' | 'reset' | 'button';
+    form?: string;
+    formAction?: string;
+    formEncType?: string;
+    formMethod?: string;
+    formNoValidate?: boolean;
+    formTarget?: string;
+    name?: string;
+    value?: string | readonly string[] | number;
+} & {
+    size?: ButtonSize;
+    theme?: ThemeProps['name'];
+}, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/ui").StackNonStyleProps & import("@tamagui/ui").TextContextStyles & {
+    textProps?: Partial<import("@tamagui/ui").SizableTextProps>;
+    noTextWrap?: boolean;
+} & {
+    icon?: import("react").JSX.Element | import("react").FunctionComponent<{
+        color?: any;
+        size?: any;
+    }> | ((props: {
+        color?: any;
+        size?: any;
+    }) => import("react").ReactNode) | null;
+    iconAfter?: import("react").JSX.Element | import("react").FunctionComponent<{
+        color?: any;
+        size?: any;
+    }> | ((props: {
+        color?: any;
+        size?: any;
+    }) => import("react").ReactNode) | null;
+    iconSize?: number;
+    scaleIcon?: number;
+    type?: 'submit' | 'reset' | 'button';
+    form?: string;
+    formAction?: string;
+    formEncType?: string;
+    formMethod?: string;
+    formNoValidate?: boolean;
+    formTarget?: string;
+    name?: string;
+    value?: string | readonly string[] | number;
+} & {
+    size?: ButtonSize;
+    theme?: ThemeProps['name'];
+}, import("@tamagui/web").StackStyleBase, {
+    circular?: boolean | undefined;
+    disabled?: boolean | undefined;
+    ellipsis?: import("@tamagui/web").FlatStyleValue<"unset" | boolean | undefined>;
+    fontFamily?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"fontFamily"> | undefined>;
+    fontSize?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"fontSize"> | undefined>;
+    fontStyle?: import("@tamagui/web").FlatStyleValue<"italic" | "normal" | "unset" | undefined>;
+    fontWeight?: import("@tamagui/web").FlatStyleValue<"unset" | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | import("@tamagui/ui").GetThemeValueForKey<"fontWeight"> | undefined>;
+    letterSpacing?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/ui").GetThemeValueForKey<"letterSpacing"> | undefined>;
+    maxFontSizeMultiplier?: number | undefined;
+    size?: string | number | boolean | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString | (string & {}) | undefined;
+    textAlign?: import("@tamagui/web").FlatStyleValue<"auto" | "center" | "justify" | "left" | "right" | "unset" | undefined>;
+    variant?: "outlined" | "quiet" | undefined;
+}, import("@tamagui/web").StaticConfigPublic>;
+export declare const Button: import("react").FunctionComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/ui").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
+    circular?: boolean | undefined;
+    disabled?: boolean | undefined;
+    ellipsis?: import("@tamagui/web").FlatStyleValue<"unset" | boolean | undefined>;
+    fontFamily?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"fontFamily"> | undefined>;
+    fontSize?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"fontSize"> | undefined>;
+    fontStyle?: import("@tamagui/web").FlatStyleValue<"italic" | "normal" | "unset" | undefined>;
+    fontWeight?: import("@tamagui/web").FlatStyleValue<"unset" | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | import("@tamagui/ui").GetThemeValueForKey<"fontWeight"> | undefined>;
+    letterSpacing?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/ui").GetThemeValueForKey<"letterSpacing"> | undefined>;
+    maxFontSizeMultiplier?: number | undefined;
+    size?: string | number | boolean | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString | (string & {}) | undefined;
+    textAlign?: import("@tamagui/web").FlatStyleValue<"auto" | "center" | "justify" | "left" | "right" | "unset" | undefined>;
+    variant?: "outlined" | "quiet" | undefined;
+}>, "form" | "formAction" | "formEncType" | "formMethod" | "formNoValidate" | "formTarget" | "icon" | "iconAfter" | "iconSize" | "name" | "noTextWrap" | "scaleIcon" | "size" | "textProps" | "theme" | "type" | "value" | keyof import("@tamagui/ui").TextContextStyles> & import("@tamagui/ui").TextContextStyles & {
+    textProps?: Partial<import("@tamagui/ui").SizableTextProps>;
+    noTextWrap?: boolean;
+} & {
+    icon?: import("react").JSX.Element | import("react").FunctionComponent<{
+        color?: any;
+        size?: any;
+    }> | ((props: {
+        color?: any;
+        size?: any;
+    }) => import("react").ReactNode) | null;
+    iconAfter?: import("react").JSX.Element | import("react").FunctionComponent<{
+        color?: any;
+        size?: any;
+    }> | ((props: {
+        color?: any;
+        size?: any;
+    }) => import("react").ReactNode) | null;
+    iconSize?: number;
+    scaleIcon?: number;
+    type?: 'submit' | 'reset' | 'button';
+    form?: string;
+    formAction?: string;
+    formEncType?: string;
+    formMethod?: string;
+    formNoValidate?: boolean;
+    formTarget?: string;
+    name?: string;
+    value?: string | readonly string[] | number;
+} & {
+    size?: ButtonSize;
+    theme?: ThemeProps['name'];
+} & {
+    ref?: import("react").Ref<import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods)> | undefined;
+}> & import("@tamagui/web").StaticComponentObject<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/ui").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
+    circular?: boolean | undefined;
+    disabled?: boolean | undefined;
+    ellipsis?: import("@tamagui/web").FlatStyleValue<"unset" | boolean | undefined>;
+    fontFamily?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"fontFamily"> | undefined>;
+    fontSize?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"fontSize"> | undefined>;
+    fontStyle?: import("@tamagui/web").FlatStyleValue<"italic" | "normal" | "unset" | undefined>;
+    fontWeight?: import("@tamagui/web").FlatStyleValue<"unset" | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | import("@tamagui/ui").GetThemeValueForKey<"fontWeight"> | undefined>;
+    letterSpacing?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/ui").GetThemeValueForKey<"letterSpacing"> | undefined>;
+    maxFontSizeMultiplier?: number | undefined;
+    size?: string | number | boolean | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString | (string & {}) | undefined;
+    textAlign?: import("@tamagui/web").FlatStyleValue<"auto" | "center" | "justify" | "left" | "right" | "unset" | undefined>;
+    variant?: "outlined" | "quiet" | undefined;
+}>, "form" | "formAction" | "formEncType" | "formMethod" | "formNoValidate" | "formTarget" | "icon" | "iconAfter" | "iconSize" | "name" | "noTextWrap" | "scaleIcon" | "size" | "textProps" | "theme" | "type" | "value" | keyof import("@tamagui/ui").TextContextStyles> & import("@tamagui/ui").TextContextStyles & {
+    textProps?: Partial<import("@tamagui/ui").SizableTextProps>;
+    noTextWrap?: boolean;
+} & {
+    icon?: import("react").JSX.Element | import("react").FunctionComponent<{
+        color?: any;
+        size?: any;
+    }> | ((props: {
+        color?: any;
+        size?: any;
+    }) => import("react").ReactNode) | null;
+    iconAfter?: import("react").JSX.Element | import("react").FunctionComponent<{
+        color?: any;
+        size?: any;
+    }> | ((props: {
+        color?: any;
+        size?: any;
+    }) => import("react").ReactNode) | null;
+    iconSize?: number;
+    scaleIcon?: number;
+    type?: 'submit' | 'reset' | 'button';
+    form?: string;
+    formAction?: string;
+    formEncType?: string;
+    formMethod?: string;
+    formNoValidate?: boolean;
+    formTarget?: string;
+    name?: string;
+    value?: string | readonly string[] | number;
+} & {
+    size?: ButtonSize;
+    theme?: ThemeProps['name'];
+}, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/ui").StackNonStyleProps & import("@tamagui/ui").TextContextStyles & {
+    textProps?: Partial<import("@tamagui/ui").SizableTextProps>;
+    noTextWrap?: boolean;
+} & {
+    icon?: import("react").JSX.Element | import("react").FunctionComponent<{
+        color?: any;
+        size?: any;
+    }> | ((props: {
+        color?: any;
+        size?: any;
+    }) => import("react").ReactNode) | null;
+    iconAfter?: import("react").JSX.Element | import("react").FunctionComponent<{
+        color?: any;
+        size?: any;
+    }> | ((props: {
+        color?: any;
+        size?: any;
+    }) => import("react").ReactNode) | null;
+    iconSize?: number;
+    scaleIcon?: number;
+    type?: 'submit' | 'reset' | 'button';
+    form?: string;
+    formAction?: string;
+    formEncType?: string;
+    formMethod?: string;
+    formNoValidate?: boolean;
+    formTarget?: string;
+    name?: string;
+    value?: string | readonly string[] | number;
+} & {
+    size?: ButtonSize;
+    theme?: ThemeProps['name'];
+}, import("@tamagui/web").StackStyleBase, {
+    circular?: boolean | undefined;
+    disabled?: boolean | undefined;
+    ellipsis?: import("@tamagui/web").FlatStyleValue<"unset" | boolean | undefined>;
+    fontFamily?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"fontFamily"> | undefined>;
+    fontSize?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"fontSize"> | undefined>;
+    fontStyle?: import("@tamagui/web").FlatStyleValue<"italic" | "normal" | "unset" | undefined>;
+    fontWeight?: import("@tamagui/web").FlatStyleValue<"unset" | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | import("@tamagui/ui").GetThemeValueForKey<"fontWeight"> | undefined>;
+    letterSpacing?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/ui").GetThemeValueForKey<"letterSpacing"> | undefined>;
+    maxFontSizeMultiplier?: number | undefined;
+    size?: string | number | boolean | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString | (string & {}) | undefined;
+    textAlign?: import("@tamagui/web").FlatStyleValue<"auto" | "center" | "justify" | "left" | "right" | "unset" | undefined>;
+    variant?: "outlined" | "quiet" | undefined;
+}, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
+    __tama: [Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/ui").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
+        circular?: boolean | undefined;
+        disabled?: boolean | undefined;
+        ellipsis?: import("@tamagui/web").FlatStyleValue<"unset" | boolean | undefined>;
+        fontFamily?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"fontFamily"> | undefined>;
+        fontSize?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"fontSize"> | undefined>;
+        fontStyle?: import("@tamagui/web").FlatStyleValue<"italic" | "normal" | "unset" | undefined>;
+        fontWeight?: import("@tamagui/web").FlatStyleValue<"unset" | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | import("@tamagui/ui").GetThemeValueForKey<"fontWeight"> | undefined>;
+        letterSpacing?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/ui").GetThemeValueForKey<"letterSpacing"> | undefined>;
+        maxFontSizeMultiplier?: number | undefined;
+        size?: string | number | boolean | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString | (string & {}) | undefined;
+        textAlign?: import("@tamagui/web").FlatStyleValue<"auto" | "center" | "justify" | "left" | "right" | "unset" | undefined>;
+        variant?: "outlined" | "quiet" | undefined;
+    }>, "form" | "formAction" | "formEncType" | "formMethod" | "formNoValidate" | "formTarget" | "icon" | "iconAfter" | "iconSize" | "name" | "noTextWrap" | "scaleIcon" | "size" | "textProps" | "theme" | "type" | "value" | keyof import("@tamagui/ui").TextContextStyles> & import("@tamagui/ui").TextContextStyles & {
+        textProps?: Partial<import("@tamagui/ui").SizableTextProps>;
+        noTextWrap?: boolean;
+    } & {
+        icon?: import("react").JSX.Element | import("react").FunctionComponent<{
+            color?: any;
+            size?: any;
+        }> | ((props: {
+            color?: any;
+            size?: any;
+        }) => import("react").ReactNode) | null;
+        iconAfter?: import("react").JSX.Element | import("react").FunctionComponent<{
+            color?: any;
+            size?: any;
+        }> | ((props: {
+            color?: any;
+            size?: any;
+        }) => import("react").ReactNode) | null;
+        iconSize?: number;
+        scaleIcon?: number;
+        type?: 'submit' | 'reset' | 'button';
+        form?: string;
+        formAction?: string;
+        formEncType?: string;
+        formMethod?: string;
+        formNoValidate?: boolean;
+        formTarget?: string;
+        name?: string;
+        value?: string | readonly string[] | number;
+    } & {
+        size?: ButtonSize;
+        theme?: ThemeProps['name'];
+    }, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/ui").StackNonStyleProps & import("@tamagui/ui").TextContextStyles & {
+        textProps?: Partial<import("@tamagui/ui").SizableTextProps>;
+        noTextWrap?: boolean;
+    } & {
+        icon?: import("react").JSX.Element | import("react").FunctionComponent<{
+            color?: any;
+            size?: any;
+        }> | ((props: {
+            color?: any;
+            size?: any;
+        }) => import("react").ReactNode) | null;
+        iconAfter?: import("react").JSX.Element | import("react").FunctionComponent<{
+            color?: any;
+            size?: any;
+        }> | ((props: {
+            color?: any;
+            size?: any;
+        }) => import("react").ReactNode) | null;
+        iconSize?: number;
+        scaleIcon?: number;
+        type?: 'submit' | 'reset' | 'button';
+        form?: string;
+        formAction?: string;
+        formEncType?: string;
+        formMethod?: string;
+        formNoValidate?: boolean;
+        formTarget?: string;
+        name?: string;
+        value?: string | readonly string[] | number;
+    } & {
+        size?: ButtonSize;
+        theme?: ThemeProps['name'];
+    }, import("@tamagui/web").StackStyleBase, {
+        circular?: boolean | undefined;
+        disabled?: boolean | undefined;
+        ellipsis?: import("@tamagui/web").FlatStyleValue<"unset" | boolean | undefined>;
+        fontFamily?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"fontFamily"> | undefined>;
+        fontSize?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"fontSize"> | undefined>;
+        fontStyle?: import("@tamagui/web").FlatStyleValue<"italic" | "normal" | "unset" | undefined>;
+        fontWeight?: import("@tamagui/web").FlatStyleValue<"unset" | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | import("@tamagui/ui").GetThemeValueForKey<"fontWeight"> | undefined>;
+        letterSpacing?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/ui").GetThemeValueForKey<"letterSpacing"> | undefined>;
+        maxFontSizeMultiplier?: number | undefined;
+        size?: string | number | boolean | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString | (string & {}) | undefined;
+        textAlign?: import("@tamagui/web").FlatStyleValue<"auto" | "center" | "justify" | "left" | "right" | "unset" | undefined>;
+        variant?: "outlined" | "quiet" | undefined;
+    }, import("@tamagui/web").StaticConfigPublic];
+} & {
+    Frame: import("react").FunctionComponent<Omit<import("@tamagui/ui").StackNonStyleProps, "circular" | "disabled" | "ellipsis" | "fontFamily" | "fontSize" | "fontStyle" | "fontWeight" | "letterSpacing" | "maxFontSizeMultiplier" | "size" | "textAlign" | "variant" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+        circular?: boolean | undefined;
+        disabled?: boolean | undefined;
+        ellipsis?: import("@tamagui/web").FlatStyleValue<"unset" | boolean | undefined>;
+        fontFamily?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"fontFamily"> | undefined>;
+        fontSize?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"fontSize"> | undefined>;
+        fontStyle?: import("@tamagui/web").FlatStyleValue<"italic" | "normal" | "unset" | undefined>;
+        fontWeight?: import("@tamagui/web").FlatStyleValue<"unset" | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | import("@tamagui/ui").GetThemeValueForKey<"fontWeight"> | undefined>;
+        letterSpacing?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/ui").GetThemeValueForKey<"letterSpacing"> | undefined>;
+        maxFontSizeMultiplier?: number | undefined;
+        size?: string | number | boolean | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString | (string & {}) | undefined;
+        textAlign?: import("@tamagui/web").FlatStyleValue<"auto" | "center" | "justify" | "left" | "right" | "unset" | undefined>;
+        variant?: "outlined" | "quiet" | undefined;
+    } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
+        ref?: import("react").Ref<import("@tamagui/ui").TamaguiElement> | undefined;
+    }> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/ui").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
+        circular?: boolean | undefined;
+        disabled?: boolean | undefined;
+        ellipsis?: import("@tamagui/web").FlatStyleValue<"unset" | boolean | undefined>;
+        fontFamily?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"fontFamily"> | undefined>;
+        fontSize?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"fontSize"> | undefined>;
+        fontStyle?: import("@tamagui/web").FlatStyleValue<"italic" | "normal" | "unset" | undefined>;
+        fontWeight?: import("@tamagui/web").FlatStyleValue<"unset" | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | import("@tamagui/ui").GetThemeValueForKey<"fontWeight"> | undefined>;
+        letterSpacing?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/ui").GetThemeValueForKey<"letterSpacing"> | undefined>;
+        maxFontSizeMultiplier?: number | undefined;
+        size?: string | number | boolean | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString | (string & {}) | undefined;
+        textAlign?: import("@tamagui/web").FlatStyleValue<"auto" | "center" | "justify" | "left" | "right" | "unset" | undefined>;
+        variant?: "outlined" | "quiet" | undefined;
+    }, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
+        __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/ui").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
+            circular?: boolean | undefined;
+            disabled?: boolean | undefined;
+            ellipsis?: import("@tamagui/web").FlatStyleValue<"unset" | boolean | undefined>;
+            fontFamily?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"fontFamily"> | undefined>;
+            fontSize?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"fontSize"> | undefined>;
+            fontStyle?: import("@tamagui/web").FlatStyleValue<"italic" | "normal" | "unset" | undefined>;
+            fontWeight?: import("@tamagui/web").FlatStyleValue<"unset" | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | import("@tamagui/ui").GetThemeValueForKey<"fontWeight"> | undefined>;
+            letterSpacing?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/ui").GetThemeValueForKey<"letterSpacing"> | undefined>;
+            maxFontSizeMultiplier?: number | undefined;
+            size?: string | number | boolean | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString | (string & {}) | undefined;
+            textAlign?: import("@tamagui/web").FlatStyleValue<"auto" | "center" | "justify" | "left" | "right" | "unset" | undefined>;
+            variant?: "outlined" | "quiet" | undefined;
+        }, import("@tamagui/web").StaticConfigPublic];
+    };
+    Icon: typeof ButtonIcon;
+    Text: import("react").FunctionComponent<Omit<import("@tamagui/ui").TextNonStyleProps, "size" | keyof import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & {
+        size?: string | number | boolean | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString | (string & {}) | undefined;
+    } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>> & {
+        ref?: import("react").Ref<import("@tamagui/ui").TamaguiTextElement> | undefined;
+    }> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiTextElement, import("@tamagui/ui").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
+        size?: string | number | boolean | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString | (string & {}) | undefined;
+    }, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
+        __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiTextElement, import("@tamagui/ui").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
+            size?: string | number | boolean | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString | (string & {}) | undefined;
+        }, import("@tamagui/web").StaticConfigPublic];
+    };
+};
+export type ButtonProps = GetProps<typeof ButtonComponent>;
+export {};
+//# sourceMappingURL=Button.d.ts.map

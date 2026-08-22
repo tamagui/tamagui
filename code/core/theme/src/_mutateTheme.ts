@@ -6,7 +6,7 @@ import {
   forceUpdateThemes,
   getConfig,
   getThemeCSSRules,
-  mutatedAutoVariables,
+  getMutatedAutoVariableCSS,
   proxyThemeToParents,
   simpleHash,
   updateConfig,
@@ -171,9 +171,10 @@ function insertThemeCSS(themes: Record<string, PartialTheme>, batch: Batch = fal
     }
   }
 
-  // Output ALL mutated auto variables (since updateStyle replaces the element)
-  if (mutatedAutoVariables.length > 0) {
-    const autoVarCSS = `:root{${mutatedAutoVariables.map((v) => `--${v.name}:${v.val}`).join(';')}}`
+  // output all mutated auto variables because updateStyle replaces the element
+  const mutatedAutoVariableCSS = getMutatedAutoVariableCSS()
+  if (mutatedAutoVariableCSS) {
+    const autoVarCSS = `:root{${mutatedAutoVariableCSS}}`
     updateStyle(`t_mutate_vars`, [autoVarCSS])
   }
 

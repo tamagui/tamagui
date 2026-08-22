@@ -219,6 +219,22 @@ test.describe('Sheet web keyboard avoidance — autofocus on open', () => {
     expect(frame!.top).toBeGreaterThanOrEqual(-4)
   })
 
+  test('public animated geometry matches the keyboard-adjusted sheet position', async ({
+    page,
+  }) => {
+    await openWithAutofocusKeyboard(page)
+
+    const frame = await rect(page, 'sheet-web-kb-af-frame')
+    const geometry = JSON.parse(
+      (await page.getByTestId('sheet-web-kb-af-public-geometry').textContent()) || '{}'
+    ) as { screenSize: number; snapOffset: number; minY: number }
+
+    expect(frame).toBeTruthy()
+    expect(geometry.screenSize).toBe(VH)
+    expect(geometry.snapOffset).toBeCloseTo(frame!.top, 0)
+    expect(geometry.minY).toBeCloseTo(frame!.top, 0)
+  })
+
   test('content becomes scrollable when the keyboard opens with autofocus', async ({
     page,
   }) => {

@@ -12,24 +12,31 @@ export const StatisticsBarScreen = memo(() => {
       {...demoProps.borderRadiusOuterProps}
       {...demoProps.elevationProps}
       {...demoProps.panelPaddingProps}
-      borderColor="$color3"
+      borderColor="color3"
     >
-      <YStack borderBottomWidth="$0.25" borderBottomColor="$borderColor" pb="$4" p="$0">
+      <YStack
+        borderBottomWidth="0-25"
+        borderBottomColor="border-color"
+        paddingBottom="0"
+        paddingTop="0"
+        paddingRight="0"
+        paddingLeft="0"
+      >
         <XStack justify="space-between">
-          <YStack gap="$2">
-            <H4 {...demoProps.headingFontFamilyProps} mt="$0" color="$color11">
+          <YStack gap="2">
+            <H4 {...demoProps.headingFontFamilyProps} mt="0" color="color11">
               New user sign-ups
             </H4>
-            <H4 size="$10">+1,200</H4>
-            <Paragraph mt="$2" {...demoProps.panelDescriptionProps} fontSize="$3">
+            <H4 size="10">+1,200</H4>
+            <Paragraph mt="2" {...demoProps.panelDescriptionProps} fontSize="3">
               Data from the past 6 months
             </Paragraph>
           </YStack>
         </XStack>
       </YStack>
 
-      <YStack flex={1} flexBasis="auto" gap="$6" mx="$-4" justify="space-around">
-        <XStack maxH={200} gap="$4">
+      <YStack flex={1} flexBasis="auto" gap="6" mx="-4" justify="space-around">
+        <XStack maxH={200} gap="4">
           <BarChart />
         </XStack>
       </YStack>
@@ -50,22 +57,29 @@ export const StatisticsLineScreen = memo(() => {
       maxH={400}
       overflow="hidden"
     >
-      <YStack borderBottomWidth="$0.25" borderBottomColor="$borderColor" pb="$4" p="$0">
+      <YStack
+        borderBottomWidth="0-25"
+        borderBottomColor="border-color"
+        paddingBottom="0"
+        paddingTop="0"
+        paddingRight="0"
+        paddingLeft="0"
+      >
         <XStack justify="space-between">
-          <YStack gap="$2">
-            <H4 {...demoProps.headingFontFamilyProps} mt="$0">
+          <YStack gap="2">
+            <H4 {...demoProps.headingFontFamilyProps} mt="0">
               Revenue Growth
             </H4>
-            <H4 size="$10">$42.3K</H4>
-            <Paragraph mt="$1" {...demoProps.panelDescriptionProps} fontSize="$3">
+            <H4 size="10">$42.3K</H4>
+            <Paragraph mt="1" {...demoProps.panelDescriptionProps} fontSize="3">
               The past 6 months
             </Paragraph>
           </YStack>
         </XStack>
       </YStack>
 
-      <YStack flex={1} flexBasis="auto" gap="$6" mx="$-4" justify="space-around">
-        <XStack maxH={200} gap="$4">
+      <YStack flex={1} flexBasis="auto" gap="6" mx="-4" justify="space-around">
+        <XStack maxH={200} gap="4">
           <LineChart />
         </XStack>
       </YStack>

@@ -9,7 +9,7 @@ process.env.TAMAGUI_TARGET = 'native'
 window['React'] = React
 
 // native matches media at render time, so there is no build-time answer for a
-// media block a variant brought with it. the element has to stay on the runtime
+// media clause a variant brought with it. the element has to stay on the runtime
 // path rather than flatten to a StyleSheet holding whichever breakpoint node
 // happened to consider active.
 test('a variant carrying a media block stays on the runtime path', async () => {
@@ -27,7 +27,7 @@ test('a variant carrying a media block stays on the runtime path', async () => {
   expect(code).not.toContain('StyleSheet.create')
 })
 
-// while a variant with no media in it still flattens
+// while a variant with no media in it still flattens to a raw native element
 test('a variant without media still flattens', async () => {
   const output = await extractForNative(`
     import { MySizableText } from '@tamagui/test-design-system'
@@ -37,5 +37,5 @@ test('a variant without media still flattens', async () => {
     }
   `)
 
-  expect(output?.code ?? '').toContain('StyleSheet.create')
+  expect(output?.code ?? '').toContain('<__TamaguiNativeText')
 })

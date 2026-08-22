@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useToastController } from '@tamagui/toast'
+import { toast } from 'tamagui'
 
 export const copyToClipboard = (text: string) => {
   return navigator.clipboard.writeText(text)
@@ -9,13 +9,12 @@ export function useClipboard(
   text = '',
   { timeout = 1500, showToast = true }: { timeout?: number; showToast?: boolean } = {}
 ) {
-  const toast = useToastController()
   const [hasCopied, setHasCopied] = useState(false)
 
   const onCopy = async (string: any = text) => {
     await copyToClipboard(typeof string === 'string' ? string : text)
     setHasCopied(true)
-    toast.show('Copied to clipboard')
+    toast('Copied to clipboard')
   }
 
   useEffect(() => {

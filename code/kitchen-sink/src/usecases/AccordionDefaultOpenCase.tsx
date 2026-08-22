@@ -1,5 +1,5 @@
 import { ChevronDown } from '@tamagui/lucide-icons-2'
-import { useCallback, useLayoutEffect, useState } from 'react'
+import { useCallback, useLayoutEffect, useRef, useState } from 'react'
 import {
   measure,
   runOnJS,
@@ -9,6 +9,51 @@ import {
 } from 'react-native-reanimated'
 import { Accordion, Button, Paragraph, Square, View, YStack, isWeb } from 'tamagui'
 
+function useHeightFrameRecorder(animatedRef: any, duration = 750) {
+  const [label, setLabel] = useState('idle')
+  const recording = useSharedValue(false)
+  const startedAt = useSharedValue(0)
+  const cycle = useSharedValue(0)
+  const samples = useSharedValue<number[]>([])
+  const nextCycleRef = useRef(0)
+
+  const finishRecording = useCallback((finishedCycle: number, heights: number[]) => {
+    setLabel(`${finishedCycle}:${heights.join(',')}`)
+  }, [])
+
+  useFrameCallback(
+    useCallback(
+      ({ timestamp }) => {
+        'worklet'
+        if (isWeb || !recording.value) return
+        const frame = measure(animatedRef)
+        if (!frame) return
+        if (startedAt.value === 0) {
+          startedAt.value = timestamp
+        }
+        samples.value = [...samples.value, frame.height]
+        if (timestamp - startedAt.value >= duration) {
+          recording.value = false
+          runOnJS(finishRecording)(cycle.value, samples.value)
+        }
+      },
+      [animatedRef, cycle, duration, finishRecording, recording, samples, startedAt]
+    )
+  )
+
+  const startRecording = useCallback(() => {
+    if (isWeb) return
+    const nextCycle = ++nextCycleRef.current
+    setLabel(`recording:${nextCycle}`)
+    startedAt.value = 0
+    samples.value = []
+    cycle.value = nextCycle
+    recording.value = true
+  }, [cycle, recording, samples, startedAt])
+
+  return [label, startRecording] as const
+}
+
 // verifies first-paint of a defaultValue-open item shows content at full height
 // (no collapse-to-0 flash), which is the client-side equivalent of the SSR case.
 // used by both the web Accordion.test and the native Accordion.e2e (Detox), so
@@ -17,71 +62,40 @@ export function AccordionDefaultOpenCase() {
   const [expanded, setExpanded] = useState(false)
   const [initialLayoutPass, setInitialLayoutPass] = useState(0)
   const [probeVisible, setProbeVisible] = useState(true)
-  const [closeFrameSamples, setCloseFrameSamples] = useState('idle')
   const defaultOpenHeightRef = useAnimatedRef<any>()
-  const recordingCloseFrames = useSharedValue(false)
-  const closeFrameStartedAt = useSharedValue(0)
-  const recordedCloseFrames = useSharedValue<number[]>([])
-
-  const finishRecordingCloseFrames = useCallback((samples: number[]) => {
-    setCloseFrameSamples(samples.join(','))
-  }, [])
-  useFrameCallback(
-    useCallback(
-      ({ timestamp }) => {
-        'worklet'
-        if (isWeb || !recordingCloseFrames.value) return
-        const frame = measure(defaultOpenHeightRef)
-        if (!frame) return
-        if (closeFrameStartedAt.value === 0) {
-          closeFrameStartedAt.value = timestamp
-        }
-        recordedCloseFrames.value = [...recordedCloseFrames.value, frame.height]
-        if (timestamp - closeFrameStartedAt.value >= 750) {
-          recordingCloseFrames.value = false
-          runOnJS(finishRecordingCloseFrames)(recordedCloseFrames.value)
-        }
-      },
-      [
-        closeFrameStartedAt,
-        defaultOpenHeightRef,
-        finishRecordingCloseFrames,
-        recordedCloseFrames,
-        recordingCloseFrames,
-      ]
-    )
+  const secondHeightRef = useAnimatedRef<any>()
+  const [defaultOpenFrameSamples, recordDefaultOpenFrames] =
+    useHeightFrameRecorder(defaultOpenHeightRef)
+  const [secondFrameSamples, recordSecondFrames] = useHeightFrameRecorder(
+    secondHeightRef,
+    1500
   )
-
-  const recordDefaultOpenClose = useCallback(() => {
-    if (isWeb) return
-    setCloseFrameSamples('recording')
-    closeFrameStartedAt.value = 0
-    recordedCloseFrames.value = []
-    recordingCloseFrames.value = true
-  }, [closeFrameStartedAt, recordedCloseFrames, recordingCloseFrames])
 
   useLayoutEffect(() => {
     if (initialLayoutPass === 1) setInitialLayoutPass(2)
   }, [initialLayoutPass])
 
   return (
-    <YStack testID="accordion-default-root" p="$4">
-      <Accordion overflow="hidden" width="$20" type="multiple" defaultValue={['a1']}>
+    <YStack testID="accordion-default-root" p="4">
+      {/* explicit px: this was $20 pre-v6; the flat-values migration mapped it
+          to the v6 "20" token (80px), which wrapped every label ~3x taller and
+          pushed grow-content below the window, so Detox refused the tap */}
+      <Accordion overflow="hidden" width={224} type="multiple" defaultValue={['a1']}>
         <Accordion.Item value="a1" mb={-1}>
           <Accordion.Trigger
             id="def-trigger"
             testID="def-trigger"
-            onPressIn={recordDefaultOpenClose}
+            onPressIn={recordDefaultOpenFrames}
             flexDirection="row"
             justify="space-between"
             borderWidth={1}
-            borderColor="$borderColor"
+            borderColor="border-color"
           >
             {({ open }: { open: boolean }) => (
               <>
                 <Paragraph>Open by default</Paragraph>
                 <Square transparent transition="quick" rotate={open ? '180deg' : '0deg'}>
-                  <ChevronDown size="$1" color="$color" />
+                  <ChevronDown size="1" color="color" />
                 </Square>
               </>
             )}
@@ -97,7 +111,7 @@ export function AccordionDefaultOpenCase() {
               testID="def-content"
               borderWidth={1}
               borderTopWidth={0}
-              borderColor="$borderColor"
+              borderColor="border-color"
             >
               <View
                 onLayout={() => setInitialLayoutPass((pass) => (pass === 0 ? 1 : pass))}
@@ -115,21 +129,23 @@ export function AccordionDefaultOpenCase() {
           <Accordion.Trigger
             id="def-trigger2"
             testID="def-trigger2"
+            onPressIn={recordSecondFrames}
             flexDirection="row"
             justify="space-between"
             borderWidth={1}
-            borderColor="$borderColor"
+            borderColor="border-color"
           >
             {({ open }: { open: boolean }) => (
               <>
                 <Paragraph>Closed by default</Paragraph>
                 <Square transparent transition="quick" rotate={open ? '180deg' : '0deg'}>
-                  <ChevronDown size="$1" color="$color" />
+                  <ChevronDown size="1" color="color" />
                 </Square>
               </>
             )}
           </Accordion.Trigger>
           <Accordion.HeightAnimator
+            ref={secondHeightRef}
             id="def-height2"
             testID="def-height2"
             transition={isWeb ? '300ms' : '5000ms'}
@@ -139,7 +155,7 @@ export function AccordionDefaultOpenCase() {
               testID="def-content2"
               borderWidth={1}
               borderTopWidth={0}
-              borderColor="$borderColor"
+              borderColor="border-color"
             >
               <Paragraph testID="def-content2-text">
                 {expanded
@@ -149,7 +165,7 @@ export function AccordionDefaultOpenCase() {
               <Button
                 id="grow-content"
                 testID="grow-content"
-                size="$2"
+                size="2"
                 onPress={() => setExpanded((value) => !value)}
               >
                 Resize content
@@ -160,7 +176,15 @@ export function AccordionDefaultOpenCase() {
       </Accordion>
       <View
         testID="default-close-frame-samples"
-        accessibilityLabel={closeFrameSamples}
+        accessibilityLabel={defaultOpenFrameSamples}
+        position="absolute"
+        pointerEvents="none"
+        width={1}
+        height={1}
+      />
+      <View
+        testID="second-frame-samples"
+        accessibilityLabel={secondFrameSamples}
         position="absolute"
         pointerEvents="none"
         width={1}
@@ -175,7 +199,7 @@ export function AccordionDefaultOpenCase() {
         width={20}
         height={probeVisible ? 40 : undefined}
         x={probeVisible ? 40 : undefined}
-        bg="$backgroundHover"
+        bg="background-hover"
         transition="300ms"
       />
       <Button

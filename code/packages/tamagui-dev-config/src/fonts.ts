@@ -15,11 +15,15 @@ export const cherryBombFont = createCherryBombFont({
   weight: {
     4: '800',
   },
+  size: {
+    true: 22.4,
+  },
 })
 export const silkscreenFont = createSilkscreenFont()
 export const headingFont = createInterFont(
   {
     size: {
+      true: 14,
       5: 13,
       6: 15,
       9: 30,
@@ -34,8 +38,8 @@ export const headingFont = createInterFont(
       7: '700',
     },
     color: {
-      6: '$colorFocus',
-      7: '$color',
+      6: 'color-focus',
+      7: 'color',
     },
     letterSpacing: {
       5: 2,
@@ -61,6 +65,9 @@ export const headingFont = createInterFont(
 
 export const bodyFont = createInterFont(
   {
+    size: {
+      true: 14,
+    },
     weight: {
       1: '400',
     },

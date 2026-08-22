@@ -13,10 +13,12 @@ First, create a new One project:
 npx one
 ```
 
-Add Tamagui and its dependencies:
+Add Tamagui and its dependencies. `@tamagui/cli` carries the Vite plugin used
+below, alongside the CLI and the other bundler integrations:
 
 ```bash
 yarn add tamagui @tamagui/config
+yarn add -D @tamagui/cli
 ```
 
 ## Configuration
@@ -24,7 +26,7 @@ yarn add tamagui @tamagui/config
 Create a `tamagui.config.ts` file in your project root:
 
 ```tsx fileName="tamagui.config.ts"
-import { defaultConfig } from '@tamagui/config/v5'
+import { defaultConfig } from '@tamagui/config/v6'
 import { createTamagui } from 'tamagui'
 
 const tamaguiConfig = createTamagui(defaultConfig)
@@ -43,7 +45,7 @@ Update your `vite.config.ts`:
 
 ```tsx fileName="vite.config.ts"
 import { one } from 'one/vite'
-import { tamaguiPlugin } from '@tamagui/vite-plugin'
+import { tamaguiPlugin } from '@tamagui/cli/vite'
 import type { UserConfig } from 'vite'
 
 export default {
@@ -101,8 +103,8 @@ import { Button, Text, YStack } from 'tamagui'
 
 export default function Home() {
   return (
-    <YStack f={1} jc="center" ai="center" p="$4" gap="$4">
-      <Text fontSize="$6">Welcome to Tamagui with One!</Text>
+    <YStack f={1} jc="center" ai="center" p="4" gap="4">
+      <Text fontSize="6">Welcome to Tamagui with One!</Text>
       <Button>Click me</Button>
     </YStack>
   )

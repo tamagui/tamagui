@@ -1,76 +1,41 @@
-const __ReactNativeStyleSheet = require('react-native').StyleSheet
-const _sheet = __ReactNativeStyleSheet.create({
-  '0': {
-    flexDirection: 'column',
-    height: 60,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  '1': {
-    fontSize: 13,
-  },
-  '2': {
-    fontWeight: '700',
-  },
-  '3': {
-    fontWeight: '400',
-  },
-  '4': {
-    flexDirection: 'column',
-    flex: 1,
-    paddingTop: 18,
-    paddingRight: 18,
-    paddingBottom: 18,
-    paddingLeft: 18,
-    gap: 18,
-  },
-  '5': {
-    fontSize: 13,
-  },
-  '6': {
-    flexDirection: 'column',
-    gap: 7,
-  },
-  '7': {
-    fontSize: 12,
-  },
-  '8': {
-    flexDirection: 'column',
-    gap: 7,
-  },
-  '9': {
-    fontSize: 12,
-  },
-})
-import { _withStableStyle } from '@tamagui/core'
-const __ReactNativeView = require('react-native').View
-const __ReactNativeText = require('react-native').Text
+// @ts-nocheck -- generated compiler fixture
 /**
- * Tests compiler extraction of ternaries mixing theme-token and non-token values.
- * Regression test for bug where fontWeight ternary was dropped when combined
- * with a theme-token color ternary on native.
- *
- * The compiler's extractToNative was unconditionally adding plain styles
- * (fontWeight) from ternary branches instead of wrapping them in the conditional.
+ * Tests the native compiler's conservative bailout for ternaries that mix theme
+ * tokens with non-token values. Static compiler coverage owns the lowering
+ * decision; Detox verifies that the bailout matches the explicit runtime path.
  */
 
 import { useState } from 'react'
-import { Button, Text, YStack } from 'tamagui'
+import { Text, YStack } from 'tamagui'
+import { Button } from '../components/Button'
+
 function ActiveText({ isActive, label }: { isActive: boolean; label: string }) {
   return (
-    <_ReactNativeViewStyled0 testID={'opt-color-box'} _expressions={[!!isActive]}>
-      <_ReactNativeTextStyled1 testID={'active-text'} _expressions={[!!isActive]}>
+    <YStack
+      testID="opt-color-box"
+      backgroundColor={`${isActive ? 'color11' : 'color10'}`}
+      height={60}
+      justifyContent="center"
+      alignItems="center"
+    >
+      <Text
+        testID="active-text"
+        fontSize="3"
+        fontWeight={isActive ? '700' : '400'}
+        color={`${isActive ? 'color11' : 'color10'}`}
+      >
         {label}
-      </_ReactNativeTextStyled1>
-    </_ReactNativeViewStyled0>
+      </Text>
+    </YStack>
   )
 }
+
 function ActiveTextNoOpt({ isActive, label }: { isActive: boolean; label: string }) {
   return (
     <YStack
       disableOptimization
       testID="noopt-color-box"
-      backgroundColor={isActive ? '$color12' : '$color11'}
+      backgroundColor={`${isActive ? 'color11' : 'color10'}`}
       height={60}
       justifyContent="center"
       alignItems="center"
@@ -78,118 +43,121 @@ function ActiveTextNoOpt({ isActive, label }: { isActive: boolean; label: string
       <Text
         disableOptimization
         testID="active-text-noopt"
-        fontSize="$3"
+        fontSize="3"
         fontWeight={isActive ? '700' : '400'}
-        color={isActive ? '$color12' : '$color11'}
+        color={`${isActive ? 'color11' : 'color10'}`}
       >
         {label}
       </Text>
     </YStack>
   )
 }
+
 export function CompilerTernaryActive() {
   const [isActive, setIsActive] = useState(false)
-  return (
-    <_ReactNativeViewStyled2 testID={'compiler-ternary-active-root'}>
-      <_ReactNativeTextStyled3 testID={'active-state-label'}>
-        Active: {isActive ? 'YES' : 'NO'}
-      </_ReactNativeTextStyled3>
 
-      <Button size="$2" testID="toggle-active" onPress={() => setIsActive((a) => !a)}>
+  return (
+    <__TamaguiStableView1532 testID="compiler-ternary-active-root">
+      <__TamaguiStableText1678 testID="active-state-label">
+        Active: {isActive ? 'YES' : 'NO'}
+      </__TamaguiStableText1678>
+
+      <Button size="3" testID="toggle-active" onPress={() => setIsActive((a) => !a)}>
         Toggle Active
       </Button>
 
-      <__ReactNativeView style={_sheet['6']}>
-        <_ReactNativeTextStyled4>Optimized:</_ReactNativeTextStyled4>
+      <__TamaguiNativeView
+        style={__TamaguiNativeStyle1914._ ?? __TamaguiNativeStyle1914()}
+      >
+        <__TamaguiStableText1939>Compiler path:</__TamaguiStableText1939>
         <ActiveText isActive={isActive} label="Hello World" />
-      </__ReactNativeView>
+      </__TamaguiNativeView>
 
-      <__ReactNativeView style={_sheet['8']}>
-        <_ReactNativeTextStyled5>Non-optimized:</_ReactNativeTextStyled5>
+      <__TamaguiNativeView
+        style={__TamaguiNativeStyle2066._ ?? __TamaguiNativeStyle2066()}
+      >
+        <__TamaguiStableText2091>Explicit runtime:</__TamaguiStableText2091>
         <ActiveTextNoOpt isActive={isActive} label="Hello World" />
-      </__ReactNativeView>
-    </_ReactNativeViewStyled2>
+      </__TamaguiNativeView>
+    </__TamaguiStableView1532>
   )
 }
-const _ReactNativeViewStyled0 = _withStableStyle(
-  __ReactNativeView,
-  (theme, _expressions) => [
-    _sheet['0'],
-    _expressions[0]
-      ? {
-          backgroundColor: theme.color12.get(),
-        }
-      : {
-          backgroundColor: theme.color11.get(),
-        },
+
+function __TamaguiNativeStyle1532() {
+  return (
+    __TamaguiNativeStyle1532._ ??
+    (__TamaguiNativeStyle1532._ = {
+      flexDirection: 'column',
+      flex: 1,
+      paddingTop: 16,
+      paddingRight: 16,
+      paddingBottom: 16,
+      paddingLeft: 16,
+      gap: 16,
+    })
+  )
+}
+__TamaguiNativeStyle1532()
+const __TamaguiNativeView = require('react-native').View
+const __TamaguiStableView1532 = require('@tamagui/core')._withStableStyle(
+  __TamaguiNativeView,
+  (_theme, expressions) => [
+    __TamaguiNativeStyle1532._ ?? __TamaguiNativeStyle1532(),
+    { backgroundColor: _theme['background']?.get() },
   ],
   true,
   false
 )
-const _ReactNativeTextStyled1 = _withStableStyle(
-  __ReactNativeText,
-  (theme, _expressions) => [
-    _sheet['1'],
-    {
-      color: theme.color.get(),
-    },
-    _expressions[0]
-      ? [
-          _sheet['2'],
-          {
-            color: theme.color12.get(),
-          },
-        ]
-      : [
-          _sheet['3'],
-          {
-            color: theme.color11.get(),
-          },
-        ],
+function __TamaguiNativeStyle1678() {
+  return __TamaguiNativeStyle1678._ ?? (__TamaguiNativeStyle1678._ = { fontSize: 14 })
+}
+__TamaguiNativeStyle1678()
+const __TamaguiNativeText = require('react-native').Text
+const __TamaguiStableText1678 = require('@tamagui/core')._withStableStyle(
+  __TamaguiNativeText,
+  (_theme, expressions) => [
+    __TamaguiNativeStyle1678._ ?? __TamaguiNativeStyle1678(),
+    { color: _theme['color']?.get() },
   ],
   true,
   false
 )
-const _ReactNativeViewStyled2 = _withStableStyle(
-  __ReactNativeView,
-  (theme, _expressions) => [
-    _sheet['4'],
-    {
-      backgroundColor: theme.background.get(),
-    },
+function __TamaguiNativeStyle1914() {
+  return (
+    __TamaguiNativeStyle1914._ ??
+    (__TamaguiNativeStyle1914._ = { flexDirection: 'column', gap: 8 })
+  )
+}
+__TamaguiNativeStyle1914()
+function __TamaguiNativeStyle1939() {
+  return __TamaguiNativeStyle1939._ ?? (__TamaguiNativeStyle1939._ = { fontSize: 13 })
+}
+__TamaguiNativeStyle1939()
+const __TamaguiStableText1939 = require('@tamagui/core')._withStableStyle(
+  __TamaguiNativeText,
+  (_theme, expressions) => [
+    __TamaguiNativeStyle1939._ ?? __TamaguiNativeStyle1939(),
+    { color: _theme['color']?.get() },
   ],
   true,
   false
 )
-const _ReactNativeTextStyled3 = _withStableStyle(
-  __ReactNativeText,
-  (theme, _expressions) => [
-    _sheet['5'],
-    {
-      color: theme.color.get(),
-    },
-  ],
-  true,
-  false
-)
-const _ReactNativeTextStyled4 = _withStableStyle(
-  __ReactNativeText,
-  (theme, _expressions) => [
-    _sheet['7'],
-    {
-      color: theme.color.get(),
-    },
-  ],
-  true,
-  false
-)
-const _ReactNativeTextStyled5 = _withStableStyle(
-  __ReactNativeText,
-  (theme, _expressions) => [
-    _sheet['9'],
-    {
-      color: theme.color.get(),
-    },
+function __TamaguiNativeStyle2066() {
+  return (
+    __TamaguiNativeStyle2066._ ??
+    (__TamaguiNativeStyle2066._ = { flexDirection: 'column', gap: 8 })
+  )
+}
+__TamaguiNativeStyle2066()
+function __TamaguiNativeStyle2091() {
+  return __TamaguiNativeStyle2091._ ?? (__TamaguiNativeStyle2091._ = { fontSize: 13 })
+}
+__TamaguiNativeStyle2091()
+const __TamaguiStableText2091 = require('@tamagui/core')._withStableStyle(
+  __TamaguiNativeText,
+  (_theme, expressions) => [
+    __TamaguiNativeStyle2091._ ?? __TamaguiNativeStyle2091(),
+    { color: _theme['color']?.get() },
   ],
   true,
   false

@@ -1,0 +1,79 @@
+{
+  "name": "@tamagui/native-registry",
+  "version": "2.7.7",
+  "description": "Generic native style registry: zero-re-render style updates via Fabric ShadowTree commits",
+  "type": "module",
+  "sideEffects": false,
+  "types": "./types/index.d.ts",
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "react-native": "src/index.native.ts",
+  "files": [
+    "src",
+    "!src/__tests__",
+    "types",
+    "dist",
+    "nitrogen",
+    "android",
+    "cpp",
+    "nitro.json",
+    "TamaguiRegistry.podspec"
+  ],
+  "scripts": {
+    "build": "tamagui-build",
+    "watch": "tamagui-build --watch",
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build",
+    "codegen": "nitrogen",
+    "test": "vitest run"
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "react-native": {
+        "types": "./types/index.d.ts",
+        "module": "./dist/esm/index.native.js",
+        "import": "./dist/esm/index.native.js",
+        "require": "./dist/cjs/index.native.js"
+      },
+      "types": "./types/index.d.ts",
+      "browser": "./dist/esm/index.mjs",
+      "module": "./dist/esm/index.mjs",
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.cjs",
+      "default": "./dist/esm/index.mjs"
+    }
+  },
+  "devDependencies": {
+    "@tamagui/build": "workspace:*",
+    "react": ">=19",
+    "react-native": "0.86.2",
+    "react-native-nitro-modules": "^0.36.5",
+    "typescript": "~6.0.3",
+    "vitest": "4.0.4",
+    "nitrogen": "^0.36.5"
+  },
+  "peerDependencies": {
+    "react": "*",
+    "react-native": ">=0.81.0",
+    "react-native-nitro-modules": ">=0.36.0",
+    "react-native-web": "*"
+  },
+  "peerDependenciesMeta": {
+    "react-native-nitro-modules": {
+      "optional": true
+    },
+    "react-native-web": {
+      "optional": true
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tamagui/tamagui.git",
+    "directory": "code/core/native-registry"
+  },
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  }
+}

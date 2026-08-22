@@ -87,13 +87,7 @@ export const HomeGlow = memo(() => {
         <YStack
           key={`${i}${tint}${tintAlt}`}
           transition="superLazy"
-          enterStyle={{
-            opacity: isOnHeroBelow ? 0.5 : 0,
-          }}
-          exitStyle={{
-            opacity: 0,
-          }}
-          opacity={isOnHeroBelow ? 0.5 : 0.8}
+          opacity={`${isOnHeroBelow ? 0.5 : 0.8} enter:${isOnHeroBelow ? 0.5 : 0} exit:0`}
           overflow="hidden"
           height="100vh"
           maxH={650}
@@ -107,7 +101,8 @@ export const HomeGlow = memo(() => {
           scaleX={isOpposing ? 1 : 1}
         >
           <YStack
-            fullscreen
+            position="absolute"
+            inset={0}
             style={{
               background: `radial-gradient(var(--${curTint}7) 20%, transparent 50%)`,
               transition: `all ease-in-out 1000ms`,

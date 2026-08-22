@@ -1,5 +1,6 @@
 import { StyleObjectIdentifier, StyleObjectRules } from '@tamagui/helpers'
 import { createVariable } from '../createVariable'
+import { formatDiagnostic } from './formatDiagnostic'
 import type {
   DedupedTheme,
   DedupedThemes,
@@ -16,13 +17,27 @@ const allSelectors: Record<string, string> = {}
 const allRules: Record<string, string> = {}
 
 export const getAllSelectors = () => allSelectors
+
+// updateRules is the only writer, so one flag there covers every change
+let sortedRules: string[] = []
+let sortedRulesStale = true
+
 export const getAllRules = () => {
   if (!process.env.TAMAGUI_DID_OUTPUT_CSS) {
-    // Sort by identifier to ensure deterministic CSS output order
-    const sortedKeys = Object.keys(allRules).sort()
-    return sortedKeys.map((key) => allRules[key])
+    if (sortedRulesStale) {
+      // Sort by identifier to ensure deterministic CSS output order
+      const sortedKeys = Object.keys(allRules).sort()
+      sortedRules = sortedKeys.map((key) => allRules[key])
+      sortedRulesStale = false
+    }
+    return sortedRules
   }
   return []
+}
+
+export function wrapStyleRules(css: string): string {
+  const layer = process.env.TAMAGUI_CSS_LAYER
+  return layer && css ? `@layer ${layer} {\n${css}\n}` : css
 }
 
 // once react 19 onyl supported we can remove most of this
@@ -44,6 +59,7 @@ export function scanAllSheets(
   if (!process.env.TAMAGUI_DID_OUTPUT_CSS) {
     if (process.env.NODE_ENV === 'test') return
     if (process.env.TAMAGUI_TARGET !== 'web') return
+    if (typeof document === 'undefined') return
 
     let themes: DedupedThemes | undefined
 
@@ -91,12 +107,12 @@ function updateSheetStyles(
 ): DedupedThemes | undefined {
   // avoid errors on cross origin sheets
   // https://stackoverflow.com/questions/49993633/uncaught-domexception-failed-to-read-the-cssrules-property
-  let rules: CSSRuleList
+  let rules: CSSRule[]
   try {
-    rules = sheet.cssRules
-    if (!rules) {
+    if (!sheet.cssRules) {
       return
     }
+    rules = flattenCSSRules(sheet.cssRules)
   } catch {
     return
   }
@@ -166,6 +182,21 @@ function updateSheetStyles(
   return dedupedThemes
 }
 
+function flattenCSSRules(rules: CSSRuleList, output: CSSRule[] = []): CSSRule[] {
+  for (let index = 0; index < rules.length; index++) {
+    const rule = rules[index]
+    if (rule instanceof CSSStyleRule) {
+      output.push(rule)
+      continue
+    }
+    if ('cssRules' in rule) {
+      const nested = (rule as CSSGroupingRule).cssRules
+      if (nested) flattenCSSRules(nested, output)
+    }
+  }
+  return output
+}
+
 let colorVarToVal: Record<string, string>
 let rootComputedStyle: CSSStyleDeclaration | null = null
 
@@ -231,22 +262,32 @@ function addThemesFromCSS(cssStyleRule: CSSStyleRule, tokens?: TokensParsed) {
 
   // loop selectors and build deduped
   for (const selector of selectors) {
-    if (selector === ' .tm_xxt') continue
-    const lastThemeSelectorIndex = selector.lastIndexOf('.t_')
-    const name = selector.slice(lastThemeSelectorIndex).slice(3)
-    const [schemeChar] = selector[lastThemeSelectorIndex - 5]
-    const scheme = schemeChar === 'd' ? 'dark' : schemeChar === 'i' ? 'light' : ''
-    const themeName = scheme && scheme !== name ? `${scheme}_${name}` : name
-    if (!themeName || themeName === 'light_dark' || themeName === 'dark_light') {
-      continue
-    }
-    names.add(themeName)
+    const themeName = getThemeNameFromSelector(selector)
+    if (themeName) names.add(themeName)
   }
 
   return {
     names: [...names],
     theme: values,
   } satisfies DedupedTheme
+}
+
+export function getThemeNameFromSelector(selector: string): string | undefined {
+  if (selector === ' .tm_xxt') return
+  const lastThemeSelectorIndex = selector.lastIndexOf('.t_')
+  if (lastThemeSelectorIndex === -1) return
+
+  // A selector may qualify the class for specificity, for example
+  // `.t_light_blue:not(#t_theme_full_name)`. Only the class identifier is a
+  // theme name; retaining the pseudo-class would double the client theme set.
+  const name = selector.slice(lastThemeSelectorIndex + 3).match(/^[\w-]+/)?.[0]
+  if (!name) return
+
+  const schemeChar = selector[lastThemeSelectorIndex - 5]
+  const scheme = schemeChar === 'd' ? 'dark' : schemeChar === 'i' ? 'light' : ''
+  const themeName = scheme && scheme !== name ? `${scheme}_${name}` : name
+  if (themeName === 'light_dark' || themeName === 'dark_light') return
+  return themeName
 }
 
 const tamaguiSelectorRegex = /\.tm_xxt/
@@ -281,16 +322,23 @@ const getIdentifierFromTamaguiSelector = (selector: string) => {
   return selector.slice(7)
 }
 
-let sheet: CSSStyleSheet | null = null
+let sheet: Pick<CSSStyleSheet, 'cssRules' | 'insertRule'> | null = null
 
+let mountedProviders = 0
 let trackAllRules = true
 export function stopAccumulatingRules() {
+  mountedProviders++
   trackAllRules = false
+  return () => {
+    mountedProviders--
+    trackAllRules = mountedProviders === 0
+  }
 }
 
 export function updateRules(identifier: string, rules: string[]) {
   if (trackAllRules) {
     allRules[identifier] = rules.join(' ')
+    sortedRulesStale = true
   }
   return true
 }
@@ -309,7 +357,18 @@ export function insertStyleRules(rulesToInsert: RulesToInsert) {
     if (nonce) {
       styleTag.nonce = nonce
     }
-    sheet = document.head.appendChild(styleTag).sheet
+    const rootSheet = document.head.appendChild(styleTag).sheet
+    const layer = process.env.TAMAGUI_CSS_LAYER
+    if (rootSheet && layer) {
+      rootSheet.insertRule(`@layer ${layer} {}`, rootSheet.cssRules.length)
+      const layerRule = rootSheet.cssRules[rootSheet.cssRules.length - 1]
+      sheet =
+        'cssRules' in layerRule && 'insertRule' in layerRule
+          ? (layerRule as CSSGroupingRule)
+          : rootSheet
+    } else {
+      sheet = rootSheet
+    }
   }
 
   if (!sheet) return
@@ -333,7 +392,26 @@ export function insertStyleRules(rulesToInsert: RulesToInsert) {
       }
     } catch (err) {
       if (process.env.NODE_ENV === 'production') {
-        console.error(`Error inserting style rule`, rules)
+        const rule = rules[0] || ''
+        const selectorEnd = rule.indexOf('{')
+        const owner =
+          'ownerNode' in sheet ? (sheet.ownerNode as HTMLElement | null) : null
+        console.error(
+          formatDiagnostic(
+            'TAMAGUI_STYLE_INSERT',
+            'insertStyleRules',
+            'the stylesheet rejected a generated rule',
+            'Fix or remove the invalid style declaration',
+            'identifier,selector,target',
+            {
+              identifier,
+              selector: (selectorEnd === -1 ? rule : rule.slice(0, selectorEnd)).trim(),
+              target: owner
+                ? `${owner.nodeName.toLowerCase()}${owner.id ? `#${owner.id}` : ''}`
+                : sheet.constructor?.name || 'CSSStyleSheet',
+            }
+          )
+        )
       }
       // in dev throw to show error clearly
     }

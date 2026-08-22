@@ -20,20 +20,25 @@ import { didGetVariableValue, setDidGetVariableValue } from './createVariable'
 import { defaultComponentStateMounted } from './defaultComponentState'
 import { getWebEvents, useEvents, wrapWithGestureDetector } from './eventHandling'
 import { getDefaultProps } from './helpers/getDefaultProps'
+import { componentDisplayName } from './helpers/componentDisplayName'
 import { resolveAnimationDriver } from './helpers/resolveAnimationDriver'
 import { getSplitStyles, useSplitStyles } from './helpers/getSplitStyles'
+import {
+  getNativeStyleEngine,
+  queueNativeViewState,
+  updateNativeStyleLink,
+} from './helpers/nativeStyleEngine'
+import { getThemeProxied } from './hooks/getThemeProxied'
 import { log } from './helpers/log'
 import { type GenericProps, mergeComponentProps } from './helpers/mergeProps'
 import { mergeRenderElementProps } from './helpers/mergeRenderElementProps'
+import { getMedia } from './helpers/mediaState'
 import { objectIdentityKey } from './helpers/objectIdentityKey'
 import { usePointerEvents } from './helpers/pointerEvents'
-import {
-  extractPseudoState,
-  resolveEffectivePseudoTransition,
-} from './helpers/pseudoTransitions'
+import { extractPseudoState } from './helpers/extractPseudoState'
+import { subscribeToSafeArea } from './helpers/resolveSafeAreaVariable'
 import { setElementProps } from './helpers/setElementProps'
 import { subscribeToContextGroup } from './helpers/subscribeToContextGroup'
-import { themeable } from './helpers/themeable'
 import { getStyleTags } from './helpers/wrapStyleTags'
 import { useComponentState } from './hooks/useComponentState'
 import { setMediaShouldUpdate, useMedia } from './hooks/useMedia'
@@ -49,7 +54,6 @@ import type {
   PseudoGroupState,
   SingleGroupContext,
   StaticConfig,
-  StyleableOptions,
   TamaguiComponent,
   TamaguiComponentState,
   TamaguiElement,
@@ -95,6 +99,25 @@ const groupPseudoKeys = [
   'focusVisible',
   'focusWithin',
 ] as const satisfies readonly (keyof PseudoGroupState)[]
+
+function getStyledContextKeys(
+  staticConfig: StaticConfig,
+  styledContextValue: GenericProps | undefined
+) {
+  const propKeys = staticConfig.contextProps || staticConfig.context?.propKeys
+  if (!propKeys) {
+    return styledContextValue
+  }
+
+  const out: GenericProps = {}
+  for (const key of propKeys) {
+    out[key] = true
+  }
+  if (styledContextValue) {
+    Object.assign(out, styledContextValue)
+  }
+  return out
+}
 
 if (process.env.TAMAGUI_TARGET !== 'native' && typeof window !== 'undefined') {
   const cancelPresses = () => {
@@ -248,12 +271,46 @@ export function createComponent<
   BaseProps = never,
   BaseStyles extends object = never,
 >(staticConfig: StaticConfig) {
+  // Zero-runtime mode: compiler reference erasure is what removes this module
+  // from the graph, and the bundle gate is what proves it. This is the loud
+  // secondary failure for a reference erasure missed, and it lets Vite and
+  // webpack fold the body to a stub. The full `process.env` comparison is
+  // written out here on purpose: anything between it and the bundler (a helper,
+  // a const, a config read) makes it unfoldable.
+  if (process.env.TAMAGUI_RUNTIME === 'zero') {
+    throw new Error(
+      `[tamagui zero-runtime] createComponent ran in a zero-runtime graph. No Tamagui component renderer ships in this mode, so a component reference survived compilation. Fix the site or move the owning module to a declared full-runtime island.`
+    )
+  }
+
   let config: TamaguiInternalConfig | null = null
+  let resolvedDefaultProps: Record<string, any> | undefined
+  let didResolveDefaultProps = false
 
   const { Component, isText, isHOC } = staticConfig
 
-  const component = React.forwardRef<Ref, ComponentPropTypes>((propsIn, forwardedRef) => {
+  type ComponentType = TamaguiComponent<
+    ComponentPropTypes,
+    Ref,
+    BaseProps,
+    BaseStyles,
+    {}
+  >
+
+  let res: ComponentType
+
+  const component = (propsInWithRef: ComponentPropTypes & { ref?: React.Ref<Ref> }) => {
     'use no memo'
+
+    const displayName = (res as any)[componentDisplayName] as string | undefined
+
+    // read the forwarded ref directly off the incoming props — do NOT clone the
+    // whole object every render just to strip `ref`. the original props object is
+    // passed straight through; `ref` is skipped in the getSplitStyles pass (so it
+    // never forwards onto the host) and the composed ref is assigned explicitly
+    // onto viewProps below.
+    const forwardedRef = propsInWithRef.ref
+    const propsIn = propsInWithRef as Omit<typeof propsInWithRef, 'ref'>
 
     config = config || getConfig()
 
@@ -304,12 +361,12 @@ export function createComponent<
     const componentContext = React.useContext(ComponentContext)
     const hasTextAncestor = !!(isWeb && isText ? componentContext.inText : false)
 
-    // On Android, skip RNGH GestureDetector inside native menus (zeego) and use
-    // direct press events instead — GestureDetector consumes touches before they
-    // reach MenuView's native handler, preventing the menu from opening
-    // NativeMenuContext only affects Android RNGH press arbitration inside zeego
-    // menus (see eventHandling.native.ts:182). isAndroid is constant for the whole
-    // app run, so on iOS we skip this context read for every component — the branch
+    // on Android, skip RNGH GestureDetector inside native menus and use direct
+    // press events instead. GestureDetector consumes touches before they reach the
+    // native menu handler, preventing the menu from opening. NativeMenuContext only
+    // affects Android RNGH press arbitration inside native menus (see
+    // eventHandling.native.ts:182). isAndroid is constant for the whole app run,
+    // so on iOS we skip this context read for every component. the branch
     // never flips at runtime, so hook order stays stable (rules-of-hooks safe).
     const isInsideNativeMenu =
       process.env.TAMAGUI_TARGET === 'native' && isAndroid
@@ -337,20 +394,41 @@ export function createComponent<
     // order important so we do loops, you can't just spread because JS does weird things
     let props: ViewProps | TextProps = propsIn
 
-    const componentName = props.componentName || staticConfig.componentName
-
     // merge both default props and styled context props - ensure order is preserved
-    const defaultProps = getDefaultProps(staticConfig, props.componentName)
+    if (!didResolveDefaultProps) {
+      didResolveDefaultProps = true
+      const staticDefaultProps = getDefaultProps(staticConfig)
+      resolvedDefaultProps =
+        isWeb &&
+        !isText &&
+        config.settings.defaultPosition === 'relative' &&
+        staticDefaultProps?.position === undefined
+          ? staticDefaultProps
+            ? { position: 'relative', ...staticDefaultProps }
+            : { position: 'relative' }
+          : staticDefaultProps
+    }
 
     // merge styled context props over defaults, ensure order is preserved
     const [nextProps, overrides] = mergeComponentProps(
-      defaultProps,
+      resolvedDefaultProps,
       styledContextValue,
       propsIn
     )
 
     props = nextProps as ViewProps | TextProps
     overriddenContextProps = overrides
+
+    // frontend single pass (hoisted): the component's descriptor tokenizes className +
+    // flattens props ONCE here, so flat values and transition props are in place before
+    // the state machine / variant / animation driver below read them. preprocessProps
+    // marks its result, so getSplitStyles skips its own preprocess.
+    // components without a descriptor pay one property read.
+    if (staticConfig.styleFrontend) {
+      props = staticConfig.styleFrontend.preprocessProps(props, config) as
+        | ViewProps
+        | TextProps
+    }
 
     if (process.env.NODE_ENV === 'development' && isClient) {
       React.useEffect(() => {
@@ -396,7 +474,7 @@ export function createComponent<
             tooltip.style.fontSize = '12px'
             tooltip.style.lineHeight = '12px'
             tooltip.style.fontFamily = 'monospace'
-            tooltip.innerText = `${componentName || ''} ${dataAt} ${dataIn}`.trim()
+            tooltip.innerText = `${displayName || ''} ${dataAt} ${dataIn}`.trim()
 
             overlay.appendChild(tooltip)
             node.appendChild(overlay)
@@ -412,7 +490,7 @@ export function createComponent<
           remove()
           debugKeyListeners?.delete(debugVisualizerHandler)
         }
-      }, [componentName])
+      }, [displayName])
     }
 
     const groupContextParent = React.useContext(GroupContext)
@@ -420,15 +498,17 @@ export function createComponent<
     // Get animation driver - either from animatedBy prop lookup or context/config fallback
     const animationDriver = (() => {
       if (props.animatedBy && config) {
+        let selectedDriver
         // check animationDrivers for multi-driver config
         if (config.animationDrivers) {
-          return (
+          selectedDriver =
             (config.animationDrivers as Record<string, any>)[props.animatedBy] ??
             config.animations
-          )
+        } else {
+          // single driver config - only 'default' makes sense
+          selectedDriver = props.animatedBy === 'default' ? config.animations : null
         }
-        // single driver config - only 'default' makes sense
-        return props.animatedBy === 'default' ? config.animations : null
+        return resolveAnimationDriver(selectedDriver)
       }
       // fall back to context driver, then config.animations
       // resolveAnimationDriver validates it's a real driver (not a raw multi-driver object)
@@ -439,7 +519,9 @@ export function createComponent<
       )
     })()
 
-    const useAnimations = animationDriver?.useAnimations as UseAnimationHook | undefined
+    const useAnimations = animationDriver?.isStub
+      ? undefined
+      : (animationDriver?.useAnimations as UseAnimationHook | undefined)
 
     const componentState = useComponentState(
       props,
@@ -470,7 +552,19 @@ export function createComponent<
       startedUnhydrated,
     } = componentState
 
-    if (animationDriver?.avoidReRenders) {
+    // adopt the props object useComponentState resolved: on the enter/exit presence
+    // path it injects presence variants onto a fresh copy instead of mutating our
+    // input (which, with no clone above, would be React's own props object)
+    props = componentState.props as typeof props
+
+    // latch on first render: animationDriver derives from the per-render
+    // animatedBy prop, and the layout effect below is conditioned on
+    // avoidReRenders — letting it flip between renders would change the hook
+    // count mid-lifecycle (same latch pattern as hasAnimated in
+    // useComponentState). ??= keeps the first value: false stays false.
+    stateRef.current.avoidReRenders ??= !!animationDriver?.avoidReRenders
+
+    if (stateRef.current.avoidReRenders) {
       // post-commit reconciliation of `nextState` with the committed React state.
       // `nextState` is the source of truth for the fast `setStateShallow` path; it
       // must stay populated until React actually commits the corresponding update,
@@ -483,7 +577,7 @@ export function createComponent<
         // keeps the last-emitted snapshot latched across re-renders (so an unrelated
         // render doesn't snap a hovered style back to base), but a render can change
         // the styles that FEED the pseudo merge — e.g. a row becoming active removes
-        // its hoverStyle while still hovered — and the stale snapshot would keep
+        // its hover clause while still hovered — and the stale snapshot would keep
         // painting over the new base (hover-beats-active-during-scrub).
         // `updateStyleListener` is rebuilt each render over fresh props/state and
         // reads `nextState || state`, so re-invoking it re-emits the correct merged
@@ -525,9 +619,18 @@ export function createComponent<
       })
     }, [platformPseudo, props.disabled])
 
+    // a component is a query container when any container prop says so; the
+    // boolean `container` is the unnamed inline-size shorthand (decision 17)
+    const containerName = props.containerName as string | undefined
+    const isContainer = !!(
+      props.container ||
+      containerName ||
+      (props.containerType && props.containerType !== 'normal')
+    )
+
     // create new context with groups, or else sublings will grab the same one
     const allGroupContexts = useMemo((): AllGroupContexts | null => {
-      if (!groupName || props.passThrough) {
+      if ((!groupName && !isContainer) || props.passThrough) {
         return groupContextParent
       }
 
@@ -552,21 +655,35 @@ export function createComponent<
         },
       }
 
-      return {
-        ...groupContextParent,
-        [groupName]: {
-          state: {
-            pseudo: defaultComponentStateMounted,
-          },
-          subscribe: (listener) => {
-            const dispose = stateRef.current.group?.subscribe(listener)
-            return () => {
-              dispose?.()
-            }
-          },
+      // one entry object serves every key this component provides: the group
+      // name and the container keys share the same state and emitter
+      const entry: SingleGroupContext = {
+        state: {
+          pseudo: defaultComponentStateMounted,
+        },
+        subscribe: (listener) => {
+          const dispose = stateRef.current.group?.subscribe(listener)
+          return () => {
+            dispose?.()
+          }
         },
       }
-    }, [stateRef, groupName, groupContextParent])
+
+      const next: AllGroupContexts = { ...groupContextParent }
+      if (groupName) {
+        next[groupName] = entry
+      }
+      if (isContainer) {
+        // `@sm:` reads the nearest container of any name, so every container
+        // writes the `@` key; a named one also writes `@name`. group names
+        // cannot contain `@`, so the namespaces never collide
+        next['@'] = entry
+        if (containerName) {
+          next[`@${containerName}`] = entry
+        }
+      }
+      return next
+    }, [stateRef, groupName, containerName, isContainer, groupContextParent])
 
     // if our animation driver supports avoidReRenders, we'll replace this below with
     // a version that essentially uses an internall emitter rather than setting state
@@ -608,11 +725,9 @@ export function createComponent<
     if (process.env.NODE_ENV === 'development' && time) time`theme-props`
 
     const themeStateProps: UseThemeWithStateProps = {
-      componentName,
       disable: disableTheme,
       shallow: props.themeShallow,
       debug: debugProp,
-      unstyled: props.unstyled,
     }
 
     // this is set conditionally if existing in props because we wrap children with
@@ -620,19 +735,27 @@ export function createComponent<
     if ('theme' in props) {
       themeStateProps.name = props.theme
     }
-    // Always set needsUpdate callback so it can check the ref's latest value
-    // This ensures components with $theme-dark/$theme-light re-render on theme change
-    // even when using raw colors (not tokens) since isListeningToTheme is set after useSplitStyles
-    themeStateProps.needsUpdate = () => !!stateRef.current.isListeningToTheme
+    if (!stateRef.current.optimizeForFirstRender) {
+      // this ensures components with dark/light theme clauses re-render on
+      // theme change even when using raw colors (not tokens), since
+      // isListeningToTheme is set after useSplitStyles.
+      themeStateProps.needsUpdate =
+        stateRef.current.themeNeedsUpdate ||
+        (stateRef.current.themeNeedsUpdate = () => !!stateRef.current.isListeningToTheme)
+    }
     // on native we optimize theme changes if fastSchemeChange is enabled, otherwise deopt
     if (process.env.TAMAGUI_TARGET === 'native') {
       themeStateProps.deopt = willBeAnimated
+      // native fast path (experimental): stable proxy so the theme
+      // subscription can hand updates to the per-render styled updater
+      themeStateProps.nativeUpdate = stateRef.current.nativeUpdateProxy ||= (next) =>
+        stateRef.current.nativeStyleUpdate?.(next) ?? false
     }
 
     if (process.env.NODE_ENV === 'development') {
       if (debugProp && debugProp !== 'profile') {
         const name = `${
-          componentName ||
+          displayName ||
           Component?.displayName ||
           Component?.name ||
           '[Unnamed Component]'
@@ -696,10 +819,16 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development' && time) time`theme`
 
-    elementType = element || elementType
+    // don't replace the animated driver component (set above) with the base element,
+    // the render string is forwarded to it via viewProps.render instead
+    if (!isAnimatedCustomComponent) {
+      elementType = element || elementType
+    }
     const isStringElement = typeof elementType === 'string'
 
-    const mediaState = useMedia(componentContext, debugProp)
+    // stateRef.current is this instance's key into useMedia's per-component
+    // States map (setMediaShouldUpdate below writes under the same key)
+    const mediaState = useMedia(componentContext, debugProp, stateRef.current)
 
     setDidGetVariableValue(false)
 
@@ -719,7 +848,8 @@ export function createComponent<
       isExiting,
       isAnimated,
       willBeAnimated,
-      styledContext: styledContextValue,
+      displayName,
+      styledContext: getStyledContextKeys(staticConfig, styledContextValue),
     } as const
 
     const themeName = themeState?.name || ''
@@ -746,6 +876,158 @@ export function createComponent<
 
     // splitStyles === null === passThrough
 
+    // native fast path (experimental, plans/native-fast-path.md): eligible
+    // leaves commit theme-driven style updates straight to the native tree
+    // and skip the re-render. eligibility is re-evaluated every render; the
+    // pushed-state cache resets every render so no native state entry can
+    // outlive the props/state that produced it. repeated toggles between
+    // already-pushed themes are pure native (no style computation at all).
+    if (process.env.TAMAGUI_TARGET === 'native') {
+      const nativeEngine = getNativeStyleEngine()
+      const canNativeUpdate =
+        !!nativeEngine &&
+        !isPassthrough &&
+        !isHOC &&
+        !willBeAnimated &&
+        !groupName &&
+        !props.disableNativeStyle
+      stateRef.current.nativePushedStates = canNativeUpdate ? new Set() : undefined
+      // fresh render: the themeState captured below is current again, and the
+      // render itself commits this state's styles
+      stateRef.current.nativeThemeState = undefined
+      stateRef.current.nativeActiveState = canNativeUpdate ? themeState?.name : undefined
+
+      // push one state's full computed style. keys pushed earlier but absent
+      // from this style commit as null — reset-to-default, exactly what a real
+      // re-render's style diff does when a key disappears (media flip dropping
+      // a $sm style, a removed prop) — and the engine unsticks them from
+      // nativeProps_DEPRECATED so future React renders can set them again.
+      // nulled keys stay in nativePushedKeys: engine state tables retain them,
+      // so every later cold push must keep nulling until a value returns.
+      const pushViewState = canNativeUpdate
+        ? (stateName: string, style: Record<string, unknown>) => {
+            const sr = stateRef.current
+            const outProps = nativeEngine.processStyleColors(style)
+            if (sr.nativePushedKeys) {
+              for (const key of sr.nativePushedKeys) {
+                if (!(key in style)) outProps[key] = null
+              }
+            }
+            const keys = (sr.nativePushedKeys ||= new Set())
+            for (const key in outProps) keys.add(key)
+            sr.nativePushedStates!.add(stateName)
+            queueNativeViewState({
+              id: sr.nativeLink!.id,
+              state: stateName,
+              props: outProps,
+            })
+          }
+        : undefined
+
+      stateRef.current.nativeStyleUpdate = canNativeUpdate
+        ? (nextTheme) => {
+            const sr = stateRef.current
+            if (!sr.nativeLink || !nextTheme.theme) return false
+            sr.nativeThemeState = nextTheme
+
+            const stateName = nextTheme.name
+            // a cascade that resolves to the already-committed state (a
+            // pinned sub-theme under a toggling outer theme) changes nothing:
+            // a real re-render would commit identical styles, so skip both
+            // the push and the re-render
+            if (stateName === sr.nativeActiveState) return true
+            sr.nativeActiveState = stateName
+
+            if (sr.nativePushedStates!.has(stateName)) {
+              queueNativeViewState({ id: sr.nativeLink.id, state: stateName })
+              return true
+            }
+
+            const proxiedTheme = getThemeProxied(
+              themeStateProps,
+              nextTheme,
+              { current: null },
+              { current: null }
+            )
+            const nextStyles = getSplitStyles(
+              props,
+              staticConfig,
+              proxiedTheme,
+              stateName,
+              state,
+              // media may have changed since render: the captured
+              // styleProps.mediaState is a mount-time snapshot in
+              // first-render mode, so resolve against the live global
+              { ...styleProps, mediaState: getMedia() },
+              null,
+              componentContext,
+              allGroupContexts,
+              elementType,
+              startedUnhydrated,
+              debugProp,
+              animationDriver
+            )
+            if (!nextStyles?.style) return false
+
+            pushViewState!(stateName, nextStyles.style as Record<string, unknown>)
+            return true
+          }
+        : undefined
+
+      // a relevant media key flipped: every cached state entry was computed
+      // under the old media state, so the warm cache clears and the current
+      // theme recomputes cold (against the live global media, see above).
+      // one dimension change fires one update per configured media key and in
+      // first-render mode every subscriber passes the snapshot check each
+      // time, so coalesce to a single recompute per event turn — by which
+      // point every key has settled
+      stateRef.current.nativeMediaUpdate = canNativeUpdate
+        ? (onMiss) => {
+            const sr = stateRef.current
+            if (!sr.nativeLink) return false
+            if (!sr.nativeMediaQueued) {
+              sr.nativeMediaQueued = true
+              queueMicrotask(() => {
+                sr.nativeMediaQueued = false
+                if (!sr.nativeLink) return
+                sr.nativePushedStates!.clear()
+                // the same state name must recompute under the new media values
+                sr.nativeActiveState = undefined
+                if (!sr.nativeStyleUpdate!(sr.nativeThemeState || themeState)) {
+                  // couldn't commit natively after all: fall back to the
+                  // re-render this update path had skipped
+                  onMiss?.()
+                }
+              })
+            }
+            return true
+          }
+        : undefined
+
+      // a real render supersedes everything pushed since: its style is the
+      // truth React commits, and RN's nativeProps_DEPRECATED merge refreshes
+      // shared keys from it. the one hazard is a previously-pushed key this
+      // render dropped — RN's merge would resurrect the stale value — so
+      // re-push the fresh style (with nulls for dropped keys) right behind
+      // React's own commit.
+      if (canNativeUpdate && stateRef.current.nativeLink) {
+        const sr = stateRef.current
+        const style = splitStyles.style as Record<string, unknown> | undefined
+        if (style && sr.nativePushedKeys) {
+          let dropped = false
+          for (const key of sr.nativePushedKeys) {
+            if (!(key in style)) {
+              dropped = true
+              break
+            }
+          }
+          if (dropped) {
+            pushViewState!(themeState?.name || '', style)
+          }
+        }
+      }
+    }
+
     // Merge style-resolved context overrides (issues #3670, #3676)
     // When styles set values that are also context keys (from variants, pseudos, media, etc),
     // we need to add them to overriddenContextProps so they propagate to children
@@ -766,7 +1048,9 @@ export function createComponent<
       }
     }
 
-    const groupContext = groupName ? allGroupContexts?.[groupName] || null : null
+    // this component's own entry: same object under every key it provides
+    const groupContext =
+      groupName || isContainer ? allGroupContexts?.[groupName ?? '@'] || null : null
 
     // one tiny mutation 🙏 get width/height optimistically from raw values if possible
     // if set hardcoded it avoids extra renders
@@ -844,14 +1128,10 @@ export function createComponent<
           animationDriver
         )
 
-        // compute effective transition based on entering/exiting pseudo states
-        const effectiveTransition = resolveEffectivePseudoTransition(
-          stateRef.current.prevPseudoState,
-          updatedState,
-          nextStyles?.pseudoTransitions,
-          // platform-pseudo with no declared transition = instant (CSS :hover semantics)
-          props.transition ?? (platformPseudo ? '0ms' : undefined)
-        )
+        const effectiveTransition =
+          nextStyles?.effectiveTransition ??
+          props.transition ??
+          (platformPseudo ? '0ms' : undefined)
 
         // update prev state for next comparison (includes group states)
         stateRef.current.prevPseudoState = extractPseudoState(updatedState)
@@ -945,7 +1225,7 @@ export function createComponent<
             debugProp &&
             debugProp !== 'profile'
           ) {
-            console.groupCollapsed(`[⚡️] avoid setState`, componentName, next, {
+            console.groupCollapsed(`[⚡️] avoid setState`, displayName, next, {
               updatedState,
               props,
             })
@@ -985,10 +1265,6 @@ export function createComponent<
         splitStyles.style = splitStyles.style || {}
         splitStyles.style.opacity = 0
       }
-
-      if (splitStyles.dynamicThemeAccess != null) {
-        stateRef.current.isListeningToTheme = splitStyles.dynamicThemeAccess
-      }
     }
 
     // only listen for changes if we are using raw theme values or media space, or dynamic media (native)
@@ -1006,11 +1282,15 @@ export function createComponent<
       console.info(`useMedia() createComponent`, shouldListenForMedia, mediaListeningKeys)
     }
 
-    setMediaShouldUpdate(componentContext, shouldListenForMedia, mediaListeningKeys)
+    setMediaShouldUpdate(
+      stateRef.current,
+      shouldListenForMedia,
+      mediaListeningKeys,
+      stateRef.current.optimizeForFirstRender
+    )
 
     const {
       viewProps: viewPropsIn,
-      pseudos,
       style: splitStylesStyle,
       classNames,
       pseudoGroups,
@@ -1036,7 +1316,7 @@ export function createComponent<
       onMouseLeave,
       onFocus,
       onBlur,
-      onDidAnimate,
+      onTransition,
       separator,
       // ignore from here on out
       passThrough,
@@ -1062,6 +1342,23 @@ export function createComponent<
       if (typeof passThrough !== 'undefined') {
         viewProps.passThrough = passThrough
       }
+      // an HOC only wraps another component - its inner render produces the real
+      // styled frame that owns behavior (press handlers, aria/data-state). forward
+      // asChild to that inner frame so IT becomes the slot boundary, instead of the
+      // wrapper consuming asChild here and forwarding only its own (often
+      // behavior-less) props. fixes asChild items whose interaction is injected
+      // below the wrapper (e.g. ToggleGroup.Item asChild -> XGroup.Item -> Button).
+      if (typeof asChild !== 'undefined') {
+        viewProps.asChild = asChild
+      }
+      // an HOC layer doesn't animate itself (shouldUseAnimation is false for
+      // isHOC); forward the animation lifecycle callback to the inner component
+      // that does, so a user onTransition on a styled/HOC-wrapped animated
+      // component (e.g. a skinned Dialog.Content) still reaches the driver and
+      // composes with the component's own onTransition.
+      if (typeof onTransition !== 'undefined') {
+        viewProps.onTransition = onTransition
+      }
     }
 
     // once you set animation prop don't remove it, you can set to undefined/false
@@ -1082,15 +1379,10 @@ export function createComponent<
           }
         : undefined
 
-      // compute effective transition once here (single source of truth)
-      // avoidReRenders path also computes this in updateStyleListener
-      const effectiveTransition = resolveEffectivePseudoTransition(
-        stateRef.current.prevPseudoState,
-        state,
-        splitStyles?.pseudoTransitions,
-        // platform-pseudo with no declared transition = instant (CSS :hover semantics)
-        props.transition ?? (platformPseudo ? '0ms' : undefined)
-      )
+      const effectiveTransition =
+        splitStyles?.effectiveTransition ??
+        props.transition ??
+        (platformPseudo ? '0ms' : undefined)
 
       // add effectiveTransition to splitStyles for drivers to consume
       if (splitStyles) {
@@ -1106,7 +1398,6 @@ export function createComponent<
         // clone style to prevent animation driver mutations from leaking to viewProps
         // during SSR/pre-hydration (CSS driver mutates style.transition in place)
         style: isHydrated ? splitStylesStyle || {} : { ...splitStylesStyle },
-        // @ts-ignore
         styleState: splitStyles,
         useStyleEmitter,
         presence,
@@ -1114,10 +1405,9 @@ export function createComponent<
         styleProps,
         theme,
         themeName,
-        pseudos: pseudos || null,
         staticConfig,
         stateRef,
-        onDidAnimate,
+        onTransition,
       })
 
       if (animations) {
@@ -1138,9 +1428,13 @@ export function createComponent<
       if (process.env.NODE_ENV === 'development' && time) time`animations`
     }
 
+    if (isWeb && isExiting) {
+      viewProps.className = `t_exiting ${viewProps.className || ''}`
+    }
+
     if (process.env.NODE_ENV === 'development' && props.untilMeasured && !props.group) {
       console.warn(
-        `You set the untilMeasured prop without setting group. This doesn't work, be sure to set untilMeasured on the parent that sets group, not the children that use the $group- prop.\n\nIf you meant to do this, you can disable this warning - either change untilMeasured and group at the same time, or do group={conditional ? 'name' : undefined}`
+        `You set the untilMeasured prop without setting group. This doesn't work, be sure to set untilMeasured on the parent that sets group, not the children that use a group clause.\n\nIf you meant to do this, you can disable this warning - either change untilMeasured and group at the same time, or do group={conditional ? 'name' : undefined}`
       )
     }
 
@@ -1180,7 +1474,12 @@ export function createComponent<
 
     if (!stateRef.current.composedRef) {
       stateRef.current.composedRef = composeRefs<TamaguiElement>(
-        (x) => (stateRef.current.host = x as TamaguiElement),
+        (x) => {
+          stateRef.current.host = x as TamaguiElement
+          if (process.env.TAMAGUI_TARGET === 'native') {
+            updateNativeStyleLink(stateRef.current, x)
+          }
+        },
         forwardedRef,
         setElementProps,
         animatedRef
@@ -1188,6 +1487,17 @@ export function createComponent<
     }
 
     viewProps.ref = stateRef.current.composedRef
+
+    if (
+      process.env.TAMAGUI_TARGET === 'native' &&
+      onClick !== undefined &&
+      staticConfig.neverSkipProps?.onClick
+    ) {
+      // native has no click of its own: a component that declares onClick as its
+      // own prop (the DOM primitives, which build the payload from a press)
+      // receives it untouched, rather than through the web press path below
+      viewProps.onClick = onClick
+    }
 
     // handle pointer events (native: maps to touch events, web: no-op)
     usePointerEvents(props, viewProps)
@@ -1198,7 +1508,7 @@ export function createComponent<
           // allow newlines because why not its annoying with mdx
           if (typeof item === 'string' && item !== '\n') {
             console.error(
-              `Unexpected text node: ${item}. A text node cannot be a child of a <${staticConfig.componentName || propsIn.tag || 'View'}>.`,
+              `Unexpected text node: ${item}. A text node cannot be a child of a <${displayName || propsIn.tag || 'View'}>.`,
               props
             )
           }
@@ -1237,7 +1547,7 @@ export function createComponent<
     }
 
     // Animation enter state machine: true -> 'should-enter' -> false
-    // Stage 1: Set 'should-enter' synchronously before paint to apply enterStyle classes
+    // Stage 1: Set 'should-enter' synchronously before paint to apply enter clauses
     // Stage 2: After browser paint, set false to trigger CSS transition
     //
     // CRITICAL: useEffect does NOT guarantee post-paint execution!
@@ -1251,7 +1561,7 @@ export function createComponent<
       }
 
       if (state.unmounted) {
-        // For CSS transitions, we need browser to paint enterStyle before removing it.
+        // For CSS transitions, the browser must paint enter clauses before removing them.
         // Double RAF guarantees paint: first RAF schedules after current frame,
         // second RAF schedules after that frame completes (including paint).
         if (inputStyle === 'css') {
@@ -1270,27 +1580,54 @@ export function createComponent<
         // Non-CSS drivers handle their own animation timing
         setStateShallow({ unmounted: false })
       }
+    }, [state.unmounted, inputStyle])
 
+    // unmount-only cleanup. this must NOT live on the enter effect above: that
+    // effect re-runs on every unmounted transition (true -> 'should-enter' ->
+    // false), and a cleanup returned there ran mid-lifecycle — dropping the
+    // mediaEmit listener right after mount for value-input avoidReRenders
+    // drivers, with no re-registration (render only registers while
+    // mediaEmitCleanup is unset), so media styles silently stopped applying
+    useIsomorphicLayoutEffect(() => {
       return () => {
         componentSetStates.delete(setState)
         stateRef.current.mediaEmitCleanup?.()
+        // clear so a render after a simulated unmount (StrictMode dev) can re-register
+        stateRef.current.mediaEmitCleanup = undefined
       }
-    }, [state.unmounted, inputStyle])
+    }, [])
 
     useIsomorphicLayoutEffect(() => {
-      if (disabled) return
+      let disposeSafeArea: (() => void) | undefined
+      if (splitStyles?.usesSafeArea) {
+        const updateSafeArea = () => {
+          setState((previous) => ({ ...previous }))
+        }
+        disposeSafeArea = subscribeToSafeArea(updateSafeArea)
+        // close the render-to-subscribe race: the provider tracker may have
+        // published new insets after this component evaluated its styles.
+        updateSafeArea()
+      }
 
-      if (!pseudoGroups && !mediaGroups) return
-      if (!allGroupContexts) return
-      return subscribeToContextGroup({
+      if (disabled) return disposeSafeArea
+
+      if (!pseudoGroups && !mediaGroups) return disposeSafeArea
+      if (!allGroupContexts) return disposeSafeArea
+      const disposeGroup = subscribeToContextGroup({
         groupContext: allGroupContexts,
         setStateShallow,
         mediaGroups,
         pseudoGroups,
       })
+      if (!disposeSafeArea) return disposeGroup
+      return () => {
+        disposeSafeArea()
+        disposeGroup?.()
+      }
     }, [
       allGroupContexts,
       disabled,
+      splitStyles?.usesSafeArea,
       pseudoGroups ? objectIdentityKey(pseudoGroups) : 0,
       mediaGroups ? objectIdentityKey(mediaGroups) : 0,
     ])
@@ -1304,9 +1641,14 @@ export function createComponent<
 
     // if its a group its gotta listen for pseudos to emit them to children
 
-    const runtimePressStyle = !disabled && noClass && pseudos?.pressStyle
-    const runtimeFocusStyle = !disabled && noClass && pseudos?.focusStyle
-    const runtimeFocusVisibleStyle = !disabled && noClass && pseudos?.focusVisibleStyle
+    // native flat-value clauses surface the interaction states they reference
+    // so the component attaches the matching events.
+    const conditionalStates = !disabled ? splitStyles?.programStates : undefined
+
+    const runtimePressStyle =
+      !disabled && (conditionalStates?.has('press') || conditionalStates?.has('active'))
+    const runtimeFocusStyle = !disabled && conditionalStates?.has('focus')
+    const runtimeFocusVisibleStyle = !disabled && conditionalStates?.has('focus-visible')
 
     const attachFocus = Boolean(
       runtimePressStyle ||
@@ -1328,11 +1670,11 @@ export function createComponent<
       onMouseDown ||
       onMouseUp ||
       onLongPress ||
-      onClick ||
-      pseudos?.focusVisibleStyle
+      // only web routes onClick through the press path (see onPress below)
+      (process.env.TAMAGUI_TARGET === 'web' && onClick)
     )
 
-    const runtimeHoverStyle = !disabled && noClass && pseudos?.hoverStyle
+    const runtimeHoverStyle = !disabled && conditionalStates?.has('hover')
     // with a platform pseudo driver the hover STATE is driver-sourced; only keep
     // the JS hover listeners when something else needs them (dynamic group
     // children, or the user's own onMouseEnter/Leave handlers below).
@@ -1372,7 +1714,6 @@ export function createComponent<
         attachHover,
         shouldAttach,
         needsHoverState,
-        pseudos,
       })
     }
 
@@ -1439,7 +1780,7 @@ export function createComponent<
                   // @ts-ignore
                   onClick?.(e)
                   // matches RN pressable behavior - only when an explicit press
-                  // handler is set, so pressStyle alone doesn't swallow clicks
+                  // handler is set, so a press clause alone doesn't swallow clicks
                   if (onPress || onClick) {
                     e.stopPropagation()
                   }
@@ -1465,7 +1806,7 @@ export function createComponent<
                 componentContext.setParentFocusState({ focusWithin: true })
                 next.focusWithin = true
               }
-              if (pseudos?.focusVisibleStyle) {
+              if (conditionalStates?.has('focus-visible')) {
                 if (lastInteractionWasKeyboard.value) {
                   next.focusVisible = true
                 } else {
@@ -1501,7 +1842,6 @@ export function createComponent<
         delayLongPress: viewProps.delayLongPress,
         delayPressIn: viewProps.delayPressIn,
         delayPressOut: viewProps.delayPressOut,
-        focusable: viewProps.focusable ?? true,
         minPressDuration: 0,
       })
     }
@@ -1528,12 +1868,12 @@ export function createComponent<
       (typeof propsInWithHref.href === 'string' ? propsInWithHref.href : null)
 
     const pressDebugName =
-      [componentName, pressDebugDetail].filter(Boolean).join(':') || null
+      [displayName, pressDebugDetail].filter(Boolean).join(':') || null
 
     // EVENTS native - handles focus/blur, input special cases, and RNGH press handling
     // Skip gesture setup for HOC components - they may return null which crashes GestureDetector
     // hasRealPressEvents distinguishes user-provided handlers from events.onPress
-    // synthesized for pressStyle alone — only the former should claim the responder.
+    // synthesized for press clauses alone — only the former should claim the responder.
     const hasRealPressEvents = !!(onPress || onPressIn || onPressOut || onLongPress)
     const pressGesture =
       process.env.TAMAGUI_TARGET === 'native'
@@ -1551,7 +1891,7 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development' && time) time`hooks`
 
-    if (asChild) {
+    if (asChild && !isHOC) {
       elementType = Slot
       // on native this is already merged into viewProps in useEvents
       if (process.env.TAMAGUI_TARGET === 'web') {
@@ -1579,6 +1919,14 @@ export function createComponent<
 
     let content: ReactNode | undefined
 
+    // ONLY native: useChildren reads TextAncestor context (a hook), so it must
+    // run on every render — passthrough included — or toggling passThrough
+    // (Adapt/Popover flip it per breakpoint) would change the hook count
+    // mid-lifecycle. it returns undefined for passthrough.
+    const childrenFromHooks = hooks.useChildren
+      ? hooks.useChildren(elementType, children, viewProps, isPassthrough)
+      : undefined
+
     if (isPassthrough) {
       // avoid re-parenting but avoid layout changes
       content = React.createElement(
@@ -1592,9 +1940,8 @@ export function createComponent<
       )
     } else {
       // here elementType is either the custom animated driver view, or base view
-      if (hooks.useChildren) {
-        // ONLY native:
-        content = hooks.useChildren(elementType, content || children, viewProps)
+      if (childrenFromHooks) {
+        content = childrenFromHooks
       }
 
       const isRenderPropString = typeof renderProp === 'string'
@@ -1610,14 +1957,28 @@ export function createComponent<
         )
         if (out) {
           viewProps = out.viewProps
-          elementType = out.elementType
+          if (
+            isAnimatedCustomComponent &&
+            (elementType as any)['acceptRenderProp'] &&
+            typeof out.elementType === 'string'
+          ) {
+            // an animated driver view is active and owns the (possibly array)
+            // style; forward the render tag so the view renders the element
+            // itself (see acceptRenderProp) instead of us swapping in a raw DOM
+            // tag, which would leak the animated style array onto a plain element
+            // (React DOM throws setting an array on a CSSStyleDeclaration).
+            viewProps.render = out.elementType
+          } else {
+            elementType = out.elementType
+          }
         }
       }
 
       if (!content) {
-        // web-only, handle render === string passing to custom animated component
-        if (isRenderPropString) {
-          viewProps.render === renderProp
+        // web-only, forward render string to custom animated driver components
+        // (they render the tag themselves, see acceptRenderProp in drivers)
+        if (isRenderPropString && elementType['acceptRenderProp']) {
+          viewProps.render = renderProp
         }
 
         content = React.createElement(elementType, viewProps, content || children)
@@ -1642,7 +2003,9 @@ export function createComponent<
 
     // needs to reset the presence state for nested children
     // Use the resolved animationDriver (handles multi-driver config)
-    const ResetPresence = animationDriver?.ResetPresence
+    const ResetPresence = animationDriver?.isStub
+      ? undefined
+      : animationDriver?.ResetPresence
     const needsReset = Boolean(
       // not when passing down to child
       !asChild &&
@@ -1666,7 +2029,7 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development' && time) time`create-element`
 
-    if ('focusWithinStyle' in propsIn || pseudos?.focusWithinStyle) {
+    if (conditionalStates?.has('focus-within')) {
       content = (
         <ComponentContext.Provider
           {...componentContext}
@@ -1677,7 +2040,12 @@ export function createComponent<
       )
     }
 
-    if ('group' in props) {
+    // containers provide the same context channel groups do: a container-only
+    // parent (`container`, `containerName`, `containerType`) must mount the
+    // provider or its descendants' `@size:` clauses can never subscribe —
+    // the context entry existed but was never provided (found 2026-07-31 by
+    // real parent/descendant integration; injected-context tests masked it)
+    if ('group' in props || isContainer) {
       content = (
         <GroupContext.Provider value={allGroupContexts}>{content}</GroupContext.Provider>
       )
@@ -1780,7 +2148,6 @@ export function createComponent<
                 hasRuntimeMediaKeys,
                 isStringElement,
                 mediaListeningKeys,
-                pseudos,
                 shouldAttach,
                 noClass,
                 shouldListenForMedia,
@@ -1802,9 +2169,6 @@ export function createComponent<
             console.groupEnd()
           }
         }
-        if (debugProp === 'break') {
-          // debugger intentionally here for debugging
-        }
       }
     }
 
@@ -1821,7 +2185,7 @@ export function createComponent<
     }
 
     return content
-  })
+  }
 
   function notifyGroupSubscribers(
     groupContext: SingleGroupContext | null,
@@ -1865,19 +2229,7 @@ export function createComponent<
 
   // let hasLogged = false
 
-  if (staticConfig.componentName) {
-    component.displayName = staticConfig.componentName
-  }
-
-  type ComponentType = TamaguiComponent<
-    ComponentPropTypes,
-    Ref,
-    BaseProps,
-    BaseStyles,
-    {}
-  >
-
-  let res: ComponentType = component as any
+  res = component as any
 
   // we now have avoid re-renders in many more cases so imo this is way more worth it
   // Text/Button/string taking components
@@ -1885,36 +2237,6 @@ export function createComponent<
   res = React.memo(res) as any
 
   res.staticConfig = staticConfig
-
-  function extendStyledConfig(extended?: Partial<StaticConfig>) {
-    return {
-      ...staticConfig,
-      ...extended,
-      neverFlatten: true,
-      isHOC: true,
-      isStyledHOC: false,
-    }
-  }
-
-  function styleable(Component: any, options?: StyleableOptions) {
-    const skipForwardRef = typeof Component === 'function' && Component.length === 1
-
-    let out = skipForwardRef ? Component : React.forwardRef(Component)
-
-    const extendedConfig = extendStyledConfig(options?.staticConfig)
-
-    out = options?.disableTheme ? out : themeable(out, extendedConfig, true)
-
-    if (extendedConfig.memo || process.env.TAMAGUI_MEMOIZE_STYLEABLE) {
-      out = React.memo(out)
-    }
-
-    out.staticConfig = extendedConfig
-    out.styleable = styleable
-    return out
-  }
-
-  res.styleable = styleable
 
   return res
 }

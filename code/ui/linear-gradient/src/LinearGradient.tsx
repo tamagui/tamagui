@@ -1,5 +1,11 @@
 import type { ColorTokens, GetProps, ThemeTokens } from '@tamagui/core'
-import { normalizeColor, styled, useProps, useTheme } from '@tamagui/core'
+import {
+  createStyledHOC,
+  normalizeColor,
+  styled,
+  useProps,
+  useTheme,
+} from '@tamagui/core'
 import { YStack } from '@tamagui/stacks'
 import type { ViewStyle } from 'react-native'
 
@@ -15,13 +21,18 @@ export type LinearGradientExtraProps = {
 }
 
 const LinearGradientFrame = styled(YStack, {
-  name: 'LinearGradient',
+  displayName: 'LinearGradient',
   overflow: 'hidden',
   position: 'relative',
 })
 
-export const LinearGradient = LinearGradientFrame.styleable<LinearGradientExtraProps>(
-  (propsIn, ref) => {
+export const LinearGradient = createStyledHOC(
+  LinearGradientFrame,
+  (
+    propsIn: Omit<GetProps<typeof LinearGradientFrame>, keyof LinearGradientExtraProps> &
+      LinearGradientExtraProps,
+    ref
+  ) => {
     const props = useProps(propsIn)
 
     const { start, end, colors: colorsProp, locations, children, ...stackProps } = props
@@ -36,7 +47,7 @@ export const LinearGradient = LinearGradientFrame.styleable<LinearGradientExtraP
       if (
         colors.some((c) => {
           const normalized = normalizeColor(c)
-          if (!normalized || normalized.startsWith('$')) {
+          if (!normalized) {
             return true
           }
         })

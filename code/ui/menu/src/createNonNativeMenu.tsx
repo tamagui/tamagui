@@ -1,3 +1,4 @@
+import { createStyledHOC, createRefComponent } from '@tamagui/core'
 import type * as BaseMenuTypes from '@tamagui/create-menu'
 import {
   type MenuArrowProps as BaseMenuArrowProps,
@@ -14,7 +15,6 @@ import {
   type MenuSubContentProps as BaseMenuSubContentProps,
   type MenuSubTriggerProps as BaseMenuSubTriggerProps,
   createBaseMenu,
-  type CreateBaseMenuProps,
 } from '@tamagui/create-menu'
 import { usePopperContextSlow } from '@tamagui/popper'
 import { ScrollView, type ScrollViewProps } from '@tamagui/scroll-view'
@@ -118,6 +118,7 @@ interface MenuProps extends BaseMenuTypes.MenuProps {
  * -----------------------------------------------------------------------------------------------*/
 
 interface MenuTriggerProps extends ViewProps {
+  /** @deprecated misspelled, use `onKeyDown` (this alias is honored when `onKeyDown` is absent) */
   onKeydown?(event: React.KeyboardEvent): void
 }
 
@@ -131,7 +132,6 @@ type MenuPortalProps = BaseMenuPortalProps
  * MenuContent
  * -----------------------------------------------------------------------------------------------*/
 
-type MenuContentElement = TamaguiElement
 interface MenuContentProps extends Omit<BaseMenuContentProps, 'onEntryFocus'> {}
 
 /* -------------------------------------------------------------------------------------------------
@@ -192,7 +192,6 @@ type MenuSubTriggerProps = BaseMenuSubTriggerProps
  * MenuSubContent
  * -----------------------------------------------------------------------------------------------*/
 
-type MenuSubContentElement = TamaguiElement
 type MenuSubContentProps = BaseMenuSubContentProps
 
 /* -------------------------------------------------------------------------------------------------
@@ -203,8 +202,8 @@ type MenuScrollViewProps = ScrollViewProps
 
 /* -----------------------------------------------------------------------------------------------*/
 
-export function createNonNativeMenu(params: CreateBaseMenuProps) {
-  const { Menu } = createBaseMenu(params)
+export function createNonNativeMenu() {
+  const { Menu } = createBaseMenu()
 
   /* -------------------------------------------------------------------------------------------------
    * Menu
@@ -281,14 +280,16 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
 
   const MenuTriggerFrame = Menu.Anchor
 
-  const MenuTrigger = View.styleable<ScopedProps<MenuTriggerProps>>(
-    (props, forwardedRef) => {
+  const MenuTrigger = createStyledHOC(
+    View,
+    (props: ScopedProps<MenuTriggerProps>, forwardedRef) => {
       const {
         scope,
         asChild,
         children,
         disabled = false,
         onKeydown,
+        onKeyDown = onKeydown,
         ...triggerProps
       } = props
       const context = useMenuContext(scope)
@@ -329,7 +330,7 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
       return (
         <MenuTriggerFrame
           asChild
-          componentName={TRIGGER_NAME}
+          className={`is_${TRIGGER_NAME}`}
           scope={scope || DROPDOWN_MENU_CONTEXT}
         >
           <Comp
@@ -342,6 +343,12 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
             data-disabled={disabled ? '' : undefined}
             aria-disabled={disabled || undefined}
             ref={composeRefs(forwardedRef, context.triggerRef, triggerElRef)}
+            // caller props come first: the composed handlers below already call
+            // the caller's own handler, so spreading them after would let a
+            // caller's onPointerDown/onClick/onPress or onKeyDown replace the
+            // one that opens the menu. the press prop stays read off `props`
+            // because which of the three opens the menu is decided at runtime.
+            {...triggerProps}
             {...{
               [pressEvent]: composeEventHandlers(
                 //@ts-ignore
@@ -371,7 +378,7 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
               ),
             }}
             {...(isWeb && {
-              onKeyDown: composeEventHandlers(onKeydown, (event) => {
+              onKeyDown: composeEventHandlers(onKeyDown, (event) => {
                 if (disabled) return
                 if (['Enter', ' '].includes(event.key)) {
                   if (context.openRef.current) {
@@ -391,7 +398,6 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
                   event.preventDefault()
               }),
             })}
-            {...triggerProps}
           >
             {children}
           </Comp>
@@ -433,8 +439,9 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
 
   const CONTENT_NAME = 'MenuContent'
 
-  const MenuContent = React.forwardRef<MenuContentElement, ScopedProps<MenuContentProps>>(
-    (props, forwardedRef) => {
+  const MenuContent = createStyledHOC(
+    Menu.Content,
+    (props: ScopedProps<MenuContentProps>, forwardedRef) => {
       const { scope, ...contentProps } = props
       const context = useMenuContext(scope)
       const hasInteractedOutsideRef = React.useRef(false)
@@ -458,10 +465,11 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
             }
             hasInteractedOutsideRef.current = false
             // Always prevent auto focus because we either focus manually or want user agent focus
-            event.preventDefault()
+            event.cancel()
           })}
           onInteractOutside={composeEventHandlers(props.onInteractOutside, (event) => {
-            const originalEvent = event.detail.originalEvent as PointerEvent
+            if (event.interaction !== 'pointer' || !event.event) return
+            const originalEvent = event.event
             const ctrlLeftClick =
               originalEvent.button === 0 && originalEvent.ctrlKey === true
             const isRightClick = originalEvent.button === 2 || ctrlLeftClick
@@ -526,37 +534,38 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
 
   const SUB_CONTENT_NAME = 'MenuSubContent'
 
-  const MenuSubContent = React.forwardRef<
-    MenuSubContentElement,
-    ScopedProps<MenuSubContentProps>
-  >((props, forwardedRef) => {
-    const { scope, ...subContentProps } = props
+  const MenuSubContent = createStyledHOC(
+    Menu.SubContent,
+    (props: ScopedProps<MenuSubContentProps>, forwardedRef) => {
+      const { scope, ...subContentProps } = props
 
-    return (
-      <Menu.SubContent
-        scope={scope || DROPDOWN_MENU_CONTEXT}
-        {...subContentProps}
-        ref={forwardedRef}
-        style={
-          isWeb
-            ? {
-                ...(props.style as object),
-                ...({
-                  '--tamagui-menu-content-transform-origin':
-                    'var(--tamagui-popper-transform-origin)',
-                  '--tamagui-menu-content-available-width':
-                    'var(--tamagui-popper-available-width)',
-                  '--tamagui-menu-content-available-height':
-                    'var(--tamagui-popper-available-height)',
-                  '--tamagui-menu-trigger-width': 'var(--tamagui-popper-anchor-width)',
-                  '--tamagui-menu-trigger-height': 'var(--tamagui-popper-anchor-height)',
-                } as React.CSSProperties),
-              }
-            : null
-        }
-      />
-    )
-  })
+      return (
+        <Menu.SubContent
+          scope={scope || DROPDOWN_MENU_CONTEXT}
+          {...subContentProps}
+          ref={forwardedRef}
+          style={
+            isWeb
+              ? {
+                  ...(props.style as object),
+                  ...({
+                    '--tamagui-menu-content-transform-origin':
+                      'var(--tamagui-popper-transform-origin)',
+                    '--tamagui-menu-content-available-width':
+                      'var(--tamagui-popper-available-width)',
+                    '--tamagui-menu-content-available-height':
+                      'var(--tamagui-popper-available-height)',
+                    '--tamagui-menu-trigger-width': 'var(--tamagui-popper-anchor-width)',
+                    '--tamagui-menu-trigger-height':
+                      'var(--tamagui-popper-anchor-height)',
+                  } as React.CSSProperties),
+                }
+              : null
+          }
+        />
+      )
+    }
+  )
 
   MenuSubContent.displayName = SUB_CONTENT_NAME
 
@@ -567,17 +576,14 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
   const MenuScrollView = styled(ScrollView, {
     flexShrink: 1,
     alignSelf: 'stretch',
+    maxHeight: 'web:var(--tamagui-menu-content-available-height)',
     showsHorizontalScrollIndicator: false,
     showsVerticalScrollIndicator: false,
-
-    '$platform-web': {
-      maxHeight: 'var(--tamagui-menu-content-available-height)',
-    },
   })
 
   /* -----------------------------------------------------------------------------------------------*/
 
-  // direct pass-through from base menu (preserves styleable)
+  // direct pass-through from base menu preserves the wrapped styled components
   const Group = Menu.Group
   const Label = Menu.Label
   const Item = Menu.Item

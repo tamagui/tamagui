@@ -4,14 +4,11 @@ import {
   ArrowRight,
   ArrowUpDown,
 } from '@tamagui/lucide-icons-2'
-import type { BuildPalette, BuildThemeAnchor } from '@tamagui/theme-builder'
-import { getThemeSuitePalettes, PALETTE_BACKGROUND_OFFSET } from '@tamagui/theme-builder'
 import { getStore, Store, useStore } from '@tamagui/use-store'
 import { parseToHsla } from 'color2k'
 import { memo, useState } from 'react'
 import {
   Anchor,
-  Button,
   Paragraph,
   SizableText,
   Theme,
@@ -22,6 +19,7 @@ import {
   XStack,
   YStack,
 } from 'tamagui'
+import { Button } from '~/components/Button'
 import { useDoublePress } from '~/features/studio/hooks/useDoublePress'
 import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
 import { Select, SelectItem } from '../../../../../components/Select'
@@ -29,6 +27,8 @@ import { type HSLA, ColorPickerContents } from '../../../colors/ColorPicker'
 import { rootStore } from '../../../state/RootStore'
 import { toastController } from '../../../ToastProvider'
 import { defaultScaleGrouped } from '../../constants/defaultScaleGrouped'
+import { getThemeSuitePalettes } from '../../palettes'
+import type { BuildPalette, BuildThemeAnchor } from '../../types'
 import { FieldsetWithLabel } from '../../views/FieldsetWithLabel'
 import { XLabeledItem } from '../../views/XLabeledItem'
 
@@ -42,12 +42,12 @@ export const StepBaseThemes = (_props: StepBaseThemesProps) => {
 
   return (
     <YStack
-      borderTopRightRadius="$8"
-      borderTopLeftRadius="$8"
+      borderTopRightRadius="8"
+      borderTopLeftRadius="8"
       overflow="hidden"
-      gap="$3"
-      py="$3"
-      px="$2"
+      gap="3"
+      py="3"
+      px="2"
     >
       {Object.entries(store.palettes).map(([name, palette]) => {
         const isAccent = name === 'accent'
@@ -56,33 +56,27 @@ export const StepBaseThemes = (_props: StepBaseThemesProps) => {
             key={name}
             label={name}
             afterLabel={
-              <XStack gap="$2" items="center">
+              <XStack gap="2" items="center">
                 {isAccent && (
                   <Select
-                    size="$2"
+                    size="2"
                     defaultValue={themeBuilder.accentSetting}
                     onValueChange={(value) => {
                       themeBuilder.setAccentSetting(value as any)
                     }}
-                    rounded="$4"
+                    rounded="4"
                     minW={80}
                     borderWidth={0}
                   >
-                    <SelectItem value="off" index={0}>
-                      Off
-                    </SelectItem>
-                    <SelectItem value="inverse" index={1}>
-                      Inverse
-                    </SelectItem>
-                    <SelectItem value="color" index={2}>
-                      Color
-                    </SelectItem>
+                    <SelectItem value="off">Off</SelectItem>
+                    <SelectItem value="inverse">Inverse</SelectItem>
+                    <SelectItem value="color">Color</SelectItem>
                   </Select>
                 )}
               </XStack>
             }
           >
-            <YStack gap="$4">
+            <YStack gap="4">
               <PaletteView
                 onUpdate={(next) => {
                   store.updatePalette(name, next)
@@ -133,8 +127,8 @@ const PaletteView = memo((props: Props) => {
   const lightPalette = palettes['light']!
 
   const colors = {
-    light: sliceToPalette(lightPalette),
-    dark: sliceToPalette(darkPalette),
+    light: lightPalette,
+    dark: darkPalette,
   }
 
   const { activeColor } = store
@@ -143,7 +137,7 @@ const PaletteView = memo((props: Props) => {
 
   const { anchors } = palette
 
-  const anchorRealIndex = +hoveredItem?.value - PALETTE_BACKGROUND_OFFSET
+  const anchorRealIndex = +hoveredItem?.value
 
   const anchorIndex = anchors.findIndex((x) => x.index === anchorRealIndex)
 
@@ -177,9 +171,8 @@ const PaletteView = memo((props: Props) => {
       }
     } else {
       const [lightHSLA, darkHSLA] = [
-        // adjusts for our transparent indices
-        parseToHsla(lightPalette[index + PALETTE_BACKGROUND_OFFSET]),
-        parseToHsla(darkPalette[index + PALETTE_BACKGROUND_OFFSET]),
+        parseToHsla(lightPalette[index]),
+        parseToHsla(darkPalette[index]),
       ]
 
       const anchor: BuildThemeAnchor = {
@@ -290,17 +283,10 @@ const PaletteView = memo((props: Props) => {
   const lightDarkSynced = anchors.every((a) => a.hue.sync && a.sat.sync)
 
   const syncButtons = (
-    <XStack
-      opacity={0}
-      $group-content-hover={{ opacity: 1 }}
-      gap="$4"
-      items="center"
-      ml={20}
-      flex={1}
-    >
+    <XStack opacity="0 group-hover/content:1" gap="4" items="center" ml={20} flex={1}>
       {/* Spacer to match color circle in ColorPickerContents */}
       <View width={24} />
-      <XStack gap="$4" flex={1}>
+      <XStack gap="4" flex={1}>
         <XStack justify="space-between" flex={1}>
           <SyncButtons
             anchorKey="hue"
@@ -325,8 +311,14 @@ const PaletteView = memo((props: Props) => {
   )
 
   return (
-    <YStack contain="paint" p="$4" mx="$-4" mb="$0" flex={1} flexBasis="auto" gap="$4">
-      <YStack group="content" containerType="normal" gap="$4">
+    <YStack contain="paint" p="4" mx="-4" mb="0" flex={1} flexBasis="auto" gap="4">
+      <YStack
+        group="content"
+        container
+        containerName="content"
+        containerType="normal"
+        gap="4"
+      >
         <ColorPickerContents
           disabled={!anchor}
           value={lightPalette[hoveredItem?.value ?? 0]}
@@ -334,9 +326,9 @@ const PaletteView = memo((props: Props) => {
           shouldDim={lightDarkSynced && isDark}
         />
 
-        <YStack py="$2">{syncButtons}</YStack>
+        <YStack py="2">{syncButtons}</YStack>
 
-        <XLabeledItem label={<SizableText size="$4">Light</SizableText>}>
+        <XLabeledItem label={<SizableText size="4">Light</SizableText>}>
           <StepThemeHoverablePalette
             palette={palette}
             colors={colors.light}
@@ -348,8 +340,8 @@ const PaletteView = memo((props: Props) => {
       </YStack>
 
       <XLabeledItem label="">
-        <YStack gap="$4">
-          <XStack gap="$4">
+        <YStack gap="4">
+          <XStack gap="4">
             <DataItem
               width={50}
               labelTop=""
@@ -358,10 +350,10 @@ const PaletteView = memo((props: Props) => {
                   select="none"
                   text="right"
                   minW={60}
-                  px="$2"
+                  px="2"
                   display="block"
-                  size="$9"
                   fontWeight="bold"
+                  size="9"
                 >
                   {activeColor + 1}
                 </SizableText>
@@ -379,8 +371,8 @@ const PaletteView = memo((props: Props) => {
               labelBottom={
                 <XStack width={50} overflow="hidden" items="center" justify="center">
                   <Button
-                    chromeless
-                    size="$2"
+                    variant="quiet"
+                    size="2"
                     scaleIcon={1.4}
                     circular
                     icon={anchor ? <Anchor /> : <ArrowLeftRight />}
@@ -392,15 +384,21 @@ const PaletteView = memo((props: Props) => {
               }
             />
 
-            {/* {!anchor && <DataItem top="" bottom={<Button size="$2">Edit</Button>} />} */}
+            {/* {!anchor && <DataItem top="" bottom={<Button size="2">Edit</Button>} />} */}
           </XStack>
         </YStack>
       </XLabeledItem>
 
       <PaletteIndices />
 
-      <YStack group="content" containerType="normal" gap="$4">
-        <XLabeledItem label={<SizableText size="$4">Dark</SizableText>}>
+      <YStack
+        group="content"
+        container
+        containerName="content"
+        containerType="normal"
+        gap="4"
+      >
+        <XLabeledItem label={<SizableText size="4">Dark</SizableText>}>
           <StepThemeHoverablePalette
             palette={palette}
             colors={colors.dark}
@@ -408,7 +406,7 @@ const PaletteView = memo((props: Props) => {
           />
         </XLabeledItem>
 
-        <YStack py="$2">{syncButtons}</YStack>
+        <YStack py="2">{syncButtons}</YStack>
 
         <ColorPickerContents
           isActive={isDark}
@@ -441,7 +439,11 @@ const SyncButtons = memo(
         <Theme name={anchor?.[anchorKey].syncLeft ? 'accent' : null}>
           <TooltipSimple label={`Sync ${anchorKey} to last anchor`}>
             <Button
-              size={16}
+              size="3"
+              width={16}
+              height={16}
+              minWidth={16}
+              paddingHorizontal={0}
               scaleIcon={1.4}
               circular
               icon={ArrowLeft}
@@ -473,7 +475,11 @@ const SyncButtons = memo(
         <Theme name={anchor?.[anchorKey].sync ? 'accent' : null}>
           <TooltipSimple label={`Sync ${anchorKey} light and dark`}>
             <Button
-              size={16}
+              size="3"
+              width={16}
+              height={16}
+              minWidth={16}
+              paddingHorizontal={0}
               scaleIcon={1.4}
               circular
               icon={ArrowUpDown}
@@ -499,7 +505,11 @@ const SyncButtons = memo(
         <Theme name={nextAnchor?.[anchorKey].syncLeft ? 'accent' : null}>
           <TooltipSimple label={`Sync ${anchorKey} to next anchor`}>
             <Button
-              size={16}
+              size="3"
+              width={16}
+              height={16}
+              minWidth={16}
+              paddingHorizontal={0}
               scaleIcon={1.4}
               circular
               icon={ArrowRight}
@@ -543,20 +553,14 @@ const DataItem = ({
 }) => {
   return (
     <YStack width={width} maxW={width}>
-      <SizableText lineHeight="$1" select="none">
+      <SizableText lineHeight="1" select="none">
         {labelTop}
       </SizableText>
-      <SizableText select="none" size="$2">
+      <SizableText select="none" size="2">
         {labelBottom}
       </SizableText>
     </YStack>
   )
-}
-
-// get the center 12 items:
-const sliceToPalette = (colors: string[]) => {
-  const toRemove = colors.length - 12
-  return colors.slice(toRemove / 2, colors.length - toRemove / 2)
 }
 
 type PaletteProps = {
@@ -581,7 +585,7 @@ export const StepThemeHoverablePalette = memo((props: PaletteProps) => {
         flexBasis="auto"
         rounded={borderRadius}
         borderWidth={1}
-        borderColor="$color7"
+        borderColor="color7"
       >
         {colors.map((color, i) => {
           return (
@@ -605,16 +609,20 @@ export const StepThemeHoverablePalette = memo((props: PaletteProps) => {
         scope={scope}
         animatePosition
         transition="quick"
-        bg="$background"
-        elevation="$2"
-        rounded="$4"
-        px="$2.5"
-        py="$1"
-        enterStyle={{ y: 4, opacity: 0 }}
-        exitStyle={{ y: 4, opacity: 0 }}
+        bg="background"
+        boxShadow="0 4px 12px shadow-color"
+        rounded="4"
+        px="2-5"
+        py="1"
+        y="enter:4px exit:4px"
+        opacity="enter:0 exit:0"
       >
-        <Tooltip.Arrow scope={scope} />
-        <Paragraph size="$3">{tooltipLabel}</Paragraph>
+        <Tooltip.Arrow
+          scope={scope}
+          backgroundColor="background"
+          borderColor="border-color"
+        />
+        <Paragraph size="3">{tooltipLabel}</Paragraph>
       </Tooltip.Content>
     </Tooltip>
   )
@@ -703,40 +711,38 @@ const PaletteColor = memo(
         overflow="hidden"
         borderWidth={2}
         borderColor={color as any}
-        onMouseEnter={() => {
-          mouseEnter(index, palette.name)
-        }}
-        hoverStyle={{
-          scale: 1.05,
-        }}
+        scale="hover:1.05"
         position="relative"
         {...(hoveredColor === index && {
           z: 10000,
-          outlineColor: '$accent10',
+          outlineColor: 'accent10',
           outlineStyle: 'solid',
           outlineWidth: 1.5,
-          shadowColor: '$blue10',
+          shadowColor: 'blue10',
           shadowRadius: 5,
           shadowOpacity: 1,
         })}
         {...((isAnchor || selectedColor === index) && {
           z: 10000,
-          outlineColor: '$accent10',
+          outlineColor: 'accent10',
           outlineStyle: 'solid',
           outlineWidth: 2,
         })}
         {...(selectedColor === index && {
-          outlineColor: '$accent1',
+          outlineColor: 'accent1',
         })}
         {...(selectedColor === hoveredColor &&
           hoveredColor === index && {
-            shadowColor: '$blue10',
+            shadowColor: 'blue10',
             shadowRadius: 10,
             shadowOpacity: 1,
             z: 100000,
           })}
         {...radiusStyle}
         {...doublePressProps}
+        onMouseEnter={() => {
+          mouseEnter(index, palette.name)
+        }}
         onMouseLeave={() => {
           mouseLeave(index)
           doublePressProps.onMouseLeave()
@@ -745,12 +751,18 @@ const PaletteColor = memo(
           }
         }}
       >
-        <XStack fullscreen bg={color as any} items="center" justify="center">
+        <XStack
+          position="absolute"
+          inset={0}
+          bg={color as any}
+          items="center"
+          justify="center"
+        >
           <SizableText
-            selectable={false}
-            color={index > 4 ? '$background' : '$color'}
-            size="$1"
+            userSelect="none"
+            color={`${index > 4 ? 'background' : 'color'}`}
             scale={size === 'small' ? 0.8 : 1}
+            size="1"
           >
             {children?.(color, index)}
           </SizableText>
@@ -761,7 +773,7 @@ const PaletteColor = memo(
 )
 
 const PaletteIndices = () => (
-  <YStack my="$-3">
+  <YStack my="-3">
     <XLabeledItem label="">
       <XStack flex={1} flexBasis="auto">
         {new Array(12).fill(0).map((_, i) => {
@@ -769,14 +781,14 @@ const PaletteIndices = () => (
             <SizableText
               width={`${1 / 12}%`}
               flex={1}
-              key={i}
-              size="$1"
               opacity={0.6}
               scale={0.65}
-              fontFamily="$mono"
-              color="$color12"
+              fontFamily="mono"
+              color="color11"
               self="center"
               text="center"
+              key={i}
+              size="1"
             >
               {i + 1}
             </SizableText>

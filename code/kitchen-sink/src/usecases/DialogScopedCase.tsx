@@ -1,10 +1,11 @@
-import { Adapt, Button, Dialog, Input, Label, Sheet, XStack, YStack } from 'tamagui'
+import { Adapt, Dialog, Input, Label, Sheet, XStack, YStack } from 'tamagui'
+import { Button } from '../components/Button'
 
 export function DialogScopedCase() {
   const shouldAdapt = window.location.search.includes('adapt=true')
 
   return (
-    <YStack padding="$4" gap="$4">
+    <YStack padding="4" gap="4">
       <Dialog modal>
         <TestDialogContent name="plain" shouldAdapt={shouldAdapt} />
         <Dialog.Trigger asChild>
@@ -35,45 +36,34 @@ const TestDialogContent = ({ name, shouldAdapt }) => {
   return (
     <>
       <Dialog.Portal>
-        <Dialog.Overlay
-          key="overlay"
-          transition="quick"
-          opacity={0.5}
-          enterStyle={{ opacity: 0 }}
-          exitStyle={{ opacity: 0 }}
-        />
+        <Dialog.Overlay key="overlay" transition="quick" opacity="0.5 enter:0 exit:0" />
 
         <Dialog.Content
           bordered
           elevate
           key="content"
-          transition={[
-            'quick',
-            {
-              opacity: {
-                overshootClamping: true,
-              },
-            },
-          ]}
-          enterStyle={{ x: 0, y: -20, opacity: 0, scale: 0.9 }}
-          exitStyle={{ x: 0, y: 10, opacity: 0, scale: 0.95 }}
+          transition={['quick', { opacity: { overshootClamping: true } }]}
+          x="enter:0 exit:0"
+          y="enter:-20px exit:10px"
+          opacity="enter:0 exit:0"
+          scale="enter:0.9 exit:0.95"
           width={400}
           height={300}
-          padding="$6"
-          gap="$4"
+          padding="6"
+          gap="4"
         >
-          <YStack data-testid={`${name}-dialog-content`} gap="$4">
+          <YStack data-testid={`${name}-dialog-content`} gap="4">
             <Dialog.Title>Dialog {name}</Dialog.Title>
             <Dialog.Description>
               This is a test dialog for scoped behavior - {name}
             </Dialog.Description>
 
-            <YStack gap="$3">
+            <YStack gap="3">
               <Label htmlFor={`name-${name}`}>Name</Label>
               <Input id={`name-${name}`} placeholder="Enter name" />
             </YStack>
 
-            <XStack gap="$3" justifyContent="flex-end">
+            <XStack gap="3" justifyContent="flex-end">
               <Dialog.Close asChild>
                 <Button variant="outlined" data-testid={`${name}-dialog-close`}>
                   Cancel
@@ -88,15 +78,15 @@ const TestDialogContent = ({ name, shouldAdapt }) => {
       {shouldAdapt && (
         <Adapt when={true}>
           <Sheet transition="medium" modal dismissOnSnapToBottom>
-            <Sheet.Frame data-testid={`${name}-sheet-contents`} padding="$4">
+            <Sheet.Container data-testid={`${name}-sheet-contents`} padding="4">
+              <Sheet.Background />
               <Adapt.Contents />
-            </Sheet.Frame>
+            </Sheet.Container>
             <Sheet.Overlay
               id={`${name}-sheet-overlay`}
-              backgroundColor="$shadowColor"
+              backgroundColor="shadow-color"
               transition="lazy"
-              enterStyle={{ opacity: 0 }}
-              exitStyle={{ opacity: 0 }}
+              opacity="enter:0 exit:0"
             />
           </Sheet>
         </Adapt>

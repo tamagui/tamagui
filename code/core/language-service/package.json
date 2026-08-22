@@ -1,0 +1,83 @@
+{
+  "name": "@tamagui/language-service",
+  "version": "2.7.7",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": false,
+  "source": "src/index.ts",
+  "files": [
+    "index.cjs",
+    "src",
+    "types",
+    "dist"
+  ],
+  "main": "index.cjs",
+  "module": "dist/esm/index.mjs",
+  "types": "types/index.d.ts",
+  "exports": {
+    "./package.json": "./package.json",
+    "./host": {
+      "types": "./types/host.d.ts",
+      "import": "./dist/esm/host.mjs",
+      "default": "./dist/esm/host.mjs"
+    },
+    "./core": {
+      "types": "./types/core.d.ts",
+      "import": "./dist/esm/core.mjs",
+      "require": "./dist/cjs/core.cjs",
+      "default": "./dist/esm/core.mjs"
+    },
+    "./document": {
+      "types": "./types/document.d.ts",
+      "import": "./dist/esm/document.mjs",
+      "require": "./dist/cjs/document.cjs",
+      "default": "./dist/esm/document.mjs"
+    },
+    "./extract-sucrase": {
+      "types": "./types/extract-sucrase.d.ts",
+      "import": "./dist/esm/extract-sucrase.mjs",
+      "require": "./dist/cjs/extract-sucrase.cjs",
+      "default": "./dist/esm/extract-sucrase.mjs"
+    },
+    "./extract-estree": {
+      "types": "./types/extract-estree.d.ts",
+      "import": "./dist/esm/extract-estree.mjs",
+      "require": "./dist/cjs/extract-estree.cjs",
+      "default": "./dist/esm/extract-estree.mjs"
+    },
+    "./check": {
+      "types": "./types/check.d.ts",
+      "import": "./dist/esm/check.mjs",
+      "require": "./dist/cjs/check.cjs",
+      "default": "./dist/esm/check.mjs"
+    },
+    ".": {
+      "types": "./types/index.d.ts",
+      "import": "./dist/esm/index.mjs",
+      "require": "./index.cjs",
+      "default": "./dist/esm/index.mjs"
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tamagui-build --exclude test",
+    "test": "bun run build && vitest --run test",
+    "test:web": "bun run build && vitest --run test"
+  },
+  "dependencies": {
+    "@tamagui/normalize-css-color": "workspace:*",
+    "@tamagui/style-grammar": "workspace:*",
+    "sucrase": "3.35.1"
+  },
+  "peerDependencies": {
+    "typescript": ">=5.7"
+  },
+  "devDependencies": {
+    "@tamagui/build": "workspace:*",
+    "oxc-parser": "^0.112.0",
+    "typescript": "~6.0.3",
+    "vitest": "4.0.4"
+  }
+}

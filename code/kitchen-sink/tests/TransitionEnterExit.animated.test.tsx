@@ -244,7 +244,7 @@ test.fixme('Enter/Exit Transition Props', () => {
     // show - should have 200ms delay before enter animation starts
     await page.getByTestId('scenario-47-trigger').click()
 
-    // element appears but at 100ms (during delay), should still be at enterStyle values
+    // element appears but at 100ms (during delay), should still be at enter clause values
     await page.waitForTimeout(100)
     expect(
       await elementExists(page, 'scenario-47-target'),
@@ -252,8 +252,10 @@ test.fixme('Enter/Exit Transition Props', () => {
     ).toBe(true)
 
     const duringDelayOpacity = await getOpacity(page, 'scenario-47-target')
-    // during 200ms delay, opacity should be near 0 (enterStyle)
-    expect(duringDelayOpacity, 'During delay, should be at enterStyle').toBeLessThan(0.3)
+    // during 200ms delay, opacity should be near 0 (enter clause)
+    expect(duringDelayOpacity, 'During delay, should be at enter clause').toBeLessThan(
+      0.3
+    )
 
     // after delay + some animation time (200ms delay + ~150ms into 300ms animation)
     await page.waitForTimeout(250)

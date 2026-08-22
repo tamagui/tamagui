@@ -34,13 +34,14 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
+    "@tamagui/font-size": "workspace:*",
     "@tamagui/helpers": "workspace:*",
     "@tamagui/web": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
     "react": ">=19",
-    "react-native": "0.83.2",
+    "react-native": "0.86.2",
     "vitest": "4.0.4"
   },
   "peerDependencies": {

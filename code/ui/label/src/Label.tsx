@@ -2,11 +2,16 @@ import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { createContext } from '@tamagui/create-context'
 import { focusFocusable } from '@tamagui/focusable'
-import { getButtonSized } from '@tamagui/get-button-sized'
 import { getFontSized } from '@tamagui/get-font-sized'
+import { resolveSizeToken } from '@tamagui/size'
 import { SizableText } from '@tamagui/text'
-import type { FontSizeTokens, GetProps } from '@tamagui/web'
-import { styled } from '@tamagui/web'
+import type {
+  FontSizeTokens,
+  GetProps,
+  SizeTokens,
+  VariantSpreadExtras,
+} from '@tamagui/web'
+import { createStyledHOC, styled } from '@tamagui/web'
 import * as React from 'react'
 
 const NAME = 'Label'
@@ -21,49 +26,44 @@ const [LabelProvider, useLabelContextImpl] = createContext<LabelContextValue>(NA
   controlRef: { current: null },
 })
 
+const labelSizeVariant = (val: SizeTokens | true, extras: VariantSpreadExtras<any>) => {
+  const fontStyle = getFontSized(val as FontSizeTokens, extras as any)
+  // line-height matches the control height at the same size token, so a Label
+  // sits flush next to the Input/Button it labels
+  const sizeKey = resolveSizeToken(val, 'size')
+  return {
+    ...fontStyle,
+    lineHeight: typeof sizeKey === 'number' ? sizeKey : extras.tokens.size[sizeKey],
+  }
+}
+
+// Unstyled Label frame: structural layout (label element, flex alignment,
+// selection/cursor resets) + the size mechanism (size-derived font) only. The
+// theme text color + the press color feedback live in the tamagui skin
+// (code/ui/tamagui/src/components/Label.tsx).
 export const LabelFrame = styled(SizableText, {
-  name: 'Label',
+  displayName: 'Label',
   render: 'label',
+  size: true,
+  backgroundColor: 'transparent',
+  display: 'flex',
+  alignItems: 'center',
+  userSelect: 'none',
+  cursor: 'default',
 
   variants: {
-    unstyled: {
-      false: {
-        size: '$true',
-        color: '$color',
-        backgroundColor: 'transparent',
-        display: 'flex',
-        alignItems: 'center',
-        userSelect: 'none',
-        cursor: 'default',
-        pressStyle: {
-          color: '$colorPress',
-        },
-      },
-    },
-
     size: {
-      '...size': (val, extras) => {
-        const buttonStyle = getButtonSized(val, extras)
-        const buttonHeight = buttonStyle?.height
-        const fontStyle = getFontSized(val as FontSizeTokens, extras as any)
-        return {
-          ...fontStyle,
-          lineHeight: buttonHeight ? extras.tokens.size[buttonHeight] : undefined,
-        }
-      },
+      true: labelSizeVariant,
+      Size: labelSizeVariant,
     },
   } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
-  },
 })
 
 export type LabelProps = GetProps<typeof LabelFrame> & {
   htmlFor?: string
 }
 
-export const Label = LabelFrame.styleable(function Label(props, forwardedRef) {
+export const Label = createStyledHOC(LabelFrame, function Label(props, forwardedRef) {
   const { htmlFor, id: idProp, ...labelProps } = props
   const controlRef = React.useRef<HTMLElement | null>(null)
   const ref = React.useRef<any>(null)

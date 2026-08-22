@@ -127,20 +127,20 @@ export default () => (
 
 **Accessing theme values:**
 
-Components can access theme values using `$` token syntax:
+Components access theme values by their bare names:
 
 ```tsx
-<View backgroundColor="$background" color="$color" />
+<View backgroundColor="background" color="color" />
 ```
 
 **Special props:**
 
-- `inverse`: Automatically swaps light ↔ dark themes
+- `theme="inverse"`: Uses the opposite light or dark sub-theme
 - `reset`: Reverts to grandparent theme
 
 ## Tokens
 
-Tokens are design system values that can be referenced using the `$` prefix.
+Tokens are design system values referenced by their bare names.
 
 ### Space Tokens
 
@@ -262,20 +262,20 @@ Tokens are design system values that can be referenced using the `$` prefix.
 
 ### Token Usage
 
-Tokens can be used in component props with the `$` prefix:
+Tokens can be used in component props by their bare names:
 
 ```tsx
 // Space tokens - for margin, padding, gap
-<View padding="$4" gap="$2" margin="$3" />
+<View padding="4" gap="2" margin="3" />
 
 // Size tokens - for width, height, dimensions
-<View width="$10" height="$6" />
+<View width="10" height="6" />
 
 // Color tokens - for colors and backgrounds
-<View backgroundColor="$blue5" color="$gray12" />
+<View backgroundColor="blue5" color="gray12" />
 
 // Radius tokens - for border-radius
-<View borderRadius="$4" />
+<View borderRadius="4" />
 ```
 
 ## Media Queries
@@ -317,8 +317,8 @@ Available responsive breakpoints:
 Media queries can be used as style props or with the `useMedia` hook:
 
 ```tsx
-// As style props (prefix with $)
-<View width="100%" $gtLarge={{ width: "50%" }} />
+// As a clause in the same style value
+<View width="100% gtLarge:50%" />
 
 // Using the useMedia hook
 const media = useMedia()
@@ -451,4 +451,3 @@ The following components are available:
 - YGroup
 - YStack
 - ZStack
-

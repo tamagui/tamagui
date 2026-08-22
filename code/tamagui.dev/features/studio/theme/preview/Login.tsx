@@ -1,5 +1,4 @@
 import {
-  Button,
   Fieldset,
   Form,
   H4,
@@ -13,6 +12,7 @@ import {
   XStack,
   YStack,
 } from 'tamagui'
+import { Button } from '~/components/Button'
 
 import { useDemoProps } from '~/features/studio/theme/hooks/useDemoProps'
 import { IconGithub } from '~/features/studio/theme/icons/icon-github'
@@ -30,12 +30,7 @@ export const LoginScreen = () => {
       {...demoProps.panelPaddingProps}
     >
       <Form>
-        <YStack
-          borderBottomWidth="$0.25"
-          borderBottomColor="$borderColor"
-          pb="$4"
-          gap="$3"
-        >
+        <YStack borderBottomWidth="0-25" borderBottomColor="border-color" pb="4" gap="3">
           <H4 {...demoProps.headingFontFamilyProps} text="center">
             Welcome Back!
           </H4>
@@ -43,7 +38,7 @@ export const LoginScreen = () => {
             text="center"
             {...demoProps.panelDescriptionProps}
             opacity={0.5}
-            size="$2"
+            size="2"
           >
             Connect your git provider
           </Paragraph>
@@ -54,7 +49,7 @@ export const LoginScreen = () => {
             <>
               <Button
                 flex={1}
-                size="$3"
+                size="3"
                 icon={IconGitlab}
                 {...demoProps.borderRadiusProps}
                 {...demoProps.buttonOutlineProps}
@@ -63,7 +58,7 @@ export const LoginScreen = () => {
               </Button>
               <Button
                 flex={1}
-                size="$3"
+                size="3"
                 icon={IconGithub}
                 {...demoProps.borderRadiusProps}
                 {...demoProps.buttonOutlineProps}
@@ -73,20 +68,20 @@ export const LoginScreen = () => {
             </>
           </XStack>
 
-          <XStack my="$2" width="100%">
-            <XStack position="absolute" l={0} r={0} items="center" gap="$4">
+          <XStack my="2" width="100%">
+            <XStack position="absolute" l={0} r={0} items="center" gap="4">
               <Separator flex={1} />
-              <SizableText fontFamily="$heading" text="center" color="$color9" size="$1">
+              <SizableText fontFamily="heading" text="center" color="color9" size="1">
                 or continue with
               </SizableText>
               <Separator flex={1} />
             </XStack>
           </XStack>
 
-          <Spacer size="$1" />
+          <Spacer size="1" />
 
           <YStack {...demoProps.gapPropsMd}>
-            <Fieldset gap="$1">
+            <Fieldset gap="1">
               <Label>Username</Label>
               <Input
                 placeholder="Username"
@@ -95,9 +90,9 @@ export const LoginScreen = () => {
               />
             </Fieldset>
 
-            <Spacer size="$2" />
+            <Spacer size="2" />
 
-            <Fieldset gap="$1">
+            <Fieldset gap="1">
               <Label>Password</Label>
               <Input
                 placeholder="Password"
@@ -109,10 +104,10 @@ export const LoginScreen = () => {
           </YStack>
         </YStack>
 
-        <YStack mt="$4">
+        <YStack mt="4">
           <Theme name="accent">
             <Button
-              size="$5"
+              size="5"
               {...demoProps.borderRadiusProps}
               {...demoProps.buttonOutlineProps}
             >

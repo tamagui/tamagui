@@ -2,7 +2,7 @@
 require('./src/tamagui.config')
 
 // setup native features - just import, no function calls needed
-import '@tamagui/native/setup-zeego'
+import '@tamagui/native/setup-expo-ui-menu'
 import '@tamagui/native/setup-teleport'
 import '@tamagui/native/setup-gesture-handler'
 // import '@tamagui/native/setup-safe-area'

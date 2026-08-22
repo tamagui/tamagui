@@ -34,41 +34,44 @@ export const ComponentSection = () => {
 
   return (
     <YStack
-      bg="$color2"
+      render={
+        <div
+          onTransitionEnd={() => {
+            if (!store.heroVisible) {
+              inputRef.current?.focus()
+            }
+          }}
+        />
+      }
+      bg="color2"
       position="relative"
       contain="paint"
-      className="transform ease-in-out ms200"
-      // @ts-ignore
-      onTransitionEnd={() => {
-        if (!store.heroVisible) {
-          inputRef.current?.focus()
-        }
-      }}
       pb={200}
       y={0}
       minHeight={800}
       {...(!store.heroVisible && {
         y: -store.heroHeight + 20,
-        shadowColor: '$shadowColor',
+        shadowColor: 'shadow-color',
         shadowRadius: 20,
       })}
       z={10000}
+      className="transform ease-in-out ms200"
     >
       <YStack>
-        <YStack gap="$4">
+        <YStack gap="4">
           {filteredSections.map(({ sectionName, parts }, index) => {
             return (
-              <YStack py="$4" id={sectionName} key={sectionName} justify="space-between">
+              <YStack py="4" justify="space-between" id={sectionName} key={sectionName}>
                 <YStack position="relative">
                   <ContainerLarge>
-                    <YStack py="$4" px="$3" position="relative">
+                    <YStack py="4" px="3" position="relative">
                       <H3
-                        fontFamily="$mono"
-                        size="$3"
+                        fontFamily="mono"
                         letterSpacing={3}
                         textTransform="uppercase"
-                        color="$color10"
+                        color="color10"
                         flex={2}
+                        size="3"
                       >
                         {`${sectionName[0].toUpperCase()}${sectionName.slice(1)}`}
                       </H3>
@@ -85,15 +88,13 @@ export const ComponentSection = () => {
                 >
                   <ContainerLarge>
                     <XStack
-                      gap="$4"
+                      columnGap="4"
+                      rowGap="4 gtMd:20"
                       flex={1}
                       flexBasis="auto"
                       shrink={1}
-                      $gtMd={{
-                        maxW: '100%',
-                        flexWrap: store.heroVisible ? 'wrap' : 'nowrap',
-                        rowGap: 20,
-                      }}
+                      maxW="gtMd:100%"
+                      flexWrap={`gtMd:${store.heroVisible ? 'wrap' : 'nowrap'}`}
                     >
                       {parts.map((props) => {
                         const { route, name, numberOfComponents } = props
@@ -105,7 +106,7 @@ export const ComponentSection = () => {
                         )
                       })}
 
-                      <Spacer width="calc(50vw - 300px)" $gtMd={{ display: 'none' }} />
+                      <Spacer width="calc(50vw - 300px)" display="gtMd:none" />
                     </XStack>
                   </ContainerLarge>
                 </ScrollView>

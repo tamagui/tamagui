@@ -41,7 +41,7 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@expo/fingerprint": "~0.16.6"
+    "@expo/fingerprint": "~0.20.9"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
@@ -49,6 +49,6 @@
     "@types/node": "^22.1.0"
   },
   "engines": {
-    "node": ">=18"
+    "bun": ">=1.1.0"
   }
 }

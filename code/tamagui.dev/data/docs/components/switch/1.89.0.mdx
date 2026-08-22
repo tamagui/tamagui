@@ -27,7 +27,7 @@ demoName: Switch
     <SwitchDemo />
   </Tabs.Content>
   <Tabs.Content value="unstyled" justifyContent="center" alignItems="center" width="100%">
-    <SwitchUnstyledDemo />
+    <SwitchDemo />
   </Tabs.Content>
   <Tabs.Content value="headless" justifyContent="center" alignItems="center" width="100%">
     <SwitchHeadlessDemo />
@@ -40,7 +40,7 @@ demoName: Switch
 ````
 </Tabs.Content>
 <Tabs.Content value="unstyled">
-```tsx hero template=SwitchUnstyled
+```tsx hero template=Switch
 
 ````
 
@@ -106,7 +106,7 @@ npm install @tamagui/switch-headless
 import { Switch } from 'tamagui' // or '@tamagui/switch'
 
 export default () => (
-  <Switch size="$4">
+  <Switch size="4">
     <Switch.Thumb animation="bouncy" />
   </Switch>
 )
@@ -126,7 +126,7 @@ styled components.
 
 If you define a `checked` variant, it will apply those styles.
 
-```tsx template=SwitchUnstyled
+```tsx template=Switch
 
 ```
 
@@ -146,7 +146,7 @@ Using the `useSwitch` API, you can make your own Switch from scratch.
 
 ### Switch
 
-`Switch` extends Stack views inheriting all the
+`Switch` extends View inheriting all the
 [Tamagui standard props](/docs/intro/props), plus:
 
 <PropsTable
@@ -206,7 +206,7 @@ Using the `useSwitch` API, you can make your own Switch from scratch.
 
 ### Switch.Thumb
 
-`Switch.Thumb` extends Stack views inheriting all the
+`Switch.Thumb` extends View inheriting all the
 [Tamagui standard props](/docs/intro/props), plus:
 
 <PropsTable

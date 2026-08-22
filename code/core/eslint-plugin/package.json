@@ -1,0 +1,46 @@
+{
+  "name": "@tamagui/eslint-plugin",
+  "version": "2.7.7",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": false,
+  "source": "src/index.ts",
+  "files": [
+    "src",
+    "types",
+    "dist"
+  ],
+  "main": "dist/cjs/index.cjs",
+  "module": "dist/esm/index.mjs",
+  "types": "types/index.d.ts",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./types/index.d.ts",
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.cjs",
+      "default": "./dist/esm/index.mjs"
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tamagui-build --exclude test",
+    "test": "vitest --run test",
+    "test:web": "vitest --run test"
+  },
+  "dependencies": {
+    "@tamagui/style-grammar": "workspace:*",
+    "@tamagui/language-service": "workspace:*"
+  },
+  "peerDependencies": {
+    "eslint": ">=9"
+  },
+  "devDependencies": {
+    "@tamagui/build": "workspace:*",
+    "@typescript-eslint/parser": "8.65.0",
+    "eslint": "10.8.0",
+    "vitest": "4.0.4"
+  }
+}

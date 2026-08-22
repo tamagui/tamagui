@@ -9,6 +9,8 @@ export interface PressBoundaryProps extends ViewProps {
 	stopPropagation?: boolean;
 	debugName?: string | null;
 }
-export declare const PressBoundary: React.ForwardRefExoticComponent<PressBoundaryProps & React.RefAttributes<View>>;
+export declare const PressBoundary: (props: PressBoundaryProps & {
+	ref?: React.Ref<View>;
+}) => React.ReactNode;
 
 //# sourceMappingURL=PressBoundary.d.ts.map

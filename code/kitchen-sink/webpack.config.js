@@ -32,7 +32,7 @@ module.exports = {
     // restart, so trade a little resolve speed for correctness
     unsafeCache: false,
     mainFields: ['module:jsx', 'browser', 'module', 'main'],
-    extensions: ['.web.tsx', '.web.ts', '.ts', '.tsx', '.js'],
+    extensions: ['.web.tsx', '.web.ts', '.web.js', '.ts', '.tsx', '.js'],
     alias: {
       'react/jsx-runtime': require.resolve('react/jsx-runtime'),
       'react/jsx-dev-runtime': require.resolve('react/jsx-dev-runtime'),
@@ -67,9 +67,15 @@ module.exports = {
       logging: 'error',
     },
     hot: true,
-    static: {
-      directory: path.join(__dirname, 'public'),
-    },
+    static: [
+      {
+        directory: path.join(__dirname, 'public'),
+      },
+      {
+        directory: path.join(__dirname, '../core/font-inter/woff2'),
+        publicPath: '/fonts',
+      },
+    ],
     compress: true,
     port: process.env.PORT || 7979,
   },
@@ -91,6 +97,9 @@ module.exports = {
           /node_modules\/(react-native-reanimated|react-native-worklets)/,
           /code\/core\/animations-reanimated/,
         ],
+        resolve: {
+          fullySpecified: false,
+        },
         use: {
           loader: 'babel-loader',
           options: {

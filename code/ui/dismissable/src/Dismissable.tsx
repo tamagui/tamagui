@@ -2,7 +2,14 @@
 // https://github.com/radix-ui/primitives/blob/cfd8dcba5fa6a0e751486af418d05a7b88a7f541/packages/react/dismissable-layer/src/DismissableLayer.tsx#L324
 
 import { useComposedRefs } from '@tamagui/compose-refs'
-import { Slot, TamaguiElement, View, composeEventHandlers } from '@tamagui/core'
+import {
+  Slot,
+  TamaguiElement,
+  View,
+  composeEventHandlers,
+  createChangeEventDetails,
+  createRefComponent,
+} from '@tamagui/core'
 import { useEscapeKeydown } from '@tamagui/use-escape-keydown'
 import { useEvent } from '@tamagui/use-event'
 import * as React from 'react'
@@ -23,8 +30,6 @@ export function dispatchDiscreteCustomEvent<E extends CustomEvent>(
 
 const DISMISSABLE_LAYER_NAME = 'Dismissable'
 const CONTEXT_UPDATE = 'dismissable.update'
-const POINTER_DOWN_OUTSIDE = 'dismissable.pointerDownOutside'
-const FOCUS_OUTSIDE = 'dismissable.focusOutside'
 
 let originalBodyPointerEvents: string
 
@@ -148,7 +153,7 @@ export function useDismissableLayersAbove(ref: React.RefObject<HTMLElement | nul
   return count
 }
 
-const Dismissable = React.forwardRef<
+const Dismissable = createRefComponent<
   HTMLElement,
   DismissableProps & { asChild?: boolean }
 >((props, forwardedRef) => {
@@ -193,9 +198,12 @@ const Dismissable = React.forwardRef<
     const branches = branchesProp || context.branches
     const isPointerDownOnBranch = [...branches].some((branch) => branch.contains(target))
     if (!isPointerEventsEnabled || isPointerDownOnBranch) return
-    onPointerDownOutside?.(event)
-    onInteractOutside?.(event)
-    if (!event.defaultPrevented) onDismiss?.()
+    const details = createChangeEventDetails('outside-press', event, event.target, {
+      interaction: 'pointer' as const,
+    })
+    onPointerDownOutside?.(details)
+    onInteractOutside?.(details)
+    if (!details.isCanceled) onDismiss?.(details)
   })
 
   const focusOutside = useFocusOutside((event) => {
@@ -204,9 +212,16 @@ const Dismissable = React.forwardRef<
     const branches = branchesProp || context.branches
     const isFocusInBranch = [...branches].some((branch) => branch.contains(target))
     if (isFocusInBranch) return
-    onFocusOutside?.(event)
-    onInteractOutside?.(event)
-    if (!event.defaultPrevented) onDismiss?.()
+    // browser focus fixup can move focus to an ancestor of this layer (e.g. the
+    // native <dialog> element when its inner active element blurs). an ancestor
+    // gaining focus is not the user focusing elsewhere — never dismiss for it
+    if (node && target.contains(node)) return
+    const details = createChangeEventDetails('focus-out', event, event.target, {
+      interaction: 'focus' as const,
+    })
+    onFocusOutside?.(details)
+    onInteractOutside?.(details)
+    if (!details.isCanceled) onDismiss?.(details)
   })
 
   // track forceUnmount in a ref so escape handler can check it
@@ -216,6 +231,10 @@ const Dismissable = React.forwardRef<
   }, [forceUnmount])
 
   useEscapeKeydown((event) => {
+    // a higher layer may have consumed this same document event and removed
+    // itself before this listener runs. don't let the newly-highest layer also
+    // dismiss from a single escape press.
+    if (event.defaultPrevented) return
     // skip if this layer is force-unmounted (e.g. dialog closed but still mounted)
     if (forceUnmountRef.current) return
     // Check layers at callback time, not render time, to avoid stale closures
@@ -223,68 +242,71 @@ const Dismissable = React.forwardRef<
     const currentIndex = node ? currentLayers.indexOf(node) : -1
     const isHighestLayer = currentIndex === currentLayers.length - 1
     if (!isHighestLayer) return
-    onEscapeKeyDown?.(event)
-    if (!event.defaultPrevented && onDismiss) {
+    const details = createChangeEventDetails('escape-key', event, event.target)
+    onEscapeKeyDown?.(details)
+    if (!details.isCanceled && onDismiss) {
+      // consuming the escape prevents native defaults (exiting fullscreen etc),
+      // matching the pre-details behavior. a canceled dismiss leaves the native
+      // event alone; handlers that self-close call preventDefault themselves
       event.preventDefault()
-      onDismiss()
+      onDismiss(details)
     }
   })
 
+  /**
+   * Creation-order layer tracking. This effect only runs on mount/unmount (and
+   * when the node itself changes), NOT when `disableOutsidePointerEvents`
+   * toggles, so a prop change can't remove a layer from the stack and re-add it
+   * at the end - the layering order stays _creation order_.
+   */
   React.useEffect(() => {
     if (!node) return
     // don't add to layers when force-unmounted (dialog closed but still mounted)
     if (forceUnmount) return
-    if (disableOutsidePointerEvents) {
-      if (context.layersWithOutsidePointerEventsDisabled.size === 0) {
-        originalBodyPointerEvents = document.body.style.pointerEvents
-        document.body.style.pointerEvents = 'none'
-      }
-      context.layersWithOutsidePointerEventsDisabled.add(node)
-      layersWithPointerEventsDisabledCount++
-    }
     context.layers.add(node)
     globalLayers.add(node)
-    // only dispatch position update when pointer-events tracking is active
-    if (disableOutsidePointerEvents || layersWithPointerEventsDisabledCount > 0) {
-      dispatchUpdate()
-    }
+    dispatchUpdate()
     notifyLayerChange()
     return () => {
-      if (disableOutsidePointerEvents) {
-        if (context.layersWithOutsidePointerEventsDisabled.size === 1) {
-          document.body.style.pointerEvents = originalBodyPointerEvents
-        }
-        // decrement AFTER dispatch so other layers still re-render
-      }
+      context.layers.delete(node)
+      globalLayers.delete(node)
+      dispatchUpdate()
+      notifyLayerChange()
     }
-  }, [node, disableOutsidePointerEvents, forceUnmount, context])
+  }, [node, forceUnmount, context])
 
   /**
-   * We purposefully prevent combining this effect with the `disableOutsidePointerEvents` effect
-   * because a change to `disableOutsidePointerEvents` would remove this layer from the stack
-   * and add it to the end again so the layering order wouldn't be _creation order_.
-   * We only want them to be removed from context stacks when unmounted.
+   * Pointer-events tracking. This owns SYMMETRIC add/remove of the node from
+   * `layersWithOutsidePointerEventsDisabled`, the module count, and the body
+   * pointer-events style. It reruns on every `disableOutsidePointerEvents`
+   * transition, and the cleanup fully reverses the setup, so a true->false->true
+   * toggle never leaves a stale Set entry or a divergent count.
    */
   React.useEffect(() => {
+    if (!node) return
     if (forceUnmount) return
-    return () => {
-      if (!node) return
-      const hadPointerEventsDisabled =
-        context.layersWithOutsidePointerEventsDisabled.has(node)
-      context.layers.delete(node)
-      context.layersWithOutsidePointerEventsDisabled.delete(node)
-      globalLayers.delete(node)
-      // only dispatch position update when pointer-events tracking is active
-      if (layersWithPointerEventsDisabledCount > 0) {
-        dispatchUpdate()
-      }
-      notifyLayerChange()
-      // decrement count AFTER dispatch so other layers see count > 0 and re-render
-      if (hadPointerEventsDisabled) {
-        layersWithPointerEventsDisabledCount--
-      }
+    if (!disableOutsidePointerEvents) return
+    if (context.layersWithOutsidePointerEventsDisabled.size === 0) {
+      originalBodyPointerEvents = document.body.style.pointerEvents
+      document.body.style.pointerEvents = 'none'
     }
-  }, [node, context, forceUnmount])
+    context.layersWithOutsidePointerEventsDisabled.add(node)
+    layersWithPointerEventsDisabledCount++
+    dispatchUpdate()
+    notifyLayerChange()
+    return () => {
+      context.layersWithOutsidePointerEventsDisabled.delete(node)
+      // restore the body once this was the last pointer-events-disabling layer
+      if (context.layersWithOutsidePointerEventsDisabled.size === 0) {
+        document.body.style.pointerEvents = originalBodyPointerEvents
+      }
+      // dispatch while the count is still > 0 so other layers re-render, then
+      // decrement so they observe the settled count on their next render
+      dispatchUpdate()
+      notifyLayerChange()
+      layersWithPointerEventsDisabledCount--
+    }
+  }, [node, disableOutsidePointerEvents, forceUnmount, context])
 
   React.useEffect(() => {
     const handleUpdate = () => {
@@ -339,7 +361,7 @@ Dismissable.displayName = DISMISSABLE_LAYER_NAME
 
 const BRANCH_NAME = 'DismissableBranch'
 
-const DismissableBranch = React.forwardRef<TamaguiElement, DismissableBranchProps>(
+const DismissableBranch = createRefComponent<TamaguiElement, DismissableBranchProps>(
   (props, forwardedRef) => {
     const { branches: branchesProp, ...rest } = props
     const context = React.useContext(DismissableContext)
@@ -367,33 +389,23 @@ DismissableBranch.displayName = BRANCH_NAME
 
 /* -----------------------------------------------------------------------------------------------*/
 
-export type PointerDownOutsideEvent = CustomEvent<{ originalEvent: PointerEvent }>
-export type FocusOutsideEvent = CustomEvent<{ originalEvent: FocusEvent }>
-
 /**
  * Listens for `pointerdown` outside a react subtree. We use `pointerdown` rather than `pointerup`
  * to mimic layer dismissing behaviour present in OS.
  * Returns props to pass to the node we want to check for outside events.
  */
-function usePointerDownOutside(
-  onPointerDownOutside?: (event: PointerDownOutsideEvent) => void
-) {
-  const handlePointerDownOutside = useEvent(onPointerDownOutside) as EventListener
+function usePointerDownOutside(onPointerDownOutside?: (event: PointerEvent) => void) {
+  const handlePointerDownOutside = useEvent(onPointerDownOutside)
   const isPointerInsideReactTreeRef = React.useRef(false)
   const handleClickRef = React.useRef(() => {})
 
   React.useEffect(() => {
     const handlePointerDown = (event: PointerEvent) => {
       if (event.target && !isPointerInsideReactTreeRef.current) {
-        const eventDetail = { originalEvent: event }
-
-        function handleAndDispatchPointerDownOutsideEvent() {
-          handleAndDispatchCustomEvent(
-            POINTER_DOWN_OUTSIDE,
-            handlePointerDownOutside,
-            eventDetail,
-            { discrete: true }
-          )
+        function handlePointerDownOutsideEvent() {
+          if (handlePointerDownOutside) {
+            ReactDOM.flushSync(() => handlePointerDownOutside(event))
+          }
         }
 
         /**
@@ -410,10 +422,10 @@ function usePointerDownOutside(
          */
         if (event.pointerType === 'touch') {
           document.removeEventListener('click', handleClickRef.current)
-          handleClickRef.current = handleAndDispatchPointerDownOutsideEvent
+          handleClickRef.current = handlePointerDownOutsideEvent
           document.addEventListener('click', handleClickRef.current, { once: true })
         } else {
-          handleAndDispatchPointerDownOutsideEvent()
+          handlePointerDownOutsideEvent()
         }
       }
       isPointerInsideReactTreeRef.current = false
@@ -453,17 +465,14 @@ function usePointerDownOutside(
  * Listens for when focus happens outside a react subtree.
  * Returns props to pass to the root (node) of the subtree we want to check.
  */
-function useFocusOutside(onFocusOutside?: (event: FocusOutsideEvent) => void) {
-  const handleFocusOutside = useEvent(onFocusOutside) as EventListener
+function useFocusOutside(onFocusOutside?: (event: FocusEvent) => void) {
+  const handleFocusOutside = useEvent(onFocusOutside)
   const isFocusInsideReactTreeRef = React.useRef(false)
 
   React.useEffect(() => {
     const handleFocus = (event: FocusEvent) => {
       if (event.target && !isFocusInsideReactTreeRef.current) {
-        const eventDetail = { originalEvent: event }
-        handleAndDispatchCustomEvent(FOCUS_OUTSIDE, handleFocusOutside, eventDetail, {
-          discrete: false,
-        })
+        handleFocusOutside?.(event)
       }
     }
     document.addEventListener('focusin', handleFocus)
@@ -485,23 +494,12 @@ function dispatchUpdate() {
   document.dispatchEvent(event)
 }
 
-function handleAndDispatchCustomEvent<E extends CustomEvent, OriginalEvent extends Event>(
-  name: string,
-  handler: ((event: E) => void) | undefined,
-  detail: { originalEvent: OriginalEvent } & (E extends CustomEvent<infer D> ? D : never),
-  { discrete }: { discrete: boolean }
-) {
-  const target = detail.originalEvent.target
-  const event = new CustomEvent(name, { bubbles: false, cancelable: true, detail })
-  if (handler) target.addEventListener(name, handler as EventListener, { once: true })
-
-  if (discrete) {
-    dispatchDiscreteCustomEvent(target, event)
-  } else {
-    target.dispatchEvent(event)
-  }
-}
-
 export { Dismissable, DismissableBranch }
 
-export type { DismissableProps }
+export type {
+  DismissableDismissDetails,
+  DismissableProps,
+  FocusOutsideDetails,
+  InteractOutsideDetails,
+  PointerDownOutsideDetails,
+} from './DismissableProps'

@@ -34,12 +34,13 @@
   },
   "dependencies": {
     "@tamagui/core": "workspace:*",
-    "@tamagui/sizable-context": "workspace:*"
+    "@tamagui/font-size": "workspace:*",
+    "@tamagui/size": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
     "react": ">=19",
-    "react-native-svg": "15.15.3"
+    "react-native-svg": "15.15.4"
   },
   "peerDependencies": {
     "react": ">=19"

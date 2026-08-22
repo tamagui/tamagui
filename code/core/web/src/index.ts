@@ -3,18 +3,35 @@ export * from './contexts/GroupContext'
 
 export * from '@tamagui/is-equal-shallow'
 export * from './_withStableStyle'
+export * from './_withNativeStyle'
 export * from './createComponent'
-export * from './helpers/createMediaStyle'
 export * from './helpers/createStyledContext'
 export * from './helpers/getDefaultProps'
 export * from './helpers/expandStyles'
 export * from './helpers/getCSSStylesAtomic'
 export * from './helpers/getExpandedShorthands'
+export * from './helpers/formatDiagnostic'
 export * from './helpers/getShorthandValue'
 export * from './helpers/getSplitStyles'
+export {
+  setNativeStyleEngine,
+  getNativeStyleEngine,
+  setNativeStyleEngineFlushListener,
+  updateNativeStyleScope,
+  removeNativeStyleScope,
+  type NativeStyleEngine,
+  type NativeStyleEngineSlots,
+  type NativeViewStateUpdate,
+} from './helpers/nativeStyleEngine'
 export * from './helpers/getThemeCSSRules'
+export * from './helpers/variables'
 export * from './helpers/getVariantExtras'
-export { autoVariables, mutatedAutoVariables } from './helpers/registerCSSVariable'
+export {
+  autoVariables,
+  getAutoVariableCSS,
+  getMutatedAutoVariableCSS,
+  mutatedAutoVariables,
+} from './helpers/registerCSSVariable'
 export { insertStyleRules } from './helpers/insertStyleRule'
 export * from './helpers/isTamaguiComponent'
 export * from './helpers/isTamaguiElement'
@@ -26,9 +43,7 @@ export * from './helpers/normalizeStyle'
 export * from './helpers/normalizeValueWithProperty'
 export * from './helpers/propMapper'
 export * from './helpers/proxyThemeToParents'
-export * from './helpers/proxyThemeVariables'
-export * from './helpers/pseudoDescriptors'
-export * from './helpers/pseudoTransitions'
+export * from './helpers/themeRef'
 export * from './helpers/themeable'
 export * from './helpers/themes'
 export * from './helpers/transformsToString'
@@ -36,6 +51,8 @@ export * from './helpers/wrapStyleTags'
 
 export * from './createComponent'
 export * from './createFont'
+export * from './eventDetails'
+export * from './createStyledHOC'
 export * from './createShorthands'
 export * from './createTamagui'
 export * from './createTokens'
@@ -52,6 +69,7 @@ export type * from './interfaces/TamaguiComponentEvents'
 export type * from './types'
 
 export * from './interfaces/GetRef'
+export { createRefComponent, type RefProp } from '@tamagui/compose-refs'
 
 export {
   getConfig,
@@ -75,6 +93,7 @@ export * from './constants/constants'
 export * from './hooks/useIsTouchDevice'
 export {
   _disableMediaTouch,
+  _mediaListenerStats,
   configureMedia,
   mediaKeyMatch,
   updateMediaListeners,
@@ -87,11 +106,18 @@ export {
   mediaState,
   setMediaState,
 } from './helpers/mediaState'
+export * from './hooks/useAnimationDriver'
 export * from './hooks/useProps'
 export * from './hooks/useTheme'
+export * from './hooks/usePortalThemeState'
 export * from './hooks/useThemeName'
-export { forceUpdateThemes } from './hooks/useThemeState'
+export {
+  forceUpdateThemes,
+  getThemeProviderChainSizes,
+  resolveThemeName,
+} from './hooks/useThemeState'
 
+export * from './dom/html'
 export * from './views/Configuration'
 export * from './views/TamaguiRoot'
 export * from './views/FontLanguage'

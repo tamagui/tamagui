@@ -28,6 +28,37 @@ npm, force-pushing, rotating credentials, or changing prod infra (Cloudflare,
 DNS, Railway settings): pause and confirm for those, and hand them back with the
 exact steps when they block you. Everything else, finish it.
 
+## Before you call anything done, run these two at the REPO ROOT
+
+```sh
+bun run lint     # oxfmt --check && oxlint. oxlint alone misses formatting
+bun run check    # deps, unused, tamagui, references, paths, dom-types, lsp-pins
+```
+
+Your package's own suite cannot see either one, and neither can `bun run
+typecheck`. Both are whole-workspace questions, so a change that is green in
+every test you ran can still be red here:
+
+- `bun run check` runs `knip`, which sees across package boundaries. It catches
+  an unreferenced file, a dependency nothing imports, and a second way to invoke
+  something that already has a declared script. A CI step written as
+  `bun scripts/whatever.ts --check` when the package already declares
+  `check:whatever` is a real finding, not a style nit.
+- `oxfmt` is separate from `oxlint`. A file committed unformatted passes lint
+  locally if you only ran the linter.
+
+Both were learned the expensive way: two of three CI cycles on the v3-beta wave
+B tip went red on exactly these, after every lane had reported its own suites
+green.
+
+In a shared checkout, both commands see the WHOLE worktree, including other
+agents' uncommitted and untracked files, so they can fail on a file you never
+opened. Read which files are named. Fix the ones that are yours; for anyone
+else's, say so in your report and leave them alone. Formatting a co-tenant's
+in-progress file is worse than the failure, because your edit lands inside their
+uncommitted work where they cannot see it. The rule asks that YOUR change not
+break the workspace, not that a tree five agents are editing is spotless.
+
 ---
 
 Please read ./CONTRIBUTING.md as well

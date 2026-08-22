@@ -23,7 +23,7 @@ export default function TestSelectAdapt(props: SelectProps) {
         <Select.Value placeholder="Something" />
       </Select.Trigger>
 
-      <Adapt when="maxMd" platform="touch">
+      <Adapt when="max-md" platform="touch">
         <Sheet
           native={!!props.native}
           modal
@@ -35,16 +35,13 @@ export default function TestSelectAdapt(props: SelectProps) {
             stiffness: 250,
           }}
         >
-          <Sheet.Frame>
+          <Sheet.Container>
+            <Sheet.Background />
             <Sheet.ScrollView>
               <Adapt.Contents />
             </Sheet.ScrollView>
-          </Sheet.Frame>
-          <Sheet.Overlay
-            transition="quick"
-            enterStyle={{ opacity: 0 }}
-            exitStyle={{ opacity: 0 }}
-          />
+          </Sheet.Container>
+          <Sheet.Overlay transition="quick" opacity="enter:0 exit:0" />
         </Sheet>
       </Adapt>
 
@@ -54,7 +51,7 @@ export default function TestSelectAdapt(props: SelectProps) {
           justify="center"
           position="relative"
           width="100%"
-          height="$3"
+          height="3"
         >
           <YStack z={10}>
             <ChevronUp size={20} />
@@ -65,8 +62,8 @@ export default function TestSelectAdapt(props: SelectProps) {
           // to do animations:
           // transition="quick"
           // animateOnly={['transform', 'opacity']}
-          // enterStyle={{ o: 0, y: -10 }}
-          // exitStyle={{ o: 0, y: 10 }}
+          // opacity="enter:0 exit:0"
+          // y="enter:-10px exit:10px"
           minW={200}
         >
           <Select.Group>
@@ -101,12 +98,10 @@ export default function TestSelectAdapt(props: SelectProps) {
               b={0}
               items="center"
               justify="center"
-              width="$4"
+              width="4"
               pointerEvents="none"
             >
-              <ChevronDown
-                size={getFontSize((props.size as FontSizeTokens) ?? '$true')}
-              />
+              <ChevronDown size={getFontSize((props.size as FontSizeTokens) ?? true)} />
             </YStack>
           )}
         </Select.Viewport>
@@ -116,7 +111,7 @@ export default function TestSelectAdapt(props: SelectProps) {
           justify="center"
           position="relative"
           width="100%"
-          height="$3"
+          height="3"
         >
           <YStack z={10}>
             <ChevronDown size={20} />

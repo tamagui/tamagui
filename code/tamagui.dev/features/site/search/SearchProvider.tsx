@@ -91,7 +91,7 @@ export const SearchProvider = memo(({ children }: any) => {
               })
             }}
           />,
-          // <View width={200} height={200} bg={"$red10"} zIndex={500000} pos={"absolute"} top={0} left={0}/>,
+          // <View width={200} height={200} bg={"red10"} zIndex={500000} pos={"absolute"} top={0} left={0}/>,
           document.body
         )}
     </>
@@ -100,7 +100,7 @@ export const SearchProvider = memo(({ children }: any) => {
 
 const ResultItem = ({ hit, children }) => {
   return (
-    <Paragraph render="span" color="$color">
+    <Paragraph render="span" color="color">
       {children}
     </Paragraph>
   )

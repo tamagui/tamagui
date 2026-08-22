@@ -1,4 +1,4 @@
-import { View, createTamagui, getSplitStyles } from '@tamagui/core'
+import { Text, View, createTamagui, getSplitStyles } from '@tamagui/core'
 import { beforeAll, describe, expect, test } from 'vitest'
 
 import config from '../config-default'
@@ -53,7 +53,7 @@ describe('RN 0.76+ Style Alignment - Native', () => {
 
     test('boxShadow with tokens resolves them', () => {
       const { style } = getSplitStylesFor({
-        boxShadow: '0 0 10px $white',
+        boxShadow: '0 0 10px white',
       })
       expect(style?.boxShadow).toBeDefined()
       expect(style?.boxShadow).toEqual([
@@ -75,8 +75,12 @@ describe('RN 0.76+ Style Alignment - Native', () => {
       const { style } = getSplitStylesFor({
         boxShadow: 'inset 0 2px 4px black',
       })
+      // config-first resolution reaches the shadow path since the program
+      // engine owns native boxShadow strings (0b3b28cde9): `black` is a
+      // configured color token and resolves to its native value, matching
+      // the item-11 pins for every other value position
       expect(style?.boxShadow).toEqual([
-        { inset: true, offsetX: 0, offsetY: 2, blurRadius: 4, color: 'black' },
+        { inset: true, offsetX: 0, offsetY: 2, blurRadius: 4, color: '#000' },
       ])
     })
   })
@@ -89,12 +93,11 @@ describe('RN 0.76+ Style Alignment - Native', () => {
       expect(style?.filter).toBe('brightness(1.2)')
     })
 
-    test('filter with tokens resolves them', () => {
+    test('filter with a migrated token value stays literal CSS', () => {
       const { style } = getSplitStylesFor({
-        filter: 'blur($2)',
+        filter: 'blur(7px)',
       })
-      expect(style?.filter).toBeDefined()
-      expect(style?.filter).not.toContain('$2')
+      expect(style?.filter).toBe('blur(7px)')
     })
 
     test('filter multiple functions', () => {
@@ -142,7 +145,7 @@ describe('RN 0.76+ Style Alignment - Native', () => {
   describe('outline props', () => {
     test('outlineColor with token resolves', () => {
       const { style } = getSplitStylesFor({
-        outlineColor: '$white',
+        outlineColor: 'white',
       })
       expect(style?.outlineColor).toBeDefined()
       expect(style?.outlineColor).not.toContain('$')
@@ -177,5 +180,112 @@ describe('RN 0.76+ Style Alignment - Native', () => {
       })
       expect(style?.display).toBe('contents')
     })
+  })
+})
+
+describe('conditional (program) values reach the same RN formats', () => {
+  // review Phase-6-item-2 gaps: the program evaluator's generic fallback
+  // bypassed the renames/parses the unconditional path performs
+  test('a backgroundImage program parses and renames like the unconditional path', () => {
+    const value = 'linear-gradient(to right, red, blue)'
+    const unconditional = getSplitStylesFor({ backgroundImage: value })
+    const conditional = getSplitStylesFor({
+      backgroundImage: `${value} hover:linear-gradient(to left, red, blue)`,
+    })
+    expect((unconditional.style as any)?.experimental_backgroundImage).toBeDefined()
+    expect((conditional.style as any)?.experimental_backgroundImage).toEqual(
+      (unconditional.style as any)?.experimental_backgroundImage
+    )
+    expect((conditional.style as any)?.backgroundImage).toBeUndefined()
+  })
+
+  test('a fontVariant program produces the RN array, not a CSS list string', () => {
+    const conditional = getSplitStylesFor(
+      { fontVariant: 'small-caps tabular-nums hover:oldstyle-nums' },
+      Text
+    )
+    expect((conditional.style as any)?.fontVariant).toEqual([
+      'small-caps',
+      'tabular-nums',
+    ])
+  })
+})
+
+describe('gradient position grammar', () => {
+  test('px positions normalize to numeric points, percents stay strings', () => {
+    // sourced from RN's own getPositionFromCSSValue (processBackgroundImage.js):
+    // px -> parseFloat number; % -> string; anything else invalidates the
+    // gradient. RN's object path accepts numbers or %-strings only
+    const result = getSplitStylesFor({
+      backgroundImage: 'linear-gradient(to bottom, red 100px, blue 50%)',
+    })
+    const gradient = (result.style as any)?.experimental_backgroundImage?.[0]
+    expect(gradient?.colorStops).toEqual([
+      { color: 'red', positions: [100] },
+      { color: 'blue', positions: ['50%'] },
+    ])
+  })
+
+  test("a position unit RN cannot read declines the parse into RN's hands", () => {
+    const result = getSplitStylesFor({
+      backgroundImage: 'linear-gradient(to bottom, red 2em, blue)',
+    })
+    // no half-parsed object: the string passes through untouched for RN's own
+    // parser to reject, never a shape RN reads wrong
+    expect((result.style as any)?.experimental_backgroundImage).toBeUndefined()
+  })
+})
+
+describe('gradient transition hints', () => {
+  // sourced from RN's string parser (processBackgroundImage.js case 4): a
+  // single position between two color stops is a transition hint,
+  // {color:null, positions:[n]}; a hint first, last, or adjacent to another
+  // hint invalidates the gradient
+  test('a bare position between stops becomes a color:null hint, never a color', () => {
+    const result = getSplitStylesFor({
+      backgroundImage: 'linear-gradient(red, 50px, blue)',
+    })
+    const gradient = (result.style as any)?.experimental_backgroundImage?.[0]
+    expect(gradient?.colorStops).toEqual([
+      { color: 'red' },
+      { color: null, positions: [50] },
+      { color: 'blue' },
+    ])
+    const percent = getSplitStylesFor({
+      backgroundImage: 'linear-gradient(red, 50%, blue)',
+    })
+    expect(
+      (percent.style as any)?.experimental_backgroundImage?.[0]?.colorStops[1]
+    ).toEqual({ color: null, positions: ['50%'] })
+  })
+
+  test("an invalid hint placement declines the parse into RN's hands", () => {
+    for (const css of [
+      'linear-gradient(50px, red, blue)',
+      'linear-gradient(red, blue, 50px)',
+      'linear-gradient(red, 20%, 50%, blue)',
+    ]) {
+      const result = getSplitStylesFor({ backgroundImage: css })
+      expect((result.style as any)?.experimental_backgroundImage, css).toBeUndefined()
+    }
+  })
+})
+
+describe('gradient direction grammar', () => {
+  test('gradient directions accept the forms React Native accepts', () => {
+    // sourced from react-native/Libraries/StyleSheet/processBackgroundImage.js:
+    // LINEAR_GRADIENT_ANGLE_UNIT_REGEX = /^([+-]?\d*\.?\d+)(deg|grad|rad|turn)$/i
+    // LINEAR_GRADIENT_DIRECTION_REGEX = /^to\s+(top|bottom|left|right).../i
+    for (const direction of ['-45deg', '+45deg', '.5turn', 'TO BOTTOM', 'to Right']) {
+      const result = getSplitStylesFor({
+        backgroundImage: `linear-gradient(${direction}, red, blue)`,
+      })
+      const gradient = (result.style as any)?.experimental_backgroundImage?.[0]
+      expect(gradient?.direction, direction).toBe(direction)
+      expect(gradient?.colorStops, direction).toEqual([
+        { color: 'red' },
+        { color: 'blue' },
+      ])
+    }
   })
 })

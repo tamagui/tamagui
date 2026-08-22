@@ -7,11 +7,11 @@ import { useEffect, useState } from 'react'
 const XStack = styled(View, { flexDirection: 'row' })
 const Button = styled(View, {
   render: 'button',
-  padding: '$3',
-  backgroundColor: '$blue10',
-  borderRadius: '$4',
+  padding: '3',
+  backgroundColor: 'blue10',
+  borderRadius: '4',
   cursor: 'pointer',
-  pressStyle: { opacity: 0.8 },
+  opacity: '1 press:0.8',
 })
 
 export function ThemeButtons() {
@@ -24,7 +24,7 @@ export function ThemeButtons() {
 
   return (
     <>
-      <XStack gap="$2">
+      <XStack gap="2">
         <Button onPress={() => themeSetting.set('light')}>
           <Text color="white">Light</Text>
         </Button>
@@ -38,7 +38,7 @@ export function ThemeButtons() {
           <Text color="white">Toggle Theme</Text>
         </Button>
       </XStack>
-      <Text color="$color10">Current theme: {mounted ? themeSetting.current : ''}</Text>
+      <Text color="color10">Current theme: {mounted ? themeSetting.current : ''}</Text>
     </>
   )
 }

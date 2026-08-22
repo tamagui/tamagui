@@ -49,10 +49,10 @@ function getDominantColor(screenshotPath: string): { r: number; g: number; b: nu
   }
 }
 
-// check if a color is predominantly blue (for $blue10)
+// check if a color is predominantly blue (for blue10)
 function isBlueish(color: { r: number; g: number; b: number }): boolean {
   // blue should have B as the dominant channel
-  // in dark themes $color4 can be a darker blue (e.g. RGB(0, 50, 97))
+  // in dark themes color4 can be a darker blue (e.g. RGB(0, 50, 97))
   return color.b > 60 && color.b > color.r && color.b > color.g
 }
 
@@ -78,7 +78,7 @@ describe.skip('PressStyleNative', () => {
     await expect(element(by.id('animated-color-test-pressable'))).toBeVisible()
   })
 
-  describe('pressStyle without transition', () => {
+  describe('press clause without transition', () => {
     it('should fire pressIn and pressOut events on tap', async () => {
       await expect(element(by.id('simple-press-in-count'))).toHaveText('In: 0')
       await expect(element(by.id('simple-press-out-count'))).toHaveText('Out: 0')
@@ -178,7 +178,7 @@ describe.skip('PressStyleNative', () => {
     })
   })
 
-  describe('pressStyle with transition (animation driver)', () => {
+  describe('press clause with transition (animation driver)', () => {
     it('should fire pressIn and pressOut events on animated pressable', async () => {
       await expect(element(by.id('animated-press-in-count'))).toHaveText('In: 0')
       await expect(element(by.id('animated-press-out-count'))).toHaveText('Out: 0')

@@ -12,7 +12,8 @@ import { Button, Paragraph, Sheet, Dialog as TamaguiDialog, YStack } from 'tamag
  * completion callback — which synced at.current back to the stale target.
  * When the real content height landed, animateTo saw at.current already at
  * the target and bailed, leaving the frame parked offscreen with no
- * animation running.
+ * animation running. The same clobber also reproduces without remount by
+ * closing mid-enter and reopening mid-exit, which is what the test does.
  */
 export function DialogSheetAdaptReopenCase() {
   const [open, setOpen] = useState(false)
@@ -27,13 +28,13 @@ export function DialogSheetAdaptReopenCase() {
   }, [])
 
   return (
-    <YStack p="$4" gap="$4" items="center">
+    <YStack p="4" gap="4" items="center">
       <Button testID="open-dialog" onPress={() => setOpen(true)}>
         Open Dialog
       </Button>
 
       <TamaguiDialog modal open={open} onOpenChange={setOpen}>
-        <TamaguiDialog.Adapt when="maxMd">
+        <TamaguiDialog.Adapt when="max-md">
           <Sheet
             transition="medium"
             zIndex={250_000}
@@ -43,24 +44,24 @@ export function DialogSheetAdaptReopenCase() {
             unmountChildrenWhenHidden
           >
             <Sheet.Overlay
-              bg="$shadow6"
-              enterStyle={{ opacity: 0 }}
-              exitStyle={{ opacity: 0 }}
+              bg="shadow6"
+              opacity="enter:0 exit:0"
               onPress={() => setOpen(false)}
             />
-            <Sheet.Frame testID="sheet-frame" bg="$background">
-              <YStack p="$4" gap="$4">
+            <Sheet.Container testID="sheet-frame">
+              <Sheet.Background bg="background" />
+              <YStack p="4" gap="4">
                 <TamaguiDialog.Adapt.Contents />
               </YStack>
-            </Sheet.Frame>
+            </Sheet.Container>
           </Sheet>
         </TamaguiDialog.Adapt>
 
         <TamaguiDialog.Portal>
           <TamaguiDialog.Overlay key="overlay" onPress={() => setOpen(false)} />
           <TamaguiDialog.Content key="content">
-            <YStack gap="$3">
-              <TamaguiDialog.Title size="$6">Reopen Dialog</TamaguiDialog.Title>
+            <YStack gap="3">
+              <TamaguiDialog.Title size="6">Reopen Dialog</TamaguiDialog.Title>
               <TamaguiDialog.Description>
                 This sheet must show every time it opens, not only the first.
               </TamaguiDialog.Description>

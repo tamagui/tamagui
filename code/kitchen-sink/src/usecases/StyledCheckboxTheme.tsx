@@ -4,12 +4,17 @@ import { Checkbox as TamaguiCheckbox, styled, withStaticProperties } from 'tamag
 export const Checkbox = withStaticProperties(
   styled(TamaguiCheckbox, {
     theme: 'green',
+    width: 20,
+    height: 20,
+    backgroundColor: 'background',
+    borderColor: 'border-color',
+    borderWidth: 1,
   }),
   {
     Indicator() {
       return (
         <TamaguiCheckbox.Indicator>
-          <Check color="$color12" />
+          <Check color="color11" />
         </TamaguiCheckbox.Indicator>
       )
     },

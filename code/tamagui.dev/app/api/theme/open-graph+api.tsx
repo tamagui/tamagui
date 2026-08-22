@@ -640,7 +640,7 @@ const fallbackTheme = {
         sync: true,
         light: 0.05,
       },
-      index: 9,
+      index: 8,
     },
     {
       hue: {
@@ -658,7 +658,7 @@ const fallbackTheme = {
         sync: true,
         light: 0.05,
       },
-      index: 10,
+      index: 9,
     },
     {
       hue: {
@@ -676,7 +676,7 @@ const fallbackTheme = {
         sync: true,
         light: 0.05,
       },
-      index: 11,
+      index: 10,
     },
   ],
   model: 'claude-3-7-sonnet',
@@ -734,7 +734,7 @@ const fallbackTheme = {
         sync: true,
         light: 0.7,
       },
-      index: 9,
+      index: 8,
     },
     {
       hue: {
@@ -752,7 +752,7 @@ const fallbackTheme = {
         sync: true,
         light: 0.7,
       },
-      index: 10,
+      index: 9,
     },
     {
       hue: {
@@ -770,7 +770,7 @@ const fallbackTheme = {
         sync: true,
         light: 0.7,
       },
-      index: 11,
+      index: 10,
     },
   ],
   scheme: 'light',

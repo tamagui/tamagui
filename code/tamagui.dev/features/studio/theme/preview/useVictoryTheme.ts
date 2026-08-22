@@ -21,7 +21,7 @@ export const useVictoryTheme = (): VictoryThemeDefinition => {
   const accent6Val = getVariableValue(theme.accent6)
   const pink9Val = getVariableValue(theme.pink9)
   const red9Val = getVariableValue(theme.red9)
-  const borderColorVal = getVariableValue(theme.borderColor)
+  const borderColorVal = getVariableValue(theme['border-color'])
   const bgVal = getVariableValue(theme.background)
   const accentColor = isAccent ? colorVal : accentBgVal
 

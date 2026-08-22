@@ -9,16 +9,17 @@ import type {
   TamaguiElement,
 } from '@tamagui/core'
 import {
+  createStyledHOC,
+  createRefComponent,
   getTokens,
   getVariableValue,
+  resolveSizeToken,
   styled,
   useConfiguration,
   useCreateShallowSetState,
 } from '@tamagui/core'
-import { getSize } from '@tamagui/get-token'
 import { clamp, composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
-import type { SizableStackProps } from '@tamagui/stacks'
-import { ThemeableStack } from '@tamagui/stacks'
+import { YStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import { useDirection } from '@tamagui/use-direction'
 import * as React from 'react'
@@ -56,19 +57,34 @@ import type {
 } from './types'
 
 const activeSliderMeasureListeners = new Set<Function>()
+let activeSliderMeasureInterval: ReturnType<typeof setInterval> | undefined
 
 // run an interval on web as using translate can move things at any moment
 // without triggering layout or intersection observers
+function startSliderMeasureInterval() {
+  if (
+    process.env.TAMAGUI_TARGET !== 'web' ||
+    activeSliderMeasureInterval !== undefined ||
+    process.env.TAMAGUI_DISABLE_SLIDER_INTERVAL
+  ) {
+    return
+  }
 
-if (process.env.TAMAGUI_TARGET === 'web') {
-  if (!process.env.TAMAGUI_DISABLE_SLIDER_INTERVAL) {
-    setInterval?.(
-      () => {
-        activeSliderMeasureListeners.forEach((cb) => cb())
-      },
-      // really doesn't need to be super often
-      1000
-    )
+  activeSliderMeasureInterval = setInterval(() => {
+    activeSliderMeasureListeners.forEach((cb) => cb())
+  }, 1000)
+}
+
+function addActiveSliderMeasureListener(listener: Function) {
+  activeSliderMeasureListeners.add(listener)
+  startSliderMeasureInterval()
+}
+
+function removeActiveSliderMeasureListener(listener: Function) {
+  activeSliderMeasureListeners.delete(listener)
+  if (!activeSliderMeasureListeners.size && activeSliderMeasureInterval !== undefined) {
+    clearInterval(activeSliderMeasureInterval)
+    activeSliderMeasureInterval = undefined
   }
 }
 
@@ -76,7 +92,7 @@ if (process.env.TAMAGUI_TARGET === 'web') {
  * SliderHorizontal
  * -----------------------------------------------------------------------------------------------*/
 
-const SliderHorizontal = React.forwardRef<View, SliderHorizontalProps>(
+const SliderHorizontal = createRefComponent<View, SliderHorizontalProps>(
   (props: ScopedProps<SliderHorizontalProps>, forwardedRef) => {
     const {
       min,
@@ -191,9 +207,9 @@ function useSliderMeasure(sliderRef: React.RefObject<View | null>, measure: () =
       (entries) => {
         debouncedMeasure()
         if (entries?.[0].isIntersecting) {
-          activeSliderMeasureListeners.add(debouncedMeasure)
+          addActiveSliderMeasureListener(debouncedMeasure)
         } else {
-          activeSliderMeasureListeners.delete(debouncedMeasure)
+          removeActiveSliderMeasureListener(debouncedMeasure)
         }
       },
       {
@@ -206,7 +222,7 @@ function useSliderMeasure(sliderRef: React.RefObject<View | null>, measure: () =
     io.observe(node)
 
     return () => {
-      activeSliderMeasureListeners.delete(debouncedMeasure)
+      removeActiveSliderMeasureListener(debouncedMeasure)
       io.disconnect()
     }
   }, [])
@@ -216,7 +232,7 @@ function useSliderMeasure(sliderRef: React.RefObject<View | null>, measure: () =
  * SliderVertical
  * -----------------------------------------------------------------------------------------------*/
 
-const SliderVertical = React.forwardRef<View, SliderVerticalProps>(
+const SliderVertical = createRefComponent<View, SliderVerticalProps>(
   (props: ScopedProps<SliderVerticalProps>, forwardedRef) => {
     const {
       min,
@@ -301,28 +317,20 @@ const SliderVertical = React.forwardRef<View, SliderVerticalProps>(
 
 type SliderTrackElement = TamaguiElement
 
+// Unstyled track frame: fill + clip only. Track color and radius live in the
+// tamagui skin (code/ui/tamagui/src/components/Slider.tsx).
 export const SliderTrackFrame = styled(SliderFrame, {
-  name: 'Slider',
-
-  variants: {
-    unstyled: {
-      false: {
-        height: '100%',
-        width: '100%',
-        backgroundColor: '$background',
-        position: 'relative',
-        borderRadius: 100_000,
-        overflow: 'hidden',
-      },
-    },
-  } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
-  },
+  displayName: 'Slider',
+  height: '100%',
+  width: '100%',
+  position: 'relative',
+  overflow: 'hidden',
 })
 
-const SliderTrack = React.forwardRef<SliderTrackElement, SliderTrackProps>(
+// createStyledHOC (not createRefComponent) so the tamagui skin can layer track
+// color/radius via styled(Slider.Track, { ... }); the render body is unchanged.
+const SliderTrack = createStyledHOC(
+  SliderTrackFrame,
   function SliderTrack(props: ScopedProps<SliderTrackProps>, forwardedRef) {
     const { __scopeSlider, ...trackProps } = props
     const context = useSliderContext(__scopeSlider)
@@ -343,67 +351,58 @@ const SliderTrack = React.forwardRef<SliderTrackElement, SliderTrackProps>(
  * SliderActive
  * -----------------------------------------------------------------------------------------------*/
 
+// Unstyled active-range frame: positioning only. Fill color and radius live in
+// the tamagui skin.
 export const SliderActiveFrame = styled(SliderFrame, {
-  name: 'SliderActive',
+  displayName: 'SliderActive',
   position: 'absolute',
   pointerEvents: 'box-none',
-
-  variants: {
-    unstyled: {
-      false: {
-        backgroundColor: '$background',
-        borderRadius: 100_000,
-      },
-    },
-  } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
-  },
 })
 
 type SliderActiveProps = GetProps<typeof SliderActiveFrame>
 
-const SliderActive = React.forwardRef<View, SliderActiveProps>(function SliderActive(
-  props: ScopedProps<SliderActiveProps>,
-  forwardedRef
-) {
-  const { __scopeSlider, ...rangeProps } = props
-  const context = useSliderContext(__scopeSlider)
-  const orientation = useSliderOrientationContext(__scopeSlider)
-  const ref = React.useRef<View>(null)
-  const composedRefs = useComposedRefs(forwardedRef, ref)
-  const valuesCount = context.values.length
-  const percentages = context.values.map((value) =>
-    convertValueToPercentage(value, context.min, context.max)
-  )
-  const offsetStart = valuesCount > 1 ? Math.min(...percentages) : 0
-  const offsetEnd = 100 - Math.max(...percentages)
+// createStyledHOC so the tamagui skin can layer active-range color/radius via
+// styled(Slider.TrackActive, { ... }); the render body is unchanged.
+const SliderActive = createStyledHOC(
+  SliderActiveFrame,
+  function SliderActive(props: ScopedProps<SliderActiveProps>, forwardedRef) {
+    const { __scopeSlider, ...rangeProps } = props
+    const context = useSliderContext(__scopeSlider)
+    const orientation = useSliderOrientationContext(__scopeSlider)
+    const ref = React.useRef<View>(null)
+    const composedRefs = useComposedRefs(forwardedRef, ref)
+    const valuesCount = context.values.length
+    const percentages = context.values.map((value) =>
+      convertValueToPercentage(value, context.min, context.max)
+    )
+    const offsetStart = valuesCount > 1 ? Math.min(...percentages) : 0
+    const offsetEnd = 100 - Math.max(...percentages)
 
-  return (
-    <SliderActiveFrame
-      orientation={context.orientation}
-      data-orientation={context.orientation}
-      data-disabled={context.disabled ? '' : undefined}
-      size={context.size}
-      animateOnly={['left', 'top', 'right', 'bottom']}
-      {...rangeProps}
-      ref={composedRefs}
-      {...{
-        [orientation.startEdge]: `${offsetStart}%`,
-        [orientation.endEdge]: `${offsetEnd}%`,
-      }}
-      {...(orientation.sizeProp === 'width'
-        ? {
-            height: '100%',
-          }
-        : {
-            left: 0,
-            right: 0,
-          })}
-    />
-  )
-})
+    return (
+      <SliderActiveFrame
+        orientation={context.orientation}
+        data-orientation={context.orientation}
+        data-disabled={context.disabled ? '' : undefined}
+        size={context.size}
+        animateOnly={['left', 'top', 'right', 'bottom']}
+        {...rangeProps}
+        ref={composedRefs}
+        {...{
+          [orientation.startEdge]: `${offsetStart}%`,
+          [orientation.endEdge]: `${offsetEnd}%`,
+        }}
+        {...(orientation.sizeProp === 'width'
+          ? {
+              height: '100%',
+            }
+          : {
+              left: 0,
+              right: 0,
+            })}
+      />
+    )
+  }
+)
 
 /* -------------------------------------------------------------------------------------------------
  * SliderThumb
@@ -411,14 +410,11 @@ const SliderActive = React.forwardRef<View, SliderActiveProps>(function SliderAc
 
 // TODO make this customizable through tamagui
 // so we can accurately use it for estimatedSize below
-const getThumbSize = (val?: SizeTokens | number) => {
+const getThumbSize = (val?: SizeTokens | number | true) => {
   const tokens = getTokens()
-  const size =
-    typeof val === 'number'
-      ? val
-      : getSize(tokens.size[val as any] as any, {
-          shift: -1,
-        })
+  const sizeToken = resolveSizeToken(val ?? true, 'size')
+  const resolved = typeof sizeToken === 'number' ? sizeToken : tokens.size[sizeToken]
+  const size = typeof val === 'number' ? val : getVariableValue(resolved) * 0.86
   return {
     width: size,
     height: size,
@@ -427,50 +423,47 @@ const getThumbSize = (val?: SizeTokens | number) => {
   }
 }
 
-export const SliderThumbFrame = styled(ThemeableStack, {
-  name: 'SliderThumb',
+// Unstyled thumb frame: positioning + the size mechanism (hit-target
+// dimensions) + the circular shape modifier (opt-in, off by default). Border,
+// background, and hover/press/focus color styling live in the tamagui skin.
+export const SliderThumbFrame = styled(YStack, {
+  displayName: 'SliderThumb',
+  position: 'absolute',
 
   variants: {
     size: {
-      '...size': getThumbSize,
-      ':number': getThumbSize,
+      number: getThumbSize,
+      Size: getThumbSize,
     },
 
-    unstyled: {
-      false: {
-        position: 'absolute',
-        borderWidth: 2,
-        borderColor: '$borderColor',
-        backgroundColor: '$background',
-        pressStyle: {
-          backgroundColor: '$backgroundPress',
-          borderColor: '$borderColorPress',
-        },
-        hoverStyle: {
-          backgroundColor: '$backgroundHover',
-          borderColor: '$borderColorHover',
-        },
-        focusVisibleStyle: {
-          outlineStyle: 'solid',
-          outlineWidth: 2,
-          outlineColor: '$outlineColor',
-        },
+    circular: {
+      true: {
+        borderRadius: 100_000,
+        padding: 0,
+      },
+    },
+
+    // opt-in v2-compat elevate (formerly from ThemeableStack), off by default.
+    // On the frame (the animated node), not a skin wrapper — a variant block on a
+    // wrapper breaks the native animation driver's interpolation.
+    elevate: {
+      true: {
+        shadowColor: 'shadow-color',
+        shadowRadius: 4,
+        shadowOffset: { width: 0, height: 2 },
       },
     },
   } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
-  },
 })
 
 export interface SliderThumbExtraProps {
   index?: number
 }
 
-export interface SliderThumbProps extends SizableStackProps, SliderThumbExtraProps {}
+export type SliderThumbProps = GetProps<typeof SliderThumbFrame> & SliderThumbExtraProps
 
-const SliderThumb = SliderThumbFrame.styleable<SliderThumbExtraProps>(
+const SliderThumb = createStyledHOC(
+  SliderThumbFrame,
   function SliderThumb(props: ScopedProps<SliderThumbProps>, forwardedRef) {
     const { __scopeSlider, index = 0, circular, size: sizeProp, ...thumbProps } = props
     const context = useSliderContext(__scopeSlider)
@@ -483,7 +476,7 @@ const SliderThumb = SliderThumbFrame.styleable<SliderThumbExtraProps>(
     const percent =
       value === undefined ? 0 : convertValueToPercentage(value, context.min, context.max)
     const label = getLabel(index, context.values.length)
-    const sizeIn = sizeProp ?? context.size ?? '$true'
+    const sizeIn = (sizeProp ?? context.size ?? true) as SizeTokens | number | true
     const [size, setSize] = React.useState(() => {
       // for SSR
       const estimatedSize = getVariableValue(getThumbSize(sizeIn).width) as number
@@ -571,7 +564,7 @@ const SliderThumb = SliderThumbFrame.styleable<SliderThumbExtraProps>(
  * Slider
  * -----------------------------------------------------------------------------------------------*/
 
-const SliderComponent = React.forwardRef(
+const SliderComponent = createRefComponent(
   (props: ScopedProps<SliderProps>, forwardedRef) => {
     const {
       name,
@@ -709,14 +702,11 @@ const SliderComponent = React.forwardRef(
             }
           }}
         />
-        {/* {isFormControl &&
-        values.map((value, index) => (
-          <BubbleInput
-            key={index}
-            name={name ? name + (values.length > 1 ? '[]' : '') : undefined}
-            value={value}
-          />
-        ))} */}
+        {isWeb &&
+          name &&
+          values.map((value, index) => (
+            <input key={index} type="hidden" name={name} value={value} />
+          ))}
       </SliderProvider>
     )
   }
@@ -729,41 +719,6 @@ const Slider = withStaticProperties(SliderComponent, {
 })
 
 Slider.displayName = SLIDER_NAME
-
-/* -----------------------------------------------------------------------------------------------*/
-
-// // TODO
-// const BubbleInput = (props: any) => {
-//   const { value, ...inputProps } = props
-//   const ref = React.useRef<HTMLInputElement>(null)
-//   const prevValue = usePrevious(value)
-
-//   // Bubble value change to parents (e.g form change event)
-//   React.useEffect(() => {
-//     const input = ref.current!
-//     const inputProto = window.HTMLInputElement.prototype
-//     const descriptor = Object.getOwnPropertyDescriptor(inputProto, 'value') as PropertyDescriptor
-//     const setValue = descriptor.set
-//     if (prevValue !== value && setValue) {
-//       const event = new Event('input', { bubbles: true })
-//       setValue.call(input, value)
-//       input.dispatchEvent(event)
-//     }
-//   }, [prevValue, value])
-
-//   /**
-//    * We purposefully do not use `type="hidden"` here otherwise forms that
-//    * wrap it will not be able to access its value via the FormData API.
-//    *
-//    * We purposefully do not add the `value` attribute here to allow the value
-//    * to be set programatically and bubble to any parent form `onChange` event.
-//    * Adding the `value` will cause React to consider the programatic
-//    * dispatch a duplicate and it will get swallowed.
-//    */
-//   return <input style={{ display: 'none' }} {...inputProps} ref={ref} defaultValue={value} />
-// }
-
-/* -----------------------------------------------------------------------------------------------*/
 
 const Track = SliderTrack
 const Range = SliderActive

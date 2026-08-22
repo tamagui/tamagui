@@ -5,7 +5,6 @@ import { Link } from '~/components/Link'
 import { memo, useEffect, useRef, useState } from 'react'
 import type { Heading, TextProps } from 'tamagui'
 import {
-  Button,
   Card,
   H1,
   H2,
@@ -19,6 +18,7 @@ import {
   useDidFinishSSR,
 } from 'tamagui'
 
+import { Button } from '~/components/Button'
 import { ContainerLarge } from '~/components/Containers'
 import { HomeH2 } from './HomeHeaders'
 
@@ -47,10 +47,10 @@ export const HomeTypography = memo(() => {
 
   return (
     <>
-      <YStack fullscreen className="" opacity={0.1} />
+      <YStack position="absolute" inset={0} className="" opacity={0.1} />
       {/* -5 my to fit grid nicely */}
-      <ContainerLarge my={-5} position="relative" gap="$8">
-        <YStack ref={ref} items="center" gap="$3">
+      <ContainerLarge my={-5} position="relative" gap="8">
+        <YStack ref={ref} items="center" gap="3">
           <HomeH2>
             Beautifully expressive font systems with{' '}
             <span className="clip-text rainbow">rhythm</span>.
@@ -61,33 +61,31 @@ export const HomeTypography = memo(() => {
           items="center"
           justify="center"
           position="relative"
-          gap="$8"
-          flexDirection="row-reverse"
-          $sm={{
-            flexDirection: 'column-reverse',
-          }}
+          gap="8"
+          flexDirection="row-reverse sm:column-reverse"
         >
           <OverlayCard />
 
           <YStack
             height={300}
             width="40%"
-            gap="$0.5"
+            gap="0-5"
             justify="center"
-            scale={1.1}
-            x={-20}
-            y={5}
-            $sm={{ y: 0, minW: '110%', items: 'center', x: 0, scale: 0.9 }}
+            scale="1.1 sm:0.9"
+            x="-20px sm:0"
+            y="5px sm:0"
+            minW="sm:110%"
+            items="sm:center"
           >
             <YStack items="flex-end" contain="paint layout" height={270}>
-              <AnimatePresence exitBeforeEnter>
+              <AnimatePresence mode="wait">
                 <AnimatedHeading
                   disableAnimation={!isIntersecting}
                   key={`${family}1`}
                   index={0}
                   Component={H1}
                   family={family}
-                  color="$red10"
+                  color="red10"
                 >
                   Swappable
                 </AnimatedHeading>
@@ -97,7 +95,7 @@ export const HomeTypography = memo(() => {
                   index={1}
                   Component={H2}
                   family={family}
-                  color="$blue10"
+                  color="blue10"
                 >
                   typed, compiled
                 </AnimatedHeading>
@@ -107,7 +105,7 @@ export const HomeTypography = memo(() => {
                   index={2}
                   Component={H3}
                   family={family}
-                  color="$blue10"
+                  color="blue10"
                 >
                   custom per-size
                 </AnimatedHeading>
@@ -117,7 +115,7 @@ export const HomeTypography = memo(() => {
                   index={3}
                   Component={H4}
                   family={family}
-                  color="$green10"
+                  color="green10"
                 >
                   premade or custom
                 </AnimatedHeading>
@@ -127,7 +125,7 @@ export const HomeTypography = memo(() => {
                   index={4}
                   Component={H5}
                   family={family}
-                  color="$yellow10"
+                  color="yellow10"
                 >
                   easy to author
                 </AnimatedHeading>
@@ -137,7 +135,7 @@ export const HomeTypography = memo(() => {
                   index={5}
                   Component={H6}
                   family={family}
-                  color="$red10"
+                  color="red10"
                 >
                   font themes
                 </AnimatedHeading>
@@ -157,30 +155,24 @@ const OverlayCard = () => {
   return (
     <Card
       borderWidth={1}
-      borderColor="$borderColor"
-      rounded="$6"
-      elevation="$6"
+      borderColor="border-color"
+      rounded="6"
       shadowRadius={60}
+      elevation="6"
     >
-      <YStack
-        justify="center"
-        p="$6"
-        gap="$5"
-        maxW="calc(min(90vw, 400px))"
-        $sm={{ p: '$5' }}
-      >
-        <Paragraph text="left" size="$8" fontWeight="400" letterSpacing={-1}>
+      <YStack justify="center" p="6 sm:5" gap="5" maxW="calc(min(90vw, 400px))">
+        <Paragraph text="left" size="8" fontWeight="400" letterSpacing={-1}>
           Use, swap and share fonts with typed vertical rhythm.
         </Paragraph>
 
-        <Paragraph text="left" size="$6" color="$color9" fontWeight="400">
+        <Paragraph text="left" color="color9" fontWeight="400" size="6">
           Typed, sizable fonts with control over every facet - weight, spacing,
           line-height, letter-spacing, color and more.
         </Paragraph>
 
         <Link asChild href="/docs/core/configuration">
           <Button aria-label="Fonts docs" self="flex-end" theme={tint as any}>
-            <Button.Text fontFamily="$silkscreen">Fonts &raquo;</Button.Text>
+            <Button.Text fontFamily="silkscreen">Fonts &raquo;</Button.Text>
           </Button>
         </Link>
       </YStack>
@@ -207,18 +199,13 @@ const AnimatedHeading = memo(
       <Delay passThrough={disableAnimation} by={index * 180 + 20}>
         <Component
           transition={disableAnimation ? null : 'lazy'}
-          enterStyle={{ opacity: 0, y: -10 }}
-          exitStyle={{ opacity: 0, y: 10 }}
-          opacity={1}
-          y={0}
-          pr="$1"
-          my="$1"
-          $sm={{
-            pr: 0,
-          }}
+          opacity="1 enter:0 exit:0"
+          y="0 enter:-10px exit:10px"
+          pr="1 sm:0"
+          my="1"
           // @ts-ignore
-          fontFamily={`$${family}`}
-          textShadowColor="$shadow2"
+          fontFamily={family}
+          textShadowColor="shadow2"
           textShadowRadius={3}
           textShadowOffset={{ width: 0, height: 3 }}
           ellipsis

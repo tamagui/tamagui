@@ -41,7 +41,6 @@ function TabsComponent(props: TabsProps) {
     <Tabs
       activationMode="manual"
       onValueChange={updateUrl}
-      unstyled
       orientation="horizontal"
       flexDirection="column"
       borderWidth={0}
@@ -56,29 +55,21 @@ const Tab = forwardRef(function Tab(props: TabsTabProps, ref) {
 
   return (
     <Tabs.Tab
-      size="$3"
+      size="3"
       flex={1}
-      ref={ref as any}
-      px="$5"
+      px="5"
       pointerEvents="auto"
-      rounded="$5"
+      rounded="5"
       {...props}
-      focusStyle={{
-        outlineColor: '$outlineColor',
-        outlineWidth: 2,
-        outlineStyle: 'solid',
-      }}
+      outlineColor="focus:outline-color"
+      outlineWidth="focus:2px"
+      outlineStyle="focus:solid"
       {...(isActive && {
-        backgroundColor: '$color7',
-        hoverStyle: {
-          backgroundColor: '$color7',
-        },
-        focusStyle: {
-          backgroundColor: '$color7',
-        },
+        backgroundColor: 'color7 hover:color7 focus:color7',
       })}
+      ref={ref as any}
     >
-      <Paragraph size="$3">{props.children}</Paragraph>
+      <Paragraph size="3">{props.children}</Paragraph>
     </Tabs.Tab>
   )
 })
@@ -86,31 +77,26 @@ const Tab = forwardRef(function Tab(props: TabsTabProps, ref) {
 const TabsListFrame = styled(XStack, {
   pointerEvents: 'none',
   maxW: '100%',
-  height: '$4',
-  self: 'stretch',
+  height: '4',
+  self: 'stretch sm:stretch',
   mr: 0,
   mb: 0,
-  pb: '$2',
+  pb: '2',
   z: 10000,
   position: 'sticky' as any,
-
-  px: '$2',
+  px: '2',
   items: 'center',
-  borderColor: '$color4',
-  borderBottomWidth: '$1',
-  rounded: '$2',
-
-  $sm: {
-    minW: '100%',
-    self: 'stretch',
-    mt: 0,
-  },
+  borderColor: 'color4',
+  borderBottomWidth: '1',
+  rounded: '2',
+  minW: 'sm:100%',
+  mt: 'sm:0px',
 })
 
 const TabsList = (props) => {
   return (
     <TabsListFrame className="sticky">
-      <Tabs.List gap="$3" {...props} />
+      <Tabs.List gap="3" {...props} />
     </TabsListFrame>
   )
 }
@@ -121,8 +107,8 @@ const TabsContent = (props) => {
       width="100%"
       justify="flex-start"
       items="stretch"
-      t="$-2"
-      pt="$4"
+      t="-2"
+      pt="4"
       {...props}
     />
   )

@@ -3,7 +3,7 @@
  * It does the following:
  *   1. Shorthands into longhands, px = paddingHorizontal
  *   2. Expands flex, borderColor and other properties that can expand into sub-parts
- *   3. Normalizes all sub pseudo-media-etc styles
+ *   3. Preserves original-value provenance across expanded longhands
  */
 export declare function normalizeStyle(style: Record<string, any>, disableNormalize?: boolean): Record<string, any>;
 //# sourceMappingURL=normalizeStyle.d.ts.map

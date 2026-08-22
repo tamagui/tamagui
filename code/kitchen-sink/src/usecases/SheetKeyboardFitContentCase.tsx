@@ -1,11 +1,8 @@
 import { useState, useSyncExternalStore } from 'react'
 import { Keyboard, type NativeScrollEvent, type NativeSyntheticEvent } from 'react-native'
-import { Button, Image, Input, Sheet, Text, XStack, YStack } from 'tamagui'
-
-const MOCK_URLS = {
-  tall: 'https://picsum.photos/400/600',
-  short: 'https://picsum.photos/400/150',
-}
+import { Image, Input, Sheet, Text, XStack, YStack } from 'tamagui'
+import { Button } from '../components/Button'
+import { TEST_IMAGE_WIDE } from './testImage'
 
 type ScrollMetrics = {
   scrollY: number
@@ -88,7 +85,7 @@ function TestMetricsProbe() {
   )
 
   return (
-    <YStack gap="$2" padding="$3" bg="$backgroundHover" borderRadius="$2">
+    <YStack gap="2" padding="3" bg="background-hover" borderRadius="2">
       <Text testID="sheet-kb-fit-events">Events: {events.join(', ') || '(none)'}</Text>
       <Text testID="sheet-kb-fit-scroll-y">Scroll Y: {scrollY}</Text>
       <Text testID="sheet-kb-fit-max-scroll-y">Max scroll Y: {maxScrollY}</Text>
@@ -106,15 +103,15 @@ function TestMetricsProbe() {
 export function SheetKeyboardFitContentCase() {
   const [open, setOpen] = useState(false)
   const [caption, setCaption] = useState('')
-  const [imageUrl, setImageUrl] = useState<string | null>(null)
+  const [imageSize, setImageSize] = useState<'tall' | 'short' | null>(null)
 
   return (
-    <YStack padding="$4" gap="$4" testID="sheet-kb-fit-screen">
-      <Text fontSize="$5" fontWeight="bold">
+    <YStack padding="4" gap="4" testID="sheet-kb-fit-screen">
+      <Text fontSize="5" fontWeight="bold">
         Sheet + Keyboard + Fit Content
       </Text>
 
-      <Text fontSize="$3" color="$gray11">
+      <Text fontSize="3" color="color10">
         Load a mock image URL to change content height while keyboard may be open.
       </Text>
 
@@ -141,14 +138,9 @@ export function SheetKeyboardFitContentCase() {
         zIndex={100000}
         transition="medium"
       >
-        <Sheet.Overlay
-          transition="lazy"
-          bg="$color"
-          opacity={0.5}
-          enterStyle={{ opacity: 0 }}
-          exitStyle={{ opacity: 0 }}
-        />
-        <Sheet.Frame testID="sheet-kb-fit-frame">
+        <Sheet.Overlay transition="lazy" bg="color" opacity="0.5 enter:0 exit:0" />
+        <Sheet.Container testID="sheet-kb-fit-frame">
+          <Sheet.Background />
           <Sheet.ScrollView
             testID="sheet-kb-fit-scrollview"
             keyboardShouldPersistTaps="handled"
@@ -156,8 +148,8 @@ export function SheetKeyboardFitContentCase() {
             scrollEventThrottle={16}
             onScroll={handleScrollMetrics}
           >
-            <YStack gap="$4" padding="$4">
-              <Text fontSize="$5" fontWeight="bold">
+            <YStack gap="4" padding="4">
+              <Text fontSize="5" fontWeight="bold">
                 Create Post
               </Text>
 
@@ -170,40 +162,39 @@ export function SheetKeyboardFitContentCase() {
                 onBlur={() => addEventMetric('blur')}
               />
 
-              {/* Image area — always rendered, height changes with URL */}
-              {imageUrl ? (
+              {/* Image area — always rendered, height changes with the picked size */}
+              {imageSize ? (
                 <Image
                   testID="sheet-kb-fit-image"
-                  source={{ uri: imageUrl }}
+                  source={{ uri: TEST_IMAGE_WIDE }}
                   width="100%"
-                  height={imageUrl === MOCK_URLS.tall ? 300 : 100}
-                  borderRadius="$4"
-                  bg="$backgroundHover"
+                  height={imageSize === 'tall' ? 300 : 100}
+                  borderRadius="4"
+                  bg="background-hover"
                 />
               ) : (
                 <YStack
                   testID="sheet-kb-fit-placeholder"
                   height={150}
                   borderWidth={2}
-                  borderColor="$borderColor"
+                  borderColor="border-color"
                   borderStyle="dashed"
-                  borderRadius="$4"
+                  borderRadius="4"
                   alignItems="center"
                   justifyContent="center"
-                  bg="$backgroundHover"
+                  bg="background-hover"
                 >
-                  <Text color="$gray11">No image loaded</Text>
+                  <Text color="color10">No image loaded</Text>
                 </YStack>
               )}
 
-              <XStack gap="$2">
+              <XStack gap="2">
                 <Button
                   testID="sheet-kb-fit-load-tall"
-                  size="$3"
                   theme="green"
                   flex={1}
                   onPress={() => {
-                    setImageUrl(MOCK_URLS.tall)
+                    setImageSize('tall')
                     addEventMetric('load-tall')
                   }}
                 >
@@ -211,11 +202,10 @@ export function SheetKeyboardFitContentCase() {
                 </Button>
                 <Button
                   testID="sheet-kb-fit-load-short"
-                  size="$3"
                   theme="blue"
                   flex={1}
                   onPress={() => {
-                    setImageUrl(MOCK_URLS.short)
+                    setImageSize('short')
                     addEventMetric('load-short')
                   }}
                 >
@@ -223,10 +213,9 @@ export function SheetKeyboardFitContentCase() {
                 </Button>
                 <Button
                   testID="sheet-kb-fit-reset"
-                  size="$3"
                   flex={1}
                   onPress={() => {
-                    setImageUrl(null)
+                    setImageSize(null)
                     addEventMetric('reset')
                   }}
                 >
@@ -236,7 +225,6 @@ export function SheetKeyboardFitContentCase() {
 
               <Button
                 testID="sheet-kb-fit-dismiss-kb"
-                size="$3"
                 onPress={() => {
                   Keyboard.dismiss()
                   addEventMetric('dismiss-kb')
@@ -247,7 +235,6 @@ export function SheetKeyboardFitContentCase() {
 
               <Button
                 testID="sheet-kb-fit-post"
-                size="$3"
                 theme="green"
                 onPress={() => addEventMetric('post')}
               >
@@ -256,7 +243,6 @@ export function SheetKeyboardFitContentCase() {
 
               <Button
                 testID="sheet-kb-fit-close"
-                size="$3"
                 theme="red"
                 onPress={() => setOpen(false)}
               >
@@ -264,7 +250,7 @@ export function SheetKeyboardFitContentCase() {
               </Button>
             </YStack>
           </Sheet.ScrollView>
-        </Sheet.Frame>
+        </Sheet.Container>
       </Sheet>
     </YStack>
   )

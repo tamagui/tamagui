@@ -3,9 +3,11 @@
  * https://github.com/tamagui/tamagui/issues/1859
  */
 
-import { Check, ChevronDown } from '@tamagui/lucide-icons-2'
+import { Check } from '@tamagui/lucide-icons-2'
 import React from 'react'
-import { Adapt, Button, Select, Sheet, Text, XStack, YStack } from 'tamagui'
+import { Adapt, Button, Text, XStack, YStack } from 'tamagui'
+import { Select } from '../components/Select'
+import { Sheet } from '../components/Sheet'
 
 const items = [
   { name: 'Apple' },
@@ -34,24 +36,20 @@ function SelectComponent({ id }: { id: string }) {
         testID={`${id}-trigger`}
         aria-label={`${id}-trigger`}
         maxWidth={220}
-        iconAfter={ChevronDown}
       >
         <Select.Value placeholder="Select a fruit" />
+        <Select.Icon />
       </Select.Trigger>
 
       <Adapt when={true} platform="touch">
         <Sheet modal dismissOnSnapToBottom transition="medium">
-          <Sheet.Frame>
+          <Sheet.Container>
+            <Sheet.Background />
             <Sheet.ScrollView>
               <Adapt.Contents />
             </Sheet.ScrollView>
-          </Sheet.Frame>
-          <Sheet.Overlay
-            bg="$shadowColor"
-            transition="lazy"
-            enterStyle={{ opacity: 0 }}
-            exitStyle={{ opacity: 0 }}
-          />
+          </Sheet.Container>
+          <Sheet.Overlay bg="shadow-color" transition="lazy" opacity="enter:0 exit:0" />
         </Sheet>
       </Adapt>
 
@@ -59,9 +57,8 @@ function SelectComponent({ id }: { id: string }) {
         <Select.Viewport minW={200}>
           <Select.Group>
             <Select.Label>Fruits</Select.Label>
-            {items.map((item, i) => (
+            {items.map((item) => (
               <Select.Item
-                index={i}
                 key={item.name}
                 value={item.name.toLowerCase()}
                 testID={`${id}-option-${item.name.toLowerCase()}`}
@@ -85,8 +82,8 @@ export function SelectRemount() {
   const [key, setKey] = React.useState(0)
 
   return (
-    <YStack padding="$4" gap="$4" flex={1}>
-      <XStack gap="$2">
+    <YStack padding="4" gap="4" flex={1}>
+      <XStack gap="2">
         <Button
           testID="toggle-mount-button"
           aria-label="toggle-mount-button"
@@ -112,7 +109,7 @@ export function SelectRemount() {
       </XStack>
 
       {mounted && (
-        <YStack key={key} gap="$4">
+        <YStack key={key} gap="4">
           <SelectComponent id="select-remount-test" />
 
           {/* Second select to test multiple on same screen */}
@@ -120,13 +117,13 @@ export function SelectRemount() {
         </YStack>
       )}
 
-      <YStack padding="$2" bg="$backgroundHover" borderRadius="$2">
-        <XStack gap="$2" width="100%">
+      <YStack padding="2" bg="background-hover" borderRadius="2">
+        <XStack gap="2" width="100%">
           <YStack
             width={10}
             height={10}
             borderRadius={5}
-            bg={mounted ? '$green10' : '$red10'}
+            bg={`${mounted ? 'green10' : 'red10'}`}
           />
           <Text>{mounted ? `Mounted (key: ${key})` : 'Unmounted'}</Text>
         </XStack>

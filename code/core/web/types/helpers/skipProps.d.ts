@@ -7,13 +7,15 @@ export declare const skipProps: {
     space: number;
     animateOnly: number;
     animatedBy: number;
+    displayName: number;
     disableClassName: number;
     debug: number;
-    componentName: number;
     disableOptimization: number;
+    disableNativeStyle: number;
     render: number;
     style: number;
     group: number;
+    container: number;
     animatePresence: number;
 };
 //# sourceMappingURL=skipProps.d.ts.map

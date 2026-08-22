@@ -1,20 +1,36 @@
-import { by, element, expect, waitFor } from 'detox'
-import { safeLaunchApp, withSync } from './utils/detox'
+import { by, device, element, expect, waitFor } from 'detox'
+import { runAdb, safeLaunchApp, withSync } from './utils/detox'
 import { remountDirectUseCase } from './utils/navigation'
 
 function getMenuItemMatcher(label: string) {
   return by.text(label)
 }
 
-async function openMenu() {
+async function selectColor(label: 'Red' | 'Green' | 'Blue') {
+  if (device.getPlatform() === 'android') {
+    const trigger = element(by.id('menu-radio-trigger'))
+    const { frame } = (await trigger.getAttributes()) as Detox.AndroidElementAttributes
+    await withSync(() => trigger.tap())
+
+    // Compose popup contents are outside Espresso's View hierarchy. Detox's
+    // screen tap also becomes relative to the popup root, so use Android's
+    // physical screen input for the 8dp padding and 48dp Material menu rows.
+    const density = frame.width / 120
+    const itemIndex = { Red: 0, Green: 1, Blue: 2 }[label]
+    runAdb(
+      'shell',
+      'input',
+      'tap',
+      String(Math.round(frame.x + frame.width / 2)),
+      String(Math.round(frame.y + frame.height + (32 + itemIndex * 48) * density))
+    )
+    return
+  }
+
   await withSync(() => element(by.id('menu-radio-trigger')).tap())
   await waitFor(element(getMenuItemMatcher('Green')))
     .toBeVisible()
     .withTimeout(10000)
-}
-
-async function selectColor(label: 'Red' | 'Green' | 'Blue') {
-  await openMenu()
   await withSync(() => element(getMenuItemMatcher(label)).tap())
 }
 

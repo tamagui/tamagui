@@ -23,7 +23,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
     return (
       <>
         {/* capture all docs pages */}
-        <ThemeNameEffect colorKey="$color1" />
+        <ThemeNameEffect colorKey="color1" />
 
         <YStack render="article">
           <Container position="relative">{children}</Container>
@@ -32,52 +32,43 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
             {(previous || next) && (
               <XStack
                 aria-label="Pagination navigation"
-                my="$9"
+                my="9"
                 justify="space-between"
-                gap="$4"
+                gap="4"
               >
                 {previous && (
                   <Link href={previous.route as Href} asChild>
                     <XStack
                       render="a"
                       group="card"
-                      hoverStyle={{
-                        borderColor: '$color11',
-                      }}
+                      borderColor="border-color hover:color11"
                       flex={1}
                       width="50%"
-                      p="$5"
-                      rounded="$2"
+                      p="5"
+                      rounded="2"
                       borderWidth={1}
-                      borderColor="$borderColor"
-                      pressStyle={{
-                        bg: '$backgroundPress',
-                      }}
-                      aria-label={`Previous page: ${previous.title}`}
+                      bg="press:background-press"
                       items="center"
-                      gap="$4"
+                      gap="4"
                       transition="100ms"
+                      aria-label={`Previous page: ${previous.title}`}
                     >
                       <View
-                        opacity={0}
-                        l="$-4"
-                        $group-card-hover={{ opacity: 1, l: '$0' }}
-                        $group-card-press={{ opacity: 0, l: '$-4' }}
+                        opacity="0 group-hover/card:1 group-press/card:0"
+                        l="-4 group-hover/card:0 group-press/card:-4"
                         transition="quickest"
                       >
-                        <ChevronLeft color="$color11" />
+                        <ChevronLeft color="color11" />
                       </View>
 
                       <YStack
-                        l="$-8"
-                        $group-card-hover={{ l: '$0' }}
-                        $group-card-press={{ l: '$-8' }}
+                        l="-8 group-hover/card:0 group-press/card:-8"
                         transition="quicker"
                       >
-                        <Paragraph select="none" color="$color10" size="$5">
+                        <Paragraph select="none" color="color10" size="5">
                           Previous
                         </Paragraph>
-                        <Paragraph select="none" size="$3" color="$gray10">
+                        <Paragraph select="none" color="gray10" size="3">
                           {previous.title}
                         </Paragraph>
                       </YStack>
@@ -89,46 +80,37 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
                     <XStack
                       render="a"
                       group="card"
-                      hoverStyle={{
-                        borderColor: '$color11',
-                      }}
+                      borderColor="border-color hover:color11"
                       flex={1}
                       width="50%"
-                      p="$5"
-                      rounded="$2"
+                      p="5"
+                      rounded="2"
                       borderWidth={1}
-                      borderColor="$borderColor"
-                      pressStyle={{
-                        bg: '$backgroundPress',
-                      }}
-                      aria-label={`Previous page: ${next.title}`}
+                      bg="press:background-press"
                       items="center"
                       justify="flex-end"
-                      gap="$4"
+                      gap="4"
                       transition="100ms"
+                      aria-label={`Previous page: ${next.title}`}
                     >
                       <YStack
-                        r="$-8"
-                        $group-card-hover={{ r: '$0' }}
-                        $group-card-press={{ r: '$-8' }}
+                        r="-8 group-hover/card:0 group-press/card:-8"
                         transition="quicker"
                       >
-                        <Paragraph select="none" color="$color10" size="$5">
+                        <Paragraph select="none" color="color10" size="5">
                           Next
                         </Paragraph>
-                        <Paragraph select="none" size="$3" color="$gray10">
+                        <Paragraph select="none" color="gray10" size="3">
                           {next.title}
                         </Paragraph>
                       </YStack>
 
                       <View
-                        opacity={0}
-                        r="$-4"
-                        $group-card-hover={{ opacity: 1, r: '$0' }}
-                        $group-card-press={{ opacity: 0, r: '$-4' }}
+                        opacity="0 group-hover/card:1 group-press/card:0"
+                        r="-4 group-hover/card:0 group-press/card:-4"
                         transition="quickest"
                       >
-                        <ChevronRight color="$color11" />
+                        <ChevronRight color="color11" />
                       </View>
                     </XStack>
                   </Link>
@@ -137,7 +119,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
             )}
           </Container>
 
-          <Container my="$3">
+          <Container my="3">
             <Link
               href={editUrl}
               // @ts-ignore
@@ -159,12 +141,8 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
       <YStack
         overflow="hidden"
         mx="auto"
-        $gtSm={{
-          flexDirection: 'row',
-        }}
-        $gtLg={{
-          l: -50,
-        }}
+        flexDirection="gtSm:row"
+        l="gtLg:-50px"
         maxW={1250}
         z={100}
         position="relative"
@@ -172,15 +150,11 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
         <EnsureFlexed />
         <YStack
           overflow="hidden"
-          $md={{
-            display: 'none',
-          }}
-          $gtSm={{
-            position: 'fixed',
-            t: 0,
-            b: 0,
-            width: 245,
-          }}
+          display="md:none"
+          position="gtSm:fixed"
+          t="gtSm:0px"
+          b="gtSm:0px"
+          width="gtSm:245px"
         >
           <LinearGradient
             position="absolute"
@@ -190,19 +164,17 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
             height={100}
             width={300}
             z={100}
-            colors={['$background', '$background', '$background0']}
+            colors={['background', 'background', 'background0']}
           />
           <ScrollView>
             <ThemeTint>
               <YStack
-                display="none"
-                $gtMd={{
-                  display: 'block',
-                  p: '$0.5',
-                  pr: '$3',
-                  mt: 108,
-                  pb: '$18',
-                }}
+                display="none gtMd:block"
+                paddingTop="gtMd:0-5"
+                paddingLeft="gtMd:0-5"
+                pr="gtMd:3"
+                mt="gtMd:108px"
+                pb="gtMd:18"
               >
                 <DocsMenuContents />
               </YStack>
@@ -214,15 +186,11 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
       <YStack
         maxW="100%"
         flex={1}
-        py="$8"
-        $gtLg={{
-          l: -50,
-        }}
-        $gtMd={{
-          pb: '$9',
-          pl: 250,
-          pr: 100,
-        }}
+        paddingTop="8"
+        pb="8 gtMd:9"
+        l="gtLg:-50px"
+        pl="gtMd:250px"
+        pr="gtMd:100px"
       >
         {pageContents}
       </YStack>

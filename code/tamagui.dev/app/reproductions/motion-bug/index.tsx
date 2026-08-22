@@ -26,11 +26,12 @@ export default function MotionBugReproPage() {
         description="Reproduction page for motion animation driver bug"
       />
 
-      <ThemeNameEffectNoTheme disableTint={3} colorKey="$color3" />
+      <ThemeNameEffectNoTheme disableTint={3} colorKey="color3" />
 
       <HomeGlow />
       <YStack
-        fullscreen
+        position="absolute"
+        inset={0}
         className="grain"
         opacity={0.2}
         style={{
@@ -46,7 +47,8 @@ export default function MotionBugReproPage() {
         <YStack
           pointerEvents="none"
           z={0}
-          fullscreen
+          position="absolute"
+          inset={0}
           className="bg-dot-grid"
           style={{
             maskImage: `linear-gradient(transparent, #000, transparent)`,
@@ -67,14 +69,15 @@ export default function MotionBugReproPage() {
         <YStack
           pointerEvents="none"
           z={2}
-          fullscreen
+          position="absolute"
+          inset={0}
           className="bg-dot-grid"
           style={{
             maskImage: `linear-gradient(transparent, #000, transparent)`,
           }}
         />
       </TintSection>
-      <TintSection index={8} my="$-4" p={0} z={100}>
+      <TintSection index={8} my="-4" p={0} z={100}>
         <SectionTinted z={1000} bubble gradient>
           <HomeTypography />
         </SectionTinted>

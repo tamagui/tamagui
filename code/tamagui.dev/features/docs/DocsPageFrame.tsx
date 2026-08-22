@@ -5,6 +5,8 @@ import { Paragraph, View, XStack, YStack } from 'tamagui'
 import { Container } from '~/components/Containers'
 import { Link } from '~/components/Link'
 import { DocsQuickNav, type Heading } from './DocsQuickNav'
+import { DocsVersionPickerPortal } from './DocsVersionPicker'
+import type { DocsVersionFrontmatter } from './docsVersion'
 
 type DocsPageFrameProps = {
   children: ReactNode
@@ -12,6 +14,8 @@ type DocsPageFrameProps = {
   editUrl?: string
   previous?: { route: string; title: string } | null
   next?: { route: string; title: string } | null
+  frontmatter?: DocsVersionFrontmatter
+  initialSearch?: string
 }
 
 export function DocsPageFrame({
@@ -20,11 +24,14 @@ export function DocsPageFrame({
   editUrl,
   previous,
   next,
+  frontmatter,
+  initialSearch,
 }: DocsPageFrameProps) {
   return (
     <>
+      <DocsVersionPickerPortal frontmatter={frontmatter} initialSearch={initialSearch} />
       {/* main content */}
-      <YStack flex={1} flexBasis="auto" py="$8" px="$4">
+      <YStack flex={1} flexBasis="auto" py="8" px="4">
         <YStack render="article">
           <Container position="relative">{children}</Container>
 
@@ -32,47 +39,39 @@ export function DocsPageFrame({
             {(previous || next) && (
               <XStack
                 aria-label="Pagination navigation"
-                my="$9"
+                my="9"
                 justify="space-between"
-                gap="$4"
+                gap="4"
               >
                 {previous && (
                   <Link href={previous.route as Href} asChild>
                     <XStack
                       render="a"
                       group="card"
-                      hoverStyle={{
-                        borderColor: '$color5',
-                      }}
+                      borderColor="border-color hover:color5"
                       flex={1}
                       width="50%"
-                      p="$5"
-                      rounded="$2"
+                      p="5"
+                      rounded="2"
                       borderWidth={1}
-                      borderColor="$borderColor"
-                      aria-label={`Previous page: ${previous.title}`}
                       items="center"
-                      gap="$4"
+                      gap="4"
                       transition="100ms"
+                      aria-label={`Previous page: ${previous.title}`}
                     >
                       <View
-                        opacity={0}
-                        x="$-2"
-                        $group-card-hover={{ opacity: 1, x: '$0' }}
+                        opacity="0 group-hover/card:1"
+                        x="-2 group-hover/card:0"
                         transition="quickest"
                       >
-                        <ChevronLeft color="$color11" />
+                        <ChevronLeft color="color11" />
                       </View>
 
-                      <YStack
-                        x="$-4"
-                        $group-card-hover={{ x: '$0' }}
-                        transition="quicker"
-                      >
-                        <Paragraph select="none" color="$color10" size="$5">
+                      <YStack x="-4 group-hover/card:0" transition="quicker">
+                        <Paragraph select="none" color="color10" size="5">
                           Previous
                         </Paragraph>
-                        <Paragraph select="none" size="$3" color="$gray10">
+                        <Paragraph select="none" color="gray10" size="3">
                           {previous.title}
                         </Paragraph>
                       </YStack>
@@ -84,37 +83,33 @@ export function DocsPageFrame({
                     <XStack
                       render="a"
                       group="card"
-                      hoverStyle={{
-                        borderColor: '$color5',
-                      }}
+                      borderColor="border-color hover:color5"
                       flex={1}
                       width="50%"
-                      p="$5"
-                      rounded="$2"
+                      p="5"
+                      rounded="2"
                       borderWidth={1}
-                      borderColor="$borderColor"
-                      aria-label={`Next page: ${next.title}`}
                       items="center"
                       justify="flex-end"
-                      gap="$4"
+                      gap="4"
                       transition="100ms"
+                      aria-label={`Next page: ${next.title}`}
                     >
-                      <YStack x="$4" $group-card-hover={{ x: '$0' }} transition="quicker">
-                        <Paragraph select="none" color="$color10" size="$5">
+                      <YStack x="4 group-hover/card:0" transition="quicker">
+                        <Paragraph select="none" color="color10" size="5">
                           Next
                         </Paragraph>
-                        <Paragraph select="none" size="$3" color="$gray10">
+                        <Paragraph select="none" color="gray10" size="3">
                           {next.title}
                         </Paragraph>
                       </YStack>
 
                       <View
-                        opacity={0}
-                        x="$2"
-                        $group-card-hover={{ opacity: 1, x: '$0' }}
+                        opacity="0 group-hover/card:1"
+                        x="2 group-hover/card:0"
                         transition="quickest"
                       >
-                        <ChevronRight color="$color11" />
+                        <ChevronRight color="color11" />
                       </View>
                     </XStack>
                   </Link>
@@ -124,7 +119,7 @@ export function DocsPageFrame({
           </Container>
 
           {editUrl && (
-            <Container my="$3">
+            <Container my="3">
               <Link
                 href={editUrl as Href}
                 rel="noopener noreferrer"

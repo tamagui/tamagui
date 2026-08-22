@@ -4,16 +4,16 @@ import { Paragraph, ScrollView, styled, Text, useMedia, XStack, YStack } from 't
 import { Link } from '~/components/Link'
 
 const TableFrame = styled(YStack, {
-  my: '$4',
+  my: '4',
   borderWidth: 1,
-  borderColor: '$borderColor',
-  rounded: '$4',
+  borderColor: 'border-color',
+  rounded: '4',
   overflow: 'hidden',
 })
 
 const TableRow = styled(XStack, {
   borderBottomWidth: 1,
-  borderBottomColor: '$borderColor',
+  borderBottomColor: 'border-color',
   variants: {
     last: {
       true: {
@@ -24,18 +24,18 @@ const TableRow = styled(XStack, {
 })
 
 const TableCellContainer = styled(YStack, {
-  p: '$3',
+  p: '3',
   variants: {
     head: {
       true: {
-        bg: '$color2',
+        bg: 'color2',
       },
     },
   } as const,
 })
 
 const TableCellText = styled(Paragraph, {
-  size: '$4',
+  size: '4',
   variants: {
     head: {
       true: {
@@ -93,7 +93,7 @@ function parseCell(content: CellContent): ReactNode {
     // Inline code: `text`
     else if (match[9]) {
       parts.push(
-        <Text key={i} fontFamily="$mono" bg="$color4" px="$1.5" py="$0.5" rounded="$2">
+        <Text key={i} fontFamily="mono" bg="color4" px="1-5" py="0-5" rounded="2">
           {match[10]}
         </Text>
       )

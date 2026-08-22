@@ -35,6 +35,7 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
+    "@tamagui/core": "workspace:*",
     "@tamagui/start-transition": "workspace:*",
     "@tamagui/use-event": "workspace:*"
   },

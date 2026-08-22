@@ -1,0 +1,108 @@
+---
+title: HTML primitives
+description: Semantic HTML elements that render on web and native
+---
+
+The root `html.*` export lets one component tree use semantic HTML on web and
+the corresponding React Native primitives on native. Each member is an ordinary
+Tamagui component, so it accepts Tamagui style props alongside the DOM props for
+that element.
+
+```tsx
+import { html } from 'tamagui'
+
+export function Article() {
+  return (
+    <html.article maxWidth={720} margin="auto" padding="4 md:8">
+      <html.h1 color="color" fontSize="8">
+        A semantic, styled heading
+      </html.h1>
+      <html.p color="color" marginTop="4" opacity={0.75}>
+        The same source renders semantic tags on web and native primitives in a
+        native app.
+      </html.p>
+    </html.article>
+  )
+}
+```
+
+You can also import `html` from `@tamagui/core`.
+
+## What renders
+
+On web, `html.article`, `html.h1`, and `html.p` render literal `article`, `h1`,
+and `p` elements. Tamagui applies explicit element defaults so the result does
+not depend on whether the page loaded a CSS reset.
+
+On native, the same members render through one of four backing primitives:
+
+| Source element | Native backing |
+| --- | --- |
+| layout elements such as `div`, `article`, `main`, `section`, and `ul` | `View` |
+| text elements such as `span`, `p`, `strong`, and `h1` | `Text` |
+| `img` | `Image` |
+| `input` and `textarea` | `TextInput` |
+
+The native runtime maps supported DOM prop names to their React Native names.
+It also wraps literal text inside a View-backed element, because a React Native
+`View` cannot render a raw string. The compiler performs the same mapping and
+text wrapping ahead of time when it can lower the element.
+
+## Available elements
+
+The root export includes:
+
+```txt
+a article aside b bdi bdo blockquote br button code del div em
+fieldset footer form h1 h2 h3 h4 h5 h6 header hr i img input
+ins kbd label li main mark nav ol optgroup option p pre s section
+select span strong sub sup textarea u ul
+```
+
+Props are specific to the element. For example, `html.a` accepts `href`,
+`html.img` accepts `src` and `alt`, and `html.input` accepts input props. Void
+elements such as `br`, `hr`, `img`, and `input` reject children in TypeScript.
+
+Because these are Tamagui components, style props use the same tokens, themes,
+shorthands, and [flat conditional values](/docs/guides/flat-values) as `View`
+and `Text`:
+
+```tsx
+<html.button
+  backgroundColor="background hover:background-hover"
+  borderColor="border-color"
+  borderWidth={1}
+  padding="3"
+  onPress={save}
+>
+  Save
+</html.button>
+```
+
+## Native support is explicit
+
+A browser feature without a faithful native equivalent does not silently turn
+into a different control. Native builds reject `html.select`, `html.option`, and
+`html.optgroup`, because React Native has no menu-based select control. Unsupported
+props and events also produce a diagnostic naming the unsupported behavior.
+
+Some elements preserve their useful native subset. `html.form` and
+`html.fieldset`, for example, render containers on native, while browser form
+submission, validation, and reset behavior remain web-only.
+
+The compiler and runtime read the same generated compatibility tables. Running
+with or without compiler lowering therefore uses the same supported tag and prop
+contract.
+
+## Compiler behavior
+
+The compiler treats `html.*` as regular lowering candidates. On web it can
+replace a component with its literal tag, extracted classes, and any remaining
+host props. On native it can replace the same component with its backing
+primitive and mapped props. If the compiler cannot lower an ordinary use, the
+root export still has a runtime implementation on both platforms.
+
+For new code, use the root `html` export shown here. The standalone
+`tamagui/dom` and `@tamagui/core/dom` entries are deprecated implementation
+surfaces. Their `style()` handles are compile-only and throw if they reach the
+runtime.

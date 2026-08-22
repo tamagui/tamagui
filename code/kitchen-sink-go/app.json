@@ -3,10 +3,15 @@
     "name": "kitchen-sink-go",
     "slug": "kitchen-sink-go",
     "version": "1.0.0",
-    "platforms": ["ios", "android"],
+    "platforms": [
+      "ios",
+      "android"
+    ],
     "ios": {
       "bundleIdentifier": "dev.tamagui.kitchensinkgo"
     },
-    "plugins": ["./plugins/expo-modules-core-swift6"]
+    "plugins": [
+      "expo-font"
+    ]
   }
 }

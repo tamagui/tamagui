@@ -1,5 +1,7 @@
 import { useState } from 'react'
-import { Button, H4, Label, Paragraph, RadioGroup, XStack, YStack } from 'tamagui'
+import { H4, Label, Paragraph, XStack, YStack } from 'tamagui'
+import { Button } from '~/components/Button'
+import { RadioGroup } from '~/components/RadioGroup'
 import { AccentTheme } from '../../components/AccentTheme'
 import { useDemoProps } from '../hooks/useDemoProps'
 const options = [
@@ -30,23 +32,23 @@ export const PricingCards = () => {
       {...demoProps.borderRadiusOuterProps}
       {...demoProps.elevationProps}
       {...demoProps.panelPaddingProps}
-      bg="$background"
+      bg="background"
     >
       <YStack
-        borderBottomWidth="$0.25"
-        borderBottomColor="$borderColor"
-        borderWidth="$0"
-        pb="$2"
+        borderBottomWidth="0-25"
+        borderBottomColor="border-color"
+        borderWidth="0"
+        pb="2"
       >
-        <H4 {...demoProps.headingFontFamilyProps} size="$4" text="center">
+        <H4 {...demoProps.headingFontFamilyProps} size="4" text="center">
           Subscribe
         </H4>
-        <Paragraph color="$color9" size="$4" text="center">
+        <Paragraph color="color9" text="center" size="4">
           Select a plan
         </Paragraph>
       </YStack>
 
-      <YStack mx="$-3" flex={1} flexBasis="auto">
+      <YStack mx="-3" flex={1} flexBasis="auto">
         <RadioGroup {...demoProps.gapPropsMd} value={val} onValueChange={setVal}>
           {options.map((price) => {
             const active = val === price.value
@@ -55,26 +57,23 @@ export const PricingCards = () => {
               <Label
                 key={price.title}
                 flex={1}
-                htmlFor={htmlId}
-                p="$4"
+                p="4"
                 display="flex"
-                bg="$color2"
-                hoverStyle={{
-                  bg: '$color3',
-                }}
-                gap="$4"
+                bg="color2 hover:color3"
+                gap="4"
                 items="center"
                 {...demoProps.borderRadiusProps}
                 borderWidth={0}
+                htmlFor={htmlId}
               >
-                <RadioGroup.Item id={htmlId} size="$3" value={price.value}>
+                <RadioGroup.Item id={htmlId} size="3" value={price.value}>
                   <RadioGroup.Indicator />
                 </RadioGroup.Item>
                 <YStack flex={1} flexBasis="auto">
-                  <Paragraph size="$6" mb={-3}>
+                  <Paragraph size="6" mb={-3}>
                     {price.title}
                   </Paragraph>
-                  <Paragraph size="$3" color="$color11">
+                  <Paragraph size="3" color="color11">
                     {price.description}
                   </Paragraph>
                 </YStack>
@@ -84,22 +83,22 @@ export const PricingCards = () => {
         </RadioGroup>
       </YStack>
 
-      <YStack mt="$4" gap="$4">
-        <Paragraph size="$3" text="center" color="$color10">
+      <YStack mt="4" gap="4">
+        <Paragraph size="3" text="center" color="color10">
           Have a coupon?{' '}
           <Paragraph render="span" textDecorationLine="underline">
             Click here
           </Paragraph>
         </Paragraph>
-        <XStack gap="$2">
-          <Button flex={1} size="$5" {...demoProps.borderRadiusProps}>
+        <XStack gap="2">
+          <Button flex={1} size="5" {...demoProps.borderRadiusProps}>
             Cancel
           </Button>
 
           <AccentTheme>
             <Button
               flex={1}
-              size="$5"
+              size="5"
               {...demoProps.borderRadiusProps}
               {...demoProps.buttonOutlineProps}
             >

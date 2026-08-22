@@ -1,17 +1,17 @@
 import { Check, CheckCircle } from '@tamagui/lucide-icons-2'
 import type { CheckboxProps, RadioGroupItemProps } from 'tamagui'
 import {
-  Button,
   Checkbox,
   Label,
   Paragraph,
-  RadioGroup,
   Separator,
   XStack,
   YStack,
   isClient,
   styled,
 } from 'tamagui'
+import { Button } from '~/components/Button'
+import { RadioGroup } from '~/components/RadioGroup'
 import type { Database } from '~/features/supabase/types'
 import { getTakeoutPriceInfo } from './getProductInfo'
 
@@ -29,10 +29,10 @@ export const isSafariMobile = (() => {
   return isClient && iOS && isWebkit && !ua?.match(/CriOS/i)
 })()
 
-export function PurchaseButton({ children, fontFamily = '$mono', ...props }) {
+export function PurchaseButton({ children, fontFamily = 'mono', ...props }) {
   return (
-    <Button size="$6" rounded="$10" {...props}>
-      <Button.Text size="$6" fontFamily={fontFamily as any}>
+    <Button size="6" rounded="10" {...props}>
+      <Button.Text size="6" fontFamily={fontFamily as any}>
         {children}
       </Button.Text>
     </Button>
@@ -40,7 +40,7 @@ export function PurchaseButton({ children, fontFamily = '$mono', ...props }) {
 }
 
 export const MunroP = styled(Paragraph, {
-  fontFamily: '$mono',
+  fontFamily: 'mono',
 })
 
 export const CheckboxGroupItem = ({ children, ...props }: CheckboxProps) => {
@@ -48,41 +48,32 @@ export const CheckboxGroupItem = ({ children, ...props }: CheckboxProps) => {
     <Label
       flex={1}
       {...(props.id && { htmlFor: props.id })}
-      p="$4"
-      className="3d"
+      p="4"
       display="flex"
-      borderWidth="$0.25"
-      bg={props.checked ? '$color2' : '$color1'}
-      borderColor={props.checked ? '$color5' : '$color2'}
-      rounded="$4"
-      gap="$4"
+      borderWidth="0-25"
+      bg={`${props.checked ? 'color2' : 'color1'}`}
+      borderColor={`${props.checked ? 'color5' : 'color2'} hover:${props.checked ? 'color7' : 'color7'}`}
+      rounded="4"
+      gap="4"
       items="center"
       opacity={props.disabled ? 0.75 : 1}
       cursor={props.disabled ? 'not-allowed' : 'default'}
-      $gtSm={{
-        maxW: 'calc(50% - 8px)',
-      }}
-      hoverStyle={{
-        borderColor: props.checked ? '$color7' : '$color7',
-      }}
+      maxW="gtSm:calc(50% - 8px)"
+      className="3d"
     >
       <Checkbox
-        bg="$color3"
-        borderColor="$color5"
-        hoverStyle={{
-          bg: '$color4',
-          borderColor: '$color6',
-        }}
+        bg="color3 hover:color4"
+        borderColor="color5 hover:color6"
         {...props}
         checked={props.checked ?? false}
-        size="$6"
+        size="6"
       >
         <Checkbox.Indicator>
           <Check />
         </Checkbox.Indicator>
       </Checkbox>
 
-      <YStack gap="$1" flex={1}>
+      <YStack gap="1" flex={1}>
         {children}
       </YStack>
     </Label>
@@ -98,23 +89,20 @@ export const RadioGroupItem = ({
     <Label
       flex={1}
       {...(props.id && { htmlFor: props.id })}
-      p="$4"
+      p="4"
       height="auto"
       display="flex"
-      borderWidth="$0.25"
-      borderColor={active ? '$color9' : '$color5'}
-      rounded="$4"
-      gap="$4"
+      borderWidth="0-25"
+      borderColor={`${active ? 'color9' : 'color5'} hover:${active ? 'color10' : 'color7'}`}
+      rounded="4"
+      gap="4"
       items="center"
-      hoverStyle={{
-        borderColor: active ? '$color10' : '$color7',
-      }}
     >
-      <RadioGroup.Item size="$6" {...props}>
+      <RadioGroup.Item size="6" {...props}>
         <RadioGroup.Indicator />
       </RadioGroup.Item>
 
-      <YStack gap="$0" flex={1}>
+      <YStack gap="0" flex={1}>
         {children}
       </YStack>
     </Label>
@@ -149,31 +137,31 @@ export function BentoTable({
   const priceInfo = price ? bentoDefaults[price.id] : null
 
   return (
-    <YStack borderWidth="$0.5" rounded="$4" borderColor="$color5">
-      <XStack px="$4" py="$4" gap="$3">
+    <YStack borderWidth="0-5" rounded="4" borderColor="color5">
+      <XStack px="4" py="4" gap="3">
         <YStack width="80%">
-          <Paragraph size="$6" fontWeight="bold">
+          <Paragraph size="6" fontWeight="bold">
             Lifetime access
           </Paragraph>
-          <Paragraph flex={1} ellipsis size="$3" color="$color10">
+          <Paragraph flex={1} color="color10" ellipsis size="3">
             You own and can use the code forever.
           </Paragraph>
         </YStack>
-        <XStack flex={1} items="center" gap="$2" justify="center">
-          <Paragraph size="$8">{checkCircle}</Paragraph>
+        <XStack flex={1} items="center" gap="2" justify="center">
+          <Paragraph size="8">{checkCircle}</Paragraph>
         </XStack>
       </XStack>
-      <XStack px="$4" py="$4" gap="$3">
+      <XStack px="4" py="4" gap="3">
         <YStack width="80%">
-          <Paragraph size="$6" fontWeight="bold">
+          <Paragraph size="6" fontWeight="bold">
             Seats
           </Paragraph>
-          <Paragraph size="$3" color="$color10" lineHeight="$2">
+          <Paragraph size="3" color="color10" lineHeight="2">
             Accounts given access
           </Paragraph>
         </YStack>
-        <XStack flex={1} items="center" gap="$2" justify="center">
-          <Paragraph size="$8">{priceInfo?.seats || '-'}</Paragraph>
+        <XStack flex={1} items="center" gap="2" justify="center">
+          <Paragraph size="8">{priceInfo?.seats || '-'}</Paragraph>
         </XStack>
       </XStack>
     </YStack>
@@ -192,57 +180,57 @@ export const TakeoutTable = ({
   const price = product?.prices.find((price) => price.id === selectedPriceId)
   const takeoutPriceInfo = getTakeoutPriceInfo(price?.description ?? '')
   return (
-    <YStack borderWidth="$0.5" rounded="$4" borderColor="$borderColor">
-      <XStack px="$4" py="$4" gap="$3">
+    <YStack borderWidth="0-5" rounded="4" borderColor="border-color">
+      <XStack px="4" py="4" gap="3">
         <YStack width="80%">
-          <Paragraph size="$6" fontWeight="bold">
+          <Paragraph size="6" fontWeight="bold">
             Lifetime access, 1 year of updates
           </Paragraph>
-          <Paragraph className="text-wrap-balance" size="$3" color="$color10">
+          <Paragraph className="text-wrap-balance" size="3" color="color10">
             You own the code for life, but only have access for a year. One-click cancel
             in your account page
           </Paragraph>
         </YStack>
-        <XStack flex={1} items="center" gap="$2" justify="center">
-          <Paragraph size="$8">{checkCircle}</Paragraph>
+        <XStack flex={1} items="center" gap="2" justify="center">
+          <Paragraph size="8">{checkCircle}</Paragraph>
         </XStack>
       </XStack>
-      <XStack px="$4" py="$4" gap="$3">
+      <XStack px="4" py="4" gap="3">
         <YStack width="80%">
-          <Paragraph size="$6">License Seats</Paragraph>
-          <Paragraph className="text-wrap-balance" size="$3" color="$color10">
+          <Paragraph size="6">License Seats</Paragraph>
+          <Paragraph className="text-wrap-balance" size="3" color="color10">
             Number of people allowed to&nbsp;develop&nbsp;on&nbsp;it
           </Paragraph>
         </YStack>
-        <XStack flex={1} items="center" gap="$2" justify="center">
-          <Paragraph size="$8">{takeoutPriceInfo.licenseSeats}</Paragraph>
+        <XStack flex={1} items="center" gap="2" justify="center">
+          <Paragraph size="8">{takeoutPriceInfo.licenseSeats}</Paragraph>
         </XStack>
       </XStack>
-      <XStack px="$4" py="$4" gap="$3">
+      <XStack px="4" py="4" gap="3">
         <YStack width="80%">
-          <Paragraph size="$6">Discord Seats</Paragraph>
-          <Paragraph className="text-wrap-balance" size="$3" color="$color10">
+          <Paragraph size="6">Discord Seats</Paragraph>
+          <Paragraph className="text-wrap-balance" size="3" color="color10">
             Access to the Discord #takeout room
           </Paragraph>
         </YStack>
-        <XStack flex={1} items="center" gap="$2" justify="center">
-          <Paragraph size="$8">{takeoutPriceInfo.discordSeats}</Paragraph>
+        <XStack flex={1} items="center" gap="2" justify="center">
+          <Paragraph size="8">{takeoutPriceInfo.discordSeats}</Paragraph>
         </XStack>
       </XStack>
 
-      <XStack px="$4" py="$4" gap="$3">
+      <XStack px="4" py="4" gap="3">
         <YStack width="80%">
-          <Paragraph size="$6">GitHub Seats</Paragraph>
-          <Paragraph className="text-wrap-balance" size="$3" color="$color10">
+          <Paragraph size="6">GitHub Seats</Paragraph>
+          <Paragraph className="text-wrap-balance" size="3" color="color10">
             Open PRs and issues on the GitHub repo
           </Paragraph>
         </YStack>
-        <XStack flex={1} items="center" gap="$2" justify="center">
-          <Paragraph size="$8">{takeoutPriceInfo.githubSeats}</Paragraph>
+        <XStack flex={1} items="center" gap="2" justify="center">
+          <Paragraph size="8">{takeoutPriceInfo.githubSeats}</Paragraph>
         </XStack>
       </XStack>
     </YStack>
   )
 }
 
-const checkCircle = <CheckCircle color="$green9" />
+const checkCircle = <CheckCircle color="green9" />

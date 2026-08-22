@@ -1,7 +1,14 @@
 name: Release
 
-# github evaluates workflow_run from the default branch. keep this workflow on
-# main as well as v3-beta so successful v3-beta CI can publish automatically.
+# github evaluates workflow_run from the DEFAULT BRANCH. the beta job below fires
+# on a v3-beta push but runs main's copy of this file, so editing it on v3-beta
+# alone changes nothing and fails silently: the run looks normal and behaves as
+# though your change is not there, because it is not. a fix to this file has to
+# land on main to take effect. that cost three full CI cycles on 2026-08-21,
+# where two consecutive "fixes" to the beta job appeared to do nothing at all.
+#
+# keep the two copies in step, and when debugging a beta cut, diff this file
+# against origin/main before believing anything about what the job does.
 on:
   workflow_run:
     workflows: [Checks]

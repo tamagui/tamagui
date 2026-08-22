@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import { StyleObjectIdentifier, StyleObjectRules } from '@tamagui/helpers'
 import type { StyleObject } from '../types'
+import { wrapStyleRules } from './insertStyleRule'
 
 // turns out this is pretty slow, creating a bunch of extra tags...
 
@@ -40,6 +41,7 @@ function getCachedStyleTag(styleObject: StyleObject) {
     return cached.element
   }
 
+  const css = wrapStyleRules(rules.join('\n'))
   const element = (
     <style
       key={identifier}
@@ -50,7 +52,7 @@ function getCachedStyleTag(styleObject: StyleObject) {
       // we remove after first render in favor of inserting to a global stylesheet (faster)
       suppressHydrationWarning
     >
-      {rules.join('\n')}
+      {css}
     </style>
   )
 

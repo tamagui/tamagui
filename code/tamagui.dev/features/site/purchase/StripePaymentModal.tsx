@@ -42,7 +42,6 @@ import { Info, X } from '@tamagui/lucide-icons-2'
 import { createStore, createUseStore } from '@tamagui/use-store'
 import { useEffect, useMemo, useState } from 'react'
 import {
-  Button,
   Dialog,
   H3,
   Input,
@@ -61,6 +60,7 @@ import {
   useTheme,
   useThemeName,
 } from 'tamagui'
+import { Button } from '~/components/Button'
 import { z } from 'zod'
 import { authFetch } from '~/features/api/authFetch'
 import { useSupabaseClient } from '~/features/auth/useSupabaseClient'
@@ -130,8 +130,8 @@ const ErrorMessage = ({ error }: { error: Error | StripeError }) => {
   }, [error])
 
   return (
-    <YStack mt="$2">
-      <Paragraph color="$red10" size="$3">
+    <YStack mt="2">
+      <Paragraph color="red10" size="3">
         {errorMessage}
       </Paragraph>
     </YStack>
@@ -509,13 +509,7 @@ const PaymentForm = ({
   return (
     <form onSubmit={handleSubmit}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <View
-          maxH="70vh"
-          $maxMd={{
-            maxH: '100%',
-          }}
-          py="$4"
-        >
+        <View maxH="70vh max-md:100%" py="4">
           <PaymentElement
             options={{
               layout: 'accordion',
@@ -530,21 +524,13 @@ const PaymentForm = ({
         </View>
       </ScrollView>
       {children}
-      <YStack
-        gap="$2"
-        $maxMd={{
-          items: 'flex-end',
-        }}
-      >
+      <YStack gap="2" items="max-md:flex-end">
         <XStack
-          $maxMd={{
-            flexDirection: 'column',
-            items: 'flex-end',
-            pt: '$4',
-          }}
+          flexDirection="max-md:column"
+          pt="max-md:4"
+          items="flex-start max-md:flex-end"
           justify="space-between"
-          items="flex-start"
-          gap="$2"
+          gap="2"
         >
           <PoweredByStripeIcon height={23} />
 
@@ -556,14 +542,12 @@ const PaymentForm = ({
             >
               <Button
                 render={<button type="submit" />}
-                rounded="$10"
+                rounded="10"
                 self="flex-end"
-                $maxMd={{
-                  width: '100%',
-                }}
+                width="max-md:100%"
                 disabled={isProcessing || !stripe || !elements}
               >
-                <Button.Text fontFamily="$mono">
+                <Button.Text fontFamily="mono">
                   {isProcessing ? 'Processing...' : 'Complete purchase'}
                 </Button.Text>
               </Button>
@@ -607,7 +591,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
 
   const theme = useTheme()
   const themeName = useThemeName()
-  const { maxMd } = useMedia()
+  const maxMd = useMedia()['max-md']
 
   // Use store values if available, otherwise use props
   const yearlyTotal = store.yearlyTotal || propYearlyTotal
@@ -743,7 +727,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
   const renderContent = () => {
     if (isLoading) {
       return (
-        <YStack flex={1} items="center" justify="center" p="$4">
+        <YStack flex={1} items="center" justify="center" p="4">
           <Spinner size="large" />
         </YStack>
       )
@@ -751,14 +735,14 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
 
     if (!userData?.user) {
       return (
-        <YStack gap="$4" items="center" p="$4">
+        <YStack gap="4" items="center" p="4">
           <H3>Sign in to continue</H3>
           <Paragraph text="center">
             Please sign in with GitHub to continue your purchase.
           </Paragraph>
 
           <Button
-            size="$4"
+            size="4"
             theme="accent"
             onPress={handleLogin}
             icon={GithubIcon}
@@ -804,38 +788,38 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
           effectiveCoupon
         )
         return (
-          <YStack flex={1} gap="$4" bg="$color2" p="$4" rounded="$4">
-            <H3 $maxMd={{ fontSize: '$6' }} fontFamily="$mono">
+          <YStack flex={1} gap="4" bg="color2" p="4" rounded="4">
+            <H3 fontSize="max-md:6" fontFamily="mono">
               Order summary
             </H3>
             <Separator />
 
             <XStack justify="space-between">
-              <Paragraph fontFamily="$mono">
+              <Paragraph fontFamily="mono">
                 {SUPPORT_TIERS[supportTier].label} Support
               </Paragraph>
               <YStack items="flex-end">
                 {effectiveCoupon && (
                   <Paragraph
-                    fontFamily="$mono"
-                    size="$3"
+                    fontFamily="mono"
                     opacity={0.5}
                     textDecorationLine="line-through"
+                    size="3"
                   >
                     ${supportPrice.toLocaleString()}/mo
                   </Paragraph>
                 )}
-                <Paragraph fontFamily="$mono">
+                <Paragraph fontFamily="mono">
                   ${Math.ceil(discountedSupportPrice).toLocaleString()}/mo
                 </Paragraph>
               </YStack>
             </XStack>
 
-            <YStack gap="$2" bg="$color3" p="$3" rounded="$3">
-              <Paragraph size="$3" fontFamily="$mono" fontWeight="600">
+            <YStack gap="2" bg="color3" p="3" rounded="3">
+              <Paragraph size="3" fontFamily="mono" fontWeight="600">
                 {SUPPORT_TIERS[supportTier].label} Support includes:
               </Paragraph>
-              <Paragraph size="$2" color="$color9">
+              <Paragraph size="2" color="color9">
                 {SUPPORT_TIERS[supportTier].description}
               </Paragraph>
             </YStack>
@@ -843,35 +827,32 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
             <Separator />
 
             <XStack justify="space-between">
-              <H3 $maxMd={{ fontSize: '$6' }} fontFamily="$mono">
+              <H3 fontSize="max-md:6" fontFamily="mono">
                 Total
               </H3>
               <YStack items="flex-end">
                 {effectiveCoupon && (
                   <Paragraph
-                    fontFamily="$mono"
-                    size="$3"
+                    fontFamily="mono"
                     opacity={0.5}
                     textDecorationLine="line-through"
+                    size="3"
                   >
                     ${supportPrice.toLocaleString()}/mo
                   </Paragraph>
                 )}
-                <H3 $maxMd={{ fontSize: '$6' }} fontFamily="$mono">
+                <H3 fontSize="max-md:6" fontFamily="mono">
                   ${Math.ceil(discountedSupportPrice).toLocaleString()}/mo
                 </H3>
               </YStack>
             </XStack>
 
-            <YStack gap="$2">
+            <YStack gap="2">
               <SizableText
-                color="$color10"
-                opacity={0.3}
+                color="color10"
+                opacity="0.3 hover:0.8"
                 cursor="pointer"
-                hoverStyle={{ opacity: 0.8 }}
-                $maxMd={{
-                  fontSize: '$3',
-                }}
+                fontSize="max-md:3"
                 onPress={() => setShowCoupon((x) => !x)}
               >
                 {effectiveCoupon
@@ -879,10 +860,10 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
                   : 'Have a coupon code?'}
               </SizableText>
               {showCoupon && (
-                <XStack gap="$2" items="center">
+                <XStack gap="2" items="center">
                   <Input
                     flex={1}
-                    size="$3"
+                    size="3"
                     borderWidth={1}
                     placeholder="Enter code"
                     value={couponCode}
@@ -891,18 +872,18 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
                       setCouponCode(text)
                     }}
                   />
-                  <Button size="$3" theme="accent" onPress={handleApplyCoupon}>
+                  <Button size="3" theme="accent" onPress={handleApplyCoupon}>
                     <Button.Text>Apply</Button.Text>
                   </Button>
                 </XStack>
               )}
               {couponError && (
-                <Paragraph size="$2" color="$red10">
+                <Paragraph size="2" color="red10">
                   {couponError}
                 </Paragraph>
               )}
               {effectiveCoupon && (
-                <Paragraph size="$2" color="$green10">
+                <Paragraph size="2" color="green10">
                   Coupon applied:{' '}
                   {effectiveCoupon.percent_off
                     ? `${effectiveCoupon.percent_off}% off`
@@ -922,28 +903,28 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
         )
         const hasAnyDiscount = parityDiscount || effectiveCoupon
         return (
-          <YStack flex={1} gap="$4" bg="$color2" p="$4" rounded="$4">
-            <H3 $maxMd={{ fontSize: '$6' }} fontFamily="$mono">
+          <YStack flex={1} gap="4" bg="color2" p="4" rounded="4">
+            <H3 fontSize="max-md:6" fontFamily="mono">
               Order summary
             </H3>
             <Separator />
 
             <XStack justify="space-between">
-              <Paragraph fontFamily="$mono" lineHeight="$6">
+              <Paragraph fontFamily="mono" lineHeight="6">
                 Tamagui Pro V2 License
               </Paragraph>
               <YStack items="flex-end">
                 {hasAnyDiscount && (
                   <Paragraph
-                    fontFamily="$mono"
-                    size="$3"
+                    fontFamily="mono"
                     opacity={0.5}
                     textDecorationLine="line-through"
+                    size="3"
                   >
                     ${V2_LICENSE_PRICE.toLocaleString()}
                   </Paragraph>
                 )}
-                <Paragraph fontFamily="$mono">
+                <Paragraph fontFamily="mono">
                   ${Math.ceil(discountedPrice).toLocaleString()}
                 </Paragraph>
               </YStack>
@@ -952,20 +933,20 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
             {/* show applied discounts */}
             {parityDiscount && (
               <XStack justify="space-between">
-                <Paragraph fontFamily="$mono" size="$3" color="$green10">
+                <Paragraph fontFamily="mono" color="green10" size="3">
                   {parityDiscount.flag} Parity ({parityDiscount.country})
                 </Paragraph>
-                <Paragraph fontFamily="$mono" size="$3" color="$green10">
+                <Paragraph fontFamily="mono" color="green10" size="3">
                   -{parityDiscount.discount}%
                 </Paragraph>
               </XStack>
             )}
             {effectiveCoupon && (
               <XStack justify="space-between">
-                <Paragraph fontFamily="$mono" size="$3" color="$green10">
+                <Paragraph fontFamily="mono" color="green10" size="3">
                   Promo: {effectiveCoupon.code}
                 </Paragraph>
-                <Paragraph fontFamily="$mono" size="$3" color="$green10">
+                <Paragraph fontFamily="mono" color="green10" size="3">
                   -{effectiveCoupon.percent_off}%
                 </Paragraph>
               </XStack>
@@ -973,21 +954,21 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
 
             {supportTier !== 'chat' && (
               <XStack justify="space-between">
-                <Paragraph fontFamily="$mono">
+                <Paragraph fontFamily="mono">
                   {SUPPORT_TIERS[supportTier].label} Support
                 </Paragraph>
                 <YStack items="flex-end">
                   {effectiveCoupon && (
                     <Paragraph
-                      fontFamily="$mono"
-                      size="$3"
+                      fontFamily="mono"
                       opacity={0.5}
                       textDecorationLine="line-through"
+                      size="3"
                     >
                       ${SUPPORT_TIERS[supportTier].price.toLocaleString()}/mo
                     </Paragraph>
                   )}
-                  <Paragraph fontFamily="$mono">
+                  <Paragraph fontFamily="mono">
                     $
                     {Math.ceil(
                       calculateDiscountedAmount(
@@ -1001,23 +982,23 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
               </XStack>
             )}
 
-            <YStack gap="$1" bg="$color3" p="$3" rounded="$3">
-              <Paragraph size="$3" fontFamily="$mono" fontWeight="600">
+            <YStack gap="1" bg="color3" p="3" rounded="3">
+              <Paragraph size="3" fontFamily="mono" fontWeight="600">
                 What's included:
               </Paragraph>
-              <Paragraph size="$2" color="$color9">
+              <Paragraph size="2" color="color9">
                 - All templates (v1 Takeout, v2 Takeout, Takeout Static)
               </Paragraph>
-              <Paragraph size="$2" color="$color9">
+              <Paragraph size="2" color="color9">
                 - Bento pro components + source repo
               </Paragraph>
-              <Paragraph size="$2" color="$color9">
+              <Paragraph size="2" color="color9">
                 - Opus-powered AI /theme generation
               </Paragraph>
-              <Paragraph size="$2" color="$color9">
+              <Paragraph size="2" color="color9">
                 - 1 year of updates, unlimited team members
               </Paragraph>
-              <Paragraph size="$2" color="$color9">
+              <Paragraph size="2" color="color9">
                 - Chat support, lifetime right
               </Paragraph>
             </YStack>
@@ -1025,23 +1006,23 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
             <Separator />
 
             <XStack justify="space-between">
-              <H3 $maxMd={{ fontSize: '$6' }} fontFamily="$mono">
+              <H3 fontSize="max-md:6" fontFamily="mono">
                 Total
               </H3>
               <YStack items="flex-end">
                 {effectiveCoupon && (
                   <Paragraph
-                    fontFamily="$mono"
-                    size="$3"
+                    fontFamily="mono"
                     opacity={0.5}
                     textDecorationLine="line-through"
+                    size="3"
                   >
                     ${V2_LICENSE_PRICE.toLocaleString()}
                     {supportTier !== 'chat' &&
                       ` + $${SUPPORT_TIERS[supportTier].price.toLocaleString()}/mo`}
                   </Paragraph>
                 )}
-                <H3 $maxMd={{ fontSize: '$6' }} fontFamily="$mono">
+                <H3 fontSize="max-md:6" fontFamily="mono">
                   ${Math.ceil(discountedPrice).toLocaleString()}
                   {supportTier !== 'chat' &&
                     ` + $${Math.ceil(
@@ -1054,15 +1035,12 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
               </YStack>
             </XStack>
 
-            <YStack gap="$2">
+            <YStack gap="2">
               <SizableText
-                color="$color10"
-                opacity={0.3}
+                color="color10"
+                opacity="0.3 hover:0.8"
                 cursor="pointer"
-                hoverStyle={{ opacity: 0.8 }}
-                $maxMd={{
-                  fontSize: '$3',
-                }}
+                fontSize="max-md:3"
                 onPress={() => setShowCoupon((x) => !x)}
               >
                 {effectiveCoupon
@@ -1070,10 +1048,10 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
                   : 'Have a coupon code?'}
               </SizableText>
               {showCoupon && (
-                <XStack gap="$2" items="center">
+                <XStack gap="2" items="center">
                   <Input
                     flex={1}
-                    size="$3"
+                    size="3"
                     borderWidth={1}
                     placeholder="Enter code"
                     value={couponCode}
@@ -1082,18 +1060,18 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
                       setCouponCode(text)
                     }}
                   />
-                  <Button size="$3" theme="accent" onPress={handleApplyCoupon}>
+                  <Button size="3" theme="accent" onPress={handleApplyCoupon}>
                     <Button.Text>Apply</Button.Text>
                   </Button>
                 </XStack>
               )}
               {couponError && (
-                <Paragraph size="$2" color="$red10">
+                <Paragraph size="2" color="red10">
                   {couponError}
                 </Paragraph>
               )}
               {effectiveCoupon && (
-                <Paragraph size="$2" color="$green10">
+                <Paragraph size="2" color="green10">
                   Coupon applied:{' '}
                   {effectiveCoupon.percent_off
                     ? `${effectiveCoupon.percent_off}% off`
@@ -1102,14 +1080,8 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
               )}
             </YStack>
 
-            <YStack
-              bg="$color3"
-              p="$3"
-              rounded="$3"
-              borderWidth={1}
-              borderColor="$color6"
-            >
-              <Paragraph size="$2" color="$color11">
+            <YStack bg="color3" p="3" rounded="3" borderWidth={1} borderColor="color6">
+              <Paragraph size="2" color="color11">
                 Sales are final. Includes $100/year subscription for updates starting in 1
                 year. Renewal email 2 weeks before, one-click unsubscribe anytime.
               </Paragraph>
@@ -1120,29 +1092,29 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
 
       // Legacy V1 Order Summary
       return (
-        <YStack flex={1} gap="$4" bg="$color2" p="$4" rounded="$4">
-          <H3 $maxMd={{ fontSize: '$6' }} fontFamily="$mono">
+        <YStack flex={1} gap="4" bg="color2" p="4" rounded="4">
+          <H3 fontSize="max-md:6" fontFamily="mono">
             Order summary
           </H3>
           <Separator />
 
           {yearlyTotal > 0 && (
             <XStack justify="space-between">
-              <Paragraph fontFamily="$mono" lineHeight="$6">
+              <Paragraph fontFamily="mono" lineHeight="6">
                 Pro subscription
               </Paragraph>
               <YStack items="flex-end">
                 {effectiveCoupon && (
                   <Paragraph
-                    fontFamily="$mono"
-                    size="$3"
+                    fontFamily="mono"
                     opacity={0.5}
                     textDecorationLine="line-through"
+                    size="3"
                   >
                     ${Math.ceil(yearlyTotal / 12)}/month
                   </Paragraph>
                 )}
-                <Paragraph fontFamily="$mono">
+                <Paragraph fontFamily="mono">
                   $
                   {Math.ceil(
                     calculateDiscountedAmount(yearlyTotal / 12, effectiveCoupon)
@@ -1157,19 +1129,19 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
             <>
               {chatSupport && (
                 <XStack justify="space-between">
-                  <Paragraph fontFamily="$mono">Chat Support</Paragraph>
+                  <Paragraph fontFamily="mono">Chat Support</Paragraph>
                   <YStack items="flex-end">
                     {effectiveCoupon && (
                       <Paragraph
-                        fontFamily="$mono"
-                        size="$3"
+                        fontFamily="mono"
                         opacity={0.5}
                         textDecorationLine="line-through"
+                        size="3"
                       >
                         $200/month
                       </Paragraph>
                     )}
-                    <Paragraph fontFamily="$mono">
+                    <Paragraph fontFamily="mono">
                       ${Math.ceil(calculateDiscountedAmount(200, effectiveCoupon))}
                       /month
                     </Paragraph>
@@ -1178,21 +1150,21 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
               )}
               {supportTier !== 'chat' && (
                 <XStack justify="space-between">
-                  <Paragraph fontFamily="$mono">
+                  <Paragraph fontFamily="mono">
                     {SUPPORT_TIERS[supportTier].label} Support
                   </Paragraph>
                   <YStack items="flex-end">
                     {effectiveCoupon && (
                       <Paragraph
-                        fontFamily="$mono"
-                        size="$3"
+                        fontFamily="mono"
                         opacity={0.5}
                         textDecorationLine="line-through"
+                        size="3"
                       >
                         ${SUPPORT_TIERS[supportTier].price}/month
                       </Paragraph>
                     )}
-                    <Paragraph fontFamily="$mono">
+                    <Paragraph fontFamily="mono">
                       $
                       {Math.ceil(
                         calculateDiscountedAmount(
@@ -1210,21 +1182,21 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
 
           {teamSeats > 0 && (
             <XStack justify="space-between">
-              <Paragraph fontFamily="$mono">
+              <Paragraph fontFamily="mono">
                 Team Seats ({teamSeats} {teamSeats === 1 ? 'seat' : 'seats'})
               </Paragraph>
               <YStack items="flex-end">
                 {effectiveCoupon && (
                   <Paragraph
-                    fontFamily="$mono"
-                    size="$3"
+                    fontFamily="mono"
                     opacity={0.5}
                     textDecorationLine="line-through"
+                    size="3"
                   >
                     ${teamSeats * 100}/year
                   </Paragraph>
                 )}
-                <Paragraph fontFamily="$mono">
+                <Paragraph fontFamily="mono">
                   $
                   {Math.ceil(calculateDiscountedAmount(teamSeats * 100, effectiveCoupon))}
                   /year
@@ -1236,24 +1208,24 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
           <Separator />
 
           <XStack justify="space-between">
-            <H3 $maxMd={{ fontSize: '$6' }} fontFamily="$mono">
+            <H3 fontSize="max-md:6" fontFamily="mono">
               Total
             </H3>
             <YStack items="flex-end">
               {effectiveCoupon && (
                 <Paragraph
-                  $maxMd={{ fontSize: '$6' }}
-                  fontFamily="$mono"
-                  size="$3"
+                  fontSize="max-md:6"
+                  fontFamily="mono"
                   opacity={0.5}
                   textDecorationLine="line-through"
+                  size="3"
                 >
                   ${yearlyTotal}
                   {monthlyTotal > 0 && ` + $${monthlyTotal}/month`}
                 </Paragraph>
               )}
 
-              <H3 $maxMd={{ fontSize: '$6' }} fontFamily="$mono">
+              <H3 fontSize="max-md:6" fontFamily="mono">
                 {yearlyTotal
                   ? `$${Math.ceil(
                       calculateDiscountedAmount(yearlyTotal, effectiveCoupon)
@@ -1267,23 +1239,20 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
               </H3>
             </YStack>
           </XStack>
-          <XStack gap="$2" items="center">
-            <Info size={16} color="$color11" />
+          <XStack gap="2" items="center">
+            <Info size={16} color="color11" />
             <YStack flex={1}>
-              <Paragraph py="$2" color="$color10" fontSize="$2">
+              <Paragraph py="2" color="color10" fontSize="2">
                 Pro subscription is billed yearly for the full amount up front.
               </Paragraph>
             </YStack>
           </XStack>
-          <YStack gap="$2">
+          <YStack gap="2">
             <SizableText
-              color="$color10"
-              opacity={0.3}
+              color="color10"
+              opacity="0.3 hover:0.8"
               cursor="pointer"
-              hoverStyle={{ opacity: 0.8 }}
-              $maxMd={{
-                fontSize: '$3',
-              }}
+              fontSize="max-md:3"
               onPress={() => setShowCoupon((x) => !x)}
             >
               {effectiveCoupon
@@ -1291,10 +1260,10 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
                 : 'Have a coupon code?'}
             </SizableText>
             {showCoupon && (
-              <XStack gap="$2" items="center">
+              <XStack gap="2" items="center">
                 <Input
                   flex={1}
-                  size="$3"
+                  size="3"
                   borderWidth={1}
                   placeholder="Enter code"
                   value={couponCode}
@@ -1303,18 +1272,18 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
                     setCouponCode(text)
                   }}
                 />
-                <Button size="$3" theme="accent" onPress={handleApplyCoupon}>
+                <Button size="3" theme="accent" onPress={handleApplyCoupon}>
                   <Button.Text>Apply</Button.Text>
                 </Button>
               </XStack>
             )}
             {couponError && (
-              <Paragraph size="$2" color="$red10">
+              <Paragraph size="2" color="red10">
                 {couponError}
               </Paragraph>
             )}
             {effectiveCoupon && (
-              <Paragraph size="$2" color="$green10">
+              <Paragraph size="2" color="green10">
                 Coupon applied:{' '}
                 {effectiveCoupon.percent_off
                   ? `${effectiveCoupon.percent_off}% off`
@@ -1328,18 +1297,15 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
 
     return (
       <View
-        flexDirection="row"
-        $maxMd={{
-          flexDirection: 'column-reverse',
-          p: '$6',
-        }}
+        flexDirection="row max-md:column-reverse"
+        p="max-md:6"
         flex={1}
         flexBasis="auto"
-        gap="$6"
+        gap="6"
       >
         <YStack flex={1}>
-          <View gap="$4">
-            <H3 fontFamily="$mono">Payment details</H3>
+          <View gap="4">
+            <H3 fontFamily="mono">Payment details</H3>
             <Separator />
           </View>
 
@@ -1399,19 +1365,15 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
         store.show = val
       }}
     >
-      <Dialog.Adapt when="maxMd">
+      <Dialog.Adapt when="max-md">
         <Sheet zIndex={1_000_001} modal dismissOnSnapToBottom transition="medium">
-          <Sheet.Frame bg="$color1" p={0} gap="$4">
+          <Sheet.Container p={0} gap="4">
+            <Sheet.Background bg="color1" />
             <Sheet.ScrollView showsVerticalScrollIndicator={false}>
               <Dialog.Adapt.Contents />
             </Sheet.ScrollView>
-          </Sheet.Frame>
-          <Sheet.Overlay
-            bg="$shadow4"
-            transition="lazy"
-            enterStyle={{ opacity: 0 }}
-            exitStyle={{ opacity: 0 }}
-          />
+          </Sheet.Container>
+          <Sheet.Overlay bg="shadow4" transition="lazy" opacity="enter:0 exit:0" />
         </Sheet>
       </Dialog.Adapt>
 
@@ -1419,10 +1381,8 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
         <Dialog.Overlay
           key="overlay"
           transition="medium"
-          bg="$shadow3"
-          opacity={0.95}
-          enterStyle={{ opacity: 0 }}
-          exitStyle={{ opacity: 0 }}
+          bg="shadow3"
+          opacity="0.95 enter:0 exit:0"
         />
         <Dialog.Content
           bordered
@@ -1430,25 +1390,16 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
           key="content"
           transition="quick"
           width="90%"
-          maxW={1000}
-          $maxMd={{
-            maxW: '100%',
-          }}
-          p="$6"
-          enterStyle={{
-            opacity: 0,
-            y: -5,
-          }}
-          exitStyle={{
-            opacity: 0,
-            y: 5,
-          }}
+          maxW="1000px max-md:100%"
+          p="6"
+          opacity="enter:0 exit:0"
+          y="enter:-5px exit:5px"
         >
           {renderContent()}
 
           <Unspaced>
             <Dialog.Close asChild>
-              <Button position="absolute" t="$2" r="$2" size="$2" circular icon={X} />
+              <Button position="absolute" t="2" r="2" size="2" circular icon={X} />
             </Dialog.Close>
           </Unspaced>
         </Dialog.Content>

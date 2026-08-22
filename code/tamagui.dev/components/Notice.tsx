@@ -32,22 +32,24 @@ export const Notice = ({
 
   return (
     <NoticeFrame theme={theme} {...props}>
-      <XStack gap="$3">
-        <IconComponent size="$1" mt={5} color="$color10" />
+      <XStack gap="3">
+        <YStack mt={5} width={20} height={20}>
+          <IconComponent size={20} color="color10" />
+        </YStack>
         <YStack flex={1}>
           {title && (
-            <H3 size="$5" mb={-10} mt={5}>
+            <H3 size="5" mb={-10} mt={5}>
               {title}
             </H3>
           )}
           <Paragraph
             render="div"
-            py="$2"
-            color="$color11"
+            py="2"
+            color="color11"
             mt={-3}
             mb={-3}
             className="paragraph-parent"
-            size="$5"
+            size="5"
           >
             {disableUnwrap ? children : unwrapText(children)}
           </Paragraph>
@@ -60,12 +62,13 @@ export const Notice = ({
 export const NoticeFrame = styled(YStack, {
   className: 'no-opacity-fade',
   borderWidth: 1,
-  borderColor: '$borderColor',
-  p: '$4',
-  py: '$3',
-  bg: '$background',
-  rounded: '$4',
-  gap: '$3',
-  my: '$4',
+  borderColor: 'border-color',
+  paddingRight: '4',
+  paddingLeft: '4',
+  py: '3',
+  bg: 'background',
+  rounded: '4',
+  gap: '3',
+  my: '4',
   position: 'relative',
 })

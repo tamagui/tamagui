@@ -1,19 +1,19 @@
 import { styled, View, Text, YStack } from 'tamagui'
 
-// styled() with boxShadow containing embedded $token
+// styled() with boxShadow containing an embedded token
 // if web imports are picked up on native, this resolves to var(--shadowColor)
 // which crashes with: [ReanimatedError: Invalid color "var(--shadowColor)"]
 const StyledShadowBox = styled(View, {
   width: 100,
   height: 100,
-  backgroundColor: '$color5',
-  borderRadius: '$4',
-  boxShadow: '0px 2px 8px $shadowColor',
+  backgroundColor: 'color5',
+  borderRadius: '4',
+  boxShadow: '0px 2px 8px shadow-color',
 })
 
 export function BoxShadowTokenDemo() {
   return (
-    <YStack gap="$4" items="center" p="$4">
+    <YStack gap="4" items="center" p="4">
       <Text testID="box-shadow-token-title">BoxShadow Token Test</Text>
 
       {/* styled() definition - breaks if web imports leak to native */}
@@ -23,9 +23,9 @@ export function BoxShadowTokenDemo() {
       <View
         width={100}
         height={100}
-        backgroundColor="$color5"
-        borderRadius="$4"
-        boxShadow="0px 2px 8px $shadowColor"
+        backgroundColor="color5"
+        borderRadius="4"
+        boxShadow="0px 2px 8px shadow-color"
         testID="box-shadow-prop"
       />
 

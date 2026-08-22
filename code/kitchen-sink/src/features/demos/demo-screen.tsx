@@ -31,7 +31,7 @@ const NativeDemos = {
 
   ThemesDemo: () => {
     return (
-      <YStack gap="$4">
+      <YStack gap="4">
         <Demos.AddThemeDemo />
         <Demos.UpdateThemeDemo />
       </YStack>
@@ -55,13 +55,13 @@ export function DemoScreen() {
     <YStack
       outlineStyle="solid"
       outlineColor="red"
-      outlineWidth="$2"
+      outlineWidth="2"
       flex={1}
       justify="center"
       items="center"
-      bg="$background"
-      gap="$4"
-      p="$4"
+      bg="background"
+      gap="4"
+      p="4"
     >
       <DemoComponent />
     </YStack>

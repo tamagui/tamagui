@@ -8,7 +8,6 @@ export const dumpThemeState = () => {
       name: store.name,
       schemes: store.schemes,
       palettes: store.palettes,
-      templateStrategy: store.templateStrategy,
     },
     // その他の重要な状態
     themeSuiteVersion: store.themeSuiteVersion,
@@ -41,5 +40,4 @@ type ThemeHistoryData = {
     light: boolean
     dark: boolean
   }
-  templateStrategy: 'base'
 }

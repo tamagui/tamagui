@@ -5,35 +5,22 @@ export const MyStack = styled(View, {
 })
 
 export const MySizableText = styled(Text, {
-  name: 'MySizableText',
+  displayName: 'MySizableText',
   backgroundColor: 'green',
 })
 
-const MyScaledText = styled(Text, {
-  variants: {
-    scale: {
-      sm: { fontSize: 24 },
-      md: { fontSize: 35 },
-      lg: { fontSize: 58 },
-    },
-  } as const,
-})
-
-// a variant whose values carry media blocks, and those media blocks set
-// another variant (`scale`). exercises the compiler resolving variants nested
-// inside media inside variants.
-export const MyMediaVariantText = styled(MyScaledText, {
-  name: 'MyMediaVariantText',
+// a variant whose value carries a media clause. this is the v3 flat-value form
+// of the nested media object used by the v2 regression fixture.
+export const MyMediaVariantText = styled(Text, {
+  displayName: 'MyMediaVariantText',
   fontWeight: '200',
-  scale: 'sm',
-  $lg: { scale: 'md' },
+  fontSize: '24px lg:35px',
 
   variants: {
     strength: {
       large: {
-        scale: 'md',
+        fontSize: '35px lg:58px',
         fontWeight: '800',
-        $lg: { scale: 'lg', fontWeight: '800' },
       },
     },
   } as const,

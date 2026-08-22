@@ -1,22 +1,12 @@
 import { memo, useEffect } from 'react'
-import {
-  Button,
-  H4,
-  H6,
-  ListItem,
-  Paragraph,
-  SizableText,
-  XStack,
-  YGroup,
-  YStack,
-} from 'tamagui'
+import { H4, H6, ListItem, Paragraph, SizableText, XStack, YGroup, YStack } from 'tamagui'
+import { Button } from '~/components/Button'
 
 import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
 import { NoticeParagraph, StudioNotice } from '../../../StudioNotice'
 import { defaultBaseTheme } from '../../constants/defaultBaseTheme'
 import { getUniqueId } from '../../helpers/getUniqueId'
-import type { BuildTheme } from '../../types'
-import type { BuildPalette } from '@tamagui/theme-builder'
+import type { BuildPalette, BuildTheme } from '../../types'
 import { AddDropdown } from '../../views/AddDropdown'
 import { ColorThemeIndicator } from '../../views/ColorThemeIndicator'
 import { BuildThemeItem } from '../views/BuildThemeItem'
@@ -59,7 +49,7 @@ export const StepSubThemes = memo(() => {
   }, [store.subThemes.length])
 
   return (
-    <YStack mx="$-5" flex={1}>
+    <YStack mx="-5" flex={1}>
       <StageButtonBar steps={steps} />
       <Stage
         current={steps.index}
@@ -73,7 +63,7 @@ export const Themes = memo(() => {
   const store = useThemeBuilderStore()
 
   return (
-    <YStack flex={1} gap="$4" py="$4" px="$2">
+    <YStack flex={1} gap="4" py="4" px="2">
       {store.subThemes
         // .sort((a, b) => (a.id === store.selectedSubTheme ? -1 : 1))
         .map((theme) => {
@@ -105,11 +95,11 @@ export const Themes = memo(() => {
         })}
 
       {!store.subThemes.length && (
-        <YStack flex={1} items="center" justify="center" gap="$4">
-          <Paragraph color="$color10">Add a theme to get started</Paragraph>
+        <YStack flex={1} items="center" justify="center" gap="4">
+          <Paragraph color="color10">Add a theme to get started</Paragraph>
           <Button
             theme="accent"
-            size="$4"
+            size="4"
             onPress={() => {
               store.showAddThemeMenu = true
             }}
@@ -128,14 +118,14 @@ export function StepSubThemesActions() {
   const setShow = (val: boolean) => (store.showAddThemeMenu = val)
 
   return (
-    <XStack items="center" gap="$4">
+    <XStack items="center" gap="4">
       <AddDropdown open={show} onOpenChange={setShow}>
         <YGroup>
           <AddDropdown.Title>Palette Themes</AddDropdown.Title>
 
           {colorThemePresets.map(({ theme, palette }) => (
             <AddDropdown.Item
-              size="$3"
+              size="3"
               key={theme.name}
               onPress={() => {
                 store.addPalette(palette)
@@ -149,12 +139,12 @@ export function StepSubThemesActions() {
 
           <AddDropdown.Separator />
 
-          <H6 size="$1" pt="$2" px="$3" opacity={0.5}>
+          <H6 size="1" pt="2" px="3" opacity={0.5}>
             Custom
           </H6>
 
           <AddDropdown.Item
-            size="$3"
+            size="3"
             onPress={() => {
               store.addSubTheme(defaultBaseTheme)
               setShow(false)
@@ -187,21 +177,21 @@ const colorThemePresets: { theme: BuildTheme; palette: BuildPalette }[] = [
           alpha: { light: 1, dark: 1 },
         },
         {
-          index: 9,
+          index: 8,
           hue: { syncLeft: true, sync: true, light: 153, dark: 153 },
           sat: { syncLeft: true, sync: true, light: 0.7, dark: 0.7 },
           lum: { light: 0.5, dark: 0.5 },
           alpha: { light: 1, dark: 1 },
         },
         {
-          index: 10,
+          index: 9,
           hue: { sync: true, light: 153, dark: 153 },
           sat: { sync: true, light: 0.7, dark: 0.7 },
           lum: { light: 0.15, dark: 0.925 },
           alpha: { light: 1, dark: 1 },
         },
         {
-          index: 11,
+          index: 10,
           hue: { syncLeft: true, sync: true, light: 153, dark: 153 },
           sat: { syncLeft: true, sync: true, light: 0.7, dark: 0.7 },
           lum: { light: 0.1, dark: 0.95 },
@@ -230,21 +220,21 @@ const colorThemePresets: { theme: BuildTheme; palette: BuildPalette }[] = [
           alpha: { light: 1, dark: 1 },
         },
         {
-          index: 9,
+          index: 8,
           hue: { syncLeft: true, sync: true, light: 48, dark: 48 },
           sat: { syncLeft: true, sync: true, light: 0.7, dark: 0.7 },
           lum: { light: 0.5, dark: 0.5 },
           alpha: { light: 1, dark: 1 },
         },
         {
-          index: 10,
+          index: 9,
           hue: { sync: true, light: 48, dark: 48 },
           sat: { sync: true, light: 0.7, dark: 0.7 },
           lum: { light: 0.15, dark: 0.925 },
           alpha: { light: 1, dark: 1 },
         },
         {
-          index: 11,
+          index: 10,
           hue: { syncLeft: true, sync: true, light: 48, dark: 48 },
           sat: { syncLeft: true, sync: true, light: 0.7, dark: 0.7 },
           lum: { light: 0.1, dark: 0.95 },
@@ -273,21 +263,21 @@ const colorThemePresets: { theme: BuildTheme; palette: BuildPalette }[] = [
           alpha: { light: 1, dark: 1 },
         },
         {
-          index: 9,
+          index: 8,
           hue: { syncLeft: true, sync: true, light: 0, dark: 0 },
           sat: { syncLeft: true, sync: true, light: 0.7, dark: 0.7 },
           lum: { light: 0.5, dark: 0.5 },
           alpha: { light: 1, dark: 1 },
         },
         {
-          index: 10,
+          index: 9,
           hue: { sync: true, light: 0, dark: 0 },
           sat: { sync: true, light: 0.7, dark: 0.7 },
           lum: { light: 0.15, dark: 0.925 },
           alpha: { light: 1, dark: 1 },
         },
         {
-          index: 11,
+          index: 10,
           hue: { syncLeft: true, sync: true, light: 0, dark: 0 },
           sat: { syncLeft: true, sync: true, light: 0.7, dark: 0.7 },
           lum: { light: 0.1, dark: 0.95 },
@@ -304,14 +294,14 @@ export function BaseThemesStepPreviewThemes() {
 
 export function BaseThemesStepPreview() {
   return (
-    <YStack py="$4" gap="$4">
+    <YStack py="4" gap="4">
       <H4>Alright, thats our base and sub-themes&nbsp;&nbsp;🙌</H4>
 
-      <Paragraph color="$color10" size="$5">
+      <Paragraph color="color10" size="5">
         We've made the foundation of our theme suite.
       </Paragraph>
 
-      <StudioNotice my="$3" title="Coming later...">
+      <StudioNotice my="3" title="Coming later...">
         <NoticeParagraph>
           You'll be able to customize <em>component themes</em> later, so don't worry if
           some specific components look a little off (like if you want brighter
@@ -347,24 +337,24 @@ export function BaseThemesStepPreview2() {
   })
 
   return (
-    <YStack py="$4" gap="$3">
+    <YStack py="4" gap="3">
       <H4>The full list, so far:</H4>
 
-      <Paragraph size="$5" color="$color10">
+      <Paragraph size="5" color="color10">
         Congrats! That's the core of your theme suite.
       </Paragraph>
 
-      <Paragraph size="$5" color="$color10">
+      <Paragraph size="5" color="color10">
         In the future, we'll allow customizing component themes as well, but for now this
         gives you everything you need. You can of course manually override the component
         styles very easily inline.
       </Paragraph>
 
-      <Paragraph size="$5" color="$color10">
+      <Paragraph size="5" color="color10">
         We've now generated the following themes:
       </Paragraph>
 
-      <YGroup borderWidth={1} borderColor="$borderColor" my="$2">
+      <YGroup borderWidth={1} borderColor="border-color" my="2">
         {fullThemes.map((theme) => {
           return (
             <ListItem

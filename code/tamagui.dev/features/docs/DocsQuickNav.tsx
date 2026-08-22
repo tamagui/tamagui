@@ -248,26 +248,23 @@ export function DocsQuickNav({ headings = [] }: { headings?: Heading[] }) {
     <YStack
       render="aside"
       className="is-sticky"
-      display="none"
-      $gtLg={{
-        display: 'flex',
-        width: 280,
-        z: 1,
-        position: 'sticky',
-        t: 20,
-        height: 'calc(100vh - 20px)',
-        alignSelf: 'flex-start',
-        shrink: 0,
-      }}
+      display="none gtLg:flex"
+      width="gtLg:280px"
+      z="gtLg:1px"
+      position="gtLg:sticky"
+      t="gtLg:20px"
+      height="gtLg:calc(100vh - 20px)"
+      alignSelf="gtLg:flex-start"
+      shrink="gtLg:0px"
     >
       <ScrollView showsVerticalScrollIndicator={false}>
-        <YStack gap="$5" pt={68} pb="$10">
-          <XStack items="center" gap="$5">
+        <YStack gap="5" pt={68} pb="10">
+          <XStack items="center" gap="5">
             <Link
               target="_blank"
               href={href(`${process.env.ONE_SERVER_URL}${pathname}.md` as any)}
             >
-              <SizableText size="$3" fontFamily="$mono">
+              <SizableText size="3" fontFamily="mono">
                 .md
               </SizableText>
             </Link>
@@ -278,34 +275,34 @@ export function DocsQuickNav({ headings = [] }: { headings?: Heading[] }) {
               target="_blank"
               href={href(`${process.env.ONE_SERVER_URL}/llms.txt` as any)}
             >
-              <SizableText size="$3" fontFamily="$mono">
+              <SizableText size="3" fontFamily="mono">
                 llms.txt
               </SizableText>
             </Link>
           </XStack>
 
-          <Separator opacity={0.5} mr="$6" />
+          <Separator opacity={0.5} mr="6" />
 
           <YStack
             render="nav"
             aria-labelledby="site-quick-nav-heading"
-            mb="$10"
-            mt="$2"
+            mb="10"
+            mt="2"
             display={headings.length === 0 ? 'none' : 'flex'}
-            gap="$2"
+            gap="2"
           >
             <H4
-              fontFamily="$mono"
-              size="$5"
-              mb="$2"
-              color="$color10"
+              fontFamily="mono"
+              mb="2"
+              color="color10"
+              size="5"
               id="site-quick-nav-heading"
             >
               Contents
             </H4>
 
             <ScrollView maxH="calc(100vh - 300px)">
-              <YStack ref={containerRef as any} py="$2" pl={24} position="relative">
+              <YStack ref={containerRef as any} py="2" pl={24} position="relative">
                 <NavLineIndicator
                   items={itemData}
                   activeIndex={activeIndex}
@@ -320,7 +317,7 @@ export function DocsQuickNav({ headings = [] }: { headings?: Heading[] }) {
                       key={`${id}-${index}`}
                       data-nav-item
                       pl={Math.max(0, level - 2) * 12}
-                      py="$1"
+                      py="1"
                     >
                       <a
                         onClick={(e) => {
@@ -332,17 +329,10 @@ export function DocsQuickNav({ headings = [] }: { headings?: Heading[] }) {
                       >
                         <Paragraph
                           render="span"
-                          size={level === 2 ? '$3' : '$2'}
-                          color={
-                            index === activeIndex
-                              ? '$color12'
-                              : level === 2
-                                ? '$color11'
-                                : '$color10'
-                          }
+                          size={level === 2 ? '3' : '2'}
+                          color={`${index === activeIndex ? 'color12' : level === 2 ? 'color11' : 'color10'} hover:color12`}
                           cursor="pointer"
                           fontWeight={level === 2 ? '500' : '400'}
-                          hoverStyle={{ color: '$color12' }}
                         >
                           {title}
                         </Paragraph>
@@ -354,7 +344,7 @@ export function DocsQuickNav({ headings = [] }: { headings?: Heading[] }) {
             </ScrollView>
           </YStack>
 
-          <YStack gap="$2" px="$4">
+          <YStack gap="2" px="4">
             <Theme name="green">
               <Link width="100%" href="/bento">
                 <BentoButton />

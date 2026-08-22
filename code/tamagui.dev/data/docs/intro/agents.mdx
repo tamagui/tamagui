@@ -1,0 +1,92 @@
+---
+title: Set up with an agent
+description: Copy-paste briefs that point a coding agent at the right v3 path
+---
+
+<IntroParagraph>
+  Most people install Tamagui through a coding agent now. The two blocks below are
+  written to be pasted straight into one. Pick the one that matches where you are
+  starting from.
+</IntroParagraph>
+
+Both briefs come from the CLI rather than only living on this page, so the copy an
+agent reads describes the version it installed instead of whatever release this page
+was last written against.
+
+## New project
+
+Use this when the project has never had Tamagui in it.
+
+```
+Add Tamagui v3 to this project. Run `npx tamagui@beta setup` and follow the brief it
+prints, adapting it to this project's bundler and framework. Do not skip the
+verification step at the end, and tell me anything you had to skip or guess at.
+```
+
+`tamagui setup` walks the agent through the version baseline, a pinned install, the
+config and provider, the right bundler adapter, and the flat-value style grammar,
+then makes it verify with `tamagui check` plus a real run before reporting success.
+
+## Upgrading from v1 or v2
+
+Use this when the project already runs Tamagui.
+
+```
+Upgrade this project to Tamagui v3. Run `npx tamagui@beta migrate --from v2` and
+follow the brief it prints. Run the flat-values codemod in dry-run first, show me the
+report, and wait for me to read it before you write anything. Tell me every site the
+codemod refused and why.
+```
+
+Use `--from v1` if the project is still on v1; the brief will sequence the v1-to-v2
+pass before the v2-to-v3 one.
+
+The codemod converts only what it can prove, and on real codebases roughly a third of
+sites need a person. Measured on two apps: 80% converted cleanly on the Bento corpus
+(1,681 of 2,113) and 67% on a mid-size control-room app (1,007 of 1,504). A clean
+codemod run means the report was generated, not that the app is ready, which is why
+the brief above makes the agent stop at the report.
+
+## Give the agent your own vocabulary
+
+Both paths end in the same place. Once the app runs, generate a description of the
+project's real tokens, themes, and components so later prompts stop guessing:
+
+```bash
+npx tamagui@beta generate-prompt
+```
+
+That writes `tamagui-prompt.md`. Commit it, and regenerate it whenever the config
+changes. Without it an agent knows the Tamagui defaults but nothing about your design
+system, which is the single biggest cause of plausible-looking wrong styles.
+
+## Skills
+
+If your agent supports [skills](https://github.com/tamagui/tamagui/tree/v3-beta/skills),
+install them once and they apply to every later prompt:
+
+```bash
+npx skills add https://github.com/tamagui/tamagui/tree/v3-beta/skills
+```
+
+- **`tamagui`** covers authoring: `styled()`, variants, flat values, tokens and themes,
+  animations, and what the compiler does.
+- **`tamagui-upgrade-v3`** covers the migration: how to sequence it, the report flag
+  playbook, the cases the codemod deliberately refuses, and how to prove the result.
+
+## What agents get wrong most often
+
+Worth stating explicitly in your own prompt, because these are the failures that
+typecheck cleanly and only show up at runtime:
+
+- **Writing v2 syntax.** There is no `$` sigil and no condition object in v3.
+  `bg="$background"` and `hoverStyle={{ ... }}` are both v2. The v3 spelling is
+  `bg="background hover:background-hover"`.
+- **Assuming source order decides.** When two clauses apply, specificity wins, not
+  position: platform first, then how many conditions the clause carries, then category
+  (media, container, theme, group, state). Writing a clause last does not make it win.
+- **Mixed versions.** Every `tamagui` and `@tamagui/*` package must sit at one exact
+  version. A mismatch produces two copies of the runtime and styles that silently do
+  nothing. `tamagui check` catches it.
+- **Trusting a green typecheck.** Flat values are strings, so a misspelled token
+  compiles fine and fails at runtime. Nothing can gate that at the type level.

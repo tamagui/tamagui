@@ -9,15 +9,21 @@ import type {
   TextareaHTMLAttributes,
 } from 'react'
 import { createComponent } from './createComponent'
+import {
+  componentDisplayName,
+  setComponentDisplayName,
+} from './helpers/componentDisplayName'
 import { mergeVariants } from './helpers/mergeVariants'
+import type { FrontendComponent, StyleFrontend } from './helpers/styleFrontend'
 import type { GetRef } from './interfaces/GetRef'
 import { getReactNativeConfig } from './setupReactNative'
 import type {
+  CompoundVariantDefinition,
   GetBaseStyles,
   GetNonStyledProps,
+  GetProps,
   GetStaticConfig,
   GetStyledVariants,
-  GetVariantValues,
   InferStyleProps,
   InferStyledProps,
   StackStyle,
@@ -34,9 +40,13 @@ import type {
   ThemeValueByCategory,
   ThemeValueGet,
   VariantDefinitions,
+  VariantResolverKey,
+  VariantResolverValue,
   VariantSpreadFunction,
 } from './types'
 import type { Text } from './views/Text'
+
+export { createVariantResolver } from './types'
 
 type AreVariantsUndefined<Variants> =
   // because we pass in the Generic variants which for some reason has this :)
@@ -46,9 +56,177 @@ type GetVariantAcceptedValues<V> = V extends object
   ? {
       [Key in keyof V]?: V[Key] extends VariantSpreadFunction<any, infer Val>
         ? Val
-        : GetVariantValues<keyof V[Key]>
+        : GetVariantAcceptedValue<keyof V[Key]>
     }
   : undefined
+
+type GetVariantAcceptedValue<Key> = Key extends 'true' | 'false'
+  ? boolean
+  : Key extends string
+    ? VariantResolverKey<Key> extends never
+      ? Key
+      : VariantResolverValue<Key>
+    : Key
+
+type NoInferLocal<T> = [T][T extends any ? 0 : never]
+type IsAny<T> = 0 extends 1 & T ? true : false
+
+type GetStyledOptionsAcceptedProps<
+  ParentComponent extends StylableComponent,
+  StyledConfig extends StaticConfigPublic,
+  Variants extends VariantDefinitions<ParentComponent, StyledConfig>,
+  Context,
+  ContextPropKeys extends string,
+> = Partial<InferStyledProps<ParentComponent, StyledConfig>> &
+  (AreVariantsUndefined<Variants> extends true
+    ? {}
+    : Partial<GetVariantAcceptedValues<Variants>>) &
+  GetStyledContextProps<Context, ContextPropKeys>
+
+export type StyledOptions<
+  ParentComponent extends StylableComponent,
+  StyledConfig extends StaticConfigPublic,
+  Variants extends VariantDefinitions<ParentComponent, StyledConfig>,
+  Context extends StyledContext<any> | undefined = undefined,
+  ContextPropKeys extends string = GetStyledContextDefaultKeys<Context>,
+> = GetStyledOptionsAcceptedProps<
+  ParentComponent,
+  StyledConfig,
+  Variants,
+  Context,
+  ContextPropKeys
+> & {
+  displayName?: string
+  variants?: Variants | undefined
+  defaultVariants?: NoInferLocal<GetVariantAcceptedValues<NonNullable<Variants>>>
+  context?: Context
+  contextProps?: readonly Extract<
+    ContextPropKeys,
+    keyof GetStyledContextAllProps<Context> & string
+  >[]
+  compoundVariants?: readonly CompoundVariantDefinition<
+    NoInferLocal<
+      GetCompoundVariantMatchProps<
+        ParentComponent,
+        StyledConfig,
+        Variants,
+        Context,
+        ContextPropKeys
+      >
+    >,
+    Partial<InferStyleProps<ParentComponent, StyledConfig>>
+  >[]
+  render?: string | React.ReactElement
+}
+
+type GetStyledContextAllProps<Context> =
+  Context extends StyledContext<infer Props>
+    ? IsAny<Props> extends true
+      ? {}
+      : Partial<Props>
+    : {}
+
+type GetStyledContextDefaultKeys<Context> =
+  Context extends StyledContext<infer Props, infer Keys>
+    ? IsAny<Props> extends true
+      ? never
+      : Extract<Keys, keyof Props & string>
+    : never
+
+type GetStyledContextProps<
+  Context,
+  Keys extends string = GetStyledContextDefaultKeys<Context>,
+> =
+  Context extends StyledContext<infer Props>
+    ? IsAny<Props> extends true
+      ? {}
+      : Partial<Pick<Props, Extract<Keys, keyof Props & string>>>
+    : {}
+
+type GetStyledContextVariantProps<
+  ParentComponent extends StylableComponent,
+  Context,
+  Keys extends string,
+> = Omit<GetStyledContextProps<Context, Keys>, keyof GetProps<ParentComponent>>
+
+type GetCompoundVariantMatchProps<
+  ParentComponent extends StylableComponent,
+  StyledConfig extends StaticConfigPublic,
+  Variants extends VariantDefinitions<ParentComponent, StyledConfig>,
+  Context,
+  ContextPropKeys extends string,
+> = Omit<StyledMergedVariants<ParentComponent, StyledConfig, Variants>, '_isEmpty'> &
+  GetStyledContextProps<Context, ContextPropKeys>
+
+type StyledCustomTokenProps<
+  ParentComponent extends StylableComponent,
+  StyledConfig extends StaticConfigPublic,
+  ParentStylesBase extends object,
+  Accepted = StyledConfig['accept'],
+> =
+  Accepted extends Record<string, any>
+    ? {
+        [Key in keyof Accepted]?:
+          | (Key extends keyof ParentStylesBase ? ParentStylesBase[Key] : never)
+          | (Accepted[Key] extends 'style'
+              ? Partial<InferStyleProps<ParentComponent, StyledConfig>>
+              : Accepted[Key] extends 'textStyle'
+                ? Partial<InferStyleProps<typeof Text, StyledConfig>>
+                : ThemeValueByCategory<Accepted[Key]>)
+      }
+    : {}
+
+type StyledMergedVariants<
+  ParentComponent extends StylableComponent,
+  StyledConfig extends StaticConfigPublic,
+  Variants extends VariantDefinitions<ParentComponent, StyledConfig>,
+  ParentVariants = GetStyledVariants<ParentComponent>,
+  OurVariantProps = GetVariantAcceptedValues<Variants>,
+> =
+  AreVariantsUndefined<Variants> extends true
+    ? ParentVariants
+    : AreVariantsUndefined<ParentVariants> extends true
+      ? Omit<OurVariantProps, '_isEmpty'>
+      : {
+          [Key in Exclude<keyof ParentVariants | keyof OurVariantProps, '_isEmpty'>]?:
+            | (Key extends keyof ParentVariants ? ParentVariants[Key] : undefined)
+            | (Key extends keyof OurVariantProps ? OurVariantProps[Key] : undefined)
+        }
+
+type StyledVariantsWithContext<Variants, ContextProps> = keyof ContextProps extends never
+  ? Variants
+  : {
+      [Key in keyof Variants | keyof ContextProps]?:
+        | (Key extends keyof Variants ? Variants[Key] : never)
+        | (Key extends keyof ContextProps ? ContextProps[Key] : never)
+    }
+
+type StyledComponentResult<
+  ParentComponent extends StylableComponent,
+  StyledConfig extends StaticConfigPublic,
+  Variants extends VariantDefinitions<ParentComponent, StyledConfig>,
+  Context extends StyledContext<any> | undefined = undefined,
+  ContextPropKeys extends string = GetStyledContextDefaultKeys<Context>,
+  ParentStylesBase extends object = GetBaseStyles<ParentComponent, StyledConfig>,
+> = TamaguiComponent<
+  TamaDefer,
+  GetRef<ParentComponent>,
+  GetNonStyledProps<ParentComponent>,
+  StyledConfig['accept'] extends Record<string, any>
+    ? ParentStylesBase &
+        StyledCustomTokenProps<
+          ParentComponent,
+          StyledConfig,
+          ParentStylesBase,
+          StyledConfig['accept']
+        >
+    : ParentStylesBase,
+  StyledVariantsWithContext<
+    StyledMergedVariants<ParentComponent, StyledConfig, Variants>,
+    GetStyledContextVariantProps<ParentComponent, Context, ContextPropKeys>
+  >,
+  GetStaticConfig<ParentComponent, StyledConfig>
+>
 
 // ---- HTML element support for styledHtml('tagName') ----
 
@@ -155,7 +333,7 @@ const textLikeElements = new Set<string>([
  *
  * @example
  * const StyledAnchor = styledHtml('a', {
- *   color: '$blue10',
+ *   color: 'blue10',
  *   textDecorationLine: 'underline',
  * })
  * // StyledAnchor now accepts `href` prop with proper typing
@@ -167,7 +345,7 @@ export function styledHtml<
 >(
   tag: Tag,
   options?: Partial<HTMLElementStyleBase<Tag>> & {
-    name?: string
+    displayName?: string
     variants?: Variants
     defaultVariants?: GetVariantAcceptedValues<NonNullable<Variants>>
     context?: StyledContext
@@ -182,14 +360,14 @@ export function styledHtml<
       : GetVariantAcceptedValues<NonNullable<Variants>>
 
   const isText = textLikeElements.has(tag)
-  const { variants, name, defaultVariants, context, ...defaultProps } = options || {}
+  const { variants, displayName, defaultVariants, context, ...defaultProps } =
+    options || {}
 
   const conf: Partial<StaticConfig> = {
     Component: tag as any,
     variants: variants as any,
     defaultProps: defaultProps as any,
     defaultVariants,
-    componentName: name,
     isReactNative: false,
     isText,
     acceptsClassName: true,
@@ -200,7 +378,7 @@ export function styledHtml<
     conf.neverFlatten = true
   }
 
-  const component = createComponent(conf)
+  const component = setComponentDisplayName(createComponent(conf), displayName)
 
   return component as any as TamaguiComponent<
     TamaDefer,
@@ -214,23 +392,92 @@ export function styledHtml<
 
 /**
  * styled() for creating Tamagui components from other components.
+ *
+ * Core's public overload is object-only. The class-string form belongs to
+ * `@tamagui/tailwind`, which reaches this implementation through
+ * `createFrontendStyled`.
  */
 function styled<
   ParentComponent extends StylableComponent,
   StyledConfig extends StaticConfigPublic,
   Variants extends VariantDefinitions<ParentComponent, StyledConfig>,
+  Context extends StyledContext<any> | undefined = undefined,
+  ContextPropKeys extends string = GetStyledContextDefaultKeys<Context>,
 >(
   ComponentIn: ParentComponent,
-  // this should be Partial<GetProps<ParentComponent>> but causes excessively deep type issues
-  options?: Partial<InferStyledProps<ParentComponent, StyledConfig>> & {
-    name?: string
-    variants?: Variants | undefined
-    defaultVariants?: GetVariantAcceptedValues<Variants>
-    context?: StyledContext
-    render?: string | React.ReactElement
-  },
+  options?: StyledOptions<
+    ParentComponent,
+    StyledConfig,
+    Variants,
+    Context,
+    ContextPropKeys
+  >,
   config?: StyledConfig
+): StyledComponentResult<
+  ParentComponent,
+  StyledConfig,
+  Variants,
+  Context,
+  ContextPropKeys
+>
+function styled(...args: any[]) {
+  return (styledImpl as any)(undefined, ...args)
+}
+
+/**
+ * Builds a `styled()` bound to one frontend descriptor. Components it creates carry
+ * that descriptor immutably, so behavior follows import provenance instead of any
+ * global setting.
+ */
+export function createFrontendStyled(
+  frontend: StyleFrontend
+): (
+  ComponentIn: any,
+  optionsOrBaseClassName?: any,
+  configOrOptions?: any,
+  maybeConfig?: any
+) => FrontendComponent {
+  return (ComponentIn, optionsOrBaseClassName, configOrOptions, maybeConfig) =>
+    styledImpl(
+      frontend,
+      ComponentIn,
+      optionsOrBaseClassName,
+      configOrOptions,
+      maybeConfig
+    ) as any
+}
+
+function styledImpl<
+  ParentComponent extends StylableComponent,
+  StyledConfig extends StaticConfigPublic,
+  Variants extends VariantDefinitions<ParentComponent, StyledConfig>,
+  Context extends StyledContext<any> | undefined,
+  ContextPropKeys extends string,
+>(
+  // undefined keeps whatever the parent static config already carries, so a
+  // styled() chain never switches frontends halfway
+  frontend: StyleFrontend | undefined,
+  ComponentIn: ParentComponent,
+  // this should be Partial<GetProps<ParentComponent>> but causes excessively deep type issues
+  optionsOrBaseClassName?:
+    | StyledOptions<ParentComponent, StyledConfig, Variants, Context, ContextPropKeys>
+    | string,
+  configOrOptions?:
+    | StyledOptions<ParentComponent, StyledConfig, Variants, Context, ContextPropKeys>
+    | StyledConfig,
+  maybeConfig?: StyledConfig
 ) {
+  const hasBaseClassName = typeof optionsOrBaseClassName === 'string'
+  const baseClassName = hasBaseClassName ? optionsOrBaseClassName : undefined
+  const optionsIn = (hasBaseClassName ? configOrOptions : optionsOrBaseClassName) as
+    | StyledOptions<ParentComponent, StyledConfig, Variants, Context, ContextPropKeys>
+    | undefined
+  const config = (hasBaseClassName ? maybeConfig : configOrOptions) as
+    | StyledConfig
+    | undefined
+  const options = optionsIn
+  const displayName = options?.displayName
+
   // do type stuff at top for easier readability
 
   // get parent props without pseudos and medias so we can rebuild both with new variants
@@ -283,7 +530,10 @@ function styled<
     Accepted extends Record<string, any>
       ? ParentStylesBase & CustomTokenProps
       : ParentStylesBase,
-    MergedVariants,
+    StyledVariantsWithContext<
+      MergedVariants,
+      GetStyledContextVariantProps<ParentComponent, Context, ContextPropKeys>
+    >,
     GetStaticConfig<ParentComponent, StyledConfig>
   >
 
@@ -316,10 +566,23 @@ function styled<
   )
 
   const staticConfigProps = (() => {
-    let { variants, name, defaultVariants, context, ...defaultProps } = options || {}
+    let {
+      variants,
+      displayName: _displayName,
+      defaultVariants,
+      context,
+      contextProps,
+      compoundVariants,
+      ...defaultProps
+    } = (options || {}) as Record<string, any>
 
     let parentDefaultVariants
     let parentDefaultProps
+    let parentCompoundVariants
+    const mergedBaseClassName =
+      parentStaticConfig?.baseClassName && baseClassName
+        ? `${parentStaticConfig.baseClassName} ${baseClassName}`
+        : baseClassName || parentStaticConfig?.baseClassName
 
     if (parentStaticConfig) {
       const avoid = parentStaticConfig.isHOC && !parentStaticConfig.isStyledHOC
@@ -344,11 +607,20 @@ function styled<
           }
         }
         if (parentStaticConfig.variants) {
-          // @ts-expect-error
           variants = mergeVariants(parentStaticConfig.variants, variants)
         }
+        parentCompoundVariants = parentStaticConfig.compoundVariants
       }
     }
+
+    const mergedCompoundVariants =
+      parentCompoundVariants || compoundVariants
+        ? [...(parentCompoundVariants || []), ...(compoundVariants || [])]
+        : undefined
+    const mergedContext = context || parentStaticConfig?.context
+    const mergedContextProps = context
+      ? contextProps
+      : contextProps || parentStaticConfig?.contextProps
 
     // applies everything in the right order! order is important
     if (parentDefaultProps || defaultVariants || parentDefaultVariants) {
@@ -357,14 +629,6 @@ function styled<
         ...parentDefaultVariants,
         ...defaultProps,
         ...defaultVariants,
-      }
-    }
-
-    if (parentStaticConfig?.isHOC) {
-      // if HOC we map name => componentName as we have a difference in how we name prop vs styled() there
-      if (name) {
-        // @ts-ignore
-        defaultProps.componentName = name
       }
     }
 
@@ -382,29 +646,35 @@ function styled<
       ...(!isPlainStyledComponent && {
         Component,
       }),
-      // @ts-expect-error
       variants,
+      compoundVariants: mergedCompoundVariants,
+      baseClassName: mergedBaseClassName,
       defaultProps,
       defaultVariants,
-      componentName: name || parentStaticConfig?.componentName,
       isReactNative,
       isText,
       acceptsClassName,
-      context,
+      context: mergedContext,
+      contextProps: mergedContextProps,
       ...reactNativeConfig,
       isStyledHOC: Boolean(parentStaticConfig?.isHOC),
       parentStaticConfig,
+      // only an explicitly bound frontend overrides the one inherited from the parent
+      ...(frontend && { styleFrontend: frontend }),
     }
 
     // bail on non className views as well
-    if (defaultProps['children'] || !acceptsClassName || context) {
+    if (defaultProps['children'] || !acceptsClassName || mergedContext) {
       conf.neverFlatten = true
     }
 
     return conf
   })()
 
-  const component = createComponent(staticConfigProps || {})
+  const component = setComponentDisplayName(
+    createComponent(staticConfigProps || {}),
+    displayName || (ComponentIn as any)[componentDisplayName]
+  )
 
   for (const key in ComponentIn) {
     // dont inherit propTypes
@@ -417,156 +687,13 @@ function styled<
   return component as any as StyledComponent
 }
 
-// sanity check types:
-
-// type YP = GetProps<typeof InputFrame>
-// type x = YP['onChangeText']
-// type x2 = YP['size']
-// const X = <InputFrame placeholder="red" hoverStyle={{}} />
-
-// import { Stack } from './views/Stack'
-// const X = styled(Stack, {
-//   variants: {
-//     size: {
-//       '...size': (val) => {
-//         return {
-//           pointerEvents: 'auto'
-//         }
-//       }
-//     },
-//     disabled: {
-//       true: {
-//         alignContent: 'center',
-//         opacity: 0.5,
-//         pointerEvents: 'none',
-//       },
-//     },
-//   } as const
-// })
-
-// const TestStyleable = X.styleable<{ abc: 123 }>((props) => {
-//   return null
-// })
-
-// // type variants = GetStyledVariants<typeof X>
-// const y = <X disabled size="$10" />
-
-// sanity check more complex types:
-
-// import { Paragraph } from '../../text/src/Paragraph'
-// import { Text } from './views/Text'
-// import { getFontSized } from '../../get-font-sized/src'
-// import { SizableText } from '../../text/src/SizableText'
-// const Text1 = styled(Text, {
-//   name: 'SizableText',
-//   fontFamily: '$body',
-
-//   variants: {
-//     size: getFontSized,
-//   } as const,
-
-//   defaultVariants: {
-//     size: '$true',
-//   },
-// })
-
-// const Test2 = styled(Text1, {
-//   render: 'p',
-//   userSelect: 'auto',
-//   color: '$color',
-// })
-
-// const Test3 = styled(Test2, {
-//   render: 'p',
-//   userSelect: 'auto',
-//   color: '$color',
-
-//   variants: {
-//     ork: {
-//       true: {}
-//     }
-//   }
-// })
-
-// const Test = styled(Paragraph, {
-//   render: 'p',
-//   userSelect: 'auto',
-//   color: '$color',
-
-//   variants: {
-//     someting: {
-//       true: {},
-//     },
-//   } as const,
-// })
-
-// type X = typeof Paragraph
-// type Props1 = GetProps<typeof Paragraph>
-// type z = typeof Text1
-// type ParentV = GetVariantProps<typeof Text1>
-// type Props = GetProps<typeof Test>
-
-// const y = <Test someting>sadad</Test>
-// const z = <Test3 someting="$true" ork>sadad</Test3>
-
-//
-// merges variant types properly:
-
-// const OneVariant = styled(Stack, {
-//   variants: {
-//     variant: {
-//       test: { backgroundColor: 'gray' },
-//     },
-//   } as const,
-// })
-// const Second = styled(Stack, {
-//   variants: {
-//     variant: {
-//       simple: { backgroundColor: 'gray' },
-//       colorful: { backgroundColor: 'violet' },
-//     },
-//   } as const,
-// })
-// const TwoVariant = styled(OneVariant, {
-//   variants: {
-//     variant: {
-//       simple: { backgroundColor: 'gray' },
-//       colorful: { backgroundColor: 'violet' },
-//     },
-//   } as const,
-// })
-
-// type X = typeof OneVariant extends TamaguiComponent<any, any, any, infer V> ? V : any
-// type V = typeof Second extends TamaguiComponent<any, any, any, infer V> ? V : any
-
-// type V2 = VariantDefinitions<typeof OneVariant>
-
-// type R = typeof TwoVariant extends TamaguiComponent<any, any, any, infer V> ? V : any
-
-// type Keys = keyof X | keyof V
-// type Z = {
-//   [Key in Keys]: V[Key] | X[Key]
-// }
-
-// const a: Z = {
-//   variant: 'colorful',
-// }
-// const b: Z = {
-//   variant: 'simple',
-// }
-// const c: Z = {
-//   variant: 'invalid',
-// }
-
-// const y = <TwoVariant variant="colorful" />
-
 // ---- styled.a, styled.div, styled.button, etc. API ----
 
 type StyledHtmlFactory<Tag extends keyof HTMLElementTagNameMap> = <
   Variants extends VariantDefinitions<any, any> | undefined = undefined,
 >(
   options?: Partial<HTMLElementStyleBase<Tag>> & {
-    name?: string
+    displayName?: string
     variants?: Variants
     defaultVariants?: GetVariantAcceptedValues<NonNullable<Variants>>
     context?: StyledContext

@@ -1,8 +1,16 @@
 import { mkdtempSync, readFileSync, realpathSync, rmSync, writeFileSync } from 'node:fs'
+import { createRequire } from 'node:module'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
+import { defaultConfig } from '@tamagui/config/v6'
+import { createTamagui, mediaQueryConfig } from '@tamagui/core'
+import {
+  esbundleTamaguiConfig,
+  loadCompilerProject,
+  loadTamaguiFromModules,
+  resolveWebOrNativeSpecificEntry,
+} from '@tamagui/static'
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest'
-import { esbundleTamaguiConfig, resolveWebOrNativeSpecificEntry } from '@tamagui/static'
 
 // regression: vite-plugin doesn't set process.env.TAMAGUI_TARGET (vxrn handles
 // both web and native through the same plugin), so the static extractor must
@@ -25,6 +33,7 @@ beforeEach(() => {
 afterEach(() => {
   rmSync(tempDir, { recursive: true, force: true })
   vi.unstubAllEnvs()
+  vi.unstubAllGlobals()
 })
 
 describe('resolveWebOrNativeSpecificEntry', () => {
@@ -114,4 +123,141 @@ describe('esbundleTamaguiConfig platform defines', () => {
     // EXPO_OS shouldn't be inlined for native (ios vs android is ambiguous)
     expect(out).toContain('process.env.EXPO_OS')
   })
+})
+
+describe('loadTamaguiFromModules', () => {
+  test('parses an unparsed config without browser CSS discovery', async () => {
+    const hostCore = createRequire(import.meta.url)(
+      '@tamagui/core'
+    ) as typeof import('@tamagui/core')
+    const previousHostConfig = hostCore.createTamagui(defaultConfig)
+    const rawConfig = {
+      ...defaultConfig,
+      themes: {},
+    }
+
+    try {
+      vi.stubEnv('NODE_ENV', 'production')
+      vi.stubEnv('TAMAGUI_TARGET', 'web')
+      vi.stubGlobal('document', undefined)
+
+      const project = await loadTamaguiFromModules(
+        { platform: 'web', components: [] },
+        { config: { default: rawConfig }, components: [] }
+      )
+
+      expect(project.tamaguiConfig).not.toBe(rawConfig)
+      expect(project.tamaguiConfig.parsed).toBe(true)
+      expect(hostCore.getConfig()).toBe(project.tamaguiConfig)
+    } finally {
+      hostCore.installTamaguiConfig(previousHostConfig)
+    }
+
+    expect(hostCore.getConfig()).toBe(previousHostConfig)
+  })
+
+  test('installs an already-parsed evaluated config without browser CSS discovery', async () => {
+    const hostCore = createRequire(import.meta.url)(
+      '@tamagui/core'
+    ) as typeof import('@tamagui/core')
+    const hostMediaQueryConfig = hostCore.mediaQueryConfig
+    const previousHostConfig = hostCore.createTamagui(defaultConfig)
+    const evaluatedConfig = createTamagui(defaultConfig)
+    const boundaryMedia = { ...evaluatedConfig.media.sm, minWidth: 4321 }
+    const parsedConfig = {
+      ...evaluatedConfig,
+      themes: {},
+      media: {
+        ...evaluatedConfig.media,
+        sm: boundaryMedia,
+      },
+    }
+    const tokenName = Object.keys(parsedConfig.tokens.space)[0]
+
+    expect(hostMediaQueryConfig).not.toBe(mediaQueryConfig)
+    expect(hostMediaQueryConfig.sm).not.toEqual(boundaryMedia)
+
+    try {
+      vi.stubEnv('NODE_ENV', 'production')
+      vi.stubEnv('TAMAGUI_TARGET', 'web')
+      vi.stubGlobal('document', undefined)
+
+      const project = await loadTamaguiFromModules(
+        { platform: 'web', components: [] },
+        { config: { default: parsedConfig }, components: [] }
+      )
+
+      const hostTokens = hostCore.getTokens()
+      expect(project.tamaguiConfig).toBe(parsedConfig)
+      expect(hostCore.getConfig()).toBe(parsedConfig)
+      expect(hostMediaQueryConfig.sm).toEqual(boundaryMedia)
+      // guards the lookup itself: both sides reading undefined would pass silently
+      expect(hostTokens.space[tokenName]).toBeDefined()
+      expect(hostTokens.space[tokenName]).toBe(parsedConfig.tokens.space[tokenName])
+      expect(hostTokens.space[tokenName]).toBe(parsedConfig.tokensParsed.space[tokenName])
+    } finally {
+      hostCore.installTamaguiConfig(previousHostConfig)
+    }
+
+    expect(hostCore.getConfig()).toBe(previousHostConfig)
+    expect(hostMediaQueryConfig.sm).toEqual(previousHostConfig.media.sm)
+  })
+})
+
+describe('loadCompilerProject', () => {
+  test.each([
+    { zeroRuntime: true as const, expectedOutputCSS: undefined },
+    { zeroRuntime: 'report' as const, expectedOutputCSS: 'generated.css' },
+    { zeroRuntime: undefined, expectedOutputCSS: 'generated.css' },
+  ])(
+    'normalizes one project and applies the $zeroRuntime zero CSS policy',
+    async ({ zeroRuntime, expectedOutputCSS }) => {
+      const projectInfo = {
+        components: [],
+        nameToPaths: {},
+        tamaguiConfig: createTamagui(defaultConfig),
+      }
+      let loadedOptions: any
+      let resolvedNames: readonly string[] = []
+
+      const project = await loadCompilerProject({
+        root: tempDir,
+        target: 'web',
+        generation: 'test-generation',
+        options: {
+          components: ['design-system', 'design-system'],
+          outputCSS: 'generated.css',
+          experimental: zeroRuntime ? { zeroRuntime } : undefined,
+        },
+        async load(options) {
+          loadedOptions = options
+          return projectInfo
+        },
+        async resolveComponents(moduleNames) {
+          resolvedNames = moduleNames
+          return moduleNames.map((moduleName) => ({
+            moduleName,
+            id: join(tempDir, `${moduleName.replace('/', '-')}.js`),
+          }))
+        },
+      })
+
+      expect(loadedOptions).toMatchObject({
+        root: tempDir,
+        platform: 'web',
+        components: ['@tamagui/core', 'design-system'],
+        outputCSS: expectedOutputCSS,
+      })
+      expect(resolvedNames).toEqual(['@tamagui/core', 'design-system'])
+      expect(project).toMatchObject({
+        projectInfo,
+        generation: 'test-generation',
+        zeroRuntime: zeroRuntime !== undefined,
+        componentModules: [
+          { moduleName: '@tamagui/core' },
+          { moduleName: 'design-system' },
+        ],
+      })
+    }
+  )
 })

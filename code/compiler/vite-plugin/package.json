@@ -20,6 +20,14 @@
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
       "default": "./dist/cjs/index.cjs"
+    },
+    "./internal": {
+      "types": "./types/internal.d.ts",
+      "browser": "./dist/esm/internal.mjs",
+      "module": "./dist/esm/internal.mjs",
+      "import": "./dist/esm/internal.mjs",
+      "require": "./dist/cjs/internal.cjs",
+      "default": "./dist/cjs/internal.cjs"
     }
   },
   "publishConfig": {
@@ -27,6 +35,7 @@
   },
   "scripts": {
     "build": "tamagui-build --skip-native",
+    "test:web": "vitest --run --config vite.test.config.ts",
     "watch": "tamagui-build --skip-native --watch",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
@@ -36,7 +45,7 @@
     "@tamagui/proxy-worm": "workspace:*",
     "@tamagui/react-native-svg": "workspace:*",
     "@tamagui/react-native-web-lite": "workspace:*",
-    "@tamagui/static-worker": "workspace:*",
+    "@tamagui/static": "workspace:*",
     "@tamagui/types": "workspace:*",
     "esm-resolve": "^1.0.8",
     "fs-extra": "^11.2.0",
@@ -45,10 +54,16 @@
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "vite": "^8.0.3"
+    "vite": "^8.0.3",
+    "vitest": "4.0.4"
   },
   "peerDependencies": {
     "vite": "^8.0.3"
+  },
+  "peerDependenciesMeta": {
+    "vite": {
+      "optional": true
+    }
   },
   "tamagui": {
     "build": {

@@ -1,0 +1,49 @@
+// Styled ToggleGroup = the unstyled @tamagui/ui ToggleGroup behavior + the
+// default v2-look skin on its Item (theme palette, border, hover/press/focus
+// color styling, and the default "active" appearance via the Item's `activeStyle`
+// prop). The behavior frame keeps only structural layout + the size mechanism.
+// Single skin definition; the shadcn registry item is generated from this file.
+import {
+  createRefComponent,
+  type GetProps,
+  styled,
+  type TamaguiElement,
+  ToggleGroup as UiToggleGroup,
+  withStaticProperties,
+} from '@tamagui/ui'
+import type * as React from 'react'
+
+// This plain prop object is applied by Toggle while active; its interaction
+// overrides are flat clauses like every other authored style value.
+const activeAppearance = {
+  backgroundColor: 'background-press hover:background-press focus:background-press',
+} as const
+
+export const ToggleGroupItem = styled(UiToggleGroup.Item, {
+  displayName: 'ToggleGroupItem',
+  backgroundColor: 'background hover:background-hover press:background-press',
+  borderColor: 'border-color hover:border-color-hover press:border-color-press',
+  borderWidth: 1,
+  margin: -1,
+  outlineColor: 'focus-visible:outline-color',
+  outlineWidth: 'focus-visible:2px',
+  outlineStyle: 'focus-visible:solid',
+  zIndex: 'focus-visible:10',
+  activeStyle: activeAppearance,
+})
+
+// see Dialog.tsx: withStaticProperties assigns in place, so composing onto
+// UiToggleGroup would rewrite @tamagui/ui's own ToggleGroup.Item for every consumer
+// of the unstyled package.
+const ToggleGroupRoot = createRefComponent<
+  TamaguiElement,
+  React.ComponentProps<typeof UiToggleGroup>
+>(function ToggleGroup(props, ref) {
+  return <UiToggleGroup {...props} ref={ref} />
+})
+
+export const ToggleGroup = withStaticProperties(ToggleGroupRoot, {
+  Item: ToggleGroupItem,
+})
+
+export type ToggleGroupItemProps = GetProps<typeof ToggleGroupItem>

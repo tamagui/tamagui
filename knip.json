@@ -11,6 +11,7 @@
         "tsconfig.*.json"
       ],
       "ignoreDependencies": [
+        "@jridgewell/trace-mapping",
         "@manypkg/cli",
         "@playwright/test",
         "@take-out/cli",
@@ -43,6 +44,7 @@
     "**/.next/**",
     "**/build/**",
     "**/.expo/**",
-    "**/starters/**"
+    "**/starters/**",
+    "**/comparisons/**"
   ]
 }

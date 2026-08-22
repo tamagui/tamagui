@@ -4,18 +4,15 @@
     "slug": "tamagui-kitchen-sink",
     "scheme": "tamagui-kitchen-sink",
     "version": "1.0.0",
-    "orientation": "portrait",
+    "orientation": "default",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.tamagui.tamaguikitchensink"
@@ -30,6 +27,9 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
+    "experiments": {
+      "tsconfigPaths": false
+    },
     "extra": {
       "eas": {
         "projectId": "5c027280-f9c1-4bba-9c75-762ba6efcecc"
@@ -37,12 +37,16 @@
     },
     "plugins": [
       "expo-font",
-      "./plugins/expo-modules-core-swift6",
       "./plugins/detox-metro-port",
-      "./plugins/detox-skip-splash"
-    ],
-    "experiments": {
-      "reactCanary": true
-    }
+      "./plugins/detox-skip-splash",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/splash.png",
+          "resizeMode": "contain",
+          "backgroundColor": "#ffffff"
+        }
+      ]
+    ]
   }
 }

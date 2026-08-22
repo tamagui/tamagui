@@ -1,0 +1,30 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "popover",
+  "type": "registry:ui",
+  "title": "Popover",
+  "description": "v2-look Popover: token-based padding and radius with theme background and arrow border styling, over the unstyled @tamagui/ui Popover behavior.",
+  "files": [
+    {
+      "path": "components/tamagui/Popover.tsx",
+      "content": "import {\n  createRefComponent,\n  defaultTokenSizePolicy,\n  Popover as UiPopover,\n  styled,\n  withStaticProperties,\n} from '@tamagui/ui'\nimport * as React from 'react'\n\nexport const PopoverContent = styled(UiPopover.Content, {\n  displayName: 'PopoverContent',\n  padding: defaultTokenSizePolicy.space,\n  borderRadius: defaultTokenSizePolicy.radius,\n  backgroundColor: 'background',\n  alignItems: 'center',\n})\n\nexport const PopoverArrow = styled(UiPopover.Arrow, {\n  displayName: 'PopoverArrow',\n  backgroundColor: 'background',\n  borderColor: 'border-color',\n})\n\nconst PopoverRoot = createRefComponent<\n  React.ComponentRef<typeof UiPopover>,\n  React.ComponentProps<typeof UiPopover>\n>(function Popover(props, ref) {\n  return <UiPopover {...props} ref={ref} />\n})\n\n// keep the ref-handle type on the same name so `useRef<Popover>` still works\nexport type Popover = UiPopover\n\nexport const Popover = withStaticProperties(PopoverRoot, {\n  Anchor: UiPopover.Anchor,\n  Arrow: PopoverArrow,\n  Trigger: UiPopover.Trigger,\n  Content: PopoverContent,\n  Close: UiPopover.Close,\n  Adapt: UiPopover.Adapt,\n  ScrollView: UiPopover.ScrollView,\n  FocusScope: UiPopover.FocusScope,\n})\n",
+      "type": "registry:ui",
+      "target": "components/tamagui/Popover.tsx"
+    }
+  ],
+  "dependencies": [
+    "@tamagui/ui"
+  ],
+  "categories": [
+    "overlay"
+  ],
+  "meta": {
+    "native": [
+      "requires a Portal provider at the app root for the popover to mount above content"
+    ],
+    "tokens": [
+      "background",
+      "border-color"
+    ]
+  }
+}

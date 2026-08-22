@@ -39,7 +39,7 @@ export default function Auth() {
       flex={1}
       justify="center"
       items="center"
-      gap="$6"
+      gap="6"
       width="100%"
       height="100%"
       minH={400}

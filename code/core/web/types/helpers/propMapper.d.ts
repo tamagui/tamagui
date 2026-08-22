@@ -1,5 +1,6 @@
 import type { PropMapper, TamaguiInternalConfig } from '../types';
-export { getTokenForKey } from './getTokenForKey';
+export declare function appendFlatClause(prev: unknown, conditionSource: string, value: unknown): string | undefined;
 export declare const propMapper: PropMapper;
 export declare function getFontFamilyFromNameOrVariable(input: any, conf: TamaguiInternalConfig): string | undefined;
+export * from './tokenCategories';
 //# sourceMappingURL=propMapper.d.ts.map

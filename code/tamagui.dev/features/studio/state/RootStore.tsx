@@ -1,4 +1,3 @@
-import type { ThemeDefinition } from '@tamagui/theme-builder'
 import { createStore } from '@tamagui/use-store'
 import type { TamaguiInternalConfig, ThemeName } from 'tamagui'
 import { isLocal } from '~/features/studio/constants'
@@ -10,7 +9,7 @@ type ThemesConfig = {
   palettes: Record<string, string[]>
   templates: Record<string, number>
   masks: Record<string, { name: string }>
-  themes: Record<string, ThemeDefinition>
+  themes: Record<string, Record<string, string>>
 }
 
 const matchDarkMode = () =>

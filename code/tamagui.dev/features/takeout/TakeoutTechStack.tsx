@@ -112,9 +112,8 @@ function GlowCard3D({
     <View
       ref={cardGlow.parentRef as any}
       flex={1}
-      minW={260}
-      maxW={340}
-      $md={{ minW: 300, maxW: 360 }}
+      minW="260px md:300px"
+      maxW="340px md:360px"
       position="relative"
     >
       {isHydrated && <cardGlow.Component />}
@@ -124,35 +123,31 @@ function GlowCard3D({
 }
 
 const TechCard = styled(YStack, {
-  bg: '$background02',
-  rounded: '$8',
-  p: '$6',
+  bg: 'background02',
+  rounded: '8',
+  p: '6',
   borderWidth: 0.5,
-  borderColor: 'transparent',
+  borderColor: 'transparent hover:color6',
   cursor: 'pointer',
   overflow: 'hidden',
   position: 'relative',
-  className: 'blur-12',
   height: '100%',
-
-  hoverStyle: {
-    borderColor: '$color6',
-  },
+  className: 'blur-12',
 })
 
 const LogoWrapper = styled(YStack, {
   width: 56,
   height: 56,
-  rounded: '$5',
+  rounded: '5',
   items: 'center',
   justify: 'center',
-  mb: '$4',
+  mb: '4',
 })
 
 const Badge = styled(YStack, {
-  px: '$3',
-  py: '$1',
-  rounded: '$10',
+  px: '3',
+  py: '1',
+  rounded: '10',
   self: 'flex-start',
 })
 
@@ -165,7 +160,7 @@ const techStack = [
     url: 'https://tamagui.dev',
     highlight: 'v2 RC1 Released',
     Logo: TamaguiLogo,
-    color: '$yellow10',
+    color: 'yellow10',
     bgColor: 'rgba(236, 210, 10, 0.1)',
     glowColor: 'var(--yellow7)',
   },
@@ -177,7 +172,7 @@ const techStack = [
     url: 'https://onestack.dev',
     highlight: 'v1 RC1 Released',
     Logo: OneLogo,
-    color: '$yellow10',
+    color: 'yellow10',
     bgColor: 'rgba(245, 202, 5, 0.1)',
     glowColor: 'var(--yellow7)',
   },
@@ -189,7 +184,7 @@ const techStack = [
     url: 'https://zero.rocicorp.dev',
     highlight: 'Instant sync',
     Logo: ZeroLogo,
-    color: '$blue10',
+    color: 'blue10',
     bgColor: 'rgba(59, 130, 246, 0.1)',
     glowColor: 'var(--blue7)',
   },
@@ -197,15 +192,14 @@ const techStack = [
 
 export function TakeoutTechStack() {
   return (
-    <YStack gap="$6" py="$8" px="$4" maxW={1200} self="center" width="100%">
-      <YStack items="center" gap="$4" px="$2">
+    <YStack gap="6" py="8" px="4" maxW={1200} self="center" width="100%">
+      <YStack items="center" gap="4" px="2">
         <H2
-          fontSize={28}
+          fontSize="28px gtSm:40px"
           fontWeight="700"
           text="center"
-          color="$color12"
+          color="color12"
           style={{ lineHeight: '1.2' }}
-          $gtSm={{ fontSize: 40 }}
         >
           Designed for moving fast
         </H2>
@@ -216,7 +210,7 @@ export function TakeoutTechStack() {
         </SubTitle>
       </YStack>
 
-      <XStack flexWrap="wrap" gap="$5" justify="center" $md={{ flexWrap: 'nowrap' }}>
+      <XStack flexWrap="wrap md:nowrap" gap="5" justify="center">
         {techStack.map((tech) => (
           <GlowCard3D key={tech.name} glowColor={tech.glowColor}>
             <Link href={tech.url as any} target="_blank">
@@ -228,7 +222,7 @@ export function TakeoutTechStack() {
                 </Card3D.Item>
 
                 <Card3D.Item translateZ={20}>
-                  <Badge bg={tech.bgColor as any} mb="$3">
+                  <Badge bg={tech.bgColor as any} mb="3">
                     <Paragraph fontSize={12} color={tech.color as any} fontWeight="600">
                       {tech.badge}
                     </Paragraph>
@@ -239,8 +233,8 @@ export function TakeoutTechStack() {
                   <H3
                     fontSize={18}
                     fontWeight="600"
-                    color="$color12"
-                    mb="$2"
+                    color="color12"
+                    mb="2"
                     style={{ lineHeight: '1.3' }}
                   >
                     {tech.name}
@@ -248,15 +242,15 @@ export function TakeoutTechStack() {
                 </Card3D.Item>
 
                 <Card3D.Item translateZ={10}>
-                  <Paragraph size="$5" color="$color10" mb="$4">
+                  <Paragraph size="5" color="color10" mb="4">
                     {tech.description}
                   </Paragraph>
                 </Card3D.Item>
 
                 <Card3D.Item translateZ={30}>
-                  <XStack items="center" gap="$2" mt="auto">
-                    <YStack width={6} height={6} rounded={999} bg="$green10" />
-                    <Paragraph fontSize={12} color="$green10" fontWeight="600">
+                  <XStack items="center" gap="2" mt="auto">
+                    <YStack width={6} height={6} rounded={999} bg="green10" />
+                    <Paragraph fontSize={12} color="green10" fontWeight="600">
                       {tech.highlight}
                     </Paragraph>
                   </XStack>

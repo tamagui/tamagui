@@ -1,5 +1,5 @@
 import { expect, test, type Page } from '@playwright/test'
-import { setupPage } from './test-utils'
+import { getComputedScale, getComputedTranslateX, setupPage } from './test-utils'
 
 /**
  * ANIMATION BEHAVIOR TESTS
@@ -21,25 +21,11 @@ async function getOpacity(page: Page, testId: string): Promise<number> {
 }
 
 async function getScale(page: Page, testId: string): Promise<number> {
-  return page.evaluate((id) => {
-    const el = document.querySelector(`[data-testid="${id}"]`)
-    if (!el) return -1
-    const transform = getComputedStyle(el).transform
-    if (transform === 'none') return 1
-    const match = transform.match(/matrix\(([^,]+),/)
-    return match ? Number.parseFloat(match[1]) : 1
-  }, testId)
+  return getComputedScale(page, `[data-testid="${testId}"]`)
 }
 
 async function getTranslateX(page: Page, testId: string): Promise<number> {
-  return page.evaluate((id) => {
-    const el = document.querySelector(`[data-testid="${id}"]`)
-    if (!el) return -1
-    const transform = getComputedStyle(el).transform
-    if (transform === 'none') return 0
-    const match = transform.match(/matrix\([^,]+,[^,]+,[^,]+,[^,]+,([^,]+),/)
-    return match ? Number.parseFloat(match[1]) : 0
-  }, testId)
+  return getComputedTranslateX(page, `[data-testid="${testId}"]`)
 }
 
 async function elementExists(page: Page, testId: string): Promise<boolean> {
@@ -132,9 +118,14 @@ test.describe('Animation Behavior', () => {
         const vals: number[] = []
         const start = performance.now()
         function tick() {
-          const t = getComputedStyle(el).transform
-          const m = t.match(/matrix\(([^,]+),/)
-          vals.push(m ? Number.parseFloat(m[1]) : 1)
+          const style = getComputedStyle(el)
+          vals.push(
+            style.scale !== 'none'
+              ? Number.parseFloat(style.scale)
+              : style.transform === 'none'
+                ? 1
+                : new DOMMatrixReadOnly(style.transform).a
+          )
           if (performance.now() - start < 800) requestAnimationFrame(tick)
           else resolve(vals)
         }
@@ -204,7 +195,7 @@ test.describe('Animation Behavior', () => {
     expect(endScale, 'End scale').toBeCloseTo(SCALE_END, 0)
   })
 
-  test('enterStyle animates on mount', async ({ page }) => {
+  test('enter clause animates on mount', async ({ page }) => {
     const trigger = page.getByTestId('scenario-21-trigger')
     await trigger.click() // Hide
     await page.waitForTimeout(1000)
@@ -219,7 +210,7 @@ test.describe('Animation Behavior', () => {
     expect(await getScale(page, 'scenario-21-target'), 'End scale').toBeCloseTo(1, 0)
   })
 
-  test('exitStyle has intermediate values during exit animation', async ({
+  test('exit clause has intermediate values during exit animation', async ({
     page,
   }, testInfo) => {
     const driver = (testInfo.project?.metadata as any)?.animationDriver
@@ -289,7 +280,7 @@ test.describe('Animation Behavior', () => {
     expect(endScale, 'End scale').toBeCloseTo(SCALE_END, 0)
   })
 
-  test('enterStyle with scaleX animates from 0 to 1', async ({ page }) => {
+  test('enter clause with scaleX animates from 0 to 1', async ({ page }) => {
     const END_SCALE_X = 1
     const END_OPACITY = 1
 
@@ -315,11 +306,10 @@ test.describe('Animation Behavior', () => {
       return page.evaluate(() => {
         const el = document.querySelector('[data-testid="scenario-37-target"]')
         if (!el) return -1
-        const transform = getComputedStyle(el).transform
-        if (transform === 'none') return 1
-        // matrix(a, b, c, d, tx, ty) - scaleX is in the 'a' position
-        const match = transform.match(/matrix\(([^,]+),/)
-        return match ? Number.parseFloat(match[1]) : 1
+        const style = getComputedStyle(el)
+        if (style.scale !== 'none') return Number.parseFloat(style.scale)
+        if (style.transform === 'none') return 1
+        return new DOMMatrixReadOnly(style.transform).a
       })
     }
 
@@ -447,7 +437,7 @@ test.describe('Animation Behavior', () => {
     expect(endScale, 'End scale').toBeCloseTo(SCALE_END, 1)
   })
 
-  test('animateOnly with exitStyle has intermediate values during exit animation', async ({
+  test('animateOnly with exit clause has intermediate values during exit animation', async ({
     page,
   }, testInfo) => {
     const driver = (testInfo.project?.metadata as any)?.animationDriver
@@ -493,7 +483,7 @@ test.describe('Animation Behavior', () => {
     )
   })
 
-  test('animateOnly with enterStyle and exitStyle animates correctly', async ({
+  test('animateOnly with enter clause and exit clause animates correctly', async ({
     page,
   }, testInfo) => {
     const driver = (testInfo.project?.metadata as any)?.animationDriver
@@ -502,7 +492,7 @@ test.describe('Animation Behavior', () => {
     // scroll to the element first
     await page.getByTestId('scenario-49-trigger').scrollIntoViewIfNeeded()
 
-    // element should be visible initially (after enterStyle animation completes)
+    // element should be visible initially (after enter clause animation completes)
     expect(await elementExists(page, 'scenario-49-target'), 'Initially visible').toBe(
       true
     )

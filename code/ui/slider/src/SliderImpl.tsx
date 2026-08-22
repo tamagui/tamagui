@@ -1,3 +1,4 @@
+import { createRefComponent } from '@tamagui/core'
 /* -------------------------------------------------------------------------------------------------
  * SliderImpl
  * -----------------------------------------------------------------------------------------------*/
@@ -44,7 +45,7 @@ export const SliderFrame = styled(YStack, {
   } as const,
 })
 
-export const SliderImpl = React.forwardRef<View, SliderImplProps>(
+export const SliderImpl = createRefComponent<View, SliderImplProps>(
   (props: ScopedProps<SliderImplProps>, forwardedRef) => {
     const {
       __scopeSlider,
@@ -107,7 +108,7 @@ export const SliderImpl = React.forwardRef<View, SliderImplProps>(
       // wrap with plain RN View for responder events - tamagui views no longer handle responder events on web
 
       <SliderFrame
-        size="$4"
+        size="4"
         ref={forwardedRef as any}
         {...sliderProps}
         data-orientation={sliderProps.orientation}

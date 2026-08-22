@@ -3,28 +3,24 @@ import { Link } from '../../../components/Link'
 import { P } from './BigP'
 
 const Question = styled(P, {
-  size: '$5',
+  size: '5',
+  fontSize: 'gtXs:6',
+  lineHeight: 'gtXs:6',
   fontWeight: 'bold',
-  $gtXs: {
-    size: '$6',
-  },
 })
 
 const Answer = styled(Paragraph, {
-  fontFamily: '$mono',
-  color: '$color10',
-  size: '$3',
-  lineHeight: '$4',
-  $gtXs: {
-    px: '$8',
-    size: '$4',
-    lineHeight: '$5',
-  },
+  fontFamily: 'mono',
+  color: 'color10',
+  lineHeight: '4 gtXs:5',
+  px: 'gtXs:8',
+  fontSize: 'gtXs:4',
+  size: '3',
 })
 
 export const FaqTabContent = () => {
   return (
-    <YStack gap="$5">
+    <YStack gap="5">
       <Question>What's included with Pro?</Question>
       <Answer>
         Two starter kits (v1 with Next.js + Expo, v2 with One framework), Bento copy-paste
@@ -110,7 +106,7 @@ export const FaqTabContent = () => {
         .
       </Answer>
 
-      <Spacer height="$6" />
+      <Spacer height="6" />
     </YStack>
   )
 }

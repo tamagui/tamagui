@@ -1,0 +1,482 @@
+{
+  "label": "baseline",
+  "scenario": "animated",
+  "extract": "1",
+  "scale": 200,
+  "iterations": 20,
+  "warmups": 3,
+  "cpuSamplingUs": 100,
+  "heapSamplingBytes": 1024,
+  "commit": "2f55b4e43d",
+  "hostsPerMount": 200,
+  "rendersPerIteration": 400,
+  "timings": {
+    "mountMedianMs": 0.5,
+    "mountMinMs": 0.4,
+    "updateMedianMs": 1.6,
+    "updateMinMs": 1.4,
+    "raw": [
+      {
+        "mount": 0.6,
+        "update": 1.6
+      },
+      {
+        "mount": 0.5,
+        "update": 2
+      },
+      {
+        "mount": 0.6,
+        "update": 1.6
+      },
+      {
+        "mount": 0.4,
+        "update": 1.8
+      },
+      {
+        "mount": 0.5,
+        "update": 1.6
+      },
+      {
+        "mount": 0.5,
+        "update": 1.6
+      },
+      {
+        "mount": 0.5,
+        "update": 1.6
+      },
+      {
+        "mount": 0.5,
+        "update": 1.6
+      },
+      {
+        "mount": 0.5,
+        "update": 1.4
+      },
+      {
+        "mount": 0.5,
+        "update": 1.6
+      },
+      {
+        "mount": 0.5,
+        "update": 1.6
+      },
+      {
+        "mount": 0.5,
+        "update": 1.5
+      },
+      {
+        "mount": 0.5,
+        "update": 1.6
+      },
+      {
+        "mount": 0.5,
+        "update": 1.8
+      },
+      {
+        "mount": 0.5,
+        "update": 1.5
+      },
+      {
+        "mount": 0.5,
+        "update": 1.5
+      },
+      {
+        "mount": 0.4,
+        "update": 1.6
+      },
+      {
+        "mount": 0.5,
+        "update": 1.5
+      },
+      {
+        "mount": 0.4,
+        "update": 2.6
+      },
+      {
+        "mount": 0.5,
+        "update": 1.5
+      }
+    ]
+  },
+  "allocation": {
+    "totalSampledBytes": 6970016,
+    "bytesPerIteration": 348501,
+    "bytesPerRender": 871.3,
+    "bySourceBytesPerIteration": [
+      {
+        "name": "node_modules/react-dom/cjs/react-dom-client.production.js",
+        "value": 95774.8
+      },
+      {
+        "name": "code/comparisons/tamagui-bench/src/index.tsx",
+        "value": 54089.8
+      },
+      {
+        "name": "node_modules/react/cjs/react-jsx-runtime.production.js",
+        "value": 13417.6
+      },
+      {
+        "name": "node_modules/scheduler/cjs/scheduler.production.js",
+        "value": 547.6
+      },
+      {
+        "name": "code/comparisons/shared/bench.ts",
+        "value": 516.2
+      },
+      {
+        "name": "code/core/web/dist/esm/createComponent.mjs",
+        "value": 54
+      }
+    ],
+    "byFrameBytesPerIteration": [
+      {
+        "name": "(V8 API) <native>",
+        "value": 51023.8
+      },
+      {
+        "name": "code/comparisons/tamagui-bench/src/index.tsx:164 (anonymous)",
+        "value": 50716.2
+      },
+      {
+        "name": "node_modules/react-dom/cjs/react-dom-client.production.js:8822 Zc",
+        "value": 21313.2
+      },
+      {
+        "name": "node_modules/react-dom/cjs/react-dom-client.production.js:2483 ui",
+        "value": 21257.6
+      },
+      {
+        "name": "(anonymous) <native>",
+        "value": 17840.2
+      },
+      {
+        "name": "innerSerialize <native>",
+        "value": 15772.6
+      },
+      {
+        "name": "node_modules/react/cjs/react-jsx-runtime.production.js:14 r",
+        "value": 13417.6
+      },
+      {
+        "name": "next <native>",
+        "value": 13129.2
+      },
+      {
+        "name": "node_modules/react-dom/cjs/react-dom-client.production.js:2414 ci",
+        "value": 13025
+      },
+      {
+        "name": "node_modules/react-dom/cjs/react-dom-client.production.js:12501 $",
+        "value": 11130.2
+      },
+      {
+        "name": "parseEvaluationResultValue <native>",
+        "value": 8653.2
+      },
+      {
+        "name": "push <native>",
+        "value": 8472.6
+      },
+      {
+        "name": "Map <native>",
+        "value": 7765.6
+      },
+      {
+        "name": "node_modules/react-dom/cjs/react-dom-client.production.js:2407 oi",
+        "value": 7696
+      },
+      {
+        "name": "_cached <native>",
+        "value": 7246
+      },
+      {
+        "name": "node_modules/react-dom/cjs/react-dom-client.production.js:7753 Oc",
+        "value": 6870.8
+      },
+      {
+        "name": "end <native>",
+        "value": 6539.8
+      },
+      {
+        "name": "node_modules/react-dom/cjs/react-dom-client.production.js:647 st",
+        "value": 5888
+      },
+      {
+        "name": "(BYTECODE_COMPILER) <native>",
+        "value": 4725.2
+      },
+      {
+        "name": "set <native>",
+        "value": 4119.2
+      },
+      {
+        "name": "evaluate <native>",
+        "value": 4039.2
+      },
+      {
+        "name": "Set <native>",
+        "value": 3831.6
+      },
+      {
+        "name": "entries <native>",
+        "value": 3569.2
+      },
+      {
+        "name": "previewNode <native>",
+        "value": 3517.8
+      },
+      {
+        "name": "query <native>",
+        "value": 3328.6
+      },
+      {
+        "name": "values <native>",
+        "value": 2638
+      },
+      {
+        "name": "sort <native>",
+        "value": 2329.8
+      },
+      {
+        "name": "code/comparisons/tamagui-bench/src/index.tsx:263 Ou",
+        "value": 2025
+      },
+      {
+        "name": "_callQuery <native>",
+        "value": 1852.6
+      },
+      {
+        "name": "slice <native>",
+        "value": 1548
+      },
+      {
+        "name": "node_modules/react-dom/cjs/react-dom-client.production.js:3606 so",
+        "value": 1256
+      },
+      {
+        "name": "node_modules/react-dom/cjs/react-dom-client.production.js:11949 dd",
+        "value": 1248
+      },
+      {
+        "name": "node_modules/react-dom/cjs/react-dom-client.production.js:11996 (anonymous)",
+        "value": 1088.6
+      },
+      {
+        "name": "_queryCSS <native>",
+        "value": 1087.6
+      },
+      {
+        "name": "filter <native>",
+        "value": 900.2
+      },
+      {
+        "name": "toLowerCase <native>",
+        "value": 879.4
+      },
+      {
+        "name": "_promiseAwareJsonValueNoThrow <native>",
+        "value": 830.2
+      },
+      {
+        "name": "code/comparisons/tamagui-bench/src/index.tsx:198 Du",
+        "value": 779.4
+      },
+      {
+        "name": "node_modules/react-dom/cjs/react-dom-client.production.js:4975 l",
+        "value": 754
+      },
+      {
+        "name": "join <native>",
+        "value": 737.6
+      }
+    ]
+  },
+  "cpu": {
+    "totalSampledMs": 4013.79,
+    "msPerIteration": 200.69,
+    "bySourceMsPerIteration": [
+      {
+        "name": "node_modules/react-dom/cjs/react-dom-client.production.js",
+        "value": 1.043
+      },
+      {
+        "name": "code/comparisons/tamagui-bench/src/index.tsx",
+        "value": 0.092
+      },
+      {
+        "name": "code/comparisons/shared/bench.ts",
+        "value": 0.051
+      },
+      {
+        "name": "node_modules/scheduler/cjs/scheduler.production.js",
+        "value": 0.033
+      },
+      {
+        "name": "node_modules/react/cjs/react-jsx-runtime.production.js",
+        "value": 0.013
+      }
+    ],
+    "byFrameMsPerIteration": [
+      {
+        "name": "(idle) <native>",
+        "value": 191.71
+      },
+      {
+        "name": "(program) <native>",
+        "value": 5.621
+      },
+      {
+        "name": "(anonymous) <native>",
+        "value": 0.64
+      },
+      {
+        "name": "node_modules/react-dom/cjs/react-dom-client.production.js:1246 Gt",
+        "value": 0.269
+      },
+      {
+        "name": "query <native>",
+        "value": 0.163
+      },
+      {
+        "name": "(garbage collector) <native>",
+        "value": 0.162
+      },
+      {
+        "name": "node_modules/react-dom/cjs/react-dom-client.production.js:11074 Tu",
+        "value": 0.145
+      },
+      {
+        "name": "querySelectorAll <native>",
+        "value": 0.107
+      },
+      {
+        "name": "elementsFromPoint <native>",
+        "value": 0.105
+      },
+      {
+        "name": "setAttribute <native>",
+        "value": 0.1
+      },
+      {
+        "name": "previewNode <native>",
+        "value": 0.098
+      },
+      {
+        "name": "removeChild <native>",
+        "value": 0.064
+      },
+      {
+        "name": "node_modules/react-dom/cjs/react-dom-client.production.js:647 st",
+        "value": 0.061
+      },
+      {
+        "name": "innerSerialize <native>",
+        "value": 0.058
+      },
+      {
+        "name": "parseEvaluationResultValue <native>",
+        "value": 0.057
+      },
+      {
+        "name": "node_modules/react-dom/cjs/react-dom-client.production.js:1264 Kt",
+        "value": 0.054
+      },
+      {
+        "name": "code/comparisons/shared/bench.ts:56 vu",
+        "value": 0.051
+      },
+      {
+        "name": "evaluate <native>",
+        "value": 0.039
+      },
+      {
+        "name": "computeBox <native>",
+        "value": 0.039
+      },
+      {
+        "name": "createElement <native>",
+        "value": 0.038
+      },
+      {
+        "name": "_cached <native>",
+        "value": 0.033
+      },
+      {
+        "name": "appendChild <native>",
+        "value": 0.033
+      },
+      {
+        "name": "node_modules/react-dom/cjs/react-dom-client.production.js:12501 $",
+        "value": 0.031
+      },
+      {
+        "name": "serialize <native>",
+        "value": 0.028
+      },
+      {
+        "name": "code/comparisons/tamagui-bench/src/index.tsx:198 Du",
+        "value": 0.028
+      },
+      {
+        "name": "getBoundingClientRect <native>",
+        "value": 0.027
+      },
+      {
+        "name": "replaceChildren <native>",
+        "value": 0.026
+      },
+      {
+        "name": "node_modules/react-dom/cjs/react-dom-client.production.js:7753 Oc",
+        "value": 0.026
+      },
+      {
+        "name": "node_modules/scheduler/cjs/scheduler.production.js:121 T",
+        "value": 0.026
+      },
+      {
+        "name": "checkVisibility <native>",
+        "value": 0.02
+      },
+      {
+        "name": "isTypedArray <native>",
+        "value": 0.02
+      },
+      {
+        "name": "code/comparisons/tamagui-bench/src/index.tsx:164 (anonymous)",
+        "value": 0.02
+      },
+      {
+        "name": "postMessage <native>",
+        "value": 0.02
+      },
+      {
+        "name": "oneLine <native>",
+        "value": 0.02
+      },
+      {
+        "name": "node_modules/react-dom/cjs/react-dom-client.production.js:1466 rn",
+        "value": 0.02
+      },
+      {
+        "name": "node_modules/react-dom/cjs/react-dom-client.production.js:7159 Sc",
+        "value": 0.019
+      },
+      {
+        "name": "node_modules/react-dom/cjs/react-dom-client.production.js:10955 Su",
+        "value": 0.019
+      },
+      {
+        "name": "code/comparisons/tamagui-bench/src/index.tsx:263 Ou",
+        "value": 0.019
+      },
+      {
+        "name": "node_modules/react-dom/cjs/react-dom-client.production.js:2383 ai",
+        "value": 0.015
+      },
+      {
+        "name": "node_modules/react-dom/cjs/react-dom-client.production.js:1489 an",
+        "value": 0.014
+      }
+    ]
+  }
+}
