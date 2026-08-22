@@ -27,7 +27,6 @@ import {
   canonicalClauseModifier,
   clauseConditionSetKey,
   clauseSubjectClassRepetitions,
-  compareClausePrecedence,
   createClausePrecedenceOrder,
   getClausePrecedenceKey,
   type ClausePrecedenceOrder,
@@ -249,9 +248,7 @@ export function lowerProgram(
       ),
     }))
     .sort(
-      (left, right) =>
-        compareClausePrecedence(left.precedence, right.precedence) ||
-        left.index - right.index
+      (left, right) => left.precedence - right.precedence || left.index - right.index
     )
 
   for (const { clause, precedence } of clauses) {

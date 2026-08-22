@@ -1,10 +1,8 @@
 import { grammarPlatformGroups } from './config'
 import {
   canonicalClauseModifier,
-  compareClausePrecedence,
   createClausePrecedenceOrder,
   getClausePrecedenceKeyFromKinds,
-  type ClausePrecedenceKey,
   type ClausePrecedenceOrder,
 } from './clausePrecedence'
 import type { ModifierKind, ModifierRegistryView, ParsedValue } from './valueTypes'
@@ -38,8 +36,7 @@ export function evaluateProgram(
   active: ActiveConditions
 ): string | null {
   let payload: string | null = null
-  let found = false
-  let best: ClausePrecedenceKey | undefined
+  let best = -1
   const order = active.mediaOrder ?? createClausePrecedenceOrder(active.media)
 
   for (let clauseIndex = 0; clauseIndex < value.clauses.length; clauseIndex++) {
@@ -80,12 +77,11 @@ export function evaluateProgram(
     if (!matches) continue
 
     const precedence = getClausePrecedenceKeyFromKinds(clause.modifiers, kinds, order)
-    if (best && compareClausePrecedence(precedence, best) < 0) continue
+    if (precedence < best) continue
 
     payload = clause.payload
     best = precedence
-    found = true
   }
 
-  return found ? payload : value.base
+  return best === -1 ? value.base : payload
 }

@@ -16,7 +16,6 @@ import {
   canonicalClauseModifier,
   clauseConditionSetKey,
   clauseSubjectClassRepetitions,
-  compareClausePrecedence,
   createClausePrecedenceOrder,
   getClausePrecedenceKeyFromKinds,
   isRootThemeName,
@@ -94,8 +93,6 @@ type DirectState = GetStyleState & {
   flatTextShadow?: Record<string, any>
   flatWebShadow?: Record<string, any>
 }
-
-const baseClausePrecedence = [0, 0, 0, 0] as const
 
 // keyed by the CANONICAL modifier spelling: `canonicalClauseModifier` has
 // already folded `active`, `pressed`, `starting` and `ending` into their one
@@ -680,7 +677,7 @@ function directAtomic(
           : condition!.key]: {
           count: nextRules.length,
           index: 0,
-          precedence: condition?.precedence ?? baseClausePrecedence,
+          precedence: condition?.precedence ?? 0,
           default: isDefault,
         },
       }
@@ -726,15 +723,12 @@ function directAtomic(
         }
         delete existing.conditions![slot]
       }
-      const precedence = condition?.precedence ?? baseClausePrecedence
+      const precedence = condition?.precedence ?? 0
       let insertionIndex = rules.length
       if (existing.conditions) {
         for (const key in existing.conditions) {
           const entry = existing.conditions[key]
-          if (
-            compareClausePrecedence(entry.precedence, precedence) > 0 &&
-            entry.index < insertionIndex
-          ) {
+          if (entry.precedence > precedence && entry.index < insertionIndex) {
             insertionIndex = entry.index
           }
         }
@@ -859,7 +853,7 @@ function emitProperty(
   if (condition) {
     if (!condition.active) return
     const previous = direct.flatPrecedence?.[property]
-    if (previous && compareClausePrecedence(condition.precedence, previous) < 0) return
+    if (previous !== undefined && condition.precedence < previous) return
     ;(direct.flatPrecedence ||= {})[property] = condition.precedence
     ;(state.flatActiveConditions ||= {})[property] = true
   } else if (state.flatActiveConditions?.[property]) {

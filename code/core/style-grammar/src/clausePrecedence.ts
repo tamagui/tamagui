@@ -15,22 +15,43 @@ import {
 export { grammarMaxNonPlatformDepth } from './valueTypes'
 
 /**
+ * One clause's precedence as a single integer: a higher key wins, so
+ * comparison is plain `>`. Four bounded fields pack most-significant first:
+ *
+ * - bits 26-27: platform rank — none 0; web/native 1; ios/android/tv 2;
+ *   tvos/androidtv 3
+ * - bits 23-25: depth — distinct non-platform conditions, capped at 5
+ * - bits 20-22: category rank — media 0 < container 1 < theme 2 < group 3
+ *   < state 4
+ * - bits 0-19: rank inside the highest category — the state lifecycle table,
+ *   or a media/container key's config declaration index (a config would need
+ *   over a million media keys to overflow these bits)
+ *
  * The CSS emitter deliberately caps a condition chain at five distinct
  * non-platform conditions. The parser can represent longer chains, but they
  * cannot be lowered while also giving platform clauses a finite specificity
- * floor above every platform-less clause, so the shared comparator rejects
+ * floor above every platform-less clause, so the shared key builder rejects
  * them consistently on every surface.
  */
-export type ClausePrecedenceKey = readonly [
-  /** no platform = 0; web/native = 1; ios/android/tv = 2; tvos/androidtv = 3 */
+export type ClausePrecedenceKey = number
+
+const categoryShift = 20
+const depthShift = 23
+const platformShift = 26
+
+export function packClausePrecedence(
   platformRank: number,
-  /** number of distinct non-platform conditions */
   depth: number,
-  /** media < container < theme < group < state */
   categoryRank: number,
-  /** declaration/lifecycle rank inside the highest category */
-  withinCategoryRank: number,
-]
+  withinCategoryRank: number
+): ClausePrecedenceKey {
+  return (
+    (platformRank << platformShift) |
+    (depth << depthShift) |
+    (categoryRank << categoryShift) |
+    withinCategoryRank
+  )
+}
 
 export type OrderedModifierNames =
   | readonly string[]
@@ -153,7 +174,12 @@ export function getClausePrecedenceKeyFromKinds(
     )
   }
 
-  return [platformRank, depth, categoryRank, highestWithinCategoryRank]
+  return packClausePrecedence(
+    platformRank,
+    depth,
+    categoryRank,
+    highestWithinCategoryRank
+  )
 }
 
 export function getClausePrecedenceKey(
@@ -168,21 +194,11 @@ export function getClausePrecedenceKey(
   return getClausePrecedenceKeyFromKinds(modifiers, kinds, order)
 }
 
-/** Ascending comparator: a positive result means `left` wins over `right`. */
-export function compareClausePrecedence(
-  left: ClausePrecedenceKey,
-  right: ClausePrecedenceKey
-): number {
-  for (let index = 0; index < 4; index++) {
-    const difference = left[index] - right[index]
-    if (difference) return difference
-  }
-  return 0
-}
-
 /** Target CSS class specificity, excluding IDs/elements: (0, result, 0). */
 export function clauseTargetClassSpecificity(key: ClausePrecedenceKey): number {
-  return 1 + key[1] + key[0] * (grammarMaxNonPlatformDepth + 1)
+  const depth = (key >>> depthShift) & 7
+  const platformRank = key >>> platformShift
+  return 1 + depth + platformRank * (grammarMaxNonPlatformDepth + 1)
 }
 
 /**
