@@ -1774,11 +1774,18 @@ function rewriteStyleObject(
       rendered.push(textWithOuterComments(property))
     }
   }
-  object.replaceWithText(
-    rendered.length
-      ? `{
-${rendered.join(',\n')}
-}`
-      : '{}'
-  )
+  if (rendered.length === 0) {
+    object.replaceWithText('{}')
+    return
+  }
+
+  // Indent one level and no more. replaceWithText re-indents what it is given by
+  // the node's own depth, so the text here is RELATIVE: ts-morph supplies the
+  // object's base indentation and this supplies the step inside it.
+  //
+  // Emitting the absolute indentation instead doubles it on every nested object,
+  // which is how variant branches ended up six columns too deep. Emitting none,
+  // as this did originally, flattens a top-level styled() config to column zero,
+  // because a node at statement depth has no indentation for ts-morph to add.
+  object.replaceWithText(`{\n${rendered.map((text) => `  ${text}`).join(',\n')}\n}`)
 }
