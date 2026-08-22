@@ -8,6 +8,7 @@ import { createRequire } from 'node:module'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import {
+  createFilter,
   createIdResolver,
   createRunnableDevEnvironment,
   defaultClientConditions,
@@ -52,6 +53,42 @@ const oneTsconfigPathsPluginName = 'one:tsconfig-paths'
 const bareTamaguiPackage = /^@tamagui\/[^/?#]+(?:[/?#]|$)/
 const inlineEvaluationTamaguiPackage = /^@tamagui\/(?:config|core|slider|web)(?:[/?#]|$)/
 const externalizablePackageExtensions = new Set(['', '.js', '.mjs', '.cjs'])
+
+// Export condition the compiler's evaluation environment resolves with. A
+// Tamagui package that cannot load outside an app publishes a runtime-free
+// build under this key; nothing else in a user's graph ever sees it.
+const TAMAGUI_COMPILER_CONDITION = 'tamagui-compiler'
+
+// A condition only decides anything while Vite is the one resolving. Externalized
+// packages are handed to node as a bare specifier, and node resolves them again
+// under its own conditions, so a compiler build wins the first resolution and is
+// thrown away at load time. Packages publishing one therefore have to be inlined
+// into the evaluation graph. They are the cheap ones to inline by construction:
+// the build exists precisely because it carries no app runtime.
+function packageDeclaresCompilerCondition(packageDir: string) {
+  const manifest = path.join(packageDir, 'package.json')
+  if (!existsSync(manifest)) return false
+  try {
+    const exports = JSON.parse(readFileSync(manifest, 'utf8')).exports
+    return JSON.stringify(exports ?? null).includes(`"${TAMAGUI_COMPILER_CONDITION}"`)
+  } catch {
+    return false
+  }
+}
+type EvaluationNoExternal = NonNullable<EnvironmentOptions['resolve']>['noExternal']
+
+function mergeEvaluationNoExternal(
+  required: (string | RegExp)[],
+  userNoExternal: EvaluationNoExternal
+): EvaluationNoExternal {
+  if (userNoExternal === true) return true
+  if (!userNoExternal) return required
+  return [
+    ...required,
+    ...(Array.isArray(userNoExternal) ? userNoExternal : [userNoExternal]),
+  ]
+}
+
 type EvaluationResolveIdHandler = (this: any, source: string, ...args: any[]) => any
 type EvaluationBarePackageResolver = (
   environment: Environment,
@@ -160,12 +197,16 @@ function getEvaluationPackageName(source: string | undefined) {
   return name && !path.extname(name) ? name : undefined
 }
 
-function getInstalledTamaguiPackages(
+function scanInstalledTamaguiPackages(
   root: string,
   configuredEvaluationPackages: Set<string>
 ) {
   const packageRequire = createRequire(path.join(root, 'package.json'))
-  const packages = new Set<string>()
+  // externalizable: evaluated through node, the default for a Tamagui package.
+  // compilerCondition: publishes a runtime-free build the compiler must inline
+  // to keep, see packageDeclaresCompilerCondition.
+  const externalizable = new Set<string>()
+  const compilerCondition = new Set<string>()
 
   for (const modulePath of packageRequire.resolve.paths('@tamagui/core') || []) {
     const scopePath = path.join(modulePath, '@tamagui')
@@ -174,15 +215,20 @@ function getInstalledTamaguiPackages(
       if (!entry.isDirectory() && !entry.isSymbolicLink()) continue
       const packageName = `@tamagui/${entry.name}`
       if (
-        !inlineEvaluationTamaguiPackage.test(packageName) &&
-        !configuredEvaluationPackages.has(packageName)
+        inlineEvaluationTamaguiPackage.test(packageName) ||
+        configuredEvaluationPackages.has(packageName)
       ) {
-        packages.add(packageName)
+        continue
+      }
+      if (packageDeclaresCompilerCondition(path.join(scopePath, entry.name))) {
+        compilerCondition.add(packageName)
+      } else {
+        externalizable.add(packageName)
       }
     }
   }
 
-  return packages
+  return { externalizable, compilerCondition }
 }
 
 function getEvaluationResolve(
@@ -191,6 +237,18 @@ function getEvaluationResolve(
   disableTsconfigPaths: boolean,
   configuredEvaluationPackages: Set<string>
 ) {
+  const noExternal = resolve.noExternal
+  const noExternalFilter =
+    noExternal && noExternal !== true
+      ? createFilter(undefined, noExternal, { resolve: false })
+      : undefined
+  const isNoExternalPackage =
+    noExternal === true
+      ? () => true
+      : noExternalFilter
+        ? (packageName: string) => !noExternalFilter(packageName)
+        : () => false
+
   return {
     ...resolve,
     external:
@@ -205,7 +263,10 @@ function getEvaluationResolve(
                     configuredEvaluationPackages
                   )
               ),
-              ...getInstalledTamaguiPackages(root, configuredEvaluationPackages),
+              ...[
+                ...scanInstalledTamaguiPackages(root, configuredEvaluationPackages)
+                  .externalizable,
+              ].filter((packageName) => !isNoExternalPackage(packageName)),
             ]),
           ],
     ...(disableTsconfigPaths && { tsconfigPaths: false }),
@@ -743,7 +804,10 @@ export function createTamaguiPlugins({
     '.json',
   ]
 
-  const getEvaluationEnvironmentOptions = (): EnvironmentOptions => ({
+  const getEvaluationEnvironmentOptions = (
+    resolvedRoot: string,
+    userNoExternal: EvaluationNoExternal
+  ): EnvironmentOptions => ({
     consumer: 'server',
     keepProcessEnv: true,
     define: {
@@ -763,9 +827,26 @@ export function createTamaguiPlugins({
       'process.env.TAMAGUI_DISABLE_SLIDER_INTERVAL': JSON.stringify('1'),
     },
     resolve: {
-      conditions: [...defaultClientConditions],
+      // `tamagui-compiler` first, so a package we control can publish a build
+      // with no app runtime in it and have the compiler pick that instead. The
+      // reanimated driver uses it: the real one imports react-native-reanimated
+      // at module scope, which node cannot load (extensionless and directory
+      // relative imports), so evaluating any config registering that driver used
+      // to fail outright. A condition is the portable way to express this, since
+      // every bundler integration can add the same one and an app configures
+      // nothing.
+      conditions: [TAMAGUI_COMPILER_CONDITION, ...defaultClientConditions],
       mainFields: [...defaultClientMainFields],
-      noExternal: [inlineEvaluationTamaguiPackage, ...configuredEvaluationPackages],
+      noExternal: mergeEvaluationNoExternal(
+        [
+          inlineEvaluationTamaguiPackage,
+          ...configuredEvaluationPackages,
+          // a condition only holds while Vite resolves, so these must not reach node
+          ...scanInstalledTamaguiPackages(resolvedRoot, configuredEvaluationPackages)
+            .compilerCondition,
+        ],
+        userNoExternal
+      ),
       extensions,
     },
     dev: {
@@ -939,7 +1020,10 @@ export function createTamaguiPlugins({
               }),
             },
           },
-          [TAMAGUI_EVALUATION_ENVIRONMENT]: getEvaluationEnvironmentOptions(),
+          [TAMAGUI_EVALUATION_ENVIRONMENT]: getEvaluationEnvironmentOptions(
+            resolvedRoot,
+            userConfig.environments?.[TAMAGUI_EVALUATION_ENVIRONMENT]?.resolve?.noExternal
+          ),
         },
 
         define: {

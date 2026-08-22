@@ -49,6 +49,22 @@ const evaluationFixtureRuntimePath = path.join(
   fixtureRoot,
   'node_modules/@tamagui/evaluation-fixture'
 )
+const compilerConditionFixturePath = path.join(
+  fixtureRoot,
+  'packages/compiler-condition-fixture'
+)
+const compilerConditionFixtureRuntimePath = path.join(
+  fixtureRoot,
+  'node_modules/@tamagui/compiler-condition-fixture'
+)
+const userNoExternalFixturePath = path.join(
+  fixtureRoot,
+  'packages/user-no-external-fixture'
+)
+const userNoExternalFixtureRuntimePath = path.join(
+  fixtureRoot,
+  'node_modules/@tamagui/user-no-external-fixture'
+)
 const metroFallbackPath = path.join(evaluationFixtureRuntimePath, 'metro/value/index.js')
 const userAliasPath = path.join(fixtureRoot, 'packages/workspace/src/user-alias.ts')
 const watchOutputRoot = path.join(fixtureRoot, '.watch-dist')
@@ -410,6 +426,8 @@ beforeEach(async () => {
     path.join(fixtureConditionalScope, 'conditional'),
     'dir'
   )
+  await symlink(compilerConditionFixturePath, compilerConditionFixtureRuntimePath, 'dir')
+  await symlink(userNoExternalFixturePath, userNoExternalFixtureRuntimePath, 'dir')
 })
 
 afterEach(async () => {
@@ -658,6 +676,13 @@ test('evaluates config and components through the app resolver and invalidates H
     server: {
       middlewareMode: true,
     },
+    environments: {
+      [TAMAGUI_EVALUATION_ENVIRONMENT]: {
+        resolve: {
+          noExternal: ['@tamagui/user-no-external-fixture'],
+        },
+      },
+    },
     resolve: {
       alias: fixtureAliases,
     },
@@ -731,6 +756,24 @@ test('evaluates config and components through the app resolver and invalidates H
     '@tamagui/button',
     directConfigResolution!.id
   )
+  const compilerConditionResolution =
+    await evaluationEnvironment.pluginContainer.resolveId(
+      '@tamagui/compiler-condition-fixture',
+      directConfigResolution!.id
+    )
+  const userNoExternalResolution = await evaluationEnvironment.pluginContainer.resolveId(
+    '@tamagui/user-no-external-fixture',
+    directConfigResolution!.id
+  )
+  expect(evaluationEnvironment.config.resolve.noExternal).toEqual(
+    expect.arrayContaining([
+      '@tamagui/compiler-condition-fixture',
+      '@tamagui/user-no-external-fixture',
+    ])
+  )
+  const externalPackages = evaluationEnvironment.config.resolve.external
+  expect(externalPackages).not.toContain('@tamagui/compiler-condition-fixture')
+  expect(externalPackages).not.toContain('@tamagui/user-no-external-fixture')
   expect(inlinePackageResolution?.id).toMatch(
     /(?:node_modules\/@tamagui\/config|code\/core\/config)\/dist\/esm\/v6\.mjs$/
   )
@@ -741,7 +784,12 @@ test('evaluates config and components through the app resolver and invalidates H
   expect(tamaguiResolution?.external).not.toBe(true)
   expect(buttonResolution?.id).toMatch(/\/button\/dist\/esm\/index\.mjs$/)
   expect(buttonResolution?.external).not.toBe(true)
-  const externalPackages = evaluationEnvironment.config.resolve.external
+  expect(compilerConditionResolution?.id).toMatch(
+    /\/compiler-condition-fixture\/compiler\.mjs$/
+  )
+  expect(compilerConditionResolution?.external).not.toBe(true)
+  expect(userNoExternalResolution?.id).toMatch(/\/user-no-external-fixture\/index\.mjs$/)
+  expect(userNoExternalResolution?.external).not.toBe(true)
   expect(externalPackages).toContain('@tamagui/evaluation-fixture')
   expect(externalPackages).toContain('@tamagui/shorthands')
   expect(externalPackages).not.toContain('tamagui')
@@ -751,6 +799,20 @@ test('evaluates config and components through the app resolver and invalidates H
   expect(externalPackages).not.toContain('@tamagui/slider')
   expect(externalPackages).not.toContain('@tamagui/web')
   expect(externalPackages).not.toContain('@fixture/conditional')
+  const compilerConditionModule = await evaluationEnvironment.runner.import(
+    compilerConditionResolution!.id
+  )
+  const userNoExternalModule = await evaluationEnvironment.runner.import(
+    userNoExternalResolution!.id
+  )
+  expect(compilerConditionModule.resolution).toBe('compiler-condition')
+  expect(compilerConditionModule.modulePath).toMatch(
+    /\/compiler-condition-fixture\/compiler\.mjs$/
+  )
+  expect(userNoExternalModule.resolution).toBe('user-no-external')
+  expect(userNoExternalModule.modulePath).toMatch(
+    /\/user-no-external-fixture\/index\.mjs$/
+  )
   const directConfigModule = await evaluationEnvironment.runner.import(
     directConfigResolution!.id
   )
