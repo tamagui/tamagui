@@ -1,4 +1,4 @@
-# V3 beta measurement state (updated 2026-08-15)
+# V3 beta measurement state (updated 2026-08-22)
 
 Records which retained numbers are trustworthy, which are load-caveated, and
 which are known invalid, so nobody re-derives this from scattered logs.
@@ -8,7 +8,84 @@ which are known invalid, so nobody re-derives this from scattered logs.
 Bundle output is deterministic. It does not depend on machine load, so
 everything here stands regardless of how busy the box was.
 
-Current, at `605a1659d3` on `v3-beta`, `metadata.dirty: false`, retained in
+### Current compiled result
+
+At `1c318a4cea` on `v3-beta`, `metadata.dirty: true` only because of three
+unrelated pre-existing untracked files:
+
+- V3 is **7,164 gzip smaller** than V2 on the compiled whole-app JS arm: 88,854
+  vs 96,018.
+- Tamagui-attributable gzip is 26,143 vs 33,417, a 7,274 byte reduction.
+- Compiled CSS is 67 gzip larger than V2: 1,107 vs 1,040.
+- The runtime arm is unchanged at +15,619 gzip. The compiled cut comes from
+  compiler output and tree shaking.
+- The V2 compiled arm reproduced at 96,018 and its Tamagui chunk at 33,417.
+  The React control reproduced within +3 gzip, so the run is valid.
+
+The source tree at `84bc8edc062` had drifted to **+15,739 compiled whole-app
+gzip** before this work (111,757 vs the same V2 96,018). That measurement had
+`metadata.dirty: true` only for the same unrelated untracked files. The
+post-2026-08-15 drift includes later feature work and the
+reintroduction of `normalize-css-color` by equivalent color spelling
+deduplication in `registerCSSVariable`. The old +9,350 state is historical.
+
+Whole-app gzip on the compiled bench arm, measured with all four web arms and
+seed 73129:
+
+| commit | change | whole-app gzip | V3 vs V2 | change |
+| --- | --- | ---: | ---: | ---: |
+| baseline `84bc8edc062` | 11 of 14 candidates flattened | 111,757 | +15,739 | |
+| `1c318a4cea` | flatten proven numeric and finite-literal dynamic host styles | 88,854 | -7,164 | **-22,903** |
+
+The compiled fixture retained exactly three runtime `View` calls before this
+change: one finite color array lookup and two numeric width expressions. The
+compiler now proves those narrow runtime domains and emits them as host inline
+styles. It resolves each finite string candidate through the real style
+resolver before accepting it, so tokens and values that would normalize or
+expand still use the runtime path. Compiler stats moved from 11 flattened plus
+3 partial to **14 of 14 flattened**, with zero partial and zero bailouts.
+
+This removes the duplicated emitter stack from the compiled arm. The complete
+`directStyle`, `getSplitStyles`, `createComponent`, `propMapper`,
+`useComponentState`, and their dependent runtime helpers all tree-shake out.
+Only 50 marginal gzip from `directStyle` remains for `platformMatches`, which
+`variables.mjs` imports.
+
+Per-module marginal gzip (`gzip(chunk) - gzip(chunk without the module)`) was
+measured on the same resulting source tree at `84bc8edc062`,
+`metadata.dirty: true`, with the compiler change pending. The committed
+four-arm result above reproduced its whole-app bytes exactly at `1c318a4cea`.
+
+| Δ gzip | module | judgment |
+| ---: | --- | --- |
+| +2,514 | `web/helpers/variables.mjs` | inline themes and configured variables; removing it removes public behavior |
+| +2,249 | `@tamagui/normalize-css-color` | equivalent color spelling deduplication added after the earlier removal; deleting it changes generated CSS and needs a product decision |
+| +1,940 | compiled fixture | application code, rather than Tamagui runtime |
+| +876 | `animations-css/animated-number.mjs` | CSS animation behavior |
+| +729 | `style-grammar/scanFlatValue.mjs` | inline theme and conditional value parsing |
+| +575 | `style-grammar/valueParser.mjs` | inline theme and conditional value parsing |
+| +398 | `@tamagui/core::runtime.mjs` | core setup retained by the compiled application |
+| +331 | `style-grammar/states.mjs` | state grammar behavior |
+| +63 | `style-grammar/stateModifiers.mjs` | state grammar behavior |
+| +50 | `web/helpers/directStyle.mjs` | `platformMatches` only; the emitter itself is absent |
+| -1,070 | `web/helpers/propMapper.mjs` | absent from V3 compiled output; V2 still ships it |
+| -3,817 | `web/createComponent.mjs` | absent from V3 compiled output; V2 still ships it |
+| -3,858 | `web/helpers/getSplitStyles.mjs` | absent from V3 compiled output; V2 still ships it |
+
+`variables.mjs` and the remaining style grammar implement features a user
+would miss. `normalize-css-color` is the only current candidate that could be
+removed for another roughly 2,249 gzip, but doing so changes color equivalence
+deduplication and needs Nate's decision.
+
+Earlier investigations remain valid: Rolldown folds `isWeb` through
+`directStyle`, the emitter had no isolated dead block, and the
+legacy-object-syntax deletion was already included in the baseline. The native
+style engine gate and color variant resolver change remain landed. The later
+normalizer reintroduction supersedes the prior normalizer byte claim below.
+
+### Historical 2026-08-15 snapshot
+
+At `605a1659d3` on `v3-beta`, `metadata.dirty: false`, retained in
 [`output/v3-v2-web-bundle-attribution.json`](./output/v3-v2-web-bundle-attribution.json):
 
 - V3 costs **+12,052 compiled whole-app gzip** vs V2 (runtime +11,900).
