@@ -49,4 +49,9 @@ export const TEST_IDS = {
   accentBgToken: 'accent-bg-token',
   baseBackground: 'base-background',
   baseButton: 'base-button',
+  // Slider scroll offset test IDs (Issue #4146)
+  sliderScrollVertical: 'slider-scroll-vertical',
+  sliderScrollVerticalValue: 'slider-scroll-vertical-value',
+  sliderScrollHorizontal: 'slider-scroll-horizontal',
+  sliderScrollHorizontalValue: 'slider-scroll-horizontal-value',
 } as const
