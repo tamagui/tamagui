@@ -16,11 +16,36 @@ is claimed.
 Parser-cluster measurement binding, 2026-08-23: the cluster subgate uses a
 separate frozen fixture that instantiates styled inheritance. It never feeds
 CORE or changes the frozen size entry. On the exact Phase III-a checkpoint
-`cd2353824f`, the five-member union is **1,710 gzip**, so the <= 1,000 gate
-also requires a same-frame reduction of at least 710 bytes (the 800 target
-requires at least 910). All five named sources were present. A test-only
-replacement of `scanFlatValue` moved the union from 1,710 to 1,028, which is
-the negative control proving the ruler can see a member move.
+`cd2353824f`, the corrected 53-selector closed union is **4,239 gzip**, so the
+<= 1,000 gate requires a same-frame reduction of at least 3,239 bytes (the 800
+target requires at least 3,439). The rejected five-source control still
+reproduces its old 1,710 figure, proving the frame correction rather than
+fixture drift. Phase III-b measures 3,950 in the corrected frame, down 289.
+Full-source and exact-declaration negative controls both move the union, and
+missing, ambiguous, wrong-kind, or privately unclosed declarations fail.
+
+Implementation bindings after revision 3, 2026-08-23:
+
+- The former five-file parser-cluster ruler was rejected after III-b proved
+  that code could move into `clauseIdentity` and out of `valueParser` without
+  the union following it. It also omitted the runtime drivers in
+  `directStyle` and `propMapper`. The replacement is a closed,
+  declaration-aware manifest. The corrected 4,239 baseline supersedes 1,710;
+  the <= 1,000 gate and 800 target do not move.
+- Phase III-c is split into explicit grammar contractions, each with a pin,
+  before the compiled vocabulary and invalidation work. Compiler and runtime
+  disagree on committed HEAD today, so this is a current v3 correctness bug
+  exposed by consolidation, not behavior created by the refactor.
+- Phase III-b carries +48 CORE of declared structural debt, from 39,857 to
+  39,905 (whole bundle 103,969 to 104,018). III-d owns its recovery. The
+  cumulative debt is +48; implementation stops before III-d if unrecovered
+  debt exceeds +300, and III-d is a reported miss if it does not clear the
+  ledger. Unrelated byte reductions may not pay this debt.
+- The parser-cluster <= 1,000 target remains unchanged but is reported rather
+  than stopping at V-e. The corrected 4,239 baseline proves before
+  implementation that this consolidation scope cannot reach it, so its miss
+  cannot discriminate success from failure. The CORE and runtime/allocation
+  conditions remain hard stops. The owner may reinstate the cluster stop.
 
 What changed in revision 3:
 
@@ -316,14 +341,71 @@ requires it at or below 1,000 with the union reported either way. Whole-core
 movement alone cannot prove the consolidation happened.
 
 The cluster number comes from `tamagui-bench/cluster.html` and its frozen
-shared fixture, never from the CORE size entry. `--members` fails if any of
-`mergeVariants`, `mergeFlatValues`, `valueParser`, `programs`, or
-`scanFlatValue` is absent from the source map, then removes all five members
-as one union and gzips the stripped chunk once. The Phase III-a baseline is
-1,710, making the absolute gate and its required delta independently visible.
-Treating an absent member as zero would let an arbitrarily large omitted sink
-pass, while adding the styled inheritance case to CORE would change the
-campaign's units. Both alternatives are rejected.
+shared fixture, never from the CORE size entry. Its closed manifest includes
+the complete legacy sources (`mergeVariants`, `mergeFlatValues`,
+`valueParser`, `programs`, and `scanFlatValue`), the runtime driver
+declarations (`directStyle.getCondition`, `directStyleHandler`,
+`propMapper.resolveVariants`, and `propMapperHandler`), and predeclared
+replacement sources beginning with `clauseIdentity`. All selected spans are
+removed as one union and the stripped chunk is gzipped once.
+
+Each checkpoint declares which selectors must be present and which must be
+absent. An absent selector must name the destination, already inside the
+manifest, that received its responsibility. Missing, ambiguous, or escaped
+selectors fail the checkpoint. The corrected Phase III-a baseline is 4,239,
+3,239 above the gate and 3,439 above target. Phase III-b is 3,950, a same-frame
+reduction of 289 but still 2,950 above the gate and 3,150 above target. Even if
+the later driver-deletion checkpoints realize their pre-ruler planning band,
+the absolute gate is not forecast to pass without materially shrinking the
+retained representation. Treating a sink that the baseline never imported as
+zero would let an arbitrarily large omitted implementation pass, while adding
+styled inheritance to CORE would change the campaign's units. Both
+alternatives remain rejected.
+
+The rejected five-source ruler scored III-b as -8 and the nominal row total
+suggested +15. The corrected union reports -289 while that fixture's whole
+bundle moves -287. Those independent whole measurements tracking each other
+show a real bundle reduction that the two incomplete instruments hid, rather
+than bytes merely moving between selected declarations.
+
+### Grammar contraction before the compiled vocabulary
+
+The compiler and runtime classify the same authored spelling differently on
+committed HEAD. Compiler-facing callers enter `createModifierRegistry`, whose
+exact-name lookup wins before parameterized parsing. `directStyle.getCondition`
+instead tries `group-*` and `@*` prefixes before configured names, accepts
+looser identifiers and non-size container queries, and reads aliases through
+an object prototype. The same source can therefore compile one way and run
+unlowered another way today. Consolidation exposed this correctness bug; it
+did not cause it.
+
+Registry semantics are authoritative after correcting the one registry rule
+that advertises a container size with no executable media query. This is a
+grammar contraction. Six rows refuse input that previously produced a wrong
+selector, a silent no-op, an unexecutable condition, or an exception. The
+platform collision row reserves the fixed platform vocabulary instead of
+letting a user theme capture it. Outward behavior changes ONLY in the seven
+enumerated rows below, each is pinned, and CORE does not regress.
+
+| row | before | after | behavioral pin |
+| ---: | --- | --- | --- |
+| 1 | A root theme named `web`, `native`, `ios`, `android`, `tv`, `tvos`, or `androidtv` wins before the platform branch. | The fixed platform meaning wins. A theme cannot capture a reserved platform name. | `layerParity.web`: `web:` emits with no `.t_web` selector and stays active under the light theme. |
+| 2 | A configured media or theme beginning `group-` is parsed as a group first, or refused when its suffix is not a runtime group state. Alias folding can change the configured name before lookup. | The exact configured name wins before parameterized group parsing. | `modifierRegistryAgreement.web`: `group-hover`, `group-active`, and `group-nope` media use media rules/subscriptions and no group selector/subscription. |
+| 3 | A named group accepts any nonempty suffix after `/`, including punctuation, Unicode, or another slash, then interpolates it into selector/class text. | Group identifiers are limited to `[A-Za-z0-9_-]+`; invalid spellings are refused. | `parserAgreement.web`: `group-hover/a.b`, `group-hover/a/b`, and `group-hover/café` are refused by parser and prop path with no group subscription. |
+| 4 | A container size or name can carry punctuation, Unicode, or another slash when `queryFor` happens to find the size. | Both segments use `[A-Za-z0-9_-]+`; invalid spellings are refused. | `modifierRegistryAgreement.web`: invalid size/name table is refused with no container subscription. |
+| 5 | `@hoverNone` and other configured non-size media are accepted as container queries, producing a silent no-op on web and incorrect activation on native. | `@` accepts only media derived as width, height, inline-size, or block-size conditions. | `flatValuePrograms.native`: a laid-out `@hoverNone` context leaves the base value active and records no subscription. |
+| 6 | An explicit `containerSizeNames` entry can register `@wide` even when no `wide` media query exists, so the registry binds a condition no runtime can execute. | A declared container size must also have a registered media query; otherwise the registry refuses it with a diagnostic. | `modifierRegistry.test`: the no-media `wide` case changes from a container binding to refusal plus diagnostic. |
+| 7 | Every `Object.prototype` spelling can make alias lookup return an inherited function/object, then `getCondition` throws at `.startsWith`. | Map-backed exact lookup refuses unconfigured prototype names and honors an explicitly configured one without throwing. | `parserAgreement.web`: all twelve own prototype names refuse without throwing; `modifierRegistryAgreement.web` pins configured `constructor` as media. |
+
+Group lifecycle is separate from those rows. The registry currently binds
+`group-enter`, `group-exit`, `group-starting`, and `group-ending`, but the
+production compiler does not call `lowerProgram`, direct runtime group
+resolution refuses them, and native group state/subscriptions do not publish
+lifecycle. Its own checkpoint stops those four group bindings while retaining
+standalone lifecycle modifiers. `parserAgreement.web` pins parser and runtime
+refusal. Implementing group lifecycle is a later cross-platform feature; it
+requires direct web selectors, production compiler coverage, native parent
+presence state, subscription notifications, and animation-timing validation.
 
 ### 3. The compiled vocabulary, with config-revision invalidation
 
@@ -595,7 +677,19 @@ repair this phase owned. Reverting 1b already removed its Proxy, closures,
 pre-pass, and double reads. There is no Phase II code checkpoint and no
 replacement traversal. Phase III begins from the pre-1a getSplitStyles path.
 
-### Phase III: grammar (four checkpoints)
+### Structural-debt ledger
+
+This ledger records checkpoint-local CORE regressions that have an explicitly
+named structural recovery point. It is not offset by unrelated reductions.
+Cumulative unrecovered debt above +300 before III-d is a hard stop.
+
+| checkpoint | CORE before | CORE after | delta | recovery owner | status |
+| --- | ---: | ---: | ---: | --- | --- |
+| III-b | 39,857 | 39,905 | +48 | III-d package-surface split | open |
+
+Current cumulative unrecovered debt: **+48 CORE**.
+
+### Phase III: grammar (seven checkpoints)
 
 - **III-a, lexer signature.** The context-passing API, all drivers converted
   mechanically, no semantic change. Verify: parserAgreement unchanged, flat
@@ -604,17 +698,38 @@ replacement traversal. Phase III begins from the pre-1a getSplitStyles path.
   consumes it; the `mergeVariants` sink replaces `mergeFlatValues`'s
   `parseValue`+`mergeProgramValues` use. Verify: mergeVariants and styled
   inheritance suites, clause-merge pins including malformed values, aliases,
-  duplicates, reordered sets, group spellings; parserAgreement.
-- **III-c, compiled vocabulary.** The table plus revision invalidation;
-  `getCondition` classifies through it with outward behavior UNCHANGED
-  (precedence and set-key still computed by the existing modules this
-  checkpoint). Verify: full condition matrix, the addTheme runtime test,
-  parserAgreement.
+  duplicates, reordered sets, group spellings; parserAgreement. This
+  checkpoint records +48 CORE structural debt, recoverable only by III-d.
+- **III-c0a, executable container-size invariant.** A declared container size
+  must also name a registered media query. Land row 6 and its registry
+  diagnostic pin by itself, before runtime normalization.
+- **III-c0b, group lifecycle contract.** Stop registry binding for
+  `group-enter`, `group-exit`, `group-starting`, and `group-ending`, while
+  retaining standalone lifecycle modifiers. Land the parser/runtime refusal
+  pin by itself and record the real cross-platform feature as follow-up work.
+- **III-c1, runtime normalization.** Change `getCondition` only for rows 1-5
+  and 7 in the enumerated table above, one failing-before/passing-after pin per
+  row. Exact configured names win before parameterized parsing, identifiers
+  become strict, only size media have `@` forms, platform wins its reserved
+  collision, and prototype spellings cannot throw. No shared table or
+  invalidation lands here. Behavior changes only in the enumerated rows and
+  CORE does not regress. Row 1 remains cheap to flip if the owner rejects the
+  coordinator's provisional platform-first ruling.
+- **III-c2, compiled vocabulary.** Land the table plus revision invalidation;
+  `getCondition` classifies through it without another behavior change
+  (precedence and set-key still come from the existing modules). Verify: full
+  condition matrix, the addTheme runtime test, parserAgreement.
 - **III-d, package surface.** Runtime/tooling entry split, enforced through
   package exports plus a build-graph assertion (never a source-string test);
-  `parseValue`, `mergeProgramValues`, registry builder, trie, and diagnostics
-  out of the app graph; measured now that each semantic owner exists. Verify:
-  compiler fixture builds against the tooling surface, app builds, CORE.
+  `parseValue`, `mergeProgramValues`, the legacy registry builder, completion
+  trie, source-span and diagnostic-message formatters, and tooling-only
+  vocabulary projections out of the app graph. The runtime graph retains one
+  compiled modifier vocabulary and its scalar refusal codes, without carrying
+  editor completion, source-span, or message-construction shapes. Measure this
+  now that each semantic owner exists. Verify: the compiler fixture builds
+  against the tooling surface, app builds, and CORE. It must recover the +48
+  III-b structural-debt ledger or report a checkpoint miss; unrelated byte
+  reductions do not count as recovery.
 
 Pool rows (indicative): valueParser, programs, mergeFlatValues, states,
 stateModifiers, modifierRegistry, grammar config.
@@ -676,8 +791,10 @@ stateModifiers, modifierRegistry, grammar config.
 
 ### THE MAKE-OR-BREAK GATE (after V-e)
 
-Three conditions, all required, measured with the frozen fixture and full
-rebuild:
+Three conditions are measured with the frozen fixture and full rebuild.
+Conditions 1 and 3 are hard stops. Condition 2 remains the owner's unchanged
+target and is reported, but its miss alone does not stop the campaign because
+the corrected ruler proved it unreachable before implementation began.
 
 1. **CORE at or below CORE_noarena minus 2,000 AND at or below CORE_base
    minus 2,000.** Both anchors, so passing cannot mean "recovered our own
@@ -689,17 +806,20 @@ rebuild:
 2. **The parser cluster (lexer + identity reduction + resolver + merge sink),
    attributed as one union, at or below 1,000 gzip**, target 800, reported
    either way. This is the owner's "one parser, around 800" stated directly.
+   The target is not lowered or translated. Missing it is non-stopping under
+   the coordinator's provisional binding; the owner may reinstate the stop.
 3. The runtime matrix (run-benchmarks, fixed seed, v2 same-run control) shows
    no broad scenario regression beyond paired noise, and the flat-scenario
    hot-path profile shows the removed visitor/condition/array/propMapper
    frames absent with a clear CPU and allocation reduction.
 
-Any condition failing stops implementation: no further phases, no
-compensating golf. The deliverable becomes exact residual attribution (module
-and declaration level, against CORE_v2) plus a written account of which pools
-moved and which did not, to p28302 and the owner. The same stop applies
-mid-phase if any checkpoint lands CORE positive after its pools were supposed
-to move.
+Condition 1 or 3 failing stops implementation: no further phases, no
+compensating golf. A condition 2 miss is reported with exact residual
+attribution but does not stop by itself. A stopping failure's deliverable is
+exact residual attribution (module and declaration level, against CORE_v2)
+plus a written account of which pools moved and which did not, to p28302 and
+the owner. The same stop applies mid-phase if any checkpoint lands CORE
+positive after its pools were supposed to move.
 
 ### Phase VI: component-state discovery and presence (three checkpoints)
 
@@ -776,7 +896,7 @@ bun code/comparisons/attribute-bundle-gzip.ts /tmp/v2-consol-N --core           
 bun code/comparisons/attribute-bundle-gzip.ts /tmp/v3-consol-N --against=/tmp/v2-consol-N --filter=@tamagui/   # attribution only
 bun code/comparisons/attribute-bundle-gzip.ts /tmp/v3-consol-N --within='directStyle'       # plus getSplitStyles during IV-V
 cd code/comparisons/tamagui-bench && bun run build:cluster --sourcemap --outDir /tmp/v3-cluster-N
-bun code/comparisons/attribute-bundle-gzip.ts /tmp/v3-cluster-N --members=mergeVariants,mergeFlatValues,valueParser,programs,scanFlatValue
+bun code/comparisons/attribute-bundle-gzip.ts /tmp/v3-cluster-N --parser-cluster=<checkpoint-name>
 ```
 
 No EXTRACT build substitutes for the runtime arm. Runtime and allocation
