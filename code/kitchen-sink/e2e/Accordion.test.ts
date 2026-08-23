@@ -12,7 +12,7 @@
 
 import * as assert from 'assert'
 import { by, device, element, expect, waitFor } from 'detox'
-import { safeLaunchApp } from './utils/detox'
+import { describeAnimated, safeLaunchApp } from './utils/detox'
 
 async function frame(id: string) {
   const attrs: any = await element(by.id(id)).getAttributes()
@@ -49,7 +49,7 @@ async function pollLabel(id: string, predicate: (label: string) => boolean) {
   return attrs.label as string
 }
 
-describe('Accordion (auto-height, native)', () => {
+describeAnimated('Accordion (auto-height, native)', () => {
   beforeEach(async () => {
     await safeLaunchApp({
       newInstance: true,

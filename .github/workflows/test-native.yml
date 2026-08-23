@@ -594,6 +594,10 @@ jobs:
 
       - name: Start Android Emulator and Run Tests
         id: android-tests
+        # must match disable-animations below: suites asserting intermediate
+        # animation frames cannot observe them at animation scale 0
+        env:
+          DETOX_ANIMATIONS_DISABLED: '1'
         uses: reactivecircus/android-emulator-runner@e89f39f1abbbd05b1113a29cf4db69e7540cae5a # v2.37.0
         with:
           api-level: 31
