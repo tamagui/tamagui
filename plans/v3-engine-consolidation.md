@@ -368,6 +368,103 @@ bundle moves -287. Those independent whole measurements tracking each other
 show a real bundle reduction that the two incomplete instruments hid, rather
 than bytes merely moving between selected declarations.
 
+### Compiler boundary control
+
+The earlier inference that every compiled app ships the runtime scanner, even
+when it authors no runtime clauses, was too broad and is superseded. Four
+isolated `EXTRACT=1` builds establish the narrower rule: **the scanner is the
+universal fallback for every retained `createComponent`**. React-only, one
+fully flattened static `View`, and `TamaguiProvider` plus that fully flattened
+`View` all omit `scanFlatValue` completely. Adding one retained `View` with
+only static literal props and `asChild` keeps `scanFlatValue` at 2,004 mapped
+minified bytes and 755 marginal gzip, despite having no dynamic props,
+functional variants, clause strings, or runtime `styled()` inheritance.
+
+The retained component reaches the scanner through two top-level edges:
+`createComponent -> useComponentState` and
+`createComponent -> getSplitStyles`. Those fan into three immediate scanner
+sites: lifecycle `hasFlatModifier`, direct string styles, and conditional
+variant resolution. **Phases IV-VI touch none of compilerHost.lowerCandidate,
+resolve.canFlatten, lower.unsafeEntry, normalization, or static evaluation.
+They only reduce the cost after a retained createComponent.**
+
+The checked kitchen-sink web corpus gives the available prevalence anchor:
+2,645 candidates found, 2,128 fully flattened, 20 partially lowered but still
+retained, and 497 bailed. Its classified retention reasons are:
+
+| reason | observed candidates |
+| --- | ---: |
+| behavior or context component contracts | 346 |
+| dynamic values | 51 |
+| animation runtime | 34 |
+| lifecycle programs | 21 |
+| event mapping | 21 |
+| `disableOptimization` | 13 |
+| unevaluated spreads | 6 |
+| theme boundaries | 5 |
+
+Only the 497 classified bailouts are measured by reason. The 20 partial
+retentions are not classified. The ordering after those measured web counts
+is inferred from API prevalence rather than a measured application
+distribution; native-only clauses, groups, containers, and plain-component
+`asChild` frequency have no measured distribution here.
+
+Ordered by the measured counts and then expected application prevalence, the
+compiler retains a component for these reasons:
+
+1. Behavior HOCs, custom hosts, default children, and styled-context providers.
+   Their host selection, interaction, ref, scrolling, child, or provider
+   contract is usually inherent. The component-level flag can be conservative
+   for an invocation that does not exercise the behavior.
+2. Dynamic style and variant values the evaluator cannot prove or lower to an
+   unambiguous host style. Runtime variability is inherent. Keeping the full
+   Tamagui component is often a current compiler limitation because proven
+   numeric domains and static conditional branches already flatten.
+3. Animations and lifecycle programs. Driver, presence, callback, and lifecycle
+   state are mostly inherent runtime work. Static CSS transitions already
+   flatten on web, while `animateOnly` and some finite cases remain conservative.
+4. Native conditional flat values and native group/container providers.
+   Publishing provider state is inherent. Refusing every native clause program
+   is a current compiler limitation.
+5. Tamagui event mapping. Active responder handlers require runtime semantics;
+   an explicitly undefined handler is retained only because the decision checks
+   prop presence.
+6. `asChild`. An active Slot must merge into its child and cannot become a host
+   wrapper. `asChild={false}` also retains today, which is a presence-check
+   artifact.
+7. `disableOptimization`. A true value is an intentional opt-out;
+   `disableOptimization={false}` retains because the decision checks presence.
+8. Prop spreads. Unknown precedence and style ownership require caution, while
+   evaluated mixed spreads expose current transactional rewrite limits.
+9. Theme boundaries. Active theme state is inherent; `themeInverse={false}`
+   retains because the decision checks presence.
+10. Candidate recognition and incomplete syntax or static definitions. These
+    are compiler analysis and configured-scope limits rather than component
+    semantics.
+11. Rare invalid-host, serialization, platform mapping, native DOM, edit-shape,
+    and style-handle failures. Some represent real platform constraints and
+    others are lowering limits.
+12. Extraction never entered because it was disabled, excluded by file or
+    environment, or outside the configured app graph.
+
+Independent controls distinguish inherent retention from compiler decisions:
+opaque web styles partially lower but retain while proven finite domains and
+static branches flatten; a static CSS transition flattens on web but retains on
+native; active `asChild`, events, lifecycle clauses, and theme boundaries
+retain; false-valued `asChild`, `disableOptimization`, and `themeInverse` also
+retain. Therefore compiler-boundary work can remove several conservative
+retention cases, but it is separate scope. Phases IV through VI only make every
+remaining retained component cheaper.
+
+Two representation changes were priced and declined for this campaign. A
+packed clause identity was estimated at roughly 150-300 corrected-union gzip,
+with low confidence and two to three high-risk checkpoints across identity,
+precedence, hashing, merging, and reentrancy. A span-only merge sink was
+estimated at roughly 70-140 corrected-union gzip, with medium-low confidence
+and one medium-risk definition-time checkpoint. The ranges overlap under gzip
+and are not additive. Neither changes the roughly 2,950-byte target gap enough
+to justify its risk; if the owner reopens either, the span sink goes first.
+
 ### Grammar contraction before the compiled vocabulary
 
 The compiler and runtime classify the same authored spelling differently on
