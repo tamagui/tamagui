@@ -63,13 +63,12 @@ export function isModifierName(text: string, start: number, end: number): boolea
 export function parseGroupModifier(name: string): GroupModifier | null {
   if (!name.startsWith('group-')) return null
   const slash = name.indexOf('/')
-  if (slash === -1) {
-    const state = name.slice(groupPrefixLength)
-    return stateModifierSet.has(state) ? { state, group: null } : null
-  }
-  if (!isModifierName(name, slash + 1, name.length)) return null
-  const state = name.slice(groupPrefixLength, slash)
-  return stateModifierSet.has(state) ? { state, group: name.slice(slash + 1) } : null
+  if (slash !== -1 && !isModifierName(name, slash + 1, name.length)) return null
+  const state = name.slice(groupPrefixLength, slash === -1 ? name.length : slash)
+  if (!stateModifierSet.has(state)) return null
+  const canonicalState = modifierAliases[state] ?? state
+  if (canonicalState === 'enter' || canonicalState === 'exit') return null
+  return { state, group: slash === -1 ? null : name.slice(slash + 1) }
 }
 
 /** canonical spelling used by every clause identity and matching consumer */

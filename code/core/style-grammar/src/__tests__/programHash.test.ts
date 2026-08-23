@@ -1,11 +1,11 @@
 import { describe, expect, test } from 'vitest'
-import { modifierAliases, programClassName } from '..'
+import { modifierAliases, parseGroupModifier, programClassName } from '..'
 
 describe('alias spellings are one hash identity', () => {
-  // class-level: EVERY registered alias must hash identically to its
-  // canonical spelling, in simple, chained, and group-embedded positions —
-  // two spellings lowering to identical rule text under different hashes
-  // would mint duplicate rules
+  // class-level: every registered alias must hash identically to its canonical
+  // spelling in each position where that alias is registered. Two spellings
+  // lowering to identical rule text under different hashes would mint duplicate
+  // rules.
   test('every alias hashes like its canonical form', () => {
     for (const alias in modifierAliases) {
       const canonical = modifierAliases[alias]
@@ -30,10 +30,16 @@ describe('alias spellings are one hash identity', () => {
         base: null,
         clauses: [{ modifiers: [`group-${modifier}/card`], payload: 'blue' }],
       })
-      expect(
-        programClassName('backgroundColor', grouped(alias), 'r1'),
-        `group-${alias}/card`
-      ).toBe(programClassName('backgroundColor', grouped(canonical), 'r1'))
+      const group = parseGroupModifier(`group-${alias}/card`)
+      if (canonical === 'enter' || canonical === 'exit') {
+        expect(group, `group-${alias}/card`).toBeNull()
+      } else {
+        expect(group, `group-${alias}/card`).not.toBeNull()
+        expect(
+          programClassName('backgroundColor', grouped(alias), 'r1'),
+          `group-${alias}/card`
+        ).toBe(programClassName('backgroundColor', grouped(canonical), 'r1'))
+      }
     }
     // and distinct conditions stay distinct
     expect(

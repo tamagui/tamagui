@@ -83,6 +83,17 @@ describe('parameterized group modifiers', () => {
     expect(full.registry.get('group-press/side_bar-2')).toBe('group')
   })
 
+  test('lifecycle states remain standalone-only', () => {
+    for (const name of ['enter', 'exit', 'starting', 'ending']) {
+      expect(full.registry.get(name), name).toBe('state')
+      expect(full.registry.get(`group-${name}`), `group-${name}`).toBeUndefined()
+      expect(
+        full.registry.get(`group-${name}/card`),
+        `group-${name}/card`
+      ).toBeUndefined()
+    }
+  })
+
   test('anything that is not a state suffix is unregistered', () => {
     expect(full.registry.get('group')).toBeUndefined()
     expect(full.registry.get('group-')).toBeUndefined()

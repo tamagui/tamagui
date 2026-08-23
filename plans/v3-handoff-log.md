@@ -5303,3 +5303,62 @@ Validation at this checkpoint:
 - root dependency, unused, Tamagui, reference, path, DOM type, and LSP pin
   checks passed;
 - `git diff --check` passed.
+
+## 52. Engine consolidation Phase III-c0b: group lifecycle contract (2026-08-23)
+
+The shared grammar no longer registers lifecycle state as a group capability.
+Standalone `enter`, `exit`, `starting`, and `ending` remain registered and keep
+their existing alias behavior. The named and unnamed `group-` forms now refuse
+through the same `parseGroupModifier` owner used by registry classification,
+identity, precedence, capability, hashing, and lowering.
+
+This makes the public grammar describe what production can execute. The web
+runtime has no group lifecycle selector path, the compiler does not lower
+programs through `lowerProgram`, and native group state and subscriptions do
+not publish enter or exit. Implementing group lifecycle requires a separate
+cross-platform feature proposal covering selectors, compiler integration,
+native publication and notification, and animation timing.
+
+The initial registry control failed because `group-enter` resolved as a group.
+The initial parser-agreement control failed for all four spellings because the
+canonical parser accepted values the production prop path refused. The final
+pins cover named and unnamed forms, preserve standalone registration, and make
+the program-hash test explicitly assert which alias group positions exist. No
+test conditionally skips an unregistered alias.
+
+### Size and cluster receipts
+
+The fresh frozen-size artifact is
+`/tmp/p29049-phase3c0b-size.U7Tkfe`.
+
+| arm | whole gzip | CORE |
+| --- | ---: | ---: |
+| Phase III-c0a | 104,018 | 39,905 |
+| Phase III-c0b | 104,024 | 39,912 |
+| movement | +6 | +7 |
+
+The fresh parser-cluster artifact is
+`/tmp/p29049-phase3c0b-cluster.E9KNua`.
+
+| arm | cluster whole gzip | parser-cluster union |
+| --- | ---: | ---: |
+| Phase III-c0a | 103,753 | 3,950 |
+| Phase III-c0b | 103,759 | 3,956 |
+| movement | +6 | +6 |
+
+The +7 CORE is the measured permanent cost of making the advertised grammar
+match the executable cross-platform contract. It is not temporary structural
+debt assigned to a later deletion, so the III-b debt ledger remains +48.
+
+Validation at this checkpoint:
+
+- the registry red control failed 1 of 35 tests before implementation;
+- the parser-agreement red control failed all four group lifecycle rows before
+  implementation;
+- style-grammar passed 28 files and 451 tests plus its package build;
+- focused registry and program-hash suites passed 37 tests;
+- parser agreement passed 32 tests in the configured web environment;
+- full root build passed 171 of 171 tasks;
+- root lint and repository checks passed with only the existing warnings;
+- the parser ruler passed 8 tests and 36 expectations;
+- `git diff --check` passed.

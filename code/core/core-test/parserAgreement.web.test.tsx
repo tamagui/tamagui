@@ -286,6 +286,15 @@ describe('agreement', () => {
     expect(hasEnterStyle('1 starting:0', 'opacity')).toBe(true)
   })
 
+  test.each(['group-enter', 'group-exit/card', 'group-starting/card', 'group-ending'])(
+    'group lifecycle modifier "%s:" is refused by the parser and prop path',
+    (modifier) => {
+      const source = `none ${modifier}:red`
+      expect(parseValue(source, registry).ok).toBe(false)
+      expect(propValue(source)).toBe(null)
+    }
+  )
+
   test.each([
     ['none active:active:red', ['press']],
     ['none sm:hover:hover:red', ['hover', 'sm']],
