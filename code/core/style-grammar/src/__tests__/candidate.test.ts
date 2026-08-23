@@ -141,11 +141,14 @@ describe('candidate grammar', () => {
       ...config,
       mediaNames: ['tablet', 'group-hover'],
     }
-    const collisionRegistry = createModifierRegistry(collisionConfig).registry
-    expect(collisionRegistry.get('group-hover')).toBe('media')
-    expect(
-      classifyCandidate('group-hover:group-press:bg-color5', collisionConfig).kind
-    ).toBe('tamagui')
+    const collision = createModifierRegistry(collisionConfig)
+    expect(collision.registry.get('group-hover')).toBe('group')
+    expect(collision.diagnostics).toEqual([
+      'modifier "group-hover" is not registered: the "group-" prefix is reserved for group state modifiers; rename this media name so it does not begin with "group-"',
+    ])
+    expect(classifyCandidate('group-hover:bg-color5', collisionConfig).kind).toBe(
+      'tamagui'
+    )
 
     for (const candidate of ['group-unknown:bg-color5', 'group/card', '@container']) {
       expect(classifyCandidate(candidate, config).kind, candidate).toBe('passthrough')

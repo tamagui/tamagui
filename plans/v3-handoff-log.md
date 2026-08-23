@@ -5362,3 +5362,75 @@ Validation at this checkpoint:
 - root lint and repository checks passed with only the existing warnings;
 - the parser ruler passed 8 tests and 36 expectations;
 - `git diff --check` passed.
+
+## 53. Engine consolidation Phase III-c0c: reserved group prefix (2026-08-23)
+
+The configured modifier namespace now refuses media, theme, custom platform,
+and container-size names beginning `group-`. The diagnostic names the
+reserved prefix, identifies the configured name source, and tells the user to
+rename it. The authored spelling keeps exactly one meaning at every layer:
+group-state syntax.
+
+An earlier design made an exact configured `group-active` media name win over
+the group parser. An executable probe showed why that design was not coherent:
+the registry classified `group-active` as media and `group-press` as group,
+while config-independent merging, program merging, program keys, and program
+class names treated them as the same state alias. Making those four identities
+config-dependent would make identical source produce different class names
+under different configs. Reserving the prefix removes the configured meaning
+and keeps those identities stable.
+
+The repository sweep found no configured media, theme, container-size, or
+custom platform name beginning `group-`. A positive result would have been a
+configured-name source containing that prefix. The only such sources were the
+deliberate collision tests converted by this checkpoint. Other matches in the
+tamagui.dev purchase components and zero-runtime fixture are authored clause or
+expected-output keys, so they remain valid group usage.
+
+The group-name syntax does not reopen the collision. The slash separates state
+from name: `group-active` is the anonymous group's press alias,
+`group-hover/active` is hover on a group named `active`, and
+`group-active/active` is press on that named group. Group names never enter
+the configured modifier namespace.
+
+The collision tests became stricter. They now assert refusal plus the exact
+diagnostic for all four configured-name sources, while the candidate test
+asserts that `group-hover` retains its group meaning. The merge sink
+permanently pins `group-active` and `group-press` as one slot.
+
+### Size and cluster receipts
+
+The fresh frozen-size artifact is
+`/tmp/p29049-phase3c0c-size.FB32kK`.
+
+| arm | whole gzip | CORE |
+| --- | ---: | ---: |
+| Phase III-c0b | 104,024 | 39,912 |
+| Phase III-c0c | 104,024 | 39,912 |
+| movement | 0 | 0 |
+
+The fresh parser-cluster artifact is
+`/tmp/p29049-phase3c0c-cluster.T7ZbVy`.
+
+| arm | cluster whole gzip | parser-cluster union |
+| --- | ---: | ---: |
+| Phase III-c0b | 103,759 | 3,956 |
+| Phase III-c0c | 103,759 | 3,956 |
+| movement | 0 | 0 |
+
+The closed manifest records Phase III-c0c explicitly with the same 44 present
+selectors and nine closed absent-to-present moves as III-c0b. The production
+measurement is byte-identical, which confirms the new builder diagnostic stays
+outside the app graph. The III-b structural-debt ledger remains +48 CORE.
+
+Validation at this checkpoint:
+
+- the pre-change executable control classified configured `group-active` as
+  media and emitted the old shadowing diagnostic;
+- focused registry, candidate, and merge suites passed 88 tests;
+- the parser ruler passed 8 tests and 36 expectations;
+- full root build passed 171 of 171 tasks;
+- root lint passed with the same five unrelated warnings;
+- root dependency, unused, Tamagui, reference, path, DOM type, and LSP pin
+  checks passed;
+- `git diff --check` passed.

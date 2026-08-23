@@ -36,6 +36,10 @@ Implementation bindings after revision 3, 2026-08-23:
   before the compiled vocabulary and invalidation work. Compiler and runtime
   disagree on committed HEAD today, so this is a current v3 correctness bug
   exposed by consolidation, not behavior created by the refactor.
+- The `group-` prefix is reserved for group conditions before runtime
+  normalization. Configured media, theme, custom platform, and container-size
+  names with that prefix are refused with an actionable diagnostic. This keeps
+  alias identity and program class names config-independent.
 - Phase III-b carries +48 CORE of declared structural debt, from 39,857 to
   39,905 (whole bundle 103,969 to 104,018). III-d owns its recovery. The
   cumulative debt is +48; implementation stops before III-d if unrecovered
@@ -476,23 +480,44 @@ an object prototype. The same source can therefore compile one way and run
 unlowered another way today. Consolidation exposed this correctness bug; it
 did not cause it.
 
-Registry semantics are authoritative after correcting the one registry rule
-that advertises a container size with no executable media query. This is a
-grammar contraction. Six rows refuse input that previously produced a wrong
-selector, a silent no-op, an unexecutable condition, or an exception. The
-platform collision row reserves the fixed platform vocabulary instead of
-letting a user theme capture it. Outward behavior changes ONLY in the seven
-enumerated rows below, each is pinned, and CORE does not regress.
+Registry semantics are authoritative after correcting the rule that advertises
+a container size with no executable media query and reserving the `group-`
+prefix for group conditions. This is a grammar contraction. Six rows refuse
+input that previously produced a wrong selector, a silent no-op, an
+unexecutable condition, or an exception. The platform collision row reserves
+the fixed platform vocabulary instead of letting a user theme capture it.
+Outward behavior changes ONLY in the seven enumerated rows below, each is
+pinned, and CORE does not regress.
 
 | row | before | after | behavioral pin |
 | ---: | --- | --- | --- |
 | 1 | A root theme named `web`, `native`, `ios`, `android`, `tv`, `tvos`, or `androidtv` wins before the platform branch. | The fixed platform meaning wins. A theme cannot capture a reserved platform name. | `layerParity.web`: `web:` emits with no `.t_web` selector and stays active under the light theme. |
-| 2 | A configured media or theme beginning `group-` is parsed as a group first, or refused when its suffix is not a runtime group state. Alias folding can change the configured name before lookup. | The exact configured name wins before parameterized group parsing. | `modifierRegistryAgreement.web`: `group-hover`, `group-active`, and `group-nope` media use media rules/subscriptions and no group selector/subscription. |
+| 2 | A configured media, theme, custom platform, or container-size name beginning `group-` competes with the group grammar, so config-independent alias identity and configured classification can assign the same spelling different meanings. | The `group-` prefix is reserved. The configured name is not registered and receives an actionable diagnostic; the spelling retains only its group-grammar meaning. | `modifierRegistry.test` and `candidate.test`: colliding configured entries are refused with the exact reserved-prefix diagnostic while valid group spellings remain groups; `mergeFlatValues.test` pins `group-active` and `group-press` as one alias-equivalent slot. |
 | 3 | A named group accepts any nonempty suffix after `/`, including punctuation, Unicode, or another slash, then interpolates it into selector/class text. | Group identifiers are limited to `[A-Za-z0-9_-]+`; invalid spellings are refused. | `parserAgreement.web`: `group-hover/a.b`, `group-hover/a/b`, and `group-hover/café` are refused by parser and prop path with no group subscription. |
 | 4 | A container size or name can carry punctuation, Unicode, or another slash when `queryFor` happens to find the size. | Both segments use `[A-Za-z0-9_-]+`; invalid spellings are refused. | `modifierRegistryAgreement.web`: invalid size/name table is refused with no container subscription. |
 | 5 | `@hoverNone` and other configured non-size media are accepted as container queries, producing a silent no-op on web and incorrect activation on native. | `@` accepts only media derived as width, height, inline-size, or block-size conditions. | `flatValuePrograms.native`: a laid-out `@hoverNone` context leaves the base value active and records no subscription. |
 | 6 | An explicit `containerSizeNames` entry can register `@wide` even when no `wide` media query exists, so the registry binds a condition no runtime can execute. | A declared container size must also have a registered media query; otherwise the registry refuses it with a diagnostic. | `modifierRegistry.test`: the no-media `wide` case changes from a container binding to refusal plus diagnostic. |
 | 7 | Every `Object.prototype` spelling can make alias lookup return an inherited function/object, then `getCondition` throws at `.startsWith`. | Map-backed exact lookup refuses unconfigured prototype names and honors an explicitly configured one without throwing. | `parserAgreement.web`: all twelve own prototype names refuse without throwing; `modifierRegistryAgreement.web` pins configured `constructor` as media. |
+
+An earlier revision made exact configured `group-*` names win. An executable
+probe disproved that design: with `group-active` configured as media, the
+registry classified `group-active` as media and `group-press` as group, while
+the config-independent identity sink treated the two spellings as one
+group-state alias. That conflict affected `mergeFlatValues`,
+`mergeProgramValues`, `normalizeProgramKey`, and `programClassName`. Making
+identity config-dependent would make class names for identical source depend
+on config, breaking compiler/runtime class-name correspondence and
+config-independent caches. Reserving the prefix removes the second meaning;
+all four consumers stay config-independent.
+
+A committed-tree sweep found no configured media, theme, container-size, or
+custom platform name beginning `group-`. The only `mediaNames` collisions were
+the deliberate registry and candidate tests. Two tamagui.dev purchase
+components and the zero-runtime differential corpus contain authored clause or
+output keys with that prefix, not config names, so ordinary group usage is
+unaffected. Group names do not create another collision: the slash is the
+grammar boundary, so `group-active` is the anonymous group's press alias while
+`group-hover/active` is hover on a group named `active`.
 
 Group lifecycle is separate from those rows. The registry currently binds
 `group-enter`, `group-exit`, `group-starting`, and `group-ending`, but the
@@ -786,7 +811,7 @@ Cumulative unrecovered debt above +300 before III-d is a hard stop.
 
 Current cumulative unrecovered debt: **+48 CORE**.
 
-### Phase III: grammar (seven checkpoints)
+### Phase III: grammar (eight checkpoints)
 
 - **III-a, lexer signature.** The context-passing API, all drivers converted
   mechanically, no semantic change. Verify: parserAgreement unchanged, flat
@@ -804,14 +829,22 @@ Current cumulative unrecovered debt: **+48 CORE**.
   `group-enter`, `group-exit`, `group-starting`, and `group-ending`, while
   retaining standalone lifecycle modifiers. Land the parser/runtime refusal
   pin by itself and record the real cross-platform feature as follow-up work.
-- **III-c1, runtime normalization.** Change `getCondition` only for rows 1-5
-  and 7 in the enumerated table above, one failing-before/passing-after pin per
-  row. Exact configured names win before parameterized parsing, identifiers
-  become strict, only size media have `@` forms, platform wins its reserved
-  collision, and prototype spellings cannot throw. No shared table or
-  invalidation lands here. Behavior changes only in the enumerated rows and
-  CORE does not regress. Row 1 remains cheap to flip if the owner rejects the
-  coordinator's provisional platform-first ruling.
+- **III-c0c, reserved group prefix.** Refuse configured media, theme, custom
+  platform, and container-size names beginning `group-` with a diagnostic that
+  names the reserved prefix and tells the user to rename the configured name.
+  Convert every prior collision test to assert both refusal and the exact
+  diagnostic; retain the config-independent alias pins in merging, program
+  identity, and class naming. The committed-tree dependency sweep above is
+  part of the checkpoint receipt.
+- **III-c1, runtime normalization.** Change `getCondition` only for the runtime
+  half of row 2 and rows 1, 3, 4, 5, and 7 in the enumerated table above, one
+  failing-before/passing-after pin per row. A configured name that violates the
+  reserved `group-` rule makes the authored value refuse instead of silently
+  becoming a group. Identifiers become strict, only size media have `@` forms,
+  platform wins its reserved collision, and prototype spellings cannot throw.
+  No shared table or invalidation lands here. Behavior changes only in the
+  enumerated rows and CORE does not regress. Row 1 remains cheap to flip if the
+  owner rejects the coordinator's provisional platform-first ruling.
 - **III-c2, compiled vocabulary.** Land the table plus revision invalidation;
   `getCondition` classifies through it without another behavior change
   (precedence and set-key still come from the existing modules). Verify: full

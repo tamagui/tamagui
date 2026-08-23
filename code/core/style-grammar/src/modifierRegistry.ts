@@ -24,6 +24,7 @@ import {
 } from './valueTypes'
 
 type Names = readonly string[] | ReadonlySet<string> | Readonly<Record<string, unknown>>
+const groupPrefix = 'group-'
 
 export interface ModifierRegistryResult {
   registry: ModifierRegistryView
@@ -120,7 +121,15 @@ export function createModifierRegistry(
   let containerSizes: Set<string> | null = null
   if (sizeSource !== undefined) {
     containerSizes = new Set()
-    forEachName(sizeSource, (name) => containerSizes!.add(name))
+    forEachName(sizeSource, (name) => {
+      if (name.startsWith(groupPrefix)) {
+        diagnostics.push(
+          `container size "${name}" is not registered: the "group-" prefix is reserved for group state modifiers; rename this container size so it does not begin with "group-"`
+        )
+      } else {
+        containerSizes!.add(name)
+      }
+    })
   }
 
   const register = (name: string, kind: ModifierKind): void => {
@@ -132,6 +141,12 @@ export function createModifierRegistry(
       )
       return
     }
+    if (name.startsWith(groupPrefix)) {
+      diagnostics.push(
+        `modifier "${name}" is not registered: the "group-" prefix is reserved for group state modifiers; rename this ${kind} name so it does not begin with "group-"`
+      )
+      return
+    }
     const existing = names.get(name)
     if (existing !== undefined) {
       if (existing !== kind) {
@@ -140,11 +155,6 @@ export function createModifierRegistry(
         )
       }
       return
-    }
-    if (parseGroupModifier(name) !== null) {
-      diagnostics.push(
-        `modifier "${name}" shadows the group modifier of the same spelling, which can no longer be used as a ${kind} name`
-      )
     }
     names.set(name, kind)
     completionNames.push(name)

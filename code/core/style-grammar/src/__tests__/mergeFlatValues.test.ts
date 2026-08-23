@@ -45,6 +45,9 @@ describe('mergeFlatValues', () => {
   })
 
   test('named and unnamed group aliases preserve the later spelling', () => {
+    expect(mergeFlatValues('group-active:red', 'group-press:blue')).toBe(
+      'group-press:blue'
+    )
     expect(
       mergeFlatValues(
         'red group-active:blue group-active/card:gray',

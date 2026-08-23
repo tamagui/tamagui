@@ -238,13 +238,22 @@ describe('collisions are reported, first registration wins', () => {
     ])
   })
 
-  test('a config name shadowing a group modifier is reported', () => {
+  test('the group prefix is reserved across configured name sources', () => {
     const { registry, diagnostics } = createModifierRegistry({
       mediaNames: ['group-hover'],
+      themeNames: ['group-brand'],
+      platformNames: ['web', 'group-device'],
+      containerSizeNames: ['group-wide'],
     })
-    expect(registry.get('group-hover')).toBe('media')
+    expect(registry.get('group-hover')).toBe('group')
+    expect(registry.get('group-brand')).toBeUndefined()
+    expect(registry.get('group-device')).toBeUndefined()
+    expect(registry.get('@group-wide')).toBeUndefined()
     expect(diagnostics).toEqual([
-      'modifier "group-hover" shadows the group modifier of the same spelling, which can no longer be used as a media name',
+      'container size "group-wide" is not registered: the "group-" prefix is reserved for group state modifiers; rename this container size so it does not begin with "group-"',
+      'modifier "group-hover" is not registered: the "group-" prefix is reserved for group state modifiers; rename this media name so it does not begin with "group-"',
+      'modifier "group-device" is not registered: the "group-" prefix is reserved for group state modifiers; rename this platform name so it does not begin with "group-"',
+      'modifier "group-brand" is not registered: the "group-" prefix is reserved for group state modifiers; rename this theme name so it does not begin with "group-"',
     ])
   })
 
