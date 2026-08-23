@@ -5661,3 +5661,79 @@ Validation at this checkpoint:
 - root dependency, unused, Tamagui, reference, path, DOM type, and LSP pin
   checks passed;
 - `git diff --check` passed.
+
+## 57. Engine consolidation Phase III-d: runtime and tooling surfaces (2026-08-23)
+
+`@tamagui/style-grammar` now exposes two explicit public paths. App and
+Tailwind consumers use `/runtime`; compiler, codemod, diagnostics, completion,
+and other authoring tools use `/tooling`. The package root is no longer
+exported. The runtime barrel names only the symbols the shipped graph uses.
+The legacy registry builder, completion trie, rich state projections, parsed
+program structures, source spans, and diagnostic formatters stay on the
+tooling path.
+
+The runtime modifier compiler now reports scalar refusal codes. The tooling
+registry formats those codes into diagnostics and derives completion names.
+The compact component-state spelling list moved beside the core state names,
+so clause identity no longer imports the rich tooling state table. Container
+spelling validation is shared through `clauseIdentity`; the Tailwind candidate
+path consumes the compiled numeric vocabulary without rebuilding the tooling
+registry.
+
+ThemeUpdate no longer imports `parseValue` or a registry view. Its existing
+revision-keyed raw-value cache drives the shared identity reduction through one
+hoisted immutable handler, with all scan state held in call locals. Stable
+renders still return from the existing cache before scanning. Platform, subtree
+theme, unsupported-modifier, syntax-error, and two-theme behavior retain their
+pre-existing order and messages.
+
+The build-graph integration control first failed against the pre-split graph,
+where a loaded app contained `states.mjs`, `modifierRegistry.mjs`,
+`programs.mjs`, and `valueParser.mjs`. It now bundles browser and native loaded
+apps that exercise Tamagui, ThemeUpdate, and Tailwind. Both graphs contain the
+runtime vocabulary, scanner, and identity reducer while excluding the tooling
+modules. A separate compiler fixture proves the tooling entry, parser, and
+registry remain available.
+
+### Size and cluster receipts
+
+The fresh frozen-size artifact is `/tmp/p29049-iiid-size.efzMk1`.
+
+| arm | whole gzip | CORE |
+| --- | ---: | ---: |
+| Phase III-c2 | 104,653 | 40,550 |
+| Phase III-d | 104,142 | 40,030 |
+| movement | -511 | -520 |
+
+The fresh parser-cluster artifact is
+`/tmp/p29049-iiid-cluster.8JccDC`.
+
+| arm | cluster whole gzip | parser-cluster union |
+| --- | ---: | ---: |
+| Phase III-c2 | 104,506 | 4,638 |
+| Phase III-d | 104,000 | 4,198 |
+| movement | -506 | -440 |
+
+III-d beat its declared 300 to 430 CORE and 250 to 380 cluster forecast by 90
+and 60 bytes. Its scoped movement repays III-b's +48 CORE debt, then pays 472
+CORE and 440 cluster bytes of the III-c2 sequence. IV-a inherits +167 CORE and
++187 cluster sequence debt, plus III-c1's separately tracked +55 cluster drift.
+
+Validation at this checkpoint:
+
+- style-grammar built and passed 29 files with 455 tests;
+- the full core web suite passed 71 files with two skipped, 559 tests with
+  three skipped and one todo;
+- the full core native suite passed 30 files with one skipped, 295 tests with
+  seven expected failures and nine skipped;
+- Tailwind built and passed 19 web files with 461 tests and four native files
+  with 275 tests, including five loaded-graph assertions;
+- the compiler flat-value suite passed seven tests;
+- the ESLint plugin built and passed six tests;
+- the parser ruler passed eight tests with 36 expectations and measured the
+  68-selector III-d checkpoint;
+- full root build passed 171 of 171 tasks;
+- root lint passed with the same five unrelated warnings;
+- root dependency, unused, Tamagui, reference, path, DOM type, and LSP pin
+  checks passed;
+- `git diff --check` passed.

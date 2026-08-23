@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest'
-import { resolveCandidateTarget } from '..'
+import { resolveCandidateTarget } from '../tooling'
 
 const textFamily = {
   xl: [{ property: 'fontSize', value: 20 }],

@@ -5,7 +5,7 @@ import {
   mergeProgramValues,
   mergePrograms,
   type ParsedValue,
-} from '..'
+} from '../tooling'
 
 const value = (base: string, clauses: ParsedValue['clauses'] = []): ParsedValue => ({
   base,

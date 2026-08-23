@@ -1,5 +1,5 @@
 import { StyleObjectValue } from '@tamagui/helpers'
-import { safeAreaVariableNames } from '@tamagui/style-grammar'
+import { safeAreaVariableNames } from '@tamagui/style-grammar/runtime'
 import { beforeAll, expect, test } from 'vitest'
 
 import config from '../config-default'

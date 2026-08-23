@@ -19,6 +19,16 @@ export const coreStateModifierNames: readonly CoreStateModifierName[] = Object.f
   'exit',
 ])
 
+export type ComponentStateModifierName =
+  | 'open'
+  | 'checked'
+  | 'highlighted'
+  | 'selected'
+  | 'invalid'
+
+export const componentStateModifierNames: readonly ComponentStateModifierName[] =
+  Object.freeze(['open', 'checked', 'highlighted', 'selected', 'invalid'])
+
 /**
  * Every alternate spelling of a core state modifier, and the one it means.
  *
@@ -26,7 +36,7 @@ export const coreStateModifierNames: readonly CoreStateModifierName[] = Object.f
  * to re-map `pressed`, `starting` and `ending` inline while resolving a
  * condition, which meant `parseValue` reported them as unregistered modifiers
  * and the runtime styled them anyway. `stateVocabulary` in states.ts already
- * calls all four aliases, so the two tables now agree by construction.
+ * calls all four aliases, so the two tables agree.
  */
 export const modifierAliases: Readonly<Record<string, string>> = Object.freeze({
   __proto__: null,

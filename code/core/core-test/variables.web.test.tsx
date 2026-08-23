@@ -6,13 +6,17 @@ import { describe, expect, test, vi } from 'vitest'
 
 import { createTamagui, TamaguiProvider, Theme, useTheme, View } from '@tamagui/core'
 import { getConfig, updateConfig } from '../web/src'
-import { getConfigRevisionState } from '../web/src/helpers/grammarConfig'
+import {
+  getConfigRevisionState,
+  prepareConfigRevision,
+} from '../web/src/helpers/grammarConfig'
 import {
   createThemeUpdateState,
   getInlineValuesFromProps,
   getMergedInlineTheme,
   getVariablesCSSRules,
   ThemeUpdate,
+  type InlineValueIssue,
 } from '@tamagui/web/theme-update'
 
 const conf = createTamagui({
@@ -219,6 +223,80 @@ describe('getVariablesCSSRules', () => {
     expect(res.rules[0]).toContain('--accent:#123;')
     expect(res.rules[0]).not.toContain('--surfaceBorder')
     expect(res.rules[0]).not.toContain('--chained')
+  })
+})
+
+describe('getInlineValuesFromProps', () => {
+  test('a syntax error refuses the whole raw value and reports the parser diagnosis', () => {
+    const issues: InlineValueIssue[] = []
+    const inline = getInlineValuesFromProps(
+      { surfaceBorder: 'red dark:blue;' },
+      conf,
+      (issue) => issues.push(issue)
+    )
+
+    expect(inline).toEqual({ values: {}, themes: undefined })
+    expect(issues).toEqual([
+      {
+        key: 'surfaceBorder',
+        raw: 'red dark:blue;',
+        message:
+          '<ThemeUpdate surfaceBorder="red dark:blue;">: ";" cannot appear in a value: it would end the declaration or rule',
+      },
+    ])
+  })
+
+  test('unsupported and unknown modifiers drop only their clauses', () => {
+    const issues: InlineValueIssue[] = []
+    const raw = 'red hover:blue mystery:green web:orange'
+    const inline = getInlineValuesFromProps({ surfaceBorder: raw }, conf, (issue) =>
+      issues.push(issue)
+    )
+
+    expect(inline).toEqual({ values: { surfaceBorder: 'orange' }, themes: undefined })
+    expect(issues.map((issue) => issue.message)).toEqual([
+      `<ThemeUpdate surfaceBorder="${raw}">: "hover:" isn't supported here. Theme values apply to a whole subtree, so only theme (dark:) and platform (ios:) modifiers work`,
+      `<ThemeUpdate surfaceBorder="${raw}">: "mystery:" isn't supported here. Theme values apply to a whole subtree, so only theme (dark:) and platform (ios:) modifiers work`,
+    ])
+  })
+
+  test('a clause naming two themes is refused without losing the base', () => {
+    const issues: InlineValueIssue[] = []
+    const raw = 'red dark:blue:green'
+    const inline = getInlineValuesFromProps({ surfaceBorder: raw }, conf, (issue) =>
+      issues.push(issue)
+    )
+
+    expect(inline).toEqual({ values: { surfaceBorder: 'red' }, themes: undefined })
+    expect(issues.map((issue) => issue.message)).toEqual([
+      `<ThemeUpdate surfaceBorder="${raw}">: "dark:blue:" targets two themes at once, which a subtree value can't express. Name the composed theme instead`,
+    ])
+  })
+
+  test('keeps ThemeUpdate collision priority over the shared direct-style order', () => {
+    const collisionConf = {
+      ...conf,
+      media: { ...conf.media, web: { maxWidth: 1 } },
+      themes: {
+        ...conf.themes,
+        hover: conf.themes.light,
+        web: conf.themes.light,
+      },
+    } as typeof conf
+    prepareConfigRevision(collisionConf)
+    const issues: InlineValueIssue[] = []
+
+    const inline = getInlineValuesFromProps(
+      { surfaceBorder: 'red hover:blue web:orange' },
+      collisionConf,
+      (issue) => issues.push(issue)
+    )
+
+    expect(inline).toEqual({
+      values: { surfaceBorder: 'orange' },
+      themes: { hover: { surfaceBorder: 'blue' } },
+    })
+    expect(issues).toEqual([])
   })
 })
 

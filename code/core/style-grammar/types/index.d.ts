@@ -1,3 +1,3 @@
-export * from "./runtime";
+export {};
 
 //# sourceMappingURL=index.d.ts.map

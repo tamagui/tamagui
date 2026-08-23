@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest'
-import { splitBorderValue, type ParsedValue } from '..'
+import { splitBorderValue, type ParsedValue } from '../tooling'
 
 const colorTokens = new Set(['primary', 'color5'])
 

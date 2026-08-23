@@ -23,8 +23,9 @@ reproduces its old 1,710 figure, proving the frame correction rather than
 fixture drift. Phase III-b measures 3,950 in the corrected frame, down 289.
 Full-source and exact-declaration negative controls both move the union, and
 missing, ambiguous, wrong-kind, or privately unclosed declarations fail.
-The manifest now contains 67 selectors after predeclaring the III-c1 and III-c2
-destinations; the same detached Phase III-a artifact still measures 4,239.
+The manifest contained 67 selectors after predeclaring the III-c1 and III-c2
+destinations. Phase III-d adds the compact component-state destination for 68
+selectors total; the same detached Phase III-a artifact still measures 4,239.
 
 Implementation bindings after revision 3, 2026-08-23:
 
@@ -859,11 +860,12 @@ sequence before the next owner.
 
 | checkpoint | CORE before | CORE after | delta | recovery owner | status |
 | --- | ---: | ---: | ---: | --- | --- |
-| III-b | 39,857 | 39,905 | +48 | III-d package-surface split | open |
-| III-c2 | 39,911 | 40,550 | +639 | III-d tooling split, then IV-a resolver/precedence deletion | sequence open |
+| III-b | 39,857 | 39,905 | +48 | III-d package-surface split | recovered |
+| III-c2 | 39,911 | 40,550 | +639 | III-d tooling split, then IV-a resolver/precedence deletion | sequence +167 remains |
+| III-d | 40,550 | 40,030 | -520 | paid III-b +48, then III-c2 +472 | banked |
 
-Current cumulative unrecovered drift: **+48 CORE**. Current predeclared
-sequence debt: **+639 CORE**.
+Current cumulative unrecovered drift: **0 CORE**. Current predeclared sequence
+debt: **+167 CORE**, assigned to IV-a.
 
 ### Parser-cluster debt ledger
 
@@ -890,10 +892,11 @@ of III-c1's temporary cluster increase.
 | III-c0c | 3,956 | 3,956 | 0 | config diagnostic stays outside the app graph | banked |
 | III-c0d | 3,956 | 3,956 | 0 | production DCE already removed the dead Proxy | banked |
 | III-c1 | 3,956 | 4,011 | +55 | IV-a resolver replacement | open |
-| III-c2 | 4,011 | 4,638 | +627 | III-d tooling split, then IV-a resolver/precedence deletion | sequence open |
+| III-c2 | 4,011 | 4,638 | +627 | III-d tooling split, then IV-a resolver/precedence deletion | sequence +187 remains |
+| III-d | 4,638 | 4,198 | -440 | runtime/tooling graph split | banked against III-c2 |
 
 Current cumulative unrecovered parser-cluster drift: **+55**. Current
-predeclared parser-cluster sequence debt: **+627**.
+predeclared parser-cluster sequence debt: **+187**, both assigned to IV-a.
 
 The III-c2 measurement is whole 104,653 / CORE 40,550 in the frozen size
 fixture and whole 104,506 / parser cluster 4,638 in the frozen cluster fixture.
@@ -928,6 +931,13 @@ gzip** against sequence debts of +639 and +627. The midpoint covers both. The
 low end falls short by 89 CORE and 77 parser-cluster gzip, so recovery is
 credible but not assured. III-d is measured against its own band before IV-a;
 a material miss stops the sequence and is reported rather than carried forward.
+
+Phase III-d measured **-520 CORE** and **-440 parser-cluster gzip**, exceeding
+its forecast bands by 90 and 60 bytes respectively. The movement comes from
+the scoped runtime/tooling graph split. It pays III-b's +48 CORE debt first,
+then reduces the III-c2 sequence debt by 472 CORE and 440 parser-cluster gzip.
+IV-a therefore starts with +167 CORE and +187 parser-cluster sequence debt,
+plus III-c1's separately tracked +55 parser-cluster drift.
 
 ### Phase III: grammar and render-path cleanup (nine checkpoints)
 
@@ -992,7 +1002,9 @@ a material miss stops the sequence and is reported rather than carried forward.
   now that each semantic owner exists. Verify: the compiler fixture builds
   against the tooling surface, app builds, and CORE. It must recover the +48
   III-b structural-debt ledger or report a checkpoint miss; unrelated byte
-  reductions do not count as recovery.
+  reductions do not count as recovery. Measured result: whole 104,142 / CORE
+  40,030 and cluster whole 104,000 / union 4,198. The scoped split recovers
+  III-b and beats the declared III-d forecast, so IV-a may proceed.
 
 Pool rows (indicative): valueParser, programs, mergeFlatValues, states,
 stateModifiers, modifierRegistry, grammar config.

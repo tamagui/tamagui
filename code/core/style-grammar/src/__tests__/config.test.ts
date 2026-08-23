@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest'
-import { createGrammarConfigView, isContainerSizeQueryText } from '..'
+import { createGrammarConfigView, isContainerSizeQueryText } from '../tooling'
 
 test('container query text accepts only size features', () => {
   for (const query of [

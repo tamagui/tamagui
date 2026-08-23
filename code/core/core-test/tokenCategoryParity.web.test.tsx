@@ -8,7 +8,7 @@ process.env.TAMAGUI_TARGET = 'web'
 // language service confidently emitted both as configured values. these pin
 // the runtime to the registry contract, property by property.
 
-import { getTokenCategory, grammarEntries } from '@tamagui/style-grammar'
+import { getTokenCategory, grammarEntries } from '@tamagui/style-grammar/tooling'
 import { beforeAll, expect, test } from 'vitest'
 import config from '../config-default'
 import { Text, View, createTamagui, getSplitStyles } from '../web/src'

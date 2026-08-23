@@ -37,7 +37,7 @@ import {
   createModifierRegistry,
   parseTransition,
   parseValue,
-} from '@tamagui/style-grammar'
+} from '@tamagui/style-grammar/tooling'
 import { isValidStyleKey } from '@tamagui/web'
 import type { AnimationDriver, StaticConfig, TamaguiInternalConfig } from '@tamagui/web'
 

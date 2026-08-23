@@ -3,7 +3,7 @@ import { createRequire } from 'node:module'
 
 import { generateThemes, writeGeneratedThemes } from '@tamagui/generate-themes'
 import { stylePropsAll } from '@tamagui/helpers'
-import { grammarEntries } from '@tamagui/style-grammar'
+import { grammarEntries } from '@tamagui/style-grammar/tooling'
 import type { TamaguiOptions } from '@tamagui/types'
 import FS from 'fs-extra'
 

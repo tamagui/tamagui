@@ -1,7 +1,6 @@
 import type { GrammarConfigView } from './candidate'
 import { grammarPlatformNames } from './config'
 import { stateModifierNames } from './clauseIdentity'
-import type { ModifierKind } from './valueTypes'
 
 export const configRevisionSymbol: unique symbol = Symbol.for(
   'tamagui.configRevision'
@@ -14,6 +13,18 @@ export const modifierKindTheme = 4
 
 export type CompiledModifierKind = 1 | 2 | 3 | 4
 export type CompiledModifierVocabulary = Readonly<Record<string, CompiledModifierKind>>
+
+export const modifierRefusalReservedContainerPrefix = 1
+export const modifierRefusalReservedGroupPrefix = 2
+export const modifierRefusalKindCollision = 3
+
+export type ModifierVocabularyRefusalCode = 1 | 2 | 3
+export type ModifierVocabularyRefusalHandler = (
+  code: ModifierVocabularyRefusalCode,
+  name: string,
+  kind: CompiledModifierKind,
+  existing: CompiledModifierKind | 0
+) => void
 
 type Names = readonly string[] | ReadonlySet<string> | Readonly<Record<string, unknown>>
 
@@ -39,63 +50,42 @@ export function isRootThemeName(name: string): boolean {
   return name.length > 0 && !name.includes('_')
 }
 
-export function modifierKindFromCode(
-  code: CompiledModifierKind | undefined
-): ModifierKind | undefined {
-  if (code === modifierKindState) return 'state'
-  if (code === modifierKindMedia) return 'media'
-  if (code === modifierKindPlatform) return 'platform'
-  if (code === modifierKindTheme) return 'theme'
-}
-
 export function compileModifierVocabulary(
   view: GrammarConfigView,
-  diagnostics?: string[],
-  completionNames?: string[]
+  onRefusal?: ModifierVocabularyRefusalHandler,
+  onRegistered?: (name: string) => void
 ): CompiledModifierVocabulary {
   const names = Object.create(null) as Record<string, CompiledModifierKind>
 
-  const register = (
-    name: string,
-    code: CompiledModifierKind,
-    kind: Exclude<ModifierKind, 'group' | 'container'>
-  ): void => {
+  const register = (name: string, code: CompiledModifierKind): void => {
     if (name.charCodeAt(0) === 64) {
-      diagnostics?.push(
-        `modifier "${name}" is not registered: the "@" prefix is reserved for container query modifiers, so it cannot be a ${kind} name`
-      )
+      onRefusal?.(modifierRefusalReservedContainerPrefix, name, code, 0)
       return
     }
     if (name.startsWith('group-')) {
-      diagnostics?.push(
-        `modifier "${name}" is not registered: the "group-" prefix is reserved for group state modifiers; rename this ${kind} name so it does not begin with "group-"`
-      )
+      onRefusal?.(modifierRefusalReservedGroupPrefix, name, code, 0)
       return
     }
     const existing = names[name]
     if (existing !== undefined) {
       if (existing !== code) {
-        diagnostics?.push(
-          `modifier "${name}" is already registered as a ${modifierKindFromCode(existing)} modifier, so the ${kind} name is ignored`
-        )
+        onRefusal?.(modifierRefusalKindCollision, name, code, existing)
       }
       return
     }
     names[name] = code
-    completionNames?.push(name)
+    onRegistered?.(name)
   }
 
   for (const name of stateModifierNames) {
-    register(name, modifierKindState, 'state')
+    register(name, modifierKindState)
   }
-  forEachModifierName(view.mediaNames, (name) =>
-    register(name, modifierKindMedia, 'media')
-  )
+  forEachModifierName(view.mediaNames, (name) => register(name, modifierKindMedia))
   forEachModifierName(view.platformNames ?? grammarPlatformNames, (name) =>
-    register(name, modifierKindPlatform, 'platform')
+    register(name, modifierKindPlatform)
   )
   forEachModifierName(view.themeNames, (name) => {
-    if (isRootThemeName(name)) register(name, modifierKindTheme, 'theme')
+    if (isRootThemeName(name)) register(name, modifierKindTheme)
   })
 
   return names

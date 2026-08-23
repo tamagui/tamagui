@@ -1,5 +1,7 @@
 export type CoreStateModifierName = "hover" | "press" | "focus" | "focus-visible" | "focus-within" | "disabled" | "enter" | "exit";
 export declare const coreStateModifierNames: readonly CoreStateModifierName[];
+export type ComponentStateModifierName = "open" | "checked" | "highlighted" | "selected" | "invalid";
+export declare const componentStateModifierNames: readonly ComponentStateModifierName[];
 /**
 * Every alternate spelling of a core state modifier, and the one it means.
 *
@@ -7,7 +9,7 @@ export declare const coreStateModifierNames: readonly CoreStateModifierName[];
 * to re-map `pressed`, `starting` and `ending` inline while resolving a
 * condition, which meant `parseValue` reported them as unregistered modifiers
 * and the runtime styled them anyway. `stateVocabulary` in states.ts already
-* calls all four aliases, so the two tables now agree by construction.
+* calls all four aliases, so the two tables agree.
 */
 export declare const modifierAliases: Readonly<Record<string, string>>;
 

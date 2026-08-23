@@ -3,8 +3,11 @@ import {
   type FlatScanErrorCode,
   type FlatValueHandler,
 } from './scanFlatValue'
-import { coreStateModifierNames, modifierAliases } from './stateModifiers'
-import { componentStateNames } from './states'
+import {
+  componentStateModifierNames,
+  coreStateModifierNames,
+  modifierAliases,
+} from './stateModifiers'
 
 export type ClauseIdentityErrorCode =
   | FlatScanErrorCode
@@ -35,7 +38,7 @@ export interface GroupModifier {
 export const stateModifierNames: readonly string[] = Object.freeze([
   ...coreStateModifierNames,
   ...Object.keys(modifierAliases),
-  ...componentStateNames,
+  ...componentStateModifierNames,
 ])
 
 const stateModifierSet: ReadonlySet<string> = new Set(stateModifierNames)
@@ -56,6 +59,16 @@ export function isModifierName(text: string, start: number, end: number): boolea
     }
   }
   return true
+}
+
+/** returns the end offset of a valid container size, or -1 for another spelling */
+export function containerModifierSizeEnd(name: string): number {
+  if (name.charCodeAt(0) !== 64 /* @ */) return -1
+  const slash = name.indexOf('/')
+  const sizeEnd = slash === -1 ? name.length : slash
+  if (!isModifierName(name, 1, sizeEnd)) return -1
+  if (slash !== -1 && !isModifierName(name, slash + 1, name.length)) return -1
+  return sizeEnd
 }
 
 /** parses the config-independent spelling of a named or unnamed group modifier */

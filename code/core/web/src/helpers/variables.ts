@@ -2,8 +2,11 @@ import { reservedThemeProps, simpleHash } from '@tamagui/helpers'
 import {
   grammarPlatformNames,
   isRootThemeName,
-  parseValue,
-  type ModifierRegistryView,
+  modifierKindPlatform,
+  modifierKindTheme,
+  reduceFlatValueIdentity,
+  type ClauseIdentityErrorCode,
+  type ClauseIdentityHandler,
 } from '@tamagui/style-grammar/runtime'
 import { getSetting } from '../config'
 import { createVariable, isVariable } from '../createVariable'
@@ -415,29 +418,6 @@ export const getInlineValuesKey = (inline: InlineValues): string => {
 
 // ---- flat theme-value props: <ThemeUpdate background-hover="blue4 dark:blue2"> ----
 
-const registryViews = new WeakMap<ConfigRevisionState, ModifierRegistryView>()
-
-/**
- * Theme and platform are the only modifiers a subtree-wide value can honor.
- * Everything else still parses as a modifier so it can be rejected by name
- * below, rather than coming back as a generic "unregistered modifier".
- */
-const getModifierRegistry = (conf: TamaguiInternalConfig): ModifierRegistryView => {
-  const generation = getConfigRevisionState(conf)
-  let view = registryViews.get(generation)
-  if (!view) {
-    view = {
-      get(name: string) {
-        if (grammarPlatformNames.has(name)) return 'platform'
-        if (isRootThemeName(name) && getThemeBucketNames(conf).has(name)) return 'theme'
-        return 'state'
-      },
-    }
-    registryViews.set(generation, view)
-  }
-  return view
-}
-
 /**
  * One authored theme-value clause the parser could not use. The runtime warns
  * and drops; zero-runtime turns each one into a rule 3 violation.
@@ -450,10 +430,78 @@ type FlatBuckets = {
   themes: Record<string, Record<string, VariableValIn>> | null
 }
 
-const parsedInlineValues = new WeakMap<
-  ConfigRevisionState,
-  Map<string, ReturnType<typeof parseValue>>
->()
+type FlatThemeModifier = [
+  name: string,
+  kind: 0 | typeof modifierKindPlatform | typeof modifierKindTheme,
+]
+type FlatThemeClause = [payload: string, modifiers: FlatThemeModifier[]]
+type FlatThemeValue = {
+  base: string | null
+  clauses: FlatThemeClause[] | null
+  error: string | null
+}
+type FlatThemeScanContext = {
+  source: string
+  themeBuckets: Set<string>
+  out: FlatThemeValue
+  pending: FlatThemeModifier[] | null
+  chainStart: number
+  chainEnd: number
+}
+
+const themeUpdateFlatHandler: ClauseIdentityHandler<FlatThemeScanContext> = {
+  segment(ctx, start, end, isBase) {
+    if (isBase) {
+      ctx.out.base = start < end ? ctx.source.slice(start, end) : null
+    }
+  },
+
+  chain(ctx, start, end) {
+    ctx.pending = []
+    ctx.chainStart = start
+    ctx.chainEnd = end
+  },
+
+  modifier(ctx, start, end) {
+    const name = ctx.source.slice(start, end)
+    const kind =
+      // theme updates intentionally keep their subtree-specific collision order:
+      // platform, then theme, then every unsupported kind. direct styles use
+      // the shared vocabulary's state/media/platform/theme order instead.
+      grammarPlatformNames.has(name)
+        ? modifierKindPlatform
+        : isRootThemeName(name) && ctx.themeBuckets.has(name)
+          ? modifierKindTheme
+          : 0
+    ctx.pending!.push([name, kind])
+  },
+
+  clause(ctx, _start, _chainEnd, start, end) {
+    ;(ctx.out.clauses ||= []).push([ctx.source.slice(start, end), ctx.pending!])
+  },
+
+  error(ctx, code: ClauseIdentityErrorCode, index) {
+    if (ctx.out.error !== null) return
+    if (code === 'empty-modifier') {
+      ctx.out.error = 'a modifier chain has an empty segment'
+    } else if (code === 'empty-payload') {
+      ctx.out.error = `the "${ctx.source.slice(ctx.chainStart, ctx.chainEnd)}:" clause has no value`
+    } else if (code === 'invalid-character') {
+      ctx.out.error = `"${ctx.source[index]}" cannot appear in a value: it would end the declaration or rule`
+    } else if (code === 'unterminated-string') {
+      ctx.out.error = `unterminated ${ctx.source[index]} string`
+    } else if (code === 'unterminated-comment') {
+      ctx.out.error =
+        'unterminated "/*" comment: it would swallow the rules after this one'
+    } else if (code === 'stray-comment-close') {
+      ctx.out.error = 'stray "*/": it would close a comment opened somewhere else'
+    } else {
+      ctx.out.error = 'unterminated "(" in value'
+    }
+  },
+}
+
+const parsedInlineValues = new WeakMap<ConfigRevisionState, Map<string, FlatThemeValue>>()
 
 const addFlatValue = (
   out: FlatBuckets,
@@ -486,38 +534,47 @@ const addFlatValue = (
 
   let parsed = configValues.get(raw)
   if (!parsed) {
-    parsed = parseValue(raw, getModifierRegistry(conf))
+    parsed = { base: null, clauses: null, error: null }
+    reduceFlatValueIdentity(raw, themeUpdateFlatHandler, {
+      source: raw,
+      themeBuckets: getThemeBucketNames(conf),
+      out: parsed,
+      pending: null,
+      chainStart: 0,
+      chainEnd: 0,
+    })
     if (configValues.size >= 10_000) {
       configValues.clear()
     }
     configValues.set(raw, parsed)
   }
 
-  if (!parsed.ok) {
+  if (parsed.error !== null) {
     report(
       `parse:${key}:${raw}`,
-      `<ThemeUpdate ${key}="${raw}">: ${parsed.errors[0].message}`,
+      `<ThemeUpdate ${key}="${raw}">: ${parsed.error}`,
       'Dropping.'
     )
     return
   }
 
-  const { base, clauses } = parsed.value
+  const { base, clauses } = parsed
   if (base !== null) {
     out.values[key] = base
   }
 
-  for (const clause of clauses) {
+  if (!clauses) return
+  for (const [payload, modifiers] of clauses) {
     let themeName: string | undefined
     let applies = true
 
-    for (const modifier of clause.modifiers) {
-      if (grammarPlatformNames.has(modifier)) {
+    for (const [modifier, kind] of modifiers) {
+      if (kind === modifierKindPlatform) {
         // platform is fixed for the process, so this resolves once per value
         applies &&= platformMatches(modifier)
         continue
       }
-      if (isRootThemeName(modifier) && getThemeBucketNames(conf).has(modifier)) {
+      if (kind === modifierKindTheme) {
         if (themeName !== undefined) {
           report(
             `two-themes:${key}:${raw}`,
@@ -541,9 +598,9 @@ const addFlatValue = (
 
     if (!applies) continue
     if (themeName === undefined) {
-      out.values[key] = clause.payload
+      out.values[key] = payload
     } else {
-      ;((out.themes ||= {})[themeName] ||= {})[key] = clause.payload
+      ;((out.themes ||= {})[themeName] ||= {})[key] = payload
     }
   }
 }

@@ -19,7 +19,7 @@
 // forks again fails here rather than in an app. The `divergences` block pins
 // what still differs, with the reason each one is not a scanner fork.
 import { renderHook } from '@testing-library/react'
-import { createModifierRegistry, parseValue } from '@tamagui/style-grammar'
+import { createModifierRegistry, parseValue } from '@tamagui/style-grammar/tooling'
 import { beforeAll, describe, expect, test } from 'vitest'
 
 import config from '../config-default'

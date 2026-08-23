@@ -15,6 +15,8 @@ export interface GroupModifier {
 export declare const stateModifierNames: readonly string[];
 /** the shared identifier rule for parameterized modifier names */
 export declare function isModifierName(text: string, start: number, end: number): boolean;
+/** returns the end offset of a valid container size, or -1 for another spelling */
+export declare function containerModifierSizeEnd(name: string): number;
 /** parses the config-independent spelling of a named or unnamed group modifier */
 export declare function parseGroupModifier(name: string): GroupModifier | null;
 /** canonical spelling used by every clause identity and matching consumer */

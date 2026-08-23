@@ -1,4 +1,4 @@
-import { createModifierRegistry } from '@tamagui/style-grammar'
+import { createModifierRegistry } from '@tamagui/style-grammar/tooling'
 import { beforeAll, expect, test } from 'vitest'
 
 import config from '../config-default'

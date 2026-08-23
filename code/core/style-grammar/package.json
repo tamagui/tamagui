@@ -39,6 +39,7 @@
     "src/tooling.ts",
     "src/toolingAnnotations.ts",
     "src/toolingDiagnostics.ts",
+    "src/toolingFormat.ts",
     "src/toolingRegistry.ts",
     "src/transformFamily.ts",
     "src/transition.ts",
@@ -57,15 +58,6 @@
   "types": "types/index.d.ts",
   "exports": {
     "./package.json": "./package.json",
-    ".": {
-      "types": "./types/index.d.ts",
-      "react-native": "./dist/esm/index.native.js",
-      "browser": "./dist/esm/index.mjs",
-      "module": "./dist/esm/index.mjs",
-      "import": "./dist/esm/index.mjs",
-      "require": "./dist/cjs/index.cjs",
-      "default": "./dist/esm/index.mjs"
-    },
     "./runtime": {
       "types": "./types/runtime.d.ts",
       "react-native": "./dist/esm/runtime.native.js",

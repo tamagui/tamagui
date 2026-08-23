@@ -20,24 +20,14 @@ describe('built export parity', () => {
   })
 
   test('ESM, CJS, and react-native outputs expose the split grammar surfaces', async () => {
-    const rootCjs = requireFromPackage('@tamagui/style-grammar')
     const runtimeCjs = requireFromPackage('@tamagui/style-grammar/runtime')
     const toolingCjs = requireFromPackage('@tamagui/style-grammar/tooling')
-    const rootEsm = await import(join(root, 'dist/esm/index.mjs'))
     const runtimeEsm = await import(join(root, 'dist/esm/runtime.mjs'))
     const toolingEsm = await import(join(root, 'dist/esm/tooling.mjs'))
-    const rootNative = await import(join(root, 'dist/esm/index.native.js'))
     const runtimeNative = await import(join(root, 'dist/esm/runtime.native.js'))
     const toolingNative = await import(join(root, 'dist/esm/tooling.native.js'))
 
-    for (const built of [
-      rootCjs,
-      runtimeCjs,
-      rootEsm,
-      runtimeEsm,
-      rootNative,
-      runtimeNative,
-    ]) {
+    for (const built of [runtimeCjs, runtimeEsm, runtimeNative]) {
       expect(built.parseCandidate('sm:p-4', config)).toMatchObject({
         modifiers: ['sm'],
         rawValue: '4',
@@ -56,5 +46,9 @@ describe('built export parity', () => {
         },
       })
     }
+  })
+
+  test('the package root is not public', () => {
+    expect(() => requireFromPackage('@tamagui/style-grammar')).toThrow()
   })
 })

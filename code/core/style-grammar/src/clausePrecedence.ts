@@ -2,9 +2,9 @@ import { grammarPlatformRank } from './config'
 import {
   canonicalClauseModifier,
   clauseConditionSetKey,
+  containerModifierSizeEnd,
   parseGroupModifier,
 } from './clauseIdentity'
-import { parseContainerModifier } from './modifierRegistry'
 
 export { canonicalClauseModifier, clauseConditionSetKey } from './clauseIdentity'
 import {
@@ -112,8 +112,8 @@ function withinCategoryRank(
 ): number {
   if (kind === 'media') return order.get(modifier) ?? 0
   if (kind === 'container') {
-    const container = parseContainerModifier(modifier)
-    return container ? (order.get(container.size) ?? 0) : 0
+    const sizeEnd = containerModifierSizeEnd(modifier)
+    return sizeEnd === -1 ? 0 : (order.get(modifier.slice(1, sizeEnd)) ?? 0)
   }
   if (kind === 'theme') return 0
   if (kind === 'group') {

@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest'
-import { createModifierRegistry, parseValue, type ModifierRegistryView } from '..'
+import { createModifierRegistry, parseValue, type ModifierRegistryView } from '../tooling'
 import { chaosAlphabet, constructCase, integer, mulberry32, pick } from './valueCorpus'
 
 const { registry } = createModifierRegistry({

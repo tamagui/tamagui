@@ -4,7 +4,7 @@ import {
   createModifierRegistry,
   parseContainerModifier,
   stateModifierNames,
-} from '..'
+} from '../tooling'
 
 // One global modifier namespace. These tests pin which spellings resolve to
 // which kind, that registration order is state -> media -> platform -> theme

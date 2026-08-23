@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest'
-import { modifierAliases, parseGroupModifier, programClassName } from '..'
+import { modifierAliases, parseGroupModifier, programClassName } from '../tooling'
 
 describe('alias spellings are one hash identity', () => {
   // class-level: every registered alias must hash identically to its canonical

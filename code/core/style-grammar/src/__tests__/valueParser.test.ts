@@ -5,7 +5,7 @@ import {
   type ParsedValue,
   type ValueParseError,
   type ValueParseResult,
-} from '..'
+} from '../tooling'
 
 // The universal flat value grammar: `value := base? clause*`. These tests pin
 // the split itself — base and payloads come back as raw trimmed CSS, and a

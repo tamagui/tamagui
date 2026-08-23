@@ -1,6 +1,7 @@
 import { describe, expect, test } from 'vitest'
 
-import { formatParsedValue, mergeFlatValues } from '../mergeFlatValues'
+import { mergeFlatValues } from '../mergeFlatValues'
+import { formatParsedValue } from '../toolingFormat'
 import { parseValue } from '../valueParser'
 import type { ModifierRegistryView } from '../valueTypes'
 

@@ -1,5 +1,5 @@
 import { getDefaultTamaguiConfig } from '../../../config-default/src'
-import { safeAreaVariableNames } from '@tamagui/style-grammar'
+import { safeAreaVariableNames } from '@tamagui/style-grammar/runtime'
 import { View as CoreView, createTamagui, getConfig } from '@tamagui/web'
 import { afterEach, beforeAll, describe, expect, test, vi } from 'vitest'
 

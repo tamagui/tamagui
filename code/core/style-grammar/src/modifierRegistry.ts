@@ -12,7 +12,7 @@
 import type { GrammarConfigView } from './candidate'
 import {
   canonicalClauseModifier,
-  isModifierName,
+  containerModifierSizeEnd,
   parseGroupModifier,
   stateModifierNames,
 } from './clauseIdentity'
@@ -20,8 +20,13 @@ import {
   compileModifierVocabulary,
   forEachModifierName,
   isRootThemeName,
-  modifierKindFromCode,
   modifierKindMedia,
+  modifierKindPlatform,
+  modifierKindState,
+  modifierRefusalKindCollision,
+  modifierRefusalReservedContainerPrefix,
+  modifierRefusalReservedGroupPrefix,
+  type CompiledModifierKind,
 } from './modifierVocabulary'
 import {
   grammarMaxNonPlatformDepth,
@@ -83,17 +88,19 @@ interface ModifierTrieNode {
  * the query text — the same split groups use for their state part.
  */
 export function parseContainerModifier(name: string): ContainerModifier | null {
-  if (name.charCodeAt(0) !== 64 /* @ */) return null
-  const slash = name.indexOf('/')
-  if (slash === -1) {
-    return isModifierName(name, 1, name.length)
-      ? { size: name.slice(1), container: null }
-      : null
+  const sizeEnd = containerModifierSizeEnd(name)
+  if (sizeEnd === -1) return null
+  return {
+    size: name.slice(1, sizeEnd),
+    container: sizeEnd === name.length ? null : name.slice(sizeEnd + 1),
   }
-  if (!isModifierName(name, 1, slash) || !isModifierName(name, slash + 1, name.length)) {
-    return null
-  }
-  return { size: name.slice(1, slash), container: name.slice(slash + 1) }
+}
+
+function modifierKindFromCode(code: CompiledModifierKind): ModifierKind {
+  if (code === modifierKindState) return 'state'
+  if (code === modifierKindMedia) return 'media'
+  if (code === modifierKindPlatform) return 'platform'
+  return 'theme'
 }
 
 export function createModifierRegistry(
@@ -122,7 +129,26 @@ export function createModifierRegistry(
     })
   }
 
-  const names = compileModifierVocabulary(view, diagnostics, completionNames)
+  const names = compileModifierVocabulary(
+    view,
+    (code, name, kind, existing) => {
+      const kindName = modifierKindFromCode(kind)
+      if (code === modifierRefusalReservedContainerPrefix) {
+        diagnostics.push(
+          `modifier "${name}" is not registered: the "@" prefix is reserved for container query modifiers, so it cannot be a ${kindName} name`
+        )
+      } else if (code === modifierRefusalReservedGroupPrefix) {
+        diagnostics.push(
+          `modifier "${name}" is not registered: the "group-" prefix is reserved for group state modifiers; rename this ${kindName} name so it does not begin with "group-"`
+        )
+      } else if (code === modifierRefusalKindCollision) {
+        diagnostics.push(
+          `modifier "${name}" is already registered as a ${modifierKindFromCode(existing as CompiledModifierKind)} modifier, so the ${kindName} name is ignored`
+        )
+      }
+    },
+    (name) => completionNames.push(name)
+  )
 
   // when the caller or the view declares which sizes a container can measure,
   // the same spelling must also be registered as media. Otherwise any
@@ -169,8 +195,8 @@ export function createModifierRegistry(
   }
 
   const get = (name: string): ModifierKind | undefined => {
-    const kind = modifierKindFromCode(names[name])
-    if (kind !== undefined) return kind
+    const code = names[name]
+    if (code !== undefined) return modifierKindFromCode(code)
     if (parseGroupModifier(name) !== null) return 'group'
     const container = parseContainerModifier(name)
     if (container !== null && isContainerSize(container.size)) return 'container'
