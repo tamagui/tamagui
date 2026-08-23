@@ -56,6 +56,17 @@
     "stateModifiers.modifierAliases": { "kind": "declaration", "source": "@tamagui/style-grammar::stateModifiers.mjs", "declaration": "modifierAliases", "declarationKind": "variable" },
     "states.stateVocabulary": { "kind": "declaration", "source": "@tamagui/style-grammar::states.mjs", "declaration": "stateVocabulary", "declarationKind": "variable" },
     "states.componentStateNames": { "kind": "declaration", "source": "@tamagui/style-grammar::states.mjs", "declaration": "componentStateNames", "declarationKind": "variable", "closePrivateDependencies": true },
+    "modifierVocabulary.configRevisionSymbol": { "kind": "declaration", "source": "@tamagui/style-grammar::modifierVocabulary.mjs", "declaration": "configRevisionSymbol", "declarationKind": "variable" },
+    "modifierVocabulary.modifierKindState": { "kind": "declaration", "source": "@tamagui/style-grammar::modifierVocabulary.mjs", "declaration": "modifierKindState", "declarationKind": "variable" },
+    "modifierVocabulary.modifierKindMedia": { "kind": "declaration", "source": "@tamagui/style-grammar::modifierVocabulary.mjs", "declaration": "modifierKindMedia", "declarationKind": "variable" },
+    "modifierVocabulary.modifierKindPlatform": { "kind": "declaration", "source": "@tamagui/style-grammar::modifierVocabulary.mjs", "declaration": "modifierKindPlatform", "declarationKind": "variable" },
+    "modifierVocabulary.modifierKindTheme": { "kind": "declaration", "source": "@tamagui/style-grammar::modifierVocabulary.mjs", "declaration": "modifierKindTheme", "declarationKind": "variable" },
+    "modifierVocabulary.forEachModifierName": { "kind": "declaration", "source": "@tamagui/style-grammar::modifierVocabulary.mjs", "declaration": "forEachModifierName", "declarationKind": "function" },
+    "modifierVocabulary.isRootThemeName": { "kind": "declaration", "source": "@tamagui/style-grammar::modifierVocabulary.mjs", "declaration": "isRootThemeName", "declarationKind": "function" },
+    "modifierVocabulary.modifierKindFromCode": { "kind": "declaration", "source": "@tamagui/style-grammar::modifierVocabulary.mjs", "declaration": "modifierKindFromCode", "declarationKind": "function", "closePrivateDependencies": true },
+    "modifierVocabulary.compileModifierVocabulary": { "kind": "declaration", "source": "@tamagui/style-grammar::modifierVocabulary.mjs", "declaration": "compileModifierVocabulary", "declarationKind": "function", "closePrivateDependencies": true },
+    "grammarConfig.prepareConfigRevision": { "kind": "declaration", "source": "@tamagui/web::helpers/grammarConfig.mjs", "declaration": "prepareConfigRevision", "declarationKind": "function" },
+    "grammarConfig.getConfigRevisionState": { "kind": "declaration", "source": "@tamagui/web::helpers/grammarConfig.mjs", "declaration": "getConfigRevisionState", "declarationKind": "function" },
     "config.grammarPlatformRank": { "kind": "declaration", "source": "@tamagui/style-grammar::config.mjs", "declaration": "grammarPlatformRank", "declarationKind": "function" },
     "config.isContainerSizeQuery": { "kind": "declaration", "source": "@tamagui/style-grammar::config.mjs", "declaration": "isContainerSizeQuery", "declarationKind": "function", "closePrivateDependencies": true },
     "config.isContainerSizeQueryText": { "kind": "declaration", "source": "@tamagui/style-grammar::config.mjs", "declaration": "isContainerSizeQueryText", "declarationKind": "function", "closePrivateDependencies": true },
@@ -115,6 +126,17 @@
       "stateModifiers.modifierAliases": { "state": "present" },
       "states.stateVocabulary": { "state": "present" },
       "states.componentStateNames": { "state": "present" },
+      "modifierVocabulary.configRevisionSymbol": { "state": "absent", "movedTo": "directStyle.mediaQueries" },
+      "modifierVocabulary.modifierKindState": { "state": "absent", "movedTo": "directStyle.getCondition" },
+      "modifierVocabulary.modifierKindMedia": { "state": "absent", "movedTo": "directStyle.getCondition" },
+      "modifierVocabulary.modifierKindPlatform": { "state": "absent", "movedTo": "directStyle.getCondition" },
+      "modifierVocabulary.modifierKindTheme": { "state": "absent", "movedTo": "directStyle.getCondition" },
+      "modifierVocabulary.forEachModifierName": { "state": "absent", "movedTo": "directStyle.getCondition" },
+      "modifierVocabulary.isRootThemeName": { "state": "absent", "movedTo": "modifierRegistry.isRootThemeName" },
+      "modifierVocabulary.modifierKindFromCode": { "state": "absent", "movedTo": "directStyle.getCondition" },
+      "modifierVocabulary.compileModifierVocabulary": { "state": "absent", "movedTo": "directStyle.getCondition" },
+      "grammarConfig.prepareConfigRevision": { "state": "absent", "movedTo": "directStyle.queryFor" },
+      "grammarConfig.getConfigRevisionState": { "state": "absent", "movedTo": "directStyle.queryFor" },
       "config.grammarPlatformRank": { "state": "present" },
       "config.isContainerSizeQuery": { "state": "absent", "movedTo": "directStyle.containerCondition" },
       "config.isContainerSizeQueryText": { "state": "absent", "movedTo": "directStyle.containerCondition" },
@@ -173,6 +195,17 @@
       "stateModifiers.modifierAliases": { "state": "present" },
       "states.stateVocabulary": { "state": "present" },
       "states.componentStateNames": { "state": "present" },
+      "modifierVocabulary.configRevisionSymbol": { "state": "absent", "movedTo": "directStyle.mediaQueries" },
+      "modifierVocabulary.modifierKindState": { "state": "absent", "movedTo": "directStyle.getCondition" },
+      "modifierVocabulary.modifierKindMedia": { "state": "absent", "movedTo": "directStyle.getCondition" },
+      "modifierVocabulary.modifierKindPlatform": { "state": "absent", "movedTo": "directStyle.getCondition" },
+      "modifierVocabulary.modifierKindTheme": { "state": "absent", "movedTo": "directStyle.getCondition" },
+      "modifierVocabulary.forEachModifierName": { "state": "absent", "movedTo": "directStyle.getCondition" },
+      "modifierVocabulary.isRootThemeName": { "state": "absent", "movedTo": "modifierRegistry.isRootThemeName" },
+      "modifierVocabulary.modifierKindFromCode": { "state": "absent", "movedTo": "directStyle.getCondition" },
+      "modifierVocabulary.compileModifierVocabulary": { "state": "absent", "movedTo": "directStyle.getCondition" },
+      "grammarConfig.prepareConfigRevision": { "state": "absent", "movedTo": "directStyle.queryFor" },
+      "grammarConfig.getConfigRevisionState": { "state": "absent", "movedTo": "directStyle.queryFor" },
       "config.grammarPlatformRank": { "state": "present" },
       "config.isContainerSizeQuery": { "state": "absent", "movedTo": "directStyle.containerCondition" },
       "config.isContainerSizeQueryText": { "state": "absent", "movedTo": "config.isContainerSizeQuery" },
@@ -231,6 +264,17 @@
       "stateModifiers.modifierAliases": { "state": "present" },
       "states.stateVocabulary": { "state": "present" },
       "states.componentStateNames": { "state": "present" },
+      "modifierVocabulary.configRevisionSymbol": { "state": "absent", "movedTo": "directStyle.mediaQueries" },
+      "modifierVocabulary.modifierKindState": { "state": "absent", "movedTo": "directStyle.getCondition" },
+      "modifierVocabulary.modifierKindMedia": { "state": "absent", "movedTo": "directStyle.getCondition" },
+      "modifierVocabulary.modifierKindPlatform": { "state": "absent", "movedTo": "directStyle.getCondition" },
+      "modifierVocabulary.modifierKindTheme": { "state": "absent", "movedTo": "directStyle.getCondition" },
+      "modifierVocabulary.forEachModifierName": { "state": "absent", "movedTo": "directStyle.getCondition" },
+      "modifierVocabulary.isRootThemeName": { "state": "absent", "movedTo": "modifierRegistry.isRootThemeName" },
+      "modifierVocabulary.modifierKindFromCode": { "state": "absent", "movedTo": "directStyle.getCondition" },
+      "modifierVocabulary.compileModifierVocabulary": { "state": "absent", "movedTo": "directStyle.getCondition" },
+      "grammarConfig.prepareConfigRevision": { "state": "absent", "movedTo": "directStyle.queryFor" },
+      "grammarConfig.getConfigRevisionState": { "state": "absent", "movedTo": "directStyle.queryFor" },
       "config.grammarPlatformRank": { "state": "present" },
       "config.isContainerSizeQuery": { "state": "absent", "movedTo": "directStyle.containerCondition" },
       "config.isContainerSizeQueryText": { "state": "absent", "movedTo": "config.isContainerSizeQuery" },
@@ -289,6 +333,17 @@
       "stateModifiers.modifierAliases": { "state": "present" },
       "states.stateVocabulary": { "state": "present" },
       "states.componentStateNames": { "state": "present" },
+      "modifierVocabulary.configRevisionSymbol": { "state": "absent", "movedTo": "directStyle.mediaQueries" },
+      "modifierVocabulary.modifierKindState": { "state": "absent", "movedTo": "directStyle.getCondition" },
+      "modifierVocabulary.modifierKindMedia": { "state": "absent", "movedTo": "directStyle.getCondition" },
+      "modifierVocabulary.modifierKindPlatform": { "state": "absent", "movedTo": "directStyle.getCondition" },
+      "modifierVocabulary.modifierKindTheme": { "state": "absent", "movedTo": "directStyle.getCondition" },
+      "modifierVocabulary.forEachModifierName": { "state": "absent", "movedTo": "directStyle.getCondition" },
+      "modifierVocabulary.isRootThemeName": { "state": "absent", "movedTo": "modifierRegistry.isRootThemeName" },
+      "modifierVocabulary.modifierKindFromCode": { "state": "absent", "movedTo": "directStyle.getCondition" },
+      "modifierVocabulary.compileModifierVocabulary": { "state": "absent", "movedTo": "directStyle.getCondition" },
+      "grammarConfig.prepareConfigRevision": { "state": "absent", "movedTo": "directStyle.queryFor" },
+      "grammarConfig.getConfigRevisionState": { "state": "absent", "movedTo": "directStyle.queryFor" },
       "config.grammarPlatformRank": { "state": "present" },
       "config.isContainerSizeQuery": { "state": "absent", "movedTo": "directStyle.containerCondition" },
       "config.isContainerSizeQueryText": { "state": "absent", "movedTo": "config.isContainerSizeQuery" },
@@ -347,6 +402,17 @@
       "stateModifiers.modifierAliases": { "state": "present" },
       "states.stateVocabulary": { "state": "present" },
       "states.componentStateNames": { "state": "present" },
+      "modifierVocabulary.configRevisionSymbol": { "state": "absent", "movedTo": "directStyle.mediaQueries" },
+      "modifierVocabulary.modifierKindState": { "state": "absent", "movedTo": "directStyle.getCondition" },
+      "modifierVocabulary.modifierKindMedia": { "state": "absent", "movedTo": "directStyle.getCondition" },
+      "modifierVocabulary.modifierKindPlatform": { "state": "absent", "movedTo": "directStyle.getCondition" },
+      "modifierVocabulary.modifierKindTheme": { "state": "absent", "movedTo": "directStyle.getCondition" },
+      "modifierVocabulary.forEachModifierName": { "state": "absent", "movedTo": "directStyle.getCondition" },
+      "modifierVocabulary.isRootThemeName": { "state": "absent", "movedTo": "modifierRegistry.isRootThemeName" },
+      "modifierVocabulary.modifierKindFromCode": { "state": "absent", "movedTo": "directStyle.getCondition" },
+      "modifierVocabulary.compileModifierVocabulary": { "state": "absent", "movedTo": "directStyle.getCondition" },
+      "grammarConfig.prepareConfigRevision": { "state": "absent", "movedTo": "directStyle.queryFor" },
+      "grammarConfig.getConfigRevisionState": { "state": "absent", "movedTo": "directStyle.queryFor" },
       "config.grammarPlatformRank": { "state": "present" },
       "config.isContainerSizeQuery": { "state": "absent", "movedTo": "directStyle.containerCondition" },
       "config.isContainerSizeQueryText": { "state": "absent", "movedTo": "config.isContainerSizeQuery" },
@@ -405,10 +471,241 @@
       "stateModifiers.modifierAliases": { "state": "present" },
       "states.stateVocabulary": { "state": "present" },
       "states.componentStateNames": { "state": "present" },
+      "modifierVocabulary.configRevisionSymbol": { "state": "absent", "movedTo": "directStyle.mediaQueries" },
+      "modifierVocabulary.modifierKindState": { "state": "absent", "movedTo": "directStyle.getCondition" },
+      "modifierVocabulary.modifierKindMedia": { "state": "absent", "movedTo": "directStyle.getCondition" },
+      "modifierVocabulary.modifierKindPlatform": { "state": "absent", "movedTo": "directStyle.getCondition" },
+      "modifierVocabulary.modifierKindTheme": { "state": "absent", "movedTo": "directStyle.getCondition" },
+      "modifierVocabulary.forEachModifierName": { "state": "absent", "movedTo": "directStyle.getCondition" },
+      "modifierVocabulary.isRootThemeName": { "state": "absent", "movedTo": "modifierRegistry.isRootThemeName" },
+      "modifierVocabulary.modifierKindFromCode": { "state": "absent", "movedTo": "directStyle.getCondition" },
+      "modifierVocabulary.compileModifierVocabulary": { "state": "absent", "movedTo": "directStyle.getCondition" },
+      "grammarConfig.prepareConfigRevision": { "state": "absent", "movedTo": "directStyle.queryFor" },
+      "grammarConfig.getConfigRevisionState": { "state": "absent", "movedTo": "directStyle.queryFor" },
       "config.grammarPlatformRank": { "state": "present" },
       "config.isContainerSizeQuery": { "state": "absent", "movedTo": "config.isContainerSizeQueryText" },
       "config.isContainerSizeQueryText": { "state": "present" },
       "config.containerSizeQueryTextPattern": { "state": "present" }
-    }
+    },
+    "phase-iii-c2": {
+  "mergeVariants": {
+    "state": "present"
+  },
+  "mergeFlatValues": {
+    "state": "present"
+  },
+  "valueParser": {
+    "state": "absent",
+    "movedTo": "clauseIdentity"
+  },
+  "programs": {
+    "state": "absent",
+    "movedTo": "mergeFlatValues"
+  },
+  "scanFlatValue": {
+    "state": "present"
+  },
+  "clauseIdentity": {
+    "state": "present"
+  },
+  "directStyle.getCondition": {
+    "state": "present"
+  },
+  "directStyleHandler": {
+    "state": "present"
+  },
+  "directStyle.stateSelectors": {
+    "state": "present"
+  },
+  "directStyle.mediaQueries": {
+    "state": "absent",
+    "movedTo": "grammarConfig.prepareConfigRevision"
+  },
+  "directStyle.clausePrecedenceOrders": {
+    "state": "absent",
+    "movedTo": "grammarConfig.prepareConfigRevision"
+  },
+  "directStyle.queryFor": {
+    "state": "absent",
+    "movedTo": "grammarConfig.prepareConfigRevision"
+  },
+  "directStyle.precedenceOrderFor": {
+    "state": "absent",
+    "movedTo": "grammarConfig.prepareConfigRevision"
+  },
+  "directStyle.stateIsActive": {
+    "state": "present"
+  },
+  "directStyle.platformMatches": {
+    "state": "present"
+  },
+  "directStyle.groupCondition": {
+    "state": "present"
+  },
+  "directStyle.containerCondition": {
+    "state": "present"
+  },
+  "propMapper.resolveVariants": {
+    "state": "present"
+  },
+  "propMapperHandler": {
+    "state": "present"
+  },
+  "propMapper.appendFlatClause": {
+    "state": "present"
+  },
+  "modifierRegistry.canonicalClauseModifier": {
+    "state": "absent",
+    "movedTo": "clauseIdentity.canonicalClauseModifier"
+  },
+  "clauseIdentity.canonicalClauseModifier": {
+    "state": "present"
+  },
+  "clausePrecedence.clauseConditionSetKey": {
+    "state": "absent",
+    "movedTo": "directStyle.getCondition"
+  },
+  "clauseIdentity.clauseConditionSetKey": {
+    "state": "absent",
+    "movedTo": "directStyle.getCondition"
+  },
+  "modifierRegistry.isRootThemeName": {
+    "state": "absent",
+    "movedTo": "modifierVocabulary.isRootThemeName"
+  },
+  "clausePrecedence.createClausePrecedenceOrder": {
+    "state": "present"
+  },
+  "clausePrecedence.getClausePrecedenceKeyFromKinds": {
+    "state": "present"
+  },
+  "clausePrecedence.clauseSubjectClassRepetitions": {
+    "state": "present"
+  },
+  "modifierRegistry.parseGroupModifier": {
+    "state": "absent",
+    "movedTo": "clauseIdentity.parseGroupModifier"
+  },
+  "clauseIdentity.parseGroupModifier": {
+    "state": "present"
+  },
+  "modifierRegistry.parseContainerModifier": {
+    "state": "present"
+  },
+  "modifierRegistry.stateModifierNames": {
+    "state": "absent",
+    "movedTo": "clauseIdentity.stateModifierNames"
+  },
+  "clauseIdentity.stateModifierNames": {
+    "state": "present"
+  },
+  "modifierRegistry.stateModifierSet": {
+    "state": "absent",
+    "movedTo": "clauseIdentity.stateModifierSet"
+  },
+  "clauseIdentity.stateModifierSet": {
+    "state": "present"
+  },
+  "modifierRegistry.groupPrefixLength": {
+    "state": "absent",
+    "movedTo": "clauseIdentity.parseGroupModifier"
+  },
+  "clauseIdentity.groupPrefixLength": {
+    "state": "absent",
+    "movedTo": "clauseIdentity.parseGroupModifier"
+  },
+  "modifierRegistry.isModifierName": {
+    "state": "absent",
+    "movedTo": "clauseIdentity.isModifierName"
+  },
+  "clauseIdentity.isModifierName": {
+    "state": "present"
+  },
+  "clauseIdentity.canonicalConditionSetKey": {
+    "state": "present"
+  },
+  "clausePrecedence.categoryShift": {
+    "state": "present"
+  },
+  "clausePrecedence.depthShift": {
+    "state": "present"
+  },
+  "clausePrecedence.platformShift": {
+    "state": "present"
+  },
+  "clausePrecedence.packClausePrecedence": {
+    "state": "present"
+  },
+  "clausePrecedence.categoryRanks": {
+    "state": "present"
+  },
+  "clausePrecedence.stateRanks": {
+    "state": "present"
+  },
+  "clausePrecedence.withinCategoryRank": {
+    "state": "present"
+  },
+  "clausePrecedence.clauseTargetClassSpecificity": {
+    "state": "present"
+  },
+  "stateModifiers.coreStateModifierNames": {
+    "state": "present"
+  },
+  "stateModifiers.modifierAliases": {
+    "state": "present"
+  },
+  "states.stateVocabulary": {
+    "state": "present"
+  },
+  "states.componentStateNames": {
+    "state": "present"
+  },
+  "modifierVocabulary.configRevisionSymbol": {
+    "state": "present"
+  },
+  "modifierVocabulary.modifierKindState": {
+    "state": "present"
+  },
+  "modifierVocabulary.modifierKindMedia": {
+    "state": "present"
+  },
+  "modifierVocabulary.modifierKindPlatform": {
+    "state": "present"
+  },
+  "modifierVocabulary.modifierKindTheme": {
+    "state": "present"
+  },
+  "modifierVocabulary.forEachModifierName": {
+    "state": "present"
+  },
+  "modifierVocabulary.isRootThemeName": {
+    "state": "present"
+  },
+  "modifierVocabulary.modifierKindFromCode": {
+    "state": "present"
+  },
+  "modifierVocabulary.compileModifierVocabulary": {
+    "state": "present"
+  },
+  "grammarConfig.prepareConfigRevision": {
+    "state": "present"
+  },
+  "grammarConfig.getConfigRevisionState": {
+    "state": "present"
+  },
+  "config.grammarPlatformRank": {
+    "state": "present"
+  },
+  "config.isContainerSizeQuery": {
+    "state": "absent",
+    "movedTo": "config.isContainerSizeQueryText"
+  },
+  "config.isContainerSizeQueryText": {
+    "state": "present"
+  },
+  "config.containerSizeQueryTextPattern": {
+    "state": "present"
+  }
+}
   }
 }
