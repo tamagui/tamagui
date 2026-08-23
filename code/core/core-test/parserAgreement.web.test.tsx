@@ -70,12 +70,24 @@ beforeAll(() => {
 function activation(modifiers: readonly string[]) {
   const componentState: Record<string, any> = {}
   const mediaState: Record<string, boolean> = {}
+  const groupContext: Record<string, any> = {}
   for (const modifier of modifiers) {
     if (modifier === 'sm' || modifier === 'md') mediaState[modifier] = true
-    else if (modifier === 'focus-visible') componentState.focusVisible = true
+    else if (modifier.startsWith('group-')) {
+      const slash = modifier.indexOf('/')
+      const state = modifier.slice('group-'.length, slash === -1 ? undefined : slash)
+      groupContext[slash === -1 ? 'true' : modifier.slice(slash + 1)] = {
+        subscribe: () => () => {},
+        state: {
+          pseudo: {
+            [state === 'active' ? 'press' : state]: true,
+          },
+        },
+      }
+    } else if (modifier === 'focus-visible') componentState.focusVisible = true
     else componentState[modifier] = true
   }
-  return { componentState, mediaState }
+  return { componentState, groupContext, mediaState }
 }
 
 /** what `directStyle`'s scanner handed to the style object */
@@ -273,6 +285,21 @@ describe('agreement', () => {
   test('an aliased lifecycle modifier puts the component on the enter path', () => {
     expect(hasEnterStyle('1 starting:0', 'opacity')).toBe(true)
   })
+
+  test.each([
+    ['none active:active:red', ['press']],
+    ['none sm:hover:hover:red', ['hover', 'sm']],
+    ['none hover:sm:red', ['hover', 'sm']],
+    ['none group-active/card:group-active/card:red', ['group-press/card']],
+  ])(
+    'aliases, duplicates, reordered sets, and group spellings agree for %s',
+    (source, active) => {
+      const parsed = parseValue(source, registry)
+      expect(parsed.ok).toBe(true)
+      expect(propValue(source, active)).toBe('red')
+      expect(variantValue(source, active)).toBe('red')
+    }
+  )
 })
 
 describe('comments', () => {

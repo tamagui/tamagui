@@ -10,6 +10,7 @@
     "src/borderFamily.ts",
     "src/candidate.ts",
     "src/candidateTarget.ts",
+    "src/clauseIdentity.ts",
     "src/clausePrecedence.ts",
     "src/clauseCapability.ts",
     "src/clauseSources.ts",

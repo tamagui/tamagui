@@ -7,17 +7,17 @@
 // parser only splits: `base` and every `payload` come back as trimmed raw CSS
 // component-value sequences with no interpretation and no token resolution.
 //
-// The split itself is `scanFlatValue`, the one lexer every implementation of
-// this grammar drives; this file is what that split MEANS, which is the part
-// the registry decides. Read `scanFlatValue.ts` for why a top-level colon,
-// brace or semicolon is structural and everything inside a string or a paren is
-// not.
+// `reduceFlatValueIdentity` drives the one `scanFlatValue` lexer and owns clause
+// spans, alias folding, and slot identity. This file adds the configured
+// modifier registry and parser diagnostics. Read `scanFlatValue.ts` for why a
+// top-level colon, brace or semicolon is structural and everything inside a
+// string or a paren is not.
 
 import {
-  scanFlatValue,
-  type FlatScanErrorCode,
-  type FlatValueHandler,
-} from './scanFlatValue'
+  reduceFlatValueIdentity,
+  type ClauseIdentityErrorCode,
+  type ClauseIdentityHandler,
+} from './clauseIdentity'
 import type {
   ModifierRegistryView,
   ParsedClause,
@@ -25,8 +25,6 @@ import type {
   ValueParseErrorCode,
   ValueParseResult,
 } from './valueTypes'
-
-const CHAR_COLON = 58
 
 const noClauses: readonly ParsedClause[] = Object.freeze([])
 
@@ -49,7 +47,6 @@ type ValueParseContext = {
   base: string | null
   clauses: ParsedClause[] | null
   pending: string[] | null
-  segmentStart: number
 }
 
 /**
@@ -78,8 +75,9 @@ export function parseValue(
 }
 
 /**
- * Parses through the runtime scanner while also retaining source boundaries for
- * editor tooling. The ordinary runtime path does not allocate these spans.
+ * Parses through the shared identity reduction while also retaining source
+ * boundaries for editor tooling. The ordinary runtime path does not allocate
+ * these spans.
  */
 export function parseValueWithSourceSpans(
   input: string,
@@ -92,7 +90,11 @@ export function parseValueWithSourceSpans(
   }
 }
 
-function scanErrorMessage(code: FlatScanErrorCode, input: string, index: number): string {
+function scanErrorMessage(
+  code: Exclude<ClauseIdentityErrorCode, 'empty-modifier' | 'empty-payload'>,
+  input: string,
+  index: number
+): string {
   if (code === 'invalid-character') {
     return `"${input[index]}" cannot appear in a value: it would end the declaration or rule`
   }
@@ -120,64 +122,54 @@ function addParseError(
   )
 }
 
-const valueParserHandler: FlatValueHandler<ValueParseContext> = {
+const valueParserHandler: ClauseIdentityHandler<ValueParseContext> = {
   segment(ctx, start, end, isBase) {
     ctx.sourceSpans?.push({ kind: isBase ? 'base' : 'payload', start, end })
     if (isBase) {
       ctx.base = start < end ? ctx.input.slice(start, end) : null
-      return
     }
-    if (start >= end) {
+  },
+
+  chain(ctx) {
+    ctx.pending = []
+  },
+
+  modifier(ctx, start, end) {
+    const name = ctx.input.slice(start, end)
+    ctx.sourceSpans?.push({ kind: 'modifier', start, end })
+    if (ctx.registry.get(name) === undefined) {
       addParseError(
         ctx,
-        'empty-payload',
-        ctx.segmentStart,
-        `the "${ctx.pending!.join(':')}:" clause has no value`
+        'unregistered-modifier',
+        start,
+        `"${name}" is not a registered modifier`,
+        name
       )
-      return
     }
+    ctx.pending!.push(name)
+  },
+
+  clause(ctx, _start, _chainEnd, start, end) {
     ;(ctx.clauses ||= []).push({
       modifiers: ctx.pending!,
       payload: ctx.input.slice(start, end),
     })
   },
 
-  // a clause word ended: everything before its last top-level colon is the
-  // modifier chain, everything after it begins the payload
-  chain(ctx, chainStart, chainEnd) {
-    const modifiers: string[] = []
-    let nameStart = chainStart
-    for (let index = chainStart; index <= chainEnd; index++) {
-      if (index !== chainEnd && ctx.input.charCodeAt(index) !== CHAR_COLON) continue
-      if (index === nameStart) {
-        addParseError(
-          ctx,
-          'empty-modifier',
-          index,
-          'a modifier chain has an empty segment'
-        )
-      } else {
-        const name = ctx.input.slice(nameStart, index)
-        ctx.sourceSpans?.push({ kind: 'modifier', start: nameStart, end: index })
-        if (ctx.registry.get(name) === undefined) {
-          addParseError(
-            ctx,
-            'unregistered-modifier',
-            nameStart,
-            `"${name}" is not a registered modifier`,
-            name
-          )
-        }
-        modifiers.push(name)
-      }
-      nameStart = index + 1
-    }
-    ctx.pending = modifiers
-    ctx.segmentStart = chainEnd + 1
-    return true
-  },
-
   error(ctx, code, index) {
+    if (code === 'empty-modifier') {
+      addParseError(ctx, code, index, 'a modifier chain has an empty segment')
+      return
+    }
+    if (code === 'empty-payload') {
+      addParseError(
+        ctx,
+        code,
+        index,
+        `the "${ctx.pending!.join(':')}:" clause has no value`
+      )
+      return
+    }
     addParseError(ctx, code, index, scanErrorMessage(code, ctx.input, index))
   },
 
@@ -203,10 +195,9 @@ function parseValueInternal(
     base: null,
     clauses: null,
     pending: null,
-    segmentStart: 0,
   }
 
-  scanFlatValue(input, valueParserHandler, ctx)
+  reduceFlatValueIdentity(input, valueParserHandler, ctx)
 
   if (ctx.errors !== null) return { ok: false, errors: ctx.errors }
   return { ok: true, value: { base: ctx.base, clauses: ctx.clauses ?? noClauses } }

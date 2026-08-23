@@ -50,4 +50,18 @@ describe('alias spellings are one hash identity', () => {
       )
     )
   })
+
+  test('reordered and duplicate modifiers share their clause identity', () => {
+    const value = (modifiers: string[]) => ({
+      base: null,
+      clauses: [{ modifiers, payload: 'blue' }],
+    })
+    const canonical = programClassName('backgroundColor', value(['dark', 'hover']), 'r1')
+    expect(programClassName('backgroundColor', value(['hover', 'dark']), 'r1')).toBe(
+      canonical
+    )
+    expect(
+      programClassName('backgroundColor', value(['dark', 'hover', 'hover']), 'r1')
+    ).toBe(canonical)
+  })
 })

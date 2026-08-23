@@ -19,7 +19,8 @@
 
 import { legacyPartComposite, programEligibility } from './programEligibility'
 import { defaultStateSelectors } from './lowerProgram'
-import { parseContainerModifier, parseGroupModifier } from './modifierRegistry'
+import { parseGroupModifier } from './clauseIdentity'
+import { parseContainerModifier } from './modifierRegistry'
 import { nativeGroupSourceableStates, nativeSourceableStates } from './clauseSources'
 import type { ModifierKind, ModifierRegistryView } from './valueTypes'
 

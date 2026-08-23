@@ -10,7 +10,7 @@
 // config object identity, or insertion history. The config revision is the
 // caller's opaque stamp for "the resolved config that produced these payloads".
 
-import { canonicalClauseModifier } from './clausePrecedence'
+import { clauseConditionSetKey } from './clauseIdentity'
 import type { ParsedValue } from './valueTypes'
 
 // The hash is the algorithm from @tamagui/simple-hash
@@ -80,12 +80,7 @@ export function normalizeProgramKey(
   let key = `${configRevision.length}:${configRevision}${property.length}:${property}`
   key += value.base === null ? 'n' : `b${value.base.length}:${value.base}`
   for (const clause of value.clauses) {
-    // condition sets are conjunctions: `dark:hover:` and `hover:dark:` are one
-    // clause, so the hash sorts a copy to agree with the merge rule and dedup;
-    // alias spellings canonicalize first so `active:` and `press:` are one name
-    const canonical = clause.modifiers.map(canonicalClauseModifier)
-    const modifiers =
-      canonical.length > 1 ? canonical.sort().join(',') : canonical.join(',')
+    const modifiers = clauseConditionSetKey(clause.modifiers)
     key += `c${modifiers.length}:${modifiers}${clause.payload.length}:${clause.payload}`
   }
   return key

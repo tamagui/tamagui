@@ -10,9 +10,13 @@
 // See plans/dom-tailwind-flat-values.md — "Conditions".
 
 import type { GrammarConfigView } from './candidate'
+import {
+  canonicalClauseModifier,
+  isModifierName,
+  parseGroupModifier,
+  stateModifierNames,
+} from './clauseIdentity'
 import { grammarPlatformNames } from './config'
-import { coreStateModifierNames, modifierAliases } from './stateModifiers'
-import { componentStateNames } from './states'
 import {
   grammarMaxNonPlatformDepth,
   type ModifierKind,
@@ -43,69 +47,12 @@ export interface CreateModifierRegistryOptions {
 }
 
 /**
- * Every built-in interaction/state modifier spelling: the modifiers of the core
- * pseudo-style props, their aliases, and the component-tier state words the
- * behavior packages expose through DOM attributes.
- */
-export const stateModifierNames: readonly string[] = Object.freeze([
-  ...coreStateModifierNames,
-  ...Object.keys(modifierAliases),
-  ...componentStateNames,
-])
-
-const stateModifierSet: ReadonlySet<string> = new Set(stateModifierNames)
-
-const groupPrefixLength = 'group-'.length
-
-/**
  * Theme conditions name a root theme. Nested themes still inherit from that
  * root, so `dark:` applies within `dark_blue`, but `dark_blue:` is not a
  * condition of its own.
  */
 export function isRootThemeName(name: string): boolean {
   return name.length > 0 && !name.includes('_')
-}
-
-export interface GroupModifier {
-  /** the state the parent group must be in, always a built-in state modifier */
-  state: string
-  /** the group name, or null for the nearest unnamed group */
-  group: string | null
-}
-
-/** Canonical spelling used by slot identity, precedence, hashing, and matching. */
-export function canonicalClauseModifier(name: string): string {
-  const direct = modifierAliases[name]
-  if (direct) return direct
-  if (name.startsWith('group-')) {
-    const group = parseGroupModifier(name)
-    if (group) {
-      const state = modifierAliases[group.state] ?? group.state
-      if (state !== group.state) {
-        return group.group === null ? `group-${state}` : `group-${state}/${group.group}`
-      }
-    }
-  }
-  return name
-}
-
-/**
- * Parameterized group modifiers use Tailwind's spelling: `group-hover` for the
- * nearest unnamed group and `group-hover/card` for a named one. The state part
- * must be a built-in state modifier; the name part is an identifier. Returns
- * null for anything else, which is what makes the spelling a single source of
- * truth for both registration and lowering.
- */
-export function parseGroupModifier(name: string): GroupModifier | null {
-  if (!name.startsWith('group-')) return null
-  const slash = name.indexOf('/')
-  if (slash === -1) {
-    const state = name.slice(groupPrefixLength)
-    return stateModifierSet.has(state) ? { state, group: null } : null
-  }
-  if (!isModifierName(name, slash + 1, name.length)) return null
-  const state = name.slice(groupPrefixLength, slash)
-  return stateModifierSet.has(state) ? { state, group: name.slice(slash + 1) } : null
 }
 
 export interface ContainerModifier {
@@ -142,24 +89,6 @@ export function parseContainerModifier(name: string): ContainerModifier | null {
     return null
   }
   return { size: name.slice(1, slash), container: name.slice(slash + 1) }
-}
-
-/** the shared identifier rule for the parameterized parts of a modifier */
-function isModifierName(text: string, start: number, end: number): boolean {
-  if (start >= end) return false
-  for (let index = start; index < end; index++) {
-    const code = text.charCodeAt(index)
-    if (
-      !(code >= 97 && code <= 122) && // a-z
-      !(code >= 65 && code <= 90) && // A-Z
-      !(code >= 48 && code <= 57) && // 0-9
-      code !== 45 && // -
-      code !== 95 // _
-    ) {
-      return false
-    }
-  }
-  return true
 }
 
 function forEachName(source: Names | undefined, visit: (name: string) => void): void {

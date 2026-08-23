@@ -5169,3 +5169,85 @@ Validation at this checkpoint:
 - root dependency, unused, Tamagui, reference, path, DOM type, and LSP pin
   checks passed;
 - `git diff --check` passed.
+
+## 50. Engine consolidation Phase III-b: shared clause identity (2026-08-23)
+
+The clause grammar now has one config-independent identity reduction.
+`reduceFlatValueIdentity` drives `scanFlatValue` and owns clause spans, alias
+folding, group spelling canonicalization, and unordered distinct-modifier slot
+identity. `parseValue` consumes that reduction and adds configured registry
+classification and tooling diagnostics. Program hashing, precedence, candidate
+normalization, capability checks, and group parsing use the same canonical
+owner.
+
+The definition-time merge sink no longer imports `parseValue` or
+`mergeProgramValues`. It reduces each side once, keeps authored clause order,
+removes earlier clauses whose canonical slot is restated later, and preserves
+the later spelling. Its behavior remains config-independent, which is required
+because `styled()` inheritance can run before config installation.
+
+The new reduction wrapper allocates its context and canonical array only in
+tooling and styled definition-time callers. Render-time `directStyle`,
+`propMapper`, and lifecycle discovery still drive `scanFlatValue` through their
+existing stable/local contexts. This checkpoint adds no render-path Proxy,
+per-pass object, extra authored-data loop, or module mutable scratch.
+
+### Semantic controls
+
+The exact `cd2353824f` implementation was built from the detached clean source
+tree at `/tmp/p28910-parser-cluster-clean.TBMFLe/tree` and compared with the
+Phase III-b build:
+
+- 25,000 deterministic `parseValueWithSourceSpans` inputs matched exactly;
+- 10,000 structured canonical merge pairs matched exactly;
+- an 8,191-character parser golden and an 829-character merge golden matched;
+- whitespace after a clause colon and a comment before its payload retain the
+  old normalized boundary exactly;
+- new pins cover alias-equivalent slots, duplicate and reordered modifiers,
+  named and unnamed group aliases, malformed earlier and later values, authored
+  order, exact colon variant keys, and styled inheritance.
+
+### Size and cluster receipts
+
+The fresh frozen-size artifact is
+`/tmp/p29049-phase3b-final-size.pI5Anj`.
+
+| arm | whole gzip | CORE |
+| --- | ---: | ---: |
+| Phase III-a | 103,969 | 39,857 |
+| Phase III-b | 104,018 | 39,905 |
+| movement | +49 | +48 |
+
+The +48 CORE is declared structural debt. III-d owns its recovery, unrelated
+byte reductions cannot pay it, and cumulative unrecovered debt above +300
+before III-d is a hard stop.
+
+The corrected closed parser-cluster ruler measures a real reduction that the
+first ruler and row marginals both hid:
+
+| arm | cluster whole gzip | parser-cluster union |
+| --- | ---: | ---: |
+| `cd2353824f` | 104,040 | 4,239 |
+| Phase III-b | 103,753 | 3,950 |
+| movement | -287 | -289 |
+
+The rejected five-source ruler reported only -8, while nominal marginal rows
+suggested +15. The corrected union and the whole cluster fixture move together,
+so the -289 is bundle reduction rather than responsibility escaping to a new
+source. Phase III-b remains 2,950 above the <=1,000 target and 3,150 above the
+800 target.
+
+Validation at this checkpoint:
+
+- style-grammar: 28 files, 450 tests, package build, and generated Rust grammar
+  check passed;
+- web merge, conditional-variant, parser-agreement, flat-value, and SSR suites:
+  5 files, 95 tests;
+- native flat-value suite: 1 file, 58 tests;
+- full root build: 171 of 171 tasks successful;
+- root lint passed with the same five unrelated warnings;
+- root dependency, unused, Tamagui, reference, path, DOM type, and LSP pin
+  checks passed;
+- parser ruler: 8 tests and 36 expectations, including both selector
+  granularities and every closure failure mode;
+- `git diff --check` passed.

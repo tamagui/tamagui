@@ -21,33 +21,11 @@ export interface CreateModifierRegistryOptions {
 	containerSizeNames?: Names;
 }
 /**
-* Every built-in interaction/state modifier spelling: the modifiers of the core
-* pseudo-style props, their aliases, and the component-tier state words the
-* behavior packages expose through DOM attributes.
-*/
-export declare const stateModifierNames: readonly string[];
-/**
 * Theme conditions name a root theme. Nested themes still inherit from that
 * root, so `dark:` applies within `dark_blue`, but `dark_blue:` is not a
 * condition of its own.
 */
 export declare function isRootThemeName(name: string): boolean;
-export interface GroupModifier {
-	/** the state the parent group must be in, always a built-in state modifier */
-	state: string;
-	/** the group name, or null for the nearest unnamed group */
-	group: string | null;
-}
-/** Canonical spelling used by slot identity, precedence, hashing, and matching. */
-export declare function canonicalClauseModifier(name: string): string;
-/**
-* Parameterized group modifiers use Tailwind's spelling: `group-hover` for the
-* nearest unnamed group and `group-hover/card` for a named one. The state part
-* must be a built-in state modifier; the name part is an identifier. Returns
-* null for anything else, which is what makes the spelling a single source of
-* truth for both registration and lowering.
-*/
-export declare function parseGroupModifier(name: string): GroupModifier | null;
 export interface ContainerModifier {
 	/** the size condition; the registry only accepts a registered media name here */
 	size: string;

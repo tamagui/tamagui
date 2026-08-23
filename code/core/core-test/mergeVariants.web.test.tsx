@@ -355,4 +355,43 @@ describe('mergeVariants', () => {
       },
     })
   })
+
+  test('merges clause slots by canonical identity without a config', () => {
+    const parentVariants = {
+      tone: {
+        active: {
+          color:
+            'black active:red hover:dark:orange group-active/card:purple disabled:gray',
+          opacity: '1 hover:',
+        },
+      },
+    }
+    const ourVariants = {
+      tone: {
+        active: {
+          color: 'white press:blue dark:hover:yellow group-press/card:pink focus:green',
+          opacity: '0.5 press:0.8',
+        },
+      },
+    }
+
+    expect(mergeVariants(parentVariants, ourVariants)).toEqual({
+      tone: {
+        active: {
+          color:
+            'white disabled:gray press:blue dark:hover:yellow group-press/card:pink focus:green',
+          opacity: '0.5 press:0.8',
+        },
+      },
+    })
+  })
+
+  test('keeps a malformed child value exactly as authored', () => {
+    expect(
+      mergeVariants(
+        { tone: { active: { color: 'black hover:red' } } },
+        { tone: { active: { color: 'white press:' } } }
+      )
+    ).toEqual({ tone: { active: { color: 'white press:' } } })
+  })
 })

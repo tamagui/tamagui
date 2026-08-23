@@ -28,8 +28,9 @@ export interface ValueParseWithSourceSpans {
 */
 export declare function parseValue(input: string, registry: ModifierRegistryView): ValueParseResult;
 /**
-* Parses through the runtime scanner while also retaining source boundaries for
-* editor tooling. The ordinary runtime path does not allocate these spans.
+* Parses through the shared identity reduction while also retaining source
+* boundaries for editor tooling. The ordinary runtime path does not allocate
+* these spans.
 */
 export declare function parseValueWithSourceSpans(input: string, registry: ModifierRegistryView): ValueParseWithSourceSpans;
 

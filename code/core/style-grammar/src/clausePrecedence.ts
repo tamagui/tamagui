@@ -1,11 +1,12 @@
 import { grammarPlatformRank } from './config'
 import {
   canonicalClauseModifier,
-  parseContainerModifier,
+  clauseConditionSetKey,
   parseGroupModifier,
-} from './modifierRegistry'
+} from './clauseIdentity'
+import { parseContainerModifier } from './modifierRegistry'
 
-export { canonicalClauseModifier } from './modifierRegistry'
+export { canonicalClauseModifier, clauseConditionSetKey } from './clauseIdentity'
 import {
   grammarMaxNonPlatformDepth,
   type ModifierKind,
@@ -76,13 +77,9 @@ const stateRanks: Readonly<Record<string, number>> = Object.freeze({
   focus: 2,
   'focus-visible': 3,
   press: 4,
-  active: 4,
-  pressed: 4,
   disabled: 5,
   enter: 6,
-  starting: 6,
   exit: 7,
-  ending: 7,
   open: 8,
   checked: 9,
   highlighted: 10,
@@ -124,14 +121,6 @@ function withinCategoryRank(
     return group ? (stateRanks[group.state] ?? 0) : 0
   }
   return stateRanks[modifier] ?? 0
-}
-
-/** Order-insensitive set key used by every clause merge/emission slot. */
-export function clauseConditionSetKey(modifiers: readonly string[]): string {
-  if (modifiers.length === 0) return ''
-  if (modifiers.length === 1) return canonicalClauseModifier(modifiers[0])
-  const unique = new Set(modifiers.map(canonicalClauseModifier))
-  return [...unique].sort().join(':')
 }
 
 export function getClausePrecedenceKeyFromKinds(

@@ -1,6 +1,5 @@
-import { mergeProgramValues } from './programs'
-import { parseValue } from './valueParser'
-import type { ModifierRegistryView, ParsedValue } from './valueTypes'
+import { reduceFlatValueIdentity, type ClauseIdentityHandler } from './clauseIdentity'
+import type { ParsedValue } from './valueTypes'
 
 /** Prints one parsed value without changing payloads, modifier order, or clause order. */
 export function formatParsedValue(value: ParsedValue): string {
@@ -12,13 +11,50 @@ export function formatParsedValue(value: ParsedValue): string {
   return parts.join(' ')
 }
 
-// merging only needs the parser to split a base from its clauses, and the
-// parser consults the registry for exactly one thing: whether a modifier is
-// registered at all. Nothing about the split depends on which kind comes back.
-// An accepting view therefore parses identically to a configured one, and it
-// keeps values whose modifiers this site cannot resolve (for example, a
-// config's media keys) mergeable instead of quietly dropping their clauses.
-const acceptAnyModifier: ModifierRegistryView = { get: () => 'state' }
+type ClauseSlice = {
+  value: string
+  slot: string
+}
+
+type MergeReduction = {
+  source: string
+  baseStart: number
+  baseEnd: number
+  clauses: ClauseSlice[] | null
+  malformed: boolean
+}
+
+const mergeIdentityHandler: ClauseIdentityHandler<MergeReduction> = {
+  segment(ctx, start, end, isBase) {
+    if (isBase) {
+      ctx.baseStart = start
+      ctx.baseEnd = end
+    }
+  },
+
+  clause(ctx, start, chainEnd, payloadStart, end, slot) {
+    ;(ctx.clauses ||= []).push({
+      value: `${ctx.source.slice(start, chainEnd)}:${ctx.source.slice(payloadStart, end)}`,
+      slot,
+    })
+  },
+
+  error(ctx) {
+    ctx.malformed = true
+  },
+}
+
+function reduceForMerge(source: string): MergeReduction {
+  const reduction: MergeReduction = {
+    source,
+    baseStart: 0,
+    baseEnd: 0,
+    clauses: null,
+    malformed: false,
+  }
+  reduceFlatValueIdentity(source, mergeIdentityHandler, reduction)
+  return reduction
+}
 
 /**
  * Combine two flat values for the same property, later winning.
@@ -30,17 +66,45 @@ const acceptAnyModifier: ModifierRegistryView = { get: () => 'state' }
  */
 export function mergeFlatValues(earlier: unknown, later: unknown): unknown {
   if (typeof earlier !== 'string' || typeof later !== 'string') return later
-  // a clause needs a colon; skipping the parse here keeps ordinary props off
-  // the grammar path entirely
+  // a clause needs a colon; skipping identity reduction here keeps ordinary
+  // props off the grammar path entirely
   if (!earlier.includes(':') && !later.includes(':')) return later
 
-  const earlierParsed = parseValue(earlier, acceptAnyModifier)
-  if (!earlierParsed.ok) return later
-  const laterParsed = parseValue(later, acceptAnyModifier)
-  if (!laterParsed.ok) return later
-  if (!earlierParsed.value.clauses.length && !laterParsed.value.clauses.length) {
-    return later
+  const earlierReduction = reduceForMerge(earlier)
+  if (earlierReduction.malformed) return later
+  const laterReduction = reduceForMerge(later)
+  if (laterReduction.malformed) return later
+
+  const earlierClauses = earlierReduction.clauses
+  const laterClauses = laterReduction.clauses
+  if (!earlierClauses && !laterClauses) return later
+
+  const parts: string[] = []
+  const base =
+    laterReduction.baseStart < laterReduction.baseEnd ? laterReduction : earlierReduction
+  if (base.baseStart < base.baseEnd) {
+    parts.push(base.source.slice(base.baseStart, base.baseEnd))
   }
 
-  return formatParsedValue(mergeProgramValues(earlierParsed.value, laterParsed.value))
+  if (earlierClauses) {
+    if (laterClauses) {
+      const restated = new Set<string>()
+      for (const clause of laterClauses) restated.add(clause.slot)
+      for (const clause of earlierClauses) {
+        if (!restated.has(clause.slot)) {
+          parts.push(clause.value)
+        }
+      }
+    } else {
+      for (const clause of earlierClauses) {
+        parts.push(clause.value)
+      }
+    }
+  }
+  if (laterClauses) {
+    for (const clause of laterClauses) {
+      parts.push(clause.value)
+    }
+  }
+  return parts.join(' ')
 }

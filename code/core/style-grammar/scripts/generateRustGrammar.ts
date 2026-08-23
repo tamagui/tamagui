@@ -19,11 +19,10 @@ import { dirname, join } from 'node:path'
 import { grammarPlatformNames } from '../src/config'
 import {
   canonicalClauseModifier,
-  createModifierRegistry,
-  parseContainerModifier,
   parseGroupModifier,
   stateModifierNames,
-} from '../src/modifierRegistry'
+} from '../src/clauseIdentity'
+import { createModifierRegistry, parseContainerModifier } from '../src/modifierRegistry'
 import { coreStateModifierNames, modifierAliases } from '../src/stateModifiers'
 import { componentStateNames } from '../src/states'
 import { parseValue } from '../src/valueParser'

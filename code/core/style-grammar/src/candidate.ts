@@ -1,7 +1,6 @@
 import {
   grammarEntries,
   fontWeightNames,
-  modifierAliases,
   prefixToEntries,
   radiusCornerProps,
   standaloneValueProps,
@@ -11,6 +10,7 @@ import {
   type GrammarEntry,
   type TokenCategory,
 } from './registry'
+import { canonicalClauseModifier } from './clauseIdentity'
 import { createModifierRegistry } from './modifierRegistry'
 import { splitColorOpacitySuffix } from './resolvePayload'
 import { getSafeAreaEdge } from './safeAreaVariables'
@@ -151,8 +151,7 @@ function getModifierRegistry(config: GrammarConfigView): ModifierRegistryView {
 }
 
 function modifierKind(modifier: string, config: GrammarConfigView): ModifierKind | null {
-  const canonical = modifierAliases[modifier] || modifier
-  return getModifierRegistry(config).get(canonical) || null
+  return getModifierRegistry(config).get(canonicalClauseModifier(modifier)) || null
 }
 
 function modifiersAreKnown(
@@ -428,9 +427,7 @@ export function parseCandidate(
   if (!split || !modifiersAreKnown(split.modifiers, config)) {
     return null
   }
-  const modifiers = split.modifiers.map(
-    (modifier) => modifierAliases[modifier] || modifier
-  )
+  const modifiers = split.modifiers.map(canonicalClauseModifier)
 
   const negative = split.base[0] === '-'
   const core = negative ? split.base.slice(1) : split.base
@@ -551,9 +548,7 @@ export function formatCandidate(
   if (!entry) return null
   if (valueKind === 'arbitrary' && value === '') return null
   if (!modifiersAreKnown(modifiers, config || {})) return null
-  const normalizedModifiers = modifiers.map(
-    (modifier) => modifierAliases[modifier] || modifier
-  )
+  const normalizedModifiers = modifiers.map(canonicalClauseModifier)
 
   if (valueKind === 'enum') {
     const whole = standaloneValueProps[prop]?.[value]
