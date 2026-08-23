@@ -5,21 +5,22 @@ import { safeLaunchApp } from './utils/detox'
 import { formatRGB, getDominantColor, isBlueish } from './utils/colors'
 import { remountDirectUseCase } from './utils/navigation'
 
-async function height() {
+async function heightInLayoutUnits() {
   const attributes: any = await element(by.id('native-mixed-driver-node')).getAttributes()
-  return attributes.frame.height as number
+  const frame = attributes.frame as { width: number; height: number }
+  return frame.height / (frame.width / 120)
 }
 
 async function waitForHeight(target: number) {
   const startedAt = Date.now()
-  let current = await height()
+  let current = await heightInLayoutUnits()
   while (Math.abs(current - target) > 1) {
     assert.ok(
       Date.now() - startedAt < 4000,
       `timed out waiting for height ${target}, last height ${current}`
     )
     await new Promise((resolve) => setTimeout(resolve, 50))
-    current = await height()
+    current = await heightInLayoutUnits()
   }
 }
 
@@ -39,7 +40,7 @@ describe('animations-react-native mixed driver node', () => {
   })
 
   it('animates height and opacity to both targets without a Fabric driver error', async () => {
-    assert.ok(Math.abs((await height()) - 40) <= 1)
+    assert.ok(Math.abs((await heightInLayoutUnits()) - 40) <= 1)
     const collapsedColor = getDominantColor(
       await element(by.id('native-mixed-driver-node')).takeScreenshot(
         'native-mixed-driver-collapsed'
