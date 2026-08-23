@@ -108,6 +108,13 @@ module.exports = {
         },
       },
       {
+        test: /\.js$/,
+        include: /node_modules\/react-native-web/,
+        resolve: {
+          fullySpecified: false,
+        },
+      },
+      {
         oneOf: [
           {
             test: /\.(ts|js)x?$/,

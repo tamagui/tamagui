@@ -1,6 +1,5 @@
 import { useState } from 'react'
-import { styled, Text, Theme, View } from 'tamagui'
-import { ThemeUpdate } from 'tamagui/theme-update'
+import { styled, Text, Theme, ThemeUpdate, View } from 'tamagui'
 import SheetIsland from '../.tamagui/zero/SheetIsland.loader'
 
 // app-local styled definition in a module with another live export: the styled

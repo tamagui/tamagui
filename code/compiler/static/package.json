@@ -68,7 +68,7 @@
     "find-root": "^1.1.0",
     "fs-extra": "^11.2.0",
     "js-yaml": "^4.1.0",
-    "react-native-web": "^0.21.0"
+    "react-native-web": "~0.21.0"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
@@ -77,7 +77,7 @@
     "@types/webpack": "^4.41.26",
     "esbuild-loader": "^4.2.2",
     "null-loader": "^4.0.1",
-    "react": ">=19",
+    "react": "19.2.3",
     "react-native": "0.86.2",
     "typescript": "~6.0.3"
   },

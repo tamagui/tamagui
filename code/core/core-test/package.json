@@ -26,7 +26,7 @@
     "@testing-library/react": "^16.1.0",
     "@testing-library/react-native": "^12.9.0",
     "csstype": "^3.0.10",
-    "react": ">=19",
+    "react": "19.2.3",
     "typescript": "~6.0.3",
     "vitest": "4.0.4"
   },

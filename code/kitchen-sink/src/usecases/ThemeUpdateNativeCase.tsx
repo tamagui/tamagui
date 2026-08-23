@@ -1,7 +1,6 @@
 import React from 'react'
 import { Appearance } from 'react-native'
-import { Text, useTheme, useThemeName, View, YStack } from 'tamagui'
-import { ThemeUpdate } from 'tamagui/theme-update'
+import { Text, ThemeUpdate, useTheme, useThemeName, View, YStack } from 'tamagui'
 
 // this subtree follows the OS scheme because no named <Theme> wraps it. that is
 // required to exercise the DynamicColorIOS fast path (inverses must be 0).

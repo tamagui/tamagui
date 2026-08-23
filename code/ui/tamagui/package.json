@@ -43,15 +43,6 @@
       "require": "./dist/cjs/index.cjs",
       "default": "./dist/esm/index.mjs"
     },
-    "./theme-update": {
-      "types": "./types/theme-update.d.ts",
-      "react-native": "./dist/esm/theme-update.native.js",
-      "browser": "./dist/esm/theme-update.mjs",
-      "module": "./dist/esm/theme-update.mjs",
-      "import": "./dist/esm/theme-update.mjs",
-      "require": "./dist/cjs/theme-update.cjs",
-      "default": "./dist/esm/theme-update.mjs"
-    },
     "./dom": {
       "react-native": {
         "types": "./types/dom.native.d.ts",
@@ -336,6 +327,7 @@
     "@tamagui/fake-react-native": "workspace:*",
     "@tamagui/field": "workspace:*",
     "@tamagui/focusable": "workspace:*",
+    "@tamagui/font-size": "workspace:*",
     "@tamagui/form": "workspace:*",
     "@tamagui/get-font-sized": "workspace:*",
     "@tamagui/get-token": "workspace:*",
@@ -376,14 +368,13 @@
     "@tamagui/use-force-update": "workspace:*",
     "@tamagui/use-window-dimensions": "workspace:*",
     "@tamagui/visually-hidden": "workspace:*",
-    "@tamagui/font-size": "workspace:*",
     "@tamagui/z-index-stack": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "react": ">=19",
+    "react": "19.2.3",
     "react-native": "0.86.2",
-    "react-native-web": "^0.21.0"
+    "react-native-web": "~0.21.0"
   },
   "peerDependencies": {
     "react": ">=19",

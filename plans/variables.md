@@ -5,17 +5,16 @@ style redefinition of theme values at any tree node, cross-platform. Companion
 to `plans/v3-evolution.md` (locked contracts) and the consistency-layer finding
 in `plans/base-ui-comparison.md` §1. Status: spec, pre-review, no code yet.
 
-## 2026-08-16: the surface moved onto `<Theme>`
+## 2026-08-22: the surface split between `<Theme>` and `<ThemeUpdate>`
 
 Everything below still describes the mechanism accurately: CSS emission,
 native merge, reference resolution, cycle handling, SSR, iOS pairs. Only the
 authoring surface changed, and only in these two ways:
 
-1. **No `<Variables>` component and no `values` object.** Theme values are
-   props on `<Theme>` itself. `<Theme name="dark">` switches themes and
-   `<Theme background="red">` patches values; both together are one node and
-   one span. `<Variables>` remains as a deprecated front door on the same
-   inline layer.
+1. **No `<Variables>` component and no `values` object.** `<Theme name="dark">`
+   switches themes and `<ThemeUpdate background="red">` patches values. Using
+   both produces two authored nodes and two `display: contents` spans.
+   `<Variables>` remains as a deprecated front door on the inline layer.
 2. **No `themes` map.** Theme targeting is the value grammar's own theme
    modifier, so `themes={{ dark: { x } }}` is `x="… dark:…"`. Platform
    modifiers work too. Modifiers that describe an element rather than a
@@ -25,12 +24,12 @@ authoring surface changed, and only in these two ways:
 // was
 <Variables values={{ 'background-hover': 'blue4' }} themes={{ dark: { 'background-hover': 'blue2' } }}>
 // is
-<Theme background-hover="blue4 dark:blue2">
+<ThemeUpdate background-hover="blue4 dark:blue2">
 ```
 
 Three things this settled that the spec below did not anticipate:
 
-- **Reserved prop names.** Every non-reserved prop on `<Theme>` is read as a
+- **Reserved prop names.** Every non-reserved prop on `<ThemeUpdate>` is read as a
   theme key, so `name`, `reset`, `debug`, `forceClassName`, `shallow`,
   `className`, `children`, `passThrough`, `contain` and the internal props are
   unavailable as theme keys. `getThemeKeySet` reports a collision once per
@@ -38,10 +37,9 @@ Three things this settled that the spec below did not anticipate:
 - **Presence, not value, makes an element theme-updating.** A theme-key prop
   that is present but `undefined` still produces an (empty) layer, matching
   what `hasThemeUpdatingProps` already does with `name`. Without this,
-  `<Theme background={on ? 'red' : undefined}>` renders no wrapper until the
-  first value appears, and the subtree remounts when it does. That defeats
-  the entire zero-re-render point. The kitchen-sink render-count tests catch
-  it.
+  `<ThemeUpdate background={on ? 'red' : undefined}>` renders no wrapper until
+  the first value appears, and the subtree remounts when it does. That defeats
+  the entire zero-re-render point. The kitchen-sink render-count tests catch it.
 - **Theme modifiers here are broader than the style grammar's.** `getCondition`
   requires a top-level `conf.themes` key, so `blue:` does not resolve for a
   `blue` that only exists as `dark_blue`/`light_blue`. Inline values match by

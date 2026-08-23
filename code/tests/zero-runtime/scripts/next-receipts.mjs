@@ -72,10 +72,10 @@ receipts.serverHtml = {
     `<div data-tamagui-island="SheetIsland" data-tamagui-bridge="${bridgeId}"></div>`
   ),
   noIslandRuntimeMarkup: !html.includes('is_SheetContainer'),
-  // one node carrying the theme classes and the inline-value class, with the
-  // same style the runtime Theme span carries: same classes, same layout
+  // 99fba89f0c moved inline values from Theme to ThemeUpdate, so the authored
+  // nodes remain distinct: outer theme classes, inner inline-value class
   loweredZeroMarkup: html.includes(
-    `class="t_sub_theme t_dark is_Theme ${Object.values(zeroIdentity.bridges)[0][0].layers[0].inlineClassName}" style="color:var(--color);display:contents"`
+    `class="t_sub_theme t_dark is_Theme" style="color:var(--color);display:contents"><span class="is_Theme ${Object.values(zeroIdentity.bridges)[0][0].layers[0].inlineClassName}" style="display:contents"`
   ),
   // a nested static Theme composed against the scheme above it at build time
   loweredNestedTheme: html.includes(

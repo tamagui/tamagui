@@ -25,12 +25,10 @@ export default () => (
 
 Use `<ThemeUpdate>` to override theme values for a subtree, much like redefining
 a CSS custom property on one node. Listed keys override and everything else
-inherits from the parent theme. Import it from its explicit entry so apps that
-never update theme values do not bundle that runtime.
+inherits from the parent theme.
 
 ```tsx
-import { View } from 'tamagui'
-import { ThemeUpdate } from 'tamagui/theme-update'
+import { ThemeUpdate, View } from 'tamagui'
 
 export default () => (
   <ThemeUpdate background-hover="blue-500 dark:blue-300">

@@ -44,7 +44,10 @@ describe('CLI shared compiler runtime', () => {
       // 12, not 10, since 15cf8b9ac9 added three receipt probes to
       // tests/integration/src/Root.tsx: receipt-flattened and receipt-dropped
       // flatten, receipt-runtime bails by design on disableOptimization.
-      expect(result.stdout).toContain('"flattened":12')
+      // 13 since the ThemeUpdate production probe added one more flattening
+      // View under it; <Theme> and <ThemeUpdate> are not styled components, so
+      // neither is counted and only that View moves the number.
+      expect(result.stdout).toContain('"flattened":13')
 
       const [compiled, css] = await Promise.all([
         readFile(join(output, 'Root.tsx'), 'utf8'),

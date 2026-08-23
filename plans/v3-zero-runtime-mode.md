@@ -531,26 +531,26 @@ This is why the local compiler gate and final bundler gate both remain required.
 ### Static Theme after Block 3
 
 This block must consume the Block 3 shape, where theme keys are props directly
-on `Theme`. It must not add a new `<Variables>` lowering path or a `values`
-object.
+on `ThemeUpdate`. It must not add a new `<Variables>` lowering path or a
+`values` object.
 
-**READ, Block 3 worktree `plans/variables.md`, the 2026-08-16 binding section,
+**READ, Block 3 worktree `plans/variables.md`, the 2026-08-22 binding section,
 and `code/core/web/src/helpers/variables.ts`:** there is no `values` object on
 the new surface. `getInlineValuesFromProps` reads every prop absent from
-`reservedThemeProps` as a theme key. Theme and platform targeting use the value
-grammar, while element conditions such as `hover:` and `sm:` are invalid for a
-subtree-wide value.
+`reservedThemeProps` on `ThemeUpdate` as a theme key. Theme and platform
+targeting use the value grammar, while element conditions such as `hover:` and
+`sm:` are invalid for a subtree-wide value.
 
 Accepted zero-mode forms include:
 
 ```tsx
 <Theme name="light">...</Theme>
 
-<Theme name="brand" color="#111" background="#fff">
-  ...
+<Theme name="brand">
+  <ThemeUpdate color="#111" background="#fff">...</ThemeUpdate>
 </Theme>
 
-<Theme background="blue4 dark:blue2">...</Theme>
+<ThemeUpdate background="blue4 dark:blue2">...</ThemeUpdate>
 ```
 
 The name must be a literal or a bounded conditional whose branches are literal
@@ -1582,7 +1582,7 @@ zero-mode diagnostics gated on `enforce`, report mode silently dropped every rul
 Evidence added after Phase 4 ran. Same fixture, `code/tests/zero-runtime`, and
 the same three integrations.
 
-### One table, one name resolution, one span
+### One table, one name resolution, two authored spans
 
 **READ.** `reservedThemeProps` now lives in `code/core/helpers/src/reservedThemeProps.ts`
 and is exported through `@tamagui/helpers`, which `@tamagui/web` re-exports, so
@@ -1600,15 +1600,20 @@ span means, and both are now single implementations:
 - `getThemeClassNames(name, isRoot)` in `@tamagui/helpers`. It was inline in
   `Theme.tsx`'s `getThemeClassNameAndColor`.
 
-The compiled span is now byte-for-byte the composition the runtime emits:
+Commit 99fba89f0c moved inline values from `Theme` to `ThemeUpdate`. The
+compiled nodes are now byte-for-byte the two-node composition the runtime
+emits for that authored tree:
 
 ```html
-<span class="t_sub_theme t_dark is_Theme tvar_1782898843"
+<span class="t_sub_theme t_dark is_Theme"
       style="color:var(--color);display:contents">
+  <span class="is_Theme tvar_1782898843" style="display:contents">...</span>
+</span>
 ```
 
-Phase 1's lowering emitted `t_dark is_Theme tvar_…` and no style. Two of those
-three differences were real defects, found by writing the parity down:
+Before that split, Phase 1's lowering emitted `t_dark is_Theme tvar_…` and no
+style on one span. Two of those three differences were real defects, found by
+writing the parity down:
 
 - **no `display: contents` meant the theme span was a layout box.** Inside a
   flex parent the runtime's span contributes nothing and its child is the flex
@@ -1672,8 +1677,8 @@ the generated loader. Both controls still fail and their receipts now assert
 | Control | Fails with | Its fix |
 | --- | --- | --- |
 | `<Theme name={themeName}>` from a URL | Rule 4, naming the value | `name={wantsDark ? 'dark' : 'light'}` |
-| `<Theme background={runtimeBackground}>` | Rule 3, naming the prop | a literal |
-| `<Theme background="#112233 hover:#445566">` | Rule 3, quoting the parser | `dark:#445566` |
+| `<ThemeUpdate background={runtimeBackground}>` | Rule 3, naming the prop | a literal |
+| `<ThemeUpdate background="#112233 hover:#445566">` | Rule 3, quoting the parser | `dark:#445566` |
 | `<TamaguiProvider>` at a zero root | Rule 4 `zero/runtime-provider`, verbatim | a static `<Theme>` |
 
 The `hover:` control is the one that would have been missed. The runtime warns
@@ -1698,8 +1703,8 @@ test.** Every assertion reads computed style or the page's own CSSOM:
   the graph it runs in, so nothing subscribed to anything;
 - a nested `<Theme name="level2">` under `<Theme name="dark">` resolves to the
   `dark_level2` values, and not to `light_level2`;
-- `<Theme name="dark" background="#0b2545">` puts `--background:#0b2545` on its
-  subtree, beating the named theme it sits inside;
+- `<Theme name="dark"><ThemeUpdate background="#0b2545">` puts
+  `--background:#0b2545` on its subtree, beating the named theme it sits inside;
 - one authored `"#112233 dark:#445566"` compiles to one class used by both
   placements, and the browser reports `rgb(17, 34, 51)` under `t_light` and
   `rgb(68, 85, 102)` under `t_dark`, choosing between two static rules;

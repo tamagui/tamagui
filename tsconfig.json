@@ -170,9 +170,6 @@
       "path": "code/core/generate-themes"
     },
     {
-      "path": "code/core/get-button-sized"
-    },
-    {
       "path": "code/core/get-font-sized"
     },
     {

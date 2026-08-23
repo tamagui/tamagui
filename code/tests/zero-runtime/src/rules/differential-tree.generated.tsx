@@ -3,359 +3,66 @@
 import { View, styled } from 'tamagui'
 import { View as TailwindView } from '@tamagui/tailwind'
 
-const Differential0 = styled(View, { backgroundColor: '#0ea5e9' })
+const Differential0 = styled(View, { backgroundColor: "#0ea5e9" })
 
 const Differential1 = styled(View, { width: 73 })
 
-const Differential2 = styled(View, { padding: '4' })
+const Differential2 = styled(View, { padding: "4" })
 
 const Differential3 = styled(View, { borderRadius: 17 })
 
 const Differential4 = styled(View, { opacity: 0.42 })
 
-const Differential5 = styled(View, {
-  backgroundColor: 'rgb(127,29,29) hover:rgb(21,128,61)',
-})
+const Differential5 = styled(View, { backgroundColor: "rgb(127,29,29) hover:rgb(21,128,61)" })
 
-const Differential6 = styled(View, { flexDirection: 'row sm:column' })
+const Differential6 = styled(View, { flexDirection: "row sm:column" })
 
-const Differential7 = styled(View, {
-  backgroundColor: 'rgb(124,45,18) dark:rgb(30,64,175)',
-})
+const Differential7 = styled(View, { backgroundColor: "rgb(124,45,18) dark:rgb(30,64,175)" })
 
-const Differential20Base = styled(View, { backgroundColor: '#7f1d1d' })
+const Differential20Base = styled(View, { backgroundColor: "#7f1d1d" })
 
 const Differential21Base = styled(View, { width: 31 })
 const Differential21 = styled(Differential21Base, { width: 79 })
 
-const differential22Value = '#eab308'
+const differential22Value = "#eab308"
 
-const Differential26 = styled(View, { opacity: '0.25 group-hover/card:0.9' })
+const Differential26 = styled(View, { opacity: "0.25 group-hover/card:0.9" })
 
 export function DifferentialCorpus() {
   return (
     <View data-testid="differential-corpus" gap={2}>
-      <Differential0
-        data-testid="differential-definition-background"
-        data-differential-probe=""
-        data-differential-id="definition-background"
-        data-differential-expected={'{"base":{"backgroundColor":"rgb(14, 165, 233)"}}'}
-        minWidth={24}
-        minHeight={24}
-      />
-      <Differential1
-        data-testid="differential-definition-width"
-        data-differential-probe=""
-        data-differential-id="definition-width"
-        data-differential-expected={'{"base":{"width":"73px"}}'}
-        minWidth={24}
-        minHeight={24}
-      />
-      <Differential2
-        data-testid="differential-definition-token-padding"
-        data-differential-probe=""
-        data-differential-id="definition-token-padding"
-        data-differential-expected={
-          '{"base":{"paddingTop":"16px","paddingRight":"16px","paddingBottom":"16px","paddingLeft":"16px"}}'
-        }
-        minWidth={24}
-        minHeight={24}
-      />
-      <Differential3
-        data-testid="differential-definition-radius"
-        data-differential-probe=""
-        data-differential-id="definition-radius"
-        data-differential-expected={'{"base":{"borderTopLeftRadius":"17px"}}'}
-        minWidth={24}
-        minHeight={24}
-      />
-      <Differential4
-        data-testid="differential-definition-opacity"
-        data-differential-probe=""
-        data-differential-id="definition-opacity"
-        data-differential-expected={'{"base":{"opacity":"0.42"}}'}
-        minWidth={24}
-        minHeight={24}
-      />
-      <Differential5
-        data-testid="differential-definition-hover"
-        data-differential-probe=""
-        data-differential-id="definition-hover"
-        data-differential-expected={
-          '{"base":{"backgroundColor":"rgb(127, 29, 29)"},"hover":{"backgroundColor":"rgb(21, 128, 61)"}}'
-        }
-        minWidth={24}
-        minHeight={24}
-        data-differential-action="hover"
-      />
-      <Differential6
-        data-testid="differential-definition-media"
-        data-differential-probe=""
-        data-differential-id="definition-media"
-        data-differential-expected={
-          '{"base":{"flexDirection":"row"},"wide":{"flexDirection":"column"}}'
-        }
-        minWidth={24}
-        minHeight={24}
-      />
-      <div className="t_dark">
-        <Differential7
-          data-testid="differential-definition-theme"
-          data-differential-probe=""
-          data-differential-id="definition-theme"
-          data-differential-expected={'{"base":{"backgroundColor":"rgb(30, 64, 175)"}}'}
-          minWidth={24}
-          minHeight={24}
-        />
-      </div>
-      <View
-        data-testid="differential-prop-background"
-        data-differential-probe=""
-        data-differential-id="prop-background"
-        data-differential-expected={'{"base":{"backgroundColor":"rgb(249, 115, 22)"}}'}
-        minWidth={24}
-        minHeight={24}
-        backgroundColor="#f97316"
-      />
-      <View
-        data-testid="differential-prop-height"
-        data-differential-probe=""
-        data-differential-id="prop-height"
-        data-differential-expected={'{"base":{"height":"61px"}}'}
-        minWidth={24}
-        minHeight={24}
-        height={61}
-      />
-      <View
-        data-testid="differential-prop-margin"
-        data-differential-probe=""
-        data-differential-id="prop-margin"
-        data-differential-expected={'{"base":{"marginLeft":"13px"}}'}
-        minWidth={24}
-        minHeight={24}
-        marginLeft={13}
-      />
-      <View
-        data-testid="differential-prop-token-size"
-        data-differential-probe=""
-        data-differential-id="prop-token-size"
-        data-differential-expected={'{"base":{"width":"48px"}}'}
-        minWidth={24}
-        minHeight={24}
-        width="12"
-      />
-      <View
-        data-testid="differential-prop-focus"
-        data-differential-probe=""
-        data-differential-id="prop-focus"
-        data-differential-expected={
-          '{"base":{"backgroundColor":"rgb(88, 28, 135)"},"focus":{"backgroundColor":"rgb(14, 116, 144)"}}'
-        }
-        minWidth={24}
-        minHeight={24}
-        data-differential-action="focus"
-        tabIndex={0}
-        backgroundColor="rgb(88,28,135) focus:rgb(14,116,144)"
-      />
-      <View
-        data-testid="differential-prop-hover"
-        data-differential-probe=""
-        data-differential-id="prop-hover"
-        data-differential-expected={
-          '{"base":{"opacity":"0.35"},"hover":{"opacity":"0.85"}}'
-        }
-        minWidth={24}
-        minHeight={24}
-        data-differential-action="hover"
-        opacity="0.35 hover:0.85"
-      />
-      <View
-        data-testid="differential-prop-media"
-        data-differential-probe=""
-        data-differential-id="prop-media"
-        data-differential-expected={'{"base":{"width":"41px"},"wide":{"width":"91px"}}'}
-        minWidth={24}
-        minHeight={24}
-        width="41px sm:91px"
-      />
-      <div className="t_dark">
-        <View
-          data-testid="differential-prop-theme"
-          data-differential-probe=""
-          data-differential-id="prop-theme"
-          data-differential-expected={'{"base":{"backgroundColor":"rgb(219, 234, 254)"}}'}
-          minWidth={24}
-          minHeight={24}
-          backgroundColor="rgb(120,53,15) dark:rgb(219,234,254)"
-        />
-      </div>
-      <View
-        data-testid="differential-prop-platform"
-        data-differential-probe=""
-        data-differential-id="prop-platform"
-        data-differential-expected={'{"base":{"backgroundColor":"rgb(5, 150, 105)"}}'}
-        minWidth={24}
-        minHeight={24}
-        backgroundColor="rgb(190,18,60) web:rgb(5,150,105)"
-      />
-      <View
-        data-testid="differential-prop-same-slot-last-wins"
-        data-differential-probe=""
-        data-differential-id="prop-same-slot-last-wins"
-        data-differential-expected={
-          '{"base":{"backgroundColor":"rgb(127, 29, 29)"},"wide":{"backgroundColor":"rgb(21, 128, 61)"}}'
-        }
-        minWidth={24}
-        minHeight={24}
-        backgroundColor="rgb(127,29,29) sm:rgb(29,78,216) sm:rgb(21,128,61)"
-      />
-      <View
-        data-testid="differential-prop-depth-over-order"
-        data-differential-probe=""
-        data-differential-id="prop-depth-over-order"
-        data-differential-expected={
-          '{"base":{"backgroundColor":"rgb(127, 29, 29)"},"wide":{"backgroundColor":"rgb(21, 128, 61)"},"wide-hover":{"backgroundColor":"rgb(29, 78, 216)"}}'
-        }
-        minWidth={24}
-        minHeight={24}
-        data-differential-action="wide-hover"
-        backgroundColor="rgb(127,29,29) sm:hover:rgb(29,78,216) md:rgb(21,128,61)"
-      />
-      <div className="t_dark">
-        <View
-          data-testid="differential-prop-theme-over-media"
-          data-differential-probe=""
-          data-differential-id="prop-theme-over-media"
-          data-differential-expected={
-            '{"base":{"backgroundColor":"rgb(21, 128, 61)"},"wide":{"backgroundColor":"rgb(21, 128, 61)"}}'
-          }
-          minWidth={24}
-          minHeight={24}
-          backgroundColor="rgb(127,29,29) sm:rgb(29,78,216) dark:rgb(21,128,61)"
-        />
-      </div>
-      <Differential20Base
-        data-testid="differential-styled-call-override"
-        data-differential-probe=""
-        data-differential-id="styled-call-override"
-        data-differential-expected={'{"base":{"backgroundColor":"rgb(20, 184, 166)"}}'}
-        minWidth={24}
-        minHeight={24}
-        backgroundColor="#14b8a6"
-      />
-      <Differential21
-        data-testid="differential-nested-styled"
-        data-differential-probe=""
-        data-differential-id="nested-styled"
-        data-differential-expected={'{"base":{"width":"79px"}}'}
-        minWidth={24}
-        minHeight={24}
-      />
-      <View
-        data-testid="differential-dynamic-prop-bailout"
-        data-differential-probe=""
-        data-differential-id="dynamic-prop-bailout"
-        data-differential-expected={'{"base":{"backgroundColor":"rgb(234, 179, 8)"}}'}
-        minWidth={24}
-        minHeight={24}
-        backgroundColor={differential22Value}
-      />
-      <View
-        data-testid="differential-style-object-bailout"
-        data-differential-probe=""
-        data-differential-id="style-object-bailout"
-        data-differential-expected={'{"base":{"width":"83px"}}'}
-        minWidth={24}
-        minHeight={24}
-        style={{ width: 83 }}
-      />
-      <View
-        data-testid="differential-style-array-bailout"
-        data-differential-probe=""
-        data-differential-id="style-array-bailout"
-        data-differential-expected={'{"base":{"backgroundColor":"rgb(219, 39, 119)"}}'}
-        minWidth={24}
-        minHeight={24}
-        style={[{ backgroundColor: '#db2777' }]}
-      />
-      <View group="card" data-differential-group="">
-        <View
-          data-testid="differential-group-hover-prop"
-          data-differential-probe=""
-          data-differential-id="group-hover-prop"
-          data-differential-expected={
-            '{"base":{"backgroundColor":"rgb(67, 56, 202)"},"group-hover":{"backgroundColor":"rgb(22, 163, 74)"}}'
-          }
-          minWidth={24}
-          minHeight={24}
-          data-differential-action="group-hover"
-          backgroundColor="rgb(67,56,202) group-hover/card:rgb(22,163,74)"
-        />
-      </View>
-      <View group="card" data-differential-group="">
-        <Differential26
-          data-testid="differential-group-hover-definition"
-          data-differential-probe=""
-          data-differential-id="group-hover-definition"
-          data-differential-expected={
-            '{"base":{"opacity":"0.25"},"group-hover":{"opacity":"0.9"}}'
-          }
-          minWidth={24}
-          minHeight={24}
-          data-differential-action="group-hover"
-        />
-      </View>
-      <TailwindView
-        data-testid="differential-tailwind-width"
-        data-differential-probe=""
-        data-differential-id="tailwind-width"
-        data-differential-expected={'{"base":{"width":"71px"}}'}
-        minWidth={24}
-        minHeight={24}
-        className="w-[71px]"
-      />
-      <TailwindView
-        data-testid="differential-tailwind-spacing-radius"
-        data-differential-probe=""
-        data-differential-id="tailwind-spacing-radius"
-        data-differential-expected={
-          '{"base":{"paddingTop":"16px","paddingRight":"16px","borderTopLeftRadius":"11px"}}'
-        }
-        minWidth={24}
-        minHeight={24}
-        className="p-4 rounded-[11px]"
-      />
-      <TailwindView
-        data-testid="differential-tailwind-color"
-        data-differential-probe=""
-        data-differential-id="tailwind-color"
-        data-differential-expected={'{"base":{"backgroundColor":"rgb(168, 85, 247)"}}'}
-        minWidth={24}
-        minHeight={24}
-        className="bg-[#a855f7]"
-      />
-      <TailwindView
-        data-testid="differential-tailwind-hover"
-        data-differential-probe=""
-        data-differential-id="tailwind-hover"
-        data-differential-expected={
-          '{"base":{"backgroundColor":"rgb(185, 28, 28)"},"hover":{"backgroundColor":"rgb(37, 99, 235)"}}'
-        }
-        minWidth={24}
-        minHeight={24}
-        data-differential-action="hover"
-        data-differential-expected-failure="compiled-tailwind-hover"
-        className="bg-[#b91c1c] hover:bg-[#2563eb]"
-      />
-      <TailwindView
-        data-testid="differential-tailwind-opacity"
-        data-differential-probe=""
-        data-differential-id="tailwind-opacity"
-        data-differential-expected={'{"base":{"opacity":"0.5"}}'}
-        minWidth={24}
-        minHeight={24}
-        className="opacity-50"
-      />
+      <Differential0 data-testid="differential-definition-background" data-differential-probe="" data-differential-id="definition-background" data-differential-expected={"{\"base\":{\"backgroundColor\":\"rgb(14, 165, 233)\"}}"} minWidth={24} minHeight={24} />
+      <Differential1 data-testid="differential-definition-width" data-differential-probe="" data-differential-id="definition-width" data-differential-expected={"{\"base\":{\"width\":\"73px\"}}"} minWidth={24} minHeight={24} />
+      <Differential2 data-testid="differential-definition-token-padding" data-differential-probe="" data-differential-id="definition-token-padding" data-differential-expected={"{\"base\":{\"paddingTop\":\"16px\",\"paddingRight\":\"16px\",\"paddingBottom\":\"16px\",\"paddingLeft\":\"16px\"}}"} minWidth={24} minHeight={24} />
+      <Differential3 data-testid="differential-definition-radius" data-differential-probe="" data-differential-id="definition-radius" data-differential-expected={"{\"base\":{\"borderTopLeftRadius\":\"17px\"}}"} minWidth={24} minHeight={24} />
+      <Differential4 data-testid="differential-definition-opacity" data-differential-probe="" data-differential-id="definition-opacity" data-differential-expected={"{\"base\":{\"opacity\":\"0.42\"}}"} minWidth={24} minHeight={24} />
+      <Differential5 data-testid="differential-definition-hover" data-differential-probe="" data-differential-id="definition-hover" data-differential-expected={"{\"base\":{\"backgroundColor\":\"rgb(127, 29, 29)\"},\"hover\":{\"backgroundColor\":\"rgb(21, 128, 61)\"}}"} minWidth={24} minHeight={24} data-differential-action="hover" />
+      <Differential6 data-testid="differential-definition-media" data-differential-probe="" data-differential-id="definition-media" data-differential-expected={"{\"base\":{\"flexDirection\":\"row\"},\"wide\":{\"flexDirection\":\"column\"}}"} minWidth={24} minHeight={24} />
+      <div className="t_dark"><Differential7 data-testid="differential-definition-theme" data-differential-probe="" data-differential-id="definition-theme" data-differential-expected={"{\"base\":{\"backgroundColor\":\"rgb(30, 64, 175)\"}}"} minWidth={24} minHeight={24} /></div>
+      <View data-testid="differential-prop-background" data-differential-probe="" data-differential-id="prop-background" data-differential-expected={"{\"base\":{\"backgroundColor\":\"rgb(249, 115, 22)\"}}"} minWidth={24} minHeight={24} backgroundColor="#f97316" />
+      <View data-testid="differential-prop-height" data-differential-probe="" data-differential-id="prop-height" data-differential-expected={"{\"base\":{\"height\":\"61px\"}}"} minWidth={24} minHeight={24} height={61} />
+      <View data-testid="differential-prop-margin" data-differential-probe="" data-differential-id="prop-margin" data-differential-expected={"{\"base\":{\"marginLeft\":\"13px\"}}"} minWidth={24} minHeight={24} marginLeft={13} />
+      <View data-testid="differential-prop-token-size" data-differential-probe="" data-differential-id="prop-token-size" data-differential-expected={"{\"base\":{\"width\":\"48px\"}}"} minWidth={24} minHeight={24} width="12" />
+      <View data-testid="differential-prop-focus" data-differential-probe="" data-differential-id="prop-focus" data-differential-expected={"{\"base\":{\"backgroundColor\":\"rgb(88, 28, 135)\"},\"focus\":{\"backgroundColor\":\"rgb(14, 116, 144)\"}}"} minWidth={24} minHeight={24} data-differential-action="focus" tabIndex={0} backgroundColor="rgb(88,28,135) focus:rgb(14,116,144)" />
+      <View data-testid="differential-prop-hover" data-differential-probe="" data-differential-id="prop-hover" data-differential-expected={"{\"base\":{\"opacity\":\"0.35\"},\"hover\":{\"opacity\":\"0.85\"}}"} minWidth={24} minHeight={24} data-differential-action="hover" opacity="0.35 hover:0.85" />
+      <View data-testid="differential-prop-media" data-differential-probe="" data-differential-id="prop-media" data-differential-expected={"{\"base\":{\"width\":\"41px\"},\"wide\":{\"width\":\"91px\"}}"} minWidth={24} minHeight={24} width="41px sm:91px" />
+      <div className="t_dark"><View data-testid="differential-prop-theme" data-differential-probe="" data-differential-id="prop-theme" data-differential-expected={"{\"base\":{\"backgroundColor\":\"rgb(219, 234, 254)\"}}"} minWidth={24} minHeight={24} backgroundColor="rgb(120,53,15) dark:rgb(219,234,254)" /></div>
+      <View data-testid="differential-prop-platform" data-differential-probe="" data-differential-id="prop-platform" data-differential-expected={"{\"base\":{\"backgroundColor\":\"rgb(5, 150, 105)\"}}"} minWidth={24} minHeight={24} backgroundColor="rgb(190,18,60) web:rgb(5,150,105)" />
+      <View data-testid="differential-prop-same-slot-last-wins" data-differential-probe="" data-differential-id="prop-same-slot-last-wins" data-differential-expected={"{\"base\":{\"backgroundColor\":\"rgb(127, 29, 29)\"},\"wide\":{\"backgroundColor\":\"rgb(21, 128, 61)\"}}"} minWidth={24} minHeight={24} backgroundColor="rgb(127,29,29) sm:rgb(29,78,216) sm:rgb(21,128,61)" />
+      <View data-testid="differential-prop-depth-over-order" data-differential-probe="" data-differential-id="prop-depth-over-order" data-differential-expected={"{\"base\":{\"backgroundColor\":\"rgb(127, 29, 29)\"},\"wide\":{\"backgroundColor\":\"rgb(21, 128, 61)\"},\"wide-hover\":{\"backgroundColor\":\"rgb(29, 78, 216)\"}}"} minWidth={24} minHeight={24} data-differential-action="wide-hover" backgroundColor="rgb(127,29,29) sm:hover:rgb(29,78,216) md:rgb(21,128,61)" />
+      <div className="t_dark"><View data-testid="differential-prop-theme-over-media" data-differential-probe="" data-differential-id="prop-theme-over-media" data-differential-expected={"{\"base\":{\"backgroundColor\":\"rgb(21, 128, 61)\"},\"wide\":{\"backgroundColor\":\"rgb(21, 128, 61)\"}}"} minWidth={24} minHeight={24} backgroundColor="rgb(127,29,29) sm:rgb(29,78,216) dark:rgb(21,128,61)" /></div>
+      <Differential20Base data-testid="differential-styled-call-override" data-differential-probe="" data-differential-id="styled-call-override" data-differential-expected={"{\"base\":{\"backgroundColor\":\"rgb(20, 184, 166)\"}}"} minWidth={24} minHeight={24} backgroundColor="#14b8a6" />
+      <Differential21 data-testid="differential-nested-styled" data-differential-probe="" data-differential-id="nested-styled" data-differential-expected={"{\"base\":{\"width\":\"79px\"}}"} minWidth={24} minHeight={24} />
+      <View data-testid="differential-dynamic-prop-bailout" data-differential-probe="" data-differential-id="dynamic-prop-bailout" data-differential-expected={"{\"base\":{\"backgroundColor\":\"rgb(234, 179, 8)\"}}"} minWidth={24} minHeight={24} backgroundColor={differential22Value} />
+      <View data-testid="differential-style-object-bailout" data-differential-probe="" data-differential-id="style-object-bailout" data-differential-expected={"{\"base\":{\"width\":\"83px\"}}"} minWidth={24} minHeight={24} style={{ width: 83 }} />
+      <View data-testid="differential-style-array-bailout" data-differential-probe="" data-differential-id="style-array-bailout" data-differential-expected={"{\"base\":{\"backgroundColor\":\"rgb(219, 39, 119)\"}}"} minWidth={24} minHeight={24} style={[{ backgroundColor: "#db2777" }]} />
+      <View group="card" data-differential-group=""><View data-testid="differential-group-hover-prop" data-differential-probe="" data-differential-id="group-hover-prop" data-differential-expected={"{\"base\":{\"backgroundColor\":\"rgb(67, 56, 202)\"},\"group-hover\":{\"backgroundColor\":\"rgb(22, 163, 74)\"}}"} minWidth={24} minHeight={24} data-differential-action="group-hover" backgroundColor="rgb(67,56,202) group-hover/card:rgb(22,163,74)" /></View>
+      <View group="card" data-differential-group=""><Differential26 data-testid="differential-group-hover-definition" data-differential-probe="" data-differential-id="group-hover-definition" data-differential-expected={"{\"base\":{\"opacity\":\"0.25\"},\"group-hover\":{\"opacity\":\"0.9\"}}"} minWidth={24} minHeight={24} data-differential-action="group-hover" /></View>
+      <TailwindView data-testid="differential-tailwind-width" data-differential-probe="" data-differential-id="tailwind-width" data-differential-expected={"{\"base\":{\"width\":\"71px\"}}"} minWidth={24} minHeight={24} className="w-[71px]" />
+      <TailwindView data-testid="differential-tailwind-spacing-radius" data-differential-probe="" data-differential-id="tailwind-spacing-radius" data-differential-expected={"{\"base\":{\"paddingTop\":\"16px\",\"paddingRight\":\"16px\",\"borderTopLeftRadius\":\"11px\"}}"} minWidth={24} minHeight={24} className="p-4 rounded-[11px]" />
+      <TailwindView data-testid="differential-tailwind-color" data-differential-probe="" data-differential-id="tailwind-color" data-differential-expected={"{\"base\":{\"backgroundColor\":\"rgb(168, 85, 247)\"}}"} minWidth={24} minHeight={24} className="bg-[#a855f7]" />
+      <TailwindView data-testid="differential-tailwind-hover" data-differential-probe="" data-differential-id="tailwind-hover" data-differential-expected={"{\"base\":{\"backgroundColor\":\"rgb(185, 28, 28)\"},\"hover\":{\"backgroundColor\":\"rgb(37, 99, 235)\"}}"} minWidth={24} minHeight={24} data-differential-action="hover" data-differential-expected-failure="compiled-tailwind-hover" className="bg-[#b91c1c] hover:bg-[#2563eb]" />
+      <TailwindView data-testid="differential-tailwind-opacity" data-differential-probe="" data-differential-id="tailwind-opacity" data-differential-expected={"{\"base\":{\"opacity\":\"0.5\"}}"} minWidth={24} minHeight={24} className="opacity-50" />
     </View>
   )
 }

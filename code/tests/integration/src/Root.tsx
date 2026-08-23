@@ -3,7 +3,7 @@ import '@tamagui/core/reset.css'
 import { Text, TamaguiProvider, Theme, View } from '@tamagui/core'
 import { styled, View as TailwindView } from '@tamagui/tailwind'
 import { LinearGradient } from '@tamagui/linear-gradient'
-import { ThemeUpdate } from 'tamagui/theme-update'
+import { ThemeUpdate } from 'tamagui'
 
 import config from './tamagui.config'
 import { HmrCandidate } from './HmrCandidate'

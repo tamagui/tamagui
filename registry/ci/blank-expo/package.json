@@ -12,8 +12,8 @@
   "dependencies": {
     "@tamagui/config": "workspace:*",
     "expo": "~57.0.15",
-    "react": ">=19",
-    "react-dom": "*",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
     "react-native": "0.86.2",
     "react-native-safe-area-context": "~5.7.0",
     "tamagui": "workspace:*"
@@ -22,7 +22,7 @@
     "@babel/core": "^7.25.2",
     "@tamagui/metro-plugin": "workspace:*",
     "@types/node": "^22.1.0",
-    "@types/react": "~19.2.4",
+    "@types/react": "~19.2.0",
     "babel-preset-expo": "~57.0.7",
     "react-test-renderer": "19.2.3",
     "typescript": "~6.0.3",

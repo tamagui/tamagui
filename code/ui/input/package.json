@@ -39,17 +39,17 @@
     "@tamagui/core": "workspace:*",
     "@tamagui/element": "workspace:*",
     "@tamagui/focusable": "workspace:*",
+    "@tamagui/font-size": "workspace:*",
     "@tamagui/get-font-sized": "workspace:*",
     "@tamagui/helpers": "workspace:*",
     "@tamagui/helpers-tamagui": "workspace:*",
     "@tamagui/stacks": "workspace:*",
     "@tamagui/text": "workspace:*",
-    "@tamagui/font-size": "workspace:*",
     "@tamagui/web": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "react": ">=19",
+    "react": "19.2.3",
     "react-native": "0.86.2",
     "vitest": "4.0.4"
   },

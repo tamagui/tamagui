@@ -146,6 +146,7 @@ export { Surface, type SurfaceProps } from './components/Surface'
 export { facets } from './components/facets'
 
 export * from './createTamagui'
+export { ThemeUpdate, type ThemeUpdateProps } from './theme-update'
 
 export * from './viewTypes'
 export * from './views/TamaguiProvider'

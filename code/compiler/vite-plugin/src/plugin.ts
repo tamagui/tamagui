@@ -1056,14 +1056,14 @@ export function createTamaguiPlugins({
       // SheetControllerContext, so the SheetController provider (from /controller)
       // and the Sheet consumer (from the full entry) never match and adapted
       // sheets silently never open. include both so they share one context chunk.
-      // ThemeUpdate follows the same rule: its subpath must patch the Theme
-      // context provided by the root package instead of creating a second copy.
+      // ThemeUpdate follows the same rule: its internal implementation must
+      // patch the Theme context provided by the root package instead of
+      // creating a second copy.
       addIfInstalled(userConf, userConf.root, [
         '@tamagui/core',
         '@tamagui/core/theme-update',
         '@tamagui/web',
         '@tamagui/web/theme-update',
-        'tamagui/theme-update',
         '@tamagui/animations-css',
         '@tamagui/animations-css/extras',
         '@tamagui/toast',
@@ -1080,7 +1080,6 @@ export function createTamaguiPlugins({
       userConf.resolve.dedupe ||= []
       for (const id of [
         'tamagui',
-        'tamagui/theme-update',
         '@tamagui/core',
         '@tamagui/core/theme-update',
         '@tamagui/web',
@@ -1390,10 +1389,7 @@ export function createTamaguiPlugins({
             source: code,
             plan: result.plan,
             config: (await tamaguiLoader.getTamaguiConfig())!,
-            isTamaguiSpecifier: (specifier) =>
-              specifier === 'tamagui' ||
-              specifier.startsWith('tamagui/') ||
-              specifier.startsWith('@tamagui/'),
+            isTamaguiSpecifier: Static.isTamaguiSpecifier,
             resolveIslandLoader: (specifier) => {
               const islandId = zero!.loaderIds.get(
                 zeroModuleKey(path.resolve(path.dirname(validId), specifier))

@@ -21,8 +21,8 @@
     "@tamagui/sheet": "workspace:*",
     "@tamagui/tailwind": "workspace:*",
     "expo": "~57.0.15",
-    "react": ">=19",
-    "react-dom": "*",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
     "react-native": "0.86.2",
     "react-native-safe-area-context": "~5.7.0",
     "tamagui": "workspace:*"
@@ -33,14 +33,14 @@
     "@tamagui/metro-plugin": "workspace:*",
     "@tamagui/vite-plugin": "workspace:*",
     "@types/node": "^22.1.0",
-    "@types/react": "~19.2.4",
+    "@types/react": "~19.2.0",
     "@types/react-dom": "~19.2.3",
     "@vitejs/plugin-react": "^6.0.0",
     "babel-preset-expo": "~57.0.7",
     "react-test-renderer": "19.2.3",
     "tailwindcss": "4.3.0",
     "typescript": "~6.0.3",
-    "vite": "^8.0.3",
+    "vite": "^8.2.2",
     "vitest-native": "npm:vitest@4.1.0"
   }
 }
