@@ -664,16 +664,20 @@
     "state": "present"
   },
   "modifierVocabulary.modifierKindState": {
-    "state": "present"
+    "state": "absent",
+    "movedTo": "modifierVocabulary.compileModifierVocabulary"
   },
   "modifierVocabulary.modifierKindMedia": {
-    "state": "present"
+    "state": "absent",
+    "movedTo": "modifierVocabulary.compileModifierVocabulary"
   },
   "modifierVocabulary.modifierKindPlatform": {
-    "state": "present"
+    "state": "absent",
+    "movedTo": "modifierVocabulary.compileModifierVocabulary"
   },
   "modifierVocabulary.modifierKindTheme": {
-    "state": "present"
+    "state": "absent",
+    "movedTo": "modifierVocabulary.compileModifierVocabulary"
   },
   "modifierVocabulary.forEachModifierName": {
     "state": "present"
