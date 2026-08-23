@@ -86,6 +86,7 @@ describe('Accordion (auto-height, native)', () => {
 
   it('closes the default-open item through an intermediate height', async () => {
     const open = await frame('def-height')
+    const pixelScale = (await frame('animated-key-probe')).width / 20
     await element(by.id('def-trigger')).tap()
     await expect(element(by.id('def-content-text'))).toBeVisible()
     const closing = await pollHeight(
@@ -104,7 +105,7 @@ describe('Accordion (auto-height, native)', () => {
       .map(Number)
     assert.ok(frameSamples.length > 5, `expected native frame samples: ${frameSamples}`)
     assert.ok(
-      frameSamples.every((height) => height > open.height * 0.5),
+      frameSamples.every((height) => height > (open.height / pixelScale) * 0.5),
       `close must not paint a collapsed frame before animating: ${frameSamples}`
     )
     await expect(element(by.id('def-content-text'))).toExist()
