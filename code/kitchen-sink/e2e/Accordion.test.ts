@@ -64,29 +64,23 @@ describe('Accordion (auto-height, native)', () => {
     await expect(element(by.id('def-content-text'))).toBeVisible()
     await device.takeScreenshot('accordion-default-open')
 
-    const pixelScale = (await frame('animated-key-probe')).width / 20
     const content = await frame('def-content')
     const trigger2 = await frame('def-trigger2')
     const marker = await frame('after-accordion-marker')
-    const contentHeight = content.height / pixelScale
-    assert.ok(contentHeight > 10, `open content height ${contentHeight} should be > 10`)
-    // android Detox reports physical pixels while iOS reports points. compare
-    // rounded layout units so the item's intentional -1 margin has one meaning.
+    assert.ok(content.height > 10, `open content height ${content.height} should be > 10`)
+    // the second (closed) item's trigger must sit at or below the open content's bottom
     assert.ok(
-      Math.round(trigger2.y / pixelScale) >=
-        Math.round((content.y + content.height) / pixelScale) - 1,
+      trigger2.y >= content.y + content.height - 2,
       `trigger2.y ${trigger2.y} should be >= content bottom ${content.y + content.height}`
     )
     assert.ok(
-      Math.round(marker.y / pixelScale) >=
-        Math.round((trigger2.y + trigger2.height) / pixelScale) - 1,
+      marker.y >= trigger2.y + trigger2.height - 2,
       `marker.y ${marker.y} should be below trigger2 bottom ${trigger2.y + trigger2.height}`
     )
   })
 
   it('closes the default-open item through an intermediate height', async () => {
     const open = await frame('def-height')
-    const pixelScale = (await frame('animated-key-probe')).width / 20
     await element(by.id('def-trigger')).tap()
     await expect(element(by.id('def-content-text'))).toBeVisible()
     const closing = await pollHeight(
@@ -105,7 +99,7 @@ describe('Accordion (auto-height, native)', () => {
       .map(Number)
     assert.ok(frameSamples.length > 5, `expected native frame samples: ${frameSamples}`)
     assert.ok(
-      frameSamples.every((height) => height > (open.height / pixelScale) * 0.5),
+      frameSamples.every((height) => height > open.height * 0.5),
       `close must not paint a collapsed frame before animating: ${frameSamples}`
     )
     await expect(element(by.id('def-content-text'))).toExist()
@@ -152,17 +146,13 @@ describe('Accordion (auto-height, native)', () => {
     const trigger2 = await frame('def-trigger2')
     const content2 = await frame('def-content2')
     const openMarker = await frame('after-accordion-marker')
-    const pixelScale = (await frame('animated-key-probe')).width / 20
-    const content2Height = content2.height / pixelScale
-    assert.ok(content2Height > 10, `content2 height ${content2Height} should be > 10`)
+    assert.ok(content2.height > 10, `content2 height ${content2.height} should be > 10`)
     assert.ok(
-      Math.round(content2.y / pixelScale) >=
-        Math.round((trigger2.y + trigger2.height) / pixelScale) - 1,
+      content2.y >= trigger2.y + trigger2.height - 2,
       `content2 should render below its own trigger, not above/overlapping`
     )
     assert.ok(
-      Math.round(openMarker.y / pixelScale) >=
-        Math.round((content2.y + content2.height) / pixelScale) - 1,
+      openMarker.y >= content2.y + content2.height - 2,
       `marker should render below the final item's content`
     )
 

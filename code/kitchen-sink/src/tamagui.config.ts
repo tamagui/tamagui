@@ -6,7 +6,6 @@ import { config } from '@tamagui/config/v3'
 import { defaultConfig as configV4, shorthands } from '@tamagui/config/v4'
 import { defaultConfig } from '@tamagui/config/v5'
 import { tamaguiThemes } from '@tamagui/themes/v4'
-import type { ReduceMotion } from 'react-native-reanimated'
 import { createTamagui, type CreateTamaguiProps } from 'tamagui'
 // TODO just move this into this folder
 import { config as tamaguiDevConfig } from '../../packages/tamagui-dev-config/src/index'
@@ -269,7 +268,6 @@ export const animationsReanimated = createAnimationsReanimated({
   '5000ms': {
     type: 'timing',
     duration: 5000,
-    reduceMotion: 'never' as ReduceMotion,
   },
   bouncy: {
     type: 'spring',
