@@ -11,7 +11,7 @@ import {
   zeroModuleKey,
 } from './zeroRuntime'
 
-const { getPragmaOptions } = Static
+const { getPragmaOptions, isTamaguiSpecifier } = Static
 
 Error.stackTraceLimit = Number.POSITIVE_INFINITY
 
@@ -151,8 +151,7 @@ export const loader = async function loader(
         source,
         plan: extracted.plan,
         config: projectInfo.tamaguiConfig!,
-        isTamaguiSpecifier: (specifier) =>
-          specifier === 'tamagui' || specifier.startsWith('@tamagui/'),
+        isTamaguiSpecifier,
         resolveIslandLoader: (specifier) => {
           const islandId = zero.loaderIds.get(
             zeroModuleKey(path.resolve(path.dirname(sourcePath), specifier))

@@ -185,6 +185,18 @@ export function zeroViolationsFromPlan(plan: LoweredModulePlan): ZeroViolation[]
   return violations
 }
 
+// every bundler plugin resolves the zero-forbidden surface through this one
+// predicate. subpaths count: `tamagui/theme-update` is as much runtime surface
+// as `tamagui` itself, and a plugin that missed them read <ThemeUpdate> as an
+// opaque component and failed rule 4 at every island mount beneath it.
+export function isTamaguiSpecifier(specifier: string): boolean {
+  return (
+    specifier === 'tamagui' ||
+    specifier.startsWith('tamagui/') ||
+    specifier.startsWith('@tamagui/')
+  )
+}
+
 export interface ZeroErasureInput {
   id: ResolvedModuleId
   source: string

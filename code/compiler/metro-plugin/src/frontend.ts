@@ -12,6 +12,7 @@ import {
   ProjectGraph,
   contentHash,
   defaultPlanCacheRoot,
+  isTamaguiSpecifier,
   lowerModule,
   materializeModule,
   moduleClosureDigest,
@@ -1063,8 +1064,7 @@ export class MetroCompilerFrontend {
       source,
       plan,
       config,
-      isTamaguiSpecifier: (specifier) =>
-        specifier === 'tamagui' || specifier.startsWith('@tamagui/'),
+      isTamaguiSpecifier,
       resolveIslandLoader: (specifier) => {
         const islandId = zero.loaderIds.get(zeroModuleKey(resolve(id, '..', specifier)))
         return islandId ? { islandId } : null

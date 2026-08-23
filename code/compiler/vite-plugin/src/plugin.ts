@@ -1389,10 +1389,7 @@ export function createTamaguiPlugins({
             source: code,
             plan: result.plan,
             config: (await tamaguiLoader.getTamaguiConfig())!,
-            isTamaguiSpecifier: (specifier) =>
-              specifier === 'tamagui' ||
-              specifier.startsWith('tamagui/') ||
-              specifier.startsWith('@tamagui/'),
+            isTamaguiSpecifier: Static.isTamaguiSpecifier,
             resolveIslandLoader: (specifier) => {
               const islandId = zero!.loaderIds.get(
                 zeroModuleKey(path.resolve(path.dirname(validId), specifier))
