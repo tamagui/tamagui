@@ -67,10 +67,13 @@ export const stateModifierSelectors: readonly string[] = Object.freeze([
  * and the runtime styled them anyway. `stateVocabulary` in states.ts already
  * calls all four aliases, so the two tables agree.
  */
-export const modifierAliases: Readonly<Record<string, string>> = Object.freeze({
-  __proto__: null,
-  active: 'press',
-  pressed: 'press',
-  starting: 'enter',
-  ending: 'exit',
-})
+// null prototype so `modifierAliases.toString` and the other eleven
+// Object.prototype spellings read as unregistered rather than inherited.
+export const modifierAliases: Readonly<Record<string, string>> = Object.freeze(
+  Object.assign(Object.create(null) as Record<string, string>, {
+    active: 'press',
+    pressed: 'press',
+    starting: 'enter',
+    ending: 'exit',
+  })
+)
