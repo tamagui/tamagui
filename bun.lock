@@ -319,6 +319,9 @@
         "@fixture/conditional": "workspace:*",
       },
     },
+    "code/compiler/vite-plugin/test/fixtures/module-runner/packages/compiler-condition-fixture": {
+      "name": "@tamagui/compiler-condition-fixture",
+    },
     "code/compiler/vite-plugin/test/fixtures/module-runner/packages/components": {
       "name": "@fixture/components",
       "dependencies": {
@@ -327,6 +330,9 @@
     },
     "code/compiler/vite-plugin/test/fixtures/module-runner/packages/conditional": {
       "name": "@fixture/conditional",
+    },
+    "code/compiler/vite-plugin/test/fixtures/module-runner/packages/user-no-external-fixture": {
+      "name": "@tamagui/user-no-external-fixture",
     },
     "code/core/animation-helpers": {
       "name": "@tamagui/animation-helpers",
@@ -5603,6 +5609,8 @@
 
     "@tamagui/comparison-uniwind-bench-native": ["@tamagui/comparison-uniwind-bench-native@workspace:code/comparisons/uniwind-bench-native"],
 
+    "@tamagui/compiler-condition-fixture": ["@tamagui/compiler-condition-fixture@workspace:code/compiler/vite-plugin/test/fixtures/module-runner/packages/compiler-condition-fixture"],
+
     "@tamagui/compiler-core": ["@tamagui/compiler-core@workspace:code/compiler/compiler-core"],
 
     "@tamagui/components-test": ["@tamagui/components-test@workspace:code/ui/components-test"],
@@ -5898,6 +5906,8 @@
     "@tamagui/use-store": ["@tamagui/use-store@workspace:code/packages/use-store"],
 
     "@tamagui/use-window-dimensions": ["@tamagui/use-window-dimensions@workspace:code/core/use-window-dimensions"],
+
+    "@tamagui/user-no-external-fixture": ["@tamagui/user-no-external-fixture@workspace:code/compiler/vite-plugin/test/fixtures/module-runner/packages/user-no-external-fixture"],
 
     "@tamagui/v3-canary": ["@tamagui/v3-canary@workspace:code/tests/v3-canary"],
 
