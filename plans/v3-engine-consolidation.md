@@ -238,8 +238,8 @@ depend on its arena, its byte-to-allocation ratio is worse than the prior
 accepted +93-byte/29.7% trade, and CORE_noarena gives every later checkpoint
 one clean historical baseline. The performance result remains a separate
 future proposal with its measured numbers. Settled decision 3's arena and its
-module-state exception leave this campaign with 1a; no replacement compound
-arena is designed into the consolidation phases.
+module-state exception leave with 1a; no replacement compound arena is
+designed into the consolidation phases.
 
 ## Target architecture
 
