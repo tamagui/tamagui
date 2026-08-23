@@ -14,10 +14,11 @@ import {
 } from '@tamagui/helpers'
 import {
   canonicalClauseModifier,
-  clauseConditionSetKey,
   clauseSubjectClassRepetitions,
   createClausePrecedenceOrder,
   getClausePrecedenceKeyFromKinds,
+  isContainerSizeQueryText,
+  isModifierName,
   isRootThemeName,
   scanFlatValue,
   type ClausePrecedenceKey,
@@ -155,7 +156,8 @@ const directStyleHandler: FlatValueHandler<DirectScanContext> = {
 // keyed by the CANONICAL modifier spelling: `canonicalClauseModifier` has
 // already folded `active`, `pressed`, `starting` and `ending` into their one
 // spelling before anything looks in here
-const stateSelectors: Record<string, string> = {
+const stateSelectors = {
+  __proto__: null,
   hover: ':hover',
   press: ':active',
   focus: ':focus',
@@ -167,7 +169,9 @@ const stateSelectors: Record<string, string> = {
   highlighted: '[data-highlighted]',
   selected: '[data-state="active"]',
   invalid: '[aria-invalid="true"]',
-}
+  enter: '.t_unmounted',
+  exit: '.t_exiting',
+} as unknown as Record<string, string>
 
 const legacyTransformParts = new Set([
   'matrix',
@@ -310,7 +314,13 @@ function groupCondition(state: GetStyleState, modifier: string, out: Condition) 
   const stateName = modifier.slice(6, slash === -1 ? undefined : slash)
   const groupName = slash === -1 ? 'true' : modifier.slice(slash + 1)
   const selector = stateSelectors[stateName]
-  if (!selector || !groupName) return false
+  if (
+    !selector ||
+    selector[0] === '.' ||
+    (slash !== -1 && !isModifierName(groupName, 0, groupName.length))
+  ) {
+    return false
+  }
   out.selector += `:where(.t_group_${groupName}${selector} *)`
   if (stateName === 'hover') (out.wrappers ||= []).push('@media (hover: hover)')
   const component = state.componentState.group?.[groupName]
@@ -323,12 +333,18 @@ function groupCondition(state: GetStyleState, modifier: string, out: Condition) 
 function containerCondition(state: GetStyleState, modifier: string, out: Condition) {
   const slash = modifier.indexOf('/')
   const size = modifier.slice(1, slash === -1 ? undefined : slash)
-  const name = slash === -1 ? null : modifier.slice(slash + 1)
+  const name = slash === -1 ? '' : modifier.slice(slash + 1)
+  if (
+    !isModifierName(size, 0, size.length) ||
+    (slash !== -1 && !isModifierName(name, 0, name.length))
+  ) {
+    return false
+  }
   const query = queryFor(state, size)
-  if (!query || (name !== null && !name)) return false
-  const key = name === null ? '@' : `@${name}`
+  if (!query || !isContainerSizeQueryText(query)) return false
+  const key = `@${name}`
   ;(out.wrappers ||= []).push(
-    name === null ? `@container ${query}` : `@container ${name} ${query}`
+    name ? `@container ${name} ${query}` : `@container ${query}`
   )
   const component = state.componentState.group?.[key]
   const context = state.flatGroupContext?.[key]
@@ -358,75 +374,69 @@ export function getCondition(state: GetStyleState, source: string): Condition | 
   let start = 0
   for (let index = 0; index <= source.length; index++) {
     if (index !== source.length && source.charCodeAt(index) !== 58) continue
-    let modifier = canonicalClauseModifier(source.slice(start, index))
+    const modifier = canonicalClauseModifier(source.slice(start, index))
     start = index + 1
     if (!modifier) return null
+    const selector = stateSelectors[modifier]
+    let kind: ModifierKind
+    if (selector) {
+      kind = 'state'
+    } else if (modifier.startsWith('group-')) {
+      kind = 'group'
+    } else if (modifier.charCodeAt(0) === 64) {
+      kind = 'container'
+    } else {
+      const media = state.conf.media
+      if (media && Object.prototype.hasOwnProperty.call(media, modifier)) {
+        kind = 'media'
+      } else if (
+        modifier === 'web' ||
+        modifier === 'native' ||
+        modifier === 'ios' ||
+        modifier === 'android' ||
+        modifier === 'tv' ||
+        modifier === 'tvos' ||
+        modifier === 'androidtv'
+      ) {
+        kind = 'platform'
+      } else {
+        const themes = isRootThemeName(modifier) && state.conf.themes
+        if (themes && Object.prototype.hasOwnProperty.call(themes, modifier)) {
+          kind = 'theme'
+        } else {
+          return null
+        }
+      }
+    }
+
     if (seenModifiers.has(modifier)) continue
     seenModifiers.add(modifier)
+    canonical.push(modifier)
+    kinds.push(kind)
 
-    if (modifier.startsWith('group-')) {
+    if (kind === 'group') {
       if (!groupCondition(state, modifier, out)) return null
-      canonical.push(modifier)
-      kinds.push('group')
       continue
     }
-    if (modifier.charCodeAt(0) === 64) {
+    if (kind === 'container') {
       if (!containerCondition(state, modifier, out)) return null
-      canonical.push(modifier)
-      kinds.push('container')
       continue
     }
-    if (modifier in stateSelectors || modifier === 'enter' || modifier === 'exit') {
-      canonical.push(modifier)
-      kinds.push('state')
-      selfStateSpecificity++
-      const selector = stateSelectors[modifier]
-      if (
-        !isWeb &&
-        modifier !== 'hover' &&
-        modifier !== 'press' &&
-        modifier !== 'focus' &&
-        modifier !== 'focus-visible' &&
-        modifier !== 'focus-within' &&
-        modifier !== 'disabled' &&
-        modifier !== 'enter' &&
-        modifier !== 'exit'
-      ) {
-        out.unsupportedState = modifier
-      }
-      if (modifier === 'enter' || modifier === 'exit') {
-        const cls = modifier === 'enter' ? '.t_unmounted' : '.t_exiting'
-        out.selector += `:is(${cls}, ${cls} *)`
-        out[modifier] = true
-      } else if (selector) {
-        out.selector += selector
-      }
-      if (modifier === 'hover') (out.wrappers ||= []).push('@media (hover: hover)')
-      out.active &&= stateIsActive(state, modifier)
-      if (
-        modifier === 'hover' ||
-        modifier === 'press' ||
-        modifier === 'focus' ||
-        modifier === 'focus-visible' ||
-        modifier === 'focus-within'
-      ) {
-        ;(state.flatStateKeys ||= new Set()).add(modifier)
-      }
-      continue
-    }
-    if (modifier in (state.conf.media || {})) {
+    if (kind === 'media') {
       const query = queryFor(state, modifier)
       if (!query) return null
-      canonical.push(modifier)
-      kinds.push('media')
       ;(out.wrappers ||= []).push(`@media ${query}`)
       out.active &&= !!state.flatMediaState?.[modifier]
       ;(state.flatMediaKeys ||= new Set()).add(modifier)
       continue
     }
-    if (isRootThemeName(modifier) && modifier in (state.conf.themes || {})) {
-      canonical.push(modifier)
-      kinds.push('theme')
+    if (kind === 'platform') {
+      const matches = platformMatches(modifier)
+      out.active &&= matches
+      out.emit &&= matches
+      continue
+    }
+    if (kind === 'theme') {
       out.theme = modifier
       out.selector += `:where(.t_${modifier}, .t_${modifier} *)`
       out.active &&=
@@ -434,30 +444,28 @@ export function getCondition(state: GetStyleState, source: string): Condition | 
         state.flatThemeName?.startsWith(`${modifier}_`) === true
       continue
     }
-    if (
-      modifier === 'web' ||
-      modifier === 'native' ||
-      modifier === 'ios' ||
-      modifier === 'android' ||
-      modifier === 'tv' ||
-      modifier === 'tvos' ||
-      modifier === 'androidtv'
-    ) {
-      canonical.push(modifier)
-      kinds.push('platform')
-      const matches = platformMatches(modifier)
-      out.active &&= matches
-      out.emit &&= matches
-      continue
+    selfStateSpecificity++
+    if (!isWeb && selector[0] === '[' && modifier !== 'disabled') {
+      out.unsupportedState = modifier
     }
-    return null
+    if (selector[0] === '.') {
+      out.selector += `:is(${selector}, ${selector} *)`
+      out[modifier] = true
+    } else {
+      out.selector += selector
+    }
+    if (modifier === 'hover') (out.wrappers ||= []).push('@media (hover: hover)')
+    out.active &&= stateIsActive(state, modifier)
+    if (selector[0] === ':') {
+      ;(state.flatStateKeys ||= new Set()).add(modifier)
+    }
   }
-  out.key = clauseConditionSetKey(canonical)
   out.precedence = getClausePrecedenceKeyFromKinds(
     canonical,
     kinds,
     precedenceOrderFor(state)
   )
+  out.key = canonical[1] ? canonical.sort().join(':') : canonical[0] || ''
   out.classRepetitions = clauseSubjectClassRepetitions(
     out.precedence,
     selfStateSpecificity

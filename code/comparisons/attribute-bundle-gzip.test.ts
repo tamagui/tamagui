@@ -302,7 +302,7 @@ test('--parser-cluster removes full sources and exact declarations as one union'
   expect(Number(/PARSER CLUSTER UNION: (-?\d+)/.exec(output)?.[1])).toBe(expectedUnion)
 })
 
-test('parser cluster full-source and declaration negative controls both move the union', () => {
+test('parser cluster full-source and declaration negative controls both move the union', async () => {
   const baseline = parserClusterBundle('bundle-parser-control-baseline-')
   const fullSourceStub = parserClusterBundle(
     'bundle-parser-control-source-',
@@ -313,18 +313,37 @@ test('parser cluster full-source and declaration negative controls both move the
     'stub-declaration'
   )
 
-  const union = (directory: string) => {
-    const result = runParserCluster(directory)
-    expect(result.exitCode).toBe(0)
-    expect(new TextDecoder().decode(result.stderr)).toBe('')
-    return Number(
-      /PARSER CLUSTER UNION: (-?\d+)/.exec(new TextDecoder().decode(result.stdout))?.[1]
+  const processes = [baseline, fullSourceStub, declarationStub].map(({ directory }) =>
+    Bun.spawn(
+      [
+        process.execPath,
+        join(import.meta.dir, 'attribute-bundle-gzip.ts'),
+        directory,
+        `--parser-cluster=${parserClusterCheckpoint}`,
+      ],
+      { stdout: 'pipe', stderr: 'pipe' }
     )
+  )
+  const results = await Promise.all(
+    processes.map(async (process) => {
+      const [exitCode, stdout, stderr] = await Promise.all([
+        process.exited,
+        new Response(process.stdout).text(),
+        new Response(process.stderr).text(),
+      ])
+      return { exitCode, stdout, stderr }
+    })
+  )
+
+  const union = (result: (typeof results)[number]) => {
+    expect(result.exitCode).toBe(0)
+    expect(result.stderr).toBe('')
+    return Number(/PARSER CLUSTER UNION: (-?\d+)/.exec(result.stdout)?.[1])
   }
 
-  const baselineUnion = union(baseline.directory)
-  expect(union(fullSourceStub.directory)).not.toBe(baselineUnion)
-  expect(union(declarationStub.directory)).not.toBe(baselineUnion)
+  const baselineUnion = union(results[0]!)
+  expect(union(results[1]!)).not.toBe(baselineUnion)
+  expect(union(results[2]!)).not.toBe(baselineUnion)
 })
 
 test.each([

@@ -102,7 +102,9 @@ function forEachName(source: Names | undefined, visit: (name: string) => void): 
     for (const name of source) visit(name)
     return
   }
-  for (const name in source as Readonly<Record<string, unknown>>) visit(name)
+  for (const name in source as Readonly<Record<string, unknown>>) {
+    if (Object.prototype.hasOwnProperty.call(source, name)) visit(name)
+  }
 }
 
 export function createModifierRegistry(

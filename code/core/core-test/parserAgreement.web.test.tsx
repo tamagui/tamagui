@@ -295,6 +295,43 @@ describe('agreement', () => {
     }
   )
 
+  test('group names outside the shared identifier grammar refuse without subscribing', () => {
+    for (const modifier of ['group-hover/a.b', 'group-hover/a/b', 'group-hover/café']) {
+      const source = `none ${modifier}:red`
+      expect(parseValue(source, registry).ok, modifier).toBe(false)
+
+      const result = simplifiedGetSplitStyles(
+        View,
+        { [PROBE]: source },
+        { noClass: true }
+      )
+      expect(result.style?.[PROBE] ?? null, modifier).toBe(null)
+      expect(result.pseudoGroups?.size ?? 0, modifier).toBe(0)
+    }
+  })
+
+  test('unconfigured Object.prototype spellings refuse without throwing', () => {
+    for (const modifier of [
+      'constructor',
+      '__defineGetter__',
+      '__defineSetter__',
+      'hasOwnProperty',
+      '__lookupGetter__',
+      '__lookupSetter__',
+      'isPrototypeOf',
+      'propertyIsEnumerable',
+      'toString',
+      'valueOf',
+      '__proto__',
+      'toLocaleString',
+    ]) {
+      const source = `none ${modifier}:red`
+      expect(parseValue(source, registry).ok, modifier).toBe(false)
+      expect(() => propValue(source), modifier).not.toThrow()
+      expect(propValue(source), modifier).toBe(null)
+    }
+  })
+
   test.each([
     ['none active:active:red', ['press']],
     ['none sm:hover:hover:red', ['hover', 'sm']],

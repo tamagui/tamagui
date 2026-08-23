@@ -29,6 +29,7 @@ export const coreStateModifierNames: readonly CoreStateModifierName[] = Object.f
  * calls all four aliases, so the two tables now agree by construction.
  */
 export const modifierAliases: Readonly<Record<string, string>> = Object.freeze({
+  __proto__: null,
   active: 'press',
   pressed: 'press',
   starting: 'enter',

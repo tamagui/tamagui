@@ -5495,3 +5495,74 @@ Validation at this checkpoint:
 - root dependency, unused, Tamagui, reference, path, DOM type, and LSP pin
   checks passed;
 - `git diff --check` passed.
+
+## 55. Engine consolidation Phase III-c1: runtime normalization (2026-08-23)
+
+Runtime classification now follows the contracted grammar without a compiled
+table or invalidation path. Platform names win over same-named root themes;
+group and container identifiers use the shared strict identifier rule;
+container syntax accepts only size-query media; configured-name lookup uses
+own entries; and all twelve `Object.prototype` spellings refuse without
+throwing unless the config supplies an own entry.
+
+The reserved-prefix behavior has a two-sided integration pin. Illegal
+configured `group-*` media and theme entries produce their exact actionable
+diagnostics, while valid authored `group-hover:` and `group-active:` clauses
+still classify as groups. The general rule is that an invalid config entry
+must never change the meaning of valid authored code.
+
+The first revised-binding implementation measured CORE 39,940, which was +28
+against the III-c0d baseline. That uncommitted result never entered the debt
+ledger. It incorrectly let illegal configured names make valid group clauses
+refuse. Removing those config-aware branches and simplifying the same
+classification path recovered 29 CORE. The final checkpoint is one byte below
+its incoming CORE.
+
+No per-call object, array, Set, closure, Proxy, authored-data read, or extra
+render loop was added. Classification state remains on the call stack, so a
+nested authored read cannot corrupt an outer pass. The condition-set key uses
+the already canonical, deduplicated array and sorts only when a second element
+exists. Registry record enumeration becomes own-only outside the render path.
+
+### Size and cluster receipts
+
+The fresh frozen-size artifact is
+`/tmp/p29049-phase3c1-final-size.g78MkB`.
+
+| arm | whole gzip | CORE |
+| --- | ---: | ---: |
+| Phase III-c0d | 104,024 | 39,912 |
+| Phase III-c1 | 104,034 | 39,911 |
+| movement | +10 | -1 |
+
+The fresh parser-cluster artifact is
+`/tmp/p29049-phase3c1-final-cluster.y1JBvI`.
+
+| arm | cluster whole gzip | parser-cluster union |
+| --- | ---: | ---: |
+| Phase III-c0d | 103,759 | 3,956 |
+| Phase III-c1 | 103,814 | 4,011 |
+| movement | +55 | +55 |
+
+The +55 parser-cluster movement is open debt assigned to IV-a. III-c1 adds
+strict shared identifier/query classification while the legacy resolver,
+precedence, and set-key wiring remains. IV-a removes that old wiring. The
+permanent III-c0b +6 remains classified as correctness cost, and the CORE debt
+ledger remains only III-b's +48.
+
+Validation at this checkpoint:
+
+- the focused web normalization matrix passed 60 tests;
+- the focused native non-size-container control passed 59 tests;
+- the full style-grammar suite passed 28 files and 453 tests;
+- the full core web suite passed 70 files with two skipped, 547 tests with
+  three skipped and one todo;
+- the full core native suite passed 30 files with one skipped, 295 tests with
+  seven expected failures and nine skipped;
+- full root build passed 171 of 171 tasks;
+- root lint and repository checks passed with only the existing warnings;
+- the parser ruler passed 8 tests and 36 expectations in 2.84 seconds. Its
+  two negative controls now run concurrently after the old sequential test
+  exceeded the unchanged five-second default under concurrent repository
+  validation; no timeout, retry, or assertion was weakened;
+- `git diff --check` passed.

@@ -1,5 +1,19 @@
 import { describe, expect, test } from 'vitest'
-import { createGrammarConfigView } from '..'
+import { createGrammarConfigView, isContainerSizeQueryText } from '..'
+
+test('container query text accepts only size features', () => {
+  for (const query of [
+    '(min-width: 900px)',
+    '(max-height: 700px)',
+    '(inline-size > 30rem)',
+    '(block-size > 20rem)',
+  ]) {
+    expect(isContainerSizeQueryText(query), query).toBe(true)
+  }
+  for (const query of ['(hover: none)', '(font-size: 16px)', '(WIDTH: 900px)']) {
+    expect(isContainerSizeQueryText(query), query).toBe(false)
+  }
+})
 
 describe('createGrammarConfigView', () => {
   test('projects runtime config names into category-safe grammar domains', () => {

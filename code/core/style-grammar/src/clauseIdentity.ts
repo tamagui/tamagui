@@ -39,7 +39,6 @@ export const stateModifierNames: readonly string[] = Object.freeze([
 ])
 
 const stateModifierSet: ReadonlySet<string> = new Set(stateModifierNames)
-const groupPrefixLength = 'group-'.length
 
 /** the shared identifier rule for parameterized modifier names */
 export function isModifierName(text: string, start: number, end: number): boolean {
@@ -64,9 +63,9 @@ export function parseGroupModifier(name: string): GroupModifier | null {
   if (!name.startsWith('group-')) return null
   const slash = name.indexOf('/')
   if (slash !== -1 && !isModifierName(name, slash + 1, name.length)) return null
-  const state = name.slice(groupPrefixLength, slash === -1 ? name.length : slash)
+  const state = name.slice(6, slash === -1 ? name.length : slash)
   if (!stateModifierSet.has(state)) return null
-  const canonicalState = modifierAliases[state] ?? state
+  const canonicalState = modifierAliases[state] || state
   if (canonicalState === 'enter' || canonicalState === 'exit') return null
   return { state, group: slash === -1 ? null : name.slice(slash + 1) }
 }
@@ -75,11 +74,12 @@ export function parseGroupModifier(name: string): GroupModifier | null {
 export function canonicalClauseModifier(name: string): string {
   const direct = modifierAliases[name]
   if (direct) return direct
-  const group = parseGroupModifier(name)
-  if (!group) return name
-  const state = modifierAliases[group.state] ?? group.state
-  if (state === group.state) return name
-  return group.group === null ? `group-${state}` : `group-${state}/${group.group}`
+  if (!name.startsWith('group-')) return name
+  const slash = name.indexOf('/')
+  if (slash !== -1 && !isModifierName(name, slash + 1, name.length)) return name
+  const state = modifierAliases[name.slice(6, slash === -1 ? name.length : slash)]
+  if (!state || state === 'enter' || state === 'exit') return name
+  return slash === -1 ? `group-${state}` : `group-${state}${name.slice(slash)}`
 }
 
 function canonicalConditionSetKey(modifiers: string[]): string {
