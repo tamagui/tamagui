@@ -31,7 +31,7 @@
     "@tamagui/react-native-media-driver": "workspace:*",
     "@tamagui/toast": "workspace:*",
     "@vxrn/color-scheme": "^1.25.2",
-    "expo": "~57.0.10",
+    "expo": "~57.0.15",
     "expo-asset": "~57.0.8",
     "expo-modules-core": "~57.0.9",
     "expo-splash-screen": "~57.0.7",
