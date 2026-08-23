@@ -105,8 +105,6 @@ function hasEnterStyle(source: string, property = PROBE) {
   const { result } = renderHook(() =>
     useComponentState(
       { [property]: source },
-      undefined,
-      undefined,
       undefined as any,
       (View as any).staticConfig,
       getConfig()

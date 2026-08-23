@@ -14,7 +14,6 @@ import {
 } from '../defaultComponentState'
 import { isObj } from '../helpers/isObj'
 import { log } from '../helpers/log'
-import { type GenericProps, readMergedProp } from '../helpers/mergeProps'
 import type {
   ComponentContextI,
   StaticConfig,
@@ -71,56 +70,31 @@ const lifecycleVisitor = {
  * an enter frame for a style that never arrived.
  */
 function hasFlatModifier(
-  caller: Record<string, any>,
-  context: Record<string, any> | undefined,
-  defaults: Record<string, any> | undefined,
+  props: Record<string, any>,
   config: TamaguiInternalConfig,
   modifiers: ReadonlySet<string>
 ): boolean {
-  // scan each key's effective merged value once, in merge order: caller wins, then
-  // styled context (undefined skips), then defaults. mirrors contributeMergedSources.
-  const scanValue = (value: any, key: string): boolean => {
-    if (typeof value !== 'string' || value.indexOf(':') === -1) return false
+  for (const key in props) {
+    const value = props[key]
+    if (typeof value !== 'string' || value.indexOf(':') === -1) continue
     const property = config.shorthands[key] || key
-    if (!(property in stylePropsAll) && property !== 'transition') return false
+    if (!(property in stylePropsAll) && property !== 'transition') continue
     scanSource = value
     scanWanted = modifiers
     scanFound = false
     scanRefused = false
     scanFlatValue(value, lifecycleVisitor)
-    return scanFound && !scanRefused
-  }
-
-  if (defaults) {
-    for (const key in defaults) {
-      if (key in caller) continue
-      if (context && context[key] !== undefined) continue
-      if (scanValue(defaults[key], key)) return true
-    }
-  }
-  if (context) {
-    for (const key in context) {
-      if (key in caller) continue
-      if (context[key] === undefined) continue
-      if (defaults && key in defaults) continue
-      if (scanValue(context[key], key)) return true
-    }
-  }
-  for (const key in caller) {
-    if (scanValue(caller[key], key)) return true
+    if (scanFound && !scanRefused) return true
   }
   return false
 }
 
 export const useComponentState = (
-  caller: ViewProps | TextProps | Record<string, any>,
-  styledContextValue: GenericProps | undefined,
-  resolvedDefaultProps: Record<string, any> | undefined,
+  props: ViewProps | TextProps | Record<string, any>,
   animationDriver: ComponentContextI['animationDriver'],
   staticConfig: StaticConfig,
   config: TamaguiInternalConfig
 ) => {
-  const props = caller
   'use no memo'
 
   const isHydrated = useDidFinishSSR()
@@ -145,11 +119,9 @@ export const useComponentState = (
   }
 
   // after we get states mount we need to turn off isAnimated for server side
-  const transition = readMergedProp(caller, styledContextValue, resolvedDefaultProps, 'transition')
-  const styleProp = readMergedProp(caller, styledContextValue, resolvedDefaultProps, 'style')
   const hasAnimationProp = Boolean(
-    (!isHOC && transition !== undefined) ||
-    (styleProp && hasAnimatedStyleValue(styleProp))
+    (!isHOC && 'transition' in props) ||
+    (props.style && hasAnimatedStyleValue(props.style))
   )
 
   const inputStyle = animationDriver?.inputStyle ?? 'css'
@@ -171,7 +143,7 @@ export const useComponentState = (
     useAnimations &&
     animationDriver?.avoidReRenders &&
     getPlatformDriver()?.pseudo &&
-    hasFlatModifier(caller, styledContextValue, resolvedDefaultProps, config, platformPseudoModifiers)
+    hasFlatModifier(props, config, platformPseudoModifiers)
   )
 
   const willBeAnimatedClient = (() => {
@@ -186,18 +158,13 @@ export const useComponentState = (
     curStateRef.hasAnimated = true
   }
 
-  const disableClassName = readMergedProp(
-    caller,
-    styledContextValue,
-    resolvedDefaultProps,
-    'disableClassName'
-  )
+  const { disableClassName } = props
 
   // HOOK
   const presence =
     (!isHOC &&
       willBeAnimated &&
-      caller['animatePresence'] !== false &&
+      props['animatePresence'] !== false &&
       animationDriver?.usePresence?.()) ||
     null
 
@@ -205,13 +172,7 @@ export const useComponentState = (
   const isExiting = presenceState?.isPresent === false
   const isEntering = presenceState?.isPresent === true && presenceState.initial !== false
 
-  const hasEnterStyle = hasFlatModifier(
-    caller,
-    styledContextValue,
-    resolvedDefaultProps,
-    config,
-    enterModifier
-  )
+  const hasEnterStyle = hasFlatModifier(props, config, enterModifier)
 
   const hasAnimationThatNeedsHydrate =
     hasAnimationProp &&
@@ -247,7 +208,7 @@ export const useComponentState = (
     : defaultComponentStateMounted
 
   // will be nice to deprecate half of these:
-  const disabled = isDisabled(caller, styledContextValue, resolvedDefaultProps)
+  const disabled = isDisabled(props)
 
   if (disabled != null) {
     initialState.disabled = disabled
@@ -256,8 +217,7 @@ export const useComponentState = (
   // HOOK
   const states = useState<TamaguiComponentState>(initialState)
 
-  const forceStyle = readMergedProp(caller, styledContextValue, resolvedDefaultProps, 'forceStyle')
-  const state = forceStyle ? { ...states[0], [forceStyle]: true } : states[0]
+  const state = props.forceStyle ? { ...states[0], [props.forceStyle]: true } : states[0]
   const setState = states[1]
 
   // apply states we never updated from avoiding re-renders in animation driver
@@ -283,7 +243,7 @@ export const useComponentState = (
     setState((_) => ({ ...state }))
   }
 
-  const groupName = readMergedProp(caller, styledContextValue, resolvedDefaultProps, 'group') as any as string | undefined
+  const groupName = props.group as any as string | undefined
 
   // hoisted shallow-set closure: created once per component instance and
   // reused every render. drops the useCallback hook that useCreateShallowSetState
@@ -318,7 +278,7 @@ export const useComponentState = (
     }
   }
   if (process.env.NODE_ENV === 'development') {
-    ;(stateRef.current as any).__debug = caller.debug
+    ;(stateRef.current as any).__debug = props.debug
   }
   const setStateShallow = stateRef.current.baseSetStateShallow!
   if (process.env.NODE_ENV === 'development' && globalThis.time)
@@ -328,9 +288,9 @@ export const useComponentState = (
   // caller's incoming props. with the ref-strip clone removed in createComponent, on
   // the no-defaults path that input IS React's own props object and must stay
   // immutable. the augmented copy is returned as `props` below.
-  let outProps: typeof caller = caller
+  let outProps: typeof props = props
   if (presenceState && isAnimated && isHydrated && staticConfig.variants) {
-    if (process.env.NODE_ENV === 'development' && caller.debug === 'verbose') {
+    if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') {
       console.warn(
         formatDiagnostic(
           'TAMAGUI_PRESENCE_STATE',
@@ -346,11 +306,11 @@ export const useComponentState = (
     }
     const { custom } = presenceState
     if (isObj(custom)) {
-      outProps = { ...caller, ...custom }
+      outProps = { ...props, ...custom }
     }
   }
 
-  let noClass = !isWeb || !!forceStyle
+  let noClass = !isWeb || !!props.forceStyle
 
   if (!isHydrated) {
     noClass = false
@@ -377,7 +337,7 @@ export const useComponentState = (
       ) {
         noClass = true
 
-        if (process.env.NODE_ENV === 'development' && caller.debug === 'verbose') {
+        if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') {
           log(`avoiding className`, {
             isAnimatedAndHydrated,
             isDisabledManually,
@@ -424,18 +384,13 @@ function hasAnimatedStyleValue(style: object) {
   return false
 }
 
-const isDisabled = (
-  caller: Record<string, any>,
-  context: Record<string, any> | undefined,
-  defaults: Record<string, any> | undefined
-) => {
-  const read = (key: string) => readMergedProp(caller, context, defaults, key)
+const isDisabled = (props: any) => {
   return (
-    read('disabled') ||
-    read('passThrough') ||
-    read('accessibilityState')?.disabled ||
-    read('aria-disabled') ||
-    read('accessibilityDisabled') ||
+    props.disabled ||
+    props.passThrough ||
+    props.accessibilityState?.disabled ||
+    props['aria-disabled'] ||
+    props.accessibilityDisabled ||
     false
   )
 }

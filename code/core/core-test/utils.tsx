@@ -6,6 +6,7 @@ import {
 import type { SplitStyleProps } from '../web/src'
 import { getDefaultProps, getSplitStyles } from '../web/src'
 import { defaultComponentState } from '../web/src/defaultComponentState'
+import { mergeComponentProps } from '../web/src/helpers/mergeProps'
 
 const emptyObj = {} as any
 
@@ -36,22 +37,23 @@ export function simplifiedGetSplitStyles(
         ...context.props,
       }
     : context?.props
-  // mirror createComponent: pass raw props and let getSplitStyles traverse the
-  // caller, styled context, and defaults directly instead of materializing a merge
+  // optionally merge in default/context props like createComponent does
+  let mergedProps = props
+  if (options.mergeDefaultProps) {
+    const defaults = getDefaultProps(component.staticConfig)
+    ;[mergedProps] = mergeComponentProps(defaults, styledContext, props)
+  }
+
   const styleProps = {
     mediaState: options.mediaState,
     isAnimated: options.isAnimated ?? false,
     noClass: options.noClass,
     resolveValues: 'auto',
     styledContext,
-    styledContextValue: options.mergeDefaultProps ? styledContext : undefined,
-    defaultProps: options.mergeDefaultProps
-      ? getDefaultProps(component.staticConfig)
-      : undefined,
   } satisfies SplitStyleProps
 
   return getSplitStyles(
-    props,
+    mergedProps,
     component.staticConfig,
     options.theme ?? emptyObj,
     options.themeName ?? '',

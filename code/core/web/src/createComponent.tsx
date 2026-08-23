@@ -34,11 +34,7 @@ import {
 } from './helpers/nativeStyleEngine'
 import { getThemeProxied } from './hooks/getThemeProxied'
 import { log } from './helpers/log'
-import {
-  type GenericProps,
-  getOverriddenContextProps,
-  readMergedProp,
-} from './helpers/mergeProps'
+import { type GenericProps, mergeComponentProps } from './helpers/mergeProps'
 import { mergeRenderElementProps } from './helpers/mergeRenderElementProps'
 import { getMedia } from './helpers/mediaState'
 import { objectIdentityKey } from './helpers/objectIdentityKey'
@@ -419,16 +415,15 @@ export function createComponent<
           : staticDefaultProps
     }
 
-    // caller props shadowing a styled-context key still reach children through the
-    // context-override provider (issue #3670); compute them without the merged object
-    overriddenContextProps = getOverriddenContextProps(propsIn, styledContextValue)
+    // merge styled context props over defaults, ensure order is preserved
+    const [nextProps, overrides] = mergeComponentProps(
+      resolvedDefaultProps,
+      styledContextValue,
+      propsIn
+    )
 
-    // scalar control reads resolve caller, styled context, then defaults, matching
-    // the removed mergeComponentProps order without materializing a merged object.
-    // closes over `props`, which is later reassigned to the presence-augmented
-    // props object, so post-useComponentState reads still see the custom overlay.
-    const readProp = (key: string) =>
-      readMergedProp(props, styledContextValue, resolvedDefaultProps, key)
+    props = nextProps as ViewProps | TextProps
+    overriddenContextProps = overrides
 
     // frontend single pass (hoisted): the component's descriptor tokenizes className +
     // flattens props ONCE here, so flat values and transition props are in place before
@@ -508,17 +503,16 @@ export function createComponent<
 
     // Get animation driver - either from animatedBy prop lookup or context/config fallback
     const animationDriver = (() => {
-      const animatedBy = readProp('animatedBy')
-      if (animatedBy && config) {
+      if (props.animatedBy && config) {
         let selectedDriver
         // check animationDrivers for multi-driver config
         if (config.animationDrivers) {
           selectedDriver =
-            (config.animationDrivers as Record<string, any>)[animatedBy] ??
+            (config.animationDrivers as Record<string, any>)[props.animatedBy] ??
             config.animations
         } else {
           // single driver config - only 'default' makes sense
-          selectedDriver = animatedBy === 'default' ? config.animations : null
+          selectedDriver = props.animatedBy === 'default' ? config.animations : null
         }
         return resolveAnimationDriver(selectedDriver)
       }
@@ -537,8 +531,6 @@ export function createComponent<
 
     const componentState = useComponentState(
       props,
-      styledContextValue,
-      resolvedDefaultProps,
       animationDriver?.isStub ? null : animationDriver,
       staticConfig,
       config!
@@ -624,27 +616,27 @@ export function createComponent<
     // responder event path (it must fire onPress anyway); the driver only owns
     // the hover trigger for now.
     useIsomorphicLayoutEffect(() => {
-      if (!platformPseudo || disabled) return
+      if (!platformPseudo || props.disabled) return
       const pseudoDriver = getPlatformDriver()?.pseudo
       const host = stateRef.current.host
       if (!pseudoDriver || !host) return
       return pseudoDriver.subscribe(host, ({ hovered }) => {
         stateRef.current.setStateShallow?.({ hover: hovered })
       })
-    }, [platformPseudo, disabled])
+    }, [platformPseudo, props.disabled])
 
     // a component is a query container when any container prop says so; the
     // boolean `container` is the unnamed inline-size shorthand (decision 17)
-    const containerName = readProp('containerName') as string | undefined
+    const containerName = props.containerName as string | undefined
     const isContainer = !!(
-      readProp('container') ||
+      props.container ||
       containerName ||
-      (readProp('containerType') && readProp('containerType') !== 'normal')
+      (props.containerType && props.containerType !== 'normal')
     )
 
     // create new context with groups, or else sublings will grab the same one
     const allGroupContexts = useMemo((): AllGroupContexts | null => {
-      if ((!groupName && !isContainer) || readProp('passThrough')) {
+      if ((!groupName && !isContainer) || props.passThrough) {
         return groupContextParent
       }
 
@@ -707,7 +699,7 @@ export function createComponent<
     if (process.env.NODE_ENV === 'development' && time) time`use-state`
 
     // web-only - string-style not valid for native
-    const renderProp = readProp('render')
+    const renderProp = props.render
     const isRenderString = !Component || typeof Component === 'string'
 
     // default to render prop, fallback to component (when both strings)
@@ -740,15 +732,14 @@ export function createComponent<
 
     const themeStateProps: UseThemeWithStateProps = {
       disable: disableTheme,
-      shallow: readProp('themeShallow'),
+      shallow: props.themeShallow,
       debug: debugProp,
     }
 
     // this is set conditionally if existing in props because we wrap children with
     // a span if they ever set one of these, so avoid wrapping all children with span
-    const themeProp = readProp('theme')
-    if (themeProp !== undefined) {
-      themeStateProps.name = themeProp
+    if ('theme' in props) {
+      themeStateProps.name = props.theme
     }
     if (!stateRef.current.optimizeForFirstRender) {
       // this ensures components with dark/light theme clauses re-render on
@@ -865,8 +856,6 @@ export function createComponent<
       willBeAnimated,
       displayName,
       styledContext: getStyledContextKeys(staticConfig, styledContextValue),
-      styledContextValue,
-      defaultProps: resolvedDefaultProps,
     } as const
 
     const themeName = themeState?.name || ''
@@ -907,7 +896,7 @@ export function createComponent<
         !isHOC &&
         !willBeAnimated &&
         !groupName &&
-        !readProp('disableNativeStyle')
+        !props.disableNativeStyle
       stateRef.current.nativePushedStates = canNativeUpdate ? new Set() : undefined
       // fresh render: the themeState captured below is current again, and the
       // render itself commits this state's styles
@@ -1075,7 +1064,7 @@ export function createComponent<
       !isPassthrough &&
       groupContext &&
       // avoids onLayout if we don't need it
-      readProp('containerType') !== 'normal'
+      props.containerType !== 'normal'
     ) {
       const groupState = groupContext?.state
       if (groupState && groupState.layout === undefined) {
@@ -1094,12 +1083,11 @@ export function createComponent<
     // The exit state comes from AnimatePresence context, not local state, so
     // updateStyleListener can fire before the component re-renders with the new
     // presence value, causing wrong animation timing (e.g., using enter timing for exit)
-    const transitionProp = readProp('transition')
     const hasEnterExitTransition =
-      transitionProp &&
-      typeof transitionProp === 'object' &&
-      !Array.isArray(transitionProp) &&
-      ('enter' in transitionProp || 'exit' in transitionProp)
+      props.transition &&
+      typeof props.transition === 'object' &&
+      !Array.isArray(props.transition) &&
+      ('enter' in props.transition || 'exit' in props.transition)
 
     if (
       !isPassthrough &&
@@ -1148,7 +1136,7 @@ export function createComponent<
 
         const effectiveTransition =
           nextStyles?.effectiveTransition ??
-          readProp('transition') ??
+          props.transition ??
           (platformPseudo ? '0ms' : undefined)
 
         // update prev state for next comparison (includes group states)
@@ -1276,8 +1264,8 @@ export function createComponent<
     // hide strategy will set this opacity = 0 until measured
     if (splitStyles) {
       if (
-        groupName &&
-        readProp('untilMeasured') === 'hide' &&
+        props.group &&
+        props.untilMeasured === 'hide' &&
         !stateRef.current.hasMeasured
       ) {
         splitStyles.style = splitStyles.style || {}
@@ -1349,9 +1337,8 @@ export function createComponent<
     // so the type is pretty loose
     let viewProps = nonTamaguiProps
 
-    const forceStyleProp = readProp('forceStyle')
-    if (forceStyleProp) {
-      viewProps.forceStyle = forceStyleProp
+    if (props.forceStyle) {
+      viewProps.forceStyle = props.forceStyle
     }
 
     if (isHOC) {
@@ -1400,7 +1387,7 @@ export function createComponent<
 
       const effectiveTransition =
         splitStyles?.effectiveTransition ??
-        readProp('transition') ??
+        props.transition ??
         (platformPseudo ? '0ms' : undefined)
 
       // add effectiveTransition to splitStyles for drivers to consume
@@ -1451,11 +1438,7 @@ export function createComponent<
       viewProps.className = `t_exiting ${viewProps.className || ''}`
     }
 
-    if (
-      process.env.NODE_ENV === 'development' &&
-      readProp('untilMeasured') &&
-      !groupName
-    ) {
+    if (process.env.NODE_ENV === 'development' && props.untilMeasured && !props.group) {
       console.warn(
         `You set the untilMeasured prop without setting group. This doesn't work, be sure to set untilMeasured on the parent that sets group, not the children that use a group clause.\n\nIf you meant to do this, you can disable this warning - either change untilMeasured and group at the same time, or do group={conditional ? 'name' : undefined}`
       )
@@ -1466,7 +1449,7 @@ export function createComponent<
     if (
       !isPassthrough &&
       groupContext && // avoids onLayout if we don't need it
-      readProp('containerType') !== 'normal'
+      props.containerType !== 'normal'
     ) {
       nonTamaguiProps.onLayout = composeEventHandlers(
         nonTamaguiProps.onLayout,
@@ -1478,7 +1461,7 @@ export function createComponent<
             layout,
           })
           // force re-render if measure strategy is hide
-          if (!stateRef.current.hasMeasured && readProp('untilMeasured') === 'hide') {
+          if (!stateRef.current.hasMeasured && props.untilMeasured === 'hide') {
             setState((prev) => ({ ...prev }))
           }
 
@@ -1712,7 +1695,7 @@ export function createComponent<
     // allows for onPress={x ? function : undefined} without re-ordering dom
     const shouldAttach =
       !disabled &&
-      !readProp('asChild') &&
+      !props.asChild &&
       Boolean(
         attachFocus ||
         attachPress ||

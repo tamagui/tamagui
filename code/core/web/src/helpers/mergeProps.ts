@@ -24,7 +24,7 @@ export const mergeProps = (defaultProps: object, props: object) => {
   // but we ignore any keys from props, and merge it after, that way
   // final order is [...defaultPropKeys, ...propKeys]
 
-  // ⚠️ keep in sync with readMergedProp / contributeMergedSources order
+  // ⚠️ keep in sync with mergeComponentProps logic
 
   for (const key in defaultProps) {
     if (key in props) continue
@@ -38,37 +38,54 @@ export const mergeProps = (defaultProps: object, props: object) => {
   return out
 }
 
-// resolve one merged prop value without materializing the merged object:
-// caller wins, then styled context (undefined context values are skipped so
-// they don't mask defaults), then defaults. mirrors the three-source traversal
-// in getSplitStyles' contributeMergedSources.
-export function readMergedProp(
-  caller: Record<string, any>,
-  context: Record<string, any> | undefined,
-  defaults: Record<string, any> | undefined,
-  key: string
-): any {
-  if (key in caller) return caller[key]
-  if (context) {
-    const value = context[key]
-    if (value !== undefined) return value
-  }
-  return defaults ? defaults[key] : undefined
-}
+// merge props but also handles defaultProps + styledContext
+export const mergeComponentProps = (
+  // this is "a" in mergeProps
+  defaultProps: object | null | undefined,
+  contextProps: object | undefined,
+  // this is "b" in mergeProps
+  props: object
+) => {
+  let overriddenContext: GenericProps | null = null
 
-// caller keys that shadow a styled-context key must still reach children through
-// the context-override provider. returns the override map, or null when none.
-export function getOverriddenContextProps(
-  caller: Record<string, any>,
-  context: Record<string, any> | undefined
-): GenericProps | null {
-  if (!context) return null
-  let overrides: GenericProps | null = null
-  for (const key in caller) {
-    if (key in context) {
-      overrides ||= {}
-      overrides[key] = caller[key]
+  if (!defaultProps && !contextProps) {
+    return [props, overriddenContext] as const
+  }
+
+  if (defaultProps && !contextProps) {
+    return [mergeProps(defaultProps, props), overriddenContext] as const
+  }
+
+  // the only unique case is contextProps, we need to track overrides and do something a bit tricky
+  // since we respect prop order for styles, we want to preserve the object key order in overriddenContext
+
+  const out: GenericProps = {}
+
+  // ⚠️ keep in sync with mergeProps logic
+  // same logic as mergeProps but tracking overrides!
+
+  for (const key in defaultProps) {
+    if (key in props) continue
+    out[key] = defaultProps[key]
+  }
+
+  // styled context props go after defaultProps but before props
+  for (const key in contextProps) {
+    if (key in props) continue
+    const contextValue = contextProps[key]
+    // don't merge undefined context values to preserve inheritance
+    if (contextValue !== undefined) {
+      out[key] = contextValue
     }
   }
-  return overrides
+
+  for (const key in props) {
+    out[key] = props[key]
+    if (contextProps && key in contextProps) {
+      overriddenContext ||= {}
+      overriddenContext[key] = props[key]
+    }
+  }
+
+  return [out, overriddenContext] as const
 }
