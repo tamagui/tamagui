@@ -13,6 +13,15 @@ the two reversible policy choices so the overnight campaign could proceed.
 may override either choice later; no translation from the old row-sum frame
 is claimed.
 
+Parser-cluster measurement binding, 2026-08-23: the cluster subgate uses a
+separate frozen fixture that instantiates styled inheritance. It never feeds
+CORE or changes the frozen size entry. On the exact Phase III-a checkpoint
+`cd2353824f`, the five-member union is **1,710 gzip**, so the <= 1,000 gate
+also requires a same-frame reduction of at least 710 bytes (the 800 target
+requires at least 910). All five named sources were present. A test-only
+replacement of `scanFlatValue` moved the union from 1,710 to 1,028, which is
+the negative control proving the ruler can see a member move.
+
 What changed in revision 3:
 
 - The 1a pricing control is now a real one-variable control: the integrated
@@ -305,6 +314,16 @@ the surviving lexer, identity reduction, resolver, and merge sink is measured
 as one union. The owner's target for this cluster is about 800 gzip; the gate
 requires it at or below 1,000 with the union reported either way. Whole-core
 movement alone cannot prove the consolidation happened.
+
+The cluster number comes from `tamagui-bench/cluster.html` and its frozen
+shared fixture, never from the CORE size entry. `--members` fails if any of
+`mergeVariants`, `mergeFlatValues`, `valueParser`, `programs`, or
+`scanFlatValue` is absent from the source map, then removes all five members
+as one union and gzips the stripped chunk once. The Phase III-a baseline is
+1,710, making the absolute gate and its required delta independently visible.
+Treating an absent member as zero would let an arbitrarily large omitted sink
+pass, while adding the styled inheritance case to CORE would change the
+campaign's units. Both alternatives are rejected.
 
 ### 3. The compiled vocabulary, with config-revision invalidation
 
@@ -756,6 +775,8 @@ bun code/comparisons/attribute-bundle-gzip.ts /tmp/v3-consol-N --core           
 bun code/comparisons/attribute-bundle-gzip.ts /tmp/v2-consol-N --core                       # CORE_v2
 bun code/comparisons/attribute-bundle-gzip.ts /tmp/v3-consol-N --against=/tmp/v2-consol-N --filter=@tamagui/   # attribution only
 bun code/comparisons/attribute-bundle-gzip.ts /tmp/v3-consol-N --within='directStyle'       # plus getSplitStyles during IV-V
+cd code/comparisons/tamagui-bench && bun run build:cluster --sourcemap --outDir /tmp/v3-cluster-N
+bun code/comparisons/attribute-bundle-gzip.ts /tmp/v3-cluster-N --members=mergeVariants,mergeFlatValues,valueParser,programs,scanFlatValue
 ```
 
 No EXTRACT build substitutes for the runtime arm. Runtime and allocation

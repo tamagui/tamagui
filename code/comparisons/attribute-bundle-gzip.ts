@@ -19,6 +19,8 @@
  * --core instead deletes every @tamagui/ span except animations-css and
  * animation-helpers as one union, then gzips the stripped chunk once. this is
  * the reproducible whole-core metric; it is not a sum of marginal rows.
+ * --members does the same one-union deletion for exact source-map member
+ * basenames and fails if any requested member is absent.
  *
  * usage:
  *   # build with sourcemaps first (bench dirs from run-benchmarks are temp)
@@ -29,6 +31,7 @@
  *   bun code/comparisons/attribute-bundle-gzip.ts /tmp/v3bench --filter=@tamagui/
  *   bun code/comparisons/attribute-bundle-gzip.ts /tmp/v3bench --against=/tmp/v2bench
  *   bun code/comparisons/attribute-bundle-gzip.ts /tmp/v3bench --core
+ *   bun code/comparisons/attribute-bundle-gzip.ts /tmp/v3bench --members=mergeVariants,mergeFlatValues
  */
 
 import { eachMapping, TraceMap } from '@jridgewell/trace-mapping'
@@ -43,11 +46,32 @@ const against = args.find((a) => a.startsWith('--against='))?.slice(10)
 const minDelta = Number(args.find((a) => a.startsWith('--min='))?.slice(6) ?? '40')
 const within = args.find((a) => a.startsWith('--within='))?.slice(9)
 const core = args.includes('--core')
+const memberArg = args.find((a) => a.startsWith('--members='))?.slice(10)
+const members = memberArg
+  ? [
+      ...new Set(
+        memberArg
+          .split(',')
+          .map((name) => name.trim())
+          .filter(Boolean)
+      ),
+    ]
+  : []
 
 if (!dirs[0]) {
   console.error(
-    'usage: attribute-bundle-gzip.ts <outDir> [--core] [--against=<outDir>] [--filter=str]'
+    'usage: attribute-bundle-gzip.ts <outDir> [--core | --members=a,b] [--against=<outDir>] [--filter=str]'
   )
+  process.exit(1)
+}
+
+if (memberArg !== undefined && members.length === 0) {
+  console.error('--members requires at least one comma-separated member name')
+  process.exit(1)
+}
+
+if (core && members.length > 0) {
+  console.error('--core and --members are separate union modes')
   process.exit(1)
 }
 
@@ -155,7 +179,7 @@ function attribute(dir: string) {
   }
 
   const modules = new Map<string, { minBytes: number; marginalGzip: number }>()
-  if (!core) {
+  if (!core && members.length === 0) {
     for (const [id, segs] of segments) {
       if (filter && !id.includes(filter)) continue
       const byFile = new Map<string, Segment[]>()
@@ -187,10 +211,56 @@ function attribute(dir: string) {
   return { modules, totalGzip, segments, codes, baseGzip, sources }
 }
 
+function groupSegmentsByFile(segmentGroups: Iterable<Segment[]>) {
+  const byFile = new Map<string, Segment[]>()
+  for (const segments of segmentGroups) {
+    for (const segment of segments) {
+      const fileSegments = byFile.get(segment.file)
+      if (fileSegments) fileSegments.push(segment)
+      else byFile.set(segment.file, [segment])
+    }
+  }
+  return byFile
+}
+
+// CORE and named-member attribution share this exact one-union operation.
+// Each emitted chunk is stripped once, gzipped once, then summed across chunks.
+function measureUnionGzip(
+  attributed: ReturnType<typeof attribute>,
+  byFile: Map<string, Segment[]>
+) {
+  let strippedGzip = 0
+  for (const [file, code] of attributed.codes) {
+    const fileSegments = byFile.get(file)
+    if (!fileSegments) {
+      strippedGzip += attributed.baseGzip.get(file)!
+      continue
+    }
+    const sorted = fileSegments.slice().sort((a, b) => a.start - b.start)
+    let stripped = ''
+    let position = 0
+    for (const segment of sorted) {
+      if (segment.start > position) stripped += code.slice(position, segment.start)
+      position = Math.max(position, segment.end)
+    }
+    stripped += code.slice(position)
+    strippedGzip += gzipSync(Buffer.from(stripped), { level: 9 }).byteLength
+  }
+  return attributed.totalGzip - strippedGzip
+}
+
+function sourceMemberName(id: string) {
+  const subpath = id.slice(id.lastIndexOf('::') + 2)
+  return subpath
+    .slice(subpath.lastIndexOf('/') + 1)
+    .replace(/\.native(?=\.[^.]+$)/, '')
+    .replace(/\.(?:mjs|js|jsx|ts|tsx)$/, '')
+}
+
 const left = attribute(dirs[0]!)
 
 if (core) {
-  const byFile = new Map<string, Segment[]>()
+  const segmentGroups: Segment[][] = []
   for (const [id, segs] of left.segments) {
     const packageName = id.slice(0, id.indexOf('::'))
     if (
@@ -200,33 +270,35 @@ if (core) {
     ) {
       continue
     }
-    for (const seg of segs) {
-      const list = byFile.get(seg.file)
-      if (list) list.push(seg)
-      else byFile.set(seg.file, [seg])
-    }
-  }
-
-  let strippedGzip = 0
-  for (const [file, code] of left.codes) {
-    const fileSegs = byFile.get(file)
-    if (!fileSegs) {
-      strippedGzip += left.baseGzip.get(file)!
-      continue
-    }
-    const sorted = fileSegs.slice().sort((a, b) => a.start - b.start)
-    let stripped = ''
-    let pos = 0
-    for (const seg of sorted) {
-      if (seg.start > pos) stripped += code.slice(pos, seg.start)
-      pos = Math.max(pos, seg.end)
-    }
-    stripped += code.slice(pos)
-    strippedGzip += gzipSync(Buffer.from(stripped), { level: 9 }).byteLength
+    segmentGroups.push(segs)
   }
 
   console.info(`bundle gzip total: ${left.totalGzip}`)
-  console.info(`CORE: ${left.totalGzip - strippedGzip}`)
+  console.info(`CORE: ${measureUnionGzip(left, groupSegmentsByFile(segmentGroups))}`)
+  process.exit(0)
+}
+
+if (members.length > 0) {
+  const matched = new Map<string, string[]>()
+  const segmentGroups: Segment[][] = []
+  for (const member of members) {
+    const ids = [...left.segments.keys()].filter((id) => sourceMemberName(id) === member)
+    if (ids.length === 0) {
+      console.error(`requested member absent from source map: ${member}`)
+      process.exit(1)
+    }
+    matched.set(member, ids)
+    for (const id of ids) segmentGroups.push(left.segments.get(id)!)
+  }
+
+  console.info(`bundle gzip total: ${left.totalGzip}`)
+  console.info('named member sources:')
+  for (const member of members) {
+    for (const id of matched.get(member)!) console.info(`  ${member}: ${id}`)
+  }
+  console.info(
+    `MEMBERS UNION: ${measureUnionGzip(left, groupSegmentsByFile(segmentGroups))}`
+  )
   process.exit(0)
 }
 

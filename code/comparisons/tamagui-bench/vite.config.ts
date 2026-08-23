@@ -33,10 +33,10 @@ export default defineConfig(({ mode }) => ({
     bundleAttributionPlugin(process.env.BUNDLE_ATTRIBUTION_FILE, import.meta.dirname),
   ],
   build:
-    mode === 'size'
+    mode === 'size' || mode === 'cluster'
       ? {
           rollupOptions: {
-            input: resolve(import.meta.dirname, 'size.html'),
+            input: resolve(import.meta.dirname, `${mode}.html`),
             output: { entryFileNames: 'assets/index-[hash].js' },
           },
         }
