@@ -5251,3 +5251,55 @@ Validation at this checkpoint:
 - parser ruler: 8 tests and 36 expectations, including both selector
   granularities and every closure failure mode;
 - `git diff --check` passed.
+
+## 51. Engine consolidation Phase III-c0a: executable container sizes (2026-08-23)
+
+The modifier registry now accepts a declared container size only when the same
+spelling is registered as a media query. A declared size with no executable
+query is refused and produces a configuration diagnostic. This closes the
+registry-only half of the compiler/runtime disagreement before runtime
+normalization, without changing `getCondition`, table construction, config
+invalidation, lifecycle handling, or any render path.
+
+The behavior pin failed against the prior implementation because `@wide`
+resolved as a container despite `wide` having no media query. It now resolves
+to undefined and reports the missing media-query registration. The registry
+source remains the only style-grammar producer of the container modifier kind;
+downstream parsing, capability, precedence, evaluation, lowering, and generated
+Rust vectors continue to consume that one registry result.
+
+### Size and cluster receipts
+
+The fresh frozen-size artifact is
+`/tmp/p29049-phase3c0a-size.B2lRVm`.
+
+| arm | whole gzip | CORE |
+| --- | ---: | ---: |
+| Phase III-b | 104,018 | 39,905 |
+| Phase III-c0a | 104,018 | 39,905 |
+| movement | 0 | 0 |
+
+The fresh parser-cluster artifact is
+`/tmp/p29049-phase3c0a-cluster.V8w9vl`.
+
+| arm | cluster whole gzip | parser-cluster union |
+| --- | ---: | ---: |
+| Phase III-b | 103,753 | 3,950 |
+| Phase III-c0a | 103,753 | 3,950 |
+| movement | 0 | 0 |
+
+The closed manifest records the Phase III-c0a selector topology explicitly.
+All 44 declarations remain present and all nine prior absent-to-present moves
+remain closed. This contraction changes no measured production byte.
+
+Validation at this checkpoint:
+
+- the red control failed 1 of 34 registry tests before the implementation;
+- the focused registry suite passed 34 of 34 afterward;
+- style-grammar passed 28 files and 450 tests, its package build, and generated
+  Rust grammar check;
+- full root build passed 171 of 171 tasks;
+- root lint passed with the same five unrelated warnings;
+- root dependency, unused, Tamagui, reference, path, DOM type, and LSP pin
+  checks passed;
+- `git diff --check` passed.

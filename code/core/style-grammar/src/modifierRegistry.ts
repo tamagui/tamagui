@@ -151,10 +151,11 @@ export function createModifierRegistry(
   }
 
   // when the caller or the view declares which sizes a container can measure,
-  // that list is the whole rule. Otherwise any registered media name works
-  // (legacy fallback, removal pending its caller sweep)
+  // the same spelling must also be registered as media. Otherwise any
+  // registered media name works (legacy fallback, removal pending its caller
+  // sweep)
   const isContainerSize = (size: string): boolean =>
-    containerSizes ? containerSizes.has(size) : names.get(size) === 'media'
+    names.get(size) === 'media' && (!containerSizes || containerSizes.has(size))
 
   for (const name of stateModifierNames) register(name, 'state')
   forEachName(view.mediaNames, (name) => register(name, 'media'))
@@ -164,6 +165,16 @@ export function createModifierRegistry(
   forEachName(view.themeNames, (name) => {
     if (isRootThemeName(name)) register(name, 'theme')
   })
+
+  if (containerSizes) {
+    for (const size of containerSizes) {
+      if (names.get(size) !== 'media') {
+        diagnostics.push(
+          `container size "${size}" is not registered: the same spelling is not registered as a media query`
+        )
+      }
+    }
+  }
 
   for (const name of stateModifierNames) {
     const group = `group-${name}`

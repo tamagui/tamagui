@@ -140,13 +140,16 @@ describe('parameterized container modifiers', () => {
     expect(registry.get('@sm')).toBeUndefined()
   })
 
-  test('a declared size that is not a media key still resolves, since the caller declared it', () => {
-    const { registry } = createModifierRegistry(
+  test('a declared size that is not a media key is refused with a diagnostic', () => {
+    const { registry, diagnostics } = createModifierRegistry(
       { mediaNames: ['sm'] },
       { containerSizeNames: ['wide'] }
     )
-    expect(registry.get('@wide')).toBe('container')
+    expect(registry.get('@wide')).toBeUndefined()
     expect(registry.get('@sm')).toBeUndefined()
+    expect(diagnostics).toEqual([
+      'container size "wide" is not registered: the same spelling is not registered as a media query',
+    ])
   })
 
   test('a media size shadowed by another kind has no container form', () => {
