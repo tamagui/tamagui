@@ -15,8 +15,8 @@
     "@react-router/node": "^7.18.0",
     "@react-router/serve": "^7.18.0",
     "@tamagui/config": "workspace:*",
-    "react": ">=19",
-    "react-dom": "*",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
     "react-router": "^7.18.0",
     "tamagui": "workspace:*"
   },
@@ -24,10 +24,10 @@
     "@react-router/dev": "^7.18.0",
     "@react-router/fs-routes": "^7.18.0",
     "@tamagui/vite-plugin": "workspace:*",
-    "@types/react": "~19.2.4",
+    "@types/react": "~19.2.0",
     "@types/react-dom": "~19.2.3",
     "typescript": "~6.0.3",
-    "vite": "^8.0.3",
+    "vite": "^8.2.2",
     "vite-tsconfig-paths": "^5.1.4"
   },
   "engines": {

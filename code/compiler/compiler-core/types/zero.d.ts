@@ -69,6 +69,7 @@ export declare function zeroIslandThemeMessage(entry: string): string;
  * runtime behind.
  */
 export declare function zeroViolationsFromPlan(plan: LoweredModulePlan): ZeroViolation[];
+export declare function isTamaguiSpecifier(specifier: string): boolean;
 export interface ZeroErasureInput {
     id: ResolvedModuleId;
     source: string;

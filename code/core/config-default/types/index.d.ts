@@ -1,5 +1,5 @@
 export declare function getDefaultTamaguiConfig(platform?: 'native' | 'web'): {
-    animations: import("@tamagui/web").AnimationDriver<{
+    animations: import("@tamagui/web").AnimationDriverWithAnimatedNumbers<{
         '100ms': {
             type: "timing";
             duration: number;
@@ -37,7 +37,7 @@ export declare function getDefaultTamaguiConfig(platform?: 'native' | 'web'): {
             mass: number;
             stiffness: number;
         };
-    }> | import("@tamagui/web").AnimationDriver<{
+    }> | import("@tamagui/web").AnimationDriverWithAnimatedNumbers<{
         '75ms': string;
         '100ms': string;
         '200ms': string;

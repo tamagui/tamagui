@@ -327,6 +327,7 @@
     "@tamagui/fake-react-native": "workspace:*",
     "@tamagui/field": "workspace:*",
     "@tamagui/focusable": "workspace:*",
+    "@tamagui/font-size": "workspace:*",
     "@tamagui/form": "workspace:*",
     "@tamagui/get-font-sized": "workspace:*",
     "@tamagui/get-token": "workspace:*",
@@ -367,14 +368,13 @@
     "@tamagui/use-force-update": "workspace:*",
     "@tamagui/use-window-dimensions": "workspace:*",
     "@tamagui/visually-hidden": "workspace:*",
-    "@tamagui/font-size": "workspace:*",
     "@tamagui/z-index-stack": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "react": ">=19",
+    "react": "19.2.3",
     "react-native": "0.86.2",
-    "react-native-web": "^0.21.0"
+    "react-native-web": "~0.21.0"
   },
   "peerDependencies": {
     "react": ">=19",

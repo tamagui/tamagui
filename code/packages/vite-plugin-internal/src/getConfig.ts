@@ -156,6 +156,13 @@ export function getConfig(tamaguiPlugin: any) {
       // happy-dom has issues with components-test
       environment: process.env.TEST_ENVIRONMENT || 'happy-dom',
       include: ['**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
+      server: isNative
+        ? {
+            deps: {
+              inline: [/react-native-(?:reanimated|worklets)/],
+            },
+          }
+        : undefined,
       // increase teardown timeout to avoid worker cleanup issues
       teardownTimeout: 10000,
     },

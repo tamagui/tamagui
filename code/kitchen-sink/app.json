@@ -37,6 +37,7 @@
     },
     "plugins": [
       "expo-font",
+      "../packages/native-ci/plugins/context-menu-warnings",
       "./plugins/detox-metro-port",
       "./plugins/detox-skip-splash",
       [

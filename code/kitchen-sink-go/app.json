@@ -11,7 +11,8 @@
       "bundleIdentifier": "dev.tamagui.kitchensinkgo"
     },
     "plugins": [
-      "expo-font"
+      "expo-font",
+      "../packages/native-ci/plugins/context-menu-warnings"
     ]
   }
 }

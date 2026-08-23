@@ -1,3 +1,4 @@
+export { isTamaguiSpecifier } from '@tamagui/compiler-core';
 export * from './artifact';
 export * from './graph';
 export * from './identity';

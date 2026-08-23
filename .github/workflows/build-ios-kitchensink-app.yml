@@ -56,8 +56,8 @@ jobs:
           fetch-depth: 1
 
       - name: Set Xcode version
-        # Expo 57's expo-modules-jsi requires Swift 6.3 or newer.
-        run: sudo xcode-select -s /Applications/Xcode_26.5.app
+        # Expo 57 requires Swift 6.3 for weak let support in expo-modules-jsi.
+        run: sudo xcode-select -s /Applications/Xcode_26.4.1.app
 
       - name: Get Built App Path
         id: get-built-app-path
@@ -200,8 +200,6 @@ jobs:
             -sdk 'iphonesimulator' \
             -destination 'generic/platform=iOS Simulator' \
             -derivedDataPath build \
-            OTHER_SWIFT_FLAGS='$(inherited) -enable-upcoming-feature IsolatedConformances' \
-            SWIFT_STRICT_CONCURRENCY=minimal \
             RCT_REMOVE_LEGACY_ARCH=1 \
             | tee xcodebuild.log | xcpretty
 

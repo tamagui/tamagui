@@ -1,7 +1,6 @@
 /**
- * The props `<Theme>` owns. Every other prop on it is read as a theme key, so
- * these names can't be used as theme keys or config variables. development
- * builds report a collision instead of silently dropping the value.
+ * The props `<Theme>` owns. Inline theme values live on `<ThemeUpdate>`, so an
+ * unknown `<Theme>` prop is always invalid.
  *
  * It lives here, in a side-effect-free package, because the compiler classifies
  * static `<Theme>` props with the same table the runtime uses. One table, so a
