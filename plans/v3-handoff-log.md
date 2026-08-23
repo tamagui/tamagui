@@ -5434,3 +5434,64 @@ Validation at this checkpoint:
 - root dependency, unused, Tamagui, reference, path, DOM type, and LSP pin
   checks passed;
 - `git diff --check` passed.
+
+## 54. Engine consolidation Phase III-c0d: dead fallback Proxy (2026-08-23)
+
+The static-only `fallbackProps` path is deleted from `getSplitStyles`, and
+the field is removed from the source and generated `SplitStyleProps` type.
+The removed block created a get-only Proxy over caller props and consulted a
+fallback record only for missing property reads. It did not implement
+membership, keys, descriptors, or spread semantics, and it allocated the Proxy
+and handler on every call that supplied the field.
+
+The deletion is based on an explicit compiler-boundary search. Separate
+`fallbackProps` searches of compiler-core, static, loader, vite-plugin,
+metro-plugin, and codemod paths each returned no match. A repo-wide positive
+control found the two expected core definitions in `getSplitStyles` and
+`SplitStyleProps`, plus an unrelated local variable in Avatar. A
+`SplitStyleProps` consumer search found ordinary resolver/test consumers but
+no construction, fixture, or type access for `fallbackProps`. After deletion
+and the web package build, the same repo-wide search returns no engine or
+compiler match. If a compiler producer existed, one of these searches would
+have found the property name at its construction or type boundary.
+
+This checkpoint does not narrow public functional-variant
+`VariantSpreadExtras.props`. That separate v3 API decision remains pending;
+`mergeComponentProps` and `getVariantExtras` are unchanged.
+
+### Size and cluster receipts
+
+The fresh frozen-size artifact is
+`/tmp/p29049-dead-proxy-size.SSiJuH`.
+
+| arm | whole gzip | CORE |
+| --- | ---: | ---: |
+| Phase III-c0c | 104,024 | 39,912 |
+| Phase III-c0d | 104,024 | 39,912 |
+| movement | 0 | 0 |
+
+The fresh parser-cluster artifact is
+`/tmp/p29049-dead-proxy-cluster.8RuCZ1`.
+
+| arm | cluster whole gzip | parser-cluster union |
+| --- | ---: | ---: |
+| Phase III-c0c | 103,759 | 3,956 |
+| Phase III-c0d | 103,759 | 3,956 |
+| movement | 0 | 0 |
+
+The frozen production build already eliminated the `IS_STATIC` block, so
+removing the unreachable source has no production gzip movement. It still
+removes a render-path Proxy from the compiler source path and removes a public
+field that nothing can supply. No parser-cluster selector moved, so the
+III-c0c closed selector state measures this artifact without a manifest change.
+The III-b structural-debt ledger remains +48 CORE.
+
+Validation at this checkpoint:
+
+- `@tamagui/web` built and regenerated its declaration output;
+- full root build passed 171 of 171 tasks, including compiler-core, static,
+  loader, vite-plugin, and metro-plugin builds;
+- root lint passed with the same five unrelated warnings;
+- root dependency, unused, Tamagui, reference, path, DOM type, and LSP pin
+  checks passed;
+- `git diff --check` passed.

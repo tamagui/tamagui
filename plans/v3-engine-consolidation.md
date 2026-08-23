@@ -40,6 +40,11 @@ Implementation bindings after revision 3, 2026-08-23:
   normalization. Configured media, theme, custom platform, and container-size
   names with that prefix are refused with an actionable diagnostic. This keeps
   alias identity and program class names config-independent.
+- The static-only `fallbackProps` Proxy and its `SplitStyleProps` field are
+  deleted before runtime normalization. Explicit searches of compiler-core,
+  static, loader, vite-plugin, metro-plugin, and codemod paths found no
+  producer, fixture, or type consumer, so this is dead-code removal rather than
+  a variant-contract change.
 - Phase III-b carries +48 CORE of declared structural debt, from 39,857 to
   39,905 (whole bundle 103,969 to 104,018). III-d owns its recovery. The
   cumulative debt is +48; implementation stops before III-d if unrecovered
@@ -811,7 +816,7 @@ Cumulative unrecovered debt above +300 before III-d is a hard stop.
 
 Current cumulative unrecovered debt: **+48 CORE**.
 
-### Phase III: grammar (eight checkpoints)
+### Phase III: grammar and render-path cleanup (nine checkpoints)
 
 - **III-a, lexer signature.** The context-passing API, all drivers converted
   mechanically, no semantic change. Verify: parserAgreement unchanged, flat
@@ -836,6 +841,10 @@ Current cumulative unrecovered debt: **+48 CORE**.
   diagnostic; retain the config-independent alias pins in merging, program
   identity, and class naming. The committed-tree dependency sweep above is
   part of the checkpoint receipt.
+- **III-c0d, dead fallback Proxy.** Delete the static-only `fallbackProps`
+  get-only Proxy and its public `SplitStyleProps` field after the compiler-path
+  search proves there is no producer, fixture, or consumer. Measure the frozen
+  bundle, but do not retain dead code when production DCE makes the delta zero.
 - **III-c1, runtime normalization.** Change `getCondition` only for the runtime
   half of row 2 and rows 1, 3, 4, 5, and 7 in the enumerated table above, one
   failing-before/passing-after pin per row. A configured name that violates the
