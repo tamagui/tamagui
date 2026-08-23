@@ -624,6 +624,11 @@ jobs:
             # Wait for boot to complete
             adb shell 'while [ -z "$(getprop sys.boot_completed)" ]; do sleep 1; done'
 
+            for setting in animator_duration_scale transition_animation_scale window_animation_scale; do
+              value=$(adb shell settings get global "$setting")
+              echo "$setting=$value"
+            done
+
             # More robust screen unlock and focus sequence
             adb shell wm dismiss-keyguard
             adb shell input keyevent 82   # KEYEVENT_MENU - wake/unlock
