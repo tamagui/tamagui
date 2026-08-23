@@ -21,6 +21,26 @@ const Sized = styled(View, {
   } as const,
 })
 
+const ParentRatio = styled(View, {
+  variants: {
+    ratio: {
+      '16:9': {
+        height: '9px hover:10px active:11px group-active/card:12px disabled:8px',
+      },
+    },
+  } as const,
+})
+
+const ChildRatio = styled(ParentRatio, {
+  variants: {
+    ratio: {
+      '16:9': {
+        height: '13px press:14px group-press/card:15px focus:16px',
+      },
+    },
+  } as const,
+})
+
 // index 4 of a StyleObject is the emitted CSS, the only place a media or pseudo
 // condition is visible — property and value alone cannot tell a base rule from a
 // conditional one
@@ -58,7 +78,20 @@ describe('conditional clauses on a variant prop', () => {
     expect(cssFor({ ratio: '16:9' })).toEqual(['._h-1387432580{height:9px}'])
   })
 
-  test('an unresolvable modifier refuses the whole value rather than half-applying it', () => {
-    expect(cssFor({ size: 'large notARealModifier:small' })).toEqual([])
+  test('styled inheritance merges canonical clause slots under an exact colon key', () => {
+    expect((ChildRatio.staticConfig.variants!.ratio as any)['16:9'].height).toBe(
+      '13px hover:10px disabled:8px press:14px group-press/card:15px focus:16px'
+    )
+    expect(
+      simplifiedGetSplitStyles(ChildRatio, { ratio: '16:9' }, { noClass: true }).style
+        ?.height
+    ).toBe(13)
+  })
+
+  test('an unresolvable modifier drops only its clause', () => {
+    expect(cssFor({ size: 'large notARealModifier:small hover:small' })).toEqual([
+      '._w-1598328809{width:200px}',
+      '@media (hover: hover) {._w-1598328809:hover{width:50px}}',
+    ])
   })
 })

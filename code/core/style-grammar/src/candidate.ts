@@ -1,7 +1,6 @@
 import {
   grammarEntries,
   fontWeightNames,
-  modifierAliases,
   prefixToEntries,
   radiusCornerProps,
   standaloneValueProps,
@@ -11,10 +10,18 @@ import {
   type GrammarEntry,
   type TokenCategory,
 } from './registry'
-import { createModifierRegistry } from './modifierRegistry'
+import {
+  canonicalClauseModifier,
+  containerModifierSizeEnd,
+  parseGroupModifier,
+} from './clauseIdentity'
+import {
+  compileModifierVocabulary,
+  modifierKindMedia,
+  type CompiledModifierVocabulary,
+} from './modifierVocabulary'
 import { splitColorOpacitySuffix } from './resolvePayload'
 import { getSafeAreaEdge } from './safeAreaVariables'
-import type { ModifierKind, ModifierRegistryView } from './valueTypes'
 
 type Names = readonly string[] | ReadonlySet<string> | Readonly<Record<string, unknown>>
 
@@ -139,33 +146,50 @@ function splitCandidate(candidate: string): { modifiers: string[]; base: string 
   return { modifiers: parts, base: current }
 }
 
-const modifierRegistryCache = new WeakMap<GrammarConfigView, ModifierRegistryView>()
+const modifierVocabularyCache = new WeakMap<
+  GrammarConfigView,
+  CompiledModifierVocabulary
+>()
+const modifierKindGroup = 5
+const modifierKindContainer = 6
 
-function getModifierRegistry(config: GrammarConfigView): ModifierRegistryView {
-  let registry = modifierRegistryCache.get(config)
-  if (!registry) {
-    registry = createModifierRegistry(config).registry
-    modifierRegistryCache.set(config, registry)
+function getModifierVocabulary(config: GrammarConfigView): CompiledModifierVocabulary {
+  let vocabulary = modifierVocabularyCache.get(config)
+  if (!vocabulary) {
+    vocabulary = compileModifierVocabulary(config)
+    modifierVocabularyCache.set(config, vocabulary)
   }
-  return registry
+  return vocabulary
 }
 
-function modifierKind(modifier: string, config: GrammarConfigView): ModifierKind | null {
-  const canonical = modifierAliases[modifier] || modifier
-  return getModifierRegistry(config).get(canonical) || null
+function modifierKindCode(modifier: string, config: GrammarConfigView): number {
+  const vocabulary = getModifierVocabulary(config)
+  const exact = vocabulary[modifier]
+  if (exact !== undefined) return exact & 7
+  if (parseGroupModifier(modifier)) return modifierKindGroup
+  const sizeEnd = containerModifierSizeEnd(modifier)
+  if (sizeEnd === -1) return 0
+  const size = modifier.slice(1, sizeEnd)
+  return (vocabulary[size] & 7) === modifierKindMedia &&
+    (config.containerSizeNames === undefined || hasName(config.containerSizeNames, size))
+    ? modifierKindContainer
+    : 0
 }
 
-function modifiersAreKnown(
+function normalizeModifiers(
   modifiers: readonly string[],
   config: GrammarConfigView
-): boolean {
-  const seen = new Set<ModifierKind>()
+): string[] | null {
+  const normalized: string[] = []
+  const seen = new Set<number>()
   for (const modifier of modifiers) {
-    const kind = modifierKind(modifier, config)
-    if (!kind || seen.has(kind)) return false
+    const canonical = canonicalClauseModifier(modifier)
+    const kind = modifierKindCode(canonical, config)
+    if (!kind || seen.has(kind)) return null
     seen.add(kind)
+    normalized.push(canonical)
   }
-  return true
+  return normalized
 }
 
 function hasTokenDomain(config: GrammarConfigView, category: TokenCategory): boolean {
@@ -425,12 +449,9 @@ export function parseCandidate(
   config: GrammarConfigView
 ): ParsedCandidate | null {
   const split = splitCandidate(candidate)
-  if (!split || !modifiersAreKnown(split.modifiers, config)) {
-    return null
-  }
-  const modifiers = split.modifiers.map(
-    (modifier) => modifierAliases[modifier] || modifier
-  )
+  if (!split) return null
+  const modifiers = normalizeModifiers(split.modifiers, config)
+  if (!modifiers) return null
 
   const negative = split.base[0] === '-'
   const core = negative ? split.base.slice(1) : split.base
@@ -550,10 +571,8 @@ export function formatCandidate(
   const entry = grammarEntries.find((candidate) => candidate.prop === prop)
   if (!entry) return null
   if (valueKind === 'arbitrary' && value === '') return null
-  if (!modifiersAreKnown(modifiers, config || {})) return null
-  const normalizedModifiers = modifiers.map(
-    (modifier) => modifierAliases[modifier] || modifier
-  )
+  const normalizedModifiers = normalizeModifiers(modifiers, config || {})
+  if (!normalizedModifiers) return null
 
   if (valueKind === 'enum') {
     const whole = standaloneValueProps[prop]?.[value]

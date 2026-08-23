@@ -18,6 +18,7 @@ export type CreateGrammarConfigViewOptions = {
 	/** overrides the derived container size set (the web adapter's resolved set) */
 	containerSizeNames?: readonly string[];
 };
+export declare function isContainerSizeQueryText(query: string): boolean;
 /**
 * The one owner of "does this media query measure a size". A `hover` or
 * `pointer` key measures nothing a container has, so it gets no `@` form.

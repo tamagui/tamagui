@@ -29,6 +29,12 @@ export type CreateGrammarConfigViewOptions = {
   containerSizeNames?: readonly string[]
 }
 
+const containerSizeQueryTextPattern = /width|height|inline-size|block-size/
+
+export function isContainerSizeQueryText(query: string): boolean {
+  return containerSizeQueryTextPattern.test(query)
+}
+
 /**
  * The one owner of "does this media query measure a size". A `hover` or
  * `pointer` key measures nothing a container has, so it gets no `@` form.
@@ -37,12 +43,7 @@ export type CreateGrammarConfigViewOptions = {
  */
 export function isContainerSizeQuery(query: unknown): boolean {
   if (typeof query === 'string') {
-    return (
-      query.includes('width') ||
-      query.includes('height') ||
-      query.includes('inline-size') ||
-      query.includes('block-size')
-    )
+    return isContainerSizeQueryText(query)
   }
   if (query && typeof query === 'object') {
     for (const key in query as Readonly<Record<string, unknown>>) {

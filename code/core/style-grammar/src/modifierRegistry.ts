@@ -10,9 +10,24 @@
 // See plans/dom-tailwind-flat-values.md — "Conditions".
 
 import type { GrammarConfigView } from './candidate'
-import { grammarPlatformNames } from './config'
-import { coreStateModifierNames, modifierAliases } from './stateModifiers'
-import { componentStateNames } from './states'
+import {
+  canonicalClauseModifier,
+  containerModifierSizeEnd,
+  parseGroupModifier,
+  stateModifierNames,
+} from './clauseIdentity'
+import {
+  compileModifierVocabulary,
+  forEachModifierName,
+  isRootThemeName,
+  modifierKindMedia,
+  modifierKindPlatform,
+  modifierKindState,
+  modifierRefusalKindCollision,
+  modifierRefusalReservedContainerPrefix,
+  modifierRefusalReservedGroupPrefix,
+  type CompiledModifierKind,
+} from './modifierVocabulary'
 import {
   grammarMaxNonPlatformDepth,
   type ModifierKind,
@@ -20,6 +35,7 @@ import {
 } from './valueTypes'
 
 type Names = readonly string[] | ReadonlySet<string> | Readonly<Record<string, unknown>>
+const groupPrefix = 'group-'
 
 export interface ModifierRegistryResult {
   registry: ModifierRegistryView
@@ -43,70 +59,11 @@ export interface CreateModifierRegistryOptions {
 }
 
 /**
- * Every built-in interaction/state modifier spelling: the modifiers of the core
- * pseudo-style props, their aliases, and the component-tier state words the
- * behavior packages expose through DOM attributes.
- */
-export const stateModifierNames: readonly string[] = Object.freeze([
-  ...coreStateModifierNames,
-  ...Object.keys(modifierAliases),
-  ...componentStateNames,
-])
-
-const stateModifierSet: ReadonlySet<string> = new Set(stateModifierNames)
-
-const groupPrefixLength = 'group-'.length
-
-/**
  * Theme conditions name a root theme. Nested themes still inherit from that
  * root, so `dark:` applies within `dark_blue`, but `dark_blue:` is not a
  * condition of its own.
  */
-export function isRootThemeName(name: string): boolean {
-  return name.length > 0 && !name.includes('_')
-}
-
-export interface GroupModifier {
-  /** the state the parent group must be in, always a built-in state modifier */
-  state: string
-  /** the group name, or null for the nearest unnamed group */
-  group: string | null
-}
-
-/** Canonical spelling used by slot identity, precedence, hashing, and matching. */
-export function canonicalClauseModifier(name: string): string {
-  const direct = modifierAliases[name]
-  if (direct) return direct
-  if (name.startsWith('group-')) {
-    const group = parseGroupModifier(name)
-    if (group) {
-      const state = modifierAliases[group.state] ?? group.state
-      if (state !== group.state) {
-        return group.group === null ? `group-${state}` : `group-${state}/${group.group}`
-      }
-    }
-  }
-  return name
-}
-
-/**
- * Parameterized group modifiers use Tailwind's spelling: `group-hover` for the
- * nearest unnamed group and `group-hover/card` for a named one. The state part
- * must be a built-in state modifier; the name part is an identifier. Returns
- * null for anything else, which is what makes the spelling a single source of
- * truth for both registration and lowering.
- */
-export function parseGroupModifier(name: string): GroupModifier | null {
-  if (!name.startsWith('group-')) return null
-  const slash = name.indexOf('/')
-  if (slash === -1) {
-    const state = name.slice(groupPrefixLength)
-    return stateModifierSet.has(state) ? { state, group: null } : null
-  }
-  if (!isModifierName(name, slash + 1, name.length)) return null
-  const state = name.slice(groupPrefixLength, slash)
-  return stateModifierSet.has(state) ? { state, group: name.slice(slash + 1) } : null
-}
+export { isRootThemeName } from './modifierVocabulary'
 
 export interface ContainerModifier {
   /** the size condition; the registry only accepts a registered media name here */
@@ -131,55 +88,26 @@ interface ModifierTrieNode {
  * the query text — the same split groups use for their state part.
  */
 export function parseContainerModifier(name: string): ContainerModifier | null {
-  if (name.charCodeAt(0) !== 64 /* @ */) return null
-  const slash = name.indexOf('/')
-  if (slash === -1) {
-    return isModifierName(name, 1, name.length)
-      ? { size: name.slice(1), container: null }
-      : null
+  const sizeEnd = containerModifierSizeEnd(name)
+  if (sizeEnd === -1) return null
+  return {
+    size: name.slice(1, sizeEnd),
+    container: sizeEnd === name.length ? null : name.slice(sizeEnd + 1),
   }
-  if (!isModifierName(name, 1, slash) || !isModifierName(name, slash + 1, name.length)) {
-    return null
-  }
-  return { size: name.slice(1, slash), container: name.slice(slash + 1) }
 }
 
-/** the shared identifier rule for the parameterized parts of a modifier */
-function isModifierName(text: string, start: number, end: number): boolean {
-  if (start >= end) return false
-  for (let index = start; index < end; index++) {
-    const code = text.charCodeAt(index)
-    if (
-      !(code >= 97 && code <= 122) && // a-z
-      !(code >= 65 && code <= 90) && // A-Z
-      !(code >= 48 && code <= 57) && // 0-9
-      code !== 45 && // -
-      code !== 95 // _
-    ) {
-      return false
-    }
-  }
-  return true
-}
-
-function forEachName(source: Names | undefined, visit: (name: string) => void): void {
-  if (!source) return
-  if (Array.isArray(source)) {
-    for (const name of source) visit(name)
-    return
-  }
-  if (source instanceof Set) {
-    for (const name of source) visit(name)
-    return
-  }
-  for (const name in source as Readonly<Record<string, unknown>>) visit(name)
+function modifierKindFromCode(code: number): ModifierKind {
+  code &= 7
+  if (code === modifierKindState) return 'state'
+  if (code === modifierKindMedia) return 'media'
+  if (code === modifierKindPlatform) return 'platform'
+  return 'theme'
 }
 
 export function createModifierRegistry(
   view: GrammarConfigView,
   options: CreateModifierRegistryOptions = {}
 ): ModifierRegistryResult {
-  const names = new Map<string, ModifierKind>()
   const diagnostics: string[] = []
   const completionNames: string[] = []
 
@@ -191,54 +119,59 @@ export function createModifierRegistry(
   let containerSizes: Set<string> | null = null
   if (sizeSource !== undefined) {
     containerSizes = new Set()
-    forEachName(sizeSource, (name) => containerSizes!.add(name))
+    forEachModifierName(sizeSource, (name) => {
+      if (name.startsWith(groupPrefix)) {
+        diagnostics.push(
+          `container size "${name}" is not registered: the "group-" prefix is reserved for group state modifiers; rename this container size so it does not begin with "group-"`
+        )
+      } else {
+        containerSizes!.add(name)
+      }
+    })
   }
 
-  const register = (name: string, kind: ModifierKind): void => {
-    if (name.charCodeAt(0) === 64 /* @ */) {
-      // the `@` prefix belongs to container queries, so no configured name may
-      // take it; otherwise `@sm:` would mean two things
-      diagnostics.push(
-        `modifier "${name}" is not registered: the "@" prefix is reserved for container query modifiers, so it cannot be a ${kind} name`
-      )
-      return
-    }
-    const existing = names.get(name)
-    if (existing !== undefined) {
-      if (existing !== kind) {
+  const names = compileModifierVocabulary(
+    view,
+    (code, name, kind, existing) => {
+      const kindName = modifierKindFromCode(kind)
+      if (code === modifierRefusalReservedContainerPrefix) {
         diagnostics.push(
-          `modifier "${name}" is already registered as a ${existing} modifier, so the ${kind} name is ignored`
+          `modifier "${name}" is not registered: the "@" prefix is reserved for container query modifiers, so it cannot be a ${kindName} name`
+        )
+      } else if (code === modifierRefusalReservedGroupPrefix) {
+        diagnostics.push(
+          `modifier "${name}" is not registered: the "group-" prefix is reserved for group state modifiers; rename this ${kindName} name so it does not begin with "group-"`
+        )
+      } else if (code === modifierRefusalKindCollision) {
+        diagnostics.push(
+          `modifier "${name}" is already registered as a ${modifierKindFromCode(existing as CompiledModifierKind)} modifier, so the ${kindName} name is ignored`
         )
       }
-      return
-    }
-    if (parseGroupModifier(name) !== null) {
-      diagnostics.push(
-        `modifier "${name}" shadows the group modifier of the same spelling, which can no longer be used as a ${kind} name`
-      )
-    }
-    names.set(name, kind)
-    completionNames.push(name)
-  }
+    },
+    (name) => completionNames.push(name)
+  )
 
   // when the caller or the view declares which sizes a container can measure,
-  // that list is the whole rule. Otherwise any registered media name works
-  // (legacy fallback, removal pending its caller sweep)
+  // the same spelling must also be registered as media. Otherwise any
+  // registered media name works (legacy fallback, removal pending its caller
+  // sweep)
   const isContainerSize = (size: string): boolean =>
-    containerSizes ? containerSizes.has(size) : names.get(size) === 'media'
+    (names[size] & 7) === modifierKindMedia &&
+    (!containerSizes || containerSizes.has(size))
 
-  for (const name of stateModifierNames) register(name, 'state')
-  forEachName(view.mediaNames, (name) => register(name, 'media'))
-  forEachName(view.platformNames ?? grammarPlatformNames, (name) =>
-    register(name, 'platform')
-  )
-  forEachName(view.themeNames, (name) => {
-    if (isRootThemeName(name)) register(name, 'theme')
-  })
+  if (containerSizes) {
+    for (const size of containerSizes) {
+      if ((names[size] & 7) !== modifierKindMedia) {
+        diagnostics.push(
+          `container size "${size}" is not registered: the same spelling is not registered as a media query`
+        )
+      }
+    }
+  }
 
   for (const name of stateModifierNames) {
     const group = `group-${name}`
-    if (names.get(group) === undefined) completionNames.push(group)
+    if (names[group] === undefined) completionNames.push(group)
   }
   if (containerSizes) {
     for (const size of containerSizes) {
@@ -246,7 +179,7 @@ export function createModifierRegistry(
     }
   } else {
     for (const name of completionNames.slice()) {
-      if (names.get(name) === 'media') completionNames.push(`@${name}`)
+      if ((names[name] & 7) === modifierKindMedia) completionNames.push(`@${name}`)
     }
   }
 
@@ -264,8 +197,8 @@ export function createModifierRegistry(
   }
 
   const get = (name: string): ModifierKind | undefined => {
-    const kind = names.get(name)
-    if (kind !== undefined) return kind
+    const code = names[name]
+    if (code !== undefined) return modifierKindFromCode(code)
     if (parseGroupModifier(name) !== null) return 'group'
     const container = parseContainerModifier(name)
     if (container !== null && isContainerSize(container.size)) return 'container'

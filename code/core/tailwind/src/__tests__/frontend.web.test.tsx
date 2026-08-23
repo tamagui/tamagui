@@ -2,7 +2,7 @@ import { getDefaultTamaguiConfig } from '../../../config-default/src'
 import { STYLE_FRONTEND_PREPROCESSED } from '@tamagui/core/internal-runtime'
 import { View as CoreView, createTamagui, getConfig } from '@tamagui/web'
 import { StyleObjectRules, StyleObjectValue } from '@tamagui/helpers'
-import { safeAreaVariableNames } from '@tamagui/style-grammar'
+import { safeAreaVariableNames } from '@tamagui/style-grammar/runtime'
 import { beforeAll, describe, expect, test } from 'vitest'
 
 import { tailwindStyleFrontend } from '../frontend'

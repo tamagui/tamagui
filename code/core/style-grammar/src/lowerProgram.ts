@@ -22,7 +22,8 @@
 // exactly one identity. Rule injection through a payload is structurally
 // impossible because the parser rejects a top-level `{`, `}`, or `;`.
 
-import { parseContainerModifier, parseGroupModifier } from './modifierRegistry'
+import { parseGroupModifier } from './clauseIdentity'
+import { parseContainerModifier } from './modifierRegistry'
 import {
   canonicalClauseModifier,
   clauseConditionSetKey,

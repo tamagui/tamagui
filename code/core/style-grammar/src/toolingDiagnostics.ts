@@ -6,7 +6,7 @@ import {
 } from './candidateTarget'
 import { createGrammarConfigView, type GrammarSourceConfig } from './config'
 import { splitGeometricShorthandValue } from './geometricShorthand'
-import { formatParsedValue } from './mergeFlatValues'
+import { formatParsedValue } from './toolingFormat'
 import { validatePayloadShape, type PayloadShapeDiagnostic } from './payloadShape'
 import { legacyPartComposite, programEligibility } from './programEligibility'
 import {

@@ -1,3 +1,5 @@
+import { componentStateModifierNames } from './stateModifiers'
+
 // A1 — the shared STATE VOCABULARY + style-grammar modifiers.
 //
 // The canonical set of states a styled skin can respond to and how each maps to
@@ -56,20 +58,20 @@ export const stateVocabulary: readonly StateEntry[] = [
   },
   // tier 2 — component / ARIA states (behavior-driven attributes).
   {
-    state: 'open',
+    state: componentStateModifierNames[0],
     tier: 'component',
     modifier: 'data-[state=open]',
     selector: '[data-state="open"]',
   },
   {
-    state: 'checked',
+    state: componentStateModifierNames[1],
     tier: 'component',
     modifier: 'data-[state=checked]',
     selector: '[data-state="checked"]',
     aliases: ['data-[state=on]', 'aria-checked'],
   },
   {
-    state: 'highlighted',
+    state: componentStateModifierNames[2],
     tier: 'component',
     modifier: 'data-[highlighted]',
     selector: '[data-highlighted]',
@@ -78,13 +80,13 @@ export const stateVocabulary: readonly StateEntry[] = [
     // item selection (Select/RadioGroup items, ToggleGroup) — the behavior emits
     // data-state="active"/"inactive"; distinct from `checked`. The bare word
     // `active` is NOT an alias here (it stays an alias of `pressed`).
-    state: 'selected',
+    state: componentStateModifierNames[3],
     tier: 'component',
     modifier: 'data-[state=active]',
     selector: '[data-state="active"]',
   },
   {
-    state: 'invalid',
+    state: componentStateModifierNames[4],
     tier: 'component',
     modifier: 'aria-invalid',
     selector: '[aria-invalid="true"]',
@@ -121,8 +123,4 @@ export const stateToSelector: Readonly<Record<string, string>> = Object.freeze(
   )
 )
 
-export const componentStateNames: readonly string[] = Object.freeze(
-  stateVocabulary
-    .filter((entry) => entry.tier === 'component')
-    .map((entry) => entry.state)
-)
+export { componentStateModifierNames as componentStateNames } from './stateModifiers'

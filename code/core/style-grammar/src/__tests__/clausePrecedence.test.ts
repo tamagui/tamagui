@@ -15,7 +15,7 @@ import {
   parseGroupModifier,
   type ClausePrecedenceOrder,
   type ModifierKind,
-} from '..'
+} from '../tooling'
 
 const { registry } = createModifierRegistry({
   mediaNames: ['sm', 'md', 'lg'],

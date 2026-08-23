@@ -1,7 +1,7 @@
 process.env.TAMAGUI_TARGET = 'native'
 
 import { getDefaultTamaguiConfig } from '@tamagui/config-default'
-import { safeAreaVariableNames } from '@tamagui/style-grammar'
+import { safeAreaVariableNames } from '@tamagui/style-grammar/runtime'
 import { act, render } from '@testing-library/react-native'
 import React from 'react'
 import {

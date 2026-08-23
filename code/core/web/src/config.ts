@@ -10,6 +10,7 @@ import type {
   TokensParsed,
 } from './types'
 import { formatDiagnostic } from './helpers/formatDiagnostic'
+import { prepareConfigRevision } from './helpers/grammarConfig'
 
 export type StyleCompat = 'legacy' | 'react-native' | 'web'
 
@@ -84,6 +85,10 @@ export function getStyleCompat(): StyleCompat {
 
 export const setConfig = (next: TamaguiInternalConfig) => {
   setConfigCalledByThisInstance = true
+  const previous = conf
+  const previousGlobal = globalThis.__tamaguiConfig
+  prepareConfigRevision(next)
+  if (conf !== previous || globalThis.__tamaguiConfig !== previousGlobal) return
   conf = next
   globalThis.__tamaguiConfig = next
 }
@@ -95,6 +100,7 @@ export const setConfigFont = (name: string, font: any, fontParsed: any) => {
   }
   config!.fonts[name] = font
   config!.fontsParsed[name] = fontParsed
+  prepareConfigRevision(config!)
 }
 
 export const getConfig = () => {
@@ -167,6 +173,7 @@ export const updateConfig = (key: string, value: any) => {
     return
   }
   Object.assign(config[key], value)
+  prepareConfigRevision(config)
 }
 
 // searches by value name or token name

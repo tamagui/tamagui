@@ -42,6 +42,7 @@ export type ValueParseResult = {
 	value: ParsedValue;
 } | {
 	ok: false;
+	value: ParsedValue;
 	errors: readonly ValueParseError[];
 };
 /**

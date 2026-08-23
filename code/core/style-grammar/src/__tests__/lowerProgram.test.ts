@@ -9,7 +9,7 @@ import {
   propertyAbbreviation,
   type LonghandProgram,
   type LoweredProgram,
-} from '..'
+} from '../tooling'
 
 // The program block encoding. These tests run real parser output through
 // lowering, and they pin what is load-bearing for correctness rather than

@@ -1,5 +1,5 @@
 import { Platform } from 'react-native'
-import type { NativeTransitionTarget } from '@tamagui/style-grammar'
+import type { NativeTransitionTarget } from '@tamagui/style-grammar/runtime'
 
 // the native transition capability matrix is version-gated with NO default:
 // an unknown React Native minor is a diagnostic upstream, never a guessed

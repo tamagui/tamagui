@@ -94,10 +94,16 @@ test('a valid opacity suffix resolves byte-identically through the candidate pat
 // registry. the clause-only comparison keeps the property/name/modifier tuple
 // identical on both sides.
 test('a modifier name shared by platform and theme classifies identically', () => {
-  expectParity(
-    splitClass('web:bg-collision'),
-    splitFlat({ backgroundColor: 'web:collision' })
+  const candidate = splitClass('web:bg-collision')
+  const flat = splitFlat({ backgroundColor: 'web:collision' })
+  expectParity(candidate, flat)
+
+  const rules = Object.values(flat.rulesToInsert ?? {}).flatMap(
+    (entry: any) => entry?.[4] ?? []
   )
+  expect(rules).toHaveLength(1)
+  expect(rules[0]).toContain('background-color:var(--c-color-collision)')
+  expect(rules[0]).not.toContain('.t_web')
 })
 
 // relationship-to-tailwind group contract: descendant group modifiers carry a

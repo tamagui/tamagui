@@ -390,6 +390,26 @@ test('container clauses measure the nearest container layout', () => {
   expect(narrow.mediaGroups?.has('sm')).toBe(true)
 })
 
+test('@ drops a non-size clause while the viewport spelling remains media', () => {
+  const context = { '@': groupEntry({}, { width: 400, height: 100 }) }
+  const container = split(
+    { backgroundColor: 'red @hoverNone:blue' },
+    {},
+    'light',
+    {},
+    context
+  )
+  expect(container.style?.backgroundColor).toBe('red')
+  expect(container.pseudoGroups?.size ?? 0).toBe(0)
+  expect(container.mediaGroups?.size ?? 0).toBe(0)
+
+  const viewport = split({ backgroundColor: 'red hoverNone:blue' }, {}, 'light', {
+    mediaState: { hoverNone: true },
+  })
+  expect(viewport.style?.backgroundColor).toBe('blue')
+  expect(viewport.hasMedia?.has('hoverNone')).toBe(true)
+})
+
 test('named container clauses target the named entry and prefer subscribed state', () => {
   const value = { backgroundColor: 'red @sm/card:blue' }
 

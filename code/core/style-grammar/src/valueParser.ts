@@ -7,17 +7,17 @@
 // parser only splits: `base` and every `payload` come back as trimmed raw CSS
 // component-value sequences with no interpretation and no token resolution.
 //
-// The split itself is `scanFlatValue`, the one lexer every implementation of
-// this grammar drives; this file is what that split MEANS, which is the part
-// the registry decides. Read `scanFlatValue.ts` for why a top-level colon,
-// brace or semicolon is structural and everything inside a string or a paren is
-// not.
+// `reduceFlatValueIdentity` drives the one `scanFlatValue` lexer and owns clause
+// spans, alias folding, and slot identity. This file adds the configured
+// modifier registry and parser diagnostics. Read `scanFlatValue.ts` for why a
+// top-level colon, brace or semicolon is structural and everything inside a
+// string or a paren is not.
 
 import {
-  scanFlatValue,
-  type FlatScanErrorCode,
-  type FlatValueVisitor,
-} from './scanFlatValue'
+  reduceFlatValueIdentity,
+  type ClauseIdentityErrorCode,
+  type ClauseIdentityHandler,
+} from './clauseIdentity'
 import type {
   ModifierRegistryView,
   ParsedClause,
@@ -25,8 +25,6 @@ import type {
   ValueParseErrorCode,
   ValueParseResult,
 } from './valueTypes'
-
-const CHAR_COLON = 58
 
 const noClauses: readonly ParsedClause[] = Object.freeze([])
 
@@ -39,6 +37,17 @@ export interface ValueSourceSpan {
 export interface ValueParseWithSourceSpans {
   result: ValueParseResult
   spans: readonly ValueSourceSpan[]
+}
+
+type ValueParseContext = {
+  input: string
+  registry: ModifierRegistryView
+  sourceSpans?: ValueSourceSpan[]
+  errors: ValueParseError[] | null
+  base: string | null
+  clauses: ParsedClause[] | null
+  pending: string[] | null
+  pendingValid: boolean
 }
 
 /**
@@ -67,8 +76,9 @@ export function parseValue(
 }
 
 /**
- * Parses through the runtime scanner while also retaining source boundaries for
- * editor tooling. The ordinary runtime path does not allocate these spans.
+ * Parses through the shared identity reduction while also retaining source
+ * boundaries for editor tooling. The ordinary runtime path does not allocate
+ * these spans.
  */
 export function parseValueWithSourceSpans(
   input: string,
@@ -81,7 +91,11 @@ export function parseValueWithSourceSpans(
   }
 }
 
-function scanErrorMessage(code: FlatScanErrorCode, input: string, index: number): string {
+function scanErrorMessage(
+  code: Exclude<ClauseIdentityErrorCode, 'empty-modifier' | 'empty-payload'>,
+  input: string,
+  index: number
+): string {
   if (code === 'invalid-character') {
     return `"${input[index]}" cannot appear in a value: it would end the declaration or rule`
   }
@@ -97,97 +111,103 @@ function scanErrorMessage(code: FlatScanErrorCode, input: string, index: number)
   return 'unterminated "(" in value'
 }
 
+function addParseError(
+  ctx: ValueParseContext,
+  code: ValueParseErrorCode,
+  index: number,
+  message: string,
+  modifier?: string
+): void {
+  ;(ctx.errors ||= []).push(
+    modifier === undefined ? { code, index, message } : { code, index, message, modifier }
+  )
+}
+
+const valueParserHandler: ClauseIdentityHandler<ValueParseContext> = {
+  segment(ctx, start, end, isBase, valid) {
+    ctx.sourceSpans?.push({ kind: isBase ? 'base' : 'payload', start, end })
+    if (isBase) {
+      ctx.base = valid && start < end ? ctx.input.slice(start, end) : null
+    } else if (!valid) {
+      ctx.pendingValid = false
+    }
+  },
+
+  chain(ctx) {
+    ctx.pending = []
+    ctx.pendingValid = true
+  },
+
+  modifier(ctx, start, end) {
+    const name = ctx.input.slice(start, end)
+    ctx.sourceSpans?.push({ kind: 'modifier', start, end })
+    if (ctx.registry.get(name) === undefined) {
+      ctx.pendingValid = false
+      addParseError(
+        ctx,
+        'unregistered-modifier',
+        start,
+        `"${name}" is not a registered modifier`,
+        name
+      )
+    }
+    ctx.pending!.push(name)
+  },
+
+  clause(ctx, _start, _chainEnd, start, end) {
+    if (!ctx.pendingValid) return
+    ;(ctx.clauses ||= []).push({
+      modifiers: ctx.pending!,
+      payload: ctx.input.slice(start, end),
+    })
+  },
+
+  error(ctx, code, index) {
+    if (code === 'empty-modifier') {
+      ctx.pendingValid = false
+      addParseError(ctx, code, index, 'a modifier chain has an empty segment')
+      return
+    }
+    if (code === 'empty-payload') {
+      addParseError(
+        ctx,
+        code,
+        index,
+        `the "${ctx.pending!.join(':')}:" clause has no value`
+      )
+      return
+    }
+    addParseError(ctx, code, index, scanErrorMessage(code, ctx.input, index))
+  },
+
+  word(ctx, start, end, isChain) {
+    // only the trailing bare word is a completion position the spans have no
+    // other name for: every earlier word is inside a base or a payload span
+    if (ctx.sourceSpans && !isChain && end === ctx.input.length) {
+      ctx.sourceSpans.push({ kind: 'word', start, end })
+    }
+  },
+}
+
 function parseValueInternal(
   input: string,
   registry: ModifierRegistryView,
   sourceSpans?: ValueSourceSpan[]
 ): ValueParseResult {
-  let errors: ValueParseError[] | null = null
-  let base: string | null = null
-  let clauses: ParsedClause[] | null = null
-  // modifiers of the clause whose payload is currently being collected
-  let pending: string[] | null = null
-  // where the base, or the current payload, starts before trimming, which is
-  // what an empty payload has to point its diagnostic at
-  let segmentStart = 0
-
-  const addError = (
-    code: ValueParseErrorCode,
-    index: number,
-    message: string,
-    modifier?: string
-  ): void => {
-    ;(errors ||= []).push(
-      modifier === undefined
-        ? { code, index, message }
-        : { code, index, message, modifier }
-    )
+  const ctx: ValueParseContext = {
+    input,
+    registry,
+    sourceSpans,
+    errors: null,
+    base: null,
+    clauses: null,
+    pending: null,
+    pendingValid: true,
   }
 
-  const visitor: FlatValueVisitor = {
-    segment(start, end, isBase) {
-      sourceSpans?.push({ kind: isBase ? 'base' : 'payload', start, end })
-      if (isBase) {
-        base = start < end ? input.slice(start, end) : null
-        return
-      }
-      if (start >= end) {
-        addError(
-          'empty-payload',
-          segmentStart,
-          `the "${pending!.join(':')}:" clause has no value`
-        )
-        return
-      }
-      ;(clauses ||= []).push({ modifiers: pending!, payload: input.slice(start, end) })
-    },
+  reduceFlatValueIdentity(input, valueParserHandler, ctx)
 
-    // a clause word ended: everything before its last top-level colon is the
-    // modifier chain, everything after it begins the payload
-    chain(chainStart, chainEnd) {
-      const modifiers: string[] = []
-      let nameStart = chainStart
-      for (let index = chainStart; index <= chainEnd; index++) {
-        if (index !== chainEnd && input.charCodeAt(index) !== CHAR_COLON) continue
-        if (index === nameStart) {
-          addError('empty-modifier', index, 'a modifier chain has an empty segment')
-        } else {
-          const name = input.slice(nameStart, index)
-          sourceSpans?.push({ kind: 'modifier', start: nameStart, end: index })
-          if (registry.get(name) === undefined) {
-            addError(
-              'unregistered-modifier',
-              nameStart,
-              `"${name}" is not a registered modifier`,
-              name
-            )
-          }
-          modifiers.push(name)
-        }
-        nameStart = index + 1
-      }
-      pending = modifiers
-      segmentStart = chainEnd + 1
-      return true
-    },
-
-    error(code, index) {
-      addError(code, index, scanErrorMessage(code, input, index))
-    },
-  }
-
-  if (sourceSpans) {
-    // only the trailing bare word is a completion position the spans have no
-    // other name for: every earlier word is inside a base or a payload span
-    visitor.word = (start, end, isChain) => {
-      if (!isChain && end === input.length) {
-        sourceSpans.push({ kind: 'word', start, end })
-      }
-    }
-  }
-
-  scanFlatValue(input, visitor)
-
-  if (errors !== null) return { ok: false, errors }
-  return { ok: true, value: { base, clauses: clauses ?? noClauses } }
+  const value = { base: ctx.base, clauses: ctx.clauses ?? noClauses }
+  if (ctx.errors !== null) return { ok: false, value, errors: ctx.errors }
+  return { ok: true, value }
 }

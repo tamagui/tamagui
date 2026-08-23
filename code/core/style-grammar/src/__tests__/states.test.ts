@@ -6,7 +6,7 @@ import {
   modifierToState,
   stateToSelector,
   componentStateNames,
-} from '..'
+} from '../tooling'
 
 // A1 state vocabulary — the join tables the registry generator and the Tailwind
 // bridge read as the single source of truth. these tests pin the joins (state ->

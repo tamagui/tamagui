@@ -71,41 +71,33 @@ test can exercise stale `dist` output instead of the source you just changed.
 The [V3 final conformance matrix](./plans/v3-final-conformance-matrix.md)
 records the source, dist, mixed, or artifact topology for each release gate.
 
-#### Style value parsing: one parse per unique value
+#### Component styles: one forward pass and one parse
 
-Treat a style value string as immutable input to the shared style grammar. A
-runtime path may parse each unique string once, store the result in a bounded
-cache keyed by that string, and evaluate the parsed conditions as often as the
-component renders. It must not scan or parse the original string again to
-answer another question about its structure. Extend the cached parsed result
-with the needed predicate or metadata instead.
+The component runtime traverses each authored prop, style object, variant
+result, and style string once. By the end of that forward pass it has resolved
+animation and lifecycle state, variants, tokens, conditions, precedence, and
+output. Do not pre-scan a prop or string and parse it again later. Do not hide a
+second traversal in a helper, visitor, `.map`, or `.split`. Do not add a cache
+whose job is to make a redundant component parse cheaper. Prevent the redundant
+parse upstream.
 
-This is a parsing and performance constraint. It is separate from the
-"single-forward-pass" rule in `plans/v3-evolution.md`, which defines authored
-precedence and says that later output wins per property. That ordering rule
-does not permit repeated parsing during the pass or in another render hook.
+Tooling may build parsed objects outside the component runtime. Inside a
+component, the shared grammar exposes scalar transitions that the component's
+one character loop drives. Add new grammar facts to that transition state
+instead of adding another local scanner.
 
-Three runtime costs found in the v3 native rich fixture show what this rule
-prevents:
+There is one narrow exception. When the runtime invokes user code, it may
+re-derive the condition state that cannot safely cross that call. This applies
+to functional variants, getters, proxy traps, and authored coercion, and only
+to the condition active at that boundary. The canonical condition identity is
+a string, while reentrant frame scratch is numeric. Keeping that string in a
+module slot would let a nested component corrupt the outer pass. Preserve
+numeric source offsets across the call and re-derive the condition afterward.
 
-- `contributeStyleString` parsed the same conditional `borderColor` string on
-  every render, then shorthand expansion resolved its one `rgba(...)`
-  component four times. Caching the canonical parse and reusing the resolved
-  single component reduced that Hermes hotspot from 36.189 ms to 18.416 ms
-  across 600 interactions.
-- `hasFlatModifier` rescanned every style string for lifecycle modifiers on
-  every node render, costing 7.8 ms across 600 interactions in a fixture with
-  no `enter:` modifiers. The cached parse now carries `modifierNames`, so the
-  lifecycle check reads the result instead of implementing another scanner.
-- `configuredValue` spent 3.9 ms across 600 interactions treating plain CSS
-  calls such as `rgb(...)` as possible sigil-less tokens, followed by another
-  0.8 ms in `resolveEmbeddedTokens`. Literal CSS calls now take the grammar's
-  classified fast path rather than being scanned twice.
-
-When adding a consumer of `@tamagui/style-grammar`, look for an existing cached
-parse before calling `parseValue`. If the parsed form cannot answer the new
-question, add that information to the shared parsed representation. Do not add
-a local string scanner beside the grammar.
+This exception does not permit rescanning the declaration, revisiting another
+prop, or re-deriving a condition at an ordinary internal boundary. It exists
+because a string cannot live in the numeric reentrant arena, not because a
+second parse is convenient.
 
 #### Playwright (web integration tests)
 

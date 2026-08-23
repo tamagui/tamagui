@@ -4,7 +4,7 @@ import {
   parseValue,
   splitGeometricShorthandValue,
   validatePayloadShape,
-} from '..'
+} from '../tooling'
 
 describe('payload shape validation', () => {
   test('a multi-component payload on a single-value longhand diagnoses', () => {

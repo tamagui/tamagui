@@ -3361,7 +3361,6 @@ export type SplitStyleProps = {
   noMergeStyle?: boolean
   resolveValues?: ResolveVariableAs
   disableExpandShorthands?: boolean
-  fallbackProps?: Record<string, any>
   hasTextAncestor?: boolean
   // for animations
   willBeAnimated?: boolean // we need to track media queries even before animation

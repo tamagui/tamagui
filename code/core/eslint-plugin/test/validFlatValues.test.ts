@@ -1,5 +1,5 @@
 import parser from '@typescript-eslint/parser'
-import { legacyPartComposite, programEligibility } from '@tamagui/style-grammar'
+import { legacyPartComposite, programEligibility } from '@tamagui/style-grammar/tooling'
 import { ESLint } from 'eslint'
 import { describe, expect, test } from 'vitest'
 import plugin from '../src'

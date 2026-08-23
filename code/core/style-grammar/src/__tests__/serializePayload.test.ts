@@ -4,7 +4,7 @@ import {
   serializePayloadNative,
   serializePayloadWeb,
   type ResolvedReference,
-} from '..'
+} from '../tooling'
 
 // One resolved payload, two targets. Web emits var() references so theme
 // switches stay zero-re-render; native looks values up and alpha-composes at

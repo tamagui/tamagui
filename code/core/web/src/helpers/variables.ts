@@ -2,11 +2,15 @@ import { reservedThemeProps, simpleHash } from '@tamagui/helpers'
 import {
   grammarPlatformNames,
   isRootThemeName,
-  parseValue,
-  type ModifierRegistryView,
+  modifierKindPlatform,
+  modifierKindTheme,
+  reduceFlatValueIdentity,
+  type ClauseIdentityErrorCode,
+  type ClauseIdentityHandler,
 } from '@tamagui/style-grammar/runtime'
 import { getSetting } from '../config'
 import { createVariable, isVariable } from '../createVariable'
+import { getConfigRevisionState, type ConfigRevisionState } from './grammarConfig'
 import { themeUpdateStateKey, type ThemeUpdateLayerInfo } from './themeUpdateState'
 import { platformMatches } from './directStyle'
 import { findVariableToken, isUnitlessVariableKey } from './variableValue'
@@ -26,10 +30,11 @@ export type InlineValues = {
   }
 }
 
-const themeKeySets = new WeakMap<object, Set<string>>()
+const themeKeySets = new WeakMap<ConfigRevisionState, Set<string>>()
 
 export const getThemeKeySet = (conf: TamaguiInternalConfig): Set<string> => {
-  const existing = themeKeySets.get(conf.themes)
+  const generation = getConfigRevisionState(conf)
+  const existing = themeKeySets.get(generation)
   if (existing) return existing
   const set = new Set<string>()
   for (const themeName in conf.themes) {
@@ -49,7 +54,7 @@ export const getThemeKeySet = (conf: TamaguiInternalConfig): Set<string> => {
       }
     }
   }
-  themeKeySets.set(conf.themes, set)
+  themeKeySets.set(generation, set)
   return set
 }
 
@@ -157,10 +162,11 @@ const getThemedBucketNames = (themes: InlineValues['themes']): string[] => {
 // scheme-stripped theme name in the config. broader than the style grammar's
 // theme modifiers, which require a top-level conf.themes key and so can't
 // target a `blue` that only exists as `dark_blue`/`light_blue`
-const themeBucketNameSets = new WeakMap<object, Set<string>>()
+const themeBucketNameSets = new WeakMap<ConfigRevisionState, Set<string>>()
 
 const getThemeBucketNames = (conf: TamaguiInternalConfig): Set<string> => {
-  let set = themeBucketNameSets.get(conf.themes)
+  const generation = getConfigRevisionState(conf)
+  let set = themeBucketNameSets.get(generation)
   if (!set) {
     set = new Set()
     for (const themeName in conf.themes) {
@@ -169,7 +175,7 @@ const getThemeBucketNames = (conf: TamaguiInternalConfig): Set<string> => {
         set.add(parts.slice(0, i).join('_'))
       }
     }
-    themeBucketNameSets.set(conf.themes, set)
+    themeBucketNameSets.set(generation, set)
   }
   return set
 }
@@ -412,28 +418,6 @@ export const getInlineValuesKey = (inline: InlineValues): string => {
 
 // ---- flat theme-value props: <ThemeUpdate background-hover="blue4 dark:blue2"> ----
 
-const registryViews = new WeakMap<object, ModifierRegistryView>()
-
-/**
- * Theme and platform are the only modifiers a subtree-wide value can honor.
- * Everything else still parses as a modifier so it can be rejected by name
- * below, rather than coming back as a generic "unregistered modifier".
- */
-const getModifierRegistry = (conf: TamaguiInternalConfig): ModifierRegistryView => {
-  let view = registryViews.get(conf.themes)
-  if (!view) {
-    view = {
-      get(name: string) {
-        if (grammarPlatformNames.has(name)) return 'platform'
-        if (isRootThemeName(name) && getThemeBucketNames(conf).has(name)) return 'theme'
-        return 'state'
-      },
-    }
-    registryViews.set(conf.themes, view)
-  }
-  return view
-}
-
 /**
  * One authored theme-value clause the parser could not use. The runtime warns
  * and drops; zero-runtime turns each one into a rule 3 violation.
@@ -446,10 +430,78 @@ type FlatBuckets = {
   themes: Record<string, Record<string, VariableValIn>> | null
 }
 
-const parsedInlineValues = new WeakMap<
-  object,
-  Map<string, ReturnType<typeof parseValue>>
->()
+type FlatThemeModifier = [
+  name: string,
+  kind: 0 | typeof modifierKindPlatform | typeof modifierKindTheme,
+]
+type FlatThemeClause = [payload: string, modifiers: FlatThemeModifier[]]
+type FlatThemeValue = {
+  base: string | null
+  clauses: FlatThemeClause[] | null
+  error: string | null
+}
+type FlatThemeScanContext = {
+  source: string
+  themeBuckets: Set<string>
+  out: FlatThemeValue
+  pending: FlatThemeModifier[] | null
+  chainStart: number
+  chainEnd: number
+}
+
+const themeUpdateFlatHandler: ClauseIdentityHandler<FlatThemeScanContext> = {
+  segment(ctx, start, end, isBase) {
+    if (isBase) {
+      ctx.out.base = start < end ? ctx.source.slice(start, end) : null
+    }
+  },
+
+  chain(ctx, start, end) {
+    ctx.pending = []
+    ctx.chainStart = start
+    ctx.chainEnd = end
+  },
+
+  modifier(ctx, start, end) {
+    const name = ctx.source.slice(start, end)
+    const kind =
+      // theme updates intentionally keep their subtree-specific collision order:
+      // platform, then theme, then every unsupported kind. direct styles use
+      // the shared vocabulary's state/media/platform/theme order instead.
+      grammarPlatformNames.has(name)
+        ? modifierKindPlatform
+        : isRootThemeName(name) && ctx.themeBuckets.has(name)
+          ? modifierKindTheme
+          : 0
+    ctx.pending!.push([name, kind])
+  },
+
+  clause(ctx, _start, _chainEnd, start, end) {
+    ;(ctx.out.clauses ||= []).push([ctx.source.slice(start, end), ctx.pending!])
+  },
+
+  error(ctx, code: ClauseIdentityErrorCode, index) {
+    if (ctx.out.error !== null) return
+    if (code === 'empty-modifier') {
+      ctx.out.error = 'a modifier chain has an empty segment'
+    } else if (code === 'empty-payload') {
+      ctx.out.error = `the "${ctx.source.slice(ctx.chainStart, ctx.chainEnd)}:" clause has no value`
+    } else if (code === 'invalid-character') {
+      ctx.out.error = `"${ctx.source[index]}" cannot appear in a value: it would end the declaration or rule`
+    } else if (code === 'unterminated-string') {
+      ctx.out.error = `unterminated ${ctx.source[index]} string`
+    } else if (code === 'unterminated-comment') {
+      ctx.out.error =
+        'unterminated "/*" comment: it would swallow the rules after this one'
+    } else if (code === 'stray-comment-close') {
+      ctx.out.error = 'stray "*/": it would close a comment opened somewhere else'
+    } else {
+      ctx.out.error = 'unterminated "(" in value'
+    }
+  },
+}
+
+const parsedInlineValues = new WeakMap<ConfigRevisionState, Map<string, FlatThemeValue>>()
 
 const addFlatValue = (
   out: FlatBuckets,
@@ -473,46 +525,56 @@ const addFlatValue = (
     return
   }
 
-  let configValues = parsedInlineValues.get(conf.themes)
+  const generation = getConfigRevisionState(conf)
+  let configValues = parsedInlineValues.get(generation)
   if (!configValues) {
     configValues = new Map()
-    parsedInlineValues.set(conf.themes, configValues)
+    parsedInlineValues.set(generation, configValues)
   }
 
   let parsed = configValues.get(raw)
   if (!parsed) {
-    parsed = parseValue(raw, getModifierRegistry(conf))
+    parsed = { base: null, clauses: null, error: null }
+    reduceFlatValueIdentity(raw, themeUpdateFlatHandler, {
+      source: raw,
+      themeBuckets: getThemeBucketNames(conf),
+      out: parsed,
+      pending: null,
+      chainStart: 0,
+      chainEnd: 0,
+    })
     if (configValues.size >= 10_000) {
       configValues.clear()
     }
     configValues.set(raw, parsed)
   }
 
-  if (!parsed.ok) {
+  if (parsed.error !== null) {
     report(
       `parse:${key}:${raw}`,
-      `<ThemeUpdate ${key}="${raw}">: ${parsed.errors[0].message}`,
+      `<ThemeUpdate ${key}="${raw}">: ${parsed.error}`,
       'Dropping.'
     )
     return
   }
 
-  const { base, clauses } = parsed.value
+  const { base, clauses } = parsed
   if (base !== null) {
     out.values[key] = base
   }
 
-  for (const clause of clauses) {
+  if (!clauses) return
+  for (const [payload, modifiers] of clauses) {
     let themeName: string | undefined
     let applies = true
 
-    for (const modifier of clause.modifiers) {
-      if (grammarPlatformNames.has(modifier)) {
+    for (const [modifier, kind] of modifiers) {
+      if (kind === modifierKindPlatform) {
         // platform is fixed for the process, so this resolves once per value
         applies &&= platformMatches(modifier)
         continue
       }
-      if (isRootThemeName(modifier) && getThemeBucketNames(conf).has(modifier)) {
+      if (kind === modifierKindTheme) {
         if (themeName !== undefined) {
           report(
             `two-themes:${key}:${raw}`,
@@ -536,9 +598,9 @@ const addFlatValue = (
 
     if (!applies) continue
     if (themeName === undefined) {
-      out.values[key] = clause.payload
+      out.values[key] = payload
     } else {
-      ;((out.themes ||= {})[themeName] ||= {})[key] = clause.payload
+      ;((out.themes ||= {})[themeName] ||= {})[key] = payload
     }
   }
 }
@@ -547,7 +609,7 @@ const addFlatValue = (
 // reuse one layer object. downstream identity caches and snapshot bailouts key
 // off this object. each config cache is bounded with the same clear-on-limit
 // pattern as simpleHash's string cache.
-const flatLayers = new WeakMap<object, Map<string, InlineValues>>()
+const flatLayers = new WeakMap<ConfigRevisionState, Map<string, InlineValues>>()
 
 /**
  * Reads theme-key props off a <ThemeUpdate> into the layer shape the rest of
@@ -579,10 +641,11 @@ export function getInlineValuesFromProps(
 
   if (!hasKey) return null
 
-  let configLayers = flatLayers.get(conf.themes)
+  const generation = getConfigRevisionState(conf)
+  let configLayers = flatLayers.get(generation)
   if (!configLayers) {
     configLayers = new Map()
-    flatLayers.set(conf.themes, configLayers)
+    flatLayers.set(generation, configLayers)
   }
 
   // a caller that asked for issues has to see them for every call, and a cache
@@ -612,7 +675,10 @@ export function getInlineValuesFromProps(
   return layer
 }
 
-const mergedThemeCache = new WeakMap<object, Map<string, Record<string, Variable>>>()
+const mergedThemeCache = new WeakMap<
+  ConfigRevisionState,
+  WeakMap<object, Map<string, Record<string, Variable>>>
+>()
 
 /**
  * Builds the merged theme for a `<ThemeUpdate>` layer: parent theme spread plus
@@ -632,6 +698,7 @@ export function getMergedInlineTheme(
   themeName: string | undefined,
   conf: TamaguiInternalConfig
 ): Record<string, Variable> {
+  const generation = getConfigRevisionState(conf)
   const name = themeName || 'light'
   const activeScheme = name === 'dark' || name.startsWith('dark_') ? 'dark' : 'light'
 
@@ -656,11 +723,12 @@ export function getMergedInlineTheme(
   const existingInfo = (parentTheme as any)[themeUpdateStateKey] as
     | ThemeUpdateLayerInfo
     | undefined
-  if (existingInfo?.key === cacheKey) {
+  if (existingInfo?.generation === generation && existingInfo.key === cacheKey) {
     return parentTheme
   }
 
-  let byKey = mergedThemeCache.get(parentTheme)
+  let generationCache = mergedThemeCache.get(generation)
+  let byKey = generationCache?.get(parentTheme)
   const cached = byKey?.get(cacheKey)
   if (cached) return cached
 
@@ -710,6 +778,7 @@ export function getMergedInlineTheme(
 
   const info: ThemeUpdateLayerInfo = {
     key: cacheKey,
+    generation,
     // nested layers: carry the parent layer's overrides forward (its values
     // are plain enumerable entries after the spread, but the iOS pair info
     // would otherwise be lost)
@@ -773,7 +842,11 @@ export function getMergedInlineTheme(
   })
 
   byKey ||= new Map()
-  mergedThemeCache.set(parentTheme, byKey)
+  if (!generationCache) {
+    generationCache = new WeakMap()
+    mergedThemeCache.set(generation, generationCache)
+  }
+  generationCache.set(parentTheme, byKey)
   if (byKey.size >= 10_000) {
     byKey.clear()
   }

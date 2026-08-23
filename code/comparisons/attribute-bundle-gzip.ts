@@ -16,19 +16,29 @@
  * this module cost me. summing them lands within ~1% of the measured delta in
  * practice, so a v3-vs-v2 marginal diff is a valid decomposition.
  *
+ * --core instead deletes every @tamagui/ span except animations-css and
+ * animation-helpers as one union, then gzips the stripped chunk once. this is
+ * the reproducible whole-core metric; it is not a sum of marginal rows.
+ * --parser-cluster selects the closed parser-cluster manifest for one declared
+ * checkpoint. it unions full sources and exact top-level declarations, then
+ * removes and gzips that union once.
+ *
  * usage:
  *   # build with sourcemaps first (bench dirs from run-benchmarks are temp)
- *   cd code/comparisons/tamagui-bench && EXTRACT=1 npx vite build --sourcemap --outDir /tmp/v3bench
+ *   cd code/comparisons/tamagui-bench && npx vite build --mode size --sourcemap --outDir /tmp/v3bench
  *   bun code/comparisons/attribute-bundle-gzip.ts /tmp/v3bench
  *
  *   # only tamagui modules, and diff two builds
  *   bun code/comparisons/attribute-bundle-gzip.ts /tmp/v3bench --filter=@tamagui/
  *   bun code/comparisons/attribute-bundle-gzip.ts /tmp/v3bench --against=/tmp/v2bench
+ *   bun code/comparisons/attribute-bundle-gzip.ts /tmp/v3bench --core
+ *   bun code/comparisons/attribute-bundle-gzip.ts /tmp/v3bench --parser-cluster=phase-iii-b
  */
 
 import { eachMapping, TraceMap } from '@jridgewell/trace-mapping'
 import { readdirSync, readFileSync } from 'fs'
 import { join } from 'path'
+import ts from 'typescript'
 import { gzipSync } from 'zlib'
 
 const args = process.argv.slice(2)
@@ -37,12 +47,53 @@ const filter = args.find((a) => a.startsWith('--filter='))?.slice(9) ?? ''
 const against = args.find((a) => a.startsWith('--against='))?.slice(10)
 const minDelta = Number(args.find((a) => a.startsWith('--min='))?.slice(6) ?? '40')
 const within = args.find((a) => a.startsWith('--within='))?.slice(9)
+const core = args.includes('--core')
+const parserClusterCheckpoint = args
+  .find((a) => a.startsWith('--parser-cluster='))
+  ?.slice('--parser-cluster='.length)
+
+if (args.some((a) => a === '--members' || a.startsWith('--members='))) {
+  console.error('--members was replaced by the closed --parser-cluster manifest')
+  process.exit(1)
+}
 
 if (!dirs[0]) {
   console.error(
-    'usage: attribute-bundle-gzip.ts <outDir> [--against=<outDir>] [--filter=str]'
+    'usage: attribute-bundle-gzip.ts <outDir> [--core | --parser-cluster=<checkpoint>] [--against=<outDir>] [--filter=str]'
   )
   process.exit(1)
+}
+
+if (args.includes('--parser-cluster') || parserClusterCheckpoint === '') {
+  console.error('--parser-cluster requires a checkpoint name')
+  process.exit(1)
+}
+
+if (core && parserClusterCheckpoint) {
+  console.error('--core and --parser-cluster are separate union modes')
+  process.exit(1)
+}
+
+type ParserClusterSelector =
+  | { kind: 'source'; source: string }
+  | {
+      kind: 'declaration'
+      source: string
+      declaration: string
+      declarationKind: 'function' | 'variable'
+      closePrivateDependencies?: true
+    }
+
+type ParserClusterManifest = {
+  version: 1
+  selectors: Record<string, ParserClusterSelector>
+  checkpoints: Record<
+    string,
+    Record<
+      string,
+      { state: 'present'; movedTo?: never } | { state: 'absent'; movedTo: string }
+    >
+  >
 }
 
 interface Segment {
@@ -51,6 +102,8 @@ interface Segment {
   end: number
   /** 1-based line in the ORIGINAL source, for --within bucketing */
   originalLine: number
+  /** 0-based column in the ORIGINAL source */
+  originalColumn: number
 }
 
 /**
@@ -122,6 +175,7 @@ function attribute(dir: string) {
         col: mapping.generatedColumn,
         source: mapping.source,
         originalLine: mapping.originalLine ?? 0,
+        originalColumn: mapping.originalColumn ?? 0,
       })
     })
     mappings.sort((a, b) => a.line - b.line || a.col - b.col)
@@ -133,7 +187,13 @@ function attribute(dir: string) {
       const end = i + 1 < mappings.length ? at(mappings[i + 1]!) : code.length
       if (end <= start) continue
       const id = canonicalId(mappings[i]!.source)
-      const seg = { file, start, end, originalLine: mappings[i]!.originalLine }
+      const seg = {
+        file,
+        start,
+        end,
+        originalLine: mappings[i]!.originalLine,
+        originalColumn: mappings[i]!.originalColumn,
+      }
       const list = segments.get(id)
       if (list) list.push(seg)
       else segments.set(id, [seg])
@@ -149,37 +209,405 @@ function attribute(dir: string) {
   }
 
   const modules = new Map<string, { minBytes: number; marginalGzip: number }>()
-  for (const [id, segs] of segments) {
-    if (filter && !id.includes(filter)) continue
-    const byFile = new Map<string, Segment[]>()
-    for (const seg of segs) {
-      const list = byFile.get(seg.file)
-      if (list) list.push(seg)
-      else byFile.set(seg.file, [seg])
-    }
-    let marginalGzip = 0
-    let minBytes = 0
-    for (const [file, fileSegs] of byFile) {
-      const code = codes.get(file)!
-      const sorted = fileSegs.slice().sort((a, b) => a.start - b.start)
-      let stripped = ''
-      let pos = 0
-      for (const seg of sorted) {
-        minBytes += seg.end - seg.start
-        if (seg.start > pos) stripped += code.slice(pos, seg.start)
-        pos = Math.max(pos, seg.end)
+  if (!core && !parserClusterCheckpoint) {
+    for (const [id, segs] of segments) {
+      if (filter && !id.includes(filter)) continue
+      const byFile = new Map<string, Segment[]>()
+      for (const seg of segs) {
+        const list = byFile.get(seg.file)
+        if (list) list.push(seg)
+        else byFile.set(seg.file, [seg])
       }
-      stripped += code.slice(pos)
-      marginalGzip +=
-        baseGzip.get(file)! - gzipSync(Buffer.from(stripped), { level: 9 }).byteLength
+      let marginalGzip = 0
+      let minBytes = 0
+      for (const [file, fileSegs] of byFile) {
+        const code = codes.get(file)!
+        const sorted = fileSegs.slice().sort((a, b) => a.start - b.start)
+        let stripped = ''
+        let pos = 0
+        for (const seg of sorted) {
+          minBytes += seg.end - seg.start
+          if (seg.start > pos) stripped += code.slice(pos, seg.start)
+          pos = Math.max(pos, seg.end)
+        }
+        stripped += code.slice(pos)
+        marginalGzip +=
+          baseGzip.get(file)! - gzipSync(Buffer.from(stripped), { level: 9 }).byteLength
+      }
+      modules.set(id, { minBytes, marginalGzip })
     }
-    modules.set(id, { minBytes, marginalGzip })
   }
 
   return { modules, totalGzip, segments, codes, baseGzip, sources }
 }
 
+function groupSegmentsByFile(segmentGroups: Iterable<Segment[]>) {
+  const byFile = new Map<string, Segment[]>()
+  for (const segments of segmentGroups) {
+    for (const segment of segments) {
+      const fileSegments = byFile.get(segment.file)
+      if (fileSegments) fileSegments.push(segment)
+      else byFile.set(segment.file, [segment])
+    }
+  }
+  return byFile
+}
+
+// CORE and named-member attribution share this exact one-union operation.
+// Each emitted chunk is stripped once, gzipped once, then summed across chunks.
+function measureUnionGzip(
+  attributed: ReturnType<typeof attribute>,
+  byFile: Map<string, Segment[]>
+) {
+  let strippedGzip = 0
+  for (const [file, code] of attributed.codes) {
+    const fileSegments = byFile.get(file)
+    if (!fileSegments) {
+      strippedGzip += attributed.baseGzip.get(file)!
+      continue
+    }
+    const sorted = fileSegments.slice().sort((a, b) => a.start - b.start)
+    let stripped = ''
+    let position = 0
+    for (const segment of sorted) {
+      if (segment.start > position) stripped += code.slice(position, segment.start)
+      position = Math.max(position, segment.end)
+    }
+    stripped += code.slice(position)
+    strippedGzip += gzipSync(Buffer.from(stripped), { level: 9 }).byteLength
+  }
+  return attributed.totalGzip - strippedGzip
+}
+
+function fail(message: string): never {
+  console.error(message)
+  process.exit(1)
+}
+
+function loadParserClusterManifest(checkpointName: string) {
+  const manifestPath = join(import.meta.dir, 'parser-cluster-manifest.json')
+  let manifest: ParserClusterManifest
+  try {
+    manifest = JSON.parse(readFileSync(manifestPath, 'utf8'))
+  } catch (error) {
+    fail(
+      `could not read parser cluster manifest: ${error instanceof Error ? error.message : String(error)}`
+    )
+  }
+
+  if (manifest.version !== 1) {
+    fail(`unsupported parser cluster manifest version: ${String(manifest.version)}`)
+  }
+  if (!manifest.selectors || typeof manifest.selectors !== 'object') {
+    fail('parser cluster manifest has no selectors')
+  }
+
+  const selectorNames = Object.keys(manifest.selectors)
+  if (selectorNames.length === 0) fail('parser cluster manifest has no selectors')
+
+  const physicalSelectors = new Set<string>()
+  for (const name of selectorNames) {
+    const selector = manifest.selectors[name] as ParserClusterSelector | undefined
+    if (!selector || (selector.kind !== 'source' && selector.kind !== 'declaration')) {
+      fail(`parser cluster selector ${name} has an invalid kind`)
+    }
+    if (typeof selector.source !== 'string' || !selector.source.includes('::')) {
+      fail(`parser cluster selector ${name} has an invalid canonical source`)
+    }
+    if (selector.kind === 'declaration') {
+      if (!selector.declaration) {
+        fail(`parser cluster selector ${name} has no declaration name`)
+      }
+      if (
+        selector.declarationKind !== 'function' &&
+        selector.declarationKind !== 'variable'
+      ) {
+        fail(`parser cluster selector ${name} has an invalid declaration kind`)
+      }
+      if (
+        selector.closePrivateDependencies !== undefined &&
+        selector.closePrivateDependencies !== true
+      ) {
+        fail(`parser cluster selector ${name} has an invalid private closure setting`)
+      }
+    }
+    const physicalKey =
+      selector.kind === 'source'
+        ? `source:${selector.source}`
+        : `declaration:${selector.source}:${selector.declaration}`
+    if (physicalSelectors.has(physicalKey)) {
+      fail(`parser cluster manifest selects ${physicalKey} more than once`)
+    }
+    physicalSelectors.add(physicalKey)
+  }
+
+  const checkpoint = manifest.checkpoints?.[checkpointName]
+  if (!checkpoint) {
+    fail(`parser cluster checkpoint is not declared: ${checkpointName}`)
+  }
+  for (const name of selectorNames) {
+    const state = checkpoint[name]
+    if (!state) {
+      fail(`parser cluster checkpoint ${checkpointName} has no state for ${name}`)
+    }
+    if (state.state === 'present') {
+      if ('movedTo' in state) {
+        fail(
+          `parser cluster selector ${name} is present at ${checkpointName} and cannot declare a move`
+        )
+      }
+      continue
+    }
+    if (state.state !== 'absent') {
+      fail(
+        `parser cluster selector ${name} has invalid state ${String((state as any).state)} at ${checkpointName}`
+      )
+    }
+    if (!state.movedTo || !manifest.selectors[state.movedTo]) {
+      fail(
+        `parser cluster selector ${name} is absent at ${checkpointName} without a manifest destination`
+      )
+    }
+    if (state.movedTo === name || checkpoint[state.movedTo]?.state !== 'present') {
+      fail(
+        `parser cluster selector ${name} moves to ${state.movedTo}, which is not present at ${checkpointName}`
+      )
+    }
+  }
+  for (const name of Object.keys(checkpoint)) {
+    if (!manifest.selectors[name]) {
+      fail(
+        `parser cluster checkpoint ${checkpointName} has state for unknown selector ${name}`
+      )
+    }
+  }
+
+  return { checkpoint, manifest, selectorNames }
+}
+
+type TopLevelDeclaration = {
+  kind: 'function' | 'variable'
+  name: string
+  node: ts.Node
+}
+
+function findTopLevelDeclarations(sourceFile: ts.SourceFile, name: string) {
+  const declarations: TopLevelDeclaration[] = []
+  for (const statement of sourceFile.statements) {
+    if (ts.isFunctionDeclaration(statement) && statement.name?.text === name) {
+      declarations.push({ kind: 'function', name, node: statement })
+      continue
+    }
+    if (!ts.isVariableStatement(statement)) continue
+    for (const declaration of statement.declarationList.declarations) {
+      if (ts.isIdentifier(declaration.name) && declaration.name.text === name) {
+        declarations.push({ kind: 'variable', name, node: statement })
+      }
+    }
+  }
+  return declarations
+}
+
+function topLevelRuntimeDeclaration(node: ts.Node): ts.Statement | undefined {
+  let current = node
+  while (current.parent && !ts.isSourceFile(current.parent)) current = current.parent
+  if (ts.isFunctionDeclaration(current) || ts.isVariableStatement(current)) {
+    return current
+  }
+}
+
+function privateDeclarationDependencies(sourceFile: ts.SourceFile, root: ts.Node) {
+  const options: ts.CompilerOptions = {
+    allowJs: true,
+    noResolve: true,
+    target: ts.ScriptTarget.Latest,
+  }
+  const defaultHost = ts.createCompilerHost(options)
+  const host: ts.CompilerHost = {
+    ...defaultHost,
+    fileExists: (fileName) => fileName === sourceFile.fileName,
+    getSourceFile: (fileName) =>
+      fileName === sourceFile.fileName ? sourceFile : undefined,
+    readFile: (fileName) =>
+      fileName === sourceFile.fileName ? sourceFile.text : undefined,
+  }
+  const checker = ts.createProgram([sourceFile.fileName], options, host).getTypeChecker()
+  const dependencies = new Map<string, TopLevelDeclaration>()
+  const visited = new Set<ts.Node>([root])
+  const queue = [root]
+
+  while (queue.length > 0) {
+    const owner = queue.pop()!
+    const visit = (node: ts.Node) => {
+      if (ts.isIdentifier(node)) {
+        const symbol = checker.getSymbolAtLocation(node)
+        for (const declaration of symbol?.declarations ?? []) {
+          if (declaration.getSourceFile() !== sourceFile) continue
+          const topLevel = topLevelRuntimeDeclaration(declaration)
+          if (!topLevel) continue
+          for (const candidate of findTopLevelDeclarations(sourceFile, node.text)) {
+            if (candidate.node !== topLevel) continue
+            if (candidate.node !== root) {
+              dependencies.set(`${candidate.kind}:${candidate.name}`, candidate)
+            }
+            if (!visited.has(candidate.node)) {
+              visited.add(candidate.node)
+              queue.push(candidate.node)
+            }
+          }
+        }
+      }
+      ts.forEachChild(node, visit)
+    }
+    ts.forEachChild(owner, visit)
+  }
+
+  return [...dependencies.values()]
+}
+
+function declarationSegments(
+  attributed: ReturnType<typeof attribute>,
+  selectorName: string,
+  selector: Extract<ParserClusterSelector, { kind: 'declaration' }>
+) {
+  const source = attributed.sources.get(selector.source)
+  if (source === undefined) {
+    return { declarationPresent: false, sourcePresent: false, segments: [] as Segment[] }
+  }
+
+  const sourceFile = ts.createSourceFile(
+    selector.source,
+    source,
+    ts.ScriptTarget.Latest,
+    true,
+    ts.ScriptKind.JS
+  )
+  const declarations = findTopLevelDeclarations(sourceFile, selector.declaration)
+  if (declarations.length > 1) {
+    fail(
+      `parser cluster declaration ${selectorName} is ambiguous in ${selector.source}: found ${declarations.length}`
+    )
+  }
+  if (declarations.length === 0) {
+    return { declarationPresent: false, sourcePresent: true, segments: [] as Segment[] }
+  }
+  const declaration = declarations[0]!
+  if (declaration.kind !== selector.declarationKind) {
+    fail(
+      `parser cluster declaration ${selectorName} has wrong kind in ${selector.source}: expected ${selector.declarationKind}, found ${declaration.kind}`
+    )
+  }
+
+  const start = declaration.node.getStart(sourceFile)
+  const end = declaration.node.getEnd()
+  const segments = (attributed.segments.get(selector.source) ?? []).filter((segment) => {
+    if (segment.originalLine < 1) return false
+    const position = sourceFile.getPositionOfLineAndCharacter(
+      segment.originalLine - 1,
+      segment.originalColumn
+    )
+    return position >= start && position < end
+  })
+  return {
+    declarationPresent: true,
+    privateDependencies: selector.closePrivateDependencies
+      ? privateDeclarationDependencies(sourceFile, declaration.node)
+      : [],
+    sourcePresent: true,
+    segments,
+  }
+}
+
 const left = attribute(dirs[0]!)
+
+if (core) {
+  const segmentGroups: Segment[][] = []
+  for (const [id, segs] of left.segments) {
+    const packageName = id.slice(0, id.indexOf('::'))
+    if (
+      !packageName.startsWith('@tamagui/') ||
+      packageName === '@tamagui/animations-css' ||
+      packageName === '@tamagui/animation-helpers'
+    ) {
+      continue
+    }
+    segmentGroups.push(segs)
+  }
+
+  console.info(`bundle gzip total: ${left.totalGzip}`)
+  console.info(`CORE: ${measureUnionGzip(left, groupSegmentsByFile(segmentGroups))}`)
+  process.exit(0)
+}
+
+if (parserClusterCheckpoint) {
+  const { checkpoint, manifest, selectorNames } = loadParserClusterManifest(
+    parserClusterCheckpoint
+  )
+  const segmentGroups: Segment[][] = []
+  const present: string[] = []
+  const absent: string[] = []
+  for (const name of selectorNames) {
+    const selector = manifest.selectors[name]!
+    const expected = checkpoint[name]!
+    let sourcePresent: boolean
+    let selectedSegments: Segment[]
+    if (selector.kind === 'source') {
+      selectedSegments = left.segments.get(selector.source) ?? []
+      sourcePresent = selectedSegments.length > 0
+    } else {
+      const result = declarationSegments(left, name, selector)
+      sourcePresent = result.sourcePresent
+      selectedSegments = result.segments
+      if (expected.state === 'present' && !result.declarationPresent) {
+        fail(`parser cluster declaration ${name} is missing from ${selector.source}`)
+      }
+      for (const dependency of result.privateDependencies ?? []) {
+        const dependencySelector = selectorNames.find((candidateName) => {
+          const candidate = manifest.selectors[candidateName]!
+          return (
+            candidate.kind === 'declaration' &&
+            candidate.source === selector.source &&
+            candidate.declaration === dependency.name &&
+            candidate.declarationKind === dependency.kind &&
+            checkpoint[candidateName]?.state === 'present'
+          )
+        })
+        if (!dependencySelector) {
+          fail(
+            `parser cluster private dependency ${selector.source}:${dependency.name} from ${name} is not a present manifest selector at ${parserClusterCheckpoint}`
+          )
+        }
+      }
+    }
+
+    const selectorPresent = sourcePresent && selectedSegments.length > 0
+    if (expected.state === 'present') {
+      if (!selectorPresent) {
+        fail(
+          `parser cluster selector ${name} expected present at ${parserClusterCheckpoint}, but it has no generated spans in ${selector.source}`
+        )
+      }
+      present.push(name)
+      segmentGroups.push(selectedSegments)
+    } else {
+      if (selectorPresent) {
+        fail(
+          `parser cluster selector ${name} expected absent at ${parserClusterCheckpoint}, but it has generated spans in ${selector.source}`
+        )
+      }
+      absent.push(`${name} -> ${expected.movedTo}`)
+    }
+  }
+
+  console.info(`bundle gzip total: ${left.totalGzip}`)
+  console.info(`parser cluster checkpoint: ${parserClusterCheckpoint}`)
+  console.info(`present: ${present.join(', ')}`)
+  console.info(`absent moves: ${absent.length > 0 ? absent.join(', ') : '(none)'}`)
+  console.info(
+    `PARSER CLUSTER UNION: ${measureUnionGzip(left, groupSegmentsByFile(segmentGroups))}`
+  )
+  process.exit(0)
+}
 
 if (within) {
   // per-declaration attribution inside ONE module: same marginal-gzip method,

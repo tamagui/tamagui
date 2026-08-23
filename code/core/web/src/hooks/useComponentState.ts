@@ -1,6 +1,10 @@
 import { getPlatformDriver, isServer, isWeb } from '@tamagui/constants'
 import { stylePropsAll } from '@tamagui/helpers'
-import { canonicalClauseModifier, scanFlatValue } from '@tamagui/style-grammar/runtime'
+import {
+  canonicalClauseModifier,
+  scanFlatValue,
+  type FlatValueHandler,
+} from '@tamagui/style-grammar/runtime'
 import { mergeIfNotShallowEqual } from '@tamagui/is-equal-shallow'
 import { useDidFinishSSR, useIsClientOnly } from '@tamagui/use-did-finish-ssr'
 import { useRef, useState } from 'react'
@@ -31,33 +35,30 @@ import type { ViewProps } from '../views/View'
 const platformPseudoModifiers = new Set(['hover', 'press', 'focus'])
 const enterModifier = new Set(['enter'])
 
-// One live scan at a time, so the visitor and its state are hoisted rather than
-// rebuilt per prop: this runs on every render of every component, and the whole
-// point of an index-based scanner is that asking the question costs nothing.
-let scanSource = ''
-let scanWanted: ReadonlySet<string> = enterModifier
-let scanFound = false
-let scanRefused = false
+type LifecycleScanContext = TamaguiComponentStateRef & {
+  // source, wanted modifiers, found, and pending match. created once per
+  // component and reused by both lifecycle questions on every render.
+  flatScan?: [string, ReadonlySet<string>, boolean, boolean]
+}
 
-const lifecycleVisitor = {
-  segment(start: number, end: number, isBase: boolean) {
-    // a clause with no payload is a value parseValue refuses, so nothing in it
-    // reaches the style object and nothing in it can start an animation
-    if (start === end && !isBase) scanRefused = true
+const lifecycleHandler: FlatValueHandler<LifecycleScanContext> = {
+  segment(ctx, start, end, isBase, valid) {
+    const scan = ctx.flatScan!
+    if (!isBase && valid && start < end && scan[3]) scan[2] = true
+    scan[3] = false
   },
-  chain(start: number, end: number) {
-    if (scanRefused) return false
+  chain(ctx, start, end, valid) {
+    const scan = ctx.flatScan!
+    scan[3] = false
+    if (!valid) return true
     for (let index = start; index <= end; index++) {
-      if (index !== end && scanSource.charCodeAt(index) !== 58) continue
-      if (scanWanted.has(canonicalClauseModifier(scanSource.slice(start, index)))) {
-        scanFound = true
+      if (index !== end && scan[0].charCodeAt(index) !== 58) continue
+      if (scan[1].has(canonicalClauseModifier(scan[0].slice(start, index)))) {
+        scan[3] = true
       }
       start = index + 1
     }
     return true
-  },
-  error() {
-    scanRefused = true
   },
 }
 
@@ -72,19 +73,21 @@ const lifecycleVisitor = {
 function hasFlatModifier(
   props: Record<string, any>,
   config: TamaguiInternalConfig,
-  modifiers: ReadonlySet<string>
+  modifiers: ReadonlySet<string>,
+  ctx: LifecycleScanContext
 ): boolean {
+  const scan = (ctx.flatScan ||= ['', enterModifier, false, false])
   for (const key in props) {
     const value = props[key]
     if (typeof value !== 'string' || value.indexOf(':') === -1) continue
     const property = config.shorthands[key] || key
     if (!(property in stylePropsAll) && property !== 'transition') continue
-    scanSource = value
-    scanWanted = modifiers
-    scanFound = false
-    scanRefused = false
-    scanFlatValue(value, lifecycleVisitor)
-    if (scanFound && !scanRefused) return true
+    scan[0] = value
+    scan[1] = modifiers
+    scan[2] = false
+    scan[3] = false
+    scanFlatValue(value, lifecycleHandler, ctx)
+    if (scan[2]) return true
   }
   return false
 }
@@ -143,7 +146,12 @@ export const useComponentState = (
     useAnimations &&
     animationDriver?.avoidReRenders &&
     getPlatformDriver()?.pseudo &&
-    hasFlatModifier(props, config, platformPseudoModifiers)
+    hasFlatModifier(
+      props,
+      config,
+      platformPseudoModifiers,
+      curStateRef as LifecycleScanContext
+    )
   )
 
   const willBeAnimatedClient = (() => {
@@ -172,7 +180,12 @@ export const useComponentState = (
   const isExiting = presenceState?.isPresent === false
   const isEntering = presenceState?.isPresent === true && presenceState.initial !== false
 
-  const hasEnterStyle = hasFlatModifier(props, config, enterModifier)
+  const hasEnterStyle = hasFlatModifier(
+    props,
+    config,
+    enterModifier,
+    curStateRef as LifecycleScanContext
+  )
 
   const hasAnimationThatNeedsHydrate =
     hasAnimationProp &&

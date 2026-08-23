@@ -410,21 +410,6 @@ export const getSplitStyles: StyleSplitter = (
     animationDriver: resolvedDriver,
   }
 
-  // only used by compiler
-  if (process.env.IS_STATIC === 'is_static') {
-    const { fallbackProps } = styleProps
-    if (fallbackProps) {
-      styleState.props = new Proxy(props, {
-        get(_, key, val) {
-          if (!Reflect.has(props, key)) {
-            return Reflect.get(fallbackProps, key)
-          }
-          return Reflect.get(props, key)
-        },
-      })
-    }
-  }
-
   if (
     process.env.NODE_ENV === 'development' &&
     (debug === 'profile' || (globalThis as any).time)

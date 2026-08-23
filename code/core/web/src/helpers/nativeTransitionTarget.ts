@@ -1,4 +1,4 @@
-import type { NativeTransitionTarget } from '@tamagui/style-grammar'
+import type { NativeTransitionTarget } from '@tamagui/style-grammar/runtime'
 
 // web build: there is no native target to detect
 export function detectNativeTransitionTarget(): NativeTransitionTarget | null {

@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest'
-import { splitBackgroundValue, type ParsedValue } from '..'
+import { splitBackgroundValue, type ParsedValue } from '../tooling'
 
 describe('background family splitting', () => {
   test('splits the plan example into only its color and image programs', () => {

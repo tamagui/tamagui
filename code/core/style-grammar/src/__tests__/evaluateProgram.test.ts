@@ -5,7 +5,7 @@ import {
   type ModifierKind,
   type ModifierRegistryView,
   type ParsedValue,
-} from '..'
+} from '../tooling'
 
 const modifierKinds: Readonly<Record<string, ModifierKind>> = {
   hover: 'state',

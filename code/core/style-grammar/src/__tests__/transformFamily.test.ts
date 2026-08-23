@@ -10,7 +10,7 @@ import {
   transformFamilyTargets,
   type LonghandProgram,
   type TransformEntry,
-} from '..'
+} from '../tooling'
 
 // The transform family. Two halves that must agree: on web, `x`/`y` and
 // `scaleX`/`scaleY` own per-axis custom properties composed by one static rule,

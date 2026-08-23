@@ -4,7 +4,7 @@ import {
   createModifierRegistry,
   parseContainerModifier,
   stateModifierNames,
-} from '..'
+} from '../tooling'
 
 // One global modifier namespace. These tests pin which spellings resolve to
 // which kind, that registration order is state -> media -> platform -> theme
@@ -83,6 +83,17 @@ describe('parameterized group modifiers', () => {
     expect(full.registry.get('group-press/side_bar-2')).toBe('group')
   })
 
+  test('lifecycle states remain standalone-only', () => {
+    for (const name of ['enter', 'exit', 'starting', 'ending']) {
+      expect(full.registry.get(name), name).toBe('state')
+      expect(full.registry.get(`group-${name}`), `group-${name}`).toBeUndefined()
+      expect(
+        full.registry.get(`group-${name}/card`),
+        `group-${name}/card`
+      ).toBeUndefined()
+    }
+  })
+
   test('anything that is not a state suffix is unregistered', () => {
     expect(full.registry.get('group')).toBeUndefined()
     expect(full.registry.get('group-')).toBeUndefined()
@@ -140,13 +151,16 @@ describe('parameterized container modifiers', () => {
     expect(registry.get('@sm')).toBeUndefined()
   })
 
-  test('a declared size that is not a media key still resolves, since the caller declared it', () => {
-    const { registry } = createModifierRegistry(
+  test('a declared size that is not a media key is refused with a diagnostic', () => {
+    const { registry, diagnostics } = createModifierRegistry(
       { mediaNames: ['sm'] },
       { containerSizeNames: ['wide'] }
     )
-    expect(registry.get('@wide')).toBe('container')
+    expect(registry.get('@wide')).toBeUndefined()
     expect(registry.get('@sm')).toBeUndefined()
+    expect(diagnostics).toEqual([
+      'container size "wide" is not registered: the same spelling is not registered as a media query',
+    ])
   })
 
   test('a media size shadowed by another kind has no container form', () => {
@@ -224,13 +238,22 @@ describe('collisions are reported, first registration wins', () => {
     ])
   })
 
-  test('a config name shadowing a group modifier is reported', () => {
+  test('the group prefix is reserved across configured name sources', () => {
     const { registry, diagnostics } = createModifierRegistry({
       mediaNames: ['group-hover'],
+      themeNames: ['group-brand'],
+      platformNames: ['web', 'group-device'],
+      containerSizeNames: ['group-wide'],
     })
-    expect(registry.get('group-hover')).toBe('media')
+    expect(registry.get('group-hover')).toBe('group')
+    expect(registry.get('group-brand')).toBeUndefined()
+    expect(registry.get('group-device')).toBeUndefined()
+    expect(registry.get('@group-wide')).toBeUndefined()
     expect(diagnostics).toEqual([
-      'modifier "group-hover" shadows the group modifier of the same spelling, which can no longer be used as a media name',
+      'container size "group-wide" is not registered: the "group-" prefix is reserved for group state modifiers; rename this container size so it does not begin with "group-"',
+      'modifier "group-hover" is not registered: the "group-" prefix is reserved for group state modifiers; rename this media name so it does not begin with "group-"',
+      'modifier "group-device" is not registered: the "group-" prefix is reserved for group state modifiers; rename this platform name so it does not begin with "group-"',
+      'modifier "group-brand" is not registered: the "group-" prefix is reserved for group state modifiers; rename this theme name so it does not begin with "group-"',
     ])
   })
 
@@ -248,6 +271,15 @@ describe('config name sources', () => {
     for (const created of [fromSet, fromObject, fromArray]) {
       expect(created.registry.get('sm')).toBe('media')
     }
+  })
+
+  test('record sources register own names only', () => {
+    const mediaNames = Object.assign(Object.create({ inherited: {} }), {
+      constructor: {},
+    })
+    const { registry } = createModifierRegistry({ mediaNames })
+    expect(registry.get('constructor')).toBe('media')
+    expect(registry.get('inherited')).toBeUndefined()
   })
 
   test('explicit platform names replace the defaults', () => {

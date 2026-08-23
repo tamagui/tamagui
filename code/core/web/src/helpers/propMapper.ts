@@ -1,5 +1,5 @@
 import { isAndroid } from '@tamagui/constants'
-import { scanFlatValue } from '@tamagui/style-grammar/runtime'
+import { scanFlatValue, type FlatValueHandler } from '@tamagui/style-grammar/runtime'
 import { isVariable } from '../createVariable'
 import type {
   GetStyleState,
@@ -11,7 +11,7 @@ import type {
   VariantSpreadFunction,
 } from '../types'
 import { variantResolverNames } from '../types'
-import { getCondition } from './directStyle'
+import { resolveClauseChain } from './directStyle'
 import { expandStyle } from './expandStyle'
 import { resolveVariableValue } from './resolveVariableValue'
 import { getFontsForLanguage, getVariantExtras } from './getVariantExtras'
@@ -36,6 +36,31 @@ export function appendFlatClause(
   return prev == null
     ? `${conditionSource}:${value}`
     : `${prev} ${conditionSource}:${value}`
+}
+
+// pass state, source, saw chain, then payload/chain offset quadruples. only
+// numeric offsets survive while authored variant code runs.
+type VariantScanContext = any[]
+
+const propMapperHandler: FlatValueHandler<VariantScanContext> = {
+  segment(ctx, start, end, isBase, valid, source, chainStart, chainEnd, chainValid) {
+    if (isBase) {
+      if (valid && start < end) ctx.push(start, end, -1, -1)
+      return
+    }
+    if (!chainValid) return
+    const condition = resolveClauseChain(ctx[0], source, chainStart, chainEnd)
+    if (condition && valid && start < end) {
+      ctx.push(start, end, chainStart, chainEnd)
+    }
+  },
+  chain(ctx) {
+    ctx[2] = true
+    return true
+  },
+  error(ctx) {
+    ctx[2] = true
+  },
 }
 
 export const propMapper: PropMapper = (key, value, styleState, disabled, map) => {
@@ -168,57 +193,30 @@ const resolveVariants: StyleResolver = (
     )
   ) {
     // `scanFlatValue` is the same lexer `contributeStyleString` and the
-    // canonical `parseValue` run, and `getCondition` is the same modifier
-    // resolver the style path uses. Both matter: the two paths used to lose
-    // different amounts of a value the grammar refuses, so which one styled a
-    // component decided how much of a typo survived.
-    const starts: number[] = []
-    const ends: number[] = []
-    const modifiers: (string | undefined)[] = []
-    let pendingModifier: string | undefined
-    let sawClause = false
-    let refused = false
+    // canonical `parseValue` run, and `resolveClauseChain` is the same modifier
+    // resolver the style path uses. A refused chain invalidates only its own
+    // payload, and the shared lexer continues to later clauses.
+    const scan: VariantScanContext = [styleState, value, false]
 
-    scanFlatValue(value, {
-      segment(start, end, isBase) {
-        if (start === end) {
-          if (!isBase) refused = true
-          return
-        }
-        starts.push(start)
-        ends.push(end)
-        modifiers.push(pendingModifier)
-      },
-      chain(start, end) {
-        if (refused) return false
-        const source = value.slice(start, end)
-        if (!getCondition(styleState, source)) {
-          refused = true
-          return false
-        }
-        pendingModifier = source
-        sawClause = true
-        return true
-      },
-      error() {
-        refused = true
-      },
-    })
+    scanFlatValue(value, propMapperHandler, scan)
 
-    if (refused) return []
-    if (sawClause) {
+    if (scan[2]) {
       let entries: [string, any, any?, string?][] | undefined
-      for (let index = 0; index < starts.length; index++) {
+      for (let index = 3; index < scan.length; index += 4) {
         const resolved = resolveVariantValue(
           key,
-          value.slice(starts[index], ends[index]),
+          value.slice(scan[index] as number, scan[index + 1] as number),
           styleProps,
           styleState,
           parentVariantKey
         )
         if (!resolved) continue
         entries ||= []
-        const modifier = modifiers[index]
+        const chainStart = scan[index + 2] as number
+        const modifier =
+          chainStart === -1
+            ? undefined
+            : value.slice(chainStart, scan[index + 3] as number)
         for (const entry of resolved) {
           if (modifier !== undefined) entry[3] = modifier
           entries.push(entry)

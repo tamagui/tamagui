@@ -1,8 +1,7 @@
 import { describe, expect, test } from 'vitest'
 
-import { createGrammarConfigView } from '../config'
-import { formatParsedValue, mergeFlatValues } from '../mergeFlatValues'
-import { createModifierRegistry } from '../modifierRegistry'
+import { mergeFlatValues } from '../mergeFlatValues'
+import { formatParsedValue } from '../toolingFormat'
 import { parseValue } from '../valueParser'
 import type { ModifierRegistryView } from '../valueTypes'
 
@@ -41,6 +40,51 @@ describe('mergeFlatValues', () => {
     expect(mergeFlatValues('a:b:red', 'b:a:green')).toBe('b:a:green')
   })
 
+  test('aliases and duplicate modifiers share their canonical slot', () => {
+    expect(mergeFlatValues('red active:blue', 'press:green')).toBe('red press:green')
+    expect(mergeFlatValues('red hover:hover:blue', 'hover:green')).toBe('red hover:green')
+  })
+
+  test('named and unnamed group aliases preserve the later spelling', () => {
+    expect(mergeFlatValues('group-active:red', 'group-press:blue')).toBe(
+      'group-press:blue'
+    )
+    expect(
+      mergeFlatValues(
+        'red group-active:blue group-active/card:gray',
+        'group-press:green group-press/card:black'
+      )
+    ).toBe('red group-press:green group-press/card:black')
+    expect(mergeFlatValues('group-press/card:red', 'group-press/dialog:blue')).toBe(
+      'group-press/card:red group-press/dialog:blue'
+    )
+  })
+
+  test('surviving earlier clauses and later clauses keep authored order', () => {
+    expect(
+      mergeFlatValues(
+        'black hover:red focus:orange disabled:gray',
+        'white focus:yellow press:green'
+      )
+    ).toBe('white hover:red disabled:gray focus:yellow press:green')
+  })
+
+  test('keeps the prior normalized boundary between a modifier and its payload', () => {
+    expect(mergeFlatValues('red hover: blue', 'green')).toBe('green hover:blue')
+    expect(mergeFlatValues('red hover: /* reason */ blue', 'green')).toBe(
+      'green hover:/* reason */ blue'
+    )
+  })
+
+  test('duplicate clauses within one authored value remain in authored order', () => {
+    expect(mergeFlatValues('hover:red hover:blue', 'black')).toBe(
+      'black hover:red hover:blue'
+    )
+    expect(mergeFlatValues('hover:red', 'hover:blue hover:green')).toBe(
+      'hover:blue hover:green'
+    )
+  })
+
   test('values with no clauses take the cheap path and the later one wins', () => {
     expect(mergeFlatValues('red', 'green')).toBe('green')
     expect(mergeFlatValues('10px', '20px')).toBe('20px')
@@ -58,59 +102,12 @@ describe('mergeFlatValues', () => {
     )
   })
 
-  test('an unparseable value falls back to the later one rather than throwing', () => {
+  test('a malformed value returns the later authored value unchanged', () => {
     // an unterminated function is a parse error, not a merge input
     expect(mergeFlatValues('rgb(1,2,3', 'red')).toBe('red')
     expect(mergeFlatValues('red hover:blue', 'rgb(1,2,3')).toBe('rgb(1,2,3')
-  })
-})
-
-describe('the accepting registry mergeFlatValues parses with', () => {
-  // mergeFlatValues runs at styled() definition time, before any config exists,
-  // so it parses through a view that accepts every modifier. That is only sound
-  // while the modifier KIND has no effect on how a value is split. Today the
-  // parser consults the registry once, for whether a name is registered at all.
-  // If that ever changes, variant merging would start mis-splitting silently at
-  // definition time, so pin the equivalence rather than trusting a comment.
-  const accepting: ModifierRegistryView = { get: () => 'state' }
-  const { registry: configured } = createModifierRegistry(
-    createGrammarConfigView({
-      media: ['sm', 'lg'],
-      themes: { dark: {} },
-    })
-  )
-
-  const cases = [
-    'green hover:transparent press:transparent',
-    'red sm:blue',
-    'red hover:sm:blue',
-    'dark:red hover:green',
-    '10px sm:20px lg:30px',
-    'rgb(1, 2, 3) hover:rgb(4, 5, 6)',
-    'hover:red',
-    'plain',
-  ]
-
-  for (const input of cases) {
-    test(`splits ${input} identically to a configured registry`, () => {
-      const acceptingResult = parseValue(input, accepting)
-      const configuredResult = parseValue(input, configured)
-      // the configured view must actually accept these, or the comparison is
-      // vacuous on the side that matters
-      expect(configuredResult.ok, `configured registry rejected ${input}`).toBe(true)
-      expect(acceptingResult.ok).toBe(true)
-      if (acceptingResult.ok && configuredResult.ok) {
-        expect(acceptingResult.value).toEqual(configuredResult.value)
-      }
-    })
-  }
-
-  test('the two views genuinely differ, so the equivalence above is not vacuous', () => {
-    // an unregistered modifier is exactly where they must part ways: the
-    // accepting view takes it, the configured one rejects it
-    const unknown = 'red nosuchmodifier:blue'
-    expect(parseValue(unknown, accepting).ok).toBe(true)
-    expect(parseValue(unknown, configured).ok).toBe(false)
+    expect(mergeFlatValues('red hover:', 'green press:blue')).toBe('green press:blue')
+    expect(mergeFlatValues('red hover:blue', 'green press:')).toBe('green press:')
   })
 })
 

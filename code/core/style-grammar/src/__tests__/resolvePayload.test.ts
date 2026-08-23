@@ -4,7 +4,7 @@ import {
   type ResolvedPayload,
   type ResolvedReference,
   type ResolvePayloadOptions,
-} from '..'
+} from '../tooling'
 
 // Config-first identifier resolution inside one payload. The rules that matter:
 // idents resolve anywhere except strings, unquoted url() bodies, function names,

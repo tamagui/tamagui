@@ -5024,3 +5024,965 @@ Validation:
   Reanimated runtime as expected.
 - No new review was created because this was the explicitly handed-off
   continuation of want-first-test-repo (m8281).
+## 49. Engine consolidation Phase I: one CORE ruler and the standalone 1a price (2026-08-22)
+
+Phase I integrated the campaign branch with current `v3-beta` while preserving
+published history. `b6420e1ff7` reverts checkpoint 1b, restoring the real
+merged props record and removing its render-time Proxy. Merge `c10696b15f`
+brings in `origin/v3-beta` at `86c00ff56a`. After the exact price below,
+`426baa19e0` reverts checkpoint 1a. The working engine baseline is therefore
+the clean pre-1a path.
+
+### The size fixture needed one more boundary
+
+Restoring only the two benchmark entries to their pre-FlatFrame source was not
+enough. Both entries imported `shared/bench.ts`, and 1a added the flat scenario
+to that module. That one performance-only line moved the whole bundle and the
+v2 CORE result through gzip's shared dictionary.
+
+The size arm now has dedicated frozen `src/size.tsx` entries and a frozen
+`shared/sizeBench.ts`. Vite's explicit `size` mode builds those files, while
+the normal `src/index.tsx` and `shared/bench.ts` keep FlatFrame for runtime and
+profile measurements. The emitted entry remains named `index-[hash].js`, which
+makes both historical controls reproduce byte for byte. The v2 and v3
+performance sources remain byte-identical under `--verify-workload`:
+
+- combined SHA-256: `2c402d082d9da72ed128d41604db7a1b93d9ad8312d3f6f2fa79fb685ff55c65`
+- source SHA-256: `e6285bcacf78d8b639800d7235ca6e0d7494f0b24d38e233c91112fee8f3a404`
+- config SHA-256: `cc2569cc5a30c5df8ae3fca81451ebfbd0f9dceb9eff31911fa4f61f485e6324`
+
+### CORE receipt
+
+`attribute-bundle-gzip.ts --core` removes all non-animation `@tamagui/`
+source-map spans as one union and gzips the stripped chunk once. Its behavioral
+test independently computes that union, proves it differs from the qualifying
+marginal sum, and preserves ordinary marginal attribution.
+
+| arm | whole gzip | CORE |
+| --- | ---: | ---: |
+| integrated tip with 1a (`CORE_base`) | 104,332 | 40,217 |
+| exact integrated source without 1a (`CORE_noarena`) | 104,053 | 39,938 |
+| v2 same fixture (`CORE_v2`) | 94,857 | 30,521 |
+
+The no-arena arm is a detached `c10696b15f` worktree with only
+`878db6d383` reverse-applied via `git revert --no-commit`, followed by the
+full root build. Its fresh production artifact reproduced 104,053 / 39,938;
+this is the literal one-variable control required by revision 3.
+
+The standalone price of 1a is therefore **+279 CORE gzip**. Its measured
+performance receipt remains getter reads 1,006 to 1 and getSplitStyles
+allocations down 16.7%. With the owner away, coordinator p28302 made the two
+reversible bindings needed to continue overnight: revert 1a, and set literal
+**CEILING = 30,000 CORE**. The +279-byte performance change is now a separate
+future proposal rather than a confound in this size campaign.
+
+The make-or-break size condition is **CORE <= 37,938**, the stricter result of
+`CORE_noarena - 2,000` and `CORE_base - 2,000`. Literal acceptance is 521
+bytes below same-run v2 CORE. A final result from 30,001 through 30,814 must
+say explicitly that the literal policy choice determines the miss.
+
+Marginal attribution remains diagnostic only. On the bound no-arena arm its
+Tamagui marginal sum is 40,955 versus v2's 31,757; the v3 animation rows are
+1,474 (`animations-css`) and 394 (`animation-helpers`). `directStyle` is 5,301,
+`propMapper` is 1,899, and the style-grammar scanner, precedence, registry,
+states, and state-modifier rows are 703, 527, 297, 287, and 65 respectively.
+
+The heavy `helpers/variables.mjs` span is absent from the Vite size source map.
+Positive controls `helpers/variableValue.mjs` and
+`helpers/configVariables.mjs` are present. This proves the Vite claim only;
+Metro still retains the root export graph described earlier.
+
+### Superseded with-1a runtime and allocation receipt
+
+Before the revert, the same-run runtime matrix used seed 73129, 10 retained
+samples, and two warmups. Values below are v3/v2 mean milliseconds for mount
+and rerender:
+
+| scenario | mount | rerender |
+| --- | ---: | ---: |
+| simple | 3.66 / 4.14 | 1.04 / 1.22 |
+| rich | 6.25 / 7.04 | 1.05 / 1.60 |
+| group | 10.35 / 10.18 | 7.50 / 7.94 |
+| heavy | 7.29 / 6.50 | 5.47 / 6.04 |
+| animated | 5.01 / 5.39 | 6.12 / 6.86 |
+| flat | 20.34 / 5.01 | 19.88 / 3.93 |
+
+The group and heavy mount confidence intervals include zero. The flat gap is
+large and unambiguous, which gives the consolidation gate a useful positive
+control rather than an already-fast path.
+
+The 30-iteration flat hot-path profile records 14.9 ms mount median, 15.1 ms
+update median, 20,165,765 sampled allocation bytes per iteration, and 50,414.4
+bytes per render. `directStyle` owns 13,525,974 sampled bytes per iteration,
+with visible scanner, condition, collect-array, and propMapper frames. Heavy
+and animated negative controls record 7,782.2 and 14,283.7 bytes per render.
+These artifacts are `/tmp/p29049-phase1-hot-{flat,heavy,animated}.json`; the
+same commands and parameters must be used at the gate.
+
+### Bound no-arena runtime and allocation baseline
+
+After `426baa19e0`, the same seed, sample count, warmups, and byte-identical
+workload produced this v3/v2 matrix:
+
+| scenario | mount | rerender |
+| --- | ---: | ---: |
+| simple | 2.84 / 3.07 | 0.70 / 0.93 |
+| rich | 4.84 / 5.44 | 0.93 / 1.32 |
+| group | 9.43 / 7.93 | 6.38 / 6.16 |
+| heavy | 5.35 / 5.19 | 4.34 / 4.65 |
+| animated | 3.98 / 4.29 | 4.93 / 5.81 |
+| flat | 15.78 / 3.88 | 15.02 / 2.79 |
+
+The flat gap remains the positive control. Its 30-iteration profile records
+15.8 ms mount median, 15.9 ms update median, 20,526,448 sampled allocation
+bytes per iteration, and 51,316.1 bytes per render. `directStyle` owns
+13,538,809 sampled bytes per iteration and getSplitStyles owns 1,101,283;
+scanner, condition, collection arrays, and propMapper frames are all visible.
+Heavy and animated negative controls record 7,782.9 and 14,296.6 bytes per
+render. The bound artifacts are
+`/tmp/p29049-phase1-bound-{runtime,hot-flat,hot-heavy,hot-animated}.json`.
+
+Validation at this checkpoint:
+
+- full root build: 171 of 171 tasks successful;
+- CORE tool behavior: 1 test, 10 expectations;
+- compound web: 11 of 11 after the 1a-only probes left with the revert;
+- compound native: 6 of 6;
+- compound iOS: 2 of 2;
+- runtime workload equivalence: byte-identical;
+- production runtime matrix and all three hot-path profiles completed.
+
+## 50. Engine consolidation Phase III-a: explicit scanner context (2026-08-23)
+
+`scanFlatValue` now takes one module-scope handler and an explicit context.
+All four consumers use that signature, and the old visitor interface and
+two-argument call form are gone. This removes every per-scan visitor object and
+the lifecycle scanner's module globals without adding an overload or a second
+path.
+
+The first literal conversion was rejected before commit because it measured
+40,143 CORE, 205 bytes above the 39,938 baseline. The accepted implementation
+uses each render driver's existing result collection as its context:
+
+- `directStyle` stores condition, start, and end triples in one array instead
+  of three result arrays plus a visitor object;
+- `propMapper` stores start, end, and modifier triples in one array instead of
+  three result arrays plus a visitor object;
+- lifecycle discovery keeps one two-slot tuple on the component's stable state
+  ref, allocated once per component rather than once per pass;
+- `parseValue` uses a per-call record because it is tooling, outside the render
+  path.
+
+Every render context is local to the call or component. No scanner state is
+stored in a module global, so authored getters can re-enter without overwriting
+another pass. Production refusal state is boolean; the exact diagnostic text
+is still produced in development.
+
+### Size receipt
+
+The fresh `--mode size` artifact after the full root build is
+`/tmp/p29049-phase3a-final-size-v3.yFaXp8`.
+
+| arm | whole gzip | CORE |
+| --- | ---: | ---: |
+| Phase I baseline | 104,053 | 39,938 |
+| Phase III-a | 103,969 | 39,857 |
+| movement | -84 | -81 |
+
+The changed diagnostic marginal is `directStyle`, 5,301 to 5,206 (-95). Rows
+remain diagnostic only; the accepted checkpoint is the -81 whole-CORE move.
+
+Validation at this checkpoint:
+
+- style-grammar: 27 files, 441 tests;
+- web parser agreement plus flat-value web, SSR, and streaming: 4 files,
+  78 tests;
+- native flat-value behavior: 1 file, 58 tests;
+- full root build: 171 of 171 tasks successful;
+- root lint passed with the same five unrelated warnings;
+- root dependency, unused, Tamagui, reference, path, DOM type, and LSP pin
+  checks passed;
+- `git diff --check` passed.
+
+## 51. Engine consolidation Phase III-b: shared clause identity (2026-08-23)
+
+The clause grammar now has one config-independent identity reduction.
+`reduceFlatValueIdentity` drives `scanFlatValue` and owns clause spans, alias
+folding, group spelling canonicalization, and unordered distinct-modifier slot
+identity. `parseValue` consumes that reduction and adds configured registry
+classification and tooling diagnostics. Program hashing, precedence, candidate
+normalization, capability checks, and group parsing use the same canonical
+owner.
+
+The definition-time merge sink no longer imports `parseValue` or
+`mergeProgramValues`. It reduces each side once, keeps authored clause order,
+removes earlier clauses whose canonical slot is restated later, and preserves
+the later spelling. Its behavior remains config-independent, which is required
+because `styled()` inheritance can run before config installation.
+
+The new reduction wrapper allocates its context and canonical array only in
+tooling and styled definition-time callers. Render-time `directStyle`,
+`propMapper`, and lifecycle discovery still drive `scanFlatValue` through their
+existing stable/local contexts. This checkpoint adds no render-path Proxy,
+per-pass object, extra authored-data loop, or module mutable scratch.
+
+### Semantic controls
+
+The exact `cd2353824f` implementation was built from the detached clean source
+tree at `/tmp/p28910-parser-cluster-clean.TBMFLe/tree` and compared with the
+Phase III-b build:
+
+- 25,000 deterministic `parseValueWithSourceSpans` inputs matched exactly;
+- 10,000 structured canonical merge pairs matched exactly;
+- an 8,191-character parser golden and an 829-character merge golden matched;
+- whitespace after a clause colon and a comment before its payload retain the
+  old normalized boundary exactly;
+- new pins cover alias-equivalent slots, duplicate and reordered modifiers,
+  named and unnamed group aliases, malformed earlier and later values, authored
+  order, exact colon variant keys, and styled inheritance.
+
+### Size and cluster receipts
+
+The fresh frozen-size artifact is
+`/tmp/p29049-phase3b-final-size.pI5Anj`.
+
+| arm | whole gzip | CORE |
+| --- | ---: | ---: |
+| Phase III-a | 103,969 | 39,857 |
+| Phase III-b | 104,018 | 39,905 |
+| movement | +49 | +48 |
+
+The +48 CORE is declared structural debt. III-d owns its recovery, unrelated
+byte reductions cannot pay it, and cumulative unrecovered debt above +300
+before III-d is a hard stop.
+
+The corrected closed parser-cluster ruler measures a real reduction that the
+first ruler and row marginals both hid:
+
+| arm | cluster whole gzip | parser-cluster union |
+| --- | ---: | ---: |
+| `cd2353824f` | 104,040 | 4,239 |
+| Phase III-b | 103,753 | 3,950 |
+| movement | -287 | -289 |
+
+The rejected five-source ruler reported only -8, while nominal marginal rows
+suggested +15. The corrected union and the whole cluster fixture move together,
+so the -289 is bundle reduction rather than responsibility escaping to a new
+source. Phase III-b remains 2,950 above the <=1,000 target and 3,150 above the
+800 target.
+
+Validation at this checkpoint:
+
+- style-grammar: 28 files, 450 tests, package build, and generated Rust grammar
+  check passed;
+- web merge, conditional-variant, parser-agreement, flat-value, and SSR suites:
+  5 files, 95 tests;
+- native flat-value suite: 1 file, 58 tests;
+- full root build: 171 of 171 tasks successful;
+- root lint passed with the same five unrelated warnings;
+- root dependency, unused, Tamagui, reference, path, DOM type, and LSP pin
+  checks passed;
+- parser ruler: 8 tests and 36 expectations, including both selector
+  granularities and every closure failure mode;
+- `git diff --check` passed.
+
+## 52. Engine consolidation Phase III-c0a: executable container sizes (2026-08-23)
+
+The modifier registry now accepts a declared container size only when the same
+spelling is registered as a media query. A declared size with no executable
+query is refused and produces a configuration diagnostic. This closes the
+registry-only half of the compiler/runtime disagreement before runtime
+normalization, without changing `getCondition`, table construction, config
+invalidation, lifecycle handling, or any render path.
+
+The behavior pin failed against the prior implementation because `@wide`
+resolved as a container despite `wide` having no media query. It now resolves
+to undefined and reports the missing media-query registration. The registry
+source remains the only style-grammar producer of the container modifier kind;
+downstream parsing, capability, precedence, evaluation, lowering, and generated
+Rust vectors continue to consume that one registry result.
+
+### Size and cluster receipts
+
+The fresh frozen-size artifact is
+`/tmp/p29049-phase3c0a-size.B2lRVm`.
+
+| arm | whole gzip | CORE |
+| --- | ---: | ---: |
+| Phase III-b | 104,018 | 39,905 |
+| Phase III-c0a | 104,018 | 39,905 |
+| movement | 0 | 0 |
+
+The fresh parser-cluster artifact is
+`/tmp/p29049-phase3c0a-cluster.V8w9vl`.
+
+| arm | cluster whole gzip | parser-cluster union |
+| --- | ---: | ---: |
+| Phase III-b | 103,753 | 3,950 |
+| Phase III-c0a | 103,753 | 3,950 |
+| movement | 0 | 0 |
+
+The closed manifest records the Phase III-c0a selector topology explicitly.
+All 44 declarations remain present and all nine prior absent-to-present moves
+remain closed. This contraction changes no measured production byte.
+
+Validation at this checkpoint:
+
+- the red control failed 1 of 34 registry tests before the implementation;
+- the focused registry suite passed 34 of 34 afterward;
+- style-grammar passed 28 files and 450 tests, its package build, and generated
+  Rust grammar check;
+- full root build passed 171 of 171 tasks;
+- root lint passed with the same five unrelated warnings;
+- root dependency, unused, Tamagui, reference, path, DOM type, and LSP pin
+  checks passed;
+- `git diff --check` passed.
+
+## 53. Engine consolidation Phase III-c0b: group lifecycle contract (2026-08-23)
+
+The shared grammar no longer registers lifecycle state as a group capability.
+Standalone `enter`, `exit`, `starting`, and `ending` remain registered and keep
+their existing alias behavior. The named and unnamed `group-` forms now refuse
+through the same `parseGroupModifier` owner used by registry classification,
+identity, precedence, capability, hashing, and lowering.
+
+This makes the public grammar describe what production can execute. The web
+runtime has no group lifecycle selector path, the compiler does not lower
+programs through `lowerProgram`, and native group state and subscriptions do
+not publish enter or exit. Implementing group lifecycle requires a separate
+cross-platform feature proposal covering selectors, compiler integration,
+native publication and notification, and animation timing.
+
+The initial registry control failed because `group-enter` resolved as a group.
+The initial parser-agreement control failed for all four spellings because the
+canonical parser accepted values the production prop path refused. The final
+pins cover named and unnamed forms, preserve standalone registration, and make
+the program-hash test explicitly assert which alias group positions exist. No
+test conditionally skips an unregistered alias.
+
+### Size and cluster receipts
+
+The fresh frozen-size artifact is
+`/tmp/p29049-phase3c0b-size.U7Tkfe`.
+
+| arm | whole gzip | CORE |
+| --- | ---: | ---: |
+| Phase III-c0a | 104,018 | 39,905 |
+| Phase III-c0b | 104,024 | 39,912 |
+| movement | +6 | +7 |
+
+The fresh parser-cluster artifact is
+`/tmp/p29049-phase3c0b-cluster.E9KNua`.
+
+| arm | cluster whole gzip | parser-cluster union |
+| --- | ---: | ---: |
+| Phase III-c0a | 103,753 | 3,950 |
+| Phase III-c0b | 103,759 | 3,956 |
+| movement | +6 | +6 |
+
+The +7 CORE is the measured permanent cost of making the advertised grammar
+match the executable cross-platform contract. It is not temporary structural
+debt assigned to a later deletion, so the III-b debt ledger remains +48.
+
+Validation at this checkpoint:
+
+- the registry red control failed 1 of 35 tests before implementation;
+- the parser-agreement red control failed all four group lifecycle rows before
+  implementation;
+- style-grammar passed 28 files and 451 tests plus its package build;
+- focused registry and program-hash suites passed 37 tests;
+- parser agreement passed 32 tests in the configured web environment;
+- full root build passed 171 of 171 tasks;
+- root lint and repository checks passed with only the existing warnings;
+- the parser ruler passed 8 tests and 36 expectations;
+- `git diff --check` passed.
+
+## 54. Engine consolidation Phase III-c0c: reserved group prefix (2026-08-23)
+
+The configured modifier namespace now refuses media, theme, custom platform,
+and container-size names beginning `group-`. The diagnostic names the
+reserved prefix, identifies the configured name source, and tells the user to
+rename it. The authored spelling keeps exactly one meaning at every layer:
+group-state syntax.
+
+An earlier design made an exact configured `group-active` media name win over
+the group parser. An executable probe showed why that design was not coherent:
+the registry classified `group-active` as media and `group-press` as group,
+while config-independent merging, program merging, program keys, and program
+class names treated them as the same state alias. Making those four identities
+config-dependent would make identical source produce different class names
+under different configs. Reserving the prefix removes the configured meaning
+and keeps those identities stable.
+
+The repository sweep found no configured media, theme, container-size, or
+custom platform name beginning `group-`. A positive result would have been a
+configured-name source containing that prefix. The only such sources were the
+deliberate collision tests converted by this checkpoint. Other matches in the
+tamagui.dev purchase components and zero-runtime fixture are authored clause or
+expected-output keys, so they remain valid group usage.
+
+The group-name syntax does not reopen the collision. The slash separates state
+from name: `group-active` is the anonymous group's press alias,
+`group-hover/active` is hover on a group named `active`, and
+`group-active/active` is press on that named group. Group names never enter
+the configured modifier namespace.
+
+The collision tests became stricter. They now assert refusal plus the exact
+diagnostic for all four configured-name sources, while the candidate test
+asserts that `group-hover` retains its group meaning. The merge sink
+permanently pins `group-active` and `group-press` as one slot.
+
+### Size and cluster receipts
+
+The fresh frozen-size artifact is
+`/tmp/p29049-phase3c0c-size.FB32kK`.
+
+| arm | whole gzip | CORE |
+| --- | ---: | ---: |
+| Phase III-c0b | 104,024 | 39,912 |
+| Phase III-c0c | 104,024 | 39,912 |
+| movement | 0 | 0 |
+
+The fresh parser-cluster artifact is
+`/tmp/p29049-phase3c0c-cluster.T7ZbVy`.
+
+| arm | cluster whole gzip | parser-cluster union |
+| --- | ---: | ---: |
+| Phase III-c0b | 103,759 | 3,956 |
+| Phase III-c0c | 103,759 | 3,956 |
+| movement | 0 | 0 |
+
+The closed manifest records Phase III-c0c explicitly with the same 44 present
+selectors and nine closed absent-to-present moves as III-c0b. The production
+measurement is byte-identical, which confirms the new builder diagnostic stays
+outside the app graph. The III-b structural-debt ledger remains +48 CORE.
+
+Validation at this checkpoint:
+
+- the pre-change executable control classified configured `group-active` as
+  media and emitted the old shadowing diagnostic;
+- focused registry, candidate, and merge suites passed 88 tests;
+- the parser ruler passed 8 tests and 36 expectations;
+- full root build passed 171 of 171 tasks;
+- root lint passed with the same five unrelated warnings;
+- root dependency, unused, Tamagui, reference, path, DOM type, and LSP pin
+  checks passed;
+- `git diff --check` passed.
+
+## 55. Engine consolidation Phase III-c0d: dead fallback Proxy (2026-08-23)
+
+The static-only `fallbackProps` path is deleted from `getSplitStyles`, and
+the field is removed from the source and generated `SplitStyleProps` type.
+The removed block created a get-only Proxy over caller props and consulted a
+fallback record only for missing property reads. It did not implement
+membership, keys, descriptors, or spread semantics, and it allocated the Proxy
+and handler on every call that supplied the field.
+
+The deletion is based on an explicit compiler-boundary search. Separate
+`fallbackProps` searches of compiler-core, static, loader, vite-plugin,
+metro-plugin, and codemod paths each returned no match. A repo-wide positive
+control found the two expected core definitions in `getSplitStyles` and
+`SplitStyleProps`, plus an unrelated local variable in Avatar. A
+`SplitStyleProps` consumer search found ordinary resolver/test consumers but
+no construction, fixture, or type access for `fallbackProps`. After deletion
+and the web package build, the same repo-wide search returns no engine or
+compiler match. If a compiler producer existed, one of these searches would
+have found the property name at its construction or type boundary.
+
+This checkpoint does not narrow public functional-variant
+`VariantSpreadExtras.props`. That separate v3 API decision remains pending;
+`mergeComponentProps` and `getVariantExtras` are unchanged.
+
+### Size and cluster receipts
+
+The fresh frozen-size artifact is
+`/tmp/p29049-dead-proxy-size.SSiJuH`.
+
+| arm | whole gzip | CORE |
+| --- | ---: | ---: |
+| Phase III-c0c | 104,024 | 39,912 |
+| Phase III-c0d | 104,024 | 39,912 |
+| movement | 0 | 0 |
+
+The fresh parser-cluster artifact is
+`/tmp/p29049-dead-proxy-cluster.8RuCZ1`.
+
+| arm | cluster whole gzip | parser-cluster union |
+| --- | ---: | ---: |
+| Phase III-c0c | 103,759 | 3,956 |
+| Phase III-c0d | 103,759 | 3,956 |
+| movement | 0 | 0 |
+
+The frozen production build already eliminated the `IS_STATIC` block, so
+removing the unreachable source has no production gzip movement. It still
+removes a render-path Proxy from the compiler source path and removes a public
+field that nothing can supply. No parser-cluster selector moved, so the
+III-c0c closed selector state measures this artifact without a manifest change.
+The III-b structural-debt ledger remains +48 CORE.
+
+Validation at this checkpoint:
+
+- `@tamagui/web` built and regenerated its declaration output;
+- full root build passed 171 of 171 tasks, including compiler-core, static,
+  loader, vite-plugin, and metro-plugin builds;
+- root lint passed with the same five unrelated warnings;
+- root dependency, unused, Tamagui, reference, path, DOM type, and LSP pin
+  checks passed;
+- `git diff --check` passed.
+
+## 56. Engine consolidation Phase III-c1: runtime normalization (2026-08-23)
+
+Runtime classification now follows the contracted grammar without a compiled
+table or invalidation path. Platform names win over same-named root themes;
+group and container identifiers use the shared strict identifier rule;
+container syntax accepts only size-query media; configured-name lookup uses
+own entries; and all twelve `Object.prototype` spellings refuse without
+throwing unless the config supplies an own entry.
+
+The reserved-prefix behavior has a two-sided integration pin. Illegal
+configured `group-*` media and theme entries produce their exact actionable
+diagnostics, while valid authored `group-hover:` and `group-active:` clauses
+still classify as groups. The general rule is that an invalid config entry
+must never change the meaning of valid authored code.
+
+The first revised-binding implementation measured CORE 39,940, which was +28
+against the III-c0d baseline. That uncommitted result never entered the debt
+ledger. It incorrectly let illegal configured names make valid group clauses
+refuse. Removing those config-aware branches and simplifying the same
+classification path recovered 29 CORE. The final checkpoint is one byte below
+its incoming CORE.
+
+No per-call object, array, Set, closure, Proxy, authored-data read, or extra
+render loop was added. Classification state remains on the call stack, so a
+nested authored read cannot corrupt an outer pass. The condition-set key uses
+the already canonical, deduplicated array and sorts only when a second element
+exists. Registry record enumeration becomes own-only outside the render path.
+
+### Size and cluster receipts
+
+The fresh frozen-size artifact is
+`/tmp/p29049-phase3c1-final-size.g78MkB`.
+
+| arm | whole gzip | CORE |
+| --- | ---: | ---: |
+| Phase III-c0d | 104,024 | 39,912 |
+| Phase III-c1 | 104,034 | 39,911 |
+| movement | +10 | -1 |
+
+The fresh parser-cluster artifact is
+`/tmp/p29049-phase3c1-final-cluster.y1JBvI`.
+
+| arm | cluster whole gzip | parser-cluster union |
+| --- | ---: | ---: |
+| Phase III-c0d | 103,759 | 3,956 |
+| Phase III-c1 | 103,814 | 4,011 |
+| movement | +55 | +55 |
+
+The +55 parser-cluster movement is open debt assigned to IV-a. III-c1 adds
+strict shared identifier/query classification while the legacy resolver,
+precedence, and set-key wiring remains. IV-a removes that old wiring. The
+permanent III-c0b +6 remains classified as correctness cost, and the CORE debt
+ledger remains only III-b's +48.
+
+Validation at this checkpoint:
+
+- the focused web normalization matrix passed 60 tests;
+- the focused native non-size-container control passed 59 tests;
+- the full style-grammar suite passed 28 files and 453 tests;
+- the full core web suite passed 70 files with two skipped, 547 tests with
+  three skipped and one todo;
+- the full core native suite passed 30 files with one skipped, 295 tests with
+  seven expected failures and nine skipped;
+- full root build passed 171 of 171 tasks;
+- root lint and repository checks passed with only the existing warnings;
+- the parser ruler passed 8 tests and 36 expectations in 2.84 seconds. Its
+  two negative controls now run concurrently after the old sequential test
+  exceeded the unchanged five-second default under concurrent repository
+  validation; no timeout, retry, or assertion was weakened;
+- `git diff --check` passed.
+
+## 57. Engine consolidation Phase III-c2: compiled vocabulary and invalidation (2026-08-23)
+
+Runtime exact-modifier classification now comes from one numeric vocabulary
+compiled when a config is installed or successfully mutated. The table is
+published on the config under `Symbol.for('tamagui.configRevision')`, before
+`setConfig` publishes the config itself. `updateConfig`, `setConfigFont`, and
+batched theme mutation all use the same eager preparation path. Render access
+only reads the published state.
+
+Preparation reads media and theme configuration into call-stack locals, builds
+the modifier table, media-query strings, and precedence order, and publishes
+only if the config still holds the state identity captured before those reads.
+A nested authored getter that performs another update therefore leaves the
+newer state authoritative. The content-hash snapshot remains lazy on that
+state identity, so config mutation does not sort and hash tokens, fonts,
+themes, and shorthands eagerly. `getCSSStylesAtomic` also keys direct identity
+reuse by the revision state, which prevents a warmed atomic rule from retaining
+old media query text.
+
+The same revision-state identity invalidates all six generation-sensitive
+ThemeUpdate cache groups. The exhaustive cache sweep found five WeakMaps that
+were keyed only by the stable `conf.themes` object: theme-key unions,
+scheme-stripped theme buckets, modifier views, parsed inline values, and flat
+layers. The merged-theme result and its idempotency marker had no config
+generation at all. They now key by the published state identity. A warmed
+regression mutates themes while preserving both config and themes identity,
+then proves a new theme bucket and a new theme key are visible and the old
+generation result is rejected. Rule and immutable-layer caches were inspected
+separately and do not depend on config generation.
+
+ThemeUpdate's existing exact-collision and unknown-modifier priorities are
+unchanged. Their user-visible differences from direct style resolution are
+recorded in `plans/v3-themeupdate-condition-divergence.md` for a separate
+decision.
+
+### Size and cluster receipts
+
+The fresh frozen-size artifact is
+`/tmp/p29049-phase3c2-size.T8n3LH`.
+
+| arm | whole gzip | CORE |
+| --- | ---: | ---: |
+| Phase III-c1 | 104,034 | 39,911 |
+| Phase III-c2 | 104,653 | 40,550 |
+| movement | +619 | +639 |
+
+The fresh parser-cluster artifact is
+`/tmp/p29049-phase3c2-cluster.pk2Kig`.
+
+| arm | cluster whole gzip | parser-cluster union |
+| --- | ---: | ---: |
+| Phase III-c1 | 103,814 | 4,011 |
+| Phase III-c2 | 104,506 | 4,638 |
+| movement | +692 | +627 |
+
+The checkpoint crosses both +300 drift caps, so implementation stopped before
+III-d and the coordinator explicitly classified it as a predeclared
+add-then-delete sequence. The +639 CORE and +627 cluster are sequence debt,
+with III-d's tooling split and IV-a's legacy resolver/precedence deletion named
+as recovery owners. No work may intervene. III-d must measure inside its
+forecast before IV-a starts.
+
+The recovery forecast is 300 to 430 CORE and 250 to 380 cluster at III-d,
+followed by 250 to 420 CORE and 300 to 500 cluster at IV-a. Combined, 550 to
+850 CORE and 550 to 880 cluster credibly cover the measured peak at their
+midpoints, while their low ends fall short by 89 CORE and 77 cluster. The
+forecast is therefore credible but not assured.
+
+The declaration-closed parser ruler also found four exported numeric modifier
+codes with zero generated declaration spans because Rolldown inlines them.
+Their literal uses remain inside selected `compileModifierVocabulary` and
+`getCondition` declarations, so the checkpoint records the zero-span
+declarations as absent and points them at the compiled vocabulary. Requiring
+them to be present would reject a valid artifact without adding any measured
+bytes.
+
+Validation at this checkpoint:
+
+- style-grammar built and passed 29 files with 454 tests;
+- web, theme, and core packages built successfully;
+- the focused config-invalidation and ThemeUpdate suites passed four files
+  with 65 tests after a clean rebuild;
+- the focused native variables suite passed three files with 39 tests;
+- the full core web suite passed 71 files with two skipped, 555 tests with
+  three skipped and one todo;
+- the full core native suite passed 30 files with one skipped, 295 tests with
+  seven expected failures and nine skipped;
+- the parser ruler passed eight tests with 36 expectations and reproduced the
+  III-c1 union at 4,011 after its selector expansion;
+- full root build passed 171 of 171 tasks;
+- root lint passed with the same five unrelated warnings;
+- root dependency, unused, Tamagui, reference, path, DOM type, and LSP pin
+  checks passed;
+- `git diff --check` passed.
+
+## 58. Engine consolidation Phase III-d: runtime and tooling surfaces (2026-08-23)
+
+`@tamagui/style-grammar` now exposes two explicit public paths. App and
+Tailwind consumers use `/runtime`; compiler, codemod, diagnostics, completion,
+and other authoring tools use `/tooling`. The package root is no longer
+exported. The runtime barrel names only the symbols the shipped graph uses.
+The legacy registry builder, completion trie, rich state projections, parsed
+program structures, source spans, and diagnostic formatters stay on the
+tooling path.
+
+The runtime modifier compiler now reports scalar refusal codes. The tooling
+registry formats those codes into diagnostics and derives completion names.
+The compact component-state spelling list moved beside the core state names,
+so clause identity no longer imports the rich tooling state table. Container
+spelling validation is shared through `clauseIdentity`; the Tailwind candidate
+path consumes the compiled numeric vocabulary without rebuilding the tooling
+registry.
+
+ThemeUpdate no longer imports `parseValue` or a registry view. Its existing
+revision-keyed raw-value cache drives the shared identity reduction through one
+hoisted immutable handler, with all scan state held in call locals. Stable
+renders still return from the existing cache before scanning. Platform, subtree
+theme, unsupported-modifier, syntax-error, and two-theme behavior retain their
+pre-existing order and messages.
+
+The build-graph integration control first failed against the pre-split graph,
+where a loaded app contained `states.mjs`, `modifierRegistry.mjs`,
+`programs.mjs`, and `valueParser.mjs`. It now bundles browser and native loaded
+apps that exercise Tamagui, ThemeUpdate, and Tailwind. Both graphs contain the
+runtime vocabulary, scanner, and identity reducer while excluding the tooling
+modules. A separate compiler fixture proves the tooling entry, parser, and
+registry remain available.
+
+### Size and cluster receipts
+
+The fresh frozen-size artifact is `/tmp/p29049-iiid-size.efzMk1`.
+
+| arm | whole gzip | CORE |
+| --- | ---: | ---: |
+| Phase III-c2 | 104,653 | 40,550 |
+| Phase III-d | 104,142 | 40,030 |
+| movement | -511 | -520 |
+
+The fresh parser-cluster artifact is
+`/tmp/p29049-iiid-cluster.8JccDC`.
+
+| arm | cluster whole gzip | parser-cluster union |
+| --- | ---: | ---: |
+| Phase III-c2 | 104,506 | 4,638 |
+| Phase III-d | 104,000 | 4,198 |
+| movement | -506 | -440 |
+
+III-d beat its declared 300 to 430 CORE and 250 to 380 cluster forecast by 90
+and 60 bytes. Its scoped movement repays III-b's +48 CORE debt, then pays 472
+CORE and 440 cluster bytes of the III-c2 sequence. IV-a inherits +167 CORE and
++187 cluster sequence debt, plus III-c1's separately tracked +55 cluster drift.
+
+Validation at this checkpoint:
+
+- style-grammar built and passed 29 files with 455 tests;
+- the full core web suite passed 71 files with two skipped, 559 tests with
+  three skipped and one todo;
+- the full core native suite passed 30 files with one skipped, 295 tests with
+  seven expected failures and nine skipped;
+- Tailwind built and passed 19 web files with 461 tests and four native files
+  with 275 tests, including five loaded-graph assertions;
+- the compiler flat-value suite passed seven tests;
+- the ESLint plugin built and passed six tests;
+- the parser ruler passed eight tests with 36 expectations and measured the
+  68-selector III-d checkpoint;
+- full root build passed 171 of 171 tasks;
+- root lint passed with the same five unrelated warnings;
+- root dependency, unused, Tamagui, reference, path, DOM type, and LSP pin
+  checks passed;
+- `git diff --check` passed.
+
+## 59. Engine consolidation Phase IV-b: per-clause refusal (2026-08-23)
+
+Malformed flat-value input now drops only the base or clause segment that owns
+the error. Valid base and clauses before or after it continue through both the
+direct style and conditional variant paths. The public scanner still stops
+when an outside handler returns false. Tamagui's handlers record a refused
+clause locally, continue scanning, and keep the existing collect-then-emit
+order so every condition is validated before emission or authored variant code
+runs.
+
+The lexer assigns structural errors to the current top-level word with scalar
+minimum and maximum offsets. An error before that word's final colon invalidates
+the modifier chain; an error after it invalidates the payload; an error in a
+plain word invalidates the current base or payload. Unterminated constructs at
+EOF retain earlier bounded segments and do not invent later clause boundaries.
+An unterminated string ended by a newline can recover at the next top-level
+word. `parseValue` failure results retain the surviving partial value beside
+the unchanged diagnostics and editor spans.
+
+Lifecycle discovery consumes the same structural segment validity. A valid
+enter clause beside a malformed segment still triggers presence, while an
+empty or structurally malformed enter payload does not. The existing
+config-aware same-chain lifecycle divergence stays pinned until Phase VI makes
+the resolved main pass authoritative. Exact `aspectRatio="16:9"`, lifecycle
+resting-value synthesis, warning dedupe, the whole authored source in warnings,
+variant validation before authored code, and the no-colon fast path remain
+pinned.
+
+The full web suite found two committed normalization tests that still expected
+whole-value refusal. They now assert the stricter IV-b contract: the invalid
+configured group or container clause contributes nothing, its valid base
+survives, and no subscription side effect is registered.
+
+### Ruler correction and measurements
+
+The first IV-b parser receipt reported 4,515 from a manifest that named the
+checkpoint but contained only 68 selectors. The receipt visibly omitted the
+seven declarations found by the prior mechanical closure audit. That result
+was flattering and is void. The manifest now contains all 75 selectors and all
+75 states at every checkpoint. Historical invalid destinations for
+`isContainerSizeQueryText` and its pattern now point to the selected runtime
+container resolver. All nine artifacts validate in the corrected frame at
+4,706, 4,414, 4,414, 4,420, 4,420, 4,474, 5,139, 4,700, and 5,045.
+
+The fresh frozen-size artifacts are
+`/tmp/p29049-ivb-size.1vtsKb` and
+`/tmp/p29049-ivb-size-repeat.hBKkBn`; both measured whole 104,450 / CORE
+40,338. The fresh parser-cluster artifacts are
+`/tmp/p29049-ivb-cluster.9rdc0i` and
+`/tmp/p29049-ivb-cluster-repeat.6dpYlL`; both measured cluster whole 104,345 /
+union 5,045.
+
+| arm | whole gzip | CORE | cluster whole gzip | parser-cluster union |
+| --- | ---: | ---: | ---: | ---: |
+| Phase III-d | 104,142 | 40,030 | 104,000 | 4,700 |
+| Phase IV-b | 104,450 | 40,338 | 104,345 | 5,045 |
+| movement | +308 | +308 | +345 | +345 |
+
+IV-b therefore leaves +475 CORE sequence debt and +571 parser-cluster sequence
+debt assigned to IV-a. The separate III-c1 parser drift is +54, so IV-a's total
+parser recovery obligation is 625. The +345 cluster movement exceeded the
+accepted +70 to +170 forecast.
+
+The miss is deterministic rather than stale output: both size artifacts and
+both cluster artifacts are byte-identical within their pairs, and the two
+fixtures name the same code centers. Nonadditive cluster marginals move
+`directStyle` +185, `scanFlatValue` +105, `clauseIdentity` +43, `propMapper`
++34, and `useComponentState` +11. The forecast modeled one scalar validity
+bit. The implementation also needs lexer error ownership at ordinary and EOF
+word boundaries, partial-result plumbing through four consumers, and a large
+temporary `directStyle` collect-then-emit bridge that keeps the old resolved
+condition collection while adding per-clause refusal state. IV-a removes that
+bridge, while the scanner, identity, variant, and lifecycle costs remain.
+The bridge is the direct cost of the coordinator-bound III-d -> IV-b -> IV-a
+sequence and is scheduled for deletion at the next checkpoint. It is not
+unexplained structural drift.
+
+The revised IV-a parser-cluster forecast is -500 to -700, with a wider
+plausible range of -450 to -770 and low-to-medium confidence. From 5,045 this
+places the likely endpoint at 4,545 to 4,345. Clearing the 625-byte obligation
+is credible only in the favorable half; the -600 midpoint misses by 25. This
+forecast was recorded before IV-a started.
+
+Validation at this checkpoint:
+
+- style-grammar passed 29 files with 466 tests;
+- the full core web suite passed 71 files with two skipped, 564 tests with
+  three skipped and one todo;
+- the full core native suite passed 30 files with one skipped, 295 tests with
+  seven expected failures and nine skipped;
+- style-grammar, web, and core package builds passed;
+- full root build passed 171 of 171 tasks;
+- root lint passed with the same five unrelated warnings;
+- root dependency, unused, Tamagui, reference, path, DOM type, and LSP pin
+  checks passed;
+- the parser ruler passed eight tests with 36 expectations;
+- `git diff --check` passed.
+
+## 60. Engine consolidation Phase IV-a: one clause resolver (2026-08-23)
+
+`directStyle` now resolves a clause through one call-stack-only
+`resolveClauseChain` loop. The heap `Condition` record, `getCondition`, the
+direct collect-then-emit loop, the canonical and kind arrays, the per-clause
+`Set`, and the grammar-config precedence bridge are gone. The compiled
+vocabulary carries numeric kind and rank data, with aliases sharing rank.
+
+The direct string path resolves and emits at payload close. The conditional
+variant path keeps only numeric payload and chain offsets across authored
+variant execution, then slices and re-resolves after that user-code boundary.
+This preserves the existing two-resolution timing without retaining mutable
+resolver state. Resolver and scanner state is call-local, duplicate modifiers
+are rejected before live state reads and side effects, and wrapper and selector
+order remains authored.
+
+Assembled review found and fixed two shipping correctness defects with red
+runtime controls:
+
+- On iOS, `enter:red` could infer a theme from lifecycle selector text and
+  return a dynamic-theme object instead of `red`. Emission now carries the
+  already-resolved theme scalar.
+- A configured size-query media key shadowed by the reserved `hover` state
+  could make `@hover` executable as a container even though the authoritative
+  registry rejects it. Container resolution now reuses the compiled lookup and
+  requires an exact media kind.
+
+Neither correction adds a render allocation, loop, config read, fallback, or
+Proxy.
+
+### Ruler and recovery receipt
+
+The parser manifest now contains 78 selectors. It predeclares
+`resolveClauseChain`, `canonicalStateModifierNames`, and
+`stateModifierSelectors`; all historical checkpoints keep those selectors
+absent with enforced destinations, so their numbers are identical to the
+omission-closed 75-selector frame. IV-a is the first artifact where the three
+selectors carry generated spans. Every historical artifact and the IV-a
+artifact validate in this frame.
+
+The fresh size artifacts are `/tmp/p29049-iva-final-size.JXOhBT` and
+`/tmp/p29049-iva-final-size-repeat.iixpb0`. Their JavaScript outputs are
+byte-identical. The fresh parser-cluster artifacts are
+`/tmp/p29049-iva-final-cluster.pxAMyd` and
+`/tmp/p29049-iva-final-cluster-repeat.BDw8IC`, also byte-identical.
+
+| arm | whole gzip | CORE | cluster whole gzip | parser-cluster union |
+| --- | ---: | ---: | ---: | ---: |
+| Phase IV-b | 104,450 | 40,338 | 104,345 | 5,045 |
+| Phase IV-a | 104,081 | 39,976 | 103,947 | 4,707 |
+| movement | -369 | -362 | -398 | -338 |
+
+The fixed add-then-delete sequence therefore closes as a measured miss. IV-a
+leaves 113 CORE and 287 parser-cluster gzip unrecovered. The recovery point
+does not move to IV-c, no unrelated bytes paid the shortfall, and no new
+over-cap sequence debt may open while this miss remains outstanding.
+
+The campaign headline after six consolidation checkpoints is plain: the
+parser cluster is 4,707 against its 4,706 baseline, and CORE is 39,976 against
+its 39,938 baseline. Both size ledgers are net zero at this precision. The
+semantic and correctness changes are real, but they are a separate result.
+
+### Corrected forward forecast
+
+IV-b and IV-a both missed their forecasts in the favorable direction. The
+common cause is now measured: the model priced gross declaration deletion but
+underpriced the retained plumbing that replaces it. After IV-a,
+`directStyle` itself is four marginal gzip bytes larger than at IV-b even
+though the named legacy helpers are gone. The retained resolver and handler
+replace most of those bytes. The actual reduction came primarily from the
+tooling-shaped precedence and identity contributions leaving the app graph,
+while the scanner and packed state tables grew.
+
+The corrected parser-cluster forecast counts only work that can disappear:
+
+| checkpoint or sequence | expected movement |
+| --- | ---: |
+| IV-c | -70 to 0 |
+| V-a through V-e | -90 to -20 |
+| VI-a and VI-b | -90 to -20 |
+
+From 4,707, this places the corrected post-V-e endpoint at 4,547 to 4,687 and
+the post-VI endpoint at 4,457 to 4,667. The former 4,230 to 3,550 endpoint is
+superseded. Even the favorable result remains far above the <=1,000 report
+gate and 800 target. IV-c is paused pending the owner's continuation decision.
+
+### Functional variant props decision
+
+The separate `extras.props` proposal is declined and corrected in
+`plans/v3-functional-variant-props-contract.md`. Narrowing it removes no code:
+`mergeComponentProps` and `getVariantExtras` still remain, and context-bearing
+components would need a second props representation and another render
+allocation. Runtime probes also withdrew the claimed TextArea, SizableText,
+and SurfaceRow breaks. The one real repository dependency is
+`StyledContextTokens`, while a previously omitted fourth source overlays media
+and pseudo values onto `styleState.props`. The dead static-only fallback Proxy
+was correctly deleted earlier but measured zero production bytes and justifies
+no public API break.
+
+Validation at this checkpoint:
+
+- style-grammar passed 29 files with 466 tests;
+- the full core web suite passed 71 files with two skipped, 566 tests with
+  three skipped and one todo;
+- the full core native suite passed 30 files with one skipped, 295 tests with
+  seven expected failures and nine skipped;
+- the iOS-focused suite passed four files with 27 tests;
+- focused SSR and streaming coverage passed two files with 11 tests;
+- style-grammar and web package builds passed;
+- the full root build passed 171 of 171 tasks;
+- the parser ruler passed eight tests with 36 expectations and validated all
+  ten checkpoint artifacts in the 78-selector frame;
+- root lint passed with the same five unrelated warnings;
+- root dependency, unused, Tamagui, reference, path, DOM type, and LSP pin
+  checks passed;
+- `git diff --check` passed.

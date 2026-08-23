@@ -5,7 +5,7 @@ import {
   splitBorderValue,
   splitFontValue,
   splitTextDecorationValue,
-} from '..'
+} from '../tooling'
 
 const { registry } = createModifierRegistry({
   mediaNames: ['sm'],

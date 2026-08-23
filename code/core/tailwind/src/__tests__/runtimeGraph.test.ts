@@ -4,15 +4,22 @@ import { describe, expect, test } from 'vitest'
 
 const repositoryRoot = new URL('../../../../../', import.meta.url).pathname
 
-async function bundledInputs(entry: string) {
+async function bundledInputs(
+  entry: string,
+  native = false,
+  platform: 'browser' | 'node' | 'neutral' = native ? 'neutral' : 'browser'
+) {
   const result = await build({
     absWorkingDir: repositoryRoot,
     entryPoints: [entry],
     bundle: true,
     write: false,
     metafile: true,
-    platform: 'browser',
+    platform,
     format: 'esm',
+    conditions: native
+      ? ['react-native', 'import', 'module', 'default']
+      : ['browser', 'import', 'module', 'default'],
     logLevel: 'silent',
     external: ['react', 'react/*', 'react-native', 'react-native/*'],
   })
@@ -22,6 +29,82 @@ async function bundledInputs(entry: string) {
 }
 
 describe('the shipped frontend runtime graphs', () => {
+  test('the compiler fixture reaches the tooling entry', async () => {
+    const files = await bundledInputs(
+      'code/core/tailwind/src/__tests__/fixtures/compilerTooling.ts',
+      false,
+      'node'
+    )
+
+    expect(
+      files.some((file) => file.endsWith('/compiler/static/dist/esm/compilerHost.mjs'))
+    ).toBe(true)
+    for (const module of ['tooling', 'valueParser', 'modifierRegistry']) {
+      expect(
+        files.some((file) => file.endsWith(`/core/style-grammar/dist/esm/${module}.mjs`)),
+        module
+      ).toBe(true)
+    }
+  })
+
+  test.each([
+    ['browser', false],
+    ['native', true],
+  ] as const)(
+    'a loaded app with ThemeUpdate and Tailwind keeps tooling out under %s conditions',
+    async (_target, native) => {
+      const files = await bundledInputs(
+        'code/core/tailwind/src/__tests__/fixtures/runtimeGraphApp.tsx',
+        native
+      )
+
+      expect(
+        files.some((file) =>
+          file.endsWith(
+            native
+              ? '/core/tailwind/dist/esm/index.native.js'
+              : '/core/tailwind/dist/esm/index.mjs'
+          )
+        )
+      ).toBe(true)
+      expect(
+        files.some((file) =>
+          file.endsWith(
+            native
+              ? '/core/core/dist/esm/theme-update.native.js'
+              : '/core/core/dist/esm/theme-update.mjs'
+          )
+        )
+      ).toBe(true)
+      expect(
+        files.some((file) =>
+          file.endsWith(
+            native
+              ? '/core/style-grammar/dist/esm/runtime.native.js'
+              : '/core/style-grammar/dist/esm/runtime.mjs'
+          )
+        )
+      ).toBe(true)
+      for (const module of ['modifierVocabulary', 'scanFlatValue', 'clauseIdentity']) {
+        expect(
+          files.some((file) =>
+            file.endsWith(
+              `/core/style-grammar/dist/esm/${module}${native ? '.native.js' : '.mjs'}`
+            )
+          ),
+          module
+        ).toBe(true)
+      }
+      expect(
+        files.filter((file) =>
+          /\/core\/style-grammar\/dist\/esm\/(?:backgroundFamily|borderFamily|candidateTarget|clauseCapability|clauseSources|evaluateProgram|fontShorthand|geometricShorthand|lowerProgram|modifierRegistry|payloadShape|programEligibility|programHash|programs|serializePayload|states|table|textDecorationFamily|tooling(?:Annotations|Diagnostics|Format|Registry)?|transformFamily|transition(?:Align|Legacy|Native)?|v6ThemeNames|valueParser)(?:\.native)?\.(?:mjs|js)$/.test(
+            file
+          )
+        )
+      ).toEqual([])
+    }
+  )
+
   test('the tailwind root uses the private runtime without regular roots or native setup', async () => {
     const files = await bundledInputs('code/core/tailwind/dist/esm/index.mjs')
 

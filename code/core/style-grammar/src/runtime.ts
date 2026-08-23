@@ -1,32 +1,61 @@
-export * from './backgroundFamily'
-export * from './borderFamily'
-export * from './candidate'
-export * from './candidateTarget'
-export * from './clausePrecedence'
-export * from './clauseSources'
-export * from './config'
-export * from './evaluateProgram'
-export * from './fontShorthand'
-export * from './geometricShorthand'
-export * from './lowerProgram'
-export * from './mergeFlatValues'
-export * from './modifierRegistry'
-export * from './payloadShape'
-export * from './programEligibility'
-export * from './programHash'
-export * from './programs'
-export * from './registry'
-export * from './resolvePayload'
-export * from './safeAreaVariables'
-export * from './scanFlatValue'
-export * from './stateModifiers'
-export * from './serializePayload'
-export * from './states'
-export * from './textDecorationFamily'
-export * from './transformFamily'
-export * from './transition'
-export * from './transitionAlign'
-export * from './transitionNative'
-export * from './valueParser'
-export * from './valueTypes'
-export * from './unitlessNumbers'
+export {
+  classifyCandidate,
+  decodeArbitrary,
+  parseCandidate,
+  type CandidateClassification,
+  type GrammarConfigView,
+  type ParsedCandidate,
+} from './candidate'
+export {
+  canonicalClauseModifier,
+  isModifierName,
+  reduceFlatValueIdentity,
+  type ClauseIdentityErrorCode,
+  type ClauseIdentityHandler,
+} from './clauseIdentity'
+export {
+  clauseSubjectClassRepetitions,
+  createClausePrecedenceOrder,
+  getClausePrecedenceKeyFromKinds,
+  type ClausePrecedenceKey,
+  type ClausePrecedenceOrder,
+} from './clausePrecedence'
+export {
+  createGrammarConfigView,
+  grammarPlatformNames,
+  isContainerSizeQueryText,
+  type GrammarSourceConfig,
+} from './config'
+export { mergeFlatValues } from './mergeFlatValues'
+export {
+  compileModifierVocabulary,
+  configRevisionSymbol,
+  isRootThemeName,
+  modifierKindMedia,
+  modifierKindPlatform,
+  modifierKindState,
+  modifierKindTheme,
+  type CompiledModifierKind,
+  type CompiledModifierVocabulary,
+} from './modifierVocabulary'
+export {
+  borderSideSuffix,
+  getTokenCategory,
+  percentUtilityProps,
+  radiusCornerProps,
+} from './registry'
+export { splitColorOpacitySuffix } from './resolvePayload'
+export { getSafeAreaEdge, safeAreaVariableNames } from './safeAreaVariables'
+export {
+  scanFlatValue,
+  type FlatScanErrorCode,
+  type FlatValueHandler,
+} from './scanFlatValue'
+export {
+  canonicalStateModifierNames,
+  stateModifierSelectors,
+  type CoreStateModifierName,
+} from './stateModifiers'
+export type { NativeTransitionTarget } from './transitionNative'
+export { unitlessNumberProperties } from './unitlessNumbers'
+export type { ModifierKind, ParsedValue } from './valueTypes'

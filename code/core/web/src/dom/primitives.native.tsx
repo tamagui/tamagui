@@ -15,7 +15,7 @@ import {
   type ReactNode,
   type Ref,
 } from 'react'
-import { unitlessNumberProperties } from '@tamagui/style-grammar'
+import { unitlessNumberProperties } from '@tamagui/style-grammar/runtime'
 
 import {
   clickFromPress,
