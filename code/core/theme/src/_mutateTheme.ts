@@ -61,10 +61,7 @@ export function mutateThemes({
   const cssRules = insertCSS ? insertThemeCSS(allThemesRaw, batch) : []
 
   startTransition(() => {
-    for (const themeName in allThemesProxied) {
-      const theme = allThemesProxied[themeName]
-      updateThemeConfig(themeName, theme)
-    }
+    updateConfig('themes', allThemesProxied)
     updateThemeStates()
   })
 
@@ -134,9 +131,7 @@ export function _mutateTheme(props: MutateThemeOptions & MutateOneThemeProps) {
 }
 
 function updateThemeConfig(themeName: string, theme: ThemeParsed) {
-  const config = getConfig()
-  config.themes[themeName] = theme
-  updateConfig('themes', config.themes)
+  updateConfig('themes', { [themeName]: theme })
 }
 
 function updateThemeStates() {

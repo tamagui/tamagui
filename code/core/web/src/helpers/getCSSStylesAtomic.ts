@@ -8,6 +8,7 @@ import { cssShorthandLonghands, simpleHash } from '@tamagui/helpers'
 import { getConfigMaybe } from '../config'
 import type { TamaguiInternalConfig, ViewStyleObject } from '../types'
 import { defaultOffset } from './defaultOffset'
+import { getConfigRevisionState } from './grammarConfig'
 import { normalizeColor } from './normalizeColor'
 import { normalizeValueWithProperty } from './normalizeValueWithProperty'
 import { transformsToString } from './transformsToString'
@@ -51,6 +52,7 @@ export function getCSSStyleAtomic(
 }
 
 let conf: TamaguiInternalConfig | null = null
+let confRevision = 0
 
 // the direct path rebuilds the same identifier and the same rule strings on
 // every render of every component, and insertStyleRules only ever inserts the
@@ -83,8 +85,10 @@ const getStyleObject = (
   // media queries and shorthands come from the config, so an identity built
   // under one config says nothing about the rules under another
   const nextConf = getConfigMaybe()
-  if (nextConf !== conf) {
+  const nextRevision = nextConf ? getConfigRevisionState(nextConf).revision : 0
+  if (nextConf !== conf || nextRevision !== confRevision) {
     conf = nextConf
+    confRevision = nextRevision
     directIdentities.clear()
     directIdentitiesSize = 0
   }

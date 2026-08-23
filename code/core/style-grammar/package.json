@@ -21,6 +21,7 @@
     "src/index.ts",
     "src/lowerProgram.ts",
     "src/modifierRegistry.ts",
+    "src/modifierVocabulary.ts",
     "src/payloadShape.ts",
     "src/programEligibility.ts",
     "src/programHash.ts",

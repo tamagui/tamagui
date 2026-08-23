@@ -23,6 +23,8 @@ reproduces its old 1,710 figure, proving the frame correction rather than
 fixture drift. Phase III-b measures 3,950 in the corrected frame, down 289.
 Full-source and exact-declaration negative controls both move the union, and
 missing, ambiguous, wrong-kind, or privately unclosed declarations fail.
+The manifest now contains 67 selectors after predeclaring the III-c1 and III-c2
+destinations; the same detached Phase III-a artifact still measures 4,239.
 
 Implementation bindings after revision 3, 2026-08-23:
 
@@ -36,11 +38,12 @@ Implementation bindings after revision 3, 2026-08-23:
   before the compiled vocabulary and invalidation work. Compiler and runtime
   disagree on committed HEAD today, so this is a current v3 correctness bug
   exposed by consolidation, not behavior created by the refactor.
-- Phase III-b carries +48 CORE of declared structural debt, from 39,857 to
-  39,905 (whole bundle 103,969 to 104,018). III-d owns its recovery. The
-  cumulative debt is +48; implementation stops before III-d if unrecovered
-  debt exceeds +300, and III-d is a reported miss if it does not clear the
-  ledger. Unrelated byte reductions may not pay this debt.
+- Phase III-b carries +48 CORE of declared structural drift, from 39,857 to
+  39,905 (whole bundle 103,969 to 104,018). III-d owns its recovery. Drift
+  stops at +300. The separately accounted III-c2 add-then-delete sequence may
+  cross that number because III-d and IV-a were named as recovery owners before
+  measurement and run immediately next; the sequence is measured at each owner
+  and when it closes. Unrelated byte reductions may not pay either ledger.
 - The parser-cluster <= 1,000 target remains unchanged but is reported rather
   than stopping at V-e. The corrected 4,239 baseline proves before
   implementation that this consolidation scope cannot reach it, so its miss
@@ -573,6 +576,23 @@ theme in the batch would make eager invalidation quadratic in the number of
 themes. `setConfigFont` also refreshes the revision after its direct font
 mutation because the grammar snapshot includes font token names.
 
+The published revision-state identity is also the generation key for every
+config-derived `<ThemeUpdate>` cache: theme-key unions, scheme-stripped bucket
+names, its modifier view, parsed inline values, flat layers, and merged-theme
+results including their idempotency marker. READ: all five WeakMaps previously
+keyed the stable `conf.themes` object, while `updateConfig` mutates that object
+in place, and the merged-theme cache had no config generation at all. A warmed
+`<ThemeUpdate>` could therefore keep rejecting a theme or key added at runtime
+after `directStyle` had refreshed. The regression warms the same raw value,
+calls `addTheme`, and proves the new theme is visible without changing config
+or themes identity. Stable renders reuse the same generation caches; only a
+successful config mutation publishes a new generation.
+
+`<ThemeUpdate>`'s pre-existing exact-collision and unknown-modifier priorities
+are not normalized in this checkpoint. Its scheme-stripped implicit theme
+buckets are a separate contract, and the concrete behavior differences are
+recorded in `plans/v3-themeupdate-condition-divergence.md` for a later decision.
+
 At III-c2 the table replaces the classification if-chain in `getCondition`.
 Across III-c2 and IV-a, the table plus resolver then replace `stateSelectors`,
 runtime `canonicalClauseModifier` calls, `createClausePrecedenceOrder`,
@@ -829,13 +849,21 @@ replacement traversal. Phase III begins from the pre-1a getSplitStyles path.
 
 This ledger records checkpoint-local CORE regressions that have an explicitly
 named structural recovery point. It is not offset by unrelated reductions.
-Cumulative unrecovered debt above +300 before III-d is a hard stop.
+Unrecovered drift above +300 is a hard stop. A predeclared add-then-delete
+sequence is accounted separately: its checkpoint may cross +300 only when the
+recovery owners were named before measurement, those owners run immediately
+next with no intervening work, and the sequence is measured again when it
+closes. Future checkpoints do not gain this treatment after they miss a
+measurement. A material miss at an intermediate recovery owner stops the
+sequence before the next owner.
 
 | checkpoint | CORE before | CORE after | delta | recovery owner | status |
 | --- | ---: | ---: | ---: | --- | --- |
 | III-b | 39,857 | 39,905 | +48 | III-d package-surface split | open |
+| III-c2 | 39,911 | 40,550 | +639 | III-d tooling split, then IV-a resolver/precedence deletion | sequence open |
 
-Current cumulative unrecovered debt: **+48 CORE**.
+Current cumulative unrecovered drift: **+48 CORE**. Current predeclared
+sequence debt: **+639 CORE**.
 
 ### Parser-cluster debt ledger
 
@@ -843,7 +871,9 @@ The parser-cluster target remains at or below 1,000 with 800 as the target and
 is reported rather than stopping at the make-or-break gate. Between gates,
 every checkpoint records its one-union movement and names a recovery point for
 any increase. Permanent correctness costs are recorded but do not become debt.
-Cumulative unrecovered cluster debt above +300 is a hard stop.
+Cumulative unrecovered cluster drift above +300 is a hard stop. The same
+predeclared-sequence rule as the CORE ledger applies, and the sequence is
+reported separately from drift.
 
 The corrected declaration-closed baseline is the Phase III-a commit
 `cd2353824f`. III-c1 does not land the compiled table. It adds strict shared
@@ -860,8 +890,44 @@ of III-c1's temporary cluster increase.
 | III-c0c | 3,956 | 3,956 | 0 | config diagnostic stays outside the app graph | banked |
 | III-c0d | 3,956 | 3,956 | 0 | production DCE already removed the dead Proxy | banked |
 | III-c1 | 3,956 | 4,011 | +55 | IV-a resolver replacement | open |
+| III-c2 | 4,011 | 4,638 | +627 | III-d tooling split, then IV-a resolver/precedence deletion | sequence open |
 
-Current cumulative unrecovered parser-cluster debt: **+55**.
+Current cumulative unrecovered parser-cluster drift: **+55**. Current
+predeclared parser-cluster sequence debt: **+627**.
+
+The III-c2 measurement is whole 104,653 / CORE 40,550 in the frozen size
+fixture and whole 104,506 / parser cluster 4,638 in the frozen cluster fixture.
+Four exported numeric modifier codes have no generated declaration spans after
+Rolldown inlines them. The manifest therefore records those declarations as
+absent with their bytes represented inside the already-selected
+`compileModifierVocabulary` and `getCondition` declarations. Requiring a
+positive declaration span for them would make a valid build fail without
+measuring any additional byte.
+
+### III-c2 recovery forecast
+
+The forecast uses declaration and module marginals only to bound likely work;
+those rows are not added into either acceptance metric. III-d is expected to
+move **300 to 430 CORE** and **250 to 380 parser-cluster gzip** by moving human
+diagnostic and completion construction out of `modifierVocabulary`, removing
+the rich `states` and legacy registry/tooling retention chains from the app
+graph, and keeping only the numeric runtime vocabulary. The current relevant
+rows include `modifierVocabulary` at 399 marginal gzip, `states` at 320, and
+`modifierRegistry` at 66, with substantial overlap and retained replacements.
+
+IV-a is expected to move a further **250 to 420 CORE** and **300 to 500
+parser-cluster gzip** by replacing the old `getCondition` plus selector,
+group/container, precedence, set-key, and canonicalization bridge with the one
+resolver. The current gross declarations include `getCondition` at 441,
+`stateSelectors` at 125, group/container/state/platform helpers at 102/147/97/56,
+and the retained precedence/identity helpers; the replacement resolver keeps a
+material part of that behavior.
+
+Combined, the forecast is **550 to 850 CORE** and **550 to 880 parser-cluster
+gzip** against sequence debts of +639 and +627. The midpoint covers both. The
+low end falls short by 89 CORE and 77 parser-cluster gzip, so recovery is
+credible but not assured. III-d is measured against its own band before IV-a;
+a material miss stops the sequence and is reported rather than carried forward.
 
 ### Phase III: grammar and render-path cleanup (nine checkpoints)
 
@@ -908,10 +974,14 @@ Current cumulative unrecovered parser-cluster debt: **+55**.
 - **III-c2, compiled vocabulary.** Land the table plus revision invalidation;
   `getCondition` classifies through it without another behavior change
   (precedence and set-key still come from the existing modules). Verify: full
-  condition matrix, the warmed-table `addTheme` runtime test, a live media
-  update proving query text and precedence both refresh, a nested config-getter
-  update proving the outer compile cannot republish stale state, and
-  parserAgreement.
+  condition matrix, the warmed-table `addTheme` runtime test, a warmed
+  `<ThemeUpdate>` cache followed by `addTheme`, a live media update proving
+  query text and precedence both refresh, a nested config-getter update proving
+  the outer compile cannot republish stale state, and parserAgreement. The
+  measured intermediate state is whole 104,653 / CORE 40,550 and cluster whole
+  104,506 / union 4,638. Its +639 CORE and +627 cluster movement is predeclared
+  sequence debt assigned first to III-d and then to IV-a, under the sequence
+  rule and forecast above.
 - **III-d, package surface.** Runtime/tooling entry split, enforced through
   package exports plus a build-graph assertion (never a source-string test);
   `parseValue`, `mergeProgramValues`, the legacy registry builder, completion

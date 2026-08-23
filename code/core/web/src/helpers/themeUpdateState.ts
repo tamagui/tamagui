@@ -1,4 +1,5 @@
 import type { TamaguiInternalConfig, ThemeParsed, Variable } from '../types'
+import type { ConfigRevisionState } from './grammarConfig'
 
 export const themeUpdateStateKey = '_tmgInlineLayer'
 
@@ -9,6 +10,7 @@ export type ThemeUpdateValues = {
 
 export type ThemeUpdateLayerInfo = {
   key: string
+  generation: ConfigRevisionState
   overridden: Set<string>
   pairs: Record<string, { light: string | number; dark: string | number }>
 }

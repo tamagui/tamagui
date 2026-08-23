@@ -25,7 +25,7 @@ export interface CreateModifierRegistryOptions {
 * root, so `dark:` applies within `dark_blue`, but `dark_blue:` is not a
 * condition of its own.
 */
-export declare function isRootThemeName(name: string): boolean;
+export { isRootThemeName } from "./modifierVocabulary";
 export interface ContainerModifier {
 	/** the size condition; the registry only accepts a registered media name here */
 	size: string;
@@ -43,6 +43,5 @@ export interface ContainerModifier {
 */
 export declare function parseContainerModifier(name: string): ContainerModifier | null;
 export declare function createModifierRegistry(view: GrammarConfigView, options?: CreateModifierRegistryOptions): ModifierRegistryResult;
-export {};
 
 //# sourceMappingURL=modifierRegistry.d.ts.map

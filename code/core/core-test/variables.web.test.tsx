@@ -5,8 +5,12 @@ import { render, waitFor } from '@testing-library/react'
 import { describe, expect, test, vi } from 'vitest'
 
 import { createTamagui, TamaguiProvider, Theme, useTheme, View } from '@tamagui/core'
+import { getConfig, updateConfig } from '../web/src'
+import { getConfigRevisionState } from '../web/src/helpers/grammarConfig'
 import {
   createThemeUpdateState,
+  getInlineValuesFromProps,
+  getMergedInlineTheme,
   getVariablesCSSRules,
   ThemeUpdate,
 } from '@tamagui/web/theme-update'
@@ -22,7 +26,6 @@ const conf = createTamagui({
     chained: 'surfaceBorder',
   },
 })
-
 const inlineSelector = (identifier: string) => `.${identifier}:not(#t_theme_full_name)`
 
 describe('createTamagui variables', () => {
@@ -462,5 +465,62 @@ describe('<ThemeUpdate> values', () => {
     expect(conf.getCSS()).toContain(
       `:root ${inlineSelector(identifier)} {--surfaceBorder:url(http://x/y.png);}`
     )
+  })
+
+  test('warmed caches see theme names and keys added to the same config', () => {
+    const current = getConfig()
+    const themes = current.themes
+    const light = themes.light
+    const bucketName = 'themeUpdateGeneration'
+    const keyName = '__themeUpdateKey'
+    const props = { surfaceBorder: `${bucketName}:blue` }
+    const inline = { values: { surfaceBorder: 'red' } }
+    const parentTheme = current.themes.light
+    const generationBefore = getConfigRevisionState(current)
+    const mergedBefore = getMergedInlineTheme(parentTheme, inline, 'light', current)
+
+    expect(getInlineValuesFromProps(props, current)?.themes).toBeUndefined()
+    expect(getMergedInlineTheme(parentTheme, inline, 'light', current)).toBe(mergedBefore)
+    expect(getMergedInlineTheme(mergedBefore, inline, 'light', current)).toBe(
+      mergedBefore
+    )
+
+    try {
+      updateConfig('themes', {
+        [bucketName]: { surfaceBorder: light.surfaceBorder },
+      })
+
+      expect(getConfig()).toBe(current)
+      expect(current.themes).toBe(themes)
+      expect(themes[bucketName]).toBeTruthy()
+      expect(getConfigRevisionState(current)).not.toBe(generationBefore)
+      expect(getInlineValuesFromProps(props, current)?.themes?.[bucketName]).toEqual({
+        surfaceBorder: 'blue',
+      })
+
+      const mergedAfter = getMergedInlineTheme(parentTheme, inline, 'light', current)
+      expect(mergedAfter).not.toBe(mergedBefore)
+      expect(getMergedInlineTheme(mergedAfter, inline, 'light', current)).toBe(
+        mergedAfter
+      )
+
+      updateConfig('themes', {
+        light: { ...light, [keyName]: light.background },
+      })
+
+      expect(getConfig()).toBe(current)
+      expect(current.themes).toBe(themes)
+      expect(
+        getMergedInlineTheme(
+          parentTheme,
+          { values: { [keyName]: '#123' } },
+          'light',
+          current
+        )[keyName]?.val
+      ).toBe('#123')
+    } finally {
+      delete themes[bucketName]
+      updateConfig('themes', { light })
+    }
   })
 })

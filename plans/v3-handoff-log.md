@@ -5566,3 +5566,98 @@ Validation at this checkpoint:
   exceeded the unchanged five-second default under concurrent repository
   validation; no timeout, retry, or assertion was weakened;
 - `git diff --check` passed.
+
+## 56. Engine consolidation Phase III-c2: compiled vocabulary and invalidation (2026-08-23)
+
+Runtime exact-modifier classification now comes from one numeric vocabulary
+compiled when a config is installed or successfully mutated. The table is
+published on the config under `Symbol.for('tamagui.configRevision')`, before
+`setConfig` publishes the config itself. `updateConfig`, `setConfigFont`, and
+batched theme mutation all use the same eager preparation path. Render access
+only reads the published state.
+
+Preparation reads media and theme configuration into call-stack locals, builds
+the modifier table, media-query strings, and precedence order, and publishes
+only if the config still holds the state identity captured before those reads.
+A nested authored getter that performs another update therefore leaves the
+newer state authoritative. The content-hash snapshot remains lazy on that
+state identity, so config mutation does not sort and hash tokens, fonts,
+themes, and shorthands eagerly. `getCSSStylesAtomic` also keys direct identity
+reuse by the revision state, which prevents a warmed atomic rule from retaining
+old media query text.
+
+The same revision-state identity invalidates all six generation-sensitive
+ThemeUpdate cache groups. The exhaustive cache sweep found five WeakMaps that
+were keyed only by the stable `conf.themes` object: theme-key unions,
+scheme-stripped theme buckets, modifier views, parsed inline values, and flat
+layers. The merged-theme result and its idempotency marker had no config
+generation at all. They now key by the published state identity. A warmed
+regression mutates themes while preserving both config and themes identity,
+then proves a new theme bucket and a new theme key are visible and the old
+generation result is rejected. Rule and immutable-layer caches were inspected
+separately and do not depend on config generation.
+
+ThemeUpdate's existing exact-collision and unknown-modifier priorities are
+unchanged. Their user-visible differences from direct style resolution are
+recorded in `plans/v3-themeupdate-condition-divergence.md` for a separate
+decision.
+
+### Size and cluster receipts
+
+The fresh frozen-size artifact is
+`/tmp/p29049-phase3c2-size.T8n3LH`.
+
+| arm | whole gzip | CORE |
+| --- | ---: | ---: |
+| Phase III-c1 | 104,034 | 39,911 |
+| Phase III-c2 | 104,653 | 40,550 |
+| movement | +619 | +639 |
+
+The fresh parser-cluster artifact is
+`/tmp/p29049-phase3c2-cluster.pk2Kig`.
+
+| arm | cluster whole gzip | parser-cluster union |
+| --- | ---: | ---: |
+| Phase III-c1 | 103,814 | 4,011 |
+| Phase III-c2 | 104,506 | 4,638 |
+| movement | +692 | +627 |
+
+The checkpoint crosses both +300 drift caps, so implementation stopped before
+III-d and the coordinator explicitly classified it as a predeclared
+add-then-delete sequence. The +639 CORE and +627 cluster are sequence debt,
+with III-d's tooling split and IV-a's legacy resolver/precedence deletion named
+as recovery owners. No work may intervene. III-d must measure inside its
+forecast before IV-a starts.
+
+The recovery forecast is 300 to 430 CORE and 250 to 380 cluster at III-d,
+followed by 250 to 420 CORE and 300 to 500 cluster at IV-a. Combined, 550 to
+850 CORE and 550 to 880 cluster credibly cover the measured peak at their
+midpoints, while their low ends fall short by 89 CORE and 77 cluster. The
+forecast is therefore credible but not assured.
+
+The declaration-closed parser ruler also found four exported numeric modifier
+codes with zero generated declaration spans because Rolldown inlines them.
+Their literal uses remain inside selected `compileModifierVocabulary` and
+`getCondition` declarations, so the checkpoint records the zero-span
+declarations as absent and points them at the compiled vocabulary. Requiring
+them to be present would reject a valid artifact without adding any measured
+bytes.
+
+Validation at this checkpoint:
+
+- style-grammar built and passed 29 files with 454 tests;
+- web, theme, and core packages built successfully;
+- the focused config-invalidation and ThemeUpdate suites passed four files
+  with 65 tests after a clean rebuild;
+- the focused native variables suite passed three files with 39 tests;
+- the full core web suite passed 71 files with two skipped, 555 tests with
+  three skipped and one todo;
+- the full core native suite passed 30 files with one skipped, 295 tests with
+  seven expected failures and nine skipped;
+- the parser ruler passed eight tests with 36 expectations and reproduced the
+  III-c1 union at 4,011 after its selector expansion;
+- full root build passed 171 of 171 tasks;
+- root lint passed with the same five unrelated warnings;
+- root dependency, unused, Tamagui, reference, path, DOM type, and LSP pin
+  checks passed;
+- `git diff --check` passed.

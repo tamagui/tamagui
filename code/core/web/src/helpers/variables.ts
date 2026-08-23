@@ -7,6 +7,7 @@ import {
 } from '@tamagui/style-grammar/runtime'
 import { getSetting } from '../config'
 import { createVariable, isVariable } from '../createVariable'
+import { getConfigRevisionState, type ConfigRevisionState } from './grammarConfig'
 import { themeUpdateStateKey, type ThemeUpdateLayerInfo } from './themeUpdateState'
 import { platformMatches } from './directStyle'
 import { findVariableToken, isUnitlessVariableKey } from './variableValue'
@@ -26,10 +27,11 @@ export type InlineValues = {
   }
 }
 
-const themeKeySets = new WeakMap<object, Set<string>>()
+const themeKeySets = new WeakMap<ConfigRevisionState, Set<string>>()
 
 export const getThemeKeySet = (conf: TamaguiInternalConfig): Set<string> => {
-  const existing = themeKeySets.get(conf.themes)
+  const generation = getConfigRevisionState(conf)
+  const existing = themeKeySets.get(generation)
   if (existing) return existing
   const set = new Set<string>()
   for (const themeName in conf.themes) {
@@ -49,7 +51,7 @@ export const getThemeKeySet = (conf: TamaguiInternalConfig): Set<string> => {
       }
     }
   }
-  themeKeySets.set(conf.themes, set)
+  themeKeySets.set(generation, set)
   return set
 }
 
@@ -157,10 +159,11 @@ const getThemedBucketNames = (themes: InlineValues['themes']): string[] => {
 // scheme-stripped theme name in the config. broader than the style grammar's
 // theme modifiers, which require a top-level conf.themes key and so can't
 // target a `blue` that only exists as `dark_blue`/`light_blue`
-const themeBucketNameSets = new WeakMap<object, Set<string>>()
+const themeBucketNameSets = new WeakMap<ConfigRevisionState, Set<string>>()
 
 const getThemeBucketNames = (conf: TamaguiInternalConfig): Set<string> => {
-  let set = themeBucketNameSets.get(conf.themes)
+  const generation = getConfigRevisionState(conf)
+  let set = themeBucketNameSets.get(generation)
   if (!set) {
     set = new Set()
     for (const themeName in conf.themes) {
@@ -169,7 +172,7 @@ const getThemeBucketNames = (conf: TamaguiInternalConfig): Set<string> => {
         set.add(parts.slice(0, i).join('_'))
       }
     }
-    themeBucketNameSets.set(conf.themes, set)
+    themeBucketNameSets.set(generation, set)
   }
   return set
 }
@@ -412,7 +415,7 @@ export const getInlineValuesKey = (inline: InlineValues): string => {
 
 // ---- flat theme-value props: <ThemeUpdate background-hover="blue4 dark:blue2"> ----
 
-const registryViews = new WeakMap<object, ModifierRegistryView>()
+const registryViews = new WeakMap<ConfigRevisionState, ModifierRegistryView>()
 
 /**
  * Theme and platform are the only modifiers a subtree-wide value can honor.
@@ -420,7 +423,8 @@ const registryViews = new WeakMap<object, ModifierRegistryView>()
  * below, rather than coming back as a generic "unregistered modifier".
  */
 const getModifierRegistry = (conf: TamaguiInternalConfig): ModifierRegistryView => {
-  let view = registryViews.get(conf.themes)
+  const generation = getConfigRevisionState(conf)
+  let view = registryViews.get(generation)
   if (!view) {
     view = {
       get(name: string) {
@@ -429,7 +433,7 @@ const getModifierRegistry = (conf: TamaguiInternalConfig): ModifierRegistryView 
         return 'state'
       },
     }
-    registryViews.set(conf.themes, view)
+    registryViews.set(generation, view)
   }
   return view
 }
@@ -447,7 +451,7 @@ type FlatBuckets = {
 }
 
 const parsedInlineValues = new WeakMap<
-  object,
+  ConfigRevisionState,
   Map<string, ReturnType<typeof parseValue>>
 >()
 
@@ -473,10 +477,11 @@ const addFlatValue = (
     return
   }
 
-  let configValues = parsedInlineValues.get(conf.themes)
+  const generation = getConfigRevisionState(conf)
+  let configValues = parsedInlineValues.get(generation)
   if (!configValues) {
     configValues = new Map()
-    parsedInlineValues.set(conf.themes, configValues)
+    parsedInlineValues.set(generation, configValues)
   }
 
   let parsed = configValues.get(raw)
@@ -547,7 +552,7 @@ const addFlatValue = (
 // reuse one layer object. downstream identity caches and snapshot bailouts key
 // off this object. each config cache is bounded with the same clear-on-limit
 // pattern as simpleHash's string cache.
-const flatLayers = new WeakMap<object, Map<string, InlineValues>>()
+const flatLayers = new WeakMap<ConfigRevisionState, Map<string, InlineValues>>()
 
 /**
  * Reads theme-key props off a <ThemeUpdate> into the layer shape the rest of
@@ -579,10 +584,11 @@ export function getInlineValuesFromProps(
 
   if (!hasKey) return null
 
-  let configLayers = flatLayers.get(conf.themes)
+  const generation = getConfigRevisionState(conf)
+  let configLayers = flatLayers.get(generation)
   if (!configLayers) {
     configLayers = new Map()
-    flatLayers.set(conf.themes, configLayers)
+    flatLayers.set(generation, configLayers)
   }
 
   // a caller that asked for issues has to see them for every call, and a cache
@@ -612,7 +618,10 @@ export function getInlineValuesFromProps(
   return layer
 }
 
-const mergedThemeCache = new WeakMap<object, Map<string, Record<string, Variable>>>()
+const mergedThemeCache = new WeakMap<
+  ConfigRevisionState,
+  WeakMap<object, Map<string, Record<string, Variable>>>
+>()
 
 /**
  * Builds the merged theme for a `<ThemeUpdate>` layer: parent theme spread plus
@@ -632,6 +641,7 @@ export function getMergedInlineTheme(
   themeName: string | undefined,
   conf: TamaguiInternalConfig
 ): Record<string, Variable> {
+  const generation = getConfigRevisionState(conf)
   const name = themeName || 'light'
   const activeScheme = name === 'dark' || name.startsWith('dark_') ? 'dark' : 'light'
 
@@ -656,11 +666,12 @@ export function getMergedInlineTheme(
   const existingInfo = (parentTheme as any)[themeUpdateStateKey] as
     | ThemeUpdateLayerInfo
     | undefined
-  if (existingInfo?.key === cacheKey) {
+  if (existingInfo?.generation === generation && existingInfo.key === cacheKey) {
     return parentTheme
   }
 
-  let byKey = mergedThemeCache.get(parentTheme)
+  let generationCache = mergedThemeCache.get(generation)
+  let byKey = generationCache?.get(parentTheme)
   const cached = byKey?.get(cacheKey)
   if (cached) return cached
 
@@ -710,6 +721,7 @@ export function getMergedInlineTheme(
 
   const info: ThemeUpdateLayerInfo = {
     key: cacheKey,
+    generation,
     // nested layers: carry the parent layer's overrides forward (its values
     // are plain enumerable entries after the spread, but the iOS pair info
     // would otherwise be lost)
@@ -773,7 +785,11 @@ export function getMergedInlineTheme(
   })
 
   byKey ||= new Map()
-  mergedThemeCache.set(parentTheme, byKey)
+  if (!generationCache) {
+    generationCache = new WeakMap()
+    mergedThemeCache.set(generation, generationCache)
+  }
+  generationCache.set(parentTheme, byKey)
   if (byKey.size >= 10_000) {
     byKey.clear()
   }

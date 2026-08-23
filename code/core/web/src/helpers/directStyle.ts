@@ -15,14 +15,15 @@ import {
 import {
   canonicalClauseModifier,
   clauseSubjectClassRepetitions,
-  createClausePrecedenceOrder,
   getClausePrecedenceKeyFromKinds,
   isContainerSizeQueryText,
   isModifierName,
-  isRootThemeName,
+  modifierKindMedia,
+  modifierKindPlatform,
+  modifierKindState,
+  modifierKindTheme,
   scanFlatValue,
   type ClausePrecedenceKey,
-  type ClausePrecedenceOrder,
   type FlatValueHandler,
   type ModifierKind,
   type ParsedValue,
@@ -34,9 +35,9 @@ import type { GetStyleState } from '../types'
 import { warnOnce, warnRefusedValue } from './warnOnce'
 import { expandStyle } from './expandStyle'
 import { getCSSStyleAtomic } from './getCSSStylesAtomic'
+import { getConfigRevisionState, type ConfigRevisionState } from './grammarConfig'
 import { isColorStyleKey } from './getDynamicVal'
 import { shouldInsertStyleRules, updateRules } from './insertStyleRule'
-import { mediaObjectToString } from './mediaObjectToString'
 import { normalizeColor } from './normalizeColor'
 import { parseNativeStyle } from './parseNativeStyle.native'
 import { parseNativeTransform } from './parseNativeTransform.native'
@@ -264,28 +265,6 @@ const borderStyleDefaults: Record<string, string> = {
   borderLeftWidth: 'borderLeftStyle',
 }
 
-const mediaQueries = new WeakMap<object, Record<string, string>>()
-const clausePrecedenceOrders = new WeakMap<object, ClausePrecedenceOrder>()
-function queryFor(state: GetStyleState, name: string): string | undefined {
-  let queries = mediaQueries.get(state.conf)
-  if (!queries) {
-    queries = {}
-    const media = state.conf.media || {}
-    for (const key in media) queries[key] = mediaObjectToString(media[key])
-    mediaQueries.set(state.conf, queries)
-  }
-  return queries[name]
-}
-
-function precedenceOrderFor(state: GetStyleState): ClausePrecedenceOrder {
-  let order = clausePrecedenceOrders.get(state.conf)
-  if (!order) {
-    order = createClausePrecedenceOrder(state.conf.media)
-    clausePrecedenceOrders.set(state.conf, order)
-  }
-  return order
-}
-
 function stateIsActive(state: GetStyleState, name: string): boolean {
   const component = state.componentState
   if (name === 'hover') return !!component.hover
@@ -330,7 +309,12 @@ function groupCondition(state: GetStyleState, modifier: string, out: Condition) 
   return true
 }
 
-function containerCondition(state: GetStyleState, modifier: string, out: Condition) {
+function containerCondition(
+  state: GetStyleState,
+  modifier: string,
+  out: Condition,
+  compiled: ConfigRevisionState
+) {
   const slash = modifier.indexOf('/')
   const size = modifier.slice(1, slash === -1 ? undefined : slash)
   const name = slash === -1 ? '' : modifier.slice(slash + 1)
@@ -340,7 +324,7 @@ function containerCondition(state: GetStyleState, modifier: string, out: Conditi
   ) {
     return false
   }
-  const query = queryFor(state, size)
+  const query = compiled.mediaQueries[size]
   if (!query || !isContainerSizeQueryText(query)) return false
   const key = `@${name}`
   ;(out.wrappers ||= []).push(
@@ -366,6 +350,7 @@ function containerCondition(state: GetStyleState, modifier: string, out: Conditi
  * of a bad value survives.
  */
 export function getCondition(state: GetStyleState, source: string): Condition | null {
+  const compiled = getConfigRevisionState(state.conf)
   const out = { key: '', active: true, emit: true, selector: '' } as Condition
   const canonical: string[] = []
   const kinds: ModifierKind[] = []
@@ -378,35 +363,22 @@ export function getCondition(state: GetStyleState, source: string): Condition | 
     start = index + 1
     if (!modifier) return null
     const selector = stateSelectors[modifier]
+    const exactKind = compiled.modifiers[modifier]
     let kind: ModifierKind
-    if (selector) {
+    if (exactKind === modifierKindState) {
       kind = 'state'
+    } else if (exactKind === modifierKindMedia) {
+      kind = 'media'
+    } else if (exactKind === modifierKindPlatform) {
+      kind = 'platform'
+    } else if (exactKind === modifierKindTheme) {
+      kind = 'theme'
     } else if (modifier.startsWith('group-')) {
       kind = 'group'
     } else if (modifier.charCodeAt(0) === 64) {
       kind = 'container'
     } else {
-      const media = state.conf.media
-      if (media && Object.prototype.hasOwnProperty.call(media, modifier)) {
-        kind = 'media'
-      } else if (
-        modifier === 'web' ||
-        modifier === 'native' ||
-        modifier === 'ios' ||
-        modifier === 'android' ||
-        modifier === 'tv' ||
-        modifier === 'tvos' ||
-        modifier === 'androidtv'
-      ) {
-        kind = 'platform'
-      } else {
-        const themes = isRootThemeName(modifier) && state.conf.themes
-        if (themes && Object.prototype.hasOwnProperty.call(themes, modifier)) {
-          kind = 'theme'
-        } else {
-          return null
-        }
-      }
+      return null
     }
 
     if (seenModifiers.has(modifier)) continue
@@ -419,11 +391,11 @@ export function getCondition(state: GetStyleState, source: string): Condition | 
       continue
     }
     if (kind === 'container') {
-      if (!containerCondition(state, modifier, out)) return null
+      if (!containerCondition(state, modifier, out, compiled)) return null
       continue
     }
     if (kind === 'media') {
-      const query = queryFor(state, modifier)
+      const query = compiled.mediaQueries[modifier]
       if (!query) return null
       ;(out.wrappers ||= []).push(`@media ${query}`)
       out.active &&= !!state.flatMediaState?.[modifier]
@@ -463,7 +435,7 @@ export function getCondition(state: GetStyleState, source: string): Condition | 
   out.precedence = getClausePrecedenceKeyFromKinds(
     canonical,
     kinds,
-    precedenceOrderFor(state)
+    compiled.precedenceOrder
   )
   out.key = canonical[1] ? canonical.sort().join(':') : canonical[0] || ''
   out.classRepetitions = clauseSubjectClassRepetitions(
