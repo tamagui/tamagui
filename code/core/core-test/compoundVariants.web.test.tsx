@@ -15,6 +15,7 @@ import {
   StyleObjectProperty,
   StyleObjectValue,
   View,
+  createComponent,
   createStyledContext,
   createTamagui,
   styled,
@@ -242,6 +243,113 @@ describe('compoundVariants - web', () => {
     expect(nan.style?.transform).toBe('scale(2)')
   })
 
+  test('base style values do not satisfy compound selectors', () => {
+    const Frame = createComponent({
+      ...View.staticConfig,
+      acceptsClassName: false,
+      baseStyle: {
+        tone: 'active',
+      },
+      variants: {
+        tone: {
+          active: {},
+        },
+      },
+      compoundVariants: [
+        {
+          tone: 'active',
+          style: {
+            opacity: 0.5,
+          },
+        },
+      ],
+    } as any)
+
+    expect(simplifiedGetSplitStyles(Frame, {}).style?.opacity).toBeUndefined()
+  })
+
+  test('absent and present undefined selectors anchor at different positions', () => {
+    const Frame = styled(
+      View,
+      {
+        compoundVariants: [
+          {
+            tone: undefined,
+            style: {
+              opacity: 0.5,
+            },
+          },
+        ],
+      } as any,
+      {
+        acceptsClassName: false,
+      }
+    )
+
+    expect(simplifiedGetSplitStyles(Frame, { opacity: 0.8 }).style?.opacity).toBe(0.8)
+    expect(
+      simplifiedGetSplitStyles(Frame, { opacity: 0.8, tone: undefined }).style?.opacity
+    ).toBe(0.5)
+  })
+
+  test('functional variant reentry preserves the outer compound frame', () => {
+    const Inner = styled(
+      View,
+      {
+        compoundVariants: [
+          {
+            inner: 'active',
+            style: {
+              opacity: 0.25,
+            },
+          },
+        ],
+      } as any,
+      {
+        acceptsClassName: false,
+      }
+    )
+    let innerOpacity: number | undefined
+    const Outer = styled(
+      View,
+      {
+        variants: {
+          tone: {
+            active: {},
+          },
+          trigger: {
+            go: () => {
+              innerOpacity = simplifiedGetSplitStyles(Inner, {
+                inner: 'active',
+              }).style?.opacity
+              return {}
+            },
+          },
+        },
+        compoundVariants: [
+          {
+            tone: 'active',
+            trigger: 'go',
+            style: {
+              opacity: 0.75,
+            },
+          },
+        ],
+      } as any,
+      {
+        acceptsClassName: false,
+      }
+    )
+
+    const out = simplifiedGetSplitStyles(Outer, {
+      tone: 'active',
+      trigger: 'go',
+    })
+
+    expect(innerOpacity).toBe(0.25)
+    expect(out.style?.opacity).toBe(0.75)
+  })
+
   test('later equal-specificity media wins without fractional importance bumps', () => {
     const compoundVariants = Array.from({ length: 1005 }, (_, index) => ({
       state: 'active' as const,
@@ -277,6 +385,64 @@ describe('compoundVariants - web', () => {
         }
       ).style?.marginTop
     ).toBe(1004)
+  })
+
+  test('getter reentry can grow the arena while an outer 1005-compound frame is live', () => {
+    const Inner = styled(
+      View,
+      {
+        compoundVariants: [
+          {
+            inner: 'active',
+            style: {
+              opacity: 0.25,
+            },
+          },
+        ],
+      } as any,
+      {
+        acceptsClassName: false,
+      }
+    )
+    const compounds = Array.from({ length: 1005 }, (_, index) => ({
+      tone: 'active',
+      trigger: 'go',
+      style: {
+        marginTop: index,
+      },
+    }))
+    const Outer = styled(
+      View,
+      {
+        compoundVariants: compounds,
+      } as any,
+      {
+        acceptsClassName: false,
+      }
+    )
+    let reads = 0
+    let innerOpacity: number | undefined
+    const props: Record<string, any> = {
+      tone: 'active',
+    }
+    Object.defineProperty(props, 'trigger', {
+      enumerable: true,
+      get() {
+        reads++
+        if (reads === 1) {
+          innerOpacity = simplifiedGetSplitStyles(Inner, {
+            inner: 'active',
+          }).style?.opacity
+        }
+        return 'go'
+      },
+    })
+
+    const out = simplifiedGetSplitStyles(Outer, props)
+
+    expect(reads).toBe(1)
+    expect(innerOpacity).toBe(0.25)
+    expect(out.style?.marginTop).toBe(1004)
   })
 
   test('media declaration order wins independently of authored contribution order', () => {

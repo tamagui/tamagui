@@ -65,7 +65,7 @@ const FRAMEWORK_IDS = args
   .filter(Boolean)
 const ITEM_COUNT = 200
 const HEAVY_COUNT = 60
-const SCENARIOS = ['simple', 'rich', 'group', 'heavy', 'animated'] as const
+const SCENARIOS = ['simple', 'rich', 'group', 'heavy', 'animated', 'flat'] as const
 type ScenarioId = (typeof SCENARIOS)[number]
 type Metric = 'mount' | 'rerender'
 
@@ -75,6 +75,7 @@ const SCENARIO_LABELS: Record<ScenarioId, string> = {
   group: 'Nested row',
   heavy: `Heavy page (${HEAVY_COUNT})`,
   animated: 'Dynamic transition',
+  flat: 'Flat values and compounds',
 }
 
 interface BenchConfig {

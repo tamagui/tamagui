@@ -25,7 +25,6 @@ import type {
   DebugProp,
   GetStyleResult,
   GetStyleState,
-  GenericCompoundVariant,
   RulesToInsert,
   SpaceTokens,
   SplitStyleProps,
@@ -105,27 +104,70 @@ type StyleSplitter = (
   animationDriver?: AnimationDriverLike | null
 ) => null | GetStyleResult
 
-function compoundMatcherMatches(expected: any, actual: any) {
-  if (Array.isArray(expected)) {
-    return expected.some((value) => Object.is(value, actual))
-  }
-  return Object.is(expected, actual)
-}
-
-function compoundVariantMatches(
-  compoundVariant: GenericCompoundVariant,
-  props: Record<string, any>
-) {
-  for (const key in compoundVariant) {
-    if (key === 'style') continue
-    if (!compoundMatcherMatches(compoundVariant[key], props[key])) {
-      return false
-    }
-  }
-  return true
-}
-
 type OrderedPropEntry = readonly [string, any]
+
+const preparedCompoundsKey = Symbol()
+
+type PreparedCompounds = Record<string, number[]> & {
+  [preparedCompoundsKey]: number[]
+}
+
+type StaticConfigWithPreparedCompounds = StaticConfig & {
+  [preparedCompoundsKey]?: PreparedCompounds | null
+}
+
+export function prepareStaticConfigCompounds(staticConfig: StaticConfig) {
+  const compoundVariants = staticConfig.compoundVariants
+  const preparedConfig = staticConfig as StaticConfigWithPreparedCompounds
+  if (!compoundVariants?.length) {
+    preparedConfig[preparedCompoundsKey] = null
+    return
+  }
+
+  const selectorCounts: number[] = []
+  const indexesByKey = Object.create(null) as PreparedCompounds
+  indexesByKey[preparedCompoundsKey] = selectorCounts
+
+  for (let index = 0; index < compoundVariants.length; index++) {
+    const compoundVariant = compoundVariants[index]
+    let selectorCount = 0
+    for (const key in compoundVariant) {
+      if (key === 'style') continue
+      selectorCount++
+      let indexes = indexesByKey[key]
+      if (!indexes) {
+        indexes = indexesByKey[key] = []
+      }
+      indexes.push(index)
+    }
+    selectorCounts[index] = selectorCount
+    if (!selectorCount) selectorCounts[-1] = 1
+  }
+
+  preparedConfig[preparedCompoundsKey] = indexesByKey
+}
+
+let compoundArena = new Float64Array(2048)
+let compoundArenaTop = 0
+let compoundArenaEpoch = 0
+
+function matchCompoundEdge(expected: any, value: any, stateIndex: number, epoch: number) {
+  const packed = compoundArena[stateIndex] === epoch ? compoundArena[stateIndex + 1] : 0
+  if (packed < 0) return packed
+  let matches = false
+  if (Array.isArray(expected)) {
+    for (let index = 0; index < expected.length; index++) {
+      if (Object.is(expected[index], value)) {
+        matches = true
+        break
+      }
+    }
+  } else {
+    matches = Object.is(expected, value)
+  }
+  compoundArena[stateIndex] = epoch
+  return (compoundArena[stateIndex + 1] = matches ? packed + 1 : -1)
+}
 
 // Styled defaults computed once per static config. mergeComponentProps replaces
 // defaults at the prop level, but flat programs merge per clause slot: either a
@@ -185,9 +227,8 @@ function contributeDisplacedStyledDefaults(
  * last.
  *
  * The common case touches each source object exactly once and allocates
- * nothing. Only compound variants need a materialised list, because a matching
- * compound has to run immediately after the LAST prop that selected it, and
- * that anchor is not known until the props have been indexed.
+ * nothing. Compound selector edges are compiled with the static config, then
+ * tracked in the module arena until the last selector prop is reached.
  */
 function forEachPropInForwardOrder(
   processedProps: Record<string, any>,
@@ -196,10 +237,12 @@ function forEachPropInForwardOrder(
   contribute: (key: string, value: any) => void
 ) {
   const processedBaseStyle = staticConfig.baseStyle
-  const compoundVariants = staticConfig.compoundVariants
   const styledDefaults = getStyledDefaults(staticConfig)
+  const preparedCompounds = (staticConfig as StaticConfigWithPreparedCompounds)[
+    preparedCompoundsKey
+  ]
 
-  if (!compoundVariants?.length) {
+  if (!preparedCompounds) {
     if (processedBaseStyle) {
       for (const key in processedBaseStyle) contribute(key, processedBaseStyle[key])
     }
@@ -213,63 +256,108 @@ function forEachPropInForwardOrder(
     return
   }
 
-  // compound path: needs indexed prop entries to resolve each compound's anchor
-  const propEntries = Object.entries(processedProps) as OrderedPropEntry[]
-  const orderedEntries = processedBaseStyle
-    ? (Object.entries(processedBaseStyle) as OrderedPropEntry[])
-    : []
-  contributeDisplacedStyledDefaults(styledDefaults, processedProps, shorthands, (k, v) =>
-    orderedEntries.push([k, v])
-  )
-
-  // Compounds are ordinary contributions in the same authored forward pass. A
-  // matching compound runs immediately after its last selector entry, then any
-  // later prop/style/className is free to override it. Never collect variants,
-  // compounds, or caller values into precedence tiers.
-  const compoundsByAnchor = new Map<number, OrderedPropEntry[]>()
-  for (const compoundVariant of compoundVariants) {
-    if (!compoundVariantMatches(compoundVariant, processedProps)) {
-      continue
+  const compoundVariants = staticConfig.compoundVariants!
+  const selectorCounts = preparedCompounds[preparedCompoundsKey]
+  const arenaBase = compoundArenaTop
+  const stateStart = arenaBase + 32
+  const required = stateStart + compoundVariants.length * 2
+  if (required > compoundArena.length) {
+    let nextLength = compoundArena.length * 2
+    while (nextLength < required) nextLength *= 2
+    const previousArena = compoundArena
+    compoundArena = new Float64Array(nextLength)
+    for (let index = 0; index < compoundArenaTop; index++) {
+      compoundArena[index] = previousArena[index]
     }
-    const { style } = compoundVariant
-    if (!isPlainObject(style)) {
-      continue
-    }
+  }
+  const epoch = ++compoundArenaEpoch
+  compoundArenaTop = required
 
-    let anchor = -1
-    for (const selectorKey in compoundVariant) {
-      if (selectorKey === 'style') continue
-      for (let index = propEntries.length - 1; index >= 0; index--) {
-        if (propEntries[index][0] === selectorKey) {
-          anchor = Math.max(anchor, index)
-          break
+  try {
+    if (processedBaseStyle) {
+      for (const key in processedBaseStyle) {
+        if (Object.hasOwn(processedBaseStyle, key)) {
+          contribute(key, processedBaseStyle[key])
         }
       }
     }
+    contributeDisplacedStyledDefaults(
+      styledDefaults,
+      processedProps,
+      shorthands,
+      contribute
+    )
 
-    const entries = compoundsByAnchor.get(anchor) || []
-    for (const key in style) {
-      entries.push([key, style[key]])
+    let hasBeforeProps = !!selectorCounts[-1]
+    for (const selectorKey in preparedCompounds) {
+      if (Object.prototype.propertyIsEnumerable.call(processedProps, selectorKey)) {
+        continue
+      }
+      hasBeforeProps = true
+      const value = processedProps[selectorKey]
+      const compoundIndexes = preparedCompounds[selectorKey]
+      for (let index = 0; index < compoundIndexes.length; index++) {
+        const compoundIndex = compoundIndexes[index]
+        matchCompoundEdge(
+          compoundVariants[compoundIndex][selectorKey],
+          value,
+          stateStart + compoundIndex * 2,
+          epoch
+        )
+      }
     }
-    compoundsByAnchor.set(anchor, entries)
-  }
 
-  for (let index = 0; index < orderedEntries.length; index++) {
-    contribute(orderedEntries[index][0], orderedEntries[index][1])
-  }
-  const beforeProps = compoundsByAnchor.get(-1)
-  if (beforeProps) {
-    for (let index = 0; index < beforeProps.length; index++) {
-      contribute(beforeProps[index][0], beforeProps[index][1])
+    if (hasBeforeProps) {
+      for (
+        let compoundIndex = 0;
+        compoundIndex < compoundVariants.length;
+        compoundIndex++
+      ) {
+        const selectorCount = selectorCounts[compoundIndex]
+        const stateIndex = stateStart + compoundIndex * 2
+        if (
+          selectorCount !== 0 &&
+          (compoundArena[stateIndex] !== epoch ||
+            compoundArena[stateIndex + 1] !== selectorCount)
+        ) {
+          continue
+        }
+        const style = compoundVariants[compoundIndex].style
+        if (!isPlainObject(style)) continue
+        for (const key in style) contribute(key, style[key])
+      }
     }
-  }
-  for (let index = 0; index < propEntries.length; index++) {
-    contribute(propEntries[index][0], propEntries[index][1])
-    const compounds = compoundsByAnchor.get(index)
-    if (compounds) {
-      for (let i = 0; i < compounds.length; i++)
-        contribute(compounds[i][0], compounds[i][1])
+
+    for (const key in processedProps) {
+      if (!Object.hasOwn(processedProps, key)) continue
+      const value = processedProps[key]
+      contribute(key, value)
+      const compoundIndexes = preparedCompounds[key]
+      if (!compoundIndexes) continue
+
+      for (let index = 0; index < compoundIndexes.length; index++) {
+        const compoundIndex = compoundIndexes[index]
+        const stateIndex = stateStart + compoundIndex * 2
+        // an object contributes each selector key once, so reaching the count
+        // is a one-shot event and needs no separate emitted flag
+        if (
+          matchCompoundEdge(
+            compoundVariants[compoundIndex][key],
+            value,
+            stateIndex,
+            epoch
+          ) !== selectorCounts[compoundIndex]
+        ) {
+          continue
+        }
+
+        const style = compoundVariants[compoundIndex].style
+        if (!isPlainObject(style)) continue
+        for (const styleKey in style) contribute(styleKey, style[styleKey])
+      }
     }
+  } finally {
+    compoundArenaTop = arenaBase
   }
 }
 
