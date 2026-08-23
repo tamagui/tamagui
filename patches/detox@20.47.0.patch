@@ -1,5 +1,5 @@
 diff --git a/src/server/DetoxServer.js b/src/server/DetoxServer.js
-index c0231f5516cd85436da37bbe0bb1dba8ed27d15a..1cfe30a23723fc802ad79730a98182254502be96 100644
+index 1ab5f08690bfd3fae42b29ffead720df06a40059..737c4471018c4c75298fc5841ebdf6163dce3d65 100644
 --- a/src/server/DetoxServer.js
 +++ b/src/server/DetoxServer.js
 @@ -107,6 +107,15 @@ class DetoxServer {
