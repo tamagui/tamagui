@@ -1060,6 +1060,8 @@ export function createTamaguiPlugins({
       // sheets silently never open. include both so they share one context chunk.
       addIfInstalled(userConf, userConf.root, [
         '@tamagui/core',
+        '@tamagui/animations-css',
+        '@tamagui/animations-css/extras',
         '@tamagui/web',
         '@tamagui/toast',
         '@tamagui/sheet',
@@ -1068,12 +1070,15 @@ export function createTamaguiPlugins({
 
       // dedupe tamagui packages so nested resolutions collapse to a single
       // instance. pairs with the include above: include pre-bundles, dedupe
-      // prevents duplicate bundling when sub-deps re-resolve them.
+      // prevents duplicate bundling when sub-deps re-resolve them. animations-css
+      // needs the same treatment because apps can import both its root transition
+      // driver and its /extras animated-number driver.
       userConf.resolve ||= {}
       userConf.resolve.dedupe ||= []
       for (const id of [
         'tamagui',
         '@tamagui/core',
+        '@tamagui/animations-css',
         '@tamagui/web',
         '@tamagui/toast',
         '@tamagui/sheet',

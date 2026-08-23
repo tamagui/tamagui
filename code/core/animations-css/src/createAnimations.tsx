@@ -10,13 +10,6 @@ import type { AnimationDriver } from '@tamagui/web'
 import { transformsToString } from '@tamagui/web'
 import React from 'react'
 
-import {
-  useAnimatedNumber,
-  useAnimatedNumberReaction,
-  useAnimatedNumberStyle,
-  useAnimatedNumbersStyle,
-} from './animated-number'
-
 // rAF-driven animated number is browser-only. read (don't call) at module scope
 // so ssr never touches requestAnimationFrame.
 const hasRAF = typeof requestAnimationFrame !== 'undefined'
@@ -144,11 +137,6 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
     ResetPresence,
     inputStyle: 'css',
     outputStyle: 'css',
-
-    useAnimatedNumber,
-    useAnimatedNumberReaction,
-    useAnimatedNumberStyle,
-    useAnimatedNumbersStyle,
 
     // @ts-ignore - styleState is added by createComponent
     useAnimations: ({

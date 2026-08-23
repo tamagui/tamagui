@@ -1,11 +1,11 @@
-import { useConfiguration } from '@tamagui/core'
+import { useConfiguration, type AnimationDriverWithAnimatedNumbers } from '@tamagui/core'
 import { useRef } from 'react'
 import { Button, Paragraph, View, YStack } from 'tamagui'
 
 const ITEM_COUNT = 100
 
 export function MotionLinkedBenchmarkCase() {
-  const driver = useConfiguration().animationDriver!
+  const driver = useConfiguration().animationDriver as AnimationDriverWithAnimatedNumbers
   const AnimatedView = driver.View ?? View
   const value = driver.useAnimatedNumber(0)
   const open = useRef(false)

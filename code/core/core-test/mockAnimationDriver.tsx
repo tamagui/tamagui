@@ -2,7 +2,7 @@
 // contract (avoidReRenders emitter path, animatedBy switching) without pulling
 // a real driver (motion/reanimated) into the test env. every hook-shaped field
 // uses zero react hooks so two mock drivers always have identical hook counts.
-import type { AnimationDriver } from '../web/src'
+import type { AnimationDriverWithAnimatedNumbers } from '../web/src'
 
 export type EmittedStyle = {
   style: Record<string, unknown>
@@ -13,7 +13,7 @@ export function createMockAnimationDriver(options?: {
   avoidReRenders?: boolean
   inputStyle?: 'css' | 'value'
   emissions?: EmittedStyle[]
-}): AnimationDriver {
+}): AnimationDriverWithAnimatedNumbers {
   const emissions = options?.emissions
   return {
     isReactNative: false,

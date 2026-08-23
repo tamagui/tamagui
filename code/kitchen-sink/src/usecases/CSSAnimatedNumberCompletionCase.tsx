@@ -1,4 +1,4 @@
-import { useConfiguration } from '@tamagui/core'
+import { useConfiguration, type AnimationDriverWithAnimatedNumbers } from '@tamagui/core'
 import { useRef, useState } from 'react'
 import { Button, Paragraph, YStack } from 'tamagui'
 
@@ -17,7 +17,8 @@ import { Button, Paragraph, YStack } from 'tamagui'
 const TARGET = 200
 
 export function CSSAnimatedNumberCompletionCase() {
-  const animationDriver = useConfiguration().animationDriver!
+  const animationDriver = useConfiguration()
+    .animationDriver as AnimationDriverWithAnimatedNumbers
   const { useAnimatedNumber, useAnimatedNumberReaction } = animationDriver
 
   const number = useAnimatedNumber(0)

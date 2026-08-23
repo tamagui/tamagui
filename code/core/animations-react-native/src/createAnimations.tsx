@@ -3,7 +3,7 @@ import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { ResetPresence, usePresence } from '@tamagui/use-presence'
 import type {
   AnimatedNumberStrategy,
-  AnimationDriver,
+  AnimationDriverWithAnimatedNumbers,
   TransitionProp,
   UniversalAnimatedNumber,
   UseAnimatedNumberReaction,
@@ -245,7 +245,7 @@ export const useAnimatedNumbersStyle = (
 export function createAnimations<A extends AnimationsConfig>(
   animations: A,
   options?: CreateAnimationsOptions
-): AnimationDriver<A> {
+): AnimationDriverWithAnimatedNumbers<A> {
   const nativeDriver = options?.useNativeDriver ?? isFabric
 
   return {

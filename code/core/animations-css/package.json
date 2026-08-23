@@ -33,6 +33,15 @@
       "import": "./dist/esm/animated-number.mjs",
       "require": "./dist/cjs/animated-number.cjs",
       "default": "./dist/esm/animated-number.mjs"
+    },
+    "./extras": {
+      "types": "./types/extras.d.ts",
+      "react-native": "./dist/esm/extras.native.js",
+      "browser": "./dist/esm/extras.mjs",
+      "module": "./dist/esm/extras.mjs",
+      "import": "./dist/esm/extras.mjs",
+      "require": "./dist/cjs/extras.cjs",
+      "default": "./dist/esm/extras.mjs"
     }
   },
   "publishConfig": {

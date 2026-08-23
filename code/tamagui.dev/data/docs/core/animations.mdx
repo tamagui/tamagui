@@ -334,8 +334,11 @@ import {
 ```
 
 Each hook is a thin delegation to the configured driver, so first-party code and
-your code exercise the same surface. In development they throw a helpful error
-if no `animations` config is set. The resolved driver must not change identity
+your code exercise the same surface. They throw a helpful error if no
+`animations` config is set or if the configured CSS driver came from the core
+`@tamagui/animations-css` entry. Import `createAnimations` from
+`@tamagui/animations-css/extras` when using these hooks, `Sheet`, or draggable
+`Toast` with the CSS driver. The resolved driver must not change identity
 mid-lifecycle, which is only a concern with `animatedBy` multi-driver setups.
 
 `useAnimatedNumberStyle` takes a value and a worklet that maps it to a style

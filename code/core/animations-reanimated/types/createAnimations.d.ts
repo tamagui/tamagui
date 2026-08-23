@@ -1,4 +1,4 @@
-import { type AnimationDriver } from "@tamagui/core";
+import { type AnimationDriverWithAnimatedNumbers } from "@tamagui/core";
 import { type WithSpringConfig, type WithTimingConfig } from "react-native-reanimated";
 /** Spring animation configuration */
 type SpringConfig = {
@@ -34,7 +34,7 @@ export type CreateAnimationsOptions = {};
 *
 * ```
 */
-export declare function createAnimations<A extends Record<string, TransitionConfig>>(animationsConfig: A): AnimationDriver<A>;
+export declare function createAnimations<A extends Record<string, TransitionConfig>>(animationsConfig: A): AnimationDriverWithAnimatedNumbers<A>;
 export {};
 
 //# sourceMappingURL=createAnimations.d.ts.map

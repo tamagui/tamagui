@@ -2,7 +2,7 @@ import { getEffectiveAnimation, normalizeTransition } from '@tamagui/animation-h
 import { ResetPresence, usePresence } from '@tamagui/use-presence'
 import {
   type AnimatedNumberStrategy,
-  type AnimationDriver,
+  type AnimationDriverWithAnimatedNumbers,
   fixStyles,
   getConfig,
   getSplitStyles,
@@ -163,7 +163,7 @@ type MotionRefs = {
 
 export function createAnimations<A extends Record<string, AnimationConfig>>(
   animations: A
-): AnimationDriver<A> {
+): AnimationDriverWithAnimatedNumbers<A> {
   let isHydratingGlobal: boolean | undefined
   const hydratingComponents = new Set<Function>()
 

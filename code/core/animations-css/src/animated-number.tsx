@@ -15,8 +15,8 @@ import { unstable_batchedUpdates } from 'react-dom'
  * this module must reach the config, the provider and the component runtime
  * through nothing but types. It owns the CSS driver's rAF timing and spring
  * engine, cancellation, completion callbacks, listener notification and the
- * linked-style render. `createAnimations` uses these same functions, so there is
- * one implementation rather than two.
+ * linked-style render. The `/extras` factory composes these functions onto the
+ * core transition driver.
  */
 
 // rAF-driven animated number is browser-only. read (don't call) at module scope

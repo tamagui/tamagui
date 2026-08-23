@@ -1,10 +1,11 @@
 import { AnimatePresence } from '@tamagui/animate-presence'
-import { useConfiguration } from '@tamagui/core'
+import { useConfiguration, type AnimationDriverWithAnimatedNumbers } from '@tamagui/core'
 import { useRef, useState } from 'react'
 import { Button, Paragraph, Square, YStack } from 'tamagui'
 
 function LinkedValue({ value }: { value: any }) {
-  const { useAnimatedNumberStyle } = useConfiguration().animationDriver!
+  const { useAnimatedNumberStyle } = useConfiguration()
+    .animationDriver as AnimationDriverWithAnimatedNumbers
   const renders = useRef(0)
   renders.current++
   const style = useAnimatedNumberStyle(value, (current: number) => ({ opacity: current }))
@@ -17,7 +18,7 @@ function LinkedValue({ value }: { value: any }) {
 }
 
 function AnimatedNumberLifecycle() {
-  const driver = useConfiguration().animationDriver!
+  const driver = useConfiguration().animationDriver as AnimationDriverWithAnimatedNumbers
   const value = driver.useAnimatedNumber(0)
   const renders = useRef(0)
   const samples = useRef<number[]>([])

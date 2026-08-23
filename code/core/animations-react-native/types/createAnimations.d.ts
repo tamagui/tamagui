@@ -1,4 +1,4 @@
-import type { AnimationDriver, UniversalAnimatedNumber, UseAnimatedNumberReaction, UseAnimatedNumberStyle } from "@tamagui/web";
+import type { AnimationDriverWithAnimatedNumbers, UniversalAnimatedNumber, UseAnimatedNumberReaction, UseAnimatedNumberStyle } from "@tamagui/web";
 import { Animated, type Text, type View } from "react-native";
 type AnimationsConfig<A extends object = any> = { [Key in keyof A] : AnimationConfig };
 type SpringConfig = {
@@ -18,7 +18,7 @@ type RNAnimatedNum = UniversalAnimatedNumber<Animated.Value>;
 export declare const useAnimatedNumberReaction: UseAnimatedNumberReaction<RNAnimatedNum>;
 export declare const useAnimatedNumberStyle: UseAnimatedNumberStyle<RNAnimatedNum>;
 export declare const useAnimatedNumbersStyle: (vals: RNAnimatedNum[], getStyle: (...currentValues: any[]) => any) => any;
-export declare function createAnimations<A extends AnimationsConfig>(animations: A, options?: CreateAnimationsOptions): AnimationDriver<A>;
+export declare function createAnimations<A extends AnimationsConfig>(animations: A, options?: CreateAnimationsOptions): AnimationDriverWithAnimatedNumbers<A>;
 export {};
 
 //# sourceMappingURL=createAnimations.d.ts.map

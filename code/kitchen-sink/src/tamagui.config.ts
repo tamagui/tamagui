@@ -1,4 +1,4 @@
-import { createAnimations as createAnimationsCSS } from '@tamagui/animations-css'
+import { createAnimations as createAnimationsCSS } from '@tamagui/animations-css/extras'
 import { createAnimations as createAnimationsMotion } from '@tamagui/animations-motion'
 import { createAnimations as createAnimationsNative } from '@tamagui/animations-react-native'
 import { createAnimations as createAnimationsReanimated } from '@tamagui/animations-reanimated'

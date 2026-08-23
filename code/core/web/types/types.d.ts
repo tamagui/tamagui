@@ -2004,6 +2004,8 @@ export type AnimationDriver<A extends AnimationConfig = AnimationConfig> = Anima
         children?: React.ReactNode;
         disabled?: boolean;
     }) => React.ReactNode;
+};
+export type AnimationDriverWithAnimatedNumbers<A extends AnimationConfig = AnimationConfig> = AnimationDriver<A> & {
     useAnimatedNumber: UseAnimatedNumber;
     useAnimatedNumberStyle: UseAnimatedNumberStyle;
     useAnimatedNumbersStyle: UseAnimatedNumbersStyle;

@@ -3474,11 +3474,16 @@ export type AnimationDriver<A extends AnimationConfig = AnimationConfig> =
       children?: React.ReactNode
       disabled?: boolean
     }) => React.ReactNode
-    useAnimatedNumber: UseAnimatedNumber
-    useAnimatedNumberStyle: UseAnimatedNumberStyle
-    useAnimatedNumbersStyle: UseAnimatedNumbersStyle
-    useAnimatedNumberReaction: UseAnimatedNumberReaction
   }
+
+export type AnimationDriverWithAnimatedNumbers<
+  A extends AnimationConfig = AnimationConfig,
+> = AnimationDriver<A> & {
+  useAnimatedNumber: UseAnimatedNumber
+  useAnimatedNumberStyle: UseAnimatedNumberStyle
+  useAnimatedNumbersStyle: UseAnimatedNumbersStyle
+  useAnimatedNumberReaction: UseAnimatedNumberReaction
+}
 
 export type AnimationDriverStub<A extends AnimationConfig = AnimationConfig> =
   AnimationDriverBase<A> & {

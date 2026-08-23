@@ -1,6 +1,7 @@
 import { useConfiguration } from '../contexts/ComponentContext'
 import type {
   AnimationDriver,
+  AnimationDriverWithAnimatedNumbers,
   UniversalAnimatedNumber,
   UseAnimatedNumberReaction,
   UseAnimatedNumberStyle,
@@ -13,25 +14,39 @@ import type {
 // `animatedBy` multi-driver setups).
 export function useAnimationDriver(): AnimationDriver {
   const { animationDriver } = useConfiguration()
-  if (process.env.NODE_ENV === 'development') {
-    if (!animationDriver || animationDriver.isStub) {
-      throw new Error(
-        `No animation driver configured. To use the animation hooks (useAnimatedNumber, useAnimatedNumberStyle, ...), pass \`animations\` to createTamagui. See: https://tamagui.dev/docs/core/animations`
-      )
-    }
+  if (!animationDriver || animationDriver.isStub) {
+    throw new Error(
+      `No animation driver configured. Pass \`animations\` to createTamagui. See: https://tamagui.dev/docs/core/animations`
+    )
   }
-  return animationDriver!
+  return animationDriver
+}
+
+function useAnimatedNumberDriver(): AnimationDriverWithAnimatedNumbers {
+  const driver = useAnimationDriver()
+  const animatedDriver = driver as Partial<AnimationDriverWithAnimatedNumbers>
+  if (
+    typeof animatedDriver.useAnimatedNumber !== 'function' ||
+    typeof animatedDriver.useAnimatedNumberStyle !== 'function' ||
+    typeof animatedDriver.useAnimatedNumbersStyle !== 'function' ||
+    typeof animatedDriver.useAnimatedNumberReaction !== 'function'
+  ) {
+    throw new Error(
+      `The configured animation driver does not include animated-number hooks. When using the CSS driver, import \`createAnimations\` from \`@tamagui/animations-css/extras\` instead of \`@tamagui/animations-css\`. See: https://tamagui.dev/docs/core/animations-css`
+    )
+  }
+  return animatedDriver as AnimationDriverWithAnimatedNumbers
 }
 
 export function useAnimatedNumber(initial: number): UniversalAnimatedNumber<any> {
-  return useAnimationDriver().useAnimatedNumber(initial)
+  return useAnimatedNumberDriver().useAnimatedNumber(initial)
 }
 
 export const useAnimatedNumberStyle: UseAnimatedNumberStyle = (value, getStyle) =>
-  useAnimationDriver().useAnimatedNumberStyle(value, getStyle)
+  useAnimatedNumberDriver().useAnimatedNumberStyle(value, getStyle)
 
 export const useAnimatedNumbersStyle: UseAnimatedNumbersStyle = (values, getStyle) =>
-  useAnimationDriver().useAnimatedNumbersStyle(values, getStyle)
+  useAnimatedNumberDriver().useAnimatedNumbersStyle(values, getStyle)
 
 export const useAnimatedNumberReaction: UseAnimatedNumberReaction = (opts, onValue) =>
-  useAnimationDriver().useAnimatedNumberReaction(opts, onValue)
+  useAnimatedNumberDriver().useAnimatedNumberReaction(opts, onValue)

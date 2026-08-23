@@ -9,7 +9,7 @@ import {
   useIsomorphicLayoutEffect,
   useThemeWithState,
   View,
-  type AnimationDriver,
+  type AnimationDriverWithAnimatedNumbers,
   type UniversalAnimatedNumber,
   createRefComponent,
 } from '@tamagui/core'
@@ -807,7 +807,7 @@ function getStyleKeys(style: Record<string, unknown>): Set<string> {
  */
 export function createAnimations<A extends Record<string, TransitionConfig>>(
   animationsConfig: A
-): AnimationDriver<A> {
+): AnimationDriverWithAnimatedNumbers<A> {
   // Normalize animation configs - default to spring if not specified
   // This matches behavior of moti and motion drivers
   const animations = {} as A

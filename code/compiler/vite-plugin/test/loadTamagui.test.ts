@@ -616,6 +616,8 @@ test('optimizes the core singleton with context-bearing Tamagui packages', async
   expect(server.config.optimizeDeps.include).toEqual(
     expect.arrayContaining([
       '@tamagui/core',
+      '@tamagui/animations-css',
+      '@tamagui/animations-css/extras',
       '@tamagui/web',
       '@tamagui/sheet',
       '@tamagui/sheet/controller',
@@ -623,7 +625,12 @@ test('optimizes the core singleton with context-bearing Tamagui packages', async
     ])
   )
   expect(server.config.resolve.dedupe).toEqual(
-    expect.arrayContaining(['tamagui', '@tamagui/core', '@tamagui/web'])
+    expect.arrayContaining([
+      'tamagui',
+      '@tamagui/core',
+      '@tamagui/animations-css',
+      '@tamagui/web',
+    ])
   )
   expect(server.config.ssr.noExternal).toEqual(
     expect.arrayContaining([
