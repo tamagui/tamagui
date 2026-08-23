@@ -1,5 +1,5 @@
 import { afterEach, expect, test } from 'bun:test'
-import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs'
+import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { gzipSync } from 'node:zlib'
@@ -8,7 +8,13 @@ const temporaryDirectories: string[] = []
 
 function writeMappedBundle(
   prefix: string,
-  spans: readonly { source: string; code: string }[]
+  spans: readonly {
+    source: string
+    code: string
+    sourceContent?: string
+    originalLine?: number
+    originalColumn?: number
+  }[]
 ) {
   const directory = mkdtempSync(join(tmpdir(), prefix))
   temporaryDirectories.push(directory)
@@ -18,7 +24,12 @@ function writeMappedBundle(
   const code = spans.map((span) => span.code).join('')
   let offset = 0
   const mappings = spans.map((span, sourceIndex) => {
-    const mapping = [offset, sourceIndex, 0, 0]
+    const mapping = [
+      offset,
+      sourceIndex,
+      (span.originalLine ?? 1) - 1,
+      span.originalColumn ?? 0,
+    ]
     offset += span.code.length
     return mapping
   })
@@ -30,12 +41,150 @@ function writeMappedBundle(
       version: 3,
       names: [],
       sources: spans.map((span) => span.source),
-      sourcesContent: spans.map((span) => span.code),
+      sourcesContent: spans.map((span) => span.sourceContent ?? span.code),
       mappings: [mappings],
     })
   )
 
   return { code, directory }
+}
+
+const parserClusterCheckpoint = 'cd2353824fb92736f6c6379be8cdb14553914921'
+const parserClusterManifest = JSON.parse(
+  readFileSync(join(import.meta.dir, 'parser-cluster-manifest.json'), 'utf8')
+) as {
+  selectors: Record<
+    string,
+    | { kind: 'source'; source: string }
+    | {
+        kind: 'declaration'
+        source: string
+        declaration: string
+        declarationKind: 'function' | 'variable'
+      }
+  >
+  checkpoints: Record<string, Record<string, { state: 'present' | 'absent' }>>
+}
+
+function sourcePath(canonicalSource: string) {
+  const [packageName, subpath] = canonicalSource.split('::')
+  return `/repo/node_modules/${packageName}/dist/esm/${subpath}`
+}
+
+function parserClusterBundle(
+  prefix: string,
+  mutation?:
+    | 'stub-full-source'
+    | 'stub-declaration'
+    | 'wrong-declaration'
+    | 'missing-declaration'
+    | 'ambiguous-declaration'
+    | 'unclosed-private-dependency'
+) {
+  const checkpoint = parserClusterManifest.checkpoints[parserClusterCheckpoint]!
+  const spans: {
+    source: string
+    code: string
+    sourceContent?: string
+    originalLine?: number
+  }[] = []
+
+  for (const [name, selector] of Object.entries(parserClusterManifest.selectors)) {
+    if (checkpoint[name]!.state !== 'present' || selector.kind !== 'source') continue
+    const code =
+      mutation === 'stub-full-source' && name === 'mergeVariants'
+        ? 'let m=0;'
+        : `const ${name}FullSource="cluster-${name}-cluster-${name}-cluster-${name}";`
+    spans.push({ source: sourcePath(selector.source), code })
+  }
+
+  const declarationsBySource = new Map<
+    string,
+    {
+      name: string
+      declaration: string
+      declarationKind: 'function' | 'variable'
+    }[]
+  >()
+  for (const [name, selector] of Object.entries(parserClusterManifest.selectors)) {
+    if (checkpoint[name]!.state !== 'present' || selector.kind !== 'declaration') {
+      continue
+    }
+    const declarations = declarationsBySource.get(selector.source)
+    const declaration = {
+      name,
+      declaration: selector.declaration,
+      declarationKind: selector.declarationKind,
+    }
+    if (declarations) declarations.push(declaration)
+    else declarationsBySource.set(selector.source, [declaration])
+  }
+
+  for (const [canonicalSource, declarations] of declarationsBySource) {
+    const lines: string[] = []
+    const mapped: { line: number; name: string; code: string }[] = []
+    for (const declaration of declarations) {
+      if (
+        mutation === 'missing-declaration' &&
+        declaration.name === 'directStyle.getCondition'
+      ) {
+        continue
+      }
+      const wrongKind =
+        mutation === 'wrong-declaration' &&
+        declaration.name === 'directStyle.getCondition'
+      const declarationKind = wrongKind ? 'variable' : declaration.declarationKind
+      const sourceLine =
+        declarationKind === 'function'
+          ? `function ${declaration.declaration}(){return ${mutation === 'unclosed-private-dependency' && declaration.name === 'directStyle.getCondition' ? 'privateConditionHelper()' : lines.length}}`
+          : `const ${declaration.declaration}=${lines.length};`
+      lines.push(sourceLine)
+      const code =
+        mutation === 'stub-declaration' && declaration.name === 'directStyle.getCondition'
+          ? 'function g(){}'
+          : `const generated${mapped.length}="cluster-declaration-${declaration.name}-cluster-declaration-${declaration.name}";`
+      mapped.push({ line: lines.length, name: declaration.name, code })
+
+      if (
+        mutation === 'ambiguous-declaration' &&
+        declaration.name === 'directStyle.getCondition'
+      ) {
+        lines.push(`function ${declaration.declaration}(){return 2}`)
+      }
+    }
+    if (
+      mutation === 'unclosed-private-dependency' &&
+      canonicalSource === '@tamagui/web::helpers/directStyle.mjs'
+    ) {
+      lines.push('function privateConditionHelper(){return 1}')
+    }
+    const sourceContent = lines.join('\n')
+    for (const item of mapped) {
+      spans.push({
+        source: sourcePath(canonicalSource),
+        sourceContent,
+        code: item.code,
+        originalLine: item.line,
+      })
+    }
+  }
+
+  const retainedCode = 'console.log("parser-cluster-fixture-retained");'
+  spans.push({
+    source: '/repo/code/comparisons/tamagui-bench/src/cluster.tsx',
+    code: retainedCode,
+  })
+  const bundle = writeMappedBundle(prefix, spans)
+  return { ...bundle, retainedCode }
+}
+
+function runParserCluster(directory: string) {
+  return Bun.spawnSync([
+    process.execPath,
+    join(import.meta.dir, 'attribute-bundle-gzip.ts'),
+    directory,
+    `--parser-cluster=${parserClusterCheckpoint}`,
+  ])
 }
 
 afterEach(() => {
@@ -122,65 +271,84 @@ test('--core deletes qualifying spans as one union and preserves marginal attrib
   expect(expectedCore).not.toBe(qualifyingMarginalSum)
 })
 
-test('--members deletes every requested member as one gzip union', () => {
-  const spans = [
-    {
-      source: '/repo/core/style-grammar/dist/esm/alpha.mjs',
-      code: 'const alpha="shared-cluster-value-alpha-shared-cluster-value";',
-    },
-    {
-      source: '/repo/core/style-grammar/dist/esm/beta.mjs',
-      code: 'const beta="shared-cluster-value-beta-shared-cluster-value";',
-    },
-    {
-      source: '/repo/code/comparisons/tamagui-bench/src/cluster.tsx',
-      code: 'console.log("shared-cluster-value-fixture");',
-    },
-  ]
-  const { code, directory } = writeMappedBundle('bundle-member-attribution-', spans)
-  const result = Bun.spawnSync([
-    process.execPath,
-    join(import.meta.dir, 'attribute-bundle-gzip.ts'),
-    directory,
-    '--members=alpha,beta',
-  ])
-
-  expect(result.exitCode).toBe(0)
-  expect(new TextDecoder().decode(result.stderr)).toBe('')
-  const baseGzip = gzipSync(Buffer.from(code), { level: 9 }).byteLength
-  const expectedUnion =
-    baseGzip - gzipSync(Buffer.from(spans[2]!.code), { level: 9 }).byteLength
-  const marginalSum = spans.slice(0, 2).reduce((sum, _, removedIndex) => {
-    const withoutMember = spans
-      .filter((_, index) => index !== removedIndex)
-      .map((span) => span.code)
-      .join('')
-    return sum + baseGzip - gzipSync(Buffer.from(withoutMember), { level: 9 }).byteLength
-  }, 0)
-  expect(expectedUnion).not.toBe(marginalSum)
-
-  const output = new TextDecoder().decode(result.stdout)
-  const measuredUnion = Number(/MEMBERS UNION: (-?\d+)/.exec(output)?.[1])
-  expect(measuredUnion).toBe(expectedUnion)
-})
-
-test('--members fails when any requested member is absent', () => {
-  const { directory } = writeMappedBundle('bundle-missing-member-', [
-    {
-      source: '/repo/core/style-grammar/dist/esm/present.mjs',
-      code: 'const present=1;',
-    },
+test('--members cannot bypass the closed parser cluster manifest', () => {
+  const { directory } = writeMappedBundle('bundle-legacy-members-', [
+    { source: '/repo/core/style-grammar/dist/esm/mergeVariants.mjs', code: 'let x=1;' },
   ])
   const result = Bun.spawnSync([
     process.execPath,
     join(import.meta.dir, 'attribute-bundle-gzip.ts'),
     directory,
-    '--members=present,missing',
+    '--members=mergeVariants',
   ])
 
   expect(result.exitCode).toBe(1)
   expect(new TextDecoder().decode(result.stdout)).toBe('')
   expect(new TextDecoder().decode(result.stderr)).toBe(
-    'requested member absent from source map: missing\n'
+    '--members was replaced by the closed --parser-cluster manifest\n'
   )
+})
+
+test('--parser-cluster removes full sources and exact declarations as one union', () => {
+  const { code, directory, retainedCode } = parserClusterBundle('bundle-parser-cluster-')
+  const result = runParserCluster(directory)
+
+  expect(result.exitCode).toBe(0)
+  expect(new TextDecoder().decode(result.stderr)).toBe('')
+  const baseGzip = gzipSync(Buffer.from(code), { level: 9 }).byteLength
+  const expectedUnion =
+    baseGzip - gzipSync(Buffer.from(retainedCode), { level: 9 }).byteLength
+  const output = new TextDecoder().decode(result.stdout)
+  expect(Number(/PARSER CLUSTER UNION: (-?\d+)/.exec(output)?.[1])).toBe(expectedUnion)
+})
+
+test('parser cluster full-source and declaration negative controls both move the union', () => {
+  const baseline = parserClusterBundle('bundle-parser-control-baseline-')
+  const fullSourceStub = parserClusterBundle(
+    'bundle-parser-control-source-',
+    'stub-full-source'
+  )
+  const declarationStub = parserClusterBundle(
+    'bundle-parser-control-declaration-',
+    'stub-declaration'
+  )
+
+  const union = (directory: string) => {
+    const result = runParserCluster(directory)
+    expect(result.exitCode).toBe(0)
+    expect(new TextDecoder().decode(result.stderr)).toBe('')
+    return Number(
+      /PARSER CLUSTER UNION: (-?\d+)/.exec(new TextDecoder().decode(result.stdout))?.[1]
+    )
+  }
+
+  const baselineUnion = union(baseline.directory)
+  expect(union(fullSourceStub.directory)).not.toBe(baselineUnion)
+  expect(union(declarationStub.directory)).not.toBe(baselineUnion)
+})
+
+test.each([
+  [
+    'wrong-declaration',
+    'parser cluster declaration directStyle.getCondition has wrong kind in @tamagui/web::helpers/directStyle.mjs: expected function, found variable\n',
+  ],
+  [
+    'missing-declaration',
+    'parser cluster declaration directStyle.getCondition is missing from @tamagui/web::helpers/directStyle.mjs\n',
+  ],
+  [
+    'ambiguous-declaration',
+    'parser cluster declaration directStyle.getCondition is ambiguous in @tamagui/web::helpers/directStyle.mjs: found 2\n',
+  ],
+  [
+    'unclosed-private-dependency',
+    `parser cluster private dependency @tamagui/web::helpers/directStyle.mjs:privateConditionHelper from directStyle.getCondition is not a present manifest selector at ${parserClusterCheckpoint}\n`,
+  ],
+] as const)('parser cluster rejects %s', (mutation, expectedError) => {
+  const { directory } = parserClusterBundle(`bundle-parser-${mutation}-`, mutation)
+  const result = runParserCluster(directory)
+
+  expect(result.exitCode).toBe(1)
+  expect(new TextDecoder().decode(result.stdout)).toBe('')
+  expect(new TextDecoder().decode(result.stderr)).toBe(expectedError)
 })
