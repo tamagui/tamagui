@@ -1,6 +1,5 @@
 import { createRoot } from 'react-dom/client'
-import { View } from 'tamagui'
-import { ThemeUpdate } from 'tamagui/theme-update'
+import { ThemeUpdate, View } from 'tamagui'
 
 function StaticThemeValue() {
   return (

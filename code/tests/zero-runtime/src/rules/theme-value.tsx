@@ -1,6 +1,5 @@
 import { createRoot } from 'react-dom/client'
-import { View } from 'tamagui'
-import { ThemeUpdate } from 'tamagui/theme-update'
+import { ThemeUpdate, View } from 'tamagui'
 
 // Rule 3. A direct theme value the compiler cannot evaluate.
 const runtimeBackground = window.getComputedStyle(document.body).backgroundColor

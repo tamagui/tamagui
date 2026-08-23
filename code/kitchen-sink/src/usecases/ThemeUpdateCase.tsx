@@ -1,6 +1,5 @@
 import React from 'react'
-import { Button, Text, Theme, View, YStack } from 'tamagui'
-import { ThemeUpdate } from 'tamagui/theme-update'
+import { Button, Text, Theme, ThemeUpdate, View, YStack } from 'tamagui'
 
 // module-level so the memoized child can prove it never re-renders while
 // inline theme values and scheme flips restyle it via CSS custom properties

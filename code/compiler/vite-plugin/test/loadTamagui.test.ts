@@ -619,7 +619,6 @@ test('optimizes the core singleton with context-bearing Tamagui packages', async
       '@tamagui/core/theme-update',
       '@tamagui/web',
       '@tamagui/web/theme-update',
-      'tamagui/theme-update',
       '@tamagui/animations-css',
       '@tamagui/animations-css/extras',
       '@tamagui/sheet',
@@ -630,7 +629,6 @@ test('optimizes the core singleton with context-bearing Tamagui packages', async
   expect(server.config.resolve.dedupe).toEqual(
     expect.arrayContaining([
       'tamagui',
-      'tamagui/theme-update',
       '@tamagui/core',
       '@tamagui/core/theme-update',
       '@tamagui/web',

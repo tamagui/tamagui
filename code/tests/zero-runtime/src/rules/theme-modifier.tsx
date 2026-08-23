@@ -1,6 +1,5 @@
 import { createRoot } from 'react-dom/client'
-import { View } from 'tamagui'
-import { ThemeUpdate } from 'tamagui/theme-update'
+import { ThemeUpdate, View } from 'tamagui'
 
 // Rule 3. An element modifier cannot describe a subtree-wide theme value: there
 // is no hovered subtree, only a hovered element.

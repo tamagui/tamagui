@@ -74,6 +74,61 @@ This is a POTENTIAL FUTURE OPTIMIZATION, not scheduled work. It would revisit th
 settled `<Theme>` inline-props API, so it is **owner-initiated only**. Do not
 start it off the back of this document.
 
+## SHIPPED 2026-08-22: root `ThemeUpdate` export
+
+The owner initiated the separate component work. Inline values moved from
+`<Theme>` to `<ThemeUpdate>`, exported from the root `tamagui` barrel. The old
+`<Theme background="...">` spelling was removed. The zero-runtime compiler
+recognizes `<ThemeUpdate>` and rejects the old spelling.
+
+READ: a no-use production bundle kept the web win after the root export:
+
+| bundler | before root export | after root export | delta |
+| --- | ---: | ---: | ---: |
+| Vite | 40,844 | 40,844 | 0 |
+| Next/webpack | 37,574 | 37,574 | 0 |
+| Metro (`--platform web`) | 205,375 | 209,182 | +3,807 |
+
+These are Tamagui-only marginal gzip totals from
+`attribute-bundle-gzip.ts`. Content checks confirmed that Vite and webpack did
+not retain the inline-values runtime. Metro added
+`web::helpers/variables.mjs` (+2,980), `web::views/ThemeUpdate.mjs` (+326),
+`web::theme-update.mjs` (+49), and `web::helpers/themeUpdateState.mjs` (+34),
+plus small compression shifts.
+
+READ: adding `createTamagui({ variables })` to the same no-use fixtures produced
+40,741 on Vite, 37,624 on webpack, and 209,574 on Metro. Each built bundle
+contained the configured key and both configured values. The inline-values
+marker remained absent from Vite and webpack, so config variables keep their
+merge without pulling `ThemeUpdate` back into tracked web bundles.
+
+READ: the `helpers/variables` edge is the implementation, not an accidental
+whole-module import. `ThemeUpdate` uses `getInlineValuesFromProps` to parse and
+cache the flat grammar, `getInlineValuesKey` for stable update identity,
+`getMergedInlineTheme` for native and JavaScript theme readers, and
+`getVariablesCSSRules` for web custom properties. Per-declaration attribution
+and the earlier analysis in this document both found the merge, parser, and CSS
+emitter to be the bulk. Moving those functions would change attribution without
+removing their code.
+
+INFERRED: Metro retains that code because it fixes its dependency graph from
+static imports and does no export-level elimination. Vite and webpack remove
+the unused root re-export, so the tracked web bundle result is unchanged.
+
+DECIDED: ship the root export with the Metro cost. A public subpath was rejected
+because this repo has already seen Tamagui subpath resolution duplicate a React
+context in a Rolldown/Vite production build, silently separating a provider from
+its consumer. `ThemeUpdate` must patch the exact context supplied by `Theme`, so
+that correctness risk outweighs the untracked Metro size increase. There is one
+public component import: `import { ThemeUpdate } from 'tamagui'`.
+
+FOLLOW-UP: an explicit internal `.native` implementation could omit CSS rule
+generation and insertion from actual native bundles. This remains one public
+API and follows the repo's normal platform-file pattern. It will not change the
+Metro fixture number above because that fixture deliberately builds
+`--platform web`, where both CSS emission and JavaScript theme-reader behavior
+are required.
+
 ## Fixture layout, to reproduce
 
 Three throwaway fixtures, one per bundler. Each renders exactly:
