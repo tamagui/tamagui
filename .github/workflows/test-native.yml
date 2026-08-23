@@ -609,7 +609,7 @@ jobs:
           disk-size: 4G
           force-avd-creation: false
           emulator-boot-timeout: 600
-          disable-animations: true
+          disable-animations: false
           emulator-options: -no-snapshot -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -camera-front none
           working-directory: code/kitchen-sink
           script: |
