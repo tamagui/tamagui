@@ -756,7 +756,6 @@ export function createTamaguiPlugins({
       // the client graph is zero or the client claims the artifact. Inheriting
       // either literal from the outer build empties the artifact it generates.
       'process.env.TAMAGUI_RUNTIME': JSON.stringify('full'),
-      ...Static.getWebRuntimeFeatureDefines({}),
       'process.env.TAMAGUI_DID_OUTPUT_CSS': JSON.stringify(''),
       // Client configs may strip theme values. Compiler evaluation and outputCSS
       // must use the full config regardless of which outer Vite environment runs last.
@@ -947,7 +946,6 @@ export function createTamaguiPlugins({
           // Config evaluation, report builds, native builds, and full-runtime
           // island child builds all keep ordinary Tamagui runtime behavior.
           'process.env.TAMAGUI_RUNTIME': JSON.stringify('full'),
-          ...Static.getWebRuntimeFeatureDefines(enableNativeEnv ? {} : options),
           // reanimated support
           _frameTimestamp: undefined,
           _WORKLET: false,
@@ -1058,11 +1056,16 @@ export function createTamaguiPlugins({
       // SheetControllerContext, so the SheetController provider (from /controller)
       // and the Sheet consumer (from the full entry) never match and adapted
       // sheets silently never open. include both so they share one context chunk.
+      // ThemeUpdate follows the same rule: its subpath must patch the Theme
+      // context provided by the root package instead of creating a second copy.
       addIfInstalled(userConf, userConf.root, [
         '@tamagui/core',
+        '@tamagui/core/theme-update',
+        '@tamagui/web',
+        '@tamagui/web/theme-update',
+        'tamagui/theme-update',
         '@tamagui/animations-css',
         '@tamagui/animations-css/extras',
-        '@tamagui/web',
         '@tamagui/toast',
         '@tamagui/sheet',
         '@tamagui/sheet/controller',
@@ -1077,9 +1080,12 @@ export function createTamaguiPlugins({
       userConf.resolve.dedupe ||= []
       for (const id of [
         'tamagui',
+        'tamagui/theme-update',
         '@tamagui/core',
-        '@tamagui/animations-css',
+        '@tamagui/core/theme-update',
         '@tamagui/web',
+        '@tamagui/web/theme-update',
+        '@tamagui/animations-css',
         '@tamagui/toast',
         '@tamagui/sheet',
       ]) {
@@ -1385,7 +1391,9 @@ export function createTamaguiPlugins({
             plan: result.plan,
             config: (await tamaguiLoader.getTamaguiConfig())!,
             isTamaguiSpecifier: (specifier) =>
-              specifier === 'tamagui' || specifier.startsWith('@tamagui/'),
+              specifier === 'tamagui' ||
+              specifier.startsWith('tamagui/') ||
+              specifier.startsWith('@tamagui/'),
             resolveIslandLoader: (specifier) => {
               const islandId = zero!.loaderIds.get(
                 zeroModuleKey(path.resolve(path.dirname(validId), specifier))

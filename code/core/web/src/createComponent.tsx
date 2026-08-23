@@ -1599,10 +1599,7 @@ export function createComponent<
 
     useIsomorphicLayoutEffect(() => {
       let disposeSafeArea: (() => void) | undefined
-      if (
-        process.env.TAMAGUI_RUNTIME_SAFE_AREA !== 'disabled' &&
-        splitStyles?.usesSafeArea
-      ) {
+      if (splitStyles?.usesSafeArea) {
         const updateSafeArea = () => {
           setState((previous) => ({ ...previous }))
         }

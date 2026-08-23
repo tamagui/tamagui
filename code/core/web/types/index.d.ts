@@ -14,7 +14,6 @@ export * from './helpers/getShorthandValue';
 export * from './helpers/getSplitStyles';
 export { setNativeStyleEngine, getNativeStyleEngine, setNativeStyleEngineFlushListener, updateNativeStyleScope, removeNativeStyleScope, type NativeStyleEngine, type NativeStyleEngineSlots, type NativeViewStateUpdate, } from './helpers/nativeStyleEngine';
 export * from './helpers/getThemeCSSRules';
-export * from './helpers/variables';
 export * from './helpers/getVariantExtras';
 export { autoVariables, getAutoVariableCSS, getMutatedAutoVariableCSS, mutatedAutoVariables, } from './helpers/registerCSSVariable';
 export { insertStyleRules } from './helpers/insertStyleRule';

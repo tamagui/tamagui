@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { styled, Text, Theme, View } from 'tamagui'
+import { ThemeUpdate } from 'tamagui/theme-update'
 import SheetIsland from '../.tamagui/zero/SheetIsland.loader'
 
 // app-local styled definition in a module with another live export: the styled
@@ -59,30 +60,32 @@ export function App() {
       {/* one authored theme value with a theme modifier, placed under both
           schemes: same class, two static rules, no runtime theme read */}
       <Theme name="light">
-        <Theme background="#112233 dark:#445566">
+        <ThemeUpdate background="#112233 dark:#445566">
           <View
             data-testid="modifier-light"
             backgroundColor="$background"
             width={16}
             height={16}
           />
-        </Theme>
+        </ThemeUpdate>
       </Theme>
       <Theme name="dark">
-        <Theme background="#112233 dark:#445566">
+        <ThemeUpdate background="#112233 dark:#445566">
           <View
             data-testid="modifier-dark"
             backgroundColor="$background"
             width={16}
             height={16}
           />
-        </Theme>
+        </ThemeUpdate>
       </Theme>
 
-      <Theme name="dark" background="#0b2545">
-        <View data-testid="zero-theme-child" padding={8}>
-          <SheetIsland data-testid="island-mount" />
-        </View>
+      <Theme name="dark">
+        <ThemeUpdate background="#0b2545">
+          <View data-testid="zero-theme-child" padding={8}>
+            <SheetIsland data-testid="island-mount" />
+          </View>
+        </ThemeUpdate>
       </Theme>
     </View>
   )

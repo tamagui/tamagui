@@ -143,7 +143,6 @@ export const useComponentState = (
     useAnimations &&
     animationDriver?.avoidReRenders &&
     getPlatformDriver()?.pseudo &&
-    process.env.TAMAGUI_RUNTIME_STYLE_VALUE_GRAMMAR !== 'disabled' &&
     hasFlatModifier(props, config, platformPseudoModifiers)
   )
 
@@ -173,9 +172,7 @@ export const useComponentState = (
   const isExiting = presenceState?.isPresent === false
   const isEntering = presenceState?.isPresent === true && presenceState.initial !== false
 
-  const hasEnterStyle =
-    process.env.TAMAGUI_RUNTIME_STYLE_VALUE_GRAMMAR !== 'disabled' &&
-    hasFlatModifier(props, config, enterModifier)
+  const hasEnterStyle = hasFlatModifier(props, config, enterModifier)
 
   const hasAnimationThatNeedsHydrate =
     hasAnimationProp &&

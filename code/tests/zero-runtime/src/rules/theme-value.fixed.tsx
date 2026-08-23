@@ -1,11 +1,12 @@
 import { createRoot } from 'react-dom/client'
-import { Theme, View } from 'tamagui'
+import { View } from 'tamagui'
+import { ThemeUpdate } from 'tamagui/theme-update'
 
 function StaticThemeValue() {
   return (
-    <Theme background="#123456">
+    <ThemeUpdate background="#123456">
       <View data-testid="zero-root" backgroundColor="$background" padding={24} />
-    </Theme>
+    </ThemeUpdate>
   )
 }
 

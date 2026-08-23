@@ -472,7 +472,13 @@ const THEME_CONTROLS = [
     entry: 'theme-value',
     rule: 3,
     message:
-      'Zero-runtime rule 3: value for background on Theme cannot be lowered: a theme value must be a string or number literal at build time.',
+      'Zero-runtime rule 3: value for background on ThemeUpdate cannot be lowered: a theme value must be a string or number literal at build time.',
+  },
+  {
+    entry: 'theme-legacy',
+    rule: 4,
+    message:
+      'Zero-runtime rule 4: the removed <Theme background> inline-value spelling. Use <ThemeUpdate background> around the subtree instead, requires runtime theme or config state.',
   },
   {
     entry: 'provider',
@@ -484,7 +490,7 @@ const THEME_CONTROLS = [
     entry: 'theme-modifier',
     rule: 3,
     message:
-      'Zero-runtime rule 3: value for background on Theme cannot be lowered: <Theme background="#112233 hover:#445566">: "hover:" isn\'t supported here.',
+      'Zero-runtime rule 3: value for background on ThemeUpdate cannot be lowered: <ThemeUpdate background="#112233 hover:#445566">: "hover:" isn\'t supported here.',
   },
 ]
 

@@ -2,16 +2,14 @@ process.env.TAMAGUI_TARGET = 'web'
 
 import { getDefaultTamaguiConfig } from '@tamagui/config-default'
 import { render, waitFor } from '@testing-library/react'
-import { describe, expect, test } from 'vitest'
+import { describe, expect, test, vi } from 'vitest'
 
+import { createTamagui, TamaguiProvider, Theme, useTheme, View } from '@tamagui/core'
 import {
-  createTamagui,
+  createThemeUpdateState,
   getVariablesCSSRules,
-  TamaguiProvider,
-  Theme,
-  useTheme,
-  View,
-} from '@tamagui/core'
+  ThemeUpdate,
+} from '@tamagui/web/theme-update'
 
 const conf = createTamagui({
   ...getDefaultTamaguiConfig(),
@@ -221,7 +219,7 @@ describe('getVariablesCSSRules', () => {
   })
 })
 
-describe('<Theme> inline values', () => {
+describe('<ThemeUpdate> values', () => {
   // the provider renders its own root .is_Theme span, so find the one actually
   // carrying an inline layer
   const layerSpan = (container: HTMLElement) =>
@@ -231,6 +229,14 @@ describe('<Theme> inline values', () => {
     const span = layerSpan(container)
     return span ? [...span.classList].find((c) => c.startsWith('tvar_')) : undefined
   }
+
+  test('reuses the opaque update state while values are unchanged', () => {
+    const values = { values: { surfaceBorder: 'red' } }
+    expect(createThemeUpdateState(values)).toBe(createThemeUpdateState(values))
+    expect(createThemeUpdateState({ values: { surfaceBorder: 'red' } })).not.toBe(
+      createThemeUpdateState(values)
+    )
+  })
 
   test('a plain <Theme> emits no inline layer', () => {
     const { container } = render(
@@ -243,33 +249,35 @@ describe('<Theme> inline values', () => {
     expect(identifierOf(container)).toBeUndefined()
   })
 
-  test('the declared runtime gate keeps theme-key props disabled', () => {
-    const previous = process.env.TAMAGUI_RUNTIME_INLINE_THEME_VALUES
-    process.env.TAMAGUI_RUNTIME_INLINE_THEME_VALUES = 'disabled'
+  test('the removed Theme spelling warns and does not apply', () => {
+    const previousNodeEnv = process.env.NODE_ENV
+    process.env.NODE_ENV = 'development'
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
     try {
+      const LegacyTheme = Theme as any
       const { container } = render(
         <TamaguiProvider config={conf} defaultTheme="light">
-          <Theme surfaceBorder="red">
+          <LegacyTheme surfaceBorder="red">
             <View borderColor="surfaceBorder" />
-          </Theme>
+          </LegacyTheme>
         </TamaguiProvider>
       )
       expect(identifierOf(container)).toBeUndefined()
+      expect(warn).toHaveBeenCalledWith(
+        expect.stringContaining('Wrap the subtree in <ThemeUpdate surfaceBorder=...>')
+      )
     } finally {
-      if (previous === undefined) {
-        delete process.env.TAMAGUI_RUNTIME_INLINE_THEME_VALUES
-      } else {
-        process.env.TAMAGUI_RUNTIME_INLINE_THEME_VALUES = previous
-      }
+      warn.mockRestore()
+      process.env.NODE_ENV = previousNodeEnv
     }
   })
 
   test('theme-key props emit custom properties on the theme span', () => {
     const { container } = render(
       <TamaguiProvider config={conf} defaultTheme="light">
-        <Theme surfaceBorder="red">
+        <ThemeUpdate surfaceBorder="red">
           <View borderColor="surfaceBorder" />
-        </Theme>
+        </ThemeUpdate>
       </TamaguiProvider>
     )
     const identifier = identifierOf(container)!
@@ -288,10 +296,10 @@ describe('<Theme> inline values', () => {
     }
     const make = (surfaceBorder: string | number) => (
       <TamaguiProvider config={conf} defaultTheme="light">
-        <Theme surfaceBorder={surfaceBorder}>
+        <ThemeUpdate surfaceBorder={surfaceBorder}>
           <ReadType />
           <View borderColor="surfaceBorder" />
-        </Theme>
+        </ThemeUpdate>
       </TamaguiProvider>
     )
     const view = render(make(123.456))
@@ -309,18 +317,19 @@ describe('<Theme> inline values', () => {
     })
   })
 
-  test('a name and inline values share one span', () => {
+  test('a named theme and update use nested spans', () => {
     const { container } = render(
       <TamaguiProvider config={conf} defaultTheme="light">
-        <Theme name="dark" surfaceBorder="red">
-          <View />
+        <Theme name="dark">
+          <ThemeUpdate surfaceBorder="red">
+            <View />
+          </ThemeUpdate>
         </Theme>
       </TamaguiProvider>
     )
-    // the theme class and the inline layer ride the same node
-    const className = layerSpan(container)!.className
-    expect(className).toContain('is_Theme')
-    expect(className).toContain('t_dark')
+    const updateSpan = layerSpan(container)!
+    expect(updateSpan.className).toContain('is_Theme')
+    expect(updateSpan.parentElement?.className).toContain('t_dark')
   })
 
   test('an inline value overrides the named theme on their shared span', () => {
@@ -328,8 +337,10 @@ describe('<Theme> inline values', () => {
       <>
         <style>{conf.getCSS()}</style>
         <TamaguiProvider config={conf} defaultTheme="light">
-          <Theme name="dark" background="#0b2545">
-            <View />
+          <Theme name="dark">
+            <ThemeUpdate background="#0b2545">
+              <View />
+            </ThemeUpdate>
           </Theme>
         </TamaguiProvider>
       </>
@@ -341,9 +352,9 @@ describe('<Theme> inline values', () => {
   test('a theme modifier scopes the value to that theme', () => {
     const { container } = render(
       <TamaguiProvider config={conf} defaultTheme="light">
-        <Theme surfaceBorder="red dark:blue blue:green">
+        <ThemeUpdate surfaceBorder="red dark:blue blue:green">
           <View />
-        </Theme>
+        </ThemeUpdate>
       </TamaguiProvider>
     )
     const identifier = identifierOf(container)!
@@ -364,9 +375,9 @@ describe('<Theme> inline values', () => {
   test('platform modifiers resolve for the running platform', () => {
     const { container } = render(
       <TamaguiProvider config={conf} defaultTheme="light">
-        <Theme surfaceBorder="red web:orange ios:purple">
+        <ThemeUpdate surfaceBorder="red web:orange ios:purple">
           <View />
-        </Theme>
+        </ThemeUpdate>
       </TamaguiProvider>
     )
     const identifier = identifierOf(container)!
@@ -387,9 +398,9 @@ describe('<Theme> inline values', () => {
     }
     const make = (value: string) => (
       <TamaguiProvider config={conf} defaultTheme="light">
-        <Theme surfaceBorder={value}>
+        <ThemeUpdate surfaceBorder={value}>
           <ReadVal />
-        </Theme>
+        </ThemeUpdate>
       </TamaguiProvider>
     )
     const view = render(make('rgb(5, 5, 5)'))
@@ -407,9 +418,9 @@ describe('<Theme> inline values', () => {
     }
     const make = (scheme: 'light' | 'dark') => (
       <TamaguiProvider config={conf} defaultTheme={scheme}>
-        <Theme surfaceBorder="rgb(1, 1, 1) dark:rgb(2, 2, 2)">
+        <ThemeUpdate surfaceBorder="rgb(1, 1, 1) dark:rgb(2, 2, 2)">
           <ReadVal />
-        </Theme>
+        </ThemeUpdate>
       </TamaguiProvider>
     )
     const light = render(make('light'))
@@ -424,9 +435,9 @@ describe('<Theme> inline values', () => {
   test('modifiers a subtree cannot honor are dropped', () => {
     const { container } = render(
       <TamaguiProvider config={conf} defaultTheme="light">
-        <Theme surfaceBorder="red hover:blue">
+        <ThemeUpdate surfaceBorder="red hover:blue">
           <View />
-        </Theme>
+        </ThemeUpdate>
       </TamaguiProvider>
     )
     const identifier = identifierOf(container)!
@@ -442,9 +453,9 @@ describe('<Theme> inline values', () => {
   test('a colon inside a function is value content, not a modifier', () => {
     const { container } = render(
       <TamaguiProvider config={conf} defaultTheme="light">
-        <Theme surfaceBorder="url(http://x/y.png)">
+        <ThemeUpdate surfaceBorder="url(http://x/y.png)">
           <View />
-        </Theme>
+        </ThemeUpdate>
       </TamaguiProvider>
     )
     const identifier = identifierOf(container)!

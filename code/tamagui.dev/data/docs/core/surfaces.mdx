@@ -70,13 +70,13 @@ skins use the same generic values and choose their own default level.
 
 ## Inline theme values are the one-off escape hatch
 
-Set the value on [`Theme`](/docs/core/theme#inline-values) when a patch belongs in
+Set the value with [`ThemeUpdate`](/docs/core/theme#theme-updates) when a patch belongs in
 exactly one place:
 
 ```tsx
-<Theme background-hover="blue-400">
+<ThemeUpdate background-hover="blue-400">
   <YStack>{/* this subtree receives the patch */}</YStack>
-</Theme>
+</ThemeUpdate>
 ```
 
 Create a named theme when the same patch appears in multiple places. Set it

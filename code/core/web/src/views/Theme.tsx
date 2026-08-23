@@ -1,60 +1,25 @@
 import { createRefComponent } from '@tamagui/compose-refs'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
-import { getThemeClassNames } from '@tamagui/helpers'
+import { getThemeClassNames, reservedThemeProps } from '@tamagui/helpers'
 import type { MutableRefObject } from 'react'
 import React, { Children, cloneElement, isValidElement, useRef } from 'react'
-import { getConfig, getSetting } from '../config'
 import { variableToString } from '../createVariable'
 import { formatDiagnostic } from '../helpers/formatDiagnostic'
-import {
-  insertStyleRules,
-  shouldInsertStyleRules,
-  updateRules,
-} from '../helpers/insertStyleRule'
 import {
   removeNativeStyleScope,
   updateNativeStyleScope,
 } from '../helpers/nativeStyleEngine'
-import { getInlineValuesFromProps, getVariablesCSSRules } from '../helpers/variables'
+import { warnOnce } from '../helpers/warnOnce'
 import { useThemeWithState } from '../hooks/useTheme'
 import {
   getThemeState,
   hasThemeUpdatingProps,
   ThemeStateContext,
 } from '../hooks/useThemeState'
-import type {
-  ReservedThemePropName,
-  RulesToInsert,
-  ThemeKeys,
-  ThemeProps,
-  ThemeState,
-  UseThemeWithStateProps,
-  VariableValIn,
-} from '../types'
+import type { ThemeProps, ThemeState, UseThemeWithStateProps } from '../types'
 import { ThemeDebug } from './ThemeDebug'
 
-/**
- * Theme values set inline for a subtree: `<Theme background-hover="blue4">`.
- * Values use the same flat grammar as style props, narrowed to the modifiers a
- * whole subtree can honor: theme (`dark:`) and platform (`ios:`).
- *
- * Without a config augmentation `ThemeKeys` is `string`, which would make this
- * a catch-all index signature that every one of Theme's own props collides
- * with. There are no known theme keys to offer in that case, so it contributes
- * nothing instead.
- */
-export type ThemeUpdate = string extends ThemeKeys
-  ? {}
-  : {
-      [Key in Exclude<ThemeKeys, ReservedThemePropName>]?: VariableValIn
-    }
-
-type ThemeComponentPropsOnly = UseThemeWithStateProps &
-  ThemeUpdate & { contain?: boolean }
-
-const useInsertEffectCompat = isWeb
-  ? React.useInsertionEffect || useIsomorphicLayoutEffect
-  : () => {}
+type ThemeComponentPropsOnly = UseThemeWithStateProps & { contain?: boolean }
 
 export const Theme = createRefComponent(function Theme(
   props: ThemeComponentPropsOnly,
@@ -66,51 +31,25 @@ export const Theme = createRefComponent(function Theme(
     return props.children
   }
 
-  const { passThrough } = props
-
-  const isRoot = !!props['_isRoot']
-
-  // theme-key props (<Theme background-hover="blue4 dark:blue2">) become an
-  // inline layer merged over the parent theme. null for a plain <Theme>, which
-  // costs one loop over its two or three props and allocates nothing.
-  const config = getConfig()
-  const inlineValues =
-    process.env.TAMAGUI_RUNTIME_INLINE_THEME_VALUES === 'disabled'
-      ? null
-      : getInlineValuesFromProps(props, config)
-
-  // on web the same layer also compiles to custom properties on this node, so
-  // styled descendants restyle through the cascade instead of re-rendering
-  let inlineCSS: ReturnType<typeof getVariablesCSSRules> = null
-  let rulesToInsert: RulesToInsert | null = null
-  if (process.env.TAMAGUI_TARGET !== 'native' && inlineValues) {
-    inlineCSS = getVariablesCSSRules(inlineValues, config)
-    if (inlineCSS && shouldInsertStyleRules(inlineCSS.identifier)) {
-      updateRules(inlineCSS.identifier, inlineCSS.rules)
-      rulesToInsert = {
-        [inlineCSS.identifier]: [
-          'variables',
-          '',
-          inlineCSS.identifier,
-          undefined,
-          inlineCSS.rules,
-        ],
+  if (process.env.NODE_ENV === 'development') {
+    for (const key in props) {
+      if (!reservedThemeProps[key]) {
+        warnOnce(
+          `theme-update:${key}`,
+          `<Theme ${key}=...> no longer accepts inline values. Wrap the subtree in <ThemeUpdate ${key}=...> instead.`
+        )
       }
     }
   }
 
-  useInsertEffectCompat(() => {
-    if (rulesToInsert) insertStyleRules(rulesToInsert)
-  }, [inlineCSS?.identifier])
+  const { passThrough } = props
 
-  const themeProps: ThemeComponentPropsOnly = inlineValues
-    ? { ...props, inlineValues, inlineClassName: inlineCSS?.identifier }
-    : props
+  const isRoot = !!props['_isRoot']
 
   // pass forThemeView=true so the descendant-cascade effect is installed —
   // <Theme> pushes themeState.id into ThemeStateContext, so children subscribe
   // under this id and need to be notified when our propsKey changes.
-  const [_, themeState] = useThemeWithState(themeProps, isRoot, true)
+  const [_, themeState] = useThemeWithState(props, isRoot, true)
 
   useIsomorphicLayoutEffect(() => {
     if (process.env.TAMAGUI_TARGET !== 'native') return
@@ -145,7 +84,7 @@ export const Theme = createRefComponent(function Theme(
   return getThemedChildren(
     themeState,
     finalChildren,
-    themeProps,
+    props,
     isRoot,
     stateRef,
     passThrough
@@ -264,10 +203,9 @@ export function getThemedChildren(
       ? {}
       : getThemeClassNameAndColor(themeState, props, isRoot)
 
-    // inline theme values ride the same span as the theme class: one node for
-    // <Theme name="dark" background="red">, and it lands even when the theme
-    // itself didn't change (getThemeClassNameAndColor returns nothing then)
-    const inlineClassName = passThrough ? undefined : props.inlineClassName
+    // ThemeUpdate values ride the anonymous Theme span it creates, and land
+    // even when the resolved theme name itself did not change
+    const inlineClassName = passThrough ? undefined : props._themeUpdate?.className
 
     children = (
       <span

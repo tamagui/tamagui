@@ -151,19 +151,6 @@ export interface TamaguiBuildOptions {
 
   experimental?: {
     /**
-     * Web runtime capabilities that can be removed from the bundle when the
-     * application does not use them. Omitted fields stay enabled.
-     */
-    webRuntimeFeatures?: {
-      /** Inline theme-key props and createTamagui({ variables }). */
-      inlineThemeValues?: boolean
-      /** Runtime parsing of flat style and variant modifier strings. */
-      styleValueGrammar?: boolean
-      /** Safe-area style values and subscriptions. */
-      safeArea?: boolean
-    }
-
-    /**
      * Emit native flattened views with theme-token mappings for the experimental
      * native style engine. Web output is unaffected.
      */

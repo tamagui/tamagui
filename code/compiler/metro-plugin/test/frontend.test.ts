@@ -129,62 +129,6 @@ function executeNativeOutput(code: string): unknown {
 }
 
 describe('E4 Metro compiler frontend', () => {
-  test('inlines web capability literals while native keeps every capability enabled', async () => {
-    const fixtureRoot = await mkdtemp(join(packageRoot, 'test/.runtime-features-'))
-    temporaryRoots.push(fixtureRoot)
-    const source = `
-export default {
-  runtime: process.env.TAMAGUI_RUNTIME,
-  inlineThemeValues: process.env.TAMAGUI_RUNTIME_INLINE_THEME_VALUES,
-  styleValueGrammar: process.env.TAMAGUI_RUNTIME_STYLE_VALUE_GRAMMAR,
-  safeArea: process.env.TAMAGUI_RUNTIME_SAFE_AREA,
-}
-`
-    const worker = createMetroCompilerTransformer({
-      cacheBaseRoot: join(fixtureRoot, 'cache'),
-      originalBabelTransformerPath: transformerPath,
-      projectRoot: fixtureRoot,
-      runtimeLiteral: 'full',
-      webRuntimeFeatures: {
-        inlineThemeValues: 'disabled',
-        styleValueGrammar: 'disabled',
-        safeArea: 'disabled',
-      },
-    })
-    const transform = (platform: string) =>
-      worker.transform({
-        filename: join(fixtureRoot, 'runtime-features.ts'),
-        src: source,
-        plugins: [],
-        options: {
-          dev: false,
-          hot: false,
-          platform,
-          projectRoot: fixtureRoot,
-          experimentalImportSupport: true,
-        },
-      })
-
-    const web = await transform('web')
-    expect(findObjectProperty(web.ast, 'runtime')?.value?.value).toBe('full')
-    expect(findObjectProperty(web.ast, 'inlineThemeValues')?.value?.value).toBe(
-      'disabled'
-    )
-    expect(findObjectProperty(web.ast, 'styleValueGrammar')?.value?.value).toBe(
-      'disabled'
-    )
-    expect(findObjectProperty(web.ast, 'safeArea')?.value?.value).toBe('disabled')
-
-    const native = await transform('ios')
-    expect(findObjectProperty(native.ast, 'inlineThemeValues')?.value?.value).toBe(
-      'enabled'
-    )
-    expect(findObjectProperty(native.ast, 'styleValueGrammar')?.value?.value).toBe(
-      'enabled'
-    )
-    expect(findObjectProperty(native.ast, 'safeArea')?.value?.value).toBe('enabled')
-  })
-
   test('publishes and applies native dynamic opacity plans against raw source', async () => {
     const fixtureRoot = await mkdtemp(join(packageRoot, 'test/.e4-native-partial-'))
     temporaryRoots.push(fixtureRoot)

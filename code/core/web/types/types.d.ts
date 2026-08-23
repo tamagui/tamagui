@@ -577,15 +577,10 @@ export type ThemeKeys = keyof ThemeDefinition;
 export type ThemeParsed = {
     [key in ThemeKeys]: CoerceToVariable<ThemeDefinition[key]>;
 };
-type InlineThemeValues = {
-    [Key in ThemeKeys]?: VariableValIn;
-};
 /**
- * Prop names `<Theme>` owns. Every other prop it receives is read as a theme
- * key, so a theme key or a `createTamagui({ variables })` entry can't use one
- * of these names. development builds report the collision.
+ * Prop names `<Theme>` owns. Inline values are authored on `<ThemeUpdate>`.
  */
-export type ReservedThemePropName = '_isRoot' | 'children' | 'className' | 'contain' | 'debug' | 'deopt' | 'disable' | 'disable-child-theme' | 'forceClassName' | 'inlineClassName' | 'inlineValues' | 'name' | 'nativeUpdate' | 'needsUpdate' | 'passThrough' | 'reset' | 'shallow';
+export type ReservedThemePropName = '_isRoot' | 'children' | 'className' | 'contain' | 'debug' | 'deopt' | 'disable' | 'disable-child-theme' | 'forceClassName' | '_themeUpdate' | 'name' | 'nativeUpdate' | 'needsUpdate' | 'passThrough' | 'reset' | 'shallow';
 export type Tokens = TamaguiConfig['tokens'];
 export type TokensParsed = {
     [Key in keyof Required<Tokens>]: TokenifyRecord<NonNullable<Tokens[Key]>>;
@@ -623,15 +618,8 @@ export type UseThemeWithStateProps = ThemeProps & {
     passThrough?: boolean;
     disable?: boolean;
     needsUpdate?: () => boolean;
-    /** inline theme layer: patches merged over the parent theme */
-    inlineValues?: {
-        values?: InlineThemeValues;
-        themes?: {
-            [Name in ThemeName]?: InlineThemeValues;
-        };
-    };
-    /** the `tvar_` class carrying this layer's custom properties on web */
-    inlineClassName?: string;
+    /** opaque internal value patch created by `<ThemeUpdate>` */
+    _themeUpdate?: import('./helpers/themeUpdateState').ThemeUpdateState;
     /**
      * native fast path (experimental): called on a theme update instead of
      * re-rendering; return true when the update was committed natively so the

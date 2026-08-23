@@ -123,6 +123,10 @@ async function waitForContent(page, port) {
     'background-color',
     'rgb(84, 84, 84)'
   )
+  await expect(page.locator('#theme-update-production')).toHaveCSS(
+    'background-color',
+    'rgb(12, 34, 56)'
+  )
 }
 
 test(`loads dev mode no error or warning logs`, async ({ page }) => {

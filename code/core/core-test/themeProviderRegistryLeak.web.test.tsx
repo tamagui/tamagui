@@ -7,6 +7,7 @@ import {
   TamaguiProvider,
   Theme,
 } from '@tamagui/core'
+import { ThemeUpdate } from '@tamagui/web/theme-update'
 import { render } from '@testing-library/react'
 import { StrictMode } from 'react'
 import { createPortal } from 'react-dom'
@@ -39,12 +40,12 @@ describe('theme provider chain registry', () => {
     expect(getThemeProviderChainSizes()).toEqual(before)
   })
 
-  test('a <Theme> with direct values retains nothing after unmount', () => {
+  test('a <ThemeUpdate> retains nothing after unmount', () => {
     const before = getThemeProviderChainSizes()
     mountAndUnmount(ROUNDS, () => (
       <TamaguiProvider config={conf} defaultTheme="light">
-        <Theme name="dark" background="#0b2545">
-          hi
+        <Theme name="dark">
+          <ThemeUpdate background="#0b2545">hi</ThemeUpdate>
         </Theme>
       </TamaguiProvider>
     ))
@@ -55,13 +56,15 @@ describe('theme provider chain registry', () => {
     const before = getThemeProviderChainSizes()
     mountAndUnmount(ROUNDS, () => (
       <TamaguiProvider config={conf} defaultTheme="light">
-        <Theme name="dark" background="#0b2545">
-          {createPortal(
-            <Theme name="light" background="#ffffff">
-              portaled
-            </Theme>,
-            document.body
-          )}
+        <Theme name="dark">
+          <ThemeUpdate background="#0b2545">
+            {createPortal(
+              <Theme name="light">
+                <ThemeUpdate background="#ffffff">portaled</ThemeUpdate>
+              </Theme>,
+              document.body
+            )}
+          </ThemeUpdate>
         </Theme>
       </TamaguiProvider>
     ))
@@ -74,8 +77,10 @@ describe('theme provider chain registry', () => {
       ROUNDS,
       () => (
         <TamaguiProvider config={conf} defaultTheme="light">
-          <Theme name="dark" background="#0b2545">
-            <Theme name="blue">hi</Theme>
+          <Theme name="dark">
+            <ThemeUpdate background="#0b2545">
+              <Theme name="blue">hi</Theme>
+            </ThemeUpdate>
           </Theme>
         </TamaguiProvider>
       ),

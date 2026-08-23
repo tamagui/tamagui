@@ -1,4 +1,4 @@
-import type { GenericVariables, TamaguiInternalConfig, ThemeKeys, ThemeName, TokensParsed, Variable, VariableValIn } from '../types';
+import type { TamaguiInternalConfig, ThemeKeys, ThemeName, Variable, VariableValIn } from '../types';
 export type InlineValues = {
     values?: {
         [Key in ThemeKeys]?: VariableValIn;
@@ -9,10 +9,9 @@ export type InlineValues = {
         };
     };
 };
-export declare const isUnitlessVariableKey: (key: string) => boolean;
 export declare const getThemeKeySet: (conf: TamaguiInternalConfig) => Set<string>;
 /**
- * Resolves one inline `<Theme>` value to a CSS value string.
+ * Resolves one `<ThemeUpdate>` value to a CSS value string.
  * References emit var() so they stay live in the cascade; literals serialize
  * with the same unit rule numeric style props use (px unless unitless key).
  * Configured names resolve first; a lookup miss stays literal.
@@ -23,7 +22,7 @@ type VariablesCSS = {
     rules: string[];
 };
 /**
- * Builds the deterministic identifier and CSS rules for inline `<Theme>` values.
+ * Builds the deterministic identifier and CSS rules for `<ThemeUpdate>` values.
  * Identifier is a pure function of the resolved declarations so SSR and
  * client agree, and a build-time extractor can precompute it.
  *
@@ -33,15 +32,6 @@ type VariablesCSS = {
  * scope by plain theme class.
  */
 export declare function getVariablesCSSRules(props: InlineValues, conf: TamaguiInternalConfig): VariablesCSS | null;
-export declare const inlineLayerKey = "_tmgInlineLayer";
-export type InlineLayerInfo = {
-    key: string;
-    overridden: Set<string>;
-    pairs: Record<string, {
-        light: string | number;
-        dark: string | number;
-    }>;
-};
 export declare const getInlineValuesKey: (inline: InlineValues) => string;
 /**
  * One authored theme-value clause the parser could not use. The runtime warns
@@ -54,20 +44,20 @@ export type InlineValueIssue = {
 };
 export type InlineValueIssueSink = (issue: InlineValueIssue) => void;
 /**
- * Reads theme-key props off a <Theme> into the inline layer shape the rest of
+ * Reads theme-key props off a <ThemeUpdate> into the layer shape the rest of
  * the system already consumes. Returns null when the element carries no theme
  * key props at all, which is one loop over its props (two entries for a plain
- * `<Theme name="dark">`) and no allocation.
+ * `<ThemeUpdate>`) and no allocation.
  *
  * A key that is present but currently undefined still produces an empty
  * layer. Presence, not value, is what makes an element a theme-updating
  * one (the same rule `hasThemeUpdatingProps` applies to `name`), and it is
- * what keeps `<Theme background={on ? 'red' : undefined}>` rendering the same
+ * what keeps `<ThemeUpdate background={on ? 'red' : undefined}>` rendering the same
  * tree in both states instead of remounting its subtree when a value appears.
  */
 export declare function getInlineValuesFromProps(props: Record<string, any>, conf: TamaguiInternalConfig, onIssue?: InlineValueIssueSink): InlineValues | null;
 /**
- * Builds the merged theme for an inline `<Theme>` layer: parent theme spread plus
+ * Builds the merged theme for a `<ThemeUpdate>` layer: parent theme spread plus
  * overridden keys as variables, resolved per the shared contract (effective
  * map = values + matching non-scheme theme buckets + scheme bucket,
  * fixed-point references, cycle-involved keys dropped everywhere). Non-scheme
@@ -79,12 +69,5 @@ export declare function getInlineValuesFromProps(props: Record<string, any>, con
  * proxy caches hold.
  */
 export declare function getMergedInlineTheme(parentTheme: Record<string, Variable>, inline: InlineValues, themeName: string | undefined, conf: TamaguiInternalConfig): Record<string, Variable>;
-/**
- * Config-level custom variables: merged into every base theme at createTamagui
- * time so they behave exactly like theme keys in every existing code path.
- * References resolve per-theme at parse time; sub-themes inherit through
- * proxyThemesToParents (native) and the cascade (web).
- */
-export declare function mergeConfigVariablesIntoTheme(theme: Record<string, Variable>, themeName: string, variables: GenericVariables, tokensParsed: TokensParsed): void;
 export {};
 //# sourceMappingURL=variables.d.ts.map

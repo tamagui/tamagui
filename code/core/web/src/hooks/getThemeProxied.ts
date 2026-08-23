@@ -3,7 +3,10 @@ import type { MutableRefObject } from 'react'
 import { getConfig, getSetting } from '../config'
 import { getVariable } from '../createVariable'
 import { getDynamicVal } from '../helpers/getDynamicVal'
-import { inlineLayerKey, type InlineLayerInfo } from '../helpers/variables'
+import {
+  themeUpdateStateKey,
+  type ThemeUpdateLayerInfo,
+} from '../helpers/themeUpdateState'
 import type {
   ThemeParsed,
   ThemeState,
@@ -50,7 +53,7 @@ type ThemeGettable<Val> = Val & {
 
 // only proxy each theme one time, after that we know that renders are sync,
 // so we can just change the focus of the proxied theme and it can be re-used.
-// WeakMap so dynamically created theme objects (inline <Theme> layers)
+// WeakMap so dynamically created ThemeUpdate theme objects
 // don't retain their proxies after the layer is gone
 const trackingCache: WeakMap<ThemeParsed, ThemeProxied> = new WeakMap()
 const untrackedCache: WeakMap<ThemeParsed, ThemeProxied> = new WeakMap()
@@ -148,13 +151,12 @@ export function getThemeProxied(
             )
           }
 
-          // an inline <Theme> layer overrides this key: the config.themes
+          // a ThemeUpdate layer overrides this key: the config.themes
           // pair below would bypass it. use the layer's literal light/dark
           // pair when it has one, otherwise deopt to normal tracking
-          const inlineLayer =
-            process.env.TAMAGUI_RUNTIME_INLINE_THEME_VALUES === 'disabled'
-              ? undefined
-              : ((curState.theme as any)?.[inlineLayerKey] as InlineLayerInfo | undefined)
+          const inlineLayer = (curState.theme as any)?.[themeUpdateStateKey] as
+            | ThemeUpdateLayerInfo
+            | undefined
           const inlineOverridden = !!inlineLayer?.overridden.has(key)
 
           if (shouldOptimize && inlineOverridden) {

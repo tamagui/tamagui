@@ -1,8 +1,9 @@
 import '@tamagui/core/reset.css'
 
-import { Text, TamaguiProvider, View } from '@tamagui/core'
+import { Text, TamaguiProvider, Theme, View } from '@tamagui/core'
 import { styled, View as TailwindView } from '@tamagui/tailwind'
 import { LinearGradient } from '@tamagui/linear-gradient'
+import { ThemeUpdate } from 'tamagui/theme-update'
 
 import config from './tamagui.config'
 import { HmrCandidate } from './HmrCandidate'
@@ -16,6 +17,11 @@ export const Root = () => {
     <TamaguiProvider config={config} defaultTheme="light">
       <View flexDirection="column" flex={1} alignItems="center" justifyContent="center">
         <Text render="h1">Hello world</Text>
+        <Theme name="dark">
+          <ThemeUpdate background="rgb(12, 34, 56)">
+            <View id="theme-update-production" backgroundColor="$background" />
+          </ThemeUpdate>
+        </Theme>
         <View id="receipt-flattened" debug="verbose" padding={10} />
         <View
           id="receipt-runtime"

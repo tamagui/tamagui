@@ -21,24 +21,25 @@ export default () => (
 )
 ```
 
-## Inline values
+## Theme updates
 
-Set theme values directly on `<Theme>` to override them for a subtree, much
-like redefining a CSS custom property on one node. Listed keys override and
-everything else inherits from the parent theme. This does not require a named
-theme or a config change.
+Use `<ThemeUpdate>` to override theme values for a subtree, much like redefining
+a CSS custom property on one node. Listed keys override and everything else
+inherits from the parent theme. Import it from its explicit entry so apps that
+never update theme values do not bundle that runtime.
 
 ```tsx
-import { Theme, View } from 'tamagui' // or '@tamagui/core'
+import { View } from 'tamagui'
+import { ThemeUpdate } from 'tamagui/theme-update'
 
 export default () => (
-  <Theme background-hover="blue-500 dark:blue-300">
+  <ThemeUpdate background-hover="blue-500 dark:blue-300">
     <View backgroundColor="background hover:background-hover" />
-  </Theme>
+  </ThemeUpdate>
 )
 ```
 
-Values use the same flat grammar as style props. `<Theme>` applies its values
+Values use the same flat grammar as style props. `<ThemeUpdate>` applies its values
 to a whole subtree, so it supports modifiers that describe a subtree:
 
 - **Theme:** `dark:`, `light:`, or any configured theme name. `blue:` applies
@@ -49,25 +50,26 @@ Interaction states such as `hover:` and `press:`, and media queries such as
 `sm:`, describe an element rather than a subtree. They warn in development and
 are dropped here.
 
-A name and inline values compose on the same node:
+A named theme and an update compose through nesting:
 
 ```tsx
-<Theme name="dark" background="red">
-  {/* dark, with background overridden */}
+<Theme name="dark">
+  <ThemeUpdate background="red">
+    {/* dark, with background overridden */}
+  </ThemeUpdate>
 </Theme>
 ```
 
 Keys must be theme keys or [custom variables](#custom-variables) declared in
 the config. Unknown keys warn in development and are dropped so web and native
-behave the same. Props owned by `<Theme>`, including `name`, `reset`, `debug`,
-`forceClassName`, `shallow`, `className`, `children`, `passThrough`, and
-`contain`, cannot also be theme keys. Tamagui reports these collisions in
-development.
+behave the same. `<ThemeUpdate>` accepts children and typed theme or custom
+variable keys. Theme controls such as `name`, `reset`, and `shallow` stay on
+`<Theme>`.
 
 ### Custom variables
 
 Declare design-system values in `createTamagui` to make them work anywhere a
-theme key works: style props, `useTheme()`, and inline `<Theme>` values.
+theme key works: style props, `useTheme()`, and `<ThemeUpdate>` values.
 
 ```tsx
 const config = createTamagui({
@@ -88,23 +90,23 @@ Use and redefine them like any other theme value:
 ```tsx
 <View borderColor="surfaceBorder" />
 
-<Theme surfaceBorder="red-500">
+<ThemeUpdate surfaceBorder="red-500">
   {/* this subtree sees the red surface border */}
-</Theme>
+</ThemeUpdate>
 ```
 
 ### References and units
 
 Inline values can reference theme keys and tokens:
 
-- `background` finds the theme key or custom variable visible at the `<Theme>`
+- `background` finds the theme key or custom variable visible at the `<ThemeUpdate>`
   node.
 - `size.4` and `color.blue-500` reference tokens by category.
 - A bare token name such as `blue-500` checks theme keys first, then scans color,
   space, size, radius, and zIndex tokens. Use the qualified form when a name
   exists in more than one category.
 
-References resolve at the `<Theme>` node and descendants inherit the result.
+References resolve at the `<ThemeUpdate>` node and descendants inherit the result.
 Chains are supported, while a reference cycle drops the involved keys on both
 platforms with a development warning.
 
@@ -115,12 +117,12 @@ or `px(10)` for an explicit pixel value.
 
 ### Nesting and updates
 
-Inline values stack, with the nearest definition winning per key. A `<Theme>`
-that resolves a new name resets keys defined by that theme. Put an inline value
+ThemeUpdate layers stack, with the nearest definition winning per key. A `<Theme>`
+that resolves a new name resets keys defined by that theme. Put the ThemeUpdate
 inside that boundary when it should survive the switch. Custom variables are
-defined on base themes, so sub-themes inherit their inline overrides.
+defined on base themes, so sub-themes inherit their updates.
 
-Changing inline values leaves unrelated descendants alone. Tamagui tracks
+Changing update values leaves unrelated descendants alone. Tamagui tracks
 which keys each component reads, and only readers of a changed key update. On
 web, styled components restyle through CSS custom properties without a
 JavaScript render. JavaScript readers such as `useTheme()` and animation

@@ -616,9 +616,12 @@ test('optimizes the core singleton with context-bearing Tamagui packages', async
   expect(server.config.optimizeDeps.include).toEqual(
     expect.arrayContaining([
       '@tamagui/core',
+      '@tamagui/core/theme-update',
+      '@tamagui/web',
+      '@tamagui/web/theme-update',
+      'tamagui/theme-update',
       '@tamagui/animations-css',
       '@tamagui/animations-css/extras',
-      '@tamagui/web',
       '@tamagui/sheet',
       '@tamagui/sheet/controller',
       '@react-native/normalize-color',
@@ -627,9 +630,12 @@ test('optimizes the core singleton with context-bearing Tamagui packages', async
   expect(server.config.resolve.dedupe).toEqual(
     expect.arrayContaining([
       'tamagui',
+      'tamagui/theme-update',
       '@tamagui/core',
-      '@tamagui/animations-css',
+      '@tamagui/core/theme-update',
       '@tamagui/web',
+      '@tamagui/web/theme-update',
+      '@tamagui/animations-css',
     ])
   )
   expect(server.config.ssr.noExternal).toEqual(

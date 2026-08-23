@@ -108,6 +108,7 @@ export function transformZeroModule(
 
   // module-level bindings we care about
   let themeLocal: string | null = null
+  let themeUpdateLocal: string | null = null
   const islandLocals = new Map<string, string>()
   for (const statement of childNodes(program, 'body')) {
     if (statement.type !== 'ImportDeclaration') continue
@@ -126,6 +127,7 @@ export function transformZeroModule(
       if (!input.isTamaguiSpecifier(specifier)) continue
       const imported = childNode(importSpecifier, 'imported')
       if (imported && imported.name === 'Theme') themeLocal = local
+      if (imported && imported.name === 'ThemeUpdate') themeUpdateLocal = local
     }
   }
 
@@ -137,15 +139,22 @@ export function transformZeroModule(
     if (node.type === 'JSXElement') elements.push(node)
   })
 
-  const themeElements = themeLocal
-    ? elements.filter((element) => jsxNameOf(element) === themeLocal)
-    : []
+  const themeElements = elements.filter((element) => {
+    const name = jsxNameOf(element)
+    return name === themeLocal || name === themeUpdateLocal
+  })
 
   // Each <Theme> is read once, then lowered against its own ancestry, so a
   // nested node resolves against whatever its parent resolved to.
   const themeNodes = new Map<AstNode, StaticThemeNode>()
   for (const element of themeElements) {
-    const read = readStaticTheme(element, id, source, config)
+    const read = readStaticTheme(
+      element,
+      id,
+      source,
+      config,
+      jsxNameOf(element) === themeUpdateLocal ? 'ThemeUpdate' : 'Theme'
+    )
     for (const [identifier, rules] of read.css) bridgeCSS.set(identifier, rules)
     violations.push(...read.violations)
     if (read.node) themeNodes.set(element, read.node)

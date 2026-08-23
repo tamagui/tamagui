@@ -7,14 +7,14 @@ import {
 } from '@tamagui/style-grammar/runtime'
 import { getSetting } from '../config'
 import { createVariable, isVariable } from '../createVariable'
+import { themeUpdateStateKey, type ThemeUpdateLayerInfo } from './themeUpdateState'
 import { platformMatches } from './directStyle'
+import { findVariableToken, isUnitlessVariableKey } from './variableValue'
 import { warnOnce } from './warnOnce'
 import type {
-  GenericVariables,
   TamaguiInternalConfig,
   ThemeKeys,
   ThemeName,
-  TokensParsed,
   Variable,
   VariableValIn,
 } from '../types'
@@ -25,30 +25,6 @@ export type InlineValues = {
     [Name in ThemeName]?: { [Key in ThemeKeys]?: VariableValIn }
   }
 }
-
-// keys whose numeric values stay unitless on web. audited against RN numeric
-// style keys: opacity, zIndex, flex/flexGrow/flexShrink, aspectRatio, scale*,
-// fontWeight, elevation, shadowOpacity all end in one of these suffixes.
-// dimensional keys (radius, width, gap, size...) default to px.
-const unitlessSuffixes = [
-  'opacity',
-  'scale',
-  'zindex',
-  'weight',
-  'flex',
-  'grow',
-  'shrink',
-  'ratio',
-  'elevation',
-]
-
-export const isUnitlessVariableKey = (key: string): boolean => {
-  const lower = key.toLowerCase()
-  return unitlessSuffixes.some((suffix) => lower.endsWith(suffix))
-}
-
-// Property-less variable references scan token categories in this fixed order.
-const tokenCategoryOrder = ['color', 'space', 'size', 'radius', 'zIndex'] as const
 
 const themeKeySets = new WeakMap<object, Set<string>>()
 
@@ -62,40 +38,19 @@ export const getThemeKeySet = (conf: TamaguiInternalConfig): Set<string> => {
     }
   }
   if (process.env.NODE_ENV === 'development') {
-    // <Theme> reads every non-reserved prop as a theme key, so a theme key or
+    // <ThemeUpdate> reads every non-reserved prop as a theme key, so a theme key or
     // config variable sharing a name with one of Theme's own props could never
     // be set inline. Caught once per config, at the source.
     for (const key of set) {
       if (reservedThemeProps[key]) {
         console.error(
-          `[tamagui] theme key "${key}" collides with a <Theme> prop, so it can never be set inline (<Theme ${key}="...">). Rename it.`
+          `[tamagui] theme key "${key}" collides with a reserved theme prop, so it cannot be set with <ThemeUpdate ${key}="...">. Rename it.`
         )
       }
     }
   }
   themeKeySets.set(conf.themes, set)
   return set
-}
-
-const findToken = (tokensParsed: TokensParsed, name: string): Variable | undefined => {
-  let found: Variable | undefined
-  let foundCategory: string | undefined
-  for (const category of tokenCategoryOrder) {
-    const token = tokensParsed[category]?.[name] as Variable | undefined
-    if (!token) continue
-    if (!found) {
-      found = token
-      foundCategory = category
-      if (process.env.NODE_ENV !== 'development') break
-    } else {
-      warnOnce(
-        `ambiguous:${name}`,
-        `Theme inline value: "${name}" exists in multiple token categories; using "${foundCategory}". Rename one of the colliding tokens.`
-      )
-      break
-    }
-  }
-  return found
 }
 
 const cssVariablePrefix = process.env.TAMAGUI_CSS_VARIABLE_PREFIX || ''
@@ -105,7 +60,7 @@ const cssVariablePrefix = process.env.TAMAGUI_CSS_VARIABLE_PREFIX || ''
 const themeKeyVar = (key: string) => `var(--${cssVariablePrefix}${simpleHash(key, 40)})`
 
 /**
- * Resolves one inline `<Theme>` value to a CSS value string.
+ * Resolves one `<ThemeUpdate>` value to a CSS value string.
  * References emit var() so they stay live in the cascade; literals serialize
  * with the same unit rule numeric style props use (px unless unitless key).
  * Configured names resolve first; a lookup miss stays literal.
@@ -131,7 +86,7 @@ export function resolveVariableValueToCSS(
     return themeKeyVar(name)
   }
 
-  const token = findToken(conf.tokensParsed, name)
+  const token = findVariableToken(conf.tokensParsed, name)
   if (token) {
     return token.variable
   }
@@ -304,7 +259,7 @@ const getCycleDroppedKeys = (props: InlineValues): Set<string> | null => {
 const rulesCache = new Map<string, VariablesCSS>()
 
 /**
- * Builds the deterministic identifier and CSS rules for inline `<Theme>` values.
+ * Builds the deterministic identifier and CSS rules for `<ThemeUpdate>` values.
  * Identifier is a pure function of the resolved declarations so SSR and
  * client agree, and a build-time extractor can precompute it.
  *
@@ -419,14 +374,6 @@ export function getVariablesCSSRules(
 
 // non-enumerable marker on merged theme objects: cache key for idempotency,
 // overridden key set, and literal light/dark pairs for the iOS fast-scheme path
-export const inlineLayerKey = '_tmgInlineLayer'
-
-export type InlineLayerInfo = {
-  key: string
-  overridden: Set<string>
-  pairs: Record<string, { light: string | number; dark: string | number }>
-}
-
 const serializeInlineValue = (value: VariableValIn): string =>
   value && typeof value === 'object'
     ? `object:px${value.val}`
@@ -446,7 +393,7 @@ const serializeBucket = (bucket: InlineValues['values']): string => {
 
 // memoized per layer object: the flat-props path hands back identity-stable
 // layers, so this is one serialization per distinct value set instead of one
-// per render (getPropsKey calls it on every render of every <Theme>)
+// per render (getPropsKey calls it on every render of every <ThemeUpdate>)
 const inlineKeys = new WeakMap<InlineValues, string>()
 
 export const getInlineValuesKey = (inline: InlineValues): string => {
@@ -463,7 +410,7 @@ export const getInlineValuesKey = (inline: InlineValues): string => {
   return key
 }
 
-// ---- flat theme-value props: <Theme background-hover="blue4 dark:blue2"> ----
+// ---- flat theme-value props: <ThemeUpdate background-hover="blue4 dark:blue2"> ----
 
 const registryViews = new WeakMap<object, ModifierRegistryView>()
 
@@ -544,7 +491,7 @@ const addFlatValue = (
   if (!parsed.ok) {
     report(
       `parse:${key}:${raw}`,
-      `<Theme ${key}="${raw}">: ${parsed.errors[0].message}`,
+      `<ThemeUpdate ${key}="${raw}">: ${parsed.errors[0].message}`,
       'Dropping.'
     )
     return
@@ -569,7 +516,7 @@ const addFlatValue = (
         if (themeName !== undefined) {
           report(
             `two-themes:${key}:${raw}`,
-            `<Theme ${key}="${raw}">: "${themeName}:${modifier}:" targets two themes at once, which a subtree value can't express. Name the composed theme instead.`,
+            `<ThemeUpdate ${key}="${raw}">: "${themeName}:${modifier}:" targets two themes at once, which a subtree value can't express. Name the composed theme instead.`,
             'Dropping the clause.'
           )
           applies = false
@@ -580,7 +527,7 @@ const addFlatValue = (
       }
       report(
         `unsupported-modifier:${modifier}`,
-        `<Theme ${key}="${raw}">: "${modifier}:" isn't supported here. Theme values apply to a whole subtree, so only theme (dark:) and platform (ios:) modifiers work.`,
+        `<ThemeUpdate ${key}="${raw}">: "${modifier}:" isn't supported here. Theme values apply to a whole subtree, so only theme (dark:) and platform (ios:) modifiers work.`,
         'Dropping the clause.'
       )
       applies = false
@@ -596,22 +543,22 @@ const addFlatValue = (
   }
 }
 
-// keyed by config and raw prop values, so repeat renders of the same <Theme>
+// keyed by config and raw prop values, so repeat renders of the same <ThemeUpdate>
 // reuse one layer object. downstream identity caches and snapshot bailouts key
 // off this object. each config cache is bounded with the same clear-on-limit
 // pattern as simpleHash's string cache.
 const flatLayers = new WeakMap<object, Map<string, InlineValues>>()
 
 /**
- * Reads theme-key props off a <Theme> into the inline layer shape the rest of
+ * Reads theme-key props off a <ThemeUpdate> into the layer shape the rest of
  * the system already consumes. Returns null when the element carries no theme
  * key props at all, which is one loop over its props (two entries for a plain
- * `<Theme name="dark">`) and no allocation.
+ * `<ThemeUpdate>`) and no allocation.
  *
  * A key that is present but currently undefined still produces an empty
  * layer. Presence, not value, is what makes an element a theme-updating
  * one (the same rule `hasThemeUpdatingProps` applies to `name`), and it is
- * what keeps `<Theme background={on ? 'red' : undefined}>` rendering the same
+ * what keeps `<ThemeUpdate background={on ? 'red' : undefined}>` rendering the same
  * tree in both states instead of remounting its subtree when a value appears.
  */
 export function getInlineValuesFromProps(
@@ -668,7 +615,7 @@ export function getInlineValuesFromProps(
 const mergedThemeCache = new WeakMap<object, Map<string, Record<string, Variable>>>()
 
 /**
- * Builds the merged theme for an inline `<Theme>` layer: parent theme spread plus
+ * Builds the merged theme for a `<ThemeUpdate>` layer: parent theme spread plus
  * overridden keys as variables, resolved per the shared contract (effective
  * map = values + matching non-scheme theme buckets + scheme bucket,
  * fixed-point references, cycle-involved keys dropped everywhere). Non-scheme
@@ -706,7 +653,9 @@ export function getMergedInlineTheme(
   const cacheKey = `${getInlineValuesKey(inline)}|${activeScheme}|${matched ? matched.join(',') : ''}`
 
   // idempotency: re-applying the same layer to its own output is a no-op
-  const existingInfo = (parentTheme as any)[inlineLayerKey] as InlineLayerInfo | undefined
+  const existingInfo = (parentTheme as any)[themeUpdateStateKey] as
+    | ThemeUpdateLayerInfo
+    | undefined
   if (existingInfo?.key === cacheKey) {
     return parentTheme
   }
@@ -749,7 +698,7 @@ export function getMergedInlineTheme(
       if (themeValue !== undefined) {
         return isVariable(themeValue) ? themeValue.val : themeValue
       }
-      const token = findToken(conf.tokensParsed, name)
+      const token = findVariableToken(conf.tokensParsed, name)
       if (token) return token.val
       return value
     }
@@ -759,7 +708,7 @@ export function getMergedInlineTheme(
     return value
   }
 
-  const info: InlineLayerInfo = {
+  const info: ThemeUpdateLayerInfo = {
     key: cacheKey,
     // nested layers: carry the parent layer's overrides forward (its values
     // are plain enumerable entries after the spread, but the iOS pair info
@@ -798,7 +747,7 @@ export function getMergedInlineTheme(
       (typeof v === 'string' &&
         !(v in effective) &&
         !(v in parentTheme) &&
-        !findToken(conf.tokensParsed, v)) ||
+        !findVariableToken(conf.tokensParsed, v)) ||
       typeof v === 'number'
     if (isLiteral(activeLiteral) && isLiteral(oppositeLiteral)) {
       info.pairs[key] = {
@@ -818,7 +767,7 @@ export function getMergedInlineTheme(
     return parentTheme
   }
 
-  Object.defineProperty(merged, inlineLayerKey, {
+  Object.defineProperty(merged, themeUpdateStateKey, {
     value: info,
     enumerable: false,
   })
@@ -830,72 +779,4 @@ export function getMergedInlineTheme(
   }
   byKey.set(cacheKey, merged)
   return merged
-}
-
-/**
- * Config-level custom variables: merged into every base theme at createTamagui
- * time so they behave exactly like theme keys in every existing code path.
- * References resolve per-theme at parse time; sub-themes inherit through
- * proxyThemesToParents (native) and the cascade (web).
- */
-export function mergeConfigVariablesIntoTheme(
-  theme: Record<string, Variable>,
-  themeName: string,
-  variables: GenericVariables,
-  tokensParsed: TokensParsed
-) {
-  const scheme = themeName.startsWith('dark') ? 'dark' : 'light'
-  const resolving = new Set<string>()
-
-  const resolveRawValue = (key: string, value: unknown): unknown => {
-    if (typeof value === 'object' && value !== null) {
-      if (isVariable(value)) return value.val
-      if ('needsPx' in value) return value
-      if ('light' in value || 'dark' in value) {
-        return resolveRawValue(key, (value as any)[scheme] ?? (value as any).light)
-      }
-      return
-    }
-    if (typeof value === 'string') {
-      const name = value
-      // other config variables first (chains allowed, cycles dropped)
-      if (name in variables && !(name in theme)) {
-        if (resolving.has(name)) {
-          warnOnce(
-            `config-cycle:${name}`,
-            `createTamagui variables: reference cycle at "${name}" — dropping.`
-          )
-          return
-        }
-        resolving.add(name)
-        const res = resolveRawValue(name, variables[name])
-        resolving.delete(name)
-        return res
-      }
-      const themeValue = theme[name]
-      if (themeValue !== undefined) {
-        return isVariable(themeValue) ? themeValue.val : themeValue
-      }
-      const token = findToken(tokensParsed, name)
-      return token ? token.val : value
-    }
-    return value
-  }
-
-  for (const key in variables) {
-    // an explicit theme value always wins over a config variable default
-    if (key in theme) continue
-    let raw = resolveRawValue(key, variables[key])
-    if (raw === undefined) continue
-    let needsPx = typeof raw === 'number' && !isUnitlessVariableKey(key)
-    if (typeof raw === 'object' && raw !== null && 'needsPx' in raw) {
-      needsPx = true
-      raw = (raw as unknown as { val: number }).val
-    }
-    const variable = createVariable({ key, name: key, val: raw as any })
-    if (needsPx) {
-      variable.needsPx = true
-    }
-    theme[key] = variable
-  }
 }

@@ -95,7 +95,6 @@ export const withTamagui = (tamaguiOptionsIn?: WithTamaguiProps) => {
           'process.env.TAMAGUI_RUNTIME': JSON.stringify(
             zeroMode === 'enforce' ? 'zero' : 'full'
           ),
-          ...Static.getWebRuntimeFeatureDefines(tamaguiOptions),
           'process.env.IS_STATIC': JSON.stringify(''),
           'process.env.TAMAGUI_TARGET': '"web"',
           'process.env.TAMAGUI_IS_SERVER': JSON.stringify(isServer ? 'true' : ''),

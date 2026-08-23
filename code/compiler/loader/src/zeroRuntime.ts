@@ -268,7 +268,6 @@ export async function buildWebpackIsland(input: {
               // same `process.env` shape the zero entry was built against
               ...input.defines.define,
               'process.env.TAMAGUI_RUNTIME': JSON.stringify('full'),
-              ...Static.getWebRuntimeFeatureDefines(controller.options),
               'process.env.TAMAGUI_DID_OUTPUT_CSS': JSON.stringify('1'),
               'process.env.TAMAGUI_TARGET': JSON.stringify('web'),
               'process.env.TAMAGUI_IS_SERVER': JSON.stringify(''),

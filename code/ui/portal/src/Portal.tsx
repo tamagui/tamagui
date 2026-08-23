@@ -50,12 +50,7 @@ export const Portal = React.memo((propsIn: PortalProps) => {
           replayed here or portaled content silently falls back to the theme */}
       {themeLayers.reduceRight(
         (node, layer, index) => (
-          <Theme
-            key={index}
-            forceClassName
-            inlineValues={layer.inlineValues}
-            inlineClassName={layer.inlineClassName}
-          >
+          <Theme key={index} forceClassName _themeUpdate={layer}>
             {node}
           </Theme>
         ),

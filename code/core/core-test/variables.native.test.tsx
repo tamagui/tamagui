@@ -3,7 +3,9 @@ process.env.TAMAGUI_TARGET = 'native'
 import { describe, expect, test } from 'vitest'
 
 import { getDefaultTamaguiConfig } from '../config-default'
-import { createTamagui, getMergedInlineTheme, inlineLayerKey, px } from '../web/src'
+import { createTamagui, px } from '../web/src'
+import { themeUpdateStateKey } from '../web/src/helpers/themeUpdateState'
+import { getMergedInlineTheme } from '../web/src/theme-update'
 
 const conf = createTamagui({
   ...getDefaultTamaguiConfig('native'),
@@ -210,7 +212,7 @@ describe('getMergedInlineTheme (native inline layer)', () => {
       'dark_blue',
       conf
     )
-    const info = merged[inlineLayerKey]
+    const info = merged[themeUpdateStateKey]
     // a literal that doesn't vary by scheme keeps the fast path with the same
     // value on both sides; references still deopt
     expect(info.pairs.accent).toEqual({ light: '#00f', dark: '#00f' })
@@ -227,7 +229,7 @@ describe('getMergedInlineTheme (native inline layer)', () => {
       'light',
       conf
     )
-    const info = merged[inlineLayerKey]
+    const info = merged[themeUpdateStateKey]
     expect(info.overridden.has('accent')).toBe(true)
     expect(info.overridden.has('surfaceBorder')).toBe(true)
     // literal both sides -> pair for the DynamicColorIOS fast path
@@ -251,7 +253,7 @@ describe('getMergedInlineTheme (native inline layer)', () => {
     )
     expect(inner.accent.val).toBe('#111')
     expect(inner.surfaceBorder.val).toBe('green')
-    const info = inner[inlineLayerKey]
+    const info = inner[themeUpdateStateKey]
     expect(info.overridden.has('accent')).toBe(true)
     expect(info.pairs.accent).toEqual({ light: '#111', dark: '#eee' })
   })

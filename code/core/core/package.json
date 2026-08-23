@@ -49,6 +49,15 @@
       "require": "./dist/cjs/index.cjs",
       "default": "./dist/esm/index.mjs"
     },
+    "./theme-update": {
+      "types": "./types/theme-update.d.ts",
+      "react-native": "./dist/esm/theme-update.native.js",
+      "browser": "./dist/esm/theme-update.mjs",
+      "module": "./dist/esm/theme-update.mjs",
+      "import": "./dist/esm/theme-update.mjs",
+      "require": "./dist/cjs/theme-update.cjs",
+      "default": "./dist/esm/theme-update.mjs"
+    },
     "./native": {
       "types": "./types/index.d.ts",
       "react-native": "./dist/native.cjs",

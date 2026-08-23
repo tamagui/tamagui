@@ -86,7 +86,6 @@ export function withTamagui(
   } = optionsIn || {}
 
   const options = loadTamaguiBuildConfigSync(tamaguiOptionsIn)
-  const webRuntimeFeatures = Static.resolveWebRuntimeFeatureLiterals(options)
 
   // Ensure CSS files can be resolved
   metroConfig.resolver = {
@@ -148,7 +147,6 @@ export function withTamagui(
         projectRoot,
         // an integration-owned literal, never an ambient shell value
         runtimeLiteral: zero?.isEnforcing && !zero.islandBuild ? 'zero' : 'full',
-        webRuntimeFeatures,
       }
     )
     const userGetTransformOptions = metroConfig.transformer.getTransformOptions

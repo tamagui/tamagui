@@ -1,5 +1,6 @@
 import React from 'react'
 import { Button, Text, Theme, View, YStack } from 'tamagui'
+import { ThemeUpdate } from 'tamagui/theme-update'
 
 // module-level so the memoized child can prove it never re-renders while
 // inline theme values and scheme flips restyle it via CSS custom properties
@@ -17,14 +18,14 @@ const PatchedChild = React.memo(() => {
         height={40}
         backgroundColor="background"
       />
-      <Theme caseAccent="rgb(1, 2, 3)">
+      <ThemeUpdate caseAccent="rgb(1, 2, 3)">
         <View
           testID="vars-nested-square"
           width={80}
           height={40}
           backgroundColor="caseAccent"
         />
-      </Theme>
+      </ThemeUpdate>
       <Theme name="dark">
         <View
           testID="vars-reset-square"
@@ -34,14 +35,14 @@ const PatchedChild = React.memo(() => {
         />
       </Theme>
       <Theme name="blue">
-        <Theme caseAccent="blue:rgb(7, 7, 77)">
+        <ThemeUpdate caseAccent="blue:rgb(7, 7, 77)">
           <View
             testID="vars-themed-square"
             width={80}
             height={40}
             backgroundColor="caseAccent"
           />
-        </Theme>
+        </ThemeUpdate>
       </Theme>
     </YStack>
   )
@@ -63,11 +64,11 @@ export function ThemeUpdateCase() {
         toggle scheme
       </Button>
       <Theme name={scheme}>
-        <Theme
+        <ThemeUpdate
           caseAccent={patched ? 'rgb(200, 0, 0) dark:rgb(200, 100, 100)' : undefined}
         >
           <PatchedChild />
-        </Theme>
+        </ThemeUpdate>
       </Theme>
     </YStack>
   )

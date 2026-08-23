@@ -650,13 +650,14 @@ apply correctly in both modes, they just re-render more coarsely under
 
 ## Inline theme values
 
-Themes are tables keyed by name, while local adjustments belong directly on
-`<Theme>`:
+Themes are tables keyed by name, while local adjustments use `<ThemeUpdate>`:
 
 ```tsx
-<Theme background-hover="blue4 dark:blue2">
+import { ThemeUpdate } from 'tamagui/theme-update'
+
+<ThemeUpdate background-hover="blue4 dark:blue2">
   <SettingsPanel />
-</Theme>
+</ThemeUpdate>
 ```
 
 Listed keys override, everything else inherits, and the theme name, scheme and
@@ -670,7 +671,7 @@ Changing values leaves unrelated descendants alone. Tamagui already tracks
 which theme keys each component reads, so only the components that read a key
 that changed do any work on both platforms. On web, styled components skip even
 that: the values compile to CSS custom properties on the same node that
-carries the theme class, so they restyle through the cascade with no
+the update owns, so they restyle through the cascade with no
 JavaScript. JavaScript readers like `useTheme()` and the animation drivers
 still see the patched values, which is what they are for.
 
@@ -687,7 +688,7 @@ createTamagui({
 })
 ```
 
-These behave like theme keys in style props, `useTheme()`, and `<Theme>`
+These behave like theme keys in style props, `useTheme()`, and `<ThemeUpdate>`
 redefinition. They are the intended replacement for
 convention-by-copy-paste: define your focus ring once, read `focusRingColor`
 in the components you own, and redefine it per section when a screen wants a

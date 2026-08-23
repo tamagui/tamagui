@@ -20,6 +20,7 @@ export interface ThemeNameOption {
     name: string | undefined;
 }
 export interface StaticThemeNode {
+    kind: 'Theme' | 'ThemeUpdate';
     element: AstNode;
     opening: AstNode;
     closing: AstNode | null;
@@ -67,7 +68,7 @@ export interface StaticThemeReadResult {
  * so a name that becomes reserved later cannot mean a theme key here and a
  * reserved prop there.
  */
-export declare function readStaticTheme(element: AstNode, id: string, source: string, config: TamaguiInternalConfig): StaticThemeReadResult;
+export declare function readStaticTheme(element: AstNode, id: string, source: string, config: TamaguiInternalConfig, kind?: 'Theme' | 'ThemeUpdate'): StaticThemeReadResult;
 /**
  * The span a static `<Theme>` lowers to.
  *

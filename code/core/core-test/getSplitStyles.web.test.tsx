@@ -19,37 +19,6 @@ beforeAll(() => {
 })
 
 describe('getSplitStyles', () => {
-  test('declared runtime gates keep disabled values on the ordinary path', () => {
-    const previousGrammar = process.env.TAMAGUI_RUNTIME_STYLE_VALUE_GRAMMAR
-    const previousSafeArea = process.env.TAMAGUI_RUNTIME_SAFE_AREA
-    process.env.TAMAGUI_RUNTIME_STYLE_VALUE_GRAMMAR = 'disabled'
-    process.env.TAMAGUI_RUNTIME_SAFE_AREA = 'disabled'
-    try {
-      expect(
-        simplifiedGetSplitStyles(
-          View,
-          { backgroundImage: 'base hover:active' },
-          { noClass: true, componentState: { hover: true } }
-        ).style?.backgroundImage
-      ).toBe('base hover:active')
-      expect(
-        simplifiedGetSplitStyles(View, { paddingTop: 'safe' }, { noClass: true }).style
-          ?.paddingTop
-      ).toBe('safe')
-    } finally {
-      if (previousGrammar === undefined) {
-        delete process.env.TAMAGUI_RUNTIME_STYLE_VALUE_GRAMMAR
-      } else {
-        process.env.TAMAGUI_RUNTIME_STYLE_VALUE_GRAMMAR = previousGrammar
-      }
-      if (previousSafeArea === undefined) {
-        delete process.env.TAMAGUI_RUNTIME_SAFE_AREA
-      } else {
-        process.env.TAMAGUI_RUNTIME_SAFE_AREA = previousSafeArea
-      }
-    }
-  })
-
   test('Text does not register inlineWhenUnflattened', () => {
     expect((Text as any).staticConfig.inlineWhenUnflattened).toBeUndefined()
   })

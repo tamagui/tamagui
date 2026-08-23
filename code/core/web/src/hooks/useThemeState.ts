@@ -10,7 +10,6 @@ import {
 } from 'react'
 import { getConfig, getSetting } from '../config'
 import { formatDiagnostic } from '../helpers/formatDiagnostic'
-import { getInlineValuesKey, getMergedInlineTheme } from '../helpers/variables'
 import { MISSING_THEME_MESSAGE } from '../constants/constants'
 import type {
   ThemeParsed,
@@ -18,6 +17,7 @@ import type {
   ThemeState,
   UseThemeWithStateProps,
 } from '../types'
+import type { ThemeUpdateState } from '../helpers/themeUpdateState'
 
 type ID = string
 
@@ -44,11 +44,11 @@ export const forceUpdateThemes = () => {
 export const getThemeState = (id: ID) => states.get(id)
 
 /**
- * Direct theme-value layers and the provider chain, both keyed by the id a
+ * ThemeUpdate layers and the provider chain, both keyed by the id a
  * `<Theme>` pushes into `ThemeStateContext`.
  *
  * A portal renders outside its mount ancestry, so it cannot inherit the CSS
- * custom properties a `<Theme background="...">` put on an ancestor node. The
+ * custom properties a `<ThemeUpdate background="...">` put on an ancestor node. The
  * portal bridge walks this chain and replays exactly those layers. It cannot
  * use `ThemeState.parentId`: a state that resolves to the same theme as its
  * parent is a copy of the parent state, so its `parentId` skips a level.
@@ -56,20 +56,15 @@ export const getThemeState = (id: ID) => states.get(id)
  * Only `<Theme>` providers are recorded, which is also the only kind of state
  * whose id can appear in `ThemeStateContext`.
  */
-const inlineThemeLayers = new Map<ID, InlineThemeLayer>()
+const themeUpdateLayers = new Map<ID, ThemeUpdateState>()
 const themeProviderParents = new Map<ID, ID>()
 
-export type InlineThemeLayer = {
-  inlineValues: NonNullable<UseThemeWithStateProps['inlineValues']>
-  inlineClassName: string | undefined
-}
-
-export const getInlineThemeLayer = (id: ID) => inlineThemeLayers.get(id)
+export const getThemeUpdateLayer = (id: ID) => themeUpdateLayers.get(id)
 export const getThemeProviderParent = (id: ID) => themeProviderParents.get(id)
 
 /** introspection for devtools and leak probes: entries retained per map */
 export const getThemeProviderChainSizes = () => ({
-  layers: inlineThemeLayers.size,
+  layers: themeUpdateLayers.size,
   parents: themeProviderParents.size,
 })
 
@@ -79,13 +74,10 @@ const registerThemeProviderChain = (
   props: UseThemeWithStateProps
 ) => {
   themeProviderParents.set(id, parentId)
-  if (props.inlineValues) {
-    inlineThemeLayers.set(id, {
-      inlineValues: props.inlineValues,
-      inlineClassName: props.inlineClassName,
-    })
+  if (props._themeUpdate) {
+    themeUpdateLayers.set(id, props._themeUpdate)
   } else {
-    inlineThemeLayers.delete(id)
+    themeUpdateLayers.delete(id)
   }
 }
 
@@ -347,7 +339,7 @@ function cleanupThemeState(r: ThemeStateRef) {
   // both branches retire the id, and a subscribed <Theme> provider only ever
   // takes the first one, so the portal-bridge chain has to be cleared here
   // rather than inside the unsubscribed branch.
-  inlineThemeLayers.delete(r.id)
+  themeUpdateLayers.delete(r.id)
   themeProviderParents.delete(r.id)
 }
 
@@ -421,25 +413,16 @@ const getSnapshotImpl = (r: SnapshotRef): ThemeState => {
     PendingUpdate.get(id)
   )
 
-  // inline <Theme> layer: swap in the merged theme so descendants
+  // ThemeUpdate layer: swap in the merged theme so descendants
   // (which read states.get(parentId).theme) see the patched values. The base
   // is always the PARENT state's theme, never this state's own theme —
   // getNextState can return our previous (already-merged) state, and merging
   // over own output would keep removed patch keys alive. Merged objects are
   // identity-cached per (base theme, values, scheme) so bailouts stay stable.
   let next = nextRaw
-  if (
-    process.env.TAMAGUI_RUNTIME_INLINE_THEME_VALUES !== 'disabled' &&
-    props.inlineValues &&
-    nextRaw?.theme
-  ) {
+  if (props._themeUpdate && nextRaw?.theme) {
     const parentTheme = states.get(parentId)?.theme || nextRaw.theme
-    const merged = getMergedInlineTheme(
-      parentTheme,
-      props.inlineValues,
-      nextRaw.name,
-      getConfig()
-    )
+    const merged = props._themeUpdate.getTheme(parentTheme, nextRaw.name, getConfig())
     if (merged !== nextRaw.theme) {
       next = { ...nextRaw, theme: merged as ThemeParsed }
     }
@@ -767,16 +750,12 @@ const getPropsKey = ({
   name,
   reset,
   forceClassName,
-  inlineValues,
+  _themeUpdate,
 }: UseThemeWithStateProps) =>
-  `${name || ''}${reset || ''}${forceClassName || ''}${
-    process.env.TAMAGUI_RUNTIME_INLINE_THEME_VALUES !== 'disabled' && inlineValues
-      ? getInlineValuesKey(inlineValues)
-      : ''
-  }`
+  `${name || ''}${reset || ''}${forceClassName || ''}${_themeUpdate?.key || ''}`
 
 export const hasThemeUpdatingProps = (props: UseThemeWithStateProps) =>
   'name' in props ||
   'reset' in props ||
   'forceClassName' in props ||
-  'inlineValues' in props
+  '_themeUpdate' in props

@@ -1,5 +1,5 @@
 /**
- * Detox E2E for inline `<Theme>` values on native.
+ * Detox E2E for `<ThemeUpdate>` values on native.
  *
  * Validates the native inline theme layer end to end on a real simulator/emulator:
  * - config custom variables resolve through useTheme() per scheme
@@ -49,7 +49,7 @@ const CONFIG_DARK_ACCENT = 'val:rgb(90, 90, 255)'
 const PATCH_ACCENT = 'val:rgb(200, 0, 0)'
 const PATCH_DARK_ACCENT = 'val:rgb(200, 100, 100)'
 
-describe('inline Theme values', () => {
+describe('ThemeUpdate values', () => {
   beforeAll(async () => {
     setDeviceAppearance('light')
     await safeLaunchApp({

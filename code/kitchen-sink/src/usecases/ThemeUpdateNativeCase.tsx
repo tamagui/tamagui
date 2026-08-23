@@ -1,6 +1,7 @@
 import React from 'react'
 import { Appearance } from 'react-native'
-import { Text, Theme, useTheme, useThemeName, View, YStack } from 'tamagui'
+import { Text, useTheme, useThemeName, View, YStack } from 'tamagui'
+import { ThemeUpdate } from 'tamagui/theme-update'
 
 // this subtree follows the OS scheme because no named <Theme> wraps it. that is
 // required to exercise the DynamicColorIOS fast path (inverses must be 0).
@@ -42,12 +43,12 @@ export function ThemeUpdateNativeCase() {
       >
         <Text color="#000">toggle patch</Text>
       </View>
-      <Theme
+      <ThemeUpdate
         caseAccent={patched ? 'rgb(200, 0, 0) dark:rgb(200, 100, 100)' : undefined}
         caseSurface={patched ? 'color' : undefined}
       >
         <ReadValues />
-      </Theme>
+      </ThemeUpdate>
     </YStack>
   )
 }

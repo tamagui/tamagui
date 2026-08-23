@@ -10,13 +10,15 @@ import {
 } from '@tamagui/compiler-core'
 import { getThemeClassNames, reservedThemeProps } from '@tamagui/helpers'
 import {
-  getInlineValuesFromProps,
-  getVariablesCSSRules,
   resolveThemeName,
   variableToString,
-  type InlineValueIssue,
   type TamaguiInternalConfig,
 } from '@tamagui/web'
+import {
+  getInlineValuesFromProps,
+  getVariablesCSSRules,
+  type InlineValueIssue,
+} from '@tamagui/web/theme-update'
 
 import type { IslandThemeBridgeLayer } from './islands'
 
@@ -41,6 +43,7 @@ export interface ThemeNameOption {
 }
 
 export interface StaticThemeNode {
+  kind: 'Theme' | 'ThemeUpdate'
   element: AstNode
   opening: AstNode
   closing: AstNode | null
@@ -215,7 +218,8 @@ export function readStaticTheme(
   element: AstNode,
   id: string,
   source: string,
-  config: TamaguiInternalConfig
+  config: TamaguiInternalConfig,
+  kind: 'Theme' | 'ThemeUpdate' = 'Theme'
 ): StaticThemeReadResult {
   const moduleId = resolvedModuleId(id)
   const violations: ZeroViolation[] = []
@@ -236,8 +240,8 @@ export function readStaticTheme(
         rule: 1,
         code: 'local/unsafe-style-spread',
         span: span(attribute),
-        component: 'Theme',
-        message: zeroRuleMessage(1, { component: 'Theme' }),
+        component: kind,
+        message: zeroRuleMessage(1, { component: kind }),
       })
       continue
     }
@@ -249,7 +253,20 @@ export function readStaticTheme(
         ? childNode(rawValue, 'expression')
         : rawValue
 
-    if (key === 'name') {
+    if (kind === 'ThemeUpdate' && reservedThemeProps[key]) {
+      violations.push({
+        rule: 4,
+        code: 'local/unsupported-target',
+        span: span(attribute),
+        component: kind,
+        message: zeroRuleMessage(4, {
+          detail: `the <ThemeUpdate ${key}> prop, which belongs on <Theme>,`,
+        }),
+      })
+      continue
+    }
+
+    if (kind === 'Theme' && key === 'name') {
       const read = value ? readNameOptions(value, source, []) : null
       if (!read) {
         violations.push({
@@ -270,7 +287,7 @@ export function readStaticTheme(
       continue
     }
 
-    if (reservedThemeProps[key]) {
+    if (kind === 'Theme' && reservedThemeProps[key]) {
       if (!LOWERABLE_RESERVED_PROPS.has(key)) {
         violations.push({
           rule: 4,
@@ -302,6 +319,19 @@ export function readStaticTheme(
       continue
     }
 
+    if (kind === 'Theme') {
+      violations.push({
+        rule: 4,
+        code: 'local/unsupported-target',
+        span: span(attribute),
+        component: 'Theme',
+        message: zeroRuleMessage(4, {
+          detail: `the removed <Theme ${key}> inline-value spelling. Use <ThemeUpdate ${key}> around the subtree instead,`,
+        }),
+      })
+      continue
+    }
+
     // everything else is a theme key, and its value has to be build-time data
     const literal = value ? literalOf(value) : undefined
     if (typeof literal !== 'string' && typeof literal !== 'number') {
@@ -309,10 +339,10 @@ export function readStaticTheme(
         rule: 3,
         code: 'local/dynamic-style-value',
         span: span(attribute),
-        component: 'Theme',
+        component: kind,
         message: zeroRuleMessage(3, {
           prop: key,
-          component: 'Theme',
+          component: kind,
           detail: value
             ? 'a theme value must be a string or number literal at build time'
             : 'a theme key needs a value',
@@ -324,7 +354,7 @@ export function readStaticTheme(
   }
 
   // the runtime throws on this pair rather than picking one
-  if (reset && options.some((option) => option.name !== undefined)) {
+  if (kind === 'Theme' && reset && options.some((option) => option.name !== undefined)) {
     violations.push({
       rule: 4,
       code: 'local/unsupported-target',
@@ -343,7 +373,7 @@ export function readStaticTheme(
       span: span(element),
       component: 'Theme',
       message: zeroRuleMessage(4, {
-        detail: 'a self-closing <Theme>, which has no subtree to theme,',
+        detail: `a self-closing <${kind}>, which has no subtree to theme,`,
       }),
     })
   }
@@ -351,18 +381,19 @@ export function readStaticTheme(
   // One parse per unique authored value, and every clause the parser could not
   // use is a violation here instead of the warn-and-drop the render path does.
   const issues: InlineValueIssue[] = []
-  const inlineValues = Object.keys(themeKeyProps).length
-    ? getInlineValuesFromProps(themeKeyProps, config, (issue) => issues.push(issue))
-    : null
+  const inlineValues =
+    kind === 'ThemeUpdate' && Object.keys(themeKeyProps).length
+      ? getInlineValuesFromProps(themeKeyProps, config, (issue) => issues.push(issue))
+      : null
   for (const issue of issues) {
     violations.push({
       rule: 3,
       code: 'local/dynamic-style-value',
       span: span(opening),
-      component: 'Theme',
+      component: kind,
       message: zeroRuleMessage(3, {
         prop: issue.key,
-        component: 'Theme',
+        component: kind,
         detail: issue.message,
       }),
     })
@@ -375,6 +406,7 @@ export function readStaticTheme(
 
   return {
     node: {
+      kind,
       element,
       opening,
       closing,

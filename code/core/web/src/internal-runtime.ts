@@ -39,14 +39,7 @@ export type * from './internalRuntimeTypes'
 export const createFrontendProgram: (
   property: string,
   value: ParsedValue
-) => FrontendProgramValue =
-  process.env.TAMAGUI_RUNTIME_STYLE_VALUE_GRAMMAR === 'disabled'
-    ? () => {
-        throw new Error(
-          'createFrontendProgram requires experimental.webRuntimeFeatures.styleValueGrammar'
-        )
-      }
-    : createFrontendProgramImpl
+) => FrontendProgramValue = createFrontendProgramImpl
 
 // the one scalar-to-css boundary used by frontends before they mint a conditional
 // value. strings already carry their authored units; finite numbers use the same
