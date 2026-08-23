@@ -1,4 +1,4 @@
-import { createAnimations } from '@tamagui/animations-css'
+import { createAnimations } from '@tamagui/animations-css/extras'
 
 const smoothBezier = 'cubic-bezier(0.215, 0.610, 0.355, 1.000)'
 
