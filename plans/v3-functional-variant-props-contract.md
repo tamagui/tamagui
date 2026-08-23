@@ -1,134 +1,110 @@
 # V3 functional variant props contract
 
-Status: owner decision pending. This document records the current behavior,
-repository dependencies, and the smallest coherent v3 break. It authorizes no
-implementation.
+Status: declined after runtime probes and repository audit. `extras.props`
+keeps its current merged contract. This record authorizes no implementation.
 
-## Answer
+## Decision
 
-The merged `extras.props` contract is useful, but much less of the repository
-depends on it than the public type suggests. Most functional variants use the
-variant value plus `tokens`, `theme`, `font`, or `fontFamily`. The direct
-repository consumers of `props` mostly read caller siblings, which a
-caller-record contract would preserve.
+Narrowing `extras.props` to the caller record buys no deletion or allocation
+win. `mergeComponentProps` must still create `nextProps` for style resolution,
+compound matching, state, and forwarded view props. `getVariantExtras` must
+still provide tokens, theme, fonts, context, and props. Giving variants a
+different record wherever styled context exists requires a second props
+representation and another render allocation.
 
-Three internal cases depend on values that did not arrive from that styled
-layer's caller: a styled-context gap, TextArea's default `rows=3`, and text
-sizing's default `size=true`. All three have direct migrations. No authored
-repository variant mutates, enumerates, spreads, retains, freezes, or inspects
-property ownership or descriptors on `extras.props`.
+The honest expectation is zero CORE benefit trending toward a small regression,
+plus one render allocation for context-bearing components. That does not
+justify a public API break where user variants that read a default or inherited
+context prop would silently start seeing `undefined`. `extras.props` therefore
+stays merged and mutable exactly as it is today.
 
-A caller-only v3 contract is therefore viable inside this repository. It is
-still a public API break because user variants can currently read default or
-styled-context values from `extras.props`. Repository usage cannot prove that
-external usage is absent.
+The proposal lasted too long because its original justification had already
+disappeared. It began as a way to remove a Proxy. The only Proxy was dead
+`IS_STATIC` source with no producer in compiler-core, static, loader,
+vite-plugin, metro-plugin, or codemod paths. Deleting it was correct and moved
+production CORE by zero bytes because the production build already removed the
+branch. That deletion justifies no further contract change.
 
-Narrowing `extras.props` does not remove all prop merging. `mergeComponentProps`
-still supplies defaults and styled-context values to style resolution,
-compound matching, state, and forwarded view props. `getVariantExtras` still
-builds the object that provides tokens, theme, fonts, context, and props. A
-claim that this API change deletes either helper would be false.
+Two of the three claimed internal migrations also did not exist, and the named
+external break did not exist. The actual cost was only established after asking
+what code and allocation the change removed. This decision should not be
+reopened without a one-variable runtime and CORE price.
 
-## Current contract
+## Current contract and all props sources
 
-**READ**: `createComponent.tsx` calls
+`createComponent.tsx` calls
 `mergeComponentProps(defaultProps, styledContextValue, propsIn)` before
-`getSplitStyles`. The resulting ordinary object has caller values over context
-values over defaults. Functional variants receive that merged record as
-`extras.props`.
+`getSplitStyles`. The resulting ordinary object has caller values over inherited
+styled-context values over component defaults. Functional variants receive that
+record as `extras.props`.
 
-**READ**: the first functional variant in one split allocates one extras object
-plus the `fontFamily` and `font` accessors. The cache is keyed by the fresh
-style state, so it does not survive a render. The accessors can read authored
-font props more than once, and a returned `fontFamily` getter is read twice by
-the current variant resolver.
+Functional variants can observe four sources:
 
-**READ**: `extras.props` is mutable. A runtime probe mutated the merged record,
-deleted a later prop, and prevented that later variant/style contribution from
-running. A newly inserted key was not visited by the active `for...in`. There
-is no repository variant that intentionally relies on this capability.
+1. caller props, including later caller siblings;
+2. component defaults and default variants folded into
+   `staticConfig.defaultProps` by `styled()`;
+3. inherited styled-context values merged by `createComponent`;
+4. a temporary media or pseudo style overlay written onto `styleState.props` by
+   `getSubStyle.tsx:1690-1692`.
 
-**READ**: prior variant output does not enter `extras.props`. A later variant
-cannot read a prior variant's returned `opacity` or arbitrary key through
-`props`. Prior output can change `extras.fontFamily` and `extras.font`, which is
-a separate state channel and must remain pinned.
+The fourth source was absent from the original audit. It is behaviorally pinned
+by `getSplitStyles.native.test.tsx:44-70`: a media functional variant sees the
+overlaid `kind=danger` instead of the caller's `kind=info`. A global
+defaults-plus-original-caller record would silently remove that behavior.
 
-## Repository consumers
+Prior variant output does not enter `extras.props`. A later variant cannot read
+a prior variant's returned `opacity` or arbitrary key through `props`. Prior
+output can change `extras.fontFamily` and `extras.font`, which is a separate
+state channel and remains pinned.
 
-| consumer | reads from `extras.props` | caller-only result |
-| --- | --- | --- |
-| `get-font-sized` | `fontStyle`, `color`, `debug` | caller siblings survive; default/context values would need an explicit source if they prove behaviorally required |
-| `SizableText` | `size`, `fontSize` | caller siblings survive; default `size=true` needs migration |
-| `Input` and `TextArea` sizing | `tag`, `rows`, `multiline`, `numberOfLines` | caller siblings survive; TextArea's default `rows=3` needs migration |
-| Slider | `orientation` | survives because wrappers explicitly pass orientation |
-| Button | `circular`, `size` | normal exported Button survives because its HOC explicitly forwards size |
-| Tabs | `unstyled` | current absent value and false are equivalent; a descendant defaulting true would change under caller-only semantics |
-| `StyledContextTokens` | context-provided `gap` | needs `extras.context.gap` |
+`extras.props` is mutable. A runtime probe mutated the record, deleted a later
+prop, and prevented that later variant/style contribution from running. A newly
+inserted key was not visited by the active `for...in`. No repository variant
+intentionally relies on mutation, enumeration, retention, freezing, property
+ownership, or descriptors, but external code may rely on the documented merged
+record.
 
-Production variants in Card, Group, ListItem, Shapes, Spacer, Toggle,
-elevation, Select, Checkbox, Radio, and most Button and Tabs paths use only the
-variant value, tokens, theme, or font accessors.
+## Corrected repository audit
 
-## Smallest caller-only contract
+The earlier proposal claimed three internal dependencies. Runtime probes
+reduced that to one:
 
-If the owner approves the v3 break, the narrow contract is:
+- `StyledContextTokens` reads a context-provided `gap` through `extras.props`.
+  It is the one genuine inherited-context dependency.
+- `TextArea` does not receive `rows=3` through default props. That value is
+  output of its `unstyled:false` variant, and the wrapped sizing resolver sees
+  `rows` and `size` as `undefined` today. There is no migration to perform.
+- `SizableText` does not receive `size=$true` through default props. It is
+  variant output, and the resolver already falls back to `$true`. There is no
+  migration to perform.
 
-- `extras.props` is `Readonly<Props>` and is exactly the record supplied by the
-  caller to that styled layer before defaults, styled-context merging, or
-  frontend rewriting;
-- caller key order, descriptors, identity, and all later caller siblings are
-  preserved;
-- variants must not mutate the record;
-- defaults still select variant styles but do not masquerade as caller props;
-- styled-context values are read through a correctly typed `extras.context`;
-- a HOC establishes a new caller boundary when it constructs and forwards a
-  new props object.
+The owner also challenged the reported `SurfaceRow` break. The challenge was
+correct. `styled.tsx` folds ordinary styled options, inherited defaults,
+default variants, child defaults, and child default variants into
+`staticConfig.defaultProps`. A runtime read observed
+`SurfaceRow.staticConfig.defaultProps.kind === 'row'`, and all eight call sites
+receive it through `mergeComponentProps`. That break is withdrawn.
 
-The internal migrations are small and independent:
+Under the narrower hypothetical change that dropped only inherited styled
+context at the `createComponent` merge, the repository has one migration:
+`StyledContextTokens` would read `extras.context.gap`. The media/pseudo overlay
+would survive because it happens later. Even this narrow change still needs a
+second props representation, removes no code, adds allocation, and breaks the
+public merged-props contract for external users. It remains declined.
 
-1. `StyledContextTokens` reads `extras.context.gap` and gains a visual/runtime
-   assertion that the small and large context gaps produce different widths.
-2. The TextArea-specific sizing resolver receives an explicit default row
-   count of 3. Ordinary multiline Input keeps its current automatic height.
-3. SizableText's font-family resolver receives the known default `size=true`
-   explicitly when deciding whether a caller `fontSize` overrides token sizing.
+Tabs has no independent bug. Missing `unstyled` and `unstyled=false` produce
+the same behavior. A descendant that defaults `unstyled` to true is simply
+another reason the merged contract matters.
 
-Tabs has no independent bug today. Missing `unstyled` and `unstyled=false`
-produce the same result. It becomes a migration only for a styled descendant
-whose own default changes `unstyled` to true.
-
-## Separate, larger breaking change
+## Separate larger breaking change
 
 Disallowing variants from returning nested variant keys or other style results
-is a different proposal. It could simplify recursion and parent-variant
-tracking, but it breaks documented variant chaining, the behavior behind issue
-3669, variant-produced styled context, and the existing `VariantsOrder` and
-`StyledContextTokens` cases. It should not ride with the caller-record change.
+is a separate proposal. It could simplify recursive variant resolution and
+parent-variant tracking, but it breaks documented variant chaining, issue 3669,
+variant-produced styled context, and the existing `VariantsOrder` and
+`StyledContextTokens` cases. Static combinations would need to become
+`compoundVariants`, and context changes would need explicit providers or HOCs.
 
-The replacement shape would require static combinations to become
-`compoundVariants` and context changes to move to explicit providers or HOCs.
 No evidence collected here establishes that this larger break is worth its
-compatibility cost.
-
-## Measurement and acceptance
-
-There is no trustworthy one-variable CORE price for caller-only props yet. The
-reverted 1a/1b pair changed the fixture and traversal architecture at the same
-time, so its gzip movement is not a price for this contract. If approved, the
-change needs its own control against the then-current frozen CORE artifact.
-
-Acceptance requires:
-
-- the three internal migrations above;
-- functional-variant tests for caller identity, descriptors, later siblings,
-  and readonly behavior;
-- explicit default/context absence from `extras.props` and presence through
-  the intended alternative;
-- unchanged prior-output font behavior;
-- no Proxy, per-render fallback record, second prop traversal, or extra
-  authored getter read;
-- a measured CORE result before commit.
-
-The dead static-only `fallbackProps` Proxy is already deleted. Its production
-CORE movement was zero because the measured build had already eliminated that
-branch.
+compatibility cost. It is not part of the engine-consolidation campaign and is
+not authorized by this document.

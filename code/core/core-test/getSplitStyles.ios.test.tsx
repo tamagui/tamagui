@@ -135,6 +135,12 @@ describe('getSplitStyles iOS specific', () => {
     expect(style.color).toHaveProperty('dynamic')
   })
 
+  test('lifecycle color clauses are not treated as theme clauses', () => {
+    const result = getSplitStylesWithTheme({ backgroundColor: 'enter:red' }, 'dark')
+
+    expect(result?.style?.backgroundColor).toBe('red')
+  })
+
   /**
    * Bug: Non-color properties should NOT be wrapped with {dynamic: {...}}
    *

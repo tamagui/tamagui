@@ -16,6 +16,7 @@ beforeAll(() => {
       'group-active': { minWidth: 1003 },
       'wide.dot': { minWidth: 1004 },
       constructor: { minWidth: 1005 },
+      hover: { minWidth: 1007 },
     }
   )
   configured.themes = {
@@ -79,6 +80,18 @@ test('container size and name segments share the strict identifier grammar', () 
     expect(result.pseudoGroups?.size ?? 0, modifier).toBe(0)
     expect(result.mediaGroups?.size ?? 0, modifier).toBe(0)
   }
+})
+
+test('a media size shadowed by a state has no container form', () => {
+  const result = simplifiedGetSplitStyles(
+    View,
+    { backgroundImage: 'none @hover:linear-gradient(red, blue)' },
+    { noClass: true }
+  )
+
+  expect(result.style?.backgroundImage).toBe('none')
+  expect(result.pseudoGroups?.size ?? 0).toBe(0)
+  expect(result.mediaGroups?.size ?? 0).toBe(0)
 })
 
 test('an own configured constructor key is ordinary media', () => {

@@ -8,7 +8,7 @@ export { borderSideSuffix, getTokenCategory, percentUtilityProps, radiusCornerPr
 export { splitColorOpacitySuffix } from "./resolvePayload";
 export { getSafeAreaEdge, safeAreaVariableNames } from "./safeAreaVariables";
 export { scanFlatValue, type FlatScanErrorCode, type FlatValueHandler } from "./scanFlatValue";
-export { type CoreStateModifierName } from "./stateModifiers";
+export { canonicalStateModifierNames, stateModifierSelectors, type CoreStateModifierName } from "./stateModifiers";
 export type { NativeTransitionTarget } from "./transitionNative";
 export { unitlessNumberProperties } from "./unitlessNumbers";
 export type { ModifierKind, ParsedValue } from "./valueTypes";

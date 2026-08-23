@@ -165,12 +165,12 @@ function getModifierVocabulary(config: GrammarConfigView): CompiledModifierVocab
 function modifierKindCode(modifier: string, config: GrammarConfigView): number {
   const vocabulary = getModifierVocabulary(config)
   const exact = vocabulary[modifier]
-  if (exact !== undefined) return exact
+  if (exact !== undefined) return exact & 7
   if (parseGroupModifier(modifier)) return modifierKindGroup
   const sizeEnd = containerModifierSizeEnd(modifier)
   if (sizeEnd === -1) return 0
   const size = modifier.slice(1, sizeEnd)
-  return vocabulary[size] === modifierKindMedia &&
+  return (vocabulary[size] & 7) === modifierKindMedia &&
     (config.containerSizeNames === undefined || hasName(config.containerSizeNames, size))
     ? modifierKindContainer
     : 0

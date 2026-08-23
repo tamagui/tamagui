@@ -18,13 +18,13 @@ describe('compiled modifier vocabulary', () => {
     const compiled = compileModifierVocabulary(view)
     const { registry } = createModifierRegistry(view)
 
-    expect(compiled).toMatchObject({
-      hover: modifierKindState,
-      active: modifierKindState,
-      sm: modifierKindMedia,
-      web: modifierKindPlatform,
-      dark: modifierKindTheme,
-    })
+    expect(compiled.hover & 7).toBe(modifierKindState)
+    expect(compiled.active & 7).toBe(modifierKindState)
+    expect(compiled.sm & 7).toBe(modifierKindMedia)
+    expect(compiled.web & 7).toBe(modifierKindPlatform)
+    expect(compiled.dark & 7).toBe(modifierKindTheme)
+    expect(compiled.active >> 3).toBe(compiled.press >> 3)
+    expect(compiled.sm >> 3).toBe(0)
     expect(compiled).not.toHaveProperty('dark_blue')
     expect(compiled).not.toHaveProperty('group-hover')
     expect(compiled).not.toHaveProperty('group-brand')

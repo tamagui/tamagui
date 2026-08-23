@@ -96,7 +96,8 @@ export function parseContainerModifier(name: string): ContainerModifier | null {
   }
 }
 
-function modifierKindFromCode(code: CompiledModifierKind): ModifierKind {
+function modifierKindFromCode(code: number): ModifierKind {
+  code &= 7
   if (code === modifierKindState) return 'state'
   if (code === modifierKindMedia) return 'media'
   if (code === modifierKindPlatform) return 'platform'
@@ -155,11 +156,12 @@ export function createModifierRegistry(
   // registered media name works (legacy fallback, removal pending its caller
   // sweep)
   const isContainerSize = (size: string): boolean =>
-    names[size] === modifierKindMedia && (!containerSizes || containerSizes.has(size))
+    (names[size] & 7) === modifierKindMedia &&
+    (!containerSizes || containerSizes.has(size))
 
   if (containerSizes) {
     for (const size of containerSizes) {
-      if (names[size] !== modifierKindMedia) {
+      if ((names[size] & 7) !== modifierKindMedia) {
         diagnostics.push(
           `container size "${size}" is not registered: the same spelling is not registered as a media query`
         )
@@ -177,7 +179,7 @@ export function createModifierRegistry(
     }
   } else {
     for (const name of completionNames.slice()) {
-      if (names[name] === modifierKindMedia) completionNames.push(`@${name}`)
+      if ((names[name] & 7) === modifierKindMedia) completionNames.push(`@${name}`)
     }
   }
 

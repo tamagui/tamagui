@@ -13,9 +13,7 @@ import {
   type StyleObject,
 } from '@tamagui/helpers'
 import {
-  canonicalClauseModifier,
-  clauseSubjectClassRepetitions,
-  getClausePrecedenceKeyFromKinds,
+  canonicalStateModifierNames,
   isContainerSizeQueryText,
   isModifierName,
   modifierKindMedia,
@@ -23,9 +21,9 @@ import {
   modifierKindState,
   modifierKindTheme,
   scanFlatValue,
+  stateModifierSelectors,
   type ClausePrecedenceKey,
   type FlatValueHandler,
-  type ModifierKind,
   type ParsedValue,
 } from '@tamagui/style-grammar/runtime'
 
@@ -35,7 +33,7 @@ import type { GetStyleState } from '../types'
 import { warnOnce, warnRefusedValue } from './warnOnce'
 import { expandStyle } from './expandStyle'
 import { getCSSStyleAtomic } from './getCSSStylesAtomic'
-import { getConfigRevisionState, type ConfigRevisionState } from './grammarConfig'
+import { getConfigRevisionState } from './grammarConfig'
 import { isColorStyleKey } from './getDynamicVal'
 import { shouldInsertStyleRules, updateRules } from './insertStyleRule'
 import { normalizeColor } from './normalizeColor'
@@ -56,20 +54,6 @@ export type MergeStyle = (
   disableNormalize?: boolean,
   originalValue?: any
 ) => void
-
-type Condition = {
-  key: string
-  active: boolean
-  emit: boolean
-  selector: string
-  wrappers?: string[]
-  enter?: true
-  exit?: true
-  theme?: string
-  precedence: ClausePrecedenceKey
-  classRepetitions: number
-  unsupportedState?: string
-}
 
 type DirectAtomic = {
   baseRules: number
@@ -97,122 +81,205 @@ type DirectState = GetStyleState & {
   flatWebShadow?: Record<string, any>
 }
 
-// pass state, pending condition, refusal, lifecycle, source, property, first
-// refusal, pending clause refusal, chain count, then
-// condition/start/end triples. this is the result collection itself, so the
-// context adds no allocation beyond the data the current collector keeps.
-type DirectScanContext = any[]
-
-const directStyleHandler: FlatValueHandler<DirectScanContext> = {
-  segment(ctx, start, end, isBase, valid) {
-    if (start === end) {
-      // an empty base is simply no base; an empty clause payload is a clause
-      // with nothing in it, which parseValue reports as `empty-payload`
-      if (!isBase) {
-        ctx[2] =
-          process.env.NODE_ENV === 'development'
-            ? 'a conditional clause has no value'
-            : true
-      }
-    }
-    let refused = !valid || ctx[7] || (!isBase && start === end)
-    if (ctx[1] === false && !refused) {
-      const ratio = Number((ctx[4] as string).slice(start, end))
-      if (start < end && Number.isFinite(ratio) && ratio > 0) {
-        ctx.push(false, start, end)
-        ctx[1] = null
-        ctx[2] = ''
+const directStyleHandler: FlatValueHandler<GetStyleState> = {
+  segment(
+    state,
+    start,
+    end,
+    isBase,
+    valid,
+    source,
+    chainStart,
+    chainEnd,
+    chainValid,
+    chainCount,
+    _result,
+    failure,
+    failureIndex,
+    property,
+    merge,
+    originalValue,
+    contextOnly
+  ) {
+    if (isBase) {
+      if (start === end) return
+      if (!valid) {
+        if (process.env.NODE_ENV === 'development') {
+          warnRefusedValue(
+            property,
+            source,
+            failure === 'invalid-character'
+              ? `"${source[failureIndex]}" would end the declaration or rule`
+              : failure === 'unterminated-string'
+                ? 'an unterminated string'
+                : failure === 'unterminated-comment'
+                  ? 'an unterminated "/*" comment'
+                  : failure === 'stray-comment-close'
+                    ? 'a stray "*/"'
+                    : 'an unterminated "("'
+          )
+        }
         return
       }
-      refused = true
+      const value = source.slice(start, end)
+      emitValue(
+        state,
+        property,
+        value,
+        0,
+        '',
+        undefined,
+        '',
+        '',
+        merge,
+        value,
+        contextOnly
+      )
+      return 5
     }
-    if (refused && (!isBase || start < end)) {
-      ctx[6] ||= ctx[2] || true
-      ctx[2] = ''
-      ctx[7] = false
-      ctx[1] = null
+    if (!chainValid) {
+      if (process.env.NODE_ENV === 'development') {
+        warnRefusedValue(
+          property,
+          source,
+          failure === 'invalid-character'
+            ? `"${source[failureIndex]}" would end the declaration or rule`
+            : failure === 'unterminated-string'
+              ? 'an unterminated string'
+              : failure === 'unterminated-comment'
+                ? 'an unterminated "/*" comment'
+                : failure === 'stray-comment-close'
+                  ? 'a stray "*/"'
+                  : 'an unterminated "("'
+        )
+      }
       return
     }
-    if (start < end) {
-      ctx.push(ctx[1] || null, start, end)
-      if (ctx[1]) ctx[3] ||= !!(ctx[1].enter || ctx[1].exit)
-    }
-  },
-  chain(ctx, start, end, valid) {
-    ctx[8]++
-    if (!valid) {
-      ctx[1] = null
-      ctx[7] = true
-      return true
-    }
-    const source = ctx[4] as string
-    const modifier = source.slice(start, end)
-    const next = getCondition(ctx[0], modifier)
-    if (!next) {
-      ctx[2] ||=
-        process.env.NODE_ENV === 'development' ? `unknown modifier "${modifier}"` : true
-      const ratio = Number(modifier)
-      if (
-        ctx[5] === 'aspectRatio' &&
-        ctx[8] === 1 &&
-        ctx.length === 9 &&
-        modifier !== '' &&
-        Number.isFinite(ratio) &&
-        ratio > 0
-      ) {
-        ctx[1] = false
-      } else {
-        ctx[1] = null
-        ctx[7] = true
+    if (start === end) {
+      if (process.env.NODE_ENV === 'development') {
+        warnRefusedValue(property, source, 'a conditional clause has no value')
       }
-      return true
+      return
     }
-    if (process.env.NODE_ENV === 'development' && next.unsupportedState) {
-      warnOnce(
-        `${ctx[5]}: "${next.unsupportedState}:" has no native component-state source; dropping the clause`
-      )
+    if (property === 'aspectRatio' && chainCount === 1) {
+      const left = Number(source.slice(chainStart, chainEnd))
+      const right = Number(source.slice(start, end))
+      if (
+        chainStart < chainEnd &&
+        Number.isFinite(left) &&
+        left > 0 &&
+        Number.isFinite(right) &&
+        right > 0
+      ) {
+        return 12
+      }
     }
-    ctx[1] = next
-    ctx[7] = false
+    const condition = resolveClauseChain(
+      state,
+      source,
+      chainStart,
+      chainEnd,
+      property,
+      undefined,
+      valid ? merge : undefined,
+      undefined,
+      contextOnly,
+      start,
+      end,
+      1
+    )
+    if (!condition) return
+    if (!valid) {
+      if (process.env.NODE_ENV === 'development') {
+        warnRefusedValue(
+          property,
+          source,
+          failure === 'invalid-character'
+            ? `"${source[failureIndex]}" would end the declaration or rule`
+            : failure === 'unterminated-string'
+              ? 'an unterminated string'
+              : failure === 'unterminated-comment'
+                ? 'an unterminated "/*" comment'
+                : failure === 'stray-comment-close'
+                  ? 'a stray "*/"'
+                  : 'an unterminated "("'
+        )
+      }
+      return
+    }
+    return 4 | (condition & 12 ? 2 : 0)
+  },
+  chain() {
     return true
   },
-  error(ctx, code, index) {
-    if (ctx[2]) return
-    const source = ctx[4] as string
-    ctx[2] =
-      process.env.NODE_ENV === 'development'
-        ? code === 'invalid-character'
-          ? `"${source[index]}" would end the declaration or rule`
-          : code === 'unterminated-string'
-            ? 'an unterminated string'
-            : code === 'unterminated-comment'
-              ? 'an unterminated "/*" comment'
-              : code === 'stray-comment-close'
-                ? 'a stray "*/"'
-                : 'an unterminated "("'
-        : true
+  end(
+    state,
+    source,
+    result,
+    lastPayloadStart,
+    chainCount,
+    property,
+    merge,
+    originalValue,
+    contextOnly
+  ) {
+    let hasBase = !!(result & 1)
+    if (result & 8 && chainCount === 1) {
+      emitValue(
+        state,
+        property,
+        source,
+        0,
+        '',
+        undefined,
+        '',
+        '',
+        merge,
+        originalValue ?? source,
+        contextOnly
+      )
+      hasBase = true
+    }
+    if (
+      process.env.NODE_ENV === 'development' &&
+      !hasBase &&
+      result & 4 &&
+      (property in tokenCategories.color || property in tokenCategoryByProperty) &&
+      splitComponents(source.slice(lastPayloadStart)).length > 1
+    ) {
+      warnOnce(
+        `${property}="${source}" has multiple values after its first conditional. Write the base value before the first conditional.`
+      )
+    }
+    if ((!isWeb || !state.flatShouldDoClasses) && result & 2 && !hasBase) {
+      const value =
+        property === 'opacity'
+          ? 1
+          : property === 'scale' || property === 'scaleX' || property === 'scaleY'
+            ? 1
+            : property === 'rotate'
+              ? '0deg'
+              : property === 'x' || property === 'y'
+                ? 0
+                : null
+      if (value !== null) {
+        emitValue(
+          state,
+          property,
+          value,
+          0,
+          '',
+          undefined,
+          '',
+          '',
+          merge,
+          value,
+          contextOnly
+        )
+      }
+    }
   },
 }
-
-// keyed by the CANONICAL modifier spelling: `canonicalClauseModifier` has
-// already folded `active`, `pressed`, `starting` and `ending` into their one
-// spelling before anything looks in here
-const stateSelectors = {
-  __proto__: null,
-  hover: ':hover',
-  press: ':active',
-  focus: ':focus',
-  'focus-visible': ':focus-visible',
-  'focus-within': ':focus-within',
-  disabled: '[aria-disabled]',
-  open: '[data-state="open"]',
-  checked: '[data-state="checked"]',
-  highlighted: '[data-highlighted]',
-  selected: '[data-state="active"]',
-  invalid: '[aria-invalid="true"]',
-  enter: '.t_unmounted',
-  exit: '.t_exiting',
-} as unknown as Record<string, string>
 
 const legacyTransformParts = new Set([
   'matrix',
@@ -305,19 +372,6 @@ const borderStyleDefaults: Record<string, string> = {
   borderLeftWidth: 'borderLeftStyle',
 }
 
-function stateIsActive(state: GetStyleState, name: string): boolean {
-  const component = state.componentState
-  if (name === 'hover') return !!component.hover
-  if (name === 'press') return !!(component.press || component.pressIn)
-  if (name === 'focus') return !!component.focus
-  if (name === 'focus-visible') return !!component.focusVisible
-  if (name === 'focus-within') return !!component.focusWithin
-  if (name === 'disabled') return !!(component.disabled || state.props.disabled)
-  if (name === 'enter') return !!component.unmounted
-  if (name === 'exit') return !!state.styleProps.isExiting
-  return false
-}
-
 export function platformMatches(name: string): boolean {
   if (name === 'web') return isWeb
   if (name === 'native') return !isWeb
@@ -328,161 +382,278 @@ export function platformMatches(name: string): boolean {
   return name === 'tv' && isTV
 }
 
-function groupCondition(state: GetStyleState, modifier: string, out: Condition) {
-  const slash = modifier.indexOf('/')
-  const stateName = modifier.slice(6, slash === -1 ? undefined : slash)
-  const groupName = slash === -1 ? 'true' : modifier.slice(slash + 1)
-  const selector = stateSelectors[stateName]
-  if (
-    !selector ||
-    selector[0] === '.' ||
-    (slash !== -1 && !isModifierName(groupName, 0, groupName.length))
-  ) {
-    return false
-  }
-  out.selector += `:where(.t_group_${groupName}${selector} *)`
-  if (stateName === 'hover') (out.wrappers ||= []).push('@media (hover: hover)')
-  const component = state.componentState.group?.[groupName]
-  const context = state.flatGroupContext?.[groupName]
-  out.active &&= !!(component?.pseudo ?? context?.state.pseudo)?.[stateName]
-  ;(state.flatGroupKeys ||= new Set()).add(groupName)
-  return true
-}
-
-function containerCondition(
+export function resolveClauseChain(
   state: GetStyleState,
-  modifier: string,
-  out: Condition,
-  compiled: ConfigRevisionState
-) {
-  const slash = modifier.indexOf('/')
-  const size = modifier.slice(1, slash === -1 ? undefined : slash)
-  const name = slash === -1 ? '' : modifier.slice(slash + 1)
-  if (
-    !isModifierName(size, 0, size.length) ||
-    (slash !== -1 && !isModifierName(name, 0, name.length))
-  ) {
-    return false
-  }
-  const query = compiled.mediaQueries[size]
-  if (!query || !isContainerSizeQueryText(query)) return false
-  const key = `@${name}`
-  ;(out.wrappers ||= []).push(
-    name ? `@container ${name} ${query}` : `@container ${query}`
-  )
-  const component = state.componentState.group?.[key]
-  const context = state.flatGroupContext?.[key]
-  const active = component?.media?.[size]
-  out.active &&=
-    active === undefined
-      ? !!(context?.state.layout && mediaKeyMatch(size, context.state.layout))
-      : !!active
-  ;(state.flatGroupKeys ||= new Set()).add(key)
-  ;(state.flatGroupMedia ||= new Set()).add(size)
-  return true
-}
-
-/**
- * Resolve one modifier chain against the live state, or null when the runtime
- * has no such modifier. Exported because the variant scanner in `propMapper`
- * has to refuse exactly the chains this one refuses; two answers to "is this a
- * modifier" is how the prop and variant paths came to disagree about how much
- * of a bad value survives.
- */
-export function getCondition(state: GetStyleState, source: string): Condition | null {
+  source: string,
+  start: number,
+  end: number,
+  property?: string,
+  raw?: any,
+  merge?: MergeStyle,
+  originalValue?: any,
+  contextOnly = false,
+  payloadStart = -1,
+  payloadEnd = -1,
+  warning = 0
+): number {
   const compiled = getConfigRevisionState(state.conf)
-  const out = { key: '', active: true, emit: true, selector: '' } as Condition
-  const canonical: string[] = []
-  const kinds: ModifierKind[] = []
-  const seenModifiers = new Set<string>()
+  const sourceStart = start
+  let key = ''
+  let active = true
+  let emit = true
+  let selector = ''
+  let wrappers: string[] | undefined
+  let theme = ''
+  let enter = false
+  let exit = false
+  let unsupportedState = ''
+  let platformRank = 0
+  let depth = 0
+  let categoryRank = 0
+  let withinRank = 0
   let selfStateSpecificity = 0
-  let start = 0
-  for (let index = 0; index <= source.length; index++) {
-    if (index !== source.length && source.charCodeAt(index) !== 58) continue
-    const modifier = canonicalClauseModifier(source.slice(start, index))
+  for (let index = start; index <= end; index++) {
+    if (index !== end && source.charCodeAt(index) !== 58) continue
+    let modifier = source.slice(start, index)
     start = index + 1
-    if (!modifier) return null
-    const selector = stateSelectors[modifier]
-    const exactKind = compiled.modifiers[modifier]
-    let kind: ModifierKind
-    if (exactKind === modifierKindState) {
-      kind = 'state'
-    } else if (exactKind === modifierKindMedia) {
-      kind = 'media'
-    } else if (exactKind === modifierKindPlatform) {
-      kind = 'platform'
-    } else if (exactKind === modifierKindTheme) {
-      kind = 'theme'
-    } else if (modifier.startsWith('group-')) {
-      kind = 'group'
-    } else if (modifier.charCodeAt(0) === 64) {
-      kind = 'container'
-    } else {
-      return null
+    let code = compiled.modifiers[modifier]
+    let kind = code & 7
+    let rank = code >> 3
+    let stateSelector = ''
+    let conditionStateName = ''
+    let groupName = ''
+    let containerSize = ''
+    let containerName = ''
+    let containerQuery = ''
+    if (kind === modifierKindState) {
+      modifier = canonicalStateModifierNames[rank]
+      stateSelector = stateModifierSelectors[rank]
+    } else if (!kind && modifier.startsWith('group-')) {
+      const slash = modifier.indexOf('/')
+      const authoredState = modifier.slice(6, slash === -1 ? undefined : slash)
+      code = compiled.modifiers[authoredState]
+      if ((code & 7) !== modifierKindState) kind = 0
+      else {
+        rank = code >> 3
+        groupName = slash === -1 ? 'true' : modifier.slice(slash + 1)
+        if (
+          rank === 6 ||
+          rank === 7 ||
+          (slash !== -1 && !isModifierName(groupName, 0, groupName.length))
+        ) {
+          kind = 0
+        } else {
+          kind = 5
+          const stateName = canonicalStateModifierNames[rank]
+          conditionStateName = stateName
+          stateSelector = stateModifierSelectors[rank]
+          modifier = `group-${stateName}${slash === -1 ? '' : modifier.slice(slash)}`
+        }
+      }
+    } else if (!kind && modifier.charCodeAt(0) === 64) {
+      const slash = modifier.indexOf('/')
+      containerSize = modifier.slice(1, slash === -1 ? undefined : slash)
+      containerName = slash === -1 ? '' : modifier.slice(slash + 1)
+      if (
+        isModifierName(containerSize, 0, containerSize.length) &&
+        (slash === -1 || isModifierName(containerName, 0, containerName.length)) &&
+        ((code = compiled.modifiers[containerSize]) & 7) === modifierKindMedia &&
+        (containerQuery = compiled.mediaQueries[containerSize]) &&
+        isContainerSizeQueryText(containerQuery)
+      ) {
+        kind = 6
+        rank = code >> 3
+      }
+    }
+    if (!kind) {
+      if (warning && process.env.NODE_ENV === 'development') {
+        warnRefusedValue(
+          property!,
+          warning === 1 ? source : raw,
+          `unknown modifier "${source.slice(sourceStart, end)}"`
+        )
+      }
+      return 0
     }
 
-    if (seenModifiers.has(modifier)) continue
-    seenModifiers.add(modifier)
-    canonical.push(modifier)
-    kinds.push(kind)
+    let slotStart = 0
+    let duplicate = false
+    let inserted = !key
+    if (!key) key = modifier
+    else {
+      while (slotStart <= key.length) {
+        let slotEnd = key.indexOf(':', slotStart)
+        if (slotEnd === -1) slotEnd = key.length
+        let order = 0
+        const compareLength = Math.min(modifier.length, slotEnd - slotStart)
+        for (let offset = 0; offset < compareLength; offset++) {
+          order = modifier.charCodeAt(offset) - key.charCodeAt(slotStart + offset)
+          if (order) break
+        }
+        order ||= modifier.length - (slotEnd - slotStart)
+        if (!order) {
+          duplicate = true
+          break
+        }
+        if (order < 0) {
+          key = `${key.slice(0, slotStart)}${modifier}:${key.slice(slotStart)}`
+          inserted = true
+          break
+        }
+        if (slotEnd === key.length) break
+        slotStart = slotEnd + 1
+      }
+      if (!duplicate && !inserted) key += `:${modifier}`
+    }
+    if (duplicate) continue
 
-    if (kind === 'group') {
-      if (!groupCondition(state, modifier, out)) return null
-      continue
-    }
-    if (kind === 'container') {
-      if (!containerCondition(state, modifier, out, compiled)) return null
-      continue
-    }
-    if (kind === 'media') {
-      const query = compiled.mediaQueries[modifier]
-      if (!query) return null
-      ;(out.wrappers ||= []).push(`@media ${query}`)
-      out.active &&= !!state.flatMediaState?.[modifier]
-      ;(state.flatMediaKeys ||= new Set()).add(modifier)
-      continue
-    }
-    if (kind === 'platform') {
+    if (kind === modifierKindPlatform) {
+      if (rank > platformRank) platformRank = rank
       const matches = platformMatches(modifier)
-      out.active &&= matches
-      out.emit &&= matches
+      active &&= matches
+      emit &&= matches
       continue
     }
-    if (kind === 'theme') {
-      out.theme = modifier
-      out.selector += `:where(.t_${modifier}, .t_${modifier} *)`
-      out.active &&=
+    depth++
+    const nextCategory =
+      kind === modifierKindMedia
+        ? 0
+        : kind === 6
+          ? 1
+          : kind === modifierKindTheme
+            ? 2
+            : kind === 5
+              ? 3
+              : 4
+    if (nextCategory > categoryRank) {
+      categoryRank = nextCategory
+      withinRank = rank
+    } else if (nextCategory === categoryRank && rank > withinRank) {
+      withinRank = rank
+    }
+
+    if (kind === modifierKindMedia) {
+      const query = compiled.mediaQueries[modifier]
+      if (!query) return 0
+      ;(wrappers ||= []).push(`@media ${query}`)
+      active &&= !!state.flatMediaState?.[modifier]
+      ;(state.flatMediaKeys ||= new Set()).add(modifier)
+    } else if (kind === modifierKindTheme) {
+      theme = modifier
+      selector += `:where(.t_${modifier}, .t_${modifier} *)`
+      active &&=
         state.flatThemeName === modifier ||
         state.flatThemeName?.startsWith(`${modifier}_`) === true
-      continue
-    }
-    selfStateSpecificity++
-    if (!isWeb && selector[0] === '[' && modifier !== 'disabled') {
-      out.unsupportedState = modifier
-    }
-    if (selector[0] === '.') {
-      out.selector += `:is(${selector}, ${selector} *)`
-      out[modifier] = true
+    } else if (kind === 5) {
+      selector += `:where(.t_group_${groupName}${stateSelector} *)`
+      if (rank === 0) (wrappers ||= []).push('@media (hover: hover)')
+      const component = state.componentState.group?.[groupName]
+      const context = state.flatGroupContext?.[groupName]
+      active &&= !!(component?.pseudo ?? context?.state.pseudo)?.[conditionStateName]
+      ;(state.flatGroupKeys ||= new Set()).add(groupName)
+    } else if (kind === 6) {
+      const groupKey = `@${containerName}`
+      ;(wrappers ||= []).push(
+        containerName
+          ? `@container ${containerName} ${containerQuery}`
+          : `@container ${containerQuery}`
+      )
+      const component = state.componentState.group?.[groupKey]
+      const context = state.flatGroupContext?.[groupKey]
+      const match = component?.media?.[containerSize]
+      active &&=
+        match === undefined
+          ? !!(
+              context?.state.layout && mediaKeyMatch(containerSize, context.state.layout)
+            )
+          : !!match
+      ;(state.flatGroupKeys ||= new Set()).add(groupKey)
+      ;(state.flatGroupMedia ||= new Set()).add(containerSize)
     } else {
-      out.selector += selector
-    }
-    if (modifier === 'hover') (out.wrappers ||= []).push('@media (hover: hover)')
-    out.active &&= stateIsActive(state, modifier)
-    if (selector[0] === ':') {
-      ;(state.flatStateKeys ||= new Set()).add(modifier)
+      selfStateSpecificity++
+      if (!isWeb && stateSelector[0] === '[' && modifier !== 'disabled') {
+        unsupportedState = modifier
+      }
+      if (stateSelector[0] === '.') {
+        selector += `:is(${stateSelector}, ${stateSelector} *)`
+        if (rank === 6) enter = true
+        else exit = true
+      } else {
+        selector += stateSelector
+      }
+      if (rank === 0) (wrappers ||= []).push('@media (hover: hover)')
+      const component = state.componentState
+      active &&=
+        rank === 0
+          ? !!component.hover
+          : rank === 4
+            ? !!(component.press || component.pressIn)
+            : rank === 2
+              ? !!component.focus
+              : rank === 3
+                ? !!component.focusVisible
+                : rank === 1
+                  ? !!component.focusWithin
+                  : rank === 5
+                    ? !!(component.disabled || state.props.disabled)
+                    : rank === 6
+                      ? !!component.unmounted
+                      : rank === 7
+                        ? !!state.styleProps.isExiting
+                        : false
+      if (stateSelector[0] === ':') {
+        ;(state.flatStateKeys ||= new Set()).add(modifier)
+      }
     }
   }
-  out.precedence = getClausePrecedenceKeyFromKinds(
-    canonical,
-    kinds,
-    compiled.precedenceOrder
-  )
-  out.key = canonical[1] ? canonical.sort().join(':') : canonical[0] || ''
-  out.classRepetitions = clauseSubjectClassRepetitions(
-    out.precedence,
-    selfStateSpecificity
-  )
-  return out
+  if (depth > 5) {
+    throw new Error(
+      `a flat value clause supports at most 5 non-platform conditions; received ${depth} in "${source.slice(sourceStart, end)}:"`
+    )
+  }
+  const precedence =
+    (platformRank << 26) | (depth << 23) | (categoryRank << 20) | withinRank
+  const condition =
+    precedence * 256 +
+    selfStateSpecificity * 32 +
+    16 +
+    (active ? 1 : 0) +
+    (emit ? 2 : 0) +
+    (enter ? 4 : 0) +
+    (exit ? 8 : 0)
+  if (warning && unsupportedState && process.env.NODE_ENV === 'development') {
+    warnOnce(
+      `${property}: "${unsupportedState}:" has no native component-state source; dropping the clause`
+    )
+  }
+  if (
+    merge &&
+    property &&
+    condition & 2 &&
+    (condition & 1 ||
+      (isWeb && state.flatShouldDoClasses) ||
+      (warning === 1 &&
+        !isWeb &&
+        theme &&
+        supportsDynamicColorIOS &&
+        isColorStyleKey(property)))
+  ) {
+    const value = payloadStart === -1 ? raw : source.slice(payloadStart, payloadEnd)
+    emitValue(
+      state,
+      property,
+      value,
+      condition,
+      key,
+      wrappers,
+      selector,
+      theme,
+      merge,
+      warning === 2 ? originalValue : (originalValue ?? value),
+      contextOnly
+    )
+  }
+  return condition
 }
 
 interface TokenLookup {
@@ -714,23 +885,31 @@ function directAtomic(
   state: DirectState,
   property: string,
   value: any,
-  condition: Condition | null,
+  condition: number,
+  conditionKey: string,
+  conditionWrappers: string[] | undefined,
+  conditionSelector: string,
   isDefault = false
 ) {
   const atomics = (state.flatAtomics ||= {})
   const atomicKey = property.startsWith('transition') ? 'transition' : property
   const existing = atomics[atomicKey]
-  const contribution = directStyleSignature(property, value, condition?.key || '')
+  const contribution = directStyleSignature(property, value, conditionKey)
   const signature = existing ? existing.signature + contribution : contribution
   const next = getCSSStyleAtomic(
     property,
     value,
-    condition?.selector,
-    condition?.wrappers,
+    conditionSelector,
+    conditionWrappers,
     signature,
     true,
     atomicKey,
-    condition?.classRepetitions
+    condition
+      ? 1 +
+          ((Math.floor(condition / 256) >>> 23) & 7) +
+          (Math.floor(condition / 256) >>> 26) * 6 -
+          ((condition >>> 5) & 7)
+      : undefined
   )
   if (!next) return
   const identifier = next[StyleObjectIdentifier]
@@ -750,12 +929,10 @@ function directAtomic(
     }
     if (slotted) {
       atomic.conditions = {
-        [atomicKey === 'transition'
-          ? `${condition?.key || ''}\0${property}`
-          : condition!.key]: {
+        [atomicKey === 'transition' ? `${conditionKey}\0${property}` : conditionKey]: {
           count: nextRules.length,
           index: 0,
-          precedence: condition?.precedence ?? 0,
+          precedence: condition ? Math.floor(condition / 256) : 0,
           default: isDefault,
         },
       }
@@ -785,9 +962,7 @@ function directAtomic(
     }
     if (slotted) {
       const slot =
-        atomicKey === 'transition'
-          ? `${condition?.key || ''}\0${property}`
-          : condition!.key
+        atomicKey === 'transition' ? `${conditionKey}\0${property}` : conditionKey
       const previous = existing.conditions?.[slot]
       if (previous) {
         rules.splice(previous.index, previous.count)
@@ -801,7 +976,7 @@ function directAtomic(
         }
         delete existing.conditions![slot]
       }
-      const precedence = condition?.precedence ?? 0
+      const precedence = condition ? Math.floor(condition / 256) : 0
       let insertionIndex = rules.length
       if (existing.conditions) {
         for (const key in existing.conditions) {
@@ -841,7 +1016,10 @@ function directAtomic(
 function emitBorderStyleDefault(
   state: GetStyleState,
   property: string,
-  condition: Condition | null
+  condition: number,
+  conditionKey: string,
+  conditionWrappers: string[] | undefined,
+  conditionSelector: string
 ) {
   if (!isWeb || !state.flatShouldDoClasses || state.styleProps.noNormalize === false) {
     return
@@ -852,11 +1030,20 @@ function emitBorderStyleDefault(
   if (
     atomic?.baseRules ||
     (state.classNames[target] && !atomic) ||
-    (condition && atomic?.conditions?.[condition.key])
+    (condition && atomic?.conditions?.[conditionKey])
   ) {
     return
   }
-  directAtomic(state as DirectState, target, 'solid', condition, true)
+  directAtomic(
+    state as DirectState,
+    target,
+    'solid',
+    condition,
+    conditionKey,
+    conditionWrappers,
+    conditionSelector,
+    true
+  )
 }
 
 export function flushDirectStyles(state: GetStyleState, clear = false) {
@@ -882,19 +1069,23 @@ function emitProperty(
   state: GetStyleState,
   property: string,
   value: any,
-  condition: Condition | null,
+  condition: number,
+  conditionKey: string,
+  conditionWrappers: string[] | undefined,
+  conditionSelector: string,
+  conditionTheme: string,
   merge: MergeStyle,
   originalValue: any,
   contextOnly: boolean
 ) {
   const direct = state as DirectState
-  if (condition?.enter) (state.flatEnterKeys ||= new Set()).add(property)
-  if (condition?.exit) (state.flatExitKeys ||= new Set()).add(property)
+  if (condition & 4) (state.flatEnterKeys ||= new Set()).add(property)
+  if (condition & 8) (state.flatExitKeys ||= new Set()).add(property)
 
-  if (!isWeb && condition?.theme) {
+  if (!isWeb && conditionTheme) {
     if (supportsDynamicColorIOS && isColorStyleKey(property)) {
       const schemes = ((direct.flatDynamicColors ||= {})[property] ||= {})
-      schemes[condition.theme] =
+      schemes[conditionTheme] =
         typeof originalValue === 'string' && /^[a-z]+$/i.test(originalValue)
           ? originalValue
           : value
@@ -905,7 +1096,7 @@ function emitProperty(
   }
 
   if (contextOnly) {
-    if (!condition || condition.active) {
+    if (!condition || condition & 1) {
       ;(state.overriddenContextProps ||= {})[property] = originalValue
     }
     return
@@ -924,15 +1115,24 @@ function emitProperty(
     if (!condition) {
       if (state.style) delete state.style[property]
     }
-    directAtomic(state as DirectState, property, value, condition)
+    directAtomic(
+      state as DirectState,
+      property,
+      value,
+      condition,
+      conditionKey,
+      conditionWrappers,
+      conditionSelector
+    )
     return
   }
 
   if (condition) {
-    if (!condition.active) return
+    if (!(condition & 1)) return
+    const precedence = Math.floor(condition / 256)
     const previous = direct.flatPrecedence?.[property]
-    if (previous !== undefined && condition.precedence < previous) return
-    ;(direct.flatPrecedence ||= {})[property] = condition.precedence
+    if (previous !== undefined && precedence < previous) return
+    ;(direct.flatPrecedence ||= {})[property] = precedence
     ;(state.flatActiveConditions ||= {})[property] = true
   } else if (state.flatActiveConditions?.[property]) {
     return
@@ -967,7 +1167,11 @@ function emitBorder(
   state: GetStyleState,
   property: string,
   raw: string,
-  condition: Condition | null,
+  condition: number,
+  conditionKey: string,
+  conditionWrappers: string[] | undefined,
+  conditionSelector: string,
+  conditionTheme: string,
   merge: MergeStyle,
   originalValue: any,
   contextOnly: boolean
@@ -1001,18 +1205,54 @@ function emitBorder(
   if (style === 'none' && width === undefined) width = '0'
   if (width !== undefined) {
     for (const target of targets.width) {
-      emitResolved(state, target, width, condition, merge, originalValue, contextOnly)
+      emitResolved(
+        state,
+        target,
+        width,
+        condition,
+        conditionKey,
+        conditionWrappers,
+        conditionSelector,
+        conditionTheme,
+        merge,
+        originalValue,
+        contextOnly
+      )
     }
   }
   if (style !== undefined) {
     const styleTargets = !isWeb && property === 'border' ? ['borderStyle'] : targets.style
     for (const target of styleTargets) {
-      emitProperty(state, target, style, condition, merge, originalValue, contextOnly)
+      emitProperty(
+        state,
+        target,
+        style,
+        condition,
+        conditionKey,
+        conditionWrappers,
+        conditionSelector,
+        conditionTheme,
+        merge,
+        originalValue,
+        contextOnly
+      )
     }
   }
   if (color !== undefined) {
     for (const target of targets.color) {
-      emitResolved(state, target, color, condition, merge, originalValue, contextOnly)
+      emitResolved(
+        state,
+        target,
+        color,
+        condition,
+        conditionKey,
+        conditionWrappers,
+        conditionSelector,
+        conditionTheme,
+        merge,
+        originalValue,
+        contextOnly
+      )
     }
   }
 }
@@ -1020,7 +1260,11 @@ function emitBorder(
 function emitTextDecoration(
   state: GetStyleState,
   raw: string,
-  condition: Condition | null,
+  condition: number,
+  conditionKey: string,
+  conditionWrappers: string[] | undefined,
+  conditionSelector: string,
+  conditionTheme: string,
   merge: MergeStyle,
   originalValue: any,
   contextOnly: boolean
@@ -1039,7 +1283,19 @@ function emitTextDecoration(
             part === 'none'
           ? 'textDecorationLine'
           : 'textDecorationColor'
-    emitResolved(state, property, part, condition, merge, originalValue, contextOnly)
+    emitResolved(
+      state,
+      property,
+      part,
+      condition,
+      conditionKey,
+      conditionWrappers,
+      conditionSelector,
+      conditionTheme,
+      merge,
+      originalValue,
+      contextOnly
+    )
   }
 }
 
@@ -1065,17 +1321,57 @@ function emitTransform(
   state: GetStyleState,
   property: string,
   value: any,
-  condition: Condition | null,
+  condition: number,
+  conditionKey: string,
+  conditionWrappers: string[] | undefined,
+  conditionSelector: string,
+  conditionTheme: string,
   merge: MergeStyle,
   originalValue: any,
   contextOnly: boolean
 ) {
   if (!isWeb || !state.flatShouldDoClasses) {
     if (!isWeb && property === 'scale') {
-      emitProperty(state, 'scaleX', value, condition, merge, originalValue, contextOnly)
-      emitProperty(state, 'scaleY', value, condition, merge, originalValue, contextOnly)
+      emitProperty(
+        state,
+        'scaleX',
+        value,
+        condition,
+        conditionKey,
+        conditionWrappers,
+        conditionSelector,
+        conditionTheme,
+        merge,
+        originalValue,
+        contextOnly
+      )
+      emitProperty(
+        state,
+        'scaleY',
+        value,
+        condition,
+        conditionKey,
+        conditionWrappers,
+        conditionSelector,
+        conditionTheme,
+        merge,
+        originalValue,
+        contextOnly
+      )
     } else {
-      emitProperty(state, property, value, condition, merge, originalValue, contextOnly)
+      emitProperty(
+        state,
+        property,
+        value,
+        condition,
+        conditionKey,
+        conditionWrappers,
+        conditionSelector,
+        conditionTheme,
+        merge,
+        originalValue,
+        contextOnly
+      )
     }
     return
   }
@@ -1100,7 +1396,19 @@ function emitTransform(
       if (target === '--t-x' || target === '--t-y') targetValue = `${targetValue}px`
       else if (target === 'rotate') targetValue = `${targetValue}deg`
     }
-    emitProperty(state, target, targetValue, condition, merge, originalValue, contextOnly)
+    emitProperty(
+      state,
+      target,
+      targetValue,
+      condition,
+      conditionKey,
+      conditionWrappers,
+      conditionSelector,
+      conditionTheme,
+      merge,
+      originalValue,
+      contextOnly
+    )
     if (target === '--t-x' || target === '--t-y') addComposition(state, 'translate')
     else if (target.startsWith('--t-scale')) addComposition(state, 'scale')
   }
@@ -1110,7 +1418,11 @@ function emitResolved(
   state: GetStyleState,
   property: string,
   raw: string,
-  condition: Condition | null,
+  condition: number,
+  conditionKey: string,
+  conditionWrappers: string[] | undefined,
+  conditionSelector: string,
+  conditionTheme: string,
   merge: MergeStyle,
   originalValue: any,
   contextOnly: boolean
@@ -1126,7 +1438,19 @@ function emitResolved(
       value = Number(value)
     }
   }
-  emitProperty(state, property, value, condition, merge, originalValue, contextOnly)
+  emitProperty(
+    state,
+    property,
+    value,
+    condition,
+    conditionKey,
+    conditionWrappers,
+    conditionSelector,
+    conditionTheme,
+    merge,
+    originalValue,
+    contextOnly
+  )
 }
 
 function shadowUnit(part: any) {
@@ -1151,7 +1475,11 @@ function emitWebShadow(
     state,
     'boxShadow',
     state.flatBoxShadow ? `${state.flatBoxShadow}, ${next}` : next,
-    null,
+    0,
+    '',
+    undefined,
+    '',
+    '',
     merge,
     originalValue,
     contextOnly
@@ -1174,7 +1502,11 @@ function emitWebTextShadow(
     state,
     'textShadow',
     `${shadowUnit(offset.width)} ${shadowUnit(offset.height)} ${shadowUnit(shadow.textShadowRadius)} ${shadow.textShadowColor}`,
-    null,
+    0,
+    '',
+    undefined,
+    '',
+    '',
     merge,
     originalValue,
     contextOnly
@@ -1185,7 +1517,11 @@ function emitValue(
   state: GetStyleState,
   property: string,
   raw: any,
-  condition: Condition | null,
+  condition: number,
+  conditionKey: string,
+  conditionWrappers: string[] | undefined,
+  conditionSelector: string,
+  conditionTheme: string,
   merge: MergeStyle,
   originalValue: any,
   contextOnly: boolean
@@ -1204,7 +1540,14 @@ function emitValue(
     )
   }
 
-  emitBorderStyleDefault(state, property, condition)
+  emitBorderStyleDefault(
+    state,
+    property,
+    condition,
+    conditionKey,
+    conditionWrappers,
+    conditionSelector
+  )
 
   if (
     typeof raw === 'string' &&
@@ -1234,7 +1577,11 @@ function emitValue(
             .sort()
             .map((key) => ({ [key]: direct.flatLegacyTransforms![key] }))
         ),
-        null,
+        0,
+        '',
+        undefined,
+        '',
+        '',
         merge,
         originalValue,
         contextOnly
@@ -1245,6 +1592,10 @@ function emitValue(
         'transform',
         `${property}(${value})`,
         condition,
+        conditionKey,
+        conditionWrappers,
+        conditionSelector,
+        conditionTheme,
         merge,
         originalValue,
         contextOnly
@@ -1323,11 +1674,34 @@ function emitValue(
   }
 
   if (typeof raw === 'string' && property in borderTargets) {
-    emitBorder(state, property, raw, condition, merge, originalValue, contextOnly)
+    emitBorder(
+      state,
+      property,
+      raw,
+      condition,
+      conditionKey,
+      conditionWrappers,
+      conditionSelector,
+      conditionTheme,
+      merge,
+      originalValue,
+      contextOnly
+    )
     return
   }
   if (typeof raw === 'string' && property === 'textDecoration') {
-    emitTextDecoration(state, raw, condition, merge, originalValue, contextOnly)
+    emitTextDecoration(
+      state,
+      raw,
+      condition,
+      conditionKey,
+      conditionWrappers,
+      conditionSelector,
+      conditionTheme,
+      merge,
+      originalValue,
+      contextOnly
+    )
     return
   }
   if (typeof raw === 'string' && property === 'background') {
@@ -1338,6 +1712,10 @@ function emitValue(
         'backgroundColor',
         parts[0],
         condition,
+        conditionKey,
+        conditionWrappers,
+        conditionSelector,
+        conditionTheme,
         merge,
         originalValue,
         contextOnly
@@ -1376,7 +1754,7 @@ function emitValue(
             `native transform "${property}" cannot represent "${value}"; dropping it`
           )
         }
-        if (condition?.active && state.flatTransforms) {
+        if (condition & 1 && state.flatTransforms) {
           delete state.flatTransforms[property]
         }
         return
@@ -1387,7 +1765,19 @@ function emitValue(
         value = Number(value)
       }
     }
-    emitTransform(state, property, value, condition, merge, originalValue, contextOnly)
+    emitTransform(
+      state,
+      property,
+      value,
+      condition,
+      conditionKey,
+      conditionWrappers,
+      conditionSelector,
+      conditionTheme,
+      merge,
+      originalValue,
+      contextOnly
+    )
     return
   }
 
@@ -1395,9 +1785,33 @@ function emitValue(
     // css reads the shorthand, so skip the four-corner expansion here. a string
     // value still needs its token resolved, which is what emitResolved does.
     if (typeof raw === 'string') {
-      emitResolved(state, property, raw, condition, merge, originalValue, contextOnly)
+      emitResolved(
+        state,
+        property,
+        raw,
+        condition,
+        conditionKey,
+        conditionWrappers,
+        conditionSelector,
+        conditionTheme,
+        merge,
+        originalValue,
+        contextOnly
+      )
     } else {
-      emitProperty(state, property, raw, condition, merge, originalValue, contextOnly)
+      emitProperty(
+        state,
+        property,
+        raw,
+        condition,
+        conditionKey,
+        conditionWrappers,
+        conditionSelector,
+        conditionTheme,
+        merge,
+        originalValue,
+        contextOnly
+      )
     }
     return
   }
@@ -1414,6 +1828,10 @@ function emitValue(
         property,
         transform,
         condition,
+        conditionKey,
+        conditionWrappers,
+        conditionSelector,
+        conditionTheme,
         merge,
         originalValue,
         contextOnly
@@ -1457,6 +1875,10 @@ function emitValue(
             key,
             parsedValue,
             condition,
+            conditionKey,
+            conditionWrappers,
+            conditionSelector,
+            conditionTheme,
             merge,
             originalValue,
             contextOnly
@@ -1468,6 +1890,10 @@ function emitValue(
           property === 'backgroundImage' ? 'experimental_backgroundImage' : property,
           parsed,
           condition,
+          conditionKey,
+          conditionWrappers,
+          conditionSelector,
+          conditionTheme,
           merge,
           originalValue,
           contextOnly
@@ -1485,7 +1911,19 @@ function emitValue(
     ? null
     : expandStyle(property, value, state.conf.settings.styleCompat || 'web')
   if (!expanded) {
-    emitProperty(state, property, value, condition, merge, originalValue, contextOnly)
+    emitProperty(
+      state,
+      property,
+      value,
+      condition,
+      conditionKey,
+      conditionWrappers,
+      conditionSelector,
+      conditionTheme,
+      merge,
+      originalValue,
+      contextOnly
+    )
     return
   }
 
@@ -1506,6 +1944,10 @@ function emitValue(
           expanded[index][0],
           parts[partIndex],
           condition,
+          conditionKey,
+          conditionWrappers,
+          conditionSelector,
+          conditionTheme,
           merge,
           originalValue,
           contextOnly
@@ -1520,41 +1962,15 @@ function emitValue(
       expanded[index][0],
       expanded[index][1],
       condition,
+      conditionKey,
+      conditionWrappers,
+      conditionSelector,
+      conditionTheme,
       merge,
       originalValue,
       contextOnly
     )
   }
-}
-
-function emitSegment(
-  state: GetStyleState,
-  property: string,
-  source: string,
-  start: number,
-  end: number,
-  condition: Condition | null,
-  merge: MergeStyle,
-  originalValue: any,
-  contextOnly: boolean
-) {
-  while (start < end && source.charCodeAt(start) <= 32) start++
-  while (end > start && source.charCodeAt(end - 1) <= 32) end--
-  if (start === end) return false
-  if (
-    !condition ||
-    (condition.emit &&
-      (condition.active ||
-        (isWeb && state.flatShouldDoClasses) ||
-        (!isWeb &&
-          condition.theme &&
-          supportsDynamicColorIOS &&
-          isColorStyleKey(property))))
-  ) {
-    const value = source.slice(start, end)
-    emitValue(state, property, value, condition, merge, value, contextOnly)
-  }
-  return true
 }
 
 export function contributeStyleString(
@@ -1581,92 +1997,31 @@ export function contributeStyleString(
   // with no colon is emitted verbatim by contract. Keep the two paths in mind
   // together when reading a bug report about one of them.
   if (source.indexOf(':') === -1) {
-    emitValue(state, property, source, null, merge, originalValue ?? source, contextOnly)
-    return true
-  }
-
-  // Collection keeps condition state across the scanner callbacks until IV-a
-  // replaces the resolver. Refusal is already per segment: each bad segment is
-  // omitted while valid segments on either side stay in authored order.
-  const scan: DirectScanContext = [state, null, '', false, source, property, '', false, 0]
-
-  scanFlatValue(source, directStyleHandler, scan)
-
-  const refused = scan[6]
-
-  if (refused && process.env.NODE_ENV === 'development') {
-    warnRefusedValue(property, source, refused)
-  }
-
-  let hasBase = false
-  let lastPayloadStart = 0
-  for (let index = 9; index < scan.length; index += 3) {
-    const condition = scan[index] as Condition | null | false
-    const start = scan[index + 1] as number
-    lastPayloadStart = start
-    if (condition === false) {
-      if (scan[8] === 1) {
-        emitValue(
-          state,
-          property,
-          source,
-          null,
-          merge,
-          originalValue ?? source,
-          contextOnly
-        )
-        hasBase = true
-      }
-      continue
-    }
-    const emitted = emitSegment(
+    emitValue(
       state,
       property,
       source,
-      start,
-      scan[index + 2] as number,
-      condition,
+      0,
+      '',
+      undefined,
+      '',
+      '',
       merge,
-      originalValue,
+      originalValue ?? source,
       contextOnly
     )
-    if (!condition && emitted) hasBase = true
+    return true
   }
 
-  if (
-    process.env.NODE_ENV === 'development' &&
-    !hasBase &&
-    scan.length > 9 &&
-    (property in tokenCategories.color || property in tokenCategoryByProperty) &&
-    splitComponents(source.slice(lastPayloadStart)).length > 1
-  ) {
-    warnOnce(
-      `${property}="${source}" has multiple values after its first conditional. Write the base value before the first conditional.`
-    )
-  }
-
-  // a lifecycle-only value (`opacity="enter:0 exit:0"`) has no resting value to
-  // return to. CSS does not need one: the property is simply absent and the
-  // browser's own default applies. A style object does need one, because an
-  // animation driver can only animate between values it can see, and that is
-  // every native render plus every web render a driver drives inline. Without
-  // this the enter style lands and then the target style has no such key at
-  // all, so the driver has nothing to animate toward and the element snaps.
-  if ((!isWeb || !state.flatShouldDoClasses) && scan[3] && !hasBase) {
-    const value =
-      property === 'opacity'
-        ? 1
-        : property === 'scale' || property === 'scaleX' || property === 'scaleY'
-          ? 1
-          : property === 'rotate'
-            ? '0deg'
-            : property === 'x' || property === 'y'
-              ? 0
-              : null
-    if (value !== null) {
-      emitValue(state, property, value, null, merge, value, contextOnly)
-    }
-  }
+  scanFlatValue(
+    source,
+    directStyleHandler,
+    state,
+    property,
+    merge,
+    originalValue,
+    contextOnly
+  )
   return true
 }
 
@@ -1678,25 +2033,33 @@ export function contributeFrontendValue(
   contextOnly = false
 ) {
   if (value.base !== null) {
-    emitValue(state, property, value.base, null, merge, value.base, contextOnly)
+    emitValue(
+      state,
+      property,
+      value.base,
+      0,
+      '',
+      undefined,
+      '',
+      '',
+      merge,
+      value.base,
+      contextOnly
+    )
   }
   for (const clause of value.clauses) {
-    const condition = getCondition(state, clause.modifiers.join(':'))
-    if (
-      condition &&
-      condition.emit &&
-      (condition.active || (isWeb && state.flatShouldDoClasses))
-    ) {
-      emitValue(
-        state,
-        property,
-        clause.payload,
-        condition,
-        merge,
-        clause.payload,
-        contextOnly
-      )
-    }
+    const source = clause.modifiers.join(':')
+    resolveClauseChain(
+      state,
+      source,
+      0,
+      source.length,
+      property,
+      clause.payload,
+      merge,
+      clause.payload,
+      contextOnly
+    )
   }
   return true
 }
@@ -1710,21 +2073,20 @@ export function contributeVariantClauseValue(
   originalValue?: any,
   contextOnly = false
 ) {
-  const condition = getCondition(state, conditionSource)
-  if (!condition) {
-    if (process.env.NODE_ENV === 'development') {
-      warnRefusedValue(property, value, `unknown modifier "${conditionSource}"`)
-    }
-    return
-  }
-  if (process.env.NODE_ENV === 'development' && condition.unsupportedState) {
-    warnOnce(
-      `${property}: "${condition.unsupportedState}:" has no native component-state source; dropping the clause`
-    )
-  }
-  if (condition.emit && (condition.active || (isWeb && state.flatShouldDoClasses))) {
-    emitValue(state, property, value, condition, merge, originalValue, contextOnly)
-  }
+  resolveClauseChain(
+    state,
+    conditionSource,
+    0,
+    conditionSource.length,
+    property,
+    value,
+    merge,
+    originalValue,
+    contextOnly,
+    -1,
+    -1,
+    2
+  )
 }
 
 export function contributeStyleValue(
@@ -1740,7 +2102,19 @@ export function contributeStyleValue(
     if (expanded) {
       state.flatUsesSafeArea = true
       for (const [key, resolved] of expanded) {
-        emitValue(state, key, resolved, null, merge, originalValue ?? value, contextOnly)
+        emitValue(
+          state,
+          key,
+          resolved,
+          0,
+          '',
+          undefined,
+          '',
+          '',
+          merge,
+          originalValue ?? value,
+          contextOnly
+        )
       }
       return true
     }
@@ -1756,7 +2130,19 @@ export function contributeStyleValue(
     )
   }
   if (value != null) {
-    emitValue(state, property, value, null, merge, originalValue ?? value, contextOnly)
+    emitValue(
+      state,
+      property,
+      value,
+      0,
+      '',
+      undefined,
+      '',
+      '',
+      merge,
+      originalValue ?? value,
+      contextOnly
+    )
     return true
   }
   return false

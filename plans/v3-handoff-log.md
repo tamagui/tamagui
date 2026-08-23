@@ -5835,3 +5835,120 @@ Validation at this checkpoint:
   checks passed;
 - the parser ruler passed eight tests with 36 expectations;
 - `git diff --check` passed.
+
+## 59. Engine consolidation Phase IV-a: one clause resolver (2026-08-23)
+
+`directStyle` now resolves a clause through one call-stack-only
+`resolveClauseChain` loop. The heap `Condition` record, `getCondition`, the
+direct collect-then-emit loop, the canonical and kind arrays, the per-clause
+`Set`, and the grammar-config precedence bridge are gone. The compiled
+vocabulary carries numeric kind and rank data, with aliases sharing rank.
+
+The direct string path resolves and emits at payload close. The conditional
+variant path keeps only numeric payload and chain offsets across authored
+variant execution, then slices and re-resolves after that user-code boundary.
+This preserves the existing two-resolution timing without retaining mutable
+resolver state. Resolver and scanner state is call-local, duplicate modifiers
+are rejected before live state reads and side effects, and wrapper and selector
+order remains authored.
+
+Assembled review found and fixed two shipping correctness defects with red
+runtime controls:
+
+- On iOS, `enter:red` could infer a theme from lifecycle selector text and
+  return a dynamic-theme object instead of `red`. Emission now carries the
+  already-resolved theme scalar.
+- A configured size-query media key shadowed by the reserved `hover` state
+  could make `@hover` executable as a container even though the authoritative
+  registry rejects it. Container resolution now reuses the compiled lookup and
+  requires an exact media kind.
+
+Neither correction adds a render allocation, loop, config read, fallback, or
+Proxy.
+
+### Ruler and recovery receipt
+
+The parser manifest now contains 78 selectors. It predeclares
+`resolveClauseChain`, `canonicalStateModifierNames`, and
+`stateModifierSelectors`; all historical checkpoints keep those selectors
+absent with enforced destinations, so their numbers are identical to the
+omission-closed 75-selector frame. IV-a is the first artifact where the three
+selectors carry generated spans. Every historical artifact and the IV-a
+artifact validate in this frame.
+
+The fresh size artifacts are `/tmp/p29049-iva-final-size.JXOhBT` and
+`/tmp/p29049-iva-final-size-repeat.iixpb0`. Their JavaScript outputs are
+byte-identical. The fresh parser-cluster artifacts are
+`/tmp/p29049-iva-final-cluster.pxAMyd` and
+`/tmp/p29049-iva-final-cluster-repeat.BDw8IC`, also byte-identical.
+
+| arm | whole gzip | CORE | cluster whole gzip | parser-cluster union |
+| --- | ---: | ---: | ---: | ---: |
+| Phase IV-b | 104,450 | 40,338 | 104,345 | 5,045 |
+| Phase IV-a | 104,081 | 39,976 | 103,947 | 4,707 |
+| movement | -369 | -362 | -398 | -338 |
+
+The fixed add-then-delete sequence therefore closes as a measured miss. IV-a
+leaves 113 CORE and 287 parser-cluster gzip unrecovered. The recovery point
+does not move to IV-c, no unrelated bytes paid the shortfall, and no new
+over-cap sequence debt may open while this miss remains outstanding.
+
+The campaign headline after six consolidation checkpoints is plain: the
+parser cluster is 4,707 against its 4,706 baseline, and CORE is 39,976 against
+its 39,938 baseline. Both size ledgers are net zero at this precision. The
+semantic and correctness changes are real, but they are a separate result.
+
+### Corrected forward forecast
+
+IV-b and IV-a both missed their forecasts in the favorable direction. The
+common cause is now measured: the model priced gross declaration deletion but
+underpriced the retained plumbing that replaces it. After IV-a,
+`directStyle` itself is four marginal gzip bytes larger than at IV-b even
+though the named legacy helpers are gone. The retained resolver and handler
+replace most of those bytes. The actual reduction came primarily from the
+tooling-shaped precedence and identity contributions leaving the app graph,
+while the scanner and packed state tables grew.
+
+The corrected parser-cluster forecast counts only work that can disappear:
+
+| checkpoint or sequence | expected movement |
+| --- | ---: |
+| IV-c | -70 to 0 |
+| V-a through V-e | -90 to -20 |
+| VI-a and VI-b | -90 to -20 |
+
+From 4,707, this places the corrected post-V-e endpoint at 4,547 to 4,687 and
+the post-VI endpoint at 4,457 to 4,667. The former 4,230 to 3,550 endpoint is
+superseded. Even the favorable result remains far above the <=1,000 report
+gate and 800 target. IV-c is paused pending the owner's continuation decision.
+
+### Functional variant props decision
+
+The separate `extras.props` proposal is declined and corrected in
+`plans/v3-functional-variant-props-contract.md`. Narrowing it removes no code:
+`mergeComponentProps` and `getVariantExtras` still remain, and context-bearing
+components would need a second props representation and another render
+allocation. Runtime probes also withdrew the claimed TextArea, SizableText,
+and SurfaceRow breaks. The one real repository dependency is
+`StyledContextTokens`, while a previously omitted fourth source overlays media
+and pseudo values onto `styleState.props`. The dead static-only fallback Proxy
+was correctly deleted earlier but measured zero production bytes and justifies
+no public API break.
+
+Validation at this checkpoint:
+
+- style-grammar passed 29 files with 466 tests;
+- the full core web suite passed 71 files with two skipped, 566 tests with
+  three skipped and one todo;
+- the full core native suite passed 30 files with one skipped, 295 tests with
+  seven expected failures and nine skipped;
+- the iOS-focused suite passed four files with 27 tests;
+- focused SSR and streaming coverage passed two files with 11 tests;
+- style-grammar and web package builds passed;
+- the full root build passed 171 of 171 tasks;
+- the parser ruler passed eight tests with 36 expectations and validated all
+  ten checkpoint artifacts in the 78-selector frame;
+- root lint passed with the same five unrelated warnings;
+- root dependency, unused, Tamagui, reference, path, DOM type, and LSP pin
+  checks passed;
+- `git diff --check` passed.

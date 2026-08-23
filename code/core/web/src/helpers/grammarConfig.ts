@@ -2,8 +2,6 @@ import { simpleHash } from '@tamagui/helpers'
 import {
   compileModifierVocabulary,
   configRevisionSymbol,
-  createClausePrecedenceOrder,
-  type ClausePrecedenceOrder,
   type CompiledModifierVocabulary,
 } from '@tamagui/style-grammar/runtime'
 
@@ -29,7 +27,6 @@ export interface ConfigRevisionState {
   revision: number
   modifiers: CompiledModifierVocabulary
   mediaQueries: Readonly<Record<string, string>>
-  precedenceOrder: ClausePrecedenceOrder
   snapshot?: ConfigRevisionSnapshot
 }
 
@@ -63,7 +60,6 @@ export function prepareConfigRevision(
   const mediaNames = Object.keys(media)
   const themeNames = Object.keys(themes)
   const modifiers = compileModifierVocabulary({ mediaNames, themeNames })
-  const precedenceOrder = createClausePrecedenceOrder(mediaNames)
   const mediaQueries = Object.create(null) as Record<string, string>
   for (const name of mediaNames) {
     mediaQueries[name] = mediaObjectToString(media[name])
@@ -72,7 +68,6 @@ export function prepareConfigRevision(
     revision: captured.revision,
     modifiers,
     mediaQueries,
-    precedenceOrder,
   }
 
   // a getter above may have synchronously mutated and rebuilt this config.

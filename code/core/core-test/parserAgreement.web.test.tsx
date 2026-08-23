@@ -362,6 +362,20 @@ describe('agreement', () => {
       expect(variantValue(source, active)).toBe('red')
     }
   )
+
+  test('duplicate chains stay unbounded while distinct non-platform conditions stay capped', () => {
+    const duplicateChain = `${Array(40).fill('hover').join(':')}:red`
+    expect(propValue(duplicateChain, ['hover'])).toBe('red')
+    expect(variantValue(duplicateChain, ['hover'])).toBe('red')
+
+    const tooDeep = 'hover:focus:disabled:sm:md:dark:red'
+    expect(() => propValue(tooDeep, ['hover', 'focus', 'disabled', 'sm', 'md'])).toThrow(
+      'at most 5 non-platform conditions'
+    )
+    expect(() =>
+      variantValue(tooDeep, ['hover', 'focus', 'disabled', 'sm', 'md'])
+    ).toThrow('at most 5 non-platform conditions')
+  })
 })
 
 describe('comments', () => {

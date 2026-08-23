@@ -11,7 +11,7 @@ import type {
   VariantSpreadFunction,
 } from '../types'
 import { variantResolverNames } from '../types'
-import { getCondition } from './directStyle'
+import { resolveClauseChain } from './directStyle'
 import { expandStyle } from './expandStyle'
 import { resolveVariableValue } from './resolveVariableValue'
 import { getFontsForLanguage, getVariantExtras } from './getVariantExtras'
@@ -38,39 +38,28 @@ export function appendFlatClause(
     : `${prev} ${conditionSource}:${value}`
 }
 
-// pass state, source, pending modifier, saw chain, pending refusal, then
-// start/end/modifier triples. this one result array replaces the former three
-// arrays and stays local while authored variant reads can re-enter.
+// pass state, source, saw chain, then payload/chain offset quadruples. only
+// numeric offsets survive while authored variant code runs.
 type VariantScanContext = any[]
 
 const propMapperHandler: FlatValueHandler<VariantScanContext> = {
-  segment(ctx, start, end, isBase, valid) {
-    if (!valid || ctx[4] || start === end) {
-      ctx[2] = undefined
-      ctx[4] = false
+  segment(ctx, start, end, isBase, valid, source, chainStart, chainEnd, chainValid) {
+    if (isBase) {
+      if (valid && start < end) ctx.push(start, end, -1, -1)
       return
     }
-    ctx.push(start, end, ctx[2])
+    if (!chainValid) return
+    const condition = resolveClauseChain(ctx[0], source, chainStart, chainEnd)
+    if (condition && valid && start < end) {
+      ctx.push(start, end, chainStart, chainEnd)
+    }
   },
-  chain(ctx, start, end, valid) {
-    ctx[3] = true
-    if (!valid) {
-      ctx[2] = undefined
-      ctx[4] = true
-      return true
-    }
-    const source = (ctx[1] as string).slice(start, end)
-    if (!getCondition(ctx[0], source)) {
-      ctx[2] = undefined
-      ctx[4] = true
-      return true
-    }
-    ctx[2] = source
-    ctx[4] = false
+  chain(ctx) {
+    ctx[2] = true
     return true
   },
   error(ctx) {
-    ctx[3] = true
+    ctx[2] = true
   },
 }
 
@@ -204,16 +193,16 @@ const resolveVariants: StyleResolver = (
     )
   ) {
     // `scanFlatValue` is the same lexer `contributeStyleString` and the
-    // canonical `parseValue` run, and `getCondition` is the same modifier
+    // canonical `parseValue` run, and `resolveClauseChain` is the same modifier
     // resolver the style path uses. A refused chain invalidates only its own
     // payload, and the shared lexer continues to later clauses.
-    const scan: VariantScanContext = [styleState, value, undefined, false, false]
+    const scan: VariantScanContext = [styleState, value, false]
 
     scanFlatValue(value, propMapperHandler, scan)
 
-    if (scan[3]) {
+    if (scan[2]) {
       let entries: [string, any, any?, string?][] | undefined
-      for (let index = 5; index < scan.length; index += 3) {
+      for (let index = 3; index < scan.length; index += 4) {
         const resolved = resolveVariantValue(
           key,
           value.slice(scan[index] as number, scan[index + 1] as number),
@@ -223,7 +212,11 @@ const resolveVariants: StyleResolver = (
         )
         if (!resolved) continue
         entries ||= []
-        const modifier = scan[index + 2] as string | undefined
+        const chainStart = scan[index + 2] as number
+        const modifier =
+          chainStart === -1
+            ? undefined
+            : value.slice(chainStart, scan[index + 3] as number)
         for (const entry of resolved) {
           if (modifier !== undefined) entry[3] = modifier
           entries.push(entry)

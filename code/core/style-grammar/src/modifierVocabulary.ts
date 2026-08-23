@@ -1,6 +1,7 @@
 import type { GrammarConfigView } from './candidate'
-import { grammarPlatformNames } from './config'
-import { stateModifierNames } from './clauseIdentity'
+import { grammarPlatformNames, grammarPlatformRank } from './config'
+import { canonicalClauseModifier, stateModifierNames } from './clauseIdentity'
+import { canonicalStateModifierNames } from './stateModifiers'
 
 export const configRevisionSymbol: unique symbol = Symbol.for(
   'tamagui.configRevision'
@@ -12,7 +13,7 @@ export const modifierKindPlatform = 3
 export const modifierKindTheme = 4
 
 export type CompiledModifierKind = 1 | 2 | 3 | 4
-export type CompiledModifierVocabulary = Readonly<Record<string, CompiledModifierKind>>
+export type CompiledModifierVocabulary = Readonly<Record<string, number>>
 
 export const modifierRefusalReservedContainerPrefix = 1
 export const modifierRefusalReservedGroupPrefix = 2
@@ -30,19 +31,20 @@ type Names = readonly string[] | ReadonlySet<string> | Readonly<Record<string, u
 
 export function forEachModifierName(
   source: Names | undefined,
-  visit: (name: string) => void
+  visit: (name: string, rank: number) => void
 ): void {
   if (!source) return
+  let rank = 0
   if (Array.isArray(source)) {
-    for (const name of source) visit(name)
+    for (const name of source) visit(name, rank++)
     return
   }
   if (source instanceof Set) {
-    for (const name of source) visit(name)
+    for (const name of source) visit(name, rank++)
     return
   }
   for (const name in source as Readonly<Record<string, unknown>>) {
-    if (Object.prototype.hasOwnProperty.call(source, name)) visit(name)
+    if (Object.prototype.hasOwnProperty.call(source, name)) visit(name, rank++)
   }
 }
 
@@ -55,21 +57,27 @@ export function compileModifierVocabulary(
   onRefusal?: ModifierVocabularyRefusalHandler,
   onRegistered?: (name: string) => void
 ): CompiledModifierVocabulary {
-  const names = Object.create(null) as Record<string, CompiledModifierKind>
+  const names = Object.create(null) as Record<string, number>
 
-  const register = (name: string, code: CompiledModifierKind): void => {
+  const register = (name: string, code: number): void => {
+    const kind = (code & 7) as CompiledModifierKind
     if (name.charCodeAt(0) === 64) {
-      onRefusal?.(modifierRefusalReservedContainerPrefix, name, code, 0)
+      onRefusal?.(modifierRefusalReservedContainerPrefix, name, kind, 0)
       return
     }
     if (name.startsWith('group-')) {
-      onRefusal?.(modifierRefusalReservedGroupPrefix, name, code, 0)
+      onRefusal?.(modifierRefusalReservedGroupPrefix, name, kind, 0)
       return
     }
     const existing = names[name]
     if (existing !== undefined) {
-      if (existing !== code) {
-        onRefusal?.(modifierRefusalKindCollision, name, code, existing)
+      if ((existing & 7) !== kind) {
+        onRefusal?.(
+          modifierRefusalKindCollision,
+          name,
+          kind,
+          (existing & 7) as CompiledModifierKind
+        )
       }
       return
     }
@@ -78,11 +86,14 @@ export function compileModifierVocabulary(
   }
 
   for (const name of stateModifierNames) {
-    register(name, modifierKindState)
+    const rank = canonicalStateModifierNames.indexOf(canonicalClauseModifier(name))
+    register(name, modifierKindState | (rank << 3))
   }
-  forEachModifierName(view.mediaNames, (name) => register(name, modifierKindMedia))
+  forEachModifierName(view.mediaNames, (name, rank) =>
+    register(name, modifierKindMedia | (rank << 3))
+  )
   forEachModifierName(view.platformNames ?? grammarPlatformNames, (name) =>
-    register(name, modifierKindPlatform)
+    register(name, modifierKindPlatform | (grammarPlatformRank(name) << 3))
   )
   forEachModifierName(view.themeNames, (name) => {
     if (isRootThemeName(name)) register(name, modifierKindTheme)

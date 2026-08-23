@@ -29,6 +29,35 @@ export type ComponentStateModifierName =
 export const componentStateModifierNames: readonly ComponentStateModifierName[] =
   Object.freeze(['open', 'checked', 'highlighted', 'selected', 'invalid'])
 
+// precedence order and the selector id packed into the runtime vocabulary
+export const canonicalStateModifierNames: readonly string[] = Object.freeze([
+  'hover',
+  'focus-within',
+  'focus',
+  'focus-visible',
+  'press',
+  'disabled',
+  'enter',
+  'exit',
+  ...componentStateModifierNames,
+])
+
+export const stateModifierSelectors: readonly string[] = Object.freeze([
+  ':hover',
+  ':focus-within',
+  ':focus',
+  ':focus-visible',
+  ':active',
+  '[aria-disabled]',
+  '.t_unmounted',
+  '.t_exiting',
+  '[data-state="open"]',
+  '[data-state="checked"]',
+  '[data-highlighted]',
+  '[data-state="active"]',
+  '[aria-invalid="true"]',
+])
+
 /**
  * Every alternate spelling of a core state modifier, and the one it means.
  *

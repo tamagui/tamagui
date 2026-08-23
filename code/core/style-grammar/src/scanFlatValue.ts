@@ -96,7 +96,25 @@ export interface FlatValueHandler<Context> {
    * base is simply no base, an empty payload is a clause with nothing in it.
    * `valid` is false when this segment contains a lexical error.
    */
-  segment(ctx: Context, start: number, end: number, isBase: boolean, valid: boolean): void
+  segment(
+    ctx: Context,
+    start: number,
+    end: number,
+    isBase: boolean,
+    valid: boolean,
+    source: string,
+    chainStart: number,
+    chainEnd: number,
+    chainValid: boolean,
+    chainCount: number,
+    result: number,
+    failure: FlatScanFailure | null,
+    failureIndex: number,
+    a: any,
+    b: any,
+    c: any,
+    d: any
+  ): number | void
   /**
    * A modifier chain just ended, without its trailing colon, so
    * `source.slice(start, end)` is `dark:hover` for `dark:hover:red`. `valid` is
@@ -112,6 +130,18 @@ export interface FlatValueHandler<Context> {
   error?(ctx: Context, code: FlatScanErrorCode, index: number): void
   /** every top-level word, whether or not it turned out to carry a chain */
   word?(ctx: Context, start: number, end: number, isChain: boolean): void
+  /** the scan ended; `result` is the bitwise union returned by `segment` */
+  end?(
+    ctx: Context,
+    source: string,
+    result: number,
+    lastAcceptedStart: number,
+    chainCount: number,
+    a: any,
+    b: any,
+    c: any,
+    d: any
+  ): void
 }
 
 function isWhitespace(code: number): boolean {
@@ -169,24 +199,66 @@ function closeSegment<Context>(
   segmentStart: number,
   end: number,
   isBase: boolean,
-  valid: boolean
-): void {
+  valid: boolean,
+  chainStart: number,
+  chainEnd: number,
+  chainValid: boolean,
+  chainCount: number,
+  result: number,
+  failure: FlatScanFailure | null,
+  failureIndex: number,
+  a: any,
+  b: any,
+  c: any,
+  d: any
+): number {
   let start = segmentStart
   let stop = end
   while (start < stop && isWhitespace(source.charCodeAt(start))) start++
   while (stop > start && isWhitespace(source.charCodeAt(stop - 1))) stop--
-  handler.segment(ctx, start, stop, isBase, valid)
+  const bits =
+    handler.segment(
+      ctx,
+      start,
+      stop,
+      isBase,
+      valid,
+      source,
+      chainStart,
+      chainEnd,
+      chainValid,
+      chainCount,
+      result,
+      failure,
+      failureIndex,
+      a,
+      b,
+      c,
+      d
+    ) || 0
+  return start * 32 + bits
 }
 
 export function scanFlatValue<Context>(
   source: string,
   handler: FlatValueHandler<Context>,
-  ctx: Context
+  ctx: Context,
+  a?: any,
+  b?: any,
+  c?: any,
+  d?: any
 ): FlatScanFailure | null {
   const length = source.length
 
   let failure: FlatScanFailure | null = null
+  let failureIndex = -1
   let sawChain = false
+  let chainCount = 0
+  let chainStart = -1
+  let chainEnd = -1
+  let chainValid = true
+  let result = 0
+  let lastAcceptedStart = 0
   let segmentValid = true
   // where the base, or the current payload, starts
   let segmentStart = 0
@@ -227,6 +299,7 @@ export function scanFlatValue<Context>(
       if (code === CHAR_BACKSLASH) index++
       else if (code === quote) quote = 0
       else if (code === CHAR_LF || code === CHAR_CR || code === CHAR_FF) {
+        if (failureIndex === -1) failureIndex = quoteStart
         if (failure === null) failure = 'unterminated-string'
         handler.error?.(ctx, 'unterminated-string', quoteStart)
         if (quoteStart < wordErrorMin) wordErrorMin = quoteStart
@@ -256,6 +329,7 @@ export function scanFlatValue<Context>(
       continue
     }
     if (code === CHAR_STAR && source.charCodeAt(index + 1) === CHAR_SLASH) {
+      if (failureIndex === -1) failureIndex = index
       if (failure === null) failure = 'stray-comment-close'
       handler.error?.(ctx, 'stray-comment-close', index)
       if (index < wordErrorMin) wordErrorMin = index
@@ -281,23 +355,41 @@ export function scanFlatValue<Context>(
       if (wordStart !== -1) {
         handler.word?.(ctx, wordStart, index, lastColon !== -1)
         if (lastColon !== -1) {
-          closeSegment(
+          const closed = closeSegment(
             source,
             handler,
             ctx,
             segmentStart,
             wordStart,
             !sawChain,
-            segmentValid
+            segmentValid,
+            chainStart,
+            chainEnd,
+            chainValid,
+            chainCount,
+            result,
+            failure,
+            failureIndex,
+            a,
+            b,
+            c,
+            d
           )
-          const chainValid = wordErrorMin >= lastColon
+          const bits = closed % 32
+          result |= bits
+          if (bits & 4) lastAcceptedStart = Math.floor(closed / 32)
+          const nextChainValid = wordErrorMin >= lastColon
           const payloadValid = wordErrorMax < lastColon
-          if (!handler.chain(ctx, wordStart, lastColon, chainValid)) {
+          if (!handler.chain(ctx, wordStart, lastColon, nextChainValid)) {
             return 'refused-chain'
           }
+          chainStart = wordStart
+          chainEnd = lastColon
+          chainValid = nextChainValid
+          chainCount++
           sawChain = true
           segmentStart = lastColon + 1
-          segmentValid = chainValid && payloadValid
+          segmentValid = nextChainValid && payloadValid
         } else if (wordErrorMax !== -1) {
           segmentValid = false
         }
@@ -317,6 +409,7 @@ export function scanFlatValue<Context>(
       code === CHAR_BRACE_CLOSE ||
       code === CHAR_SEMICOLON
     ) {
+      if (failureIndex === -1) failureIndex = index
       if (failure === null) failure = 'invalid-character'
       handler.error?.(ctx, 'invalid-character', index)
       if (index < wordErrorMin) wordErrorMin = index
@@ -333,18 +426,21 @@ export function scanFlatValue<Context>(
   }
 
   if (comment) {
+    if (failureIndex === -1) failureIndex = commentStart
     if (failure === null) failure = 'unterminated-comment'
     handler.error?.(ctx, 'unterminated-comment', commentStart)
     if (commentStart < wordErrorMin) wordErrorMin = commentStart
     if (commentStart > wordErrorMax) wordErrorMax = commentStart
   }
   if (quote !== 0) {
+    if (failureIndex === -1) failureIndex = quoteStart
     if (failure === null) failure = 'unterminated-string'
     handler.error?.(ctx, 'unterminated-string', quoteStart)
     if (quoteStart < wordErrorMin) wordErrorMin = quoteStart
     if (quoteStart > wordErrorMax) wordErrorMax = quoteStart
   }
   if (depth > 0) {
+    if (failureIndex === -1) failureIndex = parenStart
     if (failure === null) failure = 'unterminated-function'
     handler.error?.(ctx, 'unterminated-function', parenStart)
     if (parenStart < wordErrorMin) wordErrorMin = parenStart
@@ -354,22 +450,71 @@ export function scanFlatValue<Context>(
   if (wordStart !== -1) {
     handler.word?.(ctx, wordStart, length, lastColon !== -1)
     if (lastColon !== -1) {
-      closeSegment(source, handler, ctx, segmentStart, wordStart, !sawChain, segmentValid)
-      const chainValid = wordErrorMin >= lastColon
+      const closed = closeSegment(
+        source,
+        handler,
+        ctx,
+        segmentStart,
+        wordStart,
+        !sawChain,
+        segmentValid,
+        chainStart,
+        chainEnd,
+        chainValid,
+        chainCount,
+        result,
+        failure,
+        failureIndex,
+        a,
+        b,
+        c,
+        d
+      )
+      const bits = closed % 32
+      result |= bits
+      if (bits & 4) lastAcceptedStart = Math.floor(closed / 32)
+      const nextChainValid = wordErrorMin >= lastColon
       const payloadValid = wordErrorMax < lastColon
-      if (!handler.chain(ctx, wordStart, lastColon, chainValid)) {
+      if (!handler.chain(ctx, wordStart, lastColon, nextChainValid)) {
         return 'refused-chain'
       }
+      chainStart = wordStart
+      chainEnd = lastColon
+      chainValid = nextChainValid
+      chainCount++
       sawChain = true
       segmentStart = lastColon + 1
-      segmentValid = chainValid && payloadValid
+      segmentValid = nextChainValid && payloadValid
     } else if (wordErrorMax !== -1) {
       segmentValid = false
     }
   } else if (wordErrorMax !== -1) {
     segmentValid = false
   }
-  closeSegment(source, handler, ctx, segmentStart, length, !sawChain, segmentValid)
+  const closed = closeSegment(
+    source,
+    handler,
+    ctx,
+    segmentStart,
+    length,
+    !sawChain,
+    segmentValid,
+    chainStart,
+    chainEnd,
+    chainValid,
+    chainCount,
+    result,
+    failure,
+    failureIndex,
+    a,
+    b,
+    c,
+    d
+  )
+  const bits = closed % 32
+  result |= bits
+  if (bits & 4) lastAcceptedStart = Math.floor(closed / 32)
+  handler.end?.(ctx, source, result, lastAcceptedStart, chainCount, a, b, c, d)
 
   return failure
 }

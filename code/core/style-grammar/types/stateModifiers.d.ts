@@ -2,6 +2,8 @@ export type CoreStateModifierName = "hover" | "press" | "focus" | "focus-visible
 export declare const coreStateModifierNames: readonly CoreStateModifierName[];
 export type ComponentStateModifierName = "open" | "checked" | "highlighted" | "selected" | "invalid";
 export declare const componentStateModifierNames: readonly ComponentStateModifierName[];
+export declare const canonicalStateModifierNames: readonly string[];
+export declare const stateModifierSelectors: readonly string[];
 /**
 * Every alternate spelling of a core state modifier, and the one it means.
 *
