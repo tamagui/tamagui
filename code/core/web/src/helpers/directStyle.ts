@@ -97,35 +97,75 @@ type DirectState = GetStyleState & {
   flatWebShadow?: Record<string, any>
 }
 
-// pass state, pending condition, refusal, lifecycle, source, property, then
+// pass state, pending condition, refusal, lifecycle, source, property, first
+// refusal, pending clause refusal, chain count, then
 // condition/start/end triples. this is the result collection itself, so the
 // context adds no allocation beyond the data the current collector keeps.
 type DirectScanContext = any[]
 
 const directStyleHandler: FlatValueHandler<DirectScanContext> = {
-  segment(ctx, start, end, isBase) {
+  segment(ctx, start, end, isBase, valid) {
     if (start === end) {
       // an empty base is simply no base; an empty clause payload is a clause
       // with nothing in it, which parseValue reports as `empty-payload`
-      if (!isBase && !ctx[2]) {
+      if (!isBase) {
         ctx[2] =
           process.env.NODE_ENV === 'development'
             ? 'a conditional clause has no value'
             : true
       }
+    }
+    let refused = !valid || ctx[7] || (!isBase && start === end)
+    if (ctx[1] === false && !refused) {
+      const ratio = Number((ctx[4] as string).slice(start, end))
+      if (start < end && Number.isFinite(ratio) && ratio > 0) {
+        ctx.push(false, start, end)
+        ctx[1] = null
+        ctx[2] = ''
+        return
+      }
+      refused = true
+    }
+    if (refused && (!isBase || start < end)) {
+      ctx[6] ||= ctx[2] || true
+      ctx[2] = ''
+      ctx[7] = false
+      ctx[1] = null
       return
     }
-    ctx.push(ctx[1] || null, start, end)
+    if (start < end) {
+      ctx.push(ctx[1] || null, start, end)
+      if (ctx[1]) ctx[3] ||= !!(ctx[1].enter || ctx[1].exit)
+    }
   },
-  chain(ctx, start, end) {
-    if (ctx[2]) return false
+  chain(ctx, start, end, valid) {
+    ctx[8]++
+    if (!valid) {
+      ctx[1] = null
+      ctx[7] = true
+      return true
+    }
     const source = ctx[4] as string
     const modifier = source.slice(start, end)
     const next = getCondition(ctx[0], modifier)
     if (!next) {
-      ctx[2] =
+      ctx[2] ||=
         process.env.NODE_ENV === 'development' ? `unknown modifier "${modifier}"` : true
-      return false
+      const ratio = Number(modifier)
+      if (
+        ctx[5] === 'aspectRatio' &&
+        ctx[8] === 1 &&
+        ctx.length === 9 &&
+        modifier !== '' &&
+        Number.isFinite(ratio) &&
+        ratio > 0
+      ) {
+        ctx[1] = false
+      } else {
+        ctx[1] = null
+        ctx[7] = true
+      }
+      return true
     }
     if (process.env.NODE_ENV === 'development' && next.unsupportedState) {
       warnOnce(
@@ -133,7 +173,7 @@ const directStyleHandler: FlatValueHandler<DirectScanContext> = {
       )
     }
     ctx[1] = next
-    ctx[3] ||= !!(next.enter || next.exit)
+    ctx[7] = false
     return true
   },
   error(ctx, code, index) {
@@ -1545,45 +1585,40 @@ export function contributeStyleString(
     return true
   }
 
-  // The scan collects and the emit happens after it, because `parseValue`
-  // reports a refused modifier or a rule-breaking character as one failure over
-  // the WHOLE value: there is no such thing as the good half of a value the
-  // grammar rejects. Emitting as the scan went is what used to make this path
-  // lose the base it had already read while the variant path kept it.
-  const scan: DirectScanContext = [state, null, '', false, source, undefined]
-  if (process.env.NODE_ENV === 'development') scan[5] = property
+  // Collection keeps condition state across the scanner callbacks until IV-a
+  // replaces the resolver. Refusal is already per segment: each bad segment is
+  // omitted while valid segments on either side stay in authored order.
+  const scan: DirectScanContext = [state, null, '', false, source, property, '', false, 0]
 
   scanFlatValue(source, directStyleHandler, scan)
 
-  const refused = scan[2]
+  const refused = scan[6]
 
-  if (refused) {
-    // `16:9` is the one value whose top-level colon is content rather than a
-    // clause, and only this property can hold it
-    if (property === 'aspectRatio') {
-      emitValue(
-        state,
-        property,
-        source,
-        null,
-        merge,
-        originalValue ?? source,
-        contextOnly
-      )
-      return true
-    }
-    if (process.env.NODE_ENV === 'development') {
-      warnRefusedValue(property, source, refused)
-    }
-    return true
+  if (refused && process.env.NODE_ENV === 'development') {
+    warnRefusedValue(property, source, refused)
   }
 
   let hasBase = false
   let lastPayloadStart = 0
-  for (let index = 6; index < scan.length; index += 3) {
-    const condition = scan[index] as Condition | null
+  for (let index = 9; index < scan.length; index += 3) {
+    const condition = scan[index] as Condition | null | false
     const start = scan[index + 1] as number
     lastPayloadStart = start
+    if (condition === false) {
+      if (scan[8] === 1) {
+        emitValue(
+          state,
+          property,
+          source,
+          null,
+          merge,
+          originalValue ?? source,
+          contextOnly
+        )
+        hasBase = true
+      }
+      continue
+    }
     const emitted = emitSegment(
       state,
       property,
@@ -1601,7 +1636,7 @@ export function contributeStyleString(
   if (
     process.env.NODE_ENV === 'development' &&
     !hasBase &&
-    scan.length > 6 &&
+    scan.length > 9 &&
     (property in tokenCategories.color || property in tokenCategoryByProperty) &&
     splitComponents(source.slice(lastPayloadStart)).length > 1
   ) {

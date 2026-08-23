@@ -15,17 +15,24 @@ is claimed.
 
 Parser-cluster measurement binding, 2026-08-23: the cluster subgate uses a
 separate frozen fixture that instantiates styled inheritance. It never feeds
-CORE or changes the frozen size entry. On the exact Phase III-a checkpoint
-`cd2353824f`, the corrected 53-selector closed union is **4,239 gzip**, so the
-<= 1,000 gate requires a same-frame reduction of at least 3,239 bytes (the 800
-target requires at least 3,439). The rejected five-source control still
-reproduces its old 1,710 figure, proving the frame correction rather than
-fixture drift. Phase III-b measures 3,950 in the corrected frame, down 289.
-Full-source and exact-declaration negative controls both move the union, and
-missing, ambiguous, wrong-kind, or privately unclosed declarations fail.
-The manifest contained 67 selectors after predeclaring the III-c1 and III-c2
-destinations. Phase III-d adds the compact component-state destination for 68
-selectors total; the same detached Phase III-a artifact still measures 4,239.
+CORE or changes the frozen size entry. The first declaration-aware frame grew
+from 53 selectors to 68 as III-c and III-d destinations were predeclared. It
+measured the exact Phase III-a checkpoint `cd2353824f` at **4,239 gzip** and
+Phase III-b at 3,950. Those figures remain recorded as the former 68-selector
+frame.
+
+Before IV-b, a mechanical reference-closure audit found seven more retained
+parser declarations that frame omitted: the direct string driver, two other
+direct resolver callers, both lifecycle prepass declarations, the prepass's
+private enter constant, and the platform-name table retained by vocabulary
+compilation. The 75-selector omission-closed frame measures the same detached
+Phase III-a artifact at **4,706 gzip** and Phase III-b at 4,414, down 292. The
+<= 1,000 gate therefore requires at least 3,706 bytes in this frame and the 800
+target requires at least 3,906. The rejected five-source control remains 1,710
+and the former 68-selector figures remain beside every new figure rather than
+being rewritten. Full-source and exact-declaration negative controls both move
+the union, and missing, ambiguous, wrong-kind, or privately unclosed
+declarations fail.
 
 Implementation bindings after revision 3, 2026-08-23:
 
@@ -33,8 +40,9 @@ Implementation bindings after revision 3, 2026-08-23:
   that code could move into `clauseIdentity` and out of `valueParser` without
   the union following it. It also omitted the runtime drivers in
   `directStyle` and `propMapper`. The replacement is a closed,
-  declaration-aware manifest. The corrected 4,239 baseline supersedes 1,710;
-  the <= 1,000 gate and 800 target do not move.
+  declaration-aware manifest. Its first 4,239 baseline superseded 1,710. The
+  later omission audit expands that same frame to 4,706 without changing the
+  fixture, CORE, the <= 1,000 gate, or the 800 target.
 - Phase III-c is split into explicit grammar contractions, each with a pin,
   before the compiled vocabulary and invalidation work. Compiler and runtime
   disagree on committed HEAD today, so this is a current v3 correctness bug
@@ -43,8 +51,11 @@ Implementation bindings after revision 3, 2026-08-23:
   39,905 (whole bundle 103,969 to 104,018). III-d owns its recovery. Drift
   stops at +300. The separately accounted III-c2 add-then-delete sequence may
   cross that number because III-d and IV-a were named as recovery owners before
-  measurement and run immediately next; the sequence is measured at each owner
-  and when it closes. Unrelated byte reductions may not pay either ledger.
+  measurement. Implementation then proved that IV-b's per-clause refusal is a
+  semantic prerequisite of the call-stack-only IV-a resolver, so the bound
+  recovery sequence is III-d -> IV-b -> IV-a with no unrelated checkpoint in
+  between. The sequence is measured at each checkpoint and when it closes.
+  Unrelated byte reductions may not pay either ledger.
 - The parser-cluster <= 1,000 target remains unchanged but is reported rather
   than stopping at V-e. The corrected 4,239 baseline proves before
   implementation that this consolidation scope cannot reach it, so its miss
@@ -349,16 +360,98 @@ shared fixture, never from the CORE size entry. Its closed manifest includes
 the complete legacy sources (`mergeVariants`, `mergeFlatValues`,
 `valueParser`, `programs`, and `scanFlatValue`), the runtime driver
 declarations (`directStyle.getCondition`, `directStyleHandler`,
-`propMapper.resolveVariants`, and `propMapperHandler`), and predeclared
-replacement sources beginning with `clauseIdentity`. All selected spans are
-removed as one union and the stripped chunk is gzipped once.
+`directStyle.contributeStyleString`, `directStyle.contributeFrontendValue`,
+`directStyle.contributeVariantClauseValue`, `propMapper.resolveVariants`,
+`propMapperHandler`, `useComponentState.lifecycleHandler`, and
+`useComponentState.hasFlatModifier`), their parser-specific supporting
+declarations, and predeclared replacement sources beginning with
+`clauseIdentity`. `useComponentState.enterModifier` is selected because the
+manifest's private-dependency check proves `hasFlatModifier` references it.
+Their predeclared Phase VI destination is the selected
+`directStyle.contributeStyleString` main-pass declaration. If IV-c gives that
+pass a new top-level owner, its replacement selector must enter the manifest
+before the lifecycle declarations may depart.
+All selected spans are removed as one union and the stripped chunk is gzipped
+once.
 
 Each checkpoint declares which selectors must be present and which must be
 absent. An absent selector must name the destination, already inside the
 manifest, that received its responsibility. Missing, ambiguous, or escaped
-selectors fail the checkpoint. The corrected Phase III-a baseline is 4,239,
-3,239 above the gate and 3,439 above target. Phase III-b is 3,950, a same-frame
-reduction of 289 but still 2,950 above the gate and 3,150 above target. Even if
+selectors fail the checkpoint. Before IV-b measurement, the frozen artifact's
+reference graph is audited once for omissions as well as departures: every
+runtime declaration that directly calls or is called by the scanner, clause
+identity/group canonicalization, resolver, or merge sink must either have a
+manifest selector or an explicit exclusion with a reason below. There is no
+unclassified third category. This audit is required because departure closure
+did not catch the lifecycle scanner that was never selected in the first
+place.
+
+The mechanical audit parsed all 135 `sourcesContent` entries in the frozen
+Phase III-d artifact, resolved local and imported top-level references with the
+TypeScript AST, and required a generated source-map span for every included
+declaration. Its positive control found both previously known lifecycle
+omissions. It also found the three direct-style callers and
+`config.grammarPlatformNames`; the latter is absent through III-c1 and retained
+by `compileModifierVocabulary` from III-c2 onward.
+
+The included inventory is:
+
+- all generated declarations in the full-source `scanFlatValue`,
+  `clauseIdentity`, `mergeFlatValues`, and `mergeVariants` selectors;
+- the direct-style driver, three contribution callers, condition resolver,
+  selector/state/platform/group/container helpers;
+- the propMapper handler, conditional resolver, and clause appender;
+- the lifecycle handler, `hasFlatModifier`, and its private enter constant;
+- the selected precedence, state-spelling, compiled-vocabulary,
+  config-revision, platform-name/rank, and container-query declarations.
+
+The explicit exclusions are:
+
+- `emitSegment`, `emitValue`, `contributeStyleValue`, and the token, border,
+  shadow, and CSS emitters, because they consume accepted payloads after parser
+  callbacks and remain general emission sinks;
+- `propMapper`, `resolveVariantValue`, `resolveTokensAndVariants`, and their
+  helpers, because they evaluate accepted variant payloads around the selected
+  conditional driver rather than owning grammar or refusal;
+- `useComponentState`, `platformPseudoModifiers`, animation and disabled-state
+  helpers, because they are hook orchestration and query inputs around the
+  selected lifecycle driver;
+- shared platform constants, `mediaKeyMatch`, media configuration, and media
+  stringification, because they execute live platform/media state for consumers
+  outside clause parsing;
+- config publication, `getStyleObject`, `getSplitStyles`, `styledImpl`, and
+  generic object helpers, because they are app/config/integration roots outside
+  this ruler;
+- diagnostic/hash snapshot and config-view declarations with zero generated
+  spans, plus tooling-only `valueParser`, `programs`, `modifierRegistry`, and
+  rich `states` modules absent from the Phase III-d runtime artifact. Their
+  historical absent-to-present destinations remain selected.
+
+After classifying those boundaries, a second AST/source-map pass produced no
+unselected generated declaration directly touching a seed or serving as a
+parser-specific private dependency. The 75-selector manifest is mechanically
+closed under this declared parser boundary. Revalidating every historical
+artifact also found four stale `isContainerSizeQueryText`/pattern moves that
+pointed to another absent selector. Those checkpoints now point to the present
+`directStyle.containerCondition` declaration where the responsibility still
+lived; every recorded artifact validates again.
+
+Both measurement histories remain explicit:
+
+| checkpoint | former 68-selector union | omission-closed 75-selector union |
+| --- | ---: | ---: |
+| Phase III-a (`cd2353824f`) | 4,239 | 4,706 |
+| III-b | 3,950 | 4,414 |
+| III-c0a | 3,950 | 4,414 |
+| III-c0b | 3,956 | 4,420 |
+| III-c0c / dead Proxy | 3,956 | 4,420 |
+| III-c1 | 4,011 | 4,474 |
+| III-c2 | 4,638 | 5,139 |
+| III-d | 4,198 | 4,700 |
+
+The omission-closed Phase III-a baseline is 3,706 above the gate and 3,906
+above target. Phase III-b is a same-frame reduction of 292 but remains 3,414
+above the gate and 3,614 above target. Even if
 the later driver-deletion checkpoints realize their pre-ruler planning band,
 the absolute gate is not forecast to pass without materially shrinking the
 retained representation. Treating a sink that the baseline never imported as
@@ -687,8 +780,31 @@ boundary is known and drops only the bad segment, so the collect arrays and
 pending-condition locals are deleted rather than optimized. The decision lands
 in the style path and the variant path in the same commit, with
 `parserAgreement.web.test.tsx` repinned in that commit and `parseValue`
-gaining the partial result beside diagnostics; there stays exactly one parser
-result shape. The `aspectRatio="16:9"` carve-out, the lifecycle-only
+returning the surviving partial value beside diagnostics on its failure arm;
+there stays exactly one parser result shape. Lexical errors are assigned at
+the lexer boundary, not reconstructed by each consumer. The scanner tracks the
+error offsets in the current top-level word and compares them with that word's
+final colon when the word closes: errors before the colon invalidate the
+modifier chain, errors after it invalidate that clause's payload, and errors
+in an ordinary word invalidate the current base or payload. This distinction
+is required for inputs such as an unterminated string after `hover:` followed
+by a later valid clause, and it adds only primitive call-stack state.
+The public `FlatValueHandler.chain` false-means-stop contract stays unchanged.
+The style and variant handlers instead record a refused chain as pending
+clause state, return true so the scan can find later clauses, and omit only
+that clause when its payload closes.
+IV-b keeps the existing collect-then-emit order so every condition is still
+validated before direct emission and before any functional variant can run.
+IV-a then streams the direct string path after these semantics make the
+collector unnecessary; IV-c owns the remaining pipeline folding and timing
+changes.
+The lifecycle prepass consumes the same structural segment-validity signal, so
+a valid `enter:` clause survives a malformed neighboring clause and an empty or
+lexically malformed enter payload does not trigger presence. It does not grow a
+second config-aware resolver merely to validate another modifier in the same
+chain; that pre-existing narrow divergence disappears in Phase VI when the
+resolved main pass becomes the lifecycle authority.
+The `aspectRatio="16:9"` carve-out, the lifecycle-only
 resting-value synthesis, the multi-value dev warning, and the no-colon fast
 path survive with pins.
 
@@ -861,11 +977,12 @@ sequence before the next owner.
 | checkpoint | CORE before | CORE after | delta | recovery owner | status |
 | --- | ---: | ---: | ---: | --- | --- |
 | III-b | 39,857 | 39,905 | +48 | III-d package-surface split | recovered |
-| III-c2 | 39,911 | 40,550 | +639 | III-d tooling split, then IV-a resolver/precedence deletion | sequence +167 remains |
+| III-c2 | 39,911 | 40,550 | +639 | III-d tooling split, IV-b prerequisite, then IV-a resolver/precedence deletion | sequence +167 remains |
 | III-d | 40,550 | 40,030 | -520 | paid III-b +48, then III-c2 +472 | banked |
+| IV-b | 40,030 | 40,338 | +308 | IV-a resolver/precedence deletion | sequence +475 remains |
 
 Current cumulative unrecovered drift: **0 CORE**. Current predeclared sequence
-debt: **+167 CORE**, assigned to IV-a.
+debt: **+475 CORE**, assigned to IV-a.
 
 ### Parser-cluster debt ledger
 
@@ -877,29 +994,34 @@ Cumulative unrecovered cluster drift above +300 is a hard stop. The same
 predeclared-sequence rule as the CORE ledger applies, and the sequence is
 reported separately from drift.
 
-The corrected declaration-closed baseline is the Phase III-a commit
-`cd2353824f`. III-c1 does not land the compiled table. It adds strict shared
+The operational ledger below uses the omission-closed 75-selector frame. The
+former 68-selector history stays in the measurement table above. The baseline
+is the Phase III-a commit `cd2353824f`. III-c1 does not land the compiled table.
+It adds strict shared
 identifier/query classification while the legacy resolver, precedence, and
 set-key wiring still exists. IV-a deletes that old wiring, so IV-a owns recovery
 of III-c1's temporary cluster increase.
 
 | checkpoint | cluster before | cluster after | delta | reason or recovery owner | status |
 | --- | ---: | ---: | ---: | --- | --- |
-| III-a corrected baseline | | 4,239 | | declaration-closed ruler baseline | banked |
-| III-b | 4,239 | 3,950 | -289 | shared identity reduction and merge sink | banked |
-| III-c0a | 3,950 | 3,950 | 0 | container invariant stays outside the runtime cluster | banked |
-| III-c0b | 3,950 | 3,956 | +6 | permanent lifecycle-contract correctness cost | permanent |
-| III-c0c | 3,956 | 3,956 | 0 | config diagnostic stays outside the app graph | banked |
-| III-c0d | 3,956 | 3,956 | 0 | production DCE already removed the dead Proxy | banked |
-| III-c1 | 3,956 | 4,011 | +55 | IV-a resolver replacement | open |
-| III-c2 | 4,011 | 4,638 | +627 | III-d tooling split, then IV-a resolver/precedence deletion | sequence +187 remains |
-| III-d | 4,638 | 4,198 | -440 | runtime/tooling graph split | banked against III-c2 |
+| III-a omission-closed baseline | | 4,706 | | 75-selector ruler baseline | banked |
+| III-b | 4,706 | 4,414 | -292 | shared identity reduction and merge sink | banked |
+| III-c0a | 4,414 | 4,414 | 0 | container invariant stays outside the runtime cluster | banked |
+| III-c0b | 4,414 | 4,420 | +6 | permanent lifecycle-contract correctness cost | permanent |
+| III-c0c | 4,420 | 4,420 | 0 | config diagnostic stays outside the app graph | banked |
+| III-c0d | 4,420 | 4,420 | 0 | production DCE already removed the dead Proxy | banked |
+| III-c1 | 4,420 | 4,474 | +54 | IV-a resolver replacement | open |
+| III-c2 | 4,474 | 5,139 | +665 | III-d tooling split, IV-b prerequisite, then IV-a resolver/precedence deletion | sequence +226 remains |
+| III-d | 5,139 | 4,700 | -439 | runtime/tooling graph split | banked against III-c2 |
+| IV-b | 4,700 | 5,045 | +345 | per-clause refusal plumbing; IV-a resolver/collector deletion | sequence +571 remains |
 
-Current cumulative unrecovered parser-cluster drift: **+55**. Current
-predeclared parser-cluster sequence debt: **+187**, both assigned to IV-a.
+Current cumulative unrecovered parser-cluster drift: **+54**. Current
+predeclared parser-cluster sequence debt: **+571**. IV-a therefore owes 625
+bytes across the separate drift and sequence ledgers.
 
 The III-c2 measurement is whole 104,653 / CORE 40,550 in the frozen size
-fixture and whole 104,506 / parser cluster 4,638 in the frozen cluster fixture.
+fixture and whole 104,506 / parser cluster 4,638 in the former 68-selector
+cluster frame (5,139 in the omission-closed frame).
 Four exported numeric modifier codes have no generated declaration spans after
 Rolldown inlines them. The manifest therefore records those declarations as
 absent with their bytes represented inside the already-selected
@@ -918,6 +1040,12 @@ graph, and keeping only the numeric runtime vocabulary. The current relevant
 rows include `modifierVocabulary` at 399 marginal gzip, `states` at 320, and
 `modifierRegistry` at 66, with substantial overlap and retained replacements.
 
+IV-b is measured separately before IV-a because its semantic movement and the
+resolver's structural movement must remain attributable. It is part of the
+bound recovery sequence only because whole-value refusal otherwise requires a
+resolved `Condition` to survive from the lexer's `chain()` callback to the
+later payload emission. It is not counted as recovery forecast for IV-a.
+
 IV-a is expected to move a further **250 to 420 CORE** and **300 to 500
 parser-cluster gzip** by replacing the old `getCondition` plus selector,
 group/container, precedence, set-key, and canonicalization bridge with the one
@@ -929,15 +1057,89 @@ material part of that behavior.
 Combined, the forecast is **550 to 850 CORE** and **550 to 880 parser-cluster
 gzip** against sequence debts of +639 and +627. The midpoint covers both. The
 low end falls short by 89 CORE and 77 parser-cluster gzip, so recovery is
-credible but not assured. III-d is measured against its own band before IV-a;
-a material miss stops the sequence and is reported rather than carried forward.
+credible but not assured. III-d and IV-b are each measured before IV-a; a
+material miss is reported rather than hidden inside the resolver checkpoint.
 
-Phase III-d measured **-520 CORE** and **-440 parser-cluster gzip**, exceeding
-its forecast bands by 90 and 60 bytes respectively. The movement comes from
+Phase III-d measured **-520 CORE** and **-439 parser-cluster gzip** in the
+omission-closed frame, exceeding its original forecast bands. The movement comes from
 the scoped runtime/tooling graph split. It pays III-b's +48 CORE debt first,
-then reduces the III-c2 sequence debt by 472 CORE and 440 parser-cluster gzip.
-IV-a therefore starts with +167 CORE and +187 parser-cluster sequence debt,
-plus III-c1's separately tracked +55 parser-cluster drift.
+then reduces the III-c2 sequence debt by 472 CORE and 439 parser-cluster gzip.
+IV-b started with +167 CORE and +226 parser-cluster sequence debt, plus
+III-c1's separately tracked +54 parser-cluster drift. It measured +308 CORE
+and +345 parser-cluster gzip. IV-a therefore closes the sequence against +475
+CORE sequence debt and 625 parser-cluster bytes across the two ledgers.
+
+### Omission-closed forward forecast
+
+These are planning ranges for future one-union checkpoint deltas from the
+III-d parser cluster of 4,700. They are not sums of row marginals and do not
+replace fresh measurement:
+
+| checkpoint | expected parser-cluster movement | basis |
+| --- | ---: | --- |
+| IV-b | +70 to +170 | segment validity and partial-result semantics now land inside selected scanner, direct, and lifecycle drivers; no deletion |
+| IV-a | -340 to -600 | one resolver replaces `getCondition`, precedence/canonical bridges, and the direct collector |
+| IV-c | -120 to -260 | remaining collectors and selected frontend/variant contribution visitors fold into the pipeline |
+| V-e | -90 to -180 | selected propMapper conditional resolver and handler fold into the retained path |
+| VI-a/VI-b net | -90 to -180 | main-pass lifecycle flags briefly coexist with, then replace, the selected lifecycle prepass |
+
+IV-a already owes +226 cluster sequence debt plus +54 cluster drift. A positive
+IV-b is expected to put its total cluster recovery obligation between +350 and
++450, while IV-a itself forecasts -340 to -600. Recovery is credible and can
+genuinely miss. A miss is recorded with its exact shortfall and the sequence
+closes as **missed** at IV-a; the recovery point may not slide to IV-c. IV-c and
+V-e still proceed because they own independent real deletions, but no new
+over-cap sequence debt may open while that missed recovery remains outstanding.
+Unrelated bytes may not be golfed to manufacture a pass.
+
+IV-b through V-e therefore forecasts -380 to -970 and an endpoint of 4,320 to
+3,730. VI then forecasts 4,230 to 3,550. The expanded frame can see more real
+work than the former -350 to -650 band, but the expected endpoint still misses
+the <=1,000 gate by 2,730 to 3,320 at V-e and by 2,550 to 3,230 after VI.
+Improved visibility does not rescue the target; the retained scanner,
+identity, merge, and resolver representation remains the dominant gap.
+
+IV-b measured whole 104,450 / CORE 40,338 and cluster whole 104,345 /
+parser-cluster union 5,045. Its +308 CORE and +345 cluster movement exceeded
+the cluster forecast by 175 bytes at the high end. The first IV-b cluster
+receipt was invalid: the checkpoint existed in a 68-selector manifest and
+reported 4,515 because it could not see seven declarations already identified
+by the closure audit. The receipt itself omitted all seven. Restoring the
+75-selector manifest changed the same artifact to 5,045, and a second fresh
+artifact reproduced 5,045 exactly. All nine historical artifacts then
+revalidated at 4,706, 4,414, 4,414, 4,420, 4,420, 4,474, 5,139, 4,700, and
+5,045. The flattering 4,515 result is void.
+
+The miss came from work that the +70 to +170 forecast treated as one scalar
+validity flag but that crosses five retained parser surfaces. The two fresh
+IV-b artifacts are byte-identical to their repeats. Both the cluster and CORE
+artifacts attribute their nonadditive marginal movement to the same centers:
+`directStyle` +185 cluster marginal, `scanFlatValue` +105,
+`clauseIdentity` +43, `propMapper` +34, and `useComponentState` +11. At the
+declaration level, `directStyleHandler` moved 80 to 245, `scanFlatValue` 454
+to 565, `clauseIdentityScanner` 210 to 260, and `propMapperHandler` 44 to 79.
+These rows explain location, not the 345-byte union by addition.
+
+Two parts of that cost remain after IV-a: the lexer must own error ranges at
+ordinary and EOF word boundaries, and partial validity must reach identity,
+tooling, variant, and lifecycle consumers. The largest part is a temporary
+collect-then-emit bridge in `directStyle`. Whole-value refusal still needs the
+old resolved condition collection, while IV-b adds per-clause refusal,
+first-refusal state, chain counts, and the exact `16:9` ratio exception. IV-a
+removes that collector when it streams each validated clause through the new
+resolver. This dominant single cost follows directly from the bound
+III-d -> IV-b -> IV-a sequence and is scheduled for deletion at the next
+checkpoint. It is not unexplained structural drift.
+
+The revised IV-a expectation is therefore **-500 to -700 parser-cluster
+gzip**, with a wider plausible range of -450 to -770 and low-to-medium
+confidence. This adds about 110 to 170 recoverable bytes to the original
+forecast while leaving scanner, identity, variant, and lifecycle validity in
+place. From 5,045, the likely endpoint is 4,545 to 4,345. IV-a owes 625 bytes
+to reach 4,420, so clearing the obligation is credible only in the favorable
+half of the range; the -600 midpoint misses by 25. This revised range replaces
+the table's pre-IV-b IV-a range for checkpoint accounting. A miss remains a
+reported miss at IV-a and does not move the recovery point.
 
 ### Phase III: grammar and render-path cleanup (nine checkpoints)
 
@@ -1004,28 +1206,37 @@ plus III-c1's separately tracked +55 parser-cluster drift.
   III-b structural-debt ledger or report a checkpoint miss; unrelated byte
   reductions do not count as recovery. Measured result: whole 104,142 / CORE
   40,030 and cluster whole 104,000 / union 4,198. The scoped split recovers
-  III-b and beats the declared III-d forecast, so IV-a may proceed.
+  III-b and beats the declared III-d forecast, so the bound IV-b prerequisite
+  may proceed before IV-a.
 
 Pool rows (indicative): valueParser, programs, mergeFlatValues, states,
 stateModifiers, modifierRegistry, grammar config.
 
 ### Phase IV: resolver and pipeline (four checkpoints)
 
-- **IV-a, resolver equivalence.** `resolveClauseChain` replaces
-  `getCondition`'s internals plus the precedence/set-key module calls, with
-  UNCHANGED refusal semantics and behavior; `Condition` replaced by condition
-  arguments and offset re-derivation. Verify: the entire condition matrix
-  (media, platform, theme, group, container, states, precedence, nesting),
-  unbounded-chain and duplicate tests, the nested-clause condition probe,
-  emitter parity.
 - **IV-b, per-clause refusal.** The semantics flip in style AND variant paths
   in this one commit; `parseValue` partial results; `parserAgreement`
   repinned; the settled refusal cases (good clauses before and after a bad
   one, bad base with surviving clauses, empty payload, enter beside a bad
   clause, unterminated constructs, `aspectRatio="16:9"`, a good enter clause
-  beside a bad one still sets `hasEnterStyle`).
-- **IV-c, streaming and folding.** Streaming emission; collect arrays and
-  per-value visitors deleted; `contributeVariantClauseValue` and
+  beside a bad one still sets `hasEnterStyle`, and the committed D7 lifecycle
+  control remains true). This checkpoint runs before
+  IV-a. Whole-value refusal requires resolved condition state to survive from
+  `scanFlatValue.chain()` until a later payload segment, which is exactly the
+  heap state IV-a must delete. Per-clause refusal lets the lexer retain only
+  numeric chain offsets and resolve once when that clause's payload closes.
+- **IV-a, resolver equivalence.** This checkpoint depends on IV-b and preserves
+  IV-b's newly settled refusal behavior. `resolveClauseChain` replaces
+  `getCondition`'s internals plus the precedence/set-key module calls;
+  `Condition` is replaced by condition arguments and numeric-offset
+  re-derivation. The direct string path resolves and emits each accepted clause
+  when its payload closes, so no resolved condition crosses a callback and no
+  authored state source is read twice. Verify: the entire condition matrix
+  (media, platform, theme, group, container, states, precedence, nesting),
+  unbounded-chain and duplicate tests, the nested-clause condition probe,
+  emitter parity.
+- **IV-c, remaining streaming and folding.** The remaining collect arrays and
+  per-value visitors are deleted; `contributeVariantClauseValue` and
   `contributeFrontendValue` folded into the pipeline. Verify: group and
   container clause output PLUS subscription updates (groupNotifications,
   mediaKeyedSubscriptions, GroupProp, GroupUseCases, GroupPressInVariant, and
@@ -1097,6 +1308,14 @@ the owner. The same stop applies mid-phase if any checkpoint lands CORE
 positive after its pools were supposed to move.
 
 ### Phase VI: component-state discovery and presence (three checkpoints)
+
+Phase VI carries one explicit semantic obligation from IV-b. The committed D7
+control (`0 hver:1 enter:2`) remains lifecycle-true through IV-b because the
+lifecycle prepass has no config-aware modifier resolver and must not grow a
+temporary duplicate. VI-b must remove that divergence when the resolved main
+pass replaces the prepass. Its pin changes the same-chain form
+`enter:hver:1` from lifecycle-visible to refused while retaining the IV-b case
+where a valid `enter:` clause sits beside a different malformed clause.
 
 - **VI-a, flags from the pass.** The main pass records lifecycle, platform
   pseudo, and animation flags while the prepass still runs; an assertion

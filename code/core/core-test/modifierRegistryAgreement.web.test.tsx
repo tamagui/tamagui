@@ -59,8 +59,11 @@ test('invalid configured names do not change valid authored group clauses', () =
     const result = simplifiedGetSplitStyles(View, {
       backgroundColor: `red ${name}:blue`,
     })
+    const rules = rulesFor(result)
     expect(result.style?.backgroundColor ?? null, name).toBe(null)
-    expect(rulesFor(result), name).toEqual([])
+    expect(rules, name).toHaveLength(1)
+    expect(rules[0], name).toContain('background-color:red')
+    expect(rules[0], name).not.toContain('blue')
     expect(result.pseudoGroups?.size ?? 0, name).toBe(0)
   }
 })
@@ -72,7 +75,7 @@ test('container size and name segments share the strict identifier grammar', () 
       { backgroundImage: `none ${modifier}:linear-gradient(red, blue)` },
       { noClass: true }
     )
-    expect(result.style?.backgroundImage ?? null, modifier).toBe(null)
+    expect(result.style?.backgroundImage ?? null, modifier).toBe('none')
     expect(result.pseudoGroups?.size ?? 0, modifier).toBe(0)
     expect(result.mediaGroups?.size ?? 0, modifier).toBe(0)
   }
@@ -90,6 +93,10 @@ test('an inherited configured media key is not a modifier', () => {
   const result = simplifiedGetSplitStyles(View, {
     backgroundColor: 'red inherited-media:blue',
   })
+  const rules = rulesFor(result)
   expect(result.style?.backgroundColor ?? null).toBe(null)
+  expect(rules).toHaveLength(1)
+  expect(rules[0]).toContain('background-color:red')
+  expect(rules[0]).not.toContain('blue')
   expect(result.hasMedia).toBeFalsy()
 })

@@ -104,7 +104,7 @@ export interface ValueParseError {
 
 export type ValueParseResult =
   | { ok: true; value: ParsedValue }
-  | { ok: false; errors: readonly ValueParseError[] }
+  | { ok: false; value: ParsedValue; errors: readonly ValueParseError[] }
 
 /**
  * CSS-wide keywords and universal values that resolve as literal CSS even when

@@ -88,7 +88,10 @@ describe('conditional clauses on a variant prop', () => {
     ).toBe(13)
   })
 
-  test('an unresolvable modifier refuses the whole value rather than half-applying it', () => {
-    expect(cssFor({ size: 'large notARealModifier:small' })).toEqual([])
+  test('an unresolvable modifier drops only its clause', () => {
+    expect(cssFor({ size: 'large notARealModifier:small hover:small' })).toEqual([
+      '._w-1598328809{width:200px}',
+      '@media (hover: hover) {._w-1598328809:hover{width:50px}}',
+    ])
   })
 })

@@ -36,32 +36,29 @@ const platformPseudoModifiers = new Set(['hover', 'press', 'focus'])
 const enterModifier = new Set(['enter'])
 
 type LifecycleScanContext = TamaguiComponentStateRef & {
-  // source plus wanted/found/refused state. the second slot is the wanted Set,
-  // null after a match, and false after a refusal. created once per component
-  // and reused by both lifecycle questions on every render.
-  flatScan?: [string, ReadonlySet<string> | null | false]
+  // source, wanted modifiers, found, and pending match. created once per
+  // component and reused by both lifecycle questions on every render.
+  flatScan?: [string, ReadonlySet<string>, boolean, boolean]
 }
 
 const lifecycleHandler: FlatValueHandler<LifecycleScanContext> = {
-  segment(ctx, start, end, isBase) {
-    // a clause with no payload is a value parseValue refuses, so nothing in it
-    // reaches the style object and nothing in it can start an animation
-    if (start === end && !isBase) ctx.flatScan![1] = false
-  },
-  chain(ctx, start, end) {
+  segment(ctx, start, end, isBase, valid) {
     const scan = ctx.flatScan!
-    if (scan[1] === false) return false
+    if (!isBase && valid && start < end && scan[3]) scan[2] = true
+    scan[3] = false
+  },
+  chain(ctx, start, end, valid) {
+    const scan = ctx.flatScan!
+    scan[3] = false
+    if (!valid) return true
     for (let index = start; index <= end; index++) {
       if (index !== end && scan[0].charCodeAt(index) !== 58) continue
-      if (scan[1] && scan[1].has(canonicalClauseModifier(scan[0].slice(start, index)))) {
-        scan[1] = null
+      if (scan[1].has(canonicalClauseModifier(scan[0].slice(start, index)))) {
+        scan[3] = true
       }
       start = index + 1
     }
     return true
-  },
-  error(ctx) {
-    ctx.flatScan![1] = false
   },
 }
 
@@ -79,7 +76,7 @@ function hasFlatModifier(
   modifiers: ReadonlySet<string>,
   ctx: LifecycleScanContext
 ): boolean {
-  const scan = (ctx.flatScan ||= ['', enterModifier])
+  const scan = (ctx.flatScan ||= ['', enterModifier, false, false])
   for (const key in props) {
     const value = props[key]
     if (typeof value !== 'string' || value.indexOf(':') === -1) continue
@@ -87,8 +84,10 @@ function hasFlatModifier(
     if (!(property in stylePropsAll) && property !== 'transition') continue
     scan[0] = value
     scan[1] = modifiers
+    scan[2] = false
+    scan[3] = false
     scanFlatValue(value, lifecycleHandler, ctx)
-    if (scan[1] === null) return true
+    if (scan[2]) return true
   }
   return false
 }

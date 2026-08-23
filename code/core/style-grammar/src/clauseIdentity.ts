@@ -15,7 +15,7 @@ export type ClauseIdentityErrorCode =
   | 'empty-payload'
 
 export interface ClauseIdentityHandler<Context> {
-  segment(ctx: Context, start: number, end: number, isBase: boolean): void
+  segment(ctx: Context, start: number, end: number, isBase: boolean, valid: boolean): void
   chain?(ctx: Context, start: number, end: number): void
   modifier?(ctx: Context, start: number, end: number, canonical: string): void
   clause?(
@@ -126,16 +126,18 @@ type ClauseIdentityContext<Context> = {
   chainEnd: number
   payloadStart: number
   canonical: string[]
+  clauseValid: boolean
 }
 
 const clauseIdentityScanner: FlatValueHandler<ClauseIdentityContext<unknown>> = {
-  segment(ctx, start, end, isBase) {
-    ctx.handler.segment(ctx.consumer, start, end, isBase)
+  segment(ctx, start, end, isBase, valid) {
+    ctx.handler.segment(ctx.consumer, start, end, isBase, valid && ctx.clauseValid)
     if (isBase) return
     if (start === end) {
       ctx.handler.error?.(ctx.consumer, 'empty-payload', ctx.payloadStart)
       return
     }
+    if (!valid || !ctx.clauseValid) return
     ctx.handler.clause?.(
       ctx.consumer,
       ctx.chainStart,
@@ -146,17 +148,19 @@ const clauseIdentityScanner: FlatValueHandler<ClauseIdentityContext<unknown>> = 
     )
   },
 
-  chain(ctx, start, end) {
+  chain(ctx, start, end, valid) {
     ctx.chainStart = start
     ctx.chainEnd = end
     ctx.payloadStart = end + 1
     ctx.canonical.length = 0
+    ctx.clauseValid = valid
     ctx.handler.chain?.(ctx.consumer, start, end)
 
     let modifierStart = start
     for (let index = start; index <= end; index++) {
       if (index !== end && ctx.source.charCodeAt(index) !== 58) continue
       if (index === modifierStart) {
+        ctx.clauseValid = false
         ctx.handler.error?.(ctx.consumer, 'empty-modifier', index)
       } else {
         const canonical = canonicalClauseModifier(ctx.source.slice(modifierStart, index))
@@ -195,5 +199,6 @@ export function reduceFlatValueIdentity<Context>(
     chainEnd: 0,
     payloadStart: 0,
     canonical: [],
+    clauseValid: true,
   } as ClauseIdentityContext<unknown>)
 }

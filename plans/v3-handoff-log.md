@@ -5737,3 +5737,101 @@ Validation at this checkpoint:
 - root dependency, unused, Tamagui, reference, path, DOM type, and LSP pin
   checks passed;
 - `git diff --check` passed.
+
+## 58. Engine consolidation Phase IV-b: per-clause refusal (2026-08-23)
+
+Malformed flat-value input now drops only the base or clause segment that owns
+the error. Valid base and clauses before or after it continue through both the
+direct style and conditional variant paths. The public scanner still stops
+when an outside handler returns false. Tamagui's handlers record a refused
+clause locally, continue scanning, and keep the existing collect-then-emit
+order so every condition is validated before emission or authored variant code
+runs.
+
+The lexer assigns structural errors to the current top-level word with scalar
+minimum and maximum offsets. An error before that word's final colon invalidates
+the modifier chain; an error after it invalidates the payload; an error in a
+plain word invalidates the current base or payload. Unterminated constructs at
+EOF retain earlier bounded segments and do not invent later clause boundaries.
+An unterminated string ended by a newline can recover at the next top-level
+word. `parseValue` failure results retain the surviving partial value beside
+the unchanged diagnostics and editor spans.
+
+Lifecycle discovery consumes the same structural segment validity. A valid
+enter clause beside a malformed segment still triggers presence, while an
+empty or structurally malformed enter payload does not. The existing
+config-aware same-chain lifecycle divergence stays pinned until Phase VI makes
+the resolved main pass authoritative. Exact `aspectRatio="16:9"`, lifecycle
+resting-value synthesis, warning dedupe, the whole authored source in warnings,
+variant validation before authored code, and the no-colon fast path remain
+pinned.
+
+The full web suite found two committed normalization tests that still expected
+whole-value refusal. They now assert the stricter IV-b contract: the invalid
+configured group or container clause contributes nothing, its valid base
+survives, and no subscription side effect is registered.
+
+### Ruler correction and measurements
+
+The first IV-b parser receipt reported 4,515 from a manifest that named the
+checkpoint but contained only 68 selectors. The receipt visibly omitted the
+seven declarations found by the prior mechanical closure audit. That result
+was flattering and is void. The manifest now contains all 75 selectors and all
+75 states at every checkpoint. Historical invalid destinations for
+`isContainerSizeQueryText` and its pattern now point to the selected runtime
+container resolver. All nine artifacts validate in the corrected frame at
+4,706, 4,414, 4,414, 4,420, 4,420, 4,474, 5,139, 4,700, and 5,045.
+
+The fresh frozen-size artifacts are
+`/tmp/p29049-ivb-size.1vtsKb` and
+`/tmp/p29049-ivb-size-repeat.hBKkBn`; both measured whole 104,450 / CORE
+40,338. The fresh parser-cluster artifacts are
+`/tmp/p29049-ivb-cluster.9rdc0i` and
+`/tmp/p29049-ivb-cluster-repeat.6dpYlL`; both measured cluster whole 104,345 /
+union 5,045.
+
+| arm | whole gzip | CORE | cluster whole gzip | parser-cluster union |
+| --- | ---: | ---: | ---: | ---: |
+| Phase III-d | 104,142 | 40,030 | 104,000 | 4,700 |
+| Phase IV-b | 104,450 | 40,338 | 104,345 | 5,045 |
+| movement | +308 | +308 | +345 | +345 |
+
+IV-b therefore leaves +475 CORE sequence debt and +571 parser-cluster sequence
+debt assigned to IV-a. The separate III-c1 parser drift is +54, so IV-a's total
+parser recovery obligation is 625. The +345 cluster movement exceeded the
+accepted +70 to +170 forecast.
+
+The miss is deterministic rather than stale output: both size artifacts and
+both cluster artifacts are byte-identical within their pairs, and the two
+fixtures name the same code centers. Nonadditive cluster marginals move
+`directStyle` +185, `scanFlatValue` +105, `clauseIdentity` +43, `propMapper`
++34, and `useComponentState` +11. The forecast modeled one scalar validity
+bit. The implementation also needs lexer error ownership at ordinary and EOF
+word boundaries, partial-result plumbing through four consumers, and a large
+temporary `directStyle` collect-then-emit bridge that keeps the old resolved
+condition collection while adding per-clause refusal state. IV-a removes that
+bridge, while the scanner, identity, variant, and lifecycle costs remain.
+The bridge is the direct cost of the coordinator-bound III-d -> IV-b -> IV-a
+sequence and is scheduled for deletion at the next checkpoint. It is not
+unexplained structural drift.
+
+The revised IV-a parser-cluster forecast is -500 to -700, with a wider
+plausible range of -450 to -770 and low-to-medium confidence. From 5,045 this
+places the likely endpoint at 4,545 to 4,345. Clearing the 625-byte obligation
+is credible only in the favorable half; the -600 midpoint misses by 25. This
+forecast was recorded before IV-a started.
+
+Validation at this checkpoint:
+
+- style-grammar passed 29 files with 466 tests;
+- the full core web suite passed 71 files with two skipped, 564 tests with
+  three skipped and one todo;
+- the full core native suite passed 30 files with one skipped, 295 tests with
+  seven expected failures and nine skipped;
+- style-grammar, web, and core package builds passed;
+- full root build passed 171 of 171 tasks;
+- root lint passed with the same five unrelated warnings;
+- root dependency, unused, Tamagui, reference, path, DOM type, and LSP pin
+  checks passed;
+- the parser ruler passed eight tests with 36 expectations;
+- `git diff --check` passed.

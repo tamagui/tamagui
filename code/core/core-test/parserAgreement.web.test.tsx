@@ -165,20 +165,41 @@ function agreementCorpus(seed: number, count: number) {
 }
 
 describe('agreement', () => {
-  // D1. Was: the prop scanner abandoned the declaration at the first top-level
-  // `;` while the variant scanner kept splitting clauses around it, so the
-  // variant path styled `hover:red` from a value the grammar rejects. Both now
-  // refuse the value the way `parseValue` reports it: as one failure over the
-  // whole value, with no good half.
-  test('a top-level ";" refuses the whole value for both scanners', () => {
-    const source = 'none; hover:red'
-    expect(parseValue(source, registry).ok).toBe(false)
+  test('good clauses before and after a bad clause survive in both paths', () => {
+    const source = 'base hover:before hver:bad press:after'
+    expect(parseValue(source, registry)).toMatchObject({
+      ok: false,
+      value: {
+        base: 'base',
+        clauses: [
+          { modifiers: ['hover'], payload: 'before' },
+          { modifiers: ['press'], payload: 'after' },
+        ],
+      },
+    })
 
-    expect(propValue(source)).toBe(null)
-    expect(propValue(source, ['hover'])).toBe(null)
+    for (const read of [propValue, variantValue]) {
+      expect(read(source)).toBe('base')
+      expect(read(source, ['hover'])).toBe('before')
+      expect(read(source, ['press'])).toBe('after')
+    }
+  })
 
-    expect(variantValue(source)).toBe(null)
-    expect(variantValue(source, ['hover'])).toBe(null)
+  test('a bad base and bad clause payload do not hide a later clause', () => {
+    const source = 'bad; hover:also;bad press:after'
+    expect(parseValue(source, registry)).toMatchObject({
+      ok: false,
+      value: {
+        base: null,
+        clauses: [{ modifiers: ['press'], payload: 'after' }],
+      },
+    })
+
+    for (const read of [propValue, variantValue]) {
+      expect(read(source)).toBe(null)
+      expect(read(source, ['hover'])).toBe(null)
+      expect(read(source, ['press'])).toBe('after')
+    }
   })
 
   // D6. Was: the canonical parser reads a top-level backslash as an escape, so
@@ -214,37 +235,32 @@ describe('agreement', () => {
     expect(variantValue(source, ['hover'])).toBe('custom\\:part')
   })
 
-  // D4, the user-visible one. Was: `hasFlatModifier` had no invalid-character
-  // branch, so a value the style scanner threw away still put the component on
-  // the should-enter path and it rendered an enter frame for a style that never
-  // arrived, reported as an animation bug and caused by a value parser.
-  test('the lifecycle scanner does not fire on a value the style scanner drops', () => {
+  test('a bad base does not hide a later enter clause', () => {
     const source = '0; enter:1'
     expect(parseValue(source, registry).ok).toBe(false)
-    expect(propValue(source, [], 'opacity')).toBe(null)
+    // with no valid base, the lifecycle-only clause synthesizes opacity's
+    // resting target for inline animation drivers
+    expect(propValue(source, [], 'opacity')).toBe(1)
 
-    expect(hasEnterStyle(source, 'opacity')).toBe(false)
+    expect(hasEnterStyle(source, 'opacity')).toBe(true)
   })
 
-  // D5. Was: both runtime scanners refused an unregistered modifier but lost
-  // different amounts of the value, because one resolved the next chain before
-  // flushing the previous payload and the other flushed first.
-  test('an unregistered modifier refuses the whole value for both scanners', () => {
+  test('an unregistered modifier drops only its clause for both scanners', () => {
     const source = 'none hver:red'
     expect(parseValue(source, registry).ok).toBe(false)
 
-    expect(propValue(source)).toBe(null)
-    expect(variantValue(source)).toBe(null)
+    expect(propValue(source)).toBe('none')
+    expect(variantValue(source)).toBe('none')
   })
 
-  // A clause with no payload is `empty-payload` to the canonical parser. Both
-  // runtime scanners used to skip the empty segment and keep the rest.
-  test('a clause with no payload refuses the whole value for both scanners', () => {
-    const source = 'none hover:'
+  test('an empty payload drops only its clause for both scanners', () => {
+    const source = 'none hover: press:after'
     expect(parseValue(source, registry).ok).toBe(false)
 
-    expect(propValue(source)).toBe(null)
-    expect(variantValue(source)).toBe(null)
+    expect(propValue(source)).toBe('none')
+    expect(variantValue(source)).toBe('none')
+    expect(propValue(source, ['press'])).toBe('after')
+    expect(variantValue(source, ['press'])).toBe('after')
   })
 
   // `pressed`, `starting` and `ending` were spelled out inline in the runtime's
@@ -268,7 +284,7 @@ describe('agreement', () => {
 
   // the lifecycle aliases cannot be activated from the state this file can
   // construct, so they are checked the other way round: the value resolves at
-  // all, where one letter off refuses the whole thing
+  // all, where one letter off drops only its clause
   test.each(['starting', 'ending'])(
     '"%s:" resolves where a typo of it does not',
     (alias) => {
@@ -276,9 +292,9 @@ describe('agreement', () => {
       expect(parseValue(`none ${alias}g:red`, registry).ok).toBe(false)
 
       expect(propValue(`none ${alias}:red`)).not.toBe(null)
-      expect(propValue(`none ${alias}g:red`)).toBe(null)
+      expect(propValue(`none ${alias}g:red`)).toBe('none')
       expect(variantValue(`none ${alias}:red`)).not.toBe(null)
-      expect(variantValue(`none ${alias}g:red`)).toBe(null)
+      expect(variantValue(`none ${alias}g:red`)).toBe('none')
     }
   )
 
@@ -291,7 +307,7 @@ describe('agreement', () => {
     (modifier) => {
       const source = `none ${modifier}:red`
       expect(parseValue(source, registry).ok).toBe(false)
-      expect(propValue(source)).toBe(null)
+      expect(propValue(source)).toBe('none')
     }
   )
 
@@ -305,7 +321,7 @@ describe('agreement', () => {
         { [PROBE]: source },
         { noClass: true }
       )
-      expect(result.style?.[PROBE] ?? null, modifier).toBe(null)
+      expect(result.style?.[PROBE] ?? null, modifier).toBe('none')
       expect(result.pseudoGroups?.size ?? 0, modifier).toBe(0)
     }
   })
@@ -328,7 +344,7 @@ describe('agreement', () => {
       const source = `none ${modifier}:red`
       expect(parseValue(source, registry).ok, modifier).toBe(false)
       expect(() => propValue(source), modifier).not.toThrow()
-      expect(propValue(source), modifier).toBe(null)
+      expect(propValue(source), modifier).toBe('none')
     }
   })
 
@@ -439,13 +455,61 @@ describe('comments', () => {
     }
   })
 
-  // A construct left open cannot be trusted for containment the emitted CSS
-  // will not honour, so the whole value is refused rather than emitted.
-  test('an unclosed comment and a stray close both refuse the value', () => {
-    for (const source of ['red/* hover:x', 'red */ hover:x']) {
-      expect(parseValue(source, registry).ok).toBe(false)
-      expect(propValue(source)).toBe(null)
+  test('an unterminated tail drops only the segment the lexer consumed', () => {
+    for (const source of [
+      'base hover:before press:"bad',
+      'base hover:before press:calc(1px',
+      'base hover:before press:bad/* sm:lost',
+    ]) {
+      expect(parseValue(source, registry)).toMatchObject({
+        ok: false,
+        value: {
+          base: 'base',
+          clauses: [{ modifiers: ['hover'], payload: 'before' }],
+        },
+      })
+      expect(propValue(source)).toBe('base')
+      expect(propValue(source, ['hover'])).toBe('before')
+      expect(variantValue(source)).toBe('base')
+      expect(variantValue(source, ['hover'])).toBe('before')
     }
+  })
+
+  test('a newline makes an unterminated string recoverable at the next clause', () => {
+    const source = 'base hover:"bad\n press:after'
+    expect(parseValue(source, registry)).toMatchObject({
+      ok: false,
+      value: {
+        base: 'base',
+        clauses: [{ modifiers: ['press'], payload: 'after' }],
+      },
+    })
+    expect(propValue(source, ['press'])).toBe('after')
+    expect(variantValue(source, ['press'])).toBe('after')
+  })
+
+  test('unterminated base constructs do not invent a later clause boundary', () => {
+    for (const source of ['"bad hover:lost', 'calc(1px hover:lost', 'bad/* hover:lost']) {
+      expect(parseValue(source, registry)).toMatchObject({
+        ok: false,
+        value: { base: null, clauses: [] },
+      })
+      expect(propValue(source)).toBe(null)
+      expect(variantValue(source)).toBe(null)
+    }
+  })
+
+  test('a stray comment close drops its segment and later clauses recover', () => {
+    const source = 'base hover:bad*/ press:after'
+    expect(parseValue(source, registry)).toMatchObject({
+      ok: false,
+      value: {
+        base: 'base',
+        clauses: [{ modifiers: ['press'], payload: 'after' }],
+      },
+    })
+    expect(propValue(source, ['press'])).toBe('after')
+    expect(variantValue(source, ['press'])).toBe('after')
   })
 })
 
@@ -469,22 +533,20 @@ describe('divergences', () => {
     expect(propRules(source).length).toBeGreaterThan(0)
   })
 
-  // D7. `hasFlatModifier` runs the shared lexer but not the shared modifier
-  // resolver: it answers before any style state exists, so it has no
-  // `getCondition` to ask and pulling the canonical registry into @tamagui/web
-  // would put the completion trie and its tables in every app bundle for one
-  // boolean. So an unregistered modifier ANYWHERE in a value still leaves an
-  // `enter:` clause elsewhere in it visible to the lifecycle scanner, and the
-  // component enters for a style the refusal means never arrives.
-  //
-  // Same shape as D4, much narrower: it takes a typo'd modifier next to a real
-  // enter clause, where D4 took any rule-breaking character.
-  test('the lifecycle scanner fires on a value an unregistered modifier refuses', () => {
+  // D7 remains until the main pass owns resolved lifecycle flags. This scanner
+  // has no config-aware modifier resolver, so a separate bad clause does not
+  // hide a valid enter clause beside it.
+  test('a good enter clause beside a bad clause still sets hasEnterStyle', () => {
     const source = '0 hver:1 enter:2'
     expect(parseValue(source, registry).ok).toBe(false)
-    expect(propValue(source, [], 'opacity')).toBe(null)
+    expect(propValue(source, [], 'opacity')).toBe(2)
 
     expect(hasEnterStyle(source, 'opacity')).toBe(true)
+  })
+
+  test('an empty or malformed enter payload does not set hasEnterStyle', () => {
+    expect(hasEnterStyle('0 enter:', 'opacity')).toBe(false)
+    expect(hasEnterStyle('0 enter:1;', 'opacity')).toBe(false)
   })
 })
 

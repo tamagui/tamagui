@@ -47,6 +47,7 @@ type ValueParseContext = {
   base: string | null
   clauses: ParsedClause[] | null
   pending: string[] | null
+  pendingValid: boolean
 }
 
 /**
@@ -123,21 +124,25 @@ function addParseError(
 }
 
 const valueParserHandler: ClauseIdentityHandler<ValueParseContext> = {
-  segment(ctx, start, end, isBase) {
+  segment(ctx, start, end, isBase, valid) {
     ctx.sourceSpans?.push({ kind: isBase ? 'base' : 'payload', start, end })
     if (isBase) {
-      ctx.base = start < end ? ctx.input.slice(start, end) : null
+      ctx.base = valid && start < end ? ctx.input.slice(start, end) : null
+    } else if (!valid) {
+      ctx.pendingValid = false
     }
   },
 
   chain(ctx) {
     ctx.pending = []
+    ctx.pendingValid = true
   },
 
   modifier(ctx, start, end) {
     const name = ctx.input.slice(start, end)
     ctx.sourceSpans?.push({ kind: 'modifier', start, end })
     if (ctx.registry.get(name) === undefined) {
+      ctx.pendingValid = false
       addParseError(
         ctx,
         'unregistered-modifier',
@@ -150,6 +155,7 @@ const valueParserHandler: ClauseIdentityHandler<ValueParseContext> = {
   },
 
   clause(ctx, _start, _chainEnd, start, end) {
+    if (!ctx.pendingValid) return
     ;(ctx.clauses ||= []).push({
       modifiers: ctx.pending!,
       payload: ctx.input.slice(start, end),
@@ -158,6 +164,7 @@ const valueParserHandler: ClauseIdentityHandler<ValueParseContext> = {
 
   error(ctx, code, index) {
     if (code === 'empty-modifier') {
+      ctx.pendingValid = false
       addParseError(ctx, code, index, 'a modifier chain has an empty segment')
       return
     }
@@ -195,10 +202,12 @@ function parseValueInternal(
     base: null,
     clauses: null,
     pending: null,
+    pendingValid: true,
   }
 
   reduceFlatValueIdentity(input, valueParserHandler, ctx)
 
-  if (ctx.errors !== null) return { ok: false, errors: ctx.errors }
-  return { ok: true, value: { base: ctx.base, clauses: ctx.clauses ?? noClauses } }
+  const value = { base: ctx.base, clauses: ctx.clauses ?? noClauses }
+  if (ctx.errors !== null) return { ok: false, value, errors: ctx.errors }
+  return { ok: true, value }
 }

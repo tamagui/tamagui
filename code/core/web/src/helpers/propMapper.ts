@@ -38,27 +38,35 @@ export function appendFlatClause(
     : `${prev} ${conditionSource}:${value}`
 }
 
-// pass state, source, pending modifier, refused, then
+// pass state, source, pending modifier, saw chain, pending refusal, then
 // start/end/modifier triples. this one result array replaces the former three
 // arrays and stays local while authored variant reads can re-enter.
 type VariantScanContext = any[]
 
 const propMapperHandler: FlatValueHandler<VariantScanContext> = {
-  segment(ctx, start, end, isBase) {
-    if (start === end) {
-      if (!isBase) ctx[3] = true
+  segment(ctx, start, end, isBase, valid) {
+    if (!valid || ctx[4] || start === end) {
+      ctx[2] = undefined
+      ctx[4] = false
       return
     }
     ctx.push(start, end, ctx[2])
   },
-  chain(ctx, start, end) {
-    if (ctx[3]) return false
+  chain(ctx, start, end, valid) {
+    ctx[3] = true
+    if (!valid) {
+      ctx[2] = undefined
+      ctx[4] = true
+      return true
+    }
     const source = (ctx[1] as string).slice(start, end)
     if (!getCondition(ctx[0], source)) {
-      ctx[3] = true
-      return false
+      ctx[2] = undefined
+      ctx[4] = true
+      return true
     }
     ctx[2] = source
+    ctx[4] = false
     return true
   },
   error(ctx) {
@@ -197,17 +205,15 @@ const resolveVariants: StyleResolver = (
   ) {
     // `scanFlatValue` is the same lexer `contributeStyleString` and the
     // canonical `parseValue` run, and `getCondition` is the same modifier
-    // resolver the style path uses. Both matter: the two paths used to lose
-    // different amounts of a value the grammar refuses, so which one styled a
-    // component decided how much of a typo survived.
-    const scan: VariantScanContext = [styleState, value, undefined, false]
+    // resolver the style path uses. A refused chain invalidates only its own
+    // payload, and the shared lexer continues to later clauses.
+    const scan: VariantScanContext = [styleState, value, undefined, false, false]
 
     scanFlatValue(value, propMapperHandler, scan)
 
-    if (scan[3]) return []
-    if (scan[2] !== undefined) {
+    if (scan[3]) {
       let entries: [string, any, any?, string?][] | undefined
-      for (let index = 4; index < scan.length; index += 3) {
+      for (let index = 5; index < scan.length; index += 3) {
         const resolved = resolveVariantValue(
           key,
           value.slice(scan[index] as number, scan[index + 1] as number),

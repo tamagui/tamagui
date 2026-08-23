@@ -320,19 +320,27 @@ test('aspectRatio colon values pass through; other parse failures warn in dev', 
   // CMS), so a refusal is reachable from content, and an exception on content
   // takes the whole render down for one bad prop.
   //
-  // The intent of the throw is what this pins, not its mechanism: the value is
-  // dropped whole, and the report carries everything needed to find and fix it.
+  // The bad clause is dropped while the valid base survives, and the report
+  // carries everything needed to find and fix it.
   const previousNodeEnv = process.env.NODE_ENV
   const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
   process.env.NODE_ENV = 'development'
   try {
+    const badRatio = split({ aspectRatio: '1 unknown:2' })
+    const badRatioClass = badRatio.classNames.aspectRatio
+    expect(rulesFor(badRatio, badRatioClass)).toEqual([
+      `.${badRatioClass}{aspect-ratio:1}`,
+    ])
+
     const typo = split({ backgroundColor: 'red hver:blue' })
-    expect(typo.style?.backgroundColor).toBeUndefined()
-    expect(typo.classNames.backgroundColor).toBeUndefined()
+    const typoClass = typo.classNames.backgroundColor
+    expect(rulesFor(typo, typoClass)).toEqual([`.${typoClass}{background-color:red}`])
 
     // the property, the whole authored value, and WHICH modifier failed. The
     // throw it replaced said "unknown modifier" without naming one.
     const reported = warn.mock.calls.map(String).join('\n')
+    expect(reported).toContain('aspectRatio="1 unknown:2"')
+    expect(reported).toContain('unknown')
     expect(reported).toContain('backgroundColor')
     expect(reported).toContain('red hver:blue')
     expect(reported).toContain('hver')
@@ -346,7 +354,7 @@ test('aspectRatio colon values pass through; other parse failures warn in dev', 
     // what keying the warning on the property alone used to swallow
     warn.mockClear()
     const second = split({ backgroundColor: 'red fcus:blue' })
-    expect(second.style?.backgroundColor).toBeUndefined()
+    expect(second.classNames.backgroundColor).toMatch(/^_bc-/)
     expect(warn.mock.calls.map(String).join('\n')).toContain('fcus')
   } finally {
     process.env.NODE_ENV = previousNodeEnv

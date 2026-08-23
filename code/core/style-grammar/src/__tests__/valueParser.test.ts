@@ -35,6 +35,12 @@ function errors(input: string): readonly ValueParseError[] {
   return result.errors
 }
 
+function failed(input: string) {
+  const result = parse(input)
+  expect(result.ok).toBe(false)
+  return result
+}
+
 const codes = (input: string): string[] => errors(input).map((error) => error.code)
 
 describe('plain values pass through untouched', () => {
@@ -254,6 +260,19 @@ describe('clauses', () => {
 })
 
 describe('unregistered modifiers are hard errors', () => {
+  test('a failed parse retains the valid base and clauses around the bad clause', () => {
+    expect(failed('base hover:before hver:bad press:after')).toMatchObject({
+      value: {
+        base: 'base',
+        clauses: [
+          { modifiers: ['hover'], payload: 'before' },
+          { modifiers: ['press'], payload: 'after' },
+        ],
+      },
+      errors: [{ code: 'unregistered-modifier', modifier: 'hver' }],
+    })
+  })
+
   test('a misspelled modifier reports its spelling and index', () => {
     expect(errors('red hver:blue')).toEqual([
       {
@@ -307,6 +326,16 @@ describe('unregistered modifiers are hard errors', () => {
 })
 
 describe('empty payloads and empty modifiers', () => {
+  test('an empty payload drops its clause and retains later clauses', () => {
+    expect(failed('base hover: press:after')).toMatchObject({
+      value: {
+        base: 'base',
+        clauses: [{ modifiers: ['press'], payload: 'after' }],
+      },
+      errors: [{ code: 'empty-payload' }],
+    })
+  })
+
   test('a trailing colon has no value', () => {
     expect(errors('red hover:')).toEqual([
       {
@@ -346,6 +375,45 @@ describe('empty payloads and empty modifiers', () => {
 })
 
 describe('unterminated strings and functions', () => {
+  test('a newline recovers from a bad string segment and retains the next clause', () => {
+    expect(failed('base hover:"bad\n press:after')).toMatchObject({
+      value: {
+        base: 'base',
+        clauses: [{ modifiers: ['press'], payload: 'after' }],
+      },
+      errors: [{ code: 'unterminated-string' }],
+    })
+  })
+
+  test.each([
+    ['string', 'base hover:before press:"bad'],
+    ['function', 'base hover:before press:calc(1px'],
+    ['comment', 'base hover:before press:bad/* sm:lost'],
+  ])(
+    'an unterminated %s drops the consumed tail but retains earlier segments',
+    (_kind, source) => {
+      expect(failed(source)).toMatchObject({
+        value: {
+          base: 'base',
+          clauses: [{ modifiers: ['hover'], payload: 'before' }],
+        },
+      })
+    }
+  )
+
+  test.each([
+    ['string', '"bad hover:lost'],
+    ['function', 'calc(1px hover:lost'],
+    ['comment', 'bad/* hover:lost'],
+  ])(
+    'an unterminated %s in the base consumes the unrecoverable tail',
+    (_kind, source) => {
+      expect(failed(source)).toMatchObject({
+        value: { base: null, clauses: [] },
+      })
+    }
+  )
+
   test('an unterminated string reports the opening quote', () => {
     expect(errors('red hover:"abc')[0]).toMatchObject({
       code: 'unterminated-string',
@@ -383,6 +451,32 @@ describe('unterminated strings and functions', () => {
 // payload structurally impossible in the web lowering, which emits payloads
 // verbatim by contract.
 describe('rule-breaking characters are rejected at the top level', () => {
+  test('a bad base and bad clause payload do not hide later recoverable clauses', () => {
+    expect(failed('bad; hover:also;bad press:after')).toMatchObject({
+      value: {
+        base: null,
+        clauses: [{ modifiers: ['press'], payload: 'after' }],
+      },
+      errors: [
+        { code: 'invalid-character', index: 3 },
+        { code: 'invalid-character', index: 15 },
+      ],
+    })
+  })
+
+  test('an error before a chain word final colon belongs to that clause', () => {
+    expect(failed('base ho;ver:bad press:after')).toMatchObject({
+      value: {
+        base: 'base',
+        clauses: [{ modifiers: ['press'], payload: 'after' }],
+      },
+      errors: [
+        { code: 'invalid-character', index: 7 },
+        { code: 'unregistered-modifier', modifier: 'ho;ver' },
+      ],
+    })
+  })
+
   test('a payload that closes the rule and opens another is rejected', () => {
     const found = errors('red } .x { color: blue')
     expect(found[0]).toEqual({

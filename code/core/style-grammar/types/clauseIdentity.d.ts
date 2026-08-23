@@ -1,7 +1,7 @@
 import { type FlatScanErrorCode } from "./scanFlatValue";
 export type ClauseIdentityErrorCode = FlatScanErrorCode | "empty-modifier" | "empty-payload";
 export interface ClauseIdentityHandler<Context> {
-	segment(ctx: Context, start: number, end: number, isBase: boolean): void;
+	segment(ctx: Context, start: number, end: number, isBase: boolean, valid: boolean): void;
 	chain?(ctx: Context, start: number, end: number): void;
 	modifier?(ctx: Context, start: number, end: number, canonical: string): void;
 	clause?(ctx: Context, start: number, chainEnd: number, payloadStart: number, end: number, slot: string): void;

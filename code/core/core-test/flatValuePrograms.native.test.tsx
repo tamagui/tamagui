@@ -390,7 +390,7 @@ test('container clauses measure the nearest container layout', () => {
   expect(narrow.mediaGroups?.has('sm')).toBe(true)
 })
 
-test('@ refuses non-size media while the viewport spelling remains media', () => {
+test('@ drops a non-size clause while the viewport spelling remains media', () => {
   const context = { '@': groupEntry({}, { width: 400, height: 100 }) }
   const container = split(
     { backgroundColor: 'red @hoverNone:blue' },
@@ -399,7 +399,7 @@ test('@ refuses non-size media while the viewport spelling remains media', () =>
     {},
     context
   )
-  expect(container.style?.backgroundColor).toBeUndefined()
+  expect(container.style?.backgroundColor).toBe('red')
   expect(container.pseudoGroups?.size ?? 0).toBe(0)
   expect(container.mediaGroups?.size ?? 0).toBe(0)
 
