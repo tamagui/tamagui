@@ -4989,3 +4989,131 @@ effect. Refuted.
 Section 45's other conclusions still hold: it is not detox synchronization at
 launch, there is no `device.setAppearance` in detox 20.47, and simctl applies
 the appearance before it returns.
+
+## 48. Engine consolidation Phase I: one CORE ruler and the standalone 1a price (2026-08-22)
+
+Phase I integrated the campaign branch with current `v3-beta` while preserving
+published history. `b6420e1ff7` reverts checkpoint 1b, restoring the real
+merged props record and removing its render-time Proxy. Merge `c10696b15f`
+brings in `origin/v3-beta` at `86c00ff56a`. After the exact price below,
+`426baa19e0` reverts checkpoint 1a. The working engine baseline is therefore
+the clean pre-1a path.
+
+### The size fixture needed one more boundary
+
+Restoring only the two benchmark entries to their pre-FlatFrame source was not
+enough. Both entries imported `shared/bench.ts`, and 1a added the flat scenario
+to that module. That one performance-only line moved the whole bundle and the
+v2 CORE result through gzip's shared dictionary.
+
+The size arm now has dedicated frozen `src/size.tsx` entries and a frozen
+`shared/sizeBench.ts`. Vite's explicit `size` mode builds those files, while
+the normal `src/index.tsx` and `shared/bench.ts` keep FlatFrame for runtime and
+profile measurements. The emitted entry remains named `index-[hash].js`, which
+makes both historical controls reproduce byte for byte. The v2 and v3
+performance sources remain byte-identical under `--verify-workload`:
+
+- combined SHA-256: `2c402d082d9da72ed128d41604db7a1b93d9ad8312d3f6f2fa79fb685ff55c65`
+- source SHA-256: `e6285bcacf78d8b639800d7235ca6e0d7494f0b24d38e233c91112fee8f3a404`
+- config SHA-256: `cc2569cc5a30c5df8ae3fca81451ebfbd0f9dceb9eff31911fa4f61f485e6324`
+
+### CORE receipt
+
+`attribute-bundle-gzip.ts --core` removes all non-animation `@tamagui/`
+source-map spans as one union and gzips the stripped chunk once. Its behavioral
+test independently computes that union, proves it differs from the qualifying
+marginal sum, and preserves ordinary marginal attribution.
+
+| arm | whole gzip | CORE |
+| --- | ---: | ---: |
+| integrated tip with 1a (`CORE_base`) | 104,332 | 40,217 |
+| exact integrated source without 1a (`CORE_noarena`) | 104,053 | 39,938 |
+| v2 same fixture (`CORE_v2`) | 94,857 | 30,521 |
+
+The no-arena arm is a detached `c10696b15f` worktree with only
+`878db6d383` reverse-applied via `git revert --no-commit`, followed by the
+full root build. Its fresh production artifact reproduced 104,053 / 39,938;
+this is the literal one-variable control required by revision 3.
+
+The standalone price of 1a is therefore **+279 CORE gzip**. Its measured
+performance receipt remains getter reads 1,006 to 1 and getSplitStyles
+allocations down 16.7%. With the owner away, coordinator p28302 made the two
+reversible bindings needed to continue overnight: revert 1a, and set literal
+**CEILING = 30,000 CORE**. The +279-byte performance change is now a separate
+future proposal rather than a confound in this size campaign.
+
+The make-or-break size condition is **CORE <= 37,938**, the stricter result of
+`CORE_noarena - 2,000` and `CORE_base - 2,000`. Literal acceptance is 521
+bytes below same-run v2 CORE. A final result from 30,001 through 30,814 must
+say explicitly that the literal policy choice determines the miss.
+
+Marginal attribution remains diagnostic only. On the bound no-arena arm its
+Tamagui marginal sum is 40,955 versus v2's 31,757; the v3 animation rows are
+1,474 (`animations-css`) and 394 (`animation-helpers`). `directStyle` is 5,301,
+`propMapper` is 1,899, and the style-grammar scanner, precedence, registry,
+states, and state-modifier rows are 703, 527, 297, 287, and 65 respectively.
+
+The heavy `helpers/variables.mjs` span is absent from the Vite size source map.
+Positive controls `helpers/variableValue.mjs` and
+`helpers/configVariables.mjs` are present. This proves the Vite claim only;
+Metro still retains the root export graph described earlier.
+
+### Superseded with-1a runtime and allocation receipt
+
+Before the revert, the same-run runtime matrix used seed 73129, 10 retained
+samples, and two warmups. Values below are v3/v2 mean milliseconds for mount
+and rerender:
+
+| scenario | mount | rerender |
+| --- | ---: | ---: |
+| simple | 3.66 / 4.14 | 1.04 / 1.22 |
+| rich | 6.25 / 7.04 | 1.05 / 1.60 |
+| group | 10.35 / 10.18 | 7.50 / 7.94 |
+| heavy | 7.29 / 6.50 | 5.47 / 6.04 |
+| animated | 5.01 / 5.39 | 6.12 / 6.86 |
+| flat | 20.34 / 5.01 | 19.88 / 3.93 |
+
+The group and heavy mount confidence intervals include zero. The flat gap is
+large and unambiguous, which gives the consolidation gate a useful positive
+control rather than an already-fast path.
+
+The 30-iteration flat hot-path profile records 14.9 ms mount median, 15.1 ms
+update median, 20,165,765 sampled allocation bytes per iteration, and 50,414.4
+bytes per render. `directStyle` owns 13,525,974 sampled bytes per iteration,
+with visible scanner, condition, collect-array, and propMapper frames. Heavy
+and animated negative controls record 7,782.2 and 14,283.7 bytes per render.
+These artifacts are `/tmp/p29049-phase1-hot-{flat,heavy,animated}.json`; the
+same commands and parameters must be used at the gate.
+
+### Bound no-arena runtime and allocation baseline
+
+After `426baa19e0`, the same seed, sample count, warmups, and byte-identical
+workload produced this v3/v2 matrix:
+
+| scenario | mount | rerender |
+| --- | ---: | ---: |
+| simple | 2.84 / 3.07 | 0.70 / 0.93 |
+| rich | 4.84 / 5.44 | 0.93 / 1.32 |
+| group | 9.43 / 7.93 | 6.38 / 6.16 |
+| heavy | 5.35 / 5.19 | 4.34 / 4.65 |
+| animated | 3.98 / 4.29 | 4.93 / 5.81 |
+| flat | 15.78 / 3.88 | 15.02 / 2.79 |
+
+The flat gap remains the positive control. Its 30-iteration profile records
+15.8 ms mount median, 15.9 ms update median, 20,526,448 sampled allocation
+bytes per iteration, and 51,316.1 bytes per render. `directStyle` owns
+13,538,809 sampled bytes per iteration and getSplitStyles owns 1,101,283;
+scanner, condition, collection arrays, and propMapper frames are all visible.
+Heavy and animated negative controls record 7,782.9 and 14,296.6 bytes per
+render. The bound artifacts are
+`/tmp/p29049-phase1-bound-{runtime,hot-flat,hot-heavy,hot-animated}.json`.
+
+Validation at this checkpoint:
+
+- full root build: 171 of 171 tasks successful;
+- CORE tool behavior: 1 test, 10 expectations;
+- compound web: 11 of 11 after the 1a-only probes left with the revert;
+- compound native: 6 of 6;
+- compound iOS: 2 of 2;
+- runtime workload equivalence: byte-identical;
+- production runtime matrix and all three hot-path profiles completed.

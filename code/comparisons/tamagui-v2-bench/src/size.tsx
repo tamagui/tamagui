@@ -1,5 +1,6 @@
+// frozen size fixture for plans/v3-engine-consolidation.md; runtime scenarios belong in index.tsx
 import { createRoot } from 'react-dom/client'
-import { TamaguiProvider, View, styled } from 'tamagui'
+import { TamaguiProvider, View } from 'tamagui'
 import config from './tamagui.config'
 import { useState, useLayoutEffect, useEffect, useRef, useMemo, useCallback } from 'react'
 import {
@@ -8,7 +9,7 @@ import {
   scenarios,
   renderResults,
   type BenchResult,
-} from '../../shared/bench'
+} from '../../shared/sizeBench'
 
 const BEHAVIOR_VALIDATION =
   new URLSearchParams(window.location.search).get('behaviorValidation') === '1'
@@ -185,66 +186,6 @@ function AnimatedItems({ seed }: { seed: number }) {
   }, [seed])
 }
 
-// scenario 6: flat values (runtime grammar, variants, state, and compounds)
-
-const FlatFrame = styled(
-  View,
-  {
-    variants: {
-      tone: {
-        warm: {
-          backgroundColor: 'rgb(253,186,116) web:rgb(249,115,22) hover:rgb(234,88,12)',
-        },
-        cool: {
-          backgroundColor: 'rgb(147,197,253) web:rgb(59,130,246) hover:rgb(37,99,235)',
-        },
-      },
-      elevated: {
-        true: {
-          borderRadius: '4px web:8px hover:12px',
-        },
-      },
-    },
-    compoundVariants: Array.from({ length: 12 }, (_, index) => ({
-      tone: index % 2 ? 'warm' : 'cool',
-      elevated: true,
-      style: {
-        borderColor:
-          index % 2
-            ? 'rgb(154,52,18) web:rgb(124,45,18)'
-            : 'rgb(30,64,175) web:rgb(30,58,138)',
-        borderWidth: `1px web:${(index % 3) + 1}px`,
-      },
-    })),
-  } as any,
-  {
-    acceptsClassName: false,
-  }
-)
-
-function FlatItems({ seed }: { seed: number }) {
-  return useMemo(() => {
-    const arr = []
-    for (let i = 0; i < ITEM_COUNT; i++) {
-      arr.push(
-        <FlatFrame
-          key={i}
-          data-bench-scenario-item="flat"
-          tone={(i + seed) % 2 ? 'warm' : 'cool'}
-          elevated
-          disabled={(i + seed) % 3 === 0}
-          animation="quick"
-          width="24px web:28px sm:32px"
-          height="24px web:28px hover:30px"
-          margin="1px web:2px"
-          opacity="1 enter:0.2 disabled:0.5"
-        />
-      )
-    }
-    return <>{arr}</>
-  }, [seed])
-}
-
 // ── runner ────────────────────────────────────────────
 
 const scenarioComponents = {
@@ -253,7 +194,6 @@ const scenarioComponents = {
   group: GroupItems,
   heavy: HeavyItems,
   animated: AnimatedItems,
-  flat: FlatItems,
 }
 
 function BenchRunner({

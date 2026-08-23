@@ -1,7 +1,9 @@
 /**
- * shared benchmark harness used by all framework bench apps.
+ * frozen size harness for plans/v3-engine-consolidation.md.
  *
- * each app imports this and calls runBenchmark() which:
+ * the v2 and v3 size entries import this exact workload. keep runtime-only
+ * scenarios in bench.ts so performance experiments cannot move the size ruler.
+ * runBenchmark():
  * 1. mounts N components, measures time
  * 2. re-renders with new props, measures time
  * 3. writes results to DOM elements with standardized IDs
@@ -42,7 +44,6 @@ const allScenarios: BenchScenario[] = [
   { id: 'group', name: '3. Nested row layout' },
   { id: 'heavy', name: '4. Heavy page (realistic card list, nested, mixed)' },
   { id: 'animated', name: '5. Dynamic transition' },
-  { id: 'flat', name: '6. Flat values and compounds' },
 ]
 
 const scenarioParam = urlParams.get('scenario')

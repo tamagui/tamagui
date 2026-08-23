@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "EXTRACT=1 vite --port 9101",
     "dev:nocompile": "vite --port 9101",
-    "build": "EXTRACT=1 vite build"
+    "build": "EXTRACT=1 vite build",
+    "build:size": "vite build --mode size"
   },
   "dependencies": {
     "@tamagui/animations-css": "workspace:*",

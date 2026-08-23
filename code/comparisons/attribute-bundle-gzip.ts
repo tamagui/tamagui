@@ -16,14 +16,19 @@
  * this module cost me. summing them lands within ~1% of the measured delta in
  * practice, so a v3-vs-v2 marginal diff is a valid decomposition.
  *
+ * --core instead deletes every @tamagui/ span except animations-css and
+ * animation-helpers as one union, then gzips the stripped chunk once. this is
+ * the reproducible whole-core metric; it is not a sum of marginal rows.
+ *
  * usage:
  *   # build with sourcemaps first (bench dirs from run-benchmarks are temp)
- *   cd code/comparisons/tamagui-bench && EXTRACT=1 npx vite build --sourcemap --outDir /tmp/v3bench
+ *   cd code/comparisons/tamagui-bench && npx vite build --mode size --sourcemap --outDir /tmp/v3bench
  *   bun code/comparisons/attribute-bundle-gzip.ts /tmp/v3bench
  *
  *   # only tamagui modules, and diff two builds
  *   bun code/comparisons/attribute-bundle-gzip.ts /tmp/v3bench --filter=@tamagui/
  *   bun code/comparisons/attribute-bundle-gzip.ts /tmp/v3bench --against=/tmp/v2bench
+ *   bun code/comparisons/attribute-bundle-gzip.ts /tmp/v3bench --core
  */
 
 import { eachMapping, TraceMap } from '@jridgewell/trace-mapping'
@@ -37,10 +42,11 @@ const filter = args.find((a) => a.startsWith('--filter='))?.slice(9) ?? ''
 const against = args.find((a) => a.startsWith('--against='))?.slice(10)
 const minDelta = Number(args.find((a) => a.startsWith('--min='))?.slice(6) ?? '40')
 const within = args.find((a) => a.startsWith('--within='))?.slice(9)
+const core = args.includes('--core')
 
 if (!dirs[0]) {
   console.error(
-    'usage: attribute-bundle-gzip.ts <outDir> [--against=<outDir>] [--filter=str]'
+    'usage: attribute-bundle-gzip.ts <outDir> [--core] [--against=<outDir>] [--filter=str]'
   )
   process.exit(1)
 }
@@ -149,37 +155,80 @@ function attribute(dir: string) {
   }
 
   const modules = new Map<string, { minBytes: number; marginalGzip: number }>()
-  for (const [id, segs] of segments) {
-    if (filter && !id.includes(filter)) continue
-    const byFile = new Map<string, Segment[]>()
-    for (const seg of segs) {
-      const list = byFile.get(seg.file)
-      if (list) list.push(seg)
-      else byFile.set(seg.file, [seg])
-    }
-    let marginalGzip = 0
-    let minBytes = 0
-    for (const [file, fileSegs] of byFile) {
-      const code = codes.get(file)!
-      const sorted = fileSegs.slice().sort((a, b) => a.start - b.start)
-      let stripped = ''
-      let pos = 0
-      for (const seg of sorted) {
-        minBytes += seg.end - seg.start
-        if (seg.start > pos) stripped += code.slice(pos, seg.start)
-        pos = Math.max(pos, seg.end)
+  if (!core) {
+    for (const [id, segs] of segments) {
+      if (filter && !id.includes(filter)) continue
+      const byFile = new Map<string, Segment[]>()
+      for (const seg of segs) {
+        const list = byFile.get(seg.file)
+        if (list) list.push(seg)
+        else byFile.set(seg.file, [seg])
       }
-      stripped += code.slice(pos)
-      marginalGzip +=
-        baseGzip.get(file)! - gzipSync(Buffer.from(stripped), { level: 9 }).byteLength
+      let marginalGzip = 0
+      let minBytes = 0
+      for (const [file, fileSegs] of byFile) {
+        const code = codes.get(file)!
+        const sorted = fileSegs.slice().sort((a, b) => a.start - b.start)
+        let stripped = ''
+        let pos = 0
+        for (const seg of sorted) {
+          minBytes += seg.end - seg.start
+          if (seg.start > pos) stripped += code.slice(pos, seg.start)
+          pos = Math.max(pos, seg.end)
+        }
+        stripped += code.slice(pos)
+        marginalGzip +=
+          baseGzip.get(file)! - gzipSync(Buffer.from(stripped), { level: 9 }).byteLength
+      }
+      modules.set(id, { minBytes, marginalGzip })
     }
-    modules.set(id, { minBytes, marginalGzip })
   }
 
   return { modules, totalGzip, segments, codes, baseGzip, sources }
 }
 
 const left = attribute(dirs[0]!)
+
+if (core) {
+  const byFile = new Map<string, Segment[]>()
+  for (const [id, segs] of left.segments) {
+    const packageName = id.slice(0, id.indexOf('::'))
+    if (
+      !packageName.startsWith('@tamagui/') ||
+      packageName === '@tamagui/animations-css' ||
+      packageName === '@tamagui/animation-helpers'
+    ) {
+      continue
+    }
+    for (const seg of segs) {
+      const list = byFile.get(seg.file)
+      if (list) list.push(seg)
+      else byFile.set(seg.file, [seg])
+    }
+  }
+
+  let strippedGzip = 0
+  for (const [file, code] of left.codes) {
+    const fileSegs = byFile.get(file)
+    if (!fileSegs) {
+      strippedGzip += left.baseGzip.get(file)!
+      continue
+    }
+    const sorted = fileSegs.slice().sort((a, b) => a.start - b.start)
+    let stripped = ''
+    let pos = 0
+    for (const seg of sorted) {
+      if (seg.start > pos) stripped += code.slice(pos, seg.start)
+      pos = Math.max(pos, seg.end)
+    }
+    stripped += code.slice(pos)
+    strippedGzip += gzipSync(Buffer.from(stripped), { level: 9 }).byteLength
+  }
+
+  console.info(`bundle gzip total: ${left.totalGzip}`)
+  console.info(`CORE: ${left.totalGzip - strippedGzip}`)
+  process.exit(0)
+}
 
 if (within) {
   // per-declaration attribution inside ONE module: same marginal-gzip method,

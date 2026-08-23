@@ -4,7 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "vite build"
+    "build": "vite build",
+    "build:size": "vite build --mode size"
   },
   "dependencies": {
     "@tamagui/animations-css": "2.6.2",
