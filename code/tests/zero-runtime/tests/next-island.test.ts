@@ -33,13 +33,12 @@ test('server HTML has the deterministic placeholder and no full-runtime island m
   expect(html).not.toContain('data-testid="island-root"')
   // the zero page itself is fully lowered host markup
   expect(html).toContain('data-testid="zero-root"')
-  // the static Theme lowers to one node carrying both the theme class and the
-  // inline-value class, matching what the runtime Theme composes
+  // 99fba89f0c moved inline values from Theme to ThemeUpdate, so the authored
+  // nodes remain distinct: outer theme classes, inner inline-value class
   const inlineClassName = Object.values<any>(bridges().bridges)[0][0].layers[0]
     .inlineClassName
-  // the same classes and the same style the runtime Theme span carries
   expect(html).toContain(
-    `class="t_sub_theme t_dark is_Theme ${inlineClassName}" style="color:var(--color);display:contents"`
+    `class="t_sub_theme t_dark is_Theme" style="color:var(--color);display:contents"><span class="is_Theme ${inlineClassName}" style="display:contents"`
   )
 })
 
