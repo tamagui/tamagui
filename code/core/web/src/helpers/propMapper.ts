@@ -1,5 +1,5 @@
 import { isAndroid } from '@tamagui/constants'
-import { scanFlatValue } from '@tamagui/style-grammar/runtime'
+import { scanFlatValue, type FlatValueHandler } from '@tamagui/style-grammar/runtime'
 import { isVariable } from '../createVariable'
 import type {
   GetStyleState,
@@ -36,6 +36,34 @@ export function appendFlatClause(
   return prev == null
     ? `${conditionSource}:${value}`
     : `${prev} ${conditionSource}:${value}`
+}
+
+// pass state, source, pending modifier, refused, then
+// start/end/modifier triples. this one result array replaces the former three
+// arrays and stays local while authored variant reads can re-enter.
+type VariantScanContext = any[]
+
+const propMapperHandler: FlatValueHandler<VariantScanContext> = {
+  segment(ctx, start, end, isBase) {
+    if (start === end) {
+      if (!isBase) ctx[3] = true
+      return
+    }
+    ctx.push(start, end, ctx[2])
+  },
+  chain(ctx, start, end) {
+    if (ctx[3]) return false
+    const source = (ctx[1] as string).slice(start, end)
+    if (!getCondition(ctx[0], source)) {
+      ctx[3] = true
+      return false
+    }
+    ctx[2] = source
+    return true
+  },
+  error(ctx) {
+    ctx[3] = true
+  },
 }
 
 export const propMapper: PropMapper = (key, value, styleState, disabled, map) => {
@@ -172,53 +200,24 @@ const resolveVariants: StyleResolver = (
     // resolver the style path uses. Both matter: the two paths used to lose
     // different amounts of a value the grammar refuses, so which one styled a
     // component decided how much of a typo survived.
-    const starts: number[] = []
-    const ends: number[] = []
-    const modifiers: (string | undefined)[] = []
-    let pendingModifier: string | undefined
-    let sawClause = false
-    let refused = false
+    const scan: VariantScanContext = [styleState, value, undefined, false]
 
-    scanFlatValue(value, {
-      segment(start, end, isBase) {
-        if (start === end) {
-          if (!isBase) refused = true
-          return
-        }
-        starts.push(start)
-        ends.push(end)
-        modifiers.push(pendingModifier)
-      },
-      chain(start, end) {
-        if (refused) return false
-        const source = value.slice(start, end)
-        if (!getCondition(styleState, source)) {
-          refused = true
-          return false
-        }
-        pendingModifier = source
-        sawClause = true
-        return true
-      },
-      error() {
-        refused = true
-      },
-    })
+    scanFlatValue(value, propMapperHandler, scan)
 
-    if (refused) return []
-    if (sawClause) {
+    if (scan[3]) return []
+    if (scan[2] !== undefined) {
       let entries: [string, any, any?, string?][] | undefined
-      for (let index = 0; index < starts.length; index++) {
+      for (let index = 4; index < scan.length; index += 3) {
         const resolved = resolveVariantValue(
           key,
-          value.slice(starts[index], ends[index]),
+          value.slice(scan[index] as number, scan[index + 1] as number),
           styleProps,
           styleState,
           parentVariantKey
         )
         if (!resolved) continue
         entries ||= []
-        const modifier = modifiers[index]
+        const modifier = scan[index + 2] as string | undefined
         for (const entry of resolved) {
           if (modifier !== undefined) entry[3] = modifier
           entries.push(entry)

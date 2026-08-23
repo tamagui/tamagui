@@ -22,6 +22,7 @@ import {
   scanFlatValue,
   type ClausePrecedenceKey,
   type ClausePrecedenceOrder,
+  type FlatValueHandler,
   type ModifierKind,
   type ParsedValue,
 } from '@tamagui/style-grammar/runtime'
@@ -92,6 +93,63 @@ type DirectState = GetStyleState & {
   flatPrecedence?: Record<string, ClausePrecedenceKey>
   flatTextShadow?: Record<string, any>
   flatWebShadow?: Record<string, any>
+}
+
+// pass state, pending condition, refusal, lifecycle, source, property, then
+// condition/start/end triples. this is the result collection itself, so the
+// context adds no allocation beyond the data the current collector keeps.
+type DirectScanContext = any[]
+
+const directStyleHandler: FlatValueHandler<DirectScanContext> = {
+  segment(ctx, start, end, isBase) {
+    if (start === end) {
+      // an empty base is simply no base; an empty clause payload is a clause
+      // with nothing in it, which parseValue reports as `empty-payload`
+      if (!isBase && !ctx[2]) {
+        ctx[2] =
+          process.env.NODE_ENV === 'development'
+            ? 'a conditional clause has no value'
+            : true
+      }
+      return
+    }
+    ctx.push(ctx[1] || null, start, end)
+  },
+  chain(ctx, start, end) {
+    if (ctx[2]) return false
+    const source = ctx[4] as string
+    const modifier = source.slice(start, end)
+    const next = getCondition(ctx[0], modifier)
+    if (!next) {
+      ctx[2] =
+        process.env.NODE_ENV === 'development' ? `unknown modifier "${modifier}"` : true
+      return false
+    }
+    if (process.env.NODE_ENV === 'development' && next.unsupportedState) {
+      warnOnce(
+        `${ctx[5]}: "${next.unsupportedState}:" has no native component-state source; dropping the clause`
+      )
+    }
+    ctx[1] = next
+    ctx[3] ||= !!(next.enter || next.exit)
+    return true
+  },
+  error(ctx, code, index) {
+    if (ctx[2]) return
+    const source = ctx[4] as string
+    ctx[2] =
+      process.env.NODE_ENV === 'development'
+        ? code === 'invalid-character'
+          ? `"${source[index]}" would end the declaration or rule`
+          : code === 'unterminated-string'
+            ? 'an unterminated string'
+            : code === 'unterminated-comment'
+              ? 'an unterminated "/*" comment'
+              : code === 'stray-comment-close'
+                ? 'a stray "*/"'
+                : 'an unterminated "("'
+        : true
+  },
 }
 
 // keyed by the CANONICAL modifier spelling: `canonicalClauseModifier` has
@@ -1512,56 +1570,12 @@ export function contributeStyleString(
   // the WHOLE value: there is no such thing as the good half of a value the
   // grammar rejects. Emitting as the scan went is what used to make this path
   // lose the base it had already read while the variant path kept it.
-  const conditions: (Condition | null)[] = []
-  const starts: number[] = []
-  const ends: number[] = []
-  let pending: Condition | null = null
-  // the first thing that made the value unusable, and the whole refusal test
-  let refused = ''
-  let lifecycle = false
+  const scan: DirectScanContext = [state, null, '', false, source, undefined]
+  if (process.env.NODE_ENV === 'development') scan[5] = property
 
-  scanFlatValue(source, {
-    segment(start, end, isBase) {
-      if (start === end) {
-        // an empty base is simply no base; an empty clause payload is a clause
-        // with nothing in it, which parseValue reports as `empty-payload`
-        if (!isBase && !refused) refused = 'a conditional clause has no value'
-        return
-      }
-      conditions.push(pending)
-      starts.push(start)
-      ends.push(end)
-    },
-    chain(start, end) {
-      if (refused) return false
-      const next = getCondition(state, source.slice(start, end))
-      if (!next) {
-        refused = `unknown modifier "${source.slice(start, end)}"`
-        return false
-      }
-      if (process.env.NODE_ENV === 'development' && next.unsupportedState) {
-        warnOnce(
-          `${property}: "${next.unsupportedState}:" has no native component-state source; dropping the clause`
-        )
-      }
-      pending = next
-      lifecycle ||= !!(next.enter || next.exit)
-      return true
-    },
-    error(code, index) {
-      if (refused) return
-      refused =
-        code === 'invalid-character'
-          ? `"${source[index]}" would end the declaration or rule`
-          : code === 'unterminated-string'
-            ? 'an unterminated string'
-            : code === 'unterminated-comment'
-              ? 'an unterminated "/*" comment'
-              : code === 'stray-comment-close'
-                ? 'a stray "*/"'
-                : 'an unterminated "("'
-    },
-  })
+  scanFlatValue(source, directStyleHandler, scan)
+
+  const refused = scan[2]
 
   if (refused) {
     // `16:9` is the one value whose top-level colon is content rather than a
@@ -1586,15 +1600,16 @@ export function contributeStyleString(
 
   let hasBase = false
   let lastPayloadStart = 0
-  for (let index = 0; index < conditions.length; index++) {
-    const condition = conditions[index]
-    lastPayloadStart = starts[index]
+  for (let index = 6; index < scan.length; index += 3) {
+    const condition = scan[index] as Condition | null
+    const start = scan[index + 1] as number
+    lastPayloadStart = start
     const emitted = emitSegment(
       state,
       property,
       source,
-      starts[index],
-      ends[index],
+      start,
+      scan[index + 2] as number,
       condition,
       merge,
       originalValue,
@@ -1606,7 +1621,7 @@ export function contributeStyleString(
   if (
     process.env.NODE_ENV === 'development' &&
     !hasBase &&
-    conditions.length > 0 &&
+    scan.length > 6 &&
     (property in tokenCategories.color || property in tokenCategoryByProperty) &&
     splitComponents(source.slice(lastPayloadStart)).length > 1
   ) {
@@ -1622,7 +1637,7 @@ export function contributeStyleString(
   // every native render plus every web render a driver drives inline. Without
   // this the enter style lands and then the target style has no such key at
   // all, so the driver has nothing to animate toward and the element snaps.
-  if ((!isWeb || !state.flatShouldDoClasses) && lifecycle && !hasBase) {
+  if ((!isWeb || !state.flatShouldDoClasses) && scan[3] && !hasBase) {
     const value =
       property === 'opacity'
         ? 1

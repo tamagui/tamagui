@@ -4,12 +4,12 @@
 //   clause := modifier (":" modifier)* ":" payload
 //
 // Every implementation of this grammar splits a value the same way, so the
-// split lives here once and every consumer drives it with a visitor:
+// split lives here once and every consumer drives it with a handler:
 // `parseValue` builds the canonical result on top of it, and the web runtime's
 // style, variant and lifecycle scanners drive it directly so that what they
 // consume cannot drift from what the canonical parser says the value means.
 //
-// The visitor gets index ranges, never slices. A style prop is scanned on every
+// The handler gets index ranges, never slices. A style prop is scanned on every
 // render it is not classed away, so the scan itself allocates nothing and the
 // consumer slices only what it keeps.
 //
@@ -89,28 +89,28 @@ export type FlatScanErrorCode =
 /** why a scan stopped short, or null when it ran to the end cleanly */
 export type FlatScanFailure = FlatScanErrorCode | 'refused-chain'
 
-export interface FlatValueVisitor {
+export interface FlatValueHandler<Context> {
   /**
    * The base, or one clause's payload, just ended. `start` and `end` are
    * already trimmed, and `start === end` means the segment is empty: an empty
    * base is simply no base, an empty payload is a clause with nothing in it.
    */
-  segment(start: number, end: number, isBase: boolean): void
+  segment(ctx: Context, start: number, end: number, isBase: boolean): void
   /**
    * A modifier chain just ended, without its trailing colon, so
    * `source.slice(start, end)` is `dark:hover` for `dark:hover:red`. Returning
    * false stops the scan: the consumer has refused the value and does not want
    * later chains resolved.
    */
-  chain(start: number, end: number): boolean
+  chain(ctx: Context, start: number, end: number): boolean
   /**
    * A character the grammar refuses, or a delimiter left open at the end. The
    * scan continues, so a consumer that only wants the first one records it and
    * refuses the next chain.
    */
-  error?(code: FlatScanErrorCode, index: number): void
+  error?(ctx: Context, code: FlatScanErrorCode, index: number): void
   /** every top-level word, whether or not it turned out to carry a chain */
-  word?(start: number, end: number, isChain: boolean): void
+  word?(ctx: Context, start: number, end: number, isChain: boolean): void
 }
 
 function isWhitespace(code: number): boolean {
@@ -161,9 +161,10 @@ function opensUrlToken(source: string, index: number): boolean {
  * scanned on every render it is not classed away, and one closure per scan is
  * one allocation per prop per render for nothing.
  */
-function closeSegment(
+function closeSegment<Context>(
   source: string,
-  visitor: FlatValueVisitor,
+  handler: FlatValueHandler<Context>,
+  ctx: Context,
   segmentStart: number,
   end: number,
   isBase: boolean
@@ -172,12 +173,13 @@ function closeSegment(
   let stop = end
   while (start < stop && isWhitespace(source.charCodeAt(start))) start++
   while (stop > start && isWhitespace(source.charCodeAt(stop - 1))) stop--
-  visitor.segment(start, stop, isBase)
+  handler.segment(ctx, start, stop, isBase)
 }
 
-export function scanFlatValue(
+export function scanFlatValue<Context>(
   source: string,
-  visitor: FlatValueVisitor
+  handler: FlatValueHandler<Context>,
+  ctx: Context
 ): FlatScanFailure | null {
   const length = source.length
 
@@ -218,7 +220,7 @@ export function scanFlatValue(
       else if (code === quote) quote = 0
       else if (code === CHAR_LF || code === CHAR_CR || code === CHAR_FF) {
         if (failure === null) failure = 'unterminated-string'
-        if (visitor.error !== undefined) visitor.error('unterminated-string', quoteStart)
+        handler.error?.(ctx, 'unterminated-string', quoteStart)
         quote = 0
         // re-read the newline at top level, where it is ordinary whitespace
         index--
@@ -245,7 +247,7 @@ export function scanFlatValue(
     }
     if (code === CHAR_STAR && source.charCodeAt(index + 1) === CHAR_SLASH) {
       if (failure === null) failure = 'stray-comment-close'
-      if (visitor.error !== undefined) visitor.error('stray-comment-close', index)
+      handler.error?.(ctx, 'stray-comment-close', index)
       index++
       continue
     }
@@ -265,10 +267,10 @@ export function scanFlatValue(
 
     if (isWhitespace(code)) {
       if (wordStart !== -1) {
-        if (visitor.word !== undefined) visitor.word(wordStart, index, lastColon !== -1)
+        handler.word?.(ctx, wordStart, index, lastColon !== -1)
         if (lastColon !== -1) {
-          closeSegment(source, visitor, segmentStart, wordStart, !sawChain)
-          if (!visitor.chain(wordStart, lastColon)) return 'refused-chain'
+          closeSegment(source, handler, ctx, segmentStart, wordStart, !sawChain)
+          if (!handler.chain(ctx, wordStart, lastColon)) return 'refused-chain'
           sawChain = true
           segmentStart = lastColon + 1
         }
@@ -287,7 +289,7 @@ export function scanFlatValue(
       code === CHAR_SEMICOLON
     ) {
       if (failure === null) failure = 'invalid-character'
-      if (visitor.error !== undefined) visitor.error('invalid-character', index)
+      handler.error?.(ctx, 'invalid-character', index)
     } else if (code === CHAR_BACKSLASH) index++
     else if (code === CHAR_DOUBLE_QUOTE || code === CHAR_SINGLE_QUOTE) {
       quote = code
@@ -301,27 +303,27 @@ export function scanFlatValue(
 
   if (comment) {
     if (failure === null) failure = 'unterminated-comment'
-    if (visitor.error !== undefined) visitor.error('unterminated-comment', commentStart)
+    handler.error?.(ctx, 'unterminated-comment', commentStart)
   }
   if (quote !== 0) {
     if (failure === null) failure = 'unterminated-string'
-    if (visitor.error !== undefined) visitor.error('unterminated-string', quoteStart)
+    handler.error?.(ctx, 'unterminated-string', quoteStart)
   }
   if (depth > 0) {
     if (failure === null) failure = 'unterminated-function'
-    if (visitor.error !== undefined) visitor.error('unterminated-function', parenStart)
+    handler.error?.(ctx, 'unterminated-function', parenStart)
   }
 
   if (wordStart !== -1) {
-    if (visitor.word !== undefined) visitor.word(wordStart, length, lastColon !== -1)
+    handler.word?.(ctx, wordStart, length, lastColon !== -1)
     if (lastColon !== -1) {
-      closeSegment(source, visitor, segmentStart, wordStart, !sawChain)
-      if (!visitor.chain(wordStart, lastColon)) return 'refused-chain'
+      closeSegment(source, handler, ctx, segmentStart, wordStart, !sawChain)
+      if (!handler.chain(ctx, wordStart, lastColon)) return 'refused-chain'
       sawChain = true
       segmentStart = lastColon + 1
     }
   }
-  closeSegment(source, visitor, segmentStart, length, !sawChain)
+  closeSegment(source, handler, ctx, segmentStart, length, !sawChain)
 
   return failure
 }

@@ -5117,3 +5117,55 @@ Validation at this checkpoint:
 - compound iOS: 2 of 2;
 - runtime workload equivalence: byte-identical;
 - production runtime matrix and all three hot-path profiles completed.
+
+## 49. Engine consolidation Phase III-a: explicit scanner context (2026-08-23)
+
+`scanFlatValue` now takes one module-scope handler and an explicit context.
+All four consumers use that signature, and the old visitor interface and
+two-argument call form are gone. This removes every per-scan visitor object and
+the lifecycle scanner's module globals without adding an overload or a second
+path.
+
+The first literal conversion was rejected before commit because it measured
+40,143 CORE, 205 bytes above the 39,938 baseline. The accepted implementation
+uses each render driver's existing result collection as its context:
+
+- `directStyle` stores condition, start, and end triples in one array instead
+  of three result arrays plus a visitor object;
+- `propMapper` stores start, end, and modifier triples in one array instead of
+  three result arrays plus a visitor object;
+- lifecycle discovery keeps one two-slot tuple on the component's stable state
+  ref, allocated once per component rather than once per pass;
+- `parseValue` uses a per-call record because it is tooling, outside the render
+  path.
+
+Every render context is local to the call or component. No scanner state is
+stored in a module global, so authored getters can re-enter without overwriting
+another pass. Production refusal state is boolean; the exact diagnostic text
+is still produced in development.
+
+### Size receipt
+
+The fresh `--mode size` artifact after the full root build is
+`/tmp/p29049-phase3a-final-size-v3.yFaXp8`.
+
+| arm | whole gzip | CORE |
+| --- | ---: | ---: |
+| Phase I baseline | 104,053 | 39,938 |
+| Phase III-a | 103,969 | 39,857 |
+| movement | -84 | -81 |
+
+The changed diagnostic marginal is `directStyle`, 5,301 to 5,206 (-95). Rows
+remain diagnostic only; the accepted checkpoint is the -81 whole-CORE move.
+
+Validation at this checkpoint:
+
+- style-grammar: 27 files, 441 tests;
+- web parser agreement plus flat-value web, SSR, and streaming: 4 files,
+  78 tests;
+- native flat-value behavior: 1 file, 58 tests;
+- full root build: 171 of 171 tasks successful;
+- root lint passed with the same five unrelated warnings;
+- root dependency, unused, Tamagui, reference, path, DOM type, and LSP pin
+  checks passed;
+- `git diff --check` passed.

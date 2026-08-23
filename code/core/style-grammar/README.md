@@ -11,11 +11,11 @@ beside the grammar.
 
 ## The one scanner
 
-`scanFlatValue.ts` is the split: one left-to-right pass that hands a visitor
+`scanFlatValue.ts` is the split: one left-to-right pass that hands a handler
 index ranges and never allocates a slice. `parseValue` is built on it, and so
 are the three scanners in `@tamagui/web` (`contributeStyleString`,
 `resolveVariants`, `hasFlatModifier`). A consumer that needs a different answer
-writes a different visitor, never a second pass.
+writes a different handler, never a second pass.
 
 ## The Rust LSP's tables are generated from here
 

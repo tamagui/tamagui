@@ -16,7 +16,7 @@
 import {
   scanFlatValue,
   type FlatScanErrorCode,
-  type FlatValueVisitor,
+  type FlatValueHandler,
 } from './scanFlatValue'
 import type {
   ModifierRegistryView,
@@ -39,6 +39,17 @@ export interface ValueSourceSpan {
 export interface ValueParseWithSourceSpans {
   result: ValueParseResult
   spans: readonly ValueSourceSpan[]
+}
+
+type ValueParseContext = {
+  input: string
+  registry: ModifierRegistryView
+  sourceSpans?: ValueSourceSpan[]
+  errors: ValueParseError[] | null
+  base: string | null
+  clauses: ParsedClause[] | null
+  pending: string[] | null
+  segmentStart: number
 }
 
 /**
@@ -97,97 +108,106 @@ function scanErrorMessage(code: FlatScanErrorCode, input: string, index: number)
   return 'unterminated "(" in value'
 }
 
+function addParseError(
+  ctx: ValueParseContext,
+  code: ValueParseErrorCode,
+  index: number,
+  message: string,
+  modifier?: string
+): void {
+  ;(ctx.errors ||= []).push(
+    modifier === undefined ? { code, index, message } : { code, index, message, modifier }
+  )
+}
+
+const valueParserHandler: FlatValueHandler<ValueParseContext> = {
+  segment(ctx, start, end, isBase) {
+    ctx.sourceSpans?.push({ kind: isBase ? 'base' : 'payload', start, end })
+    if (isBase) {
+      ctx.base = start < end ? ctx.input.slice(start, end) : null
+      return
+    }
+    if (start >= end) {
+      addParseError(
+        ctx,
+        'empty-payload',
+        ctx.segmentStart,
+        `the "${ctx.pending!.join(':')}:" clause has no value`
+      )
+      return
+    }
+    ;(ctx.clauses ||= []).push({
+      modifiers: ctx.pending!,
+      payload: ctx.input.slice(start, end),
+    })
+  },
+
+  // a clause word ended: everything before its last top-level colon is the
+  // modifier chain, everything after it begins the payload
+  chain(ctx, chainStart, chainEnd) {
+    const modifiers: string[] = []
+    let nameStart = chainStart
+    for (let index = chainStart; index <= chainEnd; index++) {
+      if (index !== chainEnd && ctx.input.charCodeAt(index) !== CHAR_COLON) continue
+      if (index === nameStart) {
+        addParseError(
+          ctx,
+          'empty-modifier',
+          index,
+          'a modifier chain has an empty segment'
+        )
+      } else {
+        const name = ctx.input.slice(nameStart, index)
+        ctx.sourceSpans?.push({ kind: 'modifier', start: nameStart, end: index })
+        if (ctx.registry.get(name) === undefined) {
+          addParseError(
+            ctx,
+            'unregistered-modifier',
+            nameStart,
+            `"${name}" is not a registered modifier`,
+            name
+          )
+        }
+        modifiers.push(name)
+      }
+      nameStart = index + 1
+    }
+    ctx.pending = modifiers
+    ctx.segmentStart = chainEnd + 1
+    return true
+  },
+
+  error(ctx, code, index) {
+    addParseError(ctx, code, index, scanErrorMessage(code, ctx.input, index))
+  },
+
+  word(ctx, start, end, isChain) {
+    // only the trailing bare word is a completion position the spans have no
+    // other name for: every earlier word is inside a base or a payload span
+    if (ctx.sourceSpans && !isChain && end === ctx.input.length) {
+      ctx.sourceSpans.push({ kind: 'word', start, end })
+    }
+  },
+}
+
 function parseValueInternal(
   input: string,
   registry: ModifierRegistryView,
   sourceSpans?: ValueSourceSpan[]
 ): ValueParseResult {
-  let errors: ValueParseError[] | null = null
-  let base: string | null = null
-  let clauses: ParsedClause[] | null = null
-  // modifiers of the clause whose payload is currently being collected
-  let pending: string[] | null = null
-  // where the base, or the current payload, starts before trimming, which is
-  // what an empty payload has to point its diagnostic at
-  let segmentStart = 0
-
-  const addError = (
-    code: ValueParseErrorCode,
-    index: number,
-    message: string,
-    modifier?: string
-  ): void => {
-    ;(errors ||= []).push(
-      modifier === undefined
-        ? { code, index, message }
-        : { code, index, message, modifier }
-    )
+  const ctx: ValueParseContext = {
+    input,
+    registry,
+    sourceSpans,
+    errors: null,
+    base: null,
+    clauses: null,
+    pending: null,
+    segmentStart: 0,
   }
 
-  const visitor: FlatValueVisitor = {
-    segment(start, end, isBase) {
-      sourceSpans?.push({ kind: isBase ? 'base' : 'payload', start, end })
-      if (isBase) {
-        base = start < end ? input.slice(start, end) : null
-        return
-      }
-      if (start >= end) {
-        addError(
-          'empty-payload',
-          segmentStart,
-          `the "${pending!.join(':')}:" clause has no value`
-        )
-        return
-      }
-      ;(clauses ||= []).push({ modifiers: pending!, payload: input.slice(start, end) })
-    },
+  scanFlatValue(input, valueParserHandler, ctx)
 
-    // a clause word ended: everything before its last top-level colon is the
-    // modifier chain, everything after it begins the payload
-    chain(chainStart, chainEnd) {
-      const modifiers: string[] = []
-      let nameStart = chainStart
-      for (let index = chainStart; index <= chainEnd; index++) {
-        if (index !== chainEnd && input.charCodeAt(index) !== CHAR_COLON) continue
-        if (index === nameStart) {
-          addError('empty-modifier', index, 'a modifier chain has an empty segment')
-        } else {
-          const name = input.slice(nameStart, index)
-          sourceSpans?.push({ kind: 'modifier', start: nameStart, end: index })
-          if (registry.get(name) === undefined) {
-            addError(
-              'unregistered-modifier',
-              nameStart,
-              `"${name}" is not a registered modifier`,
-              name
-            )
-          }
-          modifiers.push(name)
-        }
-        nameStart = index + 1
-      }
-      pending = modifiers
-      segmentStart = chainEnd + 1
-      return true
-    },
-
-    error(code, index) {
-      addError(code, index, scanErrorMessage(code, input, index))
-    },
-  }
-
-  if (sourceSpans) {
-    // only the trailing bare word is a completion position the spans have no
-    // other name for: every earlier word is inside a base or a payload span
-    visitor.word = (start, end, isChain) => {
-      if (!isChain && end === input.length) {
-        sourceSpans.push({ kind: 'word', start, end })
-      }
-    }
-  }
-
-  scanFlatValue(input, visitor)
-
-  if (errors !== null) return { ok: false, errors }
-  return { ok: true, value: { base, clauses: clauses ?? noClauses } }
+  if (ctx.errors !== null) return { ok: false, errors: ctx.errors }
+  return { ok: true, value: { base: ctx.base, clauses: ctx.clauses ?? noClauses } }
 }
