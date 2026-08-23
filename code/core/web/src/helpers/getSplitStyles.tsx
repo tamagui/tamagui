@@ -45,6 +45,7 @@ import { isPlainObject } from './isObj'
 import { log } from './log'
 import { normalizeValueWithProperty } from './normalizeValueWithProperty'
 import { appendFlatClause, propMapper } from './propMapper'
+import { readMergedProp } from './mergeProps'
 import {
   clearDirectStyle,
   contributeStyleValue,
@@ -193,7 +194,7 @@ function getStyledDefaults(staticConfig: StaticConfig): OrderedPropEntry[] | nul
 
 function contributeDisplacedStyledDefaults(
   styledDefaults: OrderedPropEntry[] | null,
-  processedProps: Record<string, any>,
+  read: (key: string) => any,
   shorthands: Record<string, string>,
   contribute: (key: string, value: any) => void
 ) {
@@ -201,7 +202,7 @@ function contributeDisplacedStyledDefaults(
   for (let index = 0; index < styledDefaults.length; index++) {
     const key = styledDefaults[index][0]
     const styledValue = styledDefaults[index][1]
-    const propValue = processedProps[key]
+    const propValue = read(key)
     if (!(key in stylePropsAll) && !(key in shorthands)) continue
     // equal means the default flowed through the merge untouched and will be
     // processed as an ordinary prop entry; different means a call-site value
@@ -218,6 +219,36 @@ function contributeDisplacedStyledDefaults(
   }
 }
 
+// walk the three merged sources in the exact order the removed mergeComponentProps
+// produced: defaults first (a shared key's value is taken from context in place, so
+// it keeps its defaults position), then context-only keys, then caller. each key is
+// contributed exactly once with its final merged value.
+function contributeMergedSources(
+  caller: Record<string, any>,
+  context: Record<string, any> | undefined,
+  defaults: Record<string, any> | undefined,
+  contribute: (key: string, value: any) => void
+) {
+  if (defaults) {
+    for (const key in defaults) {
+      if (key in caller) continue
+      const contextValue = context ? context[key] : undefined
+      contribute(key, contextValue !== undefined ? contextValue : defaults[key])
+    }
+  }
+  if (context) {
+    for (const key in context) {
+      if (key in caller) continue
+      if (context[key] === undefined) continue
+      if (defaults && key in defaults) continue
+      contribute(key, context[key])
+    }
+  }
+  for (const key in caller) {
+    contribute(key, caller[key])
+  }
+}
+
 /**
  * Walks every style contribution in authored forward order and hands each one
  * to `contribute`, without building an intermediate list.
@@ -231,7 +262,9 @@ function contributeDisplacedStyledDefaults(
  * tracked in the module arena until the last selector prop is reached.
  */
 function forEachPropInForwardOrder(
-  processedProps: Record<string, any>,
+  caller: Record<string, any>,
+  context: Record<string, any> | undefined,
+  defaults: Record<string, any> | undefined,
   staticConfig: StaticConfig,
   shorthands: Record<string, string>,
   contribute: (key: string, value: any) => void
@@ -241,18 +274,14 @@ function forEachPropInForwardOrder(
   const preparedCompounds = (staticConfig as StaticConfigWithPreparedCompounds)[
     preparedCompoundsKey
   ]
+  const read = (key: string) => readMergedProp(caller, context, defaults, key)
 
   if (!preparedCompounds) {
     if (processedBaseStyle) {
       for (const key in processedBaseStyle) contribute(key, processedBaseStyle[key])
     }
-    contributeDisplacedStyledDefaults(
-      styledDefaults,
-      processedProps,
-      shorthands,
-      contribute
-    )
-    for (const key in processedProps) contribute(key, processedProps[key])
+    contributeDisplacedStyledDefaults(styledDefaults, read, shorthands, contribute)
+    contributeMergedSources(caller, context, defaults, contribute)
     return
   }
 
@@ -281,20 +310,22 @@ function forEachPropInForwardOrder(
         }
       }
     }
-    contributeDisplacedStyledDefaults(
-      styledDefaults,
-      processedProps,
-      shorthands,
-      contribute
-    )
+    contributeDisplacedStyledDefaults(styledDefaults, read, shorthands, contribute)
 
+    // seed selectors that are absent from every prop source (they anchor at the
+    // frame start). a present-but-undefined selector is visited at its authored
+    // position instead, matching the old merged-object semantics.
     let hasBeforeProps = !!selectorCounts[-1]
     for (const selectorKey in preparedCompounds) {
-      if (Object.prototype.propertyIsEnumerable.call(processedProps, selectorKey)) {
+      if (
+        selectorKey in caller ||
+        (context !== undefined && context[selectorKey] !== undefined) ||
+        (defaults !== undefined && selectorKey in defaults)
+      ) {
         continue
       }
       hasBeforeProps = true
-      const value = processedProps[selectorKey]
+      const value = read(selectorKey)
       const compoundIndexes = preparedCompounds[selectorKey]
       for (let index = 0; index < compoundIndexes.length; index++) {
         const compoundIndex = compoundIndexes[index]
@@ -328,12 +359,10 @@ function forEachPropInForwardOrder(
       }
     }
 
-    for (const key in processedProps) {
-      if (!Object.hasOwn(processedProps, key)) continue
-      const value = processedProps[key]
+    const contributeKey = (key: string, value: any) => {
       contribute(key, value)
       const compoundIndexes = preparedCompounds[key]
-      if (!compoundIndexes) continue
+      if (!compoundIndexes) return
 
       for (let index = 0; index < compoundIndexes.length; index++) {
         const compoundIndex = compoundIndexes[index]
@@ -356,6 +385,8 @@ function forEachPropInForwardOrder(
         for (const styleKey in style) contribute(styleKey, style[styleKey])
       }
     }
+
+    contributeMergedSources(caller, context, defaults, contributeKey)
   } finally {
     compoundArenaTop = arenaBase
   }
@@ -413,7 +444,14 @@ export const getSplitStyles: StyleSplitter = (
     (conf.animations as AnimationDriverLike)
   const resolvedDriver = driver?.isStub ? null : (driver as AnimationDriver | null)
 
-  if (props.passThrough) {
+  // direct three-source scalar reads: caller, then styled context, then defaults,
+  // matching the removed mergeComponentProps order without materializing a merged object
+  const styledContextValue = styleProps.styledContextValue
+  const resolvedDefaultProps = styleProps.defaultProps
+  const readProp = (key: string) =>
+    readMergedProp(props, styledContextValue, resolvedDefaultProps, key)
+
+  if (readProp('passThrough')) {
     return null
   }
 
@@ -448,7 +486,7 @@ export const getSplitStyles: StyleSplitter = (
     process.env.TAMAGUI_TARGET === 'native' ? (undefined as any) : {}
   const classNames: ClassNamesObject = {}
 
-  let space: SpaceTokens | null = props.space
+  let space: SpaceTokens | null = readProp('space')
   let hasMedia: boolean | Set<string> = false
   let pseudoGroups: Set<string> | undefined
   let mediaGroups: Set<string> | undefined
@@ -498,21 +536,6 @@ export const getSplitStyles: StyleSplitter = (
     animationDriver: resolvedDriver,
   }
 
-  // only used by compiler
-  if (process.env.IS_STATIC === 'is_static') {
-    const { fallbackProps } = styleProps
-    if (fallbackProps) {
-      styleState.props = new Proxy(props, {
-        get(_, key, val) {
-          if (!Reflect.has(props, key)) {
-            return Reflect.get(fallbackProps, key)
-          }
-          return Reflect.get(props, key)
-        },
-      })
-    }
-  }
-
   if (
     process.env.NODE_ENV === 'development' &&
     (debug === 'profile' || (globalThis as any).time)
@@ -537,7 +560,7 @@ export const getSplitStyles: StyleSplitter = (
     }
   }
 
-  const { asChild } = props
+  const asChild = readProp('asChild')
   const { accept, neverSkipProps } = staticConfig
   const { noSkip, disableExpandShorthands, noExpand, styledContext } = styleProps
 
@@ -551,6 +574,27 @@ export const getSplitStyles: StyleSplitter = (
   } else {
     processedProps = props
   }
+
+  // stable per-frame props view for functional variants (extras.props): scalar
+  // reads resolve caller, then styled context (skipping undefined), then defaults,
+  // without enumerating or materializing a merged object. getSubStyle prototypes
+  // sub-style objects off this view so reads fall through the same way.
+  styleState.props = new Proxy(processedProps, {
+    get(_, key) {
+      const prop = key as string
+      if (prop in processedProps) return processedProps[prop]
+      if (styledContextValue) {
+        const value = styledContextValue[prop]
+        if (value !== undefined) return value
+      }
+      if (resolvedDefaultProps && prop in resolvedDefaultProps) {
+        return resolvedDefaultProps[prop]
+      }
+      const fallback = styleProps.fallbackProps
+      return fallback ? fallback[prop] : undefined
+    },
+  })
+
   const { webContainerType } = conf.settings
   const parentVariants = parentStaticConfig?.variants
 
@@ -1123,7 +1167,14 @@ export const getSplitStyles: StyleSplitter = (
     }
   } // end prop contribution
 
-  forEachPropInForwardOrder(processedProps, staticConfig, shorthands, contributeProp)
+  forEachPropInForwardOrder(
+    processedProps,
+    styledContextValue,
+    resolvedDefaultProps,
+    staticConfig,
+    shorthands,
+    contributeProp
+  )
 
   if (
     process.env.NODE_ENV === 'development' &&
@@ -1361,10 +1412,11 @@ export const getSplitStyles: StyleSplitter = (
         // only emit font class if fontFamily was explicitly in props (not from defaults)
         const fontFamily = isText || isInput ? styleState.fontFamily : null
         const fontFamilyClassName = fontFamily ? `font_${fontFamily}` : ''
-        const groupClassName = props.group ? `t_group_${props.group}` : ''
-        const containerClassName = props.container ? 't_container' : ''
+        const groupProp = readProp('group')
+        const groupClassName = groupProp ? `t_group_${groupProp}` : ''
+        const containerClassName = readProp('container') ? 't_container' : ''
         const displayNameClassName =
-          props.asChild ||
+          asChild ||
           !styleProps.displayName ||
           styleProps.displayName === 'Text' ||
           styleProps.displayName === 'View' ||

@@ -3353,6 +3353,10 @@ export type ResolveVariableAs =
 export type SplitStyleProps = {
   displayName?: string
   styledContext?: Record<string, any>
+  // raw styled-context value and resolved defaults, for direct three-source
+  // traversal without materializing a merged props object per render
+  styledContextValue?: Record<string, any>
+  defaultProps?: Record<string, any>
   mediaState?: Record<string, boolean>
   noClass?: boolean
   noExpand?: boolean

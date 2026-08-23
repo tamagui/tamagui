@@ -98,6 +98,8 @@ export function usePropsAndStyle<A extends PropsLikeObject>(
     setStateShallow,
   } = useComponentState(
     props,
+    undefined,
+    undefined,
     componentContext.animationDriver,
     staticConfig,
     getConfig()

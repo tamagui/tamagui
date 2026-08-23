@@ -14,5 +14,6 @@
  */
 export type GenericProps = Record<string, any>;
 export declare const mergeProps: (defaultProps: object, props: object) => GenericProps;
-export declare const mergeComponentProps: (defaultProps: object | null | undefined, contextProps: object | undefined, props: object) => readonly [object, null] | readonly [GenericProps, GenericProps | null];
+export declare function readMergedProp(caller: Record<string, any>, context: Record<string, any> | undefined, defaults: Record<string, any> | undefined, key: string): any;
+export declare function getOverriddenContextProps(caller: Record<string, any>, context: Record<string, any> | undefined): GenericProps | null;
 //# sourceMappingURL=mergeProps.d.ts.map
