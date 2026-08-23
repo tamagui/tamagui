@@ -1,0 +1,19 @@
+diff --git a/Libraries/BatchedBridge/MessageQueue.js b/Libraries/BatchedBridge/MessageQueue.js
+index b177b30c1c..0fcb10cd03 100644
+--- a/Libraries/BatchedBridge/MessageQueue.js
++++ b/Libraries/BatchedBridge/MessageQueue.js
+@@ -40,7 +40,7 @@ const TRACE_TAG_REACT = 1 << 13;
+ 
+ const DEBUG_INFO_LIMIT = 32;
+ 
+-class MessageQueue {
++export default class MessageQueue {
+   _lazyCallableModules: {[key: string]: (void) => {...}, ...};
+   _queue: [number[], number[], unknown[], number];
+   _successCallbacks: Map<number, ?(...unknown[]) => void>;
+@@ -495,5 +495,3 @@ class MessageQueue {
+     }
+   }
+ }
+-
+-export default MessageQueue;
