@@ -59,10 +59,9 @@ async function launchDefaultOpenCase() {
     .withTimeout(30000)
 }
 
-// resting layout, so it holds on any platform whether or not it animates. This
-// must NOT sit behind describeAnimated: the emulator's animation scale has no
-// bearing on whether an open item's content overlaps the next trigger, and
-// skipping it there hides a real layout defect.
+// resting layout holds on every platform whether or not it animates. the
+// emulator's animation scale has no bearing on whether an open item's content
+// overlaps the next trigger, so keep this outside describeAnimated.
 describe('Accordion (auto-height, native) layout', () => {
   beforeEach(launchDefaultOpenCase)
 
