@@ -33,7 +33,7 @@ export type StableReleaseOperations = {
   listChecksRuns(headSha: string): Promise<WorkflowRun[]>
   dispatchChecks(branch: string): Promise<void>
   getWorkflowRun(runId: number): Promise<WorkflowRun>
-  squashPullRequest(pullRequest: ReleasePullRequest): Promise<void>
+  squashPullRequest(number: number, checkedHeadSha: string): Promise<void>
   getPullRequest(number: number): Promise<ReleasePullRequest>
   verifyMergedCommit(sha: string): Promise<void>
   sleep(ms: number): Promise<void>
@@ -134,15 +134,21 @@ export async function mergeStableRelease(
   await operations.ensureReleaseBranch(branch)
   pullRequest ||= await operations.createPullRequest(branch, version)
 
-  await requireSuccessfulChecks(pullRequest.head.sha, branch, operations)
+  const checkedHeadSha = pullRequest.head.sha
+  await requireSuccessfulChecks(checkedHeadSha, branch, operations)
 
   pullRequest = await operations.getPullRequest(pullRequest.number)
+  if (pullRequest.head.sha !== checkedHeadSha) {
+    throw new Error(
+      `Release pull request #${pullRequest.number} head changed from ${checkedHeadSha} to ${pullRequest.head.sha} after Checks`
+    )
+  }
   if (!pullRequest.merged_at) {
     const mainSha = await operations.getCurrentMainSha()
     if (mainSha !== targetSha) {
       throw new Error(`main advanced from ${targetSha} to ${mainSha}`)
     }
-    await operations.squashPullRequest(pullRequest)
+    await operations.squashPullRequest(pullRequest.number, checkedHeadSha)
   }
 
   for (let attempt = 0; attempt < 50; attempt++) {
@@ -302,16 +308,16 @@ export function createStableReleaseOperations(
       )
     },
 
-    async squashPullRequest(pullRequest) {
+    async squashPullRequest(number, checkedHeadSha) {
       await execute('gh', [
         'pr',
         'merge',
-        String(pullRequest.number),
+        String(number),
         '--repo',
         repository,
         '--squash',
         '--match-head-commit',
-        pullRequest.head.sha,
+        checkedHeadSha,
       ])
     },
 
