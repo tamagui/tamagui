@@ -219,7 +219,7 @@ describe('stable release pull request coordinator', () => {
       }
     )
 
-    await operations.squashPullRequest(makePullRequest())
+    await operations.squashPullRequest(42, releaseSha)
 
     expect(commands).toEqual([
       {
@@ -236,5 +236,38 @@ describe('stable release pull request coordinator', () => {
         ],
       },
     ])
+  })
+
+  test('rejects a pull request head that changes after Checks', async () => {
+    let squashMerged = false
+    const changedHeadSha = '5'.repeat(40)
+    const operations = makeOperations({
+      findPullRequests: async () => [makePullRequest()],
+      listChecksRuns: async () => [
+        {
+          id: 10,
+          event: 'workflow_dispatch',
+          head_sha: releaseSha,
+          status: 'completed',
+          conclusion: 'success',
+          created_at: '2026-08-24T00:00:00Z',
+        },
+      ],
+      getPullRequest: async () =>
+        makePullRequest({
+          head: {
+            ref: `release-v2.7.8-${targetSha}`,
+            sha: changedHeadSha,
+          },
+        }),
+      squashPullRequest: async () => {
+        squashMerged = true
+      },
+    })
+
+    await expect(mergeStableRelease('2.7.8', targetSha, operations)).rejects.toThrow(
+      `head changed from ${releaseSha} to ${changedHeadSha} after Checks`
+    )
+    expect(squashMerged).toBe(false)
   })
 })
