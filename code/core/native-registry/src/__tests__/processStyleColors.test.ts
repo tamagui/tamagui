@@ -3,7 +3,10 @@ import { describe, expect, it, vi } from 'vitest'
 // processColor is the react-native one; stub it to the ARGB packing it returns so
 // the channel unpacking is what gets asserted here rather than RN's css parsing.
 vi.mock('react-native', () => ({
-  processColor: (value: string) => {
+  processColor: (value: unknown) => {
+    if (typeof value === 'object' && value !== null && 'dynamic' in value) {
+      return { dynamic: { light: 0xffffffff, dark: 0xff000000 } }
+    }
     if (value === 'grey') return 0xffe3e3e3
     if (value === 'blue') return 0xff0000ff
     if (value === 'half-red') return 0x80ff0000
@@ -62,6 +65,16 @@ describe('processStyleColors', () => {
   it('passes a platform color object through untouched', () => {
     expect(processStyleColors({ color: 'platform' })).toEqual({
       color: { semantic: 'label' },
+    })
+  })
+
+  it('normalizes dynamic color branches before passing them to Fabric', () => {
+    expect(
+      processStyleColors({
+        color: { dynamic: { light: 'white', dark: 'black' } },
+      })
+    ).toEqual({
+      color: { dynamic: { light: 0xffffffff, dark: 0xff000000 } },
     })
   })
 
