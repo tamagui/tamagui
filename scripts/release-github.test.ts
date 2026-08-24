@@ -1,6 +1,10 @@
 import { describe, expect, test } from 'bun:test'
 
-import { mergeStableRelease, type StableReleaseOperations } from './release-github'
+import {
+  createStableReleaseOperations,
+  mergeStableRelease,
+  type StableReleaseOperations,
+} from './release-github'
 
 const targetSha = '1'.repeat(40)
 const releaseSha = '2'.repeat(40)
@@ -13,7 +17,7 @@ function makePullRequest(overrides: Record<string, unknown> = {}) {
     merged_at: null,
     merge_commit_sha: null,
     head: {
-      ref: 'release-v2.7.8',
+      ref: `release-v2.7.8-${targetSha}`,
       sha: releaseSha,
     },
     ...overrides,
@@ -34,7 +38,7 @@ function makeOperations(
     getWorkflowRun: async () => {
       throw new Error('unexpected workflow run read')
     },
-    enqueuePullRequest: async () => {},
+    squashPullRequest: async () => {},
     getPullRequest: async () => makePullRequest(),
     verifyMergedCommit: async () => {},
     sleep: async () => {},
@@ -43,7 +47,7 @@ function makeOperations(
 }
 
 describe('stable release pull request coordinator', () => {
-  test('runs full CI, enters the merge queue, and returns the merged commit', async () => {
+  test('runs full CI, squash-merges the protected pull request, and returns the merged commit', async () => {
     const events: string[] = []
     let checksDispatched = false
     let pullReads = 0
@@ -76,8 +80,8 @@ describe('stable release pull request coordinator', () => {
         checksDispatched = true
         events.push('dispatched checks')
       },
-      enqueuePullRequest: async () => {
-        events.push('entered merge queue')
+      squashPullRequest: async () => {
+        events.push('squashed pull request')
       },
       getPullRequest: async () => {
         pullReads++
@@ -98,10 +102,10 @@ describe('stable release pull request coordinator', () => {
     )
     expect(events).toEqual([
       'verified release commit',
-      'pushed release-v2.7.8',
+      `pushed release-v2.7.8-${targetSha}`,
       'opened pull request',
       'dispatched checks',
-      'entered merge queue',
+      'squashed pull request',
       `verified ${mergedSha}`,
     ])
   })
@@ -121,8 +125,8 @@ describe('stable release pull request coordinator', () => {
       dispatchChecks: async () => {
         events.push('dispatched')
       },
-      enqueuePullRequest: async () => {
-        events.push('queued')
+      squashPullRequest: async () => {
+        events.push('squashed')
       },
       verifyMergedCommit: async () => {
         events.push('verified merged commit')
@@ -150,8 +154,8 @@ describe('stable release pull request coordinator', () => {
     expect(releaseBranchCreated).toBe(false)
   })
 
-  test('does not enqueue a release whose full CI failed', async () => {
-    let enqueued = false
+  test('does not squash-merge a release whose full CI failed', async () => {
+    let squashMerged = false
     const operations = makeOperations({
       findPullRequests: async () => [makePullRequest()],
       listChecksRuns: async () => [
@@ -164,14 +168,73 @@ describe('stable release pull request coordinator', () => {
           created_at: '2026-08-24T00:00:00Z',
         },
       ],
-      enqueuePullRequest: async () => {
-        enqueued = true
+      squashPullRequest: async () => {
+        squashMerged = true
       },
     })
 
     await expect(mergeStableRelease('2.7.8', targetSha, operations)).rejects.toThrow(
       'Checks run 8 concluded failure'
     )
-    expect(enqueued).toBe(false)
+    expect(squashMerged).toBe(false)
+  })
+
+  test('rechecks main after full CI and leaves the attempt branch intact if it advanced', async () => {
+    let mainReads = 0
+    let squashMerged = false
+    const operations = makeOperations({
+      getCurrentMainSha: async () => {
+        mainReads++
+        return mainReads === 1 ? targetSha : '4'.repeat(40)
+      },
+      listChecksRuns: async () => [
+        {
+          id: 9,
+          event: 'workflow_dispatch',
+          head_sha: releaseSha,
+          status: 'completed',
+          conclusion: 'success',
+          created_at: '2026-08-24T00:00:00Z',
+        },
+      ],
+      squashPullRequest: async () => {
+        squashMerged = true
+      },
+    })
+
+    await expect(mergeStableRelease('2.7.8', targetSha, operations)).rejects.toThrow(
+      'main advanced'
+    )
+    expect(mainReads).toBe(2)
+    expect(squashMerged).toBe(false)
+  })
+
+  test('invokes the protected-branch merge with an exact head and explicit squash', async () => {
+    const commands: { command: string; args: string[] }[] = []
+    const operations = createStableReleaseOperations(
+      'tamagui/tamagui',
+      async (command, args) => {
+        commands.push({ command, args })
+        return ''
+      }
+    )
+
+    await operations.squashPullRequest(makePullRequest())
+
+    expect(commands).toEqual([
+      {
+        command: 'gh',
+        args: [
+          'pr',
+          'merge',
+          '42',
+          '--repo',
+          'tamagui/tamagui',
+          '--squash',
+          '--match-head-commit',
+          releaseSha,
+        ],
+      },
+    ])
   })
 })

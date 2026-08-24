@@ -132,90 +132,9 @@ jobs:
           --skip-native-tests
           --skip-checks
 
-  ensure-ci:
-    name: Approve main release source
-    if: github.event_name == 'workflow_dispatch' && inputs.release != 'canary'
-    runs-on: ubuntu-latest
-    timeout-minutes: 90
-    permissions:
-      actions: write
-      contents: read
-    steps:
-      # a canary is a throwaway version on its own dist-tag that nothing installs
-      # unless asked for by name, so it is cuttable from any branch and does not
-      # wait on a full CI run. requiring current main meant merging a change just
-      # to test it. a stable release still needs both.
-      - name: Require current main and successful full CI
-        env:
-          GH_TOKEN: ${{ github.token }}
-          TARGET_SHA: ${{ github.sha }}
-          WORKFLOW_FILE: checks.yaml
-        shell: bash
-        run: |
-          set -euo pipefail
-          [[ "$GITHUB_REF" == "refs/heads/main" ]]
-
-          main_sha=$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/main" --jq .object.sha)
-          [[ "$TARGET_SHA" == "$main_sha" ]]
-
-          get_runs() {
-            gh api --method GET "repos/$GITHUB_REPOSITORY/actions/workflows/$WORKFLOW_FILE/runs" \
-              -f head_sha="$TARGET_SHA" -f per_page=20
-          }
-
-          wait_for_run() {
-            local run_id="$1"
-            for ((attempt = 1; attempt <= 40; attempt++)); do
-              read -r status conclusion < <(
-                gh api "repos/$GITHUB_REPOSITORY/actions/runs/$run_id" \
-                  --jq '[.status, (.conclusion // "pending")] | @tsv'
-              )
-              if [[ "$status" == "completed" ]]; then
-                [[ "$conclusion" == "success" ]]
-                return
-              fi
-              sleep 120
-            done
-            echo "Timed out waiting for CI run $run_id" >&2
-            return 1
-          }
-
-          runs=$(get_runs)
-          run_id=$(jq -r '.workflow_runs | sort_by(.created_at) | last | .id // empty' <<< "$runs")
-          if [[ -n "$run_id" ]]; then
-            status=$(jq -r --argjson id "$run_id" '.workflow_runs[] | select(.id == $id) | .status' <<< "$runs")
-            conclusion=$(jq -r --argjson id "$run_id" '.workflow_runs[] | select(.id == $id) | .conclusion // "pending"' <<< "$runs")
-            if [[ "$status" == "completed" && "$conclusion" == "success" ]]; then
-              echo "Full CI already passed for $TARGET_SHA."
-              exit 0
-            fi
-            if [[ "$status" != "completed" ]] && wait_for_run "$run_id"; then
-              echo "Existing full CI passed for $TARGET_SHA."
-              exit 0
-            fi
-          fi
-
-          started=$(date -u +'%Y-%m-%dT%H:%M:%SZ')
-          gh api --method POST \
-            "repos/$GITHUB_REPOSITORY/actions/workflows/$WORKFLOW_FILE/dispatches" \
-            -f ref=main
-
-          run_id=''
-          for ((attempt = 1; attempt <= 12; attempt++)); do
-            sleep 10
-            runs=$(get_runs)
-            run_id=$(jq -r --arg started "$started" \
-              '[.workflow_runs[] | select(.event == "workflow_dispatch" and .created_at >= $started)] | sort_by(.created_at) | last | .id // empty' \
-              <<< "$runs")
-            [[ -n "$run_id" ]] && break
-          done
-          [[ -n "$run_id" ]]
-          wait_for_run "$run_id"
-
   prepare_stable:
     name: Merge stable version commit
     if: github.event_name == 'workflow_dispatch' && inputs.release != 'canary'
-    needs: ensure-ci
     runs-on: ubuntu-latest
     timeout-minutes: 180
     outputs:
@@ -288,10 +207,10 @@ jobs:
           version=$(node -p "require('./code/ui/tamagui/package.json').version")
           echo "version=$version" >> "$GITHUB_OUTPUT"
 
-      - name: Run release PR through full CI and the merge queue
+      - name: Run release PR through full CI and protected main
         id: merge
         # pushes made with github.token do not start workflows. the coordinator
-        # dispatches Checks on the exact release commit before enqueueing the PR.
+        # dispatches Checks on the exact release commit before squash-merging the PR.
         env:
           GH_TOKEN: ${{ github.token }}
           RELEASE_VERSION: ${{ steps.version.outputs.version }}
