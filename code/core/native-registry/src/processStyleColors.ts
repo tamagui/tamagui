@@ -19,7 +19,7 @@
  *    parser but not this one, and the throw kills the mount-item dispatch and
  *    tears the whole React surface down.
  */
-import { processColor } from 'react-native'
+import { processColor, type ColorValue } from 'react-native'
 
 const COLOR_PROPS = new Set([
   'color',
@@ -51,7 +51,10 @@ export function processStyleColors(
     // a style may already carry the packed int form RN accepts (`processColor`
     // output written straight into a style), and that form is misread the same
     // way, so it converts here too rather than only css strings
-    const processed = typeof value === 'string' ? processColor(value) : value
+    const processed =
+      typeof value === 'string' || (typeof value === 'object' && value !== null)
+        ? processColor(value as ColorValue)
+        : value
     if (typeof processed === 'number') {
       out ??= { ...props }
       // processColor packs ARGB, and is signed on Android, hence >>>
@@ -62,9 +65,9 @@ export function processStyleColors(
         b: (processed & 0xff) / 255,
         a: ((processed >>> 24) & 0xff) / 255,
       }
-    } else if (typeof value === 'string' && processed != null) {
-      // a platform color resolves to an opaque object rather than a number, and
-      // Fabric unpacks that shape itself, so it goes over untouched
+    } else if (processed != null && typeof processed === 'object') {
+      // platform and dynamic colors resolve to opaque objects. processColor
+      // normalizes their color branches before Fabric unpacks the shape.
       out ??= { ...props }
       out[key] = processed
     }
