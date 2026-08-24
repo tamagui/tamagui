@@ -33,7 +33,7 @@ export type StableReleaseOperations = {
   listChecksRuns(headSha: string): Promise<WorkflowRun[]>
   dispatchChecks(branch: string): Promise<void>
   getWorkflowRun(runId: number): Promise<WorkflowRun>
-  enqueuePullRequest(pullRequest: ReleasePullRequest): Promise<void>
+  squashPullRequest(pullRequest: ReleasePullRequest): Promise<void>
   getPullRequest(number: number): Promise<ReleasePullRequest>
   verifyMergedCommit(sha: string): Promise<void>
   sleep(ms: number): Promise<void>
@@ -104,7 +104,7 @@ export async function mergeStableRelease(
   await operations.verifyPreparedCommit(version, targetSha)
 
   // refs/heads/release already exists, so a release/... namespace cannot be created.
-  const branch = `release-v${version}`
+  const branch = `release-v${version}-${targetSha}`
   const existingPullRequests = await operations.findPullRequests(branch)
   if (existingPullRequests.length > 1) {
     throw new Error(`Multiple pull requests use ${branch}`)
@@ -138,7 +138,11 @@ export async function mergeStableRelease(
 
   pullRequest = await operations.getPullRequest(pullRequest.number)
   if (!pullRequest.merged_at) {
-    await operations.enqueuePullRequest(pullRequest)
+    const mainSha = await operations.getCurrentMainSha()
+    if (mainSha !== targetSha) {
+      throw new Error(`main advanced from ${targetSha} to ${mainSha}`)
+    }
+    await operations.squashPullRequest(pullRequest)
   }
 
   for (let attempt = 0; attempt < 50; attempt++) {
@@ -161,6 +165,8 @@ export async function mergeStableRelease(
   throw new Error(`Timed out waiting for release pull request #${pullRequest.number}`)
 }
 
+export type CommandRunner = (command: string, args: string[]) => Promise<string>
+
 async function run(command: string, args: string[]) {
   const { stdout } = await execFileAsync(command, args, {
     maxBuffer: 10 * 1024 * 1024,
@@ -173,7 +179,8 @@ function parseJSON<T>(value: string): T {
 }
 
 export function createStableReleaseOperations(
-  repository: string
+  repository: string,
+  execute: CommandRunner = run
 ): StableReleaseOperations {
   const [owner] = repository.split('/')
   if (!owner || !repository.includes('/')) {
@@ -182,16 +189,16 @@ export function createStableReleaseOperations(
 
   const getPullRequest = async (number: number) =>
     parseJSON<ReleasePullRequest>(
-      await run('gh', ['api', `repos/${repository}/pulls/${number}`])
+      await execute('gh', ['api', `repos/${repository}/pulls/${number}`])
     )
 
   return {
     async verifyPreparedCommit(version, targetSha) {
-      const subject = await run('git', ['show', '-s', '--format=%s', 'HEAD'])
+      const subject = await execute('git', ['show', '-s', '--format=%s', 'HEAD'])
       if (subject !== `v${version}`) {
         throw new Error(`Prepared commit subject is ${subject}, expected v${version}`)
       }
-      const parent = await run('git', ['rev-parse', 'HEAD^'])
+      const parent = await execute('git', ['rev-parse', 'HEAD^'])
       if (parent !== targetSha) {
         throw new Error(`Prepared commit parent is ${parent}, expected ${targetSha}`)
       }
@@ -199,7 +206,7 @@ export function createStableReleaseOperations(
 
     async findPullRequests(branch) {
       return parseJSON<ReleasePullRequest[]>(
-        await run('gh', [
+        await execute('gh', [
           'api',
           '--method',
           'GET',
@@ -217,26 +224,26 @@ export function createStableReleaseOperations(
     },
 
     async getCurrentMainSha() {
-      await run('git', ['fetch', '--no-tags', 'origin', 'main'])
-      return run('git', ['rev-parse', 'FETCH_HEAD'])
+      await execute('git', ['fetch', '--no-tags', 'origin', 'main'])
+      return execute('git', ['rev-parse', 'FETCH_HEAD'])
     },
 
     async ensureReleaseBranch(branch) {
-      const remote = await run('git', [
+      const remote = await execute('git', [
         'ls-remote',
         '--heads',
         'origin',
         `refs/heads/${branch}`,
       ])
       if (!remote) {
-        await run('git', ['push', 'origin', `HEAD:refs/heads/${branch}`])
+        await execute('git', ['push', 'origin', `HEAD:refs/heads/${branch}`])
         return
       }
 
-      await run('git', ['fetch', '--no-tags', 'origin', `refs/heads/${branch}`])
+      await execute('git', ['fetch', '--no-tags', 'origin', `refs/heads/${branch}`])
       const [localTree, remoteTree] = await Promise.all([
-        run('git', ['rev-parse', 'HEAD^{tree}']),
-        run('git', ['rev-parse', 'FETCH_HEAD^{tree}']),
+        execute('git', ['rev-parse', 'HEAD^{tree}']),
+        execute('git', ['rev-parse', 'FETCH_HEAD^{tree}']),
       ])
       if (localTree !== remoteTree) {
         throw new Error(`Existing ${branch} has different release content`)
@@ -245,7 +252,7 @@ export function createStableReleaseOperations(
 
     async createPullRequest(branch, version) {
       return parseJSON<ReleasePullRequest>(
-        await run('gh', [
+        await execute('gh', [
           'api',
           '--method',
           'POST',
@@ -257,14 +264,14 @@ export function createStableReleaseOperations(
           '-f',
           'base=main',
           '-f',
-          'body=Generated by the stable release workflow. Full CI must pass before this enters the merge queue.',
+          'body=Generated by the stable release workflow. Full CI must pass before this is squash-merged into protected main.',
         ])
       )
     },
 
     async listChecksRuns(headSha) {
       const response = parseJSON<{ workflow_runs: WorkflowRun[] }>(
-        await run('gh', [
+        await execute('gh', [
           'api',
           '--method',
           'GET',
@@ -279,7 +286,7 @@ export function createStableReleaseOperations(
     },
 
     async dispatchChecks(branch) {
-      await run('gh', [
+      await execute('gh', [
         'api',
         '--method',
         'POST',
@@ -291,43 +298,18 @@ export function createStableReleaseOperations(
 
     async getWorkflowRun(runId) {
       return parseJSON<WorkflowRun>(
-        await run('gh', ['api', `repos/${repository}/actions/runs/${runId}`])
+        await execute('gh', ['api', `repos/${repository}/actions/runs/${runId}`])
       )
     },
 
-    async enqueuePullRequest(pullRequest) {
-      const queueState = parseJSON<{
-        data: {
-          repository: {
-            pullRequest: {
-              autoMergeRequest: unknown
-              mergeQueueEntry: unknown
-            }
-          }
-        }
-      }>(
-        await run('gh', [
-          'api',
-          'graphql',
-          '-F',
-          `owner=${owner}`,
-          '-F',
-          `name=${repository.slice(owner.length + 1)}`,
-          '-F',
-          `number=${pullRequest.number}`,
-          '-f',
-          'query=query($owner:String!,$name:String!,$number:Int!){repository(owner:$owner,name:$name){pullRequest(number:$number){autoMergeRequest{enabledAt} mergeQueueEntry{position state}}}}',
-        ])
-      ).data.repository.pullRequest
-
-      if (queueState.autoMergeRequest || queueState.mergeQueueEntry) return
-
-      await run('gh', [
+    async squashPullRequest(pullRequest) {
+      await execute('gh', [
         'pr',
         'merge',
         String(pullRequest.number),
         '--repo',
         repository,
+        '--squash',
         '--match-head-commit',
         pullRequest.head.sha,
       ])
@@ -336,8 +318,8 @@ export function createStableReleaseOperations(
     getPullRequest,
 
     async verifyMergedCommit(sha) {
-      await run('git', ['fetch', '--no-tags', 'origin', 'main'])
-      await run('git', ['merge-base', '--is-ancestor', sha, 'FETCH_HEAD'])
+      await execute('git', ['fetch', '--no-tags', 'origin', 'main'])
+      await execute('git', ['merge-base', '--is-ancestor', sha, 'FETCH_HEAD'])
     },
 
     sleep(ms) {
