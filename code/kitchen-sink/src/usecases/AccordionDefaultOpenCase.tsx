@@ -12,7 +12,8 @@ import { Accordion, Button, Paragraph, Square, View, YStack, isWeb } from 'tamag
 function useHeightFrameRecorder(animatedRef: any, duration = 750) {
   const [label, setLabel] = useState('idle')
   const recording = useSharedValue(false)
-  const startedAt = useSharedValue(0)
+  const initialHeight = useSharedValue<number | null>(null)
+  const motionStartedAt = useSharedValue<number | null>(null)
   const cycle = useSharedValue(0)
   const samples = useSharedValue<number[]>([])
   const nextCycleRef = useRef(0)
@@ -28,16 +29,32 @@ function useHeightFrameRecorder(animatedRef: any, duration = 750) {
         if (isWeb || !recording.value) return
         const frame = measure(animatedRef)
         if (!frame) return
-        if (startedAt.value === 0) {
-          startedAt.value = timestamp
-        }
         samples.value = [...samples.value, frame.height]
-        if (timestamp - startedAt.value >= duration) {
+        if (initialHeight.value === null) {
+          initialHeight.value = frame.height
+          return
+        }
+        // opening mounts and measures closed content before it has a numeric target.
+        // keep those baseline frames, but start the sampling window when motion begins.
+        if (motionStartedAt.value === null) {
+          if (Math.abs(frame.height - initialHeight.value) <= 0.25) return
+          motionStartedAt.value = timestamp
+        }
+        if (timestamp - motionStartedAt.value >= duration) {
           recording.value = false
           runOnJS(finishRecording)(cycle.value, samples.value)
         }
       },
-      [animatedRef, cycle, duration, finishRecording, recording, samples, startedAt]
+      [
+        animatedRef,
+        cycle,
+        duration,
+        finishRecording,
+        initialHeight,
+        motionStartedAt,
+        recording,
+        samples,
+      ]
     )
   )
 
@@ -45,11 +62,12 @@ function useHeightFrameRecorder(animatedRef: any, duration = 750) {
     if (isWeb) return
     const nextCycle = ++nextCycleRef.current
     setLabel(`recording:${nextCycle}`)
-    startedAt.value = 0
+    initialHeight.value = null
+    motionStartedAt.value = null
     samples.value = []
     cycle.value = nextCycle
     recording.value = true
-  }, [cycle, recording, samples, startedAt])
+  }, [cycle, initialHeight, motionStartedAt, recording, samples])
 
   return [label, startRecording] as const
 }
