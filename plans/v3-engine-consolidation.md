@@ -1,11 +1,131 @@
 # V3 engine consolidation: one parser, one emit pipeline
 
-Status: revision 3, after the assigned Codex max critique in
-`plans/v3-engine-consolidation-review.md` and p28302's final-pass audit.
-Author: Fable session p28910, 2026-08-22. Supersedes the checkpoint sequence
-in `plans/v3-single-pass.md` (checkpoints 1c through 4); its settled
-decisions, reentrancy findings, and review amendments carry forward and are
-restated where they bind this design. p29049 implements from this document.
+Status: campaign closed at Phase IV-a on 2026-08-23 by owner decision. Phases
+IV-c through VII are canceled and are not authorized implementation work. The
+earlier proposal remains below as historical design context until its stale
+sections are curated. The assigned Codex max critique is in
+`plans/v3-engine-consolidation-review.md`, and p28302 performed the final-pass
+audit. Author: Fable session p28910, 2026-08-22.
+
+## Campaign close at Phase IV-a
+
+The exact headline is **parser cluster 4,707 versus the 4,706 baseline, and
+CORE 39,976 versus the 39,938 baseline. Six consolidation checkpoints were
+net zero on both size ledgers at this precision.** The campaign delivered
+correctness and reusable measurement infrastructure, but it did not deliver a
+bundle reduction.
+
+### What shipped and is worth keeping
+
+- Per-clause refusal now discards a malformed clause while retaining valid
+  base and sibling clauses in style, variant, lifecycle, and tooling paths.
+- The `group-` prefix is reserved for group syntax. Configured media, theme,
+  custom platform, and container-size names can no longer change the meaning
+  of the same authored group clause between compiler and runtime.
+- One compiled modifier vocabulary is published per config revision. The same
+  revision now invalidates the five `<ThemeUpdate>` WeakMap groups that could
+  never invalidate while keyed by the stable `conf.themes` object: theme-key
+  unions, scheme-stripped theme buckets, modifier views, parsed inline values,
+  and flat layers. Merged-theme results and their idempotency marker use the
+  same generation.
+- Assembled review caught and fixed two shipping defects with red runtime
+  controls. On iOS, `enter:red` could infer `red` as a theme and emit a dynamic
+  theme object. A configured size-query media key shadowed by the reserved
+  `hover` state could also make `@hover` execute as a container even though the
+  authoritative registry rejected it.
+- The dead static-only fallback props `Proxy` and its public field are gone.
+  The compiler audit found no producer, and production CORE did not move
+  because dead-code elimination had already removed the branch.
+- `extras.props` keeps its merged, mutable contract. Narrowing it removed no
+  code because `mergeComponentProps` and `getVariantExtras` still remain, and
+  it would add a second props representation for context-bearing components.
+  Probes found one real inherited-context dependency in `StyledContextTokens`
+  and a previously omitted media/pseudo overlay, while the claimed TextArea,
+  SizableText, and SurfaceRow breaks were disproved. The full decision and
+  probe record is in `plans/v3-functional-variant-props-contract.md`.
+
+### Why 800 was not reachable
+
+Consolidation removes copies of grammar work, but it does not remove the one
+scanner and resolver that must survive. The compiler boundary does not change
+that result for a realistic app: 346 of the 497 classified kitchen-sink
+bailouts are behavior or context component contracts, and any single retained
+`createComponent` pulls the scanner graph. Compiler work can remove particular
+avoidable retentions, but one inherent retention is enough to keep the grammar.
+
+The two plausible representation changes were also priced and declined. A
+packed clause identity was estimated at 150 to 300 corrected-union gzip with
+high semantic risk, and a span-only merge sink at 70 to 140. The ranges are
+non-additive and neither materially closes the roughly 2,950-byte gap. Reaching
+about 800 therefore requires a deliberate grammar or public-contract decision
+about what the surviving parser no longer supports. More consolidation or
+compiler-retention cleanup does not make that decision.
+
+### Forecasting lesson
+
+The forecast model priced gross declaration deletion and underpriced the
+replacement plumbing that remained in the assembled survivor. IV-b was
+forecast at +70 to +170 parser-cluster gzip and measured +345. IV-a was
+forecast at -500 to -700, with a wider plausible range of -450 to -770, and
+measured -338. Both consecutive misses favored the campaign. Future size work
+here must price the emitted survivor, including replacement state, diagnostics,
+and boundary plumbing, before taking credit for deleted declarations.
+
+### Instruments to preserve
+
+- The CORE union frame is implemented by
+  `code/comparisons/attribute-bundle-gzip.ts --core` and behaviorally pinned by
+  `code/comparisons/attribute-bundle-gzip.test.ts`. Its frozen v3 and v2 entries
+  are `code/comparisons/tamagui-bench/src/size.tsx` and
+  `code/comparisons/tamagui-v2-bench/src/size.tsx`.
+- The 78-selector parser ruler is
+  `code/comparisons/parser-cluster-manifest.json`, executed by
+  `code/comparisons/attribute-bundle-gzip.ts --parser-cluster=<checkpoint>` and
+  pinned by the same test. Its frozen entry and shared fixture are
+  `code/comparisons/tamagui-bench/src/cluster.tsx` and
+  `code/comparisons/shared/parserClusterFixture.tsx`.
+- The structural CORE ledger and parser-cluster ledger remain below under
+  `Structural-debt ledger` and `Parser-cluster debt ledger`. They record the
+  fixed IV-a recovery miss without letting unrelated reductions pay it.
+
+Run the instruments from the repository root after a full build, always with
+fresh output directories:
+
+```sh
+bun run build
+(cd code/comparisons/tamagui-bench && npx vite build --mode size --sourcemap --outDir /tmp/v3-consol-N)
+(cd code/comparisons/tamagui-v2-bench && npx vite build --mode size --sourcemap --outDir /tmp/v2-consol-N)
+bun code/comparisons/attribute-bundle-gzip.ts /tmp/v3-consol-N --core
+bun code/comparisons/attribute-bundle-gzip.ts /tmp/v2-consol-N --core
+(cd code/comparisons/tamagui-bench && npx vite build --mode cluster --sourcemap --outDir /tmp/v3-cluster-N)
+bun code/comparisons/attribute-bundle-gzip.ts /tmp/v3-cluster-N --parser-cluster=phase-iv-a
+bun test code/comparisons/attribute-bundle-gzip.test.ts
+```
+
+### Open and unowned follow-ups
+
+- Decide the `<ThemeUpdate>` versus direct-style collision and unknown-name
+  priorities from the evidence in
+  `plans/v3-themeupdate-condition-divergence.md`; no implementation is owned.
+- Fix the compiler presence checks that retain `asChild={false}`,
+  `disableOptimization={false}`, and `themeInverse={false}`, with active-value
+  controls preserved; the proposal is in
+  `plans/v3-compiler-retention-follow-ups.md` and has no owner.
+- Characterize and design partial lowering for opaque dynamic styles that
+  currently retain the full Tamagui component; the evidence and constraints
+  are in `plans/v3-compiler-retention-follow-ups.md` and the work has no owner.
+- Characterize and design narrower native clause retention in place of the
+  blanket rule that retains every active flat-clause program; the evidence and
+  required controls are in `plans/v3-compiler-retention-follow-ups.md` and the
+  work has no owner.
+- Resolve the D7 same-chain divergence as standalone correctness work. The
+  lifecycle prepass still treats `enter:hver:1` as lifecycle-visible while the
+  config-aware main resolver refuses the same chain. Phase VI-b was its former
+  owner and is canceled; no replacement owner exists.
+- Curate the stale proposal sections below. IV-c through VII, the post-V-e
+  gate, final acceptance, stop conditions, and sequencing text still describe
+  a campaign that will not run. This documentation cleanup is unowned and must
+  not be read as authorization to resume optimization.
 
 Phase I bindings, 2026-08-22: with the owner away, coordinator p28302 bound
 the two reversible policy choices so the overnight campaign could proceed.
