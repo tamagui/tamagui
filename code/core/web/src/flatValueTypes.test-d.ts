@@ -24,8 +24,11 @@ describe('flat value types', () => {
     })
     accepts<FlatStyleValue<number>>({ default: 0, hover: 1, 'sm:hover': 0.5 })
 
-    // @ts-expect-error every payload remains the underlying property type
+    // strings always pass, matching the clause string form's open payloads
     accepts<FlatStyleObject<number>>({ hover: '1' })
+
+    // @ts-expect-error non-string payloads must match the property type
+    accepts<FlatStyleObject<'left' | 'right'>>({ hover: 5 })
   })
 
   test('container and named-group spellings are valid object keys', () => {

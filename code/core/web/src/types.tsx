@@ -2034,14 +2034,6 @@ type ClauseModifierName =
   | AllPlatforms
 
 /**
- * Keep type-provided clause completion to the first modifier prefix. Adding
- * base values, payloads, or another modifier creates large unions throughout
- * the component prop graph and makes tsserver rebuild them after every edit.
- * The language-service plugin owns completion after the first prefix.
- */
-type FlatClausePrefix = `${ClauseModifierName}:`
-
-/**
  * Object keys have no `(string & {})` escape hatch the way string values do,
  * so the container (`@sm`, `@sm/card`) and named-group (`group-hover/card`)
  * spellings need their own single-template arms.
@@ -2054,14 +2046,26 @@ type FlatClauseName =
 
 /**
  * The structured twin of a flat clause string. It stays deliberately
- * non-recursive: the condition chain is the key, and every leaf retains the
- * style property's exact value type.
+ * non-recursive: the condition chain is the key, and every leaf keeps the
+ * style property's value type. `(string & {})` rides along on each leaf for
+ * the same reason it does on the whole value: the string form accepts any
+ * payload text, and without it two `FlatStyleValue`s that differ only by
+ * string members ('unset', a fallback union) stop being assignable across
+ * package boundaries.
  */
-export type FlatStyleObject<T> = { default?: T } & {
-  [K in FlatClauseName]?: T
+export type FlatStyleObject<T> = { default?: T | (string & {}) } & {
+  [K in FlatClauseName]?: T | (string & {})
 }
 
-export type FlatStyleValue<T> = T | FlatClausePrefix | FlatStyleObject<T> | (string & {})
+/**
+ * The string arm stays at base values only: `(string & {})` admits every
+ * clause string, and structured clause completion comes from the object
+ * form's keys (and the language-service plugin for strings). A per-prop
+ * `${modifier}:` prefix union used to ride along for first-prefix
+ * completion; it multiplied across the whole component prop graph and the
+ * object form made it redundant.
+ */
+export type FlatStyleValue<T> = T | FlatStyleObject<T> | (string & {})
 
 export type WithThemeValues<T extends object> = {
   [K in keyof T]:

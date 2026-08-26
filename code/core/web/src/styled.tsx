@@ -291,10 +291,16 @@ type HTMLElementSpecificProps<T extends keyof HTMLElementTagNameMap> = T extends
               ? Omit<LabelHTMLAttributes<HTMLLabelElement>, ConflictingHTMLProps>
               : Omit<HTMLAttributes<HTMLElement>, ConflictingHTMLProps>
 
-// base style props based on element type
-// use StackStyle/TextStyle to get token support (WithThemeShorthandsPseudosMedia)
+// base style props based on element type. the BASE type feeds TamaguiComponent,
+// whose GetFinalProps applies WithThemeAndShorthands itself — passing the
+// already-wrapped TextStyle/StackStyle there wraps twice, which the flat object
+// value form turns into a type-explosion. authored options still use the
+// wrapped form so tokens and clauses typecheck in the definition
 type HTMLElementStyleBase<T extends keyof HTMLElementTagNameMap> =
-  T extends TextLikeElements ? TextStyle : StackStyle
+  T extends TextLikeElements ? TextStylePropsBase : StackStyleBase
+type HTMLElementStyle<T extends keyof HTMLElementTagNameMap> = T extends TextLikeElements
+  ? TextStyle
+  : StackStyle
 
 // runtime check for text-like elements
 const textLikeElements = new Set<string>([
@@ -344,7 +350,7 @@ export function styledHtml<
   Variants extends VariantDefinitions<any, any> | undefined = undefined,
 >(
   tag: Tag,
-  options?: Partial<HTMLElementStyleBase<Tag>> & {
+  options?: Partial<HTMLElementStyle<Tag>> & {
     displayName?: string
     variants?: Variants
     defaultVariants?: GetVariantAcceptedValues<NonNullable<Variants>>
@@ -692,7 +698,7 @@ function styledImpl<
 type StyledHtmlFactory<Tag extends keyof HTMLElementTagNameMap> = <
   Variants extends VariantDefinitions<any, any> | undefined = undefined,
 >(
-  options?: Partial<HTMLElementStyleBase<Tag>> & {
+  options?: Partial<HTMLElementStyle<Tag>> & {
     displayName?: string
     variants?: Variants
     defaultVariants?: GetVariantAcceptedValues<NonNullable<Variants>>

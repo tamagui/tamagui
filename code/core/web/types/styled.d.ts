@@ -1,7 +1,7 @@
 import type { AnchorHTMLAttributes, ButtonHTMLAttributes, FormHTMLAttributes, HTMLAttributes, InputHTMLAttributes, LabelHTMLAttributes, SelectHTMLAttributes, TextareaHTMLAttributes } from 'react';
 import type { FrontendComponent, StyleFrontend } from './helpers/styleFrontend';
 import type { GetRef } from './interfaces/GetRef';
-import type { CompoundVariantDefinition, GetBaseStyles, GetNonStyledProps, GetProps, GetStaticConfig, GetStyledVariants, InferStyleProps, InferStyledProps, StackStyle, StaticConfigPublic, StylableComponent, StyledContext, TamaDefer, TamaguiComponent, TamaguiComponentPropsBase, TextStyle, ThemeValueByCategory, VariantDefinitions, VariantResolverKey, VariantResolverValue, VariantSpreadFunction } from './types';
+import type { CompoundVariantDefinition, GetBaseStyles, GetNonStyledProps, GetProps, GetStaticConfig, GetStyledVariants, InferStyleProps, InferStyledProps, StackStyle, StackStyleBase, StaticConfigPublic, StylableComponent, StyledContext, TamaDefer, TamaguiComponent, TamaguiComponentPropsBase, TextStyle, TextStylePropsBase, ThemeValueByCategory, VariantDefinitions, VariantResolverKey, VariantResolverValue, VariantSpreadFunction } from './types';
 import type { Text } from './views/Text';
 export { createVariantResolver } from './types';
 type AreVariantsUndefined<Variants> = Required<Variants> extends {
@@ -41,7 +41,8 @@ type StyledComponentResult<ParentComponent extends StylableComponent, StyledConf
 type TextLikeElements = 'a' | 'abbr' | 'b' | 'bdi' | 'bdo' | 'cite' | 'code' | 'data' | 'del' | 'dfn' | 'em' | 'i' | 'ins' | 'kbd' | 'label' | 'mark' | 'q' | 's' | 'samp' | 'small' | 'span' | 'strong' | 'sub' | 'sup' | 'time' | 'u' | 'var';
 type ConflictingHTMLProps = 'color' | 'display' | 'height' | 'width' | 'size' | 'left' | 'right' | 'top' | 'bottom' | 'translate' | 'content';
 type HTMLElementSpecificProps<T extends keyof HTMLElementTagNameMap> = T extends 'a' ? Omit<AnchorHTMLAttributes<HTMLAnchorElement>, ConflictingHTMLProps> : T extends 'button' ? Omit<ButtonHTMLAttributes<HTMLButtonElement>, ConflictingHTMLProps> : T extends 'input' ? Omit<InputHTMLAttributes<HTMLInputElement>, ConflictingHTMLProps> : T extends 'select' ? Omit<SelectHTMLAttributes<HTMLSelectElement>, ConflictingHTMLProps> : T extends 'textarea' ? Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, ConflictingHTMLProps> : T extends 'form' ? Omit<FormHTMLAttributes<HTMLFormElement>, ConflictingHTMLProps> : T extends 'label' ? Omit<LabelHTMLAttributes<HTMLLabelElement>, ConflictingHTMLProps> : Omit<HTMLAttributes<HTMLElement>, ConflictingHTMLProps>;
-type HTMLElementStyleBase<T extends keyof HTMLElementTagNameMap> = T extends TextLikeElements ? TextStyle : StackStyle;
+type HTMLElementStyleBase<T extends keyof HTMLElementTagNameMap> = T extends TextLikeElements ? TextStylePropsBase : StackStyleBase;
+type HTMLElementStyle<T extends keyof HTMLElementTagNameMap> = T extends TextLikeElements ? TextStyle : StackStyle;
 /**
  * styledHtml() for HTML element tags like 'a', 'button', 'div', etc.
  * Automatically provides element-specific props (href for anchors, type for buttons, etc.)
@@ -54,7 +55,7 @@ type HTMLElementStyleBase<T extends keyof HTMLElementTagNameMap> = T extends Tex
  * // StyledAnchor now accepts `href` prop with proper typing
  * <StyledAnchor href="/path">Link</StyledAnchor>
  */
-export declare function styledHtml<Tag extends keyof HTMLElementTagNameMap, Variants extends VariantDefinitions<any, any> | undefined = undefined>(tag: Tag, options?: Partial<HTMLElementStyleBase<Tag>> & {
+export declare function styledHtml<Tag extends keyof HTMLElementTagNameMap, Variants extends VariantDefinitions<any, any> | undefined = undefined>(tag: Tag, options?: Partial<HTMLElementStyle<Tag>> & {
     displayName?: string;
     variants?: Variants;
     defaultVariants?: GetVariantAcceptedValues<NonNullable<Variants>>;
@@ -74,7 +75,7 @@ declare function styled<ParentComponent extends StylableComponent, StyledConfig 
  * global setting.
  */
 export declare function createFrontendStyled(frontend: StyleFrontend): (ComponentIn: any, optionsOrBaseClassName?: any, configOrOptions?: any, maybeConfig?: any) => FrontendComponent;
-type StyledHtmlFactory<Tag extends keyof HTMLElementTagNameMap> = <Variants extends VariantDefinitions<any, any> | undefined = undefined>(options?: Partial<HTMLElementStyleBase<Tag>> & {
+type StyledHtmlFactory<Tag extends keyof HTMLElementTagNameMap> = <Variants extends VariantDefinitions<any, any> | undefined = undefined>(options?: Partial<HTMLElementStyle<Tag>> & {
     displayName?: string;
     variants?: Variants;
     defaultVariants?: GetVariantAcceptedValues<NonNullable<Variants>>;
