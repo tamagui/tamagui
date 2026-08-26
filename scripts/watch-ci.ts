@@ -22,6 +22,14 @@ if (!repositoryResult.success) {
 }
 
 const repository = repositoryResult.stdout.toString().trim()
+const commitResult = Bun.spawnSync(['git', 'rev-parse', '--verify', `${sha}^{commit}`])
+
+if (!commitResult.success) {
+  console.error(commitResult.stderr.toString())
+  process.exit(commitResult.exitCode)
+}
+
+const commit = commitResult.stdout.toString().trim()
 let terminalSince = 0
 let terminalRunIds = ''
 
@@ -33,7 +41,7 @@ while (true) {
     '--repo',
     repository,
     '--commit',
-    sha,
+    commit,
     '--limit',
     '50',
     '--json',
