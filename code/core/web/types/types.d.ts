@@ -1152,7 +1152,10 @@ export type WithShorthands<StyleProps> = {
 };
 export type AllPlatforms = 'web' | 'native' | 'android' | 'ios' | 'tv' | 'androidtv' | 'tvos';
 type MaybeOmitLonghands<A> = OnlyShorthandStyleProps extends true ? Omit<A, ShorthandLonghandProps> : A;
-export type WithThemeAndShorthands<A extends object, Variants = {}> = OnlyAllowShorthands extends true ? WithThemeValues<MaybeOmitLonghands<Omit<A, Longhands>>> & Variants & WithShorthands<WithThemeValues<A>> : WithThemeValues<MaybeOmitLonghands<A>> & Variants & WithShorthands<WithThemeValues<A>>;
+export type WithFlatVariantValues<Variants> = {
+    [Key in keyof Variants]?: FlatStyleValue<NonNullable<Variants[Key]>>;
+};
+export type WithThemeAndShorthands<A extends object, Variants = {}> = OnlyAllowShorthands extends true ? WithThemeValues<MaybeOmitLonghands<Omit<A, Longhands>>> & WithFlatVariantValues<Variants> & WithShorthands<WithThemeValues<A>> : WithThemeValues<MaybeOmitLonghands<A>> & WithFlatVariantValues<Variants> & WithShorthands<WithThemeValues<A>>;
 /**
  * Base style-only props (no media, pseudo):
  */
