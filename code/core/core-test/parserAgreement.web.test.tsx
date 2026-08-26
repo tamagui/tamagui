@@ -252,6 +252,11 @@ describe('agreement', () => {
     expect(hasEnterStyle({ default: 1, hover: 0 }, 'opacity')).toBe(false)
     // a structured leaf has no modifier-named key
     expect(hasEnterStyle({ width: 2, height: 4 }, 'shadowOffset')).toBe(false)
+    // an object transition is the driver's per-lifecycle timing config, not an
+    // enter style — flipping the lifecycle on it remounted shared tooltips
+    expect(
+      hasEnterStyle({ default: 'quickest', enter: 'quickest', exit: '0ms' }, 'transition')
+    ).toBe(false)
   })
 
   test('an unregistered modifier drops only its clause for both scanners', () => {

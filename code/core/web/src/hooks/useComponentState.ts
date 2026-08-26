@@ -86,6 +86,10 @@ function hasFlatModifier(
     const property = config.shorthands[key] || key
     if (!(property in stylePropsAll) && property !== 'transition') continue
     if (!isString) {
+      // an object-valued transition is the driver's per-lifecycle config
+      // grammar (`{ default, enter, exit }` timings), not a flat conditional
+      // style value — its keys name when to run, not what style arrives
+      if (property === 'transition') continue
       // flat conditional objects carry the chain as the key; a structured leaf
       // (shadowOffset) has no modifier-named key so it never matches
       for (const chain in value) {
