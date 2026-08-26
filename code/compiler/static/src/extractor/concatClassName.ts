@@ -53,9 +53,13 @@ export function concatClassName(_cn: Record<string, any> | null | undefined): st
         continue
       }
 
-      const styleKey = name.slice(1, name.indexOf('-'))
+      const styleKey = name.slice(1, splitIndex)
       const { mediaKey, pseudoKey } = getClassNameScope(name, splitIndex)
-      const uid = `${styleKey}${mediaKey ? `@${mediaKey}` : ''}${pseudoKey ? `:${pseudoKey}` : ''}`
+      const rest = name.slice(splitIndex + 1)
+      const isHashed = !mediaKey && !pseudoKey && /^\d{4,}$/.test(rest)
+      const uid = isHashed
+        ? name
+        : `${styleKey}${mediaKey ? `@${mediaKey}` : ''}${pseudoKey ? `:${pseudoKey}` : ''}`
 
       if (usedPrefixes.has(uid)) {
         // if (shouldDebug) console.log('debug exclude:', usedPrefixes, name)

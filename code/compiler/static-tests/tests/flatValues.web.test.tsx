@@ -212,6 +212,40 @@ test('transform axis programs carry their composition class', async () => {
   expect(output?.styles).toContain('translate:')
 })
 
+test('transform axis programs with transition carry their composition class and transition class', async () => {
+  const output = await extract(`<View transition="medium" x="0px sm:20px lg:-50px" y="20px" />`)
+  expect(output?.styles).toContain('--t-x')
+  expect(output?.styles).toContain('--t-y')
+  expect(output?.styles).toContain('translate:')
+  expect(output?.styles).toContain('transition:')
+
+  // Both the transition class and the translate composition class must be in JS className
+  expect(output?.js).toMatch(/_t-\d+.*_t-\d+/)
+  expect(output?.js).toContain('_tx-')
+  expect(output?.js).toContain('_ty-')
+})
+
+test('minW and maxW co-occurrence preserves both classes and rules in compiled output', async () => {
+  const output = await extract(`<View minW="300px" maxW="480px" />`)
+  expect(output?.styles).toContain('min-width:300px')
+  expect(output?.styles).toContain('max-width:480px')
+
+  // Both distinct _mw- classes must be in the compiled className
+  expect(output?.js).toMatch(/_mw-\d+.*_mw-\d+/)
+})
+
+test('minH and maxH co-occurrence preserves both classes and rules in compiled output', async () => {
+  const output = await extract(`<View minH="200px" maxH="500px" />`)
+  expect(output?.styles).toContain('min-height:200px')
+  expect(output?.styles).toContain('max-height:500px')
+
+  // Both distinct _mh- classes must be in the compiled className
+  expect(output?.js).toMatch(/_mh-\d+.*_mh-\d+/)
+})
+
+
+
+
 test('a dynamic clause string bails to the runtime component', async () => {
   const output = await extractForWeb(
     `

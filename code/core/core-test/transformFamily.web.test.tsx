@@ -1,8 +1,9 @@
 process.env.TAMAGUI_TARGET = 'web'
 
 import { beforeAll, expect, test } from 'vitest'
+import { render } from '@testing-library/react'
 import config from '../config-default'
-import { View, createTamagui, getSplitStyles } from '../web/src'
+import { TamaguiProvider, View, createTamagui, getSplitStyles } from '../web/src'
 
 // The transform family through contribution and lowering. `x`/`y` and the two
 // scale axes write per-axis custom properties; one composing rule turns them into
@@ -181,3 +182,35 @@ test('a legacy part prop beside a transform program drops with a diagnostic', ()
     process.env.NODE_ENV = previousNodeEnv
   }
 })
+
+test('transition="medium" with responsive transform programs emits compose class', () => {
+  const result = split({ transition: 'medium', x: '0px sm:20px lg:-50px', y: '20px' })
+  expect(result.classNames['--t-x']).toBeTruthy()
+  expect(result.classNames['--t-y']).toBeTruthy()
+  expect(result.classNames.translate).toBeTruthy()
+  expect(result.viewProps.className).toContain(result.classNames.translate)
+})
+
+test('rendering View with transition and responsive transform programs receives compose class', () => {
+  const { container } = render(
+    <TamaguiProvider config={conf} defaultTheme="light">
+      <View data-testid="animated" transition="medium" x="0px sm:20px lg:-50px" y="20px" />
+      <View data-testid="static" x="0px sm:20px lg:-50px" y="20px" />
+    </TamaguiProvider>
+  )
+  const animatedEl = container.querySelector('[data-testid="animated"]') as HTMLElement
+  const staticEl = container.querySelector('[data-testid="static"]') as HTMLElement
+
+  const staticClasses = staticEl.className.split(' ')
+  const animatedClasses = animatedEl.className.split(' ')
+
+  // The translate composition class should be on both elements
+  const translateComposeClass = staticClasses.find((cls) => cls.startsWith('_t-'))
+  expect(translateComposeClass).toBeTruthy()
+  expect(animatedClasses).toContain(translateComposeClass)
+  expect(animatedClasses.some((cls) => cls.startsWith('_tx-'))).toBe(true)
+  expect(animatedClasses.some((cls) => cls.startsWith('_ty-'))).toBe(true)
+})
+
+
+
