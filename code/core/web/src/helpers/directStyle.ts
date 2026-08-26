@@ -252,16 +252,7 @@ const directStyleHandler: FlatValueHandler<GetStyleState> = {
       )
     }
     if ((!isWeb || !state.flatShouldDoClasses) && result & 2 && !hasBase) {
-      const value =
-        property === 'opacity'
-          ? 1
-          : property === 'scale' || property === 'scaleX' || property === 'scaleY'
-            ? 1
-            : property === 'rotate'
-              ? '0deg'
-              : property === 'x' || property === 'y'
-                ? 0
-                : null
+      const value = implicitLifecycleBase(property)
       if (value !== null) {
         emitValue(
           state,
@@ -279,6 +270,22 @@ const directStyleHandler: FlatValueHandler<GetStyleState> = {
       }
     }
   },
+}
+
+// enter/exit clauses with no authored base animate from the property's natural
+// resting value on the inline-style path (the class path reads it from the
+// cascade instead)
+function implicitLifecycleBase(property: string): string | number | null {
+  return property === 'opacity' ||
+    property === 'scale' ||
+    property === 'scaleX' ||
+    property === 'scaleY'
+    ? 1
+    : property === 'rotate'
+      ? '0deg'
+      : property === 'x' || property === 'y'
+        ? 0
+        : null
 }
 
 const legacyTransformParts = new Set([
@@ -2064,6 +2071,21 @@ export function contributeFrontendValue(
   return true
 }
 
+// a flat conditional object either names a `default` or opens with a
+// resolvable modifier chain; anything else is a structured leaf value
+// (shadowOffset) and stays whole. only the first key is probed, the same way
+// the string scanner commits at its first clause
+function isConditionalStyleObject(
+  state: GetStyleState,
+  value: Record<string, any>
+): boolean {
+  if (Object.prototype.hasOwnProperty.call(value, 'default')) return true
+  for (const key in value) {
+    return key.length > 0 && !!resolveClauseChain(state, key, 0, key.length)
+  }
+  return false
+}
+
 export function contributeVariantClauseValue(
   state: GetStyleState,
   property: string,
@@ -2073,6 +2095,36 @@ export function contributeVariantClauseValue(
   originalValue?: any,
   contextOnly = false
 ) {
+  if (
+    value &&
+    typeof value === 'object' &&
+    !Array.isArray(value) &&
+    !isVariable(value) &&
+    isConditionalStyleObject(state, value)
+  ) {
+    // a flat conditional object inside a clause-valued variant: the outer
+    // condition prefixes every inner chain (`sm` + `hover` -> `sm:hover`)
+    for (const key in value) {
+      const payload = value[key]
+      if (payload == null) continue
+      const source = key === 'default' ? conditionSource : `${conditionSource}:${key}`
+      resolveClauseChain(
+        state,
+        source,
+        0,
+        source.length,
+        property,
+        payload,
+        merge,
+        payload,
+        contextOnly,
+        -1,
+        -1,
+        2
+      )
+    }
+    return
+  }
   resolveClauseChain(
     state,
     conditionSource,
@@ -2087,6 +2139,69 @@ export function contributeVariantClauseValue(
     -1,
     2
   )
+}
+
+function contributeStyleObject(
+  state: GetStyleState,
+  property: string,
+  value: Record<string, any>,
+  merge: MergeStyle,
+  contextOnly: boolean
+) {
+  if (!isConditionalStyleObject(state, value)) return false
+  // parity with conditional strings: shadow and legacy transform parts on web
+  // cannot carry conditions of their own — the composite property owns them
+  if (isWeb && (webShadowParts.has(property) || legacyTransformParts.has(property))) {
+    if (process.env.NODE_ENV === 'development') {
+      warnOnce(`conditional "${property}" needs its composite property; dropping it`)
+    }
+    return true
+  }
+  let hasBase = false
+  const base = value.default
+  if (base != null) {
+    emitValue(state, property, base, 0, '', undefined, '', '', merge, base, contextOnly)
+    hasBase = true
+  }
+  let conditions = 0
+  for (const key in value) {
+    if (key === 'default') continue
+    const payload = value[key]
+    if (payload == null) continue
+    conditions |= resolveClauseChain(
+      state,
+      key,
+      0,
+      key.length,
+      property,
+      payload,
+      merge,
+      payload,
+      contextOnly,
+      -1,
+      -1,
+      1
+    )
+  }
+  if ((!isWeb || !state.flatShouldDoClasses) && conditions & 12 && !hasBase) {
+    const resting = implicitLifecycleBase(property)
+    if (resting !== null) {
+      emitValue(
+        state,
+        property,
+        resting,
+        0,
+        '',
+        undefined,
+        '',
+        '',
+        merge,
+        resting,
+        contextOnly
+      )
+    }
+  }
+  return true
 }
 
 export function contributeStyleValue(
@@ -2128,6 +2243,15 @@ export function contributeStyleValue(
       originalValue,
       contextOnly
     )
+  }
+  if (
+    value &&
+    typeof value === 'object' &&
+    !Array.isArray(value) &&
+    !isVariable(value) &&
+    contributeStyleObject(state, property, value, merge, contextOnly)
+  ) {
+    return true
   }
   if (value != null) {
     emitValue(

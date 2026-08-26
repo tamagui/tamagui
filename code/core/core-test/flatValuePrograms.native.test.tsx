@@ -185,6 +185,132 @@ test('base applies and the hover clause waits for the state', () => {
   expect(hovered.style?.backgroundColor).toBe('blue')
 })
 
+test('flat conditional objects match clause strings on native', () => {
+  // Put default last to prove object enumeration order cannot make it override
+  // an active condition.
+  const value = {
+    hover: '#00f',
+    sm: '#0f0',
+    'sm:hover': '#f0f',
+    'dark:sm:hover': '#ffc0cb',
+    default: '#f00',
+  }
+  const conditions: SplitConditions = [
+    { hover: true },
+    'dark',
+    { mediaState: { sm: true } },
+  ]
+  const object = split({ backgroundColor: value }, ...conditions)
+  const string = split(
+    {
+      backgroundColor: '#f00 hover:#00f sm:#0f0 sm:hover:#f0f dark:sm:hover:#ffc0cb',
+    },
+    ...conditions
+  )
+
+  expect(object.style?.backgroundColor).toBe('#ffc0cb')
+  expect(object.style).toEqual(string.style)
+  expect(object.programStates?.has('hover')).toBe(true)
+  expect(object.hasMedia?.has('sm')).toBe(true)
+})
+
+test('flat conditional objects work in styled defaults and variants on native', () => {
+  const Frame = styled(View, {
+    bg: { default: '#808080', hover: '#00f' },
+    variants: {
+      tone: {
+        danger: {
+          opacity: { default: 0.5, focus: 1 },
+        },
+      },
+    } as const,
+  })
+
+  const hovered = simplifiedGetSplitStyles(
+    Frame,
+    { tone: 'danger' },
+    {
+      componentState: { hover: true, focus: true },
+      mergeDefaultProps: true,
+    }
+  )
+  expect(hovered.style?.backgroundColor).toBe('#00f')
+  expect(hovered.style?.opacity).toBe(1)
+})
+
+test('flat conditional object enter clauses emit the implicit resting base', () => {
+  const object = split({ opacity: { enter: 0 } })
+  const string = split({ opacity: 'enter:0' })
+  expect(object.style?.opacity).toBe(1)
+  expect(object.style).toEqual(string.style)
+
+  const entering = split({ opacity: { enter: 0 } }, { unmounted: true })
+  expect(entering.style?.opacity).toBe(0)
+})
+
+test('a clause-valued variant with an object definition composes the chains', () => {
+  const Frame = styled(View, {
+    variants: {
+      tone: {
+        danger: {
+          bg: { default: '#ffa500', hover: '#ff0' },
+        },
+      },
+    } as const,
+  })
+  const inactive = simplifiedGetSplitStyles(
+    Frame,
+    { tone: 'sm:danger' },
+    {
+      mediaState: { sm: false },
+      mergeDefaultProps: true,
+      noClass: true,
+    }
+  )
+  expect(inactive.style?.backgroundColor).toBe(undefined)
+
+  const active = simplifiedGetSplitStyles(
+    Frame,
+    { tone: 'sm:danger' },
+    {
+      mediaState: { sm: true },
+      mergeDefaultProps: true,
+      noClass: true,
+    }
+  )
+  expect(active.style?.backgroundColor).toBe('#ffa500')
+
+  const hovered = simplifiedGetSplitStyles(
+    Frame,
+    { tone: 'sm:danger' },
+    {
+      componentState: { hover: true },
+      mediaState: { sm: true },
+      mergeDefaultProps: true,
+      noClass: true,
+    }
+  )
+  expect(hovered.style?.backgroundColor).toBe('#ff0')
+})
+
+test('plain and conditional structured leaves stay intact on native', () => {
+  expect(split({ shadowOffset: { width: 2, height: 4 } }).style?.shadowOffset).toEqual({
+    width: 2,
+    height: 4,
+  })
+
+  const hovered = split(
+    {
+      shadowOffset: {
+        default: { width: 2, height: 4 },
+        hover: { width: 6, height: 8 },
+      },
+    },
+    { hover: true }
+  )
+  expect(hovered.style?.shadowOffset).toEqual({ width: 6, height: 8 })
+})
+
 test.each(tokenClauseCases)(
   'bare tokens resolve in clause payloads on native: name',
   ({ modifier, active }) => {

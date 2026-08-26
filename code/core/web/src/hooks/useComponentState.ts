@@ -79,9 +79,28 @@ function hasFlatModifier(
   const scan = (ctx.flatScan ||= ['', enterModifier, false, false])
   for (const key in props) {
     const value = props[key]
-    if (typeof value !== 'string' || value.indexOf(':') === -1) continue
+    const isString = typeof value === 'string'
+    if (isString ? value.indexOf(':') === -1 : !value || typeof value !== 'object') {
+      continue
+    }
     const property = config.shorthands[key] || key
     if (!(property in stylePropsAll) && property !== 'transition') continue
+    if (!isString) {
+      // flat conditional objects carry the chain as the key; a structured leaf
+      // (shadowOffset) has no modifier-named key so it never matches
+      for (const chain in value) {
+        if (chain === 'default' || value[chain] == null) continue
+        let start = 0
+        for (let index = 0; index <= chain.length; index++) {
+          if (index !== chain.length && chain.charCodeAt(index) !== 58) continue
+          if (modifiers.has(canonicalClauseModifier(chain.slice(start, index)))) {
+            return true
+          }
+          start = index + 1
+        }
+      }
+      continue
+    }
     scan[0] = value
     scan[1] = modifiers
     scan[2] = false

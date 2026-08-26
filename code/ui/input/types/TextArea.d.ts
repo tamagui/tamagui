@@ -20,7 +20,7 @@ export declare const TextArea: import("react").FunctionComponent<Omit<import("@t
     letterSpacing?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/web").GetThemeValueForKey<"letterSpacing"> | undefined>;
     textAlign?: import("@tamagui/web").FlatStyleValue<"auto" | "center" | "justify" | "left" | "right" | "unset" | undefined>;
     textTransform?: import("@tamagui/web").FlatStyleValue<"capitalize" | "lowercase" | "none" | "unset" | "uppercase" | undefined>;
-    color?: import("@tamagui/web").ColorStyleProp;
+    color?: import("@tamagui/web").FlatStyleValue<import("@tamagui/web").GetThemeValueForKey<"color"> | undefined>;
 } & Omit<import("./InputNativeProps").InputNativeProps, "autoCapitalize" | "autoCorrect" | "spellCheck"> & {
     autoCorrect?: boolean | 'on' | 'off';
     autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters' | 'off' | 'on';
@@ -81,7 +81,7 @@ export declare const TextArea: import("react").FunctionComponent<Omit<import("@t
     letterSpacing?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/web").GetThemeValueForKey<"letterSpacing"> | undefined>;
     textAlign?: import("@tamagui/web").FlatStyleValue<"auto" | "center" | "justify" | "left" | "right" | "unset" | undefined>;
     textTransform?: import("@tamagui/web").FlatStyleValue<"capitalize" | "lowercase" | "none" | "unset" | "uppercase" | undefined>;
-    color?: import("@tamagui/web").ColorStyleProp;
+    color?: import("@tamagui/web").FlatStyleValue<import("@tamagui/web").GetThemeValueForKey<"color"> | undefined>;
 } & Omit<import("./InputNativeProps").InputNativeProps, "autoCapitalize" | "autoCorrect" | "spellCheck"> & {
     autoCorrect?: boolean | 'on' | 'off';
     autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters' | 'off' | 'on';
@@ -159,7 +159,7 @@ export declare const TextArea: import("react").FunctionComponent<Omit<import("@t
         letterSpacing?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/web").GetThemeValueForKey<"letterSpacing"> | undefined>;
         textAlign?: import("@tamagui/web").FlatStyleValue<"auto" | "center" | "justify" | "left" | "right" | "unset" | undefined>;
         textTransform?: import("@tamagui/web").FlatStyleValue<"capitalize" | "lowercase" | "none" | "unset" | "uppercase" | undefined>;
-        color?: import("@tamagui/web").ColorStyleProp;
+        color?: import("@tamagui/web").FlatStyleValue<import("@tamagui/web").GetThemeValueForKey<"color"> | undefined>;
     } & Omit<import("./InputNativeProps").InputNativeProps, "autoCapitalize" | "autoCorrect" | "spellCheck"> & {
         autoCorrect?: boolean | 'on' | 'off';
         autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters' | 'off' | 'on';

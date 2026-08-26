@@ -113,7 +113,7 @@ function variantValue(source: string, modifiers: readonly string[] = []) {
 }
 
 /** what `useComponentState`'s scanner decided about lifecycle clauses */
-function hasEnterStyle(source: string, property = PROBE) {
+function hasEnterStyle(source: unknown, property = PROBE) {
   const { result } = renderHook(() =>
     useComponentState(
       { [property]: source },
@@ -243,6 +243,15 @@ describe('agreement', () => {
     expect(propValue(source, [], 'opacity')).toBe(1)
 
     expect(hasEnterStyle(source, 'opacity')).toBe(true)
+  })
+
+  test('flat conditional object keys drive the lifecycle decision like strings', () => {
+    expect(hasEnterStyle({ enter: 0 }, 'opacity')).toBe(true)
+    expect(hasEnterStyle({ starting: 0 }, 'opacity')).toBe(true)
+    expect(hasEnterStyle({ default: 1, 'sm:enter': 0 }, 'opacity')).toBe(true)
+    expect(hasEnterStyle({ default: 1, hover: 0 }, 'opacity')).toBe(false)
+    // a structured leaf has no modifier-named key
+    expect(hasEnterStyle({ width: 2, height: 4 }, 'shadowOffset')).toBe(false)
   })
 
   test('an unregistered modifier drops only its clause for both scanners', () => {

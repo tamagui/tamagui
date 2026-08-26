@@ -6,6 +6,7 @@ import type { GetProps } from '@tamagui/web'
 import {
   createStyledContext,
   createStyledHOC,
+  isVariable,
   styled,
   Text,
   useProps,
@@ -86,7 +87,12 @@ export const ButtonIcon = ({ children, color, scaleIcon = 1, size }: ButtonIconP
   const styledContext = ButtonContext.useStyledContext()
   const iconColor = color ?? styledContext?.color
   const getThemedIcon = useGetThemedIcon({
-    color: iconColor === 'unset' || typeof iconColor === 'number' ? undefined : iconColor,
+    // icons take one concrete color: conditional values (numbers, flat
+    // objects) fall back to the theme color
+    color:
+      (typeof iconColor === 'string' && iconColor !== 'unset') || isVariable(iconColor)
+        ? iconColor
+        : undefined,
     size: size === undefined ? undefined : size * scaleIcon,
   })
 
@@ -202,7 +208,12 @@ export function useButton<Props extends ButtonBehaviorProps>(
   const iconColor = iconColorOption ?? contextColor
   const resolvedIconSize = iconSize ?? iconSizeOption
   const getThemedIcon = useGetThemedIcon({
-    color: iconColor === 'unset' || typeof iconColor === 'number' ? undefined : iconColor,
+    // icons take one concrete color: conditional values (numbers, flat
+    // objects) fall back to the theme color
+    color:
+      (typeof iconColor === 'string' && iconColor !== 'unset') || isVariable(iconColor)
+        ? iconColor
+        : undefined,
     size: resolvedIconSize === undefined ? undefined : resolvedIconSize * scaleIcon,
   })
   const [themedIcon, themedIconAfter] = [icon, iconAfter].map((item) => {

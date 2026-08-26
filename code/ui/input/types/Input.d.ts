@@ -30,7 +30,7 @@ export declare const Input: import("@tamagui/core").TamaguiComponent<Omit<import
     letterSpacing?: import("@tamagui/core").FlatStyleValue<"unset" | import("@tamagui/core").GetThemeValueForKey<"letterSpacing"> | undefined>;
     textAlign?: import("@tamagui/core").FlatStyleValue<"auto" | "center" | "justify" | "left" | "right" | "unset" | undefined>;
     textTransform?: import("@tamagui/core").FlatStyleValue<"capitalize" | "lowercase" | "none" | "unset" | "uppercase" | undefined>;
-    color?: import("@tamagui/core").ColorStyleProp;
+    color?: import("@tamagui/core").FlatStyleValue<import("@tamagui/core").GetThemeValueForKey<"color"> | undefined>;
 } & Omit<import("./InputNativeProps").InputNativeProps, "autoCapitalize" | "autoCorrect" | "spellCheck"> & {
     autoCorrect?: boolean | 'on' | 'off';
     autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters' | 'off' | 'on';
@@ -74,7 +74,7 @@ export declare const Input: import("@tamagui/core").TamaguiComponent<Omit<import
     letterSpacing?: import("@tamagui/core").FlatStyleValue<"unset" | import("@tamagui/core").GetThemeValueForKey<"letterSpacing"> | undefined>;
     textAlign?: import("@tamagui/core").FlatStyleValue<"auto" | "center" | "justify" | "left" | "right" | "unset" | undefined>;
     textTransform?: import("@tamagui/core").FlatStyleValue<"capitalize" | "lowercase" | "none" | "unset" | "uppercase" | undefined>;
-    color?: import("@tamagui/core").ColorStyleProp;
+    color?: import("@tamagui/core").FlatStyleValue<import("@tamagui/core").GetThemeValueForKey<"color"> | undefined>;
 } & Omit<import("./InputNativeProps").InputNativeProps, "autoCapitalize" | "autoCorrect" | "spellCheck"> & {
     autoCorrect?: boolean | 'on' | 'off';
     autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters' | 'off' | 'on';

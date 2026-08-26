@@ -919,6 +919,24 @@ export function createTamaguiCompilerHost(
     mediaNames: options.tamaguiConfig.media ?? {},
     themeNames: options.tamaguiConfig.themes ?? {},
   }).registry
+  // the structured twin of flatClausePattern: a flat conditional object names a
+  // `default` or opens with a resolvable modifier chain, matching the runtime's
+  // first-key discrimination; a structured leaf (shadowOffset) matches neither
+  const isClauseObjectValue = (value: unknown): boolean => {
+    if (!staticObject(value)) return false
+    if ('default' in value) return true
+    for (const key in value) {
+      if (key.length === 0) return false
+      let start = 0
+      for (let index = 0; index <= key.length; index++) {
+        if (index !== key.length && key.charCodeAt(index) !== 58) continue
+        if (modifierRegistry.get(key.slice(start, index)) === undefined) return false
+        start = index + 1
+      }
+      return true
+    }
+    return false
+  }
   const configuredAnimationDriver = options.tamaguiConfig.animations as
     | AnimationDriver
     | undefined
@@ -2017,8 +2035,8 @@ export function createTamaguiCompilerHost(
       if (platform === 'native') {
         const isClauseValue = (name: string, value: unknown) =>
           isStyleProp(name, component) &&
-          typeof value === 'string' &&
-          flatClausePattern.test(value)
+          ((typeof value === 'string' && flatClausePattern.test(value)) ||
+            isClauseObjectValue(value))
         // a clause can also sit inside a variant definition, where it never
         // appears as a prop: variants: { big: { true: { width: 'gt-lg:999px' } } }
         const defaultVariants = component.staticConfig.defaultVariants ?? {}
@@ -2308,9 +2326,10 @@ export function createTamaguiCompilerHost(
                 ) ||
                   Object.values(item.value.value).some(
                     (value) =>
-                      typeof value === 'string' &&
-                      (flatClausePattern.test(value) ||
-                        nativeInheritedKeywordPattern.test(value))
+                      (typeof value === 'string' &&
+                        (flatClausePattern.test(value) ||
+                          nativeInheritedKeywordPattern.test(value))) ||
+                      isClauseObjectValue(value)
                   ))
             )
             const itemSources: string[] = []

@@ -2019,8 +2019,9 @@ export type SafeAreaValueKeys =
   | 'end'
 
 /**
- * Flat values: every style prop accepts a clause-bearing string
- * (`bg="red hover:blue"`, `p="4 sm:6"`). `(string & {})` admits the broad
+ * Flat values: every style prop accepts either a clause-bearing string
+ * (`bg="red hover:blue"`, `p="4 sm:6"`) or its flat object equivalent
+ * (`bg={{ default: 'red', hover: 'blue' }}`). `(string & {})` admits the broad
  * string without collapsing the token/literal unions, so autocomplete
  * survives (design record, "Types and editor tooling"). Candidate and
  * modifier validation is the compiler's and language service's job.
@@ -2040,7 +2041,27 @@ type ClauseModifierName =
  */
 type FlatClausePrefix = `${ClauseModifierName}:`
 
-export type FlatStyleValue<T> = T | FlatClausePrefix | (string & {})
+/**
+ * Object keys have no `(string & {})` escape hatch the way string values do,
+ * so the container (`@sm`, `@sm/card`) and named-group (`group-hover/card`)
+ * spellings need their own single-template arms.
+ */
+type FlatClauseName =
+  | ClauseModifierName
+  | `${ClauseModifierName}:${string}`
+  | `@${string}`
+  | `group-${CoreStateModifierName}/${string}`
+
+/**
+ * The structured twin of a flat clause string. It stays deliberately
+ * non-recursive: the condition chain is the key, and every leaf retains the
+ * style property's exact value type.
+ */
+export type FlatStyleObject<T> = { default?: T } & {
+  [K in FlatClauseName]?: T
+}
+
+export type FlatStyleValue<T> = T | FlatClausePrefix | FlatStyleObject<T> | (string & {})
 
 export type WithThemeValues<T extends object> = {
   [K in keyof T]:
@@ -2739,6 +2760,10 @@ export interface TextNonStyleProps
       // web-standard `userSelect` is the one authoring name; core maps it to
       // RN's `selectable` prop on native
       | 'selectable'
+      // the style side owns these as flat-value style props; intersecting
+      // RN's plain unions would strip the clause string and object forms
+      | 'numberOfLines'
+      | 'pointerEvents'
     >,
     ExtendBaseTextProps,
     TamaguiComponentPropsBase {

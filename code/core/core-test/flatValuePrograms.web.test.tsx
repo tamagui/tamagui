@@ -117,6 +117,124 @@ test('a clause value lowers to one program block', () => {
   )
 })
 
+test('flat conditional objects are the structured form of clause strings', () => {
+  const object = split({
+    bg: {
+      default: 'red',
+      hover: 'blue',
+      sm: 'green',
+      'sm:hover': 'purple',
+      'dark:sm:hover': 'pink',
+    },
+  })
+  const string = split({
+    bg: 'red hover:blue sm:green sm:hover:purple dark:sm:hover:pink',
+  })
+
+  expect(object.classNames).toEqual(string.classNames)
+  expect(object.rulesToInsert).toEqual(string.rulesToInsert)
+  expect(object.programStates?.has('hover')).toBe(true)
+  expect(object.hasMedia?.has('sm')).toBe(true)
+})
+
+test('flat conditional objects work through style props and styled variants', () => {
+  const fromStyle = split({
+    style: {
+      backgroundColor: { default: 'red', 'sm:hover': 'blue' },
+    },
+  })
+  expect(
+    rulesFor(fromStyle, fromStyle.classNames.backgroundColor).some(
+      (rule) => rule.startsWith('@media ') && rule.includes(':hover')
+    )
+  ).toBe(true)
+
+  const Frame = styled(View, {
+    variants: {
+      tone: {
+        danger: {
+          bg: { default: 'orange', focus: 'yellow' },
+        },
+      },
+    } as const,
+  })
+  const variant = simplifiedGetSplitStyles(
+    Frame,
+    { tone: 'danger' },
+    {
+      mergeDefaultProps: true,
+    }
+  )
+  const rules = rulesFor(variant, variant.classNames.backgroundColor)
+  expect(rules[0]).toContain('background-color:orange')
+  expect(rules.some((rule) => rule.includes(':focus'))).toBe(true)
+})
+
+test('plain structured style values remain leaves', () => {
+  const result = getSplitStyles(
+    { shadowColor: 'red', shadowOffset: { width: 2, height: 4 } },
+    View.staticConfig,
+    undefined as any,
+    'light',
+    { unmounted: false } as any,
+    { ...opts, noClass: true }
+  )
+  expect(result.style?.boxShadow).toContain('2px 4px')
+})
+
+test('flat conditional object enter clauses match strings on web', () => {
+  const object = split({ opacity: { enter: 0 } })
+  const string = split({ opacity: 'enter:0' })
+  expect(object.classNames).toEqual(string.classNames)
+  // rulesToInsert stores the raw payload too: `0` from the object, `"0"` from
+  // the string slice — the produced CSS is what must agree
+  const rules = rulesFor(object, object.classNames.opacity)
+  expect(rules).toEqual(rulesFor(string, string.classNames.opacity))
+  expect(rules.some((rule) => rule.includes('t_unmounted'))).toBe(true)
+})
+
+test('conditional web shadow parts need their composite property', () => {
+  const object = split({ shadowColor: { default: 'red', hover: 'blue' } })
+  const string = split({ shadowColor: 'red hover:blue' })
+  expect(object.classNames).toEqual(string.classNames)
+  expect(object.style?.shadowColor).toBe(undefined)
+  expect(object.style?.boxShadow).toBe(undefined)
+})
+
+test('a clause-valued variant with an object definition composes the chains', () => {
+  const Frame = styled(View, {
+    variants: {
+      tone: {
+        danger: {
+          bg: { default: 'orange', hover: 'yellow' },
+        },
+      },
+    } as const,
+  })
+  const result = simplifiedGetSplitStyles(
+    Frame,
+    { tone: 'sm:danger' },
+    { mergeDefaultProps: true }
+  )
+  const rules = rulesFor(result, result.classNames.backgroundColor)
+  expect(
+    rules.some(
+      (rule) =>
+        rule.startsWith('@media ') &&
+        rule.includes('background-color:orange') &&
+        !rule.includes(':hover')
+    )
+  ).toBe(true)
+  expect(
+    rules.some(
+      (rule) =>
+        rule.startsWith('@media ') &&
+        rule.includes(':hover') &&
+        rule.includes('background-color:yellow')
+    )
+  ).toBe(true)
+})
+
 test('tokens resolve to variables and media clauses wrap', () => {
   const result = split({ p: '4 sm:6' })
   // padding expands to four longhand programs

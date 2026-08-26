@@ -162,6 +162,18 @@ test('a clause-bearing string flattens to a plain element with a program class',
   }
 })
 
+test('a flat conditional object flattens exactly like its clause string', async () => {
+  const objectOut = await extract(
+    `<View width={10} backgroundColor={{ default: 'red', hover: 'blue' }} />`
+  )
+  const stringOut = await extract(`<View width={10} backgroundColor="red hover:blue" />`)
+  expect(objectOut?.js).toContain('<div')
+  expect(objectOut?.js).not.toContain('<View')
+  // identical CSS and class identity: the object is the same program
+  expect(objectOut?.styles).toBe(stringOut?.styles)
+  expect(objectOut?.js.match(/_bc-\d+/)?.[0]).toBe(stringOut?.js.match(/_bc-\d+/)?.[0])
+})
+
 test('token payloads and media clauses lower statically', async () => {
   const output = await extract(`<View padding="4 sm:6" />`)
   expect(output?.js).toContain('<div')

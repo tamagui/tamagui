@@ -1102,8 +1102,9 @@ export type ThemeValueGet<K extends string | number | symbol> = K extends 'theme
 export type GetThemeValueForKey<K extends string | symbol | number> = ThemeValueGet<K> | ThemeValueFallback;
 export type SafeAreaValueKeys = 'padding' | 'paddingTop' | 'paddingBottom' | 'paddingLeft' | 'paddingRight' | 'paddingHorizontal' | 'paddingVertical' | 'paddingStart' | 'paddingEnd' | 'paddingBlock' | 'paddingInline' | 'paddingBlockStart' | 'paddingBlockEnd' | 'paddingInlineStart' | 'paddingInlineEnd' | 'margin' | 'marginTop' | 'marginBottom' | 'marginLeft' | 'marginRight' | 'marginHorizontal' | 'marginVertical' | 'marginStart' | 'marginEnd' | 'marginBlock' | 'marginInline' | 'marginBlockStart' | 'marginBlockEnd' | 'marginInlineStart' | 'marginInlineEnd' | 'inset' | 'top' | 'bottom' | 'left' | 'right' | 'start' | 'end';
 /**
- * Flat values: every style prop accepts a clause-bearing string
- * (`bg="red hover:blue"`, `p="4 sm:6"`). `(string & {})` admits the broad
+ * Flat values: every style prop accepts either a clause-bearing string
+ * (`bg="red hover:blue"`, `p="4 sm:6"`) or its flat object equivalent
+ * (`bg={{ default: 'red', hover: 'blue' }}`). `(string & {})` admits the broad
  * string without collapsing the token/literal unions, so autocomplete
  * survives (design record, "Types and editor tooling"). Candidate and
  * modifier validation is the compiler's and language service's job.
@@ -1116,7 +1117,23 @@ type ClauseModifierName = (MediaQueryKey & string) | RootThemeName | CoreStateMo
  * The language-service plugin owns completion after the first prefix.
  */
 type FlatClausePrefix = `${ClauseModifierName}:`;
-export type FlatStyleValue<T> = T | FlatClausePrefix | (string & {});
+/**
+ * Object keys have no `(string & {})` escape hatch the way string values do,
+ * so the container (`@sm`, `@sm/card`) and named-group (`group-hover/card`)
+ * spellings need their own single-template arms.
+ */
+type FlatClauseName = ClauseModifierName | `${ClauseModifierName}:${string}` | `@${string}` | `group-${CoreStateModifierName}/${string}`;
+/**
+ * The structured twin of a flat clause string. It stays deliberately
+ * non-recursive: the condition chain is the key, and every leaf retains the
+ * style property's exact value type.
+ */
+export type FlatStyleObject<T> = {
+    default?: T;
+} & {
+    [K in FlatClauseName]?: T;
+};
+export type FlatStyleValue<T> = T | FlatClausePrefix | FlatStyleObject<T> | (string & {});
 export type WithThemeValues<T extends object> = {
     [K in keyof T]: (ThemeValueGet<K> extends never ? K extends keyof ExtraBaseProps ? T[K] : FlatStyleValue<T[K] | 'unset'> : FlatStyleValue<GetThemeValueForKey<K> | Exclude<T[K], string> | 'unset'>) | (K extends SafeAreaValueKeys ? 'safe' : never);
 };
@@ -1615,7 +1632,7 @@ export interface StackNonStyleProps extends Omit<ViewProps, 'hitSlop' | 'pointer
     style?: StyleProp<LooseCombinedObjects<React.CSSProperties, ViewStyle>>;
 }
 export type StackStyle = WithThemeAndShorthands<StackStyleBase>;
-export interface TextNonStyleProps extends Omit<ReactTextProps, 'children' | keyof WebOnlyPressEvents | RNOnlyProps | keyof ExtendBaseTextProps | 'style' | 'selectable'>, ExtendBaseTextProps, TamaguiComponentPropsBase {
+export interface TextNonStyleProps extends Omit<ReactTextProps, 'children' | keyof WebOnlyPressEvents | RNOnlyProps | keyof ExtendBaseTextProps | 'style' | 'selectable' | 'numberOfLines' | 'pointerEvents'>, ExtendBaseTextProps, TamaguiComponentPropsBase {
     style?: StyleProp<LooseCombinedObjects<React.CSSProperties, RNTextStyle>>;
 }
 export type TextStyle = WithThemeAndShorthands<TextStylePropsBase>;
