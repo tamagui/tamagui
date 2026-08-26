@@ -410,7 +410,8 @@ const Square = styled(View, {
 
 ### Variants and Flat Clauses
 
-Variant branches can use the same state and media clauses as any other style value:
+Variant branches can use the same state and media clauses as any other style value,
+in string or object form:
 
 ```tsx
 const SizedText = styled(Text, {
@@ -418,10 +419,20 @@ const SizedText = styled(Text, {
     size: {
       md: {
         fontSize: 'sm gtMd:md gt2xl:lg',
+        // equivalent:
+        // fontSize: { default: 'sm', gtMd: 'md', gt2xl: 'lg' },
       },
     },
   } as const,
 })
+```
+
+The variant prop itself accepts conditions too, so a variant can change per
+state or breakpoint:
+
+```tsx
+<SizedText size="sm gtMd:md" />
+<SizedText size={{ default: 'sm', gtMd: 'md' }} />
 ```
 
 ### Variants and Parent Variants

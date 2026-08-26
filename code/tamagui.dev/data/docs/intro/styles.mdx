@@ -118,10 +118,12 @@ type FlatTransformStyles = {
   rotateZ?: string
 }
 
-// Every style value may also be a flat program string. A program combines its
-// base value with state, viewport, theme, platform, group, or container clauses:
+// Every style value may also be conditional, written as a string or an object.
+// Both combine a base value with state, viewport, theme, platform, group, or
+// container clauses:
 //
 //   backgroundColor="background hover:background-hover dark:gray-950"
+//   backgroundColor={{ default: 'background', hover: 'background-hover', dark: 'gray-950' }}
 //   padding="2 sm:4"
 
 // Text style starts with this base but builds up the same:
@@ -143,6 +145,40 @@ type TextStyleBase = BaseViewStyle & {
   textTransform?: string,
 }
 ```
+
+## Conditional values
+
+Every style prop takes conditions in two spellings, a string of clauses or a
+flat object. These render the same thing:
+
+```tsx
+<View backgroundColor="red hover:blue sm:green sm:hover:purple" />
+
+<View
+  backgroundColor={{
+    default: 'red',
+    hover: 'blue',
+    sm: 'green',
+    'sm:hover': 'purple',
+  }}
+/>
+```
+
+The object keys are the same modifiers the string uses, with `default` for the
+base value. There is no mode to pick, and you can mix them per prop in one
+component:
+
+```tsx
+<View backgroundColor="red hover:blue" scale={{ press: 0.98 }} />
+```
+
+Strings are shorter for one or two conditions. Objects work better when the
+values are numbers, when the conditions stack up, or when you build the value in
+code. Both compile to identical CSS.
+
+An object only counts as conditional when it has a `default` key or its first
+key is a valid modifier. A plain value object like
+`shadowOffset={{ width: 0, height: 2 }}` is left alone.
 
 ## Font size values
 
@@ -190,6 +226,11 @@ For mount/unmount animations, use clauses on each animated property:
 
 - **`enter:`** - Initial value when the component mounts (animates _from_ it)
 - **`exit:`** - Final value when the component unmounts (animates _to_ it)
+
+```tsx
+<View opacity="enter:0 exit:0" />
+<View opacity={{ enter: 0, exit: 0 }} />
+```
 
 See [Animations](/docs/core/animations) for more details on enter/exit animations.
 
