@@ -15,6 +15,7 @@ import {
 } from '@tamagui/web'
 import type { FunctionComponent, JSX, ReactNode } from 'react'
 import { useContext } from 'react'
+import type { OpaqueColorValue } from 'react-native'
 
 const buttonContextKeys = [
   'color',
@@ -83,6 +84,13 @@ export type ButtonIconProps = {
   size?: number
 }
 
+// react-native opaque colors (PlatformColor, DynamicColorIOS) are plain
+// objects and remain valid single icon colors, unlike conditional flat objects
+const isOpaqueColor = (value: unknown): value is OpaqueColorValue =>
+  typeof value === 'object' &&
+  value !== null &&
+  ('dynamic' in value || 'semantic' in value || 'resource_paths' in value)
+
 export const ButtonIcon = ({ children, color, scaleIcon = 1, size }: ButtonIconProps) => {
   const styledContext = ButtonContext.useStyledContext()
   const iconColor = color ?? styledContext?.color
@@ -90,7 +98,9 @@ export const ButtonIcon = ({ children, color, scaleIcon = 1, size }: ButtonIconP
     // icons take one concrete color: conditional values (numbers, flat
     // objects) fall back to the theme color
     color:
-      (typeof iconColor === 'string' && iconColor !== 'unset') || isVariable(iconColor)
+      (typeof iconColor === 'string' && iconColor !== 'unset') ||
+      isVariable(iconColor) ||
+      isOpaqueColor(iconColor)
         ? iconColor
         : undefined,
     size: size === undefined ? undefined : size * scaleIcon,
@@ -211,7 +221,9 @@ export function useButton<Props extends ButtonBehaviorProps>(
     // icons take one concrete color: conditional values (numbers, flat
     // objects) fall back to the theme color
     color:
-      (typeof iconColor === 'string' && iconColor !== 'unset') || isVariable(iconColor)
+      (typeof iconColor === 'string' && iconColor !== 'unset') ||
+      isVariable(iconColor) ||
+      isOpaqueColor(iconColor)
         ? iconColor
         : undefined,
     size: resolvedIconSize === undefined ? undefined : resolvedIconSize * scaleIcon,

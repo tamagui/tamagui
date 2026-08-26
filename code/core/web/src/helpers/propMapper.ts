@@ -22,20 +22,34 @@ import { expandSafeAreaValue, isSafeAreaKey } from './resolveSafeArea'
 import { skipProps } from './skipProps'
 import { styleOriginalValues } from './styleOriginalValues'
 
-// reduces a conditional variant clause back to flat-value string form
-// (`"20 sm:40"`) so the ordinary string parser applies it downstream. returns
-// undefined when either side is not string-representable, so the caller can
-// drop the clause with a diagnostic instead of emitting garbage
+// reduces a conditional variant clause back to a flat value the downstream
+// parser applies: string form (`"20 sm:40"`) when both sides are
+// string-representable, otherwise the flat object form, which carries array
+// and structured payloads faithfully. returns undefined only for the one
+// unrepresentable mix: a clause-bearing string joined by a structured payload
 export function appendFlatClause(
+  state: GetStyleState,
   prev: unknown,
   conditionSource: string,
   value: unknown
-): string | undefined {
-  if (prev != null && typeof prev !== 'string' && typeof prev !== 'number') return
-  if (typeof value !== 'string' && typeof value !== 'number') return
-  return prev == null
-    ? `${conditionSource}:${value}`
-    : `${prev} ${conditionSource}:${value}`
+): string | Record<string, any> | undefined {
+  if (typeof value === 'string' || typeof value === 'number') {
+    if (prev == null) return `${conditionSource}:${value}`
+    if (typeof prev === 'string' || typeof prev === 'number') {
+      return `${prev} ${conditionSource}:${value}`
+    }
+  }
+  if (prev == null) return { [conditionSource]: value }
+  if (typeof prev === 'string' && prev.includes(':')) return
+  if (
+    typeof prev === 'object' &&
+    !Array.isArray(prev) &&
+    !isVariable(prev) &&
+    isConditionalStyleObject(state, prev as Record<string, any>)
+  ) {
+    return { ...(prev as Record<string, any>), [conditionSource]: value }
+  }
+  return { default: prev, [conditionSource]: value }
 }
 
 // pass state, source, saw chain, then payload/chain offset quadruples. only
@@ -450,11 +464,16 @@ const resolveTokensAndVariants: StyleResolver<object> = (
             for (const [key, val, originalVal, conditionSource] of variantOut) {
               if (val == null) continue
               if (conditionSource !== undefined) {
-                const appended = appendFlatClause(res[key], conditionSource, val)
+                const appended = appendFlatClause(
+                  styleState,
+                  res[key],
+                  conditionSource,
+                  val
+                )
                 if (appended === undefined) {
                   if (process.env.NODE_ENV === 'development') {
                     console.warn(
-                      `[tamagui] conditional variant value for "${key}" is not string-representable; dropping the clause`
+                      `[tamagui] conditional variant value for "${key}" cannot join the existing clause string; dropping the clause`
                     )
                   }
                   continue

@@ -2056,6 +2056,16 @@ export function createTamaguiCompilerHost(
                     isClauseValue(name, value)
                   )
               )
+          ) ||
+          // compound variant styles are contributed by resolveSplitStyles too,
+          // so a clause there would also freeze build-machine state if folded
+          (component.staticConfig.compoundVariants ?? []).some(
+            (compound) =>
+              staticObject(compound) &&
+              staticObject(compound.style) &&
+              Object.entries(compound.style).some(([name, value]) =>
+                isClauseValue(name, value)
+              )
           )
         if (carriesClause) {
           return bailout(

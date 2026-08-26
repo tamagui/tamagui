@@ -259,6 +259,30 @@ describe('agreement', () => {
     ).toBe(false)
   })
 
+  test('variant props carrying enter clauses flip hasEnterStyle', () => {
+    const Frame = styled(View, {
+      variants: {
+        tone: { shown: { opacity: 1 }, hidden: { opacity: 0 } },
+      } as const,
+    })
+    const probe = (value: unknown) => {
+      const { result } = renderHook(() =>
+        useComponentState(
+          { tone: value },
+          undefined as any,
+          (Frame as any).staticConfig,
+          getConfig()
+        )
+      )
+      return (result.current as any).hasEnterStyle as boolean
+    }
+
+    expect(probe('shown enter:hidden')).toBe(true)
+    expect(probe({ default: 'shown', enter: 'hidden' })).toBe(true)
+    expect(probe('shown')).toBe(false)
+    expect(probe({ default: 'shown', hover: 'hidden' })).toBe(false)
+  })
+
   test('an unregistered modifier drops only its clause for both scanners', () => {
     const source = 'none hver:red'
     expect(parseValue(source, registry).ok).toBe(false)

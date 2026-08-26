@@ -312,6 +312,107 @@ test('variant props resolve each conditional flat-value branch', () => {
   expect(roomy.style?.paddingLeft).toBe(16)
 })
 
+test('compound variants match conditional variant props per branch', () => {
+  const Frame = styled(View, {
+    variants: {
+      tone: { quiet: { opacity: 0.5 }, loud: { opacity: 1 } },
+      density: { compact: { padding: 2 }, roomy: { padding: 8 } },
+    } as const,
+    compoundVariants: [
+      { tone: 'loud', style: { backgroundColor: 'red' } },
+      { tone: 'loud', density: 'compact', style: { borderTopWidth: 5 } },
+    ],
+  })
+
+  for (const value of ['quiet hover:loud', { default: 'quiet', hover: 'loud' }]) {
+    const resting = simplifiedGetSplitStyles(
+      Frame,
+      { tone: value, density: 'compact' },
+      { mergeDefaultProps: true, noClass: true }
+    )
+    expect(resting.style?.opacity).toBe(0.5)
+    expect(resting.style?.backgroundColor).toBe(undefined)
+    expect(resting.style?.borderTopWidth).toBe(undefined)
+
+    const hovered = simplifiedGetSplitStyles(
+      Frame,
+      { tone: value, density: 'compact' },
+      { componentState: { hover: true }, mergeDefaultProps: true, noClass: true }
+    )
+    expect(hovered.style?.opacity).toBe(1)
+    expect(hovered.style?.backgroundColor).toBe('red')
+    expect(hovered.style?.borderTopWidth).toBe(5)
+  }
+
+  // exact values keep matching unconditionally, as before
+  const exact = simplifiedGetSplitStyles(
+    Frame,
+    { tone: 'loud' },
+    { mergeDefaultProps: true, noClass: true }
+  )
+  expect(exact.style?.backgroundColor).toBe('red')
+})
+
+test('nested variant clauses keep array payloads via the object form', () => {
+  const Frame = styled(View, {
+    variants: {
+      motion: {
+        still: { transform: [{ scale: 1 }] },
+        pressed: { transform: [{ scale: 0.8 }] },
+      },
+      state: {
+        interactive: { motion: { default: 'still', hover: 'pressed' } },
+      },
+    } as const,
+  })
+
+  const base = simplifiedGetSplitStyles(
+    Frame,
+    { state: 'interactive' },
+    { mergeDefaultProps: true, noClass: true }
+  )
+  expect(JSON.stringify(base.style?.transform)).toContain('1')
+
+  const hovered = simplifiedGetSplitStyles(
+    Frame,
+    { state: 'interactive' },
+    { componentState: { hover: true }, mergeDefaultProps: true, noClass: true }
+  )
+  expect(JSON.stringify(hovered.style?.transform)).toContain('0.8')
+})
+
+test('an object styled default displaced by a caller value keeps its clauses', () => {
+  // the displaced-default re-injection must treat the object form as a
+  // program exactly like its string twin: the caller base replaces only the
+  // base slot, and the default's condition slots survive
+  const ObjectFrame = styled(View, {
+    backgroundColor: { default: 'red', hover: 'blue' },
+  })
+  const StringFrame = styled(View, {
+    backgroundColor: 'red hover:blue',
+  })
+
+  for (const Frame of [ObjectFrame, StringFrame]) {
+    const result = simplifiedGetSplitStyles(
+      Frame,
+      { backgroundColor: 'green' },
+      { componentState: { hover: true }, mergeDefaultProps: true, noClass: true }
+    )
+    expect(result.style?.backgroundColor).toBe('blue')
+  }
+
+  // the inverse: a conditional caller value must not erase the styled base
+  const PlainFrame = styled(View, { backgroundColor: 'red' })
+  for (const caller of ['hover:blue', { hover: 'blue' }] as const) {
+    const result = simplifiedGetSplitStyles(
+      PlainFrame,
+      { backgroundColor: caller },
+      { mergeDefaultProps: true, noClass: true }
+    )
+    expect(result.style?.backgroundColor).toBe('red')
+  }
+})
+
 test('variant props accept the flat object spelling', () => {
   const Frame = styled(View, {
     variants: {

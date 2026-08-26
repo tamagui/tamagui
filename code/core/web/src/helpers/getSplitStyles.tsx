@@ -14,6 +14,7 @@ import {
   STYLE_FRONTEND_PREPROCESSED,
 } from './styleFrontend'
 import { getConfig, getFont } from '../config'
+import { isVariable } from '../createVariable'
 import { isDevTools } from '../constants/isDevTools'
 import { mediaState as globalMediaState } from './mediaState'
 import type {
@@ -38,6 +39,7 @@ import type {
   TransitionProp,
   ViewStyleObject,
 } from '../types'
+import { scanFlatValue, type FlatValueHandler } from '@tamagui/style-grammar/runtime'
 import { fixStyles } from './expandStyles'
 import { styleToCSS } from './getCSSStylesAtomic'
 import { getDefaultProps } from './getDefaultProps'
@@ -53,6 +55,7 @@ import {
   contributeVariantClauseValue,
   flushDirectStyles,
   getDirectDynamicThemeAccess,
+  resolveClauseChain,
 } from './directStyle'
 import { contributeFrontendProgram, isFrontendProgram } from './frontendProgram'
 import { skipProps } from './skipProps'
@@ -112,17 +115,128 @@ function compoundMatcherMatches(expected: any, actual: any) {
   return Object.is(expected, actual)
 }
 
-function compoundVariantMatches(
-  compoundVariant: GenericCompoundVariant,
-  props: Record<string, any>
-) {
-  for (const key in compoundVariant) {
-    if (key === 'style') continue
-    if (!compoundMatcherMatches(compoundVariant[key], props[key])) {
-      return false
+// clause-string payloads arrive as slices, so booleans and numbers in the
+// matcher compare by their string spelling
+function compoundMatcherMatchesPayload(expected: any, payload: string) {
+  if (Array.isArray(expected)) {
+    return expected.some((value) => compoundMatcherMatchesPayload(value, payload))
+  }
+  return typeof expected === 'string'
+    ? expected === payload
+    : String(expected) === payload
+}
+
+// [source, expected, isChain, chains, matchedBase]
+type CompoundScanContext = [string, any, (chain: string) => boolean, string[], boolean]
+
+const compoundScanHandler: FlatValueHandler<CompoundScanContext> = {
+  segment(ctx, start, end, isBase, valid, source, chainStart, chainEnd, chainValid) {
+    if (!valid || start >= end) return
+    if (!compoundMatcherMatchesPayload(ctx[1], source.slice(start, end))) return
+    if (isBase) {
+      ctx[4] = true
+      return
+    }
+    if (!chainValid) return
+    const chain = source.slice(chainStart, chainEnd)
+    if (ctx[2](chain)) ctx[3].push(chain)
+  },
+  chain() {
+    return true
+  },
+  error() {},
+}
+
+/**
+ * Which condition chains a compound matcher key matches on a prop value.
+ * `['']` means unconditional: an exact value, or a conditional value whose
+ * base/default branch matches (the clause system has no negative conditions,
+ * so a matching base applies the compound in every state, exactly like an
+ * exact value). `null` means no branch matches. Non-empty chains mean the
+ * compound's style applies only under those conditions; the caller rewrites
+ * it into the flat object form so the ordinary pipeline carries it.
+ */
+function matcherChains(
+  expected: any,
+  actual: any,
+  isChain: (chain: string) => boolean
+): string[] | null {
+  if (typeof actual === 'string' && actual.indexOf(':') !== -1) {
+    const scan: CompoundScanContext = [actual, expected, isChain, [], false]
+    scanFlatValue(actual, compoundScanHandler, scan)
+    if (scan[4]) return ['']
+    return scan[3].length ? scan[3] : null
+  }
+  if (
+    actual &&
+    typeof actual === 'object' &&
+    !Array.isArray(actual) &&
+    !isVariable(actual)
+  ) {
+    let conditional = Object.prototype.hasOwnProperty.call(actual, 'default')
+    if (!conditional) {
+      for (const key in actual) {
+        conditional = key.length > 0 && isChain(key)
+        break
+      }
+    }
+    if (conditional) {
+      const chains: string[] = []
+      for (const key in actual) {
+        const payload = actual[key]
+        if (payload == null || !compoundMatcherMatches(expected, payload)) continue
+        if (key === 'default') return ['']
+        if (isChain(key)) chains.push(key)
+      }
+      return chains.length ? chains : null
     }
   }
-  return true
+  return compoundMatcherMatches(expected, actual) ? [''] : null
+}
+
+// the runtime discrimination rule, phrased over an isChain callback: a
+// conditional object names a `default` or opens with a resolvable chain
+function isConditionalObjectValue(
+  value: Record<string, any>,
+  isChain: (chain: string) => boolean
+): boolean {
+  if (Object.prototype.hasOwnProperty.call(value, 'default')) return true
+  for (const key in value) {
+    return key.length > 0 && isChain(key)
+  }
+  return false
+}
+
+const joinChains = (a: string, b: string): string => {
+  if (!a) return b
+  if (!b) return a
+  const segments = a.split(':')
+  for (const segment of b.split(':')) {
+    if (!segments.includes(segment)) segments.push(segment)
+  }
+  return segments.join(':')
+}
+
+function compoundVariantMatchChains(
+  compoundVariant: GenericCompoundVariant,
+  props: Record<string, any>,
+  isChain: (chain: string) => boolean
+): string[] | null {
+  let chains: string[] = ['']
+  for (const key in compoundVariant) {
+    if (key === 'style') continue
+    const keyChains = matcherChains(compoundVariant[key], props[key], isChain)
+    if (!keyChains) return null
+    const next: string[] = []
+    for (const a of chains) {
+      for (const b of keyChains) {
+        const joined = joinChains(a, b)
+        if (!next.includes(joined)) next.push(joined)
+      }
+    }
+    chains = next
+  }
+  return chains
 }
 
 type OrderedPropEntry = readonly [string, any]
@@ -149,6 +263,11 @@ function getStyledDefaults(staticConfig: StaticConfig): OrderedPropEntry[] | nul
   return entries
 }
 
+const maybeStyleProgram = (value: any): boolean =>
+  typeof value === 'string'
+    ? value.includes(':')
+    : !!value && typeof value === 'object' && !Array.isArray(value) && !isVariable(value)
+
 function contributeDisplacedStyledDefaults(
   styledDefaults: OrderedPropEntry[] | null,
   processedProps: Record<string, any>,
@@ -164,12 +283,14 @@ function contributeDisplacedStyledDefaults(
     // equal means the default flowed through the merge untouched and will be
     // processed as an ordinary prop entry; different means a call-site value
     // displaced it. Re-injection is only needed when either contribution is a
-    // program; ordinary values retain the prop-level fast path.
+    // program; ordinary values retain the prop-level fast path. an object is
+    // potentially a conditional program (its clause slots must survive a
+    // caller base); re-injecting a displaced structured leaf is a harmless
+    // whole-value overwrite by the later prop entry.
     if (
       propValue !== undefined &&
       propValue !== styledValue &&
-      ((typeof styledValue === 'string' && styledValue.includes(':')) ||
-        (typeof propValue === 'string' && propValue.includes(':')))
+      (maybeStyleProgram(styledValue) || maybeStyleProgram(propValue))
     ) {
       contribute(key, styledValue)
     }
@@ -193,7 +314,8 @@ function forEachPropInForwardOrder(
   processedProps: Record<string, any>,
   staticConfig: StaticConfig,
   shorthands: Record<string, string>,
-  contribute: (key: string, value: any) => void
+  contribute: (key: string, value: any) => void,
+  isChain: (chain: string) => boolean
 ) {
   const processedBaseStyle = staticConfig.baseStyle
   const compoundVariants = staticConfig.compoundVariants
@@ -228,7 +350,8 @@ function forEachPropInForwardOrder(
   // compounds, or caller values into precedence tiers.
   const compoundsByAnchor = new Map<number, OrderedPropEntry[]>()
   for (const compoundVariant of compoundVariants) {
-    if (!compoundVariantMatches(compoundVariant, processedProps)) {
+    const chains = compoundVariantMatchChains(compoundVariant, processedProps, isChain)
+    if (!chains) {
       continue
     }
     const { style } = compoundVariant
@@ -249,7 +372,38 @@ function forEachPropInForwardOrder(
 
     const entries = compoundsByAnchor.get(anchor) || []
     for (const key in style) {
-      entries.push([key, style[key]])
+      const value = style[key]
+      for (const chain of chains) {
+        if (!chain) {
+          entries.push([key, value])
+          continue
+        }
+        // a conditional match rewrites the compound's style into the flat
+        // object form so the ordinary pipeline scopes it to the chain
+        if (
+          value &&
+          typeof value === 'object' &&
+          !Array.isArray(value) &&
+          !isVariable(value) &&
+          isConditionalObjectValue(value, isChain)
+        ) {
+          const composed: Record<string, any> = {}
+          for (const inner in value) {
+            composed[inner === 'default' ? chain : `${chain}:${inner}`] = value[inner]
+          }
+          entries.push([key, composed])
+          continue
+        }
+        if (typeof value === 'string' && value.includes(':')) {
+          if (process.env.NODE_ENV === 'development') {
+            console.warn(
+              `[tamagui] compound variant "${key}" carries a clause string and matched conditionally; dropping it. use the object form in the compound style`
+            )
+          }
+          continue
+        }
+        entries.push([key, { [chain]: value }])
+      }
     }
     compoundsByAnchor.set(anchor, entries)
   }
@@ -934,14 +1088,20 @@ export const getSplitStyles: StyleSplitter = (
               !isHostStyleKey
             )
           } else if (isHOC) {
-            // reduce the clause back to flat-value string form so the wrapped
-            // component's own string parser applies the condition
-            const appended = appendFlatClause(viewProps[key], conditionSource, val)
+            // reduce the clause back to a flat value (string, or the object
+            // form for structured payloads) so the wrapped component's own
+            // parser applies the condition
+            const appended = appendFlatClause(
+              styleState,
+              viewProps[key],
+              conditionSource,
+              val
+            )
             if (appended !== undefined) {
               viewProps[key] = appended
             } else if (process.env.NODE_ENV === 'development') {
               console.warn(
-                `[tamagui] conditional variant value for "${key}" is not string-representable; dropping the clause`
+                `[tamagui] conditional variant value for "${key}" cannot join the existing clause string; dropping the clause`
               )
             }
           } else if (process.env.NODE_ENV === 'development') {
@@ -1020,7 +1180,13 @@ export const getSplitStyles: StyleSplitter = (
     }
   } // end prop contribution
 
-  forEachPropInForwardOrder(processedProps, staticConfig, shorthands, contributeProp)
+  forEachPropInForwardOrder(
+    processedProps,
+    staticConfig,
+    shorthands,
+    contributeProp,
+    (chain) => !!resolveClauseChain(styleState, chain, 0, chain.length)
+  )
 
   if (
     process.env.NODE_ENV === 'development' &&

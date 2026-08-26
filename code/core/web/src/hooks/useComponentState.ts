@@ -74,7 +74,8 @@ function hasFlatModifier(
   props: Record<string, any>,
   config: TamaguiInternalConfig,
   modifiers: ReadonlySet<string>,
-  ctx: LifecycleScanContext
+  ctx: LifecycleScanContext,
+  variants?: Record<string, any>
 ): boolean {
   const scan = (ctx.flatScan ||= ['', enterModifier, false, false])
   for (const key in props) {
@@ -84,7 +85,15 @@ function hasFlatModifier(
       continue
     }
     const property = config.shorthands[key] || key
-    if (!(property in stylePropsAll) && property !== 'transition') continue
+    if (
+      !(property in stylePropsAll) &&
+      property !== 'transition' &&
+      // conditional variant props resolve style branches too, so their
+      // lifecycle clauses drive the same decision
+      !(variants && key in variants)
+    ) {
+      continue
+    }
     if (!isString) {
       // an object-valued transition is the driver's per-lifecycle config
       // grammar (`{ default, enter, exit }` timings), not a flat conditional
@@ -173,7 +182,8 @@ export const useComponentState = (
       props,
       config,
       platformPseudoModifiers,
-      curStateRef as LifecycleScanContext
+      curStateRef as LifecycleScanContext,
+      staticConfig.variants
     )
   )
 
@@ -207,7 +217,8 @@ export const useComponentState = (
     props,
     config,
     enterModifier,
-    curStateRef as LifecycleScanContext
+    curStateRef as LifecycleScanContext,
+    staticConfig.variants
   )
 
   const hasAnimationThatNeedsHydrate =

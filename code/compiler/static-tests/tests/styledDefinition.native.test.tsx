@@ -147,6 +147,24 @@ test('a flat conditional object inside a variant stays on the runtime path', asy
   expect(isFolded(output?.code ?? '')).toBe(false)
 })
 
+test('a flat conditional value inside a compound variant stays on the runtime path', async () => {
+  for (const styleSource of [`opacity: { lg: 0.5 }`, `opacity: 'lg:0.5'`]) {
+    const output = await extractForNative(`
+      import { styled, View } from 'tamagui'
+      const Box = styled(View, {
+        variants: { tone: { a: { height: 20 } } },
+        compoundVariants: [{ tone: 'a', style: { ${styleSource} } }],
+      })
+      export function Test() {
+        return <Box tone="a" />
+      }
+    `)
+
+    expect(isFolded(output?.code ?? '')).toBe(false)
+    expect(output?.diagnostics.map((d) => d.code)).toContain('local/unsupported-target')
+  }
+})
+
 test('a flat conditional object as a variant prop stays on the runtime path', async () => {
   const output = await extractForNative(`
     import { styled, View } from 'tamagui'
