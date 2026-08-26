@@ -89,6 +89,24 @@ values:
 <View bg="background hover:background-hover" p="4 sm:6" />
 ```
 
+The same conditions also come in a flat object form. The two spellings render
+identically, compile to the same CSS, and mix freely per prop:
+
+```tsx
+<View
+  bg={{ default: 'background', hover: 'background-hover', 'sm:hover': 'gray-4' }}
+  scale={{ press: 0.98 }}
+/>
+```
+
+The object keys are the same modifiers strings use, with `default` for the
+base value and colons joining chains (`dark:sm:hover`). Strings stay the
+shortest way to write a condition or two. Objects keep numbers as numbers,
+read better once conditions stack up, and can be built in code. Both forms
+work in `styled()` definitions, in variant values, and on variant props
+themselves. An object with no modifier keys, like
+`shadowOffset={{ width: 0, height: 2 }}`, passes through untouched.
+
 Config v6 also renames multi-word theme keys to kebab case, such as
 `border-color` and `background-hover`. Run the flat-values codemod in report
 mode first, then use `--write` for conversions it can prove safe. The
