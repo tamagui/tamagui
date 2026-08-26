@@ -19,17 +19,25 @@ async function frame(id: string) {
   return attrs.frame as { x: number; y: number; width: number; height: number }
 }
 
+// the single deadline for every condition poll, sized just under jest's 180s
+// testTimeout. these polls wait on state the next step needs; a tighter inner
+// wall-clock budget (this file shipped with 4s and 8s) only re-times the same
+// condition against machine speed — a loaded CI simulator ran the passing
+// sibling tests at 3.5x normal wall-clock and tripped the 4s label poll while
+// the condition arrived fine. the deadline exists so a genuinely missing
+// condition still fails with a named target instead of a bare jest timeout.
+const POLL_DEADLINE_MS = 150_000
+
 async function pollHeight(
   id: string,
   predicate: (height: number) => boolean,
-  label: string,
-  timeoutMs = 8000
+  label: string
 ) {
   const startedAt = Date.now()
   let last = await frame(id)
   while (!predicate(last.height)) {
     assert.ok(
-      Date.now() - startedAt < timeoutMs,
+      Date.now() - startedAt < POLL_DEADLINE_MS,
       `timed out polling for ${label}, last height ${last.height}`
     )
     await new Promise((resolve) => setTimeout(resolve, 50))
@@ -42,7 +50,10 @@ async function pollLabel(id: string, predicate: (label: string) => boolean) {
   const startedAt = Date.now()
   let attrs: any = await element(by.id(id)).getAttributes()
   while (!predicate(attrs.label ?? '')) {
-    assert.ok(Date.now() - startedAt < 4000, `timed out polling label for ${id}`)
+    assert.ok(
+      Date.now() - startedAt < POLL_DEADLINE_MS,
+      `timed out polling label for ${id}, last "${attrs.label ?? ''}"`
+    )
     await new Promise((resolve) => setTimeout(resolve, 50))
     attrs = await element(by.id(id)).getAttributes()
   }
@@ -84,7 +95,7 @@ describe('Accordion (auto-height, native)', () => {
     })
     await waitFor(element(by.id('accordion-default-root')))
       .toExist()
-      .withTimeout(30000)
+      .withTimeout(POLL_DEADLINE_MS)
   })
 
   it('default-open item shows content, closed sibling sits below it (no overlap)', async () => {
@@ -127,7 +138,7 @@ describe('Accordion (auto-height, native)', () => {
     await expect(element(by.id('def-content-text'))).toExist()
     await waitFor(element(by.id('def-content-text')))
       .not.toBeVisible()
-      .withTimeout(6000)
+      .withTimeout(POLL_DEADLINE_MS)
     const closed = await pollHeight(
       'def-height',
       (height) => height <= 1,
@@ -144,7 +155,7 @@ describe('Accordion (auto-height, native)', () => {
     )
     await waitFor(element(by.id('def-content2')))
       .toExist()
-      .withTimeout(4000)
+      .withTimeout(POLL_DEADLINE_MS)
     const natural = await frame('def-content2')
     const opening = openingSamples.find(
       (height) => height > 0 && height < natural.height - 0.25

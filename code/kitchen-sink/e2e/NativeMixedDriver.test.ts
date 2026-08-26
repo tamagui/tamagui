@@ -16,12 +16,19 @@ async function height() {
   return frame.height / (frame.width / 120)
 }
 
+// deadline sized just under jest's 180s testTimeout: this is a condition
+// wait, and a tight inner wall-clock cap (this shipped at 4s) re-times the
+// condition against machine speed — a loaded CI simulator runs these suites
+// at several times normal wall-clock (see Accordion.test.ts). the assert
+// exists so a genuinely unreached height still fails with a named target
+const POLL_DEADLINE_MS = 150_000
+
 async function waitForHeight(target: number) {
   const startedAt = Date.now()
   let current = await height()
   while (Math.abs(current - target) > 1) {
     assert.ok(
-      Date.now() - startedAt < 4000,
+      Date.now() - startedAt < POLL_DEADLINE_MS,
       `timed out waiting for height ${target}, last height ${current}`
     )
     await new Promise((resolve) => setTimeout(resolve, 50))
