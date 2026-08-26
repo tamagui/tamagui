@@ -1,0 +1,208 @@
+{
+  "schemaVersion": 1,
+  "label": "baseline-38fded5d9f",
+  "commit": "38fded5d9f35fc84e0558b5bb5770ccbc9b587de",
+  "runtime": {
+    "bun": "1.3.14",
+    "platform": "darwin-arm64",
+    "nodeEnv": "production",
+    "target": "web"
+  },
+  "corpus": {
+    "sha256": "3b49958c05089cbe506f247e641e33d16d490017394fc9eca42f8296dd15d587",
+    "elements": 8948,
+    "staticAttributes": 22918
+  },
+  "measurement": {
+    "rounds": 11,
+    "warmups": 3,
+    "targetOperations": 20000,
+    "allocation": null,
+    "allocationNote": "not collected: forced-GC heap deltas measure retained memory, not total allocation; profile-hotpath.ts supplies sampled allocation attribution"
+  },
+  "scenarios": {
+    "plain-props": {
+      "elements": 6745,
+      "propsPerOperation": 2.2775389177168273,
+      "operationsPerRound": 20235,
+      "medianNsPerOperation": 5060.950481838398,
+      "meanNsPerOperation": 5266.109189747737,
+      "standardDeviationNs": 1151.8524679301174,
+      "ci95Ns": {
+        "low": 4492.332395335819,
+        "high": 6039.885984159656,
+        "margin": 773.7767944119183
+      },
+      "samplesNsPerOperation": [
+        6600.257375833951,
+        5060.950481838398,
+        3152.3062021250307,
+        4725.67541388683,
+        4856.846602421547,
+        3930.5328885594267,
+        4913.858018285149,
+        6525.873091178651,
+        5247.102792191747,
+        6151.36723498888,
+        6762.430985915493
+      ]
+    },
+    "clause-strings": {
+      "elements": 625,
+      "propsPerOperation": 5.4592,
+      "operationsPerRound": 20000,
+      "medianNsPerOperation": 22189.55205,
+      "meanNsPerOperation": 20382.28730909091,
+      "standardDeviationNs": 4719.662897617927,
+      "ci95Ns": {
+        "low": 17211.772222044856,
+        "high": 23552.80239613696,
+        "margin": 3170.5150870460516
+      },
+      "samplesNsPerOperation": [
+        22189.55205,
+        19359.19375,
+        13858.78335,
+        15547.1479,
+        15355.6292,
+        16548.975,
+        22288.84165,
+        22940.04375,
+        23175.26875,
+        29666.4604,
+        23275.2646
+      ]
+    },
+    "conditional-objects": {
+      "elements": 14,
+      "propsPerOperation": 8,
+      "operationsPerRound": 20006,
+      "medianNsPerOperation": 13050.803508947316,
+      "meanNsPerOperation": 13768.30397244463,
+      "standardDeviationNs": 3915.455588456889,
+      "ci95Ns": {
+        "low": 11138.029038587203,
+        "high": 16398.578906302057,
+        "margin": 2630.2749338574263
+      },
+      "samplesNsPerOperation": [
+        13050.803508947316,
+        10243.789363191043,
+        8479.36034189743,
+        12107.101169649106,
+        11250.626861941417,
+        11050.455713286014,
+        14837.157202839147,
+        16052.496750974708,
+        13534.912426272118,
+        19734.323452964112,
+        21110.31690492852
+      ]
+    },
+    "variant-props": {
+      "elements": 1674,
+      "propsPerOperation": 2.8440860215053765,
+      "operationsPerRound": 20088,
+      "medianNsPerOperation": 7247.371963361211,
+      "meanNsPerOperation": 8139.338990261035,
+      "standardDeviationNs": 2642.8814362995267,
+      "ci95Ns": {
+        "low": 6363.937727749104,
+        "high": 9914.740252772966,
+        "margin": 1775.4012625119312
+      },
+      "samplesNsPerOperation": [
+        7569.859269215452,
+        6821.412883313421,
+        5738.672739944245,
+        6296.997361608921,
+        6370.828753484668,
+        5614.724362803664,
+        7247.371963361211,
+        8070.861160892075,
+        10169.176423735564,
+        12338.029370768618,
+        13294.794603743529
+      ]
+    },
+    "shorthand-heavy": {
+      "elements": 345,
+      "propsPerOperation": 5.304347826086956,
+      "operationsPerRound": 20010,
+      "medianNsPerOperation": 13926.399300349825,
+      "meanNsPerOperation": 13515.853809458904,
+      "standardDeviationNs": 3606.7181152886446,
+      "ci95Ns": {
+        "low": 11092.978606864157,
+        "high": 15938.72901205365,
+        "margin": 2422.8752025947474
+      },
+      "samplesNsPerOperation": [
+        14354.21664167916,
+        12937.314692653674,
+        8304.008395802099,
+        9486.048625687157,
+        11509.299500249876,
+        9712.01064467766,
+        19754.826736631683,
+        15181.784107946027,
+        13926.399300349825,
+        15287.018990504748,
+        18221.464267866068
+      ]
+    },
+    "style-prop-heavy": {
+      "elements": 540,
+      "propsPerOperation": 7.57037037037037,
+      "operationsPerRound": 20520,
+      "medianNsPerOperation": 26563.163986354775,
+      "meanNsPerOperation": 24435.17872585504,
+      "standardDeviationNs": 4666.809337955017,
+      "ci95Ns": {
+        "low": 21300.168930595806,
+        "high": 27570.188521114273,
+        "margin": 3135.009795259233
+      },
+      "samplesNsPerOperation": [
+        24527.78187134503,
+        26563.163986354775,
+        19774.553265107214,
+        19769.81403508772,
+        21936.864424951265,
+        15373.958333333334,
+        26576.89858674464,
+        26814.861500974657,
+        27461.726364522416,
+        30322.54507797271,
+        29664.798538011695
+      ]
+    },
+    "total": {
+      "elements": 8948,
+      "propsPerOperation": 2.5612427358068843,
+      "operationsPerRound": 26844,
+      "medianNsPerOperation": 7086.729511250186,
+      "meanNsPerOperation": 7178.942275910647,
+      "standardDeviationNs": 1810.6846232834848,
+      "ci95Ns": {
+        "low": 5962.583599340751,
+        "high": 8395.300952480544,
+        "margin": 1216.3586765698965
+      },
+      "samplesNsPerOperation": [
+        7086.729511250186,
+        6075.603486812695,
+        4608.124720607957,
+        5435.8252123379525,
+        6172.203285650425,
+        5530.504954552228,
+        8538.61354492624,
+        7478.56284458352,
+        9621.915809864402,
+        10215.965392638951,
+        8204.316271792579
+      ]
+    }
+  },
+  "checksum": 14916566
+}
