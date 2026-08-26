@@ -2,7 +2,7 @@ import type { TextContextStyles, TextParentStyles } from '@tamagui/text';
 import type { GetProps } from '@tamagui/web';
 import type { FunctionComponent, JSX, ReactNode } from 'react';
 export declare const ButtonContext: import("@tamagui/web").StyledContext<TextContextStyles, "color" | "ellipsis" | "fontFamily" | "fontSize" | "fontStyle" | "fontWeight" | "letterSpacing" | "maxFontSizeMultiplier" | "textAlign">;
-export declare const ButtonFrame: FunctionComponent<Omit<import("@tamagui/web").StackNonStyleProps, "disabled" | "ellipsis" | "fontFamily" | "fontSize" | "fontStyle" | "fontWeight" | "letterSpacing" | "maxFontSizeMultiplier" | "textAlign" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+export declare const ButtonFrame: FunctionComponent<Omit<import("@tamagui/web").StackNonStyleProps, "disabled" | "ellipsis" | "fontFamily" | "fontSize" | "fontStyle" | "fontWeight" | "letterSpacing" | "maxFontSizeMultiplier" | "textAlign" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
     disabled?: boolean | undefined;
     ellipsis?: import("@tamagui/web").FlatStyleValue<"unset" | boolean | undefined>;
     fontFamily?: import("@tamagui/web").FlatStyleValue<import("@tamagui/web").GetThemeValueForKey<"fontFamily"> | undefined>;
@@ -12,7 +12,7 @@ export declare const ButtonFrame: FunctionComponent<Omit<import("@tamagui/web").
     letterSpacing?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/web").GetThemeValueForKey<"letterSpacing"> | undefined>;
     maxFontSizeMultiplier?: number | undefined;
     textAlign?: import("@tamagui/web").FlatStyleValue<"auto" | "center" | "justify" | "left" | "right" | "unset" | undefined>;
-} & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
+}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
     ref?: import("react").Ref<import("@tamagui/web").TamaguiElement> | undefined;
 }> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
     disabled?: boolean | undefined;
@@ -37,7 +37,7 @@ export declare const ButtonFrame: FunctionComponent<Omit<import("@tamagui/web").
         textAlign?: import("@tamagui/web").FlatStyleValue<"auto" | "center" | "justify" | "left" | "right" | "unset" | undefined>;
     }, import("@tamagui/web").StaticConfigPublic];
 };
-export declare const ButtonText: FunctionComponent<Omit<import("@tamagui/web").TextNonStyleProps, keyof import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>> & {
+export declare const ButtonText: FunctionComponent<Omit<import("@tamagui/web").TextNonStyleProps, keyof import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>> & {
     ref?: import("react").Ref<import("@tamagui/web").TamaguiTextElement> | undefined;
 }> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {}, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
     __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {}, import("@tamagui/web").StaticConfigPublic];
@@ -280,7 +280,7 @@ export declare const Button: FunctionComponent<Omit<import("@tamagui/web").GetFi
         children?: ReactNode;
         scope?: string;
     }>;
-    Frame: FunctionComponent<Omit<import("@tamagui/web").StackNonStyleProps, "disabled" | "ellipsis" | "fontFamily" | "fontSize" | "fontStyle" | "fontWeight" | "letterSpacing" | "maxFontSizeMultiplier" | "textAlign" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+    Frame: FunctionComponent<Omit<import("@tamagui/web").StackNonStyleProps, "disabled" | "ellipsis" | "fontFamily" | "fontSize" | "fontStyle" | "fontWeight" | "letterSpacing" | "maxFontSizeMultiplier" | "textAlign" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
         disabled?: boolean | undefined;
         ellipsis?: import("@tamagui/web").FlatStyleValue<"unset" | boolean | undefined>;
         fontFamily?: import("@tamagui/web").FlatStyleValue<import("@tamagui/web").GetThemeValueForKey<"fontFamily"> | undefined>;
@@ -290,7 +290,7 @@ export declare const Button: FunctionComponent<Omit<import("@tamagui/web").GetFi
         letterSpacing?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/web").GetThemeValueForKey<"letterSpacing"> | undefined>;
         maxFontSizeMultiplier?: number | undefined;
         textAlign?: import("@tamagui/web").FlatStyleValue<"auto" | "center" | "justify" | "left" | "right" | "unset" | undefined>;
-    } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
+    }> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
         ref?: import("react").Ref<import("@tamagui/web").TamaguiElement> | undefined;
     }> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
         disabled?: boolean | undefined;
@@ -316,7 +316,7 @@ export declare const Button: FunctionComponent<Omit<import("@tamagui/web").GetFi
         }, import("@tamagui/web").StaticConfigPublic];
     };
     Icon: typeof ButtonIcon;
-    Text: FunctionComponent<Omit<import("@tamagui/web").TextNonStyleProps, keyof import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>> & {
+    Text: FunctionComponent<Omit<import("@tamagui/web").TextNonStyleProps, keyof import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>> & {
         ref?: import("react").Ref<import("@tamagui/web").TamaguiTextElement> | undefined;
     }> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {}, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
         __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {}, import("@tamagui/web").StaticConfigPublic];

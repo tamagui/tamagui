@@ -100,7 +100,9 @@ const RadioGroupComponent = createStyledHOC(
     } = props
 
     const { providerValue, frameAttrs, rovingFocusGroupAttrs } = useRadioGroup({
-      orientation,
+      // roving focus needs one concrete axis; a conditional flat value
+      // (clause string or object) can't drive it, so non-literals fall back
+      orientation: orientation === 'horizontal' ? 'horizontal' : 'vertical',
       name,
       defaultValue,
       value,

@@ -2075,7 +2075,7 @@ export function contributeFrontendValue(
 // resolvable modifier chain; anything else is a structured leaf value
 // (shadowOffset) and stays whole. only the first key is probed, the same way
 // the string scanner commits at its first clause
-function isConditionalStyleObject(
+export function isConditionalStyleObject(
   state: GetStyleState,
   value: Record<string, any>
 ): boolean {

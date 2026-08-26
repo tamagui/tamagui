@@ -147,6 +147,21 @@ test('a flat conditional object inside a variant stays on the runtime path', asy
   expect(isFolded(output?.code ?? '')).toBe(false)
 })
 
+test('a flat conditional object as a variant prop stays on the runtime path', async () => {
+  const output = await extractForNative(`
+    import { styled, View } from 'tamagui'
+    const Box = styled(View, {
+      variants: { size: { compact: { height: 20 }, roomy: { height: 40 } } },
+    })
+    export function Test() {
+      return <Box size={{ default: 'compact', lg: 'roomy' }} />
+    }
+  `)
+
+  expect(isFolded(output?.code ?? '')).toBe(false)
+  expect(output?.diagnostics.map((d) => d.code)).toContain('local/unsupported-target')
+})
+
 // a structured leaf object (shadowOffset) has no modifier keys, so it must not
 // read as a clause and block flattening
 test('a structured leaf object still flattens', async () => {

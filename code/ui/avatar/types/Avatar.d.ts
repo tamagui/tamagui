@@ -8,9 +8,9 @@ type AvatarImageProps = Partial<ImageProps> & {
     onLoadingStatusChange?: (status: ImageLoadingStatus) => void;
 };
 declare const AvatarImage: import("@tamagui/core").RefComponent<TamaguiElement, AvatarImageProps>;
-export declare const AvatarFallbackFrame: React.FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
+export declare const AvatarFallbackFrame: React.FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
     elevation?: number | import("@tamagui/core").Size | undefined;
-} & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
     ref?: React.Ref<TamaguiElement> | undefined;
 }> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     elevation?: number | import("@tamagui/core").Size | undefined;
@@ -33,12 +33,12 @@ declare const AvatarFallback: import("@tamagui/core").TamaguiComponent<Omit<impo
 }, import("@tamagui/core").StackStyleBase, {
     elevation?: number | import("@tamagui/core").Size | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
-export declare const AvatarFrame: React.FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "circular" | "elevation" | "size" | "transparent" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
+export declare const AvatarFrame: React.FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "circular" | "elevation" | "size" | "transparent" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
     circular?: boolean | undefined;
     elevation?: number | import("@tamagui/core").Size | undefined;
     size?: number | import("@tamagui/core").Size | undefined;
     transparent?: boolean | undefined;
-} & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
     ref?: React.Ref<TamaguiElement> | undefined;
 }> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     circular?: boolean | undefined;
@@ -75,12 +75,12 @@ type AvatarProps = GetProps<typeof AvatarFrame>;
  * </Avatar>
  * ```
  */
-declare const Avatar: ((props: Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "circular" | "elevation" | "size" | "transparent" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
+declare const Avatar: ((props: Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "circular" | "elevation" | "size" | "transparent" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
     circular?: boolean | undefined;
     elevation?: number | import("@tamagui/core").Size | undefined;
     size?: number | import("@tamagui/core").Size | undefined;
     transparent?: boolean | undefined;
-} & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").RefProp<TamaguiElement>) => React.ReactNode) & {
+}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").RefProp<TamaguiElement>) => React.ReactNode) & {
     displayName?: string;
     propTypes?: any;
 } & {

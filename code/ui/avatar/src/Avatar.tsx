@@ -19,7 +19,8 @@ const [createAvatarContext, createAvatarScope] = createContextScope(AVATAR_NAME)
 type ImageLoadingStatus = 'idle' | 'loading' | 'loaded' | 'error'
 
 type AvatarContextValue = {
-  size: SizeTokens | true
+  // mirrors the frame's own size prop; nothing reads it for shape math anymore
+  size: AvatarProps['size'] | true
   imageLoadingStatus: ImageLoadingStatus
   onImageLoadingStatusChange(status: ImageLoadingStatus): void
 }

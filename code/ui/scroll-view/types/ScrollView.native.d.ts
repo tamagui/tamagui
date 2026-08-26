@@ -7,7 +7,7 @@ export declare const ScrollView: import("react").FunctionComponent<Omit<import("
             readonly contentContainerStyle: 'style';
         };
     }>> | undefined;
-}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
+}> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
     readonly contentContainerStyle?: Partial<import("@tamagui/web").InferStyleProps<typeof ScrollViewNative, {
         neverFlatten: true;
         accept: {

@@ -66,7 +66,7 @@ export declare function createImage<C extends ComponentType<any>>(options: Creat
     prefetchWithMetadata: typeof import("react-native").Image.prefetchWithMetadata;
     abortPrefetch: typeof import("react-native").Image.abortPrefetch | undefined;
     queryCache: typeof import("react-native").Image.queryCache | undefined;
-} & import("react").FC<import("@tamagui/web").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & Omit<import("react-native").ImageProps, "resizeMode" | "source" | keyof import("@tamagui/web").StackNonStyleProps | keyof import("@tamagui/web").StackStyleBase> & {
+} & import("react").FC<import("@tamagui/web").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & Omit<import("react-native").ImageProps, "resizeMode" | "source" | keyof import("@tamagui/web").StackNonStyleProps | keyof import("@tamagui/web").StackStyleBase> & {
     src?: string | number;
     source?: import("react-native").ImageSourcePropType;
     resizeMode?: ImageResizeMode;

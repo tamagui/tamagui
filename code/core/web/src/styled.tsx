@@ -52,6 +52,10 @@ type AreVariantsUndefined<Variants> =
   // because we pass in the Generic variants which for some reason has this :)
   Required<Variants> extends { _isEmpty: 1 } ? true : false
 
+// these stay strict (exact branch keys): defaultVariants, options roots,
+// compound matchers, and the stored component variants all use them, so typos
+// there remain type errors. the conditional flat forms (clause strings and
+// objects) widen only at the final public props, in WithThemeAndShorthands
 type GetVariantAcceptedValues<V> = V extends object
   ? {
       [Key in keyof V]?: V[Key] extends VariantSpreadFunction<any, infer Val>

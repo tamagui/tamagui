@@ -2,13 +2,19 @@ import React from 'react'
 import type { Ref as ReactRef } from 'react'
 import { describe, expect, expectTypeOf, test } from 'vitest'
 
-import type { GetProps, StaticStyleInput } from './types'
+import type { FlatStyleValue, GetProps, StaticStyleInput } from './types'
 import { styled, type StyledOptions } from './styled'
 import { createStyledContext } from './helpers/createStyledContext'
 import { Text } from './views/Text'
 import { View } from './views/View'
 
 type HasStringIndex<T> = string extends keyof T ? true : false
+
+// the public prop type of a keyed variant or consumed context key: the exact
+// branch keys widened with the conditional flat forms (clause strings and
+// flat objects). definition-side types (defaultVariants, compound matchers)
+// keep the bare key unions
+type Cond<T> = FlatStyleValue<T> | undefined
 
 type ButtonProps = {
   label?: string
@@ -70,8 +76,8 @@ describe('styled v3 overloads', () => {
     expectTypeOf<ObjectProps['ref']>().toEqualTypeOf<
       ReactRef<HTMLButtonElement> | undefined
     >()
-    expectTypeOf<ObjectProps['tone']>().toEqualTypeOf<'neutral' | 'active' | undefined>()
-    expectTypeOf<ObjectProps['emphasis']>().toEqualTypeOf<'low' | 'high' | undefined>()
+    expectTypeOf<ObjectProps['tone']>().toEqualTypeOf<Cond<'neutral' | 'active'>>()
+    expectTypeOf<ObjectProps['emphasis']>().toEqualTypeOf<Cond<'low' | 'high'>>()
     expectTypeOf<HasStringIndex<ObjectProps>>().toEqualTypeOf<false>()
   })
 
@@ -139,10 +145,8 @@ describe('styled v3 overloads', () => {
     const ObjectFirst = styled(View, validOptions)
 
     type ObjectProps = GetProps<typeof ObjectFirst>
-    expectTypeOf<ObjectProps['tone']>().toEqualTypeOf<'quiet' | 'strong' | undefined>()
-    expectTypeOf<ObjectProps['density']>().toEqualTypeOf<
-      'compact' | 'spacious' | undefined
-    >()
+    expectTypeOf<ObjectProps['tone']>().toEqualTypeOf<Cond<'quiet' | 'strong'>>()
+    expectTypeOf<ObjectProps['density']>().toEqualTypeOf<Cond<'compact' | 'spacious'>>()
     expectTypeOf<HasStringIndex<Options>>().toEqualTypeOf<false>()
     expectTypeOf<HasStringIndex<ObjectProps>>().toEqualTypeOf<false>()
 
@@ -243,7 +247,7 @@ describe('styled v3 overloads', () => {
     )
 
     type Props = GetProps<typeof Advanced>
-    expectTypeOf<Props['tone']>().toEqualTypeOf<'quiet' | undefined>()
+    expectTypeOf<Props['tone']>().toEqualTypeOf<Cond<'quiet'>>()
     expectTypeOf<'4'>().toMatchTypeOf<Props['iconSize']>()
   })
 
@@ -373,9 +377,9 @@ describe('styled v3 overloads', () => {
     const Frame = styled(View, validOptions)
     type Props = GetProps<typeof Frame>
 
-    expectTypeOf<Props['tone']>().toEqualTypeOf<'critical' | 'neutral' | undefined>()
-    expectTypeOf<Props['density']>().toEqualTypeOf<'compact' | 'spacious' | undefined>()
-    expectTypeOf<Props['state']>().toEqualTypeOf<'active' | 'selected' | undefined>()
+    expectTypeOf<Props['tone']>().toEqualTypeOf<Cond<'critical' | 'neutral'>>()
+    expectTypeOf<Props['density']>().toEqualTypeOf<Cond<'compact' | 'spacious'>>()
+    expectTypeOf<Props['state']>().toEqualTypeOf<Cond<'active' | 'selected'>>()
     expectTypeOf<HasStringIndex<Props>>().toEqualTypeOf<false>()
 
     const invalidTone: FrameOptions = {
@@ -426,7 +430,7 @@ describe('styled v3 overloads', () => {
       context: DefaultContext,
     } as const)
     type DefaultContextProps = GetProps<typeof DefaultContextFrame>
-    expectTypeOf<DefaultContextProps['mode']>().toEqualTypeOf<'on' | 'off' | undefined>()
+    expectTypeOf<DefaultContextProps['mode']>().toEqualTypeOf<Cond<'on' | 'off'>>()
 
     const EmptyDefaultFrame = styled(View, {
       context: EmptyDefaultContext,
@@ -441,12 +445,14 @@ describe('styled v3 overloads', () => {
     } as const)
     type PresentUndefinedProps = GetProps<typeof PresentUndefinedFrame>
     expectTypeOf<PresentUndefinedProps['tone']>().toEqualTypeOf<
-      'critical' | 'neutral' | undefined
+      Cond<'critical' | 'neutral'>
     >()
-    // @ts-expect-error present undefined default keys keep exact values
-    const invalidPresentUndefinedTone: PresentUndefinedProps['tone'] = 'missing'
+    // any string passes now (the clause-string arm), so the negative is a
+    // non-string payload
+    // @ts-expect-error present undefined default keys reject non-string payloads
+    const invalidPresentUndefinedTone: PresentUndefinedProps['tone'] = 123
     expectTypeOf(invalidPresentUndefinedTone).toEqualTypeOf<
-      'critical' | 'neutral' | undefined
+      Cond<'critical' | 'neutral'>
     >()
 
     const RequiredUndefinedFrame = styled(View, {
@@ -454,7 +460,7 @@ describe('styled v3 overloads', () => {
     } as const)
     type RequiredUndefinedProps = GetProps<typeof RequiredUndefinedFrame>
     expectTypeOf<RequiredUndefinedProps['tone']>().toEqualTypeOf<
-      'critical' | 'neutral' | undefined
+      Cond<'critical' | 'neutral'>
     >()
 
     const EmptyDefaultKeyedFrame = styled(View, {
@@ -462,7 +468,7 @@ describe('styled v3 overloads', () => {
     } as const)
     type EmptyDefaultKeyedProps = GetProps<typeof EmptyDefaultKeyedFrame>
     expectTypeOf<EmptyDefaultKeyedProps['tone']>().toEqualTypeOf<
-      'critical' | 'neutral' | undefined
+      Cond<'critical' | 'neutral'>
     >()
 
     const FullDefaultKeyedFrame = styled(View, {
@@ -470,7 +476,7 @@ describe('styled v3 overloads', () => {
     } as const)
     type FullDefaultKeyedProps = GetProps<typeof FullDefaultKeyedFrame>
     expectTypeOf<FullDefaultKeyedProps['tone']>().toEqualTypeOf<
-      'critical' | 'neutral' | undefined
+      Cond<'critical' | 'neutral'>
     >()
     // @ts-expect-error explicit full-default keys consume only requested keys
     const fullDefaultKeyedDensity: FullDefaultKeyedProps['density'] = 'compact'
@@ -481,7 +487,7 @@ describe('styled v3 overloads', () => {
     } as const)
     type PartialDefaultProps = GetProps<typeof PartialDefaultFrame>
     expectTypeOf<PartialDefaultProps['tone']>().toEqualTypeOf<
-      'critical' | 'neutral' | undefined
+      Cond<'critical' | 'neutral'>
     >()
     // @ts-expect-error omitted optional default keys are not consumed without explicit keys
     const omittedPartialDefaultProp: PartialDefaultProps['density'] = 'compact'
@@ -529,7 +535,7 @@ describe('styled v3 overloads', () => {
     } as const)
     type OverlapProps = GetProps<typeof OverlapChild>
     expectTypeOf<OverlapProps['tone']>().toEqualTypeOf<
-      'critical' | 'neutral' | 'success' | undefined
+      Cond<'critical' | 'neutral' | 'success'>
     >()
 
     const Child = styled(Parent, {
@@ -548,11 +554,9 @@ describe('styled v3 overloads', () => {
       ],
     } as const)
     type ChildProps = GetProps<typeof Child>
-    expectTypeOf<ChildProps['tone']>().toEqualTypeOf<'critical' | 'neutral' | undefined>()
-    expectTypeOf<ChildProps['density']>().toEqualTypeOf<
-      'compact' | 'spacious' | undefined
-    >()
-    expectTypeOf<ChildProps['state']>().toEqualTypeOf<'active' | 'selected' | undefined>()
+    expectTypeOf<ChildProps['tone']>().toEqualTypeOf<Cond<'critical' | 'neutral'>>()
+    expectTypeOf<ChildProps['density']>().toEqualTypeOf<Cond<'compact' | 'spacious'>>()
+    expectTypeOf<ChildProps['state']>().toEqualTypeOf<Cond<'active' | 'selected'>>()
 
     styled(Parent, {
       context: FrameContext,
@@ -696,7 +700,7 @@ describe('styled v3 overloads', () => {
     type Props = GetProps<typeof ContextTextChild>
     expectTypeOf<'4'>().toMatchTypeOf<Props['size']>()
     expectTypeOf<string | undefined>().toMatchTypeOf<Props['color']>()
-    expectTypeOf<Props['tone']>().toEqualTypeOf<'neutral' | 'critical' | undefined>()
+    expectTypeOf<Props['tone']>().toEqualTypeOf<Cond<'neutral' | 'critical'>>()
     expectTypeOf<HasStringIndex<Props>>().toEqualTypeOf<false>()
   })
 })

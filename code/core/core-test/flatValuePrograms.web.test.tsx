@@ -312,6 +312,43 @@ test('variant props resolve each conditional flat-value branch', () => {
   expect(roomy.style?.paddingLeft).toBe(16)
 })
 
+test('variant props accept the flat object spelling', () => {
+  const Frame = styled(View, {
+    variants: {
+      density: {
+        compact: { height: 20, paddingHorizontal: 8 },
+        roomy: { height: 40, paddingHorizontal: 16 },
+      },
+      pad: (val: { x: number }) => ({ paddingHorizontal: val.x }),
+    } as const,
+  })
+
+  const objectProp = { density: { default: 'compact', sm: 'roomy' } }
+
+  const compact = simplifiedGetSplitStyles(Frame, objectProp, {
+    mergeDefaultProps: true,
+    noClass: true,
+  })
+  expect(compact.style?.height).toBe(20)
+  expect(compact.style?.paddingLeft).toBe(8)
+
+  const roomy = simplifiedGetSplitStyles(Frame, objectProp, {
+    mediaState: { sm: true },
+    mergeDefaultProps: true,
+    noClass: true,
+  })
+  expect(roomy.style?.height).toBe(40)
+  expect(roomy.style?.paddingLeft).toBe(16)
+
+  // a functional variant's own object argument is not a conditional object
+  const fn = simplifiedGetSplitStyles(
+    Frame,
+    { pad: { x: 12 } },
+    { mergeDefaultProps: true, noClass: true }
+  )
+  expect(fn.style?.paddingLeft).toBe(12)
+})
+
 test('an unknown bare lookup miss stays literal on web', () => {
   const warnings: string[] = []
   const original = console.warn

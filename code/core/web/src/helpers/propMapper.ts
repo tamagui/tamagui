@@ -11,7 +11,7 @@ import type {
   VariantSpreadFunction,
 } from '../types'
 import { variantResolverNames } from '../types'
-import { resolveClauseChain } from './directStyle'
+import { isConditionalStyleObject, resolveClauseChain } from './directStyle'
 import { expandStyle } from './expandStyle'
 import { resolveVariableValue } from './resolveVariableValue'
 import { getFontsForLanguage, getVariantExtras } from './getVariantExtras'
@@ -225,6 +225,38 @@ const resolveVariants: StyleResolver = (
       return entries || []
     }
     // no clause structure found: the colon belongs to the value itself
+  }
+
+  // the object spelling of a conditional variant prop mirrors the clause
+  // string: density={{ default: 'compact', sm: 'roomy' }}. a payload object
+  // with no default and no modifier first key (a functional variant's own
+  // argument shape) falls through whole
+  if (
+    value &&
+    typeof value === 'object' &&
+    !Array.isArray(value) &&
+    !isVariable(value) &&
+    isConditionalStyleObject(styleState, value)
+  ) {
+    let entries: [string, any, any?, string?][] | undefined
+    for (const objKey in value) {
+      const payload = value[objKey]
+      if (payload == null) continue
+      const resolved = resolveVariantValue(
+        key,
+        payload,
+        styleProps,
+        styleState,
+        parentVariantKey
+      )
+      if (!resolved) continue
+      entries ||= []
+      for (const entry of resolved) {
+        if (objKey !== 'default') entry[3] = objKey
+        entries.push(entry)
+      }
+    }
+    return entries || []
   }
 
   return resolveVariantValue(key, value, styleProps, styleState, parentVariantKey)

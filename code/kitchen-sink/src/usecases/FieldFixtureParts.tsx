@@ -75,7 +75,8 @@ export function FixtureFieldInput(props: FixtureFieldInputProps) {
       inputRef: controlRef,
       getValue: () => valueRef.current,
       required,
-      disabled,
+      // control registration needs one boolean; conditional flat values don't apply
+      disabled: disabled === true,
     })
   }, [disabled, field.ariaProps.id, field.registerControl, name, required])
 

@@ -68,7 +68,8 @@ export function FieldInput(props: React.ComponentProps<typeof DemoInput>) {
       inputRef: controlRef,
       getValue: () => valueRef.current,
       required: props.required,
-      disabled: props.disabled,
+      // control registration needs one boolean; conditional flat values don't apply
+      disabled: props.disabled === true,
     })
   }, [field.ariaProps.id, field.registerControl, props.disabled, props.required])
 

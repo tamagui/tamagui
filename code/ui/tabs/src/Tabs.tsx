@@ -167,7 +167,9 @@ export const TabsTab = createStyledHOC(
     } = props
     const context = useTabsContext(__scopeTabs)
     const listDisabled = React.useContext(TabsListDisabledContext)
-    const disabled = disabledProp ?? listDisabled
+    // interaction logic needs one boolean; a conditional flat value (clause
+    // string or object) can't drive focus/activation, so only literal true counts
+    const disabled = (disabledProp ?? listDisabled) === true
     const { isSelected, tabProps } = useTab({
       baseId: context.baseId,
       value,

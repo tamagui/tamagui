@@ -53,10 +53,10 @@ export declare const TextArea: import("react").FunctionComponent<Omit<import("@t
     readonly cursorColor?: import("@tamagui/web").Color | undefined;
     readonly selectionHandleColor?: import("@tamagui/web").Color | undefined;
     readonly underlineColorAndroid?: import("@tamagui/web").Color | undefined;
-}> & {
+}> & import("@tamagui/web").WithFlatVariantValues<{
     disabled?: boolean | undefined;
     size?: false | import("@tamagui/web").Size | undefined;
-} & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & import("@tamagui/web").TextStylePropsBase & {
+}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & import("@tamagui/web").TextStylePropsBase & {
     readonly placeholderTextColor?: import("@tamagui/web").Color | undefined;
     readonly selectionColor?: import("@tamagui/web").Color | undefined;
     readonly cursorColor?: import("@tamagui/web").Color | undefined;

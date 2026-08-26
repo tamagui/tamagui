@@ -6,11 +6,11 @@ export declare const ToggleGroupItem: React.FunctionComponent<Omit<import("@tama
             readonly activeStyle: 'style';
         };
     }>> | undefined;
-}> & {
+}> & import("@tamagui/web").WithFlatVariantValues<{
     active?: boolean | undefined;
     defaultActiveStyle?: boolean | undefined;
     size?: number | import("@tamagui/web").Size | undefined;
-} & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
+}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
     readonly activeStyle?: Partial<import("@tamagui/web").InferStyleProps<import("@tamagui/ui").TamaguiComponent<import("@tamagui/ui").ViewProps, TamaguiElement, import("@tamagui/ui").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {}, {}>, {
         accept: {
             readonly activeStyle: 'style';
@@ -28,11 +28,11 @@ export declare const ToggleGroupItem: React.FunctionComponent<Omit<import("@tama
             readonly activeStyle: 'style';
         };
     }>> | undefined;
-}> & {
+}> & import("@tamagui/web").WithFlatVariantValues<{
     active?: boolean | undefined;
     defaultActiveStyle?: boolean | undefined;
     size?: number | import("@tamagui/web").Size | undefined;
-} & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
+}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
     readonly activeStyle?: Partial<import("@tamagui/web").InferStyleProps<import("@tamagui/ui").TamaguiComponent<import("@tamagui/ui").ViewProps, TamaguiElement, import("@tamagui/ui").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {}, {}>, {
         accept: {
             readonly activeStyle: 'style';
@@ -46,11 +46,11 @@ export declare const ToggleGroupItem: React.FunctionComponent<Omit<import("@tama
             readonly activeStyle: 'style';
         };
     }>> | undefined;
-}> & {
+}> & import("@tamagui/web").WithFlatVariantValues<{
     active?: boolean | undefined;
     defaultActiveStyle?: boolean | undefined;
     size?: number | import("@tamagui/web").Size | undefined;
-} & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
+}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
     readonly activeStyle?: Partial<import("@tamagui/web").InferStyleProps<import("@tamagui/ui").TamaguiComponent<import("@tamagui/ui").ViewProps, TamaguiElement, import("@tamagui/ui").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {}, {}>, {
         accept: {
             readonly activeStyle: 'style';
@@ -87,11 +87,11 @@ export declare const ToggleGroupItem: React.FunctionComponent<Omit<import("@tama
                 readonly activeStyle: 'style';
             };
         }>> | undefined;
-    }> & {
+    }> & import("@tamagui/web").WithFlatVariantValues<{
         active?: boolean | undefined;
         defaultActiveStyle?: boolean | undefined;
         size?: number | import("@tamagui/web").Size | undefined;
-    } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
+    }> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
         readonly activeStyle?: Partial<import("@tamagui/web").InferStyleProps<import("@tamagui/ui").TamaguiComponent<import("@tamagui/ui").ViewProps, TamaguiElement, import("@tamagui/ui").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {}, {}>, {
             accept: {
                 readonly activeStyle: 'style';
@@ -131,11 +131,11 @@ export declare const ToggleGroup: ((props: ((import("@tamagui/ui").ToggleGroupPr
                 readonly activeStyle: 'style';
             };
         }>> | undefined;
-    }> & {
+    }> & import("@tamagui/web").WithFlatVariantValues<{
         active?: boolean | undefined;
         defaultActiveStyle?: boolean | undefined;
         size?: number | import("@tamagui/web").Size | undefined;
-    } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
+    }> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
         readonly activeStyle?: Partial<import("@tamagui/web").InferStyleProps<import("@tamagui/ui").TamaguiComponent<import("@tamagui/ui").ViewProps, TamaguiElement, import("@tamagui/ui").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {}, {}>, {
             accept: {
                 readonly activeStyle: 'style';
@@ -153,11 +153,11 @@ export declare const ToggleGroup: ((props: ((import("@tamagui/ui").ToggleGroupPr
                 readonly activeStyle: 'style';
             };
         }>> | undefined;
-    }> & {
+    }> & import("@tamagui/web").WithFlatVariantValues<{
         active?: boolean | undefined;
         defaultActiveStyle?: boolean | undefined;
         size?: number | import("@tamagui/web").Size | undefined;
-    } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
+    }> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
         readonly activeStyle?: Partial<import("@tamagui/web").InferStyleProps<import("@tamagui/ui").TamaguiComponent<import("@tamagui/ui").ViewProps, TamaguiElement, import("@tamagui/ui").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {}, {}>, {
             accept: {
                 readonly activeStyle: 'style';
@@ -171,11 +171,11 @@ export declare const ToggleGroup: ((props: ((import("@tamagui/ui").ToggleGroupPr
                 readonly activeStyle: 'style';
             };
         }>> | undefined;
-    }> & {
+    }> & import("@tamagui/web").WithFlatVariantValues<{
         active?: boolean | undefined;
         defaultActiveStyle?: boolean | undefined;
         size?: number | import("@tamagui/web").Size | undefined;
-    } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
+    }> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
         readonly activeStyle?: Partial<import("@tamagui/web").InferStyleProps<import("@tamagui/ui").TamaguiComponent<import("@tamagui/ui").ViewProps, TamaguiElement, import("@tamagui/ui").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {}, {}>, {
             accept: {
                 readonly activeStyle: 'style';
@@ -212,11 +212,11 @@ export declare const ToggleGroup: ((props: ((import("@tamagui/ui").ToggleGroupPr
                     readonly activeStyle: 'style';
                 };
             }>> | undefined;
-        }> & {
+        }> & import("@tamagui/web").WithFlatVariantValues<{
             active?: boolean | undefined;
             defaultActiveStyle?: boolean | undefined;
             size?: number | import("@tamagui/web").Size | undefined;
-        } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
+        }> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
             readonly activeStyle?: Partial<import("@tamagui/web").InferStyleProps<import("@tamagui/ui").TamaguiComponent<import("@tamagui/ui").ViewProps, TamaguiElement, import("@tamagui/ui").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {}, {}>, {
                 accept: {
                     readonly activeStyle: 'style';

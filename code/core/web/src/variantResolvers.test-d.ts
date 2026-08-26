@@ -262,8 +262,11 @@ describe('variant resolver types', () => {
     expectTypeOf<'sm'>().toMatchTypeOf<Props['tone']>()
     expectTypeOf<'4'>().toMatchTypeOf<Props['tone']>()
     expectTypeOf<4>().toMatchTypeOf<Props['tone']>()
-    // @ts-expect-error object is not accepted by exact or Size | number
-    const invalid: Props['tone'] = {}
+    // the conditional flat object form is accepted at call sites
+    const conditional: Props['tone'] = { default: 'sm', hover: 4 }
+    expectTypeOf(conditional).toMatchTypeOf<Props['tone']>()
+    // @ts-expect-error non-string, non-resolver payloads are rejected
+    const invalid: Props['tone'] = false
     expectTypeOf(invalid).toEqualTypeOf<Props['tone']>()
   })
 
