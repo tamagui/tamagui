@@ -21,6 +21,10 @@ if (!sha) {
 
 const bad = new Set(['failure', 'cancelled', 'timed_out', 'startup_failure'])
 
+// transient network errors (TLS handshake timeouts, DNS blips) must not kill
+// a watcher; only a sustained outage is terminal
+let consecutiveFetchFailures = 0
+
 while (true) {
   const proc = Bun.spawnSync([
     'gh',
@@ -30,9 +34,15 @@ while (true) {
     '[.check_runs[] | {name, status, conclusion}]',
   ])
   if (proc.exitCode !== 0) {
-    console.error(proc.stderr.toString().trim())
-    process.exit(2)
+    consecutiveFetchFailures++
+    console.error(
+      `fetch failed (${consecutiveFetchFailures}/10): ${proc.stderr.toString().trim()}`
+    )
+    if (consecutiveFetchFailures >= 10) process.exit(2)
+    await new Promise((resolve) => setTimeout(resolve, 60_000))
+    continue
   }
+  consecutiveFetchFailures = 0
   const runs: { name: string; status: string; conclusion: string | null }[] = JSON.parse(
     proc.stdout.toString()
   )
