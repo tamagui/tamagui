@@ -909,7 +909,7 @@ function directAtomic(
     conditionSelector,
     conditionWrappers,
     signature,
-    true,
+    2 as any,
     atomicKey,
     condition
       ? 1 +
@@ -947,7 +947,10 @@ function directAtomic(
     atomics[atomicKey] = atomic
   } else {
     const previousIdentifier = existing.styleObject[StyleObjectIdentifier]
-    const rules = existing.styleObject[StyleObjectRules]
+    // cached rules stay immutable until a same-property contribution needs to
+    // splice or rewrite them.
+    const rules = existing.styleObject[StyleObjectRules].slice()
+    existing.styleObject[StyleObjectRules] = rules
     if (!condition && !isDefault && existing.conditions) {
       for (const key in existing.conditions) {
         const entry = existing.conditions[key]
@@ -1061,7 +1064,10 @@ export function flushDirectStyles(state: GetStyleState, clear = false) {
     const styleObject = atomics[property].styleObject
     const identifier = styleObject[StyleObjectIdentifier]
     if (shouldInsertStyleRules(identifier)) {
-      updateRules(identifier, styleObject[StyleObjectRules])
+      // rulesToInsert owns its array; never expose the cache's borrowed copy.
+      const rules = styleObject[StyleObjectRules].slice()
+      styleObject[StyleObjectRules] = rules
+      updateRules(identifier, rules)
       state.flatRulesToInsert![identifier] = styleObject
     }
   }
