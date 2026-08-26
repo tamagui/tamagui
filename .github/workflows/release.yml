@@ -1,7 +1,19 @@
 name: Release
 
-# github evaluates workflow_run from the default branch. keep this workflow on
-# main as well as v3-beta so successful v3-beta CI can publish automatically.
+# github evaluates workflow_run from the DEFAULT BRANCH. the beta job below fires
+# on a v3-beta push but runs main's copy of this file, so editing it on v3-beta
+# alone changes nothing and fails silently: the run looks normal and behaves as
+# though your change is not there, because it is not. a fix to this file has to
+# land on main to take effect. that cost three full CI cycles on 2026-08-21,
+# where two consecutive "fixes" to the beta job appeared to do nothing at all.
+#
+# the two copies are therefore kept byte-identical, so that
+#   git diff origin/main:.github/workflows/release.yml origin/v3-beta:.github/workflows/release.yml
+# prints nothing whenever they agree. any output at all means they have drifted
+# and the beta job is not what the branch you are reading says it is. letting the
+# stable jobs alone drift 290 lines made that diff useless to read and sent an
+# investigation on 2026-08-25 after a beta cut that had in fact worked. change
+# this file on both branches, in the same change.
 on:
   workflow_run:
     workflows: [Checks]
