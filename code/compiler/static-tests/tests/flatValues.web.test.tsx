@@ -213,7 +213,9 @@ test('transform axis programs carry their composition class', async () => {
 })
 
 test('transform axis programs with transition carry their composition class and transition class', async () => {
-  const output = await extract(`<View transition="medium" x="0px sm:20px lg:-50px" y="20px" />`)
+  const output = await extract(
+    `<View transition="medium" x="0px sm:20px lg:-50px" y="20px" />`
+  )
   expect(output?.styles).toContain('--t-x')
   expect(output?.styles).toContain('--t-y')
   expect(output?.styles).toContain('translate:')
@@ -243,8 +245,37 @@ test('minH and maxH co-occurrence preserves both classes and rules in compiled o
   expect(output?.js).toMatch(/_mh-\d+.*_mh-\d+/)
 })
 
+test('small numeric hashes preserve both sides of an abbreviated property collision', async () => {
+  const output = await extract(`<View minWidth="3302519px" maxWidth="10042770px" />`)
+  const classes = output?.js.match(/_mw-\d+/g) ?? []
 
+  expect(classes).toHaveLength(2)
+  expect(classes.every((name) => name.slice(4).length < 4)).toBe(true)
+  expect(output?.styles).toContain('min-width:3302519px')
+  expect(output?.styles).toContain('max-width:10042770px')
+})
 
+test('same-property overrides resolve before generated identifiers are concatenated', async () => {
+  const output = await extractForWeb(
+    `
+    import { View, styled } from '@tamagui/core'
+    const Sized = styled(View, { width: '100px' })
+    export function Test() {
+      return <Sized width="200px" />
+    }
+  `,
+    {
+      options: {
+        platform: 'web',
+        components: ['@tamagui/core'],
+      },
+    }
+  )
+
+  expect(output?.js.match(/_w-\d+/g)).toHaveLength(1)
+  expect(output?.styles).toContain('width:200px')
+  expect(output?.styles).not.toContain('width:100px')
+})
 
 test('a dynamic clause string bails to the runtime component', async () => {
   const output = await extractForWeb(

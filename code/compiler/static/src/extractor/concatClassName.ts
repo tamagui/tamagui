@@ -26,7 +26,8 @@ export function concatClassName(_cn: Record<string, any> | null | undefined): st
       continue
     }
 
-    const names = Array.isArray(cns) ? cns : cns.split(' ')
+    const generatedIdentifiers = Array.isArray(cns)
+    const names = generatedIdentifiers ? cns : cns.split(' ')
     const numNames = names.length
     for (let i = numNames - 1; i >= 0; i--) {
       const name = names[i]
@@ -54,12 +55,11 @@ export function concatClassName(_cn: Record<string, any> | null | undefined): st
       }
 
       const styleKey = name.slice(1, splitIndex)
-      const { mediaKey, pseudoKey } = getClassNameScope(name, splitIndex)
-      const rest = name.slice(splitIndex + 1)
-      const isHashed = !mediaKey && !pseudoKey && /^\d{4,}$/.test(rest)
-      const uid = isHashed
-        ? name
-        : `${styleKey}${mediaKey ? `@${mediaKey}` : ''}${pseudoKey ? `:${pseudoKey}` : ''}`
+      let uid = name
+      if (!generatedIdentifiers) {
+        const { mediaKey, pseudoKey } = getClassNameScope(name, splitIndex)
+        uid = `${styleKey}${mediaKey ? `@${mediaKey}` : ''}${pseudoKey ? `:${pseudoKey}` : ''}`
+      }
 
       if (usedPrefixes.has(uid)) {
         // if (shouldDebug) console.log('debug exclude:', usedPrefixes, name)

@@ -194,7 +194,12 @@ test('transition="medium" with responsive transform programs emits compose class
 test('rendering View with transition and responsive transform programs receives compose class', () => {
   const { container } = render(
     <TamaguiProvider config={conf} defaultTheme="light">
-      <View data-testid="animated" transition="medium" x="0px sm:20px lg:-50px" y="20px" />
+      <View
+        data-testid="animated"
+        transition="medium"
+        x="0px sm:20px lg:-50px"
+        y="20px"
+      />
       <View data-testid="static" x="0px sm:20px lg:-50px" y="20px" />
     </TamaguiProvider>
   )
@@ -211,6 +216,3 @@ test('rendering View with transition and responsive transform programs receives 
   expect(animatedClasses.some((cls) => cls.startsWith('_tx-'))).toBe(true)
   expect(animatedClasses.some((cls) => cls.startsWith('_ty-'))).toBe(true)
 })
-
-
-

@@ -83,23 +83,35 @@ test(`concatClassName - preserves distinct hashed atomic classes sharing prefix 
   // _t-1731853650 (transition) and _t-2131811775 (translate) both start with _t-
   // but represent distinct CSS properties and rules; neither should be dropped
   expect(
-    concatClassName(`_t-1731853650 _tx-961070088 _t-2131811775 _ty-1263730842`)
+    concatClassName([`_t-1731853650`, `_tx-961070088`, `_t-2131811775`, `_ty-1263730842`])
   ).toEqual(`_t-1731853650 _tx-961070088 _t-2131811775 _ty-1263730842`)
 
   // _mw-1000000001 (minWidth) and _mw-2000000002 (maxWidth) both start with _mw-
-  expect(concatClassName(`_mw-1000000001 _mw-2000000002`)).toEqual(
+  expect(concatClassName([`_mw-1000000001`, `_mw-2000000002`])).toEqual(
     `_mw-1000000001 _mw-2000000002`
   )
 
   // _mh-1000000001 (minHeight) and _mh-2000000002 (maxHeight) both start with _mh-
-  expect(concatClassName(`_mh-1000000001 _mh-2000000002`)).toEqual(
+  expect(concatClassName([`_mh-1000000001`, `_mh-2000000002`])).toEqual(
     `_mh-1000000001 _mh-2000000002`
   )
 })
 
 test(`concatClassName - deduplicates identical hashed atomic classes`, () => {
-  expect(concatClassName(`_t-2131811775 _t-2131811775`)).toEqual(`_t-2131811775`)
-  expect(concatClassName(`_mw-1000000001 _mw-1000000001`)).toEqual(`_mw-1000000001`)
+  expect(concatClassName([`_t-2131811775`, `_t-2131811775`])).toEqual(`_t-2131811775`)
+  expect(concatClassName([`_mw-1000000001`, `_mw-1000000001`])).toEqual(`_mw-1000000001`)
 })
 
+test(`concatClassName - preserves numeric hashed atomic classes across the full hash range`, () => {
+  expect(concatClassName([`_mw-0`, `_mw-9`, `_mw-463`, `_mw-999`])).toEqual(
+    `_mw-0 _mw-9 _mw-463 _mw-999`
+  )
+  expect(concatClassName([`_mw-0`, `_mw-0`])).toEqual(`_mw-0`)
+})
 
+test(`concatClassName - keeps string property precedence beside generated identifiers`, () => {
+  expect(concatClassName(`_w-1001 _w-2002`)).toEqual(`_w-2002`)
+  expect(concatClassName(`_w-base`, [`_w-3003`], `_w-caller`)).toEqual(
+    `_w-3003 _w-caller`
+  )
+})
