@@ -50,17 +50,17 @@ Microbenchmark allocations are intentionally unreported. A forced-GC heap delta 
 
 ## Phase 2 result
 
-The final corpus replay was recorded at commit `ce651ae7cf4675d1e410fad121b3a1aeab532d7b`.
+The final corpus replay was recorded at commit `cce990fb7c`.
 
 | Scenario | Baseline ns/op | Final ns/op | Raw change |
 | --- | ---: | ---: | ---: |
-| Plain props | 5,061.0 | 2,346.0 | -53.65% |
-| Clause strings | 22,189.6 | 8,432.8 | -62.00% |
-| Conditional objects | 13,050.8 | 6,344.6 | -51.39% |
-| Variant props | 7,247.4 | 3,527.0 | -51.33% |
-| Shorthand-heavy | 13,926.4 | 5,515.9 | -60.39% |
-| Style-prop-heavy | 26,563.2 | 10,429.6 | -60.74% |
-| Total corpus | 7,086.7 | 3,171.2 | -55.25% |
+| Plain props | 5,061.0 | 2,057.0 | -59.36% |
+| Clause strings | 22,189.6 | 7,634.9 | -65.59% |
+| Conditional objects | 13,050.8 | 6,007.7 | -53.97% |
+| Variant props | 7,247.4 | 2,935.7 | -59.49% |
+| Shorthand-heavy | 13,926.4 | 4,647.8 | -66.63% |
+| Style-prop-heavy | 26,563.2 | 9,363.4 | -64.75% |
+| Total corpus | 7,086.7 | 2,784.1 | -60.71% |
 
 **READ**: These are the checked-in baseline and final benchmark outputs. Host-wide timing changed substantially between the two runs, so the raw change does not isolate the code change.
 
@@ -91,7 +91,7 @@ The direct atomic identity cache also copied its rule array on every cache hit. 
 | `directStyle` per iteration | 1,593,932 bytes | 1,396,953 bytes | -12.36% |
 | `getCSSStylesAtomic` per iteration | 737,871 bytes | 550,267 bytes | -25.42% |
 
-**READ**: A second production profile of the pushed implementation measured 6,289,995 bytes per iteration, 7,488.1 bytes per render, 1,398,458 bytes in `directStyle`, and 552,738 bytes in `getCSSStylesAtomic`. This confirms the allocation reduction persisted after the final internal ownership marker was applied.
+**READ**: A second production profile at final commit `cce990fb7c` measured 6,287,675 bytes per iteration, 7,485.3 bytes per render, 1,400,097 bytes in `directStyle`, and 550,094 bytes in `getCSSStylesAtomic`. This confirms the allocation reduction persisted after the final internal ownership marker and parallel correctness fixes were applied.
 
 ### Reverted trials
 
@@ -102,3 +102,5 @@ The direct atomic identity cache also copied its rule array on every cache hit. 
 ### Bundle size
 
 **READ**: The immediate same-tree zero-runtime comparison shrank the Vite island by 15 gzip bytes, Next by 38 gzip bytes, and Metro by 17 bytes. The remaining checkout-wide size movement came from the parallel flat-conditional-object fixes and is owned by that change's baseline update.
+
+**READ**: The combined intentional baseline moved from 92,487 to 92,995 bytes for Vite, 92,766 to 93,342 bytes for Next, and 388,487 to 389,103 bytes for Metro. A second Node 24.16.0 measurement passed all zero-byte thresholds against the updated baseline.
