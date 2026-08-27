@@ -618,6 +618,12 @@ export const getSplitStyles: StyleSplitter = (
 
   const mergeStylePropAtCurrentPosition = (styleProp: any) => {
     if (styleProps.noMergeStyle || !styleProp) return
+    // web HOCs hand the style prop to the inner component untouched, same
+    // position contract as the style-key pass-through in contributeProp
+    if (process.env.TAMAGUI_TARGET === 'web' && isHOC) {
+      viewProps.style = normalizeStyle(styleProp)
+      return
+    }
     const isArray = Array.isArray(styleProp)
     const length = isArray ? styleProp.length : 1
     for (let index = 0; index < length; index++) {
@@ -935,8 +941,17 @@ export const getSplitStyles: StyleSplitter = (
       inlineProps?.has(keyInit)
 
     const parentVariant = parentVariants?.[keyInit]
+    // web HOCs pass valid style keys through as authored props so the inner
+    // function component's later spreads still override them in position (a
+    // resolved $$css class can't be beaten by a later prop, only by stylesheet
+    // insertion order). native HOCs resolve them here instead: their inner
+    // component may render a raw react-native leaf that can't resolve a clause
+    // string or token itself.
     const isHOCShouldPassThrough = Boolean(
-      isHOC && (parentVariant || keyInit in skipProps)
+      isHOC &&
+        ((process.env.TAMAGUI_TARGET === 'web' && isValidStyleKeyInit) ||
+          parentVariant ||
+          keyInit in skipProps)
     )
 
     const shouldPassThrough = shouldPassProp || isHOCShouldPassThrough
