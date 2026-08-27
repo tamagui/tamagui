@@ -83,7 +83,8 @@ export type SplitStyles = ReturnType<typeof getSplitStyles>
 const shouldTrackStyleTokenProvenance =
   process.env.NODE_ENV === 'development' &&
   process.env.TAMAGUI_ENABLE_STYLE_TOKEN_PROVENANCE === '1'
-const validComponentClassName = /^[A-Za-z_][A-Za-z0-9_-]*$/
+const validComponentClassName =
+  process.env.TAMAGUI_TARGET === 'web' ? /^[A-Za-z_][A-Za-z0-9_-]*$/ : undefined
 
 export type SplitStyleResult = ReturnType<typeof getSplitStyles>
 
@@ -536,7 +537,8 @@ export const getSplitStyles: StyleSplitter = (
   // prepend them and flip the cascade-preserving switch so every later
   // Tamagui contribution keeps its last-wins position inline, exactly as a
   // className prop does mid-loop
-  let className = staticConfig.passthroughClassName || ''
+  let className =
+    process.env.TAMAGUI_TARGET === 'web' ? staticConfig.passthroughClassName || '' : ''
   if (className) {
     shouldDoClasses = false
   }
@@ -617,16 +619,22 @@ export const getSplitStyles: StyleSplitter = (
   }
   const parentVariants = parentStaticConfig?.variants
   let containerValue: boolean | string | undefined
-  const authoredContainerName = processedProps.containerName
-  const authoredContainerType = processedProps.containerType
-  let containerName =
-    typeof authoredContainerName === 'string' && authoredContainerName.indexOf(':') === -1
-      ? authoredContainerName
-      : undefined
-  let containerType =
-    typeof authoredContainerType === 'string' && authoredContainerType.indexOf(':') === -1
-      ? authoredContainerType
-      : undefined
+  let containerName: string | undefined
+  let containerType: string | undefined
+  if (process.env.TAMAGUI_TARGET === 'web') {
+    const authoredContainerName = processedProps.containerName
+    const authoredContainerType = processedProps.containerType
+    containerName =
+      typeof authoredContainerName === 'string' &&
+      authoredContainerName.indexOf(':') === -1
+        ? authoredContainerName
+        : undefined
+    containerType =
+      typeof authoredContainerType === 'string' &&
+      authoredContainerType.indexOf(':') === -1
+        ? authoredContainerType
+        : undefined
+  }
 
   const mergeStylePropAtCurrentPosition = (styleProp: any) => {
     if (styleProps.noMergeStyle || !styleProp) return
@@ -652,19 +660,21 @@ export const getSplitStyles: StyleSplitter = (
         : undefined
       for (const key in normalized) {
         if (normalized[key] == null) continue
-        if (
-          key === 'containerName' &&
-          typeof normalized[key] === 'string' &&
-          normalized[key].indexOf(':') === -1
-        ) {
-          containerName = normalized[key]
-        }
-        if (
-          key === 'containerType' &&
-          typeof normalized[key] === 'string' &&
-          normalized[key].indexOf(':') === -1
-        ) {
-          containerType = normalized[key]
+        if (process.env.TAMAGUI_TARGET === 'web') {
+          if (
+            key === 'containerName' &&
+            typeof normalized[key] === 'string' &&
+            normalized[key].indexOf(':') === -1
+          ) {
+            containerName = normalized[key]
+          }
+          if (
+            key === 'containerType' &&
+            typeof normalized[key] === 'string' &&
+            normalized[key].indexOf(':') === -1
+          ) {
+            containerType = normalized[key]
+          }
         }
         contributeStyleValue(
           styleState,
@@ -749,7 +759,11 @@ export const getSplitStyles: StyleSplitter = (
     }
 
     if (keyInit === 'className') {
-      if (typeof valInit === 'string' && valInit) {
+      if (
+        process.env.TAMAGUI_TARGET === 'web' &&
+        typeof valInit === 'string' &&
+        valInit
+      ) {
         // core className is raw interop: the string passes through untouched.
         // a frontend-bound component's claimed candidates were already consumed
         // by preprocessProps, so what remains here is passthrough CSS emitted
@@ -784,7 +798,7 @@ export const getSplitStyles: StyleSplitter = (
 
     // keyInit === 'style' is handled in skipProps
     if (keyInit in skipProps && !noSkip && !isHOC && !neverSkipProps?.[keyInit]) {
-      if (keyInit === 'container') {
+      if (process.env.TAMAGUI_TARGET === 'web' && keyInit === 'container') {
         containerValue = valInit
       }
       if (keyInit === 'transition' && typeof valInit === 'string') {
@@ -1028,7 +1042,7 @@ export const getSplitStyles: StyleSplitter = (
           styledContextKeys?.has(key) || (styledContext && key in styledContext)
 
         if (key === 'className') {
-          if (typeof val === 'string' && val) {
+          if (process.env.TAMAGUI_TARGET === 'web' && typeof val === 'string' && val) {
             className = `${className} ${val}`.trim()
           }
           return
@@ -1419,7 +1433,7 @@ export const getSplitStyles: StyleSplitter = (
           !styleProps.displayName ||
           styleProps.displayName === 'Text' ||
           styleProps.displayName === 'View' ||
-          !validComponentClassName.test(styleProps.displayName)
+          !validComponentClassName!.test(styleProps.displayName)
             ? ''
             : `is_${styleProps.displayName}`
 
@@ -1738,9 +1752,10 @@ export const getSubStyle = (
 }
 
 // on native no need to insert any css
-const useInsertEffectCompat = isWeb
-  ? React.useInsertionEffect || useIsomorphicLayoutEffect
-  : () => {}
+const useInsertEffectCompat =
+  process.env.TAMAGUI_TARGET === 'native'
+    ? undefined
+    : React.useInsertionEffect || useIsomorphicLayoutEffect
 
 // perf: ...args a bit expensive on native
 export const useSplitStyles: StyleSplitter = (a, b, c, d, e, f, g, h, i, j, k, l, m) => {
@@ -1749,7 +1764,7 @@ export const useSplitStyles: StyleSplitter = (a, b, c, d, e, f, g, h, i, j, k, l
   const res = getSplitStyles(a, b, c, d, e, f, g, h, i, j, k, l, m)
 
   if (process.env.TAMAGUI_TARGET !== 'native') {
-    useInsertEffectCompat(() => {
+    useInsertEffectCompat!(() => {
       if (res) {
         insertStyleRules(res.rulesToInsert)
       }
