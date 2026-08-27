@@ -784,13 +784,6 @@ You can pass a `settings` object to `createTamagui`:
       default: `'updates' on web, 'first-render' on native`,
       description: `Chooses the render performance tradeoff. "updates" tracks which theme and media keys each component reads so changes re-render only their consumers, at a small per-component first-render cost. "first-render" skips per-key tracking for the fastest initial render; theme and media changes still apply but re-render coarsely. This is a startup-level setting, don't change it at runtime.`,
     },
-    {
-      name: 'webContainerType',
-      required: false,
-      type: 'string',
-      default: 'inline-size',
-      description: `Only for web, when using group styles Tamagui uses container queries. When using a group on a containing element, Tamagui defaults to setting "container-type" in CSS to "inline-size".`,
-    },
   ]}
 />
 

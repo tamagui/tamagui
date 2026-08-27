@@ -318,15 +318,14 @@ export type TamaguiComponentPropsBaseBase = {
   group?: GroupNames | (string & {}) | boolean
 
   /**
-   * Marks this component as a query container: the shorthand for an unnamed
-   * `containerType="inline-size"` container that `@sm:`-style clauses in
-   * children measure against. Use the `containerName` / `containerType` style
-   * properties for named or full-size containers.
+   * Marks this component as an inline-size query container. A string names the
+   * container for matching `@sm/name:` clauses.
    */
-  container?: boolean
+  container?: boolean | (string & {})
 
   /**
-   * Works only alongside group, when children of the group are using container based sizing on native you can hide them until parent is measured.
+   * Works alongside container. On native, children using container sizing can
+   * be hidden until the parent is measured.
    * See: https://tamagui.dev/docs/intro/props
    */
   untilMeasured?: 'hide' | 'show'
@@ -1285,19 +1284,6 @@ export interface GenericTamaguiSettings {
    * @default "updates" on web, "first-render" on native
    */
   optimizeFor?: 'updates' | 'first-render'
-
-  /**
-   * On Web, this allows changing the behavior of container groups which by
-   * default uses `container-type: inline-size`.
-   */
-  webContainerType?:
-    | 'normal'
-    | 'size'
-    | 'inline-size'
-    | 'inherit'
-    | 'initial'
-    | 'revert'
-    | 'revert-layer'
 
   /**
    * Only allow shorthands when enabled. Recommended to be true to avoid having

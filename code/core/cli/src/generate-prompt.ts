@@ -112,12 +112,6 @@ function generateMarkdown(config: any): string {
       }
     }
 
-    // Check for web-specific optimizations
-    if (settings.webContainerType) {
-      sections.push(`### Web Container Type: \`${settings.webContainerType}\`\n\n`)
-      sections.push('Enables web-specific container query optimizations.\n\n')
-    }
-
     // Check for strictness settings (common patterns)
     const configString = JSON.stringify(config.tamaguiConfig)
     if (configString.includes('semi-strict-web')) {

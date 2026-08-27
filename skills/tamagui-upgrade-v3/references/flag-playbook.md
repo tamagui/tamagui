@@ -21,7 +21,7 @@ file is the action table.
 | `legacy-token-dot-path` | `$1.5`-style names need one flat token name; check the config for the replacement spelling and migrate the config if it still uses dot-path keys |
 | `legacy-numeric-composite-token` | Substitute the numeric token's resolved CSS value inside the composite string |
 | `legacy-token-constant` | Migrate the module constant holding the token, then re-run |
-| `unproven-container-group` / `ambiguous-container-group` / `container-group-not-declared` | Find the element that declares the group, add `container containerName="<group>"` to it yourself, convert the condition to `@size/<group>:`, and verify layout (containment changes) |
+| `unproven-container-group` / `ambiguous-container-group` / `container-group-not-declared` | Find the element that declares the group, add `container="<group>"` to it yourself, convert the condition to `@size/<group>:`, and verify layout (containment changes) |
 | `legacy-group-presence` | `$group-card` with no state or size styles every descendant unconditionally and has no flat spelling; restructure as a variant on the descendants or explicit props |
 | `unknown-legacy-condition` / `unregistered-legacy-condition` | The condition name is not in the v6 registry (custom media keys are the usual cause); add the key to the config's media before converting |
 | `non-style-condition-entry` | A conditional non-style prop (`numberOfLines`) has no flat target; move the branch to JSX logic |

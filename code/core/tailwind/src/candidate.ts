@@ -355,13 +355,9 @@ function computeClassPlan(
     const isSize = containerMarker[1] !== undefined
     const name = containerMarker[2]
     const entries: TailwindPlanEntry[] = []
-    if (name) entries.push(['containerName', name])
+    entries.push(['container', name || true])
     if (isSize) {
       entries.push(['containerType', 'size'])
-    } else if (name) {
-      entries.push(['containerType', 'inline-size'])
-    } else {
-      entries.push(['container', true])
     }
     return { entries, preserveRawClass: isWeb }
   }

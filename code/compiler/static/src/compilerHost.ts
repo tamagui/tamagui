@@ -1857,8 +1857,8 @@ export function createTamaguiCompilerHost(
           asChildEntry?.span
         )
       }
-      // group and the container props publish the same context: group writes
-      // the group name, container writes '@' and '@name'. descendants read it
+      // group and container props publish separate keys in the same context:
+      // group writes the group name, container writes '@' and '@name'. descendants read it
       // for `group-name-*` and `@name-*` clauses, so a flattened provider
       // silently breaks every consumer under it. web compiles these to CSS
       // container rules instead, so only native needs the bail.
@@ -1872,7 +1872,7 @@ export function createTamaguiCompilerHost(
         return bailout(
           input,
           'local/unsupported-target',
-          'Native group containers remain on the runtime path'
+          'Native group and container providers remain on the runtime path'
         )
       }
       if (runtimeAnimationRequired && !cssAnimationDriver) {

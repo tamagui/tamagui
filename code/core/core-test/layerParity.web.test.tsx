@@ -132,9 +132,9 @@ test.each([
   ['group', { group: true }],
   ['group/card', { group: 'card' }],
   ['@container', { container: true }],
-  ['@container/layout', { containerName: 'layout', containerType: 'inline-size' }],
-  ['@container-size', { containerType: 'size' }],
-  ['@container-size/layout', { containerName: 'layout', containerType: 'size' }],
+  ['@container/layout', { container: 'layout' }],
+  ['@container-size', { container: true, containerType: 'size' }],
+  ['@container-size/layout', { container: 'layout', containerType: 'size' }],
 ])('%s remains raw and projects its Tamagui parent capability', (className, props) => {
   expect(tailwindStyleFrontend.preprocessProps({ className }, CFG)).toMatchObject({
     ...props,

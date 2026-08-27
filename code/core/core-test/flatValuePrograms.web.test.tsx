@@ -814,10 +814,42 @@ test('container clauses lower to @container queries', () => {
 
 test('the boolean container prop establishes an inline-size container', () => {
   const result = split({ container: true, backgroundColor: 'red' })
-  const rules = rulesFor(result, 't_container')
-  expect(rules[0]).toBe('.t_container { container-type: inline-size; }')
-  expect(String(result.viewProps.className)).toContain('t_container')
+  const identifier = result.classNames.containerType
+  expect(rulesFor(result, identifier)[0]).toContain('container-type:inline-size')
+  expect(String(result.viewProps.className)).toContain(identifier)
 })
+
+test('a named container prop emits the convenient container shorthand', () => {
+  const result = split({ container: 'main' })
+  const identifier = result.classNames.container
+  expect(rulesFor(result, identifier)[0]).toContain('container:main / inline-size')
+})
+
+test('an explicit container type wins and is folded into the named shorthand', () => {
+  const result = split({ container: 'main', containerType: 'size' })
+  const identifier = result.classNames.container
+  expect(rulesFor(result, identifier)[0]).toContain('container:main / size')
+})
+
+test('container longhands win by property while the shorthand fills the rest', () => {
+  const result = split({
+    container: 'main',
+    containerName: 'shell',
+    style: { containerType: 'size' },
+  })
+  const identifier = result.classNames.container
+  expect(rulesFor(result, identifier)[0]).toContain('container:shell / size')
+})
+
+test.each([false, undefined])(
+  'container=%s contributes no container style',
+  (container) => {
+    const result = split({ container })
+    expect(result.classNames.container).toBeUndefined()
+    expect(result.classNames.containerType).toBeUndefined()
+    expect(Object.values(result.rulesToInsert)).toHaveLength(0)
+  }
+)
 
 test('theme clause lowers to the is-or-within selector', () => {
   const result = split({ backgroundColor: 'red dark:blue' })

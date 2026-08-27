@@ -49,6 +49,7 @@ test('a group parent marker creates the native context its descendant consumes',
     </TamaguiProvider>
   )
 
+  expect(host(screen, 'parent').props.onLayout).toBeUndefined()
   expect(backgroundColor(host(screen, 'child'))).not.toBe('#000')
   fireEvent(host(screen, 'parent'), 'responderGrant', { nativeEvent: {} })
   await waitFor(() => {
@@ -62,8 +63,7 @@ test('a container parent marker re-evaluates its descendant after layout changes
     config
   )
   expect(parentProps).toMatchObject({
-    containerName: 'layout',
-    containerType: 'inline-size',
+    container: 'layout',
   })
   expect(parentProps).not.toHaveProperty('className')
   const screen = render(

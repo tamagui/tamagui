@@ -813,11 +813,48 @@ describe('getSplitStyles - kebab-case media keys', () => {
   })
 })
 
-test('containerName establishes a named query container on web', () => {
-  const out = simplifiedGetSplitStyles(View, { containerName: 'card' })
+test('raw container longhands emit without an implicit type', () => {
+  const out = simplifiedGetSplitStyles(View, {
+    style: { containerName: 'card' },
+  })
   const rules = Object.values(out.rulesToInsert)
     .flatMap((rule: any) => rule[StyleObjectRules] ?? [])
     .join('\n')
   expect(rules).toContain('container-name:card')
-  expect(rules).toContain('container-type:inline-size')
+  expect(rules).not.toContain('container-type')
+})
+
+test('group establishes state styling without container CSS', () => {
+  const out = simplifiedGetSplitStyles(View, { group: 'card' })
+  const rules = Object.values(out.rulesToInsert)
+    .flatMap((rule: any) => rule[StyleObjectRules] ?? [])
+    .join('\n')
+  expect(out.viewProps.className).toContain('t_group_card')
+  expect(rules).not.toContain('container-')
+})
+
+test('a named container query against a group-only parent warns with the fix', () => {
+  const originalNodeEnv = process.env.NODE_ENV
+  process.env.NODE_ENV = 'development'
+  const warning = vi.spyOn(console, 'warn').mockImplementation(() => {})
+  try {
+    simplifiedGetSplitStyles(
+      View,
+      { width: '100% @sm/checkpoint-one-card:50%' },
+      {
+        groupContext: {
+          'checkpoint-one-card': {
+            state: { pseudo: {} },
+            subscribe: () => () => {},
+          },
+        },
+      }
+    )
+    expect(warning).toHaveBeenCalledWith(
+      expect.stringContaining('container="checkpoint-one-card"')
+    )
+  } finally {
+    warning.mockRestore()
+    process.env.NODE_ENV = originalNodeEnv
+  }
 })

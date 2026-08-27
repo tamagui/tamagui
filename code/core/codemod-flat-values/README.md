@@ -62,7 +62,7 @@ helper, a `react-native` component, and an intrinsic tag are all left alone —
   derive, so it stays flagged.
 - Group conditions split the way V3 splits them: `$group-card-hover` becomes
   `group-hover/card:`, and a container size (`$group-card-maxMd`) becomes
-  `@max-md/card:` plus `container containerName="card"` on the element that declares
+  `@max-md/card:` plus `container="card"` on the element that declares
   the group. That element has to be proven, never inferred: a JSX ancestor declaring
   the group takes the container silently, a single declaration elsewhere in the file
   takes it under `unproven-container-group`, and anything else stays authored

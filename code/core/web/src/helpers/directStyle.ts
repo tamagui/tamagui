@@ -567,6 +567,18 @@ export function resolveClauseChain(
       )
       const component = state.componentState.group?.[groupKey]
       const context = state.flatGroupContext?.[groupKey]
+      if (
+        process.env.NODE_ENV === 'development' &&
+        containerName &&
+        !component &&
+        !context &&
+        state.flatGroupContext?.[containerName]
+      ) {
+        warnOnce(
+          `group-container:${containerName}`,
+          `@${containerSize}/${containerName}: targets group="${containerName}", but groups no longer establish query containers. Add container="${containerName}" to that group.`
+        )
+      }
       const match = component?.media?.[containerSize]
       active &&=
         match === undefined
@@ -911,12 +923,22 @@ function directAtomic(
     signature,
     2 as any,
     atomicKey,
-    condition
-      ? 1 +
+    property === 'containerName' || property === 'containerType'
+      ? condition
+        ? Math.max(
+            2,
+            1 +
+              ((Math.floor(condition / 256) >>> 23) & 7) +
+              (Math.floor(condition / 256) >>> 26) * 6 -
+              ((condition >>> 5) & 7)
+          )
+        : 2
+      : condition
+        ? 1 +
           ((Math.floor(condition / 256) >>> 23) & 7) +
           (Math.floor(condition / 256) >>> 26) * 6 -
           ((condition >>> 5) & 7)
-      : undefined
+        : undefined
   )
   if (!next) return
   const identifier = next[StyleObjectIdentifier]
