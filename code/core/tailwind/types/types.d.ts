@@ -63,7 +63,7 @@ type TailwindCommonProps = AriaAttributes & WebEventProps & {
     }, state: TailwindComponentState) => ReactElement);
     theme?: string | null;
     group?: string | boolean;
-    container?: boolean;
+    container?: boolean | string;
     untilMeasured?: 'hide' | 'show';
     name?: string;
     tabIndex?: string | number;

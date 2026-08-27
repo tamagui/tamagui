@@ -195,7 +195,7 @@ report marks converted `x`/`y` rows; review them against the app's scales.
 The element declaring the group must also declare the query container:
 
 ```tsx
-<View group="card" container containerName="card">
+<View group="card" container="card">
 ```
 
 Declaring a container changes CSS containment, so the codemod only does this

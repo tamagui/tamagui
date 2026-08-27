@@ -227,7 +227,12 @@ describe('flatten-tests', () => {
   })
 
   test(`bails on the container props — they provide the '@' context descendants read`, async () => {
-    for (const prop of ['container', 'containerName="side"', 'containerType="size"']) {
+    for (const prop of [
+      'container',
+      'container="side"',
+      'containerName="side"',
+      'containerType="size"',
+    ]) {
       const output = await extractForNative(`
         import { View } from 'tamagui'
         export function Test() {

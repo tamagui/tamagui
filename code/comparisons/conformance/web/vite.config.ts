@@ -8,6 +8,9 @@ import { defineConfig } from 'vite'
 // className → style path; tamagui converts+removes the classes, so the loaded tailwind CSS
 // never matches tamagui's DOM (safe to load globally).
 export default defineConfig({
+  optimizeDeps: {
+    include: ['@tamagui/tailwind', '@tamagui/core/internal-runtime'],
+  },
   plugins: [
     tailwindcss(),
     react(),
@@ -17,6 +20,9 @@ export default defineConfig({
       disableExtraction: true,
     }),
   ],
+  resolve: {
+    dedupe: ['@tamagui/tailwind'],
+  },
   server: {
     fs: { allow: ['..', '../..'] },
   },

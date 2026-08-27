@@ -603,8 +603,18 @@ export const getSplitStyles: StyleSplitter = (
   } else {
     processedProps = props
   }
-  const { webContainerType } = conf.settings
   const parentVariants = parentStaticConfig?.variants
+  let containerValue: boolean | string | undefined
+  const authoredContainerName = processedProps.containerName
+  const authoredContainerType = processedProps.containerType
+  let containerName =
+    typeof authoredContainerName === 'string' && authoredContainerName.indexOf(':') === -1
+      ? authoredContainerName
+      : undefined
+  let containerType =
+    typeof authoredContainerType === 'string' && authoredContainerType.indexOf(':') === -1
+      ? authoredContainerType
+      : undefined
 
   const mergeStylePropAtCurrentPosition = (styleProp: any) => {
     if (styleProps.noMergeStyle || !styleProp) return
@@ -624,6 +634,20 @@ export const getSplitStyles: StyleSplitter = (
         : undefined
       for (const key in normalized) {
         if (normalized[key] == null) continue
+        if (
+          key === 'containerName' &&
+          typeof normalized[key] === 'string' &&
+          normalized[key].indexOf(':') === -1
+        ) {
+          containerName = normalized[key]
+        }
+        if (
+          key === 'containerType' &&
+          typeof normalized[key] === 'string' &&
+          normalized[key].indexOf(':') === -1
+        ) {
+          containerType = normalized[key]
+        }
         contributeStyleValue(
           styleState,
           key,
@@ -754,37 +778,8 @@ export const getSplitStyles: StyleSplitter = (
 
     // keyInit === 'style' is handled in skipProps
     if (keyInit in skipProps && !noSkip && !isHOC && !neverSkipProps?.[keyInit]) {
-      if (keyInit === 'group') {
-        if (process.env.TAMAGUI_TARGET === 'web') {
-          // add container style
-          const identifier = `t_group_${valInit}`
-          const containerType = webContainerType || 'inline-size'
-          const containerCSS = [
-            'container',
-            undefined,
-            identifier,
-            undefined,
-            [
-              `.${identifier} { container-name: ${valInit}; container-type: ${containerType}; }`,
-            ],
-          ] satisfies StyleObject
-          addStyleToInsertRules(rulesToInsert, containerCSS)
-        }
-      }
-      if (keyInit === 'container' && valInit) {
-        if (process.env.TAMAGUI_TARGET === 'web') {
-          // the boolean container shorthand: establish an unnamed inline-size
-          // query container (decision 17); `@sm:` clauses target it as the
-          // nearest container. named containers author container-name /
-          // container-type as regular style props instead
-          addStyleToInsertRules(rulesToInsert, [
-            'container',
-            undefined,
-            't_container',
-            undefined,
-            [`.t_container { container-type: ${webContainerType || 'inline-size'}; }`],
-          ] satisfies StyleObject)
-        }
+      if (keyInit === 'container') {
+        containerValue = valInit
       }
       if (keyInit === 'transition' && typeof valInit === 'string') {
         const animationConfig = driver?.animations?.[valInit]
@@ -1185,6 +1180,17 @@ export const getSplitStyles: StyleSplitter = (
     (chain) => !!resolveClauseChain(styleState, chain, 0, chain.length)
   )
 
+  if (process.env.TAMAGUI_TARGET === 'web' && containerValue) {
+    containerName ??= typeof containerValue === 'string' ? containerValue : undefined
+    containerType ??= 'inline-size'
+    contributeStyleValue(
+      styleState,
+      containerName ? 'container' : 'containerType',
+      containerName ? `${containerName} / ${containerType}` : containerType,
+      mergeStyle
+    )
+  }
+
   if (
     process.env.NODE_ENV === 'development' &&
     (debug === 'profile' || (globalThis as any).time)
@@ -1229,21 +1235,6 @@ export const getSplitStyles: StyleSplitter = (
   if (process.env.TAMAGUI_TARGET === 'native' && styleState.style) {
     if ('containerType' in styleState.style) delete styleState.style.containerType
     if ('containerName' in styleState.style) delete styleState.style.containerName
-  }
-
-  // a named container also establishes containment
-  if (
-    process.env.TAMAGUI_TARGET === 'web' &&
-    (styleState.style?.containerName != null || classNames.containerName) &&
-    !(styleState.style && 'containerType' in styleState.style) &&
-    !classNames.containerType
-  ) {
-    contributeStyleValue(
-      styleState,
-      'containerType',
-      webContainerType || 'inline-size',
-      mergeStyle
-    )
   }
 
   // style prop after:
@@ -1422,7 +1413,6 @@ export const getSplitStyles: StyleSplitter = (
         const fontFamily = isText || isInput ? styleState.fontFamily : null
         const fontFamilyClassName = fontFamily ? `font_${fontFamily}` : ''
         const groupClassName = props.group ? `t_group_${props.group}` : ''
-        const containerClassName = props.container ? 't_container' : ''
         const displayNameClassName =
           props.asChild ||
           !styleProps.displayName ||
@@ -1444,7 +1434,6 @@ export const getSplitStyles: StyleSplitter = (
           }
         }
         if (groupClassName) classList.push(groupClassName)
-        if (containerClassName) classList.push(containerClassName)
         // use className variable which may have been updated by tailwind preprocessing
         if (className) classList.push(className)
         const finalClassName = classList.join(' ')

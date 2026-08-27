@@ -57,6 +57,14 @@ export const cases: ConformanceCase[] = [
     ),
   },
   { name: 'size-square', render: box('w-20 h-20 bg-teal-500') },
+  {
+    name: 'container-query-named',
+    render: ({ Box }) => (
+      <Box className="@container/main w-[800px] h-16 bg-slate-200">
+        <Box id="cfm-root" className="w-full @sm/main:w-1/2 h-8 bg-sky-500" />
+      </Box>
+    ),
+  },
 
   // ── spacing ───────────────────────────────────────────────────────────────
   {

@@ -49,6 +49,35 @@ Read and hand-fix every flagged report row, then rerun until the migrated path
 has no V2 authoring sites. See [Flat Conditional Values](/docs/guides/flat-values)
 for the grammar and full workflow.
 
+### Declare query containers separately from groups
+
+`group` now provides parent interaction state only. It no longer adds CSS
+containment or native layout measurement. A named size clause needs an explicit
+container on the ancestor it targets:
+
+```tsx
+// before: group implicitly established the query container
+<View group="card">
+  <Text width="100% @sm/card:50%" />
+</View>
+
+// after: state and containment are authored separately
+<View group="card" container="card">
+  <Text width="100% @sm/card:50%" />
+</View>
+```
+
+Use `container` for an unnamed inline-size container, `container="main"` for a
+named inline-size container, and `container="main" containerType="size"` for
+containment on both axes. `container={false}` and `container={undefined}` do
+nothing, so conditional roots can use `container={isRoot}`. Raw CSS
+`containerName` and `containerType` longhands remain available in `style()` and
+style objects. An explicit longhand wins the property it names when used with
+`container`.
+
+Remove `webContainerType` from `createTamagui` settings. V3 has no global
+container-type compatibility setting.
+
 Plan for that review before starting a large migration. On the V2 Bento corpus,
 the codemod found 2,113 sites. It classified 1,681 as clean and left 412 of
 2,052 JSX sites plus 20 of 61 `styled()` configuration sites for a person to

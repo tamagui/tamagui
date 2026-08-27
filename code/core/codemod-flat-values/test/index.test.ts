@@ -479,7 +479,7 @@ const Card = styled(View, { group: 'card' })
     const found = sites(result)
     expect(found.length).toBe(2)
     const [card, inner] = found
-    expect(card.after).toBe(`group: 'card', container: true, containerName: "card"`)
+    expect(card.after).toBe(`group: 'card', container: "card"`)
     expect(card.notes.length).toBe(1)
     // this is the only declaration of the group in the file, but no JSX ancestry
     // shows it wrapping the consumer, so the placement is the human's call
@@ -1353,7 +1353,7 @@ describe('group containers', () => {
     const [card, inner] = found
     // the unrelated tree is not a conversion site at all: nothing there changes
     expect(card.line).toBe(8)
-    expect(card.after).toBe(`group="card" container containerName="card"`)
+    expect(card.after).toBe(`group="card" container="card"`)
     expect(codes(card)).toEqual([])
 
     expect(codes(inner)).toEqual([])

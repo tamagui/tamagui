@@ -604,14 +604,14 @@ export function createComponent<
       })
     }, [platformPseudo, props.disabled])
 
-    // a component is a query container when any container prop says so; the
-    // boolean `container` is the unnamed inline-size shorthand (decision 17)
-    const containerName = props.containerName as string | undefined
-    const isContainer = !!(
-      props.container ||
-      containerName ||
-      (props.containerType && props.containerType !== 'normal')
-    )
+    const containerProp = props.container
+    const containerName =
+      (props.containerName as string | undefined) ||
+      (typeof containerProp === 'string' ? containerProp : undefined)
+    const containerType =
+      (props.containerType as string | undefined) ||
+      (containerProp ? 'inline-size' : undefined)
+    const isContainer = !!containerType && containerType !== 'normal'
 
     // create new context with groups, or else sublings will grab the same one
     const allGroupContexts = useMemo((): AllGroupContexts | null => {
@@ -1044,7 +1044,7 @@ export function createComponent<
       !isPassthrough &&
       groupContext &&
       // avoids onLayout if we don't need it
-      props.containerType !== 'normal'
+      isContainer
     ) {
       const groupState = groupContext?.state
       if (groupState && groupState.layout === undefined) {
@@ -1419,9 +1419,9 @@ export function createComponent<
       viewProps.className = `t_exiting ${viewProps.className || ''}`
     }
 
-    if (process.env.NODE_ENV === 'development' && props.untilMeasured && !props.group) {
+    if (process.env.NODE_ENV === 'development' && props.untilMeasured && !isContainer) {
       console.warn(
-        `You set the untilMeasured prop without setting group. This doesn't work, be sure to set untilMeasured on the parent that sets group, not the children that use a group clause.\n\nIf you meant to do this, you can disable this warning - either change untilMeasured and group at the same time, or do group={conditional ? 'name' : undefined}`
+        `You set untilMeasured without establishing a container. Set it on the parent with container or container="name", not on the child using a container clause.`
       )
     }
 
@@ -1430,7 +1430,7 @@ export function createComponent<
     if (
       !isPassthrough &&
       groupContext && // avoids onLayout if we don't need it
-      props.containerType !== 'normal'
+      isContainer
     ) {
       nonTamaguiProps.onLayout = composeEventHandlers(
         nonTamaguiProps.onLayout,

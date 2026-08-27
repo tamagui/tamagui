@@ -187,13 +187,13 @@ const Card = styled(View, {
 Named container queries are also wired on both platforms:
 
 ```tsx
-<View container containerName="card">
+<View container="card">
   <Text width="100% @sm/card:50%" />
 </View>
 ```
 
-On web, `containerName="card"` emits `container-name: card` and supplies the
-configured container type when no explicit type is authored.
+On web, `container="card"` emits `container: card / inline-size`. Add
+`containerType="size"` when both axes should establish containment.
 
 ### Platform limits to keep visible
 

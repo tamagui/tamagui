@@ -267,10 +267,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     // normalized animations (resolved from multi-driver format if needed)
     animations: resolvedDriver ?? defaultAnimationDriver,
     animationDrivers,
-    settings: {
-      webContainerType: 'inline-size',
-      ...settingsIn,
-    },
+    settings: settingsIn,
     tokens: tokens as any,
     // vite made this into a function if it wasn't set
     shorthands,

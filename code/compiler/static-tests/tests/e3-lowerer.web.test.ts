@@ -145,6 +145,7 @@ export const App = () => (
     opacity="hover:0.5"
     margin="sm:3px"
     group="card"
+    container="card"
     data-sentinel="untouched"
   >
     <Text fontFamily="body" color="dark:color">font</Text>
@@ -173,7 +174,7 @@ export const App = () => (
     expect(plan.css).toContain('@media (hover: hover)')
     expect(plan.css).toContain('@media (min-width: 640px)')
     expect(plan.css).toContain('.t_dark')
-    expect(plan.css).toContain('container-name: card')
+    expect(plan.css).toContain('container:card / inline-size')
     expect(plan.css).toContain('font-family')
     expect(output.map?.sourcesContent).toEqual([source])
   })

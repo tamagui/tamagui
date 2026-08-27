@@ -1457,10 +1457,10 @@ function containerExtras(site: Site, declaration: Node, index: number): void {
     site.kind === 'styled'
       ? name === null
         ? 'container: true'
-        : `container: true, containerName: ${JSON.stringify(name)}`
+        : `container: ${JSON.stringify(name)}`
       : name === null
         ? 'container'
-        : `container containerName=${JSON.stringify(name)}`
+        : `container=${JSON.stringify(name)}`
   // adding the container is itself a migration edit, so this element is a site even
   // when it has no other v1 syntax
   site.legacy = true

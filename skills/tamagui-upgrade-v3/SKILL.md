@@ -313,7 +313,7 @@ The codemod flags these; you rewrite them. Full before/after recipes are in
 | Shadow/text-shadow/transform part conditions | Rebuild as one complete `boxShadow`, `textShadow`, or `transform` value |
 | `exitStyle` in shared or web files | Keep it authored; `exit:` only evaluates on native |
 | `x`/`y` offsets with a custom config | v2 `$4` used the size scale, v3 `4` uses space; review if the scales differ |
-| Group size conditions: `$group-card-maxMd` | Becomes `@max-md/card:` plus `container containerName="card"` on the declaring ancestor; the container owner must be provable |
+| Group size conditions: `$group-card-maxMd` | Becomes `@max-md/card:` plus `container="card"` on the declaring ancestor; the container owner must be provable |
 
 ## Phase 4: preserve the escape hatches
 
