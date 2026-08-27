@@ -33,12 +33,14 @@ import { log } from './helpers/log'
 import { type GenericProps, mergeComponentProps } from './helpers/mergeProps'
 import { mergeRenderElementProps } from './helpers/mergeRenderElementProps'
 import { getMedia } from './helpers/mediaState'
-import { objectIdentityKey } from './helpers/objectIdentityKey'
 import { usePointerEvents } from './helpers/pointerEvents'
 import { extractPseudoState } from './helpers/extractPseudoState'
 import { subscribeToSafeArea } from './helpers/resolveSafeAreaVariable'
 import { setElementProps } from './helpers/setElementProps'
-import { subscribeToContextGroup } from './helpers/subscribeToContextGroup'
+import {
+  subscribeToContextGroup,
+  useGroupSetRevision,
+} from './helpers/subscribeToContextGroup'
 import { getStyleTags } from './helpers/wrapStyleTags'
 import { useComponentState } from './hooks/useComponentState'
 import { setMediaShouldUpdate, useMedia } from './hooks/useMedia'
@@ -1296,6 +1298,7 @@ export function createComponent<
       pseudoGroups,
       mediaGroups,
     } = splitStyles || {}
+    const groupSetRevision = useGroupSetRevision(pseudoGroups, mediaGroups)
 
     const propsWithAnimation = props as UseAnimationProps
 
@@ -1624,13 +1627,7 @@ export function createComponent<
         disposeSafeArea()
         disposeGroup?.()
       }
-    }, [
-      allGroupContexts,
-      disabled,
-      splitStyles?.usesSafeArea,
-      pseudoGroups ? objectIdentityKey(pseudoGroups) : 0,
-      mediaGroups ? objectIdentityKey(mediaGroups) : 0,
-    ])
+    }, [allGroupContexts, disabled, splitStyles?.usesSafeArea, groupSetRevision])
 
     const groupEmitter = stateRef.current.group
     useIsomorphicLayoutEffect(() => {
