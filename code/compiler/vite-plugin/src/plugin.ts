@@ -754,12 +754,12 @@ export function createTamaguiPlugins({
   // temporary vxrn native env bridge
   const enableNativeEnv = !!globalThis.__vxrnEnableNativeEnv
   const tamaguiLoader = createViteTamaguiLoader(tamaguiOptionsIn)
-  const compilerFrontends = new Map<string, Static.CompilerFrontend>()
+  const compilerFrontends = new WeakMap<Environment, Static.CompilerFrontend>()
   const getCompilerFrontend = (environment: Environment) => {
-    let frontend = compilerFrontends.get(environment.name)
+    let frontend = compilerFrontends.get(environment)
     if (!frontend) {
       frontend = new Static.CompilerFrontend()
-      compilerFrontends.set(environment.name, frontend)
+      compilerFrontends.set(environment, frontend)
     }
     return frontend
   }

@@ -257,7 +257,6 @@ export class CompilerFrontend {
   private readonly planCaches = new Map<string, ModulePlanCache>()
   private readonly moduleRecords = new Map<ResolvedModuleId, HostModuleInput>()
   private moduleContext: string | null = null
-  private compilerHost: ReturnType<typeof createTamaguiCompilerHost> | null = null
 
   /**
    * One cache per project root and platform. Absent when the project produced
@@ -337,7 +336,6 @@ export class CompilerFrontend {
     const { rootModule, modules } = await this.buildTree(input)
     const invalidated = new Set<ResolvedModuleId>()
     for (const module of modules.values()) {
-      if (module.id === rootModule.id) continue
       for (const id of await this.session.update(module)) invalidated.add(id)
       this.moduleRecords.set(module.id, module)
     }
@@ -345,20 +343,18 @@ export class CompilerFrontend {
     if (!projectInfo.tamaguiConfig || !projectInfo.components) {
       throw new Error('The compiler requires evaluated Tamagui config and components')
     }
-    const host =
-      this.compilerHost ||
-      (this.compilerHost = createTamaguiCompilerHost({
-        target: input.target,
-        tamaguiConfig: projectInfo.tamaguiConfig,
-        components: projectInfo.components,
-        componentModules: input.project.componentModules.map((component) => ({
-          moduleName: component.moduleName,
-          resolvedId: cleanId(component.id),
-        })),
-        disablePartialExtraction: input.project.disablePartialExtraction,
-        experimentalNativeFastPath: input.project.experimentalNativeFastPath,
-        zeroRuntime: input.project.zeroRuntime,
-      }))
+    const host = createTamaguiCompilerHost({
+      target: input.target,
+      tamaguiConfig: projectInfo.tamaguiConfig,
+      components: projectInfo.components,
+      componentModules: input.project.componentModules.map((component) => ({
+        moduleName: component.moduleName,
+        resolvedId: cleanId(component.id),
+      })),
+      disablePartialExtraction: input.project.disablePartialExtraction,
+      experimentalNativeFastPath: input.project.experimentalNativeFastPath,
+      zeroRuntime: input.project.zeroRuntime,
+    })
     const result = await this.session.compile({
       module: rootModule,
       adapter: {
@@ -372,7 +368,6 @@ export class CompilerFrontend {
       },
       structuralPass: domStructuralPass,
     })
-    this.moduleRecords.set(rootModule.id, rootModule)
     for (const id of result.invalidatedIds) invalidated.add(id)
     return {
       plan: result.plan,
@@ -388,7 +383,6 @@ export class CompilerFrontend {
     const moduleContext = compilerContext(input)
     if (this.moduleContext !== moduleContext) {
       this.moduleRecords.clear()
-      this.compilerHost = null
       this.moduleContext = moduleContext
     }
 
@@ -401,6 +395,20 @@ export class CompilerFrontend {
     const modules = new Map<ResolvedModuleId, HostModuleInput>()
     const loading = new Set<ResolvedModuleId>()
 
+    const addInstalledClosure = (module: HostModuleInput): void => {
+      if (modules.has(module.id) || loading.has(module.id)) return
+      loading.add(module.id)
+      for (const dependency of module.imports) {
+        if (dependency.external) continue
+        const installedDependency = this.moduleRecords.get(dependency.resolvedId)
+        if (installedDependency && this.session.has(dependency.resolvedId)) {
+          addInstalledClosure(installedDependency)
+        }
+      }
+      modules.set(module.id, module)
+      loading.delete(module.id)
+    }
+
     const loadModule = async (
       rawId: string,
       source: string
@@ -410,7 +418,7 @@ export class CompilerFrontend {
       if (existing) return existing
       const installed = this.moduleRecords.get(id)
       if (installed?.source === source && this.session.has(id)) {
-        modules.set(id, installed)
+        addInstalledClosure(installed)
         return installed
       }
       if (loading.has(id)) {
@@ -439,7 +447,7 @@ export class CompilerFrontend {
         if (canLink && !modules.has(resolvedId) && !loading.has(resolvedId)) {
           const installedDependency = this.moduleRecords.get(resolvedId)
           if (installedDependency && this.session.has(resolvedId)) {
-            modules.set(resolvedId, installedDependency)
+            addInstalledClosure(installedDependency)
           } else {
             const dependencySource = await input.load(resolution.id)
             if (dependencySource !== null) {
