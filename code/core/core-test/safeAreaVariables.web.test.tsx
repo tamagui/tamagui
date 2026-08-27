@@ -1,13 +1,17 @@
 import { StyleObjectValue } from '@tamagui/helpers'
 import { safeAreaVariableNames } from '@tamagui/style-grammar/runtime'
+import { render } from '@testing-library/react'
+import React from 'react'
 import { beforeAll, expect, test } from 'vitest'
 
 import config from '../config-default'
-import { View, createTamagui } from '../web/src'
+import { TamaguiProvider, View, createTamagui } from '../web/src'
 import { findRule, simplifiedGetSplitStyles } from './utils'
 
+let tamaguiConfig: ReturnType<typeof createTamagui>
+
 beforeAll(() => {
-  createTamagui(config.getDefaultTamaguiConfig())
+  tamaguiConfig = createTamagui(config.getDefaultTamaguiConfig())
 })
 
 test.each([
@@ -26,4 +30,23 @@ test('literal CSS math containing the platform env stays intact', () => {
   const styles = simplifiedGetSplitStyles(View, { paddingTop: value })
 
   expect(findRule(styles.rulesToInsert, 'paddingTop')[StyleObjectValue]).toBe(value)
+})
+
+test('safe-area values do not force a second commit on web mount', () => {
+  let commits = 0
+
+  render(
+    <TamaguiProvider config={tamaguiConfig} defaultTheme="light">
+      <React.Profiler
+        id="safe-area"
+        onRender={() => {
+          commits++
+        }}
+      >
+        <View disableClassName paddingTop={safeAreaVariableNames.top} />
+      </React.Profiler>
+    </TamaguiProvider>
+  )
+
+  expect(commits).toBe(1)
 })
