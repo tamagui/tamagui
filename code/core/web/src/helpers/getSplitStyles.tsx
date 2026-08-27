@@ -435,16 +435,7 @@ export function isValidStyleKey(
   validStyles: Record<string, boolean>,
   accept?: Record<string, any>
 ) {
-  return Boolean(
-    key in validStyles ||
-    (isWeb &&
-      (key === 'transitionProperty' ||
-        key === 'transitionDuration' ||
-        key === 'transitionTimingFunction' ||
-        key === 'transitionDelay' ||
-        key === 'transitionBehavior')) ||
-    (accept && key in accept)
-  )
+  return Boolean(key in validStyles || (accept && key in accept))
 }
 
 export const getSplitStyles: StyleSplitter = (
@@ -716,18 +707,6 @@ export const getSplitStyles: StyleSplitter = (
       return
     }
 
-    if (
-      process.env.TAMAGUI_TARGET === 'native' &&
-      (keyInit === 'transition' ||
-        keyInit === 'transitionProperty' ||
-        keyInit === 'transitionDuration' ||
-        keyInit === 'transitionTimingFunction' ||
-        keyInit === 'transitionDelay' ||
-        keyInit === 'transitionBehavior')
-    ) {
-      return
-    }
-
     // for custom accept sub-styles
     if (accept) {
       const accepted = accept[keyInit]
@@ -788,6 +767,7 @@ export const getSplitStyles: StyleSplitter = (
         containerValue = valInit
       }
       if (keyInit === 'transition' && typeof valInit === 'string') {
+        if (process.env.TAMAGUI_TARGET === 'native') return
         const animationConfig = driver?.animations?.[valInit]
         if (
           animationConfig &&

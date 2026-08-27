@@ -50,6 +50,11 @@ export const nonAnimatableWebTextProps = {
 export const webOnlyStylePropsView = {
   ...nonAnimatableWebViewProps,
   transition: true,
+  transitionProperty: true,
+  transitionDuration: true,
+  transitionTimingFunction: true,
+  transitionDelay: true,
+  transitionBehavior: true,
   backdropFilter: true,
   WebkitBackdropFilter: true,
   borderTop: true,

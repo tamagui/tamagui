@@ -72,6 +72,11 @@ export declare const webOnlyStylePropsView: {
     transformStyle: boolean;
     willChange: boolean;
     transition: boolean;
+    transitionProperty: boolean;
+    transitionDuration: boolean;
+    transitionTimingFunction: boolean;
+    transitionDelay: boolean;
+    transitionBehavior: boolean;
     backdropFilter: boolean;
     WebkitBackdropFilter: boolean;
     borderTop: boolean;

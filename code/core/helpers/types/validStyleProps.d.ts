@@ -227,6 +227,11 @@ export declare const stylePropsView: {
     transformStyle?: boolean | undefined;
     willChange?: boolean | undefined;
     transition?: boolean | undefined;
+    transitionProperty?: boolean | undefined;
+    transitionDuration?: boolean | undefined;
+    transitionTimingFunction?: boolean | undefined;
+    transitionDelay?: boolean | undefined;
+    transitionBehavior?: boolean | undefined;
     backdropFilter?: boolean | undefined;
     WebkitBackdropFilter?: boolean | undefined;
     borderTop?: boolean | undefined;
@@ -511,6 +516,11 @@ export declare const stylePropsText: {
     textOverflow?: boolean | undefined;
     WebkitBoxOrient?: boolean | undefined;
     transition?: boolean | undefined;
+    transitionProperty?: boolean | undefined;
+    transitionDuration?: boolean | undefined;
+    transitionTimingFunction?: boolean | undefined;
+    transitionDelay?: boolean | undefined;
+    transitionBehavior?: boolean | undefined;
     backdropFilter?: boolean | undefined;
     WebkitBackdropFilter?: boolean | undefined;
     borderTop?: boolean | undefined;
@@ -786,6 +796,11 @@ export declare const stylePropsAll: {
     textOverflow?: boolean | undefined;
     WebkitBoxOrient?: boolean | undefined;
     transition?: boolean | undefined;
+    transitionProperty?: boolean | undefined;
+    transitionDuration?: boolean | undefined;
+    transitionTimingFunction?: boolean | undefined;
+    transitionDelay?: boolean | undefined;
+    transitionBehavior?: boolean | undefined;
     backdropFilter?: boolean | undefined;
     WebkitBackdropFilter?: boolean | undefined;
     borderTop?: boolean | undefined;
@@ -1058,6 +1073,11 @@ export declare const validStyles: {
     transformStyle?: boolean | undefined;
     willChange?: boolean | undefined;
     transition?: boolean | undefined;
+    transitionProperty?: boolean | undefined;
+    transitionDuration?: boolean | undefined;
+    transitionTimingFunction?: boolean | undefined;
+    transitionDelay?: boolean | undefined;
+    transitionBehavior?: boolean | undefined;
     backdropFilter?: boolean | undefined;
     WebkitBackdropFilter?: boolean | undefined;
     borderTop?: boolean | undefined;
