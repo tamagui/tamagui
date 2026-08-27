@@ -16,10 +16,10 @@ import { expressionReference, resolutionKey, resolvedModuleId } from './contract
 import { linkedBailout, localBailout, type BailoutReason } from './diagnostics'
 import {
   evaluateBinding,
-  evaluateConditionalExpression,
+  evaluateBranches,
   evaluateDynamicExpression,
   evaluateExpression,
-  type ConditionalEvaluation,
+  type BranchDecisionNode,
   type DynamicEvaluation,
   type EvaluationResult,
 } from './evaluate'
@@ -190,8 +190,8 @@ export class ProjectGraph implements SymbolResolver {
     return evaluateExpression(this, reference)
   }
 
-  evaluateConditional(reference: ExpressionReference): ConditionalEvaluation | null {
-    return evaluateConditionalExpression(this, reference)
+  evaluateBranches(reference: ExpressionReference): BranchDecisionNode | null {
+    return evaluateBranches(this, reference)
   }
 
   evaluateDynamic(reference: ExpressionReference): DynamicEvaluation | null {

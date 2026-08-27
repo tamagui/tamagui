@@ -1,6 +1,7 @@
 import type { ResolvedModuleId, SourceSpan } from './contracts'
 import type { BailoutReason } from './diagnostics'
-import type { StaticEvaluationValue } from './evaluate'
+import type { BranchDecisionNode, StaticEvaluationValue } from './evaluate'
+import { collectBranchDependencies } from './evaluate'
 import type { ProjectGraph } from './graph'
 import type {
   ComponentImportProvenance,
@@ -39,9 +40,7 @@ export type MaterializedValue =
        * is preserved for that purpose).
        */
       kind: 'conditional'
-      test: SourceSpan
-      whenTrue: StaticEvaluationValue
-      whenFalse: StaticEvaluationValue
+      tree: BranchDecisionNode
       dependencies: ResolvedModuleId[]
       bailout: BailoutReason
       span: SourceSpan
@@ -159,19 +158,12 @@ function materializeValue(
       span: value,
     }
   }
-  const conditional = graph.evaluateConditional(value)
-  if (conditional) {
+  const tree = graph.evaluateBranches(value)
+  if (tree) {
     return {
       kind: 'conditional',
-      test: conditional.test,
-      whenTrue: conditional.whenTrue.value,
-      whenFalse: conditional.whenFalse.value,
-      dependencies: [
-        ...new Set([
-          ...conditional.whenTrue.dependencies,
-          ...conditional.whenFalse.dependencies,
-        ]),
-      ].sort(compareCodeUnits),
+      tree,
+      dependencies: collectBranchDependencies(tree).sort(compareCodeUnits),
       bailout: result.bailout,
       span: value,
     }

@@ -1,4 +1,5 @@
 import type {
+  BranchDecisionNode,
   CompilerLoweringHost,
   CompilerTarget,
   LoweringCandidateInput,
@@ -9,7 +10,11 @@ import type {
   SourceEdit,
   ZeroRule,
 } from '@tamagui/compiler-core'
-import { zeroRuleMessage, zeroThemeBoundaryMessage } from '@tamagui/compiler-core'
+import {
+  collectLeaves,
+  zeroRuleMessage,
+  zeroThemeBoundaryMessage,
+} from '@tamagui/compiler-core'
 import {
   StyleObjectIdentifier,
   StyleObjectProperty,
@@ -267,6 +272,29 @@ function extractedStyleArtifacts(
   }
 }
 
+function spreadNonStyleReplacement(
+  form: MaterializedElement['form'],
+  entry: MaterializedElement['entries'][number],
+  isPropIgnored: (name: string) => boolean,
+  rewriteProp: (name: string, value: unknown) => [string, unknown]
+): string {
+  if (
+    entry.kind !== 'spread' ||
+    entry.value.kind !== 'static' ||
+    !staticObject(entry.value.value)
+  ) {
+    return ''
+  }
+  const nonStyleEntries = Object.entries(entry.value.value)
+    .filter(([key]) => !isPropIgnored(key))
+    .map(([key, value]) => rewriteProp(key, value))
+  if (nonStyleEntries.length === 0) return ''
+  const objectSource = `{ ${nonStyleEntries
+    .map(([key, value]) => `${JSON.stringify(key)}: ${JSON.stringify(value)}`)
+    .join(', ')} }`
+  return form === 'jsx' ? `{...${objectSource}}` : `...${objectSource}`
+}
+
 /**
  * Granular edits inside a compiled-call props object. Whole-span replacement would
  * also cover the children property, so nested candidates could never both commit.
@@ -274,7 +302,8 @@ function extractedStyleArtifacts(
 function compiledPropsEdits(
   input: LoweringCandidateInput,
   styleEntries: MaterializedElement['entries'],
-  replacement: string
+  replacement: string,
+  spreadReplacement?: (entry: MaterializedElement['entries'][number]) => string
 ): SourceEdit[] | null {
   const propsSpan = input.element.propsSpan
   if (!propsSpan) return null
@@ -309,8 +338,10 @@ function compiledPropsEdits(
   for (const [index, entry] of styleEntries.entries()) {
     let start = entry.span.start
     let end = entry.span.end
+    const nonStyle = spreadReplacement?.(entry) ?? ''
     if (index === 0) {
-      edits.push({ start, end, content: replacement, origin: entry.span })
+      const content = [replacement, nonStyle].filter(Boolean).join(', ')
+      edits.push({ start, end, content, origin: entry.span })
       continue
     }
 
@@ -323,7 +354,7 @@ function compiledPropsEdits(
       while (cursor > 0 && /\s/.test(original[cursor]!)) cursor--
       if (original[cursor] === ',') start = propsSpan.start + cursor
     }
-    edits.push({ start, end, content: '', origin: entry.span })
+    edits.push({ start, end, content: nonStyle, origin: entry.span })
   }
 
   const merged: SourceEdit[] = []
@@ -1691,7 +1722,9 @@ export function createTamaguiCompilerHost(
         !options.disablePartialExtraction &&
         (input.element.form === 'jsx' || input.element.propsSpan !== null) &&
         dynamicStyleEntries.length > 0 &&
-        !input.element.entries.some((entry) => entry.kind === 'spread')
+        !input.element.entries.some(
+          (entry) => entry.kind === 'spread' && entry.value.kind !== 'static'
+        )
       ) {
         const seen = new Set<string>()
         const properties: string[] = []
@@ -1784,15 +1817,12 @@ export function createTamaguiCompilerHost(
       // web per-branch conditional classes need the same preconditions the
       // native per-branch path has, and take precedence over web partial
       // extraction because a full flatten beats a runtime component
-      // exactly one conditional: several would need a shared class
-      // intersection across every branch combination, so elements with more
-      // keep the web partial-extraction path they had before
       const supportsWebConditionalClasses =
         platform === 'web' &&
         !options.disablePartialExtraction &&
         (input.element.form === 'jsx' || input.element.propsSpan !== null) &&
         dynamicHostStyleProperties === null &&
-        dynamicStyleEntries.length === 1 &&
+        dynamicStyleEntries.length > 0 &&
         dynamicStyleEntries.every(
           (entry) =>
             entry.kind === 'prop' &&
@@ -1866,7 +1896,9 @@ export function createTamaguiCompilerHost(
         !supportsWebConditionalClasses &&
         component.partialRuntimeSafe
       ) {
-        const hasSpread = input.element.entries.some((entry) => entry.kind === 'spread')
+        const hasSpread = input.element.entries.some(
+          (entry) => entry.kind === 'spread' && entry.value.kind !== 'static'
+        )
         const unsupportedRuntimeStyle = input.element.entries.find(
           (entry) =>
             entry.kind === 'prop' &&
@@ -2029,6 +2061,42 @@ export function createTamaguiCompilerHost(
           props
         )
       }
+      const propsForConditional = (
+        target: Extract<MaterializedElement['entries'][number], { kind: 'prop' }>,
+        value: unknown
+      ) => {
+        const branchProps: Record<string, unknown> = {}
+        for (const entry of input.element.entries) {
+          if (entry === target) {
+            branchProps[target.name] = value
+            continue
+          }
+          if (entry.kind === 'child' || entry.value.kind !== 'static') continue
+          if (entry.kind === 'spread') {
+            if (staticObject(entry.value.value))
+              Object.assign(branchProps, entry.value.value)
+          } else {
+            branchProps[entry.name] = entry.value.value
+          }
+        }
+        if (component.domTag && branchProps.hidden) branchProps.display = 'none'
+        if (component.domTag && platform === 'native') {
+          for (const [name, styleKey] of DOM_STYLE_ATTRIBUTES) {
+            if (name in branchProps) {
+              branchProps[styleKey] = branchProps[name]
+              delete branchProps[name]
+            }
+          }
+        }
+        const branchCompleteProps =
+          platform === 'native' && component.domTag && branchProps.display === 'flex'
+            ? core.mergeProps(
+                core.mergeProps(defaultProps, NATIVE_FLEX_DEFAULTS),
+                branchProps
+              )
+            : core.mergeProps(defaultProps, branchProps)
+        return { branchProps, branchCompleteProps }
+      }
       // Against completeProps, not props: clauses also arrive from styled()
       // defaults. Native resolution evaluates them against the build machine's
       // current state, so folding would freeze that state into the bundle.
@@ -2130,6 +2198,22 @@ export function createTamaguiCompilerHost(
           origin: span,
         }))
 
+      const isPropIgnored = (name: string) =>
+        isStyleProp(name, component) || isInvalidHostStyleProp(name, component)
+      const spreadReplacement = (
+        form: MaterializedElement['form'],
+        entry: MaterializedElement['entries'][number]
+      ) =>
+        spreadNonStyleReplacement(form, entry, isPropIgnored, (name, value) => {
+          if (platform !== 'web') return [name, value]
+          if (name === 'testID') return ['data-testid', value]
+          if (component.domTag && name === 'for') return ['htmlFor', value]
+          if (component.domTag && name === 'role' && value === 'none') {
+            return ['role', 'presentation']
+          }
+          return [name, value]
+        })
+
       let styleEntries = input.element.entries.filter(
         (entry) =>
           (entry.kind === 'prop' &&
@@ -2138,7 +2222,7 @@ export function createTamaguiCompilerHost(
           (entry.kind === 'spread' &&
             entry.value.kind === 'static' &&
             staticObject(entry.value.value) &&
-            Object.keys(entry.value.value).every(
+            Object.keys(entry.value.value).some(
               (name) =>
                 isStyleProp(name, component) || isInvalidHostStyleProp(name, component)
             ))
@@ -2176,6 +2260,23 @@ export function createTamaguiCompilerHost(
           invalidHostStyle.entry.span
         )
       }
+      if (platform === 'native' && component.domTag) {
+        const mixedSpread = styleEntries.find(
+          (entry) =>
+            entry.kind === 'spread' &&
+            entry.value.kind === 'static' &&
+            staticObject(entry.value.value) &&
+            Object.keys(entry.value.value).some((name) => !isPropIgnored(name))
+        )
+        if (mixedSpread) {
+          return bailout(
+            input,
+            'local/unsafe-style-spread',
+            'Native DOM prop mapping requires non-style spread props to remain on the runtime path',
+            mixedSpread.span
+          )
+        }
+      }
       const webPropEdits: SourceEdit[] =
         platform === 'web'
           ? input.element.entries.flatMap((entry) => {
@@ -2203,22 +2304,6 @@ export function createTamaguiCompilerHost(
           ? webDOMProps(input, component.domTag)
           : { edits: [] as SourceEdit[], additions: [] as [string, string][] }
       webPropEdits.push(...webDOMResult.edits)
-      const unsafeSpread = input.element.entries.find(
-        (entry) =>
-          entry.kind === 'spread' &&
-          !styleEntries.includes(entry) &&
-          entry.value.kind === 'static' &&
-          staticObject(entry.value.value) &&
-          Object.keys(entry.value.value).some((name) => isStyleProp(name, component))
-      )
-      if (unsafeSpread) {
-        return bailout(
-          input,
-          'local/unsafe-style-spread',
-          'A mixed style/non-style spread cannot be removed transactionally',
-          unsafeSpread.span
-        )
-      }
 
       if (platform === 'native') {
         const nativeStyleResolved = split.viewProps?.style
@@ -2498,6 +2583,8 @@ export function createTamaguiCompilerHost(
               })
             }
           }
+          const [first, ...rest] = styleEntries
+          const firstNonStyle = first ? spreadReplacement('jsx', first) : ''
           const propsEdits =
             input.element.form === 'jsx'
               ? styleEntries.length === 0
@@ -2511,19 +2598,21 @@ export function createTamaguiCompilerHost(
                   ]
                 : [
                     {
-                      start: styleEntries[0]!.span.start,
-                      end: styleEntries[0]!.span.end,
-                      content: propertyContent,
-                      origin: styleEntries[0]!.span,
+                      start: first!.span.start,
+                      end: first!.span.end,
+                      content: [propertyContent, firstNonStyle].filter(Boolean).join(' '),
+                      origin: first!.span,
                     },
-                    ...styleEntries.slice(1).map((entry) => ({
+                    ...rest.map((entry) => ({
                       start: entry.span.start,
                       end: entry.span.end,
-                      content: '',
+                      content: spreadReplacement('jsx', entry),
                       origin: entry.span,
                     })),
                   ]
-              : compiledPropsEdits(input, styleEntries, propertyContent)
+              : compiledPropsEdits(input, styleEntries, propertyContent, (entry) =>
+                  spreadReplacement(input.element.form, entry)
+                )
           if (!propsEdits) {
             return bailout(
               input,
@@ -2654,15 +2743,21 @@ export function createTamaguiCompilerHost(
               entry.value.kind === 'conditional' &&
               directStyleName(entry.name, component) !== 'opacity'
             ) {
-              const branchDiffs: Record<string, unknown>[] = []
-              for (const branchValue of [entry.value.whenTrue, entry.value.whenFalse]) {
+              const tree = entry.value.tree
+              const leaves = collectLeaves(tree)
+              const leafDiffs = new Map<
+                (typeof leaves)[number],
+                Record<string, unknown>
+              >()
+              for (const leaf of leaves) {
+                const { branchCompleteProps } = propsForConditional(entry, leaf.value)
                 const branchSplit = resolveSplitStyles(
-                  { ...completeProps, [entry.name]: branchValue },
+                  branchCompleteProps,
                   component.staticConfig,
                   cssAnimationDriver,
                   component.displayName
                 )
-                const branchStyle = branchSplit?.viewProps?.style
+                const branchStyle = branchSplit?.viewProps?.style ?? {}
                 if (!staticObject(branchStyle)) {
                   return bailout(
                     input,
@@ -2728,18 +2823,23 @@ export function createTamaguiCompilerHost(
                     )
                   }
                 }
-                branchDiffs.push(diff)
+                leafDiffs.set(leaf, diff)
               }
-              for (const diff of branchDiffs) {
+              for (const diff of leafDiffs.values()) {
                 for (const key of Object.keys(diff)) conditionalKeys.add(key)
               }
-              const index = expressions.length
-              expressions.push(
-                input.source.slice(entry.value.test.start, entry.value.test.end)
-              )
-              conditionalParts.push(
-                `expressions[${index}] ? ${JSON.stringify(branchDiffs[0])} : ${JSON.stringify(branchDiffs[1])}`
-              )
+
+              function serializeNativeTree(node: BranchDecisionNode): string {
+                if (node.kind === 'leaf') {
+                  const diff = leafDiffs.get(node) ?? {}
+                  return JSON.stringify(diff)
+                }
+                const index = expressions.length
+                expressions.push(input.source.slice(node.test.start, node.test.end))
+                return `expressions[${index}] ? ${serializeNativeTree(node.whenTrue)} : ${serializeNativeTree(node.whenFalse)}`
+              }
+
+              conditionalParts.push(serializeNativeTree(tree))
             } else {
               const index = expressions.length
               expressions.push(
@@ -2780,6 +2880,7 @@ export function createTamaguiCompilerHost(
               origin: span,
             }))
           const [first, ...rest] = styleEntries
+          const firstNonStyle = first ? spreadReplacement('jsx', first) : ''
           const expressionEdits =
             styleEntries.length === 0
               ? []
@@ -2788,23 +2889,28 @@ export function createTamaguiCompilerHost(
                     {
                       start: first!.span.start,
                       end: first!.span.end,
-                      content:
+                      content: [
                         expressions.length > 0
                           ? `_expressions={[${expressions.join(', ')}]}`
                           : '',
+                        firstNonStyle,
+                      ]
+                        .filter(Boolean)
+                        .join(' '),
                       origin: first!.span,
                     },
                     ...rest.map((entry) => ({
                       start: entry.span.start,
                       end: entry.span.end,
-                      content: '',
+                      content: spreadReplacement('jsx', entry),
                       origin: entry.span,
                     })),
                   ]
                 : compiledPropsEdits(
                     input,
                     styleEntries,
-                    `_expressions: [${expressions.join(', ')}]`
+                    `_expressions: [${expressions.join(', ')}]`,
+                    (entry) => spreadReplacement(input.element.form, entry)
                   )
           if (!expressionEdits) {
             return bailout(
@@ -2844,7 +2950,12 @@ export function createTamaguiCompilerHost(
             origin: span,
           }))
         if (input.element.form !== 'jsx') {
-          const propsEdits = compiledPropsEdits(input, styleEntries, styleContent)
+          const propsEdits = compiledPropsEdits(
+            input,
+            styleEntries,
+            styleContent,
+            (entry) => spreadReplacement(input.element.form, entry)
+          )
           if (!propsEdits) {
             return bailout(
               input,
@@ -2890,6 +3001,7 @@ export function createTamaguiCompilerHost(
           }
         }
         const [first, ...rest] = styleEntries
+        const firstNonStyle = first ? spreadReplacement('jsx', first) : ''
         return {
           ok: true,
           edits: [
@@ -2898,13 +3010,15 @@ export function createTamaguiCompilerHost(
             {
               start: first!.span.start,
               end: first!.span.end,
-              content: `style={${nativeStyleSource}}`,
+              content: [`style={${nativeStyleSource}}`, firstNonStyle]
+                .filter(Boolean)
+                .join(' '),
               origin: first!.span,
             },
             ...rest.map((entry) => ({
               start: entry.span.start,
               end: entry.span.end,
-              content: '',
+              content: spreadReplacement('jsx', entry),
               origin: entry.span,
             })),
           ],
@@ -3005,17 +3119,30 @@ export function createTamaguiCompilerHost(
       // branch's remainder becomes one ternary className segment. v3's web
       // font architecture makes this cheap: sizes are family-independent
       // variables, so a conditional fontFamily flips only its font_* class.
-      let webClassName = className
+      const baseStaticClasses = new Set(className.split(' ').filter(Boolean))
+      const staticClasses = new Set(baseStaticClasses)
       const webConditionalCSS: string[] = []
+      const webConditionalKeys = new Set<string>()
       const webConditionalEntries = supportsWebConditionalClasses
         ? dynamicStyleEntries.filter((entry) => entry.value.kind === 'conditional')
         : []
       for (const entry of webConditionalEntries) {
         if (entry.value.kind !== 'conditional') continue
-        const branches: { classes: string[]; css: string[] }[] = []
-        for (const branchValue of [entry.value.whenTrue, entry.value.whenFalse]) {
+        const tree = entry.value.tree
+        const leaves = collectLeaves(tree)
+        const leafArtifactsMap = new Map<
+          (typeof leaves)[number],
+          { classes: string[]; css: string[] }
+        >()
+        const entryConditionalKeys = new Set<string>()
+
+        for (const leaf of leaves) {
+          const { branchProps, branchCompleteProps } = propsForConditional(
+            entry,
+            leaf.value
+          )
           const branchSplit = resolveSplitStyles(
-            { ...completeProps, [entry.name]: branchValue },
+            branchCompleteProps,
             component.staticConfig,
             cssAnimationDriver,
             component.displayName
@@ -3045,33 +3172,94 @@ export function createTamaguiCompilerHost(
               )
             }
           }
+          const changedKeys = new Set<string>()
+          for (const key of new Set([
+            ...Object.keys(branchSplit.classNames ?? {}),
+            ...Object.keys(split.classNames ?? {}),
+          ])) {
+            if (
+              JSON.stringify(branchSplit.classNames?.[key]) !==
+              JSON.stringify(split.classNames?.[key])
+            ) {
+              changedKeys.add(key)
+            }
+          }
+          const branchStyle = branchSplit.viewProps?.style
+          const baseStyle = split.viewProps?.style
+          if (staticObject(branchStyle) || staticObject(baseStyle)) {
+            for (const key of new Set([
+              ...Object.keys(staticObject(branchStyle) ? branchStyle : {}),
+              ...Object.keys(staticObject(baseStyle) ? baseStyle : {}),
+            ])) {
+              if (
+                JSON.stringify(
+                  staticObject(branchStyle) ? branchStyle[key] : undefined
+                ) !== JSON.stringify(staticObject(baseStyle) ? baseStyle[key] : undefined)
+              ) {
+                changedKeys.add(key)
+              }
+            }
+          }
+          for (const key of changedKeys) {
+            if (webConditionalKeys.has(key)) {
+              return bailout(
+                input,
+                'local/dynamic-style-value',
+                `Multiple conditionals contribute ${key}; their interaction cannot be resolved per-branch`,
+                entry.value.span
+              )
+            }
+            entryConditionalKeys.add(key)
+          }
           const branchArtifacts = extractedStyleArtifacts(
             branchSplit,
-            { ...props, [entry.name]: branchValue },
+            branchProps,
             options.tamaguiConfig,
             !component.domTag,
             Boolean(component.staticConfig.styleFrontend)
           )
-          branches.push({
+          leafArtifactsMap.set(leaf, {
             classes: branchArtifacts.className.split(' ').filter(Boolean),
             css: branchArtifacts.css,
           })
         }
-        const [whenTrue, whenFalse] = branches
-        const shared = new Set(
-          whenTrue!.classes.filter((item) => whenFalse!.classes.includes(item))
-        )
-        const trueOnly = whenTrue!.classes.filter((item) => !shared.has(item))
-        const falseOnly = whenFalse!.classes.filter((item) => !shared.has(item))
-        webClassName = [...shared].join(' ')
-        webConditionalCSS.push(...whenTrue!.css, ...whenFalse!.css)
-        if (trueOnly.length > 0 || falseOnly.length > 0) {
-          const test = input.source.slice(entry.value.test.start, entry.value.test.end)
-          programClassSources.push(
-            `(${test}) ? ${JSON.stringify(trueOnly.join(' '))} : ${JSON.stringify(falseOnly.join(' '))}`
-          )
+        for (const key of entryConditionalKeys) webConditionalKeys.add(key)
+
+        for (const artifacts of leafArtifactsMap.values()) {
+          webConditionalCSS.push(...artifacts.css)
         }
+
+        const allLeafArtifacts = leaves.map((l) => leafArtifactsMap.get(l)!)
+        const sharedInConditional = new Set(
+          allLeafArtifacts[0]?.classes.filter((c) =>
+            allLeafArtifacts.every((a) => a.classes.includes(c))
+          ) ?? []
+        )
+        for (const cls of baseStaticClasses) {
+          if (!sharedInConditional.has(cls)) staticClasses.delete(cls)
+        }
+        for (const cls of sharedInConditional) {
+          if (!baseStaticClasses.has(cls)) staticClasses.add(cls)
+        }
+
+        function serializeWebTree(node: BranchDecisionNode): string {
+          if (node.kind === 'leaf') {
+            const artifacts = leafArtifactsMap.get(node)
+            const only = artifacts
+              ? artifacts.classes.filter((item) => !sharedInConditional.has(item))
+              : []
+            return JSON.stringify(only.join(' '))
+          }
+          const test = input.source.slice(node.test.start, node.test.end)
+          const truePart = serializeWebTree(node.whenTrue)
+          const falsePart = serializeWebTree(node.whenFalse)
+          return `(${test}) ? ${truePart} : ${falsePart}`
+        }
+
+        const classExpr = serializeWebTree(tree)
+        programClassSources.push(classExpr)
       }
+      const webClassName = [...staticClasses].join(' ')
       const hasStyleProgram = programClassSources.length > 0
       const classNameExpression = hasStyleProgram
         ? `[${[JSON.stringify(webClassName), ...programClassSources].join(', ')}].filter(Boolean).join(" ")`
@@ -3104,7 +3292,9 @@ export function createTamaguiCompilerHost(
       const webExtraProps = serializedProps(input.element.form, webDOMResult.additions)
       if (input.element.form !== 'jsx') {
         const replacement = [objectWebStyle, webExtraProps].filter(Boolean).join(', ')
-        const propsEdits = compiledPropsEdits(input, styleEntries, replacement)
+        const propsEdits = compiledPropsEdits(input, styleEntries, replacement, (entry) =>
+          spreadReplacement(input.element.form, entry)
+        )
         if (!propsEdits) {
           return bailout(
             input,
@@ -3143,7 +3333,10 @@ export function createTamaguiCompilerHost(
       }
 
       const [first, ...rest] = styleEntries
-      const attributes = [jsxWebStyle, webExtraProps].filter(Boolean).join(' ')
+      const firstNonStyle = first ? spreadReplacement('jsx', first) : ''
+      const attributes = [jsxWebStyle, webExtraProps, firstNonStyle]
+        .filter(Boolean)
+        .join(' ')
       return {
         ok: true,
         edits: [
@@ -3158,7 +3351,7 @@ export function createTamaguiCompilerHost(
           ...rest.map((entry) => ({
             start: entry.span.start,
             end: entry.span.end,
-            content: '',
+            content: spreadReplacement('jsx', entry),
             origin: entry.span,
           })),
         ],

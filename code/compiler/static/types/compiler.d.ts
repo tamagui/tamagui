@@ -97,7 +97,6 @@ export declare class CompilerFrontend {
     private readonly planCaches;
     private readonly moduleRecords;
     private moduleContext;
-    private compilerHost;
     /**
      * One cache per project root and platform. Absent when the project produced
      * no content stamp, in which case plans are never persisted rather than

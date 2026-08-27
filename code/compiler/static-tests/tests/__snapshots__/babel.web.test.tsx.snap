@@ -313,24 +313,24 @@ exports[`ternaries + font families works 1`] = `
 
 exports[`ternaries + font families works 2`] = `"._ff-398910644{font-family:var(--f-family)}"`;
 
-exports[`ternary with mixed theme-token and non-token values retains dynamic props 1`] = `
+exports[`ternary with mixed theme-token and non-token values lowers conditional classes 1`] = `
 "
     import { Text } from '@tamagui/core'
     export function Test({ isActive, label }) {
       return (
-        <Text
-          className="_fs-893655852"
-          fontWeight={isActive ? '600' : '400'}
-          color={isActive ? 'color12' : 'color11'}
+        <span
+          className={["is_Text _fs-893655852", (isActive) ? "_fw-509159631" : "_fw-509161553", (isActive) ? "_c-1791235615" : "_c-1675133514"].filter(Boolean).join(" ")}
+
+
         >
           {label}
-        </Text>
+        </span>
       )
     }
 "
 `;
 
-exports[`ternary with mixed theme-token and non-token values retains dynamic props 2`] = `"._fs-893655852{font-size:var(--f-size-3)}"`;
+exports[`ternary with mixed theme-token and non-token values lowers conditional classes 2`] = `"._fs-893655852{font-size:var(--f-size-3)}._fw-509159631{font-weight:600}._fw-509161553{font-weight:400}._c-1791235615{color:color12}._c-1675133514{color:var(--color11)}"`;
 
 exports[`theme + media queries + conditionals extract 1`] = `
 "

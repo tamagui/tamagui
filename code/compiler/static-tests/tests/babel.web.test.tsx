@@ -738,8 +738,8 @@ test('role attribute is preserved during extraction', async () => {
   expect(output?.js).toContain('button')
 })
 
-// dynamic font props remain when a disjoint static font prop is extracted
-test('ternary with mixed theme-token and non-token values retains dynamic props', async () => {
+// multiple disjoint ternaries lower to conditional class names and flatten
+test('ternary with mixed theme-token and non-token values lowers conditional classes', async () => {
   const output = await extractForWeb(
     `
     import { Text } from '@tamagui/core'
@@ -763,11 +763,16 @@ test('ternary with mixed theme-token and non-token values retains dynamic props'
     }
   )
 
-  // the static font size is disjoint, while both expressions stay on the runtime component.
   expect(output?.styles).toContain('font-size:var(--f-size-3)')
+  expect(output?.styles).toContain('font-weight:600')
+  expect(output?.styles).toContain('font-weight:400')
+  expect(output?.styles).toContain('color:color12')
+  expect(output?.styles).toContain('color:var(--color11)')
   expect(output?.js).not.toContain('fontSize="3"')
-  expect(output?.js).toContain("fontWeight={isActive ? '600' : '400'}")
-  expect(output?.js).toContain("color={isActive ? 'color12' : 'color11'}")
+  expect(output?.js).not.toContain('<Text')
+  expect(output?.js).toContain('<span')
+  expect(output?.js).toContain('(isActive) ? "_fw-509159631" : "_fw-509161553"')
+  expect(output?.js).toContain('(isActive) ? "_c-1791235615" : "_c-1675133514"')
   expect(output?.js).toMatchSnapshot()
   expect(output?.styles).toMatchSnapshot()
 })

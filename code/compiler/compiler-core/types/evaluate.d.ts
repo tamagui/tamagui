@@ -16,26 +16,26 @@ export interface DynamicEvaluation {
     values?: (number | string | boolean | null)[];
     dependencies: ResolvedModuleId[];
 }
-export interface ConditionalEvaluation {
-    /** Span of the test expression, sliced verbatim into compiled output. */
+export type BranchDecisionNode = {
+    kind: 'leaf';
+    value?: StaticEvaluationValue;
+    dependencies: ResolvedModuleId[];
+} | {
+    kind: 'branch';
     test: SourceSpan;
-    whenTrue: {
-        value: StaticEvaluationValue;
-        dependencies: ResolvedModuleId[];
-    };
-    whenFalse: {
-        value: StaticEvaluationValue;
-        dependencies: ResolvedModuleId[];
-    };
-}
+    whenTrue: BranchDecisionNode;
+    whenFalse: BranchDecisionNode;
+};
+export declare function collectLeaves(node: BranchDecisionNode): {
+    value?: StaticEvaluationValue;
+    dependencies: ResolvedModuleId[];
+}[];
+export declare function collectBranchDependencies(node: BranchDecisionNode): ResolvedModuleId[];
 /**
- * A conditional whose test resists static evaluation while both branches
- * evaluate: `cond ? 'body' : 'heading'`. Plain evaluation bails on the test;
- * this recovers the branch values so a lowering can resolve each branch at
- * compile time and leave only the test in the output. Returns null for any
- * other expression shape — the caller keeps its ordinary bailout.
+ * A conditional or logical expression whose test resists static evaluation while
+ * its branch values evaluate statically or form a decision tree.
  */
-export declare function evaluateConditionalExpression(resolver: SymbolResolver, reference: ExpressionReference): ConditionalEvaluation | null;
+export declare function evaluateBranches(resolver: SymbolResolver, reference: ExpressionReference): BranchDecisionNode | null;
 export declare function evaluateExpression(resolver: SymbolResolver, reference: ExpressionReference): EvaluationResult;
 /**
  * proves the runtime domain of a dynamic expression without evaluating its

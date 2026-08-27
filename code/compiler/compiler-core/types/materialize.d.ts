@@ -1,6 +1,6 @@
 import type { ResolvedModuleId, SourceSpan } from './contracts';
 import type { BailoutReason } from './diagnostics';
-import type { StaticEvaluationValue } from './evaluate';
+import type { BranchDecisionNode, StaticEvaluationValue } from './evaluate';
 import type { ProjectGraph } from './graph';
 import type { ComponentImportProvenance, ElementComponentIR, ElementIR, DOMStyleDefinitionIR } from './ir';
 export type MaterializedValue = {
@@ -28,9 +28,7 @@ export type MaterializedValue = {
      * is preserved for that purpose).
      */
     kind: 'conditional';
-    test: SourceSpan;
-    whenTrue: StaticEvaluationValue;
-    whenFalse: StaticEvaluationValue;
+    tree: BranchDecisionNode;
     dependencies: ResolvedModuleId[];
     bailout: BailoutReason;
     span: SourceSpan;

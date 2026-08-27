@@ -479,55 +479,185 @@ function evaluateDynamicNode(
   return null
 }
 
-export interface ConditionalEvaluation {
-  /** Span of the test expression, sliced verbatim into compiled output. */
-  test: SourceSpan
-  whenTrue: { value: StaticEvaluationValue; dependencies: ResolvedModuleId[] }
-  whenFalse: { value: StaticEvaluationValue; dependencies: ResolvedModuleId[] }
+export type BranchDecisionNode =
+  | {
+      kind: 'leaf'
+      value?: StaticEvaluationValue
+      dependencies: ResolvedModuleId[]
+    }
+  | {
+      kind: 'branch'
+      test: SourceSpan
+      whenTrue: BranchDecisionNode
+      whenFalse: BranchDecisionNode
+    }
+
+export function collectLeaves(
+  node: BranchDecisionNode
+): { value?: StaticEvaluationValue; dependencies: ResolvedModuleId[] }[] {
+  if (node.kind === 'leaf') return [node]
+  return [...collectLeaves(node.whenTrue), ...collectLeaves(node.whenFalse)]
+}
+
+export function collectBranchDependencies(node: BranchDecisionNode): ResolvedModuleId[] {
+  if (node.kind === 'leaf') return node.dependencies
+  return [
+    ...new Set([
+      ...collectBranchDependencies(node.whenTrue),
+      ...collectBranchDependencies(node.whenFalse),
+    ]),
+  ].sort()
+}
+
+function evaluateBranchChild(
+  resolver: SymbolResolver,
+  id: ResolvedModuleId,
+  node: AstNode,
+  depth: number,
+  state: EvaluationState,
+  sourceId: ResolvedModuleId
+): BranchDecisionNode | null {
+  const leafState: EvaluationState = {
+    activeDefinitions: new Set(state.activeDefinitions),
+    dependencies: new Set(state.dependencies),
+  }
+  const leafRes = evaluateNode(resolver, id, node, leafState)
+  if (leafRes.ok) {
+    return {
+      kind: 'leaf',
+      value: leafRes.value,
+      dependencies: [...leafState.dependencies].sort(),
+    }
+  }
+  return evaluateBranchesNode(resolver, id, node, depth + 1, leafState, sourceId)
+}
+
+function evaluateBranchesNode(
+  resolver: SymbolResolver,
+  id: ResolvedModuleId,
+  input: AstNode,
+  depth: number,
+  state: EvaluationState,
+  sourceId: ResolvedModuleId
+): BranchDecisionNode | null {
+  const node = unwrapExpression(input)
+  if (!isAstNode(node)) return null
+
+  if (node.type === 'Identifier') {
+    const name = identifierName(node)
+    if (!name) return null
+    const definition = resolver.resolveBinding(id, name)
+    if (!definition || !definition.constant || !definition.initializer) return null
+    const initializer = resolver.expressionNode(definition.initializer)
+    if (!initializer) return null
+    const key = `${definition.id}:${definition.span.start}`
+    if (state.activeDefinitions.has(key)) return null
+    state.activeDefinitions.add(key)
+    state.dependencies.add(definition.id)
+    try {
+      return evaluateBranchesNode(
+        resolver,
+        definition.id,
+        initializer,
+        depth,
+        state,
+        sourceId
+      )
+    } finally {
+      state.activeDefinitions.delete(key)
+    }
+  }
+
+  if (depth >= 3) return null
+
+  if (node.type === 'ConditionalExpression') {
+    const testNode = childNode(node, 'test')
+    const consequent = childNode(node, 'consequent')
+    const alternate = childNode(node, 'alternate')
+    if (!testNode || !consequent || !alternate) return null
+
+    const test = spanOf(id, testNode)
+    if (test.id !== sourceId) return null
+    const whenTrue = evaluateBranchChild(resolver, id, consequent, depth, state, sourceId)
+    if (!whenTrue) return null
+    const whenFalse = evaluateBranchChild(resolver, id, alternate, depth, state, sourceId)
+    if (!whenFalse) return null
+
+    return {
+      kind: 'branch',
+      test,
+      whenTrue,
+      whenFalse,
+    }
+  }
+
+  if (node.type === 'LogicalExpression') {
+    const left = childNode(node, 'left')
+    const right = childNode(node, 'right')
+    if (!left || !right) return null
+
+    if (node.operator === '&&') {
+      const test = spanOf(id, left)
+      if (test.id !== sourceId) return null
+      const whenTrue = evaluateBranchChild(resolver, id, right, depth, state, sourceId)
+      if (!whenTrue) return null
+      const whenFalse: BranchDecisionNode = {
+        kind: 'leaf',
+        value: undefined,
+        dependencies: [...state.dependencies].sort(),
+      }
+      return {
+        kind: 'branch',
+        test,
+        whenTrue,
+        whenFalse,
+      }
+    }
+
+    if (node.operator === '||' || node.operator === '??') {
+      const test = spanOf(id, left)
+      if (test.id !== sourceId) return null
+      const leftState: EvaluationState = {
+        activeDefinitions: new Set(state.activeDefinitions),
+        dependencies: new Set(state.dependencies),
+      }
+      const leftRes = evaluateNode(resolver, id, left, leftState)
+      if (!leftRes.ok) return null
+      const whenTrue: BranchDecisionNode = {
+        kind: 'leaf',
+        value: leftRes.value,
+        dependencies: [...leftState.dependencies].sort(),
+      }
+      const whenFalse = evaluateBranchChild(resolver, id, right, depth, state, sourceId)
+      if (!whenFalse) return null
+      return {
+        kind: 'branch',
+        test,
+        whenTrue,
+        whenFalse,
+      }
+    }
+  }
+
+  return null
 }
 
 /**
- * A conditional whose test resists static evaluation while both branches
- * evaluate: `cond ? 'body' : 'heading'`. Plain evaluation bails on the test;
- * this recovers the branch values so a lowering can resolve each branch at
- * compile time and leave only the test in the output. Returns null for any
- * other expression shape — the caller keeps its ordinary bailout.
+ * A conditional or logical expression whose test resists static evaluation while
+ * its branch values evaluate statically or form a decision tree.
  */
-export function evaluateConditionalExpression(
+export function evaluateBranches(
   resolver: SymbolResolver,
   reference: ExpressionReference
-): ConditionalEvaluation | null {
+): BranchDecisionNode | null {
   const node = resolver.expressionNode(reference)
   if (!node) return null
-  const expression = unwrapExpression(node)
-  if (!isAstNode(expression) || expression.type !== 'ConditionalExpression') return null
-  const testNode = childNode(expression, 'test')
-  const consequent = childNode(expression, 'consequent')
-  const alternate = childNode(expression, 'alternate')
-  if (!testNode || !consequent || !alternate) return null
-  const trueState: EvaluationState = {
+  const state: EvaluationState = {
     activeDefinitions: new Set(),
     dependencies: new Set(),
   }
-  const whenTrue = evaluateNode(resolver, reference.id, consequent, trueState)
-  if (!whenTrue.ok) return null
-  const falseState: EvaluationState = {
-    activeDefinitions: new Set(),
-    dependencies: new Set(),
-  }
-  const whenFalse = evaluateNode(resolver, reference.id, alternate, falseState)
-  if (!whenFalse.ok) return null
-  return {
-    test: spanOf(reference.id, testNode),
-    whenTrue: {
-      value: whenTrue.value,
-      dependencies: [...trueState.dependencies].sort(),
-    },
-    whenFalse: {
-      value: whenFalse.value,
-      dependencies: [...falseState.dependencies].sort(),
-    },
-  }
+  const tree = evaluateBranchesNode(resolver, reference.id, node, 0, state, reference.id)
+  return tree?.kind === 'branch' ? tree : null
 }
 
 export function evaluateExpression(
