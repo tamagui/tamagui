@@ -483,6 +483,11 @@ const shouldSkipTypes = shouldSwapExports
   : !!(hasFlag('--skip-types') || process.env.SKIP_TYPES)
 
 const shouldSkipNative = hasFlag('--skip-native')
+// a package that hosts both platforms at runtime (the compiler evaluates
+// modules per-platform and saves/restores process.env.TAMAGUI_TARGET) must
+// keep its env reads live: inlining them turns its save/restore into an
+// unconditional env flip
+const shouldSkipTargetDCE = hasFlag('--keep-env-target')
 const shouldSkipMJS = hasFlag('--skip-mjs')
 const shouldSkipSourceMaps =
   hasFlag('--skip-sourcemaps') || getEnvFlag('TAMAGUI_BUILD_SKIP_SOURCEMAPS')
@@ -1513,12 +1518,15 @@ async function esbuildWriteIfChanged(
         }
 
         if (!isMap && path.endsWith('.js')) {
-          const hadTamaguiTarget = contents.includes('process.env.TAMAGUI_TARGET')
-          contents = dceTamaguiTarget(contents, {
-            format: opts.format,
-            jsx: opts.jsx,
-            platform,
-          })
+          const hadTamaguiTarget =
+            !shouldSkipTargetDCE && contents.includes('process.env.TAMAGUI_TARGET')
+          if (!shouldSkipTargetDCE) {
+            contents = dceTamaguiTarget(contents, {
+              format: opts.format,
+              jsx: opts.jsx,
+              platform,
+            })
+          }
 
           if (isESM && hadTamaguiTarget) {
             contents = await pruneUnusedImports(contents, path)

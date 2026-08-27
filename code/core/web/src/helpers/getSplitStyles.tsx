@@ -90,8 +90,10 @@ export type SplitStyles = ReturnType<typeof getSplitStyles>
 const shouldTrackStyleTokenProvenance =
   process.env.NODE_ENV === 'development' &&
   process.env.TAMAGUI_ENABLE_STYLE_TOKEN_PROVENANCE === '1'
-const validComponentClassName =
-  process.env.TAMAGUI_TARGET === 'web' ? /^[A-Za-z_][A-Za-z0-9_-]*$/ : undefined
+// unconditional: a bare regex literal costs nothing on native, and a
+// target-conditional module constant breaks harnesses that load modules under
+// mixed TAMAGUI_TARGET values
+const validComponentClassName = /^[A-Za-z_][A-Za-z0-9_-]*$/
 
 export type SplitStyleResult = ReturnType<typeof getSplitStyles>
 
@@ -1441,7 +1443,7 @@ export const getSplitStyles: StyleSplitter = (
           !styleProps.displayName ||
           styleProps.displayName === 'Text' ||
           styleProps.displayName === 'View' ||
-          !validComponentClassName!.test(styleProps.displayName)
+          !validComponentClassName.test(styleProps.displayName)
             ? ''
             : `is_${styleProps.displayName}`
 

@@ -39,8 +39,8 @@
     "access": "public"
   },
   "scripts": {
-    "build": "tamagui-build --skip-native",
-    "watch": "tamagui-build --skip-native --watch",
+    "build": "tamagui-build --skip-native --keep-env-target",
+    "watch": "tamagui-build --skip-native --keep-env-target --watch",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },

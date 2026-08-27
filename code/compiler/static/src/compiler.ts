@@ -289,7 +289,22 @@ export class CompilerFrontend {
   }
 
   compile(input: CompilerInput): Promise<CompilerResult> {
-    const operation = this.queue.then(() => this.compileNow(input))
+    // compiling must not leak process-global state: internal stages set
+    // TAMAGUI_TARGET / IS_STATIC while evaluating modules for a platform, and
+    // an embedder (or a test that renders at runtime after compiling) must see
+    // its own environment unchanged afterward
+    const operation = this.queue.then(async () => {
+      const previousTarget = process.env.TAMAGUI_TARGET
+      const previousStatic = process.env.IS_STATIC
+      try {
+        return await this.compileNow(input)
+      } finally {
+        if (previousTarget === undefined) delete process.env.TAMAGUI_TARGET
+        else process.env.TAMAGUI_TARGET = previousTarget
+        if (previousStatic === undefined) delete process.env.IS_STATIC
+        else process.env.IS_STATIC = previousStatic
+      }
+    })
     this.queue = operation.catch(() => undefined)
     return operation
   }
