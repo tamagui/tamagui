@@ -24,6 +24,7 @@
     "inject-styles",
     "inject-styles.cjs",
     "internal-runtime",
+    "static-resolve",
     "native",
     "native.cjs",
     "native.d.ts",
@@ -96,6 +97,15 @@
       "import": "./dist/esm/internal-runtime.mjs",
       "require": "./dist/cjs/internal-runtime.cjs",
       "default": "./dist/esm/internal-runtime.mjs"
+    },
+    "./static-resolve": {
+      "types": "./types/static-resolve.d.ts",
+      "react-native": "./dist/esm/static-resolve.native.js",
+      "browser": "./dist/esm/static-resolve.mjs",
+      "module": "./dist/esm/static-resolve.mjs",
+      "import": "./dist/esm/static-resolve.mjs",
+      "require": "./dist/cjs/static-resolve.cjs",
+      "default": "./dist/esm/static-resolve.mjs"
     },
     "./inject-styles": {
       "types": "./types/inject-styles.d.ts",
