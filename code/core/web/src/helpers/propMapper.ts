@@ -1,4 +1,3 @@
-import { isAndroid } from '@tamagui/constants'
 import { scanFlatValue, type FlatValueHandler } from '@tamagui/style-grammar/runtime'
 import { isVariable } from '../createVariable'
 import type {
@@ -82,13 +81,10 @@ export const propMapper: PropMapper = (key, value, styleState, disabled, map) =>
     return map(key, value)
   }
 
-  if (process.env.TAMAGUI_TARGET === 'native' && !isAndroid) {
-    // this shouldnt be necessary and handled in the outer loop
-    if (key === 'elevationAndroid') return
-  }
-
   const { conf, styleProps, staticConfig } = styleState
   const { variants } = staticConfig
+  const { disableExpandShorthands, noExpand, resolveValues } = styleProps
+  const shorthands = conf.shorthands
 
   // "unset" is a CSS-wide keyword: valid CSS on web, but React Native
   // style props reject it (e.g. aspectRatio throws "must be a number, a
@@ -96,9 +92,8 @@ export const propMapper: PropMapper = (key, value, styleState, disabled, map) =>
   // styled default already merged for this key — matching web, where unset
   // resets toward initial — then drop the value so RN never sees it.
   if (process.env.TAMAGUI_TARGET === 'native' && value === 'unset') {
-    const expandedKey =
-      (!styleProps.disableExpandShorthands && conf.shorthands[key]) || key
-    const expanded = styleProps.noExpand
+    const expandedKey = (!disableExpandShorthands && shorthands[key]) || key
+    const expanded = noExpand
       ? null
       : expandStyle(expandedKey, value, conf.settings.styleCompat || 'web')
     if (styleState.style) {
@@ -113,7 +108,7 @@ export const propMapper: PropMapper = (key, value, styleState, disabled, map) =>
     return
   }
 
-  if (!styleProps.noExpand) {
+  if (!noExpand) {
     if (variants && key in variants) {
       const variantValue = resolveVariants(key, value, styleProps, styleState, '')
       if (variantValue) {
@@ -126,9 +121,9 @@ export const propMapper: PropMapper = (key, value, styleState, disabled, map) =>
   }
 
   // handle shorthands
-  if (!styleProps.disableExpandShorthands) {
-    if (key in conf.shorthands) {
-      key = conf.shorthands[key]
+  if (!disableExpandShorthands) {
+    if (key in shorthands) {
+      key = shorthands[key]
     }
   }
 
@@ -153,7 +148,7 @@ export const propMapper: PropMapper = (key, value, styleState, disabled, map) =>
     if (typeof value === 'string') {
       value = isRemValue(value) ? resolveRem(value) : value
     } else if (isVariable(value)) {
-      value = resolveVariableValue(key, value, styleProps.resolveValues)
+      value = resolveVariableValue(key, value, resolveValues)
     } else if (isRemValue(value)) {
       value = resolveRem(value)
     }
@@ -171,7 +166,7 @@ export const propMapper: PropMapper = (key, value, styleState, disabled, map) =>
 
     // strings stay whole for the direct flat-value scanner
     const expanded =
-      styleProps.noExpand || typeof value === 'string'
+      noExpand || typeof value === 'string'
         ? null
         : expandStyle(key, value, conf.settings.styleCompat || 'web')
 
@@ -404,6 +399,8 @@ const resolveTokensAndVariants: StyleResolver<object> = (
 ) => {
   const { conf, staticConfig, debug } = styleState
   const { variants } = staticConfig
+  const { noSkip, noExpand, resolveValues } = styleProps
+  const shorthands = conf.shorthands
   const res = {}
   let originalValues: Record<string, any> | undefined
 
@@ -412,17 +409,17 @@ const resolveTokensAndVariants: StyleResolver<object> = (
   }
 
   for (const _key in value) {
-    const subKey = conf.shorthands[_key] || _key
+    const subKey = shorthands[_key] || _key
     const val = value[_key]
 
-    if (!styleProps.noSkip && subKey in skipProps) {
+    if (!noSkip && subKey in skipProps) {
       continue
     }
 
     originalValues ||= {}
     originalValues[subKey] = val
 
-    if (styleProps.noExpand) {
+    if (noExpand) {
       res[subKey] = val
     } else {
       if (variants && subKey in variants) {
@@ -468,7 +465,7 @@ const resolveTokensAndVariants: StyleResolver<object> = (
     }
 
     if (isVariable(val)) {
-      res[subKey] = resolveVariableValue(subKey, val, styleProps.resolveValues)
+      res[subKey] = resolveVariableValue(subKey, val, resolveValues)
 
       if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
         console.info(`variable`, subKey, res[subKey])

@@ -490,6 +490,10 @@ export const getSplitStyles: StyleSplitter = (
     animationDriver ||
     componentContext?.animationDriver ||
     (conf.animations as AnimationDriverLike)
+  const driverAnimations = driver?.animations
+  const driverInputStyle = driver?.inputStyle
+  const driverOutputStyle = driver?.outputStyle
+  const driverIsReactNative = Boolean(driver?.isReactNative)
   const resolvedDriver = driver?.isStub ? null : (driver as AnimationDriver | null)
 
   if (props.passThrough) {
@@ -497,12 +501,7 @@ export const getSplitStyles: StyleSplitter = (
   }
 
   // a bit icky, we need no normalize but not fully
-  if (
-    isWeb &&
-    styleProps.isAnimated &&
-    driver?.isReactNative &&
-    !styleProps.noNormalize
-  ) {
+  if (isWeb && styleProps.isAnimated && driverIsReactNative && !styleProps.noNormalize) {
     styleProps.noNormalize = 'values'
   }
 
@@ -604,8 +603,17 @@ export const getSplitStyles: StyleSplitter = (
 
   const { asChild } = props
   const { accept, neverSkipProps } = staticConfig
-  const { noSkip, disableExpandShorthands, noExpand, styledContext, styledContextKeys } =
-    styleProps
+  const {
+    noSkip,
+    disableExpandShorthands,
+    noExpand,
+    noClass,
+    noMergeStyle,
+    noNormalize,
+    isAnimated,
+    styledContext,
+    styledContextKeys,
+  } = styleProps
 
   // frontend preprocessing runs once per render: createComponent already ran the
   // descriptor's preprocessProps and marked the result, so this only fires for
@@ -618,6 +626,15 @@ export const getSplitStyles: StyleSplitter = (
     processedProps = props
   }
   const parentVariants = parentStaticConfig?.variants
+  const defaultProps = asChild ? getDefaultProps(staticConfig) : undefined
+  const shouldSkipDirectProps = !noSkip && !isHOC
+  const shouldCheckSkipProps = !noSkip
+  const asChildExceptStyleLike =
+    asChild === 'except-style' || asChild === 'except-style-web'
+  const isTextOrInput = isText || isInput
+  const hocParentVariants = isHOC ? parentVariants : undefined
+  const canResolveContextPrograms = !isHOC
+  const animatedOrHOCUsesReactNativeDriver = (isAnimated || isHOC) && driverIsReactNative
   let containerValue: boolean | string | undefined
   let containerName: string | undefined
   let containerType: string | undefined
@@ -637,7 +654,7 @@ export const getSplitStyles: StyleSplitter = (
   }
 
   const mergeStylePropAtCurrentPosition = (styleProp: any) => {
-    if (styleProps.noMergeStyle || !styleProp) return
+    if (noMergeStyle || !styleProp) return
     // web HOCs hand the style prop to the inner component untouched, same
     // position contract as the style-key pass-through in contributeProp
     if (process.env.TAMAGUI_TARGET === 'web' && isHOC) {
@@ -746,7 +763,7 @@ export const getSplitStyles: StyleSplitter = (
         valInit &&
         typeof valInit === 'object'
       ) {
-        viewProps[keyInit] = getSubStyle(styleState, keyInit, valInit, styleProps.noClass)
+        viewProps[keyInit] = getSubStyle(styleState, keyInit, valInit, noClass)
         return
       }
     }
@@ -785,28 +802,25 @@ export const getSplitStyles: StyleSplitter = (
     }
 
     // when asChild, skip default props - they shouldn't be passed down to children
-    if (asChild) {
-      const defaults = getDefaultProps(staticConfig)
-      if (defaults) {
-        // check both original key and expanded key (after shorthand expansion)
-        const defaultVal = defaults[keyOg] ?? defaults[keyInit]
-        if (defaultVal !== undefined && valInit === defaultVal) {
-          return
-        }
+    if (defaultProps) {
+      // check both original key and expanded key (after shorthand expansion)
+      const defaultVal = defaultProps[keyOg] ?? defaultProps[keyInit]
+      if (defaultVal !== undefined && valInit === defaultVal) {
+        return
       }
     }
 
     // keyInit === 'style' is handled in skipProps
-    if (keyInit in skipProps && !noSkip && !isHOC && !neverSkipProps?.[keyInit]) {
+    if (keyInit in skipProps && shouldSkipDirectProps && !neverSkipProps?.[keyInit]) {
       if (process.env.TAMAGUI_TARGET === 'web' && keyInit === 'container') {
         containerValue = valInit
       }
       if (keyInit === 'transition' && typeof valInit === 'string') {
         if (process.env.TAMAGUI_TARGET === 'native') return
-        const animationConfig = driver?.animations?.[valInit]
+        const animationConfig = driverAnimations?.[valInit]
         if (
           animationConfig &&
-          driver?.outputStyle === 'css' &&
+          driverOutputStyle === 'css' &&
           process.env.IS_STATIC === 'is_static'
         ) {
           // css output needs no runtime component: lower its named transition
@@ -912,7 +926,7 @@ export const getSplitStyles: StyleSplitter = (
             // component, so keep testID for them too — otherwise a styled/HOC
             // primitive (e.g. a skinned Dialog.Overlay) loses its testID on native
             // and becomes untestable.
-            if ((styleProps.isAnimated || staticConfig.isHOC) && driver?.isReactNative) {
+            if (animatedOrHOCUsesReactNativeDriver) {
               viewProps.testID = valInit
             }
           }
@@ -930,14 +944,14 @@ export const getSplitStyles: StyleSplitter = (
     const isStyleLikeKey = isValidStyleKeyInit || isVariant
     const isStyleProp = isValidStyleKeyInit || (isVariant && !noExpand)
 
-    if (isStyleProp && (asChild === 'except-style' || asChild === 'except-style-web')) {
+    if (isStyleProp && asChildExceptStyleLike) {
       return
     }
 
     const shouldPassProp =
       (!isStyleProp && isHOC) ||
       // is in parent variants
-      (isHOC && parentVariants && keyInit in parentVariants) ||
+      (hocParentVariants && keyInit in hocParentVariants) ||
       inlineProps?.has(keyInit)
 
     const parentVariant = parentVariants?.[keyInit]
@@ -990,13 +1004,13 @@ export const getSplitStyles: StyleSplitter = (
     }
 
     // after shouldPassThrough
-    if (!noSkip && !neverSkipProps?.[keyInit]) {
+    if (shouldCheckSkipProps && !neverSkipProps?.[keyInit]) {
       if (
         keyInit in skipProps &&
         !(
           keyInit === 'transition' &&
           typeof valInit === 'string' &&
-          !driver?.animations?.[valInit]
+          !driverAnimations?.[valInit]
         )
       ) {
         if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
@@ -1007,7 +1021,7 @@ export const getSplitStyles: StyleSplitter = (
     }
 
     // we sort of have to update fontFamily all the time: before variants run, after each variant
-    if (isText || isInput) {
+    if (isTextOrInput) {
       if (
         valInit &&
         (keyInit === 'fontFamily' || keyInit === shorthands['fontFamily']) &&
@@ -1048,7 +1062,7 @@ export const getSplitStyles: StyleSplitter = (
           return
         }
 
-        if (!isHOC && disablePropMap && !isStyledContextProp) {
+        if (canResolveContextPrograms && disablePropMap && !isStyledContextProp) {
           // a text-only style prop on a non-text host must not leak to the DOM
           // as an unknown attribute (and RN would silently ignore it). every key
           // here already failed this host's validity table, so the extra check
@@ -1081,7 +1095,8 @@ export const getSplitStyles: StyleSplitter = (
         const isHostStyleKey =
           isValidStyleKey(key, validStyles, accept) ||
           (process.env.TAMAGUI_TARGET === 'native' && isAndroid && key === 'elevation')
-        const isContextProgramKey = !isHOC && Boolean(isStyledContextProp)
+        const isContextProgramKey =
+          canResolveContextPrograms && Boolean(isStyledContextProp)
 
         if (conditionSource !== undefined) {
           if (isHostStyleKey || isContextProgramKey) {
@@ -1137,8 +1152,7 @@ export const getSplitStyles: StyleSplitter = (
           viewProps[key] = props[key] ?? val
         }
 
-        const shouldPassThrough =
-          isHOC && Boolean(parentStaticConfig?.variants?.[keyInit])
+        const shouldPassThrough = Boolean(hocParentVariants && hocParentVariants[keyInit])
 
         if (shouldPassThrough) {
           passDownProp(viewProps, key, val)
@@ -1240,7 +1254,7 @@ export const getSplitStyles: StyleSplitter = (
   if (
     effectiveTransition != null &&
     styleState.style &&
-    (process.env.TAMAGUI_TARGET === 'native' || driver?.outputStyle !== 'css')
+    (process.env.TAMAGUI_TARGET === 'native' || driverOutputStyle !== 'css')
   ) {
     delete styleState.style.transition
   }
@@ -1254,15 +1268,15 @@ export const getSplitStyles: StyleSplitter = (
 
   // style prop after:
 
-  const avoidNormalize = styleProps.noNormalize === false
+  const avoidNormalize = noNormalize === false
 
   if (!avoidNormalize) {
     if (styleState.style) {
       fixStyles(styleState.style)
 
-      if (!styleProps.noExpand && !styleProps.noMergeStyle) {
+      if (!noExpand && !noMergeStyle) {
         // shouldn't this be better? but breaks some tests weirdly, need to check
-        if (isWeb && (isReactNative ? driver?.inputStyle !== 'css' : true)) {
+        if (isWeb && (isReactNative ? driverInputStyle !== 'css' : true)) {
           styleToCSS(styleState.style)
         }
       }
@@ -1310,10 +1324,10 @@ export const getSplitStyles: StyleSplitter = (
   // Button for example uses disableClassName: true but renders to a 'button' element, so needs this
   if (process.env.TAMAGUI_TARGET === 'web') {
     const shouldStringifyTransforms =
-      !styleProps.noNormalize &&
-      !staticConfig.isReactNative &&
-      !staticConfig.isHOC &&
-      (!styleProps.isAnimated || driver?.inputStyle === 'css')
+      !noNormalize &&
+      !isReactNative &&
+      !isHOC &&
+      (!isAnimated || driverInputStyle === 'css')
 
     if (shouldStringifyTransforms && Array.isArray(styleState.style?.transform)) {
       styleState.style.transform = transformsToString(styleState.style!.transform) as any
@@ -1415,10 +1429,7 @@ export const getSplitStyles: StyleSplitter = (
     }
   }
 
-  const asChildExceptStyleLike =
-    asChild === 'except-style' || asChild === 'except-style-web'
-
-  if (!styleProps.noMergeStyle) {
+  if (!noMergeStyle) {
     if (!asChildExceptStyleLike) {
       const style = styleState.style
 
@@ -1455,10 +1466,9 @@ export const getSplitStyles: StyleSplitter = (
 
         // use $$css for RNW components OR when animated with RNW driver
         // (driver's AnimatedView doesn't forward className)
-        const needsCssStyles =
-          isReactNative || (styleProps.isAnimated && driver?.isReactNative)
+        const needsCssStyles = isReactNative || (isAnimated && driverIsReactNative)
 
-        if (styleProps.isAnimated && driver?.inputStyle === 'css') {
+        if (isAnimated && driverInputStyle === 'css') {
           // CSS animation driver uses className directly
           viewProps.className = finalClassName
           if (style) {
