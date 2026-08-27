@@ -58,6 +58,7 @@ const inputs = {
   live: 'live-reference.html',
   illegal: 'illegal-static.html',
   global: 'global.html',
+  'global-hydration': 'global-hydration.html',
   'global-unimported': 'global-unimported.html',
   'global-missing': 'global.html',
   'global-stale': 'global.html',

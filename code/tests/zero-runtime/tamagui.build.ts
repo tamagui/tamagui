@@ -48,7 +48,11 @@ const isReportFixture = fixture === 'report'
 export default {
   components: ['tamagui', '@tamagui/tailwind'],
   config:
-    fixture === 'rules-motion' ? './tamagui.motion.config.ts' : './tamagui.config.ts',
+    fixture === 'rules-motion'
+      ? './tamagui.motion.config.ts'
+      : fixture === 'global-hydration'
+        ? './tamagui.global-hydration.config.ts'
+        : './tamagui.config.ts',
   ...(fixture === 'rules-runtime' ? { disableExtraction: true } : {}),
   ...(isReportFixture
     ? { experimental: { zeroRuntime: 'report' as const } }

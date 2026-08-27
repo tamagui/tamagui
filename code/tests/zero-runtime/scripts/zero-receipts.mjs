@@ -333,6 +333,13 @@ if (!globalBuild.ok)
   throw new Error(`compiled-global-css build failed:\n${globalBuild.output}`)
 const derivedBytes = clientBytes('dist-global')
 
+const globalHydrationBuild = build('global-hydration', 'dist-global-hydration')
+if (!globalHydrationBuild.ok) {
+  throw new Error(
+    `compiled-global-css hydration build failed:\n${globalHydrationBuild.output}`
+  )
+}
+
 // same source, same entry, same imported artifact: mutates-themes declares
 // runtime theme mutation, so the compiled-global claim is refused
 const ordinaryBuild = build('global', 'dist-global-mutates', [], {

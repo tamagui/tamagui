@@ -29,6 +29,11 @@ export default defineConfig({
       use: { baseURL: 'http://localhost:7882' },
     },
     {
+      name: 'vite-global-css-hydration',
+      testMatch: /vite-global-css-hydration\.test\.ts/,
+      use: { baseURL: 'http://localhost:7889' },
+    },
+    {
       name: 'vite-animated-number',
       testMatch: /vite-animated-number\.test\.ts/,
       use: { baseURL: 'http://localhost:7884' },
@@ -76,6 +81,12 @@ export default defineConfig({
     {
       command: 'npx vite preview --outDir dist-global-mutates --port 7882 --strictPort',
       url: 'http://localhost:7882/global.html',
+      reuseExistingServer: true,
+      stdout: 'ignore',
+    },
+    {
+      command: 'npx vite preview --outDir dist-global-hydration --port 7889 --strictPort',
+      url: 'http://localhost:7889/global-hydration.html',
       reuseExistingServer: true,
       stdout: 'ignore',
     },
