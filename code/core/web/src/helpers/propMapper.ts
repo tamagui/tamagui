@@ -4,6 +4,7 @@ import type {
   GetStyleState,
   PropMapper,
   SplitStyleProps,
+  StaticConfig,
   StyleResolver,
   TamaguiInternalConfig,
   Variable,
@@ -74,6 +75,34 @@ const propMapperHandler: FlatValueHandler<VariantScanContext> = {
   error(ctx) {
     ctx[2] = true
   },
+}
+
+// per-staticConfig union of every key the styled context declares, cached so
+// context-membership checks on the style write path are one Set lookup instead
+// of re-deriving config each time (issues #3670, #3676)
+const contextPropSets = new WeakMap<StaticConfig, Set<string> | null>()
+export function getContextPropSet(staticConfig: StaticConfig): Set<string> | null {
+  const cached = contextPropSets.get(staticConfig)
+  if (cached !== undefined) return cached
+  const contextConfig = staticConfig.context || staticConfig.parentStaticConfig?.context
+  const inheritedContextPropKeys =
+    !staticConfig.context ||
+    staticConfig.context === staticConfig.parentStaticConfig?.context
+      ? staticConfig.parentStaticConfig?.contextProps
+      : undefined
+  const contextPropKeys = staticConfig.contextProps || inheritedContextPropKeys
+  let set: Set<string> | null = null
+  const add = (key: string) => {
+    set ||= new Set()
+    set.add(key)
+  }
+  if (contextConfig?.props) for (const key in contextConfig.props) add(key)
+  if (contextPropKeys) for (const key of contextPropKeys) add(key)
+  if (contextConfig?.propKeys) for (const key of contextConfig.propKeys) add(key)
+  const parentPropKeys = staticConfig.parentStaticConfig?.context?.propKeys
+  if (parentPropKeys) for (const key of parentPropKeys) add(key)
+  contextPropSets.set(staticConfig, set)
+  return set
 }
 
 export const propMapper: PropMapper = (key, value, styleState, disabled, map) => {
@@ -418,6 +447,20 @@ const resolveTokensAndVariants: StyleResolver<object> = (
 
     originalValues ||= {}
     originalValues[subKey] = val
+
+    // track context overrides for any key in context props (issues #3670,
+    // #3676): store the ORIGINAL token value (like '8') before resolution so
+    // children's functional variants can look up token values. membership is a
+    // per-staticConfig cached Set, so this costs one lookup per key.
+    if (staticConfig) {
+      const contextPropSet = getContextPropSet(staticConfig)
+      if (contextPropSet?.has(subKey)) {
+        styleState.overriddenContextProps ||= {}
+        styleState.overriddenContextProps[subKey] = val
+        styleState.originalContextPropValues ||= {}
+        styleState.originalContextPropValues[subKey] = val
+      }
+    }
 
     if (noExpand) {
       res[subKey] = val

@@ -56,7 +56,7 @@ import { isPlainObject } from './isObj'
 import { log } from './log'
 import { normalizeStyle } from './normalizeStyle'
 import { normalizeValueWithProperty } from './normalizeValueWithProperty'
-import { appendFlatClause, propMapper } from './propMapper'
+import { appendFlatClause, getContextPropSet, propMapper } from './propMapper'
 import {
   clearDirectStyle,
   contributeStyleValue,
@@ -1580,6 +1580,20 @@ function mergeStyle(
   originalVal?: any
 ) {
   const { viewProps, styleProps, staticConfig } = styleState
+
+  // track context overrides for pseudo/media styles (issues #3670, #3676):
+  // when a style sets a key the styled context declares, propagate it via
+  // overriddenContextProps using the original token value (like '8') rather
+  // than the resolved CSS variable, so children's functional variants can look
+  // up token values. membership is a per-staticConfig cached Set.
+  const contextPropSet = getContextPropSet(staticConfig)
+  if (contextPropSet?.has(key)) {
+    styleState.overriddenContextProps ||= {}
+    // priority: originalVal from propMapper, tracked original from variant
+    // resolution, then the value itself
+    const originalFromState = styleState.originalContextPropValues?.[key]
+    styleState.overriddenContextProps[key] = originalVal ?? originalFromState ?? val
+  }
 
   if (key === 'transform' || key in stylePropsTransform) {
     styleState.transformAccumulator ||= createTransformAccumulator()
