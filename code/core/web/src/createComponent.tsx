@@ -1609,7 +1609,9 @@ export function createComponent<
         disposeSafeArea = subscribeToSafeArea(updateSafeArea)
         // close the render-to-subscribe race: the provider tracker may have
         // published new insets after this component evaluated its styles.
-        updateSafeArea()
+        if (process.env.TAMAGUI_TARGET === 'native') {
+          updateSafeArea()
+        }
       }
 
       if (disabled) return disposeSafeArea
