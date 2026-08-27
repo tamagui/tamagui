@@ -5,7 +5,10 @@ import { ComponentContext } from '../contexts/ComponentContext'
 import { GroupContext } from '../contexts/GroupContext'
 import { useSplitStyles } from '../helpers/getSplitStyles'
 import { subscribeToSafeArea } from '../helpers/resolveSafeAreaVariable'
-import { subscribeToContextGroup } from '../helpers/subscribeToContextGroup'
+import {
+  subscribeToContextGroup,
+  useGroupSetRevision,
+} from '../helpers/subscribeToContextGroup'
 import type { SplitStyleProps, StaticConfig, ThemeParsed, UseMediaState } from '../types'
 import type { ViewProps, ViewStyle } from '../views/View'
 import { View } from '../views/View'
@@ -129,6 +132,7 @@ export function usePropsAndStyle<A extends PropsLikeObject>(
   )
 
   const { mediaGroups, pseudoGroups } = splitStyles || {}
+  const groupSetRevision = useGroupSetRevision(pseudoGroups, mediaGroups)
 
   useIsomorphicLayoutEffect(() => {
     let disposeSafeArea: (() => void) | undefined
@@ -165,13 +169,7 @@ export function usePropsAndStyle<A extends PropsLikeObject>(
       }
     }
     return disposeSafeArea
-  }, [
-    disabled,
-    groupContext,
-    splitStyles?.usesSafeArea,
-    pseudoGroups ? Object.keys([...pseudoGroups]).join('') : 0,
-    mediaGroups ? Object.keys([...mediaGroups]).join('') : 0,
-  ])
+  }, [disabled, groupContext, splitStyles?.usesSafeArea, groupSetRevision])
 
   return [
     splitStyles?.viewProps || {},
