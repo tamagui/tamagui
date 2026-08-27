@@ -673,7 +673,7 @@
       "tamaguiSources": [
         "code/core/style-grammar/src/scanFlatValue.ts:1-191",
         "code/core/style-grammar/src/valueParser.ts:1-169",
-        "code/core/style-grammar/src/transformFamily.ts:1-590",
+        "code/core/style-grammar/src/transformFamily.ts:1-579",
         "code/core/style-grammar/src/transition.ts:1-553",
         "code/core/web/src/helpers/getSplitStyles.tsx:861-872"
       ],
