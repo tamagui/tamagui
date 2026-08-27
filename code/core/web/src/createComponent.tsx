@@ -102,25 +102,6 @@ const groupPseudoKeys = [
   'focusWithin',
 ] as const satisfies readonly (keyof PseudoGroupState)[]
 
-function getStyledContextKeys(
-  staticConfig: StaticConfig,
-  styledContextValue: GenericProps | undefined
-) {
-  const propKeys = staticConfig.contextProps || staticConfig.context?.propKeys
-  if (!propKeys) {
-    return styledContextValue
-  }
-
-  const out: GenericProps = {}
-  for (const key of propKeys) {
-    out[key] = true
-  }
-  if (styledContextValue) {
-    Object.assign(out, styledContextValue)
-  }
-  return out
-}
-
 if (process.env.TAMAGUI_TARGET !== 'native' && typeof window !== 'undefined') {
   const cancelPresses = () => {
     // clear all press downs
@@ -288,6 +269,11 @@ export function createComponent<
   let config: TamaguiInternalConfig | null = null
   let resolvedDefaultProps: Record<string, any> | undefined
   let didResolveDefaultProps = false
+  const styledContextPropKeys =
+    staticConfig.contextProps || staticConfig.context?.propKeys
+  const styledContextKeys = styledContextPropKeys
+    ? new Set(styledContextPropKeys)
+    : undefined
 
   const { Component, isText, isHOC } = staticConfig
 
@@ -851,7 +837,8 @@ export function createComponent<
       isAnimated,
       willBeAnimated,
       displayName,
-      styledContext: getStyledContextKeys(staticConfig, styledContextValue),
+      styledContext: styledContextValue,
+      styledContextKeys,
     } as const
 
     const themeName = themeState?.name || ''

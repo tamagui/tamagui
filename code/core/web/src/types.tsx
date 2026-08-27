@@ -3393,6 +3393,7 @@ export type ResolveVariableAs =
 export type SplitStyleProps = {
   displayName?: string
   styledContext?: Record<string, any>
+  styledContextKeys?: Set<string>
   mediaState?: Record<string, boolean>
   noClass?: boolean
   noExpand?: boolean

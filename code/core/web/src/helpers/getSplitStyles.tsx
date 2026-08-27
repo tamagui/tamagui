@@ -590,7 +590,8 @@ export const getSplitStyles: StyleSplitter = (
 
   const { asChild } = props
   const { accept, neverSkipProps } = staticConfig
-  const { noSkip, disableExpandShorthands, noExpand, styledContext } = styleProps
+  const { noSkip, disableExpandShorthands, noExpand, styledContext, styledContextKeys } =
+    styleProps
 
   // frontend preprocessing runs once per render: createComponent already ran the
   // descriptor's preprocessProps and marked the result, so this only fires for
@@ -1015,7 +1016,7 @@ export const getSplitStyles: StyleSplitter = (
       !(process.env.TAMAGUI_TARGET === 'native' && valInit === 'unset') &&
       !(variants && keyInit in variants) &&
       !(accept && keyInit in accept) &&
-      !(styledContext && keyInit in styledContext)
+      !(styledContextKeys?.has(keyInit) || (styledContext && keyInit in styledContext))
     ) {
       contributeStyleValue(styleState, keyInit, valInit, mergeStyle)
       return
@@ -1027,7 +1028,8 @@ export const getSplitStyles: StyleSplitter = (
       styleState,
       disablePropMap,
       (key, val, originalVal, conditionSource) => {
-        const isStyledContextProp = styledContext && key in styledContext
+        const isStyledContextProp =
+          styledContextKeys?.has(key) || (styledContext && key in styledContext)
 
         if (key === 'className') {
           if (typeof val === 'string' && val) {

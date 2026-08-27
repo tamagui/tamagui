@@ -1938,6 +1938,7 @@ export type ResolveVariableAs = 'auto' | 'value' | 'variable' | 'none' | 'web' |
 export type SplitStyleProps = {
     displayName?: string;
     styledContext?: Record<string, any>;
+    styledContextKeys?: Set<string>;
     mediaState?: Record<string, boolean>;
     noClass?: boolean;
     noExpand?: boolean;
