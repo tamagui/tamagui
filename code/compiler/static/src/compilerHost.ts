@@ -1674,8 +1674,11 @@ export function createTamaguiCompilerHost(
       const namedAnimationDriver =
         animatedBy === null ? null : options.tamaguiConfig.animationDrivers?.[animatedBy]
       const namedCssAnimationDriver =
-        platform === 'web' && namedAnimationDriver?.outputStyle === 'css'
-          ? namedAnimationDriver
+        platform === 'web' &&
+        namedAnimationDriver &&
+        !namedAnimationDriver.isStub &&
+        namedAnimationDriver.outputStyle === 'css'
+          ? (namedAnimationDriver as AnimationDriver)
           : null
       const cssAnimationDriver =
         namedCssAnimationDriver ??
