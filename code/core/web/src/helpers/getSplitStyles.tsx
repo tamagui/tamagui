@@ -67,7 +67,7 @@ import {
   resolveClauseChain,
 } from './directStyle'
 import { contributeFrontendProgram, isFrontendProgram } from './frontendProgram'
-import { skipProps } from './skipProps'
+import { HOC_CLASSNAME_MARKER, skipProps } from './skipProps'
 import { styleOriginalValues } from './styleOriginalValues'
 import {
   type StyleDebugReceipt,
@@ -666,7 +666,11 @@ export const getSplitStyles: StyleSplitter = (
   }
 
   const mergeStylePropAtCurrentPosition = (styleProp: any) => {
-    if (noMergeStyle || !styleProp) return
+    if (!styleProp) return
+    if (noMergeStyle) {
+      viewProps.style = styleProp
+      return
+    }
     const isArray = Array.isArray(styleProp)
     const length = isArray ? styleProp.length : 1
     for (let index = 0; index < length; index++) {
@@ -809,13 +813,15 @@ export const getSplitStyles: StyleSplitter = (
         typeof valInit === 'string' &&
         valInit
       ) {
+        if (noMergeStyle) {
+          viewProps.className = valInit
+          return
+        }
         // core className is raw interop: the string passes through untouched.
-        // a frontend-bound component's claimed candidates were already consumed
-        // by preprocessProps, so what remains here is passthrough CSS emitted
-        // after the base Tamagui layer — keep subsequent Tamagui contributions
-        // inline so they retain their later, last-wins cascade position
+        // HOC and frontend class transport marks an earlier generated layer,
+        // so keep later Tamagui contributions inline to retain their position
         className = `${className} ${valInit}`.trim()
-        if (styleFrontend) {
+        if (styleFrontend || props[HOC_CLASSNAME_MARKER] !== undefined) {
           flushForwardStylesToClasses()
           shouldDoClasses = false
           styleState.flatShouldDoClasses = false
@@ -1507,6 +1513,7 @@ export const getSplitStyles: StyleSplitter = (
         } else {
           // regular web: use className directly
           if (finalClassName) {
+            if (isHOC) viewProps[HOC_CLASSNAME_MARKER] = ''
             viewProps.className = finalClassName
           }
           if (style) {

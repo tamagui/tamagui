@@ -2293,5 +2293,6 @@ export function clearDirectStyle(state: GetStyleState, property: string) {
           : property
   if (direct.flatAtomics) delete direct.flatAtomics[atomicKey]
   if (atomicKey === 'transform') state.transformAccumulator = undefined
+  if (state.style) delete state.style[atomicKey]
   delete state.classNames[atomicKey]
 }
