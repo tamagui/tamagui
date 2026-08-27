@@ -56,7 +56,10 @@ export function scanAllSheets(
   collectThemes = false,
   tokens?: TokensParsed
 ): DedupedThemes | undefined {
-  if (!process.env.TAMAGUI_DID_OUTPUT_CSS) {
+  // with a proven CSS artifact the style dedup scan is dead weight, but theme
+  // collection must still run: a client config passing empty themes hydrates
+  // its theme values from that same CSS artifact
+  if (!process.env.TAMAGUI_DID_OUTPUT_CSS || collectThemes) {
     if (process.env.NODE_ENV === 'test') return
     if (process.env.TAMAGUI_TARGET !== 'web') return
     if (typeof document === 'undefined') return

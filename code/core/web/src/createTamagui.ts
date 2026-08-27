@@ -143,9 +143,11 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
   if (configIn.themes) {
     const noThemes = Object.keys(configIn.themes).length === 0
     const namesOnlyThemes = isNamesOnlyThemeProjection(configIn.themes)
-    if ((noThemes || namesOnlyThemes) && !process.env.TAMAGUI_DID_OUTPUT_CSS) {
+    if (noThemes || namesOnlyThemes) {
       // A names-only client projection keeps the grammar/config revision
       // deterministic while the CSS remains authoritative for actual values.
+      // This holds with an output CSS artifact too: that artifact is exactly
+      // the CSS an empty-themes client hydrates from.
       foundThemes = scanAllSheets(true, tokensParsed)
     }
   }
