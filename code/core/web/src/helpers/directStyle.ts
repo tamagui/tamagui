@@ -2016,16 +2016,6 @@ export function contributeStyleString(
   originalValue?: any,
   contextOnly = false
 ) {
-  if (
-    isWeb &&
-    source.indexOf(':') !== -1 &&
-    (webShadowParts.has(property) || legacyTransformParts.has(property))
-  ) {
-    if (process.env.NODE_ENV === 'development') {
-      warnOnce(`conditional "${property}" needs its composite property; dropping it`)
-    }
-    return true
-  }
   // no clause to cut, so the scanner below never runs on this value. nothing
   // validates it either: the `carriesTopLevelInjection` guard that used to
   // refuse a rule-breaking value here was dropped by owner decision, so a value
@@ -2177,14 +2167,6 @@ function contributeStyleObject(
   contextOnly: boolean
 ) {
   if (!isConditionalStyleObject(state, value)) return false
-  // parity with conditional strings: shadow and legacy transform parts on web
-  // cannot carry conditions of their own — the composite property owns them
-  if (isWeb && (webShadowParts.has(property) || legacyTransformParts.has(property))) {
-    if (process.env.NODE_ENV === 'development') {
-      warnOnce(`conditional "${property}" needs its composite property; dropping it`)
-    }
-    return true
-  }
   let hasBase = false
   const base = value.default
   if (base != null) {
@@ -2240,6 +2222,21 @@ export function contributeStyleValue(
   originalValue?: any,
   contextOnly = false
 ) {
+  if (
+    isWeb &&
+    (webShadowParts.has(property) || legacyTransformParts.has(property)) &&
+    ((typeof value === 'string' && value.indexOf(':') !== -1) ||
+      (value &&
+        typeof value === 'object' &&
+        !Array.isArray(value) &&
+        !isVariable(value) &&
+        isConditionalStyleObject(state, value)))
+  ) {
+    if (process.env.NODE_ENV === 'development') {
+      warnOnce(`conditional "${property}" needs its composite property; dropping it`)
+    }
+    return true
+  }
   if (value === 'safe' && isSafeAreaKey(property)) {
     const expanded = expandSafeAreaValue(property)
     if (expanded) {
