@@ -1857,7 +1857,7 @@ export type GetTokenFontKeysFor<
 > = keyof TamaguiConfig['fonts']['body'][A]
 
 export type FontTokens = GetTokenString<keyof TamaguiConfig['fonts']>
-export type FontFamilyTokens = GetTokenString<GetTokenFontKeysFor<'family'>>
+export type FontFamilyTokens = FontTokens
 export type FontSize =
   | GetTokenString<GetTokenFontKeysFor<'size'>>
   | number

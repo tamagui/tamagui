@@ -1,6 +1,12 @@
 import { describe, expectTypeOf, test } from 'vitest'
 
-import type { FlatStyleObject, FlatStyleValue, RootThemeName } from './types'
+import type {
+  FlatStyleObject,
+  FlatStyleValue,
+  FontFamilyTokens,
+  RootThemeName,
+  StackStyle,
+} from './types'
 
 declare const accepts: <T>(value: T) => void
 
@@ -41,5 +47,20 @@ describe('flat value types', () => {
       'group-hover/card': 4,
       'group-press': 5,
     })
+  })
+
+  test('native shadow props accept conditional strings', () => {
+    expectTypeOf<'dark:3 light:20'>().toMatchTypeOf<StackStyle['shadowRadius']>()
+    expectTypeOf<'dark:0.2 light:0.1'>().toMatchTypeOf<StackStyle['shadowOpacity']>()
+    expectTypeOf<'dark:shadow6 light:shadow4'>().toMatchTypeOf<
+      StackStyle['shadowColor']
+    >()
+    expectTypeOf<'dark:{width:0,height:2} light:{width:0,height:7}'>().toMatchTypeOf<
+      StackStyle['shadowOffset']
+    >()
+  })
+
+  test('font family tokens use their unprefixed v3 names', () => {
+    expectTypeOf<'mono'>().toMatchTypeOf<FontFamilyTokens>()
   })
 })
