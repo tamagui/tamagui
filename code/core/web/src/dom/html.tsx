@@ -40,6 +40,13 @@ import { viewStaticConfig } from '../views/View'
  */
 const tag = (name: string) => name as unknown as StaticConfig['Component']
 
+/** regular Tamagui non-style props win when the strict DOM contract names the same prop */
+type MergeHTMLProps<DOMProps, TamaguiProps, TamaguiNonStyleProps> = Omit<
+  DOMProps,
+  keyof TamaguiNonStyleProps
+> &
+  TamaguiProps
+
 /**
  * The semantic elements of the Tamagui DOM contract.
  *
@@ -52,9 +59,9 @@ const tag = (name: string) => name as unknown as StaticConfig['Component']
  */
 const a = setComponentDisplayName(
   createComponent<
-    StrictDOMAnchorProps & TextProps,
+    MergeHTMLProps<StrictDOMAnchorProps, TextProps, TextNonStyleProps>,
     TamaguiTextElement,
-    StrictDOMAnchorProps & TextNonStyleProps,
+    MergeHTMLProps<StrictDOMAnchorProps, TextNonStyleProps, TextNonStyleProps>,
     TextStylePropsBase
   >({
     ...textStaticConfig,
@@ -71,9 +78,9 @@ const a = setComponentDisplayName(
 
 const article = setComponentDisplayName(
   createComponent<
-    StrictDOMProps & ViewProps,
+    MergeHTMLProps<StrictDOMProps, ViewProps, StackNonStyleProps>,
     TamaguiElement,
-    StrictDOMProps & StackNonStyleProps,
+    MergeHTMLProps<StrictDOMProps, StackNonStyleProps, StackNonStyleProps>,
     StackStyleBase
   >({
     ...viewStaticConfig,
@@ -85,9 +92,9 @@ const article = setComponentDisplayName(
 
 const aside = setComponentDisplayName(
   createComponent<
-    StrictDOMProps & ViewProps,
+    MergeHTMLProps<StrictDOMProps, ViewProps, StackNonStyleProps>,
     TamaguiElement,
-    StrictDOMProps & StackNonStyleProps,
+    MergeHTMLProps<StrictDOMProps, StackNonStyleProps, StackNonStyleProps>,
     StackStyleBase
   >({
     ...viewStaticConfig,
@@ -99,9 +106,9 @@ const aside = setComponentDisplayName(
 
 const b = setComponentDisplayName(
   createComponent<
-    StrictDOMProps & TextProps,
+    MergeHTMLProps<StrictDOMProps, TextProps, TextNonStyleProps>,
     TamaguiTextElement,
-    StrictDOMProps & TextNonStyleProps,
+    MergeHTMLProps<StrictDOMProps, TextNonStyleProps, TextNonStyleProps>,
     TextStylePropsBase
   >({
     ...textStaticConfig,
@@ -119,9 +126,9 @@ const b = setComponentDisplayName(
 
 const bdi = setComponentDisplayName(
   createComponent<
-    StrictDOMProps & TextProps,
+    MergeHTMLProps<StrictDOMProps, TextProps, TextNonStyleProps>,
     TamaguiTextElement,
-    StrictDOMProps & TextNonStyleProps,
+    MergeHTMLProps<StrictDOMProps, TextNonStyleProps, TextNonStyleProps>,
     TextStylePropsBase
   >({
     ...textStaticConfig,
@@ -138,9 +145,9 @@ const bdi = setComponentDisplayName(
 
 const bdo = setComponentDisplayName(
   createComponent<
-    StrictDOMProps & TextProps,
+    MergeHTMLProps<StrictDOMProps, TextProps, TextNonStyleProps>,
     TamaguiTextElement,
-    StrictDOMProps & TextNonStyleProps,
+    MergeHTMLProps<StrictDOMProps, TextNonStyleProps, TextNonStyleProps>,
     TextStylePropsBase
   >({
     ...textStaticConfig,
@@ -157,9 +164,9 @@ const bdo = setComponentDisplayName(
 
 const blockquote = setComponentDisplayName(
   createComponent<
-    StrictDOMProps & ViewProps,
+    MergeHTMLProps<StrictDOMProps, ViewProps, StackNonStyleProps>,
     TamaguiElement,
-    StrictDOMProps & StackNonStyleProps,
+    MergeHTMLProps<StrictDOMProps, StackNonStyleProps, StackNonStyleProps>,
     StackStyleBase
   >({
     ...viewStaticConfig,
@@ -171,9 +178,9 @@ const blockquote = setComponentDisplayName(
 
 const br = setComponentDisplayName(
   createComponent<
-    StrictDOMVoidProps & TextProps,
+    MergeHTMLProps<StrictDOMVoidProps, TextProps, TextNonStyleProps>,
     TamaguiTextElement,
-    StrictDOMVoidProps & TextNonStyleProps,
+    MergeHTMLProps<StrictDOMVoidProps, TextNonStyleProps, TextNonStyleProps>,
     TextStylePropsBase
   >({
     ...textStaticConfig,
@@ -190,9 +197,9 @@ const br = setComponentDisplayName(
 
 const button = setComponentDisplayName(
   createComponent<
-    StrictDOMButtonProps & ViewProps,
+    MergeHTMLProps<StrictDOMButtonProps, ViewProps, StackNonStyleProps>,
     TamaguiElement,
-    StrictDOMButtonProps & StackNonStyleProps,
+    MergeHTMLProps<StrictDOMButtonProps, StackNonStyleProps, StackNonStyleProps>,
     StackStyleBase
   >({
     ...viewStaticConfig,
@@ -210,9 +217,9 @@ const button = setComponentDisplayName(
 
 const code = setComponentDisplayName(
   createComponent<
-    StrictDOMProps & TextProps,
+    MergeHTMLProps<StrictDOMProps, TextProps, TextNonStyleProps>,
     TamaguiTextElement,
-    StrictDOMProps & TextNonStyleProps,
+    MergeHTMLProps<StrictDOMProps, TextNonStyleProps, TextNonStyleProps>,
     TextStylePropsBase
   >({
     ...textStaticConfig,
@@ -231,9 +238,9 @@ const code = setComponentDisplayName(
 
 const del = setComponentDisplayName(
   createComponent<
-    StrictDOMProps & TextProps,
+    MergeHTMLProps<StrictDOMProps, TextProps, TextNonStyleProps>,
     TamaguiTextElement,
-    StrictDOMProps & TextNonStyleProps,
+    MergeHTMLProps<StrictDOMProps, TextNonStyleProps, TextNonStyleProps>,
     TextStylePropsBase
   >({
     ...textStaticConfig,
@@ -250,9 +257,9 @@ const del = setComponentDisplayName(
 
 const div = setComponentDisplayName(
   createComponent<
-    StrictDOMProps & ViewProps,
+    MergeHTMLProps<StrictDOMProps, ViewProps, StackNonStyleProps>,
     TamaguiElement,
-    StrictDOMProps & StackNonStyleProps,
+    MergeHTMLProps<StrictDOMProps, StackNonStyleProps, StackNonStyleProps>,
     StackStyleBase
   >({
     ...viewStaticConfig,
@@ -264,9 +271,9 @@ const div = setComponentDisplayName(
 
 const em = setComponentDisplayName(
   createComponent<
-    StrictDOMProps & TextProps,
+    MergeHTMLProps<StrictDOMProps, TextProps, TextNonStyleProps>,
     TamaguiTextElement,
-    StrictDOMProps & TextNonStyleProps,
+    MergeHTMLProps<StrictDOMProps, TextNonStyleProps, TextNonStyleProps>,
     TextStylePropsBase
   >({
     ...textStaticConfig,
@@ -284,9 +291,9 @@ const em = setComponentDisplayName(
 
 const fieldset = setComponentDisplayName(
   createComponent<
-    StrictDOMProps & ViewProps,
+    MergeHTMLProps<StrictDOMProps, ViewProps, StackNonStyleProps>,
     TamaguiElement,
-    StrictDOMProps & StackNonStyleProps,
+    MergeHTMLProps<StrictDOMProps, StackNonStyleProps, StackNonStyleProps>,
     StackStyleBase
   >({
     ...viewStaticConfig,
@@ -298,9 +305,9 @@ const fieldset = setComponentDisplayName(
 
 const footer = setComponentDisplayName(
   createComponent<
-    StrictDOMProps & ViewProps,
+    MergeHTMLProps<StrictDOMProps, ViewProps, StackNonStyleProps>,
     TamaguiElement,
-    StrictDOMProps & StackNonStyleProps,
+    MergeHTMLProps<StrictDOMProps, StackNonStyleProps, StackNonStyleProps>,
     StackStyleBase
   >({
     ...viewStaticConfig,
@@ -312,9 +319,9 @@ const footer = setComponentDisplayName(
 
 const form = setComponentDisplayName(
   createComponent<
-    StrictDOMProps & ViewProps,
+    MergeHTMLProps<StrictDOMProps, ViewProps, StackNonStyleProps>,
     TamaguiElement,
-    StrictDOMProps & StackNonStyleProps,
+    MergeHTMLProps<StrictDOMProps, StackNonStyleProps, StackNonStyleProps>,
     StackStyleBase
   >({
     ...viewStaticConfig,
@@ -326,9 +333,9 @@ const form = setComponentDisplayName(
 
 const h1 = setComponentDisplayName(
   createComponent<
-    StrictDOMProps & TextProps,
+    MergeHTMLProps<StrictDOMProps, TextProps, TextNonStyleProps>,
     TamaguiTextElement,
-    StrictDOMProps & TextNonStyleProps,
+    MergeHTMLProps<StrictDOMProps, TextNonStyleProps, TextNonStyleProps>,
     TextStylePropsBase
   >({
     ...textStaticConfig,
@@ -346,9 +353,9 @@ const h1 = setComponentDisplayName(
 
 const h2 = setComponentDisplayName(
   createComponent<
-    StrictDOMProps & TextProps,
+    MergeHTMLProps<StrictDOMProps, TextProps, TextNonStyleProps>,
     TamaguiTextElement,
-    StrictDOMProps & TextNonStyleProps,
+    MergeHTMLProps<StrictDOMProps, TextNonStyleProps, TextNonStyleProps>,
     TextStylePropsBase
   >({
     ...textStaticConfig,
@@ -366,9 +373,9 @@ const h2 = setComponentDisplayName(
 
 const h3 = setComponentDisplayName(
   createComponent<
-    StrictDOMProps & TextProps,
+    MergeHTMLProps<StrictDOMProps, TextProps, TextNonStyleProps>,
     TamaguiTextElement,
-    StrictDOMProps & TextNonStyleProps,
+    MergeHTMLProps<StrictDOMProps, TextNonStyleProps, TextNonStyleProps>,
     TextStylePropsBase
   >({
     ...textStaticConfig,
@@ -386,9 +393,9 @@ const h3 = setComponentDisplayName(
 
 const h4 = setComponentDisplayName(
   createComponent<
-    StrictDOMProps & TextProps,
+    MergeHTMLProps<StrictDOMProps, TextProps, TextNonStyleProps>,
     TamaguiTextElement,
-    StrictDOMProps & TextNonStyleProps,
+    MergeHTMLProps<StrictDOMProps, TextNonStyleProps, TextNonStyleProps>,
     TextStylePropsBase
   >({
     ...textStaticConfig,
@@ -406,9 +413,9 @@ const h4 = setComponentDisplayName(
 
 const h5 = setComponentDisplayName(
   createComponent<
-    StrictDOMProps & TextProps,
+    MergeHTMLProps<StrictDOMProps, TextProps, TextNonStyleProps>,
     TamaguiTextElement,
-    StrictDOMProps & TextNonStyleProps,
+    MergeHTMLProps<StrictDOMProps, TextNonStyleProps, TextNonStyleProps>,
     TextStylePropsBase
   >({
     ...textStaticConfig,
@@ -426,9 +433,9 @@ const h5 = setComponentDisplayName(
 
 const h6 = setComponentDisplayName(
   createComponent<
-    StrictDOMProps & TextProps,
+    MergeHTMLProps<StrictDOMProps, TextProps, TextNonStyleProps>,
     TamaguiTextElement,
-    StrictDOMProps & TextNonStyleProps,
+    MergeHTMLProps<StrictDOMProps, TextNonStyleProps, TextNonStyleProps>,
     TextStylePropsBase
   >({
     ...textStaticConfig,
@@ -446,9 +453,9 @@ const h6 = setComponentDisplayName(
 
 const header = setComponentDisplayName(
   createComponent<
-    StrictDOMProps & ViewProps,
+    MergeHTMLProps<StrictDOMProps, ViewProps, StackNonStyleProps>,
     TamaguiElement,
-    StrictDOMProps & StackNonStyleProps,
+    MergeHTMLProps<StrictDOMProps, StackNonStyleProps, StackNonStyleProps>,
     StackStyleBase
   >({
     ...viewStaticConfig,
@@ -460,9 +467,9 @@ const header = setComponentDisplayName(
 
 const hr = setComponentDisplayName(
   createComponent<
-    StrictDOMVoidProps & ViewProps,
+    MergeHTMLProps<StrictDOMVoidProps, ViewProps, StackNonStyleProps>,
     TamaguiElement,
-    StrictDOMVoidProps & StackNonStyleProps,
+    MergeHTMLProps<StrictDOMVoidProps, StackNonStyleProps, StackNonStyleProps>,
     StackStyleBase
   >({
     ...viewStaticConfig,
@@ -483,9 +490,9 @@ const hr = setComponentDisplayName(
 
 const i = setComponentDisplayName(
   createComponent<
-    StrictDOMProps & TextProps,
+    MergeHTMLProps<StrictDOMProps, TextProps, TextNonStyleProps>,
     TamaguiTextElement,
-    StrictDOMProps & TextNonStyleProps,
+    MergeHTMLProps<StrictDOMProps, TextNonStyleProps, TextNonStyleProps>,
     TextStylePropsBase
   >({
     ...textStaticConfig,
@@ -503,9 +510,9 @@ const i = setComponentDisplayName(
 
 const img = setComponentDisplayName(
   createComponent<
-    StrictDOMImageProps & ViewProps,
+    MergeHTMLProps<StrictDOMImageProps, ViewProps, StackNonStyleProps>,
     TamaguiElement,
-    StrictDOMImageProps & StackNonStyleProps,
+    MergeHTMLProps<StrictDOMImageProps, StackNonStyleProps, StackNonStyleProps>,
     StackStyleBase
   >({
     ...viewStaticConfig,
@@ -525,9 +532,9 @@ const img = setComponentDisplayName(
 
 const input = setComponentDisplayName(
   createComponent<
-    StrictDOMInputProps & TextProps,
+    MergeHTMLProps<StrictDOMInputProps, TextProps, TextNonStyleProps>,
     TamaguiTextElement,
-    StrictDOMInputProps & TextNonStyleProps,
+    MergeHTMLProps<StrictDOMInputProps, TextNonStyleProps, TextNonStyleProps>,
     TextStylePropsBase
   >({
     ...textStaticConfig,
@@ -546,9 +553,9 @@ const input = setComponentDisplayName(
 
 const ins = setComponentDisplayName(
   createComponent<
-    StrictDOMProps & TextProps,
+    MergeHTMLProps<StrictDOMProps, TextProps, TextNonStyleProps>,
     TamaguiTextElement,
-    StrictDOMProps & TextNonStyleProps,
+    MergeHTMLProps<StrictDOMProps, TextNonStyleProps, TextNonStyleProps>,
     TextStylePropsBase
   >({
     ...textStaticConfig,
@@ -565,9 +572,9 @@ const ins = setComponentDisplayName(
 
 const kbd = setComponentDisplayName(
   createComponent<
-    StrictDOMProps & TextProps,
+    MergeHTMLProps<StrictDOMProps, TextProps, TextNonStyleProps>,
     TamaguiTextElement,
-    StrictDOMProps & TextNonStyleProps,
+    MergeHTMLProps<StrictDOMProps, TextNonStyleProps, TextNonStyleProps>,
     TextStylePropsBase
   >({
     ...textStaticConfig,
@@ -586,9 +593,9 @@ const kbd = setComponentDisplayName(
 
 const label = setComponentDisplayName(
   createComponent<
-    StrictDOMLabelProps & TextProps,
+    MergeHTMLProps<StrictDOMLabelProps, TextProps, TextNonStyleProps>,
     TamaguiTextElement,
-    StrictDOMLabelProps & TextNonStyleProps,
+    MergeHTMLProps<StrictDOMLabelProps, TextNonStyleProps, TextNonStyleProps>,
     TextStylePropsBase
   >({
     ...textStaticConfig,
@@ -605,9 +612,9 @@ const label = setComponentDisplayName(
 
 const li = setComponentDisplayName(
   createComponent<
-    StrictDOMListItemProps & ViewProps,
+    MergeHTMLProps<StrictDOMListItemProps, ViewProps, StackNonStyleProps>,
     TamaguiElement,
-    StrictDOMListItemProps & StackNonStyleProps,
+    MergeHTMLProps<StrictDOMListItemProps, StackNonStyleProps, StackNonStyleProps>,
     StackStyleBase
   >({
     ...viewStaticConfig,
@@ -619,9 +626,9 @@ const li = setComponentDisplayName(
 
 const main = setComponentDisplayName(
   createComponent<
-    StrictDOMProps & ViewProps,
+    MergeHTMLProps<StrictDOMProps, ViewProps, StackNonStyleProps>,
     TamaguiElement,
-    StrictDOMProps & StackNonStyleProps,
+    MergeHTMLProps<StrictDOMProps, StackNonStyleProps, StackNonStyleProps>,
     StackStyleBase
   >({
     ...viewStaticConfig,
@@ -633,9 +640,9 @@ const main = setComponentDisplayName(
 
 const mark = setComponentDisplayName(
   createComponent<
-    StrictDOMProps & TextProps,
+    MergeHTMLProps<StrictDOMProps, TextProps, TextNonStyleProps>,
     TamaguiTextElement,
-    StrictDOMProps & TextNonStyleProps,
+    MergeHTMLProps<StrictDOMProps, TextNonStyleProps, TextNonStyleProps>,
     TextStylePropsBase
   >({
     ...textStaticConfig,
@@ -654,9 +661,9 @@ const mark = setComponentDisplayName(
 
 const nav = setComponentDisplayName(
   createComponent<
-    StrictDOMProps & ViewProps,
+    MergeHTMLProps<StrictDOMProps, ViewProps, StackNonStyleProps>,
     TamaguiElement,
-    StrictDOMProps & StackNonStyleProps,
+    MergeHTMLProps<StrictDOMProps, StackNonStyleProps, StackNonStyleProps>,
     StackStyleBase
   >({
     ...viewStaticConfig,
@@ -668,9 +675,9 @@ const nav = setComponentDisplayName(
 
 const ol = setComponentDisplayName(
   createComponent<
-    StrictDOMProps & ViewProps,
+    MergeHTMLProps<StrictDOMProps, ViewProps, StackNonStyleProps>,
     TamaguiElement,
-    StrictDOMProps & StackNonStyleProps,
+    MergeHTMLProps<StrictDOMProps, StackNonStyleProps, StackNonStyleProps>,
     StackStyleBase
   >({
     ...viewStaticConfig,
@@ -682,9 +689,9 @@ const ol = setComponentDisplayName(
 
 const optgroup = setComponentDisplayName(
   createComponent<
-    StrictDOMOptionGroupProps & ViewProps,
+    MergeHTMLProps<StrictDOMOptionGroupProps, ViewProps, StackNonStyleProps>,
     TamaguiElement,
-    StrictDOMOptionGroupProps & StackNonStyleProps,
+    MergeHTMLProps<StrictDOMOptionGroupProps, StackNonStyleProps, StackNonStyleProps>,
     StackStyleBase
   >({
     ...viewStaticConfig,
@@ -696,9 +703,9 @@ const optgroup = setComponentDisplayName(
 
 const option = setComponentDisplayName(
   createComponent<
-    StrictDOMOptionProps & TextProps,
+    MergeHTMLProps<StrictDOMOptionProps, TextProps, TextNonStyleProps>,
     TamaguiTextElement,
-    StrictDOMOptionProps & TextNonStyleProps,
+    MergeHTMLProps<StrictDOMOptionProps, TextNonStyleProps, TextNonStyleProps>,
     TextStylePropsBase
   >({
     ...textStaticConfig,
@@ -710,9 +717,9 @@ const option = setComponentDisplayName(
 
 const p = setComponentDisplayName(
   createComponent<
-    StrictDOMProps & TextProps,
+    MergeHTMLProps<StrictDOMProps, TextProps, TextNonStyleProps>,
     TamaguiTextElement,
-    StrictDOMProps & TextNonStyleProps,
+    MergeHTMLProps<StrictDOMProps, TextNonStyleProps, TextNonStyleProps>,
     TextStylePropsBase
   >({
     ...textStaticConfig,
@@ -724,9 +731,9 @@ const p = setComponentDisplayName(
 
 const pre = setComponentDisplayName(
   createComponent<
-    StrictDOMProps & TextProps,
+    MergeHTMLProps<StrictDOMProps, TextProps, TextNonStyleProps>,
     TamaguiTextElement,
-    StrictDOMProps & TextNonStyleProps,
+    MergeHTMLProps<StrictDOMProps, TextNonStyleProps, TextNonStyleProps>,
     TextStylePropsBase
   >({
     ...textStaticConfig,
@@ -745,9 +752,9 @@ const pre = setComponentDisplayName(
 
 const s = setComponentDisplayName(
   createComponent<
-    StrictDOMProps & TextProps,
+    MergeHTMLProps<StrictDOMProps, TextProps, TextNonStyleProps>,
     TamaguiTextElement,
-    StrictDOMProps & TextNonStyleProps,
+    MergeHTMLProps<StrictDOMProps, TextNonStyleProps, TextNonStyleProps>,
     TextStylePropsBase
   >({
     ...textStaticConfig,
@@ -764,9 +771,9 @@ const s = setComponentDisplayName(
 
 const section = setComponentDisplayName(
   createComponent<
-    StrictDOMProps & ViewProps,
+    MergeHTMLProps<StrictDOMProps, ViewProps, StackNonStyleProps>,
     TamaguiElement,
-    StrictDOMProps & StackNonStyleProps,
+    MergeHTMLProps<StrictDOMProps, StackNonStyleProps, StackNonStyleProps>,
     StackStyleBase
   >({
     ...viewStaticConfig,
@@ -778,9 +785,9 @@ const section = setComponentDisplayName(
 
 const select = setComponentDisplayName(
   createComponent<
-    StrictDOMSelectProps & ViewProps,
+    MergeHTMLProps<StrictDOMSelectProps, ViewProps, StackNonStyleProps>,
     TamaguiElement,
-    StrictDOMSelectProps & StackNonStyleProps,
+    MergeHTMLProps<StrictDOMSelectProps, StackNonStyleProps, StackNonStyleProps>,
     StackStyleBase
   >({
     ...viewStaticConfig,
@@ -797,9 +804,9 @@ const select = setComponentDisplayName(
 
 const span = setComponentDisplayName(
   createComponent<
-    StrictDOMProps & TextProps,
+    MergeHTMLProps<StrictDOMProps, TextProps, TextNonStyleProps>,
     TamaguiTextElement,
-    StrictDOMProps & TextNonStyleProps,
+    MergeHTMLProps<StrictDOMProps, TextNonStyleProps, TextNonStyleProps>,
     TextStylePropsBase
   >({
     ...textStaticConfig,
@@ -816,9 +823,9 @@ const span = setComponentDisplayName(
 
 const strong = setComponentDisplayName(
   createComponent<
-    StrictDOMProps & TextProps,
+    MergeHTMLProps<StrictDOMProps, TextProps, TextNonStyleProps>,
     TamaguiTextElement,
-    StrictDOMProps & TextNonStyleProps,
+    MergeHTMLProps<StrictDOMProps, TextNonStyleProps, TextNonStyleProps>,
     TextStylePropsBase
   >({
     ...textStaticConfig,
@@ -836,9 +843,9 @@ const strong = setComponentDisplayName(
 
 const sub = setComponentDisplayName(
   createComponent<
-    StrictDOMProps & TextProps,
+    MergeHTMLProps<StrictDOMProps, TextProps, TextNonStyleProps>,
     TamaguiTextElement,
-    StrictDOMProps & TextNonStyleProps,
+    MergeHTMLProps<StrictDOMProps, TextNonStyleProps, TextNonStyleProps>,
     TextStylePropsBase
   >({
     ...textStaticConfig,
@@ -855,9 +862,9 @@ const sub = setComponentDisplayName(
 
 const sup = setComponentDisplayName(
   createComponent<
-    StrictDOMProps & TextProps,
+    MergeHTMLProps<StrictDOMProps, TextProps, TextNonStyleProps>,
     TamaguiTextElement,
-    StrictDOMProps & TextNonStyleProps,
+    MergeHTMLProps<StrictDOMProps, TextNonStyleProps, TextNonStyleProps>,
     TextStylePropsBase
   >({
     ...textStaticConfig,
@@ -874,9 +881,9 @@ const sup = setComponentDisplayName(
 
 const textarea = setComponentDisplayName(
   createComponent<
-    StrictDOMTextAreaProps & TextProps,
+    MergeHTMLProps<StrictDOMTextAreaProps, TextProps, TextNonStyleProps>,
     TamaguiTextElement,
-    StrictDOMTextAreaProps & TextNonStyleProps,
+    MergeHTMLProps<StrictDOMTextAreaProps, TextNonStyleProps, TextNonStyleProps>,
     TextStylePropsBase
   >({
     ...textStaticConfig,
@@ -895,9 +902,9 @@ const textarea = setComponentDisplayName(
 
 const u = setComponentDisplayName(
   createComponent<
-    StrictDOMProps & TextProps,
+    MergeHTMLProps<StrictDOMProps, TextProps, TextNonStyleProps>,
     TamaguiTextElement,
-    StrictDOMProps & TextNonStyleProps,
+    MergeHTMLProps<StrictDOMProps, TextNonStyleProps, TextNonStyleProps>,
     TextStylePropsBase
   >({
     ...textStaticConfig,
@@ -914,9 +921,9 @@ const u = setComponentDisplayName(
 
 const ul = setComponentDisplayName(
   createComponent<
-    StrictDOMProps & ViewProps,
+    MergeHTMLProps<StrictDOMProps, ViewProps, StackNonStyleProps>,
     TamaguiElement,
-    StrictDOMProps & StackNonStyleProps,
+    MergeHTMLProps<StrictDOMProps, StackNonStyleProps, StackNonStyleProps>,
     StackStyleBase
   >({
     ...viewStaticConfig,

@@ -177,12 +177,19 @@ const domValidStyles = {
  */
 const primitive = (component: unknown) => component as StaticConfig['Component']
 
+/** regular Tamagui non-style props win when the strict DOM contract names the same prop */
+type MergeHTMLProps<DOMProps, TamaguiProps, TamaguiNonStyleProps> = Omit<
+  DOMProps,
+  keyof TamaguiNonStyleProps
+> &
+  TamaguiProps
+
 const a = domTag(
   'a',
   createComponent<
-    StrictDOMAnchorProps & TextProps,
+    MergeHTMLProps<StrictDOMAnchorProps, TextProps, TextNonStyleProps>,
     TamaguiTextElement,
-    StrictDOMAnchorProps & TextNonStyleProps,
+    MergeHTMLProps<StrictDOMAnchorProps, TextNonStyleProps, TextNonStyleProps>,
     TextStylePropsBase
   >({
     ...textStaticConfig,
@@ -201,9 +208,9 @@ const a = domTag(
 const article = domTag(
   'article',
   createComponent<
-    StrictDOMProps & ViewProps,
+    MergeHTMLProps<StrictDOMProps, ViewProps, StackNonStyleProps>,
     TamaguiElement,
-    StrictDOMProps & StackNonStyleProps,
+    MergeHTMLProps<StrictDOMProps, StackNonStyleProps, StackNonStyleProps>,
     StackStyleBase
   >({
     ...viewStaticConfig,
@@ -229,9 +236,9 @@ const article = domTag(
 const aside = domTag(
   'aside',
   createComponent<
-    StrictDOMProps & ViewProps,
+    MergeHTMLProps<StrictDOMProps, ViewProps, StackNonStyleProps>,
     TamaguiElement,
-    StrictDOMProps & StackNonStyleProps,
+    MergeHTMLProps<StrictDOMProps, StackNonStyleProps, StackNonStyleProps>,
     StackStyleBase
   >({
     ...viewStaticConfig,
@@ -257,9 +264,9 @@ const aside = domTag(
 const b = domTag(
   'b',
   createComponent<
-    StrictDOMProps & TextProps,
+    MergeHTMLProps<StrictDOMProps, TextProps, TextNonStyleProps>,
     TamaguiTextElement,
-    StrictDOMProps & TextNonStyleProps,
+    MergeHTMLProps<StrictDOMProps, TextNonStyleProps, TextNonStyleProps>,
     TextStylePropsBase
   >({
     ...textStaticConfig,
@@ -279,9 +286,9 @@ const b = domTag(
 const bdi = domTag(
   'bdi',
   createComponent<
-    StrictDOMProps & TextProps,
+    MergeHTMLProps<StrictDOMProps, TextProps, TextNonStyleProps>,
     TamaguiTextElement,
-    StrictDOMProps & TextNonStyleProps,
+    MergeHTMLProps<StrictDOMProps, TextNonStyleProps, TextNonStyleProps>,
     TextStylePropsBase
   >({
     ...textStaticConfig,
@@ -300,9 +307,9 @@ const bdi = domTag(
 const bdo = domTag(
   'bdo',
   createComponent<
-    StrictDOMProps & TextProps,
+    MergeHTMLProps<StrictDOMProps, TextProps, TextNonStyleProps>,
     TamaguiTextElement,
-    StrictDOMProps & TextNonStyleProps,
+    MergeHTMLProps<StrictDOMProps, TextNonStyleProps, TextNonStyleProps>,
     TextStylePropsBase
   >({
     ...textStaticConfig,
@@ -321,9 +328,9 @@ const bdo = domTag(
 const blockquote = domTag(
   'blockquote',
   createComponent<
-    StrictDOMProps & ViewProps,
+    MergeHTMLProps<StrictDOMProps, ViewProps, StackNonStyleProps>,
     TamaguiElement,
-    StrictDOMProps & StackNonStyleProps,
+    MergeHTMLProps<StrictDOMProps, StackNonStyleProps, StackNonStyleProps>,
     StackStyleBase
   >({
     ...viewStaticConfig,
@@ -349,9 +356,9 @@ const blockquote = domTag(
 const br = domTag(
   'br',
   createComponent<
-    StrictDOMVoidProps & TextProps,
+    MergeHTMLProps<StrictDOMVoidProps, TextProps, TextNonStyleProps>,
     TamaguiTextElement,
-    StrictDOMVoidProps & TextNonStyleProps,
+    MergeHTMLProps<StrictDOMVoidProps, TextNonStyleProps, TextNonStyleProps>,
     TextStylePropsBase
   >({
     ...textStaticConfig,
@@ -370,9 +377,9 @@ const br = domTag(
 const button = domTag(
   'button',
   createComponent<
-    StrictDOMButtonProps & ViewProps,
+    MergeHTMLProps<StrictDOMButtonProps, ViewProps, StackNonStyleProps>,
     TamaguiElement,
-    StrictDOMButtonProps & StackNonStyleProps,
+    MergeHTMLProps<StrictDOMButtonProps, StackNonStyleProps, StackNonStyleProps>,
     StackStyleBase
   >({
     ...viewStaticConfig,
@@ -392,9 +399,9 @@ const button = domTag(
 const code = domTag(
   'code',
   createComponent<
-    StrictDOMProps & TextProps,
+    MergeHTMLProps<StrictDOMProps, TextProps, TextNonStyleProps>,
     TamaguiTextElement,
-    StrictDOMProps & TextNonStyleProps,
+    MergeHTMLProps<StrictDOMProps, TextNonStyleProps, TextNonStyleProps>,
     TextStylePropsBase
   >({
     ...textStaticConfig,
@@ -414,9 +421,9 @@ const code = domTag(
 const del = domTag(
   'del',
   createComponent<
-    StrictDOMProps & TextProps,
+    MergeHTMLProps<StrictDOMProps, TextProps, TextNonStyleProps>,
     TamaguiTextElement,
-    StrictDOMProps & TextNonStyleProps,
+    MergeHTMLProps<StrictDOMProps, TextNonStyleProps, TextNonStyleProps>,
     TextStylePropsBase
   >({
     ...textStaticConfig,
@@ -436,9 +443,9 @@ const del = domTag(
 const div = domTag(
   'div',
   createComponent<
-    StrictDOMProps & ViewProps,
+    MergeHTMLProps<StrictDOMProps, ViewProps, StackNonStyleProps>,
     TamaguiElement,
-    StrictDOMProps & StackNonStyleProps,
+    MergeHTMLProps<StrictDOMProps, StackNonStyleProps, StackNonStyleProps>,
     StackStyleBase
   >({
     ...viewStaticConfig,
@@ -464,9 +471,9 @@ const div = domTag(
 const em = domTag(
   'em',
   createComponent<
-    StrictDOMProps & TextProps,
+    MergeHTMLProps<StrictDOMProps, TextProps, TextNonStyleProps>,
     TamaguiTextElement,
-    StrictDOMProps & TextNonStyleProps,
+    MergeHTMLProps<StrictDOMProps, TextNonStyleProps, TextNonStyleProps>,
     TextStylePropsBase
   >({
     ...textStaticConfig,
@@ -486,9 +493,9 @@ const em = domTag(
 const fieldset = domTag(
   'fieldset',
   createComponent<
-    StrictDOMProps & ViewProps,
+    MergeHTMLProps<StrictDOMProps, ViewProps, StackNonStyleProps>,
     TamaguiElement,
-    StrictDOMProps & StackNonStyleProps,
+    MergeHTMLProps<StrictDOMProps, StackNonStyleProps, StackNonStyleProps>,
     StackStyleBase
   >({
     ...viewStaticConfig,
@@ -514,9 +521,9 @@ const fieldset = domTag(
 const footer = domTag(
   'footer',
   createComponent<
-    StrictDOMProps & ViewProps,
+    MergeHTMLProps<StrictDOMProps, ViewProps, StackNonStyleProps>,
     TamaguiElement,
-    StrictDOMProps & StackNonStyleProps,
+    MergeHTMLProps<StrictDOMProps, StackNonStyleProps, StackNonStyleProps>,
     StackStyleBase
   >({
     ...viewStaticConfig,
@@ -542,9 +549,9 @@ const footer = domTag(
 const form = domTag(
   'form',
   createComponent<
-    StrictDOMProps & ViewProps,
+    MergeHTMLProps<StrictDOMProps, ViewProps, StackNonStyleProps>,
     TamaguiElement,
-    StrictDOMProps & StackNonStyleProps,
+    MergeHTMLProps<StrictDOMProps, StackNonStyleProps, StackNonStyleProps>,
     StackStyleBase
   >({
     ...viewStaticConfig,
@@ -570,9 +577,9 @@ const form = domTag(
 const h1 = domTag(
   'h1',
   createComponent<
-    StrictDOMProps & TextProps,
+    MergeHTMLProps<StrictDOMProps, TextProps, TextNonStyleProps>,
     TamaguiTextElement,
-    StrictDOMProps & TextNonStyleProps,
+    MergeHTMLProps<StrictDOMProps, TextNonStyleProps, TextNonStyleProps>,
     TextStylePropsBase
   >({
     ...textStaticConfig,
@@ -600,9 +607,9 @@ const h1 = domTag(
 const h2 = domTag(
   'h2',
   createComponent<
-    StrictDOMProps & TextProps,
+    MergeHTMLProps<StrictDOMProps, TextProps, TextNonStyleProps>,
     TamaguiTextElement,
-    StrictDOMProps & TextNonStyleProps,
+    MergeHTMLProps<StrictDOMProps, TextNonStyleProps, TextNonStyleProps>,
     TextStylePropsBase
   >({
     ...textStaticConfig,
@@ -630,9 +637,9 @@ const h2 = domTag(
 const h3 = domTag(
   'h3',
   createComponent<
-    StrictDOMProps & TextProps,
+    MergeHTMLProps<StrictDOMProps, TextProps, TextNonStyleProps>,
     TamaguiTextElement,
-    StrictDOMProps & TextNonStyleProps,
+    MergeHTMLProps<StrictDOMProps, TextNonStyleProps, TextNonStyleProps>,
     TextStylePropsBase
   >({
     ...textStaticConfig,
@@ -660,9 +667,9 @@ const h3 = domTag(
 const h4 = domTag(
   'h4',
   createComponent<
-    StrictDOMProps & TextProps,
+    MergeHTMLProps<StrictDOMProps, TextProps, TextNonStyleProps>,
     TamaguiTextElement,
-    StrictDOMProps & TextNonStyleProps,
+    MergeHTMLProps<StrictDOMProps, TextNonStyleProps, TextNonStyleProps>,
     TextStylePropsBase
   >({
     ...textStaticConfig,
@@ -690,9 +697,9 @@ const h4 = domTag(
 const h5 = domTag(
   'h5',
   createComponent<
-    StrictDOMProps & TextProps,
+    MergeHTMLProps<StrictDOMProps, TextProps, TextNonStyleProps>,
     TamaguiTextElement,
-    StrictDOMProps & TextNonStyleProps,
+    MergeHTMLProps<StrictDOMProps, TextNonStyleProps, TextNonStyleProps>,
     TextStylePropsBase
   >({
     ...textStaticConfig,
@@ -720,9 +727,9 @@ const h5 = domTag(
 const h6 = domTag(
   'h6',
   createComponent<
-    StrictDOMProps & TextProps,
+    MergeHTMLProps<StrictDOMProps, TextProps, TextNonStyleProps>,
     TamaguiTextElement,
-    StrictDOMProps & TextNonStyleProps,
+    MergeHTMLProps<StrictDOMProps, TextNonStyleProps, TextNonStyleProps>,
     TextStylePropsBase
   >({
     ...textStaticConfig,
@@ -750,9 +757,9 @@ const h6 = domTag(
 const header = domTag(
   'header',
   createComponent<
-    StrictDOMProps & ViewProps,
+    MergeHTMLProps<StrictDOMProps, ViewProps, StackNonStyleProps>,
     TamaguiElement,
-    StrictDOMProps & StackNonStyleProps,
+    MergeHTMLProps<StrictDOMProps, StackNonStyleProps, StackNonStyleProps>,
     StackStyleBase
   >({
     ...viewStaticConfig,
@@ -778,9 +785,9 @@ const header = domTag(
 const hr = domTag(
   'hr',
   createComponent<
-    StrictDOMVoidProps & ViewProps,
+    MergeHTMLProps<StrictDOMVoidProps, ViewProps, StackNonStyleProps>,
     TamaguiElement,
-    StrictDOMVoidProps & StackNonStyleProps,
+    MergeHTMLProps<StrictDOMVoidProps, StackNonStyleProps, StackNonStyleProps>,
     StackStyleBase
   >({
     ...viewStaticConfig,
@@ -808,9 +815,9 @@ const hr = domTag(
 const i = domTag(
   'i',
   createComponent<
-    StrictDOMProps & TextProps,
+    MergeHTMLProps<StrictDOMProps, TextProps, TextNonStyleProps>,
     TamaguiTextElement,
-    StrictDOMProps & TextNonStyleProps,
+    MergeHTMLProps<StrictDOMProps, TextNonStyleProps, TextNonStyleProps>,
     TextStylePropsBase
   >({
     ...textStaticConfig,
@@ -830,9 +837,9 @@ const i = domTag(
 const img = domTag(
   'img',
   createComponent<
-    StrictDOMImageProps & ViewProps,
+    MergeHTMLProps<StrictDOMImageProps, ViewProps, StackNonStyleProps>,
     TamaguiElement,
-    StrictDOMImageProps & StackNonStyleProps,
+    MergeHTMLProps<StrictDOMImageProps, StackNonStyleProps, StackNonStyleProps>,
     StackStyleBase
   >({
     ...viewStaticConfig,
@@ -851,9 +858,9 @@ const img = domTag(
 const input = domTag(
   'input',
   createComponent<
-    StrictDOMInputProps & TextProps,
+    MergeHTMLProps<StrictDOMInputProps, TextProps, TextNonStyleProps>,
     TamaguiTextElement,
-    StrictDOMInputProps & TextNonStyleProps,
+    MergeHTMLProps<StrictDOMInputProps, TextNonStyleProps, TextNonStyleProps>,
     TextStylePropsBase
   >({
     ...textStaticConfig,
@@ -874,9 +881,9 @@ const input = domTag(
 const ins = domTag(
   'ins',
   createComponent<
-    StrictDOMProps & TextProps,
+    MergeHTMLProps<StrictDOMProps, TextProps, TextNonStyleProps>,
     TamaguiTextElement,
-    StrictDOMProps & TextNonStyleProps,
+    MergeHTMLProps<StrictDOMProps, TextNonStyleProps, TextNonStyleProps>,
     TextStylePropsBase
   >({
     ...textStaticConfig,
@@ -896,9 +903,9 @@ const ins = domTag(
 const kbd = domTag(
   'kbd',
   createComponent<
-    StrictDOMProps & TextProps,
+    MergeHTMLProps<StrictDOMProps, TextProps, TextNonStyleProps>,
     TamaguiTextElement,
-    StrictDOMProps & TextNonStyleProps,
+    MergeHTMLProps<StrictDOMProps, TextNonStyleProps, TextNonStyleProps>,
     TextStylePropsBase
   >({
     ...textStaticConfig,
@@ -918,9 +925,9 @@ const kbd = domTag(
 const label = domTag(
   'label',
   createComponent<
-    StrictDOMLabelProps & TextProps,
+    MergeHTMLProps<StrictDOMLabelProps, TextProps, TextNonStyleProps>,
     TamaguiTextElement,
-    StrictDOMLabelProps & TextNonStyleProps,
+    MergeHTMLProps<StrictDOMLabelProps, TextNonStyleProps, TextNonStyleProps>,
     TextStylePropsBase
   >({
     ...textStaticConfig,
@@ -939,9 +946,9 @@ const label = domTag(
 const li = domTag(
   'li',
   createComponent<
-    StrictDOMListItemProps & ViewProps,
+    MergeHTMLProps<StrictDOMListItemProps, ViewProps, StackNonStyleProps>,
     TamaguiElement,
-    StrictDOMListItemProps & StackNonStyleProps,
+    MergeHTMLProps<StrictDOMListItemProps, StackNonStyleProps, StackNonStyleProps>,
     StackStyleBase
   >({
     ...viewStaticConfig,
@@ -967,9 +974,9 @@ const li = domTag(
 const main = domTag(
   'main',
   createComponent<
-    StrictDOMProps & ViewProps,
+    MergeHTMLProps<StrictDOMProps, ViewProps, StackNonStyleProps>,
     TamaguiElement,
-    StrictDOMProps & StackNonStyleProps,
+    MergeHTMLProps<StrictDOMProps, StackNonStyleProps, StackNonStyleProps>,
     StackStyleBase
   >({
     ...viewStaticConfig,
@@ -995,9 +1002,9 @@ const main = domTag(
 const mark = domTag(
   'mark',
   createComponent<
-    StrictDOMProps & TextProps,
+    MergeHTMLProps<StrictDOMProps, TextProps, TextNonStyleProps>,
     TamaguiTextElement,
-    StrictDOMProps & TextNonStyleProps,
+    MergeHTMLProps<StrictDOMProps, TextNonStyleProps, TextNonStyleProps>,
     TextStylePropsBase
   >({
     ...textStaticConfig,
@@ -1018,9 +1025,9 @@ const mark = domTag(
 const nav = domTag(
   'nav',
   createComponent<
-    StrictDOMProps & ViewProps,
+    MergeHTMLProps<StrictDOMProps, ViewProps, StackNonStyleProps>,
     TamaguiElement,
-    StrictDOMProps & StackNonStyleProps,
+    MergeHTMLProps<StrictDOMProps, StackNonStyleProps, StackNonStyleProps>,
     StackStyleBase
   >({
     ...viewStaticConfig,
@@ -1046,9 +1053,9 @@ const nav = domTag(
 const ol = domTag(
   'ol',
   createComponent<
-    StrictDOMProps & ViewProps,
+    MergeHTMLProps<StrictDOMProps, ViewProps, StackNonStyleProps>,
     TamaguiElement,
-    StrictDOMProps & StackNonStyleProps,
+    MergeHTMLProps<StrictDOMProps, StackNonStyleProps, StackNonStyleProps>,
     StackStyleBase
   >({
     ...viewStaticConfig,
@@ -1084,9 +1091,9 @@ const option = unsupportedDOMTag(
 const p = domTag(
   'p',
   createComponent<
-    StrictDOMProps & TextProps,
+    MergeHTMLProps<StrictDOMProps, TextProps, TextNonStyleProps>,
     TamaguiTextElement,
-    StrictDOMProps & TextNonStyleProps,
+    MergeHTMLProps<StrictDOMProps, TextNonStyleProps, TextNonStyleProps>,
     TextStylePropsBase
   >({
     ...textStaticConfig,
@@ -1112,9 +1119,9 @@ const p = domTag(
 const pre = domTag(
   'pre',
   createComponent<
-    StrictDOMProps & TextProps,
+    MergeHTMLProps<StrictDOMProps, TextProps, TextNonStyleProps>,
     TamaguiTextElement,
-    StrictDOMProps & TextNonStyleProps,
+    MergeHTMLProps<StrictDOMProps, TextNonStyleProps, TextNonStyleProps>,
     TextStylePropsBase
   >({
     ...textStaticConfig,
@@ -1141,9 +1148,9 @@ const pre = domTag(
 const s = domTag(
   's',
   createComponent<
-    StrictDOMProps & TextProps,
+    MergeHTMLProps<StrictDOMProps, TextProps, TextNonStyleProps>,
     TamaguiTextElement,
-    StrictDOMProps & TextNonStyleProps,
+    MergeHTMLProps<StrictDOMProps, TextNonStyleProps, TextNonStyleProps>,
     TextStylePropsBase
   >({
     ...textStaticConfig,
@@ -1163,9 +1170,9 @@ const s = domTag(
 const section = domTag(
   'section',
   createComponent<
-    StrictDOMProps & ViewProps,
+    MergeHTMLProps<StrictDOMProps, ViewProps, StackNonStyleProps>,
     TamaguiElement,
-    StrictDOMProps & StackNonStyleProps,
+    MergeHTMLProps<StrictDOMProps, StackNonStyleProps, StackNonStyleProps>,
     StackStyleBase
   >({
     ...viewStaticConfig,
@@ -1196,9 +1203,9 @@ const select = unsupportedDOMTag(
 const span = domTag(
   'span',
   createComponent<
-    StrictDOMProps & TextProps,
+    MergeHTMLProps<StrictDOMProps, TextProps, TextNonStyleProps>,
     TamaguiTextElement,
-    StrictDOMProps & TextNonStyleProps,
+    MergeHTMLProps<StrictDOMProps, TextNonStyleProps, TextNonStyleProps>,
     TextStylePropsBase
   >({
     ...textStaticConfig,
@@ -1217,9 +1224,9 @@ const span = domTag(
 const strong = domTag(
   'strong',
   createComponent<
-    StrictDOMProps & TextProps,
+    MergeHTMLProps<StrictDOMProps, TextProps, TextNonStyleProps>,
     TamaguiTextElement,
-    StrictDOMProps & TextNonStyleProps,
+    MergeHTMLProps<StrictDOMProps, TextNonStyleProps, TextNonStyleProps>,
     TextStylePropsBase
   >({
     ...textStaticConfig,
@@ -1239,9 +1246,9 @@ const strong = domTag(
 const sub = domTag(
   'sub',
   createComponent<
-    StrictDOMProps & TextProps,
+    MergeHTMLProps<StrictDOMProps, TextProps, TextNonStyleProps>,
     TamaguiTextElement,
-    StrictDOMProps & TextNonStyleProps,
+    MergeHTMLProps<StrictDOMProps, TextNonStyleProps, TextNonStyleProps>,
     TextStylePropsBase
   >({
     ...textStaticConfig,
@@ -1260,9 +1267,9 @@ const sub = domTag(
 const sup = domTag(
   'sup',
   createComponent<
-    StrictDOMProps & TextProps,
+    MergeHTMLProps<StrictDOMProps, TextProps, TextNonStyleProps>,
     TamaguiTextElement,
-    StrictDOMProps & TextNonStyleProps,
+    MergeHTMLProps<StrictDOMProps, TextNonStyleProps, TextNonStyleProps>,
     TextStylePropsBase
   >({
     ...textStaticConfig,
@@ -1281,9 +1288,9 @@ const sup = domTag(
 const textarea = domTag(
   'textarea',
   createComponent<
-    StrictDOMTextAreaProps & TextProps,
+    MergeHTMLProps<StrictDOMTextAreaProps, TextProps, TextNonStyleProps>,
     TamaguiTextElement,
-    StrictDOMTextAreaProps & TextNonStyleProps,
+    MergeHTMLProps<StrictDOMTextAreaProps, TextNonStyleProps, TextNonStyleProps>,
     TextStylePropsBase
   >({
     ...textStaticConfig,
@@ -1305,9 +1312,9 @@ const textarea = domTag(
 const u = domTag(
   'u',
   createComponent<
-    StrictDOMProps & TextProps,
+    MergeHTMLProps<StrictDOMProps, TextProps, TextNonStyleProps>,
     TamaguiTextElement,
-    StrictDOMProps & TextNonStyleProps,
+    MergeHTMLProps<StrictDOMProps, TextNonStyleProps, TextNonStyleProps>,
     TextStylePropsBase
   >({
     ...textStaticConfig,
@@ -1327,9 +1334,9 @@ const u = domTag(
 const ul = domTag(
   'ul',
   createComponent<
-    StrictDOMProps & ViewProps,
+    MergeHTMLProps<StrictDOMProps, ViewProps, StackNonStyleProps>,
     TamaguiElement,
-    StrictDOMProps & StackNonStyleProps,
+    MergeHTMLProps<StrictDOMProps, StackNonStyleProps, StackNonStyleProps>,
     StackStyleBase
   >({
     ...viewStaticConfig,
