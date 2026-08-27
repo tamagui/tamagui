@@ -607,10 +607,6 @@ export const getSplitStyles: StyleSplitter = (
 
   const mergeStylePropAtCurrentPosition = (styleProp: any) => {
     if (styleProps.noMergeStyle || !styleProp) return
-    if (isHOC) {
-      viewProps.style = normalizeStyle(styleProp)
-      return
-    }
     const isArray = Array.isArray(styleProp)
     const length = isArray ? styleProp.length : 1
     for (let index = 0; index < length; index++) {
@@ -944,7 +940,7 @@ export const getSplitStyles: StyleSplitter = (
 
     const parentVariant = parentVariants?.[keyInit]
     const isHOCShouldPassThrough = Boolean(
-      isHOC && (isValidStyleKeyInit || parentVariant || keyInit in skipProps)
+      isHOC && (parentVariant || keyInit in skipProps)
     )
 
     const shouldPassThrough = shouldPassProp || isHOCShouldPassThrough
@@ -1014,7 +1010,6 @@ export const getSplitStyles: StyleSplitter = (
 
     // ordinary host styles scan and emit directly without propMapper
     if (
-      !isHOC &&
       isValidStyleKeyInit &&
       valInit != null &&
       !(process.env.TAMAGUI_TARGET === 'native' && valInit === 'unset') &&
@@ -1072,7 +1067,7 @@ export const getSplitStyles: StyleSplitter = (
         }
 
         const isHostStyleKey =
-          (!isHOC && isValidStyleKey(key, validStyles, accept)) ||
+          isValidStyleKey(key, validStyles, accept) ||
           (process.env.TAMAGUI_TARGET === 'native' && isAndroid && key === 'elevation')
         const isContextProgramKey = !isHOC && Boolean(isStyledContextProp)
 

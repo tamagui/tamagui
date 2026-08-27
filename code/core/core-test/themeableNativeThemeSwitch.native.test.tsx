@@ -1,8 +1,15 @@
 process.env.TAMAGUI_TARGET = 'native'
 
 import { getDefaultTamaguiConfig } from '@tamagui/config-default'
-import { createStyledHOC, TamaguiProvider, View, createTamagui } from '@tamagui/core'
+import {
+  createStyledHOC,
+  TamaguiProvider,
+  View,
+  createTamagui,
+  styled,
+} from '../web/src'
 import { render } from '@testing-library/react-native'
+import { View as NativeView } from 'react-native'
 import { expect, test } from 'vitest'
 
 // regression: themeable() passes data-disable-theme to the inner component of
@@ -16,15 +23,15 @@ const config = createTamagui(getDefaultTamaguiConfig('native'))
 
 const Custom = createStyledHOC(View, (props, ref) => <View ref={ref} {...props} />)
 
-const findBg = (node: any): any => {
+const findStyleValue = (node: any, key: string): any => {
   if (!node) return undefined
   const styles = Array.isArray(node.props?.style) ? node.props.style : [node.props?.style]
   for (const s of styles.flat(Infinity)) {
-    if (s && s.backgroundColor) return s.backgroundColor
+    if (s && key in s) return s[key]
   }
   for (const child of node.children || []) {
-    const found = findBg(child)
-    if (found) return found
+    const found = findStyleValue(child, key)
+    if (found !== undefined) return found
   }
   return undefined
 }
@@ -36,10 +43,30 @@ test('styled HOC leaf updates token color on theme switch (native)', () => {
     </TamaguiProvider>
   )
   const { rerender, toJSON } = render(ui('light'))
-  const before = findBg(toJSON())
+  const before = findStyleValue(toJSON(), 'backgroundColor')
   rerender(ui('dark'))
-  const after = findBg(toJSON())
+  const after = findStyleValue(toJSON(), 'backgroundColor')
   expect(before).toBeTruthy()
   expect(after).toBeTruthy()
   expect(after).not.toBe(before)
+})
+
+test('nested styled HOC resolves a native state-string before the host leaf', () => {
+  const NativeLeaf = createStyledHOC(View, (props, ref) => (
+    <NativeView ref={ref} {...props} />
+  ))
+  const Skin = styled(NativeLeaf, {})
+  const AppSkin = styled(Skin, {
+    opacity: '1 enter:0 exit:0',
+  })
+
+  const { UNSAFE_getByType } = render(
+    <TamaguiProvider config={config} defaultTheme="light">
+      <AppSkin testID="leaf" />
+    </TamaguiProvider>
+  )
+
+  expect(UNSAFE_getByType(NativeView).props).toMatchObject({
+    style: { opacity: 1 },
+  })
 })
