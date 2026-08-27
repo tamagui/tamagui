@@ -88,8 +88,8 @@ describe('static-resolve entry', () => {
     expect(result.rules!.length).toBeGreaterThan(0)
   })
 
-  test('resolves text styles when isText is configured', () => {
-    const element: StaticResolveElementPlan = {
+  test('resolves text styles when isText or isInput is configured', () => {
+    const elementText: StaticResolveElementPlan = {
       id: 'elem-text',
       props: {
         fontSize: 16,
@@ -101,13 +101,48 @@ describe('static-resolve entry', () => {
       },
     }
 
-    const result = resolveStaticElement(element, 'web')
-    expect(result.ok).toBe(true)
-    expect(result.className).toBeDefined()
-    expect(result.rules!.length).toBeGreaterThan(0)
+    const resultText = resolveStaticElement(elementText, 'web')
+    expect(resultText.ok).toBe(true)
+    expect(resultText.className).toContain('is_Text')
+    expect(resultText.rules!.length).toBeGreaterThan(0)
+
+    const elementInput: StaticResolveElementPlan = {
+      id: 'elem-input',
+      props: {
+        fontSize: 14,
+        color: '$color',
+      },
+      staticConfig: {
+        isInput: true,
+      },
+    }
+
+    const resultInput = resolveStaticElement(elementInput, 'web')
+    expect(resultInput.ok).toBe(true)
+    expect(resultInput.rules!.length).toBeGreaterThan(0)
   })
 
-  test('preserves non-style props in viewProps', () => {
+  test('merges staticConfig defaultProps into element props', () => {
+    const element: StaticResolveElementPlan = {
+      id: 'elem-defaults',
+      props: {
+        backgroundColor: 'blue',
+      },
+      staticConfig: {
+        defaultProps: {
+          padding: 20,
+          borderRadius: 8,
+        },
+      },
+    }
+
+    const result = resolveStaticElement(element, 'web')
+    expect(result.ok).toBe(true)
+    // padding (4) + borderRadius (4) + backgroundColor (1) = 9 rules
+    expect(result.rules!.length).toBe(9)
+  })
+
+  test('preserves non-style props in viewProps and includes is_View class', () => {
     const element: StaticResolveElementPlan = {
       id: 'elem-viewprops',
       props: {
@@ -120,6 +155,7 @@ describe('static-resolve entry', () => {
 
     const result = resolveStaticElement(element, 'web')
     expect(result.ok).toBe(true)
+    expect(result.className).toContain('is_View')
     expect(result.viewProps).toBeDefined()
     expect(result.viewProps!.id).toBe('header-banner')
     expect(result.viewProps!['data-testid']).toBe('banner-1')
