@@ -1582,30 +1582,6 @@ function mergeStyle(
 ) {
   const { viewProps, styleProps, staticConfig } = styleState
 
-  // track context overrides for pseudo/media styles (issues #3670, #3676)
-  // when a style sets a key that's in context props, update overriddenContextProps
-  // so it propagates to children. use the original token value (like '8')
-  // instead of the resolved CSS variable (like 'var(--t-space-8)')
-  // so children's functional variants can look up token values.
-  const contextConfig = staticConfig.context || staticConfig.parentStaticConfig?.context
-  const contextProps = contextConfig?.props
-  const inheritedContextPropKeys =
-    !staticConfig.context ||
-    staticConfig.context === staticConfig.parentStaticConfig?.context
-      ? staticConfig.parentStaticConfig?.contextProps
-      : undefined
-  const contextPropKeys = staticConfig.contextProps || inheritedContextPropKeys
-  const isContextProp =
-    (contextProps && key in contextProps) ||
-    contextPropKeys?.includes(key) ||
-    contextConfig?.propKeys?.includes(key)
-  if (isContextProp) {
-    styleState.overriddenContextProps ||= {}
-    // Priority: 1) originalVal from propMapper, 2) tracked original from variant resolution, 3) val
-    const originalFromState = styleState.originalContextPropValues?.[key]
-    styleState.overriddenContextProps[key] = originalVal ?? originalFromState ?? val
-  }
-
   if (key in stylePropsTransform) {
     styleState.flatTransforms ||= {}
     styleState.flatTransforms[key] = val

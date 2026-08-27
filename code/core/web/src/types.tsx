@@ -2956,11 +2956,8 @@ export type GetStyleState = {
   flatEnterKeys?: Set<string>
   flatExitKeys?: Set<string>
   flatUsesSafeArea?: boolean
-  // Track style values that override context props (for issues #3670, #3676)
+  // resolved values for styled-context-only props
   overriddenContextProps?: Record<string, any>
-  // Track original token values before they get resolved to CSS vars
-  // This is used to preserve token strings in overriddenContextProps
-  originalContextPropValues?: Record<string, any>
   // opt-in dev-tools token provenance: original token string
   // for each winning base style key, cleared on literal override. stamped onto
   // the final style object as non-enumerable metadata (see helpers/styleProvenance).
@@ -3558,7 +3555,7 @@ export type GetStyleResult = {
   pseudoGroups?: Set<string>
   mediaGroups?: Set<string>
   dynamicThemeAccess?: boolean
-  // Style values that override context props (for issues #3670, #3676)
+  // resolved values for styled-context-only props
   overriddenContextProps?: Record<string, any>
   // interaction states referenced by flat-value clauses, so createComponent
   // attaches the matching event handlers. the field name remains for the

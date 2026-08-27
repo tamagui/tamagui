@@ -1738,7 +1738,6 @@ export type GetStyleState = {
     flatExitKeys?: Set<string>;
     flatUsesSafeArea?: boolean;
     overriddenContextProps?: Record<string, any>;
-    originalContextPropValues?: Record<string, any>;
     tokenProvenance?: Record<string, string>;
     animationDriver?: AnimationDriver | null;
 };

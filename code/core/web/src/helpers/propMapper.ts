@@ -422,32 +422,6 @@ const resolveTokensAndVariants: StyleResolver<object> = (
     originalValues ||= {}
     originalValues[subKey] = val
 
-    // Track context overrides for any key that's in context props (issues #3670, #3676)
-    // Store the ORIGINAL token value (like '8') before resolution so that
-    // children's functional variants can look up token values
-    if (staticConfig) {
-      const contextProps =
-        staticConfig.context?.props || staticConfig.parentStaticConfig?.context?.props
-      const inheritedContextPropKeys =
-        !staticConfig.context ||
-        staticConfig.context === staticConfig.parentStaticConfig?.context
-          ? staticConfig.parentStaticConfig?.contextProps
-          : undefined
-      const contextPropKeys = staticConfig.contextProps || inheritedContextPropKeys
-      const isContextProp =
-        (contextProps && subKey in contextProps) ||
-        contextPropKeys?.includes(subKey) ||
-        staticConfig.context?.propKeys?.includes(subKey) ||
-        staticConfig.parentStaticConfig?.context?.propKeys?.includes(subKey)
-      if (isContextProp) {
-        styleState.overriddenContextProps ||= {}
-        styleState.overriddenContextProps[subKey] = val
-        // Also track the original token value separately
-        styleState.originalContextPropValues ||= {}
-        styleState.originalContextPropValues[subKey] = val
-      }
-    }
-
     if (styleProps.noExpand) {
       res[subKey] = val
     } else {
