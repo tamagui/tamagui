@@ -252,6 +252,35 @@ export type V6Colors = {
     themes: NonNullable<CreateTamaguiProps['themes']>;
     /** flat named colors added at tokens.color */
     colorTokens?: Record<string, string>;
+    /** extra 12-step color scales merged into the light and dark base themes */
+    scales?: V6ColorScales;
+};
+type Twelve<Value> = readonly [
+    Value,
+    Value,
+    Value,
+    Value,
+    Value,
+    Value,
+    Value,
+    Value,
+    Value,
+    Value,
+    Value,
+    Value
+];
+/** one 12-step scale, light and dark values from step 1 (faintest) to 12 (strongest) */
+export type V6ColorScale = {
+    light: Twelve<string>;
+    dark: Twelve<string>;
+};
+export type V6ColorScales = Record<string, V6ColorScale>;
+type ScaleStep = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
+type ColorScaleThemeKeys<Scales extends V6ColorScales> = {
+    [Name in keyof Scales & string as `${Name}${ScaleStep}`]: string;
+};
+type WithColorScales<Themes extends Record<string, object>, Scales extends V6ColorScales> = {
+    [Name in keyof Themes]: Name extends 'light' | 'dark' ? Themes[Name] & ColorScaleThemeKeys<Scales> : Themes[Name];
 };
 declare const alignedConfig: {
     media: {
@@ -490,20 +519,22 @@ declare const alignedConfig: {
     };
 };
 /** Compose the aligned v6 base with a colors pack into a createTamagui-ready config. */
-export declare function createV6Config<Themes extends NonNullable<CreateTamaguiProps['themes']>, ColorTokens extends Record<string, string>>(colors: {
+export declare function createV6Config<Themes extends NonNullable<CreateTamaguiProps['themes']>, ColorTokens extends Record<string, string>, Scales extends V6ColorScales = Record<never, V6ColorScale>>(colors: {
     themes: Themes;
     colorTokens: ColorTokens;
+    scales?: Scales;
 }): typeof alignedConfig & {
-    themes: Themes;
+    themes: WithColorScales<Themes, Scales>;
     tokens: typeof tokens & {
         color: ColorTokens;
     };
 };
-export declare function createV6Config<Themes extends NonNullable<CreateTamaguiProps['themes']>>(colors: {
+export declare function createV6Config<Themes extends NonNullable<CreateTamaguiProps['themes']>, Scales extends V6ColorScales = Record<never, V6ColorScale>>(colors: {
     themes: Themes;
     colorTokens?: undefined;
+    scales?: Scales;
 }): typeof alignedConfig & {
-    themes: Themes;
+    themes: WithColorScales<Themes, Scales>;
     tokens: typeof tokens;
 };
 //# sourceMappingURL=v6-base.d.ts.map
