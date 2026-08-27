@@ -67,7 +67,7 @@ import {
   resolveClauseChain,
 } from './directStyle'
 import { contributeFrontendProgram, isFrontendProgram } from './frontendProgram'
-import { skipProps } from './skipProps'
+import { HOC_CLASSNAME_MARKER, skipProps } from './skipProps'
 import { styleOriginalValues } from './styleOriginalValues'
 import {
   type StyleDebugReceipt,
@@ -86,6 +86,11 @@ export type {
 } from './styleProvenance'
 
 export type SplitStyles = ReturnType<typeof getSplitStyles>
+
+// non-enumerable field on a $$css style object carrying the emitting
+// component's property→class map, so a tamagui consumer can merge the classes
+// with per-property position semantics while RNW's for-in flatten ignores it
+const TAMAGUI_CLASS_PROPS = '$$tamaguiClassProps'
 
 const shouldTrackStyleTokenProvenance =
   process.env.NODE_ENV === 'development' &&
@@ -663,11 +668,9 @@ export const getSplitStyles: StyleSplitter = (
   }
 
   const mergeStylePropAtCurrentPosition = (styleProp: any) => {
-    if (noMergeStyle || !styleProp) return
-    // web HOCs hand the style prop to the inner component untouched, same
-    // position contract as the style-key pass-through in contributeProp
-    if (process.env.TAMAGUI_TARGET === 'web' && isHOC) {
-      viewProps.style = normalizeStyle(styleProp)
+    if (!styleProp) return
+    if (noMergeStyle) {
+      viewProps.style = styleProp
       return
     }
     const isArray = Array.isArray(styleProp)
@@ -676,8 +679,30 @@ export const getSplitStyles: StyleSplitter = (
       const style = isArray ? styleProp[index] : styleProp
       if (!style) continue
       if (style['$$css']) {
-        for (const key in style) clearDirectStyle(styleState, key)
-        Object.assign(styleState.classNames, style)
+        // a tamagui parent (HOC output) attaches its property→class map
+        // non-enumerably. merging through it puts each class in the same
+        // per-property slot as ordinary contributions: it displaces anything
+        // contributed before this style prop's position, and a later authored
+        // prop for the same property displaces it. entries outside the map
+        // (identity classes like is_View) merge by name as before
+        const classProps = style[TAMAGUI_CLASS_PROPS] as
+          | Record<string, string>
+          | undefined
+        if (classProps) {
+          const mapped = new Set<string>()
+          for (const property in classProps) {
+            clearDirectStyle(styleState, property)
+            styleState.classNames[property] = classProps[property]
+            mapped.add(classProps[property])
+          }
+          for (const key in style) {
+            if (key === '$$css' || mapped.has(key)) continue
+            styleState.classNames[key] = style[key]
+          }
+        } else {
+          for (const key in style) clearDirectStyle(styleState, key)
+          Object.assign(styleState.classNames, style)
+        }
         continue
       }
       const normalized = normalizeStyle(style, false, true)
@@ -790,13 +815,15 @@ export const getSplitStyles: StyleSplitter = (
         typeof valInit === 'string' &&
         valInit
       ) {
+        if (noMergeStyle) {
+          viewProps.className = valInit
+          return
+        }
         // core className is raw interop: the string passes through untouched.
-        // a frontend-bound component's claimed candidates were already consumed
-        // by preprocessProps, so what remains here is passthrough CSS emitted
-        // after the base Tamagui layer — keep subsequent Tamagui contributions
-        // inline so they retain their later, last-wins cascade position
+        // HOC and frontend class transport marks an earlier generated layer,
+        // so keep later Tamagui contributions inline to retain their position
         className = `${className} ${valInit}`.trim()
-        if (styleFrontend) {
+        if (styleFrontend || props[HOC_CLASSNAME_MARKER] !== undefined) {
           flushForwardStylesToClasses()
           shouldDoClasses = false
           styleState.flatShouldDoClasses = false
@@ -964,17 +991,8 @@ export const getSplitStyles: StyleSplitter = (
       inlineProps?.has(keyInit)
 
     const parentVariant = parentVariants?.[keyInit]
-    // web HOCs pass valid style keys through as authored props so the inner
-    // function component's later spreads still override them in position (a
-    // resolved $$css class can't be beaten by a later prop, only by stylesheet
-    // insertion order). native HOCs resolve them here instead: their inner
-    // component may render a raw react-native leaf that can't resolve a clause
-    // string or token itself.
     const isHOCShouldPassThrough = Boolean(
-      isHOC &&
-      ((process.env.TAMAGUI_TARGET === 'web' && isValidStyleKeyInit) ||
-        parentVariant ||
-        keyInit in skipProps)
+      isHOC && (parentVariant || keyInit in skipProps)
     )
 
     const shouldPassThrough = shouldPassProp || isHOCShouldPassThrough
@@ -1474,11 +1492,22 @@ export const getSplitStyles: StyleSplitter = (
             viewProps.style = style as any
           }
         } else if (needsCssStyles) {
-          // RNW or RNW-animated: apply classNames via $$css
+          // RNW or RNW-animated: apply classNames via $$css. keys stay class
+          // names (createDOMProps flattens by key and classifies on the _
+          // prefix), but a tamagui consumer merging this via its style prop
+          // needs each class's property to slot it into per-property position
+          // competition, so the property→class map rides along non-enumerably
+          // (invisible to RNW's for-in flatten)
           let cnStyles: Record<string, unknown> | undefined
           for (const name of finalClassName.split(' ')) {
             cnStyles ||= { $$css: true }
             cnStyles[name] = name
+          }
+          if (cnStyles && classNames) {
+            Object.defineProperty(cnStyles, TAMAGUI_CLASS_PROPS, {
+              value: classNames,
+              enumerable: false,
+            })
           }
           viewProps.style = cnStyles
             ? [...(Array.isArray(style) ? style : [style]), cnStyles]
@@ -1486,6 +1515,7 @@ export const getSplitStyles: StyleSplitter = (
         } else {
           // regular web: use className directly
           if (finalClassName) {
+            if (isHOC) viewProps[HOC_CLASSNAME_MARKER] = ''
             viewProps.className = finalClassName
           }
           if (style) {

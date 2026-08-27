@@ -1,6 +1,8 @@
 import { nativeOnlyProps } from './nativeOnlyProps'
 import { webPropsToSkip } from './webPropsToSkip'
 
+export const HOC_CLASSNAME_MARKER = 'data-tamagui-hoc-class'
+
 /**
  * These are props that dont pass down below Tamagui styled components
  */
@@ -17,6 +19,7 @@ export const skipProps = {
   disableNativeStyle: 1,
   render: 1,
   style: 1, // handled after the prop loop to preserve authored order
+  [HOC_CLASSNAME_MARKER]: 1,
   group: 1,
   container: 1,
   animatePresence: 1,

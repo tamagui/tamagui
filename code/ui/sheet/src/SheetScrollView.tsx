@@ -37,6 +37,7 @@ export const SheetScrollView = createStyledHOC(
       children,
       onScroll,
       scrollEnabled: scrollEnabledProp,
+      style,
       ...props
     }: SheetScrollViewProps,
     ref
@@ -86,11 +87,16 @@ export const SheetScrollView = createStyledHOC(
     // that maxHeight is often tied to useWindowDimensions, which SHRINKS when the
     // keyboard opens and would otherwise collapse the sheet. holding the height
     // constant means the web frame can translate without resizing. applied
-    // AFTER {...props} so it wins.
+    // last in the ordered style array so it wins.
     const keyboardFrozenOverride =
       hasFit && isKeyboardVisible && frozenFrameHeight > 0
         ? { height: frozenFrameHeight, maxHeight: frozenFrameHeight }
         : null
+    const scrollViewStyle = [
+      fitSizingStyle,
+      ...(Array.isArray(style) ? style : [style]),
+      keyboardFrozenOverride,
+    ]
 
     const panGestureRef = gestureContext?.panGestureRef
     const { ScrollView: RNGHScrollView } = getGestureHandlerState()
@@ -288,7 +294,7 @@ export const SheetScrollView = createStyledHOC(
       return (
         <RNGHComponent
           ref={composeRefs(scrollRef as any, ref)}
-          style={fitSizingStyle}
+          style={scrollViewStyle}
           scrollEventThrottle={1}
           scrollEnabled={scrollEnabled}
           simultaneousHandlers={[panGestureRef]}
@@ -336,7 +342,6 @@ export const SheetScrollView = createStyledHOC(
           keyboardShouldPersistTaps="always"
           keyboardDismissMode="none"
           {...props}
-          {...keyboardFrozenOverride}
         >
           {contentWrapper}
         </RNGHComponent>
@@ -351,7 +356,6 @@ export const SheetScrollView = createStyledHOC(
           updateScrollable()
         }}
         ref={composeRefs(scrollRef as any, ref)}
-        {...fitSizingStyle}
         scrollEventThrottle={1}
         className="_ovs-contain"
         scrollEnabled={scrollEnabled}
@@ -366,7 +370,7 @@ export const SheetScrollView = createStyledHOC(
         contentContainerStyle={contentContainerStyle}
         {...gestureProps}
         {...props}
-        {...keyboardFrozenOverride}
+        style={scrollViewStyle}
       >
         {contentWrapper}
       </ScrollView>
