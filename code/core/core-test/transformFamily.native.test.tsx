@@ -1,13 +1,11 @@
+import { render } from '@testing-library/react-native'
 import { beforeAll, expect, test } from 'vitest'
 
 import config from '../config-default'
-import { View, createTamagui, getSplitStyles } from '../web/src'
+import { TamaguiProvider, View, createTamagui, getSplitStyles } from '../web/src'
 
-// The transform family on native. There are no CSS individual transform
-// properties in RN, so every family program composes into ONE array in the fixed
-// CSS order — translate, rotate, scale — with the raw legacy transform entries as
-// the tail. The order is semantic: array entries are matrix-multiplied in
-// authored order, so it is never sorted.
+// React Native transform arrays are matrix-multiplied in authored order, so the
+// runtime keeps the authored order rather than imposing a canonical one.
 
 let conf: any
 beforeAll(() => {
@@ -33,7 +31,7 @@ const split = (props: Record<string, any>, state: Record<string, any> = {}) =>
 const keysOf = (transform: any): string[] =>
   (transform ?? []).map((entry: any) => Object.keys(entry)[0])
 
-test('family programs compose one array in translate, rotate, scale order', () => {
+test('family programs compose one array in authored order', () => {
   const result = split({
     // authored in a deliberately scrambled order
     scale: '2 hover:3',
@@ -42,16 +40,35 @@ test('family programs compose one array in translate, rotate, scale order', () =
     x: '10px hover:11px',
   })
   expect(keysOf(result.style?.transform)).toEqual([
-    'translateX',
-    'translateY',
-    'rotate',
     'scale',
+    'rotate',
+    'translateY',
+    'translateX',
   ])
   expect(result.style?.transform).toEqual([
-    { translateX: 10 },
-    { translateY: 20 },
-    { rotate: '45deg' },
     { scale: 2 },
+    { rotate: '45deg' },
+    { translateY: 20 },
+    { translateX: 10 },
+  ])
+})
+
+test('rendered native transforms preserve authored order', () => {
+  const rendered = render(
+    <TamaguiProvider config={conf} defaultTheme="light">
+      <View testID="authored-transform" skewY="3deg" perspective={100} rotateX="10deg" />
+    </TamaguiProvider>
+  )
+
+  const output = rendered.toJSON() as any
+  const style = Array.isArray(output.props.style)
+    ? Object.assign({}, ...output.props.style.flat(Infinity).filter(Boolean))
+    : output.props.style
+  expect(output.props.testID).toBe('authored-transform')
+  expect(style.transform).toEqual([
+    { skewY: '3deg' },
+    { perspective: 100 },
+    { rotateX: '10deg' },
   ])
 })
 
@@ -74,12 +91,12 @@ test('x resolves space tokens to points', () => {
   ])
 })
 
-test('a legacy raw transform is the tail, after the family entries', () => {
+test('a later complete transform owns the property', () => {
   const result = split({
     x: '5px hover:6px',
     transform: [{ skewX: '10deg' }],
   })
-  expect(keysOf(result.style?.transform)).toEqual(['translateX', 'skewX'])
+  expect(keysOf(result.style?.transform)).toEqual(['skewX'])
 })
 
 test('legacy non-family parts stay in the tail rather than being dropped', () => {
@@ -94,9 +111,9 @@ test('legacy non-family parts stay in the tail rather than being dropped', () =>
 test('a program displaces a legacy uniform scale onto the other axis', () => {
   const result = split({ scale: 2, scaleX: '1 hover:3' })
   // uniform 2 survives on Y, the program owns X, so the axes differ and stay split
-  expect(result.style?.transform).toEqual([{ scaleX: 1 }, { scaleY: 2 }])
+  expect(result.style?.transform).toEqual([{ scaleY: 2 }, { scaleX: 1 }])
   const hovered = split({ scale: 2, scaleX: '1 hover:3' }, { hover: true })
-  expect(hovered.style?.transform).toEqual([{ scaleX: 3 }, { scaleY: 2 }])
+  expect(hovered.style?.transform).toEqual([{ scaleY: 2 }, { scaleX: 3 }])
 })
 
 test('a later plain uniform scale replaces both axis programs', () => {
@@ -112,18 +129,13 @@ test('equal axes collapse to one scale entry, matching the v1 array', () => {
   ])
 })
 
-test('clause-free transform values compose through the family in CSS order', () => {
-  // v3 cutover: clause-free strings and family numerics are base-only
-  // programs, so the whole family composes in the canonical CSS order —
-  // translate, rotate, scale — regardless of authored order or value type.
-  // (translateX/translateY commute, and uniform scale commutes with rotate,
-  // so rendering matches the legacy reverse-alphabetical output here.)
+test('clause-free transform values compose through the family in authored order', () => {
   const result = split({ scale: 2, rotate: '45deg', y: 20, x: 10 })
   expect(result.style?.transform).toEqual([
-    { translateX: 10 },
-    { translateY: 20 },
-    { rotate: '45deg' },
     { scale: 2 },
+    { rotate: '45deg' },
+    { translateY: 20 },
+    { translateX: 10 },
   ])
 })
 
@@ -162,7 +174,12 @@ test('a raw transform program parses once into the RN array', () => {
   expect(hovered.style?.transform).toEqual([{ skewX: '20deg' }])
 })
 
-test('family programs compose before the raw transform program', () => {
+test('a later raw transform program owns the property', () => {
   const result = split({ x: 10, transform: 'skewX(10deg)' })
-  expect(result.style?.transform).toEqual([{ translateX: 10 }, { skewX: '10deg' }])
+  expect(result.style?.transform).toEqual([{ skewX: '10deg' }])
+})
+
+test('a family program after a raw transform owns the property', () => {
+  const result = split({ transform: 'skewX(10deg)', x: 10 })
+  expect(result.style?.transform).toEqual([{ translateX: 10 }])
 })

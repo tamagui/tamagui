@@ -162,7 +162,7 @@ exports[`flat transform props 1`] = `
 
 function __TamaguiNativeStyle99() { return __TamaguiNativeStyle99._ ?? (__TamaguiNativeStyle99._ = {"flexDirection":"column","transform":[{"translateX":10},{"translateY":20},{"rotate":"10deg"}]}); } __TamaguiNativeStyle99();
 const __TamaguiNativeView = require('react-native').View;
-const __TamaguiStableView99 = require('@tamagui/core')._withStableStyle(__TamaguiNativeView, (_theme, expressions) => [__TamaguiNativeStyle99._ ?? __TamaguiNativeStyle99(), expressions[0] ? {"transform":[{"translateX":10},{"translateY":20},{"rotate":"10deg"},{"scale":1}]} : {"transform":[{"translateX":10},{"translateY":20},{"rotate":"10deg"},{"scale":2}]}], false, false);"
+const __TamaguiStableView99 = require('@tamagui/core')._withStableStyle(__TamaguiNativeView, (_theme, expressions) => [__TamaguiNativeStyle99._ ?? __TamaguiNativeStyle99(), expressions[0] ? {"transform":[{"scale":1},{"translateX":10},{"translateY":20},{"rotate":"10deg"}]} : {"transform":[{"scale":2},{"translateX":10},{"translateY":20},{"rotate":"10deg"}]}], false, false);"
 `;
 
 exports[`handles style order merge properly 1`] = `

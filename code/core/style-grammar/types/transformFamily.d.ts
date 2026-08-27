@@ -67,10 +67,9 @@ export interface ComposedTransform {
 	errors: TransformDiagnostic[];
 }
 /**
-* Builds one RN transform array in CSS individual-property order: translate
-* (x then y), rotate, scale, then the raw `transform` entries. Nothing is
-* sorted, and an unrepresentable value is a diagnostic rather than a lossy
-* forward to RN's permissive string parser.
+* Builds one RN transform array in authored order. A complete raw transform
+* owns the property when it follows transform parts. An unrepresentable value
+* is a diagnostic rather than a lossy forward to RN's permissive string parser.
 */
 export declare function composeTransformArray(results: TransformProgramResults, rawTransform?: string | readonly TransformEntry[] | null): ComposedTransform;
 /**

@@ -153,6 +153,28 @@ test('non-family transform parts stay legacy', () => {
   const result = split({ skewX: '10deg', perspective: 100 })
   expect(result.classNames['--t-x']).toBeUndefined()
   expect(result.classNames.translate).toBeUndefined()
+  const transformClass = result.classNames.transform
+  expect(rulesFor(result, transformClass)[0]).toBe(
+    `.${transformClass}{transform:skewX(10deg) perspective(100px)}`
+  )
+})
+
+test('rendered inline transforms preserve authored order', () => {
+  const { getByTestId } = render(
+    <TamaguiProvider config={conf} defaultTheme="light">
+      <View
+        data-testid="authored-transform"
+        disableClassName
+        skewY="3deg"
+        perspective={100}
+        rotateX="10deg"
+      />
+    </TamaguiProvider>
+  )
+
+  expect(getComputedStyle(getByTestId('authored-transform')).transform).toBe(
+    'skewY(3deg) perspective(100px) rotateX(10deg)'
+  )
 })
 
 test('a raw transform value is one ordinary program', () => {

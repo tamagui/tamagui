@@ -1,5 +1,5 @@
 import type { StyleObject } from '@tamagui/helpers';
-import type { CoreStateModifierName } from '@tamagui/style-grammar/runtime';
+import type { CoreStateModifierName, TransformAccumulator } from '@tamagui/style-grammar/runtime';
 import type { Properties } from 'csstype';
 import type { CSSProperties, ComponentType, Context, FunctionComponent, HTMLAttributes, ProviderExoticComponent, Ref as ReactRef, ReactNode, RefObject } from 'react';
 import type { PressableProps, Text as RNText, TextStyle as RNTextStyle, TextProps as ReactTextProps, View, ViewProps, ViewStyle } from 'react-native';
@@ -1722,7 +1722,7 @@ export type GetStyleState = {
     avoidMergeTransform?: boolean;
     fontFamily?: string;
     debug?: DebugProp;
-    flatTransforms?: Record<string, any>;
+    transformAccumulator?: TransformAccumulator;
     flatRulesToInsert?: RulesToInsert;
     flatShouldDoClasses?: boolean;
     flatThemeName?: string;

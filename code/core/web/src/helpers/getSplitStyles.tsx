@@ -39,7 +39,15 @@ import type {
   TransitionProp,
   ViewStyleObject,
 } from '../types'
-import { scanFlatValue, type FlatValueHandler } from '@tamagui/style-grammar/runtime'
+import {
+  addTransformValue,
+  cloneTransformAccumulator,
+  createTransformAccumulator,
+  finalizeTransformAccumulator,
+  scanFlatValue,
+  type FlatValueHandler,
+  type TransformAccumulator,
+} from '@tamagui/style-grammar/runtime'
 import { fixStyles } from './expandStyles'
 import { styleToCSS } from './getCSSStylesAtomic'
 import { getDefaultProps } from './getDefaultProps'
@@ -60,7 +68,6 @@ import {
 } from './directStyle'
 import { contributeFrontendProgram, isFrontendProgram } from './frontendProgram'
 import { skipProps } from './skipProps'
-import { sortString } from './sortString'
 import { styleOriginalValues } from './styleOriginalValues'
 import {
   type StyleDebugReceipt,
@@ -1193,7 +1200,7 @@ export const getSplitStyles: StyleSplitter = (
         log(` ✔️ expand complete`, keyInit)
         log('style', { ...styleState.style })
         log('viewProps', { ...viewProps })
-        log('transforms', { ...styleState.flatTransforms })
+        log('transforms', styleState.transformAccumulator)
       } catch {
         // RN can run into PayloadTooLargeError: request entity too large
       }
@@ -1282,21 +1289,11 @@ export const getSplitStyles: StyleSplitter = (
       }
     }
 
-    // these are only the flat transforms
-    // always do this at the very end to preserve the order strictly (animations, origin)
-    // and allow proper merging before applying
-    if (styleState.flatTransforms) {
-      // we need to match the order for animations to work because it needs consistent order
-      // was thinking of having something like `state.prevTransformsOrder = ['y', 'x', ...]
-      // but if we just handle it here its not a big cost and avoids having stateful things
-      // so the strategy is: always sort by a consistent order, until you run into a "duplicate"
-      // because you can have something like:
-      //   [{ translateX: 0 }, { scale: 1 }, { translateX: 10 }]
-      // so basically we sort until we get to a duplicate... we could sort even smarter but
-      // this should work for most (all?) of our cases since the order preservation really only needs to apply
-      // to the "flat" transform props
+    if (styleState.transformAccumulator && !styleState.flatShouldDoClasses) {
       styleState.style ||= {}
-      mergeFlatTransforms(styleState.style, styleState.flatTransforms)
+      styleState.style.transform = finalizeTransformAccumulator(
+        styleState.transformAccumulator
+      )
     }
 
     // add in defaults if not set:
@@ -1542,46 +1539,6 @@ export const getSplitStyles: StyleSplitter = (
   return result
 }
 
-function mergeFlatTransforms(target: TextStyle, flatTransforms: Record<string, any>) {
-  const transform: Record<string, any>[] = []
-  if ('x' in flatTransforms) transform.push({ translateX: flatTransforms.x })
-  if ('y' in flatTransforms) transform.push({ translateY: flatTransforms.y })
-  if ('rotate' in flatTransforms) transform.push({ rotate: flatTransforms.rotate })
-
-  const hasScaleX = 'scaleX' in flatTransforms
-  const hasScaleY = 'scaleY' in flatTransforms
-  if (hasScaleX && hasScaleY && flatTransforms.scaleX === flatTransforms.scaleY) {
-    transform.push({ scale: flatTransforms.scaleX })
-  } else {
-    if (hasScaleX) transform.push({ scaleX: flatTransforms.scaleX })
-    if (hasScaleY) transform.push({ scaleY: flatTransforms.scaleY })
-    if (!hasScaleX && !hasScaleY && 'scale' in flatTransforms) {
-      transform.push({ scale: flatTransforms.scale })
-    }
-  }
-
-  const keys: string[] = []
-  for (const key in flatTransforms) {
-    if (
-      key !== 'x' &&
-      key !== 'y' &&
-      key !== 'rotate' &&
-      key !== 'scale' &&
-      key !== 'scaleX' &&
-      key !== 'scaleY'
-    )
-      keys.push(key)
-  }
-  keys.sort(sortString)
-  for (const key of keys) {
-    transform.push({ [mapTransformKeys[key] || key]: flatTransforms[key] })
-  }
-  if (Array.isArray(target.transform)) {
-    transform.push(...(target.transform as any))
-  }
-  target.transform = transform as any
-}
-
 function mergeStyle(
   styleState: GetStyleState,
   key: string,
@@ -1592,9 +1549,9 @@ function mergeStyle(
 ) {
   const { viewProps, styleProps, staticConfig } = styleState
 
-  if (key in stylePropsTransform) {
-    styleState.flatTransforms ||= {}
-    styleState.flatTransforms[key] = val
+  if (key === 'transform' || key in stylePropsTransform) {
+    styleState.transformAccumulator ||= createTransformAccumulator()
+    addTransformValue(styleState.transformAccumulator, key, val)
   } else {
     const shouldNormalize = isWeb && !disableNormalize && !styleProps.noNormalize
     const out = shouldNormalize ? normalizeValueWithProperty(val, key) : val
@@ -1606,10 +1563,7 @@ function mergeStyle(
       viewProps[key] = out
     } else {
       styleState.style ||= {}
-      styleState.style[key] =
-        // if you dont do this you'll be passing props.transform arrays directly here and then mutating them
-        // if theres any flatTransforms later, causing issues (mutating props is bad, in strict mode styles get borked)
-        key === 'transform' && Array.isArray(out) ? [...out] : out
+      styleState.style[key] = out
       if (shouldTrackStyleTokenProvenance) {
         // dev-tools token provenance: this write is the current winner for `key`,
         // so record the token that produced it, or clear a prior token when a
@@ -1662,6 +1616,7 @@ export const getSubStyle = (
   const { staticConfig, conf, styleProps } = styleState
   const styleOut: TextStyle = {}
   let originalValues: Record<string, any> | undefined
+  let transformAccumulator: TransformAccumulator | undefined
   const styleInOriginalValues = styleOriginalValues.get(styleIn)
   const parentProps = styleState.props
   // prototype-chain view instead of a spread copy: reads fall through to
@@ -1689,8 +1644,14 @@ export const getSubStyle = (
           originalValues ||= {}
           originalValues[skey] = trackedOriginalVal
         }
-        if (!avoidMergeTransform && skey in stylePropsTransform) {
-          mergeTransform(styleOut, skey, sval)
+        if (
+          !avoidMergeTransform &&
+          (skey === 'transform' || skey in stylePropsTransform)
+        ) {
+          transformAccumulator ||= styleState.transformAccumulator
+            ? cloneTransformAccumulator(styleState.transformAccumulator)
+            : createTransformAccumulator()
+          addTransformValue(transformAccumulator, skey, sval)
         } else {
           styleOut[skey] = styleProps.noNormalize
             ? sval
@@ -1702,49 +1663,8 @@ export const getSubStyle = (
     styleState.props = parentProps
   }
 
-  if (!avoidMergeTransform) {
-    const parentTransform = styleState.style?.transform
-    const flatTransforms = styleState.flatTransforms
-    const styleOutTransform = styleOut.transform
-
-    if (Array.isArray(styleOutTransform) && styleOutTransform.length) {
-      // Inline conflict check - faster than building lookup object for small arrays
-      const len = styleOutTransform.length
-
-      if (Array.isArray(parentTransform)) {
-        const merged: any[] = []
-        outer: for (let i = 0; i < parentTransform.length; i++) {
-          const pt = parentTransform[i]
-          for (const pk in pt) {
-            for (let j = 0; j < len; j++) {
-              for (const sk in styleOutTransform[j]) {
-                if (pk === sk) continue outer
-                break
-              }
-            }
-            merged.push(pt)
-            break
-          }
-        }
-        for (let i = 0; i < len; i++) merged.push(styleOutTransform[i])
-        styleOut.transform = merged
-      }
-
-      if (flatTransforms) {
-        outer: for (const fk in flatTransforms) {
-          const ck = fk === 'x' ? 'translateX' : fk === 'y' ? 'translateY' : fk
-          for (let j = 0; j < len; j++) {
-            for (const sk in styleOutTransform[j]) {
-              if (ck === sk) continue outer
-              break
-            }
-          }
-          mergeTransform(styleOut, fk, flatTransforms[fk])
-        }
-      }
-    } else if (flatTransforms) {
-      mergeFlatTransforms(styleOut, flatTransforms)
-    }
+  if (transformAccumulator) {
+    styleOut.transform = finalizeTransformAccumulator(transformAccumulator)
   }
 
   if (!styleProps.noNormalize) {
@@ -1792,21 +1712,6 @@ function addStyleToInsertRules(rulesToInsert: RulesToInsert, styleObject: StyleO
       rulesToInsert[identifier] = styleObject
     }
   }
-}
-
-const mergeTransform = (obj: TextStyle, key: string, val: any, backwards = false) => {
-  if (typeof obj.transform === 'string') {
-    return
-  }
-  obj.transform ||= []
-  obj.transform[backwards ? 'unshift' : 'push']({
-    [mapTransformKeys[key] || key]: val,
-  } as any)
-}
-
-const mapTransformKeys = {
-  x: 'translateX',
-  y: 'translateY',
 }
 
 function passDownProp(viewProps: object, key: string, val: any) {

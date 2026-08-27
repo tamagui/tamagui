@@ -22,6 +22,11 @@ import {
   modifierKindTheme,
   scanFlatValue,
   stateModifierSelectors,
+  addTransformValue,
+  createTransformAccumulator,
+  finalizeTransformAccumulator,
+  getTransformPartKeys,
+  removeTransformValue,
   type ClausePrecedenceKey,
   type FlatValueHandler,
   type ParsedValue,
@@ -75,7 +80,6 @@ type DirectState = GetStyleState & {
   flatBoxShadow?: any
   flatDynamicColors?: Record<string, Record<string, any>>
   flatDynamicThemeAccess?: boolean
-  flatLegacyTransforms?: Record<string, any>
   flatPrecedence?: Record<string, ClausePrecedenceKey>
   flatTextShadow?: Record<string, any>
   flatWebShadow?: Record<string, any>
@@ -1080,6 +1084,19 @@ function emitBorderStyleDefault(
 
 export function flushDirectStyles(state: GetStyleState, clear = false) {
   const direct = state as DirectState
+  if (state.transformAccumulator) {
+    const transform = finalizeTransformAccumulator(state.transformAccumulator)
+    directAtomic(
+      direct,
+      'transform',
+      Array.isArray(transform) ? transformsToString(transform) : transform,
+      0,
+      '',
+      undefined,
+      ''
+    )
+    if (clear) state.transformAccumulator = undefined
+  }
   const atomics = direct.flatAtomics
   if (!atomics) return
   for (const property in atomics) {
@@ -1134,6 +1151,19 @@ function emitProperty(
     if (!condition || condition & 1) {
       ;(state.overriddenContextProps ||= {})[property] = originalValue
     }
+    return
+  }
+
+  if (isWeb && state.flatShouldDoClasses && !condition && property === 'transform') {
+    if (process.env.NODE_ENV === 'development' && state.transformAccumulator) {
+      for (const part of getTransformPartKeys(state.transformAccumulator)) {
+        warnOnce(
+          `legacy transform part "${part}" is dropped because "transform" owns the property`
+        )
+      }
+    }
+    state.transformAccumulator ||= createTransformAccumulator()
+    addTransformValue(state.transformAccumulator, property, value)
     return
   }
 
@@ -1366,48 +1396,19 @@ function emitTransform(
   contextOnly: boolean
 ) {
   if (!isWeb || !state.flatShouldDoClasses) {
-    if (!isWeb && property === 'scale') {
-      emitProperty(
-        state,
-        'scaleX',
-        value,
-        condition,
-        conditionKey,
-        conditionWrappers,
-        conditionSelector,
-        conditionTheme,
-        merge,
-        originalValue,
-        contextOnly
-      )
-      emitProperty(
-        state,
-        'scaleY',
-        value,
-        condition,
-        conditionKey,
-        conditionWrappers,
-        conditionSelector,
-        conditionTheme,
-        merge,
-        originalValue,
-        contextOnly
-      )
-    } else {
-      emitProperty(
-        state,
-        property,
-        value,
-        condition,
-        conditionKey,
-        conditionWrappers,
-        conditionSelector,
-        conditionTheme,
-        merge,
-        originalValue,
-        contextOnly
-      )
-    }
+    emitProperty(
+      state,
+      property,
+      value,
+      condition,
+      conditionKey,
+      conditionWrappers,
+      conditionSelector,
+      conditionTheme,
+      merge,
+      originalValue,
+      contextOnly
+    )
     return
   }
 
@@ -1592,35 +1593,10 @@ function emitValue(
   }
 
   if (legacyTransformParts.has(property)) {
-    if (isWeb && state.flatShouldDoClasses && state.classNames.transform) {
-      if (process.env.NODE_ENV === 'development') {
-        warnOnce(
-          `legacy transform part "${property}" is dropped because "transform" owns the property`
-        )
-      }
-      return
-    }
     const value = typeof raw === 'string' ? configuredValue(state, property, raw) : raw
     if (isWeb && state.flatShouldDoClasses && !condition) {
-      const direct = state as DirectState
-      ;(direct.flatLegacyTransforms ||= {})[property] = value
-      emitProperty(
-        state,
-        'transform',
-        transformsToString(
-          Object.keys(direct.flatLegacyTransforms)
-            .sort()
-            .map((key) => ({ [key]: direct.flatLegacyTransforms![key] }))
-        ),
-        0,
-        '',
-        undefined,
-        '',
-        '',
-        merge,
-        originalValue,
-        contextOnly
-      )
+      state.transformAccumulator ||= createTransformAccumulator()
+      addTransformValue(state.transformAccumulator, property, value)
     } else if (condition && isWeb && state.flatShouldDoClasses) {
       emitProperty(
         state,
@@ -1673,30 +1649,6 @@ function emitValue(
       merge(state, property, value, 1, false, originalValue)
     }
     return
-  }
-
-  if (isWeb && state.flatShouldDoClasses) {
-    if (property === 'transform') {
-      const direct = state as DirectState
-      if (process.env.NODE_ENV === 'development' && direct.flatLegacyTransforms) {
-        for (const part in direct.flatLegacyTransforms) {
-          warnOnce(
-            `legacy transform part "${part}" is dropped because "transform" owns the property`
-          )
-        }
-      }
-      direct.flatLegacyTransforms = undefined
-      if (state.flatTransforms) {
-        if (process.env.NODE_ENV === 'development') {
-          for (const part in state.flatTransforms) {
-            warnOnce(
-              `legacy transform part "${part}" is dropped because "transform" owns the property`
-            )
-          }
-        }
-        state.flatTransforms = undefined
-      }
-    }
   }
 
   if (
@@ -1789,9 +1741,7 @@ function emitValue(
             `native transform "${property}" cannot represent "${value}"; dropping it`
           )
         }
-        if (condition & 1 && state.flatTransforms) {
-          delete state.flatTransforms[property]
-        }
+        if (condition & 1) removeTransformValue(state.transformAccumulator, property)
         return
       }
       if (/^-?(?:\d+\.?\d*|\.\d+)(?:px|dp)$/i.test(value)) {
@@ -2342,5 +2292,6 @@ export function clearDirectStyle(state: GetStyleState, property: string) {
           ? 'transform'
           : property
   if (direct.flatAtomics) delete direct.flatAtomics[atomicKey]
+  if (atomicKey === 'transform') state.transformAccumulator = undefined
   delete state.classNames[atomicKey]
 }

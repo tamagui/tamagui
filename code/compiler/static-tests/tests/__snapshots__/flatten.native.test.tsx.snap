@@ -51,7 +51,7 @@ exports[`flatten-tests > work with experimentalFlattenThemesOnNative 1`] = `
         )
       }
 
-function __TamaguiNativeStyle108() { return __TamaguiNativeStyle108._ ?? (__TamaguiNativeStyle108._ = {"flexDirection":"column","transform":[{"translateX":20},{"translateY":10},{"rotate":"10deg"}]}); } __TamaguiNativeStyle108();
+function __TamaguiNativeStyle108() { return __TamaguiNativeStyle108._ ?? (__TamaguiNativeStyle108._ = {"flexDirection":"column","transform":[{"translateY":10},{"translateX":20},{"rotate":"10deg"}]}); } __TamaguiNativeStyle108();
 const __TamaguiNativeView = require('react-native').View;
 const __TamaguiStableView108 = require('@tamagui/core')._withStableStyle(__TamaguiNativeView, (_theme, expressions) => [__TamaguiNativeStyle108._ ?? __TamaguiNativeStyle108(), { "backgroundColor": _theme["background"]?.get() }], true, false);"
 `;

@@ -10,6 +10,7 @@ export { getSafeAreaEdge, safeAreaVariableNames } from "./safeAreaVariables";
 export { scanFlatValue, type FlatScanErrorCode, type FlatValueHandler } from "./scanFlatValue";
 export { canonicalStateModifierNames, stateModifierSelectors, type CoreStateModifierName } from "./stateModifiers";
 export type { NativeTransitionTarget } from "./transitionNative";
+export { addTransformValue, cloneTransformAccumulator, createTransformAccumulator, finalizeTransformAccumulator, getTransformPartKeys, removeTransformValue, type TransformAccumulator } from "./transformAccumulator";
 export { unitlessNumberProperties } from "./unitlessNumbers";
 export type { ModifierKind, ParsedValue } from "./valueTypes";
 

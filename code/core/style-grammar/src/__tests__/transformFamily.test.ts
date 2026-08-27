@@ -181,31 +181,39 @@ describe('web lowering', () => {
   })
 })
 
-describe('native composition order', () => {
+describe('native authored composition order', () => {
   const keysOf = (entries: readonly TransformEntry[]) =>
     entries.map((entry) => Object.keys(entry)[0])
 
-  test('the array is translate, rotate, scale, transform regardless of authored order', () => {
-    const forward = composeTransformArray(
-      { x: 10, y: 20, rotate: '45deg', scaleX: 2, scaleY: 2 },
-      'skewX(10deg)'
-    )
+  test('the array preserves the result record order', () => {
+    const forward = composeTransformArray({
+      x: 10,
+      y: 20,
+      rotate: '45deg',
+      scaleX: 2,
+      scaleY: 2,
+    })
     expect(forward.errors).toEqual([])
     expect(keysOf(forward.transform)).toEqual([
       'translateX',
       'translateY',
       'rotate',
       'scale',
-      'skewX',
     ])
 
-    // the same results built in the opposite key order compose identically:
-    // nothing here depends on object iteration
-    const reversed = composeTransformArray(
-      { scaleY: 2, scaleX: 2, rotate: '45deg', y: 20, x: 10 },
-      'skewX(10deg)'
-    )
-    expect(reversed.transform).toEqual(forward.transform)
+    const reversed = composeTransformArray({
+      scaleY: 2,
+      scaleX: 2,
+      rotate: '45deg',
+      y: 20,
+      x: 10,
+    })
+    expect(keysOf(reversed.transform)).toEqual([
+      'scale',
+      'rotate',
+      'translateY',
+      'translateX',
+    ])
   })
 
   test('missing props collapse without reordering the rest', () => {
@@ -230,14 +238,14 @@ describe('native composition order', () => {
     expect(composeTransformArray({ scaleX: 2 }).transform).toEqual([{ scaleX: 2 }])
   })
 
-  test('raw transform entries always come last, in their authored order', () => {
+  test('a later raw transform owns the property', () => {
     const composed = composeTransformArray({ x: 1 }, 'perspective(100px) rotateZ(90deg)')
-    expect(keysOf(composed.transform)).toEqual(['translateX', 'perspective', 'rotateZ'])
+    expect(keysOf(composed.transform)).toEqual(['perspective', 'rotateZ'])
   })
 
   test('an already-parsed raw array passes through untouched', () => {
     const composed = composeTransformArray({ x: 1 }, [{ skewY: '5deg' }])
-    expect(composed.transform).toEqual([{ translateX: 1 }, { skewY: '5deg' }])
+    expect(composed.transform).toEqual([{ skewY: '5deg' }])
   })
 })
 

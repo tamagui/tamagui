@@ -1,5 +1,11 @@
 import { isWeb } from '@tamagui/constants'
 import { stylePropsTransform } from '@tamagui/helpers'
+import {
+  addTransformValue,
+  createTransformAccumulator,
+  finalizeTransformAccumulator,
+  type TransformAccumulator,
+} from '@tamagui/style-grammar/runtime'
 import { expandStyle } from './expandStyle'
 import { fixStyles } from './expandStyles'
 import { normalizeValueWithProperty } from './normalizeValueWithProperty'
@@ -22,18 +28,15 @@ export function normalizeStyle(
   const res: Record<string, any> = {}
   const originalValues = styleOriginalValues.get(style)
   let nextOriginalValues: Record<string, any> | undefined
+  let transformAccumulator: TransformAccumulator | undefined
 
   for (let key in style) {
     const prop = style[key]
     if (prop == null) continue
     const originalValue = originalValues?.[key]
-    if (mergeTransforms && key in stylePropsTransform) {
-      if (typeof res.transform !== 'string') {
-        res.transform ||= []
-        res.transform.push({
-          [key === 'x' ? 'translateX' : key === 'y' ? 'translateY' : key]: prop,
-        })
-      }
+    if (mergeTransforms && (key === 'transform' || key in stylePropsTransform)) {
+      transformAccumulator ||= createTransformAccumulator()
+      addTransformValue(transformAccumulator, key, prop)
       continue
     }
     const value = disableNormalize ? prop : normalizeValueWithProperty(prop, key)
@@ -56,8 +59,10 @@ export function normalizeStyle(
     }
   }
 
-  if (mergeTransforms && isWeb && Array.isArray(res.transform)) {
-    res.transform = transformsToString(res.transform)
+  if (transformAccumulator) {
+    const transform = finalizeTransformAccumulator(transformAccumulator)
+    res.transform =
+      isWeb && Array.isArray(transform) ? transformsToString(transform) : transform
   }
 
   fixStyles(res)

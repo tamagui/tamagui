@@ -1,3 +1,9 @@
+import {
+  addTransformValue,
+  createTransformAccumulator,
+  finalizeTransformAccumulator,
+} from './transformAccumulator'
+
 // The transform family.
 //
 // See plans/dom-tailwind-flat-values.md — "The transform family" — and the
@@ -16,10 +22,8 @@
 // property consuming it (browser-verified 2026-07-29).
 //
 // Native: RN has no individual transform properties through 0.86, so the caller
-// composes ONE array in CSS individual-property order — translate, rotate, scale,
-// then the raw `transform` entries. That order is semantic: array entries are
-// matrix-multiplied in authored order, so it is never sorted and never derived
-// from object iteration.
+// composes one array in authored order. That order is semantic because array
+// entries are matrix-multiplied in sequence.
 
 export interface TransformComposition {
   /** the CSS property the axis variables compose into */
@@ -236,61 +240,46 @@ export interface ComposedTransform {
 }
 
 /**
- * Builds one RN transform array in CSS individual-property order: translate
- * (x then y), rotate, scale, then the raw `transform` entries. Nothing is
- * sorted, and an unrepresentable value is a diagnostic rather than a lossy
- * forward to RN's permissive string parser.
+ * Builds one RN transform array in authored order. A complete raw transform
+ * owns the property when it follows transform parts. An unrepresentable value
+ * is a diagnostic rather than a lossy forward to RN's permissive string parser.
  */
 export function composeTransformArray(
   results: TransformProgramResults,
   rawTransform?: string | readonly TransformEntry[] | null
 ): ComposedTransform {
-  const transform: TransformEntry[] = []
+  const accumulator = createTransformAccumulator()
   const errors: TransformDiagnostic[] = []
 
-  // 1. translate
-  for (const [prop, key] of [
-    ['x', 'translateX'],
-    ['y', 'translateY'],
-  ] as const) {
+  for (const prop in results) {
     const value = results[prop]
     if (value == null) continue
-    const length = readLength(value, prop, errors)
-    if (length !== null) transform.push({ [key]: length })
+    if (prop === 'x' || prop === 'y') {
+      const length = readLength(value, prop, errors)
+      if (length !== null) addTransformValue(accumulator, prop, length)
+    } else if (prop === 'rotate') {
+      const angle = readAngle(value, prop, errors)
+      if (angle !== null) addTransformValue(accumulator, prop, angle)
+    } else if (prop === 'scale' || prop === 'scaleX' || prop === 'scaleY') {
+      const number = readNumber(value, prop, errors)
+      if (number !== null) addTransformValue(accumulator, prop, number)
+    }
   }
 
-  // 2. rotate
-  if (results.rotate != null) {
-    const angle = readAngle(results.rotate, 'rotate', errors)
-    if (angle !== null) transform.push({ rotate: angle })
-  }
-
-  // 3. scale — always per-axis, because uniform `scale` expanded to both axes at
-  // contribution. Equal axes collapse back to one `scale` entry so the common
-  // uniform case matches the v1 array byte for byte
-  const scaleX =
-    results.scaleX == null ? null : readNumber(results.scaleX, 'scaleX', errors)
-  const scaleY =
-    results.scaleY == null ? null : readNumber(results.scaleY, 'scaleY', errors)
-  if (scaleX !== null && scaleX === scaleY) {
-    transform.push({ scale: scaleX })
-  } else {
-    if (scaleX !== null) transform.push({ scaleX })
-    if (scaleY !== null) transform.push({ scaleY })
-  }
-
-  // 4. the raw transform property, last
   if (rawTransform != null) {
     if (typeof rawTransform === 'string') {
       const parsed = parseTransformString(rawTransform)
       for (const error of parsed.errors) errors.push(error)
-      for (const entry of parsed.transform) transform.push(entry)
+      addTransformValue(accumulator, 'transform', parsed.transform)
     } else {
-      for (const entry of rawTransform) transform.push(entry)
+      addTransformValue(accumulator, 'transform', rawTransform)
     }
   }
 
-  return { transform, errors }
+  return {
+    transform: finalizeTransformAccumulator(accumulator) as TransformEntry[],
+    errors,
+  }
 }
 
 /**

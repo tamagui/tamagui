@@ -1,5 +1,8 @@
 import type { StyleObject } from '@tamagui/helpers'
-import type { CoreStateModifierName } from '@tamagui/style-grammar/runtime'
+import type {
+  CoreStateModifierName,
+  TransformAccumulator,
+} from '@tamagui/style-grammar/runtime'
 import type { Properties } from 'csstype'
 import type {
   CSSProperties,
@@ -2940,7 +2943,7 @@ export type GetStyleState = {
   avoidMergeTransform?: boolean
   fontFamily?: string
   debug?: DebugProp
-  flatTransforms?: Record<string, any>
+  transformAccumulator?: TransformAccumulator
   // direct flat-value scan context and its subscription output
   flatRulesToInsert?: RulesToInsert
   flatShouldDoClasses?: boolean
