@@ -1855,38 +1855,36 @@ export function createComponent<
       log(`events`, { events, attachHover, attachPress })
     }
 
-    const propsWithHref = props as typeof props & { href?: unknown }
-    const propsInWithHref = propsIn as typeof propsIn & { href?: unknown }
-
-    const pressDebugDetail =
-      props.testID ??
-      propsIn.testID ??
-      props.accessibilityLabel ??
-      propsIn.accessibilityLabel ??
-      (typeof propsWithHref.href === 'string' ? propsWithHref.href : null) ??
-      (typeof propsInWithHref.href === 'string' ? propsInWithHref.href : null)
-
-    const pressDebugName =
-      [displayName, pressDebugDetail].filter(Boolean).join(':') || null
-
     // EVENTS native - handles focus/blur, input special cases, and RNGH press handling
     // Skip gesture setup for HOC components - they may return null which crashes GestureDetector
     // hasRealPressEvents distinguishes user-provided handlers from events.onPress
     // synthesized for press clauses alone — only the former should claim the responder.
-    const hasRealPressEvents = !!(onPress || onPressIn || onPressOut || onLongPress)
-    const pressGesture =
-      process.env.TAMAGUI_TARGET === 'native'
-        ? useEvents(
-            events,
-            viewProps,
-            stateRef,
-            staticConfig,
-            isHOC,
-            isInsideNativeMenu,
-            pressDebugName,
-            hasRealPressEvents
-          )
-        : null
+    let hasRealPressEvents = false
+    let pressGesture: ReturnType<typeof useEvents> = null
+    if (process.env.TAMAGUI_TARGET === 'native') {
+      const propsWithHref = props as typeof props & { href?: unknown }
+      const propsInWithHref = propsIn as typeof propsIn & { href?: unknown }
+      const pressDebugDetail =
+        props.testID ??
+        propsIn.testID ??
+        props.accessibilityLabel ??
+        propsIn.accessibilityLabel ??
+        (typeof propsWithHref.href === 'string' ? propsWithHref.href : null) ??
+        (typeof propsInWithHref.href === 'string' ? propsInWithHref.href : null)
+      const pressDebugName =
+        [displayName, pressDebugDetail].filter(Boolean).join(':') || null
+      hasRealPressEvents = !!(onPress || onPressIn || onPressOut || onLongPress)
+      pressGesture = useEvents(
+        events,
+        viewProps,
+        stateRef,
+        staticConfig,
+        isHOC,
+        isInsideNativeMenu,
+        pressDebugName,
+        hasRealPressEvents
+      )
+    }
 
     if (process.env.NODE_ENV === 'development' && time) time`hooks`
 
