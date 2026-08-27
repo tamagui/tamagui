@@ -46,6 +46,7 @@ import { getDefaultProps } from './getDefaultProps'
 import { insertStyleRules, shouldInsertStyleRules, updateRules } from './insertStyleRule'
 import { isPlainObject } from './isObj'
 import { log } from './log'
+import { normalizeStyle } from './normalizeStyle'
 import { normalizeValueWithProperty } from './normalizeValueWithProperty'
 import { appendFlatClause, propMapper } from './propMapper'
 import {
@@ -645,7 +646,7 @@ export const getSplitStyles: StyleSplitter = (
         Object.assign(styleState.classNames, style)
         continue
       }
-      const normalized = normalizeStyle(style)
+      const normalized = normalizeStyle(style, false, true)
       const styleOriginals = shouldTrackStyleTokenProvenance
         ? styleOriginalValues.get(style)
         : undefined
@@ -1785,21 +1786,4 @@ const mapTransformKeys = {
 
 function passDownProp(viewProps: object, key: string, val: any) {
   viewProps[key] = val
-}
-
-function normalizeStyle(style: any) {
-  const out: Record<string, any> = {}
-  for (const key in style) {
-    const val = style[key]
-    if (key in stylePropsTransform) {
-      mergeTransform(out, key, val)
-    } else {
-      out[key] = normalizeValueWithProperty(val, key)
-    }
-  }
-  if (isWeb && Array.isArray(out.transform)) {
-    out.transform = transformsToString(out.transform)
-  }
-  fixStyles(out)
-  return out
 }

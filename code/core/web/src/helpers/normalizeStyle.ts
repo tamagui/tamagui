@@ -1,7 +1,10 @@
+import { isWeb } from '@tamagui/constants'
+import { stylePropsTransform } from '@tamagui/helpers'
 import { expandStyle } from './expandStyle'
 import { fixStyles } from './expandStyles'
 import { normalizeValueWithProperty } from './normalizeValueWithProperty'
 import { styleOriginalValues } from './styleOriginalValues'
+import { transformsToString } from './transformsToString'
 
 /**
  * This is what you want to run before Object.assign() a style onto another.
@@ -11,7 +14,11 @@ import { styleOriginalValues } from './styleOriginalValues'
  *   3. Preserves original-value provenance across expanded longhands
  */
 
-export function normalizeStyle(style: Record<string, any>, disableNormalize = false) {
+export function normalizeStyle(
+  style: Record<string, any>,
+  disableNormalize = false,
+  mergeTransforms = false
+) {
   const res: Record<string, any> = {}
   const originalValues = styleOriginalValues.get(style)
   let nextOriginalValues: Record<string, any> | undefined
@@ -20,9 +27,18 @@ export function normalizeStyle(style: Record<string, any>, disableNormalize = fa
     const prop = style[key]
     if (prop == null) continue
     const originalValue = originalValues?.[key]
+    if (mergeTransforms && key in stylePropsTransform) {
+      if (typeof res.transform !== 'string') {
+        res.transform ||= []
+        res.transform.push({
+          [key === 'x' ? 'translateX' : key === 'y' ? 'translateY' : key]: prop,
+        })
+      }
+      continue
+    }
     const value = disableNormalize ? prop : normalizeValueWithProperty(prop, key)
     // expand react-native shorthands
-    const out = expandStyle(key, value)
+    const out = mergeTransforms ? undefined : expandStyle(key, value)
     if (out) {
       for (const [nextKey, nextValue] of out) {
         res[nextKey] = nextValue
@@ -38,6 +54,10 @@ export function normalizeStyle(style: Record<string, any>, disableNormalize = fa
         nextOriginalValues[key] = originalValue
       }
     }
+  }
+
+  if (mergeTransforms && isWeb && Array.isArray(res.transform)) {
+    res.transform = transformsToString(res.transform)
   }
 
   fixStyles(res)
