@@ -21,7 +21,6 @@ import { defaultComponentStateMounted } from './defaultComponentState'
 import { getWebEvents, useEvents, wrapWithGestureDetector } from './eventHandling'
 import { getDefaultProps } from './helpers/getDefaultProps'
 import { componentDisplayName } from './helpers/componentDisplayName'
-import { resolveAnimationDriver } from './helpers/resolveAnimationDriver'
 import { getSplitStyles, useSplitStyles } from './helpers/getSplitStyles'
 import {
   getNativeStyleEngine,
@@ -49,6 +48,7 @@ import type { TamaguiComponentEvents } from './interfaces/TamaguiComponentEvents
 import { hooks } from './setupHooks'
 import type {
   AllGroupContexts,
+  AnimationDriverLike,
   ComponentGroupEmitter,
   DebugProp,
   GroupStateListener,
@@ -484,27 +484,24 @@ export function createComponent<
     const groupContextParent = React.useContext(GroupContext)
 
     // Get animation driver - either from animatedBy prop lookup or context/config fallback
-    const animationDriver = (() => {
+    const animationDriver: AnimationDriverLike | null = (() => {
       if (props.animatedBy && config) {
-        let selectedDriver
         // check animationDrivers for multi-driver config
         if (config.animationDrivers) {
-          selectedDriver =
-            (config.animationDrivers as Record<string, any>)[props.animatedBy] ??
-            config.animations
-        } else {
-          // single driver config - only 'default' makes sense
-          selectedDriver = props.animatedBy === 'default' ? config.animations : null
+          return (
+            props.animatedBy in config.animationDrivers
+              ? config.animationDrivers[props.animatedBy]
+              : config.animations
+          ) as AnimationDriverLike | null
         }
-        return resolveAnimationDriver(selectedDriver)
+        // single driver config - only 'default' makes sense
+        return props.animatedBy === 'default'
+          ? (config.animations as AnimationDriverLike)
+          : null
       }
-      // fall back to context driver, then config.animations
-      // resolveAnimationDriver validates it's a real driver (not a raw multi-driver object)
-      return (
-        resolveAnimationDriver(componentContext.animationDriver) ??
-        resolveAnimationDriver(config?.animations) ??
-        null
-      )
+      return (componentContext.animationDriver ??
+        config?.animations ??
+        null) as AnimationDriverLike | null
     })()
 
     const useAnimations = animationDriver?.isStub

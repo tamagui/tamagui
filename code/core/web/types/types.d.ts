@@ -887,7 +887,7 @@ export type TamaguiInternalConfig<A extends GenericTokens = GenericTokens, B ext
     settings: Omit<GenericTamaguiSettings, keyof G> & G;
     defaultFont?: string;
     defaultFontToken: `${string}`;
-    animationDrivers?: Record<string, AnimationDriver>;
+    animationDrivers?: Record<string, AnimationDriverLike | null>;
 };
 export type GetAnimationKeys<A extends GenericTamaguiConfig> = keyof A['animations'];
 export type UnionableString = string & {};

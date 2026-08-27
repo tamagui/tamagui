@@ -1488,7 +1488,7 @@ export type TamaguiInternalConfig<
     defaultFontToken: `${string}`
     // multi-driver animation config (e.g., { default: motionDriver, css: cssDriver })
     // used for component-level driver selection via animatedBy prop
-    animationDrivers?: Record<string, AnimationDriver>
+    animationDrivers?: Record<string, AnimationDriverLike | null>
   }
 
 export type GetAnimationKeys<A extends GenericTamaguiConfig> = keyof A['animations']
