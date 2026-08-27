@@ -82,7 +82,7 @@ export const propMapper: PropMapper = (key, value, styleState, disabled, map) =>
     return map(key, value)
   }
 
-  if (!(process.env.TAMAGUI_TARGET === 'native' && isAndroid)) {
+  if (process.env.TAMAGUI_TARGET === 'native' && !isAndroid) {
     // this shouldnt be necessary and handled in the outer loop
     if (key === 'elevationAndroid') return
   }
