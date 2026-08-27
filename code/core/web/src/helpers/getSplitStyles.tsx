@@ -949,9 +949,9 @@ export const getSplitStyles: StyleSplitter = (
     // string or token itself.
     const isHOCShouldPassThrough = Boolean(
       isHOC &&
-        ((process.env.TAMAGUI_TARGET === 'web' && isValidStyleKeyInit) ||
-          parentVariant ||
-          keyInit in skipProps)
+      ((process.env.TAMAGUI_TARGET === 'web' && isValidStyleKeyInit) ||
+        parentVariant ||
+        keyInit in skipProps)
     )
 
     const shouldPassThrough = shouldPassProp || isHOCShouldPassThrough
