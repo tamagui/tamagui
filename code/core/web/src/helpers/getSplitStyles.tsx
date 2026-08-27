@@ -1,4 +1,4 @@
-import { isAndroid, isClient, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
+import { isAndroid, isClient, isWeb } from '@tamagui/constants'
 import {
   StyleObjectIdentifier,
   StyleObjectPseudo,
@@ -8,7 +8,6 @@ import {
   stylePropsTransform,
   validStyles as validStylesView,
 } from '@tamagui/helpers'
-import React from 'react'
 import {
   STYLE_FRONTEND_PASSTHROUGH_PREFIX,
   STYLE_FRONTEND_PREPROCESSED,
@@ -51,7 +50,7 @@ import {
 import { fixStyles } from './expandStyles'
 import { styleToCSS } from './getCSSStylesAtomic'
 import { getDefaultProps } from './getDefaultProps'
-import { insertStyleRules, shouldInsertStyleRules, updateRules } from './insertStyleRule'
+import { shouldInsertStyleRules, updateRules } from './insertStyleRule'
 import { isPlainObject } from './isObj'
 import { log } from './log'
 import { normalizeStyle } from './normalizeStyle'
@@ -106,7 +105,7 @@ export type SplitStyleResult = ReturnType<typeof getSplitStyles>
 // because createTamagui may be called multiple times (HMR, tests)
 // and getConfig() already has its own caching
 
-type StyleSplitter = (
+export type StyleSplitter = (
   props: { [key: string]: any },
   staticConfig: StaticConfig,
   theme: ThemeParsed,
@@ -1740,28 +1739,7 @@ export const getSubStyle = (
   return styleOut
 }
 
-// on native no need to insert any css
-const useInsertEffectCompat =
-  process.env.TAMAGUI_TARGET === 'native'
-    ? undefined
-    : React.useInsertionEffect || useIsomorphicLayoutEffect
-
-// perf: ...args a bit expensive on native
-export const useSplitStyles: StyleSplitter = (a, b, c, d, e, f, g, h, i, j, k, l, m) => {
-  'use no memo'
-
-  const res = getSplitStyles(a, b, c, d, e, f, g, h, i, j, k, l, m)
-
-  if (process.env.TAMAGUI_TARGET !== 'native') {
-    useInsertEffectCompat!(() => {
-      if (res) {
-        insertStyleRules(res.rulesToInsert)
-      }
-    }, [res?.rulesToInsert])
-  }
-
-  return res
-}
+export { useSplitStyles } from '../hooks/useSplitStyles'
 
 function addStyleToInsertRules(rulesToInsert: RulesToInsert, styleObject: StyleObject) {
   if (process.env.TAMAGUI_TARGET === 'web') {

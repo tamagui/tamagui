@@ -56,6 +56,28 @@ describe('static-resolve native entry', () => {
     expect(result.style!.backgroundColor).toBeDefined()
   })
 
+  test('bails out on native for media and pseudo conditional programs', () => {
+    const mediaElement: StaticResolveElementPlan = {
+      id: 'native-media',
+      props: {
+        padding: 'sm:20px',
+      },
+    }
+    const mediaResult = resolveStaticElement(mediaElement, 'native')
+    expect(mediaResult.ok).toBe(false)
+    expect(mediaResult.bailout?.reason).toBe('local/unsupported-target')
+
+    const pseudoElement: StaticResolveElementPlan = {
+      id: 'native-pseudo',
+      props: {
+        backgroundColor: 'hover:blue',
+      },
+    }
+    const pseudoResult = resolveStaticElement(pseudoElement, 'native')
+    expect(pseudoResult.ok).toBe(false)
+    expect(pseudoResult.bailout?.reason).toBe('local/unsupported-target')
+  })
+
   test('resolves batched native elements via JSON string', () => {
     const batch: StaticResolveBatchPlan = {
       target: 'native',

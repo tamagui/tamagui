@@ -25,6 +25,7 @@ import {
 } from './config'
 import { createTamagui, installTamaguiConfig } from './createTamagui'
 import { getSplitStyles } from './helpers/getSplitStyles'
+import { mergeComponentProps } from './helpers/mergeProps'
 import type {
   SplitStyleProps,
   StaticConfig,
@@ -50,35 +51,25 @@ export {
 export type { StaticConfig, TamaguiComponentState, TamaguiInternalConfig, ThemeParsed }
 
 export interface StaticResolveOptions {
-  resolveValues?: 'variable' | 'except-theme' | 'value'
+  resolveValues?: 'variable' | 'except-theme' | 'value' | 'none'
   noClass?: boolean
   isAnimated?: boolean
   displayName?: string
 }
 
 export interface StaticResolveElementPlan {
-  /** Identifier to correlate the response with the request */
   id: string | number
-  /** Component props (JSON serializable) */
   props: Record<string, any>
-  /** Component display / debug name */
   componentName?: string
-  /** Static component configuration if known */
   staticConfig?: Partial<StaticConfig>
-  /** Theme name to resolve against (default: first theme in config or 'light') */
   themeName?: string
-  /** Component state (hover, press, etc.) */
   componentState?: Partial<TamaguiComponentState>
-  /** Style resolution options */
   options?: StaticResolveOptions
 }
 
 export interface StaticResolveBatchPlan {
-  /** Target platform: 'web' | 'native' (default: 'web') */
   target?: 'web' | 'native'
-  /** Optional theme name applied to all elements unless overridden */
   defaultThemeName?: string
-  /** List of element extraction plans */
   elements: StaticResolveElementPlan[]
 }
 
@@ -91,36 +82,22 @@ export interface StaticResolveRuleOutput {
 export interface StaticResolveElementResult {
   id: string | number
   ok: boolean
-  /** Concatenated className for web */
   className?: string
-  /** ClassName dictionary */
   classNames?: Record<string, string>
-  /** Atomic CSS rules generated */
   rules?: StaticResolveRuleOutput[]
-  /** Flat rules string list */
   css?: string[]
-  /** Residual inline styles */
   style?: Record<string, any> | null
-  /** Residual view props */
   viewProps?: Record<string, any>
-  /** Media query dependencies */
-  hasMedia?: boolean | string[]
-  /** Interaction state dependencies */
-  programStates?: string[]
-  /** Pseudo group dependencies */
+  hasMedia?: string[] | boolean
   pseudoGroups?: string[]
-  /** Media group dependencies */
   mediaGroups?: string[]
-  /** Dynamic theme token access detected */
+  programStates?: string[]
   dynamicThemeAccess?: boolean
-  /** Font family resolved */
   fontFamily?: string
-  /** Lifecycle animation keys */
   programLifecycleStyleKeys?: {
     enter?: string[]
     exit?: string[]
   }
-  /** Bailout details if resolution failed */
   bailout?: {
     reason: string
     message: string
@@ -132,14 +109,22 @@ export interface StaticResolveBatchResult {
 }
 
 const DEFAULT_COMPONENT_STATE: TamaguiComponentState = {
+  hover: false,
   focus: false,
   focusVisible: false,
   focusWithin: false,
-  hover: false,
-  unmounted: true,
   press: false,
   pressIn: false,
   disabled: false,
+  unmounted: false,
+}
+
+const getGlobalProcessEnv = () => {
+  try {
+    return typeof process !== 'undefined' && process ? process.env : undefined
+  } catch {
+    return undefined
+  }
 }
 
 /**
@@ -176,13 +161,29 @@ export function resolveStaticElement(
     Object.values(themes)[0] ||
     ({} as ThemeParsed)
 
-  const isText = Boolean(element.staticConfig?.isText)
+  const isTextLike = Boolean(
+    element.staticConfig?.isText || element.staticConfig?.isInput
+  )
   const baseStaticConfig: StaticConfig = {
-    validStyles: isText ? stylePropsText : validStylesView,
+    validStyles: isTextLike ? stylePropsText : validStylesView,
     defaultProps: {},
     acceptsClassName: target !== 'native',
     isReactNative: target === 'native',
     ...element.staticConfig,
+  }
+
+  // merge component defaultProps if defined on staticConfig
+  let elementProps = element.props || {}
+  if (
+    baseStaticConfig.defaultProps &&
+    Object.keys(baseStaticConfig.defaultProps).length > 0
+  ) {
+    const [merged] = mergeComponentProps(
+      baseStaticConfig.defaultProps,
+      undefined,
+      elementProps
+    )
+    elementProps = merged
   }
 
   const componentState: TamaguiComponentState = {
@@ -203,19 +204,22 @@ export function resolveStaticElement(
       'TamaguiComponent',
   }
 
-  const prevStatic = process.env.IS_STATIC
-  const prevTarget = process.env.TAMAGUI_TARGET
-  if (target === 'native') {
-    process.env.IS_STATIC = 'is_static'
-  } else {
-    delete process.env.IS_STATIC
+  const env = getGlobalProcessEnv()
+  const prevStatic = env ? env['IS_STATIC'] : undefined
+  const prevTarget = env ? env['TAMAGUI_TARGET'] : undefined
+  if (env) {
+    if (target === 'native') {
+      env['IS_STATIC'] = 'is_static'
+    } else {
+      delete env['IS_STATIC']
+    }
+    env['TAMAGUI_TARGET'] = target
   }
-  process.env.TAMAGUI_TARGET = target
 
   let split: ReturnType<typeof getSplitStyles> | null = null
   try {
     split = getSplitStyles(
-      element.props,
+      elementProps,
       baseStaticConfig,
       theme,
       themeName,
@@ -232,10 +236,12 @@ export function resolveStaticElement(
       },
     }
   } finally {
-    if (prevStatic === undefined) delete process.env.IS_STATIC
-    else process.env.IS_STATIC = prevStatic
-    if (prevTarget === undefined) delete process.env.TAMAGUI_TARGET
-    else process.env.TAMAGUI_TARGET = prevTarget
+    if (env) {
+      if (prevStatic === undefined) delete env['IS_STATIC']
+      else env['IS_STATIC'] = prevStatic
+      if (prevTarget === undefined) delete env['TAMAGUI_TARGET']
+      else env['TAMAGUI_TARGET'] = prevTarget
+    }
   }
 
   if (!split) {
@@ -249,18 +255,40 @@ export function resolveStaticElement(
     }
   }
 
-  if (
-    target === 'native' &&
-    (split.programLifecycleStyleKeys?.enter?.size ||
-      split.programLifecycleStyleKeys?.exit?.size)
-  ) {
-    return {
-      id: element.id,
-      ok: false,
-      bailout: {
-        reason: 'local/unsupported-target',
-        message: 'Lifecycle value programs remain on the runtime path',
-      },
+  // Native target does not support static media queries, pseudos, or runtime lifecycle programs
+  if (target === 'native') {
+    const hasMedia =
+      split.hasMedia === true ||
+      (split.hasMedia instanceof Set && split.hasMedia.size > 0)
+
+    const hasPseudo =
+      Boolean(split.pseudoGroups && split.pseudoGroups.size > 0) ||
+      Boolean(split.mediaGroups && split.mediaGroups.size > 0) ||
+      Boolean(split.programStates && split.programStates.size > 0)
+
+    if (hasMedia || hasPseudo) {
+      return {
+        id: element.id,
+        ok: false,
+        bailout: {
+          reason: 'local/unsupported-target',
+          message: 'Native target does not support static media queries or pseudo styles',
+        },
+      }
+    }
+
+    if (
+      split.programLifecycleStyleKeys?.enter?.size ||
+      split.programLifecycleStyleKeys?.exit?.size
+    ) {
+      return {
+        id: element.id,
+        ok: false,
+        bailout: {
+          reason: 'local/unsupported-target',
+          message: 'Lifecycle value programs remain on the runtime path',
+        },
+      }
     }
   }
 
@@ -285,7 +313,9 @@ export function resolveStaticElement(
 
   const classNames = split.classNames || {}
   const classNamesList = Object.values(classNames).filter(Boolean)
-  const className = classNamesList.length > 0 ? classNamesList.join(' ') : undefined
+  const fullClassName = (split.viewProps?.className as string) || undefined
+  const className =
+    fullClassName || (classNamesList.length > 0 ? classNamesList.join(' ') : undefined)
 
   return {
     id: element.id,

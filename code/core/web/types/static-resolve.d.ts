@@ -12,33 +12,23 @@ import type { StaticConfig, TamaguiComponentState, TamaguiInternalConfig, ThemeP
 export { createTamagui, getConfig, getConfigMaybe, getSplitStyles, getThemes, getToken, getTokens, getTokenValue, installTamaguiConfig, setConfig, updateConfig, };
 export type { StaticConfig, TamaguiComponentState, TamaguiInternalConfig, ThemeParsed };
 export interface StaticResolveOptions {
-    resolveValues?: 'variable' | 'except-theme' | 'value';
+    resolveValues?: 'variable' | 'except-theme' | 'value' | 'none';
     noClass?: boolean;
     isAnimated?: boolean;
     displayName?: string;
 }
 export interface StaticResolveElementPlan {
-    /** Identifier to correlate the response with the request */
     id: string | number;
-    /** Component props (JSON serializable) */
     props: Record<string, any>;
-    /** Component display / debug name */
     componentName?: string;
-    /** Static component configuration if known */
     staticConfig?: Partial<StaticConfig>;
-    /** Theme name to resolve against (default: first theme in config or 'light') */
     themeName?: string;
-    /** Component state (hover, press, etc.) */
     componentState?: Partial<TamaguiComponentState>;
-    /** Style resolution options */
     options?: StaticResolveOptions;
 }
 export interface StaticResolveBatchPlan {
-    /** Target platform: 'web' | 'native' (default: 'web') */
     target?: 'web' | 'native';
-    /** Optional theme name applied to all elements unless overridden */
     defaultThemeName?: string;
-    /** List of element extraction plans */
     elements: StaticResolveElementPlan[];
 }
 export interface StaticResolveRuleOutput {
@@ -49,36 +39,22 @@ export interface StaticResolveRuleOutput {
 export interface StaticResolveElementResult {
     id: string | number;
     ok: boolean;
-    /** Concatenated className for web */
     className?: string;
-    /** ClassName dictionary */
     classNames?: Record<string, string>;
-    /** Atomic CSS rules generated */
     rules?: StaticResolveRuleOutput[];
-    /** Flat rules string list */
     css?: string[];
-    /** Residual inline styles */
     style?: Record<string, any> | null;
-    /** Residual view props */
     viewProps?: Record<string, any>;
-    /** Media query dependencies */
-    hasMedia?: boolean | string[];
-    /** Interaction state dependencies */
-    programStates?: string[];
-    /** Pseudo group dependencies */
+    hasMedia?: string[] | boolean;
     pseudoGroups?: string[];
-    /** Media group dependencies */
     mediaGroups?: string[];
-    /** Dynamic theme token access detected */
+    programStates?: string[];
     dynamicThemeAccess?: boolean;
-    /** Font family resolved */
     fontFamily?: string;
-    /** Lifecycle animation keys */
     programLifecycleStyleKeys?: {
         enter?: string[];
         exit?: string[];
     };
-    /** Bailout details if resolution failed */
     bailout?: {
         reason: string;
         message: string;
