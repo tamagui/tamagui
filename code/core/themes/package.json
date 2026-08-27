@@ -52,6 +52,15 @@
       "require": "./dist/cjs/v5.cjs",
       "default": "./dist/esm/v5.mjs"
     },
+    "./v5-color-scales": {
+      "types": "./types/v5-color-scales.d.ts",
+      "react-native": "./dist/esm/v5-color-scales.native.js",
+      "browser": "./dist/esm/v5-color-scales.mjs",
+      "module": "./dist/esm/v5-color-scales.mjs",
+      "import": "./dist/esm/v5-color-scales.mjs",
+      "require": "./dist/cjs/v5-color-scales.cjs",
+      "default": "./dist/esm/v5-color-scales.mjs"
+    },
     "./v5-subtle": {
       "types": "./types/v5-subtle.d.ts",
       "react-native": "./dist/esm/v5-subtle.native.js",
@@ -76,6 +85,7 @@
   },
   "scripts": {
     "generate": "tamagui generate-themes ./src/themes.generate.ts ./src/generated.ts",
+    "check:v5-color-scales": "bun ./scripts/generate-v5-color-scales.ts --check",
     "test": "bun test tests/themes.test.ts",
     "test:types": "vitest --typecheck --run tests/themes.test-d.ts",
     "build": "tamagui-build",

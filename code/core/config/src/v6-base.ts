@@ -73,6 +73,75 @@ export type V6Colors = {
   themes: NonNullable<CreateTamaguiProps['themes']>
   /** flat named colors added at tokens.color */
   colorTokens?: Record<string, string>
+  /** extra 12-step color scales merged into the light and dark base themes */
+  scales?: V6ColorScales
+}
+
+type Twelve<Value> = readonly [
+  Value,
+  Value,
+  Value,
+  Value,
+  Value,
+  Value,
+  Value,
+  Value,
+  Value,
+  Value,
+  Value,
+  Value,
+]
+
+/** one 12-step scale, light and dark values from step 1 (faintest) to 12 (strongest) */
+export type V6ColorScale = {
+  light: Twelve<string>
+  dark: Twelve<string>
+}
+
+export type V6ColorScales = Record<string, V6ColorScale>
+
+type ScaleStep = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12
+
+type ColorScaleThemeKeys<Scales extends V6ColorScales> = {
+  [Name in keyof Scales & string as `${Name}${ScaleStep}`]: string
+}
+
+type WithColorScales<
+  Themes extends Record<string, object>,
+  Scales extends V6ColorScales,
+> = {
+  [Name in keyof Themes]: Name extends 'light' | 'dark'
+    ? Themes[Name] & ColorScaleThemeKeys<Scales>
+    : Themes[Name]
+}
+
+// scale keys land only on the base light/dark themes; every subtheme reaches
+// them through parent fallback, so the CSS carries each value once
+function themesWithColorScales<
+  Themes extends Record<string, object>,
+  Scales extends V6ColorScales,
+>(themes: Themes, scales: Scales): WithColorScales<Themes, Scales> {
+  const light: Record<string, string> = {}
+  const dark: Record<string, string> = {}
+  for (const name in scales) {
+    const scale = scales[name]
+    if (scale.light.length !== 12 || scale.dark.length !== 12) {
+      throw new Error(
+        `color scale "${name}" needs exactly 12 light and 12 dark values, got ${scale.light.length}/${scale.dark.length}`
+      )
+    }
+    scale.light.forEach((value, index) => {
+      light[`${name}${index + 1}`] = value
+    })
+    scale.dark.forEach((value, index) => {
+      dark[`${name}${index + 1}`] = value
+    })
+  }
+  return {
+    ...themes,
+    light: { ...themes.light, ...light },
+    dark: { ...themes.dark, ...dark },
+  } as WithColorScales<Themes, Scales>
 }
 
 const alignedConfig = {
@@ -87,26 +156,32 @@ const alignedConfig = {
 export function createV6Config<
   Themes extends NonNullable<CreateTamaguiProps['themes']>,
   ColorTokens extends Record<string, string>,
+  Scales extends V6ColorScales = Record<never, V6ColorScale>,
 >(colors: {
   themes: Themes
   colorTokens: ColorTokens
+  scales?: Scales
 }): typeof alignedConfig & {
-  themes: Themes
+  themes: WithColorScales<Themes, Scales>
   tokens: typeof tokens & { color: ColorTokens }
 }
 export function createV6Config<
   Themes extends NonNullable<CreateTamaguiProps['themes']>,
+  Scales extends V6ColorScales = Record<never, V6ColorScale>,
 >(colors: {
   themes: Themes
   colorTokens?: undefined
+  scales?: Scales
 }): typeof alignedConfig & {
-  themes: Themes
+  themes: WithColorScales<Themes, Scales>
   tokens: typeof tokens
 }
 export function createV6Config(colors: V6Colors) {
   return {
     ...alignedConfig,
-    themes: colors.themes,
+    themes: colors.scales
+      ? themesWithColorScales(colors.themes, colors.scales)
+      : colors.themes,
     tokens: colors.colorTokens ? { ...tokens, color: colors.colorTokens } : tokens,
   }
 }

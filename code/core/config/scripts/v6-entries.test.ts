@@ -1,8 +1,9 @@
 import { describe, expect, test } from 'bun:test'
 
 import { themes as authoredThemes } from '@tamagui/themes/builder'
+import { v5ColorScales } from '@tamagui/themes/v5-color-scales'
 import { createTamagui } from '@tamagui/web'
-import { colors, defaultConfig, themes, tokens } from '../src/v6'
+import { colors, createV6Config, defaultConfig, themes, tokens } from '../src/v6'
 
 describe('v6 config', () => {
   test('ships the statically generated form of the authored themes', () => {
@@ -44,5 +45,32 @@ describe('v6 config', () => {
 
     expect(inverseRule).toContain(':root.t_dark')
     expect(css.split(inverseSelector)).toHaveLength(2)
+  })
+
+  test('color scales merge into the base light and dark themes only', () => {
+    const config = createV6Config({
+      ...colors,
+      scales: { red: v5ColorScales.red, brand: v5ColorScales.blue },
+    })
+
+    expect(config.themes.light.red10).toBe('#dc3e42')
+    expect(config.themes.dark.red10).toBe('#ec5d5e')
+    expect(config.themes.light.brand1).toBe(v5ColorScales.blue.light[0])
+    expect(config.themes.dark.brand12).toBe(v5ColorScales.blue.dark[11])
+    // subthemes stay untouched and reach scale keys through parent fallback
+    expect(config.themes.light_level2).not.toHaveProperty('brand1')
+
+    const created = createTamagui(config)
+    expect(created.themes.light.brand10).toBeTruthy()
+    expect(created.getCSS()).toContain('--brand10')
+  })
+
+  test('a scale without exactly 12 steps throws', () => {
+    expect(() =>
+      createV6Config({
+        ...colors,
+        scales: { brand: { light: ['#fff'], dark: ['#000'] } as any },
+      })
+    ).toThrow('exactly 12')
   })
 })
