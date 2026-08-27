@@ -20,6 +20,7 @@ import { parseFont, registerFontVariables } from './insertFont'
 import { Tamagui } from './Tamagui'
 import type {
   CreateTamaguiProps,
+  AnimationDriverLike,
   DedupedTheme,
   DedupedThemes,
   GenericFont,
@@ -249,10 +250,13 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
   const resolvedDriver = resolveAnimationDriver(inputAnimations)
   // multi-driver when resolveAnimationDriver extracted .default (returned different ref)
   const isMultiDriver = resolvedDriver !== null && resolvedDriver !== inputAnimations
-  const resolvedAnimations = resolvedDriver ?? inputAnimations
-  const animationDrivers = isMultiDriver
-    ? (inputAnimations as Record<string, any>)
-    : undefined
+  let animationDrivers: Record<string, AnimationDriverLike | null> | undefined
+  if (isMultiDriver) {
+    animationDrivers = {}
+    for (const name in inputAnimations) {
+      animationDrivers[name] = resolveAnimationDriver(inputAnimations[name])
+    }
+  }
 
   const config: TamaguiInternalConfig = {
     fonts: {},
@@ -261,7 +265,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     media: {},
     ...configIn,
     // normalized animations (resolved from multi-driver format if needed)
-    animations: resolvedAnimations ?? defaultAnimationDriver,
+    animations: resolvedDriver ?? defaultAnimationDriver,
     animationDrivers,
     settings: {
       webContainerType: 'inline-size',

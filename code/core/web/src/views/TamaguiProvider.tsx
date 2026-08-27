@@ -5,7 +5,6 @@ import { getSetting } from '../config'
 import { ComponentContext } from '../contexts/ComponentContext'
 import { stopAccumulatingRules } from '../helpers/insertStyleRule'
 import { updateMediaListeners } from '../hooks/useMedia'
-import { resolveAnimationDriver } from '../helpers/resolveAnimationDriver'
 import type { AnimationDriver, TamaguiProviderProps } from '../types'
 import { ConfigRevisionCheck } from './ConfigRevisionCheck'
 import { hasSafeAreaTracker, SafeAreaTracker } from './SafeAreaTracker'
@@ -48,13 +47,11 @@ export function TamaguiProvider({
     [insets?.top, insets?.right, insets?.bottom, insets?.left]
   )
 
-  // Get the default animation driver from config
-  // config.animations is already normalized to the default driver in createTamagui
-  // resolveAnimationDriver handles edge cases where raw multi-driver object leaks through
-  const defaultAnimationDriver: AnimationDriver | null = React.useMemo(() => {
-    const driver = resolveAnimationDriver(config?.animations)
-    return driver?.isStub ? null : (driver as AnimationDriver | null)
-  }, [config?.animations])
+  const configuredAnimationDriver = config?.animations as AnimationDriver | undefined
+  const defaultAnimationDriver =
+    !configuredAnimationDriver || configuredAnimationDriver.isStub
+      ? null
+      : configuredAnimationDriver
 
   useEffect(() => {
     defaultAnimationDriver?.onMount?.()
