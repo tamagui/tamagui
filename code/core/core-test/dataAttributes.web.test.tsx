@@ -66,7 +66,7 @@ describe('data attributes', () => {
     }
   })
 
-  test('use React Native Web dataSet when the animation driver swaps the host', () => {
+  test('remain direct when an animation driver swaps the host', () => {
     const split = simplifiedGetSplitStyles(
       View,
       {
@@ -76,35 +76,10 @@ describe('data attributes', () => {
         isAnimated: true,
         animationDriver: {
           isReactNative: true,
-        },
-      }
-    )
-
-    expect(split.viewProps.dataSet).toEqual({
-      'popper-animate-position': 'true',
-    })
-    expect(split.viewProps['data-popper-animate-position']).toBeUndefined()
-  })
-
-  test('keep data attributes direct for a web-native animation host', () => {
-    const AnimatedView = () => null
-    AnimatedView.acceptRenderProp = true
-
-    const split = simplifiedGetSplitStyles(
-      View,
-      {
-        'data-popper-animate-position': 'true',
-      },
-      {
-        isAnimated: true,
-        animationDriver: {
-          isReactNative: true,
-          View: AnimatedView,
         },
       }
     )
 
     expect(split.viewProps['data-popper-animate-position']).toBe('true')
-    expect(split.viewProps.dataSet).toBeUndefined()
   })
 })

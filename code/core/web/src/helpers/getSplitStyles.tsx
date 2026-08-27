@@ -826,21 +826,6 @@ export const getSplitStyles: StyleSplitter = (
 
     // this is all for partially optimized (not flattened)... maybe worth removing?
     if (isWeb) {
-      // React Native Web ignores direct data-* props. This includes ordinary
-      // Tamagui views whose final host is swapped to RNW Animated.View.
-      if (
-        (staticConfig.isReactNative ||
-          (styleProps.isAnimated &&
-            driver?.isReactNative &&
-            !driver.View?.acceptRenderProp)) &&
-        keyInit.startsWith('data-')
-      ) {
-        keyInit = keyInit.replace('data-', '')
-        viewProps['dataSet'] ||= {}
-        viewProps['dataSet'][keyInit] = valInit
-        return
-      }
-
       // standard data attributes are view props, never styles or styled-context
       // values. Context providers receive arbitrary JSX attributes, so handle
       // these before a provider value can make the key look style-like.
