@@ -53,6 +53,45 @@ export const config = createTamagui(
 )
 ```
 
+## Add color scales
+
+The `scales` option adds 12-step scales to the base `light` and `dark` themes.
+Each entry gives 12 light values and 12 dark values, faintest to strongest, and
+becomes theme keys `name1` through `name12` that adapt to the active scheme.
+Subthemes reach them through parent fallback.
+
+`@tamagui/themes/v5-color-scales` packs the classic v5 scales (`gray`, `blue`,
+`red`, `yellow`, `green`, `orange`, `pink`, `purple`, `teal`, `neutral`,
+`black`, `white`), so keeping the old colors while moving to v6 is two lines:
+
+```tsx fileName="tamagui.config.ts"
+import { colors, createV6Config } from '@tamagui/config/v6'
+import { v5ColorScales } from '@tamagui/themes/v5-color-scales'
+import { createTamagui } from 'tamagui'
+
+export const config = createTamagui(
+  createV6Config({
+    ...colors,
+    scales: {
+      ...v5ColorScales,
+      brand: {
+        light: ['#f0f9ff', /* ... */ '#082f49'],
+        dark: ['#082f49', /* ... */ '#f0f9ff'],
+      },
+    },
+  })
+)
+```
+
+```tsx
+<View backgroundColor="red10" />
+<Text color="brand11" />
+```
+
+These are theme values, so they also resolve inside flat values like
+`backgroundImage="linear-gradient(90deg, red10, orange11)"` and take opacity
+suffixes (`red10/50`).
+
 ## Add a custom palette
 
 This example keeps all default tokens and scales, then adds an `ocean` palette
