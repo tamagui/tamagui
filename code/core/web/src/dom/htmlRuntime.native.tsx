@@ -91,6 +91,7 @@ function resolveDOMProps(
 
   for (const name in props) {
     const value = props[name]
+    if (value === undefined) continue
     if (name === 'display') {
       display = value
       continue

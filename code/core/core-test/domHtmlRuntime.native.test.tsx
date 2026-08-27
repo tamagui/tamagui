@@ -341,6 +341,16 @@ describe('what the tables say native cannot do', () => {
     )
   })
 
+  test('ignores undefined props before checking native support', () => {
+    expect(() =>
+      show(
+        <html.a data-testid="link" href={undefined} onWheel={undefined} target={undefined}>
+          go
+        </html.a>
+      )
+    ).not.toThrow()
+  })
+
   test('refuses an event with no native equivalent', () => {
     expect(() => show(<html.div onWheel={() => {}} />)).toThrow(
       'onWheel has no native DOM event equivalent'
