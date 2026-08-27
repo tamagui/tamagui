@@ -110,9 +110,9 @@ type StyleSplitter = (
 
 function compoundMatcherMatches(expected: any, actual: any) {
   if (Array.isArray(expected)) {
-    return expected.some((value) => Object.is(value, actual))
+    return expected.some((value) => value === actual)
   }
-  return Object.is(expected, actual)
+  return expected === actual
 }
 
 // clause-string payloads arrive as slices, so booleans and numbers in the
@@ -1540,7 +1540,7 @@ function mergeFlatTransforms(target: TextStyle, flatTransforms: Record<string, a
 
   const hasScaleX = 'scaleX' in flatTransforms
   const hasScaleY = 'scaleY' in flatTransforms
-  if (hasScaleX && hasScaleY && Object.is(flatTransforms.scaleX, flatTransforms.scaleY)) {
+  if (hasScaleX && hasScaleY && flatTransforms.scaleX === flatTransforms.scaleY) {
     transform.push({ scale: flatTransforms.scaleX })
   } else {
     if (hasScaleX) transform.push({ scaleX: flatTransforms.scaleX })
