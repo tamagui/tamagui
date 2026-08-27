@@ -210,11 +210,31 @@ function isConditionalObjectValue(
 const joinChains = (a: string, b: string): string => {
   if (!a) return b
   if (!b) return a
-  const segments = a.split(':')
-  for (const segment of b.split(':')) {
-    if (!segments.includes(segment)) segments.push(segment)
+  let joined = a
+  let start = 0
+  for (let end = 0; end <= b.length; end++) {
+    if (end !== b.length && b.charCodeAt(end) !== 58) continue
+    const length = end - start
+    let found = false
+    let joinedStart = 0
+    for (let joinedEnd = 0; joinedEnd <= joined.length; joinedEnd++) {
+      if (joinedEnd !== joined.length && joined.charCodeAt(joinedEnd) !== 58) continue
+      if (joinedEnd - joinedStart === length) {
+        found = true
+        for (let offset = 0; offset < length; offset++) {
+          if (joined.charCodeAt(joinedStart + offset) !== b.charCodeAt(start + offset)) {
+            found = false
+            break
+          }
+        }
+        if (found) break
+      }
+      joinedStart = joinedEnd + 1
+    }
+    if (!found) joined += `:${b.slice(start, end)}`
+    start = end + 1
   }
-  return segments.join(':')
+  return joined
 }
 
 function compoundVariantMatchChains(
