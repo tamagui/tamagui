@@ -2095,13 +2095,32 @@ export function contributeFrontendValue(
 // the string scanner commits at its first clause
 export function isConditionalStyleObject(
   state: GetStyleState,
-  value: Record<string, any>
-): boolean {
-  if (Object.prototype.hasOwnProperty.call(value, 'default')) return true
+  value: Record<string, any>,
+  property?: string,
+  merge?: MergeStyle,
+  contextOnly = false
+): number {
+  if (Object.prototype.hasOwnProperty.call(value, 'default')) return -1
   for (const key in value) {
-    return key.length > 0 && !!resolveClauseChain(state, key, 0, key.length)
+    const payload = value[key]
+    return key.length > 0
+      ? resolveClauseChain(
+          state,
+          key,
+          0,
+          key.length,
+          property,
+          payload,
+          payload == null ? undefined : merge,
+          payload,
+          contextOnly,
+          -1,
+          -1,
+          0
+        )
+      : 0
   }
-  return false
+  return 0
 }
 
 export function contributeVariantClauseValue(
@@ -2166,7 +2185,14 @@ function contributeStyleObject(
   merge: MergeStyle,
   contextOnly: boolean
 ) {
-  if (!isConditionalStyleObject(state, value)) return false
+  const classification = isConditionalStyleObject(
+    state,
+    value,
+    property,
+    merge,
+    contextOnly
+  )
+  if (!classification) return false
   let hasBase = false
   const base = value.default
   if (base != null) {
@@ -2174,24 +2200,31 @@ function contributeStyleObject(
     hasBase = true
   }
   let conditions = 0
+  let useClassification = classification > 0
   for (const key in value) {
     if (key === 'default') continue
     const payload = value[key]
-    if (payload == null) continue
-    conditions |= resolveClauseChain(
-      state,
-      key,
-      0,
-      key.length,
-      property,
-      payload,
-      merge,
-      payload,
-      contextOnly,
-      -1,
-      -1,
-      1
-    )
+    if (useClassification) {
+      if (payload != null) conditions |= classification
+      useClassification = false
+      continue
+    }
+    if (payload != null) {
+      conditions |= resolveClauseChain(
+        state,
+        key,
+        0,
+        key.length,
+        property,
+        payload,
+        merge,
+        payload,
+        contextOnly,
+        -1,
+        -1,
+        1
+      )
+    }
   }
   if ((!isWeb || !state.flatShouldDoClasses) && conditions & 12 && !hasBase) {
     const resting = implicitLifecycleBase(property)
