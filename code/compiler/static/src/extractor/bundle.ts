@@ -109,10 +109,16 @@ function getESBuildConfig(
       ...platformDefines,
       ...callerDefine,
     },
+    ...(platform === 'native'
+      ? {
+          conditions: ['react-native'],
+          mainFields: ['react-native', 'module', 'main'],
+        }
+      : {}),
     // for ESM: prefer "module" field for resolution, add require() shim for bundled CJS deps
     ...(detectedFormat === 'esm'
       ? {
-          mainFields: ['module', 'main'],
+          ...(platform === 'web' ? { mainFields: ['module', 'main'] } : {}),
           banner: {
             js: 'import { createRequire as __cr } from "module"; const require = __cr(import.meta.url);',
           },

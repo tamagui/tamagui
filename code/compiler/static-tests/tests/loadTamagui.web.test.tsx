@@ -1,4 +1,11 @@
-import { mkdtempSync, readFileSync, realpathSync, rmSync, writeFileSync } from 'node:fs'
+import {
+  mkdirSync,
+  mkdtempSync,
+  readFileSync,
+  realpathSync,
+  rmSync,
+  writeFileSync,
+} from 'node:fs'
 import { createRequire } from 'node:module'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
@@ -122,6 +129,44 @@ describe('esbundleTamaguiConfig platform defines', () => {
     expect(out).toContain('"native"')
     // EXPO_OS shouldn't be inlined for native (ios vs android is ambiguous)
     expect(out).toContain('process.env.EXPO_OS')
+  })
+
+  test('platform=native selects react-native package exports', async () => {
+    const packageDir = join(tempDir, 'node_modules', 'conditional-package')
+    mkdirSync(packageDir, { recursive: true })
+    writeFileSync(
+      join(packageDir, 'package.json'),
+      JSON.stringify({
+        name: 'conditional-package',
+        type: 'module',
+        exports: {
+          '.': {
+            'react-native': './native.js',
+            import: './web.js',
+            default: './web.js',
+          },
+        },
+      })
+    )
+    writeFileSync(join(packageDir, 'native.js'), `export const value = 'native'`)
+    writeFileSync(join(packageDir, 'web.js'), `export const value = 'web'`)
+    const entry = join(tempDir, 'native-package-entry.js')
+    writeFileSync(
+      entry,
+      `
+        import { value } from 'conditional-package'
+        export { value }
+      `
+    )
+    const outfile = join(tempDir, 'native-package-bundle.cjs')
+
+    await esbundleTamaguiConfig(
+      { entryPoints: [entry], outfile, format: 'cjs', external: [] },
+      'native'
+    )
+
+    const bundled = createRequire(import.meta.url)(outfile)
+    expect(bundled.value).toBe('native')
   })
 })
 
