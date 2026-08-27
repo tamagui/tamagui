@@ -1,4 +1,5 @@
 import { mergeIfNotShallowEqual } from '@tamagui/is-equal-shallow'
+import { useRef } from 'react'
 import { getMediaState } from '../hooks/useMedia'
 import type { ComponentSetStateShallow, DisposeFn, AllGroupContexts } from '../types'
 
@@ -7,6 +8,35 @@ type SubscribeToContextGroupProps = {
   pseudoGroups?: Set<string>
   mediaGroups?: Set<string>
   groupContext: AllGroupContexts
+}
+
+export const useGroupSetRevision = (
+  pseudoGroups: Set<string> | undefined,
+  mediaGroups: Set<string> | undefined
+) => {
+  const previous = useRef({ pseudoGroups, mediaGroups, revision: 0 })
+
+  if (
+    !setsEqual(previous.current.pseudoGroups, pseudoGroups) ||
+    !setsEqual(previous.current.mediaGroups, mediaGroups)
+  ) {
+    previous.current = {
+      pseudoGroups,
+      mediaGroups,
+      revision: previous.current.revision + 1,
+    }
+  }
+
+  return previous.current.revision
+}
+
+const setsEqual = (a: Set<string> | undefined, b: Set<string> | undefined) => {
+  if (a === b) return true
+  if (!a || !b || a.size !== b.size) return false
+  for (const value of a) {
+    if (!b.has(value)) return false
+  }
+  return true
 }
 
 export const subscribeToContextGroup = (props: SubscribeToContextGroupProps) => {
