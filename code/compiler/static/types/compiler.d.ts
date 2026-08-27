@@ -75,11 +75,13 @@ export interface CompilerInput {
     source: string;
     root: string;
     target: CompilerTarget;
+    /** Host environment whose resolver produced this module graph. */
+    environment?: string;
     project: CompilerProject;
     resolve(specifier: string, importer: string): Promise<CompilerResolution | null>;
     load(id: string): Promise<string | null>;
 }
-export type CompilerUpdateInput = Omit<CompilerInput, 'target'>;
+export type CompilerUpdateInput = CompilerInput;
 export interface CompilerResult {
     plan: LoweredModulePlan;
     output: AppliedLoweredModule;
@@ -93,6 +95,9 @@ export declare class CompilerFrontend {
     private readonly session;
     private queue;
     private readonly planCaches;
+    private readonly moduleRecords;
+    private moduleContext;
+    private compilerHost;
     /**
      * One cache per project root and platform. Absent when the project produced
      * no content stamp, in which case plans are never persisted rather than

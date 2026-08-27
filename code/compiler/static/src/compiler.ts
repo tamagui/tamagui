@@ -212,12 +212,14 @@ export interface CompilerInput {
   source: string
   root: string
   target: CompilerTarget
+  /** Host environment whose resolver produced this module graph. */
+  environment?: string
   project: CompilerProject
   resolve(specifier: string, importer: string): Promise<CompilerResolution | null>
   load(id: string): Promise<string | null>
 }
 
-export type CompilerUpdateInput = Omit<CompilerInput, 'target'>
+export type CompilerUpdateInput = CompilerInput
 
 export interface CompilerResult {
   plan: LoweredModulePlan
@@ -231,6 +233,10 @@ function cleanId(id: string): string {
 
 function externalId(specifier: string): ResolvedModuleId {
   return resolvedModuleId(`external://${encodeURIComponent(specifier)}`)
+}
+
+function compilerContext(input: CompilerInput): string {
+  return `${input.root}\0${input.target}\0${input.environment ?? ''}\0${input.project.generation}`
 }
 
 function sourceCanBeLinked(root: string, id: string): boolean {
@@ -249,6 +255,9 @@ export class CompilerFrontend {
   private readonly session = new CompilerSession()
   private queue: Promise<unknown> = Promise.resolve()
   private readonly planCaches = new Map<string, ModulePlanCache>()
+  private readonly moduleRecords = new Map<ResolvedModuleId, HostModuleInput>()
+  private moduleContext: string | null = null
+  private compilerHost: ReturnType<typeof createTamaguiCompilerHost> | null = null
 
   /**
    * One cache per project root and platform. Absent when the project produced
@@ -292,6 +301,7 @@ export class CompilerFrontend {
       const invalidated = new Set<ResolvedModuleId>()
       for (const module of modules.values()) {
         for (const id of await this.session.update(module)) invalidated.add(id)
+        this.moduleRecords.set(module.id, module)
       }
       return [...invalidated].sort()
     })
@@ -308,9 +318,13 @@ export class CompilerFrontend {
   }
 
   remove(id: string) {
-    const operation = this.queue.then(() =>
-      this.session.remove(resolvedModuleId(cleanId(id)))
-    )
+    const operation = this.queue.then(async () => {
+      const result = await this.session.remove(resolvedModuleId(cleanId(id)))
+      for (const invalidatedId of result.invalidatedIds) {
+        this.moduleRecords.delete(invalidatedId)
+      }
+      return result
+    })
     this.queue = operation.catch(() => undefined)
     return operation
   }
@@ -323,24 +337,28 @@ export class CompilerFrontend {
     const { rootModule, modules } = await this.buildTree(input)
     const invalidated = new Set<ResolvedModuleId>()
     for (const module of modules.values()) {
+      if (module.id === rootModule.id) continue
       for (const id of await this.session.update(module)) invalidated.add(id)
+      this.moduleRecords.set(module.id, module)
     }
     const projectInfo = input.project.projectInfo
     if (!projectInfo.tamaguiConfig || !projectInfo.components) {
       throw new Error('The compiler requires evaluated Tamagui config and components')
     }
-    const host = createTamaguiCompilerHost({
-      target: input.target,
-      tamaguiConfig: projectInfo.tamaguiConfig,
-      components: projectInfo.components,
-      componentModules: input.project.componentModules.map((component) => ({
-        moduleName: component.moduleName,
-        resolvedId: cleanId(component.id),
-      })),
-      disablePartialExtraction: input.project.disablePartialExtraction,
-      experimentalNativeFastPath: input.project.experimentalNativeFastPath,
-      zeroRuntime: input.project.zeroRuntime,
-    })
+    const host =
+      this.compilerHost ||
+      (this.compilerHost = createTamaguiCompilerHost({
+        target: input.target,
+        tamaguiConfig: projectInfo.tamaguiConfig,
+        components: projectInfo.components,
+        componentModules: input.project.componentModules.map((component) => ({
+          moduleName: component.moduleName,
+          resolvedId: cleanId(component.id),
+        })),
+        disablePartialExtraction: input.project.disablePartialExtraction,
+        experimentalNativeFastPath: input.project.experimentalNativeFastPath,
+        zeroRuntime: input.project.zeroRuntime,
+      }))
     const result = await this.session.compile({
       module: rootModule,
       adapter: {
@@ -354,6 +372,7 @@ export class CompilerFrontend {
       },
       structuralPass: domStructuralPass,
     })
+    this.moduleRecords.set(rootModule.id, rootModule)
     for (const id of result.invalidatedIds) invalidated.add(id)
     return {
       plan: result.plan,
@@ -366,6 +385,13 @@ export class CompilerFrontend {
     rootModule: HostModuleInput
     modules: Map<ResolvedModuleId, HostModuleInput>
   }> {
+    const moduleContext = compilerContext(input)
+    if (this.moduleContext !== moduleContext) {
+      this.moduleRecords.clear()
+      this.compilerHost = null
+      this.moduleContext = moduleContext
+    }
+
     const componentBySpecifier = new Map(
       input.project.componentModules.map((component) => [
         component.moduleName,
@@ -382,6 +408,11 @@ export class CompilerFrontend {
       const id = resolvedModuleId(cleanId(rawId))
       const existing = modules.get(id)
       if (existing) return existing
+      const installed = this.moduleRecords.get(id)
+      if (installed?.source === source && this.session.has(id)) {
+        modules.set(id, installed)
+        return installed
+      }
       if (loading.has(id)) {
         return { id, source, imports: [] }
       }
@@ -406,9 +437,14 @@ export class CompilerFrontend {
             : externalId(specifier)
         imports.push({ specifier, resolvedId, external: !canLink })
         if (canLink && !modules.has(resolvedId) && !loading.has(resolvedId)) {
-          const dependencySource = await input.load(resolution.id)
-          if (dependencySource !== null) {
-            await loadModule(resolution.id, dependencySource)
+          const installedDependency = this.moduleRecords.get(resolvedId)
+          if (installedDependency && this.session.has(resolvedId)) {
+            modules.set(resolvedId, installedDependency)
+          } else {
+            const dependencySource = await input.load(resolution.id)
+            if (dependencySource !== null) {
+              await loadModule(resolution.id, dependencySource)
+            }
           }
         }
       }

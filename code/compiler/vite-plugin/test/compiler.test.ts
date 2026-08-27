@@ -51,7 +51,9 @@ import { space } from '~/tokens'
 export const App = () => jsx(View, { padding: space, 'data-compiled': 'yes' })
 `
   let tokenSource = 'export const space = 12\n'
-  const compile = () =>
+  let resolveCalls = 0
+  let loadCalls = 0
+  const compile = (generation = 'vite-e3-fixture-v1') =>
     frontend.compile({
       id: appId,
       source,
@@ -60,15 +62,17 @@ export const App = () => jsx(View, { padding: space, 'data-compiled': 'yes' })
       project: {
         projectInfo,
         componentModules: [{ moduleName: '@tamagui/core', id: coreId }],
-        generation: 'vite-e3-fixture-v1',
+        generation,
       },
       async resolve(specifier) {
+        resolveCalls++
         if (specifier === '@tamagui/core') return { id: coreId }
         if (specifier === 'react/jsx-runtime') return { id: runtimeId, external: true }
         if (specifier === '~/tokens') return { id: tokensId }
         return null
       },
       async load(id) {
+        loadCalls++
         return id === tokensId ? tokenSource : null
       },
     })
@@ -84,11 +88,20 @@ export const App = () => jsx(View, { padding: space, 'data-compiled': 'yes' })
   expect(frontend.has(tokensId)).toBe(true)
   expect(frontend.dependentsOf(tokensId)).toContain(resolvedModuleId(appId))
 
+  const resolvedAfterFirstCompile = resolveCalls
+  const loadedAfterFirstCompile = loadCalls
+  const repeated = await compile()
+  expect(repeated.output.code).toBe(first.output.code)
+  expect(repeated.plan.css).toBe(first.plan.css)
+  expect(resolveCalls).toBe(resolvedAfterFirstCompile)
+  expect(loadCalls).toBe(loadedAfterFirstCompile)
+
   tokenSource = 'export const space = 16\n'
   const invalidatedIds = await frontend.update({
     id: tokensId,
     source: tokenSource,
     root,
+    target: 'web',
     project: {
       projectInfo,
       componentModules: [{ moduleName: '@tamagui/core', id: coreId }],
@@ -105,13 +118,86 @@ export const App = () => jsx(View, { padding: space, 'data-compiled': 'yes' })
   expect(frontend.parseCount(appId)).toBe(1)
   expect(frontend.parseCount(tokensId)).toBe(2)
 
+  const resolvedBeforeRecompile = resolveCalls
+  const loadedBeforeRecompile = loadCalls
+
   const second = await compile()
   expect(second.plan.css).toContain('padding-top:16px')
   expect(second.plan.css).not.toContain('padding-top:12px')
   expect(second.invalidatedIds).toEqual([])
   expect(frontend.parseCount(appId)).toBe(1)
   expect(frontend.parseCount(tokensId)).toBe(2)
+  expect(resolveCalls).toBe(resolvedBeforeRecompile)
+  expect(loadCalls).toBe(loadedBeforeRecompile)
+
+  const removed = await frontend.remove(tokensId)
+  expect(removed.invalidatedIds).toContain(resolvedModuleId(appId))
+  tokenSource = 'export const space = 20\n'
+  const afterRemoval = await compile()
+  expect(afterRemoval.plan.css).toContain('padding-top:20px')
+  expect(resolveCalls).toBeGreaterThan(resolvedBeforeRecompile)
+  expect(loadCalls).toBeGreaterThan(loadedBeforeRecompile)
+
+  const resolvedBeforeGenerationChange = resolveCalls
+  const loadedBeforeGenerationChange = loadCalls
+  const nextGeneration = await compile('vite-e3-fixture-v2')
+  expect(nextGeneration.plan.css).toContain('padding-top:20px')
+  expect(resolveCalls).toBeGreaterThan(resolvedBeforeGenerationChange)
+  expect(loadCalls).toBeGreaterThan(loadedBeforeGenerationChange)
 })
+
+test.each([
+  ['client', 12, 'ssr', 24],
+  ['ssr', 24, 'client', 12],
+])(
+  'frontend isolates %s (%spx) then %s (%spx) resolver graphs',
+  async (firstEnvironment, firstSpace, secondEnvironment, secondSpace) => {
+    const frontend = new CompilerFrontend()
+    const appId = join(root, 'environment-app.tsx')
+    const source = `
+import { jsx } from 'react/jsx-runtime'
+import { View } from '@tamagui/core'
+import { space } from '~/tokens'
+export const App = () => jsx(View, { padding: space })
+`
+    const tokenIds = {
+      client: join(root, 'client-tokens.ts'),
+      ssr: join(root, 'ssr-tokens.ts'),
+    }
+    const spaces = { client: 12, ssr: 24 }
+    const compile = (environment: 'client' | 'ssr') =>
+      frontend.compile({
+        id: appId,
+        source,
+        root,
+        target: 'web',
+        environment,
+        project: {
+          projectInfo,
+          componentModules: [{ moduleName: '@tamagui/core', id: coreId }],
+          generation: 'shared-generation',
+          cacheStamp: null,
+        },
+        async resolve(specifier) {
+          if (specifier === '@tamagui/core') return { id: coreId }
+          if (specifier === 'react/jsx-runtime') return { id: runtimeId, external: true }
+          if (specifier === '~/tokens') return { id: tokenIds[environment] }
+          return null
+        },
+        async load(id) {
+          return id === tokenIds[environment]
+            ? `export const space = ${spaces[environment]}\n`
+            : null
+        },
+      })
+
+    const first = await compile(firstEnvironment as 'client' | 'ssr')
+    expect(first.plan.css).toContain(`padding-top:${firstSpace}px`)
+    const second = await compile(secondEnvironment as 'client' | 'ssr')
+    expect(second.plan.css).toContain(`padding-top:${secondSpace}px`)
+    expect(second.plan.css).not.toContain(`padding-top:${firstSpace}px`)
+  }
+)
 
 test('generic compiler session consumes only canonical host-resolved modules', async () => {
   const session = new CompilerSession()

@@ -754,7 +754,15 @@ export function createTamaguiPlugins({
   // temporary vxrn native env bridge
   const enableNativeEnv = !!globalThis.__vxrnEnableNativeEnv
   const tamaguiLoader = createViteTamaguiLoader(tamaguiOptionsIn)
-  const compilerFrontend = new Static.CompilerFrontend()
+  const compilerFrontends = new Map<string, Static.CompilerFrontend>()
+  const getCompilerFrontend = (environment: Environment) => {
+    let frontend = compilerFrontends.get(environment.name)
+    if (!frontend) {
+      frontend = new Static.CompilerFrontend()
+      compilerFrontends.set(environment.name, frontend)
+    }
+    return frontend
+  }
   const pluginInstanceId = getNextPluginInstanceId()
   const configuredEvaluationPackages = new Set<string>()
   let buildEnvironmentPromise: Promise<void> | null = null
@@ -1234,6 +1242,7 @@ export function createTamaguiPlugins({
       async handler(options) {
         if (!tamaguiLoader.isEvaluationDependency(options.file)) {
           if (this.environment.name !== 'client') return
+          const compilerFrontend = getCompilerFrontend(this.environment)
           const source = options.type === 'delete' ? null : await options.read()
           const affectedModules = new Set<EnvironmentModuleNode>()
           const compilerHmrRoots = new Set<string>(
@@ -1252,6 +1261,8 @@ export function createTamaguiPlugins({
                       id: options.file,
                       source: source!,
                       root: config.root,
+                      target: 'web',
+                      environment: this.environment.name,
                       project: {
                         ...(await tamaguiLoader.getCompilerProject()),
                         generation: `${pluginInstanceId}:${tamaguiLoader.getGeneration()}`,
@@ -1415,11 +1426,13 @@ export function createTamaguiPlugins({
         const evaluationDependencies = await tamaguiLoader.ensureFullConfigLoaded()
         for (const dependency of evaluationDependencies) this.addWatchFile(dependency)
         const compilerProject = await tamaguiLoader.getCompilerProject()
+        const compilerFrontend = getCompilerFrontend(this.environment)
         const result = await compilerFrontend.compile({
           id: validId,
           source: code,
           root: config.root,
           target: 'web',
+          environment: this.environment.name,
           project: {
             ...compilerProject,
             generation: `${pluginInstanceId}:${tamaguiLoader.getGeneration()}`,
