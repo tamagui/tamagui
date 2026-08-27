@@ -31,6 +31,8 @@ type JsonValue =
   | { [key: string]: JsonValue }
 type ComponentKind = 'custom' | 'intrinsic' | 'text' | 'view'
 type Scenario =
+  | 'zero-props'
+  | 'one-prop'
   | 'plain-props'
   | 'clause-strings'
   | 'conditional-objects'
@@ -555,10 +557,28 @@ const elements: CorpusElement[] = rawElements
   })
 
 const corpus = {
-  schemaVersion: 1,
+  schemaVersion: 2,
   sourceRoots,
   exclusions: [...excludedParts].sort(),
   filesParsed: files.length,
+  fixedOverheadScenarios: {
+    'zero-props': {
+      component: 'View',
+      componentKind: 'view',
+      props: {},
+      scenarios: [],
+      staticPropCount: 0,
+      variantPropNames: [],
+    },
+    'one-prop': {
+      component: 'View',
+      componentKind: 'view',
+      props: { opacity: 1 },
+      scenarios: [],
+      staticPropCount: 1,
+      variantPropNames: [],
+    },
+  },
   elements,
   distribution: {
     componentKinds,
@@ -590,6 +610,8 @@ This corpus statically parses JSX in \`${sourceRoots.join('`, `')}\`. Generated 
 
 The generator keeps JSX attributes whose complete value is statically known. It supports scalar literals, literal templates, signed numbers, arrays, objects, and literal object spreads. Dynamic attributes are counted but omitted from replay. Each corpus row preserves the element, source line, component kind, and the full static prop object.
 
+The \`zero-props\` and \`one-prop\` lanes are fixed synthetic controls. They replay \`View\` with \`{}\` and \`{ opacity: 1 }\` so the benchmark can separate fixed call cost from the first property contribution without depending on the harvested application mix.
+
 ## Distribution
 
 Denominator for value and prop percentages: ${staticAttributes.toLocaleString()} static attributes from ${elements.length.toLocaleString()} elements in ${files.length.toLocaleString()} parsed files. Another ${dynamicAttributes.toLocaleString()} dynamic attributes were observed and omitted.
@@ -613,6 +635,8 @@ Variant classification uses variant keys declared in \`styled()\` calls across t
 
 | Scenario | Elements | Corpus elements |
 | --- | ---: | ---: |
+| zero-props | 1 | fixed control |
+| one-prop | 1 | fixed control |
 ${(
   [
     'plain-props',

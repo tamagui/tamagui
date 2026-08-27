@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "sourceRoots": [
     "code/tamagui.dev",
     "code/kitchen-sink",
@@ -15,6 +15,26 @@
     "tests"
   ],
   "filesParsed": 755,
+  "fixedOverheadScenarios": {
+    "zero-props": {
+      "component": "View",
+      "componentKind": "view",
+      "props": {},
+      "scenarios": [],
+      "staticPropCount": 0,
+      "variantPropNames": []
+    },
+    "one-prop": {
+      "component": "View",
+      "componentKind": "view",
+      "props": {
+        "opacity": 1
+      },
+      "scenarios": [],
+      "staticPropCount": 1,
+      "variantPropNames": []
+    }
+  },
   "elements": [
     {
       "component": "Accordion",

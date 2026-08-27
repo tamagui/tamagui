@@ -7,6 +7,14 @@ import { bundleAttributionPlugin } from '../shared/bundleAttributionPlugin'
 
 const extract = process.env.EXTRACT === '1'
 const outputCSS = process.env.BENCH_OUTPUT_CSS
+const checkpointInputs: Record<string, string> = {
+  'checkpoint-public-view': 'checkpoint-public-view.html',
+  'checkpoint-processor': 'checkpoint-processor.html',
+  'baseline-view': 'baseline-view.html',
+  'baseline-styled-view': 'baseline-styled-view.html',
+  'baseline-provider': 'baseline-provider.html',
+  'baseline-root': 'baseline-root.html',
+}
 
 export default defineConfig(({ mode }) => ({
   plugins: [
@@ -33,10 +41,14 @@ export default defineConfig(({ mode }) => ({
     bundleAttributionPlugin(process.env.BUNDLE_ATTRIBUTION_FILE, import.meta.dirname),
   ],
   build:
-    mode === 'size' || mode === 'cluster'
+    mode === 'size' || mode === 'cluster' || checkpointInputs[mode]
       ? {
+          modulePreload: checkpointInputs[mode] ? false : undefined,
           rollupOptions: {
-            input: resolve(import.meta.dirname, `${mode}.html`),
+            input: resolve(import.meta.dirname, checkpointInputs[mode] ?? `${mode}.html`),
+            external: checkpointInputs[mode]
+              ? ['react', 'react/jsx-runtime', 'react-dom/client']
+              : undefined,
             output: { entryFileNames: 'assets/index-[hash].js' },
           },
         }

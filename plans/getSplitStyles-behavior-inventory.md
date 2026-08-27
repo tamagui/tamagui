@@ -3,6 +3,11 @@
 This inventory defines the behavior that emitter consolidation must preserve. It
 is evidence for implementation, not a description of the preferred design.
 
+Checkpoint 0 refreshed the inventory against `18d49275e860d673c60e83a744be4b3931a959b8`
+on 2026-08-27. Historical line references below remain provenance for the commit
+where each observation was made. The current-tip map in the next section is the
+source of truth for implementation checkpoints.
+
 ## Evidence method
 
 **READ** - `git log --follow -- code/core/web/src/helpers/getSplitStyles.tsx`
@@ -32,25 +37,33 @@ between modules would not remove its behavior.
 
 ## Decision
 
-**READ** - the premise that two complete emitters remain is false in the
-current tree. `12f7e0e981` already made directStyle the sole ordinary emitter,
-and current getSplitStyles is 1,851 rendered bytes smaller than V2. The residual
-inline finalizers and routing wrappers are component-splitter behavior, not a
-second general emitter. Their measured total is under 2,000 rendered bytes and
-the possible gzip saving is under 500. The history below shows real regression
-risk in each branch.
+The earlier decision to stop consolidation is superseded by
+`plans/v3-beta/v3-style-engine-plan.md`. DirectStyle is the ordinary value
+emitter, but the current tree still has several render-path scans, transform
+systems, contribution channels, and output completion paths. Checkpoint 3
+rebuilds them as one pass in `getSplitStyles.tsx` and deletes `directStyle.ts`.
+This inventory now records behavior that must survive that rebuild. It does not
+protect the current module boundary or the duplicated mechanics.
 
-**READ** - the pair therefore stopped the proposed inline-lowering
-unification. No getSplitStyles or directStyle implementation change is part of
-this inventory. The useful code result is the Motion discrete-property fix,
-which the sweep exposed while probing the historical promotion behavior.
+**READ** - current-tip ownership is:
 
-**READ** - the retained four-arm build-only harness at `19b430e1fa` reproduced
-the post-`26ee0b751a` runtime whole-app result exactly: 109,086 gzip. The
-pre-26 result was 109,126, so the net remains **-40 gzip bytes**. The harness
-module inventory contains directStyle and getSplitStyles but no
-animations-motion or react-native-web-internals entries, which is why the
-independent Motion fix does not change that number.
+| behavior | current source | rebuild disposition |
+| --- | --- | --- |
+| authored source ordering, style-prop position, HOC/asChild forwarding, host props, and final output assembly | `getSplitStyles.tsx:450-1477` | preserve behavior in the single forward pass |
+| ordinary clause resolution and property emission | `directStyle.ts:1984-2039` and its helpers | move into `getSplitStyles.tsx`; delete the file |
+| variant resolution and reconstructed HOC clauses | `propMapper.ts:30-53, 81-366` | preserve variant behavior, delete reconstruction and component-runtime use of `propMapper` |
+| conditional-object discrimination | `directStyle.ts:2084-2183`, `getSplitStyles.tsx:176-207`, and `useComponentState.ts:97-115` | keep the public behavior through one discriminator |
+| compound matching and Cartesian chain assembly | `getSplitStyles.tsx:111-240` | preserve matching and authored order through compiled metadata and the compound arena |
+| lifecycle discovery | `useComponentState.ts:68-124` | move into the sole style pass; delete the prepass |
+| accepted style/textStyle substyles | `getSplitStyles.tsx:701-711, 1664-1750` | remove with `accept: 'style' | 'textStyle'`; token-category `accept` remains |
+| transforms | `directStyle.ts:1584-1601`, `getSplitStyles.tsx:1529-1556, 1664-1750, 1804+` | replace with one authored-order accumulator |
+| styled-context write propagation | `getSplitStyles.tsx:1579-1601`, `propMapper.ts:438-446`, and `createComponent.tsx:1033-1042` | remove; `createStyledContext` is the supported path |
+| class assembly and RNW conversion | `getSplitStyles.tsx:1417-1470` | preserve output behavior without join-then-split or wrapper arrays |
+
+**READ** - the current processor artifact is the size ruler for the rebuild.
+Source-file marginals in this inventory are diagnostic only. Moving code across
+files cannot satisfy the gate because the complete minified processor bundle is
+compressed directly.
 
 The status words below mean:
 

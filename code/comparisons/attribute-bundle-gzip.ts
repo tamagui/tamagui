@@ -33,6 +33,7 @@
  *   bun code/comparisons/attribute-bundle-gzip.ts /tmp/v3bench --against=/tmp/v2bench
  *   bun code/comparisons/attribute-bundle-gzip.ts /tmp/v3bench --core
  *   bun code/comparisons/attribute-bundle-gzip.ts /tmp/v3bench --parser-cluster=phase-iii-b
+ *   bun code/comparisons/attribute-bundle-gzip.ts /tmp/v3bench --deletion-pool
  */
 
 import { eachMapping, TraceMap } from '@jridgewell/trace-mapping'
@@ -48,6 +49,7 @@ const against = args.find((a) => a.startsWith('--against='))?.slice(10)
 const minDelta = Number(args.find((a) => a.startsWith('--min='))?.slice(6) ?? '40')
 const within = args.find((a) => a.startsWith('--within='))?.slice(9)
 const core = args.includes('--core')
+const deletionPool = args.includes('--deletion-pool')
 const parserClusterCheckpoint = args
   .find((a) => a.startsWith('--parser-cluster='))
   ?.slice('--parser-cluster='.length)
@@ -69,8 +71,8 @@ if (args.includes('--parser-cluster') || parserClusterCheckpoint === '') {
   process.exit(1)
 }
 
-if (core && parserClusterCheckpoint) {
-  console.error('--core and --parser-cluster are separate union modes')
+if ([core, Boolean(parserClusterCheckpoint), deletionPool].filter(Boolean).length > 1) {
+  console.error('--core, --parser-cluster, and --deletion-pool are separate modes')
   process.exit(1)
 }
 
@@ -87,6 +89,13 @@ type ParserClusterSelector =
 type ParserClusterManifest = {
   version: 1
   selectors: Record<string, ParserClusterSelector>
+  deletionPool?: Record<
+    string,
+    Array<
+      | ParserClusterSelector
+      | { kind: 'lines'; source: string; startLine: number; endLine: number }
+    >
+  >
   checkpoints: Record<
     string,
     Record<
@@ -520,6 +529,51 @@ function declarationSegments(
 
 const left = attribute(dirs[0]!)
 
+if (deletionPool) {
+  const manifest = JSON.parse(
+    readFileSync(join(import.meta.dir, 'parser-cluster-manifest.json'), 'utf8')
+  ) as ParserClusterManifest
+  if (!manifest.deletionPool || Object.keys(manifest.deletionPool).length === 0) {
+    fail('parser-cluster-manifest.json has no deletionPool families')
+  }
+
+  console.info(`bundle gzip total: ${left.totalGzip}`)
+  console.info('marginalGzip  family')
+  for (const [family, selectors] of Object.entries(manifest.deletionPool)) {
+    const segmentGroups: Segment[][] = []
+    for (let index = 0; index < selectors.length; index++) {
+      const selector = selectors[index]!
+      let segments: Segment[]
+      if (selector.kind === 'source') {
+        segments = left.segments.get(selector.source) ?? []
+      } else if (selector.kind === 'declaration') {
+        const result = declarationSegments(left, `${family}[${index}]`, selector)
+        if (!result.declarationPresent) {
+          fail(
+            `deletion-pool declaration ${family}[${index}] is missing from ${selector.source}`
+          )
+        }
+        segments = result.segments
+      } else {
+        segments = (left.segments.get(selector.source) ?? []).filter(
+          (segment) =>
+            segment.originalLine >= selector.startLine &&
+            segment.originalLine <= selector.endLine
+        )
+      }
+      if (segments.length === 0) {
+        fail(
+          `deletion-pool selector ${family}[${index}] has no generated spans in ${selector.source}`
+        )
+      }
+      segmentGroups.push(segments)
+    }
+    const marginal = measureUnionGzip(left, groupSegmentsByFile(segmentGroups))
+    console.info(`${String(marginal).padStart(12)}  ${family}`)
+  }
+  process.exit(0)
+}
+
 if (core) {
   const segmentGroups: Segment[][] = []
   for (const [id, segs] of left.segments) {
@@ -706,7 +760,7 @@ if (within) {
 
   console.info(`per-declaration attribution for ${id}`)
   console.info('marginals are measured against the same chunk, so they do NOT sum to the')
-  console.info("module's own marginal — they rank, they don't decompose.\n")
+  console.info("module's own marginal; they rank, they don't decompose.\n")
   console.info('marginalGzip  minBytes  src:line  declaration')
   for (const row of rows) {
     console.info(

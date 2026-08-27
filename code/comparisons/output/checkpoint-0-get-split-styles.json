@@ -1,0 +1,511 @@
+{
+  "schemaVersion": 2,
+  "label": "checkpoint-0-18d49275e8",
+  "commit": "18d49275e860d673c60e83a744be4b3931a959b8",
+  "runtime": {
+    "bun": "1.3.14",
+    "node": "v24.3.0",
+    "platform": "darwin-arm64",
+    "nodeEnv": "production",
+    "target": "web"
+  },
+  "corpus": {
+    "sha256": "1eef702fd69dcd8853822326f024df6e1ebbcf63adcc978e69c84a99226bcee5",
+    "elements": 8948,
+    "staticAttributes": 22918
+  },
+  "measurement": {
+    "rounds": 11,
+    "warmups": 3,
+    "targetOperations": 20000,
+    "allocation": null,
+    "allocationNote": "not collected: forced-GC heap deltas measure retained memory, not total allocation; profile-hotpath.ts supplies sampled allocation attribution"
+  },
+  "scenarios": {
+    "zero-props": {
+      "elements": 1,
+      "propsPerOperation": 0,
+      "operationsPerRound": 20000,
+      "medianNsPerOperation": 233.33125,
+      "meanNsPerOperation": 229.45436363636364,
+      "standardDeviationNs": 54.6624674769585,
+      "ci95Ns": {
+        "low": 192.7339067752747,
+        "high": 266.1748204974526,
+        "margin": 36.72045686108892
+      },
+      "samplesNsPerOperation": [
+        265.40835,
+        253.15,
+        355.4979,
+        170.32085,
+        166.45835,
+        170.9396,
+        198.84165,
+        244.81665,
+        233.33125,
+        228.07295,
+        237.16045
+      ]
+    },
+    "one-prop": {
+      "elements": 1,
+      "propsPerOperation": 1,
+      "operationsPerRound": 20000,
+      "medianNsPerOperation": 574.6729,
+      "meanNsPerOperation": 590.0893818181819,
+      "standardDeviationNs": 80.89514776296004,
+      "ci95Ns": {
+        "low": 535.7466687865515,
+        "high": 644.4320948498123,
+        "margin": 54.34271303163044
+      },
+      "samplesNsPerOperation": [
+        767.14165,
+        579.03125,
+        713.56455,
+        615.9479,
+        531.29585,
+        521.1583,
+        553.34375,
+        515.5979,
+        580.26875,
+        574.6729,
+        538.9604
+      ]
+    },
+    "plain-props": {
+      "elements": 6745,
+      "propsPerOperation": 2.2775389177168273,
+      "operationsPerRound": 20235,
+      "medianNsPerOperation": 2932.8555967383245,
+      "meanNsPerOperation": 3073.4709931037582,
+      "standardDeviationNs": 574.9390595139804,
+      "ci95Ns": {
+        "low": 2687.2457473894597,
+        "high": 3459.696238818057,
+        "margin": 386.22524571429864
+      },
+      "samplesNsPerOperation": [
+        3492.068198665678,
+        3150.3706449221645,
+        3071.938028169014,
+        2932.8555967383245,
+        4332.762984927106,
+        2636.5620459599704,
+        2615.7894736842104,
+        2333.691623424759,
+        3692.366790214974,
+        2704.7112923152954,
+        2845.064245119842
+      ]
+    },
+    "clause-strings": {
+      "elements": 625,
+      "propsPerOperation": 5.4592,
+      "operationsPerRound": 20000,
+      "medianNsPerOperation": 11568.7625,
+      "meanNsPerOperation": 11665.568759090907,
+      "standardDeviationNs": 2051.0307929916166,
+      "ci95Ns": {
+        "low": 10287.753390866621,
+        "high": 13043.384127315194,
+        "margin": 1377.8153682242864
+      },
+      "samplesNsPerOperation": [
+        13200.8417,
+        16012.6104,
+        12341.0479,
+        11568.7625,
+        12264.97295,
+        10699.2292,
+        9957.775,
+        8460.6146,
+        12982.24165,
+        11128.21045,
+        9704.95
+      ]
+    },
+    "conditional-objects": {
+      "elements": 14,
+      "propsPerOperation": 8,
+      "operationsPerRound": 20006,
+      "medianNsPerOperation": 7676.134659602119,
+      "meanNsPerOperation": 8006.075640944081,
+      "standardDeviationNs": 1363.3427105356438,
+      "ci95Ns": {
+        "low": 7090.226622415843,
+        "high": 8921.924659472319,
+        "margin": 915.8490185282376
+      },
+      "samplesNsPerOperation": [
+        9639.616465060482,
+        6738.126462061382,
+        8823.257172848145,
+        10967.988803358992,
+        8168.28911326602,
+        7676.134659602119,
+        7110.219034289713,
+        6474.151504548636,
+        7225.180345896231,
+        8205.336299110268,
+        7038.532190342897
+      ]
+    },
+    "variant-props": {
+      "elements": 1674,
+      "propsPerOperation": 2.8440860215053765,
+      "operationsPerRound": 20088,
+      "medianNsPerOperation": 3856.3176523297493,
+      "meanNsPerOperation": 4027.273745519713,
+      "standardDeviationNs": 678.968115435627,
+      "ci95Ns": {
+        "low": 3571.1651843132836,
+        "high": 4483.382306726143,
+        "margin": 456.1085612064295
+      },
+      "samplesNsPerOperation": [
+        5615.950219036241,
+        4004.4035244922343,
+        4484.460025886101,
+        3488.3864994026285,
+        4408.3449322978895,
+        3794.4253783353247,
+        3749.375647152529,
+        3229.1812027080846,
+        3856.3176523297493,
+        4367.989197530864,
+        3301.176921545201
+      ]
+    },
+    "shorthand-heavy": {
+      "elements": 345,
+      "propsPerOperation": 5.304347826086956,
+      "operationsPerRound": 20010,
+      "medianNsPerOperation": 6512.591604197901,
+      "meanNsPerOperation": 7445.856807959656,
+      "standardDeviationNs": 2074.850892754706,
+      "ci95Ns": {
+        "low": 6052.039876210159,
+        "high": 8839.673739709155,
+        "margin": 1393.8169317494978
+      },
+      "samplesNsPerOperation": [
+        11385.752973513243,
+        5877.290504747626,
+        6990.948275862069,
+        6369.459020489755,
+        7362.006496751625,
+        6512.591604197901,
+        5753.510744627686,
+        10583.006396801598,
+        9530.7992003998,
+        6043.773963018491,
+        5495.285707146427
+      ]
+    },
+    "style-prop-heavy": {
+      "elements": 540,
+      "propsPerOperation": 7.57037037037037,
+      "operationsPerRound": 20520,
+      "medianNsPerOperation": 15367.757066276803,
+      "meanNsPerOperation": 15750.233705475812,
+      "standardDeviationNs": 3134.85715377596,
+      "ci95Ns": {
+        "low": 13644.339255514711,
+        "high": 17856.128155436912,
+        "margin": 2105.8944499611016
+      },
+      "samplesNsPerOperation": [
+        13820.776510721247,
+        19180.025584795323,
+        17778.616374269004,
+        17122.049658869397,
+        11597.543031189083,
+        13451.821393762184,
+        13717.298196881091,
+        15367.757066276803,
+        17465.054434697857,
+        21593.317495126706,
+        12158.311013645223
+      ]
+    },
+    "total": {
+      "elements": 8948,
+      "propsPerOperation": 2.5612427358068843,
+      "operationsPerRound": 26844,
+      "medianNsPerOperation": 3883.4935181046044,
+      "meanNsPerOperation": 4004.4883298790314,
+      "standardDeviationNs": 532.8182251707722,
+      "ci95Ns": {
+        "low": 3646.558482302492,
+        "high": 4362.418177455571,
+        "margin": 357.9298475765395
+      },
+      "samplesNsPerOperation": [
+        4256.306474444941,
+        5254.915772612129,
+        4425.962673223066,
+        3773.647444494114,
+        4237.506519147668,
+        3456.3977797645657,
+        3631.810944717628,
+        3344.4220682461632,
+        3969.9901654000896,
+        3883.4935181046044,
+        3814.918268514379
+      ]
+    }
+  },
+  "pairedV2Control": {
+    "packageVersion": "2.6.2",
+    "scenarios": {
+      "zero-props": {
+        "elements": 1,
+        "propsPerOperation": 0,
+        "operationsPerRound": 20000,
+        "medianNsPerOperation": 513.8833,
+        "meanNsPerOperation": 476.85642727272733,
+        "standardDeviationNs": 120.50148757189133,
+        "ci95Ns": {
+          "low": 395.9074712464399,
+          "high": 557.8053832990147,
+          "margin": 80.9489560262874
+        },
+        "samplesNsPerOperation": [
+          478.1979,
+          549.4896,
+          565.3229,
+          518.60625,
+          544.225,
+          272.0729,
+          248.47915,
+          425.8104,
+          643.1854,
+          486.1479,
+          513.8833
+        ]
+      },
+      "one-prop": {
+        "elements": 1,
+        "propsPerOperation": 1,
+        "operationsPerRound": 20000,
+        "medianNsPerOperation": 1373.00415,
+        "meanNsPerOperation": 1334.2445,
+        "standardDeviationNs": 210.67294012855453,
+        "ci95Ns": {
+          "low": 1192.7213129420747,
+          "high": 1475.7676870579253,
+          "margin": 141.5231870579253
+        },
+        "samplesNsPerOperation": [
+          1438.6375,
+          1013.91045,
+          1621.9854,
+          1403.4729,
+          1331.65625,
+          1013.1229,
+          1202.94585,
+          1179.18955,
+          1595.5,
+          1503.26455,
+          1373.00415
+        ]
+      },
+      "plain-props": {
+        "elements": 6745,
+        "propsPerOperation": 2.2775389177168273,
+        "operationsPerRound": 20235,
+        "medianNsPerOperation": 4075.57860143316,
+        "meanNsPerOperation": 4171.320875171283,
+        "standardDeviationNs": 655.1030762183168,
+        "ci95Ns": {
+          "low": 3731.244066344799,
+          "high": 4611.397683997767,
+          "margin": 440.0768088264837
+        },
+        "samplesNsPerOperation": [
+          4732.919446503583,
+          4052.6460093896712,
+          4244.633852236225,
+          4075.57860143316,
+          5023.451544353842,
+          3132.6599950580676,
+          3819.8336051396095,
+          3447.0059797380777,
+          5252.195058067705,
+          4437.55250803064,
+          3666.053026933531
+        ]
+      },
+      "clause-strings": {
+        "elements": 625,
+        "propsPerOperation": 5.4592,
+        "operationsPerRound": 20000,
+        "medianNsPerOperation": 9576.44585,
+        "meanNsPerOperation": 9190.42992727273,
+        "standardDeviationNs": 2128.508056611407,
+        "ci95Ns": {
+          "low": 7760.567868736393,
+          "high": 10620.291985809064,
+          "margin": 1429.8620585363358
+        },
+        "samplesNsPerOperation": [
+          10338.6104,
+          10241.46875,
+          10569.11875,
+          8077.0354,
+          9708.5104,
+          6191.8792,
+          7318.21665,
+          7857.83545,
+          13850.82915,
+          9576.44585,
+          7364.7792
+        ]
+      },
+      "conditional-objects": {
+        "elements": 14,
+        "propsPerOperation": 8,
+        "operationsPerRound": 20006,
+        "medianNsPerOperation": 4537.913625912226,
+        "meanNsPerOperation": 4505.5659483972995,
+        "standardDeviationNs": 804.6672045026187,
+        "ci95Ns": {
+          "low": 3965.0168525679446,
+          "high": 5046.115044226654,
+          "margin": 540.5490958293548
+        },
+        "samplesNsPerOperation": [
+          5728.546036189144,
+          3250.822653204039,
+          4931.437268819354,
+          4935.450614815555,
+          4920.8758372488255,
+          3418.14955513346,
+          3840.5582325302407,
+          4167.203988803359,
+          5543.801459562132,
+          4537.913625912226,
+          4286.466160151955
+        ]
+      },
+      "variant-props": {
+        "elements": 1674,
+        "propsPerOperation": 2.8440860215053765,
+        "operationsPerRound": 20088,
+        "medianNsPerOperation": 3319.2328753484667,
+        "meanNsPerOperation": 3477.7695955975523,
+        "standardDeviationNs": 580.194631704468,
+        "ci95Ns": {
+          "low": 3088.013828470504,
+          "high": 3867.5253627246007,
+          "margin": 389.7557671270484
+        },
+        "samplesNsPerOperation": [
+          4673.936728395061,
+          3128.938918757467,
+          3893.16591995221,
+          3305.5535145360413,
+          3739.0108522500996,
+          2866.653375149343,
+          2571.597471127041,
+          3150.535593389088,
+          3850.1987256073276,
+          3756.641577060932,
+          3319.2328753484667
+        ]
+      },
+      "shorthand-heavy": {
+        "elements": 345,
+        "propsPerOperation": 5.304347826086956,
+        "operationsPerRound": 20010,
+        "medianNsPerOperation": 7390.854572713643,
+        "meanNsPerOperation": 7642.000022715915,
+        "standardDeviationNs": 1403.2170701200419,
+        "ci95Ns": {
+          "low": 6699.364714278617,
+          "high": 8584.635331153215,
+          "margin": 942.6353084372987
+        },
+        "samplesNsPerOperation": [
+          10251.76991504248,
+          5907.119390304848,
+          8900.097851074463,
+          7766.298100949525,
+          9259.720139930036,
+          6156.950724637682,
+          6833.075112443778,
+          6726.57836081959,
+          8385.42603698151,
+          7390.854572713643,
+          6484.110044977511
+        ]
+      },
+      "style-prop-heavy": {
+        "elements": 540,
+        "propsPerOperation": 7.57037037037037,
+        "operationsPerRound": 20520,
+        "medianNsPerOperation": 14568.106335282651,
+        "meanNsPerOperation": 15772.566857168176,
+        "standardDeviationNs": 3174.5991685003546,
+        "ci95Ns": {
+          "low": 13639.975022244074,
+          "high": 17905.15869209228,
+          "margin": 2132.591834924103
+        },
+        "samplesNsPerOperation": [
+          14236.972076023392,
+          14568.106335282651,
+          19978.667153996103,
+          22750.779727095516,
+          15490.332602339182,
+          12862.185233918128,
+          13333.103849902534,
+          14035.6522417154,
+          15393.691081871346,
+          17942.450487329435,
+          12906.294639376218
+        ]
+      },
+      "total": {
+        "elements": 8948,
+        "propsPerOperation": 2.5612427358068843,
+        "operationsPerRound": 26844,
+        "medianNsPerOperation": 4510.419758605275,
+        "meanNsPerOperation": 5008.824135408624,
+        "standardDeviationNs": 1996.2085406438248,
+        "ci95Ns": {
+          "low": 3667.8365622928072,
+          "high": 6349.811708524441,
+          "margin": 1340.9875731158168
+        },
+        "samplesNsPerOperation": [
+          4902.751378334078,
+          10815.858925644465,
+          5188.639323498734,
+          4729.986216659217,
+          4230.704887498137,
+          3403.3505066309044,
+          3661.462226195798,
+          4371.579012069737,
+          4843.950230964088,
+          4510.419758605275,
+          4438.363023394427
+        ]
+      }
+    },
+    "medianRatios": {
+      "zero-props": 0.45405493815424636,
+      "one-prop": 0.41855146614087074,
+      "plain-props": 0.7196169878080619,
+      "clause-strings": 1.2080434308517498,
+      "conditional-objects": 1.6915559202736121,
+      "variant-props": 1.1618099112509235,
+      "shorthand-heavy": 0.8811689555145343,
+      "style-prop-heavy": 1.0548905061914238,
+      "total": 0.861004901083856
+    }
+  },
+  "checksum": 32371248
+}

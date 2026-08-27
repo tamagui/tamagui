@@ -12,7 +12,9 @@
   },
   "dependencies": {
     "@tamagui/animations-css": "workspace:*",
+    "@tamagui/helpers": "workspace:*",
     "@tamagui/vite-plugin": "workspace:*",
+    "@tamagui/web": "workspace:*",
     "tamagui": "workspace:*",
     "react": "19.2.3",
     "react-dom": "19.2.3"

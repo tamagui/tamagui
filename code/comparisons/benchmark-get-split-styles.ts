@@ -20,6 +20,8 @@ import { simplifiedGetSplitStyles } from '../core/core-test/utils'
 import { createRandom, median, shuffle, summarize } from './benchmark-statistics'
 
 type Scenario =
+  | 'zero-props'
+  | 'one-prop'
   | 'plain-props'
   | 'clause-strings'
   | 'conditional-objects'
@@ -55,6 +57,7 @@ const comparePath = argument('compare')
 const corpusPath = resolve(import.meta.dir, 'get-split-styles-prop-corpus.json')
 const corpusSource = readFileSync(corpusPath, 'utf8')
 const corpus = JSON.parse(corpusSource) as {
+  fixedOverheadScenarios: Record<'zero-props' | 'one-prop', CorpusElement>
   elements: CorpusElement[]
   distribution: { staticAttributes: number }
 }
@@ -68,40 +71,71 @@ if (rounds < 2 || warmups < 1 || targetOperations < 1) {
 
 createTamagui(config.getDefaultTamaguiConfig('web'))
 
-const variantComponents = new Map<string, any>()
-function variantComponent(kind: CorpusElement['componentKind'], names: string[]) {
-  const sortedNames = [...names].sort()
-  const cacheKey = `${kind}:${sortedNames.join(',')}`
-  let component = variantComponents.get(cacheKey)
-  if (component) return component
-  const variants: Record<string, any> = {}
-  for (const name of sortedNames) {
-    variants[name] = {
-      any: (value: any) => ({ opacity: value === false ? 1 : 0.875 }),
-    }
+const v2Root = resolve(import.meta.dir, 'tamagui-v2-bench/node_modules')
+const v2Tamagui = await import(`${v2Root}/tamagui/dist/esm/index.mjs`)
+const v2Web = await import(`${v2Root}/@tamagui/web/dist/esm/index.mjs`)
+const v2ConfigDefault = await import(`${v2Root}/@tamagui/config-default/dist/index.cjs`)
+v2Tamagui.createTamagui(v2ConfigDefault.getDefaultTamaguiConfig('web'))
+
+function prepareElements(
+  elements: CorpusElement[],
+  framework: {
+    Text: any
+    View: any
+    styled: typeof styled
   }
-  component = styled(kind === 'text' ? Text : View, { variants } as any)
-  variantComponents.set(cacheKey, component)
-  return component
+) {
+  const variants = new Map<string, any>()
+  const getVariantComponent = (kind: CorpusElement['componentKind'], names: string[]) => {
+    const sortedNames = [...names].sort()
+    const cacheKey = `${kind}:${sortedNames.join(',')}`
+    let component = variants.get(cacheKey)
+    if (component) return component
+    const definitions: Record<string, any> = {}
+    for (const name of sortedNames) {
+      definitions[name] = {
+        any: (value: any) => ({ opacity: value === false ? 1 : 0.875 }),
+      }
+    }
+    component = framework.styled(kind === 'text' ? framework.Text : framework.View, {
+      variants: definitions,
+    } as any)
+    variants.set(cacheKey, component)
+    return component
+  }
+
+  return elements.map<PreparedElement>((element) => ({
+    component: element.variantPropNames.length
+      ? getVariantComponent(element.componentKind, element.variantPropNames)
+      : element.componentKind === 'text'
+        ? framework.Text
+        : framework.View,
+    options:
+      element.componentKind === 'intrinsic' ||
+      (element.component[0] === element.component[0]?.toLowerCase() &&
+        element.componentKind === 'text')
+        ? { render: element.component }
+        : undefined,
+    props: element.props,
+    staticPropCount: element.staticPropCount,
+  }))
 }
 
-const prepared = corpus.elements.map<PreparedElement>((element) => ({
-  component: element.variantPropNames.length
-    ? variantComponent(element.componentKind, element.variantPropNames)
-    : element.componentKind === 'text'
-      ? Text
-      : View,
-  options:
-    element.componentKind === 'intrinsic' ||
-    (element.component[0] === element.component[0]?.toLowerCase() &&
-      element.componentKind === 'text')
-      ? { render: element.component }
-      : undefined,
-  props: element.props,
-  staticPropCount: element.staticPropCount,
-}))
+const fixedElements = [
+  corpus.fixedOverheadScenarios['zero-props'],
+  corpus.fixedOverheadScenarios['one-prop'],
+]
+const allElements = [...corpus.elements, ...fixedElements]
+const prepared = prepareElements(allElements, { Text, View, styled })
+const v2Prepared = prepareElements(allElements, {
+  Text: v2Tamagui.Text,
+  View: v2Tamagui.View,
+  styled: v2Tamagui.styled,
+})
 
 const scenarioNames: Scenario[] = [
+  'zero-props',
+  'one-prop',
   'plain-props',
   'clause-strings',
   'conditional-objects',
@@ -110,29 +144,42 @@ const scenarioNames: Scenario[] = [
   'style-prop-heavy',
   'total',
 ]
-const scenarios = Object.fromEntries(
-  scenarioNames.map((name) => [
-    name,
-    name === 'total'
-      ? prepared
-      : prepared.filter((_, index) => corpus.elements[index]!.scenarios.includes(name)),
-  ])
-) as Record<Scenario, PreparedElement[]>
+function buildScenarios(elements: PreparedElement[]) {
+  const harvested = elements.slice(0, corpus.elements.length)
+  const fixed = elements.slice(corpus.elements.length)
+  return Object.fromEntries(
+    scenarioNames.map((name) => [
+      name,
+      name === 'zero-props'
+        ? [fixed[0]!]
+        : name === 'one-prop'
+          ? [fixed[1]!]
+          : name === 'total'
+            ? harvested
+            : harvested.filter((_, index) =>
+                corpus.elements[index]!.scenarios.includes(name as any)
+              ),
+    ])
+  ) as Record<Scenario, PreparedElement[]>
+}
+
+const scenarios = buildScenarios(prepared)
+const v2Scenarios = buildScenarios(v2Prepared)
 
 for (const name of scenarioNames) {
   if (!scenarios[name].length) throw new Error(`scenario ${name} has no corpus elements`)
 }
 
 let checksum = 0
-function replay(elements: PreparedElement[], repetitions: number) {
+function replay(
+  elements: PreparedElement[],
+  repetitions: number,
+  split: (element: PreparedElement) => any
+) {
   for (let repetition = 0; repetition < repetitions; repetition++) {
     for (let index = 0; index < elements.length; index++) {
       const element = elements[index]!
-      const result = simplifiedGetSplitStyles(
-        element.component,
-        element.props,
-        element.options
-      )
+      const result = split(element)
       checksum +=
         Object.keys(result.classNames).length +
         Object.keys(result.style ?? {}).length +
@@ -140,6 +187,23 @@ function replay(elements: PreparedElement[], repetitions: number) {
     }
   }
 }
+
+const splitV3 = (element: PreparedElement) =>
+  simplifiedGetSplitStyles(element.component, element.props, element.options)
+const splitV2 = (element: PreparedElement) =>
+  v2Web.getSplitStyles(
+    element.props,
+    element.component.staticConfig,
+    {},
+    '',
+    { unmounted: false },
+    { isAnimated: false, noClass: false, resolveValues: 'auto' },
+    {},
+    { animationDriver: {}, groups: { state: {} } },
+    undefined,
+    element.options?.render,
+    true
+  )
 
 const repetitions = Object.fromEntries(
   scenarioNames.map((name) => [
@@ -149,54 +213,66 @@ const repetitions = Object.fromEntries(
 ) as Record<Scenario, number>
 
 for (let warmup = 0; warmup < warmups; warmup++) {
-  for (const name of scenarioNames) replay(scenarios[name], repetitions[name])
-}
-
-const samples = Object.fromEntries(
-  scenarioNames.map((name) => [name, [] as number[]])
-) as Record<Scenario, number[]>
-const random = createRandom(0x5e17_57a1)
-for (let round = 0; round < rounds; round++) {
-  for (const name of shuffle(scenarioNames, random)) {
-    const elements = scenarios[name]
-    const operations = elements.length * repetitions[name]
-    const start = process.hrtime.bigint()
-    replay(elements, repetitions[name])
-    const elapsed = process.hrtime.bigint() - start
-    samples[name].push(Number(elapsed) / operations)
+  for (const name of scenarioNames) {
+    replay(scenarios[name], repetitions[name], splitV3)
+    replay(v2Scenarios[name], repetitions[name], splitV2)
   }
 }
 
-const results = Object.fromEntries(
-  scenarioNames.map((name) => {
-    const statistic = summarize(samples[name])
-    const elements = scenarios[name]
-    return [
-      name,
-      {
-        elements: elements.length,
-        propsPerOperation:
-          elements.reduce((sum, element) => sum + element.staticPropCount, 0) /
-          elements.length,
-        operationsPerRound: elements.length * repetitions[name],
-        medianNsPerOperation: median(samples[name]),
-        meanNsPerOperation: statistic.mean,
-        standardDeviationNs: statistic.standardDeviation,
-        ci95Ns: statistic.ci95,
-        samplesNsPerOperation: samples[name],
-      },
-    ]
-  })
-) as Record<Scenario, any>
+const samples = {
+  v3: Object.fromEntries(scenarioNames.map((name) => [name, [] as number[]])),
+  v2: Object.fromEntries(scenarioNames.map((name) => [name, [] as number[]])),
+} as Record<'v2' | 'v3', Record<Scenario, number[]>>
+const random = createRandom(0x5e17_57a1)
+for (let round = 0; round < rounds; round++) {
+  for (const name of shuffle(scenarioNames, random)) {
+    const order = round % 2 ? (['v2', 'v3'] as const) : (['v3', 'v2'] as const)
+    for (const framework of order) {
+      const elements = framework === 'v3' ? scenarios[name] : v2Scenarios[name]
+      const operations = elements.length * repetitions[name]
+      const start = process.hrtime.bigint()
+      replay(elements, repetitions[name], framework === 'v3' ? splitV3 : splitV2)
+      const elapsed = process.hrtime.bigint() - start
+      samples[framework][name].push(Number(elapsed) / operations)
+    }
+  }
+}
+
+const resultsFor = (frameworkSamples: Record<Scenario, number[]>) =>
+  Object.fromEntries(
+    scenarioNames.map((name) => {
+      const statistic = summarize(frameworkSamples[name])
+      const elements = scenarios[name]
+      return [
+        name,
+        {
+          elements: elements.length,
+          propsPerOperation:
+            elements.reduce((sum, element) => sum + element.staticPropCount, 0) /
+            elements.length,
+          operationsPerRound: elements.length * repetitions[name],
+          medianNsPerOperation: median(frameworkSamples[name]),
+          meanNsPerOperation: statistic.mean,
+          standardDeviationNs: statistic.standardDeviation,
+          ci95Ns: statistic.ci95,
+          samplesNsPerOperation: frameworkSamples[name],
+        },
+      ]
+    })
+  ) as Record<Scenario, any>
+
+const results = resultsFor(samples.v3)
+const v2Results = resultsFor(samples.v2)
 
 const report = {
-  schemaVersion: 1,
+  schemaVersion: 2,
   label: argument('label', 'working-tree'),
   commit: execFileSync('git', ['rev-parse', 'HEAD'], { cwd: import.meta.dir })
     .toString()
     .trim(),
   runtime: {
     bun: Bun.version,
+    node: process.version,
     platform: `${process.platform}-${process.arch}`,
     nodeEnv: process.env.NODE_ENV,
     target: process.env.TAMAGUI_TARGET,
@@ -215,21 +291,38 @@ const report = {
       'not collected: forced-GC heap deltas measure retained memory, not total allocation; profile-hotpath.ts supplies sampled allocation attribution',
   },
   scenarios: results,
+  pairedV2Control: {
+    packageVersion: v2Tamagui.version ?? '2.6.2',
+    scenarios: v2Results,
+    medianRatios: Object.fromEntries(
+      scenarioNames.map((name) => [
+        name,
+        results[name].medianNsPerOperation / v2Results[name].medianNsPerOperation,
+      ])
+    ),
+  },
   checksum,
 }
 
 console.log(
   `getSplitStyles corpus benchmark: ${rounds} rounds, ${warmups} warmups, Bun ${Bun.version}`
 )
-console.log('scenario                 elements   props/op   median ns/op     95% CI mean')
+console.log(
+  'scenario                 elements   props/op    V3 median    V2 median   V3/V2'
+)
 for (const name of scenarioNames) {
   const result = results[name]
+  const control = v2Results[name]
   console.log(
     `${name.padEnd(24)} ${String(result.elements).padStart(8)} ${result.propsPerOperation
       .toFixed(2)
       .padStart(
         10
-      )} ${result.medianNsPerOperation.toFixed(1).padStart(14)} ${`${result.ci95Ns.low.toFixed(1)}..${result.ci95Ns.high.toFixed(1)}`.padStart(19)}`
+      )} ${result.medianNsPerOperation.toFixed(1).padStart(12)} ${control.medianNsPerOperation
+      .toFixed(1)
+      .padStart(12)} ${(result.medianNsPerOperation / control.medianNsPerOperation)
+      .toFixed(3)
+      .padStart(8)}x`
   )
 }
 console.log(`checksum ${checksum}`)

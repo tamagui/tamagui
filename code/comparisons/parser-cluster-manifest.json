@@ -1,5 +1,40 @@
 {
   "version": 1,
+  "deletionPool": {
+    "directStyle runtime": [
+      { "kind": "source", "source": "@tamagui/web::helpers/directStyle.mjs" }
+    ],
+    "propMapper runtime": [
+      { "kind": "source", "source": "@tamagui/web::helpers/propMapper.mjs" }
+    ],
+    "getSubStyle": [
+      { "kind": "declaration", "source": "@tamagui/web::helpers/getSplitStyles.mjs", "declaration": "getSubStyle", "declarationKind": "variable" }
+    ],
+    "lifecycle scanners": [
+      { "kind": "declaration", "source": "@tamagui/web::hooks/useComponentState.mjs", "declaration": "lifecycleHandler", "declarationKind": "variable" },
+      { "kind": "declaration", "source": "@tamagui/web::hooks/useComponentState.mjs", "declaration": "hasFlatModifier", "declarationKind": "function" }
+    ],
+    "frontend preprocessing": [
+      { "kind": "source", "source": "@tamagui/web::helpers/styleFrontend.mjs" },
+      { "kind": "source", "source": "@tamagui/web::helpers/frontendProgram.mjs" },
+      { "kind": "lines", "source": "@tamagui/web::helpers/getSplitStyles.mjs", "startLine": 258, "endLine": 259 }
+    ],
+    "compound matcher chains": [
+      { "kind": "declaration", "source": "@tamagui/web::helpers/getSplitStyles.mjs", "declaration": "compoundMatcherMatches", "declarationKind": "function" },
+      { "kind": "declaration", "source": "@tamagui/web::helpers/getSplitStyles.mjs", "declaration": "compoundMatcherMatchesPayload", "declarationKind": "function" },
+      { "kind": "declaration", "source": "@tamagui/web::helpers/getSplitStyles.mjs", "declaration": "compoundScanHandler", "declarationKind": "variable" },
+      { "kind": "declaration", "source": "@tamagui/web::helpers/getSplitStyles.mjs", "declaration": "matcherChains", "declarationKind": "function" },
+      { "kind": "declaration", "source": "@tamagui/web::helpers/getSplitStyles.mjs", "declaration": "joinChains", "declarationKind": "variable" },
+      { "kind": "declaration", "source": "@tamagui/web::helpers/getSplitStyles.mjs", "declaration": "compoundVariantMatchChains", "declarationKind": "function" }
+    ],
+    "overriddenContextProps": [
+      { "kind": "lines", "source": "@tamagui/web::helpers/getSplitStyles.mjs", "startLine": 670, "endLine": 680 },
+      { "kind": "lines", "source": "@tamagui/web::helpers/propMapper.mjs", "startLine": 228, "endLine": 235 }
+    ],
+    "nativeOnlyProps": [
+      { "kind": "source", "source": "@tamagui/web::helpers/nativeOnlyProps.mjs" }
+    ]
+  },
   "selectors": {
     "mergeVariants": { "kind": "source", "source": "@tamagui/web::helpers/mergeVariants.mjs" },
     "mergeFlatValues": { "kind": "source", "source": "@tamagui/style-grammar::mergeFlatValues.mjs" },

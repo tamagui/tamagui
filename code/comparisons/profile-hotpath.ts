@@ -34,6 +34,7 @@ const arg = (name: string, fallback: string) =>
   process.argv.find((a) => a.startsWith(`--${name}=`))?.slice(name.length + 3) ?? fallback
 
 const SCENARIO = arg('scenario', 'heavy')
+const FIXTURE_SCENARIO = SCENARIO === 'clause-string' ? 'flat' : SCENARIO
 const EXTRACT = arg('extract', '0')
 const ITERATIONS = Number.parseInt(arg('iterations', '20'), 10)
 const WARMUPS = Number.parseInt(arg('warmups', '3'), 10)
@@ -166,13 +167,19 @@ async function runOnce(page: any) {
     await previous.evaluate((el: any) => el.replaceChildren())
   }
   await page.locator('#bench-start').click()
-  await page.waitForSelector(`#bench-result-${SCENARIO}-rerender`, { timeout: 120_000 })
+  await page.waitForSelector(`#bench-result-${FIXTURE_SCENARIO}-rerender`, {
+    timeout: 120_000,
+  })
   return {
     mount: Number(
-      await page.locator(`#bench-result-${SCENARIO}-mount`).getAttribute('data-value')
+      await page
+        .locator(`#bench-result-${FIXTURE_SCENARIO}-mount`)
+        .getAttribute('data-value')
     ),
     update: Number(
-      await page.locator(`#bench-result-${SCENARIO}-rerender`).getAttribute('data-value')
+      await page
+        .locator(`#bench-result-${FIXTURE_SCENARIO}-rerender`)
+        .getAttribute('data-value')
     ),
   }
 }
@@ -209,9 +216,12 @@ async function main() {
     const browser = await chromium.launch()
     const context = await browser.newContext({ viewport: { width: 1280, height: 900 } })
     const page = await context.newPage()
-    await page.goto(`http://127.0.0.1:${PORT}/?scenario=${SCENARIO}&scale=${SCALE}`, {
-      waitUntil: 'networkidle',
-    })
+    await page.goto(
+      `http://127.0.0.1:${PORT}/?scenario=${FIXTURE_SCENARIO}&scale=${SCALE}`,
+      {
+        waitUntil: 'networkidle',
+      }
+    )
 
     for (let i = 0; i < WARMUPS; i++) await runOnce(page)
 
@@ -221,7 +231,7 @@ async function main() {
     // long enough to read it (the normal run unmounts the runner when done).
     const countPage = await context.newPage()
     await countPage.goto(
-      `http://127.0.0.1:${PORT}/?scenario=${SCENARIO}&scale=${SCALE}&behaviorValidation=1`,
+      `http://127.0.0.1:${PORT}/?scenario=${FIXTURE_SCENARIO}&scale=${SCALE}&behaviorValidation=1`,
       { waitUntil: 'networkidle' }
     )
     await countPage.locator('#bench-start').click()
@@ -269,6 +279,7 @@ async function main() {
     const result = {
       label: LABEL,
       scenario: SCENARIO,
+      fixtureScenario: FIXTURE_SCENARIO,
       extract: EXTRACT,
       scale: Number(SCALE),
       iterations: ITERATIONS,
