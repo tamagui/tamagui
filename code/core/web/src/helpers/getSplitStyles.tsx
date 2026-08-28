@@ -2726,17 +2726,18 @@ function frameWrite(
   state: GetStyleState,
   property: string,
   value: any,
-  condition: number,
-  identity: string,
-  wrappers: string[] | undefined,
-  selector: string,
+  cursor: ConditionCursor | null,
   original: any,
   forceCSS: boolean,
-  normalize = false
+  normalize = false,
+  conditionOverride = -1
 ) {
   const direct = state as DirectState
   const weak = direct.flatWeakContribution === true
   const frame = (direct.flatFrame ||= {})
+  const condition =
+    conditionOverride !== -1 ? conditionOverride : cursor ? cursor.condition : 0
+  const identity = cursor ? cursor.key : ''
   let slot = frame[property]
   if (!slot) {
     slot = frame[property] = []
@@ -2761,10 +2762,56 @@ function frameWrite(
     value,
     condition,
     identity,
-    selector,
-    wrappers: wrappers && wrappers.length ? wrappers.slice() : undefined,
+    selector: cursor ? cursor.selector : '',
+    wrappers:
+      cursor && cursor.wrappers.length ? cursor.wrappers.slice() : undefined,
     original,
     forceCSS,
+    sequence: weak ? 0 : ++frameSequence,
+    normalize,
+  })
+}
+
+// the inline path never needs selector or wrapper text; identity and
+// precedence are enough to pick a winner
+function frameWriteInline(
+  state: GetStyleState,
+  property: string,
+  value: any,
+  cursor: ConditionCursor | null,
+  original: any,
+  normalize = false
+) {
+  const direct = state as DirectState
+  const weak = direct.flatWeakContribution === true
+  const frame = (direct.flatFrame ||= {})
+  const condition = cursor ? cursor.condition : 0
+  const identity = cursor ? cursor.key : ''
+  let slot = frame[property]
+  if (!slot) {
+    slot = frame[property] = []
+  }
+  for (let index = 0; index < slot.length; index++) {
+    const entry = slot[index]
+    if (entry.identity === identity) {
+      if (weak) return
+      entry.value = value
+      entry.condition = condition
+      entry.original = original
+      entry.sequence = ++frameSequence
+      entry.normalize = normalize
+      return
+    }
+  }
+  slot.push({
+    property,
+    value,
+    condition,
+    identity,
+    selector: '',
+    wrappers: undefined,
+    original,
+    forceCSS: false,
     sequence: weak ? 0 : ++frameSequence,
     normalize,
   })
@@ -2817,16 +2864,11 @@ function emitAtParentCondition(
   originalValue: any,
   contextOnly: boolean
 ) {
-  const parent = (state as DirectState).flatParentCursor
   emitValue(
     state,
     property,
     value,
-    parent ? parent.condition : 0,
-    parent ? parent.key : '',
-    parent && parent.wrappers.length ? parent.wrappers : undefined,
-    parent ? parent.selector : '',
-    parent ? parent.theme : '',
+    (state as DirectState).flatParentCursor || null,
     merge,
     originalValue,
     contextOnly
@@ -2888,11 +2930,7 @@ function emitUnderCondition(
       state,
       property,
       value,
-      condition,
-      cursor.key,
-      cursor.wrappers.length ? cursor.wrappers : undefined,
-      cursor.selector,
-      cursor.theme,
+      cursor,
       merge,
       // the variant path (warnMode 2) forwards its tracked original verbatim;
       // the direct paths fall back to the payload itself so consumers like the
@@ -3534,23 +3572,20 @@ function emitProperty(
   state: GetStyleState,
   property: string,
   value: any,
-  condition: number,
-  conditionKey: string,
-  conditionWrappers: string[] | undefined,
-  conditionSelector: string,
-  conditionTheme: string,
+  cursor: ConditionCursor | null,
   merge: MergeStyle,
   originalValue: any,
   contextOnly: boolean
 ) {
   const direct = state as DirectState
+  const condition = cursor ? cursor.condition : 0
   if (condition & 4) (state.flatEnterKeys ||= new Set()).add(property)
   if (condition & 8) (state.flatExitKeys ||= new Set()).add(property)
 
-  if (!isWeb && conditionTheme) {
+  if (!isWeb && cursor && cursor.theme) {
     if (supportsDynamicColorIOS && isColorStyleKey(property)) {
       const schemes = ((direct.flatDynamicColors ||= {})[property] ||= {})
-      schemes[conditionTheme] =
+      schemes[cursor.theme] =
         typeof originalValue === 'string' && isAsciiLetters(originalValue)
           ? originalValue
           : value
@@ -3558,16 +3593,14 @@ function emitProperty(
         state,
         property,
         { dynamic: { ...schemes } },
+        cursor,
+        originalValue,
+        false,
+        true,
         // a DynamicColorIOS aggregate applies on every scheme: force the
         // active bit by addition — the packed condition exceeds Int32, so a
         // bitwise write would corrupt it
-        condition & 1 ? condition : condition + 1,
-        conditionKey,
-        undefined,
-        '',
-        originalValue,
-        false,
-        true
+        condition & 1 ? condition : condition + 1
       )
       return
     }
@@ -3616,10 +3649,7 @@ function emitProperty(
       state,
       property,
       value,
-      condition,
-      conditionKey,
-      conditionWrappers,
-      conditionSelector,
+      cursor,
       originalValue,
       !state.flatShouldDoClasses
     )
@@ -3629,17 +3659,7 @@ function emitProperty(
   // inline and native: inactive conditions contribute nothing; the rest land
   // in the frame and the completion picks each property's winner
   if (condition && !(condition & 1)) return
-  frameWrite(
-    state,
-    property,
-    value,
-    condition,
-    conditionKey,
-    undefined,
-    '',
-    originalValue,
-    false
-  )
+  frameWriteInline(state, property, value, cursor, originalValue)
 }
 
 function splitComponents(value: string) {
@@ -3726,11 +3746,7 @@ function emitBorder(
   state: GetStyleState,
   property: string,
   raw: string,
-  condition: number,
-  conditionKey: string,
-  conditionWrappers: string[] | undefined,
-  conditionSelector: string,
-  conditionTheme: string,
+  cursor: ConditionCursor | null,
   merge: MergeStyle,
   originalValue: any,
   contextOnly: boolean
@@ -3768,11 +3784,7 @@ function emitBorder(
         state,
         target,
         width,
-        condition,
-        conditionKey,
-        conditionWrappers,
-        conditionSelector,
-        conditionTheme,
+        cursor,
         merge,
         originalValue,
         contextOnly
@@ -3786,11 +3798,7 @@ function emitBorder(
         state,
         target,
         style,
-        condition,
-        conditionKey,
-        conditionWrappers,
-        conditionSelector,
-        conditionTheme,
+        cursor,
         merge,
         originalValue,
         contextOnly
@@ -3803,11 +3811,7 @@ function emitBorder(
         state,
         target,
         color,
-        condition,
-        conditionKey,
-        conditionWrappers,
-        conditionSelector,
-        conditionTheme,
+        cursor,
         merge,
         originalValue,
         contextOnly
@@ -3819,11 +3823,7 @@ function emitBorder(
 function emitTextDecoration(
   state: GetStyleState,
   raw: string,
-  condition: number,
-  conditionKey: string,
-  conditionWrappers: string[] | undefined,
-  conditionSelector: string,
-  conditionTheme: string,
+  cursor: ConditionCursor | null,
   merge: MergeStyle,
   originalValue: any,
   contextOnly: boolean
@@ -3846,11 +3846,7 @@ function emitTextDecoration(
       state,
       property,
       part,
-      condition,
-      conditionKey,
-      conditionWrappers,
-      conditionSelector,
-      conditionTheme,
+      cursor,
       merge,
       originalValue,
       contextOnly
@@ -3862,11 +3858,7 @@ function emitTransform(
   state: GetStyleState,
   property: string,
   value: any,
-  condition: number,
-  conditionKey: string,
-  conditionWrappers: string[] | undefined,
-  conditionSelector: string,
-  conditionTheme: string,
+  cursor: ConditionCursor | null,
   merge: MergeStyle,
   originalValue: any,
   contextOnly: boolean
@@ -3876,11 +3868,7 @@ function emitTransform(
       state,
       property,
       value,
-      condition,
-      conditionKey,
-      conditionWrappers,
-      conditionSelector,
-      conditionTheme,
+      cursor,
       merge,
       originalValue,
       contextOnly
@@ -3912,11 +3900,7 @@ function emitTransform(
       state,
       target,
       targetValue,
-      condition,
-      conditionKey,
-      conditionWrappers,
-      conditionSelector,
-      conditionTheme,
+      cursor,
       merge,
       originalValue,
       contextOnly
@@ -3930,11 +3914,7 @@ function emitResolved(
   state: GetStyleState,
   property: string,
   raw: string,
-  condition: number,
-  conditionKey: string,
-  conditionWrappers: string[] | undefined,
-  conditionSelector: string,
-  conditionTheme: string,
+  cursor: ConditionCursor | null,
   merge: MergeStyle,
   originalValue: any,
   contextOnly: boolean
@@ -3953,11 +3933,7 @@ function emitResolved(
     state,
     property,
     value,
-    condition,
-    conditionKey,
-    conditionWrappers,
-    conditionSelector,
-    conditionTheme,
+    cursor,
     merge,
     originalValue,
     contextOnly
@@ -3986,11 +3962,7 @@ function emitWebShadow(
     state,
     'boxShadow',
     state.flatBoxShadow ? `${state.flatBoxShadow}, ${next}` : next,
-    0,
-    '',
-    undefined,
-    '',
-    '',
+    null,
     merge,
     originalValue,
     contextOnly
@@ -4013,11 +3985,7 @@ function emitWebTextShadow(
     state,
     'textShadow',
     `${shadowUnit(offset.width)} ${shadowUnit(offset.height)} ${shadowUnit(shadow.textShadowRadius)} ${shadow.textShadowColor}`,
-    0,
-    '',
-    undefined,
-    '',
-    '',
+    null,
     merge,
     originalValue,
     contextOnly
@@ -4028,15 +3996,12 @@ function emitValue(
   state: GetStyleState,
   property: string,
   raw: any,
-  condition: number,
-  conditionKey: string,
-  conditionWrappers: string[] | undefined,
-  conditionSelector: string,
-  conditionTheme: string,
+  cursor: ConditionCursor | null,
   merge: MergeStyle,
   originalValue: any,
   contextOnly: boolean
 ) {
+  const condition = cursor ? cursor.condition : 0
   if (typeof raw === 'string') {
     raw = raw.trim()
   }
@@ -4051,14 +4016,7 @@ function emitValue(
     )
   }
 
-  requestBorderStyleDefault(
-    state,
-    property,
-    condition,
-    conditionKey,
-    conditionWrappers,
-    conditionSelector
-  )
+  requestBorderStyleDefault(state, property, cursor)
 
   if (
     typeof raw === 'string' &&
@@ -4077,28 +4035,13 @@ function emitValue(
         state,
         'transform',
         `${property}(${value})`,
-        condition,
-        conditionKey,
-        conditionWrappers,
-        conditionSelector,
-        conditionTheme,
+        cursor,
         merge,
         originalValue,
         contextOnly
       )
     } else {
-      frameWrite(
-        state,
-        property,
-        value,
-        condition,
-        conditionKey,
-        undefined,
-        '',
-        originalValue,
-        false,
-        true
-      )
+      frameWriteInline(state, property, value, cursor, originalValue, true)
     }
     return
   }
@@ -4115,18 +4058,7 @@ function emitValue(
         contextOnly
       )
     } else {
-      frameWrite(
-        state,
-        property,
-        value,
-        condition,
-        conditionKey,
-        undefined,
-        '',
-        originalValue,
-        false,
-        true
-      )
+      frameWriteInline(state, property, value, cursor, originalValue, true)
     }
     return
   }
@@ -4143,18 +4075,7 @@ function emitValue(
         contextOnly
       )
     } else {
-      frameWrite(
-        state,
-        property,
-        value,
-        condition,
-        conditionKey,
-        undefined,
-        '',
-        originalValue,
-        false,
-        true
-      )
+      frameWriteInline(state, property, value, cursor, originalValue, true)
     }
     return
   }
@@ -4173,11 +4094,7 @@ function emitValue(
       state,
       property,
       raw,
-      condition,
-      conditionKey,
-      conditionWrappers,
-      conditionSelector,
-      conditionTheme,
+      cursor,
       merge,
       originalValue,
       contextOnly
@@ -4188,11 +4105,7 @@ function emitValue(
     emitTextDecoration(
       state,
       raw,
-      condition,
-      conditionKey,
-      conditionWrappers,
-      conditionSelector,
-      conditionTheme,
+      cursor,
       merge,
       originalValue,
       contextOnly
@@ -4206,11 +4119,7 @@ function emitValue(
         state,
         'backgroundColor',
         parts[0],
-        condition,
-        conditionKey,
-        conditionWrappers,
-        conditionSelector,
-        conditionTheme,
+        cursor,
         merge,
         originalValue,
         contextOnly
@@ -4254,17 +4163,7 @@ function emitValue(
         }
         if (condition & 1) {
           removeTransformValue(state.transformAccumulator, property)
-          frameWrite(
-            state,
-            property,
-            FRAME_TOMBSTONE,
-            condition,
-            conditionKey,
-            undefined,
-            '',
-            undefined,
-            false
-          )
+          frameWriteInline(state, property, FRAME_TOMBSTONE, cursor, undefined)
         }
         return
       }
@@ -4279,11 +4178,7 @@ function emitValue(
       state,
       property,
       value,
-      condition,
-      conditionKey,
-      conditionWrappers,
-      conditionSelector,
-      conditionTheme,
+      cursor,
       merge,
       originalValue,
       contextOnly
@@ -4299,11 +4194,7 @@ function emitValue(
         state,
         property,
         raw,
-        condition,
-        conditionKey,
-        conditionWrappers,
-        conditionSelector,
-        conditionTheme,
+        cursor,
         merge,
         originalValue,
         contextOnly
@@ -4313,11 +4204,7 @@ function emitValue(
         state,
         property,
         raw,
-        condition,
-        conditionKey,
-        conditionWrappers,
-        conditionSelector,
-        conditionTheme,
+        cursor,
         merge,
         originalValue,
         contextOnly
@@ -4337,11 +4224,7 @@ function emitValue(
         state,
         property,
         transform,
-        condition,
-        conditionKey,
-        conditionWrappers,
-        conditionSelector,
-        conditionTheme,
+        cursor,
         merge,
         originalValue,
         contextOnly
@@ -4388,11 +4271,7 @@ function emitValue(
             state,
             key,
             parsedValue,
-            condition,
-            conditionKey,
-            conditionWrappers,
-            conditionSelector,
-            conditionTheme,
+            cursor,
             merge,
             originalValue,
             contextOnly
@@ -4403,11 +4282,7 @@ function emitValue(
           state,
           property === 'backgroundImage' ? 'experimental_backgroundImage' : property,
           parsed,
-          condition,
-          conditionKey,
-          conditionWrappers,
-          conditionSelector,
-          conditionTheme,
+          cursor,
           merge,
           originalValue,
           contextOnly
@@ -4437,11 +4312,7 @@ function emitValue(
       state,
       property,
       value,
-      condition,
-      conditionKey,
-      conditionWrappers,
-      conditionSelector,
-      conditionTheme,
+      cursor,
       merge,
       originalValue,
       contextOnly
@@ -4465,11 +4336,7 @@ function emitValue(
           state,
           expanded[index][0],
           parts[partIndex],
-          condition,
-          conditionKey,
-          conditionWrappers,
-          conditionSelector,
-          conditionTheme,
+          cursor,
           merge,
           originalValue,
           contextOnly
@@ -4483,11 +4350,7 @@ function emitValue(
       state,
       expanded[index][0],
       expanded[index][1],
-      condition,
-      conditionKey,
-      conditionWrappers,
-      conditionSelector,
-      conditionTheme,
+      cursor,
       merge,
       originalValue,
       contextOnly

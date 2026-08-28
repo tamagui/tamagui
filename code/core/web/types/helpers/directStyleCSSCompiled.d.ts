@@ -14,7 +14,7 @@ export interface StyleFrameEntry {
     normalize: boolean;
 }
 export declare function completeFrameCSS(_state: GetStyleState): void;
-export declare function requestBorderStyleDefault(_state: GetStyleState, _property: string, _condition: number, _identity: string, _wrappers: string[] | undefined, _selector: string): void;
+export declare function requestBorderStyleDefault(_state: GetStyleState, _property: string, _cursor: unknown): void;
 export declare function flushDirectStyles(_state: GetStyleState, _clear?: boolean): void;
 export declare function addComposition(_state: GetStyleState, _property: 'translate' | 'scale'): void;
 export declare function clearFrameAtomic(_state: GetStyleState, _atomicKey: string): void;

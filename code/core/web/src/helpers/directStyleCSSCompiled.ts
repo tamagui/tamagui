@@ -22,10 +22,7 @@ export function completeFrameCSS(_state: GetStyleState) {}
 export function requestBorderStyleDefault(
   _state: GetStyleState,
   _property: string,
-  _condition: number,
-  _identity: string,
-  _wrappers: string[] | undefined,
-  _selector: string
+  _cursor: unknown
 ) {}
 export function flushDirectStyles(_state: GetStyleState, _clear = false) {}
 export function addComposition(_state: GetStyleState, _property: 'translate' | 'scale') {}

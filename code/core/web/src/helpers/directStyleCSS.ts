@@ -7,11 +7,7 @@ import {
 import { finalizeTransformAccumulator } from '@tamagui/style-grammar/runtime'
 
 import type { GetStyleState } from '../types'
-import {
-  buildAtomicSlotCSS,
-  getCSSStyleAtomic,
-  type AtomicSlotEntry,
-} from './getCSSStylesAtomic'
+import { buildAtomicSlotCSS, type AtomicSlotEntry } from './getCSSStylesAtomic'
 import { normalizeValueWithProperty } from './normalizeValueWithProperty'
 import { shouldInsertStyleRules, updateRules } from './insertStyleRule'
 import { transformsToString } from './transformsToString'
@@ -51,15 +47,18 @@ type DirectAtomicState = GetStyleState & {
 export function requestBorderStyleDefault(
   state: GetStyleState,
   property: string,
-  condition: number,
-  identity: string,
-  wrappers: string[] | undefined,
-  selector: string
+  cursor: {
+    condition: number
+    key: string
+    selector: string
+    wrappers: string[]
+  } | null
 ) {
   if (!canGenerateCSS || !state.flatShouldDoClasses) return
   if (state.styleProps.noNormalize === false) return
   const target = borderStyleDefaults[property]
   if (!target) return
+  const identity = cursor ? cursor.key : ''
   const requests = ((state as DirectAtomicState).flatBorderDefaultRequests ||= [])
   for (let index = 0; index < requests.length; index++) {
     if (requests[index].property === target && requests[index].identity === identity) {
@@ -69,10 +68,11 @@ export function requestBorderStyleDefault(
   requests.push({
     property: target,
     value: 'solid',
-    condition,
+    condition: cursor ? cursor.condition : 0,
     identity,
-    selector,
-    wrappers: wrappers && wrappers.length ? wrappers.slice() : undefined,
+    selector: cursor ? cursor.selector : '',
+    wrappers:
+      cursor && cursor.wrappers.length ? cursor.wrappers.slice() : undefined,
     original: 'solid',
     forceCSS: false,
     sequence: 0,
@@ -277,6 +277,15 @@ export function flushDirectStyles(state: GetStyleState, clear = false) {
   if (clear) direct.flatAtomics = undefined
 }
 
+const compositionEntry: AtomicSlotEntry = {
+  property: '',
+  value: '',
+  condition: 0,
+  identity: '',
+  selector: '',
+  wrappers: undefined,
+}
+
 export function addComposition(state: GetStyleState, property: 'translate' | 'scale') {
   if (!canGenerateCSS || state.classNames[property]) return
   const value =
@@ -285,12 +294,26 @@ export function addComposition(state: GetStyleState, property: 'translate' | 'sc
       : 'var(--t-scale-x, 1) var(--t-scale-y, 1)'
   const defaults =
     property === 'translate' ? '--t-x:0px;--t-y:0px' : '--t-scale-x:1;--t-scale-y:1'
-  const styleObject = getCSSStyleAtomic(property, value, '', undefined, undefined, true)!
-  const identifier = styleObject[StyleObjectIdentifier]
-  styleObject[StyleObjectRules].unshift(`:where(.${identifier}){${defaults}}`)
+  compositionEntry.property = property
+  compositionEntry.value = value
+  const built = buildAtomicSlotCSS(
+    property,
+    [compositionEntry],
+    directStyleSignature(property, value, '')
+  )
+  if (!built) return
+  const identifier = built.identifier
+  const rules = built.rules.slice()
+  rules.unshift(`:where(.${identifier}){${defaults}}`)
   if (shouldInsertStyleRules(identifier)) {
-    updateRules(identifier, styleObject[StyleObjectRules])
-    state.flatRulesToInsert![identifier] = styleObject
+    updateRules(identifier, rules)
+    state.flatRulesToInsert![identifier] = [
+      property,
+      built.value,
+      identifier,
+      undefined,
+      rules,
+    ] as any
   }
   state.classNames[property] = identifier
 }
