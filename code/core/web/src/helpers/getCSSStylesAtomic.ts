@@ -247,35 +247,19 @@ export function buildAtomicSlotCSS(
   shortProp ||= 'x'
   let identifier = `_${shortProp}-${hash}`
   if (atomicKey === 'pointerEvents' && entries.length === 1 && !entries[0].condition) {
-    const value = normalizeValueWithProperty(entries[0].value, 'pointerEvents')
+    const value = entries[0].value
     if (value === 'box-none') identifier = '_pe-boxnone'
     else if (value === 'box-only') identifier = '_pe-boxonly'
   }
 
-  // base first, then conditionals ascending precedence, stable by arrival —
-  // ordered by insertion (no sort on the render path)
-  const ordered: AtomicSlotEntry[] = []
-  for (let index = 0; index < entries.length; index++) {
-    const entry = entries[index]
-    const precedence = entry.condition ? Math.floor(entry.condition / 256) : -1
-    let insertAt = ordered.length
-    while (insertAt > 0) {
-      const before = ordered[insertAt - 1]
-      const beforePrecedence = before.condition ? Math.floor(before.condition / 256) : -1
-      if (beforePrecedence <= precedence) break
-      insertAt--
-    }
-    ordered.splice(insertAt, 0, entry)
-  }
-
+  // entries arrive ordered (base first, conditionals ascending precedence)
+  // and normalized: the slot signature was built from exactly this sequence
   const rules: string[] = []
   let lastValue: any
-  for (const entry of ordered) {
-    let value = entry.value
-    if (entry.property === 'transform' && Array.isArray(value)) {
-      value = transformsToString(value)
-    }
-    value = normalizeValueWithProperty(value, entry.property)
+  for (const entry of entries) {
+    // values arrive normalized: the slot signature normalized them so the
+    // identity hash and the rule text agree
+    const value = entry.value
     lastValue = value
     const entryRules = createAtomicRules(
       identifier,

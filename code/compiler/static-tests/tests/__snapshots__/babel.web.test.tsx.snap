@@ -158,13 +158,13 @@ exports[`conditional styles extract disjoint static siblings 1`] = `
 import { View } from '@tamagui/core'
     export function Test(props) {
       return (
-        <div className={["is_View _w-1850139707", (props.green) ? "_bc-913050308" : "_bc-1759742223"].filter(Boolean).join(" ")}  />
+        <div className={["is_View _w-132205709", (props.green) ? "_bc-913050308" : "_bc-1759742223"].filter(Boolean).join(" ")}  />
       )
     }
 "
 `;
 
-exports[`conditional styles extract disjoint static siblings 2`] = `"._w-1850139707{width:10px}._bc-913050308{background-color:red}._bc-1759742223{background-color:blue}"`;
+exports[`conditional styles extract disjoint static siblings 2`] = `"._w-132205709{width:10px}._bc-913050308{background-color:red}._bc-1759742223{background-color:blue}"`;
 
 exports[`double ternary + spread 1`] = `
 "

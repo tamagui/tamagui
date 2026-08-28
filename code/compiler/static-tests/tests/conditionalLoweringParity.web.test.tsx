@@ -97,7 +97,7 @@ test('lowers multiple disjoint conditionals on web', async () => {
   expect(output?.js).toContain('<span')
   expect(output?.js).toContain('(active) ? "_c-1357107246" : "_c-879817635"')
   expect(output?.js).toContain('(bold) ? "_fw-509158670" : "_fw-509161553"')
-  expect(output?.js).toContain('(size) ? "_fs-560135956" : "_fs-560135983"')
+  expect(output?.js).toContain('(size) ? "_fs-1419738124" : "_fs-1419764071"')
 })
 
 test('lowers evaluable static spread with mixed style and non-style props on web', async () => {

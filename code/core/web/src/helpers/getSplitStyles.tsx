@@ -310,6 +310,21 @@ function acquireConditionCursor(parent: ConditionCursor | null): ConditionCursor
 }
 
 function releaseConditionCursors(watermark: number) {
+  // clear released cursors so no string or authored-source reference survives
+  // the frame that owned it: the pool keeps only empty shells and capacity
+  for (let index = watermark; index < conditionCursorTop; index++) {
+    const cursor = conditionCursorPool[index]
+    cursor.key = ''
+    cursor.selector = ''
+    cursor.theme = ''
+    cursor.unsupportedState = ''
+    cursor.unresolvedName = ''
+    cursor.wrappers.length = 0
+    cursor.atomNames.length = 0
+    cursor.atomKinds.length = 0
+    cursor.atomRanks.length = 0
+    cursor.atomCount = 0
+  }
   conditionCursorTop = watermark
 }
 
@@ -383,34 +398,11 @@ function accumulateConditionAtom(
   rank: number,
   name: string
 ) {
-  // sorted-insert the canonical spelling into the identity key; a duplicate
-  // modifier contributes nothing further
-  let key = cursor.key
-  if (!key) {
-    cursor.key = name
-  } else {
-    let slotStart = 0
-    let inserted = false
-    while (slotStart <= key.length) {
-      let slotEnd = key.indexOf(':', slotStart)
-      if (slotEnd === -1) slotEnd = key.length
-      let order = 0
-      const compareLength = Math.min(name.length, slotEnd - slotStart)
-      for (let offset = 0; offset < compareLength; offset++) {
-        order = name.charCodeAt(offset) - key.charCodeAt(slotStart + offset)
-        if (order) break
-      }
-      order ||= name.length - (slotEnd - slotStart)
-      if (!order) return
-      if (order < 0) {
-        cursor.key = `${key.slice(0, slotStart)}${name}:${key.slice(slotStart)}`
-        inserted = true
-        break
-      }
-      if (slotEnd === key.length) break
-      slotStart = slotEnd + 1
-    }
-    if (!inserted) cursor.key = `${key}:${name}`
+  // a duplicate modifier contributes nothing further: dedupe against the
+  // recorded atoms (their canonical names are unique per atom), never by
+  // rebuilding identity text
+  for (let index = 0; index < cursor.atomCount; index++) {
+    if (cursor.atomNames[index] === name) return
   }
 
   const atomIndex = cursor.atomCount++
@@ -636,6 +628,26 @@ function commitConditionCursor(state: GetStyleState, cursor: ConditionCursor): n
     cursor.condition = 0
     return 0
   }
+  // the canonical identity materializes once per committed clause: the
+  // smallest unused atom name joins next (selection over at most six names,
+  // no intermediate collections)
+  if (cursor.atomCount === 1) {
+    cursor.key = cursor.atomNames[0]
+  } else {
+    let key = ''
+    let previous = ''
+    for (let picked = 0; picked < cursor.atomCount; picked++) {
+      let smallest = ''
+      for (let index = 0; index < cursor.atomCount; index++) {
+        const name = cursor.atomNames[index]
+        if (previous && name <= previous) continue
+        if (!smallest || name < smallest) smallest = name
+      }
+      key = picked === 0 ? smallest : `${key}:${smallest}`
+      previous = smallest
+    }
+    cursor.key = key
+  }
   if (cursor.depth > 5) {
     throw new Error(
       `a flat value clause supports at most 5 non-platform conditions; received ${cursor.depth} in "${cursor.key}:"`
@@ -676,6 +688,19 @@ function snapshotCondition(cursor: ConditionCursor): number {
 }
 
 function releaseConditionSnapshots(base: number) {
+  for (let index = base; index < conditionSnapshotTop; index++) {
+    const snapshot = conditionSnapshots[index]
+    snapshot.key = ''
+    snapshot.selector = ''
+    snapshot.theme = ''
+    snapshot.unsupportedState = ''
+    snapshot.unresolvedName = ''
+    snapshot.wrappers.length = 0
+    snapshot.atomNames.length = 0
+    snapshot.atomKinds.length = 0
+    snapshot.atomRanks.length = 0
+    snapshot.atomCount = 0
+  }
   conditionSnapshotTop = base
 }
 
@@ -707,6 +732,9 @@ function combineConditionSnapshots(
       b.atomNames[index]
     )
   }
+  // the key materializes at commit, so commit before deciding whether the
+  // composition collapsed into one of its inputs
+  commitConditionCursor(state, target)
   if (target.key === a.key) {
     conditionSnapshotTop = id
     return first
@@ -715,7 +743,6 @@ function combineConditionSnapshots(
     conditionSnapshotTop = id
     return second
   }
-  commitConditionCursor(state, target)
   return id
 }
 
@@ -1070,21 +1097,44 @@ function classifyConditionalObject(
 
 type OrderedPropEntry = readonly [string, any]
 
+interface StyledDefaultEntry {
+  key: string
+  value: any
+  /** definition-time: the value is a clause program (string with a clause cut
+   * or a conditional-capable object), so displacement re-injects it upfront */
+  program: boolean
+  /** the key contributes styles on this component (style prop or shorthand) */
+  styleLike: boolean
+}
+
 // Styled defaults computed once per static config. mergeComponentProps replaces
 // defaults at the prop level, but flat programs merge per clause slot: either a
 // conditioned default or a conditioned prop therefore needs the displaced
 // styled value re-injected at the styled-base position. This is what preserves
 // `styled(View, { flexDirection: 'row' })` under `sm:column`.
-const styledDefaultsCache = new WeakMap<object, OrderedPropEntry[] | null>()
+const styledDefaultsCache = new WeakMap<object, StyledDefaultEntry[] | null>()
+const styledDefaultsByKeyCache = new WeakMap<
+  object,
+  Record<string, StyledDefaultEntry> | null
+>()
 
-function getStyledDefaults(staticConfig: StaticConfig): OrderedPropEntry[] | null {
+function getStyledDefaults(
+  staticConfig: StaticConfig,
+  shorthands: Record<string, string>
+): StyledDefaultEntry[] | null {
   let entries = styledDefaultsCache.get(staticConfig)
   if (entries === undefined) {
     entries = null
     const defaults = staticConfig.defaultProps
     if (defaults) {
       for (const key in defaults) {
-        ;(entries ||= []).push([key, defaults[key]])
+        const value = defaults[key]
+        ;(entries ||= []).push({
+          key,
+          value,
+          program: maybeStyleProgram(value),
+          styleLike: key in stylePropsAll || key in shorthands,
+        })
       }
     }
     styledDefaultsCache.set(staticConfig, entries)
@@ -1092,36 +1142,54 @@ function getStyledDefaults(staticConfig: StaticConfig): OrderedPropEntry[] | nul
   return entries
 }
 
+/** displaced plain style defaults by prop key, for the post-scan weak path */
+function getStyledDefaultsByKey(
+  staticConfig: StaticConfig,
+  shorthands: Record<string, string>
+): Record<string, StyledDefaultEntry> | null {
+  let byKey = styledDefaultsByKeyCache.get(staticConfig)
+  if (byKey === undefined) {
+    byKey = null
+    const entries = getStyledDefaults(staticConfig, shorthands)
+    if (entries) {
+      for (let index = 0; index < entries.length; index++) {
+        const entry = entries[index]
+        if (!entry.styleLike || entry.program) continue
+        ;(byKey ||= Object.create(null) as Record<string, StyledDefaultEntry>)[
+          entry.key
+        ] = entry
+      }
+    }
+    styledDefaultsByKeyCache.set(staticConfig, byKey)
+  }
+  return byKey
+}
+
+// definition-time only: render never rescans a value to ask this
 const maybeStyleProgram = (value: any): boolean =>
   typeof value === 'string'
-    ? value.includes(':')
+    ? value.indexOf(':') !== -1
     : !!value && typeof value === 'object' && !Array.isArray(value) && !isVariable(value)
 
 function contributeDisplacedStyledDefaults(
-  styledDefaults: OrderedPropEntry[] | null,
+  styledDefaults: StyledDefaultEntry[] | null,
   processedProps: Record<string, any>,
-  shorthands: Record<string, string>,
   contribute: (key: string, value: any) => void
 ) {
   if (!styledDefaults) return
   for (let index = 0; index < styledDefaults.length; index++) {
-    const key = styledDefaults[index][0]
-    const styledValue = styledDefaults[index][1]
-    const propValue = processedProps[key]
-    if (!(key in stylePropsAll) && !(key in shorthands)) continue
+    const entry = styledDefaults[index]
+    if (!entry.styleLike || !entry.program) continue
+    const propValue = processedProps[entry.key]
     // equal means the default flowed through the merge untouched and will be
     // processed as an ordinary prop entry; different means a call-site value
-    // displaced it. Re-injection is only needed when either contribution is a
-    // program; ordinary values retain the prop-level fast path. an object is
-    // potentially a conditional program (its clause slots must survive a
-    // caller base); re-injecting a displaced structured leaf is a harmless
-    // whole-value overwrite by the later prop entry.
-    if (
-      propValue !== undefined &&
-      propValue !== styledValue &&
-      (maybeStyleProgram(styledValue) || maybeStyleProgram(propValue))
-    ) {
-      contribute(key, styledValue)
+    // displaced it, and a displaced PROGRAM default re-injects at the styled
+    // position so its clause slots survive the caller's base. A displaced
+    // plain default matters only when the displacing prop itself carries
+    // clauses, which the prop's own scan discovers — see the weak injection
+    // in forEachPropInForwardOrder.
+    if (propValue !== undefined && propValue !== entry.value) {
+      contribute(entry.key, entry.value)
     }
   }
 }
@@ -1154,22 +1222,41 @@ function forEachPropInForwardOrder(
   ) => void
 ) {
   const processedBaseStyle = staticConfig.baseStyle
-  const styledDefaults = getStyledDefaults(staticConfig)
+  const styledDefaults = getStyledDefaults(staticConfig, shorthands)
+  const displacedPlainDefaults = getStyledDefaultsByKey(staticConfig, shorthands)
+  const directState = styleState as DirectState
   const preparedCompounds = (staticConfig as StaticConfigWithPreparedCompounds)[
     preparedCompoundsKey
   ]
+
+  // a displaced PLAIN styled default matters only when the displacing prop's
+  // own scan discovered a clause: re-contribute it weakly (create-only slot
+  // writes) so its base survives under the prop's conditions without any
+  // pre-scan of the authored value
+  const weakInjectDisplacedDefault = (key: string, value: any) => {
+    const entry = displacedPlainDefaults![key]
+    if (!entry || value === entry.value || value === undefined) return
+    directState.flatWeakContribution = true
+    try {
+      contribute(key, entry.value)
+    } finally {
+      directState.flatWeakContribution = false
+    }
+  }
 
   if (!preparedCompounds) {
     if (processedBaseStyle) {
       for (const key in processedBaseStyle) contribute(key, processedBaseStyle[key])
     }
-    contributeDisplacedStyledDefaults(
-      styledDefaults,
-      processedProps,
-      shorthands,
-      contribute
-    )
-    for (const key in processedProps) contribute(key, processedProps[key])
+    contributeDisplacedStyledDefaults(styledDefaults, processedProps, contribute)
+    for (const key in processedProps) {
+      const value = processedProps[key]
+      directState.flatPropSawCondition = false
+      contribute(key, value)
+      if (displacedPlainDefaults && directState.flatPropSawCondition) {
+        weakInjectDisplacedDefault(key, value)
+      }
+    }
     return
   }
 
@@ -1182,12 +1269,7 @@ function forEachPropInForwardOrder(
     if (processedBaseStyle) {
       for (const key in processedBaseStyle) contribute(key, processedBaseStyle[key])
     }
-    contributeDisplacedStyledDefaults(
-      styledDefaults,
-      processedProps,
-      shorthands,
-      contribute
-    )
+    contributeDisplacedStyledDefaults(styledDefaults, processedProps, contribute)
     const selectorCounts = preparedCompounds[preparedCompoundsKey]
     for (
       let compoundIndex = 0;
@@ -1203,7 +1285,11 @@ function forEachPropInForwardOrder(
       const compoundIndexes = preparedCompounds[key]
       const value = processedProps[key]
       beginCompoundEdges(compoundIndexes, stateStart, epoch)
+      directState.flatPropSawCondition = false
       contribute(key, value, compoundIndexes, stateStart, epoch)
+      if (displacedPlainDefaults && directState.flatPropSawCondition) {
+        weakInjectDisplacedDefault(key, value)
+      }
       finishCompoundEdges(
         styleState as DirectState,
         key,
@@ -1971,13 +2057,17 @@ export const getSplitStyles: StyleSplitter = (
           } else if (isHOC) {
             // hand the wrapped component a structured clause keyed by the
             // canonical condition; its own pass resolves it in place. No flat
-            // string is ever reconstructed for re-parsing.
-            viewProps[key] = addStructuredClause(
+            // string is ever reconstructed for re-parsing. Delete first: the
+            // clause lands at the outer contribution's position, so a prop the
+            // wrapped component authored earlier can no longer outrank it.
+            const structured = addStructuredClause(
               styleState,
               viewProps[key],
-              conditionCursor.key,
+              conditionCursor,
               val
             )
+            if (key in viewProps) delete viewProps[key]
+            viewProps[key] = structured
           } else if (process.env.NODE_ENV === 'development') {
             console.warn(
               `[tamagui] "${key}" is not a valid style on this component; the conditional variant value is dropped.`
@@ -2604,6 +2694,10 @@ function addStyleToInsertRules(rulesToInsert: RulesToInsert, styleObject: StyleO
 }
 
 function passDownProp(viewProps: object, key: string, val: any) {
+  // a later contribution must displace IN AUTHORED POSITION: the wrapped
+  // component enumerates viewProps in insertion order, and reassigning an
+  // existing key would leave the new value at the old position
+  if (key in viewProps) delete viewProps[key]
   viewProps[key] = val
 }
 
@@ -2631,6 +2725,8 @@ type DirectState = GetStyleState & {
   flatParentCursor?: ConditionCursor | null
   flatScanCursor?: ConditionCursor | null
   flatCompoundOutputDepth?: number
+  flatPropSawCondition?: boolean
+  flatWeakContribution?: boolean
 }
 
 // an active conditional clause can retract a property entirely (an invalid
@@ -2658,7 +2754,9 @@ function frameWrite(
   forceCSS: boolean,
   normalize = false
 ) {
-  const frame = ((state as DirectState).flatFrame ||= {})
+  const direct = state as DirectState
+  const weak = direct.flatWeakContribution === true
+  const frame = (direct.flatFrame ||= {})
   let slot = frame[property]
   if (!slot) {
     slot = frame[property] = []
@@ -2666,6 +2764,9 @@ function frameWrite(
   for (let index = 0; index < slot.length; index++) {
     const entry = slot[index]
     if (entry.identity === identity) {
+      // a weak write never displaces: it restores a styled default under a
+      // prop that already owns this identity
+      if (weak) return
       entry.value = value
       entry.condition = condition
       entry.original = original
@@ -2684,7 +2785,7 @@ function frameWrite(
     wrappers: wrappers && wrappers.length ? wrappers.slice() : undefined,
     original,
     forceCSS,
-    sequence: ++frameSequence,
+    sequence: weak ? 0 : ++frameSequence,
     normalize,
   })
 }
@@ -2771,6 +2872,11 @@ function emitUnderCondition(
   warnSource: any
 ): number {
   const condition = cursor.condition
+  // a real conditional clause reached emission intent (active or not): the
+  // prop loop uses this to restore a displaced plain styled default
+  if (merge && property && condition) {
+    ;(state as DirectState).flatPropSawCondition = true
+  }
   if (!cursor.resolved) {
     if (warnMode && process.env.NODE_ENV === 'development') {
       warnRefusedValue(
@@ -4524,6 +4630,35 @@ function contributeValue(
   contextOnly = false,
   condition?: ConditionCursor | string
 ) {
+  if (isHocClauseTransport(value)) {
+    // a wrapping component's conditional contributions arrive as resolved
+    // atoms: replay each into a cursor at this position, no text reparsed
+    if (value.hasBase) {
+      contributeValue(state, property, value.base, merge, value.base, contextOnly)
+    }
+    for (let index = 0; index < value.entries.length; index++) {
+      const entry = value.entries[index]
+      const watermark = conditionCursorTop
+      const cursor = acquireTransportCursor(
+        state,
+        entry,
+        (state as DirectState).flatParentCursor || null
+      )
+      emitUnderCondition(
+        state,
+        property,
+        entry.value,
+        cursor,
+        merge,
+        entry.value,
+        contextOnly,
+        2,
+        entry.value
+      )
+      releaseConditionCursors(watermark)
+    }
+    return true
+  }
   if (condition !== undefined) {
     const directState = state as DirectState
     const parent = directState.flatParentCursor || null
@@ -4703,27 +4838,139 @@ export function clearDirectStyle(state: GetStyleState, property: string) {
   delete state.classNames[atomicKey]
 }
 
-// reduces a conditional variant clause back to a flat value the downstream
-// parser applies: string form (`"20 sm:40"`) when both sides are
-// string-representable, otherwise the flat object form, which carries array
-// and structured payloads faithfully. returns undefined only for the one
-// unrepresentable mix: a clause-bearing string joined by a structured payload
+// ── HOC clause transport ─────────────────────────────────────────────────────
+// A conditional contribution whose key the host cannot style hands the wrapped
+// component its RESOLVED atoms, never serialized condition text: the inner
+// pass replays them straight into a cursor. Values are recognized only through
+// a module-private WeakSet, so the transport cannot become publicly authorable.
+
+interface HocClauseEntry {
+  value: any
+  atomCount: number
+  atomKinds: number[]
+  atomRanks: number[]
+  atomNames: string[]
+}
+
+interface HocClauseTransport {
+  hasBase: boolean
+  base: any
+  entries: HocClauseEntry[]
+}
+
+const hocClauseTransports = new WeakSet<HocClauseTransport>()
+
+function isHocClauseTransport(value: unknown): value is HocClauseTransport {
+  return (
+    typeof value === 'object' &&
+    value !== null &&
+    hocClauseTransports.has(value as HocClauseTransport)
+  )
+}
+
+function hocClauseEntryFromCursor(cursor: ConditionCursor, value: any): HocClauseEntry {
+  const entry: HocClauseEntry = {
+    value,
+    atomCount: cursor.atomCount,
+    atomKinds: [],
+    atomRanks: [],
+    atomNames: [],
+  }
+  for (let index = 0; index < cursor.atomCount; index++) {
+    entry.atomKinds[index] = cursor.atomKinds[index]
+    entry.atomRanks[index] = cursor.atomRanks[index]
+    entry.atomNames[index] = cursor.atomNames[index]
+  }
+  return entry
+}
+
+function sameAtomSet(entry: HocClauseEntry, cursor: ConditionCursor): boolean {
+  if (entry.atomCount !== cursor.atomCount) return false
+  for (let index = 0; index < entry.atomCount; index++) {
+    let found = false
+    for (let inner = 0; inner < cursor.atomCount; inner++) {
+      if (entry.atomNames[index] === cursor.atomNames[inner]) {
+        found = true
+        break
+      }
+    }
+    if (!found) return false
+  }
+  return true
+}
+
+/** replay a transported clause's atoms into a fresh committed cursor */
+function acquireTransportCursor(
+  state: GetStyleState,
+  entry: HocClauseEntry,
+  parent: ConditionCursor | null
+): ConditionCursor {
+  const cursor = acquireConditionCursor(parent)
+  for (let index = 0; index < entry.atomCount; index++) {
+    accumulateConditionAtom(
+      state,
+      cursor,
+      entry.atomKinds[index],
+      entry.atomRanks[index],
+      entry.atomNames[index]
+    )
+  }
+  commitConditionCursor(state, cursor)
+  return cursor
+}
+
 function addStructuredClause(
   state: GetStyleState,
   prev: unknown,
-  conditionSource: string,
+  cursor: ConditionCursor,
   value: unknown
-): Record<string, any> {
-  if (prev == null) return { [conditionSource]: value }
-  if (
-    typeof prev === 'object' &&
-    !Array.isArray(prev) &&
-    !isVariable(prev) &&
-    classifyConditionalObject(prev as Record<string, any>, state)
-  ) {
-    return { ...(prev as Record<string, any>), [conditionSource]: value }
+): HocClauseTransport {
+  let transport: HocClauseTransport
+  if (isHocClauseTransport(prev)) {
+    transport = prev
+  } else {
+    transport = { hasBase: false, base: undefined, entries: [] }
+    hocClauseTransports.add(transport)
+    if (prev != null) {
+      if (
+        typeof prev === 'object' &&
+        !Array.isArray(prev) &&
+        !isVariable(prev) &&
+        classifyConditionalObject(prev as Record<string, any>, state)
+      ) {
+        // an authored conditional object joins as transported clauses; its
+        // keys are authored text and resolve here exactly once
+        for (const key in prev as Record<string, any>) {
+          const payload = (prev as Record<string, any>)[key]
+          if (payload == null) continue
+          if (key === 'default') {
+            transport.hasBase = true
+            transport.base = payload
+            continue
+          }
+          const watermark = conditionCursorTop
+          const keyCursor = acquireConditionCursor(null)
+          resolveConditionText(state, keyCursor, key)
+          commitConditionCursor(state, keyCursor)
+          transport.entries.push(hocClauseEntryFromCursor(keyCursor, payload))
+          releaseConditionCursors(watermark)
+        }
+      } else {
+        transport.hasBase = true
+        transport.base = prev
+      }
+    }
   }
-  return { default: prev, [conditionSource]: value }
+  // a repeat contribution under the same condition set replaces its entry and
+  // moves to the end: the wrapped pass sees last-wins in authored order
+  for (let index = 0; index < transport.entries.length; index++) {
+    if (sameAtomSet(transport.entries[index], cursor)) {
+      transport.entries.splice(index, 1)
+      break
+    }
+  }
+  transport.entries.push(hocClauseEntryFromCursor(cursor, value))
+  return transport
 }
 
 type MappedValue = Parameters<PropMapper>[4]
@@ -4922,6 +5169,21 @@ function resolveVariants(
   map: MappedValue
 ) {
   const variantDefinition = styleState.staticConfig.variants?.[key]
+  if (isHocClauseTransport(value)) {
+    // conditional variant selections transported through an HOC: resolve each
+    // branch under its replayed condition
+    if (value.hasBase) {
+      emitResolvedVariant(key, value.base, styleState, parentVariantKey, null, map)
+    }
+    for (let index = 0; index < value.entries.length; index++) {
+      const entry = value.entries[index]
+      const watermark = conditionCursorTop
+      const cursor = acquireTransportCursor(styleState, entry, null)
+      emitResolvedVariant(key, entry.value, styleState, parentVariantKey, cursor, map)
+      releaseConditionCursors(watermark)
+    }
+    return
+  }
   if (
     typeof value === 'string' &&
     // a variant can define a literal colon key like "16:9" — an exact match
