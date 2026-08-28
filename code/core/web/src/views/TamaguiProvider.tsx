@@ -37,9 +37,10 @@ export function TamaguiProvider({
   // (e.g. useColorScheme() returns null on first render in RN 0.83+)
   const defaultTheme = defaultThemeProp || firstThemeKey(config) || 'light'
   useIsomorphicLayoutEffect(() => {
-    const resumeAccumulatingRules = stopAccumulatingRules()
     updateMediaListeners()
-    return resumeAccumulatingRules
+    if (!process.env.TAMAGUI_DID_OUTPUT_CSS) {
+      return stopAccumulatingRules()
+    }
   }, [])
 
   const memoizedInsets = React.useMemo(
@@ -82,18 +83,21 @@ export function TamaguiProvider({
 
   return (
     <>
-      {process.env.TAMAGUI_TARGET !== 'native' && config && !disableInjectCSS && (
-        <style
-          // react 19 feature to hoist style tags to header:
-          // https://react.dev/reference/react-dom/components/style
-          // @ts-ignore
-          precedence="default"
-          href="tamagui-css"
-          key="tamagui-css"
-        >
-          {config.getCSS()}
-        </style>
-      )}
+      {!process.env.TAMAGUI_DID_OUTPUT_CSS &&
+        process.env.TAMAGUI_TARGET !== 'native' &&
+        config &&
+        !disableInjectCSS && (
+          <style
+            // react 19 feature to hoist style tags to header:
+            // https://react.dev/reference/react-dom/components/style
+            // @ts-ignore
+            precedence="default"
+            href="tamagui-css"
+            key="tamagui-css"
+          >
+            {config.getCSS()}
+          </style>
+        )}
 
       {process.env.NODE_ENV !== 'production' &&
         process.env.TAMAGUI_TARGET !== 'native' &&

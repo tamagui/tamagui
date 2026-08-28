@@ -62,7 +62,9 @@ export const ThemeUpdate: RefComponent<unknown, ThemeUpdateProps> = createRefCom
     const config = getConfig()
     const values = getInlineValuesFromProps(props, config)
     const css =
-      process.env.TAMAGUI_TARGET === 'native' || !values
+      process.env.TAMAGUI_DID_OUTPUT_CSS ||
+      process.env.TAMAGUI_TARGET === 'native' ||
+      !values
         ? null
         : getVariablesCSSRules(values, config)
     let rulesToInsert: RulesToInsert | null = null

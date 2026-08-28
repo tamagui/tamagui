@@ -1,17 +1,5 @@
-import {
-  isAndroid,
-  isIos,
-  isTV,
-  isWeb,
-  supportsDynamicColorIOS,
-} from '@tamagui/constants'
-import {
-  StyleObjectIdentifier,
-  StyleObjectRules,
-  nonAnimatableStyleProps,
-  tokenCategories,
-  type StyleObject,
-} from '@tamagui/helpers'
+import { isWeb, platformMatches, supportsDynamicColorIOS } from '@tamagui/constants'
+import { nonAnimatableStyleProps, tokenCategories } from '@tamagui/helpers'
 import {
   canonicalStateModifierNames,
   isContainerSizeQueryText,
@@ -24,7 +12,6 @@ import {
   stateModifierSelectors,
   addTransformValue,
   createTransformAccumulator,
-  finalizeTransformAccumulator,
   getTransformPartKeys,
   removeTransformValue,
   type ClausePrecedenceKey,
@@ -35,12 +22,17 @@ import {
 import { isVariable } from '../createVariable'
 import { mediaKeyMatch } from '../hooks/useMedia'
 import type { GetStyleState } from '../types'
+import {
+  addComposition,
+  canGenerateCSS,
+  clearDirectAtomic,
+  directAtomic,
+  emitBorderStyleDefault,
+} from './directStyleCSS'
 import { warnOnce, warnRefusedValue } from './warnOnce'
 import { expandStyle } from './expandStyle'
-import { getCSSStyleAtomic } from './getCSSStylesAtomic'
 import { getConfigRevisionState } from './grammarConfig'
 import { isColorStyleKey } from './getDynamicVal'
-import { shouldInsertStyleRules, updateRules } from './insertStyleRule'
 import { normalizeColor } from './normalizeColor'
 import { parseNativeStyle } from './parseNativeStyle.native'
 import { parseNativeTransform } from './parseNativeTransform.native'
@@ -51,6 +43,8 @@ import { resolveVariableValue } from './resolveVariableValue'
 import { THEME_REF_PREFIX } from './themeRef'
 import { transformsToString } from './transformsToString'
 
+export { directStyleSignature, flushDirectStyles } from './directStyleCSS'
+
 export type MergeStyle = (
   state: GetStyleState,
   key: string,
@@ -60,23 +54,7 @@ export type MergeStyle = (
   originalValue?: any
 ) => void
 
-type DirectAtomic = {
-  baseRules: number
-  conditions?: Record<
-    string,
-    {
-      count: number
-      index: number
-      precedence: ClausePrecedenceKey
-      default?: boolean
-    }
-  >
-  signature: string
-  styleObject: StyleObject
-}
-
 type DirectState = GetStyleState & {
-  flatAtomics?: Record<string, DirectAtomic>
   flatBoxShadow?: any
   flatDynamicColors?: Record<string, Record<string, any>>
   flatDynamicThemeAccess?: boolean
@@ -255,7 +233,7 @@ const directStyleHandler: FlatValueHandler<GetStyleState> = {
         `${property}="${source}" has multiple values after its first conditional. Write the base value before the first conditional.`
       )
     }
-    if ((!isWeb || !state.flatShouldDoClasses) && result & 2 && !hasBase) {
+    if ((!canGenerateCSS || !state.flatShouldDoClasses) && result & 2 && !hasBase) {
       const value = implicitLifecycleBase(property)
       if (value !== null) {
         emitValue(
@@ -373,24 +351,6 @@ const borderTargets: Record<
     style: ['borderInlineStartStyle', 'borderInlineEndStyle'],
     color: ['borderInlineStartColor', 'borderInlineEndColor'],
   },
-}
-
-const borderStyleDefaults: Record<string, string> = {
-  borderWidth: 'borderStyle',
-  borderTopWidth: 'borderTopStyle',
-  borderRightWidth: 'borderRightStyle',
-  borderBottomWidth: 'borderBottomStyle',
-  borderLeftWidth: 'borderLeftStyle',
-}
-
-export function platformMatches(name: string): boolean {
-  if (name === 'web') return isWeb
-  if (name === 'native') return !isWeb
-  if (name === 'ios') return isIos
-  if (name === 'android') return isAndroid
-  if (name === 'tvos') return isIos && isTV
-  if (name === 'androidtv') return isAndroid && isTV
-  return name === 'tv' && isTV
 }
 
 export function resolveClauseChain(
@@ -654,7 +614,7 @@ export function resolveClauseChain(
     property &&
     condition & 2 &&
     (condition & 1 ||
-      (isWeb && state.flatShouldDoClasses) ||
+      (canGenerateCSS && state.flatShouldDoClasses) ||
       (warning === 1 &&
         !isWeb &&
         theme &&
@@ -895,224 +855,6 @@ function normalizeTransitionNames(state: GetStyleState, raw: string) {
   return copyFrom ? out + raw.slice(copyFrom) : raw
 }
 
-// one contribution's slice of an atomic identity, accumulated per atomicKey
-export function directStyleSignature(
-  property: string,
-  value: unknown,
-  conditionKey = ''
-) {
-  return `\u001f${property}\u001f${conditionKey}\u001e${String(value)}`
-}
-
-function directAtomic(
-  state: DirectState,
-  property: string,
-  value: any,
-  condition: number,
-  conditionKey: string,
-  conditionWrappers: string[] | undefined,
-  conditionSelector: string,
-  isDefault = false
-) {
-  const atomics = (state.flatAtomics ||= {})
-  const atomicKey = property.startsWith('transition') ? 'transition' : property
-  const existing = atomics[atomicKey]
-  const contribution = directStyleSignature(property, value, conditionKey)
-  const signature = existing ? existing.signature + contribution : contribution
-  const next = getCSSStyleAtomic(
-    property,
-    value,
-    conditionSelector,
-    conditionWrappers,
-    signature,
-    2 as any,
-    atomicKey,
-    property === 'containerName' || property === 'containerType'
-      ? condition
-        ? Math.max(
-            2,
-            1 +
-              ((Math.floor(condition / 256) >>> 23) & 7) +
-              (Math.floor(condition / 256) >>> 26) * 6 -
-              ((condition >>> 5) & 7)
-          )
-        : 2
-      : condition
-        ? 1 +
-          ((Math.floor(condition / 256) >>> 23) & 7) +
-          (Math.floor(condition / 256) >>> 26) * 6 -
-          ((condition >>> 5) & 7)
-        : undefined
-  )
-  if (!next) return
-  const identifier = next[StyleObjectIdentifier]
-  const nextRules = next[StyleObjectRules]
-
-  const slotted = condition || atomicKey === 'transition'
-
-  if (!existing) {
-    // one shape for every DirectAtomic: a conditional object spread here gives
-    // conditioned and unconditioned atomics different hidden classes, and every
-    // read of the record downstream goes polymorphic
-    const atomic: DirectAtomic = {
-      baseRules: slotted ? 0 : nextRules.length,
-      conditions: undefined,
-      signature,
-      styleObject: next,
-    }
-    if (slotted) {
-      atomic.conditions = {
-        [atomicKey === 'transition' ? `${conditionKey}\0${property}` : conditionKey]: {
-          count: nextRules.length,
-          index: 0,
-          precedence: condition ? Math.floor(condition / 256) : 0,
-          default: isDefault,
-        },
-      }
-    }
-    atomics[atomicKey] = atomic
-  } else {
-    const previousIdentifier = existing.styleObject[StyleObjectIdentifier]
-    // cached rules stay immutable until a same-property contribution needs to
-    // splice or rewrite them.
-    const rules = existing.styleObject[StyleObjectRules].slice()
-    existing.styleObject[StyleObjectRules] = rules
-    if (!condition && !isDefault && existing.conditions) {
-      for (const key in existing.conditions) {
-        const entry = existing.conditions[key]
-        if (!entry.default) continue
-        rules.splice(entry.index, entry.count)
-        delete existing.conditions[key]
-        for (const otherKey in existing.conditions) {
-          const other = existing.conditions[otherKey]
-          if (other.index > entry.index) other.index -= entry.count
-        }
-      }
-    }
-    if (previousIdentifier !== identifier) {
-      const oldSelector = `.${previousIdentifier}`
-      const newSelector = `.${identifier}`
-      for (let index = 0; index < rules.length; index++) {
-        rules[index] = rules[index].replaceAll(oldSelector, newSelector)
-      }
-    }
-    if (slotted) {
-      const slot =
-        atomicKey === 'transition' ? `${conditionKey}\0${property}` : conditionKey
-      const previous = existing.conditions?.[slot]
-      if (previous) {
-        rules.splice(previous.index, previous.count)
-        if (existing.conditions) {
-          for (const key in existing.conditions) {
-            const entry = existing.conditions[key]
-            if (entry !== previous && entry.index > previous.index) {
-              entry.index -= previous.count
-            }
-          }
-        }
-        delete existing.conditions![slot]
-      }
-      const precedence = condition ? Math.floor(condition / 256) : 0
-      let insertionIndex = rules.length
-      if (existing.conditions) {
-        for (const key in existing.conditions) {
-          const entry = existing.conditions[key]
-          if (entry.precedence > precedence && entry.index < insertionIndex) {
-            insertionIndex = entry.index
-          }
-        }
-        for (const key in existing.conditions) {
-          const entry = existing.conditions[key]
-          if (entry.index >= insertionIndex) entry.index += nextRules.length
-        }
-      }
-      ;(existing.conditions ||= {})[slot] = {
-        count: nextRules.length,
-        index: insertionIndex,
-        precedence,
-        default: isDefault,
-      }
-      rules.splice(insertionIndex, 0, ...nextRules)
-    } else {
-      const difference = nextRules.length - existing.baseRules
-      rules.splice(0, existing.baseRules, ...nextRules)
-      if (difference && existing.conditions) {
-        for (const key in existing.conditions)
-          existing.conditions[key].index += difference
-      }
-      existing.baseRules = nextRules.length
-    }
-    existing.signature = signature
-    existing.styleObject[StyleObjectIdentifier] = identifier
-    existing.styleObject[1] = next[1]
-  }
-  state.classNames[atomicKey] = identifier
-}
-
-function emitBorderStyleDefault(
-  state: GetStyleState,
-  property: string,
-  condition: number,
-  conditionKey: string,
-  conditionWrappers: string[] | undefined,
-  conditionSelector: string
-) {
-  if (!isWeb || !state.flatShouldDoClasses || state.styleProps.noNormalize === false) {
-    return
-  }
-  const target = borderStyleDefaults[property]
-  if (!target) return
-  const atomic = (state as DirectState).flatAtomics?.[target]
-  if (
-    atomic?.baseRules ||
-    (state.classNames[target] && !atomic) ||
-    (condition && atomic?.conditions?.[conditionKey])
-  ) {
-    return
-  }
-  directAtomic(
-    state as DirectState,
-    target,
-    'solid',
-    condition,
-    conditionKey,
-    conditionWrappers,
-    conditionSelector,
-    true
-  )
-}
-
-export function flushDirectStyles(state: GetStyleState, clear = false) {
-  const direct = state as DirectState
-  if (state.transformAccumulator) {
-    const transform = finalizeTransformAccumulator(state.transformAccumulator)
-    directAtomic(
-      direct,
-      'transform',
-      Array.isArray(transform) ? transformsToString(transform) : transform,
-      0,
-      '',
-      undefined,
-      ''
-    )
-    if (clear) state.transformAccumulator = undefined
-  }
-  const atomics = direct.flatAtomics
-  if (!atomics) return
-  for (const property in atomics) {
-    const styleObject = atomics[property].styleObject
-    const identifier = styleObject[StyleObjectIdentifier]
-    if (shouldInsertStyleRules(identifier)) {
-      // rulesToInsert owns its array; never expose the cache's borrowed copy.
-      const rules = styleObject[StyleObjectRules].slice()
-      styleObject[StyleObjectRules] = rules
-      updateRules(identifier, rules)
-      state.flatRulesToInsert![identifier] = styleObject
-    }
-  }
-  if (clear) direct.flatAtomics = undefined
-}
-
 export function getDirectDynamicThemeAccess(state: GetStyleState) {
   return (state as DirectState).flatDynamicThemeAccess
 }
@@ -1154,7 +896,12 @@ function emitProperty(
     return
   }
 
-  if (isWeb && state.flatShouldDoClasses && !condition && property === 'transform') {
+  if (
+    canGenerateCSS &&
+    state.flatShouldDoClasses &&
+    !condition &&
+    property === 'transform'
+  ) {
     if (process.env.NODE_ENV === 'development' && state.transformAccumulator) {
       for (const part of getTransformPartKeys(state.transformAccumulator)) {
         warnOnce(
@@ -1168,7 +915,7 @@ function emitProperty(
   }
 
   const shouldPromoteAnimatedStyle =
-    isWeb &&
+    canGenerateCSS &&
     !condition &&
     !state.flatShouldDoClasses &&
     !state.styleProps.noMergeStyle &&
@@ -1176,7 +923,7 @@ function emitProperty(
     !state.animationDriver?.isReactNative &&
     property in nonAnimatableStyleProps
 
-  if (isWeb && (state.flatShouldDoClasses || shouldPromoteAnimatedStyle)) {
+  if (canGenerateCSS && (state.flatShouldDoClasses || shouldPromoteAnimatedStyle)) {
     if (!condition) {
       if (state.style) delete state.style[property]
     }
@@ -1364,24 +1111,6 @@ function emitTextDecoration(
   }
 }
 
-function addComposition(state: GetStyleState, property: 'translate' | 'scale') {
-  if (state.classNames[property]) return
-  const value =
-    property === 'translate'
-      ? 'var(--t-x, 0px) var(--t-y, 0px)'
-      : 'var(--t-scale-x, 1) var(--t-scale-y, 1)'
-  const defaults =
-    property === 'translate' ? '--t-x:0px;--t-y:0px' : '--t-scale-x:1;--t-scale-y:1'
-  const styleObject = getCSSStyleAtomic(property, value, '', undefined, undefined, true)!
-  const identifier = styleObject[StyleObjectIdentifier]
-  styleObject[StyleObjectRules].unshift(`:where(.${identifier}){${defaults}}`)
-  if (shouldInsertStyleRules(identifier)) {
-    updateRules(identifier, styleObject[StyleObjectRules])
-    state.flatRulesToInsert![identifier] = styleObject
-  }
-  state.classNames[property] = identifier
-}
-
 function emitTransform(
   state: GetStyleState,
   property: string,
@@ -1395,7 +1124,7 @@ function emitTransform(
   originalValue: any,
   contextOnly: boolean
 ) {
-  if (!isWeb || !state.flatShouldDoClasses) {
+  if (!canGenerateCSS || !state.flatShouldDoClasses) {
     emitProperty(
       state,
       property,
@@ -1594,10 +1323,10 @@ function emitValue(
 
   if (legacyTransformParts.has(property)) {
     const value = typeof raw === 'string' ? configuredValue(state, property, raw) : raw
-    if (isWeb && state.flatShouldDoClasses && !condition) {
+    if (canGenerateCSS && state.flatShouldDoClasses && !condition) {
       state.transformAccumulator ||= createTransformAccumulator()
       addTransformValue(state.transformAccumulator, property, value)
-    } else if (condition && isWeb && state.flatShouldDoClasses) {
+    } else if (condition && canGenerateCSS && state.flatShouldDoClasses) {
       emitProperty(
         state,
         'transform',
@@ -1619,7 +1348,7 @@ function emitValue(
 
   if (isWeb && webShadowParts.has(property)) {
     const value = typeof raw === 'string' ? configuredValue(state, property, raw) : raw
-    if (state.flatShouldDoClasses) {
+    if (canGenerateCSS && state.flatShouldDoClasses) {
       emitWebShadow(
         state as DirectState,
         property,
@@ -1636,7 +1365,7 @@ function emitValue(
 
   if (isWeb && webTextShadowParts.has(property)) {
     const value = typeof raw === 'string' ? configuredValue(state, property, raw) : raw
-    if (state.flatShouldDoClasses) {
+    if (canGenerateCSS && state.flatShouldDoClasses) {
       emitWebTextShadow(
         state as DirectState,
         property,
@@ -1652,7 +1381,7 @@ function emitValue(
   }
 
   if (
-    isWeb &&
+    canGenerateCSS &&
     state.flatShouldDoClasses &&
     property === 'transform' &&
     Array.isArray(raw)
@@ -1840,7 +1569,12 @@ function emitValue(
       value = Number(value)
     }
   }
-  if (isWeb && state.flatShouldDoClasses && property === 'boxShadow' && !condition) {
+  if (
+    canGenerateCSS &&
+    state.flatShouldDoClasses &&
+    property === 'boxShadow' &&
+    !condition
+  ) {
     ;(state as DirectState).flatBoxShadow = value
   }
 
@@ -2176,7 +1910,7 @@ function contributeStyleObject(
       )
     }
   }
-  if ((!isWeb || !state.flatShouldDoClasses) && conditions & 12 && !hasBase) {
+  if ((!canGenerateCSS || !state.flatShouldDoClasses) && conditions & 12 && !hasBase) {
     const resting = implicitLifecycleBase(property)
     if (resting !== null) {
       emitValue(
@@ -2281,7 +2015,6 @@ export function contributeStyleValue(
 }
 
 export function clearDirectStyle(state: GetStyleState, property: string) {
-  const direct = state as DirectState
   const atomicKey = property.startsWith('transition')
     ? 'transition'
     : webShadowParts.has(property)
@@ -2291,7 +2024,7 @@ export function clearDirectStyle(state: GetStyleState, property: string) {
         : legacyTransformParts.has(property)
           ? 'transform'
           : property
-  if (direct.flatAtomics) delete direct.flatAtomics[atomicKey]
+  clearDirectAtomic(state, atomicKey)
   if (atomicKey === 'transform') state.transformAccumulator = undefined
   if (state.style) delete state.style[atomicKey]
   delete state.classNames[atomicKey]

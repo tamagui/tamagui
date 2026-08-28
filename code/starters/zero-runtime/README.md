@@ -32,6 +32,12 @@ reports a compiler violation. It also compares every gzip figure with the
 committed `size-baseline.json` and fails when a figure exceeds its byte
 threshold.
 
+The same build inspects emitted JavaScript content. The strict page may retain
+no style processor or tooling parser. A full-runtime island keeps the inline
+style processor, but its compiled CSS artifact must remove atomic CSS identity
+generation, stylesheet insertion, runtime theme CSS generation, and the
+tooling-only `parseValue` parser.
+
 Gzip bytes depend on the zlib bundled with Node. The measurement script reads
 the repository's `.node-version` and refuses to check or update the baseline
 under another Node version. The baseline records the Node version and gzip

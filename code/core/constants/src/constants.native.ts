@@ -29,6 +29,16 @@ export const isTV: boolean =
   process.env.TEST_NATIVE_PLATFORM === 'androidtv' ||
   process.env.TEST_NATIVE_PLATFORM === 'tvos'
 
+export function platformMatches(name: string): boolean {
+  if (name === 'web') return isWeb
+  if (name === 'native') return !isWeb
+  if (name === 'ios') return isIos
+  if (name === 'android') return isAndroid
+  if (name === 'tvos') return isIos && isTV
+  if (name === 'androidtv') return isAndroid && isTV
+  return name === 'tv' && isTV
+}
+
 const platforms = {
   ios: 'ios',
   android: 'android',

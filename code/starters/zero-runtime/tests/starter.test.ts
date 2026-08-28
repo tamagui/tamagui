@@ -92,4 +92,11 @@ test('the island mounts on demand and runs the full runtime', async ({ page }) =
   await expect(page.locator('[data-testid="island-text"]')).toHaveText(
     'this subtree runs the full Tamagui runtime'
   )
+
+  const runtimeInline = page.locator('[data-testid="island-runtime-inline"]')
+  await expect(runtimeInline).toHaveCSS('width', '137px')
+  await expect(runtimeInline).toHaveAttribute('style', /width:\s*137px/)
+  await runtimeInline.hover()
+  await expect(runtimeInline).toHaveCSS('width', '147px')
+  await expect(runtimeInline).toHaveAttribute('style', /width:\s*147px/)
 })

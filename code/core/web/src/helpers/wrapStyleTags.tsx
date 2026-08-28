@@ -67,7 +67,7 @@ function getCachedStyleTag(styleObject: StyleObject) {
 }
 
 export function getStyleTags(styles: StyleObject[]) {
-  if (process.env.TAMAGUI_TARGET !== 'native') {
+  if (!process.env.TAMAGUI_DID_OUTPUT_CSS && process.env.TAMAGUI_TARGET !== 'native') {
     if (styles.length) {
       queueStyleTagCacheClear()
       return <>{styles.map(getCachedStyleTag)}</>

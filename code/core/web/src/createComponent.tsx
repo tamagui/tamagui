@@ -21,7 +21,7 @@ import { defaultComponentStateMounted } from './defaultComponentState'
 import { getWebEvents, useEvents, wrapWithGestureDetector } from './eventHandling'
 import { getDefaultProps } from './helpers/getDefaultProps'
 import { componentDisplayName } from './helpers/componentDisplayName'
-import { getSplitStyles, useSplitStyles } from './helpers/getSplitStyles'
+import { getSplitStyles } from './helpers/getSplitStyles'
 import {
   getNativeStyleEngine,
   queueNativeViewState,
@@ -43,6 +43,7 @@ import {
 import { getStyleTags } from './helpers/wrapStyleTags'
 import { useComponentState } from './hooks/useComponentState'
 import { setMediaShouldUpdate, useMedia } from './hooks/useMedia'
+import { useSplitStyles } from './hooks/useSplitStyles'
 import { useThemeWithState } from './hooks/useTheme'
 import type { TamaguiComponentEvents } from './interfaces/TamaguiComponentEvents'
 import { hooks } from './setupHooks'
@@ -2084,7 +2085,12 @@ export function createComponent<
 
     // SSR style support - for non compiled styles we render them inline until client takes over
     // on client we then switch over to our global sheet insert, because rendering inline is expensive
-    if (process.env.TAMAGUI_TARGET === 'web' && startedUnhydrated && splitStyles) {
+    if (
+      !process.env.TAMAGUI_DID_OUTPUT_CSS &&
+      process.env.TAMAGUI_TARGET === 'web' &&
+      startedUnhydrated &&
+      splitStyles
+    ) {
       content = (
         <>
           {content}

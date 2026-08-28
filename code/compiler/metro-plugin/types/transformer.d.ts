@@ -11,6 +11,8 @@ export interface MetroCompilerTransformerOptions {
 	* inlined here so every guard is a constant.
 	*/
 	runtimeLiteral?: "full" | "zero";
+	/** The integration-owned compiled CSS marker for this bundle request. */
+	didOutputCSSLiteral?: "1";
 }
 export interface MetroCompilerTransformMetadata {
 	cacheHit: boolean;

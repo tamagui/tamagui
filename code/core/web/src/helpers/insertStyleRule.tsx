@@ -339,7 +339,7 @@ export function stopAccumulatingRules() {
 }
 
 export function updateRules(identifier: string, rules: string[]) {
-  if (trackAllRules) {
+  if (!process.env.TAMAGUI_DID_OUTPUT_CSS && trackAllRules) {
     allRules[identifier] = rules.join(' ')
     sortedRulesStale = true
   }
@@ -352,7 +352,9 @@ export function setNonce(_: string) {
 }
 
 export function insertStyleRules(rulesToInsert: RulesToInsert) {
-  if (process.env.TAMAGUI_TARGET !== 'web') return
+  if (process.env.TAMAGUI_DID_OUTPUT_CSS || process.env.TAMAGUI_TARGET !== 'web') {
+    return
+  }
 
   if (!sheet && document.head) {
     const styleTag = document.createElement('style')

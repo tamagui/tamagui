@@ -111,6 +111,31 @@ export function withTamagui(
   // so it never installs the serializer that owns the artifact and the gate.
   if (zero?.isEnforcing) {
     applyMetroZeroRuntime(metroConfig, zero)
+    const resolveRequest = metroConfig.resolver.resolveRequest
+    metroConfig.resolver.resolveRequest = (
+      context: any,
+      moduleName: string,
+      platform: string
+    ) => {
+      const resolved = resolveRequest
+        ? resolveRequest(context, moduleName, platform)
+        : context.resolveRequest(context, moduleName, platform)
+      if (
+        resolved?.type === 'sourceFile' &&
+        /(^|\/)(?:directStyleCSS|getCSSStylesAtomic)\.(?:c?js|mjs)$/.test(
+          resolved.filePath
+        )
+      ) {
+        return {
+          ...resolved,
+          filePath: resolved.filePath.replace(
+            /(?:directStyleCSS|getCSSStylesAtomic)(?=\.)/,
+            (name: string) => `${name}Compiled`
+          ),
+        }
+      }
+      return resolved
+    }
   }
 
   if (!options.disable) {
@@ -147,6 +172,7 @@ export function withTamagui(
         projectRoot,
         // an integration-owned literal, never an ambient shell value
         runtimeLiteral: zero?.isEnforcing && !zero.islandBuild ? 'zero' : 'full',
+        didOutputCSSLiteral: zero?.isEnforcing ? '1' : undefined,
       }
     )
     const userGetTransformOptions = metroConfig.transformer.getTransformOptions

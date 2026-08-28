@@ -12,16 +12,17 @@ import {
   tailwindSize,
   tailwindSpace,
 } from './v6-tailwind-scales.generated'
+import {
+  v6RemovedThemeNames,
+  v6ThemeNameReplacements,
+} from '@tamagui/style-grammar/runtime'
 
 export { shorthands }
 export { createSystemFont } from './fonts'
 export { breakpoints, media, mediaQueryDefaultActive } from './media'
 export { selectionStyles }
 export { tailwindSource } from './v6-tailwind-scales.generated'
-export {
-  v6RemovedThemeNames,
-  v6ThemeNameReplacements,
-} from '@tamagui/style-grammar/tooling'
+export { v6RemovedThemeNames, v6ThemeNameReplacements }
 export { toV6Themes, type V6Theme, type V6Themes } from './v6-themes'
 // space and size deliberately remain separate configured domains even though their default
 // values coincide. z-index is literal, so its identity scale is not configured as tokens.

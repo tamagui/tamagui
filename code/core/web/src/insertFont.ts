@@ -16,7 +16,11 @@ export function insertFont<A extends GenericFont>(
   const font = createFont(fontIn)
   const tokened = createVariables(font, name) as GenericFont
   const parsed = parseFont(tokened) as DeepVariableObject<A>
-  if (process.env.TAMAGUI_TARGET === 'web' && typeof document !== 'undefined') {
+  if (
+    !process.env.TAMAGUI_DID_OUTPUT_CSS &&
+    process.env.TAMAGUI_TARGET === 'web' &&
+    typeof document !== 'undefined'
+  ) {
     const fontVars = registerFontVariables(parsed)
     const styleElement: HTMLStyleElement =
       document.querySelector(`style[${FONT_DATA_ATTRIBUTE_NAME}="${name}"]`) ||

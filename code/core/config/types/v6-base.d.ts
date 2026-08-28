@@ -1,12 +1,13 @@
 import { shorthands } from '@tamagui/shorthands/v6';
 import type { CreateTamaguiProps } from '@tamagui/web';
 import { selectionStyles } from './settings';
+import { v6RemovedThemeNames, v6ThemeNameReplacements } from '@tamagui/style-grammar/runtime';
 export { shorthands };
 export { createSystemFont } from './fonts';
 export { breakpoints, media, mediaQueryDefaultActive } from './media';
 export { selectionStyles };
 export { tailwindSource } from './v6-tailwind-scales.generated';
-export { v6RemovedThemeNames, v6ThemeNameReplacements, } from '@tamagui/style-grammar/tooling';
+export { v6RemovedThemeNames, v6ThemeNameReplacements };
 export { toV6Themes, type V6Theme, type V6Themes } from './v6-themes';
 export declare const tokens: {
     readonly space: {

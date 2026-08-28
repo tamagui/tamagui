@@ -31,6 +31,8 @@ export interface MetroCompilerTransformerOptions {
    * inlined here so every guard is a constant.
    */
   runtimeLiteral?: 'full' | 'zero'
+  /** The integration-owned compiled CSS marker for this bundle request. */
+  didOutputCSSLiteral?: '1'
 }
 
 export interface MetroCompilerTransformMetadata {
@@ -72,19 +74,24 @@ export function createMetroCompilerTransformer(config: MetroCompilerTransformerO
     return (
       isCompilerSourceFile(moduleId) &&
       !moduleId.includes(`${join('node_modules')}`) &&
+      !/(?:directStyleCSS|getCSSStylesAtomic)Compiled\.(?:c?js|mjs)$/.test(moduleId) &&
       existsSync(moduleId)
     )
   }
-  // Replaces only the exact member expression `process.env.TAMAGUI_RUNTIME`.
-  // Metro has no define mechanism, so this is the transform-level equivalent.
+  // Metro has no define mechanism, so inline the integration-owned build
+  // literals at the transform level.
   const runtimeLiteral = config.runtimeLiteral ?? 'full'
-  const inlineRuntimeLiteral = ({ types }: { types: any }) => ({
+  const envLiterals = new Map<string, string>([['TAMAGUI_RUNTIME', runtimeLiteral]])
+  if (config.didOutputCSSLiteral) {
+    envLiterals.set('TAMAGUI_DID_OUTPUT_CSS', config.didOutputCSSLiteral)
+  }
+  const inlineBuildLiterals = ({ types }: { types: any }) => ({
     visitor: {
       MemberExpression(nodePath: any) {
         const node = nodePath.node
         if (
           node.computed ||
-          !types.isIdentifier(node.property, { name: 'TAMAGUI_RUNTIME' }) ||
+          !types.isIdentifier(node.property) ||
           !types.isMemberExpression(node.object) ||
           node.object.computed ||
           !types.isIdentifier(node.object.object, { name: 'process' }) ||
@@ -92,7 +99,8 @@ export function createMetroCompilerTransformer(config: MetroCompilerTransformerO
         ) {
           return
         }
-        nodePath.replaceWith(types.stringLiteral(runtimeLiteral))
+        const literal = envLiterals.get(node.property.name)
+        if (literal) nodePath.replaceWith(types.stringLiteral(literal))
       },
     },
   })
@@ -101,7 +109,7 @@ export function createMetroCompilerTransformer(config: MetroCompilerTransformerO
     async transform(argsIn) {
       const args = {
         ...argsIn,
-        plugins: [...(argsIn.plugins ?? []), inlineRuntimeLiteral],
+        plugins: [...(argsIn.plugins ?? []), inlineBuildLiterals],
       }
       const platform =
         typeof args.options.platform === 'string' ? args.options.platform : 'default'
@@ -180,6 +188,8 @@ export function createMetroCompilerTransformer(config: MetroCompilerTransformerO
         .update(`tamagui-metro-compiler-v${METRO_COMPILER_CACHE_VERSION}`)
         .update('\0')
         .update(runtimeLiteral)
+        .update('\0')
+        .update(config.didOutputCSSLiteral ?? '')
         .update('\0')
         .update(userBabelCacheKey(config.originalBabelTransformerPath))
         .digest('hex')
