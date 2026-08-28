@@ -24,13 +24,20 @@ export interface StyleFrameEntry {
 export declare function requestBorderStyleDefault(state: GetStyleState, property: string, condition: number, identity: string, selector: string, wrapperSource: readonly string[] | undefined, wrapperStart: number, wrapperCount: number): void;
 export declare function directStyleSignature(property: string, value: unknown, conditionKey?: string): string;
 /**
- * Serialize the frame's CSS-destined slots: every slot when the pass emits
- * classes, only force-CSS entries otherwise. Consumed entries leave the frame;
- * whatever remains is the inline completion's input. Transition longhands
- * group into one record, and border widths synthesize a border-style default
- * unless an authored contribution owns the property.
+ * Stream one CSS contribution. A property's first contribution serializes its
+ * class immediately (the overwhelmingly common case pays one cached build and
+ * no entry). A second contribution promotes the property to a combined slot,
+ * finished at completion by precedence order - the deferred arrangement the
+ * equal-specificity cascade tie-break requires (clauseOrderIndependence).
  */
-export declare function completeFrameCSS(state: GetStyleState): void;
+export declare function streamAtomic(state: GetStyleState, property: string, value: any, condition: number, identity: string, selector: string, wrapperSource: readonly string[] | undefined, wrapperStart: number, wrapperCount: number, weak: boolean): void;
+/**
+ * The CSS residue that genuinely cannot stream: border-style defaults resolve
+ * against what the pass authored, promoted multi-contribution slots combine
+ * in precedence order, transition longhands group into one record, and the
+ * transform accumulator becomes the transform slot's base.
+ */
+export declare function completeStreamingCSS(state: GetStyleState): void;
 export declare function flushDirectStyles(state: GetStyleState, clear?: boolean): void;
 export declare function addComposition(state: GetStyleState, property: 'translate' | 'scale'): void;
 export declare function clearFrameAtomic(state: GetStyleState, atomicKey: string): void;

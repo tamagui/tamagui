@@ -11,6 +11,8 @@ type SlotIdentity = {
     identifier: string;
     rules: string[];
     value: any;
+    /** finished wrapper, cached so a repeat build allocates nothing */
+    styleObject?: unknown;
 };
 export interface AtomicSlotEntry {
     property: string;
