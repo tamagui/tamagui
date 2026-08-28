@@ -33,6 +33,7 @@ below is RAN unless noted.
 | streaming + residues (dd6997f408) | +19% |
 | + raw-value slot memo (544d14b263) | 0.874 vs 0.824 |
 | + literal-miss token cache (4cb61eccc8) | 0.875 vs 0.836 (raw medians within 2%) |
+| + emitValue kind-table dispatch (0550022158) | alternating 2x2: stream 0.850/0.828 vs base 0.825/0.805 - parity within the ±2-3% window noise; raw totals +1.8% |
 
 Per-lane at tip: variant 0.973–0.985 vs base 1.034–1.106 (ahead),
 cond-objects ahead, style-heavy ahead; plain ~4–5 points behind, clause
@@ -46,7 +47,8 @@ cond-objects ahead, style-heavy ahead; plain ~4–5 points behind, clause
 | 28a | 24,463 |
 | bdba | 25,083 |
 | streaming + fixes | 25,532 |
-| + perf caches (tip) | 25,800 |
+| + perf caches | 25,800 |
+| + kind-table dispatch (tip 0550022158) | 25,961 |
 
 Function-level attribution and the invariant-cost decomposition live in the
 milestone reports; ~1.5–2K of the delta has identified recovery paths (cursor
