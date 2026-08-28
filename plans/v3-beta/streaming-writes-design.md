@@ -74,3 +74,31 @@ Implement, run the full behavior matrix, then paired corpus + micro + size
 against base d48e1adc0b AND against tier-1 3ced8c4af7. Data picks the winner;
 the loser's commit is reverted. Gate remains: beat base on BOTH processor
 gzip and corpus timing.
+
+
+## Implementation record (dd6997f408)
+
+Landed as: streaming writes with an inline winner integer (`flatUsed`,
+packed precedence + 1, compare-on-write, later wins ties), immediate
+single-contribution class emission, and these residues, each carrying the test
+that requires it:
+
+| residue | why it cannot stream | defending test |
+| --- | --- | --- |
+| combined slot per multi-contribution property (`flatSlots`, built by `registerSlot` at completion) | state and media rules deliberately share specificity; intra-slot precedence order is the cascade tie-break | `clauseOrderIndependence.web.test.tsx` |
+| clause-known values open the slot up front (`flatExpectMulti`, a colon scan) | avoids building a single class the promotion discards | timing only; behavior covered by the slot residue |
+| platform-pseudo deferral (`flatDeferCSS` when `canPlatformPseudo`; completion registers slots or converts inline via `convertDeferredInline`) | a platform driver flips the whole pass inline only after discovery | `ReanimatedStuckHover` driver lane |
+| transition longhand record (`flatTransitions`) | longhands group into one CSS record | grouped-transition pin in `baseTierFrame.web.test.tsx` |
+| border-style default request list | the default yields to authored contributions discovered later in the pass | border default suites |
+| shadow part record + `frameSequence` gate | parts accumulate into one boxShadow; a later authored boxShadow must win | shadow suites |
+| promote-lane style delete guarded by `flatUsed` | the style object is live during the pass; a base CSS write must not clobber an inline conditional winner or ride a weak restore | promoted-base pin in `baseTierFrame.web.test.tsx`, `DriverConditionedDiscrete` |
+| compound arena | untried this slice (owner mandate allows a post-pass trial; anchor-position semantics need a design answer for streamed ties) | `compoundVariants` suites |
+
+Deleted: `StyleFrameEntry` frame entries and per-property slot arrays on the
+hot path, `frameWrite`/`frameWriteInline`, the completion winner loop,
+`FRAME_TOMBSTONE` (retraction is `streamRetractInline`), the interface itself.
+
+Measured (clean window, corpus af8ca010, V2-normalized totals): streaming
+0.822x vs base 0.871x same-window - the campaign's first beat-base timing.
+Size at dd6997f408: 25,532 gzip vs base 21,729 (+3,803); the size gap is the
+open work (arena trial, cursor diet, emitValue ladder).
