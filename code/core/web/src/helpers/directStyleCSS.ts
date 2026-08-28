@@ -35,15 +35,9 @@ export interface StyleFrameEntry {
 
 type DirectAtomicState = GetStyleState & {
   flatFrame?: Record<string, StyleFrameEntry[]>
-  flatBase?: Record<string, any>
-  flatBaseInfo?: Record<string, number>
-  flatBaseOriginals?: Record<string, any>
   flatAtomics?: Record<string, StyleObject>
   flatBorderDefaultRequests?: StyleFrameEntry[]
 }
-
-// base-tier info bits, mirrored from the frame writer
-const baseForceCSSFlag = 2
 
 /**
  * A border width was authored, so its edge needs `borderStyle: solid` unless
@@ -107,42 +101,6 @@ const borderStyleDefaults: Record<string, string> = {
   borderLeftWidth: 'borderLeftStyle',
 }
 
-// shared scratch for the base-tier fast path: buildAtomicSlotCSS reads its
-// entries synchronously and retains only the built identity
-const baseSlotEntry: AtomicSlotEntry = {
-  property: '',
-  value: '',
-  condition: 0,
-  identity: '',
-  selector: '',
-  wrappers: undefined,
-}
-const baseSlot: AtomicSlotEntry[] = [baseSlotEntry]
-
-function registerBaseSlot(state: DirectAtomicState, property: string, value: any) {
-  if (property === 'transform' && Array.isArray(value)) {
-    value = transformsToString(value)
-  }
-  const normalized = normalizeValueWithProperty(value, property)
-  baseSlotEntry.property = property
-  baseSlotEntry.value = normalized
-  const built = buildAtomicSlotCSS(
-    property,
-    baseSlot,
-    directStyleSignature(property, normalized, '')
-  )
-  if (!built) return
-  const styleObject: StyleObject = [
-    property,
-    built.value,
-    built.identifier,
-    undefined,
-    built.rules,
-  ] as any
-  ;(state.flatAtomics ||= {})[property] = styleObject
-  state.classNames[property] = built.identifier
-}
-
 function registerSlot(
   state: DirectAtomicState,
   atomicKey: string,
@@ -198,9 +156,8 @@ export function completeFrameCSS(state: GetStyleState) {
   if (!canGenerateCSS) return
   const direct = state as DirectAtomicState
   const cssMode = !!state.flatShouldDoClasses
-  const base = direct.flatBase
   // a pass can be all-transform: the accumulator alone still produces a slot
-  if (!direct.flatFrame && !base && !(cssMode && state.transformAccumulator)) return
+  if (!direct.flatFrame && !(cssMode && state.transformAccumulator)) return
   const frame = (direct.flatFrame ||= {})
 
   // synthetic border-style defaults from authored width contributions,
@@ -214,9 +171,6 @@ export function completeFrameCSS(state: GetStyleState) {
       const request = requests[index]
       const target = request.property
       const targetSlot = frame[target]
-      // a base-tier value is an authored unconditioned contribution: it owns
-      // the property and suppresses the synthetic, same as a base entry
-      if (base && target in base) continue
       if (!targetSlot && state.classNames[target]) continue
       let covered = false
       if (targetSlot) {
@@ -253,38 +207,6 @@ export function completeFrameCSS(state: GetStyleState) {
   }
 
   let transitionEntries: StyleFrameEntry[] | undefined
-
-  // base-tier values serialize through a single-entry fast path: no entry
-  // object, no ordering pass. transition longhands still join the grouped
-  // record, so they materialize an entry
-  if (base) {
-    const info = direct.flatBaseInfo
-    const originals = direct.flatBaseOriginals
-    for (const property in base) {
-      const bits = info ? info[property] || 0 : 0
-      if (!cssMode && !(bits & baseForceCSSFlag)) continue
-      const value = base[property]
-      delete base[property]
-      if (originals) delete originals[property]
-      if (property.startsWith('transition')) {
-        ;(transitionEntries ||= []).push({
-          property,
-          value,
-          condition: 0,
-          identity: '',
-          selector: '',
-          wrappers: undefined,
-          original: undefined,
-          forceCSS: false,
-          sequence: 0,
-          normalize: false,
-        })
-        continue
-      }
-      registerBaseSlot(direct, property, value)
-    }
-  }
-
   for (const property in frame) {
     const slot = frame[property]
     let cssEntries: StyleFrameEntry[] | undefined

@@ -2720,9 +2720,6 @@ const resolveAcceptedStyle = (
     transformAccumulator: undefined,
   }
   ;(childState as DirectState).flatFrame = undefined
-  ;(childState as DirectState).flatBase = undefined
-  ;(childState as DirectState).flatBaseInfo = undefined
-  ;(childState as DirectState).flatBaseOriginals = undefined
   ;(childState as DirectState).flatAtomics = undefined
   const mergeAccepted: MergeStyle = (
     _state,
@@ -2788,9 +2785,6 @@ export type MergeStyle = (
 type DirectState = GetStyleState & {
   flatPass?: StylePass
   flatFrame?: Record<string, StyleFrameEntry[]>
-  flatBase?: Record<string, any>
-  flatBaseInfo?: Record<string, number>
-  flatBaseOriginals?: Record<string, any>
   flatAtomics?: Record<string, unknown>
   flatBoxShadow?: any
   flatBoxShadowSequence?: number
@@ -2811,64 +2805,6 @@ const FRAME_TOMBSTONE: unique symbol = Symbol('tamaguiFrameTombstone')
 
 let frameSequence = 0
 
-// base-tier info bits, parallel to flatBase values
-const baseNormalizeFlag = 1
-const baseForceCSSFlag = 2
-const baseWeakFlag = 4
-
-/**
- * The base tier: an unconditioned contribution while its property has no
- * conditional slot is one record store — last-wins by overwrite, no entry
- * object, no winner selection. The first conditional write for the property
- * promotes the base value into an ordinary frame entry.
- */
-function writeBaseContribution(
-  direct: DirectState,
-  property: string,
-  value: any,
-  original: any,
-  forceCSS: boolean,
-  normalize: boolean,
-  weak: boolean
-) {
-  const base = (direct.flatBase ||= {})
-  if (weak && property in base) return
-  base[property] = value
-  ;(direct.flatBaseInfo ||= {})[property] =
-    (normalize ? baseNormalizeFlag : 0) |
-    (forceCSS ? baseForceCSSFlag : 0) |
-    (weak ? baseWeakFlag : 0)
-  const originals = direct.flatBaseOriginals
-  if (original !== value) {
-    ;(direct.flatBaseOriginals ||= {})[property] = original
-  } else if (originals && property in originals) {
-    delete originals[property]
-  }
-}
-
-function promoteBaseEntry(direct: DirectState, property: string): StyleFrameEntry | null {
-  const base = direct.flatBase
-  if (!base || !(property in base)) return null
-  const info = direct.flatBaseInfo ? direct.flatBaseInfo[property] || 0 : 0
-  const originals = direct.flatBaseOriginals
-  const hasOriginal = originals !== undefined && property in originals
-  const entry: StyleFrameEntry = {
-    property,
-    value: base[property],
-    condition: 0,
-    identity: '',
-    selector: '',
-    wrappers: undefined,
-    original: hasOriginal ? originals[property] : base[property],
-    forceCSS: (info & baseForceCSSFlag) !== 0,
-    sequence: info & baseWeakFlag ? 0 : ++frameSequence,
-    normalize: (info & baseNormalizeFlag) !== 0,
-  }
-  delete base[property]
-  if (hasOriginal) delete originals[property]
-  return entry
-}
-
 /**
  * Land one contribution in the neutral output frame. A slot holds one entry
  * per exact condition identity: a repeat write replaces the value in place
@@ -2887,13 +2823,6 @@ function frameWrite(
 ) {
   const direct = state as DirectState
   const weak = direct.flatWeakContribution === true
-  if (!cursor && conditionOverride === -1) {
-    const existing = direct.flatFrame
-    if (!existing || !existing[property]) {
-      writeBaseContribution(direct, property, value, original, forceCSS, normalize, weak)
-      return
-    }
-  }
   const frame = (direct.flatFrame ||= {})
   const condition =
     conditionOverride !== -1
@@ -2904,8 +2833,7 @@ function frameWrite(
   const identity = cursor ? conditionTexts[cursor + conditionKeyOffset] || '' : ''
   let slot = frame[property]
   if (!slot) {
-    const promoted = promoteBaseEntry(direct, property)
-    slot = frame[property] = promoted ? [promoted] : []
+    slot = frame[property] = []
   }
   for (let index = 0; index < slot.length; index++) {
     const entry = slot[index]
@@ -2948,20 +2876,12 @@ function frameWriteInline(
 ) {
   const direct = state as DirectState
   const weak = direct.flatWeakContribution === true
-  if (!cursor) {
-    const existing = direct.flatFrame
-    if (!existing || !existing[property]) {
-      writeBaseContribution(direct, property, value, original, false, normalize, weak)
-      return
-    }
-  }
   const frame = (direct.flatFrame ||= {})
   const condition = cursor ? conditionNumbers[cursor + conditionValueOffset] : 0
   const identity = cursor ? conditionTexts[cursor + conditionKeyOffset] || '' : ''
   let slot = frame[property]
   if (!slot) {
-    const promoted = promoteBaseEntry(direct, property)
-    slot = frame[property] = promoted ? [promoted] : []
+    slot = frame[property] = []
   }
   for (let index = 0; index < slot.length; index++) {
     const entry = slot[index]
@@ -2999,7 +2919,6 @@ function completeStyleFrame(state: GetStyleState, merge: MergeStyle) {
   const direct = state as DirectState
   if (
     !direct.flatFrame &&
-    !direct.flatBase &&
     !direct.flatWebShadow &&
     !(canGenerateCSS && state.flatShouldDoClasses && state.transformAccumulator)
   ) {
@@ -3025,29 +2944,6 @@ function completeStyleFrame(state: GetStyleState, merge: MergeStyle) {
     }
   }
   completeFrameCSS(state)
-  // base-tier values that completeFrameCSS did not consume complete inline:
-  // each is its property's only unconditioned contribution, so it merges
-  // directly with no winner selection
-  const base = direct.flatBase
-  if (base) {
-    const info = direct.flatBaseInfo
-    const originals = direct.flatBaseOriginals
-    for (const property in base) {
-      const value = base[property]
-      const bits = info ? info[property] || 0 : 0
-      merge(
-        state,
-        property,
-        value,
-        1,
-        !(bits & baseNormalizeFlag),
-        originals && property in originals ? originals[property] : value
-      )
-    }
-    direct.flatBase = undefined
-    direct.flatBaseInfo = undefined
-    direct.flatBaseOriginals = undefined
-  }
   const frame = direct.flatFrame
   if (!frame) return
   for (const property in frame) {
@@ -4806,16 +4702,6 @@ export function clearDirectStyle(state: GetStyleState, property: string) {
       delete frame[atomicKey]
     }
   }
-  const base = direct.flatBase
-  if (base) {
-    if (atomicKey === 'transition') {
-      for (const key in base) {
-        if (key.startsWith('transition')) delete base[key]
-      }
-    } else {
-      delete base[atomicKey]
-    }
-  }
   if (atomicKey === 'transform') state.transformAccumulator = undefined
   if (state.style) delete state.style[atomicKey]
   delete state.classNames[atomicKey]
@@ -5146,18 +5032,14 @@ const contributeMappedValue: PropMapper = (
     const expanded = noExpand
       ? null
       : expandStyle(expandedKey, value, conf.settings.styleCompat || 'web')
-    const direct = styleState as DirectState
-    const frame = direct.flatFrame
-    const base = direct.flatBase
+    const frame = (styleState as DirectState).flatFrame
     if (expanded) {
       for (const [nkey] of expanded) {
         if (frame) delete frame[nkey]
-        if (base) delete base[nkey]
         if (styleState.style) delete styleState.style[nkey]
       }
     } else {
       if (frame) delete frame[expandedKey]
-      if (base) delete base[expandedKey]
       if (styleState.style) delete styleState.style[expandedKey]
     }
     return
