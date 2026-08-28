@@ -2,7 +2,7 @@ import { beforeAll, describe, expect, test } from 'vitest'
 
 import { defaultConfig } from '@tamagui/config/v6'
 import { StyleObjectValue, createTamagui, getConfig } from '@tamagui/web'
-import { tailwindStyleFrontend } from '../frontend'
+import { preprocessTailwindClassName } from '../candidate'
 import { View } from '../index'
 import { findRule, splitTailwindStyles } from './utils'
 
@@ -13,7 +13,7 @@ beforeAll(() => {
 })
 
 const pre = (props: any) =>
-  tailwindStyleFrontend.preprocessProps(props, getConfig() as any)
+  preprocessTailwindClassName(props, getConfig() as any)
 
 const programs = (props: Record<string, any>) =>
   Object.values(props).filter(
@@ -75,37 +75,6 @@ describe('tailwind className→flat program conversion (single pass)', () => {
     const styles = splitTailwindStyles(View, pre({ className: 'bg-[red]' }) as any)
     expect(findRule(styles.rulesToInsert, 'backgroundColor')[StyleObjectValue]).toBe(
       'red'
-    )
-  })
-})
-
-describe('getSplitStyles preprocess guard (process exactly once)', () => {
-  // rules from a preprocessed (createComponent) path must equal rules from a raw
-  // (direct/test caller) path — proving no double-process and no zero-process.
-  function bgValue(props: any) {
-    const styles = splitTailwindStyles(View, props)
-    const rule = findRule(styles.rulesToInsert, 'backgroundColor')
-    return rule ? rule[StyleObjectValue] : null
-  }
-
-  test('marked path === direct path (bg-[red])', () => {
-    expect(bgValue(pre({ className: 'bg-[red]' }))).toBe('red')
-    expect(bgValue({ className: 'bg-[red]' })).toBe('red')
-  })
-
-  test('marked path === direct path (theme color bg-color5)', () => {
-    const theme = (getConfig() as any).themes.light
-    const marked = splitTailwindStyles(View, pre({ className: 'bg-color5' }), {
-      theme,
-    })
-    const direct = splitTailwindStyles(View, { className: 'bg-color5' } as any, {
-      theme,
-    })
-    expect(findRule(marked.rulesToInsert, 'backgroundColor')[StyleObjectValue]).toBe(
-      'var(--color5)'
-    )
-    expect(findRule(direct.rulesToInsert, 'backgroundColor')[StyleObjectValue]).toBe(
-      'var(--color5)'
     )
   })
 })

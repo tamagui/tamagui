@@ -1,17 +1,22 @@
-import { isAndroid, isClient, isWeb } from '@tamagui/constants'
+import {
+  isAndroid,
+  isClient,
+  isIos,
+  isTV,
+  isWeb,
+  supportsDynamicColorIOS,
+} from '@tamagui/constants'
 import {
   StyleObjectIdentifier,
   StyleObjectPseudo,
   StyleObjectRules,
+  nonAnimatableStyleProps,
   stylePropsAll,
   stylePropsText,
   stylePropsTransform,
   validStyles as validStylesView,
+  tokenCategories,
 } from '@tamagui/helpers'
-import {
-  STYLE_FRONTEND_PASSTHROUGH_PREFIX,
-  STYLE_FRONTEND_PREPROCESSED,
-} from './styleFrontend'
 import { getConfig, getFont } from '../config'
 import { isVariable } from '../createVariable'
 import { isDevTools } from '../constants/isDevTools'
@@ -25,11 +30,13 @@ import type {
   DebugProp,
   GetStyleResult,
   GetStyleState,
-  GenericCompoundVariant,
   RulesToInsert,
   SpaceTokens,
   SplitStyleProps,
   StaticConfig,
+  PropMapper,
+  Variable,
+  VariantSpreadFunction,
   StyleObject,
   TamaguiComponentState,
   TamaguiInternalConfig,
@@ -38,34 +45,51 @@ import type {
   TransitionProp,
   ViewStyleObject,
 } from '../types'
+import { variantResolverNames } from '../types'
 import {
   addTransformValue,
+  canonicalStateModifierNames,
   cloneTransformAccumulator,
   createTransformAccumulator,
   finalizeTransformAccumulator,
+  getTransformPartKeys,
+  isContainerSizeQueryText,
+  isModifierName,
+  modifierKindMedia,
+  modifierKindPlatform,
+  modifierKindState,
+  modifierKindTheme,
+  removeTransformValue,
   scanFlatValue,
+  stateModifierSelectors,
+  type ClausePrecedenceKey,
   type FlatValueHandler,
   type TransformAccumulator,
 } from '@tamagui/style-grammar/runtime'
+import { mediaKeyMatch } from './mediaState'
+import { warnOnce, warnRefusedValue } from './warnOnce'
+import { expandStyle } from './expandStyle'
 import { fixStyles } from './expandStyles'
-import { styleToCSS } from './getCSSStylesAtomic'
+import { getCSSStyleAtomic, styleToCSS } from './getCSSStylesAtomic'
+import { getConfigRevisionState } from './grammarConfig'
+import { isColorStyleKey } from './getDynamicVal'
 import { getDefaultProps } from './getDefaultProps'
 import { shouldInsertStyleRules, updateRules } from './insertStyleRule'
 import { isPlainObject } from './isObj'
+import { isObj } from './isObj'
 import { log } from './log'
 import { normalizeStyle } from './normalizeStyle'
+import { normalizeColor } from './normalizeColor'
 import { normalizeValueWithProperty } from './normalizeValueWithProperty'
-import { appendFlatClause, getContextPropSet, propMapper } from './propMapper'
-import {
-  clearDirectStyle,
-  contributeStyleValue,
-  contributeStyleString,
-  contributeVariantClauseValue,
-  flushDirectStyles,
-  getDirectDynamicThemeAccess,
-  resolveClauseChain,
-} from './directStyle'
-import { contributeFrontendProgram, isFrontendProgram } from './frontendProgram'
+import { parseNativeStyle } from './parseNativeStyle.native'
+import { parseNativeTransform } from './parseNativeTransform.native'
+import { getFontsForLanguage, getVariantExtras } from './getVariantExtras'
+import { isRemValue, resolveRem } from './resolveRem'
+import { expandSafeAreaValue, isSafeAreaKey } from './resolveSafeArea'
+import { resolveSafeAreaVariable } from './resolveSafeAreaVariable'
+import { resolveVariableValue } from './resolveVariableValue'
+import { THEME_REF_PREFIX } from './themeRef'
+import { getTokenCategoryForProperty, tokenCategoryByProperty } from './tokenCategories'
 import { HOC_CLASSNAME_MARKER, skipProps } from './skipProps'
 import { styleOriginalValues } from './styleOriginalValues'
 import {
@@ -94,11 +118,6 @@ const TAMAGUI_CLASS_PROPS = '$$tamaguiClassProps'
 const shouldTrackStyleTokenProvenance =
   process.env.NODE_ENV === 'development' &&
   process.env.TAMAGUI_ENABLE_STYLE_TOKEN_PROVENANCE === '1'
-// unconditional: a bare regex literal costs nothing on native, and a
-// target-conditional module constant breaks harnesses that load modules under
-// mixed TAMAGUI_TARGET values
-const validComponentClassName = /^[A-Za-z_][A-Za-z0-9_-]*$/
-
 export type SplitStyleResult = ReturnType<typeof getSplitStyles>
 
 // note: we intentionally don't cache conf at module level here
@@ -125,153 +144,526 @@ export type StyleSplitter = (
 
 function compoundMatcherMatches(expected: any, actual: any) {
   if (Array.isArray(expected)) {
-    return expected.some((value) => value === actual)
+    for (let index = 0; index < expected.length; index++) {
+      if (expected[index] === actual) return true
+    }
+    return false
   }
   return expected === actual
 }
 
 // clause-string payloads arrive as slices, so booleans and numbers in the
 // matcher compare by their string spelling
-function compoundMatcherMatchesPayload(expected: any, payload: string) {
+function compoundMatcherMatchesPayload(
+  expected: any,
+  source: string,
+  start: number,
+  end: number
+) {
   if (Array.isArray(expected)) {
-    return expected.some((value) => compoundMatcherMatchesPayload(value, payload))
+    for (let index = 0; index < expected.length; index++) {
+      if (compoundMatcherMatchesPayload(expected[index], source, start, end)) return true
+    }
+    return false
   }
-  return typeof expected === 'string'
-    ? expected === payload
-    : String(expected) === payload
+  const expectedValue = typeof expected === 'string' ? expected : String(expected)
+  if (expectedValue.length !== end - start) return false
+  for (let index = 0; index < expectedValue.length; index++) {
+    if (expectedValue.charCodeAt(index) !== source.charCodeAt(start + index)) return false
+  }
+  return true
 }
 
-// [source, expected, isChain, chains, matchedBase]
-type CompoundScanContext = [string, any, (chain: string) => boolean, string[], boolean]
+const preparedCompoundsKey = Symbol()
 
-const compoundScanHandler: FlatValueHandler<CompoundScanContext> = {
-  segment(ctx, start, end, isBase, valid, source, chainStart, chainEnd, chainValid) {
-    if (!valid || start >= end) return
-    if (!compoundMatcherMatchesPayload(ctx[1], source.slice(start, end))) return
+type PreparedCompounds = Record<string, number[]> & {
+  [preparedCompoundsKey]: number[]
+}
+
+type StaticConfigWithPreparedCompounds = StaticConfig & {
+  [preparedCompoundsKey]?: PreparedCompounds | null
+}
+
+function prepareStaticConfigCompounds(staticConfig: StaticConfig) {
+  const compoundVariants = staticConfig.compoundVariants
+  const preparedConfig = staticConfig as StaticConfigWithPreparedCompounds
+  if (!compoundVariants?.length) {
+    preparedConfig[preparedCompoundsKey] = null
+    return
+  }
+
+  const selectorCounts: number[] = []
+  const indexesByKey = Object.create(null) as PreparedCompounds
+  indexesByKey[preparedCompoundsKey] = selectorCounts
+  for (let index = 0; index < compoundVariants.length; index++) {
+    const compoundVariant = compoundVariants[index]
+    let selectorCount = 0
+    for (const key in compoundVariant) {
+      if (key === 'style') continue
+      selectorCount++
+      ;(indexesByKey[key] ||= []).push(index)
+    }
+    selectorCounts[index] = selectorCount
+  }
+  preparedConfig[preparedCompoundsKey] = indexesByKey
+}
+
+let compoundArena = new Float64Array(2048)
+let compoundArenaTop = 1
+let compoundArenaEpoch = 0
+
+let conditionArenaTop = 1
+const conditionNumbers: number[] = []
+const conditionKeys: string[] = []
+const conditionWrappers: (string[] | undefined)[] = []
+const conditionSelectors: string[] = []
+const conditionThemes: string[] = []
+
+function storeCondition(
+  condition: number,
+  key: string,
+  wrappers: string[] | undefined,
+  selector: string,
+  theme: string
+) {
+  const id = conditionArenaTop++
+  conditionNumbers[id] = condition
+  conditionKeys[id] = key
+  conditionWrappers[id] = wrappers
+  conditionSelectors[id] = selector
+  conditionThemes[id] = theme
+  return id
+}
+
+function releaseConditions(base: number) {
+  for (let index = base; index < conditionArenaTop; index++) {
+    conditionKeys[index] = ''
+    conditionWrappers[index] = undefined
+    conditionSelectors[index] = ''
+    conditionThemes[index] = ''
+  }
+  conditionArenaTop = base
+}
+
+function reserveCompoundArena(count: number) {
+  const start = compoundArenaTop
+  const required = start + count
+  if (required > compoundArena.length) {
+    let length = compoundArena.length * 2
+    while (length < required) length *= 2
+    const previous = compoundArena
+    compoundArena = new Float64Array(length)
+    for (let index = 0; index < compoundArenaTop; index++) {
+      compoundArena[index] = previous[index]
+    }
+  }
+  compoundArenaTop = required
+  return start
+}
+
+const compoundStateWidth = 8
+const compoundSeen = 1
+const compoundFailed = 2
+const compoundCombinations = 3
+const compoundPendingHead = 4
+const compoundPendingTail = 5
+const compoundMatchedBase = 6
+const compoundScanned = 7
+
+function initializeCompoundState(stateIndex: number, epoch: number) {
+  if (compoundArena[stateIndex] === epoch) return
+  compoundArena[stateIndex] = epoch
+  for (let offset = 1; offset < compoundStateWidth; offset++) {
+    compoundArena[stateIndex + offset] = 0
+  }
+}
+
+function appendCompoundNode(headCell: number, tailCell: number, conditionId: number) {
+  const node = reserveCompoundArena(2)
+  compoundArena[node] = conditionId
+  compoundArena[node + 1] = 0
+  const tail = compoundArena[tailCell]
+  if (tail) compoundArena[tail + 1] = node
+  else compoundArena[headCell] = node
+  compoundArena[tailCell] = node
+}
+
+function beginCompoundEdges(
+  indexes: number[] | undefined,
+  stateStart: number,
+  epoch: number
+) {
+  if (!indexes) return
+  for (let index = 0; index < indexes.length; index++) {
+    const stateIndex = stateStart + indexes[index] * compoundStateWidth
+    initializeCompoundState(stateIndex, epoch)
+    compoundArena[stateIndex + compoundPendingHead] = 0
+    compoundArena[stateIndex + compoundPendingTail] = 0
+    compoundArena[stateIndex + compoundMatchedBase] = 0
+    compoundArena[stateIndex + compoundScanned] = 0
+  }
+}
+
+function feedCompoundSegment(
+  state: DirectState,
+  source: string,
+  start: number,
+  end: number,
+  isBase: boolean,
+  valid: boolean,
+  conditionId: number
+) {
+  if (state.flatCompoundOutputDepth) return
+  const indexes = state.flatCompoundIndexes
+  const stateStart = state.flatCompoundStateStart
+  const epoch = state.flatCompoundEpoch
+  const key = state.flatCompoundKey
+  if (!indexes || stateStart === undefined || epoch === undefined || !key) return
+  const compoundVariants = state.staticConfig.compoundVariants!
+  for (let index = 0; index < indexes.length; index++) {
+    const compoundIndex = indexes[index]
+    const stateIndex = stateStart + compoundIndex * compoundStateWidth
+    compoundArena[stateIndex + compoundScanned] = 1
+    if (
+      !valid ||
+      start === end ||
+      !compoundMatcherMatchesPayload(
+        compoundVariants[compoundIndex][key],
+        source,
+        start,
+        end
+      )
+    ) {
+      continue
+    }
     if (isBase) {
-      ctx[4] = true
+      compoundArena[stateIndex + compoundMatchedBase] = 1
+    } else if (!compoundArena[stateIndex + compoundMatchedBase]) {
+      appendCompoundNode(
+        stateIndex + compoundPendingHead,
+        stateIndex + compoundPendingTail,
+        conditionId
+      )
+    }
+  }
+}
+
+function mergeConditionKeys(first: string, second: string) {
+  if (!first) return second
+  if (!second || first === second) return first
+  let key = first
+  let start = 0
+  while (start <= second.length) {
+    let end = second.indexOf(':', start)
+    if (end === -1) end = second.length
+    const modifier = second.slice(start, end)
+    let slotStart = 0
+    let inserted = false
+    while (slotStart <= key.length) {
+      let slotEnd = key.indexOf(':', slotStart)
+      if (slotEnd === -1) slotEnd = key.length
+      const current = key.slice(slotStart, slotEnd)
+      if (current === modifier) {
+        inserted = true
+        break
+      }
+      if (modifier < current) {
+        key = `${key.slice(0, slotStart)}${modifier}:${key.slice(slotStart)}`
+        inserted = true
+        break
+      }
+      if (slotEnd === key.length) break
+      slotStart = slotEnd + 1
+    }
+    if (!inserted) key += `:${modifier}`
+    if (end === second.length) break
+    start = end + 1
+  }
+  return key
+}
+
+function combineConditions(state: GetStyleState, first: number, second: number) {
+  if (!first) return second
+  if (!second || first === second) return first
+  const key = mergeConditionKeys(conditionKeys[first], conditionKeys[second])
+  if (key === conditionKeys[first]) return first
+  if (key === conditionKeys[second]) return second
+  const captureCell = reserveCompoundArena(1)
+  resolveClauseChain(
+    state,
+    key,
+    0,
+    key.length,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    false,
+    -1,
+    -1,
+    0,
+    captureCell
+  )
+  return compoundArena[captureCell]
+}
+
+const compoundOnlyHandler: FlatValueHandler<DirectState> = {
+  segment(state, start, end, isBase, valid, source, chainStart, chainEnd, chainValid) {
+    if (isBase) {
+      feedCompoundSegment(state, source, start, end, true, valid, 0)
       return
     }
-    if (!chainValid) return
-    const chain = source.slice(chainStart, chainEnd)
-    if (ctx[2](chain)) ctx[3].push(chain)
+    if (!chainValid) {
+      feedCompoundSegment(state, source, start, end, false, false, 0)
+      return
+    }
+    const captureCell = reserveCompoundArena(1)
+    compoundArena[captureCell] = 0
+    const condition = resolveClauseChain(
+      state,
+      source,
+      chainStart,
+      chainEnd,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      false,
+      -1,
+      -1,
+      0,
+      captureCell
+    )
+    feedCompoundSegment(
+      state,
+      source,
+      start,
+      end,
+      false,
+      valid && Boolean(condition),
+      compoundArena[captureCell]
+    )
   },
   chain() {
     return true
   },
-  error() {},
 }
 
-/**
- * Which condition chains a compound matcher key matches on a prop value.
- * `['']` means unconditional: an exact value, or a conditional value whose
- * base/default branch matches (the clause system has no negative conditions,
- * so a matching base applies the compound in every state, exactly like an
- * exact value). `null` means no branch matches. Non-empty chains mean the
- * compound's style applies only under those conditions; the caller rewrites
- * it into the flat object form so the ordinary pipeline carries it.
- */
-function matcherChains(
-  expected: any,
-  actual: any,
-  isChain: (chain: string) => boolean
-): string[] | null {
-  if (typeof actual === 'string' && actual.indexOf(':') !== -1) {
-    const scan: CompoundScanContext = [actual, expected, isChain, [], false]
-    scanFlatValue(actual, compoundScanHandler, scan)
-    if (scan[4]) return ['']
-    return scan[3].length ? scan[3] : null
+function appendUniqueCombination(head: number, tail: number, conditionId: number) {
+  for (let node = head; node; node = compoundArena[node + 1]) {
+    if (compoundArena[node] === conditionId) return tail
   }
-  if (
-    actual &&
-    typeof actual === 'object' &&
-    !Array.isArray(actual) &&
-    !isVariable(actual)
-  ) {
-    let conditional = Object.prototype.hasOwnProperty.call(actual, 'default')
-    if (!conditional) {
-      for (const key in actual) {
-        conditional = key.length > 0 && isChain(key)
-        break
-      }
-    }
-    if (conditional) {
-      const chains: string[] = []
-      for (const key in actual) {
-        const payload = actual[key]
-        if (payload == null || !compoundMatcherMatches(expected, payload)) continue
-        if (key === 'default') return ['']
-        if (isChain(key)) chains.push(key)
-      }
-      return chains.length ? chains : null
+  const node = reserveCompoundArena(2)
+  compoundArena[node] = conditionId
+  compoundArena[node + 1] = 0
+  if (tail) compoundArena[tail + 1] = node
+  return node
+}
+
+function finishCompoundEdges(
+  state: DirectState,
+  key: string,
+  value: any,
+  indexes: number[] | undefined,
+  stateStart: number,
+  epoch: number,
+  contribute: (
+    key: string,
+    value: any,
+    compoundIndexes?: number[],
+    compoundStateStart?: number,
+    compoundEpoch?: number,
+    parentConditionId?: number
+  ) => void
+) {
+  if (!indexes) return
+  let needsScan = false
+  for (let index = 0; index < indexes.length; index++) {
+    const stateIndex = stateStart + indexes[index] * compoundStateWidth
+    if (!compoundArena[stateIndex + compoundScanned]) {
+      needsScan = true
+      break
     }
   }
-  return compoundMatcherMatches(expected, actual) ? [''] : null
+  if (needsScan) {
+    const previousIndexes = state.flatCompoundIndexes
+    const previousKey = state.flatCompoundKey
+    const previousStateStart = state.flatCompoundStateStart
+    const previousEpoch = state.flatCompoundEpoch
+    state.flatCompoundIndexes = indexes
+    state.flatCompoundKey = key
+    state.flatCompoundStateStart = stateStart
+    state.flatCompoundEpoch = epoch
+    try {
+      if (typeof value === 'string') {
+        scanFlatValue(value, compoundOnlyHandler, state)
+      } else if (
+        value &&
+        typeof value === 'object' &&
+        !Array.isArray(value) &&
+        !isVariable(value) &&
+        Object.prototype.hasOwnProperty.call(value, 'default')
+      ) {
+        for (const conditionKey in value) {
+          const payload = value[conditionKey]
+          if (conditionKey === 'default') {
+            const payloadString = String(payload)
+            feedCompoundSegment(
+              state,
+              payloadString,
+              0,
+              payloadString.length,
+              true,
+              true,
+              0
+            )
+          } else {
+            const captureCell = reserveCompoundArena(1)
+            compoundArena[captureCell] = 0
+            const condition = resolveClauseChain(
+              state,
+              conditionKey,
+              0,
+              conditionKey.length,
+              undefined,
+              undefined,
+              undefined,
+              undefined,
+              false,
+              -1,
+              -1,
+              0,
+              captureCell
+            )
+            const payloadString = String(payload)
+            feedCompoundSegment(
+              state,
+              payloadString,
+              0,
+              payloadString.length,
+              false,
+              Boolean(condition),
+              compoundArena[captureCell]
+            )
+          }
+        }
+      } else {
+        const variants = state.staticConfig.compoundVariants!
+        for (let index = 0; index < indexes.length; index++) {
+          const compoundIndex = indexes[index]
+          const stateIndex = stateStart + compoundIndex * compoundStateWidth
+          compoundArena[stateIndex + compoundScanned] = 1
+          if (compoundMatcherMatches(variants[compoundIndex][key], value)) {
+            compoundArena[stateIndex + compoundMatchedBase] = 1
+          }
+        }
+      }
+    } finally {
+      state.flatCompoundIndexes = previousIndexes
+      state.flatCompoundKey = previousKey
+      state.flatCompoundStateStart = previousStateStart
+      state.flatCompoundEpoch = previousEpoch
+    }
+  }
+
+  const variants = state.staticConfig.compoundVariants!
+  const selectorCounts = (state.staticConfig as StaticConfigWithPreparedCompounds)[
+    preparedCompoundsKey
+  ]![preparedCompoundsKey]
+  for (let index = 0; index < indexes.length; index++) {
+    const compoundIndex = indexes[index]
+    const stateIndex = stateStart + compoundIndex * compoundStateWidth
+    if (compoundArena[stateIndex + compoundFailed]) continue
+    let branches = compoundArena[stateIndex + compoundPendingHead]
+    if (compoundArena[stateIndex + compoundMatchedBase]) {
+      branches = reserveCompoundArena(2)
+      compoundArena[branches] = 0
+      compoundArena[branches + 1] = 0
+    }
+    if (!branches) {
+      compoundArena[stateIndex + compoundFailed] = 1
+      continue
+    }
+
+    const seen = compoundArena[stateIndex + compoundSeen]
+    if (!seen) {
+      compoundArena[stateIndex + compoundCombinations] = branches
+    } else {
+      const previous = compoundArena[stateIndex + compoundCombinations]
+      let nextHead = 0
+      let nextTail = 0
+      for (let left = previous; left; left = compoundArena[left + 1]) {
+        for (let right = branches; right; right = compoundArena[right + 1]) {
+          const conditionId = combineConditions(
+            state,
+            compoundArena[left],
+            compoundArena[right]
+          )
+          const appended = appendUniqueCombination(nextHead, nextTail, conditionId)
+          if (!nextHead) nextHead = appended
+          nextTail = appended
+        }
+      }
+      compoundArena[stateIndex + compoundCombinations] = nextHead
+    }
+    compoundArena[stateIndex + compoundSeen] = seen + 1
+    if (seen + 1 !== selectorCounts[compoundIndex]) continue
+    const style = variants[compoundIndex].style
+    if (!isPlainObject(style)) continue
+    for (
+      let combination = compoundArena[stateIndex + compoundCombinations];
+      combination;
+      combination = compoundArena[combination + 1]
+    ) {
+      for (const styleKey in style) {
+        contribute(
+          styleKey,
+          style[styleKey],
+          undefined,
+          stateStart,
+          epoch,
+          compoundArena[combination]
+        )
+      }
+    }
+  }
 }
 
 // the runtime discrimination rule, phrased over an isChain callback: a
 // conditional object names a `default` or opens with a resolvable chain
-function isConditionalObjectValue(
+function classifyConditionalObject(
   value: Record<string, any>,
-  isChain: (chain: string) => boolean
-): boolean {
-  if (Object.prototype.hasOwnProperty.call(value, 'default')) return true
+  state: GetStyleState | null,
+  isChain?: (chain: string) => boolean,
+  property?: string,
+  merge?: MergeStyle,
+  contextOnly = false,
+  captureCell = 0,
+  parentConditionId = 0
+): number {
+  if (Object.prototype.hasOwnProperty.call(value, 'default')) return -1
   for (const key in value) {
-    return key.length > 0 && isChain(key)
+    if (!key.length) return 0
+    if (!state) return isChain?.(key) ? 1 : 0
+    const payload = value[key]
+    return resolveClauseChain(
+      state,
+      key,
+      0,
+      key.length,
+      property,
+      payload,
+      payload == null ? undefined : merge,
+      payload,
+      contextOnly,
+      -1,
+      -1,
+      0,
+      captureCell,
+      parentConditionId
+    )
   }
-  return false
-}
-
-const joinChains = (a: string, b: string): string => {
-  if (!a) return b
-  if (!b) return a
-  let joined = a
-  let start = 0
-  for (let end = 0; end <= b.length; end++) {
-    if (end !== b.length && b.charCodeAt(end) !== 58) continue
-    const length = end - start
-    let found = false
-    let joinedStart = 0
-    for (let joinedEnd = 0; joinedEnd <= joined.length; joinedEnd++) {
-      if (joinedEnd !== joined.length && joined.charCodeAt(joinedEnd) !== 58) continue
-      if (joinedEnd - joinedStart === length) {
-        found = true
-        for (let offset = 0; offset < length; offset++) {
-          if (joined.charCodeAt(joinedStart + offset) !== b.charCodeAt(start + offset)) {
-            found = false
-            break
-          }
-        }
-        if (found) break
-      }
-      joinedStart = joinedEnd + 1
-    }
-    if (!found) joined += `:${b.slice(start, end)}`
-    start = end + 1
-  }
-  return joined
-}
-
-function compoundVariantMatchChains(
-  compoundVariant: GenericCompoundVariant,
-  props: Record<string, any>,
-  isChain: (chain: string) => boolean
-): string[] | null {
-  let chains: string[] = ['']
-  for (const key in compoundVariant) {
-    if (key === 'style') continue
-    const keyChains = matcherChains(compoundVariant[key], props[key], isChain)
-    if (!keyChains) return null
-    const next: string[] = []
-    for (const a of chains) {
-      for (const b of keyChains) {
-        const joined = joinChains(a, b)
-        if (!next.includes(joined)) next.push(joined)
-      }
-    }
-    chains = next
-  }
-  return chains
+  return 0
 }
 
 type OrderedPropEntry = readonly [string, any]
@@ -298,11 +690,6 @@ function getStyledDefaults(staticConfig: StaticConfig): OrderedPropEntry[] | nul
   return entries
 }
 
-const maybeStyleProgram = (value: any): boolean =>
-  typeof value === 'string'
-    ? value.includes(':')
-    : !!value && typeof value === 'object' && !Array.isArray(value) && !isVariable(value)
-
 function contributeDisplacedStyledDefaults(
   styledDefaults: OrderedPropEntry[] | null,
   processedProps: Record<string, any>,
@@ -317,16 +704,9 @@ function contributeDisplacedStyledDefaults(
     if (!(key in stylePropsAll) && !(key in shorthands)) continue
     // equal means the default flowed through the merge untouched and will be
     // processed as an ordinary prop entry; different means a call-site value
-    // displaced it. Re-injection is only needed when either contribution is a
-    // program; ordinary values retain the prop-level fast path. an object is
-    // potentially a conditional program (its clause slots must survive a
-    // caller base); re-injecting a displaced structured leaf is a harmless
-    // whole-value overwrite by the later prop entry.
-    if (
-      propValue !== undefined &&
-      propValue !== styledValue &&
-      (maybeStyleProgram(styledValue) || maybeStyleProgram(propValue))
-    ) {
+    // displaced it. Re-inject it at the styled position. The later prop either
+    // overwrites the whole base or competes per clause through the same sink.
+    if (propValue !== undefined && propValue !== styledValue) {
       contribute(key, styledValue)
     }
   }
@@ -348,15 +728,24 @@ function contributeDisplacedStyledDefaults(
 function forEachPropInForwardOrder(
   processedProps: Record<string, any>,
   staticConfig: StaticConfig,
+  styleState: GetStyleState,
   shorthands: Record<string, string>,
-  contribute: (key: string, value: any) => void,
-  isChain: (chain: string) => boolean
+  contribute: (
+    key: string,
+    value: any,
+    compoundIndexes?: number[],
+    compoundStateStart?: number,
+    compoundEpoch?: number,
+    parentConditionId?: number
+  ) => void
 ) {
   const processedBaseStyle = staticConfig.baseStyle
-  const compoundVariants = staticConfig.compoundVariants
   const styledDefaults = getStyledDefaults(staticConfig)
+  const preparedCompounds = (staticConfig as StaticConfigWithPreparedCompounds)[
+    preparedCompoundsKey
+  ]
 
-  if (!compoundVariants?.length) {
+  if (!preparedCompounds) {
     if (processedBaseStyle) {
       for (const key in processedBaseStyle) contribute(key, processedBaseStyle[key])
     }
@@ -370,95 +759,50 @@ function forEachPropInForwardOrder(
     return
   }
 
-  // compound path: needs indexed prop entries to resolve each compound's anchor
-  const propEntries = Object.entries(processedProps) as OrderedPropEntry[]
-  const orderedEntries = processedBaseStyle
-    ? (Object.entries(processedBaseStyle) as OrderedPropEntry[])
-    : []
-  contributeDisplacedStyledDefaults(styledDefaults, processedProps, shorthands, (k, v) =>
-    orderedEntries.push([k, v])
-  )
-
-  // Compounds are ordinary contributions in the same authored forward pass. A
-  // matching compound runs immediately after its last selector entry, then any
-  // later prop/style/className is free to override it. Never collect variants,
-  // compounds, or caller values into precedence tiers.
-  const compoundsByAnchor = new Map<number, OrderedPropEntry[]>()
-  for (const compoundVariant of compoundVariants) {
-    const chains = compoundVariantMatchChains(compoundVariant, processedProps, isChain)
-    if (!chains) {
-      continue
+  const arenaBase = compoundArenaTop
+  const conditionBase = conditionArenaTop
+  const compoundVariants = staticConfig.compoundVariants!
+  const stateStart = reserveCompoundArena(compoundVariants.length * compoundStateWidth)
+  const epoch = ++compoundArenaEpoch
+  try {
+    if (processedBaseStyle) {
+      for (const key in processedBaseStyle) contribute(key, processedBaseStyle[key])
     }
-    const { style } = compoundVariant
-    if (!isPlainObject(style)) {
-      continue
+    contributeDisplacedStyledDefaults(
+      styledDefaults,
+      processedProps,
+      shorthands,
+      contribute
+    )
+    const selectorCounts = preparedCompounds[preparedCompoundsKey]
+    for (
+      let compoundIndex = 0;
+      compoundIndex < compoundVariants.length;
+      compoundIndex++
+    ) {
+      if (selectorCounts[compoundIndex]) continue
+      const style = compoundVariants[compoundIndex].style
+      if (!isPlainObject(style)) continue
+      for (const key in style) contribute(key, style[key])
     }
-
-    let anchor = -1
-    for (const selectorKey in compoundVariant) {
-      if (selectorKey === 'style') continue
-      for (let index = propEntries.length - 1; index >= 0; index--) {
-        if (propEntries[index][0] === selectorKey) {
-          anchor = Math.max(anchor, index)
-          break
-        }
-      }
+    for (const key in processedProps) {
+      const compoundIndexes = preparedCompounds[key]
+      const value = processedProps[key]
+      beginCompoundEdges(compoundIndexes, stateStart, epoch)
+      contribute(key, value, compoundIndexes, stateStart, epoch)
+      finishCompoundEdges(
+        styleState as DirectState,
+        key,
+        value,
+        compoundIndexes,
+        stateStart,
+        epoch,
+        contribute
+      )
     }
-
-    const entries = compoundsByAnchor.get(anchor) || []
-    for (const key in style) {
-      const value = style[key]
-      for (const chain of chains) {
-        if (!chain) {
-          entries.push([key, value])
-          continue
-        }
-        // a conditional match rewrites the compound's style into the flat
-        // object form so the ordinary pipeline scopes it to the chain
-        if (
-          value &&
-          typeof value === 'object' &&
-          !Array.isArray(value) &&
-          !isVariable(value) &&
-          isConditionalObjectValue(value, isChain)
-        ) {
-          const composed: Record<string, any> = {}
-          for (const inner in value) {
-            composed[inner === 'default' ? chain : `${chain}:${inner}`] = value[inner]
-          }
-          entries.push([key, composed])
-          continue
-        }
-        if (typeof value === 'string' && value.includes(':')) {
-          if (process.env.NODE_ENV === 'development') {
-            console.warn(
-              `[tamagui] compound variant "${key}" carries a clause string and matched conditionally; dropping it. use the object form in the compound style`
-            )
-          }
-          continue
-        }
-        entries.push([key, { [chain]: value }])
-      }
-    }
-    compoundsByAnchor.set(anchor, entries)
-  }
-
-  for (let index = 0; index < orderedEntries.length; index++) {
-    contribute(orderedEntries[index][0], orderedEntries[index][1])
-  }
-  const beforeProps = compoundsByAnchor.get(-1)
-  if (beforeProps) {
-    for (let index = 0; index < beforeProps.length; index++) {
-      contribute(beforeProps[index][0], beforeProps[index][1])
-    }
-  }
-  for (let index = 0; index < propEntries.length; index++) {
-    contribute(propEntries[index][0], propEntries[index][1])
-    const compounds = compoundsByAnchor.get(index)
-    if (compounds) {
-      for (let i = 0; i < compounds.length; i++)
-        contribute(compounds[i][0], compounds[i][1])
-    }
+  } finally {
+    releaseConditions(conditionBase)
+    compoundArenaTop = arenaBase
   }
 }
 
@@ -538,6 +882,8 @@ export const getSplitStyles: StyleSplitter = (
   const rulesToInsert: RulesToInsert =
     process.env.TAMAGUI_TARGET === 'native' ? (undefined as any) : {}
   const classNames: ClassNamesObject = {}
+  const needsCssStyles = isReactNative || (styleProps.isAnimated && driverIsReactNative)
+  let transportedRawClasses: Record<string, string> | undefined
 
   let space: SpaceTokens | null = props.space
   let hasMedia: boolean | Set<string> = false
@@ -549,9 +895,10 @@ export const getSplitStyles: StyleSplitter = (
   // prepend them and flip the cascade-preserving switch so every later
   // Tamagui contribution keeps its last-wins position inline, exactly as a
   // className prop does mid-loop
-  let className =
+  const staticPassthroughClassName =
     process.env.TAMAGUI_TARGET === 'web' ? staticConfig.passthroughClassName || '' : ''
-  if (className) {
+  let className = ''
+  if (staticPassthroughClassName) {
     shouldDoClasses = false
   }
   const validStyles =
@@ -628,16 +975,8 @@ export const getSplitStyles: StyleSplitter = (
     styledContextKeys,
   } = styleProps
 
-  // frontend preprocessing runs once per render: createComponent already ran the
-  // descriptor's preprocessProps and marked the result, so this only fires for
-  // direct callers (tests, non-component paths), which self-process exactly once
-  let processedProps: Record<string, any>
   const styleFrontend = staticConfig.styleFrontend
-  if (styleFrontend && !(props as any)[STYLE_FRONTEND_PREPROCESSED]) {
-    processedProps = styleFrontend.preprocessProps(props, conf)
-  } else {
-    processedProps = props
-  }
+  const processedProps = props
   const parentVariants = parentStaticConfig?.variants
   const defaultProps = asChild ? getDefaultProps(staticConfig) : undefined
   const shouldSkipDirectProps = !noSkip && !isHOC
@@ -726,7 +1065,7 @@ export const getSplitStyles: StyleSplitter = (
             containerType = normalized[key]
           }
         }
-        contributeStyleValue(
+        contributeValue(
           styleState,
           key,
           normalized[key],
@@ -742,16 +1081,88 @@ export const getSplitStyles: StyleSplitter = (
     flushDirectStyles(styleState, true)
   }
 
+  function contributeClassName(source: string) {
+    const getClassPlan = styleFrontend?.getClassPlan
+    let start = 0
+    for (let index = 0; index <= source.length; index++) {
+      if (index !== source.length && source.charCodeAt(index) > 32) continue
+      if (index === start) {
+        start = index + 1
+        continue
+      }
+      const candidate = source.slice(start, index)
+      const plan = getClassPlan ? getClassPlan(candidate, conf) : 'raw'
+      if (plan === null) {
+        if (process.env.NODE_ENV === 'development') {
+          console.warn(
+            `[tamagui] frontend candidate "${candidate}" is unavailable on this platform and was dropped.`
+          )
+        }
+      } else if (plan === 'raw') {
+        className = className ? `${className} ${candidate}` : candidate
+        if (needsCssStyles) {
+          transportedRawClasses ||= {}
+          transportedRawClasses[candidate] = candidate
+        }
+        flushForwardStylesToClasses()
+        shouldDoClasses = false
+        styleState.flatShouldDoClasses = false
+      } else {
+        const parentPlan = plan as {
+          entries: readonly (readonly [
+            property: string,
+            value: unknown,
+            condition?: string,
+            modifiers?: readonly string[],
+          ])[]
+          preserveRawClass: boolean
+        }
+        if (!Array.isArray(plan) && parentPlan.preserveRawClass) {
+          className = className ? `${className} ${candidate}` : candidate
+          if (needsCssStyles) {
+            transportedRawClasses ||= {}
+            transportedRawClasses[candidate] = candidate
+          }
+          flushForwardStylesToClasses()
+          shouldDoClasses = false
+          styleState.flatShouldDoClasses = false
+        }
+        const entries = Array.isArray(plan) ? plan : parentPlan.entries
+        for (let entryIndex = 0; entryIndex < entries.length; entryIndex++) {
+          const entry = entries[entryIndex]
+          if (entry[2] !== undefined) {
+            if (isValidStyleKey(entry[0], validStyles, accept)) {
+              contributeValue(
+                styleState,
+                entry[0],
+                entry[1],
+                mergeStyle,
+                undefined,
+                false,
+                entry[2]
+              )
+            } else if (process.env.NODE_ENV === 'development') {
+              console.warn(
+                `[tamagui] "${entry[0]}" is not a valid style on this component; the frontend value is dropped.`
+              )
+            }
+          } else {
+            contributeProp(entry[0], entry[1])
+          }
+        }
+      }
+      start = index + 1
+    }
+  }
+
+  if (staticPassthroughClassName) contributeClassName(staticPassthroughClassName)
+
   // ONE forward pass over the props. the body is a closure so base style,
   // displaced styled defaults and the props themselves feed it directly from
   // their own objects — nothing is copied into an intermediate list first.
-  const contributeProp = (keyOg: string, valOg: any) => {
+  const contributePropBody = (keyOg: string, valOg: any) => {
     let keyInit = keyOg
     let valInit = valOg
-
-    if (styleFrontend && keyInit.startsWith(STYLE_FRONTEND_PASSTHROUGH_PREFIX)) {
-      keyInit = 'className'
-    }
 
     if (keyInit === 'children') {
       viewProps[keyInit] = valInit
@@ -796,7 +1207,7 @@ export const getSplitStyles: StyleSplitter = (
         valInit &&
         typeof valInit === 'object'
       ) {
-        viewProps[keyInit] = getSubStyle(styleState, keyInit, valInit, noClass)
+        viewProps[keyInit] = resolveAcceptedStyle(styleState, valInit)
         return
       }
     }
@@ -810,9 +1221,9 @@ export const getSplitStyles: StyleSplitter = (
 
     if (keyInit === 'className') {
       if (
-        process.env.TAMAGUI_TARGET === 'web' &&
         typeof valInit === 'string' &&
-        valInit
+        valInit &&
+        (process.env.TAMAGUI_TARGET === 'web' || styleFrontend?.getClassPlan)
       ) {
         if (noMergeStyle) {
           viewProps.className = valInit
@@ -821,8 +1232,8 @@ export const getSplitStyles: StyleSplitter = (
         // core className is raw interop: the string passes through untouched.
         // HOC and frontend class transport marks an earlier generated layer,
         // so keep later Tamagui contributions inline to retain their position
-        className = `${className} ${valInit}`.trim()
-        if (styleFrontend || props[HOC_CLASSNAME_MARKER] !== undefined) {
+        contributeClassName(valInit)
+        if (props[HOC_CLASSNAME_MARKER] !== undefined) {
           flushForwardStylesToClasses()
           shouldDoClasses = false
           styleState.flatShouldDoClasses = false
@@ -868,22 +1279,6 @@ export const getSplitStyles: StyleSplitter = (
       } else {
         return
       }
-    }
-
-    // minted frontend values consume before style-key validity and
-    // propMapper: the transport key is only a position marker (unique per
-    // contribution, so repeated clauses on one property and interleaving
-    // with ordinary props survive in authored order). validity applies to
-    // the value's real property, so the host ruling still holds
-    if (isFrontendProgram(valInit)) {
-      if (isValidStyleKey(valInit.property, validStyles, accept)) {
-        contributeFrontendProgram(styleState, valInit, mergeStyle)
-      } else if (process.env.NODE_ENV === 'development') {
-        console.warn(
-          `[tamagui] "${valInit.property}" is not a valid style on this component; the frontend value is dropped.`
-        )
-      }
-      return
     }
 
     let isValidStyleKeyInit = isValidStyleKey(keyInit, validStyles, accept)
@@ -1081,11 +1476,11 @@ export const getSplitStyles: StyleSplitter = (
       !(accept && keyInit in accept) &&
       !(styledContextKeys?.has(keyInit) || (styledContext && keyInit in styledContext))
     ) {
-      contributeStyleValue(styleState, keyInit, valInit, mergeStyle)
+      contributeValue(styleState, keyInit, valInit, mergeStyle)
       return
     }
 
-    propMapper(
+    contributeMappedValue(
       keyInit,
       valInit,
       styleState,
@@ -1139,32 +1534,22 @@ export const getSplitStyles: StyleSplitter = (
 
         if (conditionSource !== undefined) {
           if (isHostStyleKey || isContextProgramKey) {
-            contributeVariantClauseValue(
+            contributeValue(
               styleState,
               key,
               val,
-              conditionSource,
               mergeStyle,
               originalVal,
-              !isHostStyleKey
+              !isHostStyleKey,
+              conditionSource
             )
           } else if (isHOC) {
-            // reduce the clause back to a flat value (string, or the object
-            // form for structured payloads) so the wrapped component's own
-            // parser applies the condition
-            const appended = appendFlatClause(
+            viewProps[key] = addStructuredClause(
               styleState,
               viewProps[key],
               conditionSource,
               val
             )
-            if (appended !== undefined) {
-              viewProps[key] = appended
-            } else if (process.env.NODE_ENV === 'development') {
-              console.warn(
-                `[tamagui] conditional variant value for "${key}" cannot join the existing clause string; dropping the clause`
-              )
-            }
           } else if (process.env.NODE_ENV === 'development') {
             console.warn(
               `[tamagui] "${key}" is not a valid style on this component; the conditional variant value is dropped.`
@@ -1174,14 +1559,7 @@ export const getSplitStyles: StyleSplitter = (
         }
 
         if (isHostStyleKey || isContextProgramKey) {
-          contributeStyleValue(
-            styleState,
-            key,
-            val,
-            mergeStyle,
-            originalVal,
-            !isHostStyleKey
-          )
+          contributeValue(styleState, key, val, mergeStyle, originalVal, !isHostStyleKey)
           return
         }
 
@@ -1240,18 +1618,48 @@ export const getSplitStyles: StyleSplitter = (
     }
   } // end prop contribution
 
+  const contributeProp = (
+    key: string,
+    value: any,
+    compoundIndexes?: number[],
+    compoundStateStart?: number,
+    compoundEpoch?: number,
+    parentConditionId?: number
+  ) => {
+    const compoundState = styleState as DirectState
+    const previousIndexes = compoundState.flatCompoundIndexes
+    const previousKey = compoundState.flatCompoundKey
+    const previousStateStart = compoundState.flatCompoundStateStart
+    const previousEpoch = compoundState.flatCompoundEpoch
+    const previousParent = compoundState.flatParentConditionId
+    compoundState.flatCompoundIndexes = compoundIndexes
+    compoundState.flatCompoundKey = key
+    compoundState.flatCompoundStateStart = compoundStateStart
+    compoundState.flatCompoundEpoch = compoundEpoch
+    compoundState.flatParentConditionId = parentConditionId
+    try {
+      contributePropBody(key, value)
+    } finally {
+      compoundState.flatCompoundIndexes = previousIndexes
+      compoundState.flatCompoundKey = previousKey
+      compoundState.flatCompoundStateStart = previousStateStart
+      compoundState.flatCompoundEpoch = previousEpoch
+      compoundState.flatParentConditionId = previousParent
+    }
+  }
+
   forEachPropInForwardOrder(
     processedProps,
     staticConfig,
+    styleState,
     shorthands,
-    contributeProp,
-    (chain) => !!resolveClauseChain(styleState, chain, 0, chain.length)
+    contributeProp
   )
 
   if (process.env.TAMAGUI_TARGET === 'web' && containerValue) {
     containerName ??= typeof containerValue === 'string' ? containerValue : undefined
     containerType ??= 'inline-size'
-    contributeStyleValue(
+    contributeValue(
       styleState,
       containerName ? 'container' : 'containerType',
       containerName ? `${containerName} / ${containerType}` : containerType,
@@ -1282,6 +1690,35 @@ export const getSplitStyles: StyleSplitter = (
   if (styleState.flatGroupMedia?.size) {
     mediaGroups ||= new Set()
     for (const key of styleState.flatGroupMedia) mediaGroups.add(key)
+  }
+
+  if (styleProps.canPlatformPseudo && styleState.flatHasPlatformPseudo) {
+    shouldDoClasses = false
+    styleState.flatShouldDoClasses = false
+    const direct = styleState as DirectState
+    if (direct.flatAtomics) {
+      for (const property in direct.flatAtomics) {
+        delete classNames[property]
+      }
+      direct.flatAtomics = undefined
+    }
+    if (styleState.transformAccumulator) {
+      mergeStyle(
+        styleState,
+        'transform',
+        finalizeTransformAccumulator(styleState.transformAccumulator),
+        1,
+        true
+      )
+      styleState.transformAccumulator = undefined
+    }
+    const inlineWinners = styleState.flatInlineWinners
+    if (inlineWinners) {
+      for (const property in inlineWinners) {
+        const winner = inlineWinners[property]
+        mergeStyle(styleState, property, winner.value, 1, true, winner.originalValue)
+      }
+    }
   }
 
   // hand the selected transition to animation drivers and keep it out of native
@@ -1457,6 +1894,8 @@ export const getSplitStyles: StyleSplitter = (
       exit: effectiveKeys(styleState.flatExitKeys),
     }
   }
+  if (styleState.flatHasEnterStyle) result.hasEnterStyle = true
+  if (styleState.flatHasPlatformPseudo) result.platformPseudo = true
 
   if (!noMergeStyle) {
     if (!asChildExceptStyleLike) {
@@ -1468,34 +1907,46 @@ export const getSplitStyles: StyleSplitter = (
         const fontFamily = isText || isInput ? styleState.fontFamily : null
         const fontFamilyClassName = fontFamily ? `font_${fontFamily}` : ''
         const groupClassName = props.group ? `t_group_${props.group}` : ''
-        const displayNameClassName =
-          props.asChild ||
-          !styleProps.displayName ||
-          styleProps.displayName === 'Text' ||
-          styleProps.displayName === 'View' ||
-          !validComponentClassName.test(styleProps.displayName)
-            ? ''
-            : `is_${styleProps.displayName}`
-
-        let classList: string[] = []
-        if (displayNameClassName) classList.push(displayNameClassName)
-        // is_View gets base flex styles + font reset, is_Text gets base text styles
-        if (!isText) classList.push('is_View')
-        else classList.push('is_Text')
-        if (fontFamilyClassName) classList.push(fontFamilyClassName)
-        if (classNames) {
-          for (const key in classNames) {
-            classList.push(classNames[key])
+        const displayName = styleProps.displayName
+        let validDisplayName = Boolean(
+          !props.asChild &&
+          displayName &&
+          displayName !== 'Text' &&
+          displayName !== 'View'
+        )
+        if (validDisplayName) {
+          for (let index = 0; index < displayName!.length; index++) {
+            const code = displayName!.charCodeAt(index)
+            if (
+              !(
+                code === 95 ||
+                code === 45 ||
+                (code >= 48 && code <= 57 && index > 0) ||
+                (code >= 65 && code <= 90) ||
+                (code >= 97 && code <= 122)
+              )
+            ) {
+              validDisplayName = false
+              break
+            }
           }
         }
-        if (groupClassName) classList.push(groupClassName)
-        // use className variable which may have been updated by tailwind preprocessing
-        if (className) classList.push(className)
-        const finalClassName = classList.join(' ')
+        const displayNameClassName = validDisplayName ? `is_${displayName}` : ''
 
-        // use $$css for RNW components OR when animated with RNW driver
-        // (driver's AnimatedView doesn't forward className)
-        const needsCssStyles = isReactNative || (isAnimated && driverIsReactNative)
+        let finalClassName = displayNameClassName
+        // is_View gets base flex styles + font reset, is_Text gets base text styles
+        const baseClassName = isText ? 'is_Text' : 'is_View'
+        finalClassName = finalClassName
+          ? `${finalClassName} ${baseClassName}`
+          : baseClassName
+        if (fontFamilyClassName) finalClassName += ` ${fontFamilyClassName}`
+        if (classNames) {
+          for (const key in classNames) {
+            finalClassName += ` ${classNames[key]}`
+          }
+        }
+        if (groupClassName) finalClassName += ` ${groupClassName}`
+        if (className) finalClassName += ` ${className}`
 
         if (isAnimated && driverInputStyle === 'css') {
           // CSS animation driver uses className directly
@@ -1510,10 +1961,14 @@ export const getSplitStyles: StyleSplitter = (
           // needs each class's property to slot it into per-property position
           // competition, so the property→class map rides along non-enumerably
           // (invisible to RNW's for-in flatten)
-          let cnStyles: Record<string, unknown> | undefined
-          for (const name of finalClassName.split(' ')) {
-            cnStyles ||= { $$css: true }
-            cnStyles[name] = name
+          const cnStyles: Record<string, unknown> = { $$css: true }
+          if (displayNameClassName) cnStyles[displayNameClassName] = displayNameClassName
+          cnStyles[baseClassName] = baseClassName
+          if (fontFamilyClassName) cnStyles[fontFamilyClassName] = fontFamilyClassName
+          for (const key in classNames) cnStyles[classNames[key]] = classNames[key]
+          if (groupClassName) cnStyles[groupClassName] = groupClassName
+          if (transportedRawClasses) {
+            for (const name in transportedRawClasses) cnStyles[name] = name
           }
           if (cnStyles && classNames) {
             Object.defineProperty(cnStyles, TAMAGUI_CLASS_PROPS, {
@@ -1521,9 +1976,7 @@ export const getSplitStyles: StyleSplitter = (
               enumerable: false,
             })
           }
-          viewProps.style = cnStyles
-            ? [...(Array.isArray(style) ? style : [style]), cnStyles]
-            : [style]
+          viewProps.style = [...(Array.isArray(style) ? style : [style]), cnStyles]
         } else {
           // regular web: use className directly
           if (finalClassName) {
@@ -1665,81 +2118,54 @@ function recordStyleTokenProvenance(
   }
 }
 
-export const getSubStyle = (
+const resolveAcceptedStyle = (
   styleState: GetStyleState,
-  _subKey: string,
-  styleIn: object,
-  avoidMergeTransform?: boolean
+  styleIn: Record<string, any>
 ): TextStyle => {
-  const { staticConfig, conf, styleProps } = styleState
+  const { conf, styleProps } = styleState
   const styleOut: TextStyle = {}
   let originalValues: Record<string, any> | undefined
-  let transformAccumulator: TransformAccumulator | undefined
   const styleInOriginalValues = styleOriginalValues.get(styleIn)
-  const parentProps = styleState.props
-  // prototype-chain view instead of a spread copy: reads fall through to
-  // parentProps, avoiding an O(parentProps) allocation per sub-style. define
-  // styleIn as own props (not Object.assign) because parentProps is React's
-  // frozen props object — [[Set]] of a key that exists read-only up the proto
-  // chain (e.g. a base backgroundColor also set in a pseudo/media sub-style)
-  // throws, whereas [[DefineOwnProperty]] via descriptors always writes an own.
-  styleState.props = Object.create(parentProps, Object.getOwnPropertyDescriptors(styleIn))
-
-  try {
-    for (let key in styleIn) {
-      const val = styleIn[key]
-      key = conf.shorthands[key] || key
-
-      const shouldSkip = !staticConfig.isHOC && key in skipProps && !styleProps.noSkip
-      if (shouldSkip) {
-        continue
-      }
-
-      propMapper(key, val, styleState, false, (skey, sval, originalVal) => {
-        // track original values for context prop propagation
-        const trackedOriginalVal = styleInOriginalValues?.[skey] ?? originalVal
-        if (trackedOriginalVal !== undefined) {
-          originalValues ||= {}
-          originalValues[skey] = trackedOriginalVal
-        }
-        if (
-          !avoidMergeTransform &&
-          (skey === 'transform' || skey in stylePropsTransform)
-        ) {
-          transformAccumulator ||= styleState.transformAccumulator
-            ? cloneTransformAccumulator(styleState.transformAccumulator)
-            : createTransformAccumulator()
-          addTransformValue(transformAccumulator, skey, sval)
-        } else {
-          styleOut[skey] = styleProps.noNormalize
-            ? sval
-            : normalizeValueWithProperty(sval, key)
-        }
-      })
+  const childState: GetStyleState = {
+    ...styleState,
+    classNames: {},
+    flatShouldDoClasses: false,
+    props: styleIn,
+    style: styleOut,
+    transformAccumulator: undefined,
+  }
+  const mergeAccepted: MergeStyle = (
+    _state,
+    key,
+    value,
+    _importance,
+    disableNormalize,
+    originalValue
+  ) => {
+    styleOut[key] =
+      disableNormalize || styleProps.noNormalize
+        ? value
+        : normalizeValueWithProperty(value, key)
+    const trackedOriginal = styleInOriginalValues?.[key] ?? originalValue
+    if (trackedOriginal !== undefined) {
+      ;(originalValues ||= {})[key] = trackedOriginal
     }
-  } finally {
-    styleState.props = parentProps
   }
-
-  if (transformAccumulator) {
-    styleOut.transform = finalizeTransformAccumulator(transformAccumulator)
+  for (let key in styleIn) {
+    const value = styleIn[key]
+    key = conf.shorthands[key] || key
+    if (key in skipProps || value == null) continue
+    contributeValue(childState, key, value, mergeAccepted)
   }
-
-  if (!styleProps.noNormalize) {
-    fixStyles(styleOut)
+  if (childState.transformAccumulator) {
+    styleOut.transform = finalizeTransformAccumulator(childState.transformAccumulator)
   }
-
-  // Store original values in WeakMap instead of on the object itself
-  // (originalValues is only ever created right before a key is set, so
-  // defined implies non-empty)
+  if (!styleProps.noNormalize) fixStyles(styleOut)
   if (originalValues) {
     styleOriginalValues.set(styleOut, originalValues)
   }
-
   return styleOut
 }
-
-export { useSplitStyles } from '../hooks/useSplitStyles'
 
 function addStyleToInsertRules(rulesToInsert: RulesToInsert, styleObject: StyleObject) {
   if (process.env.TAMAGUI_TARGET === 'web') {
@@ -1753,4 +2179,3125 @@ function addStyleToInsertRules(rulesToInsert: RulesToInsert, styleObject: StyleO
 
 function passDownProp(viewProps: object, key: string, val: any) {
   viewProps[key] = val
+}
+
+export type MergeStyle = (
+  state: GetStyleState,
+  key: string,
+  value: any,
+  importance: number,
+  disableNormalize?: boolean,
+  originalValue?: any
+) => void
+
+type DirectAtomic = {
+  baseRules: number
+  conditions?: Record<
+    string,
+    {
+      count: number
+      index: number
+      precedence: ClausePrecedenceKey
+      default?: boolean
+    }
+  >
+  signature: string
+  styleObject: StyleObject
+}
+
+type DirectState = GetStyleState & {
+  flatAtomics?: Record<string, DirectAtomic>
+  flatBoxShadow?: any
+  flatDynamicColors?: Record<string, Record<string, any>>
+  flatDynamicThemeAccess?: boolean
+  flatPrecedence?: Record<string, ClausePrecedenceKey>
+  flatTextShadow?: Record<string, any>
+  flatWebShadow?: Record<string, any>
+  flatCompoundEpoch?: number
+  flatCompoundIndexes?: number[]
+  flatCompoundKey?: string
+  flatCompoundStateStart?: number
+  flatParentConditionId?: number
+  flatCompoundOutputDepth?: number
+}
+
+function emitAtParentCondition(
+  state: GetStyleState,
+  property: string,
+  value: any,
+  merge: MergeStyle,
+  originalValue: any,
+  contextOnly: boolean
+) {
+  const conditionId = (state as DirectState).flatParentConditionId
+  emitValue(
+    state,
+    property,
+    value,
+    conditionId ? conditionNumbers[conditionId] : 0,
+    conditionId ? conditionKeys[conditionId] : '',
+    conditionId ? conditionWrappers[conditionId] : undefined,
+    conditionId ? conditionSelectors[conditionId] : '',
+    conditionId ? conditionThemes[conditionId] : '',
+    merge,
+    originalValue,
+    contextOnly
+  )
+}
+
+const directStyleHandler: FlatValueHandler<GetStyleState> = {
+  segment(
+    state,
+    start,
+    end,
+    isBase,
+    valid,
+    source,
+    chainStart,
+    chainEnd,
+    chainValid,
+    chainCount,
+    _result,
+    failure,
+    failureIndex,
+    property,
+    merge,
+    originalValue,
+    contextOnly
+  ) {
+    if (isBase) {
+      if (start === end) return
+      feedCompoundSegment(
+        state as DirectState,
+        source,
+        start,
+        end,
+        true,
+        valid || failure === 'invalid-character' || failure === 'stray-comment-close',
+        0
+      )
+      if (!valid) {
+        if (failure === 'invalid-character' || failure === 'stray-comment-close') {
+          // refusal belongs to the clause grammar. Keep only the decision until
+          // the scan knows whether this string contains a chain marker.
+          return 16
+        }
+        if (process.env.NODE_ENV === 'development') {
+          warnRefusedValue(
+            property,
+            source,
+            failure === 'unterminated-string'
+              ? 'an unterminated string'
+              : failure === 'unterminated-comment'
+                ? 'an unterminated "/*" comment'
+                : 'an unterminated "("'
+          )
+        }
+        return
+      }
+      const value = source.slice(start, end)
+      emitAtParentCondition(state, property, value, merge, value, contextOnly)
+      return 5
+    }
+    if (!chainValid) {
+      if (process.env.NODE_ENV === 'development') {
+        warnRefusedValue(
+          property,
+          source,
+          failure === 'invalid-character'
+            ? `"${source[failureIndex]}" would end the declaration or rule`
+            : failure === 'unterminated-string'
+              ? 'an unterminated string'
+              : failure === 'unterminated-comment'
+                ? 'an unterminated "/*" comment'
+                : failure === 'stray-comment-close'
+                  ? 'a stray "*/"'
+                  : 'an unterminated "("'
+        )
+      }
+      return
+    }
+    if (start === end) {
+      if (process.env.NODE_ENV === 'development') {
+        warnRefusedValue(property, source, 'a conditional clause has no value')
+      }
+      return
+    }
+    if (property === 'aspectRatio' && chainCount === 1) {
+      const left = Number(source.slice(chainStart, chainEnd))
+      const right = Number(source.slice(start, end))
+      if (
+        chainStart < chainEnd &&
+        Number.isFinite(left) &&
+        left > 0 &&
+        Number.isFinite(right) &&
+        right > 0
+      ) {
+        return 12
+      }
+    }
+    const directState = state as DirectState
+    const captureCell =
+      directState.flatCompoundIndexes || directState.flatParentConditionId
+        ? reserveCompoundArena(1)
+        : 0
+    if (captureCell) compoundArena[captureCell] = 0
+    const condition = resolveClauseChain(
+      state,
+      source,
+      chainStart,
+      chainEnd,
+      property,
+      undefined,
+      valid ? merge : undefined,
+      undefined,
+      contextOnly,
+      start,
+      end,
+      1,
+      captureCell,
+      directState.flatParentConditionId
+    )
+    feedCompoundSegment(
+      directState,
+      source,
+      start,
+      end,
+      false,
+      valid && Boolean(condition),
+      captureCell ? compoundArena[captureCell] : 0
+    )
+    if (!condition) return
+    if (!valid) {
+      if (process.env.NODE_ENV === 'development') {
+        warnRefusedValue(
+          property,
+          source,
+          failure === 'invalid-character'
+            ? `"${source[failureIndex]}" would end the declaration or rule`
+            : failure === 'unterminated-string'
+              ? 'an unterminated string'
+              : failure === 'unterminated-comment'
+                ? 'an unterminated "/*" comment'
+                : failure === 'stray-comment-close'
+                  ? 'a stray "*/"'
+                  : 'an unterminated "("'
+        )
+      }
+      return
+    }
+    return 4 | (condition & 12 ? 2 : 0)
+  },
+  chain() {
+    return true
+  },
+  end(
+    state,
+    source,
+    result,
+    lastPayloadStart,
+    chainCount,
+    property,
+    merge,
+    originalValue,
+    contextOnly,
+    failure,
+    failureIndex
+  ) {
+    let hasBase = !!(result & 1)
+    if (result & 16) {
+      if (chainCount === 0) {
+        emitAtParentCondition(
+          state,
+          property,
+          source,
+          merge,
+          originalValue ?? source,
+          contextOnly
+        )
+        hasBase = true
+      } else if (process.env.NODE_ENV === 'development') {
+        warnRefusedValue(
+          property,
+          source,
+          failure === 'invalid-character'
+            ? `"${source[failureIndex]}" would end the declaration or rule`
+            : failure === 'unterminated-string'
+              ? 'an unterminated string'
+              : failure === 'unterminated-comment'
+                ? 'an unterminated "/*" comment'
+                : failure === 'stray-comment-close'
+                  ? 'a stray "*/"'
+                  : 'an unterminated "("'
+        )
+      }
+    }
+    if (result & 8 && chainCount === 1) {
+      emitAtParentCondition(
+        state,
+        property,
+        source,
+        merge,
+        originalValue ?? source,
+        contextOnly
+      )
+      hasBase = true
+    }
+    if (
+      process.env.NODE_ENV === 'development' &&
+      !hasBase &&
+      result & 4 &&
+      (property in tokenCategories.color || property in tokenCategoryByProperty) &&
+      splitComponents(source.slice(lastPayloadStart)).length > 1
+    ) {
+      warnOnce(
+        `${property}="${source}" has multiple values after its first conditional. Write the base value before the first conditional.`
+      )
+    }
+    if ((!isWeb || !state.flatShouldDoClasses) && result & 2 && !hasBase) {
+      const value = implicitLifecycleBase(property)
+      if (value !== null) {
+        emitAtParentCondition(state, property, value, merge, value, contextOnly)
+      }
+    }
+  },
+}
+
+// enter/exit clauses with no authored base animate from the property's natural
+// resting value on the inline-style path (the class path reads it from the
+// cascade instead)
+function implicitLifecycleBase(property: string): string | number | null {
+  return property === 'opacity' ||
+    property === 'scale' ||
+    property === 'scaleX' ||
+    property === 'scaleY'
+    ? 1
+    : property === 'rotate'
+      ? '0deg'
+      : property === 'x' || property === 'y'
+        ? 0
+        : null
+}
+
+const legacyTransformParts = new Set([
+  'matrix',
+  'perspective',
+  'rotateX',
+  'rotateY',
+  'rotateZ',
+  'scaleZ',
+  'skewX',
+  'skewY',
+])
+
+const webShadowParts = new Set([
+  'shadowColor',
+  'shadowOffset',
+  'shadowOpacity',
+  'shadowRadius',
+])
+
+const webTextShadowParts = new Set([
+  'textShadowColor',
+  'textShadowOffset',
+  'textShadowRadius',
+])
+
+const lineStyles = new Set([
+  'none',
+  'hidden',
+  'dotted',
+  'dashed',
+  'solid',
+  'double',
+  'groove',
+  'ridge',
+  'inset',
+  'outset',
+])
+
+const borderTargets: Record<
+  string,
+  { width: string[]; style: string[]; color: string[] }
+> = {
+  border: {
+    width: ['borderTopWidth', 'borderRightWidth', 'borderBottomWidth', 'borderLeftWidth'],
+    style: ['borderTopStyle', 'borderRightStyle', 'borderBottomStyle', 'borderLeftStyle'],
+    color: ['borderTopColor', 'borderRightColor', 'borderBottomColor', 'borderLeftColor'],
+  },
+  borderTop: {
+    width: ['borderTopWidth'],
+    style: ['borderTopStyle'],
+    color: ['borderTopColor'],
+  },
+  borderRight: {
+    width: ['borderRightWidth'],
+    style: ['borderRightStyle'],
+    color: ['borderRightColor'],
+  },
+  borderBottom: {
+    width: ['borderBottomWidth'],
+    style: ['borderBottomStyle'],
+    color: ['borderBottomColor'],
+  },
+  borderLeft: {
+    width: ['borderLeftWidth'],
+    style: ['borderLeftStyle'],
+    color: ['borderLeftColor'],
+  },
+  outline: {
+    width: ['outlineWidth'],
+    style: ['outlineStyle'],
+    color: ['outlineColor'],
+  },
+  borderBlock: {
+    width: ['borderBlockStartWidth', 'borderBlockEndWidth'],
+    style: ['borderBlockStartStyle', 'borderBlockEndStyle'],
+    color: ['borderBlockStartColor', 'borderBlockEndColor'],
+  },
+  borderInline: {
+    width: ['borderInlineStartWidth', 'borderInlineEndWidth'],
+    style: ['borderInlineStartStyle', 'borderInlineEndStyle'],
+    color: ['borderInlineStartColor', 'borderInlineEndColor'],
+  },
+}
+
+const borderStyleDefaults: Record<string, string> = {
+  borderWidth: 'borderStyle',
+  borderTopWidth: 'borderTopStyle',
+  borderRightWidth: 'borderRightStyle',
+  borderBottomWidth: 'borderBottomStyle',
+  borderLeftWidth: 'borderLeftStyle',
+}
+
+export function platformMatches(name: string): boolean {
+  if (name === 'web') return isWeb
+  if (name === 'native') return !isWeb
+  if (name === 'ios') return isIos
+  if (name === 'android') return isAndroid
+  if (name === 'tvos') return isIos && isTV
+  if (name === 'androidtv') return isAndroid && isTV
+  return name === 'tv' && isTV
+}
+
+interface ConditionCursor {
+  sourceStart: number
+  key: string
+  active: boolean
+  emit: boolean
+  selector: string
+  wrappers: string[]
+  theme: string
+  enter: boolean
+  exit: boolean
+  unsupportedState: string
+  platformRank: number
+  depth: number
+  categoryRank: number
+  withinRank: number
+  selfStateSpecificity: number
+  valid: boolean
+}
+
+function createConditionCursor(): ConditionCursor {
+  return {
+    sourceStart: 0,
+    key: '',
+    active: true,
+    emit: true,
+    selector: '',
+    wrappers: [],
+    theme: '',
+    enter: false,
+    exit: false,
+    unsupportedState: '',
+    platformRank: 0,
+    depth: 0,
+    categoryRank: 0,
+    withinRank: 0,
+    selfStateSpecificity: 0,
+    valid: true,
+  }
+}
+
+function resetConditionCursor(cursor: ConditionCursor, sourceStart: number) {
+  cursor.sourceStart = sourceStart
+  cursor.key = ''
+  cursor.active = true
+  cursor.emit = true
+  cursor.selector = ''
+  cursor.wrappers.length = 0
+  cursor.theme = ''
+  cursor.enter = false
+  cursor.exit = false
+  cursor.unsupportedState = ''
+  cursor.platformRank = 0
+  cursor.depth = 0
+  cursor.categoryRank = 0
+  cursor.withinRank = 0
+  cursor.selfStateSpecificity = 0
+  cursor.valid = true
+}
+
+export function resolveClauseChain(
+  state: GetStyleState,
+  source: string,
+  start: number,
+  end: number,
+  property?: string,
+  raw?: any,
+  merge?: MergeStyle,
+  originalValue?: any,
+  contextOnly = false,
+  payloadStart = -1,
+  payloadEnd = -1,
+  warning = 0,
+  captureCell = 0,
+  parentConditionId = 0
+): number {
+  const compiled = getConfigRevisionState(state.conf)
+  const sourceStart = start
+  let key = ''
+  let active = true
+  let emit = true
+  let selector = ''
+  let wrappers: string[] | undefined
+  let theme = ''
+  let enter = false
+  let exit = false
+  let unsupportedState = ''
+  let platformRank = 0
+  let depth = 0
+  let categoryRank = 0
+  let withinRank = 0
+  let selfStateSpecificity = 0
+  for (let index = start; index <= end; index++) {
+    if (index !== end && source.charCodeAt(index) !== 58) continue
+    let modifier = source.slice(start, index)
+    start = index + 1
+    let code = compiled.modifiers[modifier]
+    let kind = code & 7
+    let rank = code >> 3
+    let stateSelector = ''
+    let conditionStateName = ''
+    let groupName = ''
+    let containerSize = ''
+    let containerName = ''
+    let containerQuery = ''
+    if (kind === modifierKindState) {
+      modifier = canonicalStateModifierNames[rank]
+      stateSelector = stateModifierSelectors[rank]
+    } else if (!kind && modifier.startsWith('group-')) {
+      const slash = modifier.indexOf('/')
+      const authoredState = modifier.slice(6, slash === -1 ? undefined : slash)
+      code = compiled.modifiers[authoredState]
+      if ((code & 7) !== modifierKindState) kind = 0
+      else {
+        rank = code >> 3
+        groupName = slash === -1 ? 'true' : modifier.slice(slash + 1)
+        if (
+          rank === 6 ||
+          rank === 7 ||
+          (slash !== -1 && !isModifierName(groupName, 0, groupName.length))
+        ) {
+          kind = 0
+        } else {
+          kind = 5
+          const stateName = canonicalStateModifierNames[rank]
+          conditionStateName = stateName
+          stateSelector = stateModifierSelectors[rank]
+          modifier = `group-${stateName}${slash === -1 ? '' : modifier.slice(slash)}`
+        }
+      }
+    } else if (!kind && modifier.charCodeAt(0) === 64) {
+      const slash = modifier.indexOf('/')
+      containerSize = modifier.slice(1, slash === -1 ? undefined : slash)
+      containerName = slash === -1 ? '' : modifier.slice(slash + 1)
+      if (
+        isModifierName(containerSize, 0, containerSize.length) &&
+        (slash === -1 || isModifierName(containerName, 0, containerName.length)) &&
+        ((code = compiled.modifiers[containerSize]) & 7) === modifierKindMedia &&
+        (containerQuery = compiled.mediaQueries[containerSize]) &&
+        isContainerSizeQueryText(containerQuery)
+      ) {
+        kind = 6
+        rank = code >> 3
+      }
+    }
+    if (!kind) {
+      if (warning && process.env.NODE_ENV === 'development') {
+        warnRefusedValue(
+          property!,
+          warning === 1 ? source : raw,
+          `unknown modifier "${source.slice(sourceStart, end)}"`
+        )
+      }
+      return 0
+    }
+
+    let slotStart = 0
+    let duplicate = false
+    let inserted = !key
+    if (!key) key = modifier
+    else {
+      while (slotStart <= key.length) {
+        let slotEnd = key.indexOf(':', slotStart)
+        if (slotEnd === -1) slotEnd = key.length
+        let order = 0
+        const compareLength = Math.min(modifier.length, slotEnd - slotStart)
+        for (let offset = 0; offset < compareLength; offset++) {
+          order = modifier.charCodeAt(offset) - key.charCodeAt(slotStart + offset)
+          if (order) break
+        }
+        order ||= modifier.length - (slotEnd - slotStart)
+        if (!order) {
+          duplicate = true
+          break
+        }
+        if (order < 0) {
+          key = `${key.slice(0, slotStart)}${modifier}:${key.slice(slotStart)}`
+          inserted = true
+          break
+        }
+        if (slotEnd === key.length) break
+        slotStart = slotEnd + 1
+      }
+      if (!duplicate && !inserted) key += `:${modifier}`
+    }
+    if (duplicate) continue
+
+    if (kind === modifierKindPlatform) {
+      if (rank > platformRank) platformRank = rank
+      const matches = platformMatches(modifier)
+      active &&= matches
+      emit &&= matches
+      continue
+    }
+    depth++
+    const nextCategory =
+      kind === modifierKindMedia
+        ? 0
+        : kind === 6
+          ? 1
+          : kind === modifierKindTheme
+            ? 2
+            : kind === 5
+              ? 3
+              : 4
+    if (nextCategory > categoryRank) {
+      categoryRank = nextCategory
+      withinRank = rank
+    } else if (nextCategory === categoryRank && rank > withinRank) {
+      withinRank = rank
+    }
+
+    if (kind === modifierKindMedia) {
+      const query = compiled.mediaQueries[modifier]
+      if (!query) return 0
+      ;(wrappers ||= []).push(`@media ${query}`)
+      active &&= !!state.flatMediaState?.[modifier]
+      ;(state.flatMediaKeys ||= new Set()).add(modifier)
+    } else if (kind === modifierKindTheme) {
+      theme = modifier
+      selector += `:where(.t_${modifier}, .t_${modifier} *)`
+      active &&=
+        state.flatThemeName === modifier ||
+        state.flatThemeName?.startsWith(`${modifier}_`) === true
+    } else if (kind === 5) {
+      selector += `:where(.t_group_${groupName}${stateSelector} *)`
+      if (rank === 0) (wrappers ||= []).push('@media (hover: hover)')
+      const component = state.componentState.group?.[groupName]
+      const context = state.flatGroupContext?.[groupName]
+      active &&= !!(component?.pseudo ?? context?.state.pseudo)?.[conditionStateName]
+      ;(state.flatGroupKeys ||= new Set()).add(groupName)
+    } else if (kind === 6) {
+      const groupKey = `@${containerName}`
+      ;(wrappers ||= []).push(
+        containerName
+          ? `@container ${containerName} ${containerQuery}`
+          : `@container ${containerQuery}`
+      )
+      const component = state.componentState.group?.[groupKey]
+      const context = state.flatGroupContext?.[groupKey]
+      if (
+        process.env.NODE_ENV === 'development' &&
+        containerName &&
+        !component &&
+        !context &&
+        state.flatGroupContext?.[containerName]
+      ) {
+        warnOnce(
+          `group-container:${containerName}`,
+          `@${containerSize}/${containerName}: targets group="${containerName}", but groups no longer establish query containers. Add container="${containerName}" to that group.`
+        )
+      }
+      const match = component?.media?.[containerSize]
+      active &&=
+        match === undefined
+          ? !!(
+              context?.state.layout && mediaKeyMatch(containerSize, context.state.layout)
+            )
+          : !!match
+      ;(state.flatGroupKeys ||= new Set()).add(groupKey)
+      ;(state.flatGroupMedia ||= new Set()).add(containerSize)
+    } else {
+      selfStateSpecificity++
+      if (!isWeb && stateSelector[0] === '[' && modifier !== 'disabled') {
+        unsupportedState = modifier
+      }
+      if (stateSelector[0] === '.') {
+        selector += `:is(${stateSelector}, ${stateSelector} *)`
+        if (rank === 6) {
+          enter = true
+          if (merge) state.flatHasEnterStyle = true
+        } else exit = true
+      } else {
+        selector += stateSelector
+        if (merge && (rank === 0 || rank === 2 || rank === 4)) {
+          state.flatHasPlatformPseudo = true
+        }
+      }
+      if (rank === 0) (wrappers ||= []).push('@media (hover: hover)')
+      const component = state.componentState
+      active &&=
+        rank === 0
+          ? !!component.hover
+          : rank === 4
+            ? !!(component.press || component.pressIn)
+            : rank === 2
+              ? !!component.focus
+              : rank === 3
+                ? !!component.focusVisible
+                : rank === 1
+                  ? !!component.focusWithin
+                  : rank === 5
+                    ? !!(component.disabled || state.props.disabled)
+                    : rank === 6
+                      ? !!component.unmounted
+                      : rank === 7
+                        ? !!state.styleProps.isExiting
+                        : false
+      if (stateSelector[0] === ':') {
+        ;(state.flatStateKeys ||= new Set()).add(modifier)
+      }
+    }
+  }
+  if (depth > 5) {
+    throw new Error(
+      `a flat value clause supports at most 5 non-platform conditions; received ${depth} in "${source.slice(sourceStart, end)}:"`
+    )
+  }
+  const precedence =
+    (platformRank << 26) | (depth << 23) | (categoryRank << 20) | withinRank
+  let condition =
+    precedence * 256 +
+    selfStateSpecificity * 32 +
+    16 +
+    (active ? 1 : 0) +
+    (emit ? 2 : 0) +
+    (enter ? 4 : 0) +
+    (exit ? 8 : 0)
+  if (parentConditionId) {
+    const childConditionId = storeCondition(condition, key, wrappers, selector, theme)
+    const conditionId = combineConditions(state, parentConditionId, childConditionId)
+    condition = conditionNumbers[conditionId]
+    key = conditionKeys[conditionId]
+    wrappers = conditionWrappers[conditionId]
+    selector = conditionSelectors[conditionId]
+    theme = conditionThemes[conditionId]
+    if (captureCell) compoundArena[captureCell] = conditionId
+  } else if (captureCell) {
+    compoundArena[captureCell] = storeCondition(condition, key, wrappers, selector, theme)
+  }
+  if (warning && unsupportedState && process.env.NODE_ENV === 'development') {
+    warnOnce(
+      `${property}: "${unsupportedState}:" has no native component-state source; dropping the clause`
+    )
+  }
+  if (
+    merge &&
+    property &&
+    condition & 2 &&
+    (condition & 1 ||
+      (isWeb && state.flatShouldDoClasses) ||
+      (warning === 1 &&
+        !isWeb &&
+        theme &&
+        supportsDynamicColorIOS &&
+        isColorStyleKey(property)))
+  ) {
+    const value = payloadStart === -1 ? raw : source.slice(payloadStart, payloadEnd)
+    emitValue(
+      state,
+      property,
+      value,
+      condition,
+      key,
+      wrappers,
+      selector,
+      theme,
+      merge,
+      warning === 2 ? originalValue : (originalValue ?? value),
+      contextOnly
+    )
+  }
+  return condition
+}
+
+interface TokenLookup {
+  value: any
+  /** The value resolved through the active theme, so it changes when the theme does. */
+  fromTheme: boolean
+  /** The normalized key the runtime theme object is indexed by. */
+  themeKey: string
+}
+
+// single reused result object: tokenVariable runs on the style hot path and its
+// one caller consumes the result before any re-entry, so this avoids allocating
+// per token lookup
+const tokenLookup: TokenLookup = { value: undefined, fromTheme: false, themeKey: '' }
+
+function fillTokenLookup(value: any, fromTheme: boolean, themeKey: string): TokenLookup {
+  tokenLookup.value = value
+  tokenLookup.fromTheme = fromTheme
+  tokenLookup.themeKey = themeKey
+  return tokenLookup
+}
+
+function tokenVariable(
+  state: GetStyleState,
+  property: string,
+  name: string
+): TokenLookup | undefined {
+  // v3's canonical token representation is unprefixed, but classic `$token`
+  // values are still valid input: normalize here so `$background` and
+  // `background` resolve identically (themes, tokens, and fonts are all
+  // keyed unprefixed)
+  let lookupName = name.charCodeAt(0) === 36 ? name.slice(1) : name
+  if (property === 'fontFamily') {
+    const family = state.conf.fontsParsed[lookupName]?.family
+    return family ? fillTokenLookup(family, false, lookupName) : undefined
+  }
+  const fontKey =
+    property === 'fontSize'
+      ? 'size'
+      : property === 'fontWeight'
+        ? 'weight'
+        : property === 'lineHeight' || property === 'letterSpacing'
+          ? property
+          : undefined
+  if (fontKey) {
+    const font =
+      state.conf.fontsParsed[state.fontFamily || state.conf.defaultFontToken] ||
+      state.conf.fontsParsed[state.conf.defaultFontToken]
+    const value = font?.[fontKey]?.[lookupName]
+    return value ? fillTokenLookup(value, false, lookupName) : undefined
+  }
+  const category = getTokenCategoryForProperty(property)
+  const dot = lookupName.indexOf('.')
+  if (dot !== -1) {
+    const prefix = lookupName.slice(0, dot)
+    if (!category || prefix === category || prefix === 'color') {
+      lookupName = lookupName.slice(dot + 1)
+    }
+  }
+  if (category) {
+    const own = state.conf.tokensParsed[category]?.[lookupName]
+    if (own) return fillTokenLookup(own, false, lookupName)
+    for (const sibling of ['color', 'space', 'size', 'radius', 'zIndex'] as const) {
+      if (sibling !== category && state.conf.tokensParsed[sibling]?.[lookupName]) return
+    }
+  } else {
+    const first = lookupName.charCodeAt(0)
+    if ((first >= 48 && first <= 57) || first === 43 || first === 45 || first === 46) {
+      return
+    }
+  }
+  const theme =
+    state.theme?.[lookupName] ||
+    state.conf.themes?.[state.flatThemeName || '']?.[lookupName]
+  if (theme) return fillTokenLookup(theme, true, lookupName)
+  if (category) return
+  const token =
+    state.conf.tokensParsed.space?.[lookupName] ||
+    state.conf.tokensParsed.color?.[lookupName]
+  return token ? fillTokenLookup(token, false, lookupName) : undefined
+}
+
+function configuredValue(state: GetStyleState, property: string, raw: string): any {
+  let name = raw
+  let opacity: number | undefined
+  const slash = raw.lastIndexOf('/')
+  if (slash > 0) {
+    const amount = Number(raw.slice(slash + 1))
+    if (Number.isInteger(amount) && amount >= 0 && amount <= 100) {
+      name = raw.slice(0, slash)
+      opacity = amount
+    }
+  }
+
+  const safeArea = resolveSafeAreaVariable(name)
+  if (safeArea !== undefined) {
+    state.flatUsesSafeArea = true
+    return safeArea
+  }
+
+  const lookup = tokenVariable(state, property, name)
+  if (!lookup || !isVariable(lookup.value)) {
+    if (
+      process.env.NODE_ENV === 'development' &&
+      tokenCategoryByProperty[property] &&
+      state.conf.tokensParsed.color?.[name]
+    ) {
+      warnOnce(`"${name}" contributes to "color", not "${property}"; keeping it literal`)
+    }
+    return raw
+  }
+  const resolveValues =
+    isWeb && !state.flatShouldDoClasses && state.styleProps.resolveValues === 'auto'
+      ? 'value'
+      : state.styleProps.resolveValues
+  // the static compiler resolves tokens but keeps theme-backed values symbolic
+  // so compiled output can read them through the live theme instead of freezing
+  // the build machine's first theme. an opacity modifier stays in the sentinel,
+  // which the compiler cannot represent and treats as a runtime-path bailout.
+  if (resolveValues === 'except-theme' && lookup.fromTheme) {
+    return `${THEME_REF_PREFIX}${lookup.themeKey}${opacity !== undefined ? `/${opacity}` : ''}`
+  }
+  let value = resolveVariableValue(property, lookup.value, resolveValues)
+  if (opacity !== undefined) {
+    value = isWeb
+      ? `color-mix(in srgb, ${value} ${opacity}%, transparent)`
+      : normalizeColor(value, opacity / 100)
+  }
+  return value
+}
+
+function resolveEmbeddedTokens(state: GetStyleState, property: string, raw: string) {
+  let copyFrom = 0
+  let out = ''
+  let quote = 0
+  for (let index = 0; index < raw.length; index++) {
+    const code = raw.charCodeAt(index)
+    if (quote) {
+      if (code === 92) index++
+      else if (code === quote) quote = 0
+      continue
+    }
+    if (code === 34 || code === 39) {
+      quote = code
+      continue
+    }
+    if (
+      !(
+        code === 36 ||
+        code === 95 ||
+        (code >= 65 && code <= 90) ||
+        (code >= 97 && code <= 122)
+      )
+    ) {
+      continue
+    }
+    let end = index + 1
+    while (end < raw.length) {
+      const next = raw.charCodeAt(end)
+      if (
+        next === 36 ||
+        next === 45 ||
+        next === 46 ||
+        next === 95 ||
+        (next >= 48 && next <= 57) ||
+        (next >= 65 && next <= 90) ||
+        (next >= 97 && next <= 122)
+      ) {
+        end++
+      } else {
+        break
+      }
+    }
+    if (raw.charCodeAt(end) === 47) {
+      let suffix = end + 1
+      while (suffix < raw.length) {
+        const next = raw.charCodeAt(suffix)
+        if (next < 48 || next > 57) break
+        suffix++
+      }
+      if (suffix > end + 1) end = suffix
+    }
+    const before = raw.charCodeAt(index - 1)
+    if (
+      code !== 36 &&
+      ((before >= 48 && before <= 57) ||
+        before === 35 ||
+        (before === 45 && raw.charCodeAt(index - 2) === 45) ||
+        raw.charCodeAt(end) === 40)
+    ) {
+      index = end - 1
+      continue
+    }
+    const word = raw.slice(index, end)
+    const value = configuredValue(state, property, word)
+    if (value !== word) {
+      out += raw.slice(copyFrom, index)
+      out += String(value)
+      copyFrom = end
+    }
+    index = end - 1
+  }
+  return copyFrom ? out + raw.slice(copyFrom) : raw
+}
+
+function normalizeTransitionNames(state: GetStyleState, raw: string) {
+  let quote = 0
+  let depth = 0
+  let copyFrom = 0
+  let out = ''
+  for (let index = 0; index < raw.length; index++) {
+    const code = raw.charCodeAt(index)
+    if (quote) {
+      if (code === 92) index++
+      else if (code === quote) quote = 0
+      continue
+    }
+    if (code === 34 || code === 39) {
+      quote = code
+      continue
+    }
+    if (code === 40) {
+      depth++
+      continue
+    }
+    if (code === 41) {
+      depth--
+      continue
+    }
+    if (
+      depth ||
+      !((code >= 65 && code <= 90) || (code >= 97 && code <= 122) || code === 95) ||
+      (index > 1 && raw.charCodeAt(index - 1) === 45 && raw.charCodeAt(index - 2) === 45)
+    ) {
+      continue
+    }
+    let end = index + 1
+    while (end < raw.length) {
+      const next = raw.charCodeAt(end)
+      if (
+        (next >= 48 && next <= 57) ||
+        (next >= 65 && next <= 90) ||
+        (next >= 97 && next <= 122) ||
+        next === 45 ||
+        next === 95
+      ) {
+        end++
+      } else {
+        break
+      }
+    }
+    if (raw.charCodeAt(end) !== 40) {
+      const authored = raw.slice(index, end)
+      let property = state.conf.shorthands[authored] || authored
+      if (property === 'x' || property === 'y') property = 'translate'
+      else if (property === 'scaleX' || property === 'scaleY') property = 'scale'
+      else if (legacyTransformParts.has(property)) property = 'transform'
+      let hasUpper = false
+      for (let offset = 0; offset < property.length; offset++) {
+        const letter = property.charCodeAt(offset)
+        if (letter >= 65 && letter <= 90) {
+          hasUpper = true
+          break
+        }
+      }
+      if (property !== authored || hasUpper) {
+        out += raw.slice(copyFrom, index)
+        for (let offset = 0; offset < property.length; offset++) {
+          const letter = property.charCodeAt(offset)
+          out +=
+            letter >= 65 && letter <= 90
+              ? `-${String.fromCharCode(letter + 32)}`
+              : property[offset]
+        }
+        copyFrom = end
+      }
+    }
+    index = end - 1
+  }
+  return copyFrom ? out + raw.slice(copyFrom) : raw
+}
+
+// one contribution's slice of an atomic identity, accumulated per atomicKey
+export function directStyleSignature(
+  property: string,
+  value: unknown,
+  conditionKey = ''
+) {
+  return `\u001f${property}\u001f${conditionKey}\u001e${String(value)}`
+}
+
+function directAtomic(
+  state: DirectState,
+  property: string,
+  value: any,
+  condition: number,
+  conditionKey: string,
+  conditionWrappers: string[] | undefined,
+  conditionSelector: string,
+  isDefault = false
+) {
+  const atomics = (state.flatAtomics ||= {})
+  const atomicKey = property.startsWith('transition') ? 'transition' : property
+  const existing = atomics[atomicKey]
+  const contribution = directStyleSignature(property, value, conditionKey)
+  const signature = existing ? existing.signature + contribution : contribution
+  const next = getCSSStyleAtomic(
+    property,
+    value,
+    conditionSelector,
+    conditionWrappers,
+    signature,
+    2 as any,
+    atomicKey,
+    property === 'containerName' || property === 'containerType'
+      ? condition
+        ? Math.max(
+            2,
+            1 +
+              ((Math.floor(condition / 256) >>> 23) & 7) +
+              (Math.floor(condition / 256) >>> 26) * 6 -
+              ((condition >>> 5) & 7)
+          )
+        : 2
+      : condition
+        ? 1 +
+          ((Math.floor(condition / 256) >>> 23) & 7) +
+          (Math.floor(condition / 256) >>> 26) * 6 -
+          ((condition >>> 5) & 7)
+        : undefined
+  )
+  if (!next) return
+  const identifier = next[StyleObjectIdentifier]
+  const nextRules = next[StyleObjectRules]
+
+  const slotted = condition || atomicKey === 'transition'
+
+  if (!existing) {
+    // one shape for every DirectAtomic: a conditional object spread here gives
+    // conditioned and unconditioned atomics different hidden classes, and every
+    // read of the record downstream goes polymorphic
+    const atomic: DirectAtomic = {
+      baseRules: slotted ? 0 : nextRules.length,
+      conditions: undefined,
+      signature,
+      styleObject: next,
+    }
+    if (slotted) {
+      atomic.conditions = {
+        [atomicKey === 'transition' ? `${conditionKey}\0${property}` : conditionKey]: {
+          count: nextRules.length,
+          index: 0,
+          precedence: condition ? Math.floor(condition / 256) : 0,
+          default: isDefault,
+        },
+      }
+    }
+    atomics[atomicKey] = atomic
+  } else {
+    const previousIdentifier = existing.styleObject[StyleObjectIdentifier]
+    // cached rules stay immutable until a same-property contribution needs to
+    // splice or rewrite them.
+    const rules = existing.styleObject[StyleObjectRules].slice()
+    existing.styleObject[StyleObjectRules] = rules
+    if (!condition && !isDefault && existing.conditions) {
+      for (const key in existing.conditions) {
+        const entry = existing.conditions[key]
+        if (!entry.default) continue
+        rules.splice(entry.index, entry.count)
+        delete existing.conditions[key]
+        for (const otherKey in existing.conditions) {
+          const other = existing.conditions[otherKey]
+          if (other.index > entry.index) other.index -= entry.count
+        }
+      }
+    }
+    if (previousIdentifier !== identifier) {
+      const oldSelector = `.${previousIdentifier}`
+      const newSelector = `.${identifier}`
+      for (let index = 0; index < rules.length; index++) {
+        rules[index] = rules[index].replaceAll(oldSelector, newSelector)
+      }
+    }
+    if (slotted) {
+      const slot =
+        atomicKey === 'transition' ? `${conditionKey}\0${property}` : conditionKey
+      const previous = existing.conditions?.[slot]
+      if (previous) {
+        rules.splice(previous.index, previous.count)
+        if (existing.conditions) {
+          for (const key in existing.conditions) {
+            const entry = existing.conditions[key]
+            if (entry !== previous && entry.index > previous.index) {
+              entry.index -= previous.count
+            }
+          }
+        }
+        delete existing.conditions![slot]
+      }
+      const precedence = condition ? Math.floor(condition / 256) : 0
+      let insertionIndex = rules.length
+      if (existing.conditions) {
+        for (const key in existing.conditions) {
+          const entry = existing.conditions[key]
+          if (entry.precedence > precedence && entry.index < insertionIndex) {
+            insertionIndex = entry.index
+          }
+        }
+        for (const key in existing.conditions) {
+          const entry = existing.conditions[key]
+          if (entry.index >= insertionIndex) entry.index += nextRules.length
+        }
+      }
+      ;(existing.conditions ||= {})[slot] = {
+        count: nextRules.length,
+        index: insertionIndex,
+        precedence,
+        default: isDefault,
+      }
+      rules.splice(insertionIndex, 0, ...nextRules)
+    } else {
+      const difference = nextRules.length - existing.baseRules
+      rules.splice(0, existing.baseRules, ...nextRules)
+      if (difference && existing.conditions) {
+        for (const key in existing.conditions)
+          existing.conditions[key].index += difference
+      }
+      existing.baseRules = nextRules.length
+    }
+    existing.signature = signature
+    existing.styleObject[StyleObjectIdentifier] = identifier
+    existing.styleObject[1] = next[1]
+  }
+  state.classNames[atomicKey] = identifier
+}
+
+function emitBorderStyleDefault(
+  state: GetStyleState,
+  property: string,
+  condition: number,
+  conditionKey: string,
+  conditionWrappers: string[] | undefined,
+  conditionSelector: string
+) {
+  if (!isWeb || !state.flatShouldDoClasses || state.styleProps.noNormalize === false) {
+    return
+  }
+  const target = borderStyleDefaults[property]
+  if (!target) return
+  const atomic = (state as DirectState).flatAtomics?.[target]
+  if (
+    atomic?.baseRules ||
+    (state.classNames[target] && !atomic) ||
+    (condition && atomic?.conditions?.[conditionKey])
+  ) {
+    return
+  }
+  directAtomic(
+    state as DirectState,
+    target,
+    'solid',
+    condition,
+    conditionKey,
+    conditionWrappers,
+    conditionSelector,
+    true
+  )
+}
+
+export function flushDirectStyles(state: GetStyleState, clear = false) {
+  const direct = state as DirectState
+  if (state.transformAccumulator) {
+    const transform = finalizeTransformAccumulator(state.transformAccumulator)
+    directAtomic(
+      direct,
+      'transform',
+      Array.isArray(transform) ? transformsToString(transform) : transform,
+      0,
+      '',
+      undefined,
+      ''
+    )
+    if (clear) state.transformAccumulator = undefined
+  }
+  const atomics = direct.flatAtomics
+  if (!atomics) return
+  for (const property in atomics) {
+    const styleObject = atomics[property].styleObject
+    const identifier = styleObject[StyleObjectIdentifier]
+    if (shouldInsertStyleRules(identifier)) {
+      // rulesToInsert owns its array; never expose the cache's borrowed copy.
+      const rules = styleObject[StyleObjectRules].slice()
+      styleObject[StyleObjectRules] = rules
+      updateRules(identifier, rules)
+      state.flatRulesToInsert![identifier] = styleObject
+    }
+  }
+  if (clear) direct.flatAtomics = undefined
+}
+
+export function getDirectDynamicThemeAccess(state: GetStyleState) {
+  return (state as DirectState).flatDynamicThemeAccess
+}
+
+function emitProperty(
+  state: GetStyleState,
+  property: string,
+  value: any,
+  condition: number,
+  conditionKey: string,
+  conditionWrappers: string[] | undefined,
+  conditionSelector: string,
+  conditionTheme: string,
+  merge: MergeStyle,
+  originalValue: any,
+  contextOnly: boolean
+) {
+  const direct = state as DirectState
+  if (condition & 4) (state.flatEnterKeys ||= new Set()).add(property)
+  if (condition & 8) (state.flatExitKeys ||= new Set()).add(property)
+
+  if (!isWeb && conditionTheme) {
+    if (supportsDynamicColorIOS && isColorStyleKey(property)) {
+      const schemes = ((direct.flatDynamicColors ||= {})[property] ||= {})
+      schemes[conditionTheme] =
+        typeof originalValue === 'string' && isAsciiLetters(originalValue)
+          ? originalValue
+          : value
+      merge(state, property, { dynamic: { ...schemes } }, 1, false, originalValue)
+      return
+    }
+    direct.flatDynamicThemeAccess = true
+  }
+
+  if (contextOnly) {
+    if (!condition || condition & 1) {
+      ;(state.overriddenContextProps ||= {})[property] = originalValue
+    }
+    return
+  }
+
+  if (state.styleProps.canPlatformPseudo) {
+    const conditioned = !!condition
+    if (!conditioned || condition & 1) {
+      const precedence = conditioned ? Math.floor(condition / 256) : 0
+      const winners = (state.flatInlineWinners ||= {})
+      const previous = winners[property]
+      if (
+        conditioned
+          ? !previous || !previous.conditioned || precedence >= previous.precedence
+          : !previous?.conditioned
+      ) {
+        winners[property] = {
+          value,
+          originalValue,
+          precedence,
+          conditioned,
+        }
+      }
+    }
+  }
+
+  if (isWeb && state.flatShouldDoClasses && !condition && property === 'transform') {
+    if (process.env.NODE_ENV === 'development' && state.transformAccumulator) {
+      for (const part of getTransformPartKeys(state.transformAccumulator)) {
+        warnOnce(
+          `legacy transform part "${part}" is dropped because "transform" owns the property`
+        )
+      }
+    }
+    state.transformAccumulator ||= createTransformAccumulator()
+    addTransformValue(state.transformAccumulator, property, value)
+    return
+  }
+
+  const shouldPromoteAnimatedStyle =
+    isWeb &&
+    !condition &&
+    !state.flatShouldDoClasses &&
+    !state.styleProps.noMergeStyle &&
+    state.styleProps.isAnimated &&
+    !state.animationDriver?.isReactNative &&
+    property in nonAnimatableStyleProps
+
+  if (isWeb && (state.flatShouldDoClasses || shouldPromoteAnimatedStyle)) {
+    if (!condition) {
+      if (state.style) delete state.style[property]
+    }
+    directAtomic(
+      state as DirectState,
+      property,
+      value,
+      condition,
+      conditionKey,
+      conditionWrappers,
+      conditionSelector
+    )
+    return
+  }
+
+  if (condition) {
+    if (!(condition & 1)) return
+    const precedence = Math.floor(condition / 256)
+    const previous = direct.flatPrecedence?.[property]
+    if (previous !== undefined && precedence < previous) return
+    ;(direct.flatPrecedence ||= {})[property] = precedence
+    ;(state.flatActiveConditions ||= {})[property] = true
+  } else if (state.flatActiveConditions?.[property]) {
+    return
+  }
+  merge(state, property, value, 1, true, originalValue)
+}
+
+function splitComponents(value: string) {
+  const parts: string[] = []
+  let start = 0
+  let quote = 0
+  let depth = 0
+  for (let index = 0; index <= value.length; index++) {
+    const code = index === value.length ? 32 : value.charCodeAt(index)
+    if (quote) {
+      if (code === 92) index++
+      else if (code === quote) quote = 0
+      continue
+    }
+    if (code === 34 || code === 39) quote = code
+    else if (code === 40) depth++
+    else if (code === 41) depth--
+    else if (!depth && code <= 32) {
+      if (index > start) parts.push(value.slice(start, index))
+      start = index + 1
+    }
+  }
+  return parts
+}
+
+function isAsciiLetters(value: string): boolean {
+  if (!value) return false
+  for (let index = 0; index < value.length; index++) {
+    const code = value.charCodeAt(index) | 32
+    if (code < 97 || code > 122) return false
+  }
+  return true
+}
+
+function numericUnitValue(value: string, first: string, second?: string): number {
+  const unitLength =
+    value.endsWith(first) || (second !== undefined && value.endsWith(second))
+      ? first.length
+      : 0
+  if (!unitLength || value.length === unitLength) return Number.NaN
+  const numeric = Number(value.slice(0, value.length - unitLength))
+  return Number.isFinite(numeric) ? numeric : Number.NaN
+}
+
+function isNumericCSSComponent(value: string): boolean {
+  let index = 0
+  if (value.charCodeAt(index) === 43 || value.charCodeAt(index) === 45) index++
+  let digits = 0
+  let dot = false
+  for (; index < value.length; index++) {
+    const code = value.charCodeAt(index)
+    if (code >= 48 && code <= 57) {
+      digits++
+      continue
+    }
+    if (code === 46 && !dot) {
+      dot = true
+      continue
+    }
+    break
+  }
+  if (!digits) return false
+  for (; index < value.length; index++) {
+    const code = value.charCodeAt(index) | 32
+    if (code !== 37 && (code < 97 || code > 122)) return false
+  }
+  return true
+}
+
+function startsValueFunction(value: string): boolean {
+  let index = 0
+  while (index < value.length) {
+    const code = value.charCodeAt(index)
+    if (code === 45 || (code >= 65 && code <= 90) || (code >= 97 && code <= 122)) {
+      index++
+      continue
+    }
+    break
+  }
+  return index > 0 && value.charCodeAt(index) === 40
+}
+
+function emitBorder(
+  state: GetStyleState,
+  property: string,
+  raw: string,
+  condition: number,
+  conditionKey: string,
+  conditionWrappers: string[] | undefined,
+  conditionSelector: string,
+  conditionTheme: string,
+  merge: MergeStyle,
+  originalValue: any,
+  contextOnly: boolean
+) {
+  if (!isWeb && (property === 'borderBlock' || property === 'borderInline')) {
+    if (process.env.NODE_ENV === 'development') {
+      warnOnce(`RN has no logical border shorthand "${property}"; dropping it`)
+    }
+    return
+  }
+  const targets = borderTargets[property]
+  let width: string | undefined
+  let style: string | undefined
+  let color: string | undefined
+  for (const part of splitComponents(raw)) {
+    const lower = part.toLowerCase()
+    if (lineStyles.has(lower) || (property === 'outline' && lower === 'auto')) {
+      style = part
+    } else if (
+      lower === 'thin' ||
+      lower === 'medium' ||
+      lower === 'thick' ||
+      isNumericCSSComponent(part) ||
+      startsValueFunction(part)
+    ) {
+      width = part
+    } else {
+      color = part
+    }
+  }
+  if (style === 'none' && width === undefined) width = '0'
+  if (width !== undefined) {
+    for (const target of targets.width) {
+      emitResolved(
+        state,
+        target,
+        width,
+        condition,
+        conditionKey,
+        conditionWrappers,
+        conditionSelector,
+        conditionTheme,
+        merge,
+        originalValue,
+        contextOnly
+      )
+    }
+  }
+  if (style !== undefined) {
+    const styleTargets = !isWeb && property === 'border' ? ['borderStyle'] : targets.style
+    for (const target of styleTargets) {
+      emitProperty(
+        state,
+        target,
+        style,
+        condition,
+        conditionKey,
+        conditionWrappers,
+        conditionSelector,
+        conditionTheme,
+        merge,
+        originalValue,
+        contextOnly
+      )
+    }
+  }
+  if (color !== undefined) {
+    for (const target of targets.color) {
+      emitResolved(
+        state,
+        target,
+        color,
+        condition,
+        conditionKey,
+        conditionWrappers,
+        conditionSelector,
+        conditionTheme,
+        merge,
+        originalValue,
+        contextOnly
+      )
+    }
+  }
+}
+
+function emitTextDecoration(
+  state: GetStyleState,
+  raw: string,
+  condition: number,
+  conditionKey: string,
+  conditionWrappers: string[] | undefined,
+  conditionSelector: string,
+  conditionTheme: string,
+  merge: MergeStyle,
+  originalValue: any,
+  contextOnly: boolean
+) {
+  for (const part of splitComponents(raw)) {
+    const property =
+      part === 'solid' ||
+      part === 'double' ||
+      part === 'dotted' ||
+      part === 'dashed' ||
+      part === 'wavy'
+        ? 'textDecorationStyle'
+        : part === 'underline' ||
+            part === 'overline' ||
+            part === 'line-through' ||
+            part === 'none'
+          ? 'textDecorationLine'
+          : 'textDecorationColor'
+    emitResolved(
+      state,
+      property,
+      part,
+      condition,
+      conditionKey,
+      conditionWrappers,
+      conditionSelector,
+      conditionTheme,
+      merge,
+      originalValue,
+      contextOnly
+    )
+  }
+}
+
+function addComposition(state: GetStyleState, property: 'translate' | 'scale') {
+  if (state.classNames[property]) return
+  const value =
+    property === 'translate'
+      ? 'var(--t-x, 0px) var(--t-y, 0px)'
+      : 'var(--t-scale-x, 1) var(--t-scale-y, 1)'
+  const defaults =
+    property === 'translate' ? '--t-x:0px;--t-y:0px' : '--t-scale-x:1;--t-scale-y:1'
+  const styleObject = getCSSStyleAtomic(property, value, '', undefined, undefined, true)!
+  const identifier = styleObject[StyleObjectIdentifier]
+  styleObject[StyleObjectRules].unshift(`:where(.${identifier}){${defaults}}`)
+  if (shouldInsertStyleRules(identifier)) {
+    updateRules(identifier, styleObject[StyleObjectRules])
+    state.flatRulesToInsert![identifier] = styleObject
+  }
+  state.classNames[property] = identifier
+}
+
+function emitTransform(
+  state: GetStyleState,
+  property: string,
+  value: any,
+  condition: number,
+  conditionKey: string,
+  conditionWrappers: string[] | undefined,
+  conditionSelector: string,
+  conditionTheme: string,
+  merge: MergeStyle,
+  originalValue: any,
+  contextOnly: boolean
+) {
+  if (!isWeb || !state.flatShouldDoClasses) {
+    emitProperty(
+      state,
+      property,
+      value,
+      condition,
+      conditionKey,
+      conditionWrappers,
+      conditionSelector,
+      conditionTheme,
+      merge,
+      originalValue,
+      contextOnly
+    )
+    return
+  }
+
+  const targets =
+    property === 'scale'
+      ? ['--t-scale-x', '--t-scale-y']
+      : [
+          property === 'x'
+            ? '--t-x'
+            : property === 'y'
+              ? '--t-y'
+              : property === 'scaleX'
+                ? '--t-scale-x'
+                : property === 'scaleY'
+                  ? '--t-scale-y'
+                  : 'rotate',
+        ]
+  for (const target of targets) {
+    let targetValue = value
+    if (typeof targetValue === 'number') {
+      if (target === '--t-x' || target === '--t-y') targetValue = `${targetValue}px`
+      else if (target === 'rotate') targetValue = `${targetValue}deg`
+    }
+    emitProperty(
+      state,
+      target,
+      targetValue,
+      condition,
+      conditionKey,
+      conditionWrappers,
+      conditionSelector,
+      conditionTheme,
+      merge,
+      originalValue,
+      contextOnly
+    )
+    if (target === '--t-x' || target === '--t-y') addComposition(state, 'translate')
+    else if (target.startsWith('--t-scale')) addComposition(state, 'scale')
+  }
+}
+
+function emitResolved(
+  state: GetStyleState,
+  property: string,
+  raw: string,
+  condition: number,
+  conditionKey: string,
+  conditionWrappers: string[] | undefined,
+  conditionSelector: string,
+  conditionTheme: string,
+  merge: MergeStyle,
+  originalValue: any,
+  contextOnly: boolean
+) {
+  let value = configuredValue(state, property, raw)
+  if (value === raw) value = resolveEmbeddedTokens(state, property, raw)
+  if ((!isWeb || !state.flatShouldDoClasses) && typeof value === 'string') {
+    const unitValue = numericUnitValue(value, 'px', 'dp')
+    if (Number.isFinite(unitValue)) {
+      value = unitValue
+    } else if (value !== '' && Number.isFinite(Number(value))) {
+      value = Number(value)
+    }
+  }
+  emitProperty(
+    state,
+    property,
+    value,
+    condition,
+    conditionKey,
+    conditionWrappers,
+    conditionSelector,
+    conditionTheme,
+    merge,
+    originalValue,
+    contextOnly
+  )
+}
+
+function shadowUnit(part: any) {
+  return typeof part === 'number' ? `${part}px` : part || '0px'
+}
+
+function emitWebShadow(
+  state: DirectState,
+  property: string,
+  value: any,
+  merge: MergeStyle,
+  originalValue: any,
+  contextOnly: boolean
+) {
+  const shadow = (state.flatWebShadow ||= {})
+  shadow[property] = value
+  const offset = shadow.shadowOffset || { width: 0, height: 0 }
+  const color = normalizeColor(shadow.shadowColor, shadow.shadowOpacity ?? 1)
+  if (!color) return
+  const next = `${shadowUnit(offset.width)} ${shadowUnit(offset.height)} ${shadowUnit(shadow.shadowRadius)} ${color}`
+  emitProperty(
+    state,
+    'boxShadow',
+    state.flatBoxShadow ? `${state.flatBoxShadow}, ${next}` : next,
+    0,
+    '',
+    undefined,
+    '',
+    '',
+    merge,
+    originalValue,
+    contextOnly
+  )
+}
+
+function emitWebTextShadow(
+  state: DirectState,
+  property: string,
+  value: any,
+  merge: MergeStyle,
+  originalValue: any,
+  contextOnly: boolean
+) {
+  const shadow = (state.flatTextShadow ||= {})
+  shadow[property] = value
+  const offset = shadow.textShadowOffset || { width: 0, height: 0 }
+  if (!shadow.textShadowColor) return
+  emitProperty(
+    state,
+    'textShadow',
+    `${shadowUnit(offset.width)} ${shadowUnit(offset.height)} ${shadowUnit(shadow.textShadowRadius)} ${shadow.textShadowColor}`,
+    0,
+    '',
+    undefined,
+    '',
+    '',
+    merge,
+    originalValue,
+    contextOnly
+  )
+}
+
+function emitValue(
+  state: GetStyleState,
+  property: string,
+  raw: any,
+  condition: number,
+  conditionKey: string,
+  conditionWrappers: string[] | undefined,
+  conditionSelector: string,
+  conditionTheme: string,
+  merge: MergeStyle,
+  originalValue: any,
+  contextOnly: boolean
+) {
+  if (typeof raw === 'string') {
+    raw = raw.trim()
+  }
+
+  if (isVariable(raw)) {
+    raw = resolveVariableValue(
+      property,
+      raw,
+      isWeb && !state.flatShouldDoClasses && state.styleProps.resolveValues === 'auto'
+        ? 'value'
+        : state.styleProps.resolveValues
+    )
+  }
+
+  emitBorderStyleDefault(
+    state,
+    property,
+    condition,
+    conditionKey,
+    conditionWrappers,
+    conditionSelector
+  )
+
+  if (
+    typeof raw === 'string' &&
+    (property === 'transition' || property === 'transitionProperty')
+  ) {
+    raw = normalizeTransitionNames(state, raw)
+  }
+
+  if (legacyTransformParts.has(property)) {
+    const value = typeof raw === 'string' ? configuredValue(state, property, raw) : raw
+    if (isWeb && state.flatShouldDoClasses && !condition) {
+      state.transformAccumulator ||= createTransformAccumulator()
+      addTransformValue(state.transformAccumulator, property, value)
+    } else if (condition && isWeb && state.flatShouldDoClasses) {
+      emitProperty(
+        state,
+        'transform',
+        `${property}(${value})`,
+        condition,
+        conditionKey,
+        conditionWrappers,
+        conditionSelector,
+        conditionTheme,
+        merge,
+        originalValue,
+        contextOnly
+      )
+    } else {
+      merge(state, property, value, 1, false, originalValue)
+    }
+    return
+  }
+
+  if (isWeb && webShadowParts.has(property)) {
+    const value = typeof raw === 'string' ? configuredValue(state, property, raw) : raw
+    if (state.flatShouldDoClasses) {
+      emitWebShadow(
+        state as DirectState,
+        property,
+        value,
+        merge,
+        originalValue,
+        contextOnly
+      )
+    } else {
+      merge(state, property, value, 1, false, originalValue)
+    }
+    return
+  }
+
+  if (isWeb && webTextShadowParts.has(property)) {
+    const value = typeof raw === 'string' ? configuredValue(state, property, raw) : raw
+    if (state.flatShouldDoClasses) {
+      emitWebTextShadow(
+        state as DirectState,
+        property,
+        value,
+        merge,
+        originalValue,
+        contextOnly
+      )
+    } else {
+      merge(state, property, value, 1, false, originalValue)
+    }
+    return
+  }
+
+  if (
+    isWeb &&
+    state.flatShouldDoClasses &&
+    property === 'transform' &&
+    Array.isArray(raw)
+  ) {
+    raw = transformsToString(raw)
+  }
+
+  if (typeof raw === 'string' && property in borderTargets) {
+    emitBorder(
+      state,
+      property,
+      raw,
+      condition,
+      conditionKey,
+      conditionWrappers,
+      conditionSelector,
+      conditionTheme,
+      merge,
+      originalValue,
+      contextOnly
+    )
+    return
+  }
+  if (typeof raw === 'string' && property === 'textDecoration') {
+    emitTextDecoration(
+      state,
+      raw,
+      condition,
+      conditionKey,
+      conditionWrappers,
+      conditionSelector,
+      conditionTheme,
+      merge,
+      originalValue,
+      contextOnly
+    )
+    return
+  }
+  if (typeof raw === 'string' && property === 'background') {
+    const parts = splitComponents(raw)
+    if (parts.length === 1 && !startsValueFunction(parts[0])) {
+      emitResolved(
+        state,
+        'backgroundColor',
+        parts[0],
+        condition,
+        conditionKey,
+        conditionWrappers,
+        conditionSelector,
+        conditionTheme,
+        merge,
+        originalValue,
+        contextOnly
+      )
+      return
+    }
+    if (!isWeb) {
+      if (process.env.NODE_ENV === 'development') {
+        warnOnce(`native background cannot represent "${raw}"; dropping it`)
+      }
+      return
+    }
+  }
+
+  if (
+    property === 'x' ||
+    property === 'y' ||
+    property === 'scale' ||
+    property === 'scaleX' ||
+    property === 'scaleY' ||
+    property === 'rotate'
+  ) {
+    let value = typeof raw === 'string' ? configuredValue(state, property, raw) : raw
+    // a transform going into a real style object rather than a CSS class has to
+    // carry numbers: that is every native render and every web render an
+    // animation driver drives inline. strings survive only on the class path.
+    // a theme-ref sentinel is not a number and must pass through untouched.
+    if (
+      (!isWeb || !state.flatShouldDoClasses) &&
+      typeof value === 'string' &&
+      !value.startsWith(THEME_REF_PREFIX)
+    ) {
+      if (
+        property === 'rotate' &&
+        !Number.isFinite(numericUnitValue(value, 'deg', 'rad'))
+      ) {
+        if (process.env.NODE_ENV === 'development') {
+          warnOnce(
+            `native transform "${property}" cannot represent "${value}"; dropping it`
+          )
+        }
+        if (condition & 1) removeTransformValue(state.transformAccumulator, property)
+        return
+      }
+      const unitValue = numericUnitValue(value, 'px', 'dp')
+      if (Number.isFinite(unitValue)) {
+        value = unitValue
+      } else if (Number.isFinite(Number(value))) {
+        value = Number(value)
+      }
+    }
+    emitTransform(
+      state,
+      property,
+      value,
+      condition,
+      conditionKey,
+      conditionWrappers,
+      conditionSelector,
+      conditionTheme,
+      merge,
+      originalValue,
+      contextOnly
+    )
+    return
+  }
+
+  if (isWeb && !state.flatShouldDoClasses && !condition && property === 'borderRadius') {
+    // css reads the shorthand, so skip the four-corner expansion here. a string
+    // value still needs its token resolved, which is what emitResolved does.
+    if (typeof raw === 'string') {
+      emitResolved(
+        state,
+        property,
+        raw,
+        condition,
+        conditionKey,
+        conditionWrappers,
+        conditionSelector,
+        conditionTheme,
+        merge,
+        originalValue,
+        contextOnly
+      )
+    } else {
+      emitProperty(
+        state,
+        property,
+        raw,
+        condition,
+        conditionKey,
+        conditionWrappers,
+        conditionSelector,
+        conditionTheme,
+        merge,
+        originalValue,
+        contextOnly
+      )
+    }
+    return
+  }
+
+  if (
+    process.env.TAMAGUI_TARGET === 'native' &&
+    property === 'transform' &&
+    typeof raw === 'string'
+  ) {
+    const transform = parseNativeTransform(raw)
+    if (transform) {
+      emitProperty(
+        state,
+        property,
+        transform,
+        condition,
+        conditionKey,
+        conditionWrappers,
+        conditionSelector,
+        conditionTheme,
+        merge,
+        originalValue,
+        contextOnly
+      )
+      return
+    }
+  }
+
+  let value: any = raw
+  if (typeof raw === 'string') {
+    value = configuredValue(state, property, raw)
+    if (value === raw) value = resolveEmbeddedTokens(state, property, raw)
+  }
+
+  if ((!isWeb || !state.flatShouldDoClasses) && typeof value === 'string') {
+    const unitValue = numericUnitValue(value, 'px', 'dp')
+    if (Number.isFinite(unitValue)) {
+      value = unitValue
+    } else if (value !== '' && Number.isFinite(Number(value))) {
+      value = Number(value)
+    }
+  }
+  if (isWeb && state.flatShouldDoClasses && property === 'boxShadow' && !condition) {
+    ;(state as DirectState).flatBoxShadow = value
+  }
+
+  if (
+    process.env.TAMAGUI_TARGET === 'native' &&
+    typeof value === 'string' &&
+    (property === 'backgroundImage' ||
+      property === 'boxShadow' ||
+      property === 'textShadow')
+  ) {
+    const parsed = parseNativeStyle(property, value)
+    if (parsed) {
+      if (property === 'textShadow') {
+        for (const [key, parsedValue] of parsed) {
+          emitProperty(
+            state,
+            key,
+            parsedValue,
+            condition,
+            conditionKey,
+            conditionWrappers,
+            conditionSelector,
+            conditionTheme,
+            merge,
+            originalValue,
+            contextOnly
+          )
+        }
+      } else {
+        emitProperty(
+          state,
+          property === 'backgroundImage' ? 'experimental_backgroundImage' : property,
+          parsed,
+          condition,
+          conditionKey,
+          conditionWrappers,
+          conditionSelector,
+          conditionTheme,
+          merge,
+          originalValue,
+          contextOnly
+        )
+      }
+      return
+    }
+  }
+
+  if (!isWeb && property === 'fontVariant' && typeof value === 'string') {
+    const variants: string[] = []
+    let start = 0
+    for (let index = 0; index <= value.length; index++) {
+      const code = index === value.length ? 32 : value.charCodeAt(index)
+      if (code !== 44 && code > 32) continue
+      if (start < index) variants.push(value.slice(start, index))
+      start = index + 1
+    }
+    value = variants
+  }
+
+  const expanded = state.styleProps.noExpand
+    ? null
+    : expandStyle(property, value, state.conf.settings.styleCompat || 'web')
+  if (!expanded) {
+    emitProperty(
+      state,
+      property,
+      value,
+      condition,
+      conditionKey,
+      conditionWrappers,
+      conditionSelector,
+      conditionTheme,
+      merge,
+      originalValue,
+      contextOnly
+    )
+    return
+  }
+
+  if (typeof raw === 'string' && expanded.length > 1) {
+    const parts = splitComponents(raw)
+    if (parts.length > 0 && parts.length <= (expanded.length === 4 ? 4 : 2)) {
+      for (let index = 0; index < expanded.length; index++) {
+        const partIndex =
+          index === 0 || parts.length === 1
+            ? 0
+            : index === 1 || (index === 3 && parts.length < 4)
+              ? 1
+              : index === 2 && parts.length < 3
+                ? 0
+                : index
+        emitResolved(
+          state,
+          expanded[index][0],
+          parts[partIndex],
+          condition,
+          conditionKey,
+          conditionWrappers,
+          conditionSelector,
+          conditionTheme,
+          merge,
+          originalValue,
+          contextOnly
+        )
+      }
+      return
+    }
+  }
+  for (let index = 0; index < expanded.length; index++) {
+    emitProperty(
+      state,
+      expanded[index][0],
+      expanded[index][1],
+      condition,
+      conditionKey,
+      conditionWrappers,
+      conditionSelector,
+      conditionTheme,
+      merge,
+      originalValue,
+      contextOnly
+    )
+  }
+}
+
+export function contributeStyleString(
+  state: GetStyleState,
+  property: string,
+  source: string,
+  merge: MergeStyle,
+  originalValue?: any,
+  contextOnly = false
+) {
+  scanFlatValue(
+    source,
+    directStyleHandler,
+    state,
+    property,
+    merge,
+    originalValue,
+    contextOnly
+  )
+  return true
+}
+
+// a flat conditional object either names a `default` or opens with a
+// resolvable modifier chain; anything else is a structured leaf value
+// (shadowOffset) and stays whole. only the first key is probed, the same way
+// the string scanner commits at its first clause
+function contributeStyleObject(
+  state: GetStyleState,
+  property: string,
+  value: Record<string, any>,
+  merge: MergeStyle,
+  contextOnly: boolean
+) {
+  const directState = state as DirectState
+  const firstCaptureCell =
+    directState.flatCompoundIndexes || directState.flatParentConditionId
+      ? reserveCompoundArena(1)
+      : 0
+  if (firstCaptureCell) compoundArena[firstCaptureCell] = 0
+  const hasDefault = Object.prototype.hasOwnProperty.call(value, 'default')
+  let classification = hasDefault ? -1 : 0
+  let hasBase = false
+  const base = hasDefault ? value.default : undefined
+  if (base != null) {
+    const baseString = String(base)
+    feedCompoundSegment(directState, baseString, 0, baseString.length, true, true, 0)
+    emitAtParentCondition(state, property, base, merge, base, contextOnly)
+    hasBase = true
+  }
+  let conditions = 0
+  let firstCondition = !hasDefault
+  for (const key in value) {
+    if (key === 'default') continue
+    const payload = value[key]
+    if (firstCondition) {
+      classification = resolveClauseChain(
+        state,
+        key,
+        0,
+        key.length,
+        property,
+        payload,
+        payload == null ? undefined : merge,
+        payload,
+        contextOnly,
+        -1,
+        -1,
+        0,
+        firstCaptureCell,
+        directState.flatParentConditionId
+      )
+      if (!classification) return false
+      if (payload != null) {
+        conditions |= classification
+        const payloadString = String(payload)
+        feedCompoundSegment(
+          directState,
+          payloadString,
+          0,
+          payloadString.length,
+          false,
+          Boolean(classification),
+          firstCaptureCell ? compoundArena[firstCaptureCell] : 0
+        )
+      }
+      firstCondition = false
+      continue
+    }
+    if (payload != null) {
+      const captureCell =
+        directState.flatCompoundIndexes || directState.flatParentConditionId
+          ? reserveCompoundArena(1)
+          : 0
+      if (captureCell) compoundArena[captureCell] = 0
+      const nextCondition = resolveClauseChain(
+        state,
+        key,
+        0,
+        key.length,
+        property,
+        payload,
+        merge,
+        payload,
+        contextOnly,
+        -1,
+        -1,
+        1,
+        captureCell,
+        directState.flatParentConditionId
+      )
+      conditions |= nextCondition
+      const payloadString = String(payload)
+      feedCompoundSegment(
+        directState,
+        payloadString,
+        0,
+        payloadString.length,
+        false,
+        Boolean(nextCondition),
+        captureCell ? compoundArena[captureCell] : 0
+      )
+    }
+  }
+  if (!hasDefault && firstCondition) return false
+  if ((!isWeb || !state.flatShouldDoClasses) && conditions & 12 && !hasBase) {
+    const resting = implicitLifecycleBase(property)
+    if (resting !== null) {
+      emitAtParentCondition(state, property, resting, merge, resting, contextOnly)
+    }
+  }
+  return true
+}
+
+function contributeValue(
+  state: GetStyleState,
+  property: string,
+  value: any,
+  merge: MergeStyle,
+  originalValue?: any,
+  contextOnly = false,
+  conditionSource?: string
+) {
+  if (conditionSource !== undefined) {
+    if (
+      value &&
+      typeof value === 'object' &&
+      !Array.isArray(value) &&
+      !isVariable(value) &&
+      classifyConditionalObject(value, state)
+    ) {
+      for (const key in value) {
+        const payload = value[key]
+        if (payload == null) continue
+        const source = key === 'default' ? conditionSource : `${conditionSource}:${key}`
+        resolveClauseChain(
+          state,
+          source,
+          0,
+          source.length,
+          property,
+          payload,
+          merge,
+          payload,
+          contextOnly,
+          -1,
+          -1,
+          2,
+          0,
+          (state as DirectState).flatParentConditionId
+        )
+      }
+      return true
+    }
+    resolveClauseChain(
+      state,
+      conditionSource,
+      0,
+      conditionSource.length,
+      property,
+      value,
+      merge,
+      originalValue,
+      contextOnly,
+      -1,
+      -1,
+      2,
+      0,
+      (state as DirectState).flatParentConditionId
+    )
+    return true
+  }
+  if (
+    isWeb &&
+    (webShadowParts.has(property) || legacyTransformParts.has(property)) &&
+    ((typeof value === 'string' && value.indexOf(':') !== -1) ||
+      (value &&
+        typeof value === 'object' &&
+        !Array.isArray(value) &&
+        !isVariable(value) &&
+        classifyConditionalObject(value, state)))
+  ) {
+    if (process.env.NODE_ENV === 'development') {
+      warnOnce(`conditional "${property}" needs its composite property; dropping it`)
+    }
+    return true
+  }
+  if (value === 'safe' && isSafeAreaKey(property)) {
+    const expanded = expandSafeAreaValue(property)
+    if (expanded) {
+      state.flatUsesSafeArea = true
+      for (const [key, resolved] of expanded) {
+        emitAtParentCondition(
+          state,
+          key,
+          resolved,
+          merge,
+          originalValue ?? value,
+          contextOnly
+        )
+      }
+      return true
+    }
+  }
+  if (typeof value === 'string') {
+    return contributeStyleString(
+      state,
+      property,
+      value,
+      merge,
+      originalValue,
+      contextOnly
+    )
+  }
+  if (
+    value &&
+    typeof value === 'object' &&
+    !Array.isArray(value) &&
+    !isVariable(value) &&
+    contributeStyleObject(state, property, value, merge, contextOnly)
+  ) {
+    return true
+  }
+  if (value != null) {
+    emitAtParentCondition(
+      state,
+      property,
+      value,
+      merge,
+      originalValue ?? value,
+      contextOnly
+    )
+    return true
+  }
+  return false
+}
+
+export function clearDirectStyle(state: GetStyleState, property: string) {
+  const direct = state as DirectState
+  const atomicKey = property.startsWith('transition')
+    ? 'transition'
+    : webShadowParts.has(property)
+      ? 'boxShadow'
+      : webTextShadowParts.has(property)
+        ? 'textShadow'
+        : legacyTransformParts.has(property)
+          ? 'transform'
+          : property
+  if (direct.flatAtomics) delete direct.flatAtomics[atomicKey]
+  if (atomicKey === 'transform') state.transformAccumulator = undefined
+  if (state.style) delete state.style[atomicKey]
+  delete state.classNames[atomicKey]
+}
+
+// reduces a conditional variant clause back to a flat value the downstream
+// parser applies: string form (`"20 sm:40"`) when both sides are
+// string-representable, otherwise the flat object form, which carries array
+// and structured payloads faithfully. returns undefined only for the one
+// unrepresentable mix: a clause-bearing string joined by a structured payload
+function addStructuredClause(
+  state: GetStyleState,
+  prev: unknown,
+  conditionSource: string,
+  value: unknown
+): Record<string, any> {
+  if (prev == null) return { [conditionSource]: value }
+  if (
+    typeof prev === 'object' &&
+    !Array.isArray(prev) &&
+    !isVariable(prev) &&
+    classifyConditionalObject(prev as Record<string, any>, state)
+  ) {
+    return { ...(prev as Record<string, any>), [conditionSource]: value }
+  }
+  return { default: prev, [conditionSource]: value }
+}
+
+type MappedValue = Parameters<PropMapper>[4]
+type VariantScanContext = [GetStyleState, string, string, string, MappedValue]
+
+const variantValueHandler: FlatValueHandler<VariantScanContext> = {
+  segment(ctx, start, end, isBase, valid, source, chainStart, chainEnd, chainValid) {
+    const directState = ctx[0] as DirectState
+    if (start === end) return
+    if (isBase) {
+      feedCompoundSegment(directState, source, start, end, true, valid, 0)
+    }
+    if (!valid || (!isBase && !chainValid)) return
+    let conditionSource: string | undefined
+    if (!isBase) {
+      const captureCell = directState.flatCompoundIndexes ? reserveCompoundArena(1) : 0
+      if (captureCell) compoundArena[captureCell] = 0
+      const condition = resolveClauseChain(
+        ctx[0],
+        source,
+        chainStart,
+        chainEnd,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        false,
+        -1,
+        -1,
+        0,
+        captureCell
+      )
+      feedCompoundSegment(
+        directState,
+        source,
+        start,
+        end,
+        false,
+        Boolean(condition),
+        captureCell ? compoundArena[captureCell] : 0
+      )
+      if (!condition) return
+      conditionSource = source.slice(chainStart, chainEnd)
+    }
+    emitResolvedVariant(
+      ctx[1],
+      source.slice(start, end),
+      ctx[0],
+      ctx[2],
+      conditionSource,
+      ctx[4]
+    )
+  },
+  chain() {
+    return true
+  },
+}
+
+// per-staticConfig union of every key the styled context declares, cached so
+// context-membership checks on the style write path are one Set lookup instead
+// of re-deriving config each time (issues #3670, #3676)
+const contextPropSets = new WeakMap<StaticConfig, Set<string> | null>()
+export function getContextPropSet(staticConfig: StaticConfig): Set<string> | null {
+  const cached = contextPropSets.get(staticConfig)
+  if (cached !== undefined) return cached
+  const contextConfig = staticConfig.context || staticConfig.parentStaticConfig?.context
+  const inheritedContextPropKeys =
+    !staticConfig.context ||
+    staticConfig.context === staticConfig.parentStaticConfig?.context
+      ? staticConfig.parentStaticConfig?.contextProps
+      : undefined
+  const contextPropKeys = staticConfig.contextProps || inheritedContextPropKeys
+  let set: Set<string> | null = null
+  const add = (key: string) => {
+    set ||= new Set()
+    set.add(key)
+  }
+  if (contextConfig?.props) for (const key in contextConfig.props) add(key)
+  if (contextPropKeys) for (const key of contextPropKeys) add(key)
+  if (contextConfig?.propKeys) for (const key of contextConfig.propKeys) add(key)
+  const parentPropKeys = staticConfig.parentStaticConfig?.context?.propKeys
+  if (parentPropKeys) for (const key of parentPropKeys) add(key)
+  contextPropSets.set(staticConfig, set)
+  return set
+}
+
+const contributeMappedValue: PropMapper = (key, value, styleState, disabled, map) => {
+  if (disabled) {
+    return map(key, value)
+  }
+
+  const { conf, styleProps, staticConfig } = styleState
+  const { variants } = staticConfig
+  const { disableExpandShorthands, noExpand, resolveValues } = styleProps
+  const shorthands = conf.shorthands
+
+  // "unset" is a CSS-wide keyword: valid CSS on web, but React Native
+  // style props reject it (e.g. aspectRatio throws "must be a number, a
+  // ratio string or `auto`"). On native, clear anything an earlier prop or
+  // styled default already merged for this key — matching web, where unset
+  // resets toward initial — then drop the value so RN never sees it.
+  if (process.env.TAMAGUI_TARGET === 'native' && value === 'unset') {
+    const expandedKey = (!disableExpandShorthands && shorthands[key]) || key
+    const expanded = noExpand
+      ? null
+      : expandStyle(expandedKey, value, conf.settings.styleCompat || 'web')
+    if (styleState.style) {
+      if (expanded) {
+        for (const [nkey] of expanded) {
+          delete styleState.style[nkey]
+        }
+      } else {
+        delete styleState.style[expandedKey]
+      }
+    }
+    return
+  }
+
+  if (!noExpand) {
+    if (variants && key in variants) {
+      resolveVariants(key, value, styleProps, styleState, key, map)
+      return
+    }
+  }
+
+  // handle shorthands
+  if (!disableExpandShorthands) {
+    if (key in shorthands) {
+      key = shorthands[key]
+    }
+  }
+
+  // Capture original value before resolution (for context prop tracking)
+  const originalValue = value
+
+  // "safe" value -> env(safe-area-inset-*) on web, numeric inset on native.
+  // expands multi-edge props (padding, inset, marginHorizontal, ...) into
+  // per-side keys so each side gets its own edge value.
+  if (value === 'safe' && isSafeAreaKey(key)) {
+    const expanded = expandSafeAreaValue(key)
+    if (expanded) {
+      for (let i = 0; i < expanded.length; i++) {
+        const [nkey, nvalue] = expanded[i]
+        map(nkey, nvalue, originalValue)
+      }
+      return
+    }
+  }
+
+  if (value != null) {
+    if (typeof value === 'string') {
+      value = isRemValue(value) ? resolveRem(value) : value
+    } else if (isVariable(value)) {
+      value = resolveVariableValue(key, value, resolveValues)
+    } else if (isRemValue(value)) {
+      value = resolveRem(value)
+    }
+  }
+
+  // strings stay whole so the direct scanner can distinguish CSS components
+  // from modifier clauses before it emits them.
+
+  if (value != null) {
+    if (key === 'fontFamily' && typeof originalValue === 'string') {
+      if (originalValue in conf.fontsParsed) {
+        styleState.fontFamily = originalValue
+      }
+    }
+
+    // strings stay whole for the direct flat-value scanner
+    const expanded =
+      noExpand || typeof value === 'string'
+        ? null
+        : expandStyle(key, value, conf.settings.styleCompat || 'web')
+
+    if (expanded) {
+      const max = expanded.length
+      for (let i = 0; i < max; i++) {
+        const [nkey, nvalue, noriginalValue] = expanded[i]
+        map(nkey, nvalue, noriginalValue ?? originalValue)
+      }
+    } else {
+      map(key, value, originalValue)
+    }
+  }
+}
+
+function resolveVariants(
+  key: string,
+  value: any,
+  styleProps: SplitStyleProps,
+  styleState: GetStyleState,
+  parentVariantKey: string,
+  map: MappedValue
+) {
+  const variantDefinition = styleState.staticConfig.variants?.[key]
+  if (
+    typeof value === 'string' &&
+    // a variant can define a literal colon key like "16:9" — an exact match
+    // wins over clause parsing
+    !(
+      variantDefinition &&
+      typeof variantDefinition === 'object' &&
+      value in variantDefinition
+    )
+  ) {
+    scanFlatValue(value, variantValueHandler, [
+      styleState,
+      key,
+      parentVariantKey,
+      '',
+      map,
+    ])
+    return
+  }
+
+  // the object spelling of a conditional variant prop mirrors the clause
+  // string: density={{ default: 'compact', sm: 'roomy' }}. a payload object
+  // with no default and no modifier first key (a functional variant's own
+  // argument shape) falls through whole
+  if (
+    value &&
+    typeof value === 'object' &&
+    !Array.isArray(value) &&
+    !isVariable(value) &&
+    classifyConditionalObject(value, styleState)
+  ) {
+    for (const objKey in value) {
+      const payload = value[objKey]
+      if (payload == null) continue
+      const directState = styleState as DirectState
+      const payloadString = String(payload)
+      if (objKey === 'default') {
+        feedCompoundSegment(
+          directState,
+          payloadString,
+          0,
+          payloadString.length,
+          true,
+          true,
+          0
+        )
+      } else if (directState.flatCompoundIndexes) {
+        const captureCell = reserveCompoundArena(1)
+        compoundArena[captureCell] = 0
+        const condition = resolveClauseChain(
+          styleState,
+          objKey,
+          0,
+          objKey.length,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          false,
+          -1,
+          -1,
+          0,
+          captureCell
+        )
+        feedCompoundSegment(
+          directState,
+          payloadString,
+          0,
+          payloadString.length,
+          false,
+          Boolean(condition),
+          compoundArena[captureCell]
+        )
+      }
+      emitResolvedVariant(
+        key,
+        payload,
+        styleState,
+        parentVariantKey,
+        objKey === 'default' ? undefined : objKey,
+        map
+      )
+    }
+    return
+  }
+
+  emitResolvedVariant(key, value, styleState, parentVariantKey, undefined, map)
+}
+
+function emitResolvedVariant(
+  key: string,
+  value: any,
+  styleState: GetStyleState,
+  parentVariantKey: string,
+  conditionSource: string | undefined,
+  map: MappedValue
+) {
+  const { staticConfig, conf, debug } = styleState
+  const styleProps = styleState.styleProps
+  const { variants } = staticConfig
+  if (!variants) return
+
+  const variant = variants[key]
+  let variantValue = getVariantDefinition(variant, value, conf, styleState)
+
+  if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
+    console.groupCollapsed(`♦️♦️♦️ resolve variant ${key}`)
+    console.info({
+      key,
+      value,
+      variantValue,
+      variants,
+    })
+    console.groupEnd()
+  }
+
+  if (!variantValue) {
+    // variant at key exists, but no matching variant
+    // disabling warnings, its fine to pass through, could re-enable later somehoiw
+    if (process.env.TAMAGUI_WARN_ON_MISSING_VARIANT === '1') {
+      // don't warn on missing booleans
+      if (typeof value !== 'boolean') {
+        const name = styleState.styleProps.displayName || '[UnnamedComponent]'
+        console.warn(
+          `No variant found: ${name} has variant "${key}", but no matching value "${value}"`
+        )
+      }
+    }
+    return
+  }
+
+  if (typeof variantValue === 'function') {
+    const fn = variantValue as VariantSpreadFunction<any>
+    const extras = getVariantExtras(styleState)
+    variantValue = fn(value, extras)
+
+    if (
+      process.env.NODE_ENV === 'development' &&
+      debug === 'verbose' &&
+      process.env.TAMAGUI_TARGET !== 'native'
+    ) {
+      console.groupCollapsed('   expanded functional variant', key)
+      console.info({ fn, variantValue, extras })
+      console.groupEnd()
+    }
+  }
+
+  if (!isObj(variantValue)) return
+
+  if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
+    console.info(`   expanding styles from `, variantValue)
+  }
+  const { noSkip } = styleProps
+  const originals = styleOriginalValues.get(variantValue)
+  const directState = styleState as DirectState
+  directState.flatCompoundOutputDepth = (directState.flatCompoundOutputDepth || 0) + 1
+  try {
+    for (const outputKey in variantValue) {
+      if (!noSkip && outputKey in skipProps) continue
+      const outputValue = variantValue[outputKey]
+      const originalValue = originals?.[outputKey] ?? outputValue
+
+      const contextPropSet = getContextPropSet(staticConfig)
+      if (contextPropSet?.has(outputKey)) {
+        styleState.overriddenContextProps ||= {}
+        styleState.overriddenContextProps[outputKey] = originalValue
+        styleState.originalContextPropValues ||= {}
+        styleState.originalContextPropValues[outputKey] = originalValue
+      }
+
+      contributeMappedValue(
+        outputKey,
+        outputValue,
+        styleState,
+        parentVariantKey === key && outputKey === key,
+        (mappedKey, mappedValue, mappedOriginal, nestedCondition) => {
+          const resolvedCondition =
+            nestedCondition === undefined
+              ? conditionSource
+              : conditionSource === undefined
+                ? nestedCondition
+                : `${conditionSource}:${nestedCondition}`
+          if (
+            mappedKey === 'fontFamily' ||
+            mappedKey === conf.inverseShorthands.fontFamily
+          ) {
+            styleState.fontFamily = getFontFamilyFromNameOrVariable(mappedValue, conf)
+          }
+          map(mappedKey, mappedValue, mappedOriginal ?? originalValue, resolvedCondition)
+        }
+      )
+    }
+  } finally {
+    directState.flatCompoundOutputDepth!--
+  }
+}
+
+// handles finding and resolving the fontFamily to the token name
+// this is used as `font_[name]` in className for nice css variable support
+export function getFontFamilyFromNameOrVariable(input: any, conf: TamaguiInternalConfig) {
+  if (isVariable(input)) {
+    const val = variableToFontNameCache.get(input)
+    if (val) return val
+    for (const key in conf.fontsParsed) {
+      const familyVariable = conf.fontsParsed[key].family
+      if (isVariable(familyVariable)) {
+        variableToFontNameCache.set(familyVariable, key)
+        if (familyVariable === input) {
+          return key
+        }
+      }
+    }
+  } else if (typeof input === 'string' && input in conf.fontsParsed) {
+    return input
+  }
+}
+
+const variableToFontNameCache = new WeakMap<Variable, string>()
+
+// the prop -> token-category tables live in their own module; re-exported
+// here because they have always been part of this module's public surface
+export * from './tokenCategories'
+
+// goes through specificity finding best matching variant function
+function getVariantDefinition(
+  variant: any,
+  value: any,
+  conf: TamaguiInternalConfig,
+  { theme }: Partial<GetStyleState>
+): any {
+  if (!variant) return
+  if (value === undefined) return
+  if (typeof variant === 'function') {
+    return variant
+  }
+  if (Object.prototype.hasOwnProperty.call(variant, value)) {
+    return variant[value]
+  }
+  for (const { key, parts } of getCompiledVariantResolvers(variant)) {
+    for (const part of parts) {
+      if (matchesVariantResolver(part, value, conf, theme)) {
+        return variant[key]
+      }
+    }
+  }
+
+  return
+}
+
+type VariantResolverName = (typeof variantResolverNames)[number]
+
+const variantResolverNameSet = new Set<string>(variantResolverNames)
+
+type CompiledVariantResolver = {
+  key: string
+  parts: VariantResolverName[]
+}
+
+const variantResolverCache = new WeakMap<object, readonly CompiledVariantResolver[]>()
+
+const preparedStyleStaticConfigs = new WeakSet<StaticConfig>()
+
+export function prepareStyleStaticConfig(staticConfig: StaticConfig): StaticConfig {
+  if (preparedStyleStaticConfigs.has(staticConfig)) return staticConfig
+  preparedStyleStaticConfigs.add(staticConfig)
+  getContextPropSet(staticConfig)
+  prepareStaticConfigCompounds(staticConfig)
+  const variants = staticConfig.variants
+  if (variants) {
+    for (const key in variants) {
+      const variant = variants[key]
+      if (variant && typeof variant === 'object') getCompiledVariantResolvers(variant)
+    }
+  }
+  return staticConfig
+}
+
+function getCompiledVariantResolvers(variant: object) {
+  let cached = variantResolverCache.get(variant)
+  if (cached) {
+    return cached
+  }
+  const compiled: CompiledVariantResolver[] = []
+  for (const key in variant) {
+    const parts = parseVariantResolverKey(key)
+    if (parts) {
+      compiled.push({ key, parts })
+    }
+  }
+  variantResolverCache.set(variant, compiled)
+  return compiled
+}
+
+function parseVariantResolverKey(key: string): VariantResolverName[] | null {
+  if (!key) return null
+  const parts: VariantResolverName[] = []
+  let start = 0
+  for (let index = 0; index <= key.length; index++) {
+    if (index !== key.length && key.charCodeAt(index) !== 124) continue
+    let partStart = start
+    let partEnd = index
+    while (partStart < partEnd && key.charCodeAt(partStart) <= 32) partStart++
+    while (partEnd > partStart && key.charCodeAt(partEnd - 1) <= 32) partEnd--
+    if (partStart === partEnd) return null
+    const part = key.slice(partStart, partEnd)
+    if (!variantResolverNameSet.has(part)) return null
+    parts.push(part as VariantResolverName)
+    start = index + 1
+  }
+  return parts
+}
+
+function hasNumericPrefix(value: string, suffixLength: number): boolean {
+  if (value.length <= suffixLength) return false
+  return Number.isFinite(Number(value.slice(0, value.length - suffixLength)))
+}
+
+function isViewportValue(value: string): boolean {
+  return (
+    ((value.endsWith('vw') || value.endsWith('vh')) && hasNumericPrefix(value, 2)) ||
+    ((value.endsWith('dvw') ||
+      value.endsWith('lvw') ||
+      value.endsWith('svw') ||
+      value.endsWith('dvh') ||
+      value.endsWith('lvh') ||
+      value.endsWith('svh')) &&
+      hasNumericPrefix(value, 3))
+  )
+}
+
+function isAllowedStyleValue(
+  category: 'size' | 'space' | 'radius' | 'zIndex',
+  value: any,
+  conf: TamaguiInternalConfig,
+  string: boolean,
+  number: boolean,
+  rem: boolean
+) {
+  const hasSetting = Object.prototype.hasOwnProperty.call(
+    conf.settings,
+    'allowedStyleValues'
+  )
+  const configured = conf.settings.allowedStyleValues
+  const setting =
+    configured && typeof configured === 'object' ? configured[category] : configured
+  const web =
+    value === 'unset' ||
+    value === 'inherit' ||
+    (string && value.startsWith('var(') && value.endsWith(')')) ||
+    ((category === 'size' || category === 'space') &&
+      (value === 'max-content' ||
+        value === 'min-content' ||
+        (string &&
+          (isViewportValue(value) ||
+            ((value.startsWith('calc(') ||
+              value.startsWith('min(') ||
+              value.startsWith('max(')) &&
+              value.endsWith(')'))))))
+  const somewhat =
+    category === 'size' || category === 'space'
+      ? value === 'auto' || number || rem || (string && value.endsWith('%'))
+      : number
+  if (setting === 'strict') return false
+  if (setting === 'strict-web') return web
+  if (setting === 'somewhat-strict') return somewhat
+  if (setting === 'somewhat-strict-web') return somewhat || web
+  return (
+    number || (string && (category === 'size' || category === 'space' || !hasSetting))
+  )
+}
+
+function matchesVariantResolver(
+  resolverName: VariantResolverName,
+  value: any,
+  conf: TamaguiInternalConfig,
+  theme: Partial<GetStyleState>['theme']
+) {
+  const string = typeof value === 'string'
+  const number = typeof value === 'number'
+  const rem = string && value.endsWith('rem') && hasNumericPrefix(value, 3)
+
+  switch (resolverName) {
+    case 'Size':
+    case 'Space':
+    case 'Radius':
+    case 'ZIndex': {
+      const category =
+        resolverName === 'ZIndex'
+          ? 'zIndex'
+          : (resolverName.toLowerCase() as 'size' | 'space' | 'radius')
+      return (
+        value === true ||
+        (value != null && value in conf.tokensParsed[category]) ||
+        ((resolverName === 'Space' ||
+          resolverName === 'Radius' ||
+          resolverName === 'ZIndex') &&
+          isVariable(value)) ||
+        ((resolverName === 'Radius' || resolverName === 'ZIndex') && (number || rem)) ||
+        isAllowedStyleValue(category, value, conf, string, number, rem)
+      )
+    }
+    // a token or theme color, otherwise any string is taken to be a raw CSS
+    // color and left for the browser to resolve. checking that against a CSS
+    // color-name table costs 2.3KB gzip to reject values that were never valid
+    // anyway. `red/50` opacity modifiers stay limited to token and theme
+    // colors, which the branches above already covered.
+    case 'Color':
+      return (value != null && value in conf.tokensParsed.color) || string
+    case 'Theme':
+      return string && !!theme && value in theme
+    case 'FontSize':
+      return value === true || !!conf.fontsParsed.body?.size?.[value] || number || rem
+    case 'FontStyle':
+      return (
+        !!conf.fontsParsed.body?.style?.[value] ||
+        value === 'normal' ||
+        value === 'italic'
+      )
+    case 'FontTransform':
+      return (
+        !!conf.fontsParsed.body?.transform?.[value] ||
+        value === 'none' ||
+        value === 'capitalize' ||
+        value === 'uppercase' ||
+        value === 'lowercase'
+      )
+    case 'FontLineHeight':
+      return !!conf.fontsParsed.body?.lineHeight?.[value] || number || rem
+    case 'FontLetterSpacing':
+      return !!conf.fontsParsed.body?.letterSpacing?.[value] || number || rem
+    case 'number':
+    case 'string':
+    case 'boolean':
+      return typeof value === resolverName
+    case 'any':
+      return true
+  }
 }

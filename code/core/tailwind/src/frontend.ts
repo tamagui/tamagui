@@ -1,16 +1,19 @@
 import {
-  STYLE_FRONTEND_PREPROCESSED,
   type FrontendStaticConfig,
   type StyleFrontend,
   type StyleFrontendConfig,
 } from '@tamagui/core/internal-runtime'
-import { preprocessTailwindClassName } from './candidate'
+import { configRevisionSymbol } from '@tamagui/style-grammar/runtime'
+import {
+  getTailwindClassPlan,
+  resolveTailwindClassName,
+} from './candidate'
 
 /**
  * The Tailwind frontend descriptor.
  *
- * `preprocessProps` is the single Tailwind pass: it tokenizes `className` once and
- * emits ordinary props plus internal program contributions in authored order.
+ * The shared style cursor tokenizes `className` once and asks this descriptor for
+ * an immutable plan per candidate.
  * Everything after this point — value programs,
  * per-longhand forward merging, web lowering, native evaluation — is shared.
  *
@@ -27,12 +30,12 @@ export function parseStaticStyle(
   input: string,
   config: StyleFrontendConfig
 ): Record<string, any> {
-  return preprocessTailwindClassName({ className: input }, config)
+  return resolveTailwindClassName(input, config)
 }
 
 const normalizedStaticConfigCache = new WeakMap<
   FrontendStaticConfig,
-  WeakMap<StyleFrontendConfig, FrontendStaticConfig>
+  WeakMap<StyleFrontendConfig, { revision: number; value: FrontendStaticConfig }>
 >()
 const normalizedStaticConfigs = new WeakSet<FrontendStaticConfig>()
 
@@ -45,7 +48,8 @@ function normalizeTailwindStaticConfig<Config extends FrontendStaticConfig>(
   }
   let configCache = normalizedStaticConfigCache.get(staticConfig)
   const cached = configCache?.get(config)
-  if (cached) return cached as Config
+  const revision = (config as any)[configRevisionSymbol]?.revision || 0
+  if (cached && cached.revision === revision) return cached.value as Config
 
   let variants = staticConfig.variants
   if (variants) {
@@ -93,24 +97,12 @@ function normalizeTailwindStaticConfig<Config extends FrontendStaticConfig>(
   } as Config
   normalizedStaticConfigs.add(normalized)
   configCache ||= new WeakMap()
-  configCache.set(config, normalized)
+  configCache.set(config, { revision, value: normalized })
   normalizedStaticConfigCache.set(staticConfig, configCache)
   return normalized
 }
 
 export const tailwindStyleFrontend: StyleFrontend = {
-  preprocessProps(props, config) {
-    const transformed =
-      typeof props.className === 'string'
-        ? preprocessTailwindClassName(props, config, true)
-        : props
-    // only a fresh object gets the marker; marking the caller's props would leak the
-    // symbol onto props the frontend never actually rewrote
-    if (transformed !== props) {
-      ;(transformed as any)[STYLE_FRONTEND_PREPROCESSED] = true
-    }
-    return transformed
-  },
-
+  getClassPlan: getTailwindClassPlan,
   normalizeStaticConfig: normalizeTailwindStaticConfig,
 }

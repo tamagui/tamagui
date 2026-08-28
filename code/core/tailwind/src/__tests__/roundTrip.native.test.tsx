@@ -16,6 +16,7 @@ import { tamaguiToTailwind } from '@tamagui/to-tailwind'
 
 import { createTamagui } from '@tamagui/web'
 import { tailwindStyleFrontend } from '../frontend'
+import { preprocessTailwindClassName } from '../candidate'
 import { Text, View } from '../index'
 import { splitTailwindStyles } from './utils'
 
@@ -61,7 +62,7 @@ function resolved(Comp: any, sourceJSX: string, styleProp: string): any {
 }
 
 function flat(className: string): Record<string, any> {
-  return tailwindStyleFrontend.preprocessProps({ className }, CFG)
+  return preprocessTailwindClassName({ className }, CFG)
 }
 
 describe('native — px-length props resolve to EXACT NUMBERS (RN drops "Npx" strings)', () => {

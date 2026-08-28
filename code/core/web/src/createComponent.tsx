@@ -21,7 +21,10 @@ import { defaultComponentStateMounted } from './defaultComponentState'
 import { getWebEvents, useEvents, wrapWithGestureDetector } from './eventHandling'
 import { getDefaultProps } from './helpers/getDefaultProps'
 import { componentDisplayName } from './helpers/componentDisplayName'
-import { getSplitStyles, useSplitStyles } from './helpers/getSplitStyles'
+import {
+  getSplitStyles,
+  prepareStyleStaticConfig,
+} from './helpers/getSplitStyles'
 import {
   getNativeStyleEngine,
   queueNativeViewState,
@@ -42,6 +45,7 @@ import {
 } from './helpers/subscribeToContextGroup'
 import { getStyleTags } from './helpers/wrapStyleTags'
 import { useComponentState } from './hooks/useComponentState'
+import { useSplitStyles } from './hooks/useSplitStyles'
 import { setMediaShouldUpdate, useMedia } from './hooks/useMedia'
 import { useThemeWithState } from './hooks/useTheme'
 import type { TamaguiComponentEvents } from './interfaces/TamaguiComponentEvents'
@@ -266,6 +270,8 @@ export function createComponent<
     )
   }
 
+  prepareStyleStaticConfig(staticConfig)
+
   let config: TamaguiInternalConfig | null = null
   let resolvedDefaultProps: Record<string, any> | undefined
   let didResolveDefaultProps = false
@@ -407,17 +413,6 @@ export function createComponent<
     props = nextProps as ViewProps | TextProps
     overriddenContextProps = overrides
 
-    // frontend single pass (hoisted): the component's descriptor tokenizes className +
-    // flattens props ONCE here, so flat values and transition props are in place before
-    // the state machine / variant / animation driver below read them. preprocessProps
-    // marks its result, so getSplitStyles skips its own preprocess.
-    // components without a descriptor pay one property read.
-    if (staticConfig.styleFrontend) {
-      props = staticConfig.styleFrontend.preprocessProps(props, config) as
-        | ViewProps
-        | TextProps
-    }
-
     if (process.env.NODE_ENV === 'development' && isClient) {
       React.useEffect(() => {
         let node: HTMLElement | undefined
@@ -519,8 +514,6 @@ export function createComponent<
       disabled,
       groupName,
       hasAnimationProp,
-      hasEnterStyle,
-      isAnimated,
       isExiting,
       isHydrated,
       presence,
@@ -531,10 +524,14 @@ export function createComponent<
       stateRef,
       inputStyle,
       outputStyle,
+      startedUnhydrated,
+    } = componentState
+    let {
+      hasEnterStyle,
+      isAnimated,
       willBeAnimated,
       willBeAnimatedClient,
       platformPseudo,
-      startedUnhydrated,
     } = componentState
 
     // adopt the props object useComponentState resolved: on the enter/exit presence
@@ -777,7 +774,7 @@ export function createComponent<
 
             console.groupCollapsed(`${childLog} [inspect props, state, context 👇]`)
             log('props in:', propsIn)
-            log('final props:', props, Object.keys(props))
+            log('final props:', props)
             log({ state, staticConfig, elementType, themeStateProps })
             log({
               context,
@@ -833,6 +830,7 @@ export function createComponent<
       isExiting,
       isAnimated,
       willBeAnimated,
+      canPlatformPseudo: componentState.platformPseudo,
       displayName,
       styledContext: styledContextValue,
       styledContextKeys,
@@ -857,6 +855,18 @@ export function createComponent<
       debugProp,
       animationDriver
     )
+
+    if (splitStyles) {
+      const finalizedComponentState = componentState.finalizeStyleFlags(
+        !!splitStyles.hasEnterStyle,
+        !!splitStyles.platformPseudo
+      )
+      hasEnterStyle = finalizedComponentState.hasEnterStyle
+      isAnimated = finalizedComponentState.isAnimated
+      willBeAnimated = finalizedComponentState.willBeAnimated
+      willBeAnimatedClient = finalizedComponentState.willBeAnimatedClient
+      platformPseudo = finalizedComponentState.platformPseudo
+    }
 
     const isPassthrough = !splitStyles
 
@@ -1195,9 +1205,13 @@ export function createComponent<
         }
 
         // one thing we have to handle here and where it gets a bit more complex is group styles
-        const canAvoidReRender = Object.keys(next).every((key) =>
-          avoidReRenderKeys.has(key)
-        )
+        let canAvoidReRender = true
+        for (const key in next) {
+          if (!avoidReRenderKeys.has(key)) {
+            canAvoidReRender = false
+            break
+          }
+        }
 
         const updatedState = {
           ...prev,
@@ -1855,8 +1869,11 @@ export function createComponent<
         propsIn.accessibilityLabel ??
         (typeof propsWithHref.href === 'string' ? propsWithHref.href : null) ??
         (typeof propsInWithHref.href === 'string' ? propsInWithHref.href : null)
-      const pressDebugName =
-        [displayName, pressDebugDetail].filter(Boolean).join(':') || null
+      const pressDebugName = displayName
+        ? pressDebugDetail
+          ? `${displayName}:${pressDebugDetail}`
+          : displayName
+        : pressDebugDetail || null
       hasRealPressEvents = !!(onPress || onPressIn || onPressOut || onLongPress)
       pressGesture = useEvents(
         events,

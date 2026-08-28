@@ -16,7 +16,7 @@ import { defaultConfig as v6 } from '@tamagui/config/v6'
 import { TamaguiProvider, createTamagui, getSplitStyles } from '@tamagui/core'
 import { renderToString } from 'react-dom/server'
 import { beforeAll, expect, test } from 'vitest'
-import { tailwindStyleFrontend } from '../tailwind/src/frontend'
+import { preprocessTailwindClassName } from '../tailwind/src/candidate'
 import { View as TailwindView } from '../tailwind/src'
 
 let CFG: any
@@ -51,8 +51,7 @@ const splitFlat = (props: Record<string, any>) =>
   )
 
 const splitClass = (className: string) => {
-  const preprocessed = tailwindStyleFrontend.preprocessProps({ className }, CFG)
-  return splitFlat(preprocessed as Record<string, any>)
+  return splitFlat({ className })
 }
 
 const fullOutput = (result: any) =>
@@ -136,7 +135,7 @@ test.each([
   ['@container-size', { container: true, containerType: 'size' }],
   ['@container-size/layout', { container: 'layout', containerType: 'size' }],
 ])('%s remains raw and projects its Tamagui parent capability', (className, props) => {
-  expect(tailwindStyleFrontend.preprocessProps({ className }, CFG)).toMatchObject({
+  expect(preprocessTailwindClassName({ className }, CFG)).toMatchObject({
     ...props,
     className,
   })
@@ -144,7 +143,7 @@ test.each([
 
 test('unknown and non-size descendants remain Tailwind passthrough', () => {
   const className = '@hoverNone:bg-collision @missing:bg-collision'
-  const result = tailwindStyleFrontend.preprocessProps({ className }, CFG)
+  const result = preprocessTailwindClassName({ className }, CFG)
   expect(result).toMatchObject({ className })
   expect(Object.keys(result)).toEqual(['className'])
 })

@@ -12,7 +12,7 @@ import { getSetting } from '../config'
 import { createVariable, isVariable } from '../createVariable'
 import { getConfigRevisionState, type ConfigRevisionState } from './grammarConfig'
 import { themeUpdateStateKey, type ThemeUpdateLayerInfo } from './themeUpdateState'
-import { platformMatches } from './directStyle'
+import { platformMatches } from './getSplitStyles'
 import { findVariableToken, isUnitlessVariableKey } from './variableValue'
 import { warnOnce } from './warnOnce'
 import type {

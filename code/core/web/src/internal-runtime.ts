@@ -10,13 +10,10 @@
  * styled, or inline style-prop declarations.
  */
 import type { FunctionComponent } from 'react'
-import type { ParsedValue } from '@tamagui/style-grammar/runtime'
 import { stylePropsUnitless } from '@tamagui/helpers'
 import { createComponent } from './createComponent'
 import { setComponentDisplayName } from './helpers/componentDisplayName'
-import { createFrontendProgram as createFrontendProgramImpl } from './helpers/frontendProgram'
 import type { FrontendComponent, StyleFrontend } from './helpers/styleFrontend'
-import type { FrontendProgramValue } from './internalRuntimeTypes'
 import { createTamagui as createTamaguiImpl } from './createTamagui'
 import { setupHooks as setupHooksImpl } from './setupHooks'
 import { createFrontendStyled as createFrontendStyledImpl } from './styled'
@@ -25,21 +22,9 @@ import { textStaticConfig } from './views/Text'
 import { viewStaticConfig } from './views/View'
 
 export {
-  STYLE_FRONTEND_PASSTHROUGH_PREFIX,
-  STYLE_FRONTEND_PREPROCESSED,
   regularStyleFrontend,
 } from './helpers/styleFrontend'
 export type * from './internalRuntimeTypes'
-
-// the frontend-program contribution channel: a frontend hands getSplitStyles
-// a pre-parsed (property, program) pair that contributes at the exact
-// forward-pass position of the equivalent authored string. values are only
-// recognized when minted by this factory (module-private WeakSet), so the
-// channel cannot become publicly authorable
-export const createFrontendProgram: (
-  property: string,
-  value: ParsedValue
-) => FrontendProgramValue = createFrontendProgramImpl
 
 // the one scalar-to-css boundary used by frontends before they mint a conditional
 // value. strings already carry their authored units; finite numbers use the same

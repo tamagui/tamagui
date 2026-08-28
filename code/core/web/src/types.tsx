@@ -630,6 +630,7 @@ export type TamaguiComponentStateRef = {
   willHydrate?: boolean
   hasMeasured?: boolean
   hasAnimated?: boolean
+  shouldRegisterPresence?: boolean
   themeShallow?: boolean
   hasEverThemed?: boolean | 'wrapped'
   hasEverResetPresence?: boolean
@@ -2958,6 +2959,17 @@ export type GetStyleState = {
   flatGroupMedia?: Set<string>
   flatEnterKeys?: Set<string>
   flatExitKeys?: Set<string>
+  flatHasEnterStyle?: boolean
+  flatHasPlatformPseudo?: boolean
+  flatInlineWinners?: Record<
+    string,
+    {
+      value: any
+      originalValue: any
+      precedence: number
+      conditioned: boolean
+    }
+  >
   flatUsesSafeArea?: boolean
   // Track style values that override context props (for issues #3670, #3676)
   overriddenContextProps?: Record<string, any>
@@ -3394,6 +3406,7 @@ export type SplitStyleProps = {
   hasTextAncestor?: boolean
   // for animations
   willBeAnimated?: boolean // we need to track media queries even before animation
+  canPlatformPseudo?: boolean
   isAnimated: boolean
   isExiting?: boolean
 }
@@ -3415,6 +3428,10 @@ type Present = [true, undefined, PresenceContextProps]
 type NotPresent = [false, SafeToRemoveCallback, PresenceContextProps]
 
 export type UsePresenceResult = AlwaysPresent | Present | NotPresent
+
+export type PresenceRegistration = {
+  shouldRegisterPresence?: boolean
+}
 
 // Animations:
 
@@ -3486,7 +3503,7 @@ export type AnimationDriver<A extends AnimationConfig = AnimationConfig> =
     /** When true, this is a stub driver with no real animation support */
     isStub?: boolean
     useAnimations: UseAnimationHook
-    usePresence: () => UsePresenceResult
+    usePresence: (registration?: PresenceRegistration) => UsePresenceResult
     ResetPresence: (props: {
       children?: React.ReactNode
       disabled?: boolean
@@ -3578,6 +3595,8 @@ export type GetStyleResult = {
     enter?: Set<string>
     exit?: Set<string>
   }
+  hasEnterStyle?: true
+  platformPseudo?: true
 }
 
 export type ClassNamesObject = Record<string, string>

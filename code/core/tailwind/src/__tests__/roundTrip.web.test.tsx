@@ -23,7 +23,7 @@ import {
 import { tamaguiToTailwind } from '@tamagui/to-tailwind'
 
 import { createTamagui } from '@tamagui/web'
-import { tailwindStyleFrontend } from '../frontend'
+import { preprocessTailwindClassName } from '../candidate'
 import { Text, View } from '../index'
 import { splitTailwindStyles } from './utils'
 
@@ -76,7 +76,7 @@ function classStyle(cls: string, Comp: any = View): Record<string, any> {
 // it is IDENTICAL on web and native (the web CSS layer later re-stringifies a number to
 // "Npx", the native layer keeps the number — so typeof must be asserted here, not on .style).
 function flat(cls: string): Record<string, any> {
-  return tailwindStyleFrontend.preprocessProps({ className: cls }, CFG)
+  return preprocessTailwindClassName({ className: cls }, CFG)
 }
 
 function programFor(props: Record<string, any>, property: string): any {
@@ -102,7 +102,7 @@ describe('PASS 1 — 1a: responsive media direction', () => {
 
   test('converted class carries the same md clause as the source flat value', () => {
     const cls = convertedClassName(`<View display="none md:flex" />`)
-    const fromClass = tailwindStyleFrontend.preprocessProps({ className: cls }, CFG)
+    const fromClass = preprocessTailwindClassName({ className: cls }, CFG)
     expect(fromClass.display).toBe('none')
     expect(programFor(fromClass, 'display')?.value).toEqual({
       base: null,
@@ -110,7 +110,7 @@ describe('PASS 1 — 1a: responsive media direction', () => {
     })
 
     const hideCls = convertedClassName(`<View display="flex md:none" />`)
-    const hide = tailwindStyleFrontend.preprocessProps({ className: hideCls }, CFG)
+    const hide = preprocessTailwindClassName({ className: hideCls }, CFG)
     expect(programFor(hide, 'display')?.value.clauses).toEqual([
       { modifiers: ['md'], payload: 'none' },
     ])

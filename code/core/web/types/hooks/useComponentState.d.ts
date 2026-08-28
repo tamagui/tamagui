@@ -23,5 +23,6 @@ export declare const useComponentState: (props: ViewProps | TextProps | Record<s
     willBeAnimated: boolean;
     willBeAnimatedClient: boolean;
     platformPseudo: boolean;
+    finalizeStyleFlags(hasEnterStyle: boolean, hasPlatformPseudo: boolean): /*elided*/ any;
 };
 //# sourceMappingURL=useComponentState.d.ts.map

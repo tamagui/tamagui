@@ -24,7 +24,7 @@ import {
   updateConfig,
 } from './config'
 import { createTamagui, installTamaguiConfig } from './createTamagui'
-import { getSplitStyles } from './helpers/getSplitStyles'
+import { getSplitStyles, prepareStyleStaticConfig } from './helpers/getSplitStyles'
 import { mergeComponentProps } from './helpers/mergeProps'
 import type {
   SplitStyleProps,
@@ -44,6 +44,7 @@ export {
   getTokens,
   getTokenValue,
   installTamaguiConfig,
+  prepareStyleStaticConfig,
   setConfig,
   updateConfig,
 }
@@ -171,6 +172,7 @@ export function resolveStaticElement(
     isReactNative: target === 'native',
     ...element.staticConfig,
   }
+  prepareStyleStaticConfig(baseStaticConfig)
 
   // merge component defaultProps if defined on staticConfig
   let elementProps = element.props || {}

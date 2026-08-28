@@ -2,6 +2,8 @@ export type FlatScanErrorCode = "invalid-character" | "unterminated-string" | "u
 /** why a scan stopped short, or null when it ran to the end cleanly */
 export type FlatScanFailure = FlatScanErrorCode | "refused-chain";
 export interface FlatValueHandler<Context> {
+	/** one modifier segment, reported by the scanner's existing character loop */
+	modifier?(ctx: Context, start: number, end: number, valid: boolean, first: boolean, source: string, a: any, b: any, c: any, d: any): boolean | void;
 	/**
 	* The base, or one clause's payload, just ended. `start` and `end` are
 	* already trimmed, and `start === end` means the segment is empty: an empty
@@ -25,7 +27,7 @@ export interface FlatValueHandler<Context> {
 	/** every top-level word, whether or not it turned out to carry a chain */
 	word?(ctx: Context, start: number, end: number, isChain: boolean): void;
 	/** the scan ended; `result` is the bitwise union returned by `segment` */
-	end?(ctx: Context, source: string, result: number, lastAcceptedStart: number, chainCount: number, a: any, b: any, c: any, d: any): void;
+	end?(ctx: Context, source: string, result: number, lastAcceptedStart: number, chainCount: number, a: any, b: any, c: any, d: any, failure: FlatScanFailure | null, failureIndex: number): void;
 }
 export declare function scanFlatValue<Context>(source: string, handler: FlatValueHandler<Context>, ctx: Context, a?: any, b?: any, c?: any, d?: any): FlatScanFailure | null;
 

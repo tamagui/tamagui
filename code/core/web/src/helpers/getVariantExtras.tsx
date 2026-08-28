@@ -38,9 +38,21 @@ export const getVariantExtras = (styleState: GetStyleState) => {
       // font identity survives in the font_<name> class.
       const className = props.className
       if (typeof className === 'string') {
-        const match = /(?:^|\s)font_([A-Za-z0-9_-]+)/.exec(className)
-        if (match && fonts[match[1]]) {
-          return fonts[match[1]]
+        let start = 0
+        for (let index = 0; index <= className.length; index++) {
+          if (index !== className.length && className.charCodeAt(index) > 32) continue
+          if (
+            index - start > 5 &&
+            className.charCodeAt(start) === 102 &&
+            className.charCodeAt(start + 1) === 111 &&
+            className.charCodeAt(start + 2) === 110 &&
+            className.charCodeAt(start + 3) === 116 &&
+            className.charCodeAt(start + 4) === 95
+          ) {
+            const name = className.slice(start + 5, index)
+            if (fonts[name]) return fonts[name]
+          }
+          start = index + 1
         }
       }
 

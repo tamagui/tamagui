@@ -25,7 +25,6 @@ export * from './helpers/mergeSlotStyleProps';
 export * from './helpers/normalizeColor';
 export * from './helpers/normalizeStyle';
 export * from './helpers/normalizeValueWithProperty';
-export * from './helpers/propMapper';
 export * from './helpers/proxyThemeToParents';
 export * from './helpers/themeRef';
 export * from './helpers/themeable';

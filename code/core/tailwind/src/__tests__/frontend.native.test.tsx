@@ -8,11 +8,6 @@ import { tailwindStyleFrontend } from '../frontend'
 import { Text, View, styled } from '../index'
 import { splitTailwindStyles, styleOf } from './utils'
 
-const programsOf = (style: Record<string, any>) =>
-  Object.values(style).filter(
-    (value) => value && typeof value === 'object' && 'property' in value
-  )
-
 beforeAll(() => {
   createTamagui(getDefaultTamaguiConfig('native') as any)
 })
@@ -181,19 +176,31 @@ describe('class-first styled()', () => {
       padding: '4',
       borderRadius: '4',
     })
-    expect(programsOf(resolved.baseStyle)).toHaveLength(3)
+    expect(resolved.baseStyle).toMatchObject({
+      backgroundColor: { hover: 'red' },
+      margin: { sm: '4' },
+      opacity: { enter: '0' },
+    })
     expect(resolved.passthroughClassName).toBeUndefined()
     expect(resolved.variants?.size?.sm).toMatchObject({
       height: '8',
       paddingHorizontal: '3',
     })
-    expect(programsOf(resolved.variants?.size?.sm as any)).toHaveLength(3)
+    expect(resolved.variants?.size?.sm).toMatchObject({
+      opacity: { hover: '0.5' },
+      marginTop: { sm: '4' },
+      scale: { enter: '0.95' },
+    })
     expect(resolved.variants?.size?.sm).not.toHaveProperty('className')
     expect(resolved.compoundVariants?.[0]?.style).toMatchObject({
       width: '8',
       padding: '0',
     })
-    expect(programsOf(resolved.compoundVariants?.[0]?.style as any)).toHaveLength(3)
+    expect(resolved.compoundVariants?.[0]?.style).toMatchObject({
+      backgroundColor: { hover: 'blue' },
+      marginBottom: { sm: '4' },
+      opacity: { enter: '0.5' },
+    })
     expect(resolved.compoundVariants?.[0]?.style).not.toHaveProperty('className')
 
     const result = splitTailwindStyles(Frame, { size: 'sm' })

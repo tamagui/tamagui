@@ -353,6 +353,43 @@ test('compound variants match conditional variant props per branch', () => {
   expect(exact.style?.backgroundColor).toBe('red')
 })
 
+test('compound variants combine conditional selector branches without replay', () => {
+  const Frame = styled(View, {
+    variants: {
+      tone: { quiet: {}, loud: {} },
+      density: { roomy: {}, compact: {} },
+    } as const,
+    compoundVariants: [
+      {
+        tone: 'loud',
+        density: 'compact',
+        style: { borderTopWidth: 5 },
+      },
+    ],
+  })
+
+  const props = {
+    tone: 'quiet hover:loud',
+    density: 'roomy sm:compact',
+  }
+  expect(
+    simplifiedGetSplitStyles(Frame, props, {
+      componentState: { hover: true },
+      mediaState: { sm: false },
+      mergeDefaultProps: true,
+      noClass: true,
+    }).style?.borderTopWidth
+  ).toBeUndefined()
+  expect(
+    simplifiedGetSplitStyles(Frame, props, {
+      componentState: { hover: true },
+      mediaState: { sm: true },
+      mergeDefaultProps: true,
+      noClass: true,
+    }).style?.borderTopWidth
+  ).toBe(5)
+})
+
 test('nested variant clauses keep array payloads via the object form', () => {
   const Frame = styled(View, {
     variants: {
