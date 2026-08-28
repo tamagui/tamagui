@@ -207,6 +207,14 @@ the paired receipts. The unit lands on v3-beta only after this review.
   timing-window defect: replace clock-dependent sequencing with condition
   waits and stricter precondition/assertion checks. Do not add retries, sleeps,
   timeout increases, or relaxed assertions.
+- **Config invalidation test-order defect** (post-campaign, separate slice):
+  `configInvalidation.web.test.tsx` pin "a warmed config recognizes a theme
+  added at runtime" fails when the file runs alone and passes only under
+  full-suite ordering. It reproduces at `bdba800925`, so it predates the final
+  engine landing. The root is known only through the `addTheme` /
+  `startTransition` layer and belongs to the config-swap defect class. Receipt:
+  r6416 review-application report at `154273258f`. Fix the hidden ordering
+  dependency at its source; do not make the test rely on suite setup.
 
 ## 8. Fleet process (as run so far)
 
