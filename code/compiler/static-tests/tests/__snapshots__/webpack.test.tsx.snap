@@ -6,7 +6,7 @@ exports[`webpack-tests > 1. extracts to a div for simple views, flat transforms 
     class="_dsp_contents  font_body"
   >
     <div
-      class="is_View _s-1446300549 _fd-1155724988 _fg-169839737 _fs-1866857425 _fb-1628162253 _btlr-710936969 _btrr-1299648406 _bbrr-439705442 _bblr-1154319061 _bc-913050308 _bs-1155467371 _tsx-1322694990 _tsy-484759473 test1"
+      class="is_View _fd-1155724988 _fg-169839737 _fs-1866857425 _fb-1628162253 _btlr-710936969 _btrr-1299648406 _bbrr-439705442 _bblr-1154319061 _bc-913050308 _s-1446300549 _bs-1155467371 _tsx-1322694990 _tsy-484759473 test1"
     >
       <span
         class="is_Text _c-533586090"
@@ -248,10 +248,10 @@ exports[`webpack-tests > 15. extracts spacer (complex expansion) 1`] = `
     class="_dsp_contents  font_body"
   >
     <span
-      class="is_Spacer is_View _pe-635873870 _w-1165502445 _h-629679316 _mw-1243015271 _mh-2015682816"
+      class="is_View _pe-635873870 _w-1165502445 _h-629679316 _mw-1243015271 _mh-2015682816"
     />
     <span
-      class="is_Spacer is_View _pe-635873870 _fg-169839737 _fs-1866857425 _fb-1628162253 _w-1770834802 _h-1954775059 _mw-121229638 _mh-1938344769"
+      class="is_View _pe-635873870 _fg-169839737 _fs-1866857425 _fb-1628162253 _w-1770834802 _h-1954775059 _mw-121229638 _mh-1938344769"
     />
     <div
       style="display: contents;"
@@ -419,7 +419,7 @@ exports[`webpack-tests > 22. flexWrap with media query conditionals 1`] = `
     class="_dsp_contents  font_body"
   >
     <div
-      class="is_View _fw-785176263 _g-1012092673 _pt-279819439 _pr-829857910 _pb-1107600041 _pl-112089339 _fd-1155724988"
+      class="is_View _g-1012092673 _fw-785176263 _pt-279819439 _pr-829857910 _pb-1107600041 _pl-112089339 _fd-1155724988"
       data-testid="flex-wrap-media"
     >
       <span

@@ -222,7 +222,7 @@ exports[`fontFamily shorthand + styled + flatten + ternaries 1`] = `
     export function Test(props) {
       return (
         <span
-          className={["is_MySizableText is_Text _bc-1277784850 _ff-513915828", (active) ? "_o-1553737126" : "_o-520187816"].filter(Boolean).join(" ")}
+          className={["is_Text _bc-1277784850 _ff-513915828", (active) ? "_o-1553737126" : "_o-520187816"].filter(Boolean).join(" ")}
 
         />
       )
@@ -236,7 +236,7 @@ exports[`fontFamily shorthand + styled + flatten works 1`] = `
     export function Test(props) {
       return (
         <span
-          className="is_MySizableText is_Text _bc-1277784850 _ff-513915828"
+          className="is_Text _bc-1277784850 _ff-513915828"
         />
       )
     }
@@ -268,7 +268,7 @@ exports[`specific className + ternary 1`] = `
     export function Test(props) {
       return (
         <span
-          className={["is_MySizableText is_Text _bc-1277784850 _ff-513915828 test-class-name", (active) ? "_o-1553737126" : "_o-520187816"].filter(Boolean).join(" ")}
+          className={["is_Text _bc-1277784850 _ff-513915828 test-class-name", (active) ? "_o-1553737126" : "_o-520187816"].filter(Boolean).join(" ")}
 
 
         />
