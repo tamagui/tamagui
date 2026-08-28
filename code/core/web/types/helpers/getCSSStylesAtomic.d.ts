@@ -7,7 +7,7 @@ import type { ViewStyleObject } from '../types';
 export { styleToCSS } from './styleToCSS';
 export declare function getCSSStylesAtomic(style: ViewStyleObject): StyleObject[];
 export declare function getCSSStyleAtomic(key: string, val: any, condition?: string, wrappers?: readonly string[], identity?: string, direct?: boolean, identityKey?: string, classRepetitions?: number): StyleObject | undefined;
-type SlotIdentity = {
+export type SlotIdentity = {
     identifier: string;
     rules: string[];
     value: any;
@@ -25,5 +25,7 @@ export interface AtomicSlotEntry {
      * inline conversion preserves provenance */
     original?: any;
 }
+export declare function probeRawSlotIdentity(property: string, raw: unknown): SlotIdentity | undefined;
+export declare function storeRawSlotIdentity(property: string, raw: unknown, identity: SlotIdentity): void;
 export declare function buildAtomicSlotCSS(atomicKey: string, entries: readonly AtomicSlotEntry[], signature: string): SlotIdentity | undefined;
 //# sourceMappingURL=getCSSStylesAtomic.d.ts.map

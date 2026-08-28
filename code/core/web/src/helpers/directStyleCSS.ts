@@ -7,7 +7,12 @@ import {
 import { finalizeTransformAccumulator } from '@tamagui/style-grammar/runtime'
 
 import type { GetStyleState } from '../types'
-import { buildAtomicSlotCSS, type AtomicSlotEntry } from './getCSSStylesAtomic'
+import {
+  buildAtomicSlotCSS,
+  probeRawSlotIdentity,
+  storeRawSlotIdentity,
+  type AtomicSlotEntry,
+} from './getCSSStylesAtomic'
 import { normalizeValueWithProperty } from './normalizeValueWithProperty'
 import { shouldInsertStyleRules, updateRules } from './insertStyleRule'
 import { transformsToString } from './transformsToString'
@@ -305,6 +310,24 @@ export function streamAtomic(
     return
   }
 
+  // repeat authored base values hit the raw memo and skip normalization,
+  // signature building, and the identity lookup chain entirely
+  if (!identity) {
+    const memo = probeRawSlotIdentity(property, value)
+    if (memo) {
+      const styleObject = ((memo as any).styleObject ||= [
+        property,
+        memo.value,
+        memo.identifier,
+        undefined,
+        memo.rules,
+      ]) as StyleObject
+      ;(direct.flatAtomics ||= {})[property] = styleObject
+      state.classNames[property] = memo.identifier
+      return
+    }
+  }
+  const rawValue = value
   if (property === 'transform' && Array.isArray(value)) {
     value = transformsToString(value)
   }
@@ -330,6 +353,9 @@ export function streamAtomic(
   streamEntry.wrappers = undefined
   streamEntry.value = ''
   if (!built) return
+  if (!identity) {
+    storeRawSlotIdentity(property, rawValue, built)
+  }
   if (identity) {
     ;(direct.flatSingleEntries ||= {})[property] = {
       property,

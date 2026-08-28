@@ -57,7 +57,7 @@ export function getCSSStyleAtomic(
 let conf: TamaguiInternalConfig | null = null
 let confRevision = 0
 
-type SlotIdentity = {
+export type SlotIdentity = {
   identifier: string
   rules: string[]
   value: any
@@ -151,6 +151,39 @@ export interface AtomicSlotEntry {
 const slotIdentities = new Map<string, Map<string, SlotIdentity>>()
 let slotIdentitiesSize = 0
 
+// raw-value memo in front of the normalized identity: a repeat authored value
+// skips normalization and signature building entirely. pure memoization - two
+// raw spellings that normalize alike still share one identity through the
+// normalized signature they both resolve to.
+const rawSlotIdentities = new Map<string, Map<unknown, SlotIdentity>>()
+let rawSlotIdentitiesSize = 0
+
+export function probeRawSlotIdentity(
+  property: string,
+  raw: unknown
+): SlotIdentity | undefined {
+  syncAtomicConfig()
+  return rawSlotIdentities.get(property)?.get(raw)
+}
+
+export function storeRawSlotIdentity(
+  property: string,
+  raw: unknown,
+  identity: SlotIdentity
+) {
+  if (rawSlotIdentitiesSize > 10_000) {
+    rawSlotIdentities.clear()
+    rawSlotIdentitiesSize = 0
+  }
+  let byRaw = rawSlotIdentities.get(property)
+  if (!byRaw) {
+    byRaw = new Map()
+    rawSlotIdentities.set(property, byRaw)
+  }
+  byRaw.set(raw, identity)
+  rawSlotIdentitiesSize++
+}
+
 function syncAtomicConfig() {
   const nextConf = getConfigMaybe()
   const nextRevision = nextConf ? getConfigRevisionState(nextConf).revision : 0
@@ -159,6 +192,8 @@ function syncAtomicConfig() {
     confRevision = nextRevision
     slotIdentities.clear()
     slotIdentitiesSize = 0
+    rawSlotIdentities.clear()
+    rawSlotIdentitiesSize = 0
   }
   return nextConf
 }
