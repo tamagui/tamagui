@@ -1,43 +1,5 @@
-export declare function getDefaultTamaguiConfig(platform?: 'native' | 'web'): {
+export declare function getDefaultTamaguiConfig(_platform?: 'native' | 'web'): {
     animations: import("@tamagui/web").AnimationDriverWithAnimatedNumbers<{
-        '100ms': {
-            type: "timing";
-            duration: number;
-        };
-        bouncy: {
-            damping: number;
-            mass: number;
-            stiffness: number;
-        };
-        lazy: {
-            damping: number;
-            stiffness: number;
-        };
-        medium: {
-            damping: number;
-            stiffness: number;
-            mass: number;
-        };
-        slow: {
-            damping: number;
-            stiffness: number;
-        };
-        quick: {
-            damping: number;
-            mass: number;
-            stiffness: number;
-        };
-        tooltip: {
-            damping: number;
-            mass: number;
-            stiffness: number;
-        };
-        select: {
-            damping: number;
-            mass: number;
-            stiffness: number;
-        };
-    }> | import("@tamagui/web").AnimationDriverWithAnimatedNumbers<{
         '75ms': string;
         '100ms': string;
         '200ms': string;

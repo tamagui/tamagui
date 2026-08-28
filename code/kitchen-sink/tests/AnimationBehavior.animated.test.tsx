@@ -5,7 +5,7 @@ import { getComputedScale, getComputedTranslateX, setupPage } from './test-utils
  * ANIMATION BEHAVIOR TESTS
  *
  * Tests animation behavior across all configured drivers.
- * Driver is determined by the playwright project (css, native, reanimated, motion).
+ * Driver is determined by the playwright project (css, reanimated, motion).
  * All tests verify start, intermediate, and end states.
  * Uses scenario-36 (1000ms timing) for reliable intermediate capture.
  */
@@ -48,10 +48,6 @@ function isIntermediate(
 
 test.describe('Animation Behavior', () => {
   test.beforeEach(async ({ page }) => {
-    // Skip native driver - it has issues with data-testid attributes on web
-    const driver = (test.info().project?.metadata as any)?.animationDriver
-    test.skip(driver === 'native', 'native driver has element detection issues on web')
-
     await setupPage(page, {
       name: 'AnimationComprehensiveCase',
       type: 'useCase',

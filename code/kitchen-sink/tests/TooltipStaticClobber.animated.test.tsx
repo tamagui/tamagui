@@ -11,13 +11,7 @@ import { expectNoTeleport, type PositionSample } from './utils'
 const CONTENT_SEL = '[data-popper-animate-position]'
 
 test.describe('Tooltip static clobber (withStaticProperties on shared compound)', () => {
-  test.beforeEach(async ({ page }, testInfo) => {
-    // same skip as the sibling shared-tooltip suites: the react-native web
-    // driver can't drive the shared-tooltip animatePosition pattern
-    const driver = (testInfo.project?.metadata as any)?.animationDriver
-    if (driver === 'native') {
-      test.skip()
-    }
+  test.beforeEach(async ({ page }) => {
     await setupPage(page, { name: 'TooltipStaticClobberCase', type: 'useCase' })
     await page.waitForSelector('[data-testid="clobber-icon-0"]', { timeout: 15000 })
   })

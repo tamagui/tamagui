@@ -59,7 +59,7 @@ The motion driver's animation state gets out of sync when:
 
 ## Testing Notes
 
-- Bug is **motion-driver specific** - other drivers (css, native, reanimated) may not have this issue
+- Bug is **motion-driver specific** - other web drivers (css, reanimated) may not have this issue
 - Run kitchen-sink on port 9000: `yarn start:web`
 - Run tamagui.dev on port 8282: `yarn dev --port 8282` (v2 branch)
 - Animation driver can be changed via URL param or config

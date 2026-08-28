@@ -32,8 +32,8 @@ test('checkbox checked state changes background', async ({ page }) => {
   await checkbox.click()
   await expect(checkbox).toHaveAttribute('aria-checked', 'true')
   await page.mouse.move(0, 0)
+  await expect.poll(() => checkbox.evaluate(getBg)).not.toBe(before)
   const after = await checkbox.evaluate(getBg)
-  expect(after).not.toBe(before)
   expect(transparent.has(after)).toBe(false)
 })
 
@@ -50,8 +50,8 @@ test('switch checked state changes background', async ({ page }) => {
   await switchEl.click()
   await expect(page.getByRole('switch', { checked: true }).and(switchEl)).toBeVisible()
   await page.mouse.move(0, 0)
+  await expect.poll(() => switchEl.evaluate(getBg)).not.toBe(before)
   const after = await switchEl.evaluate(getBg)
-  expect(after).not.toBe(before)
   expect(transparent.has(after)).toBe(false)
 })
 
@@ -72,6 +72,5 @@ test('toggle-group active item background differs', async ({ page }) => {
   await item.click()
   await expect(item).toHaveAttribute('data-state', 'on')
   await page.mouse.move(0, 0)
-  const after = await item.evaluate(getBg)
-  expect(after).not.toBe(before)
+  await expect.poll(() => item.evaluate(getBg)).not.toBe(before)
 })

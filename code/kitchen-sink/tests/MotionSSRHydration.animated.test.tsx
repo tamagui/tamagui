@@ -18,9 +18,8 @@ import { setupPage } from './test-utils'
 
 test.beforeEach(async ({ page }, testInfo) => {
   test.skip(
-    testInfo.project.name === 'animated-native' ||
-      testInfo.project.name === 'animated-reanimated',
-    'React Native web drivers hydrate through a different path (hasAnimationThatNeedsHydrate)'
+    testInfo.project.name === 'animated-reanimated',
+    'Reanimated hydrates through a different path (hasAnimationThatNeedsHydrate)'
   )
   await setupPage(page, { name: 'MotionSSRHydrationCase', type: 'useCase' })
 })

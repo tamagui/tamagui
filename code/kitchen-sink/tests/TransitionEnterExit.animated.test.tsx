@@ -7,7 +7,7 @@ import { setupPage } from './test-utils'
  * Tests the transition prop's enter/exit-specific animations using timing animations.
  * Supports syntax like: transition={{ enter: '500ms', exit: '100ms' }}
  *
- * These tests run across all animation drivers (css, native, reanimated, motion).
+ * These tests run across all web animation drivers (css, reanimated, motion).
  */
 
 const TOLERANCE = 0.2
@@ -41,9 +41,6 @@ function isIntermediate(
 // works in ci, flaky on local
 test.fixme('Enter/Exit Transition Props', () => {
   test.beforeEach(async ({ page }) => {
-    const driver = (test.info().project?.metadata as any)?.animationDriver
-    test.skip(driver === 'native', 'native driver has element detection issues on web')
-
     await setupPage(page, {
       name: 'AnimationComprehensiveCase',
       type: 'useCase',

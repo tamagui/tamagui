@@ -30,7 +30,7 @@ const drivers = singleDriver ? [singleDriver] : [...ANIMATION_DRIVERS]
  * - *.test.ts (non-animated) - Style/functional tests, run ONCE with default driver
  *
  * This significantly speeds up the test suite since most tests don't need
- * to run 4x across all animation drivers.
+ * to run three times across all web animation drivers.
  */
 export default defineConfig({
   // Look for test files in the "tests" directory, relative to this configuration file.
@@ -45,11 +45,11 @@ export default defineConfig({
   },
 
   projects: [
-    // Non-animated tests run once with default driver (native)
+    // non-animated tests run once with the CSS driver
     {
       name: 'default',
       testIgnore: '**/*.animated.test.{ts,tsx}',
-      metadata: { animationDriver: 'native' },
+      metadata: { animationDriver: 'css' },
       ...(chromiumUse && { use: chromiumUse }),
     },
     // WebKit project scoped to RemoveScroll tests (scroll restoration)
@@ -57,7 +57,7 @@ export default defineConfig({
       name: 'webkit',
       use: { ...devices['Desktop Safari'] },
       testMatch: '**/RemoveScroll.test.{ts,tsx}',
-      metadata: { animationDriver: 'native' },
+      metadata: { animationDriver: 'css' },
     },
     // the program block encoding rests on equal specificity through `:where()`
     // and source order deciding the cascade. That was only ever validated in
@@ -67,13 +67,13 @@ export default defineConfig({
       name: 'webkit-programs',
       use: { ...devices['Desktop Safari'] },
       testMatch: '**/{ProgramCascade,ProgramBlockDelivery}.test.{ts,tsx}',
-      metadata: { animationDriver: 'native' },
+      metadata: { animationDriver: 'css' },
     },
     {
       name: 'webkit-select-native',
       use: { ...devices['Desktop Safari'] },
       testMatch: '**/SelectMultipleNativeWeb.test.{ts,tsx}',
-      metadata: { animationDriver: 'native' },
+      metadata: { animationDriver: 'css' },
     },
     // mobile WebKit (Safari engine + touch) for sheet keyboard/gesture tests —
     // chromium's touch/scroll/rubber-band behavior differs from iOS Safari
@@ -83,14 +83,11 @@ export default defineConfig({
       testMatch: '**/SheetWebKeyboard*.test.{ts,tsx}',
       metadata: { animationDriver: 'css' },
     },
-    // Animated tests run with all animation drivers
+    // animated tests run with all web animation drivers
     ...drivers.map((driver) => ({
       name: `animated-${driver}`,
       testMatch: '**/*.animated.test.{ts,tsx}',
       use: animatedChromiumUse,
-      // the native driver skips AnimationsWithMediaQueries via test.skip in the
-      // file itself; css, motion, and reanimated all run it (reanimated was
-      // excluded until the enter-transition mediaEmit listener drop was fixed)
       metadata: { animationDriver: driver },
     })),
   ],

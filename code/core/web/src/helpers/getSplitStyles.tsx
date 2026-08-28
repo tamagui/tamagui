@@ -506,16 +506,10 @@ export const getSplitStyles: StyleSplitter = (
   const driverAnimations = driver?.animations
   const driverInputStyle = driver?.inputStyle
   const driverOutputStyle = driver?.outputStyle
-  const driverIsReactNative = Boolean(driver?.isReactNative)
   const resolvedDriver = driver?.isStub ? null : (driver as AnimationDriver | null)
 
   if (props.passThrough) {
     return null
-  }
-
-  // a bit icky, we need no normalize but not fully
-  if (isWeb && styleProps.isAnimated && driverIsReactNative && !styleProps.noNormalize) {
-    styleProps.noNormalize = 'values'
   }
 
   const { shorthands } = conf
@@ -651,7 +645,6 @@ export const getSplitStyles: StyleSplitter = (
   const isTextOrInput = isText || isInput
   const hocParentVariants = isHOC ? parentVariants : undefined
   const canResolveContextPrograms = !isHOC
-  const animatedOrHOCUsesReactNativeDriver = (isAnimated || isHOC) && driverIsReactNative
   let containerValue: boolean | string | undefined
   let containerName: string | undefined
   let containerType: string | undefined
@@ -894,13 +887,8 @@ export const getSplitStyles: StyleSplitter = (
 
     // this is all for partially optimized (not flattened)... maybe worth removing?
     if (isWeb) {
-      // react-native-web filters direct data-* props, including when its
-      // Animated.View replaces the final host. dataSet is its supported path.
-      if (
-        (isReactNative ||
-          (isAnimated && driverIsReactNative && !driver?.View?.acceptRenderProp)) &&
-        keyInit.startsWith('data-')
-      ) {
+      // react-native-web filters direct data-* props. dataSet is its supported path.
+      if (isReactNative && keyInit.startsWith('data-')) {
         keyInit = keyInit.replace('data-', '')
         viewProps.dataSet ||= {}
         viewProps.dataSet[keyInit] = valInit
@@ -972,15 +960,6 @@ export const getSplitStyles: StyleSplitter = (
             viewProps.testID = valInit
           } else {
             viewProps['data-testid'] = valInit
-            // also keep testID when using the RN animation driver (Animated.View
-            // from react-native-web only forwards testID, not data-testid). isHOC
-            // wrappers don't animate themselves but forward to an inner animated
-            // component, so keep testID for them too — otherwise a styled/HOC
-            // primitive (e.g. a skinned Dialog.Overlay) loses its testID on native
-            // and becomes untestable.
-            if (animatedOrHOCUsesReactNativeDriver) {
-              viewProps.testID = valInit
-            }
           }
           return
         }
@@ -1497,18 +1476,14 @@ export const getSplitStyles: StyleSplitter = (
         if (className) classList.push(className)
         const finalClassName = classList.join(' ')
 
-        // use $$css for RNW components OR when animated with RNW driver
-        // (driver's AnimatedView doesn't forward className)
-        const needsCssStyles = isReactNative || (isAnimated && driverIsReactNative)
-
         if (isAnimated && driverInputStyle === 'css') {
           // CSS animation driver uses className directly
           viewProps.className = finalClassName
           if (style) {
             viewProps.style = style as any
           }
-        } else if (needsCssStyles) {
-          // RNW or RNW-animated: apply classNames via $$css. keys stay class
+        } else if (isReactNative) {
+          // RNW: apply classNames via $$css. keys stay class
           // names (createDOMProps flattens by key and classifies on the _
           // prefix), but a tamagui consumer merging this via its style prop
           // needs each class's property to slot it into per-property position

@@ -5,12 +5,7 @@ test.beforeEach(async ({ page }) => {
   await setupPage(page, { name: 'FocusWithinCase', type: 'useCase' })
 })
 
-test('animated focus-within clause applies on focus', async ({ page }, testInfo) => {
-  // native driver uses RN Animated API which can't animate CSS border colors on web
-  test.skip(
-    testInfo.project.name === 'animated-native',
-    'Native driver cannot animate CSS properties on web'
-  )
+test('animated focus-within clause applies on focus', async ({ page }) => {
   const input = page.locator('[data-testid="animated-input"]')
   const parent = page.locator('[data-testid="animated-parent"]')
 
@@ -23,11 +18,7 @@ test('animated focus-within clause applies on focus', async ({ page }, testInfo)
   expect(borderColor).toBe('rgb(0, 128, 0)')
 })
 
-test('animated focus-within clause removes on blur', async ({ page }, testInfo) => {
-  test.skip(
-    testInfo.project.name === 'animated-native',
-    'Native driver cannot animate CSS properties on web'
-  )
+test('animated focus-within clause removes on blur', async ({ page }) => {
   const input = page.locator('[data-testid="animated-input"]')
   const parent = page.locator('[data-testid="animated-parent"]')
 
@@ -43,13 +34,7 @@ test('animated focus-within clause removes on blur', async ({ page }, testInfo) 
 
 test('animated focus-within clause does not cause React re-render (avoidReRenders)', async ({
   page,
-}, testInfo) => {
-  // native driver doesn't support avoidReRenders
-  test.skip(
-    testInfo.project.name === 'animated-native',
-    'Native driver does not support avoidReRenders'
-  )
-
+}) => {
   const input = page.locator('[data-testid="animated-input"]')
   const renders = page.locator('[data-testid="animated-renders"]')
 

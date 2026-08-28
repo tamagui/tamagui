@@ -3,7 +3,8 @@ title: Animation Drivers
 description: Choose and configure animation drivers for your platform
 ---
 
-Tamagui supports four animation drivers, each with different strengths for different use cases:
+Tamagui supports four animation drivers across its platforms. Web supports CSS,
+Reanimated, and Motion. Native supports React Native and Reanimated.
 
 <SimpleTable
   headers={['Driver', 'Platform', 'Bundle Impact', 'Performance', 'Spring Physics']}
@@ -11,8 +12,8 @@ Tamagui supports four animation drivers, each with different strengths for diffe
     ['**CSS**', 'Web only', 'Lightest', 'Fast (CSS transitions)', 'No (easing only)'],
     [
       '**React Native**',
-      'Web + Native',
-      'Web: heavy (RNW), Native: none',
+      'Native only',
+      'None',
       'On-thread',
       'Yes (basic)',
     ],
@@ -33,7 +34,7 @@ You can swap drivers per-platform, or even dynamically load heavier drivers late
 
 ## Using Config v6
 
-The easiest way to get started is with [`@tamagui/config/v6`](/docs/core/config-v6) and one of the four animation entries, which share matching keys:
+The easiest way to get started is with [`@tamagui/config/v6`](/docs/core/config-v6) and an animation entry for your platform. The entries share matching keys:
 
 ```tsx fileName="tamagui.config.ts"
 import { defaultConfig } from '@tamagui/config/v6'
@@ -85,7 +86,8 @@ The format is: `<easing-function> <duration>`
 
 ## React Native Driver
 
-Uses React Native's built-in Animated API. No extra bundle on native, but requires React Native Web on the web side. Runs on-thread. Good for basic cross-platform animations.
+Uses React Native's built-in Animated API with no extra animation-library bundle.
+It runs on native only. Use CSS, Motion, or Reanimated on web.
 
 ### Installation
 

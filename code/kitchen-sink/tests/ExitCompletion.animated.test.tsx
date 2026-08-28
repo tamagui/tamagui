@@ -304,10 +304,6 @@ test.describe('Per-Property Exit', () => {
 
 test.describe('Element removal timing', () => {
   test('element should exist during exit animation', async ({ page }) => {
-    // native driver has timing issues on web - animations complete too quickly
-    const driver = (test.info().project?.metadata as any)?.animationDriver
-    test.skip(driver === 'native', 'native driver has animation timing issues on web')
-
     // verify element stays in DOM during exit animation
     await page.getByTestId('exit-07-trigger').click()
 

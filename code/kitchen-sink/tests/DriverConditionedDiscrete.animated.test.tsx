@@ -34,11 +34,11 @@ test('motion driver declares every emitter-discrete prop as non-animated', async
 test.describe('Conditioned discrete props with inline animation driver', () => {
   test.beforeEach(async ({ page }) => {
     const driver = (test.info().project?.metadata as any)?.animationDriver
-    // css driver applies conditions via CSS classes; native/reanimated use
-    // RNW's Animated.View where this promotion never applied. only inline
+    // css driver applies conditions via CSS classes; reanimated uses
+    // an Animated.View where this promotion never applied. only inline
     // web drivers (motion) receive conditioned values as inline styles.
     test.skip(
-      driver === 'css' || driver === 'native' || driver === 'reanimated',
+      driver === 'css' || driver === 'reanimated',
       'only the motion driver receives conditioned values inline on web'
     )
 

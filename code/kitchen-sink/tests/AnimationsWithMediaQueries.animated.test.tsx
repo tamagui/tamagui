@@ -7,9 +7,6 @@ import { getComputedScale, getComputedTranslateX, setupPage } from './test-utils
  * This tests the useStyleEmitter path which allows style updates without re-renders.
  * When media queries change, the animation driver receives new styles and must
  * update the DOM accordingly.
- *
- * Note: The 'native' driver (animations-react-native) doesn't support avoidReRenders/useStyleEmitter,
- * so these tests are skipped for that driver.
  */
 
 async function getScale(page: Page, testId: string): Promise<number> {
@@ -39,12 +36,7 @@ async function getTranslateX(page: Page, testId: string): Promise<number> {
 }
 
 test.describe('Animations With Media Queries', () => {
-  test.beforeEach(async ({ page }, testInfo) => {
-    // Skip native driver - it doesn't support useStyleEmitter (avoidReRenders)
-    test.skip(
-      testInfo.project.name === 'animated-native',
-      'Native driver does not support avoidReRenders/useStyleEmitter'
-    )
+  test.beforeEach(async ({ page }) => {
     await setupPage(page, { name: 'AnimationsWithMediaQueriesCase', type: 'useCase' })
   })
 

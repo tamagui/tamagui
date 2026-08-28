@@ -200,6 +200,14 @@ import { defaultConfig } from '@tamagui/config/v6'
 import { createAnimations } from '@tamagui/animations-reanimated'
 ```
 
+### Replace the React Native animation driver on web
+
+V3 keeps `@tamagui/animations-react-native` on native and removes its web
+implementation. A web config that calls its `createAnimations` now throws during
+setup. Choose `@tamagui/animations-css`, `@tamagui/animations-motion`, or
+`@tamagui/animations-reanimated` for web. Use platform-specific config files if the
+same application keeps `@tamagui/animations-react-native` on native.
+
 Remove `@tamagui/babel-plugin` from Babel configuration and dependencies. Vite
 and Metro perform compilation through their dedicated plugins:
 

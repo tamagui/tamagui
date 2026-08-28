@@ -106,7 +106,7 @@ The kitchen-sink package contains the main integration tests for Tamagui compone
    bun run test:web
    ```
 
-   This uses `run-tests-parallel.ts` which first runs `default` + `webkit` projects sequentially, then runs all four animated driver projects (`css`, `native`, `reanimated`, `motion`) in parallel against a single shared dev server.
+   This uses `run-tests-parallel.ts` which first runs `default` + `webkit` projects sequentially, then runs the three animated web driver projects (`css`, `reanimated`, `motion`) in parallel against a single shared dev server.
 
 3. **Run tests with a specific animation driver**:
 
@@ -115,7 +115,7 @@ The kitchen-sink package contains the main integration tests for Tamagui compone
    cd code/kitchen-sink
    NODE_ENV=test TAMAGUI_TEST_ANIMATION_DRIVER=css npx playwright test --project=animated-css
 
-   # Available projects: animated-css, animated-native, animated-reanimated, animated-motion
+   # Available projects: animated-css, animated-reanimated, animated-motion
    ```
 
 4. **Run a specific test file**:
@@ -141,9 +141,9 @@ The kitchen-sink package contains the main integration tests for Tamagui compone
 Tests are located in `code/kitchen-sink/tests/` and follow these naming conventions:
 
 - `ComponentName.test.tsx` - Standard tests that run ONCE with the default animation driver
-- `ComponentName.animated.test.tsx` - Animation-dependent tests that run with ALL animation drivers (css, native, reanimated, motion)
+- `ComponentName.animated.test.tsx` - Animation-dependent tests that run with all web animation drivers (css, reanimated, motion)
 
-This separation significantly speeds up the test suite since most tests don't need to run 4x across all animation drivers. Only use `.animated.test.tsx` for tests that specifically verify animation behavior across different drivers.
+This separation significantly speeds up the test suite since most tests don't need to run three times across all web animation drivers. Only use `.animated.test.tsx` for tests that specifically verify animation behavior across different drivers.
 
 ### Writing Tests
 

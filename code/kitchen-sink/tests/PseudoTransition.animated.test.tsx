@@ -10,7 +10,7 @@ import { setupPage } from './test-utils'
  * - Enter pseudo state (e.g., hover): use that pseudo's transition (200ms)
  * - Exit pseudo state (e.g., unhover): use base transition (1000ms)
  *
- * These tests run across all animation drivers (css, native, reanimated, motion).
+ * These tests run across all web animation drivers (css, reanimated, motion).
  */
 
 async function getBackgroundColor(page: Page, testId: string): Promise<string> {
@@ -41,9 +41,6 @@ function parseRgb(color: string): { r: number; g: number; b: number } | null {
 
 test.describe('Pseudo Transition Tests', () => {
   test.beforeEach(async ({ page }) => {
-    const driver = (test.info().project?.metadata as any)?.animationDriver
-    test.skip(driver === 'native', 'native driver has issues on web')
-
     await setupPage(page, {
       name: 'PseudoTransitionCase',
       type: 'useCase',

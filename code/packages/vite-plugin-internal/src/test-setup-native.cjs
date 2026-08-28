@@ -3,8 +3,12 @@
 delete process.env.IS_STATIC
 
 const Module = require('module')
+const { dirname, join } = require('node:path')
 const originalRequire = Module.prototype.require
 const React = require('react')
+const animationsReactNativeRoot = dirname(
+  require.resolve('@tamagui/animations-react-native/package.json')
+)
 
 // mock for usePressability - returns empty event handlers object
 const usePressabilityMock = { default: () => ({}) }
@@ -25,6 +29,16 @@ const safeAreaContextMock = {
 }
 
 Module.prototype.require = function (id) {
+  if (id === '@tamagui/animations-react-native') {
+    originalRequire.call(
+      this,
+      join(animationsReactNativeRoot, 'dist/cjs/polyfill.native.cjs')
+    )
+    return originalRequire.call(
+      this,
+      join(animationsReactNativeRoot, 'dist/cjs/createAnimations.native.cjs')
+    )
+  }
   if (
     id === 'react-native-safe-area-context' ||
     id.startsWith('react-native-safe-area-context/')

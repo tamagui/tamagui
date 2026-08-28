@@ -3,7 +3,7 @@ import { createAnimations as createAnimationsMotion } from '@tamagui/animations-
 import { createAnimations as createAnimationsNative } from '@tamagui/animations-react-native'
 import { createAnimations as createAnimationsReanimated } from '@tamagui/animations-reanimated'
 import { defaultConfig } from '@tamagui/config/v6'
-import { createTamagui } from '@tamagui/core'
+import { createTamagui, isWeb } from '@tamagui/core'
 import type { InferTamaguiConfig } from '@tamagui/web'
 import { themeDev, type TamaguiThemes } from './themes/theme.dev'
 
@@ -126,102 +126,104 @@ export const animationsMotion = createAnimationsMotion({
   },
 })
 
-export const animationsNative = createAnimationsNative({
-  '0ms': {
-    type: 'timing',
-    duration: 0,
-  },
-  '30ms': {
-    type: 'timing',
-    duration: 30,
-  },
-  '50ms': {
-    type: 'timing',
-    duration: 50,
-  },
-  '75ms': {
-    type: 'timing',
-    duration: 75,
-  },
-  '100ms': {
-    type: 'timing',
-    duration: 100,
-  },
-  '200ms': {
-    type: 'timing',
-    duration: 200,
-  },
-  '250ms': {
-    type: 'timing',
-    duration: 250,
-  },
-  '300ms': {
-    type: 'timing',
-    duration: 300,
-  },
-  '400ms': {
-    type: 'timing',
-    duration: 400,
-  },
-  '500ms': {
-    type: 'timing',
-    duration: 500,
-  },
-  '1000ms': {
-    type: 'timing',
-    duration: 1000,
-  },
-  // ultra-slow for testing animation smoothness
-  '5000ms': {
-    type: 'timing',
-    duration: 5000,
-  },
-  bouncy: {
-    type: 'spring',
-    damping: 9,
-    mass: 0.9,
-    stiffness: 150,
-  },
-  lazy: {
-    type: 'spring',
-    damping: 18,
-    stiffness: 50,
-  },
-  slow: {
-    type: 'spring',
-    damping: 15,
-    stiffness: 40,
-  },
-  quick: {
-    type: 'spring',
-    damping: 20,
-    mass: 1.2,
-    stiffness: 250,
-  },
-  quicker: {
-    type: 'spring',
-    damping: 20,
-    mass: 1,
-    stiffness: 300,
-  },
-  quickest: {
-    type: 'spring',
-    damping: 14,
-    mass: 0.1,
-    stiffness: 380,
-  },
-  medium: {
-    damping: 15,
-    stiffness: 120,
-    mass: 1,
-  },
-  tooltip: {
-    type: 'spring',
-    damping: 10,
-    mass: 0.9,
-    stiffness: 100,
-  },
-})
+export const animationsNative = !isWeb
+  ? createAnimationsNative({
+      '0ms': {
+        type: 'timing',
+        duration: 0,
+      },
+      '30ms': {
+        type: 'timing',
+        duration: 30,
+      },
+      '50ms': {
+        type: 'timing',
+        duration: 50,
+      },
+      '75ms': {
+        type: 'timing',
+        duration: 75,
+      },
+      '100ms': {
+        type: 'timing',
+        duration: 100,
+      },
+      '200ms': {
+        type: 'timing',
+        duration: 200,
+      },
+      '250ms': {
+        type: 'timing',
+        duration: 250,
+      },
+      '300ms': {
+        type: 'timing',
+        duration: 300,
+      },
+      '400ms': {
+        type: 'timing',
+        duration: 400,
+      },
+      '500ms': {
+        type: 'timing',
+        duration: 500,
+      },
+      '1000ms': {
+        type: 'timing',
+        duration: 1000,
+      },
+      // ultra-slow for testing animation smoothness
+      '5000ms': {
+        type: 'timing',
+        duration: 5000,
+      },
+      bouncy: {
+        type: 'spring',
+        damping: 9,
+        mass: 0.9,
+        stiffness: 150,
+      },
+      lazy: {
+        type: 'spring',
+        damping: 18,
+        stiffness: 50,
+      },
+      slow: {
+        type: 'spring',
+        damping: 15,
+        stiffness: 40,
+      },
+      quick: {
+        type: 'spring',
+        damping: 20,
+        mass: 1.2,
+        stiffness: 250,
+      },
+      quicker: {
+        type: 'spring',
+        damping: 20,
+        mass: 1,
+        stiffness: 300,
+      },
+      quickest: {
+        type: 'spring',
+        damping: 14,
+        mass: 0.1,
+        stiffness: 380,
+      },
+      medium: {
+        damping: 15,
+        stiffness: 120,
+        mass: 1,
+      },
+      tooltip: {
+        type: 'spring',
+        damping: 10,
+        mass: 0.9,
+        stiffness: 100,
+      },
+    })
+  : (undefined as never)
 
 export const animationsReanimated = createAnimationsReanimated({
   '0ms': {
@@ -346,13 +348,11 @@ const search = (typeof window !== 'undefined' && globalThis.location?.search) ||
 
 const animations = search.includes('animationDriver=css')
   ? animationsCSS
-  : search.includes('animationDriver=native')
-    ? animationsNative
-    : search.includes('animationDriver=motion')
-      ? animationsMotion
-      : search.includes('animationDriver=multi')
-        ? animationsMultiDriver
-        : animationsReanimated
+  : search.includes('animationDriver=motion')
+    ? animationsMotion
+    : search.includes('animationDriver=multi')
+      ? animationsMultiDriver
+      : animationsReanimated
 
 /**
  * A language variant of the body font, for FontLanguageSwapCase.

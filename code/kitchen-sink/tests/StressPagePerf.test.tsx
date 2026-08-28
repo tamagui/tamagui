@@ -33,7 +33,7 @@ test('StressPage mount profiling', async ({ page }) => {
   // heavy: RELOADS full mounts of ~200 components in dev webpack
   test.setTimeout(150_000)
 
-  const url = `/?theme=light&animationDriver=native&test=StressPage&profile=true`
+  const url = `/?theme=light&animationDriver=css&test=StressPage&profile=true`
 
   const times: number[] = []
   let lastBreakdown: Record<string, number> | null = null
