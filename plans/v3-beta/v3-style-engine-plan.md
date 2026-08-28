@@ -45,6 +45,16 @@ deletion but underpriced the retained plumbing that replaces it."
 Each is checkable by reading the code and cannot be satisfied by shaving
 something unrelated.
 
+**Owner ruling (Nate via r4674, 2026-08-28): invariant 1's single-scan /
+no-reparse rule is RELAXED on rare composition paths.** Compounds and HOC
+transport may re-scan condition spans, so the atom-replay and transport
+machinery the strict form forced is deleted. The revised gate: timing >= base
+(met at parity within noise) and size driven as low as the deletes reach,
+with a +2.0-2.5K residual acceptable, financed by the campaign's banked wins.
+B's byte/timing delta is quantified in `streaming-receipts.md` before and
+after; a measurable corpus regression from re-scanning is reported, not
+absorbed.
+
 1. Every authored string is walked by exactly one character loop per pass.
 2. Exactly one conditional-object discriminator exists.
 3. Exactly one transform accumulator exists.
