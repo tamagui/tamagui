@@ -591,6 +591,16 @@ export const PopoverContent = createStyledHOC(
         </View>
       </PopoverPortal>
     )
+  },
+  {
+    staticConfig: {
+      inlineProps: new Set([
+        ...(PopperContentFrame.staticConfig.inlineProps || []),
+        'zIndex',
+        'opacity',
+        'y',
+      ]),
+    },
   }
 )
 
