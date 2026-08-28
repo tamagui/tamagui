@@ -3523,6 +3523,44 @@ function tokenVariable(
   return token ? fillTokenLookup(token, false, lookupName) : undefined
 }
 
+// literal strings dominate authored values, and each pays tokenVariable's
+// full miss path (category probe, sibling scans, theme lookups). Remember the
+// misses per (config revision, theme record, theme name); a supported registry
+// mutation bumps the revision and swaps the whole cache. Font-keyed
+// properties resolve through mutable per-pass fontFamily state and stay
+// uncached.
+let literalMissConf: unknown = null
+let literalMissRevision = -1
+let literalMisses = new WeakMap<object, Set<string>>()
+const literalMissRootTheme: object = {}
+
+function isFontKeyedProperty(property: string) {
+  return (
+    property === 'fontFamily' ||
+    property === 'fontSize' ||
+    property === 'fontWeight' ||
+    property === 'lineHeight' ||
+    property === 'letterSpacing'
+  )
+}
+
+function literalMissSet(state: GetStyleState): Set<string> {
+  const revision = getConfigRevisionState(state.conf).revision
+  if (state.conf !== literalMissConf || revision !== literalMissRevision) {
+    literalMissConf = state.conf
+    literalMissRevision = revision
+    literalMisses = new WeakMap()
+  }
+  const themeKey =
+    state.theme && typeof state.theme === 'object' ? state.theme : literalMissRootTheme
+  let set = literalMisses.get(themeKey)
+  if (!set) {
+    set = new Set()
+    literalMisses.set(themeKey, set)
+  }
+  return set
+}
+
 function configuredValue(state: GetStyleState, property: string, raw: string): any {
   let name = raw
   let opacity: number | undefined
@@ -3541,8 +3579,18 @@ function configuredValue(state: GetStyleState, property: string, raw: string): a
     return safeArea
   }
 
+  const cacheable = !isFontKeyedProperty(property)
+  let misses: Set<string> | undefined
+  let missKey = ''
+  if (cacheable) {
+    misses = literalMissSet(state)
+    missKey = `${state.flatThemeName || ''}\u001f${property}\u001f${name}`
+    if (misses.has(missKey)) return raw
+  }
+
   const lookup = tokenVariable(state, property, name)
   if (!lookup || !isVariable(lookup.value)) {
+    if (misses) misses.add(missKey)
     if (
       process.env.NODE_ENV === 'development' &&
       tokenCategoryByProperty[property] &&
