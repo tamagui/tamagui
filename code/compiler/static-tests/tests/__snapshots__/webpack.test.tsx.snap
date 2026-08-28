@@ -6,7 +6,7 @@ exports[`webpack-tests > 1. extracts to a div for simple views, flat transforms 
     class="_dsp_contents  font_body"
   >
     <div
-      class="is_View _s-1524280249 _fd-1155724988 _fg-169839737 _fs-1866857425 _fb-1102215147 _btlr-1542637521 _btrr-423228146 _bbrr-298983462 _bblr-1647959011 _bc-913050308 _bs-1155467371 _tsx-1322694990 _tsy-484759473 test1"
+      class="is_View _s-1524280249 _fd-1155724988 _fg-169839737 _fs-1866857425 _fb-1628162253 _btlr-710936969 _btrr-1299648406 _bbrr-439705442 _bblr-1154319061 _bc-913050308 _bs-1155467371 _tsx-1322694990 _tsy-484759473 test1"
     >
       <span
         class="is_Text _c-533586090"
@@ -30,7 +30,7 @@ exports[`webpack-tests > 2. extracts className for complex views but keeps other
       class="is_View _fd-1289797684 _ox-1551223136 _oy-936289697 who"
     />
     <div
-      class="is_View _fd-1289797684 _bc-1757859160 _pt-2069939088 _pb-1524626230 _t-1224251461 ease-in-out-top"
+      class="is_View _fd-1289797684 _bc-1757859160 _pt-641601928 _pb-581962686 _t-315388675 ease-in-out-top"
     >
       <span
         class="is_Text _c-533586090"
@@ -54,7 +54,7 @@ exports[`webpack-tests > 2. extracts className for complex views but keeps other
       class="is_View _fd-1289797684 _ox-1551223136 _oy-936289697 who"
     />
     <div
-      class="is_View _fd-1289797684 _bc-1757805538 _pt-2069939088 _pb-1524626230 _t-874702747 ease-in-out-top"
+      class="is_View _fd-1289797684 _bc-1757805538 _pt-641601928 _pb-581962686 _t-1224246557 ease-in-out-top"
     >
       <span
         class="is_Text _c-533586090"
@@ -136,10 +136,10 @@ exports[`webpack-tests > 7. ternary + data-is 1`] = `
     class="_dsp_contents  font_body"
   >
     <div
-      class="is_View _fd-1155724988 _pr-1809296233 _pl-2102898680 _pb-18772891 _w-1519751041 _mw-508654819 _mw-1313653272"
+      class="is_View _fd-1155724988 _pr-728071375 _pl-2043961344 _pb-860882659 _w-1519751041 _mw-808987093 _mw-1313653272"
     >
       <div
-        class="is_View _fd-1155724988 _w-1850139707 _h-1617811780"
+        class="is_View _fd-1155724988 _w-132205709 _h-61036980"
       />
     </div>
     <div
@@ -155,13 +155,13 @@ exports[`webpack-tests > 8. styleExpansions 1`] = `
     class="_dsp_contents  font_body"
   >
     <div
-      class="is_View _fd-1155724988 _t-874702747 _r-1632656972 _b-642571495 _l-1752074805 _p-1627881459"
+      class="is_View _fd-1155724988 _t-1224246557 _r-1320283460 _b-964080337 _l-116703981 _p-1627881459"
     >
       <div
         class="is_View _fd-1155724988 _bc-913050308"
       >
         <div
-          class="is_View _fd-1155724988 _t-874702747 _r-1632656972 _b-642571495 _l-1752074805 _p-1627881459 _bc-1710635990"
+          class="is_View _fd-1155724988 _t-1224246557 _r-1320283460 _b-964080337 _l-116703981 _p-1627881459 _bc-1710635990"
         />
       </div>
     </div>
@@ -178,7 +178,7 @@ exports[`webpack-tests > 9. combines with classname 1`] = `
     class="_dsp_contents  font_body"
   >
     <div
-      class="is_View _fd-1155724988 _pt-256397734 _pb-18772896 home-top-dish"
+      class="is_View _fd-1155724988 _pt-1585090094 _pb-860887464 home-top-dish"
     />
     <div
       style="display: contents;"
@@ -193,13 +193,13 @@ exports[`webpack-tests > 10. extracts Text 1`] = `
     class="_dsp_contents  font_body"
   >
     <span
-      class="is_Text _c-533586090 _fs-560135987"
+      class="is_Text _c-533586090 _fs-1419767915"
     >
       <span
         class="is_Text _c-533586090 _us-1298715756"
       >
         <span
-          class="is_Text _c-881754320 _fs-560135982 _fw-509159631"
+          class="is_Text _c-881754320 _fs-1419763110 _fw-509159631"
         >
           hello
         </span>
@@ -251,7 +251,7 @@ exports[`webpack-tests > 15. extracts spacer (complex expansion) 1`] = `
       class="is_Spacer is_View _pe-635873870 _w-1165502445 _h-629679316 _mw-1243015271 _mh-2015682816"
     />
     <span
-      class="is_Spacer is_View _pe-635873870 _fg-169839737 _fs-1866857425 _fb-1102215147 _w-1770834802 _h-1954775059 _mw-121229638 _mh-1938344769"
+      class="is_Spacer is_View _pe-635873870 _fg-169839737 _fs-1866857425 _fb-1628162253 _w-1770834802 _h-1954775059 _mw-121229638 _mh-1938344769"
     />
     <div
       style="display: contents;"
@@ -266,7 +266,7 @@ exports[`webpack-tests > 16. deopt when spreading multiple 1`] = `
     class="_dsp_contents  font_body"
   >
     <div
-      class="is_View _fd-1155724988 _fg-169839737 _fs-1866857425 _fb-1102215147 _bc-913050308"
+      class="is_View _fd-1155724988 _fg-169839737 _fs-1866857425 _fb-1628162253 _bc-913050308"
     />
     <div
       style="display: contents;"
@@ -369,10 +369,10 @@ exports[`webpack-tests > 21. complex real-world case - flexWrap with many condit
     class="_dsp_contents  font_body"
   >
     <div
-      class="is_View _btlr-2062174463 _btrr-1782469730 _bbrr-1259689622 _bblr-553360973 _fd-1155724988 _fb-1066543801 _mw-2068604972 _ox-1551223136 _oy-936289697 _pt-2069939086 _pr-630016113 _pb-1524626232 _pl-473107995 _w-1519754874 _bc-591996859 _c-1655764817"
+      class="is_View _btlr-2062174463 _btrr-1782469730 _bbrr-1259689622 _bblr-553360973 _fd-1155724988 _fb-1066543801 _mw-2068604972 _ox-1551223136 _oy-936289697 _pt-641600006 _pr-830667079 _pb-581964608 _pl-315787027 _w-195549682 _bc-591996859 _c-1655764817"
     >
       <div
-        class="is_View _fw-381719595 _fd-1289797684 _g-489594494 _jc-2146749355"
+        class="is_View _fw-381719595 _fd-1289797684 _g-1946090234 _jc-2146749355"
       >
         <span
           class="is_Text _c-533586090"
@@ -394,10 +394,10 @@ exports[`webpack-tests > 21. complex real-world case - flexWrap with many condit
     class="_dsp_contents  font_body"
   >
     <div
-      class="is_View _btlr-2062174463 _btrr-1782469730 _bbrr-1259689622 _bblr-553360973 _fd-1155724988 _fb-1068042260 _mw-2068604972 _ox-1551223136 _oy-936289697 _pt-2069939086 _pr-630016113 _pb-1524626232 _pl-473107995 _w-1519754874 _bc-591996859 _c-1655764817"
+      class="is_View _btlr-2062174463 _btrr-1782469730 _bbrr-1259689622 _bblr-553360973 _fd-1155724988 _fb-1068042260 _mw-2068604972 _ox-1551223136 _oy-936289697 _pt-641600006 _pr-830667079 _pb-581964608 _pl-315787027 _w-195549682 _bc-591996859 _c-1655764817"
     >
       <div
-        class="is_View _fw-381719595 _fd-1289797684 _g-489594494 _jc-658029924"
+        class="is_View _fw-381719595 _fd-1289797684 _g-1946090234 _jc-658029924"
       >
         <span
           class="is_Text _c-533586090"
@@ -445,7 +445,7 @@ exports[`webpack-tests > 23. inert animatedBy selector flattens with group style
       data-testid="animated-group"
     >
       <div
-        class="is_View _fd-1155724988 _w-1519756021 _bc-379219232"
+        class="is_View _fd-1155724988 _w-196651949 _bc-379219232"
         data-testid="animated-group-child"
       />
     </div>

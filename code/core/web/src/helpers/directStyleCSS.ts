@@ -12,6 +12,7 @@ import {
   getCSSStyleAtomic,
   type AtomicSlotEntry,
 } from './getCSSStylesAtomic'
+import { normalizeValueWithProperty } from './normalizeValueWithProperty'
 import { shouldInsertStyleRules, updateRules } from './insertStyleRule'
 import { transformsToString } from './transformsToString'
 
@@ -100,12 +101,33 @@ function registerSlot(
   atomicKey: string,
   entries: readonly AtomicSlotEntry[]
 ) {
-  let signature = ''
+  // identity derives from the slot's winning content AFTER normalization and
+  // AFTER ordering (base first, conditionals ascending precedence): the same
+  // final rules are the same class, whatever order they were contributed in
+  const ordered: AtomicSlotEntry[] = []
   for (let index = 0; index < entries.length; index++) {
     const entry = entries[index]
+    let value = entry.value
+    if (entry.property === 'transform' && Array.isArray(value)) {
+      value = transformsToString(value)
+    }
+    ;(entry as AtomicSlotEntry).value = normalizeValueWithProperty(value, entry.property)
+    const precedence = entry.condition ? Math.floor(entry.condition / 256) : -1
+    let insertAt = ordered.length
+    while (insertAt > 0) {
+      const before = ordered[insertAt - 1]
+      const beforePrecedence = before.condition ? Math.floor(before.condition / 256) : -1
+      if (beforePrecedence <= precedence) break
+      insertAt--
+    }
+    ordered.splice(insertAt, 0, entry)
+  }
+  let signature = ''
+  for (let index = 0; index < ordered.length; index++) {
+    const entry = ordered[index]
     signature += directStyleSignature(entry.property, entry.value, entry.identity)
   }
-  const built = buildAtomicSlotCSS(atomicKey, entries, signature)
+  const built = buildAtomicSlotCSS(atomicKey, ordered, signature)
   if (!built) return
   const styleObject: StyleObject = [
     atomicKey,
