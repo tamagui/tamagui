@@ -71,8 +71,7 @@ export function requestBorderStyleDefault(
     condition: cursor ? cursor.condition : 0,
     identity,
     selector: cursor ? cursor.selector : '',
-    wrappers:
-      cursor && cursor.wrappers.length ? cursor.wrappers.slice() : undefined,
+    wrappers: cursor && cursor.wrappers.length ? cursor.wrappers.slice() : undefined,
     original: 'solid',
     forceCSS: false,
     sequence: 0,

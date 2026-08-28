@@ -2763,8 +2763,7 @@ function frameWrite(
     condition,
     identity,
     selector: cursor ? cursor.selector : '',
-    wrappers:
-      cursor && cursor.wrappers.length ? cursor.wrappers.slice() : undefined,
+    wrappers: cursor && cursor.wrappers.length ? cursor.wrappers.slice() : undefined,
     original,
     forceCSS,
     sequence: weak ? 0 : ++frameSequence,
@@ -3645,14 +3644,7 @@ function emitProperty(
     if (!condition) {
       if (state.style) delete state.style[property]
     }
-    frameWrite(
-      state,
-      property,
-      value,
-      cursor,
-      originalValue,
-      !state.flatShouldDoClasses
-    )
+    frameWrite(state, property, value, cursor, originalValue, !state.flatShouldDoClasses)
     return
   }
 
@@ -3780,42 +3772,18 @@ function emitBorder(
   if (style === 'none' && width === undefined) width = '0'
   if (width !== undefined) {
     for (const target of targets.width) {
-      emitResolved(
-        state,
-        target,
-        width,
-        cursor,
-        merge,
-        originalValue,
-        contextOnly
-      )
+      emitResolved(state, target, width, cursor, merge, originalValue, contextOnly)
     }
   }
   if (style !== undefined) {
     const styleTargets = !isWeb && property === 'border' ? ['borderStyle'] : targets.style
     for (const target of styleTargets) {
-      emitProperty(
-        state,
-        target,
-        style,
-        cursor,
-        merge,
-        originalValue,
-        contextOnly
-      )
+      emitProperty(state, target, style, cursor, merge, originalValue, contextOnly)
     }
   }
   if (color !== undefined) {
     for (const target of targets.color) {
-      emitResolved(
-        state,
-        target,
-        color,
-        cursor,
-        merge,
-        originalValue,
-        contextOnly
-      )
+      emitResolved(state, target, color, cursor, merge, originalValue, contextOnly)
     }
   }
 }
@@ -3842,15 +3810,7 @@ function emitTextDecoration(
             part === 'none'
           ? 'textDecorationLine'
           : 'textDecorationColor'
-    emitResolved(
-      state,
-      property,
-      part,
-      cursor,
-      merge,
-      originalValue,
-      contextOnly
-    )
+    emitResolved(state, property, part, cursor, merge, originalValue, contextOnly)
   }
 }
 
@@ -3864,15 +3824,7 @@ function emitTransform(
   contextOnly: boolean
 ) {
   if (!canGenerateCSS || !state.flatShouldDoClasses) {
-    emitProperty(
-      state,
-      property,
-      value,
-      cursor,
-      merge,
-      originalValue,
-      contextOnly
-    )
+    emitProperty(state, property, value, cursor, merge, originalValue, contextOnly)
     return
   }
 
@@ -3896,15 +3848,7 @@ function emitTransform(
       if (target === '--t-x' || target === '--t-y') targetValue = `${targetValue}px`
       else if (target === 'rotate') targetValue = `${targetValue}deg`
     }
-    emitProperty(
-      state,
-      target,
-      targetValue,
-      cursor,
-      merge,
-      originalValue,
-      contextOnly
-    )
+    emitProperty(state, target, targetValue, cursor, merge, originalValue, contextOnly)
     if (target === '--t-x' || target === '--t-y') addComposition(state, 'translate')
     else if (target.startsWith('--t-scale')) addComposition(state, 'scale')
   }
@@ -3929,15 +3873,7 @@ function emitResolved(
       value = Number(value)
     }
   }
-  emitProperty(
-    state,
-    property,
-    value,
-    cursor,
-    merge,
-    originalValue,
-    contextOnly
-  )
+  emitProperty(state, property, value, cursor, merge, originalValue, contextOnly)
 }
 
 function shadowUnit(part: any) {
@@ -4090,26 +4026,11 @@ function emitValue(
   }
 
   if (typeof raw === 'string' && property in borderTargets) {
-    emitBorder(
-      state,
-      property,
-      raw,
-      cursor,
-      merge,
-      originalValue,
-      contextOnly
-    )
+    emitBorder(state, property, raw, cursor, merge, originalValue, contextOnly)
     return
   }
   if (typeof raw === 'string' && property === 'textDecoration') {
-    emitTextDecoration(
-      state,
-      raw,
-      cursor,
-      merge,
-      originalValue,
-      contextOnly
-    )
+    emitTextDecoration(state, raw, cursor, merge, originalValue, contextOnly)
     return
   }
   if (typeof raw === 'string' && property === 'background') {
@@ -4174,15 +4095,7 @@ function emitValue(
         value = Number(value)
       }
     }
-    emitTransform(
-      state,
-      property,
-      value,
-      cursor,
-      merge,
-      originalValue,
-      contextOnly
-    )
+    emitTransform(state, property, value, cursor, merge, originalValue, contextOnly)
     return
   }
 
@@ -4190,25 +4103,9 @@ function emitValue(
     // css reads the shorthand, so skip the four-corner expansion here. a string
     // value still needs its token resolved, which is what emitResolved does.
     if (typeof raw === 'string') {
-      emitResolved(
-        state,
-        property,
-        raw,
-        cursor,
-        merge,
-        originalValue,
-        contextOnly
-      )
+      emitResolved(state, property, raw, cursor, merge, originalValue, contextOnly)
     } else {
-      emitProperty(
-        state,
-        property,
-        raw,
-        cursor,
-        merge,
-        originalValue,
-        contextOnly
-      )
+      emitProperty(state, property, raw, cursor, merge, originalValue, contextOnly)
     }
     return
   }
@@ -4220,15 +4117,7 @@ function emitValue(
   ) {
     const transform = parseNativeTransform(raw)
     if (transform) {
-      emitProperty(
-        state,
-        property,
-        transform,
-        cursor,
-        merge,
-        originalValue,
-        contextOnly
-      )
+      emitProperty(state, property, transform, cursor, merge, originalValue, contextOnly)
       return
     }
   }
@@ -4267,15 +4156,7 @@ function emitValue(
     if (parsed) {
       if (property === 'textShadow') {
         for (const [key, parsedValue] of parsed) {
-          emitProperty(
-            state,
-            key,
-            parsedValue,
-            cursor,
-            merge,
-            originalValue,
-            contextOnly
-          )
+          emitProperty(state, key, parsedValue, cursor, merge, originalValue, contextOnly)
         }
       } else {
         emitProperty(
@@ -4308,15 +4189,7 @@ function emitValue(
     ? null
     : expandStyle(property, value, state.conf.settings.styleCompat || 'web')
   if (!expanded) {
-    emitProperty(
-      state,
-      property,
-      value,
-      cursor,
-      merge,
-      originalValue,
-      contextOnly
-    )
+    emitProperty(state, property, value, cursor, merge, originalValue, contextOnly)
     return
   }
 
