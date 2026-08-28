@@ -15,7 +15,11 @@ export { getDefaultProps } from './helpers/getDefaultProps'
 export { getCSSStylesAtomic } from './helpers/getCSSStylesAtomic'
 export { getExpandedShorthand } from './helpers/getExpandedShorthands'
 export { formatDiagnostic } from './helpers/formatDiagnostic'
-export { getSplitStyles, isValidStyleKey } from './helpers/getSplitStyles'
+export {
+  getSplitStyles,
+  isValidStyleKey,
+  prepareStyleStaticConfig,
+} from './helpers/getSplitStyles'
 export {
   setNativeStyleEngine,
   getNativeStyleEngine,

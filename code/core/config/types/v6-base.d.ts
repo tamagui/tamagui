@@ -1,7 +1,7 @@
 import { shorthands } from '@tamagui/shorthands/v6';
 import type { CreateTamaguiProps } from '@tamagui/web';
 import { selectionStyles } from './settings';
-import { v6RemovedThemeNames, v6ThemeNameReplacements } from '@tamagui/style-grammar/runtime';
+import { v6RemovedThemeNames, v6ThemeNameReplacements } from '@tamagui/style-grammar/v6-themes';
 export { shorthands };
 export { createSystemFont } from './fonts';
 export { breakpoints, media, mediaQueryDefaultActive } from './media';
