@@ -2146,6 +2146,12 @@ export const getSplitStyles: StyleSplitter = (
     // resolved animation driver (respects animatedBy prop)
     animationDriver: resolvedDriver,
   }
+  if (canGenerateCSS && shouldDoClasses && styleProps.canPlatformPseudo) {
+    // a platform driver with native pseudo states may flip this whole pass
+    // inline once a platform-pseudo clause is discovered: defer CSS into
+    // slots so the policy stays choosable at completion
+    ;(styleState as DirectState).flatDeferCSS = true
+  }
 
   if (
     process.env.NODE_ENV === 'development' &&
@@ -2353,6 +2359,7 @@ export const getSplitStyles: StyleSplitter = (
       )
       styleState.transformAccumulator = undefined
     }
+    convertDeferredInline(styleState, mergeStyle)
   }
 
   // streaming already applied every winner; only the residue completes here
@@ -2793,6 +2800,9 @@ type DirectState = GetStyleState & {
   /** streaming winner per property: packed precedence + 1, base 0 */
   flatUsed?: Record<string, number>
   flatTransitions?: AtomicSlotEntry[]
+  flatSlots?: Record<string, AtomicSlotEntry[]>
+  flatBorderDefaultRequests?: AtomicSlotEntry[]
+  flatDeferCSS?: boolean
   flatAtomics?: Record<string, unknown>
   flatBoxShadow?: any
   flatBoxShadowSequence?: number
@@ -2824,6 +2834,7 @@ function streamWriteCSS(
   property: string,
   value: any,
   cursor: ConditionCursor | null,
+  original?: any,
   conditionOverride = -1
 ) {
   const direct = state as DirectState
@@ -2866,7 +2877,8 @@ function streamWriteCSS(
     cursor ? conditionWrappers : undefined,
     cursor ? conditionNumbers[cursor + conditionWrapperOffset] >> 3 : 0,
     cursor ? conditionNumbers[cursor + conditionWrapperOffset] & 7 : 0,
-    direct.flatWeakContribution === true
+    direct.flatWeakContribution === true,
+    original
   )
 }
 
@@ -2923,6 +2935,46 @@ function streamRetractInline(
   if (previous !== undefined && previous > importance) return
   used[property] = importance
   if (state.style) delete state.style[property]
+}
+
+/**
+ * A platform driver flipped the pass inline: the deferred slots resolve to
+ * per-property winners through the ordinary streaming comparator and merge,
+ * exactly as if they had streamed inline from the start.
+ */
+function convertDeferredInline(state: GetStyleState, merge: MergeStyle) {
+  const direct = state as DirectState
+  const used = (direct.flatUsed ||= {})
+  const consume = (entries: AtomicSlotEntry[]) => {
+    for (let index = 0; index < entries.length; index++) {
+      const entry = entries[index]
+      const condition = entry.condition
+      if (condition && !(condition & 1)) continue
+      const importance = condition ? Math.floor(condition / 256) + 1 : 0
+      const previous = used[entry.property]
+      if (previous !== undefined && previous > importance) continue
+      used[entry.property] = importance
+      merge(
+        state,
+        entry.property,
+        entry.value,
+        1,
+        true,
+        entry.original !== undefined ? entry.original : entry.value
+      )
+    }
+  }
+  const slots = direct.flatSlots
+  if (slots) {
+    direct.flatSlots = undefined
+    for (const property in slots) consume(slots[property])
+  }
+  const transitions = direct.flatTransitions
+  if (transitions) {
+    direct.flatTransitions = undefined
+    consume(transitions)
+  }
+  direct.flatBorderDefaultRequests = undefined
 }
 
 /**
@@ -3756,7 +3808,7 @@ function emitProperty(
     if (!condition) {
       if (state.style) delete state.style[property]
     }
-    streamWriteCSS(state, property, value, cursor)
+    streamWriteCSS(state, property, value, cursor, originalValue)
     return
   }
 

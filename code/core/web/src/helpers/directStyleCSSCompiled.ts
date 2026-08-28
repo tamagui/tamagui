@@ -3,21 +3,6 @@ import type { GetStyleState } from '../types'
 export const canGenerateCSS = false
 export const directStyleSignature = () => ''
 
-// one style contribution in the neutral output frame (type-only here: the
-// compiled artifact completes every entry inline)
-export interface StyleFrameEntry {
-  property: string
-  value: any
-  condition: number
-  identity: string
-  selector: string
-  wrappers: string[] | undefined
-  original: any
-  forceCSS: boolean
-  sequence: number
-  normalize: boolean
-}
-
 export function streamAtomic(
   _state: GetStyleState,
   _property: string,
@@ -28,7 +13,8 @@ export function streamAtomic(
   _wrapperSource: readonly string[] | undefined,
   _wrapperStart: number,
   _wrapperCount: number,
-  _weak: boolean
+  _weak: boolean,
+  _original?: any
 ) {}
 export function completeStreamingCSS(_state: GetStyleState) {}
 export function requestBorderStyleDefault(

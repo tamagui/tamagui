@@ -143,6 +143,9 @@ export interface AtomicSlotEntry {
   identity: string
   selector: string
   wrappers: readonly string[] | undefined
+  /** authored value, carried only on deferred platform-pseudo passes so an
+   * inline conversion preserves provenance */
+  original?: any
 }
 
 const slotIdentities = new Map<string, Map<string, SlotIdentity>>()

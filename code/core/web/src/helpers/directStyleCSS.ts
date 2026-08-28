@@ -14,28 +14,9 @@ import { transformsToString } from './transformsToString'
 
 export const canGenerateCSS = isWeb && !process.env.TAMAGUI_DID_OUTPUT_CSS
 
-// one style contribution in the neutral output frame: winners land in slots
-// during the value pass; completion only serializes them
-export interface StyleFrameEntry {
-  property: string
-  value: any
-  condition: number
-  identity: string
-  selector: string
-  wrappers: string[] | undefined
-  original: any
-  /** written while the pass could not emit classes but this property must
-   * still become CSS (animated non-animatable style promotion) */
-  forceCSS: boolean
-  /** last-write order, breaks equal-precedence ties on the inline path */
-  sequence: number
-  /** run value normalization when the inline completion merges this entry */
-  normalize: boolean
-}
-
 type DirectAtomicState = GetStyleState & {
   flatAtomics?: Record<string, StyleObject>
-  flatBorderDefaultRequests?: StyleFrameEntry[]
+  flatBorderDefaultRequests?: AtomicSlotEntry[]
   flatTransitions?: AtomicSlotEntry[]
   /** first streamed entry per property when it carried a condition */
   flatSingleEntries?: Record<string, AtomicSlotEntry>
@@ -45,6 +26,9 @@ type DirectAtomicState = GetStyleState & {
   flatSlots?: Record<string, AtomicSlotEntry[]>
   /** the current value carries clauses: open the combined slot up front */
   flatExpectMulti?: boolean
+  /** a platform driver may flip this whole pass inline at completion: defer
+   * every contribution into slots so the policy stays choosable */
+  flatDeferCSS?: boolean
 }
 
 /**
@@ -86,10 +70,6 @@ export function requestBorderStyleDefault(
     identity,
     selector,
     wrappers,
-    original: 'solid',
-    forceCSS: false,
-    sequence: 0,
-    normalize: false,
   })
 }
 
@@ -175,7 +155,8 @@ function appendSlotEntry(
   wrapperSource: readonly string[] | undefined,
   wrapperStart: number,
   wrapperCount: number,
-  weak: boolean
+  weak: boolean,
+  original?: any
 ) {
   for (let index = 0; index < list.length; index++) {
     if (list[index].identity === identity) {
@@ -183,6 +164,7 @@ function appendSlotEntry(
       if (weak) return
       list[index].value = value
       list[index].condition = condition
+      list[index].original = original
       return
     }
   }
@@ -193,7 +175,7 @@ function appendSlotEntry(
       wrappers[index] = wrapperSource[wrapperStart + index]
     }
   }
-  list.push({ property, value, condition, identity, selector, wrappers })
+  list.push({ property, value, condition, identity, selector, wrappers, original })
 }
 
 /**
@@ -213,7 +195,8 @@ export function streamAtomic(
   wrapperSource: readonly string[] | undefined,
   wrapperStart: number,
   wrapperCount: number,
-  weak: boolean
+  weak: boolean,
+  original?: any
 ) {
   if (!canGenerateCSS) return
   const direct = state as DirectAtomicState
@@ -233,7 +216,8 @@ export function streamAtomic(
         wrapperSource,
         wrapperStart,
         wrapperCount,
-        weak
+        weak,
+        original
       )
       return
     }
@@ -258,7 +242,8 @@ export function streamAtomic(
         wrapperSource,
         wrapperStart,
         wrapperCount,
-        weak
+        weak,
+        original
       )
       return
     }
@@ -288,7 +273,8 @@ export function streamAtomic(
         wrapperSource,
         wrapperStart,
         wrapperCount,
-        weak
+        weak,
+        original
       )
       return
     }
@@ -298,10 +284,10 @@ export function streamAtomic(
     // an externally merged class owns the property; the styled-default
     // restore never displaces it
     return
-  } else if (direct.flatExpectMulti === true) {
-    // the value is known to carry more contributions for this property:
-    // open the combined slot directly, skipping a single build that the
-    // promotion would discard
+  } else if (direct.flatExpectMulti === true || direct.flatDeferCSS === true) {
+    // the value is known to carry more contributions for this property, or a
+    // platform driver may flip this pass inline at completion: open the
+    // combined slot directly instead of building a single class
     const list: AtomicSlotEntry[] = ((direct.flatSlots ||= {})[property] = [])
     appendSlotEntry(
       list,
@@ -313,7 +299,8 @@ export function streamAtomic(
       wrapperSource,
       wrapperStart,
       wrapperCount,
-      weak
+      weak,
+      original
     )
     return
   }
