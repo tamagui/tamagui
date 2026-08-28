@@ -1282,6 +1282,7 @@ export function createTamaguiCompilerHost(
     }
     process.env.TAMAGUI_TARGET = platform
     try {
+      core.prepareStyleStaticConfig(staticConfig)
       return core.getSplitStyles(
         props,
         staticConfig,

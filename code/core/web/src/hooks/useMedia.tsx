@@ -7,10 +7,12 @@ import { matchMedia } from '../helpers/matchMedia'
 import { mediaObjectToString } from '../helpers/mediaObjectToString'
 import {
   getMedia,
+  mediaKeyMatch,
   mediaKeys,
   mediaQueryConfig,
   setMediaState,
 } from '../helpers/mediaState'
+export { mediaKeyMatch } from '../helpers/mediaState'
 import type {
   ComponentContextI,
   DebugProp,
@@ -525,22 +527,4 @@ export function mediaKeyToQuery(key: string) {
     cachedMediaKeyToQuery[key] ||
     (cachedMediaKeyToQuery[key] = mediaObjectToString(mediaQueryConfig[key]))
   )
-}
-
-export function mediaKeyMatch(
-  key: string,
-  dimensions: { width: number; height: number }
-) {
-  const mediaQueries = mediaQueryConfig[key]
-  for (const query in mediaQueries) {
-    const expectedVal = +mediaQueries[query]
-    const isMax = query.startsWith('max')
-    const isWidth = query.endsWith('Width')
-    const givenVal = dimensions[isWidth ? 'width' : 'height']
-    // if not max then min
-    if (isMax ? givenVal >= expectedVal : givenVal <= expectedVal) {
-      return false
-    }
-  }
-  return true
 }

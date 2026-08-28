@@ -1,8 +1,8 @@
 import { isWeb } from '@tamagui/constants'
 import {
-  STYLE_FRONTEND_PASSTHROUGH_PREFIX,
-  createFrontendProgram,
   plainValueToPayload,
+  type FrontendClassPlan,
+  type FrontendClassPlanEntry,
   type StyleFrontendConfig,
 } from '@tamagui/core/internal-runtime'
 import {
@@ -306,7 +306,7 @@ function tailwindClassToFlatProp(
 // null = web-only candidate dropped on native. 'raw' = not claimed by the
 // grammar, caller preserves the class string. An array (which may legitimately be
 // empty) = claimed, apply these entries.
-type TailwindPlanEntry = [key: string | null, value: any]
+type TailwindPlanEntry = FrontendClassPlanEntry
 type TailwindClassPlan = TailwindPlanEntry[] | null | 'raw'
 type TailwindParentPlan = {
   entries: TailwindPlanEntry[]
@@ -334,13 +334,12 @@ function createPlanEntry(
   if (modifiers.length === 0) return [property, value]
   const payload = plainValueToPayload(value, property)
   if (payload === null) return null
-  return [
-    null,
-    createFrontendProgram(property, {
-      base: null,
-      clauses: [{ modifiers, payload }],
-    }),
-  ]
+  let condition = ''
+  for (let index = 0; index < modifiers.length; index++) {
+    if (index) condition += ':'
+    condition += modifiers[index]
+  }
+  return [property, payload, condition, modifiers]
 }
 
 function computeClassPlan(
@@ -405,7 +404,72 @@ function computeClassPlan(
   return 'raw'
 }
 
+export function getTailwindClassPlan(
+  candidate: string,
+  config: StyleFrontendConfig
+): FrontendClassPlan {
+  const grammarConfig = getStyleGrammarConfig(config)
+  const plans = getClassPlanCache(grammarConfig)
+  let plan = plans.get(candidate)
+  if (plan === undefined) {
+    plan = computeClassPlan(candidate, grammarConfig)
+    plans.set(candidate, plan)
+  }
+  return plan
+}
+
+export function resolveTailwindClassName(
+  className: string,
+  config: StyleFrontendConfig
+): Record<string, any> {
+  const result: Record<string, any> = {}
+  let rawClassName = ''
+  let start = 0
+  for (let index = 0; index <= className.length; index++) {
+    if (index !== className.length && className.charCodeAt(index) > 32) continue
+    if (start === index) {
+      start = index + 1
+      continue
+    }
+    const candidate = className.slice(start, index)
+    const plan = getTailwindClassPlan(candidate, config)
+    if (plan === 'raw') {
+      rawClassName = rawClassName ? `${rawClassName} ${candidate}` : candidate
+    } else if (plan) {
+      const parentPlan = plan as TailwindParentPlan
+      if (!Array.isArray(plan) && parentPlan.preserveRawClass) {
+        rawClassName = rawClassName ? `${rawClassName} ${candidate}` : candidate
+      }
+      const entries = Array.isArray(plan) ? plan : parentPlan.entries
+      for (let entryIndex = 0; entryIndex < entries.length; entryIndex++) {
+        const [key, value, condition] = entries[entryIndex]
+        const previous = result[key]
+        let next = value
+        if (condition !== undefined) {
+          next =
+            previous && typeof previous === 'object' && !Array.isArray(previous)
+              ? { ...previous, [condition]: value }
+              : previous === undefined
+                ? { [condition]: value }
+                : { default: previous, [condition]: value }
+        } else if (
+          previous &&
+          typeof previous === 'object' &&
+          !Array.isArray(previous)
+        ) {
+          next = { ...previous, default: value }
+        }
+        setInAuthoredOrder(result, key, next)
+      }
+    }
+    start = index + 1
+  }
+  if (rawClassName) result.className = rawClassName
+  return result
+}
+
 const warnedNativePassthroughCandidates = new Set<string>()
+const legacyPassthroughPrefix = '__tamagui_frontend_passthrough_'
 
 /**
  * Append a contribution at the end of the forward pass.
@@ -462,15 +526,21 @@ export function preprocessTailwindClassName(
 
   const preserveRawClass = (cls: string) => {
     if (hasOwnedStyleCandidate) {
-      result[`${STYLE_FRONTEND_PASSTHROUGH_PREFIX}${passthroughIndex++}`] = cls
+      result[`${legacyPassthroughPrefix}${passthroughIndex++}`] = cls
     } else {
       regularClasses.push(cls)
     }
   }
 
-  const applyEntry = ([key, value]: TailwindPlanEntry) => {
-    if (key === null) {
-      result[`__tamagui_frontend_program_${frontendProgramIndex++}`] = value
+  const applyEntry = ([key, value, condition, modifiers]: TailwindPlanEntry) => {
+    if (condition) {
+      result[`__tamagui_frontend_program_${frontendProgramIndex++}`] = {
+        property: key,
+        value: {
+          base: null,
+          clauses: [{ modifiers: modifiers!, payload: value }],
+        },
+      }
     } else {
       setInAuthoredOrder(result, key, value)
     }

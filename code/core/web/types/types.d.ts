@@ -321,6 +321,7 @@ export type TamaguiComponentStateRef = {
     willHydrate?: boolean;
     hasMeasured?: boolean;
     hasAnimated?: boolean;
+    shouldRegisterPresence?: boolean;
     themeShallow?: boolean;
     hasEverThemed?: boolean | 'wrapped';
     hasEverResetPresence?: boolean;
@@ -1736,6 +1737,14 @@ export type GetStyleState = {
     flatGroupMedia?: Set<string>;
     flatEnterKeys?: Set<string>;
     flatExitKeys?: Set<string>;
+    flatHasEnterStyle?: boolean;
+    flatHasPlatformPseudo?: boolean;
+    flatInlineWinners?: Record<string, {
+        value: any;
+        originalValue: any;
+        precedence: number;
+        conditioned: boolean;
+    }>;
     flatUsesSafeArea?: boolean;
     overriddenContextProps?: Record<string, any>;
     originalContextPropValues?: Record<string, any>;
@@ -1943,6 +1952,7 @@ export type SplitStyleProps = {
     disableExpandShorthands?: boolean;
     hasTextAncestor?: boolean;
     willBeAnimated?: boolean;
+    canPlatformPseudo?: boolean;
     isAnimated: boolean;
     isExiting?: boolean;
 };
@@ -1959,6 +1969,9 @@ type AlwaysPresent = [true, null, null];
 type Present = [true, undefined, PresenceContextProps];
 type NotPresent = [false, SafeToRemoveCallback, PresenceContextProps];
 export type UsePresenceResult = AlwaysPresent | Present | NotPresent;
+export type PresenceRegistration = {
+    shouldRegisterPresence?: boolean;
+};
 type AnimationConfig = {
     [key: string]: any;
 };
@@ -2006,7 +2019,7 @@ export type AnimationDriver<A extends AnimationConfig = AnimationConfig> = Anima
     /** When true, this is a stub driver with no real animation support */
     isStub?: boolean;
     useAnimations: UseAnimationHook;
-    usePresence: () => UsePresenceResult;
+    usePresence: (registration?: PresenceRegistration) => UsePresenceResult;
     ResetPresence: (props: {
         children?: React.ReactNode;
         disabled?: boolean;
@@ -2067,6 +2080,8 @@ export type GetStyleResult = {
         enter?: Set<string>;
         exit?: Set<string>;
     };
+    hasEnterStyle?: true;
+    platformPseudo?: true;
 };
 export type ClassNamesObject = Record<string, string>;
 export type ModifyTamaguiComponentStyleProps<Comp extends TamaguiComponent, ChangedProps extends object> = Comp extends TamaguiComponent<infer A, infer B, infer C, infer D, infer E> ? A extends object ? TamaguiComponent<Omit<A, keyof ChangedProps> & ChangedProps, B, C, D, E> : never : never;

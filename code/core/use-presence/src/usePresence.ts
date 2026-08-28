@@ -1,18 +1,27 @@
-import type { PresenceContextProps, UsePresenceResult } from '@tamagui/web'
+import type {
+  PresenceContextProps,
+  PresenceRegistration,
+  UsePresenceResult,
+} from '@tamagui/web'
 import * as React from 'react'
 
 import { PresenceContext } from './PresenceContext'
 
-export function usePresence(): UsePresenceResult {
+export function usePresence(registration?: PresenceRegistration): UsePresenceResult {
   const context = React.useContext(PresenceContext)
 
-  if (!context) {
-    return [true, null, context]
-  }
+  // the style pass completes later in the same render. read its registration
+  // decision in the passive effect so every component calls this hook in a
+  // fixed position, while only frames that animate join presence bookkeeping.
+  React.useEffect(() => {
+    if (context && registration?.shouldRegisterPresence) {
+      return context.register(context.id)
+    }
+  })
 
-  const { id, isPresent, onExitComplete, register } = context
+  if (!context) return [true, null, context]
 
-  React.useEffect(() => register(id), [])
+  const { id, isPresent, onExitComplete } = context
 
   const safeToRemove = () => onExitComplete?.(id)
 

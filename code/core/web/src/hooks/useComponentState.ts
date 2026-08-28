@@ -1,10 +1,4 @@
 import { getPlatformDriver, isServer, isWeb } from '@tamagui/constants'
-import { stylePropsAll } from '@tamagui/helpers'
-import {
-  canonicalClauseModifier,
-  scanFlatValue,
-  type FlatValueHandler,
-} from '@tamagui/style-grammar/runtime'
 import { mergeIfNotShallowEqual } from '@tamagui/is-equal-shallow'
 import { useDidFinishSSR, useIsClientOnly } from '@tamagui/use-did-finish-ssr'
 import { useRef, useState } from 'react'
@@ -28,101 +22,6 @@ import type {
   UseAnimationHook,
 } from '../types'
 import type { ViewProps } from '../views/View'
-
-// canonical spellings only: `canonicalClauseModifier` folds `active` and
-// `pressed` into `press` and `starting` into `enter` before the lookup, so the
-// alias table in @tamagui/style-grammar stays the only place they are listed
-const platformPseudoModifiers = new Set(['hover', 'press', 'focus'])
-const enterModifier = new Set(['enter'])
-
-type LifecycleScanContext = TamaguiComponentStateRef & {
-  // source, wanted modifiers, found, and pending match. created once per
-  // component and reused by both lifecycle questions on every render.
-  flatScan?: [string, ReadonlySet<string>, boolean, boolean]
-}
-
-const lifecycleHandler: FlatValueHandler<LifecycleScanContext> = {
-  segment(ctx, start, end, isBase, valid) {
-    const scan = ctx.flatScan!
-    if (!isBase && valid && start < end && scan[3]) scan[2] = true
-    scan[3] = false
-  },
-  chain(ctx, start, end, valid) {
-    const scan = ctx.flatScan!
-    scan[3] = false
-    if (!valid) return true
-    for (let index = start; index <= end; index++) {
-      if (index !== end && scan[0].charCodeAt(index) !== 58) continue
-      if (scan[1].has(canonicalClauseModifier(scan[0].slice(start, index)))) {
-        scan[3] = true
-      }
-      start = index + 1
-    }
-    return true
-  },
-}
-
-/**
- * Does any flat style value on this component carry one of `modifiers`?
- *
- * It runs the same `scanFlatValue` lexer the style scanner runs, which is the
- * whole reason it exists in this shape: a value the style scanner throws away
- * used to still put the component on the should-enter path here, so it rendered
- * an enter frame for a style that never arrived.
- */
-function hasFlatModifier(
-  props: Record<string, any>,
-  config: TamaguiInternalConfig,
-  modifiers: ReadonlySet<string>,
-  ctx: LifecycleScanContext,
-  variants?: Record<string, any>
-): boolean {
-  const scan = (ctx.flatScan ||= ['', enterModifier, false, false])
-  for (const key in props) {
-    const value = props[key]
-    const isString = typeof value === 'string'
-    if (isString ? value.indexOf(':') === -1 : !value || typeof value !== 'object') {
-      continue
-    }
-    const property = config.shorthands[key] || key
-    if (
-      !(property in stylePropsAll) &&
-      property !== 'transition' &&
-      // conditional variant props resolve style branches too, so their
-      // lifecycle clauses drive the same decision
-      !(variants && key in variants)
-    ) {
-      continue
-    }
-    if (!isString) {
-      // an object-valued transition is the driver's per-lifecycle config
-      // grammar (`{ default, enter, exit }` timings), not a flat conditional
-      // style value — its keys name when to run, not what style arrives
-      if (property === 'transition') continue
-      // flat conditional objects carry the chain as the key; a structured leaf
-      // (shadowOffset) has no modifier-named key so it never matches
-      for (const chain in value) {
-        if (chain === 'default' || value[chain] == null) continue
-        let start = 0
-        for (let index = 0; index <= chain.length; index++) {
-          if (index !== chain.length && chain.charCodeAt(index) !== 58) continue
-          if (modifiers.has(canonicalClauseModifier(chain.slice(start, index)))) {
-            return true
-          }
-          start = index + 1
-        }
-      }
-      continue
-    }
-    scan[0] = value
-    scan[1] = modifiers
-    scan[2] = false
-    scan[3] = false
-    scanFlatValue(value, lifecycleHandler, ctx)
-    if (scan[2]) return true
-  }
-  return false
-}
 
 export const useComponentState = (
   props: ViewProps | TextProps | Record<string, any>,
@@ -173,86 +72,52 @@ export const useComponentState = (
   // driver-sourced (hover) or event-sourced (press/focus) but either way applies
   // through the emitter with zero React commits; with no transition declared it
   // resolves instant (see createComponent's effectiveTransition default).
-  const platformPseudo = Boolean(
+  const platformPseudoPossible = Boolean(
     !isHOC &&
     useAnimations &&
     animationDriver?.avoidReRenders &&
-    getPlatformDriver()?.pseudo &&
-    hasFlatModifier(
-      props,
-      config,
-      platformPseudoModifiers,
-      curStateRef as LifecycleScanContext,
-      staticConfig.variants
-    )
+    getPlatformDriver()?.pseudo
   )
 
-  const willBeAnimatedClient = (() => {
-    const next = !!((hasAnimationProp || platformPseudo) && !isHOC && useAnimations)
+  let willBeAnimatedClient = (() => {
+    const next = !!(
+      (hasAnimationProp || platformPseudoPossible) &&
+      !isHOC &&
+      useAnimations
+    )
     return Boolean(next || curStateRef.hasAnimated)
   })()
 
-  const willBeAnimated = !isServer && willBeAnimatedClient
+  let willBeAnimated = !isServer && willBeAnimatedClient
 
   // once animated, always animated to preserve hooks / vdom structure
-  if (willBeAnimated && !curStateRef.hasAnimated) {
+  if (willBeAnimated && hasAnimationProp && !curStateRef.hasAnimated) {
     curStateRef.hasAnimated = true
   }
 
   const { disableClassName } = props
 
   // HOOK
-  const presence =
-    (!isHOC &&
-      willBeAnimated &&
-      props['animatePresence'] !== false &&
-      animationDriver?.usePresence?.()) ||
-    null
+  curStateRef.shouldRegisterPresence = false
+  const presence = animationDriver?.usePresence?.(curStateRef) || null
 
   const presenceState = presence?.[2]
   const isExiting = presenceState?.isPresent === false
   const isEntering = presenceState?.isPresent === true && presenceState.initial !== false
-
-  const hasEnterStyle = hasFlatModifier(
-    props,
-    config,
-    enterModifier,
-    curStateRef as LifecycleScanContext,
-    staticConfig.variants
-  )
 
   const hasAnimationThatNeedsHydrate =
     hasAnimationProp &&
     !isHydrated &&
     (animationDriver?.isReactNative || inputStyle !== 'css')
 
-  const canImmediatelyEnter = hasEnterStyle || isEntering
-
-  // this can be conditional because its only ever needed with animations
-  const shouldEnter =
-    !isHOC &&
-    (hasEnterStyle ||
-      isEntering ||
-      hasAnimationThatNeedsHydrate ||
-      // disableClassName doesnt work server side, only client, so needs hydrate
-      // this is just for a better ux, supports css variables for light/dark, media queries, etc
-      disableClassName)
-
   // two stage enter: because we switch from css driver to spring driver
   //   - first render: render to match server with css driver
   //   - second render: state.unmounted = should-enter, still rendering the initial,
   //     non-entered state but now with the spring animation driver
 
-  const initialState = shouldEnter
-    ? // on the very first render we switch all spring animation drivers to css rendering
-      // this is because we need to use css variables, which they don't support to do proper SSR
-      // without flickers of the wrong colors.
-      // but once we do that initial hydration and we are in client side rendering mode,
-      // we can avoid the extra re-render on mount
-      canImmediatelyEnter
-      ? defaultComponentStateShouldEnter
-      : defaultComponentState
-    : defaultComponentStateMounted
+  // the sole style pass decides whether an enter clause exists. A fresh first
+  // frame stays provisionally unmounted until that pass reports its flags.
+  const initialState = { ...defaultComponentState }
 
   // will be nice to deprecate half of these:
   const disabled = isDisabled(props)
@@ -369,7 +234,9 @@ export const useComponentState = (
     // no matter what if fully unmounted or on the server we use className
     // only once we hydrate do we switch to spring animation drivers or disableClassName etc
     if (isWeb && isHydrated) {
-      const isAnimatedAndHydrated = isAnimated && isHydrated
+      const isAnimatedAndHydrated =
+        !!((hasAnimationProp || curStateRef.hasAnimated) && useAnimations && !isHOC) &&
+        isHydrated
 
       const isClassNameDisabled =
         !staticConfig.acceptsClassName && (getSetting('disableSSR') || !state.unmounted)
@@ -395,14 +262,14 @@ export const useComponentState = (
     }
   }
 
-  return {
+  const result = {
     props: outProps,
     startedUnhydrated: curStateRef.startedUnhydrated,
     curStateRef,
     disabled,
     groupName,
     hasAnimationProp,
-    hasEnterStyle,
+    hasEnterStyle: false,
     isAnimated,
     isExiting,
     isHydrated,
@@ -417,8 +284,46 @@ export const useComponentState = (
     outputStyle,
     willBeAnimated,
     willBeAnimatedClient,
-    platformPseudo,
+    platformPseudo: platformPseudoPossible,
+    finalizeStyleFlags(hasEnterStyle: boolean, hasPlatformPseudo: boolean) {
+      const platformPseudo = platformPseudoPossible && hasPlatformPseudo
+      const nextWillBeAnimatedClient = Boolean(
+        ((hasAnimationProp || platformPseudo) && !isHOC && useAnimations) ||
+        curStateRef.hasAnimated
+      )
+      const nextWillBeAnimated = !isServer && nextWillBeAnimatedClient
+      if (nextWillBeAnimated && !curStateRef.hasAnimated) {
+        curStateRef.hasAnimated = true
+      }
+      if (!(curStateRef as any).didFinalizeInitialStyleFrame) {
+        ;(curStateRef as any).didFinalizeInitialStyleFrame = true
+        const shouldEnter =
+          !isHOC &&
+          (hasEnterStyle ||
+            isEntering ||
+            hasAnimationThatNeedsHydrate ||
+            disableClassName)
+        state.unmounted = shouldEnter
+          ? hasEnterStyle || isEntering
+            ? 'should-enter'
+            : true
+          : false
+      }
+      result.hasEnterStyle = hasEnterStyle
+      result.platformPseudo = platformPseudo
+      result.willBeAnimatedClient = nextWillBeAnimatedClient
+      result.willBeAnimated = nextWillBeAnimated
+      result.isAnimated =
+        isWeb && hasAnimationThatNeedsHydrate && !staticConfig.isHOC && !isHydrated
+          ? false
+          : nextWillBeAnimated
+      curStateRef.shouldRegisterPresence = Boolean(
+        nextWillBeAnimated && !isHOC && props['animatePresence'] !== false
+      )
+      return result
+    },
   }
+  return result
 }
 
 function hasAnimatedStyleValue(style: object) {

@@ -1,37 +1,18 @@
 /**
- * Private implementation boundary shared by Tamagui workspace packages. Not public
- * API: never reexport it from `@tamagui/web`, `@tamagui/core`, `tamagui`, or
- * `@tamagui/tailwind` roots. Doing so would expose implementation details again.
+ * Private implementation boundary for building another style frontend on the shared
+ * Tamagui runtime. Not public API: never reexport it from `@tamagui/web`,
+ * `@tamagui/core`, `tamagui`, or `@tamagui/tailwind` roots — doing so would
+ * reconnect the frontend graphs the package split exists to keep apart.
  *
  * It deliberately exposes purpose-built, explicitly typed wrappers rather than raw
- * module reexports. That keeps the private declaration entry narrow and avoids
- * reconnecting the regular root barrel.
+ * module reexports. That keeps the emitted declaration entry on the frontend
+ * descriptor and component factory only: it never resolves the regular View, Text,
+ * styled, or inline style-prop declarations.
  */
 import type { FunctionComponent } from 'react';
-import type { ParsedValue } from '@tamagui/style-grammar/runtime';
 import type { FrontendComponent, StyleFrontend } from './helpers/styleFrontend';
-import type { FrontendProgramValue } from './internalRuntimeTypes';
-export { STYLE_FRONTEND_PASSTHROUGH_PREFIX, STYLE_FRONTEND_PREPROCESSED, regularStyleFrontend, } from './helpers/styleFrontend';
+export { regularStyleFrontend, } from './helpers/styleFrontend';
 export type * from './internalRuntimeTypes';
-export declare const createVariables: (tokens: Record<string, any>, parentPath?: string, isFont?: boolean) => any;
-export declare const parseFont: (definition: Record<string, any>) => any;
-export declare const registerFontVariables: (parsedFont: any) => string[];
-export declare const fixStyles: (style: Record<string, any>) => void;
-export declare const getThemeCSSRules: (props: {
-    config: any;
-    themeName: string;
-    theme: any;
-    names: string[];
-    hasDarkLight?: boolean;
-    useMutatedVariables?: boolean;
-}) => string[];
-export declare const normalizeValueWithProperty: (value: any, property?: string) => any;
-export declare const proxyThemeToParents: (themeName: string, theme: any) => any;
-export declare const ensureThemeVariable: (theme: any, key: string) => void;
-export declare const transformsToString: (transforms: object[]) => string;
-export declare const styleToCSS: (style: Record<string, any>) => void;
-export declare const useThemeWithState: (props: any, isRoot?: boolean, forThemeView?: boolean) => [any, any];
-export declare const createFrontendProgram: (property: string, value: ParsedValue) => FrontendProgramValue;
 export declare const plainValueToPayload: (value: unknown, property: string) => string | null;
 export declare const createTamagui: (config: any) => any;
 export declare const setupHooks: (hooks: Record<string, any>) => void;

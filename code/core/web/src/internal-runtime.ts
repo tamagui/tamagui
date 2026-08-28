@@ -8,14 +8,12 @@
  * reconnecting the regular root barrel.
  */
 import type { FunctionComponent } from 'react'
-import type { ParsedValue } from '@tamagui/style-grammar/runtime'
 import { stylePropsUnitless } from '@tamagui/helpers'
 import { createComponent } from './createComponent'
 import { createVariables as createVariablesImpl } from './createVariables'
 import { fixStyles as fixStylesImpl } from './helpers/expandStyles'
 import { styleToCSS as styleToCSSImpl } from './helpers/styleToCSS'
 import { setComponentDisplayName } from './helpers/componentDisplayName'
-import { createFrontendProgram as createFrontendProgramImpl } from './helpers/frontendProgram'
 import { getThemeCSSRules as getThemeCSSRulesImpl } from './helpers/getThemeCSSRules'
 import { normalizeValueWithProperty as normalizeValueWithPropertyImpl } from './helpers/normalizeValueWithProperty'
 import { proxyThemeToParents as proxyThemeToParentsImpl } from './helpers/proxyThemeToParents'
@@ -26,7 +24,6 @@ import {
   parseFont as parseFontImpl,
   registerFontVariables as registerFontVariablesImpl,
 } from './insertFont'
-import type { FrontendProgramValue } from './internalRuntimeTypes'
 import { createTamagui as createTamaguiImpl } from './createTamagui'
 import { setupHooks as setupHooksImpl } from './setupHooks'
 import { createFrontendStyled as createFrontendStyledImpl } from './styled'
@@ -36,8 +33,6 @@ import { textStaticConfig } from './views/Text'
 import { viewStaticConfig } from './views/View'
 
 export {
-  STYLE_FRONTEND_PASSTHROUGH_PREFIX,
-  STYLE_FRONTEND_PREPROCESSED,
   regularStyleFrontend,
 } from './helpers/styleFrontend'
 export type * from './internalRuntimeTypes'
@@ -72,16 +67,6 @@ export const useThemeWithState: (
   isRoot?: boolean,
   forThemeView?: boolean
 ) => [any, any] = useThemeWithStateImpl
-
-// the frontend-program contribution channel: a frontend hands getSplitStyles
-// a pre-parsed (property, program) pair that contributes at the exact
-// forward-pass position of the equivalent authored string. values are only
-// recognized when minted by this factory (module-private WeakSet), so the
-// channel cannot become publicly authorable
-export const createFrontendProgram: (
-  property: string,
-  value: ParsedValue
-) => FrontendProgramValue = createFrontendProgramImpl
 
 // the one scalar-to-css boundary used by frontends before they mint a conditional
 // value. strings already carry their authored units; finite numbers use the same

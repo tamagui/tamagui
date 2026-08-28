@@ -44,6 +44,22 @@ export type FrontendComponent = FunctionComponent<any> & {
   staticConfig: FrontendStaticConfig
 }
 
+export type FrontendClassPlanEntry = readonly [
+  property: string,
+  value: unknown,
+  condition?: string,
+  modifiers?: readonly string[],
+]
+
+export type FrontendClassPlan =
+  | 'raw'
+  | null
+  | readonly FrontendClassPlanEntry[]
+  | {
+      entries: readonly FrontendClassPlanEntry[]
+      preserveRawClass: boolean
+    }
+
 /**
  * A component's authoring syntax. It is chosen by the package the component was
  * imported from and frozen onto its static config when the component is created:
@@ -58,15 +74,10 @@ export type FrontendComponent = FunctionComponent<any> & {
  */
 export type StyleFrontend = {
   /**
-   * Turns authored props into the neutral props the shared renderer consumes.
-   * Runs once per render in `createComponent`, before component state is derived,
-   * because reconstructed enter/exit, pseudo, media and related state props must
-   * exist before the animation and state machinery reads them.
+   * Classifies one class candidate. The shared style cursor owns the className
+   * character walk and feeds every returned entry through its one property sink.
    */
-  preprocessProps: (
-    props: Record<string, any>,
-    config: StyleFrontendConfig
-  ) => Record<string, any>
+  getClassPlan?: (candidate: string, config: StyleFrontendConfig) => FrontendClassPlan
 
   /**
    * Resolves frontend-specific static style input (a class-string base, string
@@ -80,25 +91,7 @@ export type StyleFrontend = {
 }
 
 /**
- * Marks props that already went through `preprocessProps`, so the style split does
- * not tokenize a second time. A Symbol key is invisible to the `for..in` prop loop,
- * so it never leaks into style processing.
- */
-export const STYLE_FRONTEND_PREPROCESSED: unique symbol = Symbol(
-  'tamaguiStyleFrontendPreprocessed'
-)
-
-/**
- * Internal ordered-prop channel for raw CSS classes a frontend does not own.
- * Numbered keys let passthrough segments keep their exact position among claimed
- * style contributions while the shared renderer still handles them as className.
- */
-export const STYLE_FRONTEND_PASSTHROUGH_PREFIX = '__tamagui_frontend_passthrough_'
-
-/**
  * The regular Tamagui frontend: props are already the renderer's input shape, so
  * preprocessing is identity and costs one property read plus one call.
  */
-export const regularStyleFrontend: StyleFrontend = {
-  preprocessProps: (props) => props,
-}
+export const regularStyleFrontend: StyleFrontend = {}
