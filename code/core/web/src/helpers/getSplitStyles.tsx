@@ -4104,6 +4104,44 @@ function emitResolved(
   emitProperty(state, property, value, cursor, merge, originalValue, contextOnly)
 }
 
+const emitKindTransition = 1
+const emitKindTransformPart = 2
+const emitKindWebShadow = 3
+const emitKindWebTextShadow = 4
+const emitKindTransform = 5
+const emitKindBorder = 6
+const emitKindTextDecoration = 7
+const emitKindBackground = 8
+const emitKindAxis = 9
+const emitKindBorderRadius = 10
+const emitKindBorderWidth = 11
+
+// per-property dispatch for emitValue's special cases, built once from the
+// same tables the branches use
+const emitValueKinds: Record<string, number> = {
+  transition: emitKindTransition,
+  transitionProperty: emitKindTransition,
+  transform: emitKindTransform,
+  textDecoration: emitKindTextDecoration,
+  background: emitKindBackground,
+  x: emitKindAxis,
+  y: emitKindAxis,
+  scale: emitKindAxis,
+  scaleX: emitKindAxis,
+  scaleY: emitKindAxis,
+  rotate: emitKindAxis,
+  borderRadius: emitKindBorderRadius,
+  borderWidth: emitKindBorderWidth,
+  borderTopWidth: emitKindBorderWidth,
+  borderRightWidth: emitKindBorderWidth,
+  borderBottomWidth: emitKindBorderWidth,
+  borderLeftWidth: emitKindBorderWidth,
+}
+for (const part of legacyTransformParts) emitValueKinds[part] = emitKindTransformPart
+for (const part in webShadowParts) emitValueKinds[part] = emitKindWebShadow
+for (const part of webTextShadowParts) emitValueKinds[part] = emitKindWebTextShadow
+for (const target in borderTargets) emitValueKinds[target] = emitKindBorder
+
 function shadowUnit(part: any) {
   return typeof part === 'number' ? `${part}px` : part || '0px'
 }
@@ -4154,185 +4192,188 @@ function emitValue(
     )
   }
 
-  requestBorderStyleDefault(
-    state,
-    property,
-    condition,
-    cursor ? conditionTexts[cursor + conditionKeyOffset] || '' : '',
-    cursor ? conditionTexts[cursor + conditionSelectorOffset] || '' : '',
-    cursor ? conditionWrappers : undefined,
-    cursor ? conditionNumbers[cursor + conditionWrapperOffset] >> 3 : 0,
-    cursor ? conditionNumbers[cursor + conditionWrapperOffset] & 7 : 0
-  )
-
-  if (
-    typeof raw === 'string' &&
-    (property === 'transition' || property === 'transitionProperty')
-  ) {
-    raw = normalizeTransitionNames(state, raw)
-  }
-
-  if (legacyTransformParts.has(property)) {
-    const value = typeof raw === 'string' ? configuredValue(state, property, raw) : raw
-    if (canGenerateCSS && state.flatShouldDoClasses && !condition) {
-      state.transformAccumulator ||= createTransformAccumulator()
-      addTransformValue(state.transformAccumulator, property, value)
-    } else if (condition && canGenerateCSS && state.flatShouldDoClasses) {
-      emitProperty(
-        state,
-        'transform',
-        `${property}(${value})`,
-        cursor,
-        merge,
-        originalValue,
-        contextOnly
-      )
-    } else {
-      streamWriteInline(state, property, value, cursor, merge, originalValue, true)
-    }
-    return
-  }
-
-  const webShadowPart = webShadowParts[property]
-  if (process.env.TAMAGUI_TARGET === 'web' && webShadowPart) {
-    const value = typeof raw === 'string' ? configuredValue(state, property, raw) : raw
-    if (canGenerateCSS && state.flatShouldDoClasses) {
-      const shadow = ((state as DirectState).flatWebShadow ||= [])
-      shadow[webShadowPart - 1] = value
-      shadow[4] = ++frameSequence
-      shadow[5] = originalValue
-      shadow[6] = contextOnly
-    } else {
-      streamWriteInline(state, property, value, cursor, merge, originalValue, true)
-    }
-    return
-  }
-
-  if (process.env.TAMAGUI_TARGET === 'web' && webTextShadowParts.has(property)) {
-    const value = typeof raw === 'string' ? configuredValue(state, property, raw) : raw
-    if (canGenerateCSS && state.flatShouldDoClasses) {
-      emitWebTextShadow(
-        state as DirectState,
-        property,
-        value,
-        merge,
-        originalValue,
-        contextOnly
-      )
-    } else {
-      streamWriteInline(state, property, value, cursor, merge, originalValue, true)
-    }
-    return
-  }
-
-  if (
-    canGenerateCSS &&
-    state.flatShouldDoClasses &&
-    property === 'transform' &&
-    Array.isArray(raw)
-  ) {
-    raw = transformsToString(raw)
-  }
-
-  if (typeof raw === 'string' && property in borderTargets) {
-    emitBorder(state, property, raw, cursor, merge, originalValue, contextOnly)
-    return
-  }
-  if (typeof raw === 'string' && property === 'textDecoration') {
-    emitTextDecoration(state, raw, cursor, merge, originalValue, contextOnly)
-    return
-  }
-  if (typeof raw === 'string' && property === 'background') {
-    const parts = splitComponents(raw)
-    if (parts.length === 1 && !startsValueFunction(parts[0])) {
-      emitResolved(
-        state,
-        'backgroundColor',
-        parts[0],
-        cursor,
-        merge,
-        originalValue,
-        contextOnly
-      )
-      return
-    }
-    if (process.env.TAMAGUI_TARGET === 'native') {
-      if (process.env.NODE_ENV === 'development') {
-        warnOnce(`native background cannot represent "${raw}"; dropping it`)
-      }
-      return
-    }
-  }
-
-  if (
-    property === 'x' ||
-    property === 'y' ||
-    property === 'scale' ||
-    property === 'scaleX' ||
-    property === 'scaleY' ||
-    property === 'rotate'
-  ) {
-    let value = typeof raw === 'string' ? configuredValue(state, property, raw) : raw
-    // a transform going into a real style object rather than a CSS class has to
-    // carry numbers: that is every native render and every web render an
-    // animation driver drives inline. strings survive only on the class path.
-    // a theme-ref sentinel is not a number and must pass through untouched.
-    if (
-      (process.env.TAMAGUI_TARGET === 'native' || !state.flatShouldDoClasses) &&
-      typeof value === 'string' &&
-      !value.startsWith(THEME_REF_PREFIX)
-    ) {
-      if (
-        property === 'rotate' &&
-        !Number.isFinite(numericUnitValue(value, 'deg', 'rad'))
-      ) {
-        if (process.env.NODE_ENV === 'development') {
-          warnOnce(
-            `native transform "${property}" cannot represent "${value}"; dropping it`
+  // one dispatch lookup replaces the per-value membership ladder: every
+  // special-cased property carries a kind, everything else goes straight to
+  // the generic tail
+  const emitKind = emitValueKinds[property]
+  if (emitKind !== undefined) {
+    switch (emitKind) {
+      case emitKindTransition:
+        if (typeof raw === 'string') raw = normalizeTransitionNames(state, raw)
+        break
+      case emitKindBorderWidth:
+        requestBorderStyleDefault(
+          state,
+          property,
+          condition,
+          cursor ? conditionTexts[cursor + conditionKeyOffset] || '' : '',
+          cursor ? conditionTexts[cursor + conditionSelectorOffset] || '' : '',
+          cursor ? conditionWrappers : undefined,
+          cursor ? conditionNumbers[cursor + conditionWrapperOffset] >> 3 : 0,
+          cursor ? conditionNumbers[cursor + conditionWrapperOffset] & 7 : 0
+        )
+        break
+      case emitKindTransformPart: {
+        const value =
+          typeof raw === 'string' ? configuredValue(state, property, raw) : raw
+        if (canGenerateCSS && state.flatShouldDoClasses && !condition) {
+          state.transformAccumulator ||= createTransformAccumulator()
+          addTransformValue(state.transformAccumulator, property, value)
+        } else if (condition && canGenerateCSS && state.flatShouldDoClasses) {
+          emitProperty(
+            state,
+            'transform',
+            `${property}(${value})`,
+            cursor,
+            merge,
+            originalValue,
+            contextOnly
           )
-        }
-        if (condition & 1) {
-          removeTransformValue(state.transformAccumulator, property)
-          streamRetractInline(state, property, cursor)
+        } else {
+          streamWriteInline(state, property, value, cursor, merge, originalValue, true)
         }
         return
       }
-      const unitValue = numericUnitValue(value, 'px', 'dp')
-      if (Number.isFinite(unitValue)) {
-        value = unitValue
-      } else if (Number.isFinite(Number(value))) {
-        value = Number(value)
+      case emitKindWebShadow: {
+        if (process.env.TAMAGUI_TARGET !== 'web') break
+        const value =
+          typeof raw === 'string' ? configuredValue(state, property, raw) : raw
+        if (canGenerateCSS && state.flatShouldDoClasses) {
+          const shadow = ((state as DirectState).flatWebShadow ||= [])
+          shadow[webShadowParts[property] - 1] = value
+          shadow[4] = ++frameSequence
+          shadow[5] = originalValue
+          shadow[6] = contextOnly
+        } else {
+          streamWriteInline(state, property, value, cursor, merge, originalValue, true)
+        }
+        return
       }
-    }
-    emitTransform(state, property, value, cursor, merge, originalValue, contextOnly)
-    return
-  }
-
-  if (
-    process.env.TAMAGUI_TARGET === 'web' &&
-    !state.flatShouldDoClasses &&
-    !condition &&
-    property === 'borderRadius'
-  ) {
-    // css reads the shorthand, so skip the four-corner expansion here. a string
-    // value still needs its token resolved, which is what emitResolved does.
-    if (typeof raw === 'string') {
-      emitResolved(state, property, raw, cursor, merge, originalValue, contextOnly)
-    } else {
-      emitProperty(state, property, raw, cursor, merge, originalValue, contextOnly)
-    }
-    return
-  }
-
-  if (
-    process.env.TAMAGUI_TARGET === 'native' &&
-    property === 'transform' &&
-    typeof raw === 'string'
-  ) {
-    const transform = parseNativeTransform(raw)
-    if (transform) {
-      emitProperty(state, property, transform, cursor, merge, originalValue, contextOnly)
-      return
+      case emitKindWebTextShadow: {
+        if (process.env.TAMAGUI_TARGET !== 'web') break
+        const value =
+          typeof raw === 'string' ? configuredValue(state, property, raw) : raw
+        if (canGenerateCSS && state.flatShouldDoClasses) {
+          emitWebTextShadow(
+            state as DirectState,
+            property,
+            value,
+            merge,
+            originalValue,
+            contextOnly
+          )
+        } else {
+          streamWriteInline(state, property, value, cursor, merge, originalValue, true)
+        }
+        return
+      }
+      case emitKindTransform:
+        if (canGenerateCSS && state.flatShouldDoClasses && Array.isArray(raw)) {
+          raw = transformsToString(raw)
+        }
+        if (process.env.TAMAGUI_TARGET === 'native' && typeof raw === 'string') {
+          const transform = parseNativeTransform(raw)
+          if (transform) {
+            emitProperty(
+              state,
+              property,
+              transform,
+              cursor,
+              merge,
+              originalValue,
+              contextOnly
+            )
+            return
+          }
+        }
+        break
+      case emitKindBorder:
+        if (typeof raw === 'string') {
+          emitBorder(state, property, raw, cursor, merge, originalValue, contextOnly)
+          return
+        }
+        break
+      case emitKindTextDecoration:
+        if (typeof raw === 'string') {
+          emitTextDecoration(state, raw, cursor, merge, originalValue, contextOnly)
+          return
+        }
+        break
+      case emitKindBackground:
+        if (typeof raw === 'string') {
+          const parts = splitComponents(raw)
+          if (parts.length === 1 && !startsValueFunction(parts[0])) {
+            emitResolved(
+              state,
+              'backgroundColor',
+              parts[0],
+              cursor,
+              merge,
+              originalValue,
+              contextOnly
+            )
+            return
+          }
+          if (process.env.TAMAGUI_TARGET === 'native') {
+            if (process.env.NODE_ENV === 'development') {
+              warnOnce(`native background cannot represent "${raw}"; dropping it`)
+            }
+            return
+          }
+        }
+        break
+      case emitKindAxis: {
+        let value = typeof raw === 'string' ? configuredValue(state, property, raw) : raw
+        // a transform going into a real style object rather than a CSS class has to
+        // carry numbers: that is every native render and every web render an
+        // animation driver drives inline. strings survive only on the class path.
+        // a theme-ref sentinel is not a number and must pass through untouched.
+        if (
+          (process.env.TAMAGUI_TARGET === 'native' || !state.flatShouldDoClasses) &&
+          typeof value === 'string' &&
+          !value.startsWith(THEME_REF_PREFIX)
+        ) {
+          if (
+            property === 'rotate' &&
+            !Number.isFinite(numericUnitValue(value, 'deg', 'rad'))
+          ) {
+            if (process.env.NODE_ENV === 'development') {
+              warnOnce(
+                `native transform "${property}" cannot represent "${value}"; dropping it`
+              )
+            }
+            if (condition & 1) {
+              removeTransformValue(state.transformAccumulator, property)
+              streamRetractInline(state, property, cursor)
+            }
+            return
+          }
+          const unitValue = numericUnitValue(value, 'px', 'dp')
+          if (Number.isFinite(unitValue)) {
+            value = unitValue
+          } else if (Number.isFinite(Number(value))) {
+            value = Number(value)
+          }
+        }
+        emitTransform(state, property, value, cursor, merge, originalValue, contextOnly)
+        return
+      }
+      case emitKindBorderRadius:
+        if (
+          process.env.TAMAGUI_TARGET === 'web' &&
+          !state.flatShouldDoClasses &&
+          !condition
+        ) {
+          // css reads the shorthand, so skip the four-corner expansion here. a
+          // string value still needs its token resolved via emitResolved.
+          if (typeof raw === 'string') {
+            emitResolved(state, property, raw, cursor, merge, originalValue, contextOnly)
+          } else {
+            emitProperty(state, property, raw, cursor, merge, originalValue, contextOnly)
+          }
+          return
+        }
+        break
     }
   }
 
