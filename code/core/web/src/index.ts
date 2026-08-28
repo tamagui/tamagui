@@ -138,6 +138,7 @@ export type {
   OnTransition,
   OutlineValue,
   PresenceContextProps,
+  PresenceRegistration,
   PxValue,
   Radius,
   RadiusTokens,
