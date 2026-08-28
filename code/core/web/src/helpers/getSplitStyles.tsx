@@ -1739,7 +1739,6 @@ export const getSubStyle = (
   return styleOut
 }
 
-
 function addStyleToInsertRules(rulesToInsert: RulesToInsert, styleObject: StyleObject) {
   if (process.env.TAMAGUI_TARGET === 'web') {
     const identifier = styleObject[StyleObjectIdentifier]
