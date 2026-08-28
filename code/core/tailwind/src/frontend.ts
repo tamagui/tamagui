@@ -1,17 +1,16 @@
 import {
-  STYLE_FRONTEND_PREPROCESSED,
   type FrontendStaticConfig,
   type StyleFrontend,
   type StyleFrontendConfig,
 } from '@tamagui/core/internal-runtime'
 import { configRevisionSymbol } from '@tamagui/style-grammar/runtime'
-import { preprocessTailwindClassName } from './candidate'
+import { getTailwindClassPlan, resolveTailwindClassName } from './candidate'
 
 /**
  * The Tailwind frontend descriptor.
  *
- * `preprocessProps` is the single Tailwind pass: it tokenizes `className` once and
- * emits ordinary props plus internal program contributions in authored order.
+ * The shared style cursor tokenizes `className` once and asks this descriptor for
+ * an immutable plan per candidate.
  * Everything after this point — value programs,
  * per-longhand forward merging, web lowering, native evaluation — is shared.
  *
@@ -28,7 +27,7 @@ export function parseStaticStyle(
   input: string,
   config: StyleFrontendConfig
 ): Record<string, any> {
-  return preprocessTailwindClassName({ className: input }, config)
+  return resolveTailwindClassName(input, config)
 }
 
 const normalizedStaticConfigCache = new WeakMap<
@@ -101,18 +100,6 @@ function normalizeTailwindStaticConfig<Config extends FrontendStaticConfig>(
 }
 
 export const tailwindStyleFrontend: StyleFrontend = {
-  preprocessProps(props, config) {
-    const transformed =
-      typeof props.className === 'string'
-        ? preprocessTailwindClassName(props, config, true)
-        : props
-    // only a fresh object gets the marker; marking the caller's props would leak the
-    // symbol onto props the frontend never actually rewrote
-    if (transformed !== props) {
-      ;(transformed as any)[STYLE_FRONTEND_PREPROCESSED] = true
-    }
-    return transformed
-  },
-
+  getClassPlan: getTailwindClassPlan,
   normalizeStaticConfig: normalizeTailwindStaticConfig,
 }

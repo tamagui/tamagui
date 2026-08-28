@@ -3,15 +3,10 @@ import { safeAreaVariableNames } from '@tamagui/style-grammar/runtime'
 import { View as CoreView, createTamagui, getConfig } from '@tamagui/web'
 import { afterEach, beforeAll, describe, expect, test, vi } from 'vitest'
 
-import { preprocessTailwindClassName } from '../candidate'
+import { getTailwindClassPlan } from '../candidate'
 import { tailwindStyleFrontend } from '../frontend'
 import { Text, View, styled } from '../index'
 import { splitTailwindStyles, styleOf } from './utils'
-
-const programsOf = (style: Record<string, any>) =>
-  Object.values(style).filter(
-    (value) => value && typeof value === 'object' && 'property' in value
-  )
 
 beforeAll(() => {
   createTamagui(getDefaultTamaguiConfig('native') as any)
@@ -121,16 +116,22 @@ describe('authored ordering across shorthand and longhand candidates', () => {
 
 describe('web-only candidates', () => {
   test('an unclaimed class is dropped instead of leaking into native className', () => {
-    const result = preprocessTailwindClassName({ className: 'grid-cols-3' }, getConfig())
-
-    expect(result.className).toBeUndefined()
+    expect(getTailwindClassPlan('grid-cols-3', getConfig())).toBeNull()
+    expect(
+      splitTailwindStyles(View, { className: 'grid-cols-3' }).viewProps.className
+    ).toBeUndefined()
   })
 
   test('dropping a web-only candidate warns once, naming the class', () => {
     const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
-    // a spelling no other test uses, so the module-level warned set is cold
-    preprocessTailwindClassName({ className: 'float-right' }, getConfig())
-    preprocessTailwindClassName({ className: 'float-right' }, getConfig())
+    const nodeEnv = process.env.NODE_ENV
+    process.env.NODE_ENV = 'development'
+    try {
+      splitTailwindStyles(View, { className: 'float-right' })
+      splitTailwindStyles(View, { className: 'float-right' })
+    } finally {
+      process.env.NODE_ENV = nodeEnv
+    }
 
     expect(warn).toHaveBeenCalledTimes(1)
     expect(warn.mock.calls[0][0]).toContain('float-right')
@@ -181,19 +182,31 @@ describe('class-first styled()', () => {
       padding: '4',
       borderRadius: '4',
     })
-    expect(programsOf(resolved.baseStyle)).toHaveLength(3)
+    expect(resolved.baseStyle).toMatchObject({
+      backgroundColor: { hover: 'red' },
+      margin: { sm: '4' },
+      opacity: { enter: '0' },
+    })
     expect(resolved.passthroughClassName).toBeUndefined()
     expect(resolved.variants?.size?.sm).toMatchObject({
       height: '8',
       paddingHorizontal: '3',
     })
-    expect(programsOf(resolved.variants?.size?.sm as any)).toHaveLength(3)
+    expect(resolved.variants?.size?.sm).toMatchObject({
+      opacity: { hover: '0.5' },
+      marginTop: { sm: '4' },
+      scale: { enter: '0.95' },
+    })
     expect(resolved.variants?.size?.sm).not.toHaveProperty('className')
     expect(resolved.compoundVariants?.[0]?.style).toMatchObject({
       width: '8',
       padding: '0',
     })
-    expect(programsOf(resolved.compoundVariants?.[0]?.style as any)).toHaveLength(3)
+    expect(resolved.compoundVariants?.[0]?.style).toMatchObject({
+      backgroundColor: { hover: 'blue' },
+      marginBottom: { sm: '4' },
+      opacity: { enter: '0.5' },
+    })
     expect(resolved.compoundVariants?.[0]?.style).not.toHaveProperty('className')
 
     const result = splitTailwindStyles(Frame, { size: 'sm' })

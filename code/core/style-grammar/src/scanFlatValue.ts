@@ -90,6 +90,19 @@ export type FlatScanErrorCode =
 export type FlatScanFailure = FlatScanErrorCode | 'refused-chain'
 
 export interface FlatValueHandler<Context> {
+  /** one modifier segment, reported by the scanner's existing character loop */
+  modifier?(
+    ctx: Context,
+    start: number,
+    end: number,
+    valid: boolean,
+    first: boolean,
+    source: string,
+    a: any,
+    b: any,
+    c: any,
+    d: any
+  ): boolean | void
   /**
    * The base, or one clause's payload, just ended. `start` and `end` are
    * already trimmed, and `start === end` means the segment is empty: an empty
@@ -140,7 +153,9 @@ export interface FlatValueHandler<Context> {
     a: any,
     b: any,
     c: any,
-    d: any
+    d: any,
+    failure: FlatScanFailure | null,
+    failureIndex: number
   ): void
 }
 
@@ -275,6 +290,7 @@ export function scanFlatValue<Context>(
   // the top-level word being scanned, and the last top-level colon inside it
   let wordStart = -1
   let lastColon = -1
+  let modifierStart = -1
   // A chain is recognized only when its whole top-level word closes. Keep the
   // error bounds for that word separate from the preceding segment so an error
   // in `hover:bad;` cannot invalidate the base flushed immediately before it.
@@ -355,29 +371,7 @@ export function scanFlatValue<Context>(
       if (wordStart !== -1) {
         handler.word?.(ctx, wordStart, index, lastColon !== -1)
         if (lastColon !== -1) {
-          const closed = closeSegment(
-            source,
-            handler,
-            ctx,
-            segmentStart,
-            wordStart,
-            !sawChain,
-            segmentValid,
-            chainStart,
-            chainEnd,
-            chainValid,
-            chainCount,
-            result,
-            failure,
-            failureIndex,
-            a,
-            b,
-            c,
-            d
-          )
-          const bits = closed % 32
-          result |= bits
-          if (bits & 4) lastAcceptedStart = Math.floor(closed / 32)
+          // the preceding segment already closed at this word's first colon
           const nextChainValid = wordErrorMin >= lastColon
           const payloadValid = wordErrorMax < lastColon
           if (!handler.chain(ctx, wordStart, lastColon, nextChainValid)) {
@@ -395,6 +389,7 @@ export function scanFlatValue<Context>(
         }
         wordStart = -1
         lastColon = -1
+        modifierStart = -1
         wordErrorMin = length
         wordErrorMax = -1
       }
@@ -422,7 +417,57 @@ export function scanFlatValue<Context>(
       if (opensUrlToken(source, index)) url = true
       depth = 1
       parenStart = index
-    } else if (code === CHAR_COLON) lastColon = index
+    } else if (code === CHAR_COLON) {
+      const first = modifierStart === -1
+      const start = first ? wordStart : modifierStart
+      if (first) {
+        // this word is a chain, so the base (or the previous clause's payload)
+        // ends where the word began. Close it now, before any modifier event,
+        // so a consumer can hold one condition cursor: every payload segment
+        // arrives before the next clause starts accumulating.
+        const closed = closeSegment(
+          source,
+          handler,
+          ctx,
+          segmentStart,
+          wordStart,
+          !sawChain,
+          segmentValid,
+          chainStart,
+          chainEnd,
+          chainValid,
+          chainCount,
+          result,
+          failure,
+          failureIndex,
+          a,
+          b,
+          c,
+          d
+        )
+        const bits = closed % 32
+        result |= bits
+        if (bits & 4) lastAcceptedStart = Math.floor(closed / 32)
+      }
+      if (
+        handler.modifier?.(
+          ctx,
+          start,
+          index,
+          wordErrorMax < start,
+          first,
+          source,
+          a,
+          b,
+          c,
+          d
+        ) === false
+      ) {
+        return 'refused-chain'
+      }
+      modifierStart = index + 1
+      lastColon = index
+    }
   }
 
   if (comment) {
@@ -450,29 +495,7 @@ export function scanFlatValue<Context>(
   if (wordStart !== -1) {
     handler.word?.(ctx, wordStart, length, lastColon !== -1)
     if (lastColon !== -1) {
-      const closed = closeSegment(
-        source,
-        handler,
-        ctx,
-        segmentStart,
-        wordStart,
-        !sawChain,
-        segmentValid,
-        chainStart,
-        chainEnd,
-        chainValid,
-        chainCount,
-        result,
-        failure,
-        failureIndex,
-        a,
-        b,
-        c,
-        d
-      )
-      const bits = closed % 32
-      result |= bits
-      if (bits & 4) lastAcceptedStart = Math.floor(closed / 32)
+      // the preceding segment already closed at this word's first colon
       const nextChainValid = wordErrorMin >= lastColon
       const payloadValid = wordErrorMax < lastColon
       if (!handler.chain(ctx, wordStart, lastColon, nextChainValid)) {
@@ -514,7 +537,19 @@ export function scanFlatValue<Context>(
   const bits = closed % 32
   result |= bits
   if (bits & 4) lastAcceptedStart = Math.floor(closed / 32)
-  handler.end?.(ctx, source, result, lastAcceptedStart, chainCount, a, b, c, d)
+  handler.end?.(
+    ctx,
+    source,
+    result,
+    lastAcceptedStart,
+    chainCount,
+    a,
+    b,
+    c,
+    d,
+    failure,
+    failureIndex
+  )
 
   return failure
 }

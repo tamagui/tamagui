@@ -15,7 +15,7 @@ import {
 import {
   v6RemovedThemeNames,
   v6ThemeNameReplacements,
-} from '@tamagui/style-grammar/runtime'
+} from '@tamagui/style-grammar/v6-themes'
 
 export { shorthands }
 export { createSystemFont } from './fonts'

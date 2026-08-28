@@ -1,7 +1,7 @@
 import type { StyleObject } from '@tamagui/helpers';
 import type { CoreStateModifierName, TransformAccumulator } from '@tamagui/style-grammar/runtime';
 import type { Properties } from 'csstype';
-import type { CSSProperties, ComponentType, Context, FunctionComponent, HTMLAttributes, ProviderExoticComponent, Ref as ReactRef, ReactNode, RefObject } from 'react';
+import type { CSSProperties, ComponentType, Context, Dispatch, FunctionComponent, HTMLAttributes, ProviderExoticComponent, Ref as ReactRef, ReactNode, RefObject, SetStateAction } from 'react';
 import type { PressableProps, Text as RNText, TextStyle as RNTextStyle, TextProps as ReactTextProps, View, ViewProps, ViewStyle } from 'react-native';
 import type { NativeStyleEngineLinkHandle } from './helpers/nativeStyleEngine';
 import type { StyleFrontend } from './helpers/styleFrontend';
@@ -298,6 +298,7 @@ export type ReactComponentWithRef<Props, Ref> = ComponentType<Props & {
     ref?: ReactRef<Ref>;
 }>;
 export type ComponentSetStateShallow = React.Dispatch<React.SetStateAction<Partial<TamaguiComponentState>>>;
+export type ComponentSetState = Dispatch<SetStateAction<TamaguiComponentState>>;
 export type ComponentContextI = {
     disableSSR?: boolean;
     inText: boolean;
@@ -321,6 +322,9 @@ export type TamaguiComponentStateRef = {
     willHydrate?: boolean;
     hasMeasured?: boolean;
     hasAnimated?: boolean;
+    shouldRegisterPresence?: boolean;
+    didFinalizeInitialStyleFrame?: boolean;
+    initialStyleFrameUnmounted?: TamaguiComponentState['unmounted'];
     themeShallow?: boolean;
     hasEverThemed?: boolean | 'wrapped';
     hasEverResetPresence?: boolean;
@@ -329,6 +333,7 @@ export type TamaguiComponentStateRef = {
     isListeningToTheme?: boolean;
     unPress?: Function;
     setStateShallow?: ComponentSetStateShallow;
+    setState?: ComponentSetState;
     baseSetStateShallow?: ComponentSetStateShallow;
     themeNeedsUpdate?: () => boolean;
     useStyleListener?: UseStyleListener;
@@ -1729,13 +1734,14 @@ export type GetStyleState = {
     flatMediaState?: Record<string, boolean | undefined>;
     flatGroupContext?: AllGroupContexts | null;
     flatConditionOrder?: number;
-    flatActiveConditions?: Record<string, true>;
     flatStateKeys?: Set<string>;
     flatMediaKeys?: Set<string>;
     flatGroupKeys?: Set<string>;
     flatGroupMedia?: Set<string>;
     flatEnterKeys?: Set<string>;
     flatExitKeys?: Set<string>;
+    flatHasEnterStyle?: boolean;
+    flatHasPlatformPseudo?: boolean;
     flatUsesSafeArea?: boolean;
     overriddenContextProps?: Record<string, any>;
     originalContextPropValues?: Record<string, any>;
@@ -1743,7 +1749,7 @@ export type GetStyleState = {
     animationDriver?: AnimationDriver | null;
 };
 export type StyleResolver<Response = PropMappedValue> = (key: string, value: any, props: SplitStyleProps, state: GetStyleState, parentVariantKey: string) => Response;
-export type PropMapper = (key: string, value: any, state: GetStyleState, disabled: boolean, map: (key: string, val: any, originalVal?: any, conditionSource?: string) => void) => void;
+export type PropMapper = (key: string, value: any, state: GetStyleState, disabled: boolean, parentCondition?: number, fallbackOriginal?: any) => void;
 export type GenericVariantDefinitions = {
     [key: string]: {
         [key: string]: ((a: any, b: any) => any) | StaticStyleInput | {
@@ -1941,6 +1947,7 @@ export type SplitStyleProps = {
     disableExpandShorthands?: boolean;
     hasTextAncestor?: boolean;
     willBeAnimated?: boolean;
+    canPlatformPseudo?: boolean;
     isAnimated: boolean;
     isExiting?: boolean;
 };
@@ -1957,6 +1964,9 @@ type AlwaysPresent = [true, null, null];
 type Present = [true, undefined, PresenceContextProps];
 type NotPresent = [false, SafeToRemoveCallback, PresenceContextProps];
 export type UsePresenceResult = AlwaysPresent | Present | NotPresent;
+export type PresenceRegistration = {
+    shouldRegisterPresence?: boolean;
+};
 type AnimationConfig = {
     [key: string]: any;
 };
@@ -2003,7 +2013,7 @@ export type AnimationDriver<A extends AnimationConfig = AnimationConfig> = Anima
     /** When true, this is a stub driver with no real animation support */
     isStub?: boolean;
     useAnimations: UseAnimationHook;
-    usePresence: () => UsePresenceResult;
+    usePresence: (registration?: PresenceRegistration) => UsePresenceResult;
     ResetPresence: (props: {
         children?: React.ReactNode;
         disabled?: boolean;
@@ -2064,6 +2074,11 @@ export type GetStyleResult = {
         enter?: Set<string>;
         exit?: Set<string>;
     };
+    hasEnterStyle?: true;
+    platformPseudo?: true;
+    frontendGroup?: boolean | string;
+    frontendContainer?: boolean | string;
+    frontendContainerType?: string;
 };
 export type ClassNamesObject = Record<string, string>;
 export type ModifyTamaguiComponentStyleProps<Comp extends TamaguiComponent, ChangedProps extends object> = Comp extends TamaguiComponent<infer A, infer B, infer C, infer D, infer E> ? A extends object ? TamaguiComponent<Omit<A, keyof ChangedProps> & ChangedProps, B, C, D, E> : never : never;

@@ -1,5 +1,3 @@
-import type { ParsedValue } from '@tamagui/style-grammar/runtime'
-
 /**
  * The narrow type surface another style frontend needs to build components on the
  * shared runtime.
@@ -11,12 +9,9 @@ import type { ParsedValue } from '@tamagui/style-grammar/runtime'
  */
 export type {
   FrontendComponent,
+  FrontendClassPlan,
+  FrontendClassPlanEntry,
   FrontendStaticConfig,
   StyleFrontend,
   StyleFrontendConfig,
 } from './helpers/styleFrontend'
-
-export interface FrontendProgramValue {
-  readonly property: string
-  readonly value: ParsedValue
-}

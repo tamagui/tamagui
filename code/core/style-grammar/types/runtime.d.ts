@@ -3,7 +3,7 @@ export { canonicalClauseModifier, isModifierName, reduceFlatValueIdentity, type 
 export { clauseSubjectClassRepetitions, createClausePrecedenceOrder, getClausePrecedenceKeyFromKinds, type ClausePrecedenceKey, type ClausePrecedenceOrder } from "./clausePrecedence";
 export { createGrammarConfigView, grammarPlatformNames, isContainerSizeQueryText, type GrammarSourceConfig } from "./config";
 export { mergeFlatValues } from "./mergeFlatValues";
-export { compileModifierVocabulary, configRevisionSymbol, isRootThemeName, modifierKindMedia, modifierKindPlatform, modifierKindState, modifierKindTheme, v6RemovedThemeNames, v6ThemeNameReplacements, type CompiledModifierKind, type CompiledModifierVocabulary } from "./modifierVocabulary";
+export { compileModifierVocabulary, configRevisionSymbol, isRootThemeName, modifierKindMedia, modifierKindPlatform, modifierKindState, modifierKindTheme, type CompiledModifierKind, type CompiledModifierVocabulary } from "./modifierVocabulary";
 export { borderSideSuffix, getTokenCategory, percentUtilityProps, radiusCornerProps } from "./registry";
 export { splitColorOpacitySuffix } from "./resolvePayload";
 export { getSafeAreaEdge, safeAreaVariableNames } from "./safeAreaVariables";

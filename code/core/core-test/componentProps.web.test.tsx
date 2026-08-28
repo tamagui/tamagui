@@ -9,6 +9,7 @@ const config = createTamagui(getDefaultTamaguiConfig('web'))
 test('styled displayName sets React identity while name remains a host prop', () => {
   const NamedButton = styled(View, {
     displayName: 'NamedButton',
+    className: 'named-button-hook',
     render: 'button',
   })
 
@@ -25,7 +26,8 @@ test('styled displayName sets React identity while name remains a host prop', ()
   const button = tree.container.querySelector('#named-button') as HTMLButtonElement
   expect(NamedButton.displayName).toBe('NamedButton')
   expect(button.name).toBe('submitter')
-  expect(button.className).toContain('is_NamedButton')
+  expect(button.className).toContain('named-button-hook')
+  expect(button.className).not.toContain('is_NamedButton')
   expect(button.className).not.toContain('is_InstanceName')
   expect(button.getAttribute('displayname')).toBeNull()
 })

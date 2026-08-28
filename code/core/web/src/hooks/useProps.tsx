@@ -93,18 +93,19 @@ export function usePropsAndStyle<A extends PropsLikeObject>(
   // useComponentState injects enter/exit presence variants onto a fresh copy
   // (it no longer mutates our `props` in place), so use the returned object for
   // style resolution below to keep those variants applied
+  const componentState = useComponentState(
+    props,
+    componentContext.animationDriver,
+    staticConfig,
+    getConfig()
+  )
   const {
     props: statefulProps,
     state,
     disabled,
     setState,
     setStateShallow,
-  } = useComponentState(
-    props,
-    componentContext.animationDriver,
-    staticConfig,
-    getConfig()
-  )
+  } = componentState
 
   const mediaStateNow = opts?.noMedia
     ? // not safe to use mediaState but really marginal to hit this
@@ -129,6 +130,11 @@ export function usePropsAndStyle<A extends PropsLikeObject>(
     null,
     componentContext,
     groupContext
+  )
+
+  componentState.finalizeStyleFlags(
+    !!splitStyles?.hasEnterStyle,
+    !!splitStyles?.platformPseudo
   )
 
   const { mediaGroups, pseudoGroups } = splitStyles || {}

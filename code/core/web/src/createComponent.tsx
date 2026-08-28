@@ -21,8 +21,7 @@ import { defaultComponentStateMounted } from './defaultComponentState'
 import { getWebEvents, useEvents, wrapWithGestureDetector } from './eventHandling'
 import { getDefaultProps } from './helpers/getDefaultProps'
 import { componentDisplayName } from './helpers/componentDisplayName'
-import { getSplitStyles } from './helpers/getSplitStyles'
-import { useSplitStyles } from './hooks/useSplitStyles'
+import { getSplitStyles, prepareStyleStaticConfig } from './helpers/getSplitStyles'
 import {
   getNativeStyleEngine,
   queueNativeViewState,
@@ -43,6 +42,7 @@ import {
 } from './helpers/subscribeToContextGroup'
 import { getStyleTags } from './helpers/wrapStyleTags'
 import { useComponentState } from './hooks/useComponentState'
+import { useSplitStyles } from './hooks/useSplitStyles'
 import { setMediaShouldUpdate, useMedia } from './hooks/useMedia'
 import { useThemeWithState } from './hooks/useTheme'
 import type { TamaguiComponentEvents } from './interfaces/TamaguiComponentEvents'
@@ -267,6 +267,8 @@ export function createComponent<
     )
   }
 
+  prepareStyleStaticConfig(staticConfig)
+
   let config: TamaguiInternalConfig | null = null
   let resolvedDefaultProps: Record<string, any> | undefined
   let didResolveDefaultProps = false
@@ -408,17 +410,6 @@ export function createComponent<
     props = nextProps as ViewProps | TextProps
     overriddenContextProps = overrides
 
-    // frontend single pass (hoisted): the component's descriptor tokenizes className +
-    // flattens props ONCE here, so flat values and transition props are in place before
-    // the state machine / variant / animation driver below read them. preprocessProps
-    // marks its result, so getSplitStyles skips its own preprocess.
-    // components without a descriptor pay one property read.
-    if (staticConfig.styleFrontend) {
-      props = staticConfig.styleFrontend.preprocessProps(props, config) as
-        | ViewProps
-        | TextProps
-    }
-
     if (process.env.NODE_ENV === 'development' && isClient) {
       React.useEffect(() => {
         let node: HTMLElement | undefined
@@ -518,10 +509,7 @@ export function createComponent<
 
     const {
       disabled,
-      groupName,
       hasAnimationProp,
-      hasEnterStyle,
-      isAnimated,
       isExiting,
       isHydrated,
       presence,
@@ -532,10 +520,15 @@ export function createComponent<
       stateRef,
       inputStyle,
       outputStyle,
+      startedUnhydrated,
+    } = componentState
+    let { groupName } = componentState
+    let {
+      hasEnterStyle,
+      isAnimated,
       willBeAnimated,
       willBeAnimatedClient,
       platformPseudo,
-      startedUnhydrated,
     } = componentState
 
     // adopt the props object useComponentState resolved: on the enter/exit presence
@@ -604,72 +597,6 @@ export function createComponent<
         stateRef.current.setStateShallow?.({ hover: hovered })
       })
     }, [platformPseudo, props.disabled])
-
-    const containerProp = props.container
-    const containerName =
-      (props.containerName as string | undefined) ||
-      (typeof containerProp === 'string' ? containerProp : undefined)
-    const containerType =
-      (props.containerType as string | undefined) ||
-      (containerProp ? 'inline-size' : undefined)
-    const isContainer = !!containerType && containerType !== 'normal'
-
-    // create new context with groups, or else sublings will grab the same one
-    const allGroupContexts = useMemo((): AllGroupContexts | null => {
-      if ((!groupName && !isContainer) || props.passThrough) {
-        return groupContextParent
-      }
-
-      const listeners = new Set<GroupStateListener>()
-      stateRef.current.group?.listeners?.clear()
-      stateRef.current.group = {
-        listeners,
-        emit(state) {
-          listeners.forEach((l) => l(state))
-        },
-        subscribe(cb) {
-          listeners.add(cb)
-          if (listeners.size === 1) {
-            setStateShallow({ hasDynGroupChildren: true })
-          }
-          return () => {
-            listeners.delete(cb)
-            if (listeners.size === 0) {
-              setStateShallow({ hasDynGroupChildren: false })
-            }
-          }
-        },
-      }
-
-      // one entry object serves every key this component provides: the group
-      // name and the container keys share the same state and emitter
-      const entry: SingleGroupContext = {
-        state: {
-          pseudo: defaultComponentStateMounted,
-        },
-        subscribe: (listener) => {
-          const dispose = stateRef.current.group?.subscribe(listener)
-          return () => {
-            dispose?.()
-          }
-        },
-      }
-
-      const next: AllGroupContexts = { ...groupContextParent }
-      if (groupName) {
-        next[groupName] = entry
-      }
-      if (isContainer) {
-        // `@sm:` reads the nearest container of any name, so every container
-        // writes the `@` key; a named one also writes `@name`. group names
-        // cannot contain `@`, so the namespaces never collide
-        next['@'] = entry
-        if (containerName) {
-          next[`@${containerName}`] = entry
-        }
-      }
-      return next
-    }, [stateRef, groupName, containerName, isContainer, groupContextParent])
 
     // if our animation driver supports avoidReRenders, we'll replace this below with
     // a version that essentially uses an internall emitter rather than setting state
@@ -777,7 +704,7 @@ export function createComponent<
 
             console.groupCollapsed(`${childLog} [inspect props, state, context 👇]`)
             log('props in:', propsIn)
-            log('final props:', props, Object.keys(props))
+            log('final props:', props)
             log({ state, staticConfig, elementType, themeStateProps })
             log({
               context,
@@ -833,6 +760,7 @@ export function createComponent<
       isExiting,
       isAnimated,
       willBeAnimated,
+      canPlatformPseudo: componentState.platformPseudo,
       displayName,
       styledContext: styledContextValue,
       styledContextKeys,
@@ -851,12 +779,90 @@ export function createComponent<
       styleProps,
       null,
       componentContext,
-      allGroupContexts,
+      groupContextParent,
       elementType,
       startedUnhydrated,
       debugProp,
       animationDriver
     )
+
+    const finalizedComponentState = componentState.finalizeStyleFlags(
+      !!splitStyles?.hasEnterStyle,
+      !!splitStyles?.platformPseudo
+    )
+    hasEnterStyle = finalizedComponentState.hasEnterStyle
+    isAnimated = finalizedComponentState.isAnimated
+    willBeAnimated = finalizedComponentState.willBeAnimated
+    willBeAnimatedClient = finalizedComponentState.willBeAnimatedClient
+    platformPseudo = finalizedComponentState.platformPseudo
+
+    groupName = (splitStyles?.frontendGroup ?? groupName) as typeof groupName
+    const containerProp = splitStyles?.frontendContainer ?? props.container
+    const containerName =
+      (props.containerName as string | undefined) ||
+      (typeof containerProp === 'string' ? containerProp : undefined)
+    const containerType =
+      (splitStyles?.frontendContainerType as string | undefined) ||
+      (props.containerType as string | undefined) ||
+      (containerProp ? 'inline-size' : undefined)
+    const isContainer = !!containerType && containerType !== 'normal'
+
+    // create new context with groups, or else siblings will grab the same one
+    const allGroupContexts = useMemo((): AllGroupContexts | null => {
+      if ((!groupName && !isContainer) || props.passThrough) {
+        return groupContextParent
+      }
+
+      const listeners = new Set<GroupStateListener>()
+      stateRef.current.group?.listeners?.clear()
+      stateRef.current.group = {
+        listeners,
+        emit(state) {
+          listeners.forEach((l) => l(state))
+        },
+        subscribe(cb) {
+          listeners.add(cb)
+          if (listeners.size === 1) {
+            setStateShallow({ hasDynGroupChildren: true })
+          }
+          return () => {
+            listeners.delete(cb)
+            if (listeners.size === 0) {
+              setStateShallow({ hasDynGroupChildren: false })
+            }
+          }
+        },
+      }
+
+      // one entry object serves every key this component provides: the group
+      // name and the container keys share the same state and emitter
+      const entry: SingleGroupContext = {
+        state: {
+          pseudo: defaultComponentStateMounted,
+        },
+        subscribe: (listener) => {
+          const dispose = stateRef.current.group?.subscribe(listener)
+          return () => {
+            dispose?.()
+          }
+        },
+      }
+
+      const next: AllGroupContexts = { ...groupContextParent }
+      if (groupName) {
+        next[groupName] = entry
+      }
+      if (isContainer) {
+        // `@sm:` reads the nearest container of any name, so every container
+        // writes the `@` key; a named one also writes `@name`. group names
+        // cannot contain `@`, so the namespaces never collide
+        next['@'] = entry
+        if (containerName) {
+          next[`@${containerName}`] = entry
+        }
+      }
+      return next
+    }, [stateRef, groupName, containerName, isContainer, groupContextParent])
 
     const isPassthrough = !splitStyles
 
@@ -1195,9 +1201,13 @@ export function createComponent<
         }
 
         // one thing we have to handle here and where it gets a bit more complex is group styles
-        const canAvoidReRender = Object.keys(next).every((key) =>
-          avoidReRenderKeys.has(key)
-        )
+        let canAvoidReRender = true
+        for (const key in next) {
+          if (!avoidReRenderKeys.has(key)) {
+            canAvoidReRender = false
+            break
+          }
+        }
 
         const updatedState = {
           ...prev,
@@ -1854,8 +1864,11 @@ export function createComponent<
         propsIn.accessibilityLabel ??
         (typeof propsWithHref.href === 'string' ? propsWithHref.href : null) ??
         (typeof propsInWithHref.href === 'string' ? propsInWithHref.href : null)
-      const pressDebugName =
-        [displayName, pressDebugDetail].filter(Boolean).join(':') || null
+      const pressDebugName = displayName
+        ? pressDebugDetail
+          ? `${displayName}:${pressDebugDetail}`
+          : displayName
+        : pressDebugDetail || null
       hasRealPressEvents = !!(onPress || onPressIn || onPressOut || onLongPress)
       pressGesture = useEvents(
         events,
@@ -2020,12 +2033,10 @@ export function createComponent<
       )
     }
 
-    // containers provide the same context channel groups do: a container-only
-    // parent (`container`, `containerName`, `containerType`) must mount the
-    // provider or its descendants' `@size:` clauses can never subscribe —
-    // the context entry existed but was never provided (found 2026-07-31 by
-    // real parent/descendant integration; injected-context tests masked it)
-    if ('group' in props || isContainer) {
+    // containers provide the same context channel groups do. Mount the
+    // provider whenever the resolved component establishes either capability
+    // so descendant clauses can subscribe.
+    if (groupName || isContainer) {
       content = (
         <GroupContext.Provider value={allGroupContexts}>{content}</GroupContext.Provider>
       )

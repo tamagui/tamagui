@@ -8,12 +8,14 @@ import type {
   CSSProperties,
   ComponentType,
   Context,
+  Dispatch,
   FunctionComponent,
   HTMLAttributes,
   ProviderExoticComponent,
   Ref as ReactRef,
   ReactNode,
   RefObject,
+  SetStateAction,
 } from 'react'
 import type {
   PressableProps,
@@ -610,6 +612,8 @@ export type ComponentSetStateShallow = React.Dispatch<
   React.SetStateAction<Partial<TamaguiComponentState>>
 >
 
+export type ComponentSetState = Dispatch<SetStateAction<TamaguiComponentState>>
+
 export type ComponentContextI = {
   disableSSR?: boolean
   inText: boolean
@@ -630,6 +634,9 @@ export type TamaguiComponentStateRef = {
   willHydrate?: boolean
   hasMeasured?: boolean
   hasAnimated?: boolean
+  shouldRegisterPresence?: boolean
+  didFinalizeInitialStyleFrame?: boolean
+  initialStyleFrameUnmounted?: TamaguiComponentState['unmounted']
   themeShallow?: boolean
   hasEverThemed?: boolean | 'wrapped'
   hasEverResetPresence?: boolean
@@ -638,6 +645,7 @@ export type TamaguiComponentStateRef = {
   isListeningToTheme?: boolean
   unPress?: Function
   setStateShallow?: ComponentSetStateShallow
+  setState?: ComponentSetState
   // hoisted base shallow-setter that always calls the real React setState.
   // kept on its own field so the avoidReRenders wrapper (which overwrites
   // `setStateShallow`) can capture this as its real-re-render escape hatch.
@@ -2951,13 +2959,14 @@ export type GetStyleState = {
   flatMediaState?: Record<string, boolean | undefined>
   flatGroupContext?: AllGroupContexts | null
   flatConditionOrder?: number
-  flatActiveConditions?: Record<string, true>
   flatStateKeys?: Set<string>
   flatMediaKeys?: Set<string>
   flatGroupKeys?: Set<string>
   flatGroupMedia?: Set<string>
   flatEnterKeys?: Set<string>
   flatExitKeys?: Set<string>
+  flatHasEnterStyle?: boolean
+  flatHasPlatformPseudo?: boolean
   flatUsesSafeArea?: boolean
   // Track style values that override context props (for issues #3670, #3676)
   overriddenContextProps?: Record<string, any>
@@ -2985,7 +2994,8 @@ export type PropMapper = (
   value: any,
   state: GetStyleState,
   disabled: boolean,
-  map: (key: string, val: any, originalVal?: any, conditionSource?: string) => void
+  parentCondition?: number,
+  fallbackOriginal?: any
 ) => void
 
 export type GenericVariantDefinitions = {
@@ -3392,6 +3402,7 @@ export type SplitStyleProps = {
   hasTextAncestor?: boolean
   // for animations
   willBeAnimated?: boolean // we need to track media queries even before animation
+  canPlatformPseudo?: boolean
   isAnimated: boolean
   isExiting?: boolean
 }
@@ -3413,6 +3424,10 @@ type Present = [true, undefined, PresenceContextProps]
 type NotPresent = [false, SafeToRemoveCallback, PresenceContextProps]
 
 export type UsePresenceResult = AlwaysPresent | Present | NotPresent
+
+export type PresenceRegistration = {
+  shouldRegisterPresence?: boolean
+}
 
 // Animations:
 
@@ -3483,7 +3498,7 @@ export type AnimationDriver<A extends AnimationConfig = AnimationConfig> =
     /** When true, this is a stub driver with no real animation support */
     isStub?: boolean
     useAnimations: UseAnimationHook
-    usePresence: () => UsePresenceResult
+    usePresence: (registration?: PresenceRegistration) => UsePresenceResult
     ResetPresence: (props: {
       children?: React.ReactNode
       disabled?: boolean
@@ -3575,6 +3590,14 @@ export type GetStyleResult = {
     enter?: Set<string>
     exit?: Set<string>
   }
+  hasEnterStyle?: true
+  platformPseudo?: true
+  // behavior-bearing frontend candidates discovered by the same className
+  // walk as styles. createComponent consumes these before it builds descendant
+  // group/container context; they are never forwarded to the host.
+  frontendGroup?: boolean | string
+  frontendContainer?: boolean | string
+  frontendContainerType?: string
 }
 
 export type ClassNamesObject = Record<string, string>

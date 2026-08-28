@@ -16,6 +16,7 @@ import { tamaguiToTailwind } from '@tamagui/to-tailwind'
 
 import { createTamagui } from '@tamagui/web'
 import { tailwindStyleFrontend } from '../frontend'
+import { resolveTailwindClassName } from '../candidate'
 import { Text, View } from '../index'
 import { splitTailwindStyles } from './utils'
 
@@ -61,7 +62,7 @@ function resolved(Comp: any, sourceJSX: string, styleProp: string): any {
 }
 
 function flat(className: string): Record<string, any> {
-  return tailwindStyleFrontend.preprocessProps({ className }, CFG)
+  return resolveTailwindClassName(className, CFG)
 }
 
 describe('native — px-length props resolve to EXACT NUMBERS (RN drops "Npx" strings)', () => {
@@ -198,24 +199,31 @@ describe('native — directional borders + per-edge radii (converter-driven)', (
     expect(flat('rounded-tl-lg').className).toBeUndefined()
     expect(nativeStyle(View, 'rounded-tl-lg').borderTopLeftRadius).toBe(8)
   })
-  test('parser: a missing radius token warns once and is dropped', () => {
+  test('the production frontend warns once for a missing radius token and drops it', () => {
     const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    const nodeEnv = process.env.NODE_ENV
+    process.env.NODE_ENV = 'development'
     expect(CFG.tokensParsed.radius).not.toHaveProperty('missing-radius')
-    expect(flat('rounded-tl-missing-radius').className).toBeUndefined()
-    expect(flat('rounded-tl-missing-radius').className).toBeUndefined()
-    expect(warn).toHaveBeenCalledTimes(1)
-    expect(warn).toHaveBeenCalledWith(expect.stringContaining('web-only'))
-    expect(
-      nativeStyle(View, 'rounded-tl-missing-radius').borderTopLeftRadius
-    ).toBeUndefined()
-    warn.mockRestore()
+    try {
+      expect(
+        nativeStyle(View, 'rounded-tl-missing-radius').borderTopLeftRadius
+      ).toBeUndefined()
+      expect(
+        nativeStyle(View, 'rounded-tl-missing-radius').borderTopLeftRadius
+      ).toBeUndefined()
+      expect(warn).toHaveBeenCalledTimes(1)
+      expect(warn).toHaveBeenCalledWith(expect.stringContaining('unavailable'))
+    } finally {
+      process.env.NODE_ENV = nodeEnv
+      warn.mockRestore()
+    }
   })
   test('production silently drops passthrough while claimed tokens still resolve', () => {
     const nodeEnv = process.env.NODE_ENV
     const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
     try {
       process.env.NODE_ENV = 'production'
-      expect(flat('grid-cols-[93px]').className).toBeUndefined()
+      expect(nativeStyle(View, 'grid-cols-[93px]')).toEqual({})
       expect(warn).not.toHaveBeenCalled()
       expect(nativeStyle(View, 'rounded-tl-lg').borderTopLeftRadius).toBe(8)
     } finally {
@@ -230,18 +238,12 @@ describe('native — directional borders + per-edge radii (converter-driven)', (
 })
 
 describe('native — responsive media (converter-driven, parser-level structure)', () => {
-  test('md show/hide carries the correct flat program', () => {
+  test('md show/hide carries the shared conditional spelling', () => {
     const showCls = toClass(`<View display="none md:flex" />`)
     expect(showCls).toContain('md:flex')
     expect(showCls).not.toMatch(/max-md/)
-    const showProgram = Object.values(flat(showCls)).find(
-      (value) => value?.property === 'display'
-    )
-    expect(showProgram?.value.clauses).toEqual([{ modifiers: ['md'], payload: 'flex' }])
+    expect(flat(showCls).display).toEqual({ default: 'none', md: 'flex' })
     const hideCls = toClass(`<View display="flex md:none" />`)
-    const hideProgram = Object.values(flat(hideCls)).find(
-      (value) => value?.property === 'display'
-    )
-    expect(hideProgram?.value.clauses).toEqual([{ modifiers: ['md'], payload: 'none' }])
+    expect(flat(hideCls).display).toEqual({ default: 'flex', md: 'none' })
   })
 })

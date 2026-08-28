@@ -61,11 +61,11 @@ export const Card = (props: any) => (
 )
 
 export function TestVariantDefaultFalseOn(props: TestProps) {
-  return <Test14Component fullbleed />
+  return <Test14Component data-testid="variant-default-false" fullbleed />
 }
 
 export function TestVariantDefaultFalseOff(props: TestProps) {
-  return <Test14Component />
+  return <Test14Component data-testid="variant-default-false" />
 }
 
 export function TestMediaQuery() {

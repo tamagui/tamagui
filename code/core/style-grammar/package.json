@@ -74,6 +74,15 @@
       "import": "./dist/esm/tooling.mjs",
       "require": "./dist/cjs/tooling.cjs",
       "default": "./dist/esm/tooling.mjs"
+    },
+    "./v6-themes": {
+      "types": "./types/v6ThemeNames.d.ts",
+      "react-native": "./dist/esm/v6ThemeNames.native.js",
+      "browser": "./dist/esm/v6ThemeNames.mjs",
+      "module": "./dist/esm/v6ThemeNames.mjs",
+      "import": "./dist/esm/v6ThemeNames.mjs",
+      "require": "./dist/cjs/v6ThemeNames.cjs",
+      "default": "./dist/esm/v6ThemeNames.mjs"
     }
   },
   "publishConfig": {

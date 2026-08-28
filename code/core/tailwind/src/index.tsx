@@ -20,5 +20,4 @@ export const Text = frontendViews.Text as unknown as TailwindText
 
 export { styled } from './styled'
 export { parseStaticStyle, tailwindStyleFrontend } from './frontend'
-export { preprocessTailwindClassName } from './candidate'
 export type * from './types'

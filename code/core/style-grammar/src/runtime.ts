@@ -35,8 +35,6 @@ export {
   modifierKindPlatform,
   modifierKindState,
   modifierKindTheme,
-  v6RemovedThemeNames,
-  v6ThemeNameReplacements,
   type CompiledModifierKind,
   type CompiledModifierVocabulary,
 } from './modifierVocabulary'

@@ -8,10 +8,8 @@
  * reconnecting the regular root barrel.
  */
 import type { FunctionComponent } from 'react';
-import type { ParsedValue } from '@tamagui/style-grammar/runtime';
 import type { FrontendComponent, StyleFrontend } from './helpers/styleFrontend';
-import type { FrontendProgramValue } from './internalRuntimeTypes';
-export { STYLE_FRONTEND_PASSTHROUGH_PREFIX, STYLE_FRONTEND_PREPROCESSED, regularStyleFrontend, } from './helpers/styleFrontend';
+export { regularStyleFrontend } from './helpers/styleFrontend';
 export type * from './internalRuntimeTypes';
 export declare const createVariables: (tokens: Record<string, any>, parentPath?: string, isFont?: boolean) => any;
 export declare const parseFont: (definition: Record<string, any>) => any;
@@ -31,7 +29,6 @@ export declare const ensureThemeVariable: (theme: any, key: string) => void;
 export declare const transformsToString: (transforms: object[]) => string;
 export declare const styleToCSS: (style: Record<string, any>) => void;
 export declare const useThemeWithState: (props: any, isRoot?: boolean, forThemeView?: boolean) => [any, any];
-export declare const createFrontendProgram: (property: string, value: ParsedValue) => FrontendProgramValue;
 export declare const plainValueToPayload: (value: unknown, property: string) => string | null;
 export declare const createTamagui: (config: any) => any;
 export declare const setupHooks: (hooks: Record<string, any>) => void;

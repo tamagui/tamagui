@@ -18,7 +18,6 @@
 // The `agreement` block pins the cases that used to diverge, so a scanner that
 // forks again fails here rather than in an app. The `divergences` block pins
 // what still differs, with the reason each one is not a scanner fork.
-import { renderHook } from '@testing-library/react'
 import { createModifierRegistry, parseValue } from '@tamagui/style-grammar/tooling'
 import { beforeAll, describe, expect, test } from 'vitest'
 
@@ -31,7 +30,6 @@ import {
   styled,
   View,
 } from '../web/src'
-import { useComponentState } from '../web/src/hooks/useComponentState'
 import { constructCase, mulberry32 } from '../style-grammar/src/__tests__/valueCorpus'
 import { simplifiedGetSplitStyles } from './utils'
 
@@ -112,17 +110,9 @@ function variantValue(source: string, modifiers: readonly string[] = []) {
   )
 }
 
-/** what `useComponentState`'s scanner decided about lifecycle clauses */
+/** what the style pass decided about lifecycle clauses */
 function hasEnterStyle(source: unknown, property = PROBE) {
-  const { result } = renderHook(() =>
-    useComponentState(
-      { [property]: source },
-      undefined as any,
-      (View as any).staticConfig,
-      getConfig()
-    )
-  )
-  return (result.current as any).hasEnterStyle as boolean
+  return !!simplifiedGetSplitStyles(View, { [property]: source }).hasEnterStyle
 }
 
 /** every CSS rule the class path emitted for the probe property */
@@ -266,15 +256,7 @@ describe('agreement', () => {
       } as const,
     })
     const probe = (value: unknown) => {
-      const { result } = renderHook(() =>
-        useComponentState(
-          { tone: value },
-          undefined as any,
-          (Frame as any).staticConfig,
-          getConfig()
-        )
-      )
-      return (result.current as any).hasEnterStyle as boolean
+      return !!simplifiedGetSplitStyles(Frame, { tone: value }).hasEnterStyle
     }
 
     expect(probe('shown enter:hidden')).toBe(true)

@@ -13,7 +13,7 @@ export declare const useComponentState: (props: ViewProps | TextProps | Record<s
     isHydrated: boolean;
     presence: import("..").UsePresenceResult | null;
     presenceState: import("..").PresenceContextProps | null | undefined;
-    setState: import("react").Dispatch<import("react").SetStateAction<TamaguiComponentState>>;
+    setState: import("../types").ComponentSetState;
     setStateShallow: import("../types").ComponentSetStateShallow;
     noClass: boolean;
     state: TamaguiComponentState;
@@ -23,5 +23,6 @@ export declare const useComponentState: (props: ViewProps | TextProps | Record<s
     willBeAnimated: boolean;
     willBeAnimatedClient: boolean;
     platformPseudo: boolean;
+    finalizeStyleFlags(hasEnterStyle: boolean, hasPlatformPseudo: boolean): /*elided*/ any;
 };
 //# sourceMappingURL=useComponentState.d.ts.map

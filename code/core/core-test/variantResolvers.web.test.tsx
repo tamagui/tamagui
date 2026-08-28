@@ -505,7 +505,10 @@ describe('TS-style variant resolvers', () => {
     }
   })
 
-  test('allowedStyleValues settings gate fallback domains', () => {
+  test('token spread resolvers accept any authored number or string', () => {
+    // styles are authored by devs and never validated at runtime: everything
+    // routes to the token variant, which passes unknown values through.
+    // allowedStyleValues remains a type-level setting only.
     const Comp = styled(View, {
       variants: {
         kind: {
@@ -515,45 +518,12 @@ describe('TS-style variant resolvers', () => {
       } as const,
     })
 
-    configure({ allowedStyleValues: 'strict' })
-    expect(getOpacity(Comp, '50%')).toBeUndefined()
-
-    configure({ allowedStyleValues: 'strict-web' })
-    expect(getOpacity(Comp, '50vw')).toBe(0.44)
-    expect(getOpacity(Comp, '+.5vw')).toBe(0.44)
-    expect(getOpacity(Comp, '1e3vh')).toBe(0.44)
-    expect(getOpacity(Comp, '0x10vw')).toBe(0.44)
-    expect(getOpacity(Comp, 'calc()')).toBe(0.44)
-    expect(getOpacity(Comp, 'min()')).toBe(0.44)
-    expect(getOpacity(Comp, 'max()')).toBe(0.44)
-    expect(getOpacity(Comp, '50%')).toBeUndefined()
-
-    configure({ allowedStyleValues: 'somewhat-strict' })
-    expect(getOpacity(Comp, '50%')).toBe(0.44)
-    expect(getOpacity(Comp, '%')).toBe(0.44)
-    expect(getOpacity(Comp, '50vw')).toBeUndefined()
-    expect(getOpacity(Comp, '10px')).toBeUndefined()
-
-    configure({ allowedStyleValues: 'somewhat-strict-web' })
     expect(getOpacity(Comp, '50%')).toBe(0.44)
     expect(getOpacity(Comp, '50vw')).toBe(0.44)
-    expect(getOpacity(Comp, '10px')).toBeUndefined()
-
-    configure({ allowedStyleValues: { size: 'strict', space: 'somewhat-strict' } })
-    expect(getOpacity(Comp, '50%')).toBe(0.45)
-    expect(getOpacity(Comp, '1rem')).toBe(0.45)
-
-    const SizeOnly = styled(View, {
-      variants: {
-        kind: {
-          Size: createVariantResolver('Size', () => ({ opacity: 0.44 })),
-        },
-      } as const,
-    })
-    expect(getOpacity(SizeOnly, '50%')).toBeUndefined()
-    configure()
+    expect(getOpacity(Comp, 'calc(100% - 10px)')).toBe(0.44)
     expect(getOpacity(Comp, 'loose-value')).toBe(0.44)
-    expect(getOpacity(SizeOnly, '10px')).toBe(0.44)
+    expect(getOpacity(Comp, '10px')).toBe(0.44)
+    expect(getOpacity(Comp, 10)).toBe(0.44)
 
     const Universal = styled(View, {
       variants: {
@@ -563,42 +533,9 @@ describe('TS-style variant resolvers', () => {
         },
       } as const,
     })
-    configure({ allowedStyleValues: 'strict-web' })
     expect(getOpacity(Universal, 'inherit')).toBe(0.53)
-    expect(getOpacity(Universal, 'unset')).toBe(0.53)
-    expect(getOpacity(Universal, 'var()')).toBe(0.53)
-    expect(getOpacity(Universal, 'var(--layer)')).toBe(0.53)
-    configure({ allowedStyleValues: { radius: 'strict', zIndex: 'strict-web' } })
-    expect(getOpacity(Universal, 'inherit')).toBe(0.54)
-    configure()
-  })
-
-  test('Radius and ZIndex preserve globally absent allowedStyleValues vs omitted categories', () => {
-    const RadiusOnly = styled(View, {
-      variants: {
-        kind: {
-          Radius: createVariantResolver('Radius', () => ({ opacity: 0.56 })),
-        },
-      } as const,
-    })
-    const ZIndexOnly = styled(View, {
-      variants: {
-        kind: {
-          ZIndex: createVariantResolver('ZIndex', () => ({ opacity: 0.57 })),
-        },
-      } as const,
-    })
-
-    configure()
-    expect(getOpacity(RadiusOnly, 'loose-radius')).toBe(0.56)
-    expect(getOpacity(ZIndexOnly, 'loose-z')).toBe(0.57)
-
-    configure({ allowedStyleValues: { size: 'strict' } })
-    expect(getOpacity(RadiusOnly, 'loose-radius')).toBeUndefined()
-    expect(getOpacity(ZIndexOnly, 'loose-z')).toBeUndefined()
-    expect(getOpacity(RadiusOnly, 1)).toBe(0.56)
-    expect(getOpacity(ZIndexOnly, 1)).toBe(0.57)
-    configure()
+    expect(getOpacity(Universal, 'loose-radius')).toBe(0.53)
+    expect(getOpacity(Universal, 1)).toBe(0.53)
   })
 
   test('variable values match aliases that include ThemeValueFallback', () => {
@@ -644,7 +581,7 @@ describe('TS-style variant resolvers', () => {
     expect(getOpacity(RadiusFirst, variable)).toBe(0.49)
   })
 
-  test('compiled resolver entries are cached per variant map', () => {
+  test('resolver entries compile when the component is defined', () => {
     let ownKeysCount = 0
     const kind = new Proxy(
       {
@@ -668,7 +605,7 @@ describe('TS-style variant resolvers', () => {
 
     expect(getOpacity(Comp, '4')).toBe(0.52)
     expect(getOpacity(Comp, '4')).toBe(0.52)
-    expect(ownKeysCount).toBe(1)
+    expect(ownKeysCount).toBe(0)
   })
 
   test('trimmed union members match', () => {

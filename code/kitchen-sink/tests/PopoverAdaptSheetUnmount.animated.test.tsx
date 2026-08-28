@@ -44,7 +44,7 @@ test.describe('Popover Sheet Adapt - body persists during exit animation', () =>
         async () =>
           page.evaluate(() =>
             document
-              .querySelector('.is_SheetContainer[data-state]')
+              .querySelector('[data-testid="sheet-frame"][data-state]')
               ?.getAttribute('data-state')
           ),
         { timeout: 5000 }
@@ -72,11 +72,11 @@ test.describe('Popover Sheet Adapt - body persists during exit animation', () =>
               exists: !!document.querySelector('[data-testid="popover-content-marker"]'),
               state:
                 document
-                  .querySelector('.is_SheetContainer[data-state]')
+                  .querySelector('[data-testid="sheet-frame"][data-state]')
                   ?.getAttribute('data-state') ?? null,
               top:
                 document
-                  .querySelector('.is_SheetContainer[data-state]')
+                  .querySelector('[data-testid="sheet-frame"][data-state]')
                   ?.getBoundingClientRect().top ?? null,
             })
           }

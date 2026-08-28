@@ -1,8 +1,8 @@
 import { isWeb } from '@tamagui/constants'
 import {
-  STYLE_FRONTEND_PASSTHROUGH_PREFIX,
-  createFrontendProgram,
   plainValueToPayload,
+  type FrontendClassPlan,
+  type FrontendClassPlanEntry,
   type StyleFrontendConfig,
 } from '@tamagui/core/internal-runtime'
 import {
@@ -306,7 +306,7 @@ function tailwindClassToFlatProp(
 // null = web-only candidate dropped on native. 'raw' = not claimed by the
 // grammar, caller preserves the class string. An array (which may legitimately be
 // empty) = claimed, apply these entries.
-type TailwindPlanEntry = [key: string | null, value: any]
+type TailwindPlanEntry = FrontendClassPlanEntry
 type TailwindClassPlan = TailwindPlanEntry[] | null | 'raw'
 type TailwindParentPlan = {
   entries: TailwindPlanEntry[]
@@ -334,13 +334,12 @@ function createPlanEntry(
   if (modifiers.length === 0) return [property, value]
   const payload = plainValueToPayload(value, property)
   if (payload === null) return null
-  return [
-    null,
-    createFrontendProgram(property, {
-      base: null,
-      clauses: [{ modifiers, payload }],
-    }),
-  ]
+  let condition = ''
+  for (let index = 0; index < modifiers.length; index++) {
+    if (index) condition += ':'
+    condition += modifiers[index]
+  }
+  return [property, payload, condition, modifiers]
 }
 
 function computeClassPlan(
@@ -405,7 +404,65 @@ function computeClassPlan(
   return 'raw'
 }
 
-const warnedNativePassthroughCandidates = new Set<string>()
+export function getTailwindClassPlan(
+  candidate: string,
+  config: StyleFrontendConfig
+): FrontendClassPlan {
+  const grammarConfig = getStyleGrammarConfig(config)
+  const plans = getClassPlanCache(grammarConfig)
+  let plan = plans.get(candidate)
+  if (plan === undefined) {
+    plan = computeClassPlan(candidate, grammarConfig)
+    plans.set(candidate, plan)
+  }
+  return plan
+}
+
+export function resolveTailwindClassName(
+  className: string,
+  config: StyleFrontendConfig
+): Record<string, any> {
+  const result: Record<string, any> = {}
+  let rawClassName = ''
+  let start = 0
+  for (let index = 0; index <= className.length; index++) {
+    if (index !== className.length && className.charCodeAt(index) > 32) continue
+    if (start === index) {
+      start = index + 1
+      continue
+    }
+    const candidate = className.slice(start, index)
+    const plan = getTailwindClassPlan(candidate, config)
+    if (plan === 'raw') {
+      rawClassName = rawClassName ? `${rawClassName} ${candidate}` : candidate
+    } else if (plan) {
+      const parentPlan = plan as TailwindParentPlan
+      if (!Array.isArray(plan) && parentPlan.preserveRawClass) {
+        rawClassName = rawClassName ? `${rawClassName} ${candidate}` : candidate
+      }
+      const entries = Array.isArray(plan) ? plan : parentPlan.entries
+      for (let entryIndex = 0; entryIndex < entries.length; entryIndex++) {
+        const [key, value, condition] = entries[entryIndex]
+        const previous = result[key]
+        let next = value
+        if (condition !== undefined) {
+          next =
+            previous && typeof previous === 'object' && !Array.isArray(previous)
+              ? { ...previous, [condition]: value }
+              : previous === undefined
+                ? { [condition]: value }
+                : { default: previous, [condition]: value }
+        } else if (previous && typeof previous === 'object' && !Array.isArray(previous)) {
+          next = { ...previous, default: value }
+        }
+        setInAuthoredOrder(result, key, next)
+      }
+    }
+    start = index + 1
+  }
+  if (rawClassName) result.className = rawClassName
+  return result
+}
 
 /**
  * Append a contribution at the end of the forward pass.
@@ -423,106 +480,4 @@ export function setInAuthoredOrder(
 ): void {
   if (key in target) delete target[key]
   target[key] = value
-}
-
-/**
- * Tokenize a className into ordinary props and internal value-program contributions,
- * once per class per config.
- * User-defined tokens drive resolution; Tailwind's color/spacing scales are never
- * hardcoded. Classes the grammar does not claim stay in `className` verbatim, in
- * author order, so official Tailwind CSS still applies them on web.
- */
-export function preprocessTailwindClassName(
-  props: Record<string, any>,
-  config: StyleFrontendConfig,
-  preservePassthroughPosition = false
-): Record<string, any> {
-  const className = props.className
-  if (!className || typeof className !== 'string') {
-    return props
-  }
-
-  const classes = className.split(/\s+/).filter(Boolean)
-  const result: Record<string, any> = {}
-  const grammarConfig = getStyleGrammarConfig(config)
-  const plans = getClassPlanCache(grammarConfig)
-  const classPlans = classes.map((cls) => {
-    let plan = plans.get(cls)
-    if (plan === undefined) {
-      plan = computeClassPlan(cls, grammarConfig)
-      plans.set(cls, plan)
-    }
-    return plan
-  })
-  const hasOwnedStyleCandidate =
-    preservePassthroughPosition && classPlans.some((plan) => Array.isArray(plan))
-  let frontendProgramIndex = 0
-  let passthroughIndex = 0
-  const regularClasses: string[] = []
-
-  const preserveRawClass = (cls: string) => {
-    if (hasOwnedStyleCandidate) {
-      result[`${STYLE_FRONTEND_PASSTHROUGH_PREFIX}${passthroughIndex++}`] = cls
-    } else {
-      regularClasses.push(cls)
-    }
-  }
-
-  const applyEntry = ([key, value]: TailwindPlanEntry) => {
-    if (key === null) {
-      result[`__tamagui_frontend_program_${frontendProgramIndex++}`] = value
-    } else {
-      setInAuthoredOrder(result, key, value)
-    }
-  }
-
-  // Expand the className exactly where it was authored. Claimed classes and
-  // ordinary props therefore share one forward pass: whichever contribution is
-  // encountered later wins. Classes within the string are likewise applied in
-  // their own left-to-right order.
-  for (const key in props) {
-    if (key !== 'className') {
-      setInAuthoredOrder(result, key, props[key])
-      continue
-    }
-    for (let classIndex = 0; classIndex < classes.length; classIndex++) {
-      const cls = classes[classIndex]
-      const plan = classPlans[classIndex]
-      if (plan === null) {
-        // web-only candidate on native: dropped, warned once
-        if (
-          process.env.NODE_ENV !== 'production' &&
-          !warnedNativePassthroughCandidates.has(cls)
-        ) {
-          warnedNativePassthroughCandidates.add(cls)
-          console.warn(
-            `[tamagui] Tailwind candidate "${cls}" is web-only and was dropped on native. Use a Tamagui grammar candidate or a native style prop for cross-platform output.`
-          )
-        }
-        continue
-      }
-      if (plan === 'raw') {
-        // not claimed by the grammar: preserve the class as-is
-        preserveRawClass(cls)
-        continue
-      }
-      if (!Array.isArray(plan)) {
-        if (plan.preserveRawClass) {
-          preserveRawClass(cls)
-        }
-        for (let i = 0; i < plan.entries.length; i++) {
-          applyEntry(plan.entries[i])
-        }
-        continue
-      }
-      for (let i = 0; i < plan.length; i++) {
-        applyEntry(plan[i])
-      }
-    }
-    if (regularClasses.length > 0) {
-      result.className = regularClasses.join(' ')
-    }
-  }
-
-  return result
 }

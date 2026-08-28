@@ -1,7 +1,9 @@
-import { type StyleFrontendConfig } from '@tamagui/core/internal-runtime';
+import { type FrontendClassPlan, type StyleFrontendConfig } from '@tamagui/core/internal-runtime';
 import { type GrammarConfigView } from '@tamagui/style-grammar/runtime';
 export declare function getStyleGrammarConfig(config: StyleFrontendConfig): GrammarConfigView;
 export declare function isTokenValueProp(prop: string): boolean;
+export declare function getTailwindClassPlan(candidate: string, config: StyleFrontendConfig): FrontendClassPlan;
+export declare function resolveTailwindClassName(className: string, config: StyleFrontendConfig): Record<string, any>;
 /**
  * Append a contribution at the end of the forward pass.
  *
@@ -12,12 +14,4 @@ export declare function isTokenValueProp(prop: string): boolean;
  * which is the authored order the shared per-longhand merge reads.
  */
 export declare function setInAuthoredOrder(target: Record<string, any>, key: string, value: any): void;
-/**
- * Tokenize a className into ordinary props and internal value-program contributions,
- * once per class per config.
- * User-defined tokens drive resolution; Tailwind's color/spacing scales are never
- * hardcoded. Classes the grammar does not claim stay in `className` verbatim, in
- * author order, so official Tailwind CSS still applies them on web.
- */
-export declare function preprocessTailwindClassName(props: Record<string, any>, config: StyleFrontendConfig, preservePassthroughPosition?: boolean): Record<string, any>;
 //# sourceMappingURL=candidate.d.ts.map

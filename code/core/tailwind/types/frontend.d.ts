@@ -2,8 +2,8 @@ import { type StyleFrontend, type StyleFrontendConfig } from '@tamagui/core/inte
 /**
  * The Tailwind frontend descriptor.
  *
- * `preprocessProps` is the single Tailwind pass: it tokenizes `className` once and
- * emits ordinary props plus internal program contributions in authored order.
+ * The shared style cursor tokenizes `className` once and asks this descriptor for
+ * an immutable plan per candidate.
  * Everything after this point — value programs,
  * per-longhand forward merging, web lowering, native evaluation — is shared.
  *

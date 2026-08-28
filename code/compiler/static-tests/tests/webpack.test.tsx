@@ -142,8 +142,8 @@ describe('webpack-tests', () => {
     const { container: containerOn } = renderOn()
     const { container: containerOff } = renderOff()
 
-    const divOn = containerOn.querySelector('.is_MyComponent')
-    const divOff = containerOff.querySelector('.is_MyComponent')
+    const divOn = containerOn.querySelector('[data-testid="variant-default-false"]')
+    const divOff = containerOff.querySelector('[data-testid="variant-default-false"]')
 
     expect(divOn).toBeTruthy()
     expect(divOff).toBeTruthy()

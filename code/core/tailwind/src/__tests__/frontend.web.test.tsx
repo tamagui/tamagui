@@ -1,5 +1,4 @@
 import { getDefaultTamaguiConfig } from '../../../config-default/src'
-import { STYLE_FRONTEND_PREPROCESSED } from '@tamagui/core/internal-runtime'
 import { View as CoreView, createTamagui, getConfig, updateConfig } from '@tamagui/web'
 import { StyleObjectRules, StyleObjectValue } from '@tamagui/helpers'
 import { safeAreaVariableNames } from '@tamagui/style-grammar/runtime'
@@ -8,11 +7,6 @@ import { beforeAll, describe, expect, test } from 'vitest'
 import { tailwindStyleFrontend } from '../frontend'
 import { Text, View, styled } from '../index'
 import { findRule, splitTailwindStyles } from './utils'
-
-const programsOf = (style: Record<string, any>) =>
-  Object.values(style)
-    .filter((value) => value && typeof value === 'object' && 'property' in value)
-    .map(({ property, value }) => ({ property, value }))
 
 beforeAll(() => {
   // no styleMode: the frontend is selected by the package these components came from
@@ -335,33 +329,32 @@ describe('class-first styled()', () => {
       padding: '4',
       borderRadius: '4',
     })
-    expect(programsOf(resolved.baseStyle)).toEqual([
-      {
-        property: 'backgroundColor',
-        value: { base: null, clauses: [{ modifiers: ['hover'], payload: 'red' }] },
-      },
-      {
-        property: 'margin',
-        value: { base: null, clauses: [{ modifiers: ['sm'], payload: '4' }] },
-      },
-      {
-        property: 'opacity',
-        value: { base: null, clauses: [{ modifiers: ['enter'], payload: '0' }] },
-      },
-    ])
+    expect(resolved.baseStyle).toMatchObject({
+      backgroundColor: { hover: 'red' },
+      margin: { sm: '4' },
+      opacity: { enter: '0' },
+    })
     expect(resolved.passthroughClassName).toBe('base-user')
     expect(resolved.variants?.size?.sm).toMatchObject({
       height: '8',
       paddingHorizontal: '3',
       className: 'simple-user',
     })
-    expect(programsOf(resolved.variants?.size?.sm as any)).toHaveLength(3)
+    expect(resolved.variants?.size?.sm).toMatchObject({
+      opacity: { hover: '0.5' },
+      marginTop: { sm: '4' },
+      scale: { enter: '0.95' },
+    })
     expect(resolved.compoundVariants?.[0]?.style).toMatchObject({
       width: '8',
       padding: '0',
       className: 'compound-user',
     })
-    expect(programsOf(resolved.compoundVariants?.[0]?.style as any)).toHaveLength(3)
+    expect(resolved.compoundVariants?.[0]?.style).toMatchObject({
+      backgroundColor: { hover: 'blue' },
+      marginBottom: { sm: '4' },
+      opacity: { enter: '0.5' },
+    })
 
     const result = splitTailwindStyles(Frame, {
       size: 'sm',
@@ -378,21 +371,5 @@ describe('frontend isolation', () => {
     expect(CoreView).not.toBe(View)
     expect((CoreView.staticConfig as any).styleFrontend).toBeUndefined()
     expect(View.staticConfig.styleFrontend).toBe(tailwindStyleFrontend)
-  })
-
-  test('preprocessing marks its output so it is never tokenized twice', () => {
-    const out = tailwindStyleFrontend.preprocessProps({ className: 'p-4' }, getConfig())
-
-    expect(out[STYLE_FRONTEND_PREPROCESSED as any]).toBe(true)
-    // the marker is a symbol, so it never reaches the `for..in` style loop
-    expect(Object.keys(out)).toEqual(['padding'])
-  })
-
-  test('props the frontend did not rewrite are returned as-is and unmarked', () => {
-    const props = { id: 'x' }
-    const out = tailwindStyleFrontend.preprocessProps(props, getConfig())
-
-    expect(out).toBe(props)
-    expect(out[STYLE_FRONTEND_PREPROCESSED as any]).toBeUndefined()
   })
 })

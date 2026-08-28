@@ -18,6 +18,10 @@ import {
   getConfigRevisionSnapshot,
   getConfigRevisionState,
 } from '../web/src/helpers/grammarConfig'
+import {
+  buildAtomicSlotCSS,
+  getCSSStyleAtomic,
+} from '../web/src/helpers/getCSSStylesAtomic'
 import { simplifiedGetSplitStyles } from './utils'
 
 const rulesFor = (result: any): string[] =>
@@ -114,6 +118,59 @@ test('setConfig compiles before publish and a nested install remains authoritati
   expect(getConfig()).toBe(nested)
 })
 
+test('an atomic style lookup cannot hide a config swap from the slot cache', () => {
+  const current = getConfig()
+  const first = {
+    ...current,
+    media: { ...current.media, probe: { minWidth: 600 } },
+  } as typeof current
+  const second = {
+    ...current,
+    media: { ...current.media, probe: { minWidth: 900 } },
+  } as typeof current
+
+  try {
+    setConfig(first)
+    const initial = buildAtomicSlotCSS(
+      'color',
+      [
+        {
+          property: 'color',
+          value: 'red',
+          condition: 1,
+          identity: 'red',
+          selector: '',
+          wrappers: ['@media (min-width: 600px)'],
+        },
+      ],
+      'config-swap-probe'
+    )!
+
+    setConfig(second)
+    getCSSStyleAtomic('padding', 1)
+    const swapped = buildAtomicSlotCSS(
+      'color',
+      [
+        {
+          property: 'color',
+          value: 'red',
+          condition: 1,
+          identity: 'red',
+          selector: '',
+          wrappers: ['@media (min-width: 900px)'],
+        },
+      ],
+      'config-swap-probe'
+    )!
+
+    expect(initial.rules.join('')).toContain('min-width: 600px')
+    expect(swapped.rules.join('')).toContain('min-width: 900px')
+    expect(swapped.rules.join('')).not.toContain('min-width: 600px')
+  } finally {
+    setConfig(current)
+  }
+})
+
 test('grammar compilation is eager and the content snapshot stays lazy', () => {
   const current = getConfig()
   const next = { ...current } as typeof current
@@ -198,4 +255,31 @@ test('inserting a font refreshes the grammar snapshot once', () => {
   expect(getConfigRevisionSnapshot(current).parts.fonts).not.toBe(
     beforeSnapshot.parts.fonts
   )
+})
+
+test('a literal miss recorded before a theme mutation resolves after it', () => {
+  // the literal-miss cache remembers that a name resolved to nothing; a
+  // supported config mutation must invalidate it (revision bump), so the same
+  // name then resolves through the new theme key
+  const theme = getConfig().themes.light
+  const before = simplifiedGetSplitStyles(View, { backgroundColor: 'specialBg' } as any, {
+    noClass: true,
+    themeName: 'light',
+    theme,
+  })
+  expect(before.style?.backgroundColor).toBe('specialBg')
+
+  updateConfig('themes', {
+    light: { ...theme, specialBg: theme.background } as any,
+  })
+
+  // the SAME theme record forces the lookup through conf.themes and the
+  // cache hit through the same WeakMap key: only the revision swap can
+  // invalidate the recorded miss here
+  const after = simplifiedGetSplitStyles(View, { backgroundColor: 'specialBg' } as any, {
+    noClass: true,
+    themeName: 'light',
+    theme,
+  })
+  expect(String(after.style?.backgroundColor)).not.toBe('specialBg')
 })

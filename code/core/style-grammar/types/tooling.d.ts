@@ -15,6 +15,7 @@ export * from "./lowerProgram";
 export * from "./mergeFlatValues";
 export * from "./modifierRegistry";
 export * from "./modifierVocabulary";
+export * from "./v6ThemeNames";
 export * from "./payloadShape";
 export * from "./programEligibility";
 export * from "./programHash";
