@@ -4,10 +4,7 @@ import {
   type StyleFrontendConfig,
 } from '@tamagui/core/internal-runtime'
 import { configRevisionSymbol } from '@tamagui/style-grammar/runtime'
-import {
-  getTailwindClassPlan,
-  resolveTailwindClassName,
-} from './candidate'
+import { getTailwindClassPlan, resolveTailwindClassName } from './candidate'
 
 /**
  * The Tailwind frontend descriptor.

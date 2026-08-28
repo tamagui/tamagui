@@ -372,5 +372,4 @@ describe('frontend isolation', () => {
     expect((CoreView.staticConfig as any).styleFrontend).toBeUndefined()
     expect(View.staticConfig.styleFrontend).toBe(tailwindStyleFrontend)
   })
-
 })

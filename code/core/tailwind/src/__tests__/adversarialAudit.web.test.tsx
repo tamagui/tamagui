@@ -121,10 +121,7 @@ describe('5 — chained media and state clause → md:hover:opacity-50', () => {
   test('the flat clause converts without rebuilding a condition object', () => {
     const a = convert(`<View opacity="md:hover:0.5" />`)
     expect(classOf(a)).toBe('md:hover:opacity-50')
-    const flat = preprocessTailwindClassName(
-      { className: 'md:hover:opacity-50' },
-      CFG
-    )
+    const flat = preprocessTailwindClassName({ className: 'md:hover:opacity-50' }, CFG)
     const program = Object.values(flat as Record<string, any>).find(
       (value) => value?.property === 'opacity'
     )
