@@ -73,11 +73,12 @@ import {
   addComposition,
   canGenerateCSS,
   clearFrameAtomic,
-  completeFrameCSS,
+  completeStreamingCSS,
   flushDirectStyles,
   requestBorderStyleDefault,
-  type StyleFrameEntry,
+  streamAtomic,
 } from './directStyleCSS'
+import type { AtomicSlotEntry } from './getCSSStylesAtomic'
 
 export { directStyleSignature, flushDirectStyles } from './directStyleCSS'
 import { getConfigRevisionState } from './grammarConfig'
@@ -1340,7 +1341,9 @@ export function isValidStyleKey(
 function flushForwardStylesToClasses(pass: StylePass) {
   const styleState = pass[passStyleState] as GetStyleState
   if (!pass[passShouldDoClasses]) return
-  completeFrameCSS(styleState)
+  // streamed classes are already in their slots; only the residue
+  // (transitions, border defaults, the transform accumulator) needs a flush
+  completeStreamingCSS(styleState)
   flushDirectStyles(styleState, true)
 }
 
@@ -2352,9 +2355,8 @@ export const getSplitStyles: StyleSplitter = (
     }
   }
 
-  // the one output completion: CSS-destined slots serialize once, the rest
-  // resolve to inline winners
-  completeStyleFrame(styleState, mergeStyle)
+  // streaming already applied every winner; only the residue completes here
+  completeStreaming(styleState, mergeStyle)
 
   // hand the selected transition to animation drivers and keep it out of native
   // destination styles, where `transition` is not a React Native style key.
@@ -2719,8 +2721,12 @@ const resolveAcceptedStyle = (
     style: styleOut,
     transformAccumulator: undefined,
   }
-  ;(childState as DirectState).flatFrame = undefined
+  ;(childState as DirectState).flatUsed = undefined
+  ;(childState as DirectState).flatTransitions = undefined
   ;(childState as DirectState).flatAtomics = undefined
+  ;(childState as any).flatSingleEntries = undefined
+  ;(childState as any).flatSlots = undefined
+  ;(childState as any).flatBorderDefaultRequests = undefined
   const mergeAccepted: MergeStyle = (
     _state,
     key,
@@ -2744,7 +2750,7 @@ const resolveAcceptedStyle = (
     if (key in skipProps || value == null) continue
     contributeValue(childState, key, value, mergeAccepted)
   }
-  completeStyleFrame(childState, mergeAccepted)
+  completeStreaming(childState, mergeAccepted)
   if (childState.transformAccumulator) {
     styleOut.transform = finalizeTransformAccumulator(childState.transformAccumulator)
   }
@@ -2784,7 +2790,9 @@ export type MergeStyle = (
 
 type DirectState = GetStyleState & {
   flatPass?: StylePass
-  flatFrame?: Record<string, StyleFrameEntry[]>
+  /** streaming winner per property: packed precedence + 1, base 0 */
+  flatUsed?: Record<string, number>
+  flatTransitions?: AtomicSlotEntry[]
   flatAtomics?: Record<string, unknown>
   flatBoxShadow?: any
   flatBoxShadowSequence?: number
@@ -2796,34 +2804,29 @@ type DirectState = GetStyleState & {
   flatCompoundOutputDepth?: number
   flatPropSawCondition?: boolean
   flatWeakContribution?: boolean
+  /** the value being contributed is known to carry clauses: its property
+   * will see 2+ contributions, so CSS emission opens the combined slot
+   * directly instead of building a single class it would discard */
+  flatExpectMulti?: boolean
 }
 
-// an active conditional clause can retract a property entirely (an invalid
-// native transform value drops the part); the tombstone wins its slot and the
-// inline completion emits nothing for it
-const FRAME_TOMBSTONE: unique symbol = Symbol('tamaguiFrameTombstone')
-
+// orders the authored boxShadow value against the shadow-part record so the
+// later contribution wins; also feeds the transition dedupe
 let frameSequence = 0
 
 /**
- * Land one contribution in the neutral output frame. A slot holds one entry
- * per exact condition identity: a repeat write replaces the value in place
- * (CSS keeps the slot's rule position) and bumps the sequence (inline ties
- * resolve to the last write).
+ * Stream one CSS-destined contribution straight into its atomic class slot.
+ * Transition longhands collect into the grouped record instead; everything
+ * else keys by property (+ condition identity) and replaces in place.
  */
-function frameWrite(
+function streamWriteCSS(
   state: GetStyleState,
   property: string,
   value: any,
   cursor: ConditionCursor | null,
-  original: any,
-  forceCSS: boolean,
-  normalize = false,
   conditionOverride = -1
 ) {
   const direct = state as DirectState
-  const weak = direct.flatWeakContribution === true
-  const frame = (direct.flatFrame ||= {})
   const condition =
     conditionOverride !== -1
       ? conditionOverride
@@ -2831,99 +2834,105 @@ function frameWrite(
         ? conditionNumbers[cursor + conditionValueOffset]
         : 0
   const identity = cursor ? conditionTexts[cursor + conditionKeyOffset] || '' : ''
-  let slot = frame[property]
-  if (!slot) {
-    slot = frame[property] = []
-  }
-  for (let index = 0; index < slot.length; index++) {
-    const entry = slot[index]
-    if (entry.identity === identity) {
-      // a weak write never displaces: it restores a styled default under a
-      // prop that already owns this identity
-      if (weak) return
-      entry.value = value
-      entry.condition = condition
-      entry.original = original
-      entry.forceCSS = forceCSS
-      entry.sequence = ++frameSequence
-      entry.normalize = normalize
-      return
+  if (property.charCodeAt(0) === 116 && property.startsWith('transition')) {
+    const transitions = (direct.flatTransitions ||= [])
+    for (let index = 0; index < transitions.length; index++) {
+      if (
+        transitions[index].property === property &&
+        transitions[index].identity === identity
+      ) {
+        transitions[index].value = value
+        transitions[index].condition = condition
+        return
+      }
     }
+    transitions.push({
+      property,
+      value,
+      condition,
+      identity,
+      selector: cursor ? conditionTexts[cursor + conditionSelectorOffset] || '' : '',
+      wrappers: cursor ? conditionWrapperCopy(cursor) : undefined,
+    })
+    return
   }
-  slot.push({
+  streamAtomic(
+    state,
     property,
     value,
     condition,
     identity,
-    selector: cursor ? conditionTexts[cursor + conditionSelectorOffset] || '' : '',
-    wrappers: cursor ? conditionWrapperCopy(cursor) : undefined,
-    original,
-    forceCSS,
-    sequence: weak ? 0 : ++frameSequence,
-    normalize,
-  })
+    cursor ? conditionTexts[cursor + conditionSelectorOffset] || '' : '',
+    cursor ? conditionWrappers : undefined,
+    cursor ? conditionNumbers[cursor + conditionWrapperOffset] >> 3 : 0,
+    cursor ? conditionNumbers[cursor + conditionWrapperOffset] & 7 : 0,
+    direct.flatWeakContribution === true
+  )
 }
 
-// the inline path never needs selector or wrapper text; identity and
-// precedence are enough to pick a winner
-function frameWriteInline(
+/**
+ * Stream one inline contribution: compare the packed precedence against the
+ * property's current winner, then merge immediately. This is the entire
+ * inline cascade — no entries, no completion pass.
+ */
+function streamWriteInline(
   state: GetStyleState,
   property: string,
   value: any,
   cursor: ConditionCursor | null,
+  merge: MergeStyle,
   original: any,
-  normalize = false
+  normalize = false,
+  conditionOverride = -1
 ) {
   const direct = state as DirectState
-  const weak = direct.flatWeakContribution === true
-  const frame = (direct.flatFrame ||= {})
-  const condition = cursor ? conditionNumbers[cursor + conditionValueOffset] : 0
-  const identity = cursor ? conditionTexts[cursor + conditionKeyOffset] || '' : ''
-  let slot = frame[property]
-  if (!slot) {
-    slot = frame[property] = []
+  const condition =
+    conditionOverride !== -1
+      ? conditionOverride
+      : cursor
+        ? conditionNumbers[cursor + conditionValueOffset]
+        : 0
+  const importance = condition ? Math.floor(condition / 256) + 1 : 0
+  const used = (direct.flatUsed ||= {})
+  const previous = used[property]
+  if (previous !== undefined) {
+    if (previous > importance) return
+    // a weak write restores a styled default: any earlier write owns the
+    // property
+    if (direct.flatWeakContribution === true) return
   }
-  for (let index = 0; index < slot.length; index++) {
-    const entry = slot[index]
-    if (entry.identity === identity) {
-      if (weak) return
-      entry.value = value
-      entry.condition = condition
-      entry.original = original
-      entry.sequence = ++frameSequence
-      entry.normalize = normalize
-      return
-    }
-  }
-  slot.push({
-    property,
-    value,
-    condition,
-    identity,
-    selector: '',
-    wrappers: undefined,
-    original,
-    forceCSS: false,
-    sequence: weak ? 0 : ++frameSequence,
-    normalize,
-  })
+  used[property] = importance
+  merge(state, property, value, 1, !normalize, original)
 }
 
 /**
- * The one output completion: serialize the frame's CSS-destined slots once
- * (winning content only), then pick each remaining slot's inline winner by
- * condition precedence and last write. Completion walks slots; it never reads
- * an authored prop again.
+ * An active conditional clause retracting a property entirely (an invalid
+ * native transform value drops the part): the retraction competes like any
+ * write, and winning deletes the merged value.
  */
-function completeStyleFrame(state: GetStyleState, merge: MergeStyle) {
+function streamRetractInline(
+  state: GetStyleState,
+  property: string,
+  cursor: ConditionCursor | null
+) {
   const direct = state as DirectState
-  if (
-    !direct.flatFrame &&
-    !direct.flatWebShadow &&
-    !(canGenerateCSS && state.flatShouldDoClasses && state.transformAccumulator)
-  ) {
-    return
-  }
+  const condition = cursor ? conditionNumbers[cursor + conditionValueOffset] : 0
+  const importance = condition ? Math.floor(condition / 256) + 1 : 0
+  const used = (direct.flatUsed ||= {})
+  const previous = used[property]
+  if (previous !== undefined && previous > importance) return
+  used[property] = importance
+  if (state.style) delete state.style[property]
+}
+
+/**
+ * The streaming completion: only genuine residue remains. The shadow-part
+ * record emits (unless a later authored boxShadow owns the property), then
+ * the CSS residue (border-style defaults, grouped transitions, the transform
+ * accumulator) serializes.
+ */
+function completeStreaming(state: GetStyleState, merge: MergeStyle) {
+  const direct = state as DirectState
   const shadow = direct.flatWebShadow
   if (shadow && (direct.flatBoxShadowSequence || 0) <= shadow[4]) {
     const offset = shadow[1] || { width: 0, height: 0 }
@@ -2939,33 +2948,9 @@ function completeStyleFrame(state: GetStyleState, merge: MergeStyle) {
         shadow[5],
         shadow[6]
       )
-      const slot = direct.flatFrame?.boxShadow
-      if (slot) slot[slot.length - 1].sequence = shadow[4]
     }
   }
-  completeFrameCSS(state)
-  const frame = direct.flatFrame
-  if (!frame) return
-  for (const property in frame) {
-    const slot = frame[property]
-    let winner: StyleFrameEntry | null = null
-    let winnerPrecedence = -2
-    for (let index = 0; index < slot.length; index++) {
-      const entry = slot[index]
-      if (entry.condition && !(entry.condition & 1)) continue
-      const precedence = entry.condition ? Math.floor(entry.condition / 256) : -1
-      if (
-        precedence > winnerPrecedence ||
-        (precedence === winnerPrecedence && (!winner || entry.sequence > winner.sequence))
-      ) {
-        winner = entry
-        winnerPrecedence = precedence
-      }
-    }
-    if (!winner || winner.value === FRAME_TOMBSTONE) continue
-    merge(state, property, winner.value, 1, !winner.normalize, winner.original)
-  }
-  direct.flatFrame = undefined
+  completeStreamingCSS(state)
 }
 
 function emitAtParentCondition(
@@ -3715,13 +3700,13 @@ function emitProperty(
         typeof originalValue === 'string' && isAsciiLetters(originalValue)
           ? originalValue
           : value
-      frameWrite(
+      streamWriteInline(
         state,
         property,
         { dynamic: { ...schemes } },
         cursor,
+        merge,
         originalValue,
-        false,
         true,
         // a DynamicColorIOS aggregate applies on every scheme: force the
         // active bit by addition — the packed condition exceeds Int32, so a
@@ -3771,14 +3756,14 @@ function emitProperty(
     if (!condition) {
       if (state.style) delete state.style[property]
     }
-    frameWrite(state, property, value, cursor, originalValue, !state.flatShouldDoClasses)
+    streamWriteCSS(state, property, value, cursor)
     return
   }
 
-  // inline and native: inactive conditions contribute nothing; the rest land
-  // in the frame and the completion picks each property's winner
+  // inline and native: inactive conditions contribute nothing; the rest
+  // stream against the property's current winner
   if (condition && !(condition & 1)) return
-  frameWriteInline(state, property, value, cursor, originalValue)
+  streamWriteInline(state, property, value, cursor, merge, originalValue)
 }
 
 function splitComponents(value: string) {
@@ -4095,7 +4080,7 @@ function emitValue(
         contextOnly
       )
     } else {
-      frameWriteInline(state, property, value, cursor, originalValue, true)
+      streamWriteInline(state, property, value, cursor, merge, originalValue, true)
     }
     return
   }
@@ -4110,7 +4095,7 @@ function emitValue(
       shadow[5] = originalValue
       shadow[6] = contextOnly
     } else {
-      frameWriteInline(state, property, value, cursor, originalValue, true)
+      streamWriteInline(state, property, value, cursor, merge, originalValue, true)
     }
     return
   }
@@ -4127,7 +4112,7 @@ function emitValue(
         contextOnly
       )
     } else {
-      frameWriteInline(state, property, value, cursor, originalValue, true)
+      streamWriteInline(state, property, value, cursor, merge, originalValue, true)
     }
     return
   }
@@ -4200,7 +4185,7 @@ function emitValue(
         }
         if (condition & 1) {
           removeTransformValue(state.transformAccumulator, property)
-          frameWriteInline(state, property, FRAME_TOMBSTONE, cursor, undefined)
+          streamRetractInline(state, property, cursor)
         }
         return
       }
@@ -4371,9 +4356,14 @@ export function contributeStyleString(
   const directState = state as DirectState
   const watermark = conditionCursorTop
   const previousCursor = directState.flatScanCursor
+  const previousExpectMulti = directState.flatExpectMulti
   // acquired lazily by the first modifier event, so clause-free values never
   // touch the pool
   directState.flatScanCursor = null
+  // a colon means the scan will produce clause contributions alongside any
+  // base, so the property's CSS slot opens combined up front (a colon inside
+  // url()/quotes is a false positive that only defers one class build)
+  directState.flatExpectMulti = source.indexOf(':') !== -1
   try {
     scanFlatValue(
       source,
@@ -4386,6 +4376,7 @@ export function contributeStyleString(
     )
   } finally {
     directState.flatScanCursor = previousCursor
+    directState.flatExpectMulti = previousExpectMulti
     releaseConditionCursors(watermark)
   }
   return true
@@ -4396,6 +4387,25 @@ export function contributeStyleString(
 // (shadowOffset) and stays whole. only the first key is probed, the same way
 // the string scanner commits at its first clause
 function contributeStyleObject(
+  state: GetStyleState,
+  property: string,
+  value: Record<string, any>,
+  merge: MergeStyle,
+  contextOnly: boolean
+) {
+  const outerState = state as DirectState
+  const previousExpectMulti = outerState.flatExpectMulti
+  // a conditional object contributes its default plus each condition key:
+  // the property's CSS slot opens combined up front
+  outerState.flatExpectMulti = true
+  try {
+    return contributeStyleObjectInner(state, property, value, merge, contextOnly)
+  } finally {
+    outerState.flatExpectMulti = previousExpectMulti
+  }
+}
+
+function contributeStyleObjectInner(
   state: GetStyleState,
   property: string,
   value: Record<string, any>,
@@ -4692,16 +4702,8 @@ export function clearDirectStyle(state: GetStyleState, property: string) {
           ? 'transform'
           : property
   clearFrameAtomic(state, atomicKey)
-  const frame = direct.flatFrame
-  if (frame) {
-    if (atomicKey === 'transition') {
-      for (const key in frame) {
-        if (key.startsWith('transition')) delete frame[key]
-      }
-    } else {
-      delete frame[atomicKey]
-    }
-  }
+  const used = direct.flatUsed
+  if (used) delete used[atomicKey]
   if (atomicKey === 'transform') state.transformAccumulator = undefined
   if (state.style) delete state.style[atomicKey]
   delete state.classNames[atomicKey]
@@ -5032,14 +5034,14 @@ const contributeMappedValue: PropMapper = (
     const expanded = noExpand
       ? null
       : expandStyle(expandedKey, value, conf.settings.styleCompat || 'web')
-    const frame = (styleState as DirectState).flatFrame
+    const used = (styleState as DirectState).flatUsed
     if (expanded) {
       for (const [nkey] of expanded) {
-        if (frame) delete frame[nkey]
+        if (used) delete used[nkey]
         if (styleState.style) delete styleState.style[nkey]
       }
     } else {
-      if (frame) delete frame[expandedKey]
+      if (used) delete used[expandedKey]
       if (styleState.style) delete styleState.style[expandedKey]
     }
     return

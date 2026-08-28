@@ -55,13 +55,18 @@ test('a weak styled-default restore never displaces an authored base value', () 
   expect(defaultRestored.style?.flexDirection).toBe('row')
 })
 
-test('a condition after a plain write migrates the base into the slot', () => {
-  // CSS: one class carries the base rule first and the hover rule after it
+test('a condition after a plain write composes with the base', () => {
+  // CSS: the base and the hover contribution both serialize, whatever slot
+  // shape the engine uses (one combined class or one class per identity)
   const css = simplifiedGetSplitStyles(View, { backgroundColor: 'red hover:blue' })
-  const rules = rulesFor(css, 'backgroundColor')
-  expect(rules.length).toBeGreaterThanOrEqual(2)
-  expect(rules[0]).toContain('red')
-  const hoverRule = rules.find((rule) => rule.includes(':hover'))
+  const allRules = Object.keys(css.classNames)
+    .filter((key) => key === 'backgroundColor' || key.startsWith('backgroundColor'))
+    .flatMap((key) => css.rulesToInsert?.[css.classNames[key]]?.[4] ?? [])
+  expect(allRules.length).toBeGreaterThanOrEqual(2)
+  expect(allRules.some((rule) => rule.includes('red') && !rule.includes(':hover'))).toBe(
+    true
+  )
+  const hoverRule = allRules.find((rule) => rule.includes(':hover'))
   expect(hoverRule).toBeTruthy()
   expect(hoverRule).toContain('blue')
 

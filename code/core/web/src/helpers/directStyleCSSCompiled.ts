@@ -18,7 +18,19 @@ export interface StyleFrameEntry {
   normalize: boolean
 }
 
-export function completeFrameCSS(_state: GetStyleState) {}
+export function streamAtomic(
+  _state: GetStyleState,
+  _property: string,
+  _value: any,
+  _condition: number,
+  _identity: string,
+  _selector: string,
+  _wrapperSource: readonly string[] | undefined,
+  _wrapperStart: number,
+  _wrapperCount: number,
+  _weak: boolean
+) {}
+export function completeStreamingCSS(_state: GetStyleState) {}
 export function requestBorderStyleDefault(
   _state: GetStyleState,
   _property: string,

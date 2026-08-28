@@ -57,7 +57,13 @@ export function getCSSStyleAtomic(
 let conf: TamaguiInternalConfig | null = null
 let confRevision = 0
 
-type SlotIdentity = { identifier: string; rules: string[]; value: any }
+type SlotIdentity = {
+  identifier: string
+  rules: string[]
+  value: any
+  /** finished wrapper, cached so a repeat build allocates nothing */
+  styleObject?: unknown
+}
 
 const getStyleObject = (
   val: any,
