@@ -17,11 +17,14 @@ below is RAN unless noted.
   requires Node 24; it crashes under system Node 25 — environment, not
   engine.)
 - kitchen-sink: default + webkit 724 passed / 0 failed; animated css 225,
-  reanimated 207, motion 223 passed. The only failures in the animated
-  projects are `MenuArrowAnimatePresence` (2 per driver), which reproduce
-  identically at bdba800925 (pre-existing; under separate triage by r4680's
-  worker). One `SheetDragFade` css failure in the parallel run passes
-  standalone — load flake.
+  reanimated 207, motion 223 passed. The `MenuArrowAnimatePresence` failures
+  (pre-existing at bdba) were is_X-selector-based and resolve with the is_X
+  sweep merge (1ec35fee13): 6/6 across css/reanimated/motion at the merged
+  tip. One `SheetDragFade` css failure in the parallel run passes standalone —
+  load flake. Zero known failures remain in the matrix.
+- engine-owned is_X residue for a later slice: `createDesignSystem.ts` still
+  targets `.is_Input`/`.is_TextArea`, so `Input.tsx` keeps those literal
+  defaults until helper selectors and artifacts migrate together.
 - root build 171/171; root lint + check clean.
 
 ## Timing (paired quiet-window corpus receipts, V2-normalized totals)
