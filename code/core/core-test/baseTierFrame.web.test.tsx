@@ -163,3 +163,23 @@ test('base-tier and slot-built single values share atomic identity', () => {
   expect(direct.classNames.width).toBeTruthy()
   expect(direct.classNames.width).toBe(viaShorthand.classNames.width)
 })
+
+test('a promoted base write never displaces an inline conditional winner', () => {
+  // animated + css-input driver promotes discrete base values to classes; the
+  // weak styled-default restore rides that same lane and must not delete the
+  // active hover value already merged inline (DriverConditionedDiscrete)
+  const Boxed = styled(View, { cursor: 'default' })
+  const result = simplifiedGetSplitStyles(
+    Boxed,
+    { cursor: 'default hover:pointer' } as any,
+    {
+      noClass: true,
+      isAnimated: true,
+      mergeDefaultProps: true,
+      animationDriver: { inputStyle: 'css' },
+      componentState: { hover: true },
+    } as any
+  )
+  expect(result.style?.cursor).toBe('pointer')
+  expect(result.classNames.cursor).toBeTruthy()
+})

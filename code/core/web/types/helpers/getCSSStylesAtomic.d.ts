@@ -21,6 +21,9 @@ export interface AtomicSlotEntry {
     identity: string;
     selector: string;
     wrappers: readonly string[] | undefined;
+    /** authored value, carried only on deferred platform-pseudo passes so an
+     * inline conversion preserves provenance */
+    original?: any;
 }
 export declare function buildAtomicSlotCSS(atomicKey: string, entries: readonly AtomicSlotEntry[], signature: string): SlotIdentity | undefined;
 //# sourceMappingURL=getCSSStylesAtomic.d.ts.map

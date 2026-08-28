@@ -3805,8 +3805,16 @@ function emitProperty(
     property in nonAnimatableStyleProps
 
   if (canGenerateCSS && (state.flatShouldDoClasses || shouldPromoteAnimatedStyle)) {
-    if (!condition) {
-      if (state.style) delete state.style[property]
+    // a base CSS write displaces an earlier inline base for the property, but
+    // never an inline conditional winner and never on a weak styled-default
+    // restore: the style object is live during the streaming pass
+    if (
+      !condition &&
+      state.style &&
+      direct.flatWeakContribution !== true &&
+      !(direct.flatUsed && direct.flatUsed[property])
+    ) {
+      delete state.style[property]
     }
     streamWriteCSS(state, property, value, cursor, originalValue)
     return
