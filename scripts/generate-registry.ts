@@ -117,7 +117,7 @@ async function drift() {
         skinCache.set(e.skin, skin)
       }
       const consumer = driftConsumers.find((c) => c.key === e.consumer)!
-      const expected = renderConsumerCopy(skin, consumer.namePrefix)
+      const expected = renderConsumerCopy(skin, consumer.displayNamePrefix)
       const actual = readFileSync(join(process.cwd(), e.path), 'utf8')
       console.log(firstDivergence(expected, actual))
     }
