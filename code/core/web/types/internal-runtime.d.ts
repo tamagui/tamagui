@@ -9,33 +9,28 @@
  */
 import type { FunctionComponent } from 'react';
 import type { ParsedValue } from '@tamagui/style-grammar/runtime';
-import type { DeepVariableObject } from './createVariables';
 import type { FrontendComponent, StyleFrontend } from './helpers/styleFrontend';
 import type { FrontendProgramValue } from './internalRuntimeTypes';
-import type { CreateTamaguiProps, GenericFont, ThemeParsed, ThemeState, UseThemeWithStateProps } from './types';
 export { STYLE_FRONTEND_PASSTHROUGH_PREFIX, STYLE_FRONTEND_PREPROCESSED, regularStyleFrontend, } from './helpers/styleFrontend';
 export type * from './internalRuntimeTypes';
-type DeepTokenObject<Val extends string | number = any> = {
-    [key: string]: Val | DeepTokenObject<Val>;
-};
-export declare const createVariables: <A extends DeepTokenObject>(tokens: A, parentPath?: string, isFont?: boolean) => DeepVariableObject<A>;
-export declare const parseFont: <A extends GenericFont>(definition: A) => DeepVariableObject<A>;
+export declare const createVariables: (tokens: Record<string, any>, parentPath?: string, isFont?: boolean) => any;
+export declare const parseFont: (definition: Record<string, any>) => any;
 export declare const registerFontVariables: (parsedFont: any) => string[];
 export declare const fixStyles: (style: Record<string, any>) => void;
 export declare const getThemeCSSRules: (props: {
-    config: CreateTamaguiProps;
+    config: any;
     themeName: string;
-    theme: ThemeParsed;
+    theme: any;
     names: string[];
     hasDarkLight?: boolean;
     useMutatedVariables?: boolean;
 }) => string[];
 export declare const normalizeValueWithProperty: (value: any, property?: string) => any;
-export declare const proxyThemeToParents: (themeName: string, theme: ThemeParsed) => ThemeParsed;
+export declare const proxyThemeToParents: (themeName: string, theme: any) => any;
 export declare const ensureThemeVariable: (theme: any, key: string) => void;
 export declare const transformsToString: (transforms: object[]) => string;
 export declare const styleToCSS: (style: Record<string, any>) => void;
-export declare const useThemeWithState: (props: UseThemeWithStateProps, isRoot?: boolean, forThemeView?: boolean) => [ThemeParsed, ThemeState];
+export declare const useThemeWithState: (props: any, isRoot?: boolean, forThemeView?: boolean) => [any, any];
 export declare const createFrontendProgram: (property: string, value: ParsedValue) => FrontendProgramValue;
 export declare const plainValueToPayload: (value: unknown, property: string) => string | null;
 export declare const createTamagui: (config: any) => any;

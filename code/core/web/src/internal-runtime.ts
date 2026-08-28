@@ -12,7 +12,6 @@ import type { ParsedValue } from '@tamagui/style-grammar/runtime'
 import { stylePropsUnitless } from '@tamagui/helpers'
 import { createComponent } from './createComponent'
 import { createVariables as createVariablesImpl } from './createVariables'
-import type { DeepVariableObject } from './createVariables'
 import { fixStyles as fixStylesImpl } from './helpers/expandStyles'
 import { styleToCSS as styleToCSSImpl } from './helpers/getCSSStylesAtomic'
 import { setComponentDisplayName } from './helpers/componentDisplayName'
@@ -28,13 +27,6 @@ import {
   registerFontVariables as registerFontVariablesImpl,
 } from './insertFont'
 import type { FrontendProgramValue } from './internalRuntimeTypes'
-import type {
-  CreateTamaguiProps,
-  GenericFont,
-  ThemeParsed,
-  ThemeState,
-  UseThemeWithStateProps,
-} from './types'
 import { createTamagui as createTamaguiImpl } from './createTamagui'
 import { setupHooks as setupHooksImpl } from './setupHooks'
 import { createFrontendStyled as createFrontendStyledImpl } from './styled'
@@ -50,41 +42,36 @@ export {
 } from './helpers/styleFrontend'
 export type * from './internalRuntimeTypes'
 
-type DeepTokenObject<Val extends string | number = any> = {
-  [key: string]: Val | DeepTokenObject<Val>
-}
-
-export const createVariables: <A extends DeepTokenObject>(
-  tokens: A,
+export const createVariables: (
+  tokens: Record<string, any>,
   parentPath?: string,
   isFont?: boolean
-) => DeepVariableObject<A> = createVariablesImpl
-export const parseFont: <A extends GenericFont>(definition: A) => DeepVariableObject<A> =
-  parseFontImpl
+) => any = createVariablesImpl as any
+export const parseFont: (definition: Record<string, any>) => any = parseFontImpl as any
 export const registerFontVariables: (parsedFont: any) => string[] =
   registerFontVariablesImpl
 export const fixStyles: (style: Record<string, any>) => void = fixStylesImpl
 export const getThemeCSSRules: (props: {
-  config: CreateTamaguiProps
+  config: any
   themeName: string
-  theme: ThemeParsed
+  theme: any
   names: string[]
   hasDarkLight?: boolean
   useMutatedVariables?: boolean
 }) => string[] = getThemeCSSRulesImpl
 export const normalizeValueWithProperty: (value: any, property?: string) => any =
   normalizeValueWithPropertyImpl
-export const proxyThemeToParents: (themeName: string, theme: ThemeParsed) => ThemeParsed =
+export const proxyThemeToParents: (themeName: string, theme: any) => any =
   proxyThemeToParentsImpl
 export const ensureThemeVariable: (theme: any, key: string) => void =
   ensureThemeVariableImpl
 export const transformsToString: (transforms: object[]) => string = transformsToStringImpl
 export const styleToCSS: (style: Record<string, any>) => void = styleToCSSImpl
 export const useThemeWithState: (
-  props: UseThemeWithStateProps,
+  props: any,
   isRoot?: boolean,
   forThemeView?: boolean
-) => [ThemeParsed, ThemeState] = useThemeWithStateImpl
+) => [any, any] = useThemeWithStateImpl
 
 // the frontend-program contribution channel: a frontend hands getSplitStyles
 // a pre-parsed (property, program) pair that contributes at the exact
