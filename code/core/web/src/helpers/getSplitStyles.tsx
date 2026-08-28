@@ -217,9 +217,19 @@ function prepareStaticConfigCompounds(staticConfig: StaticConfig) {
   preparedConfig[preparedCompoundsKey] = indexesByKey
 }
 
-let compoundArena = new Float64Array(2048)
-let compoundArenaTop = 1
-let compoundArenaEpoch = 0
+// compound matching state lives in small per-pass records (components with
+// compoundVariants only), garbage-collected with the pass; condition
+// composition uses canonical keys (owner ruling 2026-08-28)
+type CompoundState = {
+  seen: number
+  failed: boolean
+  matchedBase: boolean
+  scanned: boolean
+  /** condition keys matched for the current prop */
+  pending: string[] | null
+  /** Cartesian product of condition keys across selecting props */
+  combinations: string[] | null
+}
 
 // ── condition cursors ────────────────────────────────────────────────────────
 
@@ -668,29 +678,9 @@ function commitConditionCursor(state: GetStyleState, cursor: ConditionCursor): n
   return condition
 }
 
-// compound-arena payload: condition snapshots for matched conditional
-// branches, addressed by index from arena nodes. Module-resident but strictly
-// pass-scoped: forEachPropInForwardOrder watermarks and releases them with the
-// arena. Index 0 is the unconditional branch.
-const conditionSnapshotTexts: string[] = []
-
-function snapshotCondition(cursor: ConditionCursor): number {
-  const id = reserveCompoundArena(conditionWidth)
-  for (let offset = 0; offset < conditionWidth; offset++) {
-    compoundArena[id + offset] = conditionNumbers[cursor + offset]
-  }
-  for (let offset = 0; offset < conditionTextWidth; offset++) {
-    conditionSnapshotTexts[id + offset] = conditionTexts[cursor + offset] || ''
-  }
-  return id
-}
-
-function acquireConditionSnapshotCursor(state: GetStyleState, snapshot: number) {
-  // a snapshot restores by re-parsing its canonical key (owner ruling
-  // 2026-08-28): activity, selector and wrapper state re-derive fresh, so no
-  // stale stack reference survives the pass
+/** rebuild a cursor from a canonical condition key by re-parsing it */
+function acquireConditionKeyCursor(state: GetStyleState, key: string) {
   const cursor = acquireConditionCursor()
-  const key = conditionSnapshotTexts[snapshot + conditionKeyOffset] || ''
   if (key) {
     resolveConditionText(state, cursor, key)
     commitConditionCursor(state, cursor)
@@ -698,90 +688,42 @@ function acquireConditionSnapshotCursor(state: GetStyleState, snapshot: number) 
   return cursor
 }
 
-// compose two snapshots by replaying the second's atoms over a copy of the
-// first: shared modifiers dedupe, ranks and activity re-derive, and no
-// generated condition text is ever reparsed
-function combineConditionSnapshots(
-  state: GetStyleState,
-  first: number,
-  second: number
-): number {
+// compose two canonical condition keys by re-parsing both into one cursor:
+// shared modifiers dedupe in the sorted key insertion, ranks and activity
+// re-derive, and the composed canonical key comes back out
+function combineConditionKeys(state: GetStyleState, first: string, second: string) {
   if (!first) return second
   if (!second || first === second) return first
   const watermark = conditionCursorTop
-  const target = acquireConditionSnapshotCursor(state, first)
-  const secondKey = conditionSnapshotTexts[second + conditionKeyOffset] || ''
-  if (secondKey) resolveConditionText(state, target, secondKey)
+  const target = acquireConditionKeyCursor(state, first)
+  resolveConditionText(state, target, second)
   commitConditionCursor(state, target)
   const key = conditionTexts[target + conditionKeyOffset] || ''
-  let result: number
-  if (key === conditionSnapshotTexts[first + conditionKeyOffset]) {
-    result = first
-  } else if (key === conditionSnapshotTexts[second + conditionKeyOffset]) {
-    result = second
-  } else {
-    result = snapshotCondition(target)
-  }
   releaseConditionCursors(watermark)
-  return result
+  return key
 }
 
-function reserveCompoundArena(count: number) {
-  const start = compoundArenaTop
-  const required = start + count
-  if (required > compoundArena.length) {
-    let length = compoundArena.length * 2
-    while (length < required) length *= 2
-    const previous = compoundArena
-    compoundArena = new Float64Array(length)
-    for (let index = 0; index < compoundArenaTop; index++) {
-      compoundArena[index] = previous[index]
-    }
+function freshCompoundState(): CompoundState {
+  return {
+    seen: 0,
+    failed: false,
+    matchedBase: false,
+    scanned: false,
+    pending: null,
+    combinations: null,
   }
-  compoundArenaTop = required
-  return start
-}
-
-const compoundStateWidth = 8
-const compoundSeen = 1
-const compoundFailed = 2
-const compoundCombinations = 3
-const compoundPendingHead = 4
-const compoundPendingTail = 5
-const compoundMatchedBase = 6
-const compoundScanned = 7
-
-function initializeCompoundState(stateIndex: number, epoch: number) {
-  if (compoundArena[stateIndex] === epoch) return
-  compoundArena[stateIndex] = epoch
-  for (let offset = 1; offset < compoundStateWidth; offset++) {
-    compoundArena[stateIndex + offset] = 0
-  }
-}
-
-function appendCompoundNode(headCell: number, tailCell: number, conditionId: number) {
-  const node = reserveCompoundArena(2)
-  compoundArena[node] = conditionId
-  compoundArena[node + 1] = 0
-  const tail = compoundArena[tailCell]
-  if (tail) compoundArena[tail + 1] = node
-  else compoundArena[headCell] = node
-  compoundArena[tailCell] = node
 }
 
 function beginCompoundEdges(
   indexes: number[] | undefined,
-  stateStart: number,
-  epoch: number
+  states: (CompoundState | undefined)[]
 ) {
   if (!indexes) return
   for (let index = 0; index < indexes.length; index++) {
-    const stateIndex = stateStart + indexes[index] * compoundStateWidth
-    initializeCompoundState(stateIndex, epoch)
-    compoundArena[stateIndex + compoundPendingHead] = 0
-    compoundArena[stateIndex + compoundPendingTail] = 0
-    compoundArena[stateIndex + compoundMatchedBase] = 0
-    compoundArena[stateIndex + compoundScanned] = 0
+    const state = (states[indexes[index]] ||= freshCompoundState())
+    state.pending = null
+    state.matchedBase = false
+    state.scanned = false
   }
 }
 
@@ -792,20 +734,19 @@ function feedCompoundSegment(
   end: number,
   isBase: boolean,
   valid: boolean,
-  conditionId: number
+  conditionKey: string
 ) {
   if (state.flatCompoundOutputDepth) return
   const pass = state.flatPass!
   const indexes = pass[passCompoundIndexes] as number[] | undefined
-  const stateStart = pass[passCompoundStateStart] as number | undefined
-  const epoch = pass[passCompoundEpoch] as number | undefined
+  const states = pass[passCompoundStates] as (CompoundState | undefined)[] | undefined
   const key = pass[passCompoundKey] as string | undefined
-  if (!indexes || stateStart === undefined || epoch === undefined || !key) return
+  if (!indexes || !states || !key) return
   const compoundVariants = state.staticConfig.compoundVariants!
   for (let index = 0; index < indexes.length; index++) {
     const compoundIndex = indexes[index]
-    const stateIndex = stateStart + compoundIndex * compoundStateWidth
-    compoundArena[stateIndex + compoundScanned] = 1
+    const compoundState = (states[compoundIndex] ||= freshCompoundState())
+    compoundState.scanned = true
     if (
       !valid ||
       start === end ||
@@ -819,13 +760,9 @@ function feedCompoundSegment(
       continue
     }
     if (isBase) {
-      compoundArena[stateIndex + compoundMatchedBase] = 1
-    } else if (!compoundArena[stateIndex + compoundMatchedBase]) {
-      appendCompoundNode(
-        stateIndex + compoundPendingHead,
-        stateIndex + compoundPendingTail,
-        conditionId
-      )
+      compoundState.matchedBase = true
+    } else if (!compoundState.matchedBase) {
+      ;(compoundState.pending ||= []).push(conditionKey)
     }
   }
 }
@@ -833,7 +770,7 @@ function feedCompoundSegment(
 const compoundOnlyHandler: FlatValueHandler<DirectState> = {
   segment(state, start, end, isBase, valid, source, chainStart, chainEnd, chainValid) {
     if (isBase) {
-      feedCompoundSegment(state, source, start, end, true, valid, 0)
+      feedCompoundSegment(state, source, start, end, true, valid, '')
       return
     }
     const cursor = state.flatScanCursor
@@ -843,7 +780,7 @@ const compoundOnlyHandler: FlatValueHandler<DirectState> = {
       !(conditionNumbers[cursor + conditionFlagsOffset] & conditionResolvedFlag) ||
       !conditionNumbers[cursor + conditionValueOffset]
     ) {
-      feedCompoundSegment(state, source, start, end, false, false, 0)
+      feedCompoundSegment(state, source, start, end, false, false, '')
       return
     }
     feedCompoundSegment(
@@ -853,7 +790,7 @@ const compoundOnlyHandler: FlatValueHandler<DirectState> = {
       end,
       false,
       valid,
-      snapshotCondition(cursor)
+      conditionTexts[cursor + conditionKeyOffset] || ''
     )
   },
   modifier(state, start, end, valid, first, source) {
@@ -883,35 +820,22 @@ const compoundOnlyHandler: FlatValueHandler<DirectState> = {
   },
 }
 
-function appendUniqueCombination(head: number, tail: number, conditionId: number) {
-  for (let node = head; node; node = compoundArena[node + 1]) {
-    if (compoundArena[node] === conditionId) return tail
-  }
-  const node = reserveCompoundArena(2)
-  compoundArena[node] = conditionId
-  compoundArena[node + 1] = 0
-  if (tail) compoundArena[tail + 1] = node
-  return node
-}
-
 function finishCompoundEdges(
   pass: StylePass,
   key: string,
   value: any,
   indexes: number[] | undefined,
-  stateStart: number,
-  epoch: number
+  states: (CompoundState | undefined)[]
 ) {
   if (!indexes) return
   const state = pass[passStyleState] as DirectState
   pass[passCompoundIndexes] = indexes
   pass[passCompoundKey] = key
-  pass[passCompoundStateStart] = stateStart
-  pass[passCompoundEpoch] = epoch
+  pass[passCompoundStates] = states
   let needsScan = false
   for (let index = 0; index < indexes.length; index++) {
-    const stateIndex = stateStart + indexes[index] * compoundStateWidth
-    if (!compoundArena[stateIndex + compoundScanned]) {
+    const compoundState = (states[indexes[index]] ||= freshCompoundState())
+    if (!compoundState.scanned) {
       needsScan = true
       break
     }
@@ -945,7 +869,7 @@ function finishCompoundEdges(
             payloadString.length,
             true,
             true,
-            0
+            ''
           )
         } else {
           const watermark = conditionCursorTop
@@ -960,7 +884,7 @@ function finishCompoundEdges(
             payloadString.length,
             false,
             Boolean(condition),
-            condition ? snapshotCondition(cursor) : 0
+            condition ? conditionTexts[cursor + conditionKeyOffset] || '' : ''
           )
           releaseConditionCursors(watermark)
         }
@@ -969,10 +893,10 @@ function finishCompoundEdges(
       const variants = state.staticConfig.compoundVariants!
       for (let index = 0; index < indexes.length; index++) {
         const compoundIndex = indexes[index]
-        const stateIndex = stateStart + compoundIndex * compoundStateWidth
-        compoundArena[stateIndex + compoundScanned] = 1
+        const compoundState = (states[compoundIndex] ||= freshCompoundState())
+        compoundState.scanned = true
         if (compoundMatcherMatches(variants[compoundIndex][key], value)) {
-          compoundArena[stateIndex + compoundMatchedBase] = 1
+          compoundState.matchedBase = true
         }
       }
     }
@@ -984,58 +908,45 @@ function finishCompoundEdges(
   ]![preparedCompoundsKey]
   for (let index = 0; index < indexes.length; index++) {
     const compoundIndex = indexes[index]
-    const stateIndex = stateStart + compoundIndex * compoundStateWidth
-    if (compoundArena[stateIndex + compoundFailed]) continue
-    let branches = compoundArena[stateIndex + compoundPendingHead]
-    if (compoundArena[stateIndex + compoundMatchedBase]) {
-      branches = reserveCompoundArena(2)
-      compoundArena[branches] = 0
-      compoundArena[branches + 1] = 0
-    }
-    if (!branches) {
-      compoundArena[stateIndex + compoundFailed] = 1
+    const compoundState = states[compoundIndex]!
+    if (compoundState.failed) continue
+    const branches = compoundState.matchedBase ? [''] : compoundState.pending
+    if (!branches || !branches.length) {
+      compoundState.failed = true
       continue
     }
 
-    const seen = compoundArena[stateIndex + compoundSeen]
-    if (!seen) {
-      compoundArena[stateIndex + compoundCombinations] = branches
+    if (!compoundState.seen) {
+      compoundState.combinations = branches
     } else {
-      const previous = compoundArena[stateIndex + compoundCombinations]
-      let nextHead = 0
-      let nextTail = 0
-      for (let left = previous; left; left = compoundArena[left + 1]) {
-        for (let right = branches; right; right = compoundArena[right + 1]) {
-          const conditionId = combineConditionSnapshots(
+      const previous = compoundState.combinations!
+      const next: string[] = []
+      for (let left = 0; left < previous.length; left++) {
+        for (let right = 0; right < branches.length; right++) {
+          const conditionKey = combineConditionKeys(
             state,
-            compoundArena[left],
-            compoundArena[right]
+            previous[left],
+            branches[right]
           )
-          const appended = appendUniqueCombination(nextHead, nextTail, conditionId)
-          if (!nextHead) nextHead = appended
-          nextTail = appended
+          if (!next.includes(conditionKey)) next.push(conditionKey)
         }
       }
-      compoundArena[stateIndex + compoundCombinations] = nextHead
+      compoundState.combinations = next
     }
-    compoundArena[stateIndex + compoundSeen] = seen + 1
-    if (seen + 1 !== selectorCounts[compoundIndex]) continue
+    compoundState.seen++
+    if (compoundState.seen !== selectorCounts[compoundIndex]) continue
     const style = variants[compoundIndex].style
     if (!isPlainObject(style)) continue
-    for (
-      let combination = compoundArena[stateIndex + compoundCombinations];
-      combination;
-      combination = compoundArena[combination + 1]
-    ) {
+    const combinations = compoundState.combinations!
+    for (let combination = 0; combination < combinations.length; combination++) {
       for (const styleKey in style) {
         contributeProp(
           pass,
           styleKey,
           style[styleKey],
           undefined,
-          stateStart,
-          epoch,
-          compoundArena[combination]
+          states,
+          combinations[combination]
         )
       }
     }
@@ -1086,8 +997,7 @@ const passHocMappedProperties = 29
 const passHocMappedClasses = 30
 const passCompoundIndexes = 31
 const passCompoundKey = 32
-const passCompoundStateStart = 33
-const passCompoundEpoch = 34
+const passCompoundStates = 33
 const passParentCursor = 35
 const passMapSourceKey = 36
 const passMapFlags = 37
@@ -1233,10 +1143,8 @@ function forEachPropInForwardOrder(pass: StylePass) {
     return
   }
 
-  const arenaBase = compoundArenaTop
   const compoundVariants = staticConfig.compoundVariants!
-  const stateStart = reserveCompoundArena(compoundVariants.length * compoundStateWidth)
-  const epoch = ++compoundArenaEpoch
+  const compoundStates: (CompoundState | undefined)[] = new Array(compoundVariants.length)
   try {
     if (processedBaseStyle) {
       for (const key in processedBaseStyle) {
@@ -1258,18 +1166,16 @@ function forEachPropInForwardOrder(pass: StylePass) {
     for (const key in processedProps) {
       const compoundIndexes = preparedCompounds[key]
       const value = processedProps[key]
-      beginCompoundEdges(compoundIndexes, stateStart, epoch)
+      beginCompoundEdges(compoundIndexes, compoundStates)
       directState.flatPropSawCondition = false
-      contributeProp(pass, key, value, compoundIndexes, stateStart, epoch)
+      contributeProp(pass, key, value, compoundIndexes, compoundStates)
       if (directState.flatPropSawCondition) {
         injectDisplacedStyledDefault(pass, key, value)
       }
-      finishCompoundEdges(pass, key, value, compoundIndexes, stateStart, epoch)
+      finishCompoundEdges(pass, key, value, compoundIndexes, compoundStates)
     }
   } finally {
-    conditionSnapshotTexts.fill('', arenaBase, compoundArenaTop)
     releaseConditionPayloads(conditionWrapperBase)
-    compoundArenaTop = arenaBase
   }
 }
 
@@ -1469,23 +1375,21 @@ function contributeProp(
   keyOg: string,
   valOg: any,
   compoundIndexes?: number[],
-  compoundStateStart?: number,
-  compoundEpoch?: number,
-  parentConditionId?: number
+  compoundStates?: (CompoundState | undefined)[],
+  parentConditionKey?: string
 ) {
   const parentWatermark = conditionCursorTop
   if (compoundIndexes) {
     pass[passCompoundIndexes] = compoundIndexes
     pass[passCompoundKey] = keyOg
-    pass[passCompoundStateStart] = compoundStateStart
-    pass[passCompoundEpoch] = compoundEpoch
+    pass[passCompoundStates] = compoundStates
   } else if (pass[passCompoundIndexes]) {
     pass[passCompoundIndexes] = undefined
   }
-  if (parentConditionId) {
-    pass[passParentCursor] = acquireConditionSnapshotCursor(
+  if (parentConditionKey) {
+    pass[passParentCursor] = acquireConditionKeyCursor(
       pass[passStyleState] as GetStyleState,
-      parentConditionId
+      parentConditionKey
     )
   }
   try {
@@ -1976,7 +1880,7 @@ function contributeProp(
       console.groupEnd()
     }
   } finally {
-    if (parentConditionId) pass[passParentCursor] = null
+    if (parentConditionKey) pass[passParentCursor] = null
     releaseConditionCursors(parentWatermark)
   }
 } // end prop contribution
@@ -3079,7 +2983,7 @@ const directStyleHandler: FlatValueHandler<GetStyleState> = {
         end,
         true,
         valid || failure === 'invalid-character' || failure === 'stray-comment-close',
-        0
+        ''
       )
       if (!valid) {
         if (failure === 'invalid-character' || failure === 'stray-comment-close') {
@@ -3166,8 +3070,8 @@ const directStyleHandler: FlatValueHandler<GetStyleState> = {
       false,
       valid && Boolean(condition),
       condition && directState.flatPass?.[passCompoundIndexes]
-        ? snapshotCondition(cursor)
-        : 0
+        ? conditionTexts[cursor + conditionKeyOffset] || ''
+        : ''
     )
     if (!condition) return
     if (!valid) {
@@ -4517,7 +4421,7 @@ function contributeStyleObjectInner(
   const base = hasDefault ? value.default : undefined
   if (base != null) {
     const baseString = String(base)
-    feedCompoundSegment(directState, baseString, 0, baseString.length, true, true, 0)
+    feedCompoundSegment(directState, baseString, 0, baseString.length, true, true, '')
     emitAtParentCondition(state, property, base, merge, base, contextOnly)
     hasBase = true
   }
@@ -4560,8 +4464,8 @@ function contributeStyleObjectInner(
         false,
         Boolean(condition),
         condition && directState.flatPass?.[passCompoundIndexes]
-          ? snapshotCondition(cursor)
-          : 0
+          ? conditionTexts[cursor + conditionKeyOffset] || ''
+          : ''
       )
     }
     releaseConditionCursors(watermark)
@@ -4927,7 +4831,7 @@ const variantValueHandler: FlatValueHandler<VariantScanContext> = {
     const directState = state as DirectState
     if (start === end) return
     if (isBase) {
-      feedCompoundSegment(directState, source, start, end, true, valid, 0)
+      feedCompoundSegment(directState, source, start, end, true, valid, '')
       if (!valid) return
       emitResolvedVariant(ctx[1], source.slice(start, end), state, ctx[2], null)
       return
@@ -4948,8 +4852,8 @@ const variantValueHandler: FlatValueHandler<VariantScanContext> = {
       false,
       Boolean(condition),
       condition && directState.flatPass?.[passCompoundIndexes]
-        ? snapshotCondition(cursor!)
-        : 0
+        ? conditionTexts[cursor! + conditionKeyOffset] || ''
+        : ''
     )
     if (!condition) return
     emitResolvedVariant(ctx[1], source.slice(start, end), state, ctx[2], cursor!)
@@ -5276,7 +5180,7 @@ function resolveVariants(
             payloadString.length,
             true,
             true,
-            0
+            ''
           )
           emitResolvedVariant(key, payload, styleState, parentVariantKey, null)
           continue
@@ -5298,7 +5202,7 @@ function resolveVariants(
             payloadString.length,
             false,
             Boolean(condition),
-            condition ? snapshotCondition(cursor) : 0
+            condition ? conditionTexts[cursor + conditionKeyOffset] || '' : ''
           )
         }
         // an unresolvable key still flows down as its (unresolved) cursor so the
