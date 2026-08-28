@@ -8,6 +8,7 @@ import {
 import {
   borderSideSuffix,
   classifyCandidate,
+  configRevisionSymbol,
   createGrammarConfigView,
   decodeArbitrary,
   getTokenCategory,
@@ -30,13 +31,17 @@ import {
  * renderer.
  */
 
-const styleGrammarConfigCache = new WeakMap<StyleFrontendConfig, GrammarConfigView>()
+const styleGrammarConfigCache = new WeakMap<
+  StyleFrontendConfig,
+  { revision: number; value: GrammarConfigView }
+>()
 
 export function getStyleGrammarConfig(config: StyleFrontendConfig): GrammarConfigView {
   const cached = styleGrammarConfigCache.get(config)
-  if (cached) return cached
+  const revision = (config as any)[configRevisionSymbol]?.revision || 0
+  if (cached && cached.revision === revision) return cached.value
   const view = createGrammarConfigView(config)
-  styleGrammarConfigCache.set(config, view)
+  styleGrammarConfigCache.set(config, { revision, value: view })
   return view
 }
 

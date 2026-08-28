@@ -4,6 +4,7 @@ import {
   type StyleFrontend,
   type StyleFrontendConfig,
 } from '@tamagui/core/internal-runtime'
+import { configRevisionSymbol } from '@tamagui/style-grammar/runtime'
 import { preprocessTailwindClassName } from './candidate'
 
 /**
@@ -32,7 +33,7 @@ export function parseStaticStyle(
 
 const normalizedStaticConfigCache = new WeakMap<
   FrontendStaticConfig,
-  WeakMap<StyleFrontendConfig, FrontendStaticConfig>
+  WeakMap<StyleFrontendConfig, { revision: number; value: FrontendStaticConfig }>
 >()
 const normalizedStaticConfigs = new WeakSet<FrontendStaticConfig>()
 
@@ -45,7 +46,8 @@ function normalizeTailwindStaticConfig<Config extends FrontendStaticConfig>(
   }
   let configCache = normalizedStaticConfigCache.get(staticConfig)
   const cached = configCache?.get(config)
-  if (cached) return cached as Config
+  const revision = (config as any)[configRevisionSymbol]?.revision || 0
+  if (cached && cached.revision === revision) return cached.value as Config
 
   let variants = staticConfig.variants
   if (variants) {
@@ -93,7 +95,7 @@ function normalizeTailwindStaticConfig<Config extends FrontendStaticConfig>(
   } as Config
   normalizedStaticConfigs.add(normalized)
   configCache ||= new WeakMap()
-  configCache.set(config, normalized)
+  configCache.set(config, { revision, value: normalized })
   normalizedStaticConfigCache.set(staticConfig, configCache)
   return normalized
 }

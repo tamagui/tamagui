@@ -1,6 +1,6 @@
 import { getDefaultTamaguiConfig } from '../../../config-default/src'
 import { STYLE_FRONTEND_PREPROCESSED } from '@tamagui/core/internal-runtime'
-import { View as CoreView, createTamagui, getConfig } from '@tamagui/web'
+import { View as CoreView, createTamagui, getConfig, updateConfig } from '@tamagui/web'
 import { StyleObjectRules, StyleObjectValue } from '@tamagui/helpers'
 import { safeAreaVariableNames } from '@tamagui/style-grammar/runtime'
 import { beforeAll, describe, expect, test } from 'vitest'
@@ -198,6 +198,20 @@ describe('class-first styled()', () => {
       backgroundColor: 'red',
       padding: '4',
     })
+  })
+
+  test('a config revision refreshes compiled static frontend metadata', () => {
+    const Frame = styled(View, 'future:bg-[red]')
+    expect(splitTailwindStyles(Frame, {}).viewProps.className).toContain(
+      'future:bg-[red]'
+    )
+
+    updateConfig('media', { future: { minWidth: 1234 } })
+
+    const styles = splitTailwindStyles(Frame, {})
+    const rules = findRule(styles.rulesToInsert, 'backgroundColor')[StyleObjectRules]
+    expect(rules.join('')).toContain('@media (min-width: 1234px)')
+    expect(rules.join('')).toContain('background-color:red')
   })
 
   test('unclaimed base classes are partitioned out of baseStyle', () => {
