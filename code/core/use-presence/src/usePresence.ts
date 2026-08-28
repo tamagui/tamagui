@@ -10,14 +10,30 @@ import { PresenceContext } from './PresenceContext'
 export function usePresence(registration?: PresenceRegistration): UsePresenceResult {
   const context = React.useContext(PresenceContext)
 
-  // the style pass completes later in the same render. read its registration
-  // decision in the passive effect so every component calls this hook in a
-  // fixed position, while only frames that animate join presence bookkeeping.
+  // the style pass completes later in the same render, so the registration
+  // decision is read in a passive effect: every component calls this hook in a
+  // fixed position while only frames that animate join presence bookkeeping.
+  // Registration is sticky — it happens once and unregisters only at unmount,
+  // never between commits (a mid-exit unregister completes the exit instantly
+  // and the exit animation never plays). A public caller with no registration
+  // handle keeps the always-register contract.
+  const unregister = React.useRef<undefined | void | (() => void)>(undefined)
   React.useEffect(() => {
-    if (context && registration?.shouldRegisterPresence) {
-      return context.register(context.id)
+    if (
+      !unregister.current &&
+      context &&
+      (registration ? registration.shouldRegisterPresence : true)
+    ) {
+      unregister.current = context.register(context.id)
     }
   })
+  React.useEffect(
+    () => () => {
+      if (typeof unregister.current === 'function') unregister.current()
+      unregister.current = undefined
+    },
+    []
+  )
 
   if (!context) return [true, null, context]
 

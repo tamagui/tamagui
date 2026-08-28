@@ -83,26 +83,29 @@ and cleared on release.
 
 ## Size receipts (§11) — the directional gate FAILS, reported as a stop condition
 
-Complete-artifact gzip via the checkpoint-0 ruler (same machine, Bun vite
-build, `attribute-bundle-gzip --filter=__complete_artifact_only__`):
+Complete-artifact gzip via the checkpoint-0 ruler, PAIRED same-machine
+back-to-back builds (tip = `7c9d038e7f`, the current v3-beta with the
+RN-driver-web drop; branch = cp3-engine after the owner-ruled consolidation
+pass):
 
-| artifact | tip `479036c39b` | branch (pre driver-drop rebase) | branch `9c7a56ecfd` |
+| artifact | tip | branch | delta |
 | --- | ---: | ---: | ---: |
-| processor | **21,761** | 24,815 | **24,742** |
-| public `View` | pending same-run control | | 48,009 |
+| processor | **21,757** | **24,638** | +2,881 (+13.2%) |
+| public `View` | 44,783 | 47,897 | +3,114 (+7.0%) |
 
 Attribution (marginal gzip): tip's `directStyle` + `getSplitStyles` +
-`propMapper` = 10,408; the merged engine = 13,386, plus `getCSSStylesAtomic`
-820 → 1,141 (slot builder) against `directStyleCSS` 1,008 → 902. The
-duplication deletion paid, but the invariant-bearing machinery (compound
-arena, cursors + atoms + snapshots, neutral frame + completion) costs more
-than it recovered: net ≈ **+3.0K gzip** on the processor artifact.
+`propMapper` = 10,276; the merged engine = 13,382. The duplication deletion
+paid, but the invariant-bearing machinery (compound arena, cursors + atoms +
+snapshots, neutral frame + completion, HOC atom transport) costs more than it
+recovered. Consolidations already taken: the per-contribution atomic identity
+cache retired for its slot-level successor; the emit chain collapsed onto one
+cursor reference (gzip-neutral — minified parameter forwarding compresses to
+almost nothing); `addComposition` moved onto the slot builder so the engine
+never reaches the legacy `getStyleObject` path (that path survives only for
+the public RNW interop utility the residue-removal unit deletes).
 
-Per §12 this is a stop condition ("the processor artifact does not fall
-materially at checkpoint 3"): named to the owner with the numbers above rather
-than shaved by removing behavior. The per-contribution atomic identity cache
-was retired for its slot-level successor (−116). Remaining recovery candidates
-are compaction, not deletion, and are estimated partial.
+Per §12 this remains a named stop condition awaiting the owner's residual
+ruling; behavior was not shaved to move the number.
 
 ## Timing (§11)
 

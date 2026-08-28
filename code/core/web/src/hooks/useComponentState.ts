@@ -98,7 +98,11 @@ export const useComponentState = (
   const { disableClassName } = props
 
   // HOOK
-  curStateRef.shouldRegisterPresence = false
+  // finalizeStyleFlags owns this decision after the pass. A render that skips
+  // the pass entirely (passThrough) keeps the previous decision: resetting it
+  // would silently drop an animated frame's presence registration and its
+  // exit would complete instantly instead of animating.
+  curStateRef.shouldRegisterPresence ??= false
   const presence = animationDriver?.usePresence?.(curStateRef) || null
 
   const presenceState = presence?.[2]
