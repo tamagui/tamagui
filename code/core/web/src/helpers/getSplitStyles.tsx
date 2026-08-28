@@ -1,7 +1,6 @@
 import {
   isAndroid,
   isClient,
-  isWeb,
   platformMatches,
   supportsDynamicColorIOS,
 } from '@tamagui/constants'
@@ -503,7 +502,11 @@ function accumulateConditionAtom(
   } else {
     const stateSelector = stateModifierSelectors[rank]
     cursor.selfStateSpecificity++
-    if (!isWeb && stateSelector[0] === '[' && name !== 'disabled') {
+    if (
+      process.env.TAMAGUI_TARGET === 'native' &&
+      stateSelector[0] === '[' &&
+      name !== 'disabled'
+    ) {
       cursor.unsupportedState = name
     }
     if (rank === 6) cursor.enter = true
@@ -1381,7 +1384,7 @@ export const getSplitStyles: StyleSplitter = (
   let shouldDoClasses =
     !process.env.TAMAGUI_DID_OUTPUT_CSS &&
     acceptsClassName &&
-    isWeb &&
+    process.env.TAMAGUI_TARGET === 'web' &&
     !styleProps.noClass
 
   const rulesToInsert: RulesToInsert =
@@ -1813,7 +1816,7 @@ export const getSplitStyles: StyleSplitter = (
     let isValidStyleKeyInit = isValidStyleKey(keyInit, validStyles, accept)
 
     // this is all for partially optimized (not flattened)... maybe worth removing?
-    if (isWeb) {
+    if (process.env.TAMAGUI_TARGET === 'web') {
       // standard data attributes are view props, never styles or styled-context
       // values. Context providers receive arbitrary JSX attributes, so handle
       // these before a provider value can make the key look style-like.
@@ -2256,7 +2259,7 @@ export const getSplitStyles: StyleSplitter = (
 
       if (!noExpand && !noMergeStyle) {
         // shouldn't this be better? but breaks some tests weirdly, need to check
-        if (isWeb) {
+        if (process.env.TAMAGUI_TARGET === 'web') {
           styleToCSS(styleState.style)
         }
       }
@@ -2414,38 +2417,18 @@ export const getSplitStyles: StyleSplitter = (
         const fontFamilyClassName = fontFamily ? `font_${fontFamily}` : ''
         const group = props.group ?? frontendGroup
         const groupClassName = group ? `t_group_${group}` : ''
+        // is_View gets base flex styles + font reset, is_Text gets base text
+        // styles. named components add is_<displayName> as a styling hook;
+        // displayNames are authored by devs and are not validated
         const displayName = styleProps.displayName
-        let validDisplayName = Boolean(
+        const baseClassName = isText ? 'is_Text' : 'is_View'
+        let finalClassName =
           !props.asChild &&
           displayName &&
           displayName !== 'Text' &&
           displayName !== 'View'
-        )
-        if (validDisplayName) {
-          for (let index = 0; index < displayName!.length; index++) {
-            const code = displayName!.charCodeAt(index)
-            if (
-              !(
-                code === 95 ||
-                code === 45 ||
-                (code >= 48 && code <= 57 && index > 0) ||
-                (code >= 65 && code <= 90) ||
-                (code >= 97 && code <= 122)
-              )
-            ) {
-              validDisplayName = false
-              break
-            }
-          }
-        }
-        const displayNameClassName = validDisplayName ? `is_${displayName}` : ''
-
-        let finalClassName = displayNameClassName
-        // is_View gets base flex styles + font reset, is_Text gets base text styles
-        const baseClassName = isText ? 'is_Text' : 'is_View'
-        finalClassName = finalClassName
-          ? `${finalClassName} ${baseClassName}`
-          : baseClassName
+            ? `is_${displayName} ${baseClassName}`
+            : baseClassName
         if (fontFamilyClassName) finalClassName += ` ${fontFamilyClassName}`
         let hasPropertyClassNames = false
         if (classNames) {
@@ -2560,7 +2543,8 @@ function mergeStyle(
     styleState.transformAccumulator ||= createTransformAccumulator()
     addTransformValue(styleState.transformAccumulator, key, val)
   } else {
-    const shouldNormalize = isWeb && !disableNormalize && !styleProps.noNormalize
+    const shouldNormalize =
+      process.env.TAMAGUI_TARGET === 'web' && !disableNormalize && !styleProps.noNormalize
     const out = shouldNormalize ? normalizeValueWithProperty(val, key) : val
     if (
       // accept is for props not styles
@@ -2923,7 +2907,7 @@ function emitUnderCondition(
     (condition & 1 ||
       (canGenerateCSS && state.flatShouldDoClasses) ||
       (warnMode === 1 &&
-        !isWeb &&
+        process.env.TAMAGUI_TARGET === 'native' &&
         cursor.theme &&
         supportsDynamicColorIOS &&
         isColorStyleKey(property)))
@@ -3396,7 +3380,9 @@ function configuredValue(state: GetStyleState, property: string, raw: string): a
     return raw
   }
   const resolveValues =
-    isWeb && !state.flatShouldDoClasses && state.styleProps.resolveValues === 'auto'
+    process.env.TAMAGUI_TARGET === 'web' &&
+    !state.flatShouldDoClasses &&
+    state.styleProps.resolveValues === 'auto'
       ? 'value'
       : state.styleProps.resolveValues
   // the static compiler resolves tokens but keeps theme-backed values symbolic
@@ -3408,9 +3394,10 @@ function configuredValue(state: GetStyleState, property: string, raw: string): a
   }
   let value = resolveVariableValue(property, lookup.value, resolveValues)
   if (opacity !== undefined) {
-    value = isWeb
-      ? `color-mix(in srgb, ${value} ${opacity}%, transparent)`
-      : normalizeColor(value, opacity / 100)
+    value =
+      process.env.TAMAGUI_TARGET === 'web'
+        ? `color-mix(in srgb, ${value} ${opacity}%, transparent)`
+        : normalizeColor(value, opacity / 100)
   }
   return value
 }
@@ -3584,7 +3571,7 @@ function emitProperty(
   if (condition & 4) (state.flatEnterKeys ||= new Set()).add(property)
   if (condition & 8) (state.flatExitKeys ||= new Set()).add(property)
 
-  if (!isWeb && cursor && cursor.theme) {
+  if (process.env.TAMAGUI_TARGET === 'native' && cursor && cursor.theme) {
     if (supportsDynamicColorIOS && isColorStyleKey(property)) {
       const schemes = ((direct.flatDynamicColors ||= {})[property] ||= {})
       schemes[cursor.theme] =
@@ -3746,7 +3733,10 @@ function emitBorder(
   originalValue: any,
   contextOnly: boolean
 ) {
-  if (!isWeb && (property === 'borderBlock' || property === 'borderInline')) {
+  if (
+    process.env.TAMAGUI_TARGET === 'native' &&
+    (property === 'borderBlock' || property === 'borderInline')
+  ) {
     if (process.env.NODE_ENV === 'development') {
       warnOnce(`RN has no logical border shorthand "${property}"; dropping it`)
     }
@@ -3757,13 +3747,12 @@ function emitBorder(
   let style: string | undefined
   let color: string | undefined
   for (const part of splitComponents(raw)) {
-    const lower = part.toLowerCase()
-    if (lineStyles.has(lower) || (property === 'outline' && lower === 'auto')) {
+    if (lineStyles.has(part) || (property === 'outline' && part === 'auto')) {
       style = part
     } else if (
-      lower === 'thin' ||
-      lower === 'medium' ||
-      lower === 'thick' ||
+      part === 'thin' ||
+      part === 'medium' ||
+      part === 'thick' ||
       isNumericCSSComponent(part) ||
       startsValueFunction(part)
     ) {
@@ -3779,7 +3768,10 @@ function emitBorder(
     }
   }
   if (style !== undefined) {
-    const styleTargets = !isWeb && property === 'border' ? ['borderStyle'] : targets.style
+    const styleTargets =
+      process.env.TAMAGUI_TARGET === 'native' && property === 'border'
+        ? ['borderStyle']
+        : targets.style
     for (const target of styleTargets) {
       emitProperty(state, target, style, cursor, merge, originalValue, contextOnly)
     }
@@ -3868,7 +3860,10 @@ function emitResolved(
 ) {
   let value = configuredValue(state, property, raw)
   if (value === raw) value = resolveEmbeddedTokens(state, property, raw)
-  if ((!isWeb || !state.flatShouldDoClasses) && typeof value === 'string') {
+  if (
+    (process.env.TAMAGUI_TARGET === 'native' || !state.flatShouldDoClasses) &&
+    typeof value === 'string'
+  ) {
     const unitValue = numericUnitValue(value, 'px', 'dp')
     if (Number.isFinite(unitValue)) {
       value = unitValue
@@ -3941,15 +3936,14 @@ function emitValue(
   contextOnly: boolean
 ) {
   const condition = cursor ? cursor.condition : 0
-  if (typeof raw === 'string') {
-    raw = raw.trim()
-  }
 
   if (isVariable(raw)) {
     raw = resolveVariableValue(
       property,
       raw,
-      isWeb && !state.flatShouldDoClasses && state.styleProps.resolveValues === 'auto'
+      process.env.TAMAGUI_TARGET === 'web' &&
+        !state.flatShouldDoClasses &&
+        state.styleProps.resolveValues === 'auto'
         ? 'value'
         : state.styleProps.resolveValues
     )
@@ -3985,7 +3979,7 @@ function emitValue(
     return
   }
 
-  if (isWeb && webShadowParts.has(property)) {
+  if (process.env.TAMAGUI_TARGET === 'web' && webShadowParts.has(property)) {
     const value = typeof raw === 'string' ? configuredValue(state, property, raw) : raw
     if (canGenerateCSS && state.flatShouldDoClasses) {
       emitWebShadow(
@@ -4002,7 +3996,7 @@ function emitValue(
     return
   }
 
-  if (isWeb && webTextShadowParts.has(property)) {
+  if (process.env.TAMAGUI_TARGET === 'web' && webTextShadowParts.has(property)) {
     const value = typeof raw === 'string' ? configuredValue(state, property, raw) : raw
     if (canGenerateCSS && state.flatShouldDoClasses) {
       emitWebTextShadow(
@@ -4050,7 +4044,7 @@ function emitValue(
       )
       return
     }
-    if (!isWeb) {
+    if (process.env.TAMAGUI_TARGET === 'native') {
       if (process.env.NODE_ENV === 'development') {
         warnOnce(`native background cannot represent "${raw}"; dropping it`)
       }
@@ -4072,7 +4066,7 @@ function emitValue(
     // animation driver drives inline. strings survive only on the class path.
     // a theme-ref sentinel is not a number and must pass through untouched.
     if (
-      (!isWeb || !state.flatShouldDoClasses) &&
+      (process.env.TAMAGUI_TARGET === 'native' || !state.flatShouldDoClasses) &&
       typeof value === 'string' &&
       !value.startsWith(THEME_REF_PREFIX)
     ) {
@@ -4102,7 +4096,12 @@ function emitValue(
     return
   }
 
-  if (isWeb && !state.flatShouldDoClasses && !condition && property === 'borderRadius') {
+  if (
+    process.env.TAMAGUI_TARGET === 'web' &&
+    !state.flatShouldDoClasses &&
+    !condition &&
+    property === 'borderRadius'
+  ) {
     // css reads the shorthand, so skip the four-corner expansion here. a string
     // value still needs its token resolved, which is what emitResolved does.
     if (typeof raw === 'string') {
@@ -4131,7 +4130,10 @@ function emitValue(
     if (value === raw) value = resolveEmbeddedTokens(state, property, raw)
   }
 
-  if ((!isWeb || !state.flatShouldDoClasses) && typeof value === 'string') {
+  if (
+    (process.env.TAMAGUI_TARGET === 'native' || !state.flatShouldDoClasses) &&
+    typeof value === 'string'
+  ) {
     const unitValue = numericUnitValue(value, 'px', 'dp')
     if (Number.isFinite(unitValue)) {
       value = unitValue
@@ -4176,7 +4178,11 @@ function emitValue(
     }
   }
 
-  if (!isWeb && property === 'fontVariant' && typeof value === 'string') {
+  if (
+    process.env.TAMAGUI_TARGET === 'native' &&
+    property === 'fontVariant' &&
+    typeof value === 'string'
+  ) {
     const variants: string[] = []
     let start = 0
     for (let index = 0; index <= value.length; index++) {
@@ -4479,7 +4485,7 @@ function contributeValue(
     }
   }
   if (
-    isWeb &&
+    process.env.TAMAGUI_TARGET === 'web' &&
     (webShadowParts.has(property) || legacyTransformParts.has(property)) &&
     ((typeof value === 'string' && value.indexOf(':') !== -1) ||
       (value &&
@@ -5072,7 +5078,7 @@ function emitResolvedVariant(
     if (
       process.env.NODE_ENV === 'development' &&
       debug === 'verbose' &&
-      process.env.TAMAGUI_TARGET !== 'native'
+      process.env.TAMAGUI_TARGET === 'web'
     ) {
       console.groupCollapsed('   expanded functional variant', key)
       console.info({ fn, variantValue, extras })
@@ -5276,60 +5282,6 @@ function hasNumericPrefix(value: string, suffixLength: number): boolean {
   return Number.isFinite(Number(value.slice(0, value.length - suffixLength)))
 }
 
-function isViewportValue(value: string): boolean {
-  return (
-    ((value.endsWith('vw') || value.endsWith('vh')) && hasNumericPrefix(value, 2)) ||
-    ((value.endsWith('dvw') ||
-      value.endsWith('lvw') ||
-      value.endsWith('svw') ||
-      value.endsWith('dvh') ||
-      value.endsWith('lvh') ||
-      value.endsWith('svh')) &&
-      hasNumericPrefix(value, 3))
-  )
-}
-
-function isAllowedStyleValue(
-  category: 'size' | 'space' | 'radius' | 'zIndex',
-  value: any,
-  conf: TamaguiInternalConfig,
-  string: boolean,
-  number: boolean,
-  rem: boolean
-) {
-  const hasSetting = Object.prototype.hasOwnProperty.call(
-    conf.settings,
-    'allowedStyleValues'
-  )
-  const configured = conf.settings.allowedStyleValues
-  const setting =
-    configured && typeof configured === 'object' ? configured[category] : configured
-  const web =
-    value === 'unset' ||
-    value === 'inherit' ||
-    (string && value.startsWith('var(') && value.endsWith(')')) ||
-    ((category === 'size' || category === 'space') &&
-      (value === 'max-content' ||
-        value === 'min-content' ||
-        (string &&
-          (isViewportValue(value) ||
-            ((value.startsWith('calc(') ||
-              value.startsWith('min(') ||
-              value.startsWith('max(')) &&
-              value.endsWith(')'))))))
-  const somewhat =
-    category === 'size' || category === 'space'
-      ? value === 'auto' || number || rem || (string && value.endsWith('%'))
-      : number
-  if (setting === 'strict') return false
-  if (setting === 'strict-web') return web
-  if (setting === 'somewhat-strict') return somewhat
-  if (setting === 'somewhat-strict-web') return somewhat || web
-  return (
-    number || (string && (category === 'size' || category === 'space' || !hasSetting))
-  )
-}
-
 function matchesVariantResolver(
   resolverName: VariantResolverName,
   value: any,
@@ -5344,22 +5296,17 @@ function matchesVariantResolver(
     case 'Size':
     case 'Space':
     case 'Radius':
-    case 'ZIndex': {
-      const category =
-        resolverName === 'ZIndex'
-          ? 'zIndex'
-          : (resolverName.toLowerCase() as 'size' | 'space' | 'radius')
+    case 'ZIndex':
+      // styles are authored by devs and never validated at runtime: any number
+      // or string routes to the token variant, which passes unknown values
+      // through. Size keeps its historical variable exclusion so variables
+      // route to the Space/Radius/ZIndex fallbacks.
       return (
         value === true ||
-        (value != null && value in conf.tokensParsed[category]) ||
-        ((resolverName === 'Space' ||
-          resolverName === 'Radius' ||
-          resolverName === 'ZIndex') &&
-          isVariable(value)) ||
-        ((resolverName === 'Radius' || resolverName === 'ZIndex') && (number || rem)) ||
-        isAllowedStyleValue(category, value, conf, string, number, rem)
+        number ||
+        string ||
+        (resolverName !== 'Size' && isVariable(value))
       )
-    }
     // a token or theme color, otherwise any string is taken to be a raw CSS
     // color and left for the browser to resolve. checking that against a CSS
     // color-name table costs 2.3KB gzip to reject values that were never valid
