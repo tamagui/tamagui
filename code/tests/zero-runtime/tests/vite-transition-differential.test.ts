@@ -242,10 +242,9 @@ test('the runtime tier applies the Tailwind hover candidate', async ({ page }) =
   expect(await hoverTailwindCandidate(page, RUNTIME_URL)).toBe('rgb(37, 99, 235)')
 })
 
-// known divergence: the ordinary compiled tier retains the base candidate on
-// hover while the compiler-disabled runtime applies the authored hover color.
-// this must invert when compilation reaches runtime parity.
-test.fail('the compiled tier applies the Tailwind hover candidate', async ({ page }) => {
+// the streaming engine reached runtime parity here: the compiled tier now
+// applies the authored hover color exactly like the runtime tier.
+test('the compiled tier applies the Tailwind hover candidate', async ({ page }) => {
   const compiled = await hoverTailwindCandidate(page, COMPILED_URL)
   const runtime = await hoverTailwindCandidate(page, RUNTIME_URL)
   expect(compiled).toBe(runtime)

@@ -340,7 +340,7 @@ function __TamaguiNativeStyle7429() { return __TamaguiNativeStyle7429._ ?? (__Ta
 const __TamaguiStableText7429 = require('@tamagui/core')._withStableStyle(__TamaguiNativeText, (_theme, expressions) => [__TamaguiNativeStyle7429._ ?? __TamaguiNativeStyle7429(), { "color": _theme["color"]?.get() }], true, false);"
 `;
 
-exports[`Package.json exports support > should build app package for both web and native targets > web-css 1`] = `"._fd-1155724988{flex-direction:column}._g-1012092611{gap:var(--c-space-4)}._fd-1289797684{flex-direction:row}._w-132203642{width:100%}._ai-1980109838{align-items:center}._zi-1175933931{z-index:10}._p-384527714{position:absolute}._r-1632656972{right:0px}._t-874702747{top:0px}._b-642571495{bottom:0px}._jc-658029924{justify-content:center}._w-137381456{width:var(--c-size-4)}._pe-635873870{pointer-events:none}._pe-635873870>*{pointer-events:none}._fg-169839737{flex-grow:1}._fs-1866857425{flex-shrink:1}._fb-1102215147{flex-basis:0px}._g-1012092487{gap:var(--c-space-8)}._pt-39185609{padding-top:var(--c-space-4)}._pr-635101616{padding-right:var(--c-space-4)}._pb-245633347{padding-bottom:var(--c-space-4)}._pl-354517857{padding-left:var(--c-space-4)}._bc-1288965051{background-color:var(--background)}._p-1814547269{position:absolute}@media (min-width: 640px) {._p-1814547269._p-1814547269{position:relative}}._t-1257708669{top:var(--c-space-6)}@media (min-width: 640px) {._t-1257708669._t-1257708669{top:0px}}._g-1012092549{gap:var(--c-space-6)}._fw-381719595{flex-wrap:wrap}._g-1012092673{gap:var(--c-space-2)}._us-1298715756{user-select:auto;-webkit-user-select:auto;}._ws-45919554{white-space:normal}._tt-2034838539{text-transform:var(--f-transform-8)}._ff-266490852{font-family:var(--f-family)}._fw-555620336{font-weight:var(--f-weight-10)}._ls-119932599{letter-spacing:var(--f-letterSpacing-10)}._fs-280311366{font-size:var(--f-size-10)}._lh-1747084459{line-height:var(--f-lineHeight-10)}._c-1584573400{color:var(--color11)}._mt-279610455{margin-top:0px}._mr-1468885570{margin-right:0px}._mb-1993857511{margin-bottom:0px}._ml-1118921597{margin-left:0px}._ta-628280461{text-align:center}._ff-1640205464{font-family:var(--f-family)}._fw-1379533702{font-weight:var(--f-weight-4)}._ls-870375212{letter-spacing:var(--f-letterSpacing-4)}._fs-183738666{font-size:var(--f-size-4)}._lh-106962612{line-height:var(--f-lineHeight-4)}._c-393637825{color:var(--color10)}._fs-1698630561{flex-shrink:1}._bs-1746519034{border-style:solid}._btw-1743474923{border-top-width:0px}._brw-1478209636{border-right-width:0px}._bbw-1723652447{border-bottom-width:1px}._blw-1024325245{border-left-width:0px}._h-883471467{height:0px}._mh-751572549{max-height:0px}._bbs-452384145{border-bottom-style:solid}._ty-885232850{--t-y:-0.5px}:where(._t-2131811775){--t-x:0px;--t-y:0px}._t-2131811775{translate:var(--t-x, 0px) var(--t-y, 0px)}._btc-462111959{border-top-color:var(--background-focus)}._brc-167070178{border-right-color:var(--background-focus)}._bbc-984892067{border-bottom-color:var(--background-focus)}._blc-1251242433{border-left-color:var(--background-focus)}._c-1572260098{color:var(--color)}"`;
+exports[`Package.json exports support > should build app package for both web and native targets > web-css 1`] = `"._fd-1155724988{flex-direction:column}._g-1012092611{gap:var(--c-space-4)}._fd-1289797684{flex-direction:row}._w-132203642{width:100%}._ai-1980109838{align-items:center}._zi-1175933931{z-index:10}._p-384527714{position:absolute}._r-1320283460{right:0px}._t-1224246557{top:0px}._b-964080337{bottom:0px}._jc-658029924{justify-content:center}._w-137381456{width:var(--c-size-4)}._pe-635873870{pointer-events:none}._pe-635873870>*{pointer-events:none}._fg-169839737{flex-grow:1}._fs-1866857425{flex-shrink:1}._fb-1628162253{flex-basis:0px}._g-1012092487{gap:var(--c-space-8)}._pt-39185609{padding-top:var(--c-space-4)}._pr-635101616{padding-right:var(--c-space-4)}._pb-245633347{padding-bottom:var(--c-space-4)}._pl-354517857{padding-left:var(--c-space-4)}._bc-1288965051{background-color:var(--background)}._g-1012092549{gap:var(--c-space-6)}._fw-381719595{flex-wrap:wrap}._p-1814547269{position:absolute}@media (min-width: 640px) {._p-1814547269._p-1814547269{position:relative}}._t-1257708669{top:var(--c-space-6)}@media (min-width: 640px) {._t-1257708669._t-1257708669{top:0px}}._g-1012092673{gap:var(--c-space-2)}._us-1298715756{user-select:auto;-webkit-user-select:auto;}._ws-45919554{white-space:normal}._tt-297848359{text-transform:var(--f-transform-8)}._ff-398910644{font-family:var(--f-family)}._fw-640945470{font-weight:var(--f-weight-10)}._ls-592447083{letter-spacing:var(--f-letterSpacing-10)}._fs-1933525972{font-size:var(--f-size-10)}._lh-1061045529{line-height:var(--f-lineHeight-10)}._c-1675133514{color:var(--color11)}._mt-1877295985{margin-top:0px}._mr-1445204022{margin-right:0px}._mb-541650463{margin-bottom:0px}._ml-1541834309{margin-left:0px}._ta-628280461{text-align:center}._fw-672061085{font-weight:var(--f-weight-4)}._ls-1643456874{letter-spacing:var(--f-letterSpacing-4)}._fs-893655883{font-size:var(--f-size-4)}._lh-1905435290{line-height:var(--f-lineHeight-4)}._c-1675133483{color:var(--color10)}._btw-442151971{border-top-width:0px}._brw-1074718372{border-right-width:0px}._bbw-1088826218{border-bottom-width:1px}._blw-829053253{border-left-width:0px}._h-1387441229{height:0px}._mh-706717453{max-height:0px}._ty-885232850{--t-y:-0.5px}:where(._t-77695993){--t-x:0px;--t-y:0px}._t-77695993{translate:var(--t-x, 0px) var(--t-y, 0px)}._btc-462111959{border-top-color:var(--background-focus)}._brc-167070178{border-right-color:var(--background-focus)}._bbc-984892067{border-bottom-color:var(--background-focus)}._blc-1251242433{border-left-color:var(--background-focus)}._bs-1746519034{border-style:solid}._bbs-452384145{border-bottom-style:solid}._c-533586090{color:var(--color)}"`;
 
 exports[`Package.json exports support > should build app package for both web and native targets > web-optimized 1`] = `
 "import "./_screen.css"
@@ -475,7 +475,7 @@ export function SelectDemoItem(props: SelectProps & { trigger?: React.ReactNode 
           {/* Native gets an extra icon */}
           {props.native && (
             <div
-              className="is_View _fd-1155724988 _p-384527714 _r-1632656972 _t-874702747 _b-642571495 _ai-1980109838 _jc-658029924 _w-137381456 _pe-635873870"
+              className="is_View _fd-1155724988 _p-384527714 _r-1320283460 _t-1224246557 _b-964080337 _ai-1980109838 _jc-658029924 _w-137381456 _pe-635873870"
 
 
 
@@ -544,9 +544,9 @@ export function HomeScreen({ pagesMode = false }: { pagesMode?: boolean }) {
   })
 
   return (
-    <div className="is_View _fd-1155724988 _fg-169839737 _fs-1866857425 _fb-1102215147 _jc-658029924 _ai-1980109838 _g-1012092487 _pt-39185609 _pr-635101616 _pb-245633347 _pl-354517857 _bc-1288965051"     >
+    <div className="is_View _fd-1155724988 _fg-169839737 _fs-1866857425 _fb-1628162253 _jc-658029924 _ai-1980109838 _g-1012092487 _pt-39185609 _pr-635101616 _pb-245633347 _pl-354517857 _bc-1288965051"     >
       <div
-        className="is_View _fd-1289797684 _p-1814547269 _w-132203642 _t-1257708669 _g-1012092549 _jc-658029924 _fw-381719595"
+        className="is_View _fd-1289797684 _w-132203642 _g-1012092549 _jc-658029924 _fw-381719595 _p-1814547269 _t-1257708669"
 
 
 
@@ -576,17 +576,17 @@ export function HomeScreen({ pagesMode = false }: { pagesMode?: boolean }) {
         </Button>
       </div>
       <div className="is_View _fd-1155724988 _g-1012092611">
-        <h1 className="is_H1 is_Text font_heading _us-1298715756 _ws-45919554 _tt-2034838539 _ff-266490852 _fw-555620336 _ls-119932599 _fs-280311366 _lh-1747084459 _c-1584573400 _mt-279610455 _mr-1468885570 _mb-1993857511 _ml-1118921597 _ta-628280461" >
+        <h1 className="is_Text font_heading tm-paragraph _us-1298715756 _ws-45919554 _tt-297848359 _ff-398910644 _fw-640945470 _ls-592447083 _fs-1933525972 _lh-1061045529 _c-1675133514 _mt-1877295985 _mr-1445204022 _mb-541650463 _ml-1541834309 _ta-628280461" >
           Welcome to Tamagui.
         </h1>
-        <p className="is_Paragraph is_Text font_body _ff-1640205464 _fw-1379533702 _ls-870375212 _fs-183738666 _lh-106962612 _c-393637825 _us-1298715756 _ws-45919554 _ta-628280461" >
+        <p className="is_Text font_body tm-paragraph _ff-398910644 _fw-672061085 _ls-1643456874 _fs-893655883 _lh-1905435290 _c-1675133483 _us-1298715756 _ws-45919554 _ta-628280461" >
           Here's a basic starter to show navigating from one screen to another.
         </p>
-        <div className="is_Separator is_View _fs-1698630561 _bs-1746519034 _btw-1743474923 _brw-1478209636 _bbw-1723652447 _blw-1024325245 _fg-169839737 _fb-1102215147 _h-883471467 _mh-751572549 _bbs-452384145 _ty-885232850 _t-2131811775 _btc-462111959 _brc-167070178 _bbc-984892067 _blc-1251242433" />
-        <p className="is_Paragraph is_Text font_body _ff-1640205464 _fw-1379533702 _ls-870375212 _fs-183738666 _lh-106962612 _c-1572260098 _us-1298715756 _ws-45919554 _ta-628280461">
+        <div className="is_View _fs-1866857425 _btw-442151971 _brw-1074718372 _bbw-1088826218 _blw-829053253 _fg-169839737 _fb-1628162253 _h-1387441229 _mh-706717453 _ty-885232850 _t-77695993 _btc-462111959 _brc-167070178 _bbc-984892067 _blc-1251242433 _bs-1746519034 _bbs-452384145" />
+        <p className="is_Text font_body tm-paragraph _ff-398910644 _fw-672061085 _ls-1643456874 _fs-893655883 _lh-1905435290 _c-533586090 _us-1298715756 _ws-45919554 _ta-628280461">
           This screen uses the same code on Next.js and React Native.
         </p>
-        <div className="is_Separator is_View _fs-1698630561 _bs-1746519034 _btw-1743474923 _brw-1478209636 _bbw-1723652447 _blw-1024325245 _fg-169839737 _fb-1102215147 _h-883471467 _mh-751572549 _bbs-452384145 _ty-885232850 _t-2131811775 _btc-462111959 _brc-167070178 _bbc-984892067 _blc-1251242433" />
+        <div className="is_View _fs-1866857425 _btw-442151971 _brw-1074718372 _bbw-1088826218 _blw-829053253 _fg-169839737 _fb-1628162253 _h-1387441229 _mh-706717453 _ty-885232850 _t-77695993 _btc-462111959 _brc-167070178 _bbc-984892067 _blc-1251242433 _bs-1746519034 _bbs-452384145" />
       </div>
 
       <Button {...linkProps} theme={'dark'}>
@@ -625,7 +625,7 @@ function SheetDemo() {
         <Sheet.Container items="center" justify="center" gap="10">
           <Sheet.Background bg="color2" />
           <div className="is_View _fd-1289797684 _g-1012092673">
-            <p className="is_Paragraph is_Text font_body _ff-1640205464 _fw-1379533702 _ls-870375212 _fs-183738666 _lh-106962612 _c-1572260098 _us-1298715756 _ws-45919554 _ta-628280461">Made by</p>
+            <p className="is_Text font_body tm-paragraph _ff-398910644 _fw-672061085 _ls-1643456874 _fs-893655883 _lh-1905435290 _c-533586090 _us-1298715756 _ws-45919554 _ta-628280461">Made by</p>
             <Anchor color="blue10" href="https://twitter.com/natebirdman" target="_blank">
               @natebirdman,
             </Anchor>
@@ -1131,7 +1131,7 @@ export function SelectDemoItem(props: SelectProps & { trigger?: React.ReactNode 
           {/* Native gets an extra icon */}
           {props.native && (
             <div
-              className="is_View _fd-1155724988 _p-384527714 _r-1632656972 _t-874702747 _b-642571495 _ai-1980109838 _jc-658029924 _w-137381456 _pe-635873870"
+              className="is_View _fd-1155724988 _p-384527714 _r-1320283460 _t-1224246557 _b-964080337 _ai-1980109838 _jc-658029924 _w-137381456 _pe-635873870"
 
 
 
@@ -1200,9 +1200,9 @@ export function HomeScreen({ pagesMode = false }: { pagesMode?: boolean }) {
   })
 
   return (
-    <div className="is_View _fd-1155724988 _fg-169839737 _fs-1866857425 _fb-1102215147 _jc-658029924 _ai-1980109838 _g-1012092487 _pt-39185609 _pr-635101616 _pb-245633347 _pl-354517857 _bc-1288965051"     >
+    <div className="is_View _fd-1155724988 _fg-169839737 _fs-1866857425 _fb-1628162253 _jc-658029924 _ai-1980109838 _g-1012092487 _pt-39185609 _pr-635101616 _pb-245633347 _pl-354517857 _bc-1288965051"     >
       <div
-        className="is_View _fd-1289797684 _p-1814547269 _w-132203642 _t-1257708669 _g-1012092549 _jc-658029924 _fw-381719595"
+        className="is_View _fd-1289797684 _w-132203642 _g-1012092549 _jc-658029924 _fw-381719595 _p-1814547269 _t-1257708669"
 
 
 
@@ -1232,17 +1232,17 @@ export function HomeScreen({ pagesMode = false }: { pagesMode?: boolean }) {
         </Button>
       </div>
       <div className="is_View _fd-1155724988 _g-1012092611">
-        <h1 className="is_H1 is_Text font_heading _us-1298715756 _ws-45919554 _tt-2034838539 _ff-266490852 _fw-555620336 _ls-119932599 _fs-280311366 _lh-1747084459 _c-1584573400 _mt-279610455 _mr-1468885570 _mb-1993857511 _ml-1118921597 _ta-628280461" >
+        <h1 className="is_Text font_heading tm-paragraph _us-1298715756 _ws-45919554 _tt-297848359 _ff-398910644 _fw-640945470 _ls-592447083 _fs-1933525972 _lh-1061045529 _c-1675133514 _mt-1877295985 _mr-1445204022 _mb-541650463 _ml-1541834309 _ta-628280461" >
           Welcome to Tamagui.
         </h1>
-        <p className="is_Paragraph is_Text font_body _ff-1640205464 _fw-1379533702 _ls-870375212 _fs-183738666 _lh-106962612 _c-393637825 _us-1298715756 _ws-45919554 _ta-628280461" >
+        <p className="is_Text font_body tm-paragraph _ff-398910644 _fw-672061085 _ls-1643456874 _fs-893655883 _lh-1905435290 _c-1675133483 _us-1298715756 _ws-45919554 _ta-628280461" >
           Here's a basic starter to show navigating from one screen to another.
         </p>
-        <div className="is_Separator is_View _fs-1698630561 _bs-1746519034 _btw-1743474923 _brw-1478209636 _bbw-1723652447 _blw-1024325245 _fg-169839737 _fb-1102215147 _h-883471467 _mh-751572549 _bbs-452384145 _ty-885232850 _t-2131811775 _btc-462111959 _brc-167070178 _bbc-984892067 _blc-1251242433" />
-        <p className="is_Paragraph is_Text font_body _ff-1640205464 _fw-1379533702 _ls-870375212 _fs-183738666 _lh-106962612 _c-1572260098 _us-1298715756 _ws-45919554 _ta-628280461">
+        <div className="is_View _fs-1866857425 _btw-442151971 _brw-1074718372 _bbw-1088826218 _blw-829053253 _fg-169839737 _fb-1628162253 _h-1387441229 _mh-706717453 _ty-885232850 _t-77695993 _btc-462111959 _brc-167070178 _bbc-984892067 _blc-1251242433 _bs-1746519034 _bbs-452384145" />
+        <p className="is_Text font_body tm-paragraph _ff-398910644 _fw-672061085 _ls-1643456874 _fs-893655883 _lh-1905435290 _c-533586090 _us-1298715756 _ws-45919554 _ta-628280461">
           This screen uses the same code on Next.js and React Native.
         </p>
-        <div className="is_Separator is_View _fs-1698630561 _bs-1746519034 _btw-1743474923 _brw-1478209636 _bbw-1723652447 _blw-1024325245 _fg-169839737 _fb-1102215147 _h-883471467 _mh-751572549 _bbs-452384145 _ty-885232850 _t-2131811775 _btc-462111959 _brc-167070178 _bbc-984892067 _blc-1251242433" />
+        <div className="is_View _fs-1866857425 _btw-442151971 _brw-1074718372 _bbw-1088826218 _blw-829053253 _fg-169839737 _fb-1628162253 _h-1387441229 _mh-706717453 _ty-885232850 _t-77695993 _btc-462111959 _brc-167070178 _bbc-984892067 _blc-1251242433 _bs-1746519034 _bbs-452384145" />
       </div>
 
       <Button {...linkProps} theme={'dark'}>
@@ -1281,7 +1281,7 @@ function SheetDemo() {
         <Sheet.Container items="center" justify="center" gap="10">
           <Sheet.Background bg="color2" />
           <div className="is_View _fd-1289797684 _g-1012092673">
-            <p className="is_Paragraph is_Text font_body _ff-1640205464 _fw-1379533702 _ls-870375212 _fs-183738666 _lh-106962612 _c-1572260098 _us-1298715756 _ws-45919554 _ta-628280461">Made by</p>
+            <p className="is_Text font_body tm-paragraph _ff-398910644 _fw-672061085 _ls-1643456874 _fs-893655883 _lh-1905435290 _c-533586090 _us-1298715756 _ws-45919554 _ta-628280461">Made by</p>
             <Anchor color="blue10" href="https://twitter.com/natebirdman" target="_blank">
               @natebirdman,
             </Anchor>
