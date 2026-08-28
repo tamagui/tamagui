@@ -1,9 +1,10 @@
 # Checkpoint 3 receipts: the rebuilt style loop
 
-Branch: `cp3-engine`. Base: `v3-beta` at `7c9d038e7f` (RN-driver-web drop
-included). This file records the assembled unit's receipts against the plan's
-structural invariants (§1), behavior matrix (§10), and measurement rules (§11).
-Claim labels follow the agent contract.
+Branch: `cp3-engine`. Base: pushed `v3-beta` at
+`d48e1adc0b41113779e9cf059691b0dec99182af`. Measured source tip:
+`78c78495d07a36af9ef164daca3be727db89d886`. This file records the assembled
+unit's receipts against the plan's structural invariants (§1), behavior matrix
+(§10), and measurement rules (§11). Claim labels follow the agent contract.
 
 ## What the unit is
 
@@ -35,8 +36,9 @@ Claim labels follow the agent contract.
   clauses as active.
 - Frontend class strings feed the same cursor via per-candidate class plans;
   the frontend-program channel and `preprocessProps` are deleted.
-- HOC clause transport is a WeakSet-minted resolved-atom entry list; the inner
-  pass replays entries straight into cursors, and displacement moves the entry
+- HOC clause transport is a flat variable-width array. Each clause is stored as
+  value, key, atom count, then atom kind, rank, and name fields. The inner pass
+  replays those fields straight into cursors, and displacement moves the entry
   to the outer contribution's authored position (pinned by
   `hocClausePosition.web.test.tsx`).
 
@@ -64,59 +66,121 @@ canonical name, reused for replay and dedupe. Atom arrays exist on native too:
 they are the composition/dedupe representation, bounded at depth ≤ 6, pooled,
 and cleared on release.
 
-## Behavior matrix (§10) — RAN at `9c7a56ecfd` (rebased on the driver drop)
+## Review findings and dispositions
 
-- core-test web 600 passed / native 308 / ios 27 / tvos 12 / androidtv 12 /
-  token-provenance 7; parser agreement and flat-value programs included.
-- tailwind 458 web + 275 native; style-grammar 466.
-- compiler static-tests 220 + webpack 20 (identity snapshots updated once for
-  the winners-only, post-normalization identity — every diff verified
-  hash-only with identical rule text; reversed contribution order now yields
-  the identical class as forward order).
-- zero-runtime fixture builds with zero violations.
-- kitchen-sink `test:web`: default+webkit 724/725 exposed one real inherited
-  regression (scoped popover exit completed instantly). Root cause: the
-  fixed-position `usePresence` call exposed presence state to frames that
-  opted out (`animatePresence={false}`), an opted-out popper position frame
-  then satisfied `needsReset` and its `ResetPresence` nulled the context for
-  the frame that actually animates the exit. Fixed by gating the OBSERVED
-  presence exactly as the old conditional call was (hook position stays
-  fixed), making registration sticky (register once, unregister only at
-  unmount), keeping the public `usePresence()` always-register contract, and
-  computing the registration decision pre-pass so passThrough renders keep
-  it. Full-suite result recorded after the fix.
-- new pins: `hocClausePosition.web.test.tsx` (verified red without the fix),
-  `atomicIdentityContent.web.test.tsx`, `presenceRegistration.web.test.tsx`
-  (inherited), `tailwindLifecycle.web.test.tsx` (inherited).
+- **TESTED** - passThrough skipped lifecycle finalization before the fix. The
+  behavioral probe observed a scheduled initial-frame update and another
+  render. Both component hosts now finalize flags even when split styles return
+  null, and all four passThrough hook-order tests pass.
+- **TESTED** - lifecycle state was mutable React state, while `forceStyle`
+  received a copy. A failing probe showed that the initial unmounted state did
+  not persist. The initial frame is now render-derived, and a stable ref-backed
+  setter consumes it without mutating React state.
+- **TESTED** - unprepared compound configuration previously took the same path
+  as a prepared component with no compounds. The former now throws; the latter
+  remains valid.
+- **TESTED** - three conditional-object callers repeated the first-key
+  traversal done by the discriminator. They now reuse the first cursor.
+- **TESTED** - HOC transport allocated one object and three arrays per clause,
+  and its atom comparison was quadratic. The component render path now uses the
+  flat transport described above and canonical-key replacement.
+- **TESTED** - frontend behavior tests targeted
+  `preprocessTailwindClassName`, although production consumes `getClassPlan`.
+  Tests now exercise the real class-plan and splitter paths. The old export,
+  generated declarations, and frontend-program channel are gone. A real native
+  parent-group probe also exposed a provider gate on raw `props.group`; it now
+  uses the resolved group name, and the three native parent-capability tests
+  pass.
+- **TESTED** - a config swap at revision zero returned the old 600px media rule
+  after installing a 900px config. Atomic cache ownership now synchronizes on
+  config identity and revision, and the same probe returns 900px.
+- **TESTED** - `usePresence` registration must widen after a late false-to-true
+  render. The integration test proves that behavior, so the effect intentionally
+  remains without a dependency array.
+- **RAN** - stale comments in touched files were corrected. No unrelated
+  `v5-color-scales` declaration was touched.
+
+## Behavior matrix (§10), RAN at `78c78495d0`
+
+- core-test: web 604 passed, 3 skipped, 1 todo; native 310 passed, 7 expected
+  failures, 9 skipped; token provenance 7 passed, 1 skipped; iOS 27 passed;
+  tvOS 12 passed; Android TV 12 passed.
+- Tailwind: web 455 passed with no type errors; native 275 passed.
+- compiler static tests: web 222 passed, 2 skipped; native 94 passed and 1
+  expected failure; webpack 20 passed.
+- kitchen-sink: default plus WebKit 724 passed, 5 skipped; animated CSS 228
+  passed, 21 skipped; Reanimated 209 passed, 40 skipped; Motion 225 passed, 24
+  skipped. The three named extra WebKit projects passed 21 of 21. The named
+  StyledContextTokens, SelectSkin, ListItem, ActiveStateBackground,
+  SheetWebKeyboard, PopoverHoverable, and hocClausePosition canaries are covered
+  by these runs.
+- zero-runtime Playwright passed 12 of 12, including Metro. Its pinned-Node
+  size ruler failed the +0 thresholds described below, with zero compiler or
+  forbidden-module violations.
+- the five-file production SSR hydration job passed 18 of 18.
+- root build passed 171 of 171 tasks. Root formatting/lint and all root checks
+  passed; lint retained five pre-existing warnings.
 
 ## Size receipts (§11) — the directional gate FAILS, reported as a stop condition
 
-Complete-artifact gzip via the checkpoint-0 ruler, PAIRED same-machine
-back-to-back builds (tip = `7c9d038e7f`, the current v3-beta with the
-RN-driver-web drop; branch = cp3-engine after the owner-ruled consolidation
-pass):
+Complete-artifact gzip via the checkpoint-0 ruler, paired same-machine
+back-to-back builds from fully rebuilt detached trees:
 
-| artifact | tip | branch | delta |
+| artifact | base `d48e1adc0b` | source tip `78c78495d0` | delta |
 | --- | ---: | ---: | ---: |
-| processor | **21,757** | **24,638** | +2,881 (+13.2%) |
-| public `View` | 44,783 | 47,897 | +3,114 (+7.0%) |
+| processor | **21,729** | **24,823** | **+3,094 (+14.24%)** |
 
-Attribution (marginal gzip): tip's `directStyle` + `getSplitStyles` +
-`propMapper` = 10,276; the merged engine = 13,382. The duplication deletion
-paid, but the invariant-bearing machinery (compound arena, cursors + atoms +
-snapshots, neutral frame + completion, HOC atom transport) costs more than it
-recovered. Consolidations already taken: the per-contribution atomic identity
-cache retired for its slot-level successor; the emit chain collapsed onto one
-cursor reference (gzip-neutral — minified parameter forwarding compresses to
-almost nothing); `addComposition` moved onto the slot builder so the engine
-never reaches the legacy `getStyleObject` path (that path survives only for
-the public RNW interop utility the residue-removal unit deletes).
+Exact commands, run once from each tree's `code/comparisons/tamagui-bench`, then
+from the matching repository root:
+
+```sh
+NODE_ENV=production TAMAGUI_TARGET=web VITE_CONFIG_NATIVE_IGNORE_WARNING=true bunx vite build --mode checkpoint-processor --sourcemap --outDir <tree-output> --emptyOutDir
+bun code/comparisons/attribute-bundle-gzip.ts <tree-output> --filter=__complete_artifact_only__
+```
+
+The fixture SHA-256 was
+`06be6fca4b74efd0d98869f3c87a6c69863e5727e7ac6c2c1f8aaba3d0a38c4a`.
+Both builds used `NODE_ENV=production`, `TAMAGUI_TARGET=web`, Vite 8.2.2, and
+Vite's default Oxc production minifier. The host was arm64 macOS 26.5.1
+(25F80), Darwin 25.5.0, Bun 1.3.14.
+
+The pinned Node 24.16.0 zero-runtime ruler also failed its +0 thresholds. Its
+largest growth was island JavaScript: Vite +3,337 bytes, Next webpack +3,402
+bytes, and Metro web +3,192 bytes gzip. The non-island changes were 18 to 22
+bytes in the rows that failed. Compiler violations and forbidden modules stayed
+at zero. The baseline was not updated.
 
 Per §12 this remains a named stop condition awaiting the owner's residual
 ruling; behavior was not shaved to move the number.
 
 ## Timing (§11)
 
-Paired same-run corpus benchmark (tip vs branch on a quiet machine) pending —
-the box is running the kitchen-sink suite at this writing. No timing claims
-are made until that receipt exists.
+The existing checkpoint-0 benchmark paired workspace V3 with installed Tamagui
+2.6.2 in every round, alternating which version ran first. Base and source-tip
+runs were back-to-back from the same two fully rebuilt detached trees.
+
+Exact commands in each tree:
+
+```sh
+bun code/comparisons/generate-get-split-styles-prop-corpus.ts
+NODE_ENV=production TAMAGUI_TARGET=web bun code/comparisons/benchmark-get-split-styles.ts --label=<tree-label> --output=<tree-output.json>
+```
+
+The generated corpus SHA-256 was
+`af8ca0108efa759e4045864dab74a32797b070af6f227e4433d33eb466fd3d61`:
+8,947 elements and 22,915 static attributes. Seed was `0x5e1757a1`; each run
+used 3 warmups, 11 measured rounds, and at least 20,000 operations per scenario.
+The runtime was Bun 1.3.14, reporting Node v24.3.0, on arm64 macOS.
+
+| clause-string timing | base `d48e1adc0b` | source tip `78c78495d0` | delta |
+| --- | ---: | ---: | ---: |
+| V3 median ns/op (sample SD) | 14,078.2 (1,987.5) | 15,760.9 (7,047.0) | +1,682.8 (+11.95%) |
+| paired V2 median ns/op (sample SD) | 11,048.4 (2,148.4) | 8,521.2 (8,890.3) | host control |
+| V3/V2 ratio of medians | 1.274x | 1.850x | **+45.16% normalized** |
+| median paired-round ratio (ratio SD) | 1.179x (0.165) | 1.459x (0.291) | +23.69% |
+
+Dispersion was high in the source-tip run, and the paired V2 control moved in
+the faster direction. Both normalization methods still show regression. The
+timing gate therefore fails. Together with processor growth and the pinned
+zero-runtime size failures, this preserves the checkpoint stop condition. No
+behavior was shaved and no baseline, threshold, timeout, or assertion changed.
