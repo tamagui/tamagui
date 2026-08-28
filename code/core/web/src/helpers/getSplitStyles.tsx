@@ -48,7 +48,7 @@ import {
   type TransformAccumulator,
 } from '@tamagui/style-grammar/runtime'
 import { fixStyles } from './expandStyles'
-import { styleToCSS } from './getCSSStylesAtomic'
+import { styleToCSS } from './styleToCSS'
 import { getDefaultProps } from './getDefaultProps'
 import { shouldInsertStyleRules, updateRules } from './insertStyleRule'
 import { isPlainObject } from './isObj'
@@ -533,7 +533,11 @@ export const getSplitStyles: StyleSplitter = (
   const viewProps: GetStyleResult['viewProps'] = {}
   const mediaState = styleProps.mediaState || globalMediaState
 
-  let shouldDoClasses = acceptsClassName && isWeb && !styleProps.noClass
+  let shouldDoClasses =
+    !process.env.TAMAGUI_DID_OUTPUT_CSS &&
+    acceptsClassName &&
+    isWeb &&
+    !styleProps.noClass
 
   const rulesToInsert: RulesToInsert =
     process.env.TAMAGUI_TARGET === 'native' ? (undefined as any) : {}

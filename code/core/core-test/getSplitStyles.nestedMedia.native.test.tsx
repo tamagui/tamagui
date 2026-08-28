@@ -25,6 +25,7 @@ vi.mock('@tamagui/constants', async () => {
     isWeb: false,
     isClient: true,
     currentPlatform: 'android',
+    platformMatches: (name: string) => name === 'native' || name === 'android',
   }
 })
 

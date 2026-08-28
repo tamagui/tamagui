@@ -1,4 +1,5 @@
 import { reservedThemeProps, simpleHash } from '@tamagui/helpers'
+import { platformMatches } from '@tamagui/constants'
 import {
   grammarPlatformNames,
   isRootThemeName,
@@ -12,7 +13,6 @@ import { getSetting } from '../config'
 import { createVariable, isVariable } from '../createVariable'
 import { getConfigRevisionState, type ConfigRevisionState } from './grammarConfig'
 import { themeUpdateStateKey, type ThemeUpdateLayerInfo } from './themeUpdateState'
-import { platformMatches } from './directStyle'
 import { findVariableToken, isUnitlessVariableKey } from './variableValue'
 import { warnOnce } from './warnOnce'
 import type {
@@ -278,6 +278,7 @@ export function getVariablesCSSRules(
   props: InlineValues,
   conf: TamaguiInternalConfig
 ): VariablesCSS | null {
+  if (process.env.TAMAGUI_DID_OUTPUT_CSS) return null
   const cycleDropped = getCycleDroppedKeys(props)
   const themes = props.themes as
     | Record<string, InlineValues['values'] | undefined>

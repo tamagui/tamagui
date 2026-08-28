@@ -10,13 +10,17 @@ async function main() {
     originalBabelTransformerPath,
     projectRoot,
     inputPath,
+    runtimeLiteral,
+    didOutputCSSLiteral,
   ] = process.argv.slice(2)
   const { createMetroCompilerTransformer } = require(transformerFactoryPath)
   const args = JSON.parse(await readFile(inputPath, 'utf8'))
   const result = await createMetroCompilerTransformer({
     cacheBaseRoot,
+    didOutputCSSLiteral,
     originalBabelTransformerPath,
     projectRoot,
+    runtimeLiteral,
   }).transform(args)
   process.stdout.write(
     JSON.stringify({

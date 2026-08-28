@@ -1,6 +1,8 @@
 import { Sheet } from '@tamagui/sheet'
 import { useState } from 'react'
-import { Button, Text, View } from 'tamagui'
+import { Button, styled, Text, View } from 'tamagui'
+
+const RuntimeFrame = styled(View, {})
 
 /**
  * The island: a modal sheet needs a portal, measurement and the animation
@@ -9,6 +11,7 @@ import { Button, Text, View } from 'tamagui'
  */
 export default function DetailsIsland() {
   const [open, setOpen] = useState(false)
+  const runtimeWidth = Number((globalThis as any).__zeroRuntimeIslandWidth ?? 137)
   return (
     <View data-testid="island-root">
       <Button data-testid="island-open" onPress={() => setOpen(true)}>
@@ -23,14 +26,19 @@ export default function DetailsIsland() {
       >
         <Sheet.Overlay />
         <Sheet.Container data-testid="island-frame" backgroundColor="$background">
-          <View padding={20} gap={8}>
+          <RuntimeFrame
+            data-testid="island-runtime-inline"
+            width={`${runtimeWidth}px hover:${runtimeWidth + 10}px`}
+            padding={20}
+            gap={8}
+          >
             <Text data-testid="island-text" color="$color">
               this subtree runs the full Tamagui runtime
             </Text>
             <Button data-testid="island-close" onPress={() => setOpen(false)}>
               close
             </Button>
-          </View>
+          </RuntimeFrame>
         </Sheet.Container>
       </Sheet>
     </View>

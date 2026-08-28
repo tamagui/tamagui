@@ -268,6 +268,10 @@ export const App = ({ dynamic }) => <>
   <View padding={spacing} marker={USER_PLUGIN_VALUE} data-lowered="yes" />
   <View padding={dynamic} data-runtime="preserved" />
 </>
+export const buildEnvironment = {
+  runtime: process.env.TAMAGUI_RUNTIME,
+  didOutputCSS: process.env.TAMAGUI_DID_OUTPUT_CSS,
+}
 `
     await write(join(projectRoot, 'package.json'), '{"name":"e4-fixture"}\n')
     await write(appPath, appSource)
@@ -410,13 +414,17 @@ export const App = ({ dynamic }) => <>
       }
       const firstWorker = createMetroCompilerTransformer({
         cacheBaseRoot: cacheRoot,
+        didOutputCSSLiteral: '1',
         originalBabelTransformerPath: transformerPath,
         projectRoot,
+        runtimeLiteral: 'zero',
       })
       const secondWorker = createMetroCompilerTransformer({
         cacheBaseRoot: cacheRoot,
+        didOutputCSSLiteral: '1',
         originalBabelTransformerPath: transformerPath,
         projectRoot,
+        runtimeLiteral: 'zero',
       })
       const [first, second] = await Promise.all([
         firstWorker.transform(args),
@@ -446,6 +454,14 @@ export const App = ({ dynamic }) => <>
         '[@tamagui/metro-plugin] src/App.tsx:6:3: metro/transform-failed: Style prop padding could not be evaluated'
       )
       const firstCode = outputCode(first)
+      expect(findObjectProperty(first.ast, 'runtime')?.value).toMatchObject({
+        type: 'StringLiteral',
+        value: 'zero',
+      })
+      expect(findObjectProperty(first.ast, 'didOutputCSS')?.value).toMatchObject({
+        type: 'StringLiteral',
+        value: '1',
+      })
       expect(firstCode).toContain(
         "const __TamaguiNativeView = require('react-native').View"
       )
@@ -516,6 +532,8 @@ export const App = ({ dynamic }) => <>
                 transformerPath,
                 projectRoot,
                 workerInputPath,
+                'zero',
+                '1',
               ],
               { encoding: 'utf8' }
             )

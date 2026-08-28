@@ -4,7 +4,7 @@
  */
 import type { StyleObject } from '@tamagui/helpers';
 import type { ViewStyleObject } from '../types';
+export { styleToCSS } from './styleToCSS';
 export declare function getCSSStylesAtomic(style: ViewStyleObject): StyleObject[];
 export declare function getCSSStyleAtomic(key: string, val: any, condition?: string, wrappers?: readonly string[], identity?: string, direct?: boolean, identityKey?: string, classRepetitions?: number): StyleObject | undefined;
-export declare function styleToCSS(style: Record<string, any>): void;
 //# sourceMappingURL=getCSSStylesAtomic.d.ts.map

@@ -18,6 +18,7 @@ vi.mock('@tamagui/constants', async () => ({
   ...(await vi.importActual<any>('@tamagui/constants')),
   isIos: true,
   isWeb: false,
+  platformMatches: (name: string) => name === 'native' || name === 'ios',
 }))
 
 beforeAll(() => {

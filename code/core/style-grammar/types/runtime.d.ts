@@ -13,5 +13,6 @@ export type { NativeTransitionTarget } from "./transitionNative";
 export { addTransformValue, cloneTransformAccumulator, createTransformAccumulator, finalizeTransformAccumulator, getTransformPartKeys, removeTransformValue, type TransformAccumulator } from "./transformAccumulator";
 export { unitlessNumberProperties } from "./unitlessNumbers";
 export type { ModifierKind, ParsedValue } from "./valueTypes";
+export { v6RemovedThemeNames, v6ThemeNameReplacements } from "./v6ThemeNames";
 
 //# sourceMappingURL=runtime.d.ts.map

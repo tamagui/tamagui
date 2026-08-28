@@ -75,6 +75,31 @@ const walk = (dir) =>
 
 const gzipOfAll = (files) => files.reduce((total, file) => total + (gzipOf(file) ?? 0), 0)
 
+// these are emitted-code signatures, not source checks. each signature is a
+// stable production string owned by the named family, and the retained style
+// processor signature is the positive control that proves an island bundle was
+// actually inspected.
+const ARTIFACT_FAMILY_SIGNATURES = {
+  styleProcessor: ['a flat value clause supports at most'],
+  atomicCSSGeneration: ['--t-x:0px;--t-y:0px', '--t-scale-x:1;--t-scale-y:1'],
+  cssInsertion: ['TAMAGUI_STYLE_INSERT'],
+  runtimeThemeCSS: ['tvar_'],
+  parseValue: ['is not a registered modifier'],
+}
+
+const inspectBuiltContent = (files) => {
+  const content = files
+    .filter(existsSync)
+    .map((file) => readFileSync(file, 'utf8'))
+    .join('\n')
+  return Object.fromEntries(
+    Object.entries(ARTIFACT_FAMILY_SIGNATURES).map(([family, signatures]) => [
+      family,
+      signatures.some((signature) => content.includes(signature)),
+    ])
+  )
+}
+
 const vite = (islands) =>
   run('npx', ['vite', 'build', '--outDir', islands ? 'dist-vite' : 'dist-vite-base'], {
     ...(islands ? {} : { TAMAGUI_ZERO_ISLANDS: '0' }),
@@ -185,6 +210,8 @@ for (const [name, integration] of Object.entries(INTEGRATIONS)) {
     const violations = existsSync(path.join(zeroDir, `${prefix}.violations.json`))
       ? read(`${prefix}.violations.json`).count
       : 0
+    const jsFiles = integration.js(islands)
+    const islandFile = islands ? integration.island() : null
     receipts[name][tier] = {
       built: true,
       compilerViolations: violations,
@@ -192,12 +219,16 @@ for (const [name, integration] of Object.entries(INTEGRATIONS)) {
       forbidden: graph.forbidden,
       tamaguiModules: graph.tamaguiModules,
       moduleCount: graph.moduleCount,
-      jsGzip: gzipOfAll(integration.js(islands)),
-      jsFiles: integration.js(islands).map((file) => path.relative(root, file)),
+      jsGzip: gzipOfAll(jsFiles),
+      jsFiles: jsFiles.map((file) => path.relative(root, file)),
       cssGzip: gzipOf(integration.css(islands)),
       // the island is a separate download that only a user interaction pulls,
       // so it is never folded into the page's JavaScript figure
-      islandJsGzip: islands ? gzipOf(integration.island()) : null,
+      islandJsGzip: islandFile ? gzipOf(islandFile) : null,
+      artifactFamilies: {
+        page: inspectBuiltContent(jsFiles),
+        island: islandFile ? inspectBuiltContent([islandFile]) : null,
+      },
       identity: bridges.identity,
       bridges: Object.keys(bridges.bridges ?? {}),
     }
@@ -215,6 +246,43 @@ const unqualified = Object.entries(receipts).flatMap(([name, tiers]) =>
     )
     .map(([tierName]) => `${name}/${tierName}`)
 )
+
+const artifactFailures = []
+for (const [name, tiers] of Object.entries(receipts)) {
+  for (const [tierName, tier] of Object.entries(tiers)) {
+    if (!tier.built) continue
+    for (const [family, present] of Object.entries(tier.artifactFamilies.page)) {
+      if (present) artifactFailures.push(`${name}/${tierName} page retains ${family}`)
+    }
+    if (tierName === 'islands') {
+      const island = tier.artifactFamilies.island
+      if (!island?.styleProcessor) {
+        artifactFailures.push(
+          `${name}/${tierName} island is missing the retained styleProcessor positive control`
+        )
+      }
+      for (const family of [
+        'atomicCSSGeneration',
+        'cssInsertion',
+        'runtimeThemeCSS',
+        'parseValue',
+      ]) {
+        if (island?.[family]) {
+          artifactFailures.push(`${name}/${tierName} island retains ${family}`)
+        }
+      }
+    }
+  }
+}
+
+if (artifactFailures.length) {
+  throw new Error(
+    `Built-content specialization failed:\n${artifactFailures
+      .map((failure) => `- ${failure}`)
+      .join('\n')}`
+  )
+}
+
 if (unqualified.length) {
   throw new Error(`unqualified: ${unqualified.join(', ')}`)
 }

@@ -68,3 +68,4 @@ export {
 } from './transformAccumulator'
 export { unitlessNumberProperties } from './unitlessNumbers'
 export type { ModifierKind, ParsedValue } from './valueTypes'
+export { v6RemovedThemeNames, v6ThemeNameReplacements } from './v6ThemeNames'
