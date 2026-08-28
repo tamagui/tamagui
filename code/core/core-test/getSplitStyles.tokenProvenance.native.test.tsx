@@ -1,14 +1,8 @@
 process.env.TAMAGUI_TARGET = 'native'
 
 import { getDefaultTamaguiConfig } from '@tamagui/config-default'
-import {
-  View,
-  Text,
-  createTamagui,
-  getSplitStyles,
-  getStyleTokenProvenance,
-  styled,
-} from '../web/src'
+import { View, Text, createTamagui, getSplitStyles, styled } from '../web/src'
+import { getStyleTokenProvenance } from '../web/src/helpers/styleProvenance'
 import { describe, expect, test } from 'vitest'
 
 // config-default themes used here:

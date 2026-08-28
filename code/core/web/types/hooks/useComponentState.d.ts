@@ -14,7 +14,7 @@ export declare const useComponentState: (props: ViewProps | TextProps | Record<s
     presence: import("..").UsePresenceResult | null;
     presenceState: import("..").PresenceContextProps | null | undefined;
     setState: import("react").Dispatch<import("react").SetStateAction<TamaguiComponentState>>;
-    setStateShallow: import("..").ComponentSetStateShallow;
+    setStateShallow: import("../types").ComponentSetStateShallow;
     noClass: boolean;
     state: TamaguiComponentState;
     stateRef: import("react").RefObject<TamaguiComponentStateRef>;

@@ -1,15 +1,17 @@
 import { isWeb } from '@tamagui/constants'
+import { getConfig } from '@tamagui/web'
 import {
   createVariables,
-  getConfig,
   parseFont,
   registerFontVariables,
-} from '@tamagui/web'
+} from '@tamagui/web/internal-runtime'
 import type { CreateTamaguiProps } from '@tamagui/web'
+
+type FontDefinition = NonNullable<CreateTamaguiProps['fonts']>[string]
 
 export function addFont(props: {
   fontFamilyName: string
-  fontFamily: CreateTamaguiProps['fonts'][keyof CreateTamaguiProps['fonts']]
+  fontFamily: FontDefinition
   insertCSS?: boolean
   // TODO make sure to add updateFont
   update?: boolean
@@ -37,7 +39,7 @@ export function addFont(props: {
   }
 
   if (isWeb) {
-    const fontFamilyToken = createVariables(fontFamilyIn, 'f', true)
+    const fontFamilyToken: FontDefinition = createVariables(fontFamilyIn, 'f', true)
     const parsedFontFamily = parseFont(fontFamilyToken)
     const fontFamilyNameParsed = fontFamilyNameIn
     config.fontsParsed[fontFamilyNameParsed] = parsedFontFamily
@@ -46,7 +48,7 @@ export function addFont(props: {
       const [ff_name, ff_language] = fontFamilyNameParsed.includes('_')
         ? fontFamilyNameParsed.split('_')
         : [fontFamilyNameParsed]
-      const fontVars = registerFontVariables(parsedFontFamily)
+      const fontVars: string[] = registerFontVariables(parsedFontFamily)
       const fontDeclaration = {
         [fontFamilyNameIn]: {
           name: ff_name,

@@ -2,15 +2,17 @@ import { isServer } from '@tamagui/constants'
 import { startTransition } from '@tamagui/start-transition'
 import type { ThemeDefinition, ThemeParsed } from '@tamagui/web'
 import {
-  ensureThemeVariable,
   forceUpdateThemes,
   getConfig,
-  getThemeCSSRules,
   getMutatedAutoVariableCSS,
-  proxyThemeToParents,
   simpleHash,
   updateConfig,
 } from '@tamagui/web'
+import {
+  ensureThemeVariable,
+  getThemeCSSRules,
+  proxyThemeToParents,
+} from '@tamagui/web/internal-runtime'
 
 type MutateThemeOptions = {
   mutationType: 'replace' | 'update' | 'add'
@@ -108,7 +110,11 @@ export function _mutateTheme(props: MutateThemeOptions & MutateOneThemeProps) {
 
   const themeProxied = proxyThemeToParents(themeName, theme)
 
-  const response = {
+  const response: {
+    themeRaw: ThemeParsed
+    theme: ThemeParsed
+    cssRules: string[]
+  } = {
     themeRaw: theme,
     theme: themeProxied,
     cssRules: [] as string[],

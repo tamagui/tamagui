@@ -9,7 +9,8 @@ import type {
   UseAnimatedNumberReaction,
   UseAnimatedNumberStyle,
 } from '@tamagui/web'
-import { useEvent, useThemeWithState } from '@tamagui/web'
+import { useEvent } from '@tamagui/web'
+import { useThemeWithState } from '@tamagui/web/internal-runtime'
 import React from 'react'
 import {
   Animated,

@@ -3,24 +3,26 @@ import { ResetPresence, usePresence } from '@tamagui/use-presence'
 import {
   type AnimatedNumberStrategy,
   type AnimationDriverWithAnimatedNumbers,
-  fixStyles,
   getConfig,
   getSplitStyles,
   hooks,
   nonAnimatableStyleProps,
-  normalizeValueWithProperty,
   type OnTransition,
-  styleToCSS,
   Text,
   TransitionProp,
   type UniversalAnimatedNumber,
   useComposedRefs,
   useIsomorphicLayoutEffect,
-  useThemeWithState,
   View,
   createRefComponent,
-  transformsToString,
 } from '@tamagui/web'
+import {
+  fixStyles,
+  normalizeValueWithProperty,
+  styleToCSS,
+  transformsToString,
+  useThemeWithState,
+} from '@tamagui/web/internal-runtime'
 import {
   animate as animateMotionValue,
   type AnimationOptions,

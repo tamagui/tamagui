@@ -7,7 +7,7 @@ import {
 import { useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { ResetPresence, usePresence } from '@tamagui/use-presence'
 import type { AnimationDriver } from '@tamagui/web'
-import { transformsToString } from '@tamagui/web'
+import { transformsToString } from '@tamagui/web/internal-runtime'
 import React from 'react'
 
 // rAF-driven animated number is browser-only. read (don't call) at module scope

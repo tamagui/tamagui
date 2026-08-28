@@ -7,12 +7,12 @@ import {
   useComposedRefs,
   useEvent,
   useIsomorphicLayoutEffect,
-  useThemeWithState,
   View,
   type AnimationDriverWithAnimatedNumbers,
   type UniversalAnimatedNumber,
   createRefComponent,
 } from '@tamagui/core'
+import { useThemeWithState } from '@tamagui/web/internal-runtime'
 import { ResetPresence, usePresence } from '@tamagui/use-presence'
 import normalizeColor from '@react-native/normalize-colors'
 import React, { useMemo, useRef } from 'react'

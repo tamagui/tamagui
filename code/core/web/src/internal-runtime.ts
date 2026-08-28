@@ -1,25 +1,44 @@
 /**
- * Private implementation boundary for building another style frontend on the shared
- * Tamagui runtime. Not public API: never reexport it from `@tamagui/web`,
- * `@tamagui/core`, `tamagui`, or `@tamagui/tailwind` roots — doing so would
- * reconnect the frontend graphs the package split exists to keep apart.
+ * Private implementation boundary shared by Tamagui workspace packages. Not public
+ * API: never reexport it from `@tamagui/web`, `@tamagui/core`, `tamagui`, or
+ * `@tamagui/tailwind` roots. Doing so would expose implementation details again.
  *
  * It deliberately exposes purpose-built, explicitly typed wrappers rather than raw
- * module reexports. That keeps the emitted declaration entry on the frontend
- * descriptor and component factory only: it never resolves the regular View, Text,
- * styled, or inline style-prop declarations.
+ * module reexports. That keeps the private declaration entry narrow and avoids
+ * reconnecting the regular root barrel.
  */
 import type { FunctionComponent } from 'react'
 import type { ParsedValue } from '@tamagui/style-grammar/runtime'
 import { stylePropsUnitless } from '@tamagui/helpers'
 import { createComponent } from './createComponent'
+import { createVariables as createVariablesImpl } from './createVariables'
+import type { DeepVariableObject } from './createVariables'
+import { fixStyles as fixStylesImpl } from './helpers/expandStyles'
+import { styleToCSS as styleToCSSImpl } from './helpers/getCSSStylesAtomic'
 import { setComponentDisplayName } from './helpers/componentDisplayName'
 import { createFrontendProgram as createFrontendProgramImpl } from './helpers/frontendProgram'
+import { getThemeCSSRules as getThemeCSSRulesImpl } from './helpers/getThemeCSSRules'
+import { normalizeValueWithProperty as normalizeValueWithPropertyImpl } from './helpers/normalizeValueWithProperty'
+import { proxyThemeToParents as proxyThemeToParentsImpl } from './helpers/proxyThemeToParents'
 import type { FrontendComponent, StyleFrontend } from './helpers/styleFrontend'
+import { ensureThemeVariable as ensureThemeVariableImpl } from './helpers/themes'
+import { transformsToString as transformsToStringImpl } from './helpers/transformsToString'
+import {
+  parseFont as parseFontImpl,
+  registerFontVariables as registerFontVariablesImpl,
+} from './insertFont'
 import type { FrontendProgramValue } from './internalRuntimeTypes'
+import type {
+  CreateTamaguiProps,
+  GenericFont,
+  ThemeParsed,
+  ThemeState,
+  UseThemeWithStateProps,
+} from './types'
 import { createTamagui as createTamaguiImpl } from './createTamagui'
 import { setupHooks as setupHooksImpl } from './setupHooks'
 import { createFrontendStyled as createFrontendStyledImpl } from './styled'
+import { useThemeWithState as useThemeWithStateImpl } from './hooks/useTheme'
 import { TamaguiProvider as TamaguiProviderImpl } from './views/TamaguiProvider'
 import { textStaticConfig } from './views/Text'
 import { viewStaticConfig } from './views/View'
@@ -30,6 +49,42 @@ export {
   regularStyleFrontend,
 } from './helpers/styleFrontend'
 export type * from './internalRuntimeTypes'
+
+type DeepTokenObject<Val extends string | number = any> = {
+  [key: string]: Val | DeepTokenObject<Val>
+}
+
+export const createVariables: <A extends DeepTokenObject>(
+  tokens: A,
+  parentPath?: string,
+  isFont?: boolean
+) => DeepVariableObject<A> = createVariablesImpl
+export const parseFont: <A extends GenericFont>(definition: A) => DeepVariableObject<A> =
+  parseFontImpl
+export const registerFontVariables: (parsedFont: any) => string[] =
+  registerFontVariablesImpl
+export const fixStyles: (style: Record<string, any>) => void = fixStylesImpl
+export const getThemeCSSRules: (props: {
+  config: CreateTamaguiProps
+  themeName: string
+  theme: ThemeParsed
+  names: string[]
+  hasDarkLight?: boolean
+  useMutatedVariables?: boolean
+}) => string[] = getThemeCSSRulesImpl
+export const normalizeValueWithProperty: (value: any, property?: string) => any =
+  normalizeValueWithPropertyImpl
+export const proxyThemeToParents: (themeName: string, theme: ThemeParsed) => ThemeParsed =
+  proxyThemeToParentsImpl
+export const ensureThemeVariable: (theme: any, key: string) => void =
+  ensureThemeVariableImpl
+export const transformsToString: (transforms: object[]) => string = transformsToStringImpl
+export const styleToCSS: (style: Record<string, any>) => void = styleToCSSImpl
+export const useThemeWithState: (
+  props: UseThemeWithStateProps,
+  isRoot?: boolean,
+  forThemeView?: boolean
+) => [ThemeParsed, ThemeState] = useThemeWithStateImpl
 
 // the frontend-program contribution channel: a frontend hands getSplitStyles
 // a pre-parsed (property, program) pair that contributes at the exact
