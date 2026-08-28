@@ -73,7 +73,10 @@ test('class and inline paths preserve the same shadow and border results', () =>
 })
 
 test('inline animation drivers apply derived border defaults discretely', () => {
-  const animationDriver = { isReactNative: false }
+  const animationDriver = {
+    inputStyle: 'value' as const,
+    outputStyle: 'inline' as const,
+  }
   const borderDefault = simplifiedGetSplitStyles(
     View,
     { borderTopWidth: 2 },
@@ -113,26 +116,4 @@ test('inline animation drivers apply derived border defaults discretely', () => 
     inheritedStyle: { display: 'flex' },
     inheritedClass: undefined,
   })
-})
-
-test('RNW resolved style maps obey their authored position', () => {
-  const resolvedStyle = { $$css: true, backgroundColor: 'rnw-background' }
-  const resolvedLater = simplifiedGetSplitStyles(View, {
-    backgroundColor: 'red',
-    style: resolvedStyle,
-  })
-  const tamaguiLater = simplifiedGetSplitStyles(View, {
-    style: resolvedStyle,
-    backgroundColor: 'blue',
-  })
-
-  expect({
-    resolvedLaterClass: resolvedLater.classNames.backgroundColor,
-    resolvedLaterRule: emittedValue(resolvedLater, 'backgroundColor'),
-  }).toEqual({
-    resolvedLaterClass: 'rnw-background',
-    resolvedLaterRule: undefined,
-  })
-  expect(tamaguiLater.classNames.backgroundColor).not.toBe('rnw-background')
-  expect(emittedValue(tamaguiLater, 'backgroundColor')).toBe('blue')
 })

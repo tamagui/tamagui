@@ -164,7 +164,6 @@ const loaders: Record<string, () => ComponentType<any>> = {
   StyledInputOnFocus: () => require('./StyledInputOnFocus').StyledInputOnFocus,
   StyledMediaQueryMerge: () => require('./StyledMediaQueryMerge').StyledMediaQueryMerge,
   StyledOverridePsuedo: () => require('./StyledOverridePsuedo').StyledOverridePsuedo,
-  StyledRNW: () => require('./StyledRNW').StyledRNW,
   StyledStyleableInputOnFocus: () =>
     require('./StyledStyleableInputOnFocus').StyledStyleableInputOnFocus,
   StyledStyleableInputVariant: () =>

@@ -106,7 +106,7 @@ setupHooks({
     if (process.env.TAMAGUI_TARGET === 'web') {
       const isDOM = typeof elementType === 'string'
 
-      // replicate react-native-web functionality
+      // map the React Native-shaped public prop surface onto DOM hosts
       const {
         // remove event props handles by useResponderEvents
         onMoveShouldSetResponder,

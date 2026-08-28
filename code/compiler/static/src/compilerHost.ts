@@ -1328,11 +1328,7 @@ export function createTamaguiCompilerHost(
     if (!split) return null
 
     const inlineStyle = split.viewProps?.style
-    if (
-      staticObject(inlineStyle) &&
-      !inlineStyle['$$css'] &&
-      Object.keys(inlineStyle).length > 0
-    ) {
+    if (staticObject(inlineStyle) && Object.keys(inlineStyle).length > 0) {
       return null
     }
 
@@ -1957,7 +1953,6 @@ export function createTamaguiCompilerHost(
             const partialInlineStyle = partialSplit?.viewProps?.style
             const hasPartialInlineStyle =
               staticObject(partialInlineStyle) &&
-              !partialInlineStyle['$$css'] &&
               Object.keys(partialInlineStyle).length > 0
             if (partialSplit && !hasPartialInlineStyle) {
               const artifacts = extractedStyleArtifacts(
@@ -3049,9 +3044,7 @@ export function createTamaguiCompilerHost(
       const className = artifacts.className
       const rawInlineStyle = split.viewProps?.style
       const inlineStyle =
-        staticObject(rawInlineStyle) &&
-        !rawInlineStyle['$$css'] &&
-        Object.keys(rawInlineStyle).length > 0
+        staticObject(rawInlineStyle) && Object.keys(rawInlineStyle).length > 0
           ? (rawInlineStyle as Record<string, unknown>)
           : null
       if (rawInlineStyle && !inlineStyle && !isSerializableNativeStyle(rawInlineStyle)) {
@@ -3089,11 +3082,7 @@ export function createTamaguiCompilerHost(
             )
           }
           const itemInline = itemSplit.viewProps?.style
-          if (
-            staticObject(itemInline) &&
-            !itemInline['$$css'] &&
-            Object.keys(itemInline).length > 0
-          ) {
+          if (staticObject(itemInline) && Object.keys(itemInline).length > 0) {
             return bailout(
               input,
               'local/unsupported-target',

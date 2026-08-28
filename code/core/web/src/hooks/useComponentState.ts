@@ -222,9 +222,7 @@ export const useComponentState = (
   )
 
   const hasAnimationThatNeedsHydrate =
-    hasAnimationProp &&
-    !isHydrated &&
-    (animationDriver?.isReactNative || inputStyle !== 'css')
+    hasAnimationProp && !isHydrated && inputStyle !== 'css'
 
   const canImmediatelyEnter = hasEnterStyle || isEntering
 

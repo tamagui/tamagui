@@ -1801,9 +1801,7 @@ export type StaticConfigPublic = {
      * Auto-detected, but can override. Wraps children to space them on top
      */
     isZStack?: boolean;
-    /**
-     * Auto-detect, but can override, passes styles properly to react-native-web
-     */
+    /** Native-only marker for components backed by a React Native host. */
     isReactNative?: boolean;
     /**
      * By default if styled() doesn't recognize a parent Tamagui component or specific react-native views,
@@ -1990,7 +1988,6 @@ export type UseAnimatedNumberStyle<V extends UniversalAnimatedNumber<any> = Univ
 export type UseAnimatedNumbersStyle<V extends UniversalAnimatedNumber<any> = UniversalAnimatedNumber<any>> = (vals: V[], getStyle: (...currentValues: any[]) => any) => any;
 export type UseAnimatedNumber<N extends UniversalAnimatedNumber<any> = UniversalAnimatedNumber<any>> = (initial: number) => N;
 type AnimationDriverBase<A extends AnimationConfig = AnimationConfig> = {
-    isReactNative?: boolean;
     /** What style format the driver expects as input: 'css' (CSS variables) or 'value' (resolved values) */
     inputStyle?: 'css' | 'value';
     /** How the driver outputs styles: 'css' (className-based) or 'inline' (style object) */

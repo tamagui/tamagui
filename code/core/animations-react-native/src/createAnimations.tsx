@@ -250,7 +250,6 @@ export function createAnimations<A extends AnimationsConfig>(
   const nativeDriver = options?.useNativeDriver ?? isFabric
 
   return {
-    isReactNative: true,
     inputStyle: 'value',
     outputStyle: 'inline',
     avoidReRenders: true,

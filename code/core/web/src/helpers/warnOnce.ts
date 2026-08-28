@@ -1,10 +1,9 @@
 // One development warning per key, for the whole runtime.
 //
 // The set is BOUNDED rather than trusted to stay small, and that bound is what
-// lets a warning quote the offending value. `getCSSStylesAtomic` takes a
-// flattened style object from react-native-web, so a page rendering a
-// CMS-supplied colour can vary a refused value without limit, and keying on the
-// value alone would grow this set forever.
+// lets a warning quote the offending value. A page rendering a CMS-supplied
+// colour can vary a refused value without limit, and keying on the value alone
+// would grow this set forever.
 //
 // Keying on the PROPERTY alone was the first answer to that and it was too
 // quiet: a second, different typo in the same prop said nothing, and once a

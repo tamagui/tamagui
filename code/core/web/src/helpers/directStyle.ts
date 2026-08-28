@@ -920,7 +920,7 @@ function emitProperty(
     !state.flatShouldDoClasses &&
     !state.styleProps.noMergeStyle &&
     state.styleProps.isAnimated &&
-    !state.animationDriver?.isReactNative &&
+    state.animationDriver?.inputStyle === 'css' &&
     property in nonAnimatableStyleProps
 
   if (canGenerateCSS && (state.flatShouldDoClasses || shouldPromoteAnimatedStyle)) {

@@ -16,7 +16,6 @@ export function createMockAnimationDriver(options?: {
 }): AnimationDriverWithAnimatedNumbers {
   const emissions = options?.emissions
   return {
-    isReactNative: false,
     inputStyle: options?.inputStyle ?? 'value',
     outputStyle: 'inline',
     avoidReRenders: options?.avoidReRenders ?? false,

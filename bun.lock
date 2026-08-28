@@ -394,7 +394,6 @@
       },
       "peerDependencies": {
         "react": ">=19",
-        "react-native-web": "*",
       },
     },
     "code/core/animations-reanimated": {

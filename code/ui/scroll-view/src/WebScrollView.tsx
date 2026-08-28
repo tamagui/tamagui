@@ -72,30 +72,8 @@ function shouldEmitScrollEvent(lastTick: number, eventThrottle: number) {
   return eventThrottle > 0 && timeSinceLastTick >= eventThrottle
 }
 
-// tamagui hands styled(non-tamagui) bases react-native-web style objects: real
-// style values are plain keys, resolved atomic styles arrive as { $$css: true,
-// className: className } maps. split those apart so classNames land on className
-// and only real values land on style (merging them poisons the whole object as a
-// className map). arrays are flattened recursively.
-function resolveStyles(...inputs: any[]): { style: any; className: string } {
-  const style: any = {}
-  const classNames: string[] = []
-  const walk = (s: any) => {
-    if (!s) return
-    if (Array.isArray(s)) {
-      for (const item of s) walk(item)
-      return
-    }
-    if (s.$$css) {
-      for (const k in s) {
-        if (k !== '$$css') classNames.push(s[k])
-      }
-    } else {
-      Object.assign(style, s)
-    }
-  }
-  for (const input of inputs) walk(input)
-  return { style, className: classNames.join(' ') }
+function resolveStyles(...inputs: any[]) {
+  return inputs.flat(Infinity).filter(Boolean)
 }
 
 function joinClassNames(...parts: (string | undefined | false)[]): string | undefined {
@@ -200,18 +178,6 @@ export const WebScrollView = React.forwardRef<ScrollViewRef, any>(
       ...rest
     } = props
 
-    // tamagui treats this styled base as a react-native component, so it hands
-    // data-* attributes down as a `dataSet` map (the react-native-web convention).
-    // @tamagui/web's View doesn't expand that back, so do it here to keep
-    // data-testid and friends on the DOM node.
-    const { dataSet, ...domRest } = rest as any
-    const dataAttrs: Record<string, any> = {}
-    if (dataSet) {
-      for (const key in dataSet) {
-        dataAttrs[`data-${key}`] = dataSet[key]
-      }
-    }
-
     const scrollNodeRef = React.useRef<any>(null)
     const innerViewRef = React.useRef<any>(null)
     const scrollState = React.useRef({ isScrolling: false, scrollLastTick: 0 })
@@ -293,35 +259,23 @@ export const WebScrollView = React.forwardRef<ScrollViewRef, any>(
         ? React.Children.map(children, (child, i) => {
             const isSticky = hasStickyHeaderIndices && stickyHeaderIndices.indexOf(i) > -1
             if (child != null && (isSticky || pagingEnabled)) {
-              const resolved = resolveStyles(
+              const resolvedStyle = resolveStyles(
                 isSticky && styles.stickyHeader,
                 pagingEnabled && styles.pagingEnabledChild
               )
-              return (
-                <View
-                  style={resolved.style}
-                  className={joinClassNames(resolved.className)}
-                >
-                  {child}
-                </View>
-              )
+              return <View style={resolvedStyle}>{child}</View>
             }
             return child
           })
         : children
 
-    const contentResolved = resolveStyles(
+    const contentStyle = resolveStyles(
       horizontal && styles.contentContainerHorizontal,
       centerContent && styles.contentContainerCenterContent,
       contentContainerStyle
     )
     const contentContainer = (
-      <View
-        ref={innerViewRef}
-        onLayout={handleContentLayout}
-        style={contentResolved.style}
-        className={joinClassNames(contentResolved.className)}
-      >
+      <View ref={innerViewRef} onLayout={handleContentLayout} style={contentStyle}>
         {renderedChildren}
       </View>
     )
@@ -337,7 +291,7 @@ export const WebScrollView = React.forwardRef<ScrollViewRef, any>(
       (hideHorizontalScrollbar ? ' _hsb-x' : '') +
       (hideVerticalScrollbar ? ' _hsb-y' : '')
 
-    const scrollResolved = resolveStyles(
+    const scrollStyle = resolveStyles(
       baseStyle,
       pagingEnabled && pagingEnabledStyle,
       style,
@@ -345,28 +299,22 @@ export const WebScrollView = React.forwardRef<ScrollViewRef, any>(
     )
     const scrollView = (
       <View
-        {...domRest}
-        {...dataAttrs}
-        className={joinClassNames(
-          domRest.className,
-          scrollResolved.className,
-          extraClassName
-        )}
+        {...rest}
+        className={joinClassNames(rest.className, extraClassName)}
         ref={setScrollNodeRef}
         onScroll={handleScroll}
-        style={scrollResolved.style}
+        style={scrollStyle}
       >
         {contentContainer}
       </View>
     )
 
     if (refreshControl) {
-      const refreshResolved = resolveStyles(baseStyle, style)
+      const refreshStyle = resolveStyles(baseStyle, style)
       return React.cloneElement(
         refreshControl,
         {
-          style: refreshResolved.style,
-          className: joinClassNames(refreshResolved.className),
+          style: refreshStyle,
         },
         scrollView
       )

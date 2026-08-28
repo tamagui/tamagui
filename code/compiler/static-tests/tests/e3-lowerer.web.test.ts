@@ -31,7 +31,6 @@ let projectInfo: TamaguiProjectInfo
 type AnimationDriverShape = {
   animations?: Record<string, unknown>
   inputStyle?: 'css' | 'value'
-  isReactNative?: boolean
   outputStyle?: 'css' | 'inline'
 }
 
@@ -194,7 +193,6 @@ export const App = () => (
     const { plan, output } = compile(source, 'web', {
       animationDriver: {
         inputStyle: 'value',
-        isReactNative: true,
         outputStyle: 'inline',
       },
     })
@@ -225,7 +223,6 @@ export const App = () => (
 `
     const nonCssDriver: AnimationDriverShape = {
       inputStyle: 'value',
-      isReactNative: true,
       outputStyle: 'inline',
     }
     const { plan, output } = compile(source, 'web', {
@@ -862,7 +859,6 @@ export const Card = ({ opacity }) => (
           spring: { damping: 10, mass: 1, stiffness: 100 },
         },
         inputStyle: 'value',
-        isReactNative: true,
         outputStyle: 'inline',
       },
     })

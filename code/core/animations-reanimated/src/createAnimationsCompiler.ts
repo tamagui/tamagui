@@ -74,7 +74,6 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
     needsCustomComponent: true,
     View: 'ReanimatedViewCompilerStub',
     Text: 'ReanimatedTextCompilerStub',
-    isReactNative: true,
     inputStyle: 'value',
     outputStyle: 'inline',
     avoidReRenders: true,
