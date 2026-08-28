@@ -458,8 +458,7 @@ function accumulateConditionAtom(
     cursor.theme = name
     if (buildCSS) cursor.selector += `:where(.t_${name}, .t_${name} *)`
     cursor.active &&=
-      state.flatThemeName === name ||
-      state.flatThemeName?.startsWith(`${name}_`) === true
+      state.flatThemeName === name || state.flatThemeName?.startsWith(`${name}_`) === true
   } else if (kind === 5) {
     // name is canonical: `group-<state>` or `group-<state>/<name>`
     const slash = name.indexOf('/')
@@ -472,9 +471,7 @@ function accumulateConditionAtom(
     }
     const component = state.componentState.group?.[groupName]
     const context = state.flatGroupContext?.[groupName]
-    cursor.active &&= !!(component?.pseudo ?? context?.state.pseudo)?.[
-      conditionStateName
-    ]
+    cursor.active &&= !!(component?.pseudo ?? context?.state.pseudo)?.[conditionStateName]
     ;(state.flatGroupKeys ||= new Set()).add(groupName)
   } else if (kind === 6) {
     // name is canonical: `@<size>` or `@<size>/<name>`
@@ -507,9 +504,7 @@ function accumulateConditionAtom(
     const match = component?.media?.[containerSize]
     cursor.active &&=
       match === undefined
-        ? !!(
-            context?.state.layout && mediaKeyMatch(containerSize, context.state.layout)
-          )
+        ? !!(context?.state.layout && mediaKeyMatch(containerSize, context.state.layout))
         : !!match
     ;(state.flatGroupKeys ||= new Set()).add(groupKey)
     ;(state.flatGroupMedia ||= new Set()).add(containerSize)
@@ -566,13 +561,7 @@ function resolveConditionModifier(
   let kind = code & 7
   let rank = code >> 3
   if (kind === modifierKindState) {
-    accumulateConditionAtom(
-      state,
-      cursor,
-      kind,
-      rank,
-      canonicalStateModifierNames[rank]
-    )
+    accumulateConditionAtom(state, cursor, kind, rank, canonicalStateModifierNames[rank])
     return
   }
   if (!kind && modifier.startsWith('group-')) {
@@ -1102,6 +1091,11 @@ function getStyledDefaults(staticConfig: StaticConfig): OrderedPropEntry[] | nul
   return entries
 }
 
+const maybeStyleProgram = (value: any): boolean =>
+  typeof value === 'string'
+    ? value.includes(':')
+    : !!value && typeof value === 'object' && !Array.isArray(value) && !isVariable(value)
+
 function contributeDisplacedStyledDefaults(
   styledDefaults: OrderedPropEntry[] | null,
   processedProps: Record<string, any>,
@@ -1116,9 +1110,16 @@ function contributeDisplacedStyledDefaults(
     if (!(key in stylePropsAll) && !(key in shorthands)) continue
     // equal means the default flowed through the merge untouched and will be
     // processed as an ordinary prop entry; different means a call-site value
-    // displaced it. Re-inject it at the styled position. The later prop either
-    // overwrites the whole base or competes per clause through the same sink.
-    if (propValue !== undefined && propValue !== styledValue) {
+    // displaced it. Re-injection is only needed when either contribution is a
+    // program; ordinary values retain the prop-level fast path. an object is
+    // potentially a conditional program (its clause slots must survive a
+    // caller base); re-injecting a displaced structured leaf is a harmless
+    // whole-value overwrite by the later prop entry.
+    if (
+      propValue !== undefined &&
+      propValue !== styledValue &&
+      (maybeStyleProgram(styledValue) || maybeStyleProgram(propValue))
+    ) {
       contribute(key, styledValue)
     }
   }
@@ -1520,9 +1521,14 @@ export const getSplitStyles: StyleSplitter = (
           transportedRawClasses ||= {}
           transportedRawClasses[candidate] = candidate
         }
-        flushForwardStylesToClasses()
-        shouldDoClasses = false
-        styleState.flatShouldDoClasses = false
+        // a frontend's unclaimed candidate is an earlier generated layer, so
+        // later Tamagui contributions stay inline to keep their cascade
+        // position. Core className is raw interop and flips nothing.
+        if (getClassPlan) {
+          flushForwardStylesToClasses()
+          shouldDoClasses = false
+          styleState.flatShouldDoClasses = false
+        }
       } else {
         const parentPlan = plan as {
           entries: readonly (readonly [
@@ -2611,7 +2617,6 @@ export type MergeStyle = (
   disableNormalize?: boolean,
   originalValue?: any
 ) => void
-
 
 type DirectState = GetStyleState & {
   flatAtomics?: Record<string, unknown>
@@ -4603,14 +4608,7 @@ const variantValueHandler: FlatValueHandler<VariantScanContext> = {
       condition && directState.flatCompoundIndexes ? snapshotCondition(cursor!) : 0
     )
     if (!condition) return
-    emitResolvedVariant(
-      ctx[1],
-      source.slice(start, end),
-      state,
-      ctx[2],
-      cursor!,
-      ctx[4]
-    )
+    emitResolvedVariant(ctx[1], source.slice(start, end), state, ctx[2], cursor!, ctx[4])
   },
   modifier(ctx, start, end, valid, first, source) {
     const directState = ctx[0] as DirectState

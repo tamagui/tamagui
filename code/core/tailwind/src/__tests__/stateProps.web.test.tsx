@@ -12,8 +12,7 @@ beforeAll(() => {
   createTamagui(defaultConfig as any)
 })
 
-const pre = (props: any) =>
-  preprocessTailwindClassName(props, getConfig() as any)
+const pre = (props: any) => preprocessTailwindClassName(props, getConfig() as any)
 
 const programs = (props: Record<string, any>) =>
   Object.values(props).filter(

@@ -452,11 +452,7 @@ export function resolveTailwindClassName(
               : previous === undefined
                 ? { [condition]: value }
                 : { default: previous, [condition]: value }
-        } else if (
-          previous &&
-          typeof previous === 'object' &&
-          !Array.isArray(previous)
-        ) {
+        } else if (previous && typeof previous === 'object' && !Array.isArray(previous)) {
           next = { ...previous, default: value }
         }
         setInAuthoredOrder(result, key, next)
