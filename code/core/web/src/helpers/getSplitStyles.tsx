@@ -4519,7 +4519,7 @@ function contributeValue(
       } finally {
         releaseConditionCursors(watermark)
       }
-      offset += conditionEntryWidth(value.entries, offset)
+      offset += transportEntryWidth
     }
     return true
   }
@@ -4723,10 +4723,6 @@ function isConditionTransport(value: unknown): value is ConditionTransport {
 
 const transportEntryWidth = 2
 
-function conditionEntryWidth(_entries: unknown[], _offset: number) {
-  return transportEntryWidth
-}
-
 function appendConditionEntry(entries: unknown[], cursor: ConditionCursor, value: any) {
   entries.push(value, conditionTexts[cursor + conditionKeyOffset] || '')
 }
@@ -4808,16 +4804,12 @@ function mergeConditionTransport(
   }
   // a repeat contribution under the same condition set replaces its entry and
   // moves to the end: the wrapped pass sees last-wins in authored order
-  for (let offset = 0; offset < transport.entries.length; ) {
-    const width = conditionEntryWidth(transport.entries, offset)
-    if (
-      transport.entries[offset + 1] ===
-      (conditionTexts[cursor + conditionKeyOffset] || '')
-    ) {
-      transport.entries.splice(offset, width)
+  const cursorKey = conditionTexts[cursor + conditionKeyOffset] || ''
+  for (let offset = 0; offset < transport.entries.length; offset += transportEntryWidth) {
+    if (transport.entries[offset + 1] === cursorKey) {
+      transport.entries.splice(offset, transportEntryWidth)
       break
     }
-    offset += width
   }
   appendConditionEntry(transport.entries, cursor, value)
   return transport
@@ -5123,7 +5115,7 @@ function resolveVariants(
       } finally {
         releaseConditionCursors(watermark)
       }
-      offset += conditionEntryWidth(value.entries, offset)
+      offset += transportEntryWidth
     }
     return
   }
