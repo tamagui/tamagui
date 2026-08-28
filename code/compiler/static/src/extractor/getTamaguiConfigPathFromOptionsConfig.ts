@@ -1,6 +1,6 @@
-import { isAbsolute, join, resolve } from 'node:path'
-
+import { createRequire } from 'node:module'
 import { statSync } from 'node:fs'
+import { isAbsolute, join, resolve } from 'node:path'
 import type { TamaguiOptions } from '../types'
 
 export function getTamaguiConfigPathFromOptionsConfig(
@@ -17,6 +17,13 @@ export function getTamaguiConfigPathFromOptionsConfig(
     if (statSync(fullPath).isFile()) {
       return fullPath
     }
+  } catch {
+    //
+  }
+
+  try {
+    const customRequire = createRequire(join(root, 'package.json'))
+    return customRequire.resolve(config)
   } catch {
     //
   }
