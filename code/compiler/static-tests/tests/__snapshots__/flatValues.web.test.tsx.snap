@@ -18,8 +18,8 @@ exports[`the shared precedence table compiles with runtime-identical CSS order a
   "15-reversed": "@media (hover: hover) {._bc-612909171._bc-612909171:where(.t_group_true:hover *){background-color:blue}}@media (hover: hover) {._bc-612909171:hover{background-color:red}}",
   "2-forward": "._fd-714342058{flex-direction:row}@media (min-width: 640px) {._fd-714342058._fd-714342058{flex-direction:column}}",
   "2-reversed": "._fd-714342058{flex-direction:row}@media (min-width: 640px) {._fd-714342058._fd-714342058{flex-direction:column}}",
-  "3-forward": "._bc-1951553591{background-color:red}@media (min-width: 640px) {._bc-1951553591._bc-1951553591{background-color:green}}",
-  "3-reversed": "._bc-941989121{background-color:red}@media (min-width: 640px) {._bc-941989121._bc-941989121{background-color:blue}}",
+  "3-forward": "._bc-1046190132{background-color:red}@media (min-width: 640px) {._bc-1046190132._bc-1046190132{background-color:green}}",
+  "3-reversed": "._bc-1835017615{background-color:red}@media (min-width: 640px) {._bc-1835017615._bc-1835017615{background-color:blue}}",
   "4-forward": "@media (min-width: 640px) {._bc-1852283760._bc-1852283760{background-color:blue}}@media (min-width: 768px) {._bc-1852283760._bc-1852283760{background-color:green}}",
   "4-reversed": "@media (min-width: 640px) {._bc-1874233030._bc-1874233030{background-color:blue}}@media (min-width: 768px) {._bc-1874233030._bc-1874233030{background-color:green}}",
   "5-forward": "@media (min-width: 640px) {._bc-2043858191._bc-2043858191{background-color:blue}}._bc-2043858191._bc-2043858191:where(.t_dark, .t_dark *){background-color:green}",
@@ -30,7 +30,7 @@ exports[`the shared precedence table compiles with runtime-identical CSS order a
   "7-reversed": "@media (min-width: 768px) {._bc-1590143742._bc-1590143742{background-color:green}}@media (min-width: 640px) {._bc-1590143742._bc-1590143742._bc-1590143742:where(.t_dark, .t_dark *){background-color:blue}}",
   "8-forward": "@media (hover: hover) {._bc-2060373333:hover{background-color:green}}@media (min-width: 640px) {._bc-2060373333._bc-2060373333._bc-2060373333:where(.t_dark, .t_dark *){background-color:blue}}",
   "8-reversed": "@media (hover: hover) {._bc-1319070309:hover{background-color:green}}@media (min-width: 640px) {._bc-1319070309._bc-1319070309._bc-1319070309:where(.t_dark, .t_dark *){background-color:blue}}",
-  "9-forward": "@media (min-width: 640px) {._bc-517763403._bc-517763403._bc-517763403:where(.t_dark, .t_dark *){background-color:red}}",
-  "9-reversed": "@media (min-width: 640px) {._bc-618842885._bc-618842885._bc-618842885:where(.t_dark, .t_dark *){background-color:blue}}",
+  "9-forward": "@media (min-width: 640px) {._bc-1451574248._bc-1451574248._bc-1451574248:where(.t_dark, .t_dark *){background-color:red}}",
+  "9-reversed": "@media (min-width: 640px) {._bc-2048659427._bc-2048659427._bc-2048659427:where(.t_dark, .t_dark *){background-color:blue}}",
 }
 `;

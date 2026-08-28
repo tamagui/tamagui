@@ -1730,7 +1730,6 @@ export type GetStyleState = {
     flatMediaState?: Record<string, boolean | undefined>;
     flatGroupContext?: AllGroupContexts | null;
     flatConditionOrder?: number;
-    flatActiveConditions?: Record<string, true>;
     flatStateKeys?: Set<string>;
     flatMediaKeys?: Set<string>;
     flatGroupKeys?: Set<string>;
@@ -1739,12 +1738,6 @@ export type GetStyleState = {
     flatExitKeys?: Set<string>;
     flatHasEnterStyle?: boolean;
     flatHasPlatformPseudo?: boolean;
-    flatInlineWinners?: Record<string, {
-        value: any;
-        originalValue: any;
-        precedence: number;
-        conditioned: boolean;
-    }>;
     flatUsesSafeArea?: boolean;
     overriddenContextProps?: Record<string, any>;
     originalContextPropValues?: Record<string, any>;

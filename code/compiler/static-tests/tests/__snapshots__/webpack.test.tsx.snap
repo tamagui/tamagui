@@ -6,7 +6,7 @@ exports[`webpack-tests > 1. extracts to a div for simple views, flat transforms 
     class="_dsp_contents  font_body"
   >
     <div
-      class="is_View _fd-1155724988 _fg-169839737 _fs-1866857425 _fb-1102215147 _btlr-1542637521 _btrr-423228146 _bbrr-298983462 _bblr-1647959011 _bc-913050308 _bs-1155467371 _tsx-1322694990 _s-1524280249 _tsy-484759473 test1"
+      class="is_View _s-1524280249 _fd-1155724988 _fg-169839737 _fs-1866857425 _fb-1102215147 _btlr-1542637521 _btrr-423228146 _bbrr-298983462 _bblr-1647959011 _bc-913050308 _bs-1155467371 _tsx-1322694990 _tsy-484759473 test1"
     >
       <span
         class="is_Text _c-533586090"
