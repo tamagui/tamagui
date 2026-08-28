@@ -215,6 +215,14 @@ the paired receipts. The unit lands on v3-beta only after this review.
   `startTransition` layer and belongs to the config-swap defect class. Receipt:
   r6416 review-application report at `154273258f`. Fix the hidden ordering
   dependency at its source; do not make the test rely on suite setup.
+- **Android MenuRadioGroup selection defect** (post-campaign, separate slice):
+  the Detox run for the final repair tip `7925b72458` failed only the green and
+  red selected-state assertions in `e2e/MenuRadioGroup.test.ts`. The exact two
+  assertions and suite totals also fail at pre-CP3 ancestor `8330abb5ea`
+  (current run `33204633750`, control run `33148785852`), so this is not a CP3
+  regression. Close the interaction or observation race at its source and make
+  the test assert the required loaded and selected preconditions. Do not add
+  retries, sleeps, timeout increases, or relaxed assertions.
 
 ## 8. Fleet process (as run so far)
 
