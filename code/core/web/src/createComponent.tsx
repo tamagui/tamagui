@@ -21,7 +21,8 @@ import { defaultComponentStateMounted } from './defaultComponentState'
 import { getWebEvents, useEvents, wrapWithGestureDetector } from './eventHandling'
 import { getDefaultProps } from './helpers/getDefaultProps'
 import { componentDisplayName } from './helpers/componentDisplayName'
-import { getSplitStyles, useSplitStyles } from './helpers/getSplitStyles'
+import { getSplitStyles } from './helpers/getSplitStyles'
+import { useSplitStyles } from './hooks/useSplitStyles'
 import {
   getNativeStyleEngine,
   queueNativeViewState,

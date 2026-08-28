@@ -3,7 +3,7 @@ import React from 'react'
 import { getConfig } from '../config'
 import { ComponentContext } from '../contexts/ComponentContext'
 import { GroupContext } from '../contexts/GroupContext'
-import { useSplitStyles } from '../helpers/getSplitStyles'
+import { useSplitStyles } from './useSplitStyles'
 import { subscribeToSafeArea } from '../helpers/resolveSafeAreaVariable'
 import {
   subscribeToContextGroup,

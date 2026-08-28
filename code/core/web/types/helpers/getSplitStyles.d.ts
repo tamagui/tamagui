@@ -11,5 +11,4 @@ export type StyleSplitter = (props: {
 export declare function isValidStyleKey(key: string, validStyles: Record<string, boolean>, accept?: Record<string, any>): boolean;
 export declare const getSplitStyles: StyleSplitter;
 export declare const getSubStyle: (styleState: GetStyleState, _subKey: string, styleIn: object, avoidMergeTransform?: boolean) => TextStyle;
-export { useSplitStyles } from '../hooks/useSplitStyles';
 //# sourceMappingURL=getSplitStyles.d.ts.map

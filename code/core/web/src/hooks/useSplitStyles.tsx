@@ -19,7 +19,7 @@ export const useSplitStyles: StyleSplitter = (a, b, c, d, e, f, g, h, i, j, k, l
       if (res) {
         insertStyleRules(res.rulesToInsert)
       }
-    })
+    }, [res?.rulesToInsert])
   }
 
   return res

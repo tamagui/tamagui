@@ -189,6 +189,7 @@ export type {
   ThemeValueFallback,
   Themes,
   Token,
+  TokenCategories,
   Tokens,
   TokensParsed,
   TransitionEvent,
