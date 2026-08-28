@@ -19,7 +19,6 @@ import { DialogDemo } from '../../demos/src/DialogDemo'
 import { TestPopoverTransformOrigin } from '../use-cases/TestPopoverTransformOrigin'
 import { animationsMotion } from '../config/tamagui/animationMotion'
 import { animationsCSS } from '../config/tamagui/animationsCSS'
-import { animationsNative } from '../config/tamagui/animationNative'
 
 const delayColors = ['red', 'green', 'blue', 'purple'] as const
 
@@ -78,14 +77,12 @@ function DelayDemoContent({
 }
 
 /**
- * Demo showing animation delay support across all 4 animation drivers
- * Pattern: transition={['medium', { delay: i * 100 }]}
+ * demo showing animation delay support across the web animation drivers
+ * pattern: transition={['medium', { delay: i * 100 }]}
  */
 function AnimationDelayDemo() {
   const [showCSS, setShowCSS] = useState(false)
-  const [showMoti, setShowMoti] = useState(false)
   const [showMotion, setShowMotion] = useState(false)
-  const [showNative, setShowNative] = useState(false)
 
   return (
     <YStack gap="4" p="4">
@@ -105,27 +102,11 @@ function AnimationDelayDemo() {
           />
         </Configuration>
 
-        <Configuration animationDriver={animationsNative}>
-          <DelayDemoContent
-            show={showMoti}
-            onToggle={() => setShowMoti(!showMoti)}
-            driverName="RN Animated (2)"
-          />
-        </Configuration>
-
         <Configuration animationDriver={animationsMotion}>
           <DelayDemoContent
             show={showMotion}
             onToggle={() => setShowMotion(!showMotion)}
             driverName="Motion"
-          />
-        </Configuration>
-
-        <Configuration animationDriver={animationsNative}>
-          <DelayDemoContent
-            show={showNative}
-            onToggle={() => setShowNative(!showNative)}
-            driverName="RN Animated"
           />
         </Configuration>
       </XStack>

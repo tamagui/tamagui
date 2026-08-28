@@ -45,7 +45,7 @@ for (const driver of drivers) {
       const className = serverTag.match(/\bclass="([^"]*)"/)?.[1]
       expect(className).toBeTruthy()
 
-      // animateOnly keeps this candidate on the runtime path. In the compiled
+      // animateOnly keeps this candidate on the runtime path; in the compiled
       // artifact its unproven values stay inline, and SSR must make the same
       // decision as the first client render.
       const serverStyle = serverTag.match(/\bstyle="([^"]*)"/)?.[1]
@@ -116,7 +116,8 @@ for (const driver of drivers) {
 
     test('transform styles render correctly before and after hydration', async ({
       page,
-    }) => {
+    }, testInfo) => {
+      const compiledArtifact = testInfo.project.name === 'prod'
       // Hold every script until the pre-hydration styles have been read. Without
       // this the assertion below is a race: in a production build hydration
       // finishes before the element is even reported attached, so the "before"
@@ -145,7 +146,8 @@ for (const driver of drivers) {
       await expect(page.locator('[data-testid=hydrated-true]')).toHaveCount(0)
 
       // the runtime Configuration driver is invisible to the compiler, so the
-      // compiled artifact keeps this transform inline for both pages.
+      // compiled artifact keeps this transform inline for both pages; the dev
+      // server still generates CSS at runtime and emits transform longhands.
       const preStyles = await box.evaluate((el) => {
         const styles = getComputedStyle(el)
         return {
@@ -158,15 +160,25 @@ for (const driver of drivers) {
       const preInlineStyle = await box.getAttribute('style')
       const preBounds = await box.boundingBox()
 
-      expect(preInlineStyle).toContain(
-        'transform:translateX(50px) translateY(20px) scale(1.1) rotate(5deg)'
-      )
-      expect(preStyles.transform).not.toBe('none')
-      expect(preStyles).toMatchObject({
-        translate: 'none',
-        scale: 'none',
-        rotate: 'none',
-      })
+      if (compiledArtifact) {
+        expect(preInlineStyle).toContain(
+          'transform:translateX(50px) translateY(20px) scale(1.1) rotate(5deg)'
+        )
+        expect(preStyles.transform).not.toBe('none')
+        expect(preStyles).toMatchObject({
+          translate: 'none',
+          scale: 'none',
+          rotate: 'none',
+        })
+      } else {
+        expect(preInlineStyle).toBeNull()
+        expect(preStyles).toEqual({
+          transform: 'none',
+          translate: '50px 20px',
+          scale: '1.1',
+          rotate: '5deg',
+        })
+      }
 
       // let the app boot and hydrate
       releaseScripts!()

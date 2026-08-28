@@ -57,7 +57,7 @@ test('the runtime generated none of it: the provider injects no sheet', async ({
   page,
 }) => {
   // createDesignSystem, getThemeCSSRules and insertFont are compiled out, so
-  // the provider omits its style element. The mutates-themes project asserts
+  // the provider omits its style element; the mutates-themes project asserts
   // the opposite against the same source and same entry.
   const injected = await page.evaluate(
     () => document.querySelector('style[data-href="tamagui-css"]')?.textContent ?? null
