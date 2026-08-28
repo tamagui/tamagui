@@ -323,7 +323,7 @@ describe('getSplitStyles', () => {
       },
       {} as any,
       {
-        animationDriver: { isReactNative: false },
+        animationDriver: { inputStyle: 'value', outputStyle: 'inline' },
         groups: { state: {} },
       } as any,
       undefined,
@@ -357,7 +357,7 @@ describe('getSplitStyles', () => {
       },
       {} as any,
       {
-        animationDriver: { isReactNative: false },
+        animationDriver: { inputStyle: 'value', outputStyle: 'inline' },
         groups: { state: {} },
       } as any,
       undefined,
@@ -391,7 +391,7 @@ describe('getSplitStyles', () => {
         },
         {} as any,
         {
-          animationDriver: { isReactNative: false },
+          animationDriver: { inputStyle: 'value', outputStyle: 'inline' },
           groups: { state: {} },
         } as any,
         undefined,

@@ -15,6 +15,7 @@ import {
 } from './helpers/componentDisplayName'
 import { mergeVariants } from './helpers/mergeVariants'
 import type { FrontendComponent, StyleFrontend } from './helpers/styleFrontend'
+import { warnOnce } from './helpers/warnOnce'
 import type { GetRef } from './interfaces/GetRef'
 import { getReactNativeConfig } from './setupReactNative'
 import type {
@@ -378,7 +379,6 @@ export function styledHtml<
     variants: variants as any,
     defaultProps: defaultProps as any,
     defaultVariants,
-    isReactNative: false,
     isText,
     acceptsClassName: true,
     context,
@@ -556,9 +556,27 @@ function styledImpl<
 
   const parentStaticConfig = ComponentIn['staticConfig'] as StaticConfig | undefined
 
+  const requestedReactNativeInterop = Boolean(
+    config?.isReactNative || parentStaticConfig?.isReactNative
+  )
+
+  if (
+    process.env.TAMAGUI_TARGET !== 'native' &&
+    process.env.NODE_ENV === 'development' &&
+    requestedReactNativeInterop
+  ) {
+    warnOnce(
+      'isReactNative-web-removed',
+      'The isReactNative styled-component option is native-only in Tamagui v3. React Native Web hosts on web are no longer adapted; use a component that accepts className, data-* attributes, and DOM events.'
+    )
+  }
+
+  const isReactNative =
+    process.env.TAMAGUI_TARGET === 'native' &&
+    Boolean(config?.isReactNative || parentStaticConfig?.isReactNative)
+
   const isPlainStyledComponent =
-    !!parentStaticConfig &&
-    !(parentStaticConfig.isReactNative || parentStaticConfig.isHOC)
+    !!parentStaticConfig && !(isReactNative || parentStaticConfig.isHOC)
 
   const isNonStyledHOC = parentStaticConfig?.isHOC && !parentStaticConfig?.isStyledHOC
 
@@ -567,13 +585,12 @@ function styledImpl<
       ? ComponentIn
       : parentStaticConfig?.Component || ComponentIn
 
-  const reactNativeConfig = !parentStaticConfig
-    ? getReactNativeConfig(Component)
-    : undefined
+  const reactNativeConfig =
+    process.env.TAMAGUI_TARGET === 'native' && !parentStaticConfig
+      ? getReactNativeConfig(Component)
+      : undefined
 
-  const isReactNative = Boolean(
-    reactNativeConfig || config?.isReactNative || parentStaticConfig?.isReactNative
-  )
+  const resolvedIsReactNative = Boolean(reactNativeConfig || isReactNative)
 
   const staticConfigProps = (() => {
     let {
@@ -647,7 +664,7 @@ function styledImpl<
     const acceptsClassName =
       config?.acceptsClassName ??
       (isPlainStyledComponent ||
-        isReactNative ||
+        resolvedIsReactNative ||
         (parentStaticConfig?.isHOC && parentStaticConfig?.acceptsClassName))
 
     const conf: Partial<StaticConfig> = {
@@ -661,7 +678,9 @@ function styledImpl<
       baseClassName: mergedBaseClassName,
       defaultProps,
       defaultVariants,
-      isReactNative,
+      ...(process.env.TAMAGUI_TARGET === 'native' && {
+        isReactNative: resolvedIsReactNative,
+      }),
       isText,
       acceptsClassName,
       context: mergedContext,
@@ -671,6 +690,10 @@ function styledImpl<
       parentStaticConfig,
       // only an explicitly bound frontend overrides the one inherited from the parent
       ...(frontend && { styleFrontend: frontend }),
+    }
+
+    if (process.env.TAMAGUI_TARGET !== 'native') {
+      delete conf.isReactNative
     }
 
     // bail on non className views as well

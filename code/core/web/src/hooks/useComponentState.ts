@@ -117,18 +117,14 @@ export const useComponentState = (
   // wraps children in ResetPresence, which would null the context for the
   // frame that actually animates the exit
   const presence =
-    !isHOC && willBeAnimated && props['animatePresence'] !== false
-      ? presenceResult
-      : null
+    !isHOC && willBeAnimated && props['animatePresence'] !== false ? presenceResult : null
 
   const presenceState = presence?.[2]
   const isExiting = presenceState?.isPresent === false
   const isEntering = presenceState?.isPresent === true && presenceState.initial !== false
 
   const hasAnimationThatNeedsHydrate =
-    hasAnimationProp &&
-    !isHydrated &&
-    (animationDriver?.isReactNative || inputStyle !== 'css')
+    hasAnimationProp && !isHydrated && inputStyle !== 'css'
 
   // two stage enter: because we switch from css driver to spring driver
   //   - first render: render to match server with css driver

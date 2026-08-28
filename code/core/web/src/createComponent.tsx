@@ -341,7 +341,7 @@ export function createComponent<
 
     // set variants through context
     // order is after default props but before props
-    const { context, isReactNative } = staticConfig
+    const { context } = staticConfig
     const debugProp = propsIn['debug'] as DebugProp
 
     const styledContextValue: GenericProps | undefined = context
@@ -743,7 +743,6 @@ export function createComponent<
         const type =
           (hasEnterStyle ? '(hasEnter)' : ' ') +
           (isAnimated ? '(animated)' : ' ') +
-          (isReactNative ? '(rnw)' : ' ') +
           (noClass ? '(noClass)' : ' ') +
           (state.press || state.pressIn ? '(PRESSED)' : ' ') +
           (state.hover ? '(HOVERED)' : ' ') +
@@ -1325,8 +1324,7 @@ export function createComponent<
       ...nonTamaguiProps
     } = viewPropsIn || {}
 
-    // these can ultimately be for DOM, react-native-web views, or animated views
-    // so the type is pretty loose
+    // these can ultimately be for DOM or custom animated views, so the type is loose
     let viewProps = nonTamaguiProps
 
     if (props.forceStyle) {
@@ -1501,7 +1499,7 @@ export function createComponent<
     usePointerEvents(props, viewProps)
 
     if (process.env.NODE_ENV === 'development') {
-      if (!isReactNative && !isText && isWeb && !isHOC) {
+      if (!isText && isWeb && !isHOC) {
         React.Children.toArray(props.children).forEach((item) => {
           // allow newlines because why not its annoying with mdx
           if (typeof item === 'string' && item !== '\n') {
@@ -1840,7 +1838,7 @@ export function createComponent<
       })
     }
 
-    if (process.env.TAMAGUI_TARGET === 'web' && events && !isReactNative) {
+    if (process.env.TAMAGUI_TARGET === 'web' && events) {
       Object.assign(viewProps, getWebEvents(events))
     }
 
@@ -2063,19 +2061,6 @@ export function createComponent<
         : getThemedChildren(themeState, content, themeStateProps, false, stateRef)
 
     if (process.env.NODE_ENV === 'development' && time) time`themed-children`
-
-    if (process.env.TAMAGUI_TARGET === 'web') {
-      if (isReactNative && !asChild) {
-        content = (
-          <span
-            className="_dsp_contents"
-            {...(!isPassthrough && isHydrated && events && getWebEvents(events))}
-          >
-            {content}
-          </span>
-        )
-      }
-    }
 
     if (overriddenContextProps && contextForOverride) {
       const Provider = contextForOverride.Provider!

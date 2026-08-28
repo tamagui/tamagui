@@ -597,7 +597,7 @@ export type TamaguiProjectInfo = {
   nameToPaths: NameToPaths
 }
 
-// base props that are accepted by createComponent (additional to react-native-web)
+// base props accepted by createComponent in addition to the selected host's props
 
 export type DivAttributes = HTMLAttributes<HTMLDivElement>
 
@@ -3068,9 +3068,7 @@ export type StaticConfigPublic = {
    */
   isZStack?: boolean
 
-  /**
-   * Auto-detect, but can override, passes styles properly to react-native-web
-   */
+  /** Native-only marker for components backed by a React Native host. */
   isReactNative?: boolean
 
   /**
@@ -3476,7 +3474,6 @@ export type UseAnimatedNumber<
 > = (initial: number) => N
 
 type AnimationDriverBase<A extends AnimationConfig = AnimationConfig> = {
-  isReactNative?: boolean
   /** What style format the driver expects as input: 'css' (CSS variables) or 'value' (resolved values) */
   inputStyle?: 'css' | 'value'
   /** How the driver outputs styles: 'css' (className-based) or 'inline' (style object) */

@@ -169,8 +169,11 @@ export function resolveStaticElement(
     validStyles: isTextLike ? stylePropsText : validStylesView,
     defaultProps: {},
     acceptsClassName: target !== 'native',
-    isReactNative: target === 'native',
+    ...(target === 'native' && { isReactNative: true }),
     ...element.staticConfig,
+  }
+  if (target !== 'native') {
+    delete baseStaticConfig.isReactNative
   }
   prepareStyleStaticConfig(baseStaticConfig)
 

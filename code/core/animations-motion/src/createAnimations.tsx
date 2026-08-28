@@ -172,7 +172,6 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
   return {
     View: MotionView,
     Text: MotionText,
-    isReactNative: false,
     inputStyle: 'css',
     outputStyle: 'inline',
     avoidReRenders: true,

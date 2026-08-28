@@ -300,7 +300,6 @@ jobs:
             --shard=${{ matrix.shard }} \
             --project=default \
             --project=animated-css \
-            --project=animated-native \
             --project=animated-reanimated \
             --project=animated-motion
         timeout-minutes: 20

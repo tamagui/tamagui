@@ -1028,6 +1028,15 @@ export function createTamaguiPlugins({
               }),
             },
           },
+          ssr: {
+            define: {
+              // the server and client must make the same class-versus-inline
+              // decision or the first client render cannot hydrate the server HTML.
+              ...(globalCSS && {
+                'process.env.TAMAGUI_DID_OUTPUT_CSS': JSON.stringify('1'),
+              }),
+            },
+          },
           [TAMAGUI_EVALUATION_ENVIRONMENT]: getEvaluationEnvironmentOptions(
             resolvedRoot,
             userConfig.environments?.[TAMAGUI_EVALUATION_ENVIRONMENT]?.resolve?.noExternal

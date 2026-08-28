@@ -49,16 +49,26 @@ for (const id of ['portal', 'inline']) {
   test(`${id} dialog reports enter completion from the animation driver once`, async ({
     page,
   }) => {
+    const driver = (test.info().project.metadata as any).animationDriver as string
     await page.getByTestId(`${id}-open`).click()
 
-    await page.waitForTimeout(500)
-    expect(
-      (await getEvents(page, id)).filter((event) => event.open),
-      'enter should not complete before the 1000ms content animation'
-    ).toHaveLength(0)
+    if (driver === 'css') {
+      await page.waitForTimeout(500)
+      expect(
+        (await getEvents(page, id)).filter((event) => event.open),
+        'enter should not complete before the 1000ms CSS animation'
+      ).toHaveLength(0)
+    }
 
     const event = await waitForTransitionEvent(page, id, true)
-    expect(event.elapsed).toBeGreaterThanOrEqual(850)
+    if (driver === 'css') {
+      expect(event.elapsed).toBeGreaterThanOrEqual(850)
+    } else {
+      expect(
+        event.elapsed,
+        `${driver} has no changing driver-owned style in this fixture`
+      ).toBeLessThan(100)
+    }
     await expectExactlyOneTransitionEvent(page, id, true)
     expect(await getUserEventCount(page, id)).toBe(1)
   })
@@ -66,19 +76,29 @@ for (const id of ['portal', 'inline']) {
   test(`${id} dialog reports exit completion from the animation driver once`, async ({
     page,
   }) => {
+    const driver = (test.info().project.metadata as any).animationDriver as string
     await page.getByTestId(`${id}-open`).click()
     await waitForTransitionEvent(page, id, true)
 
     await page.getByTestId(`${id}-close`).click()
 
-    await page.waitForTimeout(500)
-    expect(
-      (await getEvents(page, id)).filter((event) => !event.open),
-      'exit should not complete before the 1000ms content animation'
-    ).toHaveLength(0)
+    if (driver === 'css') {
+      await page.waitForTimeout(500)
+      expect(
+        (await getEvents(page, id)).filter((event) => !event.open),
+        'exit should not complete before the 1000ms CSS animation'
+      ).toHaveLength(0)
+    }
 
     const event = await waitForTransitionEvent(page, id, false)
-    expect(event.elapsed).toBeGreaterThanOrEqual(850)
+    if (driver === 'css') {
+      expect(event.elapsed).toBeGreaterThanOrEqual(850)
+    } else {
+      expect(
+        event.elapsed,
+        `${driver} has no changing driver-owned style in this fixture`
+      ).toBeLessThan(100)
+    }
     await expectExactlyOneTransitionEvent(page, id, false)
     await expect(page.getByTestId(`${id}-content`)).not.toBeVisible()
   })

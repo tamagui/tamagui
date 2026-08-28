@@ -16,7 +16,7 @@
     "watch": "tamagui-build --skip-types --watch"
   },
   "dependencies": {
-    "@tamagui/animations-react-native": "workspace:*",
+    "@tamagui/animations-css": "workspace:*",
     "@tamagui/config": "workspace:*",
     "@tamagui/font-inter": "workspace:*",
     "@tamagui/shorthands": "workspace:*",

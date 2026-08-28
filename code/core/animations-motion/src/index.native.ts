@@ -19,7 +19,6 @@ export function createAnimations<A extends Record<string, any>>(
 
   // return an explicit unsupported driver so config resolution can skip it
   return {
-    isReactNative: false,
     isStub: true,
     animations: _animations,
     View: undefined as any,

@@ -31,7 +31,6 @@ let projectInfo: TamaguiProjectInfo
 type AnimationDriverShape = {
   animations?: Record<string, unknown>
   inputStyle?: 'css' | 'value'
-  isReactNative?: boolean
   outputStyle?: 'css' | 'inline'
 }
 
@@ -194,7 +193,6 @@ export const App = () => (
     const { plan, output } = compile(source, 'web', {
       animationDriver: {
         inputStyle: 'value',
-        isReactNative: true,
         outputStyle: 'inline',
       },
     })
@@ -225,7 +223,6 @@ export const App = () => (
 `
     const nonCssDriver: AnimationDriverShape = {
       inputStyle: 'value',
-      isReactNative: true,
       outputStyle: 'inline',
     }
     const { plan, output } = compile(source, 'web', {
@@ -802,6 +799,47 @@ export const Card = ({ seed }) => (
     )
   })
 
+  test('keeps a configured transition class beside a conditional host style', () => {
+    const source = `
+import { View } from '@tamagui/core'
+export const Card = ({ wide }) => (
+  <View
+    transition="medium"
+    width={wide ? 200 : 50}
+    height={20}
+  />
+)
+`
+    const { plan, output } = compile(source)
+
+    expect(codes(plan)).toEqual([])
+    expect(plan.stats).toMatchObject({ lowered: 1, flattened: 1, bailed: 0 })
+    const transitionClass = plan.css.match(/\.(_t-\d+)\{transition:/)?.[1]
+    expect(transitionClass).toBeTruthy()
+    expect(output.code).toContain(transitionClass)
+  })
+
+  test('statically configured CSS animation lowers transform longhands to classes', () => {
+    const source = `
+import { View } from '@tamagui/core'
+export const Card = () => (
+  <View transition="medium" x={50} y={20} scale={1.1} rotate="5deg" />
+)
+`
+    const { plan, output } = compile(source)
+
+    expect(codes(plan)).toEqual([])
+    expect(plan.stats).toMatchObject({ lowered: 1, flattened: 1, bailed: 0 })
+    for (const property of ['translate', 'scale', 'rotate']) {
+      const identifier = plan.css.match(
+        new RegExp(`\\.(_[a-z]+-\\d+)\\{${property}:`)
+      )?.[1]
+      expect(identifier, property).toBeTruthy()
+      expect(output.code, property).toContain(identifier)
+    }
+    expect(output.code).not.toContain('style=')
+  })
+
   test('keeps a non-CSS driver transition byte-identical', () => {
     const source = `
 import { View } from '@tamagui/core'
@@ -821,7 +859,6 @@ export const Card = ({ opacity }) => (
           spring: { damping: 10, mass: 1, stiffness: 100 },
         },
         inputStyle: 'value',
-        isReactNative: true,
         outputStyle: 'inline',
       },
     })
