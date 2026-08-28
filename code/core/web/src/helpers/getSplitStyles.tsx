@@ -891,6 +891,19 @@ export const getSplitStyles: StyleSplitter = (
 
     // this is all for partially optimized (not flattened)... maybe worth removing?
     if (isWeb) {
+      // react-native-web filters direct data-* props, including when its
+      // Animated.View replaces the final host. dataSet is its supported path.
+      if (
+        (isReactNative ||
+          (isAnimated && driverIsReactNative && !driver?.View?.acceptRenderProp)) &&
+        keyInit.startsWith('data-')
+      ) {
+        keyInit = keyInit.replace('data-', '')
+        viewProps.dataSet ||= {}
+        viewProps.dataSet[keyInit] = valInit
+        return
+      }
+
       // standard data attributes are view props, never styles or styled-context
       // values. Context providers receive arbitrary JSX attributes, so handle
       // these before a provider value can make the key look style-like.
