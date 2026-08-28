@@ -6,7 +6,6 @@ import {
 } from '@tamagui/constants'
 import {
   StyleObjectIdentifier,
-  StyleObjectPseudo,
   StyleObjectRules,
   nonAnimatableStyleProps,
   stylePropsAll,
@@ -29,7 +28,6 @@ import type {
   GetStyleResult,
   GetStyleState,
   RulesToInsert,
-  SpaceTokens,
   SplitStyleProps,
   StaticConfig,
   PropMapper,
@@ -41,13 +39,11 @@ import type {
   TextStyle,
   ThemeParsed,
   TransitionProp,
-  ViewStyleObject,
 } from '../types'
 import { variantResolverNames } from '../types'
 import {
   addTransformValue,
   canonicalStateModifierNames,
-  cloneTransformAccumulator,
   createTransformAccumulator,
   finalizeTransformAccumulator,
   getTransformPartKeys,
@@ -60,7 +56,6 @@ import {
   removeTransformValue,
   scanFlatValue,
   stateModifierSelectors,
-  type ClausePrecedenceKey,
   type FlatValueHandler,
   type TransformAccumulator,
 } from '@tamagui/style-grammar/runtime'
@@ -93,7 +88,7 @@ import { normalizeColor } from './normalizeColor'
 import { normalizeValueWithProperty } from './normalizeValueWithProperty'
 import { parseNativeStyle } from './parseNativeStyle.native'
 import { parseNativeTransform } from './parseNativeTransform.native'
-import { getFontsForLanguage, getVariantExtras } from './getVariantExtras'
+import { getVariantExtras } from './getVariantExtras'
 import { isRemValue, resolveRem } from './resolveRem'
 import { expandSafeAreaValue, isSafeAreaKey } from './resolveSafeArea'
 import { resolveSafeAreaVariable } from './resolveSafeAreaVariable'
@@ -414,7 +409,9 @@ function accumulateConditionAtom(
     return
   }
   let precedence = conditionNumbers[cursor + conditionPrecedenceOffset]
-  const depth = ((precedence >> 23) & 7) + 1
+  // clamp inside the 3-bit field so an absurd chain still reaches commit's
+  // explicit depth throw instead of silently corrupting the platform rank
+  const depth = Math.min(((precedence >> 23) & 7) + 1, 7)
   const nextCategory =
     kind === modifierKindMedia
       ? 0
@@ -979,8 +976,6 @@ function classifyConditionalObject(
   }
   return 0
 }
-
-type OrderedPropEntry = readonly [string, any]
 
 type StylePass = any[]
 
@@ -1948,7 +1943,6 @@ export const getSplitStyles: StyleSplitter = (
     process.env.TAMAGUI_TARGET === 'native' ? (undefined as any) : {}
   const classNames: ClassNamesObject = {}
 
-  let space: SpaceTokens | null = props.space
   let hasMedia: boolean | Set<string> = false
   let pseudoGroups: Set<string> | undefined
   let mediaGroups: Set<string> | undefined

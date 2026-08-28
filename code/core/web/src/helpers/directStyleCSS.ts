@@ -1,4 +1,3 @@
-import { isWeb } from '@tamagui/constants'
 import {
   StyleObjectIdentifier,
   StyleObjectRules,
@@ -17,7 +16,8 @@ import { normalizeValueWithProperty } from './normalizeValueWithProperty'
 import { shouldInsertStyleRules, updateRules } from './insertStyleRule'
 import { transformsToString } from './transformsToString'
 
-export const canGenerateCSS = isWeb && !process.env.TAMAGUI_DID_OUTPUT_CSS
+export const canGenerateCSS =
+  process.env.TAMAGUI_TARGET === 'web' && !process.env.TAMAGUI_DID_OUTPUT_CSS
 
 type DirectAtomicState = GetStyleState & {
   flatAtomics?: Record<string, StyleObject>

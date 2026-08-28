@@ -256,3 +256,30 @@ test('inserting a font refreshes the grammar snapshot once', () => {
     beforeSnapshot.parts.fonts
   )
 })
+
+test('a literal miss recorded before a theme mutation resolves after it', () => {
+  // the literal-miss cache remembers that a name resolved to nothing; a
+  // supported config mutation must invalidate it (revision bump), so the same
+  // name then resolves through the new theme key
+  const theme = getConfig().themes.light
+  const before = simplifiedGetSplitStyles(View, { backgroundColor: 'specialBg' } as any, {
+    noClass: true,
+    themeName: 'light',
+    theme,
+  })
+  expect(before.style?.backgroundColor).toBe('specialBg')
+
+  updateConfig('themes', {
+    light: { ...theme, specialBg: theme.background } as any,
+  })
+
+  // the SAME theme record forces the lookup through conf.themes and the
+  // cache hit through the same WeakMap key: only the revision swap can
+  // invalidate the recorded miss here
+  const after = simplifiedGetSplitStyles(View, { backgroundColor: 'specialBg' } as any, {
+    noClass: true,
+    themeName: 'light',
+    theme,
+  })
+  expect(String(after.style?.backgroundColor)).not.toBe('specialBg')
+})
