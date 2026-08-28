@@ -201,6 +201,12 @@ the paired receipts. The unit lands on v3-beta only after this review.
 - Minor: attribute-bundle-gzip's bun:test subprocess-capture issue (test
   red locally, not in CI); dot-dev generate-css module-resolution warning
   (intentional per its build); `getShorthandValue` public-removal decision.
+- **SheetDragFade CSS load flake** (post-campaign, do not staff during the
+  engine close): fails under the full parallel kitchen-sink run on pre-change
+  baselines and passes standalone. Receipt: `e8191a082d`. Treat it as a real
+  timing-window defect: replace clock-dependent sequencing with condition
+  waits and stricter precondition/assertion checks. Do not add retries, sleeps,
+  timeout increases, or relaxed assertions.
 
 ## 8. Fleet process (as run so far)
 
