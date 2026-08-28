@@ -67,6 +67,7 @@ const directIdentities = new Map<string, Map<string, DirectIdentity>>()
 let directIdentitiesSize = 0
 
 type DirectIdentity = { identifier: string; rules: string[] }
+type SlotIdentity = { identifier: string; rules: string[]; value: any }
 
 const getStyleObject = (
   val: any,
@@ -168,6 +169,139 @@ const getStyleObject = (
     undefined,
     rules,
   ]
+}
+
+// ── frame slot builder ───────────────────────────────────────────────────────
+// Build the css for one completed frame slot in a single shot: the identifier
+// hashes the slot's WINNING content, the base rule comes first, and
+// conditional rules follow in ascending precedence (later rules win the
+// cascade at equal specificity). Cached per (atomicKey, signature): a slot
+// that resolves to the same content is the same class, however it got there.
+
+export interface AtomicSlotEntry {
+  property: string
+  value: any
+  condition: number
+  identity: string
+  selector: string
+  wrappers: readonly string[] | undefined
+}
+
+const slotIdentities = new Map<string, Map<string, SlotIdentity>>()
+let slotIdentitiesSize = 0
+
+function slotClassRepetitions(atomicKey: string, condition: number): number {
+  const base =
+    atomicKey === 'containerName' || atomicKey === 'containerType'
+      ? condition
+        ? Math.max(
+            2,
+            1 +
+              ((Math.floor(condition / 256) >>> 23) & 7) +
+              (Math.floor(condition / 256) >>> 26) * 6 -
+              ((condition >>> 5) & 7)
+          )
+        : 2
+      : condition
+        ? 1 +
+          ((Math.floor(condition / 256) >>> 23) & 7) +
+          (Math.floor(condition / 256) >>> 26) * 6 -
+          ((condition >>> 5) & 7)
+        : 1
+  return base
+}
+
+export function buildAtomicSlotCSS(
+  atomicKey: string,
+  entries: readonly AtomicSlotEntry[],
+  signature: string
+): SlotIdentity | undefined {
+  if (process.env.TAMAGUI_DID_OUTPUT_CSS) return
+  const nextConf = getConfigMaybe()
+  const nextRevision = nextConf ? getConfigRevisionState(nextConf).revision : 0
+  if (nextConf !== conf || nextRevision !== confRevision) {
+    conf = nextConf
+    confRevision = nextRevision
+    directIdentities.clear()
+    directIdentitiesSize = 0
+    slotIdentities.clear()
+    slotIdentitiesSize = 0
+  }
+  let byKey = slotIdentities.get(atomicKey)
+  const known = byKey?.get(signature)
+  if (known) return known
+
+  const hash = simpleHash(signature, 'strict') || '0'
+  let shortProp = ''
+  for (let index = 0; index < atomicKey.length; index++) {
+    const code = atomicKey.charCodeAt(index)
+    if (
+      (index === 0 ||
+        (code >= 65 && code <= 90) ||
+        atomicKey.charCodeAt(index - 1) === 45) &&
+      ((code >= 65 && code <= 90) || (code >= 97 && code <= 122))
+    ) {
+      shortProp += atomicKey[index].toLowerCase()
+    }
+  }
+  shortProp ||= 'x'
+  let identifier = `_${shortProp}-${hash}`
+  if (atomicKey === 'pointerEvents' && entries.length === 1 && !entries[0].condition) {
+    const value = normalizeValueWithProperty(entries[0].value, 'pointerEvents')
+    if (value === 'box-none') identifier = '_pe-boxnone'
+    else if (value === 'box-only') identifier = '_pe-boxonly'
+  }
+
+  // base first, then conditionals ascending precedence, stable by arrival —
+  // ordered by insertion (no sort on the render path)
+  const ordered: AtomicSlotEntry[] = []
+  for (let index = 0; index < entries.length; index++) {
+    const entry = entries[index]
+    const precedence = entry.condition ? Math.floor(entry.condition / 256) : -1
+    let insertAt = ordered.length
+    while (insertAt > 0) {
+      const before = ordered[insertAt - 1]
+      const beforePrecedence = before.condition ? Math.floor(before.condition / 256) : -1
+      if (beforePrecedence <= precedence) break
+      insertAt--
+    }
+    ordered.splice(insertAt, 0, entry)
+  }
+
+  const rules: string[] = []
+  let lastValue: any
+  for (const entry of ordered) {
+    let value = entry.value
+    if (entry.property === 'transform' && Array.isArray(value)) {
+      value = transformsToString(value)
+    }
+    value = normalizeValueWithProperty(value, entry.property)
+    lastValue = value
+    const entryRules = createAtomicRules(
+      identifier,
+      entry.property,
+      value,
+      entry.selector,
+      entry.wrappers,
+      2,
+      slotClassRepetitions(atomicKey, entry.condition)
+    )
+    for (const rule of entryRules) rules.push(rule)
+  }
+
+  const built: SlotIdentity = { identifier, rules, value: lastValue }
+  if (slotIdentitiesSize > 10_000) {
+    slotIdentities.clear()
+    slotIdentitiesSize = 0
+    byKey = undefined
+  }
+  if (!byKey) {
+    byKey = new Map()
+    slotIdentities.set(atomicKey, byKey)
+  }
+  byKey.set(signature, built)
+  slotIdentitiesSize++
+  return built
 }
 
 function createDeclarationBlock(

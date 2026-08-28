@@ -9,7 +9,7 @@
  */
 import type { FunctionComponent } from 'react';
 import type { FrontendComponent, StyleFrontend } from './helpers/styleFrontend';
-export { regularStyleFrontend, } from './helpers/styleFrontend';
+export { regularStyleFrontend } from './helpers/styleFrontend';
 export type * from './internalRuntimeTypes';
 export declare const createVariables: (tokens: Record<string, any>, parentPath?: string, isFont?: boolean) => any;
 export declare const parseFont: (definition: Record<string, any>) => any;

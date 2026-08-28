@@ -73,10 +73,11 @@ import { styleToCSS } from './styleToCSS'
 import {
   addComposition,
   canGenerateCSS,
-  clearDirectAtomic,
-  directAtomic,
-  emitBorderStyleDefault,
+  clearFrameAtomic,
+  completeFrameCSS,
   flushDirectStyles,
+  requestBorderStyleDefault,
+  type StyleFrameEntry,
 } from './directStyleCSS'
 
 export { directStyleSignature, flushDirectStyles } from './directStyleCSS'
@@ -1495,6 +1496,7 @@ export const getSplitStyles: StyleSplitter = (
 
   const flushForwardStylesToClasses = () => {
     if (!shouldDoClasses) return
+    completeFrameCSS(styleState)
     flushDirectStyles(styleState, true)
   }
 
@@ -2120,16 +2122,12 @@ export const getSplitStyles: StyleSplitter = (
     for (const key of styleState.flatGroupMedia) mediaGroups.add(key)
   }
 
+  // a platform driver with native pseudo states rides the emitter path: the
+  // whole frame completes inline instead of as classes. The frame is neutral,
+  // so choosing the policy after the pass costs nothing to undo.
   if (styleProps.canPlatformPseudo && styleState.flatHasPlatformPseudo) {
     shouldDoClasses = false
     styleState.flatShouldDoClasses = false
-    const direct = styleState as DirectState
-    if (direct.flatAtomics) {
-      for (const property in direct.flatAtomics) {
-        delete classNames[property]
-      }
-      direct.flatAtomics = undefined
-    }
     if (styleState.transformAccumulator) {
       mergeStyle(
         styleState,
@@ -2140,14 +2138,11 @@ export const getSplitStyles: StyleSplitter = (
       )
       styleState.transformAccumulator = undefined
     }
-    const inlineWinners = styleState.flatInlineWinners
-    if (inlineWinners) {
-      for (const property in inlineWinners) {
-        const winner = inlineWinners[property]
-        mergeStyle(styleState, property, winner.value, 1, true, winner.originalValue)
-      }
-    }
   }
+
+  // the one output completion: CSS-destined slots serialize once, the rest
+  // resolve to inline winners
+  completeStyleFrame(styleState, mergeStyle)
 
   // hand the selected transition to animation drivers and keep it out of native
   // destination styles, where `transition` is not a React Native style key.
@@ -2562,6 +2557,8 @@ const resolveAcceptedStyle = (
     style: styleOut,
     transformAccumulator: undefined,
   }
+  ;(childState as DirectState).flatFrame = undefined
+  ;(childState as DirectState).flatAtomics = undefined
   const mergeAccepted: MergeStyle = (
     _state,
     key,
@@ -2585,6 +2582,7 @@ const resolveAcceptedStyle = (
     if (key in skipProps || value == null) continue
     contributeValue(childState, key, value, mergeAccepted)
   }
+  completeStyleFrame(childState, mergeAccepted)
   if (childState.transformAccumulator) {
     styleOut.transform = finalizeTransformAccumulator(childState.transformAccumulator)
   }
@@ -2619,11 +2617,11 @@ export type MergeStyle = (
 ) => void
 
 type DirectState = GetStyleState & {
+  flatFrame?: Record<string, StyleFrameEntry[]>
   flatAtomics?: Record<string, unknown>
   flatBoxShadow?: any
   flatDynamicColors?: Record<string, Record<string, any>>
   flatDynamicThemeAccess?: boolean
-  flatPrecedence?: Record<string, ClausePrecedenceKey>
   flatTextShadow?: Record<string, any>
   flatWebShadow?: Record<string, any>
   flatCompoundEpoch?: number
@@ -2633,6 +2631,101 @@ type DirectState = GetStyleState & {
   flatParentCursor?: ConditionCursor | null
   flatScanCursor?: ConditionCursor | null
   flatCompoundOutputDepth?: number
+}
+
+// an active conditional clause can retract a property entirely (an invalid
+// native transform value drops the part); the tombstone wins its slot and the
+// inline completion emits nothing for it
+const FRAME_TOMBSTONE: unique symbol = Symbol('tamaguiFrameTombstone')
+
+let frameSequence = 0
+
+/**
+ * Land one contribution in the neutral output frame. A slot holds one entry
+ * per exact condition identity: a repeat write replaces the value in place
+ * (CSS keeps the slot's rule position) and bumps the sequence (inline ties
+ * resolve to the last write).
+ */
+function frameWrite(
+  state: GetStyleState,
+  property: string,
+  value: any,
+  condition: number,
+  identity: string,
+  wrappers: string[] | undefined,
+  selector: string,
+  original: any,
+  forceCSS: boolean,
+  normalize = false
+) {
+  const frame = ((state as DirectState).flatFrame ||= {})
+  let slot = frame[property]
+  if (!slot) {
+    slot = frame[property] = []
+  }
+  for (let index = 0; index < slot.length; index++) {
+    const entry = slot[index]
+    if (entry.identity === identity) {
+      entry.value = value
+      entry.condition = condition
+      entry.original = original
+      entry.forceCSS = forceCSS
+      entry.sequence = ++frameSequence
+      entry.normalize = normalize
+      return
+    }
+  }
+  slot.push({
+    property,
+    value,
+    condition,
+    identity,
+    selector,
+    wrappers: wrappers && wrappers.length ? wrappers.slice() : undefined,
+    original,
+    forceCSS,
+    sequence: ++frameSequence,
+    normalize,
+  })
+}
+
+/**
+ * The one output completion: serialize the frame's CSS-destined slots once
+ * (winning content only), then pick each remaining slot's inline winner by
+ * condition precedence and last write. Completion walks slots; it never reads
+ * an authored prop again.
+ */
+function completeStyleFrame(state: GetStyleState, merge: MergeStyle) {
+  const direct = state as DirectState
+  if (
+    !direct.flatFrame &&
+    !(canGenerateCSS && state.flatShouldDoClasses && state.transformAccumulator)
+  ) {
+    return
+  }
+  completeFrameCSS(state)
+  const frame = direct.flatFrame
+  if (!frame) return
+  for (const property in frame) {
+    const slot = frame[property]
+    let winner: StyleFrameEntry | null = null
+    let winnerPrecedence = -2
+    for (let index = 0; index < slot.length; index++) {
+      const entry = slot[index]
+      if (entry.condition && !(entry.condition & 1)) continue
+      const precedence = entry.condition ? Math.floor(entry.condition / 256) : -1
+      if (
+        precedence > winnerPrecedence ||
+        (precedence === winnerPrecedence && (!winner || entry.sequence > winner.sequence))
+      ) {
+        winner = entry
+        winnerPrecedence = precedence
+      }
+    }
+    if (!winner || winner.value === FRAME_TOMBSTONE) continue
+    merge(state, property, winner.value, 1, !winner.normalize, winner.original)
+  }
+  direct.flatFrame = undefined
 }
 
 function emitAtParentCondition(
@@ -3375,7 +3468,21 @@ function emitProperty(
         typeof originalValue === 'string' && isAsciiLetters(originalValue)
           ? originalValue
           : value
-      merge(state, property, { dynamic: { ...schemes } }, 1, false, originalValue)
+      frameWrite(
+        state,
+        property,
+        { dynamic: { ...schemes } },
+        // a DynamicColorIOS aggregate applies on every scheme: force the
+        // active bit by addition — the packed condition exceeds Int32, so a
+        // bitwise write would corrupt it
+        condition & 1 ? condition : condition + 1,
+        conditionKey,
+        undefined,
+        '',
+        originalValue,
+        false,
+        true
+      )
       return
     }
     direct.flatDynamicThemeAccess = true
@@ -3386,27 +3493,6 @@ function emitProperty(
       ;(state.overriddenContextProps ||= {})[property] = originalValue
     }
     return
-  }
-
-  if (state.styleProps.canPlatformPseudo) {
-    const conditioned = !!condition
-    if (!conditioned || condition & 1) {
-      const precedence = conditioned ? Math.floor(condition / 256) : 0
-      const winners = (state.flatInlineWinners ||= {})
-      const previous = winners[property]
-      if (
-        conditioned
-          ? !previous || !previous.conditioned || precedence >= previous.precedence
-          : !previous?.conditioned
-      ) {
-        winners[property] = {
-          value,
-          originalValue,
-          precedence,
-          conditioned,
-        }
-      }
-    }
   }
 
   if (
@@ -3440,29 +3526,34 @@ function emitProperty(
     if (!condition) {
       if (state.style) delete state.style[property]
     }
-    directAtomic(
-      state as DirectState,
+    frameWrite(
+      state,
       property,
       value,
       condition,
       conditionKey,
       conditionWrappers,
-      conditionSelector
+      conditionSelector,
+      originalValue,
+      !state.flatShouldDoClasses
     )
     return
   }
 
-  if (condition) {
-    if (!(condition & 1)) return
-    const precedence = Math.floor(condition / 256)
-    const previous = direct.flatPrecedence?.[property]
-    if (previous !== undefined && precedence < previous) return
-    ;(direct.flatPrecedence ||= {})[property] = precedence
-    ;(state.flatActiveConditions ||= {})[property] = true
-  } else if (state.flatActiveConditions?.[property]) {
-    return
-  }
-  merge(state, property, value, 1, true, originalValue)
+  // inline and native: inactive conditions contribute nothing; the rest land
+  // in the frame and the completion picks each property's winner
+  if (condition && !(condition & 1)) return
+  frameWrite(
+    state,
+    property,
+    value,
+    condition,
+    conditionKey,
+    undefined,
+    '',
+    originalValue,
+    false
+  )
 }
 
 function splitComponents(value: string) {
@@ -3874,7 +3965,7 @@ function emitValue(
     )
   }
 
-  emitBorderStyleDefault(
+  requestBorderStyleDefault(
     state,
     property,
     condition,
@@ -3910,7 +4001,18 @@ function emitValue(
         contextOnly
       )
     } else {
-      merge(state, property, value, 1, false, originalValue)
+      frameWrite(
+        state,
+        property,
+        value,
+        condition,
+        conditionKey,
+        undefined,
+        '',
+        originalValue,
+        false,
+        true
+      )
     }
     return
   }
@@ -3927,7 +4029,18 @@ function emitValue(
         contextOnly
       )
     } else {
-      merge(state, property, value, 1, false, originalValue)
+      frameWrite(
+        state,
+        property,
+        value,
+        condition,
+        conditionKey,
+        undefined,
+        '',
+        originalValue,
+        false,
+        true
+      )
     }
     return
   }
@@ -3944,7 +4057,18 @@ function emitValue(
         contextOnly
       )
     } else {
-      merge(state, property, value, 1, false, originalValue)
+      frameWrite(
+        state,
+        property,
+        value,
+        condition,
+        conditionKey,
+        undefined,
+        '',
+        originalValue,
+        false,
+        true
+      )
     }
     return
   }
@@ -4042,7 +4166,20 @@ function emitValue(
             `native transform "${property}" cannot represent "${value}"; dropping it`
           )
         }
-        if (condition & 1) removeTransformValue(state.transformAccumulator, property)
+        if (condition & 1) {
+          removeTransformValue(state.transformAccumulator, property)
+          frameWrite(
+            state,
+            property,
+            FRAME_TOMBSTONE,
+            condition,
+            conditionKey,
+            undefined,
+            '',
+            undefined,
+            false
+          )
+        }
         return
       }
       const unitValue = numericUnitValue(value, 'px', 'dp')
@@ -4550,7 +4687,17 @@ export function clearDirectStyle(state: GetStyleState, property: string) {
         : legacyTransformParts.has(property)
           ? 'transform'
           : property
-  clearDirectAtomic(state, atomicKey)
+  clearFrameAtomic(state, atomicKey)
+  const frame = direct.flatFrame
+  if (frame) {
+    if (atomicKey === 'transition') {
+      for (const key in frame) {
+        if (key.startsWith('transition')) delete frame[key]
+      }
+    } else {
+      delete frame[atomicKey]
+    }
+  }
   if (atomicKey === 'transform') state.transformAccumulator = undefined
   if (state.style) delete state.style[atomicKey]
   delete state.classNames[atomicKey]
@@ -4684,14 +4831,15 @@ const contributeMappedValue: PropMapper = (key, value, styleState, disabled, map
     const expanded = noExpand
       ? null
       : expandStyle(expandedKey, value, conf.settings.styleCompat || 'web')
-    if (styleState.style) {
-      if (expanded) {
-        for (const [nkey] of expanded) {
-          delete styleState.style[nkey]
-        }
-      } else {
-        delete styleState.style[expandedKey]
+    const frame = (styleState as DirectState).flatFrame
+    if (expanded) {
+      for (const [nkey] of expanded) {
+        if (frame) delete frame[nkey]
+        if (styleState.style) delete styleState.style[nkey]
       }
+    } else {
+      if (frame) delete frame[expandedKey]
+      if (styleState.style) delete styleState.style[expandedKey]
     }
     return
   }

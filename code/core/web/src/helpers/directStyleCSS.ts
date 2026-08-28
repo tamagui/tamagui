@@ -4,35 +4,79 @@ import {
   StyleObjectRules,
   type StyleObject,
 } from '@tamagui/helpers'
-import {
-  finalizeTransformAccumulator,
-  type ClausePrecedenceKey,
-} from '@tamagui/style-grammar/runtime'
+import { finalizeTransformAccumulator } from '@tamagui/style-grammar/runtime'
 
 import type { GetStyleState } from '../types'
-import { getCSSStyleAtomic } from './getCSSStylesAtomic'
+import {
+  buildAtomicSlotCSS,
+  getCSSStyleAtomic,
+  type AtomicSlotEntry,
+} from './getCSSStylesAtomic'
 import { shouldInsertStyleRules, updateRules } from './insertStyleRule'
 import { transformsToString } from './transformsToString'
 
 export const canGenerateCSS = isWeb && !process.env.TAMAGUI_DID_OUTPUT_CSS
 
-type DirectAtomic = {
-  baseRules: number
-  conditions?: Record<
-    string,
-    {
-      count: number
-      index: number
-      precedence: ClausePrecedenceKey
-      default?: boolean
-    }
-  >
-  signature: string
-  styleObject: StyleObject
+// one style contribution in the neutral output frame: winners land in slots
+// during the value pass; completion only serializes them
+export interface StyleFrameEntry {
+  property: string
+  value: any
+  condition: number
+  identity: string
+  selector: string
+  wrappers: string[] | undefined
+  original: any
+  /** written while the pass could not emit classes but this property must
+   * still become CSS (animated non-animatable style promotion) */
+  forceCSS: boolean
+  /** last-write order, breaks equal-precedence ties on the inline path */
+  sequence: number
+  /** run value normalization when the inline completion merges this entry */
+  normalize: boolean
 }
 
 type DirectAtomicState = GetStyleState & {
-  flatAtomics?: Record<string, DirectAtomic>
+  flatFrame?: Record<string, StyleFrameEntry[]>
+  flatAtomics?: Record<string, StyleObject>
+  flatBorderDefaultRequests?: StyleFrameEntry[]
+}
+
+/**
+ * A border width was authored, so its edge needs `borderStyle: solid` unless
+ * an authored border style owns the property by completion time. Requests key
+ * off the authored (pre-expansion) property, matching the emitted class.
+ */
+export function requestBorderStyleDefault(
+  state: GetStyleState,
+  property: string,
+  condition: number,
+  identity: string,
+  wrappers: string[] | undefined,
+  selector: string
+) {
+  if (!canGenerateCSS || !state.flatShouldDoClasses) return
+  if (state.styleProps.noNormalize === false) return
+  const target = borderStyleDefaults[property]
+  if (!target) return
+  const requests = ((state as DirectAtomicState).flatBorderDefaultRequests ||= [])
+  for (let index = 0; index < requests.length; index++) {
+    if (requests[index].property === target && requests[index].identity === identity) {
+      return
+    }
+  }
+  requests.push({
+    property: target,
+    value: 'solid',
+    condition,
+    identity,
+    selector,
+    wrappers: wrappers && wrappers.length ? wrappers.slice() : undefined,
+    original: 'solid',
+    forceCSS: false,
+    sequence: 0,
+    normalize: false,
+  })
 }
 
 export function directStyleSignature(
@@ -43,148 +87,6 @@ export function directStyleSignature(
   return `\u001f${property}\u001f${conditionKey}\u001e${String(value)}`
 }
 
-export function directAtomic(
-  state: GetStyleState,
-  property: string,
-  value: any,
-  condition: number,
-  conditionKey: string,
-  conditionWrappers: string[] | undefined,
-  conditionSelector: string,
-  isDefault = false
-) {
-  if (!canGenerateCSS) return
-  const direct = state as DirectAtomicState
-  const atomics = (direct.flatAtomics ||= {})
-  const atomicKey = property.startsWith('transition') ? 'transition' : property
-  const existing = atomics[atomicKey]
-  const contribution = directStyleSignature(property, value, conditionKey)
-  const signature = existing ? existing.signature + contribution : contribution
-  const next = getCSSStyleAtomic(
-    property,
-    value,
-    conditionSelector,
-    conditionWrappers,
-    signature,
-    2 as any,
-    atomicKey,
-    property === 'containerName' || property === 'containerType'
-      ? condition
-        ? Math.max(
-            2,
-            1 +
-              ((Math.floor(condition / 256) >>> 23) & 7) +
-              (Math.floor(condition / 256) >>> 26) * 6 -
-              ((condition >>> 5) & 7)
-          )
-        : 2
-      : condition
-        ? 1 +
-          ((Math.floor(condition / 256) >>> 23) & 7) +
-          (Math.floor(condition / 256) >>> 26) * 6 -
-          ((condition >>> 5) & 7)
-        : undefined
-  )
-  if (!next) return
-  const identifier = next[StyleObjectIdentifier]
-  const nextRules = next[StyleObjectRules]
-  const slotted = condition || atomicKey === 'transition'
-
-  if (!existing) {
-    const atomic: DirectAtomic = {
-      baseRules: slotted ? 0 : nextRules.length,
-      conditions: undefined,
-      signature,
-      styleObject: next,
-    }
-    if (slotted) {
-      atomic.conditions = {
-        [atomicKey === 'transition' ? `${conditionKey}\0${property}` : conditionKey]: {
-          count: nextRules.length,
-          index: 0,
-          precedence: condition ? Math.floor(condition / 256) : 0,
-          default: isDefault,
-        },
-      }
-    }
-    atomics[atomicKey] = atomic
-  } else {
-    const previousIdentifier = existing.styleObject[StyleObjectIdentifier]
-    const rules = existing.styleObject[StyleObjectRules].slice()
-    existing.styleObject[StyleObjectRules] = rules
-    if (!condition && !isDefault && existing.conditions) {
-      for (const key in existing.conditions) {
-        const entry = existing.conditions[key]
-        if (!entry.default) continue
-        rules.splice(entry.index, entry.count)
-        delete existing.conditions[key]
-        for (const otherKey in existing.conditions) {
-          const other = existing.conditions[otherKey]
-          if (other.index > entry.index) other.index -= entry.count
-        }
-      }
-    }
-    if (previousIdentifier !== identifier) {
-      const oldSelector = `.${previousIdentifier}`
-      const newSelector = `.${identifier}`
-      for (let index = 0; index < rules.length; index++) {
-        rules[index] = rules[index].replaceAll(oldSelector, newSelector)
-      }
-    }
-    if (slotted) {
-      const slot =
-        atomicKey === 'transition' ? `${conditionKey}\0${property}` : conditionKey
-      const previous = existing.conditions?.[slot]
-      if (previous) {
-        rules.splice(previous.index, previous.count)
-        if (existing.conditions) {
-          for (const key in existing.conditions) {
-            const entry = existing.conditions[key]
-            if (entry !== previous && entry.index > previous.index) {
-              entry.index -= previous.count
-            }
-          }
-        }
-        delete existing.conditions![slot]
-      }
-      const precedence = condition ? Math.floor(condition / 256) : 0
-      let insertionIndex = rules.length
-      if (existing.conditions) {
-        for (const key in existing.conditions) {
-          const entry = existing.conditions[key]
-          if (entry.precedence > precedence && entry.index < insertionIndex) {
-            insertionIndex = entry.index
-          }
-        }
-        for (const key in existing.conditions) {
-          const entry = existing.conditions[key]
-          if (entry.index >= insertionIndex) entry.index += nextRules.length
-        }
-      }
-      ;(existing.conditions ||= {})[slot] = {
-        count: nextRules.length,
-        index: insertionIndex,
-        precedence,
-        default: isDefault,
-      }
-      rules.splice(insertionIndex, 0, ...nextRules)
-    } else {
-      const difference = nextRules.length - existing.baseRules
-      rules.splice(0, existing.baseRules, ...nextRules)
-      if (difference && existing.conditions) {
-        for (const key in existing.conditions) {
-          existing.conditions[key].index += difference
-        }
-      }
-      existing.baseRules = nextRules.length
-    }
-    existing.signature = signature
-    existing.styleObject[StyleObjectIdentifier] = identifier
-    existing.styleObject[1] = next[1]
-  }
-  state.classNames[atomicKey] = identifier
-}
-
 const borderStyleDefaults: Record<string, string> = {
   borderWidth: 'borderStyle',
   borderTopWidth: 'borderTopStyle',
@@ -193,41 +95,142 @@ const borderStyleDefaults: Record<string, string> = {
   borderLeftWidth: 'borderLeftStyle',
 }
 
-export function emitBorderStyleDefault(
-  state: GetStyleState,
-  property: string,
-  condition: number,
-  conditionKey: string,
-  conditionWrappers: string[] | undefined,
-  conditionSelector: string
+function registerSlot(
+  state: DirectAtomicState,
+  atomicKey: string,
+  entries: readonly AtomicSlotEntry[]
 ) {
-  if (
-    !canGenerateCSS ||
-    !state.flatShouldDoClasses ||
-    state.styleProps.noNormalize === false
-  ) {
-    return
+  let signature = ''
+  for (let index = 0; index < entries.length; index++) {
+    const entry = entries[index]
+    signature += directStyleSignature(entry.property, entry.value, entry.identity)
   }
-  const target = borderStyleDefaults[property]
-  if (!target) return
-  const atomic = (state as DirectAtomicState).flatAtomics?.[target]
-  if (
-    atomic?.baseRules ||
-    (state.classNames[target] && !atomic) ||
-    (condition && atomic?.conditions?.[conditionKey])
-  ) {
-    return
+  const built = buildAtomicSlotCSS(atomicKey, entries, signature)
+  if (!built) return
+  const styleObject: StyleObject = [
+    atomicKey,
+    built.value,
+    built.identifier,
+    undefined,
+    built.rules,
+  ] as any
+  ;(state.flatAtomics ||= {})[atomicKey] = styleObject
+  state.classNames[atomicKey] = built.identifier
+}
+
+/**
+ * Serialize the frame's CSS-destined slots: every slot when the pass emits
+ * classes, only force-CSS entries otherwise. Consumed entries leave the frame;
+ * whatever remains is the inline completion's input. Transition longhands
+ * group into one record, and border widths synthesize a border-style default
+ * unless an authored contribution owns the property.
+ */
+export function completeFrameCSS(state: GetStyleState) {
+  if (!canGenerateCSS) return
+  const direct = state as DirectAtomicState
+  const cssMode = !!state.flatShouldDoClasses
+  // a pass can be all-transform: the accumulator alone still produces a slot
+  if (!direct.flatFrame && !(cssMode && state.transformAccumulator)) return
+  const frame = (direct.flatFrame ||= {})
+
+  // synthetic border-style defaults from authored width contributions,
+  // resolved against the frame before any slot is consumed: an authored
+  // border-style base (or a matching conditional identity, or an externally
+  // merged class) suppresses the default
+  let syntheticsByTarget: Record<string, StyleFrameEntry[]> | undefined
+  const requests = direct.flatBorderDefaultRequests
+  if (cssMode && requests) {
+    for (let index = 0; index < requests.length; index++) {
+      const request = requests[index]
+      const target = request.property
+      const targetSlot = frame[target]
+      if (!targetSlot && state.classNames[target]) continue
+      let covered = false
+      if (targetSlot) {
+        for (let t = 0; t < targetSlot.length; t++) {
+          if (!targetSlot[t].condition || targetSlot[t].identity === request.identity) {
+            covered = true
+            break
+          }
+        }
+      }
+      if (covered) continue
+      ;((syntheticsByTarget ||= {})[target] ||= []).push(request)
+    }
+    direct.flatBorderDefaultRequests = undefined
   }
-  directAtomic(
-    state,
-    target,
-    'solid',
-    condition,
-    conditionKey,
-    conditionWrappers,
-    conditionSelector,
-    true
-  )
+
+  // the transform accumulator is the transform slot's base contribution
+  if (cssMode && state.transformAccumulator) {
+    const transform = finalizeTransformAccumulator(state.transformAccumulator)
+    const slot = (frame.transform ||= [])
+    slot.unshift({
+      property: 'transform',
+      value: Array.isArray(transform) ? transformsToString(transform) : transform,
+      condition: 0,
+      identity: '',
+      selector: '',
+      wrappers: undefined,
+      original: undefined,
+      forceCSS: false,
+      sequence: 0,
+      normalize: false,
+    })
+    state.transformAccumulator = undefined
+  }
+
+  let transitionEntries: StyleFrameEntry[] | undefined
+  for (const property in frame) {
+    const slot = frame[property]
+    let cssEntries: StyleFrameEntry[] | undefined
+    if (cssMode) {
+      cssEntries = slot
+      delete frame[property]
+    } else {
+      for (let index = slot.length - 1; index >= 0; index--) {
+        if (slot[index].forceCSS) {
+          ;(cssEntries ||= []).unshift(slot[index])
+          slot.splice(index, 1)
+        }
+      }
+      if (!slot.length) delete frame[property]
+      if (!cssEntries) continue
+    }
+    const synthetics = syntheticsByTarget?.[property]
+    if (synthetics) {
+      for (let index = 0; index < synthetics.length; index++) {
+        let covered = false
+        for (let t = 0; t < cssEntries.length; t++) {
+          if (cssEntries[t].identity === synthetics[index].identity) {
+            covered = true
+            break
+          }
+        }
+        if (!covered) cssEntries.push(synthetics[index])
+      }
+      delete syntheticsByTarget![property]
+    }
+    if (!cssEntries.length) continue
+    if (property.startsWith('transition')) {
+      if (transitionEntries) {
+        for (let index = 0; index < cssEntries.length; index++) {
+          transitionEntries.push(cssEntries[index])
+        }
+      } else {
+        transitionEntries = cssEntries
+      }
+      continue
+    }
+    registerSlot(direct, property, cssEntries)
+  }
+  if (syntheticsByTarget) {
+    for (const target in syntheticsByTarget) {
+      registerSlot(direct, target, syntheticsByTarget[target])
+    }
+  }
+  if (transitionEntries) {
+    registerSlot(direct, 'transition', transitionEntries)
+  }
 }
 
 export function flushDirectStyles(state: GetStyleState, clear = false) {
@@ -236,25 +239,13 @@ export function flushDirectStyles(state: GetStyleState, clear = false) {
     return
   }
   const direct = state as DirectAtomicState
-  if (state.transformAccumulator) {
-    const transform = finalizeTransformAccumulator(state.transformAccumulator)
-    directAtomic(
-      state,
-      'transform',
-      Array.isArray(transform) ? transformsToString(transform) : transform,
-      0,
-      '',
-      undefined,
-      ''
-    )
-    if (clear) state.transformAccumulator = undefined
-  }
   const atomics = direct.flatAtomics
   if (!atomics) return
   for (const property in atomics) {
-    const styleObject = atomics[property].styleObject
+    const styleObject = atomics[property]
     const identifier = styleObject[StyleObjectIdentifier]
     if (shouldInsertStyleRules(identifier)) {
+      // rulesToInsert owns its array; never expose the cache's copy
       const rules = styleObject[StyleObjectRules].slice()
       styleObject[StyleObjectRules] = rules
       updateRules(identifier, rules)
@@ -282,7 +273,7 @@ export function addComposition(state: GetStyleState, property: 'translate' | 'sc
   state.classNames[property] = identifier
 }
 
-export function clearDirectAtomic(state: GetStyleState, atomicKey: string) {
+export function clearFrameAtomic(state: GetStyleState, atomicKey: string) {
   const direct = state as DirectAtomicState
   if (direct.flatAtomics) delete direct.flatAtomics[atomicKey]
 }
