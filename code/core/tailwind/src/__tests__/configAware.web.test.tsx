@@ -14,7 +14,7 @@ import { StyleObjectProperty, StyleObjectValue } from '@tamagui/helpers'
 import { tamaguiToTailwind } from '@tamagui/to-tailwind'
 
 import { createTamagui } from '@tamagui/web'
-import { tailwindStyleFrontend } from '../frontend'
+import { preprocessTailwindClassName } from '../candidate'
 import { View } from '../index'
 import { splitTailwindStyles } from './utils'
 
@@ -45,7 +45,7 @@ function className(sourceJSX: string): string {
   return m ? m[1] : ''
 }
 function flat(cls: string): Record<string, any> {
-  return tailwindStyleFrontend.preprocessProps({ className: cls }, CFG)
+  return preprocessTailwindClassName({ className: cls }, CFG)
 }
 function styleFlat(props: Record<string, any>): Record<string, any> {
   const s = splitTailwindStyles(View, props, {

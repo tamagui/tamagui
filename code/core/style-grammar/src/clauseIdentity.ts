@@ -123,10 +123,16 @@ type ClauseIdentityContext<Context> = {
   handler: ClauseIdentityHandler<Context>
   consumer: Context
   chainStart: number
+  pendingChainStart: number
   chainEnd: number
+  pendingChainEnd: number
   payloadStart: number
   canonical: string[]
+  pendingCanonical: string[]
+  modifierStarts: number[]
+  modifierEnds: number[]
   clauseValid: boolean
+  pendingClauseValid: boolean
 }
 
 const clauseIdentityScanner: FlatValueHandler<ClauseIdentityContext<unknown>> = {
@@ -148,26 +154,43 @@ const clauseIdentityScanner: FlatValueHandler<ClauseIdentityContext<unknown>> = 
     )
   },
 
-  chain(ctx, start, end, valid) {
-    ctx.chainStart = start
-    ctx.chainEnd = end
-    ctx.payloadStart = end + 1
-    ctx.canonical.length = 0
-    ctx.clauseValid = valid
-    ctx.handler.chain?.(ctx.consumer, start, end)
+  modifier(ctx, start, end, valid, first) {
+    if (first) {
+      ctx.pendingChainStart = start
+      ctx.pendingCanonical.length = 0
+      ctx.modifierStarts.length = 0
+      ctx.modifierEnds.length = 0
+      ctx.pendingClauseValid = true
+    }
+    ctx.pendingChainEnd = end
+    ctx.pendingClauseValid &&= valid
+    if (start === end) {
+      ctx.pendingClauseValid = false
+      ctx.handler.error?.(ctx.consumer, 'empty-modifier', start)
+    } else {
+      const canonical = canonicalClauseModifier(ctx.source.slice(start, end))
+      ctx.pendingCanonical.push(canonical)
+      ctx.modifierStarts.push(start)
+      ctx.modifierEnds.push(end)
+    }
+  },
 
-    let modifierStart = start
-    for (let index = start; index <= end; index++) {
-      if (index !== end && ctx.source.charCodeAt(index) !== 58) continue
-      if (index === modifierStart) {
-        ctx.clauseValid = false
-        ctx.handler.error?.(ctx.consumer, 'empty-modifier', index)
-      } else {
-        const canonical = canonicalClauseModifier(ctx.source.slice(modifierStart, index))
-        ctx.canonical.push(canonical)
-        ctx.handler.modifier?.(ctx.consumer, modifierStart, index, canonical)
-      }
-      modifierStart = index + 1
+  chain(ctx, start, end, valid) {
+    ctx.chainStart = ctx.pendingChainStart
+    ctx.chainEnd = ctx.pendingChainEnd
+    ctx.payloadStart = end + 1
+    ctx.clauseValid = ctx.pendingClauseValid && valid
+    ctx.canonical.length = 0
+    ctx.handler.chain?.(ctx.consumer, start, end)
+    for (let index = 0; index < ctx.pendingCanonical.length; index++) {
+      const canonical = ctx.pendingCanonical[index]
+      ctx.canonical.push(canonical)
+      ctx.handler.modifier?.(
+        ctx.consumer,
+        ctx.modifierStarts[index],
+        ctx.modifierEnds[index],
+        canonical
+      )
     }
     return true
   },
@@ -196,9 +219,15 @@ export function reduceFlatValueIdentity<Context>(
     handler,
     consumer,
     chainStart: 0,
+    pendingChainStart: 0,
     chainEnd: 0,
+    pendingChainEnd: 0,
     payloadStart: 0,
     canonical: [],
+    pendingCanonical: [],
+    modifierStarts: [],
+    modifierEnds: [],
     clauseValid: true,
+    pendingClauseValid: true,
   } as ClauseIdentityContext<unknown>)
 }

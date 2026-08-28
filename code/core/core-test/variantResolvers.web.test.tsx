@@ -644,7 +644,7 @@ describe('TS-style variant resolvers', () => {
     expect(getOpacity(RadiusFirst, variable)).toBe(0.49)
   })
 
-  test('compiled resolver entries are cached per variant map', () => {
+  test('resolver entries compile when the component is defined', () => {
     let ownKeysCount = 0
     const kind = new Proxy(
       {
@@ -668,7 +668,7 @@ describe('TS-style variant resolvers', () => {
 
     expect(getOpacity(Comp, '4')).toBe(0.52)
     expect(getOpacity(Comp, '4')).toBe(0.52)
-    expect(ownKeysCount).toBe(1)
+    expect(ownKeysCount).toBe(0)
   })
 
   test('trimmed union members match', () => {

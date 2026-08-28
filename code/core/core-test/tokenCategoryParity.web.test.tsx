@@ -12,7 +12,7 @@ import { getTokenCategory, grammarEntries } from '@tamagui/style-grammar/tooling
 import { beforeAll, expect, test } from 'vitest'
 import config from '../config-default'
 import { Text, View, createTamagui, getSplitStyles } from '../web/src'
-import { getTokenCategoryForProperty } from '../web/src/helpers/propMapper'
+import { getTokenCategoryForProperty } from '../web/src/helpers/tokenCategories'
 
 beforeAll(() => {
   createTamagui(config.getDefaultTamaguiConfig() as any)

@@ -11,7 +11,7 @@ import { StyleObjectProperty, StyleObjectValue } from '@tamagui/helpers'
 import { tamaguiToTailwind } from '@tamagui/to-tailwind'
 import { createTamagui } from '@tamagui/web'
 
-import { tailwindStyleFrontend } from '../frontend'
+import { preprocessTailwindClassName } from '../candidate'
 import { Text, View } from '../index'
 import { splitTailwindStyles } from './utils'
 
@@ -67,7 +67,7 @@ describe('2 — dynamic className follows authored forward order', () => {
       expect(cls).toBe('animation-fast')
       expect(convert(source)).toContain('animation="slow"')
       expect(
-        tailwindStyleFrontend.preprocessProps({ className: cls } as any, CFG).animation
+        preprocessTailwindClassName({ className: cls } as any, CFG).animation
       ).toBeUndefined()
     }
   })
@@ -121,7 +121,7 @@ describe('5 — chained media and state clause → md:hover:opacity-50', () => {
   test('the flat clause converts without rebuilding a condition object', () => {
     const a = convert(`<View opacity="md:hover:0.5" />`)
     expect(classOf(a)).toBe('md:hover:opacity-50')
-    const flat = tailwindStyleFrontend.preprocessProps(
+    const flat = preprocessTailwindClassName(
       { className: 'md:hover:opacity-50' },
       CFG
     )
