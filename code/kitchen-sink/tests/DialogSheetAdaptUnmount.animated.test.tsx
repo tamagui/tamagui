@@ -37,8 +37,6 @@ test.describe('Dialog Sheet Adapt - body persists during exit animation', () => 
 
   test('marker stays mounted while the sheet slides out', async ({ page }) => {
     const marker = page.getByTestId('dialog-content-marker')
-    const sheetFrame = page.locator('.is_SheetContainer[data-state]')
-
     // open the dialog (which adapts to a sheet on this viewport)
     await page.getByTestId('open-dialog').click()
 
@@ -52,7 +50,7 @@ test.describe('Dialog Sheet Adapt - body persists during exit animation', () => 
         async () =>
           page.evaluate(() =>
             document
-              .querySelector('.is_SheetContainer[data-state]')
+              .querySelector('[data-testid="sheet-frame"][data-state]')
               ?.getAttribute('data-state')
           ),
         { timeout: 5000 }
@@ -85,11 +83,11 @@ test.describe('Dialog Sheet Adapt - body persists during exit animation', () => 
               exists: !!document.querySelector('[data-testid="dialog-content-marker"]'),
               state:
                 document
-                  .querySelector('.is_SheetContainer[data-state]')
+                  .querySelector('[data-testid="sheet-frame"][data-state]')
                   ?.getAttribute('data-state') ?? null,
               top:
                 document
-                  .querySelector('.is_SheetContainer[data-state]')
+                  .querySelector('[data-testid="sheet-frame"][data-state]')
                   ?.getBoundingClientRect().top ?? null,
             })
           }
@@ -159,7 +157,7 @@ test.describe('Dialog Sheet Adapt - body persists during exit animation', () => 
           page.evaluate(
             () =>
               document
-                .querySelector('.is_SheetContainer[data-state]')
+                .querySelector('[data-testid="sheet-frame"][data-state]')
                 ?.getAttribute('data-state') ?? 'gone'
           ),
         { timeout: 3000 }

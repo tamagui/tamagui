@@ -13,8 +13,8 @@ export function SliderDemo() {
 function SimpleSlider({ children, ...props }: SliderProps) {
   return (
     <Slider defaultValue={[50]} max={100} step={1} {...props}>
-      <Slider.Track>
-        <Slider.TrackActive />
+      <Slider.Track testID="slider-track">
+        <Slider.TrackActive testID="slider-track-active" />
       </Slider.Track>
       <Slider.Thumb theme="accent" size={30} borderRadius={100} />
       {children}

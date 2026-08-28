@@ -28,7 +28,7 @@ test('themeShallow does not add extra wrapper elements compared to normal theme'
   // Count the number of wrapper elements between the container and its text content
   const normalDepth = await normalContainer.evaluate((el) => {
     let depth = 0
-    let current = el.querySelector('[class*="is_Theme"]')
+    let current = el.querySelector('.t_light')
     while (current && current !== el) {
       depth++
       current = current.parentElement
@@ -38,7 +38,7 @@ test('themeShallow does not add extra wrapper elements compared to normal theme'
 
   const shallowDepth = await shallowContainer.evaluate((el) => {
     let depth = 0
-    let current = el.querySelector('[class*="is_Theme"]')
+    let current = el.querySelector('.t_light')
     while (current && current !== el) {
       depth++
       current = current.parentElement
@@ -81,7 +81,7 @@ test('themeShallow container has consistent DOM structure', async ({ page }) => 
   expect(innerHtml).toContain('Inner content')
 
   // Verify Theme wrapper spans are present (theme always wraps in span on web)
-  const themeSpans = await container.locator('span.is_Theme').count()
+  const themeSpans = await container.locator('span.t_dark').count()
   expect(themeSpans).toBeGreaterThan(0)
 })
 

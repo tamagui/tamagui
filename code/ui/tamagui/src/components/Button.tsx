@@ -62,7 +62,7 @@ const buttonTextSizeVariant = (val: ButtonSize, extras: VariantSpreadExtras<any>
 export const ButtonFrame = styled(ButtonBehaviorFrame, {
   context: SizeContext,
   displayName: 'ButtonFrame',
-  className: 'is_Button',
+  className: 'tm-button',
   backgroundColor: 'background hover:background-hover press:background-press',
   borderColor: 'border-color hover:border-color-hover',
   borderStyle: 'solid',

@@ -5,7 +5,7 @@ import { SizableText } from './SizableText'
 
 export const Paragraph = styled(SizableText, {
   displayName: 'Paragraph',
-  className: 'is_Paragraph',
+  className: 'tm-paragraph',
   render: 'p',
   userSelect: 'auto',
   color: 'color',

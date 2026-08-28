@@ -57,7 +57,7 @@ a {
   font-size: inherit;
 }
 
-:is(.is_Paragraph a, .link a, article p a, footer a) {
+:is(.tm-paragraph a, .link a, article p a, footer a) {
   text-decoration: underline;
   text-underline-offset: 4px;
   text-decoration-thickness: 2px;
@@ -65,7 +65,7 @@ a {
   transition: text-decoration-thickness ease-in-out 100ms;
 }
 
-:is(.is_Paragraph a, .link a, article p a, footer a):hover {
+:is(.tm-paragraph a, .link a, article p a, footer a):hover {
   text-decoration: underline;
   cursor: pointer;
   text-decoration-thickness: 4px;

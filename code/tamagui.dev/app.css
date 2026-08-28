@@ -88,12 +88,12 @@ p a,
   }
 }
 
-:root:root .is_Paragraph a {
+:root:root .tm-paragraph a {
   text-decoration: underline;
   text-decoration-color: var(--color02);
 }
 
-:root:root .is_Paragraph a:hover {
+:root:root .tm-paragraph a:hover {
   text-decoration-thickness: 2px;
   text-decoration-color: var(--color04);
 }
@@ -103,7 +103,7 @@ a {
   font-weight: 300;
 }
 
-:is(.is_Paragraph a, .link a, article p a, footer a) {
+:is(.tm-paragraph a, .link a, article p a, footer a) {
   text-decoration: underline;
   text-underline-offset: 4px;
   text-decoration-thickness: 2px;
@@ -111,14 +111,14 @@ a {
   transition: text-decoration-thickness ease-in-out 100ms;
 }
 
-:is(.is_Paragraph a, .link a, article p a, footer a):hover {
+:is(.tm-paragraph a, .link a, article p a, footer a):hover {
   text-decoration: underline;
   cursor: pointer;
   text-decoration-thickness: 4px;
   text-decoration-color: var(--color8);
 }
 
-:where(.is_Paragraph:has(> ul)) {
+:where(.tm-paragraph:has(> ul)) {
   margin-bottom: 0;
 }
 

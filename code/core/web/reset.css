@@ -36,7 +36,7 @@ button,
   outline: none;
 }
 
-.is_Fieldset {
+.tm-fieldset {
   all: unset;
 }
 
@@ -45,7 +45,7 @@ button,
   box-sizing: border-box;
 }
 
-a.is_Button,
-.is_Anchor:has(.is_Button) {
+a.tm-button,
+.tm-anchor:has(.tm-button) {
   text-decoration: none;
 }
