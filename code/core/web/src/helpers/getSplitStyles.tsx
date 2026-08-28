@@ -229,12 +229,11 @@ let compoundArenaEpoch = 0
 // outer pass and clear every authored reference on release.
 type ConditionCursor = number
 
-const conditionWidth = 5
+const conditionWidth = 4
 const conditionValueOffset = 0
 const conditionFlagsOffset = 1
 const conditionPrecedenceOffset = 2
-const conditionAtomOffset = 3
-const conditionWrapperOffset = 4
+const conditionWrapperOffset = 3
 
 const conditionActiveFlag = 1
 const conditionEmitFlag = 2
@@ -254,10 +253,7 @@ const conditionUnresolvedNameOffset = 4
 
 let conditionNumbers = new Float64Array(2048)
 const conditionTexts: string[] = []
-const conditionAtomNumbers: number[] = []
-const conditionAtomNames: string[] = []
 const conditionWrappers: string[] = []
-let conditionAtomTop = 0
 let conditionWrapperTop = 0
 let conditionCursorTop = conditionWidth
 
@@ -308,15 +304,6 @@ function copyConditionCursor(target: ConditionCursor, source: ConditionCursor) {
   for (let offset = 0; offset < conditionTextWidth; offset++) {
     conditionTexts[target + offset] = conditionTexts[source + offset] || ''
   }
-  const atom = conditionNumbers[source + conditionAtomOffset]
-  const atomStart = atom >> 4
-  const atomCount = atom & 15
-  for (let index = 0; index < atomCount; index++) {
-    const sourceAtom = atomStart + index
-    conditionAtomNumbers[conditionAtomTop] = conditionAtomNumbers[sourceAtom]
-    conditionAtomNames[conditionAtomTop++] = conditionAtomNames[sourceAtom]
-  }
-  conditionNumbers[target + conditionAtomOffset] += atomCount
   const wrapper = conditionNumbers[source + conditionWrapperOffset]
   const wrapperStart = wrapper >> 3
   const wrapperCount = wrapper & 7
@@ -330,7 +317,6 @@ function resetConditionCursor(cursor: ConditionCursor, parent: ConditionCursor |
   conditionNumbers[cursor + conditionValueOffset] = 0
   conditionNumbers[cursor + conditionFlagsOffset] = conditionInitialFlags
   conditionNumbers[cursor + conditionPrecedenceOffset] = 0
-  conditionNumbers[cursor + conditionAtomOffset] = conditionAtomTop << 4
   conditionNumbers[cursor + conditionWrapperOffset] = conditionWrapperTop << 3
   conditionTexts.fill('', cursor, cursor + conditionTextWidth)
   if (parent) copyConditionCursor(cursor, parent)
@@ -350,9 +336,7 @@ function releaseConditionCursors(watermark: number) {
   conditionCursorTop = watermark
 }
 
-function releaseConditionPayloads(atomBase: number, wrapperBase: number) {
-  conditionAtomNames.fill('', atomBase, conditionAtomTop)
-  conditionAtomTop = atomBase
+function releaseConditionPayloads(wrapperBase: number) {
   conditionWrappers.fill('', wrapperBase, conditionWrapperTop)
   conditionWrapperTop = wrapperBase
 }
@@ -371,15 +355,39 @@ function accumulateConditionAtom(
   rank: number,
   name: string
 ) {
-  const atom = conditionNumbers[cursor + conditionAtomOffset]
-  const atomStart = atom >> 4
-  const atomCount = atom & 15
-  for (let index = 0; index < atomCount; index++) {
-    if (conditionAtomNames[atomStart + index] === name) return
+  // the canonical identity builds incrementally: sorted insertion into the
+  // key text, and a duplicate modifier contributes nothing further.
+  // composition re-parses this key (owner ruling 2026-08-28), so no atom
+  // record survives past the insertion.
+  const keySlot = cursor + conditionKeyOffset
+  const key = conditionTexts[keySlot]
+  if (!key) {
+    conditionTexts[keySlot] = name
+  } else {
+    let slotStart = 0
+    let inserted = false
+    while (slotStart <= key.length) {
+      let slotEnd = key.indexOf(':', slotStart)
+      if (slotEnd === -1) slotEnd = key.length
+      let order = 0
+      const compareLength = Math.min(name.length, slotEnd - slotStart)
+      for (let offset = 0; offset < compareLength; offset++) {
+        order = name.charCodeAt(offset) - key.charCodeAt(slotStart + offset)
+        if (order) break
+      }
+      order ||= name.length - (slotEnd - slotStart)
+      if (!order) return
+      if (order < 0) {
+        conditionTexts[keySlot] =
+          `${key.slice(0, slotStart)}${name}:${key.slice(slotStart)}`
+        inserted = true
+        break
+      }
+      if (slotEnd === key.length) break
+      slotStart = slotEnd + 1
+    }
+    if (!inserted) conditionTexts[keySlot] = `${key}:${name}`
   }
-  conditionAtomNumbers[conditionAtomTop] = kind | (rank << 3)
-  conditionAtomNames[conditionAtomTop++] = name
-  conditionNumbers[cursor + conditionAtomOffset]++
 
   if (kind === modifierKindPlatform) {
     const precedence = conditionNumbers[cursor + conditionPrecedenceOffset]
@@ -638,29 +646,8 @@ function commitConditionCursor(state: GetStyleState, cursor: ConditionCursor): n
     conditionNumbers[cursor + conditionValueOffset] = 0
     return 0
   }
-  // the canonical identity materializes once per committed clause: the
-  // smallest unused atom name joins next (selection over at most six names,
-  // no intermediate collections)
-  const atom = conditionNumbers[cursor + conditionAtomOffset]
-  const atomStart = atom >> 4
-  const atomCount = atom & 15
-  let key = ''
-  if (atomCount === 1) {
-    key = conditionAtomNames[atomStart]
-  } else {
-    let previous = ''
-    for (let picked = 0; picked < atomCount; picked++) {
-      let smallest = ''
-      for (let index = 0; index < atomCount; index++) {
-        const name = conditionAtomNames[atomStart + index]
-        if (previous && name <= previous) continue
-        if (!smallest || name < smallest) smallest = name
-      }
-      key = picked === 0 ? smallest : `${key}:${smallest}`
-      previous = smallest
-    }
-  }
-  conditionTexts[cursor + conditionKeyOffset] = key
+  // the canonical identity built incrementally during accumulation
+  const key = conditionTexts[cursor + conditionKeyOffset] || ''
   const precedence = conditionNumbers[cursor + conditionPrecedenceOffset]
   const depth = (precedence >> 23) & 7
   if (depth > 5) {
@@ -689,53 +676,25 @@ const conditionSnapshotTexts: string[] = []
 
 function snapshotCondition(cursor: ConditionCursor): number {
   const id = reserveCompoundArena(conditionWidth)
-  const targetBase = id
-  const sourceBase = cursor
   for (let offset = 0; offset < conditionWidth; offset++) {
-    compoundArena[targetBase + offset] = conditionNumbers[sourceBase + offset]
+    compoundArena[id + offset] = conditionNumbers[cursor + offset]
   }
-  const targetText = id
-  const sourceText = cursor
   for (let offset = 0; offset < conditionTextWidth; offset++) {
-    conditionSnapshotTexts[targetText + offset] =
-      conditionTexts[sourceText + offset] || ''
+    conditionSnapshotTexts[id + offset] = conditionTexts[cursor + offset] || ''
   }
   return id
 }
 
-function copyConditionSnapshot(target: ConditionCursor, snapshot: number) {
-  const targetBase = target
-  const sourceBase = snapshot
-  for (let offset = 0; offset <= conditionPrecedenceOffset; offset++) {
-    conditionNumbers[targetBase + offset] = compoundArena[sourceBase + offset]
-  }
-  const targetText = target
-  const sourceText = snapshot
-  for (let offset = 0; offset < conditionTextWidth; offset++) {
-    conditionTexts[targetText + offset] =
-      conditionSnapshotTexts[sourceText + offset] || ''
-  }
-  const atom = compoundArena[sourceBase + conditionAtomOffset]
-  const atomStart = atom >> 4
-  const atomCount = atom & 15
-  for (let index = 0; index < atomCount; index++) {
-    const sourceAtom = atomStart + index
-    conditionAtomNumbers[conditionAtomTop] = conditionAtomNumbers[sourceAtom]
-    conditionAtomNames[conditionAtomTop++] = conditionAtomNames[sourceAtom]
-  }
-  conditionNumbers[targetBase + conditionAtomOffset] += atomCount
-  const wrapper = compoundArena[sourceBase + conditionWrapperOffset]
-  const wrapperStart = wrapper >> 3
-  const wrapperCount = wrapper & 7
-  for (let index = 0; index < wrapperCount; index++) {
-    conditionWrappers[conditionWrapperTop++] = conditionWrappers[wrapperStart + index]
-  }
-  conditionNumbers[targetBase + conditionWrapperOffset] += wrapperCount
-}
-
-function acquireConditionSnapshotCursor(snapshot: number) {
+function acquireConditionSnapshotCursor(state: GetStyleState, snapshot: number) {
+  // a snapshot restores by re-parsing its canonical key (owner ruling
+  // 2026-08-28): activity, selector and wrapper state re-derive fresh, so no
+  // stale stack reference survives the pass
   const cursor = acquireConditionCursor()
-  copyConditionSnapshot(cursor, snapshot)
+  const key = conditionSnapshotTexts[snapshot + conditionKeyOffset] || ''
+  if (key) {
+    resolveConditionText(state, cursor, key)
+    commitConditionCursor(state, cursor)
+  }
   return cursor
 }
 
@@ -750,21 +709,9 @@ function combineConditionSnapshots(
   if (!first) return second
   if (!second || first === second) return first
   const watermark = conditionCursorTop
-  const target = acquireConditionSnapshotCursor(first)
-  const secondBase = second
-  const atomMeta = compoundArena[secondBase + conditionAtomOffset]
-  const atomStart = atomMeta >> 4
-  const atomCount = atomMeta & 15
-  for (let index = 0; index < atomCount; index++) {
-    const atom = atomStart + index
-    accumulateConditionAtom(
-      state,
-      target,
-      conditionAtomNumbers[atom] & 7,
-      conditionAtomNumbers[atom] >> 3,
-      conditionAtomNames[atom]
-    )
-  }
+  const target = acquireConditionSnapshotCursor(state, first)
+  const secondKey = conditionSnapshotTexts[second + conditionKeyOffset] || ''
+  if (secondKey) resolveConditionText(state, target, secondKey)
   commitConditionCursor(state, target)
   const key = conditionTexts[target + conditionKeyOffset] || ''
   let result: number
@@ -1263,7 +1210,6 @@ function forEachPropInForwardOrder(pass: StylePass) {
     )
   }
 
-  const conditionAtomBase = conditionAtomTop
   const conditionWrapperBase = conditionWrapperTop
   if (!preparedCompounds) {
     try {
@@ -1282,7 +1228,7 @@ function forEachPropInForwardOrder(pass: StylePass) {
         }
       }
     } finally {
-      releaseConditionPayloads(conditionAtomBase, conditionWrapperBase)
+      releaseConditionPayloads(conditionWrapperBase)
     }
     return
   }
@@ -1322,7 +1268,7 @@ function forEachPropInForwardOrder(pass: StylePass) {
     }
   } finally {
     conditionSnapshotTexts.fill('', arenaBase, compoundArenaTop)
-    releaseConditionPayloads(conditionAtomBase, conditionWrapperBase)
+    releaseConditionPayloads(conditionWrapperBase)
     compoundArenaTop = arenaBase
   }
 }
@@ -1537,7 +1483,10 @@ function contributeProp(
     pass[passCompoundIndexes] = undefined
   }
   if (parentConditionId) {
-    pass[passParentCursor] = acquireConditionSnapshotCursor(parentConditionId)
+    pass[passParentCursor] = acquireConditionSnapshotCursor(
+      pass[passStyleState] as GetStyleState,
+      parentConditionId
+    )
   }
   try {
     const [
@@ -4676,7 +4625,7 @@ function contributeValue(
     const watermark = conditionCursorTop
     try {
       // compose the incoming condition over any live parent condition by
-      // replaying atoms; a frontend hands the condition as authored text
+      // re-parsing its canonical key; a frontend hands authored text directly
       let effective: ConditionCursor
       if (typeof condition === 'string') {
         effective = acquireConditionCursor(parent)
@@ -4684,20 +4633,8 @@ function contributeValue(
         commitConditionCursor(state, effective)
       } else if (parent) {
         effective = acquireConditionCursor(parent)
-        const atomMeta = conditionNumbers[condition + conditionAtomOffset]
-        const atomCount = atomMeta & 15
-        const atomStart = atomMeta >> 4
-        for (let index = 0; index < atomCount; index++) {
-          const atom = atomStart + index
-          const code = conditionAtomNumbers[atom]
-          accumulateConditionAtom(
-            state,
-            effective,
-            code & 7,
-            code >> 3,
-            conditionAtomNames[atom]
-          )
-        }
+        const conditionKey = conditionTexts[condition + conditionKeyOffset] || ''
+        if (conditionKey) resolveConditionText(state, effective, conditionKey)
         if (
           !(conditionNumbers[condition + conditionFlagsOffset] & conditionResolvedFlag)
         ) {
@@ -4880,25 +4817,17 @@ function isConditionTransport(value: unknown): value is ConditionTransport {
   )
 }
 
-const transportHeaderWidth = 3
-const transportAtomWidth = 2
+const transportEntryWidth = 2
 
-function conditionEntryWidth(entries: unknown[], offset: number) {
-  return transportHeaderWidth + (entries[offset + 2] as number) * transportAtomWidth
+function conditionEntryWidth(_entries: unknown[], _offset: number) {
+  return transportEntryWidth
 }
 
 function appendConditionEntry(entries: unknown[], cursor: ConditionCursor, value: any) {
-  const atomMeta = conditionNumbers[cursor + conditionAtomOffset]
-  const atomCount = atomMeta & 15
-  const atomStart = atomMeta >> 4
-  entries.push(value, conditionTexts[cursor + conditionKeyOffset] || '', atomCount)
-  for (let index = 0; index < atomCount; index++) {
-    const atom = atomStart + index
-    entries.push(conditionAtomNumbers[atom], conditionAtomNames[atom])
-  }
+  entries.push(value, conditionTexts[cursor + conditionKeyOffset] || '')
 }
 
-/** replay a transported clause's atoms into a fresh committed cursor */
+/** rebuild a transported clause's cursor by re-parsing its canonical key */
 function acquireTransportCursor(
   state: GetStyleState,
   entries: unknown[],
@@ -4906,18 +4835,8 @@ function acquireTransportCursor(
   parent: ConditionCursor | null
 ): ConditionCursor {
   const cursor = acquireConditionCursor(parent)
-  const atomCount = entries[offset + 2] as number
-  let atomOffset = offset + transportHeaderWidth
-  for (let index = 0; index < atomCount; index++) {
-    accumulateConditionAtom(
-      state,
-      cursor,
-      (entries[atomOffset] as number) & 7,
-      (entries[atomOffset] as number) >> 3,
-      entries[atomOffset + 1] as string
-    )
-    atomOffset += transportAtomWidth
-  }
+  const key = entries[offset + 1] as string
+  if (key) resolveConditionText(state, cursor, key)
   commitConditionCursor(state, cursor)
   return cursor
 }
@@ -5114,20 +5033,8 @@ function emitMappedValue(
   const watermark = conditionCursorTop
   if (nested && parent) {
     const composed = acquireConditionCursor(parent)
-    const atomMeta = conditionNumbers[nested + conditionAtomOffset]
-    const atomCount = atomMeta & 15
-    const atomStart = atomMeta >> 4
-    for (let index = 0; index < atomCount; index++) {
-      const atom = atomStart + index
-      const code = conditionAtomNumbers[atom]
-      accumulateConditionAtom(
-        styleState,
-        composed,
-        code & 7,
-        code >> 3,
-        conditionAtomNames[atom]
-      )
-    }
+    const nestedKey = conditionTexts[nested + conditionKeyOffset] || ''
+    if (nestedKey) resolveConditionText(styleState, composed, nestedKey)
     if (!(conditionNumbers[nested + conditionFlagsOffset] & conditionResolvedFlag)) {
       setConditionUnresolved(composed)
     }
