@@ -28,7 +28,7 @@
     "csstype": "^3.0.10",
     "react": "19.2.3",
     "typescript": "~6.0.3",
-    "vitest": "4.0.4"
+    "vitest": "4.1.0"
   },
   "peerDependencies": {
     "react": ">=19"

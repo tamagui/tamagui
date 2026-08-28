@@ -28,9 +28,9 @@
   "devDependencies": {
     "@tamagui/build": "workspace:*",
     "@tamagui/config-default": "workspace:*",
-    "happy-dom": "^10.11.2",
+    "happy-dom": "20.8.9",
     "react": "19.2.3",
-    "vitest": "4.0.4",
+    "vitest": "4.1.0",
     "vitest-axe": "^0.1.0",
     "vitest-react-native": "^0.1.5"
   },

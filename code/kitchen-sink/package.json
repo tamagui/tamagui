@@ -100,7 +100,7 @@
     "react-native-worklets": "0.10.1",
     "solito": "^4.3.0",
     "tamagui": "workspace:*",
-    "vitest": "4.0.4"
+    "vitest": "4.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",

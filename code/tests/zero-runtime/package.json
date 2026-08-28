@@ -32,7 +32,7 @@
     "@tamagui/vite-plugin": "workspace:*",
     "metro": "0.84.4",
     "metro-config": "0.84.4",
-    "next": "16.1.1",
+    "next": "16.2.11",
     "react-dom": "19.2.3",
     "vite": "^8.2.2"
   },

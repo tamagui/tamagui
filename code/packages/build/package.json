@@ -42,7 +42,7 @@
     "get-tsconfig": "^4.14.0",
     "lodash.debounce": "^4.0.8",
     "oxc-transform": "^0.112.0",
-    "picomatch": "4.0.3",
+    "picomatch": "4.0.4",
     "rolldown": "1.2.4"
   },
   "optionalDependencies": {
@@ -63,6 +63,6 @@
     }
   },
   "devDependencies": {
-    "vitest": "4.0.4"
+    "vitest": "4.1.0"
   }
 }
