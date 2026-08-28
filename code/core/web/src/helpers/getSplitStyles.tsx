@@ -262,6 +262,11 @@ let conditionCursorTop = conditionWidth
 
 function reserveConditionCursor(cursor: number) {
   const required = cursor + conditionWidth
+  if (required > conditionTexts.length) {
+    const previous = conditionTexts.length
+    conditionTexts.length = required
+    conditionTexts.fill('', previous)
+  }
   if (required <= conditionNumbers.length) return
   let length = conditionNumbers.length * 2
   while (length < required) length *= 2
