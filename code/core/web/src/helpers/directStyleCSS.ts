@@ -47,31 +47,37 @@ type DirectAtomicState = GetStyleState & {
 export function requestBorderStyleDefault(
   state: GetStyleState,
   property: string,
-  cursor: {
-    condition: number
-    key: string
-    selector: string
-    wrappers: string[]
-  } | null
+  condition: number,
+  identity: string,
+  selector: string,
+  wrapperSource: readonly string[] | undefined,
+  wrapperStart: number,
+  wrapperCount: number
 ) {
   if (!canGenerateCSS || !state.flatShouldDoClasses) return
   if (state.styleProps.noNormalize === false) return
   const target = borderStyleDefaults[property]
   if (!target) return
-  const identity = cursor ? cursor.key : ''
   const requests = ((state as DirectAtomicState).flatBorderDefaultRequests ||= [])
   for (let index = 0; index < requests.length; index++) {
     if (requests[index].property === target && requests[index].identity === identity) {
       return
     }
   }
+  let wrappers: string[] | undefined
+  if (wrapperSource && wrapperCount) {
+    wrappers = new Array(wrapperCount)
+    for (let index = 0; index < wrapperCount; index++) {
+      wrappers[index] = wrapperSource[wrapperStart + index]
+    }
+  }
   requests.push({
     property: target,
     value: 'solid',
-    condition: cursor ? cursor.condition : 0,
+    condition,
     identity,
-    selector: cursor ? cursor.selector : '',
-    wrappers: cursor && cursor.wrappers.length ? cursor.wrappers.slice() : undefined,
+    selector,
+    wrappers,
     original: 'solid',
     forceCSS: false,
     sequence: 0,

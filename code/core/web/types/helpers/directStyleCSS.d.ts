@@ -21,12 +21,7 @@ export interface StyleFrameEntry {
  * an authored border style owns the property by completion time. Requests key
  * off the authored (pre-expansion) property, matching the emitted class.
  */
-export declare function requestBorderStyleDefault(state: GetStyleState, property: string, cursor: {
-    condition: number;
-    key: string;
-    selector: string;
-    wrappers: string[];
-} | null): void;
+export declare function requestBorderStyleDefault(state: GetStyleState, property: string, condition: number, identity: string, selector: string, wrapperSource: readonly string[] | undefined, wrapperStart: number, wrapperCount: number): void;
 export declare function directStyleSignature(property: string, value: unknown, conditionKey?: string): string;
 /**
  * Serialize the frame's CSS-destined slots: every slot when the pass emits

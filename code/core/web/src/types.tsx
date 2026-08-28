@@ -2994,8 +2994,8 @@ export type PropMapper = (
   value: any,
   state: GetStyleState,
   disabled: boolean,
-  // condition is an opaque resolved-condition handle owned by getSplitStyles
-  map: (key: string, val: any, originalVal?: any, condition?: object) => void
+  parentCondition?: number,
+  fallbackOriginal?: any
 ) => void
 
 export type GenericVariantDefinitions = {

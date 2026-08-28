@@ -1749,7 +1749,7 @@ export type GetStyleState = {
     animationDriver?: AnimationDriver | null;
 };
 export type StyleResolver<Response = PropMappedValue> = (key: string, value: any, props: SplitStyleProps, state: GetStyleState, parentVariantKey: string) => Response;
-export type PropMapper = (key: string, value: any, state: GetStyleState, disabled: boolean, map: (key: string, val: any, originalVal?: any, condition?: object) => void) => void;
+export type PropMapper = (key: string, value: any, state: GetStyleState, disabled: boolean, parentCondition?: number, fallbackOriginal?: any) => void;
 export type GenericVariantDefinitions = {
     [key: string]: {
         [key: string]: ((a: any, b: any) => any) | StaticStyleInput | {

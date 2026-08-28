@@ -14,6 +14,7 @@ import type * as React from 'react'
 
 export const SliderTrackFrame = styled(UiSlider.Track, {
   displayName: 'SliderTrack',
+  className: 'is_SliderTrack',
   backgroundColor: 'background-press',
   borderRadius: 100_000,
 })
@@ -22,6 +23,7 @@ export const SliderTrack = SliderTrackFrame
 
 export const SliderActiveFrame = styled(UiSlider.TrackActive, {
   displayName: 'SliderTrackActive',
+  className: 'is_SliderTrackActive',
   backgroundColor: 'color',
   borderRadius: 100_000,
 })
