@@ -74,9 +74,17 @@ and cleared on release.
   hash-only with identical rule text; reversed contribution order now yields
   the identical class as forward order).
 - zero-runtime fixture builds with zero violations.
-- kitchen-sink `test:web`: run in progress at this writing; result reported to
-  the owner (`DriverConditionedDiscrete` now motion-driver-scoped after the
-  driver drop).
+- kitchen-sink `test:web`: default+webkit 724/725 exposed one real inherited
+  regression (scoped popover exit completed instantly). Root cause: the
+  fixed-position `usePresence` call exposed presence state to frames that
+  opted out (`animatePresence={false}`), an opted-out popper position frame
+  then satisfied `needsReset` and its `ResetPresence` nulled the context for
+  the frame that actually animates the exit. Fixed by gating the OBSERVED
+  presence exactly as the old conditional call was (hook position stays
+  fixed), making registration sticky (register once, unregister only at
+  unmount), keeping the public `usePresence()` always-register contract, and
+  computing the registration decision pre-pass so passThrough renders keep
+  it. Full-suite result recorded after the fix.
 - new pins: `hocClausePosition.web.test.tsx` (verified red without the fix),
   `atomicIdentityContent.web.test.tsx`, `presenceRegistration.web.test.tsx`
   (inherited), `tailwindLifecycle.web.test.tsx` (inherited).
