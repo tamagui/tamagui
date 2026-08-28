@@ -47,7 +47,6 @@
     "src/transitionLegacy.ts",
     "src/transitionNative.ts",
     "src/unitlessNumbers.ts",
-    "src/v6ThemeNames.ts",
     "src/valueParser.ts",
     "src/valueTypes.ts",
     "types",

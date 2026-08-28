@@ -2083,6 +2083,9 @@ export function createTamaguiCompilerHost(
           }
         }
         if (component.domTag && branchProps.hidden) branchProps.display = 'none'
+        if (resolvedCssTransition !== null) {
+          branchProps.transition = resolvedCssTransition
+        }
         if (component.domTag && platform === 'native') {
           for (const [name, styleKey] of DOM_STYLE_ATTRIBUTES) {
             if (name in branchProps) {

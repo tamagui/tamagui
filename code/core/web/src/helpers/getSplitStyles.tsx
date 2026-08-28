@@ -65,6 +65,7 @@ import {
   getDirectDynamicThemeAccess,
   resolveClauseChain,
 } from './directStyle'
+import { canGenerateCSS } from './directStyleCSS'
 import { contributeFrontendProgram, isFrontendProgram } from './frontendProgram'
 import { HOC_CLASSNAME_MARKER, skipProps } from './skipProps'
 import { styleOriginalValues } from './styleOriginalValues'
@@ -527,11 +528,7 @@ export const getSplitStyles: StyleSplitter = (
   const viewProps: GetStyleResult['viewProps'] = {}
   const mediaState = styleProps.mediaState || globalMediaState
 
-  let shouldDoClasses =
-    !process.env.TAMAGUI_DID_OUTPUT_CSS &&
-    acceptsClassName &&
-    isWeb &&
-    !styleProps.noClass
+  let shouldDoClasses = acceptsClassName && isWeb && !styleProps.noClass
 
   const rulesToInsert: RulesToInsert =
     process.env.TAMAGUI_TARGET === 'native' ? (undefined as any) : {}
@@ -1304,7 +1301,10 @@ export const getSplitStyles: StyleSplitter = (
       }
     }
 
-    if (styleState.transformAccumulator && !styleState.flatShouldDoClasses) {
+    if (
+      styleState.transformAccumulator &&
+      (!canGenerateCSS || !styleState.flatShouldDoClasses)
+    ) {
       styleState.style ||= {}
       styleState.style.transform = finalizeTransformAccumulator(
         styleState.transformAccumulator

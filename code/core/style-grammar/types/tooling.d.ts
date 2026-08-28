@@ -38,7 +38,6 @@ export * from "./transitionAlign";
 export * from "./transitionLegacy";
 export * from "./transitionNative";
 export * from "./unitlessNumbers";
-export * from "./v6ThemeNames";
 export * from "./valueParser";
 export * from "./valueTypes";
 

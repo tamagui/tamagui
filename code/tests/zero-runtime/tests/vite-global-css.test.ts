@@ -53,16 +53,16 @@ test('the loaded CSS carries base, root, font, theme and compiler atomic rules',
   expect(css).toMatch(/\._w-\d+ \{ width: 83px/)
 })
 
-test('the runtime generated none of it: the provider injects an empty sheet', async ({
+test('the runtime generated none of it: the provider injects no sheet', async ({
   page,
 }) => {
   // createDesignSystem, getThemeCSSRules and insertFont are compiled out, so
-  // TamaguiProvider's own inject has nothing left to emit. The mutates-themes
-  // project asserts the opposite against the same source and same entry.
+  // the provider omits its style element. The mutates-themes project asserts
+  // the opposite against the same source and same entry.
   const injected = await page.evaluate(
     () => document.querySelector('style[data-href="tamagui-css"]')?.textContent ?? null
   )
-  expect(injected).toBe('')
+  expect(injected).toBeNull()
 })
 
 test('it renders correctly with JavaScript CSS generation absent', async ({ page }) => {

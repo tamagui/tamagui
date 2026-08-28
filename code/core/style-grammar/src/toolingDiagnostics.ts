@@ -32,7 +32,7 @@ import type {
   ValueParseError,
   ValueParseErrorCode,
 } from './valueTypes'
-import { v6RemovedThemeNames, v6ThemeNameReplacements } from './v6ThemeNames'
+import { v6RemovedThemeNames, v6ThemeNameReplacements } from './modifierVocabulary'
 
 type Names = readonly string[] | ReadonlySet<string> | Readonly<Record<string, unknown>>
 
