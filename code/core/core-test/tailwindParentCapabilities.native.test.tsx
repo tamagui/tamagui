@@ -3,16 +3,20 @@ process.env.TAMAGUI_TARGET = 'native'
 import { getDefaultTamaguiConfig } from '@tamagui/config-default'
 import { matchMedia as matchNativeMedia } from '@tamagui/react-native-media-driver'
 import {
-  TamaguiProvider,
-  View,
-  configureMedia,
-  createTamagui,
-  setupMatchMedia,
+  TamaguiProvider as CoreTamaguiProvider,
+  View as CoreView,
+  configureMedia as configureCoreMedia,
+  createTamagui as createCoreTamagui,
+  setupMatchMedia as setupCoreMatchMedia,
 } from '@tamagui/core'
+import { TamaguiProvider, createTamagui } from '@tamagui/web/internal-runtime'
 import { fireEvent, render, waitFor } from '@testing-library/react-native'
 import { Dimensions } from 'react-native'
 import { expect, test, vi } from 'vitest'
-import { preprocessTailwindClassName } from '../tailwind/src/candidate'
+import { View as TailwindView } from '../tailwind/src'
+import { splitTailwindStyles } from '../tailwind/src/__tests__/utils'
+
+const RuntimeView = TailwindView as any
 
 vi.spyOn(Dimensions, 'get').mockReturnValue({
   width: 390,
@@ -22,6 +26,7 @@ vi.spyOn(Dimensions, 'get').mockReturnValue({
 })
 
 const config = createTamagui(getDefaultTamaguiConfig('native'))
+const coreConfig = createCoreTamagui(getDefaultTamaguiConfig('native'))
 
 const backgroundColor = (view: any) => {
   const styles = Array.isArray(view.props.style) ? view.props.style : [view.props.style]
@@ -35,22 +40,28 @@ const host = (screen: ReturnType<typeof render>, testID: string) =>
   screen.root.findAllByProps({ testID }).at(-1)!
 
 test('a group parent marker creates the native context its descendant consumes', async () => {
-  const parentProps = preprocessTailwindClassName(
-    { testID: 'parent', className: 'group/card' },
-    config
-  )
-  expect(parentProps).toMatchObject({ group: 'card' })
-  expect(parentProps).not.toHaveProperty('className')
+  expect(
+    TailwindView.staticConfig.styleFrontend.getClassPlan('group/card', config)
+  ).toEqual({
+    entries: [['group', 'card']],
+    preserveRawClass: false,
+  })
+  expect(splitTailwindStyles(TailwindView, { className: 'group/card' })).toMatchObject({
+    frontendGroup: 'card',
+  })
   const screen = render(
     <TamaguiProvider config={config} defaultTheme="light">
-      <View {...parentProps}>
-        <View testID="child" backgroundColor="group-press/card:black" />
-      </View>
+      <RuntimeView testID="parent" className="group/card">
+        <RuntimeView testID="child" backgroundColor="group-press/card:black" />
+      </RuntimeView>
     </TamaguiProvider>
   )
 
   expect(host(screen, 'parent').props.onLayout).toBeUndefined()
   expect(backgroundColor(host(screen, 'child'))).not.toBe('#000')
+  await waitFor(() => {
+    expect(host(screen, 'parent').props.onResponderGrant).toBeTypeOf('function')
+  })
   fireEvent(host(screen, 'parent'), 'responderGrant', { nativeEvent: {} })
   await waitFor(() => {
     expect(backgroundColor(host(screen, 'child'))).toBe('#000')
@@ -58,19 +69,11 @@ test('a group parent marker creates the native context its descendant consumes',
 })
 
 test('a container parent marker re-evaluates its descendant after layout changes', async () => {
-  const parentProps = preprocessTailwindClassName(
-    { testID: 'parent', className: '@container/layout' },
-    config
-  )
-  expect(parentProps).toMatchObject({
-    container: 'layout',
-  })
-  expect(parentProps).not.toHaveProperty('className')
   const screen = render(
     <TamaguiProvider config={config} defaultTheme="light">
-      <View {...parentProps}>
-        <View testID="child" backgroundColor="@sm/layout:black" />
-      </View>
+      <RuntimeView testID="parent" className="@container/layout">
+        <RuntimeView testID="child" backgroundColor="@sm/layout:black" />
+      </RuntimeView>
     </TamaguiProvider>
   )
 
@@ -95,13 +98,13 @@ test('a container parent marker re-evaluates its descendant after layout changes
 })
 
 test('a media clause resolves against native window dimensions', async () => {
-  setupMatchMedia(matchNativeMedia)
-  configureMedia(config)
+  setupCoreMatchMedia(matchNativeMedia)
+  configureCoreMedia(coreConfig)
 
   const screen = render(
-    <TamaguiProvider config={config} defaultTheme="light">
-      <View testID="child" backgroundColor="red sm:black" />
-    </TamaguiProvider>
+    <CoreTamaguiProvider config={coreConfig} defaultTheme="light">
+      <CoreView testID="child" backgroundColor="red sm:black" />
+    </CoreTamaguiProvider>
   )
 
   await waitFor(() => {

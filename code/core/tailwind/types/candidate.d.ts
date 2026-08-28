@@ -14,12 +14,4 @@ export declare function resolveTailwindClassName(className: string, config: Styl
  * which is the authored order the shared per-longhand merge reads.
  */
 export declare function setInAuthoredOrder(target: Record<string, any>, key: string, value: any): void;
-/**
- * Tokenize a className into ordinary props and internal value-program contributions,
- * once per class per config.
- * User-defined tokens drive resolution; Tailwind's color/spacing scales are never
- * hardcoded. Classes the grammar does not claim stay in `className` verbatim, in
- * author order, so official Tailwind CSS still applies them on web.
- */
-export declare function preprocessTailwindClassName(props: Record<string, any>, config: StyleFrontendConfig, preservePassthroughPosition?: boolean): Record<string, any>;
 //# sourceMappingURL=candidate.d.ts.map

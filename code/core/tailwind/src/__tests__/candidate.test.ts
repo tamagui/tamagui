@@ -2,41 +2,28 @@ import { getDefaultTamaguiConfig } from '../../../config-default/src'
 import { createTamagui, getConfig } from '@tamagui/web'
 import { beforeAll, describe, expect, test } from 'vitest'
 
-import { preprocessTailwindClassName } from '../candidate'
+import { resolveTailwindClassName } from '../candidate'
 
 beforeAll(() => {
   createTamagui(getDefaultTamaguiConfig() as any)
 })
 
-const tokenize = (className: string, rest?: Record<string, any>) =>
-  preprocessTailwindClassName({ className, ...rest }, getConfig())
+const tokenize = (className: string) => resolveTailwindClassName(className, getConfig())
 
 describe('claimed candidates become flat props', () => {
   test('a base candidate resolves through the config', () => {
     expect(tokenize('p-4')).toEqual({ padding: '4' })
   })
 
-  test('modifiers are preserved in the frontend program', () => {
+  test('modifiers are preserved in the shared conditional spelling', () => {
     expect(tokenize('hover:bg-[red]')).toEqual({
-      __tamagui_frontend_program_0: {
-        property: 'backgroundColor',
-        value: {
-          base: null,
-          clauses: [{ modifiers: ['hover'], payload: 'red' }],
-        },
-      },
+      backgroundColor: { hover: 'red' },
     })
   })
 
   test('chained modifiers keep their authored order', () => {
     expect(tokenize('sm:hover:bg-[red]')).toEqual({
-      __tamagui_frontend_program_0: {
-        property: 'backgroundColor',
-        value: {
-          base: null,
-          clauses: [{ modifiers: ['sm', 'hover'], payload: 'red' }],
-        },
-      },
+      backgroundColor: { 'sm:hover': 'red' },
     })
   })
 
@@ -94,15 +81,9 @@ describe('claimed candidates become flat props', () => {
     expect(tokenize('flex-row')).toEqual({ flexDirection: 'row' })
   })
 
-  test('a modified whole-class utility emits a frontend program', () => {
+  test('a modified whole-class utility keeps its shared conditional spelling', () => {
     expect(tokenize('hover:flex-row')).toEqual({
-      __tamagui_frontend_program_0: {
-        property: 'flexDirection',
-        value: {
-          base: null,
-          clauses: [{ modifiers: ['hover'], payload: 'row' }],
-        },
-      },
+      flexDirection: { hover: 'row' },
     })
   })
 })
@@ -123,25 +104,5 @@ describe('unclaimed candidates', () => {
     // two paddings collapse to one flat prop; the shared resolver never sees a
     // conflicting pair, so no tailwind-merge equivalent is needed
     expect(tokenize('p-2 p-4')).toEqual({ padding: '4' })
-  })
-})
-
-describe('className position in the prop pass', () => {
-  test('classes expand where className was authored, not at the end', () => {
-    const result = tokenize('p-4', { margin: 1 })
-    expect(Object.keys(result)).toEqual(['padding', 'margin'])
-  })
-
-  test('a prop authored after className wins over the class', () => {
-    const result = preprocessTailwindClassName(
-      { className: 'p-4', padding: '8' },
-      getConfig()
-    )
-    expect(result.padding).toBe('8')
-  })
-
-  test('props with no className are returned untouched', () => {
-    const props = { id: 'x' }
-    expect(preprocessTailwindClassName(props, getConfig())).toBe(props)
   })
 })

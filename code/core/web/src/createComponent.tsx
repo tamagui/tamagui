@@ -509,7 +509,6 @@ export function createComponent<
 
     const {
       disabled,
-      groupName,
       hasAnimationProp,
       isExiting,
       isHydrated,
@@ -523,6 +522,7 @@ export function createComponent<
       outputStyle,
       startedUnhydrated,
     } = componentState
+    let { groupName } = componentState
     let {
       hasEnterStyle,
       isAnimated,
@@ -597,72 +597,6 @@ export function createComponent<
         stateRef.current.setStateShallow?.({ hover: hovered })
       })
     }, [platformPseudo, props.disabled])
-
-    const containerProp = props.container
-    const containerName =
-      (props.containerName as string | undefined) ||
-      (typeof containerProp === 'string' ? containerProp : undefined)
-    const containerType =
-      (props.containerType as string | undefined) ||
-      (containerProp ? 'inline-size' : undefined)
-    const isContainer = !!containerType && containerType !== 'normal'
-
-    // create new context with groups, or else sublings will grab the same one
-    const allGroupContexts = useMemo((): AllGroupContexts | null => {
-      if ((!groupName && !isContainer) || props.passThrough) {
-        return groupContextParent
-      }
-
-      const listeners = new Set<GroupStateListener>()
-      stateRef.current.group?.listeners?.clear()
-      stateRef.current.group = {
-        listeners,
-        emit(state) {
-          listeners.forEach((l) => l(state))
-        },
-        subscribe(cb) {
-          listeners.add(cb)
-          if (listeners.size === 1) {
-            setStateShallow({ hasDynGroupChildren: true })
-          }
-          return () => {
-            listeners.delete(cb)
-            if (listeners.size === 0) {
-              setStateShallow({ hasDynGroupChildren: false })
-            }
-          }
-        },
-      }
-
-      // one entry object serves every key this component provides: the group
-      // name and the container keys share the same state and emitter
-      const entry: SingleGroupContext = {
-        state: {
-          pseudo: defaultComponentStateMounted,
-        },
-        subscribe: (listener) => {
-          const dispose = stateRef.current.group?.subscribe(listener)
-          return () => {
-            dispose?.()
-          }
-        },
-      }
-
-      const next: AllGroupContexts = { ...groupContextParent }
-      if (groupName) {
-        next[groupName] = entry
-      }
-      if (isContainer) {
-        // `@sm:` reads the nearest container of any name, so every container
-        // writes the `@` key; a named one also writes `@name`. group names
-        // cannot contain `@`, so the namespaces never collide
-        next['@'] = entry
-        if (containerName) {
-          next[`@${containerName}`] = entry
-        }
-      }
-      return next
-    }, [stateRef, groupName, containerName, isContainer, groupContextParent])
 
     // if our animation driver supports avoidReRenders, we'll replace this below with
     // a version that essentially uses an internall emitter rather than setting state
@@ -845,24 +779,90 @@ export function createComponent<
       styleProps,
       null,
       componentContext,
-      allGroupContexts,
+      groupContextParent,
       elementType,
       startedUnhydrated,
       debugProp,
       animationDriver
     )
 
-    if (splitStyles) {
-      const finalizedComponentState = componentState.finalizeStyleFlags(
-        !!splitStyles.hasEnterStyle,
-        !!splitStyles.platformPseudo
-      )
-      hasEnterStyle = finalizedComponentState.hasEnterStyle
-      isAnimated = finalizedComponentState.isAnimated
-      willBeAnimated = finalizedComponentState.willBeAnimated
-      willBeAnimatedClient = finalizedComponentState.willBeAnimatedClient
-      platformPseudo = finalizedComponentState.platformPseudo
-    }
+    const finalizedComponentState = componentState.finalizeStyleFlags(
+      !!splitStyles?.hasEnterStyle,
+      !!splitStyles?.platformPseudo
+    )
+    hasEnterStyle = finalizedComponentState.hasEnterStyle
+    isAnimated = finalizedComponentState.isAnimated
+    willBeAnimated = finalizedComponentState.willBeAnimated
+    willBeAnimatedClient = finalizedComponentState.willBeAnimatedClient
+    platformPseudo = finalizedComponentState.platformPseudo
+
+    groupName = (splitStyles?.frontendGroup ?? groupName) as typeof groupName
+    const containerProp = splitStyles?.frontendContainer ?? props.container
+    const containerName =
+      (props.containerName as string | undefined) ||
+      (typeof containerProp === 'string' ? containerProp : undefined)
+    const containerType =
+      (splitStyles?.frontendContainerType as string | undefined) ||
+      (props.containerType as string | undefined) ||
+      (containerProp ? 'inline-size' : undefined)
+    const isContainer = !!containerType && containerType !== 'normal'
+
+    // create new context with groups, or else siblings will grab the same one
+    const allGroupContexts = useMemo((): AllGroupContexts | null => {
+      if ((!groupName && !isContainer) || props.passThrough) {
+        return groupContextParent
+      }
+
+      const listeners = new Set<GroupStateListener>()
+      stateRef.current.group?.listeners?.clear()
+      stateRef.current.group = {
+        listeners,
+        emit(state) {
+          listeners.forEach((l) => l(state))
+        },
+        subscribe(cb) {
+          listeners.add(cb)
+          if (listeners.size === 1) {
+            setStateShallow({ hasDynGroupChildren: true })
+          }
+          return () => {
+            listeners.delete(cb)
+            if (listeners.size === 0) {
+              setStateShallow({ hasDynGroupChildren: false })
+            }
+          }
+        },
+      }
+
+      // one entry object serves every key this component provides: the group
+      // name and the container keys share the same state and emitter
+      const entry: SingleGroupContext = {
+        state: {
+          pseudo: defaultComponentStateMounted,
+        },
+        subscribe: (listener) => {
+          const dispose = stateRef.current.group?.subscribe(listener)
+          return () => {
+            dispose?.()
+          }
+        },
+      }
+
+      const next: AllGroupContexts = { ...groupContextParent }
+      if (groupName) {
+        next[groupName] = entry
+      }
+      if (isContainer) {
+        // `@sm:` reads the nearest container of any name, so every container
+        // writes the `@` key; a named one also writes `@name`. group names
+        // cannot contain `@`, so the namespaces never collide
+        next['@'] = entry
+        if (containerName) {
+          next[`@${containerName}`] = entry
+        }
+      }
+      return next
+    }, [stateRef, groupName, containerName, isContainer, groupContextParent])
 
     const isPassthrough = !splitStyles
 
@@ -2033,12 +2033,10 @@ export function createComponent<
       )
     }
 
-    // containers provide the same context channel groups do: a container-only
-    // parent (`container`, `containerName`, `containerType`) must mount the
-    // provider or its descendants' `@size:` clauses can never subscribe —
-    // the context entry existed but was never provided (found 2026-07-31 by
-    // real parent/descendant integration; injected-context tests masked it)
-    if ('group' in props || isContainer) {
+    // containers provide the same context channel groups do. Mount the
+    // provider whenever the resolved component establishes either capability
+    // so descendant clauses can subscribe.
+    if (groupName || isContainer) {
       content = (
         <GroupContext.Provider value={allGroupContexts}>{content}</GroupContext.Provider>
       )

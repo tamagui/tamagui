@@ -13,7 +13,7 @@ import { tamaguiToTailwind } from '@tamagui/to-tailwind'
 
 import { createTamagui } from '@tamagui/web'
 import { tailwindStyleFrontend } from '../frontend'
-import { preprocessTailwindClassName } from '../candidate'
+import { resolveTailwindClassName } from '../candidate'
 import { View } from '../index'
 import { splitTailwindStyles } from './utils'
 
@@ -45,7 +45,7 @@ function className(sourceJSX: string): string {
   return m ? m[1] : ''
 }
 function flat(cls: string): Record<string, any> {
-  return preprocessTailwindClassName({ className: cls }, CFG)
+  return resolveTailwindClassName(cls, CFG)
 }
 function split(
   props: Record<string, any>,
@@ -161,15 +161,10 @@ describe('shared candidate semantics (NATIVE)', () => {
 })
 
 describe('config-aware media (NATIVE) — a custom breakpoint round-trips', () => {
-  test('a tablet clause becomes a frontend program', () => {
+  test('a tablet clause keeps the shared conditional spelling', () => {
     const cls = className(`<View padding="tablet:10px" />`)
     expect(cls).toContain('tablet:p-[10px]')
     expect(CFG.media.tablet).toEqual({ minWidth: 900 })
-    const f = flat(cls)
-    const program = Object.values(f).find((value) => value?.property === 'padding')
-    expect(program?.value).toEqual({
-      base: null,
-      clauses: [{ modifiers: ['tablet'], payload: '10px' }],
-    })
+    expect(flat(cls).padding).toEqual({ tablet: '10px' })
   })
 })

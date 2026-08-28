@@ -18,9 +18,9 @@ process.env.TAMAGUI_TARGET = 'native'
 
 import { getDefaultTamaguiConfig } from '@tamagui/config-default'
 import { TamaguiProvider, View, createTamagui } from '@tamagui/core'
-import { render } from '@testing-library/react-native'
-import { useState } from 'react'
-import { describe, expect, test } from 'vitest'
+import { act, render } from '@testing-library/react-native'
+import { Profiler, useState } from 'react'
+import { afterEach, describe, expect, test, vi } from 'vitest'
 
 const config = createTamagui(getDefaultTamaguiConfig('native'))
 
@@ -74,4 +74,44 @@ describe('passThrough toggling (native)', () => {
     }).not.toThrow()
     expect(JSON.stringify(rendered.toJSON())).toContain('"backgroundColor":"red"')
   })
+
+  test('a passthrough mount does not schedule an enter-state render', () => {
+    const frames: FrameRequestCallback[] = []
+    vi.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) => {
+      frames.push(callback)
+      return frames.length
+    })
+    const onRender = vi.fn()
+
+    render(
+      <Profiler id="passthrough" onRender={onRender}>
+        {app(true)}
+      </Profiler>
+    )
+
+    expect(onRender).toHaveBeenCalledTimes(1)
+    expect(frames).toHaveLength(0)
+  })
+
+  test('forceStyle preserves finalized mount state across parent renders', () => {
+    const frames: FrameRequestCallback[] = []
+    vi.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) => {
+      frames.push(callback)
+      return frames.length
+    })
+    const styled = (testID: string) => (
+      <TamaguiProvider config={config} defaultTheme="light">
+        <View testID={testID} forceStyle="hover" backgroundColor="red" />
+      </TamaguiProvider>
+    )
+    const rendered = render(styled('first'))
+
+    expect(frames).toHaveLength(0)
+    act(() => rendered.rerender(styled('second')))
+    expect(frames).toHaveLength(0)
+  })
+})
+
+afterEach(() => {
+  vi.unstubAllGlobals()
 })

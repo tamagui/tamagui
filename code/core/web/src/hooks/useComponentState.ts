@@ -135,8 +135,7 @@ export const useComponentState = (
   // frame stays provisionally unmounted until that pass reports its flags —
   // except an HOC, which never enters (shouldEnter is !isHOC && ...), so its
   // pass must not resolve enter clauses as active on the first frame
-  const initialState = { ...defaultComponentState }
-  if (isHOC) initialState.unmounted = false
+  const initialState = { ...defaultComponentStateMounted }
 
   // will be nice to deprecate half of these:
   const disabled = isDisabled(props)
@@ -148,8 +147,43 @@ export const useComponentState = (
   // HOOK
   const states = useState<TamaguiComponentState>(initialState)
 
-  const state = props.forceStyle ? { ...states[0], [props.forceStyle]: true } : states[0]
-  const setState = states[1]
+  // React owns a mounted state from the start. The first style pass gets a
+  // render-local provisional `unmounted` value so it can discover enter
+  // clauses without mutating React state during render. Only a real enter
+  // frame is carried in the ref until the first state update consumes it.
+  const initialStyleFrameUnmounted = curStateRef.initialStyleFrameUnmounted
+  let state =
+    (!curStateRef.didFinalizeInitialStyleFrame && !isHOC) ||
+    initialStyleFrameUnmounted !== undefined
+      ? { ...states[0] }
+      : states[0]
+  if (!curStateRef.didFinalizeInitialStyleFrame && !isHOC) {
+    state.unmounted = true
+  }
+  if (initialStyleFrameUnmounted !== undefined) {
+    state.unmounted = initialStyleFrameUnmounted
+  }
+  if (props.forceStyle) {
+    if (state === states[0]) state = { ...state }
+    state[props.forceStyle] = true
+  }
+  if (!curStateRef.setState) {
+    const reactSetState = states[1]
+    curStateRef.setState = (stateOrGetState) => {
+      const pendingUnmounted = curStateRef.initialStyleFrameUnmounted
+      curStateRef.initialStyleFrameUnmounted = undefined
+      reactSetState((previous) => {
+        const current =
+          pendingUnmounted !== undefined && previous.unmounted !== pendingUnmounted
+            ? { ...previous, unmounted: pendingUnmounted }
+            : previous
+        return typeof stateOrGetState === 'function'
+          ? stateOrGetState(current)
+          : stateOrGetState
+      })
+    }
+  }
+  const setState = curStateRef.setState
 
   // apply states we never updated from avoiding re-renders in animation driver
   // unsafe yea yea
@@ -314,19 +348,21 @@ export const useComponentState = (
       if (nextWillBeAnimated && !curStateRef.hasAnimated) {
         curStateRef.hasAnimated = true
       }
-      if (!(curStateRef as any).didFinalizeInitialStyleFrame) {
-        ;(curStateRef as any).didFinalizeInitialStyleFrame = true
+      if (!curStateRef.didFinalizeInitialStyleFrame) {
+        curStateRef.didFinalizeInitialStyleFrame = true
         const shouldEnter =
           !isHOC &&
           (hasEnterStyle ||
             isEntering ||
             hasAnimationThatNeedsHydrate ||
             disableClassName)
-        state.unmounted = shouldEnter
+        const unmounted = shouldEnter
           ? hasEnterStyle || isEntering
             ? 'should-enter'
             : true
           : false
+        state.unmounted = unmounted
+        curStateRef.initialStyleFrameUnmounted = unmounted || undefined
       }
       result.hasEnterStyle = hasEnterStyle
       result.platformPseudo = platformPseudo

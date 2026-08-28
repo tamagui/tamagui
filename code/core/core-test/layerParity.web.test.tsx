@@ -16,7 +16,7 @@ import { defaultConfig as v6 } from '@tamagui/config/v6'
 import { TamaguiProvider, createTamagui, getSplitStyles } from '@tamagui/core'
 import { renderToString } from 'react-dom/server'
 import { beforeAll, expect, test } from 'vitest'
-import { preprocessTailwindClassName } from '../tailwind/src/candidate'
+import { getTailwindClassPlan } from '../tailwind/src/candidate'
 import { View as TailwindView } from '../tailwind/src'
 
 let CFG: any
@@ -135,17 +135,17 @@ test.each([
   ['@container-size', { container: true, containerType: 'size' }],
   ['@container-size/layout', { container: 'layout', containerType: 'size' }],
 ])('%s remains raw and projects its Tamagui parent capability', (className, props) => {
-  expect(preprocessTailwindClassName({ className }, CFG)).toMatchObject({
-    ...props,
-    className,
+  expect(getTailwindClassPlan(className, CFG)).toEqual({
+    entries: Object.entries(props),
+    preserveRawClass: true,
   })
 })
 
 test('unknown and non-size descendants remain Tailwind passthrough', () => {
   const className = '@hoverNone:bg-collision @missing:bg-collision'
-  const result = preprocessTailwindClassName({ className }, CFG)
-  expect(result).toMatchObject({ className })
-  expect(Object.keys(result)).toEqual(['className'])
+  for (const candidate of className.split(' ')) {
+    expect(getTailwindClassPlan(candidate, CFG)).toBe('raw')
+  }
 })
 
 test('parent markers establish the web capabilities their descendant program targets', () => {

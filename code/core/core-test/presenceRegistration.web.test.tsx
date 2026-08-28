@@ -18,6 +18,13 @@ function PlainChild() {
   return null
 }
 
+function LateAnimatedChild({ animated }: { animated: boolean }) {
+  const registration = useRef({ shouldRegisterPresence: animated })
+  registration.current.shouldRegisterPresence = animated
+  usePresence(registration.current)
+  return null
+}
+
 describe('presence registration', () => {
   test('removing a plain sibling preserves the animated registration', () => {
     let registered = false
@@ -51,5 +58,27 @@ describe('presence registration', () => {
 
     expect(register).toHaveBeenCalledTimes(1)
     expect(registered).toBe(true)
+  })
+
+  test('a registration that widens after mount registers on the next render', () => {
+    const register = vi.fn(() => vi.fn())
+    const context: PresenceContextProps = {
+      id: 'frame',
+      isPresent: true,
+      register,
+    }
+    const rendered = render(
+      <PresenceContext.Provider value={context}>
+        <LateAnimatedChild animated={false} />
+      </PresenceContext.Provider>
+    )
+
+    expect(register).not.toHaveBeenCalled()
+    rendered.rerender(
+      <PresenceContext.Provider value={context}>
+        <LateAnimatedChild animated />
+      </PresenceContext.Provider>
+    )
+    expect(register).toHaveBeenCalledTimes(1)
   })
 })

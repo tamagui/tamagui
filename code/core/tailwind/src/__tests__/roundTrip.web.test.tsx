@@ -23,7 +23,7 @@ import {
 import { tamaguiToTailwind } from '@tamagui/to-tailwind'
 
 import { createTamagui } from '@tamagui/web'
-import { preprocessTailwindClassName } from '../candidate'
+import { resolveTailwindClassName } from '../candidate'
 import { Text, View } from '../index'
 import { splitTailwindStyles } from './utils'
 
@@ -76,11 +76,7 @@ function classStyle(cls: string, Comp: any = View): Record<string, any> {
 // it is IDENTICAL on web and native (the web CSS layer later re-stringifies a number to
 // "Npx", the native layer keeps the number — so typeof must be asserted here, not on .style).
 function flat(cls: string): Record<string, any> {
-  return preprocessTailwindClassName({ className: cls }, CFG)
-}
-
-function programFor(props: Record<string, any>, property: string): any {
-  return Object.values(props).find((value) => value?.property === property)
+  return resolveTailwindClassName(cls, CFG)
 }
 
 describe('PASS 1 — 1a: responsive media direction', () => {
@@ -102,18 +98,15 @@ describe('PASS 1 — 1a: responsive media direction', () => {
 
   test('converted class carries the same md clause as the source flat value', () => {
     const cls = convertedClassName(`<View display="none md:flex" />`)
-    const fromClass = preprocessTailwindClassName({ className: cls }, CFG)
-    expect(fromClass.display).toBe('none')
-    expect(programFor(fromClass, 'display')?.value).toEqual({
-      base: null,
-      clauses: [{ modifiers: ['md'], payload: 'flex' }],
+    const fromClass = resolveTailwindClassName(cls, CFG)
+    expect(fromClass.display).toEqual({
+      default: 'none',
+      md: 'flex',
     })
 
     const hideCls = convertedClassName(`<View display="flex md:none" />`)
-    const hide = preprocessTailwindClassName({ className: hideCls }, CFG)
-    expect(programFor(hide, 'display')?.value.clauses).toEqual([
-      { modifiers: ['md'], payload: 'none' },
-    ])
+    const hide = resolveTailwindClassName(hideCls, CFG)
+    expect(hide.display).toEqual({ default: 'flex', md: 'none' })
   })
 
   test('bare flex class resolves to display:flex (was a no-op before)', () => {
@@ -264,17 +257,10 @@ describe('token category system — zIndex sentinel (default config)', () => {
 describe('nested modifier expansion — md:hover:border-x', () => {
   test('border-x-[0.5px] under md:hover: sets BOTH side widths (numbers), no colors', () => {
     const f = flat('md:hover:border-x-[0.5px]')
-    const programs = Object.values(f).filter(
-      (value) => value?.value?.clauses?.[0]?.modifiers?.join(':') === 'md:hover'
-    )
-    expect(programs.map((program) => program.property)).toEqual([
-      'borderLeftWidth',
-      'borderRightWidth',
-    ])
-    expect(programs.map((program) => program.value.clauses[0].payload)).toEqual([
-      '0.5px',
-      '0.5px',
-    ])
+    expect(f).toEqual({
+      borderLeftWidth: { 'md:hover': '0.5px' },
+      borderRightWidth: { 'md:hover': '0.5px' },
+    })
   })
 })
 

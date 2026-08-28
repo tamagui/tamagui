@@ -11,7 +11,7 @@ import { StyleObjectProperty, StyleObjectValue } from '@tamagui/helpers'
 import { tamaguiToTailwind } from '@tamagui/to-tailwind'
 import { createTamagui } from '@tamagui/web'
 
-import { preprocessTailwindClassName } from '../candidate'
+import { getTailwindClassPlan } from '../candidate'
 import { Text, View } from '../index'
 import { splitTailwindStyles } from './utils'
 
@@ -66,9 +66,7 @@ describe('2 — dynamic className follows authored forward order', () => {
       const cls = classOf(convert(source))
       expect(cls).toBe('animation-fast')
       expect(convert(source)).toContain('animation="slow"')
-      expect(
-        preprocessTailwindClassName({ className: cls } as any, CFG).animation
-      ).toBeUndefined()
+      expect(getTailwindClassPlan(cls, CFG)).toBe('raw')
     }
   })
 })
@@ -118,17 +116,12 @@ describe('4 — existing raw hover color + flat hover clause follow authored ord
 })
 
 describe('5 — chained media and state clause → md:hover:opacity-50', () => {
-  test('the flat clause converts without rebuilding a condition object', () => {
+  test('the class plan carries the authored condition into the real frontend path', () => {
     const a = convert(`<View opacity="md:hover:0.5" />`)
     expect(classOf(a)).toBe('md:hover:opacity-50')
-    const flat = preprocessTailwindClassName({ className: 'md:hover:opacity-50' }, CFG)
-    const program = Object.values(flat as Record<string, any>).find(
-      (value) => value?.property === 'opacity'
-    )
-    expect(program?.value).toEqual({
-      base: null,
-      clauses: [{ modifiers: ['md', 'hover'], payload: '0.5' }],
-    })
+    expect(getTailwindClassPlan('md:hover:opacity-50', CFG)).toEqual([
+      ['opacity', '0.5', 'md:hover', ['md', 'hover']],
+    ])
   })
 })
 

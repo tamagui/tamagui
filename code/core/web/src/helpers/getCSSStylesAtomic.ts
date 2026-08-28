@@ -76,8 +76,7 @@ const getStyleObject = (
   }
   const value = normalizeValueWithProperty(val, key)
   // shorthand-derived class prefixes come from the config
-  const nextConf = getConfigMaybe()
-  if (nextConf !== conf) conf = nextConf
+  const nextConf = syncAtomicConfig()
   const rawValue = typeof value === 'string' ? value : `${value}`
   // this content hash is the atomic CSS class identity shared by server output
   // and client hydration. it is not a parser cache or a runtime lookup key.
@@ -143,6 +142,18 @@ export interface AtomicSlotEntry {
 const slotIdentities = new Map<string, Map<string, SlotIdentity>>()
 let slotIdentitiesSize = 0
 
+function syncAtomicConfig() {
+  const nextConf = getConfigMaybe()
+  const nextRevision = nextConf ? getConfigRevisionState(nextConf).revision : 0
+  if (nextConf !== conf || nextRevision !== confRevision) {
+    conf = nextConf
+    confRevision = nextRevision
+    slotIdentities.clear()
+    slotIdentitiesSize = 0
+  }
+  return nextConf
+}
+
 function slotClassRepetitions(atomicKey: string, condition: number): number {
   const base =
     atomicKey === 'containerName' || atomicKey === 'containerType'
@@ -172,14 +183,7 @@ export function buildAtomicSlotCSS(
   if (process.env.TAMAGUI_DID_OUTPUT_CSS) return
   // media queries and shorthands come from the config, so an identity built
   // under one config says nothing about the rules under another
-  const nextConf = getConfigMaybe()
-  const nextRevision = nextConf ? getConfigRevisionState(nextConf).revision : 0
-  if (nextConf !== conf || nextRevision !== confRevision) {
-    conf = nextConf
-    confRevision = nextRevision
-    slotIdentities.clear()
-    slotIdentitiesSize = 0
-  }
+  syncAtomicConfig()
   let byKey = slotIdentities.get(atomicKey)
   const known = byKey?.get(signature)
   if (known) return known

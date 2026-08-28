@@ -1,7 +1,7 @@
 import type { StyleObject } from '@tamagui/helpers';
 import type { CoreStateModifierName, TransformAccumulator } from '@tamagui/style-grammar/runtime';
 import type { Properties } from 'csstype';
-import type { CSSProperties, ComponentType, Context, FunctionComponent, HTMLAttributes, ProviderExoticComponent, Ref as ReactRef, ReactNode, RefObject } from 'react';
+import type { CSSProperties, ComponentType, Context, Dispatch, FunctionComponent, HTMLAttributes, ProviderExoticComponent, Ref as ReactRef, ReactNode, RefObject, SetStateAction } from 'react';
 import type { PressableProps, Text as RNText, TextStyle as RNTextStyle, TextProps as ReactTextProps, View, ViewProps, ViewStyle } from 'react-native';
 import type { NativeStyleEngineLinkHandle } from './helpers/nativeStyleEngine';
 import type { StyleFrontend } from './helpers/styleFrontend';
@@ -298,6 +298,7 @@ export type ReactComponentWithRef<Props, Ref> = ComponentType<Props & {
     ref?: ReactRef<Ref>;
 }>;
 export type ComponentSetStateShallow = React.Dispatch<React.SetStateAction<Partial<TamaguiComponentState>>>;
+export type ComponentSetState = Dispatch<SetStateAction<TamaguiComponentState>>;
 export type ComponentContextI = {
     disableSSR?: boolean;
     inText: boolean;
@@ -322,6 +323,8 @@ export type TamaguiComponentStateRef = {
     hasMeasured?: boolean;
     hasAnimated?: boolean;
     shouldRegisterPresence?: boolean;
+    didFinalizeInitialStyleFrame?: boolean;
+    initialStyleFrameUnmounted?: TamaguiComponentState['unmounted'];
     themeShallow?: boolean;
     hasEverThemed?: boolean | 'wrapped';
     hasEverResetPresence?: boolean;
@@ -330,6 +333,7 @@ export type TamaguiComponentStateRef = {
     isListeningToTheme?: boolean;
     unPress?: Function;
     setStateShallow?: ComponentSetStateShallow;
+    setState?: ComponentSetState;
     baseSetStateShallow?: ComponentSetStateShallow;
     themeNeedsUpdate?: () => boolean;
     useStyleListener?: UseStyleListener;
@@ -2072,6 +2076,9 @@ export type GetStyleResult = {
     };
     hasEnterStyle?: true;
     platformPseudo?: true;
+    frontendGroup?: boolean | string;
+    frontendContainer?: boolean | string;
+    frontendContainerType?: string;
 };
 export type ClassNamesObject = Record<string, string>;
 export type ModifyTamaguiComponentStyleProps<Comp extends TamaguiComponent, ChangedProps extends object> = Comp extends TamaguiComponent<infer A, infer B, infer C, infer D, infer E> ? A extends object ? TamaguiComponent<Omit<A, keyof ChangedProps> & ChangedProps, B, C, D, E> : never : never;

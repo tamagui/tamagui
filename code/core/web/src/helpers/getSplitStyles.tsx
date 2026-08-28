@@ -1078,18 +1078,21 @@ function finishCompoundEdges(
 function classifyConditionalObject(
   value: Record<string, any>,
   state: GetStyleState | null,
-  isChain?: (chain: string) => boolean
+  isChain?: (chain: string) => boolean,
+  firstCursor?: ConditionCursor
 ): number {
   if (Object.prototype.hasOwnProperty.call(value, 'default')) return -1
   for (const key in value) {
     if (!key.length) return 0
     if (!state) return isChain?.(key) ? 1 : 0
     const watermark = conditionCursorTop
-    const cursor = acquireConditionCursor(null)
-    resolveConditionText(state, cursor, key)
-    const condition = commitConditionCursor(state, cursor)
-    releaseConditionCursors(watermark)
-    return condition
+    const cursor = firstCursor || acquireConditionCursor(null)
+    try {
+      resolveConditionText(state, cursor, key)
+      return commitConditionCursor(state, cursor)
+    } finally {
+      if (!firstCursor) releaseConditionCursors(watermark)
+    }
   }
   return 0
 }
@@ -1227,6 +1230,12 @@ function forEachPropInForwardOrder(
   const preparedCompounds = (staticConfig as StaticConfigWithPreparedCompounds)[
     preparedCompoundsKey
   ]
+
+  if (preparedCompounds === undefined && staticConfig.compoundVariants?.length) {
+    throw new Error(
+      'A component with compoundVariants reached style resolution before its static config was prepared.'
+    )
+  }
 
   // a displaced PLAIN styled default matters only when the displacing prop's
   // own scan discovered a clause: re-contribute it weakly (create-only slot
@@ -1470,6 +1479,9 @@ export const getSplitStyles: StyleSplitter = (
   } = styleProps
 
   const styleFrontend = staticConfig.styleFrontend
+  let frontendGroup: boolean | string | undefined
+  let frontendContainer: boolean | string | undefined
+  let frontendContainerType: string | undefined
   const processedProps = props
   const parentVariants = parentStaticConfig?.variants
   const defaultProps = asChild ? getDefaultProps(staticConfig) : undefined
@@ -1593,7 +1605,7 @@ export const getSplitStyles: StyleSplitter = (
       const plan = getClassPlan ? getClassPlan(candidate, conf) : 'raw'
       if (plan === null) {
         if (process.env.NODE_ENV === 'development') {
-          console.warn(
+          warnOnce(
             `[tamagui] frontend candidate "${candidate}" is unavailable on this platform and was dropped.`
           )
         }
@@ -1643,6 +1655,12 @@ export const getSplitStyles: StyleSplitter = (
               )
             }
           } else {
+            if (entry[0] === 'group') frontendGroup = entry[1] as boolean | string
+            else if (entry[0] === 'container') {
+              frontendContainer = entry[1] as boolean | string
+            } else if (entry[0] === 'containerType') {
+              frontendContainerType = entry[1] as string
+            }
             contributeProp(entry[0], entry[1])
           }
         }
@@ -2379,6 +2397,11 @@ export const getSplitStyles: StyleSplitter = (
   }
   if (styleState.flatHasEnterStyle) result.hasEnterStyle = true
   if (styleState.flatHasPlatformPseudo) result.platformPseudo = true
+  if (frontendGroup !== undefined) result.frontendGroup = frontendGroup
+  if (frontendContainer !== undefined) result.frontendContainer = frontendContainer
+  if (frontendContainerType !== undefined) {
+    result.frontendContainerType = frontendContainerType
+  }
 
   if (!noMergeStyle) {
     if (!asChildExceptStyleLike) {
@@ -2389,7 +2412,8 @@ export const getSplitStyles: StyleSplitter = (
         // only emit font class if fontFamily was explicitly in props (not from defaults)
         const fontFamily = isText || isInput ? styleState.fontFamily : null
         const fontFamilyClassName = fontFamily ? `font_${fontFamily}` : ''
-        const groupClassName = props.group ? `t_group_${props.group}` : ''
+        const group = props.group ?? frontendGroup
+        const groupClassName = group ? `t_group_${group}` : ''
         const displayName = styleProps.displayName
         let validDisplayName = Boolean(
           !props.asChild &&
@@ -4331,26 +4355,31 @@ function contributeValue(
     if (value.hasBase) {
       contributeValue(state, property, value.base, merge, value.base, contextOnly)
     }
-    for (let index = 0; index < value.entries.length; index++) {
-      const entry = value.entries[index]
+    for (let offset = 0; offset < value.entries.length; ) {
+      const entryValue = value.entries[offset]
       const watermark = conditionCursorTop
-      const cursor = acquireTransportCursor(
-        state,
-        entry,
-        (state as DirectState).flatParentCursor || null
-      )
-      emitUnderCondition(
-        state,
-        property,
-        entry.value,
-        cursor,
-        merge,
-        entry.value,
-        contextOnly,
-        2,
-        entry.value
-      )
-      releaseConditionCursors(watermark)
+      try {
+        const cursor = acquireTransportCursor(
+          state,
+          value.entries,
+          offset,
+          (state as DirectState).flatParentCursor || null
+        )
+        emitUnderCondition(
+          state,
+          property,
+          entryValue,
+          cursor,
+          merge,
+          entryValue,
+          contextOnly,
+          2,
+          entryValue
+        )
+      } finally {
+        releaseConditionCursors(watermark)
+      }
+      offset += hocClauseEntryWidth(value.entries, offset)
     }
     return true
   }
@@ -4382,13 +4411,17 @@ function contributeValue(
       } else {
         effective = condition
       }
+      const isObjectValue =
+        value && typeof value === 'object' && !Array.isArray(value) && !isVariable(value)
+      const objectHasDefault =
+        isObjectValue && Object.prototype.hasOwnProperty.call(value, 'default')
+      const firstChild =
+        isObjectValue && !objectHasDefault ? acquireConditionCursor(effective) : null
       if (
-        value &&
-        typeof value === 'object' &&
-        !Array.isArray(value) &&
-        !isVariable(value) &&
-        classifyConditionalObject(value, state)
+        isObjectValue &&
+        classifyConditionalObject(value, state, undefined, firstChild || undefined)
       ) {
+        let useFirstChild = firstChild !== null
         for (const key in value) {
           const payload = value[key]
           if (payload == null) continue
@@ -4406,9 +4439,13 @@ function contributeValue(
             )
           } else {
             const keyWatermark = conditionCursorTop
-            const child = acquireConditionCursor(effective)
-            resolveConditionText(state, child, key)
-            commitConditionCursor(state, child)
+            const child = useFirstChild ? firstChild! : acquireConditionCursor(effective)
+            if (useFirstChild) {
+              useFirstChild = false
+            } else {
+              resolveConditionText(state, child, key)
+              commitConditionCursor(state, child)
+            }
             emitUnderCondition(
               state,
               property,
@@ -4420,7 +4457,7 @@ function contributeValue(
               2,
               payload
             )
-            releaseConditionCursors(keyWatermark)
+            if (child !== firstChild) releaseConditionCursors(keyWatermark)
           }
         }
         return true
@@ -4539,18 +4576,10 @@ export function clearDirectStyle(state: GetStyleState, property: string) {
 // pass replays them straight into a cursor. Values are recognized only through
 // a module-private WeakSet, so the transport cannot become publicly authorable.
 
-interface HocClauseEntry {
-  value: any
-  atomCount: number
-  atomKinds: number[]
-  atomRanks: number[]
-  atomNames: string[]
-}
-
 interface HocClauseTransport {
   hasBase: boolean
   base: any
-  entries: HocClauseEntry[]
+  entries: unknown[]
 }
 
 const hocClauseTransports = new WeakSet<HocClauseTransport>()
@@ -4563,52 +4592,43 @@ function isHocClauseTransport(value: unknown): value is HocClauseTransport {
   )
 }
 
-function hocClauseEntryFromCursor(cursor: ConditionCursor, value: any): HocClauseEntry {
-  const entry: HocClauseEntry = {
-    value,
-    atomCount: cursor.atomCount,
-    atomKinds: [],
-    atomRanks: [],
-    atomNames: [],
-  }
-  for (let index = 0; index < cursor.atomCount; index++) {
-    entry.atomKinds[index] = cursor.atomKinds[index]
-    entry.atomRanks[index] = cursor.atomRanks[index]
-    entry.atomNames[index] = cursor.atomNames[index]
-  }
-  return entry
+const hocClauseHeaderWidth = 3
+const hocClauseAtomWidth = 3
+
+function hocClauseEntryWidth(entries: unknown[], offset: number) {
+  return hocClauseHeaderWidth + (entries[offset + 2] as number) * hocClauseAtomWidth
 }
 
-function sameAtomSet(entry: HocClauseEntry, cursor: ConditionCursor): boolean {
-  if (entry.atomCount !== cursor.atomCount) return false
-  for (let index = 0; index < entry.atomCount; index++) {
-    let found = false
-    for (let inner = 0; inner < cursor.atomCount; inner++) {
-      if (entry.atomNames[index] === cursor.atomNames[inner]) {
-        found = true
-        break
-      }
-    }
-    if (!found) return false
+function appendHocClauseEntry(entries: unknown[], cursor: ConditionCursor, value: any) {
+  entries.push(value, cursor.key, cursor.atomCount)
+  for (let index = 0; index < cursor.atomCount; index++) {
+    entries.push(
+      cursor.atomKinds[index],
+      cursor.atomRanks[index],
+      cursor.atomNames[index]
+    )
   }
-  return true
 }
 
 /** replay a transported clause's atoms into a fresh committed cursor */
 function acquireTransportCursor(
   state: GetStyleState,
-  entry: HocClauseEntry,
+  entries: unknown[],
+  offset: number,
   parent: ConditionCursor | null
 ): ConditionCursor {
   const cursor = acquireConditionCursor(parent)
-  for (let index = 0; index < entry.atomCount; index++) {
+  const atomCount = entries[offset + 2] as number
+  let atomOffset = offset + hocClauseHeaderWidth
+  for (let index = 0; index < atomCount; index++) {
     accumulateConditionAtom(
       state,
       cursor,
-      entry.atomKinds[index],
-      entry.atomRanks[index],
-      entry.atomNames[index]
+      entries[atomOffset] as number,
+      entries[atomOffset + 1] as number,
+      entries[atomOffset + 2] as string
     )
+    atomOffset += hocClauseAtomWidth
   }
   commitConditionCursor(state, cursor)
   return cursor
@@ -4627,44 +4647,65 @@ function addStructuredClause(
     transport = { hasBase: false, base: undefined, entries: [] }
     hocClauseTransports.add(transport)
     if (prev != null) {
-      if (
-        typeof prev === 'object' &&
-        !Array.isArray(prev) &&
-        !isVariable(prev) &&
-        classifyConditionalObject(prev as Record<string, any>, state)
-      ) {
-        // an authored conditional object joins as transported clauses; its
-        // keys are authored text and resolve here exactly once
-        for (const key in prev as Record<string, any>) {
-          const payload = (prev as Record<string, any>)[key]
-          if (payload == null) continue
-          if (key === 'default') {
-            transport.hasBase = true
-            transport.base = payload
-            continue
+      const isObjectValue =
+        typeof prev === 'object' && !Array.isArray(prev) && !isVariable(prev)
+      const objectHasDefault =
+        isObjectValue && Object.prototype.hasOwnProperty.call(prev, 'default')
+      const authoredWatermark = conditionCursorTop
+      try {
+        const firstCursor =
+          isObjectValue && !objectHasDefault ? acquireConditionCursor(null) : null
+        if (
+          isObjectValue &&
+          classifyConditionalObject(
+            prev as Record<string, any>,
+            state,
+            undefined,
+            firstCursor || undefined
+          )
+        ) {
+          // an authored conditional object joins as transported clauses; its
+          // keys are authored text and resolve here exactly once
+          let useFirstCursor = firstCursor !== null
+          for (const key in prev as Record<string, any>) {
+            const payload = (prev as Record<string, any>)[key]
+            if (payload == null) continue
+            if (key === 'default') {
+              transport.hasBase = true
+              transport.base = payload
+              continue
+            }
+            const watermark = conditionCursorTop
+            const keyCursor = useFirstCursor ? firstCursor! : acquireConditionCursor(null)
+            if (useFirstCursor) {
+              useFirstCursor = false
+            } else {
+              resolveConditionText(state, keyCursor, key)
+              commitConditionCursor(state, keyCursor)
+            }
+            appendHocClauseEntry(transport.entries, keyCursor, payload)
+            if (keyCursor !== firstCursor) releaseConditionCursors(watermark)
           }
-          const watermark = conditionCursorTop
-          const keyCursor = acquireConditionCursor(null)
-          resolveConditionText(state, keyCursor, key)
-          commitConditionCursor(state, keyCursor)
-          transport.entries.push(hocClauseEntryFromCursor(keyCursor, payload))
-          releaseConditionCursors(watermark)
+        } else {
+          transport.hasBase = true
+          transport.base = prev
         }
-      } else {
-        transport.hasBase = true
-        transport.base = prev
+      } finally {
+        releaseConditionCursors(authoredWatermark)
       }
     }
   }
   // a repeat contribution under the same condition set replaces its entry and
   // moves to the end: the wrapped pass sees last-wins in authored order
-  for (let index = 0; index < transport.entries.length; index++) {
-    if (sameAtomSet(transport.entries[index], cursor)) {
-      transport.entries.splice(index, 1)
+  for (let offset = 0; offset < transport.entries.length; ) {
+    const width = hocClauseEntryWidth(transport.entries, offset)
+    if (transport.entries[offset + 1] === cursor.key) {
+      transport.entries.splice(offset, width)
       break
     }
+    offset += width
   }
-  transport.entries.push(hocClauseEntryFromCursor(cursor, value))
+  appendHocClauseEntry(transport.entries, cursor, value)
   return transport
 }
 
@@ -4870,12 +4911,16 @@ function resolveVariants(
     if (value.hasBase) {
       emitResolvedVariant(key, value.base, styleState, parentVariantKey, null, map)
     }
-    for (let index = 0; index < value.entries.length; index++) {
-      const entry = value.entries[index]
+    for (let offset = 0; offset < value.entries.length; ) {
+      const entryValue = value.entries[offset]
       const watermark = conditionCursorTop
-      const cursor = acquireTransportCursor(styleState, entry, null)
-      emitResolvedVariant(key, entry.value, styleState, parentVariantKey, cursor, map)
-      releaseConditionCursors(watermark)
+      try {
+        const cursor = acquireTransportCursor(styleState, value.entries, offset, null)
+        emitResolvedVariant(key, entryValue, styleState, parentVariantKey, cursor, map)
+      } finally {
+        releaseConditionCursors(watermark)
+      }
+      offset += hocClauseEntryWidth(value.entries, offset)
     }
     return
   }
@@ -4912,52 +4957,66 @@ function resolveVariants(
   // string: density={{ default: 'compact', sm: 'roomy' }}. a payload object
   // with no default and no modifier first key (a functional variant's own
   // argument shape) falls through whole
-  if (
-    value &&
-    typeof value === 'object' &&
-    !Array.isArray(value) &&
-    !isVariable(value) &&
-    classifyConditionalObject(value, styleState)
-  ) {
-    for (const objKey in value) {
-      const payload = value[objKey]
-      if (payload == null) continue
-      const directState = styleState as DirectState
-      const payloadString = String(payload)
-      if (objKey === 'default') {
-        feedCompoundSegment(
-          directState,
-          payloadString,
-          0,
-          payloadString.length,
-          true,
-          true,
-          0
-        )
-        emitResolvedVariant(key, payload, styleState, parentVariantKey, null, map)
-        continue
+  const isObjectValue =
+    value && typeof value === 'object' && !Array.isArray(value) && !isVariable(value)
+  const objectHasDefault =
+    isObjectValue && Object.prototype.hasOwnProperty.call(value, 'default')
+  const objectWatermark = conditionCursorTop
+  try {
+    const firstCursor =
+      isObjectValue && !objectHasDefault ? acquireConditionCursor(null) : null
+    if (
+      isObjectValue &&
+      classifyConditionalObject(value, styleState, undefined, firstCursor || undefined)
+    ) {
+      let useFirstCursor = firstCursor !== null
+      for (const objKey in value) {
+        const payload = value[objKey]
+        if (payload == null) continue
+        const directState = styleState as DirectState
+        const payloadString = String(payload)
+        if (objKey === 'default') {
+          feedCompoundSegment(
+            directState,
+            payloadString,
+            0,
+            payloadString.length,
+            true,
+            true,
+            0
+          )
+          emitResolvedVariant(key, payload, styleState, parentVariantKey, null, map)
+          continue
+        }
+        const watermark = conditionCursorTop
+        const cursor = useFirstCursor ? firstCursor! : acquireConditionCursor(null)
+        let condition = cursor.condition
+        if (useFirstCursor) {
+          useFirstCursor = false
+        } else {
+          resolveConditionText(styleState, cursor, objKey)
+          condition = commitConditionCursor(styleState, cursor)
+        }
+        if (directState.flatCompoundIndexes) {
+          feedCompoundSegment(
+            directState,
+            payloadString,
+            0,
+            payloadString.length,
+            false,
+            Boolean(condition),
+            condition ? snapshotCondition(cursor) : 0
+          )
+        }
+        // an unresolvable key still flows down as its (unresolved) cursor so the
+        // downstream contribution warns and drops it, never emits unconditioned
+        emitResolvedVariant(key, payload, styleState, parentVariantKey, cursor, map)
+        if (cursor !== firstCursor) releaseConditionCursors(watermark)
       }
-      const watermark = conditionCursorTop
-      const cursor = acquireConditionCursor(null)
-      resolveConditionText(styleState, cursor, objKey)
-      const condition = commitConditionCursor(styleState, cursor)
-      if (directState.flatCompoundIndexes) {
-        feedCompoundSegment(
-          directState,
-          payloadString,
-          0,
-          payloadString.length,
-          false,
-          Boolean(condition),
-          condition ? snapshotCondition(cursor) : 0
-        )
-      }
-      // an unresolvable key still flows down as its (unresolved) cursor so the
-      // downstream contribution warns and drops it, never emits unconditioned
-      emitResolvedVariant(key, payload, styleState, parentVariantKey, cursor, map)
-      releaseConditionCursors(watermark)
+      return
     }
-    return
+  } finally {
+    releaseConditionCursors(objectWatermark)
   }
 
   emitResolvedVariant(key, value, styleState, parentVariantKey, null, map)

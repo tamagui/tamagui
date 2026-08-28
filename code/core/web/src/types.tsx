@@ -8,12 +8,14 @@ import type {
   CSSProperties,
   ComponentType,
   Context,
+  Dispatch,
   FunctionComponent,
   HTMLAttributes,
   ProviderExoticComponent,
   Ref as ReactRef,
   ReactNode,
   RefObject,
+  SetStateAction,
 } from 'react'
 import type {
   PressableProps,
@@ -610,6 +612,8 @@ export type ComponentSetStateShallow = React.Dispatch<
   React.SetStateAction<Partial<TamaguiComponentState>>
 >
 
+export type ComponentSetState = Dispatch<SetStateAction<TamaguiComponentState>>
+
 export type ComponentContextI = {
   disableSSR?: boolean
   inText: boolean
@@ -631,6 +635,8 @@ export type TamaguiComponentStateRef = {
   hasMeasured?: boolean
   hasAnimated?: boolean
   shouldRegisterPresence?: boolean
+  didFinalizeInitialStyleFrame?: boolean
+  initialStyleFrameUnmounted?: TamaguiComponentState['unmounted']
   themeShallow?: boolean
   hasEverThemed?: boolean | 'wrapped'
   hasEverResetPresence?: boolean
@@ -639,6 +645,7 @@ export type TamaguiComponentStateRef = {
   isListeningToTheme?: boolean
   unPress?: Function
   setStateShallow?: ComponentSetStateShallow
+  setState?: ComponentSetState
   // hoisted base shallow-setter that always calls the real React setState.
   // kept on its own field so the avoidReRenders wrapper (which overwrites
   // `setStateShallow`) can capture this as its real-re-render escape hatch.
@@ -3585,6 +3592,12 @@ export type GetStyleResult = {
   }
   hasEnterStyle?: true
   platformPseudo?: true
+  // behavior-bearing frontend candidates discovered by the same className
+  // walk as styles. createComponent consumes these before it builds descendant
+  // group/container context; they are never forwarded to the host.
+  frontendGroup?: boolean | string
+  frontendContainer?: boolean | string
+  frontendContainerType?: string
 }
 
 export type ClassNamesObject = Record<string, string>

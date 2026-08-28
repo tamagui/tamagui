@@ -34,6 +34,34 @@ describe('compoundVariants - web', () => {
     }
   }
 
+  test('an unprepared compound config fails instead of silently dropping its styles', () => {
+    const Frame = styled(View, {
+      variants: {
+        tone: {
+          active: {},
+        },
+      } as const,
+      compoundVariants: [
+        {
+          tone: 'active',
+          style: { backgroundColor: 'red' },
+        },
+      ],
+    })
+    const staticConfig = { ...Frame.staticConfig }
+    for (const key of Object.getOwnPropertySymbols(staticConfig)) {
+      delete staticConfig[key]
+    }
+
+    expect(() =>
+      simplifiedGetSplitStyles(
+        { staticConfig },
+        { tone: 'active' },
+        { mergeDefaultProps: true }
+      )
+    ).toThrow(/prepare/i)
+  })
+
   test('applies matched compounds in the same forward pass as authored props', () => {
     const FrameContext = createStyledContext<{
       tone?: 'critical' | 'neutral'

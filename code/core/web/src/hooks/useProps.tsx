@@ -132,12 +132,10 @@ export function usePropsAndStyle<A extends PropsLikeObject>(
     groupContext
   )
 
-  if (splitStyles) {
-    componentState.finalizeStyleFlags(
-      !!splitStyles.hasEnterStyle,
-      !!splitStyles.platformPseudo
-    )
-  }
+  componentState.finalizeStyleFlags(
+    !!splitStyles?.hasEnterStyle,
+    !!splitStyles?.platformPseudo
+  )
 
   const { mediaGroups, pseudoGroups } = splitStyles || {}
   const groupSetRevision = useGroupSetRevision(pseudoGroups, mediaGroups)
