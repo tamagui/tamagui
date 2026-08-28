@@ -116,8 +116,11 @@ export const useComponentState = (
   //     non-entered state but now with the spring animation driver
 
   // the sole style pass decides whether an enter clause exists. A fresh first
-  // frame stays provisionally unmounted until that pass reports its flags.
+  // frame stays provisionally unmounted until that pass reports its flags —
+  // except an HOC, which never enters (shouldEnter is !isHOC && ...), so its
+  // pass must not resolve enter clauses as active on the first frame
   const initialState = { ...defaultComponentState }
+  if (isHOC) initialState.unmounted = false
 
   // will be nice to deprecate half of these:
   const disabled = isDisabled(props)
