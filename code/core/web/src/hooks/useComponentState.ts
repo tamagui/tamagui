@@ -98,12 +98,28 @@ export const useComponentState = (
   const { disableClassName } = props
 
   // HOOK
-  // finalizeStyleFlags owns this decision after the pass. A render that skips
-  // the pass entirely (passThrough) keeps the previous decision: resetting it
-  // would silently drop an animated frame's presence registration and its
-  // exit would complete instantly instead of animating.
-  curStateRef.shouldRegisterPresence ??= false
-  const presence = animationDriver?.usePresence?.(curStateRef) || null
+  // the registration decision must be current BEFORE this render commits: a
+  // presence parent with zero registered consumers completes an exit
+  // instantly, so an animated frame that only registers after a later
+  // finalize pass never animates out. Everything the decision needs for the
+  // transition-prop case is pre-pass knowledge; finalizeStyleFlags can only
+  // widen it (pass-discovered platform pseudo), and a passThrough render
+  // keeps the widened value.
+  if (willBeAnimated && !isHOC && props['animatePresence'] !== false) {
+    curStateRef.shouldRegisterPresence = true
+  } else {
+    curStateRef.shouldRegisterPresence ??= false
+  }
+  const presenceResult = animationDriver?.usePresence?.(curStateRef) || null
+  // the hook call position is fixed, but the OBSERVED presence keeps the old
+  // conditional-call semantics: a frame that opted out (animatePresence false,
+  // HOC, not animated) must not see presence state — downstream that state
+  // wraps children in ResetPresence, which would null the context for the
+  // frame that actually animates the exit
+  const presence =
+    !isHOC && willBeAnimated && props['animatePresence'] !== false
+      ? presenceResult
+      : null
 
   const presenceState = presence?.[2]
   const isExiting = presenceState?.isPresent === false
@@ -324,9 +340,9 @@ export const useComponentState = (
         isWeb && hasAnimationThatNeedsHydrate && !staticConfig.isHOC && !isHydrated
           ? false
           : nextWillBeAnimated
-      curStateRef.shouldRegisterPresence = Boolean(
-        nextWillBeAnimated && !isHOC && props['animatePresence'] !== false
-      )
+      if (nextWillBeAnimated && !isHOC && props['animatePresence'] !== false) {
+        curStateRef.shouldRegisterPresence = true
+      }
       return result
     },
   }
