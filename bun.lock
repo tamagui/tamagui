@@ -394,6 +394,7 @@
       },
       "peerDependencies": {
         "react": ">=19",
+        "react-native-web": "*",
       },
     },
     "code/core/animations-reanimated": {
@@ -404,6 +405,7 @@
         "@tamagui/animation-helpers": "workspace:*",
         "@tamagui/core": "workspace:*",
         "@tamagui/use-presence": "workspace:*",
+        "@tamagui/web": "workspace:*",
       },
       "devDependencies": {
         "@tamagui/build": "workspace:*",
@@ -2389,7 +2391,7 @@
       "name": "@my/config",
       "version": "2.0.0-rc.0-1769885482630",
       "dependencies": {
-        "@tamagui/animations-react-native": "workspace:*",
+        "@tamagui/animations-css": "workspace:*",
         "@tamagui/config": "workspace:*",
         "@tamagui/font-inter": "workspace:*",
         "@tamagui/shorthands": "workspace:*",
