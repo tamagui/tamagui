@@ -304,7 +304,6 @@ export {
   resolveSizeToken,
   resolveTokenSize,
   setNativeStyleEngine,
-  setOnLayoutStrategy,
   styled,
   themeable,
   // hooks

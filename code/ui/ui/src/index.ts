@@ -211,7 +211,6 @@ export {
   defaultTokenSizePolicy,
   resolveSizeToken,
   resolveTokenSize,
-  setOnLayoutStrategy,
   styled,
   themeable,
   // hooks

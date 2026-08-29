@@ -1,15 +1,15 @@
 // re-exports all of @tamagui/web just adds hooks
-export * from '@tamagui/web'
+export { createRefComponent, type RefProp } from '@tamagui/compose-refs'
+export type * from '@tamagui/size'
 export {
-  SizeContext,
   createSizeContext,
   createSizeTable,
   defaultTokenSizePolicy,
   resolveSizeToken,
   resolveTokenSize,
+  SizeContext,
 } from '@tamagui/size'
-export type * from '@tamagui/size'
-export { createRefComponent, type RefProp } from '@tamagui/compose-refs'
+export * from '@tamagui/web'
 
 import type {
   StackNonStyleProps,
@@ -29,7 +29,6 @@ import type { RNTextProps, RNViewProps } from './reactNativeTypes'
 export {
   LayoutMeasurementController,
   registerLayoutNode,
-  setOnLayoutStrategy,
   type LayoutEvent,
 } from '@tamagui/use-element-layout'
 
@@ -64,7 +63,7 @@ type RNTamaguiText = TamaguiComponent<
 export * from './reactNativeTypes'
 
 // the one platform setup path, shared with `@tamagui/core/internal-runtime`
-export { TamaguiProvider, createTamagui } from './runtime'
+export { createTamagui, TamaguiProvider } from './runtime'
 
 // overwrite web versions:
 // putting at the end ensures it overwrites in dist/cjs/index.js

@@ -78,11 +78,6 @@ let resumeLayoutLoop: (() => void) | undefined
 // measurement (an opening sheet parked off-screen).
 let measureOnNextFrame: (() => void) | undefined
 
-export function setOnLayoutStrategy(state: LayoutMeasurementStrategy): void {
-  strategy = state
-  resumeLayoutLoop?.()
-}
-
 export type LayoutValue = {
   x: number
   y: number
