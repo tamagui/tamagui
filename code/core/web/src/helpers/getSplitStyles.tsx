@@ -4598,29 +4598,7 @@ function emitResolvedVariant(
   const variant = variants[key]
   let variantValue = getVariantDefinition(variant, value, conf, styleState)
 
-  if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-    console.groupCollapsed(`♦️♦️♦️ resolve variant ${key}`)
-    console.info({
-      key,
-      value,
-      variantValue,
-      variants,
-    })
-    console.groupEnd()
-  }
-
   if (!variantValue) {
-    // variant at key exists, but no matching variant
-    // disabling warnings, its fine to pass through, could re-enable later somehoiw
-    if (process.env.TAMAGUI_WARN_ON_MISSING_VARIANT === '1') {
-      // don't warn on missing booleans
-      if (typeof value !== 'boolean') {
-        const name = styleState.styleProps.displayName || '[UnnamedComponent]'
-        console.warn(
-          `No variant found: ${name} has variant "${key}", but no matching value "${value}"`
-        )
-      }
-    }
     return
   }
 
