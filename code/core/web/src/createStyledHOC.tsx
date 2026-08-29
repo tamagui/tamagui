@@ -71,7 +71,7 @@ export function createStyledHOC<
     return render(rest, ref)
   }
 
-  out = options?.disableTheme ? out : themeable(out, extendedConfig, true)
+  out = options?.disableTheme ? out : themeable(out, extendedConfig)
 
   if (extendedConfig.memo || process.env.TAMAGUI_MEMOIZE_STYLED_HOC) {
     out = React.memo(out)

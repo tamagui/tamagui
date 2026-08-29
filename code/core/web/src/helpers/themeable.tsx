@@ -6,16 +6,14 @@ import { getDefaultProps } from './getDefaultProps'
 
 export function themeable<ComponentType extends (props: any) => any>(
   Component: ComponentType,
-  staticConfig: Partial<StaticConfig>,
-  optimize = false
+  staticConfig: Partial<StaticConfig>
 ) {
   const withThemeComponent = function WithTheme(props: ThemeableProps & { ref?: any }) {
     'use no memo'
 
     const userDefaults = getDefaultProps(staticConfig)
     const defaultTheme = userDefaults?.theme
-    const defaultResetTheme = userDefaults?.themeReset
-    const { theme, themeReset, ref, ...rest } = props
+    const { theme, ref, ...rest } = props
 
     let overriddenContextProps: object | undefined
     const context = staticConfig?.context
@@ -53,14 +51,11 @@ export function themeable<ComponentType extends (props: any) => any>(
       filteredProps = filteredProps || {}
       filteredProps.name = 'theme' in props ? props.theme : defaultTheme
     }
-    if ('themeReset' in props || defaultResetTheme) {
-      filteredProps = filteredProps || {}
-      filteredProps.reset = 'themeReset' in props ? themeReset : defaultResetTheme
-    }
 
-    if (optimize && !filteredProps) {
-      // optimize by avoiding theme! this can re-parent but we should just document that to avoid performance
-      // in cases where you remove/add themes, just keep a theme={x ? '' : null} pattern
+    // avoid wrapping in Theme at all when nothing themes. this can re-parent, so
+    // to keep a stable tree across theme changes keep the prop and pass
+    // theme={x ? 'name' : null}
+    if (!filteredProps) {
       return element
     }
 

@@ -2789,7 +2789,6 @@ export type TextProps = TextNonStyleProps & TextStyle
 
 export interface ThemeableProps {
   theme?: ThemeName | null
-  themeReset?: boolean
   debug?: DebugProp
 }
 
