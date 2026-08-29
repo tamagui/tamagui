@@ -250,32 +250,6 @@ function variantSites(
     }
   }
 
-  const compound = config.getProperty('compoundVariants')
-  if (Node.isPropertyAssignment(compound)) {
-    const array = unwrapExpression(compound.getInitializerOrThrow())
-    if (Node.isArrayLiteralExpression(array)) {
-      for (const [index, element] of array.getElements().entries()) {
-        const entry = unwrapExpression(element)
-        if (!Node.isObjectLiteralExpression(entry)) continue
-        const style = entry.getProperty('style')
-        if (!Node.isPropertyAssignment(style)) continue
-        for (const object of variantStyleObjects(style.getInitializerOrThrow())) {
-          const site = convertStyleObject(
-            object,
-            'styled',
-            `${label} compoundVariants[${index}]`,
-            registry,
-            containers,
-            targets,
-            host,
-            write
-          )
-          if (site) sites.push(site)
-        }
-      }
-    }
-  }
-
   return sites
 }
 

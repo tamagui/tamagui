@@ -50,15 +50,9 @@ describe('styled() tests', () => {
       const InlineStyled = styled(View, 'p-4 rounded-4', {
         variants: {
           tone: {
-            red: 'h-8 px-3 bg-[red]'
+            red: 'h-8 px-3 bg-[red] w-8 p-0 opacity-[0.5]'
           }
-        },
-        compoundVariants: [
-          {
-            tone: 'red',
-            style: 'w-8 p-0 opacity-[0.5]'
-          }
-        ]
+        }
       })
 
       export function Test() {

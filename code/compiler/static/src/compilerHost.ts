@@ -759,9 +759,9 @@ function nativeDOMProps(input: LoweringCandidateInput, tag: TagName) {
   for (const entry of entries) {
     const value = entrySource(input, entry)
     const attribute =
-      (Object.hasOwn(ATTRIBUTES, entry.name) ? ATTRIBUTES[entry.name] : undefined) ??
+      (entry.name in ATTRIBUTES ? ATTRIBUTES[entry.name] : undefined) ??
       (entry.name.startsWith('data-') ? ATTRIBUTES['data-*'] : undefined)
-    const event = Object.hasOwn(EVENTS, entry.name) ? EVENTS[entry.name] : undefined
+    const event = entry.name in EVENTS ? EVENTS[entry.name] : undefined
     if (event) {
       if (event.native === 'none') {
         return {
@@ -1081,7 +1081,7 @@ export function createTamaguiCompilerHost(
     if (
       identity?.importedName !== 'html' ||
       !DOM_FRONTENDS.has(identity.specifier) ||
-      !Object.hasOwn(TAGS, tag)
+      !(tag in TAGS)
     ) {
       return null
     }
@@ -1141,7 +1141,6 @@ export function createTamaguiCompilerHost(
     const {
       variants,
       defaultVariants,
-      compoundVariants,
       displayName,
       context,
       contextProps,
@@ -1161,10 +1160,6 @@ export function createTamaguiCompilerHost(
           ...base.staticConfig.variants,
           ...(variants as object | undefined),
         },
-        compoundVariants: [
-          ...(base.staticConfig.compoundVariants ?? []),
-          ...(compoundVariants ?? []),
-        ],
         defaultProps: {
           ...base.staticConfig.defaultProps,
           ...defaultProps,
@@ -1209,8 +1204,7 @@ export function createTamaguiCompilerHost(
         Object.keys(defaultProps).length === 0 &&
         !resolved.staticConfig.defaultVariants &&
         !resolved.staticConfig.baseClassName &&
-        !resolved.staticConfig.baseStyle &&
-        (resolved.staticConfig.compoundVariants?.length ?? 0) === 0,
+        !resolved.staticConfig.baseStyle,
     }
   }
 
@@ -1316,7 +1310,6 @@ export function createTamaguiCompilerHost(
     baseStyle: undefined,
     defaultProps: {},
     defaultVariants: undefined,
-    compoundVariants: [],
     variants: {},
   })
 
@@ -1557,7 +1550,7 @@ export function createTamaguiCompilerHost(
       const disableOptimizationEntry = input.element.entries.find(
         (entry) => entry.kind === 'prop' && entry.name === 'disableOptimization'
       )
-      if (disableOptimizationEntry || Object.hasOwn(props, 'disableOptimization')) {
+      if (disableOptimizationEntry || 'disableOptimization' in props) {
         return bailout(
           input,
           'local/unsupported-target',
@@ -1849,7 +1842,7 @@ export function createTamaguiCompilerHost(
       const asChildEntry = input.element.entries.find(
         (entry) => entry.kind === 'prop' && entry.name === 'asChild'
       )
-      if (asChildEntry || Object.hasOwn(props, 'asChild')) {
+      if (asChildEntry || 'asChild' in props) {
         return bailout(
           input,
           'local/unsupported-target',
@@ -2125,16 +2118,6 @@ export function createTamaguiCompilerHost(
                   Object.entries(definition).some(([name, value]) =>
                     isClauseValue(name, value)
                   )
-              )
-          ) ||
-          // compound variant styles are contributed by resolveSplitStyles too,
-          // so a clause there would also freeze build-machine state if folded
-          (component.staticConfig.compoundVariants ?? []).some(
-            (compound) =>
-              staticObject(compound) &&
-              staticObject(compound.style) &&
-              Object.entries(compound.style).some(([name, value]) =>
-                isClauseValue(name, value)
               )
           )
         if (carriesClause) {

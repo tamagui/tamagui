@@ -390,7 +390,6 @@ export function assertCandidateCorrectness(
     padding: 8,
     variants: { size: { large: { padding: 16 } } },
     defaultVariants: { size: 'large' },
-    compoundVariants: [{ size: 'large', gap: 4 }],
   })
 
   const parityIds = [

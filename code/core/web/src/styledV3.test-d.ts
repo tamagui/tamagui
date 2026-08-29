@@ -362,16 +362,6 @@ describe('styled v3 overloads', () => {
       context: FrameContext,
       contextProps: ['tone', 'density'],
       variants: frameVariants,
-      compoundVariants: [
-        {
-          tone: 'critical',
-          density: ['compact', 'spacious'],
-          state: 'active',
-          style: {
-            opacity: 0.8,
-          },
-        },
-      ],
     } as const satisfies FrameOptions
 
     const Frame = styled(View, validOptions)
@@ -381,38 +371,6 @@ describe('styled v3 overloads', () => {
     expectTypeOf<Props['density']>().toEqualTypeOf<Cond<'compact' | 'spacious'>>()
     expectTypeOf<Props['state']>().toEqualTypeOf<Cond<'active' | 'selected'>>()
     expectTypeOf<HasStringIndex<Props>>().toEqualTypeOf<false>()
-
-    const invalidTone: FrameOptions = {
-      context: FrameContext,
-      contextProps: ['tone', 'density'],
-      variants: frameVariants,
-      compoundVariants: [
-        {
-          // @ts-expect-error invalid context matcher value
-          tone: 'missing',
-          state: 'active',
-          style: {
-            opacity: 0.8,
-          },
-        },
-      ],
-    }
-
-    const staticStyle: FrameOptions = {
-      context: FrameContext,
-      contextProps: ['tone', 'density'],
-      variants: frameVariants,
-      compoundVariants: [
-        {
-          tone: 'critical',
-          state: 'active',
-          style: 'opacity-100',
-        },
-      ],
-    }
-
-    styled(View, invalidTone)
-    styled(View, staticStyle)
 
     const ContextOnly = styled(View, {
       context: FrameContext,
@@ -518,20 +476,6 @@ describe('styled v3 overloads', () => {
           success: {},
         },
       },
-      compoundVariants: [
-        {
-          tone: 'critical',
-          style: {
-            opacity: 0.4,
-          },
-        },
-        {
-          tone: 'success',
-          style: {
-            opacity: 0.8,
-          },
-        },
-      ],
     } as const)
     type OverlapProps = GetProps<typeof OverlapChild>
     expectTypeOf<OverlapProps['tone']>().toEqualTypeOf<
@@ -542,135 +486,11 @@ describe('styled v3 overloads', () => {
       context: FrameContext,
       contextProps: ['density'],
       variants: frameVariants,
-      compoundVariants: [
-        {
-          tone: 'critical',
-          density: 'compact',
-          state: 'active',
-          style: {
-            opacity: 0.7,
-          },
-        },
-      ],
     } as const)
     type ChildProps = GetProps<typeof Child>
     expectTypeOf<ChildProps['tone']>().toEqualTypeOf<Cond<'critical' | 'neutral'>>()
     expectTypeOf<ChildProps['density']>().toEqualTypeOf<Cond<'compact' | 'spacious'>>()
     expectTypeOf<ChildProps['state']>().toEqualTypeOf<Cond<'active' | 'selected'>>()
-
-    styled(Parent, {
-      context: FrameContext,
-      contextProps: ['density'] as const,
-      variants: frameVariants,
-      compoundVariants: [
-        {
-          // @ts-expect-error direct styled calls keep inherited variant values closed
-          tone: 'missing',
-          density: 'compact',
-          state: 'active',
-          style: {
-            opacity: 0.7,
-          },
-        },
-      ],
-    })
-
-    styled(Parent, {
-      context: FrameContext,
-      contextProps: ['density'] as const,
-      variants: frameVariants,
-      compoundVariants: [
-        {
-          tone: 'critical',
-          density: 'compact',
-          // @ts-expect-error direct styled calls keep new variant values closed
-          state: 'missing',
-          style: {
-            opacity: 0.7,
-          },
-        },
-      ],
-    })
-
-    styled(Parent, {
-      context: FrameContext,
-      contextProps: ['density'] as const,
-      variants: frameVariants,
-      compoundVariants: [
-        {
-          tone: 'critical',
-          density: 'compact',
-          // @ts-expect-error direct styled calls keep context keys closed
-          mood: 'serious',
-          state: 'active',
-          style: {
-            opacity: 0.7,
-          },
-        },
-      ],
-    })
-
-    type ChildOptions = StyledOptions<
-      typeof Parent,
-      {},
-      typeof frameVariants,
-      typeof FrameContext,
-      'density'
-    >
-
-    const invalidInheritedVariant: ChildOptions = {
-      context: FrameContext,
-      contextProps: ['density'],
-      variants: frameVariants,
-      compoundVariants: [
-        {
-          // @ts-expect-error inherited variant values stay closed
-          tone: 'missing',
-          density: 'compact',
-          state: 'active',
-          style: {
-            opacity: 0.7,
-          },
-        },
-      ],
-    }
-    const invalidNewVariant: ChildOptions = {
-      context: FrameContext,
-      contextProps: ['density'],
-      variants: frameVariants,
-      compoundVariants: [
-        {
-          tone: 'critical',
-          density: 'compact',
-          // @ts-expect-error new variant values stay closed
-          state: 'missing',
-          style: {
-            opacity: 0.7,
-          },
-        },
-      ],
-    }
-    const invalidUnconsumedContext: ChildOptions = {
-      context: FrameContext,
-      contextProps: ['density'],
-      variants: frameVariants,
-      compoundVariants: [
-        {
-          tone: 'critical',
-          density: 'compact',
-          // @ts-expect-error context props must be explicitly consumed by styled
-          mood: 'serious',
-          state: 'active',
-          style: {
-            opacity: 0.7,
-          },
-        },
-      ],
-    }
-
-    styled(Parent, invalidInheritedVariant)
-    styled(Parent, invalidNewVariant)
-    styled(Parent, invalidUnconsumedContext)
   })
 
   test('context keys already accepted by a parent stay on one prop path', () => {

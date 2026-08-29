@@ -24,16 +24,6 @@ const CheckpointPublicView = styled(
         },
       },
     },
-    compoundVariants: [
-      {
-        tone: 'warm',
-        elevated: true,
-        style: {
-          borderColor: 'rgb(154,52,18) web:rgb(124,45,18)',
-          borderWidth: '1px sm:2px',
-        },
-      },
-    ],
   } as any,
   { acceptsClassName: true }
 )

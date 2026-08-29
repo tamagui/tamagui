@@ -127,14 +127,10 @@ export type TailwindVariantDefinitions = {
         [matcher: string]: string;
     };
 };
-export type TailwindCompoundVariant<Variants> = TailwindVariantProps<Variants> & {
-    style: string;
-};
 export type TailwindStyledOptions<Variants extends TailwindVariantDefinitions> = {
     displayName?: string;
     variants?: Variants;
     defaultVariants?: TailwindVariantProps<Variants>;
-    compoundVariants?: readonly TailwindCompoundVariant<Variants>[];
 };
 export interface TailwindComponent<Ref = any, NonStyleProps = {}, VariantProps = {}> extends FunctionComponent<NonStyleProps & TailwindStyleProps & VariantProps & {
     ref?: ReactRef<Ref>;

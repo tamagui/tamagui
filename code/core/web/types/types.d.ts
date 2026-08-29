@@ -1757,12 +1757,6 @@ export type GenericVariantDefinitions = {
         };
     };
 };
-export type CompoundVariantDefinition<MatchProps extends Record<string, any> = Record<string, any>, StyleProps extends Record<string, any> = Record<string, any>> = {
-    [Key in keyof MatchProps]?: MatchProps[Key] | readonly MatchProps[Key][];
-} & {
-    style: StyleProps | StaticStyleInput;
-};
-export type GenericCompoundVariant = CompoundVariantDefinition<Record<string, any>, Record<string, any>>;
 export type StaticConfigPublic = {
     defaultProps?: Record<string, any>;
     /** Static class input supplied to styled(Component, baseClassName, ...). */
@@ -1819,14 +1813,12 @@ export type StaticConfigPublic = {
      * memoizes component, rarely useful except mostly style components that don't take children
      */
     memo?: boolean;
-    compoundVariants?: readonly GenericCompoundVariant[];
     contextProps?: readonly string[];
 };
 type StaticConfigBase = StaticConfigPublic & {
     Component?: FunctionComponent<any> & StaticComponentObject<any, any, any, any, any, any>;
     baseStyle?: Record<string, any>;
     variants?: GenericVariantDefinitions;
-    compoundVariants?: readonly GenericCompoundVariant[];
     context?: StyledContext;
     contextProps?: readonly string[];
     /**

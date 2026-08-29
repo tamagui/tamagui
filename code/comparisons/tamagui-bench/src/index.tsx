@@ -205,17 +205,6 @@ const FlatFrame = styled(
         },
       },
     },
-    compoundVariants: Array.from({ length: 12 }, (_, index) => ({
-      tone: index % 2 ? 'warm' : 'cool',
-      elevated: true,
-      style: {
-        borderColor:
-          index % 2
-            ? 'rgb(154,52,18) web:rgb(124,45,18)'
-            : 'rgb(30,64,175) web:rgb(30,58,138)',
-        borderWidth: `1px web:${(index % 3) + 1}px`,
-      },
-    })),
   } as any,
   {
     acceptsClassName: false,

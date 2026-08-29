@@ -22,14 +22,6 @@ const crossFileFrameRoot = styled(
         true: 'h-8',
       },
     } as const,
-    compoundVariants: [
-      {
-        emphasis: 'strong',
-        selected: true,
-        tone: 'accent',
-        style: 'p-0 opacity-50',
-      },
-    ],
   }
 )
 

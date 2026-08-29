@@ -1147,19 +1147,6 @@ describe('styled variants', () => {
     expect(programs(site)).toEqual({ x: 'exit:${going < 0 ? 100 : -100}px' })
     expect(resolve1('exit:100px', {})).toBe(null)
   })
-
-  test('compound variant styles convert too', () => {
-    const site = labeled(
-      run(`import { Text, TextInput, View, styled } from 'tamagui'
-const Frame = styled(View, {
-        compoundVariants: [{ size: 'small', style: { padding: '$2' } }],
-      })`),
-      'compoundVariants[0]'
-    )
-
-    expect(programs(site)).toEqual({ padding: '2' })
-    expect(pendingCodes(site)).toEqual([])
-  })
 })
 
 describe('token context', () => {

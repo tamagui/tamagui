@@ -28,7 +28,6 @@ export type FrontendStaticConfig = {
      */
     passthroughClassName?: string;
     variants?: Record<string, Record<string, any>>;
-    compoundVariants?: readonly Record<string, any>[];
     styleFrontend?: StyleFrontend;
 };
 /**

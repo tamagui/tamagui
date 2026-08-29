@@ -1,7 +1,7 @@
 import type { AnchorHTMLAttributes, ButtonHTMLAttributes, FormHTMLAttributes, HTMLAttributes, InputHTMLAttributes, LabelHTMLAttributes, SelectHTMLAttributes, TextareaHTMLAttributes } from 'react';
 import type { FrontendComponent, StyleFrontend } from './helpers/styleFrontend';
 import type { GetRef } from './interfaces/GetRef';
-import type { CompoundVariantDefinition, GetBaseStyles, GetNonStyledProps, GetProps, GetStaticConfig, GetStyledVariants, InferStyleProps, InferStyledProps, StackStyle, StackStyleBase, StaticConfigPublic, StylableComponent, StyledContext, TamaDefer, TamaguiComponent, TamaguiComponentPropsBase, TextStyle, TextStylePropsBase, ThemeValueByCategory, VariantDefinitions, VariantResolverKey, VariantResolverValue, VariantSpreadFunction } from './types';
+import type { GetBaseStyles, GetNonStyledProps, GetProps, GetStaticConfig, GetStyledVariants, InferStyleProps, InferStyledProps, StackStyle, StackStyleBase, StaticConfigPublic, StylableComponent, StyledContext, TamaDefer, TamaguiComponent, TamaguiComponentPropsBase, TextStyle, TextStylePropsBase, ThemeValueByCategory, VariantDefinitions, VariantResolverKey, VariantResolverValue, VariantSpreadFunction } from './types';
 import type { Text } from './views/Text';
 export { createVariantResolver } from './types';
 type AreVariantsUndefined<Variants> = Required<Variants> extends {
@@ -20,14 +20,12 @@ export type StyledOptions<ParentComponent extends StylableComponent, StyledConfi
     defaultVariants?: NoInferLocal<GetVariantAcceptedValues<NonNullable<Variants>>>;
     context?: Context;
     contextProps?: readonly Extract<ContextPropKeys, keyof GetStyledContextAllProps<Context> & string>[];
-    compoundVariants?: readonly CompoundVariantDefinition<NoInferLocal<GetCompoundVariantMatchProps<ParentComponent, StyledConfig, Variants, Context, ContextPropKeys>>, Partial<InferStyleProps<ParentComponent, StyledConfig>>>[];
     render?: string | React.ReactElement;
 };
 type GetStyledContextAllProps<Context> = Context extends StyledContext<infer Props> ? IsAny<Props> extends true ? {} : Partial<Props> : {};
 type GetStyledContextDefaultKeys<Context> = Context extends StyledContext<infer Props, infer Keys> ? IsAny<Props> extends true ? never : Extract<Keys, keyof Props & string> : never;
 type GetStyledContextProps<Context, Keys extends string = GetStyledContextDefaultKeys<Context>> = Context extends StyledContext<infer Props> ? IsAny<Props> extends true ? {} : Partial<Pick<Props, Extract<Keys, keyof Props & string>>> : {};
 type GetStyledContextVariantProps<ParentComponent extends StylableComponent, Context, Keys extends string> = Omit<GetStyledContextProps<Context, Keys>, keyof GetProps<ParentComponent>>;
-type GetCompoundVariantMatchProps<ParentComponent extends StylableComponent, StyledConfig extends StaticConfigPublic, Variants extends VariantDefinitions<ParentComponent, StyledConfig>, Context, ContextPropKeys extends string> = Omit<StyledMergedVariants<ParentComponent, StyledConfig, Variants>, '_isEmpty'> & GetStyledContextProps<Context, ContextPropKeys>;
 type StyledCustomTokenProps<ParentComponent extends StylableComponent, StyledConfig extends StaticConfigPublic, ParentStylesBase extends object, Accepted = StyledConfig['accept']> = Accepted extends Record<string, any> ? {
     [Key in keyof Accepted]?: (Key extends keyof ParentStylesBase ? ParentStylesBase[Key] : never) | (Accepted[Key] extends 'style' ? Partial<InferStyleProps<ParentComponent, StyledConfig>> : Accepted[Key] extends 'textStyle' ? Partial<InferStyleProps<typeof Text, StyledConfig>> : ThemeValueByCategory<Accepted[Key]>);
 } : {};

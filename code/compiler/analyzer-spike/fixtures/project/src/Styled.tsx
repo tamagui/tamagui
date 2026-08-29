@@ -8,7 +8,6 @@ export const StyledFrame = styled(View, 'fixture-base', {
     },
   },
   defaultVariants: { size: 'large' },
-  compoundVariants: [{ size: 'large', gap: 4 }],
 })
 
 export const StyledUse = () => <StyledFrame id="styled" />

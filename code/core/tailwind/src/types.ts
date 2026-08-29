@@ -181,15 +181,10 @@ export type TailwindVariantDefinitions = {
   [variantName: string]: { [matcher: string]: string }
 }
 
-export type TailwindCompoundVariant<Variants> = TailwindVariantProps<Variants> & {
-  style: string
-}
-
 export type TailwindStyledOptions<Variants extends TailwindVariantDefinitions> = {
   displayName?: string
   variants?: Variants
   defaultVariants?: TailwindVariantProps<Variants>
-  compoundVariants?: readonly TailwindCompoundVariant<Variants>[]
 }
 
 export interface TailwindComponent<

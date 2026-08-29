@@ -65,14 +65,6 @@ function normalizeTailwindStaticConfig<Config extends FrontendStaticConfig>(
     )
   }
 
-  const compoundVariants = staticConfig.compoundVariants?.map((compoundVariant) => ({
-    ...compoundVariant,
-    style:
-      typeof compoundVariant.style === 'string'
-        ? parseStaticStyle(compoundVariant.style, config)
-        : compoundVariant.style,
-  }))
-
   // A class base is the one class string with no authored position, so its unclaimed
   // classes cannot ride the forward pass the way a call-site className does. Partition
   // them out: `baseStyle` holds styles only, and the raw remainder goes to
@@ -90,7 +82,6 @@ function normalizeTailwindStaticConfig<Config extends FrontendStaticConfig>(
     baseStyle,
     passthroughClassName,
     variants,
-    compoundVariants,
   } as Config
   normalizedStaticConfigs.add(normalized)
   configCache ||= new WeakMap()

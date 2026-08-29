@@ -912,13 +912,10 @@ const Card = styled(View, {
   padding: 8,
   variants: {
     tone: {
-      primary: { margin: 3 },
+      primary: { margin: 3, opacity: 0.5 },
     },
   },
   defaultVariants: { tone: 'primary' },
-  compoundVariants: [
-    { tone: 'primary', style: { opacity: 0.5 } },
-  ],
 })
 export const App = () => <Card padding={12} data-styled="yes" />
 `
@@ -939,21 +936,18 @@ export const App = () => <Card padding={12} data-styled="yes" />
     expect(plan.css).toContain('opacity:0.5')
   })
 
-  test('lowers compounds and style props in authored forward order', () => {
+  test('lowers variants and style props in authored forward order', () => {
     const source = (props: string) => `
 import { View, styled } from '@tamagui/core'
 const Frame = styled(View, {
-  variants: { tone: { active: {} } },
-  compoundVariants: [
-    { tone: 'active', style: { opacity: 0.5 } },
-  ],
+  variants: { tone: { active: { opacity: 0.5 } } },
 })
 export const App = () => <Frame ${props} />
 `
-    const compoundLast = compile(source('style={{ opacity: 0.2 }} tone="active"'))
-    expect(codes(compoundLast.plan)).toEqual([])
-    expect(compactCss(compoundLast.plan.css)).toContain('opacity:0.5')
-    expect(compactCss(compoundLast.plan.css)).not.toContain('opacity:0.2')
+    const variantLast = compile(source('style={{ opacity: 0.2 }} tone="active"'))
+    expect(codes(variantLast.plan)).toEqual([])
+    expect(compactCss(variantLast.plan.css)).toContain('opacity:0.5')
+    expect(compactCss(variantLast.plan.css)).not.toContain('opacity:0.2')
 
     const styleLast = compile(source('tone="active" style={{ opacity: 0.2 }}'))
     expect(codes(styleLast.plan)).toEqual([])

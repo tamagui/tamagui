@@ -49,13 +49,6 @@ export const ButtonFrame = styled(ButtonBehaviorFrame, {
     },
   } as const,
   defaultVariants: { size: 'medium' },
-  compoundVariants: [
-    {
-      size: 'small',
-      circular: true,
-      style: { maxH: 30, maxW: 30, minW: 30, w: 30 },
-    },
-  ],
 })
 
 export const ButtonText = styled(ButtonBehaviorText, {

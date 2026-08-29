@@ -298,7 +298,7 @@ describe('class-first styled()', () => {
     expect(Child.staticConfig.styleFrontend).toBe(tailwindStyleFrontend)
   })
 
-  test('base, variant, and compound class strings normalize with modifiers', () => {
+  test('base and variant class strings normalize with modifiers', () => {
     const Frame = styled(
       View,
       'p-4 rounded-4 hover:bg-[red] sm:m-4 enter:opacity-0 base-user',
@@ -308,12 +308,6 @@ describe('class-first styled()', () => {
             sm: 'h-8 px-3 hover:opacity-50 sm:mt-4 enter:scale-95 simple-user',
           },
         } as const,
-        compoundVariants: [
-          {
-            size: 'sm',
-            style: 'w-8 p-0 hover:bg-[blue] sm:mb-4 enter:opacity-50 compound-user',
-          },
-        ],
       }
     )
     const authored = Frame.staticConfig
@@ -321,7 +315,6 @@ describe('class-first styled()', () => {
 
     expect(authored.baseClassName).toContain('p-4')
     expect(authored.variants?.size?.sm).toContain('h-8')
-    expect(authored.compoundVariants?.[0]?.style).toContain('w-8')
     expect(tailwindStyleFrontend.normalizeStaticConfig!(resolved, getConfig())).toBe(
       resolved
     )
@@ -345,24 +338,12 @@ describe('class-first styled()', () => {
       marginTop: { sm: '4' },
       scale: { enter: '0.95' },
     })
-    expect(resolved.compoundVariants?.[0]?.style).toMatchObject({
-      width: '8',
-      padding: '0',
-      className: 'compound-user',
-    })
-    expect(resolved.compoundVariants?.[0]?.style).toMatchObject({
-      backgroundColor: { hover: 'blue' },
-      marginBottom: { sm: '4' },
-      opacity: { enter: '0.5' },
-    })
 
     const result = splitTailwindStyles(Frame, {
       size: 'sm',
       className: 'caller-user',
     })
-    expect(result.viewProps.className).toMatch(
-      /base-user.*simple-user.*compound-user.*caller-user/
-    )
+    expect(result.viewProps.className).toMatch(/base-user.*simple-user.*caller-user/)
   })
 })
 

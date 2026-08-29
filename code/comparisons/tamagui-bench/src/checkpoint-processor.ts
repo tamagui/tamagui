@@ -42,16 +42,6 @@ setConfig(config)
 
 const staticConfig: any = {
   acceptsClassName: true,
-  compoundVariants: [
-    {
-      tone: 'warm',
-      elevated: true,
-      style: {
-        borderColor: 'rgb(154,52,18) web:rgb(124,45,18)',
-        borderWidth: '1px sm:2px',
-      },
-    },
-  ],
   validStyles,
   variants: {
     elevated: {
