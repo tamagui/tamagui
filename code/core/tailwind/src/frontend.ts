@@ -20,8 +20,8 @@ import { getTailwindClassPlan, resolveTailwindClassName } from './candidate'
  */
 
 /**
- * Parse a static class string (a `styled()` base, a string variant value, a string
- * compound-variant style) into ordinary style props.
+ * Parse a static class string (a `styled()` base, a string variant value) into
+ * ordinary style props.
  */
 export function parseStaticStyle(
   input: string,

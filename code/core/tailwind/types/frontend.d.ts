@@ -12,8 +12,8 @@ import { type StyleFrontend, type StyleFrontendConfig } from '@tamagui/core/inte
  * why `tailwind-merge` is not a dependency here.
  */
 /**
- * Parse a static class string (a `styled()` base, a string variant value, a string
- * compound-variant style) into ordinary style props.
+ * Parse a static class string (a `styled()` base, a string variant value) into
+ * ordinary style props.
  */
 export declare function parseStaticStyle(input: string, config: StyleFrontendConfig): Record<string, any>;
 export declare const tailwindStyleFrontend: StyleFrontend;

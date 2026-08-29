@@ -77,7 +77,7 @@ helper, a `react-native` component, and an intrinsic tag are all left alone —
   literals is rewritten in place (`active ? '$red10' : '$blue10'`), and an expression
   whose type the checker can prove interpolates into the program
   (`` backgroundColor={`${GREEN} disabled:${GREY}`} ``).
-- Variant and compound-variant branches convert as their own style objects, so a
+- Variant branches convert as their own style objects, so a
   branch contributes at its own position in the forward pass. No base is invented for
   a condition-only branch: with clause-level merge (decision 21)
   `exitStyle={{ x: 10 }}` is exactly `x="exit:10px"`, which keeps whatever base the

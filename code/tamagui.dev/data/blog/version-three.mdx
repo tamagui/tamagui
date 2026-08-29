@@ -160,9 +160,8 @@ through one compiler now, they resolve under one rule: every contribution
 participates in a single forward pass, and later output wins per property.
 
 Base `styled()` values come first, then variants, then call-site props, `style`,
-and `className`. Matched compound variants run immediately after their last
-selector at that authored position. Neither `style` nor `className` is a
-privileged tier that always wins.
+and `className`. Neither `style` nor `className` is a privileged tier that
+always wins.
 
 The practical consequence is that attribute order matters. Reordering authored
 props can change the result, including in the Tailwind class pipeline.

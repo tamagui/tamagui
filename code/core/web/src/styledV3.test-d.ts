@@ -12,8 +12,8 @@ type HasStringIndex<T> = string extends keyof T ? true : false
 
 // the public prop type of a keyed variant or consumed context key: the exact
 // branch keys widened with the conditional flat forms (clause strings and
-// flat objects). definition-side types (defaultVariants, compound matchers)
-// keep the bare key unions
+// flat objects). definition-side types (defaultVariants) keep the bare key
+// unions
 type Cond<T> = FlatStyleValue<T> | undefined
 
 type ButtonProps = {

@@ -1040,8 +1040,8 @@ export function createTamaguiCompilerHost(
 
   // A component's import provenance chose its authoring syntax, and the frontend
   // descriptor frozen onto its static config is the only thing that knows how to
-  // resolve that syntax's static input (a class-string base, string variants, string
-  // compound variants) into styles. Regular Tamagui components carry no descriptor
+  // resolve that syntax's static input (a class-string base, string variants) into
+  // styles. Regular Tamagui components carry no descriptor
   // because their static config is already the renderer's input shape. The compiler
   // must never import a frontend package: `@tamagui/tailwind/vite` already depends on
   // the static compiler, so reaching the other way would be a cycle.

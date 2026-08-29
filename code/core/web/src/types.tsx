@@ -2122,7 +2122,7 @@ type MaybeOmitLonghands<A> = OnlyShorthandStyleProps extends true
 // variant props at the call site take the same conditional forms as style
 // values: density="compact sm:roomy" and density={{ default: 'compact', sm: 'roomy' }}.
 // the widening happens only here, at the final public props, so every
-// definition-side type (defaultVariants, compound matchers, inheritance)
+// definition-side type (defaultVariants, inheritance)
 // keeps the exact branch-key unions
 export type WithFlatVariantValues<Variants> = {
   [Key in keyof Variants]?: FlatStyleValue<NonNullable<Variants[Key]>>

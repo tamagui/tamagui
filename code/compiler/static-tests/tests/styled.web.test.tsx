@@ -39,7 +39,7 @@ describe('styled() tests', () => {
     expect(output.js).toContain('className')
   })
 
-  // the class-string base, string variants, and string compound variants are the
+  // the class-string base and string variants are the
   // Tailwind frontend's surface: core `styled()` is object-only, and it is the import
   // that selects which frontend interprets the base
   test('extracts styled static strings with runtime precedence', async () => {

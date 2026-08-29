@@ -80,7 +80,7 @@ export type StyleFrontend = {
 
   /**
    * Resolves frontend-specific static style input (a class-string base, string
-   * variant values, string compound-variant styles) into ordinary style objects.
+   * variant values) into ordinary style objects.
    * Called once per (staticConfig, config) pair; implementations memoize.
    */
   normalizeStaticConfig?: <Config extends FrontendStaticConfig>(

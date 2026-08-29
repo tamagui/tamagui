@@ -84,7 +84,6 @@ migration notes so far:
 
 ## deferred / post-v3 unless revisited
 
-- compound variants?
 - simplify functional variants
 - conditional values or value objects
 - see v3 cleanups
