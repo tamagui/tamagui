@@ -1,6 +1,6 @@
 process.env.TAMAGUI_TARGET = 'native'
 
-import { Button } from '@tamagui/button'
+import { ButtonFrame, ButtonText } from '@tamagui/button'
 import { getDefaultTamaguiConfig } from '@tamagui/config-default'
 import { TamaguiProvider, createRefComponent, createTamagui, styled } from '@tamagui/core'
 import { render } from '@testing-library/react-native'
@@ -10,7 +10,7 @@ import { getGestureHandler } from '../native/src/gestureState'
 const config = createTamagui(getDefaultTamaguiConfig('native'))
 const GESTURE_ENABLED_FREEZE_KEY = '__tamagui_gesture_enabled_freeze__'
 
-const StyledButton = styled(Button, {
+const StyledButton = styled(ButtonFrame, {
   displayName: 'StyledButtonHookRegression',
   variants: {
     disabled: {
@@ -25,7 +25,7 @@ const WrappedButton = createRefComponent<any, { disabled?: boolean }>(
   function WrappedButton({ disabled }, ref) {
     return (
       <StyledButton ref={ref} disabled={disabled} onPress={() => {}}>
-        Submit
+        <ButtonText>Submit</ButtonText>
       </StyledButton>
     )
   }

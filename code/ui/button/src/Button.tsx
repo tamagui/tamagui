@@ -1,57 +1,13 @@
 import { useGetThemedIcon } from '@tamagui/helpers-tamagui'
 import { ButtonNestingContext } from '@tamagui/stacks'
-import type { TextContextStyles, TextParentStyles } from '@tamagui/text'
 import { wrapChildrenInText } from '@tamagui/text'
-import type { GetProps } from '@tamagui/web'
-import {
-  createStyledContext,
-  createStyledHOC,
-  isVariable,
-  styled,
-  Text,
-  useProps,
-  View,
-  withStaticProperties,
-} from '@tamagui/web'
+import type { GetProps, TamaguiComponentPropsBaseBase } from '@tamagui/web'
+import { styled, Text, View } from '@tamagui/web'
 import type { FunctionComponent, JSX, ReactNode } from 'react'
 import { useContext } from 'react'
-import type { OpaqueColorValue } from 'react-native'
-
-const buttonContextKeys = [
-  'color',
-  'ellipsis',
-  'fontFamily',
-  'fontSize',
-  'fontStyle',
-  'fontWeight',
-  'letterSpacing',
-  'maxFontSizeMultiplier',
-  'textAlign',
-] as const
-
-export const ButtonContext = createStyledContext<
-  TextContextStyles,
-  (typeof buttonContextKeys)[number]
->(
-  {
-    color: undefined,
-    ellipsis: undefined,
-    fontFamily: undefined,
-    fontSize: undefined,
-    fontStyle: undefined,
-    fontWeight: undefined,
-    letterSpacing: undefined,
-    maxFontSizeMultiplier: undefined,
-    textAlign: undefined,
-  },
-  {
-    keys: buttonContextKeys,
-  }
-)
 
 export const ButtonFrame = styled(View, {
-  context: ButtonContext,
-  displayName: 'ButtonFrame',
+  // role is the cross-platform one; render only lands on web
   role: 'button',
   render: <button type="button" />,
   tabIndex: 0,
@@ -70,8 +26,6 @@ export const ButtonFrame = styled(View, {
 })
 
 export const ButtonText = styled(Text, {
-  context: ButtonContext,
-  displayName: 'ButtonText',
   // flexGrow 1 pushes text to the start of its parent on native
   flexGrow: 0,
   flexShrink: 1,
@@ -79,30 +33,14 @@ export const ButtonText = styled(Text, {
 
 export type ButtonIconProps = {
   children: ReactNode
-  color?: TextContextStyles['color']
+  color?: string
   scaleIcon?: number
   size?: number
 }
 
-// react-native opaque colors (PlatformColor, DynamicColorIOS) are plain
-// objects and remain valid single icon colors, unlike conditional flat objects
-const isOpaqueColor = (value: unknown): value is OpaqueColorValue =>
-  typeof value === 'object' &&
-  value !== null &&
-  ('dynamic' in value || 'semantic' in value || 'resource_paths' in value)
-
 export const ButtonIcon = ({ children, color, scaleIcon = 1, size }: ButtonIconProps) => {
-  const styledContext = ButtonContext.useStyledContext()
-  const iconColor = color ?? styledContext?.color
   const getThemedIcon = useGetThemedIcon({
-    // icons take one concrete color: conditional values (numbers, flat
-    // objects) fall back to the theme color
-    color:
-      (typeof iconColor === 'string' && iconColor !== 'unset') ||
-      isVariable(iconColor) ||
-      isOpaqueColor(iconColor)
-        ? iconColor
-        : undefined,
+    color,
     size: size === undefined ? undefined : size * scaleIcon,
   })
 
@@ -115,13 +53,32 @@ type ButtonIconInput =
   | ((props: { color?: any; size?: any }) => ReactNode)
   | null
 
-export type ButtonBehaviorProps = TextParentStyles & {
+/**
+ * The props `useButton` reads and replaces. It hands the frame everything else
+ * untouched, so this is exactly what its result omits.
+ */
+type ButtonConsumedProps = {
+  children?: ReactNode
+  disabled?: boolean
+  render?: TamaguiComponentPropsBaseBase['render']
+
+  /**
+   * The one text style that stays on the frame. A font family is a base value
+   * in practice — nobody swaps it per breakpoint — so it needs no conditional
+   * resolution, just a forward to the wrapped text. Every other text style
+   * belongs on `Button.Text`.
+   */
+  fontFamily?: string
+  noTextWrap?: boolean
+
   icon?: ButtonIconInput
   iconAfter?: ButtonIconInput
   iconSize?: number
   scaleIcon?: number
+}
 
-  // native button html props
+/** passed straight through to the rendered `<button>` */
+type ButtonHTMLProps = {
   type?: 'submit' | 'reset' | 'button'
   form?: string
   formAction?: string
@@ -133,138 +90,79 @@ export type ButtonBehaviorProps = TextParentStyles & {
   value?: string | readonly string[] | number
 }
 
+export type ButtonBehaviorProps = ButtonConsumedProps & ButtonHTMLProps
+
+/**
+ * What `useButton` returns: the caller's props minus the ones it consumed, plus
+ * the ones it decides. Spelled out rather than cast, so a skin that spreads the
+ * result onto a frame is type-checked on exactly what it will receive.
+ */
+export type UseButtonProps<Props> = Omit<Props, keyof ButtonConsumedProps> & {
+  children: ReactNode
+  'aria-disabled'?: boolean
+  disabled?: boolean
+  render?: TamaguiComponentPropsBaseBase['render']
+  tabIndex?: number
+}
+
 export type UseButtonOptions = {
   Text?: any
-  iconColor?: TextContextStyles['color']
+  iconColor?: string
   iconSize?: number
   textProps?: Record<string, unknown>
 }
 
-const buttonInternalPropNames = [
-  'children',
-  'color',
-  'disabled',
-  'ellipsis',
-  'fontFamily',
-  'fontSize',
-  'fontStyle',
-  'fontWeight',
-  'icon',
-  'iconAfter',
-  'iconSize',
-  'letterSpacing',
-  'maxFontSizeMultiplier',
-  'noTextWrap',
-  'render',
-  'scaleIcon',
-  'textAlign',
-  'textProps',
-] as const
-
+/**
+ * Button behavior: icon theming, wrapping bare children in a text, and the html
+ * nesting rules. It reads nothing off props at runtime beyond a destructure —
+ * no text context to assemble, so no `useProps` and no prop strip list.
+ */
 export function useButton<Props extends ButtonBehaviorProps>(
   propsIn: Props,
   {
     Text = ButtonText,
-    iconColor: iconColorOption,
+    iconColor,
     iconSize: iconSizeOption,
     textProps: textPropsOption,
   }: UseButtonOptions = {}
-) {
+): { isNested: boolean; props: UseButtonProps<Props> } {
   const isNested = useContext(ButtonNestingContext)
-  const styledContext = ButtonContext.useStyledContext()
-  const processedProps = useProps(propsIn, {
-    noNormalize: true,
-    noExpand: true,
-  }) as Props & {
-    accessibilityRole?: string
-    children?: ReactNode
-    color?: TextContextStyles['color']
-    disabled?: boolean
-    render?: unknown
-    role?: string
-    size?: unknown
-  }
 
   const {
     children,
-    color,
     disabled,
-    ellipsis,
     fontFamily,
-    fontSize,
-    fontStyle,
-    fontWeight,
     icon,
     iconAfter,
     iconSize,
-    letterSpacing,
-    maxFontSizeMultiplier,
     noTextWrap,
     render,
     scaleIcon = 1,
-    textAlign,
-    textProps,
-  } = processedProps
+    ...frameProps
+  } = propsIn
 
-  // useProps resolves styles for the component running the hook. This behavior
-  // HOC renders a styled frame, so its frame styles must keep the raw flat
-  // programs for the frame's own hover/press/focus state and merge pass.
-  const frameProps = { ...propsIn }
-  for (const key of buttonInternalPropNames) {
-    delete (frameProps as Record<string, any>)[key]
-  }
-
-  const contextColor = color ?? styledContext?.color
-  const iconColor = iconColorOption ?? contextColor
   const resolvedIconSize = iconSize ?? iconSizeOption
   const getThemedIcon = useGetThemedIcon({
-    // icons take one concrete color: conditional values (numbers, flat
-    // objects) fall back to the theme color
-    color:
-      (typeof iconColor === 'string' && iconColor !== 'unset') ||
-      isVariable(iconColor) ||
-      isOpaqueColor(iconColor)
-        ? iconColor
-        : undefined,
+    color: iconColor,
     size: resolvedIconSize === undefined ? undefined : resolvedIconSize * scaleIcon,
   })
   const [themedIcon, themedIconAfter] = [icon, iconAfter].map((item) => {
     return item ? getThemedIcon(item) : null
   })
 
-  const textContext: TextContextStyles = {
-    color: contextColor,
-    ellipsis: ellipsis ?? styledContext?.ellipsis,
-    fontFamily: fontFamily ?? styledContext?.fontFamily,
-    fontSize: fontSize ?? styledContext?.fontSize,
-    fontStyle: fontStyle ?? styledContext?.fontStyle,
-    fontWeight: fontWeight ?? styledContext?.fontWeight,
-    letterSpacing: letterSpacing ?? styledContext?.letterSpacing,
-    maxFontSizeMultiplier: maxFontSizeMultiplier ?? styledContext?.maxFontSizeMultiplier,
-    textAlign: textAlign ?? styledContext?.textAlign,
-  }
+  // adjacent text children join into one Text: `<Button>hi {name}</Button>` is
+  // two children, and wrapping them separately lays them out with a gap,
+  // ellipsizes per fragment, reads as fragments to assistive tech, and throws
+  // "Text strings must be rendered within a <Text>" for a bare number on native
   const wrappedChildren = wrapChildrenInText(
     Text,
-    {
-      children,
-      ...textContext,
-      noTextWrap,
-      textProps,
-    },
-    {
-      ...textPropsOption,
-      ...(processedProps.size === undefined ? null : { size: processedProps.size }),
-    }
+    { children, fontFamily, noTextWrap },
+    textPropsOption
   )
+
   const resolvedRender =
     render ??
-    (isNested ? (
-      'span'
-    ) : processedProps.accessibilityRole === 'link' || processedProps.role === 'link' ? (
-      'a'
-    ) : disabled ? (
-      <button type="button" disabled />
-    ) : undefined)
+    (isNested ? 'span' : disabled ? <button type="button" disabled /> : undefined)
 
   const props = {
     ...frameProps,
@@ -294,14 +192,12 @@ export function useButton<Props extends ButtonBehaviorProps>(
     }),
     children: (
       <ButtonNestingContext.Provider value={true}>
-        <ButtonContext.Provider {...textContext}>
-          {themedIcon}
-          {wrappedChildren}
-          {themedIconAfter}
-        </ButtonContext.Provider>
+        {themedIcon}
+        {wrappedChildren}
+        {themedIconAfter}
       </ButtonNestingContext.Provider>
     ),
-  } as Props
+  }
 
   return {
     isNested,
@@ -309,20 +205,4 @@ export function useButton<Props extends ButtonBehaviorProps>(
   }
 }
 
-const ButtonComponent = createStyledHOC(
-  ButtonFrame,
-  function Button(props: ButtonBehaviorProps, ref) {
-    const { props: buttonProps } = useButton(props)
-
-    return <ButtonFrame ref={ref} {...buttonProps} />
-  }
-)
-
-export const Button = withStaticProperties(ButtonComponent, {
-  Apply: ButtonContext.Provider,
-  Frame: ButtonFrame,
-  Icon: ButtonIcon,
-  Text: ButtonText,
-})
-
-export type ButtonProps = GetProps<typeof ButtonComponent>
+export type ButtonFrameProps = GetProps<typeof ButtonFrame>

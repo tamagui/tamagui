@@ -1,9 +1,9 @@
-// Styled Button = the unstyled @tamagui/ui Button behavior primitive + the
-// default v2-look skin, layered here in `tamagui`. This is the single skin
-// definition: `tamagui` exports it as the default `Button`, `tamagui/unstyled`
-// exposes the unstyled primitive, and the shadcn registry item is generated
-// from this exact file (it imports @tamagui/ui and applies the skin — nothing
-// duplicated).
+// Styled Button = @tamagui/ui's button behavior and parts + the default v2-look
+// skin, assembled here in `tamagui`. @tamagui/ui deliberately ships no Button of
+// its own: no two buttons are alike, so it exposes `useButton` and the frame,
+// text, and icon parts and lets a skin decide the rest. This is the single skin
+// definition — `tamagui` exports it as the default `Button`, and the shadcn
+// registry item is generated from this exact file.
 import {
   ButtonFrame as ButtonBehaviorFrame,
   ButtonIcon as ButtonBehaviorIcon,
@@ -153,26 +153,24 @@ const ButtonComponent = createStyledHOC(
     ref
   ) {
     const { theme, ...buttonBehaviorProps } = props
-    const contextSize = SizeContext.useStyledContext()?.size
+    // ButtonFrame declares `context: SizeContext`, so passing `size` through to
+    // it is what publishes size to ButtonText and Button.Icon. The only reason
+    // to resolve it here is the `icon` prop, which is themed before the frame
+    // renders and so cannot read the context the frame is about to provide.
     const size = ((buttonBehaviorProps.size as TokenSize | undefined) ??
-      contextSize ??
+      SizeContext.useStyledContext()?.size ??
       true) as ButtonSize
-    // Size is the frame's baseline contribution. Appending it after
-    // HOC-expanded style props would let the variant overwrite a direct
-    // padding override from the caller.
-    const sizedProps = { size, ...buttonBehaviorProps }
-    const { props: buttonProps } = useButton(sizedProps, {
+    const { props: buttonProps } = useButton(buttonBehaviorProps, {
       Text: ButtonText,
       iconSize: getThemedIconSize(size),
     })
 
-    const frame = (
+    const button = (
       <Theme name="level2">
         <ButtonFrame ref={ref} {...buttonProps} />
       </Theme>
     )
 
-    const button = <SizeContext.Provider size={size}>{frame}</SizeContext.Provider>
     return theme ? <Theme name={theme}>{button}</Theme> : button
   },
   { disableTheme: true }

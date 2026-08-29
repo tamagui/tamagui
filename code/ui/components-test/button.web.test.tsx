@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom'
 import 'vitest-axe/extend-expect'
 
-import { Button } from '@tamagui/button'
+import { Button } from 'tamagui'
 import { getDefaultTamaguiConfig } from '@tamagui/config-default'
 import { View, TamaguiProvider, createTamagui } from '@tamagui/core'
 import type { RenderResult } from '@testing-library/react'
@@ -69,5 +69,32 @@ describe('Button basic functionality', () => {
     const { getByRole } = render(<ButtonTest>Click me</ButtonTest>)
     const button = getByRole(BUTTON_ROLE)
     expect(button).toHaveAttribute('tabindex', '0')
+  })
+
+  // issue #3914
+  it('should forward native button html props to the element', () => {
+    const { getByRole } = render(
+      <ButtonTest
+        type="submit"
+        form="myForm"
+        formAction="/submit"
+        formMethod="post"
+        formTarget="_blank"
+        formNoValidate
+        name="submitBtn"
+        value="submit"
+      >
+        Submit
+      </ButtonTest>
+    )
+    const button = getByRole(BUTTON_ROLE)
+    expect(button).toHaveAttribute('type', 'submit')
+    expect(button).toHaveAttribute('form', 'myForm')
+    expect(button).toHaveAttribute('formaction', '/submit')
+    expect(button).toHaveAttribute('formmethod', 'post')
+    expect(button).toHaveAttribute('formtarget', '_blank')
+    expect(button).toHaveAttribute('formnovalidate')
+    expect(button).toHaveAttribute('name', 'submitBtn')
+    expect(button).toHaveAttribute('value', 'submit')
   })
 })

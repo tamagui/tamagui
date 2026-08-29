@@ -1,5 +1,5 @@
 import { getDefaultTamaguiConfig } from '@tamagui/config-default'
-import { Button } from '@tamagui/button'
+import { Button } from 'tamagui'
 import { TamaguiProvider, View, createTamagui, styled } from '@tamagui/core'
 import {
   getGestureHandler,
@@ -114,59 +114,7 @@ afterEach(() => {
   setGestureHandlerEnabled(false)
 })
 
-describe('Button native text props', () => {
-  test('passes maxFontSizeMultiplier from root props to wrapped text', async () => {
-    const rendered = await renderButton(<Button maxFontSizeMultiplier={1}>HELLO</Button>)
-    expect(findWrappedText(rendered).props.maxFontSizeMultiplier).toBe(1)
-  })
-
-  test('passes zero maxFontSizeMultiplier to wrapped text', async () => {
-    const rendered = await renderButton(<Button maxFontSizeMultiplier={0}>HELLO</Button>)
-    expect(findWrappedText(rendered).props.maxFontSizeMultiplier).toBe(0)
-  })
-
-  test('lets textProps override root text props on wrapped text', async () => {
-    const rendered = await renderButton(
-      <Button maxFontSizeMultiplier={2} textProps={{ maxFontSizeMultiplier: 1 }}>
-        HELLO
-      </Button>
-    )
-
-    expect(findWrappedText(rendered).props.maxFontSizeMultiplier).toBe(1)
-  })
-
-  test('passes styled text defaults to wrapped text', async () => {
-    const CappedButton = styled(Button, {
-      maxFontSizeMultiplier: 1,
-    })
-
-    const rendered = await renderButton(<CappedButton>HELLO</CappedButton>)
-
-    expect(findWrappedText(rendered).props.maxFontSizeMultiplier).toBe(1)
-  })
-
-  test('passes root text props to explicit Button.Text children', async () => {
-    const rendered = await renderButton(
-      <Button maxFontSizeMultiplier={1}>
-        <Button.Text>HELLO</Button.Text>
-      </Button>
-    )
-
-    expect(findWrappedText(rendered).props.maxFontSizeMultiplier).toBe(1)
-  })
-
-  test('passes Button.Apply text props to explicit Button.Text children', async () => {
-    const rendered = await renderButton(
-      <Button.Apply maxFontSizeMultiplier={1}>
-        <Button>
-          <Button.Text>HELLO</Button.Text>
-        </Button>
-      </Button.Apply>
-    )
-
-    expect(findWrappedText(rendered).props.maxFontSizeMultiplier).toBe(1)
-  })
-
+describe('Button native text', () => {
   test('does not pass cursor style to native text', async () => {
     const rendered = await renderButton(<Button>HELLO</Button>)
 

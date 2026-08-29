@@ -1,5 +1,5 @@
 import { createAnimations } from '@tamagui/animations-reanimated'
-import { Button } from '@tamagui/button'
+import { Button } from 'tamagui'
 import { getDefaultTamaguiConfig } from '@tamagui/config-default'
 import { TamaguiProvider, createTamagui } from '@tamagui/core'
 import { Input } from '@tamagui/input'
