@@ -54,7 +54,7 @@ export const domStructuralPass: StructuralModulePass = {
         element
       ): element is MaterializedElement & {
         component: MaterializedElement['component'] & { name: TagName }
-      } => Object.hasOwn(TAGS, element.component.name)
+      } => element.component.name in TAGS
     )
     const domBySpan = new Map(
       supportedDOMElements.map((element) => [
@@ -65,7 +65,7 @@ export const domStructuralPass: StructuralModulePass = {
 
     for (const element of domElements) {
       const tagName = element.component.name as TagName
-      if (!Object.hasOwn(TAGS, tagName)) {
+      if (!(tagName in TAGS)) {
         diagnostics.push(
           localBailout(
             'local/unsupported-target',
@@ -90,9 +90,9 @@ export const domStructuralPass: StructuralModulePass = {
       for (const entry of element.entries) {
         if (entry.kind !== 'prop') continue
         const attribute =
-          (Object.hasOwn(ATTRIBUTES, entry.name) ? ATTRIBUTES[entry.name] : undefined) ??
+          (entry.name in ATTRIBUTES ? ATTRIBUTES[entry.name] : undefined) ??
           (entry.name.startsWith('data-') ? ATTRIBUTES['data-*'] : undefined)
-        const event = Object.hasOwn(EVENTS, entry.name) ? EVENTS[entry.name] : undefined
+        const event = entry.name in EVENTS ? EVENTS[entry.name] : undefined
         const row = attribute ?? event
         if (!row) continue
         if (!acceptsTag(row.tags, tagName)) {

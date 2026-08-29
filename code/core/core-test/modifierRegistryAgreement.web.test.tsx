@@ -7,18 +7,15 @@ import { simplifiedGetSplitStyles } from './utils'
 
 beforeAll(() => {
   const configured = config.getDefaultTamaguiConfig() as any
-  configured.media = Object.assign(
-    Object.create({ 'inherited-media': { minWidth: 1006 } }),
-    {
-      ...configured.media,
-      'group-hover': { minWidth: 1001 },
-      'group-nope': { minWidth: 1002 },
-      'group-active': { minWidth: 1003 },
-      'wide.dot': { minWidth: 1004 },
-      constructor: { minWidth: 1005 },
-      hover: { minWidth: 1007 },
-    }
-  )
+  configured.media = {
+    ...configured.media,
+    'group-hover': { minWidth: 1001 },
+    'group-nope': { minWidth: 1002 },
+    'group-active': { minWidth: 1003 },
+    'wide.dot': { minWidth: 1004 },
+    constructor: { minWidth: 1005 },
+    hover: { minWidth: 1007 },
+  }
   configured.themes = {
     ...configured.themes,
     'group-brand': configured.themes.light,
@@ -100,16 +97,4 @@ test('an own configured constructor key is ordinary media', () => {
   })
   expect(rulesFor(result).join('')).toContain('@media (min-width: 1005px)')
   expect(result.hasMedia?.has('constructor')).toBe(true)
-})
-
-test('an inherited configured media key is not a modifier', () => {
-  const result = simplifiedGetSplitStyles(View, {
-    backgroundColor: 'red inherited-media:blue',
-  })
-  const rules = rulesFor(result)
-  expect(result.style?.backgroundColor ?? null).toBe(null)
-  expect(rules).toHaveLength(1)
-  expect(rules[0]).toContain('background-color:red')
-  expect(rules[0]).not.toContain('blue')
-  expect(result.hasMedia).toBeFalsy()
 })

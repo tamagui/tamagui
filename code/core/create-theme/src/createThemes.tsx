@@ -225,11 +225,7 @@ export function createThemes(
   }
 ): Record<string, Record<string, string>> {
   const rootKeys = Object.keys(tree).filter((key) => key !== 'children')
-  if (
-    rootKeys.length !== 2 ||
-    !Object.prototype.hasOwnProperty.call(tree, 'light') ||
-    !Object.prototype.hasOwnProperty.call(tree, 'dark')
-  ) {
+  if (rootKeys.length !== 2 || !('light' in tree) || !('dark' in tree)) {
     throw new Error('createThemes tree must have exactly the roots "light" and "dark"')
   }
 
@@ -313,7 +309,7 @@ export function createThemes(
       if (!childSet) continue
       for (const childName in childSet) {
         const fullName = `${name}_${childName}`
-        if (Object.prototype.hasOwnProperty.call(themes, fullName)) {
+        if (fullName in themes) {
           throw new Error(`Duplicate generated theme name "${fullName}"`)
         }
         add(fullName, childSet[childName]!, recipe)

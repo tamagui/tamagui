@@ -13,7 +13,7 @@ function validateNoTrueTokenKeys(tokens: CreateTokens) {
     const tokenSet = tokens[category]
     if (!tokenSet || typeof tokenSet !== 'object') continue
 
-    if (Object.prototype.hasOwnProperty.call(tokenSet, 'true')) {
+    if ('true' in tokenSet) {
       throw new Error(
         `tokens.${category}.true is reserved because boolean values select component defaults. Use an explicit token name instead.`
       )

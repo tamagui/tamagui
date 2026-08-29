@@ -14,7 +14,7 @@ export const tamaguiStaticEvaluationModules = Object.freeze({
 } as const)
 
 export function getStaticEvaluationModuleReplacement(moduleName: string) {
-  return Object.hasOwn(tamaguiStaticEvaluationModules, moduleName)
+  return moduleName in tamaguiStaticEvaluationModules
     ? tamaguiStaticEvaluationModules[
         moduleName as keyof typeof tamaguiStaticEvaluationModules
       ]

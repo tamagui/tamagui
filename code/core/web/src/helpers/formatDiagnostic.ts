@@ -32,10 +32,8 @@ function formatDiagnosticValue(
 
   const keys: string[] = []
   for (const key in value) {
-    if (Object.prototype.hasOwnProperty.call(value, key)) {
-      keys.push(key)
-      if (keys.length === 6) break
-    }
+    keys.push(key)
+    if (keys.length === 6) break
   }
   const hasMore = keys.length === 6
   if (hasMore) keys.pop()

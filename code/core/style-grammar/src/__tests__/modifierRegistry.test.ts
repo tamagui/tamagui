@@ -273,15 +273,6 @@ describe('config name sources', () => {
     }
   })
 
-  test('record sources register own names only', () => {
-    const mediaNames = Object.assign(Object.create({ inherited: {} }), {
-      constructor: {},
-    })
-    const { registry } = createModifierRegistry({ mediaNames })
-    expect(registry.get('constructor')).toBe('media')
-    expect(registry.get('inherited')).toBeUndefined()
-  })
-
   test('explicit platform names replace the defaults', () => {
     const { registry } = createModifierRegistry({ platformNames: ['web'] })
     expect(registry.get('web')).toBe('platform')

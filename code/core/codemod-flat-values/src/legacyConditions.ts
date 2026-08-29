@@ -319,7 +319,6 @@ export function convertLegacyConditionProp(
   const modifiers = root.modifiers.slice()
   const visit = (object: Record<string, unknown>, objectPath: string): void => {
     for (const childProp in object) {
-      if (!Object.prototype.hasOwnProperty.call(object, childProp)) continue
       const childValue = object[childProp]
       const childPath = `${objectPath}.${childProp}`
       const condition = resolveLegacyCondition(childProp, options.registry)

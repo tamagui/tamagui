@@ -466,9 +466,7 @@ const FieldComponent = createStyledHOC(
     disabledRef.current = disabled
     const validationMode = validationModeProp ?? formValidationMode
     const externalError =
-      effectiveName && Object.hasOwn(formErrors, effectiveName)
-        ? formErrors[effectiveName]
-        : undefined
+      effectiveName && effectiveName in formErrors ? formErrors[effectiveName] : undefined
     const externalErrors = Array.isArray(externalError)
       ? externalError
       : externalError

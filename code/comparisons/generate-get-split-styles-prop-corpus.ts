@@ -350,7 +350,7 @@ function isClauseString(value: string) {
 
 function isConditionalObject(value: JsonValue) {
   if (!value || Array.isArray(value) || typeof value !== 'object') return false
-  if (Object.prototype.hasOwnProperty.call(value, 'default')) return true
+  if ('default' in value) return true
   const first = Object.keys(value)[0]
   return first !== undefined && isModifier(first.split(':')[0]!)
 }

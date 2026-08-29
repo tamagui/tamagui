@@ -73,8 +73,8 @@ function createTransformGrammarConfig(
   // Supplying any token/font/theme domain means this is an authoritative config view: omitted
   // domains are known-empty. With no such fields, config-less conversion remains conservative but
   // may emit unambiguous token names whose membership cannot be proved until runtime.
-  const authoritative = ['tokens', 'fonts', 'themes', 'media', 'shorthands'].some((key) =>
-    Object.prototype.hasOwnProperty.call(options, key)
+  const authoritative = ['tokens', 'fonts', 'themes', 'media', 'shorthands'].some(
+    (key) => key in options
   )
   if (authoritative) {
     for (const category of [...tokenCategories, ...fontCategories]) {
@@ -709,7 +709,7 @@ function hasConfiguredName(
   if (!names) return false
   if (Array.isArray(names)) return names.includes(value)
   if (names instanceof Set) return names.has(value)
-  return Object.prototype.hasOwnProperty.call(names, value)
+  return value in names
 }
 
 function formatStringValue(ctx: Ctx, prop: string, value: string): FormattedValue | null {

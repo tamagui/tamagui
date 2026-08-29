@@ -115,7 +115,7 @@ export type FormProps<FormValue extends FormValues = FormValues> = Omit<
   FormExtraProps<FormValue>
 
 function hasError(errors: FormErrors, name?: string) {
-  if (!name || !Object.hasOwn(errors, name)) {
+  if (!name || !(name in errors)) {
     return false
   }
   const error = errors[name]

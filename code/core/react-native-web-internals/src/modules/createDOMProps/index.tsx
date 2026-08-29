@@ -11,7 +11,6 @@ import { getCSSStylesAtomic, type StyleObject } from '@tamagui/web'
 import { AccessibilityUtil } from '../AccessibilityUtil/index'
 
 const emptyObject = {}
-const hasOwnProperty = Object.prototype.hasOwnProperty
 const isArray = Array.isArray
 
 // react-native props that should be stripped before reaching the DOM
@@ -84,9 +83,7 @@ function flattenStyle(style: any): any {
     const computedStyle = flattenStyle(style[i])
     if (computedStyle) {
       for (const key in computedStyle) {
-        if (hasOwnProperty.call(computedStyle, key)) {
-          result[key] = computedStyle[key]
-        }
+        result[key] = computedStyle[key]
       }
     }
   }
@@ -347,12 +344,10 @@ export const createDOMProps = (elementType, props, options?) => {
   if (dataSet != null) {
     for (const dataProp in dataSet) {
       if (dataProp === 'className' || dataProp === 'id') continue
-      if (hasOwnProperty.call(dataSet, dataProp)) {
-        const dataName = hyphenateString(dataProp)
-        const dataValue = dataSet[dataProp]
-        if (dataValue != null) {
-          domProps[`data-${dataName}`] = dataValue
-        }
+      const dataName = hyphenateString(dataProp)
+      const dataValue = dataSet[dataProp]
+      if (dataValue != null) {
+        domProps[`data-${dataName}`] = dataValue
       }
     }
   }

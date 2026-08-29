@@ -169,7 +169,7 @@ export const getThemes = () => getConfigFromGlobalOrLocal()!.themes
 export const updateConfig = (key: string, value: any) => {
   // for usage internally only
   const config = getConfigFromGlobalOrLocal()
-  if (!config || !Object.prototype.hasOwnProperty.call(config, key)) {
+  if (!config || key === '__proto__' || !(key in config)) {
     return
   }
   Object.assign(config[key], value)

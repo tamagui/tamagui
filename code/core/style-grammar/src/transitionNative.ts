@@ -296,7 +296,6 @@ function validateEntry(
 
   let hasProperty = false
   for (const property in transitionedValues) {
-    if (!Object.prototype.hasOwnProperty.call(transitionedValues, property)) continue
     hasProperty = true
     appendDiagnostics(diagnostics, validateProperty(property, target, transitionedValues))
   }

@@ -44,7 +44,7 @@ export function forEachModifierName(
     return
   }
   for (const name in source as Readonly<Record<string, unknown>>) {
-    if (Object.prototype.hasOwnProperty.call(source, name)) visit(name, rank++)
+    visit(name, rank++)
   }
 }
 

@@ -114,7 +114,7 @@ function hasName(names: Names | undefined, name: string): boolean {
   if (!names) return false
   if (Array.isArray(names)) return names.includes(name)
   if (names instanceof Set) return names.has(name)
-  return Object.prototype.hasOwnProperty.call(names, name)
+  return name in names
 }
 
 function splitCandidate(candidate: string): { modifiers: string[]; base: string } | null {
@@ -638,18 +638,14 @@ export function formatCandidate(
     } else if (config) {
       const parsed = parseCandidate(candidate, config)
       if (parsed?.kind === 'utility') {
-        return Object.prototype.hasOwnProperty.call(parsed.properties, prop) &&
-          String(parsed.properties?.[prop]) === value
+        return prop in parsed.properties && String(parsed.properties?.[prop]) === value
           ? candidate
           : null
       }
       return parsed?.entry?.prop === prop && parsed.valueKind === valueKind
         ? candidate
         : null
-    } else if (
-      Object.prototype.hasOwnProperty.call(whole, prop) &&
-      String(whole[prop]) === value
-    ) {
+    } else if (prop in whole && String(whole[prop]) === value) {
       return candidate
     } else {
       return null
