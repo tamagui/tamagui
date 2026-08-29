@@ -24,7 +24,11 @@ import {
   updateConfig,
 } from './config'
 import { createTamagui, installTamaguiConfig } from './createTamagui'
-import { getSplitStyles, prepareStyleStaticConfig } from './helpers/getSplitStyles'
+import { getSplitStyles } from './helpers/getSplitStyles'
+import {
+  prepareStyleStaticConfig,
+  splitStyledOptions,
+} from './helpers/prepareStyleStaticConfig'
 import { mergeComponentProps } from './helpers/mergeProps'
 import type {
   SplitStyleProps,
@@ -177,17 +181,13 @@ export function resolveStaticElement(
   }
   prepareStyleStaticConfig(baseStaticConfig)
 
-  // merge component defaultProps if defined on staticConfig
+  // mirror createComponent: only the non-style defaults are props. The styles
+  // are a base layer the style pass writes for us, so merging them here too
+  // would apply them twice and in the wrong order (above variants, not below)
   let elementProps = element.props || {}
-  if (
-    baseStaticConfig.defaultProps &&
-    Object.keys(baseStaticConfig.defaultProps).length > 0
-  ) {
-    const [merged] = mergeComponentProps(
-      baseStaticConfig.defaultProps,
-      undefined,
-      elementProps
-    )
+  const { defaultProps } = splitStyledOptions(baseStaticConfig, conf)
+  if (defaultProps) {
+    const [merged] = mergeComponentProps(defaultProps, undefined, elementProps)
     elementProps = merged
   }
 

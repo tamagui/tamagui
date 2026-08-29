@@ -1,7 +1,7 @@
 import type { ComponentType, FunctionComponent } from 'react'
 import { jsx } from 'react/jsx-runtime'
 
-import { setComponentDisplayName } from '../helpers/componentDisplayName'
+import { componentDisplayName } from '../helpers/componentDisplayName'
 import { DOMText } from './primitives.native'
 
 /**
@@ -203,7 +203,9 @@ export function createDOMTagFactory(tables: DOMPropTables) {
   ): Frame {
     const Tag: FunctionComponent<Record<string, any>> = (props) =>
       jsx(Component, resolveDOMProps(props, tag, spec, tables))
-    return setComponentDisplayName(Tag, tag) as unknown as Frame
+    Tag.displayName = tag
+    ;(Tag as any)[componentDisplayName] = tag
+    return Tag as unknown as Frame
   }
 }
 
@@ -217,5 +219,7 @@ export function unsupportedDOMTag(tag: string, note: string) {
   const Tag: { (): never; displayName?: string } = () => {
     throw new Error(`html.${tag} is not supported on native: ${note}`)
   }
-  return setComponentDisplayName(Tag, tag)
+  Tag.displayName = tag
+  ;(Tag as any)[componentDisplayName] = tag
+  return Tag
 }

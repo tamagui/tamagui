@@ -1,5 +1,5 @@
 import { isWeb } from '@tamagui/constants'
-import { Text, View, styled, TamaguiComponentState } from '@tamagui/core'
+import { Text, View, html, styled, TamaguiComponentState } from '@tamagui/core'
 import { forwardRef } from 'react'
 
 // Test: render prop with string in styled()
@@ -11,8 +11,8 @@ const StyledButton = styled(View, {
   cursor: 'pointer',
 })
 
-// Test: styled.a() - styled-components style API with proper href typing
-const StyledAnchor = styled.a({
+// Test: styled(html.a) - href typing comes from the DOM contract element
+const StyledAnchor = styled(html.a, {
   color: 'blue-600',
   textDecorationLine: 'underline',
 })
@@ -115,9 +115,9 @@ export function RenderPropCase() {
         <Text testID="styled-button-text">Styled Button (render='button')</Text>
       </StyledButton>
 
-      {/* href is now properly typed because styled.a() adds AnchorHTMLAttributes */}
+      {/* href is properly typed because html.a carries the strict DOM anchor props */}
       <StyledAnchor data-testid="styled-anchor" href={isWeb ? '#' : undefined}>
-        Styled Anchor (styled.a())
+        Styled Anchor (styled(html.a))
       </StyledAnchor>
 
       {/* Test semantic elements */}

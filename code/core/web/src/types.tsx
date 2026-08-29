@@ -3009,20 +3009,6 @@ export type GenericVariantDefinitions = {
   }
 }
 
-export type CompoundVariantDefinition<
-  MatchProps extends Record<string, any> = Record<string, any>,
-  StyleProps extends Record<string, any> = Record<string, any>,
-> = {
-  [Key in keyof MatchProps]?: MatchProps[Key] | readonly MatchProps[Key][]
-} & {
-  style: StyleProps | StaticStyleInput
-}
-
-export type GenericCompoundVariant = CompoundVariantDefinition<
-  Record<string, any>,
-  Record<string, any>
->
-
 export type StaticConfigPublic = {
   defaultProps?: Record<string, any>
 
@@ -3090,19 +3076,17 @@ export type StaticConfigPublic = {
    */
   memo?: boolean
 
-  compoundVariants?: readonly GenericCompoundVariant[]
-
   contextProps?: readonly string[]
 }
 
 type StaticConfigBase = StaticConfigPublic & {
   Component?: FunctionComponent<any> & StaticComponentObject<any, any, any, any, any, any>
 
+  displayName?: string
+
   baseStyle?: Record<string, any>
 
   variants?: GenericVariantDefinitions
-
-  compoundVariants?: readonly GenericCompoundVariant[]
 
   context?: StyledContext
 
@@ -3390,7 +3374,7 @@ export type ResolveVariableAs =
 export type SplitStyleProps = {
   displayName?: string
   styledContext?: Record<string, any>
-  styledContextKeys?: Set<string>
+  styledContextKeys?: Set<string> | null
   mediaState?: Record<string, boolean>
   noClass?: boolean
   noExpand?: boolean

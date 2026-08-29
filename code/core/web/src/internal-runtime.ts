@@ -13,7 +13,6 @@ import { createComponent } from './createComponent'
 import { createVariables as createVariablesImpl } from './createVariables'
 import { fixStyles as fixStylesImpl } from './helpers/expandStyles'
 import { styleToCSS as styleToCSSImpl } from './helpers/styleToCSS'
-import { setComponentDisplayName } from './helpers/componentDisplayName'
 import { getThemeCSSRules as getThemeCSSRulesImpl } from './helpers/getThemeCSSRules'
 import { normalizeValueWithProperty as normalizeValueWithPropertyImpl } from './helpers/normalizeValueWithProperty'
 import { proxyThemeToParents as proxyThemeToParentsImpl } from './helpers/proxyThemeToParents'
@@ -120,13 +119,15 @@ export function createFrontendViews(frontend: StyleFrontend): {
   Text: FrontendComponent
 } {
   return {
-    View: setComponentDisplayName(
-      createComponent({ ...viewStaticConfig, styleFrontend: frontend }),
-      'View'
-    ),
-    Text: setComponentDisplayName(
-      createComponent({ ...textStaticConfig, styleFrontend: frontend }),
-      'Text'
-    ),
+    View: createComponent({
+      ...viewStaticConfig,
+      styleFrontend: frontend,
+      displayName: 'View',
+    }),
+    Text: createComponent({
+      ...textStaticConfig,
+      styleFrontend: frontend,
+      displayName: 'Text',
+    }),
   }
 }

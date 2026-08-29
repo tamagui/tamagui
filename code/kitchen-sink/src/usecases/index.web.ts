@@ -258,7 +258,6 @@ const loaders: Record<string, () => ComponentType<any>> = {
   SpinnerCustomColors: () => require('./SpinnerCustomColors').SpinnerCustomColors,
   StackZIndex: () => require('./StackZIndex').StackZIndex,
   StyledAnchor: () => require('./StyledAnchor').StyledAnchor,
-  StyledHtmlCase: () => require('./StyledHtmlCase').StyledHtmlCase,
   StyledButtonAnimationAuto: () =>
     require('./StyledButtonAnimationAuto').StyledButtonAnimationAuto,
   StyledButtonTheme: () => require('./StyledButtonTheme').StyledButtonTheme,

@@ -19,9 +19,13 @@ import { GroupContext } from './contexts/GroupContext'
 import { didGetVariableValue, setDidGetVariableValue } from './createVariable'
 import { defaultComponentStateMounted } from './defaultComponentState'
 import { getWebEvents, useEvents, wrapWithGestureDetector } from './eventHandling'
-import { getDefaultProps } from './helpers/getDefaultProps'
 import { componentDisplayName } from './helpers/componentDisplayName'
-import { getSplitStyles, prepareStyleStaticConfig } from './helpers/getSplitStyles'
+import { getSplitStyles } from './helpers/getSplitStyles'
+import {
+  getContextPropSet,
+  prepareStyleStaticConfig,
+  splitStyledOptions,
+} from './helpers/prepareStyleStaticConfig'
 import {
   getNativeStyleEngine,
   queueNativeViewState,
@@ -272,11 +276,7 @@ export function createComponent<
   let config: TamaguiInternalConfig | null = null
   let resolvedDefaultProps: Record<string, any> | undefined
   let didResolveDefaultProps = false
-  const styledContextPropKeys =
-    staticConfig.contextProps || staticConfig.context?.propKeys
-  const styledContextKeys = styledContextPropKeys
-    ? new Set(styledContextPropKeys)
-    : undefined
+  const styledContextKeys = getContextPropSet(staticConfig)
 
   const { Component, isText, isHOC } = staticConfig
 
@@ -290,10 +290,10 @@ export function createComponent<
 
   let res: ComponentType
 
+  const { displayName } = staticConfig
+
   const component = (propsInWithRef: ComponentPropTypes & { ref?: React.Ref<Ref> }) => {
     'use no memo'
-
-    const displayName = (res as any)[componentDisplayName] as string | undefined
 
     // read the forwarded ref directly off the incoming props — do NOT clone the
     // whole object every render just to strip `ref`. the original props object is
@@ -388,16 +388,18 @@ export function createComponent<
     // merge both default props and styled context props - ensure order is preserved
     if (!didResolveDefaultProps) {
       didResolveDefaultProps = true
-      const staticDefaultProps = getDefaultProps(staticConfig)
-      resolvedDefaultProps =
+      const split = splitStyledOptions(staticConfig, config)
+      resolvedDefaultProps = split.defaultProps
+      // the relative-position default is a style, so it joins the base layer
+      // under everything the call site writes
+      if (
         isWeb &&
         !isText &&
         config.settings.defaultPosition === 'relative' &&
-        staticDefaultProps?.position === undefined
-          ? staticDefaultProps
-            ? { position: 'relative', ...staticDefaultProps }
-            : { position: 'relative' }
-          : staticDefaultProps
+        split.baseStyle?.position === undefined
+      ) {
+        split.baseStyle = { position: 'relative', ...split.baseStyle }
+      }
     }
 
     // merge styled context props over defaults, ensure order is preserved
@@ -2220,6 +2222,11 @@ export function createComponent<
   res = React.memo(res) as any
 
   res.staticConfig = staticConfig
+
+  if (displayName) {
+    res.displayName = displayName
+    ;(res as any)[componentDisplayName] = displayName
+  }
 
   return res
 }

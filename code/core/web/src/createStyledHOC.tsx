@@ -1,8 +1,5 @@
 import React, { type ReactNode, type Ref as ReactRef } from 'react'
-import {
-  componentDisplayName,
-  setComponentDisplayName,
-} from './helpers/componentDisplayName'
+import { componentDisplayName } from './helpers/componentDisplayName'
 import { themeable } from './helpers/themeable'
 import type {
   GetFinalProps,
@@ -81,7 +78,10 @@ export function createStyledHOC<
   }
 
   const displayName = options?.displayName || (component as any)[componentDisplayName]
-  setComponentDisplayName(out, displayName)
+  if (displayName) {
+    out.displayName = displayName
+    out[componentDisplayName] = displayName
+  }
 
   out.staticConfig = extendedConfig
   return out

@@ -1,7 +1,6 @@
 import { validStyles } from '@tamagui/helpers'
 
 import { createComponent } from '../createComponent'
-import { setComponentDisplayName } from '../helpers/componentDisplayName'
 import type {
   StackNonStyleProps,
   StackStyle,
@@ -26,9 +25,9 @@ export const viewStaticConfig: StaticConfig = {
   validStyles,
 }
 
-export const View = setComponentDisplayName(
-  createComponent<ViewProps, View, ViewNonStyleProps, ViewStylePropsBase>(
-    viewStaticConfig
-  ),
-  'View'
-)
+export const View = createComponent<
+  ViewProps,
+  View,
+  ViewNonStyleProps,
+  ViewStylePropsBase
+>({ ...viewStaticConfig, displayName: 'View' })

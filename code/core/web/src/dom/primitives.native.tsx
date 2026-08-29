@@ -32,7 +32,6 @@ import type {
   DOMViewProps,
 } from './contract'
 import { createComponent } from '../createComponent'
-import { setComponentDisplayName } from '../helpers/componentDisplayName'
 import { textStaticConfig } from '../views/Text'
 import { viewStaticConfig } from '../views/View'
 
@@ -554,44 +553,36 @@ function renderDOMTextInput(resolved: DOMTextInputProps) {
   return jsx(TextInput, next)
 }
 
-const DOMRuntimeViewFrame = setComponentDisplayName(
-  createComponent({
-    ...viewStaticConfig,
-    validStyles: { ...viewStaticConfig.validStyles, ...textStaticConfig.validStyles },
-    neverSkipProps: domEventProps,
-    Component: DOMView as any,
-    neverFlatten: true,
-  }),
-  'DOMRuntimeView'
-)
-const DOMRuntimeTextFrame = setComponentDisplayName(
-  createComponent({
-    ...textStaticConfig,
-    neverSkipProps: domEventProps,
-    Component: DOMText as any,
-    neverFlatten: true,
-  }),
-  'DOMRuntimeText'
-)
-const DOMRuntimeImageFrame = setComponentDisplayName(
-  createComponent({
-    ...viewStaticConfig,
-    validStyles: { ...viewStaticConfig.validStyles, ...textStaticConfig.validStyles },
-    neverSkipProps: domEventProps,
-    Component: DOMImage as any,
-    neverFlatten: true,
-  }),
-  'DOMRuntimeImage'
-)
-const DOMRuntimeTextInputFrame = setComponentDisplayName(
-  createComponent({
-    ...textStaticConfig,
-    neverSkipProps: domEventProps,
-    Component: DOMTextInput as any,
-    neverFlatten: true,
-  }),
-  'DOMRuntimeTextInput'
-)
+const DOMRuntimeViewFrame = createComponent({
+  ...viewStaticConfig,
+  validStyles: { ...viewStaticConfig.validStyles, ...textStaticConfig.validStyles },
+  neverSkipProps: domEventProps,
+  Component: DOMView as any,
+  neverFlatten: true,
+  displayName: 'DOMRuntimeView',
+})
+const DOMRuntimeTextFrame = createComponent({
+  ...textStaticConfig,
+  neverSkipProps: domEventProps,
+  Component: DOMText as any,
+  neverFlatten: true,
+  displayName: 'DOMRuntimeText',
+})
+const DOMRuntimeImageFrame = createComponent({
+  ...viewStaticConfig,
+  validStyles: { ...viewStaticConfig.validStyles, ...textStaticConfig.validStyles },
+  neverSkipProps: domEventProps,
+  Component: DOMImage as any,
+  neverFlatten: true,
+  displayName: 'DOMRuntimeImage',
+})
+const DOMRuntimeTextInputFrame = createComponent({
+  ...textStaticConfig,
+  neverSkipProps: domEventProps,
+  Component: DOMTextInput as any,
+  neverFlatten: true,
+  displayName: 'DOMRuntimeTextInput',
+})
 
 function runtimeProps<T extends DOMMetadata>(props: T) {
   const { __styles, ...rest } = props
