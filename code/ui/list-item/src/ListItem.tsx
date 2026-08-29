@@ -1,9 +1,8 @@
 import { getFontSized } from '@tamagui/get-font-sized'
 import { oneSizeTokenSmaller } from '@tamagui/get-token'
-import { withStaticProperties } from '@tamagui/helpers'
 import { getThemedIconSize, useGetThemedIcon } from '@tamagui/helpers-tamagui'
-import { YStack } from '@tamagui/stacks'
 import { resolveSizeToken } from '@tamagui/size'
+import { YStack } from '@tamagui/stacks'
 import { SizableText, wrapChildrenInText } from '@tamagui/text'
 import type {
   ColorTokens,
@@ -12,37 +11,20 @@ import type {
   SizeTokens,
   VariantSpreadExtras,
 } from '@tamagui/web'
-import {
-  createStyledContext,
-  createStyledHOC,
-  getVariableValue,
-  styled,
-  useProps,
-  View,
-} from '@tamagui/web'
+import { createStyledContext, getVariableValue, styled, View } from '@tamagui/web'
 import type { FunctionComponent, JSX, ReactNode } from 'react'
 
 type IconProp = JSX.Element | FunctionComponent<{ color?: any; size?: any }> | null
 
-type ListItemVariant = 'outlined'
-
-export type ListItemExtraProps = {
-  icon?: IconProp
-  iconAfter?: IconProp
-  scaleIcon?: number
-  title?: ReactNode
-  subTitle?: ReactNode
-  iconSize?: SizeTokens | true
-  color?: ColorTokens | string
-}
-
-export type ListItemProps = GetProps<typeof ListItemFrame> & ListItemExtraProps
-
-const NAME = 'ListItem'
-
-const context = createStyledContext<{
+/**
+ * The three props every part shares. A styled component that declares this
+ * context reads these from an ancestor and, for any it was passed directly,
+ * republishes them to its own descendants — which is the whole mechanism for
+ * getting size and color from a ListItem down to its text and icons.
+ */
+export const ListItemContext = createStyledContext<{
   size?: SizeTokens | true
-  variant?: ListItemVariant
+  variant?: 'outlined'
   color?: ColorTokens | string
 }>({
   size: undefined,
@@ -75,15 +57,15 @@ const listItemSubtitleSizeVariant = (
   return getFontSized(oneSmaller as FontSizeTokens, extras as any)
 }
 
-// Unstyled ListItem frame: structural layout + the size mechanism + the
-// disabled pointer-event block only. Theme decoration (palette, border, cursor,
-// hover/press color styling, the outlined/active appearance, disabled dimming)
-// lives in the tamagui skin (code/ui/tamagui/src/components/ListItem.tsx).
-const ListItemFrame = styled(View, {
-  context,
-  displayName: NAME,
-  render: 'li',
+// structural layout, the size mechanism, and the disabled pointer-event block.
+// theme decoration (palette, border, cursor, the outlined/active appearance,
+// disabled dimming) lives in a skin — see tamagui's components/ListItem.tsx
+export const ListItemFrame = styled(View, {
+  context: ListItemContext,
+  displayName: 'ListItemFrame',
+  // role is the cross-platform one; render only lands on web
   role: 'listitem',
+  render: 'li',
   size: true,
   alignItems: 'center',
   justifyContent: 'space-between',
@@ -107,11 +89,8 @@ const ListItemFrame = styled(View, {
   } as const,
 })
 
-// text color comes from the styled context (the tamagui skin sets a default
-// `color` on ListItem, which flows through as context.color); unstyled it
-// inherits.
-const ListItemText = styled(SizableText, {
-  context,
+export const ListItemText = styled(SizableText, {
+  context: ListItemContext,
   displayName: 'ListItemText',
   size: true,
   flexGrow: 1,
@@ -120,11 +99,12 @@ const ListItemText = styled(SizableText, {
   cursor: 'inherit',
 })
 
-const ListItemSubtitle = styled(ListItemText, {
+export const ListItemSubtitle = styled(ListItemText, {
+  context: ListItemContext,
   displayName: 'ListItemSubtitle',
-  context,
   opacity: 0.6,
   maxWidth: '100%',
+
   variants: {
     size: {
       true: listItemSubtitleSizeVariant,
@@ -133,131 +113,110 @@ const ListItemSubtitle = styled(ListItemText, {
   } as const,
 })
 
-const ListItemTitle = styled(ListItemText, {
+export const ListItemTitle = styled(ListItemText, {
+  context: ListItemContext,
   displayName: 'ListItemTitle',
-  context,
 })
 
-const ListItemIcon = (props: {
-  children: React.ReactNode
+export type ListItemIconProps = {
+  children: ReactNode
   size?: SizeTokens | true
   scaleIcon?: number
-}) => {
-  const { children, size, scaleIcon = 1 } = props
-  const styledContext = context.useStyledContext()
-  if (!styledContext) {
-    throw new Error('ListItem.Icon must be used within a ListItem')
-  }
+}
 
-  const sizeToken = size ?? styledContext.size ?? true
-  const contextColor = styledContext.color
-  const iconColorProp =
-    contextColor === 'unset' || typeof contextColor === 'number'
-      ? undefined
-      : contextColor
-
-  const iconSize = getThemedIconSize(sizeToken, scaleIcon)
+export const ListItemIcon = ({ children, size, scaleIcon = 1 }: ListItemIconProps) => {
+  const context = ListItemContext.useStyledContext()
   const getThemedIcon = useGetThemedIcon({
-    size: iconSize,
-    color: iconColorProp,
+    size: getThemedIconSize(size ?? context.size ?? true, scaleIcon),
+    color: context.color,
   })
 
   return getThemedIcon(children)
 }
 
-const ListItemComponent = createStyledHOC(
-  ListItemFrame,
-  function ListItem(propsIn: ListItemProps, ref) {
-    const processedProps = useProps(propsIn, {
-      noNormalize: true,
-      noExpand: true,
-    })
+/**
+ * The props `useListItem` reads and replaces, so exactly what its result omits.
+ */
+type ListItemConsumedProps = {
+  children?: ReactNode
+  icon?: IconProp
+  iconAfter?: IconProp
+  iconSize?: SizeTokens | true
+  scaleIcon?: number
+  subTitle?: ReactNode
+  title?: ReactNode
+}
 
-    const {
-      children,
-      icon,
-      iconAfter,
-      scaleIcon = 1,
-      subTitle,
-      title,
-      iconSize,
-      color,
-      ...rest
-    } = processedProps
+export type ListItemBehaviorProps = ListItemConsumedProps & {
+  // read to theme an `icon` prop, then passed through untouched: the frame
+  // declares the styled context, so it is what publishes these to the parts
+  color?: ColorTokens | string
+  size?: SizeTokens | true
+}
 
-    const styledContext = context.useStyledContext()
-    const size = rest.size ?? propsIn.size ?? styledContext?.size ?? true
-    const contextColor = color ?? propsIn.color ?? styledContext?.color
-    const iconColorProp =
-      contextColor === 'unset' || typeof contextColor === 'number'
-        ? undefined
-        : contextColor
-    const iconSizeNumber = getThemedIconSize(iconSize ?? (size as any), scaleIcon)
-    const getThemedIcon = useGetThemedIcon({
-      size: iconSizeNumber,
-      color: iconColorProp,
-    })
+/**
+ * What `useListItem` returns: the caller's props minus the ones it consumed.
+ * Spelled out rather than cast, so a skin that spreads the result onto a frame
+ * is type-checked on exactly what it will receive.
+ */
+export type UseListItemProps<Props> = Omit<Props, keyof ListItemConsumedProps> & {
+  children: ReactNode
+}
 
-    const themedIcon = icon ? getThemedIcon(icon) : null
-    const themedIconAfter = iconAfter ? getThemedIcon(iconAfter) : null
+/**
+ * ListItem behavior: theming the icon props and assembling title, subtitle, and
+ * children into the frame's single child. Size and color are not reconciled
+ * here — they go to the frame as ordinary props and the styled context carries
+ * them the rest of the way.
+ */
+export function useListItem<Props extends ListItemBehaviorProps>(
+  propsIn: Props
+): { props: UseListItemProps<Props> } {
+  const {
+    children,
+    icon,
+    iconAfter,
+    iconSize,
+    scaleIcon = 1,
+    subTitle,
+    title,
+    ...frameProps
+  } = propsIn
 
-    const wrappedChildren = wrapChildrenInText(ListItemText, { children }, { size })
+  // the frame publishes size and color to every part below it, but an `icon`
+  // prop is themed here, before the frame renders, so it reads them itself
+  const context = ListItemContext.useStyledContext()
+  const getThemedIcon = useGetThemedIcon({
+    size: getThemedIconSize(iconSize ?? propsIn.size ?? context.size ?? true, scaleIcon),
+    color: propsIn.color ?? context.color,
+  })
 
-    const listItemContext = {
-      ...styledContext,
-      color: contextColor,
-      size: size as SizeTokens,
-      variant: (rest.variant ?? propsIn.variant ?? styledContext?.variant) as
-        | ListItemVariant
-        | undefined,
-    }
-    const frameProps = {
-      size,
-      variant: listItemContext.variant,
-      ...rest,
-    }
+  const wrappedChildren = wrapChildrenInText(ListItemText, { children })
 
-    return (
-      <context.Provider {...listItemContext}>
-        <ListItemFrame ref={ref} {...(frameProps as any)}>
-          <context.Provider {...listItemContext}>
-            {themedIcon}
-            {title || subTitle ? (
-              <YStack flex={1}>
-                {title ? (
-                  typeof title === 'string' ? (
-                    <ListItemTitle size={size as any}>{title}</ListItemTitle>
-                  ) : (
-                    title
-                  )
-                ) : null}
-                {subTitle ? (
-                  <>
-                    {typeof subTitle === 'string' ? (
-                      <ListItemSubtitle size={size}>{subTitle}</ListItemSubtitle>
-                    ) : (
-                      subTitle
-                    )}
-                  </>
-                ) : null}
-                {wrappedChildren}
-              </YStack>
-            ) : (
-              wrappedChildren
-            )}
-            {themedIconAfter}
-          </context.Provider>
-        </ListItemFrame>
-      </context.Provider>
-    )
+  return {
+    props: {
+      ...frameProps,
+      children: (
+        <>
+          {icon ? getThemedIcon(icon) : null}
+          {title || subTitle ? (
+            <YStack flex={1}>
+              {typeof title === 'string' ? <ListItemTitle>{title}</ListItemTitle> : title}
+              {typeof subTitle === 'string' ? (
+                <ListItemSubtitle>{subTitle}</ListItemSubtitle>
+              ) : (
+                subTitle
+              )}
+              {wrappedChildren}
+            </YStack>
+          ) : (
+            wrappedChildren
+          )}
+          {iconAfter ? getThemedIcon(iconAfter) : null}
+        </>
+      ),
+    },
   }
-)
+}
 
-export const ListItem = withStaticProperties(ListItemComponent, {
-  Apply: context.Provider,
-  Frame: ListItemFrame,
-  Text: ListItemText,
-  Subtitle: ListItemSubtitle,
-  Icon: ListItemIcon,
-  Title: ListItemTitle,
-})
+export type ListItemFrameProps = GetProps<typeof ListItemFrame>

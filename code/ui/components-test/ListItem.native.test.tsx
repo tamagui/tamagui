@@ -1,6 +1,6 @@
 import { getDefaultTamaguiConfig } from '@tamagui/config-default'
 import { TamaguiProvider, View, createFont, createTamagui } from '@tamagui/core'
-import { ListItem } from '@tamagui/list-item'
+import { ListItem } from 'tamagui'
 import TestRenderer, { act } from 'react-test-renderer'
 import { describe, expect, test } from 'vitest'
 

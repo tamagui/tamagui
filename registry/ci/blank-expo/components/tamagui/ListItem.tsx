@@ -1,13 +1,21 @@
-// Styled ListItem = the unstyled @tamagui/ui ListItem behavior + the default
-// v2-look skin (theme palette, border, cursor, hover/press color styling, text
-// color via the styled context, the outlined/active appearance, and disabled
-// dimming). The behavior keeps structural layout + the size mechanism + the
-// disabled pointer-event block. Single skin definition; the shadcn registry item
-// is generated from this file.
+// Styled ListItem = @tamagui/ui's list-item behavior and parts + the default
+// v2-look skin (theme palette, border, cursor, hover/press color, the outlined
+// and active appearances, disabled dimming). @tamagui/ui ships no ListItem of
+// its own: it exposes `useListItem` and the frame, text, title, subtitle, and
+// icon parts, and a skin decides the rest. This is the single skin definition —
+// the shadcn registry item is generated from this file.
 import {
+  createStyledHOC,
   type GetProps,
-  ListItem as UiListItem,
+  type ListItemBehaviorProps,
+  ListItemContext,
+  ListItemFrame as ListItemBehaviorFrame,
+  ListItemIcon,
+  ListItemSubtitle,
+  ListItemText,
+  ListItemTitle,
   styled,
+  useListItem,
   withStaticProperties,
 } from '@tamagui/ui'
 
@@ -19,12 +27,14 @@ const outlined = {
   borderColor: 'border-color hover:border-color-hover press:border-color-press',
 } as const
 
-const StyledListItem = styled(UiListItem, {
+export const ListItemFrame = styled(ListItemBehaviorFrame, {
+  context: ListItemContext,
   displayName: 'ListItem',
   backgroundColor: 'background hover:background-hover press:background-press',
   borderColor: 'border-color hover:border-color-hover press:border-color-press',
   color: 'color',
   cursor: 'default',
+
   variants: {
     variant: {
       outlined,
@@ -45,13 +55,21 @@ const StyledListItem = styled(UiListItem, {
   } as const,
 })
 
-export const ListItem = withStaticProperties(StyledListItem, {
-  Apply: UiListItem.Apply,
-  Frame: UiListItem.Frame,
-  Text: UiListItem.Text,
-  Subtitle: UiListItem.Subtitle,
-  Icon: UiListItem.Icon,
-  Title: UiListItem.Title,
+const ListItemComponent = createStyledHOC(
+  ListItemFrame,
+  function ListItem(props: ListItemBehaviorProps, ref) {
+    const { props: listItemProps } = useListItem(props)
+    return <ListItemFrame ref={ref} {...listItemProps} />
+  }
+)
+
+export const ListItem = withStaticProperties(ListItemComponent, {
+  Apply: ListItemContext.Provider,
+  Frame: ListItemFrame,
+  Icon: ListItemIcon,
+  Subtitle: ListItemSubtitle,
+  Text: ListItemText,
+  Title: ListItemTitle,
 })
 
-export type ListItemProps = GetProps<typeof StyledListItem>
+export type ListItemProps = GetProps<typeof ListItemComponent>

@@ -1,62 +1,234 @@
 import { type GetProps } from '@tamagui/ui';
-declare const StyledListItem: import("react").FunctionComponent<Omit<import("@tamagui/ui").StackNonStyleProps & Omit<import("@tamagui/ui").StackNonStyleProps, "disabled" | "size" | "variant" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
-    disabled?: boolean | undefined;
-    size?: false | import("@tamagui/web").Size | undefined;
-    variant?: "outlined" | undefined;
-}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/ui").ListItemExtraProps, "active" | "disabled" | "size" | "variant" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
+export declare const ListItemFrame: import("react").FunctionComponent<Omit<import("@tamagui/ui").StackNonStyleProps, "active" | "disabled" | "size" | "variant" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
     active?: boolean | undefined;
     disabled?: boolean | undefined;
     size?: false | import("@tamagui/web").Size | undefined;
     variant?: "outlined" | undefined;
 }> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-    ref?: import("react").Ref<import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods)> | undefined;
-}> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/ui").StackNonStyleProps & Omit<import("@tamagui/ui").StackNonStyleProps, "disabled" | "size" | "variant" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
-    disabled?: boolean | undefined;
-    size?: false | import("@tamagui/web").Size | undefined;
-    variant?: "outlined" | undefined;
-}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/ui").ListItemExtraProps, import("@tamagui/web").StackStyleBase, {
+    ref?: import("react").Ref<import("@tamagui/ui").TamaguiElement> | undefined;
+}> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/ui").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
     active?: boolean | undefined;
     disabled?: boolean | undefined;
     size?: false | import("@tamagui/web").Size | undefined;
     variant?: "outlined" | undefined;
 }, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
-    __tama: [import("@tamagui/web").TamaDefer, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/ui").StackNonStyleProps & Omit<import("@tamagui/ui").StackNonStyleProps, "disabled" | "size" | "variant" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
-        disabled?: boolean | undefined;
-        size?: false | import("@tamagui/web").Size | undefined;
-        variant?: "outlined" | undefined;
-    }> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/ui").ListItemExtraProps, import("@tamagui/web").StackStyleBase, {
+    __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/ui").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
         active?: boolean | undefined;
         disabled?: boolean | undefined;
         size?: false | import("@tamagui/web").Size | undefined;
         variant?: "outlined" | undefined;
     }, import("@tamagui/web").StaticConfigPublic];
 };
-export declare const ListItem: import("react").FunctionComponent<Omit<import("@tamagui/ui").StackNonStyleProps & Omit<import("@tamagui/ui").StackNonStyleProps, "disabled" | "size" | "variant" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
-    disabled?: boolean | undefined;
-    size?: false | import("@tamagui/web").Size | undefined;
-    variant?: "outlined" | undefined;
-}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/ui").ListItemExtraProps, "active" | "disabled" | "size" | "variant" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
+declare const ListItemComponent: import("@tamagui/ui").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/ui").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
     active?: boolean | undefined;
     disabled?: boolean | undefined;
     size?: false | import("@tamagui/web").Size | undefined;
     variant?: "outlined" | undefined;
-}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-    ref?: import("react").Ref<import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods)> | undefined;
-}> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/ui").StackNonStyleProps & Omit<import("@tamagui/ui").StackNonStyleProps, "disabled" | "size" | "variant" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
+}>, "color" | "size" | keyof {
+    children?: import("react").ReactNode;
+    icon?: import("react").JSX.Element | import("react").FunctionComponent<{
+        color?: any;
+        size?: any;
+    }> | null;
+    iconAfter?: import("react").JSX.Element | import("react").FunctionComponent<{
+        color?: any;
+        size?: any;
+    }> | null;
+    iconSize?: import("@tamagui/ui").SizeTokens | true;
+    scaleIcon?: number;
+    subTitle?: import("react").ReactNode;
+    title?: import("react").ReactNode;
+}> & {
+    children?: import("react").ReactNode;
+    icon?: import("react").JSX.Element | import("react").FunctionComponent<{
+        color?: any;
+        size?: any;
+    }> | null;
+    iconAfter?: import("react").JSX.Element | import("react").FunctionComponent<{
+        color?: any;
+        size?: any;
+    }> | null;
+    iconSize?: import("@tamagui/ui").SizeTokens | true;
+    scaleIcon?: number;
+    subTitle?: import("react").ReactNode;
+    title?: import("react").ReactNode;
+} & {
+    color?: import("@tamagui/ui").ColorTokens | string;
+    size?: import("@tamagui/ui").SizeTokens | true;
+}, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/ui").StackNonStyleProps & {
+    children?: import("react").ReactNode;
+    icon?: import("react").JSX.Element | import("react").FunctionComponent<{
+        color?: any;
+        size?: any;
+    }> | null;
+    iconAfter?: import("react").JSX.Element | import("react").FunctionComponent<{
+        color?: any;
+        size?: any;
+    }> | null;
+    iconSize?: import("@tamagui/ui").SizeTokens | true;
+    scaleIcon?: number;
+    subTitle?: import("react").ReactNode;
+    title?: import("react").ReactNode;
+} & {
+    color?: import("@tamagui/ui").ColorTokens | string;
+    size?: import("@tamagui/ui").SizeTokens | true;
+}, import("@tamagui/web").StackStyleBase, {
+    active?: boolean | undefined;
     disabled?: boolean | undefined;
     size?: false | import("@tamagui/web").Size | undefined;
     variant?: "outlined" | undefined;
-}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/ui").ListItemExtraProps, import("@tamagui/web").StackStyleBase, {
+}, import("@tamagui/web").StaticConfigPublic>;
+export declare const ListItem: import("react").FunctionComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/ui").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
+    active?: boolean | undefined;
+    disabled?: boolean | undefined;
+    size?: false | import("@tamagui/web").Size | undefined;
+    variant?: "outlined" | undefined;
+}>, "color" | "size" | keyof {
+    children?: import("react").ReactNode;
+    icon?: import("react").JSX.Element | import("react").FunctionComponent<{
+        color?: any;
+        size?: any;
+    }> | null;
+    iconAfter?: import("react").JSX.Element | import("react").FunctionComponent<{
+        color?: any;
+        size?: any;
+    }> | null;
+    iconSize?: import("@tamagui/ui").SizeTokens | true;
+    scaleIcon?: number;
+    subTitle?: import("react").ReactNode;
+    title?: import("react").ReactNode;
+}> & {
+    children?: import("react").ReactNode;
+    icon?: import("react").JSX.Element | import("react").FunctionComponent<{
+        color?: any;
+        size?: any;
+    }> | null;
+    iconAfter?: import("react").JSX.Element | import("react").FunctionComponent<{
+        color?: any;
+        size?: any;
+    }> | null;
+    iconSize?: import("@tamagui/ui").SizeTokens | true;
+    scaleIcon?: number;
+    subTitle?: import("react").ReactNode;
+    title?: import("react").ReactNode;
+} & {
+    color?: import("@tamagui/ui").ColorTokens | string;
+    size?: import("@tamagui/ui").SizeTokens | true;
+} & {
+    ref?: import("react").Ref<import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods)> | undefined;
+}> & import("@tamagui/web").StaticComponentObject<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/ui").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
+    active?: boolean | undefined;
+    disabled?: boolean | undefined;
+    size?: false | import("@tamagui/web").Size | undefined;
+    variant?: "outlined" | undefined;
+}>, "color" | "size" | keyof {
+    children?: import("react").ReactNode;
+    icon?: import("react").JSX.Element | import("react").FunctionComponent<{
+        color?: any;
+        size?: any;
+    }> | null;
+    iconAfter?: import("react").JSX.Element | import("react").FunctionComponent<{
+        color?: any;
+        size?: any;
+    }> | null;
+    iconSize?: import("@tamagui/ui").SizeTokens | true;
+    scaleIcon?: number;
+    subTitle?: import("react").ReactNode;
+    title?: import("react").ReactNode;
+}> & {
+    children?: import("react").ReactNode;
+    icon?: import("react").JSX.Element | import("react").FunctionComponent<{
+        color?: any;
+        size?: any;
+    }> | null;
+    iconAfter?: import("react").JSX.Element | import("react").FunctionComponent<{
+        color?: any;
+        size?: any;
+    }> | null;
+    iconSize?: import("@tamagui/ui").SizeTokens | true;
+    scaleIcon?: number;
+    subTitle?: import("react").ReactNode;
+    title?: import("react").ReactNode;
+} & {
+    color?: import("@tamagui/ui").ColorTokens | string;
+    size?: import("@tamagui/ui").SizeTokens | true;
+}, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/ui").StackNonStyleProps & {
+    children?: import("react").ReactNode;
+    icon?: import("react").JSX.Element | import("react").FunctionComponent<{
+        color?: any;
+        size?: any;
+    }> | null;
+    iconAfter?: import("react").JSX.Element | import("react").FunctionComponent<{
+        color?: any;
+        size?: any;
+    }> | null;
+    iconSize?: import("@tamagui/ui").SizeTokens | true;
+    scaleIcon?: number;
+    subTitle?: import("react").ReactNode;
+    title?: import("react").ReactNode;
+} & {
+    color?: import("@tamagui/ui").ColorTokens | string;
+    size?: import("@tamagui/ui").SizeTokens | true;
+}, import("@tamagui/web").StackStyleBase, {
     active?: boolean | undefined;
     disabled?: boolean | undefined;
     size?: false | import("@tamagui/web").Size | undefined;
     variant?: "outlined" | undefined;
 }, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
-    __tama: [import("@tamagui/web").TamaDefer, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/ui").StackNonStyleProps & Omit<import("@tamagui/ui").StackNonStyleProps, "disabled" | "size" | "variant" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
+    __tama: [Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/ui").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
+        active?: boolean | undefined;
         disabled?: boolean | undefined;
         size?: false | import("@tamagui/web").Size | undefined;
         variant?: "outlined" | undefined;
-    }> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/ui").ListItemExtraProps, import("@tamagui/web").StackStyleBase, {
+    }>, "color" | "size" | keyof {
+        children?: import("react").ReactNode;
+        icon?: import("react").JSX.Element | import("react").FunctionComponent<{
+            color?: any;
+            size?: any;
+        }> | null;
+        iconAfter?: import("react").JSX.Element | import("react").FunctionComponent<{
+            color?: any;
+            size?: any;
+        }> | null;
+        iconSize?: import("@tamagui/ui").SizeTokens | true;
+        scaleIcon?: number;
+        subTitle?: import("react").ReactNode;
+        title?: import("react").ReactNode;
+    }> & {
+        children?: import("react").ReactNode;
+        icon?: import("react").JSX.Element | import("react").FunctionComponent<{
+            color?: any;
+            size?: any;
+        }> | null;
+        iconAfter?: import("react").JSX.Element | import("react").FunctionComponent<{
+            color?: any;
+            size?: any;
+        }> | null;
+        iconSize?: import("@tamagui/ui").SizeTokens | true;
+        scaleIcon?: number;
+        subTitle?: import("react").ReactNode;
+        title?: import("react").ReactNode;
+    } & {
+        color?: import("@tamagui/ui").ColorTokens | string;
+        size?: import("@tamagui/ui").SizeTokens | true;
+    }, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/ui").StackNonStyleProps & {
+        children?: import("react").ReactNode;
+        icon?: import("react").JSX.Element | import("react").FunctionComponent<{
+            color?: any;
+            size?: any;
+        }> | null;
+        iconAfter?: import("react").JSX.Element | import("react").FunctionComponent<{
+            color?: any;
+            size?: any;
+        }> | null;
+        iconSize?: import("@tamagui/ui").SizeTokens | true;
+        scaleIcon?: number;
+        subTitle?: import("react").ReactNode;
+        title?: import("react").ReactNode;
+    } & {
+        color?: import("@tamagui/ui").ColorTokens | string;
+        size?: import("@tamagui/ui").SizeTokens | true;
+    }, import("@tamagui/web").StackStyleBase, {
         active?: boolean | undefined;
         disabled?: boolean | undefined;
         size?: false | import("@tamagui/web").Size | undefined;
@@ -65,30 +237,48 @@ export declare const ListItem: import("react").FunctionComponent<Omit<import("@t
 } & {
     Apply: import("react").Provider<{
         size?: import("@tamagui/ui").SizeTokens | true;
-        variant?: "outlined";
+        variant?: 'outlined';
         color?: import("@tamagui/ui").ColorTokens | string;
     }> & import("react").ProviderExoticComponent<Partial<{
         size?: import("@tamagui/ui").SizeTokens | true;
-        variant?: "outlined";
+        variant?: 'outlined';
         color?: import("@tamagui/ui").ColorTokens | string;
     }> & {
         children?: import("react").ReactNode;
         scope?: string;
     }>;
-    Frame: import("react").FunctionComponent<Omit<import("@tamagui/ui").StackNonStyleProps, "disabled" | "size" | "variant" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
+    Frame: import("react").FunctionComponent<Omit<import("@tamagui/ui").StackNonStyleProps, "active" | "disabled" | "size" | "variant" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
+        active?: boolean | undefined;
         disabled?: boolean | undefined;
         size?: false | import("@tamagui/web").Size | undefined;
         variant?: "outlined" | undefined;
     }> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
         ref?: import("react").Ref<import("@tamagui/ui").TamaguiElement> | undefined;
     }> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/ui").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
+        active?: boolean | undefined;
         disabled?: boolean | undefined;
         size?: false | import("@tamagui/web").Size | undefined;
         variant?: "outlined" | undefined;
     }, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
         __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/ui").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
+            active?: boolean | undefined;
             disabled?: boolean | undefined;
             size?: false | import("@tamagui/web").Size | undefined;
+            variant?: "outlined" | undefined;
+        }, import("@tamagui/web").StaticConfigPublic];
+    };
+    Icon: ({ children, size, scaleIcon }: import("@tamagui/ui").ListItemIconProps) => any;
+    Subtitle: import("react").FunctionComponent<Omit<import("@tamagui/ui").TextNonStyleProps, "size" | "variant" | keyof import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithFlatVariantValues<{
+        size?: string | number | boolean | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString | (string & {}) | undefined;
+        variant?: "outlined" | undefined;
+    }> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>> & {
+        ref?: import("react").Ref<import("@tamagui/ui").TamaguiTextElement> | undefined;
+    }> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiTextElement, import("@tamagui/ui").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
+        size?: string | number | boolean | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString | (string & {}) | undefined;
+        variant?: "outlined" | undefined;
+    }, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
+        __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiTextElement, import("@tamagui/ui").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
+            size?: string | number | boolean | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString | (string & {}) | undefined;
             variant?: "outlined" | undefined;
         }, import("@tamagui/web").StaticConfigPublic];
     };
@@ -106,25 +296,6 @@ export declare const ListItem: import("react").FunctionComponent<Omit<import("@t
             variant?: "outlined" | undefined;
         }, import("@tamagui/web").StaticConfigPublic];
     };
-    Subtitle: import("react").FunctionComponent<Omit<import("@tamagui/ui").TextNonStyleProps, "size" | "variant" | keyof import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithFlatVariantValues<{
-        size?: string | number | boolean | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString | (string & {}) | undefined;
-        variant?: "outlined" | undefined;
-    }> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>> & {
-        ref?: import("react").Ref<import("@tamagui/ui").TamaguiTextElement> | undefined;
-    }> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiTextElement, import("@tamagui/ui").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
-        size?: string | number | boolean | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString | (string & {}) | undefined;
-        variant?: "outlined" | undefined;
-    }, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
-        __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiTextElement, import("@tamagui/ui").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
-            size?: string | number | boolean | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString | (string & {}) | undefined;
-            variant?: "outlined" | undefined;
-        }, import("@tamagui/web").StaticConfigPublic];
-    };
-    Icon: (props: {
-        children: React.ReactNode;
-        size?: import("@tamagui/ui").SizeTokens | true;
-        scaleIcon?: number;
-    }) => any;
     Title: import("react").FunctionComponent<Omit<import("@tamagui/ui").TextNonStyleProps, "size" | "variant" | keyof import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithFlatVariantValues<{
         size?: import("@tamagui/web").FontSize | undefined;
         variant?: "outlined" | undefined;
@@ -140,6 +311,6 @@ export declare const ListItem: import("react").FunctionComponent<Omit<import("@t
         }, import("@tamagui/web").StaticConfigPublic];
     };
 };
-export type ListItemProps = GetProps<typeof StyledListItem>;
+export type ListItemProps = GetProps<typeof ListItemComponent>;
 export {};
 //# sourceMappingURL=ListItem.d.ts.map
