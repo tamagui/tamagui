@@ -9,20 +9,32 @@ function getMenuItemMatcher(label: string) {
 async function selectColor(label: 'Red' | 'Green' | 'Blue') {
   if (device.getPlatform() === 'android') {
     const trigger = element(by.id('menu-radio-trigger'))
-    const { frame } = (await trigger.getAttributes()) as Detox.AndroidElementAttributes
     await withSync(() => trigger.tap())
 
-    // Compose popup contents are outside Espresso's View hierarchy. Detox's
-    // screen tap also becomes relative to the popup root, so use Android's
-    // physical screen input for the 8dp padding and 48dp Material menu rows.
-    const density = frame.width / 120
-    const itemIndex = { Red: 0, Green: 1, Blue: 2 }[label]
+    // compose popup contents are outside espresso's view hierarchy, but ui
+    // automator exposes their accessibility nodes and physical screen bounds.
+    // wait for the requested row to exist before sending the physical tap.
+    const deadline = Date.now() + 10000
+    let bounds: RegExpMatchArray | null = null
+    while (!bounds) {
+      runAdb('shell', 'uiautomator', 'dump', '/sdcard/menu-radio-window.xml')
+      const hierarchy = runAdb('exec-out', 'cat', '/sdcard/menu-radio-window.xml')
+      const node = hierarchy.match(
+        new RegExp(`<node[^>]*(?:text|content-desc)="${label}"[^>]*>`)
+      )?.[0]
+      bounds = node?.match(/bounds="\[(\d+),(\d+)\]\[(\d+),(\d+)\]"/) ?? null
+      if (!bounds && Date.now() >= deadline) {
+        throw new Error(`native menu did not expose the ${label} item`)
+      }
+    }
+
+    const [, left, top, right, bottom] = bounds
     runAdb(
       'shell',
       'input',
       'tap',
-      String(Math.round(frame.x + frame.width / 2)),
-      String(Math.round(frame.y + frame.height + (32 + itemIndex * 48) * density))
+      String((Number(left) + Number(right)) / 2),
+      String((Number(top) + Number(bottom)) / 2)
     )
     return
   }
@@ -47,6 +59,11 @@ describe('MenuRadioGroup', () => {
 
   beforeEach(async () => {
     await remountDirectUseCase('menu-radio-selected-value', { skipEnableSync: true })
+    await expect(element(by.id('menu-radio-trigger'))).toBeVisible()
+    await expect(element(by.id('menu-radio-selected-value'))).toHaveText(
+      'Selected value: blue'
+    )
+    await expect(element(by.id('menu-radio-change-count'))).toHaveText('Change count: 0')
   })
 
   it('should render the menu radio group case', async () => {
