@@ -1,0 +1,416 @@
+---
+title: Button
+description: A simple button component
+name: button
+component: Button
+package: button
+demoName: Button
+---
+
+<HeroContainer demoMultiple>
+  <ButtonDemo />
+</HeroContainer>
+
+```tsx hero template=Button
+
+```
+
+<Highlights
+  features={[
+    'Size prop that works on all styles.',
+    'Place an icon before or after.',
+    'Control icon size explicitly with `iconSize`.',
+    'Full HTML button form semantics on web.',
+  ]}
+/>
+
+## Installation
+
+Button is already installed in `tamagui`:
+
+```tsx
+import { Button } from 'tamagui'
+```
+
+`@tamagui/button` holds the unstyled half: `useButton` and the parts, with no
+styled `Button` of its own. Import from it when you are building your own button
+rather than using ours - see [Build your own](#build-your-own).
+
+## Usage
+
+```tsx
+import { Button } from 'tamagui'
+
+export default () => <Button>Lorem ipsum</Button>
+```
+
+## Sizing
+
+Sizing buttons provides a unique challenge especially for a compiler, because you
+need to adjust many different properties - not just on the outer frame, but on the
+text wrapped inside. Tamagui adjusts padding, border radius, font size, and icon
+size together with the `size` prop.
+
+```tsx
+import { Button } from 'tamagui'
+
+export default () => <Button size="6">Lorem ipsum</Button>
+```
+
+Given your theme defines a size `6`, the button adjusts every property
+appropriately. You can also pass a plain number for an arbitrary size.
+
+To size a group of buttons at once, provide `SizeContext` around them. The button
+frame reads it, so every button and its text and icons follow:
+
+```tsx
+import { Button, SizeContext, XStack } from 'tamagui'
+
+export default () => (
+  <SizeContext.Provider size="2">
+    <XStack gap="2">
+      <Button>One</Button>
+      <Button>Two</Button>
+    </XStack>
+  </SizeContext.Provider>
+)
+```
+
+## Variants
+
+The `variant` prop selects a visual style. Tamagui ships `outlined` (transparent
+background with a visible border) and `quiet` (no background, no border).
+
+```tsx
+import { Button, XStack } from 'tamagui'
+
+export default () => (
+  <XStack gap="2">
+    <Button>Default</Button>
+    <Button variant="outlined">Outlined</Button>
+    <Button variant="quiet">Quiet</Button>
+  </XStack>
+)
+```
+
+## Icon Theming
+
+You can pass icons as either elements or components. If passing components,
+Tamagui themes them, passing `size` and `color`. The icon size comes from the
+Button's `size` prop by default.
+
+Set the icon size explicitly with `iconSize` (a `SizeTokens` value, e.g. `"2"`).
+`scaleIcon` adjusts it further, relative to whichever size was resolved.
+
+Spacing between an icon and the text comes from `gap` on the button frame,
+derived from the `size` token so it stays consistent with the button's
+dimensions.
+
+```tsx
+import { Button } from 'tamagui'
+import { Star } from '@tamagui/lucide-icons-2'
+
+export default () => (
+  <>
+    <Button icon={Star} size="5">
+      Icon sized by Button
+    </Button>
+    <Button icon={Star} iconSize="2" size="5">
+      Icon sized explicitly
+    </Button>
+  </>
+)
+```
+
+## Web Form Props
+
+Button supports the standard HTML `<button>` attributes for form integration.
+These are web-only and ignored on native:
+
+```tsx
+import { Button, Form } from 'tamagui'
+
+export default () => (
+  <Form action="/submit">
+    <Button type="submit">Submit Form</Button>
+    <Button type="reset">Reset</Button>
+    <Button type="button">Regular Button (default)</Button>
+
+    {/* Override form attributes */}
+    <Button type="submit" formAction="/alternative-endpoint" formMethod="post">
+      Submit to Different Endpoint
+    </Button>
+  </Form>
+)
+```
+
+<Notice>
+  Button defaults to `type="button"` to prevent unintended form submissions. Use
+  `type="submit"` explicitly when you want form submission behavior.
+</Notice>
+
+## Text Styling
+
+Button's frame is a `View`, so text style props passed to it are ignored. The one
+exception is `fontFamily`, which forwards to the wrapped text - a font family is a
+base value in practice, so it needs no conditional resolution.
+
+Everything else goes on `Button.Text`:
+
+```tsx
+import { Button } from 'tamagui'
+
+export default () => (
+  <Button>
+    <Button.Text color="blue" fontSize="5" fontWeight="bold">
+      Styled text
+    </Button.Text>
+  </Button>
+)
+```
+
+### Interactive Text Styles
+
+Combine `Button.Text` with the `group` prop on Button to coordinate text styles
+across hover, press, and focus states:
+
+```tsx
+import { Button } from 'tamagui'
+
+export default () => (
+  <Button group="btn" backgroundColor="pink">
+    <Button.Text color="blue group-hover/btn:red">Hello world</Button.Text>
+  </Button>
+)
+```
+
+The `group` prop lets any child reference <span className="show-sm-inline">all of Tamagui's </span>interactive states like
+`group-btn-hover`, `group-btn-press`, and `group-btn-focus` for precise styling
+per interaction state.
+
+## Build your own
+
+No two buttons are alike, so `@tamagui/button` ships the behavior and the parts
+rather than a finished component. `useButton` themes the icon props, wraps bare
+children in a text, and handles the html nesting rules; the skin is yours. This is
+how `tamagui`'s own Button is built:
+
+```tsx
+import {
+  ButtonFrame as ButtonBehaviorFrame,
+  ButtonText as ButtonBehaviorText,
+  createStyledHOC,
+  SizeContext,
+  styled,
+  useButton,
+  withStaticProperties,
+} from '@tamagui/ui'
+
+const ButtonFrame = styled(ButtonBehaviorFrame, {
+  context: SizeContext,
+  backgroundColor: 'background hover:background-hover press:background-press',
+  borderColor: 'border-color hover:border-color-hover',
+  borderWidth: 1,
+  cursor: 'web:pointer',
+})
+
+const ButtonText = styled(ButtonBehaviorText, {
+  context: SizeContext,
+  color: 'color',
+  fontWeight: '600',
+})
+
+const ButtonComponent = createStyledHOC(ButtonFrame, function Button(props, ref) {
+  const { props: buttonProps } = useButton(props, { Text: ButtonText })
+  return <ButtonFrame ref={ref} {...buttonProps} />
+})
+
+export const Button = withStaticProperties(ButtonComponent, {
+  Frame: ButtonFrame,
+  Text: ButtonText,
+})
+```
+
+Because the frame declares `SizeContext`, passing `size` to it is what publishes
+it to the text and icons below. There is no context to assemble by hand.
+
+`useButton` also reads `ButtonNestingContext`, which is how a Button inside
+another Button (a `Dialog.Trigger` inside a toolbar button, say) renders as a
+`span` instead of nesting an invalid `<button>` inside a `<button>`.
+
+For a longer walkthrough see
+[How to Build a Button](/docs/guides/how-to-build-a-button).
+
+## API Reference
+
+Buttons extend View, inheriting all the
+[Tamagui standard props](/docs/intro/props), plus:
+
+<PropsTable
+  data={[
+    {
+      name: 'size',
+      required: false,
+      type: 'SizeTokens | number',
+      description: `Set a size from your theme's size tokens (e.g., "4") or a specific number. Adjusts padding, border radius, font size, and icon size. Published to Button.Text and Button.Icon through the styled context.`,
+    },
+    {
+      name: 'variant',
+      required: false,
+      type: '"outlined" | "quiet"',
+      description:
+        '"outlined" is transparent with a border, "quiet" is transparent with no border.',
+    },
+    {
+      name: 'circular',
+      required: false,
+      type: 'boolean',
+      description: 'Forces a square frame with a fully rounded border radius.',
+    },
+    {
+      name: 'disabled',
+      required: false,
+      type: 'boolean',
+      description:
+        'Dims the button and sets `pointerEvents: "none"`. On web it also renders a disabled `<button>` and sets `aria-disabled`.',
+    },
+    {
+      name: 'theme',
+      required: false,
+      type: 'string',
+      description: `Apply a theme just to the button and its children.`,
+    },
+    {
+      name: 'icon',
+      required: false,
+      type: 'React.ReactNode | React.ComponentType<{ color?: string, size?: number }>',
+      description: `Any React element or a component. Appears before the text. A component receives 'color' and 'size'.`,
+    },
+    {
+      name: 'iconAfter',
+      required: false,
+      type: 'React.ReactNode | React.ComponentType<{ color?: string, size?: number }>',
+      description: `Any React element or a component. Appears after the text. A component receives 'color' and 'size'.`,
+    },
+    {
+      name: 'iconSize',
+      required: false,
+      type: 'SizeTokens',
+      description: `Explicitly set the icon size, overriding the one derived from 'size'.`,
+    },
+    {
+      name: 'scaleIcon',
+      required: false,
+      type: 'number',
+      description: `Scale the icon by this factor. Default is 1, applied after 'iconSize' or the default size calculation.`,
+    },
+    {
+      name: 'fontFamily',
+      required: false,
+      type: 'string',
+      description:
+        'The one text style prop the frame forwards, since a font family does not vary per breakpoint. Every other text style belongs on `Button.Text`.',
+    },
+    {
+      name: 'noTextWrap',
+      required: false,
+      type: 'boolean',
+      description:
+        'Render children as given instead of wrapping bare text in a `Button.Text`.',
+    },
+    // Web-only form props
+    {
+      name: '// Web Form Props',
+      description:
+        'The following props are web-only and provide full HTML button form semantics. They are ignored on native.',
+      type: '---',
+    },
+    {
+      name: 'type',
+      required: false,
+      type: '"button" | "submit" | "reset"',
+      description:
+        'Web-only. The button type. Defaults to "button" to prevent unintended form submissions.',
+    },
+    {
+      name: 'form',
+      required: false,
+      type: 'string',
+      description: 'Web-only. The ID of the form element the button is associated with.',
+    },
+    {
+      name: 'formAction',
+      required: false,
+      type: 'string',
+      description: "Web-only. URL for form submission, overrides the form's action.",
+    },
+    {
+      name: 'formMethod',
+      required: false,
+      type: '"get" | "post"',
+      description: 'Web-only. HTTP method for form submission.',
+    },
+    {
+      name: 'formEncType',
+      required: false,
+      type: 'string',
+      description: 'Web-only. Encoding type for form data.',
+    },
+    {
+      name: 'formNoValidate',
+      required: false,
+      type: 'boolean',
+      description: 'Web-only. Bypass form validation when submitting.',
+    },
+    {
+      name: 'formTarget',
+      required: false,
+      type: 'string',
+      description: 'Web-only. Where to display form response (_self, _blank, etc).',
+    },
+    {
+      name: 'name',
+      required: false,
+      type: 'string',
+      description: 'Web-only. Name submitted with form data.',
+    },
+    {
+      name: 'value',
+      required: false,
+      type: 'string',
+      description: 'Web-only. Value submitted with form data.',
+    },
+    // Note about text styling
+    {
+      name: '// Text Styling',
+      description:
+        'Apart from `fontFamily`, Button does not forward text style props. Use `Button.Text`, with the `group` prop for interactive states. See the Text Styling section above.',
+      type: '---',
+    },
+  ]}
+/>
+
+### Button.Frame
+
+The button's `View`. Renders as `<button type="button">` on web with
+`role="button"`.
+
+### Button.Text
+
+The text the button wraps bare children in, and what you use to style the label.
+Extends `SizableText`.
+
+### Button.Icon
+
+Sizes and colors an icon from the surrounding size context. Used for the `icon`
+and `iconAfter` props, and available for your own compositions.
+
+### useButton
+
+Themes the `icon` and `iconAfter` props, wraps bare children in a text, and
+applies the html nesting rules. Returns the props to spread onto a frame - the
+ones it consumed removed, everything else untouched.
+
+```tsx
+const { isNested, props } = useButton(props, { Text: MyButtonText })
+```

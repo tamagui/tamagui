@@ -3,7 +3,7 @@ import 'vitest-axe/extend-expect'
 
 import { Button } from 'tamagui'
 import { getDefaultTamaguiConfig } from '@tamagui/config-default'
-import { View, TamaguiProvider, createTamagui } from '@tamagui/core'
+import { SizeContext, View, TamaguiProvider, createTamagui } from '@tamagui/core'
 import type { RenderResult } from '@testing-library/react'
 import { render } from '@testing-library/react'
 import { beforeEach, describe, expect, it } from 'vitest'
@@ -96,5 +96,25 @@ describe('Button basic functionality', () => {
     expect(button).toHaveAttribute('formnovalidate')
     expect(button).toHaveAttribute('name', 'submitBtn')
     expect(button).toHaveAttribute('value', 'submit')
+  })
+})
+
+describe('Button sizing through context', () => {
+  it('takes size from a surrounding SizeContext', () => {
+    const { getByTestId } = render(
+      <TamaguiProvider config={conf} defaultTheme="light">
+        <SizeContext.Provider size="2">
+          <Button data-testid="from-context">Grouped</Button>
+        </SizeContext.Provider>
+        <Button data-testid="from-prop" size="2">
+          Direct
+        </Button>
+        <Button data-testid="default">Default</Button>
+      </TamaguiProvider>
+    )
+
+    const height = (id: string) => getComputedStyle(getByTestId(id)).height
+    expect(height('from-context')).toBe(height('from-prop'))
+    expect(height('from-context')).not.toBe(height('default'))
   })
 })
