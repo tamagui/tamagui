@@ -1,3 +1,4 @@
+import type { TextParentStyles } from '@tamagui/text';
 import type { GetProps, TamaguiComponentPropsBaseBase } from '@tamagui/web';
 import type { FunctionComponent, JSX, ReactNode } from 'react';
 export declare const ButtonFrame: FunctionComponent<Omit<import("@tamagui/web").StackNonStyleProps, "disabled" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
@@ -38,14 +39,6 @@ type ButtonConsumedProps = {
     children?: ReactNode;
     disabled?: boolean;
     render?: TamaguiComponentPropsBaseBase['render'];
-    /**
-     * The one text style that stays on the frame. A font family is a base value
-     * in practice — nobody swaps it per breakpoint — so it needs no conditional
-     * resolution, just a forward to the wrapped text. Every other text style
-     * belongs on `Button.Text`.
-     */
-    fontFamily?: string;
-    noTextWrap?: boolean;
     icon?: ButtonIconInput;
     iconAfter?: ButtonIconInput;
     iconSize?: number;
@@ -63,13 +56,13 @@ type ButtonHTMLProps = {
     name?: string;
     value?: string | readonly string[] | number;
 };
-export type ButtonBehaviorProps = ButtonConsumedProps & ButtonHTMLProps;
+export type ButtonBehaviorProps = TextParentStyles & ButtonConsumedProps & ButtonHTMLProps;
 /**
  * What `useButton` returns: the caller's props minus the ones it consumed, plus
  * the ones it decides. Spelled out rather than cast, so a skin that spreads the
  * result onto a frame is type-checked on exactly what it will receive.
  */
-export type UseButtonProps<Props> = Omit<Props, keyof ButtonConsumedProps> & {
+export type UseButtonProps<Props> = Omit<Omit<Props, keyof TextParentStyles>, keyof ButtonConsumedProps> & {
     children: ReactNode;
     'aria-disabled'?: boolean;
     disabled?: boolean;
@@ -84,8 +77,8 @@ export type UseButtonOptions = {
 };
 /**
  * Button behavior: icon theming, wrapping bare children in a text, and the html
- * nesting rules. It reads nothing off props at runtime beyond a destructure —
- * no text context to assemble, so no `useProps` and no prop strip list.
+ * nesting rules. Flat text styles are partitioned in one pass and handed to the
+ * wrapped text, with no style resolution hook or text context.
  */
 export declare function useButton<Props extends ButtonBehaviorProps>(propsIn: Props, { Text, iconColor, iconSize: iconSizeOption, textProps: textPropsOption, }?: UseButtonOptions): {
     isNested: boolean;

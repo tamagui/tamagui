@@ -3,7 +3,8 @@ import { oneSizeTokenSmaller } from '@tamagui/get-token'
 import { getThemedIconSize, useGetThemedIcon } from '@tamagui/helpers-tamagui'
 import { resolveSizeToken } from '@tamagui/size'
 import { YStack } from '@tamagui/stacks'
-import { SizableText, wrapChildrenInText } from '@tamagui/text'
+import type { TextParentStyles } from '@tamagui/text'
+import { SizableText, splitTextProps, wrapChildrenInText } from '@tamagui/text'
 import type {
   ColorTokens,
   FontSizeTokens,
@@ -147,31 +148,37 @@ type ListItemConsumedProps = {
   title?: ReactNode
 }
 
-export type ListItemBehaviorProps = ListItemConsumedProps & {
-  // read to theme an `icon` prop, then passed through untouched: the frame
-  // declares the styled context, so it is what publishes these to the parts
-  color?: ColorTokens | string
-  size?: SizeTokens | true
-}
+export type ListItemBehaviorProps = TextParentStyles &
+  ListItemConsumedProps & {
+    // read to theme an `icon` prop, then passed through untouched: the frame
+    // declares the styled context, so it is what publishes these to the parts
+    color?: ColorTokens | string
+    size?: SizeTokens | true
+  }
 
 /**
  * What `useListItem` returns: the caller's props minus the ones it consumed.
  * Spelled out rather than cast, so a skin that spreads the result onto a frame
  * is type-checked on exactly what it will receive.
  */
-export type UseListItemProps<Props> = Omit<Props, keyof ListItemConsumedProps> & {
+export type UseListItemProps<Props extends ListItemBehaviorProps> = Omit<
+  Omit<Props, keyof TextParentStyles>,
+  keyof ListItemConsumedProps
+> & {
   children: ReactNode
+  color?: Props['color']
 }
 
 /**
  * ListItem behavior: theming the icon props and assembling title, subtitle, and
- * children into the frame's single child. Size and color are not reconciled
- * here — they go to the frame as ordinary props and the styled context carries
- * them the rest of the way.
+ * children into the frame's single child. Flat text styles are handed directly
+ * to generated text, while size and color still reach the parts through the
+ * styled context.
  */
 export function useListItem<Props extends ListItemBehaviorProps>(
   propsIn: Props
 ): { props: UseListItemProps<Props> } {
+  const [wrappedTextProps, listItemProps] = splitTextProps(propsIn)
   const {
     children,
     icon,
@@ -181,7 +188,8 @@ export function useListItem<Props extends ListItemBehaviorProps>(
     subTitle,
     title,
     ...frameProps
-  } = propsIn
+  } = listItemProps
+  const { noTextWrap, textProps, ...textStyleProps } = wrappedTextProps
 
   // the frame publishes size and color to every part below it, but an `icon`
   // prop is themed here, before the frame renders, so it reads them itself
@@ -191,19 +199,32 @@ export function useListItem<Props extends ListItemBehaviorProps>(
     color: propsIn.color ?? context.color,
   })
 
-  const wrappedChildren = wrapChildrenInText(ListItemText, { children })
+  const wrappedChildren = wrapChildrenInText(
+    ListItemText,
+    { children, noTextWrap, textProps },
+    textStyleProps
+  )
 
   return {
     props: {
       ...frameProps,
+      color: propsIn.color,
       children: (
         <>
           {icon ? getThemedIcon(icon) : null}
           {title || subTitle ? (
             <YStack flex={1}>
-              {typeof title === 'string' ? <ListItemTitle>{title}</ListItemTitle> : title}
+              {typeof title === 'string' ? (
+                <ListItemTitle {...textStyleProps} {...textProps}>
+                  {title}
+                </ListItemTitle>
+              ) : (
+                title
+              )}
               {typeof subTitle === 'string' ? (
-                <ListItemSubtitle>{subTitle}</ListItemSubtitle>
+                <ListItemSubtitle {...textStyleProps} {...textProps}>
+                  {subTitle}
+                </ListItemSubtitle>
               ) : (
                 subTitle
               )}

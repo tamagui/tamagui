@@ -57,7 +57,42 @@ async function renderListItem(element: React.ReactElement) {
   return rendered!
 }
 
+function flattenStyle(style: any): Record<string, any> {
+  if (Array.isArray(style)) {
+    return Object.assign({}, ...style.map(flattenStyle))
+  }
+
+  return style || {}
+}
+
+function findWrappedText(rendered: TestRenderer.ReactTestRenderer) {
+  const text = rendered.root
+    .findAll((node) => node.props.children === 'HELLO')
+    .find((node) => {
+      const type = node.type
+      return type === 'Text' || (typeof type === 'function' && type.name === 'Text')
+    })
+
+  if (!text) {
+    throw new Error('wrapped text node not found')
+  }
+
+  return text
+}
+
 describe('ListItem native composition', () => {
+  test('passes root text styles and shorthands to wrapped text', async () => {
+    const rendered = await renderListItem(
+      <ListItem fow="700" fontStyle="italic">
+        HELLO
+      </ListItem>
+    )
+    const style = flattenStyle(findWrappedText(rendered).props.style)
+
+    expect(style.fontWeight).toBe(700)
+    expect(style.fontStyle).toBe('italic')
+  })
+
   test('re-provides size and color to child icons', async () => {
     const iconProps: any[] = []
 

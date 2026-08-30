@@ -1,6 +1,7 @@
 import { useGetThemedIcon } from '@tamagui/helpers-tamagui'
 import { ButtonNestingContext } from '@tamagui/stacks'
-import { wrapChildrenInText } from '@tamagui/text'
+import type { TextParentStyles } from '@tamagui/text'
+import { splitTextProps, wrapChildrenInText } from '@tamagui/text'
 import type { GetProps, TamaguiComponentPropsBaseBase } from '@tamagui/web'
 import { styled, Text, View } from '@tamagui/web'
 import type { FunctionComponent, JSX, ReactNode } from 'react'
@@ -62,15 +63,6 @@ type ButtonConsumedProps = {
   disabled?: boolean
   render?: TamaguiComponentPropsBaseBase['render']
 
-  /**
-   * The one text style that stays on the frame. A font family is a base value
-   * in practice — nobody swaps it per breakpoint — so it needs no conditional
-   * resolution, just a forward to the wrapped text. Every other text style
-   * belongs on `Button.Text`.
-   */
-  fontFamily?: string
-  noTextWrap?: boolean
-
   icon?: ButtonIconInput
   iconAfter?: ButtonIconInput
   iconSize?: number
@@ -90,14 +82,17 @@ type ButtonHTMLProps = {
   value?: string | readonly string[] | number
 }
 
-export type ButtonBehaviorProps = ButtonConsumedProps & ButtonHTMLProps
+export type ButtonBehaviorProps = TextParentStyles & ButtonConsumedProps & ButtonHTMLProps
 
 /**
  * What `useButton` returns: the caller's props minus the ones it consumed, plus
  * the ones it decides. Spelled out rather than cast, so a skin that spreads the
  * result onto a frame is type-checked on exactly what it will receive.
  */
-export type UseButtonProps<Props> = Omit<Props, keyof ButtonConsumedProps> & {
+export type UseButtonProps<Props> = Omit<
+  Omit<Props, keyof TextParentStyles>,
+  keyof ButtonConsumedProps
+> & {
   children: ReactNode
   'aria-disabled'?: boolean
   disabled?: boolean
@@ -114,8 +109,8 @@ export type UseButtonOptions = {
 
 /**
  * Button behavior: icon theming, wrapping bare children in a text, and the html
- * nesting rules. It reads nothing off props at runtime beyond a destructure —
- * no text context to assemble, so no `useProps` and no prop strip list.
+ * nesting rules. Flat text styles are partitioned in one pass and handed to the
+ * wrapped text, with no style resolution hook or text context.
  */
 export function useButton<Props extends ButtonBehaviorProps>(
   propsIn: Props,
@@ -127,19 +122,19 @@ export function useButton<Props extends ButtonBehaviorProps>(
   }: UseButtonOptions = {}
 ): { isNested: boolean; props: UseButtonProps<Props> } {
   const isNested = useContext(ButtonNestingContext)
+  const [wrappedTextProps, buttonProps] = splitTextProps(propsIn)
 
   const {
     children,
     disabled,
-    fontFamily,
     icon,
     iconAfter,
     iconSize,
-    noTextWrap,
     render,
     scaleIcon = 1,
     ...frameProps
-  } = propsIn
+  } = buttonProps
+  const { noTextWrap, textProps, ...textStyleProps } = wrappedTextProps
 
   const resolvedIconSize = iconSize ?? iconSizeOption
   const getThemedIcon = useGetThemedIcon({
@@ -156,15 +151,15 @@ export function useButton<Props extends ButtonBehaviorProps>(
   // "Text strings must be rendered within a <Text>" for a bare number on native
   const wrappedChildren = wrapChildrenInText(
     Text,
-    { children, fontFamily, noTextWrap },
-    textPropsOption
+    { children, noTextWrap, textProps },
+    { ...textPropsOption, ...textStyleProps }
   )
 
   const resolvedRender =
     render ??
     (isNested ? 'span' : disabled ? <button type="button" disabled /> : undefined)
 
-  const props = {
+  const resolvedProps = {
     ...frameProps,
     ...(disabled && {
       'aria-disabled': true,
@@ -201,7 +196,7 @@ export function useButton<Props extends ButtonBehaviorProps>(
 
   return {
     isNested,
-    props,
+    props: resolvedProps,
   }
 }
 

@@ -115,6 +115,18 @@ afterEach(() => {
 })
 
 describe('Button native text', () => {
+  test('passes root text styles and shorthands to wrapped text', async () => {
+    const rendered = await renderButton(
+      <Button fow="700" fontStyle="italic">
+        HELLO
+      </Button>
+    )
+    const style = flattenStyle(findWrappedText(rendered).props.style)
+
+    expect(style.fontWeight).toBe(700)
+    expect(style.fontStyle).toBe('italic')
+  })
+
   test('does not pass cursor style to native text', async () => {
     const rendered = await renderButton(<Button>HELLO</Button>)
 

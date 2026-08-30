@@ -1,6 +1,6 @@
 import type { GetProps } from 'tamagui'
 import { createStyledHOC, styled, Theme, View } from 'tamagui'
-import { Button, type ButtonProps } from '../components/Button'
+import { Button } from '../components/Button'
 
 const CustomButtonFrame = styled(Button, {})
 
@@ -8,12 +8,7 @@ const CustomButtonText = styled(Button.Text, {
   // ...
 })
 
-type CustomButtonFrameProps = GetProps<typeof CustomButtonFrame>
-type CustomButtonTextProps = GetProps<typeof CustomButtonText>
-
-export type CustomButtonProps = ButtonProps &
-  CustomButtonFrameProps &
-  CustomButtonTextProps
+export type CustomButtonProps = GetProps<typeof CustomButtonFrame>
 
 export const CustomButton = createStyledHOC(
   CustomButtonFrame,
@@ -35,12 +30,7 @@ const CustomButtonText2 = styled(Button.Text, {
   // ...
 })
 
-type CustomButtonFrameProps2 = GetProps<typeof CustomButtonFrame>
-type CustomButtonTextProps2 = GetProps<typeof CustomButtonText>
-
-export type CustomButtonProps2 = ButtonProps &
-  CustomButtonFrameProps2 &
-  CustomButtonTextProps2
+export type CustomButtonProps2 = GetProps<typeof CustomButtonFrame2>
 
 export const CustomButton2 = createStyledHOC(
   CustomButtonFrame2,

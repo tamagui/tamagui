@@ -34,17 +34,13 @@ global.ResizeObserver = class ResizeObserver {
   disconnect() {}
 }
 
-describe('Button with Button.Text for font styling', () => {
+describe('Button root text styling', () => {
   let rendered: RenderResult
   let button: HTMLElement
   let buttonText: HTMLElement
 
   beforeEach(() => {
-    rendered = render(
-      <ButtonTest>
-        <Button.Text fontFamily="heading">Test</Button.Text>
-      </ButtonTest>
-    )
+    rendered = render(<ButtonTest fontFamily="heading">Test</ButtonTest>)
     button = rendered.getByRole(BUTTON_ROLE)
     buttonText = rendered.getByText('Test')
   })

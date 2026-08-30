@@ -1,3 +1,4 @@
+import type { TextParentStyles } from '@tamagui/text';
 import type { ColorTokens, GetProps, SizeTokens, VariantSpreadExtras } from '@tamagui/web';
 import type { FunctionComponent, JSX, ReactNode } from 'react';
 type IconProp = JSX.Element | FunctionComponent<{
@@ -98,7 +99,7 @@ type ListItemConsumedProps = {
     subTitle?: ReactNode;
     title?: ReactNode;
 };
-export type ListItemBehaviorProps = ListItemConsumedProps & {
+export type ListItemBehaviorProps = TextParentStyles & ListItemConsumedProps & {
     color?: ColorTokens | string;
     size?: SizeTokens | true;
 };
@@ -107,14 +108,15 @@ export type ListItemBehaviorProps = ListItemConsumedProps & {
  * Spelled out rather than cast, so a skin that spreads the result onto a frame
  * is type-checked on exactly what it will receive.
  */
-export type UseListItemProps<Props> = Omit<Props, keyof ListItemConsumedProps> & {
+export type UseListItemProps<Props extends ListItemBehaviorProps> = Omit<Omit<Props, keyof TextParentStyles>, keyof ListItemConsumedProps> & {
     children: ReactNode;
+    color?: Props['color'];
 };
 /**
  * ListItem behavior: theming the icon props and assembling title, subtitle, and
- * children into the frame's single child. Size and color are not reconciled
- * here — they go to the frame as ordinary props and the styled context carries
- * them the rest of the way.
+ * children into the frame's single child. Flat text styles are handed directly
+ * to generated text, while size and color still reach the parts through the
+ * styled context.
  */
 export declare function useListItem<Props extends ListItemBehaviorProps>(propsIn: Props): {
     props: UseListItemProps<Props>;

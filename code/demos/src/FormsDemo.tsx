@@ -38,10 +38,17 @@ export function FormsDemo() {
       </Field>
 
       <Form.Trigger asChild disabled={status !== 'idle'}>
-        <Button self="flex-end" height={40} px="5" rounded="5" bg="color11 hover:color10">
-          <Button.Text color="color1" fontSize="2" fontWeight="500">
-            Submit
-          </Button.Text>
+        <Button
+          self="flex-end"
+          height={40}
+          px="5"
+          rounded="5"
+          bg="color11 hover:color10"
+          color="color1"
+          fontSize="2"
+          fontWeight="500"
+        >
+          Submit
         </Button>
       </Form.Trigger>
 
