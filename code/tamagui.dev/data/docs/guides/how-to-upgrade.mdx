@@ -517,14 +517,55 @@ Use these replacements:
 | `@tamagui/input` v1 `Input` / `TextArea` | the current `Input` and `TextArea` from `@tamagui/input` |
 | `isWindowDefined` | `isBrowser` |
 | `createMedia` from `@tamagui/react-native-media-driver` | remove the call, `createTamagui` sets the driver up |
-| `getExpandedShorthands` | author canonical prop names directly |
-| `useProps`, `useStyle`, `usePropsAndStyle` | keep style props on styled Tamagui components; use `useMedia()` or `useTheme()` only when behavior code needs that state |
+| `getExpandedShorthands` | `getExpandedShorthand(key, props)` when behavior code needs one authored prop and accepts configured shorthands |
+| `useProps`, `useStyle`, `usePropsAndStyle` | keep conditional values on styled Tamagui components; use `splitStyleProps` only when a wrapper must partition authored props |
 | `createCheckbox` `sizeAdjust` | explicit sizing math or component styles |
 | `@tamagui/animations-moti` | `@tamagui/animations-reanimated` |
 | `@tamagui/config/reanimated` | `@tamagui/config/animations-reanimated` |
 | `'...size'` / `'...fontSize'` spread variant keys | resolver-name keys: `Size`, `FontSize`, `Space`, `Color`, `Radius`, `ZIndex`, and unions like `'Size \| number'` |
 | `':string'` / `':number'` / `':boolean'` type-key variants | plain `string` / `number` / `boolean` keys |
 | `'...'` catch-all variant key | the `any` key |
+
+V2 could spread one style across its base prop, pseudo-style objects such as
+`hoverStyle`, media objects such as `$sm`, and platform objects. The removed
+hooks had to gather those objects to produce resolved props and styles. In v3,
+the base value and every conditional clause for a style live on that style's
+single property:
+
+```tsx
+<View opacity="1 hover:0.7 sm:0.8" />
+```
+
+The styled component interprets that value. Pass the property through instead
+of flattening the component's styles in JavaScript. If a wrapper must separate
+style props from regular props, use `splitStyleProps`:
+
+```tsx
+import { splitStyleProps } from '@tamagui/core'
+
+const [styleProps, regularProps] = splitStyleProps(props, {
+  expandShorthands: true,
+})
+```
+
+Pass a filter map to select only some canonical style keys. Rejected style
+props remain in the second object, which supports cases such as splitting text
+props from frame props without another loop. The filter may also be a callback
+that receives `(key, value, originalKey, isStyleProp)`.
+
+If behavior code needs one authored property and supports a configured
+shorthand, read it with the singular helper:
+
+```tsx
+import { getExpandedShorthand } from '@tamagui/core'
+
+const zIndex = getExpandedShorthand('zIndex', props)
+```
+
+`getExpandedShorthand` only chooses the longhand or shorthand property. It does
+not resolve tokens or choose an active conditional clause. Neither does
+`splitStyleProps`. Use `useMedia()` or `useTheme()` when behavior itself needs
+active responsive or theme state.
 
 The curried `createStyledHOC` form is a separate signature break from the
 `.styleable()` rename. Move the custom prop type onto the render parameter when

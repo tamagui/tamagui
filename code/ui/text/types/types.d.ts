@@ -1,5 +1,40 @@
+import { type Shorthands, type TextStyle, type TextStylePropsBase, type WithShorthands } from '@tamagui/web';
 import type { SizableTextProps } from './SizableText';
-import type { Shorthands, TextStyle, TextStylePropsBase, WithShorthands, stylePropsTextOnly } from '@tamagui/web';
+export declare const textParentProps: {
+    readonly whiteSpace?: boolean | undefined;
+    readonly wordWrap?: boolean | undefined;
+    readonly textOverflow?: boolean | undefined;
+    readonly WebkitBoxOrient?: boolean | undefined;
+    readonly textDecorationDistance?: boolean | undefined;
+    readonly WebkitLineClamp?: boolean | undefined;
+    readonly color: boolean;
+    readonly textDecorationColor: boolean;
+    readonly textShadowColor: boolean;
+    readonly fontFamily: boolean;
+    readonly fontStyle: boolean;
+    readonly fontVariant: boolean;
+    readonly textTransform: boolean;
+    readonly textAlign: boolean;
+    readonly textDecorationLine: boolean;
+    readonly textDecorationStyle: boolean;
+    readonly userSelect: boolean;
+    readonly writingDirection: boolean;
+    readonly fontSize: boolean;
+    readonly fontWeight: boolean;
+    readonly letterSpacing: boolean;
+    readonly lineHeight: boolean;
+    readonly textShadow: boolean;
+    readonly textShadowOffset: boolean;
+    readonly textShadowRadius: boolean;
+    readonly textDecoration: boolean;
+    readonly font: boolean;
+    readonly verticalAlign: boolean;
+    readonly ellipsis: true;
+    readonly maxFontSizeMultiplier: true;
+    readonly noTextWrap: true;
+    readonly numberOfLines: true;
+    readonly textProps: true;
+};
 export type TextContextStyles = {
     color?: SizableTextProps['color'];
     fontWeight?: SizableTextProps['fontWeight'];
@@ -11,7 +46,7 @@ export type TextContextStyles = {
     ellipsis?: SizableTextProps['ellipsis'];
     maxFontSizeMultiplier?: number;
 };
-type TextParentStyleKeys = Extract<keyof TextStylePropsBase, keyof typeof stylePropsTextOnly | 'ellipsis' | 'numberOfLines'>;
+type TextParentStyleKeys = Extract<keyof TextStylePropsBase, keyof typeof textParentProps>;
 type TextParentStyleProps = Partial<Pick<TextStyle, TextParentStyleKeys>>;
 type TextParentShorthandKeys = {
     [Key in keyof Shorthands]: Shorthands[Key] extends TextParentStyleKeys ? Key : never;

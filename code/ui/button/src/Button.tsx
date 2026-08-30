@@ -1,9 +1,9 @@
 import { useGetThemedIcon } from '@tamagui/helpers-tamagui'
 import { ButtonNestingContext } from '@tamagui/stacks'
 import type { TextParentStyles } from '@tamagui/text'
-import { splitTextProps, wrapChildrenInText } from '@tamagui/text'
+import { textParentProps, wrapChildrenInText } from '@tamagui/text'
 import type { GetProps, TamaguiComponentPropsBaseBase } from '@tamagui/web'
-import { styled, Text, View } from '@tamagui/web'
+import { splitStyleProps, styled, Text, View } from '@tamagui/web'
 import type { FunctionComponent, JSX, ReactNode } from 'react'
 import { useContext } from 'react'
 
@@ -90,7 +90,7 @@ export type ButtonBehaviorProps = TextParentStyles & ButtonConsumedProps & Butto
  * result onto a frame is type-checked on exactly what it will receive.
  */
 export type UseButtonProps<Props> = Omit<
-  Omit<Props, keyof TextParentStyles>,
+  Omit<Props, keyof TextParentStyles | keyof typeof textParentProps>,
   keyof ButtonConsumedProps
 > & {
   children: ReactNode
@@ -122,7 +122,10 @@ export function useButton<Props extends ButtonBehaviorProps>(
   }: UseButtonOptions = {}
 ): { isNested: boolean; props: UseButtonProps<Props> } {
   const isNested = useContext(ButtonNestingContext)
-  const [wrappedTextProps, buttonProps] = splitTextProps(propsIn)
+  const [wrappedTextProps, buttonProps] = splitStyleProps(propsIn, {
+    expandShorthands: true,
+    filter: textParentProps,
+  })
 
   const {
     children,

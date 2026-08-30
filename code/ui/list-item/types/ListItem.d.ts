@@ -1,4 +1,5 @@
 import type { TextParentStyles } from '@tamagui/text';
+import { textParentProps } from '@tamagui/text';
 import type { ColorTokens, GetProps, SizeTokens, VariantSpreadExtras } from '@tamagui/web';
 import type { FunctionComponent, JSX, ReactNode } from 'react';
 type IconProp = JSX.Element | FunctionComponent<{
@@ -108,7 +109,7 @@ export type ListItemBehaviorProps = TextParentStyles & ListItemConsumedProps & {
  * Spelled out rather than cast, so a skin that spreads the result onto a frame
  * is type-checked on exactly what it will receive.
  */
-export type UseListItemProps<Props extends ListItemBehaviorProps> = Omit<Omit<Props, keyof TextParentStyles>, keyof ListItemConsumedProps> & {
+export type UseListItemProps<Props extends ListItemBehaviorProps> = Omit<Omit<Props, keyof TextParentStyles | keyof typeof textParentProps>, keyof ListItemConsumedProps> & {
     children: ReactNode;
     color?: Props['color'];
 };

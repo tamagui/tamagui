@@ -1,11 +1,21 @@
-import type { SizableTextProps } from './SizableText'
-import type {
-  Shorthands,
-  TextStyle,
-  TextStylePropsBase,
-  WithShorthands,
+import {
   stylePropsTextOnly,
+  type Shorthands,
+  type TextStyle,
+  type TextStylePropsBase,
+  type WithShorthands,
 } from '@tamagui/web'
+
+import type { SizableTextProps } from './SizableText'
+
+export const textParentProps = {
+  ...stylePropsTextOnly,
+  ellipsis: true,
+  maxFontSizeMultiplier: true,
+  noTextWrap: true,
+  numberOfLines: true,
+  textProps: true,
+} as const
 
 export type TextContextStyles = {
   color?: SizableTextProps['color']
@@ -19,10 +29,7 @@ export type TextContextStyles = {
   maxFontSizeMultiplier?: number
 }
 
-type TextParentStyleKeys = Extract<
-  keyof TextStylePropsBase,
-  keyof typeof stylePropsTextOnly | 'ellipsis' | 'numberOfLines'
->
+type TextParentStyleKeys = Extract<keyof TextStylePropsBase, keyof typeof textParentProps>
 
 type TextParentStyleProps = Partial<Pick<TextStyle, TextParentStyleKeys>>
 type TextParentShorthandKeys = {

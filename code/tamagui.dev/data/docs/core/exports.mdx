@@ -116,6 +116,61 @@ If given a `Variable` - which comes from a parsed theme or token returned from
 Calling `getVariable(useTheme().color)` returns `var(--color)` on the web, and
 `#fff` on other platforms.
 
+### splitStyleProps
+
+`splitStyleProps` partitions an object in one pass and returns
+`[selectedProps, remainingProps]`. With no options, the first object contains
+style props and the second contains everything else. Props keep their authored
+keys by default. It is exported from `@tamagui/core`, `@tamagui/ui`, and
+`tamagui`:
+
+```tsx
+import { splitStyleProps } from 'tamagui'
+
+const [styleProps, regularProps] = splitStyleProps(props)
+```
+
+Pass `expandShorthands: true` to write selected shorthand props under their
+canonical keys:
+
+```tsx
+const [styleProps, regularProps] = splitStyleProps(props, {
+  expandShorthands: true,
+})
+```
+
+A filter map selects only its canonical keys. Style props excluded by the map
+remain in the second object. This also lets a component intentionally select
+non-style behavior props:
+
+```tsx
+import { splitStyleProps, stylePropsTextOnly } from '@tamagui/core'
+
+const [textProps, frameProps] = splitStyleProps(props, {
+  expandShorthands: true,
+  filter: {
+    ...stylePropsTextOnly,
+    ellipsis: true,
+    numberOfLines: true,
+  },
+})
+```
+
+For dynamic rules, `filter` can be a callback. It receives the canonical key,
+the value, the original authored key, and whether the canonical key is a known
+style prop:
+
+```tsx
+const [selectedProps, remainingProps] = splitStyleProps(props, {
+  filter: (key, value, originalKey, isStyleProp) => {
+    return (isStyleProp && key.startsWith('font')) || originalKey === 'numberOfLines'
+  },
+})
+```
+
+Filter maps infer the selected keys precisely. A callback can return a type
+predicate on `originalKey` when its rule narrows to a known key union.
+
 ---
 
 ## Hooks

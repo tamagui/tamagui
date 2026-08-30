@@ -315,6 +315,27 @@ The codemod flags these; you rewrite them. Full before/after recipes are in
 | `x`/`y` offsets with a custom config | v2 `$4` used the size scale, v3 `4` uses space; review if the scales differ |
 | Group size conditions: `$group-card-maxMd` | Becomes `@max-md/card:` plus `container="card"` on the declaring ancestor; the container owner must be provable |
 
+### Remove runtime prop-resolution hooks
+
+Remove `useProps`, `useStyle`, and `usePropsAndStyle`. V2 could spread one style
+across its base prop, pseudo-style objects, media objects, and platform objects,
+so these hooks gathered multiple objects into resolved props and styles. V3
+keeps every base and conditional clause for a style on that style's single
+property, such as `opacity="1 hover:0.7 sm:0.8"`.
+
+Keep that property on a styled Tamagui component. Behavior wrappers should read
+or forward only the authored property they need. When a wrapper must partition
+authored props, `splitStyleProps(props)` returns `[styleProps, regularProps]` in
+one pass. Pass `{ expandShorthands: true }` to canonicalize selected keys. A
+filter map selects only its canonical keys and leaves rejected style props in
+the second object. A filter callback receives
+`(key, value, originalKey, isStyleProp)` for dynamic selection.
+
+If a configured shorthand is allowed for one property, use
+`getExpandedShorthand(key, props)` from `@tamagui/core`. Neither helper resolves
+tokens or selects an active conditional clause. Use `useMedia()` or `useTheme()`
+when behavior itself needs active responsive or theme state.
+
 ## Phase 4: preserve the escape hatches
 
 Migrated apps carry deliberate, commented workarounds. Migrating styles is not

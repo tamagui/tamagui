@@ -22,6 +22,9 @@ describe('tamagui migrate', () => {
     expect(result.stdout).toContain('FocusScope')
     expect(result.stdout).toContain('Select.Separator')
     expect(result.stdout).toContain('`color12` -> `color11`')
+    expect(result.stdout).toContain('`useProps`, `useStyle`, and `usePropsAndStyle`')
+    expect(result.stdout).toContain('`getExpandedShorthand(key, props)`')
+    expect(result.stdout).toContain('`splitStyleProps(props)`')
     expect(result.stdout).toContain('### 15. Verification')
   })
 

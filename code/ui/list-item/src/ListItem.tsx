@@ -4,7 +4,7 @@ import { getThemedIconSize, useGetThemedIcon } from '@tamagui/helpers-tamagui'
 import { resolveSizeToken } from '@tamagui/size'
 import { YStack } from '@tamagui/stacks'
 import type { TextParentStyles } from '@tamagui/text'
-import { SizableText, splitTextProps, wrapChildrenInText } from '@tamagui/text'
+import { SizableText, textParentProps, wrapChildrenInText } from '@tamagui/text'
 import type {
   ColorTokens,
   FontSizeTokens,
@@ -12,7 +12,13 @@ import type {
   SizeTokens,
   VariantSpreadExtras,
 } from '@tamagui/web'
-import { createStyledContext, getVariableValue, styled, View } from '@tamagui/web'
+import {
+  createStyledContext,
+  getVariableValue,
+  splitStyleProps,
+  styled,
+  View,
+} from '@tamagui/web'
 import type { FunctionComponent, JSX, ReactNode } from 'react'
 
 type IconProp = JSX.Element | FunctionComponent<{ color?: any; size?: any }> | null
@@ -162,7 +168,7 @@ export type ListItemBehaviorProps = TextParentStyles &
  * is type-checked on exactly what it will receive.
  */
 export type UseListItemProps<Props extends ListItemBehaviorProps> = Omit<
-  Omit<Props, keyof TextParentStyles>,
+  Omit<Props, keyof TextParentStyles | keyof typeof textParentProps>,
   keyof ListItemConsumedProps
 > & {
   children: ReactNode
@@ -178,7 +184,10 @@ export type UseListItemProps<Props extends ListItemBehaviorProps> = Omit<
 export function useListItem<Props extends ListItemBehaviorProps>(
   propsIn: Props
 ): { props: UseListItemProps<Props> } {
-  const [wrappedTextProps, listItemProps] = splitTextProps(propsIn)
+  const [wrappedTextProps, listItemProps] = splitStyleProps(propsIn, {
+    expandShorthands: true,
+    filter: textParentProps,
+  })
   const {
     children,
     icon,

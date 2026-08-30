@@ -121,6 +121,10 @@ export type {
   SizeTableSelection,
   SizeTokens,
   SpaceTokens,
+  SplitStylePropsFilter,
+  SplitStylePropsFilterCallback,
+  SplitStylePropsOptions,
+  SplitStylePropsResult,
   SpecificTokens,
   StackNonStyleProps,
   ViewProps,
@@ -211,6 +215,7 @@ export {
   defaultTokenSizePolicy,
   resolveSizeToken,
   resolveTokenSize,
+  splitStyleProps,
   styled,
   // hooks
   useAnimatedNumber,

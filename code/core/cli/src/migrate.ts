@@ -172,7 +172,7 @@ After:
 Search:
 
 \`\`\`bash
-rg "focusable|fullscreen|themeInverse|<Theme inverse|Sheet\\.Frame|styleable\\(|inlineWhenUnflattened|\\$true|getTokenRelative|stepTokenUpOrDown|forceRemoveScrollEnabled|sizeAdjust"
+rg "focusable|fullscreen|themeInverse|<Theme inverse|Sheet\\.Frame|styleable\\(|inlineWhenUnflattened|\\$true|getTokenRelative|stepTokenUpOrDown|forceRemoveScrollEnabled|sizeAdjust|getExpandedShorthands|usePropsAndStyle|useProps|useStyle"
 \`\`\`
 
 Replace:
@@ -189,6 +189,27 @@ Replace:
 - old platform style keys -> flat \`web:\`, \`native:\`, \`ios:\`, and \`android:\` clauses.
 - \`forceRemoveScrollEnabled\` -> \`disableRemoveScroll\` with inverted intent.
 - \`createCheckbox\` \`sizeAdjust\` -> explicit sizing math or component styles.
+- \`getExpandedShorthands\` -> \`getExpandedShorthand(key, props)\` when behavior code needs one authored prop and must accept its configured shorthand.
+- \`useProps\`, \`useStyle\`, and \`usePropsAndStyle\` -> keep conditional values on styled Tamagui components; use \`splitStyleProps\` only when a wrapper must partition authored props.
+
+V2 could spread one style across its base prop, pseudo-style objects, media
+objects, and platform objects. The removed hooks gathered those separate
+objects into resolved props and styles. V3 keeps every base and conditional
+clause for a style on that style's single property, for example
+\`opacity="1 hover:0.7 sm:0.8"\`. The styled component interprets that value,
+so a wrapper should pass it through instead of flattening the component's
+styles in JavaScript.
+
+\`splitStyleProps(props)\` returns \`[styleProps, regularProps]\` in one pass.
+Pass \`{ expandShorthands: true }\` to canonicalize selected keys. Its optional
+filter map selects only those canonical keys, leaving rejected style props in
+the second object. The filter may instead be a callback receiving
+\`(key, value, originalKey, isStyleProp)\`.
+
+\`getExpandedShorthand(key, props)\` only chooses the longhand or configured
+shorthand for one property. It does not resolve tokens or select the active
+clause. Neither does \`splitStyleProps\`. Use \`useMedia()\` or \`useTheme()\`
+when behavior itself needs active responsive or theme state.
 
 ### 6. Replace true tokens
 

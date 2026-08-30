@@ -1,4 +1,5 @@
 import type { TextParentStyles } from '@tamagui/text';
+import { textParentProps } from '@tamagui/text';
 import type { GetProps, TamaguiComponentPropsBaseBase } from '@tamagui/web';
 import type { FunctionComponent, JSX, ReactNode } from 'react';
 export declare const ButtonFrame: FunctionComponent<Omit<import("@tamagui/web").StackNonStyleProps, "disabled" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
@@ -62,7 +63,7 @@ export type ButtonBehaviorProps = TextParentStyles & ButtonConsumedProps & Butto
  * the ones it decides. Spelled out rather than cast, so a skin that spreads the
  * result onto a frame is type-checked on exactly what it will receive.
  */
-export type UseButtonProps<Props> = Omit<Omit<Props, keyof TextParentStyles>, keyof ButtonConsumedProps> & {
+export type UseButtonProps<Props> = Omit<Omit<Props, keyof TextParentStyles | keyof typeof textParentProps>, keyof ButtonConsumedProps> & {
     children: ReactNode;
     'aria-disabled'?: boolean;
     disabled?: boolean;

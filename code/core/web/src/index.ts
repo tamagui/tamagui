@@ -41,6 +41,13 @@ export { isTamaguiElement } from './helpers/isTamaguiElement'
 export { matchMedia, setupMatchMedia } from './helpers/matchMedia'
 export { mergeProps } from './helpers/mergeProps'
 export { mergeSlotStyleProps } from './helpers/mergeSlotStyleProps'
+export {
+  splitStyleProps,
+  type SplitStylePropsFilter,
+  type SplitStylePropsFilterCallback,
+  type SplitStylePropsOptions,
+  type SplitStylePropsResult,
+} from './helpers/splitStyleProps'
 export { normalizeColor } from './helpers/normalizeColor'
 export { normalizeStyle } from './helpers/normalizeStyle'
 export { containsThemeRef, themeRefKey } from './helpers/themeRef'

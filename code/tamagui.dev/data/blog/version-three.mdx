@@ -215,9 +215,26 @@ forwardRef component wrappers, `inlineWhenUnflattened`, deprecated UI kit
 aliases, old platform style keys, and true token keys.
 
 The runtime-flattening hooks `useProps`, `useStyle`, and `usePropsAndStyle` are
-also gone. Keep authored style props on styled Tamagui components and read
-behavior props directly. When behavior code truly needs the active breakpoint
-or theme, read that state explicitly with `useMedia()` or `useTheme()`.
+also gone. V2 could spread one style across its base prop, pseudo-style objects,
+media objects, and platform objects, so those hooks had to gather the pieces.
+V3 keeps the base value and every conditional clause on the style's one
+property, such as `opacity="1 hover:0.7 sm:0.8"`. Keep that property on a styled
+Tamagui component and read or forward only the authored prop behavior needs.
+Wrappers that must partition authored props can use:
+
+```tsx
+import { splitStyleProps } from 'tamagui'
+
+const [styleProps, regularProps] = splitStyleProps(props, {
+  expandShorthands: true,
+})
+```
+
+Its optional filter map or callback can select a subset, while rejected style
+props remain in the second object. Use
+`getExpandedShorthand(key, props)` for a single shorthand-aware read. Neither
+helper resolves tokens or active clauses. Use `useMedia()` or `useTheme()` when
+behavior itself needs active responsive or theme state.
 
 If your code still uses `focusable`, move to `tabIndex`. If it uses
 `fullscreen`, write the layout explicitly with `position` and `inset`. If it
@@ -757,7 +774,7 @@ node ./node_modules/tamagui/scripts/codemods/sheet-frame-to-container.js "src/**
 Then search for removed APIs:
 
 ```bash
-rg "focusable|fullscreen|themeInverse|<Theme inverse|Sheet\.Frame|styleable\(|inlineWhenUnflattened|\$true|getTokenRelative|stepTokenUpOrDown"
+rg "focusable|fullscreen|themeInverse|<Theme inverse|Sheet\.Frame|styleable\(|inlineWhenUnflattened|\$true|getTokenRelative|stepTokenUpOrDown|getExpandedShorthands|usePropsAndStyle|useProps|useStyle"
 ```
 
 ### What a clean typecheck will not tell you
