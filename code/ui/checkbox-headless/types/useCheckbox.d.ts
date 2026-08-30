@@ -1,5 +1,5 @@
 import React from 'react';
-import type { PressableProps, View, ViewProps } from 'react-native';
+import type { PressableProps, ViewProps } from 'react-native';
 export type CheckedState = boolean | 'indeterminate';
 type CheckboxBaseProps = Omit<ViewProps, 'onFocus' | 'onBlur'> & Pick<PressableProps, 'onPress'>;
 export type CheckboxExtraProps = {
@@ -19,10 +19,11 @@ export type CheckboxExtraProps = {
     value?: string;
 };
 export type CheckboxProps = CheckboxBaseProps & CheckboxExtraProps;
-export declare function useCheckbox<R extends View, P extends CheckboxProps>(props: P, [checked, setChecked]: [
+type CheckboxBehaviorProps = CheckboxExtraProps & Pick<PressableProps, 'onPress'>;
+export declare function useCheckbox<R, P extends CheckboxBehaviorProps>(props: P, [checked, setChecked]: [
     CheckedState,
     React.Dispatch<React.SetStateAction<CheckedState>>
-], ref: React.Ref<R>): {
+], ref: React.Ref<R> | undefined): {
     bubbleInput: React.JSX.Element | null;
     checkboxRef: (node: R | null) => void;
     checkboxProps: {

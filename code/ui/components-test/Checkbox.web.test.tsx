@@ -41,7 +41,10 @@ function CheckboxTest(props: React.ComponentProps<typeof Checkbox>) {
     <TamaguiProvider config={conf} defaultTheme="light">
       <View>
         <CheckboxSkin {...props} aria-label="basic checkbox">
-          <CheckboxSkin.Indicator data-testid={INDICATOR_TEST_ID} />
+          <CheckboxSkin.Indicator
+            activeStyle={{ opacity: 0.5 }}
+            data-testid={INDICATOR_TEST_ID}
+          />
         </CheckboxSkin>
       </View>
     </TamaguiProvider>
@@ -93,6 +96,7 @@ describe('given a default Checkbox', () => {
 
     it('should render a visible indicator', () => {
       expect(indicator).toBeVisible()
+      expect(indicator).toHaveStyle({ opacity: '0.5' })
     })
 
     describe('and clicking the checkbox again', () => {
@@ -116,6 +120,18 @@ describe('given a disabled Checkbox', () => {
 
   it('should have no accessibility violations', async () => {
     expect(await axe(rendered.container)).toHaveNoViolations()
+  })
+})
+
+describe('given a Checkbox with an onPress handler', () => {
+  it('calls the handler and still updates checked state', () => {
+    const onPress = vitest.fn()
+    const rendered = render(<CheckboxTest onPress={onPress} />)
+
+    fireEvent.click(rendered.getByRole(CHECKBOX_ROLE))
+
+    expect(onPress).toHaveBeenCalledOnce()
+    expect(rendered.getByTestId(INDICATOR_TEST_ID)).toBeVisible()
   })
 })
 

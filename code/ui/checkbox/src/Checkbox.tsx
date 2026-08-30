@@ -12,7 +12,6 @@ import {
   isWeb,
   shouldRenderNativePlatform,
   styled,
-  useProps,
   View,
   withStaticProperties,
 } from '@tamagui/core'
@@ -109,7 +108,7 @@ export const CheckboxContext = React.createContext<{
 
 const CheckboxComponent = createStyledHOC(
   CheckboxFrame,
-  function Checkbox(_props: CheckboxProps, forwardedRef) {
+  function Checkbox(propsIn: CheckboxProps, forwardedRef) {
     const {
       checked: checkedProp,
       defaultChecked,
@@ -118,10 +117,8 @@ const CheckboxComponent = createStyledHOC(
       activeStyle,
       activeTheme,
       ...props
-    } = _props
-    const propsActive = useProps(props)
+    } = propsIn
 
-    const styledContext = React.useContext(CheckboxStyledContext.context)
     const [checked = false, setChecked] = useControllableState({
       prop: checkedProp,
       defaultProp: defaultChecked!,
@@ -129,8 +126,7 @@ const CheckboxComponent = createStyledHOC(
     })
 
     const { checkboxProps, checkboxRef, bubbleInput } = useCheckbox(
-      // @ts-ignore
-      propsActive,
+      props,
       [checked, setChecked],
       forwardedRef
     )
@@ -176,26 +172,20 @@ const CheckboxComponent = createStyledHOC(
 
     return (
       <CheckboxContext.Provider value={memoizedContext}>
-        <CheckboxStyledContext.Provider
-          size={propsActive.size ?? styledContext?.size ?? true}
+        <CheckboxFrame
+          render="button"
+          ref={checkboxRef}
+          theme={activeTheme ?? null}
+          {...(isWeb && { type: 'button' })}
+          checked={checked}
+          {...(checkboxProps as CheckboxProps)}
+          {...(isActive && activeStyle ? (activeStyle as object) : undefined)}
           active={isActive}
           disabled={disabled}
         >
-          <CheckboxFrame
-            render="button"
-            ref={checkboxRef}
-            theme={activeTheme ?? null}
-            {...(isWeb && { type: 'button' })}
-            checked={checked}
-            disabled={disabled}
-            {...(checkboxProps as CheckboxProps)}
-            {...props}
-            {...(isActive && activeStyle ? (activeStyle as object) : undefined)}
-          >
-            {propsActive.children}
-          </CheckboxFrame>
-          {bubbleInput}
-        </CheckboxStyledContext.Provider>
+          {props.children}
+        </CheckboxFrame>
+        {bubbleInput}
       </CheckboxContext.Provider>
     )
   }
