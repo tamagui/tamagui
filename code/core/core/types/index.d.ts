@@ -1,10 +1,10 @@
-export * from '@tamagui/web';
-export { SizeContext, createSizeContext, createSizeTable, defaultTokenSizePolicy, resolveSizeToken, resolveTokenSize, } from '@tamagui/size';
-export type * from '@tamagui/size';
 export { createRefComponent, type RefProp } from '@tamagui/compose-refs';
+export type * from '@tamagui/size';
+export { createSizeContext, createSizeTable, defaultTokenSizePolicy, resolveSizeToken, resolveTokenSize, SizeContext, } from '@tamagui/size';
+export * from '@tamagui/web';
 import type { StackNonStyleProps, StackStyleBase, TamaDefer, TamaguiComponent, TamaguiElement, TamaguiTextElement, TextNonStyleProps, TextProps, TextStylePropsBase } from '@tamagui/web';
 import type { RNTextProps, RNViewProps } from './reactNativeTypes';
-export { LayoutMeasurementController, registerLayoutNode, setOnLayoutStrategy, type LayoutEvent, } from '@tamagui/use-element-layout';
+export { LayoutMeasurementController, registerLayoutNode, type LayoutEvent, } from '@tamagui/use-element-layout';
 type RNExclusiveViewProps = Omit<RNViewProps, keyof StackNonStyleProps>;
 export interface RNTamaguiViewNonStyleProps extends StackNonStyleProps, RNExclusiveViewProps {
 }
@@ -14,7 +14,7 @@ export interface RNTamaguiTextNonStyleProps extends TextNonStyleProps, RNExclusi
 }
 type RNTamaguiText = TamaguiComponent<TamaDefer, TamaguiTextElement, RNTamaguiTextNonStyleProps, TextStylePropsBase, {}>;
 export * from './reactNativeTypes';
-export { TamaguiProvider, createTamagui } from './runtime';
+export { createTamagui, TamaguiProvider } from './runtime';
 export declare const View: RNTamaguiView;
 export declare const Text: RNTamaguiText;
 //# sourceMappingURL=index.d.ts.map

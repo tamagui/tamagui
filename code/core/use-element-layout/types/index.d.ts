@@ -6,8 +6,6 @@ export declare const LayoutMeasurementController: ({ disable, children }: {
 type TamaguiComponentStatePartial = {
 	host?: any;
 };
-type LayoutMeasurementStrategy = "off" | "sync" | "async";
-export declare function setOnLayoutStrategy(state: LayoutMeasurementStrategy): void;
 export type LayoutValue = {
 	x: number;
 	y: number;

@@ -118,11 +118,12 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
               aria-label="Show or hide code"
               icon={Code2}
               size="3"
-              fontWeight="400"
               z={10}
               onPress={() => setIsCollapsed(!isCollapsed)}
             >
-              {isCollapsed ? 'Show code' : 'Hide code'}
+              <Button.Text fontWeight="400">
+                {isCollapsed ? 'Show code' : 'Hide code'}
+              </Button.Text>
             </Button>
             <TooltipSimple label="Toggle tint on/off">
               <Button size="3" onPress={toggleDocsTinted} z={10} icon={Paintbrush} />

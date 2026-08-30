@@ -638,7 +638,9 @@ export function formatCandidate(
     } else if (config) {
       const parsed = parseCandidate(candidate, config)
       if (parsed?.kind === 'utility') {
-        return prop in parsed.properties && String(parsed.properties?.[prop]) === value
+        return parsed.properties &&
+          prop in parsed.properties &&
+          String(parsed.properties[prop]) === value
           ? candidate
           : null
       }

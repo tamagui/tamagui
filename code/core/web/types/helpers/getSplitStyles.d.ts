@@ -1,9 +1,11 @@
 import type { AllGroupContexts, AnimationDriverLike, ComponentContextI, DebugProp, GetStyleResult, GetStyleState, SplitStyleProps, StaticConfig, TamaguiComponentState, TamaguiInternalConfig, ThemeParsed } from '../types';
+import { getContextPropSet, prepareStyleStaticConfig } from './prepareStyleStaticConfig';
 export { directStyleSignature, flushDirectStyles } from './directStyleCSS';
+export { getContextPropSet, prepareStyleStaticConfig };
 import { styleOriginalValues } from './styleOriginalValues';
-export { styleOriginalValues };
-export { getStyleTokenProvenance, STYLE_TOKEN_PROVENANCE_KEY } from './styleProvenance';
+export { STYLE_TOKEN_PROVENANCE_KEY, getStyleTokenProvenance } from './styleProvenance';
 export type { StyleDebugReceipt, StyleDebugTier, StyleTokenBinding, StyleTokenProvenance, } from './styleProvenance';
+export { styleOriginalValues };
 export type SplitStyles = ReturnType<typeof getSplitStyles>;
 export type SplitStyleResult = ReturnType<typeof getSplitStyles>;
 export type StyleSplitter = (props: {
@@ -15,8 +17,6 @@ export type MergeStyle = (state: GetStyleState, key: string, value: any, importa
 export declare function getDirectDynamicThemeAccess(state: GetStyleState): boolean | undefined;
 export declare function contributeStyleString(state: GetStyleState, property: string, source: string, merge: MergeStyle, originalValue?: any, contextOnly?: boolean): boolean;
 export declare function clearDirectStyle(state: GetStyleState, property: string): void;
-export declare function getContextPropSet(staticConfig: StaticConfig): Set<string> | null;
 export declare function getFontFamilyFromNameOrVariable(input: any, conf: TamaguiInternalConfig): string | undefined;
 export * from './tokenCategories';
-export declare function prepareStyleStaticConfig(staticConfig: StaticConfig): StaticConfig;
 //# sourceMappingURL=getSplitStyles.d.ts.map

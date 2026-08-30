@@ -192,6 +192,36 @@ type StyledComponentResult<
   GetStaticConfig<ParentComponent, StyledConfig>
 >
 
+/**
+ * styled() for creating Tamagui components from other components.
+ *
+ * Core's public overload is object-only. The class-string form belongs to
+ * `@tamagui/tailwind`, which reaches the implementation through
+ * `createFrontendStyled`.
+ */
+function styled<
+  ParentComponent extends StylableComponent,
+  StyledConfig extends StaticConfigPublic,
+  Variants extends VariantDefinitions<ParentComponent, StyledConfig>,
+  Context extends StyledContext<any> | undefined = undefined,
+  ContextPropKeys extends string = GetStyledContextDefaultKeys<Context>,
+>(
+  ComponentIn: ParentComponent,
+  options?: StyledOptions<
+    ParentComponent,
+    StyledConfig,
+    Variants,
+    Context,
+    ContextPropKeys
+  >,
+  config?: StyledConfig
+): StyledComponentResult<
+  ParentComponent,
+  StyledConfig,
+  Variants,
+  Context,
+  ContextPropKeys
+>
 function styled(...args: any[]) {
   return (styledImpl as any)(undefined, ...args)
 }

@@ -136,17 +136,10 @@ export function FieldDemo() {
       </DemoField>
 
       <Form.Trigger asChild>
-        <Button
-          self="flex-end"
-          height={40}
-          px="5"
-          rounded="5"
-          bg="color11 hover:color10"
-          color="color1"
-          fontSize="2"
-          fontWeight="500"
-        >
-          Create account
+        <Button self="flex-end" height={40} px="5" rounded="5" bg="color11 hover:color10">
+          <Button.Text color="color1" fontSize="2" fontWeight="500">
+            Create account
+          </Button.Text>
         </Button>
       </Form.Trigger>
 

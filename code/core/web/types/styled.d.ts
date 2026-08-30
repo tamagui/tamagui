@@ -1,7 +1,6 @@
-import type { AnchorHTMLAttributes, ButtonHTMLAttributes, FormHTMLAttributes, HTMLAttributes, InputHTMLAttributes, LabelHTMLAttributes, SelectHTMLAttributes, TextareaHTMLAttributes } from 'react';
 import type { FrontendComponent, StyleFrontend } from './helpers/styleFrontend';
 import type { GetRef } from './interfaces/GetRef';
-import type { GetBaseStyles, GetNonStyledProps, GetProps, GetStaticConfig, GetStyledVariants, InferStyleProps, InferStyledProps, StackStyle, StackStyleBase, StaticConfigPublic, StylableComponent, StyledContext, TamaDefer, TamaguiComponent, TamaguiComponentPropsBase, TextStyle, TextStylePropsBase, ThemeValueByCategory, VariantDefinitions, VariantResolverKey, VariantResolverValue, VariantSpreadFunction } from './types';
+import type { GetBaseStyles, GetNonStyledProps, GetProps, GetStaticConfig, GetStyledVariants, InferStyleProps, InferStyledProps, StaticConfigPublic, StylableComponent, StyledContext, TamaDefer, TamaguiComponent, ThemeValueByCategory, VariantDefinitions, VariantResolverKey, VariantResolverValue, VariantSpreadFunction } from './types';
 import type { Text } from './views/Text';
 export { createVariantResolver } from './types';
 type AreVariantsUndefined<Variants> = Required<Variants> extends {
@@ -36,34 +35,11 @@ type StyledVariantsWithContext<Variants, ContextProps> = keyof ContextProps exte
     [Key in keyof Variants | keyof ContextProps]?: (Key extends keyof Variants ? Variants[Key] : never) | (Key extends keyof ContextProps ? ContextProps[Key] : never);
 };
 type StyledComponentResult<ParentComponent extends StylableComponent, StyledConfig extends StaticConfigPublic, Variants extends VariantDefinitions<ParentComponent, StyledConfig>, Context extends StyledContext<any> | undefined = undefined, ContextPropKeys extends string = GetStyledContextDefaultKeys<Context>, ParentStylesBase extends object = GetBaseStyles<ParentComponent, StyledConfig>> = TamaguiComponent<TamaDefer, GetRef<ParentComponent>, GetNonStyledProps<ParentComponent>, StyledConfig['accept'] extends Record<string, any> ? ParentStylesBase & StyledCustomTokenProps<ParentComponent, StyledConfig, ParentStylesBase, StyledConfig['accept']> : ParentStylesBase, StyledVariantsWithContext<StyledMergedVariants<ParentComponent, StyledConfig, Variants>, GetStyledContextVariantProps<ParentComponent, Context, ContextPropKeys>>, GetStaticConfig<ParentComponent, StyledConfig>>;
-type TextLikeElements = 'a' | 'abbr' | 'b' | 'bdi' | 'bdo' | 'cite' | 'code' | 'data' | 'del' | 'dfn' | 'em' | 'i' | 'ins' | 'kbd' | 'label' | 'mark' | 'q' | 's' | 'samp' | 'small' | 'span' | 'strong' | 'sub' | 'sup' | 'time' | 'u' | 'var';
-type ConflictingHTMLProps = 'color' | 'display' | 'height' | 'width' | 'size' | 'left' | 'right' | 'top' | 'bottom' | 'translate' | 'content';
-type HTMLElementSpecificProps<T extends keyof HTMLElementTagNameMap> = T extends 'a' ? Omit<AnchorHTMLAttributes<HTMLAnchorElement>, ConflictingHTMLProps> : T extends 'button' ? Omit<ButtonHTMLAttributes<HTMLButtonElement>, ConflictingHTMLProps> : T extends 'input' ? Omit<InputHTMLAttributes<HTMLInputElement>, ConflictingHTMLProps> : T extends 'select' ? Omit<SelectHTMLAttributes<HTMLSelectElement>, ConflictingHTMLProps> : T extends 'textarea' ? Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, ConflictingHTMLProps> : T extends 'form' ? Omit<FormHTMLAttributes<HTMLFormElement>, ConflictingHTMLProps> : T extends 'label' ? Omit<LabelHTMLAttributes<HTMLLabelElement>, ConflictingHTMLProps> : Omit<HTMLAttributes<HTMLElement>, ConflictingHTMLProps>;
-type HTMLElementStyleBase<T extends keyof HTMLElementTagNameMap> = T extends TextLikeElements ? TextStylePropsBase : StackStyleBase;
-type HTMLElementStyle<T extends keyof HTMLElementTagNameMap> = T extends TextLikeElements ? TextStyle : StackStyle;
-/**
- * styledHtml() for HTML element tags like 'a', 'button', 'div', etc.
- * Automatically provides element-specific props (href for anchors, type for buttons, etc.)
- *
- * @example
- * const StyledAnchor = styledHtml('a', {
- *   color: 'blue10',
- *   textDecorationLine: 'underline',
- * })
- * // StyledAnchor now accepts `href` prop with proper typing
- * <StyledAnchor href="/path">Link</StyledAnchor>
- */
-export declare function styledHtml<Tag extends keyof HTMLElementTagNameMap, Variants extends VariantDefinitions<any, any> | undefined = undefined>(tag: Tag, options?: Partial<HTMLElementStyle<Tag>> & {
-    displayName?: string;
-    variants?: Variants;
-    defaultVariants?: GetVariantAcceptedValues<NonNullable<Variants>>;
-    context?: StyledContext;
-}): TamaguiComponent<TamaDefer, HTMLElementTagNameMap[Tag], TamaguiComponentPropsBase & HTMLElementSpecificProps<Tag>, HTMLElementStyleBase<Tag>, Variants extends undefined ? {} : AreVariantsUndefined<NonNullable<Variants>> extends true ? {} : GetVariantAcceptedValues<NonNullable<Variants>>, {}>;
 /**
  * styled() for creating Tamagui components from other components.
  *
  * Core's public overload is object-only. The class-string form belongs to
- * `@tamagui/tailwind`, which reaches this implementation through
+ * `@tamagui/tailwind`, which reaches the implementation through
  * `createFrontendStyled`.
  */
 declare function styled<ParentComponent extends StylableComponent, StyledConfig extends StaticConfigPublic, Variants extends VariantDefinitions<ParentComponent, StyledConfig>, Context extends StyledContext<any> | undefined = undefined, ContextPropKeys extends string = GetStyledContextDefaultKeys<Context>>(ComponentIn: ParentComponent, options?: StyledOptions<ParentComponent, StyledConfig, Variants, Context, ContextPropKeys>, config?: StyledConfig): StyledComponentResult<ParentComponent, StyledConfig, Variants, Context, ContextPropKeys>;
@@ -73,15 +49,5 @@ declare function styled<ParentComponent extends StylableComponent, StyledConfig 
  * global setting.
  */
 export declare function createFrontendStyled(frontend: StyleFrontend): (ComponentIn: any, optionsOrBaseClassName?: any, configOrOptions?: any, maybeConfig?: any) => FrontendComponent;
-type StyledHtmlFactory<Tag extends keyof HTMLElementTagNameMap> = <Variants extends VariantDefinitions<any, any> | undefined = undefined>(options?: Partial<HTMLElementStyle<Tag>> & {
-    displayName?: string;
-    variants?: Variants;
-    defaultVariants?: GetVariantAcceptedValues<NonNullable<Variants>>;
-    context?: StyledContext;
-}) => TamaguiComponent<TamaDefer, HTMLElementTagNameMap[Tag], TamaguiComponentPropsBase & HTMLElementSpecificProps<Tag>, HTMLElementStyleBase<Tag>, Variants extends undefined ? {} : AreVariantsUndefined<NonNullable<Variants>> extends true ? {} : GetVariantAcceptedValues<NonNullable<Variants>>, {}>;
-type StyledHtmlFactories = {
-    [K in keyof HTMLElementTagNameMap]: StyledHtmlFactory<K>;
-};
-declare const styledExport: typeof styled & StyledHtmlFactories;
-export { styledExport as styled };
+export { styled };
 //# sourceMappingURL=styled.d.ts.map

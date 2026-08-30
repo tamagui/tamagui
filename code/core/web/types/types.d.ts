@@ -1646,7 +1646,6 @@ export type TextStyle = WithThemeAndShorthands<TextStylePropsBase>;
 export type TextProps = TextNonStyleProps & TextStyle;
 export interface ThemeableProps {
     theme?: ThemeName | null;
-    themeReset?: boolean;
     debug?: DebugProp;
 }
 export type StyledHOCOptions = {
@@ -1817,6 +1816,7 @@ export type StaticConfigPublic = {
 };
 type StaticConfigBase = StaticConfigPublic & {
     Component?: FunctionComponent<any> & StaticComponentObject<any, any, any, any, any, any>;
+    displayName?: string;
     baseStyle?: Record<string, any>;
     variants?: GenericVariantDefinitions;
     context?: StyledContext;
@@ -1928,7 +1928,7 @@ export type ResolveVariableAs = 'auto' | 'value' | 'variable' | 'none' | 'web' |
 export type SplitStyleProps = {
     displayName?: string;
     styledContext?: Record<string, any>;
-    styledContextKeys?: Set<string>;
+    styledContextKeys?: Set<string> | null;
     mediaState?: Record<string, boolean>;
     noClass?: boolean;
     noExpand?: boolean;
