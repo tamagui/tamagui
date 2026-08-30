@@ -1,21 +1,13 @@
 process.env.TAMAGUI_TARGET = 'web'
 
-// review P0-1: the runtime resolver kept a second property-to-category table
-// (tokenCategoryByProperty + fontSubMapByProp) that diverged from the
-// style-grammar registry: borderWidth and the four side widths bound to
-// nothing (emitting invalid unitless CSS) and fontFamily bound to nothing
-// (emitting a literal family name with no font scope), while the codemod and
-// language service confidently emitted both as configured values. these pin
-// the runtime to the registry contract, property by property.
+// the runtime's compact classifier and tooling registry must bind every
+// property to the same token category.
 
 import { getTokenCategory, grammarEntries } from '@tamagui/style-grammar/tooling'
 import { beforeAll, expect, test } from 'vitest'
 import config from '../config-default'
 import { Text, View, createTamagui, getSplitStyles } from '../web/src'
-import {
-  getTokenCategoryForProperty,
-  tokenCategoryByProperty,
-} from '../web/src/helpers/tokenCategories'
+import { getTokenCategoryForProperty } from '../web/src/helpers/tokenCategories'
 
 beforeAll(() => {
   createTamagui(config.getDefaultTamaguiConfig() as any)
@@ -99,11 +91,4 @@ test('every property the grammar registry binds, the runtime binds identically',
       runtimeCategoryFor(bound)
     )
   }
-})
-
-test('the legacy property map remains string-valued and enumerable', () => {
-  expect(tokenCategoryByProperty.width).toBe('size')
-  expect(tokenCategoryByProperty.borderRadius).toBe('radius')
-  expect(tokenCategoryByProperty.color).toBeUndefined()
-  expect(Object.keys(tokenCategoryByProperty)).toContain('fontSize')
 })

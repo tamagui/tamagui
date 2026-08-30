@@ -20,7 +20,7 @@ use crate::generated::{
 
 #[derive(Clone, Copy, PartialEq, Eq, Debug, Hash)]
 pub enum ModifierKind {
-    /// `hover`, `press`, `focus`, `open`, ...
+    /// `hover`, `press`, `focus`, ...
     State,
     /// a configured media key, e.g. `sm`, `gtMd`
     Media,
@@ -288,7 +288,7 @@ mod tests {
     fn every_kind_resolves_from_its_spelling() {
         let r = registry();
         assert_eq!(r.kind("hover"), Some(ModifierKind::State));
-        assert_eq!(r.kind("open"), Some(ModifierKind::State));
+        assert_eq!(r.kind("open"), None);
         assert_eq!(r.kind("sm"), Some(ModifierKind::Media));
         assert_eq!(r.kind("ios"), Some(ModifierKind::Platform));
         assert_eq!(r.kind("dark"), Some(ModifierKind::Theme));

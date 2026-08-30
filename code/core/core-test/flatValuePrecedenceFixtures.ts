@@ -21,7 +21,7 @@ export type FlatValueFixtureConditions = {
 export type FlatValueFixtureScenario = {
   name: string
   active: FlatValueFixtureConditions
-  expected: string
+  expected: string | undefined
   /**
    * Only same-slot clauses are author-order-sensitive. Reversing distinct
    * slots must keep `expected`; reversing one slot's repeated declarations
@@ -41,13 +41,13 @@ export type FlatValuePrecedenceFixture = {
 export const flatValuePrecedenceFixtures: readonly FlatValuePrecedenceFixture[] = [
   {
     id: 1,
-    name: 'styled base persists below a conditioned prop override',
+    name: 'a conditioned prop program replaces the styled program',
     property: 'flexDirection',
     layers: [
       { source: 'styled', value: 'row' },
       { source: 'prop', value: 'sm:column' },
     ],
-    scenarios: [{ name: 'below sm', active: {}, expected: 'row' }],
+    scenarios: [{ name: 'below sm', active: {}, expected: undefined }],
   },
   {
     id: 2,

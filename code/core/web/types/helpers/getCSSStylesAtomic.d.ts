@@ -27,7 +27,5 @@ export type AtomicSlotEntry = [
      * inline conversion preserves provenance */
     original?: any
 ];
-export declare function probeRawSlotIdentity(property: string, raw: unknown): SlotIdentity | undefined;
-export declare function storeRawSlotIdentity(property: string, raw: unknown, identity: SlotIdentity): void;
 export declare function buildAtomicSlotCSS(atomicKey: string, entries: readonly AtomicSlotEntry[], signature: string): SlotIdentity | undefined;
 //# sourceMappingURL=getCSSStylesAtomic.d.ts.map

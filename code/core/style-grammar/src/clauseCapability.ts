@@ -69,7 +69,7 @@ export function clauseCapability(
       native,
       note: !web
         ? `"${modifier}:" cannot lower to web CSS because it has no selector`
-        : `"${modifier}:" is a component-tier state with no native source until the behavior packages feed componentState`,
+        : `"${modifier}:" has no native component-state source`,
     }
   }
   if (kind === 'group') {

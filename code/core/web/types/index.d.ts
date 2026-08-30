@@ -28,7 +28,7 @@ export { createStyledHOC } from './createStyledHOC';
 export { createShorthands } from './createShorthands';
 export { createTamagui, installTamaguiConfig } from './createTamagui';
 export { createTokens } from './createTokens';
-export { createVariable, createCSSVariable, getVariable, getVariableName, getVariableValue, getVariableVariable, isVariable, px, variableToString, } from './createVariable';
+export { createVariable, createCSSVariable, getVariable, getVariableValue, isVariable, px, variableToString, } from './createVariable';
 export { insertFont, updateFont } from './insertFont';
 export { styled } from './styled';
 export { Tamagui } from './Tamagui';

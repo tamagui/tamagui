@@ -67,7 +67,9 @@ describe('tailwind components render through the shared renderer', () => {
     const rules = findRule(styles.rulesToInsert, 'backgroundColor')[StyleObjectRules]
     const cls = styles.classNames.backgroundColor
     expect(rules[0]).toBe(`.${cls}{background-color:red}`)
-    expect(rules[1]).toBe(`@media (hover: hover) {.${cls}:hover{background-color:blue}}`)
+    expect(rules[1]).toBe(
+      `@media (hover: hover) {.${cls}:where(:hover){background-color:blue}}`
+    )
   })
 
   test('the last of two owned candidates wins with no string merging', () => {

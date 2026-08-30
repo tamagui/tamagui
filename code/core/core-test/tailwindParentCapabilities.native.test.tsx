@@ -40,12 +40,15 @@ const host = (screen: ReturnType<typeof render>, testID: string) =>
   screen.root.findAllByProps({ testID }).at(-1)!
 
 test('a group parent marker creates the native context its descendant consumes', async () => {
+  const entries: unknown[] = []
   expect(
-    TailwindView.staticConfig.styleFrontend.getClassPlan('group/card', config)
-  ).toEqual({
-    entries: [['group', 'card']],
-    preserveRawClass: false,
-  })
+    TailwindView.staticConfig.styleFrontend.resolveClassName(
+      'group/card',
+      config,
+      (entry: unknown) => entries.push(entry)
+    )
+  ).toBe(false)
+  expect(entries).toEqual([['group', 'card']])
   expect(splitTailwindStyles(TailwindView, { className: 'group/card' })).toMatchObject({
     frontendGroup: 'card',
   })

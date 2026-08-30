@@ -273,14 +273,6 @@ describe('ancestor-scoped conditions are within tests on the subject', () => {
     )
   })
 
-  test('a group state with an attribute selector composes onto the group class', () => {
-    const lowered = lower('color', 'group-open/card:red')
-    expect(lowered.rules[0]).toBe(
-      `.${lowered.className}.${lowered.className}:where(.t_group_card[data-state="open"] *){color:red}`
-    )
-    expectSubjectAnchored(lowered)
-  })
-
   test('theme and group are independent within tests, so a theme between the group and the subject still matches', () => {
     const lowered = lower('color', 'dark:group-hover/card:foreground')
     const selector = selectorOf(lowered.rules[0])
@@ -318,13 +310,6 @@ describe('states', () => {
       `.${lowered.className}:is(.t_unmounted, .t_unmounted *){opacity:0}`
     )
     expectSubjectAnchored(lowered)
-  })
-
-  test('component states use the shared vocabulary selectors', () => {
-    expect(defaultStateSelectors.checked.fragment).toBe('[data-state="checked"]')
-    expect(defaultStateSelectors.selected.fragment).toBe('[data-state="active"]')
-    expect(defaultStateSelectors.invalid.fragment).toBe('[aria-invalid="true"]')
-    expect(lower('color', 'invalid:red').rules[0]).toContain('[aria-invalid="true"]')
   })
 
   test('exit is is-or-within on the exiting lifecycle class', () => {

@@ -50,6 +50,7 @@ export type FrontendClassPlan = 'raw' | null | readonly FrontendClassPlanEntry[]
     entries: readonly FrontendClassPlanEntry[];
     preserveRawClass: boolean;
 };
+export type FrontendClassSink = (entry: FrontendClassPlanEntry) => void;
 /**
  * A component's authoring syntax. It is chosen by the package the component was
  * imported from and frozen onto its static config when the component is created:
@@ -63,11 +64,8 @@ export type FrontendClassPlan = 'raw' | null | readonly FrontendClassPlanEntry[]
  * contribution, merging, web lowering, and native evaluation all stay in core.
  */
 export type StyleFrontend = {
-    /**
-     * Classifies one class candidate. The shared style cursor owns the className
-     * character walk and feeds every returned entry through its one property sink.
-     */
-    getClassPlan?: (candidate: string, config: StyleFrontendConfig) => FrontendClassPlan;
+    /** resolves one class candidate and sends claimed entries to the shared cursor */
+    resolveClassName?: (candidate: string, config: StyleFrontendConfig, sink: FrontendClassSink) => boolean | null;
     /**
      * Resolves frontend-specific static style input (a class-string base, string
      * variant values) into ordinary style objects.

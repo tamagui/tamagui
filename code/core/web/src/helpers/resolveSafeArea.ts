@@ -5,112 +5,45 @@
 // insets on native (see resolveSafeArea.native.ts).
 //
 
-type Edge = 'top' | 'bottom' | 'left' | 'right'
+type Edge = 'top' | 'right' | 'bottom' | 'left'
 
-// map prop name -> which edge(s) it covers.
-// single-edge props map to one edge; multi-edge props (padding, inset, ...)
-// map to multiple edges and get expanded.
-//
-// keys here are AFTER shorthand expansion (pt -> paddingTop, etc).
-const propEdges: Record<string, Edge | Edge[]> = {
-  // padding
-  padding: ['top', 'right', 'bottom', 'left'],
-  paddingTop: 'top',
-  paddingBottom: 'bottom',
-  paddingLeft: 'left',
-  paddingRight: 'right',
-  paddingHorizontal: ['left', 'right'],
-  paddingVertical: ['top', 'bottom'],
-  paddingStart: 'left',
-  paddingEnd: 'right',
-  paddingBlock: ['top', 'bottom'],
-  paddingInline: ['left', 'right'],
-  paddingBlockStart: 'top',
-  paddingBlockEnd: 'bottom',
-  paddingInlineStart: 'left',
-  paddingInlineEnd: 'right',
-  // margin
-  margin: ['top', 'right', 'bottom', 'left'],
-  marginTop: 'top',
-  marginBottom: 'bottom',
-  marginLeft: 'left',
-  marginRight: 'right',
-  marginHorizontal: ['left', 'right'],
-  marginVertical: ['top', 'bottom'],
-  marginStart: 'left',
-  marginEnd: 'right',
-  marginBlock: ['top', 'bottom'],
-  marginInline: ['left', 'right'],
-  marginBlockStart: 'top',
-  marginBlockEnd: 'bottom',
-  marginInlineStart: 'left',
-  marginInlineEnd: 'right',
-  // inset
-  inset: ['top', 'right', 'bottom', 'left'],
-  top: 'top',
-  bottom: 'bottom',
-  left: 'left',
-  right: 'right',
-  start: 'left',
-  end: 'right',
+const allEdges: Edge[] = ['top', 'right', 'bottom', 'left']
+const suffixEdges: Record<string, Edge[]> = {
+  Horizontal: ['left', 'right'],
+  Inline: ['left', 'right'],
+  Vertical: ['top', 'bottom'],
+  Block: ['top', 'bottom'],
+  Start: ['left'],
+  InlineStart: ['left'],
+  End: ['right'],
+  InlineEnd: ['right'],
+  Top: ['top'],
+  BlockStart: ['top'],
+  Bottom: ['bottom'],
+  BlockEnd: ['bottom'],
+  Left: ['left'],
+  Right: ['right'],
 }
 
-const envForEdge: Record<Edge, string> = {
-  top: 'env(safe-area-inset-top)',
-  bottom: 'env(safe-area-inset-bottom)',
-  left: 'env(safe-area-inset-left)',
-  right: 'env(safe-area-inset-right)',
-}
-
-// is this prop key safe-area-aware?
-export function isSafeAreaKey(key: string): boolean {
-  return key in propEdges
+function safeAreaEdges(key: string): [string, Edge[]] | undefined {
+  if (key === 'inset') return ['', allEdges]
+  if (/^(top|right|bottom|left)$/.test(key)) return ['', [key as Edge]]
+  if (key === 'start') return ['', ['left']]
+  if (key === 'end') return ['', ['right']]
+  const match = /^(padding|margin)(.*)$/.exec(key)
+  if (!match) return
+  const edges = match[2] ? suffixEdges[match[2]] : allEdges
+  return edges && [match[1], edges]
 }
 
 // resolve key="safe" -> array of [edge-key, value] pairs.
 // returns undefined if key isn't safe-area-aware.
 export function expandSafeAreaValue(key: string): Array<[string, string]> | undefined {
-  const edges = propEdges[key]
-  if (!edges) return undefined
-  if (typeof edges === 'string') {
-    return [[key, envForEdge[edges]]]
-  }
-  // multi-edge: expand to per-side keys.
-  // for padding/margin: padding + edgePascal = paddingTop etc.
-  // for inset: emit bare top/right/bottom/left (the actual CSS sides).
-  const base = baseKeyForExpansion[key]
-  if (base === '') {
-    return edges.map((e) => [edgeToSideKey[e], envForEdge[e]])
-  }
-  return edges.map((e) => [`${base}${edgeToPascal[e]}`, envForEdge[e]])
-}
-
-const edgeToPascal: Record<Edge, string> = {
-  top: 'Top',
-  bottom: 'Bottom',
-  left: 'Left',
-  right: 'Right',
-}
-
-const edgeToSideKey: Record<Edge, string> = {
-  top: 'top',
-  bottom: 'bottom',
-  left: 'left',
-  right: 'right',
-}
-
-// for each multi-edge prop, what's the base name to prepend Top/Bottom/etc?
-// '' = no prefix (use bare edge names like 'top', 'left')
-const baseKeyForExpansion: Record<string, string> = {
-  padding: 'padding',
-  paddingHorizontal: 'padding',
-  paddingVertical: 'padding',
-  paddingBlock: 'padding',
-  paddingInline: 'padding',
-  margin: 'margin',
-  marginHorizontal: 'margin',
-  marginVertical: 'margin',
-  marginBlock: 'margin',
-  marginInline: 'margin',
-  inset: '',
+  const match = safeAreaEdges(key)
+  if (!match) return
+  const [base, edges] = match
+  return edges.map((edge) => [
+    base ? `${base}${edge[0].toUpperCase()}${edge.slice(1)}` : edge,
+    `env(safe-area-inset-${edge})`,
+  ])
 }

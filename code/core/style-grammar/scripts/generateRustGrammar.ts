@@ -24,7 +24,6 @@ import {
 } from '../src/clauseIdentity'
 import { createModifierRegistry, parseContainerModifier } from '../src/modifierRegistry'
 import { coreStateModifierNames, modifierAliases } from '../src/stateModifiers'
-import { componentStateNames } from '../src/states'
 import { parseValue } from '../src/valueParser'
 import { grammarMaxNonPlatformDepth } from '../src/valueTypes'
 import {
@@ -75,14 +74,10 @@ function generatedRust(): string {
 /// the core interaction and lifecycle modifiers, in grammar order
 pub const CORE_STATE_MODIFIERS: &[&str] = &[${rustStrings(coreStateModifierNames)}];
 
-/// the component-tier state words the behavior packages expose as DOM
-/// attributes, which style through an attribute selector rather than a pseudo
-pub const COMPONENT_STATE_MODIFIERS: &[&str] = &[${rustStrings(componentStateNames)}];
-
 /// every alternate spelling and the modifier it means
 pub const MODIFIER_ALIASES: &[(&str, &str)] = &[${aliasPairs}];
 
-/// every built-in state spelling: core, aliases, component tier
+/// every built-in runtime state spelling: core and aliases
 pub const STATE_MODIFIERS: &[&str] = &[${rustStrings(stateModifierNames)}];
 
 pub const PLATFORM_MODIFIERS: &[&str] = &[${rustStrings(grammarPlatformNames)}];

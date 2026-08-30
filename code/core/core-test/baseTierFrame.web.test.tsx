@@ -1,9 +1,8 @@
 process.env.TAMAGUI_TARGET = 'web'
 
-// the base tier: an unconditioned contribution is one record store until its
-// property meets a condition, a weak write, or a repeat under a slot. these
-// pin the tier boundary: everything a base value would have lost to in the
-// frame, it still loses to from the base record.
+// the base tier: unconditioned contributions within one property program keep
+// authored order. a call-site property program replaces the styled default
+// wholesale, including when its only condition is inactive.
 
 import { expect, test } from 'vitest'
 
@@ -30,11 +29,10 @@ test('a repeat plain write for one property keeps last-wins', () => {
   expect(rulesFor(longhandFirst, 'backgroundColor').join('')).toContain('red')
 })
 
-test('a weak styled-default restore never displaces an authored base value', () => {
+test('a call-site property program replaces the styled default wholesale', () => {
   const Row = styled(View, { flexDirection: 'row' })
 
   // the authored base owns the property; the inactive clause changes nothing
-  // and the displaced-default restore must not clobber the authored 'column'
   const authoredBase = simplifiedGetSplitStyles(
     Row,
     {
@@ -44,15 +42,15 @@ test('a weak styled-default restore never displaces an authored base value', () 
   )
   expect(authoredBase.style?.flexDirection).toBe('column')
 
-  // with no authored base, the styled default is restored under the prop
-  const defaultRestored = simplifiedGetSplitStyles(
+  // the call-site program still owns the property when its condition is inactive
+  const inactiveCallSite = simplifiedGetSplitStyles(
     Row,
     {
       flexDirection: 'sm:column' as any,
     },
     { mergeDefaultProps: true, noClass: true }
   )
-  expect(defaultRestored.style?.flexDirection).toBe('row')
+  expect(inactiveCallSite.style?.flexDirection).toBeUndefined()
 })
 
 test('a condition after a plain write composes with the base', () => {
@@ -166,8 +164,8 @@ test('base-tier and slot-built single values share atomic identity', () => {
 
 test('a promoted base write never displaces an inline conditional winner', () => {
   // animated + css-input driver promotes discrete base values to classes; the
-  // weak styled-default restore rides that same lane and must not delete the
-  // active hover value already merged inline (DriverConditionedDiscrete)
+  // base promotion must not delete the active hover value already merged
+  // inline (DriverConditionedDiscrete)
   const Boxed = styled(View, { cursor: 'default' })
   const result = simplifiedGetSplitStyles(
     Boxed,

@@ -11,6 +11,7 @@ export type {
   FrontendComponent,
   FrontendClassPlan,
   FrontendClassPlanEntry,
+  FrontendClassSink,
   FrontendStaticConfig,
   StyleFrontend,
   StyleFrontendConfig,

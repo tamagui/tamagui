@@ -1,6 +1,7 @@
 import { createComponent } from './createComponent'
 import { componentDisplayName } from './helpers/componentDisplayName'
 import { mergeVariants } from './helpers/mergeVariants'
+import { resolveVariantStyle } from './helpers/resolveVariantStyle'
 import type { FrontendComponent, StyleFrontend } from './helpers/styleFrontend'
 import { warnOnce } from './helpers/warnOnce'
 import type { GetRef } from './interfaces/GetRef'
@@ -476,6 +477,7 @@ function styledImpl<
       // only an explicitly bound frontend overrides the one inherited from the parent
       ...(frontend && { styleFrontend: frontend }),
     }
+    ;(conf as any).variantStyleResolver = resolveVariantStyle
 
     if (process.env.TAMAGUI_TARGET !== 'native') {
       delete conf.isReactNative

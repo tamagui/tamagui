@@ -54,7 +54,7 @@ describe('conditional clauses on a variant prop', () => {
     const css = cssFor({ size: 'large sm:small' })
     expect(css).toEqual([
       '._w-450003261{width:200px}',
-      '@media (max-width: 800px) {._w-450003261._w-450003261{width:50px}}',
+      '@media (max-width: 800px) {._w-450003261{width:50px}}',
     ])
   })
 
@@ -62,7 +62,7 @@ describe('conditional clauses on a variant prop', () => {
     const css = cssFor({ size: 'large hover:small' })
     expect(css).toEqual([
       '._w-1598328809{width:200px}',
-      '@media (hover: hover) {._w-1598328809:hover{width:50px}}',
+      '@media (hover: hover) {._w-1598328809:where(:hover){width:50px}}',
     ])
   })
 
@@ -70,7 +70,7 @@ describe('conditional clauses on a variant prop', () => {
     const css = cssFor({ size: 'large hover:sm:small' })
     expect(css).toEqual([
       '._w-75456123{width:200px}',
-      '@media (hover: hover) {@media (max-width: 800px) {._w-75456123._w-75456123:hover{width:50px}}}',
+      '@media (hover: hover) {@media (max-width: 800px) {._w-75456123:where(:hover){width:50px}}}',
     ])
   })
 
@@ -91,7 +91,7 @@ describe('conditional clauses on a variant prop', () => {
   test('an unresolvable modifier drops only its clause', () => {
     expect(cssFor({ size: 'large notARealModifier:small hover:small' })).toEqual([
       '._w-1598328809{width:200px}',
-      '@media (hover: hover) {._w-1598328809:hover{width:50px}}',
+      '@media (hover: hover) {._w-1598328809:where(:hover){width:50px}}',
     ])
   })
 })

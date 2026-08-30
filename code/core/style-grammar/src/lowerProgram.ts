@@ -34,7 +34,6 @@ import {
 } from './clausePrecedence'
 import { transformAxisCompositions } from './transformFamily'
 import { programClassName } from './programHash'
-import { stateToSelector } from './states'
 import type { LonghandProgram, ModifierRegistryView } from './valueTypes'
 
 /**
@@ -77,13 +76,6 @@ export const defaultStateSelectors: Readonly<Record<string, ConditionSelector>> 
     disabled: { fragment: '[aria-disabled]' },
     enter: { fragment: '.t_unmounted', scope: 'is-or-within' },
     exit: { fragment: '.t_exiting', scope: 'is-or-within' },
-    // component-tier states, from the shared state vocabulary's web selectors
-    ...(Object.fromEntries(
-      Object.entries(stateToSelector).map(([state, selector]) => [
-        state,
-        { fragment: selector },
-      ])
-    ) as Record<string, ConditionSelector>),
   })
 
 // core writes the unnamed group's class as `t_group_true`, from the boolean

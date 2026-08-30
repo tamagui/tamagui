@@ -6,12 +6,7 @@ import {
 import { finalizeTransformAccumulator } from '@tamagui/style-grammar/runtime'
 
 import type { GetStyleState } from '../types'
-import {
-  buildAtomicSlotCSS,
-  probeRawSlotIdentity,
-  storeRawSlotIdentity,
-  type AtomicSlotEntry,
-} from './getCSSStylesAtomic'
+import { buildAtomicSlotCSS, type AtomicSlotEntry } from './getCSSStylesAtomic'
 import { normalizeValueWithProperty } from './normalizeValueWithProperty'
 import { shouldInsertStyleRules, updateRules } from './insertStyleRule'
 import { transformsToString } from './transformsToString'
@@ -22,18 +17,7 @@ export const canGenerateCSS =
 type DirectAtomicState = GetStyleState & {
   flatAtomics?: Record<string, StyleObject>
   flatBorderDefaultRequests?: AtomicSlotEntry[]
-  flatTransitions?: AtomicSlotEntry[]
-  /** first streamed entry per property when it carried a condition */
-  flatSingleEntries?: Record<string, AtomicSlotEntry>
-  /** properties with 2+ contributions: combined at completion, ordered by
-   * precedence, restoring the deferred slot the cascade tie-break requires
-   * (clauseOrderIndependence pins state-after-media at equal specificity) */
   flatSlots?: Record<string, AtomicSlotEntry[]>
-  /** the current value carries clauses: open the combined slot up front */
-  flatExpectMulti?: boolean
-  /** a platform driver may flip this whole pass inline at completion: defer
-   * every contribution into slots so the policy stays choosable */
-  flatDeferCSS?: boolean
 }
 
 /**
@@ -73,11 +57,7 @@ export function requestBorderStyleDefault(
   ])
 }
 
-export function directStyleSignature(
-  property: string,
-  value: unknown,
-  conditionKey = ''
-) {
+function directStyleSignature(property: string, value: unknown, conditionKey = '') {
   return `\u001f${property}\u001f${conditionKey}\u001e${String(value)}`
 }
 
@@ -133,7 +113,7 @@ function registerSlot(
   state.classNames[atomicKey] = built[0]
 }
 
-// shared synchronous scratch for streamed and composition single-entry slots
+// shared synchronous scratch for composition single-entry slots
 const scratchEntry: AtomicSlotEntry = ['', '', 0, '', '', undefined, 0, 0]
 const singleSlot: AtomicSlotEntry[] = [scratchEntry]
 
@@ -147,13 +127,10 @@ function appendSlotEntry(
   wrapperSource: readonly string[] | undefined,
   wrapperStart: number,
   wrapperCount: number,
-  weak: boolean,
   original?: any
 ) {
   for (let index = 0; index < list.length; index++) {
-    if (list[index][3] === identity) {
-      // a weak write never displaces the identity's existing contribution
-      if (weak) return
+    if (list[index][0] === property && list[index][3] === identity) {
       list[index][1] = value
       list[index][2] = condition
       list[index][8] = original
@@ -173,13 +150,7 @@ function appendSlotEntry(
   ])
 }
 
-/**
- * Stream one CSS contribution. A property's first contribution serializes its
- * class immediately (the overwhelmingly common case pays one cached build and
- * no entry). A second contribution promotes the property to a combined slot,
- * finished at completion by precedence order - the deferred arrangement the
- * equal-specificity cascade tie-break requires (clauseOrderIndependence).
- */
+/** collect one contribution into its per-property program */
 export function streamAtomic(
   state: GetStyleState,
   property: string,
@@ -190,184 +161,36 @@ export function streamAtomic(
   wrapperSource: readonly string[] | undefined,
   wrapperStart: number,
   wrapperCount: number,
-  weak: boolean,
-  original?: any
+  original?: any,
+  slot = property
 ) {
   if (!canGenerateCSS) return
   const direct = state as DirectAtomicState
-
-  // an existing combined slot absorbs everything for its property
-  const slots = direct.flatSlots
-  if (slots) {
-    const slot = slots[property]
-    if (slot) {
-      appendSlotEntry(
-        slot,
-        property,
-        value,
-        condition,
-        identity,
-        selector,
-        wrapperSource,
-        wrapperStart,
-        wrapperCount,
-        weak,
-        original
-      )
-      return
-    }
-  }
-
-  const singleEntries = direct.flatSingleEntries
-  const singleEntry = singleEntries ? singleEntries[property] : undefined
-  const atomics = direct.flatAtomics
-  const streamed = atomics ? atomics[property] : undefined
-  if (singleEntry) {
-    if (singleEntry[3] !== identity) {
-      // second distinct contribution: promote the single into a combined slot
-      delete singleEntries![property]
-      const list = ((direct.flatSlots ||= {})[property] = [singleEntry])
-      appendSlotEntry(
-        list,
-        property,
-        value,
-        condition,
-        identity,
-        selector,
-        wrapperSource,
-        wrapperStart,
-        wrapperCount,
-        weak,
-        original
-      )
-      return
-    }
-    // repeat write for the same identity replaces the single in place below
-    if (weak) return
-  } else if (streamed !== undefined) {
-    // a plain single was streamed: its normalized value lives in its own
-    // style object, so promotion needs no side record
-    if (identity) {
-      const list = ((direct.flatSlots ||= {})[property] = [
-        [property, (streamed as any)[1], 0, '', '', undefined, 0, 0],
-      ])
-      appendSlotEntry(
-        list,
-        property,
-        value,
-        condition,
-        identity,
-        selector,
-        wrapperSource,
-        wrapperStart,
-        wrapperCount,
-        weak,
-        original
-      )
-      return
-    }
-    if (weak) return
-    // repeat plain write replaces the single in place below
-  } else if (weak && state.classNames[property] !== undefined) {
-    // an externally merged class owns the property; the styled-default
-    // restore never displaces it
-    return
-  } else if (direct.flatExpectMulti === true || direct.flatDeferCSS === true) {
-    // the value is known to carry more contributions for this property, or a
-    // platform driver may flip this pass inline at completion: open the
-    // combined slot directly instead of building a single class
-    const list: AtomicSlotEntry[] = ((direct.flatSlots ||= {})[property] = [])
-    appendSlotEntry(
-      list,
-      property,
-      value,
-      condition,
-      identity,
-      selector,
-      wrapperSource,
-      wrapperStart,
-      wrapperCount,
-      weak,
-      original
-    )
-    return
-  }
-
-  // repeat authored base values hit the raw memo and skip normalization,
-  // signature building, and the identity lookup chain entirely
-  if (!identity) {
-    const memo = probeRawSlotIdentity(property, value)
-    if (memo) {
-      const styleObject = (memo[3] ||= [
-        property,
-        memo[2],
-        memo[0],
-        undefined,
-        memo[1],
-      ]) as StyleObject
-      ;(direct.flatAtomics ||= {})[property] = styleObject
-      state.classNames[property] = memo[0]
-      return
-    }
-  }
-  const rawValue = value
-  if (property === 'transform' && Array.isArray(value)) {
-    value = transformsToString(value)
-  }
-  const normalized = normalizeValueWithProperty(value, property)
-  scratchEntry[0] = property
-  scratchEntry[1] = normalized
-  scratchEntry[2] = condition
-  scratchEntry[3] = identity
-  scratchEntry[4] = selector
-  scratchEntry[5] = wrapperSource
-  scratchEntry[6] = wrapperStart
-  scratchEntry[7] = wrapperCount
-  const built = buildAtomicSlotCSS(
+  const list = ((direct.flatSlots ||= {})[slot] ||= [])
+  appendSlotEntry(
+    list,
     property,
-    singleSlot,
-    directStyleSignature(property, normalized, identity)
+    value,
+    condition,
+    identity,
+    selector,
+    wrapperSource,
+    wrapperStart,
+    wrapperCount,
+    original
   )
-  scratchEntry[5] = undefined
-  scratchEntry[1] = ''
-  if (!built) return
-  if (!identity) {
-    storeRawSlotIdentity(property, rawValue, built)
-  }
-  if (identity) {
-    ;(direct.flatSingleEntries ||= {})[property] = [
-      property,
-      normalized,
-      condition,
-      identity,
-      selector,
-      wrapperSource,
-      wrapperStart,
-      wrapperCount,
-    ]
-  }
-  const styleObject = (built[3] ||= [
-    property,
-    built[2],
-    built[0],
-    undefined,
-    built[1],
-  ]) as StyleObject
-  ;(direct.flatAtomics ||= {})[property] = styleObject
-  state.classNames[property] = built[0]
 }
 
 /**
  * The CSS residue that genuinely cannot stream: border-style defaults resolve
- * against what the pass authored, promoted multi-contribution slots combine
- * in precedence order, transition longhands group into one record, and the
+ * against what the pass authored, property programs combine in precedence
+ * order, transition longhands group into one record, and the
  * transform accumulator becomes the transform slot's base.
  */
 export function completeStreamingCSS(state: GetStyleState) {
   if (!canGenerateCSS) return
   const direct = state as DirectAtomicState
   const cssMode = !!state.flatShouldDoClasses
-  const singleEntries = direct.flatSingleEntries
 
   const requests = direct.flatBorderDefaultRequests
   if (cssMode && requests) {
@@ -375,14 +198,6 @@ export function completeStreamingCSS(state: GetStyleState) {
     for (let index = 0; index < requests.length; index++) {
       const request = requests[index]
       const target = request[0]
-      const targetSingle = singleEntries ? singleEntries[target] : undefined
-      if (targetSingle) {
-        if (targetSingle[3] === request[3]) continue
-        // promote so the synthetic joins the target's combined slot
-        delete singleEntries![target]
-        ;((direct.flatSlots ||= {})[target] = [targetSingle]).push(request)
-        continue
-      }
       const slot = direct.flatSlots ? direct.flatSlots[target] : undefined
       if (slot) {
         let covered = false
@@ -395,11 +210,9 @@ export function completeStreamingCSS(state: GetStyleState) {
         if (!covered) slot.push(request)
         continue
       }
-      // an unconditioned streamed single owns the property outright
-      if (direct.flatAtomics && direct.flatAtomics[target] !== undefined) continue
       // nothing authored: an externally merged class still suppresses it
       if (state.classNames[target] !== undefined) continue
-      registerSlot(direct, target, [request])
+      ;((direct.flatSlots ||= {})[target] ||= []).push(request)
     }
   }
 
@@ -417,16 +230,7 @@ export function completeStreamingCSS(state: GetStyleState) {
       0,
       0,
     ]
-    const slot = direct.flatSlots ? direct.flatSlots.transform : undefined
-    const transformSingle = singleEntries ? singleEntries.transform : undefined
-    if (slot) {
-      slot.unshift(accumulated)
-    } else if (transformSingle) {
-      delete singleEntries!.transform
-      ;(direct.flatSlots ||= {}).transform = [accumulated, transformSingle]
-    } else {
-      ;(direct.flatSlots ||= {}).transform = [accumulated]
-    }
+    ;((direct.flatSlots ||= {}).transform ||= []).unshift(accumulated)
   }
 
   const slots = direct.flatSlots
@@ -435,12 +239,6 @@ export function completeStreamingCSS(state: GetStyleState) {
     for (const property in slots) {
       registerSlot(direct, property, slots[property])
     }
-  }
-
-  const transitions = direct.flatTransitions
-  if (transitions) {
-    direct.flatTransitions = undefined
-    registerSlot(direct, 'transition', transitions)
   }
 }
 
@@ -507,7 +305,5 @@ export function addComposition(state: GetStyleState, property: 'translate' | 'sc
 export function clearFrameAtomic(state: GetStyleState, atomicKey: string) {
   const direct = state as DirectAtomicState
   if (direct.flatAtomics) delete direct.flatAtomics[atomicKey]
-  if (direct.flatSingleEntries) delete direct.flatSingleEntries[atomicKey]
   if (direct.flatSlots) delete direct.flatSlots[atomicKey]
-  if (atomicKey === 'transition') direct.flatTransitions = undefined
 }

@@ -17,6 +17,6 @@ export declare const stateNames: readonly string[];
 export declare const stateToModifier: Readonly<Record<string, string>>;
 export declare const modifierToState: Readonly<Record<string, string>>;
 export declare const stateToSelector: Readonly<Record<string, string>>;
-export { componentStateModifierNames as componentStateNames } from "./stateModifiers";
+export declare const componentStateNames: readonly string[];
 
 //# sourceMappingURL=states.d.ts.map

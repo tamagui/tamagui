@@ -439,10 +439,9 @@ test('distinct diagnostic messages each warn once per process', () => {
     const props = { width: '1 invalid:2', height: '1 invalid:2' }
     split(props)
     split(props)
-    expect(warnings.filter((warning) => warning.includes('"invalid:"'))).toEqual([
-      expect.stringContaining('width:'),
-      expect.stringContaining('height:'),
-    ])
+    expect(
+      warnings.filter((warning) => warning.includes('unknown modifier "invalid"'))
+    ).toEqual([expect.stringContaining('width='), expect.stringContaining('height=')])
   } finally {
     console.warn = original
     process.env.NODE_ENV = previousNodeEnv
@@ -599,7 +598,7 @@ test('a later plain value restates the base on native; the hover survives', () =
   expect(hovered.style?.backgroundColor).toBe('blue')
 })
 
-test('styled same-key programs merge by clause slot through call-site props', () => {
+test('direct properties replace styled and variant property programs', () => {
   const Frame = styled(View, {
     bg: 'gray hover:blue',
     p: '4 sm:6',
@@ -624,31 +623,31 @@ test('styled same-key programs merge by clause slot through call-site props', ()
     componentState: { hover: true },
     mergeDefaultProps: true,
   })
-  expect(hovered.style?.backgroundColor).toBe('blue')
+  expect(hovered.style?.backgroundColor).toBe('red')
 
   const focused = simplifiedGetSplitStyles(Frame, callSite.props, {
     componentState: { focus: true },
     mergeDefaultProps: true,
   })
-  expect(focused.style?.backgroundColor).toBe('yellow')
+  expect(focused.style?.backgroundColor).toBe('red')
 
   const responsive = simplifiedGetSplitStyles(Frame, callSite.props, {
     mediaState: { sm: true },
     mergeDefaultProps: true,
   })
-  expect(responsive.style?.paddingLeft).toBe(32)
+  expect(responsive.style?.paddingLeft).toBe(2)
 
   const variantLastCallSite = <Frame {...{ bg: 'red' }} tone="danger" />
   const variantIdle = simplifiedGetSplitStyles(Frame, variantLastCallSite.props, {
     mergeDefaultProps: true,
   })
-  expect(variantIdle.style?.backgroundColor).toBe('orange')
+  expect(variantIdle.style?.backgroundColor).toBe('red')
 
   const variantHovered = simplifiedGetSplitStyles(Frame, variantLastCallSite.props, {
     componentState: { hover: true },
     mergeDefaultProps: true,
   })
-  expect(variantHovered.style?.backgroundColor).toBe('blue')
+  expect(variantHovered.style?.backgroundColor).toBe('red')
 })
 
 test('textDecoration splits into the three RN longhand props on native', () => {
@@ -673,7 +672,7 @@ test('logical border shorthands are diagnosed and dropped on native', () => {
   expect(result?.style?.borderTopWidth).toBeUndefined()
 })
 
-test('a styled clause default survives a call-site override on native', () => {
+test('a call-site property program replaces the styled property program on native', () => {
   const Frame = styled(View, {
     backgroundColor: 'gray hover:blue',
   })
@@ -689,7 +688,29 @@ test('a styled clause default survives a call-site override on native', () => {
     { backgroundColor: 'red' },
     { componentState: { hover: true }, mergeDefaultProps: true }
   )
-  expect(hovered.style?.backgroundColor).toBe('blue')
+  expect(hovered.style?.backgroundColor).toBe('red')
+})
+
+test('an inactive call-site shorthand program clears every styled longhand', () => {
+  const Frame = styled(View, {
+    border: '1px solid red',
+    textDecoration: 'underline dotted red',
+  })
+  const result = simplifiedGetSplitStyles(
+    Frame,
+    {
+      border: 'hover:2px dashed blue',
+      textDecoration: 'hover:line-through wavy blue',
+    },
+    { mergeDefaultProps: true }
+  )
+
+  expect(result.style).not.toHaveProperty('borderTopWidth')
+  expect(result.style).not.toHaveProperty('borderStyle')
+  expect(result.style).not.toHaveProperty('borderTopColor')
+  expect(result.style).not.toHaveProperty('textDecorationLine')
+  expect(result.style).not.toHaveProperty('textDecorationStyle')
+  expect(result.style).not.toHaveProperty('textDecorationColor')
 })
 
 test('geometric shorthand payloads distribute by slot on native', () => {

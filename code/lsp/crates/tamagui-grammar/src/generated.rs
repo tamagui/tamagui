@@ -8,15 +8,11 @@
 /// the core interaction and lifecycle modifiers, in grammar order
 pub const CORE_STATE_MODIFIERS: &[&str] = &["hover", "press", "focus", "focus-visible", "focus-within", "disabled", "enter", "exit"];
 
-/// the component-tier state words the behavior packages expose as DOM
-/// attributes, which style through an attribute selector rather than a pseudo
-pub const COMPONENT_STATE_MODIFIERS: &[&str] = &["open", "checked", "highlighted", "selected", "invalid"];
-
 /// every alternate spelling and the modifier it means
 pub const MODIFIER_ALIASES: &[(&str, &str)] = &[("active", "press"), ("pressed", "press"), ("starting", "enter"), ("ending", "exit")];
 
-/// every built-in state spelling: core, aliases, component tier
-pub const STATE_MODIFIERS: &[&str] = &["hover", "press", "focus", "focus-visible", "focus-within", "disabled", "enter", "exit", "active", "pressed", "starting", "ending", "open", "checked", "highlighted", "selected", "invalid"];
+/// every built-in runtime state spelling: core and aliases
+pub const STATE_MODIFIERS: &[&str] = &["hover", "press", "focus", "focus-visible", "focus-within", "disabled", "enter", "exit", "active", "pressed", "starting", "ending"];
 
 pub const PLATFORM_MODIFIERS: &[&str] = &["web", "native", "android", "ios", "tv", "androidtv", "tvos"];
 

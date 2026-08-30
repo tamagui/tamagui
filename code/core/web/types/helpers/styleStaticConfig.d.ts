@@ -5,6 +5,7 @@ export type StyleStaticConfig = {
     defaultProps: Record<string, any> | undefined;
     styledContextKeys: Set<string> | null;
     variants: StaticConfig['variants'];
+    variantStyleResolver: any;
     passthroughClassName: string | undefined;
 };
 /**

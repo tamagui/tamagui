@@ -114,41 +114,6 @@
       "container": null
     },
     {
-      "name": "open",
-      "kind": "state",
-      "canonical": "open",
-      "group": null,
-      "container": null
-    },
-    {
-      "name": "checked",
-      "kind": "state",
-      "canonical": "checked",
-      "group": null,
-      "container": null
-    },
-    {
-      "name": "highlighted",
-      "kind": "state",
-      "canonical": "highlighted",
-      "group": null,
-      "container": null
-    },
-    {
-      "name": "selected",
-      "kind": "state",
-      "canonical": "selected",
-      "group": null,
-      "container": null
-    },
-    {
-      "name": "invalid",
-      "kind": "state",
-      "canonical": "invalid",
-      "group": null,
-      "container": null
-    },
-    {
       "name": "web",
       "kind": "platform",
       "canonical": "web",
@@ -333,12 +298,9 @@
     },
     {
       "name": "group-open",
-      "kind": "group",
+      "kind": null,
       "canonical": "group-open",
-      "group": {
-        "state": "open",
-        "group": null
-      },
+      "group": null,
       "container": null
     },
     {

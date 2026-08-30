@@ -1,8 +1,4 @@
-/**
- * states the native evaluator can source from component state and lifecycle.
- * component-tier states stay web-only until their behavior packages feed them
- * into component state.
- */
+/** states the native evaluator can source from component state and lifecycle */
 export const nativeSourceableStates: ReadonlySet<string> = new Set([
   'hover',
   'press',

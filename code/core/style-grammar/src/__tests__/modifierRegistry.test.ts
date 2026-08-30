@@ -17,7 +17,7 @@ const full = createModifierRegistry({
 })
 
 describe('registered kinds', () => {
-  test('built-in interaction and component states are state modifiers', () => {
+  test('built-in interaction and lifecycle states are state modifiers', () => {
     for (const name of [
       'hover',
       'press',
@@ -28,16 +28,10 @@ describe('registered kinds', () => {
       'enter',
       'exit',
       'active',
-      'open',
-      'checked',
-      'highlighted',
-      'selected',
-      'invalid',
     ]) {
       expect(full.registry.get(name), name).toBe('state')
     }
     expect(stateModifierNames).toContain('hover')
-    expect(stateModifierNames).toContain('open')
   })
 
   test('config media keys are media modifiers', () => {

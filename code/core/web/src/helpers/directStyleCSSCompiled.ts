@@ -1,8 +1,6 @@
 import type { GetStyleState } from '../types'
 
 export const canGenerateCSS = false
-export const directStyleSignature = () => ''
-
 export function streamAtomic(
   _state: GetStyleState,
   _property: string,
@@ -13,8 +11,8 @@ export function streamAtomic(
   _wrapperSource: readonly string[] | undefined,
   _wrapperStart: number,
   _wrapperCount: number,
-  _weak: boolean,
-  _original?: any
+  _original?: any,
+  _slot?: string
 ) {}
 export function completeStreamingCSS(_state: GetStyleState) {}
 export function requestBorderStyleDefault(

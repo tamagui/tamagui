@@ -30,8 +30,8 @@ describe('clause order inside a value', () => {
   test('state is emitted after media so it wins the cascade', () => {
     expect(shape(cssFor({ bg: 'red hover:blue sm:green' }))).toEqual([
       '._bc{background-color:red}',
-      '@media (max-width: 800px) {._bc._bc{background-color:green}}',
-      '@media (hover: hover) {._bc:hover{background-color:blue}}',
+      '@media (max-width: 800px) {._bc{background-color:green}}',
+      '@media (hover: hover) {._bc:where(:hover){background-color:blue}}',
     ])
   })
 

@@ -202,17 +202,14 @@ describe('clauses', () => {
   })
 
   test('every registered modifier kind is accepted', () => {
-    expect(value('a press:b open:c active:d md:e dark:f ios:g native:h').clauses).toEqual(
-      [
-        { modifiers: ['press'], payload: 'b' },
-        { modifiers: ['open'], payload: 'c' },
-        { modifiers: ['active'], payload: 'd' },
-        { modifiers: ['md'], payload: 'e' },
-        { modifiers: ['dark'], payload: 'f' },
-        { modifiers: ['ios'], payload: 'g' },
-        { modifiers: ['native'], payload: 'h' },
-      ]
-    )
+    expect(value('a press:b active:d md:e dark:f ios:g native:h').clauses).toEqual([
+      { modifiers: ['press'], payload: 'b' },
+      { modifiers: ['active'], payload: 'd' },
+      { modifiers: ['md'], payload: 'e' },
+      { modifiers: ['dark'], payload: 'f' },
+      { modifiers: ['ios'], payload: 'g' },
+      { modifiers: ['native'], payload: 'h' },
+    ])
   })
 
   test('container modifiers are ordinary clause words to the scanner', () => {

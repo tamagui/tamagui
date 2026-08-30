@@ -6,6 +6,9 @@ import { benchmarkAssertionAttributesPlugin } from '../shared/benchmarkAssertion
 import { bundleAttributionPlugin } from '../shared/bundleAttributionPlugin'
 
 const extract = process.env.EXTRACT === '1'
+const checkpointInputs: Record<string, string> = {
+  'baseline-styled-view': 'baseline-styled-view.html',
+}
 
 export default defineConfig(({ mode }) => ({
   plugins: [
@@ -22,10 +25,14 @@ export default defineConfig(({ mode }) => ({
     bundleAttributionPlugin(process.env.BUNDLE_ATTRIBUTION_FILE, import.meta.dirname),
   ],
   build:
-    mode === 'size'
+    mode === 'size' || checkpointInputs[mode]
       ? {
+          modulePreload: checkpointInputs[mode] ? false : undefined,
           rollupOptions: {
-            input: resolve(import.meta.dirname, 'size.html'),
+            input: resolve(import.meta.dirname, checkpointInputs[mode] ?? 'size.html'),
+            external: checkpointInputs[mode]
+              ? ['react', 'react/jsx-runtime', 'react-dom/client']
+              : undefined,
             output: { entryFileNames: 'assets/index-[hash].js' },
           },
         }

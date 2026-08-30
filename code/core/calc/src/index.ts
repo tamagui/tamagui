@@ -1,4 +1,4 @@
-import { getVariableVariable, isWeb } from '@tamagui/core'
+import { isVariable, isWeb } from '@tamagui/core'
 import type {
   FontLineHeightTokens,
   FontSizeTokens,
@@ -64,7 +64,7 @@ export const calc = (...valuesAndOperators: (CalcVal | Operator)[]): string | nu
 }
 
 const convertToVariableOrNumber = (v: any): string => {
-  const varOrVal = getVariableVariable(v)
+  const varOrVal = isVariable(v) ? v.variable : v
   if (typeof varOrVal === 'number') {
     return `${varOrVal}px`
   }

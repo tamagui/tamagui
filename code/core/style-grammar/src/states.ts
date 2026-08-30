@@ -1,10 +1,8 @@
-import { componentStateModifierNames } from './stateModifiers'
-
 // A1 — the shared STATE VOCABULARY + style-grammar modifiers.
 //
 // The canonical set of states a styled skin can respond to and how each maps to
-// a Tailwind modifier. The registry generator reads this table as the single
-// source of truth for stateful styles.
+// an explicit Tailwind modifier. Core runtime modifiers live in stateModifiers;
+// component states stay attribute variants in tooling.
 //
 // Two tiers:
 //  - `pseudo`: a core interaction or lifecycle state applies at runtime.
@@ -27,9 +25,6 @@ export interface StateEntry {
   aliases?: readonly string[]
 }
 
-// The eight-state vocabulary (open/checked/pressed/highlighted/disabled/invalid/
-// starting/ending). hover/focus/focus-visible/focus-within are interaction
-// states outside the eight but compose the same way.
 export const stateVocabulary: readonly StateEntry[] = [
   // tier 1 — interaction / lifecycle. The state word can differ from the modifier word
   // (pressed→press, starting→enter, ending→exit).
@@ -58,20 +53,20 @@ export const stateVocabulary: readonly StateEntry[] = [
   },
   // tier 2 — component / ARIA states (behavior-driven attributes).
   {
-    state: componentStateModifierNames[0],
+    state: 'open',
     tier: 'component',
     modifier: 'data-[state=open]',
     selector: '[data-state="open"]',
   },
   {
-    state: componentStateModifierNames[1],
+    state: 'checked',
     tier: 'component',
     modifier: 'data-[state=checked]',
     selector: '[data-state="checked"]',
     aliases: ['data-[state=on]', 'aria-checked'],
   },
   {
-    state: componentStateModifierNames[2],
+    state: 'highlighted',
     tier: 'component',
     modifier: 'data-[highlighted]',
     selector: '[data-highlighted]',
@@ -80,13 +75,13 @@ export const stateVocabulary: readonly StateEntry[] = [
     // item selection (Select/RadioGroup items, ToggleGroup) — the behavior emits
     // data-state="active"/"inactive"; distinct from `checked`. The bare word
     // `active` is NOT an alias here (it stays an alias of `pressed`).
-    state: componentStateModifierNames[3],
+    state: 'selected',
     tier: 'component',
     modifier: 'data-[state=active]',
     selector: '[data-state="active"]',
   },
   {
-    state: componentStateModifierNames[4],
+    state: 'invalid',
     tier: 'component',
     modifier: 'aria-invalid',
     selector: '[aria-invalid="true"]',
@@ -123,4 +118,8 @@ export const stateToSelector: Readonly<Record<string, string>> = Object.freeze(
   )
 )
 
-export { componentStateModifierNames as componentStateNames } from './stateModifiers'
+export const componentStateNames: readonly string[] = Object.freeze(
+  stateVocabulary
+    .filter((entry) => entry.tier === 'component')
+    .map((entry) => entry.state)
+)

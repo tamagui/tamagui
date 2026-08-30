@@ -3,11 +3,7 @@ import {
   type FlatScanErrorCode,
   type FlatValueHandler,
 } from './scanFlatValue'
-import {
-  componentStateModifierNames,
-  coreStateModifierNames,
-  modifierAliases,
-} from './stateModifiers'
+import { coreStateModifierNames, modifierAliases } from './stateModifiers'
 
 export type ClauseIdentityErrorCode =
   | FlatScanErrorCode
@@ -38,7 +34,6 @@ export interface GroupModifier {
 export const stateModifierNames: readonly string[] = Object.freeze([
   ...coreStateModifierNames,
   ...Object.keys(modifierAliases),
-  ...componentStateModifierNames,
 ])
 
 const stateModifierSet: ReadonlySet<string> = new Set(stateModifierNames)

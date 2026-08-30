@@ -7,5 +7,5 @@
  * rewrites. Component behavior props belong to each public frontend package, so
  * this private construction entry never reaches `./types`.
  */
-export type { FrontendComponent, FrontendClassPlan, FrontendClassPlanEntry, FrontendStaticConfig, StyleFrontend, StyleFrontendConfig, } from './helpers/styleFrontend';
+export type { FrontendComponent, FrontendClassPlan, FrontendClassPlanEntry, FrontendClassSink, FrontendStaticConfig, StyleFrontend, StyleFrontendConfig, } from './helpers/styleFrontend';
 //# sourceMappingURL=internalRuntimeTypes.d.ts.map

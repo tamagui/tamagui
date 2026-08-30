@@ -8,6 +8,7 @@ export type StyleStaticConfig = {
   defaultProps: Record<string, any> | undefined
   styledContextKeys: Set<string> | null
   variants: StaticConfig['variants']
+  variantStyleResolver: any
   passthroughClassName: string | undefined
 }
 
@@ -74,6 +75,7 @@ export function getStyleStaticConfig(
     defaultProps,
     styledContextKeys: keys ? new Set(keys) : null,
     variants,
+    variantStyleResolver: (staticConfig as any).variantStyleResolver,
     passthroughClassName: normalized
       ? normalized.passthroughClassName
       : staticConfig.passthroughClassName,

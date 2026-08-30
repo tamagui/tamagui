@@ -191,7 +191,6 @@ export {
   getTokenValue,
   getTokens,
   getVariable,
-  getVariableName,
   getVariableValue,
   insertFont,
   setConfig,

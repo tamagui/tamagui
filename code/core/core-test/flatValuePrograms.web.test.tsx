@@ -113,7 +113,7 @@ test('a clause value lowers to one program block', () => {
   expect(rules).toHaveLength(2)
   expect(rules[0]).toBe(`.${className}{background-color:red}`)
   expect(rules[1]).toBe(
-    `@media (hover: hover) {.${className}:hover{background-color:blue}}`
+    `@media (hover: hover) {.${className}:where(:hover){background-color:blue}}`
   )
 })
 
@@ -235,6 +235,27 @@ test('a clause-valued variant with an object definition composes the chains', ()
   ).toBe(true)
 })
 
+test('a null first nested condition does not lend its condition to the next entry', () => {
+  const Frame = styled(View, {
+    variants: {
+      tone: {
+        danger: {
+          bg: { hover: null, focus: 'yellow' },
+        },
+      },
+    } as const,
+  })
+  const result = simplifiedGetSplitStyles(
+    Frame,
+    { tone: 'sm:danger' },
+    { mergeDefaultProps: true }
+  )
+  const rules = rulesFor(result, result.classNames.backgroundColor)
+  expect(rules).toHaveLength(1)
+  expect(rules[0]).toContain(':where(:focus)')
+  expect(rules[0]).not.toContain(':hover')
+})
+
 test('tokens resolve to variables and media clauses wrap', () => {
   const result = split({ p: '4 sm:6' })
   // padding expands to four longhand programs
@@ -253,7 +274,7 @@ test('bare tokens resolve in conditional flat values', () => {
   const colorClass = colors.classNames.backgroundColor
   expect(rulesFor(colors, colorClass)).toEqual([
     `.${colorClass}{background-color:var(--c-white)}`,
-    `@media (hover: hover) {.${colorClass}:hover{background-color:var(--c-black)}}`,
+    `@media (hover: hover) {.${colorClass}:where(:hover){background-color:var(--c-black)}}`,
   ])
 
   const padding = split({ padding: '4 hover:8' })
@@ -266,7 +287,7 @@ test('bare tokens resolve in conditional flat values', () => {
     const className = padding.classNames[longhand]
     expect(rulesFor(padding, className), longhand).toEqual([
       `.${className}{${cssProperty}:var(--t-space-4)}`,
-      `@media (hover: hover) {.${className}:hover{${cssProperty}:var(--t-space-8)}}`,
+      `@media (hover: hover) {.${className}:where(:hover){${cssProperty}:var(--t-space-8)}}`,
     ])
   }
 
@@ -274,7 +295,7 @@ test('bare tokens resolve in conditional flat values', () => {
   const backgroundClass = background.classNames.backgroundColor
   expect(rulesFor(background, backgroundClass)).toEqual([
     `.${backgroundClass}{background-color:var(--c-white)}`,
-    `@media (hover: hover) {.${backgroundClass}:hover{background-color:var(--c-black)}}`,
+    `@media (hover: hover) {.${backgroundClass}:where(:hover){background-color:var(--c-black)}}`,
   ])
 })
 
@@ -340,10 +361,7 @@ test('nested variant clauses keep array payloads via the object form', () => {
   expect(JSON.stringify(hovered.style?.transform)).toContain('0.8')
 })
 
-test('an object styled default displaced by a caller value keeps its clauses', () => {
-  // the displaced-default re-injection must treat the object form as a
-  // program exactly like its string twin: the caller base replaces only the
-  // base slot, and the default's condition slots survive
+test('a caller property program replaces the styled property program', () => {
   const ObjectFrame = styled(View, {
     backgroundColor: { default: 'red', hover: 'blue' },
   })
@@ -357,10 +375,9 @@ test('an object styled default displaced by a caller value keeps its clauses', (
       { backgroundColor: 'green' },
       { componentState: { hover: true }, mergeDefaultProps: true, noClass: true }
     )
-    expect(result.style?.backgroundColor).toBe('blue')
+    expect(result.style?.backgroundColor).toBe('green')
   }
 
-  // the inverse: a conditional caller value must not erase the styled base
   const PlainFrame = styled(View, { backgroundColor: 'red' })
   for (const caller of ['hover:blue', { hover: 'blue' }] as const) {
     const result = simplifiedGetSplitStyles(
@@ -368,7 +385,7 @@ test('an object styled default displaced by a caller value keeps its clauses', (
       { backgroundColor: caller },
       { mergeDefaultProps: true, noClass: true }
     )
-    expect(result.style?.backgroundColor).toBe('red')
+    expect(result.style?.backgroundColor).toBeUndefined()
   }
 })
 
@@ -420,7 +437,7 @@ test('an unknown bare lookup miss stays literal on web', () => {
     const className = result.classNames.backgroundColor
     expect(rulesFor(result, className)).toEqual([
       `.${className}{background-color:missing-web-base}`,
-      `@media (hover: hover) {.${className}:hover{background-color:var(--c-black)}}`,
+      `@media (hover: hover) {.${className}:where(:hover){background-color:var(--c-black)}}`,
     ])
     expect(warnings).toEqual([])
   } finally {
@@ -435,19 +452,19 @@ test('bare tokens reach conditional border-family splitting intact', () => {
   const widthClass = result.classNames.borderTopWidth
   expect(rulesFor(result, widthClass)).toEqual([
     `.${widthClass}{border-top-width:var(--t-space-4)}`,
-    `@media (hover: hover) {.${widthClass}:hover{border-top-width:var(--t-space-8)}}`,
+    `@media (hover: hover) {.${widthClass}:where(:hover){border-top-width:var(--t-space-8)}}`,
   ])
 
   const styleClass = result.classNames.borderTopStyle
   expect(rulesFor(result, styleClass)).toEqual([
     `.${styleClass}{border-top-style:solid}`,
-    `@media (hover: hover) {.${styleClass}:hover{border-top-style:dashed}}`,
+    `@media (hover: hover) {.${styleClass}:where(:hover){border-top-style:dashed}}`,
   ])
 
   const colorClass = result.classNames.borderTopColor
   expect(rulesFor(result, colorClass)).toEqual([
     `.${colorClass}{border-top-color:var(--c-white)}`,
-    `@media (hover: hover) {.${colorClass}:hover{border-top-color:var(--c-black)}}`,
+    `@media (hover: hover) {.${colorClass}:where(:hover){border-top-color:var(--c-black)}}`,
   ])
 })
 
@@ -458,7 +475,7 @@ test('a later plain value restates the base; the hover survives (decision 21)', 
   const rules = rulesFor(result, className)
   expect(rules[0]).toBe(`.${className}{background-color:green}`)
   expect(rules[1]).toBe(
-    `@media (hover: hover) {.${className}:hover{background-color:blue}}`
+    `@media (hover: hover) {.${className}:where(:hover){background-color:blue}}`
   )
 })
 
@@ -626,17 +643,17 @@ test('web platform clauses apply on the inline path; native ones do not', () => 
   expect(result.style?.backgroundColor).toBe('blue')
 })
 
-test('web platform clauses sort last and carry the platform specificity floor', () => {
+test('web platform clauses sort after conditional clauses', () => {
   const result = split({ backgroundColor: 'sm:hover:blue web:red' })
   const className = result.classNames.backgroundColor
   const rules = rulesFor(result, className)
   expect(rules).toHaveLength(2)
-  expect(rules[0]).toContain(':hover{background-color:blue}')
+  expect(rules[0]).toContain(':where(:hover){background-color:blue}')
   expect(rules[1]).toContain('background-color:red')
-  expect(rules[1].match(new RegExp(`\\.${className}`, 'g'))).toHaveLength(7)
+  expect(rules[1].match(new RegExp(`\\.${className}`, 'g'))).toHaveLength(1)
 })
 
-test('a later style prop restates the base; the hover survives (decision 21)', () => {
+test('the style prop replaces a direct property program', () => {
   const result = split({
     backgroundColor: 'red hover:blue',
     style: { backgroundColor: 'green' },
@@ -644,11 +661,10 @@ test('a later style prop restates the base; the hover survives (decision 21)', (
   const className = result.classNames.backgroundColor
   expect(className).toMatch(/^_bc-/)
   const rules = rulesFor(result, className)
-  expect(rules[0]).toContain('green')
-  expect(rules[1]).toContain(':hover')
+  expect(rules).toEqual([`.${className}{background-color:green}`])
 })
 
-test('styled same-key programs merge by clause slot through call-site props', () => {
+test('direct properties replace styled and variant property programs', () => {
   const Frame = styled(View, {
     bg: 'gray hover:blue',
     p: '4 sm:6',
@@ -668,35 +684,22 @@ test('styled same-key programs merge by clause slot through call-site props', ()
   })
   const backgroundClass = callSiteLast.classNames.backgroundColor
   const backgroundRules = rulesFor(callSiteLast, backgroundClass)
-  expect(backgroundRules[0]).toContain('background-color:red')
-  expect(
-    backgroundRules.some((rule) => rule.includes(':focus') && rule.includes('yellow'))
-  ).toBe(true)
-  expect(
-    backgroundRules.some((rule) => rule.includes(':hover') && rule.includes('blue'))
-  ).toBe(true)
+  expect(backgroundRules).toEqual([`.${backgroundClass}{background-color:red}`])
 
   const paddingLeftClass = callSiteLast.classNames.paddingLeft
   const paddingLeftRules = rulesFor(callSiteLast, paddingLeftClass)
-  expect(paddingLeftRules[0]).toContain('var(--t-space-1)')
-  expect(
-    paddingLeftRules.some(
-      (rule) => rule.startsWith('@media ') && rule.includes('var(--t-space-6)')
-    )
-  ).toBe(true)
+  expect(paddingLeftRules).toEqual([
+    `.${paddingLeftClass}{padding-left:var(--t-space-1)}`,
+  ])
 
   const variantLastCallSite = <Frame {...{ bg: 'red' }} tone="danger" />
   const variantLast = simplifiedGetSplitStyles(Frame, variantLastCallSite.props, {
     mergeDefaultProps: true,
   })
   const variantLastRules = rulesFor(variantLast, variantLast.classNames.backgroundColor)
-  expect(variantLastRules[0]).toContain('background-color:orange')
-  expect(
-    variantLastRules.some((rule) => rule.includes(':hover') && rule.includes('blue'))
-  ).toBe(true)
-  expect(
-    variantLastRules.some((rule) => rule.includes(':focus') && rule.includes('yellow'))
-  ).toBe(true)
+  expect(variantLastRules).toEqual([
+    `.${variantLast.classNames.backgroundColor}{background-color:red}`,
+  ])
 })
 
 test('animatable defaults do not displace a program', () => {
@@ -749,15 +752,14 @@ test('a multi-value shorthand expands per side when a program takes one side', (
   expect(lookup('padding')).toBeFalsy()
 })
 
-test('sibling expansion never clobbers a later authored longhand', () => {
-  // S9b: paddingLeft was authored after the style prop and must win
+test('the style layer owns its expanded longhands', () => {
   const result = split({
     style: { padding: 10 },
     paddingLeft: 100,
     paddingTop: '4 hover:8',
   })
   const left = result.classNames.paddingLeft
-  expect(rulesFor(result, left)[0]).toContain('padding-left:100px')
+  expect(rulesFor(result, left)).toEqual([`.${left}{padding-left:10px}`])
 })
 
 test('container clauses lower to @container queries', () => {
@@ -817,7 +819,7 @@ test('theme clause lowers to the is-or-within selector', () => {
   expect(rules[1]).toContain(':where(.t_dark, .t_dark *)')
 })
 
-test('a styled clause default survives a call-site override (decision 21)', () => {
+test('a call-site property program replaces the styled property program', () => {
   const Frame = styled(View, {
     backgroundColor: 'gray hover:blue',
   })
@@ -828,9 +830,7 @@ test('a styled clause default survives a call-site override (decision 21)', () =
   )
   const className = result.classNames.backgroundColor
   const rules = result.rulesToInsert[className]?.[4] ?? []
-  // the call-site value restates the base; the styled hover clause survives
-  expect(rules[0]).toBe(`.${className}{background-color:red}`)
-  expect(rules[1]).toContain(':hover{background-color:blue}')
+  expect(rules).toEqual([`.${className}{background-color:red}`])
 })
 
 test('caller longhands override styled-base shorthands and same-key defaults', () => {

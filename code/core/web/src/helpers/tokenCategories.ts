@@ -1,73 +1,48 @@
-import {
-  getTokenCategoryName,
-  propToTokenCategoryCode,
-  tokenCategoryColor,
-  tokenCategoryFontFamily,
-  tokenCategoryFontSize,
-  tokenCategoryFontWeight,
-  tokenCategoryLetterSpacing,
-  tokenCategoryLineHeight,
-  tokenCategoryRadius,
-  tokenCategorySize,
-  tokenCategorySpace,
-  tokenCategoryZIndex,
-} from '@tamagui/helpers'
-
 export type StyleTokenCategory = 'size' | 'space' | 'radius' | 'zIndex' | 'fontSize'
 export type RuntimeTokenCategory = StyleTokenCategory | 'color' | 'font' | 'fontFamily'
-
-const legacyCategory = (property: string): StyleTokenCategory | undefined => {
-  const category = getTokenCategoryName(propToTokenCategoryCode[property])
-  return category === 'space' ||
-    category === 'size' ||
-    category === 'radius' ||
-    category === 'zIndex' ||
-    category === 'fontSize'
-    ? category
-    : undefined
-}
-
-// compatibility view for internal consumers that enumerated the old string map.
-// the proxy keeps the numeric table canonical and only allocates keys on enumeration
-export const tokenCategoryByProperty: Readonly<Record<string, StyleTokenCategory>> =
-  /* @__PURE__ */ new Proxy(Object.create(null), {
-    get(_, property) {
-      return typeof property === 'string' ? legacyCategory(property) : undefined
-    },
-    has(_, property) {
-      return typeof property === 'string' && legacyCategory(property) !== undefined
-    },
-    ownKeys() {
-      return Object.keys(propToTokenCategoryCode).filter(
-        (property) => legacyCategory(property) !== undefined
-      )
-    },
-    getOwnPropertyDescriptor(_, property) {
-      if (typeof property !== 'string' || legacyCategory(property) === undefined) return
-      return { configurable: true, enumerable: true }
-    },
-  })
 
 export function getTokenCategoryForProperty(
   property: string
 ): RuntimeTokenCategory | undefined {
-  switch (propToTokenCategoryCode[property]) {
-    case tokenCategorySpace:
-      return 'space'
-    case tokenCategorySize:
-      return 'size'
-    case tokenCategoryRadius:
-      return 'radius'
-    case tokenCategoryZIndex:
-      return 'zIndex'
-    case tokenCategoryColor:
-      return 'color'
-    case tokenCategoryFontFamily:
-      return 'fontFamily'
-    case tokenCategoryFontSize:
-    case tokenCategoryFontWeight:
-    case tokenCategoryLineHeight:
-    case tokenCategoryLetterSpacing:
-      return 'font'
+  if (property === 'fontFamily') return 'fontFamily'
+  if (
+    property === 'fontSize' ||
+    property === 'fontWeight' ||
+    property === 'lineHeight' ||
+    property === 'letterSpacing'
+  ) {
+    return 'font'
+  }
+  if (property === 'zIndex') return 'zIndex'
+  if (property === 'color' || property.endsWith('Color')) return 'color'
+  if (property.endsWith('Radius')) {
+    return property === 'shadowRadius' ? 'size' : 'radius'
+  }
+  if (
+    /^(?:width|height|(?:min|max)(?:Width|Height))$/.test(property) ||
+    property.endsWith('BlockSize') ||
+    property.endsWith('InlineSize') ||
+    property === 'blockSize' ||
+    property === 'inlineSize'
+  ) {
+    return 'size'
+  }
+  if (
+    property === 'x' ||
+    property === 'y' ||
+    property === 'top' ||
+    property === 'right' ||
+    property === 'bottom' ||
+    property === 'left' ||
+    property === 'outlineOffset' ||
+    property === 'gap' ||
+    property.endsWith('Gap') ||
+    property.startsWith('margin') ||
+    property.startsWith('padding') ||
+    property.startsWith('inset') ||
+    ((property.startsWith('border') || property === 'outlineWidth') &&
+      property.endsWith('Width'))
+  ) {
+    return 'space'
   }
 }

@@ -26,10 +26,10 @@ const key = (...modifiers: string[]) => getClausePrecedenceKey(modifiers, regist
 
 describe('fixed clause precedence key', () => {
   test('platform rank is outermost and uses the decided containment levels', () => {
-    expect(key('native')).toBe(packClausePrecedence(1, 0, 0, 0))
-    expect(key('web')).toBe(packClausePrecedence(1, 0, 0, 0))
-    expect(key('ios')).toBe(packClausePrecedence(2, 0, 0, 0))
-    expect(key('tvos')).toBe(packClausePrecedence(3, 0, 0, 0))
+    expect(key('native')).toBe(packClausePrecedence(1, []))
+    expect(key('web')).toBe(packClausePrecedence(1, []))
+    expect(key('ios')).toBe(packClausePrecedence(2, []))
+    expect(key('tvos')).toBe(packClausePrecedence(3, []))
     expect(key('native')).toBeGreaterThan(key('sm', 'hover'))
   })
 
@@ -41,6 +41,11 @@ describe('fixed clause precedence key', () => {
 
   test('media declaration order is deterministic', () => {
     expect(key('md')).toBeGreaterThan(key('sm'))
+  })
+
+  test('every atom participates after depth, including lower-ranked categories', () => {
+    expect(key('md', 'hover')).toBeGreaterThan(key('sm', 'hover'))
+    expect(key('md', 'dark', 'hover')).toBeGreaterThan(key('sm', 'dark', 'hover'))
   })
 
   test('own state beats group state and state lifecycle order is fixed', () => {
@@ -93,22 +98,15 @@ describe('CSS specificity encoding', () => {
       `at most ${grammarMaxNonPlatformDepth} non-platform conditions`
     )
     expect(key('native', 'sm', 'md', 'lg', 'dark', '@sm')).toBe(
-      packClausePrecedence(1, 5, 2, 0)
+      packClausePrecedence(1, [1, 2, 3, 65, 129])
     )
   })
 })
 
-// ---------------------------------------------------------------------------
-// Exhaustive proof that the packed integer reproduces the total order of the
-// 4-tuple key it replaced: [platformRank, depth, categoryRank,
-// withinCategoryRank] compared lexicographically. The reference below is the
-// deleted implementation, kept verbatim as the spec.
-// ---------------------------------------------------------------------------
-
-type TupleKey = readonly [number, number, number, number]
+type TupleKey = readonly [number, number, number, number, number, number, number]
 
 function compareTupleKeys(left: TupleKey, right: TupleKey): number {
-  for (let index = 0; index < 4; index++) {
+  for (let index = 0; index < left.length; index++) {
     const difference = left[index] - right[index]
     if (difference) return difference
   }
@@ -116,11 +114,11 @@ function compareTupleKeys(left: TupleKey, right: TupleKey): number {
 }
 
 const referenceCategoryRanks: Record<string, number> = {
-  media: 0,
-  container: 1,
-  theme: 2,
-  group: 3,
-  state: 4,
+  media: 1,
+  container: 65,
+  theme: 129,
+  group: 161,
+  state: 225,
 }
 
 const referenceStateRanks: Record<string, number> = {
@@ -136,87 +134,90 @@ const referenceStateRanks: Record<string, number> = {
   starting: 6,
   exit: 7,
   ending: 7,
-  open: 8,
-  checked: 9,
-  highlighted: 10,
-  selected: 11,
-  invalid: 12,
 }
 
-function referenceWithinCategoryRank(
+function referenceAtomRank(
   modifier: string,
   kind: Exclude<ModifierKind, 'platform'>,
   mediaOrder: ClausePrecedenceOrder
 ): number {
-  if (kind === 'media') return mediaOrder.get(modifier) ?? 0
+  const base = referenceCategoryRanks[kind]
+  if (kind === 'media') return base + Math.min(mediaOrder.get(modifier) ?? 0, 63)
   if (kind === 'container') {
     const container = parseContainerModifier(modifier)
-    return container ? (mediaOrder.get(container.size) ?? 0) : 0
+    return base + (container ? Math.min(mediaOrder.get(container.size) ?? 0, 63) : 0)
   }
-  if (kind === 'theme') return 0
+  if (kind === 'theme') return base
   if (kind === 'group') {
     const group = parseGroupModifier(modifier)
-    return group ? (referenceStateRanks[group.state] ?? 0) : 0
+    return base + (group ? (referenceStateRanks[group.state] ?? 0) : 0)
   }
-  return referenceStateRanks[modifier] ?? 0
+  return base + (referenceStateRanks[modifier] ?? 0)
 }
 
 function referenceTupleKey(modifiers: readonly string[]): TupleKey {
   let platformRank = 0
-  let categoryRank = 0
-  let highestWithinCategoryRank = 0
-  const nonPlatform = new Set<string>()
+  const seen = new Set<string>()
+  const ranks: number[] = []
 
   for (const raw of modifiers) {
     const modifier = canonicalClauseModifier(raw)
     const kind = registry.get(modifier)
-    if (!kind) continue
+    if (!kind || seen.has(modifier)) continue
+    seen.add(modifier)
     if (kind === 'platform') {
       platformRank = Math.max(platformRank, grammarPlatformRank(modifier))
       continue
     }
-    nonPlatform.add(modifier)
-    const nextCategoryRank = referenceCategoryRanks[kind]
-    const nextWithinCategoryRank = referenceWithinCategoryRank(modifier, kind, order)
-    if (nextCategoryRank > categoryRank) {
-      categoryRank = nextCategoryRank
-      highestWithinCategoryRank = nextWithinCategoryRank
-    } else if (nextCategoryRank === categoryRank) {
-      highestWithinCategoryRank = Math.max(
-        highestWithinCategoryRank,
-        nextWithinCategoryRank
-      )
-    }
+    ranks.push(referenceAtomRank(modifier, kind, order))
   }
-
-  return [platformRank, nonPlatform.size, categoryRank, highestWithinCategoryRank]
+  ranks.sort((left, right) => right - left)
+  return [
+    platformRank,
+    ranks.length,
+    ranks[0] || 0,
+    ranks[1] || 0,
+    ranks[2] || 0,
+    ranks[3] || 0,
+    ranks[4] || 0,
+  ]
 }
 
-describe('packed key reproduces the 4-tuple total order exactly', () => {
-  test('every pair over the full component space agrees, including ties', () => {
-    // within-category rank covers the whole state table plus media declaration
-    // indexes, which are only bounded by the packing's 20 bits
-    const withinSamples = [
-      ...Array.from({ length: 17 }, (_, index) => index),
-      17,
-      255,
-      4096,
-      2 ** 20 - 1,
+describe('packed key reproduces full-condition precedence exactly', () => {
+  test('representative rank vectors preserve lexicographic order and specificity', () => {
+    const rankVectors = [
+      [],
+      [1],
+      [2],
+      [65],
+      [129],
+      [161],
+      [225],
+      [232],
+      [225, 1],
+      [225, 2],
+      [229, 1],
+      [225, 129, 2],
+      [232, 229, 225, 161, 129],
     ]
     const keys: { tuple: TupleKey; packed: number }[] = []
     for (let platform = 0; platform <= 3; platform++) {
-      for (let depth = 0; depth <= grammarMaxNonPlatformDepth; depth++) {
-        for (let category = 0; category <= 4; category++) {
-          for (const within of withinSamples) {
-            keys.push({
-              tuple: [platform, depth, category, within],
-              packed: packClausePrecedence(platform, depth, category, within),
-            })
-          }
-        }
+      for (const ranks of rankVectors) {
+        const sorted = ranks.slice().sort((left, right) => right - left)
+        keys.push({
+          tuple: [
+            platform,
+            sorted.length,
+            sorted[0] || 0,
+            sorted[1] || 0,
+            sorted[2] || 0,
+            sorted[3] || 0,
+            sorted[4] || 0,
+          ],
+          packed: packClausePrecedence(platform, ranks),
+        })
       }
     }
-    expect(keys.length).toBe(4 * 6 * 5 * withinSamples.length)
 
     let orderMismatches = 0
     let specificityMismatches = 0
@@ -239,7 +240,7 @@ describe('packed key reproduces the 4-tuple total order exactly', () => {
     expect(specificityMismatches).toBe(0)
   })
 
-  test('every pair of real modifier chains agrees with the deleted tuple path', () => {
+  test('every pair of real modifier chains agrees with the reference tuple', () => {
     const modifiers = [
       'sm',
       'md',
@@ -259,14 +260,8 @@ describe('packed key reproduces the 4-tuple total order exactly', () => {
       'starting',
       'exit',
       'ending',
-      'open',
-      'checked',
-      'highlighted',
-      'selected',
-      'invalid',
       'group-hover',
       'group-press/card',
-      'group-checked',
       'native',
       'web',
       'ios',
@@ -282,8 +277,6 @@ describe('packed key reproduces the 4-tuple total order exactly', () => {
       'dark',
       'hover',
       'press',
-      'checked',
-      'invalid',
       'group-hover',
       'native',
       'ios',

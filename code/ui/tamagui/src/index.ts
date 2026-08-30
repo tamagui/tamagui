@@ -280,7 +280,6 @@ export {
   getTokenValue,
   getTokens,
   getVariable,
-  getVariableName,
   getVariableValue,
   // the recommended DOM frontend: `html.*` is an ordinary Tamagui component
   // here, unlike the demoted standalone `tamagui/dom` entry

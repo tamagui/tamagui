@@ -15,43 +15,27 @@ import {
 
 export { grammarMaxNonPlatformDepth } from './valueTypes'
 
-/**
- * One clause's precedence as a single integer: a higher key wins, so
- * comparison is plain `>`. Four bounded fields pack most-significant first:
- *
- * - bits 26-27: platform rank — none 0; web/native 1; ios/android/tv 2;
- *   tvos/androidtv 3
- * - bits 23-25: depth — distinct non-platform conditions, capped at 5
- * - bits 20-22: category rank — media 0 < container 1 < theme 2 < group 3
- *   < state 4
- * - bits 0-19: rank inside the highest category — the state lifecycle table,
- *   or a media/container key's config declaration index (a config would need
- *   over a million media keys to overflow these bits)
- *
- * The CSS emitter deliberately caps a condition chain at five distinct
- * non-platform conditions. The parser can represent longer chains, but they
- * cannot be lowered while also giving platform clauses a finite specificity
- * floor above every platform-less clause, so the shared key builder rejects
- * them consistently on every surface.
- */
+/** one packed key compared as platform, depth, then every canonical atom rank */
 export type ClausePrecedenceKey = number
 
-const categoryShift = 20
-const depthShift = 23
-const platformShift = 26
+const rankBase = 256
+const rankTailScale = rankBase ** grammarMaxNonPlatformDepth
 
 export function packClausePrecedence(
   platformRank: number,
-  depth: number,
-  categoryRank: number,
-  withinCategoryRank: number
+  atomRanks: readonly number[]
 ): ClausePrecedenceKey {
-  return (
-    (platformRank << platformShift) |
-    (depth << depthShift) |
-    (categoryRank << categoryShift) |
-    withinCategoryRank
-  )
+  if (atomRanks.length > grammarMaxNonPlatformDepth) {
+    throw new Error(
+      `a flat value clause supports at most ${grammarMaxNonPlatformDepth} non-platform conditions; received ${atomRanks.length}`
+    )
+  }
+  const ranks = atomRanks.slice().sort((left, right) => right - left)
+  let key = platformRank * (grammarMaxNonPlatformDepth + 1) + ranks.length
+  for (let index = 0; index < grammarMaxNonPlatformDepth; index++) {
+    key = key * rankBase + (ranks[index] || 0)
+  }
+  return key
 }
 
 export type OrderedModifierNames =
@@ -62,15 +46,14 @@ export type OrderedModifierNames =
 export type ClausePrecedenceOrder = ReadonlyMap<string, number>
 
 const categoryRanks: Readonly<Record<Exclude<ModifierKind, 'platform'>, number>> = {
-  media: 0,
-  container: 1,
-  theme: 2,
-  group: 3,
-  state: 4,
+  media: 1,
+  container: 65,
+  theme: 129,
+  group: 161,
+  state: 225,
 }
 
-// Later lifecycle entries win. Component-tier states follow the interaction
-// states in the order of states.ts's component vocabulary.
+// later lifecycle entries win
 const stateRanks: Readonly<Record<string, number>> = Object.freeze({
   hover: 0,
   'focus-within': 1,
@@ -80,11 +63,6 @@ const stateRanks: Readonly<Record<string, number>> = Object.freeze({
   disabled: 5,
   enter: 6,
   exit: 7,
-  open: 8,
-  checked: 9,
-  highlighted: 10,
-  selected: 11,
-  invalid: 12,
 })
 
 export function createClausePrecedenceOrder(
@@ -105,22 +83,26 @@ export function createClausePrecedenceOrder(
   return ranks
 }
 
-function withinCategoryRank(
+function atomRank(
   modifier: string,
   kind: Exclude<ModifierKind, 'platform'>,
   order: ClausePrecedenceOrder
 ): number {
-  if (kind === 'media') return order.get(modifier) ?? 0
+  const base = categoryRanks[kind]
+  if (kind === 'media') return base + Math.min(order.get(modifier) ?? 0, 63)
   if (kind === 'container') {
     const sizeEnd = containerModifierSizeEnd(modifier)
-    return sizeEnd === -1 ? 0 : (order.get(modifier.slice(1, sizeEnd)) ?? 0)
+    return (
+      base +
+      (sizeEnd === -1 ? 0 : Math.min(order.get(modifier.slice(1, sizeEnd)) ?? 0, 63))
+    )
   }
-  if (kind === 'theme') return 0
+  if (kind === 'theme') return base
   if (kind === 'group') {
     const group = parseGroupModifier(modifier)
-    return group ? (stateRanks[group.state] ?? 0) : 0
+    return base + (group ? (stateRanks[group.state] ?? 0) : 0)
   }
-  return stateRanks[modifier] ?? 0
+  return base + (stateRanks[modifier] ?? 0)
 }
 
 export function getClausePrecedenceKeyFromKinds(
@@ -129,46 +111,28 @@ export function getClausePrecedenceKeyFromKinds(
   order: ClausePrecedenceOrder
 ): ClausePrecedenceKey {
   let platformRank = 0
-  let categoryRank = 0
-  let highestWithinCategoryRank = 0
-  const nonPlatform = new Set<string>()
+  const seen = new Set<string>()
+  const ranks: number[] = []
 
   for (let index = 0; index < modifiers.length; index++) {
     const modifier = canonicalClauseModifier(modifiers[index])
     const kind = kinds[index]
-    if (!kind) continue
+    if (!kind || seen.has(modifier)) continue
+    seen.add(modifier)
     if (kind === 'platform') {
       platformRank = Math.max(platformRank, grammarPlatformRank(modifier))
       continue
     }
-
-    nonPlatform.add(modifier)
-    const nextCategoryRank = categoryRanks[kind]
-    const nextWithinCategoryRank = withinCategoryRank(modifier, kind, order)
-    if (nextCategoryRank > categoryRank) {
-      categoryRank = nextCategoryRank
-      highestWithinCategoryRank = nextWithinCategoryRank
-    } else if (nextCategoryRank === categoryRank) {
-      highestWithinCategoryRank = Math.max(
-        highestWithinCategoryRank,
-        nextWithinCategoryRank
-      )
-    }
+    ranks.push(atomRank(modifier, kind, order))
   }
 
-  const depth = nonPlatform.size
-  if (depth > grammarMaxNonPlatformDepth) {
+  if (ranks.length > grammarMaxNonPlatformDepth) {
     throw new Error(
-      `a flat value clause supports at most ${grammarMaxNonPlatformDepth} non-platform conditions; received ${depth} in "${modifiers.join(':')}:"`
+      `a flat value clause supports at most ${grammarMaxNonPlatformDepth} non-platform conditions; received ${ranks.length} in "${modifiers.join(':')}:"`
     )
   }
 
-  return packClausePrecedence(
-    platformRank,
-    depth,
-    categoryRank,
-    highestWithinCategoryRank
-  )
+  return packClausePrecedence(platformRank, ranks)
 }
 
 export function getClausePrecedenceKey(
@@ -185,8 +149,9 @@ export function getClausePrecedenceKey(
 
 /** Target CSS class specificity, excluding IDs/elements: (0, result, 0). */
 export function clauseTargetClassSpecificity(key: ClausePrecedenceKey): number {
-  const depth = (key >>> depthShift) & 7
-  const platformRank = key >>> platformShift
+  const head = Math.floor(key / rankTailScale)
+  const depth = head % (grammarMaxNonPlatformDepth + 1)
+  const platformRank = Math.floor(head / (grammarMaxNonPlatformDepth + 1))
   return 1 + depth + platformRank * (grammarMaxNonPlatformDepth + 1)
 }
 

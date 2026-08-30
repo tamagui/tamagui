@@ -2,7 +2,6 @@ import { describe, expect, test } from 'vitest'
 import {
   assessFlatConversion,
   clauseCapability,
-  componentStateNames,
   createGrammarConfigView,
   createModifierRegistry,
   defaultStateSelectors,
@@ -27,14 +26,6 @@ describe('clauseCapability', () => {
     expect(clauseCapability('enter', 'state')).toEqual({ web: true, native: true })
   })
 
-  test('component-tier states are the mirror image: web-only', () => {
-    for (const state of componentStateNames) {
-      const modifierSpelling = state
-      const capability = clauseCapability(modifierSpelling, 'state')
-      expect(capability.native, state).toBe(false)
-    }
-  })
-
   test('media, theme, and platform clauses are both-target', () => {
     expect(clauseCapability('sm', 'media')).toEqual({ web: true, native: true })
     expect(clauseCapability('dark', 'theme')).toEqual({ web: true, native: true })
@@ -46,9 +37,6 @@ describe('clauseCapability', () => {
       web: true,
       native: true,
     })
-    const open = clauseCapability('group-open/card', 'group')
-    expect(open.web).toBe(true)
-    expect(open.native).toBe(false)
   })
 
   test('the web side is derived from the lowering selector table', () => {
@@ -104,15 +92,6 @@ describe('assessFlatConversion', () => {
       registry
     )
     expect(exitWithoutHost.verdict).toBe('unknown-host')
-  })
-
-  test('a component-tier state in a shared file needs relocation the other way', () => {
-    const assessment = assessFlatConversion(
-      { property: 'opacity', modifiers: ['open'], targets: 'shared' },
-      registry
-    )
-    expect(assessment.verdict).toBe('needs-relocation')
-    expect(assessment.reasons[0].remedy).toContain('.web.tsx')
   })
 
   test('the View-color case: host dimension reports with the relocation remedy', () => {

@@ -1,23 +1,13 @@
-export type TransformAccumulator = {
-  keys: string[]
-  values: any[]
-  complete: any
-  hasComplete: boolean
-}
+export type TransformAccumulator = any[]
 
 export function createTransformAccumulator(): TransformAccumulator {
-  return { keys: [], values: [], complete: undefined, hasComplete: false }
+  return []
 }
 
 export function cloneTransformAccumulator(
   source: TransformAccumulator
 ): TransformAccumulator {
-  return {
-    keys: [...source.keys],
-    values: [...source.values],
-    complete: Array.isArray(source.complete) ? [...source.complete] : source.complete,
-    hasComplete: source.hasComplete,
-  }
+  return [...source]
 }
 
 export function addTransformValue(
@@ -26,53 +16,40 @@ export function addTransformValue(
   value: any
 ): void {
   if (key === 'transform') {
-    accumulator.keys.length = 0
-    accumulator.values.length = 0
-    accumulator.complete = value
-    accumulator.hasComplete = true
+    accumulator.length = 0
+    accumulator.push('', value)
     return
   }
 
-  if (accumulator.hasComplete) {
-    accumulator.complete = undefined
-    accumulator.hasComplete = false
-    accumulator.keys.length = 0
-    accumulator.values.length = 0
-  }
+  if (accumulator[0] === '') accumulator.length = 0
 
   const outputKey = key === 'x' ? 'translateX' : key === 'y' ? 'translateY' : key
-  const keys = accumulator.keys
-  const values = accumulator.values
 
   if (outputKey === 'scale') {
-    for (let index = keys.length - 1; index >= 0; index--) {
-      const key = keys[index]
+    for (let index = accumulator.length - 2; index >= 0; index -= 2) {
+      const key = accumulator[index]
       if (key === 'scale' || key === 'scaleX' || key === 'scaleY') {
-        keys.splice(index, 1)
-        values.splice(index, 1)
+        accumulator.splice(index, 2)
       }
     }
   } else if (outputKey === 'scaleX' || outputKey === 'scaleY') {
     const sibling = outputKey === 'scaleX' ? 'scaleY' : 'scaleX'
-    for (let index = keys.length - 1; index >= 0; index--) {
-      if (keys[index] === 'scale') {
-        keys[index] = sibling
-      } else if (keys[index] === outputKey) {
-        keys.splice(index, 1)
-        values.splice(index, 1)
+    for (let index = accumulator.length - 2; index >= 0; index -= 2) {
+      if (accumulator[index] === 'scale') {
+        accumulator[index] = sibling
+      } else if (accumulator[index] === outputKey) {
+        accumulator.splice(index, 2)
       }
     }
   } else {
-    for (let index = keys.length - 1; index >= 0; index--) {
-      if (keys[index] === outputKey) {
-        keys.splice(index, 1)
-        values.splice(index, 1)
+    for (let index = accumulator.length - 2; index >= 0; index -= 2) {
+      if (accumulator[index] === outputKey) {
+        accumulator.splice(index, 2)
       }
     }
   }
 
-  keys.push(outputKey)
-  values.push(value)
+  accumulator.push(outputKey, value)
 }
 
 export function removeTransformValue(
@@ -81,37 +58,38 @@ export function removeTransformValue(
 ): void {
   if (!accumulator) return
   const outputKey = key === 'x' ? 'translateX' : key === 'y' ? 'translateY' : key
-  for (let index = accumulator.keys.length - 1; index >= 0; index--) {
-    if (accumulator.keys[index] === outputKey) {
-      accumulator.keys.splice(index, 1)
-      accumulator.values.splice(index, 1)
+  for (let index = accumulator.length - 2; index >= 0; index -= 2) {
+    if (accumulator[index] === outputKey) {
+      accumulator.splice(index, 2)
     }
   }
 }
 
 export function getTransformPartKeys(accumulator: TransformAccumulator): string[] {
-  return accumulator.keys
+  const keys: string[] = []
+  for (let index = 0; index < accumulator.length; index += 2) {
+    if (accumulator[index]) keys.push(accumulator[index])
+  }
+  return keys
 }
 
 export function finalizeTransformAccumulator(accumulator: TransformAccumulator): any {
-  if (accumulator.hasComplete) {
-    return Array.isArray(accumulator.complete)
-      ? [...accumulator.complete]
-      : accumulator.complete
+  if (accumulator[0] === '') {
+    return Array.isArray(accumulator[1]) ? [...accumulator[1]] : accumulator[1]
   }
 
   const output: Record<string, any>[] = []
-  for (let index = 0; index < accumulator.keys.length; index++) {
-    const key = accumulator.keys[index]
-    const value = accumulator.values[index]
-    const nextKey = accumulator.keys[index + 1]
+  for (let index = 0; index < accumulator.length; index += 2) {
+    const key = accumulator[index]
+    const value = accumulator[index + 1]
+    const nextKey = accumulator[index + 2]
     if (
       ((key === 'scaleX' && nextKey === 'scaleY') ||
         (key === 'scaleY' && nextKey === 'scaleX')) &&
-      value === accumulator.values[index + 1]
+      value === accumulator[index + 3]
     ) {
       output.push({ scale: value })
-      index++
+      index += 2
     } else {
       output.push({ [key]: value })
     }
