@@ -2,8 +2,6 @@ import { useContext } from 'react'
 import { createStyledContext } from '../helpers/createStyledContext'
 import type { ComponentContextI } from '../types'
 
-export const HOC_REPLAY = Symbol()
-
 const componentContextKeys = [
   'disableSSR',
   'inText',
