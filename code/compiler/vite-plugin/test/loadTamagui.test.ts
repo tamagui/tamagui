@@ -858,7 +858,7 @@ test('evaluates config and components through the app resolver and invalidates H
     'browser:workspace-v1:user-plugin:serve-only'
   )
   expect(firstEvaluation.components[2].module.Slider).toBeTruthy()
-  expect(firstEvaluation.components[3].module.Button).toBeTruthy()
+  expect(firstEvaluation.components[3].module.useButton).toBeTruthy()
   expect((globalThis as any).__tamaguiFixtureEvaluationOrder).toEqual([
     'config',
     'component',
