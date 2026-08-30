@@ -4,6 +4,7 @@ import { getConfigRevisionState } from './grammarConfig'
 
 export type StyleStaticConfig = {
   baseStyle: Record<string, any> | undefined
+  baseVariantProps: Record<string, any> | undefined
   defaultProps: Record<string, any> | undefined
   styledContextKeys: Set<string> | null
   variants: StaticConfig['variants']
@@ -40,25 +41,36 @@ export function getStyleStaticConfig(
   const authoredBaseStyle = normalized ? normalized.baseStyle : staticConfig.baseStyle
   const authoredDefaultProps = staticConfig.defaultProps
   let baseStyle: Record<string, any> | undefined
+  let baseVariantProps: Record<string, any> | undefined
   let defaultProps: Record<string, any> | undefined
   if (authoredDefaultProps) {
     const validStyles =
       staticConfig.validStyles ||
       (staticConfig.isText || staticConfig.isInput ? stylePropsText : validStylesView)
     for (const key in authoredDefaultProps) {
-      // a variant name resolves through the prop path, never as a style, so
-      // defaultVariants keep working exactly as authored
-      if (variants?.[key] || !(key in validStyles || key in conf.shorthands)) {
-        ;(defaultProps ||= {})[key] = authoredDefaultProps[key]
-      } else {
+      const isVariant = Boolean(variants?.[key])
+      // transition selects an animation driver preset. It stays a prop even
+      // though the web style table recognizes the CSS property spelling.
+      const isStyle =
+        key !== 'transition' && (key in validStyles || key in conf.shorthands)
+      if (isVariant || isStyle) {
         ;(baseStyle ||= authoredBaseStyle ? { ...authoredBaseStyle } : {})[key] =
           authoredDefaultProps[key]
+      }
+      // variants also stay in the merged props for context and HOC forwarding,
+      // while their style contribution runs at its authored base position
+      if (isVariant || !isStyle) {
+        ;(defaultProps ||= {})[key] = authoredDefaultProps[key]
+      }
+      if (isVariant) {
+        ;(baseVariantProps ||= {})[key] = authoredDefaultProps[key]
       }
     }
   }
   const keys = staticConfig.contextProps || staticConfig.context?.propKeys
   const value: StyleStaticConfig = {
     baseStyle: baseStyle || authoredBaseStyle,
+    baseVariantProps,
     defaultProps,
     styledContextKeys: keys ? new Set(keys) : null,
     variants,

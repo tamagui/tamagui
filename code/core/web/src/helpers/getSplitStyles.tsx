@@ -674,18 +674,34 @@ const passAsChildStyleFlag = 128
 function forEachPropInForwardOrder(pass: StylePass) {
   const styleState = pass[passStyleState] as GetStyleState
   const processedProps = styleState.props
-  const baseStyle = (styleState as DirectState).flatStyleStaticConfig!.baseStyle
+  const styleStaticConfig = (styleState as DirectState).flatStyleStaticConfig!
+  const baseStyle = styleStaticConfig.baseStyle
+  const baseVariantProps = styleStaticConfig.baseVariantProps
 
   const conditionWrapperBase = conditionWrapperTop
   try {
     // asChild renders the child instead of this element, so this component's own
     // base styles are not its to apply; anything the call site passed still is
-    if (baseStyle && !processedProps.asChild) {
+    const appliesBaseStyle = baseStyle && !processedProps.asChild
+    if (appliesBaseStyle) {
       for (const key in baseStyle) {
-        contributeProp(pass, key, baseStyle[key])
+        // a current value replaces its default variant in the default's authored
+        // slot. changing the value must not move it after later child defaults.
+        contributeProp(
+          pass,
+          key,
+          baseVariantProps &&
+            Object.hasOwn(baseVariantProps, key) &&
+            Object.hasOwn(processedProps, key)
+            ? processedProps[key]
+            : baseStyle[key]
+        )
       }
     }
     for (const key in processedProps) {
+      if (appliesBaseStyle && baseVariantProps && Object.hasOwn(baseVariantProps, key)) {
+        continue
+      }
       contributeProp(pass, key, processedProps[key])
     }
   } catch (error) {

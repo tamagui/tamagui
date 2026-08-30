@@ -24,6 +24,7 @@ export type SplitStylePropsOptions<Props extends object> = {
     expandShorthands?: boolean;
     filter?: SplitStylePropsFilter<Props>;
 };
+/** partitions authored props in one pass without resolving style values */
 export declare function splitStyleProps<Props extends object, const ExpandShorthands extends boolean = false>(props: Props, options?: {
     expandShorthands?: ExpandShorthands;
 }): SplitStylePropsResult<Props, StyleKeys, ExpandShorthands>;
