@@ -53,3 +53,18 @@ test('an outer conditional variant displaces a wrapped prop in authored position
   // the direct-pass answer is 30 — the HOC transport must agree
   expect(node.style.paddingLeft).toBe('30px')
 })
+
+test('an HOC transport preserves a default and nested condition', () => {
+  const { container } = render(
+    <TamaguiProvider config={config} defaultTheme="light">
+      <Outer
+        alpha={{ default: 'low', 'web:hover': 'high' } as any}
+        forceStyle="hover"
+        testID="nested-probe"
+      />
+    </TamaguiProvider>
+  )
+  const node = container.querySelector('[data-testid="nested-probe"]') as HTMLElement
+  expect(node).toBeTruthy()
+  expect(node.style.padding).toBe('30px')
+})

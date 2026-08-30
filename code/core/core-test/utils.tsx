@@ -24,6 +24,7 @@ export function simplifiedGetSplitStyles(
     mergeDefaultProps?: boolean
     isAnimated?: boolean
     animationDriver?: Record<string, any>
+    canPlatformPseudo?: boolean
     noClass?: boolean
     theme?: any
     themeName?: string
@@ -52,6 +53,7 @@ export function simplifiedGetSplitStyles(
   const styleProps = {
     mediaState: options.mediaState,
     isAnimated: options.isAnimated ?? false,
+    canPlatformPseudo: options.canPlatformPseudo,
     noClass: options.noClass,
     resolveValues: 'auto',
     styledContext,

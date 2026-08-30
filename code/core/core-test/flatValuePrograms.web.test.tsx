@@ -498,10 +498,10 @@ test('a configured name wins over the same-spelled CSS literal', () => {
   )
 })
 
-test('an overloaded-family mismatch is a diagnostic, never a silent bind', () => {
-  // `width="black"`: 'black' lives in the color category, width binds size.
-  // the shared candidate-target validator diagnoses the mismatch; the value
-  // ships raw (visible breakage) instead of binding the color variable
+test('an overloaded-family mismatch warns without blocking theme resolution', () => {
+  // `width="black"`: 'black' lives in the color category, width binds size,
+  // and the active theme also defines black. development diagnoses the authored
+  // mismatch while the ordinary category-miss theme fallback stays intact.
   const warnings: string[] = []
   const original = console.warn
   const previousNodeEnv = process.env.NODE_ENV
@@ -510,7 +510,7 @@ test('an overloaded-family mismatch is a diagnostic, never a silent bind', () =>
   try {
     const result = split({ width: 'black' })
     const className = result.classNames.width
-    expect(rulesFor(result, className)[0]).toBe(`.${className}{width:black}`)
+    expect(rulesFor(result, className)[0]).toBe(`.${className}{width:var(--black)}`)
     expect(
       warnings.some((warning) =>
         warning.includes('"black" contributes to "color", not "width"')
