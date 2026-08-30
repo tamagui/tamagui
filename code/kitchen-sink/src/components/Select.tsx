@@ -54,7 +54,16 @@ const AltTrigger = styled(SelectTrigger, {
   displayName: 'KitchenAltSelectTrigger',
   backgroundColor: 'purple3',
   borderColor: 'purple8',
-  borderRadius: 1000,
+  variants: {
+    pill: {
+      true: {
+        borderRadius: 1000,
+      },
+    },
+  } as const,
+  defaultVariants: {
+    pill: true,
+  },
 })
 
 const AltValue = styled(SelectValue, {

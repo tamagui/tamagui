@@ -576,14 +576,14 @@ export function HomeScreen({ pagesMode = false }: { pagesMode?: boolean }) {
         </Button>
       </div>
       <div className="is_View _fd-1155724988 _g-1012092611">
-        <h1 className="is_Text font_heading tm-paragraph _us-1298715756 _ws-45919554 _tt-297848359 _ff-398910644 _fw-640945470 _ls-592447083 _fs-1933525972 _lh-1061045529 _c-1675133514 _mt-1877295985 _mr-1445204022 _mb-541650463 _ml-1541834309 _ta-628280461" >
+        <h1 className="is_Text font_heading tm-paragraph _us-1298715756 _c-1675133514 _ws-45919554 _mt-1877295985 _mr-1445204022 _mb-541650463 _ml-1541834309 _tt-297848359 _ff-398910644 _fw-640945470 _ls-592447083 _fs-1933525972 _lh-1061045529 _ta-628280461" >
           Welcome to Tamagui.
         </h1>
-        <p className="is_Text font_body tm-paragraph _ff-398910644 _fw-672061085 _ls-1643456874 _fs-893655883 _lh-1905435290 _c-1675133483 _us-1298715756 _ws-45919554 _ta-628280461" >
+        <p className="is_Text font_body tm-paragraph _us-1298715756 _c-1675133483 _ws-45919554 _ff-398910644 _fw-672061085 _ls-1643456874 _fs-893655883 _lh-1905435290 _ta-628280461" >
           Here's a basic starter to show navigating from one screen to another.
         </p>
         <div className="is_View _fs-1866857425 _btw-442151971 _brw-1074718372 _bbw-1088826218 _blw-829053253 _fg-169839737 _fb-1628162253 _h-1387441229 _mh-706717453 _ty-885232850 _t-77695993 _btc-462111959 _brc-167070178 _bbc-984892067 _blc-1251242433 _bs-1746519034 _bbs-452384145" />
-        <p className="is_Text font_body tm-paragraph _ff-398910644 _fw-672061085 _ls-1643456874 _fs-893655883 _lh-1905435290 _c-533586090 _us-1298715756 _ws-45919554 _ta-628280461">
+        <p className="is_Text font_body tm-paragraph _us-1298715756 _c-533586090 _ws-45919554 _ff-398910644 _fw-672061085 _ls-1643456874 _fs-893655883 _lh-1905435290 _ta-628280461">
           This screen uses the same code on Next.js and React Native.
         </p>
         <div className="is_View _fs-1866857425 _btw-442151971 _brw-1074718372 _bbw-1088826218 _blw-829053253 _fg-169839737 _fb-1628162253 _h-1387441229 _mh-706717453 _ty-885232850 _t-77695993 _btc-462111959 _brc-167070178 _bbc-984892067 _blc-1251242433 _bs-1746519034 _bbs-452384145" />
@@ -625,7 +625,7 @@ function SheetDemo() {
         <Sheet.Container items="center" justify="center" gap="10">
           <Sheet.Background bg="color2" />
           <div className="is_View _fd-1289797684 _g-1012092673">
-            <p className="is_Text font_body tm-paragraph _ff-398910644 _fw-672061085 _ls-1643456874 _fs-893655883 _lh-1905435290 _c-533586090 _us-1298715756 _ws-45919554 _ta-628280461">Made by</p>
+            <p className="is_Text font_body tm-paragraph _us-1298715756 _c-533586090 _ws-45919554 _ff-398910644 _fw-672061085 _ls-1643456874 _fs-893655883 _lh-1905435290 _ta-628280461">Made by</p>
             <Anchor color="blue10" href="https://twitter.com/natebirdman" target="_blank">
               @natebirdman,
             </Anchor>
@@ -1232,14 +1232,14 @@ export function HomeScreen({ pagesMode = false }: { pagesMode?: boolean }) {
         </Button>
       </div>
       <div className="is_View _fd-1155724988 _g-1012092611">
-        <h1 className="is_Text font_heading tm-paragraph _us-1298715756 _ws-45919554 _tt-297848359 _ff-398910644 _fw-640945470 _ls-592447083 _fs-1933525972 _lh-1061045529 _c-1675133514 _mt-1877295985 _mr-1445204022 _mb-541650463 _ml-1541834309 _ta-628280461" >
+        <h1 className="is_Text font_heading tm-paragraph _us-1298715756 _c-1675133514 _ws-45919554 _mt-1877295985 _mr-1445204022 _mb-541650463 _ml-1541834309 _tt-297848359 _ff-398910644 _fw-640945470 _ls-592447083 _fs-1933525972 _lh-1061045529 _ta-628280461" >
           Welcome to Tamagui.
         </h1>
-        <p className="is_Text font_body tm-paragraph _ff-398910644 _fw-672061085 _ls-1643456874 _fs-893655883 _lh-1905435290 _c-1675133483 _us-1298715756 _ws-45919554 _ta-628280461" >
+        <p className="is_Text font_body tm-paragraph _us-1298715756 _c-1675133483 _ws-45919554 _ff-398910644 _fw-672061085 _ls-1643456874 _fs-893655883 _lh-1905435290 _ta-628280461" >
           Here's a basic starter to show navigating from one screen to another.
         </p>
         <div className="is_View _fs-1866857425 _btw-442151971 _brw-1074718372 _bbw-1088826218 _blw-829053253 _fg-169839737 _fb-1628162253 _h-1387441229 _mh-706717453 _ty-885232850 _t-77695993 _btc-462111959 _brc-167070178 _bbc-984892067 _blc-1251242433 _bs-1746519034 _bbs-452384145" />
-        <p className="is_Text font_body tm-paragraph _ff-398910644 _fw-672061085 _ls-1643456874 _fs-893655883 _lh-1905435290 _c-533586090 _us-1298715756 _ws-45919554 _ta-628280461">
+        <p className="is_Text font_body tm-paragraph _us-1298715756 _c-533586090 _ws-45919554 _ff-398910644 _fw-672061085 _ls-1643456874 _fs-893655883 _lh-1905435290 _ta-628280461">
           This screen uses the same code on Next.js and React Native.
         </p>
         <div className="is_View _fs-1866857425 _btw-442151971 _brw-1074718372 _bbw-1088826218 _blw-829053253 _fg-169839737 _fb-1628162253 _h-1387441229 _mh-706717453 _ty-885232850 _t-77695993 _btc-462111959 _brc-167070178 _bbc-984892067 _blc-1251242433 _bs-1746519034 _bbs-452384145" />
@@ -1281,7 +1281,7 @@ function SheetDemo() {
         <Sheet.Container items="center" justify="center" gap="10">
           <Sheet.Background bg="color2" />
           <div className="is_View _fd-1289797684 _g-1012092673">
-            <p className="is_Text font_body tm-paragraph _ff-398910644 _fw-672061085 _ls-1643456874 _fs-893655883 _lh-1905435290 _c-533586090 _us-1298715756 _ws-45919554 _ta-628280461">Made by</p>
+            <p className="is_Text font_body tm-paragraph _us-1298715756 _c-533586090 _ws-45919554 _ff-398910644 _fw-672061085 _ls-1643456874 _fs-893655883 _lh-1905435290 _ta-628280461">Made by</p>
             <Anchor color="blue10" href="https://twitter.com/natebirdman" target="_blank">
               @natebirdman,
             </Anchor>
