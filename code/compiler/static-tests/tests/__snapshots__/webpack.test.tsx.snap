@@ -281,7 +281,7 @@ exports[`webpack-tests > 18. extracts flexWrap property 1`] = `
     class="_dsp_contents  font_body"
   >
     <div
-      class="is_View _fw-381719595 _fd-1289797684 _g-1012092673"
+      class="is_View _fd-1289797684 _fw-381719595 _g-1012092673"
       data-testid="flex-wrap"
     >
       <span
@@ -369,7 +369,7 @@ exports[`webpack-tests > 21. complex real-world case - flexWrap with many condit
     class="_dsp_contents  font_body"
   >
     <div
-      class="is_View _btlr-2062174463 _btrr-1782469730 _bbrr-1259689622 _bblr-553360973 _fd-1155724988 _fb-1066543801 _mw-2068604972 _ox-1551223136 _oy-936289697 _pt-641600006 _pr-830667079 _pb-581964608 _pl-315787027 _w-195549682 _bc-591996859 _c-1655764817"
+      class="is_View _fd-1155724988 _btlr-2062174463 _btrr-1782469730 _bbrr-1259689622 _bblr-553360973 _fb-1066543801 _mw-2068604972 _ox-1551223136 _oy-936289697 _pt-641600006 _pr-830667079 _pb-581964608 _pl-315787027 _w-195549682 _bc-591996859 _c-1655764817"
     >
       <div
         class="is_View _fw-381719595 _fd-1289797684 _g-1946090234 _jc-2146749355"
@@ -394,7 +394,7 @@ exports[`webpack-tests > 21. complex real-world case - flexWrap with many condit
     class="_dsp_contents  font_body"
   >
     <div
-      class="is_View _btlr-2062174463 _btrr-1782469730 _bbrr-1259689622 _bblr-553360973 _fd-1155724988 _fb-1068042260 _mw-2068604972 _ox-1551223136 _oy-936289697 _pt-641600006 _pr-830667079 _pb-581964608 _pl-315787027 _w-195549682 _bc-591996859 _c-1655764817"
+      class="is_View _fd-1155724988 _btlr-2062174463 _btrr-1782469730 _bbrr-1259689622 _bblr-553360973 _fb-1068042260 _mw-2068604972 _ox-1551223136 _oy-936289697 _pt-641600006 _pr-830667079 _pb-581964608 _pl-315787027 _w-195549682 _bc-591996859 _c-1655764817"
     >
       <div
         class="is_View _fw-381719595 _fd-1289797684 _g-1946090234 _jc-658029924"
