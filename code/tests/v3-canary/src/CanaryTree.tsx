@@ -67,7 +67,7 @@ export function CanaryTree() {
           </Button>
           <Text testID="canary-press-count">presses:{presses}</Text>
           <Button
-            testID="canary-button-compound"
+            testID="canary-button-circular"
             aria-label="small circular copied button"
             circular
             size="small"

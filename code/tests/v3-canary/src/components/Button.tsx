@@ -6,6 +6,7 @@ import {
   createStyledHOC,
   styled,
   useButton,
+  type VariantSpreadExtras,
   withStaticProperties,
 } from 'tamagui'
 
@@ -42,7 +43,20 @@ export const ButtonFrame = styled(ButtonBehaviorFrame, {
   variants: {
     size: buttonSizes.frame,
     circular: {
-      true: { rounded: 1000, paddingHorizontal: 0 },
+      true: (_, extras: VariantSpreadExtras<any>) => {
+        const { height } = buttonSizes.resolve(
+          (extras.props.size as ButtonSize | undefined) ?? buttonSizes.defaultSize
+        ).frame
+        return {
+          rounded: 1000,
+          paddingHorizontal: 0,
+          height,
+          maxHeight: height,
+          maxWidth: height,
+          minWidth: height,
+          width: height,
+        }
+      },
     },
     disabled: {
       true: { opacity: 0.35 },

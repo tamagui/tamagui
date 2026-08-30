@@ -24,7 +24,7 @@ type TextParentStyleKeys = Extract<
   keyof typeof stylePropsTextOnly | 'ellipsis' | 'numberOfLines'
 >
 
-type TextParentStyleProps = Pick<TextStyle, TextParentStyleKeys>
+type TextParentStyleProps = Partial<Pick<TextStyle, TextParentStyleKeys>>
 type TextParentShorthandKeys = {
   [Key in keyof Shorthands]: Shorthands[Key] extends TextParentStyleKeys ? Key : never
 }[keyof Shorthands]

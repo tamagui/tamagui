@@ -16,10 +16,10 @@ const crossFileFrameRoot = styled(
       },
       emphasis: {
         quiet: 'opacity-75',
-        strong: 'w-8 border-2',
+        strong: 'w-8 border-2 opacity-50',
       },
       selected: {
-        true: 'h-8',
+        true: 'h-8 p-0',
       },
     } as const,
   }

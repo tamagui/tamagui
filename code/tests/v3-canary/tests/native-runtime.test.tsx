@@ -64,7 +64,7 @@ describe('shared v3 canary on native', () => {
         typeof node.props.onResponderRelease === 'function'
     )
     const circular = flattenStyle(
-      byTestID(rendered!, 'canary-button-compound').props.style
+      byTestID(rendered!, 'canary-button-circular').props.style
     )
     const selectTrigger = flattenStyle(
       byTestID(rendered!, 'canary-select-trigger').props.style
