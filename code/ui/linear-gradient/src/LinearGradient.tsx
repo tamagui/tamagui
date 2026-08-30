@@ -1,9 +1,10 @@
 import type { ColorTokens, GetProps, ThemeTokens } from '@tamagui/core'
 import {
   createStyledHOC,
+  getTokens,
+  getVariableValue,
   normalizeColor,
   styled,
-  useProps,
   useTheme,
 } from '@tamagui/core'
 import { YStack } from '@tamagui/stacks'
@@ -33,14 +34,13 @@ export const LinearGradient = createStyledHOC(
       LinearGradientExtraProps,
     ref
   ) => {
-    const props = useProps(propsIn)
-
-    const { start, end, colors: colorsProp, locations, children, ...stackProps } = props
+    const { start, end, colors: colorsProp, locations, children, ...stackProps } = propsIn
     const theme = useTheme()
+    const colorTokens = getTokens().color
 
     let colors =
-      props.colors?.map((c) => {
-        return (theme[c]?.get('web') as string) ?? c
+      colorsProp?.map((c) => {
+        return (theme[c]?.get('web') as string) ?? getVariableValue(colorTokens[c]) ?? c
       }) || []
 
     if (process.env.NODE_ENV !== 'production') {

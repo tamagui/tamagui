@@ -10,7 +10,6 @@ import {
   createStyledContext,
   createStyledHOC,
   styled,
-  useProps,
   withStaticProperties,
 } from 'tamagui'
 
@@ -62,10 +61,9 @@ const Frame = styled(View, {
   } as const,
 })
 
-const FrameContainer = createStyledHOC(Frame, (propsIn, ref) => {
-  const props = useProps(propsIn)
-  return <Frame ref={ref} {...props} />
-})
+const FrameContainer = createStyledHOC(Frame, (props, ref) => (
+  <Frame ref={ref} {...props} />
+))
 
 const ForwardRefContainer = React.forwardRef<TamaguiElement, GetProps<typeof Frame>>(
   (propsIn, ref) => {

@@ -11,7 +11,7 @@ export function LinearGradientDemo() {
         rounded="4"
         start={[0, 1]}
         end={[0, 0]}
-        colors={['red10', 'yellow10']}
+        colors={['red-600', 'yellow-400']}
       />
 
       {/* theme values */}
