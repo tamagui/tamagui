@@ -44,7 +44,6 @@ export { _disableMediaTouch, _mediaListenerStats, configureMedia, mediaKeyMatch,
 export { mediaObjectToString } from './helpers/mediaObjectToString';
 export { getMedia, mediaQueryConfig, mediaState, setMediaState, } from './helpers/mediaState';
 export { useAnimatedNumber, useAnimatedNumberReaction, useAnimatedNumberStyle, useAnimatedNumbersStyle, useAnimationDriver, } from './hooks/useAnimationDriver';
-export { useProps, usePropsAndStyle, useStyle } from './hooks/useProps';
 export { useTheme } from './hooks/useTheme';
 export { usePortalThemeState } from './hooks/usePortalThemeState';
 export { useThemeName } from './hooks/useThemeName';

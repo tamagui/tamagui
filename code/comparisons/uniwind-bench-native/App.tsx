@@ -115,7 +115,8 @@ function AnimatedItems({ seed }: { seed: number }) {
 }
 
 // themed = simple shape with a color class. Uniwind wraps every className element
-// in useStyle (3 hooks); a static color class is prod-subscription-free, so this
+// in Uniwind's runtime style hook (3 hooks); a static color class is
+// prod-subscription-free, so this
 // measures Uniwind's per-element wrapper cost for a colored view.
 function ThemedItems({ seed }: { seed: number }) {
   return useMemo(() => {

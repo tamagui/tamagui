@@ -214,6 +214,11 @@ The removed set includes `focusable`, `fullscreen`, the `styleable` static,
 forwardRef component wrappers, `inlineWhenUnflattened`, deprecated UI kit
 aliases, old platform style keys, and true token keys.
 
+The runtime-flattening hooks `useProps`, `useStyle`, and `usePropsAndStyle` are
+also gone. Keep authored style props on styled Tamagui components and read
+behavior props directly. When behavior code truly needs the active breakpoint
+or theme, read that state explicitly with `useMedia()` or `useTheme()`.
+
 If your code still uses `focusable`, move to `tabIndex`. If it uses
 `fullscreen`, write the layout explicitly with `position` and `inset`. If it
 relies on Tamagui forwarding through wrapper statics, move to ordinary React

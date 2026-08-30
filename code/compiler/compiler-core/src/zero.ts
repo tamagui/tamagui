@@ -46,8 +46,6 @@ export const ZERO_DESIGN_STATE_APIS = new Set([
   'useMedia',
   'useTheme',
   'useThemeName',
-  'useProps',
-  'usePropsAndStyle',
   'getConfig',
   'getTokens',
   'useTokens',

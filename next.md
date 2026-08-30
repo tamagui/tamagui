@@ -36,12 +36,12 @@ let the workflow publish the exact tree that passed Checks.
 
 ## landed on v3-beta (July 2026)
 
-- deprecated API removals: `focusable` => `tabIndex`, `fullscreen`, `styleable`, forwardRef wrappers, `inlineWhenUnflattened`, ui-kit aliases, true tokens (default size resolves to `4`), platform style key renames, createSystemFont moved to its own package
+- deprecated API removals: `focusable` => `tabIndex`, `fullscreen`, `styleable`, forwardRef wrappers, `inlineWhenUnflattened`, ui-kit aliases, `useProps` / `useStyle` / `usePropsAndStyle`, true tokens (default size resolves to `4`), platform style key renames, createSystemFont moved to its own package
 - SSR-safe inverse sub-themes: `inverse` is a built-in sub-theme now, old themeInverse path gone
 - composable structure audit: ListItem alignment, Select dead-code sweep + Select.Separator, FocusScope (display:contents wrapper, render-prop removed, new `noFocus` zero-focus mode threaded through Dialog/Popover/Select), Dialog (dead-code sweep, RemoveScroll gated to open modal dialogs, parts own presence, driver-level `onDidAnimate` completion), Sheet (scoped context, Frame => Container + Background split with codemod, Overlay must be direct child)
 - Adapt live slot core + dialog<->sheet handoff (exit animations play through media flips)
 - notable fixes along the way: boolean size-shorthand tokens inside variant styles, animated-driver custom component preservation (render-as-string clobbering), slider visible track/fill, dialog exit releases pointer-events locks (body lock, overlay, focus trap)
-- icons: sizing now defaults to font sizes instead of size tokens (`themed()` resolves token sizes via the current font's `font.size[token]` scale, so icons line up with text at every size), and `usePropsAndStyle` was removed from `themed()` (icons now resolve theme color/fill/stroke via `useTheme()` and build a minimal style object instead of running full style resolution on every render)
+- icons: sizing now defaults to font sizes instead of size tokens (`themed()` resolves token sizes via the current font's `font.size[token]` scale, so icons line up with text at every size), and icons now resolve theme color/fill/stroke directly instead of running full style resolution on every render
 - token stepping removed from default component styling: `@tamagui/get-token`'s `getSize`/`getSpace`/`getRadius` are now trivial same-key token resolvers (token in, Variable out). The runtime scale-sorting stepper (`stepTokenUpOrDown` / `getTokenRelative`, plus the `shift`/`bounds`/`excludeHalfSteps` options) is gone — it sorted the config's token scale at runtime and stepped up/down by index, which was unpredictable with custom configs. Components that stepped a token down now multiply the resolved numeric size value instead (input padding, list-item/select-label paddingVertical, select-native paddingVertical, popper arrow, slider thumb, tooltip content padding), with per-site constants tuned to match the previous default-config output within ~1-2px. "One size smaller" token-key lookups (list-item subtitle font, tooltip default size) use the new `oneSizeTokenSmaller`, which just decrements a numeric token key.
 
 migration notes so far:
@@ -52,7 +52,7 @@ migration notes so far:
 - Select's unused `name` and `autoComplete` props were removed; they never backed form or autofill behavior.
 - Sheet.Frame => Sheet.Container + Sheet.Background (codemod: scripts/codemods/sheet-frame-to-container.js). Container no longer clips with overflow hidden. Sheet.Overlay must be a direct child of Sheet.
 - icon token sizes now resolve through the current font's size scale (`font.size[token]`) rather than the `size` token scale, so e.g. `<Icon size="4" />` matches `4` text instead of the `4` space/size value. Raw numeric sizes are unchanged.
-- icon components no longer accept media/state styling directly — `themed()` dropped `usePropsAndStyle` and no longer runs full style resolution. Wrap an icon in a styled `View` and use `sm:` or `hover:` value clauses when you need responsive/state styling around it. Color/fill/stroke theme tokens, `size`, `strokeWidth`, `style`, and `testID` still work as before.
+- icon components no longer accept media/state styling directly. Wrap an icon in a styled `View` and use `sm:` or `hover:` value clauses when you need responsive/state styling around it. Color/fill/stroke theme tokens, `size`, `strokeWidth`, `style`, and `testID` still work as before.
 - `@tamagui/get-token` public API removal: `stepTokenUpOrDown` and its alias `getTokenRelative` are gone, and `getSize` / `getSpace` / `getRadius` no longer accept the second options argument (`shift` / `bounds` / `excludeHalfSteps`). They now take a single token and return that token's Variable, resolving `true` to the default size and looking up cross-scale by the same key. Replace shifted lookups with arithmetic on the resolved numeric value (e.g. `getVariableValue(getSize(size)) * n`). `createCheckbox`'s `sizeAdjust` prop was also removed (it relied on token stepping).
 - font size semantics settled: a raw **number** font size is the multiplier / platform-default-lineHeight path (a direct numeric `fontSize` sets the literal size and leaves lineHeight to the platform — landed earlier), while a **"Npx" string** (e.g. `"17px"`, or `fontSize="17px"`) means an exact pixel value. Px strings are first-class literals — never token keys, no lineHeight auto-derivation: web passes them through as CSS, native parses them to the number, and a token authored as a px string is normalized to its number with a `needsPx` flag at creation. The v5 config font `size` + `lineHeight` scales are now pinned to px strings, so v5 behavior is exactly the previous numbers (verified identical computed styles); v6 will redefine the number scales aligned to tailwind.
 
@@ -485,7 +485,6 @@ createCore<CustomTypes>({
 
 - nan issue: nan start or end NaN 22 bytes: 0-22 [ 'bytes: 0', '22' ]
 
-- button media queries break due to useStyle hook
 - algolia creds
 - uniswap/tamagui fixes, see uniswap section
   - the platform-web type issues should be relatively easy
@@ -584,7 +583,6 @@ gtSm: false,
   - adding a color/scale really adds a theme
   - but also adds colorName1 => colorNameX to base theme
 
-- check usePropsAndStyle with group props
 
 - alt themes don't change color1-9 so you can't do color2 and then make the alt theme make it more subtle, but they should
 

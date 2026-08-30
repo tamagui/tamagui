@@ -31,7 +31,7 @@ export const useThemeWithState = (
   // <Theme> components push their themeState.id into ThemeStateContext,
   // so their descendants subscribe under this id; <Theme> needs to schedule
   // descendant updates when its propsKey changes. Leaf styled components
-  // (createComponent, useProps, useTheme, animation hooks) do NOT push a
+  // (createComponent, useTheme, animation hooks) do NOT push a
   // context — listenersByParent[componentId] is always empty — so the
   // schedule-update effect is a no-op for them and can be skipped to save
   // one hook slot per styled component on mount. Theme.tsx passes true.

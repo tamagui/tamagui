@@ -33,9 +33,9 @@ export const getVariantExtras = (styleState: GetStyleState) => {
       const found = fonts[this.fontFamily]
       if (found) return found
 
-      // When a component re-processes already-resolved props (useProps -> inner
-      // render), fontFamily arrives as the opaque var(--f-family) reference. The
-      // font identity survives in the font_<name> class.
+      // When an inner component re-processes already-resolved props, fontFamily
+      // arrives as the opaque var(--f-family) reference. The font identity
+      // survives in the font_<name> class.
       const className = props.className
       if (typeof className === 'string') {
         let start = 0

@@ -489,7 +489,7 @@ Rules to verify:
 Search for removed APIs:
 
 ```bash
-rg "createStyledHOC|focusable|fullscreen|themeInverse|<Theme inverse|Sheet\.Frame|styleable\(|inlineWhenUnflattened|\$true|getTokenRelative|stepTokenUpOrDown|forceRemoveScrollEnabled|sizeAdjust|selectable=|Select\.Item.*index|enterVariant|exitVariant|enterExitVariant|delayMs|disableTransparencyHide|disableRootThemeClass|themeClassNameOnRoot|isWindowDefined|getExpandedShorthands|backgroundActive|surface[1-4]|color12|defaultComponentThemes|@tamagui/config/v[3-5]|@tamagui/animations-moti|@tamagui/babel-plugin"
+rg "createStyledHOC|focusable|fullscreen|themeInverse|<Theme inverse|Sheet\.Frame|styleable\(|inlineWhenUnflattened|\$true|getTokenRelative|stepTokenUpOrDown|forceRemoveScrollEnabled|sizeAdjust|selectable=|Select\.Item.*index|enterVariant|exitVariant|enterExitVariant|delayMs|disableTransparencyHide|disableRootThemeClass|themeClassNameOnRoot|isWindowDefined|getExpandedShorthands|usePropsAndStyle|useProps|useStyle|backgroundActive|surface[1-4]|color12|defaultComponentThemes|@tamagui/config/v[3-5]|@tamagui/animations-moti|@tamagui/babel-plugin"
 ```
 
 Use these replacements:
@@ -517,7 +517,8 @@ Use these replacements:
 | `@tamagui/input` v1 `Input` / `TextArea` | the current `Input` and `TextArea` from `@tamagui/input` |
 | `isWindowDefined` | `isBrowser` |
 | `createMedia` from `@tamagui/react-native-media-driver` | remove the call, `createTamagui` sets the driver up |
-| `getExpandedShorthands` | `useProps` |
+| `getExpandedShorthands` | author canonical prop names directly |
+| `useProps`, `useStyle`, `usePropsAndStyle` | keep style props on styled Tamagui components; use `useMedia()` or `useTheme()` only when behavior code needs that state |
 | `createCheckbox` `sizeAdjust` | explicit sizing math or component styles |
 | `@tamagui/animations-moti` | `@tamagui/animations-reanimated` |
 | `@tamagui/config/reanimated` | `@tamagui/config/animations-reanimated` |
@@ -1296,7 +1297,7 @@ npx tamagui check
 node ./node_modules/tamagui/scripts/codemods/sheet-frame-to-container.js "src/**/*.{ts,tsx}"
 
 # removed APIs
-rg "createStyledHOC|focusable|fullscreen|themeInverse|<Theme inverse|Sheet\.Frame|styleable\(|inlineWhenUnflattened|\$true|getTokenRelative|stepTokenUpOrDown|forceRemoveScrollEnabled|sizeAdjust|selectable=|Select\.Item.*index|enterVariant|exitVariant|enterExitVariant|delayMs|disableTransparencyHide|disableRootThemeClass|themeClassNameOnRoot|isWindowDefined|getExpandedShorthands|backgroundActive|surface[1-4]|color12|defaultComponentThemes|@tamagui/config/v[3-5]|@tamagui/animations-moti|@tamagui/babel-plugin"
+rg "createStyledHOC|focusable|fullscreen|themeInverse|<Theme inverse|Sheet\.Frame|styleable\(|inlineWhenUnflattened|\$true|getTokenRelative|stepTokenUpOrDown|forceRemoveScrollEnabled|sizeAdjust|selectable=|Select\.Item.*index|enterVariant|exitVariant|enterExitVariant|delayMs|disableTransparencyHide|disableRootThemeClass|themeClassNameOnRoot|isWindowDefined|getExpandedShorthands|usePropsAndStyle|useProps|useStyle|backgroundActive|surface[1-4]|color12|defaultComponentThemes|@tamagui/config/v[3-5]|@tamagui/animations-moti|@tamagui/babel-plugin"
 ```
 
 ## v1 to v3 path

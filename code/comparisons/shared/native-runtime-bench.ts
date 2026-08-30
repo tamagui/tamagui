@@ -16,7 +16,7 @@ const HARNESS_URL = 'http://localhost:8091/result'
 
 type CreateNativeRuntimeBenchOptions = {
   React: any
-  Linking: { parse(url: string): { queryParams?: Record<string, unknown> } }
+  Linking: { parse(url: string): { queryParams?: Record<string, unknown> | null } }
   useURL(): string | null
   RNView: any
   RNText: any
@@ -25,10 +25,7 @@ type CreateNativeRuntimeBenchOptions = {
   View: any
   Button: any
   getVariableValue(value: unknown): unknown
-  usePropsAndStyle(
-    props: Record<string, unknown>,
-    options?: Record<string, unknown>
-  ): [Record<string, unknown>, Record<string, unknown>]
+  flattenStyle(style: unknown): Record<string, unknown>
   config: any
   version: 'v2' | 'v3'
   framework: string
@@ -46,7 +43,7 @@ export function createNativeRuntimeBenchApp({
   View,
   Button,
   getVariableValue,
-  usePropsAndStyle,
+  flattenStyle,
   config,
   version,
   framework: defaultFramework,
@@ -65,12 +62,14 @@ export function createNativeRuntimeBenchApp({
     useRef,
     useState,
   } = React
-  const normalizeStyle = (style: Record<string, unknown>, keys: readonly string[]) =>
-    Object.fromEntries(
+  const normalizeStyle = (styleIn: unknown, keys: readonly string[]) => {
+    const style = flattenStyle(styleIn)
+    return Object.fromEntries(
       keys.flatMap((key) =>
         style[key] === undefined ? [] : [[key, getVariableValue(style[key])]]
       )
     )
+  }
   const tokenNames = [
     '3',
     'blue3',
@@ -404,37 +403,73 @@ export function createNativeRuntimeBenchApp({
     component: ComponentItems,
   }
 
-  function GroupBehaviorProbe({ onResolved }: { onResolved(style: object): void }) {
-    const [, style] = usePropsAndStyle(runtimeBehaviorProps.group, { noMedia: true })
-    const signature = JSON.stringify(style)
+  function ResolvedStyleCapture({
+    keys,
+    onResolved,
+    style,
+  }: {
+    keys: readonly string[]
+    onResolved(style: Record<string, unknown>): void
+    style?: unknown
+  }) {
+    const resolvedStyle = normalizeStyle(style, keys)
+    const signature = JSON.stringify(resolvedStyle)
     useLayoutEffect(() => {
-      if (getVariableValue(style.backgroundColor) === '#2563eb') {
-        onResolved(normalizeStyle(style, ['backgroundColor']))
-      }
+      onResolved(resolvedStyle)
     }, [onResolved, signature])
     return null
   }
 
+  function BehaviorProbe({
+    Component = View,
+    keys,
+    onResolved,
+    props,
+  }: {
+    Component?: any
+    keys: readonly string[]
+    onResolved(style: Record<string, unknown>): void
+    props: Record<string, unknown>
+  }) {
+    return createElement(
+      Component,
+      { ...props, asChild: true },
+      createElement(ResolvedStyleCapture, { keys, onResolved })
+    )
+  }
+
   function RuntimeBehaviorGate({ onReady }: { onReady(signature: object): void }) {
-    const [, staticStyle] = usePropsAndStyle(runtimeBehaviorProps.static, {
-      noMedia: true,
-    })
-    const [, tokenStyle] = usePropsAndStyle(runtimeBehaviorProps.token, {
-      noMedia: true,
-    })
-    const [, pseudoStyle] = usePropsAndStyle(runtimeBehaviorProps.pseudo, {
-      noMedia: true,
-    })
-    // Button is a never-flatten HOC; resolve the styled frame it forwards to while
-    // the timed component scenario continues to render the real Button.
-    const [, componentStyle] = usePropsAndStyle(runtimeBehaviorProps.component, {
-      forComponent: Button.Frame,
-      noMedia: true,
-    })
-    const [groupStyle, setGroupStyle] = useState(null as object | null)
-    const handleGroupStyle = useCallback(
-      (style: object) => setGroupStyle((current: object | null) => current ?? style),
+    type BehaviorKey = 'static' | 'token' | 'pseudo' | 'group' | 'component'
+    type BehaviorStyles = Partial<Record<BehaviorKey, Record<string, unknown>>>
+    const [resolvedStyles, setResolvedStyles] = useState({} as BehaviorStyles)
+    const handleResolved = useCallback(
+      (key: BehaviorKey, style: Record<string, unknown>) => {
+        setResolvedStyles((current: BehaviorStyles) => {
+          if (JSON.stringify(current[key]) === JSON.stringify(style)) return current
+          return { ...current, [key]: style }
+        })
+      },
       []
+    )
+    const handleStaticStyle = useCallback(
+      (style: Record<string, unknown>) => handleResolved('static', style),
+      [handleResolved]
+    )
+    const handleTokenStyle = useCallback(
+      (style: Record<string, unknown>) => handleResolved('token', style),
+      [handleResolved]
+    )
+    const handlePseudoStyle = useCallback(
+      (style: Record<string, unknown>) => handleResolved('pseudo', style),
+      [handleResolved]
+    )
+    const handleGroupStyle = useCallback(
+      (style: Record<string, unknown>) => handleResolved('group', style),
+      [handleResolved]
+    )
+    const handleComponentStyle = useCallback(
+      (style: Record<string, unknown>) => handleResolved('component', style),
+      [handleResolved]
     )
     const groupContext = useMemo(() => {
       const state = { pseudo: { press: true } }
@@ -449,40 +484,26 @@ export function createNativeRuntimeBenchApp({
       }
     }, [])
     const signature = useMemo(
-      () => ({
-        version: 1,
-        static: normalizeStyle(staticStyle, [
-          'width',
-          'height',
-          'backgroundColor',
-          'borderTopLeftRadius',
-          'borderTopRightRadius',
-          'borderBottomRightRadius',
-          'borderBottomLeftRadius',
-          'marginTop',
-          'marginRight',
-          'marginBottom',
-          'marginLeft',
-        ]),
-        token: normalizeStyle(tokenStyle, ['width', 'height', 'backgroundColor']),
-        pseudo: normalizeStyle(pseudoStyle, ['opacity', 'backgroundColor']),
-        component: normalizeStyle(componentStyle, [
-          'height',
-          'minHeight',
-          'paddingLeft',
-          'paddingRight',
-          'borderTopLeftRadius',
-          'backgroundColor',
-          'color',
-          'opacity',
-        ]),
-      }),
-      [componentStyle, pseudoStyle, staticStyle, tokenStyle]
+      () =>
+        resolvedStyles.static &&
+        resolvedStyles.token &&
+        resolvedStyles.pseudo &&
+        resolvedStyles.group &&
+        resolvedStyles.component
+          ? {
+              version: 1,
+              static: resolvedStyles.static,
+              token: resolvedStyles.token,
+              pseudo: resolvedStyles.pseudo,
+              group: resolvedStyles.group,
+              component: resolvedStyles.component,
+            }
+          : null,
+      [resolvedStyles]
     )
 
     useLayoutEffect(() => {
-      if (!groupStyle) return
-      const completeSignature = { ...signature, group: groupStyle }
+      if (!signature) return
       const expected = {
         static: {
           width: 20,
@@ -502,27 +523,74 @@ export function createNativeRuntimeBenchApp({
         group: { backgroundColor: '#2563eb' },
       }
       for (const key of Object.keys(expected) as Array<keyof typeof expected>) {
-        if (JSON.stringify(completeSignature[key]) !== JSON.stringify(expected[key])) {
+        if (JSON.stringify(signature[key]) !== JSON.stringify(expected[key])) {
           throw new Error(
-            `native runtime behavior mismatch for ${key}: ${JSON.stringify(completeSignature[key])}`
+            `native runtime behavior mismatch for ${key}: ${JSON.stringify(signature[key])}`
           )
         }
       }
-      if (
-        typeof Button.displayName !== 'string' ||
-        completeSignature.component.opacity !== 0.8
-      ) {
+      if (typeof Button.displayName !== 'string' || signature.component.opacity !== 0.8) {
         throw new Error(
-          `native component behavior mismatch: ${JSON.stringify(completeSignature.component)}`
+          `native component behavior mismatch: ${JSON.stringify(signature.component)}`
         )
       }
-      onReady(completeSignature)
-    }, [groupStyle, onReady, signature])
+      onReady(signature)
+    }, [onReady, signature])
 
     return createElement(
-      GroupContext.Provider,
-      { value: groupContext },
-      createElement(GroupBehaviorProbe, { onResolved: handleGroupStyle })
+      Fragment,
+      null,
+      createElement(BehaviorProbe, {
+        props: runtimeBehaviorProps.static,
+        keys: [
+          'width',
+          'height',
+          'backgroundColor',
+          'borderTopLeftRadius',
+          'borderTopRightRadius',
+          'borderBottomRightRadius',
+          'borderBottomLeftRadius',
+          'marginTop',
+          'marginRight',
+          'marginBottom',
+          'marginLeft',
+        ],
+        onResolved: handleStaticStyle,
+      }),
+      createElement(BehaviorProbe, {
+        props: runtimeBehaviorProps.token,
+        keys: ['width', 'height', 'backgroundColor'],
+        onResolved: handleTokenStyle,
+      }),
+      createElement(BehaviorProbe, {
+        props: runtimeBehaviorProps.pseudo,
+        keys: ['opacity', 'backgroundColor'],
+        onResolved: handlePseudoStyle,
+      }),
+      createElement(
+        GroupContext.Provider,
+        { value: groupContext },
+        createElement(BehaviorProbe, {
+          props: runtimeBehaviorProps.group,
+          keys: ['backgroundColor'],
+          onResolved: handleGroupStyle,
+        })
+      ),
+      createElement(BehaviorProbe, {
+        Component: Button.Frame,
+        props: runtimeBehaviorProps.component,
+        keys: [
+          'height',
+          'minHeight',
+          'paddingLeft',
+          'paddingRight',
+          'borderTopLeftRadius',
+          'backgroundColor',
+          'color',
+          'opacity',
+        ],
+        onResolved: handleComponentStyle,
+      })
     )
   }
 
