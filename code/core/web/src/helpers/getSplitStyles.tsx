@@ -674,7 +674,9 @@ const passAsChildStyleFlag = 128
 function forEachPropInForwardOrder(pass: StylePass) {
   const styleState = pass[passStyleState] as GetStyleState
   const processedProps = styleState.props
-  const baseStyle = (styleState as DirectState).flatStyleStaticConfig!.baseStyle
+  const styleStaticConfig = (styleState as DirectState).flatStyleStaticConfig!
+  const baseStyle = styleStaticConfig.baseStyle
+  const baseVariantProps = styleStaticConfig.baseVariantProps
 
   const conditionWrapperBase = conditionWrapperTop
   try {
@@ -686,6 +688,13 @@ function forEachPropInForwardOrder(pass: StylePass) {
       }
     }
     for (const key in processedProps) {
+      if (
+        baseVariantProps &&
+        Object.hasOwn(baseVariantProps, key) &&
+        Object.is(processedProps[key], baseVariantProps[key])
+      ) {
+        continue
+      }
       contributeProp(pass, key, processedProps[key])
     }
   } catch (error) {
