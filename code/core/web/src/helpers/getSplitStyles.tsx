@@ -1676,20 +1676,13 @@ export const getSplitStyles: StyleSplitter = (
 
     conditionalStates = styleState.flatStateKeys || null
     usesSafeArea = !!styleState.flatUsesSafeArea
-    if (styleState.flatMediaKeys?.size) {
-      if (!hasMedia) hasMedia = new Set()
-      if (typeof hasMedia !== 'boolean') {
-        for (const key of styleState.flatMediaKeys) hasMedia.add(key)
-      }
-    }
-    if (styleState.flatGroupKeys?.size) {
-      pseudoGroups ||= new Set()
-      for (const key of styleState.flatGroupKeys) pseudoGroups.add(key)
-    }
-    if (styleState.flatGroupMedia?.size) {
-      mediaGroups ||= new Set()
-      for (const key of styleState.flatGroupMedia) mediaGroups.add(key)
-    }
+    hasMedia = styleState.flatMediaKeys?.size ? styleState.flatMediaKeys : false
+    pseudoGroups = styleState.flatGroupKeys?.size
+      ? styleState.flatGroupKeys
+      : undefined
+    mediaGroups = styleState.flatGroupMedia?.size
+      ? styleState.flatGroupMedia
+      : undefined
 
     // a platform driver with native pseudo states rides the emitter path: the
     // whole frame completes inline instead of as classes. The frame is neutral,
@@ -1702,7 +1695,6 @@ export const getSplitStyles: StyleSplitter = (
           styleState,
           'transform',
           finalizeTransformAccumulator(styleState.transformAccumulator),
-          1,
           true
         )
         styleState.transformAccumulator = undefined
@@ -1984,7 +1976,6 @@ function mergeStyle(
   styleState: GetStyleState,
   key: string,
   val: any,
-  _importance: number,
   disableNormalize = false,
   originalVal?: any
 ) {
@@ -2087,7 +2078,6 @@ const resolveAcceptedStyle = (
     _state,
     key,
     value,
-    _importance,
     disableNormalize,
     originalValue
   ) => {
@@ -2139,7 +2129,6 @@ export type MergeStyle = (
   state: GetStyleState,
   key: string,
   value: any,
-  importance: number,
   disableNormalize?: boolean,
   originalValue?: any
 ) => void
@@ -2255,7 +2244,7 @@ function streamWriteInline(
   const previous = used[property]
   if (previous !== undefined && previous > importance) return
   used[property] = importance
-  merge(state, property, value, 1, !normalize, original)
+  merge(state, property, value, !normalize, original)
 }
 
 /**
@@ -2285,23 +2274,20 @@ function streamRetractInline(
  */
 function convertDeferredInline(state: GetStyleState, merge: MergeStyle) {
   const direct = state as DirectState
-  const used = (direct.flatUsed ||= {})
   const consume = (entries: AtomicSlotEntry[]) => {
     for (let index = 0; index < entries.length; index++) {
       const entry = entries[index]
       const condition = entry[2]
       if (condition && !(condition & 1)) continue
-      const importance = condition ? Math.floor(condition / 256) + 1 : 0
-      const previous = used[entry[0]]
-      if (previous !== undefined && previous > importance) continue
-      used[entry[0]] = importance
-      merge(
+      streamWriteInline(
         state,
         entry[0],
         entry[1],
-        1,
-        true,
-        entry[8] !== undefined ? entry[8] : entry[1]
+        null,
+        merge,
+        entry[8] !== undefined ? entry[8] : entry[1],
+        false,
+        condition
       )
     }
   }
@@ -2819,9 +2805,6 @@ function tokenVariable(
   if (category) {
     const own = state.conf.tokensParsed[category]?.[lookupName]
     if (own) return fillTokenLookup(own, false, lookupName)
-    for (const sibling of ['color', 'space', 'size', 'radius', 'zIndex'] as const) {
-      if (sibling !== category && state.conf.tokensParsed[sibling]?.[lookupName]) return
-    }
   } else {
     const first = lookupName.charCodeAt(0)
     if ((first >= 48 && first <= 57) || first === 43 || first === 45 || first === 46) {
@@ -2840,7 +2823,7 @@ function tokenVariable(
 }
 
 // literal strings dominate authored values, and each pays tokenVariable's
-// full miss path (category probe, sibling scans, theme lookups). Remember the
+// full miss path (category probe and theme lookups). Remember the
 // misses per (config revision, theme record, theme name); a supported registry
 // mutation bumps the revision and swaps the whole cache. Font-keyed
 // properties resolve through mutable per-pass fontFamily state and stay
@@ -2904,17 +2887,15 @@ function configuredValue(state: GetStyleState, property: string, raw: string): a
     if (misses.has(missKey)) return raw
   }
 
+  if (process.env.NODE_ENV === 'development') {
+    const category = getTokenCategoryForProperty(property)
+    if (category && category !== 'color' && state.conf.tokensParsed.color?.[name]) {
+      warnOnce(`"${name}" contributes to "color", not "${property}"`)
+    }
+  }
   const lookup = tokenVariable(state, property, name)
   if (!lookup || !isVariable(lookup.value)) {
     if (misses) misses.add(missKey)
-    if (
-      process.env.NODE_ENV === 'development' &&
-      propToTokenCategoryCode[property] &&
-      propToTokenCategoryCode[property] !== tokenCategoryColor &&
-      state.conf.tokensParsed.color?.[name]
-    ) {
-      warnOnce(`"${name}" contributes to "color", not "${property}"; keeping it literal`)
-    }
     return raw
   }
   const resolveValues =
@@ -3944,16 +3925,17 @@ function contributeValue(
   if (isConditionTransport(value)) {
     // a wrapping component's conditional contributions arrive as resolved
     // atoms: replay each into a cursor at this position, no text reparsed
-    if (value.hasBase) {
-      contributeValue(state, property, value.base, merge, value.base, contextOnly)
+    if (value[transportHasBase]) {
+      const base = value[transportBase]
+      contributeValue(state, property, base, merge, base, contextOnly)
     }
-    for (let offset = 0; offset < value.entries.length; ) {
-      const entryValue = value.entries[offset]
+    for (let offset = transportEntries; offset < value.length; ) {
+      const entryValue = value[offset]
       const watermark = conditionCursorTop
       try {
         const cursor = acquireTransportCursor(
           state,
-          value.entries,
+          value,
           offset,
           ((state as DirectState).flatPass?.[passParentCursor] as ConditionCursor) || null
         )
@@ -4153,40 +4135,37 @@ export function clearDirectStyle(state: GetStyleState, property: string) {
 // ── HOC clause transport ─────────────────────────────────────────────────────
 // A conditional contribution whose key the host cannot style hands the wrapped
 // component its RESOLVED atoms, never serialized condition text: the inner
-// pass replays them straight into a cursor. Values are recognized only through
-// a module-private WeakSet, so the transport cannot become publicly authorable.
+// pass replays them straight into a cursor. the private symbol makes the tuple
+// impossible to author through public style values.
 
-interface ConditionTransport {
-  hasBase: boolean
-  base: any
-  entries: unknown[]
-}
-
-const conditionTransports = new WeakSet<ConditionTransport>()
+const conditionTransportTag = Symbol()
+const transportHasBase = 1
+const transportBase = 2
+const transportEntries = 3
+const transportEntryWidth = 2
+type ConditionTransport = [typeof conditionTransportTag, boolean, any, ...unknown[]]
 
 function isConditionTransport(value: unknown): value is ConditionTransport {
-  return (
-    typeof value === 'object' &&
-    value !== null &&
-    conditionTransports.has(value as ConditionTransport)
-  )
+  return Array.isArray(value) && value[0] === conditionTransportTag
 }
 
-const transportEntryWidth = 2
-
-function appendConditionEntry(entries: unknown[], cursor: ConditionCursor, value: any) {
-  entries.push(value, conditionTexts[cursor + conditionKeyOffset] || '')
+function appendConditionEntry(
+  transport: ConditionTransport,
+  cursor: ConditionCursor,
+  value: any
+) {
+  transport.push(value, conditionTexts[cursor + conditionKeyOffset] || '')
 }
 
 /** rebuild a transported clause's cursor by re-parsing its canonical key */
 function acquireTransportCursor(
   state: GetStyleState,
-  entries: unknown[],
+  transport: ConditionTransport,
   offset: number,
   parent: ConditionCursor | null
 ): ConditionCursor {
   const cursor = acquireConditionCursor(parent)
-  const key = entries[offset + 1] as string
+  const key = transport[offset + 1] as string
   if (key) resolveConditionText(state, cursor, key)
   commitConditionCursor(state, cursor)
   return cursor
@@ -4202,8 +4181,7 @@ function mergeConditionTransport(
   if (isConditionTransport(prev)) {
     transport = prev
   } else {
-    transport = { hasBase: false, base: undefined, entries: [] }
-    conditionTransports.add(transport)
+    transport = [conditionTransportTag, false, undefined]
     if (prev != null) {
       const isObjectValue =
         typeof prev === 'object' && !Array.isArray(prev) && !isVariable(prev)
@@ -4228,8 +4206,8 @@ function mergeConditionTransport(
             const payload = (prev as Record<string, any>)[key]
             if (payload == null) continue
             if (key === 'default') {
-              transport.hasBase = true
-              transport.base = payload
+              transport[transportHasBase] = true
+              transport[transportBase] = payload
               continue
             }
             const watermark = conditionCursorTop
@@ -4240,12 +4218,12 @@ function mergeConditionTransport(
               resolveConditionText(state, keyCursor, key)
               commitConditionCursor(state, keyCursor)
             }
-            appendConditionEntry(transport.entries, keyCursor, payload)
+            appendConditionEntry(transport, keyCursor, payload)
             if (keyCursor !== firstCursor) releaseConditionCursors(watermark)
           }
         } else {
-          transport.hasBase = true
-          transport.base = prev
+          transport[transportHasBase] = true
+          transport[transportBase] = prev
         }
       } finally {
         releaseConditionCursors(authoredWatermark)
@@ -4255,13 +4233,17 @@ function mergeConditionTransport(
   // a repeat contribution under the same condition set replaces its entry and
   // moves to the end: the wrapped pass sees last-wins in authored order
   const cursorKey = conditionTexts[cursor + conditionKeyOffset] || ''
-  for (let offset = 0; offset < transport.entries.length; offset += transportEntryWidth) {
-    if (transport.entries[offset + 1] === cursorKey) {
-      transport.entries.splice(offset, transportEntryWidth)
+  for (
+    let offset = transportEntries;
+    offset < transport.length;
+    offset += transportEntryWidth
+  ) {
+    if (transport[offset + 1] === cursorKey) {
+      transport.splice(offset, transportEntryWidth)
       break
     }
   }
-  appendConditionEntry(transport.entries, cursor, value)
+  appendConditionEntry(transport, cursor, value)
   return transport
 }
 
@@ -4506,14 +4488,14 @@ function resolveVariants(
   if (isConditionTransport(value)) {
     // conditional variant selections transported through an HOC: resolve each
     // branch under its replayed condition
-    if (value.hasBase) {
-      emitResolvedVariant(key, value.base, styleState, parentVariantKey, null)
+    if (value[transportHasBase]) {
+      emitResolvedVariant(key, value[transportBase], styleState, parentVariantKey, null)
     }
-    for (let offset = 0; offset < value.entries.length; ) {
-      const entryValue = value.entries[offset]
+    for (let offset = transportEntries; offset < value.length; ) {
+      const entryValue = value[offset]
       const watermark = conditionCursorTop
       try {
-        const cursor = acquireTransportCursor(styleState, value.entries, offset, null)
+        const cursor = acquireTransportCursor(styleState, value, offset, null)
         emitResolvedVariant(key, entryValue, styleState, parentVariantKey, cursor)
       } finally {
         releaseConditionCursors(watermark)

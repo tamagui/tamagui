@@ -183,3 +183,18 @@ test('a promoted base write never displaces an inline conditional winner', () =>
   expect(result.style?.cursor).toBe('pointer')
   expect(result.classNames.cursor).toBeTruthy()
 })
+
+test('platform pseudo conversion uses the inline conditional winner', () => {
+  const result = simplifiedGetSplitStyles(
+    View,
+    { backgroundColor: 'red hover:blue', bg: 'green' },
+    {
+      canPlatformPseudo: true,
+      componentState: { hover: true },
+    }
+  )
+
+  expect(result.platformPseudo).toBe(true)
+  expect(result.style?.backgroundColor).toBe('blue')
+  expect(result.classNames.backgroundColor).toBeUndefined()
+})
