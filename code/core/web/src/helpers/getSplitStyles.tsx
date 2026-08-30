@@ -1677,12 +1677,8 @@ export const getSplitStyles: StyleSplitter = (
     conditionalStates = styleState.flatStateKeys || null
     usesSafeArea = !!styleState.flatUsesSafeArea
     hasMedia = styleState.flatMediaKeys?.size ? styleState.flatMediaKeys : false
-    pseudoGroups = styleState.flatGroupKeys?.size
-      ? styleState.flatGroupKeys
-      : undefined
-    mediaGroups = styleState.flatGroupMedia?.size
-      ? styleState.flatGroupMedia
-      : undefined
+    pseudoGroups = styleState.flatGroupKeys?.size ? styleState.flatGroupKeys : undefined
+    mediaGroups = styleState.flatGroupMedia?.size ? styleState.flatGroupMedia : undefined
 
     // a platform driver with native pseudo states rides the emitter path: the
     // whole frame completes inline instead of as classes. The frame is neutral,
