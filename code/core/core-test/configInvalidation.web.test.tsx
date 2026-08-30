@@ -133,16 +133,7 @@ test('an atomic style lookup cannot hide a config swap from the slot cache', () 
     setConfig(first)
     const initial = buildAtomicSlotCSS(
       'color',
-      [
-        {
-          property: 'color',
-          value: 'red',
-          condition: 1,
-          identity: 'red',
-          selector: '',
-          wrappers: ['@media (min-width: 600px)'],
-        },
-      ],
+      [['color', 'red', 1, 'red', '', ['@media (min-width: 600px)'], 0, 1]],
       'config-swap-probe'
     )!
 
@@ -150,22 +141,13 @@ test('an atomic style lookup cannot hide a config swap from the slot cache', () 
     getCSSStyleAtomic('padding', 1)
     const swapped = buildAtomicSlotCSS(
       'color',
-      [
-        {
-          property: 'color',
-          value: 'red',
-          condition: 1,
-          identity: 'red',
-          selector: '',
-          wrappers: ['@media (min-width: 900px)'],
-        },
-      ],
+      [['color', 'red', 1, 'red', '', ['@media (min-width: 900px)'], 0, 1]],
       'config-swap-probe'
     )!
 
-    expect(initial.rules.join('')).toContain('min-width: 600px')
-    expect(swapped.rules.join('')).toContain('min-width: 900px')
-    expect(swapped.rules.join('')).not.toContain('min-width: 600px')
+    expect(initial[1].join('')).toContain('min-width: 600px')
+    expect(swapped[1].join('')).toContain('min-width: 900px')
+    expect(swapped[1].join('')).not.toContain('min-width: 600px')
   } finally {
     setConfig(current)
   }

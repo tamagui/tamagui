@@ -67,4 +67,21 @@ export {
   type TransformAccumulator,
 } from './transformAccumulator'
 export { unitlessNumberProperties } from './unitlessNumbers'
+export {
+  getTokenCategoryName,
+  propToTokenCategoryCode,
+  tokenCategoryColor,
+  tokenCategoryFontFamily,
+  tokenCategoryFontSize,
+  tokenCategoryFontWeight,
+  tokenCategoryLetterSpacing,
+  tokenCategoryLineHeight,
+  tokenCategoryNames,
+  tokenCategoryRadius,
+  tokenCategorySize,
+  tokenCategorySpace,
+  tokenCategoryZIndex,
+  type TokenCategoryCode,
+  type TokenCategoryName,
+} from './tokenCategories'
 export type { ModifierKind, ParsedValue } from './valueTypes'

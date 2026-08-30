@@ -1,3 +1,4 @@
+import { getTokenCategoryName, propToTokenCategoryCode } from './tokenCategories'
 import { modifierAliases } from './stateModifiers'
 
 export { modifierAliases }
@@ -30,96 +31,90 @@ export interface GrammarEntry {
   conveniences?: readonly Convenience[]
 }
 
-export const grammarEntries: readonly GrammarEntry[] = [
-  { prop: 'backgroundColor', prefix: 'bg', tokenCategory: 'color' },
-  { prop: 'width', prefix: 'w', tokenCategory: 'size', conveniences: ['sizing-keyword'] },
+const grammarEntrySpecs = [
+  { prop: 'backgroundColor', prefix: 'bg' },
+  { prop: 'width', prefix: 'w', conveniences: ['sizing-keyword'] },
   {
     prop: 'height',
     prefix: 'h',
-    tokenCategory: 'size',
     conveniences: ['sizing-keyword'],
   },
   {
     prop: 'minWidth',
     prefix: 'min-w',
-    tokenCategory: 'size',
     conveniences: ['sizing-keyword'],
   },
   {
     prop: 'maxWidth',
     prefix: 'max-w',
-    tokenCategory: 'size',
     conveniences: ['sizing-keyword'],
   },
   {
     prop: 'minHeight',
     prefix: 'min-h',
-    tokenCategory: 'size',
     conveniences: ['sizing-keyword'],
   },
   {
     prop: 'maxHeight',
     prefix: 'max-h',
-    tokenCategory: 'size',
     conveniences: ['sizing-keyword'],
   },
-  { prop: 'padding', prefix: 'p', tokenCategory: 'space' },
-  { prop: 'paddingTop', prefix: 'pt', tokenCategory: 'space' },
-  { prop: 'paddingRight', prefix: 'pr', tokenCategory: 'space' },
-  { prop: 'paddingBottom', prefix: 'pb', tokenCategory: 'space' },
-  { prop: 'paddingLeft', prefix: 'pl', tokenCategory: 'space' },
-  { prop: 'paddingHorizontal', prefix: 'px', tokenCategory: 'space' },
-  { prop: 'paddingVertical', prefix: 'py', tokenCategory: 'space' },
-  { prop: 'margin', prefix: 'm', tokenCategory: 'space' },
-  { prop: 'marginTop', prefix: 'mt', tokenCategory: 'space' },
-  { prop: 'marginRight', prefix: 'mr', tokenCategory: 'space' },
-  { prop: 'marginBottom', prefix: 'mb', tokenCategory: 'space' },
-  { prop: 'marginLeft', prefix: 'ml', tokenCategory: 'space' },
-  { prop: 'marginHorizontal', prefix: 'mx', tokenCategory: 'space' },
-  { prop: 'marginVertical', prefix: 'my', tokenCategory: 'space' },
-  { prop: 'gap', prefix: 'gap', tokenCategory: 'space' },
-  { prop: 'borderWidth', prefix: 'border', tokenCategory: 'space' },
-  { prop: 'borderTopWidth', prefix: 'border-t', tokenCategory: 'space' },
-  { prop: 'borderRightWidth', prefix: 'border-r', tokenCategory: 'space' },
-  { prop: 'borderBottomWidth', prefix: 'border-b', tokenCategory: 'space' },
-  { prop: 'borderLeftWidth', prefix: 'border-l', tokenCategory: 'space' },
-  { prop: 'borderColor', prefix: 'border', tokenCategory: 'color' },
-  { prop: 'borderTopColor', prefix: 'border-t', tokenCategory: 'color' },
-  { prop: 'borderRightColor', prefix: 'border-r', tokenCategory: 'color' },
-  { prop: 'borderBottomColor', prefix: 'border-b', tokenCategory: 'color' },
-  { prop: 'borderLeftColor', prefix: 'border-l', tokenCategory: 'color' },
-  { prop: 'borderRadius', prefix: 'rounded', tokenCategory: 'radius' },
-  { prop: 'borderTopLeftRadius', prefix: 'rounded-tl', tokenCategory: 'radius' },
-  { prop: 'borderTopRightRadius', prefix: 'rounded-tr', tokenCategory: 'radius' },
-  { prop: 'borderBottomLeftRadius', prefix: 'rounded-bl', tokenCategory: 'radius' },
-  { prop: 'borderBottomRightRadius', prefix: 'rounded-br', tokenCategory: 'radius' },
+  { prop: 'padding', prefix: 'p' },
+  { prop: 'paddingTop', prefix: 'pt' },
+  { prop: 'paddingRight', prefix: 'pr' },
+  { prop: 'paddingBottom', prefix: 'pb' },
+  { prop: 'paddingLeft', prefix: 'pl' },
+  { prop: 'paddingHorizontal', prefix: 'px' },
+  { prop: 'paddingVertical', prefix: 'py' },
+  { prop: 'margin', prefix: 'm' },
+  { prop: 'marginTop', prefix: 'mt' },
+  { prop: 'marginRight', prefix: 'mr' },
+  { prop: 'marginBottom', prefix: 'mb' },
+  { prop: 'marginLeft', prefix: 'ml' },
+  { prop: 'marginHorizontal', prefix: 'mx' },
+  { prop: 'marginVertical', prefix: 'my' },
+  { prop: 'gap', prefix: 'gap' },
+  { prop: 'borderWidth', prefix: 'border' },
+  { prop: 'borderTopWidth', prefix: 'border-t' },
+  { prop: 'borderRightWidth', prefix: 'border-r' },
+  { prop: 'borderBottomWidth', prefix: 'border-b' },
+  { prop: 'borderLeftWidth', prefix: 'border-l' },
+  { prop: 'borderColor', prefix: 'border' },
+  { prop: 'borderTopColor', prefix: 'border-t' },
+  { prop: 'borderRightColor', prefix: 'border-r' },
+  { prop: 'borderBottomColor', prefix: 'border-b' },
+  { prop: 'borderLeftColor', prefix: 'border-l' },
+  { prop: 'borderRadius', prefix: 'rounded' },
+  { prop: 'borderTopLeftRadius', prefix: 'rounded-tl' },
+  { prop: 'borderTopRightRadius', prefix: 'rounded-tr' },
+  { prop: 'borderBottomLeftRadius', prefix: 'rounded-bl' },
+  { prop: 'borderBottomRightRadius', prefix: 'rounded-br' },
   { prop: 'borderStyle', prefix: 'border' },
-  { prop: 'color', prefix: 'color', tokenCategory: 'color' },
-  { prop: 'fontSize', prefix: 'text', tokenCategory: 'fontSize' },
+  { prop: 'color', prefix: 'color' },
+  { prop: 'fontSize', prefix: 'text' },
   // bound (2026-07-31 adjudication): the runtime resolves fontWeight through
   // the active family's weight sub-map and the codemod already emits flat
   // weight names, so an unbound registry row was an omission, not a decision
-  { prop: 'fontWeight', prefix: 'font', tokenCategory: 'fontWeight' },
+  { prop: 'fontWeight', prefix: 'font' },
   {
     prop: 'fontFamily',
     prefix: 'font',
-    tokenCategory: 'fontFamily',
     conveniences: ['font-generic'],
   },
   { prop: 'fontStyle', prefix: '' },
-  { prop: 'lineHeight', prefix: 'leading', tokenCategory: 'lineHeight' },
-  { prop: 'letterSpacing', prefix: 'tracking', tokenCategory: 'letterSpacing' },
+  { prop: 'lineHeight', prefix: 'leading' },
+  { prop: 'letterSpacing', prefix: 'tracking' },
   { prop: 'textAlign', prefix: 'text' },
   { prop: 'textTransform', prefix: '' },
   { prop: 'textDecorationLine', prefix: '' },
   { prop: 'display', prefix: '' },
   { prop: 'position', prefix: '' },
-  { prop: 'top', prefix: 'top', tokenCategory: 'space' },
-  { prop: 'right', prefix: 'right', tokenCategory: 'space' },
-  { prop: 'bottom', prefix: 'bottom', tokenCategory: 'space' },
-  { prop: 'left', prefix: 'left', tokenCategory: 'space' },
-  { prop: 'inset', prefix: 'inset', tokenCategory: 'space' },
-  { prop: 'zIndex', prefix: 'z', tokenCategory: 'zIndex', conveniences: ['integer'] },
+  { prop: 'top', prefix: 'top' },
+  { prop: 'right', prefix: 'right' },
+  { prop: 'bottom', prefix: 'bottom' },
+  { prop: 'left', prefix: 'left' },
+  { prop: 'inset', prefix: 'inset' },
+  { prop: 'zIndex', prefix: 'z', conveniences: ['integer'] },
   { prop: 'overflow', prefix: '' },
   { prop: 'flex', prefix: 'flex', conveniences: ['flex-bundle'] },
   { prop: 'flexDirection', prefix: 'flex' },
@@ -135,18 +130,23 @@ export const grammarEntries: readonly GrammarEntry[] = [
   { prop: 'pointerEvents', prefix: 'pointer-events' },
   { prop: 'rotate', prefix: 'rotate' },
   { prop: 'scale', prefix: 'scale', conveniences: ['percentage'] },
-  { prop: 'x', prefix: 'translate-x', tokenCategory: 'space' },
-  { prop: 'y', prefix: 'translate-y', tokenCategory: 'space' },
+  { prop: 'x', prefix: 'translate-x' },
+  { prop: 'y', prefix: 'translate-y' },
   { prop: 'aspectRatio', prefix: 'aspect' },
   { prop: 'objectFit', prefix: 'object' },
 ] as const
+
+export const grammarEntries: readonly GrammarEntry[] = grammarEntrySpecs.map((entry) => {
+  const tokenCategory = getTokenCategoryName(propToTokenCategoryCode[entry.prop])
+  return tokenCategory ? { ...entry, tokenCategory } : entry
+})
 
 export const propToGrammarEntry: Readonly<Record<string, GrammarEntry>> = Object.freeze(
   Object.fromEntries(grammarEntries.map((entry) => [entry.prop, entry]))
 )
 
 export function getTokenCategory(prop: string): TokenCategory | null {
-  return propToGrammarEntry[prop]?.tokenCategory || null
+  return (getTokenCategoryName(propToTokenCategoryCode[prop]) as TokenCategory) || null
 }
 
 export const prefixToEntries: Readonly<Record<string, readonly GrammarEntry[]>> =

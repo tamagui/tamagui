@@ -5,8 +5,6 @@ import {
   webOnlyStylePropsText,
   webOnlyStylePropsView,
 } from './webOnlyStyleProps'
-import { tokenCategories } from './tokenCategories'
-
 export { tokenCategories } from './tokenCategories'
 
 // generally organizing this so we don't duplicate things so its a bit weird
@@ -42,17 +40,6 @@ const textColors = {
   textDecorationColor: true,
   textShadowColor: true,
 }
-
-// tokenCategories.color is a VALUE-binding table (which props resolve color
-// tokens); three of its members are text-only PROPS, so the View host's
-// validity table must not inherit them — `color` on a View resolves on
-// neither platform (RN has no View color; a web div would only inherit it)
-const {
-  color: _textOnlyColor,
-  textDecorationColor: _textOnlyDecoration,
-  textShadowColor: _textOnlyShadow,
-  ...viewColorCategoryProps
-} = tokenCategories.color
 
 // discrete (non-animatable) view style properties - keyword-based, no interpolation
 // defined above stylePropsView so it can be spread in without duplication
@@ -249,9 +236,49 @@ export const stylePropsView = {
   insetInlineEnd: true,
   insetInlineStart: true,
   shadowOffset: true,
-  ...viewColorCategoryProps,
-  ...tokenCategories.radius,
-  ...tokenCategories.size,
+  backgroundColor: true,
+  borderColor: true,
+  borderBlockStartColor: true,
+  borderBlockEndColor: true,
+  borderBlockColor: true,
+  borderBottomColor: true,
+  borderInlineColor: true,
+  borderInlineStartColor: true,
+  borderInlineEndColor: true,
+  borderTopColor: true,
+  borderLeftColor: true,
+  borderRightColor: true,
+  borderEndColor: true,
+  borderStartColor: true,
+  shadowColor: true,
+  outlineColor: true,
+  ...(process.env.TAMAGUI_TARGET === 'web' && { caretColor: true }),
+  borderRadius: true,
+  borderTopLeftRadius: true,
+  borderTopRightRadius: true,
+  borderBottomLeftRadius: true,
+  borderBottomRightRadius: true,
+  borderTopStartRadius: true,
+  borderTopEndRadius: true,
+  borderBottomStartRadius: true,
+  borderBottomEndRadius: true,
+  borderStartStartRadius: true,
+  borderStartEndRadius: true,
+  borderEndStartRadius: true,
+  borderEndEndRadius: true,
+  width: true,
+  height: true,
+  minWidth: true,
+  minHeight: true,
+  maxWidth: true,
+  maxHeight: true,
+  blockSize: true,
+  minBlockSize: true,
+  maxBlockSize: true,
+  inlineSize: true,
+  minInlineSize: true,
+  maxInlineSize: true,
+  shadowRadius: true,
   ...stylePropsTransform,
   ...stylePropsUnitless,
   ...(isAndroid ? { elevationAndroid: true } : {}),
@@ -273,7 +300,6 @@ export const stylePropsView = {
   experimental_backgroundImage: true,
   // RN 0.76/0.77+ style props (New Architecture)
   outline: true,
-  outlineColor: true,
   outlineOffset: true,
   outlineWidth: true,
 

@@ -1,6 +1,6 @@
 import React, { type ReactNode, type Ref as ReactRef } from 'react'
 import { componentDisplayName } from './helpers/componentDisplayName'
-import { themeable } from './helpers/themeable'
+import { Theme } from './views/Theme'
 import type {
   GetFinalProps,
   StaticConfig,
@@ -8,6 +8,7 @@ import type {
   StyledHOCOptions,
   TamaguiComponent,
   TamaDefer,
+  ThemeProps,
 } from './types'
 
 export function createStyledHOC<
@@ -67,11 +68,57 @@ export function createStyledHOC<
   }
 
   let out: any = function StyledHOCComponent(props: any) {
-    const { ref, ...rest } = props
-    return render(rest, ref)
-  }
+    'use no memo'
 
-  out = options?.disableTheme ? out : themeable(out, extendedConfig)
+    const { ref, ...rest } = props
+    if (options?.disableTheme) {
+      return render(rest, ref)
+    }
+
+    const defaultTheme = extendedConfig.defaultProps?.theme
+    const { theme: _, ...themedRest } = rest
+    const element = render({ ...themedRest, 'data-disable-theme': true }, ref)
+
+    let themeProps: Partial<ThemeProps> | null = null
+    if ('debug' in props) {
+      themeProps = { debug: props.debug }
+    }
+    if ('theme' in props || defaultTheme) {
+      ;(themeProps ||= {}).name = 'theme' in props ? props.theme : defaultTheme
+    }
+
+    // keeping the theme key present with a null value keeps the tree stable
+    // across theme changes, while an entirely absent key avoids mounting Theme.
+    if (!themeProps) {
+      return element
+    }
+
+    const context = extendedConfig.context
+    if (!context) {
+      return (
+        <Theme disable-child-theme {...themeProps}>
+          {element}
+        </Theme>
+      )
+    }
+
+    const contextValue = React.useContext(context)
+    let overriddenContextProps: object | undefined
+    for (const key in context.props) {
+      const value = props[key]
+      if (value !== undefined) {
+        ;(overriddenContextProps ||= {})[key] = value
+      }
+    }
+    const Provider = context.Provider
+    return (
+      <Provider {...contextValue} {...overriddenContextProps}>
+        <Theme disable-child-theme {...themeProps}>
+          {element}
+        </Theme>
+      </Provider>
+    )
+  }
 
   if (extendedConfig.memo || process.env.TAMAGUI_MEMOIZE_STYLED_HOC) {
     out = React.memo(out)

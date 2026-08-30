@@ -6,7 +6,7 @@ import { render } from '@testing-library/react-native'
 import { View as NativeView } from 'react-native'
 import { expect, test } from 'vitest'
 
-// regression: themeable() passes data-disable-theme to the inner component of
+// regression: styled HOCs pass data-disable-theme to the inner component of
 // every styled HOC. on native that flag must be IGNORED because honoring it
 // skips the theme subscription, and since components are React.memo'd nothing
 // re-renders the leaf on theme change, leaving resolved token colors stale.

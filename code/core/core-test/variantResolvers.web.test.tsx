@@ -581,7 +581,7 @@ describe('TS-style variant resolvers', () => {
     expect(getOpacity(RadiusFirst, variable)).toBe(0.49)
   })
 
-  test('resolver entries compile when the component is defined', () => {
+  test('resolver entries compile once on first use', () => {
     let ownKeysCount = 0
     const kind = new Proxy(
       {
@@ -605,7 +605,7 @@ describe('TS-style variant resolvers', () => {
 
     expect(getOpacity(Comp, '4')).toBe(0.52)
     expect(getOpacity(Comp, '4')).toBe(0.52)
-    expect(ownKeysCount).toBe(0)
+    expect(ownKeysCount).toBe(1)
   })
 
   test('trimmed union members match', () => {

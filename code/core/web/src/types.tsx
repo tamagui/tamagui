@@ -3143,25 +3143,22 @@ export type StylableComponent =
   | ReactComponentWithRef<any, any>
   | (new (props: any) => any)
 
-export const variantResolverNames = [
-  'Size',
-  'Space',
-  'Color',
-  'Radius',
-  'ZIndex',
-  'Theme',
-  'FontSize',
-  'FontStyle',
-  'FontTransform',
-  'FontLineHeight',
-  'FontLetterSpacing',
-  'number',
-  'string',
-  'boolean',
-  'any',
-] as const
-
-export type VariantResolverName = (typeof variantResolverNames)[number]
+export type VariantResolverName =
+  | 'Size'
+  | 'Space'
+  | 'Color'
+  | 'Radius'
+  | 'ZIndex'
+  | 'Theme'
+  | 'FontSize'
+  | 'FontStyle'
+  | 'FontTransform'
+  | 'FontLineHeight'
+  | 'FontLetterSpacing'
+  | 'number'
+  | 'string'
+  | 'boolean'
+  | 'any'
 
 type TrimWhitespace = ' ' | '\n' | '\t' | '\r' | '\v' | '\f'
 
@@ -3373,7 +3370,6 @@ export type ResolveVariableAs =
 export type SplitStyleProps = {
   displayName?: string
   styledContext?: Record<string, any>
-  styledContextKeys?: Set<string> | null
   mediaState?: Record<string, boolean>
   noClass?: boolean
   noExpand?: boolean

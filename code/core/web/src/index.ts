@@ -11,14 +11,13 @@ export { _withStableStyle } from './_withStableStyle'
 export { _withNativeStyle } from './_withNativeStyle'
 export { createComponent } from './createComponent'
 export { createStyledContext } from './helpers/createStyledContext'
-export { getDefaultProps } from './helpers/getDefaultProps'
 export { getCSSStylesAtomic } from './helpers/getCSSStylesAtomic'
 export { getExpandedShorthand } from './helpers/getExpandedShorthands'
 export { formatDiagnostic } from './helpers/formatDiagnostic'
 export {
+  getStyleStaticConfig,
   getSplitStyles,
   isValidStyleKey,
-  prepareStyleStaticConfig,
 } from './helpers/getSplitStyles'
 export {
   setNativeStyleEngine,
@@ -45,7 +44,6 @@ export { mergeSlotStyleProps } from './helpers/mergeSlotStyleProps'
 export { normalizeColor } from './helpers/normalizeColor'
 export { normalizeStyle } from './helpers/normalizeStyle'
 export { containsThemeRef, themeRefKey } from './helpers/themeRef'
-export { themeable } from './helpers/themeable'
 export { getStyleTags } from './helpers/wrapStyleTags'
 
 export { createFont } from './createFont'

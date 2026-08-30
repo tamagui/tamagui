@@ -38,71 +38,7 @@ declare const ListItemComponent: import("@tamagui/ui").TamaguiComponent<Omit<imp
     scaleIcon?: number;
     subTitle?: import("react").ReactNode;
     title?: import("react").ReactNode;
-}> & {
-    fontVariant?: import("@tamagui/web").FlatStyleValue<"unset" | import("react-native").FontVariant[] | undefined>;
-    writingDirection?: import("@tamagui/web").FlatStyleValue<"auto" | "ltr" | "rtl" | "unset" | undefined>;
-    fontFamily?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"fontFamily"> | undefined>;
-    fontSize?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"fontSize"> | undefined>;
-    fontStyle?: import("@tamagui/web").FlatStyleValue<"italic" | "normal" | "unset" | undefined>;
-    fontWeight?: import("@tamagui/web").FlatStyleValue<"unset" | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | import("@tamagui/ui").GetThemeValueForKey<"fontWeight"> | undefined>;
-    letterSpacing?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/ui").GetThemeValueForKey<"letterSpacing"> | undefined>;
-    lineHeight?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/ui").GetThemeValueForKey<"lineHeight"> | undefined>;
-    textAlign?: import("@tamagui/web").FlatStyleValue<"auto" | "center" | "justify" | "left" | "right" | "unset" | undefined>;
-    textDecorationLine?: import("@tamagui/web").FlatStyleValue<"line-through" | "none" | "underline" | "underline line-through" | "unset" | undefined>;
-    textDecorationStyle?: import("@tamagui/web").FlatStyleValue<"dashed" | "dotted" | "double" | "solid" | "unset" | undefined>;
-    textDecorationColor?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"textDecorationColor"> | import("react-native").OpaqueColorValue | undefined>;
-    textShadowColor?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"textShadowColor"> | import("react-native").OpaqueColorValue | undefined>;
-    textShadowOffset?: import("@tamagui/web").FlatStyleValue<"unset" | {
-        width: number;
-        height: number;
-    } | undefined>;
-    textShadowRadius?: import("@tamagui/web").FlatStyleValue<number | "unset" | undefined>;
-    textTransform?: import("@tamagui/web").FlatStyleValue<"capitalize" | "lowercase" | "none" | "unset" | "uppercase" | undefined>;
-    color?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"color"> | undefined>;
-    userSelect?: import("@tamagui/web").FlatStyleValue<import("csstype").Property.UserSelect | undefined>;
-    verticalAlign?: import("@tamagui/web").FlatStyleValue<import("csstype").Property.VerticalAlign<0 | (string & {})> | undefined>;
-    ellipsis?: import("@tamagui/web").FlatStyleValue<"unset" | boolean | undefined>;
-    numberOfLines?: import("@tamagui/web").FlatStyleValue<number | "unset" | undefined>;
-    textDecorationDistance?: import("@tamagui/web").FlatStyleValue<number | "unset" | undefined>;
-    textOverflow?: import("@tamagui/web").FlatStyleValue<import("csstype").Property.TextOverflow | undefined>;
-    whiteSpace?: import("@tamagui/web").FlatStyleValue<import("csstype").Property.WhiteSpace | undefined>;
-    wordWrap?: import("@tamagui/web").FlatStyleValue<import("csstype").Property.WordWrap | undefined>;
-    textShadow?: import("@tamagui/web").FlatStyleValue<string | undefined>;
-    textDecoration?: import("@tamagui/web").FlatStyleValue<string | undefined>;
-    font?: import("@tamagui/web").FlatStyleValue<string | undefined>;
-} & Pick<import("@tamagui/web").WithShorthands<{
-    fontVariant?: import("@tamagui/web").FlatStyleValue<"unset" | import("react-native").FontVariant[] | undefined>;
-    writingDirection?: import("@tamagui/web").FlatStyleValue<"auto" | "ltr" | "rtl" | "unset" | undefined>;
-    fontFamily?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"fontFamily"> | undefined>;
-    fontSize?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"fontSize"> | undefined>;
-    fontStyle?: import("@tamagui/web").FlatStyleValue<"italic" | "normal" | "unset" | undefined>;
-    fontWeight?: import("@tamagui/web").FlatStyleValue<"unset" | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | import("@tamagui/ui").GetThemeValueForKey<"fontWeight"> | undefined>;
-    letterSpacing?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/ui").GetThemeValueForKey<"letterSpacing"> | undefined>;
-    lineHeight?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/ui").GetThemeValueForKey<"lineHeight"> | undefined>;
-    textAlign?: import("@tamagui/web").FlatStyleValue<"auto" | "center" | "justify" | "left" | "right" | "unset" | undefined>;
-    textDecorationLine?: import("@tamagui/web").FlatStyleValue<"line-through" | "none" | "underline" | "underline line-through" | "unset" | undefined>;
-    textDecorationStyle?: import("@tamagui/web").FlatStyleValue<"dashed" | "dotted" | "double" | "solid" | "unset" | undefined>;
-    textDecorationColor?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"textDecorationColor"> | import("react-native").OpaqueColorValue | undefined>;
-    textShadowColor?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"textShadowColor"> | import("react-native").OpaqueColorValue | undefined>;
-    textShadowOffset?: import("@tamagui/web").FlatStyleValue<"unset" | {
-        width: number;
-        height: number;
-    } | undefined>;
-    textShadowRadius?: import("@tamagui/web").FlatStyleValue<number | "unset" | undefined>;
-    textTransform?: import("@tamagui/web").FlatStyleValue<"capitalize" | "lowercase" | "none" | "unset" | "uppercase" | undefined>;
-    color?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"color"> | undefined>;
-    userSelect?: import("@tamagui/web").FlatStyleValue<import("csstype").Property.UserSelect | undefined>;
-    verticalAlign?: import("@tamagui/web").FlatStyleValue<import("csstype").Property.VerticalAlign<0 | (string & {})> | undefined>;
-    ellipsis?: import("@tamagui/web").FlatStyleValue<"unset" | boolean | undefined>;
-    numberOfLines?: import("@tamagui/web").FlatStyleValue<number | "unset" | undefined>;
-    textDecorationDistance?: import("@tamagui/web").FlatStyleValue<number | "unset" | undefined>;
-    textOverflow?: import("@tamagui/web").FlatStyleValue<import("csstype").Property.TextOverflow | undefined>;
-    whiteSpace?: import("@tamagui/web").FlatStyleValue<import("csstype").Property.WhiteSpace | undefined>;
-    wordWrap?: import("@tamagui/web").FlatStyleValue<import("csstype").Property.WordWrap | undefined>;
-    textShadow?: import("@tamagui/web").FlatStyleValue<string | undefined>;
-    textDecoration?: import("@tamagui/web").FlatStyleValue<string | undefined>;
-    font?: import("@tamagui/web").FlatStyleValue<string | undefined>;
-}>, never> & {
+}> & Partial<Pick<import("@tamagui/ui").TextStyle, "color" | "ellipsis" | "font" | "fontFamily" | "fontSize" | "fontStyle" | "fontVariant" | "fontWeight" | "letterSpacing" | "lineHeight" | "numberOfLines" | "textAlign" | "textDecoration" | "textDecorationColor" | "textDecorationDistance" | "textDecorationLine" | "textDecorationStyle" | "textOverflow" | "textShadow" | "textShadowColor" | "textShadowOffset" | "textShadowRadius" | "textTransform" | "userSelect" | "verticalAlign" | "whiteSpace" | "wordWrap" | "writingDirection">> & Pick<import("@tamagui/web").WithShorthands<Partial<Pick<import("@tamagui/ui").TextStyle, "color" | "ellipsis" | "font" | "fontFamily" | "fontSize" | "fontStyle" | "fontVariant" | "fontWeight" | "letterSpacing" | "lineHeight" | "numberOfLines" | "textAlign" | "textDecoration" | "textDecorationColor" | "textDecorationDistance" | "textDecorationLine" | "textDecorationStyle" | "textOverflow" | "textShadow" | "textShadowColor" | "textShadowOffset" | "textShadowRadius" | "textTransform" | "userSelect" | "verticalAlign" | "whiteSpace" | "wordWrap" | "writingDirection">>>, never> & {
     maxFontSizeMultiplier?: number;
     textProps?: Partial<import("@tamagui/ui").SizableTextProps>;
     noTextWrap?: boolean;
@@ -123,71 +59,7 @@ declare const ListItemComponent: import("@tamagui/ui").TamaguiComponent<Omit<imp
 } & {
     color?: import("@tamagui/ui").ColorTokens | string;
     size?: import("@tamagui/ui").SizeTokens | true;
-}, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/ui").StackNonStyleProps & {
-    fontVariant?: import("@tamagui/web").FlatStyleValue<"unset" | import("react-native").FontVariant[] | undefined>;
-    writingDirection?: import("@tamagui/web").FlatStyleValue<"auto" | "ltr" | "rtl" | "unset" | undefined>;
-    fontFamily?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"fontFamily"> | undefined>;
-    fontSize?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"fontSize"> | undefined>;
-    fontStyle?: import("@tamagui/web").FlatStyleValue<"italic" | "normal" | "unset" | undefined>;
-    fontWeight?: import("@tamagui/web").FlatStyleValue<"unset" | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | import("@tamagui/ui").GetThemeValueForKey<"fontWeight"> | undefined>;
-    letterSpacing?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/ui").GetThemeValueForKey<"letterSpacing"> | undefined>;
-    lineHeight?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/ui").GetThemeValueForKey<"lineHeight"> | undefined>;
-    textAlign?: import("@tamagui/web").FlatStyleValue<"auto" | "center" | "justify" | "left" | "right" | "unset" | undefined>;
-    textDecorationLine?: import("@tamagui/web").FlatStyleValue<"line-through" | "none" | "underline" | "underline line-through" | "unset" | undefined>;
-    textDecorationStyle?: import("@tamagui/web").FlatStyleValue<"dashed" | "dotted" | "double" | "solid" | "unset" | undefined>;
-    textDecorationColor?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"textDecorationColor"> | import("react-native").OpaqueColorValue | undefined>;
-    textShadowColor?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"textShadowColor"> | import("react-native").OpaqueColorValue | undefined>;
-    textShadowOffset?: import("@tamagui/web").FlatStyleValue<"unset" | {
-        width: number;
-        height: number;
-    } | undefined>;
-    textShadowRadius?: import("@tamagui/web").FlatStyleValue<number | "unset" | undefined>;
-    textTransform?: import("@tamagui/web").FlatStyleValue<"capitalize" | "lowercase" | "none" | "unset" | "uppercase" | undefined>;
-    color?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"color"> | undefined>;
-    userSelect?: import("@tamagui/web").FlatStyleValue<import("csstype").Property.UserSelect | undefined>;
-    verticalAlign?: import("@tamagui/web").FlatStyleValue<import("csstype").Property.VerticalAlign<0 | (string & {})> | undefined>;
-    ellipsis?: import("@tamagui/web").FlatStyleValue<"unset" | boolean | undefined>;
-    numberOfLines?: import("@tamagui/web").FlatStyleValue<number | "unset" | undefined>;
-    textDecorationDistance?: import("@tamagui/web").FlatStyleValue<number | "unset" | undefined>;
-    textOverflow?: import("@tamagui/web").FlatStyleValue<import("csstype").Property.TextOverflow | undefined>;
-    whiteSpace?: import("@tamagui/web").FlatStyleValue<import("csstype").Property.WhiteSpace | undefined>;
-    wordWrap?: import("@tamagui/web").FlatStyleValue<import("csstype").Property.WordWrap | undefined>;
-    textShadow?: import("@tamagui/web").FlatStyleValue<string | undefined>;
-    textDecoration?: import("@tamagui/web").FlatStyleValue<string | undefined>;
-    font?: import("@tamagui/web").FlatStyleValue<string | undefined>;
-} & Pick<import("@tamagui/web").WithShorthands<{
-    fontVariant?: import("@tamagui/web").FlatStyleValue<"unset" | import("react-native").FontVariant[] | undefined>;
-    writingDirection?: import("@tamagui/web").FlatStyleValue<"auto" | "ltr" | "rtl" | "unset" | undefined>;
-    fontFamily?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"fontFamily"> | undefined>;
-    fontSize?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"fontSize"> | undefined>;
-    fontStyle?: import("@tamagui/web").FlatStyleValue<"italic" | "normal" | "unset" | undefined>;
-    fontWeight?: import("@tamagui/web").FlatStyleValue<"unset" | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | import("@tamagui/ui").GetThemeValueForKey<"fontWeight"> | undefined>;
-    letterSpacing?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/ui").GetThemeValueForKey<"letterSpacing"> | undefined>;
-    lineHeight?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/ui").GetThemeValueForKey<"lineHeight"> | undefined>;
-    textAlign?: import("@tamagui/web").FlatStyleValue<"auto" | "center" | "justify" | "left" | "right" | "unset" | undefined>;
-    textDecorationLine?: import("@tamagui/web").FlatStyleValue<"line-through" | "none" | "underline" | "underline line-through" | "unset" | undefined>;
-    textDecorationStyle?: import("@tamagui/web").FlatStyleValue<"dashed" | "dotted" | "double" | "solid" | "unset" | undefined>;
-    textDecorationColor?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"textDecorationColor"> | import("react-native").OpaqueColorValue | undefined>;
-    textShadowColor?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"textShadowColor"> | import("react-native").OpaqueColorValue | undefined>;
-    textShadowOffset?: import("@tamagui/web").FlatStyleValue<"unset" | {
-        width: number;
-        height: number;
-    } | undefined>;
-    textShadowRadius?: import("@tamagui/web").FlatStyleValue<number | "unset" | undefined>;
-    textTransform?: import("@tamagui/web").FlatStyleValue<"capitalize" | "lowercase" | "none" | "unset" | "uppercase" | undefined>;
-    color?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"color"> | undefined>;
-    userSelect?: import("@tamagui/web").FlatStyleValue<import("csstype").Property.UserSelect | undefined>;
-    verticalAlign?: import("@tamagui/web").FlatStyleValue<import("csstype").Property.VerticalAlign<0 | (string & {})> | undefined>;
-    ellipsis?: import("@tamagui/web").FlatStyleValue<"unset" | boolean | undefined>;
-    numberOfLines?: import("@tamagui/web").FlatStyleValue<number | "unset" | undefined>;
-    textDecorationDistance?: import("@tamagui/web").FlatStyleValue<number | "unset" | undefined>;
-    textOverflow?: import("@tamagui/web").FlatStyleValue<import("csstype").Property.TextOverflow | undefined>;
-    whiteSpace?: import("@tamagui/web").FlatStyleValue<import("csstype").Property.WhiteSpace | undefined>;
-    wordWrap?: import("@tamagui/web").FlatStyleValue<import("csstype").Property.WordWrap | undefined>;
-    textShadow?: import("@tamagui/web").FlatStyleValue<string | undefined>;
-    textDecoration?: import("@tamagui/web").FlatStyleValue<string | undefined>;
-    font?: import("@tamagui/web").FlatStyleValue<string | undefined>;
-}>, never> & {
+}, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/ui").StackNonStyleProps & Partial<Pick<import("@tamagui/ui").TextStyle, "color" | "ellipsis" | "font" | "fontFamily" | "fontSize" | "fontStyle" | "fontVariant" | "fontWeight" | "letterSpacing" | "lineHeight" | "numberOfLines" | "textAlign" | "textDecoration" | "textDecorationColor" | "textDecorationDistance" | "textDecorationLine" | "textDecorationStyle" | "textOverflow" | "textShadow" | "textShadowColor" | "textShadowOffset" | "textShadowRadius" | "textTransform" | "userSelect" | "verticalAlign" | "whiteSpace" | "wordWrap" | "writingDirection">> & Pick<import("@tamagui/web").WithShorthands<Partial<Pick<import("@tamagui/ui").TextStyle, "color" | "ellipsis" | "font" | "fontFamily" | "fontSize" | "fontStyle" | "fontVariant" | "fontWeight" | "letterSpacing" | "lineHeight" | "numberOfLines" | "textAlign" | "textDecoration" | "textDecorationColor" | "textDecorationDistance" | "textDecorationLine" | "textDecorationStyle" | "textOverflow" | "textShadow" | "textShadowColor" | "textShadowOffset" | "textShadowRadius" | "textTransform" | "userSelect" | "verticalAlign" | "whiteSpace" | "wordWrap" | "writingDirection">>>, never> & {
     maxFontSizeMultiplier?: number;
     textProps?: Partial<import("@tamagui/ui").SizableTextProps>;
     noTextWrap?: boolean;
@@ -233,71 +105,7 @@ export declare const ListItem: import("react").FunctionComponent<Omit<import("@t
     scaleIcon?: number;
     subTitle?: import("react").ReactNode;
     title?: import("react").ReactNode;
-}> & {
-    fontVariant?: import("@tamagui/web").FlatStyleValue<"unset" | import("react-native").FontVariant[] | undefined>;
-    writingDirection?: import("@tamagui/web").FlatStyleValue<"auto" | "ltr" | "rtl" | "unset" | undefined>;
-    fontFamily?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"fontFamily"> | undefined>;
-    fontSize?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"fontSize"> | undefined>;
-    fontStyle?: import("@tamagui/web").FlatStyleValue<"italic" | "normal" | "unset" | undefined>;
-    fontWeight?: import("@tamagui/web").FlatStyleValue<"unset" | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | import("@tamagui/ui").GetThemeValueForKey<"fontWeight"> | undefined>;
-    letterSpacing?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/ui").GetThemeValueForKey<"letterSpacing"> | undefined>;
-    lineHeight?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/ui").GetThemeValueForKey<"lineHeight"> | undefined>;
-    textAlign?: import("@tamagui/web").FlatStyleValue<"auto" | "center" | "justify" | "left" | "right" | "unset" | undefined>;
-    textDecorationLine?: import("@tamagui/web").FlatStyleValue<"line-through" | "none" | "underline" | "underline line-through" | "unset" | undefined>;
-    textDecorationStyle?: import("@tamagui/web").FlatStyleValue<"dashed" | "dotted" | "double" | "solid" | "unset" | undefined>;
-    textDecorationColor?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"textDecorationColor"> | import("react-native").OpaqueColorValue | undefined>;
-    textShadowColor?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"textShadowColor"> | import("react-native").OpaqueColorValue | undefined>;
-    textShadowOffset?: import("@tamagui/web").FlatStyleValue<"unset" | {
-        width: number;
-        height: number;
-    } | undefined>;
-    textShadowRadius?: import("@tamagui/web").FlatStyleValue<number | "unset" | undefined>;
-    textTransform?: import("@tamagui/web").FlatStyleValue<"capitalize" | "lowercase" | "none" | "unset" | "uppercase" | undefined>;
-    color?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"color"> | undefined>;
-    userSelect?: import("@tamagui/web").FlatStyleValue<import("csstype").Property.UserSelect | undefined>;
-    verticalAlign?: import("@tamagui/web").FlatStyleValue<import("csstype").Property.VerticalAlign<0 | (string & {})> | undefined>;
-    ellipsis?: import("@tamagui/web").FlatStyleValue<"unset" | boolean | undefined>;
-    numberOfLines?: import("@tamagui/web").FlatStyleValue<number | "unset" | undefined>;
-    textDecorationDistance?: import("@tamagui/web").FlatStyleValue<number | "unset" | undefined>;
-    textOverflow?: import("@tamagui/web").FlatStyleValue<import("csstype").Property.TextOverflow | undefined>;
-    whiteSpace?: import("@tamagui/web").FlatStyleValue<import("csstype").Property.WhiteSpace | undefined>;
-    wordWrap?: import("@tamagui/web").FlatStyleValue<import("csstype").Property.WordWrap | undefined>;
-    textShadow?: import("@tamagui/web").FlatStyleValue<string | undefined>;
-    textDecoration?: import("@tamagui/web").FlatStyleValue<string | undefined>;
-    font?: import("@tamagui/web").FlatStyleValue<string | undefined>;
-} & Pick<import("@tamagui/web").WithShorthands<{
-    fontVariant?: import("@tamagui/web").FlatStyleValue<"unset" | import("react-native").FontVariant[] | undefined>;
-    writingDirection?: import("@tamagui/web").FlatStyleValue<"auto" | "ltr" | "rtl" | "unset" | undefined>;
-    fontFamily?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"fontFamily"> | undefined>;
-    fontSize?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"fontSize"> | undefined>;
-    fontStyle?: import("@tamagui/web").FlatStyleValue<"italic" | "normal" | "unset" | undefined>;
-    fontWeight?: import("@tamagui/web").FlatStyleValue<"unset" | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | import("@tamagui/ui").GetThemeValueForKey<"fontWeight"> | undefined>;
-    letterSpacing?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/ui").GetThemeValueForKey<"letterSpacing"> | undefined>;
-    lineHeight?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/ui").GetThemeValueForKey<"lineHeight"> | undefined>;
-    textAlign?: import("@tamagui/web").FlatStyleValue<"auto" | "center" | "justify" | "left" | "right" | "unset" | undefined>;
-    textDecorationLine?: import("@tamagui/web").FlatStyleValue<"line-through" | "none" | "underline" | "underline line-through" | "unset" | undefined>;
-    textDecorationStyle?: import("@tamagui/web").FlatStyleValue<"dashed" | "dotted" | "double" | "solid" | "unset" | undefined>;
-    textDecorationColor?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"textDecorationColor"> | import("react-native").OpaqueColorValue | undefined>;
-    textShadowColor?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"textShadowColor"> | import("react-native").OpaqueColorValue | undefined>;
-    textShadowOffset?: import("@tamagui/web").FlatStyleValue<"unset" | {
-        width: number;
-        height: number;
-    } | undefined>;
-    textShadowRadius?: import("@tamagui/web").FlatStyleValue<number | "unset" | undefined>;
-    textTransform?: import("@tamagui/web").FlatStyleValue<"capitalize" | "lowercase" | "none" | "unset" | "uppercase" | undefined>;
-    color?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"color"> | undefined>;
-    userSelect?: import("@tamagui/web").FlatStyleValue<import("csstype").Property.UserSelect | undefined>;
-    verticalAlign?: import("@tamagui/web").FlatStyleValue<import("csstype").Property.VerticalAlign<0 | (string & {})> | undefined>;
-    ellipsis?: import("@tamagui/web").FlatStyleValue<"unset" | boolean | undefined>;
-    numberOfLines?: import("@tamagui/web").FlatStyleValue<number | "unset" | undefined>;
-    textDecorationDistance?: import("@tamagui/web").FlatStyleValue<number | "unset" | undefined>;
-    textOverflow?: import("@tamagui/web").FlatStyleValue<import("csstype").Property.TextOverflow | undefined>;
-    whiteSpace?: import("@tamagui/web").FlatStyleValue<import("csstype").Property.WhiteSpace | undefined>;
-    wordWrap?: import("@tamagui/web").FlatStyleValue<import("csstype").Property.WordWrap | undefined>;
-    textShadow?: import("@tamagui/web").FlatStyleValue<string | undefined>;
-    textDecoration?: import("@tamagui/web").FlatStyleValue<string | undefined>;
-    font?: import("@tamagui/web").FlatStyleValue<string | undefined>;
-}>, never> & {
+}> & Partial<Pick<import("@tamagui/ui").TextStyle, "color" | "ellipsis" | "font" | "fontFamily" | "fontSize" | "fontStyle" | "fontVariant" | "fontWeight" | "letterSpacing" | "lineHeight" | "numberOfLines" | "textAlign" | "textDecoration" | "textDecorationColor" | "textDecorationDistance" | "textDecorationLine" | "textDecorationStyle" | "textOverflow" | "textShadow" | "textShadowColor" | "textShadowOffset" | "textShadowRadius" | "textTransform" | "userSelect" | "verticalAlign" | "whiteSpace" | "wordWrap" | "writingDirection">> & Pick<import("@tamagui/web").WithShorthands<Partial<Pick<import("@tamagui/ui").TextStyle, "color" | "ellipsis" | "font" | "fontFamily" | "fontSize" | "fontStyle" | "fontVariant" | "fontWeight" | "letterSpacing" | "lineHeight" | "numberOfLines" | "textAlign" | "textDecoration" | "textDecorationColor" | "textDecorationDistance" | "textDecorationLine" | "textDecorationStyle" | "textOverflow" | "textShadow" | "textShadowColor" | "textShadowOffset" | "textShadowRadius" | "textTransform" | "userSelect" | "verticalAlign" | "whiteSpace" | "wordWrap" | "writingDirection">>>, never> & {
     maxFontSizeMultiplier?: number;
     textProps?: Partial<import("@tamagui/ui").SizableTextProps>;
     noTextWrap?: boolean;
@@ -339,71 +147,7 @@ export declare const ListItem: import("react").FunctionComponent<Omit<import("@t
     scaleIcon?: number;
     subTitle?: import("react").ReactNode;
     title?: import("react").ReactNode;
-}> & {
-    fontVariant?: import("@tamagui/web").FlatStyleValue<"unset" | import("react-native").FontVariant[] | undefined>;
-    writingDirection?: import("@tamagui/web").FlatStyleValue<"auto" | "ltr" | "rtl" | "unset" | undefined>;
-    fontFamily?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"fontFamily"> | undefined>;
-    fontSize?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"fontSize"> | undefined>;
-    fontStyle?: import("@tamagui/web").FlatStyleValue<"italic" | "normal" | "unset" | undefined>;
-    fontWeight?: import("@tamagui/web").FlatStyleValue<"unset" | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | import("@tamagui/ui").GetThemeValueForKey<"fontWeight"> | undefined>;
-    letterSpacing?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/ui").GetThemeValueForKey<"letterSpacing"> | undefined>;
-    lineHeight?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/ui").GetThemeValueForKey<"lineHeight"> | undefined>;
-    textAlign?: import("@tamagui/web").FlatStyleValue<"auto" | "center" | "justify" | "left" | "right" | "unset" | undefined>;
-    textDecorationLine?: import("@tamagui/web").FlatStyleValue<"line-through" | "none" | "underline" | "underline line-through" | "unset" | undefined>;
-    textDecorationStyle?: import("@tamagui/web").FlatStyleValue<"dashed" | "dotted" | "double" | "solid" | "unset" | undefined>;
-    textDecorationColor?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"textDecorationColor"> | import("react-native").OpaqueColorValue | undefined>;
-    textShadowColor?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"textShadowColor"> | import("react-native").OpaqueColorValue | undefined>;
-    textShadowOffset?: import("@tamagui/web").FlatStyleValue<"unset" | {
-        width: number;
-        height: number;
-    } | undefined>;
-    textShadowRadius?: import("@tamagui/web").FlatStyleValue<number | "unset" | undefined>;
-    textTransform?: import("@tamagui/web").FlatStyleValue<"capitalize" | "lowercase" | "none" | "unset" | "uppercase" | undefined>;
-    color?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"color"> | undefined>;
-    userSelect?: import("@tamagui/web").FlatStyleValue<import("csstype").Property.UserSelect | undefined>;
-    verticalAlign?: import("@tamagui/web").FlatStyleValue<import("csstype").Property.VerticalAlign<0 | (string & {})> | undefined>;
-    ellipsis?: import("@tamagui/web").FlatStyleValue<"unset" | boolean | undefined>;
-    numberOfLines?: import("@tamagui/web").FlatStyleValue<number | "unset" | undefined>;
-    textDecorationDistance?: import("@tamagui/web").FlatStyleValue<number | "unset" | undefined>;
-    textOverflow?: import("@tamagui/web").FlatStyleValue<import("csstype").Property.TextOverflow | undefined>;
-    whiteSpace?: import("@tamagui/web").FlatStyleValue<import("csstype").Property.WhiteSpace | undefined>;
-    wordWrap?: import("@tamagui/web").FlatStyleValue<import("csstype").Property.WordWrap | undefined>;
-    textShadow?: import("@tamagui/web").FlatStyleValue<string | undefined>;
-    textDecoration?: import("@tamagui/web").FlatStyleValue<string | undefined>;
-    font?: import("@tamagui/web").FlatStyleValue<string | undefined>;
-} & Pick<import("@tamagui/web").WithShorthands<{
-    fontVariant?: import("@tamagui/web").FlatStyleValue<"unset" | import("react-native").FontVariant[] | undefined>;
-    writingDirection?: import("@tamagui/web").FlatStyleValue<"auto" | "ltr" | "rtl" | "unset" | undefined>;
-    fontFamily?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"fontFamily"> | undefined>;
-    fontSize?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"fontSize"> | undefined>;
-    fontStyle?: import("@tamagui/web").FlatStyleValue<"italic" | "normal" | "unset" | undefined>;
-    fontWeight?: import("@tamagui/web").FlatStyleValue<"unset" | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | import("@tamagui/ui").GetThemeValueForKey<"fontWeight"> | undefined>;
-    letterSpacing?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/ui").GetThemeValueForKey<"letterSpacing"> | undefined>;
-    lineHeight?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/ui").GetThemeValueForKey<"lineHeight"> | undefined>;
-    textAlign?: import("@tamagui/web").FlatStyleValue<"auto" | "center" | "justify" | "left" | "right" | "unset" | undefined>;
-    textDecorationLine?: import("@tamagui/web").FlatStyleValue<"line-through" | "none" | "underline" | "underline line-through" | "unset" | undefined>;
-    textDecorationStyle?: import("@tamagui/web").FlatStyleValue<"dashed" | "dotted" | "double" | "solid" | "unset" | undefined>;
-    textDecorationColor?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"textDecorationColor"> | import("react-native").OpaqueColorValue | undefined>;
-    textShadowColor?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"textShadowColor"> | import("react-native").OpaqueColorValue | undefined>;
-    textShadowOffset?: import("@tamagui/web").FlatStyleValue<"unset" | {
-        width: number;
-        height: number;
-    } | undefined>;
-    textShadowRadius?: import("@tamagui/web").FlatStyleValue<number | "unset" | undefined>;
-    textTransform?: import("@tamagui/web").FlatStyleValue<"capitalize" | "lowercase" | "none" | "unset" | "uppercase" | undefined>;
-    color?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"color"> | undefined>;
-    userSelect?: import("@tamagui/web").FlatStyleValue<import("csstype").Property.UserSelect | undefined>;
-    verticalAlign?: import("@tamagui/web").FlatStyleValue<import("csstype").Property.VerticalAlign<0 | (string & {})> | undefined>;
-    ellipsis?: import("@tamagui/web").FlatStyleValue<"unset" | boolean | undefined>;
-    numberOfLines?: import("@tamagui/web").FlatStyleValue<number | "unset" | undefined>;
-    textDecorationDistance?: import("@tamagui/web").FlatStyleValue<number | "unset" | undefined>;
-    textOverflow?: import("@tamagui/web").FlatStyleValue<import("csstype").Property.TextOverflow | undefined>;
-    whiteSpace?: import("@tamagui/web").FlatStyleValue<import("csstype").Property.WhiteSpace | undefined>;
-    wordWrap?: import("@tamagui/web").FlatStyleValue<import("csstype").Property.WordWrap | undefined>;
-    textShadow?: import("@tamagui/web").FlatStyleValue<string | undefined>;
-    textDecoration?: import("@tamagui/web").FlatStyleValue<string | undefined>;
-    font?: import("@tamagui/web").FlatStyleValue<string | undefined>;
-}>, never> & {
+}> & Partial<Pick<import("@tamagui/ui").TextStyle, "color" | "ellipsis" | "font" | "fontFamily" | "fontSize" | "fontStyle" | "fontVariant" | "fontWeight" | "letterSpacing" | "lineHeight" | "numberOfLines" | "textAlign" | "textDecoration" | "textDecorationColor" | "textDecorationDistance" | "textDecorationLine" | "textDecorationStyle" | "textOverflow" | "textShadow" | "textShadowColor" | "textShadowOffset" | "textShadowRadius" | "textTransform" | "userSelect" | "verticalAlign" | "whiteSpace" | "wordWrap" | "writingDirection">> & Pick<import("@tamagui/web").WithShorthands<Partial<Pick<import("@tamagui/ui").TextStyle, "color" | "ellipsis" | "font" | "fontFamily" | "fontSize" | "fontStyle" | "fontVariant" | "fontWeight" | "letterSpacing" | "lineHeight" | "numberOfLines" | "textAlign" | "textDecoration" | "textDecorationColor" | "textDecorationDistance" | "textDecorationLine" | "textDecorationStyle" | "textOverflow" | "textShadow" | "textShadowColor" | "textShadowOffset" | "textShadowRadius" | "textTransform" | "userSelect" | "verticalAlign" | "whiteSpace" | "wordWrap" | "writingDirection">>>, never> & {
     maxFontSizeMultiplier?: number;
     textProps?: Partial<import("@tamagui/ui").SizableTextProps>;
     noTextWrap?: boolean;
@@ -424,71 +168,7 @@ export declare const ListItem: import("react").FunctionComponent<Omit<import("@t
 } & {
     color?: import("@tamagui/ui").ColorTokens | string;
     size?: import("@tamagui/ui").SizeTokens | true;
-}, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/ui").StackNonStyleProps & {
-    fontVariant?: import("@tamagui/web").FlatStyleValue<"unset" | import("react-native").FontVariant[] | undefined>;
-    writingDirection?: import("@tamagui/web").FlatStyleValue<"auto" | "ltr" | "rtl" | "unset" | undefined>;
-    fontFamily?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"fontFamily"> | undefined>;
-    fontSize?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"fontSize"> | undefined>;
-    fontStyle?: import("@tamagui/web").FlatStyleValue<"italic" | "normal" | "unset" | undefined>;
-    fontWeight?: import("@tamagui/web").FlatStyleValue<"unset" | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | import("@tamagui/ui").GetThemeValueForKey<"fontWeight"> | undefined>;
-    letterSpacing?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/ui").GetThemeValueForKey<"letterSpacing"> | undefined>;
-    lineHeight?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/ui").GetThemeValueForKey<"lineHeight"> | undefined>;
-    textAlign?: import("@tamagui/web").FlatStyleValue<"auto" | "center" | "justify" | "left" | "right" | "unset" | undefined>;
-    textDecorationLine?: import("@tamagui/web").FlatStyleValue<"line-through" | "none" | "underline" | "underline line-through" | "unset" | undefined>;
-    textDecorationStyle?: import("@tamagui/web").FlatStyleValue<"dashed" | "dotted" | "double" | "solid" | "unset" | undefined>;
-    textDecorationColor?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"textDecorationColor"> | import("react-native").OpaqueColorValue | undefined>;
-    textShadowColor?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"textShadowColor"> | import("react-native").OpaqueColorValue | undefined>;
-    textShadowOffset?: import("@tamagui/web").FlatStyleValue<"unset" | {
-        width: number;
-        height: number;
-    } | undefined>;
-    textShadowRadius?: import("@tamagui/web").FlatStyleValue<number | "unset" | undefined>;
-    textTransform?: import("@tamagui/web").FlatStyleValue<"capitalize" | "lowercase" | "none" | "unset" | "uppercase" | undefined>;
-    color?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"color"> | undefined>;
-    userSelect?: import("@tamagui/web").FlatStyleValue<import("csstype").Property.UserSelect | undefined>;
-    verticalAlign?: import("@tamagui/web").FlatStyleValue<import("csstype").Property.VerticalAlign<0 | (string & {})> | undefined>;
-    ellipsis?: import("@tamagui/web").FlatStyleValue<"unset" | boolean | undefined>;
-    numberOfLines?: import("@tamagui/web").FlatStyleValue<number | "unset" | undefined>;
-    textDecorationDistance?: import("@tamagui/web").FlatStyleValue<number | "unset" | undefined>;
-    textOverflow?: import("@tamagui/web").FlatStyleValue<import("csstype").Property.TextOverflow | undefined>;
-    whiteSpace?: import("@tamagui/web").FlatStyleValue<import("csstype").Property.WhiteSpace | undefined>;
-    wordWrap?: import("@tamagui/web").FlatStyleValue<import("csstype").Property.WordWrap | undefined>;
-    textShadow?: import("@tamagui/web").FlatStyleValue<string | undefined>;
-    textDecoration?: import("@tamagui/web").FlatStyleValue<string | undefined>;
-    font?: import("@tamagui/web").FlatStyleValue<string | undefined>;
-} & Pick<import("@tamagui/web").WithShorthands<{
-    fontVariant?: import("@tamagui/web").FlatStyleValue<"unset" | import("react-native").FontVariant[] | undefined>;
-    writingDirection?: import("@tamagui/web").FlatStyleValue<"auto" | "ltr" | "rtl" | "unset" | undefined>;
-    fontFamily?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"fontFamily"> | undefined>;
-    fontSize?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"fontSize"> | undefined>;
-    fontStyle?: import("@tamagui/web").FlatStyleValue<"italic" | "normal" | "unset" | undefined>;
-    fontWeight?: import("@tamagui/web").FlatStyleValue<"unset" | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | import("@tamagui/ui").GetThemeValueForKey<"fontWeight"> | undefined>;
-    letterSpacing?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/ui").GetThemeValueForKey<"letterSpacing"> | undefined>;
-    lineHeight?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/ui").GetThemeValueForKey<"lineHeight"> | undefined>;
-    textAlign?: import("@tamagui/web").FlatStyleValue<"auto" | "center" | "justify" | "left" | "right" | "unset" | undefined>;
-    textDecorationLine?: import("@tamagui/web").FlatStyleValue<"line-through" | "none" | "underline" | "underline line-through" | "unset" | undefined>;
-    textDecorationStyle?: import("@tamagui/web").FlatStyleValue<"dashed" | "dotted" | "double" | "solid" | "unset" | undefined>;
-    textDecorationColor?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"textDecorationColor"> | import("react-native").OpaqueColorValue | undefined>;
-    textShadowColor?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"textShadowColor"> | import("react-native").OpaqueColorValue | undefined>;
-    textShadowOffset?: import("@tamagui/web").FlatStyleValue<"unset" | {
-        width: number;
-        height: number;
-    } | undefined>;
-    textShadowRadius?: import("@tamagui/web").FlatStyleValue<number | "unset" | undefined>;
-    textTransform?: import("@tamagui/web").FlatStyleValue<"capitalize" | "lowercase" | "none" | "unset" | "uppercase" | undefined>;
-    color?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"color"> | undefined>;
-    userSelect?: import("@tamagui/web").FlatStyleValue<import("csstype").Property.UserSelect | undefined>;
-    verticalAlign?: import("@tamagui/web").FlatStyleValue<import("csstype").Property.VerticalAlign<0 | (string & {})> | undefined>;
-    ellipsis?: import("@tamagui/web").FlatStyleValue<"unset" | boolean | undefined>;
-    numberOfLines?: import("@tamagui/web").FlatStyleValue<number | "unset" | undefined>;
-    textDecorationDistance?: import("@tamagui/web").FlatStyleValue<number | "unset" | undefined>;
-    textOverflow?: import("@tamagui/web").FlatStyleValue<import("csstype").Property.TextOverflow | undefined>;
-    whiteSpace?: import("@tamagui/web").FlatStyleValue<import("csstype").Property.WhiteSpace | undefined>;
-    wordWrap?: import("@tamagui/web").FlatStyleValue<import("csstype").Property.WordWrap | undefined>;
-    textShadow?: import("@tamagui/web").FlatStyleValue<string | undefined>;
-    textDecoration?: import("@tamagui/web").FlatStyleValue<string | undefined>;
-    font?: import("@tamagui/web").FlatStyleValue<string | undefined>;
-}>, never> & {
+}, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/ui").StackNonStyleProps & Partial<Pick<import("@tamagui/ui").TextStyle, "color" | "ellipsis" | "font" | "fontFamily" | "fontSize" | "fontStyle" | "fontVariant" | "fontWeight" | "letterSpacing" | "lineHeight" | "numberOfLines" | "textAlign" | "textDecoration" | "textDecorationColor" | "textDecorationDistance" | "textDecorationLine" | "textDecorationStyle" | "textOverflow" | "textShadow" | "textShadowColor" | "textShadowOffset" | "textShadowRadius" | "textTransform" | "userSelect" | "verticalAlign" | "whiteSpace" | "wordWrap" | "writingDirection">> & Pick<import("@tamagui/web").WithShorthands<Partial<Pick<import("@tamagui/ui").TextStyle, "color" | "ellipsis" | "font" | "fontFamily" | "fontSize" | "fontStyle" | "fontVariant" | "fontWeight" | "letterSpacing" | "lineHeight" | "numberOfLines" | "textAlign" | "textDecoration" | "textDecorationColor" | "textDecorationDistance" | "textDecorationLine" | "textDecorationStyle" | "textOverflow" | "textShadow" | "textShadowColor" | "textShadowOffset" | "textShadowRadius" | "textTransform" | "userSelect" | "verticalAlign" | "whiteSpace" | "wordWrap" | "writingDirection">>>, never> & {
     maxFontSizeMultiplier?: number;
     textProps?: Partial<import("@tamagui/ui").SizableTextProps>;
     noTextWrap?: boolean;
@@ -534,71 +214,7 @@ export declare const ListItem: import("react").FunctionComponent<Omit<import("@t
         scaleIcon?: number;
         subTitle?: import("react").ReactNode;
         title?: import("react").ReactNode;
-    }> & {
-        fontVariant?: import("@tamagui/web").FlatStyleValue<"unset" | import("react-native").FontVariant[] | undefined>;
-        writingDirection?: import("@tamagui/web").FlatStyleValue<"auto" | "ltr" | "rtl" | "unset" | undefined>;
-        fontFamily?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"fontFamily"> | undefined>;
-        fontSize?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"fontSize"> | undefined>;
-        fontStyle?: import("@tamagui/web").FlatStyleValue<"italic" | "normal" | "unset" | undefined>;
-        fontWeight?: import("@tamagui/web").FlatStyleValue<"unset" | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | import("@tamagui/ui").GetThemeValueForKey<"fontWeight"> | undefined>;
-        letterSpacing?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/ui").GetThemeValueForKey<"letterSpacing"> | undefined>;
-        lineHeight?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/ui").GetThemeValueForKey<"lineHeight"> | undefined>;
-        textAlign?: import("@tamagui/web").FlatStyleValue<"auto" | "center" | "justify" | "left" | "right" | "unset" | undefined>;
-        textDecorationLine?: import("@tamagui/web").FlatStyleValue<"line-through" | "none" | "underline" | "underline line-through" | "unset" | undefined>;
-        textDecorationStyle?: import("@tamagui/web").FlatStyleValue<"dashed" | "dotted" | "double" | "solid" | "unset" | undefined>;
-        textDecorationColor?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"textDecorationColor"> | import("react-native").OpaqueColorValue | undefined>;
-        textShadowColor?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"textShadowColor"> | import("react-native").OpaqueColorValue | undefined>;
-        textShadowOffset?: import("@tamagui/web").FlatStyleValue<"unset" | {
-            width: number;
-            height: number;
-        } | undefined>;
-        textShadowRadius?: import("@tamagui/web").FlatStyleValue<number | "unset" | undefined>;
-        textTransform?: import("@tamagui/web").FlatStyleValue<"capitalize" | "lowercase" | "none" | "unset" | "uppercase" | undefined>;
-        color?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"color"> | undefined>;
-        userSelect?: import("@tamagui/web").FlatStyleValue<import("csstype").Property.UserSelect | undefined>;
-        verticalAlign?: import("@tamagui/web").FlatStyleValue<import("csstype").Property.VerticalAlign<0 | (string & {})> | undefined>;
-        ellipsis?: import("@tamagui/web").FlatStyleValue<"unset" | boolean | undefined>;
-        numberOfLines?: import("@tamagui/web").FlatStyleValue<number | "unset" | undefined>;
-        textDecorationDistance?: import("@tamagui/web").FlatStyleValue<number | "unset" | undefined>;
-        textOverflow?: import("@tamagui/web").FlatStyleValue<import("csstype").Property.TextOverflow | undefined>;
-        whiteSpace?: import("@tamagui/web").FlatStyleValue<import("csstype").Property.WhiteSpace | undefined>;
-        wordWrap?: import("@tamagui/web").FlatStyleValue<import("csstype").Property.WordWrap | undefined>;
-        textShadow?: import("@tamagui/web").FlatStyleValue<string | undefined>;
-        textDecoration?: import("@tamagui/web").FlatStyleValue<string | undefined>;
-        font?: import("@tamagui/web").FlatStyleValue<string | undefined>;
-    } & Pick<import("@tamagui/web").WithShorthands<{
-        fontVariant?: import("@tamagui/web").FlatStyleValue<"unset" | import("react-native").FontVariant[] | undefined>;
-        writingDirection?: import("@tamagui/web").FlatStyleValue<"auto" | "ltr" | "rtl" | "unset" | undefined>;
-        fontFamily?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"fontFamily"> | undefined>;
-        fontSize?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"fontSize"> | undefined>;
-        fontStyle?: import("@tamagui/web").FlatStyleValue<"italic" | "normal" | "unset" | undefined>;
-        fontWeight?: import("@tamagui/web").FlatStyleValue<"unset" | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | import("@tamagui/ui").GetThemeValueForKey<"fontWeight"> | undefined>;
-        letterSpacing?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/ui").GetThemeValueForKey<"letterSpacing"> | undefined>;
-        lineHeight?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/ui").GetThemeValueForKey<"lineHeight"> | undefined>;
-        textAlign?: import("@tamagui/web").FlatStyleValue<"auto" | "center" | "justify" | "left" | "right" | "unset" | undefined>;
-        textDecorationLine?: import("@tamagui/web").FlatStyleValue<"line-through" | "none" | "underline" | "underline line-through" | "unset" | undefined>;
-        textDecorationStyle?: import("@tamagui/web").FlatStyleValue<"dashed" | "dotted" | "double" | "solid" | "unset" | undefined>;
-        textDecorationColor?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"textDecorationColor"> | import("react-native").OpaqueColorValue | undefined>;
-        textShadowColor?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"textShadowColor"> | import("react-native").OpaqueColorValue | undefined>;
-        textShadowOffset?: import("@tamagui/web").FlatStyleValue<"unset" | {
-            width: number;
-            height: number;
-        } | undefined>;
-        textShadowRadius?: import("@tamagui/web").FlatStyleValue<number | "unset" | undefined>;
-        textTransform?: import("@tamagui/web").FlatStyleValue<"capitalize" | "lowercase" | "none" | "unset" | "uppercase" | undefined>;
-        color?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"color"> | undefined>;
-        userSelect?: import("@tamagui/web").FlatStyleValue<import("csstype").Property.UserSelect | undefined>;
-        verticalAlign?: import("@tamagui/web").FlatStyleValue<import("csstype").Property.VerticalAlign<0 | (string & {})> | undefined>;
-        ellipsis?: import("@tamagui/web").FlatStyleValue<"unset" | boolean | undefined>;
-        numberOfLines?: import("@tamagui/web").FlatStyleValue<number | "unset" | undefined>;
-        textDecorationDistance?: import("@tamagui/web").FlatStyleValue<number | "unset" | undefined>;
-        textOverflow?: import("@tamagui/web").FlatStyleValue<import("csstype").Property.TextOverflow | undefined>;
-        whiteSpace?: import("@tamagui/web").FlatStyleValue<import("csstype").Property.WhiteSpace | undefined>;
-        wordWrap?: import("@tamagui/web").FlatStyleValue<import("csstype").Property.WordWrap | undefined>;
-        textShadow?: import("@tamagui/web").FlatStyleValue<string | undefined>;
-        textDecoration?: import("@tamagui/web").FlatStyleValue<string | undefined>;
-        font?: import("@tamagui/web").FlatStyleValue<string | undefined>;
-    }>, never> & {
+    }> & Partial<Pick<import("@tamagui/ui").TextStyle, "color" | "ellipsis" | "font" | "fontFamily" | "fontSize" | "fontStyle" | "fontVariant" | "fontWeight" | "letterSpacing" | "lineHeight" | "numberOfLines" | "textAlign" | "textDecoration" | "textDecorationColor" | "textDecorationDistance" | "textDecorationLine" | "textDecorationStyle" | "textOverflow" | "textShadow" | "textShadowColor" | "textShadowOffset" | "textShadowRadius" | "textTransform" | "userSelect" | "verticalAlign" | "whiteSpace" | "wordWrap" | "writingDirection">> & Pick<import("@tamagui/web").WithShorthands<Partial<Pick<import("@tamagui/ui").TextStyle, "color" | "ellipsis" | "font" | "fontFamily" | "fontSize" | "fontStyle" | "fontVariant" | "fontWeight" | "letterSpacing" | "lineHeight" | "numberOfLines" | "textAlign" | "textDecoration" | "textDecorationColor" | "textDecorationDistance" | "textDecorationLine" | "textDecorationStyle" | "textOverflow" | "textShadow" | "textShadowColor" | "textShadowOffset" | "textShadowRadius" | "textTransform" | "userSelect" | "verticalAlign" | "whiteSpace" | "wordWrap" | "writingDirection">>>, never> & {
         maxFontSizeMultiplier?: number;
         textProps?: Partial<import("@tamagui/ui").SizableTextProps>;
         noTextWrap?: boolean;
@@ -619,71 +235,7 @@ export declare const ListItem: import("react").FunctionComponent<Omit<import("@t
     } & {
         color?: import("@tamagui/ui").ColorTokens | string;
         size?: import("@tamagui/ui").SizeTokens | true;
-    }, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/ui").StackNonStyleProps & {
-        fontVariant?: import("@tamagui/web").FlatStyleValue<"unset" | import("react-native").FontVariant[] | undefined>;
-        writingDirection?: import("@tamagui/web").FlatStyleValue<"auto" | "ltr" | "rtl" | "unset" | undefined>;
-        fontFamily?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"fontFamily"> | undefined>;
-        fontSize?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"fontSize"> | undefined>;
-        fontStyle?: import("@tamagui/web").FlatStyleValue<"italic" | "normal" | "unset" | undefined>;
-        fontWeight?: import("@tamagui/web").FlatStyleValue<"unset" | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | import("@tamagui/ui").GetThemeValueForKey<"fontWeight"> | undefined>;
-        letterSpacing?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/ui").GetThemeValueForKey<"letterSpacing"> | undefined>;
-        lineHeight?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/ui").GetThemeValueForKey<"lineHeight"> | undefined>;
-        textAlign?: import("@tamagui/web").FlatStyleValue<"auto" | "center" | "justify" | "left" | "right" | "unset" | undefined>;
-        textDecorationLine?: import("@tamagui/web").FlatStyleValue<"line-through" | "none" | "underline" | "underline line-through" | "unset" | undefined>;
-        textDecorationStyle?: import("@tamagui/web").FlatStyleValue<"dashed" | "dotted" | "double" | "solid" | "unset" | undefined>;
-        textDecorationColor?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"textDecorationColor"> | import("react-native").OpaqueColorValue | undefined>;
-        textShadowColor?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"textShadowColor"> | import("react-native").OpaqueColorValue | undefined>;
-        textShadowOffset?: import("@tamagui/web").FlatStyleValue<"unset" | {
-            width: number;
-            height: number;
-        } | undefined>;
-        textShadowRadius?: import("@tamagui/web").FlatStyleValue<number | "unset" | undefined>;
-        textTransform?: import("@tamagui/web").FlatStyleValue<"capitalize" | "lowercase" | "none" | "unset" | "uppercase" | undefined>;
-        color?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"color"> | undefined>;
-        userSelect?: import("@tamagui/web").FlatStyleValue<import("csstype").Property.UserSelect | undefined>;
-        verticalAlign?: import("@tamagui/web").FlatStyleValue<import("csstype").Property.VerticalAlign<0 | (string & {})> | undefined>;
-        ellipsis?: import("@tamagui/web").FlatStyleValue<"unset" | boolean | undefined>;
-        numberOfLines?: import("@tamagui/web").FlatStyleValue<number | "unset" | undefined>;
-        textDecorationDistance?: import("@tamagui/web").FlatStyleValue<number | "unset" | undefined>;
-        textOverflow?: import("@tamagui/web").FlatStyleValue<import("csstype").Property.TextOverflow | undefined>;
-        whiteSpace?: import("@tamagui/web").FlatStyleValue<import("csstype").Property.WhiteSpace | undefined>;
-        wordWrap?: import("@tamagui/web").FlatStyleValue<import("csstype").Property.WordWrap | undefined>;
-        textShadow?: import("@tamagui/web").FlatStyleValue<string | undefined>;
-        textDecoration?: import("@tamagui/web").FlatStyleValue<string | undefined>;
-        font?: import("@tamagui/web").FlatStyleValue<string | undefined>;
-    } & Pick<import("@tamagui/web").WithShorthands<{
-        fontVariant?: import("@tamagui/web").FlatStyleValue<"unset" | import("react-native").FontVariant[] | undefined>;
-        writingDirection?: import("@tamagui/web").FlatStyleValue<"auto" | "ltr" | "rtl" | "unset" | undefined>;
-        fontFamily?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"fontFamily"> | undefined>;
-        fontSize?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"fontSize"> | undefined>;
-        fontStyle?: import("@tamagui/web").FlatStyleValue<"italic" | "normal" | "unset" | undefined>;
-        fontWeight?: import("@tamagui/web").FlatStyleValue<"unset" | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | import("@tamagui/ui").GetThemeValueForKey<"fontWeight"> | undefined>;
-        letterSpacing?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/ui").GetThemeValueForKey<"letterSpacing"> | undefined>;
-        lineHeight?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/ui").GetThemeValueForKey<"lineHeight"> | undefined>;
-        textAlign?: import("@tamagui/web").FlatStyleValue<"auto" | "center" | "justify" | "left" | "right" | "unset" | undefined>;
-        textDecorationLine?: import("@tamagui/web").FlatStyleValue<"line-through" | "none" | "underline" | "underline line-through" | "unset" | undefined>;
-        textDecorationStyle?: import("@tamagui/web").FlatStyleValue<"dashed" | "dotted" | "double" | "solid" | "unset" | undefined>;
-        textDecorationColor?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"textDecorationColor"> | import("react-native").OpaqueColorValue | undefined>;
-        textShadowColor?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"textShadowColor"> | import("react-native").OpaqueColorValue | undefined>;
-        textShadowOffset?: import("@tamagui/web").FlatStyleValue<"unset" | {
-            width: number;
-            height: number;
-        } | undefined>;
-        textShadowRadius?: import("@tamagui/web").FlatStyleValue<number | "unset" | undefined>;
-        textTransform?: import("@tamagui/web").FlatStyleValue<"capitalize" | "lowercase" | "none" | "unset" | "uppercase" | undefined>;
-        color?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"color"> | undefined>;
-        userSelect?: import("@tamagui/web").FlatStyleValue<import("csstype").Property.UserSelect | undefined>;
-        verticalAlign?: import("@tamagui/web").FlatStyleValue<import("csstype").Property.VerticalAlign<0 | (string & {})> | undefined>;
-        ellipsis?: import("@tamagui/web").FlatStyleValue<"unset" | boolean | undefined>;
-        numberOfLines?: import("@tamagui/web").FlatStyleValue<number | "unset" | undefined>;
-        textDecorationDistance?: import("@tamagui/web").FlatStyleValue<number | "unset" | undefined>;
-        textOverflow?: import("@tamagui/web").FlatStyleValue<import("csstype").Property.TextOverflow | undefined>;
-        whiteSpace?: import("@tamagui/web").FlatStyleValue<import("csstype").Property.WhiteSpace | undefined>;
-        wordWrap?: import("@tamagui/web").FlatStyleValue<import("csstype").Property.WordWrap | undefined>;
-        textShadow?: import("@tamagui/web").FlatStyleValue<string | undefined>;
-        textDecoration?: import("@tamagui/web").FlatStyleValue<string | undefined>;
-        font?: import("@tamagui/web").FlatStyleValue<string | undefined>;
-    }>, never> & {
+    }, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/ui").StackNonStyleProps & Partial<Pick<import("@tamagui/ui").TextStyle, "color" | "ellipsis" | "font" | "fontFamily" | "fontSize" | "fontStyle" | "fontVariant" | "fontWeight" | "letterSpacing" | "lineHeight" | "numberOfLines" | "textAlign" | "textDecoration" | "textDecorationColor" | "textDecorationDistance" | "textDecorationLine" | "textDecorationStyle" | "textOverflow" | "textShadow" | "textShadowColor" | "textShadowOffset" | "textShadowRadius" | "textTransform" | "userSelect" | "verticalAlign" | "whiteSpace" | "wordWrap" | "writingDirection">> & Pick<import("@tamagui/web").WithShorthands<Partial<Pick<import("@tamagui/ui").TextStyle, "color" | "ellipsis" | "font" | "fontFamily" | "fontSize" | "fontStyle" | "fontVariant" | "fontWeight" | "letterSpacing" | "lineHeight" | "numberOfLines" | "textAlign" | "textDecoration" | "textDecorationColor" | "textDecorationDistance" | "textDecorationLine" | "textDecorationStyle" | "textOverflow" | "textShadow" | "textShadowColor" | "textShadowOffset" | "textShadowRadius" | "textTransform" | "userSelect" | "verticalAlign" | "whiteSpace" | "wordWrap" | "writingDirection">>>, never> & {
         maxFontSizeMultiplier?: number;
         textProps?: Partial<import("@tamagui/ui").SizableTextProps>;
         noTextWrap?: boolean;

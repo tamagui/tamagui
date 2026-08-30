@@ -25,10 +25,7 @@ import {
 } from './config'
 import { createTamagui, installTamaguiConfig } from './createTamagui'
 import { getSplitStyles } from './helpers/getSplitStyles'
-import {
-  prepareStyleStaticConfig,
-  splitStyledOptions,
-} from './helpers/prepareStyleStaticConfig'
+import { getStyleStaticConfig } from './helpers/styleStaticConfig'
 import { mergeComponentProps } from './helpers/mergeProps'
 import type {
   SplitStyleProps,
@@ -48,7 +45,6 @@ export {
   getTokens,
   getTokenValue,
   installTamaguiConfig,
-  prepareStyleStaticConfig,
   setConfig,
   updateConfig,
 }
@@ -179,13 +175,13 @@ export function resolveStaticElement(
   if (target !== 'native') {
     delete baseStaticConfig.isReactNative
   }
-  prepareStyleStaticConfig(baseStaticConfig)
+  const styleStaticConfig = getStyleStaticConfig(baseStaticConfig, conf)
 
   // mirror createComponent: only the non-style defaults are props. The styles
   // are a base layer the style pass writes for us, so merging them here too
   // would apply them twice and in the wrong order (above variants, not below)
   let elementProps = element.props || {}
-  const { defaultProps } = splitStyledOptions(baseStaticConfig, conf)
+  const { defaultProps } = styleStaticConfig
   if (defaultProps) {
     const [merged] = mergeComponentProps(defaultProps, undefined, elementProps)
     elementProps = merged
@@ -229,7 +225,15 @@ export function resolveStaticElement(
       theme,
       themeName,
       componentState,
-      styleProps
+      styleProps,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      styleStaticConfig
     )
   } catch (err: any) {
     return {

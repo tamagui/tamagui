@@ -212,7 +212,6 @@ export {
   resolveSizeToken,
   resolveTokenSize,
   styled,
-  themeable,
   // hooks
   useAnimatedNumber,
   useAnimatedNumberReaction,

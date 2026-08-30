@@ -33,6 +33,11 @@ export type FrontendStaticConfig = {
   styleFrontend?: StyleFrontend
 }
 
+export type FrontendStaticConfigNormalization = Pick<
+  FrontendStaticConfig,
+  'baseStyle' | 'passthroughClassName' | 'variants'
+>
+
 /**
  * What the internal View/Text factory and a frontend-bound `styled()` hand back: an
  * opaque component object carrying its static config. Deliberately not core's
@@ -81,12 +86,12 @@ export type StyleFrontend = {
   /**
    * Resolves frontend-specific static style input (a class-string base, string
    * variant values) into ordinary style objects.
-   * Called once per (staticConfig, config) pair; implementations memoize.
+   * Called once per (staticConfig, config revision) by the shared runtime cache.
    */
   normalizeStaticConfig?: <Config extends FrontendStaticConfig>(
     staticConfig: Config,
     config: StyleFrontendConfig
-  ) => Config
+  ) => FrontendStaticConfigNormalization
 }
 
 /**

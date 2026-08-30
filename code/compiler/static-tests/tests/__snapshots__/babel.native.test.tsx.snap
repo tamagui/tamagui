@@ -258,7 +258,7 @@ exports[`theme value extraction should work when no theme variables used 1`] = `
       )
     }
 
-function __TamaguiNativeStyle93() { return __TamaguiNativeStyle93._ ?? (__TamaguiNativeStyle93._ = {"fontFamily":"-apple-system, system-ui, BlinkMacSystemFont, \\"Segoe UI\\", Roboto, Helvetica, Arial, sans-serif","fontWeight":400,"letterSpacing":0,"fontSize":15,"lineHeight":23,"color":"red"}); } __TamaguiNativeStyle93();
+function __TamaguiNativeStyle93() { return __TamaguiNativeStyle93._ ?? (__TamaguiNativeStyle93._ = {"color":"red","fontFamily":"-apple-system, system-ui, BlinkMacSystemFont, \\"Segoe UI\\", Roboto, Helvetica, Arial, sans-serif","fontWeight":400,"letterSpacing":0,"fontSize":15,"lineHeight":23}); } __TamaguiNativeStyle93();
 const __TamaguiNativeText = require('react-native').Text;"
 `;
 

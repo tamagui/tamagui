@@ -1,5 +1,11 @@
 import { getDefaultTamaguiConfig } from '../../../config-default/src'
-import { View as CoreView, createTamagui, getConfig, updateConfig } from '@tamagui/web'
+import {
+  View as CoreView,
+  createTamagui,
+  getConfig,
+  getStyleStaticConfig,
+  updateConfig,
+} from '@tamagui/web'
 import { StyleObjectRules, StyleObjectValue } from '@tamagui/helpers'
 import { safeAreaVariableNames } from '@tamagui/style-grammar/runtime'
 import { beforeAll, describe, expect, test } from 'vitest'
@@ -232,15 +238,10 @@ describe('class-first styled()', () => {
   test('the normalized static config is memoized per config', () => {
     const Frame = styled(View, 'bg-[red]')
     const config = getConfig()
-    const first = tailwindStyleFrontend.normalizeStaticConfig!(Frame.staticConfig, config)
-    const second = tailwindStyleFrontend.normalizeStaticConfig!(
-      Frame.staticConfig,
-      config
-    )
+    const first = getStyleStaticConfig(Frame.staticConfig, config)
+    const second = getStyleStaticConfig(Frame.staticConfig, config)
 
     expect(second).toBe(first)
-    // and re-normalizing an already normalized config is a no-op
-    expect(tailwindStyleFrontend.normalizeStaticConfig!(first, config)).toBe(first)
   })
 
   test('a call-site class overrides the styled base', () => {
@@ -311,13 +312,11 @@ describe('class-first styled()', () => {
       }
     )
     const authored = Frame.staticConfig
-    const resolved = tailwindStyleFrontend.normalizeStaticConfig!(authored, getConfig())
+    const resolved = getStyleStaticConfig(authored, getConfig())
 
     expect(authored.baseClassName).toContain('p-4')
     expect(authored.variants?.size?.sm).toContain('h-8')
-    expect(tailwindStyleFrontend.normalizeStaticConfig!(resolved, getConfig())).toBe(
-      resolved
-    )
+    expect(getStyleStaticConfig(authored, getConfig())).toBe(resolved)
     expect(resolved.baseStyle).toMatchObject({
       padding: '4',
       borderRadius: '4',

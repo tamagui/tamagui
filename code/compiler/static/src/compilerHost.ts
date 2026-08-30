@@ -1045,11 +1045,20 @@ export function createTamaguiCompilerHost(
   // because their static config is already the renderer's input shape. The compiler
   // must never import a frontend package: `@tamagui/tailwind/vite` already depends on
   // the static compiler, so reaching the other way would be a cycle.
-  const normalizeStaticConfig = (staticConfig: StaticConfig): StaticConfig =>
-    (staticConfig as any).styleFrontend?.normalizeStaticConfig?.(
-      staticConfig,
-      options.tamaguiConfig
-    ) ?? staticConfig
+  const normalizedStyleConfigs = new WeakMap<StaticConfig, any>()
+  const normalizeStaticConfig = (staticConfig: StaticConfig): StaticConfig => {
+    if (!staticConfig.styleFrontend) return staticConfig
+    const normalized = core.getStyleStaticConfig(staticConfig, options.tamaguiConfig)
+    const result = {
+      ...staticConfig,
+      baseStyle: normalized.baseStyle,
+      defaultProps: normalized.defaultProps,
+      variants: normalized.variants,
+      passthroughClassName: normalized.passthroughClassName,
+    }
+    normalizedStyleConfigs.set(result, normalized)
+    return result
+  }
 
   const directStaticConfig = (
     element: MaterializedElement
@@ -1185,7 +1194,7 @@ export function createTamaguiCompilerHost(
     const resolved =
       dom ?? styledStaticConfig(styledDefinition) ?? directStaticConfig(element)
     if (!resolved) return null
-    const defaultProps = core.getDefaultProps(resolved.staticConfig) ?? {}
+    const defaultProps = resolved.staticConfig.defaultProps ?? {}
     return {
       key: resolved.key,
       canFlatten:
@@ -1276,7 +1285,6 @@ export function createTamaguiCompilerHost(
     }
     process.env.TAMAGUI_TARGET = platform
     try {
-      core.prepareStyleStaticConfig(staticConfig)
       return core.getSplitStyles(
         props,
         staticConfig,
@@ -1295,7 +1303,8 @@ export function createTamaguiCompilerHost(
         undefined,
         undefined,
         undefined,
-        animationDriver
+        animationDriver,
+        normalizedStyleConfigs.get(staticConfig)
       )
     } finally {
       if (previousStatic === undefined) delete process.env.IS_STATIC
@@ -1621,7 +1630,7 @@ export function createTamaguiCompilerHost(
       // had never been written: the element flattened and the prop was dropped
       // with no diagnostic. Same merge function and same precedence as
       // completeProps, so there is one answer to "what is this prop's value".
-      const animationDefaultProps = core.getDefaultProps(component.staticConfig) ?? {}
+      const animationDefaultProps = component.staticConfig.defaultProps ?? {}
       const animationProps = core.mergeProps(animationDefaultProps, props)
       const animationNames = new Set([
         ...input.element.entries.flatMap((entry) =>
@@ -2038,7 +2047,7 @@ export function createTamaguiCompilerHost(
           entry.span
         )
       }
-      const staticDefaultProps = core.getDefaultProps(component.staticConfig) ?? {}
+      const staticDefaultProps = component.staticConfig.defaultProps ?? {}
       const defaultProps =
         platform === 'web' &&
         !component.staticConfig.isText &&

@@ -47,6 +47,16 @@ describe('getSplitStyles', () => {
     expect((styles.rulesToInsert[className]?.[4] ?? []).join('')).toContain('color:red')
   })
 
+  test.each([false, null, undefined])(
+    `%s style props clear styled base values`,
+    (value) => {
+      const StyledView = styled(View, { backgroundColor: 'green' })
+      const styles = simplifiedGetSplitStyles(StyledView, { backgroundColor: value })
+
+      expect(styles.classNames.backgroundColor).toBeUndefined()
+    }
+  )
+
   test(`Size variants receive true for opt-in sizing policies`, () => {
     let seenSize: unknown
     const SizedView = styled(View, {

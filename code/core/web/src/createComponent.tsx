@@ -21,11 +21,8 @@ import { defaultComponentStateMounted } from './defaultComponentState'
 import { getWebEvents, useEvents, wrapWithGestureDetector } from './eventHandling'
 import { componentDisplayName } from './helpers/componentDisplayName'
 import { getSplitStyles } from './helpers/getSplitStyles'
-import {
-  getContextPropSet,
-  prepareStyleStaticConfig,
-  splitStyledOptions,
-} from './helpers/prepareStyleStaticConfig'
+import { getConfigRevisionState } from './helpers/grammarConfig'
+import { getStyleStaticConfig, type StyleStaticConfig } from './helpers/styleStaticConfig'
 import {
   getNativeStyleEngine,
   queueNativeViewState,
@@ -271,12 +268,10 @@ export function createComponent<
     )
   }
 
-  prepareStyleStaticConfig(staticConfig)
-
   let config: TamaguiInternalConfig | null = null
   let resolvedDefaultProps: Record<string, any> | undefined
-  let didResolveDefaultProps = false
-  const styledContextKeys = getContextPropSet(staticConfig)
+  let resolvedStyleRevision = -1
+  let resolvedStyleStaticConfig: StyleStaticConfig | undefined
 
   const { Component, isText, isHOC } = staticConfig
 
@@ -304,6 +299,29 @@ export function createComponent<
     const propsIn = propsInWithRef as Omit<typeof propsInWithRef, 'ref'>
 
     config = config || getConfig()
+
+    const styleRevision = getConfigRevisionState(config).revision
+    if (resolvedStyleRevision !== styleRevision) {
+      resolvedStyleRevision = styleRevision
+      const nextStyleStaticConfig = getStyleStaticConfig(staticConfig, config)
+      resolvedStyleStaticConfig = nextStyleStaticConfig
+      resolvedDefaultProps = nextStyleStaticConfig.defaultProps
+      // the relative-position default is a style, so it joins the base layer
+      // under everything the call site writes
+      if (
+        isWeb &&
+        !staticConfig.isText &&
+        config.settings.defaultPosition === 'relative' &&
+        nextStyleStaticConfig.baseStyle?.position === undefined
+      ) {
+        resolvedStyleStaticConfig = {
+          ...nextStyleStaticConfig,
+          baseStyle: { position: 'relative', ...nextStyleStaticConfig.baseStyle },
+        }
+      }
+    }
+    const styleStaticConfig = resolvedStyleStaticConfig!
+    const styledContextKeys = styleStaticConfig.styledContextKeys
 
     const internalID = process.env.NODE_ENV === 'development' ? React.useId() : ''
 
@@ -386,22 +404,6 @@ export function createComponent<
     let props: ViewProps | TextProps = propsIn
 
     // merge both default props and styled context props - ensure order is preserved
-    if (!didResolveDefaultProps) {
-      didResolveDefaultProps = true
-      const split = splitStyledOptions(staticConfig, config)
-      resolvedDefaultProps = split.defaultProps
-      // the relative-position default is a style, so it joins the base layer
-      // under everything the call site writes
-      if (
-        isWeb &&
-        !isText &&
-        config.settings.defaultPosition === 'relative' &&
-        split.baseStyle?.position === undefined
-      ) {
-        split.baseStyle = { position: 'relative', ...split.baseStyle }
-      }
-    }
-
     // merge styled context props over defaults, ensure order is preserved
     const [nextProps, overrides] = mergeComponentProps(
       resolvedDefaultProps,
@@ -765,7 +767,6 @@ export function createComponent<
       canPlatformPseudo: componentState.platformPseudo,
       displayName,
       styledContext: styledContextValue,
-      styledContextKeys,
     } as const
 
     const themeName = themeState?.name || ''
@@ -785,7 +786,8 @@ export function createComponent<
       elementType,
       startedUnhydrated,
       debugProp,
-      animationDriver
+      animationDriver,
+      styleStaticConfig
     )
 
     const finalizedComponentState = componentState.finalizeStyleFlags(
@@ -959,7 +961,8 @@ export function createComponent<
               elementType,
               startedUnhydrated,
               debugProp,
-              animationDriver
+              animationDriver,
+              styleStaticConfig
             )
             if (!nextStyles?.style) return false
 
@@ -1119,7 +1122,8 @@ export function createComponent<
           elementType,
           startedUnhydrated,
           debugProp,
-          animationDriver
+          animationDriver,
+          styleStaticConfig
         )
 
         const effectiveTransition =

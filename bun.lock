@@ -917,6 +917,7 @@
       "dependencies": {
         "@tamagui/constants": "workspace:*",
         "@tamagui/simple-hash": "workspace:*",
+        "@tamagui/style-grammar": "workspace:*",
       },
       "devDependencies": {
         "@tamagui/build": "workspace:*",

@@ -1,8 +1,5 @@
 import { isVariable } from '../createVariable'
 import type { GetStyleState, TamaguiInternalConfig, VariantResolverName } from '../types'
-import { variantResolverNames } from '../types'
-
-const variantResolverNameSet = new Set<string>(variantResolverNames)
 
 type CompiledVariantResolver = {
   key: string
@@ -12,7 +9,7 @@ type CompiledVariantResolver = {
 const variantResolverCache = new WeakMap<object, readonly CompiledVariantResolver[]>()
 
 // a variant key may list several resolvers: `'Size | Space'`. compiled once per
-// variant object during static config preparation, never on the render path
+// variant object on first use, never again on the render path
 export function getCompiledVariantResolvers(variant: object) {
   let compiled = variantResolverCache.get(variant)
   if (!compiled) {
@@ -29,9 +26,7 @@ export function getCompiledVariantResolvers(variant: object) {
 
 function parseVariantResolverKey(key: string): VariantResolverName[] | null {
   if (!key) return null
-  const parts = key.split('|').map((part) => part.trim())
-  if (parts.some((part) => !variantResolverNameSet.has(part))) return null
-  return parts as VariantResolverName[]
+  return key.split('|').map((part) => part.trim()) as VariantResolverName[]
 }
 
 // goes through specificity finding best matching variant function
@@ -93,7 +88,7 @@ function matchesVariantResolver(
     // anyway. `red/50` opacity modifiers stay limited to token and theme
     // colors, which the branches above already covered.
     case 'Color':
-      return (value != null && value in conf.tokensParsed.color) || string
+      return string
     case 'Theme':
       return string && !!theme && value in theme
     case 'FontSize':

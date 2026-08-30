@@ -1,8 +1,10 @@
 import type { StaticConfig, TamaguiInternalConfig } from '../types';
-export declare function getContextPropSet(staticConfig: StaticConfig): Set<string> | null;
-export type SplitStyledOptions = {
+export type StyleStaticConfig = {
     baseStyle: Record<string, any> | undefined;
     defaultProps: Record<string, any> | undefined;
+    styledContextKeys: Set<string> | null;
+    variants: StaticConfig['variants'];
+    passthroughClassName: string | undefined;
 };
 /**
  * styled() takes styles and props in one options object. The styles belong to the
@@ -12,6 +14,5 @@ export type SplitStyledOptions = {
  * Split lazily rather than in styled(), because classifying a key needs
  * `conf.shorthands` and styled() runs at module scope before createTamagui.
  */
-export declare function splitStyledOptions(staticConfig: StaticConfig, conf: TamaguiInternalConfig): SplitStyledOptions;
-export declare function prepareStyleStaticConfig(staticConfig: StaticConfig): StaticConfig;
-//# sourceMappingURL=prepareStyleStaticConfig.d.ts.map
+export declare function getStyleStaticConfig(staticConfig: StaticConfig, conf: TamaguiInternalConfig): StyleStaticConfig;
+//# sourceMappingURL=styleStaticConfig.d.ts.map

@@ -57,13 +57,13 @@ export function getCSSStyleAtomic(
 let conf: TamaguiInternalConfig | null = null
 let confRevision = 0
 
-export type SlotIdentity = {
-  identifier: string
-  rules: string[]
-  value: any
+export type SlotIdentity = [
+  identifier: string,
+  rules: string[],
+  value: any,
   /** finished wrapper, cached so a repeat build allocates nothing */
-  styleObject?: unknown
-}
+  styleObject?: unknown,
+]
 
 const getStyleObject = (
   val: any,
@@ -136,17 +136,19 @@ const getStyleObject = (
 // cascade at equal specificity). Cached per (atomicKey, signature): a slot
 // that resolves to the same content is the same class, however it got there.
 
-export interface AtomicSlotEntry {
-  property: string
-  value: any
-  condition: number
-  identity: string
-  selector: string
-  wrappers: readonly string[] | undefined
+export type AtomicSlotEntry = [
+  property: string,
+  value: any,
+  condition: number,
+  identity: string,
+  selector: string,
+  wrapperSource: readonly string[] | undefined,
+  wrapperStart: number,
+  wrapperCount: number,
   /** authored value, carried only on deferred platform-pseudo passes so an
    * inline conversion preserves provenance */
-  original?: any
-}
+  original?: any,
+]
 
 const slotIdentities = new Map<string, Map<string, SlotIdentity>>()
 let slotIdentitiesSize = 0
@@ -247,8 +249,8 @@ export function buildAtomicSlotCSS(
   }
   shortProp ||= 'x'
   let identifier = `_${shortProp}-${hash}`
-  if (atomicKey === 'pointerEvents' && entries.length === 1 && !entries[0].condition) {
-    const value = entries[0].value
+  if (atomicKey === 'pointerEvents' && entries.length === 1 && !entries[0][2]) {
+    const value = entries[0][1]
     if (value === 'box-none') identifier = '_pe-boxnone'
     else if (value === 'box-only') identifier = '_pe-boxonly'
   }
@@ -260,21 +262,23 @@ export function buildAtomicSlotCSS(
   for (const entry of entries) {
     // values arrive normalized: the slot signature normalized them so the
     // identity hash and the rule text agree
-    const value = entry.value
+    const value = entry[1]
     lastValue = value
     const entryRules = createAtomicRules(
       identifier,
-      entry.property,
+      entry[0],
       value,
-      entry.selector,
-      entry.wrappers,
+      entry[4],
+      entry[5],
       2,
-      slotClassRepetitions(atomicKey, entry.condition)
+      slotClassRepetitions(atomicKey, entry[2]),
+      entry[6],
+      entry[7]
     )
     for (const rule of entryRules) rules.push(rule)
   }
 
-  const built: SlotIdentity = { identifier, rules, value: lastValue }
+  const built: SlotIdentity = [identifier, rules, lastValue]
   if (slotIdentitiesSize > 10_000) {
     slotIdentities.clear()
     slotIdentitiesSize = 0
@@ -320,7 +324,9 @@ function createAtomicRules(
   condition = '',
   wrappers?: readonly string[],
   direct: boolean | 2 = false,
-  classRepetitions = 1
+  classRepetitions = 1,
+  wrapperStart = 0,
+  wrapperCount = wrappers?.length || 0
 ): string[] {
   // longhands get .cls.cls for higher specificity over shorthands
   const repetitions =
@@ -399,10 +405,10 @@ function createAtomicRules(
     }
   }
 
-  if (wrappers?.length) {
+  if (wrappers && wrapperCount) {
     for (let ruleIndex = 0; ruleIndex < rules.length; ruleIndex++) {
       let rule = rules[ruleIndex]
-      for (let index = wrappers.length - 1; index >= 0; index--) {
+      for (let index = wrapperStart + wrapperCount - 1; index >= wrapperStart; index--) {
         rule = `${wrappers[index]} {${rule}}`
       }
       rules[ruleIndex] = rule

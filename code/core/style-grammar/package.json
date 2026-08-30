@@ -36,6 +36,7 @@
     "src/states.ts",
     "src/table.ts",
     "src/textDecorationFamily.ts",
+    "src/tokenCategories.ts",
     "src/tooling.ts",
     "src/toolingAnnotations.ts",
     "src/toolingDiagnostics.ts",
@@ -65,6 +66,15 @@
       "import": "./dist/esm/runtime.mjs",
       "require": "./dist/cjs/runtime.cjs",
       "default": "./dist/esm/runtime.mjs"
+    },
+    "./token-categories": {
+      "types": "./types/tokenCategories.d.ts",
+      "react-native": "./dist/esm/tokenCategories.mjs",
+      "browser": "./dist/esm/tokenCategories.mjs",
+      "module": "./dist/esm/tokenCategories.mjs",
+      "import": "./dist/esm/tokenCategories.mjs",
+      "require": "./dist/cjs/tokenCategories.cjs",
+      "default": "./dist/esm/tokenCategories.mjs"
     },
     "./tooling": {
       "types": "./types/tooling.d.ts",

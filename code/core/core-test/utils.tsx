@@ -5,10 +5,7 @@ import {
 } from '@tamagui/helpers'
 import type { SplitStyleProps } from '../web/src'
 import { getConfig, getSplitStyles } from '../web/src'
-import {
-  getContextPropSet,
-  splitStyledOptions,
-} from '../web/src/helpers/prepareStyleStaticConfig'
+import { getStyleStaticConfig } from '../web/src/helpers/styleStaticConfig'
 import { defaultComponentState } from '../web/src/defaultComponentState'
 import { mergeComponentProps } from '../web/src/helpers/mergeProps'
 
@@ -31,7 +28,8 @@ export function simplifiedGetSplitStyles(
   } = {}
 ) {
   const context = component.staticConfig.context
-  const contextPropKeys = getContextPropSet(component.staticConfig)
+  const styleStaticConfig = getStyleStaticConfig(component.staticConfig, getConfig())
+  const contextPropKeys = styleStaticConfig.styledContextKeys
   const styledContext = contextPropKeys
     ? {
         ...[...contextPropKeys].reduce<Record<string, any>>((next, key) => {
@@ -45,7 +43,7 @@ export function simplifiedGetSplitStyles(
   let mergedProps = props
   if (options.mergeDefaultProps) {
     // mirror createComponent: styled() styles are a base layer, not props
-    const { defaultProps } = splitStyledOptions(component.staticConfig, getConfig())
+    const { defaultProps } = styleStaticConfig
     ;[mergedProps] = mergeComponentProps(defaultProps, styledContext, props)
   }
 
@@ -76,7 +74,10 @@ export function simplifiedGetSplitStyles(
     } as any,
     options.groupContext,
     options.render,
-    true
+    true,
+    undefined,
+    undefined,
+    styleStaticConfig
   )!
 }
 

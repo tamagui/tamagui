@@ -9,10 +9,25 @@ const useInsertEffectCompat = isWeb
   : () => {}
 
 // perf: ...args a bit expensive on native
-export const useSplitStyles: StyleSplitter = (a, b, c, d, e, f, g, h, i, j, k, l, m) => {
+export const useSplitStyles: StyleSplitter = (
+  a,
+  b,
+  c,
+  d,
+  e,
+  f,
+  g,
+  h,
+  i,
+  j,
+  k,
+  l,
+  m,
+  n
+) => {
   'use no memo'
 
-  const res = getSplitStyles(a, b, c, d, e, f, g, h, i, j, k, l, m)
+  const res = getSplitStyles(a, b, c, d, e, f, g, h, i, j, k, l, m, n)
 
   if (!process.env.TAMAGUI_DID_OUTPUT_CSS && process.env.TAMAGUI_TARGET !== 'native') {
     useInsertEffectCompat(() => {

@@ -1,104 +1,73 @@
-// The prop -> token-category tables.
-//
-// Its own module because both `propMapper` and `directStyle` bind props to
-// these categories, and `propMapper` needs `directStyle`'s condition resolver:
-// leaving the tables where the resolver's consumer lives made the two files
-// import each other.
-
-import { tokenCategories } from '@tamagui/helpers'
+import {
+  getTokenCategoryName,
+  propToTokenCategoryCode,
+  tokenCategoryColor,
+  tokenCategoryFontFamily,
+  tokenCategoryFontSize,
+  tokenCategoryFontWeight,
+  tokenCategoryLetterSpacing,
+  tokenCategoryLineHeight,
+  tokenCategoryRadius,
+  tokenCategorySize,
+  tokenCategorySpace,
+  tokenCategoryZIndex,
+} from '@tamagui/helpers'
 
 export type StyleTokenCategory = 'size' | 'space' | 'radius' | 'zIndex' | 'fontSize'
-
-function mapTokenCategory(keys: Record<string, boolean>, category: StyleTokenCategory) {
-  return Object.fromEntries(Object.keys(keys).map((key) => [key, category]))
-}
-
-// exported so the flat-value grammar adapter binds props to the same token
-// categories the bare-token path already uses, rather than keeping a second table
-export const tokenCategoryByProperty: Record<string, StyleTokenCategory> = {
-  ...mapTokenCategory(tokenCategories.size, 'size'),
-  ...mapTokenCategory(tokenCategories.radius, 'radius'),
-  ...mapTokenCategory(tokenCategories.zIndex, 'zIndex'),
-  // the transform family's x/y are lengths from the space scale (v6 decision:
-  // `x="4"` resolves like `p="4"`), never the size category
-  x: 'space',
-  y: 'space',
-  fontSize: 'fontSize',
-  borderWidth: 'space',
-  borderTopWidth: 'space',
-  borderRightWidth: 'space',
-  borderBottomWidth: 'space',
-  borderLeftWidth: 'space',
-  borderBlockWidth: 'space',
-  borderBlockStartWidth: 'space',
-  borderBlockEndWidth: 'space',
-  borderInlineWidth: 'space',
-  borderInlineStartWidth: 'space',
-  borderInlineEndWidth: 'space',
-  outlineOffset: 'space',
-  outlineWidth: 'space',
-  gap: 'space',
-  rowGap: 'space',
-  columnGap: 'space',
-  top: 'space',
-  right: 'space',
-  bottom: 'space',
-  left: 'space',
-  inset: 'space',
-  insetBlock: 'space',
-  insetBlockEnd: 'space',
-  insetBlockStart: 'space',
-  insetInline: 'space',
-  insetInlineEnd: 'space',
-  insetInlineStart: 'space',
-  margin: 'space',
-  marginBlock: 'space',
-  marginBlockEnd: 'space',
-  marginBlockStart: 'space',
-  marginInline: 'space',
-  marginInlineEnd: 'space',
-  marginInlineStart: 'space',
-  marginTop: 'space',
-  marginRight: 'space',
-  marginBottom: 'space',
-  marginEnd: 'space',
-  marginLeft: 'space',
-  marginHorizontal: 'space',
-  marginStart: 'space',
-  marginVertical: 'space',
-  padding: 'space',
-  paddingBlock: 'space',
-  paddingBlockEnd: 'space',
-  paddingBlockStart: 'space',
-  paddingInline: 'space',
-  paddingInlineEnd: 'space',
-  paddingInlineStart: 'space',
-  paddingTop: 'space',
-  paddingRight: 'space',
-  paddingBottom: 'space',
-  paddingEnd: 'space',
-  paddingLeft: 'space',
-  paddingHorizontal: 'space',
-  paddingStart: 'space',
-  paddingVertical: 'space',
-}
-
 export type RuntimeTokenCategory = StyleTokenCategory | 'color' | 'font' | 'fontFamily'
+
+const legacyCategory = (property: string): StyleTokenCategory | undefined => {
+  const category = getTokenCategoryName(propToTokenCategoryCode[property])
+  return category === 'space' ||
+    category === 'size' ||
+    category === 'radius' ||
+    category === 'zIndex' ||
+    category === 'fontSize'
+    ? category
+    : undefined
+}
+
+// compatibility view for internal consumers that enumerated the old string map.
+// the proxy keeps the numeric table canonical and only allocates keys on enumeration
+export const tokenCategoryByProperty: Readonly<Record<string, StyleTokenCategory>> =
+  /* @__PURE__ */ new Proxy(Object.create(null), {
+    get(_, property) {
+      return typeof property === 'string' ? legacyCategory(property) : undefined
+    },
+    has(_, property) {
+      return typeof property === 'string' && legacyCategory(property) !== undefined
+    },
+    ownKeys() {
+      return Object.keys(propToTokenCategoryCode).filter(
+        (property) => legacyCategory(property) !== undefined
+      )
+    },
+    getOwnPropertyDescriptor(_, property) {
+      if (typeof property !== 'string' || legacyCategory(property) === undefined) return
+      return { configurable: true, enumerable: true }
+    },
+  })
 
 export function getTokenCategoryForProperty(
   property: string
 ): RuntimeTokenCategory | undefined {
-  if (property === 'fontFamily') return 'fontFamily'
-  if (
-    property === 'fontSize' ||
-    property === 'fontWeight' ||
-    property === 'lineHeight' ||
-    property === 'letterSpacing'
-  ) {
-    return 'font'
+  switch (propToTokenCategoryCode[property]) {
+    case tokenCategorySpace:
+      return 'space'
+    case tokenCategorySize:
+      return 'size'
+    case tokenCategoryRadius:
+      return 'radius'
+    case tokenCategoryZIndex:
+      return 'zIndex'
+    case tokenCategoryColor:
+      return 'color'
+    case tokenCategoryFontFamily:
+      return 'fontFamily'
+    case tokenCategoryFontSize:
+    case tokenCategoryFontWeight:
+    case tokenCategoryLineHeight:
+    case tokenCategoryLetterSpacing:
+      return 'font'
   }
-  return (
-    tokenCategoryByProperty[property] ||
-    (property in tokenCategories.color ? 'color' : undefined)
-  )
 }

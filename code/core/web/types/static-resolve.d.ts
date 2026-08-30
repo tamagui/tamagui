@@ -8,9 +8,8 @@
 import { getConfig, getConfigMaybe, getThemes, getToken, getTokens, getTokenValue, setConfig, updateConfig } from './config';
 import { createTamagui, installTamaguiConfig } from './createTamagui';
 import { getSplitStyles } from './helpers/getSplitStyles';
-import { prepareStyleStaticConfig } from './helpers/prepareStyleStaticConfig';
 import type { StaticConfig, TamaguiComponentState, TamaguiInternalConfig, ThemeParsed } from './types';
-export { createTamagui, getConfig, getConfigMaybe, getSplitStyles, getThemes, getToken, getTokens, getTokenValue, installTamaguiConfig, prepareStyleStaticConfig, setConfig, updateConfig, };
+export { createTamagui, getConfig, getConfigMaybe, getSplitStyles, getThemes, getToken, getTokens, getTokenValue, installTamaguiConfig, setConfig, updateConfig, };
 export type { StaticConfig, TamaguiComponentState, TamaguiInternalConfig, ThemeParsed };
 export interface StaticResolveOptions {
     resolveValues?: 'variable' | 'except-theme' | 'value' | 'none';

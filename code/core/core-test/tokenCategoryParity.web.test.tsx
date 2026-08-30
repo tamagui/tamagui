@@ -12,7 +12,10 @@ import { getTokenCategory, grammarEntries } from '@tamagui/style-grammar/tooling
 import { beforeAll, expect, test } from 'vitest'
 import config from '../config-default'
 import { Text, View, createTamagui, getSplitStyles } from '../web/src'
-import { getTokenCategoryForProperty } from '../web/src/helpers/tokenCategories'
+import {
+  getTokenCategoryForProperty,
+  tokenCategoryByProperty,
+} from '../web/src/helpers/tokenCategories'
 
 beforeAll(() => {
   createTamagui(config.getDefaultTamaguiConfig() as any)
@@ -96,4 +99,11 @@ test('every property the grammar registry binds, the runtime binds identically',
       runtimeCategoryFor(bound)
     )
   }
+})
+
+test('the legacy property map remains string-valued and enumerable', () => {
+  expect(tokenCategoryByProperty.width).toBe('size')
+  expect(tokenCategoryByProperty.borderRadius).toBe('radius')
+  expect(tokenCategoryByProperty.color).toBeUndefined()
+  expect(Object.keys(tokenCategoryByProperty)).toContain('fontSize')
 })

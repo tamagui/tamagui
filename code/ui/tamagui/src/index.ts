@@ -305,7 +305,6 @@ export {
   resolveTokenSize,
   setNativeStyleEngine,
   styled,
-  themeable,
   // hooks
   useAnimatedNumber,
   useAnimatedNumberReaction,

@@ -1860,8 +1860,7 @@ export type ViewStyleObject = TextStyle;
  * --------------------------------------------
  */
 export type StylableComponent = TamaguiComponent | ComponentType<any> | ReactComponentWithRef<any, any> | (new (props: any) => any);
-export declare const variantResolverNames: readonly ['Size', 'Space', 'Color', 'Radius', 'ZIndex', 'Theme', 'FontSize', 'FontStyle', 'FontTransform', 'FontLineHeight', 'FontLetterSpacing', 'number', 'string', 'boolean', 'any'];
-export type VariantResolverName = (typeof variantResolverNames)[number];
+export type VariantResolverName = 'Size' | 'Space' | 'Color' | 'Radius' | 'ZIndex' | 'Theme' | 'FontSize' | 'FontStyle' | 'FontTransform' | 'FontLineHeight' | 'FontLetterSpacing' | 'number' | 'string' | 'boolean' | 'any';
 type TrimWhitespace = ' ' | '\n' | '\t' | '\r' | '\v' | '\f';
 type Trim<S extends string> = S extends `${TrimWhitespace}${infer Next}` ? Trim<Next> : S extends `${infer Next}${TrimWhitespace}` ? Trim<Next> : S;
 type ValidateVariantResolverKey<Key extends string> = Trim<Key> extends `${infer Left}|${infer Right}` ? Trim<Left> extends VariantResolverName ? ValidateVariantResolverKey<Right> extends never ? never : Key : never : Trim<Key> extends VariantResolverName ? Key : never;
@@ -1928,7 +1927,6 @@ export type ResolveVariableAs = 'auto' | 'value' | 'variable' | 'none' | 'web' |
 export type SplitStyleProps = {
     displayName?: string;
     styledContext?: Record<string, any>;
-    styledContextKeys?: Set<string> | null;
     mediaState?: Record<string, boolean>;
     noClass?: boolean;
     noExpand?: boolean;

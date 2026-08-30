@@ -8,10 +8,11 @@ import {
   StyleObjectIdentifier,
   StyleObjectRules,
   nonAnimatableStyleProps,
+  propToTokenCategoryCode,
   stylePropsAll,
   stylePropsText,
   stylePropsTransform,
-  tokenCategories,
+  tokenCategoryColor,
   validStyles as validStylesView,
 } from '@tamagui/helpers'
 import {
@@ -70,18 +71,14 @@ import { fixStyles } from './expandStyles'
 import type { AtomicSlotEntry } from './getCSSStylesAtomic'
 import { getConfigRevisionState } from './grammarConfig'
 import { mediaState as globalMediaState, mediaKeyMatch } from './mediaState'
-import {
-  getContextPropSet,
-  prepareStyleStaticConfig,
-  splitStyledOptions,
-} from './prepareStyleStaticConfig'
+import { getStyleStaticConfig, type StyleStaticConfig } from './styleStaticConfig'
 import { styleToCSS } from './styleToCSS'
 import { getVariantDefinition } from './variantResolvers'
 import { warnOnce, warnRefusedValue } from './warnOnce'
 
 export { directStyleSignature, flushDirectStyles } from './directStyleCSS'
 
-export { getContextPropSet, prepareStyleStaticConfig }
+export { getStyleStaticConfig }
 
 import { isColorStyleKey } from './getDynamicVal'
 import { getVariantExtras } from './getVariantExtras'
@@ -105,7 +102,7 @@ import {
   type StyleTokenProvenance,
 } from './styleProvenance'
 import { THEME_REF_PREFIX } from './themeRef'
-import { getTokenCategoryForProperty, tokenCategoryByProperty } from './tokenCategories'
+import { getTokenCategoryForProperty } from './tokenCategories'
 import { transformsToString } from './transformsToString'
 
 export { STYLE_TOKEN_PROVENANCE_KEY, getStyleTokenProvenance } from './styleProvenance'
@@ -147,7 +144,8 @@ export type StyleSplitter = (
   startedUnhydrated?: boolean,
   debug?: DebugProp,
   // resolved animation driver (respects animatedBy prop)
-  animationDriver?: AnimationDriverLike | null
+  animationDriver?: AnimationDriverLike | null,
+  styleStaticConfig?: StyleStaticConfig
 ) => null | GetStyleResult
 
 // ── condition cursors ────────────────────────────────────────────────────────
@@ -199,18 +197,6 @@ function reserveConditionCursor(cursor: number) {
   const previous = conditionNumbers
   conditionNumbers = new Float64Array(length)
   conditionNumbers.set(previous)
-}
-
-function conditionWrapperCopy(cursor: ConditionCursor) {
-  const wrapper = conditionNumbers[cursor + conditionWrapperOffset]
-  const count = wrapper & 7
-  if (!count) return undefined
-  const start = wrapper >> 3
-  const wrappers = new Array<string>(count)
-  for (let index = 0; index < count; index++) {
-    wrappers[index] = conditionWrappers[start + index]
-  }
-  return wrappers
 }
 
 function setConditionUnresolved(cursor: ConditionCursor, name = '') {
@@ -688,7 +674,7 @@ const passAsChildStyleFlag = 128
 function forEachPropInForwardOrder(pass: StylePass) {
   const styleState = pass[passStyleState] as GetStyleState
   const processedProps = styleState.props
-  const { baseStyle } = splitStyledOptions(styleState.staticConfig, styleState.conf)
+  const baseStyle = (styleState as DirectState).flatStyleStaticConfig!.baseStyle
 
   const conditionWrapperBase = conditionWrapperTop
   try {
@@ -702,8 +688,9 @@ function forEachPropInForwardOrder(pass: StylePass) {
     for (const key in processedProps) {
       contributeProp(pass, key, processedProps[key])
     }
-  } finally {
+  } catch (error) {
     releaseConditionPayloads(conditionWrapperBase)
+    throw error
   }
 }
 
@@ -1277,6 +1264,19 @@ function contributeProp(
       }
     }
 
+    if (
+      process.env.TAMAGUI_TARGET === 'web' &&
+      isValidStyleKeyInit &&
+      valInit == null &&
+      keyOg in props
+    ) {
+      clearDirectStyle(styleState, keyInit)
+      if (styledContextKeys?.has(keyInit)) {
+        ;(styleState.overriddenContextProps ||= {})[keyInit] = valInit
+      }
+      return
+    }
+
     let isVariant = !isValidStyleKeyInit && variants && keyInit in variants
     const isStyleLikeKey = isValidStyleKeyInit || isVariant
     const isStyleProp = isValidStyleKeyInit || (isVariant && !noExpand)
@@ -1408,18 +1408,11 @@ export const getSplitStyles: StyleSplitter = (
   elementType,
   startedUnhydrated,
   debug,
-  animationDriver
+  animationDriver,
+  styleStaticConfig
 ) => {
   const conf = getConfig()
-  // a frontend-bound component resolves its static style input (class-string
-  // base, string variants) through its own descriptor; implementations memoize
-  // per (staticConfig, config). components without a descriptor pay one read.
-  if (staticConfig.styleFrontend?.normalizeStaticConfig) {
-    staticConfig = staticConfig.styleFrontend.normalizeStaticConfig(
-      staticConfig as any,
-      conf
-    ) as StaticConfig
-  }
+  styleStaticConfig ||= getStyleStaticConfig(staticConfig, conf)
   // use passed animationDriver or fall back to context/config
   const driver =
     animationDriver ||
@@ -1435,15 +1428,9 @@ export const getSplitStyles: StyleSplitter = (
   }
 
   const { shorthands } = conf
-  const {
-    isHOC,
-    isText,
-    isInput,
-    variants,
-    inlineProps,
-    parentStaticConfig,
-    acceptsClassName,
-  } = staticConfig
+  const { isHOC, isText, isInput, inlineProps, parentStaticConfig, acceptsClassName } =
+    staticConfig
+  const variants = styleStaticConfig.variants
 
   const viewProps: GetStyleResult['viewProps'] = {}
   const mediaState = styleProps.mediaState || globalMediaState
@@ -1461,14 +1448,16 @@ export const getSplitStyles: StyleSplitter = (
   let hasMedia: boolean | Set<string> = false
   let pseudoGroups: Set<string> | undefined
   let mediaGroups: Set<string> | undefined
-  // the frontend's normalizeStaticConfig partitions unclaimed styled-base
+  // the frontend normalization partitions unclaimed styled-base
   // classes into passthroughClassName (baseStyle holds styles only). they are
   // the base's raw-interop className at the earliest forward position:
   // prepend them and flip the cascade-preserving switch so every later
   // Tamagui contribution keeps its last-wins position inline, exactly as a
   // className prop does mid-loop
   const staticPassthroughClassName =
-    process.env.TAMAGUI_TARGET === 'web' ? staticConfig.passthroughClassName || '' : ''
+    process.env.TAMAGUI_TARGET === 'web'
+      ? styleStaticConfig.passthroughClassName || ''
+      : ''
   let className = staticPassthroughClassName
   if (staticPassthroughClassName) {
     shouldDoClasses = false
@@ -1508,6 +1497,7 @@ export const getSplitStyles: StyleSplitter = (
     // resolved animation driver (respects animatedBy prop)
     animationDriver: resolvedDriver,
   }
+  ;(styleState as DirectState).flatStyleStaticConfig = styleStaticConfig
   if (canGenerateCSS && shouldDoClasses && styleProps.canPlatformPseudo) {
     // a platform driver with native pseudo states may flip this whole pass
     // inline once a platform-pseudo clause is discovered: defer CSS into
@@ -1550,18 +1540,18 @@ export const getSplitStyles: StyleSplitter = (
     noNormalize,
     isAnimated,
     styledContext,
-    styledContextKeys,
   } = styleProps
+  const styledContextKeys = styleStaticConfig.styledContextKeys
 
   const styleFrontend = staticConfig.styleFrontend
   let frontendGroup: boolean | string | undefined
   let frontendContainer: boolean | string | undefined
   let frontendContainerType: string | undefined
   const processedProps = props
-  const parentVariants = parentStaticConfig?.variants
-  const defaultProps = asChild
-    ? splitStyledOptions(staticConfig, conf).defaultProps
+  const parentVariants = parentStaticConfig
+    ? getStyleStaticConfig(parentStaticConfig as StaticConfig, conf).variants
     : undefined
+  const defaultProps = asChild ? styleStaticConfig.defaultProps : undefined
   const asChildExceptStyleLike =
     asChild === 'except-style' || asChild === 'except-style-web'
   let containerValue: boolean | string | undefined
@@ -1625,99 +1615,106 @@ export const getSplitStyles: StyleSplitter = (
   ]
   ;(styleState as DirectState).flatPass = pass
 
-  forEachPropInForwardOrder(pass)
+  let conditionalStates: Set<string> | null = null
+  let usesSafeArea = false
+  const conditionWrapperBase = conditionWrapperTop
+  try {
+    forEachPropInForwardOrder(pass)
 
-  ;[
-    ,
-    ,
-    ,
-    ,
-    ,
-    ,
-    ,
-    ,
-    ,
-    ,
-    ,
-    ,
-    ,
-    ,
-    ,
-    ,
-    ,
-    ,
-    ,
-    ,
-    ,
-    className,
-    shouldDoClasses,
-    containerValue,
-    containerName,
-    containerType,
-    frontendGroup,
-    frontendContainer,
-    frontendContainerType,
-    hocMappedClassProperties,
-    hocMappedClasses,
-  ] = pass
+    ;[
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      className,
+      shouldDoClasses,
+      containerValue,
+      containerName,
+      containerType,
+      frontendGroup,
+      frontendContainer,
+      frontendContainerType,
+      hocMappedClassProperties,
+      hocMappedClasses,
+    ] = pass
 
-  if (process.env.TAMAGUI_TARGET === 'web' && containerValue) {
-    containerName ??= typeof containerValue === 'string' ? containerValue : undefined
-    containerType ??= 'inline-size'
-    contributeValue(
-      styleState,
-      containerName ? 'container' : 'containerType',
-      containerName ? `${containerName} / ${containerType}` : containerType,
-      mergeStyle
-    )
-  }
-
-  if (
-    process.env.NODE_ENV === 'development' &&
-    (debug === 'profile' || (globalThis as any).time)
-  ) {
-    // @ts-expect-error
-    time`split-styles-propsend`
-  }
-
-  const conditionalStates = styleState.flatStateKeys || null
-  const usesSafeArea = !!styleState.flatUsesSafeArea
-  if (styleState.flatMediaKeys?.size) {
-    if (!hasMedia) hasMedia = new Set()
-    if (typeof hasMedia !== 'boolean') {
-      for (const key of styleState.flatMediaKeys) hasMedia.add(key)
-    }
-  }
-  if (styleState.flatGroupKeys?.size) {
-    pseudoGroups ||= new Set()
-    for (const key of styleState.flatGroupKeys) pseudoGroups.add(key)
-  }
-  if (styleState.flatGroupMedia?.size) {
-    mediaGroups ||= new Set()
-    for (const key of styleState.flatGroupMedia) mediaGroups.add(key)
-  }
-
-  // a platform driver with native pseudo states rides the emitter path: the
-  // whole frame completes inline instead of as classes. The frame is neutral,
-  // so choosing the policy after the pass costs nothing to undo.
-  if (styleProps.canPlatformPseudo && styleState.flatHasPlatformPseudo) {
-    shouldDoClasses = false
-    styleState.flatShouldDoClasses = false
-    if (styleState.transformAccumulator) {
-      mergeStyle(
+    if (process.env.TAMAGUI_TARGET === 'web' && containerValue) {
+      containerName ??= typeof containerValue === 'string' ? containerValue : undefined
+      containerType ??= 'inline-size'
+      contributeValue(
         styleState,
-        'transform',
-        finalizeTransformAccumulator(styleState.transformAccumulator),
-        1,
-        true
+        containerName ? 'container' : 'containerType',
+        containerName ? `${containerName} / ${containerType}` : containerType,
+        mergeStyle
       )
-      styleState.transformAccumulator = undefined
     }
-    convertDeferredInline(styleState, mergeStyle)
-  }
 
-  // streaming already applied every winner; only the residue completes here
-  completeStreaming(styleState, mergeStyle)
+    if (
+      process.env.NODE_ENV === 'development' &&
+      (debug === 'profile' || (globalThis as any).time)
+    ) {
+      // @ts-expect-error
+      time`split-styles-propsend`
+    }
+
+    conditionalStates = styleState.flatStateKeys || null
+    usesSafeArea = !!styleState.flatUsesSafeArea
+    if (styleState.flatMediaKeys?.size) {
+      if (!hasMedia) hasMedia = new Set()
+      if (typeof hasMedia !== 'boolean') {
+        for (const key of styleState.flatMediaKeys) hasMedia.add(key)
+      }
+    }
+    if (styleState.flatGroupKeys?.size) {
+      pseudoGroups ||= new Set()
+      for (const key of styleState.flatGroupKeys) pseudoGroups.add(key)
+    }
+    if (styleState.flatGroupMedia?.size) {
+      mediaGroups ||= new Set()
+      for (const key of styleState.flatGroupMedia) mediaGroups.add(key)
+    }
+
+    // a platform driver with native pseudo states rides the emitter path: the
+    // whole frame completes inline instead of as classes. The frame is neutral,
+    // so choosing the policy after the pass costs nothing to undo.
+    if (styleProps.canPlatformPseudo && styleState.flatHasPlatformPseudo) {
+      shouldDoClasses = false
+      styleState.flatShouldDoClasses = false
+      if (styleState.transformAccumulator) {
+        mergeStyle(
+          styleState,
+          'transform',
+          finalizeTransformAccumulator(styleState.transformAccumulator),
+          1,
+          true
+        )
+        styleState.transformAccumulator = undefined
+      }
+      convertDeferredInline(styleState, mergeStyle)
+    }
+
+    // streaming already applied every winner; only the residue completes here
+    completeStreaming(styleState, mergeStyle)
+  } finally {
+    releaseConditionPayloads(conditionWrapperBase)
+  }
 
   // hand the selected transition to animation drivers and keep it out of native
   // destination styles, where `transition` is not a React Native style key.
@@ -1998,7 +1995,8 @@ function mergeStyle(
   // overriddenContextProps using the original token value (like '8') rather
   // than the resolved CSS variable, so children's functional variants can look
   // up token values. membership is a per-staticConfig cached Set.
-  const contextPropSet = getContextPropSet(staticConfig)
+  const contextPropSet = (styleState as DirectState).flatStyleStaticConfig!
+    .styledContextKeys
   if (contextPropSet?.has(key)) {
     styleState.overriddenContextProps ||= {}
     // priority: originalVal from propMapper, tracked original from variant
@@ -2148,6 +2146,7 @@ export type MergeStyle = (
 
 type DirectState = GetStyleState & {
   flatPass?: StylePass
+  flatStyleStaticConfig?: StyleStaticConfig
   /** streaming winner per property: packed precedence + 1, base 0 */
   flatUsed?: Record<string, number>
   flatTransitions?: AtomicSlotEntry[]
@@ -2196,23 +2195,22 @@ function streamWriteCSS(
   if (property.charCodeAt(0) === 116 && property.startsWith('transition')) {
     const transitions = (direct.flatTransitions ||= [])
     for (let index = 0; index < transitions.length; index++) {
-      if (
-        transitions[index].property === property &&
-        transitions[index].identity === identity
-      ) {
-        transitions[index].value = value
-        transitions[index].condition = condition
+      if (transitions[index][0] === property && transitions[index][3] === identity) {
+        transitions[index][1] = value
+        transitions[index][2] = condition
         return
       }
     }
-    transitions.push({
+    transitions.push([
       property,
       value,
       condition,
       identity,
-      selector: cursor ? conditionTexts[cursor + conditionSelectorOffset] || '' : '',
-      wrappers: cursor ? conditionWrapperCopy(cursor) : undefined,
-    })
+      cursor ? conditionTexts[cursor + conditionSelectorOffset] || '' : '',
+      cursor ? conditionWrappers : undefined,
+      cursor ? conditionNumbers[cursor + conditionWrapperOffset] >> 3 : 0,
+      cursor ? conditionNumbers[cursor + conditionWrapperOffset] & 7 : 0,
+    ])
     return
   }
   streamAtomic(
@@ -2291,19 +2289,19 @@ function convertDeferredInline(state: GetStyleState, merge: MergeStyle) {
   const consume = (entries: AtomicSlotEntry[]) => {
     for (let index = 0; index < entries.length; index++) {
       const entry = entries[index]
-      const condition = entry.condition
+      const condition = entry[2]
       if (condition && !(condition & 1)) continue
       const importance = condition ? Math.floor(condition / 256) + 1 : 0
-      const previous = used[entry.property]
+      const previous = used[entry[0]]
       if (previous !== undefined && previous > importance) continue
-      used[entry.property] = importance
+      used[entry[0]] = importance
       merge(
         state,
-        entry.property,
-        entry.value,
+        entry[0],
+        entry[1],
         1,
         true,
-        entry.original !== undefined ? entry.original : entry.value
+        entry[8] !== undefined ? entry[8] : entry[1]
       )
     }
   }
@@ -2646,7 +2644,7 @@ const directStyleHandler: FlatValueHandler<GetStyleState> = {
       process.env.NODE_ENV === 'development' &&
       !hasBase &&
       result & 4 &&
-      (property in tokenCategories.color || property in tokenCategoryByProperty) &&
+      property in propToTokenCategoryCode &&
       splitComponents(source.slice(lastPayloadStart)).length > 1
     ) {
       warnOnce(
@@ -2911,7 +2909,8 @@ function configuredValue(state: GetStyleState, property: string, raw: string): a
     if (misses) misses.add(missKey)
     if (
       process.env.NODE_ENV === 'development' &&
-      tokenCategoryByProperty[property] &&
+      propToTokenCategoryCode[property] &&
+      propToTokenCategoryCode[property] !== tokenCategoryColor &&
       state.conf.tokensParsed.color?.[name]
     ) {
       warnOnce(`"${name}" contributes to "color", not "${property}"; keeping it literal`)
@@ -3107,6 +3106,13 @@ function emitProperty(
 ) {
   const direct = state as DirectState
   const condition = cursor ? conditionNumbers[cursor + conditionValueOffset] : 0
+  if (process.env.TAMAGUI_TARGET === 'web' && value === false && !condition) {
+    clearDirectStyle(state, property)
+    if (direct.flatStyleStaticConfig?.styledContextKeys?.has(property)) {
+      ;(state.overriddenContextProps ||= {})[property] = false
+    }
+    return
+  }
   if (condition & 4) (state.flatEnterKeys ||= new Set()).add(property)
   if (condition & 8) (state.flatExitKeys ||= new Set()).add(property)
 
@@ -4366,8 +4372,8 @@ const contributeMappedValue: PropMapper = (
     )
   }
 
-  const { conf, styleProps, staticConfig } = styleState
-  const { variants } = staticConfig
+  const { conf, styleProps } = styleState
+  const variants = (styleState as DirectState).flatStyleStaticConfig!.variants
   const { disableExpandShorthands, noExpand, resolveValues } = styleProps
   const shorthands = conf.shorthands
 
@@ -4494,7 +4500,9 @@ function resolveVariants(
   styleState: GetStyleState,
   parentVariantKey: string
 ) {
-  const variantDefinition = styleState.staticConfig.variants?.[key]
+  const variantDefinition = (styleState as DirectState).flatStyleStaticConfig!.variants?.[
+    key
+  ]
   if (isConditionTransport(value)) {
     // conditional variant selections transported through an HOC: resolve each
     // branch under its replayed condition
@@ -4590,9 +4598,9 @@ function emitResolvedVariant(
   parentVariantKey: string,
   conditionCursor: ConditionCursor | null
 ) {
-  const { staticConfig, conf, debug } = styleState
+  const { conf, debug } = styleState
   const styleProps = styleState.styleProps
-  const { variants } = staticConfig
+  const variants = (styleState as DirectState).flatStyleStaticConfig!.variants
   if (!variants) return
 
   const variant = variants[key]
@@ -4640,7 +4648,8 @@ function emitResolvedVariant(
         )
     const originalValue = originals?.[outputKey] ?? rawOutputValue
 
-    const contextPropSet = getContextPropSet(staticConfig)
+    const contextPropSet = (styleState as DirectState).flatStyleStaticConfig!
+      .styledContextKeys
     if (contextPropSet?.has(outputKey)) {
       styleState.overriddenContextProps ||= {}
       styleState.overriddenContextProps[outputKey] = originalValue

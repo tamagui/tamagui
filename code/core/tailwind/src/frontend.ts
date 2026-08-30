@@ -1,9 +1,9 @@
 import {
   type FrontendStaticConfig,
+  type FrontendStaticConfigNormalization,
   type StyleFrontend,
   type StyleFrontendConfig,
 } from '@tamagui/core/internal-runtime'
-import { configRevisionSymbol } from '@tamagui/style-grammar/runtime'
 import { getTailwindClassPlan, resolveTailwindClassName } from './candidate'
 
 /**
@@ -30,24 +30,10 @@ export function parseStaticStyle(
   return resolveTailwindClassName(input, config)
 }
 
-const normalizedStaticConfigCache = new WeakMap<
-  FrontendStaticConfig,
-  WeakMap<StyleFrontendConfig, { revision: number; value: FrontendStaticConfig }>
->()
-const normalizedStaticConfigs = new WeakSet<FrontendStaticConfig>()
-
-function normalizeTailwindStaticConfig<Config extends FrontendStaticConfig>(
-  staticConfig: Config,
+function normalizeTailwindStaticConfig(
+  staticConfig: FrontendStaticConfig,
   config: StyleFrontendConfig
-): Config {
-  if (normalizedStaticConfigs.has(staticConfig)) {
-    return staticConfig
-  }
-  let configCache = normalizedStaticConfigCache.get(staticConfig)
-  const cached = configCache?.get(config)
-  const revision = (config as any)[configRevisionSymbol]?.revision || 0
-  if (cached && cached.revision === revision) return cached.value as Config
-
+): FrontendStaticConfigNormalization {
   let variants = staticConfig.variants
   if (variants) {
     variants = Object.fromEntries(
@@ -77,17 +63,7 @@ function normalizeTailwindStaticConfig<Config extends FrontendStaticConfig>(
     passthroughClassName = className
   }
 
-  const normalized = {
-    ...staticConfig,
-    baseStyle,
-    passthroughClassName,
-    variants,
-  } as Config
-  normalizedStaticConfigs.add(normalized)
-  configCache ||= new WeakMap()
-  configCache.set(config, { revision, value: normalized })
-  normalizedStaticConfigCache.set(staticConfig, configCache)
-  return normalized
+  return { baseStyle, passthroughClassName, variants }
 }
 
 export const tailwindStyleFrontend: StyleFrontend = {
