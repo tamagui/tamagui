@@ -14,7 +14,7 @@ import { isEqualShallow } from '@tamagui/is-equal-shallow'
 import React, { ReactElement, ReactNode, useMemo } from 'react'
 import { devConfig, getConfig } from './config'
 import { isDevTools } from './constants/isDevTools'
-import { ComponentContext } from './contexts/ComponentContext'
+import { ComponentContext, HOC_REPLAY } from './contexts/ComponentContext'
 import { GroupContext } from './contexts/GroupContext'
 import { didGetVariableValue, setDidGetVariableValue } from './createVariable'
 import { defaultComponentStateMounted } from './defaultComponentState'
@@ -787,7 +787,8 @@ export function createComponent<
       startedUnhydrated,
       debugProp,
       animationDriver,
-      styleStaticConfig
+      styleStaticConfig,
+      (componentContext as any).hocReplay
     )
 
     const finalizedComponentState = componentState.finalizeStyleFlags(
@@ -1981,6 +1982,17 @@ export function createComponent<
         }
 
         content = React.createElement(elementType, viewProps, content || children)
+      }
+
+      if (splitStyles![HOC_REPLAY]) {
+        content = (
+          <ComponentContext.Provider
+            {...componentContext}
+            {...({ hocReplay: splitStyles![HOC_REPLAY] } as any)}
+          >
+            {content}
+          </ComponentContext.Provider>
+        )
       }
 
       if (process.env.NODE_ENV === 'development' && time) time`use-children`

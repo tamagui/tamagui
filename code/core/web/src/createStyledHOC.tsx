@@ -1,4 +1,5 @@
 import React, { type ReactNode, type Ref as ReactRef } from 'react'
+import { HOC_REPLAY } from './contexts/ComponentContext'
 import { componentDisplayName } from './helpers/componentDisplayName'
 import { Theme } from './views/Theme'
 import type {
@@ -66,6 +67,7 @@ export function createStyledHOC<
     isHOC: true,
     isStyledHOC: false,
   }
+  extendedConfig[HOC_REPLAY] = staticConfig[HOC_REPLAY] || staticConfig
 
   let out: any = function StyledHOCComponent(props: any) {
     'use no memo'

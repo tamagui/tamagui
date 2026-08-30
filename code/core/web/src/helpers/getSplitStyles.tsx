@@ -33,6 +33,7 @@ import {
   type FlatValueHandler,
 } from '@tamagui/style-grammar/runtime'
 import { getConfig, getFont } from '../config'
+import { HOC_REPLAY } from '../contexts/ComponentContext'
 import { isDevTools } from '../constants/isDevTools'
 import { isVariable } from '../createVariable'
 import type {
@@ -94,7 +95,7 @@ import { isRemValue, resolveRem } from './resolveRem'
 import { expandSafeAreaValue, isSafeAreaKey } from './resolveSafeArea'
 import { resolveSafeAreaVariable } from './resolveSafeAreaVariable'
 import { resolveVariableValue } from './resolveVariableValue'
-import { HOC_CLASSNAME_MARKER, skipProps } from './skipProps'
+import { skipProps } from './skipProps'
 import { styleOriginalValues } from './styleOriginalValues'
 import {
   setStyleTokenProvenance,
@@ -116,14 +117,11 @@ export { styleOriginalValues }
 
 export type SplitStyles = ReturnType<typeof getSplitStyles>
 
-// internal HOC style entry carrying the property-to-class map at the authored
-// style position. unlike the removed RNW transport, this has no $$css payload.
-const TAMAGUI_CLASS_PROPS = '$$tamaguiClassProps'
-
 const shouldTrackStyleTokenProvenance =
   process.env.NODE_ENV === 'development' &&
   process.env.TAMAGUI_ENABLE_STYLE_TOKEN_PROVENANCE === '1'
 export type SplitStyleResult = ReturnType<typeof getSplitStyles>
+type HOCReplayStream = any[]
 
 // note: we intentionally don't cache conf at module level here
 // because createTamagui may be called multiple times (HMR, tests)
@@ -145,7 +143,8 @@ export type StyleSplitter = (
   debug?: DebugProp,
   // resolved animation driver (respects animatedBy prop)
   animationDriver?: AnimationDriverLike | null,
-  styleStaticConfig?: StyleStaticConfig
+  styleStaticConfig?: StyleStaticConfig,
+  hocReplay?: HOCReplayStream | null
 ) => null | GetStyleResult
 
 // ── condition cursors ────────────────────────────────────────────────────────
@@ -637,6 +636,26 @@ function classifyConditionalObject(
   return 0
 }
 
+function appendHOCReplay(
+  state: GetStyleState,
+  kind: number,
+  key: string,
+  value: any,
+  cursor: ConditionCursor | null,
+  original?: any
+) {
+  const stream = (state as DirectState).flatPass?.[passHOCOutput]
+  if (!stream) return
+  stream.push(
+    kind,
+    key,
+    value,
+    cursor ? conditionNumbers[cursor + conditionValueOffset] : 0,
+    original,
+    0
+  )
+}
+
 type StylePass = any[]
 
 const passStyleState = 0
@@ -648,8 +667,8 @@ const passContainerType = 25
 const passFrontendGroup = 26
 const passFrontendContainer = 27
 const passFrontendContainerType = 28
-const passHocMappedProperties = 29
-const passHocMappedClasses = 30
+const passHOCInput = 29
+const passHOCOutput = 30
 const passParentCursor = 35
 const passMapSourceKey = 36
 const passMapFlags = 37
@@ -685,7 +704,18 @@ function forEachPropInForwardOrder(pass: StylePass) {
         contributeProp(pass, key, baseStyle[key])
       }
     }
+    const hocReplay = pass[passHOCInput] as HOCReplayStream | null
+    if (hocReplay) replayHOCContributions(pass, hocReplay)
+    const replayProps = hocReplay?.[0] === styleState.staticConfig ? hocReplay[3] : null
+    const variants = (styleState as DirectState).flatStyleStaticConfig!.variants
     for (const key in processedProps) {
+      if (
+        replayProps &&
+        (key === 'className' || key === 'style' || (variants && key in variants)) &&
+        replayProps[key] === processedProps[key]
+      ) {
+        continue
+      }
       contributeProp(pass, key, processedProps[key])
     }
   } catch (error) {
@@ -710,8 +740,82 @@ function flushForwardStylesToClasses(pass: StylePass) {
   if (!pass[passShouldDoClasses]) return
   // streamed classes are already in their slots; only the residue
   // (transitions, border defaults, the transform accumulator) needs a flush
-  completeStreamingCSS(styleState)
+  completeStreaming(styleState, mergeStyle)
   flushDirectStyles(styleState, true)
+}
+
+function replayHOCContributions(pass: StylePass, initial: HOCReplayStream) {
+  const styleState = pass[passStyleState] as GetStyleState
+  if (initial[0] !== styleState.staticConfig) return
+  let stream: HOCReplayStream | null = initial
+  while (stream) {
+    if (stream[2] && styleState.flatShouldDoClasses) {
+      convertDeferredInline(styleState, mergeStyle)
+      styleState.flatShouldDoClasses = pass[passShouldDoClasses] = false
+    }
+    for (let offset = 4; offset < stream.length; ) {
+      const kind = stream[offset]
+      const key = stream[offset + 1]
+      const value = stream[offset + 2]
+      const condition = stream[offset + 3]
+      if (kind === 0) {
+        if (styleState.flatShouldDoClasses) {
+          offset += 6
+          continue
+        }
+        if (!condition || condition & 1) {
+          streamWriteInline(
+            styleState,
+            key,
+            value,
+            null,
+            mergeStyle,
+            stream[offset + 4],
+            false,
+            condition
+          )
+        }
+      } else if (kind === 3) {
+        if (styleState.flatShouldDoClasses) {
+          const direct = styleState as DirectState
+          const atomics = value as Record<string, StyleObject>
+          const singleEntries = stream[offset + 4] as
+            | Record<string, AtomicSlotEntry>
+            | undefined
+          const slots = stream[offset + 5] as
+            | Record<string, AtomicSlotEntry[]>
+            | undefined
+          const transitions = key as unknown as AtomicSlotEntry[] | undefined
+          const targetAtomics = (direct.flatAtomics ||= {})
+          for (const property in atomics) {
+            clearFrameAtomic(styleState, property)
+            const atomic = atomics[property]
+            targetAtomics[property] = atomic
+            styleState.classNames[property] = atomic[StyleObjectIdentifier]
+            const single = singleEntries?.[property]
+            const slot = property === 'transition' ? transitions : slots?.[property]
+            if (single) {
+              ;(direct.flatSingleEntries ||= {})[property] = single
+            } else if (slot) {
+              ;(direct.flatReplaySlots ||= {})[property] = slot
+            }
+          }
+        }
+      } else if (kind === 1) {
+        if (stream[offset + 4]) flushForwardStylesToClasses(pass)
+        pass[passClassName] = pass[passClassName]
+          ? `${pass[passClassName]} ${value}`
+          : value
+        if (stream[offset + 4]) {
+          styleState.flatShouldDoClasses = pass[passShouldDoClasses] = false
+        }
+      } else if (kind === 2) {
+        if (!condition || condition & 1) clearDirectStyle(styleState, key)
+      }
+      offset += 6
+    }
+    stream = stream[1]
+  }
 }
 
 function effectiveLifecycleKeys(keys?: Set<string>) {
@@ -765,6 +869,7 @@ function mapContributedProp(
 
   if (key === 'className') {
     if (process.env.TAMAGUI_TARGET === 'web' && typeof val === 'string' && val) {
+      if (isHOC) appendHOCReplay(styleState, 1, '', val, null)
       pass[passClassName] = `${pass[passClassName]} ${val}`.trim()
     }
     return
@@ -805,6 +910,19 @@ function mapContributedProp(
     (process.env.TAMAGUI_TARGET === 'native' && isAndroid && key === 'elevation')
   const isContextProgramKey = canResolveContextPrograms && Boolean(isStyledContextProp)
 
+  if (hocParentVariants && key in hocParentVariants) {
+    resolveVariants(
+      key,
+      val,
+      styleState.styleProps,
+      styleState,
+      '',
+      hocParentVariants[key],
+      condition === undefined ? null : (condition as ConditionCursor)
+    )
+    return
+  }
+
   if (condition !== undefined) {
     const conditionCursor = condition as ConditionCursor
     if (isHostStyleKey || isContextProgramKey) {
@@ -817,20 +935,6 @@ function mapContributedProp(
         !isHostStyleKey,
         conditionCursor
       )
-    } else if (isHOC) {
-      // hand the wrapped component a structured clause keyed by the
-      // canonical condition; its own pass resolves it in place. No flat
-      // string is ever reconstructed for re-parsing. Delete first: the
-      // clause lands at the outer contribution's position, so a prop the
-      // wrapped component authored earlier can no longer outrank it.
-      const structured = mergeConditionTransport(
-        styleState,
-        viewProps[key],
-        conditionCursor,
-        val
-      )
-      if (key in viewProps) delete viewProps[key]
-      viewProps[key] = structured
     } else if (process.env.NODE_ENV === 'development') {
       console.warn(
         `[tamagui] "${key}" is not a valid style on this component; the conditional variant value is dropped.`
@@ -848,18 +952,6 @@ function mapContributedProp(
 
   if (inlineProps?.has(key)) {
     viewProps[key] = props[key] ?? val
-  }
-
-  const shouldPassThrough = Boolean(hocParentVariants && hocParentVariants[keyInit])
-
-  if (shouldPassThrough) {
-    passDownProp(viewProps, key, val)
-    if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-      console.groupCollapsed(` - passing down prop ${key}`)
-      log({ val, after: { ...viewProps[key] } })
-      console.groupEnd()
-    }
-    return
   }
 
   // pass to view props
@@ -1004,24 +1096,6 @@ function contributeProp(
           viewProps.className = valInit
           return
         }
-        // core className is raw interop: the string passes through untouched.
-        // HOC and frontend class transport marks an earlier generated layer,
-        // so keep later Tamagui contributions inline to retain their position
-        const hocClassNames = props[HOC_CLASSNAME_MARKER]
-        if (hocClassNames && typeof hocClassNames === 'object') {
-          // the HOC marker carries the emitting layer's property→class map:
-          // slot each class at this authored position so per-property
-          // competition applies, and keep those classes out of the raw walk
-          flushForwardStylesToClasses(pass)
-          for (const property in hocClassNames) {
-            const generatedClass = hocClassNames[property]
-            if (typeof generatedClass !== 'string') continue
-            clearDirectStyle(styleState, property)
-            styleState.classNames[property] = generatedClass
-            ;(pass[passHocMappedProperties] ||= new Set()).add(property)
-            ;(pass[passHocMappedClasses] ||= new Set()).add(generatedClass)
-          }
-        }
         const getClassPlan = styleFrontend?.getClassPlan
         let start = 0
         for (let index = 0; index <= valInit.length; index++) {
@@ -1031,10 +1105,6 @@ function contributeProp(
             continue
           }
           const candidate = valInit.slice(start, index)
-          if (pass[passHocMappedClasses]?.has(candidate)) {
-            start = index + 1
-            continue
-          }
           const plan = getClassPlan ? getClassPlan(candidate, conf) : 'raw'
           if (plan === null) {
             if (process.env.NODE_ENV === 'development') {
@@ -1043,13 +1113,15 @@ function contributeProp(
               )
             }
           } else if (plan === 'raw') {
+            if (getClassPlan) flushForwardStylesToClasses(pass)
+            if (isHOC) {
+              appendHOCReplay(styleState, 1, '', candidate, null, getClassPlan)
+            }
             pass[passClassName] = pass[passClassName]
               ? `${pass[passClassName]} ${candidate}`
               : candidate
             if (getClassPlan) {
-              flushForwardStylesToClasses(pass)
-              pass[passShouldDoClasses] = false
-              styleState.flatShouldDoClasses = false
+              styleState.flatShouldDoClasses = pass[passShouldDoClasses] = false
             }
           } else {
             const parentPlan = plan as {
@@ -1057,12 +1129,14 @@ function contributeProp(
               preserveRawClass: boolean
             }
             if (!Array.isArray(plan) && parentPlan.preserveRawClass) {
+              flushForwardStylesToClasses(pass)
+              if (isHOC) {
+                appendHOCReplay(styleState, 1, '', candidate, null, true)
+              }
               pass[passClassName] = pass[passClassName]
                 ? `${pass[passClassName]} ${candidate}`
                 : candidate
-              flushForwardStylesToClasses(pass)
-              pass[passShouldDoClasses] = false
-              styleState.flatShouldDoClasses = false
+              styleState.flatShouldDoClasses = pass[passShouldDoClasses] = false
             }
             const entries = Array.isArray(plan) ? plan : parentPlan.entries
             for (let entryIndex = 0; entryIndex < entries.length; entryIndex++) {
@@ -1097,11 +1171,6 @@ function contributeProp(
           }
           start = index + 1
         }
-        if (props[HOC_CLASSNAME_MARKER] !== undefined) {
-          flushForwardStylesToClasses(pass)
-          pass[passShouldDoClasses] = false
-          styleState.flatShouldDoClasses = false
-        }
       }
       return
     }
@@ -1117,26 +1186,12 @@ function contributeProp(
       for (let index = 0; index < length; index++) {
         const style = isArray ? valInit[index] : valInit
         if (!style) continue
-        const hocClassNames = style[TAMAGUI_CLASS_PROPS] as
-          | Record<string, string>
-          | undefined
-        if (hocClassNames) {
-          for (const property in hocClassNames) {
-            clearDirectStyle(styleState, property)
-            styleState.classNames[property] = hocClassNames[property]
-            ;(pass[passHocMappedProperties] ||= new Set()).add(property)
-          }
-          continue
-        }
         const normalized = normalizeStyle(style, false, true)
         const styleOriginals = shouldTrackStyleTokenProvenance
           ? styleOriginalValues.get(style)
           : undefined
         for (const key in normalized) {
           if (normalized[key] == null) continue
-          if (pass[passHocMappedProperties]?.delete(key)) {
-            clearDirectStyle(styleState, key)
-          }
           if (process.env.TAMAGUI_TARGET === 'web') {
             if (key === 'containerName') {
               pass[passContainerName] = normalized[key]
@@ -1285,18 +1340,11 @@ function contributeProp(
       return
     }
 
-    const shouldPassProp =
-      (!isStyleProp && isHOC) ||
-      // is in parent variants
-      (hocParentVariants && keyInit in hocParentVariants) ||
+    const isParentVariant = hocParentVariants && keyInit in hocParentVariants
+    const shouldPassThrough =
+      (isHOC && (!isStyleProp || keyInit in skipProps)) ||
+      isParentVariant ||
       inlineProps?.has(keyInit)
-
-    const parentVariant = parentVariants?.[keyInit]
-    const isHOCShouldPassThrough = Boolean(
-      isHOC && (parentVariant || keyInit in skipProps)
-    )
-
-    const shouldPassThrough = shouldPassProp || isHOCShouldPassThrough
 
     if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
       // console.groupEnd() // react native was not nesting right
@@ -1305,20 +1353,32 @@ function contributeProp(
           keyInit !== keyOg ? ` (shorthand for ${keyInit})` : ''
         } ${shouldPassThrough ? '(pass)' : ''}`
       )
-      log({ isVariant, valInit, shouldPassProp })
+      log({ isVariant, valInit, shouldPassThrough })
       if (isClient) {
         log({
           variants,
           variant: variants?.[keyInit],
           isVariant,
-          isHOCShouldPassThrough,
           parentStaticConfig,
         })
       }
     }
 
     if (shouldPassThrough) {
-      passDownProp(viewProps, keyInit, valInit)
+      if (isHOC && isParentVariant) {
+        resolveVariants(
+          keyInit,
+          valInit,
+          styleState.styleProps,
+          styleState,
+          '',
+          hocParentVariants![keyInit],
+          (pass[passParentCursor] as ConditionCursor) || null
+        )
+        viewProps[keyInit] = valInit
+      } else {
+        viewProps[keyInit] = valInit
+      }
 
       if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
         console.groupEnd()
@@ -1409,7 +1469,8 @@ export const getSplitStyles: StyleSplitter = (
   startedUnhydrated,
   debug,
   animationDriver,
-  styleStaticConfig
+  styleStaticConfig,
+  inheritedHOCReplay
 ) => {
   const conf = getConfig()
   styleStaticConfig ||= getStyleStaticConfig(staticConfig, conf)
@@ -1430,6 +1491,7 @@ export const getSplitStyles: StyleSplitter = (
   const { shorthands } = conf
   const { isHOC, isText, isInput, inlineProps, parentStaticConfig, acceptsClassName } =
     staticConfig
+  const hocTarget = staticConfig[HOC_REPLAY]
   const variants = styleStaticConfig.variants
 
   const viewProps: GetStyleResult['viewProps'] = {}
@@ -1462,6 +1524,12 @@ export const getSplitStyles: StyleSplitter = (
   if (staticPassthroughClassName) {
     shouldDoClasses = false
   }
+  const hocReplay = (hocTarget && [
+    hocTarget,
+    inheritedHOCReplay,
+    +!shouldDoClasses,
+    viewProps,
+  ]) as HOCReplayStream | undefined
   const validStyles =
     staticConfig.validStyles ||
     (staticConfig.isText || staticConfig.isInput ? stylePropsText : validStylesView)
@@ -1562,14 +1630,6 @@ export const getSplitStyles: StyleSplitter = (
     containerType = processedProps.containerType
   }
 
-  // properties whose class landed through the HOC class transport at an
-  // authored style position: a later plain value for the same property
-  // displaces the transported class, exactly like ordinary contributions
-  let hocMappedClassProperties: Set<string> | undefined
-  // generated classes already slotted per property from an HOC className, so
-  // the raw className walk does not merge them a second time by name
-  let hocMappedClasses: Set<string> | undefined
-
   const stylePassFlags =
     (noSkip ? passNoSkipFlag : 0) |
     (disableExpandShorthands ? passDisableShorthandsFlag : 0) |
@@ -1610,8 +1670,8 @@ export const getSplitStyles: StyleSplitter = (
     frontendGroup,
     frontendContainer,
     frontendContainerType,
-    hocMappedClassProperties,
-    hocMappedClasses,
+    inheritedHOCReplay,
+    hocReplay,
   ]
   ;(styleState as DirectState).flatPass = pass
 
@@ -1651,8 +1711,6 @@ export const getSplitStyles: StyleSplitter = (
       frontendGroup,
       frontendContainer,
       frontendContainerType,
-      hocMappedClassProperties,
-      hocMappedClasses,
     ] = pass
 
     if (process.env.TAMAGUI_TARGET === 'web' && containerValue) {
@@ -1686,6 +1744,7 @@ export const getSplitStyles: StyleSplitter = (
     if (styleProps.canPlatformPseudo && styleState.flatHasPlatformPseudo) {
       shouldDoClasses = false
       styleState.flatShouldDoClasses = false
+      if (hocReplay) hocReplay[2] = 1
       if (styleState.transformAccumulator) {
         mergeStyle(
           styleState,
@@ -1867,6 +1926,7 @@ export const getSplitStyles: StyleSplitter = (
   if (frontendContainerType !== undefined) {
     result.frontendContainerType = frontendContainerType
   }
+  if (hocReplay) result[HOC_REPLAY] = hocReplay
 
   if (!noMergeStyle) {
     if (!asChildExceptStyleLike) {
@@ -1879,45 +1939,22 @@ export const getSplitStyles: StyleSplitter = (
         const fontFamilyClassName = fontFamily ? `font_${fontFamily}` : ''
         const group = props.group ?? frontendGroup
         const groupClassName = group ? `t_group_${group}` : ''
+        if (isHOC && groupClassName) {
+          appendHOCReplay(styleState, 1, '', groupClassName, null)
+        }
         // core host classes carry the base web reset. component hooks are
         // ordinary authored className defaults and do not derive from React identity.
         let finalClassName = isText ? 'is_Text' : 'is_View'
         if (fontFamilyClassName) finalClassName += ` ${fontFamilyClassName}`
-        let hasPropertyClassNames = false
-        if (classNames) {
-          for (const key in classNames) {
-            hasPropertyClassNames = true
-            finalClassName += ` ${classNames[key]}`
-          }
+        for (const key in classNames) {
+          finalClassName += ` ${classNames[key]}`
         }
         if (groupClassName) finalClassName += ` ${groupClassName}`
         if (className) finalClassName += ` ${className}`
 
-        if (isAnimated && driverInputStyle === 'css') {
-          // CSS animation driver uses className directly
-          viewProps.className = finalClassName
-          if (style) {
-            viewProps.style = style as any
-          }
-        } else {
-          // regular web: use className directly. an HOC also hands its
-          // property→class map to the wrapped tamagui component: on the
-          // marker for the className path, and on a non-enumerable style
-          // entry so the map holds the authored style position
-          if (finalClassName) {
-            if (isHOC) viewProps[HOC_CLASSNAME_MARKER] = classNames
-            viewProps.className = finalClassName
-          }
-          if (isHOC && hasPropertyClassNames) {
-            const classStyle = {}
-            Object.defineProperty(classStyle, TAMAGUI_CLASS_PROPS, {
-              value: classNames,
-              enumerable: false,
-            })
-            viewProps.style = style ? [classStyle, style] : classStyle
-          } else if (style) {
-            viewProps.style = style as any
-          }
+        viewProps.className = finalClassName
+        if (style) {
+          viewProps.style = style as any
         }
       } else {
         if (style) {
@@ -2113,14 +2150,6 @@ function addStyleToInsertRules(rulesToInsert: RulesToInsert, styleObject: StyleO
   }
 }
 
-function passDownProp(viewProps: object, key: string, val: any) {
-  // a later contribution must displace IN AUTHORED POSITION: the wrapped
-  // component enumerates viewProps in insertion order, and reassigning an
-  // existing key would leave the new value at the old position
-  if (key in viewProps) delete viewProps[key]
-  viewProps[key] = val
-}
-
 export type MergeStyle = (
   state: GetStyleState,
   key: string,
@@ -2136,6 +2165,8 @@ type DirectState = GetStyleState & {
   flatUsed?: Record<string, number>
   flatTransitions?: AtomicSlotEntry[]
   flatSlots?: Record<string, AtomicSlotEntry[]>
+  flatSingleEntries?: Record<string, AtomicSlotEntry>
+  flatReplaySlots?: Record<string, AtomicSlotEntry[]>
   flatBorderDefaultRequests?: AtomicSlotEntry[]
   flatDeferCSS?: boolean
   flatAtomics?: Record<string, unknown>
@@ -2176,6 +2207,7 @@ function streamWriteCSS(
       : cursor
         ? conditionNumbers[cursor + conditionValueOffset]
         : 0
+  appendHOCReplay(state, 0, property, value, cursor, original)
   const identity = cursor ? conditionTexts[cursor + conditionKeyOffset] || '' : ''
   if (property.charCodeAt(0) === 116 && property.startsWith('transition')) {
     const transitions = (direct.flatTransitions ||= [])
@@ -2235,6 +2267,7 @@ function streamWriteInline(
       : cursor
         ? conditionNumbers[cursor + conditionValueOffset]
         : 0
+  appendHOCReplay(state, 0, property, value, cursor, original)
   const importance = condition ? Math.floor(condition / 256) + 1 : 0
   const used = (direct.flatUsed ||= {})
   const previous = used[property]
@@ -2255,6 +2288,7 @@ function streamRetractInline(
 ) {
   const direct = state as DirectState
   const condition = cursor ? conditionNumbers[cursor + conditionValueOffset] : 0
+  appendHOCReplay(state, 2, property, undefined, cursor)
   const importance = condition ? Math.floor(condition / 256) + 1 : 0
   const used = (direct.flatUsed ||= {})
   const previous = used[property]
@@ -2308,6 +2342,7 @@ function convertDeferredInline(state: GetStyleState, merge: MergeStyle) {
  */
 function completeStreaming(state: GetStyleState, merge: MergeStyle) {
   const direct = state as DirectState
+  const stream = direct.flatPass?.[passHOCOutput]
   const shadow = direct.flatWebShadow
   if (shadow && (direct.flatBoxShadowSequence || 0) <= shadow[4]) {
     const offset = shadow[1] || { width: 0, height: 0 }
@@ -2324,8 +2359,24 @@ function completeStreaming(state: GetStyleState, merge: MergeStyle) {
         shadow[6]
       )
     }
+    direct.flatWebShadow = undefined
   }
+  if (stream && state.transformAccumulator) {
+    appendHOCReplay(
+      state,
+      0,
+      'transform',
+      finalizeTransformAccumulator(state.transformAccumulator),
+      null
+    )
+  }
+  const slots =
+    stream && state.flatShouldDoClasses ? (direct.flatSlots ||= {}) : undefined
+  const transitions = direct.flatTransitions
   completeStreamingCSS(state)
+  if (slots && direct.flatAtomics) {
+    stream.push(3, transitions, direct.flatAtomics, 0, direct.flatSingleEntries, slots)
+  }
 }
 
 function emitAtParentCondition(
@@ -3084,6 +3135,7 @@ function emitProperty(
   const direct = state as DirectState
   const condition = cursor ? conditionNumbers[cursor + conditionValueOffset] : 0
   if (process.env.TAMAGUI_TARGET === 'web' && value === false && !condition) {
+    appendHOCReplay(state, 2, property, undefined, cursor)
     clearDirectStyle(state, property)
     if (direct.flatStyleStaticConfig?.styledContextKeys?.has(property)) {
       ;(state.overriddenContextProps ||= {})[property] = false
@@ -3918,41 +3970,6 @@ function contributeValue(
   contextOnly = false,
   condition?: ConditionCursor | string
 ) {
-  if (isConditionTransport(value)) {
-    // a wrapping component's conditional contributions arrive as resolved
-    // atoms: replay each into a cursor at this position, no text reparsed
-    if (value[transportHasBase]) {
-      const base = value[transportBase]
-      contributeValue(state, property, base, merge, base, contextOnly)
-    }
-    for (let offset = transportEntries; offset < value.length; ) {
-      const entryValue = value[offset]
-      const watermark = conditionCursorTop
-      try {
-        const cursor = acquireTransportCursor(
-          state,
-          value,
-          offset,
-          ((state as DirectState).flatPass?.[passParentCursor] as ConditionCursor) || null
-        )
-        emitUnderCondition(
-          state,
-          property,
-          entryValue,
-          cursor,
-          merge,
-          entryValue,
-          contextOnly,
-          2,
-          entryValue
-        )
-      } finally {
-        releaseConditionCursors(watermark)
-      }
-      offset += transportEntryWidth
-    }
-    return true
-  }
   if (condition !== undefined) {
     const directState = state as DirectState
     const parent = (directState.flatPass?.[passParentCursor] as ConditionCursor) || null
@@ -4128,122 +4145,9 @@ export function clearDirectStyle(state: GetStyleState, property: string) {
   delete state.classNames[atomicKey]
 }
 
-// ── HOC clause transport ─────────────────────────────────────────────────────
-// A conditional contribution whose key the host cannot style hands the wrapped
-// component its RESOLVED atoms, never serialized condition text: the inner
-// pass replays them straight into a cursor. the private symbol makes the tuple
-// impossible to author through public style values.
-
-const conditionTransportTag = Symbol()
-const transportHasBase = 1
-const transportBase = 2
-const transportEntries = 3
-const transportEntryWidth = 2
-type ConditionTransport = [typeof conditionTransportTag, boolean, any, ...unknown[]]
-
-function isConditionTransport(value: unknown): value is ConditionTransport {
-  return Array.isArray(value) && value[0] === conditionTransportTag
-}
-
-function appendConditionEntry(
-  transport: ConditionTransport,
-  cursor: ConditionCursor,
-  value: any
-) {
-  transport.push(value, conditionTexts[cursor + conditionKeyOffset] || '')
-}
-
-/** rebuild a transported clause's cursor by re-parsing its canonical key */
-function acquireTransportCursor(
-  state: GetStyleState,
-  transport: ConditionTransport,
-  offset: number,
-  parent: ConditionCursor | null
-): ConditionCursor {
-  const cursor = acquireConditionCursor(parent)
-  const key = transport[offset + 1] as string
-  if (key) resolveConditionText(state, cursor, key)
-  commitConditionCursor(state, cursor)
-  return cursor
-}
-
-function mergeConditionTransport(
-  state: GetStyleState,
-  prev: unknown,
-  cursor: ConditionCursor,
-  value: unknown
-): ConditionTransport {
-  let transport: ConditionTransport
-  if (isConditionTransport(prev)) {
-    transport = prev
-  } else {
-    transport = [conditionTransportTag, false, undefined]
-    if (prev != null) {
-      const isObjectValue =
-        typeof prev === 'object' && !Array.isArray(prev) && !isVariable(prev)
-      const objectHasDefault = isObjectValue && 'default' in prev
-      const authoredWatermark = conditionCursorTop
-      try {
-        const firstCursor =
-          isObjectValue && !objectHasDefault ? acquireConditionCursor() : null
-        if (
-          isObjectValue &&
-          classifyConditionalObject(
-            prev as Record<string, any>,
-            state,
-            undefined,
-            firstCursor || undefined
-          )
-        ) {
-          // an authored conditional object joins as transported clauses; its
-          // keys are authored text and resolve here exactly once
-          let useFirstCursor = firstCursor !== null
-          for (const key in prev as Record<string, any>) {
-            const payload = (prev as Record<string, any>)[key]
-            if (payload == null) continue
-            if (key === 'default') {
-              transport[transportHasBase] = true
-              transport[transportBase] = payload
-              continue
-            }
-            const watermark = conditionCursorTop
-            const keyCursor = useFirstCursor ? firstCursor! : acquireConditionCursor()
-            if (useFirstCursor) {
-              useFirstCursor = false
-            } else {
-              resolveConditionText(state, keyCursor, key)
-              commitConditionCursor(state, keyCursor)
-            }
-            appendConditionEntry(transport, keyCursor, payload)
-            if (keyCursor !== firstCursor) releaseConditionCursors(watermark)
-          }
-        } else {
-          transport[transportHasBase] = true
-          transport[transportBase] = prev
-        }
-      } finally {
-        releaseConditionCursors(authoredWatermark)
-      }
-    }
-  }
-  // a repeat contribution under the same condition set replaces its entry and
-  // moves to the end: the wrapped pass sees last-wins in authored order
-  const cursorKey = conditionTexts[cursor + conditionKeyOffset] || ''
-  for (
-    let offset = transportEntries;
-    offset < transport.length;
-    offset += transportEntryWidth
-  ) {
-    if (transport[offset + 1] === cursorKey) {
-      transport.splice(offset, transportEntryWidth)
-      break
-    }
-  }
-  appendConditionEntry(transport, cursor, value)
-  return transport
-}
-
-type VariantScanContext = [GetStyleState, string, string]
+type VariantScanContext =
+  | [GetStyleState, string, string]
+  | [GetStyleState, string, string, ConditionCursor | null, any]
 
 const variantValueHandler: FlatValueHandler<VariantScanContext> = {
   segment(ctx, start, end, isBase, valid, source, chainStart, chainEnd, chainValid) {
@@ -4251,7 +4155,14 @@ const variantValueHandler: FlatValueHandler<VariantScanContext> = {
     if (start === end) return
     if (isBase) {
       if (!valid) return
-      emitResolvedVariant(ctx[1], source.slice(start, end), state, ctx[2], null)
+      emitResolvedVariant(
+        ctx[1],
+        source.slice(start, end),
+        state,
+        ctx[2],
+        ctx[3] || null,
+        ctx[4]
+      )
       return
     }
     if (!valid || !chainValid) return
@@ -4263,15 +4174,15 @@ const variantValueHandler: FlatValueHandler<VariantScanContext> = {
         ? conditionNumbers[cursor + conditionValueOffset]
         : 0
     if (!condition) return
-    emitResolvedVariant(ctx[1], source.slice(start, end), state, ctx[2], cursor!)
+    emitResolvedVariant(ctx[1], source.slice(start, end), state, ctx[2], cursor!, ctx[4])
   },
   modifier(ctx, start, end, valid, first, source) {
     const directState = ctx[0] as DirectState
     let cursor = directState.flatScanCursor
     if (!cursor) {
-      cursor = directState.flatScanCursor = acquireConditionCursor()
+      cursor = directState.flatScanCursor = acquireConditionCursor(ctx[3] || null)
     } else if (first) {
-      resetConditionCursor(cursor, 0)
+      resetConditionCursor(cursor, ctx[3] || null)
     }
     if (!valid) {
       setConditionUnresolved(cursor)
@@ -4476,30 +4387,14 @@ function resolveVariants(
   value: any,
   styleProps: SplitStyleProps,
   styleState: GetStyleState,
-  parentVariantKey: string
+  parentVariantKey: string,
+  replayDefinition?: any,
+  replayParent?: ConditionCursor | null
 ) {
-  const variantDefinition = (styleState as DirectState).flatStyleStaticConfig!.variants?.[
-    key
-  ]
-  if (isConditionTransport(value)) {
-    // conditional variant selections transported through an HOC: resolve each
-    // branch under its replayed condition
-    if (value[transportHasBase]) {
-      emitResolvedVariant(key, value[transportBase], styleState, parentVariantKey, null)
-    }
-    for (let offset = transportEntries; offset < value.length; ) {
-      const entryValue = value[offset]
-      const watermark = conditionCursorTop
-      try {
-        const cursor = acquireTransportCursor(styleState, value, offset, null)
-        emitResolvedVariant(key, entryValue, styleState, parentVariantKey, cursor)
-      } finally {
-        releaseConditionCursors(watermark)
-      }
-      offset += transportEntryWidth
-    }
-    return
-  }
+  const replay = replayDefinition !== undefined
+  const variantDefinition = replay
+    ? replayDefinition
+    : (styleState as DirectState).flatStyleStaticConfig!.variants?.[key]
   if (
     typeof value === 'string' &&
     // a variant can define a literal colon key like "16:9" — an exact match
@@ -4515,7 +4410,13 @@ function resolveVariants(
     const previousCursor = directState.flatScanCursor
     directState.flatScanCursor = null
     try {
-      scanFlatValue(value, variantValueHandler, [styleState, key, parentVariantKey])
+      scanFlatValue(
+        value,
+        variantValueHandler,
+        replay
+          ? [styleState, key, parentVariantKey, replayParent || null, replayDefinition]
+          : [styleState, key, parentVariantKey]
+      )
     } finally {
       directState.flatScanCursor = previousCursor
       releaseConditionCursors(watermark)
@@ -4533,7 +4434,9 @@ function resolveVariants(
   const objectWatermark = conditionCursorTop
   try {
     const firstCursor =
-      isObjectValue && !objectHasDefault ? acquireConditionCursor() : null
+      isObjectValue && !objectHasDefault
+        ? acquireConditionCursor(replayParent || null)
+        : null
     if (
       isObjectValue &&
       classifyConditionalObject(value, styleState, undefined, firstCursor || undefined)
@@ -4543,11 +4446,20 @@ function resolveVariants(
         const payload = value[objKey]
         if (payload == null) continue
         if (objKey === 'default') {
-          emitResolvedVariant(key, payload, styleState, parentVariantKey, null)
+          emitResolvedVariant(
+            key,
+            payload,
+            styleState,
+            parentVariantKey,
+            replayParent || null,
+            replayDefinition
+          )
           continue
         }
         const watermark = conditionCursorTop
-        const cursor = useFirstCursor ? firstCursor! : acquireConditionCursor()
+        const cursor = useFirstCursor
+          ? firstCursor!
+          : acquireConditionCursor(replayParent || null)
         let condition = conditionNumbers[cursor + conditionValueOffset]
         if (useFirstCursor) {
           useFirstCursor = false
@@ -4557,7 +4469,14 @@ function resolveVariants(
         }
         // an unresolvable key still flows down as its (unresolved) cursor so the
         // downstream contribution warns and drops it, never emits unconditioned
-        emitResolvedVariant(key, payload, styleState, parentVariantKey, cursor)
+        emitResolvedVariant(
+          key,
+          payload,
+          styleState,
+          parentVariantKey,
+          cursor,
+          replayDefinition
+        )
         if (cursor !== firstCursor) releaseConditionCursors(watermark)
       }
       return
@@ -4566,7 +4485,14 @@ function resolveVariants(
     releaseConditionCursors(objectWatermark)
   }
 
-  emitResolvedVariant(key, value, styleState, parentVariantKey, null)
+  emitResolvedVariant(
+    key,
+    value,
+    styleState,
+    parentVariantKey,
+    replayParent || null,
+    replayDefinition
+  )
 }
 
 function emitResolvedVariant(
@@ -4574,14 +4500,15 @@ function emitResolvedVariant(
   value: any,
   styleState: GetStyleState,
   parentVariantKey: string,
-  conditionCursor: ConditionCursor | null
+  conditionCursor: ConditionCursor | null,
+  variantOverride?: any
 ) {
   const { conf, debug } = styleState
   const styleProps = styleState.styleProps
   const variants = (styleState as DirectState).flatStyleStaticConfig!.variants
-  if (!variants) return
+  if (!variants && variantOverride === undefined) return
 
-  const variant = variants[key]
+  const variant = variantOverride === undefined ? variants![key] : variantOverride
   let variantValue = getVariantDefinition(variant, value, conf, styleState)
 
   if (!variantValue) {

@@ -1,7 +1,18 @@
 process.env.TAMAGUI_TARGET = 'native'
 
 import { getDefaultTamaguiConfig } from '@tamagui/config-default'
-import { View, Text, createTamagui, getSplitStyles, styled } from '../web/src'
+import { render } from '@testing-library/react-native'
+import React from 'react'
+import { View as NativeView } from 'react-native'
+import {
+  TamaguiProvider,
+  Text,
+  View,
+  createStyledHOC,
+  createTamagui,
+  getSplitStyles,
+  styled,
+} from '../web/src'
 import { getStyleTokenProvenance } from '../web/src/helpers/styleProvenance'
 import { describe, expect, test } from 'vitest'
 
@@ -13,6 +24,28 @@ const config = createTamagui(getDefaultTamaguiConfig('native'))
 const provenanceEnabled =
   process.env.NODE_ENV === 'development' &&
   process.env.TAMAGUI_ENABLE_STYLE_TOKEN_PROVENANCE === '1'
+
+const ReplayTokenBase = styled(View, {
+  variants: {
+    toned: {
+      true: { backgroundColor: 'background' },
+    },
+  } as const,
+})
+
+const OpaqueTokenReplay = createStyledHOC(ReplayTokenBase, (_props, ref) => (
+  <NativeView accessibilityLabel="token-replay-shell">
+    <ReplayTokenBase ref={ref} />
+  </NativeView>
+))
+
+const TokenReplayOuter = styled(OpaqueTokenReplay, {
+  variants: {
+    outer: {
+      true: { toned: true },
+    },
+  } as const,
+})
 
 const componentState = {
   hover: false,
@@ -49,6 +82,27 @@ function splitInspect(
 }
 
 describe.runIf(provenanceEnabled)('getSplitStyles token provenance', () => {
+  test('an opaque HOC replay retains the outer variant token binding', () => {
+    const { UNSAFE_getAllByType } = render(
+      <TamaguiProvider config={config} defaultTheme="light">
+        <TokenReplayOuter outer />
+      </TamaguiProvider>
+    )
+    const shell = UNSAFE_getAllByType(NativeView)[0]
+    let replayedStyle: object | undefined
+    for (const node of [shell, ...shell.findAll(() => true)]) {
+      const styles = Array.isArray(node.props.style)
+        ? node.props.style.flat(Infinity)
+        : [node.props.style]
+      replayedStyle = styles.find((style) => style?.backgroundColor !== undefined)
+      if (replayedStyle) break
+    }
+    expect(replayedStyle).toBeTruthy()
+    expect(getStyleTokenProvenance(replayedStyle)).toEqual({
+      backgroundColor: { token: 'background', theme: 'light' },
+    })
+  })
+
   test('a direct color token resolves to a real color and records its token + theme', () => {
     const { resolved, provenance } = splitInspect('light', {
       backgroundColor: 'background',

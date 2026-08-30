@@ -8,9 +8,10 @@ export type { StyleDebugReceipt, StyleDebugTier, StyleTokenBinding, StyleTokenPr
 export { styleOriginalValues };
 export type SplitStyles = ReturnType<typeof getSplitStyles>;
 export type SplitStyleResult = ReturnType<typeof getSplitStyles>;
+type HOCReplayStream = any[];
 export type StyleSplitter = (props: {
     [key: string]: any;
-}, staticConfig: StaticConfig, theme: ThemeParsed, themeName: string, componentState: TamaguiComponentState, styleProps: SplitStyleProps, parentSplitStyles?: GetStyleResult | null, context?: ComponentContextI, groupContext?: AllGroupContexts | null, elementType?: string, startedUnhydrated?: boolean, debug?: DebugProp, animationDriver?: AnimationDriverLike | null, styleStaticConfig?: StyleStaticConfig) => null | GetStyleResult;
+}, staticConfig: StaticConfig, theme: ThemeParsed, themeName: string, componentState: TamaguiComponentState, styleProps: SplitStyleProps, parentSplitStyles?: GetStyleResult | null, context?: ComponentContextI, groupContext?: AllGroupContexts | null, elementType?: string, startedUnhydrated?: boolean, debug?: DebugProp, animationDriver?: AnimationDriverLike | null, styleStaticConfig?: StyleStaticConfig, hocReplay?: HOCReplayStream | null) => null | GetStyleResult;
 export declare function isValidStyleKey(key: string, validStyles: Record<string, boolean>, accept?: Record<string, any>): boolean;
 export declare const getSplitStyles: StyleSplitter;
 export type MergeStyle = (state: GetStyleState, key: string, value: any, disableNormalize?: boolean, originalValue?: any) => void;
