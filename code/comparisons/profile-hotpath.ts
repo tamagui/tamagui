@@ -34,7 +34,9 @@ const arg = (name: string, fallback: string) =>
   process.argv.find((a) => a.startsWith(`--${name}=`))?.slice(name.length + 3) ?? fallback
 
 const SCENARIO = arg('scenario', 'heavy')
-const FIXTURE_SCENARIO = SCENARIO === 'clause-string' ? 'flat' : SCENARIO
+const FIXTURE_SCENARIO =
+  SCENARIO === 'clause-string' || SCENARIO === 'hoc' ? 'flat' : SCENARIO
+const WORKLOAD_QUERY = SCENARIO === 'hoc' ? '&workload=hoc' : ''
 const EXTRACT = arg('extract', '0')
 const ITERATIONS = Number.parseInt(arg('iterations', '20'), 10)
 const WARMUPS = Number.parseInt(arg('warmups', '3'), 10)
@@ -217,7 +219,7 @@ async function main() {
     const context = await browser.newContext({ viewport: { width: 1280, height: 900 } })
     const page = await context.newPage()
     await page.goto(
-      `http://127.0.0.1:${PORT}/?scenario=${FIXTURE_SCENARIO}&scale=${SCALE}`,
+      `http://127.0.0.1:${PORT}/?scenario=${FIXTURE_SCENARIO}&scale=${SCALE}${WORKLOAD_QUERY}`,
       {
         waitUntil: 'networkidle',
       }
@@ -231,7 +233,7 @@ async function main() {
     // long enough to read it (the normal run unmounts the runner when done).
     const countPage = await context.newPage()
     await countPage.goto(
-      `http://127.0.0.1:${PORT}/?scenario=${FIXTURE_SCENARIO}&scale=${SCALE}&behaviorValidation=1`,
+      `http://127.0.0.1:${PORT}/?scenario=${FIXTURE_SCENARIO}&scale=${SCALE}&behaviorValidation=1${WORKLOAD_QUERY}`,
       { waitUntil: 'networkidle' }
     )
     await countPage.locator('#bench-start').click()

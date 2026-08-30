@@ -1,5 +1,5 @@
 import { createRoot } from 'react-dom/client'
-import { TamaguiProvider, View, styled } from 'tamagui'
+import { TamaguiProvider, View, createStyledHOC, styled } from 'tamagui'
 import config from './tamagui.config'
 import { useState, useLayoutEffect, useEffect, useRef, useMemo, useCallback } from 'react'
 import {
@@ -12,6 +12,7 @@ import {
 
 const BEHAVIOR_VALIDATION =
   new URLSearchParams(window.location.search).get('behaviorValidation') === '1'
+const HOC_WORKLOAD = new URLSearchParams(window.location.search).get('workload') === 'hoc'
 
 // ── scenario 1: simple (fully static — compiler CAN flatten) ──
 
@@ -234,6 +235,75 @@ function FlatItems({ seed }: { seed: number }) {
   }, [seed])
 }
 
+// scenario 7: styled HOC replay with inner and outer variants
+
+const HocBase = styled(View, {
+  variants: {
+    density: {
+      compact: {
+        padding: '4px web:6px hover:8px',
+      },
+      roomy: {
+        padding: '8px web:10px hover:12px',
+      },
+    },
+    accent: {
+      true: {
+        backgroundColor: 'rgb(147,197,253) web:rgb(59,130,246) hover:rgb(37,99,235)',
+      },
+    },
+  },
+} as any)
+
+const HocBoundary = createStyledHOC(HocBase, (props: any, ref: any) => {
+  const { children, ...rest } = props
+  return (
+    <div data-hoc-shell="">
+      <HocBase ref={ref} {...rest}>
+        {children}
+      </HocBase>
+    </div>
+  )
+})
+
+const HocFrame = styled(HocBoundary, {
+  variants: {
+    selected: {
+      true: {
+        density: 'roomy',
+        borderColor: 'rgb(59,130,246) hover:rgb(30,64,175)',
+        scale: '1 hover:1.05',
+      },
+    },
+  },
+} as any)
+
+function HocItems({ seed }: { seed: number }) {
+  return useMemo(() => {
+    const arr = []
+    for (let i = 0; i < ITEM_COUNT; i++) {
+      arr.push(
+        <HocFrame
+          key={i}
+          data-bench-scenario-item="flat"
+          density={(i + seed) % 2 ? 'compact' : 'roomy'}
+          accent
+          selected="false hover:true"
+          width="24px web:28px sm:32px"
+          height="24px web:28px hover:30px"
+          borderWidth={1}
+          className="hoc-bench-raw"
+          style={[
+            { transform: [{ translateX: (i + seed) % 3 }] },
+            (i + seed) % 2 ? { paddingLeft: 7 } : { paddingRight: 9 },
+          ]}
+        />
+      )
+    }
+    return <>{arr}</>
+  }, [seed])
+}
+
 // ── runner ────────────────────────────────────────────
 
 const scenarioComponents = {
@@ -242,7 +312,7 @@ const scenarioComponents = {
   group: GroupItems,
   heavy: HeavyItems,
   animated: AnimatedItems,
-  flat: FlatItems,
+  flat: HOC_WORKLOAD ? HocItems : FlatItems,
 }
 
 function BenchRunner({

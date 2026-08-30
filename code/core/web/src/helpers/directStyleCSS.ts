@@ -25,6 +25,7 @@ type DirectAtomicState = GetStyleState & {
   flatTransitions?: AtomicSlotEntry[]
   /** first streamed entry per property when it carried a condition */
   flatSingleEntries?: Record<string, AtomicSlotEntry>
+  flatReplaySlots?: Record<string, AtomicSlotEntry[]>
   /** properties with 2+ contributions: combined at completion, ordered by
    * precedence, restoring the deferred slot the cascade tie-break requires
    * (clauseOrderIndependence pins state-after-media at equal specificity) */
@@ -195,6 +196,28 @@ export function streamAtomic(
 ) {
   if (!canGenerateCSS) return
   const direct = state as DirectAtomicState
+
+  const replay = direct.flatReplaySlots?.[property]
+  if (replay) {
+    delete direct.flatReplaySlots![property]
+    const list = ((direct.flatSlots ||= {})[property] = replay.map(
+      (entry) => entry.slice() as AtomicSlotEntry
+    ))
+    appendSlotEntry(
+      list,
+      property,
+      value,
+      condition,
+      identity,
+      selector,
+      wrapperSource,
+      wrapperStart,
+      wrapperCount,
+      weak,
+      original
+    )
+    return
+  }
 
   // an existing combined slot absorbs everything for its property
   const slots = direct.flatSlots
@@ -508,6 +531,7 @@ export function clearFrameAtomic(state: GetStyleState, atomicKey: string) {
   const direct = state as DirectAtomicState
   if (direct.flatAtomics) delete direct.flatAtomics[atomicKey]
   if (direct.flatSingleEntries) delete direct.flatSingleEntries[atomicKey]
+  if (direct.flatReplaySlots) delete direct.flatReplaySlots[atomicKey]
   if (direct.flatSlots) delete direct.flatSlots[atomicKey]
   if (atomicKey === 'transition') direct.flatTransitions = undefined
 }

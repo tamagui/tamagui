@@ -23,11 +23,12 @@ export const useSplitStyles: StyleSplitter = (
   k,
   l,
   m,
-  n
+  n,
+  o
 ) => {
   'use no memo'
 
-  const res = getSplitStyles(a, b, c, d, e, f, g, h, i, j, k, l, m, n)
+  const res = getSplitStyles(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o)
 
   if (!process.env.TAMAGUI_DID_OUTPUT_CSS && process.env.TAMAGUI_TARGET !== 'native') {
     useInsertEffectCompat(() => {

@@ -1,4 +1,3 @@
-export declare const HOC_CLASSNAME_MARKER = "data-tamagui-hoc-class";
 /**
  * These are props that dont pass down below Tamagui styled components
  */
@@ -15,7 +14,6 @@ export declare const skipProps: {
     disableNativeStyle: number;
     render: number;
     style: number;
-    "data-tamagui-hoc-class": number;
     group: number;
     container: number;
     animatePresence: number;

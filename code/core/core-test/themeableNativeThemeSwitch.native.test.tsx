@@ -17,6 +17,37 @@ const config = createTamagui(getDefaultTamaguiConfig('native'))
 
 const Custom = createStyledHOC(View, (props, ref) => <View ref={ref} {...props} />)
 
+const ReplayBase = styled(View, {
+  variants: {
+    alpha: {
+      low: { padding: 10 },
+      high: { padding: 30 },
+    },
+    beta: {
+      true: { paddingLeft: 20 },
+    },
+  } as const,
+})
+
+const OpaqueReplay = createStyledHOC(ReplayBase, (props, ref) => (
+  <NativeView accessibilityLabel="opaque-shell">
+    <ReplayBase ref={ref} testID={props.testID} />
+  </NativeView>
+))
+
+const NativeReplayOuter = styled(OpaqueReplay, {
+  variants: {
+    outer: {
+      true: {
+        alpha: {
+          default: 'low',
+          'native:dark': 'high',
+        },
+      },
+    },
+  } as const,
+})
+
 const findStyleValue = (node: any, key: string): any => {
   if (!node) return undefined
   const styles = Array.isArray(node.props?.style) ? node.props.style : [node.props?.style]
@@ -63,4 +94,24 @@ test('nested styled HOC resolves a native state-string before the host leaf', ()
   expect(UNSAFE_getByType(NativeView).props).toMatchObject({
     style: { opacity: 1 },
   })
+})
+
+test('native replay crosses opaque output with nested platform and theme identity', () => {
+  const { UNSAFE_getAllByType } = render(
+    <TamaguiProvider config={config} defaultTheme="dark">
+      <NativeReplayOuter
+        alpha="low"
+        beta
+        style={{ paddingLeft: 25 }}
+        outer
+        testID="native-replay-leaf"
+      />
+    </TamaguiProvider>
+  )
+
+  const shell = UNSAFE_getAllByType(NativeView).find(
+    (node) => node.props.accessibilityLabel === 'opaque-shell'
+  )
+  expect(shell).toBeTruthy()
+  expect(findStyleValue(shell, 'paddingLeft')).toBe(30)
 })
