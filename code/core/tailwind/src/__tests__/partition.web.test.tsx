@@ -7,16 +7,12 @@
 
 import { beforeAll, describe, expect, test } from 'vitest'
 import { defaultConfig as v6 } from '@tamagui/config/v6'
-import {
-  StyleObjectProperty,
-  StyleObjectValue,
-  StyleObjectPseudo,
-} from '@tamagui/helpers'
+import { StyleObjectPseudo } from '@tamagui/helpers'
 import { tamaguiToTailwind } from '@tamagui/to-tailwind'
 
 import { createTamagui } from '@tamagui/web'
 import { View } from '../index'
-import { splitTailwindStyles } from './utils'
+import { resolvedStyle, splitTailwindStyles } from './utils'
 
 beforeAll(() => {
   createTamagui(v6 as any)
@@ -38,7 +34,7 @@ describe('flat clauses', () => {
     const opacityRules = (s.rulesToInsert[s.classNames.opacity]?.[4] ?? []).join('')
     expect(opacityRules).toContain(':hover')
     expect(opacityRules).toContain('opacity:0.5')
-    const bgRules = (s.rulesToInsert[s.classNames.backgroundColor]?.[4] ?? []).join('')
+    const bgRules = (s.rulesToInsert[s.classNames.background]?.[4] ?? []).join('')
     expect(bgRules).toContain(':hover')
     expect(bgRules).toContain('background-color:blue')
   })
@@ -76,13 +72,7 @@ describe('precedence — same-key className and props retain authored order', ()
 
   test('the later contribution wins in both attribute orders', () => {
     const findPad = (s: any) => {
-      const merged: Record<string, any> = { ...s.style }
-      for (const r of Object.values(s.rulesToInsert || {}) as any[]) {
-        const p = r[StyleObjectProperty]
-        if (p === 'paddingTop' && merged.paddingTop === undefined)
-          merged.paddingTop = r[StyleObjectValue]
-      }
-      return merged.paddingTop
+      return resolvedStyle(s).paddingTop
     }
     expect(
       findPad(splitTailwindStyles(View, { className: 'p-[8px]', padding: 10 }))

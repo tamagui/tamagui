@@ -7,13 +7,12 @@
 
 import { beforeAll, describe, expect, test } from 'vitest'
 import { defaultConfig as v6 } from '@tamagui/config/v6'
-import { StyleObjectProperty, StyleObjectValue } from '@tamagui/helpers'
 import { tamaguiToTailwind } from '@tamagui/to-tailwind'
 import { createTamagui } from '@tamagui/web'
 
 import { getTailwindClassPlan } from '../candidate'
 import { Text, View } from '../index'
-import { splitTailwindStyles } from './utils'
+import { resolvedStyle, splitTailwindStyles } from './utils'
 
 let CFG: any
 beforeAll(() => {
@@ -30,11 +29,7 @@ const classOf = (out: string) => {
 }
 function resolved(Comp: any, props: Record<string, any>): Record<string, any> {
   const s = splitTailwindStyles(Comp, props as any)
-  const out: Record<string, any> = { ...s.style }
-  for (const r of Object.values(s.rulesToInsert || {}) as any[]) {
-    const p = r[StyleObjectProperty]
-    if (p != null && out[p] === undefined) out[p] = r[StyleObjectValue]
-  }
+  const out = resolvedStyle(s)
   const internal = new Set(['className', 'style', 'children', 'ref', 'key'])
   const vp = s.viewProps || {}
   for (const k of Object.keys(vp))
@@ -90,7 +85,7 @@ describe('4 — existing raw hover color + flat hover clause follow authored ord
     // authored one restates the hover clause and wins (decision 21)
     const hoverColor = (props: Record<string, any>) => {
       const styles = splitTailwindStyles(View, props as any)
-      const className = styles.classNames.backgroundColor
+      const className = styles.classNames.background
       const rule = styles.rulesToInsert[className]?.[4]?.[0]
       const prefix = `@media (hover: hover) {.${className}:where(:hover){background-color:`
       return rule?.startsWith(prefix) && rule.endsWith('}}')

@@ -1,5 +1,5 @@
 import { type FrontendClassPlan, type StyleFrontendConfig } from '@tamagui/core/internal-runtime';
-import { type GrammarConfigView } from '@tamagui/style-grammar/runtime';
+import { type GrammarConfigView } from '@tamagui/style-grammar/tooling/candidate';
 export declare function getStyleGrammarConfig(config: StyleFrontendConfig): GrammarConfigView;
 export declare function isTokenValueProp(prop: string): boolean;
 export declare function getTailwindClassPlan(candidate: string, config: StyleFrontendConfig): FrontendClassPlan;

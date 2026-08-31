@@ -16,8 +16,8 @@ describe('tailwind package - basic className', () => {
       className: 'bg-[red]',
     } as any)
 
-    const className = styles.classNames.backgroundColor
-    expect(className).toMatch(/^_bc-/)
+    const className = styles.classNames.background
+    expect(className).toMatch(/^_b-/)
     expect(
       (styles.rulesToInsert[className]?.[StyleObjectRules] ?? []).join('')
     ).toContain('background-color:red')
@@ -69,8 +69,8 @@ describe('tailwind package - modifiers', () => {
     } as any)
 
     // the hover clause becomes a backgroundColor program block
-    const className = styles.classNames.backgroundColor
-    expect(className).toMatch(/^_bc-/)
+    const className = styles.classNames.background
+    expect(className).toMatch(/^_b-/)
     const rules = (styles.rulesToInsert[className]?.[StyleObjectRules] ?? []).join('')
     expect(rules).toContain(':hover')
     expect(rules).toContain('background-color:blue')
@@ -81,8 +81,8 @@ describe('tailwind package - modifiers', () => {
       className: 'sm:p-[80px]',
     } as any)
 
-    const className = styles.classNames.paddingTop
-    expect(className).toMatch(/^_pt-/)
+    const className = styles.classNames.padding
+    expect(className).toMatch(/^_p-/)
     const rules = (styles.rulesToInsert[className]?.[StyleObjectRules] ?? []).join('')
     expect(rules).toContain('@media')
     expect(rules).toContain('80px')
@@ -95,8 +95,8 @@ describe('tailwind package - modifiers', () => {
 
     // combined modifiers nest the media query around the hover selector in
     // one program block
-    const className = styles.classNames.backgroundColor
-    expect(className).toMatch(/^_bc-/)
+    const className = styles.classNames.background
+    expect(className).toMatch(/^_b-/)
     const rules = (styles.rulesToInsert[className]?.[StyleObjectRules] ?? []).join('')
     expect(rules).toContain('@media')
     expect(rules).toContain(':hover')
@@ -122,8 +122,8 @@ describe('tailwind package - token values', () => {
 
     // black is a token - the hover clause resolves to a CSS variable inside
     // the program block
-    const className = styles.classNames.backgroundColor
-    expect(className).toMatch(/^_bc-/)
+    const className = styles.classNames.background
+    expect(className).toMatch(/^_b-/)
     const rules = (styles.rulesToInsert[className]?.[StyleObjectRules] ?? []).join('')
     expect(rules).toContain(':hover')
     expect(rules).toContain('var(--')

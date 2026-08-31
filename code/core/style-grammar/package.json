@@ -42,6 +42,15 @@
       "require": "./dist/cjs/tooling.cjs",
       "default": "./dist/esm/tooling.mjs"
     },
+    "./tooling/candidate": {
+      "types": "./types/tooling/candidate.d.ts",
+      "react-native": "./dist/esm/tooling/candidate.native.js",
+      "browser": "./dist/esm/tooling/candidate.mjs",
+      "module": "./dist/esm/tooling/candidate.mjs",
+      "import": "./dist/esm/tooling/candidate.mjs",
+      "require": "./dist/cjs/tooling/candidate.cjs",
+      "default": "./dist/esm/tooling/candidate.mjs"
+    },
     "./v6-themes": {
       "types": "./types/v6ThemeNames.d.ts",
       "react-native": "./dist/esm/v6ThemeNames.native.js",

@@ -15,17 +15,12 @@
 
 import { beforeAll, describe, expect, test } from 'vitest'
 import { defaultConfig as v6 } from '@tamagui/config/v6'
-import {
-  StyleObjectIdentifier,
-  StyleObjectProperty,
-  StyleObjectValue,
-} from '@tamagui/helpers'
 import { tamaguiToTailwind } from '@tamagui/to-tailwind'
 
 import { createTamagui } from '@tamagui/web'
 import { resolveTailwindClassName } from '../candidate'
 import { Text, View } from '../index'
-import { splitTailwindStyles } from './utils'
+import { resolvedStyle, splitTailwindStyles } from './utils'
 
 let CFG: any
 let THEME: any
@@ -57,14 +52,7 @@ function convertedClassName(sourceJSX: string): string {
 // only (media/pseudo-scoped rules are skipped; media is asserted through preprocessing).
 function styleOf(props: Record<string, any>, Comp: any = View): Record<string, any> {
   const s = splitTailwindStyles(Comp, props, { theme: THEME, themeName: 'light' })
-  const out: Record<string, any> = { ...s.style }
-  for (const r of Object.values(s.rulesToInsert || {}) as any[]) {
-    const id = r[StyleObjectIdentifier] || ''
-    if (/hover|focus|press|_md|_sm|_lg|_max|:/.test(id)) continue // base props only
-    const p = r[StyleObjectProperty]
-    if (p != null && out[p] === undefined) out[p] = r[StyleObjectValue]
-  }
-  return out
+  return resolvedStyle(s)
 }
 
 function classStyle(cls: string, Comp: any = View): Record<string, any> {

@@ -39,7 +39,7 @@ describe('the shipped frontend runtime graphs', () => {
     expect(
       files.some((file) => file.endsWith('/compiler/static/dist/esm/compilerHost.mjs'))
     ).toBe(true)
-    for (const module of ['tooling', 'valueParser', 'modifierRegistry']) {
+    for (const module of ['tooling', 'ast/valueParser', 'programs/modifierRegistry']) {
       expect(
         files.some((file) => file.endsWith(`/core/style-grammar/dist/esm/${module}.mjs`)),
         module
@@ -51,7 +51,7 @@ describe('the shipped frontend runtime graphs', () => {
     ['browser', false],
     ['native', true],
   ] as const)(
-    'a loaded app with ThemeUpdate and Tailwind keeps tooling out under %s conditions',
+    'a loaded app with ThemeUpdate and Tailwind keeps compiler tooling out under %s conditions',
     async (_target, native) => {
       const files = await bundledInputs(
         'code/core/tailwind/src/__tests__/fixtures/runtimeGraphApp.tsx',
@@ -89,7 +89,7 @@ describe('the shipped frontend runtime graphs', () => {
         expect(
           files.some((file) =>
             file.endsWith(
-              `/core/style-grammar/dist/esm/${module}${native ? '.native.js' : '.mjs'}`
+              `/core/style-grammar/dist/esm/runtime/${module}${native ? '.native.js' : '.mjs'}`
             )
           ),
           module
@@ -97,7 +97,7 @@ describe('the shipped frontend runtime graphs', () => {
       }
       expect(
         files.filter((file) =>
-          /\/core\/style-grammar\/dist\/esm\/(?:backgroundFamily|borderFamily|candidateTarget|clauseCapability|clauseSources|evaluateProgram|fontShorthand|geometricShorthand|lowerProgram|modifierRegistry|payloadShape|programEligibility|programHash|programs|serializePayload|states|table|textDecorationFamily|tooling(?:Annotations|Diagnostics|Format|Registry)?|transformFamily|transition(?:Align|Legacy|Native)?|v6ThemeNames|valueParser)(?:\.native)?\.(?:mjs|js)$/.test(
+          /\/core\/style-grammar\/dist\/esm\/(?:ast\/(?:payloadShape|serializePayload|valueParser)|programs\/(?:clauseCapability|clauseSources|evaluateProgram|lowerProgram|modifierRegistry|programEligibility|programHash|programs)|shorthands\/(?:backgroundFamily|borderFamily|fontShorthand|geometricShorthand|textDecorationFamily|transformFamily|transition(?:Align|Legacy|Native)?)|tooling\/(?:candidateTarget|table|tooling(?:Annotations|Diagnostics|Format|Registry)))(?:\.native)?\.(?:mjs|js)$/.test(
             file
           )
         )

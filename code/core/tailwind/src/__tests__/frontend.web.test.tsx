@@ -23,7 +23,7 @@ describe('tailwind components render through the shared renderer', () => {
   test('a claimed candidate emits a real CSS rule', () => {
     const styles = splitTailwindStyles(View, { className: 'bg-[red]' })
 
-    expect(styles.classNames.backgroundColor).toBeTruthy()
+    expect(styles.classNames.background).toBeTruthy()
     expect(findRule(styles.rulesToInsert, 'backgroundColor')[StyleObjectValue]).toBe(
       'red'
     )
@@ -65,7 +65,7 @@ describe('tailwind components render through the shared renderer', () => {
 
     // one backgroundColor program, one class, base and hover as ordered clauses
     const rules = findRule(styles.rulesToInsert, 'backgroundColor')[StyleObjectRules]
-    const cls = styles.classNames.backgroundColor
+    const cls = styles.classNames.background
     expect(rules[0]).toBe(`.${cls}{background-color:red}`)
     expect(rules[1]).toBe(
       `@media (hover: hover) {.${cls}:where(:hover){background-color:blue}}`
@@ -93,7 +93,7 @@ describe('tailwind components render through the shared renderer', () => {
       className: 'bg-[red] supports-[display:grid]:bg-blue-500',
     })
 
-    expect(styles.classNames.backgroundColor).toBeTruthy()
+    expect(styles.classNames.background).toBeTruthy()
     expect(styles.style?.backgroundColor).toBeUndefined()
   })
 
@@ -211,7 +211,8 @@ describe('class-first styled()', () => {
     updateConfig('media', { future: { minWidth: 1234 } })
 
     const styles = splitTailwindStyles(Frame, {})
-    const rules = findRule(styles.rulesToInsert, 'backgroundColor')[StyleObjectRules]
+    const className = styles.classNames.background
+    const rules = styles.rulesToInsert[className][StyleObjectRules]
     expect(rules.join('')).toContain('@media (min-width: 1234px)')
     expect(rules.join('')).toContain('background-color:red')
   })

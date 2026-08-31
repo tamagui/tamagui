@@ -10,13 +10,12 @@
 
 import { beforeAll, describe, expect, test } from 'vitest'
 import { defaultConfig as v6 } from '@tamagui/config/v6'
-import { StyleObjectProperty, StyleObjectValue } from '@tamagui/helpers'
 import { tamaguiToTailwind } from '@tamagui/to-tailwind'
 
 import { createTamagui } from '@tamagui/web'
 import { resolveTailwindClassName } from '../candidate'
 import { View } from '../index'
-import { splitTailwindStyles } from './utils'
+import { resolvedStyle, splitTailwindStyles } from './utils'
 
 // custom config: overridden token scales + an extra media key
 const tokens = {
@@ -52,12 +51,7 @@ function styleFlat(props: Record<string, any>): Record<string, any> {
     theme: (CFG.themes as any).light,
     themeName: 'light',
   })
-  const out: Record<string, any> = { ...s.style }
-  for (const r of Object.values(s.rulesToInsert || {}) as any[]) {
-    const p = r[StyleObjectProperty]
-    if (p != null && out[p] === undefined) out[p] = r[StyleObjectValue]
-  }
-  return out
+  return resolvedStyle(s)
 }
 describe('config-aware tokens (WEB) — class names follow runtime-owned values', () => {
   test('space.4: padding="4" → p-4 → direct-token parity', () => {

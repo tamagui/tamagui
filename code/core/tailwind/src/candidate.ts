@@ -20,7 +20,7 @@ import {
   decodeArbitrary,
   type GrammarConfigView,
   type ParsedCandidate,
-} from '@tamagui/style-grammar/tooling'
+} from '@tamagui/style-grammar/tooling/candidate'
 
 /**
  * Class-string tokenization and candidate adaptation. This is the Tailwind
