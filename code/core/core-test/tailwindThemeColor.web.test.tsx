@@ -3,7 +3,11 @@ import { beforeAll, describe, expect, test } from 'vitest'
 import { defaultConfig } from '@tamagui/config/v6'
 import { createTamagui, getConfig, StyleObjectValue } from '../web/src'
 import { Text, View } from '../tailwind/src'
-import { findRule, splitTailwindStyles } from '../tailwind/src/__tests__/utils'
+import {
+  findRule,
+  resolvedStyle,
+  splitTailwindStyles,
+} from '../tailwind/src/__tests__/utils'
 
 // the tailwind frontend should resolve semantic theme-value color names (color1-11,
 // background, border-color, …) to their theme css var (var(--color5)), theme-aware
@@ -37,9 +41,17 @@ describe('tailwind theme-value color classes', () => {
   })
 
   test('border-border-color resolves to var(--border-color)', () => {
-    const rule = colorRule('border-border-color', 'borderColor')
-    expect(rule).toBeTruthy()
-    expect(rule[StyleObjectValue]).toBe('var(--border-color)')
+    const styles = splitTailwindStyles(
+      View,
+      { className: 'border-border-color' },
+      { theme: theme() }
+    )
+    expect(resolvedStyle(styles)).toMatchObject({
+      borderTopColor: 'var(--border-color)',
+      borderRightColor: 'var(--border-color)',
+      borderBottomColor: 'var(--border-color)',
+      borderLeftColor: 'var(--border-color)',
+    })
   })
 
   test('bg-background resolves to var(--background)', () => {
