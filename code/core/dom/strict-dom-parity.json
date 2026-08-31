@@ -623,7 +623,7 @@
         "packages/react-strict-dom/tests/css/css-themes-test.native.js:1-213"
       ],
       "tamaguiSources": [
-        "code/core/style-grammar/src/lowerProgram.ts:48-315",
+        "code/core/style-grammar/src/programs/lowerProgram.ts:48-315",
         "code/compiler/static/src/compilerHost.ts:1895-1950"
       ],
       "tamaguiTests": [
@@ -671,10 +671,10 @@
         "packages/react-strict-dom/src/native/css/__tests__/parseTimeValue-test.js"
       ],
       "tamaguiSources": [
-        "code/core/style-grammar/src/scanFlatValue.ts:1-191",
-        "code/core/style-grammar/src/valueParser.ts:1-169",
-        "code/core/style-grammar/src/transformFamily.ts:1-579",
-        "code/core/style-grammar/src/transition.ts:1-553",
+        "code/core/style-grammar/src/runtime/scanFlatValue.ts:1-191",
+        "code/core/style-grammar/src/ast/valueParser.ts:1-169",
+        "code/core/style-grammar/src/shorthands/transformFamily.ts:1-579",
+        "code/core/style-grammar/src/shorthands/transition.ts:1-553",
         "code/core/web/src/helpers/getSplitStyles.tsx:861-872"
       ],
       "tamaguiTests": [

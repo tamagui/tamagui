@@ -1665,17 +1665,19 @@ function styleSlot(property: string) {
           ? 'background'
           : property.startsWith('textDecoration')
             ? 'textDecoration'
-            : property.startsWith('transition')
-              ? 'transition'
-              : property.startsWith('overflow')
-                ? 'overflow'
-                : property === 'top' ||
-                    property === 'right' ||
-                    property === 'bottom' ||
-                    property === 'left' ||
-                    property.startsWith('inset')
-                  ? 'inset'
-                  : property
+            : property.includes('flex')
+              ? 'flex'
+              : property.startsWith('transition')
+                ? 'transition'
+                : property.startsWith('overflow')
+                  ? 'overflow'
+                  : property === 'top' ||
+                      property === 'right' ||
+                      property === 'bottom' ||
+                      property === 'left' ||
+                      property.startsWith('inset')
+                    ? 'inset'
+                    : property
 }
 
 function writeStyleRecord(
@@ -2697,19 +2699,19 @@ function emitValue(
     property === 'flex' &&
     typeof value === 'number'
   ) {
-    const compat = state.conf.settings.styleCompat || 'web'
+    const compat = state.conf.settings.styleCompat
     value =
       value === -1
-        ? '0 1 auto'
+        ? '0 auto'
         : compat === 'legacy'
-          ? `${value} 1 auto`
-          : compat === 'react-native'
+          ? `${value} auto`
+          : compat && compat !== 'web'
             ? value > 0
-              ? `${value} 0 0px`
+              ? `${value} 0 0`
               : `0 ${-value} auto`
             : value < 0
               ? value
-              : `${value} 1 0px`
+              : `${value} 0px`
   }
 
   const expanded =
@@ -3045,7 +3047,7 @@ export function emitVariantStyle(
   condition: unknown,
   disabled: boolean
 ) {
-  if ((state as DirectState).flatStyleStaticConfig?.styledContextKeys?.has(key)) {
+  if ((state as DirectState).flatStyleStaticConfig!.styledContextKeys?.has(key)) {
     ;(state.overriddenContextProps ||= {})[key] = (state.originalContextPropValues ||=
       {})[key] = original
   }
