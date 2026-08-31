@@ -67,7 +67,7 @@ export function AccordionDefaultOpenCase() {
   return (
     <YStack testID="accordion-default-root" p="$4">
       <Accordion overflow="hidden" width="$20" type="multiple" defaultValue={['a1']}>
-        <Accordion.Item value="a1" mb={-1}>
+        <Accordion.Item value="a1">
           <Accordion.Trigger
             id="def-trigger"
             testID="def-trigger"
@@ -118,6 +118,7 @@ export function AccordionDefaultOpenCase() {
             flexDirection="row"
             justify="space-between"
             borderWidth={1}
+            borderTopWidth={0}
             borderColor="$borderColor"
           >
             {({ open }: { open: boolean }) => (

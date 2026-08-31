@@ -40,11 +40,11 @@ type MenuSubTriggerProps = BaseMenuSubTriggerProps;
 type MenuSubContentProps = BaseMenuSubContentProps;
 type MenuScrollViewProps = ScrollViewProps;
 export declare function createNonNativeMenu(params: CreateBaseMenuProps): {
-    (props: ScopedProps<MenuProps>): import("react/jsx-runtime").JSX.Element;
+    (props: ScopedProps<MenuProps>): React.JSX.Element;
     displayName: string;
 } & {
     Root: {
-        (props: ScopedProps<MenuProps>): import("react/jsx-runtime").JSX.Element;
+        (props: ScopedProps<MenuProps>): React.JSX.Element;
         displayName: string;
     };
     Trigger: import("@tamagui/web").TamaguiComponent<Omit<ViewProps, "scope" | keyof MenuTriggerProps> & MenuTriggerProps & {
@@ -53,7 +53,7 @@ export declare function createNonNativeMenu(params: CreateBaseMenuProps): {
         scope?: string;
     }, import("@tamagui/web").StackStyleBase, {}, {}>;
     Portal: {
-        (props: ScopedProps<MenuPortalProps>): import("react/jsx-runtime").JSX.Element;
+        (props: ScopedProps<MenuPortalProps>): React.JSX.Element;
         displayName: string;
     };
     Content: React.ForwardRefExoticComponent<MenuContentProps & {
@@ -123,7 +123,7 @@ export declare function createNonNativeMenu(params: CreateBaseMenuProps): {
     }, import("@tamagui/web").StaticConfigPublic>;
     Arrow: React.ForwardRefExoticComponent<BaseMenuTypes.MenuArrowProps & React.RefAttributes<TamaguiElement>>;
     Sub: {
-        (props: ScopedProps<MenuSubProps>): import("react/jsx-runtime").JSX.Element;
+        (props: ScopedProps<MenuSubProps>): React.JSX.Element;
         displayName: string;
     };
     SubTrigger: React.ForwardRefExoticComponent<BaseMenuTypes.MenuSubTriggerProps & {

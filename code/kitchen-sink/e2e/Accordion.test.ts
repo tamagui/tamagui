@@ -12,7 +12,7 @@
 
 import * as assert from 'assert'
 import { by, device, element, expect, waitFor } from 'detox'
-import { safeLaunchApp } from './utils/detox'
+import { describeAnimated, safeLaunchApp } from './utils/detox'
 
 async function frame(id: string) {
   const attrs: any = await element(by.id(id)).getAttributes()
@@ -49,16 +49,21 @@ async function pollLabel(id: string, predicate: (label: string) => boolean) {
   return attrs.label as string
 }
 
-describe('Accordion (auto-height, native)', () => {
-  beforeEach(async () => {
-    await safeLaunchApp({
-      newInstance: true,
-      launchArgs: { directUseCase: 'AccordionDefaultOpenCase' },
-    })
-    await waitFor(element(by.id('accordion-default-root')))
-      .toExist()
-      .withTimeout(30000)
+async function launchDefaultOpenCase() {
+  await safeLaunchApp({
+    newInstance: true,
+    launchArgs: { directUseCase: 'AccordionDefaultOpenCase' },
   })
+  await waitFor(element(by.id('accordion-default-root')))
+    .toExist()
+    .withTimeout(30000)
+}
+
+// resting layout holds on every platform whether or not it animates. the
+// emulator's animation scale has no bearing on whether an open item's content
+// overlaps the next trigger, so keep this outside describeAnimated.
+describe('Accordion (auto-height, native) layout', () => {
+  beforeEach(launchDefaultOpenCase)
 
   it('default-open item shows content, closed sibling sits below it (no overlap)', async () => {
     await expect(element(by.id('def-content-text'))).toBeVisible()
@@ -78,6 +83,12 @@ describe('Accordion (auto-height, native)', () => {
       `marker.y ${marker.y} should be below trigger2 bottom ${trigger2.y + trigger2.height}`
     )
   })
+})
+
+// these two sample the height WHILE the accordion animates, so they need a
+// platform that actually paints intermediate frames.
+describeAnimated('Accordion (auto-height, native)', () => {
+  beforeEach(launchDefaultOpenCase)
 
   it('closes the default-open item through an intermediate height', async () => {
     const open = await frame('def-height')

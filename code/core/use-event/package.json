@@ -35,7 +35,7 @@
   "dependencies": {},
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "react": ">=19"
+    "react": "19.2.3"
   },
   "peerDependencies": {
     "react": ">=19"
