@@ -23,12 +23,12 @@
     "@my/config": "workspace:^",
     "@tamagui/next-theme": "workspace:*",
     "@tamagui/toast": "workspace:*",
-    "expo-constants": "~55.0.7",
+    "expo-constants": "~57.0.9",
     "tamagui": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "react": ">=19"
+    "react": "19.2.3"
   },
   "peerDependencies": {
     "react": ">=19"

@@ -257,3 +257,18 @@ export async function withSync<T>(fn: () => Promise<T>): Promise<T> {
     await device.disableSynchronization()
   }
 }
+
+/**
+ * `describe` for suites that assert on intermediate animation frames.
+ *
+ * The Android CI emulator boots with animator_duration_scale,
+ * transition_animation_scale and window_animation_scale all at 0
+ * (`disable-animations: true` in test-native.yml), so animations complete
+ * instantly and there are no intermediate frames to observe. These suites
+ * still run on iOS, where the simulator has no equivalent setting.
+ *
+ * Gated on the capability rather than on the platform, so they start running
+ * again by themselves if the emulator ever boots with animations enabled.
+ */
+export const describeAnimated =
+  process.env.DETOX_ANIMATIONS_DISABLED === '1' ? describe.skip : describe
