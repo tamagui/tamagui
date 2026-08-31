@@ -1749,25 +1749,14 @@ export const getSplitStyles: StyleSplitter = (
         }
         if (groupClassName) finalClassName += ` ${groupClassName}`
         if (className) finalClassName += ` ${className}`
-
-        if (isAnimated && driverInputStyle === 'css') {
-          // CSS animation driver uses className directly
+        if (isHOC && hasPropertyClassNames) {
+          viewProps[HOC_CLASSNAME_MARKER] = classNames
+        }
+        if (finalClassName) {
           viewProps.className = finalClassName
-          if (style) {
-            viewProps.style = style as any
-          }
-        } else {
-          // an HOC hands its property classes to the wrapped component, which
-          // merges them at the direct-prop source layer
-          if (finalClassName) {
-            if (isHOC && hasPropertyClassNames) {
-              viewProps[HOC_CLASSNAME_MARKER] = classNames
-            }
-            viewProps.className = finalClassName
-          }
-          if (style) {
-            viewProps.style = style as any
-          }
+        }
+        if (style) {
+          viewProps.style = style as any
         }
       } else {
         if (style) {
@@ -2913,11 +2902,19 @@ function emitBorder(
   if (style === 'none' && width === undefined) width = '0'
   const targets = borderTargets[property]
   const prefix = property === 'outline' ? 'outline' : 'border'
-  if (width !== undefined) {
-    for (const target of targets) {
+  if (
+    style !== undefined &&
+    process.env.TAMAGUI_TARGET === 'native' &&
+    property === 'border'
+  ) {
+    emitProperty(state, 'borderStyle', style, cursor, merge, originalValue, contextOnly)
+  }
+  for (const target of targets) {
+    const propBase = `${prefix}${target}`
+    if (width !== undefined) {
       emitResolved(
         state,
-        `${prefix}${target}Width`,
+        `${propBase}Width`,
         width,
         cursor,
         merge,
@@ -2925,29 +2922,24 @@ function emitBorder(
         contextOnly
       )
     }
-  }
-  if (style !== undefined) {
-    if (process.env.TAMAGUI_TARGET === 'native' && property === 'border') {
-      emitProperty(state, 'borderStyle', style, cursor, merge, originalValue, contextOnly)
-    } else {
-      for (const target of targets) {
-        emitProperty(
-          state,
-          `${prefix}${target}Style`,
-          style,
-          cursor,
-          merge,
-          originalValue,
-          contextOnly
-        )
-      }
+    if (
+      style !== undefined &&
+      !(process.env.TAMAGUI_TARGET === 'native' && property === 'border')
+    ) {
+      emitProperty(
+        state,
+        `${propBase}Style`,
+        style,
+        cursor,
+        merge,
+        originalValue,
+        contextOnly
+      )
     }
-  }
-  if (color !== undefined) {
-    for (const target of targets) {
+    if (color !== undefined) {
       emitResolved(
         state,
-        `${prefix}${target}Color`,
+        `${propBase}Color`,
         color,
         cursor,
         merge,
