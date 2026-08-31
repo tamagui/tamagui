@@ -51,6 +51,66 @@ a module whose exports contribute to `createTamagui()` or a configured component
 
 A flat value clause supports at most 5 non-platform conditions (e.g. `hover:sm:focus:dark:`). Reduce the number of chained modifiers on a single clause.
 
+### Error 005
+
+#### Invalid variable name
+
+`createCSSVariable` expected a string variable name.
+
+### Error 006
+
+#### Missing component in styled()
+
+`styled()` was called without a target component. Pass a valid React component or host element tag.
+
+### Error 007
+
+#### createTamagui in zero-runtime graph
+
+`createTamagui` was invoked in a zero-runtime graph. In zero-runtime mode, config parsing and CSS generation happen at build time. Remove client config references or mark the module as full-runtime.
+
+### Error 008
+
+#### Reserved token name collision
+
+A token name collides with a reserved CSS-wide keyword (`initial`, `inherit`, `unset`, etc.). Rename the token to avoid collision with standard CSS identifiers.
+
+### Error 009
+
+#### Missing default font
+
+`settings.defaultFont` points to a font family that was not defined in the `fonts` configuration.
+
+### Error 010
+
+#### createComponent in zero-runtime graph
+
+A Tamagui component renderer survived compilation in a zero-runtime bundle. Move the component to a declared full-runtime island or ensure static compilation extracts it.
+
+### Error 011
+
+#### Missing animation driver
+
+No animation driver was configured. Pass an `animations` driver to `createTamagui()`.
+
+### Error 012
+
+#### Missing animated-number hooks in driver
+
+The configured animation driver does not support animated numbers. For CSS animations, use `@tamagui/animations-css/extras`.
+
+### Error 013
+
+#### Invalid matchMedia implementation
+
+`matchMedia` did not return a valid `MediaQueryList` object. Supply a compatible `matchMedia` polyfill on native platforms.
+
+### Error 014
+
+#### Missing parent theme for shallow render
+
+`<Theme shallow>` requires a mounted parent `<Theme>` component to derive its scoped theme hierarchy.
+
 ### Warning 002
 
 You're rendering a Tamagui <Adapt /> component without nesting it inside a

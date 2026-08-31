@@ -56,14 +56,14 @@ export function formatDiagnostic(
   prop?: string,
   received?: unknown
 ) {
-  if (process.env.NODE_ENV === 'production') {
-    return `${code}: ${message}`
+  if (process.env.NODE_ENV === 'development') {
+    const formattedValue = prop ? formatDiagnosticValue(received) : ''
+    const boundedValue =
+      formattedValue.length > maxDiagnosticValueLength
+        ? `${formattedValue.slice(0, maxDiagnosticValueLength - 1)}…`
+        : formattedValue
+    const value = prop ? ` Received ${prop}=${boundedValue}.` : ''
+    return `${code} ${component}: ${message}.${value} ${action}`
   }
-  const formattedValue = prop ? formatDiagnosticValue(received) : ''
-  const boundedValue =
-    formattedValue.length > maxDiagnosticValueLength
-      ? `${formattedValue.slice(0, maxDiagnosticValueLength - 1)}…`
-      : formattedValue
-  const value = prop ? ` Received ${prop}=${boundedValue}.` : ''
-  return `${code} ${component}: ${message}.${value} ${action}`
+  return `${code}: ${message}`
 }

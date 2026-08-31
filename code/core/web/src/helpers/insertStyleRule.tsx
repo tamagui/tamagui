@@ -396,7 +396,7 @@ export function insertStyleRules(rulesToInsert: RulesToInsert) {
         sheet.insertRule(rule, sheet.cssRules.length)
       }
     } catch (err) {
-      if (process.env.NODE_ENV === 'production') {
+      if (process.env.NODE_ENV === 'development') {
         const rule = rules[0] || ''
         const selectorEnd = rule.indexOf('{')
         const owner =
@@ -418,7 +418,6 @@ export function insertStyleRules(rulesToInsert: RulesToInsert) {
           )
         )
       }
-      // in dev throw to show error clearly
     }
   }
 }

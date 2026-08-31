@@ -15,10 +15,11 @@ const warnLimit = 500
 const warned = process.env.NODE_ENV !== 'production' ? new Set<string>() : null
 
 export function warnOnce(key: string, message = key) {
-  if (process.env.NODE_ENV !== 'development') return
-  if (warned!.has(key) || warned!.size >= warnLimit) return
-  warned!.add(key)
-  console.warn(`[tamagui] ${message}`)
+  if (process.env.NODE_ENV === 'development') {
+    if (warned?.has(key) || (warned?.size ?? 0) >= warnLimit) return
+    warned?.add(key)
+    console.warn(`[tamagui] ${message}`)
+  }
 }
 
 /**
