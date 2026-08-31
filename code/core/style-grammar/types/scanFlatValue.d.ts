@@ -1,32 +1,11 @@
 export type FlatScanErrorCode = "invalid-character" | "unterminated-string" | "unterminated-function" | "unterminated-comment" | "stray-comment-close";
-/** why a scan stopped short, or null when it ran to the end cleanly */
 export type FlatScanFailure = FlatScanErrorCode | "refused-chain";
 export interface FlatValueHandler<Context> {
-	/** one modifier segment, reported by the scanner's existing character loop */
 	modifier?(ctx: Context, start: number, end: number, valid: boolean, first: boolean, source: string, a: any, b: any, c: any, d: any): boolean | void;
-	/**
-	* The base, or one clause's payload, just ended. `start` and `end` are
-	* already trimmed, and `start === end` means the segment is empty: an empty
-	* base is simply no base, an empty payload is a clause with nothing in it.
-	* `valid` is false when this segment contains a lexical error.
-	*/
 	segment(ctx: Context, start: number, end: number, isBase: boolean, valid: boolean, source: string, chainStart: number, chainEnd: number, chainValid: boolean, chainCount: number, result: number, failure: FlatScanFailure | null, failureIndex: number, a: any, b: any, c: any, d: any): number | void;
-	/**
-	* A modifier chain just ended, without its trailing colon, so
-	* `source.slice(start, end)` is `dark:hover` for `dark:hover:red`. `valid` is
-	* false when the chain word itself contains a lexical error. Returning false
-	* stops the scan.
-	*/
 	chain(ctx: Context, start: number, end: number, valid: boolean): boolean;
-	/**
-	* A character the grammar refuses, or a delimiter left open at the end. The
-	* scan continues, so a consumer that only wants the first one records it and
-	* uses the segment validity bit to refuse the affected segment.
-	*/
 	error?(ctx: Context, code: FlatScanErrorCode, index: number): void;
-	/** every top-level word, whether or not it turned out to carry a chain */
 	word?(ctx: Context, start: number, end: number, isChain: boolean): void;
-	/** the scan ended; `result` is the bitwise union returned by `segment` */
 	end?(ctx: Context, source: string, result: number, lastAcceptedStart: number, chainCount: number, a: any, b: any, c: any, d: any, failure: FlatScanFailure | null, failureIndex: number): void;
 }
 export declare function scanFlatValue<Context>(source: string, handler: FlatValueHandler<Context>, ctx: Context, a?: any, b?: any, c?: any, d?: any): FlatScanFailure | null;

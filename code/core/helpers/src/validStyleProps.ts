@@ -7,335 +7,111 @@ import {
 } from './webOnlyStyleProps'
 export { tokenCategories } from './tokenCategories'
 
-// generally organizing this so we don't duplicate things so its a bit weird
-
-// longhands of CSS shorthands - used for specificity boosting on web
-// so that e.g. borderWidth always beats border in the cascade
-export const cssShorthandLonghands = {
-  // border longhands
-  borderWidth: true,
-  borderStyle: true,
-  borderColor: true,
-  borderTopWidth: true,
-  borderTopStyle: true,
-  borderTopColor: true,
-  borderRightWidth: true,
-  borderRightStyle: true,
-  borderRightColor: true,
-  borderBottomWidth: true,
-  borderBottomStyle: true,
-  borderBottomColor: true,
-  borderLeftWidth: true,
-  borderLeftStyle: true,
-  borderLeftColor: true,
-  // outline longhands
-  outlineWidth: true,
-  outlineStyle: true,
-  outlineColor: true,
-  outlineOffset: true,
+const toObj = (
+  ...sources: (string | Record<string, boolean> | undefined)[]
+): Record<string, boolean> => {
+  const out: Record<string, boolean> = {}
+  for (let i = 0; i < sources.length; i++) {
+    const s = sources[i]
+    if (!s) continue
+    if (typeof s === 'string') {
+      const parts = s.split(' ')
+      for (let j = 0; j < parts.length; j++) if (parts[j]) out[parts[j]] = true
+    } else {
+      Object.assign(out, s)
+    }
+  }
+  return out
 }
 
-const textColors = {
-  color: true,
-  textDecorationColor: true,
-  textShadowColor: true,
-}
+export const cssShorthandLonghands = toObj(
+  'borderWidth borderStyle borderColor borderTopWidth borderTopStyle borderTopColor ' +
+    'borderRightWidth borderRightStyle borderRightColor borderBottomWidth borderBottomStyle ' +
+    'borderBottomColor borderLeftWidth borderLeftStyle borderLeftColor outlineWidth outlineStyle outlineColor outlineOffset'
+)
 
-// discrete (non-animatable) view style properties - keyword-based, no interpolation
-// defined above stylePropsView so it can be spread in without duplication
-const nonAnimatableViewProps = {
-  alignContent: true,
-  alignItems: true,
-  alignSelf: true,
-  backfaceVisibility: true,
-  borderCurve: true,
-  borderStyle: true,
-  borderBlockStyle: true,
-  borderBlockEndStyle: true,
-  borderBlockStartStyle: true,
-  borderInlineStyle: true,
-  borderInlineEndStyle: true,
-  borderInlineStartStyle: true,
-  boxSizing: true,
-  cursor: true,
-  direction: true,
-  display: true,
-  flexDirection: true,
-  flexWrap: true,
-  isolation: true,
-  justifyContent: true,
-  mixBlendMode: true,
-  outlineStyle: true,
-  overflow: true,
-  // a style on both platforms: CSS pointer-events on web, style.pointerEvents
-  // on RN (>= 0.71) — the deprecated View prop spelling is
-  // not used, so flat clause values evaluate through the program engine
-  pointerEvents: true,
-  position: true,
-  // visibility: native maps "hidden" -> opacity:0 + pointerEvents:none via expandStyle;
-  // on web passes through as CSS visibility (visible | hidden | collapse).
-  visibility: true,
-}
+const textColors = toObj('color textDecorationColor textShadowColor')
 
-// discrete (non-animatable) font properties
-const nonAnimatableFontProps = {
-  fontFamily: true,
-  fontStyle: true,
-  fontVariant: true,
-  textTransform: true,
-}
+const nonAnimatableViewProps = toObj(
+  'alignContent alignItems alignSelf backfaceVisibility borderCurve borderStyle ' +
+    'borderBlockStyle borderBlockEndStyle borderBlockStartStyle borderInlineStyle ' +
+    'borderInlineEndStyle borderInlineStartStyle boxSizing cursor direction display ' +
+    'flexDirection flexWrap isolation justifyContent mixBlendMode outlineStyle overflow pointerEvents position visibility'
+)
 
-// discrete (non-animatable) text-only properties
-const nonAnimatableTextOnlyProps = {
-  textAlign: true,
-  textDecorationLine: true,
-  textDecorationStyle: true,
-  userSelect: true,
-  // react native carries text direction as a style, and it inherits: the DOM
-  // `dir` attribute lowers to it (expandStyle maps it to `direction` on web)
-  writingDirection: true,
-}
+const nonAnimatableFontProps = toObj('fontFamily fontStyle fontVariant textTransform')
 
-// discrete (non-animatable) unitless properties
-const nonAnimatableUnitlessProps = {
-  WebkitLineClamp: true,
-  lineClamp: true,
-  gridTemplateColumns: true,
-  gridTemplateAreas: true,
-}
+const nonAnimatableTextOnlyProps = toObj(
+  'textAlign textDecorationLine textDecorationStyle userSelect writingDirection'
+)
 
-// all non-animatable style props combined, used by getSplitStyles to keep
-// these as atomic CSS classNames even for components with animation drivers
-export const nonAnimatableStyleProps = {
-  ...nonAnimatableViewProps,
-  ...nonAnimatableFontProps,
-  ...nonAnimatableTextOnlyProps,
-  ...nonAnimatableUnitlessProps,
-  // web-only discrete properties (defined in webOnlyStyleProps.ts)
-  ...(process.env.TAMAGUI_TARGET === 'web' && {
-    ...nonAnimatableWebViewProps,
-    ...nonAnimatableWebTextProps,
-  }),
-}
+const nonAnimatableUnitlessProps = toObj(
+  'WebkitLineClamp lineClamp gridTemplateColumns gridTemplateAreas'
+)
 
-export const stylePropsUnitless = {
-  ...nonAnimatableUnitlessProps,
-  animationIterationCount: true,
-  aspectRatio: true,
-  borderImageOutset: true,
-  borderImageSlice: true,
-  borderImageWidth: true,
-  columnCount: true,
-  flex: true,
-  flexGrow: true,
-  flexOrder: true,
-  flexPositive: true,
-  flexShrink: true,
-  flexNegative: true,
-  fontWeight: true,
-  gridRow: true,
-  gridRowEnd: true,
-  gridRowGap: true,
-  gridRowStart: true,
-  gridColumn: true,
-  gridColumnEnd: true,
-  gridColumnGap: true,
-  gridColumnStart: true,
-  opacity: true,
-  order: true,
-  orphans: true,
-  tabSize: true,
-  widows: true,
-  zIndex: true,
-  zoom: true,
-  scale: true,
-  scaleX: true,
-  scaleY: true,
-  scaleZ: true,
-  shadowOpacity: true,
-}
+export const nonAnimatableStyleProps = toObj(
+  nonAnimatableViewProps,
+  nonAnimatableFontProps,
+  nonAnimatableTextOnlyProps,
+  nonAnimatableUnitlessProps,
+  process.env.TAMAGUI_TARGET === 'web' ? nonAnimatableWebViewProps : undefined,
+  process.env.TAMAGUI_TARGET === 'web' ? nonAnimatableWebTextProps : undefined
+)
 
-export const stylePropsTransform = {
-  x: true,
-  y: true,
-  scale: true,
-  perspective: true,
-  scaleX: true,
-  scaleY: true,
-  skewX: true,
-  skewY: true,
-  matrix: true,
-  rotate: true,
-  rotateY: true,
-  rotateX: true,
-  rotateZ: true,
-}
+export const stylePropsUnitless = toObj(
+  nonAnimatableUnitlessProps,
+  'animationIterationCount aspectRatio borderImageOutset borderImageSlice borderImageWidth ' +
+    'columnCount flex flexGrow flexOrder flexPositive flexShrink flexNegative fontWeight ' +
+    'gridRow gridRowEnd gridRowGap gridRowStart gridColumn gridColumnEnd gridColumnGap gridColumnStart ' +
+    'opacity order orphans tabSize widows zIndex zoom scale scaleX scaleY scaleZ shadowOpacity'
+)
 
-export const stylePropsView = {
-  ...nonAnimatableViewProps,
-  borderBottomWidth: true,
-  borderLeftWidth: true,
-  borderRightWidth: true,
-  borderBlockWidth: true,
-  borderBlockEndWidth: true,
-  borderBlockStartWidth: true,
-  borderInlineWidth: true,
-  borderInlineEndWidth: true,
-  borderInlineStartWidth: true,
-  borderTopWidth: true,
-  borderWidth: true,
-  transform: true,
-  transformOrigin: true,
-  borderEndWidth: true,
-  borderStartWidth: true,
-  bottom: true,
-  end: true,
-  flexBasis: true,
-  gap: true,
-  columnGap: true,
-  rowGap: true,
-  left: true,
-  margin: true,
-  marginBlock: true,
-  marginBlockEnd: true,
-  marginBlockStart: true,
-  marginInline: true,
-  marginInlineStart: true,
-  marginInlineEnd: true,
-  marginBottom: true,
-  marginEnd: true,
-  marginHorizontal: true,
-  marginLeft: true,
-  marginRight: true,
-  marginStart: true,
-  marginTop: true,
-  marginVertical: true,
-  padding: true,
-  paddingBottom: true,
-  paddingInline: true,
-  paddingBlock: true,
-  paddingBlockEnd: true,
-  paddingBlockStart: true,
-  paddingInlineEnd: true,
-  paddingInlineStart: true,
-  paddingEnd: true,
-  paddingHorizontal: true,
-  paddingLeft: true,
-  paddingRight: true,
-  paddingStart: true,
-  paddingTop: true,
-  paddingVertical: true,
-  right: true,
-  start: true,
-  top: true,
-  inset: true,
-  insetBlock: true,
-  insetBlockEnd: true,
-  insetBlockStart: true,
-  insetInline: true,
-  insetInlineEnd: true,
-  insetInlineStart: true,
-  shadowOffset: true,
-  backgroundColor: true,
-  borderColor: true,
-  borderBlockStartColor: true,
-  borderBlockEndColor: true,
-  borderBlockColor: true,
-  borderBottomColor: true,
-  borderInlineColor: true,
-  borderInlineStartColor: true,
-  borderInlineEndColor: true,
-  borderTopColor: true,
-  borderLeftColor: true,
-  borderRightColor: true,
-  borderEndColor: true,
-  borderStartColor: true,
-  shadowColor: true,
-  outlineColor: true,
-  ...(process.env.TAMAGUI_TARGET === 'web' && { caretColor: true }),
-  borderRadius: true,
-  borderTopLeftRadius: true,
-  borderTopRightRadius: true,
-  borderBottomLeftRadius: true,
-  borderBottomRightRadius: true,
-  borderTopStartRadius: true,
-  borderTopEndRadius: true,
-  borderBottomStartRadius: true,
-  borderBottomEndRadius: true,
-  borderStartStartRadius: true,
-  borderStartEndRadius: true,
-  borderEndStartRadius: true,
-  borderEndEndRadius: true,
-  width: true,
-  height: true,
-  minWidth: true,
-  minHeight: true,
-  maxWidth: true,
-  maxHeight: true,
-  blockSize: true,
-  minBlockSize: true,
-  maxBlockSize: true,
-  inlineSize: true,
-  minInlineSize: true,
-  maxInlineSize: true,
-  shadowRadius: true,
-  ...stylePropsTransform,
-  ...stylePropsUnitless,
-  ...(isAndroid ? { elevationAndroid: true } : {}),
+export const stylePropsTransform = toObj(
+  'x y scale perspective scaleX scaleY skewX skewY matrix rotate rotateY rotateX rotateZ'
+)
 
-  boxShadow: true,
-  border: true,
-  // logical shorthands: the border family splits them into CSS logical
-  // longhands on web; native evaluation diagnoses and drops them (RN has no
-  // logical border properties)
-  borderBlock: true,
-  borderInline: true,
-  filter: true,
-  // the v6 bg shorthand maps here; native lowers single color values to
-  // backgroundColor and drops url()/gradient/multi-part values it can't express
-  background: true,
-  // RN 0.76+ supports linear-gradient via backgroundImage
-  backgroundImage: true,
-  // the actual RN 0.76+ prop name (backgroundImage expands to this on native)
-  experimental_backgroundImage: true,
-  // RN 0.76/0.77+ style props (New Architecture)
-  outline: true,
-  outlineOffset: true,
-  outlineWidth: true,
+export const stylePropsView = toObj(
+  nonAnimatableViewProps,
+  'borderBottomWidth borderLeftWidth borderRightWidth borderBlockWidth borderBlockEndWidth ' +
+    'borderBlockStartWidth borderInlineWidth borderInlineEndWidth borderInlineStartWidth ' +
+    'borderTopWidth borderWidth transform transformOrigin borderEndWidth borderStartWidth ' +
+    'bottom end flexBasis gap columnGap rowGap left margin marginBlock marginBlockEnd ' +
+    'marginBlockStart marginInline marginInlineStart marginInlineEnd marginBottom marginEnd ' +
+    'marginHorizontal marginLeft marginRight marginStart marginTop marginVertical padding ' +
+    'paddingBottom paddingInline paddingBlock paddingBlockEnd paddingBlockStart paddingInlineEnd ' +
+    'paddingInlineStart paddingEnd paddingHorizontal paddingLeft paddingRight paddingStart ' +
+    'paddingTop paddingVertical right start top inset insetBlock insetBlockEnd insetBlockStart ' +
+    'insetInline insetInlineEnd insetInlineStart shadowOffset backgroundColor borderColor ' +
+    'borderBlockStartColor borderBlockEndColor borderBlockColor borderBottomColor borderInlineColor ' +
+    'borderInlineStartColor borderInlineEndColor borderTopColor borderLeftColor borderRightColor ' +
+    'borderEndColor borderStartColor shadowColor outlineColor ' +
+    (process.env.TAMAGUI_TARGET === 'web' ? 'caretColor ' : '') +
+    'borderRadius borderTopLeftRadius borderTopRightRadius borderBottomLeftRadius borderBottomRightRadius ' +
+    'borderTopStartRadius borderTopEndRadius borderBottomStartRadius borderBottomEndRadius ' +
+    'borderStartStartRadius borderStartEndRadius borderEndStartRadius borderEndEndRadius ' +
+    'width height minWidth minHeight maxWidth maxHeight blockSize minBlockSize maxBlockSize ' +
+    'inlineSize minInlineSize maxInlineSize shadowRadius',
+  stylePropsTransform,
+  stylePropsUnitless,
+  isAndroid ? { elevationAndroid: true } : undefined,
+  'boxShadow border borderBlock borderInline filter background backgroundImage experimental_backgroundImage outline outlineOffset outlineWidth',
+  process.env.TAMAGUI_TARGET === 'web' ? webOnlyStylePropsView : undefined
+)
 
-  // web-only for convenience - tree-shaken on native
-  ...(process.env.TAMAGUI_TARGET === 'web' ? webOnlyStylePropsView : {}),
-}
+const stylePropsFont = toObj(
+  nonAnimatableFontProps,
+  'fontSize fontWeight letterSpacing lineHeight'
+)
 
-const stylePropsFont = {
-  ...nonAnimatableFontProps,
-  fontSize: true,
-  fontWeight: true,
-  letterSpacing: true,
-  lineHeight: true,
-}
+export const stylePropsTextOnly = toObj(
+  stylePropsFont,
+  nonAnimatableTextOnlyProps,
+  textColors,
+  'textShadow textShadowOffset textShadowRadius textDecoration font verticalAlign',
+  process.env.TAMAGUI_TARGET === 'web' ? webOnlyStylePropsText : undefined
+)
 
-export const stylePropsTextOnly = {
-  ...stylePropsFont,
-  ...nonAnimatableTextOnlyProps,
-  ...textColors,
-  textShadow: true,
-  textShadowOffset: true,
-  textShadowRadius: true,
-  // resetting composites: the family splits turn these into per-longhand
-  // programs, which RN supports individually
-  textDecoration: true,
-  font: true,
-  verticalAlign: true,
-
-  // web-only text props - tree-shaken on native
-  ...(process.env.TAMAGUI_TARGET === 'web' ? webOnlyStylePropsText : {}),
-}
-
-export const stylePropsText = {
-  ...stylePropsView,
-  ...stylePropsTextOnly,
-}
+export const stylePropsText = toObj(stylePropsView, stylePropsTextOnly)
 
 export const stylePropsAll = stylePropsText
 

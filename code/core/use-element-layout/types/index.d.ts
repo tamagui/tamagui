@@ -30,7 +30,7 @@ export declare const measureNode: (node: HTMLElement, relativeTo?: HTMLElement |
 type MeasureInWindowCb = (x: number, y: number, width: number, height: number) => void;
 type MeasureCb = (x: number, y: number, width: number, height: number, pageX: number, pageY: number) => void;
 export declare const measure: (node: HTMLElement, callback: MeasureCb) => Promise<LayoutValue | null>;
-export declare function createMeasure(node: HTMLElement): (callback: MeasureCb) => Promise<LayoutValue | null>;
+export declare const createMeasure: (node: HTMLElement) => ((callback: MeasureCb) => Promise<LayoutValue | null>);
 type WindowLayout = {
 	pageX: number;
 	pageY: number;
@@ -40,7 +40,7 @@ type WindowLayout = {
 export declare const measureInWindow: (node: HTMLElement, callback: MeasureInWindowCb) => Promise<WindowLayout | null>;
 export declare const createMeasureInWindow: (node: HTMLElement) => ((callback: MeasureInWindowCb) => Promise<WindowLayout | null>);
 export declare const measureLayout: (node: HTMLElement, relativeNode: HTMLElement, callback: MeasureCb) => Promise<LayoutValue | null>;
-export declare function createMeasureLayout(node: HTMLElement): (relativeTo: HTMLElement, callback: MeasureCb) => Promise<LayoutValue | null>;
+export declare const createMeasureLayout: (node: HTMLElement) => ((relativeTo: HTMLElement, callback: MeasureCb) => Promise<LayoutValue | null>);
 export {};
 
 //# sourceMappingURL=index.d.ts.map

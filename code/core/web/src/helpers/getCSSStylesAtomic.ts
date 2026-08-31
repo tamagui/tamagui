@@ -3,18 +3,320 @@
  * Copyright (c) Nicolas Gallagher licensed under the MIT license.
  */
 
-import type { StyleObject } from '@tamagui/helpers'
-import { cssShorthandLonghands, simpleHash } from '@tamagui/helpers'
+import {
+  type StyleObject,
+  StyleObjectIdentifier,
+  StyleObjectRules,
+  cssShorthandLonghands,
+  simpleHash,
+} from '@tamagui/helpers'
+import { finalizeTransformAccumulator } from '@tamagui/style-grammar/runtime'
 import { getConfigMaybe } from '../config'
-import type { TamaguiInternalConfig, ViewStyleObject } from '../types'
+import type { GetStyleState, TamaguiInternalConfig, ViewStyleObject } from '../types'
 import { getConfigRevisionState } from './grammarConfig'
+import { shouldInsertStyleRules, updateRules } from './insertStyleRule'
 import { normalizeValueWithProperty } from './normalizeValueWithProperty'
 import { styleToCSS } from './styleToCSS'
 import { transformsToString } from './transformsToString'
 
 export { styleToCSS } from './styleToCSS'
 
-// refactor this file away next...
+export const canGenerateCSS =
+  process.env.TAMAGUI_TARGET === 'web' && !process.env.TAMAGUI_DID_OUTPUT_CSS
+
+type DirectAtomicState = GetStyleState & {
+  flatAtomics?: Record<string, StyleObject>
+  flatBorderDefaultRequests?: AtomicSlotEntry[]
+  flatSlots?: Record<string, AtomicSlotEntry[]>
+}
+
+export type AtomicSlotEntry = [
+  property: string,
+  value: any,
+  condition: number,
+  identity: string,
+  selector: string,
+  wrapperSource: readonly string[] | undefined,
+  wrapperStart: number,
+  wrapperCount: number,
+  original?: any,
+]
+
+export type SlotIdentity = [
+  identifier: string,
+  rules: string[],
+  value: any,
+  styleObject?: unknown,
+]
+
+const borderStyleDefaults: Record<string, string> = {
+  borderWidth: 'borderStyle',
+  borderTopWidth: 'borderTopStyle',
+  borderRightWidth: 'borderRightStyle',
+  borderBottomWidth: 'borderBottomStyle',
+  borderLeftWidth: 'borderLeftStyle',
+}
+
+function directStyleSignature(property: string, value: unknown, conditionKey = '') {
+  return '\u001f' + property + '\u001f' + conditionKey + '\u001e' + String(value)
+}
+
+export function requestBorderStyleDefault(
+  state: GetStyleState,
+  property: string,
+  condition: number,
+  identity: string,
+  selector: string,
+  wrapperSource: readonly string[] | undefined,
+  wrapperStart: number,
+  wrapperCount: number
+) {
+  if (!canGenerateCSS || !state.flatShouldDoClasses) return
+  if (state.styleProps.noNormalize === false) return
+  const target = borderStyleDefaults[property]
+  if (!target) return
+  const requests = ((state as DirectAtomicState).flatBorderDefaultRequests ||= [])
+  for (let index = 0; index < requests.length; index++) {
+    if (requests[index][0] === target && requests[index][3] === identity) {
+      return
+    }
+  }
+  requests.push([
+    target,
+    'solid',
+    condition,
+    identity,
+    selector,
+    wrapperSource,
+    wrapperStart,
+    wrapperCount,
+  ])
+}
+
+function appendSlotEntry(
+  list: AtomicSlotEntry[],
+  property: string,
+  value: any,
+  condition: number,
+  identity: string,
+  selector: string,
+  wrapperSource: readonly string[] | undefined,
+  wrapperStart: number,
+  wrapperCount: number,
+  original?: any
+) {
+  for (let index = 0; index < list.length; index++) {
+    if (list[index][0] === property && list[index][3] === identity) {
+      list[index][1] = value
+      list[index][2] = condition
+      list[index][8] = original
+      return
+    }
+  }
+  list.push([
+    property,
+    value,
+    condition,
+    identity,
+    selector,
+    wrapperSource,
+    wrapperStart,
+    wrapperCount,
+    original,
+  ])
+}
+
+export function streamAtomic(
+  state: GetStyleState,
+  property: string,
+  value: any,
+  condition: number,
+  identity: string,
+  selector: string,
+  wrapperSource: readonly string[] | undefined,
+  wrapperStart: number,
+  wrapperCount: number,
+  original?: any,
+  slot = property
+) {
+  if (!canGenerateCSS) return
+  const direct = state as DirectAtomicState
+  const list = ((direct.flatSlots ||= {})[slot] ||= [])
+  appendSlotEntry(
+    list,
+    property,
+    value,
+    condition,
+    identity,
+    selector,
+    wrapperSource,
+    wrapperStart,
+    wrapperCount,
+    original
+  )
+}
+
+function registerSlot(
+  state: DirectAtomicState,
+  atomicKey: string,
+  entries: readonly AtomicSlotEntry[]
+) {
+  const ordered: AtomicSlotEntry[] = []
+  for (let index = 0; index < entries.length; index++) {
+    const entry = entries[index]
+    let value = entry[1]
+    if (entry[0] === 'transform' && Array.isArray(value)) {
+      value = transformsToString(value)
+    }
+    entry[1] = normalizeValueWithProperty(value, entry[0])
+    const precedence = entry[2] ? Math.floor(entry[2] / 256) : -1
+    let insertAt = ordered.length
+    while (insertAt > 0) {
+      const before = ordered[insertAt - 1]
+      const beforePrecedence = before[2] ? Math.floor(before[2] / 256) : -1
+      if (beforePrecedence <= precedence) break
+      insertAt--
+    }
+    ordered.splice(insertAt, 0, entry)
+  }
+  let signature = ''
+  for (let index = 0; index < ordered.length; index++) {
+    const entry = ordered[index]
+    signature += directStyleSignature(entry[0], entry[1], entry[3])
+  }
+  const built = buildAtomicSlotCSS(atomicKey, ordered, signature)
+  if (!built) return
+  const styleObject = (built[3] ||= [
+    atomicKey,
+    built[2],
+    built[0],
+    undefined,
+    built[1],
+  ]) as StyleObject
+  ;(state.flatAtomics ||= {})[atomicKey] = styleObject
+  state.classNames[atomicKey] = built[0]
+}
+
+const scratchEntry: AtomicSlotEntry = ['', '', 0, '', '', undefined, 0, 0]
+const singleSlot: AtomicSlotEntry[] = [scratchEntry]
+
+export function completeStreamingCSS(state: GetStyleState) {
+  if (!canGenerateCSS) return
+  const direct = state as DirectAtomicState
+  const cssMode = !!state.flatShouldDoClasses
+
+  const requests = direct.flatBorderDefaultRequests
+  if (cssMode && requests) {
+    direct.flatBorderDefaultRequests = undefined
+    for (let index = 0; index < requests.length; index++) {
+      const request = requests[index]
+      const target = request[0]
+      const slot = direct.flatSlots ? direct.flatSlots[target] : undefined
+      if (slot) {
+        let covered = false
+        for (let t = 0; t < slot.length; t++) {
+          if (!slot[t][2] || slot[t][3] === request[3]) {
+            covered = true
+            break
+          }
+        }
+        if (!covered) slot.push(request)
+        continue
+      }
+      if (state.classNames[target] !== undefined) continue
+      ;((direct.flatSlots ||= {})[target] ||= []).push(request)
+    }
+  }
+
+  if (cssMode && state.transformAccumulator) {
+    const transform = finalizeTransformAccumulator(state.transformAccumulator)
+    state.transformAccumulator = undefined
+    const accumulated: AtomicSlotEntry = [
+      'transform',
+      Array.isArray(transform) ? transformsToString(transform) : transform,
+      0,
+      '',
+      '',
+      undefined,
+      0,
+      0,
+    ]
+    ;((direct.flatSlots ||= {}).transform ||= []).unshift(accumulated)
+  }
+
+  const slots = direct.flatSlots
+  if (slots) {
+    direct.flatSlots = undefined
+    for (const property in slots) {
+      registerSlot(direct, property, slots[property])
+    }
+  }
+}
+
+export function flushDirectStyles(state: GetStyleState, clear = false) {
+  if (!canGenerateCSS) {
+    if (clear) (state as DirectAtomicState).flatAtomics = undefined
+    return
+  }
+  const direct = state as DirectAtomicState
+  const atomics = direct.flatAtomics
+  if (!atomics) return
+  for (const property in atomics) {
+    const styleObject = atomics[property]
+    const identifier = styleObject[StyleObjectIdentifier]
+    if (shouldInsertStyleRules(identifier)) {
+      const rules = styleObject[StyleObjectRules].slice()
+      styleObject[StyleObjectRules] = rules
+      updateRules(identifier, rules)
+      state.flatRulesToInsert![identifier] = styleObject
+    }
+  }
+  if (clear) direct.flatAtomics = undefined
+}
+
+export function addComposition(state: GetStyleState, property: 'translate' | 'scale') {
+  if (!canGenerateCSS || state.classNames[property]) return
+  const value =
+    property === 'translate'
+      ? 'var(--t-x, 0px) var(--t-y, 0px)'
+      : 'var(--t-scale-x, 1) var(--t-scale-y, 1)'
+  const defaults =
+    property === 'translate' ? '--t-x:0px;--t-y:0px' : '--t-scale-x:1;--t-scale-y:1'
+  scratchEntry[0] = property
+  scratchEntry[1] = value
+  scratchEntry[2] = 0
+  scratchEntry[3] = ''
+  scratchEntry[4] = ''
+  scratchEntry[5] = undefined
+  scratchEntry[6] = 0
+  scratchEntry[7] = 0
+  const built = buildAtomicSlotCSS(
+    property,
+    singleSlot,
+    directStyleSignature(property, value, '')
+  )
+  if (!built) return
+  const identifier = built[0]
+  const rules = built[1].slice()
+  rules.unshift(`:where(.${identifier}){${defaults}}`)
+  if (shouldInsertStyleRules(identifier)) {
+    updateRules(identifier, rules)
+    state.flatRulesToInsert![identifier] = [
+      property,
+      built[2],
+      identifier,
+      undefined,
+      rules,
+    ] as any
+  }
+  state.classNames[property] = identifier
+}
+
+export function clearFrameAtomic(state: GetStyleState, atomicKey: string) {
+  const direct = state as DirectAtomicState
+  if (direct.flatAtomics) delete direct.flatAtomics[atomicKey]
+  if (direct.flatSlots) delete direct.flatSlots[atomicKey]
+}
 
 export function getCSSStylesAtomic(style: ViewStyleObject) {
   if (process.env.TAMAGUI_DID_OUTPUT_CSS) return []
@@ -57,14 +359,6 @@ export function getCSSStyleAtomic(
 let conf: TamaguiInternalConfig | null = null
 let confRevision = 0
 
-export type SlotIdentity = [
-  identifier: string,
-  rules: string[],
-  value: any,
-  /** finished wrapper, cached so a repeat build allocates nothing */
-  styleObject?: unknown,
-]
-
 const getStyleObject = (
   val: any,
   key: string,
@@ -76,16 +370,12 @@ const getStyleObject = (
   classRepetitions = 1
 ): StyleObject | undefined => {
   if (val == null) return
-  // transform
   if (key === 'transform' && Array.isArray(val)) {
     val = transformsToString(val)
   }
   const value = normalizeValueWithProperty(val, key)
-  // shorthand-derived class prefixes come from the config
-  const nextConf = syncAtomicConfig()
+  syncAtomicConfig()
   const rawValue = typeof value === 'string' ? value : `${value}`
-  // this content hash is the atomic CSS class identity shared by server output
-  // and client hydration. it is not a parser cache or a runtime lookup key.
   const hash = simpleHash(identity ?? rawValue, direct ? 'strict' : 10) || '0'
   let shortProp: string
   if (direct) {
@@ -119,36 +409,8 @@ const getStyleObject = (
     direct,
     classRepetitions
   )
-  return [
-    // array for performance
-    key,
-    value,
-    identifier,
-    undefined,
-    rules,
-  ]
+  return [key, value, identifier, undefined, rules]
 }
-
-// ── frame slot builder ───────────────────────────────────────────────────────
-// Build the css for one completed frame slot in a single shot: the identifier
-// hashes the slot's WINNING content, the base rule comes first, and
-// conditional rules follow in ascending precedence (later rules win the
-// cascade at equal specificity). Cached per (atomicKey, signature): a slot
-// that resolves to the same content is the same class, however it got there.
-
-export type AtomicSlotEntry = [
-  property: string,
-  value: any,
-  condition: number,
-  identity: string,
-  selector: string,
-  wrapperSource: readonly string[] | undefined,
-  wrapperStart: number,
-  wrapperCount: number,
-  /** authored value, carried only on deferred platform-pseudo passes so an
-   * inline conversion preserves provenance */
-  original?: any,
-]
 
 const slotIdentities = new Map<string, Map<string, SlotIdentity>>()
 let slotIdentitiesSize = 0
@@ -175,8 +437,6 @@ export function buildAtomicSlotCSS(
   signature: string
 ): SlotIdentity | undefined {
   if (process.env.TAMAGUI_DID_OUTPUT_CSS) return
-  // media queries and shorthands come from the config, so an identity built
-  // under one config says nothing about the rules under another
   syncAtomicConfig()
   let byKey = slotIdentities.get(atomicKey)
   const known = byKey?.get(signature)
@@ -203,13 +463,9 @@ export function buildAtomicSlotCSS(
     else if (value === 'box-only') identifier = '_pe-boxonly'
   }
 
-  // entries arrive ordered (base first, conditionals ascending precedence)
-  // and normalized: the slot signature was built from exactly this sequence
   const rules: string[] = []
   let lastValue: any
   for (const entry of entries) {
-    // values arrive normalized: the slot signature normalized them so the
-    // identity hash and the rule text agree
     const value = entry[1]
     lastValue = value
     const entryRules = createAtomicRules(
@@ -276,7 +532,6 @@ function createAtomicRules(
   wrapperStart = 0,
   wrapperCount = wrappers?.length || 0
 ): string[] {
-  // longhands get .cls.cls for higher specificity over shorthands
   const repetitions =
     direct && classRepetitions > 1
       ? classRepetitions
@@ -288,10 +543,7 @@ function createAtomicRules(
 
   let rules: string[] = []
 
-  // Handle non-standard properties and object values that require multiple
-  // CSS rules to be created.
   switch (property) {
-    // Equivalent to using '::placeholder'
     case 'placeholderTextColor': {
       const block = createDeclarationBlock(
         [
@@ -304,7 +556,6 @@ function createAtomicRules(
       break
     }
 
-    // all webkit prefixed rules
     case 'backgroundClip':
     case 'userSelect': {
       const propertyCapitalized = `${property[0].toUpperCase()}${property.slice(1)}`
@@ -320,7 +571,6 @@ function createAtomicRules(
       break
     }
 
-    // Polyfill for additional 'pointer-events' values
     case 'pointerEvents': {
       if (direct) {
         const subject = value === 'none' || value === 'box-none' ? 'none' : 'auto'

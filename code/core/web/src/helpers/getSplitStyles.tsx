@@ -54,6 +54,7 @@ import type {
   Variable,
 } from '../types'
 import {
+  type AtomicSlotEntry,
   addComposition,
   canGenerateCSS,
   clearFrameAtomic,
@@ -61,10 +62,9 @@ import {
   flushDirectStyles,
   requestBorderStyleDefault,
   streamAtomic,
-} from './directStyleCSS'
+} from './getCSSStylesAtomic'
 import { expandStyle } from './expandStyle'
 import { fixStyles } from './expandStyles'
-import type { AtomicSlotEntry } from './getCSSStylesAtomic'
 import { getConfigRevisionState } from './grammarConfig'
 import { mediaState as globalMediaState, mediaKeyMatch } from './mediaState'
 import { getStyleStaticConfig, type StyleStaticConfig } from './styleStaticConfig'
@@ -690,24 +690,89 @@ function mapContributedProp(
     (process.env.TAMAGUI_TARGET === 'native' && isAndroid && key === 'elevation')
   const isContextProgramKey = canResolveContextPrograms && Boolean(isStyledContextProp)
 
+  if (isHostStyleKey || isContextProgramKey) {
+    if (val != null) {
+      if (typeof val === 'string') {
+        if (isRemValue(val)) val = resolveRem(val)
+      } else if (isVariable(val)) {
+        val = resolveVariableValue(key, val, styleState.styleProps.resolveValues)
+      } else if (isRemValue(val)) {
+        val = resolveRem(val)
+      }
+    }
+
+    if (
+      key === 'fontFamily' &&
+      typeof originalVal === 'string' &&
+      originalVal in conf.fontsParsed
+    ) {
+      styleState.fontFamily = originalVal
+    }
+
+    if (process.env.TAMAGUI_TARGET === 'native' && val === 'unset') {
+      const expanded = expandStyle(key, val, conf.settings.styleCompat || 'web')
+      const used = (styleState as DirectState).flatUsed
+      if (used) delete used[key]
+      if (styleState.style) delete styleState.style[key]
+      if (expanded) {
+        for (let i = 0; i < expanded.length; i++) {
+          const nkey = expanded[i][0]
+          if (used) delete used[nkey]
+          if (styleState.style) delete styleState.style[nkey]
+        }
+      }
+      return
+    }
+
+    const noExpand = Boolean(flags & passNoExpandFlag)
+    const expanded =
+      noExpand || typeof val === 'string'
+        ? null
+        : expandStyle(key, val, conf.settings.styleCompat || 'web')
+
+    if (expanded) {
+      for (let i = 0; i < expanded.length; i++) {
+        const [nkey, nvalue, noriginal] = expanded[i]
+        contributeValue(
+          styleState,
+          nkey,
+          nvalue,
+          mergeStyle,
+          noriginal ?? originalVal,
+          !isHostStyleKey,
+          condition as Condition | undefined
+        )
+      }
+      return
+    }
+
+    contributeValue(
+      styleState,
+      key,
+      val,
+      mergeStyle,
+      originalVal,
+      !isHostStyleKey,
+      condition as Condition | undefined
+    )
+    return
+  }
+
+  const isVariant = Boolean(variants && key in variants)
+  if (isVariant) {
+    const noExpand = Boolean(flags & passNoExpandFlag)
+    if (!noExpand) {
+      const previousLayer = pass[passSourceLayer]
+      pass[passSourceLayer] = 1
+      resolveVariants(key, val, styleState.styleProps, styleState, key)
+      pass[passSourceLayer] = previousLayer
+      return
+    }
+  }
+
   if (condition !== undefined) {
     const conditionCursor = condition as Condition
-    if (isHostStyleKey || isContextProgramKey) {
-      contributeValue(
-        styleState,
-        key,
-        val,
-        mergeStyle,
-        originalVal,
-        !isHostStyleKey,
-        conditionCursor
-      )
-    } else if (isHOC) {
-      // hand the wrapped component a structured clause keyed by the
-      // canonical condition; its own pass resolves it in place. No flat
-      // string is ever reconstructed for re-parsing. Delete first: the
-      // clause lands at the outer contribution's position, so a prop the
-      // wrapped component authored earlier can no longer outrank it.
+    if (isHOC) {
       const structured = mergeConditionTransport(viewProps[key], conditionCursor, val)
       if (key in viewProps) delete viewProps[key]
       viewProps[key] = structured
@@ -718,13 +783,6 @@ function mapContributedProp(
     }
     return
   }
-
-  if (isHostStyleKey || isContextProgramKey) {
-    contributeValue(styleState, key, val, mergeStyle, originalVal, !isHostStyleKey)
-    return
-  }
-
-  const isVariant = Boolean(variants && key in variants)
 
   if (inlineProps?.has(key)) {
     viewProps[key] = props[key] ?? val
@@ -1213,9 +1271,17 @@ function contributeProp(
       return
     }
 
+    if (variants && keyInit in variants && !noExpand) {
+      const previousLayer = pass[passSourceLayer]
+      pass[passSourceLayer] = 1
+      resolveVariants(keyInit, valInit, styleState.styleProps, styleState, keyInit)
+      pass[passSourceLayer] = previousLayer
+      return
+    }
+
     pass[passMapSourceKey] = keyInit
     pass[passMapFlags] = disablePropMap ? 1 : 0
-    contributeMappedValue(keyInit, valInit, styleState, disablePropMap)
+    mapContributedProp(styleState, keyInit, valInit, valOg, undefined)
 
     if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
       try {
@@ -3693,186 +3759,6 @@ function mergeConditionTransport(
   return transport
 }
 
-function emitMappedValue(
-  styleState: GetStyleState,
-  key: string,
-  value: any,
-  originalValue: any,
-  nestedCondition: Condition | undefined,
-  parentCondition: Condition | undefined,
-  fallbackOriginal: any
-) {
-  const nested = nestedCondition as Condition | undefined
-  const parent = parentCondition as Condition | undefined
-  let resolvedCondition = nested ?? parent
-  if (nested && parent) {
-    const composed = createCondition(parent)
-    const nestedKey = nested[conditionKey]
-    if (nestedKey) resolveConditionText(styleState, composed, nestedKey)
-    if (!(nested[conditionFlags] & conditionResolvedFlag)) {
-      setConditionUnresolved(composed)
-    }
-    commitCondition(composed)
-    resolvedCondition = composed
-  }
-  const conf = styleState.conf
-  if (key === 'fontFamily' || key === conf.inverseShorthands.fontFamily) {
-    styleState.fontFamily = getFontFamilyFromNameOrVariable(value, conf)
-  }
-  mapContributedProp(
-    styleState,
-    key,
-    value,
-    originalValue ?? fallbackOriginal,
-    resolvedCondition
-  )
-}
-
-const contributeMappedValue = (
-  key: string,
-  value: any,
-  styleState: GetStyleState,
-  disabled: boolean,
-  parentCondition?: Condition,
-  fallbackOriginal?: any
-) => {
-  if (disabled) {
-    return emitMappedValue(
-      styleState,
-      key,
-      value,
-      undefined,
-      undefined,
-      parentCondition,
-      fallbackOriginal
-    )
-  }
-
-  const { conf, styleProps } = styleState
-  const variants = (styleState as DirectState).flatStyleStaticConfig!.variants
-  const { disableExpandShorthands, noExpand, resolveValues } = styleProps
-  const shorthands = conf.shorthands
-
-  // "unset" is a CSS-wide keyword: valid CSS on web, but React Native
-  // style props reject it (e.g. aspectRatio throws "must be a number, a
-  // ratio string or `auto`"). On native, clear anything an earlier prop or
-  // styled default already merged for this key — matching web, where unset
-  // resets toward initial — then drop the value so RN never sees it.
-  if (process.env.TAMAGUI_TARGET === 'native' && value === 'unset') {
-    const expandedKey = (!disableExpandShorthands && shorthands[key]) || key
-    const expanded = noExpand
-      ? null
-      : expandStyle(expandedKey, value, conf.settings.styleCompat || 'web')
-    const used = (styleState as DirectState).flatUsed
-    if (expanded) {
-      for (const [nkey] of expanded) {
-        if (used) delete used[nkey]
-        if (styleState.style) delete styleState.style[nkey]
-      }
-    } else {
-      if (used) delete used[expandedKey]
-      if (styleState.style) delete styleState.style[expandedKey]
-    }
-    return
-  }
-
-  if (!noExpand) {
-    if (variants && key in variants) {
-      const pass = (styleState as DirectState).flatPass!
-      const previousLayer = pass[passSourceLayer]
-      pass[passSourceLayer] = 1
-      resolveVariants(key, value, styleProps, styleState, key)
-      pass[passSourceLayer] = previousLayer
-      return
-    }
-  }
-
-  // handle shorthands
-  if (!disableExpandShorthands) {
-    if (key in shorthands) {
-      key = shorthands[key]
-    }
-  }
-
-  // Capture original value before resolution (for context prop tracking)
-  const originalValue = value
-
-  // "safe" value -> env(safe-area-inset-*) on web, numeric inset on native.
-  // expands multi-edge props (padding, inset, marginHorizontal, ...) into
-  // per-side keys so each side gets its own edge value.
-  if (value === 'safe') {
-    const expanded = expandSafeAreaValue(key)
-    if (expanded) {
-      for (let i = 0; i < expanded.length; i++) {
-        const [nkey, nvalue] = expanded[i]
-        emitMappedValue(
-          styleState,
-          nkey,
-          nvalue,
-          originalValue,
-          undefined,
-          parentCondition,
-          fallbackOriginal
-        )
-      }
-      return
-    }
-  }
-
-  if (value != null) {
-    if (typeof value === 'string') {
-      value = isRemValue(value) ? resolveRem(value) : value
-    } else if (isVariable(value)) {
-      value = resolveVariableValue(key, value, resolveValues)
-    } else if (isRemValue(value)) {
-      value = resolveRem(value)
-    }
-  }
-
-  // strings stay whole so the direct scanner can distinguish CSS components
-  // from modifier clauses before it emits them.
-
-  if (value != null) {
-    if (key === 'fontFamily' && typeof originalValue === 'string') {
-      if (originalValue in conf.fontsParsed) {
-        styleState.fontFamily = originalValue
-      }
-    }
-
-    // strings stay whole for the direct flat-value scanner
-    const expanded =
-      noExpand || typeof value === 'string'
-        ? null
-        : expandStyle(key, value, conf.settings.styleCompat || 'web')
-
-    if (expanded) {
-      const max = expanded.length
-      for (let i = 0; i < max; i++) {
-        const [nkey, nvalue, noriginalValue] = expanded[i]
-        emitMappedValue(
-          styleState,
-          nkey,
-          nvalue,
-          noriginalValue ?? originalValue,
-          undefined,
-          parentCondition,
-          fallbackOriginal
-        )
-      }
-    } else {
-      emitMappedValue(
-        styleState,
-        key,
-        value,
-        originalValue,
-        undefined,
-        parentCondition,
-        fallbackOriginal
-      )
-    }
-  }
-}
-
 export function resolveVariantCondition(
   state: GetStyleState,
   text: string,
@@ -3893,19 +3779,16 @@ export function emitVariantStyle(
   condition: unknown,
   disabled: boolean
 ) {
+  const conf = state.conf
+  if (!state.styleProps.disableExpandShorthands && key in conf.shorthands) {
+    key = conf.shorthands[key]
+  }
   const contextKeys = (state as DirectState).flatStyleStaticConfig!.styledContextKeys
   if (contextKeys?.has(key)) {
     ;(state.overriddenContextProps ||= {})[key] = original
     ;(state.originalContextPropValues ||= {})[key] = original
   }
-  contributeMappedValue(
-    key,
-    value,
-    state,
-    disabled,
-    condition as Condition | undefined,
-    original
-  )
+  mapContributedProp(state, key, value, original, condition as Condition | undefined)
 }
 
 function resolveVariants(
