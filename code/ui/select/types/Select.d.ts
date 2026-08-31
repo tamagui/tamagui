@@ -32,8 +32,8 @@ export declare const SelectSeparator: import("@tamagui/core").TamaguiComponent<i
     unstyled?: boolean | undefined;
     vertical?: boolean | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
-export declare const Select: (<Value extends string = string>(props: SelectScopedProps<SelectProps<Value>>) => import("react/jsx-runtime").JSX.Element) & {
-    Adapt: ((props: import("@tamagui/adapt").AdaptProps) => import("react/jsx-runtime").JSX.Element) & {
+export declare const Select: (<Value extends string = string>(props: SelectScopedProps<SelectProps<Value>>) => React.JSX.Element) & {
+    Adapt: ((props: import("@tamagui/adapt").AdaptProps) => React.JSX.Element) & {
         Contents: {
             ({ scope, ...rest }: {
                 scope?: string;
@@ -41,7 +41,7 @@ export declare const Select: (<Value extends string = string>(props: SelectScope
             shouldForwardSpace: boolean;
         };
     };
-    Content: ({ children, scope, ...focusScopeProps }: import("./types").SelectContentProps & import("@tamagui/focus-scope").FocusScopeProps) => import("react/jsx-runtime").JSX.Element | null;
+    Content: ({ children, scope, ...focusScopeProps }: import("./types").SelectContentProps & import("@tamagui/focus-scope").FocusScopeProps) => React.JSX.Element | null;
     Group: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/core").StackStyleBase | "fullscreen"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
         elevation?: number | SizeTokens | undefined;
         fullscreen?: boolean | undefined;
@@ -217,7 +217,7 @@ export declare const Select: (<Value extends string = string>(props: SelectScope
         elevation?: number | SizeTokens | undefined;
         fullscreen?: boolean | undefined;
     }, import("@tamagui/core").StaticConfigPublic>;
-    FocusScope: (props: import("@tamagui/focus-scope/types/types").ScopedProps<import("@tamagui/focus-scope").FocusScopeControllerProps>) => import("react/jsx-runtime").JSX.Element;
+    FocusScope: (props: import("@tamagui/focus-scope/types/types").ScopedProps<import("@tamagui/focus-scope").FocusScopeControllerProps>) => React.JSX.Element;
 };
 export {};
 //# sourceMappingURL=Select.d.ts.map

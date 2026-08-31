@@ -7,6 +7,6 @@
     "ios": {
       "bundleIdentifier": "dev.tamagui.kitchensinkgo"
     },
-    "plugins": ["./plugins/expo-modules-core-swift6"]
+    "plugins": ["../packages/native-ci/plugins/context-menu-warnings"]
   }
 }
