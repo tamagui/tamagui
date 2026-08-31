@@ -6,7 +6,7 @@ export declare const Slot: import("react").NamedExoticComponent<SlotProps & impo
 export declare const Slottable: {
     ({ children }: {
         children: ReactNode;
-    }): import("react/jsx-runtime").JSX.Element;
+    }): import("react").JSX.Element;
     displayName: string;
 };
 export {};
