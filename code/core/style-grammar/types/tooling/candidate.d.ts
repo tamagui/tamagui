@@ -1,4 +1,4 @@
-import { type GrammarEntry, type TokenCategory } from "../tooling/registry";
+import { type GrammarEntry, type TokenCategory } from "./registry";
 type Names = readonly string[] | ReadonlySet<string> | Readonly<Record<string, unknown>>;
 export interface GrammarConfigView {
 	shorthands?: Readonly<Record<string, string>>;

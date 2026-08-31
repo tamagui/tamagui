@@ -1,9 +1,8 @@
 import { describe, expect, test } from 'vitest'
-import { parseCandidate } from '../runtime'
-import { grammarTable, migrateLegacyTransition } from '../tooling'
+import { grammarTable, migrateLegacyTransition, parseCandidate } from '../tooling'
 
 describe('package entry points', () => {
-  test('runtime exposes candidate parsing', () => {
+  test('tooling exposes candidate parsing', () => {
     expect(
       parseCandidate('sm:p-4', {
         mediaNames: ['sm'],

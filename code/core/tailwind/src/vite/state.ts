@@ -1,10 +1,10 @@
 import { compile } from '@tailwindcss/node'
 import { Scanner } from '@tailwindcss/oxide'
 import {
-  classifyCandidate,
   createGrammarConfigView,
   type GrammarSourceConfig,
 } from '@tamagui/style-grammar/runtime'
+import { classifyCandidate } from '@tamagui/style-grammar/tooling'
 import { readFile, realpath } from 'node:fs/promises'
 import { createRequire } from 'node:module'
 import path from 'node:path'

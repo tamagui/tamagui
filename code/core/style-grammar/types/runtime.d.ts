@@ -1,4 +1,3 @@
-export { classifyCandidate, decodeArbitrary, parseCandidate, type CandidateClassification, type GrammarConfigView, type ParsedCandidate } from "./runtime/candidate";
 export { canonicalClauseModifier, isModifierName, reduceFlatValueIdentity, type ClauseIdentityErrorCode, type ClauseIdentityHandler } from "./runtime/clauseIdentity";
 export { clauseSubjectClassRepetitions, createClausePrecedenceOrder, getClausePrecedenceKeyFromKinds, type ClausePrecedenceKey, type ClausePrecedenceOrder } from "./runtime/clausePrecedence";
 export { createGrammarConfigView, grammarPlatformNames, isContainerSizeQueryText, type GrammarSourceConfig } from "./tooling/config";

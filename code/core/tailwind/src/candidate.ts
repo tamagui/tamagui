@@ -7,18 +7,20 @@ import {
 } from '@tamagui/core/internal-runtime'
 import {
   borderSideSuffix,
-  classifyCandidate,
   configRevisionSymbol,
   createGrammarConfigView,
-  decodeArbitrary,
   getTokenCategory,
   getSafeAreaEdge,
   percentUtilityProps,
   radiusCornerProps,
   splitColorOpacitySuffix,
+} from '@tamagui/style-grammar/runtime'
+import {
+  classifyCandidate,
+  decodeArbitrary,
   type GrammarConfigView,
   type ParsedCandidate,
-} from '@tamagui/style-grammar/runtime'
+} from '@tamagui/style-grammar/tooling'
 
 /**
  * Class-string tokenization and candidate adaptation. This is the Tailwind

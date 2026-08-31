@@ -1,12 +1,4 @@
 export {
-  classifyCandidate,
-  decodeArbitrary,
-  parseCandidate,
-  type CandidateClassification,
-  type GrammarConfigView,
-  type ParsedCandidate,
-} from './runtime/candidate'
-export {
   canonicalClauseModifier,
   isModifierName,
   reduceFlatValueIdentity,

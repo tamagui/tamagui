@@ -9,19 +9,19 @@ import {
   wholeClassUtilities,
   type GrammarEntry,
   type TokenCategory,
-} from '../tooling/registry'
+} from './registry'
 import {
   canonicalClauseModifier,
   containerModifierSizeEnd,
   parseGroupModifier,
-} from './clauseIdentity'
+} from '../runtime/clauseIdentity'
 import {
   compileModifierVocabulary,
   modifierKindMedia,
   type CompiledModifierVocabulary,
-} from './modifierVocabulary'
-import { splitColorOpacitySuffix } from './colorOpacity'
-import { getSafeAreaEdge } from './safeAreaVariables'
+} from '../runtime/modifierVocabulary'
+import { splitColorOpacitySuffix } from '../runtime/colorOpacity'
+import { getSafeAreaEdge } from '../runtime/safeAreaVariables'
 
 type Names = readonly string[] | ReadonlySet<string> | Readonly<Record<string, unknown>>
 

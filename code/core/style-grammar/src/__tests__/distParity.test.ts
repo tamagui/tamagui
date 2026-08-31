@@ -28,6 +28,11 @@ describe('built export parity', () => {
     const toolingNative = await import(join(root, 'dist/esm/tooling.native.js'))
 
     for (const built of [runtimeCjs, runtimeEsm, runtimeNative]) {
+      expect(typeof built.scanFlatValue).toBe('function')
+      expect(typeof built.getSafeAreaEdge).toBe('function')
+    }
+
+    for (const built of [toolingCjs, toolingEsm, toolingNative]) {
       expect(built.parseCandidate('sm:p-4', config)).toMatchObject({
         modifiers: ['sm'],
         rawValue: '4',
@@ -35,9 +40,6 @@ describe('built export parity', () => {
         entry: { prop: 'padding', tokenCategory: 'space' },
       })
       expect(built.classifyCandidate('p-999', config).kind).toBe('passthrough')
-    }
-
-    for (const built of [toolingCjs, toolingEsm, toolingNative]) {
       expect(built.grammarTable).toBe(toolingEsm.grammarTable)
       expect(built.migrateLegacyTransition('quick', new Set(['quick']))).toMatchObject({
         ok: true,
