@@ -27,16 +27,16 @@ export declare function registerLayoutNode(node: HTMLElement, onChange: () => vo
 export declare function useElementLayout(ref: RefObject<TamaguiComponentStatePartial>, onLayout?: ((e: LayoutEvent) => void) | null): void;
 export declare const getBoundingClientRectAsync: (node: HTMLElement | null) => Promise<DOMRectReadOnly | false>;
 export declare const measureNode: (node: HTMLElement, relativeTo?: HTMLElement | null) => Promise<null | LayoutValue>;
-type MeasureInWindowCb = (x: number, y: number, width: number, height: number) => void;
-type MeasureCb = (x: number, y: number, width: number, height: number, pageX: number, pageY: number) => void;
-export declare const measure: (node: HTMLElement, callback: MeasureCb) => Promise<LayoutValue | null>;
-export declare const createMeasure: (node: HTMLElement) => ((callback: MeasureCb) => Promise<LayoutValue | null>);
-type WindowLayout = {
+export type MeasureInWindowCb = (x: number, y: number, width: number, height: number) => void;
+export type MeasureCb = (x: number, y: number, width: number, height: number, pageX: number, pageY: number) => void;
+export type WindowLayout = {
 	pageX: number;
 	pageY: number;
 	width: number;
 	height: number;
 };
+export declare const measure: (node: HTMLElement, callback: MeasureCb) => Promise<LayoutValue | null>;
+export declare const createMeasure: (node: HTMLElement) => ((callback: MeasureCb) => Promise<LayoutValue | null>);
 export declare const measureInWindow: (node: HTMLElement, callback: MeasureInWindowCb) => Promise<WindowLayout | null>;
 export declare const createMeasureInWindow: (node: HTMLElement) => ((callback: MeasureInWindowCb) => Promise<WindowLayout | null>);
 export declare const measureLayout: (node: HTMLElement, relativeNode: HTMLElement, callback: MeasureCb) => Promise<LayoutValue | null>;

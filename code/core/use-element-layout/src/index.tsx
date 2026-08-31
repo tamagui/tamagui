@@ -11,15 +11,8 @@ const usePretransformDimensions = () =>
   (globalThis as any).__TAMAGUI_ONLAYOUT_PRETRANSFORM === true ||
   process.env.TAMAGUI_ONLAYOUT_PRETRANSFORM === '1'
 
-let _debugLayout: boolean | undefined
-function isDebugLayout() {
-  if (_debugLayout === undefined) {
-    _debugLayout =
-      typeof window !== 'undefined' &&
-      new URLSearchParams(window.location.search).has('__tamaDebugLayout')
-  }
-  return _debugLayout
-}
+const isDebugLayout = () =>
+  typeof window !== 'undefined' && window.location?.search?.includes('__tamaDebugLayout')
 
 const DisableLayoutContextValues: Record<string, boolean> = {}
 const DisableLayoutContextKey = createContext<string>('')
@@ -384,8 +377,13 @@ export const measureNode = async (
   return null
 }
 
-type MeasureInWindowCb = (x: number, y: number, width: number, height: number) => void
-type MeasureCb = (
+export type MeasureInWindowCb = (
+  x: number,
+  y: number,
+  width: number,
+  height: number
+) => void
+export type MeasureCb = (
   x: number,
   y: number,
   width: number,
@@ -393,15 +391,13 @@ type MeasureCb = (
   pageX: number,
   pageY: number
 ) => void
+export type WindowLayout = { pageX: number; pageY: number; width: number; height: number }
 
 export const measure = async (
   node: HTMLElement,
   callback: MeasureCb
 ): Promise<LayoutValue | null> => {
-  const out = await measureNode(
-    node,
-    node.parentNode instanceof HTMLElement ? node.parentNode : null
-  )
+  const out = await measureNode(node, node.parentElement)
   if (out) callback?.(out.x, out.y, out.width, out.height, out.pageX, out.pageY)
   return out
 }
@@ -410,8 +406,6 @@ export const createMeasure =
   (node: HTMLElement): ((callback: MeasureCb) => Promise<LayoutValue | null>) =>
   (callback: MeasureCb) =>
     measure(node, callback)
-
-type WindowLayout = { pageX: number; pageY: number; width: number; height: number }
 
 export const measureInWindow = async (
   node: HTMLElement,
