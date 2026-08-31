@@ -156,14 +156,16 @@ export function getThemedChildren(
       )
       if (!parentState) {
         throw new Error(
-          formatDiagnostic(
-            '‼️010',
-            'Theme',
-            'parent theme state is missing for shallow rendering',
-            'Keep <Theme shallow> inside its mounted parent Theme',
-            'name,parentId',
-            { name: themeState.name, parentId: themeState.parentId }
-          )
+          process.env.NODE_ENV !== 'production'
+            ? formatDiagnostic(
+                '‼️010',
+                'Theme',
+                'parent theme state is missing for shallow rendering',
+                'Keep <Theme shallow> inside its mounted parent Theme',
+                'name,parentId',
+                { name: themeState.name, parentId: themeState.parentId }
+              )
+            : '❌ Error 014'
         )
       }
       children = Children.toArray(children).map((child) => {

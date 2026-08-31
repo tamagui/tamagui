@@ -75,14 +75,16 @@ export function setupMediaListeners() {
     const match = getMatch()
     if (!match) {
       throw new Error(
-        formatDiagnostic(
-          'TAMAGUI_MEDIA_MATCH',
-          'useMedia',
-          'matchMedia returned no MediaQueryList',
-          'Provide a matchMedia implementation that returns a MediaQueryList',
-          'key,query,platform',
-          { key, query: str, platform: isWeb ? 'web' : 'native' }
-        )
+        process.env.NODE_ENV !== 'production'
+          ? formatDiagnostic(
+              'TAMAGUI_MEDIA_MATCH',
+              'useMedia',
+              'matchMedia returned no MediaQueryList',
+              'Provide a matchMedia implementation that returns a MediaQueryList',
+              'key,query,platform',
+              { key, query: str, platform: isWeb ? 'web' : 'native' }
+            )
+          : '❌ Error 013'
       )
     }
 

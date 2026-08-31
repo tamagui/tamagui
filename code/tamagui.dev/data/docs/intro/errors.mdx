@@ -45,7 +45,14 @@ export default {
 Ignored modules receive an empty object during static evaluation. Do not ignore
 a module whose exports contribute to `createTamagui()` or a configured component.
 
+### Error 004
+
+#### Flat value clause condition depth exceeded
+
+A flat value clause supports at most 5 non-platform conditions (e.g. `hover:sm:focus:dark:`). Reduce the number of chained modifiers on a single clause.
+
 ### Warning 002
 
 You're rendering a Tamagui <Adapt /> component without nesting it inside a
 parent that is able to adapt.
+

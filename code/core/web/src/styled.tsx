@@ -343,7 +343,11 @@ function styledImpl<
   // validate not using a variant over an existing valid style
   if (process.env.NODE_ENV !== 'production') {
     if (!ComponentIn) {
-      throw new Error(`No component given to styled()`)
+      throw new Error(
+        process.env.NODE_ENV !== 'production'
+          ? 'No component given to styled()'
+          : '❌ Error 006'
+      )
     }
   }
 

@@ -27,7 +27,9 @@ export function packClausePrecedence(
 ): ClausePrecedenceKey {
   if (atomRanks.length > grammarMaxNonPlatformDepth) {
     throw new Error(
-      `a flat value clause supports at most ${grammarMaxNonPlatformDepth} non-platform conditions; received ${atomRanks.length}`
+      process.env.NODE_ENV !== 'production'
+        ? `a flat value clause supports at most ${grammarMaxNonPlatformDepth} non-platform conditions; received ${atomRanks.length}`
+        : '❌ Error 004'
     )
   }
   const ranks = atomRanks.slice().sort((left, right) => right - left)
@@ -128,7 +130,9 @@ export function getClausePrecedenceKeyFromKinds(
 
   if (ranks.length > grammarMaxNonPlatformDepth) {
     throw new Error(
-      `a flat value clause supports at most ${grammarMaxNonPlatformDepth} non-platform conditions; received ${ranks.length} in "${modifiers.join(':')}:"`
+      process.env.NODE_ENV !== 'production'
+        ? `a flat value clause supports at most ${grammarMaxNonPlatformDepth} non-platform conditions; received ${ranks.length} in "${modifiers.join(':')}:"`
+        : '❌ Error 004'
     )
   }
 

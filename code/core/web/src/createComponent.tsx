@@ -264,7 +264,9 @@ export function createComponent<
   // a const, a config read) makes it unfoldable.
   if (process.env.TAMAGUI_RUNTIME === 'zero') {
     throw new Error(
-      `[tamagui zero-runtime] createComponent ran in a zero-runtime graph. No Tamagui component renderer ships in this mode, so a component reference survived compilation. Fix the site or move the owning module to a declared full-runtime island.`
+      process.env.NODE_ENV !== 'production'
+        ? `[tamagui zero-runtime] createComponent ran in a zero-runtime graph. No Tamagui component renderer ships in this mode, so a component reference survived compilation. Fix the site or move the owning module to a declared full-runtime island.`
+        : '❌ Error 010'
     )
   }
 
