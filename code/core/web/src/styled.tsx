@@ -340,15 +340,12 @@ function styledImpl<
     GetStaticConfig<ParentComponent, StyledConfig>
   >
 
-  // validate not using a variant over an existing valid style
-  if (process.env.NODE_ENV !== 'production') {
-    if (!ComponentIn) {
-      throw new Error(
-        process.env.NODE_ENV !== 'production'
-          ? 'No component given to styled()'
-          : '❌ Error 006'
-      )
-    }
+  if (!ComponentIn) {
+    throw new Error(
+      process.env.NODE_ENV === 'development'
+        ? 'No component given to styled()'
+        : '❌ Error 006'
+    )
   }
 
   const parentStaticConfig = ComponentIn['staticConfig'] as StaticConfig | undefined
