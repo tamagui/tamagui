@@ -2560,15 +2560,8 @@ let literalMissRevision = -1
 let literalMisses = new WeakMap<object, Set<string>>()
 const literalMissRootTheme: object = {}
 
-function isFontKeyedProperty(property: string) {
-  return (
-    property === 'fontFamily' ||
-    property === 'fontSize' ||
-    property === 'fontWeight' ||
-    property === 'lineHeight' ||
-    property === 'letterSpacing'
-  )
-}
+const isFontKeyedProperty = (property: string) =>
+  property.startsWith('font') || property === 'lineHeight' || property === 'letterSpacing'
 
 function literalMissSet(state: GetStyleState): Set<string> {
   const revision = getConfigRevisionState(state.conf).revision
