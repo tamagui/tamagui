@@ -22,7 +22,7 @@ test('lowers logical AND expression on web', async () => {
   )
 
   expect(output?.js).toContain('<div')
-  expect(output?.js).toContain('(active) ? "_bc-913050308" : ""')
+  expect(output?.js).toMatch(/\(active\) \? "_b-\d+" : ""/)
   expect(output?.styles).toContain('background-color:red')
 })
 
@@ -43,8 +43,10 @@ test('does not retain a default class removed by a logical AND branch on web', a
     }
   )
 
-  expect(output?.js).toContain('(active) ? "_bc-913050308" : ""')
-  expect(output?.js).not.toContain('_bc-1277784850')
+  expect(output?.js).toMatch(/\(active\) \? "_b-\d+" : ""/)
+  const defaultClass = output?.styles.match(/\.(_b-\d+)\{background-color:green\}/)?.[1]
+  expect(defaultClass).toBeTruthy()
+  expect(output?.js).not.toContain(defaultClass)
 })
 
 test('lowers nested ternaries to nested ternary class expressions on web', async () => {
@@ -64,8 +66,8 @@ test('lowers nested ternaries to nested ternary class expressions on web', async
   )
 
   expect(output?.js).toContain('<div')
-  expect(output?.js).toContain(
-    '(status === \'err\') ? "_bc-913050308" : (status === \'warn\') ? "_bc-453090327" : "_bc-1277784850"'
+  expect(output?.js).toMatch(
+    /\(status === 'err'\) \? "_b-\d+" : \(status === 'warn'\) \? "_b-\d+" : "_b-\d+"/
   )
   expect(output?.styles).toContain('background-color:red')
   expect(output?.styles).toContain('background-color:yellow')
@@ -95,9 +97,9 @@ test('lowers multiple disjoint conditionals on web', async () => {
   )
 
   expect(output?.js).toContain('<span')
-  expect(output?.js).toContain('(active) ? "_c-1357107246" : "_c-879817635"')
-  expect(output?.js).toContain('(bold) ? "_fw-509158670" : "_fw-509161553"')
-  expect(output?.js).toContain('(size) ? "_fs-1419738124" : "_fs-1419764071"')
+  expect(output?.js).toMatch(/\(active\) \? "_c-\d+" : "_c-\d+"/)
+  expect(output?.js).toMatch(/\(bold\) \? "_fw-\d+" : "_fw-\d+"/)
+  expect(output?.js).toMatch(/\(size\) \? "_fs-\d+" : "_fs-\d+"/)
 })
 
 test('lowers evaluable static spread with mixed style and non-style props on web', async () => {
@@ -117,7 +119,7 @@ test('lowers evaluable static spread with mixed style and non-style props on web
   )
 
   expect(output?.js).toContain('<div')
-  expect(output?.js).toContain('className="is_View _bc-913050308"')
+  expect(output?.js).toMatch(/className="is_View _b-\d+"/)
   expect(output?.js).toContain(
     '{...{ "id": "my-view", "data-testid": "spread-test", "data-test": "ok" }}'
   )

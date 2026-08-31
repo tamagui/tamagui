@@ -388,7 +388,7 @@ test('flexBasis: 0 with responsive style extracts correctly', async () => {
 
   // fb: 0 should extract as 0px, not auto
   expect(output?.styles).toMatch(
-    /@media \(min-width: 640px\) \{(\._fb-\d+)\1\{flex-basis:0px\}\}/
+    /(\._f-\d+)\{flex-basis:1\}@media \(min-width: 640px\) \{\1\{flex-basis:0px\}\}/
   )
   expect(output?.styles).not.toContain('auto')
   expect(output?.js).toMatchSnapshot()
@@ -771,8 +771,8 @@ test('ternary with mixed theme-token and non-token values lowers conditional cla
   expect(output?.js).not.toContain('fontSize="3"')
   expect(output?.js).not.toContain('<Text')
   expect(output?.js).toContain('<span')
-  expect(output?.js).toContain('(isActive) ? "_fw-509159631" : "_fw-509161553"')
-  expect(output?.js).toContain('(isActive) ? "_c-1791235615" : "_c-1675133514"')
+  expect(output?.js).toMatch(/\(isActive\) \? "_fw-\d+" : "_fw-\d+"/)
+  expect(output?.js).toMatch(/\(isActive\) \? "_c-\d+" : "_c-\d+"/)
   expect(output?.js).toMatchSnapshot()
   expect(output?.styles).toMatchSnapshot()
 })

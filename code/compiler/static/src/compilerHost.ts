@@ -548,6 +548,12 @@ const cssShorthandConflicts: Record<string, readonly string[]> = {
 }
 
 const cssConflictFamilies = [
+  new Set(['width', 'inlineSize']),
+  new Set(['minWidth', 'minInlineSize']),
+  new Set(['maxWidth', 'maxInlineSize']),
+  new Set(['height', 'blockSize']),
+  new Set(['minHeight', 'minBlockSize']),
+  new Set(['maxHeight', 'maxBlockSize']),
   new Set([
     'marginInline',
     'marginInlineEnd',
@@ -943,6 +949,8 @@ export function createTamaguiCompilerHost(
 ): CompilerLoweringHost {
   const platform = options.target === 'native' ? 'native' : 'web'
   const core = requireTamaguiCore(platform) as any
+  const compilerVariantStyleResolver = core.styled(core.View, {}).staticConfig
+    .variantStyleResolver
   const firstThemeName = Object.keys(options.tamaguiConfig.themes ?? {})[0] ?? ''
   const firstTheme = options.tamaguiConfig.themes?.[firstThemeName] ?? {}
   const theme = firstTheme
@@ -1160,29 +1168,31 @@ export function createTamaguiCompilerHost(
       typeof definition.baseClassName.value === 'string'
         ? definition.baseClassName.value
         : undefined
+    const localStaticConfig = {
+      ...base.staticConfig,
+      variants: {
+        ...base.staticConfig.variants,
+        ...(variants as object | undefined),
+      },
+      defaultProps: {
+        ...base.staticConfig.defaultProps,
+        ...defaultProps,
+        ...(defaultVariants as object | undefined),
+      },
+      defaultVariants,
+      baseClassName: [base.staticConfig.baseClassName, baseClassName]
+        .filter(Boolean)
+        .join(' '),
+      context: context ?? base.staticConfig.context,
+      contextProps: context
+        ? contextProps
+        : (contextProps ?? base.staticConfig.contextProps),
+    }
+    ;(localStaticConfig as any).variantStyleResolver = compilerVariantStyleResolver
     return {
       key: componentKey(definition.id, definition.name),
       displayName: displayName || base.displayName,
-      staticConfig: normalizeStaticConfig({
-        ...base.staticConfig,
-        variants: {
-          ...base.staticConfig.variants,
-          ...(variants as object | undefined),
-        },
-        defaultProps: {
-          ...base.staticConfig.defaultProps,
-          ...defaultProps,
-          ...(defaultVariants as object | undefined),
-        },
-        defaultVariants,
-        baseClassName: [base.staticConfig.baseClassName, baseClassName]
-          .filter(Boolean)
-          .join(' '),
-        context: context ?? base.staticConfig.context,
-        contextProps: context
-          ? contextProps
-          : (contextProps ?? base.staticConfig.contextProps),
-      }),
+      staticConfig: normalizeStaticConfig(localStaticConfig),
     }
   }
 
@@ -1761,11 +1771,7 @@ export function createTamaguiCompilerHost(
               name === 'opacity'
                 ? `opacity: (${expression})`
                 : `transform: "scale(" + (${expression}) + ")"`
-          } else if (
-            entry.value.kind === 'bailout' &&
-            owners.size === 1 &&
-            owners.has(name)
-          ) {
+          } else if (entry.value.kind === 'bailout' && owners.has(name)) {
             const dynamic = entry.value.dynamic
             if (dynamic?.type === 'number') {
               property = `${JSON.stringify(name)}: (${expression})`
@@ -2047,7 +2053,11 @@ export function createTamaguiCompilerHost(
           entry.span
         )
       }
-      const staticDefaultProps = component.staticConfig.defaultProps ?? {}
+      const resolvedStyleStaticConfig = core.getStyleStaticConfig(
+        component.staticConfig,
+        core.getConfig()
+      )
+      const staticDefaultProps = resolvedStyleStaticConfig.defaultProps ?? {}
       const defaultProps =
         platform === 'web' &&
         !component.staticConfig.isText &&
@@ -2101,9 +2111,9 @@ export function createTamaguiCompilerHost(
             : core.mergeProps(defaultProps, branchProps)
         return { branchProps, branchCompleteProps }
       }
-      // Against completeProps, not props: clauses also arrive from styled()
-      // defaults. Native resolution evaluates them against the build machine's
-      // current state, so folding would freeze that state into the bundle.
+      // native resolution evaluates clauses against the build machine's current
+      // state, so folding a call-site, styled base, or variant clause would freeze
+      // that state into the bundle.
       if (platform === 'native') {
         const isClauseValue = (name: string, value: unknown) =>
           isStyleProp(name, component) &&
@@ -2115,6 +2125,9 @@ export function createTamaguiCompilerHost(
         const carriesClause =
           Object.entries(completeProps).some(([name, value]) =>
             isClauseValue(name, value)
+          ) ||
+          Object.entries(resolvedStyleStaticConfig.baseStyle ?? {}).some(
+            ([name, value]) => isClauseValue(name, value)
           ) ||
           Object.entries(component.staticConfig.variants ?? {}).some(
             ([variantName, definitions]) =>

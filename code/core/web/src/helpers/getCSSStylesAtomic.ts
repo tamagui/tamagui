@@ -84,8 +84,15 @@ export function registerAtomicSlot(
   }
   const built = buildAtomicSlotCSS(atomicKey, entries, signature)
   if (!built) return
+  let styleObjectProperty = entries[0]![0]
+  for (let index = 1; index < entries.length; index++) {
+    if (entries[index]![0] !== styleObjectProperty) {
+      styleObjectProperty = atomicKey
+      break
+    }
+  }
   const styleObject = (built[3] ||= [
-    atomicKey,
+    styleObjectProperty,
     built[2],
     built[0],
     undefined,

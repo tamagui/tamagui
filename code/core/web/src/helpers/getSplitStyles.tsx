@@ -2436,7 +2436,10 @@ function emitValue(
       property === 'borderLeftWidth') &&
     state.styleProps.noNormalize !== false
   ) {
-    const target = property.slice(0, -5) + 'Style'
+    const target =
+      process.env.TAMAGUI_TARGET === 'native'
+        ? 'borderStyle'
+        : property.slice(0, -5) + 'Style'
     writeStyleRecord(state, target, 'solid', cursor, originalValue, recordDefault)
   }
 

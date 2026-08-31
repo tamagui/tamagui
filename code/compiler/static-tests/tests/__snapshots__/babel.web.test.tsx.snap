@@ -158,13 +158,13 @@ exports[`conditional styles extract disjoint static siblings 1`] = `
 import { View } from '@tamagui/core'
     export function Test(props) {
       return (
-        <div className={["is_View _w-132205709", (props.green) ? "_bc-913050308" : "_bc-1759742223"].filter(Boolean).join(" ")}  />
+        <div className={["is_View _w-1618194424", (props.green) ? "_b-1357850575" : "_b-855835834"].filter(Boolean).join(" ")}  />
       )
     }
 "
 `;
 
-exports[`conditional styles extract disjoint static siblings 2`] = `"._w-132205709{width:10px}._bc-913050308{background-color:red}._bc-1759742223{background-color:blue}"`;
+exports[`conditional styles extract disjoint static siblings 2`] = `"._w-1618194424{width:10px}._b-1357850575{background-color:red}._b-855835834{background-color:blue}"`;
 
 exports[`double ternary + spread 1`] = `
 "
@@ -194,14 +194,14 @@ exports[`flexBasis: 0 with responsive style extracts correctly 1`] = `
     export function Test() {
       return (
         <div
-          className="is_View _fb-1714115553"
+          className="is_View _f-254670591"
         />
       )
     }
 "
 `;
 
-exports[`flexBasis: 0 with responsive style extracts correctly 2`] = `"._fb-1714115553{flex-basis:1}@media (min-width: 640px) {._fb-1714115553._fb-1714115553{flex-basis:0px}}"`;
+exports[`flexBasis: 0 with responsive style extracts correctly 2`] = `"._f-254670591{flex-basis:1}@media (min-width: 640px) {._f-254670591{flex-basis:0px}}"`;
 
 exports[`font_body class is present in BOTH ternary branches 1`] = `
 "const _cn2 = "is_Text font_body _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _ff-f-family ";
@@ -222,7 +222,7 @@ exports[`fontFamily shorthand + styled + flatten + ternaries 1`] = `
     export function Test(props) {
       return (
         <span
-          className={["is_Text _bc-1277784850 _ff-513915828", (active) ? "_o-1553737126" : "_o-520187816"].filter(Boolean).join(" ")}
+          className={["is_Text _b-1009119199 _ff-1595383903", (active) ? "_o-1507268773" : "_o-839079379"].filter(Boolean).join(" ")}
 
         />
       )
@@ -236,7 +236,7 @@ exports[`fontFamily shorthand + styled + flatten works 1`] = `
     export function Test(props) {
       return (
         <span
-          className="is_Text _bc-1277784850 _ff-513915828"
+          className="is_Text _b-1009119199 _ff-1595383903"
         />
       )
     }
@@ -268,7 +268,7 @@ exports[`specific className + ternary 1`] = `
     export function Test(props) {
       return (
         <span
-          className={["is_Text _bc-1277784850 _ff-513915828 test-class-name", (active) ? "_o-1553737126" : "_o-520187816"].filter(Boolean).join(" ")}
+          className={["is_Text _b-1009119199 _ff-1595383903 test-class-name", (active) ? "_o-1507268773" : "_o-839079379"].filter(Boolean).join(" ")}
 
 
         />
@@ -305,13 +305,13 @@ exports[`ternaries + font families works 1`] = `
     import { Text } from '@tamagui/core'
     export function Test(props) {
       return (
-        <span className={["is_Text _ff-398910644", (window) ? "font_body" : "font_heading"].filter(Boolean).join(" ")} />
+        <span className={["is_Text _ff-1751765567", (window) ? "font_body" : "font_heading"].filter(Boolean).join(" ")} />
       )
     }
 "
 `;
 
-exports[`ternaries + font families works 2`] = `"._ff-398910644{font-family:var(--f-family)}"`;
+exports[`ternaries + font families works 2`] = `"._ff-1751765567{font-family:var(--f-family)}"`;
 
 exports[`ternary with mixed theme-token and non-token values lowers conditional classes 1`] = `
 "
@@ -319,7 +319,7 @@ exports[`ternary with mixed theme-token and non-token values lowers conditional 
     export function Test({ isActive, label }) {
       return (
         <span
-          className={["is_Text _fs-893655852", (isActive) ? "_fw-509159631" : "_fw-509161553", (isActive) ? "_c-1791235615" : "_c-1675133514"].filter(Boolean).join(" ")}
+          className={["is_Text _fs-539220193", (isActive) ? "_fw-291014182" : "_fw-291012260", (isActive) ? "_c-636982742" : "_c-1849059509"].filter(Boolean).join(" ")}
 
 
         >
@@ -330,7 +330,7 @@ exports[`ternary with mixed theme-token and non-token values lowers conditional 
 "
 `;
 
-exports[`ternary with mixed theme-token and non-token values lowers conditional classes 2`] = `"._fs-893655852{font-size:var(--f-size-3)}._fw-509159631{font-weight:600}._fw-509161553{font-weight:400}._c-1791235615{color:color12}._c-1675133514{color:var(--color11)}"`;
+exports[`ternary with mixed theme-token and non-token values lowers conditional classes 2`] = `"._fs-539220193{font-size:var(--f-size-3)}._fw-291014182{font-weight:600}._fw-291012260{font-weight:400}._c-636982742{color:color12}._c-1849059509{color:var(--color11)}"`;
 
 exports[`theme + media queries + conditionals extract 1`] = `
 "

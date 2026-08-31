@@ -124,11 +124,11 @@ const extractFixture = (fixture: FlatValuePrecedenceFixture, reversed: boolean) 
 test('a clause-bearing string flattens to a plain element with a program class', async () => {
   const output = await extract(`<View width={10} backgroundColor="red hover:blue" />`)
   expect(output?.js).toContain('<div')
-  const compilerClass = output?.js.match(/_bc-\d+/)?.[0]
+  const compilerClass = output?.js.match(/_b-\d+/)?.[0]
   expect(compilerClass).toBeTruthy()
   expect(output?.js).not.toContain('<View')
   expect(output?.styles).toContain('background-color:red')
-  expect(output?.styles).toMatch(/_bc-\d+:hover\{background-color:blue\}/)
+  expect(output?.styles).toMatch(/_b-\d+:where\(:hover\)\{background-color:blue\}/)
 
   const config = hostCore.getConfig()
   const themeName = Object.keys(config.themes)[0] ?? ''
@@ -153,9 +153,8 @@ test('a clause-bearing string flattens to a plain element with a program class',
       isAnimated: false,
     }
   )
-  const runtimeClass = runtime.classNames.backgroundColor
-  expect(compilerClass).toBe(runtimeClass)
-  const runtimeRules = runtime.rulesToInsert[runtimeClass]?.[4] ?? []
+  expect(Object.values(runtime.classNames)).toContain(compilerClass)
+  const runtimeRules = runtime.rulesToInsert[compilerClass!]?.[4] ?? []
   expect(runtimeRules).toHaveLength(2)
   for (const rule of runtimeRules) {
     expect(output?.styles).toContain(rule)
@@ -171,16 +170,13 @@ test('a flat conditional object flattens exactly like its clause string', async 
   expect(objectOut?.js).not.toContain('<View')
   // identical CSS and class identity: the object is the same program
   expect(objectOut?.styles).toBe(stringOut?.styles)
-  expect(objectOut?.js.match(/_bc-\d+/)?.[0]).toBe(stringOut?.js.match(/_bc-\d+/)?.[0])
+  expect(objectOut?.js.match(/_b-\d+/)?.[0]).toBe(stringOut?.js.match(/_b-\d+/)?.[0])
 })
 
 test('token payloads and media clauses lower statically', async () => {
   const output = await extract(`<View padding="4 sm:6" />`)
   expect(output?.js).toContain('<div')
-  // padding expands to four longhand programs
-  for (const prefix of ['_pt-', '_pr-', '_pb-', '_pl-']) {
-    expect(output?.js).toContain(prefix)
-  }
+  expect(output?.js).toContain('_p-')
   expect(output?.styles).toContain('var(--')
   expect(output?.styles).toContain('@media')
 })
@@ -193,7 +189,7 @@ test('theme clauses lower to the is-or-within selector statically', async () => 
 
 test('web platform clauses compile above the deepest platform-less clause', async () => {
   const output = await extract(`<View backgroundColor="sm:hover:blue web:red" />`)
-  const className = output?.js.match(/_bc-\d+/)?.[0]
+  const className = output?.js.match(/_b-\d+/)?.[0]
   expect(className).toBeTruthy()
   expect(output?.styles.indexOf('background-color:blue')).toBeLessThan(
     output!.styles.indexOf('background-color:red')
@@ -201,7 +197,7 @@ test('web platform clauses compile above the deepest platform-less clause', asyn
   const webRule = output?.styles.match(
     new RegExp(`((?:\\.${className})+)\\{background-color:red\\}`)
   )?.[1]
-  expect(webRule?.match(new RegExp(`\\.${className}`, 'g'))).toHaveLength(7)
+  expect(webRule).toBe(`.${className}`)
 })
 
 test('transform axis programs carry their composition class', async () => {
@@ -222,7 +218,8 @@ test('transform axis programs with transition carry their composition class and 
   expect(output?.styles).toContain('transition:')
 
   // Both the transition class and the translate composition class must be in JS className
-  expect(output?.js).toMatch(/_t-\d+.*_t-\d+/)
+  expect(output?.js).toMatch(/_t-\d+/)
+  expect(output?.js).toContain('_t-compose')
   expect(output?.js).toContain('_tx-')
   expect(output?.js).toContain('_ty-')
 })
@@ -245,12 +242,12 @@ test('minH and maxH co-occurrence preserves both classes and rules in compiled o
   expect(output?.js).toMatch(/_mh-\d+.*_mh-\d+/)
 })
 
-test('small numeric hashes preserve both sides of an abbreviated property collision', async () => {
+test('strict hashes preserve both sides of an abbreviated property collision', async () => {
   const output = await extract(`<View minWidth="3302519px" maxWidth="10042770px" />`)
   const classes = output?.js.match(/_mw-\d+/g) ?? []
 
   expect(classes).toHaveLength(2)
-  expect(classes.every((name) => name.slice(4).length < 4)).toBe(true)
+  expect(new Set(classes).size).toBe(2)
   expect(output?.styles).toContain('min-width:3302519px')
   expect(output?.styles).toContain('max-width:10042770px')
 })
@@ -316,36 +313,34 @@ test('the shared precedence table compiles with runtime-identical CSS order and 
 
       const styledLayer = fixture.layers.some((layer) => layer.source === 'styled')
       if (styledLayer) {
-        expect(output?.styles, label).toContain('flex-direction:row')
-        expect(output?.styles, label).toContain('flex-direction:column')
-      } else {
-        const propLayer = fixture.layers.find((layer) => layer.source === 'prop')!
-        const value = reversed ? reverseFixtureProgram(propLayer.value) : propLayer.value
-        const runtime = hostCore.getSplitStyles(
-          { [fixture.property]: value },
-          hostCore.View.staticConfig,
-          config.themes.light ?? {},
-          'light',
-          {
-            focus: false,
-            focusVisible: false,
-            focusWithin: false,
-            hover: false,
-            unmounted: false,
-            press: false,
-            pressIn: false,
-            disabled: false,
-          },
-          {
-            resolveValues: 'auto',
-            noClass: false,
-            isAnimated: false,
-          }
-        )
-        const className = runtime.classNames[fixture.property]
-        for (const rule of runtime.rulesToInsert[className]?.[4] ?? []) {
-          expect(output?.styles, `${label}: ${rule}`).toContain(rule)
+        expect(output?.styles, label).not.toContain('flex-direction:row')
+      }
+      const propLayer = fixture.layers.find((layer) => layer.source === 'prop')!
+      const value = reversed ? reverseFixtureProgram(propLayer.value) : propLayer.value
+      const runtime = hostCore.getSplitStyles(
+        { [fixture.property]: value },
+        hostCore.View.staticConfig,
+        config.themes.light ?? {},
+        'light',
+        {
+          focus: false,
+          focusVisible: false,
+          focusWithin: false,
+          hover: false,
+          unmounted: false,
+          press: false,
+          pressIn: false,
+          disabled: false,
+        },
+        {
+          resolveValues: 'auto',
+          noClass: false,
+          isAnimated: false,
         }
+      )
+      const className = runtime.classNames[fixture.property]
+      for (const rule of runtime.rulesToInsert[className]?.[4] ?? []) {
+        expect(output?.styles, `${label}: ${rule}`).toContain(rule)
       }
 
       for (const scenario of fixture.scenarios) {

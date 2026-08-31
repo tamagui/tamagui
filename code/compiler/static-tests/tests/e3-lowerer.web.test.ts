@@ -163,13 +163,13 @@ export const App = () => (
     })
     expect(output.code).toMatch(/<div\s+className="[^"]*\bhost-class\b/)
     const className = output.code.match(/<div\s+className="([^"]+)"/)?.[1] ?? ''
-    expect(className.indexOf('host-class')).toBeGreaterThan(className.indexOf('_pl-14px'))
+    expect(className.indexOf('host-class')).toBeGreaterThan(className.indexOf('_p-'))
     expect(output.code).toContain('t_group_card')
     expect(output.code).toContain('data-sentinel="untouched"')
     expect(output.code).not.toContain('padding={10}')
     expect(output.code).not.toContain('{...override}')
     expect(output.code).not.toContain('group="card"')
-    expect(plan.css).toContain('padding-top:14px')
+    expect(plan.css).toContain('padding:14px')
     expect(plan.css).toContain('@media (hover: hover)')
     expect(plan.css).toContain('@media (min-width: 640px)')
     expect(plan.css).toContain('.t_dark')
@@ -250,8 +250,8 @@ export const App = () => (
     expect(output.code).not.toContain('padding="12px hover:16px"')
     expect(output.code).toContain('<div')
     expect(plan.css).toContain('transition:opacity 150ms ease-out')
-    expect(plan.css).toContain('padding-top:12px')
-    expect(plan.css).toContain('padding-top:16px')
+    expect(plan.css).toContain('padding:12px')
+    expect(plan.css).toContain('padding:16px')
   })
 
   test('extracts static styles while retaining a dynamic style prop on the Tamagui component', () => {
@@ -275,7 +275,7 @@ export const Card = ({ width }) => (
       /<View width=\{width\} className="[^"]+" data-partial="dynamic" \/>/
     )
     expect(output.code).not.toContain('padding={12}')
-    expect(plan.css).toContain('padding-top:12px')
+    expect(plan.css).toContain('padding:12px')
     expect(plan.css).not.toContain('width:')
   })
 
@@ -327,7 +327,7 @@ export const Cards = ({ seed }) => {
     expect(identifierName(unwrapExpression(childNode(properties[1]!, 'value')!))).toBe(
       'color'
     )
-    expect(plan.css).toContain('padding-top:12px')
+    expect(plan.css).toContain('padding:12px')
     expect(plan.css).not.toContain('width:')
     expect(plan.css).not.toContain('background-color:')
 
@@ -340,7 +340,7 @@ export const Card = ({ seed }) => (
 `
     const token = compile(tokenSource)
     expect(token.plan.stats).toMatchObject({ lowered: 1, flattened: 0, bailed: 0 })
-    expect(token.plan.css).toContain('padding-top:12px')
+    expect(token.plan.css).toContain('padding:12px')
   })
 
   test('keeps current transition candidates byte-identical for every animation driver', () => {
@@ -430,7 +430,7 @@ export const Card = ({ width }) => jsx(View, {
     expect(plan.stats).toMatchObject({ lowered: 1, flattened: 0, bailed: 0 })
     expect(output.code).toMatch(/jsx\(View, \{\s*width,\s*className: "[^"]+"/)
     expect(output.code).not.toContain('padding: 12')
-    expect(plan.css).toContain('padding-top:12px')
+    expect(plan.css).toContain('padding:12px')
   })
 
   test('leaves native dynamic candidates byte-identical', () => {
@@ -484,7 +484,7 @@ export const Card = ({ x }) => (
     expect(output.code).toContain('x={x}')
     expect(output.code).not.toContain('transform={[{ scale: 2 }]}')
     expect(output.code).not.toContain('padding={12}')
-    expect(plan.css).toContain('padding-top:12px')
+    expect(plan.css).toContain('padding:12px')
     expect(plan.css).toContain('transform:scale(2)')
   })
 
@@ -526,7 +526,7 @@ export const Card = ({ flex, shadowColor }) => (
     expect(output.code).toContain('shadowColor={shadowColor}')
     expect(output.code).toContain('shadowOffset={{ width: 2, height: 3 }}')
     expect(output.code).not.toContain('padding={12}')
-    expect(plan.css).toContain('padding-top:12px')
+    expect(plan.css).toContain('padding:12px')
     expect(plan.css).not.toContain('flex-basis:')
     expect(plan.css).not.toContain('box-shadow:')
   })
@@ -547,7 +547,7 @@ export const Card = ({ x }) => jsx(View, {
     expect(output.code).toContain('x,')
     expect(output.code).not.toContain('transform: [{ scale: 2 }]')
     expect(output.code).not.toContain('padding: 12')
-    expect(plan.css).toContain('padding-top:12px')
+    expect(plan.css).toContain('padding:12px')
     expect(plan.css).toContain('transform:scale(2)')
   })
 
@@ -580,7 +580,7 @@ export const Card = ({ border, background, outline, gap }) => (
     expect(output.code).toContain('gap={gap}')
     expect(output.code).toContain('rowGap={4}')
     expect(output.code).not.toContain('padding={12}')
-    expect(plan.css).toContain('padding-top:12px')
+    expect(plan.css).toContain('padding:12px')
     expect(plan.css).not.toContain('border-top-width:2px')
     expect(plan.css).not.toContain('background-color:red')
     expect(plan.css).not.toContain('outline-color:blue')
@@ -603,7 +603,7 @@ export const Card = ({ border }) => jsx(View, {
     expect(output.code).toContain('border,')
     expect(output.code).toContain("borderLeftColor: 'red'")
     expect(output.code).not.toContain('padding: 12')
-    expect(plan.css).toContain('padding-top:12px')
+    expect(plan.css).toContain('padding:12px')
     expect(plan.css).not.toContain('border-left-color:red')
   })
 
@@ -645,7 +645,7 @@ export const Card = () => <View {...animated} />
     expect(plan.stats).toMatchObject({ lowered: 1, flattened: 1, bailed: 0 })
     expect(output.changed).toBe(true)
     expect(output.code).not.toContain('{...animated}')
-    expect(plan.css).toContain('padding-top:12px')
+    expect(plan.css).toContain('padding:12px')
     expect(plan.css).toContain('transition:opacity 150ms ease-out')
   })
 
@@ -764,9 +764,9 @@ export const Card = () => (
     expect(output.code).not.toContain('transition="opacity 150ms ease-out"')
     expect(output.code).not.toContain('padding="12px hover:16px"')
     expect(plan.css).toContain('transition:opacity 150ms ease-out')
-    expect(plan.css).toContain('padding-top:12px')
+    expect(plan.css).toContain('padding:12px')
     expect(plan.css).toContain('@media (hover: hover)')
-    expect(plan.css).toContain(':hover{padding-top:16px}')
+    expect(plan.css).toContain(':where(:hover){padding:16px}')
   })
 
   test('lowers a configured CSS transition preset on a dynamic animated component', () => {
@@ -830,12 +830,17 @@ export const Card = () => (
 
     expect(codes(plan)).toEqual([])
     expect(plan.stats).toMatchObject({ lowered: 1, flattened: 1, bailed: 0 })
-    for (const property of ['translate', 'scale', 'rotate']) {
-      const identifier = plan.css.match(
-        new RegExp(`\\.(_[a-z]+-\\d+)\\{${property}:`)
-      )?.[1]
-      expect(identifier, property).toBeTruthy()
+    for (const [property, identifier] of [
+      ['translate', '_t-compose'],
+      ['scale', '_s-compose'],
+    ] as const) {
+      expect(plan.css, property).toContain(`.${identifier}{${property}:`)
       expect(output.code, property).toContain(identifier)
+    }
+    {
+      const identifier = plan.css.match(/\.(_r-\d+)\{rotate:/)?.[1]
+      expect(identifier, 'rotate').toBeTruthy()
+      expect(output.code, 'rotate').toContain(identifier)
     }
     expect(output.code).not.toContain('style=')
   })
@@ -931,12 +936,12 @@ export const App = () => <Card padding={12} data-styled="yes" />
     expect(output.code).toContain('<div className=')
     expect(output.code).toContain('data-styled="yes"')
     expect(output.code).not.toContain('padding={12}')
-    expect(plan.css).toContain('padding-top:12px')
-    expect(plan.css).toContain('margin-top:3px')
+    expect(plan.css).toContain('padding:12px')
+    expect(plan.css).toContain('margin:3px')
     expect(plan.css).toContain('opacity:0.5')
   })
 
-  test('lowers variants and style props in authored forward order', () => {
+  test('keeps the style prop above variants regardless of authored order', () => {
     const source = (props: string) => `
 import { View, styled } from '@tamagui/core'
 const Frame = styled(View, {
@@ -946,8 +951,8 @@ export const App = () => <Frame ${props} />
 `
     const variantLast = compile(source('style={{ opacity: 0.2 }} tone="active"'))
     expect(codes(variantLast.plan)).toEqual([])
-    expect(compactCss(variantLast.plan.css)).toContain('opacity:0.5')
-    expect(compactCss(variantLast.plan.css)).not.toContain('opacity:0.2')
+    expect(compactCss(variantLast.plan.css)).toContain('opacity:0.2')
+    expect(compactCss(variantLast.plan.css)).not.toContain('opacity:0.5')
 
     const styleLast = compile(source('tone="active" style={{ opacity: 0.2 }}'))
     expect(codes(styleLast.plan)).toEqual([])
@@ -983,8 +988,8 @@ export const CreateElementApp = () => createElement(
     expect(output.code).toContain("'child'")
     expect(output.code).not.toContain('padding: 12')
     expect(output.code).not.toContain('padding: 14')
-    expect(plan.css).toContain('padding-top:12px')
-    expect(plan.css).toContain('padding-top:14px')
+    expect(plan.css).toContain('padding:12px')
+    expect(plan.css).toContain('padding:14px')
   })
 
   test('disablePartialExtraction keeps every partial candidate byte-identical', () => {
@@ -1063,8 +1068,8 @@ export const Card = () => jsx(View, {
     expect(output.code).toContain(`'data-inner': 'yes'`)
     expect(output.code).toContain(`'data-testid': 'inner'`)
     expect(output.code).not.toContain('testID')
-    expect(plan.css).toContain('padding-top:12px')
-    expect(plan.css).toContain('margin-top:4px')
+    expect(plan.css).toContain('padding:12px')
+    expect(plan.css).toContain('margin:4px')
   })
 
   test('registry identity is canonical resolved id plus export name', () => {

@@ -455,9 +455,10 @@ test('the gap family resolves to native numbers', () => {
 
 test('program values run through native fixStyles like plain values', () => {
   // borderWidth programs must receive the borderStyle default
-  const result = split({ borderWidth: '1 hover:2' })
-  expect(result.style?.borderTopWidth ?? result.style?.borderWidth).toBeTruthy()
+  const result = split({ borderBottomWidth: '1 hover:2' })
+  expect(result.style?.borderBottomWidth).toBeTruthy()
   expect(result.style?.borderStyle).toBe('solid')
+  expect(result.style).not.toHaveProperty('borderBottomStyle')
 })
 
 test('group clauses read the parent group state and register the subscription', () => {

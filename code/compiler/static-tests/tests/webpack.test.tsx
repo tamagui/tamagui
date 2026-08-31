@@ -147,8 +147,8 @@ describe('webpack-tests', () => {
 
     expect(divOn).toBeTruthy()
     expect(divOff).toBeTruthy()
-    expect(window.getComputedStyle(divOn!).paddingLeft).toBe('')
-    expect(window.getComputedStyle(divOff!).paddingLeft).toBe('var(--c-space-4)')
+    expect(window.getComputedStyle(divOn!).padding).toBe('')
+    expect(window.getComputedStyle(divOff!).padding).toBe('var(--c-space-4)')
   })
 
   test('18. extracts flexWrap property', () => {
@@ -256,7 +256,7 @@ describe('webpack-tests', () => {
     expect(parent).toBeTruthy()
     expect(parent?.hasAttribute('animatedby')).toBe(false)
     expect(parent?.className).toContain('t_group_animated')
-    expect(child?.className).toContain('_bc-')
+    expect(child?.className).toContain('_b-')
     expect(snapshotOf(container)).toMatchSnapshot()
   })
 

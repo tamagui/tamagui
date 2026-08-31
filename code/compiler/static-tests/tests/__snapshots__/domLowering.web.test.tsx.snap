@@ -6,10 +6,10 @@ exports[`DOM elements lower to literal tags through every normalized element for
     import { jsx, jsxs } from 'react/jsx-runtime'
     import { html as h } from '@tamagui/core'
 
-    export const JSXElement = <main className="_mt-1877295985 _mr-1445204022 _mb-541650463 _ml-1541834309 _pt-641603850 _pr-253609487 _pb-581960764 _pl-765350752" id="main"><h1 className="_mt-1877295985 _mr-1445204022 _mb-541650463 _ml-1541834309 _pt-641603850 _pr-253609487 _pb-581960764 _pl-765350752 _fs-1399026576 _fw-1397293930">Title</h1></main>
-    export const JSXCall = jsx("section", { children: 'jsx' , className: "_mt-1877295985 _mr-1445204022 _mb-541650463 _ml-1541834309 _pt-641603850 _pr-253609487 _pb-581960764 _pl-765350752" })
-    export const JSXSCall = jsxs("nav", { children: ['one', jsx("span", { children: 'two' , className: "_mt-1877295985 _mr-1445204022 _mb-541650463 _ml-1541834309 _pt-641603850 _pr-253609487 _pb-581960764 _pl-765350752 _tdl-281247417" })] , className: "_mt-1877295985 _mr-1445204022 _mb-541650463 _ml-1541834309 _pt-641603850 _pr-253609487 _pb-581960764 _pl-765350752" })
-    export const CreateElementCall = createElement("article", { className: "_mt-1877295985 _mr-1445204022 _mb-541650463 _ml-1541834309 _pt-641603850 _pr-253609487 _pb-581960764 _pl-765350752" }, 'named')
-    export const MemberCreateElementCall = React.createElement("footer", { className: "_mt-1877295985 _mr-1445204022 _mb-541650463 _ml-1541834309 _pt-641603850 _pr-253609487 _pb-581960764 _pl-765350752" }, 'member')
+    export const JSXElement = <main className="_m-2017216831 _p-1943363302" id="main"><h1 className="_m-2017216831 _p-1943363302 _fs-1289474947 _fw-375620055">Title</h1></main>
+    export const JSXCall = jsx("section", { children: 'jsx' , className: "_m-2017216831 _p-1943363302" })
+    export const JSXSCall = jsxs("nav", { children: ['one', jsx("span", { children: 'two' , className: "_m-2017216831 _p-1943363302 _td-1861836084" })] , className: "_m-2017216831 _p-1943363302" })
+    export const CreateElementCall = createElement("article", { className: "_m-2017216831 _p-1943363302" }, 'named')
+    export const MemberCreateElementCall = React.createElement("footer", { className: "_m-2017216831 _p-1943363302" }, 'member')
 "
 `;

@@ -18,9 +18,7 @@ test('standalone style handles lower without a runtime style call', async () => 
   expect(output.js).not.toContain('<html.main')
   expect(output.js).not.toContain('style({')
   expect(output.styles).toContain('color:red')
-  for (const side of ['top', 'right', 'bottom', 'left']) {
-    expect(output.styles).toContain(`padding-${side}:4px`)
-  }
+  expect(output.styles).toContain('padding:4px')
 })
 
 test('standalone inline, array and conditional handles compose in compiled calls', async () => {
@@ -57,7 +55,7 @@ test('standalone handles share Tamagui pseudo, media and theme lowering', async 
 
   expect(output.diagnostics).toEqual([])
   expect(output.styles).toContain('@media (hover: hover)')
-  expect(output.styles).toContain(':hover{opacity:0.5}')
+  expect(output.styles).toContain(':where(:hover){opacity:0.5}')
   expect(output.styles).toContain('@media (min-width: 640px)')
   expect(output.styles).toContain(':where(.t_dark, .t_dark *)')
 })
