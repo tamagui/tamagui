@@ -3432,21 +3432,7 @@ function contributeStyleString(
   return true
 }
 
-// a flat conditional object either names a `default` or opens with a
-// resolvable modifier chain; anything else is a structured leaf value
-// (shadowOffset) and stays whole. only the first key is probed, the same way
-// the string scanner commits at its first clause
 function contributeStyleObject(
-  state: GetStyleState,
-  property: string,
-  value: Record<string, any>,
-  merge: MergeStyle,
-  contextOnly: boolean
-) {
-  return contributeStyleObjectInner(state, property, value, merge, contextOnly)
-}
-
-function contributeStyleObjectInner(
   state: GetStyleState,
   property: string,
   value: Record<string, any>,
