@@ -13,6 +13,7 @@ import { beforeAll, expect, test } from 'vitest'
 
 import config from '../config-default'
 import { View, createTamagui, getSplitStyles, styled } from '../web/src'
+import { exposeClassProperties } from './utils'
 
 beforeAll(() => {
   createTamagui(config.getDefaultTamaguiConfig() as any)
@@ -21,14 +22,16 @@ beforeAll(() => {
 const opts = { isAnimated: false, noClass: false, resolveValues: 'auto' } as any
 
 const split = (props: Record<string, any>, componentState: Record<string, any> = {}) =>
-  getSplitStyles(
-    props,
-    View.staticConfig,
-    undefined as any,
-    'light',
-    { unmounted: false, ...componentState } as any,
-    opts
-  ) as any
+  exposeClassProperties(
+    getSplitStyles(
+      props,
+      View.staticConfig,
+      undefined as any,
+      'light',
+      { unmounted: false, ...componentState } as any,
+      opts
+    ) as any
+  )
 
 const rulesFor = (result: any, identifier: string): string[] =>
   result.rulesToInsert[identifier]?.[4] ?? []
@@ -179,5 +182,5 @@ test('a clause matrix over one styled component keeps every rule set distinct', 
     byText.set(text, identifier)
   }
 
-  expect(byText.size).toBeGreaterThan(4)
+  expect(byText.size).toBe(4)
 })

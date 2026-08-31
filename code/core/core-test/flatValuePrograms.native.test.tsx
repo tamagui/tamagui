@@ -705,12 +705,13 @@ test('an inactive call-site shorthand program clears every styled longhand', () 
     { mergeDefaultProps: true }
   )
 
-  expect(result.style).not.toHaveProperty('borderTopWidth')
-  expect(result.style).not.toHaveProperty('borderStyle')
-  expect(result.style).not.toHaveProperty('borderTopColor')
-  expect(result.style).not.toHaveProperty('textDecorationLine')
-  expect(result.style).not.toHaveProperty('textDecorationStyle')
-  expect(result.style).not.toHaveProperty('textDecorationColor')
+  const style = result.style || {}
+  expect(style).not.toHaveProperty('borderTopWidth')
+  expect(style).not.toHaveProperty('borderStyle')
+  expect(style).not.toHaveProperty('borderTopColor')
+  expect(style).not.toHaveProperty('textDecorationLine')
+  expect(style).not.toHaveProperty('textDecorationStyle')
+  expect(style).not.toHaveProperty('textDecorationColor')
 })
 
 test('geometric shorthand payloads distribute by slot on native', () => {

@@ -7,6 +7,7 @@ import { describe, expect, test } from 'vitest'
 
 import config from '../config-default'
 import { TamaguiProvider, Text, View, createTamagui, getSplitStyles } from '../web/src'
+import { exposeClassProperties } from './utils'
 
 /**
  * Program blocks under streaming SSR.
@@ -25,17 +26,19 @@ import { TamaguiProvider, Text, View, createTamagui, getSplitStyles } from '../w
  */
 
 const split = (props: Record<string, any>) =>
-  getSplitStyles(
-    props,
-    Text.staticConfig,
-    undefined as any,
-    'light',
-    { unmounted: false } as any,
-    {
-      isAnimated: false,
-      noClass: false,
-      resolveValues: 'auto',
-    } as any
+  exposeClassProperties(
+    getSplitStyles(
+      props,
+      Text.staticConfig,
+      undefined as any,
+      'light',
+      { unmounted: false } as any,
+      {
+        isAnimated: false,
+        noClass: false,
+        resolveValues: 'auto',
+      } as any
+    )
   )
 
 const rulesFor = (result: any, identifier: string): string[] =>

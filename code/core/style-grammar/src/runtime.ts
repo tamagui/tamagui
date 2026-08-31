@@ -39,9 +39,11 @@ export {
 export { splitColorOpacitySuffix, type ColorOpacitySuffix } from './runtime/colorOpacity'
 export { getSafeAreaEdge, safeAreaVariableNames } from './runtime/safeAreaVariables'
 export {
+  parseFlatValue,
   scanFlatValue,
   type FlatScanErrorCode,
   type FlatValueHandler,
+  type ParsedFlatValue,
 } from './runtime/scanFlatValue'
 export {
   canonicalStateModifierNames,

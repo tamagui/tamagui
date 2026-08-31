@@ -138,8 +138,7 @@ describe('static-resolve entry', () => {
 
     const result = resolveStaticElement(element, 'web')
     expect(result.ok).toBe(true)
-    // padding (4) + borderRadius (4) + backgroundColor (1) = 9 rules
-    expect(result.rules!.length).toBe(9)
+    expect(result.rules!.length).toBe(3)
   })
 
   test('preserves non-style props in viewProps and includes is_View class', () => {

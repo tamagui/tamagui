@@ -15,7 +15,7 @@ const cssFor = (props: Record<string, any>) =>
   )
 
 // strip the generated atomic identifier so two values that differ only by hash compare equal
-const shape = (css: string[]) => css.map((rule) => rule.replace(/_bc-\d+/g, '_bc'))
+const shape = (css: string[]) => css.map((rule) => rule.replace(/_b-\d+/g, '_b'))
 
 describe('clause order inside a value', () => {
   test('writing a clause later does not make it win', () => {
@@ -29,15 +29,15 @@ describe('clause order inside a value', () => {
 
   test('state is emitted after media so it wins the cascade', () => {
     expect(shape(cssFor({ bg: 'red hover:blue sm:green' }))).toEqual([
-      '._bc{background-color:red}',
-      '@media (max-width: 800px) {._bc{background-color:green}}',
-      '@media (hover: hover) {._bc:where(:hover){background-color:blue}}',
+      '._b{background-color:red}',
+      '@media (max-width: 800px) {._b{background-color:green}}',
+      '@media (hover: hover) {._b:where(:hover){background-color:blue}}',
     ])
   })
 
   test('native-only platform clauses contribute nothing on web', () => {
     expect(shape(cssFor({ bg: 'red ios:blue native:green' }))).toEqual([
-      '._bc{background-color:red}',
+      '._b{background-color:red}',
     ])
   })
 })

@@ -19,18 +19,20 @@ import {
   type FlatValueFixtureConditions,
   type FlatValuePrecedenceFixture,
 } from './flatValuePrecedenceFixtures'
-import { simplifiedGetSplitStyles } from './utils'
+import { exposeClassProperties, simplifiedGetSplitStyles } from './utils'
 
 const opts = { isAnimated: false, noClass: false, resolveValues: 'auto' } as any
 
 const split = (props: Record<string, any>) =>
-  getSplitStyles(
-    props,
-    Text.staticConfig,
-    undefined as any,
-    'light',
-    { unmounted: false } as any,
-    opts
+  exposeClassProperties(
+    getSplitStyles(
+      props,
+      Text.staticConfig,
+      undefined as any,
+      'light',
+      { unmounted: false } as any,
+      opts
+    )
   )
 
 const rulesFor = (result: any, identifier: string): string[] =>
@@ -235,10 +237,7 @@ describe('flat value program SSR', () => {
     const serverSplit = split(initialProps)
     const programClasses = [
       serverSplit.classNames.backgroundColor,
-      serverSplit.classNames.paddingTop,
-      serverSplit.classNames.paddingRight,
-      serverSplit.classNames.paddingBottom,
-      serverSplit.classNames.paddingLeft,
+      serverSplit.classNames.padding,
     ]
 
     for (const className of programClasses) {

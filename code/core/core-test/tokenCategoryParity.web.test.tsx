@@ -8,6 +8,7 @@ import { beforeAll, expect, test } from 'vitest'
 import config from '../config-default'
 import { Text, View, createTamagui, getSplitStyles } from '../web/src'
 import { getTokenCategoryForProperty } from '../web/src/helpers/tokenCategories'
+import { exposeClassProperties } from './utils'
 
 beforeAll(() => {
   createTamagui(config.getDefaultTamaguiConfig() as any)
@@ -16,13 +17,15 @@ beforeAll(() => {
 const opts = { isAnimated: false, noClass: false, resolveValues: 'auto' } as any
 
 const split = (props: Record<string, any>, staticConfig = View.staticConfig) =>
-  getSplitStyles(
-    props,
-    staticConfig,
-    undefined as any,
-    'light',
-    { unmounted: false } as any,
-    opts
+  exposeClassProperties(
+    getSplitStyles(
+      props,
+      staticConfig,
+      undefined as any,
+      'light',
+      { unmounted: false } as any,
+      opts
+    )
   )
 
 const rulesFor = (result: any, identifier: string): string[] =>
@@ -30,31 +33,18 @@ const rulesFor = (result: any, identifier: string): string[] =>
 
 test('borderWidth binds the space category like the tooling says it does', () => {
   const result = split({ borderWidth: '4' })
-  expect(rulesFor(result, result.classNames.borderStyle).join('')).toContain(
-    'border-style:solid'
-  )
-  for (const longhand of [
-    'borderTopWidth',
-    'borderRightWidth',
-    'borderBottomWidth',
-    'borderLeftWidth',
-  ]) {
-    const className = result.classNames[longhand]
-    expect(className, longhand).toBeTruthy()
-    const [rule] = rulesFor(result, className)
-    expect(rule, longhand).toContain('var(--')
-  }
+  const rules = rulesFor(result, result.classNames.borderWidth).join('')
+  expect(rules).toContain('border-style:solid')
+  expect(rules).toContain('border-width:var(--')
 })
 
 test('a side border width binds the space category on its own', () => {
   const result = split({ borderTopWidth: '4' })
   const className = result.classNames.borderTopWidth
   expect(className).toBeTruthy()
-  const [rule] = rulesFor(result, className)
-  expect(rule).toContain('var(--')
-  expect(rulesFor(result, result.classNames.borderTopStyle).join('')).toContain(
-    'border-top-style:solid'
-  )
+  const rules = rulesFor(result, className).join('')
+  expect(rules).toContain('border-top-width:var(--')
+  expect(rules).toContain('border-top-style:solid')
 
   const explicit = split({ borderTopWidth: 'hover:4', borderTopStyle: 'dashed' })
   const styleRules = rulesFor(explicit, explicit.classNames.borderTopStyle).join('')

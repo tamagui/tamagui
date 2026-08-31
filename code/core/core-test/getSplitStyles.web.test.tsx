@@ -12,7 +12,7 @@ import {
 } from '../web/src'
 import { getSplitStyles } from '../web/src'
 import { defaultComponentState } from '../web/src/defaultComponentState'
-import { simplifiedGetSplitStyles } from './utils'
+import { getStyleValue, rulesForProperty, simplifiedGetSplitStyles } from './utils'
 
 beforeAll(() => {
   createTamagui(config.getDefaultTamaguiConfig())
@@ -108,54 +108,36 @@ describe('getSplitStyles', () => {
 
   test(`prop "paddingTop" value "safe" becomes env(safe-area-inset-top)`, () => {
     const out = simplifiedGetSplitStyles(View, { paddingTop: 'safe' })
-    const rule = Object.values(out.rulesToInsert).find(
-      (r) => r[StyleObjectProperty] === 'paddingTop'
-    )
-    expect(rule?.[StyleObjectValue]).toEqual('env(safe-area-inset-top)')
+    expect(getStyleValue(out, 'paddingTop')).toEqual('env(safe-area-inset-top)')
   })
 
   test(`prop "padding" value "safe" expands to 4 per-side env() values`, () => {
     const out = simplifiedGetSplitStyles(View, { padding: 'safe' })
-    const byProp: Record<string, string> = {}
-    for (const rule of Object.values(out.rulesToInsert)) {
-      byProp[rule[StyleObjectProperty] as string] = rule[StyleObjectValue] as string
-    }
-    expect(byProp.paddingTop).toEqual('env(safe-area-inset-top)')
-    expect(byProp.paddingRight).toEqual('env(safe-area-inset-right)')
-    expect(byProp.paddingBottom).toEqual('env(safe-area-inset-bottom)')
-    expect(byProp.paddingLeft).toEqual('env(safe-area-inset-left)')
+    expect(getStyleValue(out, 'paddingTop')).toEqual('env(safe-area-inset-top)')
+    expect(getStyleValue(out, 'paddingRight')).toEqual('env(safe-area-inset-right)')
+    expect(getStyleValue(out, 'paddingBottom')).toEqual('env(safe-area-inset-bottom)')
+    expect(getStyleValue(out, 'paddingLeft')).toEqual('env(safe-area-inset-left)')
   })
 
   test(`prop "inset" value "safe" expands to top/right/bottom/left env() values`, () => {
     const out = simplifiedGetSplitStyles(View, { inset: 'safe' })
-    const byProp: Record<string, string> = {}
-    for (const rule of Object.values(out.rulesToInsert)) {
-      byProp[rule[StyleObjectProperty] as string] = rule[StyleObjectValue] as string
-    }
-    expect(byProp.top).toEqual('env(safe-area-inset-top)')
-    expect(byProp.right).toEqual('env(safe-area-inset-right)')
-    expect(byProp.bottom).toEqual('env(safe-area-inset-bottom)')
-    expect(byProp.left).toEqual('env(safe-area-inset-left)')
+    expect(getStyleValue(out, 'top')).toEqual('env(safe-area-inset-top)')
+    expect(getStyleValue(out, 'right')).toEqual('env(safe-area-inset-right)')
+    expect(getStyleValue(out, 'bottom')).toEqual('env(safe-area-inset-bottom)')
+    expect(getStyleValue(out, 'left')).toEqual('env(safe-area-inset-left)')
   })
 
   test(`shorthand "pt" value "safe" becomes paddingTop env(safe-area-inset-top)`, () => {
     const out = simplifiedGetSplitStyles(View, { pt: 'safe' })
-    const rule = Object.values(out.rulesToInsert).find(
-      (r) => r[StyleObjectProperty] === 'paddingTop'
-    )
-    expect(rule?.[StyleObjectValue]).toEqual('env(safe-area-inset-top)')
+    expect(getStyleValue(out, 'paddingTop')).toEqual('env(safe-area-inset-top)')
   })
 
   test(`prop "paddingHorizontal" value "safe" only emits left+right`, () => {
     const out = simplifiedGetSplitStyles(View, { paddingHorizontal: 'safe' })
-    const byProp: Record<string, string> = {}
-    for (const rule of Object.values(out.rulesToInsert)) {
-      byProp[rule[StyleObjectProperty] as string] = rule[StyleObjectValue] as string
-    }
-    expect(byProp.paddingLeft).toEqual('env(safe-area-inset-left)')
-    expect(byProp.paddingRight).toEqual('env(safe-area-inset-right)')
-    expect(byProp.paddingTop).toBeUndefined()
-    expect(byProp.paddingBottom).toBeUndefined()
+    expect(getStyleValue(out, 'paddingLeft')).toEqual('env(safe-area-inset-left)')
+    expect(getStyleValue(out, 'paddingRight')).toEqual('env(safe-area-inset-right)')
+    expect(getStyleValue(out, 'paddingTop')).toBeUndefined()
+    expect(getStyleValue(out, 'paddingBottom')).toBeUndefined()
   })
 
   test(`font props get the font family, regardless of the order`, () => {
@@ -229,11 +211,7 @@ describe('getSplitStyles', () => {
 
     // single color values normalize to backgroundColor
     const color = simplifiedGetSplitStyles(View, { background: 'red' })
-    expect(
-      Object.values(color.rulesToInsert).find(
-        (rule) => rule[StyleObjectProperty] === 'backgroundColor'
-      )?.[StyleObjectValue]
-    ).toBe('red')
+    expect(getStyleValue(color, 'backgroundColor')).toBe('red')
   })
 
   test(`light and dark theme clauses generate the correct CSS selectors`, () => {
@@ -245,7 +223,7 @@ describe('getSplitStyles', () => {
 
     // Check the entire structure for expected values
     const lightThemeString = JSON.stringify(lightThemeStyles.rulesToInsert)
-    expect(lightThemeString).toContain('backgroundColor')
+    expect(lightThemeString).toContain('background-color')
     expect(lightThemeString).toContain('white')
     expect(lightThemeString).toContain('light')
 
@@ -267,7 +245,7 @@ describe('getSplitStyles', () => {
 
     // Check the entire structure for expected values
     const darkThemeString = JSON.stringify(darkThemeStyles.rulesToInsert)
-    expect(darkThemeString).toContain('backgroundColor')
+    expect(darkThemeString).toContain('background-color')
     expect(darkThemeString).toContain('black')
     expect(darkThemeString).toContain('dark')
 
@@ -291,7 +269,7 @@ describe('getSplitStyles', () => {
 
     // Check the entire structure for expected values
     const combinedThemeString = JSON.stringify(combinedThemeStyles.rulesToInsert)
-    expect(combinedThemeString).toContain('backgroundColor')
+    expect(combinedThemeString).toContain('background-color')
     expect(combinedThemeString).toContain('white')
     expect(combinedThemeString).toContain('black')
     expect(combinedThemeString).toContain('light')
@@ -490,7 +468,7 @@ describe('getSplitStyles', () => {
     // converted to a program: a container query on the frame group, anchored
     // on the subject's program class
     expect(rule).toContain('@container frame')
-    expect(rule).toMatch(/\._pr-\d+/)
+    expect(rule).toMatch(/\._p-\d+/)
     // should not have the media key as a pseudo selector
     expect(rule).not.toContain(':sm')
   })
@@ -755,7 +733,7 @@ describe('getSplitStyles - flat clause merging', () => {
     })
     // The inline restatement replaces the variant's clause.
     const className = styles.classNames.backgroundColor
-    expect(className).toMatch(/^_bc-/)
+    expect(className).toMatch(/^_b-/)
     const rules = (styles.rulesToInsert[className]?.[StyleObjectRules] ?? []).join('')
     expect(rules).toContain(':active')
     expect(rules).toContain('red')
@@ -767,7 +745,7 @@ describe('getSplitStyles - flat clause merging', () => {
       variant: 'prim',
     })
     const className = styles.classNames.backgroundColor
-    expect(className).toMatch(/^_bc-/)
+    expect(className).toMatch(/^_b-/)
     const rules = (styles.rulesToInsert[className]?.[StyleObjectRules] ?? []).join('')
     expect(rules).toContain(':active')
     expect(rules).toContain('blue')
@@ -802,7 +780,7 @@ describe('getSplitStyles - kebab-case media keys', () => {
 
     // converted to a program: a pure container query needs no group selector
     expect(rule).toContain('@container frame')
-    expect(rule).toMatch(/\._pr-\d+/)
+    expect(rule).toMatch(/\._p-\d+/)
     // should NOT have :max as a pseudo selector - this was the bug
     expect(rule).not.toContain(':max')
     expect(rule).not.toContain(':max-md')

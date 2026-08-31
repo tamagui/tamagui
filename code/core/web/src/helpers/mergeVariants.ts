@@ -5,61 +5,41 @@ function mergeVariantValues(earlier: unknown, later: unknown): unknown {
   if (typeof earlier !== 'string' || typeof later !== 'string') return later
   if (!earlier.includes(':') && !later.includes(':')) return later
 
-  const getSlot = (chain: string) => {
-    return chain
-      .split(':')
-      .map((m) => {
-        if (m === 'active') return 'press'
-        if (m.startsWith('group-active')) return m.replace('group-active', 'group-press')
-        return m
-      })
-      .sort()
-      .filter((m, i, arr) => i === 0 || m !== arr[i - 1])
-      .join(':')
+  const getSlot = (token: string, colon: number) => {
+    const slot: string[] = []
+    for (let modifier of token.slice(0, colon).split(':')) {
+      if (modifier === 'active') modifier = 'press'
+      else if (modifier.startsWith('group-active')) {
+        modifier = modifier.replace('group-active', 'group-press')
+      }
+      let index = 0
+      while (index < slot.length && slot[index] < modifier) index++
+      if (slot[index] !== modifier) slot.splice(index, 0, modifier)
+    }
+    return slot.join(':')
   }
 
-  const parseTokens = (str: string) => {
-    const tokens = str.trim().split(/\s+/).filter(Boolean)
-    let base: string | null = null
-    const clauses: { slot: string; full: string }[] = []
-    let malformed = false
-    for (const token of tokens) {
-      const lastColon = token.lastIndexOf(':')
-      if (lastColon === -1) {
-        base = token
-      } else {
-        const payload = token.slice(lastColon + 1)
-        if (!payload) {
-          malformed = true
+  const clauses = new Map<string, string>()
+  let base: string | undefined
+  const add = (source: string, reject: boolean) => {
+    for (const token of source.trim().split(/\s+/)) {
+      const colon = token.lastIndexOf(':')
+      if (colon === -1) base = token
+      else {
+        if (colon === token.length - 1) {
+          if (reject) return false
           continue
         }
-        const chain = token.slice(0, lastColon)
-        clauses.push({ slot: getSlot(chain), full: token })
+        const slot = getSlot(token, colon)
+        clauses.delete(slot)
+        clauses.set(slot, token)
       }
     }
-    return { base, clauses, malformed }
+    return true
   }
-
-  const l = parseTokens(later)
-  if (l.malformed) return later
-
-  const e = parseTokens(earlier)
-
-  const parts: string[] = []
-  const base = l.base !== null ? l.base : e.base
-  if (base !== null) parts.push(base)
-
-  const laterSlots = new Set(l.clauses.map((c) => c.slot))
-  for (const c of e.clauses) {
-    if (!laterSlots.has(c.slot)) {
-      parts.push(c.full)
-    }
-  }
-  for (const c of l.clauses) {
-    parts.push(c.full)
-  }
-
-  return parts.join(' ')
+  add(earlier, false)
+  if (!add(later, true)) return later
+  return [base, ...clauses.values()].filter(Boolean).join(' ')
 }
 
 // same key ordering as mergeProps (parent keys first, then ours), but a key
@@ -68,11 +48,7 @@ function mergeStyleBranch(
   parentBranch: Record<string, any>,
   ourBranch: Record<string, any>
 ) {
-  const out: Record<string, any> = {}
-  for (const key in parentBranch) {
-    if (key in ourBranch) continue
-    out[key] = parentBranch[key]
-  }
+  const out: Record<string, any> = { ...parentBranch }
   for (const key in ourBranch) {
     out[key] =
       key in parentBranch
@@ -94,7 +70,7 @@ export const mergeVariants = (
     return ourVariants || {}
   }
 
-  const variants: Record<string, any> = {}
+  const variants: Record<string, any> = { ...parentVariants }
 
   for (const key in ourVariants) {
     const parentVariant = parentVariants?.[key]
@@ -110,8 +86,5 @@ export const mergeVariants = (
     }
   }
 
-  return {
-    ...parentVariants,
-    ...variants,
-  }
+  return variants
 }

@@ -13,7 +13,7 @@ import {
   type FlatValueFixtureConditions,
   type FlatValuePrecedenceFixture,
 } from './flatValuePrecedenceFixtures'
-import { simplifiedGetSplitStyles } from './utils'
+import { exposeClassProperties, simplifiedGetSplitStyles } from './utils'
 
 beforeAll(() => {
   createTamagui(config.getDefaultTamaguiConfig() as any)
@@ -22,15 +22,17 @@ beforeAll(() => {
 const opts = { isAnimated: false, noClass: false, resolveValues: 'auto' } as any
 
 const split = (props: Record<string, any>) =>
-  getSplitStyles(
-    props,
-    View.staticConfig,
-    undefined as any,
-    'light',
-    {
-      unmounted: false,
-    } as any,
-    opts
+  exposeClassProperties(
+    getSplitStyles(
+      props,
+      View.staticConfig,
+      undefined as any,
+      'light',
+      {
+        unmounted: false,
+      } as any,
+      opts
+    )
   )
 
 const rulesFor = (result: any, identifier: string): string[] =>
@@ -108,7 +110,7 @@ for (const fixture of flatValuePrecedenceFixtures) {
 test('a clause value lowers to one program block', () => {
   const result = split({ backgroundColor: 'red hover:blue' })
   const className = result.classNames.backgroundColor
-  expect(className).toMatch(/^_bc-/)
+  expect(className).toMatch(/^_b-/)
   const rules = rulesFor(result, className)
   expect(rules).toHaveLength(2)
   expect(rules[0]).toBe(`.${className}{background-color:red}`)
@@ -258,15 +260,11 @@ test('a null first nested condition does not lend its condition to the next entr
 
 test('tokens resolve to variables and media clauses wrap', () => {
   const result = split({ p: '4 sm:6' })
-  // padding expands to four longhand programs
-  for (const longhand of ['paddingTop', 'paddingRight', 'paddingBottom', 'paddingLeft']) {
-    const className = result.classNames[longhand]
-    expect(className, longhand).toBeTruthy()
-    const rules = rulesFor(result, className)
-    expect(rules).toHaveLength(2)
-    expect(rules[0]).toContain('var(--')
-    expect(rules[1]).toMatch(/^@media /)
-  }
+  const className = result.classNames.padding
+  const rules = rulesFor(result, className)
+  expect(rules).toHaveLength(2)
+  expect(rules[0]).toContain('padding:var(--')
+  expect(rules[1]).toMatch(/^@media /)
 })
 
 test('bare tokens resolve in conditional flat values', () => {
@@ -278,18 +276,11 @@ test('bare tokens resolve in conditional flat values', () => {
   ])
 
   const padding = split({ padding: '4 hover:8' })
-  for (const [longhand, cssProperty] of [
-    ['paddingTop', 'padding-top'],
-    ['paddingRight', 'padding-right'],
-    ['paddingBottom', 'padding-bottom'],
-    ['paddingLeft', 'padding-left'],
-  ] as const) {
-    const className = padding.classNames[longhand]
-    expect(rulesFor(padding, className), longhand).toEqual([
-      `.${className}{${cssProperty}:var(--t-space-4)}`,
-      `@media (hover: hover) {.${className}:where(:hover){${cssProperty}:var(--t-space-8)}}`,
-    ])
-  }
+  const paddingClass = padding.classNames.padding
+  expect(rulesFor(padding, paddingClass)).toEqual([
+    `.${paddingClass}{padding:var(--t-space-4)}`,
+    `@media (hover: hover) {.${paddingClass}:where(:hover){padding:var(--t-space-8)}}`,
+  ])
 
   const background = split({ background: 'white hover:black' })
   const backgroundClass = background.classNames.backgroundColor
@@ -318,7 +309,7 @@ test('variant props resolve each conditional flat-value branch', () => {
     }
   )
   expect(compact.style?.height).toBe(20)
-  expect(compact.style?.paddingLeft).toBe(8)
+  expect(compact.style?.paddingInline).toBe(8)
 
   const roomy = simplifiedGetSplitStyles(
     Frame,
@@ -330,7 +321,7 @@ test('variant props resolve each conditional flat-value branch', () => {
     }
   )
   expect(roomy.style?.height).toBe(40)
-  expect(roomy.style?.paddingLeft).toBe(16)
+  expect(roomy.style?.paddingInline).toBe(16)
 })
 
 test('nested variant clauses keep array payloads via the object form', () => {
@@ -407,7 +398,7 @@ test('variant props accept the flat object spelling', () => {
     noClass: true,
   })
   expect(compact.style?.height).toBe(20)
-  expect(compact.style?.paddingLeft).toBe(8)
+  expect(compact.style?.paddingInline).toBe(8)
 
   const roomy = simplifiedGetSplitStyles(Frame, objectProp, {
     mediaState: { sm: true },
@@ -415,7 +406,7 @@ test('variant props accept the flat object spelling', () => {
     noClass: true,
   })
   expect(roomy.style?.height).toBe(40)
-  expect(roomy.style?.paddingLeft).toBe(16)
+  expect(roomy.style?.paddingInline).toBe(16)
 
   // a functional variant's own object argument is not a conditional object
   const fn = simplifiedGetSplitStyles(
@@ -423,7 +414,7 @@ test('variant props accept the flat object spelling', () => {
     { pad: { x: 12 } },
     { mergeDefaultProps: true, noClass: true }
   )
-  expect(fn.style?.paddingLeft).toBe(12)
+  expect(fn.style?.paddingInline).toBe(12)
 })
 
 test('an unknown bare lookup miss stays literal on web', () => {
@@ -448,30 +439,17 @@ test('an unknown bare lookup miss stays literal on web', () => {
 
 test('bare tokens reach conditional border-family splitting intact', () => {
   const result = split({ border: '4 solid white hover:8 dashed black' })
-
-  const widthClass = result.classNames.borderTopWidth
-  expect(rulesFor(result, widthClass)).toEqual([
-    `.${widthClass}{border-top-width:var(--t-space-4)}`,
-    `@media (hover: hover) {.${widthClass}:where(:hover){border-top-width:var(--t-space-8)}}`,
-  ])
-
-  const styleClass = result.classNames.borderTopStyle
-  expect(rulesFor(result, styleClass)).toEqual([
-    `.${styleClass}{border-top-style:solid}`,
-    `@media (hover: hover) {.${styleClass}:where(:hover){border-top-style:dashed}}`,
-  ])
-
-  const colorClass = result.classNames.borderTopColor
-  expect(rulesFor(result, colorClass)).toEqual([
-    `.${colorClass}{border-top-color:var(--c-white)}`,
-    `@media (hover: hover) {.${colorClass}:where(:hover){border-top-color:var(--c-black)}}`,
+  const className = result.classNames.border
+  expect(rulesFor(result, className)).toEqual([
+    `.${className}{border:var(--t-space-4) solid var(--c-white)}`,
+    `@media (hover: hover) {.${className}:where(:hover){border:var(--t-space-8) dashed var(--c-black)}}`,
   ])
 })
 
 test('a later plain value restates the base; the hover survives (decision 21)', () => {
   const result = split({ backgroundColor: 'red hover:blue', bg: 'green' })
   const className = result.classNames.backgroundColor
-  expect(className).toMatch(/^_bc-/)
+  expect(className).toMatch(/^_b-/)
   const rules = rulesFor(result, className)
   expect(rules[0]).toBe(`.${className}{background-color:green}`)
   expect(rules[1]).toBe(
@@ -481,7 +459,7 @@ test('a later plain value restates the base; the hover survives (decision 21)', 
 
 test('a later program replaces the plain value wholesale', () => {
   const result = split({ bg: 'green', backgroundColor: 'red hover:blue' })
-  expect(result.classNames.backgroundColor).toMatch(/^_bc-/)
+  expect(result.classNames.backgroundColor).toMatch(/^_b-/)
   expect(result.style?.backgroundColor).toBeUndefined()
 })
 
@@ -489,17 +467,14 @@ test('clause-free strings are base-only programs resolving config-first', () => 
   // a plain CSS value becomes a base-only program block
   const result = split({ backgroundColor: 'red' })
   const className = result.classNames.backgroundColor
-  expect(className).toMatch(/^_bc-/)
+  expect(className).toMatch(/^_b-/)
   expect(rulesFor(result, className)).toEqual([`.${className}{background-color:red}`])
 
   // a configured bare numeric string resolves through the token category
   // (`p="4"` is the space token exactly like `p="4"` was)
   const tokens = split({ p: '4' })
-  for (const longhand of ['paddingTop', 'paddingRight', 'paddingBottom', 'paddingLeft']) {
-    const tokenClass = tokens.classNames[longhand]
-    expect(tokenClass, longhand).toBeTruthy()
-    expect(rulesFor(tokens, tokenClass)[0]).toContain('var(--')
-  }
+  const tokenClass = tokens.classNames.padding
+  expect(rulesFor(tokens, tokenClass)[0]).toContain('padding:var(--')
 })
 
 test('a configured name wins over the same-spelled CSS literal', () => {
@@ -586,7 +561,7 @@ test('aspectRatio colon values pass through; other parse failures warn in dev', 
     // what keying the warning on the property alone used to swallow
     warn.mockClear()
     const second = split({ backgroundColor: 'red fcus:blue' })
-    expect(second.classNames.backgroundColor).toMatch(/^_bc-/)
+    expect(second.classNames.backgroundColor).toMatch(/^_b-/)
     expect(warn.mock.calls.map(String).join('\n')).toContain('fcus')
   } finally {
     process.env.NODE_ENV = previousNodeEnv
@@ -596,9 +571,8 @@ test('aspectRatio colon values pass through; other parse failures warn in dev', 
 
 test('a program displaces a uniform geometric shorthand per longhand', () => {
   const result = split({ padding: 10, paddingTop: '4 hover:8' })
-  expect(result.classNames.paddingTop).toMatch(/^_pt-/)
-  // the other three sides survive as plain values
-  expect(result.style?.paddingRight ?? result.classNames.paddingRight).toBeTruthy()
+  expect(result.classNames.paddingTop).toMatch(/^_p-/)
+  expect(result.classNames.padding).toBeTruthy()
   expect(result.style?.paddingTop).toBeUndefined()
 })
 
@@ -659,7 +633,7 @@ test('the style prop replaces a direct property program', () => {
     style: { backgroundColor: 'green' },
   })
   const className = result.classNames.backgroundColor
-  expect(className).toMatch(/^_bc-/)
+  expect(className).toMatch(/^_b-/)
   const rules = rulesFor(result, className)
   expect(rules).toEqual([`.${className}{background-color:green}`])
 })
@@ -688,9 +662,12 @@ test('direct properties replace styled and variant property programs', () => {
 
   const paddingLeftClass = callSiteLast.classNames.paddingLeft
   const paddingLeftRules = rulesFor(callSiteLast, paddingLeftClass)
-  expect(paddingLeftRules).toEqual([
-    `.${paddingLeftClass}{padding-left:var(--t-space-1)}`,
-  ])
+  expect(paddingLeftRules.some((rule) => rule.includes('padding:var(--t-space-2)'))).toBe(
+    true
+  )
+  expect(
+    paddingLeftRules.some((rule) => rule.includes('padding-left:var(--t-space-1)'))
+  ).toBe(true)
 
   const variantLastCallSite = <Frame {...{ bg: 'red' }} tone="danger" />
   const variantLast = simplifiedGetSplitStyles(Frame, variantLastCallSite.props, {
@@ -743,13 +720,10 @@ test('a multi-value shorthand expands per side when a program takes one side', (
     style: { padding: '10px 20px' },
     paddingTop: '4 hover:8',
   })
-  expect(result.classNames.paddingTop).toMatch(/^_pt-/)
-  const flat = { ...result.style }
-  const lookup = (k: string) => flat[k] ?? result.classNames[k]
-  expect(lookup('paddingRight')).toBeTruthy()
-  expect(lookup('paddingBottom')).toBeTruthy()
-  expect(lookup('paddingLeft')).toBeTruthy()
-  expect(lookup('padding')).toBeFalsy()
+  expect(result.classNames.paddingTop).toMatch(/^_p-/)
+  const rules = rulesFor(result, result.classNames.padding)
+  expect(rules.some((rule) => rule.includes('padding:10px 20px'))).toBe(true)
+  expect(rules.some((rule) => rule.includes('padding-top:var(--t-space-4)'))).toBe(true)
 })
 
 test('the style layer owns its expanded longhands', () => {
@@ -759,7 +733,8 @@ test('the style layer owns its expanded longhands', () => {
     paddingTop: '4 hover:8',
   })
   const left = result.classNames.paddingLeft
-  expect(rulesFor(result, left)).toEqual([`.${left}{padding-left:10px}`])
+  const rules = rulesFor(result, left)
+  expect(rules.at(-1)).toContain('padding:10px')
 })
 
 test('container clauses lower to @container queries', () => {
@@ -846,7 +821,9 @@ test('caller longhands override styled-base shorthands and same-key defaults', (
 
   const marginRules = rulesFor(result, result.classNames.marginTop)
   const weightRules = rulesFor(result, result.classNames.fontWeight)
-  expect(marginRules[0]).toContain('var(--t-space-8)')
+  expect(marginRules.some((rule) => rule.includes('margin-top:var(--t-space-8)'))).toBe(
+    true
+  )
   expect(weightRules[0]).toContain('font-weight:400')
 })
 
@@ -863,7 +840,11 @@ test('heading caller spacing survives the inherited size variant chain', () => {
     { mergeDefaultProps: true }
   )
 
-  expect(rulesFor(result, result.classNames.marginTop)[0]).toContain('var(--t-space-8)')
+  expect(
+    rulesFor(result, result.classNames.marginTop).some((rule) =>
+      rule.includes('margin-top:var(--t-space-8)')
+    )
+  ).toBe(true)
 })
 
 test('a base swallowed by a conditional payload is a diagnostic, not silence', () => {
@@ -887,14 +868,7 @@ test('a base swallowed by a conditional payload is a diagnostic, not silence', (
 
 test('geometric shorthand payloads distribute by slot (p="4 8")', () => {
   const result = split({ p: '4 8' })
-  const top = result.classNames.paddingTop
-  const right = result.classNames.paddingRight
-  expect(rulesFor(result, top)[0]).toContain('padding-top:var(--t-space-4)')
-  expect(rulesFor(result, right)[0]).toContain('padding-right:var(--t-space-8)')
-  expect(rulesFor(result, result.classNames.paddingBottom)[0]).toContain(
-    'padding-bottom:var(--t-space-4)'
-  )
-  expect(rulesFor(result, result.classNames.paddingLeft)[0]).toContain(
-    'padding-left:var(--t-space-8)'
+  expect(rulesFor(result, result.classNames.padding)[0]).toContain(
+    'padding:var(--t-space-4) var(--t-space-8)'
   )
 })

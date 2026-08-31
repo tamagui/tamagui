@@ -4,6 +4,7 @@ import {
   StyleObjectIdentifier,
   StyleObjectProperty,
   StyleObjectPseudo,
+  StyleObjectRules,
 } from '@tamagui/helpers'
 
 const emptyObj = {} as any
@@ -79,6 +80,13 @@ export function findRule(rulesToInsert: any, prop: string, pseudo?: string) {
         }
       } else if (r[StyleObjectPseudo] === pseudo) {
         return r
+      }
+    }
+    const property = prop.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`)
+    for (const css of r[StyleObjectRules] || []) {
+      const match = css.match(new RegExp(`[;{]${property}:([^;}]+)`))
+      if (match && (pseudo === undefined || css.includes(`:${pseudo}`))) {
+        return [prop, match[1], r[StyleObjectIdentifier], pseudo, [css]]
       }
     }
   }

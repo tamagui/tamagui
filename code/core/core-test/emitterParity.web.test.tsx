@@ -1,4 +1,3 @@
-import { StyleObjectProperty, StyleObjectValue } from '@tamagui/helpers'
 import { beforeAll, expect, test } from 'vitest'
 
 import { disableAnimationProps } from '../animations-motion/src/createAnimations'
@@ -6,16 +5,11 @@ import config from '../config-default'
 import { Text, View, createTamagui, getSplitStyles } from '../web/src'
 import { defaultComponentState } from '../web/src/defaultComponentState'
 import { styleToCSS } from '../web/src/helpers/getCSSStylesAtomic'
-import { simplifiedGetSplitStyles } from './utils'
+import { getStyleValue, simplifiedGetSplitStyles } from './utils'
 
 beforeAll(() => {
   createTamagui(config.getDefaultTamaguiConfig())
 })
-
-const emittedValue = (result: any, property: string) =>
-  Object.values(result.rulesToInsert).find(
-    (rule: any) => rule[StyleObjectProperty] === property
-  )?.[StyleObjectValue]
 
 test('class and inline paths preserve the same shadow and border results', () => {
   const textShadow = {
@@ -50,14 +44,14 @@ test('class and inline paths preserve the same shadow and border results', () =>
   )
 
   expect({
-    textClass: emittedValue(textClass, 'textShadow'),
+    textClass: getStyleValue(textClass, 'textShadow'),
     textInline: textInline.style,
-    textStylePropClass: emittedValue(textStylePropClass, 'textShadow'),
+    textStylePropClass: getStyleValue(textStylePropClass, 'textShadow'),
     textStylePropInline: textStylePropInline.style,
     rawTextShadow,
-    shadowClass: emittedValue(shadowClass, 'boxShadow'),
+    shadowClass: getStyleValue(shadowClass, 'boxShadow'),
     shadowInline: shadowInline.style,
-    borderClassStyle: emittedValue(borderClass, 'borderTopStyle'),
+    borderClassStyle: getStyleValue(borderClass, 'borderTopStyle'),
     borderInline: borderInline.style,
   }).toEqual({
     textClass: '0px 0px 0px red',

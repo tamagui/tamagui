@@ -8,6 +8,8 @@ export interface FlatValueHandler<Context> {
 	word?(ctx: Context, start: number, end: number, isChain: boolean): void;
 	end?(ctx: Context, source: string, result: number, lastAcceptedStart: number, chainCount: number, a: any, b: any, c: any, d: any, failure: FlatScanFailure | null, failureIndex: number): void;
 }
+export type ParsedFlatValue = [segments: readonly number[], failure: FlatScanFailure | null, failureIndex: number];
 export declare function scanFlatValue<Context>(source: string, handler: FlatValueHandler<Context>, ctx: Context, a?: any, b?: any, c?: any, d?: any): FlatScanFailure | null;
+export declare function parseFlatValue(source: string): ParsedFlatValue;
 
 //# sourceMappingURL=scanFlatValue.d.ts.map

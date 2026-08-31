@@ -1,12 +1,26 @@
+import { platformMatches } from '@tamagui/constants'
 import { simpleHash } from '@tamagui/helpers'
 import {
+  canonicalStateModifierNames,
   compileModifierVocabulary,
   configRevisionSymbol,
+  isContainerSizeQueryText,
+  modifierKindMedia,
+  modifierKindPlatform,
+  modifierKindState,
+  parseFlatValue,
+  stateModifierSelectors,
   type CompiledModifierVocabulary,
 } from '@tamagui/style-grammar/runtime'
 
-import type { TamaguiInternalConfig } from '../types'
+import type { StaticConfig, TamaguiInternalConfig } from '../types'
 import { mediaObjectToString } from './mediaObjectToString'
+import { getTokenCategoryForProperty, type RuntimeTokenCategory } from './tokenCategories'
+import { expandSafeAreaValue } from './resolveSafeArea'
+import { resolveSafeAreaVariable } from './resolveSafeAreaVariable'
+import { resolveStyleStaticConfig } from './styleStaticConfigCore'
+import type { StyleStaticConfig } from './styleStaticConfig'
+import { resolveVariantDefinition } from './variantDefinitionCore'
 
 export type ConfigRevisionPart =
   | 'media'
@@ -27,8 +41,37 @@ export interface ConfigRevisionState {
   revision: number
   modifiers: CompiledModifierVocabulary
   mediaQueries: Readonly<Record<string, string>>
+  resolveCondition(name: string): ConditionModifier | null
+  tokenCategory(property: string): RuntimeTokenCategory | undefined
+  expandSafeArea: typeof expandSafeAreaValue
+  safeAreaVariable: typeof resolveSafeAreaVariable
+  parseFlatValue: typeof parseFlatValue
+  styleStaticConfig(
+    staticConfig: StaticConfig,
+    conf: TamaguiInternalConfig
+  ): StyleStaticConfig
+  variantDefinition(variant: any, value: any, theme: any): any
+  propertyKind(property: string): number
+  compositeValue(
+    property: string,
+    raw: string,
+    context: any,
+    resolve: (context: any, property: string, raw: string) => any
+  ): string | undefined
+  normalizeTransition(value: string): string
+  embeddedTokens(value: string, resolve: (token: string) => any): string
   snapshot?: ConfigRevisionSnapshot
 }
+
+export type ConditionModifier = [
+  name: string,
+  kind: number,
+  rank: number,
+  selectorOrQuery?: string,
+  groupOrSize?: string,
+  containerName?: string,
+  platformActive?: boolean,
+]
 
 type ConfigWithRevision = TamaguiInternalConfig & {
   [configRevisionSymbol]?: ConfigRevisionState
@@ -64,10 +107,197 @@ export function prepareConfigRevision(
   for (const name of mediaNames) {
     mediaQueries[name] = mediaObjectToString(media[name])
   }
+  const conditionModifiers = Object.create(null) as Record<
+    string,
+    ConditionModifier | null
+  >
+  for (const name in modifiers) {
+    const code = modifiers[name]
+    const kind = code & 7
+    const rank = code >> 3
+    conditionModifiers[name] =
+      kind === modifierKindState
+        ? [canonicalStateModifierNames[rank], kind, rank, stateModifierSelectors[rank]]
+        : kind === modifierKindMedia
+          ? [name, kind, rank, mediaQueries[name]]
+          : kind === modifierKindPlatform
+            ? [name, kind, rank, undefined, undefined, undefined, platformMatches(name)]
+            : [name, kind, rank]
+  }
+  const resolveCondition = (authored: string): ConditionModifier | null => {
+    const cached = conditionModifiers[authored]
+    if (cached !== undefined) return cached
+    let result: ConditionModifier | null = null
+    if (authored.startsWith('group-')) {
+      const slash = authored.indexOf('/')
+      const state = authored.slice(6, slash === -1 ? undefined : slash)
+      const code = modifiers[state] || 0
+      const rank = code >> 3
+      const groupName = slash === -1 ? 'true' : authored.slice(slash + 1)
+      if (
+        (code & 7) === modifierKindState &&
+        rank !== 6 &&
+        rank !== 7 &&
+        (slash === -1 || /^[\w-]+$/.test(groupName))
+      ) {
+        result = [
+          `group-${canonicalStateModifierNames[rank]}${slash === -1 ? '' : authored.slice(slash)}`,
+          5,
+          rank,
+          stateModifierSelectors[rank],
+          groupName,
+          canonicalStateModifierNames[rank],
+        ]
+      }
+    } else if (authored.charCodeAt(0) === 64) {
+      const slash = authored.indexOf('/')
+      const size = authored.slice(1, slash === -1 ? undefined : slash)
+      const containerName = slash === -1 ? '' : authored.slice(slash + 1)
+      const code = modifiers[size] || 0
+      const query = mediaQueries[size]
+      if (
+        /^[\w-]+$/.test(size) &&
+        (slash === -1 || /^[\w-]+$/.test(containerName)) &&
+        (code & 7) === modifierKindMedia &&
+        isContainerSizeQueryText(query)
+      ) {
+        result = [authored, 6, code >> 3, query, size, containerName]
+      }
+    }
+    return (conditionModifiers[authored] = result)
+  }
+  const propertyKinds: Record<string, number> = {
+    shadowColor: 1,
+    shadowOffset: 2,
+    shadowOpacity: 3,
+    shadowRadius: 4,
+    matrix: 5,
+    perspective: 5,
+    rotateX: 5,
+    rotateY: 5,
+    rotateZ: 5,
+    scaleZ: 5,
+    skewX: 5,
+    skewY: 5,
+    textShadowColor: 6,
+    textShadowOffset: 6,
+    textShadowRadius: 6,
+    border: 7,
+    borderTop: 7,
+    borderRight: 7,
+    borderBottom: 7,
+    borderLeft: 7,
+    borderBlock: 7,
+    borderInline: 7,
+    outline: 7,
+    padding: 8,
+    paddingBlock: 8,
+    paddingInline: 8,
+    margin: 8,
+    marginBlock: 8,
+    marginInline: 8,
+    inset: 8,
+    insetBlock: 8,
+    insetInline: 8,
+    borderRadius: 8,
+  }
+  const propertyKind = (property: string) => propertyKinds[property] || 0
   const next: ConfigRevisionState = {
     revision: captured.revision,
     modifiers,
     mediaQueries,
+    resolveCondition,
+    tokenCategory: getTokenCategoryForProperty,
+    expandSafeArea: expandSafeAreaValue,
+    safeAreaVariable: resolveSafeAreaVariable,
+    parseFlatValue,
+    styleStaticConfig: (staticConfig, conf) =>
+      resolveStyleStaticConfig(staticConfig, conf, captured.revision),
+    variantDefinition: (variant, value, theme) =>
+      resolveVariantDefinition(variant, value, config, theme),
+    propertyKind,
+    compositeValue: (property, raw, context, resolve) => {
+      const kind = propertyKinds[property]
+      if (kind < 7) return
+      const parts =
+        raw.match(
+          /(?:[^\s("']+|\((?:[^()]|\([^)]*\))*\)|"(?:\\.|[^"])*"|'(?:\\.|[^'])*')+/g
+        ) || []
+      if (kind === 7) {
+        let width = ''
+        let style = ''
+        let color = ''
+        for (const part of parts) {
+          if (
+            ` none hidden dotted dashed solid double groove ridge inset outset `.includes(
+              ` ${part} `
+            ) ||
+            (property === 'outline' && part === 'auto')
+          ) {
+            style = part
+          } else if (
+            part === 'thin' ||
+            part === 'medium' ||
+            part === 'thick' ||
+            /^[+-]?(?:\d+\.?\d*|\.\d+)(?:%|[a-z]+)?$/.test(part) ||
+            /^-?[a-z][a-z0-9-]*\(/i.test(part)
+          ) {
+            width = part
+          } else {
+            color = part
+          }
+        }
+        if (style === 'none' && !color) return 'none'
+        const prefix = property === 'outline' ? 'outline' : 'border'
+        return [
+          width && resolve(context, `${prefix}Width`, width),
+          style,
+          color && resolve(context, `${prefix}Color`, color),
+        ]
+          .filter(Boolean)
+          .join(' ')
+      }
+      if (kind === 8 && parts.length > 1) {
+        let value = ''
+        for (const part of parts) {
+          value += `${value ? ' ' : ''}${resolve(context, property, part)}`
+        }
+        return value
+      }
+    },
+    normalizeTransition: (raw) =>
+      raw.replace(
+        /\/\*[\s\S]*?\*\/|(["'])(?:\\.|(?!\1)[^\\])*\1|[A-Za-z_][\w-]*/g,
+        (authored, quote, offset) => {
+          if (
+            quote ||
+            raw.charCodeAt(offset + authored.length) === 40 ||
+            (raw.charCodeAt(offset - 1) === 45 && raw.charCodeAt(offset - 2) === 45)
+          ) {
+            return authored
+          }
+          let property = config.shorthands[authored] || authored
+          if (property === 'x' || property === 'y') property = 'translate'
+          else if (property === 'scaleX' || property === 'scaleY') property = 'scale'
+          else if (propertyKind(property) === 5) property = 'transform'
+          return property.replace(/[A-Z]/g, '-$&').toLowerCase()
+        }
+      ),
+    embeddedTokens: (raw, resolve) =>
+      raw.replace(
+        /\/\*[\s\S]*?\*\/|(["'])(?:\\.|(?!\1)[^\\])*\1|[$A-Za-z_][\w.$-]*(?:\/\d+)?/g,
+        (word, quote, offset) => {
+          const before = raw.charCodeAt(offset - 1)
+          return quote ||
+            (word[0] !== '$' &&
+              ((before >= 48 && before <= 57) ||
+                before === 35 ||
+                (before === 45 && raw.charCodeAt(offset - 2) === 45) ||
+                raw.charCodeAt(offset + word.length) === 40))
+            ? word
+            : resolve(word)
+        }
+      ),
   }
 
   // a getter above may have synchronously mutated and rebuilt this config.

@@ -10,7 +10,7 @@ import {
   styled,
   getConfig,
 } from '../web/src'
-import { simplifiedGetSplitStyles } from './utils'
+import { getStyleValue, simplifiedGetSplitStyles } from './utils'
 
 function findRuleValue(rulesToInsert: Record<string, any>, property: string): any {
   for (const rule of Object.values(rulesToInsert)) {
@@ -183,8 +183,8 @@ describe('Radius variant resolver', () => {
   })
 
   test('resolves radius token to borderRadius', () => {
-    const { rulesToInsert } = simplifiedGetSplitStyles(Comp, { rounding: '4' })
-    expect(findRuleValue(rulesToInsert, 'borderTopLeftRadius')).toBe('var(--t-radius-4)')
+    const result = simplifiedGetSplitStyles(Comp, { rounding: '4' })
+    expect(getStyleValue(result, 'borderRadius')).toBe('var(--t-radius-4)')
   })
 })
 
@@ -222,8 +222,8 @@ describe('Space variant resolver', () => {
   })
 
   test('resolves space token to padding', () => {
-    const { rulesToInsert } = simplifiedGetSplitStyles(Comp, { spacing: '4' })
-    expect(findRuleValue(rulesToInsert, 'paddingTop')).toBe('var(--t-space-4)')
+    const result = simplifiedGetSplitStyles(Comp, { spacing: '4' })
+    expect(getStyleValue(result, 'padding')).toBe('var(--t-space-4)')
   })
 })
 
@@ -240,12 +240,12 @@ describe('Theme variant resolver', () => {
   })
 
   test('resolves theme values', () => {
-    const { rulesToInsert } = simplifiedGetSplitStyles(
+    const result = simplifiedGetSplitStyles(
       Comp,
       { look: 'background' },
       { theme: lightTheme, themeName: 'light' }
     )
-    expect(findRuleValue(rulesToInsert, 'backgroundColor')).toBe('var(--background)')
+    expect(getStyleValue(result, 'backgroundColor')).toBe('var(--background)')
   })
 })
 

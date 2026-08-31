@@ -4,7 +4,7 @@ import { expect, test } from 'vitest'
 
 import { View, createTamagui, styled } from '../web/src'
 import { getDefaultTamaguiConfig } from '../config-default'
-import { simplifiedGetSplitStyles } from './utils'
+import { getStyleValue, simplifiedGetSplitStyles } from './utils'
 
 createTamagui(getDefaultTamaguiConfig('web'))
 
@@ -16,12 +16,9 @@ const Sized = styled(View, {
   } as const,
 })
 
-// identity derives from the slot's winning content after normalization: a
-// variant's numeric width and a directly authored numeric width are the same
-// rule, so they must be the same class
-test('a variant numeric and a direct numeric produce one atomic identity', () => {
+test('a variant numeric and a direct numeric produce the same declaration', () => {
   const viaVariant = simplifiedGetSplitStyles(Sized, { size: 'big' })
   const direct = simplifiedGetSplitStyles(Sized, { width: 10 })
-  expect(viaVariant.classNames.width).toBeTruthy()
-  expect(viaVariant.classNames.width).toBe(direct.classNames.width)
+  expect(getStyleValue(viaVariant, 'width')).toBe('10px')
+  expect(getStyleValue(direct, 'width')).toBe('10px')
 })

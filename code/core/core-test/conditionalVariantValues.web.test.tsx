@@ -49,33 +49,35 @@ const cssFor = (props: Record<string, any>) =>
     (rule: any) => rule[4] ?? []
   )
 
+const shape = (css: string[]) => css.map((rule) => rule.replace(/_[a-z]+-\d+/g, '_class'))
+
 describe('conditional clauses on a variant prop', () => {
   test('a media clause picks a different variant value under that media', () => {
     const css = cssFor({ size: 'large sm:small' })
-    expect(css).toEqual([
-      '._w-450003261{width:200px}',
-      '@media (max-width: 800px) {._w-450003261{width:50px}}',
+    expect(shape(css)).toEqual([
+      '._class{width:200px}',
+      '@media (max-width: 800px) {._class{width:50px}}',
     ])
   })
 
   test('a pseudo clause picks a different variant value in that state', () => {
     const css = cssFor({ size: 'large hover:small' })
-    expect(css).toEqual([
-      '._w-1598328809{width:200px}',
-      '@media (hover: hover) {._w-1598328809:where(:hover){width:50px}}',
+    expect(shape(css)).toEqual([
+      '._class{width:200px}',
+      '@media (hover: hover) {._class:where(:hover){width:50px}}',
     ])
   })
 
   test('modifiers chain, so hover:sm: nests both conditions', () => {
     const css = cssFor({ size: 'large hover:sm:small' })
-    expect(css).toEqual([
-      '._w-75456123{width:200px}',
-      '@media (hover: hover) {@media (max-width: 800px) {._w-75456123:where(:hover){width:50px}}}',
+    expect(shape(css)).toEqual([
+      '._class{width:200px}',
+      '@media (hover: hover) {@media (max-width: 800px) {._class:where(:hover){width:50px}}}',
     ])
   })
 
   test('an exact variant key containing a colon wins over clause parsing', () => {
-    expect(cssFor({ ratio: '16:9' })).toEqual(['._h-1387432580{height:9px}'])
+    expect(shape(cssFor({ ratio: '16:9' }))).toEqual(['._class{height:9px}'])
   })
 
   test('styled inheritance merges canonical clause slots under an exact colon key', () => {
@@ -89,9 +91,9 @@ describe('conditional clauses on a variant prop', () => {
   })
 
   test('an unresolvable modifier drops only its clause', () => {
-    expect(cssFor({ size: 'large notARealModifier:small hover:small' })).toEqual([
-      '._w-1598328809{width:200px}',
-      '@media (hover: hover) {._w-1598328809:where(:hover){width:50px}}',
+    expect(shape(cssFor({ size: 'large notARealModifier:small hover:small' }))).toEqual([
+      '._class{width:200px}',
+      '@media (hover: hover) {._class:where(:hover){width:50px}}',
     ])
   })
 })

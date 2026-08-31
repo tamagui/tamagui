@@ -1,36 +1,12 @@
 import { beforeAll, describe, expect, test } from 'vitest'
 
 import config from '../config-default'
-import {
-  Text,
-  View,
-  createTamagui,
-  styled,
-  StyleObjectValue,
-  StyleObjectRules,
-} from '../web/src'
-import { simplifiedGetSplitStyles } from './utils'
+import { Text, View, createTamagui, styled } from '../web/src'
+import { getStyleValue, rulesForProperty, simplifiedGetSplitStyles } from './utils'
 
 beforeAll(() => {
   createTamagui(config.getDefaultTamaguiConfig())
 })
-
-// helper to get style value from either style object or rulesToInsert
-function getStyleValue(
-  styles: ReturnType<typeof simplifiedGetSplitStyles>,
-  prop: string
-): string | undefined {
-  if (styles.style?.[prop]) {
-    return styles.style[prop] as string
-  }
-  if (styles.rulesToInsert) {
-    const rule = Object.values(styles.rulesToInsert).find(
-      (r: any) => r[0] === prop
-    ) as any
-    return rule?.[StyleObjectValue]
-  }
-  return undefined
-}
 
 describe('shorthand variables - web', () => {
   // boxShadow/filter/backgroundImage support embedded tokens which resolve to CSS vars
@@ -137,67 +113,51 @@ describe('shorthand variables - web', () => {
 })
 
 describe('border shorthand - web', () => {
-  // the border family splits the composite value into per-longhand programs
-
   test('border with width, style and color', () => {
     const styles = simplifiedGetSplitStyles(View, {
       border: '1px solid red',
     })
-
-    expect(getStyleValue(styles, 'borderTopWidth')).toBe('1px')
-    expect(getStyleValue(styles, 'borderTopStyle')).toBe('solid')
-    expect(getStyleValue(styles, 'borderTopColor')).toBe('red')
-    expect(getStyleValue(styles, 'borderLeftColor')).toBe('red')
+    expect(getStyleValue(styles, 'border')).toBe('1px solid red')
   })
 
   test('border with variable color resolves to CSS var', () => {
     const styles = simplifiedGetSplitStyles(View, {
       border: '2px dashed white',
     })
-    expect(getStyleValue(styles, 'borderTopWidth')).toBe('2px')
-    expect(getStyleValue(styles, 'borderTopStyle')).toBe('dashed')
-    expect(getStyleValue(styles, 'borderTopColor')).toMatch(/var\(--.*white.*\)/)
+    expect(getStyleValue(styles, 'border')).toMatch(/^2px dashed var\(--.*white.*\)$/)
   })
 
-  test('border without variables splits into longhands unchanged', () => {
+  test('border without variables passes through unchanged', () => {
     const styles = simplifiedGetSplitStyles(View, {
       border: '1px solid blue',
     })
 
-    expect(getStyleValue(styles, 'borderTopWidth')).toBe('1px')
-    expect(getStyleValue(styles, 'borderTopColor')).toBe('blue')
+    expect(getStyleValue(styles, 'border')).toBe('1px solid blue')
   })
 
-  test('border "none" becomes border-style none per side', () => {
+  test('border "none" passes through', () => {
     const styles = simplifiedGetSplitStyles(View, {
       border: 'none',
     })
 
-    expect(getStyleValue(styles, 'borderTopStyle')).toBe('none')
-    expect(getStyleValue(styles, 'borderBottomStyle')).toBe('none')
+    expect(getStyleValue(styles, 'border')).toBe('none')
   })
 })
 
 describe('outline shorthand - web', () => {
-  // outline splits into width/style/color programs (like border)
-
   test('outline with width, style and color', () => {
     const styles = simplifiedGetSplitStyles(View, {
       outline: '2px solid red',
     })
 
-    expect(getStyleValue(styles, 'outlineWidth')).toBe('2px')
-    expect(getStyleValue(styles, 'outlineStyle')).toBe('solid')
-    expect(getStyleValue(styles, 'outlineColor')).toBe('red')
+    expect(getStyleValue(styles, 'outline')).toBe('2px solid red')
   })
 
   test('outline with variable color resolves to CSS var', () => {
     const styles = simplifiedGetSplitStyles(View, {
       outline: '2px solid white',
     })
-    expect(getStyleValue(styles, 'outlineWidth')).toBe('2px')
-    expect(getStyleValue(styles, 'outlineStyle')).toBe('solid')
-    expect(getStyleValue(styles, 'outlineColor')).toMatch(/var\(--.*white.*\)/)
+    expect(getStyleValue(styles, 'outline')).toMatch(/^2px solid var\(--.*white.*\)$/)
   })
 
   test('outline "none" becomes outline-style none', () => {
@@ -205,50 +165,44 @@ describe('outline shorthand - web', () => {
       outline: 'none',
     })
 
-    expect(getStyleValue(styles, 'outlineStyle')).toBe('none')
+    expect(getStyleValue(styles, 'outline')).toBe('none')
   })
 })
 
 describe('text-decoration shorthand - web', () => {
-  test('textDecoration splits into line, style and color programs', () => {
+  test('textDecoration preserves the composite declaration', () => {
     const styles = simplifiedGetSplitStyles(Text, {
       textDecoration: 'underline dotted red',
     })
 
-    expect(getStyleValue(styles, 'textDecorationLine')).toBe('underline')
-    expect(getStyleValue(styles, 'textDecorationStyle')).toBe('dotted')
-    expect(getStyleValue(styles, 'textDecorationColor')).toBe('red')
+    expect(getStyleValue(styles, 'textDecoration')).toBe('underline dotted red')
   })
 
   test('a hover clause lands on the line program', () => {
     const styles = simplifiedGetSplitStyles(Text, {
       textDecoration: 'underline hover:none',
     })
-    const className = styles.classNames?.textDecorationLine
-    const rules = (styles.rulesToInsert?.[className]?.[StyleObjectRules] ?? []).join('')
-    expect(rules).toContain('text-decoration-line:underline')
-    expect(rules).toContain(':where(:hover){text-decoration-line:none}')
+    const rules = rulesForProperty(styles, 'textDecoration').join('')
+    expect(rules).toContain('text-decoration:underline')
+    expect(rules).toContain(':where(:hover){text-decoration:none}')
   })
 })
 
 describe('logical border shorthands - web', () => {
-  test('borderBlock splits into logical start/end longhand programs', () => {
+  test('borderBlock preserves the logical shorthand', () => {
     const styles = simplifiedGetSplitStyles(View, {
       borderBlock: '1px solid green',
     })
 
-    expect(getStyleValue(styles, 'borderBlockStartWidth')).toBe('1px')
-    expect(getStyleValue(styles, 'borderBlockEndStyle')).toBe('solid')
-    expect(getStyleValue(styles, 'borderBlockStartColor')).toBe('green')
+    expect(getStyleValue(styles, 'borderBlock')).toBe('1px solid green')
   })
 
-  test('borderInline splits into logical start/end longhand programs', () => {
+  test('borderInline preserves the logical shorthand', () => {
     const styles = simplifiedGetSplitStyles(View, {
       borderInline: '2px dashed blue',
     })
 
-    expect(getStyleValue(styles, 'borderInlineStartWidth')).toBe('2px')
-    expect(getStyleValue(styles, 'borderInlineEndColor')).toBe('blue')
+    expect(getStyleValue(styles, 'borderInline')).toBe('2px dashed blue')
   })
 })
 
@@ -281,9 +235,7 @@ describe('tokens in variant styles - web', () => {
       } as const,
     })
     const styles = simplifiedGetSplitStyles(Comp, { outlined: true })
-    expect(getStyleValue(styles, 'borderTopWidth')).toBe('2px')
-    expect(getStyleValue(styles, 'borderTopStyle')).toBe('solid')
-    expect(getStyleValue(styles, 'borderTopColor')).toMatch(/var\(--.*white/)
+    expect(getStyleValue(styles, 'border')).toMatch(/^2px solid var\(--.*white/)
   })
 
   test('backgroundImage with embedded tokens in variant resolves', () => {
@@ -305,27 +257,14 @@ describe('tokens in variant styles - web', () => {
 })
 
 describe('border shorthand with media queries - web', () => {
-  test('border in sm splits into per-longhand media programs', () => {
+  test('border in sm emits one media declaration', () => {
     const styles = simplifiedGetSplitStyles(View, {
       border: 'sm:2px solid green',
     })
 
-    // the border family splits the composite into width/style/color programs
-    const widthClass = styles.classNames?.borderTopWidth
-    expect(widthClass).toMatch(/^_btw-/)
-    const widthRules = (styles.rulesToInsert?.[widthClass]?.[4] ?? []).join('')
-    expect(widthRules).toContain('@media')
-    expect(widthRules).toContain('border-top-width:2px')
-
-    const styleRules = (
-      styles.rulesToInsert?.[styles.classNames?.borderTopStyle]?.[4] ?? []
-    ).join('')
-    expect(styleRules).toContain('border-top-style:solid')
-
-    const colorRules = (
-      styles.rulesToInsert?.[styles.classNames?.borderTopColor]?.[4] ?? []
-    ).join('')
-    expect(colorRules).toContain('border-top-color:green')
+    const rules = rulesForProperty(styles, 'border').join('')
+    expect(rules).toContain('@media')
+    expect(rules).toContain('border:2px solid green')
   })
 
   test('border in sm with token resolves through the variable', () => {
@@ -333,10 +272,8 @@ describe('border shorthand with media queries - web', () => {
       border: 'sm:1px dashed white',
     })
 
-    const colorRules = (
-      styles.rulesToInsert?.[styles.classNames?.borderTopColor]?.[4] ?? []
-    ).join('')
-    expect(colorRules).toContain('@media')
-    expect(colorRules).toContain('var(--')
+    const rules = rulesForProperty(styles, 'border').join('')
+    expect(rules).toContain('@media')
+    expect(rules).toContain('var(--')
   })
 })

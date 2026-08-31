@@ -6,7 +6,7 @@ export { compileModifierVocabulary, configRevisionSymbol, isRootThemeName, modif
 export { borderSideSuffix, getTokenCategory, percentUtilityProps, radiusCornerProps } from "./tooling/registry";
 export { splitColorOpacitySuffix, type ColorOpacitySuffix } from "./runtime/colorOpacity";
 export { getSafeAreaEdge, safeAreaVariableNames } from "./runtime/safeAreaVariables";
-export { scanFlatValue, type FlatScanErrorCode, type FlatValueHandler } from "./runtime/scanFlatValue";
+export { parseFlatValue, scanFlatValue, type FlatScanErrorCode, type FlatValueHandler, type ParsedFlatValue } from "./runtime/scanFlatValue";
 export { canonicalStateModifierNames, stateModifierSelectors, type CoreStateModifierName } from "./runtime/stateModifiers";
 export type { NativeTransitionTarget } from "./shorthands/transitionNative";
 export { addTransformValue, cloneTransformAccumulator, createTransformAccumulator, finalizeTransformAccumulator, getTransformPartKeys, removeTransformValue, type TransformAccumulator } from "./runtime/transformAccumulator";

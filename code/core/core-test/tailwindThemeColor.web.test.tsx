@@ -37,7 +37,7 @@ describe('tailwind theme-value color classes', () => {
   })
 
   test('border-border-color resolves to var(--border-color)', () => {
-    const rule = colorRule('border-border-color', 'borderTopColor')
+    const rule = colorRule('border-border-color', 'borderColor')
     expect(rule).toBeTruthy()
     expect(rule[StyleObjectValue]).toBe('var(--border-color)')
   })

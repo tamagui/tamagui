@@ -50,6 +50,11 @@ const minDelta = Number(args.find((a) => a.startsWith('--min='))?.slice(6) ?? '4
 const within = args.find((a) => a.startsWith('--within='))?.slice(9)
 const core = args.includes('--core')
 const deletionPool = args.includes('--deletion-pool')
+const unionFilters = args
+  .find((a) => a.startsWith('--union-filter='))
+  ?.slice('--union-filter='.length)
+  .split(',')
+  .filter(Boolean)
 const parserClusterCheckpoint = args
   .find((a) => a.startsWith('--parser-cluster='))
   ?.slice('--parser-cluster='.length)
@@ -71,8 +76,14 @@ if (args.includes('--parser-cluster') || parserClusterCheckpoint === '') {
   process.exit(1)
 }
 
-if ([core, Boolean(parserClusterCheckpoint), deletionPool].filter(Boolean).length > 1) {
-  console.error('--core, --parser-cluster, and --deletion-pool are separate modes')
+if (
+  [core, Boolean(parserClusterCheckpoint), deletionPool, Boolean(unionFilters)].filter(
+    Boolean
+  ).length > 1
+) {
+  console.error(
+    '--core, --parser-cluster, --deletion-pool, and --union-filter are separate modes'
+  )
   process.exit(1)
 }
 
@@ -286,6 +297,19 @@ function measureUnionGzip(
     strippedGzip += gzipSync(Buffer.from(stripped), { level: 9 }).byteLength
   }
   return attributed.totalGzip - strippedGzip
+}
+
+function measureUnionBytes(byFile: Map<string, Segment[]>) {
+  let bytes = 0
+  for (const segments of byFile.values()) {
+    const sorted = segments.slice().sort((a, b) => a.start - b.start)
+    let end = 0
+    for (const segment of sorted) {
+      if (segment.end > end) bytes += segment.end - Math.max(end, segment.start)
+      end = Math.max(end, segment.end)
+    }
+  }
+  return bytes
 }
 
 function fail(message: string): never {
@@ -528,6 +552,19 @@ function declarationSegments(
 }
 
 const left = attribute(dirs[0]!)
+
+if (unionFilters) {
+  const matches = [...left.segments.entries()].filter(([id]) =>
+    unionFilters.some((value) => id.includes(value))
+  )
+  if (matches.length === 0) fail(`no modules matched --union-filter=${unionFilters}`)
+  console.info(`bundle gzip total: ${left.totalGzip}`)
+  console.info(`matched modules: ${matches.map(([id]) => id).join(', ')}`)
+  const byFile = groupSegmentsByFile(matches.map(([, segments]) => segments))
+  console.info(`UNION RAW: ${measureUnionBytes(byFile)}`)
+  console.info(`UNION: ${measureUnionGzip(left, byFile)}`)
+  process.exit(0)
+}
 
 if (deletionPool) {
   const manifest = JSON.parse(
@@ -789,20 +826,22 @@ if (!against) {
     .map((id) => {
       const a = left.modules.get(id)?.marginalGzip ?? 0
       const b = right.modules.get(id)?.marginalGzip ?? 0
-      return { id, a, b, delta: a - b }
+      const aMin = left.modules.get(id)?.minBytes ?? 0
+      const bMin = right.modules.get(id)?.minBytes ?? 0
+      return { id, a, b, delta: a - b, aMin, bMin, minDelta: aMin - bMin }
     })
     .sort((x, y) => y.delta - x.delta)
 
   console.info(`${dirs[0]} gzip total: ${left.totalGzip}`)
   console.info(`${against} gzip total: ${right.totalGzip}`)
-  console.info('\n  Δgzip     left    right  module')
+  console.info('\n  Δgzip     left    right     Δmin  leftMin rightMin  module')
   for (const row of rows) {
     if (Math.abs(row.delta) < minDelta) continue
     console.info(
-      `${String(row.delta).padStart(7)} ${String(row.a).padStart(8)} ${String(row.b).padStart(8)}  ${row.id}`
+      `${String(row.delta).padStart(7)} ${String(row.a).padStart(8)} ${String(row.b).padStart(8)} ${String(row.minDelta).padStart(8)} ${String(row.aMin).padStart(8)} ${String(row.bMin).padStart(8)}  ${row.id}`
     )
   }
   console.info(
-    `${String(rows.reduce((sum, r) => sum + r.delta, 0)).padStart(7)} ${String(rows.reduce((sum, r) => sum + r.a, 0)).padStart(8)} ${String(rows.reduce((sum, r) => sum + r.b, 0)).padStart(8)}  TOTAL`
+    `${String(rows.reduce((sum, r) => sum + r.delta, 0)).padStart(7)} ${String(rows.reduce((sum, r) => sum + r.a, 0)).padStart(8)} ${String(rows.reduce((sum, r) => sum + r.b, 0)).padStart(8)} ${String(rows.reduce((sum, r) => sum + r.minDelta, 0)).padStart(8)} ${String(rows.reduce((sum, r) => sum + r.aMin, 0)).padStart(8)} ${String(rows.reduce((sum, r) => sum + r.bMin, 0)).padStart(8)}  TOTAL`
   )
 }

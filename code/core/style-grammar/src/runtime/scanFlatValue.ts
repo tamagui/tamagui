@@ -57,6 +57,12 @@ export interface FlatValueHandler<Context> {
   ): void
 }
 
+export type ParsedFlatValue = [
+  segments: readonly number[],
+  failure: FlatScanFailure | null,
+  failureIndex: number,
+]
+
 function opensUrlToken(source: string, index: number): boolean {
   if (
     index < 3 ||
@@ -284,4 +290,237 @@ export function scanFlatValue<Context>(
   )
 
   return failure
+}
+
+const parsedValues = new Map<string, ParsedFlatValue>()
+
+export function parseFlatValue(source: string): ParsedFlatValue {
+  const known = parsedValues.get(source)
+  if (known) return known
+
+  const context =
+    process.env.NODE_ENV === 'production'
+      ? parseFlatValueProduction(source)
+      : parseFlatValueChecked(source)
+  if (parsedValues.size > 2048) parsedValues.clear()
+  parsedValues.set(source, context)
+  return context
+}
+
+function parseFlatValueProduction(source: string): ParsedFlatValue {
+  const length = source.length
+  const segments: number[] = []
+  let sawChain = false,
+    chainStart = -1,
+    chainEnd = -1,
+    segmentStart = 0,
+    wordStart = -1,
+    lastColon = -1,
+    quote = 0,
+    comment = false,
+    depth = 0,
+    valid = true
+
+  const close = (end: number) => {
+    let start = segmentStart
+    while (start < end && source.charCodeAt(start) <= 32) start++
+    while (end > start && source.charCodeAt(end - 1) <= 32) end--
+    segments.push(start, end, chainStart, chainEnd, (!sawChain ? 1 : 0) | 6)
+  }
+  const flush = () => {
+    if (wordStart !== -1 && lastColon !== -1) {
+      chainStart = wordStart
+      chainEnd = lastColon
+      sawChain = true
+      segmentStart = lastColon + 1
+    }
+    wordStart = lastColon = -1
+  }
+
+  for (let index = 0; index < length; index++) {
+    const code = source.charCodeAt(index)
+    if (comment) {
+      if (code === 42 && source.charCodeAt(index + 1) === 47) {
+        comment = false
+        index++
+      }
+      continue
+    }
+    if (code === 92) {
+      index++
+      continue
+    }
+    if (quote) {
+      if (code === quote) quote = 0
+      else if (code === 10 || code === 13 || code === 12) valid = false
+      continue
+    }
+    if (code === 47 && source.charCodeAt(index + 1) === 42) {
+      comment = true
+      index++
+      continue
+    }
+    if (code === 42 && source.charCodeAt(index + 1) === 47) {
+      valid = false
+      index++
+      continue
+    }
+    if (code === 34 || code === 39) {
+      quote = code
+      continue
+    }
+    if (code === 40) {
+      depth++
+      continue
+    }
+    if (depth) {
+      if (code === 41) depth--
+      continue
+    }
+    if (code <= 32) {
+      if (wordStart !== -1) flush()
+      continue
+    }
+    if (wordStart === -1) wordStart = index
+    if (code === 59 || code === 123 || code === 125) valid = false
+    else if (code === 58) {
+      if (lastColon === -1) close(wordStart)
+      lastColon = index
+    }
+  }
+
+  if (comment || quote || depth) valid = false
+  flush()
+  close(length)
+  if (!valid) {
+    for (let index = 4; index < segments.length; index += 5) segments[index] &= 1
+  }
+  return [segments, null, -1]
+}
+
+function parseFlatValueChecked(source: string): ParsedFlatValue {
+  const length = source.length
+  const segments: number[] = []
+  let failure: FlatScanFailure | null = null,
+    failureIndex = -1,
+    sawChain = false,
+    chainStart = -1,
+    chainEnd = -1,
+    chainValid = true,
+    segmentValid = true,
+    segmentStart = 0,
+    comment = false,
+    commentStart = -1,
+    quote = 0,
+    quoteStart = -1,
+    url = false,
+    depth = 0,
+    parenStart = -1,
+    wordStart = -1,
+    lastColon = -1,
+    wordErrorMin = length,
+    wordErrorMax = -1
+
+  const report = (code: FlatScanErrorCode, index: number) => {
+    if (failureIndex === -1) failureIndex = index
+    failure ??= code
+    wordErrorMin = Math.min(wordErrorMin, index)
+    wordErrorMax = Math.max(wordErrorMax, index)
+  }
+  const close = (end: number) => {
+    let start = segmentStart
+    while (start < end && source.charCodeAt(start) <= 32) start++
+    while (end > start && source.charCodeAt(end - 1) <= 32) end--
+    const valid = segmentValid && chainValid
+    segments.push(
+      start,
+      end,
+      chainStart,
+      chainEnd,
+      (!sawChain ? 1 : 0) | (segmentValid ? 2 : 0) | (chainValid ? 4 : 0)
+    )
+  }
+  const flush = (end: number) => {
+    if (wordStart !== -1 && lastColon !== -1) {
+      chainStart = wordStart
+      chainEnd = lastColon
+      chainValid = wordErrorMin >= lastColon
+      sawChain = true
+      segmentStart = lastColon + 1
+      segmentValid = chainValid && wordErrorMax < lastColon
+    } else if (wordErrorMax !== -1) {
+      segmentValid = false
+    }
+    wordStart = lastColon = wordErrorMax = -1
+    wordErrorMin = length
+  }
+
+  for (let index = 0; index < length; index++) {
+    const code = source.charCodeAt(index)
+    if (code === 42 && source.charCodeAt(index + 1) === 47) {
+      if (comment) comment = false
+      else report('stray-comment-close', index)
+      index++
+      continue
+    }
+    if (comment) continue
+    if (code === 92) {
+      index++
+      continue
+    }
+    if (quote) {
+      if (code === quote) quote = 0
+      else if (code === 10 || code === 13 || code === 12) {
+        report('unterminated-string', quoteStart)
+        quote = 0
+        index--
+      }
+      continue
+    }
+    if (url) {
+      if (code === 41) {
+        url = false
+        depth--
+      }
+      continue
+    }
+    if (code === 47 && source.charCodeAt(index + 1) === 42) {
+      comment = true
+      commentStart = index++
+      continue
+    }
+    if (code === 34 || code === 39) {
+      quote = code
+      quoteStart = index
+      continue
+    }
+    if (code === 40) {
+      if (opensUrlToken(source, index)) url = true
+      if (!depth) parenStart = index
+      depth++
+      continue
+    }
+    if (depth) {
+      if (code === 41) depth--
+      continue
+    }
+    if (code <= 32) {
+      if (wordStart !== -1) flush(index)
+      continue
+    }
+    if (wordStart === -1) wordStart = index
+    if (code === 59 || code === 123 || code === 125) {
+      report('invalid-character', index)
+    } else if (code === 58) {
+      if (lastColon === -1) close(wordStart)
+      lastColon = index
+    }
+  }
+
+  if (comment) report('unterminated-comment', commentStart)
+  if (quote) report('unterminated-string', quoteStart)
+  if (depth) report('unterminated-function', parenStart)
+  flush(length)
+  close(length)
+  return [segments, failure, failureIndex]
 }

@@ -1,0 +1,212 @@
+# V3 styled View bundle size ledger
+
+## Goal and ruler
+
+- Target `baseline-styled-view` in `code/comparisons/tamagui-bench`.
+- Treat Vite's displayed production gzip as the release-facing ruler. The requested ceiling is
+  literally `27.00 kB` in that output.
+- Record raw JavaScript and Node `gzipSync(..., { level: 9 })` bytes for exact comparisons.
+- Keep React externalization, fixture code, source maps, and build settings identical between
+  checkpoints.
+- Rebuild changed packages before every fixture build. Tests can otherwise resolve stale `dist`.
+
+```sh
+cd code/core/style-grammar && bun run build
+cd ../web && bun run build
+cd ../../comparisons/tamagui-bench
+npx vite build --mode baseline-styled-view --sourcemap \
+  --outDir /tmp/tamagui-styled-view --emptyOutDir
+cd ../../..
+bun code/comparisons/attribute-bundle-gzip.ts /tmp/tamagui-styled-view
+```
+
+## Final result
+
+| artifact | raw JavaScript | exact Node gzip-9 | Vite display |
+| --- | ---: | ---: | ---: |
+| V2 comparator | 68,476 | 25,778 | not recorded |
+| restored V3 control | 87,423 | 32,546 | 32.86 kB |
+| V3 before the config boundary rewrite | 77,185 | 28,929 | 29.29 kB |
+| retained V3 | 70,670 | 26,700 | **27.00 kB** |
+
+- **RAN** the retained artifact is `/tmp/tamagui-styled-final-64`.
+- **RAN** the retained V3 closes 5,846 of the original 6,768 exact gzip-byte gap to V2 while
+  preserving the V3 condition, precedence, composite, family, and transform behavior.
+- **RAN** the config-inclusive processor checkpoint emits 43.79 kB raw / 16.68 kB displayed
+  gzip and executes successfully. This is a separate dependency slice, not a number to add to
+  the styled fixture.
+
+## What made V3 larger
+
+- **RAN** source maps account for 87,114 of 87,423 control bytes and 68,107 of 68,476 V2
+  bytes. Fixture and sourcemap glue are effectively unchanged.
+- **RAN** deleting all Tamagui-owned generated ranges moves the control from 32,546 to a
+  266-byte gzip residual. The V2 residual is 350 bytes.
+- **INFERRED** Tamagui runtime code explains essentially the entire regression. React, fixture
+  code, and map glue do not.
+- **RAN** replacing the complete style-processor island with an opaque function saved about
+  9,477 gzip bytes. The missing bytes were executable style-engine logic, not repeated enum
+  spellings or diagnostics.
+- **RAN** the five largest control regressions were:
+
+| module | V3 marginal gzip | V2 marginal gzip | delta |
+| --- | ---: | ---: | ---: |
+| `web/helpers/getSplitStyles.mjs` | 8,960 | 3,728 | +5,232 |
+| `web/helpers/resolveVariantStyle.mjs` | 1,058 | 0 | +1,058 |
+| `style-grammar/runtime/scanFlatValue.mjs` | 779 | 0 | +779 |
+| `web/helpers/getCSSStylesAtomic.mjs` | 1,476 | 866 | +610 |
+| `web/helpers/mergeVariants.mjs` | 429 | 71 | +358 |
+
+- **INFERRED** the core mistake was ownership. The render-time component graph owned both the
+  style interpreter and the code that compiled config-specific grammar facts. V3 legitimately
+  added conditions, precedence, composites, and source layers, but each feature arrived as
+  another resolver, table, scanner, or emitter reachable from every styled component.
+- **RAN** changing object, enum, and diagnostic representations produced small movements. It
+  could not explain or recover a multi-kilobyte gzip regression because gzip already compresses
+  repeated vocabulary well.
+
+## Structural replacement
+
+- Build config-specific grammar once in `prepareConfigRevision` and expose a compact revision
+  state to the renderer.
+- Move these implementations behind that boundary:
+  - modifier and condition descriptors
+  - state selectors and names
+  - platform matching
+  - token category classification
+  - safe-area expansion
+  - flat-value scanning
+  - static-config normalization
+  - variant definition matching
+  - property-kind classification
+  - transition normalization
+  - embedded-token resolution
+  - browser composite-value resolution
+- Keep `getSplitStyles` as the consumer. It walks authored contributions into compact records,
+  then completes each property family once into inline style or CSS.
+- Use a conflict-family slot for browser CSS. A shorthand and its longhands share ordering and
+  source-layer ownership while retaining separate property records inside the slot.
+- Let browsers apply valid CSS shorthands. Keep React Native expansion for native output.
+- Preserve transform accumulation because independent `x`, `y`, scale, rotate, and raw transform
+  contributions still need last-writer semantics before emission.
+- Cache parsed flat strings and static value resolution with bounded maps. Repeated renders can
+  skip parsing and token lookup without growing memory without limit.
+- Keep detailed parser diagnostics out of the production renderer closure. Checked tooling and
+  test paths retain exact diagnostics.
+
+This gives the runtime the V3 behavior without making every styled component import the code
+that discovers the grammar from a Tamagui config.
+
+## Measured checkpoint chain
+
+The intermediate rows use Vite's displayed gzip because that was recorded for every build.
+Exact raw and gzip bytes are shown only where the artifact receipt retained them.
+
+| checkpoint | Vite gzip | disposition |
+| --- | ---: | --- |
+| restored V3 control | 32.86 kB | reference |
+| two-phase records, parser/cache, atomic and transform cleanup | 31.28 kB | retained |
+| one conditional walker and completion ordering | 30.93 kB | retained |
+| production parser without diagnostic bookkeeping | 30.51 kB | retained |
+| browser-native shorthand and conflict families | 29.45 kB | retained |
+| shared ordinary and variant property path | 29.29 kB | config-boundary starting point |
+| config-owned metadata | 29.09 kB | retained |
+| config-owned condition descriptors | 28.74 kB | retained |
+| config-owned token classification | 28.55 kB | retained |
+| config-owned safe-area rules | 28.23 kB | retained |
+| config-owned flat scanner | 27.87 kB | retained |
+| config-owned static-config normalization | 27.61 kB | retained |
+| config-owned variant matching | 27.24 kB | retained |
+| config-owned property kinds and transitions | 27.10 kB | retained |
+| remove remaining renderer state vocabulary | 27.08 kB | retained |
+| config-owned embedded-token resolution | 26.97 kB | provisional, missing controls |
+| restore family and composite correctness controls | 27.44 kB | correct but too large |
+| move composite parsing behind config boundary | 27.04 kB | retained |
+| tighten property classification | 27.03 kB | retained |
+| avoid allocating an empty cleared style object | 27.02 kB | retained |
+| inline the one-use atomic clear | **27.00 kB** | retained |
+
+The provisional 26.97 kB build was not accepted as success. Negative controls found real
+source-layer and composite-token bugs. Correctness temporarily raised the fixture to 27.44 kB;
+moving the corrected implementation to config preparation recovered those bytes.
+
+## Correctness findings from negative controls
+
+- A higher-layer `borderWidth` cleared the whole border family and lost a styled
+  `borderColor`. `clearDirectStyle` now removes only records for the property being replaced.
+- Default-record cleanup compared only the family slot. A default for one border property could
+  remove a sibling property. Default replacement is now scoped to the exact property.
+- An implicit `solid` created for `borderWidth` could claim a newer source layer and replace an
+  explicitly authored lower-layer `dashed`. The implicit default no longer claims source
+  ownership.
+- Browser `border="4 solid white"` emitted an invalid unitless width and resolved color from the
+  wrong token domain. Config-owned composite resolution now classifies and resolves each part.
+- Browser `padding="4 8"` emitted unresolved component tokens. Multi-value geometric shorthands
+  now resolve each component while remaining one valid browser shorthand.
+- Clearing the last native style no longer allocates `{}`. The result can be `null`, which is the
+  same no-style contract with less work on the hot path.
+
+## Validation
+
+- **TESTED** 94 focused web tests covering flat values, tokenized shorthands, source layers,
+  border defaults, explicit border styles, and token categories.
+- **TESTED** the complete core web suite: 76 files passed, 2 skipped; 604 tests passed, 3
+  skipped, 1 todo.
+- **TESTED** the complete core native suite: 30 files passed, 1 skipped; 306 tests passed, 7
+  expected failures, 9 skipped.
+- **TESTED** all 462 style-grammar tests across 29 files.
+- **RAN** the final processor bundle in a VM module. It returned class slots for
+  `containerName`, `background`, `padding`, `width`, `height`, `opacity`, and `rotate`, emitted
+  seven rule groups, retained the `sm` media dependency, and returned no inline style.
+- **RAN** final `@tamagui/web` and `@tamagui/style-grammar` package builds.
+- **RAN** root `bun run lint` completed with no errors. It reported existing warnings in
+  unrelated sandbox, compiler fixture, and Tailwind contract files.
+- **RAN** root `bun run check` passed dependency, unused-dependency, Tamagui, reference, path,
+  standalone DOM type, and LSP pin checks.
+
+## Final module ranking
+
+From `/tmp/tamagui-styled-final-64`. Marginals rank closures and do not sum because each
+measurement recompresses the same complete chunk after deleting one generated range.
+
+| module | minified bytes | marginal gzip |
+| --- | ---: | ---: |
+| `getSplitStyles.mjs` | 20,733 | 7,572 |
+| `createComponent.mjs` | 11,156 | 3,913 |
+| `useThemeState.mjs` | 4,299 | 1,730 |
+| `getCSSStylesAtomic.mjs` | 2,844 | 1,189 |
+| `resolveVariantStyle.mjs` | 1,110 | 436 |
+| `mergeVariants.mjs` | 852 | 372 |
+
+The largest remaining top-level closures inside `getSplitStyles` are `getSplitStyles` itself
+(1,282 marginal gzip), `contributeProp` (1,141), `resolveConditionModifier` (650), `emitValue`
+(646), and `configuredValue` (614).
+
+## Rejected or superseded experiments
+
+| experiment | measured result | conclusion |
+| --- | --- | --- |
+| Canonical token-category table in the renderer | +1,262 raw, +306 gzip | The table duplicated property vocabulary already present in validity data. |
+| Numeric emit-kind dispatch | Removing it saved 217 raw but only 14 gzip | Direct branches are smaller and clearer. |
+| Canonical condition strings | About +199 minified bytes | Compact condition arrays are smaller than rebuilding strings. |
+| Full grammar parser inside `mergeVariants` | +183 raw, +73 gzip | It pulled a large dependency closure into a small merge path. |
+| Store emitter context on shared state | +66 gzip | Passing the hot local context is smaller. |
+| Regex replacement for the checked parser | -7 gzip | Too little gain for a parser correctness rewrite. |
+| Algorithmic `expandStyle` replacement | -40 gzip | Added runtime work for a tiny saving. The retained graph removes the web dependency instead. |
+| One encoded style-metadata table | -682 raw, only -58 gzip | Gzip already compresses repeated property names. Decode cost was not justified. |
+| Local permissive production parser | smaller but unsafe | It accepted malformed or declaration-injecting CSS. Reverted. |
+| Preserve longhand class keys until a shorthand appears | about +167 gzip | Dynamic slot aliasing duplicated conflict logic. |
+| Deferred border-default queue | about +0.03 kB | A provisional record in the existing slot is smaller and preserves ordering. |
+| One merged flat record list | about -0.13 kB | It lost property-family isolation under source-layer replacement. Reverted. |
+
+## Diagnostic tools
+
+- `code/comparisons/audit-top-level-replacements.ts` builds the fixture once per selected
+  top-level replacement.
+- `code/comparisons/shared/bundleTopLevelReplacementPlugin.ts` replaces one generated
+  declaration with an opaque call without editing source.
+- `code/comparisons/attribute-bundle-gzip.ts --within=<module>` attributes generated spans to
+  top-level declarations using source-map ownership.
+
+These tools turned bundle guesses into falsifiable deletion measurements and should be reused
+for any later size regression.
