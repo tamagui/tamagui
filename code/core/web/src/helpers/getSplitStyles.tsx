@@ -1941,16 +1941,6 @@ const resolveAcceptedStyle = (
   return styleOut
 }
 
-function addStyleToInsertRules(rulesToInsert: RulesToInsert, styleObject: StyleObject) {
-  if (process.env.TAMAGUI_TARGET === 'web') {
-    const identifier = styleObject[StyleObjectIdentifier]
-    if (shouldInsertStyleRules(identifier)) {
-      updateRules(identifier, styleObject[StyleObjectRules])
-      rulesToInsert[identifier] = styleObject
-    }
-  }
-}
-
 function passDownProp(viewProps: object, key: string, val: any) {
   // a later contribution must displace IN AUTHORED POSITION: the wrapped
   // component enumerates viewProps in insertion order, and reassigning an
