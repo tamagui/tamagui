@@ -76,11 +76,8 @@ const walk = (dir) =>
 const gzipOfAll = (files) => files.reduce((total, file) => total + (gzipOf(file) ?? 0), 0)
 
 // these are emitted-code signatures, not source checks. each signature is a
-// stable production string owned by the named family, and the retained style
-// processor signature is the positive control that proves an island bundle was
-// actually inspected.
+// stable production string owned by a family forbidden outside the island.
 const ARTIFACT_FAMILY_SIGNATURES = {
-  styleProcessor: ['a flat value clause supports at most'],
   atomicCSSGeneration: ['--t-x:0px;--t-y:0px', '--t-scale-x:1;--t-scale-y:1'],
   cssInsertion: ['TAMAGUI_STYLE_INSERT'],
   runtimeThemeCSS: ['tvar_'],
@@ -256,18 +253,16 @@ for (const [name, tiers] of Object.entries(receipts)) {
     }
     if (tierName === 'islands') {
       const island = tier.artifactFamilies.island
-      if (!island?.styleProcessor) {
+      if (!Number.isFinite(tier.islandJsGzip) || tier.islandJsGzip <= 0) {
         artifactFailures.push(
-          `${name}/${tierName} island is missing the retained styleProcessor positive control`
+          `${name}/${tierName} is missing its separately emitted island JavaScript`
         )
       }
-      for (const family of [
-        'atomicCSSGeneration',
-        'cssInsertion',
-        'runtimeThemeCSS',
-        'parseValue',
-      ]) {
-        if (island?.[family]) {
+      if (!tier.bridges.includes('DetailsIsland')) {
+        artifactFailures.push(`${name}/${tierName} is missing the DetailsIsland bridge`)
+      }
+      for (const [family, present] of Object.entries(island ?? {})) {
+        if (present) {
           artifactFailures.push(`${name}/${tierName} island retains ${family}`)
         }
       }
