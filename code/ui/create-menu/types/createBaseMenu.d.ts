@@ -164,15 +164,15 @@ export type CreateBaseMenuProps = {
 };
 export declare function createBaseMenu({ Item: _Item, Title: _Title, SubTitle: _SubTitle, Image: _Image, Icon: _Icon, Indicator: _Indicator, Separator: _Separator, MenuGroup: _MenuGroup, Label: _Label, }: CreateBaseMenuProps): {
     Menu: {
-        (props: ScopedProps<MenuBaseProps>): import("react/jsx-runtime").JSX.Element;
+        (props: ScopedProps<MenuBaseProps>): React.JSX.Element;
         displayName: string;
     } & {
         Anchor: {
-            (props: MenuAnchorProps): import("react/jsx-runtime").JSX.Element;
+            (props: MenuAnchorProps): React.JSX.Element;
             displayName: string;
         };
         Portal: {
-            (props: ScopedProps<MenuPortalProps>): import("react/jsx-runtime").JSX.Element;
+            (props: ScopedProps<MenuPortalProps>): React.JSX.Element;
             displayName: string;
         };
         Content: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {

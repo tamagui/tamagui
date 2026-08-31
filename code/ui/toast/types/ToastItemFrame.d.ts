@@ -21,5 +21,5 @@ export declare const ToastActionFrame: import("@tamagui/core").TamaguiComponent<
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
-export declare const DefaultCloseIcon: () => import("react/jsx-runtime").JSX.Element;
+export declare const DefaultCloseIcon: () => import("react").JSX.Element;
 //# sourceMappingURL=ToastItemFrame.d.ts.map

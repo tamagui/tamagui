@@ -86,7 +86,7 @@ declare const ToastProvider: React.FC<ToastProviderProps>;
 export declare function ReprogapateToastProvider(props: {
     children: React.ReactNode;
     context: ToastProviderContextValue;
-}): import("react/jsx-runtime").JSX.Element;
+}): React.JSX.Element;
 export { Collection, ToastProvider, useCollection, useToastProviderContext };
 export type { ScopedProps, ToastProviderProps };
 //# sourceMappingURL=ToastProvider.d.ts.map
