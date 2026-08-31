@@ -73,7 +73,7 @@ export const SheetScrollView = createStyledHOC(
     // a flex: 1 child can't grow inside a content-sized parent, so the ScrollView (and the Container
     // around it) collapse to 0 height. instead, let the ScrollView size to its content and cap it
     // at the available viewport (screenSize / maxContentSize) so scrolling kicks in for tall content.
-    const fitSizingStyle = hasFit
+    const fitSizingProps = hasFit
       ? {
           flex: undefined as undefined,
           height: undefined as undefined,
@@ -93,7 +93,6 @@ export const SheetScrollView = createStyledHOC(
         ? { height: frozenFrameHeight, maxHeight: frozenFrameHeight }
         : null
     const scrollViewStyle = [
-      fitSizingStyle,
       ...(Array.isArray(style) ? style : [style]),
       keyboardFrozenOverride,
     ]
@@ -294,7 +293,7 @@ export const SheetScrollView = createStyledHOC(
       return (
         <RNGHComponent
           ref={composeRefs(scrollRef as any, ref)}
-          style={scrollViewStyle}
+          style={[fitSizingProps, ...scrollViewStyle]}
           scrollEventThrottle={1}
           scrollEnabled={scrollEnabled}
           simultaneousHandlers={[panGestureRef]}
@@ -351,6 +350,7 @@ export const SheetScrollView = createStyledHOC(
     // fallback ScrollView with platform-specific gesture props
     return (
       <ScrollView
+        {...fitSizingProps}
         onLayout={(e) => {
           recordFitHeight(Math.ceil(e.nativeEvent.layout.height))
           updateScrollable()
