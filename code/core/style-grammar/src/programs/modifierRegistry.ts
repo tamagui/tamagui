@@ -9,7 +9,7 @@
 //
 // See plans/dom-tailwind-flat-values.md — "Conditions".
 
-import type { GrammarConfigView } from '../runtime/candidate'
+import type { GrammarConfigView } from '../tooling/candidate'
 import {
   canonicalClauseModifier,
   containerModifierSizeEnd,

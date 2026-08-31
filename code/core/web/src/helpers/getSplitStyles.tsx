@@ -403,49 +403,6 @@ const passTextFlag = 32
 const passInputFlag = 64
 const passAsChildStyleFlag = 128
 
-/**
- * Walks every style contribution in authored forward order and hands each one
- * to `contribute`, without building an intermediate list.
- *
- * Order is the base style, then the props. That is the cascade: last writer
- * wins, so the props must come last — a call-site value and a variant always
- * land on top of a styled() base style.
- */
-function forEachPropInForwardOrder(pass: StylePass) {
-  const styleState = pass[passStyleState] as GetStyleState
-  const processedProps = styleState.props
-  const styleStaticConfig = (styleState as DirectState).flatStyleStaticConfig!
-  const baseStyle = styleStaticConfig.baseStyle
-  const baseVariantProps = styleStaticConfig.baseVariantProps
-
-  // asChild renders the child instead of this element, so this component's own
-  // base styles are not its to apply; anything the call site passed still is
-  const appliesBaseStyle = baseStyle && !processedProps.asChild
-  pass[passSourceLayer] = 0
-  if (appliesBaseStyle) {
-    for (const key in baseStyle) {
-      // a current value replaces its default variant in the default's authored
-      // slot. changing the value must not move it after later child defaults.
-      contributeProp(
-        pass,
-        key,
-        baseVariantProps &&
-          Object.hasOwn(baseVariantProps, key) &&
-          Object.hasOwn(processedProps, key)
-          ? processedProps[key]
-          : baseStyle[key]
-      )
-    }
-  }
-  pass[passSourceLayer] = 2
-  for (const key in processedProps) {
-    if (appliesBaseStyle && baseVariantProps && Object.hasOwn(baseVariantProps, key)) {
-      continue
-    }
-    contributeProp(pass, key, processedProps[key])
-  }
-}
-
 // exported so the compiler applies the SAME host-validity decision when it
 // flattens: a style-shaped key that fails this check must be dropped with a
 // diagnostic, never kept as a DOM attribute (one predicate, two hosts)
@@ -455,13 +412,6 @@ export function isValidStyleKey(
   accept?: Record<string, any>
 ) {
   return Boolean(key in validStyles || (accept && key in accept))
-}
-
-function flushForwardStylesToClasses(pass: StylePass) {
-  const styleState = pass[passStyleState] as GetStyleState
-  if (!pass[passShouldDoClasses]) return
-  completeResolvedStyles(styleState)
-  flushDirectStyles(styleState, true)
 }
 
 function effectiveLifecycleKeys(keys?: Set<string>) {
@@ -638,7 +588,10 @@ function contributeProp(
             ? `${pass[passClassName]} ${candidate}`
             : candidate
           if (resolveClassName) {
-            flushForwardStylesToClasses(pass)
+            if (pass[passShouldDoClasses]) {
+              completeResolvedStyles(styleState)
+              flushDirectStyles(styleState, true)
+            }
             pass[passShouldDoClasses] = false
             styleState.flatShouldDoClasses = false
           }
@@ -853,7 +806,9 @@ function contributeProp(
   }
 
   if (shouldPassThrough) {
-    passDownProp(viewProps, keyInit, valInit)
+    // delete first so wrapped components enumerate the replacement at its authored position
+    if (keyInit in viewProps) delete viewProps[keyInit]
+    viewProps[keyInit] = valInit
 
     if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
       console.groupEnd()
@@ -909,9 +864,17 @@ function contributeProp(
 
   if (variants && keyInit in variants && !noExpand && !disabled) {
     const previousLayer = pass[passSourceLayer]
-    pass[passSourceLayer] = 1
+    pass[passSourceLayer] = +!!previousLayer
     pass[passMapSourceKey] = keyInit
-    resolveVariants(keyInit, valInit, styleState.styleProps, styleState, keyInit)
+    const variantConfig = (styleState as DirectState).flatStyleStaticConfig!
+    variantConfig.variantStyleResolver?.(
+      styleState,
+      variantConfig.variants,
+      keyInit,
+      valInit,
+      keyInit,
+      pass[passParentCursor]
+    )
     pass[passSourceLayer] = previousLayer
     return
   }
@@ -949,7 +912,16 @@ function contributeProp(
   const condition = pass[passParentCursor] as Condition | null
   if (condition) {
     if (isHOC) {
-      viewProps[keyInit] = mergeConditionTransport(viewProps[keyInit], condition, valInit)
+      const previous = viewProps[keyInit]
+      const transport =
+        previous &&
+        typeof previous === 'object' &&
+        !Array.isArray(previous) &&
+        'default' in previous
+          ? (previous as Record<string, unknown>)
+          : { default: previous }
+      transport[condition[conditionKey]] = valInit
+      viewProps[keyInit] = transport
     } else if (process.env.NODE_ENV === 'development') {
       console.warn(
         `[tamagui] "${keyInit}" is not a valid style on this component; the conditional variant value is dropped.`
@@ -1187,7 +1159,31 @@ export const getSplitStyles: StyleSplitter = (
 
   let conditionalStates: Set<string> | null = null
   let usesSafeArea = false
-  forEachPropInForwardOrder(pass)
+  // base styles precede call-site props so the last authored contribution wins
+  const baseStyle = styleStaticConfig.baseStyle
+  const baseVariantProps = styleStaticConfig.baseVariantProps
+  const appliesBaseStyle = baseStyle && !processedProps.asChild
+  pass[passSourceLayer] = 0
+  if (appliesBaseStyle) {
+    for (const key in baseStyle) {
+      contributeProp(
+        pass,
+        key,
+        baseVariantProps &&
+          Object.hasOwn(baseVariantProps, key) &&
+          Object.hasOwn(processedProps, key)
+          ? processedProps[key]
+          : baseStyle[key]
+      )
+    }
+  }
+  pass[passSourceLayer] = 2
+  for (const key in processedProps) {
+    if (appliesBaseStyle && baseVariantProps && Object.hasOwn(baseVariantProps, key)) {
+      continue
+    }
+    contributeProp(pass, key, processedProps[key])
+  }
 
   className = pass[passClassName]
   shouldDoClasses = pass[passShouldDoClasses]
@@ -1382,7 +1378,7 @@ export const getSplitStyles: StyleSplitter = (
   if (effectiveTransition != null) result.effectiveTransition = effectiveTransition
   if (conditionalStates) result.programStates = conditionalStates
   if (usesSafeArea) result.usesSafeArea = true
-  if (getDirectDynamicThemeAccess(styleState)) result.dynamicThemeAccess = true
+  if ((styleState as DirectState).flatDynamicThemeAccess) result.dynamicThemeAccess = true
 
   if (styleState.flatEnterKeys || styleState.flatExitKeys) {
     result.programLifecycleStyleKeys = {
@@ -1614,14 +1610,6 @@ const resolveAcceptedStyle = (
   return styleOut
 }
 
-function passDownProp(viewProps: object, key: string, val: any) {
-  // a later contribution must displace IN AUTHORED POSITION: the wrapped
-  // component enumerates viewProps in insertion order, and reassigning an
-  // existing key would leave the new value at the old position
-  if (key in viewProps) delete viewProps[key]
-  viewProps[key] = val
-}
-
 export type MergeStyle = (
   state: GetStyleState,
   key: string,
@@ -1752,7 +1740,7 @@ function streamWriteInline(
   value: any,
   cursor: Condition | null,
   original: any,
-  normalize = false,
+  normalize = property === 'lineHeight',
   conditionOverride = -1,
   force = false
 ) {
@@ -1765,14 +1753,6 @@ function streamWriteInline(
     (normalize ? recordNormalize : 0) | (force ? recordInline : 0),
     conditionOverride
   )
-}
-
-function streamRetractInline(
-  state: GetStyleState,
-  property: string,
-  cursor: Condition | null
-) {
-  writeStyleRecord(state, property, undefined, cursor, undefined, recordRetract)
 }
 
 function completeResolvedStyles(state: GetStyleState, merge: MergeStyle = mergeStyle) {
@@ -1955,19 +1935,6 @@ const warnScanFailure = (
   }
 }
 
-// enter/exit clauses with no authored base animate from the property's natural
-// resting value on the inline-style path (the class path reads it from the
-// cascade instead)
-function implicitLifecycleBase(property: string): string | number | null {
-  return property === 'opacity' || property.startsWith('scale')
-    ? 1
-    : property === 'rotate'
-      ? '0deg'
-      : property === 'x' || property === 'y'
-        ? 0
-        : null
-}
-
 const lineStyles = new Set([
   'none',
   'hidden',
@@ -2123,10 +2090,6 @@ function resolveEmbeddedTokens(state: GetStyleState, property: string, raw: stri
   )
 }
 
-function getDirectDynamicThemeAccess(state: GetStyleState) {
-  return (state as DirectState).flatDynamicThemeAccess
-}
-
 function ownsSourceLayer(state: GetStyleState, property: string) {
   const direct = state as DirectState
   const layer = direct.flatPass?.[passSourceLayer] || 0
@@ -2267,10 +2230,6 @@ function numericUnitValue(value: string, first: string, second?: string): number
   return Number.isFinite(numeric) ? numeric : Number.NaN
 }
 
-function isNumericCSSComponent(value: string): boolean {
-  return /^[+-]?(?:\d+\.?\d*|\.\d+)(?:%|[a-z]+)?$/.test(value)
-}
-
 function startsValueFunction(value: string): boolean {
   return /^-?[a-z][a-z0-9-]*\(/i.test(value)
 }
@@ -2316,7 +2275,7 @@ function emitBorder(
       part === 'thin' ||
       part === 'medium' ||
       part === 'thick' ||
-      isNumericCSSComponent(part) ||
+      /^[+-]?(?:\d+\.?\d*|\.\d+)(?:%|[a-z]+)?$/.test(part) ||
       startsValueFunction(part)
     ) {
       width = part
@@ -2378,45 +2337,6 @@ function emitTextDecoration(
           ? 'textDecorationLine'
           : 'textDecorationColor'
     emitResolved(state, property, part, cursor, originalValue, contextOnly)
-  }
-}
-
-function emitTransform(
-  state: GetStyleState,
-  property: string,
-  value: any,
-  cursor: Condition | null,
-  originalValue: any,
-  contextOnly: boolean
-) {
-  if (!canGenerateCSS || !state.flatShouldDoClasses) {
-    emitProperty(state, property, value, cursor, originalValue, contextOnly)
-    return
-  }
-
-  const targets =
-    property === 'scale'
-      ? ['--t-scale-x', '--t-scale-y']
-      : [
-          property === 'x'
-            ? '--t-x'
-            : property === 'y'
-              ? '--t-y'
-              : property === 'scaleX'
-                ? '--t-scale-x'
-                : property === 'scaleY'
-                  ? '--t-scale-y'
-                  : 'rotate',
-        ]
-  for (const target of targets) {
-    let targetValue = value
-    if (typeof targetValue === 'number') {
-      if (target === '--t-x' || target === '--t-y') targetValue = `${targetValue}px`
-      else if (target === 'rotate') targetValue = `${targetValue}deg`
-    }
-    emitProperty(state, target, targetValue, cursor, originalValue, contextOnly)
-    if (target === '--t-x' || target === '--t-y') addComposition(state, 'translate')
-    else if (target.startsWith('--t-scale')) addComposition(state, 'scale')
   }
 }
 
@@ -2645,7 +2565,7 @@ function emitValue(
         }
         if (condition & 1) {
           removeTransformValue(state.transformAccumulator, property)
-          streamRetractInline(state, property, cursor)
+          writeStyleRecord(state, property, undefined, cursor, undefined, recordRetract)
         }
         return
       }
@@ -2656,7 +2576,34 @@ function emitValue(
         value = Number(value)
       }
     }
-    emitTransform(state, property, value, cursor, originalValue, contextOnly)
+    if (!canGenerateCSS || !state.flatShouldDoClasses) {
+      emitProperty(state, property, value, cursor, originalValue, contextOnly)
+      return
+    }
+    const targets =
+      property === 'scale'
+        ? ['--t-scale-x', '--t-scale-y']
+        : [
+            property === 'x'
+              ? '--t-x'
+              : property === 'y'
+                ? '--t-y'
+                : property === 'scaleX'
+                  ? '--t-scale-x'
+                  : property === 'scaleY'
+                    ? '--t-scale-y'
+                    : 'rotate',
+          ]
+    for (const target of targets) {
+      let targetValue = value
+      if (typeof targetValue === 'number') {
+        if (target === '--t-x' || target === '--t-y') targetValue = `${targetValue}px`
+        else if (target === 'rotate') targetValue = `${targetValue}deg`
+      }
+      emitProperty(state, target, targetValue, cursor, originalValue, contextOnly)
+      if (target === '--t-x' || target === '--t-y') addComposition(state, 'translate')
+      else if (target.startsWith('--t-scale')) addComposition(state, 'scale')
+    }
     return
   }
 
@@ -2742,6 +2689,27 @@ function emitValue(
       start = index + 1
     }
     value = variants
+  }
+
+  if (
+    process.env.TAMAGUI_TARGET === 'web' &&
+    !state.styleProps.noExpand &&
+    property === 'flex' &&
+    typeof value === 'number'
+  ) {
+    const compat = state.conf.settings.styleCompat || 'web'
+    value =
+      value === -1
+        ? '0 1 auto'
+        : compat === 'legacy'
+          ? `${value} 1 auto`
+          : compat === 'react-native'
+            ? value > 0
+              ? `${value} 0 0px`
+              : `0 ${-value} auto`
+            : value < 0
+              ? value
+              : `${value} 1 0px`
   }
 
   const expanded =
@@ -2902,7 +2870,15 @@ export function walkConditionalValue(
     conditions & 12 &&
     !hasBase
   ) {
-    const resting = implicitLifecycleBase(property)
+    // inline lifecycle styles need a natural resting value when no base was authored
+    const resting =
+      property === 'opacity' || property.startsWith('scale')
+        ? 1
+        : property === 'rotate'
+          ? '0deg'
+          : property === 'x' || property === 'y'
+            ? 0
+            : null
     if (resting !== null) sink(resting, parentCondition, resting)
   }
   return true
@@ -3061,19 +3037,6 @@ function clearDirectStyle(state: GetStyleState, property: string) {
   delete state.classNames[slot]
 }
 
-function mergeConditionTransport(
-  prev: unknown,
-  cursor: Condition,
-  value: unknown
-): Record<string, unknown> {
-  const transport =
-    prev && typeof prev === 'object' && !Array.isArray(prev) && 'default' in prev
-      ? (prev as Record<string, unknown>)
-      : { default: prev }
-  transport[cursor[conditionKey]] = value
-  return transport
-}
-
 export function emitVariantStyle(
   state: GetStyleState,
   key: string,
@@ -3082,29 +3045,15 @@ export function emitVariantStyle(
   condition: unknown,
   disabled: boolean
 ) {
+  if ((state as DirectState).flatStyleStaticConfig?.styledContextKeys?.has(key)) {
+    ;(state.overriddenContextProps ||= {})[key] = (state.originalContextPropValues ||=
+      {})[key] = original
+  }
   const pass = (state as DirectState).flatPass!
   const parent = pass[passParentCursor]
   pass[passParentCursor] = condition
   contributeProp(pass, key, value, original, disabled)
   pass[passParentCursor] = parent
-}
-
-function resolveVariants(
-  key: string,
-  value: any,
-  _styleProps: SplitStyleProps,
-  styleState: GetStyleState,
-  parentVariantKey: string
-) {
-  const config = (styleState as DirectState).flatStyleStaticConfig!
-  config.variantStyleResolver?.(
-    styleState,
-    config.variants,
-    key,
-    value,
-    parentVariantKey,
-    (styleState as DirectState).flatPass?.[passParentCursor]
-  )
 }
 
 // handles finding and resolving the fontFamily to the token name

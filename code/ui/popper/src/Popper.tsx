@@ -921,7 +921,8 @@ export const PopperArrow = createRefComponent<TamaguiElement, PopperArrowProps>(
     const sizeVal =
       typeof sizeProp === 'number'
         ? sizeProp
-        : (getVariableValue(getSize(sizeProp ?? context.size)) as number) * 0.52 - 11.5
+        : (getVariableValue(getSize(sizeProp ?? context.size ?? true)) as number) * 0.52 -
+          11.5
 
     const size = Math.max(0, +sizeVal)
 

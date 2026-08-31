@@ -52,11 +52,11 @@ describe('v6 default component size on web', () => {
     expect({
       buttonHeight: resolveRenderedValue(buttonStyle.height, config.tokensParsed.size),
       buttonPadding: resolveRenderedValue(
-        buttonStyle.paddingLeft,
+        buttonStyle.paddingInline,
         config.tokensParsed.space
       ),
       buttonRadius: resolveRenderedValue(
-        buttonStyle.borderTopLeftRadius,
+        buttonStyle.borderRadius,
         config.tokensParsed.radius
       ),
       buttonFontSize: resolveRenderedValue(
@@ -69,11 +69,11 @@ describe('v6 default component size on web', () => {
       ),
       inputHeight: resolveRenderedValue(inputStyle.height, config.tokensParsed.size),
       inputPadding: resolveRenderedValue(
-        inputStyle.paddingLeft,
+        inputStyle.paddingInline,
         config.tokensParsed.space
       ),
       inputRadius: resolveRenderedValue(
-        inputStyle.borderTopLeftRadius,
+        inputStyle.borderRadius,
         config.tokensParsed.radius
       ),
       inputFontSize: resolveRenderedValue(
@@ -111,11 +111,11 @@ describe('v6 default component size on web', () => {
 
     expect({
       buttonPadding: resolveRenderedValue(
-        buttonStyle.paddingLeft,
+        buttonStyle.paddingInline,
         config.tokensParsed.space
       ),
       buttonRadius: resolveRenderedValue(
-        buttonStyle.borderTopLeftRadius,
+        buttonStyle.borderRadius,
         config.tokensParsed.radius
       ),
       buttonFontSize: resolveRenderedValue(
@@ -123,7 +123,7 @@ describe('v6 default component size on web', () => {
         config.fontsParsed.body.size
       ),
       inputRadius: resolveRenderedValue(
-        inputStyle.borderTopLeftRadius,
+        inputStyle.borderRadius,
         config.tokensParsed.radius
       ),
       inputFontSize: resolveRenderedValue(

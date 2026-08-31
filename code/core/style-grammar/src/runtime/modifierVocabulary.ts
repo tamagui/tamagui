@@ -1,4 +1,4 @@
-import type { GrammarConfigView } from './candidate'
+import type { GrammarConfigView } from '../tooling/candidate'
 import { grammarPlatformNames, grammarPlatformRank } from '../tooling/config'
 import { canonicalClauseModifier, stateModifierNames } from './clauseIdentity'
 import { canonicalStateModifierNames } from './stateModifiers'

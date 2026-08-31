@@ -1,4 +1,4 @@
-import type { GrammarConfigView } from "../runtime/candidate";
+import type { GrammarConfigView } from "./candidate";
 import { type CandidateContribution, type CandidatePropertyMismatch } from "./candidateTarget";
 import { type GrammarSourceConfig } from "./config";
 import { type PayloadShapeDiagnostic } from "../ast/payloadShape";

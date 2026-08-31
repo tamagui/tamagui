@@ -1,4 +1,4 @@
-import type { GrammarConfigView } from '../runtime/candidate'
+import type { GrammarConfigView } from './candidate'
 import {
   resolveCandidateTarget,
   type CandidateContribution,

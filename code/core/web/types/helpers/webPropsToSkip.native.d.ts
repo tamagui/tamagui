@@ -2,6 +2,11 @@
  * Web-only props and event handlers that should be skipped on native
  */
 export declare const webPropsToSkip: {
+    WebkitBoxOrient: true;
+    WebkitLineClamp: true;
+    textDecorationDistance: true;
+    whiteSpace: true;
+    wordWrap: true;
     onClick: number;
     onDoubleClick: number;
     onContextMenu: number;

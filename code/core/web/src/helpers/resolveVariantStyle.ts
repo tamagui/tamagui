@@ -6,6 +6,7 @@ import { isObj } from './isObj'
 import { getConfigRevisionState } from './grammarConfig'
 import { skipProps } from './skipProps'
 import { styleOriginalValues } from './styleOriginalValues'
+import { normalizeValueWithProperty } from './normalizeValueWithProperty'
 
 const fontLanguageCache = new WeakMap()
 
@@ -104,10 +105,13 @@ function resolveSelection(
   for (const outputKey in output) {
     if (!state.styleProps.noSkip && outputKey in skipProps) continue
     const raw = output[outputKey]
+    const value = state.styleProps.noNormalize
+      ? raw
+      : normalizeValueWithProperty(raw, state.conf.shorthands[outputKey] || outputKey)
     emitVariantStyle(
       state,
       outputKey,
-      raw,
+      value,
       originals?.[outputKey] ?? raw,
       condition,
       parentKey === key && outputKey === key

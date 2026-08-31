@@ -5,24 +5,8 @@ import {
   webOnlyStylePropsText,
   webOnlyStylePropsView,
 } from './webOnlyStyleProps'
+import { toStylePropsObject as toObj } from './toStylePropsObject'
 export { tokenCategories } from './tokenCategories'
-
-const toObj = (
-  ...sources: (string | Record<string, boolean> | undefined)[]
-): Record<string, boolean> => {
-  const out: Record<string, boolean> = {}
-  for (let i = 0; i < sources.length; i++) {
-    const s = sources[i]
-    if (!s) continue
-    if (typeof s === 'string') {
-      const parts = s.split(' ')
-      for (let j = 0; j < parts.length; j++) if (parts[j]) out[parts[j]] = true
-    } else {
-      Object.assign(out, s)
-    }
-  }
-  return out
-}
 
 export const cssShorthandLonghands = toObj(
   'borderWidth borderStyle borderColor borderTopWidth borderTopStyle borderTopColor ' +

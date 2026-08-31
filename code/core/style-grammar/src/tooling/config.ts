@@ -1,4 +1,4 @@
-import type { GrammarConfigView } from '../runtime/candidate'
+import type { GrammarConfigView } from './candidate'
 import type { TokenCategory } from './registry'
 
 type Names = readonly string[] | ReadonlySet<string> | Readonly<Record<string, unknown>>
