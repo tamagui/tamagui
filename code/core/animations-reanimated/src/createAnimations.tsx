@@ -426,7 +426,13 @@ const applyAnimation = (
   // wrapper substitutes the seed for whatever start value reanimated passes.
   // color history gets the same treatment only when reanimated's own parser
   // rejects it, preserving valid in-flight values during interruption.
-  if (seedValue !== undefined || validateStartAsColor) {
+  // inside initialUpdaterRun withSpring returns a raw value, not a definition —
+  // writing onStart onto it throws and poisons animation app-wide until reload.
+  if (
+    (seedValue !== undefined || validateStartAsColor) &&
+    animatedValue !== null &&
+    (typeof animatedValue === 'object' || typeof animatedValue === 'function')
+  ) {
     const innerOnStart = animatedValue.onStart
     animatedValue.onStart = (
       animation: unknown,
