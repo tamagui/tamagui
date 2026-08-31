@@ -223,6 +223,17 @@ function atomRank(kind: number, rank: number) {
  * text. Composition replays these same atoms, so this is the single place a
  * modifier's meaning is applied.
  */
+const stateRankFlags = [
+  conditionPlatformPseudoFlag,
+  0,
+  conditionPlatformPseudoFlag,
+  0,
+  conditionPlatformPseudoFlag,
+  0,
+  conditionEnterFlag,
+  conditionExitFlag,
+]
+
 function accumulateConditionAtom(
   state: GetStyleState,
   condition: Condition,
@@ -325,39 +336,30 @@ function accumulateConditionAtom(
     ;(state.flatGroupMedia ||= new Set()).add(containerSize)
   } else {
     const stateSelector = stateModifierSelectors[rank]
-    if (rank === 6) {
-      condition[conditionFlags] |= conditionEnterFlag
-    } else if (rank === 7) {
-      condition[conditionFlags] |= conditionExitFlag
-    } else if (rank === 0 || rank === 2 || rank === 4) {
-      condition[conditionFlags] |= conditionPlatformPseudoFlag
-    }
+    condition[conditionFlags] |= stateRankFlags[rank] || 0
     if (buildCSS) {
-      if (stateSelector[0] === '.') {
-        condition[conditionSelector] += `:where(${stateSelector}, ${stateSelector} *)`
-      } else {
-        condition[conditionSelector] += `:where(${stateSelector})`
-      }
+      condition[conditionSelector] +=
+        `:where(${stateSelector}${stateSelector[0] === '.' ? `, ${stateSelector} *` : ''})`
       if (rank === 0) appendConditionWrapper(condition, '@media (hover: hover)')
     }
-    const component = state.componentState
+    const c = state.componentState
     const active =
       rank === 0
-        ? !!component.hover
+        ? Boolean(c.hover)
         : rank === 4
-          ? !!(component.press || component.pressIn)
+          ? Boolean(c.press || c.pressIn)
           : rank === 2
-            ? !!component.focus
+            ? Boolean(c.focus)
             : rank === 3
-              ? !!component.focusVisible
+              ? Boolean(c.focusVisible)
               : rank === 1
-                ? !!component.focusWithin
+                ? Boolean(c.focusWithin)
                 : rank === 5
-                  ? !!(component.disabled || state.props.disabled)
+                  ? Boolean(c.disabled || state.props.disabled)
                   : rank === 6
-                    ? !!component.unmounted
+                    ? Boolean(c.unmounted)
                     : rank === 7
-                      ? !!state.styleProps.isExiting
+                      ? Boolean(state.styleProps.isExiting)
                       : false
     if (!active) {
       condition[conditionFlags] &= ~conditionActiveFlag
@@ -841,7 +843,7 @@ function contributeProp(
       conf,
       props,
       viewProps,
-      staticConfig,
+      ,
       validStyles,
       accept,
       neverSkipProps,
@@ -853,7 +855,7 @@ function contributeProp(
       styledContextKeys,
       flags,
       debug,
-      parentStaticConfig,
+      ,
       defaultProps,
       driverAnimations,
       driverOutputStyle,
@@ -872,7 +874,6 @@ function contributeProp(
     const asChildExceptStyleLike = Boolean(flags & passAsChildStyleFlag)
     const isTextOrInput = isText || isInput
     const hocParentVariants = isHOC ? parentVariants : undefined
-    const canResolveContextPrograms = !isHOC
     let keyInit = keyOg
     let valInit = valOg
 
@@ -1209,7 +1210,7 @@ function contributeProp(
           variant: variants?.[keyInit],
           isVariant,
           isHOCShouldPassThrough,
-          parentStaticConfig,
+          parentStaticConfig: pass[16],
         })
       }
     }
@@ -2247,6 +2248,21 @@ function emitUnderCondition(
   return condition
 }
 
+const formatScanFailure = (
+  failure: string | undefined | null,
+  source: string,
+  failureIndex: number
+) =>
+  failure === 'invalid-character'
+    ? `"${source[failureIndex]}" would end the declaration or rule`
+    : failure === 'unterminated-string'
+      ? 'an unterminated string'
+      : failure === 'unterminated-comment'
+        ? 'an unterminated "/*" comment'
+        : failure === 'stray-comment-close'
+          ? 'a stray "*/"'
+          : 'an unterminated "("'
+
 const directStyleHandler: FlatValueHandler<GetStyleState> = {
   segment(
     state,
@@ -2279,11 +2295,7 @@ const directStyleHandler: FlatValueHandler<GetStyleState> = {
           warnRefusedValue(
             property,
             source,
-            failure === 'unterminated-string'
-              ? 'an unterminated string'
-              : failure === 'unterminated-comment'
-                ? 'an unterminated "/*" comment'
-                : 'an unterminated "("'
+            formatScanFailure(failure, source, failureIndex)
           )
         }
         return
@@ -2297,15 +2309,7 @@ const directStyleHandler: FlatValueHandler<GetStyleState> = {
         warnRefusedValue(
           property,
           source,
-          failure === 'invalid-character'
-            ? `"${source[failureIndex]}" would end the declaration or rule`
-            : failure === 'unterminated-string'
-              ? 'an unterminated string'
-              : failure === 'unterminated-comment'
-                ? 'an unterminated "/*" comment'
-                : failure === 'stray-comment-close'
-                  ? 'a stray "*/"'
-                  : 'an unterminated "("'
+          formatScanFailure(failure, source, failureIndex)
         )
       }
       return
@@ -2352,15 +2356,7 @@ const directStyleHandler: FlatValueHandler<GetStyleState> = {
         warnRefusedValue(
           property,
           source,
-          failure === 'invalid-character'
-            ? `"${source[failureIndex]}" would end the declaration or rule`
-            : failure === 'unterminated-string'
-              ? 'an unterminated string'
-              : failure === 'unterminated-comment'
-                ? 'an unterminated "/*" comment'
-                : failure === 'stray-comment-close'
-                  ? 'a stray "*/"'
-                  : 'an unterminated "("'
+          formatScanFailure(failure, source, failureIndex)
         )
       }
       return
@@ -2427,15 +2423,7 @@ const directStyleHandler: FlatValueHandler<GetStyleState> = {
         warnRefusedValue(
           property,
           source,
-          failure === 'invalid-character'
-            ? `"${source[failureIndex]}" would end the declaration or rule`
-            : failure === 'unterminated-string'
-              ? 'an unterminated string'
-              : failure === 'unterminated-comment'
-                ? 'an unterminated "/*" comment'
-                : failure === 'stray-comment-close'
-                  ? 'a stray "*/"'
-                  : 'an unterminated "("'
+          formatScanFailure(failure, source, failureIndex)
         )
       }
     }
@@ -3216,34 +3204,28 @@ function emitValue(
         }
         return
       }
-      case emitKindWebShadow: {
-        if (process.env.TAMAGUI_TARGET !== 'web') break
-        const value =
-          typeof raw === 'string' ? configuredValue(state, property, raw) : raw
-        if (canGenerateCSS && state.flatShouldDoClasses) {
-          const shadow = ((state as DirectState).flatWebShadow ||= [])
-          shadow[webShadowParts[property] - 1] = value
-          shadow[4] = ++frameSequence
-          shadow[5] = originalValue
-          shadow[6] = contextOnly
-        } else {
-          streamWriteInline(state, property, value, cursor, merge, originalValue, true)
-        }
-        return
-      }
+      case emitKindWebShadow:
       case emitKindWebTextShadow: {
         if (process.env.TAMAGUI_TARGET !== 'web') break
         const value =
           typeof raw === 'string' ? configuredValue(state, property, raw) : raw
         if (canGenerateCSS && state.flatShouldDoClasses) {
-          emitWebTextShadow(
-            state as DirectState,
-            property,
-            value,
-            merge,
-            originalValue,
-            contextOnly
-          )
+          if (emitKind === emitKindWebShadow) {
+            const shadow = ((state as DirectState).flatWebShadow ||= [])
+            shadow[webShadowParts[property] - 1] = value
+            shadow[4] = ++frameSequence
+            shadow[5] = originalValue
+            shadow[6] = contextOnly
+          } else {
+            emitWebTextShadow(
+              state as DirectState,
+              property,
+              value,
+              merge,
+              originalValue,
+              contextOnly
+            )
+          }
         } else {
           streamWriteInline(state, property, value, cursor, merge, originalValue, true)
         }
