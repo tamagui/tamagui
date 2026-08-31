@@ -329,9 +329,7 @@ function expectMediaPaddingCss(css: string | undefined, breakpoint: number) {
   expect(css).toMatch(
     new RegExp(`\\(\\s*(?:width\\s*>=|min-width\\s*:)\\s*${breakpoint}px\\s*\\)`)
   )
-  for (const side of ['top', 'right', 'bottom', 'left']) {
-    expect(css).toMatch(new RegExp(`padding-${side}\\s*:\\s*9px`))
-  }
+  expect(css).toMatch(/padding\s*:\s*9px/)
 }
 
 async function waitForFileChange(
@@ -919,7 +917,7 @@ test('evaluates config and components through the app resolver and invalidates H
   expect(compiledCssRequest).toBeTruthy()
   const compiledCss = await clientEnvironment.transformRequest(compiledCssRequest!)
   expect(compiledCss?.code).toMatch(/\(\s*(?:width\s*>=|min-width\s*:)\s*16px\s*\)/)
-  expect(compiledCss?.code).toMatch(/padding-top\s*:\s*7px/)
+  expect(compiledCss?.code).toMatch(/padding\s*:\s*7px/)
   const absoluteCssRequest = `${fixtureRoot}/src/App.tsx.tamagui.css`
   const queryResolution = await clientEnvironment.pluginContainer.resolveId(
     `${absoluteCssRequest}?direct`

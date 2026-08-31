@@ -81,7 +81,7 @@ export const App = () => jsx(View, { padding: space, 'data-compiled': 'yes' })
   expect(first.plan.diagnostics).toEqual([])
   expect(first.output.code).toMatch(/jsx\("div", \{ className: "[^"]+"/)
   expect(first.output.code).toContain("'data-compiled': 'yes'")
-  expect(first.plan.css).toContain('padding-top:12px')
+  expect(first.plan.css).toContain('padding:12px')
   expect(first.plan.dependencies).toContain(resolvedModuleId(tokensId))
   expect(frontend.parseCount(appId)).toBe(1)
   expect(frontend.parseCount(tokensId)).toBe(1)
@@ -122,8 +122,8 @@ export const App = () => jsx(View, { padding: space, 'data-compiled': 'yes' })
   const loadedBeforeRecompile = loadCalls
 
   const second = await compile()
-  expect(second.plan.css).toContain('padding-top:16px')
-  expect(second.plan.css).not.toContain('padding-top:12px')
+  expect(second.plan.css).toContain('padding:16px')
+  expect(second.plan.css).not.toContain('padding:12px')
   expect(second.invalidatedIds).toEqual([])
   expect(frontend.parseCount(appId)).toBe(1)
   expect(frontend.parseCount(tokensId)).toBe(2)
@@ -134,14 +134,14 @@ export const App = () => jsx(View, { padding: space, 'data-compiled': 'yes' })
   expect(removed.invalidatedIds).toContain(resolvedModuleId(appId))
   tokenSource = 'export const space = 20\n'
   const afterRemoval = await compile()
-  expect(afterRemoval.plan.css).toContain('padding-top:20px')
+  expect(afterRemoval.plan.css).toContain('padding:20px')
   expect(resolveCalls).toBeGreaterThan(resolvedBeforeRecompile)
   expect(loadCalls).toBeGreaterThan(loadedBeforeRecompile)
 
   const resolvedBeforeGenerationChange = resolveCalls
   const loadedBeforeGenerationChange = loadCalls
   const nextGeneration = await compile('vite-e3-fixture-v2')
-  expect(nextGeneration.plan.css).toContain('padding-top:20px')
+  expect(nextGeneration.plan.css).toContain('padding:20px')
   expect(resolveCalls).toBeGreaterThan(resolvedBeforeGenerationChange)
   expect(loadCalls).toBeGreaterThan(loadedBeforeGenerationChange)
 })
@@ -192,10 +192,10 @@ export const App = () => jsx(View, { padding: space })
       })
 
     const first = await compile(firstEnvironment as 'client' | 'ssr')
-    expect(first.plan.css).toContain(`padding-top:${firstSpace}px`)
+    expect(first.plan.css).toContain(`padding:${firstSpace}px`)
     const second = await compile(secondEnvironment as 'client' | 'ssr')
-    expect(second.plan.css).toContain(`padding-top:${secondSpace}px`)
-    expect(second.plan.css).not.toContain(`padding-top:${firstSpace}px`)
+    expect(second.plan.css).toContain(`padding:${secondSpace}px`)
+    expect(second.plan.css).not.toContain(`padding:${firstSpace}px`)
   }
 )
 
@@ -247,7 +247,7 @@ export const App = () => jsx(View, { padding: space })
   }
 
   const first = await session.compile({ module: appModule, adapter })
-  expect(first.plan.css).toContain('padding-top:20px')
+  expect(first.plan.css).toContain('padding:20px')
   expect(first.plan.diagnostics).toEqual([])
   expect(session.has(tokenModule.id)).toBe(true)
   expect(session.dependentsOf(tokenModule.id)).toEqual([appModule.id])
@@ -261,8 +261,8 @@ export const App = () => jsx(View, { padding: space })
   expect(session.parseCount(appModule.id)).toBe(1)
 
   const second = await session.compile({ module: appModule, adapter })
-  expect(second.plan.css).toContain('padding-top:24px')
-  expect(second.plan.css).not.toContain('padding-top:20px')
+  expect(second.plan.css).toContain('padding:24px')
+  expect(second.plan.css).not.toContain('padding:20px')
   expect((await session.remove(tokenModule.id)).invalidatedIds).toContain(appModule.id)
 })
 
@@ -352,7 +352,7 @@ export const App = () => jsx(View, { padding: space })
 
   const first = new CompilerFrontend()
   const cold = await compile(first, 'stamp-one')
-  expect(cold.plan.css).toContain('padding-top:12px')
+  expect(cold.plan.css).toContain('padding:12px')
   expect(first.planCacheStats).toMatchObject({ hits: 0, writes: 1 })
 
   // a new frontend is a new process: the plan comes off disk and is identical
@@ -367,8 +367,8 @@ export const App = () => jsx(View, { padding: space })
   tokenSource = 'export const space = 16\n'
   const third = new CompilerFrontend()
   const afterEdit = await compile(third, 'stamp-one')
-  expect(afterEdit.plan.css).toContain('padding-top:16px')
-  expect(afterEdit.plan.css).not.toContain('padding-top:12px')
+  expect(afterEdit.plan.css).toContain('padding:16px')
+  expect(afterEdit.plan.css).not.toContain('padding:12px')
   expect(third.planCacheStats).toMatchObject({ hits: 0, misses: 1, writes: 1 })
 
   // a different compiler or config identity reuses nothing
