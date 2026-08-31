@@ -69,15 +69,13 @@ export const createStyledContext = (<VariantProps extends Record<string, any>>(
     typeof namespaceOrOptions === 'string'
       ? namespaceOrOptions
       : namespaceOrOptions.namespace || ''
+  const defaultKeys = isPlainObject(defaultValues)
+    ? (Object.keys(defaultValues) as StyledContextKey<VariantProps>[])
+    : undefined
   const propKeys =
-    typeof namespaceOrOptions === 'string'
-      ? isPlainObject(defaultValues)
-        ? (Object.keys(defaultValues) as StyledContextKey<VariantProps>[])
-        : undefined
-      : namespaceOrOptions.keys ||
-        (isPlainObject(defaultValues)
-          ? (Object.keys(defaultValues) as StyledContextKey<VariantProps>[])
-          : undefined)
+    typeof namespaceOrOptions === 'object' && namespaceOrOptions.keys
+      ? namespaceOrOptions.keys
+      : defaultKeys
 
   const OGContext = React.createContext<VariantProps | undefined>(defaultValues)
   const OGProvider = OGContext.Provider
