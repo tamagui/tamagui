@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest'
-import { alignTransitionContributions } from '../transitionAlign'
+import { alignTransitionContributions } from '../shorthands/transitionAlign'
 
 const presets = new Set(['quick', 'bouncy'])
 

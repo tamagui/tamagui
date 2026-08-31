@@ -49,16 +49,22 @@ export type SlotIdentity = [
   styleObject?: unknown,
 ]
 
-const borderStyleDefaults: Record<string, string> = {
-  borderWidth: 'borderStyle',
-  borderTopWidth: 'borderTopStyle',
-  borderRightWidth: 'borderRightStyle',
-  borderBottomWidth: 'borderBottomStyle',
-  borderLeftWidth: 'borderLeftStyle',
-}
-
 function directStyleSignature(property: string, value: unknown, conditionKey = '') {
   return '\u001f' + property + '\u001f' + conditionKey + '\u001e' + String(value)
+}
+
+function getShortProp(key: string) {
+  let short = ''
+  for (let i = 0; i < key.length; i++) {
+    const code = key.charCodeAt(i)
+    if (
+      (i === 0 || (code >= 65 && code <= 90) || key.charCodeAt(i - 1) === 45) &&
+      ((code >= 65 && code <= 90) || (code >= 97 && code <= 122))
+    ) {
+      short += key[i].toLowerCase()
+    }
+  }
+  return short || 'x'
 }
 
 export function requestBorderStyleDefault(
@@ -71,10 +77,14 @@ export function requestBorderStyleDefault(
   wrapperStart: number,
   wrapperCount: number
 ) {
-  if (!canGenerateCSS || !state.flatShouldDoClasses) return
-  if (state.styleProps.noNormalize === false) return
-  const target = borderStyleDefaults[property]
-  if (!target) return
+  if (
+    !canGenerateCSS ||
+    !state.flatShouldDoClasses ||
+    state.styleProps.noNormalize === false
+  )
+    return
+  if (!property.startsWith('border') || !property.endsWith('Width')) return
+  const target = property.slice(0, -5) + 'Style'
   const requests = ((state as DirectAtomicState).flatBorderDefaultRequests ||= [])
   for (let index = 0; index < requests.length; index++) {
     if (requests[index][0] === target && requests[index][3] === identity) {
@@ -106,10 +116,11 @@ function appendSlotEntry(
   original?: any
 ) {
   for (let index = 0; index < list.length; index++) {
-    if (list[index][0] === property && list[index][3] === identity) {
-      list[index][1] = value
-      list[index][2] = condition
-      list[index][8] = original
+    const item = list[index]
+    if (item[0] === property && item[3] === identity) {
+      item[1] = value
+      item[2] = condition
+      item[8] = original
       return
     }
   }
@@ -172,8 +183,9 @@ function registerSlot(
     const precedence = entry[2] ? Math.floor(entry[2] / 256) : -1
     let insertAt = ordered.length
     while (insertAt > 0) {
-      const before = ordered[insertAt - 1]
-      const beforePrecedence = before[2] ? Math.floor(before[2] / 256) : -1
+      const beforePrecedence = ordered[insertAt - 1][2]
+        ? Math.floor(ordered[insertAt - 1][2] / 256)
+        : -1
       if (beforePrecedence <= precedence) break
       insertAt--
     }
@@ -276,12 +288,11 @@ export function flushDirectStyles(state: GetStyleState, clear = false) {
 
 export function addComposition(state: GetStyleState, property: 'translate' | 'scale') {
   if (!canGenerateCSS || state.classNames[property]) return
-  const value =
-    property === 'translate'
-      ? 'var(--t-x, 0px) var(--t-y, 0px)'
-      : 'var(--t-scale-x, 1) var(--t-scale-y, 1)'
-  const defaults =
-    property === 'translate' ? '--t-x:0px;--t-y:0px' : '--t-scale-x:1;--t-scale-y:1'
+  const isTranslate = property === 'translate'
+  const value = isTranslate
+    ? 'var(--t-x, 0px) var(--t-y, 0px)'
+    : 'var(--t-scale-x, 1) var(--t-scale-y, 1)'
+  const defaults = isTranslate ? '--t-x:0px;--t-y:0px' : '--t-scale-x:1;--t-scale-y:1'
   scratchEntry[0] = property
   scratchEntry[1] = value
   scratchEntry[2] = 0
@@ -377,24 +388,9 @@ const getStyleObject = (
   syncAtomicConfig()
   const rawValue = typeof value === 'string' ? value : `${value}`
   const hash = simpleHash(identity ?? rawValue, direct ? 'strict' : 10) || '0'
-  let shortProp: string
-  if (direct) {
-    shortProp = ''
-    for (let index = 0; index < identityKey.length; index++) {
-      const code = identityKey.charCodeAt(index)
-      if (
-        (index === 0 ||
-          (code >= 65 && code <= 90) ||
-          identityKey.charCodeAt(index - 1) === 45) &&
-        ((code >= 65 && code <= 90) || (code >= 97 && code <= 122))
-      ) {
-        shortProp += identityKey[index].toLowerCase()
-      }
-    }
-    shortProp ||= 'x'
-  } else {
-    shortProp = conf?.inverseShorthands[key] || key
-  }
+  const shortProp = direct
+    ? getShortProp(identityKey)
+    : conf?.inverseShorthands[key] || key
   let identifier = `_${shortProp}-${hash}`
   if (key === 'pointerEvents' && !condition) {
     if (value === 'box-none') identifier = '_pe-boxnone'
@@ -427,10 +423,6 @@ function syncAtomicConfig() {
   return nextConf
 }
 
-function slotClassRepetitions(atomicKey: string, condition: number): number {
-  return atomicKey === 'containerName' || atomicKey === 'containerType' ? 2 : 1
-}
-
 export function buildAtomicSlotCSS(
   atomicKey: string,
   entries: readonly AtomicSlotEntry[],
@@ -443,19 +435,7 @@ export function buildAtomicSlotCSS(
   if (known) return known
 
   const hash = simpleHash(signature, 'strict') || '0'
-  let shortProp = ''
-  for (let index = 0; index < atomicKey.length; index++) {
-    const code = atomicKey.charCodeAt(index)
-    if (
-      (index === 0 ||
-        (code >= 65 && code <= 90) ||
-        atomicKey.charCodeAt(index - 1) === 45) &&
-      ((code >= 65 && code <= 90) || (code >= 97 && code <= 122))
-    ) {
-      shortProp += atomicKey[index].toLowerCase()
-    }
-  }
-  shortProp ||= 'x'
+  const shortProp = getShortProp(atomicKey)
   let identifier = `_${shortProp}-${hash}`
   if (atomicKey === 'pointerEvents' && entries.length === 1 && !entries[0][2]) {
     const value = entries[0][1]
@@ -475,7 +455,7 @@ export function buildAtomicSlotCSS(
       entry[4],
       entry[5],
       2,
-      slotClassRepetitions(atomicKey, entry[2]),
+      atomicKey === 'containerName' || atomicKey === 'containerType' ? 2 : 1,
       entry[6],
       entry[7]
     )

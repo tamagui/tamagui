@@ -21,7 +21,7 @@ import {
   stateToModifier,
   stateNames,
   stateToSelector,
-} from '../../../code/core/style-grammar/src/states'
+} from '../../../code/core/style-grammar/src/runtime/states'
 
 const JSON_INDENT = 2
 

@@ -6,8 +6,8 @@ import {
   modifierKindPlatform,
   modifierKindState,
   modifierKindTheme,
-} from '../modifierVocabulary'
-import { createModifierRegistry } from '../modifierRegistry'
+} from '../runtime/modifierVocabulary'
+import { createModifierRegistry } from '../programs/modifierRegistry'
 
 describe('compiled modifier vocabulary', () => {
   test('uses numeric classification for exact entries and agrees with the parser', () => {

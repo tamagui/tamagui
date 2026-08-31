@@ -395,7 +395,7 @@ describe('splitColorOpacitySuffix', () => {
   // the whole-name rule must agree with the mid-payload readOpacitySuffix rule
   // for every input shape, so the two spellings of one owner cannot drift
   test('agrees with payload resolution case by case', async () => {
-    const { splitColorOpacitySuffix } = await import('../resolvePayload')
+    const { splitColorOpacitySuffix } = await import('../runtime/colorOpacity')
     const lookup = (name: string) =>
       name === 'accent' ? ({ name: 'c-accent', kind: 'color' } as const) : undefined
 

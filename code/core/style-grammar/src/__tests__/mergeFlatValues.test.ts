@@ -1,9 +1,9 @@
 import { describe, expect, test } from 'vitest'
 
-import { mergeFlatValues } from '../mergeFlatValues'
-import { formatParsedValue } from '../toolingFormat'
-import { parseValue } from '../valueParser'
-import type { ModifierRegistryView } from '../valueTypes'
+import { mergeFlatValues } from '../runtime/mergeFlatValues'
+import { formatParsedValue } from '../tooling/toolingFormat'
+import { parseValue } from '../ast/valueParser'
+import type { ModifierRegistryView } from '../ast/valueTypes'
 
 const registry: ModifierRegistryView = { get: () => 'state' }
 const parse = (input: string) => {

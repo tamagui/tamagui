@@ -5,7 +5,7 @@ import {
   stateNames,
   stateToSelector,
   stateToModifier,
-} from '../../../code/core/style-grammar/src/states'
+} from '../../../code/core/style-grammar/src/runtime/states'
 import { extractImportSpecifiers, classifyDependencies, packageNameOf } from './deps'
 import { reprefixDisplayNames, buildItem, loadSkin, type Skin } from './core'
 import { buildRegistry, buildSkinPackageExports } from './emit'

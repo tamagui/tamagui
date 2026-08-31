@@ -23,8 +23,8 @@ const importSource = (path: string): Promise<any> =>
 const [configMedia, grammarConfig, modifierRegistry, generatedThemes] = await Promise.all(
   [
     importSource('../code/core/config/src/v4-media.ts'),
-    importSource('../code/core/style-grammar/src/config.ts'),
-    importSource('../code/core/style-grammar/src/modifierRegistry.ts'),
+    importSource('../code/core/style-grammar/src/tooling/config.ts'),
+    importSource('../code/core/style-grammar/src/programs/modifierRegistry.ts'),
     importSource('../code/core/themes/src/generated-v4.ts'),
   ]
 )

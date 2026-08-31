@@ -5,28 +5,28 @@ export {
   type CandidateClassification,
   type GrammarConfigView,
   type ParsedCandidate,
-} from './candidate'
+} from './runtime/candidate'
 export {
   canonicalClauseModifier,
   isModifierName,
   reduceFlatValueIdentity,
   type ClauseIdentityErrorCode,
   type ClauseIdentityHandler,
-} from './clauseIdentity'
+} from './runtime/clauseIdentity'
 export {
   clauseSubjectClassRepetitions,
   createClausePrecedenceOrder,
   getClausePrecedenceKeyFromKinds,
   type ClausePrecedenceKey,
   type ClausePrecedenceOrder,
-} from './clausePrecedence'
+} from './runtime/clausePrecedence'
 export {
   createGrammarConfigView,
   grammarPlatformNames,
   isContainerSizeQueryText,
   type GrammarSourceConfig,
-} from './config'
-export { mergeFlatValues } from './mergeFlatValues'
+} from './tooling/config'
+export { mergeFlatValues } from './runtime/mergeFlatValues'
 export {
   compileModifierVocabulary,
   configRevisionSymbol,
@@ -37,26 +37,26 @@ export {
   modifierKindTheme,
   type CompiledModifierKind,
   type CompiledModifierVocabulary,
-} from './modifierVocabulary'
+} from './runtime/modifierVocabulary'
 export {
   borderSideSuffix,
   getTokenCategory,
   percentUtilityProps,
   radiusCornerProps,
-} from './registry'
-export { splitColorOpacitySuffix } from './resolvePayload'
-export { getSafeAreaEdge, safeAreaVariableNames } from './safeAreaVariables'
+} from './tooling/registry'
+export { splitColorOpacitySuffix, type ColorOpacitySuffix } from './runtime/colorOpacity'
+export { getSafeAreaEdge, safeAreaVariableNames } from './runtime/safeAreaVariables'
 export {
   scanFlatValue,
   type FlatScanErrorCode,
   type FlatValueHandler,
-} from './scanFlatValue'
+} from './runtime/scanFlatValue'
 export {
   canonicalStateModifierNames,
   stateModifierSelectors,
   type CoreStateModifierName,
-} from './stateModifiers'
-export type { NativeTransitionTarget } from './transitionNative'
+} from './runtime/stateModifiers'
+export type { NativeTransitionTarget } from './shorthands/transitionNative'
 export {
   addTransformValue,
   cloneTransformAccumulator,
@@ -65,8 +65,8 @@ export {
   getTransformPartKeys,
   removeTransformValue,
   type TransformAccumulator,
-} from './transformAccumulator'
-export { unitlessNumberProperties } from './unitlessNumbers'
+} from './runtime/transformAccumulator'
+export { unitlessNumberProperties } from './runtime/unitlessNumbers'
 export {
   getTokenCategoryName,
   propToTokenCategoryCode,
@@ -83,5 +83,5 @@ export {
   tokenCategoryZIndex,
   type TokenCategoryCode,
   type TokenCategoryName,
-} from './tokenCategories'
-export type { ModifierKind, ParsedValue } from './valueTypes'
+} from './runtime/tokenCategories'
+export type { ModifierKind, ParsedValue } from './ast/valueTypes'

@@ -4,9 +4,9 @@ import {
   reduceFlatValueIdentity,
   type ClauseIdentityErrorCode,
   type ClauseIdentityHandler,
-} from '../clauseIdentity'
-import { createModifierRegistry } from '../modifierRegistry'
-import { parseValue } from '../valueParser'
+} from '../runtime/clauseIdentity'
+import { createModifierRegistry } from '../programs/modifierRegistry'
+import { parseValue } from '../ast/valueParser'
 
 type Receipt = {
   source: string

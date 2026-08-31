@@ -29,7 +29,6 @@ const HasRenderedOnce = new WeakMap<object, boolean>()
 const HadTheme = new WeakMap<object, boolean>()
 const PendingUpdate = new Map<any, boolean | 'force'>()
 
-// TODO this will gain memory over time but its not going to be a ton
 const states: Map<ID, ThemeState | undefined> = new Map()
 const localStates: Map<ID, ThemeState | undefined> = new Map()
 
@@ -43,26 +42,12 @@ export const forceUpdateThemes = () => {
 
 export const getThemeState = (id: ID) => states.get(id)
 
-/**
- * ThemeUpdate layers and the provider chain, both keyed by the id a
- * `<Theme>` pushes into `ThemeStateContext`.
- *
- * A portal renders outside its mount ancestry, so it cannot inherit the CSS
- * custom properties a `<ThemeUpdate background="...">` put on an ancestor node. The
- * portal bridge walks this chain and replays exactly those layers. It cannot
- * use `ThemeState.parentId`: a state that resolves to the same theme as its
- * parent is a copy of the parent state, so its `parentId` skips a level.
- *
- * Only `<Theme>` providers are recorded, which is also the only kind of state
- * whose id can appear in `ThemeStateContext`.
- */
 const themeUpdateLayers = new Map<ID, ThemeUpdateState>()
 const themeProviderParents = new Map<ID, ID>()
 
 export const getThemeUpdateLayer = (id: ID) => themeUpdateLayers.get(id)
 export const getThemeProviderParent = (id: ID) => themeProviderParents.get(id)
 
-/** introspection for devtools and leak probes: entries retained per map */
 export const getThemeProviderChainSizes = () => ({
   layers: themeUpdateLayers.size,
   parents: themeProviderParents.size,
@@ -82,9 +67,6 @@ const registerThemeProviderChain = (
 }
 
 let cacheVersion = 0
-
-// config-generation cache for getNewThemeName. values are derived strings, so
-// the whole memo generation can roll without invalidating mounted ThemeState.
 const themeNameCache = new Map<string, string | null>()
 let themeNameCacheVer = -1
 
@@ -93,11 +75,8 @@ let themes: Record<string, ThemeParsed> | null = null
 let rootThemeState: ThemeState | null = null
 export const getRootThemeState = () => rootThemeState
 
-// extracts base name without scheme: "light_red_surface1" -> "red_surface1"
 const getThemeBaseName = (name: string) => name.replace(/^(light|dark)_/, '')
 
-// useReducer-based force-update; cheaper than useSyncExternalStore's internal
-// useState+useLayoutEffect+useEffect+useDebugValue chain on Hermes.
 const incReducer = (c: number): number => c + 1
 
 export const useThemeState = (
@@ -105,12 +84,6 @@ export const useThemeState = (
   isRoot = false,
   keys: MutableRefObject<Set<string> | null>,
   schemeKeys?: MutableRefObject<Set<string> | null>,
-  // when true, install the propsKey-watching useIsomorphicLayoutEffect that
-  // schedules descendant updates via listenersByParent[id]. Only <Theme>
-  // providers actually push their themeState.id into ThemeStateContext, so
-  // only they can have descendants subscribed under their id. Leaf styled
-  // components pass false (the default) and save one hook slot per mount.
-  // Stable per call-site (rule of hooks satisfied).
   cascadeOnChange = false,
   optimizeForFirstRender = false
 ): ThemeState => {
@@ -122,9 +95,7 @@ export const useThemeState = (
   if (!parentId && !isRoot) {
     throw new Error(
       process.env.NODE_ENV === 'development'
-        ? `${MISSING_THEME_MESSAGE}
-
-Looked for theme${props.name ? ` "${props.name}"` : ''}, but no parent theme context was found (parentId: ${parentId}).`
+        ? `${MISSING_THEME_MESSAGE}\n\nLooked for theme${props.name ? ` "${props.name}"` : ''}, but no parent theme context was found (parentId: ${parentId}).`
         : MISSING_THEME_MESSAGE
     )
   }
@@ -135,83 +106,49 @@ Looked for theme${props.name ? ` "${props.name}"` : ''}, but no parent theme con
         id: '',
         name: 'light',
         theme: getConfig().themes.light,
-        // inverses: 0,
       }
     )
   }
 
-  // useId keeps theme-provider ids tied to the React tree. A process-wide
-  // counter can let children observe a provider context id whose matching
-  // states Map entry was never populated in multi-root/native surfaces.
   const id = useId()
   const propsKey = getPropsKey(props)
 
-  // only a <Theme> provider pushes its id into ThemeStateContext, so only it can
-  // be a step in the chain the portal bridge replays
   if (cascadeOnChange) {
     registerThemeProviderChain(id, parentId, props)
   }
 
-  // stable ref-bag for render inputs and the optional subscription cleanup.
-  // lastSnap caches the last getSnapshot result for the subscription bailout.
   const ref = useRef<ThemeStateRef>(null as any)
-  if (!ref.current) {
-    ref.current = {
-      id,
-      parentId,
-      props,
-      propsKey,
-      isRoot,
-      keys,
-      schemeKeys,
-      optimizeForFirstRender,
-      renderVersion: 0,
-    }
-  } else {
-    // refresh latest values for the stable closures to read
-    ref.current.props = props
-    ref.current.propsKey = propsKey
-    ref.current.isRoot = isRoot
-    ref.current.keys = keys
-    ref.current.schemeKeys = schemeKeys
-    ref.current.parentId = parentId
-  }
-  ref.current.renderVersion++
+  const r = (ref.current ||= {
+    id,
+    parentId,
+    props,
+    propsKey,
+    isRoot,
+    keys,
+    schemeKeys,
+    optimizeForFirstRender,
+    renderVersion: 0,
+  })
+  r.props = props
+  r.propsKey = propsKey
+  r.isRoot = isRoot
+  r.keys = keys
+  r.schemeKeys = schemeKeys
+  r.parentId = parentId
+  r.renderVersion++
 
-  if (process.env.NODE_ENV === 'development' && globalThis.time)
-    globalThis.time`theme-prep-uses`
-
-  // manual subscription replaces useSyncExternalStore: same granular bailout
-  // (getSnapshot returning the same ref → React doesn't re-render), fewer
-  // React-internal hook slots on Hermes. We don't need tearing prevention
-  // here: theme/media updates are event-driven, not transition-driven, and
-  // useReducer in normal mode already gives same-tick batching.
   const [, forceUpdate] = useReducer(incReducer, 0)
-  const state = getSnapshotImpl(ref.current)
-  ref.current.lastSnap = state
+  const state = getSnapshotImpl(r)
+  r.lastSnap = state
 
   useEffect(() => {
-    const r = ref.current
     const renderVersion = r.renderVersion
 
-    // strict-mode dev double-invokes effects: cleanup runs between the two
-    // invocations with no render in between, so the "unchanged renderVersion
-    // means unmount" check below false-positives and deletes this component's
-    // registered theme state mid-lifecycle. the registry is only re-populated
-    // on this component's next render, so until then children resolve a
-    // missing parent and fall back to the root theme state (isNew: true) —
-    // which flips getThemedChildren to wrap and re-parents/remounts their
-    // hosts, losing focus (keyboard dismiss on first Input tap). per react's
-    // strict-mode contract, setup restores whatever cleanup tore down.
     if (r.lastSnap && !states.has(r.id)) {
       states.set(r.id, r.lastSnap)
       localStates.set(r.id, r.lastSnap)
     }
 
-    // same strict-mode contract for the portal-bridge chain: cleanupThemeState
-    // retires both maps, and only a render re-registers them, so a provider torn
-    // down between the two effect invocations would lose its layer until it
-    // happened to re-render, breaking portal bridging mid-lifecycle.
     if (cascadeOnChange && !themeProviderParents.has(r.id)) {
       registerThemeProviderChain(r.id, r.parentId, r.props)
     }
@@ -228,11 +165,6 @@ Looked for theme${props.name ? ` "${props.name}"` : ''}, but no parent theme con
           const next = getSnapshotImpl(r)
           if (next !== r.lastSnap) {
             r.lastSnap = next
-            // native fast path: the component can commit the themed styles
-            // straight to the native tree and skip this re-render. state maps
-            // are already updated above, so a later natural render resolves
-            // the exact same values (mirror consistency). forced updates
-            // (config changes) always re-render.
             if (!forced && r.props.nativeUpdate?.(next)) {
               return
             }
@@ -240,8 +172,7 @@ Looked for theme${props.name ? ` "${props.name}"` : ''}, but no parent theme con
           }
         }
 
-        listenersByParent[pid] = listenersByParent[pid] || new Set()
-        listenersByParent[pid].add(sid)
+        ;(listenersByParent[pid] ||= new Set()).add(sid)
         allListeners.set(sid, () => {
           const forced = shouldForce
           PendingUpdate.set(sid, forced ? 'force' : true)
@@ -263,9 +194,6 @@ Looked for theme${props.name ? ` "${props.name}"` : ''}, but no parent theme con
     }
 
     return () => {
-      // react runs passive cleanup before the next effect as well as on unmount.
-      // a newer render bumps renderVersion before that cleanup, so equality here
-      // means this is the final unmount cleanup.
       if (r.renderVersion === renderVersion) {
         cleanupThemeState(r)
       }
@@ -281,14 +209,10 @@ Looked for theme${props.name ? ` "${props.name}"` : ''}, but no parent theme con
       }
       if (!propsKey) {
         if (HadTheme.get(keys)) {
-          // we're removing the last theme, make sure to notify
           scheduleUpdate(id)
         }
         HadTheme.set(keys, false)
         return
-      }
-      if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') {
-        console.warn(` · useTheme(${id}) scheduleUpdate`, propsKey, states.get(id)?.name)
       }
       scheduleUpdate(id)
       HadTheme.set(keys, true)
@@ -317,12 +241,14 @@ type ThemeStateRef = SnapshotRef & {
 }
 
 const shouldSubscribeToTheme = (r: ThemeStateRef, cascadeOnChange: boolean): boolean =>
-  r.optimizeForFirstRender ||
-  r.isRoot ||
-  cascadeOnChange ||
-  hasThemeUpdatingProps(r.props) ||
-  !!r.keys.current?.size ||
-  !!r.props.needsUpdate?.()
+  Boolean(
+    r.optimizeForFirstRender ||
+    r.isRoot ||
+    cascadeOnChange ||
+    hasThemeUpdatingProps(r.props) ||
+    r.keys.current?.size ||
+    r.props.needsUpdate?.()
+  )
 
 function cleanupThemeSubscription(r: ThemeStateRef) {
   r.unsubscribe?.()
@@ -336,9 +262,6 @@ function cleanupThemeState(r: ThemeStateRef) {
     states.delete(r.id)
     PendingUpdate.delete(r.id)
   }
-  // both branches retire the id, and a subscribed <Theme> provider only ever
-  // takes the first one, so the portal-bridge chain has to be cleared here
-  // rather than inside the unsubscribed branch.
   themeUpdateLayers.delete(r.id)
   themeProviderParents.delete(r.id)
 }
@@ -357,7 +280,6 @@ const getSnapshotImpl = (r: SnapshotRef): ThemeState => {
   let local = localStates.get(id)
   const parentState = states.get(parentId)
 
-  // fast path: nothing changed since last snapshot
   if (local && !PendingUpdate.has(id)) {
     if (
       parentState &&
@@ -368,7 +290,6 @@ const getSnapshotImpl = (r: SnapshotRef): ThemeState => {
     }
   }
 
-  // check if this is a scheme-only change (light↔dark) where DynamicColorIOS handles it
   const isSchemeOnlyChange =
     !optimizeForFirstRender &&
     process.env.TAMAGUI_TARGET === 'native' &&
@@ -379,14 +300,11 @@ const getSnapshotImpl = (r: SnapshotRef): ThemeState => {
     local.scheme !== parentState.scheme &&
     getThemeBaseName(local.name) === getThemeBaseName(parentState.name)
 
-  let allKeysSchemeOptimized = false
-  if (!optimizeForFirstRender) {
-    const keysSize = keys.current?.size ?? 0
-    const schemeKeysSize = schemeKeys?.current?.size ?? 0
-    allKeysSchemeOptimized = schemeKeysSize === keysSize && keysSize > 0
-  }
+  const allKeysSchemeOptimized =
+    !optimizeForFirstRender &&
+    Boolean(keys.current?.size && schemeKeys?.current?.size === keys.current.size)
 
-  const canSkipForSchemeChange = !!isSchemeOnlyChange && allKeysSchemeOptimized
+  const canSkipForSchemeChange = Boolean(isSchemeOnlyChange && allKeysSchemeOptimized)
 
   const needsUpdate = props.passThrough
     ? false
@@ -397,7 +315,7 @@ const getSnapshotImpl = (r: SnapshotRef): ThemeState => {
         : !HasRenderedOnce.get(keys)
           ? true
           : canSkipForSchemeChange
-            ? false // skip re-render for scheme-only changes with DynamicColorIOS
+            ? false
             : keys?.current?.size
               ? true
               : props.needsUpdate?.()
@@ -413,12 +331,6 @@ const getSnapshotImpl = (r: SnapshotRef): ThemeState => {
     PendingUpdate.get(id)
   )
 
-  // ThemeUpdate layer: swap in the merged theme so descendants
-  // (which read states.get(parentId).theme) see the patched values. The base
-  // is always the PARENT state's theme, never this state's own theme —
-  // getNextState can return our previous (already-merged) state, and merging
-  // over own output would keep removed patch keys alive. Merged objects are
-  // identity-cached per (base theme, values, scheme) so bailouts stay stable.
   let next = nextRaw
   if (props._themeUpdate && nextRaw?.theme) {
     const parentTheme = states.get(parentId)?.theme || nextRaw.theme
@@ -430,30 +342,9 @@ const getSnapshotImpl = (r: SnapshotRef): ThemeState => {
 
   PendingUpdate.delete(id)
 
-  // we always create a new localState for every component
-  // that way we can use it to de-opt and avoid renders granularly
-  // we always return the localState object in each component
-  // the global state (states) should always be up to date with the latest
   if (!local || rerender) {
     local = { ...next }
     localStates.set(id, local)
-  }
-
-  if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') {
-    console.groupCollapsed(` ${id} getSnapshot ${rerender}`, local.name, '>', next.name)
-    console.info({
-      props,
-      propsKey,
-      isRoot,
-      parentId,
-      local,
-      next,
-      needsUpdate,
-      isSchemeOnlyChange,
-      allKeysSchemeOptimized,
-      canSkipForSchemeChange,
-    })
-    console.groupEnd()
   }
 
   if (next !== local) {
@@ -477,59 +368,36 @@ const getNextState = (
   needsUpdate: boolean | undefined,
   pendingUpdate: boolean | 'force' | undefined
 ): [boolean, ThemeState] => {
-  const { debug } = props
   const parentState = states.get(parentId)
 
   if (props.passThrough) {
     return [false, lastState || parentState || ({ name: '' } as any)]
   }
 
-  if (!themes) {
-    themes = getConfig().themes
-  }
+  themes ||= getConfig().themes
 
   const name =
-    !propsKey && (!lastState || !lastState?.isNew)
+    !propsKey && (!lastState || !lastState.isNew)
       ? null
       : getNewThemeName(
           parentState?.name,
           props,
           pendingUpdate === 'force' ? true : !!needsUpdate
         )
-  const isSameAsParent = parentState && (!name || name === parentState.name)
+  const isSameAsParent = Boolean(parentState && (!name || name === parentState.name))
   const shouldRerender = Boolean(
     pendingUpdate === 'force' ||
     (needsUpdate && (pendingUpdate || lastState?.name !== parentState?.name))
   )
 
-  if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-    const message = ` · useTheme(${id}) getNextState => ${name} needsUpdate ${needsUpdate} shouldRerender ${shouldRerender}`
-    if (process.env.TAMAGUI_TARGET === 'native') {
-      console.info(message)
-    } else {
-      console.groupCollapsed(message)
-      console.trace({ name, lastState, parentState, props, propsKey, id, isSameAsParent })
-      console.groupEnd()
-    }
-  }
-
   if (isSameAsParent) {
     if (!shouldRerender && lastState && lastState.name === parentState!.name) {
       return [false, lastState]
     }
-    return [shouldRerender, { ...parentState, isNew: false }]
+    return [shouldRerender, { ...parentState!, isNew: false }]
   }
 
   if (!name) {
-    // parentState can be transiently missing when a consumer renders in a
-    // separate sync flush (a portal/Toast viewport, or a native multi-root
-    // surface) before its provider has populated the module-level `states` map.
-    // that's recoverable — the next render resolves it — so fall back to the
-    // root theme (or a light stub) instead of throwing. the "no parent context"
-    // throw above still catches a genuinely missing provider. going back to
-    // useSyncExternalStore would avoid the race but force every themed node out
-    // of concurrent rendering, so we keep the manual store and tolerate the
-    // ordering here.
     const next = lastState ??
       parentState ??
       rootThemeState ?? {
@@ -539,8 +407,7 @@ const getNextState = (
       }
 
     if (shouldRerender) {
-      const updated = { ...(parentState || lastState || next)! }
-      return [true, updated]
+      return [true, { ...(parentState || lastState || next) }]
     }
 
     return [false, next]
@@ -548,13 +415,10 @@ const getNextState = (
 
   const scheme = getScheme(name)
   const parentInverses = parentState?.inverses ?? 0
-  const isInverse = parentState && scheme !== parentState.scheme
-  // cumulative from the root: once any level flips scheme, every descendant is
-  // considered inverted vs the OS, even sub-themes that match their immediate
-  // parent (dark_blue under dark). gates the DynamicColorIOS optimization below.
+  const isInverse = Boolean(parentState && scheme !== parentState.scheme)
   const inverses = parentInverses + (isInverse ? 1 : 0)
 
-  const nextState = {
+  const nextState: ThemeState = {
     id,
     name,
     theme: themes[name],
@@ -564,7 +428,7 @@ const getNextState = (
     inverses,
     isInverse,
     isNew: true,
-  } satisfies ThemeState
+  }
 
   if (isRoot) {
     rootThemeState = nextState
@@ -580,21 +444,7 @@ const getNextState = (
     !needsUpdate &&
     nextState.name === lastState.name
 
-  if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-    console.groupCollapsed(
-      ` · useTheme(${id}) ⏭️ ${name} shouldAvoidRerender: ${shouldAvoidRerender}`
-    )
-    console.info({ lastState, needsUpdate, nextState, pendingUpdate })
-    console.groupEnd()
-  }
-
-  // we still update the state (not changing identity), that way children can properly resolve the right state
-  // but this one wont trigger an update
-  if (shouldAvoidRerender) {
-    return [false, nextState]
-  }
-
-  return [true, nextState]
+  return [!shouldAvoidRerender, nextState]
 }
 
 function scheduleUpdate(id: string) {
@@ -615,8 +465,7 @@ function scheduleUpdate(id: string) {
   }
 
   visited.forEach((childId) => {
-    const cb = allListeners.get(childId)
-    cb?.()
+    allListeners.get(childId)?.()
   })
 }
 
@@ -649,7 +498,6 @@ export function getNewThemeName(
     )
   }
 
-  // check cache
   const cacheKey = `${parentName}|${name || ''}|${reset ? 1 : 0}|${forceUpdate ? 1 : 0}`
   if (themeNameCacheVer !== cacheVersion) {
     themeNameCache.clear()
@@ -673,17 +521,8 @@ export function getNewThemeName(
   return result
 }
 
-/** current config-generation size for development diagnostics and behavior probes */
 export const getThemeNameCacheSize = () => themeNameCache.size
 
-/**
- * Which theme a `<Theme>` node resolves to, given the theme it sits under.
- *
- * Pure: parent name, authored name, and the config's theme map are the whole
- * input. That is what lets the zero-runtime compiler resolve a nested static
- * `<Theme>` chain to the same names the runtime would, instead of guessing at
- * how the composition works. `null` means the node did not change the theme.
- */
 export function resolveThemeName(
   parentName: string,
   name: string | undefined,
@@ -692,39 +531,27 @@ export function resolveThemeName(
   forceUpdate = false
 ): string | null {
   if (reset) {
-    // For reset, we need to go back to the grandparent theme
-    // If parentName is just a scheme (like "dark" or "light"),
-    // we should return the opposite scheme or a default
-    const isSchemeOnly = parentName === 'light' || parentName === 'dark'
-    if (isSchemeOnly) {
-      // If parent is just a scheme, go to the opposite scheme
+    if (parentName === 'light' || parentName === 'dark') {
       return parentName === 'light' ? 'dark' : 'light'
     }
-
-    // For compound themes like "dark_blue", extract the scheme
     const lastPartIndex = parentName.lastIndexOf('_')
-    // parentName will have format light_{name} or dark_{name}
     const resetName = lastPartIndex <= 0 ? parentName : parentName.slice(lastPartIndex)
     const scheme = parentName.slice(0, lastPartIndex)
     return themes[resetName] ? resetName : scheme
   }
 
   const parentParts = parentName ? parentName.split('_') : []
-
   let found: string | null = null
 
   if (name) {
     const nameHasScheme = getScheme(name)
-
     if (nameHasScheme && name in themes) {
       found = name
     }
-
     if (!found && !nameHasScheme) {
       for (let i = parentParts.length; i >= 0; i--) {
         const base = parentParts.slice(0, i).join('_')
         const potential = base ? `${base}_${name}` : name
-
         if (potential in themes) {
           found = potential
           break
@@ -733,13 +560,7 @@ export function resolveThemeName(
     }
   }
 
-  if (
-    !forceUpdate &&
-    found === parentName &&
-    // if its a scheme only sub-theme, we always consider it "new" because it likely inverses
-    // and we want to avoid reparenting
-    !validSchemes[found]
-  ) {
+  if (!forceUpdate && found === parentName && !validSchemes[found]) {
     return null
   }
 

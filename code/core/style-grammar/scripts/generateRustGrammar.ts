@@ -16,16 +16,19 @@
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 
-import { grammarPlatformNames } from '../src/config'
+import { grammarPlatformNames } from '../src/tooling/config'
 import {
   canonicalClauseModifier,
   parseGroupModifier,
   stateModifierNames,
-} from '../src/clauseIdentity'
-import { createModifierRegistry, parseContainerModifier } from '../src/modifierRegistry'
-import { coreStateModifierNames, modifierAliases } from '../src/stateModifiers'
-import { parseValue } from '../src/valueParser'
-import { grammarMaxNonPlatformDepth } from '../src/valueTypes'
+} from '../src/runtime/clauseIdentity'
+import {
+  createModifierRegistry,
+  parseContainerModifier,
+} from '../src/programs/modifierRegistry'
+import { coreStateModifierNames, modifierAliases } from '../src/runtime/stateModifiers'
+import { parseValue } from '../src/ast/valueParser'
+import { grammarMaxNonPlatformDepth } from '../src/ast/valueTypes'
 import {
   chaosAlphabet,
   constructCase,
