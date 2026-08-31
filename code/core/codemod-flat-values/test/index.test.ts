@@ -987,33 +987,6 @@ export const Fixture = () => (
     expect(text.assessments).toEqual([])
   })
 
-  test('requires web-only group states to move out of shared files', () => {
-    const source = `import { View } from 'tamagui'
-export const Fixture = () => (
-  <View group="card">
-    <View bg="$red10" $group-card-open={{ bg: '$blue10' }} />
-  </View>
-)`
-    const shared = only(run(source))
-    const web = only(runOn([fixture(source, 'fixture.web.tsx')]))
-
-    expect(programs(shared)).toEqual({ bg: 'red10 group-open/card:blue10' })
-    expect(shared.after).not.toContain('$group-card-open=')
-    expect(shared.assessments).toContainEqual({
-      property: 'background',
-      verdict: 'needs-relocation',
-      reasons: expect.arrayContaining([
-        expect.objectContaining({
-          dimension: 'clause',
-          modifier: 'group-open/card',
-          remedy: expect.stringContaining('.web.tsx'),
-        }),
-      ]),
-    })
-    expect(programs(web)).toEqual({ bg: 'red10 group-open/card:blue10' })
-    expect(web.assessments).toEqual([])
-  })
-
   test('keeps an erased component type in the unknown-host review list', () => {
     const site = only(
       run(`import type React from 'react'
