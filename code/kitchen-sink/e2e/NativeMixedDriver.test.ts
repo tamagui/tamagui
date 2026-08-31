@@ -1,7 +1,7 @@
 import * as assert from 'assert'
 import { by, element, waitFor } from 'detox'
 
-import { safeLaunchApp } from './utils/detox'
+import { describeAnimated, safeLaunchApp } from './utils/detox'
 import { formatRGB, getDominantColor, isBlueish } from './utils/colors'
 import { remountDirectUseCase } from './utils/navigation'
 
@@ -23,7 +23,7 @@ async function waitForHeight(target: number) {
   }
 }
 
-describe('animations-react-native mixed driver node', () => {
+describeAnimated('animations-react-native mixed driver node', () => {
   beforeAll(async () => {
     await safeLaunchApp({
       newInstance: true,

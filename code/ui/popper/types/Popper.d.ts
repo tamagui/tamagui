@@ -41,7 +41,7 @@ export declare const usePopperContextSlow: (scope?: string) => PopperContextSlow
 export declare const PopperProvider: ({ scope, children, ...context }: PopperContextValue & {
     scope?: string;
     children?: React.ReactNode;
-}) => import("react/jsx-runtime").JSX.Element;
+}) => React.JSX.Element;
 export type PopperProps = {
     /**
      * Popper is a component used by other components to create interfaces, so scope is required
@@ -91,7 +91,7 @@ export type PopperSetupOptions = {
     disableRTL?: boolean;
 };
 export declare function setupPopper(options?: PopperSetupOptions): void;
-export declare function Popper(props: PopperProps): import("react/jsx-runtime").JSX.Element;
+export declare function Popper(props: PopperProps): React.JSX.Element;
 export type PopperAnchorExtraProps = {
     virtualRef?: React.RefObject<any>;
     scope?: string;

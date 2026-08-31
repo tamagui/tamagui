@@ -7,5 +7,6 @@
  */
 import type { LinearGradientProps } from 'expo-linear-gradient';
 export type { LinearGradientPoint, LinearGradientProps } from 'expo-linear-gradient';
-export declare function LinearGradient({ colors, locations, start, end, ...props }: LinearGradientProps): import("react/jsx-runtime").JSX.Element;
+import * as React from 'react';
+export declare function LinearGradient({ colors, locations, start, end, ...props }: LinearGradientProps): React.JSX.Element;
 //# sourceMappingURL=linear-gradient.d.ts.map

@@ -17,15 +17,15 @@
     "@tamagui/core": "workspace:*",
     "@tamagui/next-theme": "workspace:*",
     "next": "16.1.1",
-    "react": ">=19",
-    "react-dom": "*",
-    "react-native-web": "^0.21.0"
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "react-native-web": "~0.21.0"
   },
   "devDependencies": {
     "@playwright/test": "1.58.2",
     "@tamagui/cli": "workspace:*",
     "@types/node": "^22.1.0",
-    "@types/react": "~19.1.10",
+    "@types/react": "~19.2.0",
     "vitest": "4.0.4"
   }
 }
