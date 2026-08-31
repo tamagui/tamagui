@@ -12,7 +12,7 @@ export interface RNTamaguiTextNonStyleProps extends TextNonStyleProps, RNExclusi
 }
 type RNTamaguiText = TamaguiComponent<TamaDefer, TamaguiTextElement, RNTamaguiTextNonStyleProps, TextStylePropsBase, {}>;
 export * from './reactNativeTypes';
-export declare const TamaguiProvider: (props: TamaguiProviderProps) => import("react/jsx-runtime").JSX.Element;
+export declare const TamaguiProvider: (props: TamaguiProviderProps) => import("react").JSX.Element;
 export declare const createTamagui: typeof createTamaguiWeb;
 export declare const View: RNTamaguiView;
 export declare const Text: RNTamaguiText;

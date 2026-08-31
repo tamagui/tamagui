@@ -3,6 +3,7 @@ name: Checks
 on:
   workflow_dispatch:
   pull_request:
+  merge_group:
   push:
     paths-ignore:
       - 'assets/**'

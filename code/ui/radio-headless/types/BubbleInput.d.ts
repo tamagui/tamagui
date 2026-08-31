@@ -6,6 +6,6 @@ interface BubbleInputProps extends Omit<React.HTMLProps<HTMLInputElement>, 'chec
     isHidden?: boolean;
     accentColor?: string;
 }
-export declare const BubbleInput: (props: BubbleInputProps) => import("react/jsx-runtime").JSX.Element;
+export declare const BubbleInput: (props: BubbleInputProps) => React.JSX.Element;
 export {};
 //# sourceMappingURL=BubbleInput.d.ts.map

@@ -13,7 +13,7 @@ declare const FocusScopeControllerProvider: (props: FocusScopeControllerContextV
 export interface FocusScopeControllerProps extends FocusScopeControllerContextValue {
     children?: React.ReactNode;
 }
-declare function FocusScopeController(props: ScopedProps<FocusScopeControllerProps>): import("react/jsx-runtime").JSX.Element;
+declare function FocusScopeController(props: ScopedProps<FocusScopeControllerProps>): React.JSX.Element;
 declare const FocusScopeControllerComponent: typeof FocusScopeController;
 export { createFocusScopeControllerScope, FocusScopeControllerComponent as FocusScopeController, FocusScopeControllerProvider, useFocusScopeControllerContext, };
 //# sourceMappingURL=FocusScopeController.d.ts.map
