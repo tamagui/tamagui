@@ -694,12 +694,10 @@ function mapContributedProp(
 
   if (isHostStyleKey || isContextProgramKey) {
     if (val != null) {
-      if (typeof val === 'string') {
-        if (isRemValue(val)) val = resolveRem(val)
+      if (typeof val === 'string' && isRemValue(val)) {
+        val = resolveRem(val)
       } else if (isVariable(val)) {
         val = resolveVariableValue(key, val, styleState.styleProps.resolveValues)
-      } else if (isRemValue(val)) {
-        val = resolveRem(val)
       }
     }
 
@@ -1508,37 +1506,14 @@ export const getSplitStyles: StyleSplitter = (
   let usesSafeArea = false
   forEachPropInForwardOrder(pass)
 
-  ;[
-    ,
-    ,
-    ,
-    ,
-    ,
-    ,
-    ,
-    ,
-    ,
-    ,
-    ,
-    ,
-    ,
-    ,
-    ,
-    ,
-    ,
-    ,
-    ,
-    ,
-    ,
-    className,
-    shouldDoClasses,
-    containerValue,
-    containerName,
-    containerType,
-    frontendGroup,
-    frontendContainer,
-    frontendContainerType,
-  ] = pass
+  className = pass[passClassName]
+  shouldDoClasses = pass[passShouldDoClasses]
+  containerValue = pass[passContainerValue]
+  containerName = pass[passContainerName]
+  containerType = pass[passContainerType]
+  frontendGroup = pass[passFrontendGroup]
+  frontendContainer = pass[passFrontendContainer]
+  frontendContainerType = pass[passFrontendContainerType]
 
   if (process.env.TAMAGUI_TARGET === 'web' && containerValue) {
     containerName ??= typeof containerValue === 'string' ? containerValue : undefined
