@@ -2227,6 +2227,17 @@ const formatScanFailure = (
           ? 'a stray "*/"'
           : 'an unterminated "("'
 
+const warnScanFailure = (
+  property: string,
+  source: string,
+  failure: string | undefined | null,
+  failureIndex: number
+) => {
+  if (process.env.NODE_ENV === 'development') {
+    warnRefusedValue(property, source, formatScanFailure(failure, source, failureIndex))
+  }
+}
+
 const directStyleHandler: FlatValueHandler<GetStyleState> = {
   segment(
     state,
@@ -2255,13 +2266,7 @@ const directStyleHandler: FlatValueHandler<GetStyleState> = {
           // the scan knows whether this string contains a chain marker.
           return 16
         }
-        if (process.env.NODE_ENV === 'development') {
-          warnRefusedValue(
-            property,
-            source,
-            formatScanFailure(failure, source, failureIndex)
-          )
-        }
+        warnScanFailure(property, source, failure, failureIndex)
         return
       }
       const value = source.slice(start, end)
@@ -2269,13 +2274,7 @@ const directStyleHandler: FlatValueHandler<GetStyleState> = {
       return 5
     }
     if (!chainValid) {
-      if (process.env.NODE_ENV === 'development') {
-        warnRefusedValue(
-          property,
-          source,
-          formatScanFailure(failure, source, failureIndex)
-        )
-      }
+      warnScanFailure(property, source, failure, failureIndex)
       return
     }
     if (start === end) {
@@ -2316,13 +2315,7 @@ const directStyleHandler: FlatValueHandler<GetStyleState> = {
         : 0
     if (!condition) return
     if (!valid) {
-      if (process.env.NODE_ENV === 'development') {
-        warnRefusedValue(
-          property,
-          source,
-          formatScanFailure(failure, source, failureIndex)
-        )
-      }
+      warnScanFailure(property, source, failure, failureIndex)
       return
     }
     return 4 | (condition & 12 ? 2 : 0)
@@ -2383,12 +2376,8 @@ const directStyleHandler: FlatValueHandler<GetStyleState> = {
           contextOnly
         )
         hasBase = true
-      } else if (process.env.NODE_ENV === 'development') {
-        warnRefusedValue(
-          property,
-          source,
-          formatScanFailure(failure, source, failureIndex)
-        )
+      } else {
+        warnScanFailure(property, source, failure, failureIndex)
       }
     }
     if (result & 8 && chainCount === 1) {
@@ -2426,10 +2415,7 @@ const directStyleHandler: FlatValueHandler<GetStyleState> = {
 // resting value on the inline-style path (the class path reads it from the
 // cascade instead)
 function implicitLifecycleBase(property: string): string | number | null {
-  return property === 'opacity' ||
-    property === 'scale' ||
-    property === 'scaleX' ||
-    property === 'scaleY'
+  return property === 'opacity' || property.startsWith('scale')
     ? 1
     : property === 'rotate'
       ? '0deg'
