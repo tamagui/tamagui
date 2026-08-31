@@ -11,5 +11,5 @@ export declare function TamaguiRoot({ children, theme, isRootRoot, passThrough, 
     isRootRoot?: boolean;
     passThrough?: boolean;
     style?: React.CSSProperties;
-}): import("react/jsx-runtime").JSX.Element;
+}): React.JSX.Element;
 //# sourceMappingURL=TamaguiRoot.d.ts.map

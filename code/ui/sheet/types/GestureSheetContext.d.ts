@@ -32,5 +32,5 @@ export interface GestureSheetProviderProps {
     panGesture: any | null;
     panGestureRef: RefObject<any> | null;
 }
-export declare function GestureSheetProvider({ children, isDragging, blockPan, setBlockPan, panGesture, panGestureRef, }: GestureSheetProviderProps): import("react/jsx-runtime").JSX.Element;
+export declare function GestureSheetProvider({ children, isDragging, blockPan, setBlockPan, panGesture, panGestureRef, }: GestureSheetProviderProps): React.JSX.Element;
 //# sourceMappingURL=GestureSheetContext.d.ts.map

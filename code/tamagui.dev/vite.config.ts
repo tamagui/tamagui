@@ -191,6 +191,8 @@ export default {
 
   optimizeDeps: {
     include,
+    // expo publishes this entry as TypeScript, which the dependency scanner parses as JavaScript
+    exclude: ['expo-image-picker'],
   },
 
   ssr: {

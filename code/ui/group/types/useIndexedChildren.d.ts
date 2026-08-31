@@ -36,5 +36,5 @@ export declare function useIndex(): {
     isOdd: boolean;
 } | null;
 /** Provides the current index path for each child. */
-export declare function useIndexedChildren(children: React.ReactNode): import("react/jsx-runtime").JSX.Element;
+export declare function useIndexedChildren(children: React.ReactNode): React.JSX.Element;
 //# sourceMappingURL=useIndexedChildren.d.ts.map
