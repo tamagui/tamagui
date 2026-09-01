@@ -28,6 +28,25 @@ npm, force-pushing, rotating credentials, or changing prod infra (Cloudflare,
 DNS, Railway settings): pause and confirm for those, and hand them back with the
 exact steps when they block you. Everything else, finish it.
 
+## Worktrees: create in one place, leave none behind
+
+Worktrees pile up. Measured 2026-09-01: the fleet held about 470 linked
+worktrees across five machines, most abandoned with no live session and nothing
+unpushed. Rules:
+
+- Create worktrees only under `~/.worktrees/tamagui-<slug>`, from a freshly
+  fetched base branch. Never in `/tmp`, a scratchpad, or inside the repo.
+- The session that creates a worktree owns it. When the task ends (merged,
+  handed off, or abandoned) either `git worktree remove <path>` from the primary
+  checkout, or leave it clean with every commit pushed to its branch, and say
+  which in your final report.
+- Uncommitted work in a worktree at session end is lost work. Commit it to the
+  branch and push, as a `wip:` commit if unfinished, before you stop.
+- A long task in the shared checkout that will not be committable for hours
+  belongs in a worktree so a co-tenant push cannot publish it half done.
+- Managers prune without asking: any worktree with no live owner, a clean tree,
+  and a HEAD reachable from `origin` is removed. `tm drift` is the audit.
+
 ## Before you call anything done, run these two at the REPO ROOT
 
 ```sh
