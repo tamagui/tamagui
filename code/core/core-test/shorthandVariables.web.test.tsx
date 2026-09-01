@@ -142,6 +142,14 @@ describe('border shorthand - web', () => {
 
     expect(getStyleValue(styles, 'border')).toBe('none')
   })
+
+  test('border with color function classifies it as the color', () => {
+    const styles = simplifiedGetSplitStyles(View, {
+      border: '1px solid rgba(0, 0, 0, 0.1)',
+    })
+
+    expect(getStyleValue(styles, 'border')).toBe('1px solid rgba(0, 0, 0, 0.1)')
+  })
 })
 
 describe('outline shorthand - web', () => {

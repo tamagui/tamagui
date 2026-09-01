@@ -14,6 +14,7 @@ import {
 } from '@tamagui/style-grammar/runtime'
 
 import type { StaticConfig, TamaguiInternalConfig } from '../types'
+import { classifyBorderComponents, splitComponents } from './borderComponents'
 import { mediaObjectToString } from './mediaObjectToString'
 import { getTokenCategoryForProperty, type RuntimeTokenCategory } from './tokenCategories'
 import { expandSafeAreaValue } from './resolveSafeArea'
@@ -222,37 +223,11 @@ export function prepareConfigRevision(
     compositeValue: (property, raw, context, resolve) => {
       const kind = propertyKinds[property]
       if (kind < 7) return
-      // a one-component shorthand (margin="4px") has nothing to distribute;
-      // the split is on whitespace, so without any there is nothing to match out
-      if (kind === 8 && !/\s/.test(raw)) return
-      const parts =
-        raw.match(
-          /(?:[^\s("']+|\((?:[^()]|\([^)]*\))*\)|"(?:\\.|[^"])*"|'(?:\\.|[^'])*')+/g
-        ) || []
       if (kind === 7) {
-        let width = ''
-        let style = ''
-        let color = ''
-        for (const part of parts) {
-          if (
-            ` none hidden dotted dashed solid double groove ridge inset outset `.includes(
-              ` ${part} `
-            ) ||
-            (property === 'outline' && part === 'auto')
-          ) {
-            style = part
-          } else if (
-            part === 'thin' ||
-            part === 'medium' ||
-            part === 'thick' ||
-            /^[+-]?(?:\d+\.?\d*|\.\d+)(?:%|[a-z]+)?$/.test(part) ||
-            /^-?[a-z][a-z0-9-]*\(/i.test(part)
-          ) {
-            width = part
-          } else {
-            color = part
-          }
-        }
+        const { width, style, color } = classifyBorderComponents(
+          raw,
+          property === 'outline'
+        )
         if (style === 'none' && !color) return 'none'
         const prefix = property === 'outline' ? 'outline' : 'border'
         return [
@@ -263,7 +238,11 @@ export function prepareConfigRevision(
           .filter(Boolean)
           .join(' ')
       }
-      if (kind === 8 && parts.length > 1) {
+      // a one-component shorthand (margin="4px") has nothing to distribute;
+      // the split is on whitespace, so without any there is nothing to match out
+      if (!/\s/.test(raw)) return
+      const parts = splitComponents(raw)
+      if (parts.length > 1) {
         let value = ''
         for (const part of parts) {
           value += `${value ? ' ' : ''}${resolve(context, property, part)}`

@@ -46,6 +46,11 @@ import {
   registerAtomicSlot,
 } from './getCSSStylesAtomic'
 import { expandStyle } from './expandStyle'
+import {
+  classifyBorderComponents,
+  splitComponents,
+  startsValueFunction,
+} from './borderComponents'
 import { fixStyles } from './expandStyles'
 import { getConfigRevisionState } from './grammarConfig'
 import { mediaState as globalMediaState, mediaKeyMatch } from './mediaState'
@@ -1984,19 +1989,6 @@ const warnScanFailure = (
   }
 }
 
-const lineStyles = new Set([
-  'none',
-  'hidden',
-  'dotted',
-  'dashed',
-  'solid',
-  'double',
-  'groove',
-  'ridge',
-  'inset',
-  'outset',
-])
-
 const borderTargets: Record<string, string[]> = {
   border: ['Top', 'Right', 'Bottom', 'Left'],
   borderTop: ['Top'],
@@ -2306,14 +2298,6 @@ function emitProperty(
   streamWriteInline(state, property, value, cursor, originalValue)
 }
 
-function splitComponents(value: string) {
-  return (
-    value.match(
-      /(?:[^\s("']+|\((?:[^()]|\([^)]*\))*\)|"(?:\\.|[^"])*"|'(?:\\.|[^'])*')+/g
-    ) || []
-  )
-}
-
 function numericUnitValue(value: string, first: string, second?: string): number {
   const unitLength =
     value.endsWith(first) || (second !== undefined && value.endsWith(second))
@@ -2322,10 +2306,6 @@ function numericUnitValue(value: string, first: string, second?: string): number
   if (!unitLength || value.length === unitLength) return Number.NaN
   const numeric = Number(value.slice(0, value.length - unitLength))
   return Number.isFinite(numeric) ? numeric : Number.NaN
-}
-
-function startsValueFunction(value: string): boolean {
-  return /^-?[a-z][a-z0-9-]*\(/i.test(value)
 }
 
 function emitBorder(
@@ -2345,25 +2325,15 @@ function emitBorder(
     }
     return
   }
-  let width: string | undefined
-  let style: string | undefined
-  let color: string | undefined
-  for (const part of splitComponents(raw)) {
-    if (lineStyles.has(part) || (property === 'outline' && part === 'auto')) {
-      style = part
-    } else if (
-      part === 'thin' ||
-      part === 'medium' ||
-      part === 'thick' ||
-      /^[+-]?(?:\d+\.?\d*|\.\d+)(?:%|[a-z]+)?$/.test(part) ||
-      startsValueFunction(part)
-    ) {
-      width = part
-    } else {
-      color = part
-    }
-  }
+  let { width, style, color } = classifyBorderComponents(raw, property === 'outline')
   if (style === 'none' && width === undefined) width = '0'
+  if (process.env.TAMAGUI_TARGET === 'native' && width !== undefined) {
+    // native width props want numbers; the CSS keywords map to their
+    // user-agent px values (px so they convert instead of resolving as tokens)
+    if (width === 'thin') width = '1px'
+    else if (width === 'medium') width = '3px'
+    else if (width === 'thick') width = '5px'
+  }
   const targets = borderTargets[property]
   const prefix = property === 'outline' ? 'outline' : 'border'
   if (

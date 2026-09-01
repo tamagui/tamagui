@@ -205,6 +205,26 @@ describe('border shorthand - native', () => {
     expect(style?.borderStyle).toBe('dotted')
     expect(style?.borderTopColor).toBe('blue')
   })
+
+  test('border with color function keeps commas intact', () => {
+    const { style } = getSplitStylesFor({
+      border: '1px solid rgb(1, 2, 3)',
+    })
+
+    expect(style?.borderTopWidth).toBe(1)
+    expect(style?.borderStyle).toBe('solid')
+    expect(style?.borderTopColor).toBe('rgb(1, 2, 3)')
+  })
+
+  test('border with keyword width', () => {
+    const { style } = getSplitStylesFor({
+      border: 'thin solid red',
+    })
+
+    expect(style?.borderTopWidth).toBe(1)
+    expect(style?.borderStyle).toBe('solid')
+    expect(style?.borderTopColor).toBe('red')
+  })
 })
 
 describe('outline shorthand - native', () => {
@@ -246,6 +266,16 @@ describe('outline shorthand - native', () => {
 
     expect(style?.outlineWidth).toBe(1)
     expect(style?.outlineStyle).toBe('solid')
+  })
+
+  test('outline with color function keeps commas intact', () => {
+    const { style } = getSplitStylesFor({
+      outline: '2px solid rgba(0, 0, 0, 0.5)',
+    })
+
+    expect(style?.outlineWidth).toBe(2)
+    expect(style?.outlineStyle).toBe('solid')
+    expect(style?.outlineColor).toBe('rgba(0, 0, 0, 0.5)')
   })
 })
 
