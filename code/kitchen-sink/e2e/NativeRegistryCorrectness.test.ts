@@ -66,6 +66,27 @@ async function waitForState(state: string) {
     .withTimeout(10000)
 }
 
+// a whileElement search never settles against this fixture. the test measures
+// link/unlink churn, so rows keep laying out between visibility checks and the
+// search can stay pending past the jest timeout, which wedges the detox session
+// for every later test in the file. bounded interactions keep a miss local and
+// name the row that never arrived. rows are 68pt across 80 items, so a scroll
+// of 600 reaches either end in about nine.
+async function scrollRowIntoView(row: number, direction: 'down' | 'up') {
+  const testID = `native-fast-list-row-${row}`
+  for (let scrolls = 0; scrolls < 14; scrolls++) {
+    try {
+      await expect(element(by.id(testID))).toBeVisible()
+      return
+    } catch {
+      await element(by.id('native-fast-list-view')).scroll(600, direction)
+    }
+  }
+  throw new Error(
+    `${testID} never became visible after 14 scrolls ${direction} of the fast list`
+  )
+}
+
 describe('NativeRegistryCorrectness', () => {
   beforeAll(async () => {
     await safeLaunchApp({
@@ -161,10 +182,7 @@ describe('NativeRegistryCorrectness', () => {
     const topGreen = await swatchColor('native-fast-list-row-0', 'list-top-green')
     assert.ok(isGreenish(topGreen), formatRGB(topGreen))
 
-    await waitFor(element(by.id('native-fast-list-row-79')))
-      .toBeVisible()
-      .whileElement(by.id('native-fast-list-view'))
-      .scroll(600, 'down')
+    await scrollRowIntoView(79, 'down')
     const recycled = await readMetrics()
     assert.ok(recycled.unlinkCalls > 0, 'virtualization must detach offscreen links')
     assert.ok(
@@ -177,10 +195,7 @@ describe('NativeRegistryCorrectness', () => {
     const bottomRed = await swatchColor('native-fast-list-row-79', 'list-bottom-red')
     assertSameColor(bottomRed, topRed, 'recycled bottom row red')
 
-    await waitFor(element(by.id('native-fast-list-row-0')))
-      .toBeVisible()
-      .whileElement(by.id('native-fast-list-view'))
-      .scroll(600, 'up')
+    await scrollRowIntoView(0, 'up')
     await element(by.id('native-fast-toggle-theme')).tap()
     await waitForState('list:fast:green:ready')
     const relinkedTopGreen = await swatchColor(
