@@ -140,25 +140,45 @@ Tailwind classes work alongside regular Tamagui props:
 Only recognized Tailwind-style classes are processed. All other classes are preserved:
 
 ```tsx
-<View className="my-custom-class bg-blue5 another-class text-center" />
+<View className="my-custom-class bg-blue5 another-class grid-cols-3" />
 // Result:
 // - bg-blue5 → converted to backgroundColor style
-// - my-custom-class, another-class, text-center → preserved in className
+// - my-custom-class, another-class, grid-cols-3 → preserved in className (web)
 ```
 
 ### What Gets Processed
 
-A class is processed as Tailwind syntax when:
-1. It has a known prop prefix (e.g., `bg-`, `p-`, `w-`)
-2. The value is valid (numeric, token reference, or simple CSS value)
+A class is processed as Tailwind syntax when the shared grammar can prove it: a known prefix plus a configured token, enum, or arbitrary value. That includes:
+
+- layout and spacing: `w-24`, `h-8`, `size-10`, `p-4`, `px-6`, `gap-2`
+- flex and alignment: `flex`, `flex-row`, `items-center`, `justify-between`
+- typography: `text-sm` (size), `text-white` (color), `text-center` (align), `text-[14px]`, `font-bold`, `font-sans`
+- color, radius, and borders: `bg-blue5`, `rounded-t-xl`, `rounded-tl-lg`, `border-t-4`, `border-x`
+- position: `inset-0`, `inset-x-0`, `inset-y-4`, `top-2`, `z-10`
+
+`text-*` is disambiguated the same way Tailwind does it: alignment keywords, then the type scale, then palette and theme colors.
 
 ### What Gets Preserved
 
-These are kept as regular CSS classes:
-- Classes without dashes: `container`, `flex`
-- Classes with unknown props: `my-custom-class`, `foo-bar`
-- Classes with invalid values: `my-theme` (not a valid spacing value)
-- Ambiguous classes: `text-center` (could mean text-align, not color)
+These stay as regular CSS classes on web (and are dropped on native):
+- Unknown prefixes: `my-custom-class`, `grid-cols-3`, `float-right`
+- Values the grammar cannot prove against the active config
+- Web-only CSS with no React Native equivalent (see Coverage below)
+
+## Coverage
+
+Claimed utilities compile on web and native through the same grammar. The official Tailwind engine only sees passthrough classes.
+
+Web-only remainder (passthrough, not a Tamagui miss that we can express cross-platform):
+
+- CSS grid, columns, float, clear
+- backdrop filters, mix-blend, CSS filter/blur
+- sibling combinators (`space-x`, `divide-x`)
+- outline, cursor, user-select, appearance, placeholder, file inputs
+- gradient stops (`from-` / `via-` / `to-`), ring as extra box-shadow layers
+- selector variants the grammar does not own (`data-*`, `[&>*]`, `peer-*`, `has-*`)
+
+See `plans/v3-beta/tailwind-coverage.md` for the reason each of those stays passthrough.
 
 ## How It Works
 
