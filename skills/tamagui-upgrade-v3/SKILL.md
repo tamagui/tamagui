@@ -307,7 +307,7 @@ The codemod flags these; you rewrite them. Full before/after recipes are in
 | Ternary over token literals: `bg={x ? '$a' : '$b'}` | Codemod rewrites literal trees in place; verify, don't touch |
 | Dynamic value inside a condition object: `hoverStyle={{ bg: x ? undefined : '$a' }}` | Lift the branch outside the clause string, or make it a variant |
 | Conditional spreads carrying style objects | Convert the spread object's values; never reorder the spread itself |
-| Functional variants | Brand with `styled.dynamic<T>()`; move `extras.props` logic to `.resolve` |
+| Functional variants | Codemod brands spread and type keys; resolve its catch-all, mixed-branch, body-shape, and sibling-prop flags |
 | Token in a module constant: `const R = '$6'` | Migrate the constant, then its users |
 | Tokens embedded in composite strings (shadows, gradients) | Bare name for named tokens; resolved CSS value for numeric ones |
 | Shadow/text-shadow/transform part conditions | Rebuild as one complete `boxShadow`, `textShadow`, or `transform` value |
@@ -317,11 +317,18 @@ The codemod flags these; you rewrite them. Full before/after recipes are in
 
 ### Manual playbook for functional variants
 
-The codemod flags functional variants that need architectural updates:
-- **`extras.props` to `.resolve`:** Move sibling-prop inspection out of variant functions. Declare variant props with `styled.dynamic<T>()` and apply dependent styles in a component `.resolve((props, env) => ({ ... }))` callback.
-- **Mixed variants:** Variants combining exact keys and dynamic fallbacks (e.g. `:number`) become a single `styled.dynamic<UnionType>((val, env) => ...)` or separate exact variants.
-- **Catch-all variants (`'...'`):** Replace with `styled.dynamic<YourValue>((val, env) => ...)`.
-- **Static shape rule:** Ensure returned objects have static keys and use `undefined` for inactive branches. Spreads and computed keys in dynamic bodies deopt compiler extraction.
+The codemod rewrites the six spread token categories and the
+`':number'` / `':string'` / `':boolean'` keys. It adds token type imports, unions
+type keys, and emits `typeof` branches when different bodies each return one
+object literal. Keep the surrounding `as const`.
+
+Resolve the functional-variant report flags:
+
+- **`extras.props` to `.resolve`:** Use the generated draft. Declare the consumed prop with `styled.dynamic<T>()`, then move sibling-prop styles to `.resolve((props, env) => ({ ... }))`.
+- **Mixed variants:** Replace exact keys plus a function key with one dynamic or separate exact variants.
+- **Catch-all variants (`'...'`):** Choose the real value type, then use `styled.dynamic<YourValue>((value, env) => ...)`.
+- **Different non-literal bodies:** Combine the callbacks by hand. Automatic `typeof` branches require one object-literal return per body.
+- **Static shape rule:** Return static keys and use `undefined` for inactive values. Dynamic spreads and computed keys deopt compiler extraction.
 
 ### Remove runtime prop-resolution hooks
 

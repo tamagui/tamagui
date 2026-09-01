@@ -11,6 +11,7 @@ import { tmpdir } from 'node:os'
 import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { sanitize, type SiteReport } from '../src/convert'
+import type { FunctionalVariantReport } from '../src/functionalVariants'
 import {
   codemodMediaNames,
   createModifierRegistry,
@@ -32,7 +33,11 @@ const defaultCorpus = [
 const temporaryDirectories: string[] = []
 
 interface Result {
-  files: Array<{ file: string; sites: SiteReport[] }>
+  files: Array<{
+    file: string
+    sites: SiteReport[]
+    functionalVariants: FunctionalVariantReport[]
+  }>
   summary: {
     sites: number
     clean: number
@@ -43,6 +48,10 @@ interface Result {
     warnings: number
     waiting: number
     ignoredFiles: number
+    functionalVariantSites: number
+    functionalVariantConverted: number
+    functionalVariantFlagged: number
+    functionalVariantFlags: Record<string, number>
   }
 }
 
@@ -139,6 +148,16 @@ function only(result: Result): SiteReport {
 function labeled(result: Result, label: string): SiteReport {
   const found = sites(result).filter((site) => site.label.includes(label))
   expect(found.length, JSON.stringify(sites(result).map((site) => site.label))).toBe(1)
+  return found[0]
+}
+
+function functionalVariants(result: Result): FunctionalVariantReport[] {
+  return result.files.flatMap((file) => file.functionalVariants)
+}
+
+function onlyFunctional(result: Result): FunctionalVariantReport {
+  const found = functionalVariants(result)
+  expect(found.length, JSON.stringify(found, null, 2)).toBe(1)
   return found[0]
 }
 
@@ -1119,6 +1138,282 @@ describe('styled variants', () => {
     expect(codes(site)).toEqual([])
     expect(programs(site)).toEqual({ x: 'exit:${going < 0 ? 100 : -100}px' })
     expect(resolve1('exit:100px', {})).toBe(null)
+  })
+
+  test('write mode converts flat values before wrapping a v2 function key', () => {
+    const output = runWrite(`import { View, styled } from 'tamagui'
+const Frame = styled(View, {
+  x: 0,
+  variants: {
+    going: {
+      ':number': (going) => ({
+        exitStyle: { x: going < 0 ? 100 : -100 },
+      }),
+    },
+  } as const,
+})`)
+
+    expect(output).toContain('going: styled.dynamic<number>')
+    expect(output).not.toContain("':number'")
+    expect(output).not.toContain('exitStyle')
+    expect(output).toContain('exit:${going < 0 ? 100 : -100}px')
+  })
+})
+
+describe('functional variants', () => {
+  test('spread keys become typed dynamics and add their type to the styled import', () => {
+    const output = runWrite(`import { View, styled } from '@tamagui/core'
+const Frame = styled(View, {
+  variants: {
+    size: {
+      '...size': (val, extras) => ({
+        width: extras.tokens.size[val],
+        color: extras.theme.color,
+      }),
+    },
+  } as const,
+})
+`)
+
+    expect(output).toContain('type SizeTokens')
+    expect(output).toContain("from '@tamagui/core'")
+    expect(output).toContain('size: styled.dynamic<SizeTokens>((val, env) => ({')
+    expect(output).toContain('width: env.tokens.size[val]')
+    expect(output).toContain('color: env.theme.color')
+    expect(output).toContain('} as const')
+    expect(output).not.toContain("'...size'")
+  })
+
+  test.each([
+    ['size', 'SizeTokens'],
+    ['space', 'SpaceTokens'],
+    ['color', 'ColorTokens'],
+    ['radius', 'RadiusTokens'],
+    ['fontSize', 'FontSizeTokens'],
+    ['zIndex', 'ZIndexTokens'],
+  ])('maps ...%s to %s', (category, typeName) => {
+    const site = onlyFunctional(
+      run(`import { View, styled } from 'tamagui'
+const Frame = styled(View, {
+  variants: {
+    value: { '...${category}': (value, { tokens }) => ({ width: tokens.size[value] }) },
+  } as const,
+})`)
+    )
+
+    expect(site.flags).toEqual([])
+    expect(site.after).toContain(`styled.dynamic<${typeName}>`)
+  })
+
+  test('a destructured env stays destructured and an existing type import is reused', () => {
+    const output = runWrite(`import { View, styled } from 'tamagui'
+import type { FontSizeTokens } from 'tamagui'
+const Frame = styled(View, {
+  variants: {
+    size: { '...fontSize': (val, { tokens, font }) => ({ fontSize: tokens.size[val], lineHeight: font?.lineHeight[val] }) },
+  } as const,
+})`)
+
+    expect(output.match(/FontSizeTokens/g)).toHaveLength(2)
+    expect(output).toContain(
+      'styled.dynamic<FontSizeTokens>((val, { tokens, font }) => ({'
+    )
+  })
+
+  test('an env parameter with a shadowed name is left alone', () => {
+    const output = runWrite(`import { View, styled } from 'tamagui'
+const Frame = styled(View, {
+  variants: {
+    size: {
+      '...size': (val, extras) => {
+        const read = (extras) => extras.tokens
+        return { width: extras.tokens.size[val], height: read(extras) }
+      },
+    },
+  } as const,
+})`)
+
+    expect(output).toContain('styled.dynamic<SizeTokens>((val, extras) => {')
+    expect(output).toContain('width: extras.tokens.size[val]')
+  })
+
+  test('different type-key object returns form one canonical union', () => {
+    const output = runWrite(`import { View, styled } from 'tamagui'
+const Frame = styled(View, {
+  variants: {
+    amount: {
+      ':string': (amount) => ({ width: amount }),
+      ':number': (amount) => ({ width: amount }),
+      ':boolean': (amount) => ({ width: amount ? 1 : 0 }),
+    },
+  } as const,
+})`)
+
+    expect(output).toContain('styled.dynamic<number | string | boolean>')
+    expect(output).toContain("if (typeof value === 'number')")
+    expect(output).toContain("if (typeof value === 'string')")
+    expect(output).toContain('return { width: value ? 1 : 0 }')
+    expect(output).not.toContain("':number'")
+  })
+
+  test('combined type-key object returns preserve as const assertions', () => {
+    const output = runWrite(`import { View, styled } from 'tamagui'
+const Frame = styled(View, {
+  variants: {
+    amount: {
+      ':number': (amount) => ({ width: amount } as const),
+      ':string': (amount) => {
+        return { width: amount } as const
+      },
+    },
+  } as const,
+})`)
+
+    expect(output.match(/as const/g)).toHaveLength(3)
+    expect(output).toContain('return ({ width: value } as const)')
+    expect(output).toContain('return { width: value } as const')
+  })
+
+  test('several type keys with the same body do not add typeof branches', () => {
+    const output = runWrite(`import { View, styled } from 'tamagui'
+const Frame = styled(View, {
+  variants: {
+    amount: {
+      ':number': (amount) => ({ width: amount }),
+      ':string': (amount) => ({ width: amount }),
+    },
+  } as const,
+})`)
+
+    expect(output).toContain('styled.dynamic<number | string>((value) =>')
+    expect(output).toContain('{ width: value }')
+    expect(output).not.toContain('typeof value')
+  })
+
+  test('combined type bodies map both extras forms onto env', () => {
+    const output = runWrite(`import { View, styled } from 'tamagui'
+const Frame = styled(View, {
+  variants: {
+    amount: {
+      ':number': (amount, { tokens }) => ({ width: tokens.size[amount] }),
+      ':string': (amount, extras) => ({ color: extras.theme[amount] }),
+    },
+  } as const,
+})`)
+
+    expect(output).toContain('styled.dynamic<number | string>((value, env) =>')
+    expect(output).toContain('return { width: env.tokens.size[value] }')
+    expect(output).toContain('return { color: env.theme[value] }')
+  })
+
+  test('different non-object type bodies are flagged and left authored', () => {
+    const source = `import { View, styled } from 'tamagui'
+const Frame = styled(View, {
+  variants: {
+    amount: {
+      ':number': (amount) => makeNumberStyles(amount),
+      ':string': (amount) => ({ width: amount }),
+    },
+  } as const,
+})`
+    const site = onlyFunctional(run(source))
+
+    expect(site.flags.map((flag) => flag.code)).toEqual([
+      'functional-variant-type-bodies',
+    ])
+    expect(runWrite(source)).toContain("':number':")
+  })
+
+  test('catch-all keys report the exact line and suggested generic without rewriting', () => {
+    const source = `import { View, styled } from 'tamagui'
+const Frame = styled(View, {
+  variants: {
+    tone: {
+      '...': (value) => ({ opacity: value ? 1 : 0 }),
+    },
+  } as const,
+})`
+    const site = onlyFunctional(run(source))
+
+    expect(site.line).toBe(5)
+    expect(site.flags).toEqual([
+      expect.objectContaining({
+        code: 'functional-variant-catch-all',
+        detail: expect.stringContaining('styled.dynamic<YourValue>'),
+      }),
+    ])
+    expect(runWrite(source)).toContain("'...':")
+  })
+
+  test('mixed exact and functional branches are flagged and not rewritten', () => {
+    const source = `import { View, styled } from 'tamagui'
+const Frame = styled(View, {
+  variants: {
+    amount: {
+      small: { width: 10 },
+      ':number': (amount) => ({ width: amount }),
+    },
+  } as const,
+})`
+    const site = onlyFunctional(run(source))
+
+    expect(site.flags.map((flag) => flag.code)).toEqual(['functional-variant-mixed'])
+    expect(runWrite(source)).toContain("':number':")
+  })
+
+  test('extras.props produces a resolve draft and leaves the functional key authored', () => {
+    const source = `import { View, styled } from 'tamagui'
+const Frame = styled(View, {
+  variants: {
+    size: {
+      '...size': (val, extras) => ({
+        width: extras.props.fullscreen ? extras.tokens.size[val] : val,
+      }),
+    },
+  } as const,
+})`
+    const site = onlyFunctional(run(source))
+
+    expect(site.flags.map((flag) => flag.code)).toEqual([
+      'functional-variant-needs-resolve',
+    ])
+    expect(site.draft).toContain('.resolve((props, env) =>')
+    expect(site.draft).toContain('const val = props.size')
+    expect(site.draft).toContain('props.fullscreen')
+    expect(site.draft).toContain('env.tokens.size[val]')
+    expect(runWrite(source)).toContain("'...size':")
+  })
+
+  test('destructured props reads produce the same resolve flag and draft', () => {
+    const site = onlyFunctional(
+      run(`import { View, styled } from 'tamagui'
+const Frame = styled(View, {
+  variants: {
+    size: {
+      '...size': (val, { props, theme }) => ({ color: props.active ? theme.color : val }),
+    },
+  } as const,
+})`)
+    )
+
+    expect(site.flags.map((flag) => flag.code)).toEqual([
+      'functional-variant-needs-resolve',
+    ])
+    expect(site.draft).toContain('props.active')
+    expect(site.draft).toContain('env.theme.color')
+  })
+
+  test('the functional summary counts automatic conversions and flags by category', () => {
+    const result = run(`import { View, styled } from 'tamagui'
+const A = styled(View, { variants: { size: { '...size': (value) => ({ width: value }) } } })
+const B = styled(View, { variants: { tone: { '...': (value) => ({ opacity: value }) } } })`)
+
+    expect(result.summary.functionalVariantSites).toBe(2)
+    expect(result.summary.functionalVariantConverted).toBe(1)
+    expect(result.summary.functionalVariantFlagged).toBe(1)
+    expect(result.summary.functionalVariantFlags).toEqual({
+      'functional-variant-catch-all': 1,
+    })
   })
 })
 

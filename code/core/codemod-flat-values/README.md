@@ -82,6 +82,11 @@ helper, a `react-native` component, and an intrinsic tag are all left alone —
   a condition-only branch: with clause-level merge (decision 21)
   `exitStyle={{ x: 10 }}` is exactly `x="exit:10px"`, which keeps whatever base the
   styled component, variant, or call site defined — the same thing the v1 prop did.
+- V2 spread variant keys become typed `styled.dynamic` callbacks for the size,
+  space, color, radius, font-size, and z-index token categories. Type keys become
+  one `number | string | boolean` dynamic, with `typeof` branches when each body
+  is one object-literal return. The report leaves catch-all keys, mixed exact and
+  function branches, and sibling-prop reads authored.
 
 Every program the report suggests is parsed back with the real value parser and merged
 with the real clause merge before it is printed. A program that does not read back
@@ -198,6 +203,11 @@ A flag means a human decides. Every code the tool can emit:
 | `structured-<property>` | a condition needs an object or array with no verified CSS-shaped migration rule |
 | `condition-order-not-preservable`, `base-order-not-preservable` | merging would move a value past something that can also set it |
 | `computed-property` | a computed key hides the affected style property |
+| `functional-variant-needs-resolve` | the callback reads `extras.props`; use the generated `.resolve` draft |
+| `functional-variant-mixed` | exact branches and a function key share one variant |
+| `functional-variant-catch-all` | `'...'` needs an explicit value type chosen by the app |
+| `functional-variant-type-bodies` | different type-key bodies cannot be combined into safe `typeof` branches |
+| `functional-variant-unsupported`, `functional-variant-unsupported-extras`, `functional-variant-styled-import` | the callback, env access, or `styled` import does not have a provable automatic rewrite |
 | `emitted-program-mismatch`, `emitted-value-invalid` | the printer failed its own re-parse; this is a codemod bug |
 | plus any code from the shared converter | `unsupported-legacy-value`, `legacy-condition-object`, `ambiguous-legacy-group`, `legacy-composite-shorthand` |
 
@@ -215,5 +225,5 @@ payloads go through the same shared converter, so they always agree on that.
 ## Remaining manual migration
 
 The report counts the files whose sites all converted: those have no legacy condition
-object left. V3 has no compatibility setting, so the report names every file that
-still needs a hand edit after `--write`.
+object or flagged functional variant left. V3 has no compatibility setting, so the
+report names every file that still needs a hand edit after `--write`.

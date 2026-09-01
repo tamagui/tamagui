@@ -33,6 +33,11 @@ file is the action table.
 | `structured-font-variant-*` / `structured-background-image-*` / `structured-<property>` | The structure has no verified CSS spelling; keep authored or rewrite manually with runtime verification |
 | `condition-order-not-preservable` / `base-order-not-preservable` | An opaque spread or unconverted condition sits between contributions; convert the blocker first, then re-run, and never reorder to force a merge |
 | `computed-property` | A computed key hides the style property; resolve the key statically or leave authored |
+| `functional-variant-needs-resolve` | Use the generated `.resolve((props, env) => ...)` draft; replace `extras.props` with `props` and declare the consumed variant prop with bare `styled.dynamic<T>()` |
+| `functional-variant-mixed` | V3 has no exact-key plus function-key form; use one dynamic or keep separate exact variants |
+| `functional-variant-catch-all` | Choose the real value type and replace `'...'` with `styled.dynamic<YourValue>(...)`; do not use `unknown` |
+| `functional-variant-type-bodies` | Combine the type callbacks by hand; automatic `typeof` branches require one object-literal return from every body |
+| `functional-variant-unsupported` / `functional-variant-unsupported-extras` / `functional-variant-styled-import` | Inline the callback, use only the v3 env fields, or import `styled` directly from `tamagui` or `@tamagui/core`, then re-run |
 | `value-reparses-as-program` | The converted string would read back as more than one base value; adjust the value (usually quoting or spacing) until it round-trips |
 | `emitted-program-mismatch` / `emitted-value-invalid` | Codemod bug; report it upstream with the site, do not hand-apply the suggestion |
 

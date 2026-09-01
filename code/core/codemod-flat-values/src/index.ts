@@ -19,6 +19,12 @@ import { planContainers, type ContainerPlan } from './containers'
 import { convertJsxSite, convertStyleObject, type SiteReport } from './convert'
 import { compact, unwrapExpression } from './expressions'
 import {
+  addFunctionalVariantTypeImports,
+  convertFunctionalVariants,
+  type FunctionalVariantReport,
+  type RequiredTypeImport,
+} from './functionalVariants'
+import {
   codemodMediaNames,
   createModifierRegistry,
   grammarPlatformNames,
@@ -308,6 +314,8 @@ function inspectFile(
   const containers = planContainers(sourceFile, registry)
   const targets = conversionTargets(sourceFile.getFilePath())
   const sites: SiteReport[] = []
+  const functionalVariants: FunctionalVariantReport[] = []
+  const requiredTypeImports: RequiredTypeImport[] = []
   const styledCalls = sourceFile
     .getDescendantsOfKind(SyntaxKind.CallExpression)
     .filter((call) => provenance.isTamaguiStyledCall(call))
@@ -340,6 +348,9 @@ function inspectFile(
     if (!Node.isObjectLiteralExpression(config)) continue
     const label = `styled(${compact(call.getArguments()[0]?.getText() ?? 'unknown')}, …)`
     sites.push(...variantSites(config, label, registry, containers, targets, host, write))
+    const functional = convertFunctionalVariants(config, label, write)
+    functionalVariants.push(...functional.sites)
+    requiredTypeImports.push(...functional.requiredTypeImports)
     const site = convertStyleObject(
       config,
       'styled',
@@ -356,7 +367,15 @@ function inspectFile(
   sites.sort(
     (left, right) => left.line - right.line || left.label.localeCompare(right.label)
   )
-  return { file: relative(projectRoot, sourceFile.getFilePath()), sites }
+  functionalVariants.sort(
+    (left, right) => left.line - right.line || left.label.localeCompare(right.label)
+  )
+  if (write) addFunctionalVariantTypeImports(sourceFile, requiredTypeImports)
+  return {
+    file: relative(projectRoot, sourceFile.getFilePath()),
+    sites,
+    functionalVariants,
+  }
 }
 
 const usage = `Converts Tamagui style syntax to V3 flat property values and reports what it cannot convert.
@@ -509,5 +528,5 @@ if (write) {
 console.log(`wrote ${reportPath}`)
 if (write) console.log(`rewrote ${written} source files`)
 console.log(
-  `${summary.sites} sites: ${summary.clean - summary.waiting} clean, ${summary.needsRelocation} need relocation, ${summary.unknownHost} unknown host, ${summary.ineligible} ineligible, ${summary.waiting} waiting on runtime support, ${summary.flagged} syntax-flagged; ${summary.ignoredFiles} source files ignored`
+  `${summary.sites} style sites: ${summary.clean - summary.waiting} clean, ${summary.needsRelocation} need relocation, ${summary.unknownHost} unknown host, ${summary.ineligible} ineligible, ${summary.waiting} waiting on runtime support, ${summary.flagged} syntax-flagged; ${summary.functionalVariantSites} functional variants: ${summary.functionalVariantConverted} automatic, ${summary.functionalVariantFlagged} flagged; ${summary.ignoredFiles} source files ignored`
 )

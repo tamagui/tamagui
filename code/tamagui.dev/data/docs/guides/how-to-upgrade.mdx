@@ -523,9 +523,9 @@ Use these replacements:
 | `@tamagui/animations-moti` | `@tamagui/animations-reanimated` |
 | `@tamagui/config/reanimated` | `@tamagui/config/animations-reanimated` |
 | `accept` option in `styled()` | piece-typed props (e.g. `StylePiece`) or real style keys |
-| `'...size'` / `'...fontSize'` spread variant keys | `styled.dynamic<T>((value, env) => ({ ... }))` |
-| `':string'` / `':number'` / `':boolean'` type-key variants | a typed `styled.dynamic<string \| number \| boolean>(...)` |
-| `'...'` catch-all variant key | `styled.dynamic<YourValue>(...)` with an explicit value type |
+| `'...size'` / `'...fontSize'` spread variant keys | codemod writes `styled.dynamic<TokenType>(...)`; report flags sibling-prop reads for `.resolve` |
+| `':string'` / `':number'` / `':boolean'` type-key variants | codemod writes one typed dynamic and combines object returns with `typeof`; report flags other bodies and mixed exact keys |
+| `'...'` catch-all variant key | report only; choose the explicit `styled.dynamic<YourValue>(...)` generic yourself |
 
 V2 could spread one style across its base prop, pseudo-style objects such as
 `hoverStyle`, media objects such as `$sm`, and platform objects. The removed
@@ -582,8 +582,9 @@ const Card = createStyledHOC(CardFrame, (props: CardProps, ref) => ...)
 
 Spread, resolver-name, and type-key variants have no runtime matching in v3. A
 leftover `'...size'`, `Size`, or `number` key only matches that exact literal.
-Search for those keys and replace the functional branch with one branded
-dynamic, which types the prop directly:
+The flat-values codemod rewrites known spread and type keys to one branded
+dynamic. Its report leaves catch-all keys, mixed exact branches, and sibling-prop
+reads for manual migration:
 
 ```tsx
 // before

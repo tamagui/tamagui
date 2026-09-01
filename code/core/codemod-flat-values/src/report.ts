@@ -1,8 +1,10 @@
 import type { Flag, SiteReport } from './convert'
+import type { FunctionalVariantReport } from './functionalVariants'
 
 export interface FileReport {
   file: string
   sites: SiteReport[]
+  functionalVariants: FunctionalVariantReport[]
 }
 
 function countCodes(flags: Iterable<Flag>): Array<[string, number]> {
@@ -25,6 +27,10 @@ export interface ReportSummary {
   /** sites with nothing to convert until the runtime catches up */
   waiting: number
   ignoredFiles: number
+  functionalVariantSites: number
+  functionalVariantConverted: number
+  functionalVariantFlagged: number
+  functionalVariantFlags: Record<string, number>
 }
 
 export function renderReport(
@@ -35,6 +41,9 @@ export function renderReport(
   write = false
 ): { text: string; summary: ReportSummary } {
   const sites = files.flatMap((file) => file.sites)
+  const functionalVariants = files.flatMap((file) => file.functionalVariants)
+  const convertedFunctionalVariants = functionalVariants.filter((site) => site.converted)
+  const flaggedFunctionalVariants = functionalVariants.filter((site) => !site.converted)
   const clean = sites.filter(
     (site) =>
       site.flags.length === 0 &&
@@ -64,12 +73,26 @@ export function renderReport(
       site.assessmentVerdict === 'clean'
   ).length
   const readyFiles = files.filter(
-    (file) => file.sites.length > 0 && file.sites.every((site) => site.legacyLeft === 0)
+    (file) =>
+      (file.sites.length > 0 || file.functionalVariants.length > 0) &&
+      file.sites.every((site) => site.legacyLeft === 0) &&
+      file.functionalVariants.every((site) => site.converted)
   )
-  const filesWithSites = files.filter((file) => file.sites.length > 0).length
+  const filesWithSites = files.filter(
+    (file) => file.sites.length > 0 || file.functionalVariants.length > 0
+  ).length
   const blockedFiles = files
-    .filter((file) => file.sites.some((site) => site.legacyLeft > 0))
+    .filter(
+      (file) =>
+        file.sites.some((site) => site.legacyLeft > 0) ||
+        file.functionalVariants.some((site) => !site.converted)
+    )
     .map((file) => file.file)
+  const functionalFlagCounts = countCodes(
+    flaggedFunctionalVariants.flatMap((site) => [
+      ...new Map(site.flags.map((flag) => [flag.code, flag])).values(),
+    ])
+  )
 
   const lines = [
     '# Flat-values codemod dry-run',
@@ -93,10 +116,19 @@ export function renderReport(
     `- ${ignoredFiles} source files skipped by \`.tamagui-flat-values-ignore\` markers`,
     `- ${jsx.length} JSX sites: ${cleanJsx} clean, ${jsx.length - cleanJsx} need review`,
     `- ${styled.length} styled config sites: ${cleanStyled} clean, ${styled.length - cleanStyled} need review`,
+    `- ${functionalVariants.length} functional variant sites found`,
+    `- ${convertedFunctionalVariants.length} functional variants have automatic styled.dynamic rewrites`,
+    `- ${flaggedFunctionalVariants.length} functional variants need manual migration`,
+    '',
+    '### Functional variant flag reasons',
+    '',
+    ...(functionalFlagCounts.length
+      ? functionalFlagCounts.map(([code, count]) => `- ${code}: ${count}`)
+      : ['- none']),
     '',
     '### Remaining manual migration',
     '',
-    `${readyFiles.length} of ${filesWithSites} files have no legacy condition object left after`,
+    `${readyFiles.length} of ${filesWithSites} files have no legacy condition object or flagged functional variant left after`,
     'conversion. V3 has no compatibility setting; finish the remaining files directly:',
     blockedFiles.length
       ? blockedFiles.map((file) => `\`${file}\``).join(', ')
@@ -156,8 +188,37 @@ export function renderReport(
   }
 
   for (const file of files) {
-    if (!file.sites.length) continue
+    if (!file.sites.length && !file.functionalVariants.length) continue
     lines.push('', `## \`${file.file}\``, '')
+    for (const site of file.functionalVariants) {
+      lines.push(
+        `### ${site.label} functional variant at line ${site.line} (${site.converted ? 'automatic' : 'manual'})`,
+        '',
+        'Before:',
+        '',
+        '```tsx',
+        site.before,
+        '```',
+        '',
+        site.converted ? 'Automatic rewrite:' : 'Left authored:',
+        '',
+        '```tsx',
+        site.after,
+        '```'
+      )
+      if (site.flags.length) {
+        lines.push('', 'Flags:', '')
+        for (const flag of site.flags) lines.push(`- **${flag.code}**: ${flag.detail}`)
+      }
+      if (site.draft) {
+        lines.push('', 'Generated `.resolve` draft:', '', '```tsx', site.draft, '```')
+      }
+      if (site.notes.length) {
+        lines.push('', 'Notes:', '')
+        for (const note of site.notes) lines.push(`- ${note}`)
+      }
+      lines.push('')
+    }
     for (const site of file.sites) {
       const status = [
         site.assessmentVerdict === 'clean' ? null : site.assessmentVerdict,
@@ -230,6 +291,10 @@ export function renderReport(
       warnings: warnings.length,
       waiting: waiting.length,
       ignoredFiles,
+      functionalVariantSites: functionalVariants.length,
+      functionalVariantConverted: convertedFunctionalVariants.length,
+      functionalVariantFlagged: flaggedFunctionalVariants.length,
+      functionalVariantFlags: Object.fromEntries(functionalFlagCounts),
     },
   }
 }
