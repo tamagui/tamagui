@@ -208,6 +208,11 @@ setup. Choose `@tamagui/animations-css`, `@tamagui/animations-motion`, or
 `@tamagui/animations-reanimated` for web. Use platform-specific config files if the
 same application keeps `@tamagui/animations-react-native` on native.
 
+Apps that use Sheet or the animated-number hooks with the CSS driver must import
+`createAnimations` from `@tamagui/animations-css/extras`. The root
+`@tamagui/animations-css` entry omits those hooks, so Sheet throws when it tries
+to animate its position.
+
 Remove `@tamagui/babel-plugin` from Babel configuration and dependencies. Vite
 and Metro perform compilation through their dedicated plugins:
 
@@ -433,19 +438,19 @@ In monorepos, keep resolutions/overrides aligned:
 }
 ```
 
-## 2. Run the Sheet codemod
+## 2. Migrate Sheet anatomy
 
 `Sheet.Frame` has been replaced by `Sheet.Container` and `Sheet.Background`.
-Run the codemod before hand-editing Sheet callsites.
+The v3 package does not ship a Sheet codemod, so migrate each callsite using the
+rules below.
+
+If you are working inside a Tamagui source checkout, you can run its source-only
+codemod first. Pass expanded file paths because the script does not expand a
+quoted glob:
 
 ```bash
-node ./node_modules/tamagui/scripts/codemods/sheet-frame-to-container.js "src/**/*.{ts,tsx}"
-```
-
-If you are working from a local Tamagui checkout:
-
-```bash
-node ./scripts/codemods/sheet-frame-to-container.js "src/**/*.{ts,tsx}"
+rg --files src -g '*.ts' -g '*.tsx' -0 \
+  | xargs -0 node ./scripts/codemods/sheet-frame-to-container.js
 ```
 
 Review every changed Sheet. The codemod handles the common JSX rewrite, but you
@@ -1361,8 +1366,8 @@ rg '`\$\{[^`]*undefined[^`]*\}`'                    # "undefined" interpolated i
 # duplicate package / lockfile scan
 npx tamagui check
 
-# Sheet anatomy codemod
-node ./node_modules/tamagui/scripts/codemods/sheet-frame-to-container.js "src/**/*.{ts,tsx}"
+# Sheet anatomy still requiring migration
+rg 'Sheet\.Frame'
 
 # removed APIs
 rg "createStyledHOC|focusable|fullscreen|themeInverse|<Theme inverse|Sheet\.Frame|styleable\(|inlineWhenUnflattened|\$true|getTokenRelative|stepTokenUpOrDown|forceRemoveScrollEnabled|sizeAdjust|selectable=|Select\.Item.*index|enterVariant|exitVariant|enterExitVariant|delayMs|disableTransparencyHide|disableRootThemeClass|themeClassNameOnRoot|isWindowDefined|getExpandedShorthands|usePropsAndStyle|useProps|useStyle|backgroundActive|surface[1-4]|color12|defaultComponentThemes|@tamagui/config/v[3-5]|@tamagui/animations-moti|@tamagui/babel-plugin"

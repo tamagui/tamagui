@@ -17,6 +17,7 @@ describe('tamagui migrate', () => {
     expect(result.status).toBe(0)
     expect(result.stderr).toBe('')
     expect(result.stdout).toContain('You are migrating a Tamagui app from v2 to v3.')
+    expect(result.stdout).toContain('The v3 package does not ship a Sheet codemod.')
     expect(result.stdout).toContain('sheet-frame-to-container.js')
     expect(result.stdout).toContain('Sheet.Frame')
     expect(result.stdout).toContain('FocusScope')

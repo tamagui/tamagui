@@ -43,7 +43,8 @@ re-implement:
 
 - `npx tamagui migrate --from v2` (or `--from v1`) prints the canonical
   step-by-step migration prompt: dependency updates, config and theme moves,
-  the Sheet codemod, and every deprecated-API replacement with before/after.
+  the Sheet anatomy migration, and every deprecated-API replacement with
+  before/after.
   That prompt is the checklist of record. This skill tells you how to sequence
   it, what the codemod cannot do, and how to prove the result.
 - `npx @tamagui/codemod-flat-values` converts `$` tokens and condition objects
@@ -153,6 +154,11 @@ value-neutral, so any visual change is a bug rather than a decision.
 Do v3 first. There is already plenty to figure out. Decide about v6 later, on
 its own, when you have budget for the visual review it deserves. The nice
 property of v6 is that it can be adopted piece by piece afterwards.
+
+If the web config uses the CSS animation driver and the app renders Sheet or
+uses animated-number hooks, import `createAnimations` from
+`@tamagui/animations-css/extras`. The root entry intentionally omits those
+hooks, and Sheet throws when it tries to animate its position.
 
 ## Phase 1: order the work by ownership
 

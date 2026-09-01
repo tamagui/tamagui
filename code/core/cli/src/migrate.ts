@@ -91,6 +91,7 @@ add a compatibility setting or restore condition-object parsing.
 - New applications should use \`defaultConfig\` from \`@tamagui/config/v6\`.
 - Existing V5 applications can keep \`@tamagui/config/v5\` or \`/v5-subtle\` while migrating incrementally. These are frozen static compatibility packs, so they preserve the V5 token and theme values but will not receive new theme-builder features.
 - Import animations from \`@tamagui/config/animations-css\`, \`animations-rn\`, \`animations-reanimated\`, or \`animations-motion\`.
+- Apps using Sheet or animated-number hooks with the CSS driver must import \`createAnimations\` from \`@tamagui/animations-css/extras\`. The root entry omits those hooks.
 - Remove \`@tamagui/theme-builder\` and any V5 builder imports. Static \`@tamagui/themes/v5\`, \`/v5-subtle\`, and \`/v5-tokens\` imports remain supported.
 - Use \`createThemes\`, \`levels\`, scales, and the other recipe helpers from \`@tamagui/themes/builder\`.
 - Remove \`componentThemes\`, \`templates\`, \`masks\`, \`childrenThemes\`, and \`grandChildrenThemes\`. Express hierarchy in the recipe tree, semantic values in scales, and exact one-theme overrides in \`values\`.
@@ -121,18 +122,18 @@ Search the config and application together:
 rg "@tamagui/theme-builder|v5-builder|createV5Theme|componentThemes|grandChildrenThemes|surface[1-4]|color12"
 \`\`\`
 
-### 4. Run the Sheet codemod
+### 4. Migrate Sheet anatomy
 
-Run the codemod, then inspect every changed Sheet:
+The v3 package does not ship a Sheet codemod. Migrate each callsite using the
+rules below.
+
+When working inside a Tamagui source checkout, you can run its source-only
+codemod first. Pass expanded file paths because the script does not expand a
+quoted glob:
 
 \`\`\`bash
-node ./node_modules/tamagui/scripts/codemods/sheet-frame-to-container.js "src/**/*.{ts,tsx}"
-\`\`\`
-
-If working inside a Tamagui checkout, this path is also valid:
-
-\`\`\`bash
-node ./scripts/codemods/sheet-frame-to-container.js "src/**/*.{ts,tsx}"
+rg --files src -g '*.ts' -g '*.tsx' -0 \\
+  | xargs -0 node ./scripts/codemods/sheet-frame-to-container.js
 \`\`\`
 
 Migration rules:
