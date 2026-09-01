@@ -8,11 +8,14 @@ import { stylePropsAll, stylePropsUnitless } from '@tamagui/helpers'
 
 // only doing this on web on native it accepts pixel values
 
-const stylePropsAllPlusTransforms = {
-  ...stylePropsAll,
-  translateX: true,
-  translateY: true,
-}
+// the properties that take a unit: everything normalize can append `px` to.
+// a Set beats a spread object here, which lands in dictionary mode and makes
+// every lookup on this hot path a slow one
+const unitfulProps = new Set(
+  [...Object.keys(stylePropsAll), 'translateX', 'translateY'].filter(
+    (key) => !stylePropsUnitless[key]
+  )
+)
 
 // literal "Npx" values (e.g. fontSize="17px"). react native only accepts
 // numbers, so parse them there; web keeps the string and outputs it as css.
@@ -25,13 +28,8 @@ export function normalizeValueWithProperty(value: any, property = ''): any {
     }
     return value
   }
-  if (
-    stylePropsUnitless[property] ||
-    (property && !stylePropsAllPlusTransforms[property]) ||
-    typeof value === 'boolean'
-  ) {
-    return value
-  }
+  if (property !== '' && !unitfulProps.has(property)) return value
+  if (typeof value === 'boolean') return value
   if (value && typeof value === 'object') {
     if (typeof value.__getValue === 'function') {
       // resolve Animated.Value objects

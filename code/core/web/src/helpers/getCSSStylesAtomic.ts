@@ -227,7 +227,10 @@ const getStyleObject = (
   return [key, value, identifier, undefined, rules]
 }
 
-const slotIdentities = new Map<string, SlotIdentity>()
+// keyed atomicKey -> signature so the lookup never has to join the two into a
+// fresh string; every atomic slot of every element goes through here per render
+const slotIdentities = new Map<string, Map<string, SlotIdentity>>()
+let slotIdentityCount = 0
 
 function syncAtomicConfig() {
   const nextConf = getConfigMaybe()
@@ -236,6 +239,7 @@ function syncAtomicConfig() {
     conf = nextConf
     confRevision = nextRevision
     slotIdentities.clear()
+    slotIdentityCount = 0
   }
 }
 
@@ -246,9 +250,14 @@ export function buildAtomicSlotCSS(
 ): SlotIdentity | undefined {
   if (process.env.TAMAGUI_DID_OUTPUT_CSS) return
   syncAtomicConfig()
-  const cacheKey = atomicKey + signature
-  const known = slotIdentities.get(cacheKey)
-  if (known) return known
+  let bucket = slotIdentities.get(atomicKey)
+  if (bucket === undefined) {
+    bucket = new Map()
+    slotIdentities.set(atomicKey, bucket)
+  } else {
+    const known = bucket.get(signature)
+    if (known) return known
+  }
 
   const hash = simpleHash(signature, 'strict') || '0'
   const shortProp = getShortProp(atomicKey)
@@ -287,8 +296,13 @@ export function buildAtomicSlotCSS(
   }
 
   const built: SlotIdentity = [identifier, rules, lastValue]
-  if (slotIdentities.size > 10_000) slotIdentities.clear()
-  slotIdentities.set(cacheKey, built)
+  if (slotIdentityCount > 10_000) {
+    slotIdentities.clear()
+    slotIdentityCount = 0
+    slotIdentities.set(atomicKey, (bucket = new Map()))
+  }
+  slotIdentityCount++
+  bucket.set(signature, built)
   return built
 }
 

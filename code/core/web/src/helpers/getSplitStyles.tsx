@@ -180,7 +180,9 @@ function resolveConditionModifier(
   let atomIndex = 0
   while (atomIndex < atoms.length && atoms[atomIndex] < name) atomIndex++
   if (atoms[atomIndex] === name) return
-  atoms.splice(atomIndex, 0, name)
+  for (let index = atoms.length; index > atomIndex; index--)
+    atoms[index] = atoms[index - 1]
+  atoms[atomIndex] = name
 
   if (kind === 3) {
     condition[conditionPlatform] = Math.max(condition[conditionPlatform], rank)
@@ -203,7 +205,9 @@ function resolveConditionModifier(
   const ranks = condition[conditionRanks]
   let rankIndex = 0
   while (rankIndex < ranks.length && ranks[rankIndex] >= precedence) rankIndex++
-  ranks.splice(rankIndex, 0, precedence)
+  for (let index = ranks.length; index > rankIndex; index--)
+    ranks[index] = ranks[index - 1]
+  ranks[rankIndex] = precedence
 
   const buildCSS = canGenerateCSS && state.flatShouldDoClasses
   if (kind === 2) {
@@ -351,11 +355,33 @@ function commitCondition(condition: Condition): number {
 }
 
 function conditionFromKey(state: GetStyleState, key: string, parent?: Condition | null) {
-  const condition = createCondition(parent)
-  if (key) {
-    resolveConditionText(state, condition, key)
-    commitCondition(condition)
+  if (!key) return createCondition(parent)
+  if (!parent) {
+    // one element's props name the same conditions over and over (`web:` and
+    // `hover:` on width, height, margin, background...). a committed condition
+    // is immutable and reads only pass-fixed state, so resolve each key once.
+    // shouldDoClasses can flip mid-pass and changes what gets built, so it
+    // scopes the cache.
+    const direct = state as DirectState
+    let cache = direct.flatConditions
+    if (
+      cache === undefined ||
+      direct.flatConditionsClassed !== state.flatShouldDoClasses
+    ) {
+      cache = direct.flatConditions = new Map()
+      direct.flatConditionsClassed = state.flatShouldDoClasses
+    }
+    const known = cache.get(key)
+    if (known !== undefined) return known
+    const resolved = createCondition(null)
+    resolveConditionText(state, resolved, key)
+    commitCondition(resolved)
+    cache.set(key, resolved)
+    return resolved
   }
+  const condition = createCondition(parent)
+  resolveConditionText(state, condition, key)
+  commitCondition(condition)
   return condition
 }
 
@@ -1619,6 +1645,10 @@ export type MergeStyle = (
 ) => void
 
 type DirectState = GetStyleState & {
+  flatValueScope?: ValueScopeCache
+  flatValueScopeKind?: any
+  flatConditions?: Map<string, Condition>
+  flatConditionsClassed?: boolean
   flatPass?: StylePass
   flatStyleStaticConfig?: StyleStaticConfig
   flatSlots?: Record<string, AtomicSlotEntry[]>
@@ -1963,8 +1993,62 @@ const borderTargets: Record<string, string[]> = {
 
 let valueCacheConf: unknown
 let valueCacheRevision = -1
-let valueCaches = new WeakMap<object, Map<string, any>>()
+// themeObject -> `${themeName}\u001f${resolveValues}` -> property -> raw -> resolved
+type ValueMaps = { direct: Map<string, any>; embedded?: Map<string, any> }
+type ValueScopeCache = Map<string, ValueMaps>
+let valueCaches = new WeakMap<object, Map<string, ValueScopeCache>>()
+let valueCacheEntries = 0
 const valueCacheRoot = {}
+const parsedSlices = new WeakMap<object, (string | undefined)[]>()
+
+// the scope (theme identity, theme name, resolveValues) is fixed for a pass
+// apart from the class/inline flip, so resolve it once and key the per-value
+// lookups off interned property and raw strings instead of building a joined
+// key string for every value
+function valueScopeCache(state: GetStyleState, resolveValues: any): ValueScopeCache {
+  const direct = state as DirectState
+  if (
+    direct.flatValueScope !== undefined &&
+    direct.flatValueScopeKind === resolveValues
+  ) {
+    return direct.flatValueScope
+  }
+  const themeObject =
+    state.theme && typeof state.theme === 'object' ? state.theme : valueCacheRoot
+  let byScope = valueCaches.get(themeObject)
+  if (!byScope) {
+    byScope = new Map()
+    valueCaches.set(themeObject, byScope)
+  }
+  const scopeKey = `${state.flatThemeName || ''}\u001f${resolveValues}`
+  let scope = byScope.get(scopeKey)
+  if (!scope) {
+    scope = new Map()
+    byScope.set(scopeKey, scope)
+  }
+  direct.flatValueScope = scope
+  direct.flatValueScopeKind = resolveValues
+  return scope
+}
+
+function valuePropertyCache(scope: ValueScopeCache, property: string) {
+  let maps = scope.get(property)
+  if (maps === undefined) {
+    maps = { direct: new Map() }
+    scope.set(property, maps)
+  }
+  return maps
+}
+
+function rememberValue(byRaw: Map<string, any>, raw: string, out: any) {
+  if (valueCacheEntries > 8192) {
+    valueCaches = new WeakMap()
+    valueCacheEntries = 0
+    return
+  }
+  valueCacheEntries++
+  byRaw.set(raw, out)
+}
 
 function configuredValue(state: GetStyleState, property: string, raw: string): any {
   const grammar = getConfigRevisionState(state.conf)
@@ -1994,13 +2078,8 @@ function configuredValue(state: GetStyleState, property: string, raw: string): a
     valueCacheConf = state.conf
     valueCacheRevision = revision
     valueCaches = new WeakMap()
-  }
-  const themeObject =
-    state.theme && typeof state.theme === 'object' ? state.theme : valueCacheRoot
-  let cache = valueCaches.get(themeObject)
-  if (!cache) {
-    cache = new Map()
-    valueCaches.set(themeObject, cache)
+    valueCacheEntries = 0
+    ;(state as DirectState).flatValueScope = undefined
   }
   const resolveValues =
     process.env.TAMAGUI_TARGET === 'web' &&
@@ -2008,8 +2087,11 @@ function configuredValue(state: GetStyleState, property: string, raw: string): a
     state.styleProps.resolveValues === 'auto'
       ? 'value'
       : state.styleProps.resolveValues
-  const cacheKey = `${state.flatThemeName || ''}\u001f${resolveValues}\u001f${property}\u001f${raw}`
-  if (!fontProperty && cache.has(cacheKey)) return cache.get(cacheKey)
+  const byRaw = valuePropertyCache(valueScopeCache(state, resolveValues), property).direct
+  if (!fontProperty) {
+    const known = byRaw.get(raw)
+    if (known !== undefined || byRaw.has(raw)) return known
+  }
 
   let lookupName = name.charCodeAt(0) === 36 ? name.slice(1) : name
   let value: any
@@ -2080,8 +2162,7 @@ function configuredValue(state: GetStyleState, property: string, raw: string): a
     }
   }
   if (!fontProperty && !fromTheme) {
-    if (cache.size > 2048) cache.clear()
-    cache.set(cacheKey, out)
+    rememberValue(byRaw, raw, out)
   }
   return out
 }
@@ -2090,6 +2171,32 @@ function resolveEmbeddedTokens(state: GetStyleState, property: string, raw: stri
   return getConfigRevisionState(state.conf).embeddedTokens(raw, (word) =>
     configuredValue(state, property, word)
   )
+}
+
+// the embedded-token pass runs a regex replace over every string value that the
+// direct token lookup left alone, which is most of them. the result depends on
+// the same scope the direct lookup is keyed by, so memoize it there. safe-area
+// values set state.flatUsesSafeArea as they resolve, so they stay uncached.
+function resolvedEmbeddedValue(state: GetStyleState, property: string, raw: string) {
+  const fontProperty =
+    property.startsWith('font') ||
+    property === 'lineHeight' ||
+    property === 'letterSpacing'
+  if (fontProperty) return resolveEmbeddedTokens(state, property, raw)
+  const resolveValues =
+    process.env.TAMAGUI_TARGET === 'web' &&
+    !state.flatShouldDoClasses &&
+    state.styleProps.resolveValues === 'auto'
+      ? 'value'
+      : state.styleProps.resolveValues
+  const maps = valuePropertyCache(valueScopeCache(state, resolveValues), property)
+  const cache = (maps.embedded ||= new Map())
+  const known = cache.get(raw)
+  if (known !== undefined || cache.has(raw)) return known
+  const usedSafeArea = state.flatUsesSafeArea
+  const out = resolveEmbeddedTokens(state, property, raw)
+  if (usedSafeArea || !state.flatUsesSafeArea) rememberValue(cache, raw, out)
+  return out
 }
 
 function ownsSourceLayer(state: GetStyleState, property: string) {
@@ -2629,7 +2736,7 @@ function emitValue(
   let value: any = raw
   if (typeof raw === 'string') {
     value = configuredValue(state, property, raw)
-    if (value === raw) value = resolveEmbeddedTokens(state, property, raw)
+    if (value === raw) value = resolvedEmbeddedValue(state, property, raw)
   }
 
   if (
@@ -2775,9 +2882,13 @@ export function walkConditionalValue(
   let conditions = 0
   let lastPayload = ''
   if (typeof value === 'string') {
-    const [segments, failure, failureIndex] = getConfigRevisionState(
-      state.conf
-    ).parseFlatValue(value)
+    const parsed = getConfigRevisionState(state.conf).parseFlatValue(value)
+    const [segments, failure, failureIndex] = parsed
+    // the parse result is cached per authored string, so its payload and chain
+    // substrings can be too. without this every render of every element re-slices
+    // the same pieces out of the same value
+    let slices = parsedSlices.get(parsed)
+    if (slices === undefined) parsedSlices.set(parsed, (slices = []))
     const chainCount = segments.length / 5 - 1
     if (property === 'aspectRatio' && chainCount === 1) {
       const left = Number(value.slice(segments[7], segments[8]))
@@ -2794,7 +2905,7 @@ export function walkConditionalValue(
       if (flags & 1) {
         if (start === end) continue
         if (flags & 2) {
-          const payload = value.slice(start, end)
+          const payload = (slices[index] ??= value.slice(start, end))
           sink(payload, parentCondition, payload)
           hasBase = true
         } else if (
@@ -2823,15 +2934,15 @@ export function walkConditionalValue(
       }
       const cursor = conditionFromKey(
         state,
-        value.slice(segments[index + 2], segments[index + 3]),
+        (slices[index + 2] ??= value.slice(segments[index + 2], segments[index + 3])),
         parentCondition
       )
       conditions |= cursor[conditionValue]
       if (cursor[conditionValue] & conditionResolvedFlag || warnMode) {
-        sink(value.slice(start, end), cursor, value)
+        sink((slices[index] ??= value.slice(start, end)), cursor, value)
       }
     }
-    lastPayload = value.slice(lastPayloadStart)
+    if (process.env.NODE_ENV !== 'production') lastPayload = value.slice(lastPayloadStart)
   } else {
     if (
       !value ||

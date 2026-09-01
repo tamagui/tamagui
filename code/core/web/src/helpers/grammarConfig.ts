@@ -202,6 +202,9 @@ export function prepareConfigRevision(
     borderRadius: 8,
   }
   const propertyKind = (property: string) => propertyKinds[property] || 0
+  // transition strings are re-normalized on every render of every animated
+  // element; the result only depends on this revision's shorthands
+  const normalizedTransitions = new Map<string, string>()
   const next: ConfigRevisionState = {
     revision: captured.revision,
     modifiers,
@@ -219,6 +222,9 @@ export function prepareConfigRevision(
     compositeValue: (property, raw, context, resolve) => {
       const kind = propertyKinds[property]
       if (kind < 7) return
+      // a one-component shorthand (margin="4px") has nothing to distribute, and
+      // matching it out only to count one part allocates on every render
+      if (kind === 8 && !hasMultipleComponents(raw)) return
       const parts =
         raw.match(
           /(?:[^\s("']+|\((?:[^()]|\([^)]*\))*\)|"(?:\\.|[^"])*"|'(?:\\.|[^'])*')+/g
@@ -265,8 +271,10 @@ export function prepareConfigRevision(
         return value
       }
     },
-    normalizeTransition: (raw) =>
-      raw.replace(
+    normalizeTransition: (raw) => {
+      const known = normalizedTransitions.get(raw)
+      if (known !== undefined) return known
+      const out = raw.replace(
         /\/\*[\s\S]*?\*\/|(["'])(?:\\.|(?!\1)[^\\])*\1|[A-Za-z_][\w-]*/g,
         (authored, quote, offset) => {
           if (
@@ -282,7 +290,11 @@ export function prepareConfigRevision(
           else if (propertyKind(property) === 5) property = 'transform'
           return property.replace(/[A-Z]/g, '-$&').toLowerCase()
         }
-      ),
+      )
+      if (normalizedTransitions.size > 2048) normalizedTransitions.clear()
+      normalizedTransitions.set(raw, out)
+      return out
+    },
     embeddedTokens: (raw, resolve) =>
       raw.replace(
         /\/\*[\s\S]*?\*\/|(["'])(?:\\.|(?!\1)[^\\])*\1|[$A-Za-z_][\w.$-]*(?:\/\d+)?/g,
@@ -307,6 +319,47 @@ export function prepareConfigRevision(
     return next
   }
   return target[configRevisionSymbol]!
+}
+
+// does this value hold more than one whitespace-separated component, ignoring
+// separators inside quotes or parentheses? mirrors the composite split regex
+function hasMultipleComponents(raw: string) {
+  let depth = 0
+  let quote = 0
+  let started = false
+  for (let index = 0; index < raw.length; index++) {
+    const code = raw.charCodeAt(index)
+    if (quote) {
+      if (code === quote) quote = 0
+      continue
+    }
+    if (code === 34 || code === 39) {
+      quote = code
+      if (!started) started = true
+      continue
+    }
+    if (code === 40) {
+      depth++
+      if (!started) started = true
+      continue
+    }
+    if (depth) {
+      if (code === 41) depth--
+      continue
+    }
+    if (code <= 32) {
+      if (started) {
+        // a component ended; anything non-blank after it is a second one
+        for (let next = index + 1; next < raw.length; next++) {
+          if (raw.charCodeAt(next) > 32) return true
+        }
+        return false
+      }
+      continue
+    }
+    started = true
+  }
+  return false
 }
 
 export function getConfigRevisionState(
