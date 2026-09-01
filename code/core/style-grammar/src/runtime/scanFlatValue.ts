@@ -312,7 +312,7 @@ export function parseFlatValue(source: string): ParsedFlatValue {
   return context
 }
 
-function parseFlatValueProduction(source: string): ParsedFlatValue {
+export function parseFlatValueProduction(source: string): ParsedFlatValue {
   const length = source.length
   const segments: number[] = []
   let sawChain = false,
@@ -403,7 +403,7 @@ function parseFlatValueProduction(source: string): ParsedFlatValue {
   return [segments, null, -1]
 }
 
-function parseFlatValueChecked(source: string): ParsedFlatValue {
+export function parseFlatValueChecked(source: string): ParsedFlatValue {
   const length = source.length
   const segments: number[] = []
   let failure: FlatScanFailure | null = null,
@@ -436,7 +436,6 @@ function parseFlatValueChecked(source: string): ParsedFlatValue {
     let start = segmentStart
     while (start < end && source.charCodeAt(start) <= 32) start++
     while (end > start && source.charCodeAt(end - 1) <= 32) end--
-    const valid = segmentValid && chainValid
     segments.push(
       start,
       end,
