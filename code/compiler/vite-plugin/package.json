@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/vite-plugin",
-  "version": "2.6.2",
+  "version": "2.7.7",
   "license": "MIT",
   "files": [
     "src",
@@ -41,11 +41,11 @@
     "esm-resolve": "^1.0.8",
     "fs-extra": "^11.2.0",
     "outdent": "^0.8.0",
-    "react-native-web": "^0.21.0"
+    "react-native-web": "~0.21.0"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "vite": "^8.0.3"
+    "vite": "^8.2.2"
   },
   "peerDependencies": {
     "vite": "^8.0.3"

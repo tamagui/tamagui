@@ -616,7 +616,7 @@ exports[`webpack-tests > 22. flexWrap with media query conditionals 1`] = `
         class="_dsp_contents  font_body"
       >
         <div
-          class="is_View _pt-_sm_t-space-4 _pr-_sm_t-space-4 _pb-_sm_t-space-4 _pl-_sm_t-space-4 _fwr-_sm_nowrap _fwr-wrap _gap-t-space-2 _fd-row"
+          class="is_View _fwr-_sm_nowrap _pt-_sm_t-space-4 _pr-_sm_t-space-4 _pb-_sm_t-space-4 _pl-_sm_t-space-4 _fwr-wrap _gap-t-space-2 _fd-row"
         >
           <span
             class="is_Text _col-color"

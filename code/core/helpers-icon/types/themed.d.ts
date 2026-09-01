@@ -11,7 +11,7 @@ type Options = {
     resolveValues?: ResolveVariableAs;
 };
 export declare function themed(Component: FC<IconProps>, optsIn?: Options): {
-    (propsIn: IconProps): import("react/jsx-runtime").JSX.Element;
+    (propsIn: IconProps): import("react").JSX.Element;
     staticConfig: {
         isHOC: boolean;
         acceptsClassName: boolean;

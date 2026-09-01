@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/build",
-  "version": "2.6.2",
+  "version": "2.7.7",
   "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
   "bin": {
     "tamagui-build": "tamagui-build.js",
@@ -29,7 +29,7 @@
     "lodash.debounce": "^4.0.8",
     "oxc-transform": "^0.112.0",
     "picomatch": "4.0.3",
-    "rolldown": "1.0.1",
+    "rolldown": "1.2.4",
     "typescript": "~5.9.2"
   },
   "peerDependencies": {

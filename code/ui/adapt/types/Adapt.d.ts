@@ -26,7 +26,7 @@ type Component = (props: any) => any;
 export declare const AdaptContext: import("@tamagui/core").StyledContext<AdaptParentContextI>;
 export declare const ProvideAdaptContext: ({ children, ...context }: AdaptParentContextI & {
     children: any;
-}) => import("react/jsx-runtime").JSX.Element;
+}) => React.JSX.Element;
 export declare const useAdaptContext: (scope?: string) => AdaptParentContextI;
 /**
  * Hooks
@@ -39,7 +39,7 @@ type AdaptParentProps = {
         forwardProps?: any;
     };
 };
-export declare const AdaptParent: ({ children, Contents, scope, portal }: AdaptParentProps) => import("react/jsx-runtime").JSX.Element;
+export declare const AdaptParent: ({ children, Contents, scope, portal }: AdaptParentProps) => React.JSX.Element;
 /**
  * Components
  */
@@ -49,7 +49,7 @@ export declare const AdaptContents: {
     }): React.FunctionComponentElement<any>;
     shouldForwardSpace: boolean;
 };
-export declare const Adapt: ((props: AdaptProps) => import("react/jsx-runtime").JSX.Element) & {
+export declare const Adapt: ((props: AdaptProps) => React.JSX.Element) & {
     Contents: {
         ({ scope, ...rest }: {
             scope?: string;
@@ -61,7 +61,7 @@ export declare const AdaptPortalContents: (props: {
     children: React.ReactNode;
     scope?: string;
     passThrough?: boolean;
-}) => import("react/jsx-runtime").JSX.Element;
+}) => React.JSX.Element;
 export declare const useAdaptIsActive: (scope?: string) => boolean;
 export {};
 //# sourceMappingURL=Adapt.d.ts.map

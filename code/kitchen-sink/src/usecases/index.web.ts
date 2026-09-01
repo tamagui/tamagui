@@ -65,6 +65,8 @@ const loaders: Record<string, () => ComponentType<any>> = {
     require('./DialogPointerEventsCase').DialogPointerEventsCase,
   DialogScopedCase: () => require('./DialogScopedCase').DialogScopedCase,
   DialogSheetAdaptCase: () => require('./DialogSheetAdaptCase').DialogSheetAdaptCase,
+  DialogSheetAdaptReopenCase: () =>
+    require('./DialogSheetAdaptReopenCase').DialogSheetAdaptReopenCase,
   DialogSheetAdaptResizeCase: () =>
     require('./DialogSheetAdaptResizeCase').DialogSheetAdaptResizeCase,
   DialogSheetAdaptUnmountCase: () =>

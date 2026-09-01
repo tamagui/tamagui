@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/image",
-  "version": "2.6.2",
+  "version": "2.7.7",
   "source": "src/index.ts",
   "files": [
     "src",
@@ -40,8 +40,8 @@
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "react": ">=19",
-    "react-native": "0.83.2"
+    "react": "19.2.3",
+    "react-native": "0.86.2"
   },
   "peerDependencies": {
     "react": ">=19"

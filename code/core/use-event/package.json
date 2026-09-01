@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/use-event",
-  "version": "2.6.2",
+  "version": "2.7.7",
   "files": [
     "src",
     "types",
@@ -35,7 +35,7 @@
   "dependencies": {},
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "react": ">=19"
+    "react": "19.2.3"
   },
   "peerDependencies": {
     "react": ">=19"

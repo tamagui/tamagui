@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/native-bundle",
-  "version": "2.6.2",
+  "version": "2.7.7",
   "description": "Vite-based bundler for creating native CommonJS bundles for Tamagui packages",
   "license": "MIT",
   "author": {
@@ -21,7 +21,7 @@
     "watch": "node build.mjs --watch"
   },
   "dependencies": {
-    "vite": "^8.0.3"
+    "vite": "^8.2.2"
   },
   "devDependencies": {
     "esbuild": "^0.27.2"

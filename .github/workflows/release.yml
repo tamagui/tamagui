@@ -1,7 +1,24 @@
 name: Release
 
-# github evaluates workflow_run from the default branch. keep this workflow on
-# main as well as v3-beta so successful v3-beta CI can publish automatically.
+# github evaluates workflow_run from the DEFAULT BRANCH. the beta job below fires
+# on a v3-beta push but runs main's copy of this file, so editing it on v3-beta
+# alone changes nothing and fails silently: the run looks normal and behaves as
+# though your change is not there, because it is not. a fix to the beta job has
+# to land on main to take effect. that cost three full CI cycles on 2026-08-21,
+# where two consecutive "fixes" to the beta job appeared to do nothing at all.
+#
+# what has to match across the two branches is the `on:` block and the `beta`
+# job. the jobs after them are expected to differ: main cuts stable releases
+# through a merge queue and calls scripts/release-github.ts, a file that exists
+# only on main, so copying main's whole file onto v3-beta fails `bun run check`
+# with an unlisted-binary error from knip. that was tried on 2026-08-25.
+#
+# so when debugging a beta cut, run
+#   git diff origin/main:.github/workflows/release.yml \
+#     origin/v3-beta:.github/workflows/release.yml
+# and check that every hunk lands in the stable or canary jobs. a hunk in the
+# `on:` block or in the `beta` job means the beta cut is not running what the
+# branch you are reading says it runs.
 on:
   workflow_run:
     workflows: [Checks]
@@ -35,6 +52,18 @@ jobs:
       github.event.workflow_run.head_branch == 'v3-beta'
     runs-on: ubuntu-latest
     timeout-minutes: 60
+    # this job publishes a beta automatically every time Checks goes green on a
+    # v3-beta push.
+    #
+    # it declares no environment. every package's trusted publisher on npmjs.com
+    # pins repository + release.yml with the environment left unset, and github
+    # adds an `environment` claim to the OIDC token whenever a job names one, so
+    # leaving it off is what certainly matches. the previous npm-publish-beta
+    # environment was removed while chasing the 404 below and was NOT its cause;
+    # whether npm treats an unset environment as "any" was never established.
+    #
+    # re-adding one to get protection rules means checking that against all 166
+    # npm configs first, and the stable job below names none either.
     permissions:
       contents: read
       id-token: write
@@ -59,12 +88,20 @@ jobs:
             echo "release=true" >> "$GITHUB_OUTPUT"
           fi
 
+      # deliberately no registry-url. it makes setup-node write an .npmrc holding
+      # //registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN} and export
+      # NODE_AUTH_TOKEN as the placeholder XXXXX-XXXXX-XXXXX-XXXXX, because no
+      # real token exists here. npm then sends that placeholder, authenticates as
+      # nobody, and the registry answers a PUT with 404 rather than 401 so it does
+      # not reveal whether the package exists. that 404 is what stopped every beta
+      # cut. a configured credential also pre-empts OIDC, so trusted publishing
+      # never ran at all. registry.npmjs.org is npm's default, so nothing here
+      # needed the setting.
       - name: Setup Node.js
         if: steps.candidate.outputs.release == 'true'
         uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
         with:
-          node-version: '24'
-          registry-url: 'https://registry.npmjs.org'
+          node-version-file: '.node-version'
           package-manager-cache: false
 
       - name: Setup Bun
@@ -75,7 +112,7 @@ jobs:
 
       - name: Install npm with trusted publishing support
         if: steps.candidate.outputs.release == 'true'
-        run: npm install --global npm@12.0.1
+        run: npm install --global npm@12.0.2
 
       - name: Install dependencies
         if: steps.candidate.outputs.release == 'true'
@@ -112,117 +149,34 @@ jobs:
           --skip-native-tests
           --skip-checks
 
-  ensure-ci:
-    name: Approve main release source
-    if: github.event_name == 'workflow_dispatch'
+  prepare_stable:
+    name: Merge stable version commit
+    if: github.event_name == 'workflow_dispatch' && inputs.release != 'canary'
     runs-on: ubuntu-latest
-    timeout-minutes: 90
+    timeout-minutes: 180
+    outputs:
+      base_ref: ${{ steps.source.outputs.base-ref }}
+      merged_sha: ${{ steps.merge.outputs.merged-sha }}
+      version: ${{ steps.version.outputs.version }}
     permissions:
       actions: write
-      contents: read
-    steps:
-      # a canary is a throwaway version on its own dist-tag that nothing installs
-      # unless asked for by name, so it is cuttable from any branch and does not
-      # wait on a full CI run. requiring current main meant merging a change just
-      # to test it. a stable release still needs both.
-      - name: Require current main and successful full CI
-        if: inputs.release != 'canary'
-        env:
-          GH_TOKEN: ${{ github.token }}
-          TARGET_SHA: ${{ github.sha }}
-          WORKFLOW_FILE: checks.yaml
-        shell: bash
-        run: |
-          set -euo pipefail
-          [[ "$GITHUB_REF" == "refs/heads/main" ]]
-
-          main_sha=$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/main" --jq .object.sha)
-          [[ "$TARGET_SHA" == "$main_sha" ]]
-
-          get_runs() {
-            gh api --method GET "repos/$GITHUB_REPOSITORY/actions/workflows/$WORKFLOW_FILE/runs" \
-              -f head_sha="$TARGET_SHA" -f per_page=20
-          }
-
-          wait_for_run() {
-            local run_id="$1"
-            for ((attempt = 1; attempt <= 40; attempt++)); do
-              read -r status conclusion < <(
-                gh api "repos/$GITHUB_REPOSITORY/actions/runs/$run_id" \
-                  --jq '[.status, (.conclusion // "pending")] | @tsv'
-              )
-              if [[ "$status" == "completed" ]]; then
-                [[ "$conclusion" == "success" ]]
-                return
-              fi
-              sleep 120
-            done
-            echo "Timed out waiting for CI run $run_id" >&2
-            return 1
-          }
-
-          runs=$(get_runs)
-          run_id=$(jq -r '.workflow_runs | sort_by(.created_at) | last | .id // empty' <<< "$runs")
-          if [[ -n "$run_id" ]]; then
-            status=$(jq -r --argjson id "$run_id" '.workflow_runs[] | select(.id == $id) | .status' <<< "$runs")
-            conclusion=$(jq -r --argjson id "$run_id" '.workflow_runs[] | select(.id == $id) | .conclusion // "pending"' <<< "$runs")
-            if [[ "$status" == "completed" && "$conclusion" == "success" ]]; then
-              echo "Full CI already passed for $TARGET_SHA."
-              exit 0
-            fi
-            if [[ "$status" != "completed" ]] && wait_for_run "$run_id"; then
-              echo "Existing full CI passed for $TARGET_SHA."
-              exit 0
-            fi
-          fi
-
-          started=$(date -u +'%Y-%m-%dT%H:%M:%SZ')
-          gh api --method POST \
-            "repos/$GITHUB_REPOSITORY/actions/workflows/$WORKFLOW_FILE/dispatches" \
-            -f ref=main
-
-          run_id=''
-          for ((attempt = 1; attempt <= 12; attempt++)); do
-            sleep 10
-            runs=$(get_runs)
-            run_id=$(jq -r --arg started "$started" \
-              '[.workflow_runs[] | select(.event == "workflow_dispatch" and .created_at >= $started)] | sort_by(.created_at) | last | .id // empty' \
-              <<< "$runs")
-            [[ -n "$run_id" ]] && break
-          done
-          [[ -n "$run_id" ]]
-          wait_for_run "$run_id"
-
-  publish:
-    name: Publish approved main release
-    if: github.event_name == 'workflow_dispatch'
-    needs: ensure-ci
-    runs-on: ubuntu-latest
-    timeout-minutes: 60
-    permissions:
       contents: write
-      id-token: write
+      pull-requests: write
     steps:
       - name: Checkout release source
         uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
         with:
           fetch-depth: 0
-          persist-credentials: false
+          ref: ${{ github.sha }}
 
       - name: Validate release source and select baseline
         id: source
-        env:
-          RELEASE_KIND: ${{ inputs.release }}
         shell: bash
         run: |
           set -euo pipefail
           git fetch --no-tags origin main
-          # baseline selection below is needed for every release kind; only the
-          # must-be-current-main assertion is stable-only (see ensure-ci).
-          if [[ "$RELEASE_KIND" != 'canary' ]]; then
-            [[ "$GITHUB_REF" == "refs/heads/main" ]]
-            [[ "$(git rev-parse HEAD)" == "$(git rev-parse origin/main)" ]]
-          fi
+          [[ "$GITHUB_REF" == "refs/heads/main" ]]
+          [[ "$(git rev-parse HEAD)" == "$(git rev-parse origin/main)" ]]
 
           tag_ref=$(git describe --tags --match 'v*' --abbrev=0 2>/dev/null || true)
           canary_ref=$(git log --grep='^canary' --format='%H' -1)
@@ -241,17 +195,13 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
         with:
-          node-version: '24'
-          registry-url: 'https://registry.npmjs.org'
+          node-version-file: '.node-version'
           package-manager-cache: false
 
       - name: Setup Bun
         uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
         with:
           bun-version-file: 'package.json'
-
-      - name: Install npm with trusted publishing support
-        run: npm install --global npm@12.0.1
 
       - name: Install dependencies
         run: bun install --frozen-lockfile
@@ -263,46 +213,168 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          git config user.name 'Tamagui Release'
-          git config user.email 'tamagui@users.noreply.github.com'
-          bun scripts/release.ts "--$RELEASE_KIND" --ci --dirty --skip-publish --skip-push --skip-tests --skip-native-tests --skip-checks
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          bun scripts/release.ts "--$RELEASE_KIND" --ci --dirty --skip-publish --skip-push --skip-tests --skip-native-tests --skip-checks --skip-build
 
-      # a canary mutates no git at all, matching orez and takeout. pushing a
-      # throwaway version commit to main is what wedged the one repo: main
-      # requires a pull request and a merge queue there, so the push is rejected
-      # with GH006 and the publish step below never runs. the bump only has to
-      # exist in the tree for npm.
-      - name: Push release commit
-        if: inputs.release != 'canary'
+      - name: Read prepared version
+        id: version
+        shell: bash
+        run: |
+          version=$(node -p "require('./code/ui/tamagui/package.json').version")
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
+      - name: Run release PR through full CI and protected main
+        id: merge
+        # pushes made with github.token do not start workflows. the coordinator
+        # dispatches Checks on the exact release commit before squash-merging the PR.
         env:
           GH_TOKEN: ${{ github.token }}
+          RELEASE_VERSION: ${{ steps.version.outputs.version }}
           TARGET_SHA: ${{ github.sha }}
+        run: bun scripts/release-github.ts
+
+  publish_stable:
+    name: Publish merged stable release
+    if: github.event_name == 'workflow_dispatch' && inputs.release != 'canary'
+    needs: prepare_stable
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    permissions:
+      contents: write
+      id-token: write
+    steps:
+      - name: Checkout merged release source
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+          ref: ${{ needs.prepare_stable.outputs.merged_sha }}
+
+      - name: Validate merged release source
+        env:
+          MERGED_SHA: ${{ needs.prepare_stable.outputs.merged_sha }}
+          RELEASE_VERSION: ${{ needs.prepare_stable.outputs.version }}
         shell: bash
         run: |
           set -euo pipefail
           git fetch --no-tags origin main
-          [[ "$(git rev-parse origin/main)" == "$TARGET_SHA" ]]
-          auth=$(printf 'x-access-token:%s' "$GH_TOKEN" | base64 | tr -d '\n')
-          trap 'git config --local --unset-all http.https://github.com/.extraheader || true' EXIT
-          git config --local http.https://github.com/.extraheader "AUTHORIZATION: basic $auth"
-          git push origin HEAD:main
+          [[ "$(git rev-parse HEAD)" == "$MERGED_SHA" ]]
+          git merge-base --is-ancestor "$MERGED_SHA" origin/main
+          version=$(node -p "require('./code/ui/tamagui/package.json').version")
+          [[ "$version" == "$RELEASE_VERSION" ]]
+
+      # no registry-url, for the same reason as the beta job above
+      - name: Setup Node.js
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+        with:
+          node-version-file: '.node-version'
+          package-manager-cache: false
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version-file: 'package.json'
+
+      - name: Install npm with trusted publishing support
+        run: npm install --global npm@12.0.2
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Build merged release source
+        run: bun run build:force
+
+      - name: Publish prepared version
+        env:
+          RELEASE_BASE_REF: ${{ needs.prepare_stable.outputs.base_ref }}
+        run: bun scripts/release.ts --republish --ci --dirty --skip-finish
+
+      - name: Push stable tag
+        env:
+          GH_TOKEN: ${{ github.token }}
+          MERGED_SHA: ${{ needs.prepare_stable.outputs.merged_sha }}
+          RELEASE_VERSION: ${{ needs.prepare_stable.outputs.version }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git ls-remote --exit-code --tags origin "refs/tags/v$RELEASE_VERSION" >/dev/null; then
+            git fetch --no-tags origin "refs/tags/v$RELEASE_VERSION:refs/tags/v$RELEASE_VERSION"
+            [[ "$(git rev-list -n 1 "v$RELEASE_VERSION")" == "$MERGED_SHA" ]]
+          else
+            git tag "v$RELEASE_VERSION" "$MERGED_SHA"
+            auth=$(printf 'x-access-token:%s' "$GH_TOKEN" | base64 | tr -d '\n')
+            trap 'git config --local --unset-all http.https://github.com/.extraheader || true' EXIT
+            git config --local http.https://github.com/.extraheader "AUTHORIZATION: basic $auth"
+            git push origin "v$RELEASE_VERSION"
+          fi
+          if ! gh release view "v$RELEASE_VERSION" >/dev/null 2>&1; then
+            gh release create "v$RELEASE_VERSION" --verify-tag --generate-notes --title "v$RELEASE_VERSION"
+          fi
+
+  publish_canary:
+    name: Publish canary
+    if: github.event_name == 'workflow_dispatch' && inputs.release == 'canary'
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Checkout release source
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Select release baseline
+        id: source
+        shell: bash
+        run: |
+          set -euo pipefail
+          tag_ref=$(git describe --tags --match 'v*' --abbrev=0 2>/dev/null || true)
+          canary_ref=$(git log --grep='^canary' --format='%H' -1)
+          if [[ -z "$tag_ref" ]]; then
+            base_ref="$canary_ref"
+          elif [[ -z "$canary_ref" ]]; then
+            base_ref="$tag_ref"
+          elif (( $(git log -1 --format=%ct "$canary_ref") > $(git log -1 --format=%ct "$tag_ref") )); then
+            base_ref="$canary_ref"
+          else
+            base_ref="$tag_ref"
+          fi
+          [[ -n "$base_ref" ]]
+          echo "base-ref=$base_ref" >> "$GITHUB_OUTPUT"
+
+      # no registry-url, for the same reason as the beta job above
+      - name: Setup Node.js
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+        with:
+          node-version-file: '.node-version'
+          package-manager-cache: false
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version-file: 'package.json'
+
+      - name: Install npm with trusted publishing support
+        run: npm install --global npm@12.0.2
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Prepare canary version
+        env:
+          RELEASE_BASE_REF: ${{ steps.source.outputs.base-ref }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'Tamagui Release'
+          git config user.email 'tamagui@users.noreply.github.com'
+          bun scripts/release.ts --canary --ci --dirty --skip-publish --skip-push --skip-tests --skip-native-tests --skip-checks
 
       - name: Publish prepared version
         env:
           RELEASE_BASE_REF: ${{ steps.source.outputs.base-ref }}
         run: bun scripts/release.ts --republish --ci --dirty --skip-finish
-
-      - name: Push stable tag
-        if: inputs.release != 'canary'
-        env:
-          GH_TOKEN: ${{ github.token }}
-        shell: bash
-        run: |
-          set -euo pipefail
-          version=$(node -p "require('./code/ui/tamagui/package.json').version")
-          [[ "$(git rev-list -n 1 "v$version")" == "$(git rev-parse HEAD)" ]]
-          auth=$(printf 'x-access-token:%s' "$GH_TOKEN" | base64 | tr -d '\n')
-          trap 'git config --local --unset-all http.https://github.com/.extraheader || true' EXIT
-          git config --local http.https://github.com/.extraheader "AUTHORIZATION: basic $auth"
-          git push origin "v$version"
-          gh release create "v$version" --verify-tag --generate-notes --title "v$version"

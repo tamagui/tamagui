@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/animations-css",
-  "version": "2.6.2",
+  "version": "2.7.7",
   "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
   "license": "MIT",
   "source": "src/index.ts",
@@ -44,8 +44,8 @@
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "react": ">=19",
-    "react-dom": "*"
+    "react": "19.2.3",
+    "react-dom": "19.2.3"
   },
   "peerDependencies": {
     "react": ">=19",

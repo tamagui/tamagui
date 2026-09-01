@@ -4,5 +4,5 @@ export declare function ToastPortal(props: {
     children: ReactNode;
     zIndex?: number;
     context: ToastProviderContextValue;
-}): import("react/jsx-runtime").JSX.Element;
+}): import("react").JSX.Element;
 //# sourceMappingURL=ToastPortal.d.ts.map

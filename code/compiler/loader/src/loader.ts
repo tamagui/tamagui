@@ -1,24 +1,11 @@
 import * as StaticWorker from '@tamagui/static-worker'
 import type { TamaguiOptions } from '@tamagui/types'
 import type { LoaderContext } from 'webpack'
-import { requireResolve } from './requireResolve'
+import { cssLoaderPath } from './css'
 
 const { getPragmaOptions } = StaticWorker
 
 Error.stackTraceLimit = Number.POSITIVE_INFINITY
-
-// pass loader as path
-let CSS_LOADER_PATH = ''
-
-try {
-  CSS_LOADER_PATH = requireResolve('./css.cjs')
-} catch {
-  try {
-    CSS_LOADER_PATH = requireResolve('./css.esm')
-  } catch {
-    CSS_LOADER_PATH = requireResolve('./css.js')
-  }
-}
 
 let index = 0
 
@@ -88,7 +75,7 @@ export const loader = async function loader(
     if (extracted.styles) {
       const cssQuery = `cssData=${Buffer.from(extracted.styles).toString('base64')}`
       const remReq = this.remainingRequest
-      const importPath = `${cssPath}!=!${CSS_LOADER_PATH}?${cssQuery}!${remReq}`
+      const importPath = `${cssPath}!=!${cssLoaderPath}?${cssQuery}!${remReq}`
       extracted.js = `${extracted.js}\n\nrequire(${JSON.stringify(importPath)})`
     }
 

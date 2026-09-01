@@ -12,30 +12,26 @@
  * Menu and ContextMenu native mode.
  */
 
-import { getZeego } from './zeegoState'
+import { registerNativeMenuAdapter } from './nativeMenuState'
 
 function setup(): void {
-  const g = globalThis as any
-  if (g.__tamagui_native_zeego_setup) return
-  g.__tamagui_native_zeego_setup = true
-
+  let Menu
+  let ContextMenu
   try {
-    const DropdownMenu = require('zeego/dropdown-menu')
-    const ContextMenu = require('zeego/context-menu')
-
-    if (DropdownMenu && ContextMenu) {
-      getZeego().set({
-        enabled: true,
-        DropdownMenu,
-        ContextMenu,
-      })
-    }
+    Menu = require('zeego/dropdown-menu')
+    ContextMenu = require('zeego/context-menu')
   } catch (err) {
     if (process.env.NODE_ENV === 'development') {
       console.warn(`Error setting up Zeego`, err)
     }
-    // zeego not installed
+    return
   }
+
+  registerNativeMenuAdapter({
+    name: 'zeego',
+    Menu,
+    ContextMenu,
+  })
 }
 
 // run setup immediately on import

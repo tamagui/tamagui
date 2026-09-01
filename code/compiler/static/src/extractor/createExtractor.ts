@@ -46,7 +46,7 @@ import { cleanupBeforeExit, getStaticBindingsForScope } from './getStaticBinding
 import { literalToAst } from './literalToAst'
 import { loadTamagui, loadTamaguiSync } from './loadTamagui'
 import { logLines } from './logLines'
-import { normalizeTernaries } from './normalizeTernaries'
+import { getTernaryKey, normalizeTernaries } from './normalizeTernaries'
 import { setPropsToFontFamily } from './propsToFontFamilyCache'
 import { timer } from './timer'
 import { validHTMLAttributes } from './validHTMLAttributes'
@@ -624,6 +624,8 @@ export function createExtractor(
     tm.mark('import-check', !!shouldPrintDebug)
 
     let couldntParse = false
+    // evaluating the file resolves every styled() in it at once, so once is enough
+    let didDynamicLoad = false
     const modifiedComponents = new Set<NodePath<any>>()
 
     // only keeping a cache around per-file, reset it if it changes
@@ -696,11 +698,21 @@ export function createExtractor(
         let Component =
           getValidImportedComponent(parentName) || getValidImportedComponent(variableName)
 
-        if (!Component) {
-          if (!enableDynamicEvaluation) {
-            return
-          }
+        // the parent's staticConfig knows nothing about the variants this call
+        // declares, so a JSX site passing one reads as an unknown prop and
+        // de-opts the whole element. evaluating the file gives us the real
+        // staticConfig, variants included.
+        const declaresVariants =
+          !didDynamicLoad &&
+          definition.properties.some(
+            (prop) =>
+              t.isObjectProperty(prop) &&
+              t.isIdentifier(prop.key) &&
+              prop.key.name === 'variants'
+          )
 
+        if ((!Component || declaresVariants) && enableDynamicEvaluation) {
+          didDynamicLoad = true
           try {
             if (shouldPrintDebug) {
               logger.info(
@@ -714,32 +726,31 @@ export function createExtractor(
               cacheKey: version,
             })
 
-            if (!out?.components) {
-              if (shouldPrintDebug) {
-                logger.info(`Couldn't load, got ${out}`)
+            if (out?.components) {
+              propsWithFileInfo.allLoadedComponents = [
+                ...propsWithFileInfo.allLoadedComponents,
+                ...out.components,
+              ]
+
+              Component =
+                out.components.flatMap((x) => x.nameToInfo[variableName] ?? [])[0] ||
+                Component
+
+              if (!out.cached) {
+                const foundNames = out.components
+                  ?.map((x) => Object.keys(x.nameToInfo).join(', '))
+                  .join(', ')
+                  .trim()
+
+                if (foundNames) {
+                  colorLog(
+                    Color.FgYellow,
+                    `      | Tamagui found dynamic components: ${foundNames}`
+                  )
+                }
               }
-              return
-            }
-
-            propsWithFileInfo.allLoadedComponents = [
-              ...propsWithFileInfo.allLoadedComponents,
-              ...out.components,
-            ]
-
-            Component = out.components.flatMap((x) => x.nameToInfo[variableName] ?? [])[0]
-
-            if (!out.cached) {
-              const foundNames = out.components
-                ?.map((x) => Object.keys(x.nameToInfo).join(', '))
-                .join(', ')
-                .trim()
-
-              if (foundNames) {
-                colorLog(
-                  Color.FgYellow,
-                  `      | Tamagui found dynamic components: ${foundNames}`
-                )
-              }
+            } else if (shouldPrintDebug) {
+              logger.info(`Couldn't load, got ${out}`)
             }
           } catch (err: any) {
             if (shouldPrintDebug) {
@@ -2129,6 +2140,16 @@ export function createExtractor(
             }, [])
             .flat()
 
+          const ternaryBranchProps = new Map<string, Ternary>()
+          const allTernaries = attrs.flatMap((attr) =>
+            attr.type === 'ternary' ? attr.value : []
+          )
+          if (allTernaries.length > 1) {
+            for (const ternary of normalizeTernaries(allTernaries)) {
+              ternaryBranchProps.set(getTernaryKey(ternary.test), ternary)
+            }
+          }
+
           // wrap theme around children on flatten
           // account for shouldFlatten could change w the above block "if (disableExtractVariables)"
           if (themeVal) {
@@ -2397,7 +2418,8 @@ export function createExtractor(
           const getProps = (
             props: object | null,
             includeProps = false,
-            debugName = ''
+            debugName = '',
+            branchProps?: object | null
           ) => {
             if (!props) {
               if (shouldPrintDebug) logger.info([' getProps() no props'].join(' '))
@@ -2415,6 +2437,10 @@ export function createExtractor(
             const before = process.env.IS_STATIC
             process.env.IS_STATIC = 'is_static'
             try {
+              const fallbackProps = branchProps
+                ? { ...completeProps, ...branchProps }
+                : completeProps
+
               // $group-* / $theme-* keys carry block-form style objects that
               // getSplitStyles drops in static mode (no parent group context,
               // no theme value to read). Pluck them out so the atomic-CSS
@@ -2453,7 +2479,7 @@ export function createExtractor(
                 {
                   ...styleProps,
                   noClass: true,
-                  fallbackProps: completeProps,
+                  fallbackProps,
                   ...(platform === 'native' && {
                     resolveValues: 'except-theme',
                   }),
@@ -2484,7 +2510,7 @@ export function createExtractor(
                     {
                       ...styleProps,
                       noClass: true,
-                      fallbackProps: completeProps,
+                      fallbackProps,
                     },
                     undefined,
                     undefined,
@@ -2524,7 +2550,11 @@ export function createExtractor(
                   platform === 'native' &&
                   key[0] === '$' &&
                   (key.startsWith('$theme-') ||
-                    (key.startsWith('$group-') && getGroupPseudo(key) !== 'hover'))
+                    (key.startsWith('$group-') && getGroupPseudo(key) !== 'hover') ||
+                    // same story for a breakpoint a variant brought with it:
+                    // native matches media at render time, so there is nothing
+                    // to write it to here
+                    mediaQueryConfig[key.slice(1)])
                 ) {
                   shouldFlatten = false
                 }
@@ -2632,6 +2662,13 @@ export function createExtractor(
 
           let getStyleError: any = null
 
+          // a variant can carry its own media blocks ($md/$lg inside a variant
+          // value). getSplitStyles leaves those nested rather than folding them
+          // into the flat style, so hand them to the same media path a $md/$lg
+          // prop takes. they go on the end because a variant is a prop, and so
+          // outranks the media the styled() frame declared in its defaults.
+          const mediaFromVariants: ExtractedAttr[] = []
+
           // fix up ternaries, combine final style values
           for (const attr of attrs) {
             try {
@@ -2641,8 +2678,21 @@ export function createExtractor(
 
               switch (attr.type) {
                 case 'ternary': {
-                  const a = getProps(attr.value.alternate, false, 'ternary.alternate')
-                  const c = getProps(attr.value.consequent, false, 'ternary.consequent')
+                  const branchProps = ternaryBranchProps.get(
+                    getTernaryKey(attr.value.test)
+                  )
+                  const a = getProps(
+                    attr.value.alternate,
+                    false,
+                    'ternary.alternate',
+                    branchProps?.alternate
+                  )
+                  const c = getProps(
+                    attr.value.consequent,
+                    false,
+                    'ternary.consequent',
+                    branchProps?.consequent
+                  )
                   if (a) attr.value.alternate = a
                   if (c) attr.value.consequent = c
                   if (shouldPrintDebug)
@@ -2653,6 +2703,22 @@ export function createExtractor(
                   // expand variants and such
                   const styles = getProps(attr.value, false, 'style')
                   if (styles) {
+                    for (const key in styles) {
+                      if (key[0] !== '$') continue
+                      const mediaKey = key.slice(1)
+                      if (!mediaQueryConfig[mediaKey]) continue
+                      mediaFromVariants.push({
+                        type: 'ternary',
+                        value: {
+                          inlineMediaQuery: mediaKey,
+                          test: t.stringLiteral(mediaKey),
+                          consequent: styles[key],
+                          alternate: null,
+                          remove() {},
+                        },
+                      })
+                      delete styles[key]
+                    }
                     // @ts-ignore
                     attr.value = styles
                   }
@@ -2706,6 +2772,10 @@ export function createExtractor(
               // any error de-opt
               getStyleError = err
             }
+          }
+
+          if (mediaFromVariants.length) {
+            attrs.push(...mediaFromVariants)
           }
 
           if (shouldPrintDebug) {

@@ -1038,6 +1038,9 @@ function createMotionView(defaultTag: string) {
     const { forwardedRef, animation, render = defaultTag, style, ...propsRest } = propsIn
     const [scope, animate] = useAnimateSSRSafe()
     const hostRef = useRef<HTMLElement>(null)
+    const seededNode = useRef<HTMLElement>(null)
+    const seededInCurrentFrame = useRef(false)
+    const queuedAnimationFrames = useRef(new WeakMap<MotionValue, number>())
     const composedRefs = useComposedRefs(forwardedRef, ref, hostRef, scope)
 
     const stateRef = useRef<any>(null)
@@ -1098,65 +1101,106 @@ function createMotionView(defaultTag: string) {
     const Element = render || 'div'
     const transformedProps = hooks.usePropsTransform?.(render, props, stateRef, false)
 
-    useEffect(() => {
+    // consumers set animated numbers from layout effects, so subscribe before
+    // passive effects to avoid missing a value set in the mounting commit.
+    useIsomorphicLayoutEffect(() => {
       if (!animatedStyle) return
+
+      const node = hostRef.current
+      if (node instanceof HTMLElement && seededNode.current !== node) {
+        const currentStyle = animatedStyle.motionValues
+          ? animatedStyle.getStyle(
+              ...animatedStyle.motionValues.map((value) => value.get())
+            )
+          : animatedStyle.motionValue
+            ? animatedStyle.getStyle(animatedStyle.motionValue.get())
+            : null
+        const webStyle = currentStyle && getProps({ style: currentStyle }).style
+        if (webStyle) {
+          Object.assign(node.style, webStyle)
+          seededNode.current = node
+          seededInCurrentFrame.current = true
+          requestAnimationFrame(() => {
+            if (seededNode.current === node) {
+              seededInCurrentFrame.current = false
+            }
+          })
+        }
+      }
+
+      const toTransition = (
+        animationConfig: AnimatedNumberStrategy | undefined
+      ): AnimationOptions =>
+        animationConfig?.type === 'timing'
+          ? { type: 'tween', duration: (animationConfig?.duration || 0) / 1000 }
+          : animationConfig?.type === 'direct'
+            ? { type: 'tween', duration: 0 }
+            : { type: 'spring', ...(animationConfig as any) }
+
+      const animateNodeTo = (
+        nextStyle: Record<string, unknown>,
+        transition: AnimationOptions,
+        mv: MotionValue
+      ) => {
+        if (!(node instanceof HTMLElement) || hostRef.current !== node) return
+        const webStyle = getProps({ style: nextStyle }).style
+        if (!webStyle) return
+        settlePendingMotionOnFinish(mv, animate(node, webStyle as any, transition))
+      }
+      const animateChangedValue = (
+        nextStyle: Record<string, unknown>,
+        transition: AnimationOptions,
+        mv: MotionValue
+      ) => {
+        if (seededInCurrentFrame.current && seededNode.current === node) {
+          const queuedFrame = queuedAnimationFrames.current.get(mv)
+          if (queuedFrame !== undefined) {
+            cancelAnimationFrame(queuedFrame)
+          }
+          const frame = requestAnimationFrame(() => {
+            if (queuedAnimationFrames.current.get(mv) !== frame) return
+            queuedAnimationFrames.current.delete(mv)
+            if (hostRef.current === node) {
+              animateNodeTo(nextStyle, transition, mv)
+            } else {
+              const onFinish = PendingMotionOnFinish.get(mv)
+              PendingMotionOnFinish.delete(mv)
+              onFinish?.()
+            }
+          })
+          queuedAnimationFrames.current.set(mv, frame)
+          return
+        }
+        animateNodeTo(nextStyle, transition, mv)
+      }
 
       // multi-value path: subscribe to all motion values
       if (animatedStyle.motionValues) {
         const mvs = animatedStyle.motionValues
+        const styleForAll = () => animatedStyle.getStyle(...mvs.map((v) => v.get()))
         const unsubs = mvs.map((mv) =>
-          mv.on('change', () => {
-            const currentValues = mvs.map((v) => v.get())
-            const nextStyle = animatedStyle.getStyle(...currentValues)
-            const animationConfig = MotionValueStrategy.get(mv)
-            const node = hostRef.current
-
-            const webStyle = getProps({ style: nextStyle }).style
-
-            if (webStyle && node instanceof HTMLElement) {
-              const motionAnimationConfig =
-                animationConfig?.type === 'timing'
-                  ? { type: 'tween', duration: (animationConfig?.duration || 0) / 1000 }
-                  : animationConfig?.type === 'direct'
-                    ? { type: 'tween', duration: 0 }
-                    : { type: 'spring', ...(animationConfig as any) }
-
-              const controls = animate(node, webStyle as any, motionAnimationConfig)
-              settlePendingMotionOnFinish(mv, controls)
-            }
-          })
+          mv.on('change', () =>
+            animateChangedValue(
+              styleForAll(),
+              toTransition(MotionValueStrategy.get(mv)),
+              mv
+            )
+          )
         )
         return () => unsubs.forEach((fn) => fn())
       }
 
       // single-value path
-      if (!animatedStyle.motionValue) return
+      const motionValue = animatedStyle.motionValue
+      if (!motionValue) return
 
-      return animatedStyle.motionValue.on('change', (value) => {
-        const nextStyle = animatedStyle.getStyle(value)
-        const animationConfig = MotionValueStrategy.get(animatedStyle.motionValue!)
-        const node = hostRef.current
-
-        const webStyle = getProps({ style: nextStyle }).style
-
-        if (webStyle && node instanceof HTMLElement) {
-          const motionAnimationConfig =
-            animationConfig?.type === 'timing'
-              ? {
-                  type: 'tween',
-                  duration: (animationConfig?.duration || 0) / 1000,
-                }
-              : animationConfig?.type === 'direct'
-                ? { type: 'tween', duration: 0 }
-                : {
-                    type: 'spring',
-                    ...(animationConfig as any),
-                  }
-
-          const controls = animate(node, webStyle as any, motionAnimationConfig)
-          settlePendingMotionOnFinish(animatedStyle.motionValue!, controls)
-        }
-      })
+      return motionValue.on('change', (value) =>
+        animateChangedValue(
+          animatedStyle.getStyle(value),
+          toTransition(MotionValueStrategy.get(motionValue)),
+          motionValue
+        )
+      )
     }, [animatedStyle])
 
     return <Element {...transformedProps} ref={composedRefs} />

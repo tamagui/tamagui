@@ -6,6 +6,7 @@ import pMap from 'p-map'
 import prompts from 'prompts'
 
 import { ensureNpmAuthentication } from './release-npm-auth'
+import { createNpmRegistryClient } from './release-npm-registry'
 import {
   getPublishArtifactPaths,
   getReusablePublishWorkspace,
@@ -518,6 +519,15 @@ async function run() {
     const lastTag = await getLastReleaseRef()
     const skippedPackages: typeof packageJsons = []
     let packagesToPublish = packageJsons
+    let npmRegistryClient: ReturnType<typeof createNpmRegistryClient> | undefined
+
+    const getNpmRegistryClient = async () => {
+      if (!npmRegistryClient) {
+        const { stdout } = await exec(`npm config get registry`)
+        npmRegistryClient = createNpmRegistryClient(stdout.trim())
+      }
+      return npmRegistryClient
+    }
 
     if (lastTag && !forcePublishAll) {
       const lastTagVersion = lastTag.replace(/^v/, '')
@@ -567,12 +577,12 @@ async function run() {
       console.info(
         `Resolving last published versions for skipped packages (tag: ${distTag})...`
       )
+      const registry = await getNpmRegistryClient()
       await pMap(
         skippedPackages,
         async ({ name }) => {
           try {
-            const { stdout } = await exec(`npm view ${name} dist-tags.${distTag}`)
-            const lastVersion = stdout.trim()
+            const lastVersion = await registry.getDistTag(name, distTag)
             if (lastVersion) {
               skippedVersions.set(name, lastVersion)
               console.info(`  ${name}: ${lastVersion}`)
@@ -638,25 +648,22 @@ async function run() {
       // publishTag was resolved + validated up front (single source of truth)
       const publishOptions = `--tag ${publishTag}`
 
+      const registry = await getNpmRegistryClient()
       const isPublished = async ({ name }: { name: string }) => {
         try {
-          const { stdout } = await exec(`npm view ${name}@${version} version --json`)
-          const found = JSON.parse(stdout.trim())
-          return found === version || (Array.isArray(found) && found.includes(version))
+          return await registry.hasVersion(name, version)
         } catch (error) {
-          const message = String(error)
-          if (/E404|404 Not Found|is not in this registry/i.test(message)) {
-            return false
-          }
-          throw new Error(`Could not verify ${name}@${version} on npm:\n${message}`)
+          throw new Error(`Could not verify ${name}@${version} on npm:\n${error}`)
         }
       }
 
-      console.info(`Checking ${packagesToPublish.length} package versions on npm...`)
+      console.info(
+        `Checking ${packagesToPublish.length} package versions through the npm registry...`
+      )
       const publishedChecks = await pMap(
         packagesToPublish,
         async (pkg) => ({ pkg, published: await isPublished(pkg) }),
-        { concurrency: 8 }
+        { concurrency: 32 }
       )
       const pendingPackages = publishedChecks
         .filter(({ pkg, published }) => {
@@ -812,8 +819,7 @@ async function run() {
           skippedPackages,
           async ({ name }) => {
             try {
-              const { stdout } = await exec(`npm view ${name} dist-tags.latest`)
-              const latestVersion = stdout.trim()
+              const latestVersion = await registry.getDistTag(name, 'latest')
               if (latestVersion) {
                 await spawnify(
                   `npm dist-tag add ${name}@${latestVersion} ${publishTag}`,

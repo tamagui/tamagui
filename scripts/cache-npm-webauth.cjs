@@ -1,23 +1,12 @@
 const Module = require('node:module')
 
+const { publishInBatches } = require('./release-publish-batches.cjs')
+
 const load = Module._load
 let approval
 
 const resetApproval = () => {
   approval = undefined
-}
-
-const isAuthFailure = (error) => {
-  if (error?.code === 'EOTP') {
-    return true
-  }
-
-  return (
-    error?.code === 'E401' &&
-    /one-time pass|one[- ]time password|two-factor|2fa|otp/i.test(
-      `${error.message || ''}\n${error.body || ''}`
-    )
-  )
 }
 
 Module._load = function (request, parent, isMain) {
@@ -27,33 +16,11 @@ Module._load = function (request, parent, isMain) {
     loaded.prototype.execWorkspaces = async function () {
       await this.setWorkspaces()
       const workspaces = [...this.workspaces.values()]
-      const failures = []
-
-      for (let index = 0; index < workspaces.length; index += 6) {
-        let pending = workspaces.slice(index, index + 6)
-
-        for (let attempt = 0; pending.length > 0 && attempt < 2; attempt++) {
-          const results = await Promise.allSettled(
-            pending.map((workspace) => this.exec([workspace]))
-          )
-          const rejected = results.flatMap((result, resultIndex) =>
-            result.status === 'rejected' ? [pending[resultIndex]] : []
-          )
-
-          if (
-            rejected.length > 0 &&
-            results.some((result) => {
-              return result.status === 'rejected' && isAuthFailure(result.reason)
-            })
-          ) {
-            resetApproval()
-          }
-
-          pending = rejected
-        }
-
-        failures.push(...pending)
-      }
+      const failures = await publishInBatches({
+        workspaces,
+        publish: (workspace) => this.exec([workspace]),
+        onAuthFailure: resetApproval,
+      })
 
       if (failures.length > 0) {
         throw new AggregateError(

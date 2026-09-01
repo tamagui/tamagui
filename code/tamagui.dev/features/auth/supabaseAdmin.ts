@@ -452,12 +452,6 @@ export const createTeamInvoice = async (sub: Stripe.Invoice) => {
   if (teamSubscriptionError) throw teamSubscriptionError
 }
 
-export async function deleteSubscriptionRecord(sub: Stripe.Subscription) {
-  const { error } = await supabaseAdmin.from('subscriptions').delete().eq('id', sub.id)
-  if (error) throw error
-  console.error(`Deleted subscription: ${sub.id}`)
-}
-
 export async function addRenewalSubscription(
   sessionFromEvent: Stripe.Checkout.Session,
   options?: { toltReferral?: string }

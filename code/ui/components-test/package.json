@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/components-test",
-  "version": "2.6.2",
+  "version": "2.7.7",
   "private": true,
   "license": "MIT",
   "type": "module",
@@ -16,7 +16,7 @@
     "@testing-library/react": "^16.1.0",
     "csstype": "^3.0.10",
     "jsdom": "^28.1.0",
-    "react": ">=19",
+    "react": "19.2.3",
     "typescript": "~5.9.2",
     "vitest": "4.0.4",
     "vitest-axe": "^0.1.0"

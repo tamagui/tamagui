@@ -2,7 +2,7 @@
  * createNativeMenu - native menu implementation for React Native
  *
  * Web: returns empty stub components (withNativeMenu uses the web components instead)
- * Native: lazily resolves Zeego at render time so importing the package doesn't warn/error
+ * Native: lazily resolves the registered adapter at render time.
  */
 import type { FC } from 'react';
 import React from 'react';

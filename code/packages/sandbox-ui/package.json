@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/sandbox-ui",
-  "version": "2.6.2",
+  "version": "2.7.7",
   "private": true,
   "files": [
     "types",
@@ -23,14 +23,14 @@
     "@tamagui/core": "workspace:*",
     "@tamagui/lucide-icons-2": "workspace:*",
     "@tamagui/toast": "workspace:*",
-    "expo-constants": "~55.0.7",
-    "expo-image": "~55.0.6",
+    "expo-constants": "~57.0.9",
+    "expo-image": "~57.0.2",
     "solito": "^4.3.0",
     "tamagui": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "react": ">=19"
+    "react": "19.2.3"
   },
   "peerDependencies": {
     "react": ">=19"

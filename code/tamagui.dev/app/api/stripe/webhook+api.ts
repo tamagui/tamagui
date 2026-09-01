@@ -10,7 +10,6 @@ import {
   createTeamSubscription,
   deletePriceRecord,
   deleteProductRecord,
-  deleteSubscriptionRecord,
   manageSubscriptionStatusChange,
   upsertPriceRecord,
   upsertProductRecord,
@@ -186,8 +185,14 @@ export default apiRoute(async (req) => {
         break
       }
       case 'customer.subscription.deleted': {
-        await unclaimSubscription(event.data.object as Stripe.Subscription)
-        await deleteSubscriptionRecord(event.data.object as Stripe.Subscription)
+        const deletedSub = event.data.object as Stripe.Subscription
+        await manageSubscriptionStatusChange(
+          deletedSub.id,
+          typeof deletedSub.customer === 'string'
+            ? deletedSub.customer
+            : deletedSub.customer.id
+        )
+        await unclaimSubscription(deletedSub)
         break
       }
 

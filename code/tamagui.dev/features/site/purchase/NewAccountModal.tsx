@@ -1237,7 +1237,7 @@ const PlanTab = ({
               size="$3"
               chromeless
               onPress={() => {
-                window.open('https://tamagui.dev/pro', '_blank')
+                window.open('https://tamagui.dev/takeout', '_blank')
               }}
             >
               Learn More
@@ -1825,6 +1825,26 @@ const ManageTab = ({
                 borderColor="$color3"
                 rounded="$4"
               >
+                {!isTeamMember && (
+                  <Button
+                    theme="red"
+                    size="$3"
+                    alignSelf="flex-end"
+                    disabled={isLoading || !!subscription.cancel_at_period_end}
+                    onPress={() =>
+                      handleCancelSubscription(
+                        subscription.id,
+                        isPastDueSubscription(subscription)
+                      )
+                    }
+                  >
+                    <Button.Text>
+                      {subscription.cancel_at_period_end
+                        ? 'Cancellation Scheduled'
+                        : 'Cancel Subscription'}
+                    </Button.Text>
+                  </Button>
+                )}
                 <YStack
                   p="$4"
                   borderWidth={1}
@@ -1923,28 +1943,6 @@ const ManageTab = ({
                     </Paragraph>
                   </YStack>
                 )}
-                {/* Cancel button logic here */}
-                {!isTeamMember ? (
-                  <>
-                    <Separator />
-                    <Button
-                      theme="red"
-                      disabled={isLoading || !!subscription.cancel_at_period_end}
-                      onPress={() =>
-                        handleCancelSubscription(
-                          subscription.id,
-                          isPastDueSubscription(subscription)
-                        )
-                      }
-                    >
-                      <Button.Text>
-                        {subscription.cancel_at_period_end
-                          ? 'Cancellation Scheduled'
-                          : 'Cancel Subscription'}
-                      </Button.Text>
-                    </Button>
-                  </>
-                ) : null}
               </YStack>
             )
           })}
