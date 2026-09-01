@@ -348,3 +348,6 @@ if (outputPath) {
   writeFileSync(resolve(outputPath), `${JSON.stringify(report, null, 2)}\n`)
   console.log(`wrote ${outputPath}`)
 }
+
+// the v2 control package registers timers on import, so the loop never drains
+process.exit(0)
