@@ -181,16 +181,31 @@ Each component retains its authoring syntax. Both resolve through the same runti
 
 ## Utility Coverage
 
-<Notice theme="blue">
-  This section tracks current utility mapping in `@tamagui/tailwind` (source of truth: `code/core/tailwind/src/candidate.ts`). Marked for update by the coverage worker.
-</Notice>
+Claimed utilities are parsed by `@tamagui/style-grammar`. They compile to atomic CSS on web and resolve to React Native styles on iOS and Android.
 
-Supported categories include:
-- **Layout and Flexbox:** `flex`, `flex-row`, `flex-col`, `flex-wrap`, `flex-1`, `flex-initial`, `flex-none`, `items-center`, `items-start`, `items-end`, `items-stretch`, `justify-start`, `justify-center`, `justify-between`, `justify-around`, `self-auto`, `self-start`, `self-end`, `self-center`, `gap-*`, `gap-x-*`, `gap-y-*`.
-- **Sizing:** `w-*`, `h-*`, `min-w-*`, `max-w-*`, `min-h-*`, `max-h-*` (`full`, `screen`, `auto`, fractions like `1/2`, `w-100`, `h-100`).
-- **Spacing:** `p-*`, `px-*`, `py-*`, `pt-*`, `pr-*`, `pb-*`, `pl-*`, `m-*`, `mx-*`, `my-*`, `mt-*`, `mr-*`, `mb-*`, `ml-*`.
-- **Typography:** `font-*`, `text-[14px]`, `leading-*`, `tracking-*`, `text-left`, `text-center`, `text-right`.
-- **Borders and Radius:** `rounded-*`, `rounded-t-*`, `rounded-b-*`, `rounded-l-*`, `rounded-r-*`, `border`, `border-*`, `border-t-*`, `border-b-*`, `border-l-*`, `border-r-*`, `border-[color]`.
-- **Positioning:** `relative`, `absolute`, `fixed`, `inset-*`, `top-*`, `right-*`, `bottom-*`, `left-*`, `z-*`.
-- **Effects:** `opacity-*`, `shadow-*`, `box-shadow-*`.
-- **Transform:** `scale-*`, `rotate-*`, `translate-x-*`, `translate-y-*`.
+### Claimed cross-platform utilities
+
+- **Sizing:** `w-*`, `h-*`, `size-*` (width and height), `min-w-*`, `max-w-*`, `min-h-*`, `max-h-*`, fractions (`w-1/2`), keywords (`full`, `auto`, `screen`, `min`, `max`, `fit`).
+- **Spacing:** `p`, `pt`, `pr`, `pb`, `pl`, `px`, `py`, `m`, `mt`, `mr`, `mb`, `ml`, `mx`, `my`, `gap-*`, `gap-x-*`, `gap-y-*`.
+- **Flex and Alignment:** `flex`, `flex-1`, `flex-auto`, `flex-initial`, `flex-none`, `flex-row`, `flex-col`, `flex-wrap`, `flex-wrap-reverse`, `grow`, `shrink`, `items-*`, `justify-*`, `content-*`, `self-*`.
+- **Typography:** `text-sm` (font size tokens), `text-white` (palette and theme colors), `text-center`/`left`/`right`/`justify`/`start`/`end` (alignment), `text-[14px]` (arbitrary size), `text-[#fff]` (arbitrary color), `font-bold` and named weights, `font-sans`/`serif`/`mono` and configured font families, `leading-*` (line height), `tracking-*` (letter spacing), `italic`/`not-italic`, `uppercase`/`lowercase`/`capitalize`/`normal-case`, `underline`/`line-through`/`no-underline`.
+- **Color:** `bg-*`, `color-*`, `text-*` (colors), `border-*` (color), opacity suffix `/50` (such as `bg-blue-500/50`).
+- **Radius:** `rounded-*`, `rounded-t/r/b/l-*`, `rounded-tl/tr/bl/br-*` (including `xl`, `lg`, `full`).
+- **Borders:** `border` (1px default), `border-4`, `border-t/r/b/l-*`, `border-x`/`border-y` (width and color).
+- **Positioning:** `relative`, `absolute`, `fixed`, `sticky`, `inset-*`, `inset-x-*`, `inset-y-*`, `top-*`, `right-*`, `bottom-*`, `left-*`, `z-*`.
+- **Transforms & Effects:** `opacity-*`, `overflow-*`, `object-fit`, `pointer-events-*`, `rotate-*`, `scale-*`, `translate-x-*`, `translate-y-*`, `aspect-*`, `shadow-[…]` (arbitrary shadow), group and container markers (`group`, `container="card"`, `@container`).
+
+`text-*` utilities resolve in strict order: configured `fontSize` token first, then alignment keywords, then configured palette color.
+
+### Web-only passthrough
+
+Classes that do not have a React Native style equivalent pass through to `className` on web. On native, unrecognized classes are dropped:
+
+- **CSS Grid & Columns:** `grid-*`, `col-*`, `row-*`, `auto-cols-*`, `auto-rows-*`, `columns-*`, `break-*`
+- **Filters & Blurs:** `backdrop-*`, `blur-*`, `brightness-*`, `contrast-*`, `grayscale-*`, `drop-shadow-*`
+- **Gradients & Blends:** `from-*`, `via-*`, `to-*`, `bg-gradient-*`, `mix-blend-*`
+- **Child & Sibling Selectors:** `space-x-*`, `space-y-*`, `divide-x-*`, `divide-y-*`
+- **Rings & Outlines:** `ring-*`, `ring-offset-*`, `outline-*` (use `shadow-[…]` for cross-platform shadow)
+- **Web Chrome & Pseudo Elements:** `cursor-*`, `select-*`, `appearance-*`, `resize-*`, `placeholder-*`, `caret-*`
+- **Arbitrary Selectors:** `peer-*`, `has-*`, `data-*`, `aria-*`, `[&>*]`
+- **Keyframe Animations:** `animate-*` (use Tamagui's `animation` prop instead)
