@@ -124,19 +124,10 @@ rg "@tamagui/theme-builder|v5-builder|createV5Theme|componentThemes|grandChildre
 
 ### 4. Migrate Sheet anatomy
 
-The v3 package does not ship a Sheet codemod. Migrate each callsite using the
-rules below.
-
-When working inside a Tamagui source checkout, you can run its source-only
-codemod first. Pass expanded file paths because the script does not expand a
-quoted glob:
-
-\`\`\`bash
-rg --files src -g '*.ts' -g '*.tsx' -0 \\
-  | xargs -0 node ./scripts/codemods/sheet-frame-to-container.js
-\`\`\`
-
-Migration rules:
+The flat-values codemod from step 1 rewrites every provable \`Sheet.Frame\` to
+\`Sheet.Container\` with a \`Sheet.Background\` first child carrying the surface
+props, and reports spreads and \`styled(Sheet.Frame, …)\` targets for review.
+Check each rewritten callsite against these rules:
 
 - Replace \`Sheet.Frame\` with \`Sheet.Container\` plus \`Sheet.Background\`.
 - Keep layout props such as \`padding\`, \`gap\`, \`height\`, \`maxHeight\`, and flex props on \`Sheet.Container\`.

@@ -1,10 +1,12 @@
 import type { Flag, SiteReport } from './convert'
 import type { FunctionalVariantReport } from './functionalVariants'
+import type { SheetFrameReport } from './sheetAnatomy'
 
 export interface FileReport {
   file: string
   sites: SiteReport[]
   functionalVariants: FunctionalVariantReport[]
+  sheetFrames: SheetFrameReport[]
 }
 
 function countCodes(flags: Iterable<Flag>): Array<[string, number]> {
@@ -31,6 +33,9 @@ export interface ReportSummary {
   functionalVariantConverted: number
   functionalVariantFlagged: number
   functionalVariantFlags: Record<string, number>
+  sheetFrames: number
+  /** rewritten, but with a spread or a styled target a human has to place */
+  sheetFramesFlagged: number
 }
 
 export function renderReport(
@@ -42,6 +47,8 @@ export function renderReport(
 ): { text: string; summary: ReportSummary } {
   const sites = files.flatMap((file) => file.sites)
   const functionalVariants = files.flatMap((file) => file.functionalVariants)
+  const sheetFrames = files.flatMap((file) => file.sheetFrames)
+  const flaggedSheetFrames = sheetFrames.filter((site) => site.flags.length > 0)
   const convertedFunctionalVariants = functionalVariants.filter((site) => site.converted)
   const flaggedFunctionalVariants = functionalVariants.filter((site) => !site.converted)
   const clean = sites.filter(
@@ -72,22 +79,17 @@ export function renderReport(
       site.warnings.length === 0 &&
       site.assessmentVerdict === 'clean'
   ).length
-  const readyFiles = files.filter(
-    (file) =>
-      (file.sites.length > 0 || file.functionalVariants.length > 0) &&
-      file.sites.every((site) => site.legacyLeft === 0) &&
-      file.functionalVariants.every((site) => site.converted)
-  )
-  const filesWithSites = files.filter(
-    (file) => file.sites.length > 0 || file.functionalVariants.length > 0
-  ).length
-  const blockedFiles = files
-    .filter(
-      (file) =>
-        file.sites.some((site) => site.legacyLeft > 0) ||
-        file.functionalVariants.some((site) => !site.converted)
-    )
-    .map((file) => file.file)
+  const touched = (file: FileReport) =>
+    file.sites.length > 0 ||
+    file.functionalVariants.length > 0 ||
+    file.sheetFrames.length > 0
+  const blocked = (file: FileReport) =>
+    file.sites.some((site) => site.legacyLeft > 0) ||
+    file.functionalVariants.some((site) => !site.converted) ||
+    file.sheetFrames.some((site) => site.flags.length > 0)
+  const readyFiles = files.filter((file) => touched(file) && !blocked(file))
+  const filesWithSites = files.filter(touched).length
+  const blockedFiles = files.filter(blocked).map((file) => file.file)
   const functionalFlagCounts = countCodes(
     flaggedFunctionalVariants.flatMap((site) => [
       ...new Map(site.flags.map((flag) => [flag.code, flag])).values(),
@@ -119,6 +121,8 @@ export function renderReport(
     `- ${functionalVariants.length} functional variant sites found`,
     `- ${convertedFunctionalVariants.length} functional variants have automatic styled.dynamic rewrites`,
     `- ${flaggedFunctionalVariants.length} functional variants need manual migration`,
+    `- ${sheetFrames.length} Sheet.Frame sites rewritten to Sheet.Container plus Sheet.Background`,
+    `- ${flaggedSheetFrames.length} Sheet.Frame sites need a human to place a spread or a styled target`,
     '',
     '### Functional variant flag reasons',
     '',
@@ -128,7 +132,7 @@ export function renderReport(
     '',
     '### Remaining manual migration',
     '',
-    `${readyFiles.length} of ${filesWithSites} files have no legacy condition object or flagged functional variant left after`,
+    `${readyFiles.length} of ${filesWithSites} files have no legacy condition object, flagged functional variant, or flagged Sheet.Frame left after`,
     'conversion. V3 has no compatibility setting; finish the remaining files directly:',
     blockedFiles.length
       ? blockedFiles.map((file) => `\`${file}\``).join(', ')
@@ -188,8 +192,30 @@ export function renderReport(
   }
 
   for (const file of files) {
-    if (!file.sites.length && !file.functionalVariants.length) continue
+    if (!touched(file)) continue
     lines.push('', `## \`${file.file}\``, '')
+    for (const site of file.sheetFrames) {
+      lines.push(
+        `### ${site.label} at line ${site.line} (${site.flags.length ? 'review' : 'automatic'})`,
+        '',
+        'Before:',
+        '',
+        '```tsx',
+        site.before,
+        '```',
+        '',
+        'Automatic rewrite:',
+        '',
+        '```tsx',
+        site.after,
+        '```'
+      )
+      if (site.flags.length) {
+        lines.push('', 'Flags:', '')
+        for (const flag of site.flags) lines.push(`- **${flag.code}**: ${flag.detail}`)
+      }
+      lines.push('')
+    }
     for (const site of file.functionalVariants) {
       lines.push(
         `### ${site.label} functional variant at line ${site.line} (${site.converted ? 'automatic' : 'manual'})`,
@@ -295,6 +321,8 @@ export function renderReport(
       functionalVariantConverted: convertedFunctionalVariants.length,
       functionalVariantFlagged: flaggedFunctionalVariants.length,
       functionalVariantFlags: Object.fromEntries(functionalFlagCounts),
+      sheetFrames: sheetFrames.length,
+      sheetFramesFlagged: flaggedSheetFrames.length,
     },
   }
 }

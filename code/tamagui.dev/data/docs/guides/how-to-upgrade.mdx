@@ -87,7 +87,9 @@ run means the report was generated, not that the application is ready for V3.
 
 ## 1. Update packages
 
-Bump all `tamagui` and `@tamagui/*` packages together.
+Bump all `tamagui` and `@tamagui/*` packages together. The `tamagui` command
+is `@tamagui/cli`, so add it as a dev dependency first if the app does not have
+it yet.
 
 ```bash
 npx tamagui check
@@ -441,21 +443,13 @@ In monorepos, keep resolutions/overrides aligned:
 ## 2. Migrate Sheet anatomy
 
 `Sheet.Frame` has been replaced by `Sheet.Container` and `Sheet.Background`.
-The v3 package does not ship a Sheet codemod, so migrate each callsite using the
-rules below.
-
-If you are working inside a Tamagui source checkout, you can run its source-only
-codemod first. Pass expanded file paths because the script does not expand a
-quoted glob:
-
-```bash
-rg --files src -g '*.ts' -g '*.tsx' -0 \
-  | xargs -0 node ./scripts/codemods/sheet-frame-to-container.js
-```
-
-Review every changed Sheet. The codemod handles the common JSX rewrite, but you
-still need to decide which props are visual surface props and which are layout
-props.
+The flat-values codemod above rewrites every `Sheet.Frame` it can prove is
+Tamagui's: the element becomes `Sheet.Container`, and a `Sheet.Background`
+carrying the surface props (`bg`, `border*`, `shadow*`, `elevation`,
+`disableHideBottomOverflow`) is inserted as its first child. A spread on the
+Frame and a `styled(Sheet.Frame, …)` target are rewritten too but reported
+for review, because the codemod cannot see which of those props are surface
+props. Review every changed Sheet against the rules below.
 
 ```tsx
 // before

@@ -1429,16 +1429,19 @@ function rewriteJsxSite(
   // impossible to review.
   //
   // The authored indentation is dropped from the prefix and the closing suffix
-  // so every emitted line is indented by replaceWithText alone. Keeping it would
-  // add to what ts-morph supplies and stagger the attributes, and taking control
-  // of the whitespace directly is not an option: SourceFile.replaceText forgets
-  // every node in the file and the rest of the pass then reads freed nodes.
+  // so every emitted line is indented by replaceWithText alone: ts-morph puts
+  // each new line at the element's own indentation, so an attribute line
+  // carries one relative step and the closing `>` none. Keeping the authored
+  // whitespace would add to what ts-morph supplies and stagger the attributes,
+  // and taking control of the whitespace directly is not an option:
+  // SourceFile.replaceText forgets every node in the file and the rest of the
+  // pass then reads freed nodes.
   const authoredMultiline =
     prefix.includes('\n') ||
     source.slice(first.getStart() - start, last.getEnd() - start).includes('\n')
   opening.replaceWithText(
     authoredMultiline
-      ? `${prefix.replace(/[ \t]+$/, '')}${rendered.join('\n')}${suffix.replace(/\n[ \t]+/, '\n')}`
+      ? `${prefix.replace(/[ \t]+$/, '')}${rendered.map((text) => `  ${text}`).join('\n')}${suffix.replace(/\n[ \t]+/, '\n')}`
       : `${prefix}${rendered.join(' ')}${suffix}`
   )
 }

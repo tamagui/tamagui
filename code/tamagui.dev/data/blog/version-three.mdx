@@ -425,17 +425,9 @@ behavior that made theme output harder to predict.
 </Sheet>
 ```
 
-Run the codemod to do the mechanical part:
-
-```bash
-node ./node_modules/tamagui/scripts/codemods/sheet-frame-to-container.js "src/**/*.{ts,tsx}"
-```
-
-or from a local checkout:
-
-```bash
-node ./scripts/codemods/sheet-frame-to-container.js "src/**/*.{ts,tsx}"
-```
+The flat-values codemod does the mechanical part: every `Sheet.Frame` becomes
+a `Sheet.Container` with a `Sheet.Background` first child carrying the surface
+props, and spreads and `styled(Sheet.Frame, …)` targets are reported for review.
 
 ## Adapt handoff is unified
 
@@ -817,7 +809,6 @@ npx tamagui check
 npx @tamagui/codemod-flat-values --write \
   --report flat-values-report.md \
   ./src
-node ./node_modules/tamagui/scripts/codemods/sheet-frame-to-container.js "src/**/*.{ts,tsx}"
 ```
 
 Then search for removed APIs:

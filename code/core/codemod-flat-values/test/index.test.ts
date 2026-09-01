@@ -12,6 +12,7 @@ import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { sanitize, type SiteReport } from '../src/convert'
 import type { FunctionalVariantReport } from '../src/functionalVariants'
+import type { SheetFrameReport } from '../src/sheetAnatomy'
 import {
   codemodMediaNames,
   createModifierRegistry,
@@ -37,6 +38,7 @@ interface Result {
     file: string
     sites: SiteReport[]
     functionalVariants: FunctionalVariantReport[]
+    sheetFrames: SheetFrameReport[]
   }>
   summary: {
     sites: number
@@ -52,6 +54,8 @@ interface Result {
     functionalVariantConverted: number
     functionalVariantFlagged: number
     functionalVariantFlags: Record<string, number>
+    sheetFrames: number
+    sheetFramesFlagged: number
   }
 }
 
@@ -1938,4 +1942,156 @@ describe('the kitchen-sink corpus', () => {
 
     expect(offenders).toEqual([])
   }, 180_000)
+})
+
+describe('multi-line elements', () => {
+  test('a rewritten element keeps one attribute per line at the authored indentation', () => {
+    const written = runWrite(`import { View } from 'tamagui'
+
+export function Example() {
+  return (
+    <View>
+      <View
+        bg="$red"
+        hoverStyle={{ bg: '$blue' }}
+        onPress={() => {}}
+      >
+        <View
+          p="$4"
+          $sm={{ p: '$6' }}
+        />
+      </View>
+    </View>
+  )
+}
+`)
+    expect(written).toBe(`import { View } from 'tamagui'
+
+export function Example() {
+  return (
+    <View>
+      <View
+        bg="red hover:blue"
+        onPress={() => {}}
+      >
+        <View
+          p="4 sm:6"
+        />
+      </View>
+    </View>
+  )
+}
+`)
+  })
+})
+
+describe('Sheet anatomy', () => {
+  test('a Frame becomes a Container with a Background carrying the surface props', () => {
+    const written = runWrite(`import { Sheet } from 'tamagui'
+
+export function Example({ children }) {
+  return (
+    <Sheet>
+      <Sheet.Overlay />
+      <Sheet.Frame padding="$4" bg="$background" borderRadius="$6" gap="$2">
+        <Sheet.ScrollView>{children}</Sheet.ScrollView>
+      </Sheet.Frame>
+    </Sheet>
+  )
+}
+`)
+    expect(written).toBe(`import { Sheet } from 'tamagui'
+
+export function Example({ children }) {
+  return (
+    <Sheet>
+      <Sheet.Overlay />
+      <Sheet.Container padding="4" gap="2">
+        <Sheet.Background bg="background" borderRadius="6" />
+        <Sheet.ScrollView>{children}</Sheet.ScrollView>
+      </Sheet.Container>
+    </Sheet>
+  )
+}
+`)
+  })
+
+  test('a multi-line Frame keeps one attribute per line and an existing Background takes the moved props', () => {
+    const written = runWrite(`import { Sheet } from 'tamagui'
+
+export function Example({ children }) {
+  return (
+    <Sheet>
+      <Sheet.Frame
+        padding={16}
+        borderColor="$borderColor"
+        maxHeight={400}
+      >
+        <Sheet.Background bg="$color2" />
+        {children}
+      </Sheet.Frame>
+      <Sheet.Frame bg="$background" {...rest} />
+    </Sheet>
+  )
+}
+`)
+    expect(written).toBe(`import { Sheet } from 'tamagui'
+
+export function Example({ children }) {
+  return (
+    <Sheet>
+      <Sheet.Container
+        padding={16}
+        maxHeight={400}
+      >
+        <Sheet.Background bg="color2" borderColor="border-color" />
+        {children}
+      </Sheet.Container>
+      <Sheet.Container {...rest}><Sheet.Background bg="background" /></Sheet.Container>
+    </Sheet>
+  )
+}
+`)
+  })
+
+  test('adapted sheets, styled targets, and foreign Sheets are told apart', () => {
+    const source = `import { Dialog, styled } from 'tamagui'
+import { Sheet } from './local-sheet'
+
+const Frame = styled(Dialog.Sheet.Frame, { padding: 16 })
+
+export function Example() {
+  return (
+    <>
+      <Dialog.Sheet.Frame padding="$4"><Dialog.Sheet.ScrollView /></Dialog.Sheet.Frame>
+      <Sheet.Frame bg="$background" />
+    </>
+  )
+}
+`
+    const result = run(source)
+    const [styledTarget, element] = result.files[0]!.sheetFrames
+    expect(result.summary.sheetFrames).toBe(2)
+    expect(result.summary.sheetFramesFlagged).toBe(1)
+    expect(styledTarget!.label).toBe('styled(Dialog.Sheet.Frame, …)')
+    expect(styledTarget!.flags.map((flag) => flag.code)).toEqual(['sheet-frame-styled'])
+    expect(element!.label).toBe('<Dialog.Sheet.Frame>')
+    expect(element!.after).toBe(
+      '<Dialog.Sheet.Container padding="$4"><Dialog.Sheet.Background /><Dialog.Sheet.ScrollView /></Dialog.Sheet.Container>'
+    )
+    expect(runWrite(source)).toBe(`import { Dialog, styled } from 'tamagui'
+import { Sheet } from './local-sheet'
+
+const Frame = styled(Dialog.Sheet.Container, { padding: 16 })
+
+export function Example() {
+  return (
+    <>
+      <Dialog.Sheet.Container padding="4"><Dialog.Sheet.Background /><Dialog.Sheet.ScrollView /></Dialog.Sheet.Container>
+      <Sheet.Frame bg="$background" />
+    </>
+  )
+}
+`)
+  })
 })

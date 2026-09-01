@@ -4,6 +4,7 @@ import { dirname, relative, resolve } from 'node:path'
 import { resolveTamaguiHost } from '@tamagui/language-service/host'
 import { stylePropsTextOnly } from '@tamagui/helpers'
 import {
+  IndentationText,
   ModuleKind,
   ModuleResolutionKind,
   Node,
@@ -34,6 +35,7 @@ import {
 } from './grammar'
 import { createProvenance } from './provenance'
 import { renderReport, type FileReport } from './report'
+import { convertSheetFrames } from './sheetAnatomy'
 
 type Provenance = ReturnType<typeof createProvenance>
 
@@ -86,6 +88,11 @@ function collectFiles(inputs: readonly string[]): {
   const project = new Project({
     tsConfigFilePath,
     skipAddingFilesFromTsConfig: true,
+    // ts-morph re-indents every multi-line replacement from the indentation it
+    // computes for the node with this unit. The default four-space unit puts a
+    // JSX child two columns past where two-space source authored it, and every
+    // attribute line of a rewritten element staggered with it
+    manipulationSettings: { indentationText: IndentationText.TwoSpaces },
     compilerOptions: {
       allowJs: false,
       jsx: 4,
@@ -311,6 +318,9 @@ function inspectFile(
   provenance: Provenance,
   write: boolean
 ): FileReport {
+  // the anatomy rewrite runs first so the Background it adds, and the surface
+  // props it moves there, go through the flat-value conversion below
+  const sheetFrames = convertSheetFrames(sourceFile, provenance, write)
   const containers = planContainers(sourceFile, registry)
   const targets = conversionTargets(sourceFile.getFilePath())
   const sites: SiteReport[] = []
@@ -375,6 +385,7 @@ function inspectFile(
     file: relative(projectRoot, sourceFile.getFilePath()),
     sites,
     functionalVariants,
+    sheetFrames,
   }
 }
 
@@ -528,5 +539,5 @@ if (write) {
 console.log(`wrote ${reportPath}`)
 if (write) console.log(`rewrote ${written} source files`)
 console.log(
-  `${summary.sites} style sites: ${summary.clean - summary.waiting} clean, ${summary.needsRelocation} need relocation, ${summary.unknownHost} unknown host, ${summary.ineligible} ineligible, ${summary.waiting} waiting on runtime support, ${summary.flagged} syntax-flagged; ${summary.functionalVariantSites} functional variants: ${summary.functionalVariantConverted} automatic, ${summary.functionalVariantFlagged} flagged; ${summary.ignoredFiles} source files ignored`
+  `${summary.sites} style sites: ${summary.clean - summary.waiting} clean, ${summary.needsRelocation} need relocation, ${summary.unknownHost} unknown host, ${summary.ineligible} ineligible, ${summary.waiting} waiting on runtime support, ${summary.flagged} syntax-flagged; ${summary.functionalVariantSites} functional variants: ${summary.functionalVariantConverted} automatic, ${summary.functionalVariantFlagged} flagged; ${summary.sheetFrames} Sheet.Frame sites: ${summary.sheetFramesFlagged} need review; ${summary.ignoredFiles} source files ignored`
 )

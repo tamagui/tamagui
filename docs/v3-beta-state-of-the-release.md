@@ -96,8 +96,7 @@ Condensed:
    / `tamagui build`), `@tamagui/sizable-context` (→ `@tamagui/size`),
    `@tamagui/static-sync`, `@tamagui/static-worker`.
 2. **Sheet:** `Sheet.Frame` splits into `Sheet.Container` (layout) +
-   `Sheet.Background` (visuals). There is a codemod:
-   `node ./node_modules/tamagui/scripts/codemods/sheet-frame-to-container.js`.
+   `Sheet.Background` (visuals). `@tamagui/codemod-flat-values` rewrites it.
    `Sheet.Overlay` must now be a direct child of `Sheet`.
 3. **Removed props/aliases** (14 of them): `focusable`→`tabIndex`,
    `fullscreen`→explicit `position`+`inset`, `themeInverse`→`theme="inverse"`,
