@@ -21,8 +21,10 @@ import {
   type JsxAttribute,
   type JsxOpeningElement,
   type JsxSelfClosingElement,
+  type NoSubstitutionTemplateLiteral,
   type ObjectLiteralExpression,
   type PropertyAssignment,
+  type StringLiteral,
 } from 'ts-morph'
 import type { ContainerPlan } from './containers'
 import {
@@ -45,6 +47,7 @@ import {
   sharedPayload,
   shorthands,
   styleProps,
+  tokenVariantProps,
   unitSuffix,
   type ConversionReason,
   type ConversionTargets,
@@ -179,6 +182,8 @@ export interface Site {
   members: Member[]
   comments: Map<number, readonly string[]>
   extras: Array<{ index: number; text: string }>
+  /** token variant values respelled in place; they count as converted output */
+  respelled: EmittedProgram[]
   warnings: Flag[]
   flags: Flag[]
   inventory: Flag[]
@@ -206,6 +211,7 @@ function createSite(
     members: [],
     comments: new Map(),
     extras: [],
+    respelled: [],
     warnings: [],
     flags: [],
     inventory: [],
@@ -263,6 +269,16 @@ function addAssessment(
   }
 }
 
+/** a member the conversion owns, so the rewrite prints it from the site's entries */
+function isConvertedName(name: string): boolean {
+  return (
+    name === 'group' ||
+    styleProps.has(name) ||
+    tokenVariantProps.has(name) ||
+    isLegacyConditionName(name)
+  )
+}
+
 function addFlag(list: Flag[], code: string, detail: string): void {
   if (!list.some((flag) => flag.code === code && flag.detail === detail)) {
     list.push({ code, detail })
@@ -276,21 +292,32 @@ function addNote(site: Site, note: string): void {
 const legacyPaletteStepPattern =
   /(?:^|[^\w-])\$?((?:gray|mauve|slate|sage|olive|sand|tomato|red|ruby|crimson|pink|plum|purple|violet|iris|indigo|blue|cyan|teal|jade|green|grass|bronze|gold|brown|orange|amber|yellow|lime|mint|sky)(?:1[0-2]|[1-9]))(?![\w-])/g
 
-function legacyPaletteStepWarning(prop: string, values: readonly string[]): Flag | null {
+const legacyTrueTokenPattern = /(?:^|[^\w-])\$true(?![\w-])/
+
+/** configuration risks visible in the authored literals of one value */
+function legacyTokenWarnings(prop: string, values: readonly string[]): Flag[] {
+  const warnings: Flag[] = []
+  if (values.some((value) => legacyTrueTokenPattern.test(value))) {
+    warnings.push({
+      code: 'legacy-true-token',
+      detail: `${prop} spelled the \`$true\` alias, written as \`4\` because the default config aliased it there; confirm the app's tokens agree`,
+    })
+  }
   const names = new Set<string>()
   for (const value of values) {
     legacyPaletteStepPattern.lastIndex = 0
     for (const match of value.matchAll(legacyPaletteStepPattern)) names.add(match[1])
   }
-  if (!names.size) return null
+  if (!names.size) return warnings
   const formatted = [...names]
     .sort()
     .map((name) => `\`${name}\``)
     .join(', ')
-  return {
+  warnings.push({
     code: 'legacy-palette-token',
     detail: `${prop} preserves ${formatted}, which @tamagui/config/v6 does not define; choose an absolute palette token or an adaptive colorN value`,
-  }
+  })
+  return warnings
 }
 
 // —— value classification ————————————————————————————————————————————————
@@ -304,8 +331,8 @@ interface Classification {
   dynamic: boolean
   /** a problem with the value itself, raised on sight */
   problem: Flag | null
-  /** a non-blocking configuration risk visible in the authored literals */
-  warning: Flag | null
+  /** non-blocking configuration risks visible in the authored literals */
+  warnings: Flag[]
   /** raised only when a clause forces the value into a program */
   blocked: Flag | null
   /** recorded for a migration that is not the flat-value migration */
@@ -317,7 +344,7 @@ const empty: Classification = {
   text: null,
   dynamic: false,
   problem: null,
-  warning: null,
+  warnings: [],
   blocked: null,
   inventory: null,
 }
@@ -402,7 +429,7 @@ function classifyDynamic(
       payload: interpolate(prop, tree.text, tree.kind, registry),
       text: rewrittenTokenText,
       dynamic: true,
-      warning: legacyPaletteStepWarning(prop, tree.strings),
+      warnings: legacyTokenWarnings(prop, tree.strings),
     }
   }
   if (tree) {
@@ -469,8 +496,9 @@ function pushBase(
   const index = site.index++
 
   if (literalString !== null) {
-    const warning = legacyPaletteStepWarning(prop, [literalString])
-    if (warning) addFlag(site.warnings, warning.code, warning.detail)
+    for (const warning of legacyTokenWarnings(prop, [literalString])) {
+      addFlag(site.warnings, warning.code, warning.detail)
+    }
     if (literalString.includes('$')) {
       site.legacy = true
       const allowed = assessProgram(site, prop, [])
@@ -588,8 +616,8 @@ function pushBase(
     site.legacy = true
     addFlag(site.flags, classified.problem.code, classified.problem.detail)
   }
-  if (classified.warning) {
-    addFlag(site.warnings, classified.warning.code, classified.warning.detail)
+  for (const warning of classified.warnings) {
+    addFlag(site.warnings, warning.code, warning.detail)
   }
   if (classified.inventory) {
     addFlag(site.inventory, classified.inventory.code, classified.inventory.detail)
@@ -824,12 +852,8 @@ function pushLegacy(
   for (let index = 0; index < evaluated.leaves.length; index++) {
     const leaf = evaluated.leaves[index]
     const classified = classifyDynamic(leaf.prop, leaf.expression, site.registry)
-    if (classified.warning) {
-      addFlag(
-        site.warnings,
-        classified.warning.code,
-        `${leaf.path}: ${classified.warning.detail}`
-      )
+    for (const warning of classified.warnings) {
+      addFlag(site.warnings, warning.code, `${leaf.path}: ${warning.detail}`)
     }
     if (classified.payload === null) {
       const flag = classified.problem ?? classified.blocked
@@ -1393,9 +1417,7 @@ function isConvertedJsxAttribute(attribute: Node): boolean {
   if (Node.isJsxSpreadAttribute(attribute)) return true
   if (!Node.isJsxAttribute(attribute)) return false
   const name = jsxAttributeName(attribute)
-  return (
-    !!name && (name === 'group' || styleProps.has(name) || isLegacyConditionName(name))
-  )
+  return !!name && isConvertedName(name)
 }
 
 function rewriteJsxSite(
@@ -1498,11 +1520,7 @@ export function convertJsxSite(
             if (name !== null) {
               // a member the conversion leaves authored has to print as the JSX
               // attribute it becomes here, not as the object member it was
-              if (
-                name === 'group' ||
-                styleProps.has(name) ||
-                isLegacyConditionName(name)
-              ) {
+              if (isConvertedName(name)) {
                 pushStyledProperty(
                   site,
                   name,
@@ -1556,6 +1574,10 @@ export function convertJsxSite(
       pushLegacy(site, name, text, jsxExpression(attribute), attribute)
       continue
     }
+    if (tokenVariantProps.has(name)) {
+      if (pushTokenVariant(site, name, attribute, text)) before.push(text)
+      continue
+    }
     if (!styleProps.has(name)) continue
     before.push(text)
 
@@ -1579,7 +1601,7 @@ export function convertJsxSite(
     line: sourceFile.getLineAndColumnAtPos(opening.getStart()).line,
     before: before.join(' '),
     after: entries.map((entry) => entry.text).join(' ') || '(no style props left)',
-    programs,
+    programs: [...programs, ...site.respelled],
     assessments: site.assessments,
     assessmentVerdict: assessmentVerdict(site.assessments),
     warnings: site.warnings,
@@ -1623,6 +1645,10 @@ function pushStyledProperty(
     pushLegacy(site, name, text, initializer, property)
     return
   }
+  if (tokenVariantProps.has(name)) {
+    pushTokenVariant(site, name, property, text)
+    return
+  }
   if (!styleProps.has(name)) return
 
   const literal =
@@ -1630,6 +1656,86 @@ function pushStyledProperty(
       ? initializer.getLiteralValue()
       : null
   pushBase(site, name, text, literal === null ? initializer : null, literal)
+}
+
+/**
+ * A variant prop whose value is a size token (`size="$4"`, `elevation="$2"`).
+ * No program is built for it, but v3 looks the value up as written and `$4`
+ * finds nothing, so every `$token` string literal in the value is respelled,
+ * a conditional on both arms. `$true` aliased the default size, which v3
+ * spells as the boolean. Returns whether the member is legacy at all:
+ * respelled, or flagged because it cannot be.
+ */
+function pushTokenVariant(
+  site: Site,
+  name: string,
+  node: JsxAttribute | PropertyAssignment,
+  text: string
+): boolean {
+  const index = site.index++
+  const initializer = node.getInitializer()
+  const value =
+    initializer !== undefined && Node.isJsxExpression(initializer)
+      ? initializer.getExpression()
+      : initializer
+  const literals =
+    value === undefined
+      ? []
+      : [value, ...value.getDescendants()].filter(
+          (candidate): candidate is StringLiteral | NoSubstitutionTemplateLiteral =>
+            (Node.isStringLiteral(candidate) ||
+              Node.isNoSubstitutionTemplateLiteral(candidate)) &&
+            candidate.getLiteralValue().startsWith('$')
+        )
+  if (value === undefined || literals.length === 0) {
+    site.members.push({ type: 'passthrough', index, text })
+    return false
+  }
+
+  const source = value.getText()
+  const start = value.getStart()
+  let rewritten = ''
+  let cursor = start
+  for (const literal of literals) {
+    let replacement = 'true'
+    if (literal.getLiteralValue() !== '$true') {
+      const flat = flatStringValue(literal.getLiteralValue(), site.registry)
+      if (flat.text === null) {
+        site.legacy = true
+        addFlag(
+          site.flags,
+          flat.error?.code ?? 'unsupported-legacy-value',
+          `${name}: ${flat.error?.message ?? `${literal.getText()} has no flat spelling`}`
+        )
+        site.members.push({ type: 'passthrough', index, text })
+        return true
+      }
+      const quote = literal.getText()[0]
+      replacement = `${quote}${flat.text}${quote}`
+    }
+    rewritten += source.slice(cursor - start, literal.getStart() - start)
+    rewritten += replacement
+    cursor = literal.getEnd()
+  }
+  rewritten += source.slice(cursor - start)
+
+  site.legacy = true
+  const output = Node.isJsxAttribute(node)
+    ? Node.isStringLiteral(initializer)
+      ? rewritten === 'true'
+        ? name
+        : `${name}=${rewritten}`
+      : `${name}={${rewritten}}`
+    : site.kind === 'jsx'
+      ? `${name}={${rewritten}}`
+      : textWithOuterComments(node, `${node.getNameNode().getText()}: ${rewritten}`)
+  site.members.push({ type: 'passthrough', index, text: output })
+  site.respelled.push({
+    name,
+    value: rewritten,
+    dynamic: literals.length !== 1 || literals[0] !== value,
+  })
+  return true
 }
 
 export function convertStyleObject(
@@ -1654,11 +1760,7 @@ export function convertStyleObject(
           if (Node.isPropertyAssignment(nested)) {
             const name = propertyName(nested.getNameNode())
             if (name !== null) {
-              if (
-                name === 'group' ||
-                styleProps.has(name) ||
-                isLegacyConditionName(name)
-              ) {
+              if (isConvertedName(name)) {
                 pushStyledProperty(site, name, nested)
               } else {
                 site.members.push({
@@ -1700,8 +1802,7 @@ export function convertStyleObject(
     }
     const name = propertyName(nameNode)
     if (name === null) continue
-    if (!styleProps.has(name) && !isLegacyConditionName(name) && name !== 'group')
-      continue
+    if (!isConvertedName(name)) continue
     before.push(compact(property.getText()))
     pushStyledProperty(site, name, property)
   }
@@ -1716,7 +1817,7 @@ export function convertStyleObject(
     line: sourceFile.getLineAndColumnAtPos(object.getStart()).line,
     before: before.join(', '),
     after: entries.map((entry) => entry.text).join(', ') || '(no style props left)',
-    programs,
+    programs: [...programs, ...site.respelled],
     assessments: site.assessments,
     assessmentVerdict: assessmentVerdict(site.assessments),
     warnings: site.warnings,
@@ -1745,9 +1846,7 @@ function isConvertedStyledProperty(property: Node): boolean {
   const nameNode = property.getNameNode()
   if (Node.isComputedPropertyName(nameNode)) return false
   const name = propertyName(nameNode)
-  return (
-    !!name && (name === 'group' || styleProps.has(name) || isLegacyConditionName(name))
-  )
+  return !!name && isConvertedName(name)
 }
 
 function allCommentTexts(node: Node): string[] {
@@ -1765,7 +1864,7 @@ function allCommentTexts(node: Node): string[] {
     .map((entry) => entry[1])
 }
 
-function textWithOuterComments(node: Node): string {
+function textWithOuterComments(node: Node, text = node.getText()): string {
   const comments = new Map<number, string>()
   for (const range of [
     ...node.getLeadingCommentRanges(),
@@ -1776,7 +1875,9 @@ function textWithOuterComments(node: Node): string {
   const prefix = [...comments.entries()]
     .sort((left, right) => left[0] - right[0])
     .map((entry) => entry[1])
-  return [...prefix, node.getText()].join('\n')
+  // the member sits one step inside its object and rewriteStyleObject supplies
+  // that step for the first line only, so the lines after a comment carry it
+  return [...prefix, text].join('\n  ')
 }
 
 function rewriteStyleObject(

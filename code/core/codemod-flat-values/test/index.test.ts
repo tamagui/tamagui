@@ -2095,3 +2095,74 @@ export function Example() {
 `)
   })
 })
+
+describe('token variant props', () => {
+  const source = `import { Button, Input, ListItem, Spacer, YStack, styled } from 'tamagui'
+import { Search } from '@tamagui/lucide-icons'
+import { Local } from './local'
+
+export const Big = styled(Button, {
+  size: '$5',
+  // the icon leads
+  iconSize: '$3',
+  defaultVariants: {
+    size: '$6',
+  },
+  variants: {
+    huge: {
+      true: { size: '$8' },
+    },
+  } as const,
+})
+
+export function Example({ compact }: { compact: boolean }) {
+  return (
+    <YStack elevation="$2" gap="$true">
+      <Button size="$4" elevation="$true" icon={<Search size="$4" />} />
+      <Button size={compact ? '$3' : '$true'} />
+      <Button size={'$size.4'} />
+      <Spacer size="$1.5" />
+      <ListItem iconSize="$2" size="4" />
+      <Input placeholder="$100" size="$4" />
+      <Local size="$4" />
+    </YStack>
+  )
+}
+`
+
+  test('size tokens on size, elevation, and iconSize lose their $ everywhere they are spelled', () => {
+    const written = runWrite(source)
+    expect(written).toContain(`  size: '5',
+  // the icon leads
+  iconSize: '3',`)
+    expect(written).toContain(`  defaultVariants: {
+    size: '6'
+  },`)
+    expect(written).toContain(`size: '8'`)
+    expect(written).toContain(`<YStack elevation="2" gap="4">`)
+    expect(written).toContain(`<Button size="4" elevation icon={<Search size="4" />} />`)
+    expect(written).toContain(`<Button size={compact ? '3' : true} />`)
+    expect(written).toContain(`<Button size={'$size.4'} />`)
+    expect(written).toContain(`<Spacer size="1-5" />`)
+    expect(written).toContain(`<ListItem iconSize="2" size="4" />`)
+    expect(written).toContain(`<Input placeholder="$100" size="4" />`)
+    expect(written).toContain(`<Local size="$4" />`)
+  })
+
+  test('a respelled site counts as converted, a dot path is flagged, and $true on a style prop warns', () => {
+    const result = run(source)
+    const sites = result.files[0]!.sites
+    const dotPath = sites.find((site) => site.before === `size={'$size.4'}`)!
+    expect(dotPath.flags.map((flag) => flag.code)).toEqual(['legacy-token-dot-path'])
+    const stack = sites.find((site) => site.label === '<YStack>')!
+    expect(stack.warnings.map((flag) => flag.code)).toEqual(['legacy-true-token'])
+    const button = sites.find((site) => site.before === 'size="$4" elevation="$true"')!
+    expect(button.warnings).toEqual([])
+    expect(button.programs).toEqual([
+      { name: 'size', value: '"4"', dynamic: false },
+      { name: 'elevation', value: 'true', dynamic: false },
+    ])
+    expect(result.summary.waiting).toBe(0)
+    expect(result.summary.flagged).toBe(1)
+  })
+})

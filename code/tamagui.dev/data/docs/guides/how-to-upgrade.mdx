@@ -692,20 +692,27 @@ when the parent has defined dimensions.
 
 ## 4. Remove true token references
 
-The default v3 configs no longer export the legacy `$true` token key. Pass the
-explicit bare token that it aliased. In the default config that value is `4`.
+The default v3 configs no longer export the legacy `$true` token key. The
+flat-values codemod writes `$true` on a style prop as `4`, the bare key the
+default config aliased it to, and reports the site with a `legacy-true-token`
+warning so you can confirm your config agrees. On the size-typed variant props
+`size`, `elevation`, and `iconSize` it writes the boolean instead, which
+resolves to the component's default size.
 
 ```tsx
 // before
 <XStack gap="$true" p="$true" />
+<Button size="$true" />
 ```
 
 ```tsx
 // after
 <XStack gap="4" p="4" />
+<Button size />
 ```
 
-Search both code and config files:
+The codemod does not edit token definitions or custom variants, so search
+config files and any remaining code for the alias:
 
 ```bash
 rg "\$true|true:" tamagui.config.* src code
@@ -1320,10 +1327,11 @@ space free. `rgba(0,0,0,0.5)` is fine and `rgba(0, 0, 0, 0.5)` splits into
 garbage clauses.
 
 **Variants that look like style props.** The codemod converts style props and
-leaves variants, and the two sit side by side. On one element it rewrote
-`color="$color12"` to `color="color12"` and left `size="$2"` untouched.
-`size="$2"` typechecks and resolves to nothing, since font sizes are spelled `1`
-through `14`.
+the size-typed variant props `size`, `elevation`, and `iconSize`, since v3 reads
+those values as size-scale keys. On one element it rewrites `color="$color12"`
+to `color="color12"` and `size="$2"` to `size="2"`. A custom variant that takes
+a token value keeps its `$` spelling, and it typechecks while resolving to
+nothing, so grep for `="$` after the run.
 
 **Half steps are renamed, not removed.** `$0.5` becomes `0-5` and `$1.5` becomes
 `1-5`, with identical values in both packs, so it is a spelling change with no

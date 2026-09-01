@@ -207,8 +207,9 @@ when behavior itself needs active responsive or theme state.
 ### 6. Replace true tokens
 
 - Default v3 configs no longer export the legacy \`$true\` token key.
-- Component default size resolves to bare \`4\`.
-- Replace authored \`$true\` tokens with real bare keys such as \`4\`.
+- The codemod writes \`$true\` on style props as \`4\` and reports a \`legacy-true-token\` warning; confirm the app's config aliased it there.
+- On \`size\`, \`elevation\`, and \`iconSize\` it writes the boolean \`true\`, which resolves to the component default size.
+- Token definitions and custom variants are not edited; search them for the alias by hand.
 - Do not change unrelated boolean props or boolean variant values.
 
 ### 7. Replace token stepping

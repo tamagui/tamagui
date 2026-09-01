@@ -45,6 +45,7 @@ file is the action table.
 
 | Code | Action |
 |---|---|
+| `legacy-true-token` | The site spelled the `$true` alias on a style prop and was written as `4`, the key the default config aliased it to. Confirm the app's config agrees; correct the value if its `true` alias pointed elsewhere |
 | `legacy-palette-token` | The site keeps a v5 palette-step name (`blue10`) the v6 defaults do not define; missing colors drop silently at runtime. Replace with an absolute token (`blue-500`) or a theme's adaptive `colorN` value before running the app |
 
 ## Exit condition

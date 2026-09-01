@@ -233,6 +233,26 @@ function variantSites(
 ): SiteReport[] {
   const sites: SiteReport[] = []
 
+  // variant defaults are spelled like the props they set, so a size token here
+  // needs the same respelling as one on an element
+  const defaults = config.getProperty('defaultVariants')
+  if (Node.isPropertyAssignment(defaults)) {
+    const object = unwrapExpression(defaults.getInitializerOrThrow())
+    if (Node.isObjectLiteralExpression(object)) {
+      const site = convertStyleObject(
+        object,
+        'styled',
+        `${label} defaultVariants`,
+        registry,
+        containers,
+        targets,
+        host,
+        write
+      )
+      if (site) sites.push(site)
+    }
+  }
+
   const variants = config.getProperty('variants')
   if (Node.isPropertyAssignment(variants)) {
     const object = unwrapExpression(variants.getInitializerOrThrow())

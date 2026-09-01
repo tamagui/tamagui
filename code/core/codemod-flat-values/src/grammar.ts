@@ -87,6 +87,16 @@ export const styleProps: ReadonlySet<string> = new Set<string>([
   ...Object.values(shorthands),
 ])
 
+/**
+ * variant props whose values are size tokens. no program is built for them,
+ * but v3 reads the value as a size-scale key and a `$` spelling finds nothing
+ */
+export const tokenVariantProps: ReadonlySet<string> = new Set<string>([
+  'size',
+  'elevation',
+  'iconSize',
+])
+
 /** the media keys of the V6 default config, plus the two motion queries */
 export const codemodMediaNames: readonly string[] = [
   ...defaultMediaKeys,

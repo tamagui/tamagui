@@ -88,6 +88,18 @@ Owner session: Fable (r16625). Supersedes the execution state in
   script is gone) and the docs stop pointing at it. Workers: soot migration
   (r18015), team-machine GUI test-drive with light/dark pixel diffs (r18019),
   chat (r17284), comparison repo (r16846).
+- 2026-09-01 (day 1, afternoon): beta `3.0.0-beta.891.1` published from
+  `dc8a609e9f`; the comparison re-run on it is assigned (r16846). The codemod
+  now converts the size-typed variant props (`size`, `elevation`, `iconSize`)
+  and `defaultVariants`, writes `$true` as `4` on style props with a
+  `legacy-true-token` warning and as the boolean on those variants, and keeps
+  comment indentation on rewritten members. The web heavy/animated comparison
+  outlier is explained: every dynamic className form in the tailwind bench
+  (template literal with an expression, conditional className, `style={{
+  width: expr }}`) bails out of the compiler at the tip, while the same
+  dynamics on a core `View` lower through lane A. An earlier probe that showed
+  a mis-lowered template was a `dedent` artifact (it keeps `\$` raw), not a
+  compiler defect.
 
 ## Plan
 

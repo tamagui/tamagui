@@ -5,6 +5,8 @@ export const v6CodemodBuiltInNameReplacements = {
   // v3 removed backgroundActive after its component defaults had already
   // stopped resolving; press is the corrected active-state default
   backgroundActive: 'background-press',
+  // v3 configs no longer alias `true`; the default config pointed it at `4`
+  true: '4',
 } as const
 
 const builtInTokenPattern = new RegExp(
