@@ -8,11 +8,16 @@ import type {
   StructuralModulePass,
 } from './lower'
 import { lowerModule } from './lower'
-import { materializeModule } from './materialize'
+import { materializeModule, type MaterializedModule } from './materialize'
 import type { AppliedLoweredModule } from './output'
 import { applyLoweredModule } from './output'
 import type { ModulePlanCache } from './planCache'
-import { PLAN_CACHE_SCHEMA_VERSION, moduleClosureDigest, planCacheKey } from './planCache'
+import {
+  PLAN_CACHE_SCHEMA_VERSION,
+  createExternalClosureLookup,
+  moduleClosureDigest,
+  planCacheKey,
+} from './planCache'
 import { yukuFactory } from './yuku'
 
 export interface CompilerAdapter {
@@ -20,6 +25,13 @@ export interface CompilerAdapter {
   projectGeneration: string
   host: CompilerLoweringHost
   load(id: ResolvedModuleId): Promise<HostModuleInput | null>
+  /**
+   * Runs after a module is materialized and before it lowers, once per uncached
+   * compile. The frontend evaluates component modules the host does not know
+   * yet here (element and styled() base provenance outside the configured
+   * `components`), so lowering never meets an import it could have resolved.
+   */
+  prepare?(module: MaterializedModule): Promise<void>
   /**
    * Persistent per-module plan reuse across processes. Absent means the host
    * could not produce a content stamp for this project, so nothing is cached
@@ -50,6 +62,7 @@ function compareIds(left: ResolvedModuleId, right: ResolvedModuleId): number {
  */
 export class CompilerSession {
   readonly #graph = new ProjectGraph(yukuFactory, { modules: [] })
+  readonly #externalClosure = createExternalClosureLookup()
   #queue: Promise<unknown> = Promise.resolve()
 
   compile(input: CompileModuleInput): Promise<CompilerSessionResult> {
@@ -98,9 +111,13 @@ export class CompilerSession {
     const closureDigest = cache
       ? moduleClosureDigest(module.id, (id) => {
           const hash = graph.contentHash(id)
-          return hash
-            ? { contentHash: hash, dependencies: graph.dependenciesOf(id) }
-            : null
+          if (hash) {
+            return {
+              contentHash: hash,
+              dependencies: [...graph.dependenciesOf(id), ...graph.externalImportsOf(id)],
+            }
+          }
+          return this.#externalClosure(id)
         })
       : null
     const entry =
@@ -124,16 +141,19 @@ export class CompilerSession {
     const cached = entry
       ? await entry.store.read(entry.key, module.id, entry.digest)
       : null
-    const plan =
-      cached?.plan ??
-      lowerModule({
-        module: materializeModule(graph, module.id),
+    let plan = cached?.plan
+    if (!plan) {
+      const materialized = materializeModule(graph, module.id)
+      if (adapter.prepare) await adapter.prepare(materialized)
+      plan = lowerModule({
+        module: materialized,
         source: module.source,
         target: adapter.target,
         host: adapter.host,
         options: { projectGeneration: adapter.projectGeneration },
         structuralPass,
       })
+    }
     if (entry && !cached) {
       await entry.store.write(entry.key, {
         schemaVersion: PLAN_CACHE_SCHEMA_VERSION,

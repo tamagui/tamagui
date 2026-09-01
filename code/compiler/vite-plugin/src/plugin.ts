@@ -539,6 +539,7 @@ function createTamaguiNativePlugin(
   const projectDependencies = new Set<string>()
   let root = nativeContext?.root || process.cwd()
   let projectPromise: Promise<Static.CompilerProject | null> | null = null
+  let nativeOptions: TamaguiOptions | null = null
   let rebuildProject = false
   let generation = 0
 
@@ -555,6 +556,7 @@ function createTamaguiNativePlugin(
         outputCSS: undefined,
       })
       const options = { ...loadedOptions, root, outputCSS: undefined }
+      nativeOptions = options
       for (const dependency of Static.getTamaguiBuildConfigDependencies(loadedOptions)) {
         projectDependencies.add(normalizePath(dependency))
       }
@@ -671,6 +673,10 @@ function createTamaguiNativePlugin(
           target: 'native',
           project,
           resolve,
+          evaluate: async ({ id: moduleId }) =>
+            nativeOptions
+              ? Static.evaluateComponentModule(nativeOptions, moduleId)
+              : null,
           load: async (dependencyId) => {
             const cleanDependencyId = dependencyId.split(/[?#]/, 1)[0]
             if (!path.isAbsolute(cleanDependencyId)) return null
@@ -1455,6 +1461,7 @@ export function createTamaguiPlugins({
               ? { id: resolution.id, external: resolution.external === true }
               : null
           },
+          evaluate: ({ id: moduleId }) => tamaguiLoader.evaluateModule(moduleId),
           load: async (dependencyId) => {
             const cleanDependencyId = dependencyId.split(/[?#]/, 1)[0]
             if (!path.isAbsolute(cleanDependencyId)) return null

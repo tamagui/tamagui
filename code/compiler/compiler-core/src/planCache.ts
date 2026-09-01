@@ -1,4 +1,5 @@
-import { randomBytes } from 'node:crypto'
+import { createHash, randomBytes } from 'node:crypto'
+import { readFileSync, statSync } from 'node:fs'
 import {
   mkdir,
   readdir,
@@ -79,12 +80,46 @@ export type ModuleClosureLookup = (id: ResolvedModuleId) => ModuleClosureNode | 
  * Reads a closure node straight off host module records, for callers that have
  * not built a ProjectGraph (Metro's prepass skips it entirely on a full hit).
  */
-export function moduleClosureNode(input: HostModuleInput): ModuleClosureNode {
+export function moduleClosureNode(
+  input: HostModuleInput,
+  options?: { includeExternal?: boolean }
+): ModuleClosureNode {
   return {
     contentHash: moduleContentHash(input),
     dependencies: input.imports
-      .filter(({ external }) => !external)
+      .filter(({ external }) => options?.includeExternal || !external)
       .map(({ resolvedId }) => resolvedId),
+  }
+}
+
+/**
+ * Closure nodes for ids the graph does not own: package entries. Their bytes
+ * decide which static configs lowering resolved against (configured
+ * `components` and discovered modules alike), so a package bump changes the
+ * digest of every module that imports it. Ids that are not files hash to a
+ * constant so they never make a closure incomplete.
+ */
+export function createExternalClosureLookup(): (
+  id: ResolvedModuleId
+) => ModuleClosureNode {
+  const memo = new Map<string, { size: number; mtimeMs: number; contentHash: string }>()
+  return (id) => {
+    const file = id.split(/[?#]/, 1)[0]
+    if (!file.startsWith('/') && !/^[A-Za-z]:[\\/]/.test(file)) {
+      return { contentHash: 'external', dependencies: [] }
+    }
+    try {
+      const stat = statSync(file)
+      const cached = memo.get(file)
+      if (cached && cached.size === stat.size && cached.mtimeMs === stat.mtimeMs) {
+        return { contentHash: cached.contentHash, dependencies: [] }
+      }
+      const hash = createHash('sha256').update(readFileSync(file)).digest('hex')
+      memo.set(file, { size: stat.size, mtimeMs: stat.mtimeMs, contentHash: hash })
+      return { contentHash: hash, dependencies: [] }
+    } catch {
+      return { contentHash: 'external', dependencies: [] }
+    }
   }
 }
 

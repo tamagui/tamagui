@@ -11,6 +11,7 @@ import {
   PLAN_CACHE_SCHEMA_VERSION,
   ProjectGraph,
   contentHash,
+  createExternalClosureLookup,
   defaultPlanCacheRoot,
   isTamaguiSpecifier,
   lowerModule,
@@ -29,7 +30,11 @@ import {
   type ModuleClosureNode,
   type ResolvedModuleId,
 } from '@tamagui/compiler-core'
-import Static, { createTamaguiCompilerHost } from '@tamagui/static'
+import Static, {
+  ComponentDiscovery,
+  createComponentRegistry,
+  createTamaguiCompilerHost,
+} from '@tamagui/static'
 import type {
   IslandThemeBridge,
   TamaguiOptions,
@@ -257,6 +262,9 @@ export class MetroCompilerFrontend {
   readonly #resolver
   #graph: ProjectGraph | null = null
   #host: CompilerLoweringHost | null = null
+  #registry: Static.CompilerComponentRegistry | null = null
+  readonly #discovery = new ComponentDiscovery()
+  readonly #externalClosure = createExternalClosureLookup()
   #projectGeneration: string | null = null
   #publishedGeneration: string | null = null
   #scanOptions: MetroCompilerScanOptions | null = null
@@ -398,14 +406,22 @@ export class MetroCompilerFrontend {
       this.#graph = new ProjectGraph(yukuFactory, {
         modules: [...this.#records.values()].map(({ input }) => input),
       })
+      const componentModules = compilerProject.componentModules.map(
+        ({ moduleName, id }) => ({ moduleName, resolvedId: id })
+      )
+      // a new project generation may carry new static configs, so discovery
+      // starts over with it and re-registers what it finds
+      this.#discovery.clear()
+      this.#registry = createComponentRegistry(
+        compilerProject.projectInfo.components,
+        componentModules
+      )
       this.#host = createTamaguiCompilerHost({
         target: compilerTarget(options.platform),
         tamaguiConfig: compilerProject.projectInfo.tamaguiConfig,
         components: compilerProject.projectInfo.components,
-        componentModules: compilerProject.componentModules.map(({ moduleName, id }) => ({
-          moduleName,
-          resolvedId: id,
-        })),
+        componentModules,
+        registry: this.#registry,
         disablePartialExtraction: compilerProject.disablePartialExtraction,
         experimentalNativeFastPath: compilerProject.experimentalNativeFastPath,
         zeroRuntime: compilerProject.zeroRuntime,
@@ -427,7 +443,7 @@ export class MetroCompilerFrontend {
         // contract they are not part of.
         this.#zeroEntryGraph = this.#reachableFrom(entryRoots.map(resolvedModuleId))
       }
-      for (const id of unplanned) this.#refreshEntry(id)
+      for (const id of unplanned) await this.#refreshEntry(id)
       await this.#storePlans(unplanned)
     }
     if (zero) {
@@ -562,7 +578,7 @@ export class MetroCompilerFrontend {
           this.#records.delete(id)
           this.#entries.delete(id)
           for (const affected of invalidation.invalidatedIds) {
-            if (affected !== id) this.#refreshEntry(affected)
+            if (affected !== id) await this.#refreshEntry(affected)
           }
           const generation = await this.#publish(options.platform)
           result = {
@@ -593,7 +609,8 @@ export class MetroCompilerFrontend {
       }
       this.#records.set(record.input.id, record)
       const invalidation = graph.updateModule(record.input)
-      for (const affected of invalidation.invalidatedIds) this.#refreshEntry(affected)
+      for (const affected of invalidation.invalidatedIds)
+        await this.#refreshEntry(affected)
       const generation = invalidation.changed
         ? await this.#publish(options.platform)
         : null
@@ -644,6 +661,7 @@ export class MetroCompilerFrontend {
     this.#planKeys.clear()
     this.#graph = null
     this.#host = null
+    this.#registry = null
     this.#projectGeneration = null
   }
 
@@ -834,7 +852,7 @@ export class MetroCompilerFrontend {
       this.#records.set(id, record)
       const invalidation = this.#graph?.updateModule(record.input)
       for (const affected of invalidation?.invalidatedIds ?? [id]) {
-        this.#refreshEntry(affected)
+        await this.#refreshEntry(affected)
       }
       if (
         this.config.watch !== false &&
@@ -848,15 +866,33 @@ export class MetroCompilerFrontend {
     }
   }
 
-  #refreshEntry(id: ResolvedModuleId): void {
+  async #refreshEntry(id: ResolvedModuleId): Promise<void> {
     const graph = this.#graph
     const host = this.#host
+    const registry = this.#registry
     const record = this.#records.get(id)
-    if (!graph || !host || !record || !this.#scanOptions || !this.#projectGeneration)
+    if (
+      !graph ||
+      !host ||
+      !registry ||
+      !record ||
+      !this.#scanOptions ||
+      !this.#projectGeneration
+    ) {
       return
+    }
     const target = compilerTarget(this.#scanOptions.platform)
+    const materialized = materializeModule(graph, id)
+    // Metro has no module runner; packages a file uses that are not in
+    // `components` evaluate under the static-evaluation require hooks, once
+    await this.#discovery.prepare(materialized, registry, ({ id: moduleId }) =>
+      Static.evaluateComponentModule(
+        { ...this.config.tamaguiOptions, platform: target },
+        moduleId
+      )
+    )
     const plan = lowerModule({
-      module: materializeModule(graph, id),
+      module: materialized,
       source: record.input.source,
       target,
       host,
@@ -964,7 +1000,9 @@ export class MetroCompilerFrontend {
       let node = nodes.get(id)
       if (node === undefined) {
         const record = this.#records.get(id)
-        node = record ? moduleClosureNode(record.input) : null
+        node = record
+          ? moduleClosureNode(record.input, { includeExternal: true })
+          : this.#externalClosure(id)
         nodes.set(id, node)
       }
       return node

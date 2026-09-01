@@ -5,6 +5,8 @@ export * from './types';
 export * from './constants';
 export * from './extractor/concatClassName';
 export * from './extractor/loadTamagui';
+export { evaluateComponentModule } from './extractor/bundleConfig';
+export * from './componentDiscovery';
 export * from './extractor/watchTamaguiConfig';
 export * from './registerRequire';
 export { detectModuleFormat, clearFormatCache } from './extractor/detectModuleFormat';

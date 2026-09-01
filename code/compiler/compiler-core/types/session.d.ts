@@ -1,6 +1,7 @@
 import type { HostModuleInput, ResolvedModuleId } from './contracts';
 import type { GraphInvalidation } from './graph';
 import type { CompilerLoweringHost, CompilerTarget, LoweredModulePlan, StructuralModulePass } from './lower';
+import { type MaterializedModule } from './materialize';
 import type { AppliedLoweredModule } from './output';
 import type { ModulePlanCache } from './planCache';
 export interface CompilerAdapter {
@@ -8,6 +9,13 @@ export interface CompilerAdapter {
     projectGeneration: string;
     host: CompilerLoweringHost;
     load(id: ResolvedModuleId): Promise<HostModuleInput | null>;
+    /**
+     * Runs after a module is materialized and before it lowers, once per uncached
+     * compile. The frontend evaluates component modules the host does not know
+     * yet here (element and styled() base provenance outside the configured
+     * `components`), so lowering never meets an import it could have resolved.
+     */
+    prepare?(module: MaterializedModule): Promise<void>;
     /**
      * Persistent per-module plan reuse across processes. Absent means the host
      * could not produce a content stamp for this project, so nothing is cached

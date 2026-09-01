@@ -119,6 +119,17 @@ export class ProjectGraph implements SymbolResolver {
     return [...(this.#dependents.get(id) ?? [])].sort(compareIds)
   }
 
+  /** resolved ids a module imports that the graph does not own (package entries) */
+  externalImportsOf(id: ResolvedModuleId): ResolvedModuleId[] {
+    const record = this.#modules.get(id)
+    if (!record) return []
+    const ids = new Set<ResolvedModuleId>()
+    for (const dependency of record.input.imports) {
+      if (dependency.external) ids.add(dependency.resolvedId)
+    }
+    return [...ids].sort(compareIds)
+  }
+
   affectedBy(id: ResolvedModuleId): ResolvedModuleId[] {
     const affected = new Set<ResolvedModuleId>([id])
     const queue = [id]

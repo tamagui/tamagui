@@ -53,6 +53,13 @@ export declare function getBundledConfig(props: TamaguiOptions, rebuild?: boolea
 export declare function bundleConfig(props: TamaguiOptions, rebuild?: boolean): Promise<any>;
 export declare function writeTamaguiCSS(outputCSS: string, config: TamaguiInternalConfig): Promise<void>;
 export declare function loadComponents(props: TamaguiOptions, forceExports?: boolean): Promise<LoadedComponents[]>;
+/**
+ * Evaluate one host-resolved module under the platform's static-evaluation
+ * hooks, the way configured `components` load, and return its exports. The
+ * compiler frontend uses this for component discovery when no module runner is
+ * available (the Vite native environment plans for Metro).
+ */
+export declare function evaluateComponentModule(props: TamaguiOptions, id: string): Promise<Record<string, unknown>>;
 export declare function loadComponentsSync(props: TamaguiOptions, forceExports?: boolean): LoadedComponents[];
 export declare function loadComponentsInner(props: TamaguiOptions, forceExports?: boolean): Promise<LoadedComponents[]>;
 export declare function loadComponentsInnerSync(props: TamaguiOptions, forceExports?: boolean): LoadedComponents[];

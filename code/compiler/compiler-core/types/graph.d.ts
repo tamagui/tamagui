@@ -22,6 +22,8 @@ export declare class ProjectGraph implements SymbolResolver {
     sourceOf(id: ResolvedModuleId): string;
     dependenciesOf(id: ResolvedModuleId): ResolvedModuleId[];
     dependentsOf(id: ResolvedModuleId): ResolvedModuleId[];
+    /** resolved ids a module imports that the graph does not own (package entries) */
+    externalImportsOf(id: ResolvedModuleId): ResolvedModuleId[];
     affectedBy(id: ResolvedModuleId): ResolvedModuleId[];
     parseCount(id: ResolvedModuleId): number;
     resolveBinding(id: ResolvedModuleId, localName: string): SymbolDefinition | null;

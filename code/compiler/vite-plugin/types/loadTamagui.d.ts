@@ -22,6 +22,12 @@ export type ViteTamaguiLoader = {
     getEvaluationDependencies(): string[];
     isEvaluationDependency(id: string): boolean;
     evaluateProjectModules(options: TamaguiOptions): Promise<EvaluatedProjectModules>;
+    /**
+     * Evaluate one host-resolved module in the evaluation environment for the
+     * compiler's component discovery. Null when the environment is not ready or
+     * the module cannot run in node; the compiler then leaves its elements alone.
+     */
+    evaluateModule(id: string): Promise<Record<string, unknown> | null>;
     loadTamaguiBuildConfig(): Promise<TamaguiOptions>;
     setEnvironment(next: RunnableDevEnvironment, options?: {
         owned?: boolean;

@@ -1,5 +1,6 @@
 import { type AppliedLoweredModule, type CompilerTarget, type LoweredModulePlan, type ResolvedModuleId } from '@tamagui/compiler-core';
 import type { TamaguiOptions } from '@tamagui/types';
+import { type ComponentModuleEvaluator } from './componentDiscovery';
 import type { TamaguiProjectInfo } from './extractor/bundleConfig';
 export interface CompilerProjectComponentModule {
     moduleName: string;
@@ -80,6 +81,15 @@ export interface CompilerInput {
     project: CompilerProject;
     resolve(specifier: string, importer: string): Promise<CompilerResolution | null>;
     load(id: string): Promise<string | null>;
+    /**
+     * Evaluate a host-resolved module and return its exports. The frontend asks
+     * for every package a JSX element or styled() base imports from that is not
+     * in the configured `components` list, once per module per project, and
+     * lowers against the static configs it finds. Return null (or throw) when
+     * the host cannot evaluate the module; those elements stay on the runtime
+     * path exactly as before.
+     */
+    evaluate?: ComponentModuleEvaluator;
 }
 export type CompilerUpdateInput = CompilerInput;
 export interface CompilerResult {
@@ -97,6 +107,7 @@ export declare class CompilerFrontend {
     private readonly planCaches;
     private readonly moduleRecords;
     private moduleContext;
+    private readonly discovery;
     /**
      * One cache per project root and platform. Absent when the project produced
      * no content stamp, in which case plans are never persisted rather than
@@ -116,6 +127,8 @@ export declare class CompilerFrontend {
     remove(id: string): Promise<import("@tamagui/compiler-core").GraphInvalidation>;
     parseCount(id: string): number;
     private compileNow;
+    /** host-resolved ids of every module discovery found components in */
+    discoveredModuleIds(): string[];
     private buildTree;
 }
 //# sourceMappingURL=compiler.d.ts.map

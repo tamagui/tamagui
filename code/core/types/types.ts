@@ -3,8 +3,10 @@ export interface TamaguiBuildOptions {
   root?: string
 
   /**
-   * module paths you want to compile with tamagui (for example ['tamagui'])
-   * */
+   * Component packages to evaluate up front (default ['tamagui']). The compiler
+   * discovers any other package a JSX element or styled() base imports from as
+   * it compiles, so this is an optional warm-up, not a requirement.
+   */
   components?: string[]
 
   /**
@@ -78,13 +80,6 @@ export interface TamaguiBuildOptions {
    * Custom prefix for the timing logs
    */
   prefixLogs?: string
-
-  /**
-   * (Advanced) Enables Tamagui to try and evaluate components outside the `components` option.
-   * When true, Tamagui will bundle and load components as its running across every file,
-   * if it loads them successfully it will perform all optimiziations inline.
-   */
-  enableDynamicEvaluation?: boolean
 
   /**
    * Completely disable tamagui for these files

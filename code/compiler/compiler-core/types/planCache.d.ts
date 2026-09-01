@@ -52,7 +52,17 @@ export type ModuleClosureLookup = (id: ResolvedModuleId) => ModuleClosureNode | 
  * Reads a closure node straight off host module records, for callers that have
  * not built a ProjectGraph (Metro's prepass skips it entirely on a full hit).
  */
-export declare function moduleClosureNode(input: HostModuleInput): ModuleClosureNode;
+export declare function moduleClosureNode(input: HostModuleInput, options?: {
+    includeExternal?: boolean;
+}): ModuleClosureNode;
+/**
+ * Closure nodes for ids the graph does not own: package entries. Their bytes
+ * decide which static configs lowering resolved against (configured
+ * `components` and discovered modules alike), so a package bump changes the
+ * digest of every module that imports it. Ids that are not files hash to a
+ * constant so they never make a closure incomplete.
+ */
+export declare function createExternalClosureLookup(): (id: ResolvedModuleId) => ModuleClosureNode;
 /**
  * Identity of a module's whole compile input: itself plus every module reachable
  * from it over non-external imports, each by content hash.

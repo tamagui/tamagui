@@ -748,6 +748,40 @@ export async function loadComponents(props: TamaguiOptions, forceExports = false
   return [...coreComponents, ...otherComponents]
 }
 
+/**
+ * Evaluate one host-resolved module under the platform's static-evaluation
+ * hooks, the way configured `components` load, and return its exports. The
+ * compiler frontend uses this for component discovery when no module runner is
+ * available (the Vite native environment plans for Metro).
+ */
+export async function evaluateComponentModule(
+  props: TamaguiOptions,
+  id: string
+): Promise<Record<string, unknown>> {
+  const previousIsStatic = process.env.IS_STATIC
+  const previousIsServer = process.env.TAMAGUI_IS_SERVER
+  process.env.IS_STATIC = 'is_static'
+  process.env.TAMAGUI_IS_SERVER = 'true'
+  const { unregister } = registerRequire(props.platform || 'web', {
+    ignoredModules: props.dangerouslyIgnoreStaticEvaluationModules,
+  })
+  try {
+    try {
+      return nodeRequire(id)
+    } catch (error) {
+      const code = (error as { code?: string })?.code
+      if (code !== 'ERR_REQUIRE_ESM' && code !== 'ERR_REQUIRE_ASYNC_MODULE') throw error
+    }
+  } finally {
+    unregister()
+    if (previousIsStatic === undefined) delete process.env.IS_STATIC
+    else process.env.IS_STATIC = previousIsStatic
+    if (previousIsServer === undefined) delete process.env.TAMAGUI_IS_SERVER
+    else process.env.TAMAGUI_IS_SERVER = previousIsServer
+  }
+  return import(`${pathToFileURL(id).href}?v=${FS.statSync(id).mtimeMs}`)
+}
+
 export function loadComponentsSync(props: TamaguiOptions, forceExports = false) {
   const coreComponents = getCoreComponentsSync(props)
   const otherComponents = loadComponentsInnerSync(props, forceExports)

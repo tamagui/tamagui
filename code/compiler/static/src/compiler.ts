@@ -19,7 +19,8 @@ import { readFileSync } from 'node:fs'
 import { createRequire } from 'node:module'
 import path from 'node:path'
 
-import { createTamaguiCompilerHost } from './compilerHost'
+import { ComponentDiscovery, type ComponentModuleEvaluator } from './componentDiscovery'
+import { createComponentRegistry, createTamaguiCompilerHost } from './compilerHost'
 import { domStructuralPass } from './domStructuralPass'
 import type { TamaguiProjectInfo } from './extractor/bundleConfig'
 import { loadTamagui } from './extractor/loadTamagui'
@@ -217,6 +218,15 @@ export interface CompilerInput {
   project: CompilerProject
   resolve(specifier: string, importer: string): Promise<CompilerResolution | null>
   load(id: string): Promise<string | null>
+  /**
+   * Evaluate a host-resolved module and return its exports. The frontend asks
+   * for every package a JSX element or styled() base imports from that is not
+   * in the configured `components` list, once per module per project, and
+   * lowers against the static configs it finds. Return null (or throw) when
+   * the host cannot evaluate the module; those elements stay on the runtime
+   * path exactly as before.
+   */
+  evaluate?: ComponentModuleEvaluator
 }
 
 export type CompilerUpdateInput = CompilerInput
@@ -257,6 +267,7 @@ export class CompilerFrontend {
   private readonly planCaches = new Map<string, ModulePlanCache>()
   private readonly moduleRecords = new Map<ResolvedModuleId, HostModuleInput>()
   private moduleContext: string | null = null
+  private readonly discovery = new ComponentDiscovery()
 
   /**
    * One cache per project root and platform. Absent when the project produced
@@ -358,14 +369,18 @@ export class CompilerFrontend {
     if (!projectInfo.tamaguiConfig || !projectInfo.components) {
       throw new Error('The compiler requires evaluated Tamagui config and components')
     }
+    const componentModules = input.project.componentModules.map((component) => ({
+      moduleName: component.moduleName,
+      resolvedId: cleanId(component.id),
+    }))
+    const registry = createComponentRegistry(projectInfo.components, componentModules)
+    this.discovery.seed(registry)
     const host = createTamaguiCompilerHost({
       target: input.target,
       tamaguiConfig: projectInfo.tamaguiConfig,
       components: projectInfo.components,
-      componentModules: input.project.componentModules.map((component) => ({
-        moduleName: component.moduleName,
-        resolvedId: cleanId(component.id),
-      })),
+      componentModules,
+      registry,
       disablePartialExtraction: input.project.disablePartialExtraction,
       experimentalNativeFastPath: input.project.experimentalNativeFastPath,
       zeroRuntime: input.project.zeroRuntime,
@@ -380,6 +395,7 @@ export class CompilerFrontend {
         async load(id) {
           return modules.get(id) ?? null
         },
+        prepare: (module) => this.discovery.prepare(module, registry, input.evaluate),
       },
       structuralPass: domStructuralPass,
     })
@@ -391,6 +407,11 @@ export class CompilerFrontend {
     }
   }
 
+  /** host-resolved ids of every module discovery found components in */
+  discoveredModuleIds(): string[] {
+    return this.discovery.ids()
+  }
+
   private async buildTree(input: CompilerUpdateInput): Promise<{
     rootModule: HostModuleInput
     modules: Map<ResolvedModuleId, HostModuleInput>
@@ -398,6 +419,7 @@ export class CompilerFrontend {
     const moduleContext = compilerContext(input)
     if (this.moduleContext !== moduleContext) {
       this.moduleRecords.clear()
+      this.discovery.clear()
       this.moduleContext = moduleContext
     }
 

@@ -71,8 +71,7 @@ test('a flat media clause at the call site overrides the frame media', async () 
       export function Test() {
         return <Title fontSize="7 lg:11" />
       }
-    `,
-    { options: { enableDynamicEvaluation: true } }
+    `
   )
   const styles = output?.styles ?? ''
 
@@ -93,8 +92,7 @@ test('a flat media clause merges into the frame media rather than replacing it',
       export function Test() {
         return <Title color="lg:red" />
       }
-    `,
-    { options: { enableDynamicEvaluation: true } }
+    `
   )
   const styles = output?.styles ?? ''
 
@@ -134,10 +132,7 @@ afterAll(() => {
 })
 
 test('a locally defined styled() flattens when given one of its own variants', async () => {
-  const output = await extractForWeb(localSource, {
-    sourcePath: localFile,
-    options: { enableDynamicEvaluation: true },
-  })
+  const output = await extractForWeb(localSource, { sourcePath: localFile })
   const styles = output?.styles ?? ''
 
   expect(output?.js).toContain('className')

@@ -27,8 +27,7 @@ describe('styled() tests', () => {
       export function Test() {
         return <InlineStyled />
       }
-    `,
-      { options: { enableDynamicEvaluation: true } }
+    `
     )
     if (!output) {
       throw new Error(`No output`)
@@ -63,7 +62,6 @@ describe('styled() tests', () => {
     `,
       {
         options: {
-          enableDynamicEvaluation: true,
           components: ['@tamagui/core', '@tamagui/tailwind'],
         },
       }
@@ -261,7 +259,6 @@ describe('styled() tests', () => {
       // first process the component file (like vite plugin would)
       const componentOutput = await extractForWeb(componentSource, {
         sourcePath: componentFile,
-        options: { enableDynamicEvaluation: true },
       })
       expect(componentOutput).toBeTruthy()
       // Definitions are graph metadata. CSS is emitted transactionally at a use site,
@@ -280,7 +277,6 @@ describe('styled() tests', () => {
       const consumerPath = join(tmpDir, 'Consumer.tsx')
       const output = await extractForWeb(consumerSource, {
         sourcePath: consumerPath,
-        options: { enableDynamicEvaluation: true },
       })
 
       if (!output) {

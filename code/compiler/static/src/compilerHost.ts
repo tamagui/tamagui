@@ -56,11 +56,38 @@ export interface CompilerComponentModule {
   resolvedId: string
 }
 
+/**
+ * The components lowering can resolve, keyed the way element provenance names
+ * them. The frontend owns one per compile and grows it as it discovers component
+ * modules outside the configured `components` list.
+ */
+export interface CompilerComponentRegistry {
+  /** host-resolved module id -> the module name its components register under */
+  modulesById: Map<string, string>
+  componentsByModule: Map<string, LoadedComponents>
+}
+
+export function createComponentRegistry(
+  components: readonly LoadedComponents[],
+  componentModules: readonly CompilerComponentModule[]
+): CompilerComponentRegistry {
+  return {
+    modulesById: new Map(
+      componentModules.map((module) => [module.resolvedId, module.moduleName])
+    ),
+    componentsByModule: new Map(
+      components.map((component) => [component.moduleName, component])
+    ),
+  }
+}
+
 export interface TamaguiCompilerHostOptions {
   target: CompilerTarget
   tamaguiConfig: TamaguiInternalConfig
   components: LoadedComponents[]
   componentModules: CompilerComponentModule[]
+  /** shared with the frontend so discovery during `prepare` is visible to this host */
+  registry?: CompilerComponentRegistry
   /** Keep elements with dynamic style props fully on the runtime path. */
   disablePartialExtraction?: boolean
   /** emit native theme-token mappings for the native style engine */
@@ -390,6 +417,11 @@ const runtimeAnimationProps = new Set([
   'animatePresence',
   'animatedBy',
 ])
+
+// createComponent reads these and never forwards them to the host element, so a
+// flattened element has to drop them instead of emitting an unknown attribute.
+// only the inert values reach the emit: an active one already bailed.
+const componentOnlyProps = new Set(['asChild', 'disableOptimization', 'themeInverse'])
 
 const cssShorthandConflicts: Record<string, readonly string[]> = {
   background: [
@@ -977,6 +1009,39 @@ export function createTamaguiCompilerHost(
     }
     return false
   }
+  // A native bundle knows one thing about its platform: it is not web. So a
+  // `web:` clause can never match there and a bare `native:` clause always
+  // does, which makes a value built only from those two resolvable at compile
+  // time. Every other modifier is live at render: media and container queries
+  // measure, theme and group clauses read context, state and lifecycle clauses
+  // track the component, and the device platforms (ios, android, tv) are not
+  // known until the bundle runs. One of those anywhere in the value keeps the
+  // whole element on the runtime path.
+  const platformModifiersRegistered =
+    modifierRegistry.get('web') === 'platform' &&
+    modifierRegistry.get('native') === 'platform'
+  const nativeClauseValue = (
+    value: unknown
+  ): 'live' | { payload: unknown; matched: boolean } | null => {
+    if (typeof value !== 'string' || !flatClausePattern.test(value)) {
+      return isClauseObjectValue(value) ? 'live' : null
+    }
+    if (!platformModifiersRegistered) return 'live'
+    const parsed = parseValue(value, modifierRegistry)
+    if (!parsed.ok || parsed.value.clauses.length === 0) return 'live'
+    let payload: unknown = parsed.value.base
+    let matched = parsed.value.base !== null
+    for (const clause of parsed.value.clauses) {
+      // a chain containing `web` is dead here whatever else it names
+      if (clause.modifiers.includes('web')) continue
+      if (clause.modifiers.length !== 1 || clause.modifiers[0] !== 'native') return 'live'
+      // platform clauses all rank the same, so a later one wins and any of them
+      // beats the unconditional base
+      payload = clause.payload
+      matched = true
+    }
+    return { payload, matched }
+  }
   const configuredAnimationDriver = options.tamaguiConfig.animations as
     | AnimationDriver
     | undefined
@@ -1040,12 +1105,9 @@ export function createTamaguiCompilerHost(
     }
     return resolved.join(' ')
   }
-  const modulesById = new Map(
-    options.componentModules.map((module) => [module.resolvedId, module.moduleName])
-  )
-  const componentsByModule = new Map(
-    options.components.map((component) => [component.moduleName, component])
-  )
+  const { modulesById, componentsByModule } =
+    options.registry ??
+    createComponentRegistry(options.components, options.componentModules)
 
   // A component's import provenance chose its authoring syntax, and the frontend
   // descriptor frozen onto its static config is the only thing that knows how to
@@ -1606,15 +1668,29 @@ export function createTamaguiCompilerHost(
           )
         }
       }
-      const disableOptimizationEntry = input.element.entries.find(
-        (entry) => entry.kind === 'prop' && entry.name === 'disableOptimization'
-      )
-      if (disableOptimizationEntry || 'disableOptimization' in props) {
+      // asChild, disableOptimization and themeInverse each asked only whether the
+      // prop was PRESENT, so a false value retained a component that requested
+      // none of the runtime behavior the branch exists for. read the materialized
+      // value instead, and treat a prop the compiler could not evaluate as active.
+      // a later duplicate wins, so the last entry decides and any unevaluated
+      // entry for that name makes the answer unknown.
+      const componentOnlyProp = (name: string) => {
+        let span: MaterializedElement['entries'][number]['span'] | undefined
+        let unknown = false
+        for (const entry of input.element.entries) {
+          if (entry.kind !== 'prop' || entry.name !== name) continue
+          span = entry.span
+          if (entry.value.kind !== 'static') unknown = true
+        }
+        return { unknown, span }
+      }
+      const disableOptimization = componentOnlyProp('disableOptimization')
+      if (disableOptimization.unknown || props.disableOptimization) {
         return bailout(
           input,
           'local/unsupported-target',
           'disableOptimization keeps the component on the runtime path',
-          disableOptimizationEntry?.span
+          disableOptimization.span
         )
       }
       if (component.domTag && props.hidden) props.display = 'none'
@@ -1877,8 +1953,13 @@ export function createTamaguiCompilerHost(
             entry.value.kind === 'conditional' &&
             canLowerConditionalStyleProp(entry.name, component)
         )
-      if ('theme' in props || 'themeInverse' in props) {
-        const themeProp = 'theme' in props ? 'theme' : 'themeInverse'
+      // a theme name of any value selects a theme, while themeInverse only opens a
+      // boundary when it is on
+      const themeEntry = componentOnlyProp('theme')
+      const themeInverseEntry = componentOnlyProp('themeInverse')
+      const themeBoundary = themeEntry.unknown || 'theme' in props
+      if (themeBoundary || themeInverseEntry.unknown || props.themeInverse) {
+        const themeProp = themeBoundary ? 'theme' : 'themeInverse'
         return bailout(
           input,
           'local/unsupported-target',
@@ -1894,15 +1975,13 @@ export function createTamaguiCompilerHost(
       // the single child and emits no element of its own. a flattened host view
       // would add a wrapper the runtime never renders, and the child would
       // never receive the merged props. both platforms.
-      const asChildEntry = input.element.entries.find(
-        (entry) => entry.kind === 'prop' && entry.name === 'asChild'
-      )
-      if (asChildEntry || 'asChild' in props) {
+      const asChild = componentOnlyProp('asChild')
+      if (asChild.unknown || props.asChild) {
         return bailout(
           input,
           'local/unsupported-target',
           'asChild renders a Slot, not a host view',
-          asChildEntry?.span
+          asChild.span
         )
       }
       // group and container props publish separate keys in the same context:
@@ -2167,18 +2246,21 @@ export function createTamaguiCompilerHost(
       // native resolution evaluates clauses against the build machine's current
       // state, so folding a call-site, styled base, or variant clause would freeze
       // that state into the bundle.
+      // native leaf values are resolved per branch further down, and a leaf is a
+      // clause program the same way a direct prop is. the reduction has to be
+      // applied where those branches are built, so it is memoized per leaf here.
+      const nativeConditionalLeafValues = new Map<unknown, unknown>()
       if (platform === 'native') {
         const isClauseValue = (name: string, value: unknown) =>
           isStyleProp(name, component) &&
           ((typeof value === 'string' && flatClausePattern.test(value)) ||
             isClauseObjectValue(value))
         // a clause can also sit inside a variant definition, where it never
-        // appears as a prop: variants: { big: { true: { width: 'gt-lg:999px' } } }
+        // appears as a prop: variants: { big: { true: { width: 'gt-lg:999px' } } }.
+        // those live in the styled definition, which this element cannot rewrite,
+        // so a clause there retains whatever kind it is.
         const defaultVariants = component.staticConfig.defaultVariants ?? {}
-        const carriesClause =
-          Object.entries(completeProps).some(([name, value]) =>
-            isClauseValue(name, value)
-          ) ||
+        const definitionCarriesClause =
           Object.entries(resolvedStyleStaticConfig.baseStyle ?? {}).some(
             ([name, value]) => isClauseValue(name, value)
           ) ||
@@ -2195,12 +2277,47 @@ export function createTamaguiCompilerHost(
                   )
               )
           )
-        if (carriesClause) {
+        if (definitionCarriesClause) {
           return bailout(
             input,
             'local/unsupported-target',
             'Native conditional value programs remain on the runtime path'
           )
+        }
+        const reducedProps: Record<string, unknown> = {}
+        for (const [name, value] of Object.entries(completeProps)) {
+          const clause = isStyleProp(name, component) ? nativeClauseValue(value) : null
+          if (clause === 'live') {
+            return bailout(
+              input,
+              'local/unsupported-target',
+              'Native conditional value programs remain on the runtime path'
+            )
+          }
+          if (clause === null) {
+            reducedProps[name] = value
+            continue
+          }
+          if (clause.matched) reducedProps[name] = clause.payload
+        }
+        completeProps = reducedProps
+        for (const entry of dynamicStyleEntries) {
+          if (entry.value.kind !== 'conditional') continue
+          for (const leaf of collectLeaves(entry.value.tree)) {
+            const clause = nativeClauseValue(leaf.value)
+            if (clause === 'live') {
+              return bailout(
+                input,
+                'local/unsupported-target',
+                'Native conditional value programs remain on the runtime path'
+              )
+            }
+            if (clause === null) continue
+            nativeConditionalLeafValues.set(
+              leaf,
+              clause.matched ? clause.payload : undefined
+            )
+          }
         }
       }
       const split = resolveSplitStyles(
@@ -2252,7 +2369,9 @@ export function createTamaguiCompilerHost(
         }))
 
       const isPropIgnored = (name: string) =>
-        isStyleProp(name, component) || isInvalidHostStyleProp(name, component)
+        isStyleProp(name, component) ||
+        isInvalidHostStyleProp(name, component) ||
+        componentOnlyProps.has(name)
       const spreadReplacement = (
         form: MaterializedElement['form'],
         entry: MaterializedElement['entries'][number]
@@ -2269,16 +2388,11 @@ export function createTamaguiCompilerHost(
 
       let styleEntries = input.element.entries.filter(
         (entry) =>
-          (entry.kind === 'prop' &&
-            (isStyleProp(entry.name, component) ||
-              isInvalidHostStyleProp(entry.name, component))) ||
+          (entry.kind === 'prop' && isPropIgnored(entry.name)) ||
           (entry.kind === 'spread' &&
             entry.value.kind === 'static' &&
             staticObject(entry.value.value) &&
-            Object.keys(entry.value.value).some(
-              (name) =>
-                isStyleProp(name, component) || isInvalidHostStyleProp(name, component)
-            ))
+            Object.keys(entry.value.value).some(isPropIgnored))
       )
       let invalidHostStyle:
         | { entry: MaterializedElement['entries'][number]; name: string }
@@ -2803,7 +2917,12 @@ export function createTamaguiCompilerHost(
                 Record<string, unknown>
               >()
               for (const leaf of leaves) {
-                const { branchCompleteProps } = propsForConditional(entry, leaf.value)
+                const { branchCompleteProps } = propsForConditional(
+                  entry,
+                  nativeConditionalLeafValues.has(leaf)
+                    ? nativeConditionalLeafValues.get(leaf)
+                    : leaf.value
+                )
                 const branchSplit = resolveSplitStyles(
                   branchCompleteProps,
                   component.staticConfig,

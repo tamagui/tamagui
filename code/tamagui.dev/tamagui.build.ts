@@ -7,7 +7,6 @@ export default {
   outputCSS: './tamagui.generated.css',
   disableExtraction:
     process.env.NODE_ENV !== 'production' || !!process.env.TAMAGUI_DISABLE_EXTRACTION,
-  enableDynamicEvaluation: true,
   // bento lists some last issues
   // useReactNativeWebLite: true,
 } as TamaguiBuildOptions

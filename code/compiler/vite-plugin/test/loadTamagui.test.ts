@@ -690,7 +690,6 @@ test('evaluates config and components through the app resolver and invalidates H
       fixtureTransformProbePlugin(),
       tamaguiPlugin({
         components: directPackageFixtureComponents,
-        enableDynamicEvaluation: true,
         disableWatchTamaguiConfig: false,
       }),
     ],
@@ -1117,7 +1116,6 @@ test('evaluates the same fixture during a production build without legacy bundle
       tamaguiPlugin({
         config: '#fixture-config',
         components: directPackageFixtureComponents,
-        enableDynamicEvaluation: true,
       }),
     ],
     build: {
@@ -1302,7 +1300,6 @@ test('keeps the owned runner alive across concurrent builds sharing one plugin',
     tamaguiPlugin({
       config: '#fixture-config',
       components: fixtureComponents,
-      enableDynamicEvaluation: true,
     }),
     releaseAfterTamaguiBuildEnd,
   ]
@@ -1374,7 +1371,6 @@ test('isolates extraction caches and rebuilds CSS for a config-only dependency',
       tamaguiPlugin({
         config: '#fixture-config',
         components: fixtureComponents,
-        enableDynamicEvaluation: true,
       }),
     ],
     build: {

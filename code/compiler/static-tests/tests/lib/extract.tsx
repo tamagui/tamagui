@@ -1,4 +1,9 @@
-import { CompilerFrontend, loadTamaguiSync, type CompilerProject } from '@tamagui/static'
+import {
+  CompilerFrontend,
+  loadTamaguiSync,
+  type CompilerInput,
+  type CompilerProject,
+} from '@tamagui/static'
 import type { TamaguiOptions } from '@tamagui/types'
 import { existsSync } from 'node:fs'
 import { readFile } from 'node:fs/promises'
@@ -9,6 +14,21 @@ interface ExtractOptions {
   sourcePath?: string
   options?: TamaguiOptions
   disablePartialExtraction?: boolean
+  /**
+   * Component discovery for modules outside `components`. Defaults to a plain
+   * dynamic import of the resolved file; `false` disables discovery.
+   */
+  evaluate?: CompilerInput['evaluate'] | false
+}
+
+// packages live in node_modules; fixtures under tests/fixtures/external stand
+// in for one so discovery can be exercised without a workspace package
+function isExternal(id: string) {
+  return id.includes('/node_modules/') || id.includes('/fixtures/external/')
+}
+
+async function evaluateModule({ id }: { id: string }) {
+  return (await import(id)) as Record<string, unknown>
 }
 
 const require = createRequire(import.meta.url)
@@ -105,8 +125,9 @@ async function compile(
     project,
     resolve: async (specifier, importer) => {
       const id = resolveFile(specifier, importer)
-      return id ? { id, external: id.includes('/node_modules/') } : null
+      return id ? { id, external: isExternal(id) } : null
     },
+    evaluate: opts.evaluate === false ? undefined : (opts.evaluate ?? evaluateModule),
     load: async (id) => {
       try {
         return await readFile(id.split(/[?#]/, 1)[0]!, 'utf8')
