@@ -89,6 +89,21 @@ fonts and the font_ className system, themes, media, group/container queries,
 flat clause values, animation driver seam. These are Tamagui features, not
 compat.
 
+## Pre-v3 fat-cut audit (createComponent + useThemeState)
+
+Requested before v3 ships, independent of the split. Target for light web is
+16-20 kB gzip on the styled-view fixture, so createComponent (3.9k marginal
+gzip) and useThemeState (1.7k) must both shrink, including by dropping
+features. Produce a costed inventory (deletion-measurement per feature via
+`bundleTopLevelReplacementPlugin`) and cut list for sign-off. Known candidates:
+
+- Theme `reset` prop: still present in useThemeState (verified 2026-09-01); it
+  participates in every themed component's cache key. Requested drop.
+- The config-level global `defaultProps` setting: already gone (no conf-level
+  read remains in web; only per-component styled defaults exist).
+- Anything in createComponent that exists only for JS-knowledge of pseudo
+  states on class-emitting components (overlaps phase 4 below).
+
 ## Sequencing (each phase gated by fixture measurements)
 
 0. Land the runtime bundle-size gate in CI first (styled-view fixture baseline
