@@ -15,6 +15,13 @@ for (const [themeName, theme] of Object.entries(selectedThemes)) {
     selectedThemes[themeName.replace(/_surface1$/, '_level2')] = theme
   } else if (themeName.endsWith('_surface2')) {
     selectedThemes[themeName.replace(/_surface2$/, '_level3')] = theme
+  } else if (themeName.endsWith('_accent')) {
+    // v5 shipped no accent surface subthemes, and its lookup stayed on the
+    // active parent when one was missing. A nested level Theme (Button wraps
+    // level2) must keep the accent palette the same way, so the level names
+    // alias the accent theme itself.
+    selectedThemes[`${themeName}_level2`] = theme
+    selectedThemes[`${themeName}_level3`] = theme
   }
 }
 

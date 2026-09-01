@@ -47,7 +47,9 @@ const levelThemeNames = baseThemeNames.flatMap((themeName) =>
     ? [themeName.replace(/_surface1$/, '_level2')]
     : themeName.endsWith('_surface2')
       ? [themeName.replace(/_surface2$/, '_level3')]
-      : []
+      : themeName.endsWith('_accent')
+        ? [`${themeName}_level2`, `${themeName}_level3`]
+        : []
 )
 
 const componentThemeNames = [...baseThemeNames, ...levelThemeNames].flatMap((parent) =>
