@@ -1696,6 +1696,12 @@ export type GetStaticConfig<A, Extra = {}> = A extends {
 } ? B & Extra : Extra;
 export type StaticComponentObject<Props, Ref, NonStyledProps, BaseStyles extends object, VariantProps, ParentStaticProperties> = {
     staticConfig: StaticConfig;
+    /**
+     * chain a component resolver: receives the complete props plus the style
+     * env, returns a style fragment applied above variants and below call-site
+     * props. Returns a NEW component; the original is untouched.
+     */
+    resolve(resolver: StyledResolver<Props extends TamaDefer ? GetFinalProps<NonStyledProps, BaseStyles, VariantProps> : Props, WithThemeAndShorthands<BaseStyles, {}>>): TamaguiComponent<Props, Ref, NonStyledProps, BaseStyles, VariantProps, ParentStaticProperties>;
 };
 export type TamaguiComponentExpectingVariants<Props = {}, Variants extends object = {}> = TamaguiComponent<Props, any, any, any, Variants>;
 export type TamaguiProviderProps = Omit<ThemeProviderProps, 'children'> & {
@@ -1817,6 +1823,12 @@ type StaticConfigBase = StaticConfigPublic & {
     displayName?: string;
     baseStyle?: Record<string, any>;
     variants?: GenericVariantDefinitions;
+    /**
+     * component resolvers added via `.resolve`, parent-first. Run after the
+     * props walk at their own precedence tier (above variants, below call-site
+     * props); a later resolver wins within the tier.
+     */
+    resolvers?: StyledResolver[];
     context?: StyledContext;
     contextProps?: readonly string[];
     /**
@@ -1858,6 +1870,43 @@ export type ViewStyleObject = TextStyle;
  * --------------------------------------------
  */
 export type StylableComponent = TamaguiComponent | ComponentType<any> | ReactComponentWithRef<any, any> | (new (props: any) => any);
+/**
+ * brand for `styled.dynamic` carriers stored in `variants`. Shared registry
+ * symbol so multiple copies of the package agree on what is a carrier.
+ */
+export declare const styledDynamicSymbol: unique symbol;
+/**
+ * environment handed to `styled.dynamic` callbacks and component `.resolve`
+ * resolvers. Never includes props for dynamics: a dynamic is a pure function
+ * of its value, which is what makes per-clause invocation sound.
+ */
+export type StyledDynamicEnv = {
+    fonts: TamaguiConfig['fonts'];
+    tokens: TokensParsed;
+    theme: Themes extends {
+        [key: string]: infer B;
+    } ? B : unknown;
+    fontFamily?: FontFamilyTokens;
+    font?: Font;
+};
+/** bare `styled.dynamic<T>()`: a typed prop consumed by styling, given style by `.resolve` */
+export interface StyledDynamicProp<Val = any> {
+    [styledDynamicSymbol]: true;
+    /** phantom carrying the accepted value type; never set at runtime */
+    __value?: Val;
+}
+/** `styled.dynamic<T>(fn)`: value -> style fragment, invoked per clause payload */
+export interface StyledDynamicFn<Val = any, Output extends object = Record<string, any>> {
+    (value: Val, env: StyledDynamicEnv): Partial<Output> | null | undefined;
+    [styledDynamicSymbol]: true;
+}
+export type StyledDynamic<Val = any, Output extends object = Record<string, any>> = StyledDynamicProp<Val> | StyledDynamicFn<Val, Output>;
+/**
+ * a component resolver added via `.resolve`: complete merged props -> style
+ * fragment, applied above variants and below call-site props. undefined
+ * values mean absent (fall through to lower tiers).
+ */
+export type StyledResolver<Props = Record<string, any>, Output extends object = Record<string, any>> = (props: Props, env: StyledDynamicEnv) => Partial<Output> | null | undefined;
 export type VariantResolverName = 'Size' | 'Space' | 'Color' | 'Radius' | 'ZIndex' | 'Theme' | 'FontSize' | 'FontStyle' | 'FontTransform' | 'FontLineHeight' | 'FontLetterSpacing' | 'number' | 'string' | 'boolean' | 'any';
 type TrimWhitespace = ' ' | '\n' | '\t' | '\r' | '\v' | '\f';
 type Trim<S extends string> = S extends `${TrimWhitespace}${infer Next}` ? Trim<Next> : S extends `${infer Next}${TrimWhitespace}` ? Trim<Next> : S;
@@ -1883,7 +1932,7 @@ export type GetVariantProps<A extends StylableComponent, IsText extends boolean 
     ];
 } ? Props extends TamaDefer ? GetFinalProps<NonStyledProps, BaseStyles, VariantProps> : Props : WithThemeAndShorthands<IsText extends true ? TextStylePropsBase : StackStyleBase>;
 export type VariantDefinitionFromProps<MyProps, Val> = MyProps extends object ? {
-    [propName: string]: VariantSpreadFunction<MyProps, Val> | {
+    [propName: string]: VariantSpreadFunction<MyProps, Val> | StyledDynamic<any, MyProps> | {
         [Key in string | number | 'true' | 'false']?: MyProps | VariantSpreadFunction<MyProps, Val> | StaticStyleInput;
     };
 } : {};

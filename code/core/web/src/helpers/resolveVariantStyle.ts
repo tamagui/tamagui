@@ -1,25 +1,13 @@
 import { getSetting } from '../config'
 import { getVariableValue } from '../createVariable'
-import type { GenericFonts, GetStyleState, LanguageContextType } from '../types'
+import type { GetStyleState } from '../types'
 import { emitVariantStyle, walkConditionalValue } from './getSplitStyles'
 import { isObj } from './isObj'
 import { getConfigRevisionState } from './grammarConfig'
 import { skipProps } from './skipProps'
 import { styleOriginalValues } from './styleOriginalValues'
 import { normalizeValueWithProperty } from './normalizeValueWithProperty'
-
-const fontLanguageCache = new WeakMap()
-
-export function getFontsForLanguage(fonts: GenericFonts, language: LanguageContextType) {
-  if (fontLanguageCache.has(language)) return fontLanguageCache.get(language)
-  const next = { ...fonts }
-  for (const name in language) {
-    const lang = language[name]
-    if (lang !== 'default') next[name] = fonts[`${name}_${lang}`]
-  }
-  fontLanguageCache.set(language, next)
-  return next
-}
+import { getDynamicEnv, getFontsForLanguage, isStyledDynamic } from './styledDynamic'
 
 export const getVariantExtras = (styleState: GetStyleState) => {
   const cached = (styleState as any).flatVariantExtras
@@ -69,6 +57,11 @@ export function resolveVariantStyle(
   parentCondition?: unknown
 ) {
   const definition = variants[key]
+  // bare styled.dynamic<T>(): the prop is typed and consumed here; its style
+  // comes from a component resolver reading it off props
+  if (typeof definition !== 'function' && isStyledDynamic(definition)) {
+    return
+  }
   if (
     !(
       typeof value === 'string' &&
@@ -93,12 +86,19 @@ function resolveSelection(
   parentKey: string,
   condition?: unknown
 ) {
-  let output = getConfigRevisionState(state.conf).variantDefinition(
-    variants[key],
-    value,
-    state.theme
-  )
-  if (typeof output === 'function') output = output(value, getVariantExtras(state))
+  const definition = variants[key]
+  let output
+  if (isStyledDynamic(definition) && typeof definition === 'function') {
+    // styled.dynamic(fn): pure function of the (per-clause) value + env
+    output = definition(value, getDynamicEnv(state))
+  } else {
+    output = getConfigRevisionState(state.conf).variantDefinition(
+      definition,
+      value,
+      state.theme
+    )
+    if (typeof output === 'function') output = output(value, getVariantExtras(state))
+  }
   if (!isObj(output)) return
 
   const originals = styleOriginalValues.get(output)

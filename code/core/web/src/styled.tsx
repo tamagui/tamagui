@@ -2,6 +2,7 @@ import { createComponent } from './createComponent'
 import { componentDisplayName } from './helpers/componentDisplayName'
 import { mergeVariants } from './helpers/mergeVariants'
 import { resolveVariantStyle } from './helpers/resolveVariantStyle'
+import { styledDynamic } from './helpers/styledDynamic'
 import type { FrontendComponent, StyleFrontend } from './helpers/styleFrontend'
 import { warnOnce } from './helpers/warnOnce'
 import type { GetRef } from './interfaces/GetRef'
@@ -18,6 +19,8 @@ import type {
   StaticConfigPublic,
   StylableComponent,
   StyledContext,
+  StyledDynamicFn,
+  StyledDynamicProp,
   TamaDefer,
   TamaguiComponent,
   ThemeValueByCategory,
@@ -40,9 +43,15 @@ type AreVariantsUndefined<Variants> =
 // objects) widen only at the final public props, in WithThemeAndShorthands
 type GetVariantAcceptedValues<V> = V extends object
   ? {
-      [Key in keyof V]?: V[Key] extends VariantSpreadFunction<any, infer Val>
+      // the fn carrier check runs first: the bare carrier's phantom is
+      // optional, so it would match a fn too and infer unknown
+      [Key in keyof V]?: V[Key] extends StyledDynamicFn<infer Val, any>
         ? Val
-        : GetVariantAcceptedValue<keyof V[Key]>
+        : V[Key] extends StyledDynamicProp<infer Val>
+          ? Val
+          : V[Key] extends VariantSpreadFunction<any, infer Val>
+            ? Val
+            : GetVariantAcceptedValue<keyof V[Key]>
     }
   : undefined
 
@@ -200,7 +209,7 @@ type StyledComponentResult<
  * `@tamagui/tailwind`, which reaches the implementation through
  * `createFrontendStyled`.
  */
-function styled<
+function styledFn<
   ParentComponent extends StylableComponent,
   StyledConfig extends StaticConfigPublic,
   Variants extends VariantDefinitions<ParentComponent, StyledConfig>,
@@ -223,9 +232,14 @@ function styled<
   Context,
   ContextPropKeys
 >
-function styled(...args: any[]) {
+function styledFn(...args: any[]) {
   return (styledImpl as any)(undefined, ...args)
 }
+
+const styled = Object.assign(styledFn, {
+  /** see styledDynamic: value/prop carriers usable as `variants` entries */
+  dynamic: styledDynamic,
+})
 
 /**
  * Builds a `styled()` bound to one frontend descriptor. Components it creates carry

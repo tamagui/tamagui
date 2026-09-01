@@ -1,13 +1,14 @@
+import { styledDynamic } from './helpers/styledDynamic';
 import type { FrontendComponent, StyleFrontend } from './helpers/styleFrontend';
 import type { GetRef } from './interfaces/GetRef';
-import type { GetBaseStyles, GetNonStyledProps, GetProps, GetStaticConfig, GetStyledVariants, InferStyleProps, InferStyledProps, StaticConfigPublic, StylableComponent, StyledContext, TamaDefer, TamaguiComponent, ThemeValueByCategory, VariantDefinitions, VariantResolverKey, VariantResolverValue, VariantSpreadFunction } from './types';
+import type { GetBaseStyles, GetNonStyledProps, GetProps, GetStaticConfig, GetStyledVariants, InferStyleProps, InferStyledProps, StaticConfigPublic, StylableComponent, StyledContext, StyledDynamicFn, StyledDynamicProp, TamaDefer, TamaguiComponent, ThemeValueByCategory, VariantDefinitions, VariantResolverKey, VariantResolverValue, VariantSpreadFunction } from './types';
 import type { Text } from './views/Text';
 export { createVariantResolver } from './types';
 type AreVariantsUndefined<Variants> = Required<Variants> extends {
     _isEmpty: 1;
 } ? true : false;
 type GetVariantAcceptedValues<V> = V extends object ? {
-    [Key in keyof V]?: V[Key] extends VariantSpreadFunction<any, infer Val> ? Val : GetVariantAcceptedValue<keyof V[Key]>;
+    [Key in keyof V]?: V[Key] extends StyledDynamicFn<infer Val, any> ? Val : V[Key] extends StyledDynamicProp<infer Val> ? Val : V[Key] extends VariantSpreadFunction<any, infer Val> ? Val : GetVariantAcceptedValue<keyof V[Key]>;
 } : undefined;
 type GetVariantAcceptedValue<Key> = Key extends 'true' | 'false' ? boolean : Key extends string ? VariantResolverKey<Key> extends never ? Key : VariantResolverValue<Key> : Key;
 type NoInferLocal<T> = [T][T extends any ? 0 : never];
@@ -42,7 +43,11 @@ type StyledComponentResult<ParentComponent extends StylableComponent, StyledConf
  * `@tamagui/tailwind`, which reaches the implementation through
  * `createFrontendStyled`.
  */
-declare function styled<ParentComponent extends StylableComponent, StyledConfig extends StaticConfigPublic, Variants extends VariantDefinitions<ParentComponent, StyledConfig>, Context extends StyledContext<any> | undefined = undefined, ContextPropKeys extends string = GetStyledContextDefaultKeys<Context>>(ComponentIn: ParentComponent, options?: StyledOptions<ParentComponent, StyledConfig, Variants, Context, ContextPropKeys>, config?: StyledConfig): StyledComponentResult<ParentComponent, StyledConfig, Variants, Context, ContextPropKeys>;
+declare function styledFn<ParentComponent extends StylableComponent, StyledConfig extends StaticConfigPublic, Variants extends VariantDefinitions<ParentComponent, StyledConfig>, Context extends StyledContext<any> | undefined = undefined, ContextPropKeys extends string = GetStyledContextDefaultKeys<Context>>(ComponentIn: ParentComponent, options?: StyledOptions<ParentComponent, StyledConfig, Variants, Context, ContextPropKeys>, config?: StyledConfig): StyledComponentResult<ParentComponent, StyledConfig, Variants, Context, ContextPropKeys>;
+declare const styled: typeof styledFn & {
+    /** see styledDynamic: value/prop carriers usable as `variants` entries */
+    dynamic: typeof styledDynamic;
+};
 /**
  * Builds a `styled()` bound to one frontend descriptor. Components it creates carry
  * that descriptor immutably, so behavior follows import provenance instead of any

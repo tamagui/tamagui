@@ -1,4 +1,5 @@
 import type { GenericVariantDefinitions } from '../types'
+import { styledDynamicSymbol } from '../types'
 import { isPlainObject } from './isObj'
 
 function mergeVariantValues(earlier: unknown, later: unknown): unknown {
@@ -75,7 +76,15 @@ export const mergeVariants = (
   for (const key in ourVariants) {
     const parentVariant = parentVariants?.[key]
     const ourVariant = ourVariants[key]
-    if (!isPlainObject(parentVariant) || !isPlainObject(ourVariant)) {
+    if (
+      !isPlainObject(parentVariant) ||
+      !isPlainObject(ourVariant) ||
+      // styled.dynamic carriers are atomic: a child redefinition replaces the
+      // parent's outright, never merges (spreading a bare marker's brand into
+      // an enumerated child would turn it into a consumed no-op)
+      styledDynamicSymbol in parentVariant ||
+      styledDynamicSymbol in ourVariant
+    ) {
       variants[key] = ourVariant
     } else {
       if (level === 0) {

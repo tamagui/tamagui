@@ -61,6 +61,7 @@ import { warnOnce, warnRefusedValue } from './warnOnce'
 export { getStyleStaticConfig }
 
 import { isColorStyleKey } from './getDynamicVal'
+import { getDynamicEnv } from './styledDynamic'
 import { shouldInsertStyleRules, updateRules } from './insertStyleRule'
 import { log } from './log'
 import { normalizeColor } from './normalizeColor'
@@ -425,6 +426,17 @@ const passSourceLayer = 29
 const passParentCursor = 30
 const passMapSourceKey = 31
 
+const passFlags = 14
+
+// style contribution precedence tiers (ownsSourceLayer): a higher tier's
+// unconditional value replaces a lower tier's for the same property, equal
+// tiers are last-wins, conditional values layer over lower tiers instead
+const sourceLayerBase = 0
+const sourceLayerVariant = 1
+const sourceLayerResolver = 2
+const sourceLayerProps = 3
+const sourceLayerStyle = 4
+
 const passNoSkipFlag = 1
 const passDisableShorthandsFlag = 2
 const passNoExpandFlag = 4
@@ -652,7 +664,8 @@ function contributeProp(
       viewProps.style = valInit
       return
     }
-    pass[passSourceLayer] = 3
+    const layerBeforeStyle = pass[passSourceLayer]
+    pass[passSourceLayer] = sourceLayerStyle
     const isArray = Array.isArray(valInit)
     const length = isArray ? valInit.length : 1
     for (let index = 0; index < length; index++) {
@@ -673,7 +686,7 @@ function contributeProp(
         contributeValue(styleState, key, style[key], styleOriginals?.[key])
       }
     }
-    pass[passSourceLayer] = 2
+    pass[passSourceLayer] = layerBeforeStyle
     return
   }
 
@@ -895,7 +908,7 @@ function contributeProp(
 
   if (variants && keyInit in variants && !noExpand && !disabled) {
     const previousLayer = pass[passSourceLayer]
-    pass[passSourceLayer] = +!!previousLayer
+    pass[passSourceLayer] = previousLayer ? sourceLayerVariant : sourceLayerBase
     pass[passMapSourceKey] = keyInit
     const variantConfig = (styleState as DirectState).flatStyleStaticConfig!
     variantConfig.variantStyleResolver?.(
@@ -1194,7 +1207,7 @@ export const getSplitStyles: StyleSplitter = (
   const baseStyle = styleStaticConfig.baseStyle
   const baseVariantProps = styleStaticConfig.baseVariantProps
   const appliesBaseStyle = baseStyle && !processedProps.asChild
-  pass[passSourceLayer] = 0
+  pass[passSourceLayer] = sourceLayerBase
   if (appliesBaseStyle && baseVariantProps) {
     // a defaulted variant the caller replaced keeps the default's authored
     // position (so a later styled override of its outputs still wins), but the
@@ -1224,12 +1237,34 @@ export const getSplitStyles: StyleSplitter = (
       )
     }
   }
-  pass[passSourceLayer] = 2
+  pass[passSourceLayer] = sourceLayerProps
   for (const key in processedProps) {
     if (appliesBaseStyle && baseVariantProps && Object.hasOwn(baseVariantProps, key)) {
       continue
     }
     contributeProp(pass, key, processedProps[key])
+  }
+
+  // component resolvers (`.resolve`): parent-first, full merged props, style
+  // fragment output. contributed above variants, below call-site props, so a
+  // later resolver in the chain wins within the tier
+  const resolvers = staticConfig.resolvers
+  if (resolvers && !noExpand) {
+    pass[passSourceLayer] = sourceLayerResolver
+    const flagsBefore = pass[passFlags]
+    // resolver output is styles only: never re-enter variant dispatch
+    pass[passFlags] = flagsBefore | passNoExpandFlag
+    const env = getDynamicEnv(styleState)
+    for (let index = 0; index < resolvers.length; index++) {
+      const resolved = resolvers[index](processedProps, env)
+      if (resolved) {
+        for (const key in resolved) {
+          if (resolved[key] == null) continue
+          contributeProp(pass, key, resolved[key])
+        }
+      }
+    }
+    pass[passFlags] = flagsBefore
   }
 
   className = pass[passClassName]

@@ -2229,6 +2229,24 @@ export function createComponent<
 
   res.staticConfig = staticConfig
 
+  // `.resolve` chains a component resolver (complete props + env -> style
+  // fragment) by returning a NEW component with the resolver appended
+  res.resolve = (resolver: any) => {
+    const next: any = createComponent({
+      ...staticConfig,
+      resolvers: staticConfig.resolvers
+        ? [...staticConfig.resolvers, resolver]
+        : [resolver],
+    })
+    // carry over statics assigned after creation (styled() copies parent
+    // statics onto the finished component)
+    for (const key in res) {
+      if (key === 'propTypes' || key in next) continue
+      next[key] = (res as any)[key]
+    }
+    return next
+  }
+
   if (displayName) {
     res.displayName = displayName
     ;(res as any)[componentDisplayName] = displayName
