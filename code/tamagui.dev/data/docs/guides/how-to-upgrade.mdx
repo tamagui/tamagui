@@ -522,6 +522,7 @@ Use these replacements:
 | `createCheckbox` `sizeAdjust` | explicit sizing math or component styles |
 | `@tamagui/animations-moti` | `@tamagui/animations-reanimated` |
 | `@tamagui/config/reanimated` | `@tamagui/config/animations-reanimated` |
+| `accept` option in `styled()` | piece-typed props (e.g. `StylePiece`) or real style keys |
 | `'...size'` / `'...fontSize'` spread variant keys | `styled.dynamic<T>((value, env) => ({ ... }))` |
 | `':string'` / `':number'` / `':boolean'` type-key variants | a typed `styled.dynamic<string \| number \| boolean>(...)` |
 | `'...'` catch-all variant key | `styled.dynamic<YourValue>(...)` with an explicit value type |
@@ -579,7 +580,7 @@ const Card = createStyledHOC(CardFrame)<CardProps>((props, ref) => ...)
 const Card = createStyledHOC(CardFrame, (props: CardProps, ref) => ...)
 ```
 
-Spread, resolver-name, and type-key variants have no runtime matching in v3 — a
+Spread, resolver-name, and type-key variants have no runtime matching in v3. A
 leftover `'...size'`, `Size`, or `number` key only matches that exact literal.
 Search for those keys and replace the functional branch with one branded
 dynamic, which types the prop directly:
@@ -598,6 +599,32 @@ variants: {
     padding: tokens.size[val],
   })),
 } as const
+```
+
+### accept is removed
+
+The `accept` configuration option in `styled()` has been removed in v3. It previously handled two patterns:
+
+1. **Piece-typed style props:** Props that accept style objects (such as `activeStyle` on `Checkbox`, `ToggleGroup`, and `Tabs`, or `contentContainerStyle` on `ScrollView`) now accept a `StylePiece` created with `style()`.
+2. **Input color style keys:** `placeholderTextColor`, `selectionColor`, `cursorColor`, and `selectionHandleColor` on `Input` and `TextArea` are now real style properties. On web, they emit CSS rules (`::placeholder`, `caret-color`, `::selection`). On native, they map through the React Native compatibility layer.
+
+```tsx
+// before
+const MyScrollView = styled(
+  ScrollView,
+  {},
+  {
+    accept: {
+      contentContainerStyle: 'style',
+    } as const,
+  }
+)
+
+// after
+import { ScrollView, style } from 'tamagui'
+
+const contentStyle = style({ padding: 16 })
+<ScrollView contentContainerStyle={contentStyle} />
 ```
 
 Examples:

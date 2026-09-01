@@ -73,8 +73,77 @@ const Card = styled(View, {
 - Tokens and theme values are bare: `4`, `background`, `color11`
 - Conditions are clauses in the same value string: `bg="background hover:background-hover"`
 - Do not author pseudo, media, theme, platform, group, enter, or exit style objects
-- Prop order matters - later props override earlier ones
+- Prop order matters: later props override earlier ones
 - Variants defined later in the object override earlier ones
+
+### Dynamic Variants and Component Resolvers
+
+Use `styled.dynamic` and `.resolve` for typed dynamic styles:
+
+```tsx
+import { SizeTokens, View, style, styled } from 'tamagui'
+
+// 1. Style piece: static fragment compiled at module evaluation
+const activePiece = style({
+  backgroundColor: 'background-press',
+})
+
+// 2. Dynamic variant: value -> style fragment, or bare declaration
+const Box = styled(View, {
+  variants: {
+    // bare declaration: typed and consumed, styled in .resolve
+    tone: styled.dynamic<'neutral' | 'critical'>(),
+
+    // function form: maps value to styles, runs per clause payload
+    size: styled.dynamic<SizeTokens | number>((val, { tokens }) => {
+      const value = tokens.size[val] ?? val
+      return { width: value, height: value }
+    }),
+  } as const,
+}).resolve((props, env) => ({
+  // 3. Component resolver: complete props -> styles
+  backgroundColor: props.tone === 'critical' ? env.theme.red10 : undefined,
+  opacity: props.disabled ? 0.5 : undefined,
+}))
+```
+
+**Precedence tiers:**
+`0 base styles < 1 variants < 2 component resolvers < 3 callsite style props < 4 style prop`
+
+### Piece-Typed Component Props
+
+Components accept `StylePiece` on dedicated style props:
+- `activeStyle` on `Checkbox`, `ToggleGroup.Item`, and `Tabs.Tab`
+- `contentContainerStyle` on `ScrollView`
+
+```tsx
+const contentStyle = style({ padding: 16 })
+<ScrollView contentContainerStyle={contentStyle}>
+  <Checkbox activeStyle={activePiece} />
+</ScrollView>
+```
+
+### Tamagui Tailwind
+
+Author with Tailwind utility classes in `className` by importing from `@tamagui/tailwind`:
+
+```tsx
+import { Text, View, styled } from '@tamagui/tailwind'
+
+export function Card() {
+  return (
+    <View className="flex flex-row items-center gap-3 p-4 rounded-lg bg-slate-100">
+      <View className="w-10 h-10 rounded-full bg-blue-500" />
+      <Text className="text-base font-semibold text-slate-900">Card Title</Text>
+    </View>
+  )
+}
+```
+
+- **Frontend selected by import:** No global mode. `@tamagui/tailwind` and `tamagui` components mix in the same tree.
+- **Cross-platform:** Compiles to atomic CSS on web; resolves to React Native styles on iOS and Android.
+- **Class-first styled():** `styled(View, 'p-4 rounded', { variants: { ... } })`
+- **Vite plugin:** `import { tamaguiPlugin } from '@tamagui/tailwind/vite'`
 
 ### Stack Components
 
@@ -377,6 +446,67 @@ const anims = createAnimations({
 const anims = createAnimations({
   bouncy: 'cubic-bezier(0.68, -0.55, 0.265, 1.55) 300ms'
 })
+```
+
+### ❌ Reading sibling props inside dynamic variants
+
+```tsx
+// bad - dynamic variant callbacks receive only (value, env)
+const BadButton = styled(View, {
+  variants: {
+    size: styled.dynamic<SizeTokens>((val, env) => ({
+      width: env.tokens.size[val],
+      borderRadius: (env as any).props?.circular ? 1000 : 4,
+    })),
+  },
+})
+
+// good - declare bare dynamic variant, resolve sibling logic in .resolve
+const GoodButtonBase = styled(View, {
+  variants: {
+    size: styled.dynamic<SizeTokens>((val, { tokens }) => ({
+      width: tokens.size[val],
+    })),
+    circular: styled.dynamic<boolean>(),
+  },
+})
+
+export const GoodButton = GoodButtonBase.resolve((props) => ({
+  borderRadius: props.circular ? 1000 : 4,
+}))
+```
+
+### ❌ Spreads or computed keys in dynamic bodies
+
+```tsx
+// bad - deopts compiler extraction and warns in development
+const badVariant = styled.dynamic<string>((val) => ({
+  [`padding-${val}`]: 10,
+  ...someObject,
+}))
+
+// good - static keys and undefined values for inactive branches
+const goodVariant = styled.dynamic<string>((val) => ({
+  padding: val === 'large' ? 20 : 10,
+  opacity: val === 'hidden' ? 0 : undefined,
+}))
+```
+
+### ❌ Calling style() inside render
+
+```tsx
+// bad - recompiles style rules on every render pass
+function BadComponent() {
+  const badPiece = style({ padding: 16 })
+  return <View style={badPiece} />
+}
+
+// good - define style pieces at module scope
+const goodPiece = style({ padding: 16 })
+
+function GoodComponent() {
+  return <View style={goodPiece} />
+}
 ```
 
 ---

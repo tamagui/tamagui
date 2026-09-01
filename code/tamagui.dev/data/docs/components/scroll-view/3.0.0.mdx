@@ -42,10 +42,15 @@ npm install @tamagui/scroll-view
 ## Usage
 
 ```tsx
-import { ScrollView, YStack, ListItem } from 'tamagui'
+import { ListItem, ScrollView, YStack, style } from 'tamagui'
+
+const contentContainer = style({
+  padding: 16,
+  gap: 8,
+})
 
 export default () => (
-  <ScrollView>
+  <ScrollView contentContainerStyle={contentContainer}>
     <YStack>
       <ListItem>1</ListItem>
       <ListItem>2</ListItem>
@@ -60,4 +65,31 @@ export default () => (
 
 ### ScrollView
 
-See [React Native ScrollView](https://reactnative.dev/docs/scrollview) and [Tamagui style props](https://tamagui.dev/docs/intro/props). On web, prefer the mapped props documented above.
+`ScrollView` accepts Tamagui standard props and the mapped React Native ScrollView surface.
+
+<PropsTable
+  data={[
+    {
+      name: 'contentContainerStyle',
+      type: 'StylePiece',
+      description: `Styles applied to the inner scroll container. Accepts a style() piece.`,
+    },
+    {
+      name: 'horizontal',
+      type: 'boolean',
+      description: `When true, scrolls horizontally instead of vertically.`,
+    },
+    {
+      name: 'showsHorizontalScrollIndicator',
+      type: 'boolean',
+      description: `Whether to show the horizontal scroll indicator.`,
+    },
+    {
+      name: 'showsVerticalScrollIndicator',
+      type: 'boolean',
+      description: `Whether to show the vertical scroll indicator.`,
+    },
+  ]}
+/>
+
+See [React Native ScrollView](https://reactnative.dev/docs/scrollview) and [Tamagui style props](/docs/intro/props). On web, prefer the mapped props documented above.

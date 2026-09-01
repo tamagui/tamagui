@@ -5,6 +5,6 @@
     "declaration": false,
     "composite": false
   },
-  "include": ["./migration-guide.tsx", "../../config/tamagui.config.ts"],
+  "include": ["./migration-guide.tsx", "./variant-system.tsx", "../../config/tamagui.config.ts"],
   "references": []
 }

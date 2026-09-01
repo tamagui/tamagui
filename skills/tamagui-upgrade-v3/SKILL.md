@@ -307,13 +307,21 @@ The codemod flags these; you rewrite them. Full before/after recipes are in
 | Ternary over token literals: `bg={x ? '$a' : '$b'}` | Codemod rewrites literal trees in place; verify, don't touch |
 | Dynamic value inside a condition object: `hoverStyle={{ bg: x ? undefined : '$a' }}` | Lift the branch outside the clause string, or make it a variant |
 | Conditional spreads carrying style objects | Convert the spread object's values; never reorder the spread itself |
-| Functional variants returning style objects | Keep the function, convert returned values to flat strings |
+| Functional variants | Brand with `styled.dynamic<T>()`; move `extras.props` logic to `.resolve` |
 | Token in a module constant: `const R = '$6'` | Migrate the constant, then its users |
 | Tokens embedded in composite strings (shadows, gradients) | Bare name for named tokens; resolved CSS value for numeric ones |
 | Shadow/text-shadow/transform part conditions | Rebuild as one complete `boxShadow`, `textShadow`, or `transform` value |
 | `exitStyle` in shared or web files | Keep it authored; `exit:` only evaluates on native |
 | `x`/`y` offsets with a custom config | v2 `$4` used the size scale, v3 `4` uses space; review if the scales differ |
 | Group size conditions: `$group-card-maxMd` | Becomes `@max-md/card:` plus `container="card"` on the declaring ancestor; the container owner must be provable |
+
+### Manual playbook for functional variants
+
+The codemod flags functional variants that need architectural updates:
+- **`extras.props` to `.resolve`:** Move sibling-prop inspection out of variant functions. Declare variant props with `styled.dynamic<T>()` and apply dependent styles in a component `.resolve((props, env) => ({ ... }))` callback.
+- **Mixed variants:** Variants combining exact keys and dynamic fallbacks (e.g. `:number`) become a single `styled.dynamic<UnionType>((val, env) => ...)` or separate exact variants.
+- **Catch-all variants (`'...'`):** Replace with `styled.dynamic<YourValue>((val, env) => ...)`.
+- **Static shape rule:** Ensure returned objects have static keys and use `undefined` for inactive branches. Spreads and computed keys in dynamic bodies deopt compiler extraction.
 
 ### Remove runtime prop-resolution hooks
 

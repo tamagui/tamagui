@@ -33,7 +33,7 @@ Version 3 has three goals:
 - **Unify syntax choices.** Tamagui props and Tailwind classes now flow through
   one compiler and one token system instead of competing styling stacks.
 
-## Tailwind frontend
+## Tamagui Tailwind
 
 The headline new feature is a package-selected Tailwind frontend. Import its
 components and write utility classes in `className`:
@@ -56,7 +56,7 @@ the same string resolves to React Native styles. Components imported from
 `tamagui` keep the regular prop frontend, so both authoring styles can share a
 tree without a global mode.
 
-Read the full [Tailwind post](/blog/tailwind-mode) for the compiler details
+Read the full [Tamagui Tailwind post](/blog/tailwind-mode) for compiler details
 and current utility coverage.
 
 ## Three explicit component surfaces
@@ -187,6 +187,55 @@ wins in both because state outranks media:
 
 Moving a clause to the end of the string is not a way to make it win. Reach for a
 more specific clause instead, such as `hover:sm:`.
+
+## Single-function variants and component resolvers
+
+In v2, variant machinery was the largest source of runtime complexity and TypeScript compilation overhead in `styled()`. Spread keys like `'...size'`, resolver names like `Size`, and type-key matching created heavy type computations. Inline variant functions also ran before the component's complete prop types existed, which forced workarounds for variants that needed to inspect sibling props.
+
+Version 3 unifies this around statically-shaped style fragments across three arities:
+
+```tsx
+import { SizeTokens, View, style, styled } from 'tamagui'
+
+// 1. Zero inputs: a style piece compiled at definition time
+const cardActive = style({ backgroundColor: 'background-press' })
+
+// 2. Value to style piece: branded dynamic variant
+const CardBase = styled(View, {
+  variants: {
+    // bare declaration: typed and consumed, styled by .resolve
+    tone: styled.dynamic<'neutral' | 'critical'>(),
+
+    // function form: invoked per clause payload so responsive values work
+    size: styled.dynamic<SizeTokens | number>((val, { tokens }) => {
+      const value = tokens.size[val] ?? val
+      return { width: value, height: value }
+    }),
+  } as const,
+})
+
+// 3. Props to style piece: component resolver
+export const Card = CardBase.resolve((props, env) => ({
+  backgroundColor: props.tone === 'critical' ? env.theme.red10 : undefined,
+  opacity: props.disabled ? 0.5 : undefined,
+}))
+```
+
+### Precedence tiers
+
+Styles resolve through flat precedence tiers:
+
+```
+0 base styles < 1 variants (definition order) < 2 component resolvers < 3 callsite style props < 4 style prop
+```
+
+Within each tier, later definitions win. Resolver chains execute in parent-first order, so a child component's resolver overrides its parent's resolver for conflicting properties. Setting a property to `undefined` in a resolver means absent, allowing lower-tier styles to show through.
+
+### Compiler path
+
+This unified model simplifies static extraction:
+- **Lane A (available today):** The compiler evaluates `styled.dynamic` callbacks and `.resolve` chains inside its evaluation sandbox for callsites with statically-known props.
+- **Lane B (v4 zero-runtime path):** Conforming bodies with static keys and no spreads will extract to static CSS classes with CSS variables for dynamic values.
 
 ## Removed deprecated APIs
 

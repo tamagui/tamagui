@@ -87,6 +87,10 @@ site is clean.
 
 ## Functional variants
 
+In v3, all functional variants require explicit `styled.dynamic<T>()` branding. Unbranded functions and v2 `(val, extras)` bodies are rejected.
+
+### Standard functional variants
+
 ```tsx
 // v2
 variants: {
@@ -95,21 +99,87 @@ variants: {
     enterStyle: { opacity: 0 },
   }),
 }
-```
 
-The function stays; its returned values migrate like any style object:
-
-```tsx
+// v3: brand with styled.dynamic
 variants: {
-  step: (val: number) => ({
+  step: styled.dynamic<number>((val) => ({
     x: val * 10,
     opacity: 'enter:0',
-  }),
+  })),
 }
 ```
 
-Numbers computed at runtime stay numbers (raw platform values). Only make a
-computed value a string when it needs a clause or a token.
+### Reading sibling props (extras.props to .resolve)
+
+In v2, variants accessed sibling props via `extras.props`. In v3, dynamic variant callbacks receive only `(value, env)`. Move sibling-prop inspection to a component `.resolve` callback:
+
+```tsx
+// v2
+const Button = styled(View, {
+  variants: {
+    size: (val, { props, tokens }) => ({
+      padding: tokens.size[val],
+      borderRadius: props.circular ? 1000 : 4,
+    }),
+    circular: { true: {} },
+  },
+})
+
+// v3: dynamic size + .resolve for circular
+const ButtonBase = styled(View, {
+  variants: {
+    size: styled.dynamic<SizeTokens>((val, { tokens }) => ({
+      padding: tokens.size[val],
+    })),
+    circular: styled.dynamic<boolean>(),
+  },
+})
+
+export const Button = ButtonBase.resolve((props) => ({
+  borderRadius: props.circular ? 1000 : 4,
+}))
+```
+
+### Mixed variants (exact keys + dynamic)
+
+When a variant mixed exact literal keys with a functional fallback:
+
+```tsx
+// v2
+variants: {
+  size: {
+    small: { padding: 4 },
+    large: { padding: 12 },
+    ':number': (val) => ({ padding: val }),
+  },
+}
+
+// v3: declare one dynamic with union type, or separate exact variants
+variants: {
+  size: styled.dynamic<'small' | 'large' | number>((val) => ({
+    padding: val === 'small' ? 4 : val === 'large' ? 12 : val,
+  })),
+}
+```
+
+### Catch-all variants ('...')
+
+```tsx
+// v2
+variants: {
+  size: {
+    '...': (val) => ({ width: val, height: val }),
+  },
+}
+
+// v3: replace with styled.dynamic with explicit value type
+variants: {
+  size: styled.dynamic<SizeTokens | number>((val, { tokens }) => {
+    const value = tokens.size[val] ?? val
+    return { width: value, height: value }
+  }),
+}
+```
 
 ## Tokens behind module constants and maps
 

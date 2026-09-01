@@ -245,8 +245,8 @@ function MyCheckbox({ defaultChecked, onCheckedChange, ...props }) {
     {
       name: 'activeStyle',
       required: false,
-      type: `StyleProp`,
-      description: `Styles to apply when the checkbox is checked.`,
+      type: `StylePiece`,
+      description: `Styles to apply when the checkbox is checked. Accepts a style() piece.`,
     },
     {
       name: 'activeTheme',
@@ -264,6 +264,12 @@ function MyCheckbox({ defaultChecked, onCheckedChange, ...props }) {
 
 <PropsTable
   data={[
+    {
+      name: 'activeStyle',
+      required: false,
+      type: `StylePiece`,
+      description: `Styles to apply when the indicator is active. Accepts a style() piece.`,
+    },
     {
       name: 'forceMount',
       required: false,

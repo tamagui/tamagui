@@ -268,17 +268,17 @@ the property (`"lg"`), and the second is an object with
     {
       name: 'theme',
       type: 'ThemeParsed',
-      description: `A proxy to your theme that lets you access all theme values using normal keys, or with a "$" prefix.`,
+      description: `A proxy to your theme that lets you access active theme values using normal keys.`,
     },
     {
       name: 'tokens',
       type: 'TokensParsed',
-      description: `All your tokens given to createTamagui, ensuring the keys all start with "$".`,
+      description: `All tokens parsed from your configuration, accessible with bare keys (e.g. tokens.size[val]).`,
     },
     {
       name: 'font',
       type: 'Font',
-      description: `Maybe undefined. A single resolved Font that you passed to you fonts config.`,
+      description: `Maybe undefined. A single resolved Font object from your font configuration.`,
     },
     {
       name: 'fontFamily',
@@ -287,11 +287,30 @@ the property (`"lg"`), and the second is an object with
     },
     {
       name: 'fonts',
-      type: 'string',
-      description: `All your fonts passed to createTamagui.`,
+      type: 'GenericFonts',
+      description: `All fonts parsed from your configuration.`,
     },
   ]}
 />
+
+#### Bare Dynamic Declarations
+
+When variant styles depend on sibling props, declare the prop type with bare `styled.dynamic<T>()` and apply the styles in a component `.resolve` callback:
+
+```tsx
+import { View, styled } from 'tamagui' // or '@tamagui/core'
+
+export const AlertBox = styled(View, {
+  variants: {
+    tone: styled.dynamic<'neutral' | 'critical'>(),
+  },
+}).resolve((props, env) => ({
+  backgroundColor: props.tone === 'critical' ? env.theme.red10 : undefined,
+  opacity: props.disabled ? 0.5 : undefined,
+}))
+```
+
+Bare dynamic variants declare the accepted prop type and mark the prop as consumed. It is not forwarded to the underlying DOM element or native view.
 
 #### Dynamic value domains
 
