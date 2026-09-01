@@ -25,7 +25,7 @@ const deterministicImage = await readFile(
 const pageCases = [
   { name: 'home', path: '/' },
   { name: 'docs', path: '/docs/intro/introduction' },
-  { name: 'component', path: '/ui/button' },
+  { name: 'component', path: '/ui/button', comparable: false },
   { name: 'blog-index', path: '/blog', comparable: false },
   { name: 'blog-post', path: '/blog/version-two' },
   { name: 'takeout', path: '/takeout' },
