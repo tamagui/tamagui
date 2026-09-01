@@ -295,5 +295,8 @@ clause strings with outputs unchanged.
   ceiling 28,497.
 
 A third round (clause conditions built once per config revision and class
-mode, activated per pass) measures +258 gzip on the same fixture and is held
-locally until a quiet-machine paired replay confirms its clause-path win.
+mode, activated per pass) measured +258 gzip on the same fixture. **RAN** a
+quiet-machine ABBA replay (80% idle, 15 rounds each) put its clause-string
+ratio at 1.13 and 1.06 against 1.13 and 1.12 without it, conditional objects
+and the total flat. No win to pay for, so it was reverted; the baseline stays
+at 28,347.

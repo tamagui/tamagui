@@ -72,13 +72,20 @@ Outputs are identical (the replay checksum did not move), core web (594)
 and native (311) suites and the compiler web suite (246) pass, and the
 styled-view fixture grew 127 gzip bytes (baseline re-recorded).
 
+## Tried and reverted
+
+- Condition templates across passes (`2f50d46c04`, reverted): committed
+  conditions built once per config revision and class mode, activated per
+  pass. **RAN** ABBA on a quiet machine (80% idle, 15 rounds each): clause
+  strings 1.13 / 1.06 with templates against 1.13 / 1.12 without, conditional
+  objects 1.30 / 1.30 against 1.29 / 1.33, total 0.80 / 0.78 against 0.77 /
+  0.79. The per-pass condition build is not where the clause cost is; the
+  record and CSS emission chain is. It also cost 258 gzip bytes. One trap for
+  whoever retries it: the packed precedence value is wider than 32 bits, so a
+  bitwise clear of the active bit on the committed value truncates it.
+
 ## Follow-ups, ranked by the profile
 
-- Condition templates across passes: `conditionFromKey` re-resolves `hover:`,
-  `sm:` and friends on every pass (four array allocations, selector and
-  wrapper string building, atom and rank insertion, a join in
-  `commitCondition`). Only the active bit and the touched-key sets depend on
-  pass state; the rest is fixed per config revision and class mode.
 - Prop classification per component: `contributeProp` runs eight hash
   lookups per prop (shorthands, defaults, skip props, validity, variants,
   context keys, text props) that are all static per `styleStaticConfig`.
