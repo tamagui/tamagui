@@ -99,7 +99,7 @@ export function AccordionDefaultOpenCase() {
           to the v6 "20" token (80px), which wrapped every label ~3x taller and
           pushed grow-content below the window, so Detox refused the tap */}
       <Accordion overflow="hidden" width={224} type="multiple" defaultValue={['a1']}>
-        <Accordion.Item value="a1" mb={-1}>
+        <Accordion.Item value="a1">
           <Accordion.Trigger
             id="def-trigger"
             testID="def-trigger"
@@ -151,6 +151,7 @@ export function AccordionDefaultOpenCase() {
             flexDirection="row"
             justify="space-between"
             borderWidth={1}
+            borderTopWidth={0}
             borderColor="border-color"
           >
             {({ open }: { open: boolean }) => (

@@ -20,7 +20,6 @@ import {
 } from 'tamagui'
 import { Button } from '~/components/Button'
 import { authFetch } from '../../api/authFetch'
-import { getAccessToken } from '../../auth/useSupabaseClient'
 import { defaultModel } from '../../api/generateModels'
 import { getActivePromo } from '../../site/purchase/promoConfig'
 import { purchaseModal } from '../../site/purchase/purchaseModalStore'
@@ -141,8 +140,7 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
 
       const lastId = `${type === 'delete' ? themeIdToDelete : id}`
 
-      const accessToken = await getAccessToken()
-      const res = await fetch(`/api/theme/generate`, {
+      const res = await authFetch(`/api/theme/generate`, {
         body: JSON.stringify({
           prompt,
           model,
@@ -152,10 +150,6 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
           scheme: themeName.startsWith('dark') ? 'dark' : 'light',
           action: type === 'delete' ? 'delete' : 'generate',
         }),
-        headers: {
-          'Content-Type': 'application/json',
-          ...(accessToken && { Authorization: `Bearer ${accessToken}` }),
-        },
         method: 'POST',
       })
 

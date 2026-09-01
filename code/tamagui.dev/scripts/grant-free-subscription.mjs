@@ -1,16 +1,14 @@
 // @ts-check
 
 /**
- * Grant Free Subscription Script
+ * Grant one free year of the current V2 Pro license to an existing user.
  *
- * Creates a free Pro subscription for a user via Stripe with a 100% coupon.
- * The webhook will automatically sync to Supabase.
+ * This creates a zero-dollar, one-time Stripe invoice for the V2 license. The
+ * normal invoice.paid webhook then records one year of Pro access in Supabase.
+ * No recurring Stripe subscription is created, so the gift cannot renew.
  *
  * Usage:
- *   node scripts/grant-free-subscription.mjs <github_username>
- *
- * Example:
- *   node scripts/grant-free-subscription.mjs DaveyEke
+ *   node scripts/grant-free-subscription.mjs <email>
  */
 
 import Stripe from 'stripe'
@@ -27,163 +25,256 @@ if (!STRIPE_KEY) {
 const stripe = new Stripe(STRIPE_KEY, {
   apiVersion: '2020-08-27',
   appInfo: {
-    name: 'Tamagui Free Subscription Granter',
-    version: '0.1.0',
+    name: 'Tamagui Free Pro Year Granter',
+    version: '1.0.0',
   },
 })
 
-const SUPA_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || 'http://localhost:54321'
-const SUPA_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || ''
+const SUPA_URL = process.env.NEXT_PUBLIC_SUPABASE_URL
+const SUPA_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY
 
 if (!SUPA_URL || !SUPA_KEY) {
-  throw new Error('SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY is not set')
+  throw new Error('NEXT_PUBLIC_SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY is not set')
 }
-
-console.info(`Connecting to supabase: ${SUPA_URL}`)
 
 const supabaseAdmin = createClient(SUPA_URL, SUPA_KEY)
 
-// V1 Pro subscription price (recurring $240/year - will be $0 with 100% coupon)
-const PRO_PRICE_ID = 'price_1QthHSFQGtHoG6xcDOEuFsrW'
+const PRO_V2_LICENSE_PRICE_ID = 'price_1T4OsOFQGtHoG6xcBAL0yFd1'
+const GIFT_COUPON_ID = 'TAMAGUI_PRO_YEAR_GIFT'
+const GIFT_REASON = 'free-pro-year-gift'
 
-async function getUserByGitHubUsername(githubUsername) {
+const sleep = (milliseconds) =>
+  new Promise((resolve) => {
+    setTimeout(resolve, milliseconds)
+  })
+
+async function getUserByEmail(email) {
   const { data, error } = await supabaseAdmin
     .from('users_private')
-    .select('*')
-    .ilike('github_user_name', githubUsername)
-    .single()
+    .select('id, email, github_user_name')
+    .ilike('email', email)
+    .maybeSingle()
 
   if (error) {
-    throw new Error(
-      `Failed to find user with GitHub username "${githubUsername}": ${error.message}`
-    )
+    throw new Error(`Failed to find user with email "${email}": ${error.message}`)
+  }
+  if (!data) {
+    throw new Error(`No Tamagui account found for ${email}`)
   }
   return data
 }
 
 async function getOrCreateStripeCustomer(userId, email) {
-  // check if customer exists
-  const { data: existingCustomer } = await supabaseAdmin
+  const { data: existingCustomer, error } = await supabaseAdmin
     .from('customers')
-    .select('*')
+    .select('stripe_customer_id')
     .eq('id', userId)
-    .single()
+    .maybeSingle()
+
+  if (error) throw new Error(`Failed to look up Stripe customer: ${error.message}`)
 
   if (existingCustomer?.stripe_customer_id) {
-    console.info(`Found existing Stripe customer: ${existingCustomer.stripe_customer_id}`)
     return existingCustomer.stripe_customer_id
   }
 
-  // create new customer in Stripe
-  const customer = await stripe.customers.create({
-    email,
-    metadata: {
-      supabaseUUID: userId,
+  const customer = await stripe.customers.create(
+    {
+      email,
+      metadata: {
+        supabaseUUID: userId,
+      },
     },
-  })
+    {
+      idempotencyKey: `gift_customer_${userId}`,
+    }
+  )
 
-  // save to supabase
-  await supabaseAdmin.from('customers').upsert({
+  const { error: saveError } = await supabaseAdmin.from('customers').upsert({
     id: userId,
     stripe_customer_id: customer.id,
   })
 
-  console.info(`Created new Stripe customer: ${customer.id}`)
+  if (saveError) throw new Error(`Failed to save Stripe customer: ${saveError.message}`)
   return customer.id
 }
 
-async function getOrCreateFreeCoupon() {
-  const couponId = 'FREE_PRO_100_PERCENT'
-
+async function getOrCreateGiftCoupon() {
   try {
-    const existingCoupon = await stripe.coupons.retrieve(couponId)
-    console.info(`Using existing coupon: ${couponId}`)
-    return existingCoupon.id
-  } catch {
-    // coupon doesn't exist, create it
+    const coupon = await stripe.coupons.retrieve(GIFT_COUPON_ID)
+    if ('deleted' in coupon && coupon.deleted) {
+      throw new Error(`Stripe coupon ${GIFT_COUPON_ID} was deleted`)
+    }
+    if (coupon.percent_off !== 100 || coupon.duration !== 'once') {
+      throw new Error(`Stripe coupon ${GIFT_COUPON_ID} has unexpected terms`)
+    }
+    return coupon.id
+  } catch (error) {
+    if (error instanceof Error && error.message.includes('has unexpected terms')) {
+      throw error
+    }
+    if (error instanceof Error && error.message.includes('was deleted')) {
+      throw error
+    }
+    if (
+      !(error instanceof Stripe.errors.StripeError) ||
+      error.code !== 'resource_missing'
+    ) {
+      throw error
+    }
+
     const coupon = await stripe.coupons.create({
-      id: couponId,
+      id: GIFT_COUPON_ID,
       percent_off: 100,
-      duration: 'forever',
-      name: 'Free Pro (100% off)',
+      duration: 'once',
+      name: 'Tamagui Pro one-year gift',
+      metadata: {
+        reason: GIFT_REASON,
+      },
     })
-    console.info(`Created new coupon: ${coupon.id}`)
     return coupon.id
   }
 }
 
-async function grantFreeSubscription(githubUsername) {
-  console.info(`\n=== Granting Free Pro Subscription ===\n`)
-  console.info(`GitHub username: ${githubUsername}`)
-
-  // 1. find user
-  console.info('\n1. Finding user...')
-  const userPrivate = await getUserByGitHubUsername(githubUsername)
-  console.info(`   Found user: ${userPrivate.id}`)
-
-  // get user email from auth
-  const { data: authUser, error: authError } = await supabaseAdmin.auth.admin.getUserById(
-    userPrivate.id
-  )
-  if (authError) throw new Error(`Failed to get user: ${authError.message}`)
-  console.info(`   Email: ${authUser.user.email}`)
-
-  // 2. check for existing active subscription
-  console.info('\n2. Checking existing subscriptions...')
-  const { data: existingSubs } = await supabaseAdmin
-    .from('subscriptions')
-    .select('*')
-    .eq('user_id', userPrivate.id)
-    .in('status', ['active', 'trialing'])
-
-  if (existingSubs && existingSubs.length > 0) {
-    console.info(`   User already has ${existingSubs.length} active subscription(s)!`)
-    console.info(`   Subscription IDs: ${existingSubs.map((s) => s.id).join(', ')}`)
-    console.info(`   Aborting - user already has Pro access.`)
-    return
-  }
-  console.info(`   No active subscriptions found.`)
-
-  // 3. get or create stripe customer
-  console.info('\n3. Setting up Stripe customer...')
-  const stripeCustomerId = await getOrCreateStripeCustomer(
-    userPrivate.id,
-    authUser.user.email
-  )
-
-  // 4. get or create 100% coupon
-  console.info('\n4. Getting/creating 100% coupon...')
-  const couponId = await getOrCreateFreeCoupon()
-
-  // 5. create subscription with coupon
-  console.info('\n5. Creating free subscription...')
-  const subscription = await stripe.subscriptions.create({
+async function findExistingGiftInvoice(stripeCustomerId, userId) {
+  const invoices = await stripe.invoices.list({
     customer: stripeCustomerId,
-    items: [{ price: PRO_PRICE_ID }],
-    coupon: couponId,
-    metadata: {
-      supabaseUUID: userPrivate.id,
-      grantedBy: 'admin-script',
-      reason: 'free-pro-grant',
-    },
+    limit: 100,
   })
 
-  console.info(`   Created subscription: ${subscription.id}`)
-  console.info(`   Status: ${subscription.status}`)
-
-  console.info('\n=== Done! ===')
-  console.info(`\nThe Stripe webhook will sync this to Supabase automatically.`)
-  console.info(`User @${githubUsername} now has Pro access!`)
+  return (
+    invoices.data.find(
+      (invoice) =>
+        invoice.metadata?.gift_user_id === userId &&
+        invoice.metadata?.gift_reason === GIFT_REASON
+    ) ?? null
+  )
 }
 
-const githubUsername = process.argv[2]
-if (!githubUsername) {
-  console.error('Please provide a GitHub username as an argument')
-  console.error('Usage: node scripts/grant-free-subscription.mjs <github_username>')
+async function getActiveSubscriptions(userId) {
+  const { data, error } = await supabaseAdmin
+    .from('subscriptions')
+    .select('id, status, current_period_end')
+    .eq('user_id', userId)
+    .in('status', ['active', 'trialing'])
+
+  if (error) throw new Error(`Failed to check existing access: ${error.message}`)
+  return data ?? []
+}
+
+async function waitForSyncedSubscription(userId, invoiceId) {
+  for (let attempt = 0; attempt < 12; attempt++) {
+    const { data, error } = await supabaseAdmin
+      .from('subscriptions')
+      .select('id, status, current_period_end, cancel_at, cancel_at_period_end')
+      .eq('id', invoiceId)
+      .eq('user_id', userId)
+      .maybeSingle()
+
+    if (error) throw new Error(`Failed to verify gifted access: ${error.message}`)
+    if (data?.status === 'active') return data
+    await sleep(2_500)
+  }
+
+  throw new Error(
+    `Stripe invoice ${invoiceId} is paid, but the invoice.paid webhook has not synced it yet`
+  )
+}
+
+async function grantFreeProYear(email) {
+  const user = await getUserByEmail(email)
+  const normalizedEmail = user.email || email
+  const stripeCustomerId = await getOrCreateStripeCustomer(user.id, normalizedEmail)
+  let invoice = await findExistingGiftInvoice(stripeCustomerId, user.id)
+
+  if (invoice?.status === 'paid') {
+    const syncedSubscription = await waitForSyncedSubscription(user.id, invoice.id)
+    console.info(
+      JSON.stringify({
+        email: normalizedEmail,
+        stripeInvoiceId: invoice.id,
+        status: syncedSubscription.status,
+        accessUntil: syncedSubscription.current_period_end,
+        autoRenew: false,
+        alreadyGranted: true,
+      })
+    )
+    return
+  }
+
+  const activeSubscriptions = await getActiveSubscriptions(user.id)
+  if (activeSubscriptions.length > 0) {
+    throw new Error(
+      `User already has active Pro access: ${activeSubscriptions.map((subscription) => subscription.id).join(', ')}`
+    )
+  }
+
+  const couponId = await getOrCreateGiftCoupon()
+
+  if (!invoice) {
+    await stripe.invoiceItems.create(
+      {
+        customer: stripeCustomerId,
+        price: PRO_V2_LICENSE_PRICE_ID,
+        metadata: {
+          gift_user_id: user.id,
+          gift_reason: GIFT_REASON,
+          version: 'v2',
+        },
+      },
+      {
+        idempotencyKey: `gift_invoice_item_${user.id}`,
+      }
+    )
+
+    invoice = await stripe.invoices.create(
+      {
+        customer: stripeCustomerId,
+        collection_method: 'charge_automatically',
+        auto_advance: false,
+        discounts: [{ coupon: couponId }],
+        metadata: {
+          gift_user_id: user.id,
+          gift_reason: GIFT_REASON,
+          version: 'v2',
+          type: 'pro_v2_gift',
+        },
+      },
+      {
+        idempotencyKey: `gift_invoice_${user.id}`,
+      }
+    )
+  }
+
+  if (invoice.status === 'draft') {
+    invoice = await stripe.invoices.finalizeInvoice(invoice.id)
+  }
+  if (invoice.status !== 'paid') {
+    invoice = await stripe.invoices.pay(invoice.id)
+  }
+  if (invoice.status !== 'paid') {
+    throw new Error(`Gift invoice ${invoice.id} did not become paid: ${invoice.status}`)
+  }
+
+  const syncedSubscription = await waitForSyncedSubscription(user.id, invoice.id)
+
+  console.info(
+    JSON.stringify({
+      email: normalizedEmail,
+      stripeInvoiceId: invoice.id,
+      status: syncedSubscription.status,
+      accessUntil: syncedSubscription.current_period_end,
+      autoRenew: false,
+    })
+  )
+}
+
+const email = process.argv[2]?.trim().toLowerCase()
+if (!email || !email.includes('@')) {
+  console.error('Usage: node scripts/grant-free-subscription.mjs <email>')
   process.exit(1)
 }
 
-grantFreeSubscription(githubUsername).catch((error) => {
+grantFreeProYear(email).catch((error) => {
   console.error('Script failed:', error)
   process.exit(1)
 })

@@ -77,26 +77,21 @@ async function tapAndReadFrameSamples(triggerId: string, sampleId: string) {
   return samples
 }
 
-describe('Accordion (auto-height, native)', () => {
-  beforeAll(() => {
-    // ci disables system animations for emulator stability. this suite verifies
-    // intermediate reanimated frames, so opt its transition scale back in.
-    setAndroidAnimationScales(1, ['transition_animation_scale'])
+async function launchDefaultOpenCase() {
+  await safeLaunchApp({
+    newInstance: true,
+    launchArgs: { directUseCase: 'AccordionDefaultOpenCase' },
   })
+  await waitFor(element(by.id('accordion-default-root')))
+    .toExist()
+    .withTimeout(POLL_DEADLINE_MS)
+}
 
-  afterAll(() => {
-    setAndroidAnimationScales(0, ['transition_animation_scale'])
-  })
-
-  beforeEach(async () => {
-    await safeLaunchApp({
-      newInstance: true,
-      launchArgs: { directUseCase: 'AccordionDefaultOpenCase' },
-    })
-    await waitFor(element(by.id('accordion-default-root')))
-      .toExist()
-      .withTimeout(POLL_DEADLINE_MS)
-  })
+// resting layout holds on every platform whether or not it animates. the
+// emulator's animation scale has no bearing on whether an open item's content
+// overlaps the next trigger, so it runs at the ci default scale.
+describe('Accordion (auto-height, native) layout', () => {
+  beforeEach(launchDefaultOpenCase)
 
   it('default-open item shows content, closed sibling sits below it (no overlap)', async () => {
     await expect(element(by.id('def-content-text'))).toBeVisible()
@@ -116,6 +111,22 @@ describe('Accordion (auto-height, native)', () => {
       `marker.y ${marker.y} should be below trigger2 bottom ${trigger2.y + trigger2.height}`
     )
   })
+})
+
+// these two sample the height WHILE the accordion animates, so they need a
+// platform that actually paints intermediate frames.
+describe('Accordion (auto-height, native)', () => {
+  beforeAll(() => {
+    // ci disables system animations for emulator stability. this suite verifies
+    // intermediate reanimated frames, so opt its transition scale back in.
+    setAndroidAnimationScales(1, ['transition_animation_scale'])
+  })
+
+  afterAll(() => {
+    setAndroidAnimationScales(0, ['transition_animation_scale'])
+  })
+
+  beforeEach(launchDefaultOpenCase)
 
   it('closes the default-open item through an intermediate height', async () => {
     const open = await frame('def-height')

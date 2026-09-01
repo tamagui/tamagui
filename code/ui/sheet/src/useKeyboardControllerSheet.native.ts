@@ -1,12 +1,12 @@
 /**
- * Native implementation of keyboard controller sheet hook.
+ * native implementation of keyboard controller sheet hook.
  *
- * Simplified to just track keyboard state (height, visibility).
- * Position animation is handled by SheetImplementationCustom via
- * keyboard-adjusted positions — matching the react-native-actions-sheet pattern.
+ * simplified to just track keyboard state (height, visibility).
+ * position animation is handled by SheetImplementationCustom via
+ * keyboard-adjusted positions, matching the react-native-actions-sheet pattern.
  *
- * Uses react-native-keyboard-controller events when available,
- * falls back to basic Keyboard API otherwise.
+ * uses React Native keyboard events for state. The optional keyboard-controller
+ * integration is only used for imperative dismissal.
  */
 
 import { useCallback, useEffect, useRef, useState } from 'react'
@@ -67,43 +67,9 @@ export function useKeyboardControllerSheet(
     }
   }, [])
 
-  // keyboard-controller event listeners (preferred when available)
-  useEffect(() => {
-    if (!enabled || !keyboardControllerEnabled) return
-
-    const { KeyboardEvents } = getKeyboardControllerState()
-    if (!KeyboardEvents?.addListener) return
-
-    const showSub = KeyboardEvents.addListener('keyboardWillShow', (e: any) => {
-      const height = e?.height ?? 0
-      if (height > 0) {
-        setKeyboardHeight(height)
-      }
-      setIsKeyboardVisible(true)
-    })
-
-    const hideSub = KeyboardEvents.addListener('keyboardWillHide', () => {
-      if (pauseKeyboardHandler.current) {
-        pendingHide.current = true
-        return
-      }
-      setIsKeyboardVisible(false)
-      setKeyboardHeight(0)
-    })
-
-    return () => {
-      showSub?.remove?.()
-      hideSub?.remove?.()
-    }
-  }, [enabled, keyboardControllerEnabled])
-
-  // basic Keyboard API listeners, always on: keyboard-controller's events only
-  // fire when the app mounts its KeyboardProvider, and `enabled` above only
-  // proves the module is linked. an app (or the detox harness, which launches
-  // with disableKeyboardController) that skips the provider would otherwise get
-  // silently dead keyboard tracking - the sheet never moves and the scroll
-  // occlusion padding never applies. RN's Keyboard events always fire, so they
-  // are the baseline; when both fire the extra setState is a same-value no-op.
+  // module availability does not prove that KeyboardProvider is mounted. Its
+  // event emitter is silent without the provider, while React Native's keyboard
+  // notifications are available in both configurations.
   useEffect(() => {
     if (!enabled) return
 
@@ -128,7 +94,7 @@ export function useKeyboardControllerSheet(
       showListener.remove()
       hideListener.remove()
     }
-  }, [enabled, keyboardControllerEnabled])
+  }, [enabled])
 
   return {
     keyboardControllerEnabled,

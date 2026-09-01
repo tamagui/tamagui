@@ -4,21 +4,18 @@ import slugify from '@sindresorhus/slugify'
 import { generateText } from 'ai'
 import { z } from 'zod'
 import { apiRoute } from '~/features/api/apiRoute'
+import { generateWithCloudflareWorkersAI } from '~/features/api/cloudflareWorkersAI'
 import { serverEnv } from '~/features/api/serverEnv'
 import { ensureAccess } from '~/features/api/ensureAccess'
 import { ensureAuth } from '~/features/api/ensureAuth'
 import { readBodyJSON } from '~/features/api/readBodyJSON'
+import { checkThemeGenerationRateLimit } from '~/features/api/rateLimit'
 import { supabaseAdmin } from '~/features/auth/supabaseAdmin'
 import type { ThemeSuiteItemData } from '~/features/studio/theme/types'
 
 const openrouter = createOpenRouter({
   apiKey: serverEnv('OPENROUTER_API_KEY'),
 })
-
-const modelChain = [
-  { name: 'claude-sonnet-4-6', create: () => anthropic('claude-sonnet-4-6') },
-  { name: 'qwen/qwen3-max', create: () => openrouter('qwen/qwen3-max') },
-]
 
 const lightDarkVal = z.object({
   light: z.number(),
@@ -156,6 +153,26 @@ export default apiRoute(async (req) => {
     )
   }
 
+  const rateLimit = checkThemeGenerationRateLimit(user.id)
+  if (!rateLimit.allowed) {
+    const retryAfterSeconds = Math.max(1, Math.ceil(rateLimit.retryAfterMs / 1000))
+
+    throw Response.json(
+      {
+        error: 'Theme generation limit reached. Please try again later.',
+        retryAfterSeconds,
+      },
+      {
+        status: 429,
+        headers: {
+          'Retry-After': String(retryAfterSeconds),
+          'X-RateLimit-Limit': String(rateLimit.limit),
+          'X-RateLimit-Remaining': '0',
+        },
+      }
+    )
+  }
+
   console.info(`Generating (scheme: ${scheme}): ${prompt}...`)
 
   const fullPrompt = `
@@ -263,21 +280,45 @@ Here's the new prompt:
 
 ${lastReply ? `Note that since they are refining, unless they explicitly refer to the "accent" theme, assume they are talking about the base theme.` : ``}
 
-When you respond, start with a <thinking /> first to plan, then end output just the exact structured data.
-Don't add headers, backticks, or any labels around the structured data.
+When you respond, output just the exact structured data.
+Don't add thinking text, headers, backticks, or any labels around the structured data.
 `
+
+  const modelChain = [
+    {
+      name: 'deepseek-v4-flash-cf',
+      generate: () => generateWithCloudflareWorkersAI(fullPrompt),
+    },
+    {
+      name: 'claude-sonnet-4-6',
+      generate: async () => {
+        const result = await generateText({
+          model: anthropic('claude-sonnet-4-6'),
+          maxOutputTokens: 4_000,
+          prompt: fullPrompt,
+        })
+        return result.text
+      },
+    },
+    {
+      name: 'qwen/qwen3-max',
+      generate: async () => {
+        const result = await generateText({
+          model: openrouter('qwen/qwen3-max'),
+          maxOutputTokens: 4_000,
+          prompt: fullPrompt,
+        })
+        return result.text
+      },
+    },
+  ]
 
   let text = ''
 
-  for (const { name, create } of modelChain) {
+  for (const { name, generate } of modelChain) {
     try {
       console.info(`[theme/generate] trying model=${name}`)
-      const result = await generateText({
-        model: create(),
-        maxOutputTokens: 4_000,
-        prompt: fullPrompt,
-      })
-      text = result.text
+      text = await generate()
       console.info(`[theme/generate] success model=${name}`)
       break
     } catch (err) {
