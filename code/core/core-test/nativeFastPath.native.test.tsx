@@ -409,3 +409,124 @@ test('a media flip recomputes fresh styles and null-resets sm-only keys', async 
     setMediaState({ ...getMedia(), sm: smWas })
   }
 })
+
+// the engine's color transport (srgb maps for Fabric's C++ prop parser) must
+// never reach React: RN's JS style normalizer misreads it. render props stay
+// raw, link slots and table updates carry the processed form
+test('compiled mapping render props keep raw colors while engine tables carry processed colors', async () => {
+  const processed = (value: unknown) => ({ space: 'srgb', from: value })
+  mock.engine.processStyleColors = (props) => {
+    const out: Record<string, unknown> = {}
+    for (const key in props) {
+      out[key] = typeof props[key] === 'string' ? processed(props[key]) : props[key]
+    }
+    return out
+  }
+  const CompiledSquare = _withNativeStyle(
+    NativeView,
+    { width: 10 },
+    { backgroundColor: 'background', borderColor: 'color' }
+  )
+  let setCompiledSub: (sub: 'red' | 'blue') => void = () => {}
+  function CompiledHarness() {
+    const [sub, setSubState] = useState<'red' | 'blue'>('red')
+    setCompiledSub = setSubState
+    const square = useMemo(() => <CompiledSquare testID="compiled" />, [])
+    return (
+      <TamaguiProvider config={config} defaultTheme="dark">
+        <Theme name={sub}>{square}</Theme>
+      </TamaguiProvider>
+    )
+  }
+
+  const tree = render(<CompiledHarness />, { createNodeMock: () => ({}) })
+  const red = config.themes.dark_red as any
+  const blue = config.themes.dark_blue as any
+
+  const [, rendered] = tree.UNSAFE_getByType(NativeView).props.style
+  expect(rendered).toEqual({
+    backgroundColor: red.background.val,
+    borderColor: red.color.val,
+  })
+  expect(mock.links).toHaveLength(1)
+  expect(mock.links[0].slots.state).toEqual({
+    dark_red: {
+      backgroundColor: processed(red.background.val),
+      borderColor: processed(red.color.val),
+    },
+  })
+
+  await act(async () => setCompiledSub('blue'))
+  expect(mock.tableEntries()).toEqual([
+    {
+      id: mock.links[0].id,
+      state: 'dark_blue',
+      props: {
+        backgroundColor: processed(blue.background.val),
+        borderColor: processed(blue.color.val),
+      },
+    },
+  ])
+})
+
+// a scope can advance (its layout effect runs) after a concurrent render
+// captured the theme but before that render's host ref attaches. the engine's
+// link() only stores tables and never commits, so the link must use the live
+// scope state and commit that table once, or React's stale colors survive
+test('a host linking after its scope advanced links to the live theme and commits it once', async () => {
+  let hostRenders = 0
+  let attachRef: () => void = () => {}
+  const DeferredHost = forwardRef<any, any>((props, ref) => {
+    hostRenders++
+    attachRef = () => (ref as (node: unknown) => void)({ deferred: true })
+    return <NativeView {...props} />
+  })
+  const CompiledSquare = _withNativeStyle(
+    DeferredHost,
+    { width: 10 },
+    { backgroundColor: 'background' }
+  )
+  let setCompiledSub: (sub: 'red' | 'blue') => void = () => {}
+  function CompiledHarness() {
+    const [sub, setSubState] = useState<'red' | 'blue'>('red')
+    setCompiledSub = setSubState
+    const square = useMemo(() => <CompiledSquare testID="compiled" />, [])
+    return (
+      <TamaguiProvider config={config} defaultTheme="dark">
+        <Theme name={sub}>{square}</Theme>
+      </TamaguiProvider>
+    )
+  }
+
+  render(<CompiledHarness />, { createNodeMock: () => ({}) })
+  expect(mock.links).toHaveLength(0)
+
+  // the scope moves on while the render that captured dark_red has not linked
+  await act(async () => setCompiledSub('blue'))
+  expect(hostRenders).toBe(1)
+  expect(mock.broadcasts.at(-1)?.[1]).toBe('dark_blue')
+
+  attachRef()
+  const blue = config.themes.dark_blue as any
+  expect(mock.links).toHaveLength(1)
+  // the stale dark_red table stays warm for a later toggle back; the live
+  // dark_blue table is what the link carries and commits
+  expect(Object.keys(mock.links[0].slots.state!)).toEqual(['dark_red', 'dark_blue'])
+  expect(mock.links[0].slots.state!.dark_blue).toEqual({
+    backgroundColor: blue.background.val,
+  })
+  expect(mock.tableEntries()).toEqual([
+    {
+      id: mock.links[0].id,
+      state: 'dark_blue',
+      props: { backgroundColor: blue.background.val },
+    },
+  ])
+
+  // the dark_red table the link carried is already warm: toggling back only
+  // broadcasts the state name, no table is re-sent
+  await act(async () => setCompiledSub('red'))
+  expect(mock.tableEntries()).toHaveLength(1)
+  expect(mock.broadcasts.at(-1)?.[1]).toBe('dark_red')
+  expect(hostRenders).toBe(1)
+})

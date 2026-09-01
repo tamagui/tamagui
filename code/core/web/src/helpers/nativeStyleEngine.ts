@@ -72,9 +72,17 @@ interface CompiledMappingLink {
   stateThemes: Map<string, object>
 }
 
+interface ResolvedMappingState {
+  theme: object
+  /** raw resolved values, what React renders through RN's own style normalizer */
+  renderProps: Record<string, unknown>
+  /** engine transport form after processStyleColors, never handed back to React */
+  nativeProps: Record<string, unknown>
+}
+
 interface CompiledMapping {
   mapping: NativeStyleThemeMapping
-  states: Map<string, { theme: object; props: Record<string, unknown> }>
+  states: Map<string, ResolvedMappingState>
   links: Set<CompiledMappingLink>
 }
 
@@ -112,24 +120,27 @@ function resolveCompiledMapping(
   compiled: CompiledMapping,
   stateName: string,
   theme: Record<string, unknown>
-): Record<string, unknown> {
+): ResolvedMappingState {
   const cached = compiled.states.get(stateName)
-  if (cached?.theme === theme) return cached.props
+  if (cached?.theme === theme) return cached
 
-  const props: Record<string, unknown> = {}
+  const renderProps: Record<string, unknown> = {}
   for (const styleKey in compiled.mapping) {
     const value = theme[compiled.mapping[styleKey]]
-    props[styleKey] = value === undefined ? null : getVariableValue(value)
+    renderProps[styleKey] = value === undefined ? null : getVariableValue(value)
   }
-  const processed = engine?.processStyleColors(props) ?? props
+  // the engine's color form (srgb maps for Fabric's C++ parser) must not flow
+  // back through React: RN's JS style normalizer misreads it
+  const nativeProps = engine?.processStyleColors(renderProps) ?? renderProps
   if (compiled.states.size >= 10_000) {
     compiled.states.clear()
     for (const link of compiled.links) {
       link.stateThemes.clear()
     }
   }
-  compiled.states.set(stateName, { theme, props: processed })
-  return processed
+  const resolved: ResolvedMappingState = { theme, renderProps, nativeProps }
+  compiled.states.set(stateName, resolved)
+  return resolved
 }
 
 export function setNativeStyleEngine(next: NativeStyleEngine | null): void {
@@ -170,7 +181,7 @@ export function updateNativeStyleScope(
           compiled,
           stateName,
           theme as Record<string, unknown>
-        )
+        ).nativeProps
         entries.push({ id: link.handle.id, state: stateName, props })
         link.stateThemes.set(stateName, theme)
       }
@@ -190,7 +201,7 @@ export function resolveNativeStyleMapping(
   stateName: string,
   theme: Record<string, unknown>
 ): Record<string, unknown> {
-  return resolveCompiledMapping(getCompiledMapping(mapping), stateName, theme)
+  return resolveCompiledMapping(getCompiledMapping(mapping), stateName, theme).renderProps
 }
 
 export function linkNativeStyleMapping(
@@ -204,7 +215,19 @@ export function linkNativeStyleMapping(
   if (!engine) return null
 
   const compiled = getCompiledMapping(mapping)
-  const stateProps = resolveCompiledMapping(compiled, stateName, theme)
+  // a scope can advance (layout effect) after a concurrent render captured its
+  // theme but before that render's host ref links. the engine's link() only
+  // stores tables, it never commits, so link against the live scope state and
+  // commit that table once to correct the stale React commit.
+  const scopeState = scopeStates.get(scopeId)
+  const currentStateName = scopeState?.name ?? stateName
+  const currentTheme = (scopeState?.theme ?? theme) as Record<string, unknown>
+  const stale = currentStateName !== stateName || currentTheme !== theme
+  const stateProps = resolveCompiledMapping(
+    compiled,
+    currentStateName,
+    currentTheme
+  ).nativeProps
   let base = processedBases.get(baseStyle)
   if (!base || base.engine !== engine) {
     base = { engine, props: engine.processStyleColors(baseStyle) }
@@ -213,13 +236,19 @@ export function linkNativeStyleMapping(
   const state: Record<string, Record<string, unknown>> = {}
   const stateThemes = new Map<string, object>()
   for (const [name, cached] of compiled.states) {
-    state[name] = cached.props
+    state[name] = cached.nativeProps
     stateThemes.set(name, cached.theme)
   }
-  state[stateName] = stateProps
-  stateThemes.set(stateName, theme)
+  state[currentStateName] = stateProps
+  stateThemes.set(currentStateName, currentTheme)
   const handle = engine.link(ref, { base: base.props, state }, scopeId)
   if (!handle) return null
+
+  if (stale) {
+    engine.updateViewStateTables([
+      { id: handle.id, state: currentStateName, props: stateProps },
+    ])
+  }
 
   const link: CompiledMappingLink = {
     handle,

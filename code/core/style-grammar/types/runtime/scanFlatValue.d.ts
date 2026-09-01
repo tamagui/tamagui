@@ -11,5 +11,7 @@ export interface FlatValueHandler<Context> {
 export type ParsedFlatValue = [segments: readonly number[], failure: FlatScanFailure | null, failureIndex: number];
 export declare function scanFlatValue<Context>(source: string, handler: FlatValueHandler<Context>, ctx: Context, a?: any, b?: any, c?: any, d?: any): FlatScanFailure | null;
 export declare function parseFlatValue(source: string): ParsedFlatValue;
+export declare function parseFlatValueProduction(source: string): ParsedFlatValue;
+export declare function parseFlatValueChecked(source: string): ParsedFlatValue;
 
 //# sourceMappingURL=scanFlatValue.d.ts.map
