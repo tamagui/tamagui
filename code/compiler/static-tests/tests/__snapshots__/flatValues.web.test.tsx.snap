@@ -2,8 +2,8 @@
 
 exports[`the shared precedence table compiles with runtime-identical CSS order and specificity 1`] = `
 {
-  "1-forward": "@media (min-width: 640px) {._f-2120114099{flex-direction:column}}",
-  "1-reversed": "@media (min-width: 640px) {._f-2120114099{flex-direction:column}}",
+  "1-forward": "._f-738730484{flex-direction:row}@media (min-width: 640px) {._f-738730484{flex-direction:column}}",
+  "1-reversed": "._f-738730484{flex-direction:row}@media (min-width: 640px) {._f-738730484{flex-direction:column}}",
   "10-forward": "._b-855835834{background-color:blue}",
   "10-reversed": "._b-855835834{background-color:blue}",
   "11-forward": "",
@@ -16,8 +16,8 @@ exports[`the shared precedence table compiles with runtime-identical CSS order a
   "14-reversed": "@media (min-width: 640px) {._b-1385328089{background-color:red}}@container (min-width: 640px) {._b-1385328089{background-color:blue}}",
   "15-forward": "@media (hover: hover) {._b-508336391:where(.t_group_true:hover *){background-color:blue}}@media (hover: hover) {._b-508336391:where(:hover){background-color:red}}",
   "15-reversed": "@media (hover: hover) {._b-508336391:where(.t_group_true:hover *){background-color:blue}}@media (hover: hover) {._b-508336391:where(:hover){background-color:red}}",
-  "2-forward": "@media (min-width: 640px) {._f-2120114099{flex-direction:column}}",
-  "2-reversed": "@media (min-width: 640px) {._f-2120114099{flex-direction:column}}",
+  "2-forward": "._f-738730484{flex-direction:row}@media (min-width: 640px) {._f-738730484{flex-direction:column}}",
+  "2-reversed": "._f-738730484{flex-direction:row}@media (min-width: 640px) {._f-738730484{flex-direction:column}}",
   "3-forward": "._b-1929703956{background-color:red}@media (min-width: 640px) {._b-1929703956{background-color:green}}",
   "3-reversed": "._b-214691921{background-color:red}@media (min-width: 640px) {._b-214691921{background-color:blue}}",
   "4-forward": "@media (min-width: 640px) {._b-1745350554{background-color:blue}}@media (min-width: 768px) {._b-1745350554{background-color:green}}",

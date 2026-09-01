@@ -369,14 +369,23 @@ test('a caller property program replaces the styled property program', () => {
     expect(result.style?.backgroundColor).toBe('green')
   }
 
+  // a clause-only caller program has no base of its own, so it layers over
+  // the styled base instead of replacing it
   const PlainFrame = styled(View, { backgroundColor: 'red' })
   for (const caller of ['hover:blue', { hover: 'blue' }] as const) {
-    const result = simplifiedGetSplitStyles(
+    const resting = simplifiedGetSplitStyles(
       PlainFrame,
       { backgroundColor: caller },
       { mergeDefaultProps: true, noClass: true }
     )
-    expect(result.style?.backgroundColor).toBeUndefined()
+    expect(resting.style?.backgroundColor).toBe('red')
+
+    const hovered = simplifiedGetSplitStyles(
+      PlainFrame,
+      { backgroundColor: caller },
+      { mergeDefaultProps: true, noClass: true, componentState: { hover: true } }
+    )
+    expect(hovered.style?.backgroundColor).toBe('blue')
   }
 })
 

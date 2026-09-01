@@ -221,3 +221,18 @@ for any later size regression.
 - Both figures are Node 25.9.0 (zlib 1.2.12). `code/comparisons/check-styled-view-size.mts` now
   gates this fixture in CI on the `.node-version` Node 24.16.0 (zlib 1.3.1-e00f703), where the
   same artifact measures 26,733. Gzip bytes only compare within one zlib.
+
+## Baseline update, 2026-08-31: clause-only programs layer over the styled base
+
+The visual parity pass against v2 proved the wholesale-replace semantic wrong: a
+clause-only value (`flexDirection="sm:column"` on a styled row) wiped the styled
+base entirely, so 15 tamagui.dev call sites rendered column at desktop widths.
+The engine now keeps a lower tier's unconditional value when a call-site program
+has no base of its own (conditional emissions no longer transfer slot
+ownership; a program's base segments emit before its clauses).
+
+- Cost on pinned Node 24.16.0: 26,733 -> 26,889 gzip-9 (+156, +0.58%), from the
+  extra layering branch in `ownsSourceLayer` and the two-pass walk in
+  `walkConditionalValue`. Includes m11275's flat-path perf work (26,846) plus
+  this fix (+43).
+- Baseline re-recorded at 26,889, ceiling 27,039.

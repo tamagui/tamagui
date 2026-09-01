@@ -41,13 +41,13 @@ export type FlatValuePrecedenceFixture = {
 export const flatValuePrecedenceFixtures: readonly FlatValuePrecedenceFixture[] = [
   {
     id: 1,
-    name: 'a conditioned prop program replaces the styled program',
+    name: 'a clause-only prop program layers over the styled base',
     property: 'flexDirection',
     layers: [
       { source: 'styled', value: 'row' },
       { source: 'prop', value: 'sm:column' },
     ],
-    scenarios: [{ name: 'below sm', active: {}, expected: undefined }],
+    scenarios: [{ name: 'below sm', active: {}, expected: 'row' }],
   },
   {
     id: 2,

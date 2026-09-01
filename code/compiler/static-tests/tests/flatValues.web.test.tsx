@@ -313,7 +313,11 @@ test('the shared precedence table compiles with runtime-identical CSS order and 
 
       const styledLayer = fixture.layers.some((layer) => layer.source === 'styled')
       if (styledLayer) {
-        expect(output?.styles, label).not.toContain('flex-direction:row')
+        // both styled-layer fixtures pair a clause-only prop program with a
+        // styled base: the base survives as the resting rule alongside the
+        // clause's conditional rule
+        expect(output?.styles, label).toContain('flex-direction:row')
+        expect(output?.styles, label).toContain('flex-direction:column')
       }
       const propLayer = fixture.layers.find((layer) => layer.source === 'prop')!
       const value = reversed ? reverseFixtureProgram(propLayer.value) : propLayer.value

@@ -692,27 +692,32 @@ test('a call-site property program replaces the styled property program on nativ
   expect(hovered.style?.backgroundColor).toBe('red')
 })
 
-test('an inactive call-site shorthand program clears every styled longhand', () => {
+test('an inactive clause-only shorthand program keeps every styled longhand', () => {
   const Frame = styled(View, {
     border: '1px solid red',
-    textDecoration: 'underline dotted red',
   })
   const result = simplifiedGetSplitStyles(
     Frame,
-    {
-      border: 'hover:2px dashed blue',
-      textDecoration: 'hover:line-through wavy blue',
-    },
+    { border: 'hover:2px dashed blue' },
     { mergeDefaultProps: true }
   )
 
+  // clause-only programs layer over the styled base: at rest the styled
+  // longhands still render
   const style = result.style || {}
-  expect(style).not.toHaveProperty('borderTopWidth')
-  expect(style).not.toHaveProperty('borderStyle')
-  expect(style).not.toHaveProperty('borderTopColor')
-  expect(style).not.toHaveProperty('textDecorationLine')
-  expect(style).not.toHaveProperty('textDecorationStyle')
-  expect(style).not.toHaveProperty('textDecorationColor')
+  expect(style.borderTopWidth).toBe(1)
+  expect(style.borderStyle).toBe('solid')
+  expect(style.borderTopColor).toBe('red')
+
+  const hovered = simplifiedGetSplitStyles(
+    Frame,
+    { border: 'hover:2px dashed blue' },
+    { mergeDefaultProps: true, componentState: { hover: true } }
+  )
+  const hoveredStyle = hovered.style || {}
+  expect(hoveredStyle.borderTopWidth).toBe(2)
+  expect(hoveredStyle.borderStyle).toBe('dashed')
+  expect(hoveredStyle.borderTopColor).toBe('blue')
 })
 
 test('geometric shorthand payloads distribute by slot on native', () => {

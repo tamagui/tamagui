@@ -1,8 +1,9 @@
 process.env.TAMAGUI_TARGET = 'web'
 
 // the base tier: unconditioned contributions within one property program keep
-// authored order. a call-site property program replaces the styled default
-// wholesale, including when its only condition is inactive.
+// authored order. a call-site program with its own base replaces the styled
+// default wholesale; a clause-only program layers over it, so the styled base
+// still renders while the clause's condition is inactive.
 
 import { expect, test } from 'vitest'
 
@@ -29,7 +30,7 @@ test('a repeat plain write for one property keeps last-wins', () => {
   expect(rulesFor(longhandFirst, 'backgroundColor').join('')).toContain('red')
 })
 
-test('a call-site property program replaces the styled default wholesale', () => {
+test('a call-site base replaces the styled default; a clause-only program keeps it', () => {
   const Row = styled(View, { flexDirection: 'row' })
 
   // the authored base owns the property; the inactive clause changes nothing
@@ -42,7 +43,9 @@ test('a call-site property program replaces the styled default wholesale', () =>
   )
   expect(authoredBase.style?.flexDirection).toBe('column')
 
-  // the call-site program still owns the property when its condition is inactive
+  // a clause-only program layers over the styled base: while its condition is
+  // inactive the styled default still renders (an XStack with
+  // flexDirection="sm:column" stays a row at desktop widths)
   const inactiveCallSite = simplifiedGetSplitStyles(
     Row,
     {
@@ -50,7 +53,35 @@ test('a call-site property program replaces the styled default wholesale', () =>
     },
     { mergeDefaultProps: true, noClass: true }
   )
-  expect(inactiveCallSite.style?.flexDirection).toBeUndefined()
+  expect(inactiveCallSite.style?.flexDirection).toBe('row')
+
+  // same layering through the conditional-object form
+  const inactiveObject = simplifiedGetSplitStyles(
+    Row,
+    {
+      flexDirection: { sm: 'column' } as any,
+    },
+    { mergeDefaultProps: true, noClass: true }
+  )
+  expect(inactiveObject.style?.flexDirection).toBe('row')
+})
+
+test('a clause-only program emits both the styled base and the clause as CSS', () => {
+  const Row = styled(View, { flexDirection: 'row' })
+  const result = simplifiedGetSplitStyles(
+    Row,
+    { flexDirection: 'sm:column' as any },
+    { mergeDefaultProps: true }
+  )
+  const allRules = Object.keys(result.classNames)
+    .filter((key) => key === 'flexDirection' || key.startsWith('flexDirection'))
+    .flatMap((key) => result.rulesToInsert?.[result.classNames[key]]?.[4] ?? [])
+  expect(allRules.some((rule) => rule.includes('row') && !rule.includes('@media'))).toBe(
+    true
+  )
+  expect(
+    allRules.some((rule) => rule.includes('column') && rule.includes('@media'))
+  ).toBe(true)
 })
 
 test('a condition after a plain write composes with the base', () => {

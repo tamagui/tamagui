@@ -2157,14 +2157,24 @@ function configuredValue(
   return out
 }
 
-function ownsSourceLayer(state: GetStyleState, property: string) {
+function ownsSourceLayer(state: GetStyleState, property: string, conditional = false) {
   const direct = state as DirectState
   const layer = direct.flatPass?.[passSourceLayer] || 0
   const layers = (direct.flatPropertyLayers ||= {})
   const previous = layers[property]
   if (previous !== undefined) {
     if (previous > layer) return false
-    if (previous < layer) clearDirectStyle(state, property)
+    if (previous < layer) {
+      // a conditional contribution layers over a lower tier instead of
+      // replacing it: flexDirection="sm:column" on a styled row keeps the
+      // base row while the condition is inactive. only a program's
+      // unconditional base transfers ownership and clears what it replaces.
+      if (conditional) return true
+      clearDirectStyle(state, property)
+    }
+  } else if (conditional) {
+    // don't claim the slot either, so a later lower-tier base can still join
+    return true
   }
   layers[property] = layer
   return true
@@ -2178,7 +2188,7 @@ function emitProperty(
   originalValue: any,
   contextOnly: boolean
 ) {
-  if (!ownsSourceLayer(state, property)) return
+  if (!ownsSourceLayer(state, property, cursor !== null)) return
   const direct = state as DirectState
   const condition = cursor ? cursor[conditionValue] : 0
   if (
@@ -2318,20 +2328,6 @@ function emitBorder(
     }
     return
   }
-  if (cursor) {
-    const prefix = property === 'outline' ? 'outline' : 'border'
-    for (const target of borderTargets[property]) {
-      const base = `${prefix}${target}`
-      ownsSourceLayer(state, `${base}Width`)
-      ownsSourceLayer(state, `${base}Color`)
-      ownsSourceLayer(
-        state,
-        process.env.TAMAGUI_TARGET === 'native' && property === 'border'
-          ? 'borderStyle'
-          : `${base}Style`
-      )
-    }
-  }
   let width: string | undefined
   let style: string | undefined
   let color: string | undefined
@@ -2384,11 +2380,6 @@ function emitTextDecoration(
   originalValue: any,
   contextOnly: boolean
 ) {
-  if (cursor) {
-    ownsSourceLayer(state, 'textDecorationLine')
-    ownsSourceLayer(state, 'textDecorationStyle')
-    ownsSourceLayer(state, 'textDecorationColor')
-  }
   for (const part of splitComponents(raw)) {
     const property =
       part === 'solid' ||
@@ -2853,30 +2844,37 @@ export function walkConditionalValue(
         return false
       }
     }
+    // base segments emit before conditional ones regardless of authored order:
+    // the program's own base is what transfers slot ownership, so it must land
+    // before its clauses, and clause order independence is already the contract
+    for (let index = 0; index < segments.length; index += 5) {
+      const start = segments[index]
+      const end = segments[index + 1]
+      const flags = segments[index + 4]
+      if (!(flags & 1)) continue
+      if (start === end) continue
+      if (flags & 2) {
+        const payload = (slices[index] ??= value.slice(start, end))
+        sink(payload, parentCondition, payload)
+        hasBase = true
+      } else if (
+        process.env.NODE_ENV !== 'production' &&
+        warnMode &&
+        !chainCount &&
+        (failure === 'invalid-character' || failure === 'stray-comment-close')
+      ) {
+        sink(value, parentCondition, value)
+        hasBase = true
+      } else if (warnMode) {
+        warnScanFailure(property, value, failure, failureIndex)
+      }
+    }
     let lastPayloadStart = 0
     for (let index = 0; index < segments.length; index += 5) {
       const start = segments[index]
       const end = segments[index + 1]
       const flags = segments[index + 4]
-      if (flags & 1) {
-        if (start === end) continue
-        if (flags & 2) {
-          const payload = (slices[index] ??= value.slice(start, end))
-          sink(payload, parentCondition, payload)
-          hasBase = true
-        } else if (
-          process.env.NODE_ENV !== 'production' &&
-          warnMode &&
-          !chainCount &&
-          (failure === 'invalid-character' || failure === 'stray-comment-close')
-        ) {
-          sink(value, parentCondition, value)
-          hasBase = true
-        } else if (warnMode) {
-          warnScanFailure(property, value, failure, failureIndex)
-        }
-        continue
-      }
+      if (flags & 1) continue
       if (!(flags & 4) || !(flags & 2)) {
         if (warnMode) warnScanFailure(property, value, failure, failureIndex)
         continue
@@ -2942,7 +2940,9 @@ export function walkConditionalValue(
     conditions & 12 &&
     !hasBase
   ) {
-    // inline lifecycle styles need a natural resting value when no base was authored
+    // inline lifecycle styles need a natural resting value when no base was
+    // authored anywhere: a lower tier that owns the property (a styled default)
+    // is the resting value already, so don't stamp over it
     const resting =
       property === 'opacity' || property.startsWith('scale')
         ? 1
@@ -2951,7 +2951,12 @@ export function walkConditionalValue(
           : property === 'x' || property === 'y'
             ? 0
             : null
-    if (resting !== null) sink(resting, parentCondition, resting)
+    if (
+      resting !== null &&
+      (state as DirectState).flatPropertyLayers?.[property] === undefined
+    ) {
+      sink(resting, parentCondition, resting)
+    }
   }
   return true
 }
