@@ -100,6 +100,15 @@ Owner session: Fable (r16625). Supersedes the execution state in
   dynamics on a core `View` lower through lane A. An earlier probe that showed
   a mis-lowered template was a `dedent` artifact (it keeps `\$` raw), not a
   compiler defect.
+- 2026-09-01 (day 1, afternoon, compiler): a tailwind View's dynamic
+  className now flattens on web when its value is finite: conditionals and
+  template-wrapped conditionals lower per branch, and a static array read with
+  a dynamic index (`heavyColors[(index + seed) % heavyColors.length]`) lowers
+  to a class table keyed by the runtime string; native lowers the conditional
+  form per branch. Identifiers resolve by position, so function-scope
+  constants fold and a parameter shadowing a module constant is no longer read
+  as the module's value. Still open for the heavy bench element:
+  `style={{ width: expr }}` bails on every component.
 
 ## Plan
 

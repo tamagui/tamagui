@@ -239,7 +239,9 @@ function evaluateNode(
     case 'Identifier': {
       const name = identifierName(node)
       if (!name) return unsupported(id, node)
-      const definition = resolver.resolveBinding(id, name)
+      // by position, so a function-scope constant resolves and a parameter
+      // shadowing a module constant does not read the module's value
+      const definition = resolver.resolveReference(expressionReference(id, node))
       if (!definition) {
         return {
           ok: false,
@@ -479,6 +481,32 @@ function evaluateDynamicNode(
     }
   }
 
+  // a template whose every interpolation takes finitely many primitives takes
+  // finitely many strings: `w-6 ${colors[index % 2]}` is two class strings
+  if (node.type === 'TemplateLiteral') {
+    const quasis = childNodes(node, 'quasis')
+    const expressions = childNodes(node, 'expressions')
+    let values: string[] = ['']
+    for (let position = 0; position < quasis.length; position++) {
+      const text = quasiText(quasis[position])
+      values = values.map((value) => value + text)
+      const expression = expressions[position]
+      if (!expression) continue
+      const part = evaluateDynamicNode(resolver, id, expression, state)
+      if (!part?.values) return null
+      const next: string[] = []
+      for (const value of values) {
+        for (const primitive of part.values) {
+          const joined = value + String(primitive)
+          if (!next.includes(joined)) next.push(joined)
+        }
+      }
+      if (next.length > 32) return null
+      values = next
+    }
+    return { type: 'string', values }
+  }
+
   return null
 }
 
@@ -547,9 +575,8 @@ function evaluateBranchesNode(
   if (!isAstNode(node)) return null
 
   if (node.type === 'Identifier') {
-    const name = identifierName(node)
-    if (!name) return null
-    const definition = resolver.resolveBinding(id, name)
+    if (!identifierName(node)) return null
+    const definition = resolver.resolveReference(expressionReference(id, node))
     if (!definition || !definition.constant || !definition.initializer) return null
     const initializer = resolver.expressionNode(definition.initializer)
     if (!initializer) return null

@@ -11,12 +11,7 @@ import type {
 } from './contracts'
 import { resolveFromHost, resolvedModuleId } from './contracts'
 import { childNode, walkAst } from './ast'
-import {
-  asAstNode,
-  declarationForName,
-  definitionFromDeclaration,
-  nodeAtSpan,
-} from './normalize'
+import { asAstNode, definitionFromDeclaration, nodeAtSpan } from './normalize'
 
 class YukuCandidate implements AnalyzerCandidate {
   readonly name = 'yuku' as const
@@ -59,14 +54,11 @@ class YukuCandidate implements AnalyzerCandidate {
     const declaration = symbol.declarations[0]
     if (!declaration) return null
     const program = asAstNode(symbol.module.ast, `${symbol.module.path} program`)
-    const normalizedDeclaration =
-      declarationForName(program, symbol.name) ??
-      asAstNode(declaration, `${symbol.name} declaration`)
     return definitionFromDeclaration(
       symbol.module.path,
       symbol.name,
       program,
-      normalizedDeclaration
+      asAstNode(declaration, `${symbol.name} declaration`)
     )
   }
 

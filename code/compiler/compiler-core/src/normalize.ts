@@ -837,13 +837,6 @@ export function normalizeElements(
   }
 }
 
-export function declarationForName(program: AstNode, name: string): AstNode | null {
-  return findAstNode(program, (node) => {
-    if (node.type !== 'VariableDeclarator') return false
-    return identifierName(childNode(node, 'id')) === name
-  })
-}
-
 export function nodeAtSpan(program: AstNode, start: number, end: number): AstNode | null {
   return findAstNode(program, (node) => node.start === start && node.end === end)
 }

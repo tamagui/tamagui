@@ -1329,10 +1329,34 @@ export function createTamaguiCompilerHost(
     'animatedBy',
     'render',
   ])
+  // a frontend's className is its style input: each value it can take
+  // resolves through the same pipeline as a static class string
+  const isFrontendClassName = (name: string, component: LoweringComponent): boolean =>
+    name === 'className' && !!(component.staticConfig as StaticConfig).styleFrontend
   const canLowerConditionalStyleProp = (
     name: string,
     component: LoweringComponent
-  ): boolean => isStyleProp(name, component) && !runtimeOnlyStyleProps.has(name)
+  ): boolean =>
+    isStyleProp(name, component) &&
+    (!runtimeOnlyStyleProps.has(name) || isFrontendClassName(name, component))
+  // the finite class strings a frontend className takes at runtime (a template
+  // over a static array with a dynamic index, a static array member). each one
+  // lowers like a conditional branch, selected by the runtime string
+  const frontendClassDomain = (
+    entry: MaterializedElement['entries'][number],
+    component: LoweringComponent
+  ): string[] | null => {
+    if (
+      entry.kind !== 'prop' ||
+      entry.value.kind !== 'bailout' ||
+      !isFrontendClassName(entry.name, component)
+    ) {
+      return null
+    }
+    const dynamic = entry.value.dynamic
+    if (dynamic?.type !== 'string' || !dynamic.values?.length) return null
+    return dynamic.values.map(String)
+  }
 
   const isInvalidHostStyleProp = (
     name: string,
@@ -1596,6 +1620,13 @@ export function createTamaguiCompilerHost(
       // execute the real resolver with an incomplete props snapshot.
       if ((component.staticConfig as StaticConfig).resolvers?.length) {
         return false
+      }
+      if (
+        !options.disablePartialExtraction &&
+        platform === 'web' &&
+        isFrontendClassName(name, component)
+      ) {
+        return true
       }
       return (
         !options.disablePartialExtraction &&
@@ -1961,8 +1992,9 @@ export function createTamaguiCompilerHost(
         dynamicStyleEntries.every(
           (entry) =>
             entry.kind === 'prop' &&
-            entry.value.kind === 'conditional' &&
-            canLowerConditionalStyleProp(entry.name, component)
+            ((entry.value.kind === 'conditional' &&
+              canLowerConditionalStyleProp(entry.name, component)) ||
+              frontendClassDomain(entry, component) !== null)
         )
       // a theme name of any value selects a theme, while themeInverse only opens a
       // boundary when it is on
@@ -3298,12 +3330,15 @@ export function createTamaguiCompilerHost(
       const webConditionalCSS: string[] = []
       const webConditionalKeys = new Set<string>()
       const webConditionalEntries = supportsWebConditionalClasses
-        ? dynamicStyleEntries.filter((entry) => entry.value.kind === 'conditional')
+        ? dynamicStyleEntries
         : []
       for (const entry of webConditionalEntries) {
-        if (entry.value.kind !== 'conditional') continue
-        const tree = entry.value.tree
-        const leaves = collectLeaves(tree)
+        const tree = entry.value.kind === 'conditional' ? entry.value.tree : null
+        const domain = frontendClassDomain(entry, component)
+        if (!tree && !domain) continue
+        const leaves = tree
+          ? collectLeaves(tree)
+          : domain!.map((value) => ({ value, dependencies: [] }))
         const leafArtifactsMap = new Map<
           (typeof leaves)[number],
           { classes: string[]; css: string[] }
@@ -3416,22 +3451,32 @@ export function createTamaguiCompilerHost(
           if (!baseStaticClasses.has(cls)) staticClasses.add(cls)
         }
 
+        const leafClasses = (leaf: (typeof leaves)[number]): string => {
+          const artifacts = leafArtifactsMap.get(leaf)
+          const only = artifacts
+            ? artifacts.classes.filter((item) => !sharedInConditional.has(item))
+            : []
+          return only.join(' ')
+        }
         function serializeWebTree(node: BranchDecisionNode): string {
-          if (node.kind === 'leaf') {
-            const artifacts = leafArtifactsMap.get(node)
-            const only = artifacts
-              ? artifacts.classes.filter((item) => !sharedInConditional.has(item))
-              : []
-            return JSON.stringify(only.join(' '))
-          }
+          if (node.kind === 'leaf') return JSON.stringify(leafClasses(node))
           const test = input.source.slice(node.test.start, node.test.end)
           const truePart = serializeWebTree(node.whenTrue)
           const falsePart = serializeWebTree(node.whenFalse)
           return `(${test}) ? ${truePart} : ${falsePart}`
         }
 
-        const classExpr = serializeWebTree(tree)
-        programClassSources.push(classExpr)
+        if (tree) {
+          programClassSources.push(serializeWebTree(tree))
+        } else {
+          // the runtime string picks its resolved classes; a string outside the
+          // domain cannot occur, since the domain is the array's full contents
+          const table = Object.fromEntries(
+            leaves.map((leaf) => [leaf.value, leafClasses(leaf)])
+          )
+          const key = input.source.slice(entry.value.span.start, entry.value.span.end)
+          programClassSources.push(`(${JSON.stringify(table)})[${key}]`)
+        }
       }
       const webClassName = [...staticClasses].join(' ')
       const hasStyleProgram = programClassSources.length > 0
