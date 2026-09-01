@@ -33,7 +33,9 @@ export const Theme = createRefComponent(function Theme(
 
   if (process.env.NODE_ENV === 'development') {
     for (const key in props) {
-      if (!reservedThemeProps[key]) {
+      // bundler dev tooling stamps source locations onto every element
+      // (`data-one-source` on web, `srcloc` on native); those are not values
+      if (!reservedThemeProps[key] && key !== 'srcloc' && !key.startsWith('data-')) {
         warnOnce(
           `theme-update:${key}`,
           `<Theme ${key}=...> no longer accepts inline values. Wrap the subtree in <ThemeUpdate ${key}=...> instead.`
