@@ -22,6 +22,5 @@ export const reservedThemeProps: Record<string, true> = {
   nativeUpdate: true,
   needsUpdate: true,
   passThrough: true,
-  reset: true,
   shallow: true,
 }

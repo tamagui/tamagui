@@ -9,7 +9,6 @@ import {
   type MutableRefObject,
 } from 'react'
 import { getConfig, getSetting } from '../config'
-import { formatDiagnostic } from '../helpers/formatDiagnostic'
 import { MISSING_THEME_MESSAGE } from '../constants/constants'
 import type {
   ThemeParsed,
@@ -483,22 +482,9 @@ export function getNewThemeName(
   props: UseThemeWithStateProps,
   forceUpdate = false
 ): string | null {
-  const { name, reset } = props
+  const { name } = props
 
-  if (name && reset) {
-    throw new Error(
-      formatDiagnostic(
-        '❌004',
-        'Theme',
-        'props name and reset are mutually exclusive',
-        'Pass either name or reset, not both',
-        'name,reset',
-        { name, reset }
-      )
-    )
-  }
-
-  const cacheKey = `${parentName}|${name || ''}|${reset ? 1 : 0}|${forceUpdate ? 1 : 0}`
+  const cacheKey = `${parentName}|${name || ''}|${forceUpdate ? 1 : 0}`
   if (themeNameCacheVer !== cacheVersion) {
     themeNameCache.clear()
     themeNameCacheVer = cacheVersion
@@ -510,7 +496,6 @@ export function getNewThemeName(
   const result = resolveThemeName(
     parentName,
     name ?? undefined,
-    reset,
     getConfig().themes,
     forceUpdate
   )
@@ -526,20 +511,9 @@ export const getThemeNameCacheSize = () => themeNameCache.size
 export function resolveThemeName(
   parentName: string,
   name: string | undefined,
-  reset: boolean | undefined,
   themes: Record<string, any>,
   forceUpdate = false
 ): string | null {
-  if (reset) {
-    if (parentName === 'light' || parentName === 'dark') {
-      return parentName === 'light' ? 'dark' : 'light'
-    }
-    const lastPartIndex = parentName.lastIndexOf('_')
-    const resetName = lastPartIndex <= 0 ? parentName : parentName.slice(lastPartIndex)
-    const scheme = parentName.slice(0, lastPartIndex)
-    return themes[resetName] ? resetName : scheme
-  }
-
   const parentParts = parentName ? parentName.split('_') : []
   let found: string | null = null
 
@@ -567,16 +541,8 @@ export function resolveThemeName(
   return found
 }
 
-const getPropsKey = ({
-  name,
-  reset,
-  forceClassName,
-  _themeUpdate,
-}: UseThemeWithStateProps) =>
-  `${name || ''}${reset || ''}${forceClassName || ''}${_themeUpdate?.key || ''}`
+const getPropsKey = ({ name, forceClassName, _themeUpdate }: UseThemeWithStateProps) =>
+  `${name || ''}${forceClassName || ''}${_themeUpdate?.key || ''}`
 
 export const hasThemeUpdatingProps = (props: UseThemeWithStateProps) =>
-  'name' in props ||
-  'reset' in props ||
-  'forceClassName' in props ||
-  '_themeUpdate' in props
+  'name' in props || 'forceClassName' in props || '_themeUpdate' in props

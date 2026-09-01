@@ -204,7 +204,6 @@ export type ThemeProviderProps = {
     className?: string;
     defaultTheme: string | null | undefined;
     children?: any;
-    reset?: boolean;
     /**
      * This provider is mounted inside a page it does not own, so it must not write
      * its theme class onto `html` or `body`. Its theme class goes on its own node
@@ -584,7 +583,7 @@ export type ThemeParsed = {
 /**
  * Prop names `<Theme>` owns. Inline values are authored on `<ThemeUpdate>`.
  */
-export type ReservedThemePropName = '_isRoot' | 'children' | 'className' | 'contain' | 'debug' | 'deopt' | 'disable' | 'disable-child-theme' | 'forceClassName' | '_themeUpdate' | 'name' | 'nativeUpdate' | 'needsUpdate' | 'passThrough' | 'reset' | 'shallow';
+export type ReservedThemePropName = '_isRoot' | 'children' | 'className' | 'contain' | 'debug' | 'deopt' | 'disable' | 'disable-child-theme' | 'forceClassName' | '_themeUpdate' | 'name' | 'nativeUpdate' | 'needsUpdate' | 'passThrough' | 'shallow';
 export type Tokens = TamaguiConfig['tokens'];
 export type TokensParsed = {
     [Key in keyof Required<Tokens>]: TokenifyRecord<NonNullable<Tokens[Key]>>;
@@ -612,7 +611,6 @@ export interface ThemeProps {
     className?: string;
     name?: Exclude<ThemeName, number> | null;
     children?: any;
-    reset?: boolean;
     debug?: DebugProp;
     forceClassName?: boolean;
     shallow?: boolean;

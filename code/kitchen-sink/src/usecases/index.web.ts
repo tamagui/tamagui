@@ -300,7 +300,6 @@ const loaders: Record<string, () => ComponentType<any>> = {
   ThemeMutation: () => require('./ThemeMutation').ThemeMutation,
   ThemeLevels: () => require('./ThemeLevels').ThemeLevels,
   ThemeNested: () => require('./ThemeNested').ThemeNested,
-  ThemeReset: () => require('./ThemeReset').ThemeReset,
   ThemeShallowCase: () => require('./ThemeShallowCase').ThemeShallowCase,
   ToastAboveDialogCase: () => require('./ToastAboveDialogCase').ToastAboveDialogCase,
   ToastMultipleCase: () => require('./ToastMultipleCase').ToastMultipleCase,

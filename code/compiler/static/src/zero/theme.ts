@@ -48,7 +48,6 @@ export interface StaticThemeNode {
   opening: AstNode
   closing: AstNode | null
   options: ThemeNameOption[]
-  reset: boolean
   contain: boolean
   /** The compiled inline-value layer, when the node carries theme-key props. */
   layer: IslandThemeBridgeLayer | null
@@ -69,7 +68,7 @@ const MAX_THEME_BRANCHES = 8
  * runtime behavior with no compiled form, including a `children` prop: the
  * lowered span carries the element's body, not an attribute.
  */
-const LOWERABLE_RESERVED_PROPS = new Set(['name', 'reset', 'contain'])
+const LOWERABLE_RESERVED_PROPS = new Set(['name', 'contain'])
 
 function jsxAttributeName(attribute: AstNode): string | null {
   const name = childNode(attribute, 'name')
@@ -184,7 +183,6 @@ export function resolveThemeChain(
         const resolved = resolveThemeName(
           parent.name,
           option.name,
-          node.reset,
           config.themes as Record<string, any>
         )
         const tests = [parent.test, option.test].filter(Boolean)
@@ -230,7 +228,6 @@ export function readStaticTheme(
   const span = (node: AstNode) => ({ id: moduleId, start: node.start, end: node.end })
 
   let options: ThemeNameOption[] = [{ test: null, name: undefined }]
-  let reset = false
   let contain = false
   const themeKeyProps: Record<string, string | number> = {}
 
@@ -314,7 +311,6 @@ export function readStaticTheme(
         })
         continue
       }
-      if (key === 'reset') reset = literal
       if (key === 'contain') contain = literal
       continue
     }
@@ -351,19 +347,6 @@ export function readStaticTheme(
       continue
     }
     themeKeyProps[key] = literal
-  }
-
-  // the runtime throws on this pair rather than picking one
-  if (kind === 'Theme' && reset && options.some((option) => option.name !== undefined)) {
-    violations.push({
-      rule: 4,
-      code: 'local/unsupported-target',
-      span: span(opening),
-      component: 'Theme',
-      message: zeroRuleMessage(4, {
-        detail: 'a <Theme> with both name and reset, which cannot mean one theme,',
-      }),
-    })
   }
 
   if (!closing) {
@@ -411,7 +394,6 @@ export function readStaticTheme(
       opening,
       closing,
       options,
-      reset,
       contain,
       layer:
         inlineValues && inlineCSS

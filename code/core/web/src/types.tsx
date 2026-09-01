@@ -460,7 +460,6 @@ export type ThemeProviderProps = {
   className?: string
   defaultTheme: string | null | undefined
   children?: any
-  reset?: boolean
   /**
    * This provider is mounted inside a page it does not own, so it must not write
    * its theme class onto `html` or `body`. Its theme class goes on its own node
@@ -1083,7 +1082,6 @@ export type ReservedThemePropName =
   | 'nativeUpdate'
   | 'needsUpdate'
   | 'passThrough'
-  | 'reset'
   | 'shallow'
 
 export type Tokens = TamaguiConfig['tokens']
@@ -1147,7 +1145,6 @@ export interface ThemeProps {
   className?: string
   name?: Exclude<ThemeName, number> | null
   children?: any
-  reset?: boolean
   debug?: DebugProp
   // on the web, for portals we need to re-insert className
   forceClassName?: boolean

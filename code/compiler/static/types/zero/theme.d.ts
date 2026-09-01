@@ -25,7 +25,6 @@ export interface StaticThemeNode {
     opening: AstNode;
     closing: AstNode | null;
     options: ThemeNameOption[];
-    reset: boolean;
     contain: boolean;
     /** The compiled inline-value layer, when the node carries theme-key props. */
     layer: IslandThemeBridgeLayer | null;

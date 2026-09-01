@@ -15,7 +15,7 @@ export declare const getRootThemeState: () => ThemeState | null;
 export declare const useThemeState: (props: UseThemeWithStateProps, isRoot: boolean | undefined, keys: MutableRefObject<Set<string> | null>, schemeKeys?: MutableRefObject<Set<string> | null>, cascadeOnChange?: boolean, optimizeForFirstRender?: boolean) => ThemeState;
 export declare function getNewThemeName(parentName: string | undefined, props: UseThemeWithStateProps, forceUpdate?: boolean): string | null;
 export declare const getThemeNameCacheSize: () => number;
-export declare function resolveThemeName(parentName: string, name: string | undefined, reset: boolean | undefined, themes: Record<string, any>, forceUpdate?: boolean): string | null;
+export declare function resolveThemeName(parentName: string, name: string | undefined, themes: Record<string, any>, forceUpdate?: boolean): string | null;
 export declare const hasThemeUpdatingProps: (props: UseThemeWithStateProps) => boolean;
 export {};
 //# sourceMappingURL=useThemeState.d.ts.map

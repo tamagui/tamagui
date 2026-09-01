@@ -136,7 +136,6 @@ Components access theme values by their bare names:
 **Special props:**
 
 - `theme="inverse"`: Uses the opposite light or dark sub-theme
-- `reset`: Reverts to grandparent theme
 
 ## Tokens
 

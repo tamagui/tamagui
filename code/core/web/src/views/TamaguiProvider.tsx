@@ -29,7 +29,6 @@ export function TamaguiProvider({
   config,
   className,
   defaultTheme: defaultThemeProp,
-  reset,
   insets,
   isSubtreeRoot,
 }: TamaguiProviderProps) {
@@ -65,7 +64,6 @@ export function TamaguiProvider({
     >
       <ThemeProvider
         defaultTheme={defaultTheme}
-        reset={reset}
         className={className}
         isSubtreeRoot={isSubtreeRoot}
       >
