@@ -1502,6 +1502,12 @@ export function createTamaguiCompilerHost(
     resolveComponent: resolve,
     isStyleProp,
     canLowerDynamicStyleProp(name, component, valueKind) {
+      // A component resolver receives the complete props object. Without a
+      // compiler-derived read set, resolving one side of a dynamic callsite
+      // would execute the real resolver with an incomplete props snapshot.
+      if ((component.staticConfig as StaticConfig).resolvers?.length) {
+        return false
+      }
       // a conditional with static branches lowers per-branch on both
       // platforms: each side resolves at compile time, only the test survives
       if (
@@ -1564,6 +1570,21 @@ export function createTamaguiCompilerHost(
           Object.assign(props, entry.value.value)
         } else {
           props[entry.name] = entry.value.value
+        }
+      }
+      if (component.staticConfig.resolvers?.length) {
+        const unresolvedProp = input.element.entries.find(
+          (entry) => entry.kind === 'prop' && entry.value.kind !== 'static'
+        )
+        if (unresolvedProp?.kind === 'prop') {
+          return bailout(
+            input,
+            'local/dynamic-style-value',
+            `Component resolver prop ${unresolvedProp.name} could not be evaluated`,
+            unresolvedProp.span,
+            undefined,
+            unresolvedProp.name
+          )
         }
       }
       const disableOptimizationEntry = input.element.entries.find(
@@ -3374,7 +3395,8 @@ function bailout(
     | 'local/unsupported-child',
   message: string,
   span = input.element.span,
-  zero?: { rule: ZeroRule; message?: string }
+  zero?: { rule: ZeroRule; message?: string },
+  prop?: string
 ): LoweringCandidateResult {
   return {
     ok: false,
@@ -3384,6 +3406,7 @@ function bailout(
       message,
       span,
       component: input.element.component.name,
+      ...(prop && { prop }),
       ...(zero && { zeroRule: zero.rule, zeroMessage: zero.message }),
     },
   }

@@ -2,13 +2,15 @@ import dedent from 'dedent'
 import * as React from 'react'
 import { afterAll, beforeAll, describe, expect, test } from 'vitest'
 import { mkdirSync, writeFileSync, rmSync, existsSync } from 'node:fs'
-import { join } from 'node:path'
+import { join, resolve } from 'node:path'
 
 import { extractForWeb } from './lib/extract'
 
 Error.stackTraceLimit = Number.MAX_SAFE_INTEGER
 process.env.TAMAGUI_TARGET = 'web'
 window['React'] = React
+
+const compilerLaneAComponents = resolve(__dirname, 'fixtures/compilerLaneAComponents.tsx')
 
 describe('styled() tests', () => {
   test('loads dynamic styled() in file and extracts CSS', async () => {
@@ -92,6 +94,82 @@ describe('styled() tests', () => {
 
     expect(output.js).toMatchSnapshot()
     expect(output.styles).toMatchSnapshot()
+  })
+
+  test('evaluates branded dynamics and resolver chains with static callsite props', async () => {
+    const output = await extractForWeb(
+      `
+      import { DynamicResolverStack } from './fixtures/compilerLaneAComponents'
+
+      export function Test() {
+        return <DynamicResolverStack scale={20} tone="critical" id="dim" />
+      }
+    `,
+      { options: { components: [compilerLaneAComponents] } }
+    )
+
+    expect(output.stats.lowered).toBe(1)
+    expect(output.stats.bailed).toBe(0)
+    expect(output.js).toContain('className')
+    expect(output.styles).toContain('width:20px')
+    expect(output.styles).toContain('height:20px')
+    expect(output.styles).toContain('background-color:red')
+    expect(output.styles).toContain('opacity:0.5')
+    expect(output.styles).toContain('padding:12px')
+    expect(output.styles).not.toContain('padding:8px')
+  })
+
+  test('deopts a branded dynamic whose callsite value is unknown', async () => {
+    const output = await extractForWeb(
+      `
+      import { DynamicResolverStack } from './fixtures/compilerLaneAComponents'
+
+      export function Test(props) {
+        return <DynamicResolverStack scale={props.scale} tone="critical" id="dim" />
+      }
+    `,
+      { options: { components: [compilerLaneAComponents] } }
+    )
+
+    expect(output.stats.lowered).toBe(0)
+    expect(output.stats.bailed).toBe(1)
+    expect(output.js).toContain('scale={props.scale}')
+    expect(output.diagnostics).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          code: 'local/dynamic-style-value',
+          blocking: true,
+          prop: 'scale',
+        }),
+      ])
+    )
+  })
+
+  test('deopts a resolver callsite when any readable prop is unknown', async () => {
+    const output = await extractForWeb(
+      `
+      import { DynamicResolverStack } from './fixtures/compilerLaneAComponents'
+
+      export function Test(props) {
+        return <DynamicResolverStack scale={20} tone="critical" id={props.id} />
+      }
+    `,
+      { options: { components: [compilerLaneAComponents] } }
+    )
+
+    expect(output.stats.lowered).toBe(0)
+    expect(output.stats.bailed).toBe(1)
+    expect(output.js).toContain('id={props.id}')
+    expect(output.styles).toBe('')
+    expect(output.diagnostics).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          code: 'local/dynamic-style-value',
+          blocking: true,
+          prop: 'id',
+        }),
+      ])
+    )
   })
 
   describe('cross-file styled() optimization', () => {
