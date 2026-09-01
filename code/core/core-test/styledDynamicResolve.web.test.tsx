@@ -1,6 +1,6 @@
 process.env.TAMAGUI_TARGET = 'web'
 
-import { describe, expect, test } from 'vitest'
+import { afterEach, describe, expect, test, vi } from 'vitest'
 
 import { View, createTamagui, styled } from '../web/src'
 import { getDefaultTamaguiConfig } from '../config-default'
@@ -23,6 +23,11 @@ const cssFor = (component: any, props: Record<string, any>) =>
     .map((rule: string) => rule.replace(/_[a-z]+-\d+/g, '_class'))
 
 describe('styled.dynamic function variants', () => {
+  afterEach(() => {
+    vi.restoreAllMocks()
+    vi.unstubAllEnvs()
+  })
+
   test('maps the value to styles', () => {
     const result = simplifiedGetSplitStyles(Sized, { size: 'big' })
     expect(getStyleValue(result, 'width')).toBe('200px')
@@ -54,6 +59,69 @@ describe('styled.dynamic function variants', () => {
     expect(seen.tokens).toBeTruthy()
     expect('theme' in seen).toBe(true)
     expect(seen.props).toBeUndefined()
+  })
+
+  test('treats undefined output values as absent', () => {
+    const Optional = styled(View, {
+      opacity: 0.75,
+      variants: {
+        enabled: styled.dynamic<boolean>((enabled) => ({
+          opacity: enabled ? 1 : undefined,
+          scale: enabled ? 2 : undefined,
+        })),
+      },
+    })
+
+    const result = simplifiedGetSplitStyles(Optional, { enabled: false })
+    expect(getStyleValue(result, 'opacity')).toBe('0.75')
+    expect(getStyleValue(result, 'scale')).toBeUndefined()
+  })
+
+  test('warns on dynamic-input spreads without making definition an error', () => {
+    vi.stubEnv('NODE_ENV', 'development')
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+
+    expect(() =>
+      styled.dynamic<any>((value) => ({
+        ...value,
+        opacity: 0.5,
+      }))
+    ).not.toThrow()
+    expect(warn).toHaveBeenCalledWith(expect.stringContaining('a spread'))
+  })
+
+  test('warns on dynamic-input computed keys', () => {
+    vi.stubEnv('NODE_ENV', 'development')
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+
+    styled.dynamic<any>((value) => ({
+      [`padding-${value}`]: 10,
+    }))
+    expect(warn).toHaveBeenCalledWith(expect.stringContaining('a computed key'))
+  })
+
+  test('shape probing never throws when a body needs a concrete runtime value', () => {
+    vi.stubEnv('NODE_ENV', 'development')
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+
+    expect(() =>
+      styled.dynamic<string>((value) => {
+        if (typeof value !== 'string') throw new Error('concrete string required')
+        return { opacity: value.length }
+      })
+    ).not.toThrow()
+    expect(warn).not.toHaveBeenCalled()
+  })
+
+  test('does not mistake dynamic scalar or structured-leaf values for spreads', () => {
+    vi.stubEnv('NODE_ENV', 'development')
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+
+    styled.dynamic<any>((value) => ({
+      width: value,
+      shadowOffset: { width: value, height: 0 },
+    }))
+    expect(warn).not.toHaveBeenCalled()
   })
 })
 

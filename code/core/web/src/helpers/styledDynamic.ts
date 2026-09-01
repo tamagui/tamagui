@@ -33,6 +33,103 @@ export function isStyledDynamic(value: unknown): value is StyledDynamic {
 }
 
 const bareStyledDynamic: StyledDynamicProp = { [styledDynamicSymbol]: true }
+const dynamicSpreadProbe = Symbol('tamagui.dynamicSpreadProbe')
+const dynamicComputedProbe = '__tamagui_dynamic_computed_key__'
+const dynamicComputedNumberProbe = 712_367_821
+const dynamicShapeProbeValues = new WeakSet<object>()
+
+function createDynamicShapeProbe(): any {
+  const target = function () {}
+  let probe: any
+  probe = new Proxy(target, {
+    apply: () => probe,
+    construct: () => probe,
+    get: (_target, key) => {
+      if (key === Symbol.toPrimitive) {
+        return (hint: string) =>
+          hint === 'number' ? dynamicComputedNumberProbe : dynamicComputedProbe
+      }
+      if (key === Symbol.iterator) {
+        return function* () {
+          yield dynamicComputedProbe
+        }
+      }
+      if (key === dynamicSpreadProbe) return true
+      return probe
+    },
+    getOwnPropertyDescriptor: (target, key) =>
+      key === dynamicSpreadProbe
+        ? { configurable: true, enumerable: true, value: true }
+        : Reflect.getOwnPropertyDescriptor(target, key),
+    ownKeys: (target) => [...Reflect.ownKeys(target), dynamicSpreadProbe],
+  })
+  dynamicShapeProbeValues.add(probe)
+  return probe
+}
+
+function findDynamicShapeViolation(value: unknown) {
+  if (!value || (typeof value !== 'object' && typeof value !== 'function')) return
+  const seen = new WeakSet<object>()
+  let spread = false
+  let computed = false
+  const visit = (current: object) => {
+    // A proxy used as an ordinary scalar/local value is valid. Its enumerable
+    // marker only means "spread" after object spread copies that descriptor
+    // onto a returned literal.
+    if (dynamicShapeProbeValues.has(current) || seen.has(current)) return
+    seen.add(current)
+    let descriptors: PropertyDescriptorMap
+    try {
+      descriptors = Object.getOwnPropertyDescriptors(current)
+    } catch {
+      return
+    }
+    for (const key of Reflect.ownKeys(descriptors)) {
+      if (key === dynamicSpreadProbe) spread = true
+      if (
+        typeof key === 'string' &&
+        (key.includes(dynamicComputedProbe) || key === String(dynamicComputedNumberProbe))
+      ) {
+        computed = true
+      }
+      const nested = descriptors[key as keyof typeof descriptors]?.value
+      if (nested && (typeof nested === 'object' || typeof nested === 'function')) {
+        visit(nested)
+      }
+    }
+  }
+  visit(value)
+  if (spread || computed) return { spread, computed }
+}
+
+function validateDynamicShape(fn: Function) {
+  try {
+    const probe = createDynamicShapeProbe()
+    // Helpers may diagnose the deliberately-invalid proxy value (for example a
+    // token resolver saying it is not a known size). Those are probe artifacts,
+    // not definition warnings; only the shape warning below should escape.
+    const warn = console.warn
+    let output
+    try {
+      console.warn = () => {}
+      output = fn(probe, probe)
+    } finally {
+      console.warn = warn
+    }
+    const violation = findDynamicShapeViolation(output)
+    if (!violation) return
+    const reasons = [
+      violation.spread ? 'a spread from a dynamic input' : '',
+      violation.computed ? 'a computed key from a dynamic input' : '',
+    ].filter(Boolean)
+    console.warn(
+      `[tamagui] styled.dynamic${fn.name ? ` (${fn.name})` : ''} returned ${reasons.join(' and ')} during its development shape check. Dynamic style bodies require static object keys for extraction; this definition will deopt instead.`
+    )
+  } catch {
+    // The probe is intentionally best-effort. A body may depend on a concrete
+    // runtime value the proxy cannot model; definition must never fail for it.
+  }
+}
 
 /**
  * `styled.dynamic<T>()` declares a typed variant prop that is consumed by
@@ -47,6 +144,7 @@ export function styledDynamic<Val>(
 ): StyledDynamicFn<Val>
 export function styledDynamic(fn?: any) {
   if (!fn) return bareStyledDynamic
+  if (process.env.NODE_ENV === 'development') validateDynamicShape(fn)
   fn[styledDynamicSymbol] = true
   return fn
 }
