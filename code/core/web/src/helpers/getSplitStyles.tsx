@@ -1190,31 +1190,38 @@ export const getSplitStyles: StyleSplitter = (
   const baseVariantProps = styleStaticConfig.baseVariantProps
   const appliesBaseStyle = baseStyle && !processedProps.asChild
   pass[passSourceLayer] = 0
-  if (appliesBaseStyle) {
-    for (const key in baseStyle) {
-      // a defaulted variant the caller (or styled context) replaced dispatches
-      // from the call-site pass below instead: its outputs then land on the
-      // variant tier, above every styled default, so a later default variant's
-      // nested output cannot overwrite an explicit call-site value
+  if (appliesBaseStyle && baseVariantProps) {
+    // a defaulted variant the caller replaced keeps the default's authored
+    // position (so a later styled override of its outputs still wins), but the
+    // caller's value becomes authoritative for that variant key: any DEFAULT
+    // variant's nested re-assignment of it is suppressed in emitVariantStyle
+    let callerKeys: Set<string> | undefined
+    for (const key in baseVariantProps) {
       if (
-        baseVariantProps &&
-        Object.hasOwn(baseVariantProps, key) &&
         Object.hasOwn(processedProps, key) &&
         processedProps[key] !== baseVariantProps[key]
       ) {
-        continue
+        ;(callerKeys ||= new Set()).add(key)
       }
-      contributeProp(pass, key, baseStyle[key])
+    }
+    ;(styleState as DirectState).flatCallerVariantKeys = callerKeys
+  }
+  if (appliesBaseStyle) {
+    for (const key in baseStyle) {
+      contributeProp(
+        pass,
+        key,
+        baseVariantProps &&
+          Object.hasOwn(baseVariantProps, key) &&
+          Object.hasOwn(processedProps, key)
+          ? processedProps[key]
+          : baseStyle[key]
+      )
     }
   }
   pass[passSourceLayer] = 2
   for (const key in processedProps) {
-    if (
-      appliesBaseStyle &&
-      baseVariantProps &&
-      Object.hasOwn(baseVariantProps, key) &&
-      processedProps[key] === baseVariantProps[key]
-    ) {
+    if (appliesBaseStyle && baseVariantProps && Object.hasOwn(baseVariantProps, key)) {
       continue
     }
     contributeProp(pass, key, processedProps[key])
@@ -1662,6 +1669,7 @@ type DirectState = GetStyleState & {
   flatStyleStaticConfig?: StyleStaticConfig
   flatSlots?: Record<string, AtomicSlotEntry[]>
   flatPropertyLayers?: Record<string, number>
+  flatCallerVariantKeys?: Set<string>
   flatAtomics?: Record<string, any>
   flatBoxShadow?: any
   flatBoxShadowSequence?: number
@@ -3131,11 +3139,22 @@ export function emitVariantStyle(
   condition: unknown,
   disabled: boolean
 ) {
+  const pass = (state as DirectState).flatPass!
+  // an explicit caller value for a defaulted variant is authoritative: a
+  // nested re-assignment of that variant from ANOTHER variant's output is
+  // dropped, so a default like unstyled=false cannot overwrite a caller size.
+  // a variant re-emitting its own key (fontFamily -> getFontSized ->
+  // { fontFamily }) is that caller value being applied, so it passes
+  if (
+    key !== pass[passMapSourceKey] &&
+    (state as DirectState).flatCallerVariantKeys?.has(key)
+  ) {
+    return
+  }
   if ((state as DirectState).flatStyleStaticConfig!.styledContextKeys?.has(key)) {
     ;(state.overriddenContextProps ||= {})[key] = (state.originalContextPropValues ||=
       {})[key] = original
   }
-  const pass = (state as DirectState).flatPass!
   const parent = pass[passParentCursor]
   pass[passParentCursor] = condition
   contributeProp(pass, key, value, original, disabled)
