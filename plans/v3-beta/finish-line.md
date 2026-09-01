@@ -63,6 +63,16 @@ Owner session: Fable (r16625). Supersedes the execution state in
   docs pushes on top keep superseding green runs; a main-side `release.yml`
   change is drafted to tolerate docs-only newer commits and waits for the
   owner. Codemod, comparison, and types-probe workers still running.
+- 2026-09-01 (day 1, later): the frozen head's Checks failed on the converter
+  (`text-[body]` classified as color) and the zero-runtime starter CSS baseline;
+  both fixed and the batch pushed as `ea2077c85a`, Checks green, beta release
+  running. Functional-variant codemod landed and reviewed (`5369893f38`,
+  `b5e298c17d`): every real site in takeout, chat, soot, and 3pc converts
+  automatically. Editor type probe landed (`9d96bc2377`): all completions
+  present, sub-4 ms, no leaks; `createStyledHOC` now hands render callbacks a
+  ref value (local `48cc946e87`). Condition template cache tried and reverted
+  (no win, +258 gzip). Migrations started in worktrees on local tarballs:
+  takeout (r17171), team-machine (r17281), chat (r17284).
 
 ## Plan
 
