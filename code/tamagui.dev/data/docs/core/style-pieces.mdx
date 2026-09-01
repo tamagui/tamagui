@@ -77,7 +77,7 @@ Rules for conforming style pieces:
 - Structured leaf values (such as `shadowOffset`) are allowed.
 - Flat clause strings (such as `'1 hover:0.8'`) are allowed.
 
-In development mode, Tamagui inspects the object shape. Violations emit a warning and deopt compiler extraction. They do not cause runtime errors.
+Non-conforming pieces with dynamic spreads or computed keys deopt compiler extraction for that piece. The runtime remains unaffected and interprets the styles in JavaScript.
 
 ## Native resolution
 
