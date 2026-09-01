@@ -4,17 +4,20 @@
  * getSplitStyles harness.
  *
  * usage:
- *   NODE_ENV=production TAMAGUI_TARGET=web bun code/comparisons/benchmark-get-split-styles.ts
- *   NODE_ENV=production TAMAGUI_TARGET=web bun code/comparisons/benchmark-get-split-styles.ts --output=code/comparisons/get-split-styles-baseline.json
- *   NODE_ENV=production TAMAGUI_TARGET=web bun code/comparisons/benchmark-get-split-styles.ts --compare=code/comparisons/get-split-styles-baseline.json
+ *   npm ci --workspaces=false --prefix code/comparisons/v2-control
+ *   NODE_ENV=production TAMAGUI_TARGET=web npx tsx code/comparisons/benchmark-get-split-styles.ts
+ *   NODE_ENV=production TAMAGUI_TARGET=web npx tsx code/comparisons/benchmark-get-split-styles.ts --output=code/comparisons/get-split-styles-baseline.json
+ *   NODE_ENV=production TAMAGUI_TARGET=web npx tsx code/comparisons/benchmark-get-split-styles.ts --compare=code/comparisons/get-split-styles-baseline.json
  */
 
 import { createHash } from 'node:crypto'
 import { execFileSync } from 'node:child_process'
 import { readFileSync, writeFileSync } from 'node:fs'
-import { resolve } from 'node:path'
+import { createRequire } from 'node:module'
+import { dirname, resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
 
-import config from '../core/config-default'
+import * as config from '../core/config-default'
 import { Text, View, createTamagui, styled } from '../core/web/src'
 import { simplifiedGetSplitStyles } from '../core/core-test/utils'
 import { createRandom, median, shuffle, summarize } from './benchmark-statistics'
@@ -54,7 +57,8 @@ const warmups = Number.parseInt(argument('warmups', '3')!, 10)
 const targetOperations = Number.parseInt(argument('target-ops', '20000')!, 10)
 const outputPath = argument('output')
 const comparePath = argument('compare')
-const corpusPath = resolve(import.meta.dir, 'get-split-styles-prop-corpus.json')
+const comparisonRoot = dirname(fileURLToPath(import.meta.url))
+const corpusPath = resolve(comparisonRoot, 'get-split-styles-prop-corpus.json')
 const corpusSource = readFileSync(corpusPath, 'utf8')
 const corpus = JSON.parse(corpusSource) as {
   fixedOverheadScenarios: Record<'zero-props' | 'one-prop', CorpusElement>
@@ -71,11 +75,11 @@ if (rounds < 2 || warmups < 1 || targetOperations < 1) {
 
 createTamagui(config.getDefaultTamaguiConfig('web'))
 
-const v2Root = resolve(import.meta.dir, 'tamagui-v2-bench/node_modules')
-const v2Tamagui = await import(`${v2Root}/tamagui/dist/esm/index.mjs`)
-const v2Web = await import(`${v2Root}/@tamagui/web/dist/esm/index.mjs`)
-const v2ConfigDefault = await import(`${v2Root}/@tamagui/config-default/dist/index.cjs`)
-v2Tamagui.createTamagui(v2ConfigDefault.getDefaultTamaguiConfig('web'))
+const v2Root = resolve(comparisonRoot, 'v2-control/node_modules')
+const v2Require = createRequire(resolve(v2Root, '..', 'package.json'))
+const v2Web = v2Require('@tamagui/web')
+const v2ConfigDefault = v2Require('@tamagui/config-default')
+v2Web.createTamagui(v2ConfigDefault.getDefaultTamaguiConfig('web'))
 
 function prepareElements(
   elements: CorpusElement[],
@@ -137,9 +141,9 @@ const prepared = prepareElements(allElements, {
   dynamic: styled.dynamic,
 })
 const v2Prepared = prepareElements(allElements, {
-  Text: v2Tamagui.Text,
-  View: v2Tamagui.View,
-  styled: v2Tamagui.styled,
+  Text: v2Web.Text,
+  View: v2Web.View,
+  styled: v2Web.styled,
 })
 
 const scenarioNames: Scenario[] = [
@@ -276,11 +280,11 @@ const v2Results = resultsFor(samples.v2)
 const report = {
   schemaVersion: 2,
   label: argument('label', 'working-tree'),
-  commit: execFileSync('git', ['rev-parse', 'HEAD'], { cwd: import.meta.dir })
+  commit: execFileSync('git', ['rev-parse', 'HEAD'], { cwd: comparisonRoot })
     .toString()
     .trim(),
   runtime: {
-    bun: Bun.version,
+    bun: process.versions.bun ?? null,
     node: process.version,
     platform: `${process.platform}-${process.arch}`,
     nodeEnv: process.env.NODE_ENV,
@@ -301,7 +305,7 @@ const report = {
   },
   scenarios: results,
   pairedV2Control: {
-    packageVersion: v2Tamagui.version ?? '2.6.2',
+    packageVersion: '2.6.2',
     scenarios: v2Results,
     medianRatios: Object.fromEntries(
       scenarioNames.map((name) => [
@@ -314,7 +318,7 @@ const report = {
 }
 
 console.log(
-  `getSplitStyles corpus benchmark: ${rounds} rounds, ${warmups} warmups, Bun ${Bun.version}`
+  `getSplitStyles corpus benchmark: ${rounds} rounds, ${warmups} warmups, Node ${process.version}`
 )
 console.log(
   'scenario                 elements   props/op    V3 median    V2 median   V3/V2'
