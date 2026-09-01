@@ -1,7 +1,7 @@
 // Styled ToggleGroup = the unstyled @tamagui/ui ToggleGroup behavior + the
 // default v2-look skin on its Item (theme palette, border, hover/press/focus
-// color styling, and the default "active" appearance via the Item's `activeStyle`
-// prop). The behavior frame keeps only structural layout + the size mechanism.
+// color styling, and the default active appearance). The behavior frame keeps
+// only structural layout + the size mechanism.
 // Single skin definition; the shadcn registry item is generated from this file.
 import {
   createRefComponent,
@@ -13,8 +13,6 @@ import {
 } from '@tamagui/ui'
 import type * as React from 'react'
 
-// This plain prop object is applied by Toggle while active; its interaction
-// overrides are flat clauses like every other authored style value.
 const activeAppearance = {
   backgroundColor: 'background-press hover:background-press focus:background-press',
 } as const
@@ -29,7 +27,11 @@ export const ToggleGroupItem = styled(UiToggleGroup.Item, {
   outlineWidth: 'focus-visible:2px',
   outlineStyle: 'focus-visible:solid',
   zIndex: 'focus-visible:10',
-  activeStyle: activeAppearance,
+  variants: {
+    defaultActiveStyle: {
+      true: activeAppearance,
+    },
+  } as const,
 })
 
 // see Dialog.tsx: withStaticProperties assigns in place, so composing onto

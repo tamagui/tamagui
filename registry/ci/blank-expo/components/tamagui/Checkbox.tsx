@@ -4,7 +4,6 @@ import {
   type GetProps,
   resolveTokenSize,
   styled,
-  type VariantSpreadExtras,
   withStaticProperties,
 } from '@tamagui/ui'
 
@@ -19,21 +18,18 @@ export const CheckboxFrame = styled(CheckboxBehavior, {
   outlineStyle: 'focus-visible:solid',
   outlineWidth: 'focus-visible:2px',
   variants: {
-    size: {
-      Size: (size, extras: VariantSpreadExtras<any>) => {
-        const controlSize = Math.round(
-          getVariableValue(
-            resolveTokenSize(size, { tokens: extras.tokens, font: extras.font! }).frame
-              .size
-          ) * 0.5
-        )
-        return {
-          width: controlSize,
-          height: controlSize,
-          borderRadius: Math.max(3, Math.round(controlSize / 5)),
-        }
-      },
-    },
+    size: styled.dynamic<any>((size, env) => {
+      const controlSize = Math.round(
+        getVariableValue(
+          resolveTokenSize(size, { tokens: env.tokens, font: env.font! }).frame.size
+        ) * 0.5
+      )
+      return {
+        width: controlSize,
+        height: controlSize,
+        borderRadius: Math.max(3, Math.round(controlSize / 5)),
+      }
+    }),
 
     disabled: {
       true: {

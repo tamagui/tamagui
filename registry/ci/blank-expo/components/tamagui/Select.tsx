@@ -20,7 +20,6 @@ import {
   SizeContext,
   type SizeTokens,
   styled,
-  type VariantSpreadExtras,
   withStaticProperties,
 } from '@tamagui/ui'
 
@@ -50,10 +49,10 @@ const Check = ({ size = 14 }: { size?: number }) => (
 
 export type SelectSize = SizeTokens
 
-const selectTriggerSizeVariant = (val: SelectSize, extras: VariantSpreadExtras<any>) => {
+const selectTriggerSizeVariant = styled.dynamic<SelectSize>((val, env) => {
   const { frame } = resolveTokenSize(val, {
-    tokens: extras.tokens,
-    font: extras.font!,
+    tokens: env.tokens,
+    font: env.font!,
   })
   return {
     borderRadius: frame.radius,
@@ -61,24 +60,24 @@ const selectTriggerSizeVariant = (val: SelectSize, extras: VariantSpreadExtras<a
     height: frame.size,
     paddingHorizontal: frame.space,
   }
-}
+})
 
-const selectItemSizeVariant = (val: SelectSize, extras: VariantSpreadExtras<any>) => {
+const selectItemSizeVariant = styled.dynamic<SelectSize>((val, env) => {
   const { frame } = resolveTokenSize(val, {
-    tokens: extras.tokens,
-    font: extras.font!,
+    tokens: env.tokens,
+    font: env.font!,
   })
   return {
     gap: Math.round(getVariableValue(frame.size) * 0.2),
     height: frame.size,
     paddingHorizontal: frame.space,
   }
-}
+})
 
-const selectNativeSizeVariant = (val: SelectSize, extras: VariantSpreadExtras<any>) => {
+const selectNativeSizeVariant = styled.dynamic<SelectSize>((val, env) => {
   const resolved = resolveTokenSize(val, {
-    tokens: extras.tokens,
-    font: extras.font!,
+    tokens: env.tokens,
+    font: env.font!,
   })
   const paddingVertical = Math.max(
     0,
@@ -95,7 +94,7 @@ const selectNativeSizeVariant = (val: SelectSize, extras: VariantSpreadExtras<an
     ),
     paddingRight: getVariableValue(resolved.frame.space) + 20,
   }
-}
+})
 
 const SelectNative = styled(SizableText, {
   displayName: 'SelectNative',
@@ -107,24 +106,21 @@ const SelectNative = styled(SizableText, {
   outlineWidth: 0,
   userSelect: 'none',
   variants: {
-    size: {
-      true: selectNativeSizeVariant,
-      Size: selectNativeSizeVariant,
-    },
+    size: selectNativeSizeVariant,
   } as const,
   defaultVariants: { size: true },
 })
 
-const selectTextSizeVariant = (val: SelectSize, extras: VariantSpreadExtras<any>) => {
+const selectTextSizeVariant = styled.dynamic<SelectSize>((val, env) => {
   const { text } = resolveTokenSize(val, {
-    tokens: extras.tokens,
-    font: extras.font!,
+    tokens: env.tokens,
+    font: env.font!,
   })
   return {
     fontSize: text.fontSize,
-    ...(text.lineHeight !== undefined && { lineHeight: text.lineHeight }),
+    lineHeight: text.lineHeight,
   }
-}
+})
 
 export const SelectTrigger = styled(SelectBehavior.Trigger, {
   context: SizeContext,
@@ -141,10 +137,7 @@ export const SelectTrigger = styled(SelectBehavior.Trigger, {
   outlineStyle: 'focus-visible:solid',
   outlineWidth: 'focus-visible:2px',
   variants: {
-    size: {
-      true: selectTriggerSizeVariant,
-      Size: selectTriggerSizeVariant,
-    },
+    size: selectTriggerSizeVariant,
   } as const,
   defaultVariants: { size: true },
 })
@@ -155,10 +148,7 @@ export const SelectValue = styled(SelectBehavior.Value, {
   color: 'color',
   ellipsis: true,
   variants: {
-    size: {
-      true: selectTextSizeVariant,
-      Size: selectTextSizeVariant,
-    },
+    size: selectTextSizeVariant,
   } as const,
   defaultVariants: { size: true },
 })
@@ -183,10 +173,7 @@ export const SelectLabel = styled(SelectBehavior.Label, {
   paddingHorizontal: 10,
   paddingVertical: 6,
   variants: {
-    size: {
-      true: selectTextSizeVariant,
-      Size: selectTextSizeVariant,
-    },
+    size: selectTextSizeVariant,
   } as const,
   defaultVariants: { size: true },
 })
@@ -207,10 +194,7 @@ export const SelectItem = styled(SelectBehavior.Item, {
   outlineStyle: 'focus-visible:solid',
   outlineWidth: 'focus-visible:1px',
   variants: {
-    size: {
-      true: selectItemSizeVariant,
-      Size: selectItemSizeVariant,
-    },
+    size: selectItemSizeVariant,
   } as const,
   defaultVariants: { size: true },
 })
@@ -222,10 +206,7 @@ export const SelectItemText = styled(SelectBehavior.ItemText, {
   userSelect: 'none',
   ellipsis: true,
   variants: {
-    size: {
-      true: selectTextSizeVariant,
-      Size: selectTextSizeVariant,
-    },
+    size: selectTextSizeVariant,
   } as const,
   defaultVariants: { size: true },
 })

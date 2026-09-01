@@ -20,16 +20,14 @@ export const SwitchFrame = styled(SwitchBehaviorFrame, {
   outlineStyle: 'focus-visible:solid',
   outlineWidth: 'focus-visible:2px',
   variants: {
-    size: {
-      Size: (size) => {
-        const height = getSwitchHeight(size)
-        return {
-          width: height * 2,
-          height,
-          minHeight: height,
-        }
-      },
-    },
+    size: styled.dynamic<SizeTokens>((size) => {
+      const height = getSwitchHeight(size)
+      return {
+        width: height * 2,
+        height,
+        minHeight: height,
+      }
+    }),
   } as const,
 })
 
@@ -38,15 +36,13 @@ export const SwitchThumbFrame = styled(SwitchBehaviorThumbFrame, {
   backgroundColor: 'background',
   borderRadius: 1000,
   variants: {
-    size: {
-      Size: (size) => {
-        const height = getSwitchHeight(size)
-        return {
-          width: height,
-          height,
-        }
-      },
-    },
+    size: styled.dynamic<SizeTokens>((size) => {
+      const height = getSwitchHeight(size)
+      return {
+        width: height,
+        height,
+      }
+    }),
   } as const,
 })
 

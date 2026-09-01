@@ -22,19 +22,16 @@ import {
   type ThemeProps,
   type TokenSize,
   useButton,
-  type VariantSpreadExtras,
   withStaticProperties,
 } from '@tamagui/ui'
 
 // SizeTokens includes `true`, which resolves through @tamagui/size's opt-in policy.
 export type ButtonSize = SizeTokens
 
-const buttonFrameSizeVariant = (val: ButtonSize, extras: VariantSpreadExtras<any>) => {
-  // Circular owns its square geometry in the circular variant below.
-  if (extras.props.circular) return
+const buttonFrameSizeVariant = styled.dynamic<ButtonSize>((val, env) => {
   const { frame } = resolveTokenSize(val, {
-    tokens: extras.tokens,
-    font: extras.font!,
+    tokens: env.tokens,
+    font: env.font!,
   })
   return {
     borderRadius: frame.radius,
@@ -46,20 +43,20 @@ const buttonFrameSizeVariant = (val: ButtonSize, extras: VariantSpreadExtras<any
     // the generic width/height shorthand.
     width: 'auto',
   }
-}
+})
 
-const buttonTextSizeVariant = (val: ButtonSize, extras: VariantSpreadExtras<any>) => {
+const buttonTextSizeVariant = styled.dynamic<ButtonSize>((val, env) => {
   const { text } = resolveTokenSize(val, {
-    tokens: extras.tokens,
-    font: extras.font!,
+    tokens: env.tokens,
+    font: env.font!,
   })
   return {
     fontSize: text.fontSize,
-    ...(text.lineHeight !== undefined && { lineHeight: text.lineHeight }),
+    lineHeight: text.lineHeight,
   }
-}
+})
 
-export const ButtonFrame = styled(ButtonBehaviorFrame, {
+const ButtonFrameBase = styled(ButtonBehaviorFrame, {
   context: SizeContext,
   displayName: 'ButtonFrame',
   className: 'tm-button',
@@ -73,28 +70,9 @@ export const ButtonFrame = styled(ButtonBehaviorFrame, {
   outlineStyle: 'focus-visible:solid',
   outlineWidth: 'focus-visible:2px',
   variants: {
-    size: {
-      true: buttonFrameSizeVariant,
-      Size: buttonFrameSizeVariant,
-    },
+    size: styled.dynamic<ButtonSize>(),
 
-    circular: {
-      true: (_, extras: VariantSpreadExtras<any>) => {
-        const { frame } = resolveTokenSize((extras.props.size as ButtonSize) ?? true, {
-          tokens: extras.tokens,
-          font: extras.font!,
-        })
-        return {
-          borderRadius: 1000,
-          paddingHorizontal: 0,
-          height: frame.size,
-          maxHeight: frame.size,
-          maxWidth: frame.size,
-          minWidth: frame.size,
-          width: frame.size,
-        }
-      },
-    },
+    circular: styled.dynamic<boolean>(),
 
     disabled: {
       true: {
@@ -118,6 +96,32 @@ export const ButtonFrame = styled(ButtonBehaviorFrame, {
   },
 })
 
+export const ButtonFrame = ButtonFrameBase.resolve((props, env) => {
+  const sized = buttonFrameSizeVariant((props.size as ButtonSize) ?? true, env)
+  if (!props.circular) {
+    return {
+      borderRadius: sized?.borderRadius,
+      gap: sized?.gap,
+      height: sized?.height,
+      paddingHorizontal: sized?.paddingHorizontal,
+      width: sized?.width,
+    }
+  }
+  const { frame } = resolveTokenSize((props.size as ButtonSize) ?? true, {
+    tokens: env.tokens,
+    font: env.font!,
+  })
+  return {
+    borderRadius: 1000,
+    paddingHorizontal: 0,
+    height: frame.size,
+    maxHeight: frame.size,
+    maxWidth: frame.size,
+    minWidth: frame.size,
+    width: frame.size,
+  }
+})
+
 export const ButtonText = styled(ButtonBehaviorText, {
   context: SizeContext,
   displayName: 'ButtonText',
@@ -125,10 +129,7 @@ export const ButtonText = styled(ButtonBehaviorText, {
   fontWeight: '600',
   userSelect: 'none',
   variants: {
-    size: {
-      true: buttonTextSizeVariant,
-      Size: buttonTextSizeVariant,
-    },
+    size: buttonTextSizeVariant,
   } as const,
   defaultVariants: {
     size: true,

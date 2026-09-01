@@ -113,4 +113,19 @@ describe('Button sizing through context', () => {
     expect(height('from-context')).toBe(height('from-prop'))
     expect(height('from-context')).not.toBe(height('default'))
   })
+
+  it('lets circular resolver geometry override the size dynamic', () => {
+    const { getByTestId } = render(
+      <TamaguiProvider config={conf} defaultTheme="light">
+        <Button data-testid="circular" size="2" circular>
+          C
+        </Button>
+      </TamaguiProvider>
+    )
+
+    const style = getComputedStyle(getByTestId('circular'))
+    expect(style.width).not.toBe('')
+    expect(style.width).toBe(style.height)
+    expect(style.borderRadius).toBe('1000px')
+  })
 })
