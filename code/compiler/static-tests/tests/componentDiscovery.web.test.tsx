@@ -7,11 +7,11 @@ import { extractForWeb } from './lib/extract'
 process.env.TAMAGUI_TARGET = 'web'
 window['React'] = React
 
-// `./fixtures/external/ui` is resolved as an external package by the harness
+// `@fixture/ui` is resolved as an external package by the harness
 // and is not in the configured `components` list, so the only way the compiler
 // can know its static configs is by evaluating it on demand
 const source = dedent`
-  import { ExternalCard, ExternalLabel } from './fixtures/external/ui'
+  import { ExternalCard, ExternalLabel } from '@fixture/ui'
 
   export function Test() {
     return (
@@ -59,7 +59,7 @@ describe('component discovery', () => {
     })
     const second = await extractForWeb(
       dedent`
-        import { ExternalLabel } from './fixtures/external/ui'
+        import { ExternalLabel } from '@fixture/ui'
         export const Other = () => <ExternalLabel fontSize={12}>x</ExternalLabel>
       `,
       { evaluate, options, sourcePath: `${process.cwd()}/tests/__discovery-b__.tsx` }
@@ -72,7 +72,7 @@ describe('component discovery', () => {
   test('a module with no components is remembered and does not retain siblings', async () => {
     const output = await extractForWeb(dedent`
       import { View } from '@tamagui/core'
-      import { helper } from './fixtures/external/plain'
+      import { helper } from '@fixture/plain'
 
       export function Test() {
         return <View backgroundColor="red" data-x={helper()} />

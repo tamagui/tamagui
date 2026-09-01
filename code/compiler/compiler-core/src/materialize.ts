@@ -97,6 +97,7 @@ export interface MaterializedStyledDefinition {
   base: ElementComponentIR
   baseClassName: MaterializedValue | null
   options: MaterializedValue
+  staticConfig: MaterializedValue | null
   complete: boolean
   bailouts: BailoutReason[]
 }
@@ -239,6 +240,9 @@ function materializeStyledDefinition(
       ? materializeValue(graph, definition.baseClassName)
       : null,
     options: materializeValue(graph, definition.options),
+    staticConfig: definition.staticConfig
+      ? materializeValue(graph, definition.staticConfig)
+      : null,
     complete: definition.complete,
     bailouts: [...definition.bailouts],
   }
@@ -280,6 +284,7 @@ function collectDependencies(module: Omit<MaterializedModule, 'dependencies'>) {
     if (definition.base.definition) dependencies.add(definition.base.definition.id)
     if (definition.baseClassName) collect(definition.baseClassName)
     collect(definition.options)
+    if (definition.staticConfig) collect(definition.staticConfig)
   }
   for (const definition of module.domStyleDefinitions) {
     dependencies.add(definition.factory.resolvedId)

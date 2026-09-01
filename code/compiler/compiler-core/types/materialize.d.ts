@@ -83,6 +83,7 @@ export interface MaterializedStyledDefinition {
     base: ElementComponentIR;
     baseClassName: MaterializedValue | null;
     options: MaterializedValue;
+    staticConfig: MaterializedValue | null;
     complete: boolean;
     bailouts: BailoutReason[];
 }

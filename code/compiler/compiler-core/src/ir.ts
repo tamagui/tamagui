@@ -104,6 +104,8 @@ export interface StyledDefinitionIRBase {
   base: ElementComponentIR
   baseClassName: ElementValue | null
   options: ExpressionReference
+  /** the object form's third argument, `styled(Base, options, staticConfig)` */
+  staticConfig: ExpressionReference | null
 }
 
 export interface CompleteStyledDefinitionIR extends StyledDefinitionIRBase {

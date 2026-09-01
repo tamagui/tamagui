@@ -22,9 +22,17 @@ interface ExtractOptions {
 }
 
 // packages live in node_modules; fixtures under tests/fixtures/external stand
-// in for one so discovery can be exercised without a workspace package
+// in for one so discovery can be exercised without a workspace package.
+// `@fixture/<name>` imports them by a package specifier the way an app would
 function isExternal(id: string) {
   return id.includes('/node_modules/') || id.includes('/fixtures/external/')
+}
+
+// `@workspace/<name>` is a fixture package whose source stays in the graph,
+// the shape of a monorepo package whose dist is not under node_modules
+const fixturePackages: Record<string, string> = {
+  '@fixture/': 'tests/fixtures/external/',
+  '@workspace/': 'tests/fixtures/workspace/',
 }
 
 async function evaluateModule({ id }: { id: string }) {
@@ -54,6 +62,14 @@ function resolveFile(specifier: string, importer: string): string | null {
       if (existsSync(candidate)) return candidate
     }
     return null
+  }
+  for (const prefix in fixturePackages) {
+    if (specifier.startsWith(prefix)) {
+      return resolveFile(
+        resolve(root, fixturePackages[prefix]!, specifier.slice(prefix.length)),
+        importer
+      )
+    }
   }
   try {
     return require.resolve(specifier, { paths: [dirname(importer), root] })

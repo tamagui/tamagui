@@ -573,7 +573,10 @@ function styledDefinitions(
     const definitionBailouts: BailoutReason[] = []
     const args = childNodes(call, 'arguments')
     const baseNode = args[0]
-    const optionsNode = args.length >= 3 ? args[2] : args[1]
+    // `styled(Base, options, staticConfig?)` is the object form; the class
+    // string frontend form is `styled(Base, 'classes', options)`
+    const objectForm = args[1]?.type === 'ObjectExpression'
+    const optionsNode = objectForm ? args[1] : args.length >= 3 ? args[2] : args[1]
     if (!baseNode || !optionsNode) {
       definitionBailouts.push(
         localBailout(
@@ -597,7 +600,8 @@ function styledDefinitions(
       bailouts.push(...definitionBailouts)
       return
     }
-    const baseClassNode = args.length >= 3 ? args[1] : null
+    const baseClassNode = objectForm ? null : args.length >= 3 ? args[1] : null
+    const staticConfigNode = objectForm && args.length >= 3 ? args[2] : null
     const baseDefinition = {
       kind: 'styled-definition' as const,
       id,
@@ -608,6 +612,7 @@ function styledDefinitions(
       base,
       baseClassName: baseClassNode ? elementValue(id, baseClassNode) : null,
       options: expressionReference(id, optionsNode),
+      staticConfig: staticConfigNode ? expressionReference(id, staticConfigNode) : null,
     }
     definitions.push(
       definitionBailouts.length === 0

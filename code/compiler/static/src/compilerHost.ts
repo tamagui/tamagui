@@ -1209,6 +1209,13 @@ export function createTamaguiCompilerHost(
     definition: MaterializedStyledDefinition | null
   ): { key: string; staticConfig: StaticConfig; displayName?: string } | null => {
     if (!definition || definition.options.kind !== 'static') return null
+    const staticConfig = definition.staticConfig
+    if (
+      staticConfig &&
+      (staticConfig.kind !== 'static' || !staticObject(staticConfig.value))
+    ) {
+      return null
+    }
     const base = directStaticConfig({
       kind: 'element',
       form: 'jsx',
@@ -1236,6 +1243,7 @@ export function createTamaguiCompilerHost(
         : undefined
     const localStaticConfig = {
       ...base.staticConfig,
+      ...(staticConfig?.value as Record<string, unknown> | undefined),
       variants: {
         ...base.staticConfig.variants,
         ...(variants as object | undefined),
@@ -1267,8 +1275,11 @@ export function createTamaguiCompilerHost(
     styledDefinition: MaterializedStyledDefinition | null
   ): TamaguiLoweringComponent | null => {
     const dom = domStaticConfig(element)
+    // a config the host evaluated is the component's real static config. The
+    // one derived from a visible `styled()` literal only stands in for
+    // definitions nothing evaluated, such as the app's own
     const resolved =
-      dom ?? styledStaticConfig(styledDefinition) ?? directStaticConfig(element)
+      dom ?? directStaticConfig(element) ?? styledStaticConfig(styledDefinition)
     if (!resolved) return null
     const defaultProps = resolved.staticConfig.defaultProps ?? {}
     return {

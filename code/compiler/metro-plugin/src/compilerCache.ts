@@ -12,7 +12,7 @@ import type { LoweredModulePlan } from '@tamagui/compiler-core'
 
 import { metroDiagnostic, type MetroCompilerDiagnostic } from './diagnostics'
 
-export const METRO_COMPILER_CACHE_VERSION = 6
+export const METRO_COMPILER_CACHE_VERSION = 7
 
 export interface MetroCompilerCacheEntry {
   schemaVersion: typeof METRO_COMPILER_CACHE_VERSION

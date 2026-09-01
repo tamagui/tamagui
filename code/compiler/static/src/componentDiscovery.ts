@@ -17,6 +17,13 @@ export type ComponentModuleEvaluator = (module: {
   specifier: string
 }) => Promise<Record<string, unknown> | null>
 
+// `pkg`, `@scope/pkg`, and their subpaths. `@/x` and `~/x` are path aliases
+const packageSpecifier = /^(?:@[^/@\s]+\/)?[^./~@\s][^/\s]*(?:\/|$)/
+
+function isPackageSpecifier(specifier: string): boolean {
+  return packageSpecifier.test(specifier)
+}
+
 /**
  * Finds the component modules a file uses that the configured `components`
  * list does not cover, evaluates each once, and registers what it exports so
@@ -60,7 +67,10 @@ export class ComponentDiscovery {
       ...module.styledDefinitions.map((definition) => definition.base.provenance),
     ]
     for (const provenance of provenances) {
-      if (!provenance) continue
+      // a relative or aliased import is the app's own module: the graph
+      // already models its styled definitions, and evaluating app code at
+      // build time runs its side effects
+      if (!provenance || !isPackageSpecifier(provenance.specifier)) continue
       const id = provenance.resolvedId.split(/[?#]/, 1)[0]
       if (seen.has(id) || registry.modulesById.has(id) || this.#discovered.has(id)) {
         continue

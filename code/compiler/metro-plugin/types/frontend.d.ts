@@ -10,7 +10,7 @@ import { type MetroResolverConfig } from "./metroResolver";
 * prepass. The result is a pure function of the module's own bytes plus the
 * resolver and Babel identity, so it caches per file with no closure involved.
 */
-export declare const METRO_RECORD_CACHE_VERSION = 1;
+export declare const METRO_RECORD_CACHE_VERSION = 2;
 export interface MetroCompilerFrontendConfig extends MetroResolverConfig {
 	cacheRoot?: string;
 	/** Present only for an enforced zero-runtime web build. */
