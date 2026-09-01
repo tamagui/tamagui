@@ -2226,7 +2226,6 @@
         "awesome-phonenumber": "^6.4.0",
         "color2k": "^2.0.2",
         "expo-document-picker": "~57.0.1",
-        "expo-image-picker": "~57.0.7",
         "expo-linear-gradient": "~57.0.1",
         "foxact": "^0.2.33",
         "hast-util-to-html": "^8.0.3",
