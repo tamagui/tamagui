@@ -73,6 +73,21 @@ Owner session: Fable (r16625). Supersedes the execution state in
   ref value (local `48cc946e87`). Condition template cache tried and reverted
   (no win, +258 gzip). Migrations started in worktrees on local tarballs:
   takeout (r17171), team-machine (r17281), chat (r17284).
+- 2026-09-01 (day 1, evening): Detox `ThemeMutation` red traced to the Metro
+  compiler: `<Square size={100} />` lost its `size` variant because the host
+  derived Square's config from the graph-visible dist literal
+  `styled(YStack, {...}, { memo: true })`, which compiler-core misparsed as the
+  class-string form, and that derivation beat the evaluated registry config.
+  Fixed at the source (`744b5b7294`): the object form with a third argument is
+  parsed and its static config folded in, an evaluated config now beats a
+  literal-derived one, and discovery evaluates package specifiers only (app
+  modules are the graph's job). The zero-runtime starter baseline moved by 3
+  gzip bytes from class order and was re-recorded (`6be2a974c1`). Takeout and
+  team-machine migrations landed their receipts; the codemod now rewrites
+  `Sheet.Frame` to `Sheet.Container` + `Sheet.Background` (the source-only
+  script is gone) and the docs stop pointing at it. Workers: soot migration
+  (r18015), team-machine GUI test-drive with light/dark pixel diffs (r18019),
+  chat (r17284), comparison repo (r16846).
 
 ## Plan
 
