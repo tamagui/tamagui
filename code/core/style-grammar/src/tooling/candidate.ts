@@ -1,3 +1,4 @@
+import { namedCssColors } from '../runtime/namedCssColors'
 import {
   grammarEntries,
   fontWeightNames,
@@ -317,10 +318,14 @@ function arbitraryTextKind(value: string): 'fontSize' | 'color' | null {
   if (
     value.startsWith('#') ||
     /^(?:rgb|hsl|hwb|lab|lch|oklab|oklch|color|color-mix|light-dark)\(/.test(value) ||
-    /^[a-zA-Z][a-zA-Z0-9-]*$/.test(value)
+    namedCssColors.has(value.toLowerCase())
   ) {
     return 'color'
   }
+  // any other bare word is a font size the way Tailwind reads `text-[...]`: a
+  // raw fontSize value the converter could not match to a token round-trips
+  // here (`fontSize="body"` -> `text-[body]`)
+  if (/^[a-zA-Z][a-zA-Z0-9-]*$/.test(value)) return 'fontSize'
   return null
 }
 

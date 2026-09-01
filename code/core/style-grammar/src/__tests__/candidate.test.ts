@@ -210,6 +210,10 @@ describe('candidate grammar', () => {
     expect(parseCandidate('text-[14px]', config)?.entry?.prop).toBe('fontSize')
     expect(parseCandidate('text-[#fff]', config)?.entry?.prop).toBe('color')
     expect(parseCandidate('text-[red]', config)?.entry?.prop).toBe('color')
+    expect(parseCandidate('text-[tomato]', config)?.entry?.prop).toBe('color')
+    // a bare word that is not a CSS color is a raw font size, the value the
+    // converter emits for a fontSize it could not match to a token
+    expect(parseCandidate('text-[body]', config)?.entry?.prop).toBe('fontSize')
     expect(parseCandidate('z-[123]', config)?.entry?.prop).toBe('zIndex')
     expect(parseCandidate('bg-[red]', config)?.valueKind).toBe('arbitrary')
     expect(parseCandidate('bg-red', config)).toBeNull()
