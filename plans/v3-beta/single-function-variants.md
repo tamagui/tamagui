@@ -203,14 +203,17 @@ through it.
    - dev-mode shape validation at branded definition sites
    - kitchen-sink + core-test coverage, repo-root lint/check green
 
-## Open decisions
+## Decisions closed for 3.0 (2026-09-01, Fable owner session)
 
-- Per-depth tier interleave (parent resolver < child base) vs flat tiers:
-  shipping flat, revisit only with a concrete case.
-- Whether `.resolve` skipping via compiler-derived read sets is worth it
-  before lane B (cost is one resolver run per style pass; measure on the
-  styled-view fixture before optimizing).
-- Where styled.dynamic lives after the web/core split (web for now; moves
-  behind the variants carrier contract in split phase 1).
-- Optional value-level domain for pre-generation
-  (`styled.dynamic({ scale: 'size' }, fn)`), reserved, not built.
+- Tiers stay flat. No concrete case has needed the per-depth interleave, and
+  the flattened single-pass engine would have to change shape for it. Revisit
+  only with a failing real component.
+- No `.resolve` skipping before lane B. **RAN**: in the corpus CPU profile
+  (`runtime-corpus-receipt.md`) the whole variant dispatch is under 1% of the
+  v3 style pass (`resolveVariantStyle` 0.4%, `getDynamicEnv` 0.4%), and the
+  variant-props scenario is 0.81x of v2. There is nothing to skip yet.
+- `styled.dynamic` and `style()` live in `@tamagui/web` for 3.0. The web/core
+  split (`web-core-split.md`) is a 3.1 campaign and moves them behind the
+  variants carrier then.
+- The value-level domain form (`styled.dynamic({ scale: 'size' }, fn)`) stays
+  reserved and unbuilt.

@@ -47,6 +47,23 @@ Owner session: Fable (r16625). Supersedes the execution state in
 | native runtime | native-registry Detox suite green in CI | not exercised on a fresh beta in a real app since 653.1 |
 | main sync | merge-base 2026-08-21 | 26 main commits (sheet keyboard, native media driver, ci) not in v3-beta |
 
+## Status log
+
+- 2026-09-01 (day 1): phase 0 done (main merged, native fast path engine
+  fixes upstreamed with tests, tarball audit fixed). Compiler discovers
+  component packages on demand (`b587feeccf`); `components` is a warm-up
+  list. Compiler retention defects closed (`0d664ed254`). Tamagui Tailwind
+  utility gaps closed in the shared grammar (`82f2622332`); docs, skills and
+  blog updated for the variant system and Tamagui Tailwind (`0456f1f5ed`).
+  Comparison apps extracted toward a standalone repo (`300a4db8de`). Runtime
+  style pass measured against a real v2 control: v3 is 0.79x of v2 on the
+  corpus after two engine rounds, clause paths still 1.2x
+  (`runtime-corpus-receipt.md`). Beta publish is gated on push cadence: the
+  beta job only publishes when its Checks run belongs to the newest commit, so
+  docs pushes on top keep superseding green runs; a main-side `release.yml`
+  change is drafted to tolerate docs-only newer commits and waits for the
+  owner. Codemod, comparison, and types-probe workers still running.
+
 ## Plan
 
 Phase 0, unblock (this session, direct):
