@@ -8,7 +8,9 @@ import { lazyThemes } from './lazyThemes'
 import { subtleChildrenThemes } from './subtleChildrenThemes'
 import { createV5Theme } from './v5-themes'
 
-export const themes = lazyThemes(() => createV5Theme({ childrenThemes: subtleChildrenThemes }))
+export const themes = lazyThemes(() =>
+  createV5Theme({ childrenThemes: subtleChildrenThemes })
+)
 
 // type checks - don't remove. they are type-level so they do not force the lazy
 // build at import time:
