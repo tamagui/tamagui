@@ -282,3 +282,18 @@ machinery is deleted.
   Next/Webpack fixture verifies that base rules still land in CSS and that
   native/web style coverage is preserved.
 - Baseline re-recorded at 28,220, ceiling 28,370.
+
+## Baseline update, 2026-09-01: runtime style pass rounds
+
+Two engine rounds from `runtime-corpus-receipt.md` (property classification
+memoized once per process; per-pass `flatSlots`, `flatPropertyLayers`, and
+`flatAtomics` as Maps) took the corpus replay from 1.33x to 1.22x of v2 on
+clause strings with outputs unchanged.
+
+- **RAN** pinned Node 24.16.0: 28,220 -> 28,347 gzip-9 (+127, +0.45%).
+- Accepted as the price of the runtime win; baseline re-recorded at 28,347,
+  ceiling 28,497.
+
+A third round (clause conditions built once per config revision and class
+mode, activated per pass) measures +258 gzip on the same fixture and is held
+locally until a quiet-machine paired replay confirms its clause-path win.
