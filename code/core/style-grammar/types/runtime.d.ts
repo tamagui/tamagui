@@ -3,7 +3,7 @@ export { clauseSubjectClassRepetitions, createClausePrecedenceOrder, getClausePr
 export { createGrammarConfigView, grammarPlatformNames, isContainerSizeQueryText, type GrammarSourceConfig } from "./tooling/config";
 export { mergeFlatValues } from "./runtime/mergeFlatValues";
 export { compileModifierVocabulary, configRevisionSymbol, isRootThemeName, modifierKindMedia, modifierKindPlatform, modifierKindState, modifierKindTheme, type CompiledModifierKind, type CompiledModifierVocabulary } from "./runtime/modifierVocabulary";
-export { borderSideSuffix, getTokenCategory, percentUtilityProps, radiusCornerProps } from "./tooling/registry";
+export { borderSideSuffix, getTokenCategory, insetAxisProps, percentUtilityProps, radiusCornerProps, sizeUtilityProps } from "./tooling/registry";
 export { splitColorOpacitySuffix, type ColorOpacitySuffix } from "./runtime/colorOpacity";
 export { getSafeAreaEdge, safeAreaVariableNames } from "./runtime/safeAreaVariables";
 export { parseFlatValue, scanFlatValue, type FlatScanErrorCode, type FlatValueHandler, type ParsedFlatValue } from "./runtime/scanFlatValue";

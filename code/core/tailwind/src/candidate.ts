@@ -11,8 +11,10 @@ import {
   createGrammarConfigView,
   getTokenCategory,
   getSafeAreaEdge,
+  insetAxisProps,
   percentUtilityProps,
   radiusCornerProps,
+  sizeUtilityProps,
   splitColorOpacitySuffix,
 } from '@tamagui/style-grammar/runtime'
 import {
@@ -96,31 +98,28 @@ function borderDimValue(raw: string): number | string {
 }
 
 /**
- * Expand a registry-parsed directional border/radius into all affected props. The registry
- * already selected the token category and width-vs-color meaning; this function only expands
- * that semantic result across sides/corners.
+ * Prefixes that write more than one longhand from a single candidate. The registry
+ * already selected the token category and width-vs-color meaning; this only names
+ * the affected props. Values are converted per longhand so size-screen can be
+ * 100vw by 100vh.
  */
-function expandBorderCandidate(
-  parsed: ParsedCandidate,
-  value: any
-): Record<string, any> | null {
+function expansionProps(parsed: ParsedCandidate): readonly string[] | null {
   const prefix = parsed.prefix
   if (!prefix) return null
+  if (prefix === 'size') return sizeUtilityProps
+  if (prefix === 'inset-x' || prefix === 'inset-y') {
+    return insetAxisProps[prefix.slice('inset-'.length)]
+  }
   if (prefix.startsWith('rounded-')) {
     const props = radiusCornerProps[prefix.slice('rounded-'.length)]
     if (!props || props.length === 1) return null
-    const out: Record<string, any> = {}
-    for (const p of props) out[p] = value
-    return out
+    return props
   }
-
   const m = /^border-([trblxy])$/.exec(prefix)
   if (!m) return null
   const sides = borderSideSuffix[m[1]]
   const suffix = parsed.entry?.prop.endsWith('Width') ? 'Width' : 'Color'
-  const out: Record<string, any> = {}
-  for (const side of sides) out[`border${side}${suffix}`] = value
-  return out
+  return sides.map((side) => `border${side}${suffix}`)
 }
 
 /**
@@ -385,20 +384,25 @@ function computeClassPlan(
     }
     return entries
   }
-  // Resolve only after the registry has claimed the candidate. Directional border/radius
-  // expansion below consumes that parsed decision instead of re-parsing width vs color.
+  // Resolve only after the registry has claimed the candidate. Multi-prop expansion
+  // below consumes that parsed decision instead of re-parsing width vs color.
+  const expandedProps = expansionProps(parsed)
+  if (expandedProps) {
+    const entries: TailwindPlanEntry[] = []
+    for (const prop of expandedProps) {
+      const flatProp = tailwindClassToFlatProp({
+        ...parsed,
+        entry: parsed.entry ? { ...parsed.entry, prop } : parsed.entry,
+      })
+      if (!flatProp) return 'raw'
+      const entry = createPlanEntry(flatProp.key, flatProp.value, parsed.modifiers)
+      if (!entry) return 'raw'
+      entries.push(entry)
+    }
+    return entries
+  }
   const flatProp = tailwindClassToFlatProp(parsed)
   if (flatProp) {
-    const expanded = expandBorderCandidate(parsed, flatProp.value)
-    if (expanded) {
-      const entries: TailwindPlanEntry[] = []
-      for (const p in expanded) {
-        const entry = createPlanEntry(p, expanded[p], parsed.modifiers)
-        if (!entry) return 'raw'
-        entries.push(entry)
-      }
-      return entries
-    }
     const entry = createPlanEntry(flatProp.key, flatProp.value, parsed.modifiers)
     return entry ? [entry] : 'raw'
   }

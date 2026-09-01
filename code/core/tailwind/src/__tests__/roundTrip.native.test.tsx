@@ -237,6 +237,42 @@ describe('native — directional borders + per-edge radii (converter-driven)', (
   })
 })
 
+describe('native — coverage gaps', () => {
+  test('text-sm and text-white resolve as size and color', () => {
+    expect(nativeStyle(Text, 'text-sm').fontSize).toBe(
+      nativeStyleOf(Text, { fontSize: 'sm' }).fontSize
+    )
+    expect(typeof nativeStyle(Text, 'text-sm').fontSize).toBe('number')
+    expect(nativeStyle(Text, 'text-white').color).toBe(
+      nativeStyleOf(Text, { color: 'white' }).color
+    )
+    expect(nativeStyle(Text, 'text-center').textAlign).toBe('center')
+  })
+
+  test('size-10 is numeric width and height', () => {
+    const s = nativeStyle(View, 'size-10')
+    expect(s.width).toBe(nativeStyleOf(View, { width: '10' }).width)
+    expect(s.height).toBe(nativeStyleOf(View, { height: '10' }).height)
+    expect(typeof s.width).toBe('number')
+  })
+
+  test('rounded-t-xl, border-t-4, and inset-x-0 expand on native', () => {
+    const radius = nativeStyle(View, 'rounded-t-xl')
+    expect(radius.borderTopLeftRadius).toBe(12)
+    expect(radius.borderTopRightRadius).toBe(12)
+    expect(radius.borderBottomLeftRadius).toBeUndefined()
+
+    const border = nativeStyle(View, 'border-t-4')
+    expect(border.borderTopWidth).toBe(16)
+    expect(border.borderLeftWidth).toBeUndefined()
+
+    const inset = nativeStyle(View, 'inset-x-0')
+    expect(inset.left).toBe(0)
+    expect(inset.right).toBe(0)
+    expect(inset.top).toBeUndefined()
+  })
+})
+
 describe('native — responsive media (converter-driven, parser-level structure)', () => {
   test('md show/hide carries the shared conditional spelling', () => {
     const showCls = toClass(`<View display="none md:flex" />`)

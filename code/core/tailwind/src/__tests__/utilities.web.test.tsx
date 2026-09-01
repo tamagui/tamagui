@@ -90,4 +90,46 @@ describe('tailwind standard utilities', () => {
     expect(rule).toBeTruthy()
     expect(rule[StyleObjectValue]).toBe('700')
   })
+
+  test('size-10 sets width and height from the size token', () => {
+    const styles = splitTailwindStyles(View, { className: 'size-10' } as any)
+    expect(findRule(styles.rulesToInsert, 'width')[StyleObjectValue]).toContain('var(--')
+    expect(findRule(styles.rulesToInsert, 'height')[StyleObjectValue]).toContain('var(--')
+  })
+
+  test('rounded-t-xl sets only the top corners', () => {
+    const styles = splitTailwindStyles(View, { className: 'rounded-t-xl' } as any)
+    expect(
+      findRule(styles.rulesToInsert, 'borderTopLeftRadius')[StyleObjectValue]
+    ).toContain('var(--')
+    expect(
+      findRule(styles.rulesToInsert, 'borderTopRightRadius')[StyleObjectValue]
+    ).toContain('var(--')
+    expect(findRule(styles.rulesToInsert, 'borderBottomLeftRadius')).toBeNull()
+  })
+
+  test('border-t-4 sets only the top width', () => {
+    const styles = splitTailwindStyles(View, { className: 'border-t-4' } as any)
+    expect(findRule(styles.rulesToInsert, 'borderTopWidth')[StyleObjectValue]).toContain(
+      'var(--'
+    )
+    expect(findRule(styles.rulesToInsert, 'borderLeftWidth')).toBeNull()
+  })
+
+  test('bare border-x sets left and right width to 1', () => {
+    const styles = splitTailwindStyles(View, { className: 'border-x' } as any)
+    expect(findRule(styles.rulesToInsert, 'borderLeftWidth')[StyleObjectValue]).toBe(
+      '1px'
+    )
+    expect(findRule(styles.rulesToInsert, 'borderRightWidth')[StyleObjectValue]).toBe(
+      '1px'
+    )
+  })
+
+  test('inset-x-0 pins left and right', () => {
+    const styles = splitTailwindStyles(View, { className: 'inset-x-0' } as any)
+    expect(findRule(styles.rulesToInsert, 'left')[StyleObjectValue]).toContain('var(--')
+    expect(findRule(styles.rulesToInsert, 'right')[StyleObjectValue]).toContain('var(--')
+    expect(findRule(styles.rulesToInsert, 'top')).toBeNull()
+  })
 })

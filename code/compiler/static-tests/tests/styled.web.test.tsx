@@ -78,6 +78,44 @@ describe('styled() tests', () => {
     expect(output.styles).toContain('width:30px')
   })
 
+  test('extracts text color/size, size-*, corner radius, side borders, and axis insets', async () => {
+    const output = await extractForWeb(
+      dedent`
+      import { styled, View } from '@tamagui/tailwind'
+
+      const Box = styled(View, 'size-10 inset-x-0 rounded-t-xl border-t-4', {
+        variants: {
+          tone: {
+            red: 'text-white text-sm font-bold',
+          },
+        },
+      })
+
+      export function Test() {
+        return <Box tone="red" />
+      }
+    `,
+      {
+        options: {
+          enableDynamicEvaluation: true,
+          components: ['@tamagui/core', '@tamagui/tailwind'],
+        },
+      }
+    )
+    if (!output) {
+      throw new Error(`No output`)
+    }
+
+    expect(output.styles).toContain('width:var(--c-size-10)')
+    expect(output.styles).toContain('height:var(--c-size-10)')
+    expect(output.styles).toContain('border-top-left-radius:var(--c-radius-xl)')
+    expect(output.styles).toContain('border-top-right-radius:var(--c-radius-xl)')
+    expect(output.styles).toContain('border-top-width:var(--c-space-4)')
+    expect(output.styles).toContain('left:var(--c-space-0)')
+    expect(output.styles).toContain('right:var(--c-space-0)')
+    expect(output.styles).toContain('font-weight:700')
+  })
+
   test('extracts to className at call-site', async () => {
     const output = await extractForWeb(`
       import { MyStack } from '@tamagui/test-design-system'

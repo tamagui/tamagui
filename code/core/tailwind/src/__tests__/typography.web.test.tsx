@@ -37,6 +37,36 @@ describe('tailwind fontSize (text-*)', () => {
   test('text-left stays textAlign', () => {
     expect(rule('text-left', 'textAlign')[StyleObjectValue]).toBe('left')
   })
+
+  test('text-sm uses the type-scale fontSize token', () => {
+    expect(rule('text-sm', 'fontSize')[StyleObjectValue]).toContain('var(--')
+    expect(
+      findRule(
+        splitTailwindStyles(Text, { className: 'text-sm' } as any).rulesToInsert,
+        'textAlign'
+      )
+    ).toBeNull()
+  })
+
+  test('text-white sets color, not alignment or size', () => {
+    expect(rule('text-white', 'color')[StyleObjectValue]).toBeTruthy()
+    expect(
+      findRule(
+        splitTailwindStyles(Text, { className: 'text-white' } as any).rulesToInsert,
+        'textAlign'
+      )
+    ).toBeNull()
+    expect(
+      findRule(
+        splitTailwindStyles(Text, { className: 'text-white' } as any).rulesToInsert,
+        'fontSize'
+      )
+    ).toBeNull()
+  })
+
+  test('text-[#fff] is an arbitrary color', () => {
+    expect(rule('text-[#fff]', 'color')[StyleObjectValue]).toBe('#fff')
+  })
 })
 
 describe('tailwind lineHeight (leading-*)', () => {

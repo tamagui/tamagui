@@ -103,6 +103,21 @@ export const grammarDecisions: readonly GrammarDecision[] = [
   { syntax: 'bare border', decision: 'keep', reason: 'documented 1px convenience' },
   { syntax: 'inset-0', decision: 'keep', reason: 'documented zero convenience' },
   {
+    syntax: 'inset-x / inset-y',
+    decision: 'keep',
+    reason: 'axis insets expand to left/right or top/bottom',
+  },
+  {
+    syntax: 'size-*',
+    decision: 'keep',
+    reason: 'width and height from the size token scale',
+  },
+  {
+    syntax: 'text-* color/size/align',
+    decision: 'keep',
+    reason: 'fontSize tokens, then alignment keywords, then color tokens',
+  },
+  {
     syntax: 'active: modifier',
     decision: 'keep',
     reason: 'documented alias of canonical press:',

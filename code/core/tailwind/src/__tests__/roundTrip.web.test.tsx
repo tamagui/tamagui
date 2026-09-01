@@ -147,6 +147,44 @@ describe('PASS 1 — 1b: token-first config fidelity', () => {
   })
 })
 
+describe('coverage gaps — claimed Tailwind spellings', () => {
+  test('text-sm matches the fontSize token, text-white matches color', () => {
+    expect(classStyle('text-sm', Text).fontSize).toBe(
+      styleOf({ fontSize: 'sm' }, Text).fontSize
+    )
+    expect(classStyle('text-white', Text).color).toBe(
+      styleOf({ color: 'white' }, Text).color
+    )
+    expect(classStyle('text-center', Text).textAlign).toBe('center')
+  })
+
+  test('size-10 matches width and height of the size token', () => {
+    const fromClass = classStyle('size-10')
+    expect(fromClass.width).toBe(styleOf({ width: '10' }).width)
+    expect(fromClass.height).toBe(styleOf({ height: '10' }).height)
+  })
+
+  test('rounded-t-xl sets only the top corners', () => {
+    const fromClass = classStyle('rounded-t-xl')
+    expect(fromClass.borderTopLeftRadius).toBe(
+      styleOf({ borderTopLeftRadius: 'xl' }).borderTopLeftRadius
+    )
+    expect(fromClass.borderTopRightRadius).toBe(
+      styleOf({ borderTopRightRadius: 'xl' }).borderTopRightRadius
+    )
+    expect(fromClass.borderBottomLeftRadius).toBeUndefined()
+  })
+
+  test('border-t-4 and inset-x-0 expand to the matching sides', () => {
+    expect(classStyle('border-t-4').borderTopWidth).toBe(
+      styleOf({ borderTopWidth: '4' }).borderTopWidth
+    )
+    expect(classStyle('inset-x-0').left).toBe(styleOf({ left: '0' }).left)
+    expect(classStyle('inset-x-0').right).toBe(styleOf({ right: '0' }).right)
+    expect(classStyle('inset-x-0').top).toBeUndefined()
+  })
+})
+
 describe('PASS 1 — 1b: aligned named typography', () => {
   test('text-base and leading-base follow the paired default font tokens', () => {
     const cls = convertedClassName(`<Text fontSize="base" lineHeight="base" />`)

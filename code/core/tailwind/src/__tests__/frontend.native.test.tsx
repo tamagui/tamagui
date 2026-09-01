@@ -72,6 +72,29 @@ describe('claimed candidates resolve to native style values', () => {
 
     expect(styleOf(styles).flexDirection).toBe('row')
   })
+
+  test('size-10 sets numeric width and height', () => {
+    const styles = splitTailwindStyles(View, { className: 'size-10' })
+    const expected = getConfig().tokensParsed.size['10'].val
+
+    expect(styleOf(styles).width).toBe(expected)
+    expect(styleOf(styles).height).toBe(expected)
+  })
+
+  test('inset-x-0 pins left and right', () => {
+    const styles = splitTailwindStyles(View, { className: 'inset-x-0' })
+
+    expect(styleOf(styles).left).toBe(0)
+    expect(styleOf(styles).right).toBe(0)
+    expect(styleOf(styles).top).toBeUndefined()
+  })
+
+  test('text-white sets color on Text', () => {
+    const styles = splitTailwindStyles(Text, { className: 'text-white' })
+
+    expect(styleOf(styles).color).toBe('#fff')
+    expect(styleOf(styles).textAlign).toBeUndefined()
+  })
 })
 
 // same rule as web: a restated shorthand applies at its authored position, so a

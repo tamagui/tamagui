@@ -18,6 +18,8 @@ export declare const wholeClassUtilities: Readonly<Record<string, Readonly<Recor
 export declare const wholeClassConveniences: Readonly<Record<string, Convenience>>;
 export declare const borderSideSuffix: Readonly<Record<string, readonly string[]>>;
 export declare const radiusCornerProps: Readonly<Record<string, readonly string[]>>;
+export declare const sizeUtilityProps: readonly string[];
+export declare const insetAxisProps: Readonly<Record<string, readonly string[]>>;
 export declare const textAlignKeywords: ReadonlySet<string>;
 export declare const percentUtilityProps: ReadonlySet<string>;
 

@@ -17,11 +17,11 @@ import {
 const tokenNames: Record<TokenCategory, readonly string[]> = {
   space: ['0', '1', '2', '4', '-1', 'spaceOnly'],
   size: ['0', '4', '10', 'sizeOnly'],
-  radius: ['0', '4', '8', 'radiusOnly'],
+  radius: ['0', '4', '8', 'xl', 'radiusOnly'],
   zIndex: ['4', 'modal'],
-  color: ['color5', 'red-9', 'colorOnly'],
+  color: ['color5', 'red-9', 'colorOnly', 'white'],
   fontFamily: ['body', 'heading', 'familyOnly', 'bothNamed'],
-  fontSize: ['4', '5', 'fontSizeOnly'],
+  fontSize: ['4', '5', 'fontSizeOnly', 'sm'],
   // 'strong' not 'semibold': a configured weight sharing a generated
   // font-* utility name is a real collision the candidate layer resolves
   // config-first, pinned separately below the whole-class test
@@ -44,10 +44,20 @@ describe('candidate grammar', () => {
     ['-m-1', 'margin', '1'],
     ['rounded-8', 'borderRadius', '8'],
     ['rounded-t-4', 'borderTopLeftRadius', '4'],
+    ['rounded-t-xl', 'borderTopLeftRadius', 'xl'],
+    ['rounded-tl-8', 'borderTopLeftRadius', '8'],
     ['border-r-2', 'borderRightWidth', '2'],
+    ['border-t-4', 'borderTopWidth', '4'],
+    ['border-x-2', 'borderLeftWidth', '2'],
+    ['size-10', 'width', '10'],
+    ['inset-x-0', 'left', '0'],
+    ['inset-y-4', 'top', '4'],
     ['border-color5', 'borderColor', 'color5'],
     ['bg-color5', 'backgroundColor', 'color5'],
     ['text-5', 'fontSize', '5'],
+    ['text-sm', 'fontSize', 'sm'],
+    ['text-color5', 'color', 'color5'],
+    ['text-white', 'color', 'white'],
     ['font-strong', 'fontWeight', 'strong'],
     ['font-4', 'fontWeight', '4'],
     ['leading-8', 'lineHeight', '8'],
@@ -198,9 +208,32 @@ describe('candidate grammar', () => {
     expect(parseCandidate('border-[inherit]', config)).toBeNull()
     expect(parseCandidate('border-[1%]', config)).toBeNull()
     expect(parseCandidate('text-[14px]', config)?.entry?.prop).toBe('fontSize')
+    expect(parseCandidate('text-[#fff]', config)?.entry?.prop).toBe('color')
+    expect(parseCandidate('text-[red]', config)?.entry?.prop).toBe('color')
     expect(parseCandidate('z-[123]', config)?.entry?.prop).toBe('zIndex')
     expect(parseCandidate('bg-[red]', config)?.valueKind).toBe('arbitrary')
     expect(parseCandidate('bg-red', config)).toBeNull()
+  })
+
+  test('text-* prefers size tokens, then alignment, then color', () => {
+    expect(parseCandidate('text-center', config)?.properties).toEqual({
+      textAlign: 'center',
+    })
+    expect(parseCandidate('text-sm', config)?.entry?.prop).toBe('fontSize')
+    expect(parseCandidate('text-white', config)?.entry?.prop).toBe('color')
+    expect(parseCandidate('text-color5/50', config)).toMatchObject({
+      valueKind: 'token',
+      rawValue: 'color5/50',
+      entry: { prop: 'color', tokenCategory: 'color' },
+    })
+  })
+
+  test('size-* and axis insets claim the first expanded longhand', () => {
+    expect(parseCandidate('size-full', config)?.convenience).toBe('sizing-keyword')
+    expect(parseCandidate('size-10', config)?.prefix).toBe('size')
+    expect(parseCandidate('inset-x-0', config)?.prefix).toBe('inset-x')
+    expect(parseCandidate('inset-y-4', config)?.prefix).toBe('inset-y')
+    expect(parseCandidate('-inset-x-1', config)?.negative).toBe(true)
   })
 
   test('kept conveniences are explicit grammar results', () => {
@@ -490,6 +523,9 @@ describe('candidate grammar', () => {
       'flex bundles',
       'bare border',
       'inset-0',
+      'inset-x / inset-y',
+      'size-*',
+      'text-* color/size/align',
       'leading-negative arbitrary/convenience/enum forms',
       'ambiguous overloaded border arbitrary values',
       'zero-denominator fractions',

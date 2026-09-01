@@ -310,6 +310,8 @@ export const wholeClassUtilities: Readonly<
   'border-x': { borderLeftWidth: 1, borderRightWidth: 1 },
   'border-y': { borderTopWidth: 1, borderBottomWidth: 1 },
   'inset-0': { top: 0, right: 0, bottom: 0, left: 0 },
+  'inset-x-0': { left: 0, right: 0 },
+  'inset-y-0': { top: 0, bottom: 0 },
 })
 
 export const wholeClassConveniences: Readonly<Record<string, Convenience>> =
@@ -326,6 +328,8 @@ export const wholeClassConveniences: Readonly<Record<string, Convenience>> =
     'border-x': 'bare-border',
     'border-y': 'bare-border',
     'inset-0': 'sizing-keyword',
+    'inset-x-0': 'sizing-keyword',
+    'inset-y-0': 'sizing-keyword',
   })
 
 export const borderSideSuffix: Readonly<Record<string, readonly string[]>> =
@@ -349,6 +353,13 @@ export const radiusCornerProps: Readonly<Record<string, readonly string[]>> =
     l: ['borderTopLeftRadius', 'borderBottomLeftRadius'],
     r: ['borderTopRightRadius', 'borderBottomRightRadius'],
   })
+
+export const sizeUtilityProps: readonly string[] = ['width', 'height']
+
+export const insetAxisProps: Readonly<Record<string, readonly string[]>> = Object.freeze({
+  x: ['left', 'right'],
+  y: ['top', 'bottom'],
+})
 
 export const textAlignKeywords: ReadonlySet<string> = new Set([
   'left',

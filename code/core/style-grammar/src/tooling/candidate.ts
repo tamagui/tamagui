@@ -1,8 +1,10 @@
 import {
   grammarEntries,
   fontWeightNames,
+  insetAxisProps,
   prefixToEntries,
   radiusCornerProps,
+  sizeUtilityProps,
   standaloneValueProps,
   textAlignKeywords,
   wholeClassConveniences,
@@ -69,6 +71,9 @@ const extraPrefixes = [
   'rounded-r',
   'rounded-b',
   'rounded-l',
+  'inset-x',
+  'inset-y',
+  'size',
 ]
 const negativeTokenProps = new Set([
   'margin',
@@ -204,24 +209,40 @@ export function hasTokenName(
   return hasName(config.tokenNames?.[category], name)
 }
 
+function entriesForProps(props: readonly string[]): GrammarEntry[] {
+  const byProp = new Map(grammarEntries.map((entry) => [entry.prop, entry]))
+  const out: GrammarEntry[] = []
+  for (const prop of props) {
+    const entry = byProp.get(prop)
+    if (entry) out.push(entry)
+  }
+  return out
+}
+
 function resolveEntries(
   prefix: string,
   config: GrammarConfigView
 ): readonly GrammarEntry[] {
   const registered = prefixToEntries[prefix]
+  if (prefix === 'text') {
+    return entriesForProps(['fontSize', 'textAlign', 'color'])
+  }
   if (registered) return registered
   if (prefix === 'border-x' || prefix === 'border-y') {
-    const props =
-      prefix === 'border-x'
-        ? ['borderLeft', 'borderRight']
-        : ['borderTop', 'borderBottom']
-    return grammarEntries.filter((entry) =>
-      props.some((prop) => entry.prop === `${prop}Width` || entry.prop === `${prop}Color`)
+    const sides = prefix === 'border-x' ? ['Left', 'Right'] : ['Top', 'Bottom']
+    return entriesForProps(
+      sides.flatMap((side) => [`border${side}Width`, `border${side}Color`])
     )
+  }
+  if (prefix === 'size') {
+    return entriesForProps(sizeUtilityProps)
+  }
+  if (prefix === 'inset-x' || prefix === 'inset-y') {
+    return entriesForProps(insetAxisProps[prefix.slice('inset-'.length)])
   }
   if (prefix.startsWith('rounded-')) {
     const props = radiusCornerProps[prefix.slice('rounded-'.length)]
-    return props ? grammarEntries.filter((entry) => props.includes(entry.prop)) : []
+    return props ? entriesForProps(props) : []
   }
   const expanded = config.shorthands?.[prefix]
   if (!expanded) return []
@@ -287,6 +308,22 @@ function fractionIsValid(value: string): boolean {
   return !!fraction && Number(fraction[2]) !== 0
 }
 
+function arbitraryTextKind(value: string): 'fontSize' | 'color' | null {
+  if (/^-?(?:\d+|\d*\.\d+)$/.test(value)) return 'fontSize'
+  if (cssLengthPattern.test(value) || /^(?:calc|min|max|clamp)\(/.test(value)) {
+    return 'fontSize'
+  }
+  if (ambiguousCssKeywords.has(value) || value.startsWith('var(')) return null
+  if (
+    value.startsWith('#') ||
+    /^(?:rgb|hsl|hwb|lab|lch|oklab|oklch|color|color-mix|light-dark)\(/.test(value) ||
+    /^[a-zA-Z][a-zA-Z0-9-]*$/.test(value)
+  ) {
+    return 'color'
+  }
+  return null
+}
+
 function arbitraryBorderKind(value: string): 'width' | 'color' | null {
   if (/^-?(?:\d+|\d*\.\d+)$/.test(value)) return 'width'
   if (cssLengthPattern.test(value) || borderWidthKeywords.has(value)) return 'width'
@@ -348,10 +385,16 @@ function chooseEntry(
       }
     }
     if (prefix === 'text') {
-      return {
-        entry: entries.find((entry) => entry.prop === 'fontSize')!,
-        valueKind: 'arbitrary',
+      const kind = arbitraryTextKind(decodeArbitrary(arbitrary))
+      const fontSize = entries.find((entry) => entry.prop === 'fontSize')
+      const color = entries.find((entry) => entry.prop === 'color')
+      if (kind === 'fontSize' && fontSize) {
+        return { entry: fontSize, valueKind: 'arbitrary' }
       }
+      if (kind === 'color' && color) {
+        return { entry: color, valueKind: 'arbitrary' }
+      }
+      return null
     }
     if (prefix === 'font') {
       return {
@@ -372,6 +415,11 @@ function chooseEntry(
         entry: entries.find((entry) => entry.prop === 'textAlign')!,
         valueKind: 'enum',
       }
+    }
+    const color = entries.find((entry) => entry.prop === 'color')
+    const colorName = tokenLookupName('color', rawValue)
+    if (color && hasTokenName(config, 'color', colorName)) {
+      return { entry: color, valueKind: 'token' }
     }
     return null
   }

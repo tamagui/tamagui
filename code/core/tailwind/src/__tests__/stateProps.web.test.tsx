@@ -23,14 +23,20 @@ describe('tailwind class plans consumed by the shared renderer', () => {
     expect(plan('exit:translate-y-[10px]')).toEqual([['y', '10px', 'exit', ['exit']]])
   })
 
-  test('size-*, animate-*, and animation-* remain passthrough classes', () => {
-    expect(plan('size-4')).toBe('raw')
+  test('size-* is width and height; animate-* and animation-* stay passthrough', () => {
+    expect(plan('size-4')).toEqual([
+      ['width', '4'],
+      ['height', '4'],
+    ])
     expect(plan('animation-bouncy')).toBe('raw')
     expect(plan('animate-spin')).toBe('raw')
   })
 
-  test('standard size-* never becomes or overwrites a Tamagui size variant', () => {
-    expect(plan('size-2')).toBe('raw')
+  test('size-* is the size token scale, not a Tamagui size variant', () => {
+    expect(plan('size-2')).toEqual([
+      ['width', '2'],
+      ['height', '2'],
+    ])
   })
 
   test('animation-* never overwrites an explicit animation prop', () => {

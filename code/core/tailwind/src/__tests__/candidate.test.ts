@@ -57,6 +57,24 @@ describe('claimed candidates become flat props', () => {
     })
   })
 
+  test('size-* sets width and height from the size token', () => {
+    expect(tokenize('size-10')).toEqual({ width: '10', height: '10' })
+  })
+
+  test('size-full sets both axes to 100%', () => {
+    expect(tokenize('size-full')).toEqual({ width: '100%', height: '100%' })
+  })
+
+  test('axis insets expand to the matching sides', () => {
+    expect(tokenize('inset-x-0')).toEqual({ left: '0', right: '0' })
+    expect(tokenize('inset-y-4')).toEqual({ top: '4', bottom: '4' })
+  })
+
+  test('text-* color and size stay distinct from alignment', () => {
+    expect(tokenize('text-white')).toEqual({ color: 'white' })
+    expect(tokenize('text-center')).toEqual({ textAlign: 'center' })
+  })
+
   test('color opacity rides along as a suffix for the shared resolver', () => {
     // the suffix survives tokenization untouched; alpha composition happens once,
     // in core's color resolution, identically on web and native

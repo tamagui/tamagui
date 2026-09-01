@@ -33,8 +33,10 @@ export {
 export {
   borderSideSuffix,
   getTokenCategory,
+  insetAxisProps,
   percentUtilityProps,
   radiusCornerProps,
+  sizeUtilityProps,
 } from './tooling/registry'
 export { splitColorOpacitySuffix, type ColorOpacitySuffix } from './runtime/colorOpacity'
 export { getSafeAreaEdge, safeAreaVariableNames } from './runtime/safeAreaVariables'
