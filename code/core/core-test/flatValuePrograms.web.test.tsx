@@ -836,6 +836,46 @@ test('caller longhands override styled-base shorthands and same-key defaults', (
   expect(weightRules[0]).toContain('font-weight:400')
 })
 
+test('a caller variant beats a default variant nested output', () => {
+  // the Headings shape: unstyled defaults to false and its branch nests
+  // size='9'. An explicit caller size must win over that nested default
+  // output (the site's colors demo captions rendered as size-9 headings
+  // when it did not).
+  const Framed = styled(View, {
+    variants: {
+      tone: {
+        a: { backgroundColor: 'red' },
+        b: { backgroundColor: 'blue' },
+        c: { backgroundColor: 'green' },
+      },
+      boxed: {
+        false: { tone: 'b' },
+      },
+    } as const,
+    defaultVariants: {
+      tone: 'a',
+      boxed: false,
+    },
+  })
+
+  // no caller value: the later default's nested tone wins within the base tier
+  const defaulted = simplifiedGetSplitStyles(
+    Framed,
+    {},
+    { mergeDefaultProps: true, noClass: true }
+  )
+  expect(defaulted.style?.backgroundColor).toBe('blue')
+
+  // an explicit caller tone dispatches at the call-site tier and beats the
+  // nested default output
+  const called = simplifiedGetSplitStyles(
+    Framed,
+    { tone: 'c' },
+    { mergeDefaultProps: true, noClass: true }
+  )
+  expect(called.style?.backgroundColor).toBe('green')
+})
+
 test('heading caller spacing survives the inherited size variant chain', () => {
   const result = simplifiedGetSplitStyles(
     H4,

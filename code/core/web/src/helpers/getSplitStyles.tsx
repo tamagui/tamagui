@@ -1192,20 +1192,29 @@ export const getSplitStyles: StyleSplitter = (
   pass[passSourceLayer] = 0
   if (appliesBaseStyle) {
     for (const key in baseStyle) {
-      contributeProp(
-        pass,
-        key,
+      // a defaulted variant the caller (or styled context) replaced dispatches
+      // from the call-site pass below instead: its outputs then land on the
+      // variant tier, above every styled default, so a later default variant's
+      // nested output cannot overwrite an explicit call-site value
+      if (
         baseVariantProps &&
-          Object.hasOwn(baseVariantProps, key) &&
-          Object.hasOwn(processedProps, key)
-          ? processedProps[key]
-          : baseStyle[key]
-      )
+        Object.hasOwn(baseVariantProps, key) &&
+        Object.hasOwn(processedProps, key) &&
+        processedProps[key] !== baseVariantProps[key]
+      ) {
+        continue
+      }
+      contributeProp(pass, key, baseStyle[key])
     }
   }
   pass[passSourceLayer] = 2
   for (const key in processedProps) {
-    if (appliesBaseStyle && baseVariantProps && Object.hasOwn(baseVariantProps, key)) {
+    if (
+      appliesBaseStyle &&
+      baseVariantProps &&
+      Object.hasOwn(baseVariantProps, key) &&
+      processedProps[key] === baseVariantProps[key]
+    ) {
       continue
     }
     contributeProp(pass, key, processedProps[key])

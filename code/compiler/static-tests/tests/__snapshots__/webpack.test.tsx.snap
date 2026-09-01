@@ -251,7 +251,7 @@ exports[`webpack-tests > 15. extracts spacer (complex expansion) 1`] = `
       class="is_View _pe-1547870085 _w-640548506 _h-2047729177 _mw-1042395974 _mh-1620098797"
     />
     <span
-      class="is_View _pe-1547870085 _w-1617835419 _h-944907578 _mw-2045465799 _mh-1316547470 _f-627022823"
+      class="is_View _pe-1547870085 _f-627022823 _w-1832660006 _h-1789379449 _mw-1405029626 _mh-2133947955"
     />
     <div
       style="display: contents;"
