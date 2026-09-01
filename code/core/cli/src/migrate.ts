@@ -93,6 +93,7 @@ add a compatibility setting or restore condition-object parsing.
 - Import animations from \`@tamagui/config/animations-css\`, \`animations-rn\`, \`animations-reanimated\`, or \`animations-motion\`.
 - Apps using Sheet or animated-number hooks with the CSS driver must import \`createAnimations\` from \`@tamagui/animations-css/extras\`. The root entry omits those hooks.
 - Remove \`@tamagui/theme-builder\` and any V5 builder imports. Static \`@tamagui/themes/v5\`, \`/v5-subtle\`, and \`/v5-tokens\` imports remain supported.
+- An app that GENERATES its v5 themes (\`createV5Theme\`, \`subtleChildrenThemes\`, \`createPalettes\`) has two ways to stay on v5 for this migration: run the builder once and serialize the result to a static literal, or import the same builders from \`@tamagui/config-v5\` (and \`@tamagui/config-v5/builder\`), the opt-in package that carries them. Take one of those when the themes are built from values the app only knows at runtime; the v6 recipe move below is a separate migration.
 - Use \`createThemes\`, \`levels\`, scales, and the other recipe helpers from \`@tamagui/themes/builder\`.
 - Remove \`componentThemes\`, \`templates\`, \`masks\`, \`childrenThemes\`, and \`grandChildrenThemes\`. Express hierarchy in the recipe tree, semantic values in scales, and exact one-theme overrides in \`values\`.
 - Component names no longer select uppercase theme segments automatically. Replace component themes with explicit normal theme or \`level2\` boundaries in component skins.

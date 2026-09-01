@@ -514,6 +514,7 @@ Use these replacements:
 | `Select.Item` `index` | remove it, registry order is authoritative |
 | `TamaguiProvider` / `ThemeProvider` `disableRootThemeClass` and `themeClassNameOnRoot` | `createTamagui({ settings: { addThemeClassName } })` |
 | `@tamagui/input` v1 `Input` / `TextArea` | the current `Input` and `TextArea` from `@tamagui/input` |
+| `Button` from `@tamagui/button` | `Button` from `tamagui`; `@tamagui/button` ships `ButtonFrame`, `ButtonText`, `ButtonIcon` and `useButton` only |
 | `isWindowDefined` | `isBrowser` |
 | `createMedia` from `@tamagui/react-native-media-driver` | remove the call, `createTamagui` sets the driver up |
 | `getExpandedShorthands` | `getExpandedShorthand(key, props)` when behavior code needs one authored prop and accepts configured shorthands |
