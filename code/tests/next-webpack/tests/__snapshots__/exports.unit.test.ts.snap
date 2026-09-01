@@ -340,7 +340,7 @@ function __TamaguiNativeStyle7429() { return __TamaguiNativeStyle7429._ ?? (__Ta
 const __TamaguiStableText7429 = require('@tamagui/core')._withStableStyle(__TamaguiNativeText, (_theme, expressions) => [__TamaguiNativeStyle7429._ ?? __TamaguiNativeStyle7429(), { "color": _theme["color"]?.get() }], true, false);"
 `;
 
-exports[`Package.json exports support > should build app package for both web and native targets > web-css 1`] = `"._f-2057920087{flex-direction:column}._g-1921595432{gap:var(--c-space-4)}._f-1841970073{flex-direction:row}._w-1618192357{width:100%}._ai-687583239{align-items:center}._zi-497018304{z-index:10}._p-868240457{position:absolute}._i-933642581._i-933642581._i-933642581{right:0px}._i-933642581._i-933642581._i-933642581{top:0px}._i-933642581._i-933642581._i-933642581{bottom:0px}._jc-1909189881{justify-content:center}._w-359521787{width:var(--c-size-4)}._pe-1490611783{pointer-events:none}._pe-1490611783>*{pointer-events:none}._f-337534512{flex-direction:column}._f-337534512._f-337534512._f-337534512{flex:1 0px}._g-1921595556{gap:var(--c-space-8)}._p-373321373{padding:var(--c-space-4)}._b-41027194{background-color:var(--background)}._f-1135793{flex-direction:row}._f-1135793._f-1135793._f-1135793{flex-wrap:wrap}._p-949456293{position:absolute}@media (min-width: 640px) {._p-949456293{position:relative}}._i-469006035{top:var(--c-space-6)}@media (min-width: 640px) {._i-469006035{top:0px}}._g-1921595494{gap:var(--c-space-6)}._g-1921595370{gap:var(--c-space-2)}._us-601593343{user-select:auto;-webkit-user-select:auto;}._ws-974065937{white-space:normal}._tt-2008973254{text-transform:var(--f-transform-8)}._ff-163417665{font-family:var(--f-family)}._fw-1746808431{font-weight:var(--f-weight-10)}._ls-1762537288{letter-spacing:var(--f-letterSpacing-10)}._fs-1530099841{font-size:var(--f-size-10)}._lh-1535216966{line-height:var(--f-lineHeight-10)}._m-2017216831{margin:0px}._ta-1579476152{text-align:center}._c-1849059509{color:var(--color11)}._fw-333443408{font-weight:var(--f-weight-4)}._ls-888140119{letter-spacing:var(--f-letterSpacing-4)}._fs-2127568126{font-size:var(--f-size-4)}._lh-465165209{line-height:var(--f-lineHeight-4)}._c-1849059478{color:var(--color10)}:where(._t-compose){--t-x:0px;--t-y:0px}._t-compose{translate:var(--t-x, 0px) var(--t-y, 0px)}._f-1691251864{flex-shrink:0}._f-1691251864{flex:1 0px}._b-1161078938{border-style:solid}._b-1161078938{border-width:0px}._b-1161078938{border-bottom-style:solid}._b-1161078938{border-bottom-width:1px}._b-1161078938{border-color:var(--background-focus)}._h-1922296922{height:0px}._mh-519501952{max-height:0px}._ty-79275713{--t-y:-0.5px}._c-1996280471{color:var(--color)}"`;
+exports[`Package.json exports support > should build app package for both web and native targets > web-css 1`] = `"._f-2057920087{flex-direction:column}._g-924523079{gap:var(--c-space-4)}._f-1841970073{flex-direction:row}._w-1646821508{width:100%}._ai-1055227096{align-items:center}._zi-496988513{z-index:10}._p-671726952{position:absolute}._i-1765874804._i-1765874804._i-1765874804._i-1765874804{right:0px}._i-1765874804._i-1765874804._i-1765874804._i-1765874804{top:0px}._i-1765874804._i-1765874804._i-1765874804._i-1765874804{bottom:0px}._jc-166379546{justify-content:center}._w-993787910{width:var(--c-size-4)}._pe-1461982632{pointer-events:none}._pe-1461982632>*{pointer-events:none}._f-549969169{flex-direction:column}._f-549969169._f-549969169._f-549969169._f-549969169{flex:1 0px}._g-924523203{gap:var(--c-space-8)}._p-1370393726{padding:var(--c-space-4)}._b-803444677{background-color:var(--background)}._f-27493358{flex-direction:row}._f-27493358._f-27493358._f-27493358._f-27493358{flex-wrap:wrap}._p-965320571{position:absolute}@media (min-width: 640px) {._p-965320571{position:relative}}._i-117282577{top:var(--c-space-6)}@media (min-width: 640px) {._i-117282577{top:0px}}._g-924523141{gap:var(--c-space-6)}._g-924523017{gap:var(--c-space-2)}._us-601593343{user-select:auto;-webkit-user-select:auto;}._ws-974065937{white-space:normal}._tt-2008973254{text-transform:var(--f-transform-8)}._ff-163417665{font-family:var(--f-family)}._fw-1746808431{font-weight:var(--f-weight-10)}._ls-1762537288{letter-spacing:var(--f-letterSpacing-10)}._fs-1530099841{font-size:var(--f-size-10)}._lh-1535216966{line-height:var(--f-lineHeight-10)}._m-2017216831{margin:0px}._ta-972680809{text-align:center}._c-1338525332{color:var(--color11)}._fw-333443408{font-weight:var(--f-weight-4)}._ls-888140119{letter-spacing:var(--f-letterSpacing-4)}._fs-2127568126{font-size:var(--f-size-4)}._lh-465165209{line-height:var(--f-lineHeight-4)}._c-1338525301{color:var(--color10)}:where(._t-compose){--t-x:0px;--t-y:0px}._t-compose{translate:var(--t-x, 0px) var(--t-y, 0px)}._f-1691251864{flex-shrink:0}._f-1691251864{flex:1 0px}._b-1161078938{border-style:solid}._b-1161078938{border-width:0px}._b-1161078938{border-bottom-style:solid}._b-1161078938{border-bottom-width:1px}._b-1161078938{border-color:var(--background-focus)}._h-1922296922{height:0px}._mh-519501952{max-height:0px}._ty-79275713{--t-y:-0.5px}._c-1996280471{color:var(--color)}"`;
 
 exports[`Package.json exports support > should build app package for both web and native targets > web-optimized 1`] = `
 "import "./_screen.css"
@@ -371,15 +371,15 @@ import { useLink } from 'solito/navigation'
 
 export function SelectDemo() {
   return (
-    <div className="is_View _f-2057920087 _g-1921595432">
-      <div className="is_View _f-1841970073 _w-1618192357 _ai-687583239 _g-1921595432"  >
+    <div className="is_View _f-2057920087 _g-924523079">
+      <div className="is_View _f-1841970073 _w-1646821508 _ai-1055227096 _g-924523079"  >
         <Label htmlFor="select-demo-1" flex={1} minW={80}>
           Custom
         </Label>
         <SelectDemoItem id="select-demo-1" />
       </div>
 
-      <div className="is_View _f-1841970073 _w-1618192357 _ai-687583239 _g-1921595432"  >
+      <div className="is_View _f-1841970073 _w-1646821508 _ai-1055227096 _g-924523079"  >
         <Label htmlFor="select-demo-2" flex={1} minW={80}>
           Native
         </Label>
@@ -430,7 +430,7 @@ export function SelectDemoItem(props: SelectProps & { trigger?: React.ReactNode 
           width="100%"
           height="3"
         >
-          <div className="is_View _f-2057920087 _zi-497018304">
+          <div className="is_View _f-2057920087 _zi-496988513">
             <ChevronUp size={20} />
           </div>
           <LinearGradient
@@ -475,7 +475,7 @@ export function SelectDemoItem(props: SelectProps & { trigger?: React.ReactNode 
           {/* Native gets an extra icon */}
           {props.native && (
             <div
-              className="is_View _f-2057920087 _p-868240457 _i-933642581 _ai-687583239 _jc-1909189881 _w-359521787 _pe-1490611783"
+              className="is_View _f-2057920087 _p-671726952 _i-1765874804 _ai-1055227096 _jc-166379546 _w-993787910 _pe-1461982632"
 
 
 
@@ -496,7 +496,7 @@ export function SelectDemoItem(props: SelectProps & { trigger?: React.ReactNode 
           width="100%"
           height="3"
         >
-          <div className="is_View _f-2057920087 _zi-497018304">
+          <div className="is_View _f-2057920087 _zi-496988513">
             <ChevronDown size={20} />
           </div>
           <LinearGradient
@@ -544,9 +544,9 @@ export function HomeScreen({ pagesMode = false }: { pagesMode?: boolean }) {
   })
 
   return (
-    <div className="is_View _f-337534512 _jc-1909189881 _ai-687583239 _g-1921595556 _p-373321373 _b-41027194"     >
+    <div className="is_View _f-549969169 _jc-166379546 _ai-1055227096 _g-924523203 _p-1370393726 _b-803444677"     >
       <div
-        className="is_View _f-1135793 _p-949456293 _w-1618192357 _i-469006035 _g-1921595494 _jc-1909189881"
+        className="is_View _f-27493358 _p-965320571 _w-1646821508 _i-117282577 _g-924523141 _jc-166379546"
 
 
 
@@ -563,7 +563,7 @@ export function HomeScreen({ pagesMode = false }: { pagesMode?: boolean }) {
 
       <SelectDemo />
 
-      <div className="is_View _f-1841970073 _g-1921595370">
+      <div className="is_View _f-1841970073 _g-924523017">
         <Button
           size="3"
           iconAfter={
@@ -575,15 +575,15 @@ export function HomeScreen({ pagesMode = false }: { pagesMode?: boolean }) {
           <Button.Text>Inverse</Button.Text>
         </Button>
       </div>
-      <div className="is_View _f-2057920087 _g-1921595432">
-        <h1 className="is_Text font_heading tm-paragraph _us-601593343 _ws-974065937 _tt-2008973254 _ff-163417665 _fw-1746808431 _ls-1762537288 _fs-1530099841 _lh-1535216966 _m-2017216831 _ta-1579476152 _c-1849059509" >
+      <div className="is_View _f-2057920087 _g-924523079">
+        <h1 className="is_Text font_heading tm-paragraph _us-601593343 _ws-974065937 _tt-2008973254 _ff-163417665 _fw-1746808431 _ls-1762537288 _fs-1530099841 _lh-1535216966 _m-2017216831 _ta-972680809 _c-1338525332" >
           Welcome to Tamagui.
         </h1>
-        <p className="is_Text font_body tm-paragraph _ff-163417665 _fw-333443408 _ls-888140119 _fs-2127568126 _lh-465165209 _us-601593343 _ws-974065937 _c-1849059478 _ta-1579476152" >
+        <p className="is_Text font_body tm-paragraph _ff-163417665 _fw-333443408 _ls-888140119 _fs-2127568126 _lh-465165209 _us-601593343 _ws-974065937 _c-1338525301 _ta-972680809" >
           Here's a basic starter to show navigating from one screen to another.
         </p>
         <div className="is_View _t-compose _f-1691251864 _b-1161078938 _h-1922296922 _mh-519501952 _ty-79275713" />
-        <p className="is_Text font_body tm-paragraph _ff-163417665 _fw-333443408 _ls-888140119 _fs-2127568126 _lh-465165209 _us-601593343 _c-1996280471 _ws-974065937 _ta-1579476152">
+        <p className="is_Text font_body tm-paragraph _ff-163417665 _fw-333443408 _ls-888140119 _fs-2127568126 _lh-465165209 _us-601593343 _c-1996280471 _ws-974065937 _ta-972680809">
           This screen uses the same code on Next.js and React Native.
         </p>
         <div className="is_View _t-compose _f-1691251864 _b-1161078938 _h-1922296922 _mh-519501952 _ty-79275713" />
@@ -624,8 +624,8 @@ function SheetDemo() {
         <Sheet.Handle bg="color8" />
         <Sheet.Container items="center" justify="center" gap="10">
           <Sheet.Background bg="color2" />
-          <div className="is_View _f-1841970073 _g-1921595370">
-            <p className="is_Text font_body tm-paragraph _ff-163417665 _fw-333443408 _ls-888140119 _fs-2127568126 _lh-465165209 _us-601593343 _c-1996280471 _ws-974065937 _ta-1579476152">Made by</p>
+          <div className="is_View _f-1841970073 _g-924523017">
+            <p className="is_Text font_body tm-paragraph _ff-163417665 _fw-333443408 _ls-888140119 _fs-2127568126 _lh-465165209 _us-601593343 _c-1996280471 _ws-974065937 _ta-972680809">Made by</p>
             <Anchor color="blue10" href="https://twitter.com/natebirdman" target="_blank">
               @natebirdman,
             </Anchor>
@@ -1027,15 +1027,15 @@ import { useLink } from 'solito/navigation'
 
 export function SelectDemo() {
   return (
-    <div className="is_View _f-2057920087 _g-1921595432">
-      <div className="is_View _f-1841970073 _w-1618192357 _ai-687583239 _g-1921595432"  >
+    <div className="is_View _f-2057920087 _g-924523079">
+      <div className="is_View _f-1841970073 _w-1646821508 _ai-1055227096 _g-924523079"  >
         <Label htmlFor="select-demo-1" flex={1} minW={80}>
           Custom
         </Label>
         <SelectDemoItem id="select-demo-1" />
       </div>
 
-      <div className="is_View _f-1841970073 _w-1618192357 _ai-687583239 _g-1921595432"  >
+      <div className="is_View _f-1841970073 _w-1646821508 _ai-1055227096 _g-924523079"  >
         <Label htmlFor="select-demo-2" flex={1} minW={80}>
           Native
         </Label>
@@ -1086,7 +1086,7 @@ export function SelectDemoItem(props: SelectProps & { trigger?: React.ReactNode 
           width="100%"
           height="3"
         >
-          <div className="is_View _f-2057920087 _zi-497018304">
+          <div className="is_View _f-2057920087 _zi-496988513">
             <ChevronUp size={20} />
           </div>
           <LinearGradient
@@ -1131,7 +1131,7 @@ export function SelectDemoItem(props: SelectProps & { trigger?: React.ReactNode 
           {/* Native gets an extra icon */}
           {props.native && (
             <div
-              className="is_View _f-2057920087 _p-868240457 _i-933642581 _ai-687583239 _jc-1909189881 _w-359521787 _pe-1490611783"
+              className="is_View _f-2057920087 _p-671726952 _i-1765874804 _ai-1055227096 _jc-166379546 _w-993787910 _pe-1461982632"
 
 
 
@@ -1152,7 +1152,7 @@ export function SelectDemoItem(props: SelectProps & { trigger?: React.ReactNode 
           width="100%"
           height="3"
         >
-          <div className="is_View _f-2057920087 _zi-497018304">
+          <div className="is_View _f-2057920087 _zi-496988513">
             <ChevronDown size={20} />
           </div>
           <LinearGradient
@@ -1200,9 +1200,9 @@ export function HomeScreen({ pagesMode = false }: { pagesMode?: boolean }) {
   })
 
   return (
-    <div className="is_View _f-337534512 _jc-1909189881 _ai-687583239 _g-1921595556 _p-373321373 _b-41027194"     >
+    <div className="is_View _f-549969169 _jc-166379546 _ai-1055227096 _g-924523203 _p-1370393726 _b-803444677"     >
       <div
-        className="is_View _f-1135793 _p-949456293 _w-1618192357 _i-469006035 _g-1921595494 _jc-1909189881"
+        className="is_View _f-27493358 _p-965320571 _w-1646821508 _i-117282577 _g-924523141 _jc-166379546"
 
 
 
@@ -1219,7 +1219,7 @@ export function HomeScreen({ pagesMode = false }: { pagesMode?: boolean }) {
 
       <SelectDemo />
 
-      <div className="is_View _f-1841970073 _g-1921595370">
+      <div className="is_View _f-1841970073 _g-924523017">
         <Button
           size="3"
           iconAfter={
@@ -1231,15 +1231,15 @@ export function HomeScreen({ pagesMode = false }: { pagesMode?: boolean }) {
           <Button.Text>Inverse</Button.Text>
         </Button>
       </div>
-      <div className="is_View _f-2057920087 _g-1921595432">
-        <h1 className="is_Text font_heading tm-paragraph _us-601593343 _ws-974065937 _tt-2008973254 _ff-163417665 _fw-1746808431 _ls-1762537288 _fs-1530099841 _lh-1535216966 _m-2017216831 _ta-1579476152 _c-1849059509" >
+      <div className="is_View _f-2057920087 _g-924523079">
+        <h1 className="is_Text font_heading tm-paragraph _us-601593343 _ws-974065937 _tt-2008973254 _ff-163417665 _fw-1746808431 _ls-1762537288 _fs-1530099841 _lh-1535216966 _m-2017216831 _ta-972680809 _c-1338525332" >
           Welcome to Tamagui.
         </h1>
-        <p className="is_Text font_body tm-paragraph _ff-163417665 _fw-333443408 _ls-888140119 _fs-2127568126 _lh-465165209 _us-601593343 _ws-974065937 _c-1849059478 _ta-1579476152" >
+        <p className="is_Text font_body tm-paragraph _ff-163417665 _fw-333443408 _ls-888140119 _fs-2127568126 _lh-465165209 _us-601593343 _ws-974065937 _c-1338525301 _ta-972680809" >
           Here's a basic starter to show navigating from one screen to another.
         </p>
         <div className="is_View _t-compose _f-1691251864 _b-1161078938 _h-1922296922 _mh-519501952 _ty-79275713" />
-        <p className="is_Text font_body tm-paragraph _ff-163417665 _fw-333443408 _ls-888140119 _fs-2127568126 _lh-465165209 _us-601593343 _c-1996280471 _ws-974065937 _ta-1579476152">
+        <p className="is_Text font_body tm-paragraph _ff-163417665 _fw-333443408 _ls-888140119 _fs-2127568126 _lh-465165209 _us-601593343 _c-1996280471 _ws-974065937 _ta-972680809">
           This screen uses the same code on Next.js and React Native.
         </p>
         <div className="is_View _t-compose _f-1691251864 _b-1161078938 _h-1922296922 _mh-519501952 _ty-79275713" />
@@ -1280,8 +1280,8 @@ function SheetDemo() {
         <Sheet.Handle bg="color8" />
         <Sheet.Container items="center" justify="center" gap="10">
           <Sheet.Background bg="color2" />
-          <div className="is_View _f-1841970073 _g-1921595370">
-            <p className="is_Text font_body tm-paragraph _ff-163417665 _fw-333443408 _ls-888140119 _fs-2127568126 _lh-465165209 _us-601593343 _c-1996280471 _ws-974065937 _ta-1579476152">Made by</p>
+          <div className="is_View _f-1841970073 _g-924523017">
+            <p className="is_Text font_body tm-paragraph _ff-163417665 _fw-333443408 _ls-888140119 _fs-2127568126 _lh-465165209 _us-601593343 _c-1996280471 _ws-974065937 _ta-972680809">Made by</p>
             <Anchor color="blue10" href="https://twitter.com/natebirdman" target="_blank">
               @natebirdman,
             </Anchor>
