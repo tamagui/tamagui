@@ -646,11 +646,11 @@ function contributeProp(
   if (keyInit === HOC_CLASSNAME_MARKER) {
     if (valInit && typeof valInit === 'object') {
       const direct = styleState as DirectState
-      const layers = (direct.flatPropertyLayers ||= {})
+      const layers = (direct.flatPropertyLayers ||= new Map())
       for (const property in valInit) {
         clearDirectStyle(styleState, property)
         styleState.classNames[property] = valInit[property]
-        layers[property] = pass[passSourceLayer]
+        layers.set(property, pass[passSourceLayer])
       }
     }
     return
@@ -1366,7 +1366,9 @@ export const getSplitStyles: StyleSplitter = (
 
   if (styleProps.stylePieceEntries) {
     const slots = (styleState as DirectState).flatSlots
-    if (slots) Object.assign(styleProps.stylePieceEntries, slots)
+    if (slots) {
+      for (const [slot, entries] of slots) styleProps.stylePieceEntries[slot] = entries
+    }
   }
   completeResolvedStyles(styleState)
   if (styleProps.isStatic) {
@@ -1744,7 +1746,7 @@ function applyStylePieceClasses(
   }
   if (compiled) {
     const direct = styleState as DirectState
-    const slots = (direct.flatSlots ||= {})
+    const slots = (direct.flatSlots ||= new Map())
     for (const slot in compiled.slots) {
       for (const entry of compiled.slots[slot]) {
         const property = entry[0]
@@ -1778,14 +1780,14 @@ function applyStylePieceClasses(
 
   const byKey = piece[stylePieceSymbol].byKey
   const direct = styleState as DirectState
-  const layers = (direct.flatPropertyLayers ||= {})
+  const layers = (direct.flatPropertyLayers ||= new Map())
   let applied = false
   for (const property in byKey) {
-    const previousLayer = layers[property]
+    const previousLayer = layers.get(property)
     if (previousLayer !== undefined && previousLayer > sourceLayer) continue
     clearDirectStyle(styleState, property)
     styleState.classNames[property] = byKey[property]
-    layers[property] = sourceLayer
+    layers.set(property, sourceLayer)
     const identifier = byKey[property]
     const fallbackRules = getRulesForIdentifier(identifier)
     const shouldInsert =
@@ -1805,12 +1807,13 @@ function applyStylePieceClasses(
 }
 
 function writeCapturedStyleRecord(
-  slots: Record<string, AtomicSlotEntry[]>,
+  slots: Map<string, AtomicSlotEntry[]>,
   slot: string,
   source: AtomicSlotEntry,
   sourceLayer: number
 ) {
-  const list = (slots[slot] ||= [])
+  let list = slots.get(slot)
+  if (!list) slots.set(slot, (list = []))
   const flags = source[7]! & 31
   const identity = source[3]
   const condition = source[2]
@@ -1989,10 +1992,10 @@ type DirectState = GetStyleState & {
   flatConditionsClassed?: boolean
   flatPass?: StylePass
   flatStyleStaticConfig?: StyleStaticConfig
-  flatSlots?: Record<string, AtomicSlotEntry[]>
-  flatPropertyLayers?: Record<string, number>
+  flatSlots?: Map<string, AtomicSlotEntry[]>
+  flatPropertyLayers?: Map<string, number>
   flatCallerVariantKeys?: Set<string>
-  flatAtomics?: Record<string, any>
+  flatAtomics?: Map<string, any>
   flatBoxShadow?: any
   flatBoxShadowSequence?: number
   flatDynamicColors?: Record<string, Record<string, any>>
@@ -2011,17 +2014,34 @@ const recordRetract = 4
 const recordDefault = 8
 const recordCSS = 16
 
+// the property vocabulary is small and its strings are interned, so these
+// per-property classifications resolve once per process instead of running
+// their string tests on every value of every pass
+const webStyleProperties = new Map<string, string>()
 function webStyleProperty(property: string) {
-  return property === 'writingDirection'
-    ? 'direction'
-    : property.endsWith('Horizontal')
-      ? `${property.slice(0, -10)}Inline`
-      : property.endsWith('Vertical')
-        ? `${property.slice(0, -8)}Block`
-        : property
+  let web = webStyleProperties.get(property)
+  if (web === undefined) {
+    web =
+      property === 'writingDirection'
+        ? 'direction'
+        : property.endsWith('Horizontal')
+          ? `${property.slice(0, -10)}Inline`
+          : property.endsWith('Vertical')
+            ? `${property.slice(0, -8)}Block`
+            : property
+    webStyleProperties.set(property, web)
+  }
+  return web
 }
 
+const styleSlots = new Map<string, string>()
 function styleSlot(property: string) {
+  let slot = styleSlots.get(property)
+  if (slot === undefined) styleSlots.set(property, (slot = classifyStyleSlot(property)))
+  return slot
+}
+
+function classifyStyleSlot(property: string) {
   return property.startsWith('border')
     ? property.includes('Radius')
       ? 'borderRadius'
@@ -2062,7 +2082,7 @@ function writeStyleRecord(
     conditionOverride !== -1 ? conditionOverride : cursor ? cursor[conditionValue] : 0
   const identity = cursor ? cursor[conditionKey] : ''
   const direct = state as DirectState
-  const slots = (direct.flatSlots ||= {})
+  const slots = (direct.flatSlots ||= new Map())
   const slot =
     process.env.TAMAGUI_TARGET === 'web' &&
     canGenerateCSS &&
@@ -2071,7 +2091,8 @@ function writeStyleRecord(
       : property.startsWith('transition')
         ? 'transition'
         : property
-  const list = (slots[slot] ||= [])
+  let list = slots.get(slot)
+  if (!list) slots.set(slot, (list = []))
   for (let index = 0; index < list.length; index++) {
     const entry = list[index]
     const entryFlags = entry[7]!
@@ -2162,8 +2183,7 @@ function completeResolvedStyles(state: GetStyleState, merge: MergeStyle = mergeS
   const slots = direct.flatSlots
   if (!slots) return
 
-  for (const property in slots) {
-    const entries = slots[property]
+  for (const [property, entries] of slots) {
     let cssEntries: AtomicSlotEntry[] | undefined
     let inlineWinner: AtomicSlotEntry | undefined
     let importance = -1
@@ -2187,7 +2207,8 @@ function completeResolvedStyles(state: GetStyleState, merge: MergeStyle = mergeS
           }
           index--
         }
-        cssEntries.splice(index, 0, entry)
+        if (index === cssEntries.length) cssEntries.push(entry)
+        else cssEntries.splice(index, 0, entry)
       } else if (!entry[2] || entry[2] & 1) {
         const next = entry[2] ? Math.floor(entry[2] / 256) : 0
         if (next >= importance) {
@@ -2331,6 +2352,8 @@ const parsedSlices = new WeakMap<object, (string | undefined)[]>()
 // value alone, and memoizes that result. it is a regex replace over most string
 // values, so repeating it every render of every element is the single largest
 // cost on this path.
+const fontProperties = new Map<string, boolean>()
+
 function configuredValue(
   state: GetStyleState,
   property: string,
@@ -2355,10 +2378,14 @@ function configuredValue(
     return safeArea
   }
 
-  const fontProperty =
-    property.startsWith('font') ||
-    property === 'lineHeight' ||
-    property === 'letterSpacing'
+  let fontProperty = fontProperties.get(property)
+  if (fontProperty === undefined) {
+    fontProperty =
+      property.startsWith('font') ||
+      property === 'lineHeight' ||
+      property === 'letterSpacing'
+    fontProperties.set(property, fontProperty)
+  }
   const revision = grammar.revision
   if (state.conf !== valueCacheConf || revision !== valueCacheRevision) {
     valueCacheConf = state.conf
@@ -2486,8 +2513,8 @@ function configuredValue(
 function ownsSourceLayer(state: GetStyleState, property: string, conditional = false) {
   const direct = state as DirectState
   const layer = direct.flatPass?.[passSourceLayer] || 0
-  const layers = (direct.flatPropertyLayers ||= {})
-  const previous = layers[property]
+  const layers = (direct.flatPropertyLayers ||= new Map())
+  const previous = layers.get(property)
   if (previous !== undefined) {
     if (previous > layer) return false
     if (previous < layer) {
@@ -2502,7 +2529,7 @@ function ownsSourceLayer(state: GetStyleState, property: string, conditional = f
     // don't claim the slot either, so a later lower-tier base can still join
     return true
   }
-  layers[property] = layer
+  layers.set(property, layer)
   return true
 }
 
@@ -3255,10 +3282,7 @@ export function walkConditionalValue(
           : property === 'x' || property === 'y'
             ? 0
             : null
-    if (
-      resting !== null &&
-      (state as DirectState).flatPropertyLayers?.[property] === undefined
-    ) {
+    if (resting !== null && !(state as DirectState).flatPropertyLayers?.has(property)) {
       sink(resting, parentCondition, resting)
     }
   }
@@ -3400,17 +3424,17 @@ function clearDirectStyle(state: GetStyleState, property: string) {
           ? 'transform'
           : property
   const slot = process.env.TAMAGUI_TARGET === 'web' ? styleSlot(atomicKey) : atomicKey
-  if (direct.flatAtomics) delete direct.flatAtomics[slot]
+  direct.flatAtomics?.delete(slot)
   if (direct.flatSlots) {
     if (slot !== atomicKey) {
-      const entries = direct.flatSlots[slot]
+      const entries = direct.flatSlots.get(slot)
       if (entries) {
         for (let index = entries.length; index--; ) {
           if (entries[index][0] === atomicKey) entries.splice(index, 1)
         }
       }
     }
-    delete direct.flatSlots[atomicKey]
+    direct.flatSlots.delete(atomicKey)
   }
   if (atomicKey === 'transform') state.transformAccumulator = undefined
   if (state.style) delete state.style[atomicKey]

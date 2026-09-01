@@ -7,7 +7,7 @@ import type { GetStyleState, ViewStyleObject } from '../types';
 export { styleToCSS } from './styleToCSS';
 export declare const canGenerateCSS: boolean;
 type DirectAtomicState = GetStyleState & {
-    flatAtomics?: Record<string, StyleObject>;
+    flatAtomics?: Map<string, StyleObject>;
 };
 export type AtomicSlotEntry = [
     property: string,

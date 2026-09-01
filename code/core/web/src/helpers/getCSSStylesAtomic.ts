@@ -24,7 +24,7 @@ export const canGenerateCSS =
   process.env.TAMAGUI_TARGET === 'web' && !process.env.TAMAGUI_DID_OUTPUT_CSS
 
 type DirectAtomicState = GetStyleState & {
-  flatAtomics?: Record<string, StyleObject>
+  flatAtomics?: Map<string, StyleObject>
 }
 
 export type AtomicSlotEntry = [
@@ -98,7 +98,7 @@ export function registerAtomicSlot(
     undefined,
     built[1],
   ]) as StyleObject
-  ;(state.flatAtomics ||= {})[atomicKey] = styleObject
+  ;(state.flatAtomics ||= new Map()).set(atomicKey, styleObject)
   state.classNames[atomicKey] = built[0]
 }
 
@@ -110,8 +110,7 @@ export function flushDirectStyles(state: GetStyleState, clear = false) {
   const direct = state as DirectAtomicState
   const atomics = direct.flatAtomics
   if (!atomics) return
-  for (const property in atomics) {
-    const styleObject = atomics[property]
+  for (const styleObject of atomics.values()) {
     const identifier = styleObject[StyleObjectIdentifier]
     if (shouldInsertStyleRules(identifier)) {
       const rules = styleObject[StyleObjectRules].slice()
@@ -227,7 +226,10 @@ const getStyleObject = (
   return [key, value, identifier, undefined, rules]
 }
 
-const slotIdentities = new Map<string, SlotIdentity>()
+// atomic key -> signature -> identity. two levels so a pass never builds and
+// hashes one long combined key per slot
+const slotIdentities = new Map<string, Map<string, SlotIdentity>>()
+let slotIdentityCount = 0
 
 function syncAtomicConfig() {
   const nextConf = getConfigMaybe()
@@ -236,6 +238,7 @@ function syncAtomicConfig() {
     conf = nextConf
     confRevision = nextRevision
     slotIdentities.clear()
+    slotIdentityCount = 0
   }
 }
 
@@ -246,8 +249,9 @@ export function buildAtomicSlotCSS(
 ): SlotIdentity | undefined {
   if (process.env.TAMAGUI_DID_OUTPUT_CSS) return
   syncAtomicConfig()
-  const cacheKey = atomicKey + signature
-  const known = slotIdentities.get(cacheKey)
+  let bySignature = slotIdentities.get(atomicKey)
+  if (!bySignature) slotIdentities.set(atomicKey, (bySignature = new Map()))
+  const known = bySignature.get(signature)
   if (known) return known
 
   const hash = simpleHash(signature, 'strict') || '0'
@@ -287,8 +291,13 @@ export function buildAtomicSlotCSS(
   }
 
   const built: SlotIdentity = [identifier, rules, lastValue]
-  if (slotIdentities.size > 10_000) slotIdentities.clear()
-  slotIdentities.set(cacheKey, built)
+  if (slotIdentityCount > 10_000) {
+    slotIdentities.clear()
+    slotIdentityCount = 0
+    slotIdentities.set(atomicKey, (bySignature = new Map()))
+  }
+  slotIdentityCount++
+  bySignature.set(signature, built)
   return built
 }
 
