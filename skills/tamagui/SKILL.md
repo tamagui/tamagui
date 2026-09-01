@@ -520,6 +520,14 @@ The Tamagui compiler extracts static styles to CSS at build time. For styles to 
 3. **Avoid runtime variables** - computed values don't extract
 4. **Use variants** - better than conditional props
 
+The compiler resolves every component it meets: `styled()` definitions
+anywhere in the app are linked across files, and a component imported from any
+package is evaluated the first time a file uses it as a JSX element or a
+`styled()` base. `components` in `tamagui.build.ts` is an optional warm-up
+list, not a requirement. A package that cannot run in Node during the build
+stays on the runtime path; `DEBUG=tamagui` prints which modules discovery
+skipped and why.
+
 Check if extraction is working:
 - Look for `data-tamagui` attributes in dev mode
 - Bundle size should be smaller with compiler enabled
