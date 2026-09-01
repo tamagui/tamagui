@@ -70,7 +70,7 @@ const ButtonFrameBase = styled(ButtonBehaviorFrame, {
   outlineStyle: 'focus-visible:solid',
   outlineWidth: 'focus-visible:2px',
   variants: {
-    size: styled.dynamic<ButtonSize>(),
+    size: buttonFrameSizeVariant,
 
     circular: styled.dynamic<boolean>(),
 
@@ -97,16 +97,7 @@ const ButtonFrameBase = styled(ButtonBehaviorFrame, {
 })
 
 export const ButtonFrame = ButtonFrameBase.resolve((props, env) => {
-  const sized = buttonFrameSizeVariant((props.size as ButtonSize) ?? true, env)
-  if (!props.circular) {
-    return {
-      borderRadius: sized?.borderRadius,
-      gap: sized?.gap,
-      height: sized?.height,
-      paddingHorizontal: sized?.paddingHorizontal,
-      width: sized?.width,
-    }
-  }
+  if (!props.circular) return
   const { frame } = resolveTokenSize((props.size as ButtonSize) ?? true, {
     tokens: env.tokens,
     font: env.font!,

@@ -3,12 +3,25 @@ import 'vitest-axe/extend-expect'
 
 import { Button } from 'tamagui'
 import { getDefaultTamaguiConfig } from '@tamagui/config-default'
-import { SizeContext, View, TamaguiProvider, createTamagui } from '@tamagui/core'
+import { SizeContext, View, TamaguiProvider, createTamagui, styled } from '@tamagui/core'
 import type { RenderResult } from '@testing-library/react'
 import { render } from '@testing-library/react'
 import { beforeEach, describe, expect, it } from 'vitest'
 
 const conf = createTamagui(getDefaultTamaguiConfig())
+
+const PlainButton = styled(Button, {
+  variants: {
+    plain: {
+      true: {
+        borderRadius: 3,
+        gap: 2,
+        height: 33,
+        padding: 0,
+      },
+    },
+  } as const,
+})
 
 function ButtonTest(props: React.ComponentProps<typeof Button>) {
   return (
@@ -127,5 +140,21 @@ describe('Button sizing through context', () => {
     expect(style.width).not.toBe('')
     expect(style.width).toBe(style.height)
     expect(style.borderRadius).toBe('1000px')
+  })
+
+  it('lets child variants override size dynamic geometry', () => {
+    const { getByTestId } = render(
+      <TamaguiProvider config={conf} defaultTheme="light">
+        <PlainButton data-testid="plain" size="2" plain>
+          Plain
+        </PlainButton>
+      </TamaguiProvider>
+    )
+
+    const style = getComputedStyle(getByTestId('plain'))
+    expect(style.padding).toBe('0px')
+    expect(style.height).toBe('33px')
+    expect(style.borderRadius).toBe('3px')
+    expect(style.gap).toBe('2px')
   })
 })
