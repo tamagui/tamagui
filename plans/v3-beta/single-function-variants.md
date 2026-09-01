@@ -164,13 +164,14 @@ Four call sites, two patterns:
 - Wins: one branch out of the getSplitStyles hot path (lines 889, 913), the
   accept type machinery out of web, large .d.ts shrinkage.
 
-## v2 compat
+## No v2 compat
 
-Lives in a separate resolver package per the web-core-split carrier contract
-(styled() stores defs on staticConfig.variants, resolver in the existing
-variantStyleResolver slot, getSplitStyles.tsx:901 dispatches through it).
-v3's styled.dynamic/.resolve is the first-class citizen of that same seam,
-so web-core-split phase 1 and this design are one migration.
+Decided (Nate, 2026-08-31): no compat resolver package. Rewrite every in-repo
+usage of legacy functional variants (spread keys, VariantSpreadFunction
+bodies, getVariantExtras consumers) to styled.dynamic/.resolve directly, then
+delete the legacy variant-function machinery from the engine. The
+web-core-split carrier seam still exists, but nothing v2-shaped ships
+through it.
 
 ## Migration inventory (ui kit)
 

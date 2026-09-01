@@ -1,5 +1,3 @@
-import { getSetting } from '../config'
-import { getVariableValue } from '../createVariable'
 import type { GetStyleState } from '../types'
 import { emitVariantStyle, walkConditionalValue } from './getSplitStyles'
 import { isObj } from './isObj'
@@ -7,42 +5,25 @@ import { getConfigRevisionState } from './grammarConfig'
 import { skipProps } from './skipProps'
 import { styleOriginalValues } from './styleOriginalValues'
 import { normalizeValueWithProperty } from './normalizeValueWithProperty'
-import { getDynamicEnv, getFontsForLanguage, isStyledDynamic } from './styledDynamic'
+import { getDynamicEnv, isStyledDynamic } from './styledDynamic'
 
 export const getVariantExtras = (styleState: GetStyleState) => {
   const cached = (styleState as any).flatVariantExtras
   if (cached) return cached
 
-  const { props, conf, context, theme, styleProps } = styleState
-  let fonts = conf.fontsParsed
-  if (context?.language) {
-    fonts = getFontsForLanguage(conf.fontsParsed, context.language)
-  }
-
+  const env = getDynamicEnv(styleState)
   const next = {
-    fonts,
-    tokens: conf.tokensParsed,
-    theme,
-    context: styleProps.styledContext,
+    fonts: env.fonts,
+    tokens: env.tokens,
+    theme: env.theme,
+    context: styleState.styleProps.styledContext,
     get fontFamily() {
-      return (
-        getVariableValue(styleState.fontFamily || styleState.props.fontFamily) ||
-        props.fontFamily ||
-        getVariableValue(getSetting('defaultFont'))
-      )
+      return env.fontFamily
     },
     get font() {
-      const found = fonts[this.fontFamily]
-      if (found) return found
-
-      const className = props.className
-      if (typeof className === 'string') {
-        const name = /(?:^|\s)font_(\S+)/.exec(className)?.[1]
-        if (name && fonts[name]) return fonts[name]
-      }
-      return fonts[conf.defaultFontToken]
+      return env.font
     },
-    props,
+    props: styleState.props,
   }
 
   return ((styleState as any).flatVariantExtras = next)

@@ -1,8 +1,8 @@
 {
   "fixture": "baseline-styled-view",
-  "raw": 71077,
-  "gzip": 26889,
-  "ceiling": 27039,
+  "raw": 72101,
+  "gzip": 27309,
+  "ceiling": 27459,
   "node": "24.16.0",
   "zlib": "1.3.1-e00f703",
   "recorded": "2026-09-01",

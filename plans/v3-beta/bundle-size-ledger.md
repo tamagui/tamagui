@@ -236,3 +236,26 @@ ownership; a program's base segments emit before its clauses).
   `walkConditionalValue`. Includes m11275's flat-path perf work (26,846) plus
   this fix (+43).
 - Baseline re-recorded at 26,889, ceiling 27,039.
+
+## Baseline update, 2026-09-01: styled.dynamic and .resolve engine core
+
+Phase 1 of `single-function-variants.md` added the v3 variant machinery to the
+runtime: the `styledDynamic` carrier module (brand check, factory, the shared
+`getDynamicEnv` builder), the resolver-chain execution block in
+`getSplitStyles`, `.resolve` on every component in `createComponent`, and the
+source-layer renumbering.
+
+- **RAN** first push measured +536 gzip-9 over the 26,889 baseline. Dedup
+  recovered 116: `getVariantExtras` had its fonts/fontFamily/font getter
+  bodies duplicated into `getDynamicEnv`; it is now a thin wrapper adding
+  `context` and `props` over the one shared builder.
+- **RAN** final cost on pinned Node 24.16.0: 26,889 -> 27,309 gzip-9 (+420,
+  +1.56%). Attribution: `createComponent` +~190 (the `.resolve` chain
+  closure), the rest split between the resolver execution block in
+  `getSplitStyles` and the carrier module (`isStyledDynamic`, factory,
+  dispatch branches in `resolveVariantStyle`/`mergeVariants`).
+- Accepted as feature cost: this is the agreed v3 variant API, and the legacy
+  variant-function machinery it replaces (spread keys, function matching,
+  `getVariantExtras` consumers) is scheduled for deletion in phase 2, which
+  should claw back a chunk of this.
+- Baseline re-recorded at 27,309, ceiling 27,459.
