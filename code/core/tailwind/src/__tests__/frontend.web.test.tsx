@@ -330,12 +330,16 @@ describe('class-first styled()', () => {
       opacity: { enter: '0' },
     })
     expect(resolved.passthroughClassName).toBe('base-user')
-    expect(resolved.variants?.size?.sm).toMatchObject({
+    const resolvedSize = resolved.variants?.size
+    if (!resolvedSize || !('sm' in resolvedSize)) {
+      throw new Error('the tailwind frontend must resolve size to a variant map')
+    }
+    expect(resolvedSize.sm).toMatchObject({
       height: '8',
       paddingHorizontal: '3',
       className: 'simple-user',
     })
-    expect(resolved.variants?.size?.sm).toMatchObject({
+    expect(resolvedSize.sm).toMatchObject({
       opacity: { hover: '0.5' },
       marginTop: { sm: '4' },
       scale: { enter: '0.95' },
