@@ -2001,56 +2001,16 @@ let valueCacheEntries = 0
 const valueCacheRoot = {}
 const parsedSlices = new WeakMap<object, (string | undefined)[]>()
 
-// the scope (theme identity, theme name, resolveValues) is fixed for a pass
-// apart from the class/inline flip, so resolve it once and key the per-value
-// lookups off interned property and raw strings instead of building a joined
-// key string for every value
-function valueScopeCache(state: GetStyleState, resolveValues: any): ValueScopeCache {
-  const direct = state as DirectState
-  if (
-    direct.flatValueScope !== undefined &&
-    direct.flatValueScopeKind === resolveValues
-  ) {
-    return direct.flatValueScope
-  }
-  const themeObject =
-    state.theme && typeof state.theme === 'object' ? state.theme : valueCacheRoot
-  let byScope = valueCaches.get(themeObject)
-  if (!byScope) {
-    byScope = new Map()
-    valueCaches.set(themeObject, byScope)
-  }
-  const scopeKey = `${state.flatThemeName || ''}\u001f${resolveValues}`
-  let scope = byScope.get(scopeKey)
-  if (!scope) {
-    scope = new Map()
-    byScope.set(scopeKey, scope)
-  }
-  direct.flatValueScope = scope
-  direct.flatValueScopeKind = resolveValues
-  return scope
-}
-
-function valuePropertyCache(scope: ValueScopeCache, property: string) {
-  let maps = scope.get(property)
-  if (maps === undefined) {
-    maps = { direct: new Map() }
-    scope.set(property, maps)
-  }
-  return maps
-}
-
-function rememberValue(byRaw: Map<string, any>, raw: string, out: any) {
-  if (valueCacheEntries > 8192) {
-    valueCaches = new WeakMap()
-    valueCacheEntries = 0
-    return
-  }
-  valueCacheEntries++
-  byRaw.set(raw, out)
-}
-
-function configuredValue(state: GetStyleState, property: string, raw: string): any {
+// `embedded` also runs the embedded-token pass when the direct lookup leaves the
+// value alone, and memoizes that result. it is a regex replace over most string
+// values, so repeating it every render of every element is the single largest
+// cost on this path.
+function configuredValue(
+  state: GetStyleState,
+  property: string,
+  raw: string,
+  embedded = false
+): any {
   const grammar = getConfigRevisionState(state.conf)
   let name = raw
   let opacity: number | undefined
@@ -2087,7 +2047,25 @@ function configuredValue(state: GetStyleState, property: string, raw: string): a
     state.styleProps.resolveValues === 'auto'
       ? 'value'
       : state.styleProps.resolveValues
-  const byRaw = valuePropertyCache(valueScopeCache(state, resolveValues), property).direct
+  // the scope (theme identity, name, resolveValues) is fixed for a pass apart
+  // from the class/inline flip, so resolve it once and key the per-value lookups
+  // off interned property and raw strings instead of joining them into a key
+  const direct = state as DirectState
+  let scope = direct.flatValueScope
+  if (scope === undefined || direct.flatValueScopeKind !== resolveValues) {
+    const themeObject =
+      state.theme && typeof state.theme === 'object' ? state.theme : valueCacheRoot
+    let byScope = valueCaches.get(themeObject)
+    if (!byScope) valueCaches.set(themeObject, (byScope = new Map()))
+    const scopeKey = `${state.flatThemeName || ''}\u001f${resolveValues}`
+    scope = byScope.get(scopeKey)
+    if (!scope) byScope.set(scopeKey, (scope = new Map()))
+    direct.flatValueScope = scope
+    direct.flatValueScopeKind = resolveValues
+  }
+  let maps = scope.get(property)
+  if (maps === undefined) scope.set(property, (maps = { direct: new Map() }))
+  const byRaw = embedded ? (maps.embedded ||= new Map()) : maps.direct
   if (!fontProperty) {
     const known = byRaw.get(raw)
     if (known !== undefined || byRaw.has(raw)) return known
@@ -2161,41 +2139,21 @@ function configuredValue(state: GetStyleState, property: string, raw: string): a
           : (normalizeColor(out, opacity / 100) ?? out)
     }
   }
-  if (!fontProperty && !fromTheme) {
-    rememberValue(byRaw, raw, out)
+  if (embedded && out === raw) {
+    const usedSafeArea = state.flatUsesSafeArea
+    out = grammar.embeddedTokens(raw, (word) => configuredValue(state, property, word))
+    // a safe-area token flips state as it resolves, so a cached hit would lose it
+    if (!usedSafeArea && state.flatUsesSafeArea) return out
   }
-  return out
-}
-
-function resolveEmbeddedTokens(state: GetStyleState, property: string, raw: string) {
-  return getConfigRevisionState(state.conf).embeddedTokens(raw, (word) =>
-    configuredValue(state, property, word)
-  )
-}
-
-// the embedded-token pass runs a regex replace over every string value that the
-// direct token lookup left alone, which is most of them. the result depends on
-// the same scope the direct lookup is keyed by, so memoize it there. safe-area
-// values set state.flatUsesSafeArea as they resolve, so they stay uncached.
-function resolvedEmbeddedValue(state: GetStyleState, property: string, raw: string) {
-  const fontProperty =
-    property.startsWith('font') ||
-    property === 'lineHeight' ||
-    property === 'letterSpacing'
-  if (fontProperty) return resolveEmbeddedTokens(state, property, raw)
-  const resolveValues =
-    process.env.TAMAGUI_TARGET === 'web' &&
-    !state.flatShouldDoClasses &&
-    state.styleProps.resolveValues === 'auto'
-      ? 'value'
-      : state.styleProps.resolveValues
-  const maps = valuePropertyCache(valueScopeCache(state, resolveValues), property)
-  const cache = (maps.embedded ||= new Map())
-  const known = cache.get(raw)
-  if (known !== undefined || cache.has(raw)) return known
-  const usedSafeArea = state.flatUsesSafeArea
-  const out = resolveEmbeddedTokens(state, property, raw)
-  if (usedSafeArea || !state.flatUsesSafeArea) rememberValue(cache, raw, out)
+  if (!fontProperty && !fromTheme) {
+    if (valueCacheEntries > 8192) {
+      valueCaches = new WeakMap()
+      valueCacheEntries = 0
+    } else {
+      valueCacheEntries++
+      byRaw.set(raw, out)
+    }
+  }
   return out
 }
 
@@ -2457,8 +2415,7 @@ function emitResolved(
   originalValue: any,
   contextOnly: boolean
 ) {
-  let value = configuredValue(state, property, raw)
-  if (value === raw) value = resolveEmbeddedTokens(state, property, raw)
+  let value = configuredValue(state, property, raw, true)
   if (
     (process.env.TAMAGUI_TARGET === 'native' || !state.flatShouldDoClasses) &&
     typeof value === 'string'
@@ -2735,8 +2692,7 @@ function emitValue(
 
   let value: any = raw
   if (typeof raw === 'string') {
-    value = configuredValue(state, property, raw)
-    if (value === raw) value = resolvedEmbeddedValue(state, property, raw)
+    value = configuredValue(state, property, raw, true)
   }
 
   if (

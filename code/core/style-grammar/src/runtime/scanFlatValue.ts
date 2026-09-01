@@ -303,15 +303,10 @@ export function parseFlatValue(source: string): ParsedFlatValue {
     process.env.NODE_ENV === 'production'
       ? parseFlatValueProduction(source)
       : parseFlatValueChecked(source)
+  // evict one at a time in insertion order: clearing the whole map makes an app
+  // with more distinct values than the limit re-scan nearly every one per render
   if (parsedValues.size >= parsedValuesLimit) {
-    // drop the oldest half rather than the whole map: clearing it outright
-    // makes an app with more distinct values than the limit re-scan nearly
-    // every value on every render
-    let dropped = 0
-    for (const key of parsedValues.keys()) {
-      parsedValues.delete(key)
-      if (++dropped >= parsedValuesLimit / 2) break
-    }
+    parsedValues.delete(parsedValues.keys().next().value!)
   }
   parsedValues.set(source, context)
   return context

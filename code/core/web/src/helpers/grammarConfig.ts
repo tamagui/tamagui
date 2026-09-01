@@ -222,9 +222,9 @@ export function prepareConfigRevision(
     compositeValue: (property, raw, context, resolve) => {
       const kind = propertyKinds[property]
       if (kind < 7) return
-      // a one-component shorthand (margin="4px") has nothing to distribute, and
-      // matching it out only to count one part allocates on every render
-      if (kind === 8 && !hasMultipleComponents(raw)) return
+      // a one-component shorthand (margin="4px") has nothing to distribute;
+      // the split is on whitespace, so without any there is nothing to match out
+      if (kind === 8 && !/\s/.test(raw)) return
       const parts =
         raw.match(
           /(?:[^\s("']+|\((?:[^()]|\([^)]*\))*\)|"(?:\\.|[^"])*"|'(?:\\.|[^'])*')+/g
@@ -319,47 +319,6 @@ export function prepareConfigRevision(
     return next
   }
   return target[configRevisionSymbol]!
-}
-
-// does this value hold more than one whitespace-separated component, ignoring
-// separators inside quotes or parentheses? mirrors the composite split regex
-function hasMultipleComponents(raw: string) {
-  let depth = 0
-  let quote = 0
-  let started = false
-  for (let index = 0; index < raw.length; index++) {
-    const code = raw.charCodeAt(index)
-    if (quote) {
-      if (code === quote) quote = 0
-      continue
-    }
-    if (code === 34 || code === 39) {
-      quote = code
-      if (!started) started = true
-      continue
-    }
-    if (code === 40) {
-      depth++
-      if (!started) started = true
-      continue
-    }
-    if (depth) {
-      if (code === 41) depth--
-      continue
-    }
-    if (code <= 32) {
-      if (started) {
-        // a component ended; anything non-blank after it is a second one
-        for (let next = index + 1; next < raw.length; next++) {
-          if (raw.charCodeAt(next) > 32) return true
-        }
-        return false
-      }
-      continue
-    }
-    started = true
-  }
-  return false
 }
 
 export function getConfigRevisionState(
