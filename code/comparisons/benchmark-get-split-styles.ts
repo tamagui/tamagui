@@ -13,7 +13,6 @@
 import { createHash } from 'node:crypto'
 import { execFileSync } from 'node:child_process'
 import { readFileSync, writeFileSync } from 'node:fs'
-import { createRequire } from 'node:module'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -23,6 +22,9 @@ import { getConfig, getSplitStyles as v3GetSplitStyles } from '../core/web/src'
 import { defaultComponentState } from '../core/web/src/defaultComponentState'
 import { getStyleStaticConfig } from '../core/web/src/helpers/styleStaticConfig'
 import { createRandom, median, shuffle, summarize } from './benchmark-statistics'
+import * as v2ConfigDefault from './v2-control/node_modules/@tamagui/config-default/dist/index.cjs'
+import * as v2Web from './v2-control/node_modules/@tamagui/web/dist/esm/index.mjs'
+import * as v2Tamagui from './v2-control/node_modules/tamagui/dist/esm/index.mjs'
 
 type Scenario =
   | 'zero-props'
@@ -78,10 +80,16 @@ if (rounds < 2 || warmups < 1 || targetOperations < 1) {
 createTamagui(config.getDefaultTamaguiConfig('web'))
 
 const v2Root = resolve(comparisonRoot, 'v2-control/node_modules')
-const v2Require = createRequire(resolve(v2Root, '..', 'package.json'))
-const v2Web = v2Require('@tamagui/web')
-const v2ConfigDefault = v2Require('@tamagui/config-default')
-v2Web.createTamagui(v2ConfigDefault.getDefaultTamaguiConfig('web'))
+const v2WebPackage = JSON.parse(
+  readFileSync(resolve(v2Root, '@tamagui/web/package.json'), 'utf8')
+)
+if (!v2WebPackage.version.startsWith('2.')) {
+  throw new Error(`expected @tamagui/web v2, found ${v2WebPackage.version}`)
+}
+if ('styledDynamic' in v2Web) {
+  throw new Error('v2 control unexpectedly exports styledDynamic')
+}
+v2Tamagui.createTamagui(v2ConfigDefault.getDefaultTamaguiConfig('web'))
 
 function prepareElements(
   elements: CorpusElement[],
@@ -143,9 +151,9 @@ const prepared = prepareElements(allElements, {
   dynamic: styled.dynamic,
 })
 const v2Prepared = prepareElements(allElements, {
-  Text: v2Web.Text,
-  View: v2Web.View,
-  styled: v2Web.styled,
+  Text: v2Tamagui.Text,
+  View: v2Tamagui.View,
+  styled: v2Tamagui.styled,
 })
 
 const scenarioNames: Scenario[] = [
