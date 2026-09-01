@@ -89,20 +89,37 @@ fonts and the font_ className system, themes, media, group/container queries,
 flat clause values, animation driver seam. These are Tamagui features, not
 compat.
 
-## Pre-v3 fat-cut audit (createComponent + useThemeState)
+## Pre-v3 fat-cut audit: measured inventory (2026-08-31, tip c87d57d314)
 
-Requested before v3 ships, independent of the split. Target for light web is
-16-20 kB gzip on the styled-view fixture, so createComponent (3.9k marginal
-gzip) and useThemeState (1.7k) must both shrink, including by dropping
-features. Produce a costed inventory (deletion-measurement per feature via
-`bundleTopLevelReplacementPlugin`) and cut list for sign-off. Known candidates:
+Priced by deletion measurement (`audit-top-level-replacements.ts`, RAN) and
+source-map span attribution (INFERRED) at fixture baseline 26,889 gzip.
+Marginals overlap; only the union recompressions below are additive.
 
-- Theme `reset` prop: still present in useThemeState (verified 2026-09-01); it
-  participates in every themed component's cache key. Requested drop.
-- The config-level global `defaultProps` setting: already gone (no conf-level
-  read remains in web; only per-component styled defaults exist).
-- Anything in createComponent that exists only for JS-knowledge of pseudo
-  states on class-emitting components (overlaps phase 4 below).
+- Theme `reset` prop: removed (`7cfefaaa80`). Config-level global
+  `defaultProps`: already gone.
+- createComponent regions (INFERRED spans): pseudo listener + state plumbing
+  801, animation-driver integration 1,123, group/container state contexts 694,
+  enter/exit + presence coordination 253, themeShallow handoff 204, RN event
+  prop mapping 185.
+- useThemeState (whole hook RAN 1,543): getSnapshotImpl 830 RAN, getNextState
+  489 RAN, subscription/fanout graph 673, scheme tracking 239, name/cache-key
+  machinery 218, inverse accounting 42. No production debug paths survive.
+- Modules a light web build can drop or replace: `use-element-layout` 1,313,
+  `validStyleProps` 1,060 (only with a generated DOM predicate replacing it),
+  `useComponentState` 988 RAN, variants runtime 806, `@tamagui/core` runtime
+  wrapper 347, `subscribeToContextGroup` 329, `nativeOnlyProps` 320,
+  `Theme.getThemedChildren` 544 RAN.
+
+Floors (single-union recompressions, RAN): cutting the priced create/theme
+regions plus the module list saves 6,417 -> implies **20,472** gzip. Also
+zero-costing `validStyleProps` behind DOM tables saves 7,422 -> implies
+**19,467**. 16 kB is NOT reachable from this feature diet alone; the last
+~3.5 kB would have to come from `getSplitStyles` (7,875 marginal),
+`getCSSStylesAtomic` (1,224), or media (944) structural work.
+
+Caveat: every CSS-replaces-JS row is conditional on class-emitting DOM
+components; user event callbacks, JS animation drivers, group subscribers, and
+JS theme-token readers keep needing a narrow opt-in lane.
 
 ## Sequencing (each phase gated by fixture measurements)
 
