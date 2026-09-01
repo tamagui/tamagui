@@ -56,6 +56,16 @@ jobs:
       - name: Lint
         run: bun run lint
 
+      # The v3 engine rewrite recovered the runtime styled-view bundle
+      # (plans/v3-beta/bundle-size-ledger.md); this is what keeps it recovered.
+      # It is a ceiling, so an engine change that shrinks the bundle passes
+      # untouched. It lives in this job because the fixture links @tamagui/*
+      # from workspace dist and the install action has already built the whole
+      # workspace, and because Node here comes from .node-version, which is what
+      # the recorded gzip bytes were measured against.
+      - name: Styled-view runtime bundle size
+        run: node code/comparisons/check-styled-view-size.mts
+
   grammar-conformance:
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository || github.head_ref != 'v3-beta'
     # @tamagui/style-grammar owns what a flat value means, and the Rust LSP's

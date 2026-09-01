@@ -210,3 +210,14 @@ The largest remaining top-level closures inside `getSplitStyles` are `getSplitSt
 
 These tools turned bundle guesses into falsifiable deletion measurements and should be reused
 for any later size regression.
+
+## Correction, 2026-08-31
+
+- **RAN** a fresh V2 2.6.2 comparator, built with the same Vite 8.2.2 as the V3 fixture,
+  measures 68,262 raw / 25,523 exact gzip-9. The 25,778 in the result table above is stale and
+  high.
+- **RAN** V3 at `285813438f` measures 70,562 raw / 26,696 exact gzip-9, so the real remaining
+  gap to V2 is **+1,173 gzip bytes (+4.60%)**, not the smaller one the old row implied.
+- Both figures are Node 25.9.0 (zlib 1.2.12). `code/comparisons/check-styled-view-size.mts` now
+  gates this fixture in CI on the `.node-version` Node 24.16.0 (zlib 1.3.1-e00f703), where the
+  same artifact measures 26,733. Gzip bytes only compare within one zlib.

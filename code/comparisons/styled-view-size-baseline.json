@@ -1,0 +1,10 @@
+{
+  "fixture": "baseline-styled-view",
+  "raw": 70562,
+  "gzip": 26733,
+  "ceiling": 26883,
+  "node": "24.16.0",
+  "zlib": "1.3.1-e00f703",
+  "recorded": "2026-09-01",
+  "notes": "One styled View from code/comparisons/tamagui-bench, React externalized, built with `vite build --mode baseline-styled-view --sourcemap`. gzip is Node gzipSync level 9 over the emitted assets/*.js, so it is only comparable within one zlib. ceiling is gzip + 150 bytes of minifier slack. Re-record with `node code/comparisons/check-styled-view-size.mts --update-baseline` on the .node-version Node."
+}
