@@ -19,7 +19,9 @@ import { fileURLToPath } from 'node:url'
 
 import * as config from '../core/config-default'
 import { Text, View, createTamagui, styled } from '../core/web/src'
-import { simplifiedGetSplitStyles } from '../core/core-test/utils'
+import { getConfig, getSplitStyles as v3GetSplitStyles } from '../core/web/src'
+import { defaultComponentState } from '../core/web/src/defaultComponentState'
+import { getStyleStaticConfig } from '../core/web/src/helpers/styleStaticConfig'
 import { createRandom, median, shuffle, summarize } from './benchmark-statistics'
 
 type Scenario =
@@ -201,8 +203,36 @@ function replay(
   }
 }
 
-const splitV3 = (element: PreparedElement) =>
-  simplifiedGetSplitStyles(element.component, element.props, element.options)
+// the runtime call shape createComponent makes, and the same shape the v2 arm
+// uses. the core-test harness is NOT used here: it runs the split in the
+// compiler's static mode (isStatic collects rulesToInsert) and then parses the
+// generated CSS to expose class properties, which is bookkeeping a render never
+// pays and it inflated the v3 arm by roughly a fifth
+const v3Empty = {} as any
+const v3Env = { animationDriver: {}, groups: { state: {} } } as any
+const splitV3 = (element: PreparedElement) => {
+  const staticConfig = element.component.staticConfig
+  return v3GetSplitStyles(
+    element.props,
+    staticConfig,
+    v3Empty,
+    '',
+    defaultComponentState,
+    {
+      isAnimated: false,
+      resolveValues: 'auto',
+      styledContext: staticConfig.context?.props,
+    },
+    v3Empty,
+    v3Env,
+    undefined,
+    element.options?.render,
+    true,
+    undefined,
+    undefined,
+    getStyleStaticConfig(staticConfig, getConfig())
+  )!
+}
 const splitV2 = (element: PreparedElement) =>
   v2Web.getSplitStyles(
     element.props,
