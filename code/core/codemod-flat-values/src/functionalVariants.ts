@@ -2,6 +2,7 @@ import {
   Node,
   SyntaxKind,
   type ArrowFunction,
+  type Expression,
   type FunctionExpression,
   type Identifier,
   type ImportDeclaration,
@@ -115,6 +116,20 @@ function referencesWithin(node: MorphNode, definition: Identifier): MorphNode[] 
       (reference) =>
         reference.getStart() >= node.getStart() && reference.getEnd() <= node.getEnd()
     )
+}
+
+function renderObjectReturn(
+  expression: Expression,
+  replacements: readonly Replacement[]
+): string {
+  let current = expression
+  while (Node.isParenthesizedExpression(current)) current = current.getExpression()
+  return renderNode(
+    Node.isAsExpression(current) || Node.isTypeAssertion(current)
+      ? expression
+      : unwrapExpression(expression),
+    replacements
+  )
 }
 
 function callbackAnalysis(callback: FunctionalCallback): CallbackAnalysis {
@@ -284,8 +299,8 @@ function callbackAnalysis(callback: FunctionalCallback): CallbackAnalysis {
   let objectReturn: string | null = null
   const unwrappedBody = Node.isExpression(body) ? unwrapExpression(body) : body
 
-  if (Node.isObjectLiteralExpression(unwrappedBody)) {
-    objectReturn = renderNode(body, normalizedReplacements)
+  if (Node.isExpression(body) && Node.isObjectLiteralExpression(unwrappedBody)) {
+    objectReturn = renderObjectReturn(body, normalizedReplacements)
   } else if (Node.isBlock(body)) {
     const statements = body.getStatements()
     if (statements.length === 1 && Node.isReturnStatement(statements[0])) {
@@ -293,7 +308,7 @@ function callbackAnalysis(callback: FunctionalCallback): CallbackAnalysis {
       if (returned) {
         const unwrapped = unwrapExpression(returned)
         if (Node.isObjectLiteralExpression(unwrapped)) {
-          objectReturn = renderNode(returned, normalizedReplacements)
+          objectReturn = renderObjectReturn(returned, normalizedReplacements)
         }
       }
     }
