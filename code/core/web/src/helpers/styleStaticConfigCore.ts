@@ -1,4 +1,8 @@
-import { stylePropsText, validStyles as validStylesView } from '@tamagui/helpers'
+import {
+  stylePropsInput,
+  stylePropsText,
+  validStyles as validStylesView,
+} from '@tamagui/helpers'
 import type { StaticConfig, TamaguiInternalConfig } from '../types'
 import { createStylePiece } from '../style'
 import type { StyleStaticConfig } from './styleStaticConfig'
@@ -29,7 +33,11 @@ export function resolveStyleStaticConfig(
   let defaultProps: Record<string, any> | undefined
   const validStyles =
     staticConfig.validStyles ||
-    (staticConfig.isText || staticConfig.isInput ? stylePropsText : validStylesView)
+    (staticConfig.isInput
+      ? stylePropsInput
+      : staticConfig.isText
+        ? stylePropsText
+        : validStylesView)
   if (authoredDefaultProps) {
     for (const key in authoredDefaultProps) {
       const isVariant = Boolean(variants?.[key])

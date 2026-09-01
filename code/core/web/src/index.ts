@@ -74,7 +74,7 @@ export {
 } from './createVariable'
 export { insertFont, updateFont } from './insertFont'
 export { styled } from './styled'
-export { style } from './style'
+export { style, useStyle } from './style'
 export { Tamagui } from './Tamagui'
 
 export type { TamaguiBuildOptions } from '@tamagui/types'
@@ -340,6 +340,7 @@ export {
   StyleObjectRules,
   StyleObjectValue,
   stylePropsAll,
+  stylePropsInput,
   stylePropsText,
   stylePropsTextOnly,
   stylePropsTransform,

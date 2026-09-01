@@ -1,6 +1,18 @@
 import React from 'react'
 import type { TabsContentProps } from 'tamagui'
-import { Button, H5, Separator, SizableText, Tabs, XStack, YStack, isWeb } from 'tamagui'
+import {
+  Button,
+  H5,
+  Separator,
+  SizableText,
+  Tabs,
+  XStack,
+  YStack,
+  isWeb,
+  style,
+} from 'tamagui'
+
+const activeTabStyle = style({ backgroundColor: 'color3' })
 
 const demos = ['horizontal', 'vertical'] as const
 const demosTitle: Record<(typeof demos)[number], string> = {
@@ -45,35 +57,17 @@ const HorizontalTabs = () => {
       borderColor="border-color"
     >
       <Tabs.List aria-label="Manage your account">
-        <Tabs.Tab
-          activeStyle={{
-            backgroundColor: 'color3',
-          }}
-          flex={1}
-          value="tab1"
-        >
+        <Tabs.Tab activeStyle={activeTabStyle} flex={1} value="tab1">
           <SizableText fontFamily="body" text="center" ellipsis>
             Profile
           </SizableText>
         </Tabs.Tab>
-        <Tabs.Tab
-          activeStyle={{
-            backgroundColor: 'color3',
-          }}
-          flex={1}
-          value="tab2"
-        >
+        <Tabs.Tab activeStyle={activeTabStyle} flex={1} value="tab2">
           <SizableText fontFamily="body" text="center" ellipsis>
             Connections
           </SizableText>
         </Tabs.Tab>
-        <Tabs.Tab
-          activeStyle={{
-            backgroundColor: 'color3',
-          }}
-          flex={1}
-          value="tab3"
-        >
+        <Tabs.Tab activeStyle={activeTabStyle} flex={1} value="tab3">
           <SizableText fontFamily="body" text="center" ellipsis>
             Notifications
           </SizableText>
@@ -108,13 +102,13 @@ const VerticalTabs = () => {
       orientation="vertical"
     >
       <Tabs.List aria-label="Manage your account">
-        <Tabs.Tab activeStyle={{ backgroundColor: 'color3' }} value="tab1">
+        <Tabs.Tab activeStyle={activeTabStyle} value="tab1">
           <SizableText>Profile</SizableText>
         </Tabs.Tab>
-        <Tabs.Tab activeStyle={{ backgroundColor: 'color3' }} value="tab2">
+        <Tabs.Tab activeStyle={activeTabStyle} value="tab2">
           <SizableText>Connections</SizableText>
         </Tabs.Tab>
-        <Tabs.Tab activeStyle={{ backgroundColor: 'color3' }} value="tab3">
+        <Tabs.Tab activeStyle={activeTabStyle} value="tab3">
           <SizableText>Notifications</SizableText>
         </Tabs.Tab>
       </Tabs.List>

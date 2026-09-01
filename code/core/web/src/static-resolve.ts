@@ -10,6 +10,7 @@ import {
   StyleObjectIdentifier,
   StyleObjectProperty,
   StyleObjectRules,
+  stylePropsInput,
   stylePropsText,
   validStyles as validStylesView,
 } from '@tamagui/helpers'
@@ -162,11 +163,12 @@ export function resolveStaticElement(
     Object.values(themes)[0] ||
     ({} as ThemeParsed)
 
-  const isTextLike = Boolean(
-    element.staticConfig?.isText || element.staticConfig?.isInput
-  )
   const baseStaticConfig: StaticConfig = {
-    validStyles: isTextLike ? stylePropsText : validStylesView,
+    validStyles: element.staticConfig?.isInput
+      ? stylePropsInput
+      : element.staticConfig?.isText
+        ? stylePropsText
+        : validStylesView,
     defaultProps: {},
     acceptsClassName: target !== 'native',
     ...(target === 'native' && { isReactNative: true }),

@@ -332,6 +332,17 @@ function createAtomicRules(
       break
     }
 
+    case 'selectionColor': {
+      rules.push(`${selector}::selection{${declaration('backgroundColor', value)}}`)
+      break
+    }
+
+    case 'cursorColor':
+    case 'selectionHandleColor': {
+      rules.push(`${selector}{${declaration('caretColor', value)}}`)
+      break
+    }
+
     case 'backgroundClip':
     case 'userSelect': {
       const propertyCapitalized = `${property[0].toUpperCase()}${property.slice(1)}`

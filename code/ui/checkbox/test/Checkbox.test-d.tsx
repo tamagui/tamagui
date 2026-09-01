@@ -1,4 +1,4 @@
-import { styled } from '@tamagui/core'
+import { style, styled } from '@tamagui/core'
 
 import { Checkbox } from '../src'
 
@@ -26,15 +26,22 @@ const CheckboxIndicatorSkin = styled(Checkbox.Indicator, {
   backgroundColor: 'color',
 })
 
+const activeStyle = style({ backgroundColor: 'background-press' })
+
 export const CheckboxPartsTypeTest = () => (
   <CheckboxSkin
     aria-label="type test"
     size="compact"
     backgroundColor="background"
-    activeStyle={{ backgroundColor: 'background-press' }}
+    activeStyle={activeStyle}
   >
     <CheckboxIndicatorSkin />
   </CheckboxSkin>
+)
+
+export const CheckboxRejectsPlainActiveStyle = () => (
+  // @ts-expect-error activeStyle accepts only a style() piece
+  <Checkbox activeStyle={{ opacity: 0.5 }} />
 )
 
 export const CheckboxDirectStyleTypeTest = () => (

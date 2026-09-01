@@ -29,11 +29,12 @@ const { Provider: ToggleGroupItemProvider } =
 const { Provider: ToggleGroupContext, useStyledContext: useToggleGroupContext } =
   createStyledContext<ToggleGroupContextValue>({})
 
-type ToggleGroupItemProps = GetProps<typeof ToggleFrame> & {
-  value: string
-  id?: string
-  disabled?: boolean
-}
+type ToggleGroupItemProps = GetProps<typeof ToggleFrame> &
+  Pick<ToggleProps, 'activeStyle' | 'activeTheme'> & {
+    value: string
+    id?: string
+    disabled?: boolean
+  }
 
 const ToggleGroupItem = createStyledHOC(
   ToggleFrame,

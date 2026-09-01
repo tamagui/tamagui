@@ -11,10 +11,13 @@ import {
   Switch,
   XStack,
   YStack,
+  style,
 } from 'tamagui'
 
 import { AccentTheme } from '~/features/studio/components/AccentTheme'
 import { accentThemeName } from '../../../accentThemeName'
+
+const previewContentStyle = style({ flex: 1 })
 
 export const StudioThemesQuickPreviewSection = memo(
   ({
@@ -40,7 +43,7 @@ export const StudioThemesQuickPreviewSection = memo(
         maxH={350}
         maxW={400}
         self="center"
-        contentContainerStyle={{ flex: 1 }}
+        contentContainerStyle={previewContentStyle}
       >
         <YStack gap="3" height="100%" flex={1} pt="4" px="4" justify="space-between">
           <YStack gap="2">

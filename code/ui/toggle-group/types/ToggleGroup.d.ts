@@ -1,8 +1,9 @@
 import { RovingFocusGroup } from '@tamagui/roving-focus';
 import type { GetProps, TamaguiElement } from '@tamagui/web';
 import React from 'react';
+import type { ToggleProps } from './Toggle';
 import { ToggleFrame } from './Toggle';
-type ToggleGroupItemProps = GetProps<typeof ToggleFrame> & {
+type ToggleGroupItemProps = GetProps<typeof ToggleFrame> & Pick<ToggleProps, 'activeStyle' | 'activeTheme'> & {
     value: string;
     id?: string;
     disabled?: boolean;
@@ -21,75 +22,35 @@ declare const ToggleGroup: ((props: ScopedProps<ToggleGroupProps> & import("@tam
     displayName?: string;
     propTypes?: any;
 } & {
-    Item: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase & {
-        readonly activeStyle?: Partial<import("@tamagui/web").InferStyleProps<import("@tamagui/web").TamaguiComponent<import("@tamagui/web").ViewProps, TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {}, {}>, {
-            accept: {
-                readonly activeStyle: 'style';
-            };
-        }>> | undefined;
-    }, {
+    Item: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
         active?: boolean | undefined;
         defaultActiveStyle?: boolean | undefined;
         size?: number | import("@tamagui/web").Size | undefined;
-    }>, "__scopeToggleGroup" | "active" | "activeStyle" | "defaultActiveStyle" | "size" | "value" | keyof import("@tamagui/web").StackNonStyleProps | keyof import("@tamagui/web").StackStyleBase> & Omit<import("@tamagui/web").StackNonStyleProps, "active" | "activeStyle" | "defaultActiveStyle" | "size" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
-        readonly activeStyle?: Partial<import("@tamagui/web").InferStyleProps<import("@tamagui/web").TamaguiComponent<import("@tamagui/web").ViewProps, TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {}, {}>, {
-            accept: {
-                readonly activeStyle: 'style';
-            };
-        }>> | undefined;
-    }> & import("@tamagui/web").WithFlatVariantValues<{
+    }>, "__scopeToggleGroup" | "active" | "activeStyle" | "activeTheme" | "defaultActiveStyle" | "size" | "value" | keyof import("@tamagui/web").StackNonStyleProps | keyof import("@tamagui/web").StackStyleBase> & Omit<import("@tamagui/web").StackNonStyleProps, "active" | "defaultActiveStyle" | "size" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
         active?: boolean | undefined;
         defaultActiveStyle?: boolean | undefined;
         size?: number | import("@tamagui/web").Size | undefined;
-    }> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
-        readonly activeStyle?: Partial<import("@tamagui/web").InferStyleProps<import("@tamagui/web").TamaguiComponent<import("@tamagui/web").ViewProps, TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {}, {}>, {
-            accept: {
-                readonly activeStyle: 'style';
-            };
-        }>> | undefined;
-    }>> & {
+    }> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & Pick<ToggleProps, "activeStyle" | "activeTheme"> & {
         value: string;
         id?: string;
         disabled?: boolean;
     } & {
         __scopeToggleGroup?: string;
-    }, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/web").StackNonStyleProps & Omit<import("@tamagui/web").StackNonStyleProps, "active" | "activeStyle" | "defaultActiveStyle" | "size" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
-        readonly activeStyle?: Partial<import("@tamagui/web").InferStyleProps<import("@tamagui/web").TamaguiComponent<import("@tamagui/web").ViewProps, TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {}, {}>, {
-            accept: {
-                readonly activeStyle: 'style';
-            };
-        }>> | undefined;
-    }> & import("@tamagui/web").WithFlatVariantValues<{
+    }, TamaguiElement, import("@tamagui/web").StackNonStyleProps & Omit<import("@tamagui/web").StackNonStyleProps, "active" | "defaultActiveStyle" | "size" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
         active?: boolean | undefined;
         defaultActiveStyle?: boolean | undefined;
         size?: number | import("@tamagui/web").Size | undefined;
-    }> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
-        readonly activeStyle?: Partial<import("@tamagui/web").InferStyleProps<import("@tamagui/web").TamaguiComponent<import("@tamagui/web").ViewProps, TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {}, {}>, {
-            accept: {
-                readonly activeStyle: 'style';
-            };
-        }>> | undefined;
-    }>> & {
+    }> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & Pick<ToggleProps, "activeStyle" | "activeTheme"> & {
         value: string;
         id?: string;
         disabled?: boolean;
     } & {
         __scopeToggleGroup?: string;
-    }, import("@tamagui/web").StackStyleBase & {
-        readonly activeStyle?: Partial<import("@tamagui/web").InferStyleProps<import("@tamagui/web").TamaguiComponent<import("@tamagui/web").ViewProps, TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {}, {}>, {
-            accept: {
-                readonly activeStyle: 'style';
-            };
-        }>> | undefined;
-    }, {
+    }, import("@tamagui/web").StackStyleBase, {
         active?: boolean | undefined;
         defaultActiveStyle?: boolean | undefined;
         size?: number | import("@tamagui/web").Size | undefined;
-    }, {
-        accept: {
-            readonly activeStyle: 'style';
-        };
-    }>;
+    }, import("@tamagui/web").StaticConfigPublic>;
 };
 interface ToggleGroupImplSingleProps extends ToggleGroupImplProps {
     /** The controlled stateful value of the item that is pressed. */

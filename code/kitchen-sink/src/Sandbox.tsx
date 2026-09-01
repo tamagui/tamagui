@@ -11,16 +11,18 @@ import {
   ScrollView,
   XStack,
   YStack,
+  style,
 } from 'tamagui'
 
 const lorem =
   'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.'
 
 const sizes = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'] as const
+const scrollContentStyle = style({ padding: 20 })
 
 export const Sandbox = () => {
   return (
-    <ScrollView flex={1} width="100%" contentContainerStyle={{ padding: 20 }}>
+    <ScrollView flex={1} width="100%" contentContainerStyle={scrollContentStyle}>
       <YStack gap="6" maxWidth={800}>
         <YStack gap="4">
           <Heading size="8" marginBottom="2">

@@ -1,3 +1,4 @@
+import { type StylePiece } from '@tamagui/web';
 import * as React from 'react';
 export interface ScrollViewMethods {
     getScrollResponder: () => any;
@@ -16,5 +17,9 @@ export interface ScrollViewMethods {
     flashScrollIndicators: () => void;
 }
 export type ScrollViewRef = HTMLElement & ScrollViewMethods;
-export declare const WebScrollView: React.ForwardRefExoticComponent<Omit<any, "ref"> & React.RefAttributes<ScrollViewRef>>;
+export type WebScrollViewProps = {
+    contentContainerStyle?: StylePiece;
+    [key: string]: any;
+};
+export declare const WebScrollView: React.ForwardRefExoticComponent<Omit<WebScrollViewProps, "ref"> & React.RefAttributes<ScrollViewRef>>;
 //# sourceMappingURL=WebScrollView.d.ts.map

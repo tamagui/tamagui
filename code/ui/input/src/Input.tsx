@@ -1,4 +1,4 @@
-import { createStyledHOC, type GetProps, View, styled, useTheme } from '@tamagui/core'
+import { createStyledHOC, type GetProps, View, styled } from '@tamagui/core'
 import { registerFocusable } from '@tamagui/focusable'
 import { useWebRef } from '@tamagui/element'
 import React from 'react'
@@ -24,8 +24,6 @@ export const Input = createStyledHOC(
       onSubmitEditing,
       onSelectionChange,
       selection,
-      placeholderTextColor,
-      selectionColor,
       rows,
 
       // Native-only props (ignored on web)
@@ -67,8 +65,6 @@ export const Input = createStyledHOC(
       disableKeyboardShortcuts,
 
       // Android-only props (ignored on web)
-      cursorColor,
-      selectionHandleColor,
       underlineColorAndroid,
       importantForAutofill,
       disableFullscreenUI,
@@ -85,8 +81,6 @@ export const Input = createStyledHOC(
     } = props
 
     const { ref, composedRef } = useWebRef<HTMLInputElement>(_forwardedRef)
-    const theme = useTheme()
-
     // convert native-style values to web equivalents
     const autoCorrect =
       autoCorrectProp === true
@@ -164,16 +158,6 @@ export const Input = createStyledHOC(
       autoCapitalize,
       onKeyDown: onSubmitEditing ? handleKeyDown : rest.onKeyDown,
       onChange: onChangeText ? handleChange : rest.onChange,
-      style: {
-        ...(rest.style as any),
-        ...(placeholderTextColor && {
-          '--t_placeholderColor':
-            theme[placeholderTextColor]?.variable || placeholderTextColor,
-        }),
-        ...(selectionColor && {
-          '--t_selectionColor': theme[selectionColor]?.variable || selectionColor,
-        }),
-      },
     } as any
 
     return <StyledInput ref={composedRef} {...finalProps} />

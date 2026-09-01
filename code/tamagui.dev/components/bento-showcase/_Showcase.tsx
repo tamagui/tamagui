@@ -18,10 +18,26 @@ import {
   YStack,
   createStyledContext,
   createStyledHOC,
+  style,
   useEvent,
   useIsomorphicLayoutEffect,
 } from 'tamagui'
 import { Button } from '~/components/Button'
+
+const showcaseContentStyle = style({
+  py: 24,
+  justify: 'center',
+  items: 'center',
+  width: '100%',
+  height: '100%',
+})
+const showcaseCompactContentStyle = style({
+  py: 0,
+  justify: 'center',
+  items: 'center',
+  width: '100%',
+  height: '100%',
+})
 // @ts-ignore - bento component wildcard import
 import { useCurrentRouteParams } from '@tamagui/bento'
 // @ts-ignore - bento component wildcard import
@@ -358,13 +374,7 @@ export const ShowcaseChildWrapper = createStyledHOC(ScrollView, (props, ref) => 
   return (
     <ScrollView
       ref={ref}
-      contentContainerStyle={{
-        py: sm ? 0 : 24,
-        justify: 'center',
-        items: 'center',
-        width: '100%',
-        height: '100%',
-      }}
+      contentContainerStyle={sm ? showcaseCompactContentStyle : showcaseContentStyle}
       px={sm ? 5 : 24}
       width="100%"
       {...props}

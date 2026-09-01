@@ -1,6 +1,28 @@
-import type { GetProps, GetRef } from '@tamagui/web'
-import { styled } from '@tamagui/web'
-import { ScrollView as ScrollViewNative } from 'react-native'
+import type { GetProps, GetRef, StylePiece } from '@tamagui/web'
+import { styled, useStyle } from '@tamagui/web'
+import React from 'react'
+import {
+  ScrollView as ReactNativeScrollView,
+  type ScrollViewProps as ReactNativeScrollViewProps,
+} from 'react-native'
+
+type NativeScrollViewProps = Omit<ReactNativeScrollViewProps, 'contentContainerStyle'> & {
+  contentContainerStyle?: StylePiece
+}
+
+const ScrollViewNative = React.forwardRef<ReactNativeScrollView, NativeScrollViewProps>(
+  ({ contentContainerStyle, ...props }, ref) => (
+    <ReactNativeScrollView
+      {...props}
+      ref={ref}
+      contentContainerStyle={
+        useStyle(
+          contentContainerStyle
+        ) as ReactNativeScrollViewProps['contentContainerStyle']
+      }
+    />
+  )
+)
 
 export const ScrollView = styled(
   ScrollViewNative,
@@ -10,12 +32,14 @@ export const ScrollView = styled(
   },
   {
     neverFlatten: true,
-    accept: {
-      contentContainerStyle: 'style',
-    } as const,
   }
 )
 
 export type ScrollView = GetRef<typeof ScrollView>
 
-export type ScrollViewProps = GetProps<typeof ScrollView>
+export type ScrollViewProps = Omit<
+  GetProps<typeof ScrollView>,
+  'contentContainerStyle'
+> & {
+  contentContainerStyle?: StylePiece
+}

@@ -1,9 +1,11 @@
 import { listingData } from './bento-showcase/data'
 import { useStore } from '@tamagui/use-store'
 import { useMemo, useRef, useState } from 'react'
-import { H3, ScrollView, Spacer, XStack, YStack } from 'tamagui'
+import { H3, ScrollView, Spacer, XStack, YStack, style } from 'tamagui'
 import { ContainerLarge } from '~/components/Containers'
 import { ComponentItem } from './BentoComponentItem'
+
+const scrollContentStyle = style({ minW: '100%' })
 
 export class BentoStore {
   heroVisible = true
@@ -82,9 +84,7 @@ export const ComponentSection = () => {
                 <ScrollView
                   horizontal
                   showsHorizontalScrollIndicator={false}
-                  contentContainerStyle={{
-                    minW: '100%',
-                  }}
+                  contentContainerStyle={scrollContentStyle}
                 >
                   <ContainerLarge>
                     <XStack

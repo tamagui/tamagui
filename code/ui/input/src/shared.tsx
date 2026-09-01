@@ -1,5 +1,4 @@
 import type { SizeVariantSpreadFunction, VariantSpreadExtras } from '@tamagui/core'
-import { Text } from '@tamagui/core'
 import { getVariableValue, isWeb, resolveTokenSize } from '@tamagui/core'
 import { getFontSized } from '@tamagui/get-font-sized'
 
@@ -129,14 +128,5 @@ export const styledBody = [
 
   {
     isInput: true,
-    accept: {
-      placeholderTextColor: 'color',
-      selectionColor: 'color',
-      cursorColor: 'color',
-      selectionHandleColor: 'color',
-      underlineColorAndroid: 'color',
-    } as const,
-
-    validStyles: Text.staticConfig.validStyles,
   },
 ] as const

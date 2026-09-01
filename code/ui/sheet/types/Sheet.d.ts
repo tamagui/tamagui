@@ -1,4 +1,4 @@
-import { type ViewProps } from '@tamagui/core';
+import { type TamaguiElement, type ViewProps } from '@tamagui/core';
 import type { FunctionComponent, Ref } from 'react';
 import type { View as RNView } from 'react-native';
 import { useAnimatedPosition } from './SheetContext';
@@ -14,7 +14,7 @@ export declare const SheetHandle: import("@tamagui/core").TamaguiComponent<Omit<
     open?: boolean | undefined;
 }>, "scope" | keyof SheetStyleShorthandProps | keyof import("@tamagui/core").StackNonStyleProps | keyof import("@tamagui/core").StackStyleBase> & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & SheetStyleShorthandProps, "scope"> & {
     scope?: import("./types").SheetScopes;
-}, RNView | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & SheetStyleShorthandProps, "scope"> & {
+}, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & SheetStyleShorthandProps, "scope"> & {
     scope?: import("./types").SheetScopes;
 }, import("@tamagui/core").StackStyleBase, {
     elevation?: number | import("@tamagui/core").Size | undefined;
@@ -25,7 +25,7 @@ export declare const SheetOverlay: import("@tamagui/core").TamaguiComponent<Omit
     open?: boolean | undefined;
 }>, "scope" | keyof SheetStyleShorthandProps | keyof import("@tamagui/core").StackNonStyleProps | keyof import("@tamagui/core").StackStyleBase> & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & SheetStyleShorthandProps, "scope"> & {
     scope?: import("./types").SheetScopes;
-}, RNView | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & SheetStyleShorthandProps, "scope"> & {
+}, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & SheetStyleShorthandProps, "scope"> & {
     scope?: import("./types").SheetScopes;
 }, import("@tamagui/core").StackStyleBase, {
     elevation?: number | import("@tamagui/core").Size | undefined;
@@ -43,7 +43,7 @@ export declare const SheetContainer: import("@tamagui/core").TamaguiComponent<Om
     elevation?: number | import("@tamagui/core").Size | undefined;
 }>, "adjustPaddingForOffscreenContent" | "scope" | keyof SheetStyleShorthandProps | keyof import("@tamagui/core").StackNonStyleProps | keyof import("@tamagui/core").StackStyleBase> & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & SheetStyleShorthandProps & ExtraContainerProps, "scope"> & {
     scope?: import("./types").SheetScopes;
-}, RNView | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & SheetStyleShorthandProps & ExtraContainerProps, "scope"> & {
+}, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & SheetStyleShorthandProps & ExtraContainerProps, "scope"> & {
     scope?: import("./types").SheetScopes;
 }, import("@tamagui/core").StackStyleBase, {
     elevation?: number | import("@tamagui/core").Size | undefined;
@@ -59,7 +59,7 @@ export declare const SheetBackground: import("@tamagui/core").TamaguiComponent<O
     elevation?: number | import("@tamagui/core").Size | undefined;
 }>, "disableHideBottomOverflow" | "scope" | keyof SheetStyleShorthandProps | keyof import("@tamagui/core").StackNonStyleProps | keyof import("@tamagui/core").StackStyleBase> & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & SheetStyleShorthandProps & ExtraBackgroundProps, "scope"> & {
     scope?: import("./types").SheetScopes;
-}, RNView | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & SheetStyleShorthandProps & ExtraBackgroundProps, "scope"> & {
+}, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & SheetStyleShorthandProps & ExtraBackgroundProps, "scope"> & {
     scope?: import("./types").SheetScopes;
 }, import("@tamagui/core").StackStyleBase, {
     elevation?: number | import("@tamagui/core").Size | undefined;
@@ -72,7 +72,7 @@ export declare const SheetControlled: FunctionComponent<Omit<SheetProps, "onOpen
         elevation?: number | import("@tamagui/core").Size | undefined;
     }>, "adjustPaddingForOffscreenContent" | "scope" | keyof SheetStyleShorthandProps | keyof import("@tamagui/core").StackNonStyleProps | keyof import("@tamagui/core").StackStyleBase> & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & SheetStyleShorthandProps & ExtraContainerProps, "scope"> & {
         scope?: import("./types").SheetScopes;
-    }, RNView | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & SheetStyleShorthandProps & ExtraContainerProps, "scope"> & {
+    }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & SheetStyleShorthandProps & ExtraContainerProps, "scope"> & {
         scope?: import("./types").SheetScopes;
     }, import("@tamagui/core").StackStyleBase, {
         elevation?: number | import("@tamagui/core").Size | undefined;
@@ -81,7 +81,7 @@ export declare const SheetControlled: FunctionComponent<Omit<SheetProps, "onOpen
         elevation?: number | import("@tamagui/core").Size | undefined;
     }>, "disableHideBottomOverflow" | "scope" | keyof SheetStyleShorthandProps | keyof import("@tamagui/core").StackNonStyleProps | keyof import("@tamagui/core").StackStyleBase> & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & SheetStyleShorthandProps & ExtraBackgroundProps, "scope"> & {
         scope?: import("./types").SheetScopes;
-    }, RNView | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & SheetStyleShorthandProps & ExtraBackgroundProps, "scope"> & {
+    }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & SheetStyleShorthandProps & ExtraBackgroundProps, "scope"> & {
         scope?: import("./types").SheetScopes;
     }, import("@tamagui/core").StackStyleBase, {
         elevation?: number | import("@tamagui/core").Size | undefined;
@@ -91,7 +91,7 @@ export declare const SheetControlled: FunctionComponent<Omit<SheetProps, "onOpen
         open?: boolean | undefined;
     }>, "scope" | keyof SheetStyleShorthandProps | keyof import("@tamagui/core").StackNonStyleProps | keyof import("@tamagui/core").StackStyleBase> & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & SheetStyleShorthandProps, "scope"> & {
         scope?: import("./types").SheetScopes;
-    }, RNView | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & SheetStyleShorthandProps, "scope"> & {
+    }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & SheetStyleShorthandProps, "scope"> & {
         scope?: import("./types").SheetScopes;
     }, import("@tamagui/core").StackStyleBase, {
         elevation?: number | import("@tamagui/core").Size | undefined;
@@ -102,78 +102,27 @@ export declare const SheetControlled: FunctionComponent<Omit<SheetProps, "onOpen
         open?: boolean | undefined;
     }>, "scope" | keyof SheetStyleShorthandProps | keyof import("@tamagui/core").StackNonStyleProps | keyof import("@tamagui/core").StackStyleBase> & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & SheetStyleShorthandProps, "scope"> & {
         scope?: import("./types").SheetScopes;
-    }, RNView | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & SheetStyleShorthandProps, "scope"> & {
+    }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & SheetStyleShorthandProps, "scope"> & {
         scope?: import("./types").SheetScopes;
     }, import("@tamagui/core").StackStyleBase, {
         elevation?: number | import("@tamagui/core").Size | undefined;
         open?: boolean | undefined;
     }, import("@tamagui/core").StaticConfigPublic>;
-    ScrollView: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>, import("@tamagui/core").StackStyleBase & {
-        readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>>, {
-            acceptsClassName: true;
-            neverFlatten: true;
-            accept: {
-                readonly contentContainerStyle: 'style';
-            };
-        }>> | undefined;
-    }, {}>, string | number | symbol> & Omit<Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>, "contentContainerStyle" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
-        readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>>, {
-            acceptsClassName: true;
-            neverFlatten: true;
-            accept: {
-                readonly contentContainerStyle: 'style';
-            };
-        }>> | undefined;
-    }> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
-        readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>>, {
-            acceptsClassName: true;
-            neverFlatten: true;
-            accept: {
-                readonly contentContainerStyle: 'style';
-            };
-        }>> | undefined;
-    }>> & {
+    ScrollView: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>, import("@tamagui/core").StackStyleBase, {}>, string | number> & Omit<Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>, keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
         h?: import("@tamagui/core").FlatStyleValue<number | "unset" | import("react-native").Animated.AnimatedNode | import("@tamagui/core").GetThemeValueForKey<"height"> | null | undefined>;
         o?: import("@tamagui/core").FlatStyleValue<"unset" | import("react-native").AnimatableNumericValue | import("@tamagui/core").GetThemeValueForKey<"opacity"> | undefined>;
         pos?: import("@tamagui/core").FlatStyleValue<"absolute" | "fixed" | "relative" | "static" | "sticky" | "unset" | undefined>;
     }, "scope"> & {
         scope?: import("./types").SheetScopes;
-    }, import("@tamagui/scroll-view").ScrollViewRef, import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef> & Omit<Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>, "contentContainerStyle" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
-        readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>>, {
-            acceptsClassName: true;
-            neverFlatten: true;
-            accept: {
-                readonly contentContainerStyle: 'style';
-            };
-        }>> | undefined;
-    }> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
-        readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>>, {
-            acceptsClassName: true;
-            neverFlatten: true;
-            accept: {
-                readonly contentContainerStyle: 'style';
-            };
-        }>> | undefined;
-    }>> & {
+    }, import("@tamagui/scroll-view").ScrollViewRef, import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef> & Omit<Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>, keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
         h?: import("@tamagui/core").FlatStyleValue<number | "unset" | import("react-native").Animated.AnimatedNode | import("@tamagui/core").GetThemeValueForKey<"height"> | null | undefined>;
         o?: import("@tamagui/core").FlatStyleValue<"unset" | import("react-native").AnimatableNumericValue | import("@tamagui/core").GetThemeValueForKey<"opacity"> | undefined>;
         pos?: import("@tamagui/core").FlatStyleValue<"absolute" | "fixed" | "relative" | "static" | "sticky" | "unset" | undefined>;
     }, "scope"> & {
         scope?: import("./types").SheetScopes;
-    }, import("@tamagui/core").StackStyleBase & {
-        readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>>, {
-            acceptsClassName: true;
-            neverFlatten: true;
-            accept: {
-                readonly contentContainerStyle: 'style';
-            };
-        }>> | undefined;
-    }, {}, {
+    }, import("@tamagui/core").StackStyleBase, {}, {
         acceptsClassName: true;
         neverFlatten: true;
-        accept: {
-            readonly contentContainerStyle: 'style';
-        };
     }>;
 };
 export declare const Sheet: ((props: Omit<{
@@ -213,7 +162,7 @@ export declare const Sheet: ((props: Omit<{
         elevation?: number | import("@tamagui/core").Size | undefined;
     }>, "adjustPaddingForOffscreenContent" | "scope" | keyof SheetStyleShorthandProps | keyof import("@tamagui/core").StackNonStyleProps | keyof import("@tamagui/core").StackStyleBase> & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & SheetStyleShorthandProps & ExtraContainerProps, "scope"> & {
         scope?: import("./types").SheetScopes;
-    }, RNView | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & SheetStyleShorthandProps & ExtraContainerProps, "scope"> & {
+    }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & SheetStyleShorthandProps & ExtraContainerProps, "scope"> & {
         scope?: import("./types").SheetScopes;
     }, import("@tamagui/core").StackStyleBase, {
         elevation?: number | import("@tamagui/core").Size | undefined;
@@ -222,7 +171,7 @@ export declare const Sheet: ((props: Omit<{
         elevation?: number | import("@tamagui/core").Size | undefined;
     }>, "disableHideBottomOverflow" | "scope" | keyof SheetStyleShorthandProps | keyof import("@tamagui/core").StackNonStyleProps | keyof import("@tamagui/core").StackStyleBase> & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & SheetStyleShorthandProps & ExtraBackgroundProps, "scope"> & {
         scope?: import("./types").SheetScopes;
-    }, RNView | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & SheetStyleShorthandProps & ExtraBackgroundProps, "scope"> & {
+    }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & SheetStyleShorthandProps & ExtraBackgroundProps, "scope"> & {
         scope?: import("./types").SheetScopes;
     }, import("@tamagui/core").StackStyleBase, {
         elevation?: number | import("@tamagui/core").Size | undefined;
@@ -232,7 +181,7 @@ export declare const Sheet: ((props: Omit<{
         open?: boolean | undefined;
     }>, "scope" | keyof SheetStyleShorthandProps | keyof import("@tamagui/core").StackNonStyleProps | keyof import("@tamagui/core").StackStyleBase> & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & SheetStyleShorthandProps, "scope"> & {
         scope?: import("./types").SheetScopes;
-    }, RNView | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & SheetStyleShorthandProps, "scope"> & {
+    }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & SheetStyleShorthandProps, "scope"> & {
         scope?: import("./types").SheetScopes;
     }, import("@tamagui/core").StackStyleBase, {
         elevation?: number | import("@tamagui/core").Size | undefined;
@@ -243,78 +192,27 @@ export declare const Sheet: ((props: Omit<{
         open?: boolean | undefined;
     }>, "scope" | keyof SheetStyleShorthandProps | keyof import("@tamagui/core").StackNonStyleProps | keyof import("@tamagui/core").StackStyleBase> & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & SheetStyleShorthandProps, "scope"> & {
         scope?: import("./types").SheetScopes;
-    }, RNView | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & SheetStyleShorthandProps, "scope"> & {
+    }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & SheetStyleShorthandProps, "scope"> & {
         scope?: import("./types").SheetScopes;
     }, import("@tamagui/core").StackStyleBase, {
         elevation?: number | import("@tamagui/core").Size | undefined;
         open?: boolean | undefined;
     }, import("@tamagui/core").StaticConfigPublic>;
-    ScrollView: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>, import("@tamagui/core").StackStyleBase & {
-        readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>>, {
-            acceptsClassName: true;
-            neverFlatten: true;
-            accept: {
-                readonly contentContainerStyle: 'style';
-            };
-        }>> | undefined;
-    }, {}>, string | number | symbol> & Omit<Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>, "contentContainerStyle" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
-        readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>>, {
-            acceptsClassName: true;
-            neverFlatten: true;
-            accept: {
-                readonly contentContainerStyle: 'style';
-            };
-        }>> | undefined;
-    }> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
-        readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>>, {
-            acceptsClassName: true;
-            neverFlatten: true;
-            accept: {
-                readonly contentContainerStyle: 'style';
-            };
-        }>> | undefined;
-    }>> & {
+    ScrollView: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>, import("@tamagui/core").StackStyleBase, {}>, string | number> & Omit<Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>, keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
         h?: import("@tamagui/core").FlatStyleValue<number | "unset" | import("react-native").Animated.AnimatedNode | import("@tamagui/core").GetThemeValueForKey<"height"> | null | undefined>;
         o?: import("@tamagui/core").FlatStyleValue<"unset" | import("react-native").AnimatableNumericValue | import("@tamagui/core").GetThemeValueForKey<"opacity"> | undefined>;
         pos?: import("@tamagui/core").FlatStyleValue<"absolute" | "fixed" | "relative" | "static" | "sticky" | "unset" | undefined>;
     }, "scope"> & {
         scope?: import("./types").SheetScopes;
-    }, import("@tamagui/scroll-view").ScrollViewRef, import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef> & Omit<Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>, "contentContainerStyle" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
-        readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>>, {
-            acceptsClassName: true;
-            neverFlatten: true;
-            accept: {
-                readonly contentContainerStyle: 'style';
-            };
-        }>> | undefined;
-    }> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
-        readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>>, {
-            acceptsClassName: true;
-            neverFlatten: true;
-            accept: {
-                readonly contentContainerStyle: 'style';
-            };
-        }>> | undefined;
-    }>> & {
+    }, import("@tamagui/scroll-view").ScrollViewRef, import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef> & Omit<Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>, keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
         h?: import("@tamagui/core").FlatStyleValue<number | "unset" | import("react-native").Animated.AnimatedNode | import("@tamagui/core").GetThemeValueForKey<"height"> | null | undefined>;
         o?: import("@tamagui/core").FlatStyleValue<"unset" | import("react-native").AnimatableNumericValue | import("@tamagui/core").GetThemeValueForKey<"opacity"> | undefined>;
         pos?: import("@tamagui/core").FlatStyleValue<"absolute" | "fixed" | "relative" | "static" | "sticky" | "unset" | undefined>;
     }, "scope"> & {
         scope?: import("./types").SheetScopes;
-    }, import("@tamagui/core").StackStyleBase & {
-        readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>>, {
-            acceptsClassName: true;
-            neverFlatten: true;
-            accept: {
-                readonly contentContainerStyle: 'style';
-            };
-        }>> | undefined;
-    }, {}, {
+    }, import("@tamagui/core").StackStyleBase, {}, {
         acceptsClassName: true;
         neverFlatten: true;
-        accept: {
-            readonly contentContainerStyle: 'style';
-        };
     }>;
     Root: import("@tamagui/compose-refs").RefComponent<RNView, SheetProps>;
     Controlled: FunctionComponent<Omit<SheetProps, "onOpenChange" | "open"> & {
@@ -324,7 +222,7 @@ export declare const Sheet: ((props: Omit<{
             elevation?: number | import("@tamagui/core").Size | undefined;
         }>, "adjustPaddingForOffscreenContent" | "scope" | keyof SheetStyleShorthandProps | keyof import("@tamagui/core").StackNonStyleProps | keyof import("@tamagui/core").StackStyleBase> & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & SheetStyleShorthandProps & ExtraContainerProps, "scope"> & {
             scope?: import("./types").SheetScopes;
-        }, RNView | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & SheetStyleShorthandProps & ExtraContainerProps, "scope"> & {
+        }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & SheetStyleShorthandProps & ExtraContainerProps, "scope"> & {
             scope?: import("./types").SheetScopes;
         }, import("@tamagui/core").StackStyleBase, {
             elevation?: number | import("@tamagui/core").Size | undefined;
@@ -333,7 +231,7 @@ export declare const Sheet: ((props: Omit<{
             elevation?: number | import("@tamagui/core").Size | undefined;
         }>, "disableHideBottomOverflow" | "scope" | keyof SheetStyleShorthandProps | keyof import("@tamagui/core").StackNonStyleProps | keyof import("@tamagui/core").StackStyleBase> & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & SheetStyleShorthandProps & ExtraBackgroundProps, "scope"> & {
             scope?: import("./types").SheetScopes;
-        }, RNView | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & SheetStyleShorthandProps & ExtraBackgroundProps, "scope"> & {
+        }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & SheetStyleShorthandProps & ExtraBackgroundProps, "scope"> & {
             scope?: import("./types").SheetScopes;
         }, import("@tamagui/core").StackStyleBase, {
             elevation?: number | import("@tamagui/core").Size | undefined;
@@ -343,7 +241,7 @@ export declare const Sheet: ((props: Omit<{
             open?: boolean | undefined;
         }>, "scope" | keyof SheetStyleShorthandProps | keyof import("@tamagui/core").StackNonStyleProps | keyof import("@tamagui/core").StackStyleBase> & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & SheetStyleShorthandProps, "scope"> & {
             scope?: import("./types").SheetScopes;
-        }, RNView | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & SheetStyleShorthandProps, "scope"> & {
+        }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & SheetStyleShorthandProps, "scope"> & {
             scope?: import("./types").SheetScopes;
         }, import("@tamagui/core").StackStyleBase, {
             elevation?: number | import("@tamagui/core").Size | undefined;
@@ -354,78 +252,27 @@ export declare const Sheet: ((props: Omit<{
             open?: boolean | undefined;
         }>, "scope" | keyof SheetStyleShorthandProps | keyof import("@tamagui/core").StackNonStyleProps | keyof import("@tamagui/core").StackStyleBase> & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & SheetStyleShorthandProps, "scope"> & {
             scope?: import("./types").SheetScopes;
-        }, RNView | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & SheetStyleShorthandProps, "scope"> & {
+        }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & SheetStyleShorthandProps, "scope"> & {
             scope?: import("./types").SheetScopes;
         }, import("@tamagui/core").StackStyleBase, {
             elevation?: number | import("@tamagui/core").Size | undefined;
             open?: boolean | undefined;
         }, import("@tamagui/core").StaticConfigPublic>;
-        ScrollView: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>, import("@tamagui/core").StackStyleBase & {
-            readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>>, {
-                acceptsClassName: true;
-                neverFlatten: true;
-                accept: {
-                    readonly contentContainerStyle: 'style';
-                };
-            }>> | undefined;
-        }, {}>, string | number | symbol> & Omit<Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>, "contentContainerStyle" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
-            readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>>, {
-                acceptsClassName: true;
-                neverFlatten: true;
-                accept: {
-                    readonly contentContainerStyle: 'style';
-                };
-            }>> | undefined;
-        }> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
-            readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>>, {
-                acceptsClassName: true;
-                neverFlatten: true;
-                accept: {
-                    readonly contentContainerStyle: 'style';
-                };
-            }>> | undefined;
-        }>> & {
+        ScrollView: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>, import("@tamagui/core").StackStyleBase, {}>, string | number> & Omit<Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>, keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
             h?: import("@tamagui/core").FlatStyleValue<number | "unset" | import("react-native").Animated.AnimatedNode | import("@tamagui/core").GetThemeValueForKey<"height"> | null | undefined>;
             o?: import("@tamagui/core").FlatStyleValue<"unset" | import("react-native").AnimatableNumericValue | import("@tamagui/core").GetThemeValueForKey<"opacity"> | undefined>;
             pos?: import("@tamagui/core").FlatStyleValue<"absolute" | "fixed" | "relative" | "static" | "sticky" | "unset" | undefined>;
         }, "scope"> & {
             scope?: import("./types").SheetScopes;
-        }, import("@tamagui/scroll-view").ScrollViewRef, import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef> & Omit<Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>, "contentContainerStyle" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
-            readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>>, {
-                acceptsClassName: true;
-                neverFlatten: true;
-                accept: {
-                    readonly contentContainerStyle: 'style';
-                };
-            }>> | undefined;
-        }> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
-            readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>>, {
-                acceptsClassName: true;
-                neverFlatten: true;
-                accept: {
-                    readonly contentContainerStyle: 'style';
-                };
-            }>> | undefined;
-        }>> & {
+        }, import("@tamagui/scroll-view").ScrollViewRef, import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef> & Omit<Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>, keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
             h?: import("@tamagui/core").FlatStyleValue<number | "unset" | import("react-native").Animated.AnimatedNode | import("@tamagui/core").GetThemeValueForKey<"height"> | null | undefined>;
             o?: import("@tamagui/core").FlatStyleValue<"unset" | import("react-native").AnimatableNumericValue | import("@tamagui/core").GetThemeValueForKey<"opacity"> | undefined>;
             pos?: import("@tamagui/core").FlatStyleValue<"absolute" | "fixed" | "relative" | "static" | "sticky" | "unset" | undefined>;
         }, "scope"> & {
             scope?: import("./types").SheetScopes;
-        }, import("@tamagui/core").StackStyleBase & {
-            readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>>, {
-                acceptsClassName: true;
-                neverFlatten: true;
-                accept: {
-                    readonly contentContainerStyle: 'style';
-                };
-            }>> | undefined;
-        }, {}, {
+        }, import("@tamagui/core").StackStyleBase, {}, {
             acceptsClassName: true;
             neverFlatten: true;
-            accept: {
-                readonly contentContainerStyle: 'style';
-            };
         }>;
     };
     useAnimatedPosition: typeof useAnimatedPosition;

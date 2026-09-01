@@ -1,4 +1,4 @@
-import { View as TamaguiView } from '@tamagui/web'
+import { View as TamaguiView, type StylePiece } from '@tamagui/web'
 import * as React from 'react'
 
 // loosely typed to map the react-native ScrollView prop surface onto a
@@ -23,6 +23,11 @@ export interface ScrollViewMethods {
 }
 
 export type ScrollViewRef = HTMLElement & ScrollViewMethods
+
+export type WebScrollViewProps = {
+  contentContainerStyle?: StylePiece
+  [key: string]: any
+}
 
 function mergeRefs(...refs: any[]) {
   return (node: any) => {
@@ -127,7 +132,7 @@ const styles = {
   },
 } as const
 
-export const WebScrollView = React.forwardRef<ScrollViewRef, any>(
+export const WebScrollView = React.forwardRef<ScrollViewRef, WebScrollViewProps>(
   (props, forwardedRef) => {
     const {
       children,

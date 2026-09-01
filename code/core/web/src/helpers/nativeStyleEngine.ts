@@ -14,6 +14,18 @@
 
 import { getVariableValue } from '../createVariable'
 
+/**
+ * CSS-shaped Input color styles lower back to React Native TextInput props.
+ * Keeping this table beside native color processing makes the runtime and
+ * compiler use one RN compatibility boundary after token resolution.
+ */
+export const nativeTextInputColorProps: Readonly<Record<string, string>> = {
+  placeholderTextColor: 'placeholderTextColor',
+  selectionColor: 'selectionColor',
+  cursorColor: 'cursorColor',
+  selectionHandleColor: 'selectionHandleColor',
+}
+
 export interface NativeStyleEngineLinkHandle {
   id: number
   unlink: () => void

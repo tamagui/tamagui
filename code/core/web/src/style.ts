@@ -1,18 +1,29 @@
 import React from 'react'
 
-import type { StaticShapeStyle, StylePiece } from './types'
+import type { StaticShapeStyle, StylePiece, TextStyle, ThemeParsed } from './types'
 import { stylePieceSymbol } from './types'
 import { warnOnce } from './helpers/warnOnce'
+import { useThemeWithState } from './hooks/useTheme'
 
 type StylePieceLayer = 'base' | 'style'
 type StylePieceCompiler = (piece: StylePiece, layer: StylePieceLayer) => void
+type StylePieceResolver = (
+  piece: StylePiece,
+  theme: ThemeParsed,
+  themeName: string
+) => TextStyle
 
 let compileStylePiece: StylePieceCompiler | undefined
+let resolveStylePiece: StylePieceResolver | undefined
 const uncacheablePieces = new WeakSet<StylePiece>()
 const flatClausePattern = /(?:^|\s)@?[A-Za-z][A-Za-z0-9-]*(?:\/[A-Za-z0-9_-]+)?:/
 
 export function setStylePieceCompiler(compiler: StylePieceCompiler) {
   compileStylePiece = compiler
+}
+
+export function setStylePieceResolver(resolver: StylePieceResolver) {
+  resolveStylePiece = resolver
 }
 
 export function isStylePiece(value: unknown): value is StylePiece {
@@ -74,4 +85,13 @@ export function style(definition: StaticShapeStyle): StylePiece {
     }
   }
   return createStylePiece(definition)
+}
+
+/** Resolves a style piece to a native/inline style object for compatibility props. */
+export function useStyle(piece?: StylePiece | null): TextStyle | undefined {
+  const [, themeState] = useThemeWithState({})
+  if (!piece) return
+  return resolveStylePiece
+    ? resolveStylePiece(piece, themeState.theme, themeState.name)
+    : piece[stylePieceSymbol].styleObject
 }

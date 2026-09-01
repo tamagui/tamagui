@@ -6,7 +6,7 @@ import type {
   CheckboxExtraProps as HeadlessCheckboxExtraProps,
 } from '@tamagui/checkbox-headless'
 import { isIndeterminate, useCheckbox } from '@tamagui/checkbox-headless'
-import type { GetProps, NativeValue, SizeTokens } from '@tamagui/core'
+import type { GetProps, NativeValue, SizeTokens, StylePiece } from '@tamagui/core'
 import {
   createStyledHOC,
   isWeb,
@@ -23,46 +23,30 @@ import { CheckboxStyledContext } from './CheckboxStyledContext'
 
 const INDICATOR_NAME = 'CheckboxIndicator'
 
-export const CheckboxIndicatorFrame = styled(
-  View,
-  {
-    // use Checkbox for easier themes
-    displayName: INDICATOR_NAME,
-    context: CheckboxStyledContext,
-  },
-  {
-    accept: {
-      activeStyle: 'style',
-    } as const,
-  }
-)
+export const CheckboxIndicatorFrame = styled(View, {
+  // use Checkbox for easier themes
+  displayName: INDICATOR_NAME,
+  context: CheckboxStyledContext,
+})
 
 const CHECKBOX_NAME = 'Checkbox'
 
-export const CheckboxFrame = styled(
-  View,
-  {
-    displayName: CHECKBOX_NAME,
-    render: 'button',
-    context: CheckboxStyledContext,
-    alignItems: 'center',
-    justifyContent: 'center',
+export const CheckboxFrame = styled(View, {
+  displayName: CHECKBOX_NAME,
+  render: 'button',
+  context: CheckboxStyledContext,
+  alignItems: 'center',
+  justifyContent: 'center',
 
-    variants: {
-      disabled: {
-        true: {
-          pointerEvents: 'none',
-          userSelect: 'none',
-        },
+  variants: {
+    disabled: {
+      true: {
+        pointerEvents: 'none',
+        userSelect: 'none',
       },
-    } as const,
-  },
-  {
-    accept: {
-      activeStyle: 'style',
-    } as const,
-  }
-)
+    },
+  } as const,
+})
 
 type CheckboxExpectingVariantProps = {
   size?: SizeTokens | true
@@ -73,12 +57,12 @@ type CheckboxExtraProps = HeadlessCheckboxExtraProps & {
 }
 
 type CheckboxFrameActiveStyleProps = {
-  activeStyle?: GetProps<typeof CheckboxFrame>
+  activeStyle?: StylePiece
   activeTheme?: string | null
 }
 
 type CheckboxIndicatorActiveStyleProps = {
-  activeStyle?: GetProps<typeof CheckboxIndicatorFrame>
+  activeStyle?: StylePiece
 }
 
 export type CheckboxProps = GetProps<typeof CheckboxFrame> &
@@ -179,7 +163,7 @@ const CheckboxComponent = createStyledHOC(
           {...(isWeb && { type: 'button' })}
           checked={checked}
           {...(checkboxProps as CheckboxProps)}
-          {...(isActive && activeStyle ? (activeStyle as object) : undefined)}
+          style={[checkboxProps.style, isActive && activeStyle]}
           active={isActive}
           disabled={disabled}
         >
@@ -203,7 +187,7 @@ const CheckboxIndicator = createStyledHOC(
         <CheckboxIndicatorFrame
           pointerEvents="none"
           {...indicatorProps}
-          {...(active && activeStyle ? (activeStyle as object) : undefined)}
+          style={[indicatorProps.style, active && activeStyle]}
           ref={forwardedRef}
         >
           {children}

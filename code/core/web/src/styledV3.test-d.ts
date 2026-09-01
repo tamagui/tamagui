@@ -239,16 +239,12 @@ describe('styled v3 overloads', () => {
         },
       } as const,
       {
-        accept: {
-          iconSize: 'size',
-        },
         neverFlatten: 'jsx',
       } as const
     )
 
     type Props = GetProps<typeof Advanced>
     expectTypeOf<Props['tone']>().toEqualTypeOf<Cond<'quiet'>>()
-    expectTypeOf<'4'>().toMatchTypeOf<Props['iconSize']>()
   })
 
   test('static class strings are typed as static style input leaves only', () => {

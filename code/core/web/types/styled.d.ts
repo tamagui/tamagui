@@ -1,8 +1,7 @@
 import { styledDynamic } from './helpers/styledDynamic';
 import type { FrontendComponent, StyleFrontend } from './helpers/styleFrontend';
 import type { GetRef } from './interfaces/GetRef';
-import type { GetBaseStyles, GetNonStyledProps, GetProps, GetStaticConfig, GetStyledVariants, InferStyleProps, InferStyledProps, StaticConfigPublic, StylableComponent, StyledContext, StyledDynamicFn, StyledDynamicProp, TamaDefer, TamaguiComponent, ThemeValueByCategory, VariantDefinitions, VariantResolverKey, VariantResolverValue, VariantSpreadFunction } from './types';
-import type { Text } from './views/Text';
+import type { GetBaseStyles, GetNonStyledProps, GetProps, GetStaticConfig, GetStyledVariants, InferStyledProps, StaticConfigPublic, StylableComponent, StyledContext, StyledDynamicFn, StyledDynamicProp, TamaDefer, TamaguiComponent, VariantDefinitions, VariantResolverKey, VariantResolverValue, VariantSpreadFunction } from './types';
 export { createVariantResolver } from './types';
 type AreVariantsUndefined<Variants> = Required<Variants> extends {
     _isEmpty: 1;
@@ -26,16 +25,13 @@ type GetStyledContextAllProps<Context> = Context extends StyledContext<infer Pro
 type GetStyledContextDefaultKeys<Context> = Context extends StyledContext<infer Props, infer Keys> ? IsAny<Props> extends true ? never : Extract<Keys, keyof Props & string> : never;
 type GetStyledContextProps<Context, Keys extends string = GetStyledContextDefaultKeys<Context>> = Context extends StyledContext<infer Props> ? IsAny<Props> extends true ? {} : Partial<Pick<Props, Extract<Keys, keyof Props & string>>> : {};
 type GetStyledContextVariantProps<ParentComponent extends StylableComponent, Context, Keys extends string> = Omit<GetStyledContextProps<Context, Keys>, keyof GetProps<ParentComponent>>;
-type StyledCustomTokenProps<ParentComponent extends StylableComponent, StyledConfig extends StaticConfigPublic, ParentStylesBase extends object, Accepted = StyledConfig['accept']> = Accepted extends Record<string, any> ? {
-    [Key in keyof Accepted]?: (Key extends keyof ParentStylesBase ? ParentStylesBase[Key] : never) | (Accepted[Key] extends 'style' ? Partial<InferStyleProps<ParentComponent, StyledConfig>> : Accepted[Key] extends 'textStyle' ? Partial<InferStyleProps<typeof Text, StyledConfig>> : ThemeValueByCategory<Accepted[Key]>);
-} : {};
 type StyledMergedVariants<ParentComponent extends StylableComponent, StyledConfig extends StaticConfigPublic, Variants extends VariantDefinitions<ParentComponent, StyledConfig>, ParentVariants = GetStyledVariants<ParentComponent>, OurVariantProps = GetVariantAcceptedValues<Variants>> = AreVariantsUndefined<Variants> extends true ? ParentVariants : AreVariantsUndefined<ParentVariants> extends true ? Omit<OurVariantProps, '_isEmpty'> : {
     [Key in Exclude<keyof ParentVariants | keyof OurVariantProps, '_isEmpty'>]?: (Key extends keyof ParentVariants ? ParentVariants[Key] : undefined) | (Key extends keyof OurVariantProps ? OurVariantProps[Key] : undefined);
 };
 type StyledVariantsWithContext<Variants, ContextProps> = keyof ContextProps extends never ? Variants : {
     [Key in keyof Variants | keyof ContextProps]?: (Key extends keyof Variants ? Variants[Key] : never) | (Key extends keyof ContextProps ? ContextProps[Key] : never);
 };
-type StyledComponentResult<ParentComponent extends StylableComponent, StyledConfig extends StaticConfigPublic, Variants extends VariantDefinitions<ParentComponent, StyledConfig>, Context extends StyledContext<any> | undefined = undefined, ContextPropKeys extends string = GetStyledContextDefaultKeys<Context>, ParentStylesBase extends object = GetBaseStyles<ParentComponent, StyledConfig>> = TamaguiComponent<TamaDefer, GetRef<ParentComponent>, GetNonStyledProps<ParentComponent>, StyledConfig['accept'] extends Record<string, any> ? ParentStylesBase & StyledCustomTokenProps<ParentComponent, StyledConfig, ParentStylesBase, StyledConfig['accept']> : ParentStylesBase, StyledVariantsWithContext<StyledMergedVariants<ParentComponent, StyledConfig, Variants>, GetStyledContextVariantProps<ParentComponent, Context, ContextPropKeys>>, GetStaticConfig<ParentComponent, StyledConfig>>;
+type StyledComponentResult<ParentComponent extends StylableComponent, StyledConfig extends StaticConfigPublic, Variants extends VariantDefinitions<ParentComponent, StyledConfig>, Context extends StyledContext<any> | undefined = undefined, ContextPropKeys extends string = GetStyledContextDefaultKeys<Context>, ParentStylesBase extends object = GetBaseStyles<ParentComponent, StyledConfig>> = TamaguiComponent<TamaDefer, GetRef<ParentComponent>, GetNonStyledProps<ParentComponent>, ParentStylesBase, StyledVariantsWithContext<StyledMergedVariants<ParentComponent, StyledConfig, Variants>, GetStyledContextVariantProps<ParentComponent, Context, ContextPropKeys>>, GetStaticConfig<ParentComponent, StyledConfig>>;
 /**
  * styled() for creating Tamagui components from other components.
  *

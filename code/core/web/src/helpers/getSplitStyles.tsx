@@ -4,6 +4,7 @@ import {
   StyleObjectRules,
   nonAnimatableStyleProps,
   stylePropsAll,
+  stylePropsInput,
   stylePropsText,
   stylePropsTransform,
   validStyles as validStylesView,
@@ -59,6 +60,7 @@ import { getConfigRevisionState } from './grammarConfig'
 import { mediaState as globalMediaState, mediaKeyMatch } from './mediaState'
 import { getStyleStaticConfig, type StyleStaticConfig } from './styleStaticConfig'
 import type { FrontendClassSink } from './styleFrontend'
+import { nativeTextInputColorProps } from './nativeStyleEngine'
 import { warnOnce, warnRefusedValue } from './warnOnce'
 
 export { getStyleStaticConfig }
@@ -87,7 +89,12 @@ import {
 } from './styleProvenance'
 import { THEME_REF_PREFIX } from './themeRef'
 import { transformsToString } from './transformsToString'
-import { isStylePiece, isStylePieceCacheable, setStylePieceCompiler } from '../style'
+import {
+  isStylePiece,
+  isStylePieceCacheable,
+  setStylePieceCompiler,
+  setStylePieceResolver,
+} from '../style'
 
 export { STYLE_TOKEN_PROVENANCE_KEY, getStyleTokenProvenance } from './styleProvenance'
 export type {
@@ -423,19 +430,19 @@ function classifyConditionalObject(
 type StylePass = any[]
 
 const passStyleState = 0
-const passClassName = 21
-const passShouldDoClasses = 22
-const passContainerValue = 23
-const passContainerName = 24
-const passContainerType = 25
-const passFrontendGroup = 26
-const passFrontendContainer = 27
-const passFrontendContainerType = 28
-const passSourceLayer = 29
-const passParentCursor = 30
-const passMapSourceKey = 31
+const passClassName = 20
+const passShouldDoClasses = 21
+const passContainerValue = 22
+const passContainerName = 23
+const passContainerType = 24
+const passFrontendGroup = 25
+const passFrontendContainer = 26
+const passFrontendContainerType = 27
+const passSourceLayer = 28
+const passParentCursor = 29
+const passMapSourceKey = 30
 
-const passFlags = 14
+const passFlags = 13
 
 // style contribution precedence tiers (ownsSourceLayer): a higher tier's
 // unconditional value replaces a lower tier's for the same property, equal
@@ -458,12 +465,8 @@ const passAsChildStyleFlag = 128
 // exported so the compiler applies the SAME host-validity decision when it
 // flattens: a style-shaped key that fails this check must be dropped with a
 // diagnostic, never kept as a DOM attribute (one predicate, two hosts)
-export function isValidStyleKey(
-  key: string,
-  validStyles: Record<string, boolean>,
-  accept?: Record<string, any>
-) {
-  return Boolean(key in validStyles || (accept && key in accept))
+export function isValidStyleKey(key: string, validStyles: Record<string, boolean>) {
+  return key in validStyles
 }
 
 function effectiveLifecycleKeys(keys?: Set<string>) {
@@ -495,7 +498,6 @@ function contributeProp(
     viewProps,
     ,
     validStyles,
-    accept,
     neverSkipProps,
     variants,
     inlineProps,
@@ -562,19 +564,6 @@ function contributeProp(
     return
   }
 
-  // for custom accept sub-styles
-  if (accept) {
-    const accepted = accept[keyInit]
-    if (
-      (accepted === 'style' || accepted === 'textStyle') &&
-      valInit &&
-      typeof valInit === 'object'
-    ) {
-      viewProps[keyInit] = resolveAcceptedStyle(styleState, valInit)
-      return
-    }
-  }
-
   // normalize shorthands up front
   if (!disableExpandShorthands) {
     if (keyInit in shorthands) {
@@ -602,7 +591,7 @@ function contributeProp(
       const sink: FrontendClassSink = (entry) => {
         const property = entry[0]
         if (entry[2] !== undefined) {
-          if (isValidStyleKey(property, validStyles, accept)) {
+          if (isValidStyleKey(property, validStyles)) {
             contributeValue(styleState, property, entry[1], undefined, false, entry[2])
           } else if (process.env.NODE_ENV === 'development') {
             console.warn(
@@ -751,7 +740,7 @@ function contributeProp(
     }
   }
 
-  let isValidStyleKeyInit = isValidStyleKey(keyInit, validStyles, accept)
+  let isValidStyleKeyInit = isValidStyleKey(keyInit, validStyles)
 
   // this is all for partially optimized (not flattened)... maybe worth removing?
   if (process.env.TAMAGUI_TARGET === 'web') {
@@ -871,7 +860,7 @@ function contributeProp(
         variant: variants?.[keyInit],
         isVariant,
         isHOCShouldPassThrough,
-        parentStaticConfig: pass[16],
+        parentStaticConfig: pass[15],
       })
     }
   }
@@ -926,7 +915,6 @@ function contributeProp(
     valInit != null &&
     !(process.env.TAMAGUI_TARGET === 'native' && valInit === 'unset') &&
     !(variants && keyInit in variants) &&
-    !(accept && keyInit in accept) &&
     !(styledContextKeys?.has(keyInit) || (styledContext && keyInit in styledContext))
   ) {
     contributeValue(styleState, keyInit, valInit, originalOg)
@@ -947,11 +935,6 @@ function contributeProp(
       pass[passParentCursor]
     )
     pass[passSourceLayer] = previousLayer
-    return
-  }
-
-  if (accept && keyInit in accept) {
-    viewProps[keyInit] = valInit
     return
   }
 
@@ -1093,7 +1076,11 @@ export const getSplitStyles: StyleSplitter = (
   }
   const validStyles =
     staticConfig.validStyles ||
-    (staticConfig.isText || staticConfig.isInput ? stylePropsText : validStylesView)
+    (staticConfig.isInput
+      ? stylePropsInput
+      : staticConfig.isText
+        ? stylePropsText
+        : validStylesView)
 
   if (
     process.env.NODE_ENV === 'development' &&
@@ -1153,7 +1140,7 @@ export const getSplitStyles: StyleSplitter = (
   }
 
   const { asChild } = props
-  const { accept, neverSkipProps } = staticConfig
+  const { neverSkipProps } = staticConfig
   const {
     noSkip,
     disableExpandShorthands,
@@ -1202,7 +1189,6 @@ export const getSplitStyles: StyleSplitter = (
     viewProps,
     staticConfig,
     validStyles,
-    accept,
     neverSkipProps,
     variants,
     inlineProps,
@@ -1623,7 +1609,7 @@ export const getSplitStyles: StyleSplitter = (
 const stylePieceStaticConfig = {
   acceptsClassName: true,
   isText: true,
-  validStyles: stylePropsText,
+  validStyles: stylePropsAll,
 } as StaticConfig
 
 type CompiledStylePiece = {
@@ -1638,7 +1624,7 @@ type CompiledStylePiece = {
 
 const compiledStylePieces = new WeakMap<StylePiece, CompiledStylePiece>()
 
-setStylePieceCompiler((piece, layer) => {
+const compileStylePieceRuntime = (piece: StylePiece, layer: 'base' | 'style') => {
   if (process.env.TAMAGUI_TARGET !== 'web') return
   const conf = getConfigMaybe()
   if (!conf) return
@@ -1688,6 +1674,23 @@ setStylePieceCompiler((piece, layer) => {
   }
   piece.className = className
   if (isClient) insertStyleRules(split.rulesToInsert)
+}
+
+setStylePieceCompiler(compileStylePieceRuntime)
+
+setStylePieceResolver((piece, theme, themeName) => {
+  const split = getSplitStyles(
+    { style: piece },
+    stylePieceStaticConfig,
+    theme,
+    themeName,
+    defaultComponentStateMounted,
+    {
+      isAnimated: false,
+      resolveValues: 'value',
+    }
+  )
+  return (split?.style || {}) as TextStyle
 })
 
 const resolvedStylePieceCache = new WeakMap<StylePiece, WeakMap<object, TextStyle>>()
@@ -1695,7 +1698,7 @@ const resolvedStylePieceCache = new WeakMap<StylePiece, WeakMap<object, TextStyl
 function resolveStylePiece(styleState: GetStyleState, piece: StylePiece): TextStyle {
   const definition = piece[stylePieceSymbol].styleObject
   if (!isStylePieceCacheable(piece)) {
-    return resolveAcceptedStyle(styleState, definition)
+    return resolveStyleObject(styleState, definition)
   }
   let themeCache = resolvedStylePieceCache.get(piece)
   if (!themeCache) {
@@ -1705,7 +1708,7 @@ function resolveStylePiece(styleState: GetStyleState, piece: StylePiece): TextSt
   const theme = styleState.theme as object
   const cached = themeCache.get(theme)
   if (cached) return cached
-  const resolved = resolveAcceptedStyle(styleState, definition)
+  const resolved = resolveStyleObject(styleState, definition)
   themeCache.set(theme, resolved)
   return resolved
 }
@@ -1715,7 +1718,11 @@ function applyStylePieceClasses(
   piece: StylePiece,
   sourceLayer: number
 ) {
-  const compiled = compiledStylePieces.get(piece)
+  let compiled = compiledStylePieces.get(piece)
+  if (!compiled && process.env.TAMAGUI_TARGET === 'web' && getConfigMaybe()) {
+    compileStylePieceRuntime(piece, 'style')
+    compiled = compiledStylePieces.get(piece)
+  }
   if (compiled) {
     const direct = styleState as DirectState
     const slots = (direct.flatSlots ||= {})
@@ -1846,11 +1853,11 @@ function mergeStyle(
       process.env.TAMAGUI_TARGET === 'web' && !disableNormalize && !styleProps.noNormalize
     const out = shouldNormalize ? normalizeValueWithProperty(val, key) : val
     if (
-      // accept is for props not styles
-      staticConfig.accept &&
-      key in staticConfig.accept
+      process.env.TAMAGUI_TARGET === 'native' &&
+      staticConfig.isInput &&
+      key in nativeTextInputColorProps
     ) {
-      viewProps[key] = out
+      viewProps[nativeTextInputColorProps[key]] = out
     } else {
       styleState.style ||= {}
       styleState.style[key] = out
@@ -1894,7 +1901,7 @@ function recordStyleTokenProvenance(
   }
 }
 
-const resolveAcceptedStyle = (
+const resolveStyleObject = (
   styleState: GetStyleState,
   styleIn: Record<string, any>
 ): TextStyle => {

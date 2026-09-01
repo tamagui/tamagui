@@ -1,4 +1,4 @@
-import { styled, withStaticProperties } from '@tamagui/core'
+import { style, styled, withStaticProperties } from '@tamagui/core'
 import { Tabs } from '../src'
 
 const TabsSkinFrame = styled(Tabs, {
@@ -28,10 +28,14 @@ const TabsSkin = withStaticProperties(TabsSkinFrame, {
   Content: TabsSkinContent,
 })
 
+const activeStyle = style({ backgroundColor: 'background-press' })
+
 export const TabsSkinTypeTest = () => (
   <TabsSkin defaultValue="one" size="4">
     <TabsSkin.List loop>
-      <TabsSkin.Tab value="one">One</TabsSkin.Tab>
+      <TabsSkin.Tab value="one" activeStyle={activeStyle}>
+        One
+      </TabsSkin.Tab>
       <TabsSkin.Tab value="two" disabled>
         Two
       </TabsSkin.Tab>
@@ -54,4 +58,9 @@ export const TabsPartsTypeTest = () => (
     </Tabs.List>
     <Tabs.Content value="one" minHeight={120} />
   </Tabs>
+)
+
+export const TabsRejectsPlainActiveStyle = () => (
+  // @ts-expect-error activeStyle accepts only a style() piece
+  <Tabs.Tab value="one" activeStyle={{ opacity: 0.5 }} />
 )

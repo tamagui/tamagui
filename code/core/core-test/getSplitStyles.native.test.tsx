@@ -8,6 +8,28 @@ beforeAll(() => {
 })
 
 describe('getSplitStyles', () => {
+  test('Input color styles lower to native TextInput props', () => {
+    const InputFrame = styled(Text, {}, { isInput: true })
+    const result = getSplitStylesFor(
+      {
+        placeholderTextColor: 'gray',
+        selectionColor: 'blue',
+        cursorColor: 'red',
+        selectionHandleColor: 'green',
+      },
+      InputFrame,
+      { resolveValues: 'value' }
+    )
+
+    expect(result.viewProps).toMatchObject({
+      placeholderTextColor: 'gray',
+      selectionColor: 'blue',
+      cursorColor: 'red',
+      selectionHandleColor: 'green',
+    })
+    expect(result.style).toBeNull()
+  })
+
   test(`styled with variants`, () => {
     const ViewVariants = styled(Text, {
       color: 'blue',

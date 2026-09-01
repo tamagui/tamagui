@@ -31,7 +31,6 @@ export const nativeOnlyProps = {
   onMagicTap: 1,
   onTextLayout: 1,
   pressRetentionOffset: 1,
-  selectionColor: 1,
   shouldRasterizeIOS: 1,
   suppressHighlighting: 1,
   textBreakStrategy: 1,

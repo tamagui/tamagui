@@ -1,5 +1,5 @@
 import React from 'react'
-import { SizableText, ToggleGroup, YStack, styled } from 'tamagui'
+import { SizableText, ToggleGroup, YStack, style, styled } from 'tamagui'
 
 // repro for community issue: a styled(ToggleGroup.Item) variant that sets a
 // resting backgroundColor breaks activeStyle. `filled` sets backgroundColor at
@@ -22,6 +22,8 @@ const FilledItem = styled(ToggleGroup.Item, {
   } as const,
 })
 
+const activeStyle = style({ backgroundColor: 'green' })
+
 export function ToggleGroupFilledActiveCase() {
   const [value, setValue] = React.useState('a')
 
@@ -40,7 +42,7 @@ export function ToggleGroupFilledActiveCase() {
           id="filled-a"
           width={120}
           height={40}
-          activeStyle={{ backgroundColor: 'green' }}
+          activeStyle={activeStyle}
         >
           <SizableText>filled-a</SizableText>
         </FilledItem>
@@ -50,7 +52,7 @@ export function ToggleGroupFilledActiveCase() {
           id="filled-b"
           width={120}
           height={40}
-          activeStyle={{ backgroundColor: 'green' }}
+          activeStyle={activeStyle}
         >
           <SizableText>filled-b</SizableText>
         </FilledItem>
@@ -60,7 +62,7 @@ export function ToggleGroupFilledActiveCase() {
           id="primary-c"
           width={120}
           height={40}
-          activeStyle={{ backgroundColor: 'green' }}
+          activeStyle={activeStyle}
         >
           <SizableText>primary-c</SizableText>
         </FilledItem>

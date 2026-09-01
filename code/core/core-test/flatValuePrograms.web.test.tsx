@@ -703,23 +703,28 @@ test('animatable defaults do not displace a program', () => {
   expect(rules[0]).toContain('0.5')
 })
 
-test('accept props never route into CSS', () => {
-  // S6: placeholderTextColor-style accept keys are props, not styles
+test('Input colors route into their real CSS selectors', () => {
   const result = getSplitStyles(
-    { placeholderTextColor: 'gray hover:blue' },
+    {
+      placeholderTextColor: 'gray',
+      selectionColor: 'blue',
+      cursorColor: 'red',
+    },
     {
       ...View.staticConfig,
-      accept: { placeholderTextColor: 'color' },
+      isInput: true,
+      validStyles: undefined,
     } as any,
     undefined as any,
     'light',
     { unmounted: false } as any,
     opts
   )
-  expect(
-    Object.values(result.classNames).some((v) => String(v).startsWith('_ptc-'))
-  ).toBe(false)
-  expect(result.viewProps.placeholderTextColor).toBeTruthy()
+  expect(rulesFor(result, result.classNames.placeholderTextColor)[0]).toContain(
+    '::placeholder'
+  )
+  expect(rulesFor(result, result.classNames.selectionColor)[0]).toContain('::selection')
+  expect(rulesFor(result, result.classNames.cursorColor)[0]).toContain('caret-color')
 })
 
 test('a multi-value shorthand expands per side when a program takes one side', () => {

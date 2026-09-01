@@ -15,6 +15,7 @@ import {
   ScrollView,
   Separator,
   Spacer,
+  style,
   styled,
   Theme,
   useMedia,
@@ -37,6 +38,8 @@ import { lastInserted } from '~/features/studio/theme/updatePreviewTheme'
 import { weakKey } from '~/helpers/weakKey'
 import { type ThemePageProps, themePageStore, ThemePageStore } from './themePageStore'
 import { router, useRouter } from 'one'
+
+const stepContentStyle = style({ flex: 1 })
 
 // TO avoid changing the entire React tree we can do this, better perf
 
@@ -187,7 +190,7 @@ const ThemeBuilderModal = memo(() => {
             >
               {useMemo(() => {
                 return (
-                  <ScrollView flex={1} contentContainerStyle={{ flex: 1 }}>
+                  <ScrollView flex={1} contentContainerStyle={stepContentStyle}>
                     <YStack flex={1}>
                       <StepComponent />
                     </YStack>

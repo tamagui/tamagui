@@ -21,6 +21,7 @@ import {
   StyleObjectRules,
   StyleObjectValue,
   stylePropsAll,
+  stylePropsInput,
   stylePropsText,
   validStyles as validStylesView,
 } from '@tamagui/helpers'
@@ -1130,7 +1131,10 @@ export function createTamaguiCompilerHost(
         isInput: row.backing === 'textinput',
         // CSS text properties may be authored on any element and inherited by
         // descendant text, including from a View-backed tag on native.
-        validStyles: { ...validStylesView, ...stylePropsText },
+        validStyles: {
+          ...validStylesView,
+          ...(row.backing === 'textinput' ? stylePropsInput : stylePropsText),
+        },
         defaultProps: {
           ...base.defaultProps,
           ...platformDefaults,
@@ -1264,10 +1268,12 @@ export function createTamaguiCompilerHost(
     const staticConfig = component.staticConfig as StaticConfig
     const validStyles =
       staticConfig.validStyles ||
-      (staticConfig.isText || staticConfig.isInput ? stylePropsText : validStylesView)
-    return (
-      name in stylePropsAll && !isValidStyleKey(name, validStyles, staticConfig.accept)
-    )
+      (staticConfig.isInput
+        ? stylePropsInput
+        : staticConfig.isText
+          ? stylePropsText
+          : validStylesView)
+    return name in stylePropsAll && !isValidStyleKey(name, validStyles)
   }
 
   const directStyleName = (name: string, component: LoweringComponent): string | null => {

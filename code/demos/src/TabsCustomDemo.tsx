@@ -5,11 +5,14 @@ import {
   YStack,
   isWeb,
   resolveTokenSize,
+  style,
   styled,
   type VariantSpreadExtras,
   withStaticProperties,
 } from 'tamagui'
 import { Tabs as TabsBehavior } from '@tamagui/tabs'
+
+const transparentActiveStyle = style({ backgroundColor: 'transparent' })
 
 const tabSizeVariant = (value: any, extras: VariantSpreadExtras<any>) => {
   const { frame } = resolveTokenSize(value, {
@@ -101,11 +104,7 @@ const TabsView = ({ flexDirection = 'row' }: { flexDirection: 'row' | 'column' }
     >
       <CustomTabs.List flexDirection={flexDirection}>
         {content.map((name, index) => (
-          <CustomTabs.Tab
-            key={index}
-            value={name}
-            activeStyle={{ backgroundColor: 'transparent' }}
-          >
+          <CustomTabs.Tab key={index} value={name} activeStyle={transparentActiveStyle}>
             {name}
           </CustomTabs.Tab>
         ))}

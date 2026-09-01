@@ -2,7 +2,7 @@ import { createRefComponent } from '@tamagui/compose-refs'
 import { composeEventHandlers } from '@tamagui/helpers'
 import { resolveSizeToken } from '@tamagui/size'
 import { useControllableState } from '@tamagui/use-controllable-state'
-import type { GetProps, TamaguiElement, ViewStyle } from '@tamagui/web'
+import type { GetProps, StylePiece, TamaguiElement } from '@tamagui/web'
 import { styled, View } from '@tamagui/web'
 import * as React from 'react'
 import { context } from './context'
@@ -20,45 +20,37 @@ const NAME = 'Toggle'
 // (code/ui/tamagui/src/components/ToggleGroup.tsx). The frame still emits the
 // discrete state (aria-pressed / data-state) via the Toggle component below; the
 // skins can supply a plain style prop object that is applied while active.
-export const ToggleFrame = styled(
-  View,
-  {
-    displayName: NAME,
-    render: 'button',
-    context,
-    size: true,
-    alignItems: 'center',
-    justifyContent: 'center',
-    display: 'flex',
+export const ToggleFrame = styled(View, {
+  displayName: NAME,
+  render: 'button',
+  context,
+  size: true,
+  alignItems: 'center',
+  justifyContent: 'center',
+  display: 'flex',
 
-    variants: {
-      size: {
-        number: (val) => ({
-          width: val,
-          height: val,
-        }),
-        Size: (val, { tokens }) => {
-          if (!val) return
-          const sizeToken = resolveSizeToken(val, 'size')
-          const size = typeof sizeToken === 'number' ? sizeToken : tokens.size[sizeToken]
-          return {
-            width: size,
-            height: size,
-          }
-        },
+  variants: {
+    size: {
+      number: (val) => ({
+        width: val,
+        height: val,
+      }),
+      Size: (val, { tokens }) => {
+        if (!val) return
+        const sizeToken = resolveSizeToken(val, 'size')
+        const size = typeof sizeToken === 'number' ? sizeToken : tokens.size[sizeToken]
+        return {
+          width: size,
+          height: size,
+        }
       },
+    },
 
-      defaultActiveStyle: {
-        true: {},
-      },
-    } as const,
-  },
-  {
-    accept: {
-      activeStyle: 'style',
-    } as const,
-  }
-)
+    defaultActiveStyle: {
+      true: {},
+    },
+  } as const,
+})
 
 type ToggleFrameProps = GetProps<typeof ToggleFrame>
 
@@ -69,7 +61,7 @@ type ToggleItemExtraProps = {
   active?: boolean
   defaultActive?: boolean
   onActiveChange?(active: boolean): void
-  activeStyle?: ViewStyle | null
+  activeStyle?: StylePiece | null
   activeTheme?: string | null
 }
 
@@ -100,7 +92,7 @@ export const Toggle = createRefComponent<TamaguiElement, ToggleProps>(
         data-disabled={props.disabled ? '' : undefined}
         {...(active && !activeStyle && { defaultActiveStyle: true })}
         {...buttonProps}
-        {...(active && activeStyle ? (activeStyle as any) : undefined)}
+        style={[buttonProps.style, active && activeStyle]}
         ref={forwardedRef}
         onPress={composeEventHandlers(props.onPress ?? undefined, () => {
           if (!props.disabled) {

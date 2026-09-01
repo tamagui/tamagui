@@ -220,6 +220,7 @@ export type {
   SplitStylePropsOptions,
   SplitStylePropsResult,
   StackNonStyleProps,
+  StylePiece,
   ViewProps,
   StaticConfig,
   TamaguiBaseTheme,
@@ -308,6 +309,7 @@ export {
   resolveTokenSize,
   setNativeStyleEngine,
   splitStyleProps,
+  style,
   styled,
   // hooks
   useAnimatedNumber,
@@ -322,6 +324,7 @@ export {
   useIsTouchDevice,
   useIsomorphicLayoutEffect,
   useMedia,
+  useStyle,
   useConfiguration,
   useTheme,
   useThemeName,

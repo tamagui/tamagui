@@ -5,7 +5,7 @@ import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
 import { RovingFocusGroup, type RovingFocusGroupProps } from '@tamagui/roving-focus'
 import { SizeContext, type TokenSize } from '@tamagui/size'
 import { useTab, useTabContent, useTabs, useTabsList } from '@tamagui/tabs-headless'
-import type { GetProps, TamaguiElement } from '@tamagui/web'
+import type { GetProps, StylePiece, TamaguiElement } from '@tamagui/web'
 import { useEvent } from '@tamagui/web'
 import * as React from 'react'
 import type { LayoutRectangle } from 'react-native'
@@ -95,7 +95,7 @@ type TabsTabExtraProps = TabsScopeProps & {
   /** Reports the measured trigger rectangle for custom indicators. */
   onInteraction?: (type: InteractionType, layout: TabLayout | null) => void
   /** Custom styles to apply while this trigger is selected. */
-  activeStyle?: GetProps<typeof TabsTabFrame>
+  activeStyle?: StylePiece
   /** Theme to apply while this trigger is selected. */
   activeTheme?: string | null
 }
@@ -261,7 +261,7 @@ export const TabsTab = createStyledHOC(
           size={context.size}
           {...triggerProps}
           // after triggerProps so active styles beat base styles from styled() skins
-          {...(isSelected && activeStyle)}
+          style={[triggerProps.style, isSelected && activeStyle]}
           ref={composeRefs(forwardedRef, triggerRef)}
           onPress={composeEventHandlers(onPress ?? undefined, activateOnPress as any)}
           {...(isWeb && {

@@ -11,9 +11,12 @@ import {
   ScrollView,
   XStack,
   YStack,
+  style,
   styled,
 } from 'tamagui'
 import { Button } from '~/components/Button'
+
+const noticeContentStyle = style({ flex: 1 })
 
 type PanelProps = XStackProps & {
   title?: React.ReactNode
@@ -229,9 +232,7 @@ const ScrollViewWithFade = ({
       <ScrollView
         {...props}
         scrollEventThrottle={16}
-        contentContainerStyle={{
-          flex: 1,
-        }}
+        contentContainerStyle={noticeContentStyle}
         onLayout={(e) => {
           if (!state.current.outerSize) {
             state.current.outerSize = e.nativeEvent.layout

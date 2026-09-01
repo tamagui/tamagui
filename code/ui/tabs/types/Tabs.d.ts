@@ -1,6 +1,6 @@
 import { type RovingFocusGroupProps } from '@tamagui/roving-focus';
 import { type TokenSize } from '@tamagui/size';
-import type { GetProps, TamaguiElement } from '@tamagui/web';
+import type { GetProps, StylePiece, TamaguiElement } from '@tamagui/web';
 import * as React from 'react';
 import type { LayoutRectangle } from 'react-native';
 export declare const TabsFrame: React.FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
@@ -95,7 +95,7 @@ type TabsTabExtraProps = TabsScopeProps & {
     /** Reports the measured trigger rectangle for custom indicators. */
     onInteraction?: (type: InteractionType, layout: TabLayout | null) => void;
     /** Custom styles to apply while this trigger is selected. */
-    activeStyle?: GetProps<typeof TabsTabFrame>;
+    activeStyle?: StylePiece;
     /** Theme to apply while this trigger is selected. */
     activeTheme?: string | null;
 };
@@ -116,7 +116,7 @@ export declare const TabsList: import("@tamagui/web").TamaguiComponent<Omit<impo
     loop?: boolean;
     /** Disables every trigger in the list. */
     disabled?: boolean;
-}, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
+}, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
     size?: TokenSize | undefined;
 }> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & TabsScopeProps & {
     /** Whether keyboard navigation loops after the first or last trigger. */
@@ -138,10 +138,10 @@ export declare const TabsTab: import("@tamagui/web").TamaguiComponent<Omit<impor
     /** Reports the measured trigger rectangle for custom indicators. */
     onInteraction?: (type: InteractionType, layout: TabLayout | null) => void;
     /** Custom styles to apply while this trigger is selected. */
-    activeStyle?: GetProps<typeof TabsTabFrame>;
+    activeStyle?: StylePiece;
     /** Theme to apply while this trigger is selected. */
     activeTheme?: string | null;
-}, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "disabled" | "size" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
+}, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "disabled" | "size" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
     disabled?: boolean | undefined;
     size?: TokenSize | undefined;
 }> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & TabsScopeProps & {
@@ -150,7 +150,7 @@ export declare const TabsTab: import("@tamagui/web").TamaguiComponent<Omit<impor
     /** Reports the measured trigger rectangle for custom indicators. */
     onInteraction?: (type: InteractionType, layout: TabLayout | null) => void;
     /** Custom styles to apply while this trigger is selected. */
-    activeStyle?: GetProps<typeof TabsTabFrame>;
+    activeStyle?: StylePiece;
     /** Theme to apply while this trigger is selected. */
     activeTheme?: string | null;
 }, import("@tamagui/web").StackStyleBase, {
@@ -166,7 +166,7 @@ export declare const TabsContent: import("@tamagui/web").TamaguiComponent<Omit<i
     value: string;
     /** Mounts the content even when its value is not selected. */
     forceMount?: boolean;
-}, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
+}, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
     size?: TokenSize | undefined;
 }> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & TabsScopeProps & {
     /** The value that selects this content. */
@@ -204,7 +204,7 @@ export declare const Tabs: React.FunctionComponent<Omit<import("@tamagui/web").G
      */
     activationMode?: 'automatic' | 'manual';
 } & {
-    ref?: React.Ref<import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods)> | undefined;
+    ref?: React.Ref<TamaguiElement> | undefined;
 }> & import("@tamagui/web").StaticComponentObject<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
     size?: TokenSize | undefined;
 }>, "__scopeTabs" | "activationMode" | "defaultValue" | "dir" | "onValueChange" | "orientation" | "size" | "value" | keyof import("@tamagui/core").RNTamaguiViewNonStyleProps | keyof import("@tamagui/web").StackStyleBase> & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
@@ -232,7 +232,7 @@ export declare const Tabs: React.FunctionComponent<Omit<import("@tamagui/web").G
      * @defaultValue automatic
      */
     activationMode?: 'automatic' | 'manual';
-}, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
+}, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
     size?: TokenSize | undefined;
 }> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & TabsScopeProps & {
     /** The value for the selected tab, if controlled */
@@ -287,7 +287,7 @@ export declare const Tabs: React.FunctionComponent<Omit<import("@tamagui/web").G
          * @defaultValue automatic
          */
         activationMode?: 'automatic' | 'manual';
-    }, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
+    }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
         size?: TokenSize | undefined;
     }> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & TabsScopeProps & {
         /** The value for the selected tab, if controlled */
@@ -336,7 +336,7 @@ export declare const Tabs: React.FunctionComponent<Omit<import("@tamagui/web").G
         loop?: boolean;
         /** Disables every trigger in the list. */
         disabled?: boolean;
-    }, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
+    }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
         size?: TokenSize | undefined;
     }> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & TabsScopeProps & {
         /** Whether keyboard navigation loops after the first or last trigger. */
@@ -358,10 +358,10 @@ export declare const Tabs: React.FunctionComponent<Omit<import("@tamagui/web").G
         /** Reports the measured trigger rectangle for custom indicators. */
         onInteraction?: (type: InteractionType, layout: TabLayout | null) => void;
         /** Custom styles to apply while this trigger is selected. */
-        activeStyle?: GetProps<typeof TabsTabFrame>;
+        activeStyle?: StylePiece;
         /** Theme to apply while this trigger is selected. */
         activeTheme?: string | null;
-    }, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "disabled" | "size" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
+    }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "disabled" | "size" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
         disabled?: boolean | undefined;
         size?: TokenSize | undefined;
     }> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & TabsScopeProps & {
@@ -370,7 +370,7 @@ export declare const Tabs: React.FunctionComponent<Omit<import("@tamagui/web").G
         /** Reports the measured trigger rectangle for custom indicators. */
         onInteraction?: (type: InteractionType, layout: TabLayout | null) => void;
         /** Custom styles to apply while this trigger is selected. */
-        activeStyle?: GetProps<typeof TabsTabFrame>;
+        activeStyle?: StylePiece;
         /** Theme to apply while this trigger is selected. */
         activeTheme?: string | null;
     }, import("@tamagui/web").StackStyleBase, {
@@ -386,7 +386,7 @@ export declare const Tabs: React.FunctionComponent<Omit<import("@tamagui/web").G
         value: string;
         /** Mounts the content even when its value is not selected. */
         forceMount?: boolean;
-    }, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
+    }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
         size?: TokenSize | undefined;
     }> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & TabsScopeProps & {
         /** The value that selects this content. */

@@ -14,6 +14,10 @@ export const cssShorthandLonghands = toObj(
 
 const textColors = toObj('color textDecorationColor textShadowColor')
 
+const inputColors = toObj(
+  'placeholderTextColor selectionColor cursorColor selectionHandleColor'
+)
+
 const nonAnimatableViewProps = toObj(
   'alignContent alignItems alignSelf backfaceVisibility borderCurve borderStyle borderBlockStyle borderBlockEndStyle borderBlockStartStyle borderInlineStyle borderInlineEndStyle borderInlineStartStyle boxSizing cursor direction display flexDirection flexWrap isolation justifyContent mixBlendMode outlineStyle overflow pointerEvents position visibility'
 )
@@ -73,6 +77,8 @@ export const stylePropsTextOnly = toObj(
 
 export const stylePropsText = toObj(stylePropsView, stylePropsTextOnly)
 
-export const stylePropsAll = stylePropsText
+export const stylePropsInput = toObj(stylePropsText, inputColors)
+
+export const stylePropsAll = stylePropsInput
 
 export const validStyles = stylePropsView

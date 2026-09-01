@@ -15,6 +15,7 @@ import {
   Separator,
   Sheet,
   SizableText,
+  style,
   styled,
   TooltipGroup,
   useComposedRefs,
@@ -47,6 +48,8 @@ import { SearchButton } from './SearchButton'
 import { UpgradeToProPopover } from './UpgradeToProPopover'
 import { UserAvatar } from './UserAvatar'
 import type { HeaderProps } from './types'
+
+const drawerContentStyle = style({ width: '100%' })
 
 export function Header(props: HeaderProps) {
   const [isScrolled, setIsScrolled] = React.useState(false)
@@ -719,7 +722,7 @@ const HeaderMenuContents = (props: { id: ID }) => {
           flex: 1,
           width: '100%',
         }}
-        contentContainerStyle={{ width: '100%' }}
+        contentContainerStyle={drawerContentStyle}
       >
         <YStack width="100%" p="3">
           {contents}

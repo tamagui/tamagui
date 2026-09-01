@@ -13,7 +13,6 @@ import type {
   GetProps,
   GetStaticConfig,
   GetStyledVariants,
-  InferStyleProps,
   InferStyledProps,
   StaticConfig,
   StaticConfigPublic,
@@ -23,14 +22,12 @@ import type {
   StyledDynamicProp,
   TamaDefer,
   TamaguiComponent,
-  ThemeValueByCategory,
   ThemeValueGet,
   VariantDefinitions,
   VariantResolverKey,
   VariantResolverValue,
   VariantSpreadFunction,
 } from './types'
-import type { Text } from './views/Text'
 
 export { createVariantResolver } from './types'
 
@@ -132,24 +129,6 @@ type GetStyledContextVariantProps<
   Keys extends string,
 > = Omit<GetStyledContextProps<Context, Keys>, keyof GetProps<ParentComponent>>
 
-type StyledCustomTokenProps<
-  ParentComponent extends StylableComponent,
-  StyledConfig extends StaticConfigPublic,
-  ParentStylesBase extends object,
-  Accepted = StyledConfig['accept'],
-> =
-  Accepted extends Record<string, any>
-    ? {
-        [Key in keyof Accepted]?:
-          | (Key extends keyof ParentStylesBase ? ParentStylesBase[Key] : never)
-          | (Accepted[Key] extends 'style'
-              ? Partial<InferStyleProps<ParentComponent, StyledConfig>>
-              : Accepted[Key] extends 'textStyle'
-                ? Partial<InferStyleProps<typeof Text, StyledConfig>>
-                : ThemeValueByCategory<Accepted[Key]>)
-      }
-    : {}
-
 type StyledMergedVariants<
   ParentComponent extends StylableComponent,
   StyledConfig extends StaticConfigPublic,
@@ -186,15 +165,7 @@ type StyledComponentResult<
   TamaDefer,
   GetRef<ParentComponent>,
   GetNonStyledProps<ParentComponent>,
-  StyledConfig['accept'] extends Record<string, any>
-    ? ParentStylesBase &
-        StyledCustomTokenProps<
-          ParentComponent,
-          StyledConfig,
-          ParentStylesBase,
-          StyledConfig['accept']
-        >
-    : ParentStylesBase,
+  ParentStylesBase,
   StyledVariantsWithContext<
     StyledMergedVariants<ParentComponent, StyledConfig, Variants>,
     GetStyledContextVariantProps<ParentComponent, Context, ContextPropKeys>
@@ -316,20 +287,6 @@ function styledImpl<
               | (Key extends keyof OurVariantProps ? OurVariantProps[Key] : undefined)
           }
 
-  type Accepted = StyledConfig['accept']
-  type CustomTokenProps =
-    Accepted extends Record<string, any>
-      ? {
-          [Key in keyof Accepted]?:
-            | (Key extends keyof ParentStylesBase ? ParentStylesBase[Key] : never)
-            | (Accepted[Key] extends 'style'
-                ? Partial<InferStyleProps<ParentComponent, StyledConfig>>
-                : Accepted[Key] extends 'textStyle'
-                  ? Partial<InferStyleProps<typeof Text, StyledConfig>>
-                  : ThemeValueByCategory<Accepted[Key]>)
-        }
-      : {}
-
   /**
    * de-opting a bit of type niceness because were hitting depth issues too soon
    * before we had:
@@ -344,9 +301,7 @@ function styledImpl<
     TamaDefer,
     GetRef<ParentComponent>,
     ParentNonStyledProps,
-    Accepted extends Record<string, any>
-      ? ParentStylesBase & CustomTokenProps
-      : ParentStylesBase,
+    ParentStylesBase,
     StyledVariantsWithContext<
       MergedVariants,
       GetStyledContextVariantProps<ParentComponent, Context, ContextPropKeys>

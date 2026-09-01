@@ -7,6 +7,7 @@ import {
   View,
   TamaguiProvider,
   createTamagui,
+  style,
   styled,
   withStaticProperties,
 } from '@tamagui/core'
@@ -32,6 +33,8 @@ const CheckboxIndicator = styled(Checkbox.Indicator, {
   backgroundColor: 'color',
 })
 
+const activeIndicatorStyle = style({ opacity: 0.5 })
+
 const CheckboxSkin = withStaticProperties(CheckboxFrame, {
   Indicator: CheckboxIndicator,
 })
@@ -42,7 +45,7 @@ function CheckboxTest(props: React.ComponentProps<typeof Checkbox>) {
       <View>
         <CheckboxSkin {...props} aria-label="basic checkbox">
           <CheckboxSkin.Indicator
-            activeStyle={{ opacity: 0.5 }}
+            activeStyle={activeIndicatorStyle}
             data-testid={INDICATOR_TEST_ID}
           />
         </CheckboxSkin>

@@ -1,5 +1,5 @@
 import { composeRefs } from '@tamagui/compose-refs'
-import { createStyledHOC, isWeb, View, type GetProps } from '@tamagui/core'
+import { createStyledHOC, isWeb, style, View, type GetProps } from '@tamagui/core'
 import type { ScrollViewRef } from '@tamagui/scroll-view'
 import { ScrollView } from '@tamagui/scroll-view'
 import { useControllableState } from '@tamagui/use-controllable-state'
@@ -18,6 +18,7 @@ import {
 } from './webViewport'
 
 const SHEET_SCROLL_VIEW_NAME = 'SheetScrollView'
+const sheetContentStyle = style({ minHeight: '100%' })
 
 type SheetScrollViewBaseProps = GetProps<typeof ScrollView>
 
@@ -80,7 +81,7 @@ export const SheetScrollView = createStyledHOC(
           maxHeight: screenSize || undefined,
         }
       : { flex: 1 }
-    const contentContainerStyle = hasFit ? undefined : { minHeight: '100%' as const }
+    const contentContainerStyle = hasFit ? undefined : sheetContentStyle
 
     // when the keyboard is open, pin the scroll view to the sheet's pre-keyboard
     // frame height (frozenFrameHeight), overriding any consumer maxHeight. on web

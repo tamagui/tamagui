@@ -16,16 +16,17 @@ import { getDefaultTamaguiConfig } from '../config-default'
 import { getStyleStaticConfig } from '../web/src/helpers/styleStaticConfig'
 import { getStyleValue, simplifiedGetSplitStyles } from './utils'
 
+const card = style({
+  width: 10,
+  padding: 4,
+  backgroundColor: 'red',
+})
+
 createTamagui(getDefaultTamaguiConfig('web'))
 
 describe('style() pieces on web', () => {
-  const card = style({
-    width: 10,
-    padding: 4,
-    backgroundColor: 'red',
-  })
-
-  test('precompiles a subtractable class map at definition time', () => {
+  test('precompiles a subtractable class map by first use when config installs later', () => {
+    simplifiedGetSplitStyles(View, { style: card })
     const data = card[stylePieceSymbol]
     expect(card.className).toBe(Object.values(data.byKey).join(' '))
     expect(data.byKey.width).toBeTruthy()

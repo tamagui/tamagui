@@ -29,59 +29,6 @@ beforeAll(() => {
   lightTheme = getConfig().themes.light
 })
 
-describe('Color variant resolver (#3892)', () => {
-  const StyledSvg = styled(
-    View,
-    {
-      displayName: 'ColorSpread',
-      variants: {
-        color: {
-          Color: (val) => ({ stroke: val }),
-        },
-      } as const,
-    },
-    { accept: { stroke: 'color' } }
-  )
-
-  test('resolves color token white to stroke', () => {
-    const { viewProps } = simplifiedGetSplitStyles(StyledSvg, { color: 'white' })
-    expect(viewProps.stroke).toBeDefined()
-  })
-
-  test('resolves theme value color to stroke', () => {
-    const { viewProps } = simplifiedGetSplitStyles(
-      StyledSvg,
-      { color: 'color' },
-      { theme: lightTheme, themeName: 'light' }
-    )
-    expect(viewProps.stroke).toBeDefined()
-  })
-
-  test('does NOT produce CSS color property', () => {
-    const { rulesToInsert } = simplifiedGetSplitStyles(StyledSvg, { color: 'white' })
-    const rules = Object.values(rulesToInsert)
-    expect(rules.find((r) => r[StyleObjectProperty] === 'color')).toBeUndefined()
-  })
-
-  test('exact variant value works alongside spread', () => {
-    const Comp = styled(
-      View,
-      {
-        displayName: 'ColorExact',
-        variants: {
-          color: {
-            red: { stroke: 'red' },
-            Color: (val) => ({ stroke: val }),
-          },
-        } as const,
-      },
-      { accept: { stroke: 'color' } }
-    )
-    const { viewProps } = simplifiedGetSplitStyles(Comp, { color: 'red' })
-    expect(viewProps.stroke).toBe('red')
-  })
-})
-
 describe('FontSize variant resolver', () => {
   const Comp = styled(Text, {
     displayName: 'FontSizeSpread',
@@ -262,44 +209,5 @@ describe('ZIndex variant resolver', () => {
   test('resolves overlapping zIndex token names', () => {
     const { rulesToInsert } = simplifiedGetSplitStyles(Comp, { layer: '1' })
     expect(findRuleValue(rulesToInsert, 'zIndex')).toBe('var(--t-zIndex-1)')
-  })
-})
-
-describe('spread variants combined', () => {
-  const StyledSvg = styled(
-    View,
-    {
-      displayName: 'CombinedSpread',
-      variants: {
-        color: {
-          Color: (val) => ({ stroke: val }),
-        },
-        size: {
-          Size: (val) => ({ height: val, width: val }),
-        },
-      } as const,
-    },
-    { accept: { stroke: 'color', height: 'size', width: 'size' } }
-  )
-
-  test('works together with theme values', () => {
-    const { viewProps } = simplifiedGetSplitStyles(
-      StyledSvg,
-      { color: 'color', size: '4' },
-      { theme: lightTheme, themeName: 'light' }
-    )
-    expect(viewProps.stroke).toBeDefined()
-    expect(viewProps.height).toBeDefined()
-    expect(viewProps.width).toBeDefined()
-  })
-
-  test('works together with token values', () => {
-    const { viewProps } = simplifiedGetSplitStyles(StyledSvg, {
-      color: 'white',
-      size: '4',
-    })
-    expect(viewProps.stroke).toBeDefined()
-    expect(viewProps.height).toBeDefined()
-    expect(viewProps.width).toBeDefined()
   })
 })

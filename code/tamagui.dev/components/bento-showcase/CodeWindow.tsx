@@ -9,12 +9,15 @@ import {
   Theme,
   XStack,
   YStack,
+  style,
 } from 'tamagui'
 import { Button } from '~/components/Button'
 import { useClipboard } from './hooks'
 import { useReplaceTokens } from './hooks/useReplaceTokens'
 import useTokenMapper from './hooks/useTokenMapper'
 import { useUserTamaguiConfig } from './hooks/useUserTamaguiConfig'
+
+const scrollContentStyle = style({ p: 12 })
 interface Props {
   code: string
   isLoading?: boolean
@@ -224,9 +227,7 @@ function Content({
         showsVerticalScrollIndicator={true}
         width="100%"
         maxH={700}
-        contentContainerStyle={{
-          p: 12,
-        }}
+        contentContainerStyle={scrollContentStyle}
       >
         {CodeBlock ? (
           <CodeBlock

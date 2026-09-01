@@ -11,6 +11,12 @@
  * microtask flush folds them into a single applyViewStates call, which the
  * engine commits in one ShadowTree transaction.
  */
+/**
+ * CSS-shaped Input color styles lower back to React Native TextInput props.
+ * Keeping this table beside native color processing makes the runtime and
+ * compiler use one RN compatibility boundary after token resolution.
+ */
+export declare const nativeTextInputColorProps: Readonly<Record<string, string>>;
 export interface NativeStyleEngineLinkHandle {
     id: number;
     unlink: () => void;
