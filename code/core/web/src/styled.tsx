@@ -1,3 +1,5 @@
+import { stylePropsInput, stylePropsText } from '@tamagui/helpers'
+
 import { createComponent } from './createComponent'
 import { componentDisplayName } from './helpers/componentDisplayName'
 import { mergeVariants } from './helpers/mergeVariants'
@@ -24,12 +26,7 @@ import type {
   TamaguiComponent,
   ThemeValueGet,
   VariantDefinitions,
-  VariantResolverKey,
-  VariantResolverValue,
-  VariantSpreadFunction,
 } from './types'
-
-export { createVariantResolver } from './types'
 
 type AreVariantsUndefined<Variants> =
   // because we pass in the Generic variants which for some reason has this :)
@@ -46,19 +43,11 @@ type GetVariantAcceptedValues<V> = V extends object
         ? Val
         : V[Key] extends StyledDynamicProp<infer Val>
           ? Val
-          : V[Key] extends VariantSpreadFunction<any, infer Val>
-            ? Val
-            : GetVariantAcceptedValue<keyof V[Key]>
+          : GetVariantAcceptedValue<keyof V[Key]>
     }
   : undefined
 
-type GetVariantAcceptedValue<Key> = Key extends 'true' | 'false'
-  ? boolean
-  : Key extends string
-    ? VariantResolverKey<Key> extends never
-      ? Key
-      : VariantResolverValue<Key>
-    : Key
+type GetVariantAcceptedValue<Key> = Key extends 'true' | 'false' ? boolean : Key
 
 type NoInferLocal<T> = [T][T extends any ? 0 : never]
 type IsAny<T> = 0 extends 1 & T ? true : false
@@ -415,7 +404,15 @@ function styledImpl<
       }
     }
 
+    const isInput = Boolean(config?.isInput || parentStaticConfig?.isInput)
     const isText = Boolean(config?.isText || parentStaticConfig?.isText)
+    const validStyles =
+      config?.validStyles ||
+      (config?.isInput
+        ? stylePropsInput
+        : config?.isText
+          ? stylePropsText
+          : parentStaticConfig?.validStyles)
 
     const acceptsClassName =
       config?.acceptsClassName ??
@@ -437,6 +434,8 @@ function styledImpl<
         isReactNative: resolvedIsReactNative,
       }),
       isText,
+      isInput,
+      validStyles,
       acceptsClassName,
       context: mergedContext,
       contextProps: mergedContextProps,

@@ -1,5 +1,4 @@
-import type { FontSizeTokens, TextProps, VariantSpreadFunction } from '@tamagui/web';
-export declare const getFontSized: VariantSpreadFunction<TextProps, FontSizeTokens>;
+export declare const getFontSized: import("@tamagui/web/types/types").StyledDynamicFn<import("@tamagui/web").FontSize, Record<string, any>>;
 export declare const SizableText: import("react").FunctionComponent<Omit<import("@tamagui/web").TextNonStyleProps, "size" | keyof import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithFlatVariantValues<{
     size?: import("@tamagui/web").FontSize | undefined;
 }> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>> & {

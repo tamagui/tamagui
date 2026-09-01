@@ -122,16 +122,14 @@ export const ProgressFrame = styled(YStack, {
   overflow: 'hidden',
 
   variants: {
-    size: {
-      Size: (val) => {
-        const size = Math.round(getVariableValue(getSize(val)) * 0.25)
-        return {
-          height: size,
-          minWidth: getVariableValue(size) * 20,
-          width: '100%',
-        }
-      },
-    },
+    size: styled.dynamic<any>((val) => {
+      const size = Math.round(getVariableValue(getSize(val)) * 0.25)
+      return {
+        height: size,
+        minWidth: getVariableValue(size) * 20,
+        width: '100%',
+      }
+    }),
   } as const,
 })
 

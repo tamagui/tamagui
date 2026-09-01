@@ -1,12 +1,12 @@
 import { type GetProps, styled } from '@tamagui/web'
 import { Input } from './Input'
-import { defaultStyles, textAreaSizeVariant } from './shared'
+import { defaultStyles, resolveTextAreaSize, textAreaSizeVariant } from './shared'
 
 /**
  * A web-aligned textarea component (multi-line input).
  * @see — Docs https://tamagui.dev/ui/inputs#textarea
  */
-export const TextArea = styled(Input, {
+const TextAreaFrame = styled(Input, {
   displayName: 'TextArea',
   render: 'textarea',
 
@@ -18,11 +18,10 @@ export const TextArea = styled(Input, {
   rows: 3,
 
   variants: {
-    size: {
-      true: textAreaSizeVariant,
-      Size: textAreaSizeVariant,
-    },
+    size: textAreaSizeVariant,
   } as const,
 })
+
+export const TextArea = TextAreaFrame.resolve(resolveTextAreaSize)
 
 export type TextAreaProps = GetProps<typeof TextArea>

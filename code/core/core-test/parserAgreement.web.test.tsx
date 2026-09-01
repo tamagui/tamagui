@@ -22,14 +22,7 @@ import { createModifierRegistry, parseValue } from '@tamagui/style-grammar/tooli
 import { beforeAll, describe, expect, test } from 'vitest'
 
 import config from '../config-default'
-import {
-  createTamagui,
-  createVariantResolver,
-  getConfig,
-  StyleObjectRules,
-  styled,
-  View,
-} from '../web/src'
+import { createTamagui, getConfig, StyleObjectRules, styled, View } from '../web/src'
 import { constructCase, mulberry32 } from '../style-grammar/src/__tests__/valueCorpus'
 import { simplifiedGetSplitStyles } from './utils'
 
@@ -48,11 +41,9 @@ let registry: ReturnType<typeof createModifierRegistry>['registry']
 
 const ProbeVariant = styled(View, {
   variants: {
-    kind: {
-      string: createVariantResolver('string', (value: string) => ({
-        [PROBE]: value,
-      })),
-    },
+    kind: styled.dynamic<string>((value) => ({
+      [PROBE]: value,
+    })),
   } as const,
 })
 

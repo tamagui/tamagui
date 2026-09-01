@@ -21,7 +21,6 @@ import { expandSafeAreaValue } from './resolveSafeArea'
 import { resolveSafeAreaVariable } from './resolveSafeAreaVariable'
 import { resolveStyleStaticConfig } from './styleStaticConfigCore'
 import type { StyleStaticConfig } from './styleStaticConfig'
-import { resolveVariantDefinition } from './variantDefinitionCore'
 
 export type ConfigRevisionPart =
   | 'media'
@@ -51,7 +50,6 @@ export interface ConfigRevisionState {
     staticConfig: StaticConfig,
     conf: TamaguiInternalConfig
   ): StyleStaticConfig
-  variantDefinition(variant: any, value: any, theme: any): any
   propertyKind(property: string): number
   compositeValue(
     property: string,
@@ -217,8 +215,6 @@ export function prepareConfigRevision(
     parseFlatValue,
     styleStaticConfig: (staticConfig, conf) =>
       resolveStyleStaticConfig(staticConfig, conf, captured.revision),
-    variantDefinition: (variant, value, theme) =>
-      resolveVariantDefinition(variant, value, config, theme),
     propertyKind,
     compositeValue: (property, raw, context, resolve) => {
       const kind = propertyKinds[property]

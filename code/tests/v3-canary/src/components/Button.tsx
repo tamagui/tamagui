@@ -6,7 +6,6 @@ import {
   createStyledHOC,
   styled,
   useButton,
-  type VariantSpreadExtras,
   withStaticProperties,
 } from 'tamagui'
 
@@ -28,7 +27,7 @@ export const buttonSizes = createSizeTable(
 
 type ButtonSize = keyof typeof buttonSizes.values
 
-export const ButtonFrame = styled(ButtonBehaviorFrame, {
+const ButtonFrameBase = styled(ButtonBehaviorFrame, {
   context: buttonSizes.Context,
   displayName: 'CanaryButtonFrame',
   bg: 'canaryTheme',
@@ -42,27 +41,28 @@ export const ButtonFrame = styled(ButtonBehaviorFrame, {
   outlineWidth: 'focus-visible:2px',
   variants: {
     size: buttonSizes.frame,
-    circular: {
-      true: (_, extras: VariantSpreadExtras<any>) => {
-        const { height } = buttonSizes.resolve(
-          (extras.props.size as ButtonSize | undefined) ?? buttonSizes.defaultSize
-        ).frame
-        return {
-          rounded: 1000,
-          paddingHorizontal: 0,
-          height,
-          maxHeight: height,
-          maxWidth: height,
-          minWidth: height,
-          width: height,
-        }
-      },
-    },
+    circular: styled.dynamic<boolean>(),
     disabled: {
       true: { opacity: 0.35 },
     },
   } as const,
   defaultVariants: { size: 'medium' },
+})
+
+export const ButtonFrame = ButtonFrameBase.resolve((props) => {
+  if (!props.circular) return
+  const { height } = buttonSizes.resolve(
+    (props.size as ButtonSize | undefined) ?? buttonSizes.defaultSize
+  ).frame
+  return {
+    rounded: 1000,
+    paddingHorizontal: 0,
+    height,
+    maxHeight: height,
+    maxWidth: height,
+    minWidth: height,
+    width: height,
+  }
 })
 
 export const ButtonText = styled(ButtonBehaviorText, {

@@ -1,31 +1,25 @@
 import { YStack } from '@tamagui/stacks'
 import { resolveSizeToken } from '@tamagui/size'
-import type { GetProps, SizeTokens, VariantSpreadExtras } from '@tamagui/web'
+import type { GetProps, SizeTokens } from '@tamagui/web'
 import { createStyledContext, styled, withStaticProperties } from '@tamagui/web'
 
 const CardContext = createStyledContext({
   size: true as SizeTokens | true,
 })
 
-const cardRadiusVariant = (
-  val: SizeTokens | true,
-  { tokens }: VariantSpreadExtras<any>
-) => {
+const cardRadiusVariant = styled.dynamic<SizeTokens | true>((val, { tokens }) => {
   const radiusToken = resolveSizeToken(val, 'radius')
   return {
     borderRadius: tokens.radius[radiusToken] ?? radiusToken,
   }
-}
+})
 
-const cardPaddingVariant = (
-  val: SizeTokens | true,
-  { tokens }: VariantSpreadExtras<any>
-) => {
+const cardPaddingVariant = styled.dynamic<SizeTokens | true>((val, { tokens }) => {
   const spaceToken = resolveSizeToken(val, 'space')
   return {
     padding: tokens.space[spaceToken] ?? spaceToken,
   }
-}
+})
 
 // Unstyled Card frame: structural layout + the size mechanism (size-derived
 // radius on the frame, size-derived padding on Header/Footer) only. The theme
@@ -37,10 +31,7 @@ export const CardFrame = styled(YStack, {
   position: 'relative',
 
   variants: {
-    size: {
-      true: cardRadiusVariant,
-      Size: cardRadiusVariant,
-    },
+    size: cardRadiusVariant,
   } as const,
 })
 
@@ -52,10 +43,7 @@ export const CardHeader = styled(YStack, {
   marginBottom: 'auto',
 
   variants: {
-    size: {
-      true: cardPaddingVariant,
-      Size: cardPaddingVariant,
-    },
+    size: cardPaddingVariant,
   } as const,
 })
 

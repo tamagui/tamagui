@@ -3,7 +3,6 @@ import React from 'react'
 import type { StaticShapeStyle, StylePiece, TextStyle, ThemeParsed } from './types'
 import { stylePieceSymbol } from './types'
 import { warnOnce } from './helpers/warnOnce'
-import { useThemeWithState } from './hooks/useTheme'
 
 type StylePieceLayer = 'base' | 'style'
 type StylePieceCompiler = (piece: StylePiece, layer: StylePieceLayer) => void
@@ -87,11 +86,12 @@ export function style(definition: StaticShapeStyle): StylePiece {
   return createStylePiece(definition)
 }
 
-/** Resolves a style piece to a native/inline style object for compatibility props. */
-export function useStyle(piece?: StylePiece | null): TextStyle | undefined {
-  const [, themeState] = useThemeWithState({})
-  if (!piece) return
+export function resolveStylePieceForTheme(
+  piece: StylePiece,
+  theme: ThemeParsed,
+  themeName: string
+): TextStyle {
   return resolveStylePiece
-    ? resolveStylePiece(piece, themeState.theme, themeState.name)
+    ? resolveStylePiece(piece, theme, themeName)
     : piece[stylePieceSymbol].styleObject
 }

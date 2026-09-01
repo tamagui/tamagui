@@ -2,22 +2,20 @@ import {
   resolveTokenSize,
   styled,
   Tabs as TabsBehavior,
-  type VariantSpreadExtras,
   withStaticProperties,
 } from '@tamagui/ui'
 
-const tabSizeVariant = (size: any, extras: VariantSpreadExtras<any>) => {
-  if (extras.props.unstyled) return
+const tabSizeVariant = styled.dynamic<any>((size, env) => {
   const { frame } = resolveTokenSize(size, {
-    tokens: extras.tokens,
-    font: extras.font!,
+    tokens: env.tokens,
+    font: env.font!,
   })
   return {
     borderRadius: frame.radius,
     height: frame.size,
     paddingHorizontal: frame.space,
   }
-}
+})
 
 export const TabsFrame = styled(TabsBehavior, {
   displayName: 'Tabs',
@@ -27,7 +25,7 @@ export const TabsList = styled(TabsBehavior.List, {
   displayName: 'TabsList',
 })
 
-export const TabsTab = styled(TabsBehavior.Tab, {
+const TabsTabBase = styled(TabsBehavior.Tab, {
   displayName: 'TabsTrigger',
   variants: {
     unstyled: {
@@ -47,10 +45,7 @@ export const TabsTab = styled(TabsBehavior.Tab, {
       },
     },
 
-    size: {
-      true: tabSizeVariant,
-      Size: tabSizeVariant,
-    },
+    size: styled.dynamic<any>(),
 
     disabled: {
       true: {
@@ -62,6 +57,11 @@ export const TabsTab = styled(TabsBehavior.Tab, {
   defaultVariants: {
     unstyled: false,
   },
+})
+
+export const TabsTab = TabsTabBase.resolve((props, env) => {
+  if (props.unstyled) return
+  return tabSizeVariant(props.size ?? true, env)
 })
 
 export const TabsContent = styled(TabsBehavior.Content, {

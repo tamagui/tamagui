@@ -12,10 +12,7 @@ export const Square = styled(
     justifyContent: 'center',
 
     variants: {
-      size: {
-        number: getShapeSize,
-        Size: getShapeSize,
-      },
+      size: getShapeSize,
 
       // shape modifiers formerly inherited from ThemeableStack (now removed).
       circular: {

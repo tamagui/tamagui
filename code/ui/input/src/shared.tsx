@@ -1,5 +1,4 @@
-import type { SizeVariantSpreadFunction, VariantSpreadExtras } from '@tamagui/core'
-import { getVariableValue, isWeb, resolveTokenSize } from '@tamagui/core'
+import { getVariableValue, isWeb, resolveTokenSize, styled } from '@tamagui/core'
 import { getFontSized } from '@tamagui/get-font-sized'
 
 // Structural-only defaults for the unstyled Input behavior primitive.
@@ -16,8 +15,8 @@ export const defaultStyles = {
   minWidth: 0,
 } as const
 
-const resolveInputFrame = (val: any, extras: VariantSpreadExtras<any>) =>
-  resolveTokenSize(val, { tokens: extras.tokens, font: extras.font! }).frame
+const resolveInputFrame = (val: any, env: Parameters<typeof getFontSized>[1]) =>
+  resolveTokenSize(val, { tokens: env.tokens, font: env.font! }).frame
 
 const inputSizeKeys = [
   '0',
@@ -50,7 +49,11 @@ const inputSizeKeys = [
   '20',
 ] as const
 
-const getInputPadding = (val: any, extras: VariantSpreadExtras<any>, steps: 1 | 2) => {
+const getInputPadding = (
+  val: any,
+  env: Parameters<typeof getFontSized>[1],
+  steps: 1 | 2
+) => {
   if (typeof val === 'number') {
     return steps === 1
       ? Math.max(0, Math.round(val * 0.6 - 12))
@@ -58,54 +61,79 @@ const getInputPadding = (val: any, extras: VariantSpreadExtras<any>, steps: 1 | 
   }
   const key = val === true ? '4' : val
   const index = inputSizeKeys.indexOf(key)
-  return extras.tokens.space[inputSizeKeys[Math.max(0, index - steps)]]
+  return env.tokens.space[inputSizeKeys[Math.max(0, index - steps)]]
 }
 
-export const inputSizeVariant: SizeVariantSpreadFunction<any> = (val = true, extras) => {
-  // Check for textarea mode via tag, rows, multiline, or numberOfLines
-  if (
-    extras.props.tag === 'textarea' ||
-    extras.props.rows > 1 ||
-    extras.props.multiline ||
-    extras.props.numberOfLines > 1
-  ) {
-    return textAreaSizeVariant(val, extras)
-  }
-  const frame = resolveInputFrame(val, extras)
-  const fontStyle = getFontSized(val as any, extras)
-  // lineHeight messes up input on native
-  if (!isWeb && fontStyle) {
-    delete fontStyle['lineHeight']
-  }
+export const inputSizeVariant = styled.dynamic<any>((val = true, env) => {
+  const frame = resolveInputFrame(val, env)
+  const fontStyle = getFontSized(val as any, env)
   return {
-    ...fontStyle,
+    color: fontStyle?.color,
+    fontFamily: fontStyle?.fontFamily,
+    fontSize: fontStyle?.fontSize,
+    fontStyle: fontStyle?.fontStyle,
+    fontWeight: fontStyle?.fontWeight,
+    letterSpacing: fontStyle?.letterSpacing,
+    lineHeight: isWeb ? fontStyle?.lineHeight : undefined,
+    textTransform: fontStyle?.textTransform,
     height: frame.size,
     borderRadius: frame.radius,
-    paddingHorizontal: getInputPadding(val, extras, 1),
+    paddingHorizontal: getInputPadding(val, env, 1),
+  }
+})
+
+export const textAreaSizeVariant = styled.dynamic<any>((val = true, env) => {
+  const frame = resolveInputFrame(val, env)
+  const fontStyle = getFontSized(val as any, env)
+  return {
+    borderRadius: frame.radius,
+    color: fontStyle?.color,
+    fontFamily: fontStyle?.fontFamily,
+    fontSize: fontStyle?.fontSize,
+    fontStyle: fontStyle?.fontStyle,
+    fontWeight: fontStyle?.fontWeight,
+    letterSpacing: fontStyle?.letterSpacing,
+    lineHeight: isWeb ? fontStyle?.lineHeight : undefined,
+    textTransform: fontStyle?.textTransform,
+    paddingVertical: getInputPadding(val, env, 2),
+    paddingHorizontal: getInputPadding(val, env, 1),
+    height: 'auto',
+  }
+})
+
+export const resolveTextAreaSize = (
+  props: Record<string, any>,
+  env: Parameters<typeof textAreaSizeVariant>[1]
+) => {
+  const sized = textAreaSizeVariant(props.size ?? true, env)
+  const fontStyle = getFontSized(props.size ?? true, env)
+  const lines = props.rows ?? props.numberOfLines
+  const height =
+    typeof lines === 'number'
+      ? lines * getVariableValue(fontStyle?.lineHeight)
+      : sized?.height
+  return {
+    borderRadius: sized?.borderRadius,
+    color: sized?.color,
+    fontFamily: sized?.fontFamily,
+    fontSize: sized?.fontSize,
+    fontStyle: sized?.fontStyle,
+    fontWeight: sized?.fontWeight,
+    letterSpacing: sized?.letterSpacing,
+    lineHeight: sized?.lineHeight,
+    textTransform: sized?.textTransform,
+    paddingVertical: sized?.paddingVertical,
+    paddingHorizontal: sized?.paddingHorizontal,
+    height,
   }
 }
 
-export const textAreaSizeVariant: SizeVariantSpreadFunction<any> = (
-  val = true,
-  extras
+export const resolveMultilineInputSize = (
+  props: Record<string, any>,
+  env: Parameters<typeof textAreaSizeVariant>[1]
 ) => {
-  const { props } = extras
-  const frame = resolveInputFrame(val, extras)
-  const fontStyle = getFontSized(val as any, extras)!
-  const lines = props.rows ?? props.numberOfLines
-  const height =
-    typeof lines === 'number' ? lines * getVariableValue(fontStyle.lineHeight) : 'auto'
-  // lineHeight messes up input on native
-  if (!isWeb && fontStyle) {
-    delete fontStyle['lineHeight']
-  }
-  return {
-    borderRadius: frame.radius,
-    ...fontStyle,
-    paddingVertical: getInputPadding(val, extras, 2),
-    paddingHorizontal: getInputPadding(val, extras, 1),
-    height,
-  }
+  if (!(props.rows > 1 || props.multiline || props.numberOfLines > 1)) return
+  return resolveTextAreaSize(props, env)
 }
 export const INPUT_NAME = 'Input'
 
@@ -115,10 +143,7 @@ export const styledBody = [
     render: 'input',
     ...defaultStyles,
     variants: {
-      size: {
-        true: inputSizeVariant,
-        Size: inputSizeVariant,
-      },
+      size: inputSizeVariant,
 
       disabled: {
         true: {},

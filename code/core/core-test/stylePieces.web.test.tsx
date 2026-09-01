@@ -6,6 +6,7 @@ import { beforeEach, describe, expect, test, vi } from 'vitest'
 
 import {
   View,
+  Text,
   createTamagui,
   getConfig,
   style,
@@ -85,6 +86,41 @@ describe('style() pieces on web', () => {
     const variant = simplifiedGetSplitStyles(Frame, { wide: true })
     expect(getStyleValue(variant, 'width')).toBe('100px')
     expect(variant.classNames.width).not.toBe(basePiece[stylePieceSymbol].byKey.width)
+  })
+
+  test('preserves direct declarations authored after a default variant', () => {
+    const Parent = styled(Text, {
+      fontSize: 20,
+      variants: {
+        inherit: {
+          false: { fontSize: 15 },
+        },
+      },
+      defaultVariants: {
+        inherit: false,
+      },
+    })
+    const Child = styled(Parent, {
+      fontSize: 30,
+    })
+    const staticStyles = getStyleStaticConfig(Child.staticConfig, getConfig())
+    const childPiece = staticStyles.baseStylePieces!.fontSize
+
+    expect(simplifiedGetSplitStyles(Child, {}).classNames.fontSize).toBe(
+      childPiece[stylePieceSymbol].byKey.fontSize
+    )
+  })
+
+  test('preserves active font state when a text base is precompiled', () => {
+    const Frame = styled(Text, {
+      fontFamily: 'heading',
+    }).resolve((_props, env) => ({
+      fontFamily: env.fontFamily,
+    }))
+
+    expect(simplifiedGetSplitStyles(Frame, {}).viewProps.className).toContain(
+      'font_heading'
+    )
   })
 
   describe('render-time definition warning', () => {

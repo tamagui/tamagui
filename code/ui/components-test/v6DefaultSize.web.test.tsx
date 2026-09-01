@@ -4,7 +4,7 @@ import { defaultConfig as v6 } from '@tamagui/config/v6'
 import { Input } from '@tamagui/input'
 import { TamaguiProvider, createTamagui } from '@tamagui/core'
 import { render } from '@testing-library/react'
-import { Button } from 'tamagui'
+import { Button, H1 } from 'tamagui'
 import { describe, expect, test } from 'vitest'
 
 const config = createTamagui(v6)
@@ -137,5 +137,18 @@ describe('v6 default component size on web', () => {
       inputRadius: config.tokensParsed.radius['11'].val,
       inputFontSize: config.fontsParsed.body.size['11'].val,
     })
+  })
+
+  test('keeps heading variants above the sizable-text base size', () => {
+    const rendered = render(
+      <TamaguiProvider config={config} defaultTheme="light">
+        <H1>Heading</H1>
+      </TamaguiProvider>
+    )
+    const headingStyle = getComputedStyle(rendered.getByRole('heading'))
+
+    expect(
+      resolveRenderedValue(headingStyle.fontSize, config.fontsParsed.heading.size)
+    ).toBe(config.fontsParsed.heading.size['10'].val)
   })
 })

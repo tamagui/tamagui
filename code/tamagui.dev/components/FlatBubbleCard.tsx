@@ -27,10 +27,8 @@ export const FlatBubbleCard = styled(YStack, {
       },
     },
 
-    highlight: {
-      Color: (val) => ({
-        backgroundColor: val,
-      }),
-    },
+    highlight: styled.dynamic<any>((val) => ({
+      backgroundColor: val,
+    })),
   } as const,
 })

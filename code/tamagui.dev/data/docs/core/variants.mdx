@@ -11,7 +11,7 @@ that expand into groups of styles. Variants do just that. Before explaining more
 on why and how they work, an example:
 
 ```tsx
-import { View, styled } from 'tamagui' // or '@tamagui/core'
+import { type SizeTokens, View, styled } from 'tamagui' // or '@tamagui/core'
 
 export const Circle = styled(View, {
   borderRadius: 100_000_000,
@@ -31,14 +31,10 @@ export const Circle = styled(View, {
       },
     },
 
-    size: {
-      Size: (size, { tokens }) => {
-        return {
-          width: tokens.size[size] ?? size,
-          height: tokens.size[size] ?? size,
-        }
-      },
-    },
+    size: styled.dynamic<SizeTokens | number>((size, { tokens }) => ({
+      width: tokens.size[size] ?? size,
+      height: tokens.size[size] ?? size,
+    })),
   } as const,
 })
 ```
@@ -76,8 +72,9 @@ map to the actual output, and a compiler will almost certainly get confused or
 be unable to optimize with any easily unforeseen abstraction.
 
 Variants force you out of the React render function, which means no hooks and a
-much clearer contract of limitations: at most you take in a value, your design
-system, and props, and you output a group of styles.
+much clearer contract: a dynamic takes one value and the style environment, and
+outputs a statically-shaped group of styles. Sibling-prop logic belongs in a
+component `.resolve` callback.
 
 It's nice having this special area just for styling. It keeps your types correct
 by definition. And it ensures the optimizing compiler can understand your styled
@@ -117,42 +114,34 @@ export const MyView = styled(View, {
 })
 ```
 
-#### String, Boolean, Number Variants
+#### String, Boolean, and Number Domains
 
-Beyond exact keys, a variant object can use type keys that match by the type of
-the incoming value:
-
-- `string` - Accepts a `string`
-- `boolean` - Accepts a `boolean` (less precedence than `true` or `false`)
-- `number` - Accepts a `number`
+For an open-ended value domain, declare the prop type on `styled.dynamic`.
+There is no runtime type-key lookup:
 
 ```tsx
 import { View, styled } from 'tamagui' // or '@tamagui/core'
 
 export const ColorfulView = styled(View, {
   variants: {
-    color: {
-      string: (color: string) => {
-        return {
-          color,
-          borderColor: color,
-        }
-      },
-    },
+    color: styled.dynamic<string>((color) => ({
+      color,
+      borderColor: color,
+    })),
   } as const,
 })
 ```
 
-Exact keys always win: if a variant defines both `small: {...}` and
-`string: (val) => ...`, passing `"small"` matches the exact key and any other
-string falls through to the `string` resolver.
+Use an exact-key object when the domain is finite, or one dynamic when it is
+parametric. A key such as `string`, `number`, or `Size` is otherwise just an
+exact literal key.
 
-### Resolver Variants
+### Dynamic Token Variants
 
 When you write variants, you have to be explicit so TypeScript and the runtime
 know exactly which props you accept. This can be especially cumbersome when you
 want to "gather" all the values of a specific token scale. For example, without
-resolver variants, if you wanted to have a `pad` property that accepted all the
+a dynamic, if you wanted to have a `pad` property that accepted all the
 keys from `tokens.size`, you'd have to write this:
 
 ```tsx
@@ -196,7 +185,7 @@ const MyButton = styled(View, {
 This is verbose, and only gets more verbose if you add more sizes. It would
 require always updating every component every time you change the tokens.
 
-Resolver variants solve this problem. Instead, we can write:
+Branded dynamic variants solve this problem. Instead, we can write:
 
 ```tsx
 // in your tamagui.config.ts:
@@ -217,11 +206,9 @@ export default createTamagui({
 // somewhere in your app:
 const MyButton = styled(View, {
   variants: {
-    pad: {
-      Size: (val, { tokens }) => ({
-        padding: tokens.size[val]
-      }),
-    }
+    pad: styled.dynamic<SizeTokens>((val, { tokens }) => ({
+      padding: tokens.size[val]
+    }))
   } as const
 })
 
@@ -229,28 +216,17 @@ const MyButton = styled(View, {
 <MyButton pad="lg" />
 ```
 
-Resolver variants save you from having to define hardcoded styles for every key
-(`sm`, `md`, `lg`) in your token object. A resolver key matches every value in
-its token scale, and props are typed from the key. The available names are:
-
-- Token scales: `Size`, `Space`, `Color`, `Radius`, `ZIndex`
-- Fonts: `FontSize`, `FontStyle`, `FontTransform`, `FontLineHeight`,
-  `FontLetterSpacing`
-- Themes: `Theme`
-- Plain types: `number`, `string`, `boolean`, `any`
-
-You can also combine names with `|` to accept several kinds of values with one
-function:
+Dynamic variants save you from hardcoding every token key. The generic
+parameter is the accepted prop type, so one callback can cover a token scale,
+raw values, or a union without runtime type-key matching:
 
 ```tsx
 const Square = styled(View, {
   variants: {
-    size: {
-      'Size | number': (val, { tokens }) => {
-        const value = tokens.size[val] ?? val
-        return { width: value, height: value }
-      },
-    },
+    size: styled.dynamic<SizeTokens | number>((val, { tokens }) => {
+      const value = tokens.size[val] ?? val
+      return { width: value, height: value }
+    }),
   } as const,
 })
 
@@ -259,24 +235,20 @@ const Square = styled(View, {
 <Square size={100} />
 ```
 
-#### Extra properties passed to functional variants
+#### Environment passed to dynamic variants
 
-There's a second argument passed to all variant functions that is a
-bag-o-goodies that help you use the current tokens, theme, props, and fonts
-easily.
+The second argument contains the current tokens, theme, and fonts. It never
+contains component props; use `.resolve((props, env) => ...)` when styles depend
+on sibling props.
 
 ```tsx
 const SizableText = styled(Text, {
   variants: {
-    size: {
-      Size: (size, { tokens, font }) => {
-        return {
-          fontSize: font?.size,
-          lineHeight: font?.lineHeight,
-          height: tokens.size[size] ?? size,
-        }
-      },
-    },
+    size: styled.dynamic<SizeTokens>((size, { tokens, font }) => ({
+      fontSize: font?.size[size],
+      lineHeight: font?.lineHeight[size],
+      height: tokens.size[size] ?? size,
+    })),
   } as const,
 })
 ```
@@ -287,9 +259,9 @@ Which you can use:
 <SizableText size="md">Hello world</SizableText>
 ```
 
-Every functional variant receives two arguments: the first is the value given
-to the property (`"lg"`), and the second is an object with
-`{ theme, tokens, props, font, context }`.
+Every dynamic variant receives two arguments: the first is the value given to
+the property (`"lg"`), and the second is an object with
+`{ theme, tokens, fonts, font, fontFamily }`.
 
 <PropsTable
   data={[
@@ -302,11 +274,6 @@ to the property (`"lg"`), and the second is an object with
       name: 'tokens',
       type: 'TokensParsed',
       description: `All your tokens given to createTamagui, ensuring the keys all start with "$".`,
-    },
-    {
-      name: 'props',
-      type: 'Props',
-      description: `All props passed to the styled component.`,
     },
     {
       name: 'font',
@@ -323,59 +290,45 @@ to the property (`"lg"`), and the second is an object with
       type: 'string',
       description: `All your fonts passed to createTamagui.`,
     },
-    {
-      name: 'context',
-      type: 'StyledContext',
-      description: `The styledContext values from the parent component, useful for compound components.`,
-    },
   ]}
 />
 
-#### Catch-all variants
+#### Dynamic value domains
 
-Much like a dynamic variant, except it lets you use it alongside the other typed
-variants you need. Use the `any` key and it will grab all values that don't
-match another key:
+Use the dynamic's generic parameter to declare the whole accepted domain, then
+branch on the value inside the callback when needed:
 
 ```tsx
 import { View, styled } from 'tamagui' // or '@tamagui/core'
 
 export const ColorfulView = styled(View, {
   variants: {
-    colorful: {
-      true: {
-        color: 'red',
-      },
-      any: (val: string) => {
-        // this will catch any other values that don't match
-        return {
-          color: val,
-        }
-      },
-    },
+    colorful: styled.dynamic<true | string>((val) => ({
+      color: val === true ? 'red' : val,
+    })),
   } as const,
 })
 ```
 
 #### Dynamic variants
 
-If you need more complex types, or simply prefer a shorter syntax, you can use a
-single function instead of using the object syntax for variants:
+If you need more complex types, use `styled.dynamic` to brand the value-to-style
+function and declare the prop type:
 
 ```tsx
 import { View, styled } from 'tamagui' // or '@tamagui/core'
 
 export const MyView = styled(View, {
   variants: {
-    doubleMargin: (val: number) => ({
+    doubleMargin: styled.dynamic<number>((val) => ({
       margin: val * 2,
-    }),
+    })),
   } as const,
 })
 ```
 
-Tamagui also provides a few types of other variant definition patterns that work
-with tokens or types.
+The callback is invoked once per active flat-clause payload, so responsive and
+stateful values keep the same behavior as exact variants.
 
 ### defaultVariants
 
@@ -389,16 +342,12 @@ The `defaultVariants` option allows you to set these, properly typed:
 ```tsx
 const Square = styled(View, {
   variants: {
-    size: {
-      Size: (size, { tokens }) => {
-        // size === 'lg'
-        // tokens.size.lg === 25
-        return {
-          width: tokens.size[size] ?? size,
-          height: tokens.size[size] ?? size,
-        }
-      },
-    },
+    size: styled.dynamic<SizeTokens>((size, { tokens }) => ({
+      // size === 'lg'
+      // tokens.size.lg === 25
+      width: tokens.size[size] ?? size,
+      height: tokens.size[size] ?? size,
+    })),
   } as const,
 
   // <Square /> will get size '10' from size tokens automatically

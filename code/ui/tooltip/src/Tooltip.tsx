@@ -41,10 +41,7 @@ export type TooltipContentProps = ScopedProps<PopoverContentProps>
 
 const TooltipContentFrame = styled(PopperContentFrame, {
   variants: {
-    elevation: {
-      number: getElevation,
-      Size: getElevation,
-    },
+    elevation: getElevation,
   } as const,
 })
 

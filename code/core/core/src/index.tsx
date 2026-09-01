@@ -110,9 +110,7 @@ export const Text = WebText as any as RNTamaguiText
 //     backgroundColor: 'green',
 
 //     variants: {
-//       size: {
-//         Size: () => ({}),
-//       },
+//       size: styled.dynamic(() => ({})),
 
 //       // disabled: {
 //       //   boolean: () => ({})
@@ -121,8 +119,6 @@ export const Text = WebText as any as RNTamaguiText
 //   },
 //   {
 //     isText: true,
-//     accept: {
-//       placeholderTextColor: 'color',
 //     },
 //   }
 // )

@@ -1,15 +1,14 @@
 import { styledDynamic } from './helpers/styledDynamic';
 import type { FrontendComponent, StyleFrontend } from './helpers/styleFrontend';
 import type { GetRef } from './interfaces/GetRef';
-import type { GetBaseStyles, GetNonStyledProps, GetProps, GetStaticConfig, GetStyledVariants, InferStyledProps, StaticConfigPublic, StylableComponent, StyledContext, StyledDynamicFn, StyledDynamicProp, TamaDefer, TamaguiComponent, VariantDefinitions, VariantResolverKey, VariantResolverValue, VariantSpreadFunction } from './types';
-export { createVariantResolver } from './types';
+import type { GetBaseStyles, GetNonStyledProps, GetProps, GetStaticConfig, GetStyledVariants, InferStyledProps, StaticConfigPublic, StylableComponent, StyledContext, StyledDynamicFn, StyledDynamicProp, TamaDefer, TamaguiComponent, VariantDefinitions } from './types';
 type AreVariantsUndefined<Variants> = Required<Variants> extends {
     _isEmpty: 1;
 } ? true : false;
 type GetVariantAcceptedValues<V> = V extends object ? {
-    [Key in keyof V]?: V[Key] extends StyledDynamicFn<infer Val, any> ? Val : V[Key] extends StyledDynamicProp<infer Val> ? Val : V[Key] extends VariantSpreadFunction<any, infer Val> ? Val : GetVariantAcceptedValue<keyof V[Key]>;
+    [Key in keyof V]?: V[Key] extends StyledDynamicFn<infer Val, any> ? Val : V[Key] extends StyledDynamicProp<infer Val> ? Val : GetVariantAcceptedValue<keyof V[Key]>;
 } : undefined;
-type GetVariantAcceptedValue<Key> = Key extends 'true' | 'false' ? boolean : Key extends string ? VariantResolverKey<Key> extends never ? Key : VariantResolverValue<Key> : Key;
+type GetVariantAcceptedValue<Key> = Key extends 'true' | 'false' ? boolean : Key;
 type NoInferLocal<T> = [T][T extends any ? 0 : never];
 type IsAny<T> = 0 extends 1 & T ? true : false;
 type GetStyledOptionsAcceptedProps<ParentComponent extends StylableComponent, StyledConfig extends StaticConfigPublic, Variants extends VariantDefinitions<ParentComponent, StyledConfig>, Context, ContextPropKeys extends string> = Partial<InferStyledProps<ParentComponent, StyledConfig>> & (AreVariantsUndefined<Variants> extends true ? {} : Partial<GetVariantAcceptedValues<Variants>>) & GetStyledContextProps<Context, ContextPropKeys>;

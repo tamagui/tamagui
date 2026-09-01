@@ -1754,8 +1754,8 @@ export type GetStyleState = {
 export type StyleResolver<Response = PropMappedValue> = (key: string, value: any, props: SplitStyleProps, state: GetStyleState, parentVariantKey: string) => Response;
 export type PropMapper = (key: string, value: any, state: GetStyleState, disabled: boolean, parentCondition?: number, fallbackOriginal?: any) => void;
 export type GenericVariantDefinitions = {
-    [key: string]: {
-        [key: string]: ((a: any, b: any) => any) | StaticStyleInput | {
+    [key: string]: StyledDynamic<any> | {
+        [key: string]: StaticStyleInput | {
             [key: string]: any;
         };
     };
@@ -1916,14 +1916,6 @@ export type StyledDynamic<Val = any, Output extends object = Record<string, any>
  * values mean absent (fall through to lower tiers).
  */
 export type StyledResolver<Props = Record<string, any>, Output extends object = Record<string, any>> = (props: Props, env: StyledDynamicEnv) => Partial<Output> | null | undefined;
-export type VariantResolverName = 'Size' | 'Space' | 'Color' | 'Radius' | 'ZIndex' | 'Theme' | 'FontSize' | 'FontStyle' | 'FontTransform' | 'FontLineHeight' | 'FontLetterSpacing' | 'number' | 'string' | 'boolean' | 'any';
-type TrimWhitespace = ' ' | '\n' | '\t' | '\r' | '\v' | '\f';
-type Trim<S extends string> = S extends `${TrimWhitespace}${infer Next}` ? Trim<Next> : S extends `${infer Next}${TrimWhitespace}` ? Trim<Next> : S;
-type ValidateVariantResolverKey<Key extends string> = Trim<Key> extends `${infer Left}|${infer Right}` ? Trim<Left> extends VariantResolverName ? ValidateVariantResolverKey<Right> extends never ? never : Key : never : Trim<Key> extends VariantResolverName ? Key : never;
-export type VariantResolverKey<Key extends string = string> = Key extends string ? ValidateVariantResolverKey<Key> : never;
-type VariantResolverValueForName<Name extends string> = Name extends 'Size' ? Size : Name extends 'Space' ? Space : Name extends 'Color' ? Color : Name extends 'Radius' ? Radius : Name extends 'ZIndex' ? ZIndex : Name extends 'Theme' ? ThemeTokens : Name extends 'FontSize' ? FontSize : Name extends 'FontStyle' ? FontStyleTokens : Name extends 'FontTransform' ? FontTransformTokens : Name extends 'FontLineHeight' ? FontLineHeightTokens : Name extends 'FontLetterSpacing' ? FontLetterSpacingTokens : Name extends 'number' ? number : Name extends 'string' ? string : Name extends 'boolean' ? boolean : Name extends 'any' ? any : never;
-export type VariantResolverValue<Key extends string> = Trim<Key> extends `${infer Left}|${infer Right}` ? VariantResolverValueForName<Trim<Left>> | VariantResolverValue<Right> : VariantResolverValueForName<Trim<Key>>;
-export declare function createVariantResolver<Key extends string, Props extends PropLike = PropLike, Resolver extends VariantSpreadFunction<Props, VariantResolverValue<Key>> = VariantSpreadFunction<Props, VariantResolverValue<Key>>>(key: string extends Key ? never : Key & VariantResolverKey<Key>, resolver: Resolver): Resolver;
 export type VariantDefinitions<Parent extends StylableComponent = TamaguiComponent, StaticConfig extends StaticConfigPublic = Parent extends {
     __tama: [any, any, any, any, any, infer S];
 } ? S : {}, MyProps extends object = Partial<GetVariantProps<Parent, StaticConfig['isText'] extends true ? true : StaticConfig['isInput'] extends true ? true : false>>, Val = any> = VariantDefinitionFromProps<MyProps, Val> & {
@@ -1941,39 +1933,12 @@ export type GetVariantProps<A extends StylableComponent, IsText extends boolean 
     ];
 } ? Props extends TamaDefer ? GetFinalProps<NonStyledProps, BaseStyles, VariantProps> : Props : WithThemeAndShorthands<IsText extends true ? TextStylePropsBase : StackStyleBase>;
 export type VariantDefinitionFromProps<MyProps, Val> = MyProps extends object ? {
-    [propName: string]: VariantSpreadFunction<MyProps, Val> | StyledDynamic<any, MyProps> | {
-        [Key in string | number | 'true' | 'false']?: MyProps | VariantSpreadFunction<MyProps, Val> | StaticStyleInput;
+    [propName: string]: StyledDynamic<any, MyProps> | {
+        [Key in string | number | 'true' | 'false']?: MyProps | StaticStyleInput;
     };
 } : {};
 export type GenericStackVariants = VariantDefinitionFromProps<StackNonStyleProps & StackStyle, any>;
 export type GenericTextVariants = VariantDefinitionFromProps<TextProps, any>;
-export type VariantSpreadExtras<Props> = {
-    fonts: TamaguiConfig['fonts'];
-    tokens: TokensParsed;
-    theme: Themes extends {
-        [key: string]: infer B;
-    } ? B : unknown;
-    props: Props;
-    fontFamily?: FontFamilyTokens;
-    font?: Font;
-};
-type PropLike = {
-    [key: string]: any;
-};
-export type VariantSpreadFunction<Props extends PropLike, Val = any> = (val: Val, config: VariantSpreadExtras<Props>) => {
-    [Key in keyof Props]: Props[Key] | Variable | VariableVal;
-} | null | undefined;
-export type FontSizeVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<A, FontSizeTokens>;
-export type SizeVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<A, SizeTokens>;
-export type SpaceVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<A, SpaceTokens>;
-export type ColorVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<A, ColorTokens>;
-export type FontLineHeightVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<A, FontLineHeightTokens>;
-export type FontLetterSpacingVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<A, FontLetterSpacingTokens>;
-export type FontStyleVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<A, FontStyleTokens>;
-export type FontTransformVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<A, FontTransformTokens>;
-export type ZIndexVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<A, ZIndexTokens>;
-export type RadiusVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<A, RadiusTokens>;
-export type ThemeVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<A, ThemeTokens>;
 /**
  * --------------------------------------------
  *   end variants

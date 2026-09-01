@@ -193,6 +193,36 @@ describe('styled() tests', () => {
     )
   })
 
+  test('deopts a resolver callsite with multiple conditional props', async () => {
+    const output = await extractForWeb(
+      `
+      import { DynamicResolverStack } from './fixtures/compilerLaneAComponents'
+
+      export function Test(props) {
+        return (
+          <DynamicResolverStack
+            scale={props.large ? 20 : 10}
+            tone="critical"
+            id={props.dim ? 'dim' : 'bright'}
+          />
+        )
+      }
+    `,
+      { options: { components: [compilerLaneAComponents] } }
+    )
+
+    expect(output.stats.lowered).toBe(0)
+    expect(output.stats.bailed).toBe(1)
+    expect(output.diagnostics).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          code: 'local/dynamic-style-value',
+          blocking: true,
+        }),
+      ])
+    )
+  })
+
   describe('cross-file styled() optimization', () => {
     const tmpDir = join(__dirname, '.tmp-cross-file-test')
     const componentFile = join(tmpDir, 'MyBox.tsx')

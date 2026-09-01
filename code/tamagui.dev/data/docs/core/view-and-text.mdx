@@ -45,7 +45,7 @@ export default () => (
 You can also use them [with styled](/docs/core/styled) to create your own lower level views that are meant to be re-usable:
 
 ```tsx
-import { View, styled } from 'tamagui' // or '@tamagui/core'
+import { type SizeTokens, View, styled } from 'tamagui' // or '@tamagui/core'
 
 export const Circle = styled(View, {
   borderRadius: 100_000_000,
@@ -65,14 +65,10 @@ export const Circle = styled(View, {
       },
     },
 
-    size: {
-      Size: (size, { tokens }) => {
-        return {
-          width: tokens.size[size] ?? size,
-          height: tokens.size[size] ?? size,
-        }
-      },
-    },
+    size: styled.dynamic<SizeTokens | number>((size, { tokens }) => ({
+      width: tokens.size[size] ?? size,
+      height: tokens.size[size] ?? size,
+    })),
   } as const,
 })
 ```

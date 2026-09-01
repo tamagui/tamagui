@@ -20,7 +20,6 @@ export interface ConfigRevisionState {
     safeAreaVariable: typeof resolveSafeAreaVariable;
     parseFlatValue: typeof parseFlatValue;
     styleStaticConfig(staticConfig: StaticConfig, conf: TamaguiInternalConfig): StyleStaticConfig;
-    variantDefinition(variant: any, value: any, theme: any): any;
     propertyKind(property: string): number;
     compositeValue(property: string, raw: string, context: any, resolve: (context: any, property: string, raw: string) => any): string | undefined;
     normalizeTransition(value: string): string;

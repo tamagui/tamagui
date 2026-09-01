@@ -25,6 +25,7 @@ import {
   Popover,
   Select,
   Sheet,
+  style,
   styled,
   Surface,
   Tabs,
@@ -45,10 +46,12 @@ export const AppAvatar = styled(Avatar, {
   borderColor: 'border-color',
 })
 
+const appTabActive = style({ backgroundColor: 'background-press' })
+
 export const AppTab = styled(Tabs.Tab, {
   paddingHorizontal: '3',
   paddingVertical: '2',
-  activeStyle: { backgroundColor: 'background-press' },
+  activeStyle: appTabActive,
 })
 
 // §2 — Sheet anatomy: Frame -> Container + Background
@@ -196,11 +199,11 @@ export const OnTransition = () => (
 // §15 — defaultProps -> createStyledContext for prop propagation
 export const SquareContext = createStyledContext({ size: '4' as const })
 
-// design-systems.mdx — Circle size variant with number/Size type keys
-const getCircleSize = (size: any, { tokens }: any) => {
+// design-systems.mdx — Circle size dynamic
+const getCircleSize = styled.dynamic<any>((size, { tokens }) => {
   const value = tokens.size[size] ?? size
   return { width: value, height: value }
-}
+})
 
 export const Circle = styled(YStack, {
   alignItems: 'center',
@@ -209,10 +212,7 @@ export const Circle = styled(YStack, {
   overflow: 'hidden',
 
   variants: {
-    size: {
-      number: getCircleSize,
-      Size: getCircleSize,
-    },
+    size: getCircleSize,
   } as const,
 })
 

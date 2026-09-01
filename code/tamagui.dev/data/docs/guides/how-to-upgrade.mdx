@@ -522,9 +522,9 @@ Use these replacements:
 | `createCheckbox` `sizeAdjust` | explicit sizing math or component styles |
 | `@tamagui/animations-moti` | `@tamagui/animations-reanimated` |
 | `@tamagui/config/reanimated` | `@tamagui/config/animations-reanimated` |
-| `'...size'` / `'...fontSize'` spread variant keys | resolver-name keys: `Size`, `FontSize`, `Space`, `Color`, `Radius`, `ZIndex`, and unions like `'Size \| number'` |
-| `':string'` / `':number'` / `':boolean'` type-key variants | plain `string` / `number` / `boolean` keys |
-| `'...'` catch-all variant key | the `any` key |
+| `'...size'` / `'...fontSize'` spread variant keys | `styled.dynamic<T>((value, env) => ({ ... }))` |
+| `':string'` / `':number'` / `':boolean'` type-key variants | a typed `styled.dynamic<string \| number \| boolean>(...)` |
+| `'...'` catch-all variant key | `styled.dynamic<YourValue>(...)` with an explicit value type |
 
 V2 could spread one style across its base prop, pseudo-style objects such as
 `hoverStyle`, media objects such as `$sm`, and platform objects. The removed
@@ -579,11 +579,10 @@ const Card = createStyledHOC(CardFrame)<CardProps>((props, ref) => ...)
 const Card = createStyledHOC(CardFrame, (props: CardProps, ref) => ...)
 ```
 
-Spread and type-key variants have no runtime support in v3 — a leftover
-`'...size'` key only ever matches the literal string `"...size"`. Search with
-`` rg "'\.\.\.\w*':|':(string|number|boolean)':" `` and switch to resolver-name
-keys, which type the prop from the key (see
-[the variants docs](/docs/core/variants#resolver-variants)):
+Spread, resolver-name, and type-key variants have no runtime matching in v3 — a
+leftover `'...size'`, `Size`, or `number` key only matches that exact literal.
+Search for those keys and replace the functional branch with one branded
+dynamic, which types the prop directly:
 
 ```tsx
 // before
@@ -595,9 +594,9 @@ variants: {
 
 // after
 variants: {
-  size: {
-    Size: (val, { tokens }) => ({ padding: tokens.size[val] }),
-  },
+  size: styled.dynamic<SizeTokens>((val, { tokens }) => ({
+    padding: tokens.size[val],
+  })),
 } as const
 ```
 

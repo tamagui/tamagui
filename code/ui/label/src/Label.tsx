@@ -5,12 +5,7 @@ import { focusFocusable } from '@tamagui/focusable'
 import { getFontSized } from '@tamagui/get-font-sized'
 import { resolveSizeToken } from '@tamagui/size'
 import { SizableText } from '@tamagui/text'
-import type {
-  FontSizeTokens,
-  GetProps,
-  SizeTokens,
-  VariantSpreadExtras,
-} from '@tamagui/web'
+import type { FontSizeTokens, GetProps, SizeTokens } from '@tamagui/web'
 import { createStyledHOC, styled } from '@tamagui/web'
 import * as React from 'react'
 
@@ -26,16 +21,22 @@ const [LabelProvider, useLabelContextImpl] = createContext<LabelContextValue>(NA
   controlRef: { current: null },
 })
 
-const labelSizeVariant = (val: SizeTokens | true, extras: VariantSpreadExtras<any>) => {
-  const fontStyle = getFontSized(val as FontSizeTokens, extras as any)
+const labelSizeVariant = styled.dynamic<SizeTokens | true>((val, env) => {
+  const fontStyle = getFontSized(val as FontSizeTokens, env)
   // line-height matches the control height at the same size token, so a Label
   // sits flush next to the Input/Button it labels
   const sizeKey = resolveSizeToken(val, 'size')
   return {
-    ...fontStyle,
-    lineHeight: typeof sizeKey === 'number' ? sizeKey : extras.tokens.size[sizeKey],
+    color: fontStyle?.color,
+    fontFamily: fontStyle?.fontFamily,
+    fontSize: fontStyle?.fontSize,
+    fontStyle: fontStyle?.fontStyle,
+    fontWeight: fontStyle?.fontWeight,
+    letterSpacing: fontStyle?.letterSpacing,
+    lineHeight: typeof sizeKey === 'number' ? sizeKey : env.tokens.size[sizeKey],
+    textTransform: fontStyle?.textTransform,
   }
-}
+})
 
 // Unstyled Label frame: structural layout (label element, flex alignment,
 // selection/cursor resets) + the size mechanism (size-derived font) only. The
@@ -52,10 +53,7 @@ export const LabelFrame = styled(SizableText, {
   cursor: 'default',
 
   variants: {
-    size: {
-      true: labelSizeVariant,
-      Size: labelSizeVariant,
-    },
+    size: labelSizeVariant,
   } as const,
 })
 

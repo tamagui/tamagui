@@ -259,3 +259,26 @@ source-layer renumbering.
   `getVariantExtras` consumers) is scheduled for deletion in phase 2, which
   should claw back a chunk of this.
 - Baseline re-recorded at 27,309, ceiling 27,459.
+
+## Baseline update, 2026-09-01: v3 variants phase 2
+
+Phase 2 completes the agreed redesign: styled base declarations now use
+subtractable `style()` pieces, piece-typed public props replace `accept`, Input
+gets its real web/native color-style surface, every in-repo functional variant
+moves to `styled.dynamic`/`.resolve`, and the legacy spread/function matching
+machinery is deleted.
+
+- **RAN** the pinned styled-view fixture after a complete workspace JS build:
+  27,309 -> 28,220 gzip-9 (+911, +3.34%), raw 72,101 -> 74,901 (+2,800).
+- **RAN** source-map deletion attribution. The retained cost is concentrated in
+  `getSplitStyles` (base-piece application/compilation and resolver-aware
+  emission), with smaller additions in `styled` (correct Text/Input validity
+  selection), `styledDynamic`, and `style`. Deleting the legacy variant matcher,
+  spread-key resolver, and `getVariantExtras` offsets part of that feature cost.
+- Accepted as the runtime cost of the reviewed phase-2 API. The base-piece path
+  is required for compiler/runtime parity and retains per-key subtraction; the
+  Input validity branch is required so text CSS reaches wrapped inputs; and the
+  resolver/dynamic path replaces all remaining v2 functional variants. The
+  Next/Webpack fixture verifies that base rules still land in CSS and that
+  native/web style coverage is preserved.
+- Baseline re-recorded at 28,220, ceiling 28,370.

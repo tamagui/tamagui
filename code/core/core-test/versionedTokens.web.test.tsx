@@ -29,14 +29,12 @@ describe('default token config', () => {
 
     const SizedView = styled(View, {
       variants: {
-        size: {
-          Size: (val) => {
-            seenSize = val
-            return {
-              width: val,
-            }
-          },
-        },
+        size: styled.dynamic<any>((val) => {
+          seenSize = val
+          return {
+            width: val,
+          }
+        }),
       } as const,
     })
 

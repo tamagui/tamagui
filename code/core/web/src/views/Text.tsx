@@ -1,6 +1,7 @@
 import { stylePropsTextOnly, validStyles } from '@tamagui/helpers'
 
 import { createComponent } from '../createComponent'
+import { styledDynamic } from '../helpers/styledDynamic'
 import type {
   StaticConfig,
   TamaguiTextElement,
@@ -42,20 +43,25 @@ export const textStaticConfig: StaticConfig = {
 
   variants: {
     ...(process.env.TAMAGUI_TARGET === 'web' && {
-      numberOfLines: {
-        1: ellipsisStyle,
-
-        number: (numberOfLines) =>
-          numberOfLines >= 1
-            ? {
-                maxWidth: '100%',
-                WebkitLineClamp: numberOfLines,
-                WebkitBoxOrient: 'vertical',
-                display: '-webkit-box',
-                overflow: 'hidden',
-              }
-            : null,
-      },
+      numberOfLines: styledDynamic<number>((numberOfLines) => {
+        if (numberOfLines === 1) {
+          return {
+            maxWidth: '100%',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+          }
+        }
+        return numberOfLines >= 1
+          ? {
+              maxWidth: '100%',
+              WebkitLineClamp: numberOfLines,
+              WebkitBoxOrient: 'vertical',
+              display: '-webkit-box',
+              overflow: 'hidden',
+            }
+          : null
+      }),
     }),
 
     ellipsis: {

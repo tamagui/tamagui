@@ -57,18 +57,16 @@ describe('getSplitStyles', () => {
     }
   )
 
-  test(`Size variants receive true for opt-in sizing policies`, () => {
+  test(`dynamic variants receive true for opt-in sizing policies`, () => {
     let seenSize: unknown
     const SizedView = styled(View, {
       variants: {
-        size: {
-          Size: (val) => {
-            seenSize = val
-            return {
-              width: val,
-            }
-          },
-        },
+        size: styled.dynamic<any>((val) => {
+          seenSize = val
+          return {
+            width: val,
+          }
+        }),
       } as const,
     })
 
@@ -77,6 +75,23 @@ describe('getSplitStyles', () => {
     })
 
     expect(seenSize).toBe(true)
+  })
+
+  test(`resolver-name keys are exact values, not type matchers`, () => {
+    const ExactOnly = styled(View, {
+      variants: {
+        kind: {
+          Size: { opacity: 0.42 },
+        },
+      } as const,
+    })
+
+    expect(
+      simplifiedGetSplitStyles(ExactOnly, { kind: '4' }).style?.opacity
+    ).toBeUndefined()
+    expect(
+      getStyleValue(simplifiedGetSplitStyles(ExactOnly, { kind: 'Size' }), 'opacity')
+    ).toBe('0.42')
   })
 
   test(`prop "aria-required" is passed through`, () => {

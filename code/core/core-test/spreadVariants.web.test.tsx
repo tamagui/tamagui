@@ -33,11 +33,9 @@ describe('FontSize variant resolver', () => {
   const Comp = styled(Text, {
     displayName: 'FontSizeSpread',
     variants: {
-      textSize: {
-        FontSize: (val, { font }) => ({
-          fontSize: font?.size[val] || val,
-        }),
-      },
+      textSize: styled.dynamic<any>((val, { font }) => ({
+        fontSize: font?.size[val] || val,
+      })),
     } as const,
   })
 
@@ -51,11 +49,9 @@ describe('FontStyle variant resolver', () => {
   const Comp = styled(Text, {
     displayName: 'FontStyleSpread',
     variants: {
-      emphasis: {
-        FontStyle: (val) => ({
-          fontStyle: val,
-        }),
-      },
+      emphasis: styled.dynamic<any>((val) => ({
+        fontStyle: val,
+      })),
     } as const,
   })
 
@@ -69,11 +65,9 @@ describe('FontTransform variant resolver', () => {
   const Comp = styled(Text, {
     displayName: 'FontTransformSpread',
     variants: {
-      casing: {
-        FontTransform: (val) => ({
-          textTransform: val,
-        }),
-      },
+      casing: styled.dynamic<any>((val) => ({
+        textTransform: val,
+      })),
     } as const,
   })
 
@@ -87,11 +81,9 @@ describe('FontLetterSpacing variant resolver', () => {
   const Comp = styled(Text, {
     displayName: 'LetterSpacingSpread',
     variants: {
-      tracking: {
-        FontLetterSpacing: (val, { font }) => ({
-          letterSpacing: font?.letterSpacing[val] || val,
-        }),
-      },
+      tracking: styled.dynamic<any>((val, { font }) => ({
+        letterSpacing: font?.letterSpacing[val] || val,
+      })),
     } as const,
   })
 
@@ -105,11 +97,9 @@ describe('FontLineHeight variant resolver', () => {
   const Comp = styled(Text, {
     displayName: 'LineHeightSpread',
     variants: {
-      leading: {
-        FontLineHeight: (val, { font }) => ({
-          lineHeight: font?.lineHeight[val] || val,
-        }),
-      },
+      leading: styled.dynamic<any>((val, { font }) => ({
+        lineHeight: font?.lineHeight[val] || val,
+      })),
     } as const,
   })
 
@@ -123,9 +113,7 @@ describe('Radius variant resolver', () => {
   const Comp = styled(View, {
     displayName: 'RadiusSpread',
     variants: {
-      rounding: {
-        Radius: (val) => ({ borderRadius: val }),
-      },
+      rounding: styled.dynamic<any>((val) => ({ borderRadius: val })),
     } as const,
   })
 
@@ -139,9 +127,7 @@ describe('Size variant resolver', () => {
   const Comp = styled(View, {
     displayName: 'SizeSpread',
     variants: {
-      size: {
-        Size: (val) => ({ height: val, width: val }),
-      },
+      size: styled.dynamic<any>((val) => ({ height: val, width: val })),
     } as const,
   })
 
@@ -162,9 +148,7 @@ describe('Space variant resolver', () => {
   const Comp = styled(View, {
     displayName: 'SpaceSpread',
     variants: {
-      spacing: {
-        Space: (val) => ({ padding: val }),
-      },
+      spacing: styled.dynamic<any>((val) => ({ padding: val })),
     } as const,
   })
 
@@ -178,11 +162,9 @@ describe('Theme variant resolver', () => {
   const Comp = styled(View, {
     displayName: 'ThemeSpread',
     variants: {
-      look: {
-        Theme: (val) => ({
-          backgroundColor: val,
-        }),
-      },
+      look: styled.dynamic<any>((val) => ({
+        backgroundColor: val,
+      })),
     } as const,
   })
 
@@ -200,9 +182,7 @@ describe('ZIndex variant resolver', () => {
   const Comp = styled(View, {
     displayName: 'ZIndexSpread',
     variants: {
-      layer: {
-        ZIndex: (val) => ({ zIndex: val }),
-      },
+      layer: styled.dynamic<any>((val) => ({ zIndex: val })),
     } as const,
   })
 

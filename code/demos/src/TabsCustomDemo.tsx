@@ -7,24 +7,23 @@ import {
   resolveTokenSize,
   style,
   styled,
-  type VariantSpreadExtras,
   withStaticProperties,
 } from 'tamagui'
 import { Tabs as TabsBehavior } from '@tamagui/tabs'
 
 const transparentActiveStyle = style({ backgroundColor: 'transparent' })
 
-const tabSizeVariant = (value: any, extras: VariantSpreadExtras<any>) => {
+const tabSizeVariant = styled.dynamic<any>((value, env) => {
   const { frame } = resolveTokenSize(value, {
-    tokens: extras.tokens,
-    font: extras.font!,
+    tokens: env.tokens,
+    font: env.font!,
   })
   return {
     borderRadius: frame.radius,
     height: frame.size,
     paddingHorizontal: frame.space,
   }
-}
+})
 
 const demos = ['horizontal', 'vertical'] as const
 
@@ -38,9 +37,7 @@ export const TabFrame = styled(TabsBehavior.Tab, {
   cursor: 'pointer',
   backgroundColor: 'transparent',
   variants: {
-    size: {
-      Size: tabSizeVariant,
-    },
+    size: tabSizeVariant,
 
     disabled: {
       true: {

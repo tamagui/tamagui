@@ -396,7 +396,7 @@ test('variant props accept the flat object spelling', () => {
         compact: { height: 20, paddingHorizontal: 8 },
         roomy: { height: 40, paddingHorizontal: 16 },
       },
-      pad: (val: { x: number }) => ({ paddingHorizontal: val.x }),
+      pad: styled.dynamic<{ x: number }>((val) => ({ paddingHorizontal: val.x })),
     } as const,
   })
 

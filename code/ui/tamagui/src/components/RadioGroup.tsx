@@ -4,7 +4,6 @@ import {
   RadioGroup as RadioGroupBehavior,
   resolveTokenSize,
   styled,
-  type VariantSpreadExtras,
   withStaticProperties,
 } from '@tamagui/ui'
 
@@ -24,20 +23,17 @@ export const RadioGroupItem = styled(RadioGroupBehavior.Item, {
   outlineStyle: 'focus-visible:solid',
   outlineWidth: 'focus-visible:2px',
   variants: {
-    size: {
-      Size: (size, extras: VariantSpreadExtras<any>) => {
-        const controlSize = Math.round(
-          getVariableValue(
-            resolveTokenSize(size, { tokens: extras.tokens, font: extras.font! }).frame
-              .size
-          ) * 0.5
-        )
-        return {
-          width: controlSize,
-          height: controlSize,
-        }
-      },
-    },
+    size: styled.dynamic<any>((size, env) => {
+      const controlSize = Math.round(
+        getVariableValue(
+          resolveTokenSize(size, { tokens: env.tokens, font: env.font! }).frame.size
+        ) * 0.5
+      )
+      return {
+        width: controlSize,
+        height: controlSize,
+      }
+    }),
 
     disabled: {
       true: {

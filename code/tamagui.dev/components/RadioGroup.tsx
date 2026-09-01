@@ -13,20 +13,17 @@ const RadioGroupItem = styled(RadioGroupBehavior.Item, {
   outlineStyle: 'focus-visible:solid',
   outlineWidth: 'focus-visible:2px',
   variants: {
-    size: {
-      Size: (value, extras) => {
-        const size = Math.round(
-          getVariableValue(
-            resolveTokenSize(value, { tokens: extras.tokens, font: extras.font! }).frame
-              .size
-          ) * 0.5
-        )
-        return {
-          width: size,
-          height: size,
-        }
-      },
-    },
+    size: styled.dynamic<any>((value, env) => {
+      const size = Math.round(
+        getVariableValue(
+          resolveTokenSize(value, { tokens: env.tokens, font: env.font! }).frame.size
+        ) * 0.5
+      )
+      return {
+        width: size,
+        height: size,
+      }
+    }),
 
     disabled: {
       true: {

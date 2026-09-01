@@ -3,7 +3,7 @@ import {
   stylePropsText,
   validStyles as validStylesView,
 } from '@tamagui/helpers'
-import type { StaticConfig, TamaguiInternalConfig } from '../types'
+import type { StaticConfig, StylePiece, TamaguiInternalConfig } from '../types'
 import { createStylePiece } from '../style'
 import type { StyleStaticConfig } from './styleStaticConfig'
 
@@ -57,23 +57,41 @@ export function resolveStyleStaticConfig(
   }
   const resolvedBaseStyle = baseStyle || authoredBaseStyle
   let baseStylePiece
+  let baseStylePieces: Record<string, StylePiece> | undefined
   if (resolvedBaseStyle && !(staticConfig as any).disableBaseStylePiece) {
     let directBaseStyle: Record<string, any> | undefined
+    let directBaseKeys: string[] | undefined
+    const flushDirectBaseStyle = () => {
+      if (!directBaseStyle || !directBaseKeys) return
+      const piece = createStylePiece(directBaseStyle, 'base')
+      baseStylePiece ||= piece
+      baseStylePieces ||= {}
+      for (const key of directBaseKeys) {
+        baseStylePieces[key] = piece
+      }
+      directBaseStyle = undefined
+      directBaseKeys = undefined
+    }
     for (const key in resolvedBaseStyle) {
       const expanded = conf.shorthands[key] || key
       if (key !== 'transition' && !variants?.[key] && expanded in validStyles) {
         ;(directBaseStyle ||= {})[key] = resolvedBaseStyle[key]
+        ;(directBaseKeys ||= []).push(key)
+      } else {
+        // A default variant between direct declarations must run at that exact
+        // authored position. Keeping separate contiguous pieces preserves the
+        // base layer's ordinary last-write order while still precompiling it.
+        flushDirectBaseStyle()
       }
     }
-    if (directBaseStyle) {
-      baseStylePiece = createStylePiece(directBaseStyle, 'base')
-    }
+    flushDirectBaseStyle()
   }
   const keys = staticConfig.contextProps || staticConfig.context?.propKeys
   const value: StyleStaticConfig = {
     baseStyle: resolvedBaseStyle,
     baseVariantProps,
     baseStylePiece,
+    baseStylePieces,
     defaultProps,
     styledContextKeys: keys ? new Set(keys) : null,
     variants,

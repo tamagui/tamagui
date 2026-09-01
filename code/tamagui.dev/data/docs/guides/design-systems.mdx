@@ -96,13 +96,13 @@ Now, create and export your components. You can re-export components from
 `Circle.tsx`:
 
 ```tsx
-import { GetProps, YStack, styled } from 'tamagui' // or '@tamagui/core' if extending just that
+import { GetProps, type SizeTokens, YStack, styled } from 'tamagui' // or '@tamagui/core' if extending just that
 
 // one function drives both the numeric and the size-token cases
-const getCircleSize = (size, { tokens }) => {
+const getCircleSize = styled.dynamic<SizeTokens | number>((size, { tokens }) => {
   const value = tokens.size[size] ?? size
   return { width: value, height: value }
-}
+})
 
 export const Circle = styled(YStack, {
   alignItems: 'center',
@@ -111,10 +111,7 @@ export const Circle = styled(YStack, {
   overflow: 'hidden',
 
   variants: {
-    size: {
-      number: getCircleSize,
-      Size: getCircleSize,
-    },
+    size: getCircleSize,
   } as const,
 })
 
@@ -122,11 +119,9 @@ export type CircleProps = GetProps<typeof Circle>
 ```
 
 <Notice theme="yellow">
-  v3 removed the runtime spread and type-key variant lookups such as `'...size'`,
-  `':number'`, and `':string'`. Match variant values with the explicit type keys
-  `number`, `string`, `boolean`, and the token-scale keys like `Size`, `Space`,
-  `Color`, and `Radius` instead. A single function can back several keys, as
-  `getCircleSize` does above.
+  v3 removed runtime spread, resolver-name, and type-key variant matching. Brand
+  value-to-style functions with `styled.dynamic`; its generic parameter is the
+  accepted prop type, and one function handles the whole value domain.
 </Notice>
 
 And then export from `index.tsx`:

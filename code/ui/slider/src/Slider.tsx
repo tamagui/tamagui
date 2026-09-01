@@ -339,7 +339,7 @@ const SliderTrack = createStyledHOC(
         data-disabled={context.disabled ? '' : undefined}
         data-orientation={context.orientation}
         orientation={context.orientation}
-        size={context.size}
+        size={context.size ?? undefined}
         {...trackProps}
         ref={forwardedRef}
       />
@@ -383,7 +383,7 @@ const SliderActive = createStyledHOC(
         orientation={context.orientation}
         data-orientation={context.orientation}
         data-disabled={context.disabled ? '' : undefined}
-        size={context.size}
+        size={context.size ?? undefined}
         animateOnly={['left', 'top', 'right', 'bottom']}
         {...rangeProps}
         ref={composedRefs}
@@ -410,7 +410,7 @@ const SliderActive = createStyledHOC(
 
 // TODO make this customizable through tamagui
 // so we can accurately use it for estimatedSize below
-const getThumbSize = (val?: SizeTokens | number | true) => {
+const getThumbSize = styled.dynamic<SizeTokens | number | true>((val) => {
   const tokens = getTokens()
   const sizeToken = resolveSizeToken(val ?? true, 'size')
   const resolved = typeof sizeToken === 'number' ? sizeToken : tokens.size[sizeToken]
@@ -421,7 +421,7 @@ const getThumbSize = (val?: SizeTokens | number | true) => {
     minWidth: size,
     minHeight: size,
   }
-}
+})
 
 // Unstyled thumb frame: positioning + the size mechanism (hit-target
 // dimensions) + the circular shape modifier (opt-in, off by default). Border,
@@ -431,10 +431,7 @@ export const SliderThumbFrame = styled(YStack, {
   position: 'absolute',
 
   variants: {
-    size: {
-      number: getThumbSize,
-      Size: getThumbSize,
-    },
+    size: getThumbSize,
 
     circular: {
       true: {
@@ -479,7 +476,9 @@ const SliderThumb = createStyledHOC(
     const sizeIn = (sizeProp ?? context.size ?? true) as SizeTokens | number | true
     const [size, setSize] = React.useState(() => {
       // for SSR
-      const estimatedSize = getVariableValue(getThumbSize(sizeIn).width) as number
+      const estimatedSize = getVariableValue(
+        getThumbSize(sizeIn, {} as any)?.width
+      ) as number
       return estimatedSize
     })
 

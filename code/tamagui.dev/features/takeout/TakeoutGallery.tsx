@@ -360,14 +360,12 @@ const ImagesCarousel = () => {
 const YStackEnterable = styled(YStack, {
   variants: {
     // 1 = paginated forward, -1 = back, 0 = first render
-    going: {
-      number: (going: number) => ({
-        x: `0 enter:${going >= 0 ? '300px' : '-300px'} exit:${
-          going > 0 ? '-300px' : '300px'
-        }`,
-        opacity: '1 enter:0 exit:0',
-      }),
-    },
+    going: styled.dynamic<number>((going) => ({
+      x: `0 enter:${going >= 0 ? '300px' : '-300px'} exit:${
+        going > 0 ? '-300px' : '300px'
+      }`,
+      opacity: '1 enter:0 exit:0',
+    })),
   } as const,
 })
 

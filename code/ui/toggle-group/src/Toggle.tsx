@@ -30,21 +30,15 @@ export const ToggleFrame = styled(View, {
   display: 'flex',
 
   variants: {
-    size: {
-      number: (val) => ({
-        width: val,
-        height: val,
-      }),
-      Size: (val, { tokens }) => {
-        if (!val) return
-        const sizeToken = resolveSizeToken(val, 'size')
-        const size = typeof sizeToken === 'number' ? sizeToken : tokens.size[sizeToken]
-        return {
-          width: size,
-          height: size,
-        }
-      },
-    },
+    size: styled.dynamic<any>((val, { tokens }) => {
+      if (!val) return
+      const sizeToken = resolveSizeToken(val, 'size')
+      const size = typeof sizeToken === 'number' ? sizeToken : tokens.size[sizeToken]
+      return {
+        width: size,
+        height: size,
+      }
+    }),
 
     defaultActiveStyle: {
       true: {},

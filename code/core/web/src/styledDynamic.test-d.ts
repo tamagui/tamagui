@@ -53,6 +53,26 @@ describe('styled.dynamic', () => {
       },
     })
   })
+
+  test('legacy resolver keys are exact and unbranded functions are rejected', () => {
+    const Exact = styled(View, {
+      variants: {
+        size: {
+          Size: { width: 100 },
+        },
+      },
+    })
+
+    type ExactProps = GetProps<typeof Exact>
+    expectTypeOf<ExactProps['size']>().toEqualTypeOf<Cond<'Size'>>()
+
+    styled(View, {
+      variants: {
+        // @ts-expect-error value-to-style functions must be branded with styled.dynamic
+        size: (value: number) => ({ width: value }),
+      },
+    })
+  })
 })
 
 describe('.resolve', () => {

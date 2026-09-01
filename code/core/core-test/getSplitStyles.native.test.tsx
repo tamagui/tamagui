@@ -80,18 +80,16 @@ describe('getSplitStyles', () => {
     expect(style?.rowGap).toBe(10)
   })
 
-  test(`Size variants receive true for opt-in sizing policies`, () => {
+  test(`dynamic variants receive true for opt-in sizing policies`, () => {
     let seenSize: unknown
     const SpreadSizeView = styled(View, {
       variants: {
-        size: {
-          Size: (val) => {
-            seenSize = val
-            return {
-              opacity: 0.5,
-            }
-          },
-        },
+        size: styled.dynamic<any>((val) => {
+          seenSize = val
+          return {
+            opacity: 0.5,
+          }
+        }),
       } as const,
     })
 

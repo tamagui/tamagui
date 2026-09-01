@@ -228,6 +228,28 @@ function variantSites(
         if (!Node.isPropertyAssignment(variant)) continue
         const variantName = compact(variant.getNameNode().getText())
         const branches = unwrapExpression(variant.getInitializerOrThrow())
+        if (Node.isCallExpression(branches)) {
+          const callee = branches.getExpression()
+          if (Node.isPropertyAccessExpression(callee) && callee.getName() === 'dynamic') {
+            const body = branches.getArguments()[0]
+            if (body && Node.isExpression(body)) {
+              for (const style of variantStyleObjects(body)) {
+                const site = convertStyleObject(
+                  style,
+                  'styled',
+                  `${label} variants.${variantName}`,
+                  registry,
+                  containers,
+                  targets,
+                  host,
+                  write
+                )
+                if (site) sites.push(site)
+              }
+            }
+          }
+          continue
+        }
         if (!Node.isObjectLiteralExpression(branches)) continue
         for (const branch of branches.getProperties()) {
           if (!Node.isPropertyAssignment(branch)) continue

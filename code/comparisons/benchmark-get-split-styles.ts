@@ -83,6 +83,7 @@ function prepareElements(
     Text: any
     View: any
     styled: typeof styled
+    dynamic?: typeof styled.dynamic
   }
 ) {
   const variants = new Map<string, any>()
@@ -93,9 +94,12 @@ function prepareElements(
     if (component) return component
     const definitions: Record<string, any> = {}
     for (const name of sortedNames) {
-      definitions[name] = {
-        any: (value: any) => ({ opacity: value === false ? 1 : 0.875 }),
-      }
+      const resolveOpacity = (value: any) => ({
+        opacity: value === false ? 1 : 0.875,
+      })
+      definitions[name] = framework.dynamic
+        ? framework.dynamic<any>(resolveOpacity)
+        : { ['...']: resolveOpacity }
     }
     component = framework.styled(kind === 'text' ? framework.Text : framework.View, {
       variants: definitions,
@@ -126,7 +130,12 @@ const fixedElements = [
   corpus.fixedOverheadScenarios['one-prop'],
 ]
 const allElements = [...corpus.elements, ...fixedElements]
-const prepared = prepareElements(allElements, { Text, View, styled })
+const prepared = prepareElements(allElements, {
+  Text,
+  View,
+  styled,
+  dynamic: styled.dynamic,
+})
 const v2Prepared = prepareElements(allElements, {
   Text: v2Tamagui.Text,
   View: v2Tamagui.View,

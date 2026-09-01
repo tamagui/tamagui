@@ -3,10 +3,12 @@ import { TextInput, type TextInputProps as RNTextInputProps } from 'react-native
 import { createStyledHOC, type GetProps, styled } from '@tamagui/core'
 import { registerFocusable } from '@tamagui/focusable'
 import { useNativeInputRef } from '@tamagui/element'
-import { styledBody } from './shared'
+import { resolveMultilineInputSize, styledBody } from './shared'
 import type { InputExtraProps } from './types'
 
-const StyledInput = styled(TextInput, styledBody[0], styledBody[1])
+const StyledInput = styled(TextInput, styledBody[0], styledBody[1]).resolve(
+  resolveMultilineInputSize
+)
 
 /**
  * A web-aligned input component for React Native.

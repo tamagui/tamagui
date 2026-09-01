@@ -368,7 +368,9 @@ export const { Provider: PhoneScaleProvider, useStyledContext: usePhoneScale } =
     invertScale: 1.464,
   })
 
-export const ShowcaseChildWrapper = createStyledHOC(ScrollView, (props, ref) => {
+export const ShowcaseChildWrapper: React.ComponentType<
+  React.ComponentProps<typeof ScrollView>
+> = createStyledHOC(ScrollView, (props, ref) => {
   const { sm } = useGroupMedia('window')
 
   return (

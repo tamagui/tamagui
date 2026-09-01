@@ -14,10 +14,7 @@ export type XStackProps = YStackProps
 export type ZStackProps = YStackProps
 
 const variants = {
-  elevation: {
-    number: getElevation,
-    Size: getElevation,
-  },
+  elevation: getElevation,
 } as const
 
 /**

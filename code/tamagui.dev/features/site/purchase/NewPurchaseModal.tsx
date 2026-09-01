@@ -583,13 +583,11 @@ const AnimatedYStack = styled(YStack, {
 
   transition: '100ms',
   variants: {
-    direction: {
-      number: (direction) => ({
-        x: `enter:${direction > 0 ? -10 : 10}px exit:${direction < 0 ? -10 : 10}px`,
-        opacity: 'enter:0 exit:0',
-        zIndex: 'exit:0',
-      }),
-    },
+    direction: styled.dynamic<number>((direction) => ({
+      x: `enter:${direction > 0 ? -10 : 10}px exit:${direction < 0 ? -10 : 10}px`,
+      opacity: 'enter:0 exit:0',
+      zIndex: 'exit:0',
+    })),
   } as const,
 })
 

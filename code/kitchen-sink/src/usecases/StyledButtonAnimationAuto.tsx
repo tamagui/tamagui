@@ -25,24 +25,22 @@ export const ButtonFrame = styled(View, {
   scale: 'press:0.97',
   opacity: 'press:0.9',
   variants: {
-    size: {
-      Size: (name, { tokens }) => {
-        const sizeToken = (name === true ? '4' : name) as Exclude<SizeTokens, true>
+    size: styled.dynamic<SizeTokens>((name, { tokens }) => {
+      const sizeToken = (name === true ? '4' : name) as Exclude<SizeTokens, true>
 
-        return {
-          height: tokens.size[sizeToken],
+      return {
+        height: tokens.size[sizeToken],
 
-          borderRadius: tokens.radius[sizeToken],
+        borderRadius: tokens.radius[sizeToken],
 
-          // resolve tokens to numeric values and multiply to derive related
-          // sizes - this is a stylistic choice that depends on your token scale
+        // resolve tokens to numeric values and multiply to derive related
+        // sizes - this is a stylistic choice that depends on your token scale
 
-          gap: tokens.space[sizeToken].val * 0.2,
+        gap: tokens.space[sizeToken].val * 0.2,
 
-          paddingHorizontal: getSpace(sizeToken).val * 0.9,
-        }
-      },
-    },
+        paddingHorizontal: getSpace(sizeToken).val * 0.9,
+      }
+    }),
   } as const,
   defaultVariants: {
     size: '5',
@@ -55,15 +53,13 @@ export const ButtonText = styled(Text, {
   color: 'color',
   userSelect: 'none',
   variants: {
-    size: {
-      FontSize: (name, { font }) => {
-        const sizeToken = (name === true ? '4' : name) as Exclude<typeof name, true>
+    size: styled.dynamic<SizeTokens>((name, { font }) => {
+      const sizeToken = (name === true ? '4' : name) as Exclude<typeof name, true>
 
-        return {
-          fontSize: font?.size[sizeToken],
-        }
-      },
-    },
+      return {
+        fontSize: font?.size[sizeToken],
+      }
+    }),
   } as const,
 })
 

@@ -14,7 +14,7 @@ import { View } from 'react-native'
 import { ARROW_KEYS, PAGE_KEYS, SLIDER_NAME, useSliderContext } from './constants'
 import type { ScopedProps, SliderImplProps } from './types'
 
-export const SliderFrame = styled(YStack, {
+const SliderFrameBase = styled(YStack, {
   position: 'relative',
 
   variants: {
@@ -23,26 +23,25 @@ export const SliderFrame = styled(YStack, {
       vertical: {},
     },
 
-    size: (val, extras) => {
-      if (!val) {
-        return
-      }
-      const orientation = extras.props['orientation']
-      const size = Math.round(getVariableValue(getSize(val)) / 6)
-      if (orientation === 'horizontal') {
-        return {
-          height: size,
-          borderRadius: size,
-          justifyContent: 'center',
-        }
-      }
-      return {
-        width: size,
-        borderRadius: size,
-        alignItems: 'center',
-      }
-    },
+    size: styled.dynamic<SliderImplProps['size']>(),
   } as const,
+})
+
+export const SliderFrame = SliderFrameBase.resolve((props) => {
+  if (!props.size) return
+  const size = Math.round(getVariableValue(getSize(props.size as any)) / 6)
+  if (props.orientation === 'horizontal') {
+    return {
+      height: size,
+      borderRadius: size,
+      justifyContent: 'center',
+    }
+  }
+  return {
+    width: size,
+    borderRadius: size,
+    alignItems: 'center',
+  }
 })
 
 export const SliderImpl = createRefComponent<View, SliderImplProps>(

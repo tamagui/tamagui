@@ -74,7 +74,8 @@ export {
 } from './createVariable'
 export { insertFont, updateFont } from './insertFont'
 export { styled } from './styled'
-export { style, useStyle } from './style'
+export { style } from './style'
+export { useStyle } from './hooks/useStyle'
 export { Tamagui } from './Tamagui'
 
 export type { TamaguiBuildOptions } from '@tamagui/types'
@@ -153,7 +154,6 @@ export type {
   Size,
   SizeKeys,
   SizeTokens,
-  SizeVariantSpreadFunction,
   Space,
   SpaceTokens,
   SpaceValue,
@@ -221,8 +221,6 @@ export type {
   VariableVal,
   VariableValGeneric,
   VariableValIn,
-  VariantSpreadExtras,
-  VariantSpreadFunction,
   WidthHeight,
   WithFlatVariantValues,
   WithShorthands,
@@ -231,7 +229,6 @@ export type {
   ZIndexTokens,
 } from './types'
 export { stylePieceSymbol } from './types'
-export { createVariantResolver } from './types'
 
 export type { GetRef } from './interfaces/GetRef'
 export {

@@ -156,12 +156,10 @@ const SlideFrame = styled(YStack, {
   opacity: 1,
 
   variants: {
-    going: {
-      number: (going: number) => ({
-        x: `enter:${going === 0 ? 0 : going > 0 ? 100 : -100}px exit:${going === 0 ? 0 : going < 0 ? 100 : -100}px`,
-        opacity: 'enter:0 exit:0',
-      }),
-    },
+    going: styled.dynamic<number>((going) => ({
+      x: `enter:${going === 0 ? 0 : going > 0 ? 100 : -100}px exit:${going === 0 ? 0 : going < 0 ? 100 : -100}px`,
+      opacity: 'enter:0 exit:0',
+    })),
   } as const,
 })
 

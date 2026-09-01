@@ -247,8 +247,6 @@ export type {
   Tokens,
   TypeOverride,
   Variable,
-  VariantSpreadExtras,
-  VariantSpreadFunction,
   ZIndexTokens,
   ViewStyle,
   TextStyle,

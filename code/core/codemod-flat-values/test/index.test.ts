@@ -1107,13 +1107,13 @@ describe('styled variants', () => {
 	const Frame = styled(View, {
         x: 0,
         variants: {
-          going: { number: (going: number) => ({ exitStyle: { x: going < 0 ? 100 : -100 } }) },
+          going: styled.dynamic<number>((going) => ({ exitStyle: { x: going < 0 ? 100 : -100 } })),
         } as const,
       })`,
           'fixture.native.tsx'
         ),
       ]),
-      'variants.going.number'
+      'variants.going'
     )
 
     expect(codes(site)).toEqual([])

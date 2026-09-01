@@ -77,18 +77,14 @@ export const ButtonFrame = styled(View, {
   flexDirection: 'row',
 
   variants: {
-    size: {
-      Size: (name, { tokens }) => {
-        return {
-          height: tokens.size[name],
-          borderRadius: tokens.radius[name],
-          // scale the resolved token values to fit this component's proportions
-          // these multipliers are a stylistic choice for this design system
-          gap: tokens.space[name].val * 0.2,
-          paddingHorizontal: getVariableValue(getSpace(name)) * 0.8,
-        }
-      },
-    },
+    size: styled.dynamic<SizeTokens>((name, { tokens }) => ({
+      height: tokens.size[name],
+      borderRadius: tokens.radius[name],
+      // scale the resolved token values to fit this component's proportions
+      // these multipliers are a stylistic choice for this design system
+      gap: tokens.space[name].val * 0.2,
+      paddingHorizontal: getVariableValue(getSpace(name)) * 0.8,
+    })),
   } as const,
 
   defaultVariants: {
@@ -105,11 +101,9 @@ export const ButtonText = styled(Text, {
   userSelect: 'none',
 
   variants: {
-    size: {
-      FontSize: (name, { font }) => ({
-        fontSize: font?.size[name],
-      }),
-    },
+    size: styled.dynamic<SizeTokens>((name, { font }) => ({
+      fontSize: font?.size[name],
+    })),
   } as const,
 })
 
@@ -335,8 +329,8 @@ const ButtonFrame = styled(View, {
 ```
 
 Still, this is somewhat repetitive and prone to typos. To avoid duplication while
-also working even if we add new sizes to our design system in the future, we can
-use the handy Tamagui [Spread Variants](/docs/core/variants#spread-variants):
+also working if we add new sizes later, use a branded
+[`styled.dynamic`](/docs/core/variants#dynamic-variants):
 
 ```tsx
 import { View, styled } from '@tamagui/core'
@@ -348,15 +342,11 @@ const ButtonFrame = styled(View, {
   flexDirection: 'row',
 
   variants: {
-    size: {
-      Size: (name, { tokens }) => {
-        return {
-          height: tokens.size[name],
-          borderRadius: tokens.radius[name],
-          gap: tokens.space[name].val * 0.2,
-        }
-      },
-    },
+    size: styled.dynamic<SizeTokens>((name, { tokens }) => ({
+      height: tokens.size[name],
+      borderRadius: tokens.radius[name],
+      gap: tokens.space[name].val * 0.2,
+    })),
   } as const,
 })
 
@@ -366,19 +356,16 @@ export const ButtonText = styled(Text, {
   userSelect: 'none',
 
   variants: {
-    size: {
-      FontSize: (name, { font }) => ({
-        fontSize: font?.size[name],
-      }),
-    },
+    size: styled.dynamic<SizeTokens>((name, { font }) => ({
+      fontSize: font?.size[name],
+    })),
   } as const,
 })
 ```
 
 <Notice>
-  Resolver variant callbacks are not contextually typed, so `name` defaults to implicit
-  any. Annotate it yourself — `Size: (name: SizeTokens, { tokens }) => ...` — or set
-  `"noImplicitAny": false` in `tsconfig.json`.
+  The generic parameter on `styled.dynamic` is the variant prop's accepted type,
+  so callback values stay contextually typed under `noImplicitAny`.
 </Notice>
 
 So now we can pass in our new `size` property:
@@ -588,15 +575,11 @@ const ButtonFrame = styled(View, {
   flexDirection: 'row',
 
   variants: {
-    size: {
-      Size: (name, { tokens }) => {
-        return {
-          height: tokens.size[name],
-          borderRadius: tokens.radius[name],
-          gap: tokens.space[name].val * 0.2,
-        }
-      },
-    },
+    size: styled.dynamic<SizeTokens>((name, { tokens }) => ({
+      height: tokens.size[name],
+      borderRadius: tokens.radius[name],
+      gap: tokens.space[name].val * 0.2,
+    })),
   } as const,
 })
 
@@ -607,11 +590,9 @@ const ButtonText = styled(Text, {
   userSelect: 'none',
 
   variants: {
-    size: {
-      FontSize: (name, { font }) => ({
-        fontSize: font?.size[name],
-      }),
-    },
+    size: styled.dynamic<SizeTokens>((name, { font }) => ({
+      fontSize: font?.size[name],
+    })),
   } as const,
 })
 

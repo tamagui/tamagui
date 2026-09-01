@@ -1509,12 +1509,6 @@ export function createTamaguiCompilerHost(
     resolveComponent: resolve,
     isStyleProp,
     canLowerDynamicStyleProp(name, component, valueKind) {
-      // A component resolver receives the complete props object. Without a
-      // compiler-derived read set, resolving one side of a dynamic callsite
-      // would execute the real resolver with an incomplete props snapshot.
-      if ((component.staticConfig as StaticConfig).resolvers?.length) {
-        return false
-      }
       // a conditional with static branches lowers per-branch on both
       // platforms: each side resolves at compile time, only the test survives
       if (
@@ -1523,6 +1517,12 @@ export function createTamaguiCompilerHost(
         canLowerConditionalStyleProp(name, component)
       ) {
         return true
+      }
+      // A component resolver receives the complete props object. Without a
+      // compiler-derived read set, resolving an opaque dynamic callsite would
+      // execute the real resolver with an incomplete props snapshot.
+      if ((component.staticConfig as StaticConfig).resolvers?.length) {
+        return false
       }
       return (
         !options.disablePartialExtraction &&
@@ -1580,9 +1580,21 @@ export function createTamaguiCompilerHost(
         }
       }
       if (component.staticConfig.resolvers?.length) {
-        const unresolvedProp = input.element.entries.find(
+        const unresolvedProps = input.element.entries.filter(
           (entry) => entry.kind === 'prop' && entry.value.kind !== 'static'
         )
+        // One conditional with static leaves is still a complete prop set:
+        // lowerCandidate evaluates the full resolver chain once per branch.
+        // Multiple unknown props would require a cross-product/read set, so
+        // they remain on the runtime path.
+        const onlyStaticBranchConditional =
+          unresolvedProps.length === 1 &&
+          unresolvedProps[0]?.kind === 'prop' &&
+          unresolvedProps[0].value.kind === 'conditional' &&
+          canLowerConditionalStyleProp(unresolvedProps[0].name, component)
+        const unresolvedProp = onlyStaticBranchConditional
+          ? undefined
+          : unresolvedProps[0]
         if (unresolvedProp?.kind === 'prop') {
           return bailout(
             input,

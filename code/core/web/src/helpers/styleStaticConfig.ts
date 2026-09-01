@@ -5,6 +5,7 @@ export type StyleStaticConfig = {
   baseStyle: Record<string, any> | undefined
   baseVariantProps: Record<string, any> | undefined
   baseStylePiece: StylePiece | undefined
+  baseStylePieces: Record<string, StylePiece> | undefined
   defaultProps: Record<string, any> | undefined
   styledContextKeys: Set<string> | null
   variants: StaticConfig['variants']

@@ -38,34 +38,26 @@ const GridParent = styled(View, {
   } as const,
 })
 
-const GridChild = styled(View, {
+const GridChildBase = styled(View, {
   displayName: 'GridChild',
   context: GridContext,
   height: 50,
   backgroundColor: 'blue10',
   variants: {
-    columns: {
-      // Functional variant that uses context props
-      number: (columns, { props, tokens }) => {
-        const gapToken = props.gap as string
-
-        // Test: gapToken should be '2', '4', or '8' - NOT 'var(--t-space-X)'
-        // If it's a CSS variable, the token lookup below will fail
-        const spaceToken = gapToken ? tokens.space[gapToken] : undefined
-        const gapValue =
-          spaceToken && typeof spaceToken.val === 'number' ? spaceToken.val : 0
-
-        // Calculate width based on columns and gap
-        // width = (100% / columns) - (gap * (columns - 1) / columns)
-        const widthPercent = 100 / columns
-        const gapAdjustment = (gapValue * (columns - 1)) / columns
-
-        return {
-          width: `calc(${widthPercent}% - ${gapAdjustment}px)`,
-        }
-      },
-    },
+    columns: styled.dynamic<number>(),
   } as const,
+})
+
+const GridChild = GridChildBase.resolve((props, { tokens }) => {
+  const columns = Number(props.columns ?? 2)
+  const gapToken = props.gap as string
+  const spaceToken = gapToken ? tokens.space[gapToken] : undefined
+  const gapValue = spaceToken && typeof spaceToken.val === 'number' ? spaceToken.val : 0
+  const widthPercent = 100 / columns
+  const gapAdjustment = (gapValue * (columns - 1)) / columns
+  return {
+    width: `calc(${widthPercent}% - ${gapAdjustment}px)`,
+  }
 })
 
 // Component that displays debug info about the context props

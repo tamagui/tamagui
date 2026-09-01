@@ -13,7 +13,6 @@ export declare function createStylePiece(definition: StaticShapeStyle, layer?: S
  * precedence.
  */
 export declare function style(definition: StaticShapeStyle): StylePiece;
-/** Resolves a style piece to a native/inline style object for compatibility props. */
-export declare function useStyle(piece?: StylePiece | null): TextStyle | undefined;
+export declare function resolveStylePieceForTheme(piece: StylePiece, theme: ThemeParsed, themeName: string): TextStyle;
 export {};
 //# sourceMappingURL=style.d.ts.map

@@ -22,13 +22,11 @@ const GalleryItem = styled(YStack, {
 
   variants: {
     // 1 = right, 0 = nowhere, -1 = left
-    going: {
-      number: (going) => ({
-        x: `enter:${going > 0 ? 1000 : -1000}px exit:${going < 0 ? 1000 : -1000}px`,
-        opacity: 'enter:0 exit:0',
-        zIndex: 'exit:0',
-      }),
-    },
+    going: styled.dynamic<number>((going) => ({
+      x: `enter:${going > 0 ? 1000 : -1000}px exit:${going < 0 ? 1000 : -1000}px`,
+      opacity: 'enter:0 exit:0',
+      zIndex: 'exit:0',
+    })),
   } as const,
 })
 

@@ -115,15 +115,13 @@ const GalleryItem = styled(YStack, {
 
   variants: {
     // 1 = right, 0 = nowhere, -1 = left
-    going: {
-      number: (going: number) => ({
+    going: styled.dynamic<number>((going) => ({
         x: `0 enter:${going > 0 ? '1000px' : '-1000px'} exit:${
           going < 0 ? '1000px' : '-1000px'
         }`,
         opacity: '1 enter:0 exit:0',
         zIndex: '1 exit:0',
-      }),
-    },
+      })),
   } as const,
 })
 

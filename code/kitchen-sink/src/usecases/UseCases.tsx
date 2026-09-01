@@ -294,14 +294,12 @@ export const Sandbox = () => {
 
 // const Frame = styled(ButtonFrame, {
 //   variants: {
-//     square: {
-//       number: (size, { tokens }) => {
+//     square: styled.dynamic<number>((size, { tokens }) => {
 //         return {
 //           width: tokens.size[size] ?? size,
 //           p: 0,
 //         }
-//       },
-//     },
+//       }),
 //   } as const,
 // })
 

@@ -2,10 +2,12 @@ import { createStyledHOC, type GetProps, View, styled } from '@tamagui/core'
 import { registerFocusable } from '@tamagui/focusable'
 import { useWebRef } from '@tamagui/element'
 import React from 'react'
-import { styledBody } from './shared'
+import { resolveMultilineInputSize, styledBody } from './shared'
 import type { InputExtraProps } from './types'
 
-const StyledInput = styled(View, styledBody[0], styledBody[1])
+const StyledInput = styled(View, styledBody[0], styledBody[1]).resolve(
+  resolveMultilineInputSize
+)
 
 /**
  * A web-aligned input component.

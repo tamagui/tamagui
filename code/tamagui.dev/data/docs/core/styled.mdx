@@ -36,7 +36,7 @@ One really important and useful thing to note about Tamagui style properties: th
 Let's add some variants:
 
 ```tsx
-import { View, styled } from '@tamagui/core'
+import { type SizeTokens, View, styled } from '@tamagui/core'
 
 export const RoundedSquare = styled(View, {
   borderRadius: 20,
@@ -56,14 +56,10 @@ export const RoundedSquare = styled(View, {
       },
     },
 
-    size: {
-      Size: (size, { tokens }) => {
-        return {
-          width: tokens.size[size] ?? size,
-          height: tokens.size[size] ?? size,
-        }
-      },
-    },
+    size: styled.dynamic<SizeTokens | number>((size, { tokens }) => ({
+      width: tokens.size[size] ?? size,
+      height: tokens.size[size] ?? size,
+    })),
   } as const,
 })
 ```

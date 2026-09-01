@@ -364,9 +364,16 @@ export function readStaticTheme(
   // One parse per unique authored value, and every clause the parser could not
   // use is a violation here instead of the warn-and-drop the render path does.
   const issues: InlineValueIssue[] = []
+  // The theme-update subpath can resolve through the workspace symlink while
+  // the root @tamagui/web type resolves through the TS path alias. They are the
+  // same runtime config; keep the duplicate declaration identity at this
+  // subpath boundary instead of leaking it through the zero compiler.
+  const themeUpdateConfig = config as Parameters<typeof getInlineValuesFromProps>[1]
   const inlineValues =
     kind === 'ThemeUpdate' && Object.keys(themeKeyProps).length
-      ? getInlineValuesFromProps(themeKeyProps, config, (issue) => issues.push(issue))
+      ? getInlineValuesFromProps(themeKeyProps, themeUpdateConfig, (issue) =>
+          issues.push(issue)
+        )
       : null
   for (const issue of issues) {
     violations.push({
@@ -382,7 +389,9 @@ export function readStaticTheme(
     })
   }
 
-  const inlineCSS = inlineValues ? getVariablesCSSRules(inlineValues, config) : null
+  const inlineCSS = inlineValues
+    ? getVariablesCSSRules(inlineValues, themeUpdateConfig)
+    : null
   if (inlineCSS) css.set(inlineCSS.identifier, inlineCSS.rules.join(''))
 
   if (violations.length) return { node: null, violations, css }

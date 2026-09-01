@@ -1,4 +1,4 @@
-import type { GetProps, VariantSpreadExtras } from '@tamagui/core'
+import type { GetProps } from '@tamagui/core'
 import {
   createStyledHOC,
   mergeSlotStyleProps,
@@ -23,22 +23,19 @@ type ScopedProps<P> = P & { __scopeGroup?: Scope }
 const [createGroupContext, createGroupScope] = createContextScope(GROUP_NAME)
 const [GroupProvider, useGroupContext] = createGroupContext<GroupContextValue>(GROUP_NAME)
 
-const groupSizeVariant = (val: any, { tokens }: VariantSpreadExtras<any>) => {
+const groupSizeVariant = styled.dynamic<any>((val, { tokens }) => {
   const radiusToken = resolveSizeToken(val, 'radius')
   return {
     borderRadius: tokens.radius[radiusToken] ?? radiusToken,
   }
-}
+})
 
 export const GroupFrame = styled(YStack, {
   displayName: 'GroupFrame',
   size: true,
 
   variants: {
-    size: {
-      true: groupSizeVariant,
-      any: groupSizeVariant,
-    },
+    size: groupSizeVariant,
   } as const,
 })
 

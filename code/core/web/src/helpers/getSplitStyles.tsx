@@ -715,8 +715,18 @@ function contributeProp(
     }
   }
 
+  const isNativeInputColor =
+    process.env.TAMAGUI_TARGET === 'native' &&
+    isInput &&
+    keyInit in nativeTextInputColorProps
+
   // keyInit === 'style' is handled in skipProps
-  if (keyInit in skipProps && shouldSkipDirectProps && !neverSkipProps?.[keyInit]) {
+  if (
+    !isNativeInputColor &&
+    keyInit in skipProps &&
+    shouldSkipDirectProps &&
+    !neverSkipProps?.[keyInit]
+  ) {
     if (process.env.TAMAGUI_TARGET === 'web' && keyInit === 'container') {
       pass[passContainerValue] = valInit
     }
@@ -882,7 +892,7 @@ function contributeProp(
   }
 
   // after shouldPassThrough
-  if (shouldCheckSkipProps && !neverSkipProps?.[keyInit]) {
+  if (!isNativeInputColor && shouldCheckSkipProps && !neverSkipProps?.[keyInit]) {
     if (
       keyInit in skipProps &&
       !(
@@ -1221,12 +1231,7 @@ export const getSplitStyles: StyleSplitter = (
   const baseVariantProps = styleStaticConfig.baseVariantProps
   const appliesBaseStyle = baseStyle && !processedProps.asChild
   pass[passSourceLayer] = sourceLayerBase
-  const appliedBaseStylePiece =
-    !!appliesBaseStyle &&
-    !!styleStaticConfig.baseStylePiece &&
-    process.env.TAMAGUI_TARGET === 'web' &&
-    styleState.flatShouldDoClasses &&
-    applyStylePieceClasses(styleState, styleStaticConfig.baseStylePiece, sourceLayerBase)
+  let appliedBaseStylePieces: Set<StylePiece> | undefined
   if (appliesBaseStyle && baseVariantProps) {
     // a defaulted variant the caller replaced keeps the default's authored
     // position (so a later styled override of its outputs still wins), but the
@@ -1245,24 +1250,38 @@ export const getSplitStyles: StyleSplitter = (
   }
   if (appliesBaseStyle) {
     for (const key in baseStyle) {
-      if (
-        appliedBaseStylePiece &&
-        Object.hasOwn(
-          styleStaticConfig.baseStylePiece![stylePieceSymbol].styleObject,
-          key
-        )
-      ) {
-        continue
-      }
-      contributeProp(
-        pass,
-        key,
+      const baseValue =
         baseVariantProps &&
-          Object.hasOwn(baseVariantProps, key) &&
-          Object.hasOwn(processedProps, key)
+        Object.hasOwn(baseVariantProps, key) &&
+        Object.hasOwn(processedProps, key)
           ? processedProps[key]
           : baseStyle[key]
-      )
+      const expandedKey = shorthands[key] || key
+      // Precompiled base pieces bypass contributeProp, but font-aware dynamics
+      // and resolvers still need the same active-family state that the ordinary
+      // base walk establishes before they execute.
+      if (
+        (isText || isInput) &&
+        baseValue &&
+        expandedKey === 'fontFamily' &&
+        baseValue in conf.fontsParsed
+      ) {
+        styleState.fontFamily = baseValue
+      }
+      const piece = styleStaticConfig.baseStylePieces?.[key]
+      if (
+        piece &&
+        process.env.TAMAGUI_TARGET === 'web' &&
+        styleState.flatShouldDoClasses
+      ) {
+        if (!appliedBaseStylePieces?.has(piece)) {
+          if (applyStylePieceClasses(styleState, piece, sourceLayerBase)) {
+            ;(appliedBaseStylePieces ||= new Set()).add(piece)
+          }
+        }
+        if (appliedBaseStylePieces?.has(piece)) continue
+      }
+      contributeProp(pass, key, baseValue)
     }
   }
   pass[passSourceLayer] = sourceLayerProps

@@ -17,12 +17,10 @@ const PanelFrame = styled(YStack, {
   opacity: 1,
   x: 0,
   variants: {
-    going: {
-      number: (going) => ({
-        x: `enter:${going > 0 ? 80 : -80}px exit:${going < 0 ? 80 : -80}px`,
-        opacity: 'enter:0 exit:0',
-      }),
-    },
+    going: styled.dynamic<number>((going) => ({
+      x: `enter:${going > 0 ? 80 : -80}px exit:${going < 0 ? 80 : -80}px`,
+      opacity: 'enter:0 exit:0',
+    })),
   } as const,
 })
 

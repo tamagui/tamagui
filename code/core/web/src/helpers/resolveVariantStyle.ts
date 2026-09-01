@@ -1,33 +1,10 @@
 import type { GetStyleState } from '../types'
 import { emitVariantStyle, walkConditionalValue } from './getSplitStyles'
 import { isObj } from './isObj'
-import { getConfigRevisionState } from './grammarConfig'
 import { skipProps } from './skipProps'
 import { styleOriginalValues } from './styleOriginalValues'
 import { normalizeValueWithProperty } from './normalizeValueWithProperty'
 import { getDynamicEnv, isStyledDynamic } from './styledDynamic'
-
-export const getVariantExtras = (styleState: GetStyleState) => {
-  const cached = (styleState as any).flatVariantExtras
-  if (cached) return cached
-
-  const env = getDynamicEnv(styleState)
-  const next = {
-    fonts: env.fonts,
-    tokens: env.tokens,
-    theme: env.theme,
-    context: styleState.styleProps.styledContext,
-    get fontFamily() {
-      return env.fontFamily
-    },
-    get font() {
-      return env.font
-    },
-    props: styleState.props,
-  }
-
-  return ((styleState as any).flatVariantExtras = next)
-}
 
 export function resolveVariantStyle(
   state: GetStyleState,
@@ -72,13 +49,8 @@ function resolveSelection(
   if (isStyledDynamic(definition) && typeof definition === 'function') {
     // styled.dynamic(fn): pure function of the (per-clause) value + env
     output = definition(value, getDynamicEnv(state))
-  } else {
-    output = getConfigRevisionState(state.conf).variantDefinition(
-      definition,
-      value,
-      state.theme
-    )
-    if (typeof output === 'function') output = output(value, getVariantExtras(state))
+  } else if (definition && typeof definition === 'object' && value !== undefined) {
+    output = definition[value]
   }
   if (!isObj(output)) return
 
@@ -86,6 +58,10 @@ function resolveSelection(
   for (const outputKey in output) {
     if (!state.styleProps.noSkip && outputKey in skipProps) continue
     const raw = output[outputKey]
+    // A dynamic's static shape is allowed to use undefined values for
+    // conditionals. They are absent, matching resolver output semantics, and
+    // must not normalize into an "undefined" atomic rule.
+    if (raw == null) continue
     const value = state.styleProps.noNormalize
       ? raw
       : normalizeValueWithProperty(raw, state.conf.shorthands[outputKey] || outputKey)

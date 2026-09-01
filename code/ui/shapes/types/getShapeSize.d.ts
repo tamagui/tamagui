@@ -1,4 +1,2 @@
-import type { YStackProps } from '@tamagui/stacks';
-import type { SizeVariantSpreadFunction } from '@tamagui/web';
-export declare const getShapeSize: SizeVariantSpreadFunction<YStackProps>;
+export declare const getShapeSize: import("@tamagui/web/types/types").StyledDynamicFn<number | import("@tamagui/web").Size, Record<string, any>>;
 //# sourceMappingURL=getShapeSize.d.ts.map

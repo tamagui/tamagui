@@ -5,13 +5,7 @@ import { resolveSizeToken } from '@tamagui/size'
 import { YStack } from '@tamagui/stacks'
 import type { TextParentStyles } from '@tamagui/text'
 import { SizableText, textParentProps, wrapChildrenInText } from '@tamagui/text'
-import type {
-  ColorTokens,
-  FontSizeTokens,
-  GetProps,
-  SizeTokens,
-  VariantSpreadExtras,
-} from '@tamagui/web'
+import type { ColorTokens, FontSizeTokens, GetProps, SizeTokens } from '@tamagui/web'
 import {
   createStyledContext,
   getVariableValue,
@@ -39,30 +33,26 @@ export const ListItemContext = createStyledContext<{
   color: undefined,
 })
 
-export const listItemSizeVariant = (
-  val: SizeTokens | true,
-  { tokens }: VariantSpreadExtras<any>
-) => {
-  const sizeToken = resolveSizeToken(val, 'size')
-  const spaceToken = resolveSizeToken(val, 'space')
-  const size = typeof sizeToken === 'number' ? sizeToken : tokens.size[sizeToken]
-  const sizeVal = getVariableValue(size) as number
-  return {
-    minHeight: size,
-    paddingHorizontal: tokens.space[spaceToken],
-    paddingVertical: Math.max(0, Math.round(sizeVal * 0.36 - 9)),
-    gap: getThemedIconSize(sizeToken, 0.4),
+export const listItemSizeVariant = styled.dynamic<SizeTokens | true>(
+  (val, { tokens }) => {
+    const sizeToken = resolveSizeToken(val, 'size')
+    const spaceToken = resolveSizeToken(val, 'space')
+    const size = typeof sizeToken === 'number' ? sizeToken : tokens.size[sizeToken]
+    const sizeVal = getVariableValue(size) as number
+    return {
+      minHeight: size,
+      paddingHorizontal: tokens.space[spaceToken],
+      paddingVertical: Math.max(0, Math.round(sizeVal * 0.36 - 9)),
+      gap: getThemedIconSize(sizeToken, 0.4),
+    }
   }
-}
+)
 
-const listItemSubtitleSizeVariant = (
-  val: SizeTokens | true,
-  extras: VariantSpreadExtras<any>
-) => {
+const listItemSubtitleSizeVariant = styled.dynamic<SizeTokens | true>((val, env) => {
   const fontSizeToken = resolveSizeToken(val, 'fontSize')
   const oneSmaller = oneSizeTokenSmaller(fontSizeToken)
-  return getFontSized(oneSmaller as FontSizeTokens, extras as any)
-}
+  return getFontSized(oneSmaller as FontSizeTokens, env)
+})
 
 // structural layout, the size mechanism, and the disabled pointer-event block.
 // theme decoration (palette, border, cursor, the outlined/active appearance,
@@ -83,10 +73,7 @@ export const ListItemFrame = styled(View, {
   flexDirection: 'row',
 
   variants: {
-    size: {
-      true: listItemSizeVariant,
-      Size: listItemSizeVariant,
-    },
+    size: listItemSizeVariant,
 
     disabled: {
       true: {
@@ -113,10 +100,7 @@ export const ListItemSubtitle = styled(ListItemText, {
   maxWidth: '100%',
 
   variants: {
-    size: {
-      true: listItemSubtitleSizeVariant,
-      Size: listItemSubtitleSizeVariant,
-    },
+    size: listItemSubtitleSizeVariant,
   } as const,
 })
 
