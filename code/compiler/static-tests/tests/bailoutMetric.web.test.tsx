@@ -19,6 +19,10 @@ const structurallyRetainedComponents: Record<string, string> = {
   ButtonStyled: 'inherits the Button behavior HOC',
   Card: 'styled-context frame: inherited size is also provided to descendants',
   Checkbox: 'behavior HOC: checked state, press handling, and descendant context',
+  FixtureField: 'inherits the Field behavior HOC',
+  FixtureFieldDescription: 'inherits the Field.Description behavior HOC',
+  FixtureFieldError: 'inherits the Field.Error behavior HOC',
+  FixtureFieldLabel: 'inherits the Field.Label behavior HOC',
   Form: 'behavior HOC: form registry and submission handling',
   Image: 'behavior HOC: image source, load, and host-prop adaptation',
   Input:

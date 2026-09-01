@@ -2241,15 +2241,22 @@ export function createTamaguiCompilerHost(
                 branchProps
               )
             : core.mergeProps(defaultProps, branchProps)
+        // the same platform-clause reduction the unconditional props get: a
+        // branch resolves through the full pipeline, so a clause left standing
+        // here would be decided by the build machine instead of the bundle
+        if (platform === 'native') {
+          for (const [name, value] of Object.entries(branchCompleteProps)) {
+            const clause = isStyleProp(name, component) ? nativeClauseValue(value) : null
+            if (clause === null || clause === 'live') continue
+            if (clause.matched) branchCompleteProps[name] = clause.payload
+            else delete branchCompleteProps[name]
+          }
+        }
         return { branchProps, branchCompleteProps }
       }
       // native resolution evaluates clauses against the build machine's current
       // state, so folding a call-site, styled base, or variant clause would freeze
       // that state into the bundle.
-      // native leaf values are resolved per branch further down, and a leaf is a
-      // clause program the same way a direct prop is. the reduction has to be
-      // applied where those branches are built, so it is memoized per leaf here.
-      const nativeConditionalLeafValues = new Map<unknown, unknown>()
       if (platform === 'native') {
         const isClauseValue = (name: string, value: unknown) =>
           isStyleProp(name, component) &&
@@ -2301,21 +2308,16 @@ export function createTamaguiCompilerHost(
           if (clause.matched) reducedProps[name] = clause.payload
         }
         completeProps = reducedProps
+        // a conditional leaf is a clause program the same way a direct prop is,
+        // and propsForConditional reduces the ones that fold
         for (const entry of dynamicStyleEntries) {
           if (entry.value.kind !== 'conditional') continue
           for (const leaf of collectLeaves(entry.value.tree)) {
-            const clause = nativeClauseValue(leaf.value)
-            if (clause === 'live') {
-              return bailout(
-                input,
-                'local/unsupported-target',
-                'Native conditional value programs remain on the runtime path'
-              )
-            }
-            if (clause === null) continue
-            nativeConditionalLeafValues.set(
-              leaf,
-              clause.matched ? clause.payload : undefined
+            if (nativeClauseValue(leaf.value) !== 'live') continue
+            return bailout(
+              input,
+              'local/unsupported-target',
+              'Native conditional value programs remain on the runtime path'
             )
           }
         }
@@ -2917,12 +2919,7 @@ export function createTamaguiCompilerHost(
                 Record<string, unknown>
               >()
               for (const leaf of leaves) {
-                const { branchCompleteProps } = propsForConditional(
-                  entry,
-                  nativeConditionalLeafValues.has(leaf)
-                    ? nativeConditionalLeafValues.get(leaf)
-                    : leaf.value
-                )
+                const { branchCompleteProps } = propsForConditional(entry, leaf.value)
                 const branchSplit = resolveSplitStyles(
                   branchCompleteProps,
                   component.staticConfig,

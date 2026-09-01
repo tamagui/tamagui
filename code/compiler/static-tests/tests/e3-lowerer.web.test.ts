@@ -1270,3 +1270,251 @@ export const App = () => <Card />
     )
   })
 })
+
+describe('component-only props read their value, not their presence', () => {
+  for (const [prop, inert, active] of [
+    ['asChild', 'asChild={false}', 'asChild'],
+    ['asChild', 'asChild={false}', 'asChild="except-style"'],
+    ['disableOptimization', 'disableOptimization={false}', 'disableOptimization'],
+    ['themeInverse', 'themeInverse={false}', 'themeInverse'],
+  ] as const) {
+    test(`${inert} flattens while ${active} retains`, () => {
+      const inertSource = `
+import { View } from '@tamagui/core'
+export const App = () => <View ${inert} padding={12} data-box="inert" />
+`
+      const inertResult = compile(inertSource)
+      expect(codes(inertResult.plan)).toEqual([])
+      expect(inertResult.plan.stats).toMatchObject({ flattened: 1, bailed: 0 })
+      expect(inertResult.output.code).toMatch(/<div /)
+      expect(inertResult.output.code).not.toContain(prop)
+      expect(inertResult.plan.css).toContain('padding:12px')
+
+      const activeSource = `
+import { View } from '@tamagui/core'
+export const App = () => <View ${active} padding={12} data-box="active" />
+`
+      const activeResult = compile(activeSource)
+      expect(codes(activeResult.plan)).toEqual(['local/unsupported-target'])
+      expect(activeResult.plan.stats).toMatchObject({ flattened: 0, bailed: 1 })
+      expect(activeResult.output.code).toBe(activeSource)
+    })
+  }
+
+  test('reads the same keys out of a statically materialized spread', () => {
+    const inert = compile(`
+import { View } from '@tamagui/core'
+const settings = { asChild: false, disableOptimization: false, themeInverse: false, id: 'card' }
+export const App = () => <View {...settings} padding={12} />
+`)
+    expect(codes(inert.plan)).toEqual([])
+    expect(inert.plan.stats).toMatchObject({ flattened: 1, bailed: 0 })
+    const element = inert.output.code.slice(inert.output.code.indexOf('<div'))
+    expect(element).toContain('{ "id": "card" }')
+    expect(element).not.toContain('asChild')
+    expect(element).not.toContain('disableOptimization')
+    expect(element).not.toContain('themeInverse')
+
+    for (const active of [
+      `{ asChild: true, id: 'card' }`,
+      `{ disableOptimization: true, id: 'card' }`,
+      `{ themeInverse: true, id: 'card' }`,
+    ]) {
+      const result = compile(`
+import { View } from '@tamagui/core'
+const settings = ${active}
+export const App = () => <View {...settings} padding={12} />
+`)
+      expect(codes(result.plan)).toEqual(['local/unsupported-target'])
+      expect(result.plan.stats).toMatchObject({ flattened: 0, bailed: 1 })
+    }
+  })
+
+  test('a duplicate makes the last value decide', () => {
+    const inertLast = compile(`
+import { View } from '@tamagui/core'
+export const App = () => <View asChild {...{ asChild: false }} padding={12} />
+`)
+    expect(codes(inertLast.plan)).toEqual([])
+    expect(inertLast.plan.stats).toMatchObject({ flattened: 1, bailed: 0 })
+
+    const activeLast = compile(`
+import { View } from '@tamagui/core'
+export const App = () => <View asChild={false} {...{ asChild: true }} padding={12} />
+`)
+    expect(codes(activeLast.plan)).toEqual(['local/unsupported-target'])
+    expect(activeLast.plan.stats).toMatchObject({ flattened: 0, bailed: 1 })
+  })
+
+  test('a value the compiler cannot evaluate keeps every one of them on the runtime path', () => {
+    for (const prop of ['asChild', 'disableOptimization', 'theme', 'themeInverse']) {
+      const source = `
+import { View } from '@tamagui/core'
+export const App = ({ flag }) => <View ${prop}={flag} padding={12} />
+`
+      const { plan, output } = compile(source)
+      expect(codes(plan)).toEqual(['local/unsupported-target'])
+      expect(plan.stats).toMatchObject({ flattened: 0, bailed: 1 })
+      expect(output.code).toBe(source)
+    }
+  })
+})
+
+describe('template literals carrying a static branch program', () => {
+  test('lowers a template-wrapped ternary to per-branch classes', () => {
+    const source = `
+import { View } from '@tamagui/core'
+export const App = ({ active }) => (
+  <View backgroundColor={\`\${active ? 'red' : 'blue'}\`} padding={12} />
+)
+`
+    const { plan, output } = compile(source)
+
+    expect(codes(plan)).toEqual([])
+    expect(plan.stats).toMatchObject({ lowered: 1, flattened: 1, bailed: 0 })
+    expect(output.code).toContain('(active) ?')
+    expect(output.code).not.toContain('backgroundColor=')
+    expect(compactCss(plan.css)).toContain('background-color:red')
+    expect(compactCss(plan.css)).toContain('background-color:blue')
+    expect(compactCss(plan.css)).toContain('padding:12px')
+  })
+
+  test('matches the bare ternary it wraps, including quasis around the hole', () => {
+    const bare = compile(`
+import { View } from '@tamagui/core'
+export const App = ({ active }) => <View backgroundColor={active ? 'red' : 'blue'} />
+`)
+    const wrapped = compile(`
+import { View } from '@tamagui/core'
+export const App = ({ active }) => <View backgroundColor={\`\${active ? 'red' : 'blue'}\`} />
+`)
+    expect(loweredClassNames(bare.output.code)).toEqual(
+      loweredClassNames(wrapped.output.code)
+    )
+    expect(compactCss(bare.plan.css)).toBe(compactCss(wrapped.plan.css))
+
+    const composed = compile(`
+import { View } from '@tamagui/core'
+export const App = ({ open }) => (
+  <View backgroundColor={\`\${open ? 'red' : 'blue'} hover:green\`} />
+)
+`)
+    const expanded = compile(`
+import { View } from '@tamagui/core'
+export const App = ({ open }) => (
+  <View backgroundColor={open ? 'red hover:green' : 'blue hover:green'} />
+)
+`)
+    expect(codes(composed.plan)).toEqual([])
+    expect(loweredClassNames(composed.output.code)).toEqual(
+      loweredClassNames(expanded.output.code)
+    )
+    expect(compactCss(composed.plan.css)).toBe(compactCss(expanded.plan.css))
+  })
+
+  test('multiplies two holes in one value into a decision tree', () => {
+    const source = `
+import { View } from '@tamagui/core'
+export const App = ({ warm, bright }) => (
+  <View backgroundColor={\`rgb(\${warm ? 200 : 10}, 0, \${bright ? 250 : 40})\`} />
+)
+`
+    const { plan, output } = compile(source)
+
+    expect(codes(plan)).toEqual([])
+    expect(plan.stats).toMatchObject({ flattened: 1, bailed: 0 })
+    expect(output.code).toContain('(warm) ?')
+    expect(output.code).toContain('(bright) ?')
+    for (const color of [
+      'rgb(200,0,250)',
+      'rgb(200,0,40)',
+      'rgb(10,0,250)',
+      'rgb(10,0,40)',
+    ]) {
+      expect(compactCss(plan.css)).toContain(`background-color:${color}`)
+    }
+  })
+
+  test('refuses a hole whose falsy side is the operand itself', () => {
+    const source = `
+import { View } from '@tamagui/core'
+export const App = ({ tone }) => <View backgroundColor={\`\${tone && 'red'}\`} padding={12} />
+`
+    const { plan, output } = compile(source)
+
+    expect(codes(plan)).toEqual([])
+    expect(plan.stats).toMatchObject({ lowered: 1, flattened: 0, bailed: 0 })
+    expect(output.code).toContain("backgroundColor={`${tone && 'red'}`}")
+    expect(compactCss(plan.css)).toContain('padding:12px')
+    expect(compactCss(plan.css)).not.toContain('background-color')
+  })
+
+  test('a later duplicate still wins over the branch program', () => {
+    const branchLast = compile(`
+import { View } from '@tamagui/core'
+export const App = ({ active }) => (
+  <View {...{ backgroundColor: 'green' }} backgroundColor={\`\${active ? 'red' : 'blue'}\`} />
+)
+`)
+    expect(codes(branchLast.plan)).toEqual([])
+    // the branch program is authored last, so the spread's green never reaches
+    // the element and only the two branch classes are named
+    expect(branchLast.output.code).toContain(
+      '(active) ? "_b-1356927054" : "_b-884464985"'
+    )
+    expect(branchLast.output.code).not.toContain('_b-1653391844')
+
+    const spreadLast = compile(`
+import { View } from '@tamagui/core'
+export const App = ({ active }) => (
+  <View backgroundColor={\`\${active ? 'red' : 'blue'}\`} {...{ backgroundColor: 'green' }} />
+)
+`)
+    expect(codes(spreadLast.plan)).toEqual([])
+    // the spread is authored last, so green is the unconditional class and both
+    // branches contribute nothing
+    expect(spreadLast.output.code).toContain('"is_View _b-1653391844"')
+    expect(spreadLast.output.code).toContain('(active) ? "" : ""')
+  })
+})
+
+describe('opaque dynamic style values', () => {
+  test('an unproven value stays on the runtime path because the grammar is not identity', () => {
+    // control: the same authored string resolves to two different style values,
+    // so no single inline-style emission of the raw expression can be right
+    const token = compile(`
+import { View } from '@tamagui/core'
+export const App = () => <View backgroundColor="$color" />
+`)
+    const literal = compile(`
+import { View } from '@tamagui/core'
+export const App = () => <View backgroundColor="rgb(1,2,3)" />
+`)
+    expect(compactCss(literal.plan.css)).toContain('background-color:rgb(1,2,3)')
+    expect(compactCss(token.plan.css)).toContain('background-color:var(')
+    expect(compactCss(token.plan.css)).not.toContain('background-color:$color')
+
+    const opaque = compile(`
+import { View } from '@tamagui/core'
+export const App = ({ color }) => <View backgroundColor={color} padding={12} />
+`)
+    expect(codes(opaque.plan)).toEqual([])
+    expect(opaque.plan.stats).toMatchObject({ lowered: 1, flattened: 0, bailed: 0 })
+    expect(opaque.output.code).toContain('backgroundColor={color}')
+    expect(compactCss(opaque.plan.css)).toContain('padding:12px')
+    expect(compactCss(opaque.plan.css)).not.toContain('background-color')
+  })
+
+  test('a proven numeric domain still flattens beside it', () => {
+    const source = `
+import { View } from '@tamagui/core'
+export const App = ({ seed }) => <View width={seed * 2} padding={12} />
+`
+    const { plan, output } = compile(source)
+
+    expect(codes(plan)).toEqual([])
+    expect(plan.stats).toMatchObject({ flattened: 1, bailed: 0 })
+    expect(output.code).toMatch(/<div /)
+    expect(output.code).toContain('style={{ "width": (seed * 2) }}')
+  })
+})

@@ -144,3 +144,25 @@ test('keeps native DOM mixed spreads on the runtime mapping path', async () => {
     'local/unsafe-style-spread'
   )
 })
+
+test('lowers a template-wrapped ternary the same way as the ternary it wraps', async () => {
+  const wrapped = await extractForNative(`
+    import { View } from '@tamagui/core'
+    export function Test({ active }) {
+      return <View backgroundColor={\`\${active ? 'red' : 'blue'}\`} />
+    }
+  `)
+  const bare = await extractForNative(`
+    import { View } from '@tamagui/core'
+    export function Test({ active }) {
+      return <View backgroundColor={active ? 'red' : 'blue'} />
+    }
+  `)
+
+  expect(wrapped.diagnostics).toEqual([])
+  expect(wrapped.code).toContain('_expressions={[active]}')
+  expect(wrapped.code).toContain(
+    'expressions[0] ? {"backgroundColor":"red"} : {"backgroundColor":"blue"}'
+  )
+  expect(wrapped.code).toBe(bare.code)
+})

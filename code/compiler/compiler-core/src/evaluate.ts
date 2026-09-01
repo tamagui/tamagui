@@ -369,10 +369,7 @@ function evaluateNode(
       const expressions = childNodes(node, 'expressions')
       let output = ''
       for (let index = 0; index < quasis.length; index++) {
-        const quasi = quasis[index]
-        const cooked = (quasi?.value as { cooked?: unknown } | undefined)?.cooked
-        const raw = (quasi?.value as { raw?: unknown } | undefined)?.raw
-        output += typeof cooked === 'string' ? cooked : typeof raw === 'string' ? raw : ''
+        output += quasiText(quasis[index])
         const expression = expressions[index]
         if (expression) {
           const value = evaluateNode(resolver, id, expression, state)
@@ -385,6 +382,12 @@ function evaluateNode(
     default:
       return unsupported(id, node)
   }
+}
+
+function quasiText(quasi: AstNode | undefined): string {
+  const cooked = (quasi?.value as { cooked?: unknown } | undefined)?.cooked
+  const raw = (quasi?.value as { raw?: unknown } | undefined)?.raw
+  return typeof cooked === 'string' ? cooked : typeof raw === 'string' ? raw : ''
 }
 
 function dynamicPrimitive(
@@ -591,6 +594,20 @@ function evaluateBranchesNode(
     }
   }
 
+  if (node.type === 'TemplateLiteral') {
+    return templateBranchesNode(
+      resolver,
+      id,
+      childNodes(node, 'quasis'),
+      childNodes(node, 'expressions'),
+      0,
+      '',
+      depth,
+      state,
+      sourceId
+    )
+  }
+
   if (node.type === 'LogicalExpression') {
     const left = childNode(node, 'left')
     const right = childNode(node, 'right')
@@ -639,6 +656,92 @@ function evaluateBranchesNode(
     }
   }
 
+  return null
+}
+
+function mapBranchLeaves(
+  node: BranchDecisionNode,
+  map: (leaf: Extract<BranchDecisionNode, { kind: 'leaf' }>) => BranchDecisionNode | null
+): BranchDecisionNode | null {
+  if (node.kind === 'leaf') return map(node)
+  const whenTrue = mapBranchLeaves(node.whenTrue, map)
+  if (!whenTrue) return null
+  const whenFalse = mapBranchLeaves(node.whenFalse, map)
+  if (!whenFalse) return null
+  return { kind: 'branch', test: node.test, whenTrue, whenFalse }
+}
+
+/**
+ * A template literal is a decision tree once every value it interpolates is:
+ * `${active ? 'red10' : 'blue10'}` names the same two strings the bare ternary
+ * does, and the quasis around it are constants. Each interpolated tree
+ * multiplies the leaves, so every step spends a level of the shared depth
+ * budget and a wide template refuses instead of expanding.
+ */
+function templateBranchesNode(
+  resolver: SymbolResolver,
+  id: ResolvedModuleId,
+  quasis: AstNode[],
+  expressions: AstNode[],
+  index: number,
+  prefix: string,
+  depth: number,
+  state: EvaluationState,
+  sourceId: ResolvedModuleId
+): BranchDecisionNode | null {
+  let text = prefix
+  for (let position = index; position < quasis.length; position++) {
+    text += quasiText(quasis[position])
+    const expression = expressions[position]
+    if (!expression) continue
+    const exact = evaluateNode(resolver, id, expression, state)
+    if (exact.ok) {
+      const interpolated = templateInterpolation(exact.value)
+      if (interpolated === null) return null
+      text += interpolated
+      continue
+    }
+    const tree = evaluateBranchesNode(
+      resolver,
+      id,
+      expression,
+      depth + 1,
+      state,
+      sourceId
+    )
+    if (!tree) return null
+    return mapBranchLeaves(tree, (leaf) => {
+      // an `&&` leaf carries `undefined` to mean "the falsy left operand", whose
+      // string form is the operand itself and so is not known here
+      if (leaf.value === undefined) return null
+      const interpolated = templateInterpolation(leaf.value)
+      if (interpolated === null) return null
+      return templateBranchesNode(
+        resolver,
+        id,
+        quasis,
+        expressions,
+        position + 1,
+        text + interpolated,
+        depth + 1,
+        state,
+        sourceId
+      )
+    })
+  }
+  return { kind: 'leaf', value: text, dependencies: [...state.dependencies].sort() }
+}
+
+/** ToString on a primitive, which is all a template can be folded through */
+function templateInterpolation(value: StaticEvaluationValue): string | null {
+  if (value === null) return 'null'
+  if (
+    typeof value === 'string' ||
+    typeof value === 'number' ||
+    typeof value === 'boolean'
+  ) {
+    return String(value)
+  }
   return null
 }
 
