@@ -56,7 +56,11 @@ import {
   startsValueFunction,
 } from './borderComponents'
 import { fixStyles } from './expandStyles'
-import { getConfigRevisionState } from './grammarConfig'
+import {
+  getConfigRevisionState,
+  type ConditionModifier,
+  type ConfigRevisionState,
+} from './grammarConfig'
 import { mediaState as globalMediaState, mediaKeyMatch } from './mediaState'
 import { getStyleStaticConfig, type StyleStaticConfig } from './styleStaticConfig'
 import type { FrontendClassSink } from './styleFrontend'
@@ -185,153 +189,239 @@ function appendConditionWrapper(condition: Condition, wrapper: string) {
   if (!wrappers.includes(wrapper)) wrappers.push(wrapper)
 }
 
-function resolveConditionModifier(
+const modifierStructure = 1
+const modifierActivate = 2
+
+/**
+ * one modifier of a clause. structure (mode bit 1) depends only on the config
+ * revision, the name, and whether the pass builds CSS, so a committed condition
+ * made of it is reusable across passes (conditionTemplate). activation (bit 2)
+ * is the per-pass half: the active bit and the media, group, and state keys
+ * this pass touched. returns the modifier for later activation, or null when
+ * nothing about it depends on the pass.
+ */
+function applyConditionModifier(
   state: GetStyleState,
   condition: Condition,
-  authored: string
-) {
-  const compiled = getConfigRevisionState(state.conf)
-  const modifier = compiled.resolveCondition(authored)
+  authored: string | ConditionModifier,
+  mode: number
+): ConditionModifier | null {
+  const modifier =
+    typeof authored === 'string'
+      ? getConfigRevisionState(state.conf).resolveCondition(authored)
+      : authored
   if (!modifier) {
-    setConditionUnresolved(condition, authored)
-    return
+    setConditionUnresolved(condition, authored as string)
+    return null
   }
   const [name, kind, rank] = modifier
 
-  const atoms = condition[conditionAtoms]
-  let atomIndex = 0
-  while (atomIndex < atoms.length && atoms[atomIndex] < name) atomIndex++
-  if (atoms[atomIndex] === name) return
-  for (let index = atoms.length; index > atomIndex; index--)
-    atoms[index] = atoms[index - 1]
-  atoms[atomIndex] = name
+  if (mode & modifierStructure) {
+    const atoms = condition[conditionAtoms]
+    let atomIndex = 0
+    while (atomIndex < atoms.length && atoms[atomIndex] < name) atomIndex++
+    if (atoms[atomIndex] === name) return null
+    for (let index = atoms.length; index > atomIndex; index--)
+      atoms[index] = atoms[index - 1]
+    atoms[atomIndex] = name
 
-  if (kind === 3) {
-    condition[conditionPlatform] = Math.max(condition[conditionPlatform], rank)
-    if (!modifier[6]) {
-      condition[conditionValue] &= ~3
+    if (kind === 3) {
+      condition[conditionPlatform] = Math.max(condition[conditionPlatform], rank)
+      if (!modifier[6]) {
+        condition[conditionValue] &= ~3
+      }
+      return null
     }
-    return
-  }
 
-  const precedence =
-    kind === 2
-      ? 1 + Math.min(rank, 63)
-      : kind === 6
-        ? 65 + Math.min(rank, 63)
-        : kind === 4
-          ? 129
-          : kind === 5
-            ? 161 + rank
-            : 225 + rank
-  const ranks = condition[conditionRanks]
-  let rankIndex = 0
-  while (rankIndex < ranks.length && ranks[rankIndex] >= precedence) rankIndex++
-  for (let index = ranks.length; index > rankIndex; index--)
-    ranks[index] = ranks[index - 1]
-  ranks[rankIndex] = precedence
+    const precedence =
+      kind === 2
+        ? 1 + Math.min(rank, 63)
+        : kind === 6
+          ? 65 + Math.min(rank, 63)
+          : kind === 4
+            ? 129
+            : kind === 5
+              ? 161 + rank
+              : 225 + rank
+    const ranks = condition[conditionRanks]
+    let rankIndex = 0
+    while (rankIndex < ranks.length && ranks[rankIndex] >= precedence) rankIndex++
+    for (let index = ranks.length; index > rankIndex; index--)
+      ranks[index] = ranks[index - 1]
+    ranks[rankIndex] = precedence
+  }
 
   const buildCSS = canGenerateCSS && state.flatShouldDoClasses
+  const activate = mode & modifierActivate
   if (kind === 2) {
-    const query = modifier[3]
-    if (!query) return setConditionUnresolved(condition, name)
-    if (buildCSS) appendConditionWrapper(condition, `@media ${query}`)
-    if (!state.flatMediaState?.[name]) condition[conditionValue] &= ~1
-    ;(state.flatMediaKeys ||= new Set()).add(name)
-    return
+    if (mode & modifierStructure) {
+      const query = modifier[3]
+      if (!query) {
+        setConditionUnresolved(condition, name)
+        return null
+      }
+      if (buildCSS) appendConditionWrapper(condition, `@media ${query}`)
+    }
+    if (activate) {
+      if (!state.flatMediaState?.[name]) condition[conditionValue] &= ~1
+      ;(state.flatMediaKeys ||= new Set()).add(name)
+    }
+    return modifier
   }
   if (kind === 4) {
-    if (process.env.TAMAGUI_TARGET === 'native') condition[conditionTheme] = name
-    if (buildCSS) condition[conditionSelector] += `:where(.t_${name}, .t_${name} *)`
+    if (mode & modifierStructure) {
+      if (process.env.TAMAGUI_TARGET === 'native') condition[conditionTheme] = name
+      if (buildCSS) condition[conditionSelector] += `:where(.t_${name}, .t_${name} *)`
+    }
     if (
+      activate &&
       state.flatThemeName !== name &&
       state.flatThemeName?.startsWith(`${name}_`) !== true
     ) {
       condition[conditionValue] &= ~1
     }
-    return
+    return modifier
   }
   if (kind === 6) {
     const size = modifier[4]!
     const containerName = modifier[5]!
-    const groupName = `@${containerName}`
-    if (buildCSS) {
+    if (mode & modifierStructure && buildCSS) {
       const query = modifier[3]
       appendConditionWrapper(
         condition,
         containerName ? `@container ${containerName} ${query}` : `@container ${query}`
       )
     }
-    const component = state.componentState.group?.[groupName]
-    const context = state.flatGroupContext?.[groupName]
-    if (
-      process.env.NODE_ENV === 'development' &&
-      containerName &&
-      !component &&
-      !context &&
-      state.flatGroupContext?.[containerName]
-    ) {
-      warnOnce(
-        `group-container:${containerName}`,
-        `@${size}/${containerName}: targets group="${containerName}", but groups no longer establish query containers. Add container="${containerName}" to that group.`
-      )
+    if (activate) {
+      const groupName = `@${containerName}`
+      const component = state.componentState.group?.[groupName]
+      const context = state.flatGroupContext?.[groupName]
+      if (
+        process.env.NODE_ENV === 'development' &&
+        containerName &&
+        !component &&
+        !context &&
+        state.flatGroupContext?.[containerName]
+      ) {
+        warnOnce(
+          `group-container:${containerName}`,
+          `@${size}/${containerName}: targets group="${containerName}", but groups no longer establish query containers. Add container="${containerName}" to that group.`
+        )
+      }
+      const match = component?.media?.[size]
+      if (
+        !(match ?? (context?.state.layout && mediaKeyMatch(size, context.state.layout)))
+      ) {
+        condition[conditionValue] &= ~1
+      }
+      ;(state.flatGroupKeys ||= new Set()).add(groupName)
+      ;(state.flatGroupMedia ||= new Set()).add(size)
     }
-    const match = component?.media?.[size]
-    if (
-      !(match ?? (context?.state.layout && mediaKeyMatch(size, context.state.layout)))
-    ) {
-      condition[conditionValue] &= ~1
-    }
-    ;(state.flatGroupKeys ||= new Set()).add(groupName)
-    ;(state.flatGroupMedia ||= new Set()).add(size)
-    return
+    return modifier
   }
 
   const selector = modifier[3]!
   if (kind === 5) {
     const groupName = modifier[4]!
-    if (buildCSS) {
+    if (mode & modifierStructure && buildCSS) {
       condition[conditionSelector] += `:where(.t_group_${groupName}${selector} *)`
     }
-    const component = state.componentState.group?.[groupName]
-    const context = state.flatGroupContext?.[groupName]
-    if (!(component?.pseudo ?? context?.state.pseudo)?.[modifier[5]!]) {
-      condition[conditionValue] &= ~1
+    if (activate) {
+      const component = state.componentState.group?.[groupName]
+      const context = state.flatGroupContext?.[groupName]
+      if (!(component?.pseudo ?? context?.state.pseudo)?.[modifier[5]!]) {
+        condition[conditionValue] &= ~1
+      }
+      ;(state.flatGroupKeys ||= new Set()).add(groupName)
     }
-    ;(state.flatGroupKeys ||= new Set()).add(groupName)
   } else {
-    if (rank === 0 || rank === 2 || rank === 4) {
-      condition[conditionValue] |= conditionPlatformPseudoFlag
-    } else if (rank === 6) {
-      condition[conditionValue] |= 4
-    } else if (rank === 7) {
-      condition[conditionValue] |= 8
+    if (mode & modifierStructure) {
+      if (rank === 0 || rank === 2 || rank === 4) {
+        condition[conditionValue] |= conditionPlatformPseudoFlag
+      } else if (rank === 6) {
+        condition[conditionValue] |= 4
+      } else if (rank === 7) {
+        condition[conditionValue] |= 8
+      }
+      if (buildCSS) {
+        condition[conditionSelector] +=
+          `:where(${selector}${selector[0] === '.' ? `, ${selector} *` : ''})`
+      }
     }
-    if (buildCSS) {
-      condition[conditionSelector] +=
-        `:where(${selector}${selector[0] === '.' ? `, ${selector} *` : ''})`
+    if (activate) {
+      const component = state.componentState
+      const active =
+        rank === 1
+          ? component.focusWithin
+          : rank === 3
+            ? component.focusVisible
+            : rank === 4
+              ? component.press || component.pressIn
+              : rank === 5
+                ? component.disabled || state.props.disabled
+                : rank === 6
+                  ? component.unmounted
+                  : rank === 7
+                    ? state.styleProps.isExiting
+                    : component[name]
+      if (!active) condition[conditionValue] &= ~1
+      if (selector[0] === ':') (state.flatStateKeys ||= new Set()).add(name)
     }
-    const component = state.componentState
-    const active =
-      rank === 1
-        ? component.focusWithin
-        : rank === 3
-          ? component.focusVisible
-          : rank === 4
-            ? component.press || component.pressIn
-            : rank === 5
-              ? component.disabled || state.props.disabled
-              : rank === 6
-                ? component.unmounted
-                : rank === 7
-                  ? state.styleProps.isExiting
-                  : component[name]
-    if (!active) condition[conditionValue] &= ~1
-    if (selector[0] === ':') (state.flatStateKeys ||= new Set()).add(name)
   }
-  if (rank === 0 && buildCSS) {
+  if (mode & modifierStructure && rank === 0 && buildCSS) {
     appendConditionWrapper(condition, '@media (hover: hover)')
   }
+  return modifier
+}
+
+function resolveConditionModifier(
+  state: GetStyleState,
+  condition: Condition,
+  authored: string
+) {
+  applyConditionModifier(state, condition, authored, modifierStructure | modifierActivate)
+}
+
+type ConditionTemplate = { condition: Condition; modifiers: ConditionModifier[] }
+
+// committed conditions for a bare key (`hover`, `sm:dark`) are the same every
+// pass apart from the active bit and the touched-key sets, so their structure
+// is built once per config revision and class mode and only activated per pass
+const conditionTemplates = new WeakMap<
+  ConfigRevisionState,
+  Map<string, ConditionTemplate>
+>()
+
+function conditionTemplate(state: GetStyleState, key: string): ConditionTemplate {
+  const grammar = getConfigRevisionState(state.conf)
+  let templates = conditionTemplates.get(grammar)
+  if (!templates) conditionTemplates.set(grammar, (templates = new Map()))
+  const cacheKey = state.flatShouldDoClasses ? `c${key}` : `i${key}`
+  let template = templates.get(cacheKey)
+  if (template) return template
+  const condition = createCondition(null)
+  const modifiers: ConditionModifier[] = []
+  let start = 0
+  for (let index = 0; index <= key.length; index++) {
+    if (index !== key.length && key.charCodeAt(index) !== 58) continue
+    if (index === start) {
+      setConditionUnresolved(condition)
+      break
+    }
+    if (!(condition[conditionValue] & conditionResolvedFlag)) break
+    const modifier = applyConditionModifier(
+      state,
+      condition,
+      key.slice(start, index),
+      modifierStructure
+    )
+    if (modifier) modifiers.push(modifier)
+    start = index + 1
+  }
+  commitCondition(condition)
+  if (templates.size >= 4096) templates.clear()
+  templates.set(cacheKey, (template = { condition, modifiers }))
+  return template
 }
 
 /** resolve a colon-joined condition text (an object key) into the cursor */
@@ -395,9 +485,33 @@ function conditionFromKey(state: GetStyleState, key: string, parent?: Condition 
     }
     const known = cache.get(key)
     if (known !== undefined) return known
-    const resolved = createCondition(null)
-    resolveConditionText(state, resolved, key)
-    commitCondition(resolved)
+    const template = conditionTemplate(state, key)
+    const base = template.condition
+    // the template's arrays are never mutated after commit (children slice
+    // them), so the per-pass condition shares them and owns only its value.
+    // activation runs on the low flag byte: the packed precedence above it is
+    // wider than 32 bits, so a bitwise clear on the whole value would truncate
+    const packed = base[conditionValue]
+    const flags = packed % 256
+    const resolved: Condition = [
+      flags,
+      base[conditionPlatform],
+      base[conditionKey],
+      base[conditionSelector],
+      base[conditionTheme],
+      base[conditionWrappers],
+      base[conditionAtoms],
+      base[conditionRanks],
+    ]
+    if (process.env.NODE_ENV !== 'production' && base.problem) {
+      resolved.problem = base.problem
+    }
+    if (packed) {
+      for (const modifier of template.modifiers) {
+        applyConditionModifier(state, resolved, modifier, modifierActivate)
+      }
+      resolved[conditionValue] += packed - flags
+    }
     cache.set(key, resolved)
     return resolved
   }
@@ -408,21 +522,13 @@ function conditionFromKey(state: GetStyleState, key: string, parent?: Condition 
 }
 
 // does this object's first key open a resolvable modifier chain, or does it
-// name a `default`? the probe resolves through a scratch cursor and the
-// caller's own enumeration does the contribution.
-function classifyConditionalObject(
-  value: Record<string, any>,
-  state: GetStyleState | null,
-  isChain?: (chain: string) => boolean,
-  firstCondition?: Condition
-): number {
+// name a `default`? the answer is structural, so the committed template
+// decides it and the caller's own enumeration does the contribution.
+function classifyConditionalObject(value: Record<string, any>, state: GetStyleState) {
   if ('default' in value) return -1
   for (const key in value) {
     if (!key.length) return 0
-    if (!state) return isChain?.(key) ? 1 : 0
-    const condition = firstCondition || createCondition()
-    resolveConditionText(state, condition, key)
-    return commitCondition(condition)
+    return conditionTemplate(state, key).condition[conditionValue]
   }
   return 0
 }
