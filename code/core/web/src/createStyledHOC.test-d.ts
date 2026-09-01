@@ -2,7 +2,9 @@ import { describe, expectTypeOf, test } from 'vitest'
 
 import { createStyledHOC } from './createStyledHOC'
 import { styled } from './styled'
-import type { GetProps } from './types'
+import type { Ref } from 'react'
+
+import type { GetProps, TamaguiElement } from './types'
 import { View } from './views/View'
 
 const Frame = styled(View, {
@@ -22,6 +24,14 @@ describe('createStyledHOC', () => {
 
     type Props = GetProps<typeof Hoc>
     expectTypeOf<true>().toMatchTypeOf<Props['pinned']>()
+  })
+
+  test('the render ref parameter accepts a required React ref annotation', () => {
+    const Hoc = createStyledHOC(Frame, (props, ref: Ref<TamaguiElement>) => {
+      expectTypeOf(ref).toEqualTypeOf<Ref<TamaguiElement>>()
+      return null
+    })
+    expectTypeOf<true>().toMatchTypeOf<GetProps<typeof Hoc>['pinned']>()
   })
 
   test('annotating the render props param merges custom props over the component', () => {

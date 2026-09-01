@@ -35,7 +35,9 @@ export function createStyledHOC<
         : Props
     > &
       CustomProps,
-    ref?: ReactRef<NoInfer<Ref>>
+    // always a ref value (null when the caller passed none), so a render
+    // callback may declare a required `Ref<TamaguiElement>` parameter
+    ref: ReactRef<NoInfer<Ref>> | null
   ) => ReactNode,
   options?: StyledHOCOptions
 ): TamaguiComponent<
@@ -70,7 +72,7 @@ export function createStyledHOC<
   let out: any = function StyledHOCComponent(props: any) {
     'use no memo'
 
-    const { ref, ...rest } = props
+    const { ref = null, ...rest } = props
     if (options?.disableTheme) {
       return render(rest, ref)
     }
