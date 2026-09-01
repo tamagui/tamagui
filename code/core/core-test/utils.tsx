@@ -51,6 +51,7 @@ export function simplifiedGetSplitStyles(
   }
 
   const styleProps = {
+    isStatic: true,
     mediaState: options.mediaState,
     isAnimated: options.isAnimated ?? false,
     canPlatformPseudo: options.canPlatformPseudo,

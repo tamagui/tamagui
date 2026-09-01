@@ -629,6 +629,13 @@ const DOM_STYLE_FRONTENDS = new Set([
   '@tamagui/tailwind',
 ])
 
+const STYLE_FRONTENDS = new Set([
+  ...DOM_STYLE_FRONTENDS,
+  'tamagui',
+  '@tamagui/core',
+  '@tamagui/web',
+])
+
 function domStyleDefinitions(
   id: ResolvedModuleId,
   program: AstNode,
@@ -648,7 +655,7 @@ function domStyleDefinitions(
     if (
       !binding ||
       binding.imported !== 'style' ||
-      !DOM_STYLE_FRONTENDS.has(binding.source)
+      !STYLE_FRONTENDS.has(binding.source)
     ) {
       return
     }
@@ -686,11 +693,7 @@ function domStyleArgument(
   const factoryName = callee && identifierName(callee)
   if (!factoryName) return null
   const binding = importBinding(program, factoryName)
-  if (
-    !binding ||
-    binding.imported !== 'style' ||
-    !DOM_STYLE_FRONTENDS.has(binding.source)
-  ) {
+  if (!binding || binding.imported !== 'style' || !STYLE_FRONTENDS.has(binding.source)) {
     return null
   }
   return childNodes(call, 'arguments')[0] ?? null

@@ -15,8 +15,9 @@ import {
   getTransformPartKeys,
   removeTransformValue,
 } from '@tamagui/style-grammar/runtime'
-import { getConfig, getFont } from '../config'
+import { getConfig, getConfigMaybe, getFont } from '../config'
 import { isDevTools } from '../constants/isDevTools'
+import { defaultComponentStateMounted } from '../defaultComponentState'
 import { isVariable } from '../createVariable'
 import type {
   AllGroupContexts,
@@ -31,6 +32,7 @@ import type {
   SplitStyleProps,
   StaticConfig,
   StyleObject,
+  StylePiece,
   TamaguiComponentState,
   TamaguiInternalConfig,
   TextStyle,
@@ -38,6 +40,7 @@ import type {
   TransitionProp,
   Variable,
 } from '../types'
+import { stylePieceSymbol } from '../types'
 import {
   type AtomicSlotEntry,
   addComposition,
@@ -62,7 +65,12 @@ export { getStyleStaticConfig }
 
 import { isColorStyleKey } from './getDynamicVal'
 import { getDynamicEnv } from './styledDynamic'
-import { shouldInsertStyleRules, updateRules } from './insertStyleRule'
+import {
+  getRulesForIdentifier,
+  insertStyleRules,
+  shouldInsertStyleRules,
+  updateRules,
+} from './insertStyleRule'
 import { log } from './log'
 import { normalizeColor } from './normalizeColor'
 import { normalizeValueWithProperty } from './normalizeValueWithProperty'
@@ -79,6 +87,7 @@ import {
 } from './styleProvenance'
 import { THEME_REF_PREFIX } from './themeRef'
 import { transformsToString } from './transformsToString'
+import { isStylePiece, isStylePieceCacheable, setStylePieceCompiler } from '../style'
 
 export { STYLE_TOKEN_PROVENANCE_KEY, getStyleTokenProvenance } from './styleProvenance'
 export type {
@@ -671,6 +680,24 @@ function contributeProp(
     for (let index = 0; index < length; index++) {
       const style = isArray ? valInit[index] : valInit
       if (!style) continue
+      if (isStylePiece(style)) {
+        if (
+          process.env.TAMAGUI_TARGET === 'web' &&
+          styleState.flatShouldDoClasses &&
+          applyStylePieceClasses(styleState, style, sourceLayerStyle)
+        ) {
+          continue
+        }
+        const resolvedPiece = resolveStylePiece(styleState, style)
+        const pieceOriginals = shouldTrackStyleTokenProvenance
+          ? styleOriginalValues.get(style[stylePieceSymbol].styleObject)
+          : undefined
+        for (const key in resolvedPiece) {
+          if (resolvedPiece[key] == null) continue
+          contributeValue(styleState, key, resolvedPiece[key], pieceOriginals?.[key])
+        }
+        continue
+      }
       const styleOriginals = shouldTrackStyleTokenProvenance
         ? styleOriginalValues.get(style)
         : undefined
@@ -1208,6 +1235,12 @@ export const getSplitStyles: StyleSplitter = (
   const baseVariantProps = styleStaticConfig.baseVariantProps
   const appliesBaseStyle = baseStyle && !processedProps.asChild
   pass[passSourceLayer] = sourceLayerBase
+  const appliedBaseStylePiece =
+    !!appliesBaseStyle &&
+    !!styleStaticConfig.baseStylePiece &&
+    process.env.TAMAGUI_TARGET === 'web' &&
+    styleState.flatShouldDoClasses &&
+    applyStylePieceClasses(styleState, styleStaticConfig.baseStylePiece, sourceLayerBase)
   if (appliesBaseStyle && baseVariantProps) {
     // a defaulted variant the caller replaced keeps the default's authored
     // position (so a later styled override of its outputs still wins), but the
@@ -1226,6 +1259,15 @@ export const getSplitStyles: StyleSplitter = (
   }
   if (appliesBaseStyle) {
     for (const key in baseStyle) {
+      if (
+        appliedBaseStylePiece &&
+        Object.hasOwn(
+          styleStaticConfig.baseStylePiece![stylePieceSymbol].styleObject,
+          key
+        )
+      ) {
+        continue
+      }
       contributeProp(
         pass,
         key,
@@ -1317,7 +1359,27 @@ export const getSplitStyles: StyleSplitter = (
     }
   }
 
+  if (styleProps.stylePieceEntries) {
+    const slots = (styleState as DirectState).flatSlots
+    if (slots) Object.assign(styleProps.stylePieceEntries, slots)
+  }
   completeResolvedStyles(styleState)
+  if (styleProps.isStatic) {
+    for (const property in classNames) {
+      const identifier = classNames[property]
+      if (rulesToInsert[identifier]) continue
+      const rules = getRulesForIdentifier(identifier)
+      if (rules) {
+        rulesToInsert[identifier] = [
+          property,
+          '',
+          identifier,
+          undefined,
+          rules,
+        ] as StyleObject
+      }
+    }
+  }
 
   // hand the selected transition to animation drivers and keep it out of native
   // destination styles, where `transition` is not a React Native style key.
@@ -1556,6 +1618,200 @@ export const getSplitStyles: StyleSplitter = (
   }
 
   return result
+}
+
+const stylePieceStaticConfig = {
+  acceptsClassName: true,
+  isText: true,
+  validStyles: stylePropsText,
+} as StaticConfig
+
+type CompiledStylePiece = {
+  slots: Record<string, AtomicSlotEntry[]>
+  directClassNames: ClassNamesObject
+  programStates?: Set<string>
+  mediaKeys?: Set<string>
+  pseudoGroups?: Set<string>
+  mediaGroups?: Set<string>
+  dynamicThemeAccess?: boolean
+}
+
+const compiledStylePieces = new WeakMap<StylePiece, CompiledStylePiece>()
+
+setStylePieceCompiler((piece, layer) => {
+  if (process.env.TAMAGUI_TARGET !== 'web') return
+  const conf = getConfigMaybe()
+  if (!conf) return
+  const themeName = Object.keys(conf.themes)[0] || ''
+  const theme = conf.themes[themeName] || {}
+  const definition = piece[stylePieceSymbol].styleObject
+  const isBase = layer === 'base'
+  const slots: Record<string, AtomicSlotEntry[]> = {}
+  const split = getSplitStyles(
+    isBase ? {} : { style: definition },
+    isBase
+      ? ({
+          ...stylePieceStaticConfig,
+          baseStyle: definition,
+          disableBaseStylePiece: true,
+        } as StaticConfig)
+      : stylePieceStaticConfig,
+    theme,
+    themeName,
+    defaultComponentStateMounted,
+    {
+      isAnimated: false,
+      resolveValues: 'variable',
+      stylePieceEntries: slots,
+    }
+  )
+  if (!split) return
+  const directClassNames: ClassNamesObject = {}
+  for (const key in split.classNames) {
+    if (!(key in slots)) directClassNames[key] = split.classNames[key]
+  }
+  compiledStylePieces.set(piece, {
+    slots,
+    directClassNames,
+    programStates: split.programStates,
+    mediaKeys: split.hasMedia instanceof Set ? split.hasMedia : undefined,
+    pseudoGroups: split.pseudoGroups,
+    mediaGroups: split.mediaGroups,
+    dynamicThemeAccess: split.dynamicThemeAccess,
+  })
+  const byKey = piece[stylePieceSymbol].byKey
+  let className = ''
+  for (const key in split.classNames) {
+    const identifier = split.classNames[key]
+    byKey[key] = identifier
+    className = className ? `${className} ${identifier}` : identifier
+  }
+  piece.className = className
+  if (isClient) insertStyleRules(split.rulesToInsert)
+})
+
+const resolvedStylePieceCache = new WeakMap<StylePiece, WeakMap<object, TextStyle>>()
+
+function resolveStylePiece(styleState: GetStyleState, piece: StylePiece): TextStyle {
+  const definition = piece[stylePieceSymbol].styleObject
+  if (!isStylePieceCacheable(piece)) {
+    return resolveAcceptedStyle(styleState, definition)
+  }
+  let themeCache = resolvedStylePieceCache.get(piece)
+  if (!themeCache) {
+    themeCache = new WeakMap()
+    resolvedStylePieceCache.set(piece, themeCache)
+  }
+  const theme = styleState.theme as object
+  const cached = themeCache.get(theme)
+  if (cached) return cached
+  const resolved = resolveAcceptedStyle(styleState, definition)
+  themeCache.set(theme, resolved)
+  return resolved
+}
+
+function applyStylePieceClasses(
+  styleState: GetStyleState,
+  piece: StylePiece,
+  sourceLayer: number
+) {
+  const compiled = compiledStylePieces.get(piece)
+  if (compiled) {
+    const direct = styleState as DirectState
+    const slots = (direct.flatSlots ||= {})
+    for (const slot in compiled.slots) {
+      for (const entry of compiled.slots[slot]) {
+        const property = entry[0]
+        const conditional = !!entry[2]
+        if (!ownsSourceLayer(styleState, property, conditional)) continue
+        writeCapturedStyleRecord(slots, slot, entry, sourceLayer)
+      }
+    }
+    if (compiled.programStates) {
+      const target = (styleState.flatStateKeys ||= new Set())
+      for (const key of compiled.programStates) target.add(key)
+    }
+    if (compiled.mediaKeys) {
+      const target = (styleState.flatMediaKeys ||= new Set())
+      for (const key of compiled.mediaKeys) target.add(key)
+    }
+    if (compiled.pseudoGroups) {
+      const target = (styleState.flatGroupKeys ||= new Set())
+      for (const key of compiled.pseudoGroups) target.add(key)
+    }
+    if (compiled.mediaGroups) {
+      const target = (styleState.flatGroupMedia ||= new Set())
+      for (const key of compiled.mediaGroups) target.add(key)
+    }
+    if (compiled.dynamicThemeAccess) direct.flatDynamicThemeAccess = true
+    for (const property in compiled.directClassNames) {
+      styleState.classNames[property] = compiled.directClassNames[property]
+    }
+    return true
+  }
+
+  const byKey = piece[stylePieceSymbol].byKey
+  const direct = styleState as DirectState
+  const layers = (direct.flatPropertyLayers ||= {})
+  let applied = false
+  for (const property in byKey) {
+    const previousLayer = layers[property]
+    if (previousLayer !== undefined && previousLayer > sourceLayer) continue
+    clearDirectStyle(styleState, property)
+    styleState.classNames[property] = byKey[property]
+    layers[property] = sourceLayer
+    const identifier = byKey[property]
+    const fallbackRules = getRulesForIdentifier(identifier)
+    const shouldInsert =
+      styleState.styleProps.isStatic || shouldInsertStyleRules(identifier)
+    if (fallbackRules && shouldInsert) {
+      styleState.flatRulesToInsert![identifier] = [
+        property,
+        '',
+        identifier,
+        undefined,
+        fallbackRules,
+      ] as StyleObject
+    }
+    applied = true
+  }
+  return applied
+}
+
+function writeCapturedStyleRecord(
+  slots: Record<string, AtomicSlotEntry[]>,
+  slot: string,
+  source: AtomicSlotEntry,
+  sourceLayer: number
+) {
+  const list = (slots[slot] ||= [])
+  const flags = source[7]! & 31
+  const identity = source[3]
+  const condition = source[2]
+  for (let index = 0; index < list.length; index++) {
+    const entry = list[index]
+    const entryFlags = entry[7]! & 31
+    if (
+      (entryFlags & (recordInline | recordCSS)) !==
+      (flags & (recordInline | recordCSS))
+    ) {
+      continue
+    }
+    if (entry[0] !== source[0]) continue
+    if (flags & recordDefault) {
+      if (!(entryFlags & recordDefault) && (!entry[2] || entry[3] === identity)) return
+    } else if (entryFlags & recordDefault && (!condition || entry[3] === identity)) {
+      list.splice(index--, 1)
+      continue
+    }
+    if (entry[3] === identity) {
+      list.splice(index, 1)
+      break
+    }
+  }
+  const next = [...source] as AtomicSlotEntry
+  next[7] = flags | (sourceLayer << 5)
+  list.push(next)
 }
 
 function mergeStyle(

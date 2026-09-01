@@ -119,6 +119,27 @@ describe('styled() tests', () => {
     expect(output.styles).not.toContain('padding:8px')
   })
 
+  test('extracts core style pieces and replaces their definition calls', async () => {
+    const output = await extractForWeb(`
+      import { style, View } from '@tamagui/core'
+
+      const card = style({ backgroundColor: 'red', padding: 8 })
+
+      export function Test({ active }) {
+        return <View style={[card, active && style({ opacity: 0.5 })]} />
+      }
+    `)
+
+    expect(output.stats.lowered).toBe(1)
+    expect(output.stats.bailed).toBe(0)
+    expect(output.js).not.toContain('style({')
+    expect(output.js).toContain('Symbol.for("tamagui.stylePiece")')
+    expect(output.js).toContain('(active) &&')
+    expect(output.styles).toContain('background-color:red')
+    expect(output.styles).toContain('padding:8px')
+    expect(output.styles).toContain('opacity:0.5')
+  })
+
   test('deopts a branded dynamic whose callsite value is unknown', async () => {
     const output = await extractForWeb(
       `

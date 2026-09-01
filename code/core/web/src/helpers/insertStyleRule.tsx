@@ -15,8 +15,10 @@ const scannedCache = new WeakMap<CSSStyleSheet, string>()
 const totalSelectorsInserted = new Map<string, number>()
 const allSelectors: Record<string, string> = {}
 const allRules: Record<string, string> = {}
+const allRuleSets: Record<string, string[]> = {}
 
 export const getAllSelectors = () => allSelectors
+export const getRulesForIdentifier = (identifier: string) => allRuleSets[identifier]
 
 // updateRules is the only writer, so one flag there covers every change
 let sortedRules: string[] = []
@@ -341,6 +343,7 @@ export function stopAccumulatingRules() {
 export function updateRules(identifier: string, rules: string[]) {
   if (!process.env.TAMAGUI_DID_OUTPUT_CSS && trackAllRules) {
     allRules[identifier] = rules.join(' ')
+    allRuleSets[identifier] = rules
     sortedRulesStale = true
   }
   return true

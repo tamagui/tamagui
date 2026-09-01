@@ -1302,6 +1302,7 @@ export function createTamaguiCompilerHost(
         firstThemeName,
         componentState,
         {
+          isStatic: true,
           resolveValues: platform === 'native' ? 'except-theme' : 'variable',
           noClass: platform === 'native',
           isAnimated: false,
@@ -2093,6 +2094,19 @@ export function createTamaguiCompilerHost(
           props
         )
       }
+      const domStyleProgram = input.element.entries.find(
+        (entry) =>
+          entry.kind === 'prop' &&
+          entry.name === 'style' &&
+          entry.value.kind === 'dom-style'
+      )
+      if (platform === 'native' && !component.domTag && domStyleProgram) {
+        return bailout(
+          input,
+          'local/unsupported-target',
+          'Native style() pieces remain on the runtime path'
+        )
+      }
       const propsForConditional = (
         target: Extract<MaterializedElement['entries'][number], { kind: 'prop' }>,
         value: unknown
@@ -2201,13 +2215,6 @@ export function createTamaguiCompilerHost(
           }
         )
       }
-      const domStyleProgram = input.element.entries.find(
-        (entry) =>
-          entry.kind === 'prop' &&
-          entry.name === 'style' &&
-          entry.value.kind === 'dom-style'
-      )
-
       const flatTag =
         component.domTag ??
         (typeof props.render === 'string'

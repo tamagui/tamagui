@@ -74,6 +74,7 @@ export {
 } from './createVariable'
 export { insertFont, updateFont } from './insertFont'
 export { styled } from './styled'
+export { style } from './style'
 export { Tamagui } from './Tamagui'
 
 export type { TamaguiBuildOptions } from '@tamagui/types'
@@ -162,7 +163,9 @@ export type {
   StaticConfig,
   StaticComponentObject,
   StaticConfigPublic,
+  StaticShapeStyle,
   StyleObject,
+  StylePiece,
   StyleProp,
   StyledContext,
   StyledContextOptions,
@@ -227,6 +230,7 @@ export type {
   ZIndex,
   ZIndexTokens,
 } from './types'
+export { stylePieceSymbol } from './types'
 export { createVariantResolver } from './types'
 
 export type { GetRef } from './interfaces/GetRef'

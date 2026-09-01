@@ -1,9 +1,10 @@
-import type { StaticConfig, TamaguiInternalConfig } from '../types'
+import type { StaticConfig, StylePiece, TamaguiInternalConfig } from '../types'
 import { getConfigRevisionState } from './grammarConfig'
 
 export type StyleStaticConfig = {
   baseStyle: Record<string, any> | undefined
   baseVariantProps: Record<string, any> | undefined
+  baseStylePiece: StylePiece | undefined
   defaultProps: Record<string, any> | undefined
   styledContextKeys: Set<string> | null
   variants: StaticConfig['variants']

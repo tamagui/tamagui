@@ -193,6 +193,7 @@ export function resolveStaticElement(
   }
 
   const styleProps: SplitStyleProps = {
+    isStatic: true,
     resolveValues:
       element.options?.resolveValues ??
       (target === 'native' ? 'except-theme' : 'variable'),

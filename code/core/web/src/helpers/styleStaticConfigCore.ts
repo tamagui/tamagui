@@ -1,5 +1,6 @@
 import { stylePropsText, validStyles as validStylesView } from '@tamagui/helpers'
 import type { StaticConfig, TamaguiInternalConfig } from '../types'
+import { createStylePiece } from '../style'
 import type { StyleStaticConfig } from './styleStaticConfig'
 
 const styleStaticConfigCache = new WeakMap<
@@ -26,10 +27,10 @@ export function resolveStyleStaticConfig(
   let baseStyle: Record<string, any> | undefined
   let baseVariantProps: Record<string, any> | undefined
   let defaultProps: Record<string, any> | undefined
+  const validStyles =
+    staticConfig.validStyles ||
+    (staticConfig.isText || staticConfig.isInput ? stylePropsText : validStylesView)
   if (authoredDefaultProps) {
-    const validStyles =
-      staticConfig.validStyles ||
-      (staticConfig.isText || staticConfig.isInput ? stylePropsText : validStylesView)
     for (const key in authoredDefaultProps) {
       const isVariant = Boolean(variants?.[key])
       const isStyle =
@@ -46,10 +47,25 @@ export function resolveStyleStaticConfig(
       }
     }
   }
+  const resolvedBaseStyle = baseStyle || authoredBaseStyle
+  let baseStylePiece
+  if (resolvedBaseStyle && !(staticConfig as any).disableBaseStylePiece) {
+    let directBaseStyle: Record<string, any> | undefined
+    for (const key in resolvedBaseStyle) {
+      const expanded = conf.shorthands[key] || key
+      if (key !== 'transition' && !variants?.[key] && expanded in validStyles) {
+        ;(directBaseStyle ||= {})[key] = resolvedBaseStyle[key]
+      }
+    }
+    if (directBaseStyle) {
+      baseStylePiece = createStylePiece(directBaseStyle, 'base')
+    }
+  }
   const keys = staticConfig.contextProps || staticConfig.context?.propKeys
   const value: StyleStaticConfig = {
-    baseStyle: baseStyle || authoredBaseStyle,
+    baseStyle: resolvedBaseStyle,
     baseVariantProps,
+    baseStylePiece,
     defaultProps,
     styledContextKeys: keys ? new Set(keys) : null,
     variants,

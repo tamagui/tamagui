@@ -24,6 +24,8 @@ const DOM_FRONTENDS = new Set([
   '@tamagui/tailwind',
 ])
 
+const RUNTIME_STYLE_FRONTENDS = new Set(['tamagui', '@tamagui/core', '@tamagui/web'])
+
 const acceptsTag = (accepted: PropTags, tag: TagName) =>
   accepted === '*' || accepted.includes(tag)
 
@@ -44,7 +46,7 @@ const versionHash = createHash('sha256')
   .digest('hex')
 
 export const domStructuralPass: StructuralModulePass = {
-  versionHash: `dom-structural-v3-${versionHash}`,
+  versionHash: `dom-structural-v4-${versionHash}`,
   transform({ module, source, target }) {
     const edits: SourceEdit[] = []
     const diagnostics: BailoutReason[] = []
@@ -150,10 +152,28 @@ export const domStructuralPass: StructuralModulePass = {
         )
         continue
       }
+      const isRuntimeStyle = RUNTIME_STYLE_FRONTENDS.has(definition.factory.specifier)
+      if (
+        isRuntimeStyle &&
+        (!definition.value.value ||
+          typeof definition.value.value !== 'object' ||
+          Array.isArray(definition.value.value))
+      ) {
+        diagnostics.push(
+          localBailout(
+            'local/dynamic-style-value',
+            definition.value.span,
+            `style() definition ${definition.name} must be an object literal`
+          )
+        )
+        continue
+      }
       edits.push({
         start: definition.span.start,
         end: definition.span.end,
-        content: 'undefined',
+        content: isRuntimeStyle
+          ? `({ className: "", [Symbol.for("tamagui.stylePiece")]: { byKey: {}, styleObject: ${JSON.stringify(definition.value.value)} } })`
+          : 'undefined',
         origin: definition.span,
       })
     }

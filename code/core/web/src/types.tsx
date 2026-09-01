@@ -3156,6 +3156,24 @@ export type StaticConfig = StaticConfigBase & {
 
 export type ViewStyleObject = TextStyle
 
+/** Shared registry symbol carried by runtime/compiled `style()` pieces. */
+export const stylePieceSymbol: symbol = Symbol.for('tamagui.stylePiece')
+
+/** A statically-shaped style accepted by `style()`. */
+export type StaticShapeStyle = TextStyle
+
+/**
+ * Per-property style fragment. `byKey` keeps later tiers subtractable; the
+ * authored object is retained for native and inline-JS resolution.
+ */
+export type StylePiece = {
+  className: string
+  [key: symbol]: {
+    byKey: Record<string, string>
+    styleObject: StaticShapeStyle
+  }
+}
+
 /**
  * --------------------------------------------
  *   variants
@@ -3440,6 +3458,10 @@ export type ResolveVariableAs =
   | 'except-theme'
 
 export type SplitStyleProps = {
+  /** Internal: extraction must carry rules even when module evaluation inserted them. */
+  isStatic?: boolean
+  /** Internal: captures pre-parsed style-piece slots before atomic completion. */
+  stylePieceEntries?: Record<string, any[]>
   displayName?: string
   styledContext?: Record<string, any>
   mediaState?: Record<string, boolean>
@@ -3695,8 +3717,9 @@ export type RegisteredStyle<T> = number & { __registeredStyleBrand: T }
 
 export type StyleProp<T> =
   | T
+  | StylePiece
   | RegisteredStyle<T>
-  | RecursiveArray<T | RegisteredStyle<T> | Falsy>
+  | RecursiveArray<T | StylePiece | RegisteredStyle<T> | Falsy>
   | Falsy
 
 export type FillInFont<A extends GenericFont, DefaultKeys extends string | number> = {

@@ -67,6 +67,25 @@ test('branded dynamics and resolver chains flatten with static props', async () 
   expect(code).not.toContain('"paddingTop":8')
 })
 
+test('core style pieces retain a runtime fallback on native', async () => {
+  const output = await extractForNative(`
+    import { style, View } from '@tamagui/core'
+
+    const card = style({ backgroundColor: 'red', padding: 8 })
+
+    export function Test() {
+      return <View style={card} />
+    }
+  `)
+  const code = output?.code ?? ''
+
+  expect(output?.stats.lowered).toBe(0)
+  expect(output?.stats.bailed).toBe(1)
+  expect(code).not.toContain('style({')
+  expect(code).toContain('Symbol.for("tamagui.stylePiece")')
+  expect(code).toContain('<View style={card} />')
+})
+
 test('resolver chains deopt when an ordinary readable prop is unknown', async () => {
   const output = await extractForNative(
     `

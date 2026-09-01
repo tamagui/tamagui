@@ -97,7 +97,7 @@ export interface IncompleteStyledDefinitionIR extends StyledDefinitionIRBase {
     bailouts: readonly [BailoutReason, ...BailoutReason[]];
 }
 export type StyledDefinitionIR = CompleteStyledDefinitionIR | IncompleteStyledDefinitionIR;
-/** A compile-time style handle declared by the standalone DOM frontend. */
+/** A compile-time style handle declared by a Tamagui style frontend. */
 export interface DOMStyleDefinitionIR {
     kind: 'dom-style-definition';
     id: ResolvedModuleId;
