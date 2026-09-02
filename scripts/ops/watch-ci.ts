@@ -26,13 +26,21 @@ const bad = new Set(['failure', 'cancelled', 'timed_out', 'startup_failure'])
 let consecutiveFetchFailures = 0
 
 while (true) {
-  const proc = Bun.spawnSync([
-    'gh',
-    'api',
-    `repos/${repo}/commits/${sha}/check-runs?per_page=100`,
-    '--jq',
-    '[.check_runs[] | {name, status, conclusion}]',
-  ])
+  // gh colors json when FORCE_COLOR is set, which this agent env always has.
+  // colored stdout is not json. drop the color force for this spawn only.
+  const env = { ...process.env, NO_COLOR: '1' }
+  delete env.FORCE_COLOR
+  delete env.CLICOLOR_FORCE
+  const proc = Bun.spawnSync(
+    [
+      'gh',
+      'api',
+      `repos/${repo}/commits/${sha}/check-runs?per_page=100`,
+      '--jq',
+      '[.check_runs[] | {name, status, conclusion}]',
+    ],
+    { env }
+  )
   if (proc.exitCode !== 0) {
     consecutiveFetchFailures++
     console.error(
