@@ -1023,6 +1023,26 @@ export const Fixture = () => <Box bg="$red10" hoverStyle={{ bg: '$blue10' }} />`
     expect(site.assessmentVerdict).toBe('unknown-host')
   })
 
+  test('a host typed by onlyAllowShorthands still accepts the longhand it hides', () => {
+    // `onlyAllowShorthands: true` omits every longhand a shorthand covers from
+    // the component's prop type, so a real app's `View` types `rounded` and not
+    // `borderRadius`. The conversion resolves `rounded` to its longhand before
+    // asking the host, and the host answers about the property, not the spelling.
+    const site = only(
+      run(`import { View as Raw } from 'tamagui'
+type ShorthandOnly = ((props: {
+  rounded?: string
+  px?: string
+  overflow?: string
+}) => null) & { staticConfig: {} }
+const Card = Raw as unknown as ShorthandOnly
+export const Fixture = () => <Card rounded="$3" px="$2" overflow="hidden" />`)
+    )
+
+    expect(site.assessments).toEqual([])
+    expect(site.assessmentVerdict).toBe('clean')
+  })
+
   test('a supported exit clause keeps an erased component in unknown-host review', () => {
     const site = only(
       run(`import type React from 'react'
@@ -1536,6 +1556,43 @@ describe('authored order across an inline object spread', () => {
     expect(codes(site)).toEqual(['condition-order-not-preservable'])
     expect(site.after).toContain('...base')
     expect(site.after).toContain(`hoverStyle: { bg: 'red' }`)
+  })
+
+  test('a spread the conversion cannot open is flagged for the legacy keys it hides', () => {
+    const site = only(
+      run(`import { View } from 'tamagui'
+        export const Fixture = ({ wide }) => (
+          <View
+            bg="$blue10"
+            minWidth={wide ? undefined : 160}
+            {...(!wide && {
+              $sm: { minWidth: '40%' },
+              $lg: { minWidth: '10%' },
+            })}
+          />
+        )`)
+    )
+
+    expect(codes(site)).toEqual(['legacy-condition-in-spread'])
+    expect(site.flags[0].detail).toContain('$sm')
+    expect(site.flags[0].detail).toContain('$lg')
+    expect(site.after).toContain("$sm: { minWidth: '40%' }")
+  })
+
+  test('a preserved legacy spread counts as a hand edit, not as converted', () => {
+    const sourcePath = fixture(`import { View } from 'tamagui'
+export const Fixture = ({ wide }) => (
+  <View {...(!wide && { $sm: { minWidth: '40%' } })} />
+)`)
+    const result = runRaw([sourcePath])
+    expect(result.exitCode, result.stderr).toBe(0)
+    const report = readFileSync(result.reportPath, 'utf8')
+
+    const site = only(runOn([sourcePath]))
+    expect(site.legacyLeft).toBe(1)
+    expect(report).toContain('- 0 converted with no open questions')
+    expect(report).toContain('- 1 have syntax or ordering flags for manual work')
+    expect(report).toContain('0 of 1 files have no legacy condition object')
   })
 
   test('a member whose key is not statically known is kept as a barrier', () => {

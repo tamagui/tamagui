@@ -127,7 +127,11 @@ component's TypeScript prop type accepts the style.
   `boxShadow`, or `textShadow` composite.
 
 The type-aware host lookup is shared with `@tamagui/language-service`; the codemod does
-not import or evaluate an app's runtime config.
+not import or evaluate an app's runtime config. Host validity is a question about the
+property rather than its spelling, so a host that types `rounded` accepts `borderRadius`
+too: `onlyAllowShorthands: true` omits every longhand a shorthand covers from the
+component's prop type, and the conversion resolves an authored shorthand to its longhand
+before it asks.
 
 Ordering is never traded for a bigger diff. A program merges only when every
 contribution still beats and loses to the same things it did, so an opaque spread or
@@ -194,6 +198,7 @@ A flag means a human decides. Every code the tool can emit:
 | `unregistered-legacy-condition` | a registered shape whose parameter is not registered |
 | `non-style-condition-entry` | a conditional non-style prop (`numberOfLines`) has no flat target |
 | `dynamic-legacy-condition` | the condition object is built at runtime (spread, computed key, non-literal) |
+| `legacy-condition-in-spread` | a spread the conversion cannot open (`{...(wide && { $sm: … })}`) holds v1 condition keys, named in the flag |
 | `unprovable-dynamic-value` | a condition needs the base value, whose type cannot be proven |
 | `dynamic-condition-value` | a value inside the condition object is not statically known |
 | `non-css-style-value` | a condition needs a base that is `true`, `false`, or `null` |

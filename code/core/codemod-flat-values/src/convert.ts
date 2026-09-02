@@ -126,6 +126,8 @@ interface SpreadMember {
   type: 'spread'
   index: number
   text: string
+  /** it holds v1 condition keys the conversion could not reach, so a human must */
+  legacy: boolean
 }
 
 /** a prop the conversion keeps verbatim at its authored position */
@@ -267,6 +269,80 @@ function addAssessment(
       reasons: assessment.reasons,
     })
   }
+}
+
+/**
+ * The v1 condition keys written inside a spread the conversion cannot open. A
+ * spread of anything but an inline object literal keeps its members where they
+ * were authored, so `{...(wide && { $sm: { minW: '40%' } })}` used to survive
+ * `--write` untouched while the site still reported clean. The keys are visible
+ * in the source even when the spread's value is not, and naming them is what
+ * tells the author which element still needs a hand edit.
+ */
+function legacySpreadKeys(expression: Node): string[] {
+  const names = new Set<string>()
+  for (const object of expression.getDescendantsOfKind(
+    SyntaxKind.ObjectLiteralExpression
+  )) {
+    for (const property of object.getProperties()) {
+      if (!Node.isPropertyAssignment(property)) continue
+      const name = propertyName(property.getNameNode())
+      if (name !== null && isLegacyConditionName(name)) names.add(name)
+    }
+  }
+  return [...names]
+}
+
+/**
+ * A spread member, flagged when it hides v1 condition keys. Setting `legacy`
+ * makes the element a conversion site even when nothing else on it converts,
+ * and counts it as an open hand edit rather than a converted one.
+ */
+function pushSpread(site: Site, expression: Node, text: string): void {
+  const keys = legacySpreadKeys(expression)
+  if (keys.length) {
+    site.legacy = true
+    addFlag(
+      site.flags,
+      'legacy-condition-in-spread',
+      `"${compact(text)}" is not an inline object literal, so its ${keys
+        .map((key) => `"${key}"`)
+        .join(', ')} ${keys.length === 1 ? 'entry stays' : 'entries stay'} authored`
+    )
+  }
+  site.members.push({
+    type: 'spread',
+    index: site.index++,
+    text,
+    legacy: keys.length > 0,
+  })
+}
+
+/**
+ * Whether the rewrite would change anything: a printed program, a respelled
+ * token, an added container, or a member the entries drop. A site reported only
+ * for syntax it cannot convert has none of those, and reprinting it there
+ * reflows the source for no change at all.
+ */
+function converted(site: Site, report: SiteReport): boolean {
+  return (
+    report.programs.length > 0 ||
+    site.extras.length > 0 ||
+    site.members.some(
+      (member) =>
+        (member.type === 'authored' && member.activated) ||
+        (member.type === 'legacy' && !member.failed)
+    )
+  )
+}
+
+/** the members a human still has to migrate by hand */
+function legacyLeft(site: Site): number {
+  return site.members.filter(
+    (member) =>
+      (member.type === 'legacy' && member.failed) ||
+      (member.type === 'spread' && member.legacy)
+  ).length
 }
 
 /** a member the conversion owns, so the rewrite prints it from the site's entries */
@@ -1539,22 +1615,18 @@ export function convertJsxSite(
           }
           // a nested spread or a member whose key is not statically known can set
           // anything, so it stays where it was authored and orders the merge
-          site.members.push({
-            type: 'spread',
-            index: site.index++,
-            text: Node.isSpreadAssignment(property)
+          pushSpread(
+            site,
+            property,
+            Node.isSpreadAssignment(property)
               ? `{${property.getText()}}`
-              : `{...{ ${property.getText()} }}`,
-          })
+              : `{...{ ${property.getText()} }}`
+          )
         }
         continue
       }
       before.push(compact(attribute.getText()))
-      site.members.push({
-        type: 'spread',
-        index: site.index++,
-        text: attribute.getText(),
-      })
+      pushSpread(site, expression, attribute.getText())
       continue
     }
 
@@ -1609,11 +1681,11 @@ export function convertJsxSite(
     inventory: site.inventory,
     pending: site.pending,
     notes: site.notes,
-    legacyLeft: site.members.filter((member) => member.type === 'legacy' && member.failed)
-      .length,
+    legacyLeft: legacyLeft(site),
   }
   if (
     write &&
+    converted(site, report) &&
     !site.flags.some(
       (flag) =>
         flag.code === 'emitted-program-mismatch' || flag.code === 'emitted-value-invalid'
@@ -1774,19 +1846,11 @@ export function convertStyleObject(
           }
           // a nested spread or a member whose key is not statically known can set
           // anything, so it stays where it was authored and orders the merge
-          site.members.push({
-            type: 'spread',
-            index: site.index++,
-            text: compact(nested.getText()),
-          })
+          pushSpread(site, nested, compact(nested.getText()))
         }
         continue
       }
-      site.members.push({
-        type: 'spread',
-        index: site.index++,
-        text: compact(property.getText()),
-      })
+      pushSpread(site, expression, compact(property.getText()))
       continue
     }
     if (!Node.isPropertyAssignment(property)) continue
@@ -1825,11 +1889,11 @@ export function convertStyleObject(
     inventory: site.inventory,
     pending: site.pending,
     notes: site.notes,
-    legacyLeft: site.members.filter((member) => member.type === 'legacy' && member.failed)
-      .length,
+    legacyLeft: legacyLeft(site),
   }
   if (
     write &&
+    converted(site, report) &&
     !site.flags.some(
       (flag) =>
         flag.code === 'emitted-program-mismatch' || flag.code === 'emitted-value-invalid'

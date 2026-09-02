@@ -29,6 +29,7 @@ import {
   codemodMediaNames,
   createModifierRegistry,
   grammarPlatformNames,
+  shorthands,
   type ConversionTargets,
   type HostView,
   type ModifierRegistryView,
@@ -314,13 +315,33 @@ function conversionTargets(filePath: string): ConversionTargets {
   return 'shared'
 }
 
+/** every shorthand spelling a longhand can be written as, keyed by longhand */
+const shorthandSpellings = new Map<string, string[]>()
+for (const [shorthand, longhand] of Object.entries(shorthands)) {
+  const spellings = shorthandSpellings.get(longhand)
+  if (spellings) spellings.push(shorthand)
+  else shorthandSpellings.set(longhand, [shorthand])
+}
+
 function typeAwareHost(node: Node): HostView | undefined {
   const checker = node.getProject().getTypeChecker().compilerObject
   const host = resolveTamaguiHost(
     checker as unknown as Parameters<typeof resolveTamaguiHost>[0],
     node.compilerNode as unknown as Parameters<typeof resolveTamaguiHost>[1]
   )
-  if (!host || node.getText() !== 'View') return host
+  if (!host) return host
+
+  // The conversion resolves an authored shorthand to its longhand before asking
+  // the host, and `onlyAllowShorthands: true` omits exactly those longhands from
+  // the component's prop type. Asking about `borderRadius` on an app configured
+  // that way therefore answered "the runtime drops it" for `rounded="$3"`. Host
+  // validity is a question about the property, so any spelling of it answers.
+  const accepts = (property: string): boolean =>
+    host.accepts(property) ||
+    (shorthandSpellings.get(property)?.some((spelling) => host.accepts(spelling)) ??
+      false)
+
+  if (node.getText() !== 'View') return { ...host, accepts }
 
   // Flat value typing deliberately admits arbitrary strings on narrow style
   // props, so TypeScript alone can no longer distinguish Text-only styles on
@@ -328,7 +349,7 @@ function typeAwareHost(node: Node): HostView | undefined {
   // this canonical primitive; styled(View, …) and direct <View> share it.
   return {
     ...host,
-    accepts: (property) => !(property in stylePropsTextOnly) && host.accepts(property),
+    accepts: (property) => !(property in stylePropsTextOnly) && accepts(property),
   }
 }
 
