@@ -279,7 +279,7 @@ function addAssessment(
  * in the source even when the spread's value is not, and naming them is what
  * tells the author which element still needs a hand edit.
  */
-function legacySpreadKeys(expression: Node): string[] {
+function legacyKeysInSpread(expression: Node): string[] {
   const names = new Set<string>()
   for (const object of expression.getDescendantsOfKind(
     SyntaxKind.ObjectLiteralExpression
@@ -299,7 +299,7 @@ function legacySpreadKeys(expression: Node): string[] {
  * and counts it as an open hand edit rather than a converted one.
  */
 function pushSpread(site: Site, expression: Node, text: string): void {
-  const keys = legacySpreadKeys(expression)
+  const keys = legacyKeysInSpread(expression)
   if (keys.length) {
     site.legacy = true
     addFlag(
