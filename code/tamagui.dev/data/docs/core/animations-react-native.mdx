@@ -23,56 +23,44 @@ import { createTamagui } from 'tamagui'
 
 export default createTamagui({
   animations: createAnimations({
-    fast: {
-      damping: 20,
-      mass: 1.2,
-      stiffness: 250,
-    },
-    medium: {
-      damping: 10,
-      mass: 0.9,
-      stiffness: 100,
-    },
-    slow: {
-      damping: 20,
-      stiffness: 60,
-    },
+    fast: { duration: 160, bounce: 0.25 },
+    medium: { duration: 300, bounce: 0.15 },
+    slow: { duration: 450, bounce: 0.1 },
   }),
   // ...
 })
 ```
 
+The config format is the same for all four drivers, so a name means the same
+motion whichever driver renders it.
+
 ## Animation Configuration
 
-React Native animations use spring physics with these parameters:
+React Native animations are springs, written as a duration and a bounce:
 
 ### Spring Parameters
 
-- **`damping`** - How quickly the spring settles. Higher = less bouncy
-- **`mass`** - Mass of the object attached to the spring. Higher = more inertia
-- **`stiffness`** - Spring stiffness coefficient. Higher = faster animation
+- **`duration`** - The spring's undamped period in milliseconds, which is what
+  "how fast does this feel" means. It is not a stopwatch: a bouncy spring keeps
+  ringing past it.
+- **`bounce`** - 0 is critically damped, toward 1 is loose and oscillating,
+  negative is sluggish.
 
 ```tsx
 createAnimations({
-  bouncy: {
-    damping: 10,
-    mass: 0.9,
-    stiffness: 100,
-  },
-  quick: {
-    damping: 20,
-    mass: 1.2,
-    stiffness: 250,
-  },
+  bouncy: { duration: 400, bounce: 0.5 },
+  quick: { duration: 220, bounce: 0.3 },
 })
 ```
 
+`stiffness`, `damping`, and `mass` still work for a config already tuned against
+them, and `velocity`, `overshootClamping`, and the rest thresholds pass through
+to `Animated.spring`.
+
 ### Delay
 
-You can add animation delays using the array syntax:
-
 ```tsx
-<Square transition={['bouncy', { delay: 200 }]} />
+<Square transition={{ preset: 'bouncy', delay: 200 }} />
 ```
 
 The delay is specified in milliseconds and uses `Animated.delay()` internally to
@@ -101,7 +89,7 @@ extensions:
 import { createAnimations } from '@tamagui/animations-css'
 
 export const animations = createAnimations({
-  quick: 'ease-out 150ms',
+  quick: { duration: 220, bounce: 0.3 },
 })
 ```
 
@@ -110,10 +98,7 @@ export const animations = createAnimations({
 import { createAnimations } from '@tamagui/animations-react-native'
 
 export const animations = createAnimations({
-  quick: {
-    damping: 20,
-    stiffness: 250,
-  },
+  quick: { duration: 220, bounce: 0.3 },
 })
 ```
 
@@ -132,16 +117,8 @@ import { createAnimations } from '@tamagui/animations-react-native'
 import { YStack, createTamagui } from 'tamagui'
 
 const animations = createAnimations({
-  bouncy: {
-    damping: 10,
-    mass: 0.9,
-    stiffness: 100,
-  },
-  quick: {
-    damping: 20,
-    mass: 1.2,
-    stiffness: 250,
-  },
+  bouncy: { duration: 400, bounce: 0.5 },
+  quick: { duration: 220, bounce: 0.3 },
 })
 
 export default createTamagui({

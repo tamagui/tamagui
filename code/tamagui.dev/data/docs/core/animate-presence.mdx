@@ -65,26 +65,37 @@ export default ({ show }) => (
 )
 ```
 
-The `enter` and `exit` keys accept any animation name from your config. You can also combine them with a `default` for property changes that happen while the element is mounted:
+`enter` and `exit` each take a whole transition value, so they accept a preset
+name, a CSS transition string, or an object. The rest of the transition is what
+property changes use while the element is mounted:
 
 ```tsx
-// enter slowly, exit quickly, property changes use medium speed
+// enter slowly, exit quickly, property changes use bouncy
 <View
-  transition={{ enter: 'lazy', exit: 'quick', default: 'bouncy' }}
+  transition={{ preset: 'bouncy', enter: 'lazy', exit: 'quick' }}
   opacity="enter:0 exit:0"
 />
 ```
 
-Or use enter/exit with the array syntax to include delay and per-property animations:
+Because they are whole transition values, they can carry a delay and their own
+per-property entries:
 
 ```tsx
-// enter with lazy, exit with quick, delay 200ms, x uses its own animation
+// enter with lazy but move x slowly, exit with quick after 200ms
 <View
-  transition={['bouncy', { enter: 'lazy', exit: 'quick', delay: 200, x: 'slow' }]}
+  transition={{
+    preset: 'bouncy',
+    enter: { preset: 'lazy', x: 'slow' },
+    exit: { preset: 'quick', delay: 200 },
+  }}
   opacity="enter:0 exit:0"
   x="enter:-100px exit:100px"
 />
 ```
+
+An `enter` or `exit` value replaces the base while it applies rather than
+merging into it, the same way a later CSS `transition` declaration replaces an
+earlier one.
 
 This works with all four animation drivers (CSS, React Native, Reanimated, Motion).
 

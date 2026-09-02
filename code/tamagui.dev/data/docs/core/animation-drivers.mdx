@@ -9,7 +9,7 @@ Reanimated, and Motion. Native supports React Native and Reanimated.
 <SimpleTable
   headers={['Driver', 'Platform', 'Bundle Impact', 'Performance', 'Spring Physics']}
   rows={[
-    ['**CSS**', 'Web only', 'Lightest', 'Fast (CSS transitions)', 'No (easing only)'],
+    ['**CSS**', 'Web only', 'Lightest', 'Fast (CSS transitions)', 'Yes (sampled to `linear()`)'],
     [
       '**React Native**',
       'Native only',
@@ -47,13 +47,17 @@ export const config = createTamagui({
 })
 ```
 
-The animation entries include timing keys (`100ms`, `200ms`, and others) and shared names such as `bouncy`, `quick`, and `lazy`.
+Every entry ships the same preset table, so `bouncy`, `quick`, and `lazy` mean
+the same motion whichever driver you pick. There are no `100ms`-style keys: a
+duration is CSS now, so `transition="100ms"` works with nothing configured.
 
 ---
 
 ## CSS Driver
 
-The lightest bundle size, but lacks spring physics (easing curves only). Best for simple web-only apps.
+The lightest bundle size. Springs work here too: they compile to a `linear()`
+easing that traces the real spring curve with no JavaScript running. Best for
+simple web-only apps.
 
 ### Installation
 
@@ -69,16 +73,16 @@ import { createTamagui } from 'tamagui'
 
 export default createTamagui({
   animations: createAnimations({
-    fast: 'ease-in 150ms',
-    medium: 'ease-in 300ms',
+    fast: { duration: 160, bounce: 0.25 },
+    medium: { duration: 300, bounce: 0.15 },
     slow: 'ease-in 450ms',
-    bouncy: 'cubic-bezier(0.68, -0.55, 0.265, 1.55) 300ms',
   }),
   // ...
 })
 ```
 
-The format is: `<easing-function> <duration>`
+An entry is a spring written as `{ duration, bounce }`, or a plain CSS timing
+string.
 
 **Supported easing functions:** `ease`, `linear`, `ease-in`, `ease-out`, `ease-in-out`, `cubic-bezier(x1, y1, x2, y2)`
 
@@ -103,20 +107,9 @@ import { createTamagui } from 'tamagui'
 
 export default createTamagui({
   animations: createAnimations({
-    fast: {
-      damping: 20,
-      mass: 1.2,
-      stiffness: 250,
-    },
-    medium: {
-      damping: 10,
-      mass: 0.9,
-      stiffness: 100,
-    },
-    slow: {
-      damping: 20,
-      stiffness: 60,
-    },
+    fast: { duration: 160, bounce: 0.25 },
+    medium: { duration: 300, bounce: 0.15 },
+    slow: { duration: 450, bounce: 0.1 },
   }),
   // ...
 })
@@ -124,9 +117,10 @@ export default createTamagui({
 
 **Spring parameters:**
 
-- `damping` - How quickly the spring settles (higher = less bouncy)
-- `mass` - Mass of the object (higher = more inertia)
-- `stiffness` - Spring stiffness coefficient (higher = faster)
+- `duration` - The spring's undamped period in milliseconds, how fast it feels
+- `bounce` - 0 is critically damped, toward 1 is loose, negative is sluggish
+- `stiffness`, `damping`, and `mass` still work for a config already tuned
+  against them
 
 ---
 
@@ -150,23 +144,10 @@ import { createTamagui } from 'tamagui'
 
 export default createTamagui({
   animations: createAnimations({
-    fast: {
-      type: 'spring',
-      damping: 20,
-      mass: 1.2,
-      stiffness: 250,
-    },
-    medium: {
-      type: 'spring',
-      damping: 10,
-      mass: 0.9,
-      stiffness: 100,
-    },
+    fast: { duration: 160, bounce: 0.25 },
+    medium: { duration: 300, bounce: 0.15 },
     // timing animations also supported
-    quick: {
-      type: 'timing',
-      duration: 300,
-    },
+    quick: { type: 'timing', duration: 300, easing: 'ease-out' },
   }),
   // ...
 })
@@ -192,20 +173,8 @@ import { createTamagui } from 'tamagui'
 
 export default createTamagui({
   animations: createAnimations({
-    '100ms': { duration: 100 },
-    '200ms': { duration: 200 },
-    bouncy: {
-      type: 'spring',
-      damping: 9,
-      mass: 0.9,
-      stiffness: 150,
-    },
-    quick: {
-      type: 'spring',
-      damping: 20,
-      mass: 1.2,
-      stiffness: 250,
-    },
+    bouncy: { duration: 400, bounce: 0.5 },
+    quick: { duration: 220, bounce: 0.3 },
   }),
   // ...
 })
@@ -228,7 +197,7 @@ Use `.native.ts` and `.ts` file extensions to bundle different drivers per platf
 import { createAnimations } from '@tamagui/animations-motion'
 
 export const animations = createAnimations({
-  bouncy: { type: 'spring', damping: 10, stiffness: 100 },
+  bouncy: { duration: 400, bounce: 0.5 },
 })
 ```
 
@@ -237,7 +206,7 @@ export const animations = createAnimations({
 import { createAnimations } from '@tamagui/animations-reanimated'
 
 export const animations = createAnimations({
-  bouncy: { type: 'spring', damping: 10, stiffness: 100 },
+  bouncy: { duration: 400, bounce: 0.5 },
 })
 ```
 
@@ -259,7 +228,7 @@ import { Configuration, Slot } from 'tamagui'
 import { createAnimations } from '@tamagui/animations-motion'
 
 const motionDriver = createAnimations({
-  bouncy: { type: 'spring', damping: 10, stiffness: 100 },
+  bouncy: { duration: 400, bounce: 0.5 },
 })
 
 export function AuthenticatedLayout() {
@@ -284,7 +253,7 @@ import { createAnimations as createSpring } from '@tamagui/animations-motion'
 export default createTamagui({
   animations: {
     default: createCSS({ bouncy: 'ease-in 200ms' }),
-    spring: createSpring({ bouncy: { type: 'spring', damping: 10 } }),
+    spring: createSpring({ bouncy: { duration: 400, bounce: 0.5 } }),
   },
 })
 ```
@@ -303,7 +272,7 @@ import { loadAnimationDriver } from 'tamagui'
 import { createAnimations } from '@tamagui/animations-motion'
 
 // call this after some condition (user auth, route change, etc.)
-const driver = createAnimations({ bouncy: { type: 'spring', damping: 10 } })
+const driver = createAnimations({ bouncy: { duration: 400, bounce: 0.5 } })
 loadAnimationDriver('spring', driver)
 
 // now components can use animatedBy="spring"

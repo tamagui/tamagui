@@ -24,25 +24,18 @@ import { createTamagui } from 'tamagui'
 
 export default createTamagui({
   animations: createAnimations({
-    '75ms': { duration: 75 },
-    '100ms': { duration: 100 },
-    '200ms': { duration: 200 },
-    superBouncy: {
-      type: 'spring',
-      damping: 5,
-      mass: 0.7,
-      stiffness: 200,
-    },
-    bouncy: {
-      type: 'spring',
-      damping: 9,
-      mass: 0.9,
-      stiffness: 150,
-    },
+    quick: { duration: 220, bounce: 0.3 },
+    bouncy: { duration: 400, bounce: 0.5 },
+    superBouncy: { duration: 400, bounce: 0.75 },
   }),
   // ...
 })
 ```
+
+The config format is the same for all four drivers, so a name means the same
+motion whichever driver renders it. There is no need for `'200ms'`-style entries
+any more: a duration is CSS, so `transition="200ms"` works with nothing
+configured.
 
 ## How it Works
 
@@ -57,33 +50,36 @@ thread is busy.
 
 ## Animation Configuration
 
-Motion animations support both spring and tween (timing) animations:
+Motion animations support both spring and timing animations:
 
 ### Spring Animations
 
 ```tsx
 {
-  type: 'spring',
-  damping: 10,     // Higher = less bouncy
-  mass: 0.9,       // Higher = more inertia
-  stiffness: 100,  // Higher = faster
+  duration: 400,  // the spring's undamped period, in milliseconds
+  bounce: 0.5,    // 0 is critically damped, toward 1 is loose, negative is sluggish
 }
 ```
 
-### Tween Animations
+`stiffness`, `damping`, and `mass` still work for a config already tuned against
+them, and `velocity`, `overshootClamping`, and the rest thresholds pass through.
+
+### Timing Animations
 
 ```tsx
 {
-  duration: 200,   // Duration in milliseconds
+  type: 'timing',
+  duration: 200,      // Duration in milliseconds
+  easing: 'ease-out', // any css timing function
 }
 ```
 
+A plain CSS string means the same thing: `'200ms ease-out'`.
+
 ### Delay
 
-You can add animation delays using the array syntax:
-
 ```tsx
-<Square transition={['bouncy', { delay: 200 }]} />
+<Square transition={{ preset: 'bouncy', delay: 200 }} />
 ```
 
 The delay is specified in milliseconds and is converted to seconds for Motion
@@ -111,11 +107,7 @@ For cross-platform apps, use Motion on web and Reanimated on native:
 import { createAnimations } from '@tamagui/animations-motion'
 
 export const animations = createAnimations({
-  bouncy: {
-    type: 'spring',
-    damping: 10,
-    stiffness: 100,
-  },
+  bouncy: { duration: 400, bounce: 0.5 },
 })
 ```
 
@@ -124,11 +116,7 @@ export const animations = createAnimations({
 import { createAnimations } from '@tamagui/animations-reanimated'
 
 export const animations = createAnimations({
-  bouncy: {
-    type: 'spring',
-    damping: 10,
-    stiffness: 100,
-  },
+  bouncy: { duration: 400, bounce: 0.5 },
 })
 ```
 
