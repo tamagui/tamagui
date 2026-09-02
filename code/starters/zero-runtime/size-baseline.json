@@ -1,5 +1,5 @@
 {
-  "measuredAtCommit": "744b5b72946681e378797bf4bc1310171624d03a",
+  "measuredAtCommit": "ed1560e0e3c6ab30b91743b4f658fcd588a77024",
   "nodeVersion": "24.16.0",
   "compression": "Node gzipSync level 9; output depends on Node's bundled zlib",
   "thresholds": {
@@ -17,7 +17,7 @@
       "islands": {
         "jsGzip": 60776,
         "cssGzip": 2406,
-        "islandJsGzip": 87789
+        "islandJsGzip": 87792
       }
     },
     "next-webpack": {
@@ -29,7 +29,7 @@
       "islands": {
         "jsGzip": 141880,
         "cssGzip": 2423,
-        "islandJsGzip": 87627
+        "islandJsGzip": 87632
       }
     },
     "metro-web": {
@@ -41,7 +41,7 @@
       "islands": {
         "jsGzip": 62614,
         "cssGzip": 3104,
-        "islandJsGzip": 358217
+        "islandJsGzip": 358388
       }
     }
   }
