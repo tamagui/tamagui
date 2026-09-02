@@ -147,8 +147,8 @@ test('preserves static spread precedence over an earlier conditional on web', as
     }
   )
 
-  expect(output?.js).toContain('<div')
-  expect(output?.js).toContain('(active) ? "" : ""')
+  expect(output?.js).toContain('className="is_View _b-1653391844"')
+  expect(output?.js).not.toContain('active)')
   expect(output?.js).toContain('{...{ "id": "last-wins" }}')
   expect(output?.styles).toContain('background-color:green')
   expect(output?.styles).not.toContain('background-color:red')

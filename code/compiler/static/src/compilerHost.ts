@@ -3443,6 +3443,13 @@ export function createTamaguiCompilerHost(
       const webConditionalCSS: string[] = []
       const webConditionalKeys = new Set<string>()
       const webConditionalEntries = supportsWebConditionalClasses ? webClassEntries : []
+      // inline style from conditional branches: a value every branch shares
+      // hoists into the element's style, and a value that differs becomes one
+      // conditional inline property. the css driver keeps transitioned
+      // properties inline, so this is how a conditional className carrying
+      // `transition-*` classes lowers
+      let webInlineStyle: Record<string, unknown> | null = inlineStyle
+      const conditionalInlineProperties: string[] = []
       for (const entry of webConditionalEntries) {
         const tree = entry.value.kind === 'conditional' ? entry.value.tree : null
         const domain = frontendClassDomain(entry, component)
@@ -3454,6 +3461,7 @@ export function createTamaguiCompilerHost(
           (typeof leaves)[number],
           { classes: string[]; css: string[] }
         >()
+        const leafStyles = new Map<(typeof leaves)[number], Record<string, unknown>>()
         const entryConditionalKeys = new Set<string>()
 
         for (const leaf of leaves) {
@@ -3479,7 +3487,7 @@ export function createTamaguiCompilerHost(
             ...Object.keys(branchSplit.viewProps ?? {}),
             ...Object.keys(split.viewProps ?? {}),
           ])) {
-            if (viewPropsKey === 'className') continue
+            if (viewPropsKey === 'className' || viewPropsKey === 'style') continue
             if (
               JSON.stringify(branchSplit.viewProps?.[viewPropsKey]) !==
               JSON.stringify((split.viewProps as any)?.[viewPropsKey])
@@ -3492,6 +3500,19 @@ export function createTamaguiCompilerHost(
               )
             }
           }
+          const branchInline = branchSplit.viewProps?.style
+          if (branchInline !== undefined && !staticObject(branchInline)) {
+            return bailout(
+              input,
+              'local/dynamic-style-value',
+              `Conditional ${entry.name} branch style is not a static object`,
+              entry.value.span
+            )
+          }
+          leafStyles.set(
+            leaf,
+            staticObject(branchInline) ? (branchInline as Record<string, unknown>) : {}
+          )
           const changedKeys = new Set<string>()
           for (const key of new Set([
             ...Object.keys(branchSplit.classNames ?? {}),
@@ -3553,6 +3574,41 @@ export function createTamaguiCompilerHost(
         }
         for (const key of entryConditionalKeys) webConditionalKeys.add(key)
 
+        const styleKeys = new Set<string>(Object.keys(webInlineStyle ?? {}))
+        for (const leaf of leaves) {
+          for (const key of Object.keys(leafStyles.get(leaf) ?? {})) styleKeys.add(key)
+        }
+        for (const key of styleKeys) {
+          const serialized = leaves.map((leaf) =>
+            JSON.stringify(leafStyles.get(leaf)?.[key])
+          )
+          if (serialized.every((value) => value === serialized[0])) {
+            if (serialized[0] === JSON.stringify(webInlineStyle?.[key])) continue
+            const next = { ...webInlineStyle }
+            if (serialized[0] === undefined) delete next[key]
+            else next[key] = leafStyles.get(leaves[0]!)![key]
+            webInlineStyle = Object.keys(next).length > 0 ? next : null
+            continue
+          }
+          if (!tree) {
+            return bailout(
+              input,
+              'local/dynamic-style-value',
+              `Conditional ${entry.name} branch changes style, which a class table cannot express`,
+              entry.value.span
+            )
+          }
+          const serializeValue = (node: BranchDecisionNode): string => {
+            if (node.kind === 'leaf')
+              return String(JSON.stringify(leafStyles.get(node)?.[key]))
+            const test = input.source.slice(node.test.start, node.test.end)
+            return `(${test}) ? ${serializeValue(node.whenTrue)} : ${serializeValue(node.whenFalse)}`
+          }
+          conditionalInlineProperties.push(
+            `${JSON.stringify(key)}: (${serializeValue(tree)})`
+          )
+        }
+
         for (const artifacts of leafArtifactsMap.values()) {
           webConditionalCSS.push(...artifacts.css)
         }
@@ -3585,7 +3641,10 @@ export function createTamaguiCompilerHost(
           return `(${test}) ? ${truePart} : ${falsePart}`
         }
 
-        if (tree) {
+        if (leaves.every((leaf) => leafClasses(leaf) === '')) {
+          // every branch's classes hoisted, or the branches differ only in
+          // inline style
+        } else if (tree) {
           programClassSources.push(serializeWebTree(tree))
         } else {
           // the runtime string picks its resolved classes; a string outside the
@@ -3602,10 +3661,11 @@ export function createTamaguiCompilerHost(
       const classNameExpression = hasStyleProgram
         ? `[${[JSON.stringify(webClassName), ...programClassSources].join(', ')}].filter(Boolean).join(" ")`
         : null
-      const serializedInlineStyle = serializedStyle(
-        inlineStyle,
-        dynamicHostStyleProperties ?? []
-      )
+      const webInlineProperties = [
+        ...(dynamicHostStyleProperties ?? []),
+        ...conditionalInlineProperties,
+      ]
+      const serializedInlineStyle = serializedStyle(webInlineStyle, webInlineProperties)
       const jsxWebStyle = classNameExpression
         ? [
             `className={${classNameExpression}}`,
@@ -3613,7 +3673,7 @@ export function createTamaguiCompilerHost(
           ]
             .filter(Boolean)
             .join(' ')
-        : jsxStyleAttributes(webClassName, inlineStyle, dynamicHostStyleProperties ?? [])
+        : jsxStyleAttributes(webClassName, webInlineStyle, webInlineProperties)
       const objectWebStyle = classNameExpression
         ? [
             `className: ${classNameExpression}`,
@@ -3621,11 +3681,7 @@ export function createTamaguiCompilerHost(
           ]
             .filter(Boolean)
             .join(', ')
-        : objectStyleProperties(
-            webClassName,
-            inlineStyle,
-            dynamicHostStyleProperties ?? []
-          )
+        : objectStyleProperties(webClassName, webInlineStyle, webInlineProperties)
       const webCSS = [...new Set([...artifacts.css, ...programCSS, ...webConditionalCSS])]
       const webExtraProps = serializedProps(input.element.form, webDOMResult.additions)
       if (input.element.form !== 'jsx') {

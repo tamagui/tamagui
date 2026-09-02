@@ -70,6 +70,27 @@ describe('dynamic className on a tailwind View', () => {
     expect(wrapped.line).toBe(bare.line)
   })
 
+  // the css driver keeps transitioned properties inline, so a conditional
+  // className under `transition-*` differs per branch in inline style rather
+  // than in classes: each differing property becomes one conditional inline
+  // value, matching what the static form of either branch emits
+  test('a conditional under a transition lowers its transitioned properties to conditional inline values', async () => {
+    const output = await compile(
+      '<View className={`w-11 transition-all duration-200 ${dynamicClassName}`} />',
+      `  const dynamicClassName = seed % 2 ? 'opacity-[0.85] scale-[0.95]' : 'opacity-100 scale-100'`
+    )
+    const staticBranch = await compile(
+      '<View className="w-11 transition-all duration-200 opacity-[0.85] scale-[0.95]" />'
+    )
+    expect(output.diagnostics).toEqual([])
+    expect(output.line).toMatch(
+      /^<div className="is_View transition-all duration-200 _w-\d+" style=\{\{ "opacity": \(\(seed % 2\) \? 0\.85 : 1\), "transform": \(\(seed % 2\) \? "scale\(0\.95\)" : "scale\(1\)"\) \}\} \/>$/
+    )
+    expect(staticBranch.line).toMatch(
+      /^<div className="is_View transition-all duration-200 _w-\d+" style=\{\{"opacity":0\.85,"transform":"scale\(0\.95\)"\}\} \/>$/
+    )
+  })
+
   test('a static array read with a dynamic index lowers to a class table keyed by the runtime string', async () => {
     const output = await compile('<View className={`w-6 ${colors[seed % 2]}`} />')
     expect(output.diagnostics).toEqual([])

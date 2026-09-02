@@ -1471,10 +1471,10 @@ export const App = ({ active }) => (
 )
 `)
     expect(codes(spreadLast.plan)).toEqual([])
-    // the spread is authored last, so green is the unconditional class and both
-    // branches contribute nothing
-    expect(spreadLast.output.code).toContain('"is_View _b-1653391844"')
-    expect(spreadLast.output.code).toContain('(active) ? "" : ""')
+    // the spread is authored last, so green is the unconditional class and the
+    // branches, contributing nothing, are dropped from the element
+    expect(spreadLast.output.code).toContain('className="is_View _b-1653391844"')
+    expect(spreadLast.output.code).not.toContain('active)')
   })
 })
 
