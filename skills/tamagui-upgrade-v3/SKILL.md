@@ -124,6 +124,8 @@ rg -l 'createTamagui|TamaguiCustomConfig'                                # every
 rg 'mutateThemes|addTheme|updateTheme'                                   # runtime-generated themes
 rg '\.styleable\(|createStyledHOC\('                                     # wrapper factory API changes
 rg 'useTheme\(\)\..*\.val|getTokenValue\(|var\(--'                       # token escape hatches
+rg '<Theme[^\n>]*\b(bg|background|border|radius|padding|p=|width|height)' -g '*.tsx'
+rg 'styled\(Theme' -g '*.tsx'                                            # Theme no longer takes style props
 ```
 
 Write the inventory down: every config owner, every shared wrapper component
@@ -197,6 +199,12 @@ Facts about the codemod that shape how you work with it:
   through imports, ordering preserved, the emitted program re-parsed with the
   real grammar, host and platform targets checked per file name. Everything
   else stays authored and lands in the report.
+- One element can carry two of the same condition object. A write that
+  converts the first `pressStyle` can leave a later `pressStyle={cond ?
+  undefined : { bg: 'color4' }}` authored. After `--write`, grep remaining
+  `hoverStyle`/`pressStyle`/`enterStyle`/`exitStyle` and convert the leftovers
+  (soot: `ComposerAttachmentDialog` needed a second `pressStyle` lifted to
+  `bg={busyAction ? undefined : 'press:color4'}`).
 - It never edits `createTamagui()` config. Config is always your job.
 - A report row is a decision, not noise. Resolve every row, re-run, repeat
   until the report names no remaining legacy sites. There is no runtime
@@ -398,7 +406,17 @@ runtime styles and real interaction. Minimum matrix, drawn from real apps:
    open, safe-area insets, and drag dismissal; enter/exit transitions under
    the native driver. Web passing proves nothing about the native driver.
 6. Re-run the codemod report: it must name zero remaining legacy sites.
-7. Audit custom CSS against the v3 specificity change (ordinary base rules
+7. If the running app logs
+   `<Theme ${key}=...> no longer accepts inline values. Wrap the subtree in
+   <ThemeUpdate ${key}=...> instead.`, do not patch `node_modules`. `<Theme>`
+   only owns the reserved keys in `@tamagui/helpers` `reservedThemeProps`
+   (`name`, `className`, `disable`, ...). Style values belong on
+   `<ThemeUpdate>`. The flat-values codemod and `tamagui check --styles-only`
+   only see authored JSX; a green report does not prove the warning is gone.
+   Search `styled(Theme`, `<Theme {...`, and compiler/bundler output for the
+   key. If there is no source owner, record it as a transformed-prop gap and
+   keep going; do not invent a `ThemeUpdate` wrapper around a guessed parent.
+8. Audit custom CSS against the v3 specificity change (ordinary base rules
    dropped from `(0,2,0)` to `(0,1,0)`, so single-class consumer rules now tie
    and stylesheet order decides). Rebaseline any snapshot pinning generated
    class names (`active:` now hashes as `press:`).

@@ -275,6 +275,29 @@ find the declaring element yourself and verify layout after adding
 `container` to it. Plain state groups (`$group-card-hover` to
 `group-hover/card:`) need no container.
 
+## Theme no longer takes style values
+
+```tsx
+// v2, and a v3 mistake
+<Theme name="blue" borderTopLeftRadius={8} bg="background">
+  {children}
+</Theme>
+```
+
+`<Theme>` only switches the theme name. Inline values go on `<ThemeUpdate>`:
+
+```tsx
+<Theme name="blue">
+  <ThemeUpdate borderTopLeftRadius={8} background="background">
+    {children}
+  </ThemeUpdate>
+</Theme>
+```
+
+If the warning fires and a TSX scan finds no `<Theme key=...>`, the props are
+coming from a spread, `styled(Theme, ...)`, or transformed output. Do not
+patch Tamagui dist. Find that owner or leave it documented.
+
 ## Runtime theme generation
 
 `mutateThemes`, custom user palettes, and generated theme sets are config-side

@@ -182,7 +182,16 @@ import { Theme } from 'tamagui'
 const theme = useTheme()
 console.log(theme.background.val)  // actual color value
 console.log(theme.color11.val)     // high contrast text
+
+// style values on a theme subtree: ThemeUpdate, not Theme
+<Theme name="blue">
+  <ThemeUpdate borderTopLeftRadius={8}>{children}</ThemeUpdate>
+</Theme>
 ```
+
+`<Theme>` only accepts reserved keys (`name`, `className`, `disable`, ...). A
+dev warning `<Theme ${key}=...> no longer accepts inline values` means a style
+prop reached Theme; move it to `ThemeUpdate` or stop spreading styles onto Theme.
 
 **12-step color scale convention:**
 - `color1-4`: backgrounds (subtle to emphasized)
