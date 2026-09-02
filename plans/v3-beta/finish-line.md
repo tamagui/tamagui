@@ -167,6 +167,20 @@ Owner session: Fable (r16625). Supersedes the execution state in
   Maestro Sheet red was a flake that self-cleared. Assigned on 917.1:
   team-machine pin bump and merge through the push guard (r18019), the
   animated web re-run for the comparison (r16846), soot re-pin (r18696).
+- 2026-09-02 (day 2, close-out r18971): tip `05f6e1485b` on `v3-beta`. Checks,
+  Registry, Detox, and Maestro are green on `64e209488c`; npm `beta` is
+  `3.0.0-beta.924.1`. Portal teleport root-host test is on v3-beta
+  (`2baa0f55c9`) and on main as PR 4197 (open, mergeable, not pushed to main).
+  Main canary `@tamagui/portal@2.7.7-1788328229285` is from `6831debc28` and
+  verified in the tarball. Soot `main` local `91f6c6b83e` takes that canary and
+  restores default `TamaguiProvider`; not pushed. Tailwind blog numbers
+  refreshed from the beta 917 comparison. Soot v3 receipt is
+  `plans/v3-beta/soot-migration-receipt.md` (local `d5f28c58c8`, not pushed).
+  takeout `origin/v3` `649b2a0e` and chat `origin/v3` `531ecfdc0` pin
+  `3.0.0-beta.917.1`; chat Debug native launched with `fabric:true` and no
+  `outlineStyle` Fabric failure. Team-machine already carries 917.1
+  (`git pull && cd gui && bun install && bun run sync:gpui`). Main-side
+  `release.yml` docs-tolerant beta selection still waits for an explicit go.
 
 ## Plan
 
