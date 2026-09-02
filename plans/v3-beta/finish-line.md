@@ -157,6 +157,16 @@ Owner session: Fable (r16625). Supersedes the execution state in
   should read 14/14/0). Benchmark worker r16846 and soot worker r18015 hit
   provider hard limits until 2026-09-07; soot respawned as a fresh `lg`
   worker on the existing `~/.worktrees/soot-v3` worktree.
+- 2026-09-02 (day 2, beta 917.1): published from `af016777b2` and verified
+  by tarball content: the animated lowering, the create-menu fixes, and the
+  codemod spread flag are all in it. Two release-only failures cost a cycle
+  each: the release audit rejected the codemod for a helper named
+  `legacySpreadKeys` (the audit forbids the deleted v2 grammar's identifiers
+  as substrings in every shipped package but style-grammar; renamed), and a
+  Detox shard died in `setup-node` on a runner DNS failure (rerun). The
+  Maestro Sheet red was a flake that self-cleared. Assigned on 917.1:
+  team-machine pin bump and merge through the push guard (r18019), the
+  animated web re-run for the comparison (r16846), soot re-pin (r18696).
 
 ## Plan
 
