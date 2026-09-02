@@ -512,8 +512,10 @@ export function createBaseMenu() {
 
   const PORTAL_NAME = 'MenuPortal'
 
+  // Menu.Portal is optional, so Content and SubContent read this context with no
+  // provider above them: an undefined default makes that a crash
   const { Provider: PortalProvider, useStyledContext: usePortalContext } =
-    createStyledContext<PortalContextValue>(undefined, 'Portal')
+    createStyledContext<PortalContextValue>({}, 'Portal')
 
   const MenuPortal = (props: ScopedProps<MenuPortalProps>) => {
     const { scope = MENU_CONTEXT, forceMount, zIndex, children } = props

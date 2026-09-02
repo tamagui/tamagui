@@ -24,6 +24,17 @@ const TextAncestorContext = React.createContext(false)
 const Animated = {
   createAnimatedComponent: (Component) => Component,
 }
+const Keyboard = {
+  addListener: () => ({ remove: () => {} }),
+  removeAllListeners: () => {},
+  dismiss: () => {},
+}
+const useWindowDimensions = () => ({
+  width: 1024,
+  height: 768,
+  scale: 2,
+  fontScale: 1,
+})
 const PanResponder = {
   create: (handlers) => ({ panHandlers: handlers }),
 }
@@ -60,6 +71,8 @@ function proxyWorm() {
         get: () => ({ width: 1024, height: 768 }),
         addEventListener: () => ({ remove: () => {} }),
       },
+      useWindowDimensions,
+      Keyboard,
       Appearance: {
         getColorScheme: () => 'light',
         addChangeListener: () => {},
@@ -105,6 +118,8 @@ module.exports.PanResponder = proxy.PanResponder
 module.exports.TurboModuleRegistry = proxy.TurboModuleRegistry
 module.exports.processColor = proxy.processColor
 module.exports.Dimensions = proxy.Dimensions
+module.exports.useWindowDimensions = useWindowDimensions
+module.exports.Keyboard = Keyboard
 module.exports.Appearance = proxy.Appearance
 module.exports.codegenNativeCommands = codegenNativeCommands
 module.exports.codegenNativeComponent = codegenNativeComponent

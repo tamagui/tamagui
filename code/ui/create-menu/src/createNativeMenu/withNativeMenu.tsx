@@ -1,3 +1,4 @@
+import { getNativeMenuAdapter } from '@tamagui/native'
 import { isWeb } from '@tamagui/web'
 
 type GetProps<T> = T extends React.ComponentType<infer P> ? P : never
@@ -28,6 +29,12 @@ export function withNativeMenu<
   }
 
   const Menu: React.FC<Props> = (props) => {
+    // adapters register during app setup, so read at render time. with none
+    // installed every native component renders null, which silently erases the
+    // whole menu: fall back to the cross-platform implementation instead
+    if (!getNativeMenuAdapter()) {
+      return <Component {...(props as any)} />
+    }
     return <NativeComponent {...(props as any)} />
   }
 
