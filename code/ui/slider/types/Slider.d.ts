@@ -23,13 +23,13 @@ declare const SliderTrack: import("@tamagui/core").TamaguiComponent<Omit<import(
     orientation?: "horizontal" | "vertical" | undefined;
     size?: import("@tamagui/core").Size | undefined;
 }>, "__scopeSlider" | "elevation" | "size" | keyof import("@tamagui/core").RNTamaguiViewNonStyleProps | keyof import("@tamagui/core").StackStyleBase> & Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-    elevation?: number | false | import('@tamagui/core').Size | undefined;
+    elevation?: number | false | import("@tamagui/core").Size | undefined;
 }>, "elevation"> & import("@tamagui/stacks").StackVariants & {
     size?: SizeTokens | true;
 } & {
     __scopeSlider?: string;
 }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-    elevation?: number | false | import('@tamagui/core').Size | undefined;
+    elevation?: number | false | import("@tamagui/core").Size | undefined;
 }>, "elevation"> & import("@tamagui/stacks").StackVariants & {
     size?: SizeTokens | true;
 } & {
@@ -138,13 +138,13 @@ declare const Slider: ((props: SliderProps & {
         orientation?: "horizontal" | "vertical" | undefined;
         size?: import("@tamagui/core").Size | undefined;
     }>, "__scopeSlider" | "elevation" | "size" | keyof import("@tamagui/core").RNTamaguiViewNonStyleProps | keyof import("@tamagui/core").StackStyleBase> & Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-        elevation?: number | false | import('@tamagui/core').Size | undefined;
+        elevation?: number | false | import("@tamagui/core").Size | undefined;
     }>, "elevation"> & import("@tamagui/stacks").StackVariants & {
         size?: SizeTokens | true;
     } & {
         __scopeSlider?: string;
     }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-        elevation?: number | false | import('@tamagui/core').Size | undefined;
+        elevation?: number | false | import("@tamagui/core").Size | undefined;
     }>, "elevation"> & import("@tamagui/stacks").StackVariants & {
         size?: SizeTokens | true;
     } & {
@@ -206,13 +206,13 @@ declare const Track: import("@tamagui/core").TamaguiComponent<Omit<import("@tama
     orientation?: "horizontal" | "vertical" | undefined;
     size?: import("@tamagui/core").Size | undefined;
 }>, "__scopeSlider" | "elevation" | "size" | keyof import("@tamagui/core").RNTamaguiViewNonStyleProps | keyof import("@tamagui/core").StackStyleBase> & Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-    elevation?: number | false | import('@tamagui/core').Size | undefined;
+    elevation?: number | false | import("@tamagui/core").Size | undefined;
 }>, "elevation"> & import("@tamagui/stacks").StackVariants & {
     size?: SizeTokens | true;
 } & {
     __scopeSlider?: string;
 }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-    elevation?: number | false | import('@tamagui/core').Size | undefined;
+    elevation?: number | false | import("@tamagui/core").Size | undefined;
 }>, "elevation"> & import("@tamagui/stacks").StackVariants & {
     size?: SizeTokens | true;
 } & {

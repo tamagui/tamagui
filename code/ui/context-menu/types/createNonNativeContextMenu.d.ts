@@ -64,7 +64,7 @@ export declare function createNonNativeContextMenu(): {
         scope?: string;
     }, keyof ContextMenuContentProps> & ContextMenuContentProps & {
         scope?: string;
-    }, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & BaseMenuTypes.MenuContentProps & {
+    }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & BaseMenuTypes.MenuContentProps & {
         scope?: string;
     } & ContextMenuContentProps & {
         scope?: string;
@@ -128,15 +128,15 @@ export declare function createNonNativeContextMenu(): {
     }, "download" | "elevationAndroid" | "onLayout" | "onMoveShouldSetResponder" | "onMoveShouldSetResponderCapture" | "onResponderEnd" | "onResponderGrant" | "onResponderMove" | "onResponderReject" | "onResponderRelease" | "onResponderStart" | "onResponderTerminate" | "onResponderTerminationRequest" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "onStartShouldSetResponder" | "onStartShouldSetResponderCapture" | "rel" | keyof BaseMenuTypes.MenuSubContentProps> & Omit<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {}>, keyof BaseMenuTypes.MenuSubContentProps> & BaseMenuTypes.MenuSubContentProps & {
         scope?: string;
     } & {
-        ref?: React.Ref<import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods)> | undefined;
+        ref?: React.Ref<TamaguiElement> | undefined;
     }, "ref"> & {
         scope?: string;
-    }, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & BaseMenuTypes.MenuSubContentProps & {
+    }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & BaseMenuTypes.MenuSubContentProps & {
         scope?: string;
     } & Omit<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {}>, keyof BaseMenuTypes.MenuSubContentProps> & BaseMenuTypes.MenuSubContentProps & {
         scope?: string;
     } & {
-        ref?: React.Ref<import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods)> | undefined;
+        ref?: React.Ref<TamaguiElement> | undefined;
     }, "ref"> & {
         scope?: string;
     }, import("@tamagui/web").StackStyleBase, {}, import("@tamagui/web").StaticConfigPublic>;

@@ -61,9 +61,12 @@ export const TooltipSimple: React.FC<TooltipSimpleProps> = createRefComponent(
           )}
           borderRadius={getVariableValue(getRadius(tooltipProps.size ?? true))}
           boxShadow="0 2px 4px shadow-color"
-          transition={['quicker', { opacity: { overshootClamping: true } }]}
+          transition={{
+            preset: 'quicker',
+            properties: 'transform, opacity',
+            opacity: { preset: 'quicker', spring: { overshootClamping: true } },
+          }}
           {...contentProps}
-          animateOnly={['transform', 'opacity']}
         >
           <Tooltip.Arrow
             size={tooltipProps.size ?? 7}

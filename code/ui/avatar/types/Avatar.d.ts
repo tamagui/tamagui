@@ -9,14 +9,14 @@ type AvatarImageProps = Partial<ImageProps> & {
 };
 declare const AvatarImage: import("@tamagui/core").RefComponent<TamaguiElement, AvatarImageProps>;
 export declare const AvatarFallbackFrame: React.FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
-    elevation?: number | import("@tamagui/core").Size | undefined;
+    elevation?: number | false | import("@tamagui/core").Size | undefined;
 }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
     ref?: React.Ref<TamaguiElement> | undefined;
 }> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-    elevation?: number | import("@tamagui/core").Size | undefined;
+    elevation?: number | false | import("@tamagui/core").Size | undefined;
 }, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
     __tama: [import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-        elevation?: number | import("@tamagui/core").Size | undefined;
+        elevation?: number | false | import("@tamagui/core").Size | undefined;
     }, import("@tamagui/core").StaticConfigPublic];
 };
 type AvatarFallbackExtraProps = {
@@ -25,24 +25,24 @@ type AvatarFallbackExtraProps = {
 };
 type AvatarFallbackProps = GetProps<typeof AvatarFallbackFrame> & AvatarFallbackExtraProps;
 declare const AvatarFallback: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-    elevation?: number | import("@tamagui/core").Size | undefined;
+    elevation?: number | false | import("@tamagui/core").Size | undefined;
 }>, "__scopeAvatar" | "delay"> & AvatarFallbackExtraProps & {
     __scopeAvatar?: Scope;
-}, import("react-native").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & AvatarFallbackExtraProps & {
+}, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & AvatarFallbackExtraProps & {
     __scopeAvatar?: Scope;
 }, import("@tamagui/core").StackStyleBase, {
-    elevation?: number | import("@tamagui/core").Size | undefined;
+    elevation?: number | false | import("@tamagui/core").Size | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
 export declare const AvatarFrame: React.FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "circular" | "elevation" | "size" | "transparent" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
     circular?: boolean | undefined;
-    elevation?: number | import("@tamagui/core").Size | undefined;
+    elevation?: number | false | import("@tamagui/core").Size | undefined;
     size?: number | import("@tamagui/core").Size | undefined;
     transparent?: boolean | undefined;
 }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
     ref?: React.Ref<TamaguiElement> | undefined;
 }> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     circular?: boolean | undefined;
-    elevation?: number | import("@tamagui/core").Size | undefined;
+    elevation?: number | false | import("@tamagui/core").Size | undefined;
     size?: number | import("@tamagui/core").Size | undefined;
     transparent?: boolean | undefined;
 }, import("@tamagui/core").StaticConfigPublic & {
@@ -52,7 +52,7 @@ export declare const AvatarFrame: React.FunctionComponent<Omit<import("@tamagui/
 }, "staticConfig"> & {
     __tama: [import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
         circular?: boolean | undefined;
-        elevation?: number | import("@tamagui/core").Size | undefined;
+        elevation?: number | false | import("@tamagui/core").Size | undefined;
         size?: number | import("@tamagui/core").Size | undefined;
         transparent?: boolean | undefined;
     }, import("@tamagui/core").StaticConfigPublic & {
@@ -77,7 +77,7 @@ type AvatarProps = GetProps<typeof AvatarFrame>;
  */
 declare const Avatar: ((props: Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "circular" | "elevation" | "size" | "transparent" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
     circular?: boolean | undefined;
-    elevation?: number | import("@tamagui/core").Size | undefined;
+    elevation?: number | false | import("@tamagui/core").Size | undefined;
     size?: number | import("@tamagui/core").Size | undefined;
     transparent?: boolean | undefined;
 }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").RefProp<TamaguiElement>) => React.ReactNode) & {
@@ -86,13 +86,13 @@ declare const Avatar: ((props: Omit<import("@tamagui/core").RNTamaguiViewNonStyl
 } & {
     Image: import("@tamagui/core").RefComponent<TamaguiElement, AvatarImageProps>;
     Fallback: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-        elevation?: number | import("@tamagui/core").Size | undefined;
+        elevation?: number | false | import("@tamagui/core").Size | undefined;
     }>, "__scopeAvatar" | "delay"> & AvatarFallbackExtraProps & {
         __scopeAvatar?: Scope;
-    }, import("react-native").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & AvatarFallbackExtraProps & {
+    }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & AvatarFallbackExtraProps & {
         __scopeAvatar?: Scope;
     }, import("@tamagui/core").StackStyleBase, {
-        elevation?: number | import("@tamagui/core").Size | undefined;
+        elevation?: number | false | import("@tamagui/core").Size | undefined;
     }, import("@tamagui/core").StaticConfigPublic>;
 };
 export { createAvatarScope, Avatar, AvatarImage, AvatarFallback };

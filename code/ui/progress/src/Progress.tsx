@@ -69,11 +69,11 @@ const ProgressIndicator = createStyledHOC(
         data-max={context.max}
         x={x}
         width="200%"
-        animateOnly={['transform']}
         {...(!isWeb && context.width === 0 && { opacity: 0 })}
         {...indicatorProps}
         ref={forwardedRef}
-        transition={!isWeb && !context.width ? null : transition}
+        // only the indicator's slide transitions; `width` is a layout jump
+        transition={!isWeb && !context.width ? null : { transform: transition }}
       />
     )
   }

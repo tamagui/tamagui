@@ -15,7 +15,7 @@ export declare function createMenu(): React.FC<import("./createNonNativeMenu").M
     }, keyof import("./createNonNativeMenu").MenuContentProps> & import("./createNonNativeMenu").MenuContentProps & {
         scope?: string;
     } & {
-        ref?: React.Ref<import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods)> | undefined;
+        ref?: React.Ref<import("@tamagui/web").TamaguiElement> | undefined;
     } & Partial<Omit<import("@tamagui/create-menu").NativeMenuContentProps, "download" | "elevationAndroid" | "onEntryFocus" | "onLayout" | "onMoveShouldSetResponder" | "onMoveShouldSetResponderCapture" | "onResponderEnd" | "onResponderGrant" | "onResponderMove" | "onResponderReject" | "onResponderRelease" | "onResponderStart" | "onResponderTerminate" | "onResponderTerminationRequest" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "onStartShouldSetResponder" | "onStartShouldSetResponderCapture" | "ref" | "rel" | keyof import("./createNonNativeMenu").MenuContentProps>>>;
     readonly Group: React.FC<Omit<import("@tamagui/web").ViewProps, keyof import("@tamagui/create-menu").MenuGroupProps> & import("@tamagui/create-menu").MenuGroupProps & {
         ref?: React.Ref<import("@tamagui/web").TamaguiElement> | undefined;
@@ -98,7 +98,7 @@ export declare function createMenu(): React.FC<import("./createNonNativeMenu").M
     }, keyof import("@tamagui/create-menu").MenuSubContentProps> & import("@tamagui/create-menu").MenuSubContentProps & {
         scope?: string;
     } & {
-        ref?: React.Ref<import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods)> | undefined;
+        ref?: React.Ref<import("@tamagui/web").TamaguiElement> | undefined;
     } & Partial<Omit<import("@tamagui/create-menu").NativeMenuSubContentProps, "download" | "elevationAndroid" | "onLayout" | "onMoveShouldSetResponder" | "onMoveShouldSetResponderCapture" | "onResponderEnd" | "onResponderGrant" | "onResponderMove" | "onResponderReject" | "onResponderRelease" | "onResponderStart" | "onResponderTerminate" | "onResponderTerminationRequest" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "onStartShouldSetResponder" | "onStartShouldSetResponderCapture" | "ref" | "rel" | keyof import("@tamagui/create-menu").MenuSubContentProps>>>;
     readonly ItemTitle: React.FC<Omit<import("@tamagui/web").TextProps, keyof import("@tamagui/create-menu").MenuItemTitleProps> & import("@tamagui/create-menu").MenuItemTitleProps & {
         ref?: React.Ref<import("@tamagui/web").TamaguiTextElement> | undefined;

@@ -384,7 +384,6 @@ const SliderActive = createStyledHOC(
         data-orientation={context.orientation}
         data-disabled={context.disabled ? '' : undefined}
         size={context.size ?? undefined}
-        animateOnly={['left', 'top', 'right', 'bottom']}
         {...rangeProps}
         ref={composedRefs}
         {...{
@@ -528,7 +527,6 @@ const SliderThumb = createStyledHOC(
         data-orientation={context.orientation}
         data-disabled={context.disabled ? '' : undefined}
         tabIndex={context.disabled ? undefined : 0}
-        animateOnly={['transform', 'left', 'top', 'right', 'bottom']}
         {...positionalStyles}
         {...{
           [orientation.startEdge]: `${percent}%`,

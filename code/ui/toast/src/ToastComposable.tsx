@@ -1151,7 +1151,13 @@ const ToastItemInner = createStyledHOC(
         aria-label={rest['aria-label']}
         {...dataAttributes}
         transition={
-          isDragging || ctx.reducedMotion ? undefined : removed ? '200ms' : '400ms'
+          isDragging || ctx.reducedMotion
+            ? undefined
+            : {
+                duration: removed ? 200 : 400,
+                // height only collapses the stack on web; native relayouts
+                properties: isWeb ? 'transform, opacity, height' : 'transform, opacity',
+              }
         }
         y={
           ctx.reducedMotion
@@ -1172,9 +1178,6 @@ const ToastItemInner = createStyledHOC(
           !isFront && {
             style: { transformOrigin: isTop ? 'top center' : 'bottom center' },
           })}
-        animateOnly={
-          isWeb ? ['transform', 'opacity', 'height'] : ['transform', 'opacity']
-        }
       >
         <DragWrapper
           animatedStyle={animatedStyle}

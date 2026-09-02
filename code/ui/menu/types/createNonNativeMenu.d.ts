@@ -61,7 +61,7 @@ export declare function createNonNativeMenu(): {
         scope?: string;
     }, keyof MenuContentProps> & MenuContentProps & {
         scope?: string;
-    }, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & BaseMenuContentProps & {
+    }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & BaseMenuContentProps & {
         scope?: string;
     } & MenuContentProps & {
         scope?: string;
@@ -106,7 +106,7 @@ export declare function createNonNativeMenu(): {
         scope?: string;
     }, keyof BaseMenuSubContentProps> & BaseMenuSubContentProps & {
         scope?: string;
-    }, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & BaseMenuSubContentProps & {
+    }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & BaseMenuSubContentProps & {
         scope?: string;
     } & {
         scope?: string;

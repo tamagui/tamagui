@@ -709,7 +709,7 @@ export const PopperContent = createRefComponent<PopperContentElement, PopperCont
     // when animatePosition=true, disableAnimation state changes cycle the DOM node
     // (null then re-mount). we block all null calls here to prevent floating-ui from
     // losing its reference mid-cycle; genuine unmount is handled by the useEffect below.
-    // for same-node cycling (animateOnly prop change without remount), refs.setFloating
+    // for same-node cycling (transition prop change without remount), refs.setFloating
     // is a no-op in floating-ui (same-node guard), so we call update() to force recompute.
     const lastNodeRef = React.useRef<any>(null)
     const safeSetFloating = React.useCallback(
@@ -813,14 +813,13 @@ export const PopperContent = createRefComponent<PopperContentElement, PopperCont
       position: strategy,
       opacity: hide ? 0 : 1,
       // when animatePosition is controlled by the user, always emit these keys with
-      // safe no-op values (transition: undefined, animateOnly: []) so the inner
-      // View's hook count stays stable across animatePos toggles. animatePresence
-      // must always be false here too, to short-circuit usePresence consistently.
+      // safe no-op values (transition: 'none') so the inner View's hook count
+      // stays stable across animatePos toggles. animatePresence must always be
+      // false here too, to short-circuit usePresence consistently.
       ...(isAnimatePosControlled && {
-        transition: animatePos ? rest.transition : undefined,
-        // animateOnly: [] turns off transitions while keeping styles applied,
-        // letting the element move to its position silently before animations start
-        animateOnly: animatePos && !disableAnimation ? rest.animateOnly : [],
+        // `none` keeps the styles applied while turning transitions off, letting
+        // the element move to its position silently before animations start
+        transition: animatePos && !disableAnimation ? rest.transition : 'none',
         animatePresence: false,
       }),
     }
@@ -973,8 +972,9 @@ export const PopperArrow = createRefComponent<TamaguiElement, PopperArrowProps>(
         {...arrowStyle}
         {...(!arrowPositioned && { opacity: 0 })}
         {...(isAnimatePosControlled && {
-          transition: animatePosition ? transition : undefined,
-          animateOnly: animatePosition ? ['transform'] : [],
+          // the arrow only ever moves, so its transition names `transform` and
+          // nothing else: `left`/`top` have to jump with the popper, not trail it
+          transition: animatePosition ? { transform: transition } : 'none',
           animatePresence: false,
         })}
       >
