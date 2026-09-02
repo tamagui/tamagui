@@ -43,8 +43,10 @@ describe('animation props', () => {
     const view = tree.container.querySelector('#test-id') as HTMLElement
     expect(view.tagName).toBe('DIV')
     expect(view.className).toContain('is_View')
+    // emitted in css order, duration then easing, whatever order the config
+    // entry was authored in
     expect(view.style.transition).toBe(
-      'all cubic-bezier(0.215, 0.610, 0.355, 1.000) 400ms'
+      'all 400ms cubic-bezier(0.215, 0.610, 0.355, 1.000)'
     )
     const style = getComputedStyle(view)
     expect(style.backgroundColor).toBe('red')

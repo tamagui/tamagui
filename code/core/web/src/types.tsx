@@ -1553,75 +1553,90 @@ export type MatchMedia = (query: string) => MediaQueryList
 
 // createComponent props helpers
 
-// transition="bouncy"
-// transition={['bouncy', {  }]}
-// { all: 'name' }
-
 // TODO can override for better types
 export type AnimationConfigType = any
 
 /**
- * Spring configuration parameters that can override preset defaults.
- * Use with array syntax: transition={['bouncy', { stiffness: 1000, damping: 70 }]}
+ * Low-level spring physics. A projection of `duration` + `bounce`, not a second
+ * way to configure a spring: whichever you author, the other is derived, and
+ * every driver ends up with the same motion.
+ *
+ * Reach for this only when you are porting a config you already tuned.
  */
 export type TransitionSpringConfig = {
   stiffness?: number
   damping?: number
   mass?: number
-  tension?: number
-  friction?: number
   velocity?: number
   overshootClamping?: boolean
-  duration?: number
-  bounciness?: number
-  speed?: number
+  restDisplacementThreshold?: number
+  restSpeedThreshold?: number
 }
 
 /**
- * A transition value: the name of a configured driver animation, or a raw CSS
- * transition string such as `200ms` or `200ms hover:400ms`. The runtime accepts
- * both — a name that is not a configured preset is treated as CSS — so the type
- * must too. `(string & {})` keeps the preset names in autocomplete instead of
- * collapsing the union to plain `string`.
+ * A transition value: the name of a configured driver animation, or a CSS
+ * transition string such as `200ms`, `200ms ease-out`, or
+ * `opacity 150ms, transform 300ms`.
+ *
+ * Springs get a CSS-shaped function of their own: `spring(300ms, 0.4)` is a
+ * 300ms spring with a bounce of 0.4. It works everywhere a timing function
+ * does, including on the web, where it compiles to a `linear()` easing.
+ *
+ * A bare string that exactly matches a configured animation name is that
+ * preset; everything else is CSS. `(string & {})` keeps preset names in
+ * autocomplete instead of collapsing the union to plain `string`.
  */
 export type TransitionValue = TransitionKeys | (string & {})
 
+/**
+ * The settings half of a transition object. Anything else in the object is a
+ * style property name carrying its own transition.
+ */
+export type TransitionConfig = {
+  /** a configured animation to start from */
+  preset?: TransitionKeys
+  /** milliseconds, or a CSS time like `'200ms'` */
+  duration?: number | string
+  /**
+   * Makes it a spring. `0` is critically damped (no overshoot), approaching
+   * `1` is loose and oscillating, negative is sluggish. `duration` stays the
+   * perceptual "how fast does this feel" number either way.
+   */
+  bounce?: number
+  /** any CSS timing function. Mutually exclusive with `bounce`. */
+  easing?: string
+  /** milliseconds, or a CSS time */
+  delay?: number | string
+  behavior?: 'normal' | 'allow-discrete'
+  /** the CSS `transition-property` list these settings apply to */
+  properties?: string
+  spring?: TransitionSpringConfig
+  /** the transition to use while mounting, if it differs */
+  enter?: TransitionProp
+  /** the transition to use while unmounting, if it differs */
+  exit?: TransitionProp
+}
+
+/**
+ * `transition` accepts a string or an object, and nothing else.
+ *
+ * ```tsx
+ * transition="bouncy"                                  // a configured preset
+ * transition="200ms ease-out"                          // css
+ * transition="opacity 150ms, transform spring(300ms, 0.4)"
+ * transition={{ duration: 200, bounce: 0.15 }}
+ * transition={{ preset: 'bouncy', opacity: '150ms' }}  // per-property override
+ * ```
+ *
+ * Per-property keys are later CSS entries, so they win for that property and
+ * inherit nothing from the base, exactly as
+ * `transition: all 200ms, opacity 150ms` behaves in a stylesheet.
+ */
 export type TransitionProp =
   | TransitionValue
-  | ({
-      default?: TransitionValue
-      enter?: TransitionValue
-      exit?: TransitionValue
-      delay?: number
-    } & TransitionSpringConfig & {
-        [key: string]:
-          | TransitionValue
-          | {
-              type: TransitionValue
-              [key: string]: any
-            }
-          | number
-          | boolean
-          | undefined
-      })
-  | [
-      TransitionValue,
-      {
-        delay?: number
-        enter?: TransitionValue
-        exit?: TransitionValue
-      } & TransitionSpringConfig & {
-          [key: string]:
-            | TransitionValue
-            | {
-                type?: TransitionValue
-                [key: string]: any
-              }
-            | number
-            | boolean
-            | undefined
-        },
-    ]
+  | (TransitionConfig & {
+      [property: string]: TransitionValue | TransitionConfig | unknown
+    })
 
 /**
  * Emitted by the animation driver at the start and end of a transition.
@@ -2639,12 +2654,6 @@ interface ExtraBaseProps {
    * See: https://tamagui.dev/docs/core/animations
    */
   transition?: TransitionProp | null
-
-  /**
-   * Pass an array of strings containing the long style property names
-   * which will be exclusively transitioned.
-   */
-  animateOnly?: string[]
 
   /**
    * If you'd like this component to not attach to the nearest parent AnimatePresence,

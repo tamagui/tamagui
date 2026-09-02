@@ -350,7 +350,6 @@ export const Card = () => (
   <View
     animatedBy="css"
     transition="fast"
-    animateOnly={['padding']}
     padding={12}
     data-runtime="transition"
   />
@@ -1234,11 +1233,7 @@ export const App = () => (
   })
 
   test('reports an animation that needs a runtime instead of dropping it', () => {
-    for (const definition of [
-      `animateOnly: ['opacity'], transition: 'all 200ms ease', opacity: 0.5`,
-      `animation: 'medium'`,
-      `animatePresence: true`,
-    ]) {
+    for (const definition of [`animation: 'medium'`, `animatePresence: true`]) {
       const source = `
 import { View, styled } from '@tamagui/core'
 const Card = styled(View, { ${definition}, height: 20 })
@@ -1251,23 +1246,6 @@ export const App = () => <Card data-box="definition" />
       expect(plan.stats).toMatchObject({ lowered: 0, flattened: 0, bailed: 1 })
       expect(output.changed).toBe(false)
     }
-  })
-
-  test('names the styled definition when animateOnly is not on the element', () => {
-    const atCallSite = compile(`
-import { View } from '@tamagui/core'
-export const App = () => <View animateOnly={['opacity']} transition="medium" opacity={0.5} />
-`)
-    const inDefinition = compile(`
-import { View, styled } from '@tamagui/core'
-const Card = styled(View, { animateOnly: ['opacity'], transition: 'medium', opacity: 0.5 })
-export const App = () => <Card />
-`)
-
-    expect(atCallSite.plan.diagnostics[0]?.zeroMessage).toContain('animateOnly on View')
-    expect(inDefinition.plan.diagnostics[0]?.zeroMessage).toContain(
-      'animateOnly in the styled() definition of Card'
-    )
   })
 })
 

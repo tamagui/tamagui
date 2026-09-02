@@ -403,7 +403,6 @@ const compilerStyleProps = new Set([
   'group',
   'transition',
   'animation',
-  'animateOnly',
   'animatePresence',
   'animatedBy',
   'fontFamily',
@@ -413,7 +412,6 @@ const compilerStyleProps = new Set([
 const runtimeAnimationProps = new Set([
   'transition',
   'animation',
-  'animateOnly',
   'animatePresence',
   'animatedBy',
 ])
@@ -1324,7 +1322,6 @@ export function createTamaguiCompilerHost(
     'group',
     'transition',
     'animation',
-    'animateOnly',
     'animatePresence',
     'animatedBy',
     'render',
@@ -1848,7 +1845,7 @@ export function createTamaguiCompilerHost(
       // A styled() definition's animation props decide the same things the call
       // site's do, so the lowering decision reads both. completeProps merges
       // them far below, long after this point, and reading only the call site
-      // here decided a definition's transition/animation/animateOnly as if it
+      // here decided a definition's transition/animation props as if they
       // had never been written: the element flattened and the prop was dropped
       // with no diagnostic. Same merge function and same precedence as
       // completeProps, so there is one answer to "what is this prop's value".
@@ -1864,27 +1861,6 @@ export function createTamaguiCompilerHost(
           (name) => runtimeAnimationProps.has(name) && animationProps[name] !== undefined
         ),
       ])
-      const animateOnlyEntry = input.element.entries.find(
-        (entry) => entry.kind === 'prop' && entry.name === 'animateOnly'
-      )
-      if (animationNames.has('animateOnly')) {
-        return bailout(
-          input,
-          'local/unsupported-target',
-          'Animated candidates remain on the runtime path',
-          animateOnlyEntry?.span,
-          {
-            rule: 5,
-            message: zeroRuleMessage(5, {
-              // without the origin an author reads this against JSX that does
-              // not carry the prop, because the styled() definition does
-              detail: animateOnlyEntry
-                ? `animateOnly on ${input.element.component.name}`
-                : `animateOnly in the styled() definition of ${input.element.component.name}`,
-            }),
-          }
-        )
-      }
       const transitionEntry = input.element.entries.find(
         (entry) => entry.kind === 'prop' && entry.name === 'transition'
       )
@@ -1936,8 +1912,7 @@ export function createTamaguiCompilerHost(
       const runtimeAnimationRequired =
         (animationNames.has('transition') && resolvedCssTransition === null) ||
         [...animationNames].some(
-          (name) =>
-            name !== 'transition' && name !== 'animatedBy' && name !== 'animateOnly'
+          (name) => name !== 'transition' && name !== 'animatedBy'
         ) ||
         animatedByNeedsRuntime
       let dynamicHostStyleProperties: string[] | null = null

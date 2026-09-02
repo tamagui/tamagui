@@ -23,7 +23,8 @@ export function getTokenCategoryForProperty(
     property.endsWith('BlockSize') ||
     property.endsWith('InlineSize') ||
     property === 'blockSize' ||
-    property === 'inlineSize'
+    property === 'inlineSize' ||
+    property === 'flexBasis'
   ) {
     return 'size'
   }

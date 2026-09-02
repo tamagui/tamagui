@@ -372,50 +372,6 @@ describe('getSplitStyles', () => {
     expect(lightResult.style?.backgroundColor).toBe('red')
   })
 
-  test.todo(
-    `a dark clause keeps CSS classes when animateOnly is set and the property is not animated`,
-    () => {
-      // when animateOnly is set, non-animated properties (like bg) should stay as
-      // CSS classes so theme media overrides work via specificity
-      const result = getSplitStyles(
-        {
-          backgroundColor: 'red dark:blue',
-          animateOnly: ['transform'],
-        },
-        View.staticConfig,
-        {} as any,
-        'dark',
-        defaultComponentState,
-        {
-          mediaState: undefined,
-          isAnimated: true,
-          noClass: true,
-          resolveValues: 'auto',
-        },
-        {} as any,
-        {
-          animationDriver: { inputStyle: 'value', outputStyle: 'inline' },
-          groups: { state: {} },
-        } as any,
-        undefined,
-        undefined,
-        true
-      )!
-
-      // backgroundColor should NOT be inline (it's not in animateOnly)
-      expect(result.style?.backgroundColor).toBeUndefined()
-
-      // backgroundColor should be promoted to CSS class
-      expect(result.classNames?.backgroundColor).toBeDefined()
-
-      // theme media CSS class should also exist
-      const themeMediaKey = Object.keys(result.classNames || {}).find((k) =>
-        k.includes('dark')
-      )
-      expect(themeMediaKey).toBeDefined()
-    }
-  )
-
   test(`perspective transform`, () => {
     const rules = Object.values(
       simplifiedGetSplitStyles(Text, {
