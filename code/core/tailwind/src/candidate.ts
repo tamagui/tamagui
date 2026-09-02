@@ -22,6 +22,7 @@ import {
   decodeArbitrary,
   type GrammarConfigView,
   type ParsedCandidate,
+  resolveTokenName,
 } from '@tamagui/style-grammar/tooling/candidate'
 
 /**
@@ -107,6 +108,7 @@ function expansionProps(parsed: ParsedCandidate): readonly string[] | null {
   const prefix = parsed.prefix
   if (!prefix) return null
   if (prefix === 'size') return sizeUtilityProps
+  if (prefix === 'translate') return ['x', 'y']
   if (prefix === 'inset-x' || prefix === 'inset-y') {
     return insetAxisProps[prefix.slice('inset-'.length)]
   }
@@ -132,7 +134,8 @@ function expansionProps(parsed: ParsedCandidate): readonly string[] | null {
  *   "opacity-50" → { key: "opacity", value: 0.5 }
  */
 function tailwindClassToFlatProp(
-  parsed: ParsedCandidate
+  parsed: ParsedCandidate,
+  grammarConfig?: GrammarConfigView
 ): { key: string; value: any } | null {
   if (parsed.kind !== 'dynamic' || !parsed.entry || parsed.rawValue === undefined) {
     return null
@@ -141,9 +144,20 @@ function tailwindClassToFlatProp(
   const category = parsed.entry.tokenCategory
   let value: any = parsed.rawValue
 
+  if (prop === 'rotate' && parsed.valueKind === 'convenience') {
+    return {
+      key: 'rotate',
+      value: `${parsed.negative ? '-' : ''}${value}deg`,
+    }
+  }
+
   if (prop.endsWith('Width') && parsed.prefix?.startsWith('border')) {
     if (parsed.valueKind === 'token') {
       value = `${parsed.negative ? '-' : ''}${value}`
+      if (grammarConfig && parsed.entry?.tokenCategory) {
+        value =
+          resolveTokenName(grammarConfig, parsed.entry.tokenCategory, value) ?? value
+      }
     } else if (parsed.valueKind === 'arbitrary') {
       value = borderDimValue(value)
     } else {
@@ -235,7 +249,10 @@ function tailwindClassToFlatProp(
   // tailwind sizing keywords / fractions (w-full → 100%, w-1/2 → 50%, w-auto, w-screen).
   // handled before isValidTailwindValue since fractions/keywords aren't plain CSS values. An
   // exact configured size token with the same spelling stays a token.
-  if (category === 'size' && parsed.valueKind !== 'token') {
+  if (
+    parsed.valueKind !== 'token' &&
+    (category === 'size' || parsed.convenience === 'sizing-keyword')
+  ) {
     const sized = tailwindSizingValue(prop, value)
     if (sized != null) {
       return { key: prop, value: sized }
@@ -267,6 +284,9 @@ function tailwindClassToFlatProp(
       value = Number(value)
     } else if (category) {
       value = `${parsed.negative ? '-' : ''}${value}`
+      if (grammarConfig) {
+        value = resolveTokenName(grammarConfig, category, value) ?? value
+      }
     } else {
       value = Number(value)
     }
@@ -491,10 +511,13 @@ function computeClassPlan(
   if (expandedProps) {
     const entries: TailwindPlanEntry[] = []
     for (const prop of expandedProps) {
-      const flatProp = tailwindClassToFlatProp({
-        ...parsed,
-        entry: parsed.entry ? { ...parsed.entry, prop } : parsed.entry,
-      })
+      const flatProp = tailwindClassToFlatProp(
+        {
+          ...parsed,
+          entry: parsed.entry ? { ...parsed.entry, prop } : parsed.entry,
+        },
+        grammarConfig
+      )
       if (!flatProp) return 'raw'
       const entry = createPlanEntry(flatProp.key, flatProp.value, parsed.modifiers)
       if (!entry) return 'raw'
@@ -502,7 +525,7 @@ function computeClassPlan(
     }
     return attachShorthandResets(entries, parsed.modifiers)
   }
-  const flatProp = tailwindClassToFlatProp(parsed)
+  const flatProp = tailwindClassToFlatProp(parsed, grammarConfig)
   if (flatProp) {
     const entry = createPlanEntry(flatProp.key, flatProp.value, parsed.modifiers)
     return entry ? attachShorthandResets([entry], parsed.modifiers) : 'raw'

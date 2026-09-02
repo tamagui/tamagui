@@ -25,6 +25,34 @@ describe('claimed candidates resolve to native style values', () => {
     expect(styleOf(styles).paddingLeft).toBe(expected)
   })
 
+  test('tailwind half-step classes resolve the configured space token', () => {
+    const styles = splitTailwindStyles(View, { className: 'p-0.5' })
+    const space = getConfig().tokensParsed.space
+    const expected = (space['0.5'] ?? space['0-5']).val
+
+    expect(styleOf(styles).paddingTop).toBe(expected)
+    expect(styleOf(styles).paddingLeft).toBe(expected)
+  })
+
+  test('rotate-45 becomes a native rotate string', () => {
+    const styles = splitTailwindStyles(View, { className: 'rotate-45' })
+    const transform = styleOf(styles).transform
+    const rotate =
+      styleOf(styles).rotate ??
+      (Array.isArray(transform)
+        ? transform.find((item) => item?.rotate)?.rotate
+        : undefined)
+
+    expect(rotate).toBe('45deg')
+  })
+
+  test('inset fractions become percentages', () => {
+    const styles = splitTailwindStyles(View, { className: 'inset-1/2' })
+
+    expect(styleOf(styles).top).toBe('50%')
+    expect(styleOf(styles).left).toBe('50%')
+  })
+
   test('a px arbitrary becomes a number, which is what react native accepts', () => {
     const styles = splitTailwindStyles(View, { className: 'w-[400px]' })
 

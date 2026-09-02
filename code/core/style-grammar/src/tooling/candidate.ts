@@ -77,6 +77,7 @@ const extraPrefixes = [
   'inset-x',
   'inset-y',
   'size',
+  'translate',
 ]
 const negativeTokenProps = new Set([
   'margin',
@@ -95,9 +96,28 @@ const negativeTokenProps = new Set([
   'bottom',
   'left',
   'inset',
+  'insetInlineStart',
+  'insetInlineEnd',
+  'start',
+  'end',
   'x',
   'y',
+  'rotate',
+  'scale',
+  'scaleX',
+  'scaleY',
   'letterSpacing',
+])
+const positionSpaceProps = new Set([
+  'top',
+  'right',
+  'bottom',
+  'left',
+  'inset',
+  'insetInlineStart',
+  'insetInlineEnd',
+  'start',
+  'end',
 ])
 const borderWidthKeywords = new Set(['thin', 'medium', 'thick'])
 const ambiguousCssKeywords = new Set([
@@ -213,7 +233,23 @@ export function hasTokenName(
   category: TokenCategory,
   name: string
 ): boolean {
-  return hasName(config.tokenNames?.[category], name)
+  return resolveTokenName(config, category, name) !== null
+}
+
+// Tailwind spells half-steps as `0.5`; some Tamagui configs use `0-5`.
+export function decimalHalfTokenAlias(name: string): string | null {
+  const match = /^(-?\d+)\.5$/.exec(name)
+  return match ? `${match[1]}-5` : null
+}
+
+export function resolveTokenName(
+  config: GrammarConfigView,
+  category: TokenCategory,
+  name: string
+): string | null {
+  if (hasName(config.tokenNames?.[category], name)) return name
+  const alias = decimalHalfTokenAlias(name)
+  return alias !== null && hasName(config.tokenNames?.[category], alias) ? alias : null
 }
 
 function entriesForProps(props: readonly string[]): GrammarEntry[] {
@@ -246,6 +282,9 @@ function resolveEntries(
   }
   if (prefix === 'inset-x' || prefix === 'inset-y') {
     return entriesForProps(insetAxisProps[prefix.slice('inset-'.length)])
+  }
+  if (prefix === 'translate') {
+    return entriesForProps(['x', 'y'])
   }
   if (prefix.startsWith('rounded-')) {
     const props = radiusCornerProps[prefix.slice('rounded-'.length)]
@@ -472,6 +511,27 @@ function chooseEntry(
     return null
   }
 
+  if (numericPattern.test(rawValue)) {
+    if (prefix === 'rotate') {
+      const rotate = entries.find((entry) => entry.prop === 'rotate')
+      if (rotate) return { entry: rotate, valueKind: 'convenience', convenience: 'angle' }
+    }
+    if (prefix === 'flex') {
+      const flex = entries.find((entry) => entry.prop === 'flex')
+      if (flex)
+        return { entry: flex, valueKind: 'convenience', convenience: 'flex-bundle' }
+    }
+    if (prefix === 'grow') {
+      const grow = entries.find((entry) => entry.prop === 'flexGrow')
+      if (grow) return { entry: grow, valueKind: 'convenience', convenience: 'integer' }
+    }
+    if (prefix === 'shrink') {
+      const shrink = entries.find((entry) => entry.prop === 'flexShrink')
+      if (shrink)
+        return { entry: shrink, valueKind: 'convenience', convenience: 'integer' }
+    }
+  }
+
   for (const entry of entries) {
     if (entry.tokenCategory) {
       const name = negative ? `-${rawValue}` : rawValue
@@ -485,12 +545,23 @@ function chooseEntry(
       ) {
         return { entry, valueKind: 'convenience', convenience: 'sizing-keyword' }
       }
+      if (
+        positionSpaceProps.has(entry.prop) &&
+        (rawValue === 'full' || rawValue === 'auto' || fractionIsValid(rawValue))
+      ) {
+        return { entry, valueKind: 'convenience', convenience: 'sizing-keyword' }
+      }
       if (entry.tokenCategory === 'zIndex' && numericPattern.test(rawValue)) {
         return { entry, valueKind: 'convenience', convenience: 'integer' }
       }
       continue
     }
-    if (prefix === 'opacity' || prefix === 'scale') {
+    if (
+      prefix === 'opacity' ||
+      prefix === 'scale' ||
+      prefix === 'scale-x' ||
+      prefix === 'scale-y'
+    ) {
       if (numericPattern.test(rawValue)) {
         return { entry, valueKind: 'convenience', convenience: 'percentage' }
       }
@@ -530,7 +601,10 @@ export function parseCandidate(
       if (
         selected &&
         (!negative ||
-          (selected.valueKind === 'token' && negativeTokenProps.has(selected.entry.prop)))
+          (negativeTokenProps.has(selected.entry.prop) &&
+            (selected.valueKind === 'token' ||
+              selected.convenience === 'angle' ||
+              selected.convenience === 'percentage')))
       ) {
         dynamic = { prefix, rawValue, selected }
         // An exact configured token owns its spelling before a reserved whole utility. Other

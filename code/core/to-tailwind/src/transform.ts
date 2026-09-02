@@ -826,6 +826,8 @@ const pxLengthProps = new Set([
   'bottom',
   'left',
   'inset',
+  'insetInlineStart',
+  'insetInlineEnd',
   'borderRadius',
   'borderTopLeftRadius',
   'borderTopRightRadius',

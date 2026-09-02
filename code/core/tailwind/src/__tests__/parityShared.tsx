@@ -132,6 +132,8 @@ const SAMPLE: Record<string, { comp: any; attr: string } | null> = {
   bottom: { comp: View, attr: 'bottom={5}' },
   left: { comp: View, attr: 'left={5}' },
   inset: { comp: View, attr: 'inset={5}' },
+  insetInlineStart: { comp: View, attr: 'insetInlineStart={5}' },
+  insetInlineEnd: { comp: View, attr: 'insetInlineEnd={5}' },
   zIndex: { comp: View, attr: 'zIndex={5}' },
   overflow: null, // standalone
   flex: { comp: View, attr: 'flex={1}' },
@@ -139,6 +141,7 @@ const SAMPLE: Record<string, { comp: any; attr: string } | null> = {
   flexWrap: null, // standalone
   flexGrow: { comp: View, attr: 'flexGrow={1}' },
   flexShrink: { comp: View, attr: 'flexShrink={1}' },
+  flexBasis: { comp: View, attr: 'flexBasis={8}' },
   alignItems: null, // standalone
   alignContent: null, // standalone
   alignSelf: null, // standalone
@@ -148,6 +151,8 @@ const SAMPLE: Record<string, { comp: any; attr: string } | null> = {
   pointerEvents: { comp: View, attr: 'pointerEvents="box-none"' },
   rotate: { comp: View, attr: 'rotate="10deg"' },
   scale: { comp: View, attr: 'scale={0.95}' },
+  scaleX: { comp: View, attr: 'scaleX={0.95}' },
+  scaleY: { comp: View, attr: 'scaleY={0.95}' },
   x: { comp: View, attr: 'x={10}' },
   y: { comp: View, attr: 'y={10}' },
   aspectRatio: { comp: View, attr: 'aspectRatio={1.5}' },
@@ -235,7 +240,6 @@ export function runParityGate(label: string) {
       'textDecorationColor',
       'borderHorizontalWidth',
       'borderVerticalWidth',
-      'flexBasis',
       'userSelect',
       'cursor',
     ]

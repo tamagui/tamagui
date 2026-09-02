@@ -15,6 +15,23 @@ describe('claimed candidates become flat props', () => {
     expect(tokenize('p-4')).toEqual({ padding: '4' })
   })
 
+  test('tailwind half-steps resolve to a configured space token', () => {
+    const space = getConfig().tokensParsed.space
+    const half = '0.5' in space ? '0.5' : '0-5'
+    expect(tokenize('p-0.5')).toEqual({ padding: half })
+    expect(tokenize('-mt-0.5')).toEqual({
+      marginTop: half.startsWith('-') ? half : `-${half}`,
+    })
+  })
+
+  test('rotate, flex-n, and inset fractions become native-capable values', () => {
+    expect(tokenize('rotate-45')).toEqual({ rotate: '45deg' })
+    expect(tokenize('-rotate-90')).toEqual({ rotate: '-90deg' })
+    expect(tokenize('flex-2')).toEqual({ flex: 2 })
+    expect(tokenize('inset-1/2')).toEqual({ inset: '50%' })
+    expect(tokenize('line-clamp-2')).toEqual({ numberOfLines: 2 })
+  })
+
   test('modifiers are preserved in the shared conditional spelling', () => {
     expect(tokenize('hover:bg-[red]')).toEqual({
       backgroundColor: { hover: 'red' },

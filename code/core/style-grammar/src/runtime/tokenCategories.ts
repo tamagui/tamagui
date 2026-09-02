@@ -53,6 +53,7 @@ export const propToTokenCategoryCode: Readonly<Record<string, number>> = Object.
   inlineSize: tokenCategorySize,
   minInlineSize: tokenCategorySize,
   maxInlineSize: tokenCategorySize,
+  flexBasis: tokenCategorySize,
   shadowRadius: tokenCategorySize,
   zIndex: tokenCategoryZIndex,
   backgroundColor: tokenCategoryColor,

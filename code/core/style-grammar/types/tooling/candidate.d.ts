@@ -36,6 +36,8 @@ export type CandidateClassification = {
 	reason: string;
 };
 export declare function hasTokenName(config: GrammarConfigView, category: TokenCategory, name: string): boolean;
+export declare function decimalHalfTokenAlias(name: string): string | null;
+export declare function resolveTokenName(config: GrammarConfigView, category: TokenCategory, name: string): string | null;
 export declare function parseCandidate(candidate: string, config: GrammarConfigView): ParsedCandidate | null;
 export declare function classifyCandidate(candidate: string, config: GrammarConfigView): CandidateClassification;
 export interface FormatCandidateInput {

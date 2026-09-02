@@ -15,7 +15,7 @@ import {
 } from '../tooling'
 
 const tokenNames: Record<TokenCategory, readonly string[]> = {
-  space: ['0', '1', '2', '4', '-1', 'spaceOnly'],
+  space: ['0', '1', '2', '4', '-1', '0-5', '-0-5', 'spaceOnly'],
   size: ['0', '4', '10', 'sizeOnly'],
   radius: ['0', '4', '8', 'xl', 'radiusOnly'],
   zIndex: ['4', 'modal'],
@@ -41,6 +41,8 @@ const config: GrammarConfigView = {
 describe('candidate grammar', () => {
   test.each([
     ['p-4', 'padding', '4'],
+    ['p-0.5', 'padding', '0.5'],
+    ['-m-0.5', 'margin', '0.5'],
     ['ps-4', 'paddingInlineStart', '4'],
     ['pe-4', 'paddingInlineEnd', '4'],
     ['pbs-4', 'paddingBlockStart', '4'],
@@ -98,8 +100,7 @@ describe('candidate grammar', () => {
       'pointer-events-foo',
       'object-foo',
       'flex-garbage',
-      'grow-1',
-      'rotate-45',
+      'basis-garbage',
       'shadow-sm',
     ]) {
       expect(classifyCandidate(candidate, config).kind, candidate).toBe('passthrough')
@@ -257,6 +258,16 @@ describe('candidate grammar', () => {
   test('kept conveniences are explicit grammar results', () => {
     expect(parseCandidate('w-full', config)?.convenience).toBe('sizing-keyword')
     expect(parseCandidate('w-1/2', config)?.convenience).toBe('sizing-keyword')
+    expect(parseCandidate('inset-1/2', config)?.convenience).toBe('sizing-keyword')
+    expect(parseCandidate('top-full', config)?.convenience).toBe('sizing-keyword')
+    expect(parseCandidate('rotate-45', config)?.convenience).toBe('angle')
+    expect(parseCandidate('flex-2', config)?.convenience).toBe('flex-bundle')
+    expect(parseCandidate('basis-full', config)?.convenience).toBe('sizing-keyword')
+    expect(parseCandidate('scale-x-50', config)?.convenience).toBe('percentage')
+    expect(parseCandidate('line-clamp-2', config)?.properties).toEqual({
+      numberOfLines: 2,
+    })
+    expect(parseCandidate('start-4', config)?.entry?.prop).toBe('insetInlineStart')
     expect(parseCandidate('opacity-50', config)?.convenience).toBe('percentage')
     expect(parseCandidate('z-4', config)?.valueKind).toBe('token')
     expect(parseCandidate('z-10', config)?.convenience).toBe('integer')
