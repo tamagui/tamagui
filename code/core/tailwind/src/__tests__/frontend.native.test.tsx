@@ -46,6 +46,19 @@ describe('claimed candidates resolve to native style values', () => {
     expect(rotate).toBe('45deg')
   })
 
+  test('outline classes resolve to native outline longhands', () => {
+    const styles = splitTailwindStyles(View, {
+      className: 'outline-2 outline-solid outline-[red] outline-offset-2',
+    })
+    const space = getConfig().tokensParsed.space
+    const expectedWidth = space['2'].val
+
+    expect(styleOf(styles).outlineWidth).toBe(expectedWidth)
+    expect(styleOf(styles).outlineStyle).toBe('solid')
+    expect(styleOf(styles).outlineColor).toBe('red')
+    expect(styleOf(styles).outlineOffset).toBe(expectedWidth)
+  })
+
   test('inset fractions become percentages', () => {
     const styles = splitTailwindStyles(View, { className: 'inset-1/2' })
 

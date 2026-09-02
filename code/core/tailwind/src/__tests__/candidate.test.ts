@@ -74,6 +74,15 @@ describe('claimed candidates become flat props', () => {
     })
   })
 
+  test('outline classes become the outline longhands', () => {
+    expect(tokenize('outline')).toEqual({ outlineWidth: 1 })
+    expect(tokenize('outline-2')).toEqual({ outlineWidth: '2' })
+    expect(tokenize('outline-[red]')).toEqual({ outlineColor: 'red' })
+    expect(tokenize('outline-solid')).toEqual({ outlineStyle: 'solid' })
+    expect(tokenize('outline-offset-2')).toEqual({ outlineOffset: '2' })
+    expect(tokenize('-outline-offset-2')).toEqual({ outlineOffset: '-2' })
+  })
+
   test('logical spacing and gap axes become native-capable props', () => {
     expect(
       tokenize('ps-4 pe-2 pbs-4 pbe-2 -ms-1 me-4 -mbs-1 mbe-4 gap-x-2 gap-y-4')
