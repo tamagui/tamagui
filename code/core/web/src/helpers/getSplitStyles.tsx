@@ -1372,6 +1372,8 @@ export const getSplitStyles: StyleSplitter = (
     }
   }
   completeResolvedStyles(styleState)
+  if (styleState.flatGroupKeys?.size) pseudoGroups = styleState.flatGroupKeys
+  if (styleState.flatGroupMedia?.size) mediaGroups = styleState.flatGroupMedia
   if (styleProps.isStatic) {
     for (const property in classNames) {
       const identifier = classNames[property]
@@ -1880,6 +1882,7 @@ function mergeStyle(
     let out = shouldNormalize ? normalizeValueWithProperty(val, key) : val
     if (process.env.TAMAGUI_TARGET === 'native' && typeof out === 'string') {
       if (out.includes('cqi') || out.includes('cqw')) {
+        ;(styleState.flatGroupKeys ||= new Set()).add('@')
         ;(styleState.flatGroupMedia ||= new Set()).add('@')
       }
       out = resolveNativeUnits(key, out, styleState)

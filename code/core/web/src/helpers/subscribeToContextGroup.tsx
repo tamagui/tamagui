@@ -96,13 +96,15 @@ const createGroupListener = (
           Object.assign(group.pseudo, pseudo)
           didChange = true
         }
-      } else if (layout && mediaGroups) {
-        group.media ||= {}
-        const mediaState = getMediaState(mediaGroups, layout)
-        const next = mergeIfNotShallowEqual(group.media, mediaState)
-        if (next !== group.media) {
-          Object.assign(group.media, next)
-          didChange = true
+      } else if (layout) {
+        if (mediaGroups) {
+          group.media ||= {}
+          const mediaState = getMediaState(mediaGroups, layout)
+          const next = mergeIfNotShallowEqual(group.media, mediaState)
+          if (next !== group.media) {
+            Object.assign(group.media, next)
+            didChange = true
+          }
         }
         if (layout.width !== undefined) {
           const prevWidth = group.layout?.width

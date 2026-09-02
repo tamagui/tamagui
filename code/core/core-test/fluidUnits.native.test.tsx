@@ -209,4 +209,81 @@ describe('getSplitStyles integration on native', () => {
     expect(split?.style?.fontSize).toBe(20)
     expect(split?.style?.paddingTop).toBe(30)
   })
+
+  test('mounted tree integration: container layout event updates child fluid fontSize', async () => {
+    const { Text, View, createTamagui, TamaguiProvider } = await import('@tamagui/core')
+    const { render, fireEvent, waitFor } = await import('@testing-library/react-native')
+    const configDefault = (await import('../config-default')).default
+    const config = createTamagui(configDefault.getDefaultTamaguiConfig('native'))
+
+    const fontSize = (element: any) => {
+      const styles = Array.isArray(element.props.style)
+        ? element.props.style
+        : [element.props.style]
+      let val: any
+      for (const s of styles.flat(Number.POSITIVE_INFINITY)) {
+        if (s?.fontSize !== undefined) val = s.fontSize
+      }
+      return val
+    }
+
+    const host = (screen: any, testID: string) =>
+      screen.root.findAllByProps({ testID }).at(-1)!
+
+    const screen = render(
+      <TamaguiProvider config={config} defaultTheme="light">
+        <View testID="parent" container>
+          <Text testID="child" fontSize="clamp(16px, 2cqi + 10px, 32px)">
+            Hello
+          </Text>
+        </View>
+      </TamaguiProvider>
+    )
+
+    // Fire onLayout on parent container with width = 1000
+    // 2% of 1000 + 10 = 20 + 10 = 30px
+    fireEvent(host(screen, 'parent'), 'layout', {
+      nativeEvent: {
+        layout: { width: 1000, height: 100, x: 0, y: 0 },
+      },
+    })
+
+    await waitFor(() => {
+      expect(fontSize(host(screen, 'child'))).toBe(30)
+    })
+
+    // Now resize container to width = 400
+    // 2% of 400 + 10 = 8 + 10 = 18px
+    fireEvent(host(screen, 'parent'), 'layout', {
+      nativeEvent: {
+        layout: { width: 400, height: 100, x: 0, y: 0 },
+      },
+    })
+
+    await waitFor(() => {
+      expect(fontSize(host(screen, 'child'))).toBe(18)
+    })
+
+    // Clamp to max: container width = 2000 (2% of 2000 + 10 = 50 -> clamps to 32)
+    fireEvent(host(screen, 'parent'), 'layout', {
+      nativeEvent: {
+        layout: { width: 2000, height: 100, x: 0, y: 0 },
+      },
+    })
+
+    await waitFor(() => {
+      expect(fontSize(host(screen, 'child'))).toBe(32)
+    })
+
+    // Clamp to min: container width = 100 (2% of 100 + 10 = 12 -> clamps to 16)
+    fireEvent(host(screen, 'parent'), 'layout', {
+      nativeEvent: {
+        layout: { width: 100, height: 100, x: 0, y: 0 },
+      },
+    })
+
+    await waitFor(() => {
+      expect(fontSize(host(screen, 'child'))).toBe(16)
+    })
+  })
 })
