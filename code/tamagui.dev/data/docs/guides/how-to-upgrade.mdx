@@ -443,13 +443,13 @@ In monorepos, keep resolutions/overrides aligned:
 ## 2. Migrate Sheet anatomy
 
 `Sheet.Frame` has been replaced by `Sheet.Container` and `Sheet.Background`.
-The flat-values codemod above rewrites every `Sheet.Frame` it can prove is
-Tamagui's: the element becomes `Sheet.Container`, and a `Sheet.Background`
-carrying the surface props (`bg`, `border*`, `shadow*`, `elevation`,
-`disableHideBottomOverflow`) is inserted as its first child. A spread on the
-Frame and a `styled(Sheet.Frame, …)` target are rewritten too but reported
-for review, because the codemod cannot see which of those props are surface
-props. Review every changed Sheet against the rules below.
+The flat-values codemod does not rewrite component anatomy. Replace each
+`Sheet.Frame` by hand: the element becomes `Sheet.Container`, and a
+`Sheet.Background` carrying the surface props (`bg`, `border*`, `shadow*`,
+`elevation`, `disableHideBottomOverflow`) is inserted as its first child.
+Inspect spreads and `styled(Sheet.Frame, …)` targets individually because the
+surface props may be hidden from a text search. Review every changed Sheet
+against the rules below.
 
 ```tsx
 // before

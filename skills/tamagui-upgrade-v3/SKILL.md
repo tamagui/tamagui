@@ -203,9 +203,11 @@ Facts about the codemod that shape how you work with it:
   fallback, so a skipped row is a broken style in production.
 - It preserves v5 palette-step names (`blue10`) as non-blocking
   `legacy-palette-token` warnings because it cannot evaluate your config. The
-  v6 defaults do not define them and missing colors drop silently, so resolve
-  every one: an absolute token such as `blue-500`, or a theme's adaptive
-  `colorN` ramp.
+  warning requires a config-aware decision. If the application stayed on the
+  frozen v5 pack, verify that the token exists and record the warning as
+  resolved without renaming it. If the application moved to v6, replace it
+  with an absolute token such as `blue-500` or a theme's adaptive `colorN`
+  ramp because missing colors drop silently.
 
 For what each flag code means and the standard fix for each, read
 [references/flag-playbook.md](references/flag-playbook.md).

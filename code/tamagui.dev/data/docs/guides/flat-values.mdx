@@ -213,8 +213,10 @@ It becomes:
 ```
 
 That output preserves the old palette name because the codemod cannot choose a
-new shade for a custom design system. Replace it with the intended v6 token,
-for example `dark:blue-500`, before running the converted application.
+new shade for a custom design system. Check the active config before changing
+it. `blue10` remains valid when the application keeps the frozen v5 pack. If
+the application moved to v6, replace it with the intended v6 token, for
+example `dark:blue-500`, before running the converted application.
 
 Run write mode from your project root against one or more files or directories:
 
