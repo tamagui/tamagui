@@ -180,6 +180,25 @@ one preset name meaning one motion on all four drivers.
 absorbs a +24 byte css drift that was already failing this gate on `v3-beta`
 before this branch.
 
+### metro-web islands is measured on CI, not on a Mac
+
+Every number in that file except two comes out identical on macOS and on the
+Linux CI runner. The exceptions are `metro-web.islands.cssGzip` and
+`metro-web.islands.islandJsGzip`, which are 348 and 309 bytes larger on CI.
+
+It is not staleness: a run from a fully cleaned starter reproduces the macOS
+numbers exactly, and metro's page bundle, both next bundles and both vite
+bundles all match CI byte for byte. Only metro's *island* build differs, in both
+its javascript and its css, so metro is resolving a slightly different island
+graph on the two platforms. The gate has disagreed on this metric since before
+this branch: `v3-beta`'s own run measured 3,129 and 358,824 against a recorded
+3,104 and 358,397.
+
+Those two entries therefore carry CI's values, taken from the job log. Running
+`--update-baseline` on a Mac will lower them and turn the gate red again. Read
+the numbers off a CI run instead. Finding what metro resolves differently is
+worth doing and is not part of this change.
+
 ## Presets lower to static css at compile time
 
 `resolveStaticCssTransition` in `compilerHost.ts` decides whether a
