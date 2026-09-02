@@ -7,14 +7,10 @@ export const Content = styled(Popover.Content, {
   x: '0 enter:0 exit:0',
   y: '0 enter:5px exit:5px',
   opacity: '1 enter:0 exit:0',
-  transition: [
-    'quick',
-    {
-      opacity: {
-        overshootClamping: true,
-      },
-    },
-  ],
+  transition: {
+    preset: 'quick',
+    opacity: { preset: 'quick', spring: { overshootClamping: true } },
+  },
 })
 
 export function CustomStyledAnimatedPopover() {

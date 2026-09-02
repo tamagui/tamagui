@@ -61,8 +61,12 @@ export function TooltipToolbarRowCase() {
         <Tooltip.Content
           data-testid="toolbar-tip-content"
           animatePosition
-          animateOnly={['transform', 'opacity', 'width', 'height']}
-          transition={{ default: 'quickest', enter: 'quickest', exit: '0ms' }}
+          transition={{
+            enter: 'quickest',
+            exit: '0ms',
+            preset: 'quickest',
+            properties: 'transform, opacity, width, height',
+          }}
           x="0 enter:0 exit:0"
           y="0 enter:-3px exit:-3px"
           opacity="1 enter:0 exit:0"

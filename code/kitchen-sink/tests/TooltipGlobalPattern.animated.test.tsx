@@ -6,7 +6,7 @@ import { setupPage } from './test-utils'
  *
  * Two behaviors to verify:
  * 1. While open, switching triggers → smooth position animation
- * 2. Close at A, reopen at B → snap position (animateOnly: []), then animate in
+ * 2. Close at A, reopen at B → snap position (transition: "none"), then animate in
  */
 
 test.describe('Tooltip Global Pattern', () => {

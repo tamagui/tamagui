@@ -50,7 +50,10 @@ function Demo({ Icon, ...props }: TooltipProps & { Icon?: any }) {
         px="3"
         rounded
         boxShadow="0 2px 4px shadow-color"
-        transition={['quick', { opacity: { overshootClamping: true } }]}
+        transition={{
+          preset: 'quick',
+          opacity: { preset: 'quick', spring: { overshootClamping: true } },
+        }}
       >
         <Tooltip.Arrow backgroundColor="background" borderColor="border-color" />
         <Paragraph size="2" lineHeight="1">

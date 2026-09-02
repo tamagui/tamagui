@@ -543,7 +543,7 @@ function Scenario10_PerPropertyExit() {
         {visible && (
           <Square
             key="per-prop"
-            transition={['100ms', { scale: '500ms' }] as any}
+            transition={{ duration: '100ms', scale: '500ms' }}
             bg="green10"
             opacity="exit:0"
             scale="exit:0.5"
@@ -584,7 +584,7 @@ function Scenario11_MixedDurationExit() {
         {visible && (
           <Square
             key="mixed"
-            transition={{ opacity: '100ms', scale: '400ms', default: '400ms' } as any}
+            transition={{ duration: '400ms', opacity: '100ms', scale: '400ms' }}
             bg="yellow10"
             opacity="exit:0"
             scale="exit:0.5"
@@ -601,10 +601,10 @@ function Scenario11_MixedDurationExit() {
 }
 
 // ============================================================================
-// SCENARIO 51: AnimateOnly Exclusion
-// animateOnly=['opacity'] should exclude scale from pending set
+// SCENARIO 51: Property List Exclusion
+// properties: 'opacity' should exclude scale from the pending set
 // Even if scale has a long exit config (500ms), should complete based on opacity (100ms)
-// Tests: pending-set only includes keys in animateOnly filter
+// Tests: pending-set only includes keys the transition names
 // ============================================================================
 function Scenario51_AnimateOnlyExclusion() {
   const [visible, setVisible] = useState(true)
@@ -627,11 +627,10 @@ function Scenario51_AnimateOnlyExclusion() {
         {visible && (
           <Square
             key="animateonly-exclusion"
-            transition={{ opacity: '100ms', scale: '500ms', default: '500ms' } as any}
+            transition={{ duration: '500ms', opacity: '100ms', properties: 'opacity' }}
             bg="purple10"
             opacity="exit:0"
             scale="exit:0.5"
-            animateOnly={['opacity']}
             size={40}
             testID="exit-51-target"
             data-testid="exit-51-target"
@@ -669,7 +668,7 @@ function Scenario53_TransformSubKeySplitDurations() {
         {visible && (
           <Square
             key="transform-subkeys"
-            transition={{ scale: '100ms', y: '500ms', default: '100ms' } as any}
+            transition={{ duration: '100ms', scale: '100ms', y: '500ms' }}
             bg="orange10"
             scale="exit:0.5"
             y="exit:50px"
@@ -711,11 +710,10 @@ function Scenario55_ZeroAnimatableExitProps() {
         {visible && (
           <Square
             key="zero-animatable"
-            transition="300ms"
+            transition="none"
             bg="gray10"
             opacity="exit:0"
             scale="exit:0.5"
-            animateOnly={[]}
             size={40}
             testID="exit-55-target"
             data-testid="exit-55-target"

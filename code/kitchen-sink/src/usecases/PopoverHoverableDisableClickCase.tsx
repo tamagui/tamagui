@@ -61,14 +61,13 @@ export function PopoverHoverableDisableClickCase() {
         <Popover.Content
           id="disableclick-content"
           disableFocusScope
-          transition="200ms"
+          transition={{ duration: '200ms', properties: 'opacity, transform' }}
           opacity="enter:0 exit:0"
           y="enter:-4px exit:-4px"
           bg="color4"
           rounded="4"
           px="4"
           py="3"
-          animateOnly={['opacity', 'transform']}
         >
           <SizableText>Popover content (disablePressTrigger test)</SizableText>
         </Popover.Content>
@@ -91,14 +90,13 @@ export function PopoverHoverableDisableClickCase() {
         <Popover.Content
           id="withclick-content"
           disableFocusScope
-          transition="200ms"
+          transition={{ duration: '200ms', properties: 'opacity, transform' }}
           opacity="enter:0 exit:0"
           y="enter:-4px exit:-4px"
           bg="color4"
           rounded="4"
           px="4"
           py="3"
-          animateOnly={['opacity', 'transform']}
         >
           <SizableText>Popover content (normal click)</SizableText>
         </Popover.Content>

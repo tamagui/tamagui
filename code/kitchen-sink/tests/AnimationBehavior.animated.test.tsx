@@ -323,7 +323,7 @@ test.describe('Animation Behavior', () => {
     page,
   }) => {
     // this tests the "animationClamped" pattern fix
-    // transition={['quick', { opacity: '200ms', backgroundColor: '200ms' }]}
+    // transition={{ preset: 'quick', opacity: '200ms', backgroundColor: '200ms' }}
     // scale and y are NOT in the per-property config but should still animate
     const OPACITY_END = 0.5
     const SCALE_END = 1.3
@@ -350,10 +350,10 @@ test.describe('Animation Behavior', () => {
     expect(endScale, 'End scale').toBeCloseTo(SCALE_END, 1)
   })
 
-  test('object format per-property config: unlisted properties still animate', async ({
+  test('css string per-property config: unlisted properties still animate', async ({
     page,
   }) => {
-    // same as above but using object format: { opacity: '200ms', default: 'quick' }
+    // same as above spelled as a string: "quick, opacity 200ms, background-color 200ms"
     const OPACITY_END = 0.5
     const SCALE_END = 1.3
 
@@ -404,7 +404,7 @@ test.describe('Animation Behavior', () => {
   test('per-property config with delay: both delay and per-property work together', async ({
     page,
   }) => {
-    // transition={['quick', { delay: 300, opacity: '500ms' }]}
+    // transition={{ preset: 'quick', delay: 300, opacity: '500ms' }}
     // 300ms delay, then opacity=500ms, scale=quick
     const OPACITY_START = 1,
       OPACITY_END = 0.5
@@ -433,7 +433,7 @@ test.describe('Animation Behavior', () => {
     expect(endScale, 'End scale').toBeCloseTo(SCALE_END, 1)
   })
 
-  test('animateOnly with exit clause has intermediate values during exit animation', async ({
+  test('a property list with an exit clause has intermediate values during exit animation', async ({
     page,
   }, testInfo) => {
     const driver = (testInfo.project?.metadata as any)?.animationDriver
@@ -479,7 +479,7 @@ test.describe('Animation Behavior', () => {
     )
   })
 
-  test('animateOnly with enter clause and exit clause animates correctly', async ({
+  test('a property list with enter and exit clauses animates correctly', async ({
     page,
   }, testInfo) => {
     const driver = (testInfo.project?.metadata as any)?.animationDriver

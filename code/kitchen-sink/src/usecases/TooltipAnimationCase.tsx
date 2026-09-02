@@ -46,8 +46,7 @@ export function TooltipAnimationCase() {
           data-testid="tooltip-content"
           y="0 enter:-20px exit:-20px"
           opacity="1 enter:0 exit:0"
-          transition="lazy"
-          animateOnly={['transform', 'opacity']}
+          transition={{ preset: 'lazy', properties: 'transform, opacity' }}
         >
           <Tooltip.Arrow data-testid="tooltip-arrow" size="2" />
           <Paragraph size="2">Tooltip content</Paragraph>
@@ -64,8 +63,7 @@ export function TooltipAnimationCase() {
           data-testid="tooltip-content-2"
           y="0 enter:20px exit:20px"
           opacity="1 enter:0 exit:0"
-          transition="lazy"
-          animateOnly={['transform', 'opacity']}
+          transition={{ preset: 'lazy', properties: 'transform, opacity' }}
         >
           <Tooltip.Arrow data-testid="tooltip-arrow-2" size="2" />
           <Paragraph size="2">Second tooltip</Paragraph>
@@ -82,8 +80,7 @@ export function TooltipAnimationCase() {
           data-testid="tooltip-content-quick"
           x="0 enter:-20px exit:-20px"
           opacity="1 enter:0 exit:0"
-          transition="100ms"
-          animateOnly={['transform', 'opacity']}
+          transition={{ duration: '100ms', properties: 'transform, opacity' }}
         >
           <Tooltip.Arrow data-testid="tooltip-arrow-quick" size="3" />
           <Paragraph size="2">Quick tooltip</Paragraph>

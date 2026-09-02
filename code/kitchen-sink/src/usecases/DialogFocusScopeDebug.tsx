@@ -37,7 +37,10 @@ export function DialogFocusScopeDebug() {
             key="content"
             bordered
             elevate
-            transition={['quick', { opacity: { overshootClamping: true } }]}
+            transition={{
+              preset: 'quick',
+              opacity: { preset: 'quick', spring: { overshootClamping: true } },
+            }}
             x="enter:0 exit:0"
             y="enter:-20px exit:10px"
             opacity="enter:0 exit:0"

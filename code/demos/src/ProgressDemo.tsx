@@ -17,7 +17,10 @@ export function ProgressDemo() {
         <Progress key={key} theme="level3" value={progress}>
           <Progress.Indicator
             backgroundColor="color"
-            transition={['quicker', { transform: { overshootClamping: true } }]}
+            transition={{
+              preset: 'quicker',
+              transform: { preset: 'quicker', spring: { overshootClamping: true } },
+            }}
           />
         </Progress>
       </YStack>

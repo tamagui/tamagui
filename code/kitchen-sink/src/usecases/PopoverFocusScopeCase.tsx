@@ -18,7 +18,10 @@ export function PopoverFocusScopeCase() {
           opacity="enter:0 exit:0"
           backgroundColor="background"
           boxShadow="0 4px 12px shadow-color"
-          transition={['quick', { opacity: { overshootClamping: true } }]}
+          transition={{
+            preset: 'quick',
+            opacity: { preset: 'quick', spring: { overshootClamping: true } },
+          }}
         >
           <YStack gap="3" padding="4" data-testid="basic-popover-content">
             <Label htmlFor="popover-name">Name</Label>
@@ -71,7 +74,10 @@ export function PopoverFocusScopeCase() {
           opacity="enter:0 exit:0"
           backgroundColor="background"
           boxShadow="0 4px 12px shadow-color"
-          transition={['quick', { opacity: { overshootClamping: true } }]}
+          transition={{
+            preset: 'quick',
+            opacity: { preset: 'quick', spring: { overshootClamping: true } },
+          }}
         >
           <YStack gap="3" padding="4" data-testid="no-trap-popover-content">
             <Label htmlFor="no-trap-input">Input Field</Label>
@@ -100,7 +106,10 @@ export function PopoverFocusScopeCase() {
           opacity="enter:0 exit:0"
           backgroundColor="background"
           boxShadow="0 4px 12px shadow-color"
-          transition={['quick', { opacity: { overshootClamping: true } }]}
+          transition={{
+            preset: 'quick',
+            opacity: { preset: 'quick', spring: { overshootClamping: true } },
+          }}
         >
           <YStack gap="3" padding="4" data-testid="parent-popover-content">
             <Label htmlFor="parent-popover-input">Parent Input</Label>
@@ -120,7 +129,10 @@ export function PopoverFocusScopeCase() {
                 opacity="enter:0 exit:0"
                 backgroundColor="background"
                 boxShadow="0 4px 12px shadow-color"
-                transition={['quick', { opacity: { overshootClamping: true } }]}
+                transition={{
+                  preset: 'quick',
+                  opacity: { preset: 'quick', spring: { overshootClamping: true } },
+                }}
               >
                 <YStack gap="3" padding="3" data-testid="nested-popover-content">
                   <Input data-testid="nested-popover-input" placeholder="Nested input" />

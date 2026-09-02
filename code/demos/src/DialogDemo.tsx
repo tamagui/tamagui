@@ -102,13 +102,19 @@ function DialogInstance({ mode }: { mode: DialogMode }) {
         <Dialog.Overlay
           bg="background"
           opacity="0.5 enter:0 exit:0"
-          transition={['quicker', { opacity: { overshootClamping: true } }]}
-          animateOnly={['transform', 'opacity']}
+          transition={{
+            preset: 'quicker',
+            properties: 'transform, opacity',
+            opacity: { preset: 'quicker', spring: { overshootClamping: true } },
+          }}
         />
 
         <Dialog.FocusScope focusOnIdle>
           <Dialog.Content
-            transition={['quicker', { opacity: { overshootClamping: true } }]}
+            transition={{
+              preset: 'quicker',
+              opacity: { preset: 'quicker', spring: { overshootClamping: true } },
+            }}
             x="enter:0 exit:0"
             y="enter:20px exit:10px"
             opacity="enter:0 exit:0"

@@ -45,7 +45,7 @@ for (const driver of drivers) {
       const className = serverTag.match(/\bclass="([^"]*)"/)?.[1]
       expect(className).toBeTruthy()
 
-      // animateOnly keeps this candidate on the runtime path; in the compiled
+      // a transition keeps this candidate on the runtime path; in the compiled
       // artifact its unproven values stay inline, and SSR must make the same
       // decision as the first client render.
       const serverStyle = serverTag.match(/\bstyle="([^"]*)"/)?.[1]

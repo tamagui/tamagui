@@ -74,8 +74,12 @@ export function TooltipStaticClobberCase() {
 
           <Tooltip.Content
             animatePosition
-            transition={{ default: 'quickest', enter: 'quickest', exit: '0ms' }}
-            animateOnly={['transform', 'opacity']}
+            transition={{
+              enter: 'quickest',
+              exit: '0ms',
+              preset: 'quickest',
+              properties: 'transform, opacity',
+            }}
             y="0 enter:-3px exit:-3px"
             opacity="1 enter:0 exit:0"
           >

@@ -10,12 +10,5 @@ import { View } from 'tamagui'
  * module that gets far enough for its own gate to run.
  */
 export function Gamma() {
-  return (
-    <View
-      data-testid="gamma"
-      animateOnly={['opacity']}
-      transition="all 200ms ease"
-      opacity={0.5}
-    />
-  )
+  return <View data-testid="gamma" animatedBy="motion" transition="200ms" opacity={0.5} />
 }

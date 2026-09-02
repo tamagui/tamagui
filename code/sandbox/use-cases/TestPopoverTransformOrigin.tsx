@@ -91,7 +91,10 @@ function PopoverWithScale({
           borderWidth={1}
           borderColor="border-color"
           p="4"
-          transition={['quick', { opacity: { overshootClamping: true } }]}
+          transition={{
+            preset: 'quick',
+            opacity: { preset: 'quick', spring: { overshootClamping: true } },
+          }}
           scale="enter:0.5 exit:0.5"
           opacity="enter:0 exit:0"
           elevate

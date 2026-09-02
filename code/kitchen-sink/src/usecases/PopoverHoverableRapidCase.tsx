@@ -67,12 +67,11 @@ export function PopoverHoverableRapidCase() {
           id="rapid-content"
           scope="rapid"
           disableFocusScope
-          transition="100ms"
+          transition={{ duration: '100ms', properties: 'transform, opacity' }}
           opacity="1 enter:0 exit:0"
           y="enter:-4px exit:4px"
           width={200}
           height={80}
-          animateOnly={['transform', 'opacity']}
         >
           <YStack
             bg="color2"

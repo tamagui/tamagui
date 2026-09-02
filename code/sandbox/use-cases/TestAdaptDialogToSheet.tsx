@@ -56,9 +56,8 @@ export default function TestAdaptDialogToSheet() {
             height="100%"
             items="center"
             rounded={0}
-            transition="quick"
+            transition={{ preset: 'quick', properties: 'transform, opacity' }}
             x="enter:100% exit:100%"
-            animateOnly={['transform', 'opacity']}
           >
             <ScrollView width="100%">
               <YStack items="center" justify="center">

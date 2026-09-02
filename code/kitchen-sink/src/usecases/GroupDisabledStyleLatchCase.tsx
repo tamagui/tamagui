@@ -36,10 +36,9 @@ export function GroupDisabledStyleLatchCase() {
         <Btn
           testID="group-disabled-btn"
           group
-          transition="quick"
+          transition={{ preset: 'quick', properties: 'backgroundColor, borderColor' }}
           backgroundColor={`${GREEN} disabled:${GREY}`}
           borderColor={`${GREEN} disabled:${GREY}`}
-          animateOnly={['backgroundColor', 'borderColor']}
           disabled={disabled}
           onPress={() => setDisabled((d) => !d)}
         />
@@ -48,10 +47,9 @@ export function GroupDisabledStyleLatchCase() {
         <Btn
           testID="group-disabled-press-btn"
           group
-          transition="quick"
+          transition={{ preset: 'quick', properties: 'backgroundColor, borderColor' }}
           backgroundColor={`${GREEN} press:${DARKGREEN} disabled:${GREY}`}
           borderColor={`${GREEN} press:${DARKGREEN} disabled:${GREY}`}
-          animateOnly={['backgroundColor', 'borderColor']}
           disabled={disabled}
           onPress={() => setDisabled((d) => !d)}
         />

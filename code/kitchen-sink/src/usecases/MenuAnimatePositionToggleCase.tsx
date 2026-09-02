@@ -4,7 +4,7 @@ import { Button, Text, XStack, YStack } from 'tamagui'
 
 // reproduces the bug where toggling animatePosition between renders on the
 // same long-lived Menu.Content trips React's "Should have a queue" invariant.
-// PopperContent used to spread `transition`/`animateOnly`/`animatePresence`
+// PopperContent used to spread `transition`/`animatePresence`
 // only when animatePos was truthy, which flipped 'transition' presence on the
 // inner View and changed useComponentState's hasAnimationProp mid-life.
 export function MenuAnimatePositionToggleCase() {

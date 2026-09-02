@@ -33,12 +33,11 @@ export function ClickDuringEnterCase() {
             <Square
               key="click-enter-square"
               testID="click-enter-target"
-              transition="medium"
+              transition={{ preset: 'medium', properties: 'transform, opacity' }}
               bg="blue10"
               opacity="1 enter:0 exit:0"
               scale="1 enter:0.93 exit:0.93"
               y="0 enter:-10px exit:5px"
-              animateOnly={['transform', 'opacity']}
               size={80}
             />
           ) : null}
