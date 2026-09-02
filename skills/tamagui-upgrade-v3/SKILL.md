@@ -262,10 +262,10 @@ tokens land exactly:
 
 | v5 | value | by name | by nearest value |
 |---|---|---|---|
-| `$1` | 2 | `1` = 4 | `0-5` = 2, exact |
-| `$1.5` | 4 | `1-5` = 6 | `1` = 4, exact |
-| `$2.5` | 10 | `2-5` = 10, exact | `2-5` = 10, exact |
-| `$3.5` | 16 | `3-5` = 14 | `4` = 16, exact |
+| `$1` | 2 | `1` = 4 | `0.5` = 2, exact |
+| `$1.5` | 4 | `1.5` = 6 | `1` = 4, exact |
+| `$2.5` | 10 | `2.5` = 10, exact | `2.5` = 10, exact |
+| `$3.5` | 16 | `3.5` = 14 | `4` = 16, exact |
 | `$5` | 24 | `5` = 20 | `6` = 24, exact |
 | `$6` | 32 | `6` = 24 | `8` = 32, exact |
 | `$16` | 144 | `16` = 64 | `36` = 144, exact |
@@ -307,11 +307,11 @@ The same drift applies to `size` and `radius`. Generate the comparison for
     }'
   ```
 - `$0.75` and `$0.25` have no v6 equivalent at all. v6 carries only the Tailwind
-  half-steps (`0-5`, `1-5`, `2-5`, `3-5`), so quarter-steps need a real decision
+  half-steps (`0.5`, `1.5`, `2.5`, `3.5`), so quarter-steps need a real decision
   rather than a rename.
 
-Note the v6 spelling: the token is `2-5`, not `2.5`. v5 accepted the dot form as
-an alias; v3's flat grammar wants the configured name, so `$2.5` becomes `2-5`.
+Note the v6 spelling: the token is `2.5`, same as Tailwind. Hyphenated names
+(`2-5`) still resolve as aliases. `$2.5` becomes `2.5`.
 
 ## Phase 3: the flagged third, by pattern
 

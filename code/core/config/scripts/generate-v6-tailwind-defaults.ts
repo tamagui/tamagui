@@ -154,15 +154,22 @@ export function createDefaultTables(themeCss: string): V6TailwindDefaultTables {
 
   for (const name of DEFAULT_SPACING_SUGGESTIONS) {
     const value = Number(name) * spacing
-    const tokenName = name.replaceAll('.', '-')
-    size[tokenName] = value
-    space[tokenName] = value
+    size[name] = value
+    space[name] = value
+    // hyphenated aliases so existing `p="0-5"` keep resolving after the
+    // canonical name became Tailwind's `0.5`
+    if (name.includes('.')) {
+      const hyphenated = name.replaceAll('.', '-')
+      size[hyphenated] = value
+      space[hyphenated] = value
+    }
   }
   space['-px'] = -1
   for (const name of DEFAULT_SPACING_SUGGESTIONS) {
-    if (name !== '0') {
-      const tokenName = name.replaceAll('.', '-')
-      space[`-${tokenName}`] = -Number(name) * spacing
+    if (name === '0') continue
+    space[`-${name}`] = -Number(name) * spacing
+    if (name.includes('.')) {
+      space[`-${name.replaceAll('.', '-')}`] = -Number(name) * spacing
     }
   }
 

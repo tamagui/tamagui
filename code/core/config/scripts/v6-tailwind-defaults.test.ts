@@ -53,6 +53,9 @@ describe('v6 Tailwind defaults provenance', () => {
     }
     expect(tailwindSpace).toHaveProperty('-24', -96)
     expect(tailwindSize).not.toHaveProperty('-24')
+    expect(tailwindSpace['0.5']).toBe(2)
+    expect(tailwindSpace['0-5']).toBe(2)
+    expect(tailwindSize['0.5']).toBe(2)
     expect(tailwindSpace).not.toHaveProperty('0.25')
     expect(tailwindSpace).not.toHaveProperty('13')
     expect(tailwindRadius).toHaveProperty('lg', 8)
