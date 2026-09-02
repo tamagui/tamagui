@@ -79,9 +79,8 @@ export declare function resolveTransition(transition: TransitionObjectValue | nu
 /**
 * the transition that applies to one style key, under css last-wins.
 *
-* a transform part falls back to the `transform` entry before `all`, because
-* css has one `transform` property and `transition="transform 200ms"` has to
-* cover `scale` and `x` alike.
+* an authored `transform` already expanded into the whole family in
+* `fromEntries`, so `x`, `scale` and `rotate` find a direct entry here.
 */
 export declare function getTransitionForKey(resolved: ResolvedTransition, key: string): ResolvedEntry | null;
 /** true when anything at all will animate */

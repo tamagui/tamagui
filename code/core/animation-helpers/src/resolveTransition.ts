@@ -25,7 +25,7 @@ import {
   type TransitionTiming,
 } from '@tamagui/style-grammar/transitions'
 
-import { canonicalTransitionProperty, isTransformProperty } from './propertyNames'
+import { canonicalTransitionProperty } from './propertyNames'
 import { setTransitionResolver } from './transitionResolver'
 
 export type DriverTiming =
@@ -216,22 +216,26 @@ function timingToDriver(
   // authored overrides land on top of the preset, in the preset's own terms
   const overrides = timing.config as Record<string, unknown>
   if (base.kind === 'spring' || typeof overrides.bounce === 'number') {
-    const durationMs =
+    const overrideDuration =
       typeof overrides.duration === 'number'
         ? overrides.duration
         : typeof overrides.duration === 'string'
           ? timeToMs(overrides.duration)
-          : base.durationMs
-    const bounce =
-      typeof overrides.bounce === 'number'
-        ? overrides.bounce
-        : base.kind === 'spring'
-          ? base.bounce
-          : 0
-    return springTiming(durationMs, bounce, {
-      ...(base.kind === 'spring' ? base.extra : undefined),
-      ...overrides,
-    })
+          : undefined
+    const overrideBounce =
+      typeof overrides.bounce === 'number' ? overrides.bounce : undefined
+    const durationMs = overrideDuration ?? base.durationMs
+    const bounce = overrideBounce ?? (base.kind === 'spring' ? base.bounce : 0)
+    let carried = base.kind === 'spring' ? base.extra : undefined
+    // a duration or bounce override re-solves the spring, so a preset written as
+    // stiffness/damping cannot pass those two through: they ARE what the
+    // override replaces. mass belongs to the object rather than the curve, so it
+    // carries. physics written in the override still win, exactly as elsewhere.
+    if (carried && (overrideDuration !== undefined || overrideBounce !== undefined)) {
+      const { stiffness, damping, ...rest } = carried
+      carried = rest
+    }
+    return springTiming(durationMs, bounce, { ...carried, ...overrides })
   }
 
   return {
@@ -350,6 +354,8 @@ function buildResolved(
   )
 }
 
+const transformFamily = ['transform', 'translate', 'scale', 'rotate'] as const
+
 function fromEntries(
   source: readonly TransitionEntry[],
   animations: Record<string, unknown> | null,
@@ -387,16 +393,22 @@ function fromEntries(
 
     const expanded = shorthands?.[entry.property] ?? entry.property
     const property = canonicalTransitionProperty(expanded)
-    const resolved: ResolvedEntry = {
-      property,
-      timing,
-      delayMs: timeToMs(entry.delay),
-      behavior: entry.behavior,
+    const delayMs = timeToMs(entry.delay)
+    // tamagui writes x/y into the css `translate` longhand, scale into
+    // `scale` and rotate into `rotate`, so an authored `transform` covers the
+    // whole family or it transitions nothing the author can see.
+    for (const name of expanded === 'transform' ? transformFamily : [property]) {
+      const resolved: ResolvedEntry = {
+        property: name,
+        timing,
+        delayMs,
+        behavior: entry.behavior,
+      }
+      entries.push(resolved)
+      // last wins, exactly as a stylesheet resolves a repeated property
+      if (name === 'all') all = resolved
+      else byProperty[name] = resolved
     }
-    entries.push(resolved)
-    // last wins, exactly as a stylesheet resolves a repeated property
-    if (property === 'all') all = resolved
-    else byProperty[property] = resolved
   }
 
   return { entries, all, byProperty, none, fused, enter, exit, diagnostics }
@@ -405,22 +417,16 @@ function fromEntries(
 /**
  * the transition that applies to one style key, under css last-wins.
  *
- * a transform part falls back to the `transform` entry before `all`, because
- * css has one `transform` property and `transition="transform 200ms"` has to
- * cover `scale` and `x` alike.
+ * an authored `transform` already expanded into the whole family in
+ * `fromEntries`, so `x`, `scale` and `rotate` find a direct entry here.
  */
 export function getTransitionForKey(
   resolved: ResolvedTransition,
   key: string
 ): ResolvedEntry | null {
   if (resolved.none) return null
-  const property = canonicalTransitionProperty(key)
-  const direct = resolved.byProperty[property]
+  const direct = resolved.byProperty[canonicalTransitionProperty(key)]
   if (direct) return direct
-  if (isTransformProperty(key)) {
-    const group = resolved.byProperty.transform
-    if (group) return group
-  }
   return resolved.all
 }
 
