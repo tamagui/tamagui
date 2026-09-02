@@ -285,6 +285,21 @@ change should have changed a build's output.
   with no duration or bounce override keeps its authored stiffness and damping
   to the number.
 
+- **Every native style value ending in a unit name resolved to a length.**
+  Merging `v3-beta` brought in fluid units, whose `isDynamicUnitValue` matched
+  the suffix alone (`/(px|rem|em|vw|vh|...)$/`). `'System'` ends in `em`, so
+  `fontFamily: 'System'` went through the unit resolver, failed the
+  number-and-unit parse, and came out as `0`. The check now requires a number in
+  front of the suffix. The existing negative-control test only had `'Bremen'`,
+  which ends in `en` and so could never have caught it; `'System'` and a bare
+  `'px'` are in there now.
+
+- **`@tamagui/fake-react-native` had no `PixelRatio`.** It is what the vitest
+  native target aliases `react-native` to, and the fluid-unit resolver reads
+  `PixelRatio.getFontScale()`, so any native test rendering an `em` length threw
+  on a missing export. It now exports a real `PixelRatio`, and `Dimensions.get`
+  in the esm build returns numbers instead of a proxy, matching the cjs build.
+
 ## Deferred: css `animation` and looping
 
 The original ask included exploring css `animation`-style support for v3
