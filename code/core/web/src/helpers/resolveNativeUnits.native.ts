@@ -125,6 +125,8 @@ export function resolveClamp(val: string, ctx: UnitContext): number {
   }
 
   // Split into signed terms (e.g. "2.18cqi + 9.82px" or "2cqi - 5px")
+  // TODO: this regex only handles addition/subtraction terms. Multiplication (*)
+  // and division (/) in raw user calc() expressions are not supported yet.
   let pref = 0
   const terms = prefStr.match(/([+-]?\s*[^+-]+)/g)
   if (terms && terms.length > 0) {
