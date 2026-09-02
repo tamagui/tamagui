@@ -7,9 +7,9 @@ image: /blog/tailwind-mode.jpg
 ---
 
 <IntroParagraph large>
-  Tamagui Tailwind brings Tailwind utility classes to Tamagui's `className` prop.
-  The compiler turns them into atomic CSS at build time, and the same string renders
-  on web and React Native from one source file.
+  Tamagui Tailwind brings Tailwind utility classes to Tamagui's `className` prop. The
+  compiler turns them into atomic CSS at build time, and the same string renders on web
+  and React Native from one source file.
 </IntroParagraph>
 
 Tailwind CSS is a trademark of Tailwind Labs Inc.; Tamagui is not affiliated with or endorsed by Tailwind Labs.
@@ -60,7 +60,7 @@ Modifiers compile too. `hover:bg-blue-600` extracts a hover rule into its own at
 
 Classes the compiler does not recognize are left alone. If you write `my-custom-class`, it passes through to the rendered element's `className` untouched, so your own CSS keeps working alongside the utilities.
 
-Some things cannot become static rules, and the compiler is explicit about them. A physics spring animation, an enter or exit transition, and parent-driven group states all need runtime state to resolve, so they fall back to Tamagui's runtime style path. You still write them the same way; they just do not end up in the static stylesheet. The performance section below shows what that fallback costs.
+Some values cannot become static rules, and the compiler is explicit about them. Physics springs, gesture-linked motion, and parent-driven native states need runtime state to resolve. CSS transitions with conditional opacity and transform values can compile on web, while truly dynamic values remain inline or use Tamagui's runtime style path.
 
 ### What compiles today
 
@@ -70,60 +70,84 @@ The utilities that resolve cross-platform cover the layout surface you reach for
 
 ### Performance
 
-The benchmark mounts 500 components (150 for the heavy scenario), then forces a re-render, across five scenarios. It runs in Chromium on a single warm run. The same component tree is authored once and rendered through each framework. Numbers rounded to one decimal.
+The web benchmark renders 200 items, or 60 in the heavy case, in production
+Chromium on an Apple M5 Pro. Each arm gets two warmup rounds and 10 retained
+rounds. Seed `73129` reshuffles framework and scenario order each round, and a
+rendered-behavior gate runs before timing. The table reports mean milliseconds.
+Simple, rich, group, and heavy use Tamagui beta 901. Animated uses beta 917.
 
-| Scenario | Tamagui (compiled) | Tailwind CSS | Inline (baseline) | NativeWind v5 | Uniwind |
-|---|---|---|---|---|---|
-| **Mount, simple props** | **7.2ms** | 7.0ms | 7.1ms | 18.1ms (2.5x) | 23.1ms (3.2x) |
-| **Mount, pseudo states** | **7.2ms** | 5.7ms | 6.4ms | 14.1ms (2.2x) | 17.5ms (2.7x) |
-| Mount, group hover | 396ms | 18.2ms | 20.4ms | 52.6ms | 59.8ms |
-| Mount, heavy page (150) | 149ms | 11.0ms | 10.9ms | 33.4ms | 39.7ms |
-| Mount, spring animation | 35.5ms | 6.0ms | 7.3ms | 14.5ms (2.0x) | 6.5ms |
-| **Re-render, simple props** | **9.1ms** | 7.5ms | 7.7ms | 15.0ms (1.9x) | 21.1ms (2.7x) |
-| **Re-render, pseudo states** | **9.4ms** | 6.1ms | 7.6ms | 14.7ms (1.9x) | 22.1ms (2.9x) |
-| Re-render, group hover | 381ms | 20.0ms | 21.9ms | 35.4ms | 75.5ms |
-| Re-render, heavy page (150) | 126ms | 10.8ms | 11.5ms | 29.2ms | 20.9ms |
-| Re-render, spring animation | 30.0ms | 6.0ms | 7.7ms | 14.5ms (1.9x) | 7.5ms |
+| Scenario | Operation | Tamagui Tailwind compiled | Tailwind CSS | Inline React | NativeWind v5 | Uniwind |
+| -------- | --------- | ------------------------: | -----------: | -----------: | ------------: | ------: |
+| Simple   | Mount     |                  **0.45** |         0.35 |         0.53 |          1.60 |    1.71 |
+| Simple   | Update    |                  **0.96** |         0.98 |         0.90 |          2.43 |    2.35 |
+| Simple   | Remount   |                  **0.55** |         0.44 |         0.63 |          1.72 |    1.80 |
+| Rich     | Mount     |                  **0.57** |         0.33 |         0.90 |          1.73 |    1.64 |
+| Rich     | Update    |                  **1.14** |         1.06 |         1.07 |          2.39 |    2.59 |
+| Rich     | Remount   |                  **0.67** |         0.43 |         0.98 |          1.82 |    2.11 |
+| Group    | Mount     |                  **0.71** |         0.80 |         1.38 |          4.21 |    5.24 |
+| Group    | Update    |                  **2.23** |         2.53 |         2.18 |          6.00 |    6.92 |
+| Group    | Remount   |                  **0.92** |         1.10 |         1.83 |          5.75 |    6.10 |
+| Heavy    | Mount     |                  **0.72** |         0.63 |         1.01 |          2.95 |    3.11 |
+| Heavy    | Update    |                  **1.67** |         1.80 |         1.70 |          4.52 |    4.42 |
+| Heavy    | Remount   |                  **1.06** |         0.93 |         1.34 |          3.59 |    4.00 |
+| Animated | Mount     |                  **0.42** |         0.31 |         0.57 |          1.21 |    1.07 |
+| Animated | Update    |                  **1.91** |         1.14 |         1.25 |          1.96 |    1.81 |
+| Animated | Remount   |                  **2.01** |         1.98 |         2.35 |          2.81 |    2.95 |
 
-The numbers split cleanly into two groups: cases the compiler can fully optimize, and cases it cannot.
+On beta 901, compiled Tamagui Tailwind had lower mount means than NativeWind
+and Uniwind in simple, rich, group, and heavy. The paired 95% confidence
+intervals for all eight comparisons were below zero. Its whole-app JavaScript
+was 111,808 bytes gzipped, with 47,925 bytes attributed to the framework and
+1,093 bytes of CSS gzip. Those bundle figures also use beta 901.
 
-**When the compiler works**, Tamagui lands at or below inline styles. Simple static props: 7.2ms against 18.1ms for NativeWind and 23.1ms for Uniwind. Pseudo states like hover and press: 7.2ms against 14.1ms for NativeWind. The compiler extracts every rule to atomic CSS at build time, so there is nothing left to compute on mount. Re-renders follow the same pattern because the DOM already has the right classes; a prop change swaps a class name rather than recalculating a style object.
+The animated fixture uses a CSS transition with conditional opacity and
+transform values. On beta 917 the compiler found, lowered, and flattened all 14
+`View` candidates in the fixture source with zero bailouts. Tamagui Tailwind
+compiled measured 0.42ms mount, 1.91ms update, and 2.01ms remount.
 
-**When the compiler cannot fully optimize**, performance falls back to Tamagui's runtime style path, and the numbers look different. Two cases hit this today.
+Direct paired effects report Tamagui Tailwind minus each rival. Against
+NativeWind, the differences were -0.79ms for mount (95% CI -0.988 to -0.592),
+-0.05ms for update (-0.376 to 0.276), and -0.80ms for remount (-1.066 to
+-0.534). Against Uniwind, they were -0.65ms (-0.741 to -0.559), 0.10ms
+(-0.176 to 0.376), and -0.94ms (-1.445 to -0.435). Tamagui Tailwind was lower
+for mount and remount against both native utility libraries, while neither
+update interval resolved a difference.
 
-The first is group styles. A parent with `group="row"` and children using a
-`group-hover/row:` value clause rely on a JavaScript state emitter to propagate
-the hover signal cross-platform. That makes it work on native (nothing else
-does), but the compiler cannot express it as pure CSS because on native there
-is no CSS to write. On web the compiler could theoretically emit
-`:has([data-group])` selectors, but that optimization is not implemented yet.
-The result: 500 group-hover components mount in 396ms, which is 19x baseline
-and 7.5x NativeWind. This is the single largest compiler gap right now and the
-thing being worked on next.
+Against Tailwind CSS, the paired differences were 0.11ms for mount (0.001 to
+0.219), 0.77ms for update (0.529 to 1.011), and 0.03ms for remount (-0.256 to
+0.316). Tailwind CSS was lower for mount and update; the remount interval did
+not resolve a difference. These are results for this fixture on this machine,
+not a universal framework ranking.
 
-The second is dynamic style props. The heavy scenario mixes static props with computed values (`width={80 + ((i * 17) % 60)}`). When a dynamic value sits next to static props in the same component, the current compiler bails on the whole component and falls back to runtime. The goal is partial extraction: emit atomic classes for the static props and leave only the dynamic value as an inline style. That would cut heavy mount from 149ms to something near pure-CSS performance.
-
-The spring animation row shows a deliberate trade-off. Tamagui drives physics springs and gesture-linked motion through a real animation runtime because those need the same behavior on native as on web. CSS transitions are cheaper but they only run in the browser; they cannot drive a gesture-driven swipe or a shared-element transition. If your motion is CSS easing, Tamagui's CSS animation driver matches that cost. If you need spring physics or native-parity motion, Tamagui runs it and pays the runtime cost. You are not paying that cost on the static components around it.
-
-NativeWind v5's animated numbers look good here because it uses CSS transitions exclusively on web. That is fast; it is also web-only.
+The beta 901 compiler build flattened the group and heavy fixture elements. It
+left the heavy fixture's computed widths as dynamic values while extracting the
+static utility work. Its one source-wide bailout was the older animated
+conditional. Beta 917 closed that animated bailout without changing the
+fixture. The benchmark covers a CSS transition, not a physics spring or
+gesture-linked animation.
 
 ### Cross-platform coverage
 
-We compared 149 CSS utility categories across the frameworks and measured how many resolve fully on both web and native.
+The beta 891 coverage harness derives all 23,286 candidates from Tailwind CSS
+4.3.0's installed utility registry instead of a hand-maintained list. It runs
+each library's parser or compiler on both targets.
 
-| Framework | Fully cross-platform | Weighted coverage % |
-|---|---|---|
-| **Tamagui** | **79** | 66.1% |
-| NativeWind v5 | 74 | 72.8% |
-| Uniwind | 51 | 40.6% |
+| Framework        | Web resolved | Native styles | Native share of registry |
+| ---------------- | -----------: | ------------: | -----------------------: |
+| Tamagui Tailwind |       23,286 |         4,522 |                   19.42% |
+| NativeWind v5    |       23,286 |        20,500 |                   88.04% |
+| Uniwind          |       23,286 |        22,352 |                   95.99% |
 
-Tamagui leads cross-platform with 79 fully supported utility categories: the full layout, flexbox, spacing, sizing, color, border, transform, and opacity surface, plus things like `gap`, `flex-wrap`, logical spacing, aspect ratio, and group/container queries that all work on native through Tamagui's JS state emitter. NativeWind v5 comes in at 74.
+Tamagui Tailwind resolves all 23,286 classes on web. Of those, 4,522 become
+Tamagui styles and 18,764 pass through to CSS. The same 4,522 return React
+Native styles on native. Beta 891 closed the named text color and size, font,
+size, corner radius, single-side border, and axis inset gaps. Its largest
+remaining native gaps are masks, gradients, shadows, rings, outlines, and
+logical-direction borders.
 
-The weighted coverage percentages favor NativeWind, and that number counts something different. It gives partial credit for web-only utilities, and NativeWind has 45 web-only entries that count toward its weighted score. For a framework whose purpose is write-once-render-everywhere, the fully-cross-platform column is the honest number: utilities that produce the same output on iOS, Android, and web without platform branches.
-
-Uniwind sits at 51 because it targets mobile-first workflows and explicitly skips most web-specific CSS.
-
-For web-specific CSS that does not translate to a native layout engine, `float`, CSS grid, `columns`, and backdrop filters, those stay web-only in every framework here. React Native's layout model has no equivalent, so none of these tools can make them work natively.
+The registry contains web-only CSS, so these percentages describe each
+compiler's accepted native surface. They do not claim that React Native can
+visually reproduce every CSS utility.
 
 ### One component, both platforms
 
