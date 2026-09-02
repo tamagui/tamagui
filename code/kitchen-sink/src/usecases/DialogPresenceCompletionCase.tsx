@@ -4,6 +4,14 @@ import { Button, Dialog, Paragraph, XStack, YStack } from 'tamagui'
 type DialogPresenceEvent = {
   open: boolean
   elapsed: number
+  /**
+   * frames between the open change and the completion callback. a driver that
+   * reports completion itself lands within a frame or two of the state change
+   * no matter how loaded the machine is, while a driver waiting out a 1000ms
+   * transition takes tens of frames. milliseconds cannot tell those apart on a
+   * busy machine, and `elapsed` is only a reliable LOWER bound.
+   */
+  frames: number
 }
 
 declare global {
@@ -48,17 +56,28 @@ function PresenceScenario({
   const [open, setOpen] = useState(false)
   const [eventCount, setEventCount] = useState(0)
   const transitionStartedAt = useRef(0)
+  const framesSinceStart = useRef(0)
+  const frameHandle = useRef(0)
 
   const handleOpenChange = useCallback((nextOpen: boolean) => {
     transitionStartedAt.current = Date.now()
+    framesSinceStart.current = 0
+    cancelAnimationFrame(frameHandle.current)
+    const tick = () => {
+      framesSinceStart.current++
+      frameHandle.current = requestAnimationFrame(tick)
+    }
+    frameHandle.current = requestAnimationFrame(tick)
     setOpen(nextOpen)
   }, [])
 
   const handleAnimationComplete = useCallback(
     (info: { open: boolean }) => {
+      cancelAnimationFrame(frameHandle.current)
       const event = {
         open: info.open,
         elapsed: Date.now() - transitionStartedAt.current,
+        frames: framesSinceStart.current,
       }
       if (typeof window !== 'undefined') {
         window.__dialogPresenceEvents[id] ||= []

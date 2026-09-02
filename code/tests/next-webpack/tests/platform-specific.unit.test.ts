@@ -32,17 +32,15 @@ describe('Platform-specific file optimization', () => {
 
   describe('BaseOnly.tsx - file without platform-specific versions', () => {
     it('should optimize for both web and native by default', () => {
-      const result = execSync(
-        'bun tamagui build ./packages/app/test-fixtures --include BaseOnly.tsx',
-        {
-          cwd: ROOT_DIR,
-          encoding: 'utf-8',
-          stdio: 'pipe',
-        }
-      )
+      execSync('bun tamagui build ./packages/app/test-fixtures --include BaseOnly.tsx', {
+        cwd: ROOT_DIR,
+        encoding: 'utf-8',
+        stdio: 'pipe',
+      })
 
-      // Should process both web and native targets
-      expect(result).toContain('[tamagui]')
+      // both targets are proven by the emitted files below. the CLI only logs
+      // "built config" on a cold node_modules/.cache/tamagui, so asserting its
+      // stdout passes or fails on whether another test ran first.
 
       // Web version should be in BaseOnly.tsx
       const webContent = readFileSync(join(FIXTURES_DIR, 'BaseOnly.tsx'), 'utf-8')
