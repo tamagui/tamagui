@@ -89,6 +89,54 @@ describe('claimed candidates resolve to native style values', () => {
     expect(styleOf(styles).top).toBeUndefined()
   })
 
+  test('logical spacing and gap axes resolve to native styles', () => {
+    const styles = splitTailwindStyles(View, {
+      className: 'ps-4 pe-2 pbs-4 pbe-2 -ms-1 me-4 -mbs-1 mbe-4 gap-x-2 gap-y-4',
+    })
+    const space = getConfig().tokensParsed.space
+
+    expect(styleOf(styles)).toMatchObject({
+      paddingStart: space['4'].val,
+      paddingEnd: space['2'].val,
+      paddingTop: space['4'].val,
+      paddingBottom: space['2'].val,
+      marginStart: -space['1'].val,
+      marginEnd: space['4'].val,
+      marginTop: -space['1'].val,
+      marginBottom: space['4'].val,
+      columnGap: space['2'].val,
+      rowGap: space['4'].val,
+    })
+  })
+
+  test('logical border sides resolve to native styles', () => {
+    const styles = splitTailwindStyles(View, {
+      className: 'border-s-2 border-e-white border-bs-2 border-be-white',
+    })
+
+    expect(styleOf(styles)).toMatchObject({
+      borderStartWidth: getConfig().tokensParsed.space['2'].val,
+      borderEndColor: '#fff',
+      borderTopWidth: getConfig().tokensParsed.space['2'].val,
+      borderBottomColor: '#fff',
+    })
+  })
+
+  test('logical radii and standard flex and aspect conveniences resolve natively', () => {
+    const styles = splitTailwindStyles(View, {
+      className: 'rounded-s-4 rounded-se-8 grow shrink-0 aspect-video',
+    })
+
+    expect(styleOf(styles)).toMatchObject({
+      borderStartStartRadius: getConfig().tokensParsed.radius['4'].val,
+      borderEndStartRadius: getConfig().tokensParsed.radius['4'].val,
+      borderStartEndRadius: getConfig().tokensParsed.radius['8'].val,
+      flexGrow: 1,
+      flexShrink: 0,
+      aspectRatio: 16 / 9,
+    })
+  })
+
   test('text-white sets color on Text', () => {
     const styles = splitTailwindStyles(Text, { className: 'text-white' })
 
@@ -133,6 +181,47 @@ describe('authored ordering across shorthand and longhand candidates', () => {
       className: 'border-[4px] border-x-[2px] border-[6px]',
     })
 
+    expect(styleOf(styles).borderLeftWidth).toBe(6)
+  })
+
+  test('a later padding shorthand resets an earlier logical longhand', () => {
+    const styles = splitTailwindStyles(View, { className: 'ps-2 p-4' })
+
+    expect(styleOf(styles).paddingStart).toBeUndefined()
+    expect(styleOf(styles).paddingLeft).toBe(space('4'))
+  })
+
+  test('a later logical longhand still overrides the matching edge of a shorthand', () => {
+    const styles = splitTailwindStyles(View, { className: 'p-4 ps-2' })
+
+    expect(styleOf(styles).paddingStart).toBe(space('2'))
+    expect(styleOf(styles).paddingLeft).toBe(space('4'))
+    expect(styleOf(styles).paddingTop).toBe(space('4'))
+  })
+
+  test('a later gap shorthand resets an earlier axis longhand', () => {
+    const styles = splitTailwindStyles(View, { className: 'gap-x-2 gap-4' })
+
+    expect(styleOf(styles).columnGap).toBeUndefined()
+    expect(styleOf(styles).gap).toBe(space('4'))
+  })
+
+  test('a later radius shorthand resets earlier logical corners', () => {
+    const styles = splitTailwindStyles(View, {
+      className: 'rounded-s-4 rounded-[6px]',
+    })
+
+    expect(styleOf(styles).borderStartStartRadius).toBeUndefined()
+    expect(styleOf(styles).borderEndStartRadius).toBeUndefined()
+    expect(styleOf(styles).borderTopLeftRadius).toBe(6)
+  })
+
+  test('a later border-width shorthand resets an earlier logical side', () => {
+    const styles = splitTailwindStyles(View, {
+      className: 'border-s-2 border-[6px]',
+    })
+
+    expect(styleOf(styles).borderStartWidth).toBeUndefined()
     expect(styleOf(styles).borderLeftWidth).toBe(6)
   })
 })

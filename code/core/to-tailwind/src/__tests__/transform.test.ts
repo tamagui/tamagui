@@ -31,6 +31,35 @@ describe('tamaguiToTailwind', () => {
       expect(output).toContain('m-[20px]')
     })
 
+    test('logical spacing, gap axes, and logical border sides', () => {
+      const output = tamaguiToTailwind(
+        `<View paddingInlineStart="4" paddingInlineEnd="2" paddingBlockStart="4" paddingBlockEnd="2" marginInlineStart="1" marginInlineEnd="4" marginBlockStart="1" marginBlockEnd="4" columnGap="2" rowGap="4" borderInlineStartWidth="2" borderInlineEndColor="white" borderBlockStartWidth="2" borderBlockEndColor="white" borderStartStartRadius="4" borderStartEndRadius="2" borderEndStartRadius="2" borderEndEndRadius="4" />`,
+        {
+          tokens: {
+            space: { 1: 4, 2: 8, 4: 16 },
+            color: { white: '#fff' },
+            radius: { 2: 8, 4: 16 },
+          },
+        }
+      )
+
+      expect(output).toContain(
+        'className="ps-4 pe-2 pbs-4 pbe-2 ms-1 me-4 mbs-1 mbe-4 gap-x-2 gap-y-4 border-s-2 border-e-white border-bs-2 border-be-white rounded-ss-4 rounded-se-2 rounded-es-2 rounded-ee-4"'
+      )
+    })
+
+    test('numeric logical spacing and radii become arbitrary px classes', () => {
+      const output = tamaguiToTailwind(
+        `<View paddingInlineStart={10} paddingBlockStart={10} marginInlineStart={8} borderStartStartRadius={12} columnGap={8} />`
+      )
+
+      expect(output).toContain('ps-[10px]')
+      expect(output).toContain('pbs-[10px]')
+      expect(output).toContain('ms-[8px]')
+      expect(output).toContain('rounded-ss-[12px]')
+      expect(output).toContain('gap-x-[8px]')
+    })
+
     test('border radius', () => {
       const input = `<View borderRadius={8} />`
       const output = tamaguiToTailwind(input)

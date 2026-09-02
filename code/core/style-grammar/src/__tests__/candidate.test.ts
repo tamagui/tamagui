@@ -41,14 +41,30 @@ const config: GrammarConfigView = {
 describe('candidate grammar', () => {
   test.each([
     ['p-4', 'padding', '4'],
+    ['ps-4', 'paddingInlineStart', '4'],
+    ['pe-4', 'paddingInlineEnd', '4'],
+    ['pbs-4', 'paddingBlockStart', '4'],
+    ['pbe-4', 'paddingBlockEnd', '4'],
     ['-m-1', 'margin', '1'],
+    ['-ms-1', 'marginInlineStart', '1'],
+    ['me-4', 'marginInlineEnd', '4'],
+    ['-mbs-1', 'marginBlockStart', '1'],
+    ['mbe-4', 'marginBlockEnd', '4'],
+    ['gap-x-4', 'columnGap', '4'],
+    ['gap-y-4', 'rowGap', '4'],
     ['rounded-8', 'borderRadius', '8'],
     ['rounded-t-4', 'borderTopLeftRadius', '4'],
     ['rounded-t-xl', 'borderTopLeftRadius', 'xl'],
     ['rounded-tl-8', 'borderTopLeftRadius', '8'],
+    ['rounded-s-8', 'borderStartStartRadius', '8'],
+    ['rounded-se-8', 'borderStartEndRadius', '8'],
     ['border-r-2', 'borderRightWidth', '2'],
     ['border-t-4', 'borderTopWidth', '4'],
     ['border-x-2', 'borderLeftWidth', '2'],
+    ['border-s-2', 'borderInlineStartWidth', '2'],
+    ['border-e-color5', 'borderInlineEndColor', 'color5'],
+    ['border-bs-2', 'borderBlockStartWidth', '2'],
+    ['border-be-color5', 'borderBlockEndColor', 'color5'],
     ['size-10', 'width', '10'],
     ['inset-x-0', 'left', '0'],
     ['inset-y-4', 'top', '4'],
@@ -83,10 +99,8 @@ describe('candidate grammar', () => {
       'object-foo',
       'flex-garbage',
       'grow-1',
-      'shrink-0',
       'rotate-45',
       'shadow-sm',
-      'aspect-video',
     ]) {
       expect(classifyCandidate(candidate, config).kind, candidate).toBe('passthrough')
     }
@@ -248,7 +262,29 @@ describe('candidate grammar', () => {
     expect(parseCandidate('z-10', config)?.convenience).toBe('integer')
     expect(parseCandidate('font-sans', config)?.convenience).toBe('font-generic')
     expect(parseCandidate('border', config)?.convenience).toBe('bare-border')
+    expect(parseCandidate('border-s', config)?.properties).toEqual({
+      borderInlineStartWidth: 1,
+    })
+    expect(parseCandidate('border-e', config)?.properties).toEqual({
+      borderInlineEndWidth: 1,
+    })
+    expect(parseCandidate('border-bs', config)?.properties).toEqual({
+      borderBlockStartWidth: 1,
+    })
+    expect(parseCandidate('border-be', config)?.properties).toEqual({
+      borderBlockEndWidth: 1,
+    })
     expect(parseCandidate('flex-1', config)?.convenience).toBe('flex-bundle')
+    expect(parseCandidate('grow', config)?.properties).toEqual({ flexGrow: 1 })
+    expect(parseCandidate('grow-0', config)?.properties).toEqual({ flexGrow: 0 })
+    expect(parseCandidate('shrink', config)?.properties).toEqual({ flexShrink: 1 })
+    expect(parseCandidate('shrink-0', config)?.properties).toEqual({ flexShrink: 0 })
+    expect(parseCandidate('aspect-square', config)?.properties).toEqual({
+      aspectRatio: 1,
+    })
+    expect(parseCandidate('aspect-video', config)?.properties).toEqual({
+      aspectRatio: 16 / 9,
+    })
     expect(parseCandidate('w-0/1', config)?.convenience).toBe('sizing-keyword')
     expect(parseCandidate('w-1/0', config)).toBeNull()
   })

@@ -343,6 +343,107 @@ function createPlanEntry(
   return [property, payload, condition, modifiers]
 }
 
+// CSS shorthands reset every longhand, including logical ones. RN stores those
+// under different keys (`paddingStart` vs `paddingLeft`, `columnGap` vs `gap`),
+// so `ps-2 p-4` would otherwise keep the earlier logical value. Unmodified
+// shorthand plans prepend `unset` entries so both the tokenizer and the
+// renderer sink clear them. Conditional classes (`hover:p-4`) skip this.
+const shorthandResets: Record<string, readonly string[]> = {
+  padding: [
+    'paddingTop',
+    'paddingRight',
+    'paddingBottom',
+    'paddingLeft',
+    'paddingStart',
+    'paddingEnd',
+    'paddingInlineStart',
+    'paddingInlineEnd',
+    'paddingBlockStart',
+    'paddingBlockEnd',
+    'paddingHorizontal',
+    'paddingVertical',
+    'paddingInline',
+    'paddingBlock',
+  ],
+  margin: [
+    'marginTop',
+    'marginRight',
+    'marginBottom',
+    'marginLeft',
+    'marginStart',
+    'marginEnd',
+    'marginInlineStart',
+    'marginInlineEnd',
+    'marginBlockStart',
+    'marginBlockEnd',
+    'marginHorizontal',
+    'marginVertical',
+    'marginInline',
+    'marginBlock',
+  ],
+  gap: ['rowGap', 'columnGap'],
+  borderRadius: [
+    'borderTopLeftRadius',
+    'borderTopRightRadius',
+    'borderBottomLeftRadius',
+    'borderBottomRightRadius',
+    'borderTopStartRadius',
+    'borderTopEndRadius',
+    'borderBottomStartRadius',
+    'borderBottomEndRadius',
+    'borderStartStartRadius',
+    'borderStartEndRadius',
+    'borderEndStartRadius',
+    'borderEndEndRadius',
+  ],
+  borderWidth: [
+    'borderTopWidth',
+    'borderRightWidth',
+    'borderBottomWidth',
+    'borderLeftWidth',
+    'borderStartWidth',
+    'borderEndWidth',
+    'borderInlineStartWidth',
+    'borderInlineEndWidth',
+    'borderBlockStartWidth',
+    'borderBlockEndWidth',
+    'borderInlineWidth',
+    'borderBlockWidth',
+  ],
+  borderColor: [
+    'borderTopColor',
+    'borderRightColor',
+    'borderBottomColor',
+    'borderLeftColor',
+    'borderStartColor',
+    'borderEndColor',
+    'borderInlineStartColor',
+    'borderInlineEndColor',
+    'borderBlockStartColor',
+    'borderBlockEndColor',
+    'borderInlineColor',
+    'borderBlockColor',
+  ],
+}
+
+function attachShorthandResets(
+  entries: TailwindPlanEntry[],
+  modifiers: readonly string[]
+): TailwindPlanEntry[] {
+  // web cascade already treats a later shorthand as a reset. emitting
+  // `unset` there becomes a real CSS value and fails parity.
+  if (isWeb || modifiers.length > 0) return entries
+  const unsets: TailwindPlanEntry[] = []
+  for (let i = 0; i < entries.length; i++) {
+    const resets = shorthandResets[entries[i][0]]
+    if (!resets) continue
+    for (let j = 0; j < resets.length; j++) {
+      unsets.push([resets[j], 'unset'])
+    }
+  }
+  return unsets.length === 0 ? entries : unsets.concat(entries)
+}
+
 function computeClassPlan(
   cls: string,
   grammarConfig: GrammarConfigView
@@ -382,7 +483,7 @@ function computeClassPlan(
       if (!entry) return 'raw'
       entries.push(entry)
     }
-    return entries
+    return attachShorthandResets(entries, parsed.modifiers)
   }
   // Resolve only after the registry has claimed the candidate. Multi-prop expansion
   // below consumes that parsed decision instead of re-parsing width vs color.
@@ -399,12 +500,12 @@ function computeClassPlan(
       if (!entry) return 'raw'
       entries.push(entry)
     }
-    return entries
+    return attachShorthandResets(entries, parsed.modifiers)
   }
   const flatProp = tailwindClassToFlatProp(parsed)
   if (flatProp) {
     const entry = createPlanEntry(flatProp.key, flatProp.value, parsed.modifiers)
-    return entry ? [entry] : 'raw'
+    return entry ? attachShorthandResets([entry], parsed.modifiers) : 'raw'
   }
   // not claimed: caller preserves the raw class
   return 'raw'
@@ -461,6 +562,14 @@ export function resolveTailwindClassName(
         } else if (previous && typeof previous === 'object' && !Array.isArray(previous)) {
           next = { ...previous, default: value }
         }
+        if (condition === undefined) {
+          const resets = shorthandResets[key]
+          if (resets) {
+            for (let i = 0; i < resets.length; i++) {
+              delete result[resets[i]]
+            }
+          }
+        }
         setInAuthoredOrder(result, key, next)
       }
     }
@@ -484,6 +593,10 @@ export function setInAuthoredOrder(
   key: string,
   value: any
 ): void {
+  if (value === 'unset') {
+    delete target[key]
+    return
+  }
   if (key in target) delete target[key]
   target[key] = value
 }

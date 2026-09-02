@@ -132,4 +132,53 @@ describe('tailwind standard utilities', () => {
     expect(findRule(styles.rulesToInsert, 'right')[StyleObjectValue]).toContain('var(--')
     expect(findRule(styles.rulesToInsert, 'top')).toBeNull()
   })
+
+  test('logical spacing and gap axes emit browser-native logical properties', () => {
+    const styles = splitTailwindStyles(View, {
+      className: 'ps-4 pe-2 pbs-4 pbe-2 ms-2 me-4 mbs-2 mbe-4 gap-x-2 gap-y-4',
+    } as any)
+
+    for (const prop of [
+      'paddingInlineStart',
+      'paddingInlineEnd',
+      'marginInlineStart',
+      'marginInlineEnd',
+      'paddingTop',
+      'paddingBottom',
+      'marginTop',
+      'marginBottom',
+      'columnGap',
+      'rowGap',
+    ]) {
+      expect(findRule(styles.rulesToInsert, prop), prop).toBeTruthy()
+    }
+  })
+
+  test('logical border sides emit browser-native logical properties', () => {
+    const styles = splitTailwindStyles(View, {
+      className: 'border-s-2 border-e-white border-bs-2 border-be-white',
+    } as any)
+
+    expect(findRule(styles.rulesToInsert, 'borderInlineStartWidth')).toBeTruthy()
+    expect(findRule(styles.rulesToInsert, 'borderInlineEndColor')).toBeTruthy()
+    expect(findRule(styles.rulesToInsert, 'borderTopWidth')).toBeTruthy()
+    expect(findRule(styles.rulesToInsert, 'borderBottomColor')).toBeTruthy()
+  })
+
+  test('logical radii and standard flex and aspect conveniences emit CSS', () => {
+    const styles = splitTailwindStyles(View, {
+      className: 'rounded-s-4 rounded-se-8 grow shrink-0 aspect-video',
+    } as any)
+
+    for (const prop of [
+      'borderStartStartRadius',
+      'borderEndStartRadius',
+      'borderStartEndRadius',
+      'flexGrow',
+      'flexShrink',
+      'aspectRatio',
+    ]) {
+      expect(findRule(styles.rulesToInsert, prop), prop).toBeTruthy()
+    }
+  })
 })

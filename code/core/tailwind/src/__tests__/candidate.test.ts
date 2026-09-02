@@ -57,6 +57,51 @@ describe('claimed candidates become flat props', () => {
     })
   })
 
+  test('logical spacing and gap axes become native-capable props', () => {
+    expect(
+      tokenize('ps-4 pe-2 pbs-4 pbe-2 -ms-1 me-4 -mbs-1 mbe-4 gap-x-2 gap-y-4')
+    ).toEqual({
+      paddingInlineStart: '4',
+      paddingInlineEnd: '2',
+      paddingBlockStart: '4',
+      paddingBlockEnd: '2',
+      marginInlineStart: '-1',
+      marginInlineEnd: '4',
+      marginBlockStart: '-1',
+      marginBlockEnd: '4',
+      columnGap: '2',
+      rowGap: '4',
+    })
+  })
+
+  test('logical border sides preserve width and color meaning', () => {
+    expect(tokenize('border-s-2 border-e-white border-bs-2 border-be-white')).toEqual({
+      borderInlineStartWidth: '2',
+      borderInlineEndColor: 'white',
+      borderBlockStartWidth: '2',
+      borderBlockEndColor: 'white',
+    })
+    expect(tokenize('border-s border-e border-bs border-be')).toEqual({
+      borderInlineStartWidth: 1,
+      borderInlineEndWidth: 1,
+      borderBlockStartWidth: 1,
+      borderBlockEndWidth: 1,
+    })
+  })
+
+  test('logical radii and standard flex and aspect conveniences resolve directly', () => {
+    expect(tokenize('rounded-s-4 rounded-se-8')).toEqual({
+      borderStartStartRadius: '4',
+      borderEndStartRadius: '4',
+      borderStartEndRadius: '8',
+    })
+    expect(tokenize('grow shrink-0 aspect-video')).toEqual({
+      flexGrow: 1,
+      flexShrink: 0,
+      aspectRatio: 16 / 9,
+    })
+  })
+
   test('size-* sets width and height from the size token', () => {
     expect(tokenize('size-10')).toEqual({ width: '10', height: '10' })
   })
@@ -122,5 +167,16 @@ describe('unclaimed candidates', () => {
     // two paddings collapse to one flat prop; the shared resolver never sees a
     // conflicting pair, so no tailwind-merge equivalent is needed
     expect(tokenize('p-2 p-4')).toEqual({ padding: '4' })
+  })
+
+  test('a later shorthand drops earlier logical longhands', () => {
+    expect(tokenize('ps-2 p-4')).toEqual({ padding: '4' })
+    expect(tokenize('p-4 ps-2')).toEqual({
+      padding: '4',
+      paddingInlineStart: '2',
+    })
+    expect(tokenize('gap-x-2 gap-4')).toEqual({ gap: '4' })
+    expect(tokenize('rounded-s-4 rounded-[6px]')).toEqual({ borderRadius: 6 })
+    expect(tokenize('border-s-2 border-[6px]')).toEqual({ borderWidth: 6 })
   })
 })
