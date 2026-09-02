@@ -1,12 +1,14 @@
 import type { Flag, SiteReport } from './convert'
 import type { FunctionalVariantReport } from './functionalVariants'
 import type { SheetFrameReport } from './sheetAnatomy'
+import type { TransitionReport } from './transition'
 
 export interface FileReport {
   file: string
   sites: SiteReport[]
   functionalVariants: FunctionalVariantReport[]
   sheetFrames: SheetFrameReport[]
+  transitions: TransitionReport[]
 }
 
 function countCodes(flags: Iterable<Flag>): Array<[string, number]> {
@@ -36,6 +38,9 @@ export interface ReportSummary {
   sheetFrames: number
   /** rewritten, but with a spread or a styled target a human has to place */
   sheetFramesFlagged: number
+  transitions: number
+  /** v2 transitions the pass could not read statically */
+  transitionsFlagged: number
 }
 
 export function renderReport(
@@ -49,6 +54,8 @@ export function renderReport(
   const functionalVariants = files.flatMap((file) => file.functionalVariants)
   const sheetFrames = files.flatMap((file) => file.sheetFrames)
   const flaggedSheetFrames = sheetFrames.filter((site) => site.flags.length > 0)
+  const transitions = files.flatMap((file) => file.transitions)
+  const flaggedTransitions = transitions.filter((site) => site.flags.length > 0)
   const convertedFunctionalVariants = functionalVariants.filter((site) => site.converted)
   const flaggedFunctionalVariants = functionalVariants.filter((site) => !site.converted)
   const clean = sites.filter(
@@ -82,11 +89,13 @@ export function renderReport(
   const touched = (file: FileReport) =>
     file.sites.length > 0 ||
     file.functionalVariants.length > 0 ||
-    file.sheetFrames.length > 0
+    file.sheetFrames.length > 0 ||
+    file.transitions.length > 0
   const blocked = (file: FileReport) =>
     file.sites.some((site) => site.legacyLeft > 0) ||
     file.functionalVariants.some((site) => !site.converted) ||
-    file.sheetFrames.some((site) => site.flags.length > 0)
+    file.sheetFrames.some((site) => site.flags.length > 0) ||
+    file.transitions.some((site) => site.flags.length > 0)
   const readyFiles = files.filter((file) => touched(file) && !blocked(file))
   const filesWithSites = files.filter(touched).length
   const blockedFiles = files.filter(blocked).map((file) => file.file)
@@ -123,6 +132,8 @@ export function renderReport(
     `- ${flaggedFunctionalVariants.length} functional variants need manual migration`,
     `- ${sheetFrames.length} Sheet.Frame sites rewritten to Sheet.Container plus Sheet.Background`,
     `- ${flaggedSheetFrames.length} Sheet.Frame sites need a human to place a spread or a styled target`,
+    `- ${transitions.length} v2 transition values rewritten to the v3 spelling`,
+    `- ${flaggedTransitions.length} v2 transition values need a hand migration`,
     '',
     '### Functional variant flag reasons',
     '',
@@ -194,6 +205,27 @@ export function renderReport(
   for (const file of files) {
     if (!touched(file)) continue
     lines.push('', `## \`${file.file}\``, '')
+    for (const site of file.transitions) {
+      lines.push(
+        `### ${site.label} at line ${site.line} (${site.flags.length ? 'review' : 'automatic'})`,
+        '',
+        'Before:',
+        '',
+        '```tsx',
+        site.before,
+        '```',
+        '',
+        'Automatic rewrite:',
+        '',
+        '```tsx',
+        site.after,
+        '```'
+      )
+      if (site.flags.length) {
+        lines.push('', 'Flags:', '')
+        for (const flag of site.flags) lines.push(`- **${flag.code}**: ${flag.detail}`)
+      }
+    }
     for (const site of file.sheetFrames) {
       lines.push(
         `### ${site.label} at line ${site.line} (${site.flags.length ? 'review' : 'automatic'})`,
@@ -323,6 +355,8 @@ export function renderReport(
       functionalVariantFlags: Object.fromEntries(functionalFlagCounts),
       sheetFrames: sheetFrames.length,
       sheetFramesFlagged: flaggedSheetFrames.length,
+      transitions: transitions.length,
+      transitionsFlagged: flaggedTransitions.length,
     },
   }
 }
