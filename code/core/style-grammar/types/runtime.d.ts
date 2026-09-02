@@ -9,6 +9,7 @@ export { getSafeAreaEdge, safeAreaVariableNames } from "./runtime/safeAreaVariab
 export { parseFlatValue, scanFlatValue, type FlatScanErrorCode, type FlatValueHandler, type ParsedFlatValue } from "./runtime/scanFlatValue";
 export { canonicalStateModifierNames, stateModifierSelectors, type CoreStateModifierName } from "./runtime/stateModifiers";
 export type { NativeTransitionTarget } from "./shorthands/transitionNative";
+export { bounceToDampingRatio, dampingRatioToBounce, springFromDurationBounce, springPosition, springSettleTime, springToDurationBounce, springToLinearEasing, type SpringCanonical, type SpringPhysics } from "./runtime/spring";
 export { addTransformValue, cloneTransformAccumulator, createTransformAccumulator, finalizeTransformAccumulator, getTransformPartKeys, removeTransformValue, type TransformAccumulator } from "./runtime/transformAccumulator";
 export { unitlessNumberProperties } from "./runtime/unitlessNumbers";
 export { getTokenCategoryName, propToTokenCategoryCode, tokenCategoryColor, tokenCategoryFontFamily, tokenCategoryFontSize, tokenCategoryFontWeight, tokenCategoryLetterSpacing, tokenCategoryLineHeight, tokenCategoryNames, tokenCategoryRadius, tokenCategorySize, tokenCategorySpace, tokenCategoryZIndex, type TokenCategoryCode, type TokenCategoryName } from "./runtime/tokenCategories";

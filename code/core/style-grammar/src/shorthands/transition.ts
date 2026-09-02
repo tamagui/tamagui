@@ -12,7 +12,28 @@ export interface PresetTransitionTiming {
   config?: Readonly<Record<string, unknown>>
 }
 
-export type TransitionTiming = CSSTransitionTiming | PresetTransitionTiming
+/**
+ * a spring occupies the fused duration+timingFunction pair, exactly like a
+ * preset: CSS has no spring easing, so it is not decomposable into css
+ * components and the duration/timing-function longhands cannot reach inside it.
+ *
+ * `duration` is the perceptual duration, defined as the undamped period
+ * `2pi / sqrt(stiffness / mass)` (SwiftUI's convention). `bounce` is 0 for
+ * critically damped, approaches 1 for undamped oscillation, and goes negative
+ * for overdamped. Drivers solve these into their own parameters; the low-level
+ * `stiffness`/`damping`/`mass` escape hatch rides along in `config`.
+ */
+export interface SpringTransitionTiming {
+  type: 'spring'
+  duration: string
+  bounce: number
+  config?: Readonly<Record<string, unknown>>
+}
+
+export type TransitionTiming =
+  | CSSTransitionTiming
+  | PresetTransitionTiming
+  | SpringTransitionTiming
 
 export interface TransitionEntry {
   property: string
@@ -43,6 +64,7 @@ export interface TransitionDiagnostic {
     | 'transition-duplicate-component'
     | 'transition-invalid-duration'
     | 'transition-invalid-list'
+    | 'transition-invalid-spring'
   message: string
   item?: string
   token?: string
@@ -169,7 +191,59 @@ function isTimingFunction(value: string): boolean {
   return false
 }
 
-function parseSingleTransition(item: string): TransitionEntry | TransitionDiagnostic {
+const springPattern = /^spring\(\s*([^)]*)\s*\)$/
+
+/**
+ * parses `spring(<duration>)` or `spring(<duration>, <bounce>)`.
+ *
+ * returns undefined when the token is not spring-shaped at all, so the caller
+ * can keep trying other token kinds, and a diagnostic when it is spring-shaped
+ * but wrong, so a typo inside the parens is never silently read as a property.
+ */
+function parseSpring(
+  token: string
+): SpringTransitionTiming | TransitionDiagnostic | undefined {
+  const match = springPattern.exec(token)
+  if (!match) return undefined
+
+  const args = splitTopLevel(match[1], ',')
+  if (args === null || args.length === 0 || args.length > 2 || !args[0]) {
+    return {
+      code: 'transition-invalid-spring',
+      token,
+      message: `"${token}" must be spring(<duration>) or spring(<duration>, <bounce>)`,
+    }
+  }
+
+  const duration = args[0]
+  if (!isTime(duration) || Number(duration.match(timePattern)?.[1]) < 0) {
+    return {
+      code: 'transition-invalid-spring',
+      token,
+      message: `spring duration "${duration}" must be a non-negative time`,
+    }
+  }
+
+  if (args.length === 1) {
+    return { type: 'spring', duration, bounce: 0 }
+  }
+
+  const bounce = Number(args[1])
+  if (!Number.isFinite(bounce) || bounce <= -1 || bounce >= 1) {
+    return {
+      code: 'transition-invalid-spring',
+      token,
+      message: `spring bounce "${args[1]}" must be a number between -1 and 1 (0 is critically damped)`,
+    }
+  }
+
+  return { type: 'spring', duration, bounce }
+}
+
+function parseSingleTransition(
+  item: string,
+  presetNames: ReadonlySet<string> = noPresetNames
+): TransitionEntry | TransitionDiagnostic {
   const tokens = splitTopLevel(item, ' ')
   if (tokens === null || tokens.length === 0) {
     return {
@@ -193,6 +267,12 @@ function parseSingleTransition(item: string): TransitionEntry | TransitionDiagno
   let delay: string | undefined
   let timingFunction: string | undefined
   let behavior: TransitionBehavior | undefined
+  // a preset or a spring: an opaque atom filling the duration+timingFunction
+  // pair, so an entry carrying one accepts no separate duration or easing
+  let fused: PresetTransitionTiming | SpringTransitionTiming | undefined
+  // collected order-independently, like every other css shorthand component,
+  // and assigned to duration/delay once we know whether a fused atom is present
+  const times: string[] = []
 
   for (const token of tokens) {
     if (globalValues.has(token)) {
@@ -204,19 +284,7 @@ function parseSingleTransition(item: string): TransitionEntry | TransitionDiagno
       }
     }
     if (isTime(token)) {
-      if (duration === undefined) {
-        if (Number(token.match(timePattern)?.[1]) < 0) {
-          return {
-            code: 'transition-invalid-duration',
-            item,
-            token,
-            message: `transition duration "${token}" cannot be negative`,
-          }
-        }
-        duration = token
-      } else if (delay === undefined) {
-        delay = token
-      } else {
+      if (times.length === 2) {
         return {
           code: 'transition-duplicate-component',
           item,
@@ -224,6 +292,22 @@ function parseSingleTransition(item: string): TransitionEntry | TransitionDiagno
           message: `"${item}" has more than two time values`,
         }
       }
+      times.push(token)
+      continue
+    }
+
+    const spring = parseSpring(token)
+    if (spring !== undefined) {
+      if ('code' in spring) return { ...spring, item }
+      if (fused !== undefined) {
+        return {
+          code: 'transition-duplicate-component',
+          item,
+          token,
+          message: `"${item}" has more than one preset or spring`,
+        }
+      }
+      fused = spring
       continue
     }
 
@@ -253,6 +337,21 @@ function parseSingleTransition(item: string): TransitionEntry | TransitionDiagno
       continue
     }
 
+    // config-first identifier: an exact configured animation name is a preset,
+    // never a property. reserved css names can never be presets.
+    if (!reservedPresetNames.has(token) && presetNames.has(token)) {
+      if (fused !== undefined) {
+        return {
+          code: 'transition-duplicate-component',
+          item,
+          token,
+          message: `"${item}" has more than one preset or spring`,
+        }
+      }
+      fused = { type: 'preset', name: token }
+      continue
+    }
+
     if (identifierPattern.test(token) || /^--[-_a-zA-Z0-9]+$/.test(token)) {
       if (property !== undefined) {
         return {
@@ -274,9 +373,40 @@ function parseSingleTransition(item: string): TransitionEntry | TransitionDiagno
     }
   }
 
+  if (fused !== undefined) {
+    // the atom carries its own duration and easing, so a lone time is the delay
+    if (timingFunction !== undefined) {
+      return {
+        code: 'transition-invalid-list',
+        item,
+        message: `"${item}" sets a timing function on a ${fused.type}, which already carries its own easing`,
+      }
+    }
+    if (times.length > 1) {
+      return {
+        code: 'transition-duplicate-component',
+        item,
+        message: `"${item}" has more than one time value; a ${fused.type} carries its own duration, so only a delay may follow it`,
+      }
+    }
+    delay = times[0]
+  } else {
+    duration = times[0]
+    delay = times[1]
+    if (duration !== undefined && Number(duration.match(timePattern)?.[1]) < 0) {
+      return {
+        code: 'transition-invalid-duration',
+        item,
+        token: duration,
+        message: `transition duration "${duration}" cannot be negative`,
+      }
+    }
+  }
+
   if (
     property === 'none' &&
-    (duration !== undefined ||
+    (fused !== undefined ||
+      duration !== undefined ||
       delay !== undefined ||
       timingFunction !== undefined ||
       behavior !== undefined)
@@ -290,7 +420,7 @@ function parseSingleTransition(item: string): TransitionEntry | TransitionDiagno
 
   return {
     property: property ?? 'all',
-    timing: {
+    timing: fused ?? {
       type: 'css',
       duration: duration ?? '0s',
       timingFunction: timingFunction ?? 'ease',
@@ -333,27 +463,6 @@ export function parseTransition(
     }
   }
 
-  if (
-    identifierPattern.test(value) &&
-    !reservedPresetNames.has(value) &&
-    presetNames.has(value)
-  ) {
-    return {
-      ok: true,
-      value: {
-        kind: 'transition',
-        entries: [
-          {
-            property: 'all',
-            timing: { type: 'preset', name: value },
-            delay: '0s',
-            behavior: 'normal',
-          },
-        ],
-      },
-    }
-  }
-
   const items = splitTopLevel(value, ',')
   if (items === null) {
     return {
@@ -378,7 +487,7 @@ export function parseTransition(
       })
       continue
     }
-    const parsed = parseSingleTransition(item)
+    const parsed = parseSingleTransition(item, presetNames)
     if ('code' in parsed) diagnostics.push(parsed)
     else entries.push(parsed)
   }
@@ -526,8 +635,9 @@ export function parseTransitionLonghands(
 export function serializeTransition(value: ParsedTransition): string | null {
   if (value.kind === 'global') return value.value
   if (value.enter || value.exit || value.config) return null
+  // presets and springs are opaque atoms with no css spelling
   for (let index = 0; index < value.entries.length; index++) {
-    if (value.entries[index].timing.type === 'preset') return null
+    if (value.entries[index].timing.type !== 'css') return null
   }
 
   let serialized = ''

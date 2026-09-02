@@ -376,3 +376,108 @@ describe('native transition capabilities', () => {
     })
   })
 })
+
+describe('fused timing atoms (presets and springs)', () => {
+  test('parses spring() with an optional bounce, defaulting to critically damped', () => {
+    expect(parseTransition('spring(200ms)')).toMatchObject({
+      ok: true,
+      value: {
+        entries: [
+          {
+            property: 'all',
+            timing: { type: 'spring', duration: '200ms', bounce: 0 },
+            delay: '0s',
+          },
+        ],
+      },
+    })
+
+    expect(parseTransition('transform spring(300ms, 0.2) 50ms')).toMatchObject({
+      ok: true,
+      value: {
+        entries: [
+          {
+            property: 'transform',
+            timing: { type: 'spring', duration: '300ms', bounce: 0.2 },
+            delay: '50ms',
+          },
+        ],
+      },
+    })
+  })
+
+  test('a fused atom owns the duration slot, so a lone time is the delay', () => {
+    // the whole point of fusing: a preset already carries duration and easing,
+    // so the only time value that can still mean anything is the delay. order
+    // independent, like every other css shorthand component.
+    for (const input of ['bouncy 100ms', '100ms bouncy']) {
+      expect(parseTransition(input, presets)).toMatchObject({
+        ok: true,
+        value: {
+          entries: [
+            {
+              property: 'all',
+              timing: { type: 'preset', name: 'bouncy' },
+              delay: '100ms',
+            },
+          ],
+        },
+      })
+    }
+
+    expect(parseTransition('opacity bouncy 50ms', presets)).toMatchObject({
+      ok: true,
+      value: {
+        entries: [
+          {
+            property: 'opacity',
+            timing: { type: 'preset', name: 'bouncy' },
+            delay: '50ms',
+          },
+        ],
+      },
+    })
+  })
+
+  test('rejects composing a fused atom with easing, a second time, or another atom', () => {
+    expect(parseTransition('spring(200ms) ease-out')).toMatchObject({
+      ok: false,
+      diagnostics: [{ code: 'transition-invalid-list' }],
+    })
+    expect(parseTransition('bouncy ease-out', presets)).toMatchObject({
+      ok: false,
+      diagnostics: [{ code: 'transition-invalid-list' }],
+    })
+    expect(parseTransition('spring(200ms) 50ms 100ms')).toMatchObject({
+      ok: false,
+      diagnostics: [{ code: 'transition-duplicate-component' }],
+    })
+    expect(parseTransition('bouncy spring(200ms)', presets)).toMatchObject({
+      ok: false,
+      diagnostics: [{ code: 'transition-duplicate-component' }],
+    })
+  })
+
+  test('a spring-shaped token with bad arguments is a diagnostic, never a property', () => {
+    for (const input of [
+      'spring()',
+      'spring(abc)',
+      'spring(-200ms)',
+      'spring(200ms, 2)',
+      'spring(200ms, -1)',
+      'spring(200ms, nope)',
+      'spring(200ms, 0.2, 3)',
+    ]) {
+      expect(parseTransition(input)).toMatchObject({
+        ok: false,
+        diagnostics: [{ code: 'transition-invalid-spring' }],
+      })
+    }
+  })
+
+  test('springs have no css spelling, so they never serialize', () => {
+    const parsed = parseTransition('opacity spring(200ms, 0.2)')
+    expect(parsed.ok).toBe(true)
+    expect(parsed.ok && serializeTransition(parsed.value)).toBe(null)
+  })
+})

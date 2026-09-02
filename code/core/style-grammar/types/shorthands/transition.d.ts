@@ -9,7 +9,24 @@ export interface PresetTransitionTiming {
 	name: string;
 	config?: Readonly<Record<string, unknown>>;
 }
-export type TransitionTiming = CSSTransitionTiming | PresetTransitionTiming;
+/**
+* a spring occupies the fused duration+timingFunction pair, exactly like a
+* preset: CSS has no spring easing, so it is not decomposable into css
+* components and the duration/timing-function longhands cannot reach inside it.
+*
+* `duration` is the perceptual duration, defined as the undamped period
+* `2pi / sqrt(stiffness / mass)` (SwiftUI's convention). `bounce` is 0 for
+* critically damped, approaches 1 for undamped oscillation, and goes negative
+* for overdamped. Drivers solve these into their own parameters; the low-level
+* `stiffness`/`damping`/`mass` escape hatch rides along in `config`.
+*/
+export interface SpringTransitionTiming {
+	type: "spring";
+	duration: string;
+	bounce: number;
+	config?: Readonly<Record<string, unknown>>;
+}
+export type TransitionTiming = CSSTransitionTiming | PresetTransitionTiming | SpringTransitionTiming;
 export interface TransitionEntry {
 	property: string;
 	timing: TransitionTiming;
@@ -29,7 +46,7 @@ export interface TransitionGlobalIR {
 }
 export type ParsedTransition = TransitionIR | TransitionGlobalIR;
 export interface TransitionDiagnostic {
-	code: "transition-empty-item" | "transition-invalid-token" | "transition-duplicate-component" | "transition-invalid-duration" | "transition-invalid-list";
+	code: "transition-empty-item" | "transition-invalid-token" | "transition-duplicate-component" | "transition-invalid-duration" | "transition-invalid-list" | "transition-invalid-spring";
 	message: string;
 	item?: string;
 	token?: string;

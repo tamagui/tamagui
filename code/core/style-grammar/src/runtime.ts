@@ -54,6 +54,17 @@ export {
 } from './runtime/stateModifiers'
 export type { NativeTransitionTarget } from './shorthands/transitionNative'
 export {
+  bounceToDampingRatio,
+  dampingRatioToBounce,
+  springFromDurationBounce,
+  springPosition,
+  springSettleTime,
+  springToDurationBounce,
+  springToLinearEasing,
+  type SpringCanonical,
+  type SpringPhysics,
+} from './runtime/spring'
+export {
   addTransformValue,
   cloneTransformAccumulator,
   createTransformAccumulator,
