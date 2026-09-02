@@ -1,4 +1,6 @@
-import { canonicalTransitionProperty } from '@tamagui/animation-helpers'
+// leaf subpath on purpose: the barrel pulls in the transition parser, which
+// belongs to drivers and the compiler, not to every app that imports core
+import { canonicalTransitionProperty } from '@tamagui/animation-helpers/propertyNames'
 import { platformMatches } from '@tamagui/constants'
 import { simpleHash } from '@tamagui/helpers'
 import {

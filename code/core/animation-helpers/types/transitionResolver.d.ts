@@ -10,6 +10,13 @@ import type { ResolvedTransition } from "./resolveTransition";
 * So `resolveTransition` registers itself here on import. Loading any driver
 * loads it, and a bundle with no driver in it has no presets to resolve, so
 * the absent resolver is the correct answer rather than a missing one.
+*
+* The slot lives on `globalThis` because a bundler routinely gives one process
+* two copies of this module: Vite's SSR graph and its optimized-deps graph each
+* carry their own, and a module-local `let` then leaves the reader looking at
+* the copy nobody registered into. The server rendered a transition as a static
+* class while the client resolved it to a driver animation, which React reports
+* as a hydration mismatch.
 */
 export type TransitionResolver = {
 	resolve: (value: any, options: {

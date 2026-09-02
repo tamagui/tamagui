@@ -1,4 +1,5 @@
-import { getTransitionResolver } from '@tamagui/animation-helpers'
+// leaf subpath on purpose, see grammarConfig
+import { getTransitionResolver } from '@tamagui/animation-helpers/transitionResolver'
 import { isAndroid, isClient, supportsDynamicColorIOS } from '@tamagui/constants'
 import {
   StyleObjectIdentifier,
