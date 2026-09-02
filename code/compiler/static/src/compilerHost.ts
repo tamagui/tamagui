@@ -39,6 +39,7 @@ import {
   TAG_WEB_DEFAULTS,
   type TagName,
 } from '@tamagui/dom'
+import { resolveTransition, toCSSTransition } from '@tamagui/animation-helpers'
 import {
   createModifierRegistry,
   parseTransition,
@@ -1066,32 +1067,23 @@ export function createTamaguiCompilerHost(
     for (const payload of payloads) {
       const transition = parseTransition(payload, transitionPresetNames)
       if (!transition.ok) return null
-      if (
-        transition.value.kind === 'global' ||
-        transition.value.entries.every((entry) => entry.timing.type === 'css')
-      ) {
+      if (transition.value.kind === 'global') {
         resolvedPayloads.push(payload)
         continue
       }
-      if (
-        transition.value.entries.length !== 1 ||
-        transition.value.entries[0]!.timing.type !== 'preset'
-      ) {
-        return null
+      // the runtime's own resolver, so a preset lowers to exactly the css the
+      // css driver would have emitted. a preset of any shape works, springs
+      // included: they become a `linear()` easing here rather than forcing the
+      // element onto the runtime path.
+      const resolved = resolveTransition(payload, { animations: transitionPresets })
+      if (resolved.diagnostics.length > 0) return null
+      if (!resolved.fused) {
+        resolvedPayloads.push(payload)
+        continue
       }
-      const preset = transitionPresets[transition.value.entries[0]!.timing.name]
-      if (typeof preset !== 'string') return null
-      const parsedPreset = parseTransition(preset)
-      if (
-        !parsedPreset.ok ||
-        parsedPreset.value.kind !== 'transition' ||
-        parsedPreset.value.entries.length !== 1 ||
-        parsedPreset.value.entries[0]!.property !== 'all' ||
-        parsedPreset.value.entries[0]!.timing.type !== 'css'
-      ) {
-        return null
-      }
-      resolvedPayloads.push(`all ${preset}`)
+      const css = toCSSTransition(resolved)
+      if (css === undefined) return null
+      resolvedPayloads.push(css)
     }
     let payloadIndex = 0
     const resolved: string[] = []

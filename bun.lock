@@ -135,6 +135,7 @@
       "name": "@tamagui/static",
       "version": "2.7.7",
       "dependencies": {
+        "@tamagui/animation-helpers": "workspace:*",
         "@tamagui/cli-color": "workspace:*",
         "@tamagui/compiler-core": "workspace:*",
         "@tamagui/config-default": "workspace:*",
