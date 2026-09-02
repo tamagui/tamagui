@@ -89,6 +89,45 @@ describe('claimed candidates become flat props', () => {
     expect(tokenize('-outline-offset-2')).toEqual({ outlineOffset: '-2' })
   })
 
+  test('cursor classes resolve to cursor prop', () => {
+    expect(tokenize('cursor-pointer')).toEqual({ cursor: 'pointer' })
+    expect(tokenize('cursor-not-allowed')).toEqual({ cursor: 'not-allowed' })
+    expect(tokenize('cursor-grab')).toEqual({ cursor: 'grab' })
+  })
+
+  test('overflow-x and overflow-y resolve to their axis props', () => {
+    expect(tokenize('overflow-x-hidden')).toEqual({ overflowX: 'hidden' })
+    expect(tokenize('overflow-y-scroll')).toEqual({ overflowY: 'scroll' })
+    expect(tokenize('overflow-x-auto overflow-y-hidden')).toEqual({
+      overflowX: 'auto',
+      overflowY: 'hidden',
+    })
+  })
+
+  test('truncate sets overflow + textOverflow + whiteSpace', () => {
+    expect(tokenize('truncate')).toEqual({
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+      whiteSpace: 'nowrap',
+    })
+  })
+
+  test('select utilities resolve to userSelect', () => {
+    expect(tokenize('select-none')).toEqual({ userSelect: 'none' })
+    expect(tokenize('select-text')).toEqual({ userSelect: 'text' })
+    expect(tokenize('select-all')).toEqual({ userSelect: 'all' })
+  })
+
+  test('visibility classes resolve correctly', () => {
+    expect(tokenize('visible')).toEqual({ visibility: 'visible' })
+    expect(tokenize('invisible')).toEqual({ visibility: 'hidden' })
+  })
+
+  test('dynamic line-clamp resolves to numberOfLines', () => {
+    expect(tokenize('line-clamp-8')).toEqual({ numberOfLines: 8 })
+    expect(tokenize('line-clamp-none')).toEqual({ numberOfLines: 0 })
+  })
+
   test('gradient composers emit one backgroundImage and ignore incomplete stops', () => {
     expect(tokenize('from-[red]')).toEqual({})
     expect(tokenize('bg-linear-to-r from-[red] to-[blue]')).toEqual({

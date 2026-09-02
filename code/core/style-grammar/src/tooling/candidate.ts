@@ -535,6 +535,10 @@ function chooseEntry(
       if (shrink)
         return { entry: shrink, valueKind: 'convenience', convenience: 'integer' }
     }
+    if (prefix === 'line-clamp') {
+      const clamp = entries.find((entry) => entry.prop === 'numberOfLines')
+      if (clamp) return { entry: clamp, valueKind: 'convenience', convenience: 'integer' }
+    }
   }
 
   for (const entry of entries) {
