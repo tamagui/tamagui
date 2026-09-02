@@ -1,5 +1,7 @@
 import { ProvideAdaptContext, useAdaptContext } from '@tamagui/adapt'
 import { AnimatePresence } from '@tamagui/animate-presence'
+// leaf subpath: the grammar itself belongs to the drivers, not to every sheet
+import { getTransitionResolver } from '@tamagui/animation-helpers/transitionResolver'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import {
@@ -150,29 +152,32 @@ export const SheetImplementationCustom = createRefComponent<View, SheetProps>(
         return transitionConfigProp
       }
 
-      const [animationProp, animationPropConfig] = !transition
-        ? []
-        : Array.isArray(transition)
-          ? transition
-          : ([transition] as const)
-
-      // look up named animation config from driver if available
-      const namedConfig =
-        animationProp && animationDriver.animations?.[animationProp as string]
-      if (namedConfig) {
-        // css stores string configs (e.g. '150ms ease-out'); object-spreading a
-        // string produces char-indexed junk. the css visual is driven by the DOM
-        // `transition` prop, so pass only any explicit override object through.
-        if (typeof namedConfig === 'string') {
-          return animationPropConfig ?? null
-        }
-        return {
-          ...namedConfig,
-          ...animationPropConfig,
-        }
+      // the sheet drives its position through an animated number rather than a
+      // style prop, so it resolves the authored transition itself. it goes
+      // through the same grammar every driver and the compiler use, so a config
+      // entry never means one thing here and another in a style prop. the raw
+      // config is the wrong thing to spread: presets are authored as
+      // `{ duration, bounce }` in milliseconds, and motion reads `duration` in
+      // seconds.
+      const resolved = transition
+        ? getTransitionResolver()?.resolve(transition, {
+            animations: animationDriver.animations,
+          })
+        : null
+      const timing = resolved?.all?.timing
+      if (!timing) return null
+      if (timing.kind === 'timing') {
+        return { type: 'timing', duration: timing.durationMs }
       }
-
-      return null
+      // stiffness/damping/mass is the spelling every spring driver takes, and
+      // the resolver derives it from `{ duration, bounce }` when that is what
+      // the config was written in
+      return {
+        type: 'spring',
+        stiffness: timing.stiffness,
+        damping: timing.damping,
+        mass: timing.mass,
+      }
     })()
 
     /**
