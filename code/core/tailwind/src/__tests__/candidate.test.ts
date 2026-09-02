@@ -32,6 +32,12 @@ describe('claimed candidates become flat props', () => {
     expect(tokenize('line-clamp-2')).toEqual({ numberOfLines: 2 })
   })
 
+  test('arbitrary rotate appends deg for unitless numbers', () => {
+    expect(tokenize('rotate-[45]')).toEqual({ rotate: '45deg' })
+    expect(tokenize('rotate-[-8deg]')).toEqual({ rotate: '-8deg' })
+    expect(tokenize('rotate-[0.5turn]')).toEqual({ rotate: '0.5turn' })
+  })
+
   test('modifiers are preserved in the shared conditional spelling', () => {
     expect(tokenize('hover:bg-[red]')).toEqual({
       backgroundColor: { hover: 'red' },

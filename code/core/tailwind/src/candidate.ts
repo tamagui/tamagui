@@ -243,7 +243,13 @@ function tailwindClassToFlatProp(
     if (inner === '') return null
     // px-length + unitless arbitraries become NUMBERS (native requires numbers, drops "Npx"
     // strings); unit/function values stay strings. one canonical rule (arbitraryValue).
-    return { key: prop, value: arbitraryValue(inner) }
+    let resolved = arbitraryValue(inner)
+    // rotate requires a unit-bearing string on native — a bare number from rotate-[45]
+    // triggers a redbox. append deg when the arbitrary resolved to a unitless number.
+    if (prop === 'rotate' && typeof resolved === 'number') {
+      resolved = `${resolved}deg`
+    }
+    return { key: prop, value: resolved }
   }
 
   // tailwind sizing keywords / fractions (w-full → 100%, w-1/2 → 50%, w-auto, w-screen).
