@@ -1,5 +1,5 @@
 {
-  "measuredAtCommit": "ed1560e0e3c6ab30b91743b4f658fcd588a77024",
+  "measuredAtCommit": "2b03ce3a8749c659afe0d94d6d2d86da0113e592",
   "nodeVersion": "24.16.0",
   "compression": "Node gzipSync level 9; output depends on Node's bundled zlib",
   "thresholds": {
@@ -41,7 +41,7 @@
       "islands": {
         "jsGzip": 62614,
         "cssGzip": 3104,
-        "islandJsGzip": 358388
+        "islandJsGzip": 358397
       }
     }
   }
