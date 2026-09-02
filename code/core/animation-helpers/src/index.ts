@@ -2,6 +2,17 @@ export { animationPresets } from './presets'
 
 export {
   canonicalTransitionProperty,
+  isTransformProperty,
+  styleKeysForProperty,
+} from './propertyNames'
+
+export {
+  getTransitionResolver,
+  setTransitionResolver,
+  type TransitionResolver,
+} from './transitionResolver'
+
+export {
   easingToBezier,
   entryToCSS,
   forAnimationState,
@@ -9,10 +20,8 @@ export {
   getSettleMs,
   getTransitionForKey,
   hasTransition,
-  isTransformProperty,
   presetToTiming,
   resolveTransition,
-  styleKeysForProperty,
   toCSSTransition,
 } from './resolveTransition'
 

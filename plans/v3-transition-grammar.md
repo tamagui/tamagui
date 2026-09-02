@@ -128,6 +128,27 @@ The compiler/runtime split is closed:
 land on the same emitted css, so a future divergence fails a test rather than
 shipping.
 
+## The grammar must not reach a bundle with no animations in it
+
+`getSplitStyles` has to know whether a `transition` string is plain css or
+needs a driver, and that answer has to come from the same grammar the compiler
+uses. Importing the grammar into `@tamagui/web` to get it put the parser, the
+object parser, and the spring solver into every styled component: +3,988 gzip
+bytes, +14%, which the styled-view bundle ceiling caught.
+
+So `resolveTransition` registers itself into `animation-helpers/transitionResolver.ts`
+on import, and `@tamagui/web` reads it from there. Loading any driver loads it.
+A bundle with no driver has no presets to resolve, so an absent resolver is the
+correct answer rather than a missing one, and the prop still works as plain css
+through the ordinary style path. Growth is now +32 bytes.
+
+`canonicalTransitionProperty` and friends moved into
+`animation-helpers/propertyNames.ts` for the same reason: `grammarConfig` needs
+them on every component and they depend on nothing.
+
+If you add an import of the grammar to `@tamagui/web`, the ceiling check in the
+`checks` job is what will tell you.
+
 ## Driver notes
 
 - **css**: springs sample to `linear()`; per-property lists emit as a real css

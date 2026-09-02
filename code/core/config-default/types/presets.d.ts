@@ -1,4 +1,5 @@
-export declare const animations: import("@tamagui/web").AnimationDriverWithAnimatedNumbers<{
+/** the shared table plus the two this config adds, in one place for both drivers */
+export declare const presets: {
     quickest: {
         readonly duration: 120;
         readonly bounce: 0.2;
@@ -59,5 +60,5 @@ export declare const animations: import("@tamagui/web").AnimationDriverWithAnima
         duration: number;
         bounce: number;
     };
-}>;
-//# sourceMappingURL=animations.native.d.ts.map
+};
+//# sourceMappingURL=presets.d.ts.map

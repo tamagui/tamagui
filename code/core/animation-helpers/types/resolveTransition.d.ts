@@ -45,17 +45,6 @@ export interface ResolvedTransition {
 /** the resolution that applies in a given animation state */
 export declare function forAnimationState(resolved: ResolvedTransition, state: "enter" | "exit" | "default"): ResolvedTransition;
 /**
-* the css property name an entry is filed under, so `backgroundColor` and
-* `background-color` are one key and cannot both silently apply.
-*/
-export declare function canonicalTransitionProperty(key: string): string;
-export declare function isTransformProperty(key: string): boolean;
-/**
-* the style keys a css property covers, for drivers that key their per-property
-* options by style key rather than css property (motion, react-native).
-*/
-export declare function styleKeysForProperty(property: string): readonly string[];
-/**
 * turns one entry in a driver's `animations` config into a timing.
 *
 * accepts every shape `PresetConfig` allows: a css string (`'350ms ease-out'`),
@@ -115,6 +104,6 @@ export declare function entryToCSS(entry: ResolvedEntry): string;
 * nothing animates. entry order is preserved, so css last-wins does the
 * per-property resolution for us in the browser.
 */
-export declare function toCSSTransition(resolved: ResolvedTransition, filter?: readonly string[] | null): string | undefined;
+export declare function toCSSTransition(resolved: ResolvedTransition): string | undefined;
 
 //# sourceMappingURL=resolveTransition.d.ts.map
