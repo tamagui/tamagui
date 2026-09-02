@@ -386,3 +386,8 @@ downscale.
 | repo | sha | what |
 | --- | --- | --- |
 | team-machine `tamagui-v3-tip` | `98fa15707` | `fix(gui): thread the light/dark scheme through the shadow palette instead of a module global` — findings 1 and 2 |
+| tamagui `v3-beta` | `dce5caf065` | `fix(create-menu): fall back to the cross-platform menu with no native adapter, and make Menu.Portal optional again` — the two upstream defects under finding 3, with `MenuNoAdapter.native.test.tsx` and `MenuNoPortal.web.test.tsx` |
+
+Neither is pushed. Root `bun run lint` and `bun run check` are green with both in
+the tree; `code/ui/components-test` passes 15 files / 34 tests native and 12
+files / 55 tests web.
