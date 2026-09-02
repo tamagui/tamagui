@@ -121,8 +121,11 @@ export function Panel({
               backgroundColor="background"
               boxShadow="0 4px 12px shadow-color"
               p={0}
-              transition={['quicker', { opacity: { overshootClamping: true } }]}
-              animateOnly={['transform', 'opacity']}
+              transition={{
+                preset: 'quicker',
+                properties: 'transform, opacity',
+                opacity: { preset: 'quicker', spring: { overshootClamping: true } },
+              }}
             >
               <Popover.Arrow
                 backgroundColor="background"
@@ -150,14 +153,13 @@ export function Panel({
                       }}
                     >
                       <Switch.Thumb
-                        transition={[
-                          'quickest',
-                          {
-                            transform: {
-                              overshootClamping: true,
-                            },
+                        transition={{
+                          preset: 'quickest',
+                          transform: {
+                            preset: 'quickest',
+                            spring: { overshootClamping: true },
                           },
-                        ]}
+                        }}
                       />
                     </Switch>
                   </ListItem>

@@ -150,7 +150,7 @@ const ThemeBuilderModal = memo(() => {
       <YStack
         position="absolute"
         inset={0}
-        transition="medium"
+        transition={{ preset: 'medium', properties: 'transform' }}
         x={0}
         borderTopLeftRadius="6"
         borderBottomLeftRadius="6"
@@ -162,7 +162,6 @@ const ThemeBuilderModal = memo(() => {
           borderColor: 'transparent',
           bg: 'color3',
         })}
-        animateOnly={['transform']}
         ref={ref}
         elevation="5"
       >
@@ -176,7 +175,10 @@ const ThemeBuilderModal = memo(() => {
         </XStack>
 
         <YStack
-          transition={['medium', { opacity: { overshootClamping: true } }]}
+          transition={{
+            preset: 'medium',
+            opacity: { preset: 'medium', spring: { overshootClamping: true } },
+          }}
           opacity={hide ? 0 : 1}
           gap="4"
           flex={1}
@@ -184,8 +186,7 @@ const ThemeBuilderModal = memo(() => {
           <AnimatePresence mode="wait" custom={{ going: store.direction }}>
             <Section
               flex={1}
-              transition="75ms"
-              animateOnly={['transform', 'opacity']}
+              transition={{ duration: '75ms', properties: 'transform, opacity' }}
               key={weakKey(StepComponent)}
             >
               {useMemo(() => {

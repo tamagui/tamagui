@@ -275,13 +275,12 @@ export function AnimationsDemoBase(props) {
   return (
     <>
       <Square
-        transition={props.animation || 'bouncy'}
+        transition={{ preset: props.animation || 'bouncy', properties: 'transform' }}
         borderColor="border-color"
         borderWidth={1}
         rounded="9"
         bg="color9"
         {...position}
-        animateOnly={['transform']}
         onPress={onPress}
         size={104}
       >

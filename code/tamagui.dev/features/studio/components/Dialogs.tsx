@@ -50,7 +50,10 @@ export const Dialogs = memo(() => {
           bordered
           elevate
           key="content"
-          transition={['quickest', { opacity: { overshootClamping: true } }]}
+          transition={{
+            preset: 'quickest',
+            opacity: { preset: 'quickest', spring: { overshootClamping: true } },
+          }}
           x="0 enter:0 exit:0"
           scale="1 enter:0.9 exit:0.95"
           opacity="1 enter:0 exit:0"

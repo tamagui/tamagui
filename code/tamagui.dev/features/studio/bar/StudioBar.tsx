@@ -163,7 +163,10 @@ export const ThemeSwitch = memo(() => {
         opacity="enter:0 exit:0"
         backgroundColor="background"
         boxShadow="0 4px 12px shadow-color"
-        transition={['quickest', { opacity: { overshootClamping: true } }]}
+        transition={{
+          preset: 'quickest',
+          opacity: { preset: 'quickest', spring: { overshootClamping: true } },
+        }}
       >
         <Popover.Arrow
           backgroundColor="background"

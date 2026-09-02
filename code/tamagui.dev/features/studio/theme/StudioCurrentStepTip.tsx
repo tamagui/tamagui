@@ -63,7 +63,10 @@ export function StudioCurrentStepTip() {
           backgroundColor="background"
           boxShadow="0 4px 12px shadow-color"
           maxW={500}
-          transition={['quickest', { opacity: { overshootClamping: true } }]}
+          transition={{
+            preset: 'quickest',
+            opacity: { preset: 'quickest', spring: { overshootClamping: true } },
+          }}
         >
           <Popover.Arrow
             backgroundColor="background"
