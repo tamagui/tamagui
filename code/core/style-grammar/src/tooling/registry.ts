@@ -172,7 +172,12 @@ const grammarEntrySpecs = [
   { prop: 'textOverflow', prefix: '' },
   { prop: 'userSelect', prefix: 'select' },
   { prop: 'visibility', prefix: '' },
-  // grid (supported in Tamagui stylePropsUnitless / stylePropsView)
+  /**
+   * CSS Grid utilities. Web-only by default — filtered out on native because
+   * Yoga has no stable CSS Grid support (facebook/yoga#1865). Set the
+   * `TAMAGUI_CSS_GRID=1` env var to opt in on native with an experimental
+   * Yoga build.
+   */
   { prop: 'gridTemplateColumns', prefix: 'grid-cols' },
   { prop: 'gridColumn', prefix: 'col-span' },
   { prop: 'gridColumnStart', prefix: 'col-start' },
