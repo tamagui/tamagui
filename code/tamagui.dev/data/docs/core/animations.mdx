@@ -214,6 +214,13 @@ timing goes, and `preset` in the object form takes overrides:
 <View transition={{ preset: 'bouncy', duration: 250 }} />
 ```
 
+Overriding `duration` or `bounce` re-solves the spring, so the preset keeps
+whichever of the two you did not name and drops the `stiffness`/`damping` it was
+written with, since those are what you just replaced. `mass` carries over: it
+describes the object rather than the curve. Naming `stiffness` or `damping`
+yourself still wins outright, and a preset used without a `duration` or `bounce`
+override runs exactly the numbers your config gave it.
+
 The shipped presets are the same springs on every driver: `quickest`, `quicker`,
 `quick`, `medium`, `slow`, `slowest`, `lazy`, `superLazy`, `bouncy`,
 `superBouncy`, and the `LessBouncy` variants of the three quick ones. Keep your
@@ -353,6 +360,18 @@ form the property leads the value; in object form it is the `properties` key:
 This replaces v2's `animateOnly` prop, which was the same idea spelled as a
 separate array. `properties` reaches every driver, so a list means the same
 thing on CSS, Motion, React Native, and Reanimated.
+
+Naming `transform` covers every transform part, so `x`, `y`, `scale`,
+`scaleX`/`scaleY`, `rotate` and the rest all transition together. Naming one
+part covers only that part:
+
+```tsx
+// x, scale and rotate all transition
+<Square transition="transform 200ms" x={10} scale={1.1} rotate="5deg" />
+
+// only x transitions; scale jumps
+<Square transition="x 200ms" x={10} scale={1.1} />
+```
 
 ## The onTransition lifecycle
 

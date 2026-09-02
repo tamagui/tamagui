@@ -140,14 +140,31 @@ So `resolveTransition` registers itself into `animation-helpers/transitionResolv
 on import, and `@tamagui/web` reads it from there. Loading any driver loads it.
 A bundle with no driver has no presets to resolve, so an absent resolver is the
 correct answer rather than a missing one, and the prop still works as plain css
-through the ordinary style path. Growth is now +32 bytes.
+through the ordinary style path. Growth is +39 bytes.
 
 `canonicalTransitionProperty` and friends moved into
 `animation-helpers/propertyNames.ts` for the same reason: `grammarConfig` needs
 them on every component and they depend on nothing.
 
-If you add an import of the grammar to `@tamagui/web`, the ceiling check in the
-`checks` job is what will tell you.
+Two details that a registry alone does not buy, both found by tests rather than
+by reading:
+
+- **Import the leaf module, never the barrel.** `@tamagui/animation-helpers`'s
+  index re-exports `resolveTransition`, so importing the package name pulls the
+  grammar back in no matter what the importer actually uses. `@tamagui/web` and
+  `@tamagui/sheet` import `@tamagui/animation-helpers/propertyNames` and
+  `@tamagui/animation-helpers/transitionResolver`, which are declared subpath
+  exports for exactly this. `@tamagui/tailwind`'s `runtimeGraph` test asserts on
+  the real esbuild module graph of a loaded app and is what catches a regression
+  here; the styled-view gzip ceiling in the `checks` job catches the size.
+- **The registry slot lives on `globalThis`, keyed by `Symbol.for`.** A bundler
+  routinely hands one process two copies of a leaf module: Vite's SSR graph and
+  its optimized-deps graph each carry their own. With a module-local `let`, the
+  driver registers into one copy and `getSplitStyles` reads the other, so the
+  server rendered `transition="medium"` as a static `_t-` class while the client
+  resolved it to a driver animation and rendered none. React reports that as a
+  hydration mismatch, which is how `code/sandbox`'s `hydration-drivers` and
+  `motion-hydration` tests found it.
 
 ## What the grammar costs where
 
@@ -157,7 +174,7 @@ one the design wanted:
 | graph | before | after |
 | --- | --- | --- |
 | vite page js gzip | 59,835 | 59,835 |
-| vite island js gzip | 87,819 | 91,785 |
+| vite island js gzip | 87,819 | 92,012 |
 | vite css gzip | 2,426 | 2,532 |
 
 A compiled page pays nothing. The parser, the object parser and the spring
@@ -237,6 +254,36 @@ change should have changed a build's output.
 - `hasAnimatedLayoutKey` gained a third argument earlier in the work and one
   react-native call site was left at two, which would have thrown at runtime in
   `getTransitionForKey`. Root typecheck caught it; package suites could not.
+- **An authored `transform` has to expand to the whole family.** Tamagui writes
+  `x`/`y` into the css `translate` longhand, `scale` into `scale` and `rotate`
+  into `rotate`, so `transition="transform 200ms"` transitioned a property
+  nothing was written to and the element jumped. `fromEntries` now expands an
+  authored `transform` into `transform, translate, scale, rotate`, which is also
+  what the css driver emits, so the four drivers agree. That replaced a fallback
+  in `getTransitionForKey` that reached for the `transform` entry on behalf of
+  any transform part: the fallback made the js drivers animate `x` for an
+  authored `rotateX` while css did not.
+- **The Sheet was reading the raw config out of the driver.** It drives its
+  position through an animated number rather than a style prop, and it built its
+  spring by looking up `animationDriver.animations[name]` and spreading it. With
+  presets authored as `{ duration, bounce }` in milliseconds, motion read that
+  `duration: 220` as 220 *seconds*: the sheet crawled 38px in 1.2s and never
+  arrived. It now resolves through `getTransitionResolver()` like everything
+  else and hands the driver `{ stiffness, damping, mass }`, the spelling every
+  spring driver takes. This was the last place in the repo still doing its own
+  transition lookup, and the only remaining user of the array form.
+
+- **A duration override on a preset was silently discarded.** Overriding a
+  preset (`transition={{ preset: 'medium', duration: 50 }}`) re-solves the
+  spring from the new duration, but the preset's own `stiffness`/`damping` came
+  along in `extra`, and authored physics win over the derived pair. So a preset
+  written as `{ stiffness: 120, damping: 15 }` kept running its 570ms curve no
+  matter what duration you asked for. A duration or bounce override now drops
+  those two keys, since they are exactly what the override replaces. `mass`
+  still carries: it belongs to the object, not to the curve. Physics written in
+  the override still win, so the exact escape hatch is intact, and a preset used
+  with no duration or bounce override keeps its authored stiffness and damping
+  to the number.
 
 ## Deferred: css `animation` and looping
 
