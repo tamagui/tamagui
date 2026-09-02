@@ -137,6 +137,26 @@ Owner session: Fable (r16625). Supersedes the execution state in
   codemod gaps found on chat (false host warnings under `onlyAllowShorthands`,
   silent legacy keys inside an unopenable spread, report accounting) landed as
   `0899359cb9`.
+- 2026-09-02 (day 2, early): beta `3.0.0-beta.907.1` published from
+  `ffd2c5feb4` (verified by tarball content: it predates the animated fix).
+  Every later push failed the zero-runtime starter size gate on the metro-web
+  island (+9 gzip bytes; vite and next unchanged, so the compiler output is
+  identical and the growth is the create-menu runtime fix, which metro-web
+  does not tree-shake). Baseline re-recorded from CI's receipts. The Maestro
+  iOS `Sheet` flow is red on `2b03ce3a87` (the Home list stays on screen after
+  tapping Sheet; last green `55e0019330`), assigned to r18019 on its simulator
+  before the team-machine pin bump. Team-machine test drive: Finding 3 closed
+  as UIKit `UIMenu` behavior (the composer menus are zeego native menus, which
+  do not restyle after an appearance change; engine on/off diffs identical),
+  two real create-menu defects fixed (`dce5caf065`: no-adapter fallback on
+  native, `Menu.Portal` optional again); kitchen-sink's Menu opens on iOS with
+  no adapter, so the composer non-presentation is app composition. The
+  comparison document is complete at `/Users/n8/tamagui-comparisons`
+  (`COMPARISON.md`, clean `4d35a9b`), shared with the owner; the animated web
+  scenario still needs a re-run on the beta carrying `0bb490118d` (bench
+  should read 14/14/0). Benchmark worker r16846 and soot worker r18015 hit
+  provider hard limits until 2026-09-07; soot respawned as a fresh `lg`
+  worker on the existing `~/.worktrees/soot-v3` worktree.
 
 ## Plan
 
