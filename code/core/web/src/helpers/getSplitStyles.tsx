@@ -60,7 +60,7 @@ import { getConfigRevisionState } from './grammarConfig'
 import { mediaState as globalMediaState, mediaKeyMatch } from './mediaState'
 import { getStyleStaticConfig, type StyleStaticConfig } from './styleStaticConfig'
 import type { FrontendClassSink } from './styleFrontend'
-import { nativeTextInputColorProps } from './nativeStyleEngine'
+import { nativeTextInputColorProps, normalizeNativeStyle } from './nativeStyleEngine'
 import { warnOnce, warnRefusedValue } from './warnOnce'
 
 export { getStyleStaticConfig }
@@ -1485,6 +1485,9 @@ export const getSplitStyles: StyleSplitter = (
       if (process.env.NODE_ENV === 'development' && debug && debug !== 'profile') {
         log(`Found fontFamily native: ${style.fontFamily}`, faceInfo)
       }
+    }
+    if (styleState.style) {
+      styleState.style = normalizeNativeStyle(styleState.style)
     }
   }
 

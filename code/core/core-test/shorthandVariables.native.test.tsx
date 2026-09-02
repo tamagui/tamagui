@@ -250,13 +250,27 @@ describe('outline shorthand - native', () => {
     expect(style?.outlineColor).toBe('#fff')
   })
 
-  test('outline "none" sets outlineWidth to 0', () => {
-    const { style } = getSplitStylesFor({
-      outline: 'none',
-    })
-
-    expect(style?.outlineWidth).toBe(0)
-    expect(style?.outlineStyle).toBe('none')
+  test('outline "none" removes unsupported native outline props', () => {
+    for (const props of [
+      {
+        outline: 'none',
+        outlineWidth: 2,
+        outlineColor: 'red',
+        outlineOffset: 3,
+      },
+      {
+        outlineStyle: 'none' as const,
+        outlineWidth: 2,
+        outlineColor: 'red',
+        outlineOffset: 3,
+      },
+    ]) {
+      const { style } = getSplitStylesFor(props)
+      expect(style).not.toHaveProperty('outlineStyle')
+      expect(style).not.toHaveProperty('outlineWidth')
+      expect(style).not.toHaveProperty('outlineColor')
+      expect(style).not.toHaveProperty('outlineOffset')
+    }
   })
 
   test('outline with just width and style', () => {
@@ -277,6 +291,24 @@ describe('outline shorthand - native', () => {
     expect(style?.outlineStyle).toBe('solid')
     expect(style?.outlineColor).toBe('rgba(0, 0, 0, 0.5)')
   })
+})
+
+test('web intrinsic sizes are removed from native styles', () => {
+  const { style } = getSplitStylesFor({
+    width: 'max-content',
+    height: 'min-content',
+    minWidth: 'fit-content',
+    minHeight: 'max-content',
+    maxWidth: 'min-content',
+    maxHeight: 'fit-content',
+  })
+
+  expect(style).not.toHaveProperty('width')
+  expect(style).not.toHaveProperty('height')
+  expect(style).not.toHaveProperty('minWidth')
+  expect(style).not.toHaveProperty('minHeight')
+  expect(style).not.toHaveProperty('maxWidth')
+  expect(style).not.toHaveProperty('maxHeight')
 })
 
 describe('border shorthand with media queries - native', () => {

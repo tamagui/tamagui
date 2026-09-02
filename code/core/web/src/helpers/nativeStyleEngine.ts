@@ -26,6 +26,55 @@ export const nativeTextInputColorProps: Readonly<Record<string, string>> = {
   selectionHandleColor: 'selectionHandleColor',
 }
 
+const nativeOutlineProps = [
+  'outlineStyle',
+  'outlineWidth',
+  'outlineColor',
+  'outlineOffset',
+] as const
+
+const nativeIntrinsicSizeProps = [
+  'width',
+  'height',
+  'minWidth',
+  'minHeight',
+  'maxWidth',
+  'maxHeight',
+] as const
+
+/** drops CSS values Fabric cannot accept; state tables use null to clear lower layers */
+export function normalizeNativeStyle(
+  style: Record<string, unknown>,
+  reset = false
+): Record<string, unknown> {
+  let next: Record<string, unknown> | undefined
+
+  if (style.outlineStyle === 'none') {
+    next = { ...style }
+    for (const key of nativeOutlineProps) {
+      if (reset) {
+        next[key] = null
+      } else {
+        delete next[key]
+      }
+    }
+  }
+
+  for (const key of nativeIntrinsicSizeProps) {
+    const value = style[key]
+    if (value === 'max-content' || value === 'min-content' || value === 'fit-content') {
+      next ||= { ...style }
+      if (reset) {
+        next[key] = null
+      } else {
+        delete next[key]
+      }
+    }
+  }
+
+  return next ?? style
+}
+
 export interface NativeStyleEngineLinkHandle {
   id: number
   unlink: () => void
@@ -124,11 +173,12 @@ function resolveCompiledMapping(
   const cached = compiled.states.get(stateName)
   if (cached?.theme === theme) return cached
 
-  const renderProps: Record<string, unknown> = {}
+  let renderProps: Record<string, unknown> = {}
   for (const styleKey in compiled.mapping) {
     const value = theme[compiled.mapping[styleKey]]
     renderProps[styleKey] = value === undefined ? null : getVariableValue(value)
   }
+  renderProps = normalizeNativeStyle(renderProps, true)
   // the engine's color form (srgb maps for Fabric's C++ parser) must not flow
   // back through React: RN's JS style normalizer misreads it
   const nativeProps = engine?.processStyleColors(renderProps) ?? renderProps
@@ -230,7 +280,10 @@ export function linkNativeStyleMapping(
   ).nativeProps
   let base = processedBases.get(baseStyle)
   if (!base || base.engine !== engine) {
-    base = { engine, props: engine.processStyleColors(baseStyle) }
+    base = {
+      engine,
+      props: engine.processStyleColors(normalizeNativeStyle(baseStyle)),
+    }
     processedBases.set(baseStyle, base)
   }
   const state: Record<string, Record<string, unknown>> = {}

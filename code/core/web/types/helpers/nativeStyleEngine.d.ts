@@ -17,6 +17,8 @@
  * compiler use one RN compatibility boundary after token resolution.
  */
 export declare const nativeTextInputColorProps: Readonly<Record<string, string>>;
+/** drops CSS values Fabric cannot accept; state tables use null to clear lower layers */
+export declare function normalizeNativeStyle(style: Record<string, unknown>, reset?: boolean): Record<string, unknown>;
 export interface NativeStyleEngineLinkHandle {
     id: number;
     unlink: () => void;
