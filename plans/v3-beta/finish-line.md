@@ -124,6 +124,19 @@ Owner session: Fable (r16625). Supersedes the execution state in
   web, tests, and typecheck green on the local tarball; native blocked by an
   upstream abort on `outlineStyle: 'none'` reaching Fabric (Dialog,
   RovingFocusGroup), assigned to r17284 to fix in the native style engine.
+- 2026-09-01 (day 1, evening, compiler): the comparison bench's animated
+  element flattens. A conditional className under `transition-*` differs per
+  branch in inline style rather than classes (the css driver keeps transitioned
+  properties inline), so the per-branch lowering now diffs each branch's inline
+  style against the base: a value every branch shares hoists into the element's
+  style, a value that differs becomes one conditional inline property, and a
+  branch program whose classes all hoisted is dropped instead of emitting an
+  empty ternary. Class-table entries (array read by index) whose leaves differ
+  in inline style still bail. Pushed as `0bb490118d`; the compiler stats on the
+  bench should read 14 found, 14 flattened, 0 bailed on the next beta. The
+  codemod gaps found on chat (false host warnings under `onlyAllowShorthands`,
+  silent legacy keys inside an unopenable spread, report accounting) landed as
+  `0899359cb9`.
 
 ## Plan
 
