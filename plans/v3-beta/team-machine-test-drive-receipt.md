@@ -27,6 +27,9 @@ all, and closing it surfaced two genuine engine bugs, now fixed with tests.
    bugs, both fixed on `v3-beta` with a failing-then-passing test: a native
    menu with no registered adapter rendered nothing at all, and a
    `Menu.Content` without a `Menu.Portal` threw on both native and web.
+   Kitchen-sink's Menu usecase presents fine on iOS with no adapter
+   registered, so team-machine's composer not presenting on that path is app
+   composition rather than an engine defect.
 
 The elements Nate saw not switching on beta.653.1 are explained by findings 1
 and 2 on web and desktop.
@@ -308,6 +311,39 @@ popover, which these do not.
 Both worktree edits were reverted after the capture and the published
 `3.0.0-beta.881.1` dist restored, so the branch is exactly as r17281 left it.
 
+### Kitchen-sink cross-check: the no-adapter path does present
+
+**RAN.** The same cross-platform path presents fine in kitchen-sink on the iOS
+simulator at the v3-beta tip, so team-machine's composer non-presentation is app
+composition, not an engine defect. I stopped chasing it there.
+
+The check needed a correction first. Kitchen-sink *does* install a native menu
+adapter: `code/kitchen-sink/index.js:5` imports
+`@tamagui/native/setup-expo-ui-menu`, so the UIKit-looking popup in the default
+run is `@expo/ui`'s `MenuView`, and the passing Detox suite exercises the adapter
+path rather than fix A's fallback. Grepping the source for `zeego` and
+`registerNativeMenuAdapter` had made me claim the opposite; a render-time probe
+logging `getNativeMenuAdapter()` printed `[ks-probe] menuAdapter=installed` and
+settled it.
+
+With that import commented out the probe prints `menuAdapter=none`, and tapping
+the trigger in `MenuRadioGroupCase` opens the Tamagui menu: accessibility rows
+labelled exactly `Red`, `Green`, `Blue` go 0 before the tap to 3 after, the
+element count goes 6 to 9, and the screenshot shows the three rows with a
+checkmark on `Blue` in plain Tamagui styling rather than UIKit blur. The
+0-before-tap count is the null control, on a relaunched app, so the assertion can
+fail.
+
+With the adapter left in place the existing `e2e/MenuRadioGroup.test.ts` passes
+all three specs on iOS (1.0s / 4.7s / 9.4s), which covers the adapter path.
+Its first run failed for an unrelated reason worth writing down: the cold Metro
+bundle took 72s and the app's own fetch timed out first, showing
+"Could not connect to development server" while Metro was in fact serving. One
+`curl` of the bundle URL warms the cache to 90ms and the suite passes.
+
+Both temporary edits (the `index.js` import and the probe in
+`MenuRadioGroupCase.tsx`) were reverted; `git status` is clean on both.
+
 ## Click-through
 
 **RAN** — overview, session list, an open session with transcript, composer,
@@ -380,6 +416,9 @@ downscale.
   the popover, and `finding3-fallback-menu.webp` is the discarded no-adapter
   trio, kept because it shows the absent menu the text describes.
   `finding-ios-menu-sidebyside.webp` is the original symptom capture.
+  `kitchensink-menu-adapter.webp` and `kitchensink-menu-no-adapter.webp` are
+  the kitchen-sink cross-check: the `@expo/ui` popup and the Tamagui menu the
+  same usecase presents once the adapter import is removed.
 
 ## Commits
 
