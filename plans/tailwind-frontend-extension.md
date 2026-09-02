@@ -125,7 +125,7 @@ Regular Tamagui `backgroundImage="linear-gradient(...)"` and `outlineWidth={2}` 
 
 ## Slice order
 
-1. Outline prefixes in style-grammar (this change). No extension hook.
-2. AGY agreement on the composer hook, then from/via/to in `@tamagui/tailwind` only.
-3. Ring composer after that.
+1. Outline prefixes in style-grammar. Landed.
+2. from/via/to + `bg-linear-to-*` in `@tamagui/tailwind/src/compose.ts`. On-the-fly, WeakMap keyed by sink, no bag on `p-4`.
+3. ring-* as `boxShadow`, stacked with arbitrary `shadow-[...]`. Never outline.
 4. Do not start fractions or default-unit rotate from this plan.

@@ -72,6 +72,16 @@ describe('tailwind components render through the shared renderer', () => {
     )
   })
 
+  test('gradient composers emit one background-image rule', () => {
+    const styles = splitTailwindStyles(View, {
+      className: 'bg-linear-to-r from-[red] to-[blue]',
+    })
+
+    expect(findRule(styles.rulesToInsert, 'backgroundImage')[StyleObjectValue]).toBe(
+      'linear-gradient(to right, red, blue)'
+    )
+  })
+
   test('the last of two owned candidates wins with no string merging', () => {
     const styles = splitTailwindStyles(View, { className: 'p-2 p-4' })
 

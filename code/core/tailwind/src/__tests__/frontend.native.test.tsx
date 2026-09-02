@@ -46,6 +46,37 @@ describe('claimed candidates resolve to native style values', () => {
     expect(rotate).toBe('45deg')
   })
 
+  test('gradient classes resolve to a native backgroundImage string', () => {
+    const styles = splitTailwindStyles(View, {
+      className: 'bg-linear-to-r from-[red] to-[blue]',
+    })
+
+    expect(styleOf(styles).experimental_backgroundImage).toEqual([
+      {
+        type: 'linear-gradient',
+        direction: 'to right',
+        colorStops: [{ color: 'red' }, { color: 'blue' }],
+      },
+    ])
+  })
+
+  test('ring classes resolve to native boxShadow and leave outline alone', () => {
+    const styles = splitTailwindStyles(View, {
+      className: 'outline-2 ring-2 ring-[blue]',
+    })
+
+    expect(styleOf(styles).outlineWidth).toBe(getConfig().tokensParsed.space['2'].val)
+    expect(styleOf(styles).boxShadow).toEqual([
+      {
+        offsetX: 0,
+        offsetY: 0,
+        blurRadius: 0,
+        spreadDistance: 2,
+        color: 'blue',
+      },
+    ])
+  })
+
   test('outline classes resolve to native outline longhands', () => {
     const styles = splitTailwindStyles(View, {
       className: 'outline-2 outline-solid outline-[red] outline-offset-2',
