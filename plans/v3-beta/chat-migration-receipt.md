@@ -285,7 +285,7 @@ bun run:dev expo start --dev-client --port 8081
 - **RAN**: it also falsely marked valid padding and radius props on `SizableText` at `app/(site)/blog/index+ssg.tsx:94` and `src/features/blog/BlogPostLayout.tsx:80`.
 - **RAN**: `src/features/blocks/zones/StatsZone.tsx:27` was reported clean even though a conditional spread still contained `$sm`, `$md`, and `$lg`. The applied before/after is documented in the hand-fix section.
 - **RAN**: the upgrade guide and skill incorrectly treated every legacy palette warning as a v6 rename even when the app intentionally retained the frozen v5 config. They now require checking the selected config pack.
-- **RAN**: the upgrade guide implied the flat-values command rewrote `Sheet.Frame`. It now states that Sheet anatomy conversion is manual and that spreads must be inspected.
+- **RAN**: the flat-values command in this tarball did not rewrite `Sheet.Frame`; the tarball predated `58ed07002f`, which added that rewrite to the codemod. The upgrade guide's claim that the codemod rewrites `Sheet.Frame` holds at the tip and was kept.
 - **RAN**: the local release flow cannot seed a newly introduced unpublished workspace package into a downstream that does not already have it. This affected `@tamagui/config-v5` and required the physical-unpack step described above.
 
 ## Remaining gap

@@ -109,6 +109,21 @@ Owner session: Fable (r16625). Supersedes the execution state in
   constants fold and a parameter shadowing a module constant is no longer read
   as the module's value. Still open for the heavy bench element:
   `style={{ width: expr }}` bails on every component.
+- 2026-09-01 (day 1, afternoon, compiler part C): a `style` object whose
+  members do not all evaluate now lowers member by member (static members stay
+  on the style layer, each dynamic member lowers like the direct prop of its
+  name), and lane A inline styles share an element with per-branch classes
+  when they own different CSS properties. The comparison bench's heavy element
+  (class template over a static array plus `style={{ width: expr }}`) flattens
+  to hoisted shared classes, a class table keyed by the runtime string, and one
+  inline width. Precedence is honored the runtime's way: the style layer is the
+  highest tier, so a static style member over a dynamic direct prop of the same
+  property stays at runtime (a pre-existing hole that lowered wrong is closed),
+  while a dynamic style member beside a class on the same property is fine
+  because inline style wins in CSS. Chat migration receipt landed (r17284):
+  web, tests, and typecheck green on the local tarball; native blocked by an
+  upstream abort on `outlineStyle: 'none'` reaching Fabric (Dialog,
+  RovingFocusGroup), assigned to r17284 to fix in the native style engine.
 
 ## Plan
 
