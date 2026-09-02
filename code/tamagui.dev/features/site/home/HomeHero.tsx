@@ -61,31 +61,6 @@ const HeroContents = memo(function HeroContents() {
 
   return (
     <ContainerLarge position="relative">
-      {/* use explicit edge props because inset:0 conflicts with _l/_r/_b in the
-          css cascade and flips winner around hydration, causing a ~0.3 horizontal
-          CLS in the hero (the decorative grid jumps from 1140 to 2140 wide) */}
-      <YStack
-        position="absolute"
-        t={0}
-        l={-500}
-        r={-500}
-        b={-100}
-        style={{
-          maskImage: `linear-gradient(#000 0%, transparent)`,
-        }}
-      >
-        <YStack
-          className="bg-grid"
-          position="absolute"
-          inset={0}
-          pointerEvents="none"
-          opacity={0.18}
-          style={{
-            maskImage: `radial-gradient(ellipse at bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0) 60%)`,
-          }}
-        />
-      </YStack>
-
       <YStack
         overflow="hidden"
         gap="3"

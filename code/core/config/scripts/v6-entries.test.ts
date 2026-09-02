@@ -19,7 +19,9 @@ describe('v6 config', () => {
     expect(created.tokensParsed.color['shadow-7']).toBeTruthy()
     expect(created.tokensParsed.space['4']).toBeTruthy()
     expect(created.tokensParsed.space['0.5']).toBeTruthy()
-    expect(created.tokensParsed.space['0.5'].val).toBe(created.tokensParsed.space['0-5'].val)
+    expect(created.tokensParsed.space['0.5'].val).toBe(
+      created.tokensParsed.space['0-5'].val
+    )
     expect(created.shorthands?.w).toBe('width')
   })
 
