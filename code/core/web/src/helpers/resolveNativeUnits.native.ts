@@ -12,13 +12,15 @@ export interface UnitContext {
 }
 
 const UNIT_RE = /^([+-]?\s*\d*\.?\d+)(px|rem|em|vw|vh|vmin|vmax|cqi|cqw|cqh|cqb)?$/i
-const DYNAMIC_UNIT_END_RE = /(px|rem|em|vw|vh|vmin|vmax|cqi|cqw|cqh|cqb)$/i
 
 export function isDynamicUnitValue(value: unknown): boolean {
   if (typeof value !== 'string') return false
   const trimmed = value.trim()
   if (trimmed.startsWith('clamp(') || trimmed.startsWith('CLAMP(')) return true
-  return DYNAMIC_UNIT_END_RE.test(trimmed)
+  // a unit suffix only counts when a number precedes it. matching the suffix
+  // alone turns every word ending in one into a length: 'System' ends in `em`
+  // and resolved to 0, wiping out fontFamily
+  return !!UNIT_RE.exec(trimmed.replace(/\s+/g, ''))?.[2]
 }
 
 function getUnitContext(key: string, styleState?: any): UnitContext {
