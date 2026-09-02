@@ -149,6 +149,56 @@ them on every component and they depend on nothing.
 If you add an import of the grammar to `@tamagui/web`, the ceiling check in the
 `checks` job is what will tell you.
 
+## What the grammar costs where
+
+The zero-runtime starter measures six graphs, and the split it reports is the
+one the design wanted:
+
+| graph | before | after |
+| --- | --- | --- |
+| vite page js gzip | 59,835 | 59,835 |
+| vite island js gzip | 87,819 | 91,785 |
+| vite css gzip | 2,426 | 2,532 |
+
+A compiled page pays nothing. The parser, the object parser and the spring
+solver are only in the island bundle, which is a declared full-runtime island
+and can be handed any transition value at runtime. Grepping the two bundles for
+`transition-duplicate-component` finds it in the island and not in the page.
+
+The ~4KB is what the compiler and the runtime agreeing actually costs. v2 kept
+that number down by giving the runtime a smaller, different parser than the
+compiler's, which is the bug this whole change exists to remove, so buying it
+back is not on the table.
+
+The +106 css bytes are one `linear()` easing. `medium` used to be a
+cubic-bezier on the css driver and a spring everywhere else; it is a spring
+everywhere now, and on css a spring is 41 sampled stops. That is the price of
+one preset name meaning one motion on all four drivers.
+
+`code/starters/zero-runtime/size-baseline.json` was updated with
+`node scripts/measure.mjs --update-baseline` on the pinned Node. It also
+absorbs a +24 byte css drift that was already failing this gate on `v3-beta`
+before this branch.
+
+## Presets lower to static css at compile time
+
+`resolveStaticCssTransition` in `compilerHost.ts` decides whether a
+`transition` on a zero-runtime element can become plain css or has to drag in a
+component runtime (zero-runtime rule 5). It used to only lower a preset whose
+config value was a css *string*, so the moment presets became spring objects
+every `transition="medium"` in a zero graph became a rule 5 violation.
+
+It now calls `resolveTransition` and `toCSSTransition`, the same two functions
+the css driver calls, so a preset of any shape lowers to exactly the css the
+driver would have emitted, springs included. Nothing about "what does this
+transition mean" is decided twice any more.
+
+Watch out for the plan cache while working on this: plans are content addressed
+under `<project>/node_modules/.cache/tamagui/plans`, and the cache stamp does
+not track the compiler's own `dist`. A rebuilt compiler replays the old plan and
+you debug a fix that already landed. Delete that directory when a compiler
+change should have changed a build's output.
+
 ## Driver notes
 
 - **css**: springs sample to `linear()`; per-property lists emit as a real css
