@@ -1,11 +1,10 @@
 import {
   type FrontendStaticConfig,
   type FrontendStaticConfigNormalization,
-  type FrontendClassSink,
   type StyleFrontend,
   type StyleFrontendConfig,
 } from '@tamagui/core/internal-runtime'
-import { getTailwindClassPlan, resolveTailwindClassName } from './candidate'
+import { resolveTailwindCandidate, resolveTailwindClassName } from './candidate'
 
 /**
  * The Tailwind frontend descriptor.
@@ -64,20 +63,6 @@ function normalizeTailwindStaticConfig(
   }
 
   return { baseStyle, passthroughClassName, variants }
-}
-
-function resolveTailwindCandidate(
-  candidate: string,
-  config: StyleFrontendConfig,
-  sink: FrontendClassSink
-): boolean | null {
-  const plan = getTailwindClassPlan(candidate, config)
-  if (plan === 'raw') return true
-  if (plan === null) return null
-  const parent = Array.isArray(plan) ? null : plan
-  const entries = parent ? parent.entries : plan
-  for (let index = 0; index < entries.length; index++) sink(entries[index])
-  return parent?.preserveRawClass || false
 }
 
 export const tailwindStyleFrontend: StyleFrontend = {

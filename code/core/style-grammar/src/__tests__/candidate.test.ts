@@ -71,6 +71,9 @@ describe('candidate grammar', () => {
     ['inset-x-0', 'left', '0'],
     ['inset-y-4', 'top', '4'],
     ['border-color5', 'borderColor', 'color5'],
+    ['outline-2', 'outlineWidth', '2'],
+    ['outline-color5', 'outlineColor', 'color5'],
+    ['outline-offset-4', 'outlineOffset', '4'],
     ['bg-color5', 'backgroundColor', 'color5'],
     ['text-5', 'fontSize', '5'],
     ['text-sm', 'fontSize', 'sm'],
@@ -219,6 +222,12 @@ describe('candidate grammar', () => {
     )
     expect(parseCandidate('border-[#fff]', config)?.entry?.prop).toBe('borderColor')
     expect(parseCandidate('border-[red]', config)?.entry?.prop).toBe('borderColor')
+    expect(parseCandidate('outline-[0.5px]', config)?.entry?.prop).toBe('outlineWidth')
+    expect(parseCandidate('outline-[#fff]', config)?.entry?.prop).toBe('outlineColor')
+    expect(parseCandidate('outline-[red]', config)?.entry?.prop).toBe('outlineColor')
+    expect(parseCandidate('outline-offset-[3px]', config)?.entry?.prop).toBe(
+      'outlineOffset'
+    )
     expect(parseCandidate('border-[var(--border)]', config)).toBeNull()
     expect(parseCandidate('border-[inherit]', config)).toBeNull()
     expect(parseCandidate('border-[1%]', config)).toBeNull()
@@ -273,6 +282,18 @@ describe('candidate grammar', () => {
     expect(parseCandidate('z-10', config)?.convenience).toBe('integer')
     expect(parseCandidate('font-sans', config)?.convenience).toBe('font-generic')
     expect(parseCandidate('border', config)?.convenience).toBe('bare-border')
+    expect(parseCandidate('outline', config)?.properties).toEqual({ outlineWidth: 1 })
+    expect(parseCandidate('outline-solid', config)?.properties).toEqual({
+      outlineStyle: 'solid',
+    })
+    expect(parseCandidate('outline-dashed', config)?.properties).toEqual({
+      outlineStyle: 'dashed',
+    })
+    expect(parseCandidate('outline-none', config)?.properties).toEqual({
+      outlineStyle: 'none',
+    })
+    expect(parseCandidate('-outline-offset-1', config)?.entry?.prop).toBe('outlineOffset')
+    expect(parseCandidate('outline-hidden', config)).toBeNull()
     expect(parseCandidate('border-s', config)?.properties).toEqual({
       borderInlineStartWidth: 1,
     })

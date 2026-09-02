@@ -101,6 +101,7 @@ export const grammarDecisions: readonly GrammarDecision[] = [
     reason: 'raw numbers use brackets',
   },
   { syntax: 'bare border', decision: 'keep', reason: 'documented 1px convenience' },
+  { syntax: 'bare outline', decision: 'keep', reason: 'documented 1px convenience' },
   { syntax: 'inset-0', decision: 'keep', reason: 'documented zero convenience' },
   {
     syntax: 'inset-x / inset-y',

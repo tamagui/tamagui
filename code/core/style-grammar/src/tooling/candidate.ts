@@ -107,6 +107,7 @@ const negativeTokenProps = new Set([
   'scaleX',
   'scaleY',
   'letterSpacing',
+  'outlineOffset',
 ])
 const positionSpaceProps = new Set([
   'top',
@@ -374,6 +375,10 @@ function arbitraryTextKind(value: string): 'fontSize' | 'color' | null {
   return null
 }
 
+function isWidthColorPrefix(prefix: string): boolean {
+  return prefix.startsWith('border') || prefix === 'outline'
+}
+
 function arbitraryBorderKind(value: string): 'width' | 'color' | null {
   if (/^-?(?:\d+|\d*\.\d+)$/.test(value)) return 'width'
   if (cssLengthPattern.test(value) || borderWidthKeywords.has(value)) return 'width'
@@ -424,7 +429,7 @@ function chooseEntry(
   const arbitrary = arbitraryInner(rawValue)
   if (arbitrary !== null) {
     if (!arbitrary) return null
-    if (prefix.startsWith('border')) {
+    if (isWidthColorPrefix(prefix)) {
       const width = entries.find((entry) => entry.prop.endsWith('Width'))
       const color = entries.find((entry) => entry.prop.endsWith('Color'))
       const kind = arbitraryBorderKind(decodeArbitrary(arbitrary))
@@ -494,7 +499,7 @@ function chooseEntry(
       : null
   }
 
-  if (prefix.startsWith('border')) {
+  if (isWidthColorPrefix(prefix)) {
     const width = entries.find((entry) => entry.prop.endsWith('Width'))
     const color = entries.find((entry) => entry.prop.endsWith('Color'))
     const token = negative ? `-${rawValue}` : rawValue

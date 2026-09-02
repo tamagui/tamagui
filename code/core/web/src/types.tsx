@@ -717,6 +717,7 @@ export type WidthHeight = {
 export type ChildGroupState = {
   pseudo?: PseudoGroupState
   media?: Record<MediaQueryKey extends number ? never : MediaQueryKey, boolean>
+  layout?: WidthHeight
 }
 
 export type ComponentGroupState = {

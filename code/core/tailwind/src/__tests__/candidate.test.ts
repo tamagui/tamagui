@@ -32,6 +32,12 @@ describe('claimed candidates become flat props', () => {
     expect(tokenize('line-clamp-2')).toEqual({ numberOfLines: 2 })
   })
 
+  test('arbitrary rotate appends deg for unitless numbers', () => {
+    expect(tokenize('rotate-[45]')).toEqual({ rotate: '45deg' })
+    expect(tokenize('rotate-[-8deg]')).toEqual({ rotate: '-8deg' })
+    expect(tokenize('rotate-[0.5turn]')).toEqual({ rotate: '0.5turn' })
+  })
+
   test('modifiers are preserved in the shared conditional spelling', () => {
     expect(tokenize('hover:bg-[red]')).toEqual({
       backgroundColor: { hover: 'red' },
@@ -72,6 +78,56 @@ describe('claimed candidates become flat props', () => {
       borderLeftWidth: '2',
       borderRightWidth: '2',
     })
+  })
+
+  test('outline classes become the outline longhands', () => {
+    expect(tokenize('outline')).toEqual({ outlineWidth: 1 })
+    expect(tokenize('outline-2')).toEqual({ outlineWidth: '2' })
+    expect(tokenize('outline-[red]')).toEqual({ outlineColor: 'red' })
+    expect(tokenize('outline-solid')).toEqual({ outlineStyle: 'solid' })
+    expect(tokenize('outline-offset-2')).toEqual({ outlineOffset: '2' })
+    expect(tokenize('-outline-offset-2')).toEqual({ outlineOffset: '-2' })
+  })
+
+  test('gradient composers emit one backgroundImage and ignore incomplete stops', () => {
+    expect(tokenize('from-[red]')).toEqual({})
+    expect(tokenize('bg-linear-to-r from-[red] to-[blue]')).toEqual({
+      backgroundImage: 'linear-gradient(to right, red, blue)',
+    })
+    expect(tokenize('bg-linear-to-r from-[red] via-[white] to-[blue]')).toEqual({
+      backgroundImage: 'linear-gradient(to right, red, white, blue)',
+    })
+    expect(tokenize('from-[red] to-[blue] bg-linear-to-b')).toEqual({
+      backgroundImage: 'linear-gradient(to bottom, red, blue)',
+    })
+  })
+
+  test('gradient last-wins and hover:from inherit the base direction', () => {
+    expect(tokenize('bg-linear-to-r from-[red] to-[blue] to-[green]')).toEqual({
+      backgroundImage: 'linear-gradient(to right, red, green)',
+    })
+    expect(tokenize('bg-linear-to-r from-[red] to-[blue] hover:from-[yellow]')).toEqual({
+      backgroundImage: {
+        default: 'linear-gradient(to right, red, blue)',
+        hover: 'linear-gradient(to right, yellow, blue)',
+      },
+    })
+  })
+
+  test('ring composers emit boxShadow and do not touch outline', () => {
+    expect(tokenize('ring-2')).toEqual({ boxShadow: '0 0 0 2px currentColor' })
+    expect(tokenize('ring-2 ring-[blue]')).toEqual({ boxShadow: '0 0 0 2px blue' })
+    expect(tokenize('outline-2 ring-2')).toEqual({
+      outlineWidth: '2',
+      boxShadow: '0 0 0 2px currentColor',
+    })
+    expect(tokenize('shadow-[0_1px_2px_red] ring-2 ring-[blue]')).toEqual({
+      boxShadow: '0 0 0 2px blue, 0 1px 2px red',
+    })
+    expect(tokenize('ring-2 ring-[blue] shadow-[0_1px_2px_red]')).toEqual({
+      boxShadow: '0 0 0 2px blue, 0 1px 2px red',
+    })
+    expect(tokenize('ring-[blue]')).toEqual({})
   })
 
   test('logical spacing and gap axes become native-capable props', () => {

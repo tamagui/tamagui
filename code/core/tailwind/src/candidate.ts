@@ -3,8 +3,10 @@ import {
   plainValueToPayload,
   type FrontendClassPlan,
   type FrontendClassPlanEntry,
+  type FrontendClassSink,
   type StyleFrontendConfig,
 } from '@tamagui/core/internal-runtime'
+import { noteBoxShadow, tryCompose } from './compose'
 import {
   borderSideSuffix,
   configRevisionSymbol,
@@ -243,7 +245,13 @@ function tailwindClassToFlatProp(
     if (inner === '') return null
     // px-length + unitless arbitraries become NUMBERS (native requires numbers, drops "Npx"
     // strings); unit/function values stay strings. one canonical rule (arbitraryValue).
-    return { key: prop, value: arbitraryValue(inner) }
+    let resolved = arbitraryValue(inner)
+    // rotate requires a unit-bearing string on native — a bare number from rotate-[45]
+    // triggers a redbox. append deg when the arbitrary resolved to a unitless number.
+    if (prop === 'rotate' && typeof resolved === 'number') {
+      resolved = `${resolved}deg`
+    }
+    return { key: prop, value: resolved }
   }
 
   // tailwind sizing keywords / fractions (w-full → 100%, w-1/2 → 50%, w-auto, w-screen).
@@ -548,12 +556,58 @@ export function getTailwindClassPlan(
   return plan
 }
 
+export function resolveTailwindCandidate(
+  candidate: string,
+  config: StyleFrontendConfig,
+  sink: FrontendClassSink
+): boolean | null {
+  const composed = tryCompose(candidate, getStyleGrammarConfig(config), sink)
+  if (composed !== undefined) return composed
+  const plan = getTailwindClassPlan(candidate, config)
+  if (plan === 'raw') return true
+  if (plan === null) return null
+  const parent = Array.isArray(plan) ? null : plan
+  const entries = parent ? parent.entries : plan
+  for (let index = 0; index < entries.length; index++) {
+    const entry = entries[index]
+    if (entry[0] === 'boxShadow' && noteBoxShadow(sink, entry[1], entry[3] || [])) {
+      continue
+    }
+    sink(entry)
+  }
+  return parent?.preserveRawClass || false
+}
+
 export function resolveTailwindClassName(
   className: string,
   config: StyleFrontendConfig
 ): Record<string, any> {
   const result: Record<string, any> = {}
   let rawClassName = ''
+  const sink: FrontendClassSink = (entry) => {
+    const [key, value, condition] = entry
+    const previous = result[key]
+    let next = value
+    if (condition !== undefined) {
+      next =
+        previous && typeof previous === 'object' && !Array.isArray(previous)
+          ? { ...previous, [condition]: value }
+          : previous === undefined
+            ? { [condition]: value }
+            : { default: previous, [condition]: value }
+    } else if (previous && typeof previous === 'object' && !Array.isArray(previous)) {
+      next = { ...previous, default: value }
+    }
+    if (condition === undefined) {
+      const resets = shorthandResets[key]
+      if (resets) {
+        for (let i = 0; i < resets.length; i++) {
+          delete result[resets[i]]
+        }
+      }
+    }
+    setInAuthoredOrder(result, key, next)
+  }
   let start = 0
   for (let index = 0; index <= className.length; index++) {
     if (index !== className.length && className.charCodeAt(index) > 32) continue
@@ -562,39 +616,9 @@ export function resolveTailwindClassName(
       continue
     }
     const candidate = className.slice(start, index)
-    const plan = getTailwindClassPlan(candidate, config)
-    if (plan === 'raw') {
+    const preserveRaw = resolveTailwindCandidate(candidate, config, sink)
+    if (preserveRaw) {
       rawClassName = rawClassName ? `${rawClassName} ${candidate}` : candidate
-    } else if (plan) {
-      const parentPlan = plan as TailwindParentPlan
-      if (!Array.isArray(plan) && parentPlan.preserveRawClass) {
-        rawClassName = rawClassName ? `${rawClassName} ${candidate}` : candidate
-      }
-      const entries = Array.isArray(plan) ? plan : parentPlan.entries
-      for (let entryIndex = 0; entryIndex < entries.length; entryIndex++) {
-        const [key, value, condition] = entries[entryIndex]
-        const previous = result[key]
-        let next = value
-        if (condition !== undefined) {
-          next =
-            previous && typeof previous === 'object' && !Array.isArray(previous)
-              ? { ...previous, [condition]: value }
-              : previous === undefined
-                ? { [condition]: value }
-                : { default: previous, [condition]: value }
-        } else if (previous && typeof previous === 'object' && !Array.isArray(previous)) {
-          next = { ...previous, default: value }
-        }
-        if (condition === undefined) {
-          const resets = shorthandResets[key]
-          if (resets) {
-            for (let i = 0; i < resets.length; i++) {
-              delete result[resets[i]]
-            }
-          }
-        }
-        setInAuthoredOrder(result, key, next)
-      }
     }
     start = index + 1
   }

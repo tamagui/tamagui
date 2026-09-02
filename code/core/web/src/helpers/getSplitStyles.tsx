@@ -81,6 +81,7 @@ import { normalizeValueWithProperty } from './normalizeValueWithProperty'
 import { parseNativeStyle } from './parseNativeStyle.native'
 import { parseNativeTransform } from './parseNativeTransform.native'
 import { isRemValue, resolveRem } from './resolveRem'
+import { resolveNativeUnits } from './resolveNativeUnits'
 import { resolveVariableValue } from './resolveVariableValue'
 import { HOC_CLASSNAME_MARKER, skipProps } from './skipProps'
 import { styleOriginalValues } from './styleOriginalValues'
@@ -1378,6 +1379,8 @@ export const getSplitStyles: StyleSplitter = (
     }
   }
   completeResolvedStyles(styleState)
+  if (styleState.flatGroupKeys?.size) pseudoGroups = styleState.flatGroupKeys
+  if (styleState.flatGroupMedia?.size) mediaGroups = styleState.flatGroupMedia
   if (styleProps.isStatic) {
     for (const property in classNames) {
       const identifier = classNames[property]
@@ -1883,7 +1886,14 @@ function mergeStyle(
   } else {
     const shouldNormalize =
       process.env.TAMAGUI_TARGET === 'web' && !disableNormalize && !styleProps.noNormalize
-    const out = shouldNormalize ? normalizeValueWithProperty(val, key) : val
+    let out = shouldNormalize ? normalizeValueWithProperty(val, key) : val
+    if (process.env.TAMAGUI_TARGET === 'native' && typeof out === 'string') {
+      if (out.includes('cqi') || out.includes('cqw')) {
+        ;(styleState.flatGroupKeys ||= new Set()).add('@')
+        ;(styleState.flatGroupMedia ||= new Set()).add('@')
+      }
+      out = resolveNativeUnits(key, out, styleState)
+    }
     if (
       process.env.TAMAGUI_TARGET === 'native' &&
       staticConfig.isInput &&
