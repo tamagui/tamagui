@@ -1,4 +1,4 @@
-import type { CandidateFactory, ExpressionReference, HostModuleInput, HostResolvedProject, ResolvedModuleId, SymbolDefinition, SymbolResolver } from './contracts';
+import type { CandidateFactory, ExpressionReference, HostModuleInput, HostResolvedProject, ResolvedModuleId, SourceSpan, SymbolDefinition, SymbolResolver } from './contracts';
 import { type BailoutReason } from './diagnostics';
 import { type BranchDecisionNode, type DynamicEvaluation, type EvaluationResult } from './evaluate';
 import type { ElementIRResult } from './ir';
@@ -29,6 +29,16 @@ export declare class ProjectGraph implements SymbolResolver {
     resolveBinding(id: ResolvedModuleId, localName: string): SymbolDefinition | null;
     resolveReference(reference: ExpressionReference): SymbolDefinition | null;
     expressionNode(reference: ExpressionReference): import("./contracts").AstNode | null;
+    /**
+     * The members of a plain object literal, each as its own expression:
+     * `{ width: expr, height: 10 }`. Null for anything else, and for an object
+     * that spreads, computes a key, or defines a method or accessor.
+     */
+    objectMembers(reference: ExpressionReference): {
+        name: string;
+        span: SourceSpan;
+        value: ExpressionReference;
+    }[] | null;
     evaluate(reference: ExpressionReference): EvaluationResult;
     evaluateBranches(reference: ExpressionReference): BranchDecisionNode | null;
     evaluateDynamic(reference: ExpressionReference): DynamicEvaluation | null;

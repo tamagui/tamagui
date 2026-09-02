@@ -1,4 +1,4 @@
-import type { ResolvedModuleId, SourceSpan } from './contracts'
+import type { ExpressionReference, ResolvedModuleId, SourceSpan } from './contracts'
 import type { BailoutReason } from './diagnostics'
 import type { BranchDecisionNode, StaticEvaluationValue } from './evaluate'
 import { collectBranchDependencies } from './evaluate'
@@ -52,6 +52,22 @@ export type MaterializedValue =
         condition: SourceSpan | null
         value: Exclude<MaterializedValue, { kind: 'dom-style' }>
       }[]
+    }
+  | {
+      /**
+       * A `style` object literal that did not evaluate as a whole:
+       * `style={{ width: expr, height: 10 }}`. Each member carries its own
+       * value, so a lowering keeps the static members as one style object and
+       * treats each dynamic member like the direct prop of its name.
+       */
+      kind: 'object'
+      span: SourceSpan
+      members: {
+        name: string
+        span: SourceSpan
+        value: Exclude<MaterializedValue, { kind: 'dom-style' | 'object' }>
+      }[]
+      bailout: BailoutReason
     }
 
 export type MaterializedElementEntry =
@@ -177,16 +193,44 @@ function materializeValue(
   }
 }
 
+function materializeStyleObject(
+  graph: ProjectGraph,
+  reference: ExpressionReference,
+  bailout: BailoutReason
+): MaterializedValue | null {
+  const members = graph.objectMembers(reference)
+  if (!members) return null
+  return {
+    kind: 'object',
+    span: reference,
+    members: members.map((member) => ({
+      name: member.name,
+      span: member.span,
+      value: materializeValue(graph, member.value) as Exclude<
+        MaterializedValue,
+        { kind: 'dom-style' | 'object' }
+      >,
+    })),
+    bailout,
+  }
+}
+
 function materializeEntry(
   graph: ProjectGraph,
   entry: ElementEntryIR
 ): MaterializedElementEntry {
   if (entry.kind === 'prop') {
+    const value = materializeValue(graph, entry.value)
     return {
       kind: entry.kind,
       name: entry.name,
       span: entry.span,
-      value: materializeValue(graph, entry.value),
+      value:
+        entry.name === 'style' &&
+        value.kind === 'bailout' &&
+        entry.value.kind === 'expression'
+          ? (materializeStyleObject(graph, entry.value, value.bailout) ?? value)
+          : value,
     }
   }
   if (entry.kind === 'spread') {
@@ -255,6 +299,9 @@ function collectDependencies(module: Omit<MaterializedModule, 'dependencies'>) {
       for (const dependency of value.dependencies) dependencies.add(dependency)
     } else if (value.kind === 'dom-style') {
       for (const item of value.items) collect(item.value)
+    } else if (value.kind === 'object') {
+      for (const member of value.members) collect(member.value)
+      if (value.bailout.dependencyId) dependencies.add(value.bailout.dependencyId)
     } else {
       for (const dependency of value.dynamic?.dependencies ?? []) {
         dependencies.add(dependency)

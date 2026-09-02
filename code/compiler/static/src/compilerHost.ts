@@ -1357,6 +1357,21 @@ export function createTamaguiCompilerHost(
     if (dynamic?.type !== 'string' || !dynamic.values?.length) return null
     return dynamic.values.map(String)
   }
+  type DynamicStyleEntry = Extract<
+    MaterializedElement['entries'][number],
+    { kind: 'prop' }
+  > & {
+    /** a member of the element's `style` object, lowered like the direct prop of its name */
+    styleMember?: true
+  }
+  // an entry that lowers per branch as classes on web
+  const conditionalClassEntry = (
+    entry: DynamicStyleEntry,
+    component: LoweringComponent
+  ): boolean =>
+    (entry.value.kind === 'conditional' &&
+      canLowerConditionalStyleProp(entry.name, component)) ||
+    frontendClassDomain(entry, component) !== null
 
   const isInvalidHostStyleProp = (
     name: string,
@@ -1756,14 +1771,53 @@ export function createTamaguiCompilerHost(
           `input type ${props.type} has no native text-entry control`
         )
       }
-      const dynamicStyleEntries = input.element.entries.filter(
-        (
-          entry
-        ): entry is Extract<MaterializedElement['entries'][number], { kind: 'prop' }> =>
-          entry.kind === 'prop' &&
-          (entry.value.kind === 'bailout' || entry.value.kind === 'conditional') &&
-          isStyleProp(entry.name, component)
-      )
+      // `style={{ width: expr, height: 10 }}`: the static members stay one
+      // style object, and each dynamic member lowers like the direct prop of
+      // its name
+      let styleObjectStatic: Record<string, unknown> | null = null
+      const styleMemberEntries: DynamicStyleEntry[] = []
+      for (const entry of input.element.entries) {
+        if (
+          entry.kind !== 'prop' ||
+          entry.name !== 'style' ||
+          entry.value.kind !== 'object'
+        ) {
+          continue
+        }
+        styleObjectStatic = {}
+        for (const member of entry.value.members) {
+          if (member.value.kind === 'static') {
+            styleObjectStatic[member.name] = member.value.value
+            continue
+          }
+          if (!isStyleProp(member.name, component)) {
+            return bailout(
+              input,
+              'local/dynamic-style-value',
+              `Style prop ${member.name} could not be evaluated`,
+              member.span
+            )
+          }
+          styleMemberEntries.push({
+            kind: 'prop',
+            name: member.name,
+            span: member.span,
+            value: member.value,
+            styleMember: true,
+          })
+        }
+        if (Object.keys(styleObjectStatic).length === 0) styleObjectStatic = null
+      }
+      if (styleObjectStatic) props.style = styleObjectStatic
+      const dynamicStyleEntries: DynamicStyleEntry[] = [
+        ...input.element.entries.filter(
+          (entry): entry is DynamicStyleEntry =>
+            entry.kind === 'prop' &&
+            (entry.value.kind === 'bailout' || entry.value.kind === 'conditional') &&
+            isStyleProp(entry.name, component)
+        ),
+        ...styleMemberEntries,
+      ]
       // both platforms: web needs runtime event mapping, and a flattened bare
       // RN View silently ignores onPress/onLongPress (Tamagui wires press via
       // its responder system at runtime)
@@ -1887,6 +1941,35 @@ export function createTamaguiCompilerHost(
         ) ||
         animatedByNeedsRuntime
       let dynamicHostStyleProperties: string[] | null = null
+      // the entries lane A carries as inline style: all of them when they all
+      // lower that way, else the ones that do not lower per branch as classes,
+      // so `width={w * 2}` shares an element with `bg={cond ? 'red' : 'blue'}`
+      let laneAEntries: DynamicStyleEntry[] = []
+      const laneAOwners = new Set<string>()
+      // the CSS properties lane A took from the element's style object. the
+      // style layer is the runtime's highest tier, and an inline style wins
+      // over a class in CSS, so a class on the same property may coexist
+      const laneAMemberOwners = new Set<string>()
+      // a static value and an inline dynamic one interact unless the dynamic
+      // one is a style member on the very same property
+      const conflictsWithInline = (
+        owners: Set<string>,
+        dynamicOwners: Set<string>,
+        memberOwners: Set<string>
+      ) =>
+        [...owners].some(
+          (owner) =>
+            !memberOwners.has(owner) && cssOwnersConflict(new Set([owner]), dynamicOwners)
+        )
+      const laneAAttempts = [dynamicStyleEntries]
+      {
+        const rest = dynamicStyleEntries.filter(
+          (entry) => !conditionalClassEntry(entry, component)
+        )
+        if (rest.length > 0 && rest.length < dynamicStyleEntries.length) {
+          laneAAttempts.push(rest)
+        }
+      }
       if (
         platform === 'web' &&
         !options.disablePartialExtraction &&
@@ -1896,106 +1979,135 @@ export function createTamaguiCompilerHost(
           (entry) => entry.kind === 'spread' && entry.value.kind !== 'static'
         )
       ) {
-        const seen = new Set<string>()
-        const properties: string[] = []
-        const dynamicOwners = new Set<string>()
-        for (const entry of dynamicStyleEntries) {
-          if (
-            entry.kind !== 'prop' ||
-            (entry.value.kind !== 'bailout' && entry.value.kind !== 'conditional')
-          ) {
-            continue
-          }
-          const name = directStyleName(entry.name, component)
-          if (!name || seen.has(name)) {
-            properties.length = 0
-            break
-          }
-          const owners = dynamicStyleOwners(name, component.staticConfig as StaticConfig)
-          if (!owners) {
-            properties.length = 0
-            break
-          }
-          let property: string | null = null
-          const expression = input.source.slice(
-            entry.value.span.start,
-            entry.value.span.end
-          )
-          if (
-            resolvedCssTransition !== null &&
-            (name === 'opacity' || name === 'scale')
-          ) {
-            property =
-              name === 'opacity'
-                ? `opacity: (${expression})`
-                : `transform: "scale(" + (${expression}) + ")"`
-          } else if (entry.value.kind === 'bailout' && owners.has(name)) {
-            const dynamic = entry.value.dynamic
-            if (dynamic?.type === 'number') {
-              property = `${JSON.stringify(name)}: (${expression})`
-            } else if (dynamic?.type === 'string' && dynamic.values?.length) {
-              let valuesStayLiteral = true
-              for (const value of dynamic.values) {
-                const split = resolveSplitStyles(
-                  { [entry.name]: value },
-                  partialStaticConfig(component.staticConfig as StaticConfig)
-                )
-                const atomics = Object.values(split?.rulesToInsert ?? {}) as any[]
-                if (
-                  atomics.length !== 1 ||
-                  atomics[0]?.[StyleObjectProperty] !== name ||
-                  atomics[0]?.[StyleObjectValue] !== value
-                ) {
-                  valuesStayLiteral = false
-                  break
-                }
-              }
-              if (valuesStayLiteral) {
-                property = `${JSON.stringify(name)}: (${expression})`
-              }
+        for (const attempt of laneAAttempts) {
+          const seen = new Set<string>()
+          const properties: string[] = []
+          const dynamicOwners = new Set<string>()
+          const memberOwners = new Set<string>()
+          for (const entry of attempt) {
+            if (
+              entry.kind !== 'prop' ||
+              (entry.value.kind !== 'bailout' && entry.value.kind !== 'conditional')
+            ) {
+              continue
             }
-          }
-          if (!property) {
-            properties.length = 0
-            break
-          }
-          seen.add(name)
-          for (const owner of owners) dynamicOwners.add(owner)
-          properties.push(property)
-        }
-        if (
-          properties.length === dynamicStyleEntries.length &&
-          !input.element.entries.some((entry) => {
-            if (entry.kind !== 'prop' || entry.value.kind !== 'static') return false
             const name = directStyleName(entry.name, component)
-            if (!name) return false
-            const owners = styleOwners(
+            if (!name || seen.has(name)) {
+              properties.length = 0
+              break
+            }
+            const owners = dynamicStyleOwners(
               name,
-              entry.value.value,
               component.staticConfig as StaticConfig
             )
-            return !!owners && cssOwnersConflict(owners, dynamicOwners)
-          })
-        ) {
-          dynamicHostStyleProperties = properties
+            if (!owners) {
+              properties.length = 0
+              break
+            }
+            let property: string | null = null
+            const expression = input.source.slice(
+              entry.value.span.start,
+              entry.value.span.end
+            )
+            if (
+              resolvedCssTransition !== null &&
+              (name === 'opacity' || name === 'scale')
+            ) {
+              property =
+                name === 'opacity'
+                  ? `opacity: (${expression})`
+                  : `transform: "scale(" + (${expression}) + ")"`
+            } else if (entry.value.kind === 'bailout' && owners.has(name)) {
+              const dynamic = entry.value.dynamic
+              if (dynamic?.type === 'number') {
+                property = `${JSON.stringify(name)}: (${expression})`
+              } else if (dynamic?.type === 'string' && dynamic.values?.length) {
+                let valuesStayLiteral = true
+                for (const value of dynamic.values) {
+                  const split = resolveSplitStyles(
+                    { [entry.name]: value },
+                    partialStaticConfig(component.staticConfig as StaticConfig)
+                  )
+                  const atomics = Object.values(split?.rulesToInsert ?? {}) as any[]
+                  if (
+                    atomics.length !== 1 ||
+                    atomics[0]?.[StyleObjectProperty] !== name ||
+                    atomics[0]?.[StyleObjectValue] !== value
+                  ) {
+                    valuesStayLiteral = false
+                    break
+                  }
+                }
+                if (valuesStayLiteral) {
+                  property = `${JSON.stringify(name)}: (${expression})`
+                }
+              }
+            }
+            if (!property) {
+              properties.length = 0
+              break
+            }
+            seen.add(name)
+            for (const owner of owners) {
+              dynamicOwners.add(owner)
+              if (entry.styleMember) memberOwners.add(owner)
+            }
+            properties.push(property)
+          }
+          if (
+            properties.length === attempt.length &&
+            !input.element.entries.some((entry) => {
+              if (entry.kind !== 'prop' || entry.value.kind !== 'static') return false
+              const name = directStyleName(entry.name, component)
+              if (!name) return false
+              const owners = styleOwners(
+                name,
+                entry.value.value,
+                component.staticConfig as StaticConfig
+              )
+              return !!owners && conflictsWithInline(owners, dynamicOwners, memberOwners)
+            }) &&
+            // the static members of the style object outrank every direct
+            // prop at runtime, so an inline dynamic direct prop on the same
+            // property would invert them
+            !Object.entries(staticObject(props.style) ? props.style : {}).some(
+              ([name, value]) => {
+                const owners = styleOwners(
+                  name,
+                  value,
+                  component.staticConfig as StaticConfig
+                )
+                return !!owners && cssOwnersConflict(owners, dynamicOwners)
+              }
+            )
+          ) {
+            dynamicHostStyleProperties = properties
+            laneAEntries = attempt
+            for (const owner of dynamicOwners) laneAOwners.add(owner)
+            for (const owner of memberOwners) laneAMemberOwners.add(owner)
+            break
+          }
         }
       }
       // web per-branch conditional classes need the same preconditions the
       // native per-branch path has, and take precedence over web partial
       // extraction because a full flatten beats a runtime component
+      const laneACoversAll =
+        dynamicHostStyleProperties !== null &&
+        laneAEntries.length === dynamicStyleEntries.length
+      // the entries that lower per branch as classes: all of them, or the ones
+      // lane A left behind
+      const webClassEntries =
+        dynamicHostStyleProperties === null
+          ? dynamicStyleEntries
+          : dynamicStyleEntries.filter((entry) => !laneAEntries.includes(entry))
       const supportsWebConditionalClasses =
         platform === 'web' &&
         !options.disablePartialExtraction &&
         (input.element.form === 'jsx' || input.element.propsSpan !== null) &&
-        dynamicHostStyleProperties === null &&
-        dynamicStyleEntries.length > 0 &&
-        dynamicStyleEntries.every(
-          (entry) =>
-            entry.kind === 'prop' &&
-            ((entry.value.kind === 'conditional' &&
-              canLowerConditionalStyleProp(entry.name, component)) ||
-              frontendClassDomain(entry, component) !== null)
-        )
+        !laneACoversAll &&
+        webClassEntries.length > 0 &&
+        webClassEntries.every((entry) => conditionalClassEntry(entry, component))
       // a theme name of any value selects a theme, while themeInverse only opens a
       // boundary when it is on
       const themeEntry = componentOnlyProp('theme')
@@ -2062,7 +2174,7 @@ export function createTamaguiCompilerHost(
       if (
         platform === 'web' &&
         (dynamicStyleEntries.length > 0 || runtimeAnimationRequired) &&
-        dynamicHostStyleProperties === null &&
+        !laneACoversAll &&
         !supportsWebConditionalClasses &&
         component.partialRuntimeSafe
       ) {
@@ -2203,7 +2315,7 @@ export function createTamaguiCompilerHost(
         )
       if (
         dynamicStyleEntries.length > 0 &&
-        dynamicHostStyleProperties === null &&
+        !laneACoversAll &&
         !supportsNativeDynamicStyles &&
         !supportsWebConditionalClasses
       ) {
@@ -2247,11 +2359,12 @@ export function createTamaguiCompilerHost(
           'Native style() pieces remain on the runtime path'
         )
       }
-      const propsForConditional = (
-        target: Extract<MaterializedElement['entries'][number], { kind: 'prop' }>,
-        value: unknown
-      ) => {
+      const propsForConditional = (target: DynamicStyleEntry, value: unknown) => {
         const branchProps: Record<string, unknown> = {}
+        if (styleObjectStatic) branchProps.style = styleObjectStatic
+        if (target.styleMember) {
+          branchProps.style = { ...styleObjectStatic, [target.name]: value }
+        }
         for (const entry of input.element.entries) {
           if (entry === target) {
             branchProps[target.name] = value
@@ -3329,9 +3442,7 @@ export function createTamaguiCompilerHost(
       const staticClasses = new Set(baseStaticClasses)
       const webConditionalCSS: string[] = []
       const webConditionalKeys = new Set<string>()
-      const webConditionalEntries = supportsWebConditionalClasses
-        ? dynamicStyleEntries
-        : []
+      const webConditionalEntries = supportsWebConditionalClasses ? webClassEntries : []
       for (const entry of webConditionalEntries) {
         const tree = entry.value.kind === 'conditional' ? entry.value.tree : null
         const domain = frontendClassDomain(entry, component)
@@ -3419,6 +3530,14 @@ export function createTamaguiCompilerHost(
               )
             }
             entryConditionalKeys.add(key)
+          }
+          if (conflictsWithInline(changedKeys, laneAOwners, laneAMemberOwners)) {
+            return bailout(
+              input,
+              'local/dynamic-style-value',
+              `${entry.name} and an inline dynamic style both contribute a CSS property; their precedence cannot be resolved per-branch`,
+              entry.value.span
+            )
           }
           const branchArtifacts = extractedStyleArtifacts(
             branchSplit,

@@ -31,6 +31,22 @@ async function compile(jsx: string, body = '') {
 // a tailwind View's className is its style input, so each string the value can
 // take resolves at compile time the way a static class string does
 describe('dynamic className on a tailwind View', () => {
+  // the comparison bench's heavy element: a class table keyed by the runtime
+  // string, the classes every string shares hoisted, and the style object's
+  // dynamic member inline
+  test('a template over a static array beside a dynamic style member flattens', async () => {
+    const output = await compile(
+      '<View className={`w-11 h-11 rounded-full ${heavyColors[(index + seed) % heavyColors.length]}`} style={{ width: 80 + ((index * 17) % 60) }} />'
+    )
+    expect(output.diagnostics).toEqual([])
+    expect(output.line).toMatch(
+      /^<div className=\{\["is_View _w-\d+ _h-\d+ _br-\d+", \(\{"w-11 h-11 rounded-full bg-\[red\]":"_b-\d+","w-11 h-11 rounded-full bg-\[blue\]":"_b-\d+","w-11 h-11 rounded-full bg-\[pink\]":"_b-\d+","w-11 h-11 rounded-full bg-\[orange\]":"_b-\d+"\}\)\[`w-11 h-11 rounded-full \$\{heavyColors\[\(index \+ seed\) % heavyColors\.length\]\}`\]\]\.filter\(Boolean\)\.join\(" "\)\} style=\{\{ "width": \(80 \+ \(\(index \* 17\) % 60\)\) \}\} {2}\/>$/
+    )
+    expect(output.css).toContain('width:var(--c-size-11)')
+    expect(output.css).toContain('border-radius:var(--c-radius-full)')
+    expect(output.css).toContain('background-color:orange')
+  })
+
   test('a conditional lowers to per-branch classes around the shared ones', async () => {
     const output = await compile(
       "<View className={seed % 2 ? 'w-6 bg-[red]' : 'w-6 bg-[blue]'} />"

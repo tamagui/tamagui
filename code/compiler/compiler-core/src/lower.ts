@@ -193,6 +193,23 @@ function unsafeEntry(
       entry.name
     )
   }
+  // each dynamic member of a style object lowers like the direct prop of its name
+  if (entry.kind === 'prop' && entry.value.kind === 'object') {
+    for (const member of entry.value.members) {
+      if (member.value.kind !== 'bailout' && member.value.kind !== 'conditional') continue
+      if (
+        !host.isStyleProp(member.name, component) ||
+        !host.canLowerDynamicStyleProp?.(member.name, component, member.value.kind)
+      ) {
+        return diagnostic(
+          'local/dynamic-style-value',
+          element,
+          `Style prop ${member.name} could not be evaluated`,
+          member.name
+        )
+      }
+    }
+  }
   return null
 }
 

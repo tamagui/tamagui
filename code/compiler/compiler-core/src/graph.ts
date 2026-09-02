@@ -9,10 +9,12 @@ import type {
   HostResolvedProject,
   ProjectInput,
   ResolvedModuleId,
+  SourceSpan,
   SymbolDefinition,
   SymbolResolver,
 } from './contracts'
-import { expressionReference, resolutionKey, resolvedModuleId } from './contracts'
+import { expressionReference, resolutionKey, resolvedModuleId, spanOf } from './contracts'
+import { childNode, childNodes, identifierName, unwrapExpression } from './ast'
 import { linkedBailout, localBailout, type BailoutReason } from './diagnostics'
 import {
   evaluateBinding,
@@ -195,6 +197,43 @@ export class ProjectGraph implements SymbolResolver {
       reference.start,
       reference.end
     )
+  }
+
+  /**
+   * The members of a plain object literal, each as its own expression:
+   * `{ width: expr, height: 10 }`. Null for anything else, and for an object
+   * that spreads, computes a key, or defines a method or accessor.
+   */
+  objectMembers(
+    reference: ExpressionReference
+  ): { name: string; span: SourceSpan; value: ExpressionReference }[] | null {
+    const node = this.expressionNode(reference)
+    if (!node) return null
+    const object = unwrapExpression(node)
+    if (object.type !== 'ObjectExpression') return null
+    const members: { name: string; span: SourceSpan; value: ExpressionReference }[] = []
+    for (const property of childNodes(object, 'properties')) {
+      if (
+        (property.type !== 'Property' && property.type !== 'ObjectProperty') ||
+        property.computed === true ||
+        property.method === true ||
+        (property.kind !== undefined && property.kind !== 'init')
+      ) {
+        return null
+      }
+      const key = childNode(property, 'key')
+      const value = childNode(property, 'value')
+      if (!key || !value) return null
+      const name =
+        identifierName(key) ?? (typeof key.value === 'string' ? key.value : null)
+      if (name === null) return null
+      members.push({
+        name,
+        span: spanOf(reference.id, property),
+        value: expressionReference(reference.id, value),
+      })
+    }
+    return members
   }
 
   evaluate(reference: ExpressionReference): EvaluationResult {

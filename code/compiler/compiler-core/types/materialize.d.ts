@@ -41,6 +41,23 @@ export type MaterializedValue = {
             kind: 'dom-style';
         }>;
     }[];
+} | {
+    /**
+     * A `style` object literal that did not evaluate as a whole:
+     * `style={{ width: expr, height: 10 }}`. Each member carries its own
+     * value, so a lowering keeps the static members as one style object and
+     * treats each dynamic member like the direct prop of its name.
+     */
+    kind: 'object';
+    span: SourceSpan;
+    members: {
+        name: string;
+        span: SourceSpan;
+        value: Exclude<MaterializedValue, {
+            kind: 'dom-style' | 'object';
+        }>;
+    }[];
+    bailout: BailoutReason;
 };
 export type MaterializedElementEntry = {
     kind: 'prop';
