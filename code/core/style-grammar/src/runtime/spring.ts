@@ -109,7 +109,7 @@ export function springPosition(
  * springs: the position crosses its target on every oscillation, so "first
  * time within threshold" would report a zero crossing rather than the settle.
  */
-function springEnvelope(
+export function springEnvelope(
   { duration, bounce }: SpringCanonical,
   timeSeconds: number
 ): number {
@@ -141,6 +141,11 @@ function springEnvelope(
 /**
  * time in ms until the spring stays within `threshold` of its target.
  *
+ * the default 0.5% is the practical settle point: tighter thresholds buy only
+ * motion nobody can see while stretching transition-duration well past the
+ * point the element looks finished, which delays every completion callback
+ * hanging off it.
+ *
  * css needs this and not `duration`: a `linear()` easing maps its samples
  * across transition-duration, so the transition has to be as long as the
  * motion actually lasts or the tail gets cut off mid-bounce.
@@ -149,7 +154,13 @@ function springEnvelope(
  * elementary inverse and the underdamped and overdamped closed forms both go
  * singular as they approach it.
  */
-export function springSettleTime(canonical: SpringCanonical, threshold = 0.001): number {
+/** how close to the target counts as settled */
+export const SPRING_SETTLE_THRESHOLD: number = 0.005
+
+export function springSettleTime(
+  canonical: SpringCanonical,
+  threshold: number = SPRING_SETTLE_THRESHOLD
+): number {
   let high = canonical.duration / 1000
   for (
     let attempt = 0;

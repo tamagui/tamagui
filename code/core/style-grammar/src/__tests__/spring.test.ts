@@ -2,6 +2,8 @@ import { describe, expect, test } from 'vitest'
 import {
   bounceToDampingRatio,
   dampingRatioToBounce,
+  SPRING_SETTLE_THRESHOLD,
+  springEnvelope,
   springFromDurationBounce,
   springPosition,
   springSettleTime,
@@ -50,7 +52,19 @@ describe('spring solver', () => {
       const canonical = { duration: 250, bounce }
       expect(springPosition(canonical, 0)).toBeCloseTo(0, 10)
       const settle = springSettleTime(canonical)
-      expect(springPosition(canonical, settle / 1000)).toBeCloseTo(1, 2)
+      // settle time is "the first time the ENVELOPE is inside the threshold",
+      // so that is what it has to be checked against. asserting on position
+      // instead would pass by luck for an underdamped spring, which crosses
+      // the target on every oscillation long before it settles.
+      expect(springEnvelope(canonical, settle / 1000)).toBeCloseTo(
+        SPRING_SETTLE_THRESHOLD,
+        6
+      )
+      // a critically damped spring's position IS its envelope, so it lands
+      // exactly on the threshold and float rounding decides the comparison
+      expect(Math.abs(1 - springPosition(canonical, settle / 1000))).toBeLessThanOrEqual(
+        SPRING_SETTLE_THRESHOLD + Number.EPSILON
+      )
     }
   })
 

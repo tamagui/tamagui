@@ -1,4 +1,14 @@
-import { getEffectiveAnimation, normalizeTransition } from '@tamagui/animation-helpers'
+import {
+  easingToBezier,
+  forAnimationState,
+  getTransitionForKey,
+  hasTransition,
+  resolveTransition,
+  styleKeysForProperty,
+  type AnimationsConfig,
+  type ResolvedEntry,
+  type ResolvedTransition,
+} from '@tamagui/animation-helpers'
 import { ResetPresence, usePresence } from '@tamagui/use-presence'
 import {
   type AnimatedNumberStrategy,
@@ -49,7 +59,6 @@ function useAnimateSSRSafe() {
 }
 
 type MotionAnimatedNumber = MotionValue<number>
-type AnimationConfig = ValueTransition
 
 type MotionAnimatedNumberStyle = {
   getStyle: (...args: any[]) => Record<string, unknown>
@@ -163,7 +172,7 @@ type MotionRefs = {
   wasNoClass: boolean
 }
 
-export function createAnimations<A extends Record<string, AnimationConfig>>(
+export function createAnimations<A extends AnimationsConfig>(
   animations: A
 ): AnimationDriverWithAnimatedNumbers<A> {
   let isHydratingGlobal: boolean | undefined
@@ -198,11 +207,13 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         presence,
         onTransition,
         styleProps,
+        styleState,
       } = animationProps
 
-      const animationKey = Array.isArray(props.transition)
-        ? props.transition[0]
-        : props.transition
+      // createComponent merges a colocated `transition` out of the active
+      // pseudo style (`hoverStyle={{ transition: '400ms' }}`), so this is the
+      // one that applies right now. same source the other three drivers read.
+      const effectiveTransition = styleState?.effectiveTransition ?? props.transition
 
       const isComponentHydrating = componentState.unmounted === true
       const isMounting = componentState.unmounted === 'should-enter'
@@ -263,7 +274,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
           : 'default'
 
       // disable animation during hydration and mounting (prevents "flying across the page")
-      const disableAnimation = isComponentHydrating || isMounting || !animationKey
+      const disableAnimation = isComponentHydrating || isMounting || !effectiveTransition
 
       const [scope] = useAnimateSSRSafe()
 
@@ -302,7 +313,13 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         dontAnimate = {},
         doAnimate,
         animationOptions,
-      } = getMotionAnimatedProps(props as any, style, disableAnimation, animationState)
+      } = getMotionAnimatedProps(
+        props as any,
+        style,
+        disableAnimation,
+        animationState,
+        effectiveTransition
+      )
 
       const [firstRenderStyle] = useState(style)
 
@@ -346,7 +363,14 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         // only recompute animation options for exit animations to avoid stale state.
         const animationOptions =
           isCurrentlyExiting && currentSendExitComplete
-            ? getAnimationOptions(props.transition ?? null, 'exit')
+            ? getAnimationOptions(
+                forAnimationState(
+                  resolveTransition(effectiveTransition ?? null, {
+                    animations: animations as Record<string, unknown>,
+                  }),
+                  'exit'
+                )
+              )
             : passedOptions
 
         try {
@@ -504,7 +528,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
 
                   const opts = animationOptions as TransitionAnimationOptions
                   const positionTransition =
-                    opts.transform ?? opts.default ?? animationOptions
+                    opts.x ?? opts.transform ?? opts.default ?? animationOptions
                   const cx = animateMotionValue(
                     entry.x,
                     target.x,
@@ -744,13 +768,13 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         }
       }
 
-      useStyleEmitter?.((nextStyle, effectiveTransition) => {
+      useStyleEmitter?.((nextStyle, emittedTransition) => {
         const animationProps = getMotionAnimatedProps(
           props as any,
           nextStyle,
           disableAnimation,
           refs.current.animationState,
-          effectiveTransition
+          emittedTransition ?? effectiveTransition
         )
 
         flushAnimation(animationProps)
@@ -958,7 +982,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
   }
 
   function getMotionAnimatedProps(
-    props: { transition?: TransitionProp | null; animateOnly?: string[] },
+    props: { transition?: TransitionProp | null },
     style: Record<string, unknown>,
     disable: boolean,
     animationState: 'enter' | 'exit' | 'default' = 'default',
@@ -970,18 +994,22 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
       }
     }
 
-    const animationOptions = getAnimationOptions(
-      transitionOverride ?? props.transition ?? null,
+    const resolved = forAnimationState(
+      resolveTransition(transitionOverride ?? props.transition ?? null, {
+        animations: animations as Record<string, unknown>,
+      }),
       animationState
     )
+    const animationOptions = getAnimationOptions(resolved)
 
     let dontAnimate: Record<string, unknown> | undefined
     let doAnimate: Record<string, unknown> | undefined
 
-    const animateOnly = props.animateOnly as string[] | undefined
     for (const key in style) {
       const value = style[key]
-      if (disableAnimationProps.has(key) || (animateOnly && !animateOnly.includes(key))) {
+      // a key the transition does not name is set, never animated, which is
+      // what a `transitionProperty` list narrows down to
+      if (disableAnimationProps.has(key) || !getTransitionForKey(resolved, key)) {
         dontAnimate ||= {}
         dontAnimate[key] = value
       } else {
@@ -997,91 +1025,23 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
     }
   }
 
-  function getAnimationOptions(
-    transitionProp: TransitionProp | null,
-    animationState: 'enter' | 'exit' | 'default' = 'default'
-  ): TransitionAnimationOptions {
-    const normalized = normalizeTransition(transitionProp)
+  function getAnimationOptions(resolved: ResolvedTransition): TransitionAnimationOptions {
+    if (!hasTransition(resolved)) return {}
 
-    let effectiveKey = getEffectiveAnimation(normalized, animationState)
-
-    // fallback: if we have enter/exit defined but state is 'default' and no default key,
-    // use enter timing as fallback to avoid empty animation options
-    if (!effectiveKey && animationState === 'default') {
-      effectiveKey = normalized.enter || normalized.exit || null
-    }
-
-    const globalConfigOverride: Record<string, unknown> | undefined = normalized.config
-      ? { ...normalized.config }
-      : undefined
-
-    if (
-      !effectiveKey &&
-      Object.keys(normalized.properties).length === 0 &&
-      !globalConfigOverride
-    ) {
-      return {}
-    }
-
-    const defaultConfig = effectiveKey ? withInferredType(animations[effectiveKey]) : null
-
-    const delay = normalized.delay
-
-    // framer motion's animate() expects default config at the TOP LEVEL
     const result: TransitionAnimationOptions = {}
 
-    if (defaultConfig) {
-      Object.assign(result, defaultConfig)
+    // motion reads the default config from the TOP LEVEL as well as `default`
+    if (resolved.all) {
+      const base = entryToMotion(resolved.all)
+      Object.assign(result, base)
+      result.default = { ...base }
     }
 
-    if (globalConfigOverride) {
-      Object.assign(result, globalConfigOverride)
-      if (
-        result.type === undefined &&
-        result.duration !== undefined &&
-        result.damping === undefined &&
-        result.stiffness === undefined &&
-        result.mass === undefined
-      ) {
-        result.type = 'tween'
-      }
-    }
-
-    if (delay) {
-      result.delay = delay
-    }
-
-    if (defaultConfig || globalConfigOverride || delay) {
-      result.default = {
-        ...defaultConfig,
-        ...globalConfigOverride,
-        ...(delay ? { delay } : null),
-      }
-    }
-
-    for (const [propName, animationNameOrConfig] of Object.entries(
-      normalized.properties
-    )) {
-      if (typeof animationNameOrConfig === 'string') {
-        result[propName] = withInferredType(animations[animationNameOrConfig])
-      } else if (animationNameOrConfig && typeof animationNameOrConfig === 'object') {
-        const baseConfig = animationNameOrConfig.type
-          ? withInferredType(animations[animationNameOrConfig.type])
-          : defaultConfig
-
-        result[propName] = {
-          ...baseConfig,
-          ...animationNameOrConfig,
-        } as ValueTransition
-      }
-    }
-
-    // we standardize to ms across drivers, motion expects s
-    convertMsToS(result as ValueTransition)
-    convertMsToS(result.default)
-    for (const key in result) {
-      if (key !== 'default' && typeof result[key] === 'object') {
-        convertMsToS(result[key])
+    for (const entry of resolved.entries) {
+      if (entry.property === 'all') continue
+      const config = entryToMotion(entry)
+      for (const key of styleKeysForProperty(entry.property)) {
+        result[key] = { ...config }
       }
     }
 
@@ -1089,32 +1049,34 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
   }
 }
 
-function withInferredType(config: AnimationConfig | undefined): AnimationConfig {
-  if (!config) {
-    return { type: 'spring' }
-  }
-  const isTimingBased =
-    config.duration !== undefined &&
-    config.damping === undefined &&
-    config.stiffness === undefined &&
-    config.mass === undefined
-  return { type: isTimingBased ? 'tween' : 'spring', ...config }
-}
+/**
+ * one resolved entry as a motion `ValueTransition`.
+ *
+ * durations are in SECONDS here. motion is the only driver that wants that, so
+ * the conversion lives at this single boundary. it used to be a post-pass that
+ * checked `type === 'tween'` and skipped springs and anything typed `'timing'`,
+ * which meant a `{ type: 'spring', duration: 200 }` ran for 200 seconds.
+ */
+function entryToMotion(entry: ResolvedEntry): ValueTransition {
+  const delay = entry.delayMs ? { delay: entry.delayMs / 1000 } : null
 
-function convertMsToS(config: ValueTransition | undefined) {
-  if (!config) return
-  if (typeof config.delay === 'number') config.delay = config.delay / 1000
-  if (typeof config.duration === 'number') {
-    const isTimingBased =
-      config.type === 'tween' ||
-      (config.type === undefined &&
-        config.damping === undefined &&
-        config.stiffness === undefined &&
-        config.mass === undefined)
-    if (isTimingBased) {
-      config.duration = config.duration / 1000
-    }
+  if (entry.timing.kind === 'spring') {
+    return {
+      type: 'spring',
+      stiffness: entry.timing.stiffness,
+      damping: entry.timing.damping,
+      mass: entry.timing.mass,
+      ...delay,
+    } as ValueTransition
   }
+
+  const bezier = easingToBezier(entry.timing.easing)
+  return {
+    type: 'tween',
+    duration: entry.timing.durationMs / 1000,
+    ...(bezier ? { ease: [bezier[0], bezier[1], bezier[2], bezier[3]] } : null),
+    ...delay,
+  } as ValueTransition
 }
 
 function removeRemovedStyles(

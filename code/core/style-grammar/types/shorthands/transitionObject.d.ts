@@ -19,6 +19,13 @@ export interface TransitionObjectBase {
 	/** the css transition-property list this base entry applies to */
 	properties?: string;
 	spring?: SpringEscapeHatch;
+	/**
+	* the transition to use while mounting. prefer colocating it with the styles
+	* it animates: `enterStyle={{ opacity: 0, transition: '200ms' }}`.
+	*/
+	enter?: TransitionObjectValue;
+	/** the transition to use while unmounting. see `enter`. */
+	exit?: TransitionObjectValue;
 }
 export type TransitionObjectValue = string | (TransitionObjectBase & {
 	[property: string]: unknown;

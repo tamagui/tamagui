@@ -1,4 +1,13 @@
-import { getEffectiveAnimation, normalizeTransition } from '@tamagui/animation-helpers'
+import {
+  easingToBezier,
+  forAnimationState,
+  getTransitionForKey,
+  hasTransition,
+  resolveTransition,
+  type ResolvedEntry,
+  type ResolvedTransition,
+  type AnimationsConfig,
+} from '@tamagui/animation-helpers'
 import {
   getSplitStyles,
   hooks,
@@ -19,6 +28,7 @@ import React, { useMemo, useRef } from 'react'
 import type { SharedValue } from 'react-native-reanimated'
 import Animated_, {
   cancelAnimation,
+  Easing,
   runOnJS,
   runOnUI,
   useAnimatedReaction,
@@ -604,23 +614,19 @@ const ANIMATABLE_PROPERTIES: Record<string, boolean> = {
 /**
  * Check if a style property can be animated
  */
-const canAnimateProperty = (
-  key: string,
-  value: unknown,
-  animateOnly?: string[]
-): boolean => {
+const canAnimateProperty = (key: string, value: unknown): boolean => {
   if (!ANIMATABLE_PROPERTIES[key]) return false
   if (value === 'auto') return false
   if (typeof value === 'string' && value.startsWith('calc')) return false
-  if (animateOnly && !animateOnly.includes(key)) return false
   return true
 }
 
+// narrowing to a subset of properties is the transition's own job: a key no
+// entry covers gets `instantConfig()` in `buildTransitionConfig` and snaps.
 const splitAnimationStyles = (
   style: Record<string, unknown>,
   isDark: boolean,
-  disableAnimation: boolean,
-  animateOnly?: string[]
+  disableAnimation: boolean
 ) => {
   const animated: Record<string, unknown> = {}
   const statics: Record<string, unknown> = {}
@@ -629,7 +635,7 @@ const splitAnimationStyles = (
     const value = resolveDynamicValue(style[key], isDark)
     if (value === undefined) continue
 
-    if (!disableAnimation && canAnimateProperty(key, value, animateOnly)) {
+    if (!disableAnimation && canAnimateProperty(key, value)) {
       animated[key] = cloneAnimationValue(value)
     } else {
       statics[key] = cloneAnimationValue(value)
@@ -700,71 +706,69 @@ const AnimatedText = createWebAnimatedComponent('span')
 type TransitionConfigResult = {
   baseConfig: TransitionConfig
   propertyConfigs: Record<string, TransitionConfig>
+  resolved: ResolvedTransition
+}
+
+const defaultConfig: TransitionConfig = { type: 'spring' }
+
+/** one resolved entry as reanimated's own animation config */
+function entryToReanimated(entry: ResolvedEntry): TransitionConfig {
+  if (entry.timing.kind === 'spring') {
+    return {
+      type: 'spring',
+      stiffness: entry.timing.stiffness,
+      damping: entry.timing.damping,
+      mass: entry.timing.mass,
+      delay: entry.delayMs || undefined,
+    }
+  }
+  const bezier = easingToBezier(entry.timing.easing)
+  return {
+    type: 'timing',
+    duration: entry.timing.durationMs,
+    // Easing.bezier returns a worklet, which is what withTiming wants. a
+    // `linear()` or `steps()` easing has no bezier form, so leave it to
+    // reanimated's default rather than applying something that isn't it.
+    easing: bezier
+      ? Easing.bezier(bezier[0], bezier[1], bezier[2], bezier[3])
+      : undefined,
+    delay: entry.delayMs || undefined,
+  }
 }
 
 /**
  * Builds animation config from a transition prop.
  * Shared logic used in both initial render and style emitter updates.
+ *
+ * Everything meaningful happens in `resolveTransition`, which the other three
+ * drivers also call. This only translates the result into reanimated's shape.
  */
-function buildTransitionConfig<A extends Record<string, TransitionConfig>>(
+function buildTransitionConfig(
   transition: any,
-  animations: A,
+  animations: AnimationsConfig,
   animationState: 'enter' | 'exit' | 'default',
   styleKeys: Set<string>
 ): TransitionConfigResult {
-  const normalized = normalizeTransition(transition)
-  const effectiveKey = getEffectiveAnimation(normalized, animationState)
-
-  let base = cloneTransitionConfig(
-    effectiveKey
-      ? (animations[effectiveKey as keyof typeof animations] ??
-          ({ type: 'spring' } as TransitionConfig))
-      : ({ type: 'spring' } as TransitionConfig)
+  const resolved = forAnimationState(
+    resolveTransition(transition, { animations: animations as Record<string, unknown> }),
+    animationState
   )
 
-  if (normalized.delay) {
-    base = cloneTransitionConfig({ ...base, delay: normalized.delay })
-  }
+  const base = resolved.all ? entryToReanimated(resolved.all) : { ...defaultConfig }
 
-  if (normalized.config) {
-    base = cloneTransitionConfig({ ...base, ...normalized.config } as TransitionConfig)
-    // infer type: 'timing' if duration is provided without spring params
-    if (
-      base.type !== 'timing' &&
-      normalized.config.duration !== undefined &&
-      normalized.config.damping === undefined &&
-      normalized.config.stiffness === undefined &&
-      normalized.config.mass === undefined
-    ) {
-      base = cloneTransitionConfig({ ...base, type: 'timing' })
-    }
-  }
-
-  // build per-property configs
   const propertyConfigs: Record<string, TransitionConfig> = {}
-
   for (const key of styleKeys) {
-    const propAnimation = normalized.properties[key]
-    if (typeof propAnimation === 'string') {
-      propertyConfigs[key] = cloneTransitionConfig(
-        animations[propAnimation as keyof typeof animations] ?? base
-      )
-    } else if (propAnimation && typeof propAnimation === 'object') {
-      const configType = (propAnimation as any).type
-      const baseForProp = configType
-        ? (animations[configType as keyof typeof animations] ?? base)
-        : base
-      propertyConfigs[key] = cloneTransitionConfig({
-        ...baseForProp,
-        ...propAnimation,
-      } as TransitionConfig)
-    } else {
-      propertyConfigs[key] = cloneTransitionConfig(base)
-    }
+    const entry = getTransitionForKey(resolved, key)
+    // a key no entry covers must SNAP, not animate with some default spring.
+    // `transition={{ opacity: '150ms' }}` names opacity and nothing else, and
+    // that has to mean the same thing here as it does in a stylesheet.
+    propertyConfigs[key] = entry ? entryToReanimated(entry) : instantConfig()
   }
 
-  return { baseConfig: base, propertyConfigs }
+  return { baseConfig: base, propertyConfigs, resolved }
 }
+
+const instantConfig = (): TransitionConfig => ({ type: 'timing', duration: 0 })
 
 /**
  * Extracts all style keys including transform sub-properties.
@@ -799,25 +803,14 @@ function getStyleKeys(style: Record<string, unknown>): Set<string> {
  * @example
  * ```tsx
  * const animations = createAnimations({
- *   fast: { type: 'spring', damping: 20, stiffness: 250 },
- *   slow: { type: 'timing', duration: 500 },
+ *   fast: { duration: 200, bounce: 0.2 },
+ *   slow: { type: 'timing', duration: 500, easing: 'ease-out' },
  * })
- *
  * ```
  */
-export function createAnimations<A extends Record<string, TransitionConfig>>(
-  animationsConfig: A
+export function createAnimations<A extends AnimationsConfig>(
+  animations: A
 ): AnimationDriverWithAnimatedNumbers<A> {
-  // Normalize animation configs - default to spring if not specified
-  // This matches behavior of moti and motion drivers
-  const animations = {} as A
-  for (const key in animationsConfig) {
-    animations[key] = cloneTransitionConfig({
-      type: 'spring',
-      ...animationsConfig[key],
-    }) as A[typeof key]
-  }
-
   return {
     needsCustomComponent: true,
     View: isWeb ? AnimatedView : Animated.View,
@@ -982,16 +975,20 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
 
       // Use effectiveTransition computed by createComponent (single source of truth)
       const effectiveTransition = styleState?.effectiveTransition ?? props.transition
-      const normalized = normalizeTransition(effectiveTransition)
       // Use 'enter' if we're mounting OR if we just finished entering
       const animationState: 'enter' | 'exit' | 'default' = isExiting
         ? 'exit'
         : isMounting || justFinishedEntering
           ? 'enter'
           : 'default'
-      const animationKey = getEffectiveAnimation(normalized, animationState)
+      const resolvedTransition = forAnimationState(
+        resolveTransition(effectiveTransition, {
+          animations: animations as Record<string, unknown>,
+        }),
+        animationState
+      )
 
-      const disableAnimation = isHydrating || !animationKey
+      const disableAnimation = isHydrating || !hasTransition(resolvedTransition)
 
       // Theme state for dynamic values - use themeName from props instead of hook
       const isDark = themeName?.startsWith('dark') || false
@@ -1026,17 +1023,23 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
       const updateCompletedRef = useRef(false)
       const isCompletingUpdateRef = useSharedValue(false)
       const updateCycleIdShared = useSharedValue(0)
+      // an interrupted key still resolves its participation in this cycle. it
+      // used to be dropped on the floor, which left the key in the pending set
+      // forever and hung the update cycle: no 'end' event, and any component
+      // waiting on one (accordion's HeightAnimator) stayed latched.
+      const updateInterruptedRef = useRef(false)
       const markUpdateKeyDone = useEvent(
         (key: string, cycleId: number, finished: boolean) => {
-          if (!finished || cycleId !== updateCycleIdRef.current) return
+          if (cycleId !== updateCycleIdRef.current) return
           if (updateCompletedRef.current) return
+          if (!finished) updateInterruptedRef.current = true
           pendingUpdateKeysRef.current.delete(key)
           if (pendingUpdateKeysRef.current.size === 0) {
             updateCompletedRef.current = true
             isCompletingUpdateRef.value = false
             if (updateStartedRef.current) {
               updateStartedRef.current = false
-              emit('end', 'update', true)
+              emit('end', 'update', !updateInterruptedRef.current)
             }
           }
         }
@@ -1171,12 +1174,10 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
 
       // Separate styles into animated and static
       const { animatedStyles, staticStyles, nextCarry } = useMemo(() => {
-        const animateOnly = props.animateOnly as string[] | undefined
         const { animated, statics } = splitAnimationStyles(
           style as Record<string, unknown>,
           isDark,
-          disableAnimation,
-          animateOnly
+          disableAnimation
         )
 
         // every animated key keeps its FIRST animated value in React's style for
@@ -1202,7 +1203,7 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
         }
 
         return { animatedStyles: animated, staticStyles: statics, nextCarry }
-      }, [disableAnimation, style, isDark, props.animateOnly])
+      }, [disableAnimation, style, isDark])
 
       const renderSnapshot = useMemo(
         () =>
@@ -1360,7 +1361,6 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
           // track whether a self pseudo is active so the render-time layout effect knows whether
           // this emitter snapshot is a transient override to keep latched or a base it can drop.
           pseudoActiveRef.current = pseudoActive === true
-          const animateOnly = props.animateOnly as string[] | undefined
 
           // effectiveTransition is computed in createComponent based on entering/exiting pseudo states
           // rebuild config whenever transition changes (entering OR exiting pseudo states)
@@ -1385,8 +1385,7 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
           const { animated, statics } = splitAnimationStyles(
             nextStyle,
             isDark,
-            configRef.value.disableAnimation,
-            animateOnly
+            configRef.value.disableAnimation
           )
           const snapshot = buildSnapshot(
             animated,
@@ -1465,6 +1464,7 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
 
         const cycleId = ++updateCycleIdRef.current
         pendingUpdateKeysRef.current = new Set(updateKeys)
+        updateInterruptedRef.current = false
         updateCompletedRef.current = updateKeys.length === 0
         isCompletingUpdateRef.value = updateKeys.length > 0
         updateCycleIdShared.value = cycleId
@@ -1571,7 +1571,7 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
           // statics must fall back to the render's staticStyles (not {}): once an
           // emitter snapshot has applied static keys, reanimated never unsets
           // them, so after the latch drops a stale emitted value (e.g. a border
-          // color that missed animateOnly) would keep painting over the fresh
+          // color that could not animate) would keep painting over the fresh
           // style prop forever
           const animatedValues = snapshot.animated
           const staticValues = snapshot.statics
@@ -1706,7 +1706,7 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
         props.debug !== 'profile'
       ) {
         console.info('[animations-reanimated] useAnimations', {
-          animationKey,
+          resolvedTransition,
           componentState,
           isExiting,
           animatedStyles,

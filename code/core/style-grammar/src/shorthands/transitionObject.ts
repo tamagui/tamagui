@@ -39,6 +39,13 @@ export interface TransitionObjectBase {
   /** the css transition-property list this base entry applies to */
   properties?: string
   spring?: SpringEscapeHatch
+  /**
+   * the transition to use while mounting. prefer colocating it with the styles
+   * it animates: `enterStyle={{ opacity: 0, transition: '200ms' }}`.
+   */
+  enter?: TransitionObjectValue
+  /** the transition to use while unmounting. see `enter`. */
+  exit?: TransitionObjectValue
 }
 
 export type TransitionObjectValue =
@@ -59,6 +66,8 @@ export const TRANSITION_RESERVED_KEYS: ReadonlySet<string> = new Set([
   'behavior',
   'properties',
   'spring',
+  'enter',
+  'exit',
 ])
 
 const behaviorValues = new Set(['normal', 'allow-discrete'])
@@ -322,9 +331,26 @@ export function parseTransitionObject(
     })
   }
 
+  // mount and unmount transitions are their own entry lists rather than
+  // entries in this one, because they never apply at the same time as it
+  const states: {
+    enter?: readonly TransitionEntry[]
+    exit?: readonly TransitionEntry[]
+  } = {}
+  for (const state of ['enter', 'exit'] as const) {
+    const value = base[state]
+    if (value === undefined) continue
+    const parsed = parseTransitionObject(value, presetNames, knownProperties)
+    if (!parsed.ok) {
+      diagnostics.push(...parsed.diagnostics)
+      continue
+    }
+    if (parsed.value.kind === 'transition') states[state] = parsed.value.entries
+  }
+
   if (diagnostics.length) return { ok: false, diagnostics }
 
-  if (!entries.length) {
+  if (!entries.length && !states.enter && !states.exit) {
     return {
       ok: false,
       diagnostics: [
@@ -336,5 +362,8 @@ export function parseTransitionObject(
     }
   }
 
-  return { ok: true, value: { kind: 'transition', entries } }
+  return {
+    ok: true,
+    value: { kind: 'transition', entries, enter: states.enter, exit: states.exit },
+  }
 }

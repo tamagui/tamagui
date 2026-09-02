@@ -1,8 +1,9 @@
 import {
-  normalizeTransition,
-  getAnimatedProperties,
-  hasAnimation as hasNormalizedAnimation,
-  getEffectiveAnimation,
+  forAnimationState,
+  hasTransition,
+  resolveTransition,
+  toCSSTransition,
+  type AnimationsConfig,
 } from '@tamagui/animation-helpers'
 import { useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { ResetPresence, usePresence } from '@tamagui/use-presence'
@@ -51,17 +52,6 @@ function waitForAnimations(node: HTMLElement): Promise<boolean> {
       check()
     }
   })
-}
-
-const DURATION_REGEX = /(\d+(?:\.\d+)?)\s*(?:ms|s(?!tiffness))/
-
-/**
- * Apply duration override to a CSS animation string
- * Replaces the existing duration with the override value
- */
-function applyDurationOverride(animation: string, durationMs: number): string {
-  const replaced = animation.replace(DURATION_REGEX, `${durationMs}ms`)
-  return replaced === animation ? `${durationMs}ms ${animation}` : replaced
 }
 
 const CSS_TRANSFORM_PROPERTIES: Record<string, string[]> = {
@@ -130,7 +120,9 @@ function clearCSSProperties(node: HTMLElement, properties: readonly string[]): v
   }
 }
 
-export function createAnimations<A extends object>(animations: A): AnimationDriver<A> {
+export function createAnimations<A extends AnimationsConfig>(
+  animations: A
+): AnimationDriver<A> {
   return {
     animations,
     usePresence,
@@ -241,72 +233,28 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
       // use effectiveTransition computed by createComponent (single source of truth)
       const effectiveTransition = styleState?.effectiveTransition ?? props.transition
 
-      // Normalize the transition prop to a consistent format
-      const normalized = normalizeTransition(effectiveTransition)
-
-      // Determine animation state and get effective animation
-      // Use 'enter' if we're entering OR if we just finished entering (transition is happening)
+      // one parser, one preset lookup, one spring solver, shared with the other
+      // three drivers. this driver decides nothing about what a transition means.
       const animationState = isExiting
         ? 'exit'
         : isEntering || justFinishedEntering
           ? 'enter'
           : 'default'
-      const effectiveAnimationKey = getEffectiveAnimation(normalized, animationState)
-      const defaultAnimation = effectiveAnimationKey
-        ? animations[effectiveAnimationKey]
-        : null
-      const animatedProperties = getAnimatedProperties(normalized)
+      const resolved = forAnimationState(
+        resolveTransition(effectiveTransition, {
+          animations: animations as Record<string, unknown>,
+        }),
+        animationState
+      )
 
-      // Determine which properties to animate
-      // - animateOnly prop is an exclusive filter (only animate those properties)
-      // - per-property configs WITHOUT a default = only animate those specific properties
-      // - per-property configs WITH a default = per-property overrides + default for rest
-      const hasDefault =
-        normalized.default !== null ||
-        normalized.enter !== null ||
-        normalized.exit !== null
-      const hasPerPropertyConfigs = animatedProperties.length > 0
-
-      let keys: string[]
-      if (props.animateOnly) {
-        // animateOnly is explicit filter
-        keys = props.animateOnly
-      } else if (hasPerPropertyConfigs && !hasDefault) {
-        // object format without default: { opacity: '200ms' } = only animate opacity
-        keys = animatedProperties
-      } else if (hasPerPropertyConfigs && hasDefault) {
-        // array format or object with default: 'all' first, then per-property overrides
-        // CSS transition specificity: later declarations override earlier ones for the same property
-        keys = ['all', ...animatedProperties]
-      } else {
-        // simple string format: 'quick' = animate all
-        keys = ['all']
-      }
+      // the entries stand as authored; the browser resolves them under css
+      // last-wins, and narrowing to a property list is `transitionProperty`
+      const hasKeys = hasTransition(resolved)
 
       let transition: string | undefined
       const getTransition = () => {
         if (transition !== undefined) return transition
-        const delay = normalized.delay ? ` ${normalized.delay}ms` : ''
-        const duration = normalized.config?.duration
-        transition = keys
-          .flatMap((key) => {
-            const propertyAnimation = normalized.properties[key]
-            let animation = defaultAnimation
-            if (typeof propertyAnimation === 'string') {
-              animation = animations[propertyAnimation]
-            } else if (propertyAnimation?.type) {
-              animation = animations[propertyAnimation.type]
-            }
-            if (animation && duration) {
-              animation = applyDurationOverride(animation, duration)
-            }
-            return animation
-              ? getCSSProperties(key).map(
-                  (property) => `${property} ${animation}${delay}`
-                )
-              : []
-          })
-          .join(', ')
+        transition = toCSSTransition(resolved) ?? ''
         return transition
       }
 
@@ -338,8 +286,8 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
           sendExitCompleteRef.current?.()
         }
 
-        // if no properties to animate (animateOnly=[]), complete immediately
-        if (keys.length === 0) {
+        // if no properties animate (`transition="none"`), complete immediately
+        if (!hasKeys) {
           completeExit()
           return
         }
@@ -476,7 +424,7 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
       }
 
       // Check if we have any animation to apply
-      if (!hasNormalizedAnimation(normalized)) {
+      if (!hasTransition(resolved)) {
         return null
       }
 
@@ -490,8 +438,7 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
         console.info('CSS animation', {
           props,
           animations,
-          normalized,
-          defaultAnimation,
+          resolved,
           style,
           isEntering,
           isExiting,

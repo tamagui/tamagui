@@ -25,6 +25,15 @@
       "require": "./dist/cjs/runtime.cjs",
       "default": "./dist/esm/runtime.mjs"
     },
+    "./transitions": {
+      "types": "./types/transitions.d.ts",
+      "react-native": "./dist/esm/transitions.native.js",
+      "browser": "./dist/esm/transitions.mjs",
+      "module": "./dist/esm/transitions.mjs",
+      "import": "./dist/esm/transitions.mjs",
+      "require": "./dist/cjs/transitions.cjs",
+      "default": "./dist/esm/transitions.mjs"
+    },
     "./token-categories": {
       "types": "./types/tokenCategories.d.ts",
       "react-native": "./dist/esm/tokenCategories.mjs",

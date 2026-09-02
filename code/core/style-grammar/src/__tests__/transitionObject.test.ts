@@ -166,6 +166,8 @@ describe('transition object form', () => {
       'delay',
       'duration',
       'easing',
+      'enter',
+      'exit',
       'preset',
       'properties',
       'spring',

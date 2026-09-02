@@ -167,6 +167,7 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
+    "@tamagui/animation-helpers": "workspace:*",
     "@tamagui/animations-css": "workspace:*",
     "@tamagui/animations-motion": "workspace:*",
     "@tamagui/animations-react-native": "workspace:*",

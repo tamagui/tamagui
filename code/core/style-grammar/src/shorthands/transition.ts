@@ -45,9 +45,13 @@ export interface TransitionEntry {
 export interface TransitionIR {
   kind: 'transition'
   entries: readonly TransitionEntry[]
-  enter?: TransitionEntry
-  exit?: TransitionEntry
-  config?: Readonly<Record<string, unknown>>
+  /**
+   * entries that replace `entries` while mounting and unmounting. they are a
+   * separate list rather than more entries because they never apply at the
+   * same time as the default ones.
+   */
+  enter?: readonly TransitionEntry[]
+  exit?: readonly TransitionEntry[]
 }
 
 export interface TransitionGlobalIR {
@@ -634,7 +638,8 @@ export function parseTransitionLonghands(
 
 export function serializeTransition(value: ParsedTransition): string | null {
   if (value.kind === 'global') return value.value
-  if (value.enter || value.exit || value.config) return null
+  // state-scoped entries have no css spelling: css has no mount or unmount
+  if (value.enter || value.exit) return null
   // presets and springs are opaque atoms with no css spelling
   for (let index = 0; index < value.entries.length; index++) {
     if (value.entries[index].timing.type !== 'css') return null

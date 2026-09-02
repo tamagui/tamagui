@@ -36,9 +36,13 @@ export interface TransitionEntry {
 export interface TransitionIR {
 	kind: "transition";
 	entries: readonly TransitionEntry[];
-	enter?: TransitionEntry;
-	exit?: TransitionEntry;
-	config?: Readonly<Record<string, unknown>>;
+	/**
+	* entries that replace `entries` while mounting and unmounting. they are a
+	* separate list rather than more entries because they never apply at the
+	* same time as the default ones.
+	*/
+	enter?: readonly TransitionEntry[];
+	exit?: readonly TransitionEntry[];
 }
 export interface TransitionGlobalIR {
 	kind: "global";
