@@ -128,6 +128,35 @@ describe('claimed candidates become flat props', () => {
     expect(tokenize('line-clamp-none')).toEqual({ numberOfLines: 0 })
   })
 
+  test('grid-cols-N resolves to repeat() template', () => {
+    expect(tokenize('grid-cols-3')).toEqual({
+      gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
+    })
+    expect(tokenize('grid-cols-12')).toEqual({
+      gridTemplateColumns: 'repeat(12, minmax(0, 1fr))',
+    })
+    expect(tokenize('grid-cols-none')).toEqual({ gridTemplateColumns: 'none' })
+    expect(tokenize('grid-cols-subgrid')).toEqual({ gridTemplateColumns: 'subgrid' })
+  })
+
+  test('col-span and row-span resolve to span syntax', () => {
+    expect(tokenize('col-span-2')).toEqual({ gridColumn: 'span 2 / span 2' })
+    expect(tokenize('col-span-full')).toEqual({ gridColumn: '1 / -1' })
+    expect(tokenize('col-auto')).toEqual({ gridColumn: 'auto' })
+    expect(tokenize('col-start-1')).toEqual({ gridColumnStart: 1 })
+    expect(tokenize('col-end-3')).toEqual({ gridColumnEnd: 3 })
+    expect(tokenize('row-span-2')).toEqual({ gridRow: 'span 2 / span 2' })
+    expect(tokenize('row-start-1')).toEqual({ gridRowStart: 1 })
+    expect(tokenize('row-auto')).toEqual({ gridRow: 'auto' })
+  })
+
+  test('backface-visibility and isolation resolve correctly', () => {
+    expect(tokenize('backface-visible')).toEqual({ backfaceVisibility: 'visible' })
+    expect(tokenize('backface-hidden')).toEqual({ backfaceVisibility: 'hidden' })
+    expect(tokenize('isolate')).toEqual({ isolation: 'isolate' })
+    expect(tokenize('isolation-auto')).toEqual({ isolation: 'auto' })
+  })
+
   test('gradient composers emit one backgroundImage and ignore incomplete stops', () => {
     expect(tokenize('from-[red]')).toEqual({})
     expect(tokenize('bg-linear-to-r from-[red] to-[blue]')).toEqual({
@@ -265,12 +294,12 @@ describe('claimed candidates become flat props', () => {
 
 describe('unclaimed candidates', () => {
   test('an unknown class stays in className verbatim', () => {
-    expect(tokenize('grid-cols-3')).toEqual({ className: 'grid-cols-3' })
+    expect(tokenize('custom-widget')).toEqual({ className: 'custom-widget' })
   })
 
   test('unknown classes keep author order and claimed ones are removed', () => {
-    expect(tokenize('grid-cols-2 p-4 grid-cols-3')).toEqual({
-      className: 'grid-cols-2 grid-cols-3',
+    expect(tokenize('custom-a p-4 custom-b')).toEqual({
+      className: 'custom-a custom-b',
       padding: '4',
     })
   })

@@ -153,6 +153,26 @@ function tailwindClassToFlatProp(
     }
   }
 
+  // grid-cols-N → repeat(N, minmax(0, 1fr)), col-span-N → span N / span N
+  if (prop === 'gridTemplateColumns' && /^\d+$/.test(value)) {
+    return { key: prop, value: `repeat(${value}, minmax(0, 1fr))` }
+  }
+  if (prop === 'gridColumn' && /^\d+$/.test(value)) {
+    return { key: prop, value: `span ${value} / span ${value}` }
+  }
+  if (prop === 'gridRow' && /^\d+$/.test(value)) {
+    return { key: prop, value: `span ${value} / span ${value}` }
+  }
+  if (
+    (prop === 'gridColumnStart' ||
+      prop === 'gridColumnEnd' ||
+      prop === 'gridRowStart' ||
+      prop === 'gridRowEnd') &&
+    /^\d+$/.test(value)
+  ) {
+    return { key: prop, value: Number(value) }
+  }
+
   if (prop.endsWith('Width') && parsed.prefix?.startsWith('border')) {
     if (parsed.valueKind === 'token') {
       value = `${parsed.negative ? '-' : ''}${value}`

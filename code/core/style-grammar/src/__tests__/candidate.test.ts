@@ -96,7 +96,7 @@ describe('candidate grammar', () => {
     expect(classifyCandidate('rounded-color5', config).kind).toBe('passthrough')
     expect(classifyCandidate('unknown:p-4', config).kind).toBe('passthrough')
     expect(classifyCandidate('md:p-4', config).kind).toBe('passthrough')
-    expect(classifyCandidate('grid-cols-3', config).kind).toBe('passthrough')
+    expect(classifyCandidate('custom-widget', config).kind).toBe('passthrough')
     for (const candidate of [
       'items-garbage',
       'justify-nonsense',

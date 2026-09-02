@@ -172,6 +172,20 @@ const grammarEntrySpecs = [
   { prop: 'textOverflow', prefix: '' },
   { prop: 'userSelect', prefix: 'select' },
   { prop: 'visibility', prefix: '' },
+  // grid (supported in Tamagui stylePropsUnitless / stylePropsView)
+  { prop: 'gridTemplateColumns', prefix: 'grid-cols' },
+  { prop: 'gridColumn', prefix: 'col-span' },
+  { prop: 'gridColumnStart', prefix: 'col-start' },
+  { prop: 'gridColumnEnd', prefix: 'col-end' },
+  { prop: 'gridRow', prefix: 'row-span' },
+  { prop: 'gridRowStart', prefix: 'row-start' },
+  { prop: 'gridRowEnd', prefix: 'row-end' },
+  // text shadow props (RN: textShadowColor, textShadowRadius)
+  { prop: 'textShadowColor', prefix: 'text-shadow' },
+  { prop: 'textShadowRadius', prefix: 'text-shadow-blur' },
+  // misc layout
+  { prop: 'backfaceVisibility', prefix: '' },
+  { prop: 'isolation', prefix: '' },
 ] as const
 
 export const grammarEntries: readonly GrammarEntry[] = grammarEntrySpecs.map((entry) => {
@@ -375,6 +389,14 @@ export const standaloneValueProps: Readonly<
     hidden: 'invisible',
     collapse: 'collapse',
   },
+  backfaceVisibility: {
+    visible: 'backface-visible',
+    hidden: 'backface-hidden',
+  },
+  isolation: {
+    isolate: 'isolate',
+    auto: 'isolation-auto',
+  },
 })
 
 export const fontWeightNames: Readonly<Record<string, string>> = Object.freeze({
@@ -425,6 +447,12 @@ export const wholeClassUtilities: Readonly<
   'line-clamp-6': { numberOfLines: 6 },
   'line-clamp-none': { numberOfLines: 0 },
   truncate: { overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' },
+  'grid-cols-none': { gridTemplateColumns: 'none' },
+  'grid-cols-subgrid': { gridTemplateColumns: 'subgrid' },
+  'col-auto': { gridColumn: 'auto' },
+  'col-span-full': { gridColumn: '1 / -1' },
+  'row-auto': { gridRow: 'auto' },
+  'row-span-full': { gridRow: '1 / -1' },
   contents: { display: 'contents' },
   border: { borderWidth: 1 },
   outline: { outlineWidth: 1 },

@@ -539,6 +539,19 @@ function chooseEntry(
       const clamp = entries.find((entry) => entry.prop === 'numberOfLines')
       if (clamp) return { entry: clamp, valueKind: 'convenience', convenience: 'integer' }
     }
+    // grid utilities: grid-cols-3, col-span-2, col-start-1, row-span-3, etc.
+    if (
+      prefix === 'grid-cols' ||
+      prefix === 'col-span' ||
+      prefix === 'col-start' ||
+      prefix === 'col-end' ||
+      prefix === 'row-span' ||
+      prefix === 'row-start' ||
+      prefix === 'row-end'
+    ) {
+      const entry = entries[0]
+      if (entry) return { entry, valueKind: 'convenience', convenience: 'integer' }
+    }
   }
 
   for (const entry of entries) {
