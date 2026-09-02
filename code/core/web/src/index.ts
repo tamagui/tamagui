@@ -54,6 +54,7 @@ export { containsThemeRef, themeRefKey } from './helpers/themeRef'
 export { getStyleTags } from './helpers/wrapStyleTags'
 
 export { createFont } from './createFont'
+export { fluid, type FluidOptions } from './helpers/fluid'
 export {
   createChangeEventDetails,
   type TamaguiChangeEventDetails,

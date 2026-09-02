@@ -104,6 +104,13 @@ const createGroupListener = (
           Object.assign(group.media, next)
           didChange = true
         }
+        if (layout.width !== undefined) {
+          const prevWidth = group.layout?.width
+          if (prevWidth === undefined || Math.abs(prevWidth - layout.width) >= 0.5) {
+            group.layout = layout
+            didChange = true
+          }
+        }
       }
 
       if (didChange) {

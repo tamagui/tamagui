@@ -23,6 +23,7 @@ export { normalizeStyle } from './helpers/normalizeStyle';
 export { containsThemeRef, themeRefKey } from './helpers/themeRef';
 export { getStyleTags } from './helpers/wrapStyleTags';
 export { createFont } from './createFont';
+export { fluid, type FluidOptions } from './helpers/fluid';
 export { createChangeEventDetails, type TamaguiChangeEventDetails, type TamaguiEventDetails, } from './eventDetails';
 export { createStyledHOC } from './createStyledHOC';
 export { createShorthands } from './createShorthands';
