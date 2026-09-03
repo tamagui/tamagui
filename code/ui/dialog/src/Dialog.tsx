@@ -1050,7 +1050,13 @@ const Dialog = withStaticProperties(
     } satisfies DialogContextValue
 
     return (
-      <AdaptParent scope={adaptScope} open={open} onOpenChange={setOpen} state={context}>
+      <AdaptParent
+        scope={adaptScope}
+        adaptChildren={children}
+        open={open}
+        onOpenChange={setOpen}
+        state={context}
+      >
         <DialogProvider scope={scope} {...context}>
           {children}
         </DialogProvider>
