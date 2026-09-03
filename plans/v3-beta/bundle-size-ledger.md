@@ -352,3 +352,31 @@ instead of supplementing it, so `width` cannot declare only the container values
 Making that a fallback would drop those variables, but it changes token lookup
 for every prop-named domain in every user config and needs its own review.
 
+
+## Baseline update, 2026-09-03: zero-runtime starter, token variables get their units
+
+`shouldTokenCategoryHaveUnits` in `createTamagui.ts` listed `size`, `space` and
+`radius` by hand, so the eleven token domains the coverage-audit merge added
+emitted lengths with no unit: `--c-width-12:48`, and `width: var(--c-width-12)`
+is an invalid declaration the browser drops. A category named after a style
+property now follows that property's own unit table, the one
+`plainValueToPayload` already uses, so those variables carry `px`.
+
+- **RAN** the bug, not a size question: `v3-zero-runtime (fixture)` was red on
+  `e68de50ad7` at `vite-transition-differential.test.ts:226`,
+  `prop-token-size base width` expecting `48px` and reading `484px`, because the
+  dropped declaration let the probe div fill its 484px parent. The whole
+  `vite-transition` project passes on `d041c9311a`.
+- **RAN** pinned Node 24.16.0: cssGzip +14 on vite (4,064 -> 4,078 base,
+  4,068 -> 4,082 islands) and +13 on next-webpack and metro-web base
+  (4,083 -> 4,096, 4,088 -> 4,100, 4,083 -> 4,096). `jsGzip` is unchanged in
+  every one of the six tiers. `islandJsGzip` +2 on vite, unchanged on next.
+- **INFERRED** metro-web/islands is projected, not measured here: that tier is
+  the one with the macOS/Linux skew recorded above (CI 4,789 reads 4,435
+  locally; CI 367,166 reads 366,862). The local run moved it 4,435 -> 4,449 and
+  366,862 -> 366,887, so the CI figures are recorded as 4,789 + 14 = 4,803 and
+  367,166 + 25 = 367,191. If CI's gate reports different actuals for that tier,
+  correct these two numbers from its `receipts.json` rather than re-measuring
+  on macOS.
+- **RAN** the styled-view gate is untouched by this: 28,793 gzip-9 against the
+  28,821 ceiling, the same byte count the compose trim recorded.
