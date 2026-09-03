@@ -30,9 +30,12 @@ describe('size primitives', () => {
       },
     } as unknown as SizeResolverExtras
 
+    // space, radius and fontSize come from the policy; frame height does not -
+    // it is a control preset read off the `controlSizes` ramp, where `true` is
+    // the `4` step (44)
     expect(resolveTokenSize(true, extras)).toEqual({
       frame: {
-        size: 40,
+        size: 44,
         space: 12,
         radius: 8,
       },
