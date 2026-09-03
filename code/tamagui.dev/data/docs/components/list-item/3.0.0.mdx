@@ -52,7 +52,7 @@ export default () => (
     borderColor="border-color"
     rounded="4"
     width={240}
-    size="4"
+    size="md"
   >
     <YGroup.Item>
       <ListItem title="Star" icon={ChevronRight} />
@@ -75,7 +75,7 @@ and icons inside. It accepts theme size tokens (e.g., `"3"`, `"4"`).
 ```tsx
 import { ListItem } from 'tamagui'
 
-export default () => <ListItem size="5" title="Large List Item" />
+export default () => <ListItem size="lg" title="Large List Item" />
 ```
 
 ## Title and SubTitle
@@ -95,7 +95,7 @@ import { User } from '@tamagui/lucide-icons-2'
 export default () => (
   <ListItem
     icon={
-      <Avatar circular size="3">
+      <Avatar circular size="sm">
         <Avatar.Image src="/placeholder.png" />
         <Avatar.Fallback backgroundColor="background-focus" />
       </Avatar>
@@ -103,7 +103,7 @@ export default () => (
     title="User Profile"
     subTitle="View and edit your profile details."
     iconAfter={User}
-    size="4"
+    size="md"
   />
 )
 ```
@@ -126,20 +126,20 @@ import { Star, Settings } from '@tamagui/lucide-icons-2'
 
 export default () => (
   <>
-    <ListItem icon={Star} title="Default Icon Size" size="4" />
+    <ListItem icon={Star} title="Default Icon Size" size="md" />
     <ListItem
       icon={Settings}
       iconSize="2"
       title="Explicit Icon Size"
       subTitle="iconSize='2'"
-      size="5"
+      size="lg"
     />
     <ListItem
       icon={Star}
       scaleIcon={1.5}
       title="Scaled Icon"
       subTitle="scaleIcon={1.5}"
-      size="4"
+      size="md"
     />
   </>
 )
@@ -256,7 +256,7 @@ ListItem extends View, inheriting all the
     {
       name: 'size',
       required: false,
-      type: 'SizeTokens',
+      type: "'xs' | 'sm' | 'md' | 'lg' | 'xl' | SizeTokens",
       description:
         'Adjusts padding, min-height, and default font/icon sizes. Uses theme size tokens (e.g., "3", "4"). Published to the parts through the styled context.',
     },
@@ -333,7 +333,7 @@ ListItem and ListItem part beneath it.
     {
       name: 'size',
       required: false,
-      type: 'SizeTokens',
+      type: "'xs' | 'sm' | 'md' | 'lg' | 'xl' | SizeTokens",
       description: 'Size token to apply to children ListItems.',
     },
     {
@@ -372,7 +372,7 @@ Sizes and colors an icon from the surrounding ListItem context.
     {
       name: 'size',
       required: false,
-      type: 'SizeTokens',
+      type: "'xs' | 'sm' | 'md' | 'lg' | 'xl' | SizeTokens",
       description: 'Overrides the size taken from context.',
     },
     {

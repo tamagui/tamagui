@@ -149,8 +149,6 @@ export const Surface = forwardRef<any, SurfaceProps>(function Surface(
 The facets live in a sibling `facets.ts` so any skin can compose the same chrome:
 
 ```tsx
-import { defaultTokenSizePolicy } from '@tamagui/ui'
-
 export const filled = {
   true: { backgroundColor: 'background' },
 } as const
@@ -168,7 +166,7 @@ export const elevated = {
 } as const
 
 export const rounded = {
-  true: { borderRadius: defaultTokenSizePolicy.radius },
+  true: { borderRadius: '4' },
 } as const
 
 export const interactive = {

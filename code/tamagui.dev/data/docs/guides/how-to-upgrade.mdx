@@ -144,8 +144,8 @@ Remove tooling packages that no longer exist in v3:
 | Removed package            | Migration                                                                                                     |
 | -------------------------- | ------------------------------------------------------------------------------------------------------------- |
 | `@tamagui/babel-plugin`    | Install `@tamagui/cli` and use `@tamagui/cli/vite`, `@tamagui/cli/metro`, or the `tamagui build` precompile command for Turbopack. |
-| `@tamagui/get-button-sized`| Use `resolveTokenSize` from `@tamagui/size` (also exported from `tamagui`); its `frame` result provides size, space, and radius. |
-| `@tamagui/sizable-context` | Use the opt-in primitives from `@tamagui/size`.                                                               |
+| `@tamagui/get-button-sized`| Use `resolveSize` from `@tamagui/size` (also exported from `tamagui`); its `frame` and `text` results are ready to spread. |
+| `@tamagui/sizable-context` | Use `SizeContext` from `@tamagui/size`.                                                                        |
 | `@tamagui/static-sync`     | Remove direct imports. Compiler sessions are owned by the supported bundler adapters.                         |
 | `@tamagui/static-worker`   | Remove direct imports. Metro owns its graph/cache workers through `@tamagui/cli/metro`.                       |
 | `@tamagui/theme-builder`   | Use `createThemes` and the recipe helpers from `@tamagui/themes/builder`.                                     |
@@ -723,46 +723,86 @@ rg "\$true|true:" tamagui.config.* src code
 Only replace token keys. Boolean variant values like `circular` or `unstyled={false}`
 are unrelated.
 
-## 5. Button and Input size values changed meaning
+## 5. Control sizes are named
 
-Component `size` still takes the same names, but controls and shapes resolve their
-frame differently. `Button` and `Input` use a control-height ramp for the frame,
-while padding, radius, text, and icon sizing continue to use your config scales.
-The control ramp reproduces the v2 frame heights by name, so existing
-`size="4"` code still means a 44 px control:
+Every control that takes `size` (Button, Input, Select, Tabs, ListItem, Label,
+Card, Toggle, Checkbox, RadioGroup, Switch, Slider, Progress, Avatar, Group,
+Tooltip) accepts the same five names: `xs`, `sm`, `md`, `lg`, `xl`. A name is a
+recipe of tokens, never a height: it picks a font size, horizontal and vertical
+padding, and a radius, and the control ends up its line-height plus padding
+tall. That keeps the frame, its text, and its icon aligned by construction.
+The default is `md`.
 
-| Size | Control frame height |
-| --- | --- |
-| `true` | 44 px |
-| `0`, `0-25`, `0-5`, `0-75` | 0, 2, 4, 8 px |
-| `1`, `1-5`, `2`, `2-5` | 20, 24, 28, 32 px |
-| `3`, `3-5`, `4`, `4-5`, `5` | 36, 40, 44, 48, 52 px |
-| `6`, `7`, `8`, `9`, `10` | 64, 74, 84, 94, 104 px |
-| `11`, `12`, `13`, `14`, `15` | 124, 144, 164, 184, 204 px |
-| `16`, `17`, `18`, `19`, `20` | 224, 224, 244, 264, 284 px |
+Under `@tamagui/config/v6` the recipes mirror shadcn:
 
-The duplicate 224 px values for `16` and `17` preserve the v2 scale. A size key
-outside this ramp still resolves through your config's size scale.
+| name | font size / line-height | paddingX | paddingY | radius | icon | height |
+| ---- | ----------------------- | -------- | -------- | ------ | ---- | ------ |
+| `xs` | 12 / 16                 | 8        | 4        | 4      | 12   | 24     |
+| `sm` | 14 / 20                 | 12       | 6        | 6      | 16   | 32     |
+| `md` | 14 / 20                 | 16       | 8        | 6      | 16   | 36     |
+| `lg` | 16 / 24                 | 24       | 8        | 6      | 16   | 40     |
+| `xl` | 18 / 28                 | 32       | 10       | 8      | 20   | 48     |
 
-`Square` and `Circle` remain shapes and use the config spacing scale. With the
-v6 config, `<Square size="5" />` is therefore 20 px while
-`<Button size="5" />` is 52 px.
-
-Earlier v3 betas accidentally resolved explicit Button and Input sizes through
-the v6 spacing scale. That made `size="4"` 16 px and `size="3"` 12 px, shorter
-than their text. V2 users do not need to change these props. If you adopted an
-earlier v3 beta and compensated by using `size="11"` for a normal 44 px control,
-remove that workaround: `size="11"` now means 124 px, while `size="4"` or no
-size prop gives you 44 px.
-
-Omitting `size` (or passing `true`) selects the `4` step, 44 px:
+Height excludes the 1px border. `@tamagui/config/v5` ships its own table on the
+v5 keys, so the same names work under either config.
 
 ```tsx
-// styled control: pass a v2-compatible size name, or omit for the 44 px default
-import { Button } from 'tamagui/button'
+import { Button } from 'tamagui'
 
-<Button size="5" />
+<Button size="sm" />
+<Button size="lg" icon={Check} />
 ```
+
+Token keys still work and now mean exactly what they say. `size="$4"` (or
+`size="4"`) indexes every scale with `4`: `font.size[4]`, `space[4]`,
+`radius[4]`, and `minHeight: size[4]`. Under the v5 config that is the 44px
+control it always was. Under the v6 config `size[4]` is 16px, the same as
+`<Square size="$4" />`. Earlier v3 betas rewrote v6 `size="$4"` to 44px behind
+your back; that ramp is gone. Apps migrating to v6 should move controls to names
+rather than tuning token keys:
+
+```tsx
+// v2 / v5: 44px control
+<Button size="$4" />
+
+// v3 with the v6 config: an honest 16px minHeight, almost certainly not what you meant
+<Button size="$4" />
+
+// v3: the named recipe
+<Button size="md" />
+```
+
+`size={number}` on a control is a dev error and resolves to the default. Numbers
+stay pixels on shapes (`Square`, `Circle`, `Avatar`).
+
+The table lives in your config. `createTamagui` takes a `sizes` key with a
+`default` name and one recipe per name, each written in token keys:
+
+```tsx
+import { defaultConfig } from '@tamagui/config/v6'
+import { createTamagui } from 'tamagui'
+
+export const config = createTamagui({
+  ...defaultConfig,
+  sizes: {
+    default: 'md',
+    ...defaultConfig.sizes,
+    // a compact control for dense tables
+    xs: { fontSize: 'xs', paddingX: '1.5', paddingY: '0.5', radius: 'sm' },
+  },
+})
+```
+
+Each recipe is `{ fontSize, paddingX, paddingY, radius, gap?, icon? }`. `gap`
+defaults to `paddingY`, and `icon` defaults to the font size rounded up to the
+4px grid. Skins read the same table through `resolveSize(value, env)` inside a
+`styled.dynamic` variant and spread its `frame` or `text`.
+
+Text components speak Tailwind's own scale (`xs`, `sm`, `base`, `lg`, `xl`,
+`2xl` and up), and a control's recipe points at those same keys. `size="md"` on
+`Paragraph` is the `md` recipe's font key, `sm`, so `<Button size="md">` text
+and `<Paragraph size="sm">` text are the same 14/20. Text keeps `base` rather
+than `md` because `text-base` is what Tailwind users know.
 
 If you also adopt the unstyled primitives from `@tamagui/ui`, those own no size
 scale at all, so you provide sizing yourself or through your copied styles.
