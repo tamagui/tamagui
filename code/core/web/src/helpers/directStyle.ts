@@ -14,12 +14,12 @@ import {
 } from '@tamagui/helpers'
 import {
   canonicalClauseModifier,
-  clauseConditionSetKey,
   clauseSubjectClassRepetitions,
   createClausePrecedenceOrder,
-  getClausePrecedenceKeyFromKinds,
+  getClausePrecedencePart,
+  grammarMaxNonPlatformDepth,
   isRootThemeName,
-  scanFlatValue,
+  parseValue,
   type ClausePrecedenceKey,
   type ClausePrecedenceOrder,
   type ModifierKind,
@@ -28,7 +28,7 @@ import {
 
 import { isVariable } from '../createVariable'
 import { mediaKeyMatch } from '../hooks/useMedia'
-import type { GetStyleState } from '../types'
+import type { GetStyleState, TamaguiInternalConfig } from '../types'
 import { warnOnce, warnRefusedValue } from './warnOnce'
 import { expandStyle } from './expandStyle'
 import { getCSSStyleAtomic } from './getCSSStylesAtomic'
@@ -55,17 +55,33 @@ export type MergeStyle = (
 ) => void
 
 type Condition = {
+  source: string
   key: string
   active: boolean
   emit: boolean
   selector: string
+  parts: (number | string)[]
   wrappers?: string[]
   enter?: true
   exit?: true
   theme?: string
   precedence: ClausePrecedenceKey
   classRepetitions: number
+  flags: number
   unsupportedState?: string
+}
+
+type CachedFlatValue = {
+  value?: ParsedValue
+  conditions?: Condition[]
+  error?: string
+  flags: number
+}
+
+type FlatValueCache = {
+  values: Map<string, CachedFlatValue>
+  conditions: Map<string, Condition | false>
+  size: number
 }
 
 type DirectAtomic = {
@@ -204,22 +220,42 @@ const borderStyleDefaults: Record<string, string> = {
 
 const mediaQueries = new WeakMap<object, Record<string, string>>()
 const clausePrecedenceOrders = new WeakMap<object, ClausePrecedenceOrder>()
-function queryFor(state: GetStyleState, name: string): string | undefined {
-  let queries = mediaQueries.get(state.conf)
+const flatValueCaches = new WeakMap<object, FlatValueCache>()
+const modifierSources = new WeakMap<readonly string[], string>()
+
+const CONDITION_STATE = 0
+const CONDITION_MEDIA = 1
+const CONDITION_THEME = 2
+const CONDITION_GROUP = 3
+const CONDITION_CONTAINER = 4
+
+export const FLAT_VALUE_ENTER = 1
+export const FLAT_VALUE_PLATFORM_PSEUDO = 2
+const FLAT_VALUE_LIFECYCLE = 4
+const FLAT_VALUE_CACHE_LIMIT = 1024
+
+function acceptModifier(): ModifierKind {
+  return 'state'
+}
+
+const acceptAnyModifier = { get: acceptModifier }
+
+function queryFor(conf: TamaguiInternalConfig, name: string): string | undefined {
+  let queries = mediaQueries.get(conf)
   if (!queries) {
     queries = {}
-    const media = state.conf.media || {}
+    const media = conf.media || {}
     for (const key in media) queries[key] = mediaObjectToString(media[key])
-    mediaQueries.set(state.conf, queries)
+    mediaQueries.set(conf, queries)
   }
   return queries[name]
 }
 
-function precedenceOrderFor(state: GetStyleState): ClausePrecedenceOrder {
-  let order = clausePrecedenceOrders.get(state.conf)
+function precedenceOrderFor(conf: TamaguiInternalConfig): ClausePrecedenceOrder {
+  let order = clausePrecedenceOrders.get(conf)
   if (!order) {
-    order = createClausePrecedenceOrder(state.conf.media)
-    clausePrecedenceOrders.set(state.conf, order)
+    order = createClausePrecedenceOrder(conf.media)
+    clausePrecedenceOrders.set(conf, order)
   }
   return order
 }
@@ -247,7 +283,7 @@ export function platformMatches(name: string): boolean {
   return name === 'tv' && isTV
 }
 
-function groupCondition(state: GetStyleState, modifier: string, out: Condition) {
+function addGroupCondition(modifier: string, out: Condition) {
   const slash = modifier.indexOf('/')
   const stateName = modifier.slice(6, slash === -1 ? undefined : slash)
   const groupName = slash === -1 ? 'true' : modifier.slice(slash + 1)
@@ -255,72 +291,68 @@ function groupCondition(state: GetStyleState, modifier: string, out: Condition) 
   if (!selector || !groupName) return false
   out.selector += `:where(.t_group_${groupName}${selector} *)`
   if (stateName === 'hover') (out.wrappers ||= []).push('@media (hover: hover)')
-  const component = state.componentState.group?.[groupName]
-  const context = state.flatGroupContext?.[groupName]
-  out.active &&= !!(component?.pseudo ?? context?.state.pseudo)?.[stateName]
-  ;(state.flatGroupKeys ||= new Set()).add(groupName)
+  out.parts.push(CONDITION_GROUP, stateName, groupName)
   return true
 }
 
-function containerCondition(state: GetStyleState, modifier: string, out: Condition) {
+function addContainerCondition(
+  conf: TamaguiInternalConfig,
+  modifier: string,
+  out: Condition
+) {
   const slash = modifier.indexOf('/')
   const size = modifier.slice(1, slash === -1 ? undefined : slash)
   const name = slash === -1 ? null : modifier.slice(slash + 1)
-  const query = queryFor(state, size)
+  const query = queryFor(conf, size)
   if (!query || (name !== null && !name)) return false
   const key = name === null ? '@' : `@${name}`
   ;(out.wrappers ||= []).push(
     name === null ? `@container ${query}` : `@container ${name} ${query}`
   )
-  const component = state.componentState.group?.[key]
-  const context = state.flatGroupContext?.[key]
-  const active = component?.media?.[size]
-  out.active &&=
-    active === undefined
-      ? !!(context?.state.layout && mediaKeyMatch(size, context.state.layout))
-      : !!active
-  ;(state.flatGroupKeys ||= new Set()).add(key)
-  ;(state.flatGroupMedia ||= new Set()).add(size)
+  out.parts.push(CONDITION_CONTAINER, size, key)
   return true
 }
 
-/**
- * Resolve one modifier chain against the live state, or null when the runtime
- * has no such modifier. Exported because the variant scanner in `propMapper`
- * has to refuse exactly the chains this one refuses; two answers to "is this a
- * modifier" is how the prop and variant paths came to disagree about how much
- * of a bad value survives.
- */
-export function getCondition(state: GetStyleState, source: string): Condition | null {
-  const out = { key: '', active: true, emit: true, selector: '' } as Condition
+function compileCondition(
+  conf: TamaguiInternalConfig,
+  source: string,
+  modifiers: readonly string[]
+): Condition | null {
+  const out: Condition = {
+    source,
+    key: '',
+    active: true,
+    emit: true,
+    selector: '',
+    parts: [],
+    precedence: 0,
+    classRepetitions: 0,
+    flags: 0,
+  }
   const canonical: string[] = []
-  const kinds: ModifierKind[] = []
-  const seenModifiers = new Set<string>()
   let selfStateSpecificity = 0
-  let start = 0
-  for (let index = 0; index <= source.length; index++) {
-    if (index !== source.length && source.charCodeAt(index) !== 58) continue
-    let modifier = canonicalClauseModifier(source.slice(start, index))
-    start = index + 1
+  let platformPrecedence = 0
+  let conditionPrecedence = 0
+  let depth = 0
+  const precedenceOrder = precedenceOrderFor(conf)
+  for (let index = 0; index < modifiers.length; index++) {
+    const modifier = canonicalClauseModifier(modifiers[index])
     if (!modifier) return null
-    if (seenModifiers.has(modifier)) continue
-    seenModifiers.add(modifier)
+    if (canonical.includes(modifier)) continue
 
+    let kind: ModifierKind
     if (modifier.startsWith('group-')) {
-      if (!groupCondition(state, modifier, out)) return null
-      canonical.push(modifier)
-      kinds.push('group')
-      continue
-    }
-    if (modifier.charCodeAt(0) === 64) {
-      if (!containerCondition(state, modifier, out)) return null
-      canonical.push(modifier)
-      kinds.push('container')
-      continue
-    }
-    if (modifier in stateSelectors || modifier === 'enter' || modifier === 'exit') {
-      canonical.push(modifier)
-      kinds.push('state')
+      if (!addGroupCondition(modifier, out)) return null
+      kind = 'group'
+    } else if (modifier.charCodeAt(0) === 64) {
+      if (!addContainerCondition(conf, modifier, out)) return null
+      kind = 'container'
+    } else if (
+      modifier in stateSelectors ||
+      modifier === 'enter' ||
+      modifier === 'exit'
+    ) {
+      kind = 'state'
       selfStateSpecificity++
       const selector = stateSelectors[modifier]
       if (
@@ -344,39 +376,28 @@ export function getCondition(state: GetStyleState, source: string): Condition | 
         out.selector += selector
       }
       if (modifier === 'hover') (out.wrappers ||= []).push('@media (hover: hover)')
-      out.active &&= stateIsActive(state, modifier)
-      if (
+      out.parts.push(CONDITION_STATE, modifier, '')
+      if (modifier === 'enter') out.flags |= FLAT_VALUE_ENTER | FLAT_VALUE_LIFECYCLE
+      else if (modifier === 'exit') out.flags |= FLAT_VALUE_LIFECYCLE
+      else if (
         modifier === 'hover' ||
         modifier === 'press' ||
-        modifier === 'focus' ||
-        modifier === 'focus-visible' ||
-        modifier === 'focus-within'
+        modifier === 'focus'
       ) {
-        ;(state.flatStateKeys ||= new Set()).add(modifier)
+        out.flags |= FLAT_VALUE_PLATFORM_PSEUDO
       }
-      continue
-    }
-    if (modifier in (state.conf.media || {})) {
-      const query = queryFor(state, modifier)
+    } else if (modifier in (conf.media || {})) {
+      kind = 'media'
+      const query = queryFor(conf, modifier)
       if (!query) return null
-      canonical.push(modifier)
-      kinds.push('media')
       ;(out.wrappers ||= []).push(`@media ${query}`)
-      out.active &&= !!state.flatMediaState?.[modifier]
-      ;(state.flatMediaKeys ||= new Set()).add(modifier)
-      continue
-    }
-    if (isRootThemeName(modifier) && modifier in (state.conf.themes || {})) {
-      canonical.push(modifier)
-      kinds.push('theme')
+      out.parts.push(CONDITION_MEDIA, modifier, '')
+    } else if (isRootThemeName(modifier) && modifier in (conf.themes || {})) {
+      kind = 'theme'
       out.theme = modifier
       out.selector += `:where(.t_${modifier}, .t_${modifier} *)`
-      out.active &&=
-        state.flatThemeName === modifier ||
-        state.flatThemeName?.startsWith(`${modifier}_`) === true
-      continue
-    }
-    if (
+      out.parts.push(CONDITION_THEME, modifier, `${modifier}_`)
+    } else if (
       modifier === 'web' ||
       modifier === 'native' ||
       modifier === 'ios' ||
@@ -385,26 +406,184 @@ export function getCondition(state: GetStyleState, source: string): Condition | 
       modifier === 'tvos' ||
       modifier === 'androidtv'
     ) {
-      canonical.push(modifier)
-      kinds.push('platform')
+      kind = 'platform'
       const matches = platformMatches(modifier)
-      out.active &&= matches
       out.emit &&= matches
-      continue
+    } else {
+      return null
     }
-    return null
+
+    canonical.push(modifier)
+    const precedence = getClausePrecedencePart(
+      modifier,
+      kind,
+      precedenceOrder
+    )
+    if (kind === 'platform') platformPrecedence = Math.max(platformPrecedence, precedence)
+    else {
+      depth++
+      conditionPrecedence = Math.max(conditionPrecedence, precedence)
+    }
   }
-  out.key = clauseConditionSetKey(canonical)
-  out.precedence = getClausePrecedenceKeyFromKinds(
-    canonical,
-    kinds,
-    precedenceOrderFor(state)
-  )
+  if (depth > grammarMaxNonPlatformDepth) {
+    throw new Error(
+      `a flat value clause supports at most ${grammarMaxNonPlatformDepth} non-platform conditions; received ${depth} in "${modifiers.join(':')}:"`
+    )
+  }
+  out.precedence = platformPrecedence | (depth << 23) | conditionPrecedence
+  canonical.sort()
+  out.key = canonical.join(':')
   out.classRepetitions = clauseSubjectClassRepetitions(
     out.precedence,
     selfStateSpecificity
   )
   return out
+}
+
+function evaluateCondition(state: GetStyleState, out: Condition): Condition {
+  let active = out.emit
+  const parts = out.parts
+  for (let index = 0; index < parts.length; index += 3) {
+    const kind = parts[index]
+    const name = parts[index + 1] as string
+    const extra = parts[index + 2] as string
+    if (kind === CONDITION_STATE) {
+      active &&= stateIsActive(state, name)
+      if (
+        name === 'hover' ||
+        name === 'press' ||
+        name === 'focus' ||
+        name === 'focus-visible' ||
+        name === 'focus-within'
+      ) {
+        ;(state.flatStateKeys ||= new Set()).add(name)
+      }
+      continue
+    }
+    if (kind === CONDITION_MEDIA) {
+      active &&= !!state.flatMediaState?.[name]
+      ;(state.flatMediaKeys ||= new Set()).add(name)
+      continue
+    }
+    if (kind === CONDITION_THEME) {
+      active &&=
+        state.flatThemeName === name || state.flatThemeName?.startsWith(extra) === true
+      continue
+    }
+    if (kind === CONDITION_GROUP) {
+      const component = state.componentState.group?.[extra]
+      const context = state.flatGroupContext?.[extra]
+      active &&= !!(component?.pseudo ?? context?.state.pseudo)?.[name]
+      ;(state.flatGroupKeys ||= new Set()).add(extra)
+      continue
+    }
+    const component = state.componentState.group?.[extra]
+    const context = state.flatGroupContext?.[extra]
+    const value = component?.media?.[name]
+    active &&=
+      value === undefined
+        ? !!(context?.state.layout && mediaKeyMatch(name, context.state.layout))
+        : !!value
+    ;(state.flatGroupKeys ||= new Set()).add(extra)
+    ;(state.flatGroupMedia ||= new Set()).add(name)
+  }
+  out.active = active
+  return out
+}
+
+function getFlatValueCache(conf: TamaguiInternalConfig): FlatValueCache {
+  let cache = flatValueCaches.get(conf)
+  if (!cache) {
+    cache = { values: new Map(), conditions: new Map(), size: 0 }
+    flatValueCaches.set(conf, cache)
+  }
+  return cache
+}
+
+function addCacheEntry(cache: FlatValueCache): void {
+  if (cache.size >= FLAT_VALUE_CACHE_LIMIT) {
+    cache.values.clear()
+    cache.conditions.clear()
+    cache.size = 0
+  }
+  cache.size++
+}
+
+function getCachedCondition(
+  conf: TamaguiInternalConfig,
+  source: string,
+  modifiers?: readonly string[]
+): Condition | null {
+  const cache = getFlatValueCache(conf)
+  const hit = cache.conditions.get(source)
+  if (hit !== undefined) return hit || null
+  const condition = compileCondition(conf, source, modifiers ?? source.split(':'))
+  addCacheEntry(cache)
+  cache.conditions.set(source, condition || false)
+  return condition
+}
+
+function sourceForModifiers(modifiers: readonly string[]): string {
+  let source = modifierSources.get(modifiers)
+  if (source === undefined) {
+    source = modifiers.join(':')
+    modifierSources.set(modifiers, source)
+  }
+  return source
+}
+
+export function getCachedFlatValue(
+  conf: TamaguiInternalConfig,
+  source: string
+): CachedFlatValue {
+  const cache = getFlatValueCache(conf)
+  const hit = cache.values.get(source)
+  if (hit !== undefined) return hit
+
+  const parsed = parseValue(source, acceptAnyModifier)
+  let entry: CachedFlatValue
+  if (!parsed.ok) {
+    entry = { error: parsed.errors[0].message, flags: 0 }
+  } else {
+    const conditions: Condition[] = []
+    let flags = 0
+    let error = ''
+    for (const clause of parsed.value.clauses) {
+      for (const authored of clause.modifiers) {
+        const modifier = canonicalClauseModifier(authored)
+        if (modifier === 'enter') flags |= FLAT_VALUE_ENTER
+        else if (
+          modifier === 'hover' ||
+          modifier === 'press' ||
+          modifier === 'focus'
+        ) {
+          flags |= FLAT_VALUE_PLATFORM_PSEUDO
+        }
+      }
+      const conditionSource = sourceForModifiers(clause.modifiers)
+      const condition = getCachedCondition(conf, conditionSource, clause.modifiers)
+      if (!condition) {
+        error = `unknown modifier "${conditionSource}"`
+        continue
+      }
+      conditions.push(condition)
+      flags |= condition.flags
+    }
+    entry = error
+      ? { error, flags }
+      : { value: parsed.value, conditions, flags }
+  }
+  addCacheEntry(cache)
+  cache.values.set(source, entry)
+  return entry
+}
+
+export function flatValueHasModifier(
+  conf: TamaguiInternalConfig,
+  source: string,
+  flag: number
+): boolean {
+  return (getCachedFlatValue(conf, source).flags & flag) !== 0
 }
 
 interface TokenLookup {
@@ -1452,36 +1631,6 @@ function emitValue(
   }
 }
 
-function emitSegment(
-  state: GetStyleState,
-  property: string,
-  source: string,
-  start: number,
-  end: number,
-  condition: Condition | null,
-  merge: MergeStyle,
-  originalValue: any,
-  contextOnly: boolean
-) {
-  while (start < end && source.charCodeAt(start) <= 32) start++
-  while (end > start && source.charCodeAt(end - 1) <= 32) end--
-  if (start === end) return false
-  if (
-    !condition ||
-    (condition.emit &&
-      (condition.active ||
-        (isWeb && state.flatShouldDoClasses) ||
-        (!isWeb &&
-          condition.theme &&
-          supportsDynamicColorIOS &&
-          isColorStyleKey(property))))
-  ) {
-    const value = source.slice(start, end)
-    emitValue(state, property, value, condition, merge, value, contextOnly)
-  }
-  return true
-}
-
 export function contributeStyleString(
   state: GetStyleState,
   property: string,
@@ -1514,63 +1663,8 @@ export function contributeStyleString(
     return true
   }
 
-  // The scan collects and the emit happens after it, because `parseValue`
-  // reports a refused modifier or a rule-breaking character as one failure over
-  // the WHOLE value: there is no such thing as the good half of a value the
-  // grammar rejects. Emitting as the scan went is what used to make this path
-  // lose the base it had already read while the variant path kept it.
-  const conditions: (Condition | null)[] = []
-  const starts: number[] = []
-  const ends: number[] = []
-  let pending: Condition | null = null
-  // the first thing that made the value unusable, and the whole refusal test
-  let refused = ''
-  let lifecycle = false
-
-  scanFlatValue(source, {
-    segment(start, end, isBase) {
-      if (start === end) {
-        // an empty base is simply no base; an empty clause payload is a clause
-        // with nothing in it, which parseValue reports as `empty-payload`
-        if (!isBase && !refused) refused = 'a conditional clause has no value'
-        return
-      }
-      conditions.push(pending)
-      starts.push(start)
-      ends.push(end)
-    },
-    chain(start, end) {
-      if (refused) return false
-      const next = getCondition(state, source.slice(start, end))
-      if (!next) {
-        refused = `unknown modifier "${source.slice(start, end)}"`
-        return false
-      }
-      if (process.env.NODE_ENV === 'development' && next.unsupportedState) {
-        warnOnce(
-          `${property}: "${next.unsupportedState}:" has no native component-state source; dropping the clause`
-        )
-      }
-      pending = next
-      lifecycle ||= !!(next.enter || next.exit)
-      return true
-    },
-    error(code, index) {
-      if (refused) return
-      refused =
-        code === 'invalid-character'
-          ? `"${source[index]}" would end the declaration or rule`
-          : code === 'unterminated-string'
-            ? 'an unterminated string'
-            : code === 'unterminated-comment'
-              ? 'an unterminated "/*" comment'
-              : code === 'stray-comment-close'
-                ? 'a stray "*/"'
-                : 'an unterminated "("'
-    },
-  })
-
-  if (refused) {
+  const cached = getCachedFlatValue(state.conf, source)
+  if (cached.error) {
     // `16:9` is the one value whose top-level colon is content rather than a
     // clause, and only this property can hold it
     if (property === 'aspectRatio') {
@@ -1586,36 +1680,52 @@ export function contributeStyleString(
       return true
     }
     if (process.env.NODE_ENV === 'development') {
-      warnRefusedValue(property, source, refused)
+      warnRefusedValue(property, source, cached.error)
     }
     return true
   }
 
-  let hasBase = false
-  let lastPayloadStart = 0
-  for (let index = 0; index < conditions.length; index++) {
-    const condition = conditions[index]
-    lastPayloadStart = starts[index]
-    const emitted = emitSegment(
-      state,
-      property,
-      source,
-      starts[index],
-      ends[index],
-      condition,
-      merge,
-      originalValue,
-      contextOnly
-    )
-    if (!condition && emitted) hasBase = true
+  const value = cached.value!
+  const conditions = cached.conditions!
+  const hasBase = value.base !== null
+  if (value.base !== null) {
+    emitValue(state, property, value.base, null, merge, value.base, contextOnly)
+  }
+  for (let index = 0; index < value.clauses.length; index++) {
+    const clause = value.clauses[index]
+    const condition = evaluateCondition(state, conditions[index])
+    if (process.env.NODE_ENV === 'development' && condition.unsupportedState) {
+      warnOnce(
+        `${property}: "${condition.unsupportedState}:" has no native component-state source; dropping the clause`
+      )
+    }
+    if (
+      condition.emit &&
+      (condition.active ||
+        (isWeb && state.flatShouldDoClasses) ||
+        (!isWeb &&
+          condition.theme &&
+          supportsDynamicColorIOS &&
+          isColorStyleKey(property)))
+    ) {
+      emitValue(
+        state,
+        property,
+        clause.payload,
+        condition,
+        merge,
+        clause.payload,
+        contextOnly
+      )
+    }
   }
 
   if (
     process.env.NODE_ENV === 'development' &&
     !hasBase &&
-    conditions.length > 0 &&
+    value.clauses.length > 0 &&
     (property in tokenCategories.color || property in tokenCategoryByProperty) &&
-    splitComponents(source.slice(lastPayloadStart)).length > 1
+    splitComponents(value.clauses[value.clauses.length - 1].payload).length > 1
   ) {
     warnOnce(
       `${property}="${source}" has multiple values after its first conditional. Write the base value before the first conditional.`
@@ -1629,7 +1739,11 @@ export function contributeStyleString(
   // every native render plus every web render a driver drives inline. Without
   // this the enter style lands and then the target style has no such key at
   // all, so the driver has nothing to animate toward and the element snaps.
-  if ((!isWeb || !state.flatShouldDoClasses) && lifecycle && !hasBase) {
+  if (
+    (!isWeb || !state.flatShouldDoClasses) &&
+    (cached.flags & FLAT_VALUE_LIFECYCLE) !== 0 &&
+    !hasBase
+  ) {
     const value =
       property === 'opacity'
         ? 1
@@ -1661,11 +1775,16 @@ export function contributeFrontendValue(
     emitValue(state, property, value.base, null, merge, value.base, contextOnly)
   }
   for (const clause of value.clauses) {
-    const condition = getCondition(state, clause.modifiers.join(':'))
+    const condition = getCachedCondition(
+      state.conf,
+      sourceForModifiers(clause.modifiers),
+      clause.modifiers
+    )
+    const active = condition && evaluateCondition(state, condition).active
     if (
       condition &&
       condition.emit &&
-      (condition.active || (isWeb && state.flatShouldDoClasses))
+      (active || (isWeb && state.flatShouldDoClasses))
     ) {
       emitValue(
         state,
@@ -1693,7 +1812,7 @@ export function contributeVariantClauseValue(
   if (process.env.TAMAGUI_RUNTIME_STYLE_VALUE_GRAMMAR === 'disabled') {
     return
   }
-  const condition = getCondition(state, conditionSource)
+  const condition = getCachedCondition(state.conf, conditionSource)
   if (!condition) {
     if (process.env.NODE_ENV === 'development') {
       warnRefusedValue(property, value, `unknown modifier "${conditionSource}"`)
@@ -1705,7 +1824,11 @@ export function contributeVariantClauseValue(
       `${property}: "${condition.unsupportedState}:" has no native component-state source; dropping the clause`
     )
   }
-  if (condition.emit && (condition.active || (isWeb && state.flatShouldDoClasses))) {
+  const active = evaluateCondition(state, condition).active
+  if (
+    condition.emit &&
+    (active || (isWeb && state.flatShouldDoClasses))
+  ) {
     emitValue(state, property, value, condition, merge, originalValue, contextOnly)
   }
 }

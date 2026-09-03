@@ -1,4 +1,4 @@
-import { tamaguiPlugin } from '@tamagui/vite-plugin'
+import { tamaguiPlugin } from '../../compiler/vite-plugin/dist/esm/index.mjs'
 import react from '@vitejs/plugin-react'
 import { resolve } from 'node:path'
 import { defineConfig } from 'vite'
@@ -7,16 +7,32 @@ import { bundleAttributionPlugin } from '../shared/bundleAttributionPlugin'
 
 const extract = process.env.EXTRACT === '1'
 const outputCSS = process.env.BENCH_OUTPUT_CSS
-const webRuntimeFeatures =
-  extract || process.env.BENCH_RUNTIME_FEATURES === 'full'
-    ? undefined
-    : {
-        inlineThemeValues: false,
-        styleValueGrammar: false,
-        safeArea: false,
-      }
+const runtimeRoot =
+  process.env.BENCH_RUNTIME_ROOT ||
+  '/Users/n8/.worktrees/tamagui-v3-golf-p28910'
 
 export default defineConfig({
+  root: import.meta.dirname,
+  resolve: {
+    alias: [
+      {
+        find: /^@tamagui\/web\/(.+)$/,
+        replacement: `${runtimeRoot}/code/core/web/dist/esm/$1.mjs`,
+      },
+      {
+        find: /^@tamagui\/web$/,
+        replacement: `${runtimeRoot}/code/core/web/dist/esm/index.mjs`,
+      },
+      {
+        find: '@tamagui/style-grammar/runtime',
+        replacement: `${runtimeRoot}/code/core/style-grammar/dist/esm/runtime.mjs`,
+      },
+      {
+        find: /^tamagui$/,
+        replacement: `${runtimeRoot}/code/ui/tamagui/dist/esm/index.mjs`,
+      },
+    ],
+  },
   plugins: [
     outputCSS && {
       name: 'benchmark-global-css-import',
@@ -37,7 +53,6 @@ export default defineConfig({
       optimize: extract,
       disableExtraction: !extract,
       outputCSS,
-      experimental: webRuntimeFeatures ? { webRuntimeFeatures } : undefined,
     }),
     bundleAttributionPlugin(process.env.BUNDLE_ATTRIBUTION_FILE, import.meta.dirname),
   ],
