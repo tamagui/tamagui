@@ -431,8 +431,17 @@ const applyAnimation = (
   // a throw during initialUpdaterRun), withSpring/withTiming return the raw
   // target value (number or string) instead of an animation descriptor.
   // bail out instead of crashing on .onStart assignment. (#4193)
+  //
+  // note: we avoid `typeof x === 'object'` here because SWC's ES5 transform
+  // replaces it with a `_type_of()` helper that isn't a worklet — calling it
+  // on the UI Runtime crashes Reanimated 4. checking for known primitive types
+  // instead is safe because SWC leaves those comparisons as plain `typeof`.
   const isAnimationDescriptor =
-    animatedValue !== null && typeof animatedValue === 'object'
+    animatedValue !== null &&
+    typeof animatedValue !== 'number' &&
+    typeof animatedValue !== 'string' &&
+    typeof animatedValue !== 'boolean' &&
+    typeof animatedValue !== 'undefined'
 
   if (isAnimationDescriptor && (seedValue !== undefined || validateStartAsColor)) {
     const innerOnStart = animatedValue.onStart

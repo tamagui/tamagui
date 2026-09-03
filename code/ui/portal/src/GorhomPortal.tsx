@@ -265,18 +265,13 @@ const PortalProviderComponent = ({
       <PortalDispatchContext.Provider value={transitionDispatch}>
         <PortalStateContext.Provider value={state}>
           {children}
-          {shouldAddRootHost && portalState.type !== 'teleport' && (
-            <PortalHost name={rootHostName} />
-          )}
+          {shouldAddRootHost && <PortalHost name={rootHostName} />}
         </PortalStateContext.Provider>
       </PortalDispatchContext.Provider>
     </PortalProviderActiveContext.Provider>
   )
 
-  // teleport's own PortalProvider renders an absolute-fill root host, so the
-  // gorhom root host is skipped above: a second host with the same name
-  // replaces it in the native registry and, having no style, lays out at zero
-  // height, which draws every teleported sheet offscreen
+  // wrap with NativePortalProvider if teleport is available
   if (portalState.type === 'teleport') {
     return <NativePortalProvider>{content}</NativePortalProvider>
   }
