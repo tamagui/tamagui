@@ -605,6 +605,12 @@ function contributeProp(
           else if (property === 'containerType') {
             pass[passFrontendContainerType] = entry[1]
           }
+          // collect non-style-key props so .resolve() can see className-
+          // contributed variant values (e.g. ring, ringColor from
+          // "ring-2 ring-blue-500"). only allocates when needed.
+          if (!(property in validStyles)) {
+            ;(styleState.classNameResolvedProps ??= {})[property] = entry[1]
+          }
           contributeProp(pass, property, entry[1])
         }
       }
@@ -1303,8 +1309,14 @@ export const getSplitStyles: StyleSplitter = (
     // resolver output is styles only: never re-enter variant dispatch
     pass[passFlags] = flagsBefore | passNoExpandFlag
     const env = getDynamicEnv(styleState)
+    // merge className-contributed variant props (e.g. ring, ringColor) so
+    // .resolve() sees them alongside regular props. fast path: skip
+    // allocation when className didn't yield any non-style-key props.
+    const resolveProps = styleState.classNameResolvedProps
+      ? { ...processedProps, ...styleState.classNameResolvedProps }
+      : processedProps
     for (let index = 0; index < resolvers.length; index++) {
-      const resolved = resolvers[index](processedProps, env)
+      const resolved = resolvers[index](resolveProps, env)
       if (resolved) {
         for (const key in resolved) {
           if (resolved[key] == null) continue

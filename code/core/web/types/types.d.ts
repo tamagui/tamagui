@@ -1751,6 +1751,7 @@ export type GetStyleState = {
     originalContextPropValues?: Record<string, any>;
     tokenProvenance?: Record<string, string>;
     animationDriver?: AnimationDriver | null;
+    classNameResolvedProps?: Record<string, any>;
 };
 export type StyleResolver<Response = PropMappedValue> = (key: string, value: any, props: SplitStyleProps, state: GetStyleState, parentVariantKey: string) => Response;
 export type PropMapper = (key: string, value: any, state: GetStyleState, disabled: boolean, parentCondition?: number, fallbackOriginal?: any) => void;
