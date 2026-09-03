@@ -5,7 +5,6 @@ import { getGlobalCssLoader } from 'next/dist/build/webpack/config/blocks/css/lo
 import path from 'node:path'
 import type { PluginOptions as LoaderPluginOptions } from 'tamagui-loader'
 import { TamaguiPlugin } from 'tamagui-loader'
-import webpack from 'webpack'
 
 const { loadTamaguiBuildConfigSync } = Static
 
@@ -160,7 +159,7 @@ export const withTamagui = (tamaguiOptionsIn?: WithTamaguiProps) => {
           }
         }
 
-        webpackConfig.plugins.push(new webpack.DefinePlugin(defines))
+        webpackConfig.plugins.push(new options.webpack.DefinePlugin(defines))
 
         if (process.env.IGNORE_TS_CONFIG_PATHS) {
           if (process.env.DEBUG) {
