@@ -175,7 +175,14 @@ function hasName(names: Names | undefined, name: string): boolean {
   return name in names
 }
 
-function splitCandidate(candidate: string): { modifiers: string[]; base: string } | null {
+/**
+ * Split a candidate on its unbracketed colons: everything before the last one is a
+ * raw modifier, the remainder is the base. `null` for unbalanced brackets or an
+ * empty base, which are not candidates at all.
+ */
+export function splitCandidate(
+  candidate: string
+): { modifiers: string[]; base: string } | null {
   const parts: string[] = []
   let current = ''
   let bracketDepth = 0

@@ -35,6 +35,15 @@ export type CandidateClassification = {
 	kind: "passthrough";
 	reason: string;
 };
+/**
+* Split a candidate on its unbracketed colons: everything before the last one is a
+* raw modifier, the remainder is the base. `null` for unbalanced brackets or an
+* empty base, which are not candidates at all.
+*/
+export declare function splitCandidate(candidate: string): {
+	modifiers: string[];
+	base: string;
+} | null;
 export declare function hasTokenName(config: GrammarConfigView, category: TokenCategory, name: string): boolean;
 export declare function decimalHalfTokenAlias(name: string): string | null;
 export declare function resolveTokenName(config: GrammarConfigView, category: TokenCategory, name: string): string | null;
