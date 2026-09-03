@@ -6,7 +6,6 @@ export declare const skipProps: {
     untilMeasured: number;
     transition: number;
     space: number;
-    animateOnly: number;
     animatedBy: number;
     displayName: number;
     disableClassName: number;

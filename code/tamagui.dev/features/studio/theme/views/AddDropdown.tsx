@@ -50,7 +50,10 @@ export const AddDropdown = withStaticProperties(
           boxShadow="0 4px 12px shadow-color"
           maxW={400}
           items="flex-start"
-          transition={['quickest', { opacity: { overshootClamping: true } }]}
+          transition={{
+            preset: 'quickest',
+            opacity: { preset: 'quickest', spring: { overshootClamping: true } },
+          }}
           trapFocus={false}
         >
           <Popover.ScrollView>{children}</Popover.ScrollView>

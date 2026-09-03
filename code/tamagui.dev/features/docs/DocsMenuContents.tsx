@@ -265,9 +265,8 @@ const AccordionSection = ({
               </Paragraph>
 
               <YStack
-                transition="quick"
+                transition={{ preset: 'quick', properties: 'transform' }}
                 rotate={open ? '180deg' : '0deg'}
-                animateOnly={['transform']}
               >
                 <ChevronDown color="color8" size="1" />
               </YStack>

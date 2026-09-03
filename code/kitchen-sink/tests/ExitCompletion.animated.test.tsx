@@ -330,8 +330,8 @@ test.describe('Element removal timing', () => {
   })
 })
 
-test.describe('AnimateOnly & Transform Sub-Keys', () => {
-  test('scenario 51: animateOnly excludes scale from pending set', async ({
+test.describe('Property Lists & Transform Sub-Keys', () => {
+  test('scenario 51: a property list excludes scale from pending set', async ({
     page,
   }, testInfo) => {
     // this test uses CSS-style duration strings which only CSS driver supports
@@ -341,7 +341,7 @@ test.describe('AnimateOnly & Transform Sub-Keys', () => {
       return
     }
 
-    // animateOnly=['opacity'] with scale=500ms, opacity=100ms
+    // properties: 'opacity' with scale=500ms, opacity=100ms
     // should complete based on opacity timing (~100ms), not scale
     await page.getByTestId('exit-51-trigger').click()
 
@@ -354,7 +354,7 @@ test.describe('AnimateOnly & Transform Sub-Keys', () => {
     // allow tolerance but should NOT wait 400-500ms
     expect(
       completionTime,
-      'AnimateOnly should exclude scale - complete around opacity time (not 400+ms)'
+      'The property list should exclude scale - complete around opacity time (not 400+ms)'
     ).toBeLessThan(400)
     expect(data.counts['51-animateonly-exclusion'], 'Should complete exactly once').toBe(
       1
@@ -396,7 +396,7 @@ test.describe('AnimateOnly & Transform Sub-Keys', () => {
   })
 
   test('scenario 55: zero animatable props completes immediately', async ({ page }) => {
-    // animateOnly=[] means nothing should animate, immediate completion
+    // transition="none" means nothing should animate, immediate completion
     await page.getByTestId('exit-55-trigger').click()
 
     const startTime = Date.now()

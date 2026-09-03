@@ -195,7 +195,7 @@ export function AnimationComprehensiveCase() {
       {/* SECTION 12: Per-Property with Transform (animationClamped fix) */}
       <SectionHeader>12. Per-Property with Transform</SectionHeader>
       <Scenario38_PerPropertyWithTransform />
-      <Scenario39_ObjectFormatPerProperty />
+      <Scenario39_StringFormatPerProperty />
       <Scenario40_ObjectFormatNoDefault />
       <Scenario41_PerPropertyWithDelay />
 
@@ -208,8 +208,8 @@ export function AnimationComprehensiveCase() {
       <Scenario46_TransitionEnterExitPerProperty />
       <Scenario47_TransitionEnterExitWithDelay />
 
-      {/* SECTION 14: animateOnly with Exit/Enter Styles */}
-      <SectionHeader>14. animateOnly with Exit/Enter Styles</SectionHeader>
+      {/* SECTION 14: property lists with Exit/Enter Styles */}
+      <SectionHeader>14. Property lists with Exit/Enter Styles</SectionHeader>
       <Scenario48_AnimateOnlyWithExitStyle />
       <Scenario49_AnimateOnlyWithEnterExitStyle />
 
@@ -866,7 +866,10 @@ function Scenario17_SpringCustom() {
       </Button>
       <Square
         ref={ref as any}
-        transition={['quick', { damping: 5, stiffness: 100, mass: 0.5 }]}
+        transition={{
+          preset: 'quick',
+          spring: { stiffness: 100, damping: 5, mass: 0.5 },
+        }}
         bg="yellow10"
         scale={active ? 1.5 : 1}
         size={40}
@@ -980,7 +983,7 @@ function Scenario20_TimingWithDelay() {
       </Button>
       <Square
         ref={ref as any}
-        transition={['quick', { delay: 300 }]}
+        transition={{ preset: 'quick', delay: 300 }}
         bg="blue10"
         opacity={active ? 0.3 : 1}
         size={40}
@@ -1217,7 +1220,7 @@ function Scenario25_Interruption() {
 }
 
 // ============================================================================
-// SCENARIO 26: animateOnly prop
+// SCENARIO 26: a transition that names its properties
 // ============================================================================
 function Scenario26_AnimateOnly() {
   const [active, setActive] = useState(false)
@@ -1243,11 +1246,10 @@ function Scenario26_AnimateOnly() {
       </Button>
       <Square
         ref={ref as any}
-        transition="quick"
+        transition={{ preset: 'quick', properties: 'opacity' }}
         bg="blue10"
         opacity={active ? 0.3 : 1}
         scale={active ? 1.5 : 1}
-        animateOnly={['opacity']}
         size={40}
         testID="scenario-26-target"
         data-testid="scenario-26-target"
@@ -1283,7 +1285,7 @@ function Scenario27_AnimationConfig() {
       </Button>
       <Square
         ref={ref as any}
-        transition={['quick', { damping: 8, stiffness: 80 }]}
+        transition={{ preset: 'quick', spring: { stiffness: 80, damping: 8 } }}
         bg="green10"
         scale={active ? 1.5 : 1}
         size={40}
@@ -1433,7 +1435,7 @@ function Scenario30_HoverAnimation() {
 
 // ============================================================================
 // SCENARIO 31: Per-Property Animation Configs
-// Tests: transition={['quick', { opacity: 'lazy', scale: 'bouncy' }]}
+// Tests: transition={{ preset: 'quick', opacity: 'lazy', scale: 'bouncy' }}
 // Each property should animate with its own timing/spring config
 // ============================================================================
 function Scenario31_PerPropertyConfigs() {
@@ -1460,7 +1462,7 @@ function Scenario31_PerPropertyConfigs() {
       </Button>
       <Square
         ref={ref as any}
-        transition={['quick', { opacity: 'lazy', scale: 'bouncy' }] as any}
+        transition={{ preset: 'quick', opacity: 'lazy', scale: 'bouncy' }}
         bg="blue10"
         opacity={active ? 0.3 : 1}
         scale={active ? 1.5 : 1}
@@ -1505,7 +1507,7 @@ function Scenario32_PerPropertyWithInterruption() {
       </Button>
       <Square
         ref={ref as any}
-        transition={['quick', { opacity: 'lazy', scale: 'bouncy' }] as any}
+        transition={{ preset: 'quick', opacity: 'lazy', scale: 'bouncy' }}
         bg="green10"
         opacity={state === 0 ? 1 : state === 1 ? 0.5 : 0.2}
         scale={state === 0 ? 1 : state === 1 ? 1.3 : 1.6}
@@ -1551,7 +1553,7 @@ function Scenario33_MixedSpringTiming() {
       </Button>
       <View
         ref={ref as any}
-        transition={['bouncy', { opacity: 'quick', borderRadius: 'lazy' }] as any}
+        transition={{ preset: 'bouncy', opacity: 'quick', borderRadius: 'lazy' }}
         width={40}
         height={40}
         bg="blue10"
@@ -1598,19 +1600,15 @@ function Scenario34_ComplexObjectManyProps() {
       </Button>
       <View
         ref={ref as any}
-        transition={
-          [
-            'quick',
-            {
-              opacity: 'lazy',
-              scale: 'bouncy',
-              width: 'lazy',
-              height: 'lazy',
-              borderRadius: 'bouncy',
-              backgroundColor: '200ms',
-            },
-          ] as any
-        }
+        transition={{
+          preset: 'quick',
+          opacity: 'lazy',
+          scale: 'bouncy',
+          width: 'lazy',
+          height: 'lazy',
+          borderRadius: 'bouncy',
+          backgroundColor: '200ms',
+        }}
         width={active ? 80 : 40}
         height={active ? 60 : 40}
         backgroundColor={`${active ? 'red10' : 'blue10'}`}
@@ -1665,7 +1663,7 @@ function Scenario35_RapidPerPropertyChanges() {
       </Button>
       <Square
         ref={ref as any}
-        transition={['quick', { opacity: 'lazy', scale: 'bouncy' }] as any}
+        transition={{ preset: 'quick', opacity: 'lazy', scale: 'bouncy' }}
         bg="yellow10"
         opacity={active ? 0.3 : 1}
         scale={active ? 1.5 : 1}
@@ -1766,7 +1764,7 @@ function Scenario37_EnterStyleScaleX() {
 
 // ============================================================================
 // SCENARIO 38: Per-Property Config with Transform (animationClamped pattern)
-// Tests: transition={['quick', { opacity: '200ms', backgroundColor: '200ms' }]}
+// Tests: transition={{ preset: 'quick', opacity: '200ms', backgroundColor: '200ms' }}
 // The key test: scale/y should STILL animate with the default 'quick' animation
 // even though they're not explicitly listed in the per-property config
 // ============================================================================
@@ -1795,7 +1793,7 @@ function Scenario38_PerPropertyWithTransform() {
       </Button>
       <Square
         ref={ref as any}
-        transition={['quick', { opacity: '200ms', backgroundColor: '200ms' }] as any}
+        transition={{ preset: 'quick', opacity: '200ms', backgroundColor: '200ms' }}
         bg={`${active ? 'red10' : 'blue10'}`}
         opacity={active ? 0.5 : 1}
         scale={active ? 1.3 : 1}
@@ -1810,11 +1808,11 @@ function Scenario38_PerPropertyWithTransform() {
 }
 
 // ============================================================================
-// SCENARIO 39: Object Format Per-Property with Transform
-// Tests: transition={{ opacity: '200ms', backgroundColor: '200ms', default: 'quick' }}
-// Same as 38 but using object format instead of array format
+// SCENARIO 39: CSS String Per-Property with Transform
+// Tests: transition="quick, opacity 200ms, background-color 200ms"
+// Same motion as 38, spelled as a css transition string instead of an object
 // ============================================================================
-function Scenario39_ObjectFormatPerProperty() {
+function Scenario39_StringFormatPerProperty() {
   const [active, setActive] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
   const { startLogging, stopLogging } = useAnimationLogger('39-object-per-prop', ref, [
@@ -1835,13 +1833,11 @@ function Scenario39_ObjectFormatPerProperty() {
         testID="scenario-39-trigger"
         data-testid="scenario-39-trigger"
       >
-        39: Object Format
+        39: String Format
       </Button>
       <Square
         ref={ref as any}
-        transition={
-          { opacity: '200ms', backgroundColor: '200ms', default: 'quick' } as any
-        }
+        transition="quick, opacity 200ms, background-color 200ms"
         bg={`${active ? 'red10' : 'blue10'}`}
         opacity={active ? 0.5 : 1}
         scale={active ? 1.3 : 1}
@@ -1850,13 +1846,13 @@ function Scenario39_ObjectFormatPerProperty() {
         testID="scenario-39-target"
         data-testid="scenario-39-target"
       />
-      <Paragraph size="1">object: opacity/bg=200ms, default=quick</Paragraph>
+      <Paragraph size="1">string: opacity/bg=200ms, rest=quick</Paragraph>
     </XStack>
   )
 }
 
 // ============================================================================
-// SCENARIO 40: Object Format WITHOUT Default (only specified properties animate)
+// SCENARIO 40: Object Format with no base entry (only named properties animate)
 // Tests: transition={{ opacity: '200ms' }} - scale should NOT animate
 // ============================================================================
 function Scenario40_ObjectFormatNoDefault() {
@@ -1883,7 +1879,7 @@ function Scenario40_ObjectFormatNoDefault() {
       </Button>
       <Square
         ref={ref as any}
-        transition={{ opacity: '500ms' } as any}
+        transition={{ opacity: '500ms' }}
         bg="blue10"
         opacity={active ? 0.5 : 1}
         scale={active ? 1.3 : 1}
@@ -1898,7 +1894,7 @@ function Scenario40_ObjectFormatNoDefault() {
 
 // ============================================================================
 // SCENARIO 41: Per-Property Config with Delay
-// Tests: transition={['quick', { delay: 300, opacity: '500ms' }]}
+// Tests: transition={{ preset: 'quick', delay: 300, opacity: { duration: '500ms', delay: 300 } }}
 // Delay should apply to all properties, opacity uses custom timing
 // ============================================================================
 function Scenario41_PerPropertyWithDelay() {
@@ -1925,7 +1921,11 @@ function Scenario41_PerPropertyWithDelay() {
       </Button>
       <Square
         ref={ref as any}
-        transition={['quick', { delay: 300, opacity: '500ms' }] as any}
+        transition={{
+          preset: 'quick',
+          delay: 300,
+          opacity: { duration: '500ms', delay: 300 },
+        }}
         bg="blue10"
         opacity={active ? 0.5 : 1}
         scale={active ? 1.3 : 1}
@@ -1971,7 +1971,7 @@ function Scenario42_TransitionEnterExit() {
           <Square
             key="enter-exit-42"
             ref={ref as any}
-            transition={{ enter: '500ms', exit: '100ms' } as any}
+            transition={{ enter: '500ms', exit: '100ms' }}
             bg="blue10"
             opacity="enter:0 exit:0"
             scale="enter:0.5 exit:0.5"
@@ -1990,7 +1990,7 @@ function Scenario42_TransitionEnterExit() {
 
 // ============================================================================
 // SCENARIO 43: Enter Transition Only (exit uses default)
-// Tests: transition={{ enter: '500ms', default: '100ms' }}
+// Tests: transition={{ duration: '100ms', enter: '500ms' }}
 // Enter uses 500ms (slow), exit/other uses default 100ms (fast)
 // Using timing animations for predictable test behavior across all drivers
 // ============================================================================
@@ -2021,7 +2021,7 @@ function Scenario43_TransitionEnterOnly() {
           <Square
             key="enter-only-43"
             ref={ref as any}
-            transition={{ enter: '500ms', default: '100ms' } as any}
+            transition={{ duration: '100ms', enter: '500ms' }}
             bg="green10"
             opacity="enter:0 exit:0"
             scale="enter:0.5 exit:0.5"
@@ -2040,7 +2040,7 @@ function Scenario43_TransitionEnterOnly() {
 
 // ============================================================================
 // SCENARIO 44: Exit Transition Only (enter uses default)
-// Tests: transition={{ exit: '500ms', default: '100ms' }}
+// Tests: transition={{ duration: '100ms', exit: '500ms' }}
 // Exit uses 500ms (slow), enter/other uses default 100ms (fast)
 // Using timing animations for predictable test behavior across all drivers
 // ============================================================================
@@ -2071,7 +2071,7 @@ function Scenario44_TransitionExitOnly() {
           <Square
             key="exit-only-44"
             ref={ref as any}
-            transition={{ exit: '500ms', default: '100ms' } as any}
+            transition={{ duration: '100ms', exit: '500ms' }}
             bg="yellow10"
             opacity="enter:0 exit:0"
             scale="enter:0.5 exit:0.5"
@@ -2090,7 +2090,7 @@ function Scenario44_TransitionExitOnly() {
 
 // ============================================================================
 // SCENARIO 45: Enter/Exit with Default Fallback
-// Tests: transition={{ enter: '300ms', exit: '100ms', default: '500ms' }}
+// Tests: transition={{ duration: '500ms', enter: '300ms', exit: '100ms' }}
 // Enter=300ms, exit=100ms, property changes while visible use 500ms
 // Using timing animations for predictable test behavior across all drivers
 // ============================================================================
@@ -2134,7 +2134,7 @@ function Scenario45_TransitionEnterExitWithDefault() {
           <Square
             key="enter-exit-default-45"
             ref={ref as any}
-            transition={{ enter: '300ms', exit: '100ms', default: '500ms' } as any}
+            transition={{ duration: '500ms', enter: '300ms', exit: '100ms' }}
             bg="red10"
             opacity={`${active ? 0.5 : 1} enter:0 exit:0`}
             scale="enter:0.5 exit:0.5"
@@ -2185,7 +2185,7 @@ function Scenario46_TransitionEnterExitPerProperty() {
           <Square
             key="enter-exit-per-prop-46"
             ref={ref as any}
-            transition={{ enter: '300ms', exit: '100ms', opacity: '500ms' } as any}
+            transition={{ enter: '300ms', exit: '100ms', opacity: '500ms' }}
             bg="blue10"
             opacity="enter:0 exit:0"
             scale="enter:0.5 exit:0.5"
@@ -2235,7 +2235,7 @@ function Scenario47_TransitionEnterExitWithDelay() {
           <Square
             key="enter-exit-delay-47"
             ref={ref as any}
-            transition={{ enter: '300ms', exit: '100ms', delay: 200 } as any}
+            transition={{ enter: '300ms', exit: '100ms', delay: 200 }}
             bg="color10"
             opacity="enter:0 exit:0"
             scale="enter:0.5 exit:0.5"
@@ -2253,9 +2253,9 @@ function Scenario47_TransitionEnterExitWithDelay() {
 }
 
 // ============================================================================
-// SCENARIO 48: animateOnly with exit clause
-// Tests: animateOnly={['opacity', 'transform']} combined with exit clause
-// Exit animation should work correctly when animateOnly includes the exit properties
+// SCENARIO 48: a property list with an exit clause
+// Tests: properties: 'opacity, transform' combined with an exit clause
+// Exit animation should work when the list includes the exit properties
 // ============================================================================
 function Scenario48_AnimateOnlyWithExitStyle() {
   const [visible, setVisible] = useState(true)
@@ -2284,11 +2284,10 @@ function Scenario48_AnimateOnlyWithExitStyle() {
           <Square
             key="animate-only-exit-48"
             ref={ref as any}
-            transition="500ms"
+            transition={{ duration: '500ms', properties: 'opacity, transform' }}
             bg="blue10"
             opacity="exit:0"
             scale="exit:0.5"
-            animateOnly={['opacity', 'transform']}
             size={40}
             testID="scenario-48-target"
             data-testid="scenario-48-target"
@@ -2296,15 +2295,15 @@ function Scenario48_AnimateOnlyWithExitStyle() {
         )}
       </AnimatePresence>
       <Paragraph size="1">
-        {visible ? 'visible' : 'hidden'} (animateOnly=['opacity', 'transform'])
+        {visible ? 'visible' : 'hidden'} (properties: 'opacity, transform')
       </Paragraph>
     </XStack>
   )
 }
 
 // ============================================================================
-// SCENARIO 49: animateOnly with enter clause and exit clause
-// Tests: animateOnly combined with both enter and exit animations
+// SCENARIO 49: a property list with enter and exit clauses
+// Tests: a property list combined with both enter and exit animations
 // Both should animate smoothly using only the specified properties
 // ============================================================================
 function Scenario49_AnimateOnlyWithEnterExitStyle() {
@@ -2335,12 +2334,11 @@ function Scenario49_AnimateOnlyWithEnterExitStyle() {
           <Square
             key="animate-only-enter-exit-49"
             ref={ref as any}
-            transition="500ms"
+            transition={{ duration: '500ms', properties: 'opacity, transform' }}
             bg="green10"
             opacity="enter:0 exit:0"
             scale="enter:0.5 exit:0.5"
             y="exit:20px"
-            animateOnly={['opacity', 'transform']}
             size={40}
             testID="scenario-49-target"
             data-testid="scenario-49-target"
@@ -2348,7 +2346,7 @@ function Scenario49_AnimateOnlyWithEnterExitStyle() {
         )}
       </AnimatePresence>
       <Paragraph size="1">
-        {visible ? 'visible' : 'hidden'} (enter+exit with animateOnly)
+        {visible ? 'visible' : 'hidden'} (enter+exit with a property list)
       </Paragraph>
     </XStack>
   )
@@ -2387,7 +2385,7 @@ function Scenario50_EnterTimingVerification() {
           <Square
             key="enter-timing-50"
             ref={ref as any}
-            transition={{ enter: '200ms', exit: '1000ms' } as any}
+            transition={{ enter: '200ms', exit: '1000ms' }}
             bg="red10"
             opacity="enter:0 exit:0"
             scale="enter:0.5 exit:0.5"
@@ -2406,7 +2404,7 @@ function Scenario50_EnterTimingVerification() {
 
 // ============================================================================
 // SCENARIO 51: Duration Normalization
-// Tests: transition={{ default: { duration: 1 } }}
+// Tests: transition={{ duration: 1 }}
 // BUG FIX TEST: duration: 1 should be 1ms, not 1 second
 // The animation should be instant (1ms), not slow (1 second)
 // ============================================================================
@@ -2437,7 +2435,7 @@ function Scenario51_DurationNormalization() {
           <Square
             key="duration-norm-51"
             ref={ref as any}
-            transition={{ duration: 1 } as any}
+            transition={{ duration: 1 }}
             bg="orange10"
             opacity="enter:0 exit:0"
             scale="enter:0.5 exit:0.5"
@@ -2456,7 +2454,7 @@ function Scenario51_DurationNormalization() {
 
 // ============================================================================
 // SCENARIO 52: Duration Normalization with Inline Config
-// Tests: transition={{ default: '100ms', duration: 50 }}
+// Tests: transition={{ preset: 'medium', duration: 50 }}
 // BUG FIX TEST: Inline duration override should also be in milliseconds
 // ============================================================================
 function Scenario52_DurationNormalizationInlineConfig() {
@@ -2486,7 +2484,7 @@ function Scenario52_DurationNormalizationInlineConfig() {
           <Square
             key="duration-inline-52"
             ref={ref as any}
-            transition={{ default: '100ms', duration: 50 } as any}
+            transition={{ preset: 'medium', duration: 50 }}
             bg="purple10"
             opacity="enter:0 exit:0"
             scale="enter:0.5 exit:0.5"

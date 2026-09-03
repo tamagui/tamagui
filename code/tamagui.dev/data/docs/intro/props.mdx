@@ -167,23 +167,13 @@ Use these events alongside `press:`, `hover:`, and `focus:` clauses to create in
     {
       name: 'transition',
       required: false,
-      type: 'string',
+      type: 'string | object',
       description: (
         <span>
-          Apply a transition animation as defined in your createTamagui configuration. See the{' '}
-          <a href="/docs/core/animations">Animations documentation</a> for more details on configuring animation drivers.
-        </span>
-      ),
-    },
-
-    {
-      name: 'animateOnly',
-      required: false,
-      type: 'string[]',
-      description: (
-        <span>
-          A list of properties to animate. Note that flat transforms can only be controlled via `transform`. Learn more in the{' '}
-          <a href="/docs/core/animations#granular-animations">Granular animations</a> section.
+          A CSS transition string (<code>"200ms ease-out"</code>), a preset name from your
+          createTamagui configuration (<code>"bouncy"</code>), or an object for per-property
+          control (<code>{`{ preset: 'bouncy', opacity: '100ms' }`}</code>). See the{' '}
+          <a href="/docs/core/animations">Animations documentation</a>.
         </span>
       ),
     },

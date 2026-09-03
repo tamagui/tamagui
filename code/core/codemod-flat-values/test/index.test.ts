@@ -13,6 +13,7 @@ import { fileURLToPath } from 'node:url'
 import { sanitize, type SiteReport } from '../src/convert'
 import type { FunctionalVariantReport } from '../src/functionalVariants'
 import type { SheetFrameReport } from '../src/sheetAnatomy'
+import type { TransitionReport } from '../src/transition'
 import {
   codemodMediaNames,
   createModifierRegistry,
@@ -39,6 +40,7 @@ interface Result {
     sites: SiteReport[]
     functionalVariants: FunctionalVariantReport[]
     sheetFrames: SheetFrameReport[]
+    transitions: TransitionReport[]
   }>
   summary: {
     sites: number
@@ -56,6 +58,8 @@ interface Result {
     functionalVariantFlags: Record<string, number>
     sheetFrames: number
     sheetFramesFlagged: number
+    transitions: number
+    transitionsFlagged: number
   }
 }
 
@@ -141,6 +145,10 @@ function runRaw(inputs: readonly string[]): {
 
 function sites(result: Result): SiteReport[] {
   return result.files.flatMap((file) => file.sites)
+}
+
+function transitions(result: Result): TransitionReport[] {
+  return result.files.flatMap((file) => file.transitions)
 }
 
 function only(result: Result): SiteReport {
@@ -636,9 +644,8 @@ export const Fixture = ({ anything }) => (
     expect(site.after).toContain('hoverStyle={{ opacity: 1 }}')
   })
 
-  test('keeps supported transition structures authored without inventory', () => {
-    const site = only(
-      run(`import { Text, TextInput, View, styled } from 'tamagui'
+  test('migrates the v2 transition array without touching the rest of the site', () => {
+    const result = run(`import { Text, TextInput, View, styled } from 'tamagui'
 export const Fixture = () => (
         <View
           bg="$blue10"
@@ -647,16 +654,18 @@ export const Fixture = () => (
           transform={[{ translateX: 20 }]}
         />
       )`)
-    )
 
+    expect(transitions(result).map((site) => site.after)).toEqual([
+      `transition={{ preset: 'quick', opacity: 'lazy' }}`,
+    ])
+    const site = only(result)
     expect(codes(site)).toEqual([])
     expect(site.inventory).toEqual([])
-    expect(site.after).toContain(`transition={['quick', { opacity: 'lazy' }]}`)
     expect(site.after).toContain('shadowOffset={{ width: 0, height: 20 }}')
     expect(site.after).toContain('transform={[{ translateX: 20 }]}')
   })
 
-  test('keeps transition objects and dynamic references byte-identical', () => {
+  test('spells `default` as `preset` and leaves a dynamic transition alone', () => {
     const result = run(`import { View } from 'tamagui'
 export const ObjectFixture = () => (
   <View bg="$blue10" transition={{ opacity: '500ms', default: 'quick' }} />
@@ -664,14 +673,82 @@ export const ObjectFixture = () => (
 export const DynamicFixture = ({ transition }) => (
   <View bg="$blue10" transition={transition} />
 )`)
-    const found = sites(result)
 
-    expect(found).toHaveLength(2)
-    expect(found.every((site) => site.inventory.length === 0)).toBe(true)
-    expect(found.map((site) => site.after)).toEqual([
+    // only the v2 value is a transition site; the dynamic one is left authored
+    expect(transitions(result).map((site) => site.after)).toEqual([
+      `transition={{ preset: 'quick', opacity: '500ms' }}`,
+    ])
+    expect(sites(result).map((site) => site.after)).toEqual([
       `bg="blue10" transition={{ opacity: '500ms', default: 'quick' }}`,
       'bg="blue10" transition={transition}',
     ])
+  })
+
+  test('folds a removed animateOnly list into the transition it narrowed', () => {
+    const written = runWrite(`import { View } from 'tamagui'
+export const Fixture = () => (
+  <View transition="quick" animateOnly={['transform', 'opacity']} opacity={0.5} />
+)`)
+    expect(written).toContain(
+      `transition={{ preset: 'quick', properties: 'transform, opacity' }}`
+    )
+    expect(written).not.toContain('animateOnly')
+    expect(written).toContain('opacity={0.5}')
+  })
+
+  test('drops a per-property entry the animateOnly list filtered out', () => {
+    const written = runWrite(`import { View } from 'tamagui'
+export const Fixture = () => (
+  <View transition={['quick', { opacity: 'lazy' }]} animateOnly={['transform']} />
+)`)
+    expect(written).toContain(`transition={{ preset: 'quick', properties: 'transform' }}`)
+    expect(written).not.toContain('lazy')
+  })
+
+  test('an empty animateOnly list is `none`', () => {
+    const written = runWrite(`import { View } from 'tamagui'
+export const Fixture = () => <View transition="quick" animateOnly={[]} />`)
+    expect(written).toContain(`transition="none"`)
+    expect(written).not.toContain('animateOnly')
+  })
+
+  test('flags an animateOnly the migration cannot fold', () => {
+    const dynamic = run(`import { View } from 'tamagui'
+export const Fixture = (props) => (
+  <View transition={props.animation} animateOnly={['transform']} />
+)`)
+    expect(
+      transitions(dynamic).flatMap((site) => site.flags.map((flag) => flag.code))
+    ).toEqual(['unsupported-legacy-value'])
+
+    const orphan = run(`import { View } from 'tamagui'
+export const Fixture = () => <View animateOnly={['transform']} />`)
+    expect(
+      transitions(orphan).flatMap((site) => site.flags.map((flag) => flag.detail))
+    ).toEqual([
+      'the removed `animateOnly` has no `transition` next to it; spell it as `properties` wherever the transition is authored',
+    ])
+  })
+
+  test('folds animateOnly inside a styled() definition', () => {
+    const written = runWrite(`import { View, styled } from 'tamagui'
+export const Card = styled(View, {
+  transition: 'quick',
+  animateOnly: ['transform'],
+})`)
+    expect(written).toContain(`transition: { preset: 'quick', properties: 'transform' }`)
+    expect(written).not.toContain('animateOnly')
+  })
+
+  test('writes the migrated transition and drops the array form', () => {
+    const written = runWrite(`import { View } from 'tamagui'
+export const Fixture = () => (
+  <View transition={['quick', { opacity: { overshootClamping: true } }]} />
+)`)
+    expect(written).toContain(
+      `transition={{ preset: 'quick', opacity: { preset: 'quick', spring: { overshootClamping: true } } }}`
+    )
+    expect(written).not.toContain('[')
   })
 })
 

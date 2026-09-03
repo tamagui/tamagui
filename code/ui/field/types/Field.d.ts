@@ -181,7 +181,7 @@ export declare const Field: React.FunctionComponent<Omit<import("@tamagui/core")
     touched?: boolean | undefined;
     valid?: boolean | undefined;
 }>, keyof FieldExtraProps> & FieldExtraProps & {
-    ref?: React.Ref<import("react-native").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods)> | undefined;
+    ref?: React.Ref<import("@tamagui/core").TamaguiElement> | undefined;
 }> & import("@tamagui/core").StaticComponentObject<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     dirty?: boolean | undefined;
     disabled?: boolean | undefined;
@@ -198,7 +198,7 @@ export declare const Field: React.FunctionComponent<Omit<import("@tamagui/core")
     invalid?: boolean | undefined;
     touched?: boolean | undefined;
     valid?: boolean | undefined;
-}>, keyof FieldExtraProps> & FieldExtraProps, import("react-native").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+}>, keyof FieldExtraProps> & FieldExtraProps, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     dirty?: boolean | undefined;
     disabled?: boolean | undefined;
     filled?: boolean | undefined;
@@ -231,7 +231,7 @@ export declare const Field: React.FunctionComponent<Omit<import("@tamagui/core")
         invalid?: boolean | undefined;
         touched?: boolean | undefined;
         valid?: boolean | undefined;
-    }>, keyof FieldExtraProps> & FieldExtraProps, import("react-native").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+    }>, keyof FieldExtraProps> & FieldExtraProps, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
         dirty?: boolean | undefined;
         disabled?: boolean | undefined;
         filled?: boolean | undefined;
@@ -265,7 +265,7 @@ export declare const Field: React.FunctionComponent<Omit<import("@tamagui/core")
         invalid?: boolean | undefined;
         touched?: boolean | undefined;
         valid?: boolean | undefined;
-    }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>>, import("react-native").Text | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").RNTamaguiTextNonStyleProps & Omit<import("@tamagui/core").RNTamaguiTextNonStyleProps, "dirty" | "disabled" | "filled" | "focused" | "invalid" | "touched" | "valid" | keyof import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithFlatVariantValues<{
+    }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>>, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").RNTamaguiTextNonStyleProps & Omit<import("@tamagui/core").RNTamaguiTextNonStyleProps, "dirty" | "disabled" | "filled" | "focused" | "invalid" | "touched" | "valid" | keyof import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithFlatVariantValues<{
         dirty?: boolean | undefined;
         disabled?: boolean | undefined;
         filled?: boolean | undefined;
@@ -298,7 +298,7 @@ export declare const Field: React.FunctionComponent<Omit<import("@tamagui/core")
         invalid?: boolean | undefined;
         touched?: boolean | undefined;
         valid?: boolean | undefined;
-    }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>>, import("react-native").Text | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").RNTamaguiTextNonStyleProps & Omit<import("@tamagui/core").RNTamaguiTextNonStyleProps, "dirty" | "disabled" | "filled" | "focused" | "invalid" | "touched" | "valid" | keyof import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithFlatVariantValues<{
+    }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>>, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").RNTamaguiTextNonStyleProps & Omit<import("@tamagui/core").RNTamaguiTextNonStyleProps, "dirty" | "disabled" | "filled" | "focused" | "invalid" | "touched" | "valid" | keyof import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithFlatVariantValues<{
         dirty?: boolean | undefined;
         disabled?: boolean | undefined;
         filled?: boolean | undefined;
@@ -333,7 +333,7 @@ export declare const Field: React.FunctionComponent<Omit<import("@tamagui/core")
         valid?: boolean | undefined;
     }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & {
         match?: boolean | keyof FieldValidityState;
-    }, import("react-native").Text | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").RNTamaguiTextNonStyleProps & Omit<import("@tamagui/core").RNTamaguiTextNonStyleProps, "dirty" | "disabled" | "filled" | "focused" | "invalid" | "touched" | "valid" | keyof import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithFlatVariantValues<{
+    }, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").RNTamaguiTextNonStyleProps & Omit<import("@tamagui/core").RNTamaguiTextNonStyleProps, "dirty" | "disabled" | "filled" | "focused" | "invalid" | "touched" | "valid" | keyof import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithFlatVariantValues<{
         dirty?: boolean | undefined;
         disabled?: boolean | undefined;
         filled?: boolean | undefined;
@@ -370,7 +370,7 @@ export declare const Field: React.FunctionComponent<Omit<import("@tamagui/core")
         valid?: boolean | undefined;
     }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
         disabled?: boolean;
-    }, import("react-native").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "dirty" | "disabled" | "filled" | "focused" | "invalid" | "touched" | "valid" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
+    }, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "dirty" | "disabled" | "filled" | "focused" | "invalid" | "touched" | "valid" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
         dirty?: boolean | undefined;
         disabled?: boolean | undefined;
         filled?: boolean | undefined;

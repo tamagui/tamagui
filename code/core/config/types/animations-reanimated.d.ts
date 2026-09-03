@@ -1,203 +1,109 @@
 export declare const animationsReanimated: import("@tamagui/web").AnimationDriverWithAnimatedNumbers<{
-    '0ms': {
-        type: "timing";
-        duration: number;
+    readonly quickest: {
+        readonly duration: 120;
+        readonly bounce: 0.2;
     };
-    '50ms': {
-        type: "timing";
-        duration: number;
+    readonly quickestLessBouncy: {
+        readonly duration: 120;
+        readonly bounce: 0;
     };
-    '75ms': {
-        type: "timing";
-        duration: number;
+    readonly quicker: {
+        readonly duration: 160;
+        readonly bounce: 0.25;
     };
-    '100ms': {
-        type: "timing";
-        duration: number;
+    readonly quickerLessBouncy: {
+        readonly duration: 160;
+        readonly bounce: 0;
     };
-    '200ms': {
-        type: "timing";
-        duration: number;
+    readonly quick: {
+        readonly duration: 220;
+        readonly bounce: 0.3;
     };
-    '250ms': {
-        type: "timing";
-        duration: number;
+    readonly quickLessBouncy: {
+        readonly duration: 220;
+        readonly bounce: 0;
     };
-    '300ms': {
-        type: "timing";
-        duration: number;
+    readonly medium: {
+        readonly duration: 300;
+        readonly bounce: 0.15;
     };
-    '400ms': {
-        type: "timing";
-        duration: number;
+    readonly slow: {
+        readonly duration: 450;
+        readonly bounce: 0.1;
     };
-    '500ms': {
-        type: "timing";
-        duration: number;
+    readonly slowest: {
+        readonly duration: 700;
+        readonly bounce: 0.1;
     };
-    superBouncy: {
-        damping: number;
-        mass: number;
-        stiffness: number;
+    readonly lazy: {
+        readonly duration: 500;
+        readonly bounce: -0.2;
     };
-    bouncy: {
-        damping: number;
-        mass: number;
-        stiffness: number;
+    readonly superLazy: {
+        readonly duration: 800;
+        readonly bounce: -0.3;
     };
-    superLazy: {
-        damping: number;
-        mass: number;
-        stiffness: number;
+    readonly bouncy: {
+        readonly duration: 400;
+        readonly bounce: 0.5;
     };
-    medium: {
-        damping: number;
-        stiffness: number;
-        mass: number;
-    };
-    lazy: {
-        damping: number;
-        mass: number;
-        stiffness: number;
-    };
-    slowest: {
-        damping: number;
-        stiffness: number;
-    };
-    slow: {
-        damping: number;
-        stiffness: number;
-    };
-    quick: {
-        damping: number;
-        mass: number;
-        stiffness: number;
-    };
-    quickLessBouncy: {
-        damping: number;
-        mass: number;
-        stiffness: number;
-    };
-    quicker: {
-        damping: number;
-        mass: number;
-        stiffness: number;
-    };
-    quickerLessBouncy: {
-        damping: number;
-        mass: number;
-        stiffness: number;
-    };
-    quickest: {
-        damping: number;
-        mass: number;
-        stiffness: number;
-    };
-    quickestLessBouncy: {
-        damping: number;
-        mass: number;
-        stiffness: number;
+    readonly superBouncy: {
+        readonly duration: 400;
+        readonly bounce: 0.75;
     };
 }>;
 export declare const animations: import("@tamagui/web").AnimationDriverWithAnimatedNumbers<{
-    '0ms': {
-        type: "timing";
-        duration: number;
+    readonly quickest: {
+        readonly duration: 120;
+        readonly bounce: 0.2;
     };
-    '50ms': {
-        type: "timing";
-        duration: number;
+    readonly quickestLessBouncy: {
+        readonly duration: 120;
+        readonly bounce: 0;
     };
-    '75ms': {
-        type: "timing";
-        duration: number;
+    readonly quicker: {
+        readonly duration: 160;
+        readonly bounce: 0.25;
     };
-    '100ms': {
-        type: "timing";
-        duration: number;
+    readonly quickerLessBouncy: {
+        readonly duration: 160;
+        readonly bounce: 0;
     };
-    '200ms': {
-        type: "timing";
-        duration: number;
+    readonly quick: {
+        readonly duration: 220;
+        readonly bounce: 0.3;
     };
-    '250ms': {
-        type: "timing";
-        duration: number;
+    readonly quickLessBouncy: {
+        readonly duration: 220;
+        readonly bounce: 0;
     };
-    '300ms': {
-        type: "timing";
-        duration: number;
+    readonly medium: {
+        readonly duration: 300;
+        readonly bounce: 0.15;
     };
-    '400ms': {
-        type: "timing";
-        duration: number;
+    readonly slow: {
+        readonly duration: 450;
+        readonly bounce: 0.1;
     };
-    '500ms': {
-        type: "timing";
-        duration: number;
+    readonly slowest: {
+        readonly duration: 700;
+        readonly bounce: 0.1;
     };
-    superBouncy: {
-        damping: number;
-        mass: number;
-        stiffness: number;
+    readonly lazy: {
+        readonly duration: 500;
+        readonly bounce: -0.2;
     };
-    bouncy: {
-        damping: number;
-        mass: number;
-        stiffness: number;
+    readonly superLazy: {
+        readonly duration: 800;
+        readonly bounce: -0.3;
     };
-    superLazy: {
-        damping: number;
-        mass: number;
-        stiffness: number;
+    readonly bouncy: {
+        readonly duration: 400;
+        readonly bounce: 0.5;
     };
-    medium: {
-        damping: number;
-        stiffness: number;
-        mass: number;
-    };
-    lazy: {
-        damping: number;
-        mass: number;
-        stiffness: number;
-    };
-    slowest: {
-        damping: number;
-        stiffness: number;
-    };
-    slow: {
-        damping: number;
-        stiffness: number;
-    };
-    quick: {
-        damping: number;
-        mass: number;
-        stiffness: number;
-    };
-    quickLessBouncy: {
-        damping: number;
-        mass: number;
-        stiffness: number;
-    };
-    quicker: {
-        damping: number;
-        mass: number;
-        stiffness: number;
-    };
-    quickerLessBouncy: {
-        damping: number;
-        mass: number;
-        stiffness: number;
-    };
-    quickest: {
-        damping: number;
-        mass: number;
-        stiffness: number;
-    };
-    quickestLessBouncy: {
-        damping: number;
-        mass: number;
-        stiffness: number;
+    readonly superBouncy: {
+        readonly duration: 400;
+        readonly bounce: 0.75;
     };
 }>;
 //# sourceMappingURL=animations-reanimated.d.ts.map

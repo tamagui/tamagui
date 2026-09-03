@@ -22,7 +22,14 @@ function proxyWorm() {
       TextInput: emtpyComponent,
       ScrollView: emtpyComponent,
       Dimensions: {
+        get: () => ({ width: 1024, height: 768, scale: 2, fontScale: 1 }),
         addEventListener(cb) {},
+      },
+      PixelRatio: {
+        get: () => 2,
+        getFontScale: () => 1,
+        getPixelSizeForLayoutSize: (size) => Math.round(size * 2),
+        roundToNearestPixel: (size) => Math.round(size * 2) / 2,
       },
       Appearance: {
         getColorScheme: () => 'light',
@@ -53,6 +60,7 @@ export const Text = proxy.Text
 export const TextInput = proxy.TextInput
 export const ScrollView = proxy.ScrollView
 export const Dimensions = proxy.Dimensions
+export const PixelRatio = proxy.PixelRatio
 export const Pressable = proxy.Pressable
 export const Animated = proxy.Animated
 export const Easing = proxy.Easing

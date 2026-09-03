@@ -45,6 +45,7 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
+    "@tamagui/animation-helpers": "workspace:*",
     "@tamagui/cli-color": "workspace:*",
     "@tamagui/compiler-core": "workspace:*",
     "@tamagui/config-default": "workspace:*",

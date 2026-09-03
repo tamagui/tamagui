@@ -45,6 +45,7 @@
   "dependencies": {
     "@tamagui/adapt": "workspace:*",
     "@tamagui/animate-presence": "workspace:*",
+    "@tamagui/animation-helpers": "workspace:*",
     "@tamagui/animations-react-native": "workspace:*",
     "@tamagui/compose-refs": "workspace:*",
     "@tamagui/constants": "workspace:*",

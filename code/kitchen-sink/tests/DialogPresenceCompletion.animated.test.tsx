@@ -4,6 +4,7 @@ import { setupPage } from './test-utils'
 type DialogPresenceEvent = {
   open: boolean
   elapsed: number
+  frames: number
 }
 
 async function getEvents(page: Page, id: string): Promise<DialogPresenceEvent[]> {
@@ -63,11 +64,17 @@ for (const id of ['portal', 'inline']) {
     const event = await waitForTransitionEvent(page, id, true)
     if (driver === 'css') {
       expect(event.elapsed).toBeGreaterThanOrEqual(850)
+      // the same counter the branch below reads, proving it counts: css waits
+      // out the whole 1000ms transition, so it spends frames rather than none
+      expect(event.frames).toBeGreaterThan(4)
     } else {
+      // a driver that reports completion itself lands within a frame or two of
+      // the state change. a millisecond budget cannot say that on a loaded
+      // machine, where the same two frames take 120ms.
       expect(
-        event.elapsed,
-        `${driver} has no changing driver-owned style in this fixture`
-      ).toBeLessThan(100)
+        event.frames,
+        `${driver} has no changing driver-owned style in this fixture, so completion should not wait frames (elapsed ${event.elapsed}ms)`
+      ).toBeLessThanOrEqual(2)
     }
     await expectExactlyOneTransitionEvent(page, id, true)
     expect(await getUserEventCount(page, id)).toBe(1)
@@ -93,11 +100,17 @@ for (const id of ['portal', 'inline']) {
     const event = await waitForTransitionEvent(page, id, false)
     if (driver === 'css') {
       expect(event.elapsed).toBeGreaterThanOrEqual(850)
+      // the same counter the branch below reads, proving it counts: css waits
+      // out the whole 1000ms transition, so it spends frames rather than none
+      expect(event.frames).toBeGreaterThan(4)
     } else {
+      // a driver that reports completion itself lands within a frame or two of
+      // the state change. a millisecond budget cannot say that on a loaded
+      // machine, where the same two frames take 120ms.
       expect(
-        event.elapsed,
-        `${driver} has no changing driver-owned style in this fixture`
-      ).toBeLessThan(100)
+        event.frames,
+        `${driver} has no changing driver-owned style in this fixture, so completion should not wait frames (elapsed ${event.elapsed}ms)`
+      ).toBeLessThanOrEqual(2)
     }
     await expectExactlyOneTransitionEvent(page, id, false)
     await expect(page.getByTestId(`${id}-content`)).not.toBeVisible()

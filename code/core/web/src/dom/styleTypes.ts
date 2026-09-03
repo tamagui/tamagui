@@ -551,58 +551,41 @@ interface WebStyle {
   userSelect?: Properties['userSelect']
 }
 
+/** low-level spring physics, for porting an already-tuned config */
 type TransitionSpringConfig = {
   stiffness?: number
   damping?: number
   mass?: number
-  tension?: number
-  friction?: number
   velocity?: number
   overshootClamping?: boolean
-  duration?: number
-  bounciness?: number
-  speed?: number
+  restDisplacementThreshold?: number
+  restSpeedThreshold?: number
 }
 
-/** a configured driver animation name, or a CSS transition string like `'200ms'` */
+/**
+ * A configured driver animation name, or a CSS transition string like `'200ms'`,
+ * `'200ms ease-out'`, or `'opacity 150ms, transform spring(300ms, 0.4)'`.
+ */
 type TransitionValue = string
+
+type TransitionConfig = {
+  preset?: string
+  duration?: number | string
+  bounce?: number
+  easing?: string
+  delay?: number | string
+  behavior?: 'normal' | 'allow-discrete'
+  properties?: string
+  spring?: TransitionSpringConfig
+  enter?: TransitionProp
+  exit?: TransitionProp
+}
 
 type TransitionProp =
   | TransitionValue
-  | ({
-      default?: TransitionValue
-      enter?: TransitionValue
-      exit?: TransitionValue
-      delay?: number
-    } & TransitionSpringConfig & {
-        [key: string]:
-          | TransitionValue
-          | {
-              type: TransitionValue
-              [key: string]: any
-            }
-          | number
-          | boolean
-          | undefined
-      })
-  | [
-      TransitionValue,
-      {
-        delay?: number
-        enter?: TransitionValue
-        exit?: TransitionValue
-      } & TransitionSpringConfig & {
-          [key: string]:
-            | TransitionValue
-            | {
-                type?: TransitionValue
-                [key: string]: any
-              }
-            | number
-            | boolean
-            | undefined
-        },
-    ]
+  | (TransitionConfig & {
+      [property: string]: TransitionValue | TransitionConfig | unknown
+    })
 
 /**
  * The animation props, which ride along with the style grammar because a
@@ -610,7 +593,6 @@ type TransitionProp =
  */
 interface AnimationStyle {
   transition?: TransitionProp | null
-  animateOnly?: string[]
   animatePresence?: boolean
   onTransition?: (event: {
     phase: 'start' | 'end'

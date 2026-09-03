@@ -24,7 +24,7 @@ const delayColors = ['red', 'green', 'blue', 'purple'] as const
 
 /**
  * Reusable delay demo component that works with any animation driver
- * Tests: transition={['medium', { delay: i * 100 }]}
+ * Tests: transition={{ preset: 'medium', delay: i * 100 }}
  */
 function DelayDemoContent({
   show,
@@ -58,7 +58,7 @@ function DelayDemoContent({
             delayColors.map((color, i) => (
               <Square
                 key={color}
-                transition={['medium', { delay: i * 100 }]}
+                transition={{ preset: 'medium', delay: i * 100 }}
                 bg={color}
                 opacity="enter:0 exit:0"
                 scale="enter:0.5 exit:0.5"
@@ -78,7 +78,7 @@ function DelayDemoContent({
 
 /**
  * demo showing animation delay support across the web animation drivers
- * pattern: transition={['medium', { delay: i * 100 }]}
+ * pattern: transition={{ preset: 'medium', delay: i * 100 }}
  */
 function AnimationDelayDemo() {
   const [showCSS, setShowCSS] = useState(false)
@@ -90,7 +90,7 @@ function AnimationDelayDemo() {
         Animation Delay Test
       </Text>
       <Text fontSize="2" opacity={0.7}>
-        {`transition={['medium', { delay: i * 100 }]}`}
+        {`transition={{ preset: 'medium', delay: i * 100 }}`}
       </Text>
 
       <XStack flexWrap="wrap" gap="4">
@@ -718,23 +718,26 @@ const Motion = () => {
         </XStack>
       </YStack>
 
-      {/* animateOnly */}
+      {/* a transition naming its properties */}
       <Square
-        transition={['superBouncy', { opacity: '100ms' }]}
+        transition={{
+          preset: 'superBouncy',
+          opacity: '100ms',
+          properties: 'transform, opacity',
+        }}
         bg="red max-md:blue"
         opacity="0.25 hover:1"
         borderWidth={2}
         scale="hover:1.5 press:0.8"
         borderColor="hover:green press:red"
         x={x * 300}
-        animateOnly={['transform', 'opacity']}
         size={50}
       />
 
       <Button onPress={() => setX(Math.random())}>asdasdas</Button>
 
       <Square
-        transition={['superBouncy', { opacity: '100ms' }]}
+        transition={{ preset: 'superBouncy', opacity: '100ms' }}
         bg="red"
         opacity="0.25 hover:1"
         borderWidth={2}
@@ -784,7 +787,10 @@ const Drivers = () => {
       <Configuration animationDriver={animationsMotion}>
         <YStack group="card" gap={50}>
           <XStack
-            transition={['bouncy', { stiffness: 250, damping: 4, mass: 0.5 }]}
+            transition={{
+              preset: 'bouncy',
+              spring: { stiffness: 250, damping: 4, mass: 0.5 },
+            }}
             width={100}
             height={100}
             bg="red"

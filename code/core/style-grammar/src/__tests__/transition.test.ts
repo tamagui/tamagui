@@ -4,6 +4,8 @@ import {
   nativeTransitionCapabilities,
   parseTransition,
   parseTransitionLonghands,
+  parseTransitionObject,
+  printMigratedTransition,
   serializeTransition,
   validateNativeTransition,
 } from '../tooling'
@@ -141,7 +143,9 @@ describe('transition grammar', () => {
 })
 
 describe('legacy transition migration', () => {
-  test('preserves default, per-property, lifecycle, delay, and spring config', () => {
+  test('materializes the inherited default and delay into every entry', () => {
+    // v2 leaned on inheritance, v3 entries stand alone, so `bouncy` and the
+    // 200ms delay have to be written into the lifecycle and property entries
     expect(
       migrateLegacyTransition(
         [
@@ -156,62 +160,42 @@ describe('legacy transition migration', () => {
         ],
         presets
       )
-    ).toMatchObject({
+    ).toEqual({
       ok: true,
       value: {
-        kind: 'transition',
-        enter: {
-          property: 'all',
-          timing: { type: 'preset', name: 'quick' },
-          delay: '200ms',
-        },
-        exit: {
-          property: 'all',
-          timing: { type: 'preset', name: 'quick' },
-          delay: '200ms',
-        },
-        config: { stiffness: 1000 },
-        entries: [
-          {
-            property: 'all',
-            timing: {
-              type: 'preset',
-              name: 'bouncy',
-              config: { stiffness: 1000 },
-            },
-            delay: '200ms',
-          },
-          {
-            property: 'opacity',
-            timing: {
-              type: 'preset',
-              name: 'quick',
-              config: { overshootClamping: true },
-            },
-            delay: '200ms',
-          },
-        ],
+        preset: 'bouncy',
+        delay: 200,
+        spring: { stiffness: 1000 },
+        enter: { preset: 'quick', delay: 200 },
+        exit: { preset: 'quick', delay: 200 },
+        opacity: { preset: 'quick', delay: 200, spring: { overshootClamping: true } },
       },
     })
   })
 
-  test('migrates duration-shaped legacy values with CSS semantics', () => {
+  test('leaves strings alone when there is no delay to push down', () => {
     expect(
       migrateLegacyTransition(['quick', { opacity: '200ms', enter: '200ms' }], presets)
-    ).toMatchObject({
+    ).toEqual({
       ok: true,
-      value: {
-        enter: {
-          timing: { type: 'css', duration: '200ms', timingFunction: 'ease' },
-        },
-        entries: [
-          { timing: { type: 'preset', name: 'quick' } },
-          {
-            property: 'opacity',
-            timing: { type: 'css', duration: '200ms', timingFunction: 'ease' },
-          },
-        ],
-      },
+      value: { preset: 'quick', enter: '200ms', opacity: '200ms' },
+    })
+    expect(migrateLegacyTransition('quick', presets)).toEqual({
+      ok: true,
+      value: 'quick',
+    })
+  })
+
+  test('converts both origami spring parameterizations to stiffness and damping', () => {
+    // the numbers are react-native's own fromOrigamiTensionAndFriction and
+    // fromBouncinessAndSpeed, so a migrated spring keeps the motion it had
+    expect(migrateLegacyTransition({ tension: 40, friction: 7 }, presets)).toEqual({
+      ok: true,
+      value: { spring: { stiffness: 230.2, damping: 22 } },
+    })
+    expect(migrateLegacyTransition({ bounciness: 8, speed: 12 }, presets)).toEqual({
+      ok: true,
+      value: { spring: { stiffness: 342.101, damping: 24.684 } },
     })
   })
 
@@ -221,6 +205,87 @@ describe('legacy transition migration', () => {
     ).toMatchObject({
       ok: false,
       diagnostics: [{ code: 'transition-invalid-token', token: 'opacity' }],
+    })
+  })
+
+  test('folds a v2 animateOnly list into the migrated value', () => {
+    // v2 read the list as an exclusive filter over whatever the transition
+    // named, which is what a css `transition-property` list already is
+    expect(migrateLegacyTransition('quick', presets, ['transform', 'opacity'])).toEqual({
+      ok: true,
+      value: { preset: 'quick', properties: 'transform, opacity' },
+    })
+    // an entry the list leaves out was filtered out in v2, so it is dropped
+    // rather than quietly surviving as a property the transition still names
+    expect(
+      migrateLegacyTransition(['quick', { opacity: { type: 'bouncy' } }], presets, [
+        'transform',
+      ])
+    ).toEqual({
+      ok: true,
+      value: { preset: 'quick', properties: 'transform' },
+    })
+    // an empty list animated nothing at all
+    expect(migrateLegacyTransition('quick', presets, [])).toEqual({
+      ok: true,
+      value: 'none',
+    })
+  })
+
+  test('a list with no base timing narrows to the properties still named', () => {
+    // no base entry exists for `properties` to apply to, so the answer is the
+    // per-property entries the list keeps
+    expect(
+      migrateLegacyTransition(
+        { opacity: { type: 'quick' }, transform: { type: 'bouncy' } },
+        presets,
+        ['transform']
+      )
+    ).toEqual({
+      ok: true,
+      value: { transform: { preset: 'bouncy' } },
+    })
+  })
+
+  test('a list narrows enter and exit too, since they replace the base', () => {
+    expect(
+      migrateLegacyTransition(
+        ['quick', { enter: 'bouncy', opacity: { type: 'quick' } }],
+        presets,
+        ['transform']
+      )
+    ).toEqual({
+      ok: true,
+      value: {
+        preset: 'quick',
+        properties: 'transform',
+        enter: { preset: 'bouncy', properties: 'transform' },
+      },
+    })
+  })
+
+  test('prints a migrated value back as source the object parser accepts', () => {
+    const migrated = migrateLegacyTransition(
+      ['quick', { delay: 100, opacity: { type: 'bouncy' } }],
+      presets
+    )
+    expect(migrated.ok).toBe(true)
+    if (!migrated.ok) return
+    expect(printMigratedTransition(migrated.value)).toBe(
+      `{ preset: 'quick', delay: 100, opacity: { preset: 'bouncy', delay: 100 } }`
+    )
+    expect(parseTransitionObject(migrated.value, presets)).toMatchObject({
+      ok: true,
+      value: {
+        entries: [
+          { property: 'all', timing: { type: 'preset', name: 'quick' }, delay: '100ms' },
+          {
+            property: 'opacity',
+            timing: { type: 'preset', name: 'bouncy' },
+            delay: '100ms',
+          },
+        ],
+      },
     })
   })
 })
@@ -295,9 +360,12 @@ describe('native transition capabilities', () => {
     const migrated = migrateLegacyTransition({ enter: '150ms steps(2, end)' }, presets)
     expect(migrated.ok).toBe(true)
     if (!migrated.ok) return
+    const parsed = parseTransitionObject(migrated.value, presets)
+    expect(parsed.ok).toBe(true)
+    if (!parsed.ok) return
     expect(
       validateNativeTransition(
-        migrated.value,
+        parsed.value,
         { platform: 'ios', reactNativeMinor: 86 },
         { opacity: '1' }
       )
@@ -374,5 +442,110 @@ describe('native transition capabilities', () => {
       ok: false,
       diagnostics: [{ code: 'native-transition-filter' }],
     })
+  })
+})
+
+describe('fused timing atoms (presets and springs)', () => {
+  test('parses spring() with an optional bounce, defaulting to critically damped', () => {
+    expect(parseTransition('spring(200ms)')).toMatchObject({
+      ok: true,
+      value: {
+        entries: [
+          {
+            property: 'all',
+            timing: { type: 'spring', duration: '200ms', bounce: 0 },
+            delay: '0s',
+          },
+        ],
+      },
+    })
+
+    expect(parseTransition('transform spring(300ms, 0.2) 50ms')).toMatchObject({
+      ok: true,
+      value: {
+        entries: [
+          {
+            property: 'transform',
+            timing: { type: 'spring', duration: '300ms', bounce: 0.2 },
+            delay: '50ms',
+          },
+        ],
+      },
+    })
+  })
+
+  test('a fused atom owns the duration slot, so a lone time is the delay', () => {
+    // the whole point of fusing: a preset already carries duration and easing,
+    // so the only time value that can still mean anything is the delay. order
+    // independent, like every other css shorthand component.
+    for (const input of ['bouncy 100ms', '100ms bouncy']) {
+      expect(parseTransition(input, presets)).toMatchObject({
+        ok: true,
+        value: {
+          entries: [
+            {
+              property: 'all',
+              timing: { type: 'preset', name: 'bouncy' },
+              delay: '100ms',
+            },
+          ],
+        },
+      })
+    }
+
+    expect(parseTransition('opacity bouncy 50ms', presets)).toMatchObject({
+      ok: true,
+      value: {
+        entries: [
+          {
+            property: 'opacity',
+            timing: { type: 'preset', name: 'bouncy' },
+            delay: '50ms',
+          },
+        ],
+      },
+    })
+  })
+
+  test('rejects composing a fused atom with easing, a second time, or another atom', () => {
+    expect(parseTransition('spring(200ms) ease-out')).toMatchObject({
+      ok: false,
+      diagnostics: [{ code: 'transition-invalid-list' }],
+    })
+    expect(parseTransition('bouncy ease-out', presets)).toMatchObject({
+      ok: false,
+      diagnostics: [{ code: 'transition-invalid-list' }],
+    })
+    expect(parseTransition('spring(200ms) 50ms 100ms')).toMatchObject({
+      ok: false,
+      diagnostics: [{ code: 'transition-duplicate-component' }],
+    })
+    expect(parseTransition('bouncy spring(200ms)', presets)).toMatchObject({
+      ok: false,
+      diagnostics: [{ code: 'transition-duplicate-component' }],
+    })
+  })
+
+  test('a spring-shaped token with bad arguments is a diagnostic, never a property', () => {
+    for (const input of [
+      'spring()',
+      'spring(abc)',
+      'spring(-200ms)',
+      'spring(200ms, 2)',
+      'spring(200ms, -1)',
+      'spring(200ms, nope)',
+      'spring(200ms, 0.2, 3)',
+    ]) {
+      expect(parseTransition(input)).toMatchObject({
+        ok: false,
+        diagnostics: [{ code: 'transition-invalid-spring' }],
+      })
+    }
+  })
+
+  test('springs have no css spelling, so they never serialize', () => {
+    const parsed = parseTransition('opacity spring(200ms, 0.2)')
+    expect(parsed.ok).toBe(true)
+    expect(parsed.ok && serializeTransition(parsed.value)).toBe(null)
   })
 })

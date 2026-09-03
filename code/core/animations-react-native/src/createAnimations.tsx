@@ -1,4 +1,12 @@
-import { getEffectiveAnimation, normalizeTransition } from '@tamagui/animation-helpers'
+import {
+  easingToBezier,
+  forAnimationState,
+  getTransitionForKey,
+  resolveTransition,
+  type AnimationsConfig,
+  type ResolvedEntry,
+  type ResolvedTransition,
+} from '@tamagui/animation-helpers'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { ResetPresence, usePresence } from '@tamagui/use-presence'
 import type {
@@ -14,6 +22,7 @@ import { useThemeWithState } from '@tamagui/web/internal-runtime'
 import React from 'react'
 import {
   Animated,
+  Easing,
   processColor,
   type ColorValue,
   type Text,
@@ -33,27 +42,17 @@ const resolveDynamicValue = (value: any, isDark: boolean): any => {
   return value
 }
 
-type AnimationsConfig<A extends object = any> = { [Key in keyof A]: AnimationConfig }
-
-type SpringConfig = { type?: 'spring' } & Partial<
-  Pick<
-    Animated.SpringAnimationConfig,
-    | 'delay'
-    | 'bounciness'
-    | 'damping'
-    | 'friction'
-    | 'mass'
-    | 'overshootClamping'
-    | 'speed'
-    | 'stiffness'
-    | 'tension'
-    | 'velocity'
-  >
->
-
-type TimingConfig = { type: 'timing' } & Partial<Animated.TimingAnimationConfig>
-
-type AnimationConfig = SpringConfig | TimingConfig
+/** what `getAnimationConfig` hands to `Animated.spring` / `Animated.timing` */
+type AnimationConfig =
+  | ({ type: 'spring'; delay?: number } & Partial<
+      Pick<
+        Animated.SpringAnimationConfig,
+        'damping' | 'mass' | 'overshootClamping' | 'stiffness' | 'velocity'
+      >
+    >)
+  | ({ type: 'timing'; delay?: number } & Partial<
+      Pick<Animated.TimingAnimationConfig, 'duration' | 'easing'>
+    >)
 
 const animatedStyleKey = {
   transform: true,
@@ -84,10 +83,10 @@ const layoutStyleKey = {
 function hasAnimatedLayoutKey(
   style: Record<string, any>,
   isDark: boolean,
-  animateOnly?: string[]
+  resolved: ResolvedTransition
 ) {
   for (const key in layoutStyleKey) {
-    if (animateOnly && !animateOnly.includes(key)) continue
+    if (!getTransitionForKey(resolved, key)) continue
     if (typeof resolveDynamicValue(style[key], isDark) === 'number') return true
   }
   return false
@@ -161,7 +160,12 @@ export function useAnimatedNumber(
         : undefined
 
       if (type === 'direct') {
+        state.current.composite?.stop()
+        state.current.composite = null
         val.setValue(next)
+        // a direct set finishes the moment it lands. not calling back stranded
+        // everything waiting on it (sheet snap, presence completion).
+        onFinish?.()
       } else if (type === 'spring') {
         state.current.composite?.stop()
         const composite = Animated.spring(val, {
@@ -270,6 +274,7 @@ export function createAnimations<A extends AnimationsConfig>(
       componentState,
       presence,
       stateRef,
+      styleState,
       useStyleEmitter,
     }) => {
       const isDisabled = isWeb && componentState.unmounted === true
@@ -286,6 +291,14 @@ export function createAnimations<A extends AnimationsConfig>(
           phase === 'end' ? { phase, cause, finished } : { phase, cause }
         )
       }
+      // createComponent merges a colocated `transition` out of the active
+      // pseudo style (`enterStyle={{ opacity: 0, transition: '200ms' }}`), so
+      // this is the one that applies right now, not the base prop.
+      const effectiveTransition = (styleState?.effectiveTransition ?? props.transition) as
+        | TransitionProp
+        | null
+        | undefined
+
       const [, themeState] = useThemeWithState({})
       // Check scheme first, then fall back to checking theme name for 'dark'
       const isDark = themeState?.scheme === 'dark' || themeState?.name?.startsWith('dark')
@@ -332,9 +345,6 @@ export function createAnimations<A extends AnimationsConfig>(
         exitCycleIdRef.current++
       }
 
-      const animateOnly = (props.animateOnly as string[]) || []
-      const hasTransitionOnly = !!props.animateOnly
-
       // Track if we just finished entering (transition from entering to not entering)
       // must be declared before args array that uses justFinishedEntering
       const isEntering = !!componentState.unmounted
@@ -346,12 +356,12 @@ export function createAnimations<A extends AnimationsConfig>(
 
       const args = [
         JSON.stringify(style),
+        JSON.stringify(effectiveTransition),
         componentState,
         isExiting,
         !!onTransition,
         isDark,
         justFinishedEntering,
-        hasTransitionOnly,
       ]
 
       const res = React.useMemo(() => {
@@ -366,17 +376,19 @@ export function createAnimations<A extends AnimationsConfig>(
             ? 'enter'
             : 'default'
 
+        // which style keys animate at all is the transition's own decision, so
+        // a property list narrows this the same way it narrows css
+        const resolved = forAnimationState(
+          resolveTransition(effectiveTransition, { animations }),
+          animationState
+        )
+
         const nonAnimatedStyle = {}
         // animatedStyle owns every Animated.Value on the node. Fabric cannot mix
         // native- and JS-driven values inside that shared graph, so one layout
         // animation makes the whole node use the JS driver.
         const useNativeDriverForNode =
-          nativeDriver &&
-          !hasAnimatedLayoutKey(
-            style,
-            isDark,
-            hasTransitionOnly ? animateOnly : undefined
-          )
+          nativeDriver && !hasAnimatedLayoutKey(style, isDark, resolved)
 
         // track which animated keys/transforms the incoming style actually
         // carries this pass, so entries that left the style can be dropped
@@ -405,7 +417,10 @@ export function createAnimations<A extends AnimationsConfig>(
             continue
           }
 
-          if (hasTransitionOnly && !animateOnly.includes(key)) {
+          // `transform` is a container, not a property: its parts each resolve
+          // on their own below, and a part no entry covers gets `snapConfig`.
+          // the array cannot be split into animated and static halves here.
+          if (key !== 'transform' && !getTransitionForKey(resolved, key)) {
             nonAnimatedStyle[key] = val
             continue
           }
@@ -539,7 +554,7 @@ export function createAnimations<A extends AnimationsConfig>(
             const animationConfig = getAnimationConfig(
               key,
               animations,
-              props.transition,
+              effectiveTransition,
               animationState
             )
 
@@ -552,22 +567,19 @@ export function createAnimations<A extends AnimationsConfig>(
             runners.push(() => {
               value.stopAnimation()
 
-              function getAnimation() {
-                return Animated[animationConfig.type || 'spring'](value, {
-                  toValue: animateToValue,
-                  ...animationConfig,
-                  useNativeDriver: useNativeDriverForNode,
-                })
-              }
+              // `delay` drives the sequence below, so it must not also ride
+              // along in the config or every delayed animation waits twice
+              const { type, delay, ...config } = animationConfig
+              const animation = Animated[type || 'spring'](value, {
+                toValue: animateToValue,
+                ...config,
+                useNativeDriver: useNativeDriverForNode,
+              })
+              const animation2 = delay
+                ? Animated.sequence([Animated.delay(delay), animation])
+                : animation
 
-              const animation = animationConfig.delay
-                ? Animated.sequence([
-                    Animated.delay(animationConfig.delay),
-                    getAnimation(),
-                  ])
-                : getAnimation()
-
-              animation.start(({ finished }) => {
+              animation2.start(({ finished }) => {
                 // always resolve during exit (element is leaving anyway)
                 // for non-exit, only resolve on successful completion
                 if (finished || isExiting) {
@@ -710,19 +722,25 @@ export function createAnimations<A extends AnimationsConfig>(
       // avoidReRenders: receive style changes imperatively from tamagui
       // and update Animated.Values directly without React re-renders
       // reuses the same update() + runner pattern as the useMemo path
-      useStyleEmitter?.((nextStyle, _effectiveTransition, pseudoActive) => {
+      useStyleEmitter?.((nextStyle, emittedTransition, pseudoActive) => {
         pseudoActiveRef.current = pseudoActive === true
         const runners: Function[] = []
         const seenAnimateKeys = new Set<string>()
         let transformCount = 0
         let animatedShapeChanged = false
+        // the emitter runs on a mounted node, so `default` is the state, but
+        // the transition is the one it was handed
+        const emittedResolved = forAnimationState(
+          resolveTransition(emittedTransition ?? effectiveTransition, { animations }),
+          'default'
+        )
         // nextStyle is the complete style for this node, so the emitter makes
         // the same single driver decision as the render path. include the
         // currently rendered graph because its stale keys are not removed until
         // the structural-change commit below.
         const useNativeDriverForNode =
           nativeDriver &&
-          !hasAnimatedLayoutKey(nextStyle, isDark) &&
+          !hasAnimatedLayoutKey(nextStyle, isDark, emittedResolved) &&
           !Object.keys(animateStyles.current).some((key) => layoutStyleKey[key])
 
         for (const key in nextStyle) {
@@ -820,23 +838,23 @@ export function createAnimations<A extends AnimationsConfig>(
             })
           }
 
+          // the emitter runs for pseudo-state changes on a mounted node, so
+          // `default` is the state, but the transition is the one it was handed
           const animationConfig = getAnimationConfig(
             key,
             animations,
-            props.transition,
+            emittedTransition ?? effectiveTransition,
             'default'
           )
           runners.push(() => {
             value.stopAnimation()
-            const anim = Animated[animationConfig.type || 'spring'](value, {
+            const { type, delay, ...config } = animationConfig
+            const anim = Animated[type || 'spring'](value, {
               toValue: animateToValue,
-              ...animationConfig,
+              ...config,
               useNativeDriver: useNativeDriverForNode,
             })
-            ;(animationConfig.delay
-              ? Animated.sequence([Animated.delay(animationConfig.delay), anim])
-              : anim
-            ).start()
+            ;(delay ? Animated.sequence([Animated.delay(delay), anim]) : anim).start()
           })
 
           return value
@@ -887,56 +905,59 @@ function getInterpolated(current: number, next: number, postfix = 'deg') {
   }
 }
 
-function getAnimationConfig(
-  key: string,
-  animations: AnimationsConfig,
-  transition?: TransitionProp,
-  animationState: 'enter' | 'exit' | 'default' = 'default'
-): AnimationConfig {
-  const normalized = normalizeTransition(transition)
-  const shortKey = transformShorthands[key]
+/**
+ * one resolved entry as a react-native Animated config.
+ *
+ * springs go in as stiffness/damping/mass, which is the parameterization RN
+ * actually integrates. `bounciness`/`speed` and `tension`/`friction` are older
+ * spellings of the same two numbers, so nothing is lost by not using them.
+ */
+function entryToRN(entry: ResolvedEntry): AnimationConfig {
+  const extra = entry.timing.kind === 'spring' ? entry.timing.extra : undefined
 
-  // Check for property-specific animation
-  const propAnimation = normalized.properties[key] ?? normalized.properties[shortKey]
-
-  let animationType: string | null = null
-  let extraConf: any = {}
-
-  if (typeof propAnimation === 'string') {
-    // Direct animation name: { x: 'quick' }
-    animationType = propAnimation
-  } else if (propAnimation && typeof propAnimation === 'object') {
-    // Config object: { x: { type: 'quick', delay: 100 } }
-    // Use effective animation based on state if no explicit type in config
-    animationType =
-      propAnimation.type || getEffectiveAnimation(normalized, animationState)
-    extraConf = propAnimation
-  } else {
-    // Fall back to effective animation based on state (enter/exit/default)
-    animationType = getEffectiveAnimation(normalized, animationState)
+  if (entry.timing.kind === 'spring') {
+    return {
+      type: 'spring',
+      stiffness: entry.timing.stiffness,
+      damping: entry.timing.damping,
+      mass: entry.timing.mass,
+      ...(typeof extra?.velocity === 'number' ? { velocity: extra.velocity } : null),
+      ...(typeof extra?.overshootClamping === 'boolean'
+        ? { overshootClamping: extra.overshootClamping }
+        : null),
+      ...(entry.delayMs ? { delay: entry.delayMs } : null),
+    }
   }
 
-  // Apply global delay if no property-specific delay
-  if (normalized.delay && !extraConf.delay) {
-    extraConf = { ...extraConf, delay: normalized.delay }
-  }
-
-  const found = animationType ? animations[animationType] : {}
+  const bezier = easingToBezier(entry.timing.easing)
   return {
-    ...found,
-    // Apply global spring config overrides (from transition={['bouncy', { stiffness: 1000 }]})
-    ...normalized.config,
-    // Property-specific config takes highest precedence
-    ...extraConf,
+    type: 'timing',
+    duration: entry.timing.durationMs,
+    // `linear()` and `steps()` have no bezier equivalent; RN's default easing
+    // is the honest answer rather than a curve we made up
+    ...(bezier
+      ? { easing: Easing.bezier(bezier[0], bezier[1], bezier[2], bezier[3]) }
+      : null),
+    ...(entry.delayMs ? { delay: entry.delayMs } : null),
   }
 }
 
-// try both combos
-const transformShorthands = {
-  x: 'translateX',
-  y: 'translateY',
-  translateX: 'x',
-  translateY: 'y',
+// a key the transition does not cover does not animate. snapping is what css
+// does for an unlisted property, so the drivers have to agree on it too.
+const snapConfig: AnimationConfig = { type: 'timing', duration: 0 }
+
+function getAnimationConfig(
+  key: string,
+  animations: AnimationsConfig,
+  transition?: TransitionProp | null,
+  animationState: 'enter' | 'exit' | 'default' = 'default'
+): AnimationConfig {
+  const resolved = forAnimationState(
+    resolveTransition(transition, { animations }),
+    animationState
+  )
+  const entry = getTransitionForKey(resolved, key)
+  return entry ? entryToRN(entry) : snapConfig
 }
 
 function getValue(input: number | string, isColor = false) {

@@ -10,7 +10,6 @@ export const skipProps = {
   untilMeasured: 1,
   transition: 1,
   space: 1,
-  animateOnly: 1,
   animatedBy: 1,
   displayName: 1,
   disableClassName: 1,

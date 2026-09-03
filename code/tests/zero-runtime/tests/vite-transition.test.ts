@@ -25,15 +25,15 @@ test('a configured transition preset resolves to CSS and interpolates', async ({
   page,
 }) => {
   const box = page.locator('[data-testid="transition-box"]')
-  // `medium` is a config preset, so this value only exists if the compiler
-  // resolved it against the config rather than copying an authored string
+  // `medium` is a config preset, a spring, so this settle time only exists if
+  // the compiler resolved it against the config rather than copying a string
   expect(await box.evaluate((node) => getComputedStyle(node).transitionDuration)).toBe(
-    '0.3s'
+    '0.334s'
   )
   expect(await box.evaluate((node) => getComputedStyle(node).width)).toBe('50px')
 
   await page.click('[data-testid="transition-toggle"]')
-  // partway through a 300ms transition. a class swap with no transition would
+  // partway through a 334ms transition. a class swap with no transition would
   // already read the settled width here
   await page.waitForTimeout(120)
   const midFlight = await box.evaluate((node) =>
@@ -61,13 +61,13 @@ test('a preset lowers from every place it can be written', async ({ page }) => {
       .locator(`[data-testid="${testId}"]`)
       .evaluate((node) => getComputedStyle(node).transitionDuration)
 
-  expect(await duration('transition-box')).toBe('0.3s')
-  expect(await duration('definition-box')).toBe('0.5s')
-  expect(await duration('call-site-box')).toBe('0.15s')
+  expect(await duration('transition-box')).toBe('0.334s')
+  expect(await duration('definition-box')).toBe('0.889s')
+  expect(await duration('call-site-box')).toBe('0.282s')
 
   const definition = page.locator('[data-testid="definition-box"]')
   await page.click('[data-testid="transition-toggle"]')
-  // 120ms into `lazy`'s 500ms. without the transition this reads 200 already
+  // 120ms into `lazy`'s 889ms settle. without the transition this reads 200 already
   await page.waitForTimeout(120)
   const midFlight = await definition.evaluate((node) =>
     Number.parseFloat(getComputedStyle(node).width)

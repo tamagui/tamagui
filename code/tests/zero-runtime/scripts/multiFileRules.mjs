@@ -65,7 +65,7 @@ export const MULTI_FILE_SITES = [
     rule: 5,
     code: 'local/unsupported-target',
     message:
-      'Zero-runtime rule 5: animateOnly on View requires a component animation runtime.',
+      'Zero-runtime rule 5: the animation configured on View requires a component animation runtime.',
   },
 ]
 

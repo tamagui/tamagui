@@ -263,8 +263,7 @@ function TabsComponent() {
             bg="background"
             rounded="4"
             x={activeIndex * tabWidth}
-            transition="medium"
-            animateOnly={['transform']}
+            transition={{ preset: 'medium', properties: 'transform' }}
           />
           {tabItems.map((tab, index) => {
             const isActive = activeIndex === index
@@ -304,8 +303,7 @@ function IndicatorDot({ isActive }: { isActive: boolean }) {
       height={8}
       rounded={4}
       bg={`${isActive ? 'color10' : 'color7'}`}
-      transition="medium"
-      animateOnly={['width', 'backgroundColor']}
+      transition={{ preset: 'medium', properties: 'width, backgroundColor' }}
     />
   )
 }
@@ -712,7 +710,10 @@ function DemoMenu() {
           boxShadow="0 4px 12px shadow-color"
           y="enter:-10px exit:-10px"
           opacity="enter:0 exit:0"
-          transition={['quicker', { opacity: { overshootClamping: true } }]}
+          transition={{
+            preset: 'quicker',
+            opacity: { preset: 'quicker', spring: { overshootClamping: true } },
+          }}
         >
           <Menu.Group>
             <Menu.Label
@@ -762,7 +763,10 @@ function DemoMenu() {
                 boxShadow="0 4px 12px shadow-color"
                 x="enter:-10px exit:-10px"
                 opacity="enter:0 exit:0"
-                transition={['quicker', { opacity: { overshootClamping: true } }]}
+                transition={{
+                  preset: 'quicker',
+                  opacity: { preset: 'quicker', spring: { overshootClamping: true } },
+                }}
               >
                 <StyledItem key="duplicate" textValue="Duplicate">
                   <Menu.ItemTitle fontSize={14} color="color12">

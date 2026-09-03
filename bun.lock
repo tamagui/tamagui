@@ -135,6 +135,7 @@
       "name": "@tamagui/static",
       "version": "2.7.7",
       "dependencies": {
+        "@tamagui/animation-helpers": "workspace:*",
         "@tamagui/cli-color": "workspace:*",
         "@tamagui/compiler-core": "workspace:*",
         "@tamagui/config-default": "workspace:*",
@@ -267,6 +268,9 @@
     "code/core/animation-helpers": {
       "name": "@tamagui/animation-helpers",
       "version": "2.7.7",
+      "dependencies": {
+        "@tamagui/style-grammar": "workspace:*",
+      },
       "devDependencies": {
         "@tamagui/build": "workspace:*",
       },
@@ -446,6 +450,7 @@
       "name": "@tamagui/config",
       "version": "2.7.7",
       "dependencies": {
+        "@tamagui/animation-helpers": "workspace:*",
         "@tamagui/animations-css": "workspace:*",
         "@tamagui/animations-motion": "workspace:*",
         "@tamagui/animations-react-native": "workspace:*",
@@ -474,6 +479,7 @@
       "name": "@tamagui/config-default",
       "version": "2.7.7",
       "dependencies": {
+        "@tamagui/animation-helpers": "workspace:*",
         "@tamagui/animations-css": "workspace:*",
         "@tamagui/animations-react-native": "workspace:*",
         "@tamagui/core": "workspace:*",
@@ -1417,6 +1423,7 @@
       "name": "@tamagui/web",
       "version": "2.7.7",
       "dependencies": {
+        "@tamagui/animation-helpers": "workspace:*",
         "@tamagui/compose-refs": "workspace:*",
         "@tamagui/constants": "workspace:*",
         "@tamagui/dom": "workspace:*",
@@ -3313,6 +3320,7 @@
       "dependencies": {
         "@tamagui/adapt": "workspace:*",
         "@tamagui/animate-presence": "workspace:*",
+        "@tamagui/animation-helpers": "workspace:*",
         "@tamagui/animations-react-native": "workspace:*",
         "@tamagui/compose-refs": "workspace:*",
         "@tamagui/constants": "workspace:*",

@@ -39,6 +39,7 @@ import {
   TAG_WEB_DEFAULTS,
   type TagName,
 } from '@tamagui/dom'
+import { resolveTransition, toCSSTransition } from '@tamagui/animation-helpers'
 import {
   createModifierRegistry,
   parseTransition,
@@ -403,7 +404,6 @@ const compilerStyleProps = new Set([
   'group',
   'transition',
   'animation',
-  'animateOnly',
   'animatePresence',
   'animatedBy',
   'fontFamily',
@@ -413,7 +413,6 @@ const compilerStyleProps = new Set([
 const runtimeAnimationProps = new Set([
   'transition',
   'animation',
-  'animateOnly',
   'animatePresence',
   'animatedBy',
 ])
@@ -1068,32 +1067,23 @@ export function createTamaguiCompilerHost(
     for (const payload of payloads) {
       const transition = parseTransition(payload, transitionPresetNames)
       if (!transition.ok) return null
-      if (
-        transition.value.kind === 'global' ||
-        transition.value.entries.every((entry) => entry.timing.type === 'css')
-      ) {
+      if (transition.value.kind === 'global') {
         resolvedPayloads.push(payload)
         continue
       }
-      if (
-        transition.value.entries.length !== 1 ||
-        transition.value.entries[0]!.timing.type !== 'preset'
-      ) {
-        return null
+      // the runtime's own resolver, so a preset lowers to exactly the css the
+      // css driver would have emitted. a preset of any shape works, springs
+      // included: they become a `linear()` easing here rather than forcing the
+      // element onto the runtime path.
+      const resolved = resolveTransition(payload, { animations: transitionPresets })
+      if (resolved.diagnostics.length > 0) return null
+      if (!resolved.fused) {
+        resolvedPayloads.push(payload)
+        continue
       }
-      const preset = transitionPresets[transition.value.entries[0]!.timing.name]
-      if (typeof preset !== 'string') return null
-      const parsedPreset = parseTransition(preset)
-      if (
-        !parsedPreset.ok ||
-        parsedPreset.value.kind !== 'transition' ||
-        parsedPreset.value.entries.length !== 1 ||
-        parsedPreset.value.entries[0]!.property !== 'all' ||
-        parsedPreset.value.entries[0]!.timing.type !== 'css'
-      ) {
-        return null
-      }
-      resolvedPayloads.push(`all ${preset}`)
+      const css = toCSSTransition(resolved)
+      if (css === undefined) return null
+      resolvedPayloads.push(css)
     }
     let payloadIndex = 0
     const resolved: string[] = []
@@ -1324,7 +1314,6 @@ export function createTamaguiCompilerHost(
     'group',
     'transition',
     'animation',
-    'animateOnly',
     'animatePresence',
     'animatedBy',
     'render',
@@ -1848,7 +1837,7 @@ export function createTamaguiCompilerHost(
       // A styled() definition's animation props decide the same things the call
       // site's do, so the lowering decision reads both. completeProps merges
       // them far below, long after this point, and reading only the call site
-      // here decided a definition's transition/animation/animateOnly as if it
+      // here decided a definition's transition/animation props as if they
       // had never been written: the element flattened and the prop was dropped
       // with no diagnostic. Same merge function and same precedence as
       // completeProps, so there is one answer to "what is this prop's value".
@@ -1864,27 +1853,6 @@ export function createTamaguiCompilerHost(
           (name) => runtimeAnimationProps.has(name) && animationProps[name] !== undefined
         ),
       ])
-      const animateOnlyEntry = input.element.entries.find(
-        (entry) => entry.kind === 'prop' && entry.name === 'animateOnly'
-      )
-      if (animationNames.has('animateOnly')) {
-        return bailout(
-          input,
-          'local/unsupported-target',
-          'Animated candidates remain on the runtime path',
-          animateOnlyEntry?.span,
-          {
-            rule: 5,
-            message: zeroRuleMessage(5, {
-              // without the origin an author reads this against JSX that does
-              // not carry the prop, because the styled() definition does
-              detail: animateOnlyEntry
-                ? `animateOnly on ${input.element.component.name}`
-                : `animateOnly in the styled() definition of ${input.element.component.name}`,
-            }),
-          }
-        )
-      }
       const transitionEntry = input.element.entries.find(
         (entry) => entry.kind === 'prop' && entry.name === 'transition'
       )
@@ -1936,8 +1904,7 @@ export function createTamaguiCompilerHost(
       const runtimeAnimationRequired =
         (animationNames.has('transition') && resolvedCssTransition === null) ||
         [...animationNames].some(
-          (name) =>
-            name !== 'transition' && name !== 'animatedBy' && name !== 'animateOnly'
+          (name) => name !== 'transition' && name !== 'animatedBy'
         ) ||
         animatedByNeedsRuntime
       let dynamicHostStyleProperties: string[] | null = null

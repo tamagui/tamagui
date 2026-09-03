@@ -17,11 +17,9 @@ describe('package entry points', () => {
 
   test('tooling exposes documentation and migration helpers', () => {
     expect(grammarTable).toContain('| `p-<value>` |')
-    expect(migrateLegacyTransition('quick', new Set(['quick']))).toMatchObject({
+    expect(migrateLegacyTransition('quick', new Set(['quick']))).toEqual({
       ok: true,
-      value: {
-        entries: [{ timing: { type: 'preset', name: 'quick' } }],
-      },
+      value: 'quick',
     })
   })
 })

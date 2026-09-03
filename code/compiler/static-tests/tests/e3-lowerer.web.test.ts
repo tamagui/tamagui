@@ -350,7 +350,6 @@ export const Card = () => (
   <View
     animatedBy="css"
     transition="fast"
-    animateOnly={['padding']}
     padding={12}
     data-runtime="transition"
   />
@@ -794,9 +793,9 @@ export const Card = ({ seed }) => (
     expect(output.code).not.toContain('transition="bouncy"')
     expect(output.code).toContain('opacity: (seed % 2 ? 0.85 : 1)')
     expect(output.code).toContain('transform: "scale(" + (seed % 2 ? 0.95 : 1) + ")"')
-    expect(plan.css).toContain(
-      'transition:all 350ms cubic-bezier(0.175, 0.885, 0.32, 1.275)'
-    )
+    // the configured `bouncy` is a 400ms/0.5-bounce spring, sampled to a
+    // linear() curve the browser runs with no javascript
+    expect(plan.css).toContain('transition:all 693ms linear(')
   })
 
   test('keeps a configured transition class beside a conditional host style', () => {
@@ -875,7 +874,7 @@ export const Card = ({ opacity }) => (
     expect(plan.css).toBe('')
   })
 
-  test('partially extracts static styles beside an unsupported CSS-driver transition', () => {
+  test('lowers a physics-written spring preset on the CSS driver', () => {
     const source = `
 import { View } from '@tamagui/core'
 export const Card = ({ opacity }) => (
@@ -898,16 +897,20 @@ export const Card = ({ opacity }) => (
       },
     })
 
+    // a preset written as stiffness/damping/mass solves to the same
+    // duration-and-bounce pair every other driver takes, so css samples it to a
+    // linear() curve rather than handing the element back to the runtime
     expect(codes(plan)).toEqual([])
-    expect(plan.stats).toMatchObject({ lowered: 1, flattened: 0, bailed: 0 })
-    expect(output.code).toMatch(
-      /<View\s+transition="spring"\s+className="[^"]+"\s+opacity=\{opacity\}/
-    )
+    expect(plan.stats).toMatchObject({ lowered: 1, flattened: 1, bailed: 0 })
+    expect(output.code).not.toContain('transition="spring"')
+    expect(output.code).toContain('style={{ opacity: (opacity) }}')
     expect(output.code).not.toContain('width={24}')
     expect(output.code).not.toContain('height={24}')
     expect(plan.css).toContain('width:24px')
     expect(plan.css).toContain('height:24px')
-    expect(plan.css).not.toContain('transition:')
+    // stiffness 100 / damping 10 / mass 1 is a 628ms period at 0.5 bounce, and
+    // css emits the settle time the ringing actually needs
+    expect(plan.css).toContain('transition:all 1088ms linear(')
   })
 
   test('materializes local styled definitions before lowering variants and compounds', () => {
@@ -1196,7 +1199,7 @@ export const App = () => (
     // grow rules, so a plan that emitted nothing would not pass this
     const occurrences = (rule: string) => plan.css.split(rule).length - 1
     expect(occurrences('{height:20px}')).toBe(1)
-    expect(occurrences('{transition:all 300ms cubic-bezier(0.25, 0.1, 0.25, 1)}')).toBe(1)
+    expect(occurrences('{transition:all 334ms linear(')).toBe(1)
     expect(occurrences('{width:50px}')).toBe(1)
   })
 })
@@ -1228,17 +1231,14 @@ export const App = () => (
     expect(output.code).not.toContain('transition="quick"')
     expect(output.code).not.toContain('transition="lazy"')
     const css = compactCss(plan.css)
-    expect(css).toContain('transition:all150mscubic-bezier(0.25,0.1,0.25,1)')
-    expect(css).toContain('transition:all300mscubic-bezier(0.25,0.1,0.25,1)')
-    expect(css).toContain('transition:all500mscubic-bezier(0.25,0.1,0.25,1)')
+    // quick, medium and lazy, each sampled from its own spring
+    expect(css).toContain('transition:all282mslinear(')
+    expect(css).toContain('transition:all334mslinear(')
+    expect(css).toContain('transition:all889mslinear(')
   })
 
   test('reports an animation that needs a runtime instead of dropping it', () => {
-    for (const definition of [
-      `animateOnly: ['opacity'], transition: 'all 200ms ease', opacity: 0.5`,
-      `animation: 'medium'`,
-      `animatePresence: true`,
-    ]) {
+    for (const definition of [`animation: 'medium'`, `animatePresence: true`]) {
       const source = `
 import { View, styled } from '@tamagui/core'
 const Card = styled(View, { ${definition}, height: 20 })
@@ -1251,23 +1251,6 @@ export const App = () => <Card data-box="definition" />
       expect(plan.stats).toMatchObject({ lowered: 0, flattened: 0, bailed: 1 })
       expect(output.changed).toBe(false)
     }
-  })
-
-  test('names the styled definition when animateOnly is not on the element', () => {
-    const atCallSite = compile(`
-import { View } from '@tamagui/core'
-export const App = () => <View animateOnly={['opacity']} transition="medium" opacity={0.5} />
-`)
-    const inDefinition = compile(`
-import { View, styled } from '@tamagui/core'
-const Card = styled(View, { animateOnly: ['opacity'], transition: 'medium', opacity: 0.5 })
-export const App = () => <Card />
-`)
-
-    expect(atCallSite.plan.diagnostics[0]?.zeroMessage).toContain('animateOnly on View')
-    expect(inDefinition.plan.diagnostics[0]?.zeroMessage).toContain(
-      'animateOnly in the styled() definition of Card'
-    )
   })
 })
 

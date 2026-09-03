@@ -37,6 +37,7 @@ import {
 import { createProvenance } from './provenance'
 import { renderReport, type FileReport } from './report'
 import { convertSheetFrames } from './sheetAnatomy'
+import { convertTransitions } from './transition'
 
 type Provenance = ReturnType<typeof createProvenance>
 
@@ -362,6 +363,9 @@ function inspectFile(
   // the anatomy rewrite runs first so the Background it adds, and the surface
   // props it moves there, go through the flat-value conversion below
   const sheetFrames = convertSheetFrames(sourceFile, provenance, write)
+  // the transition respelling touches one value, so it runs on its own rather
+  // than turning every element that has a v2 transition into a style site
+  const transitions = convertTransitions(sourceFile, provenance, write)
   const containers = planContainers(sourceFile, registry)
   const targets = conversionTargets(sourceFile.getFilePath())
   const sites: SiteReport[] = []
@@ -427,6 +431,7 @@ function inspectFile(
     sites,
     functionalVariants,
     sheetFrames,
+    transitions,
   }
 }
 
@@ -580,5 +585,5 @@ if (write) {
 console.log(`wrote ${reportPath}`)
 if (write) console.log(`rewrote ${written} source files`)
 console.log(
-  `${summary.sites} style sites: ${summary.clean - summary.waiting} clean, ${summary.needsRelocation} need relocation, ${summary.unknownHost} unknown host, ${summary.ineligible} ineligible, ${summary.waiting} waiting on runtime support, ${summary.flagged} syntax-flagged; ${summary.functionalVariantSites} functional variants: ${summary.functionalVariantConverted} automatic, ${summary.functionalVariantFlagged} flagged; ${summary.sheetFrames} Sheet.Frame sites: ${summary.sheetFramesFlagged} need review; ${summary.ignoredFiles} source files ignored`
+  `${summary.sites} style sites: ${summary.clean - summary.waiting} clean, ${summary.needsRelocation} need relocation, ${summary.unknownHost} unknown host, ${summary.ineligible} ineligible, ${summary.waiting} waiting on runtime support, ${summary.flagged} syntax-flagged; ${summary.functionalVariantSites} functional variants: ${summary.functionalVariantConverted} automatic, ${summary.functionalVariantFlagged} flagged; ${summary.sheetFrames} Sheet.Frame sites: ${summary.sheetFramesFlagged} need review; ${summary.transitions} v2 transitions: ${summary.transitionsFlagged} need review; ${summary.ignoredFiles} source files ignored`
 )

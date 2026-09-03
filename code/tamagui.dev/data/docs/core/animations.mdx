@@ -40,23 +40,25 @@ import { createTamagui } from 'tamagui'
 
 export default createTamagui({
   animations: createAnimations({
-    bouncy: {
-      damping: 10,
-      mass: 0.9,
-      stiffness: 100,
-    },
-    lazy: {
-      damping: 18,
-      stiffness: 50,
-    },
-    quick: {
-      damping: 20,
-      mass: 1.2,
-      stiffness: 250,
-    },
+    bouncy: { duration: 400, bounce: 0.5 },
+    lazy: { duration: 500, bounce: -0.2 },
+    quick: { duration: 220, bounce: 0.3 },
   }),
   // ...
 })
+```
+
+A config entry is `{ duration, bounce }`, a CSS timing string, or
+`{ type: 'timing', duration, easing }`. `stiffness`, `damping`, and `mass` still
+work for a table that was already tuned against them. The same config resolves
+to the same motion on all four drivers, so you can swap drivers without
+retuning.
+
+`@tamagui/config` ships this table for every driver, so you only need
+`createAnimations` when you want names of your own:
+
+```tsx
+import { animationsCSS } from '@tamagui/config/animations-css'
 ```
 
 ## Usage
@@ -102,60 +104,133 @@ animate to its base value after mount:
 
 ```
 
+### The transition value
+
+`transition` takes a CSS transition string or an object. Both spell the same
+thing, so pick whichever reads better at the site:
+
+```tsx
+// a css transition, exactly as css writes it
+<View transition="200ms" />
+<View transition="200ms ease-out" />
+<View transition="transform 200ms, opacity 100ms 50ms" />
+
+// a configured preset name, anywhere a timing goes
+<View transition="quick" />
+<View transition="transform quick, opacity 100ms" />
+
+// a spring, inline
+<View transition="spring(400ms, 0.5)" />
+
+// nothing transitions
+<View transition="none" />
+```
+
+The object form takes the same values under names:
+
+```tsx
+<View
+  transition={{
+    preset: 'quick',
+    delay: 100,
+    properties: 'transform, opacity',
+    // any key that is not a transition setting is a style property
+    opacity: '150ms ease-out',
+  }}
+/>
+```
+
+The settings are `preset`, `duration`, `bounce`, `easing`, `delay`, `behavior`,
+`properties`, `spring`, `enter`, and `exit`. Every other key names a style
+property and gets its own timing. An unrecognized key is an error rather than a
+silent no-op.
+
 ### Granular animations
 
-The `transition` prop accepts a string or a more complex object to customize
-animations per-property.
-
-You can specify animations for specific properties using an object:
+A per-property key wins for that property, the same way a later entry wins in a
+CSS transition list. These two are the same transition:
 
 ```tsx
-import { YStack } from 'tamagui'
-
-export default () => (
-  <YStack
-    transition={{
-      // only x and y will apply animations
-      x: 'bouncy',
-      y: {
-        type: 'bouncy',
-        overshootClamping: true,
-      },
-    }}
-  />
-)
+<View transition="all 200ms, opacity 100ms" />
+<View transition={{ duration: 200, opacity: 100 }} />
 ```
 
-Note that values can either map to `AnimationKey` as a string, or to
-`{ type: AnimationKey, ...configuration }`
-
-You can set a default animation using a two-element array with the default in the
-first position:
+Per-property values take a preset name, a CSS timing, or an object:
 
 ```tsx
-import { YStack } from 'tamagui'
-
-export default () => (
-  <YStack
-    transition={[
-      // all attributes get "bouncy"
-      'bouncy',
-      // these are customized
-      {
-        y: 'slow',
-        scale: {
-          type: 'fast',
-          repeat: 2,
-        },
-      },
-    ]}
-  />
-)
+<View
+  transition={{
+    preset: 'bouncy',
+    // a preset name
+    x: 'lazy',
+    // a css timing
+    opacity: '150ms ease-out',
+    // or its own settings, including the low-level spring escape hatch
+    y: { preset: 'bouncy', spring: { overshootClamping: true } },
+  }}
+/>
 ```
+
+Entries do not inherit from the base. `{ duration: 200, opacity: {} }` gives
+`opacity` no timing of its own, the same as `transition: all 200ms, opacity` in
+CSS. Name what you want on each entry, or use `preset` for a shared starting
+point.
+
+### Springs
+
+A spring is `duration` plus `bounce`:
+
+```tsx
+<View transition={{ duration: 400, bounce: 0.5 }} />
+<View transition="spring(400ms, 0.5)" />
+```
+
+`duration` is the spring's period, which is what "how fast does this feel"
+means. It is not a stopwatch: a bouncy spring keeps ringing past it, which is
+the point of a bouncy spring. `bounce` is `0` for critically damped (fast, no
+overshoot), goes up toward `1` for loose and oscillating, and goes negative for
+sluggish. A value outside `-1` to `1` is an error.
+
+On the web this compiles to a `linear()` easing that traces the real spring
+curve, overshoot included, with no JavaScript running.
+
+When you need the physics directly, `spring` is the escape hatch:
+
+```tsx
+<View transition={{ spring: { stiffness: 250, damping: 20, mass: 1.2 } }} />
+```
+
+It takes `stiffness`, `damping`, `mass`, `velocity`, `overshootClamping`,
+`restDisplacementThreshold`, and `restSpeedThreshold`. Tamagui derives the
+`duration`/`bounce` pair from `stiffness` and `mass`, so the same motion reaches
+the CSS driver too. It is a projection of duration and bounce, not a second API.
+
+### Presets
+
+A preset is a name from your config's `animations`. Any name works where a
+timing goes, and `preset` in the object form takes overrides:
+
+```tsx
+<View transition={{ preset: 'bouncy', duration: 250 }} />
+```
+
+Overriding `duration` or `bounce` re-solves the spring, so the preset keeps
+whichever of the two you did not name and drops the `stiffness`/`damping` it was
+written with, since those are what you just replaced. `mass` carries over: it
+describes the object rather than the curve. Naming `stiffness` or `damping`
+yourself still wins outright, and a preset used without a `duration` or `bounce`
+override runs exactly the numbers your config gave it.
+
+The shipped presets are the same springs on every driver: `quickest`, `quicker`,
+`quick`, `medium`, `slow`, `slowest`, `lazy`, `superLazy`, `bouncy`,
+`superBouncy`, and the `LessBouncy` variants of the three quick ones. Keep your
+own table small. A duration is CSS now, so `transition="200ms"` needs nothing
+configured, and a name is worth having only when it means something a duration
+cannot say.
 
 ### Delay
 
-You can add a delay before animations start using the array syntax with a `delay` property (in milliseconds):
+`delay` is the second time in the CSS string, or the `delay` key:
 
 ```tsx
 import { Square, XStack } from 'tamagui'
@@ -165,7 +240,7 @@ export default () => (
     {[0, 1, 2, 3].map((i) => (
       <Square
         key={i}
-        transition={['bouncy', { delay: i * 100 }]}
+        transition={{ preset: 'bouncy', delay: i * 100 }}
         opacity="enter:0"
         scale="enter:0.5"
         y="enter:20px"
@@ -177,11 +252,14 @@ export default () => (
 )
 ```
 
-This creates a staggered animation effect where each square animates 100ms after the previous one. The delay works with all animation drivers and applies to enter, exit, and style change animations.
+This creates a staggered animation where each square starts 100ms after the
+previous one. It works with all animation drivers and applies to enter, exit,
+and style change animations.
 
 ### Enter/Exit Transitions
 
-You can specify different animations for enter (mount) and exit (unmount) transitions. This is useful when you want elements to enter slowly but exit quickly, or vice versa:
+`enter` and `exit` set the transition to use while mounting and unmounting.
+This is useful when elements should enter slowly and leave quickly:
 
 ```tsx
 import { AnimatePresence, View } from 'tamagui'
@@ -200,28 +278,26 @@ export default ({ show }) => (
 )
 ```
 
-The `enter` and `exit` keys accept any animation name from your config. You can also combine them with a `default` for property changes that happen while the element is mounted:
+Each takes a whole transition value, so they can carry their own properties and
+per-property timings, and the base still applies to changes while mounted:
 
 ```tsx
-// enter slowly, exit quickly, property changes use medium speed
+// enter slowly, exit quickly, changes while mounted use 200ms
 <View
-  transition={{ enter: 'lazy', exit: 'quick', default: 'bouncy' }}
+  transition={{
+    duration: 200,
+    enter: { preset: 'lazy', delay: 100 },
+    exit: 'quick',
+  }}
   opacity="enter:0 exit:0"
 />
 ```
 
-Or use enter/exit with the array syntax to include delay and per-property animations:
+An `enter` or `exit` list replaces the base while it applies rather than merging
+into it, because the two never run at the same time.
 
-```tsx
-// enter with lazy, exit with quick, delay 200ms, x uses its own animation
-<View
-  transition={['bouncy', { enter: 'lazy', exit: 'quick', delay: 200, x: 'slow' }]}
-  opacity="enter:0 exit:0"
-  x="enter:-100px exit:100px"
-/>
-```
-
-This works with all four animation drivers (CSS, React Native, Reanimated, Motion).
+This works with all four animation drivers (CSS, React Native, Reanimated,
+Motion).
 
 ### Pseudo-Style Transitions
 
@@ -267,10 +343,35 @@ And with group pseudo states:
 
 Priority follows CSS specificity intuition: press > hover > focus. This works with all animation drivers.
 
-### animateOnly
+### Limiting which properties transition
 
-The `animateOnly` prop will limit your animation config to certain keys. It
-accepts an array of strings that correspond to style property names.
+Name the properties in the transition itself, the same way CSS does. In string
+form the property leads the value; in object form it is the `properties` key:
+
+```tsx
+// only transform transitions, everything else jumps
+<Square transition="transform 200ms ease" />
+<Square transition={{ preset: 'quick', properties: 'transform, opacity' }} />
+
+// nothing transitions
+<Square transition="none" />
+```
+
+This replaces v2's `animateOnly` prop, which was the same idea spelled as a
+separate array. `properties` reaches every driver, so a list means the same
+thing on CSS, Motion, React Native, and Reanimated.
+
+Naming `transform` covers every transform part, so `x`, `y`, `scale`,
+`scaleX`/`scaleY`, `rotate` and the rest all transition together. Naming one
+part covers only that part:
+
+```tsx
+// x, scale and rotate all transition
+<Square transition="transform 200ms" x={10} scale={1.1} rotate="5deg" />
+
+// only x transitions; scale jumps
+<Square transition="x 200ms" x={10} scale={1.1} />
+```
 
 ## The onTransition lifecycle
 

@@ -41,6 +41,12 @@ const PanResponder = {
 const TurboModuleRegistry = {
   get: () => null,
 }
+const PixelRatio = {
+  get: () => 2,
+  getFontScale: () => 1,
+  getPixelSizeForLayoutSize: (size) => Math.round(size * 2),
+  roundToNearestPixel: (size) => Math.round(size * 2) / 2,
+}
 const codegenNativeCommands = () => ({})
 const codegenNativeComponent = (name) => createMockComponent(name)
 
@@ -66,9 +72,10 @@ function proxyWorm() {
       NativeModules: {},
       PanResponder,
       TurboModuleRegistry,
+      PixelRatio,
       processColor: (color) => color,
       Dimensions: {
-        get: () => ({ width: 1024, height: 768 }),
+        get: () => ({ width: 1024, height: 768, scale: 2, fontScale: 1 }),
         addEventListener: () => ({ remove: () => {} }),
       },
       useWindowDimensions,
@@ -116,6 +123,7 @@ module.exports.Animated = proxy.Animated
 module.exports.NativeModules = proxy.NativeModules
 module.exports.PanResponder = proxy.PanResponder
 module.exports.TurboModuleRegistry = proxy.TurboModuleRegistry
+module.exports.PixelRatio = PixelRatio
 module.exports.processColor = proxy.processColor
 module.exports.Dimensions = proxy.Dimensions
 module.exports.useWindowDimensions = useWindowDimensions

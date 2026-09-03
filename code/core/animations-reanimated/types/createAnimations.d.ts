@@ -1,3 +1,4 @@
+import { type AnimationsConfig } from "@tamagui/animation-helpers";
 import { type AnimationDriverWithAnimatedNumbers } from "@tamagui/core";
 import { type WithSpringConfig, type WithTimingConfig } from "react-native-reanimated";
 /** Spring animation configuration */
@@ -28,13 +29,12 @@ export type CreateAnimationsOptions = {};
 * @example
 * ```tsx
 * const animations = createAnimations({
-*   fast: { type: 'spring', damping: 20, stiffness: 250 },
-*   slow: { type: 'timing', duration: 500 },
+*   fast: { duration: 200, bounce: 0.2 },
+*   slow: { type: 'timing', duration: 500, easing: 'ease-out' },
 * })
-*
 * ```
 */
-export declare function createAnimations<A extends Record<string, TransitionConfig>>(animationsConfig: A): AnimationDriverWithAnimatedNumbers<A>;
+export declare function createAnimations<A extends AnimationsConfig>(animations: A): AnimationDriverWithAnimatedNumbers<A>;
 export {};
 
 //# sourceMappingURL=createAnimations.d.ts.map

@@ -41,11 +41,9 @@ describe('built export parity', () => {
       })
       expect(built.classifyCandidate('p-999', config).kind).toBe('passthrough')
       expect(built.grammarTable).toBe(toolingEsm.grammarTable)
-      expect(built.migrateLegacyTransition('quick', new Set(['quick']))).toMatchObject({
+      expect(built.migrateLegacyTransition('quick', new Set(['quick']))).toEqual({
         ok: true,
-        value: {
-          entries: [{ timing: { type: 'preset', name: 'quick' } }],
-        },
+        value: 'quick',
       })
     }
   })

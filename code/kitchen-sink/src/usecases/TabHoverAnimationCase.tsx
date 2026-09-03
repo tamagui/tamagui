@@ -102,10 +102,9 @@ export function TabHoverAnimationCase() {
           data-testid="hover-content"
           animatePosition
           disableFocusScope
-          animateOnly={['transform', 'opacity']}
           opacity="1 enter:0 exit:0"
           y="enter:-4px exit:6px"
-          transition="500ms"
+          transition={{ duration: '500ms', properties: 'transform, opacity' }}
         >
           <YStack
             width={250}

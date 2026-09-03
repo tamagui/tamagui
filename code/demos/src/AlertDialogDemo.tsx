@@ -17,7 +17,10 @@ export function AlertDialogDemo() {
         <AlertDialog.Content
           elevation="4"
           key="content"
-          transition={['quick', { opacity: { overshootClamping: true } }]}
+          transition={{
+            preset: 'quick',
+            opacity: { preset: 'quick', spring: { overshootClamping: true } },
+          }}
           x="0 enter:0 exit:0"
           scale="1 enter:0.9 exit:0.95"
           opacity="1 enter:0 exit:0"

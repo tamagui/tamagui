@@ -39,7 +39,10 @@ export const ProAgreementModal = () => {
           bordered
           elevate
           key="content"
-          transition={['quick', { opacity: { overshootClamping: true } }]}
+          transition={{
+            preset: 'quick',
+            opacity: { preset: 'quick', spring: { overshootClamping: true } },
+          }}
           y="enter:-10px exit:10px"
           opacity="enter:0 exit:0"
           scale="enter:0.975 exit:0.975"

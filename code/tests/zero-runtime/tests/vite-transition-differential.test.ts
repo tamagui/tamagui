@@ -212,9 +212,9 @@ async function observeTier(page: Page, url: string) {
   const transitions = await sampleTransitions(page)
   // item 4's first slice stays explicit: plain View call-site prop, styled()
   // definition, and styled component call-site prop respectively.
-  expect(transitions['transition-box'].transitionDuration).toBe('0.3s')
-  expect(transitions['definition-box'].transitionDuration).toBe('0.5s')
-  expect(transitions['call-site-box'].transitionDuration).toBe('0.15s')
+  expect(transitions['transition-box'].transitionDuration).toBe('0.334s')
+  expect(transitions['definition-box'].transitionDuration).toBe('0.889s')
+  expect(transitions['call-site-box'].transitionDuration).toBe('0.282s')
   const actions = await sampleActions(page, base)
 
   await open(page, url, 900)

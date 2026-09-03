@@ -50,6 +50,10 @@ describe('isDynamicUnitValue', () => {
   })
 
   test('rejects non-unit values to prevent false positives', () => {
+    // a unit suffix with no number in front of it is part of a word. 'System'
+    // ends in `em`, and treating it as a length resolved fontFamily to 0
+    expect(isDynamicUnitValue('System')).toBe(false)
+    expect(isDynamicUnitValue('px')).toBe(false)
     expect(isDynamicUnitValue('Bremen')).toBe(false)
     expect(isDynamicUnitValue('red')).toBe(false)
     expect(isDynamicUnitValue('#ffffff')).toBe(false)

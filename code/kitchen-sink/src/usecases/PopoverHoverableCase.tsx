@@ -24,14 +24,13 @@ export function PopoverHoverableDelayCase() {
         <Popover.Content
           id="delay-content"
           disableFocusScope
-          transition="200ms"
+          transition={{ duration: '200ms', properties: 'opacity, transform' }}
           opacity="enter:0 exit:0"
           y="enter:-4px exit:-4px"
           bg="color4"
           rounded="4"
           px="4"
           py="3"
-          animateOnly={['opacity', 'transform']}
         >
           <SizableText>Popover content (delay test)</SizableText>
         </Popover.Content>
@@ -62,14 +61,13 @@ export function PopoverHoverableRestMsCase() {
         <Popover.Content
           id="restms-content"
           disableFocusScope
-          transition="200ms"
+          transition={{ duration: '200ms', properties: 'opacity, transform' }}
           opacity="enter:0 exit:0"
           y="enter:-4px exit:-4px"
           bg="color4"
           rounded="4"
           px="4"
           py="3"
-          animateOnly={['opacity', 'transform']}
         >
           <SizableText>Popover content (restMs test)</SizableText>
         </Popover.Content>
@@ -101,14 +99,13 @@ export function PopoverHoverableSafePolygonCase() {
         <Popover.Content
           id="safepoly-content"
           disableFocusScope
-          transition="200ms"
+          transition={{ duration: '200ms', properties: 'opacity, transform' }}
           opacity="enter:0 exit:0"
           y="enter:-4px exit:-4px"
           bg="color4"
           rounded="4"
           px="4"
           py="3"
-          animateOnly={['opacity', 'transform']}
         >
           <SizableText id="safepoly-text">Popover content (safePolygon)</SizableText>
         </Popover.Content>
@@ -145,14 +142,13 @@ export function PopoverHoverableExitAnimCase() {
         <Popover.Content
           id="exitanim-content"
           disableFocusScope
-          transition="500ms"
+          transition={{ duration: '500ms', properties: 'opacity, transform' }}
           opacity="1 enter:0 exit:0"
           y="enter:-4px exit:-4px"
           bg="color4"
           rounded="4"
           px="4"
           py="3"
-          animateOnly={['opacity', 'transform']}
         >
           <SizableText>Popover content (exit anim test)</SizableText>
         </Popover.Content>

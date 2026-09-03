@@ -45,7 +45,10 @@ export function DialogFocusScopeCase() {
             key="parent-content"
             bordered
             elevate
-            transition={['quick', { opacity: { overshootClamping: true } }]}
+            transition={{
+              preset: 'quick',
+              opacity: { preset: 'quick', spring: { overshootClamping: true } },
+            }}
             x="enter:0 exit:0"
             y="enter:-20px exit:10px"
             opacity="enter:0 exit:0"
@@ -148,7 +151,10 @@ function DialogContent({
         bordered
         elevate
         disableOutsidePointerEvents={disableOutsidePointerEvents}
-        transition={['quick', { opacity: { overshootClamping: true } }]}
+        transition={{
+          preset: 'quick',
+          opacity: { preset: 'quick', spring: { overshootClamping: true } },
+        }}
         x="enter:0 exit:0"
         y="enter:-20px exit:10px"
         opacity="enter:0 exit:0"

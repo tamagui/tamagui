@@ -38,7 +38,10 @@ export const StudioThemeBuilderSettingsDropdown = () => {
         backgroundColor="background"
         boxShadow="0 4px 12px shadow-color"
         maxW={400}
-        transition={['quickest', { opacity: { overshootClamping: true } }]}
+        transition={{
+          preset: 'quickest',
+          opacity: { preset: 'quickest', spring: { overshootClamping: true } },
+        }}
         trapFocus={false}
       >
         <Popover.ScrollView>

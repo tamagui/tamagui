@@ -161,7 +161,7 @@ export declare function createBaseMenu(): {
         };
         Content: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {}>, keyof MenuContentProps> & MenuContentProps & {
             scope?: string;
-        }, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & MenuContentProps & {
+        }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & MenuContentProps & {
             scope?: string;
         }, import("@tamagui/web").StackStyleBase, {}, import("@tamagui/web").StaticConfigPublic>;
         Group: import("@tamagui/web").TamaguiComponent<Omit<ViewProps, keyof MenuGroupProps> & MenuGroupProps, TamaguiElement, import("@tamagui/web").StackNonStyleProps & MenuGroupProps, import("@tamagui/web").StackStyleBase, {}, {}>;
@@ -197,7 +197,7 @@ export declare function createBaseMenu(): {
         SubTrigger: import("@tamagui/web").RefComponent<TamaguiElement, ScopedProps<MenuSubTriggerProps>>;
         SubContent: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {}>, keyof MenuSubContentProps> & MenuSubContentProps & {
             scope?: string;
-        }, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & MenuSubContentProps & {
+        }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & MenuSubContentProps & {
             scope?: string;
         }, import("@tamagui/web").StackStyleBase, {}, import("@tamagui/web").StaticConfigPublic>;
         ItemTitle: import("@tamagui/web").TamaguiComponent<Omit<TextProps, keyof MenuItemTitleProps> & MenuItemTitleProps, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps & MenuItemTitleProps, import("@tamagui/web").TextStylePropsBase, {}, {}>;

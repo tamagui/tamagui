@@ -14,7 +14,7 @@ import {
  *
  * Tests that styles render consistently between server and client.
  * Key scenarios tested:
- * 1. animateOnly prop (the bug we fixed - server rendered inline style, client rendered className)
+ * 1. a transition naming its properties (the bug we fixed - server rendered inline style, client rendered className)
  * 2. Transform styles
  * 3. AnimatePresence with enter clause/exit clause
  */
@@ -23,7 +23,7 @@ export default function HydrationMotionTest() {
   const didHydrate = useDidFinishSSR()
   const [showAnimated, setShowAnimated] = useState(true)
 
-  // test case: animateOnly with non-animated component
+  // test case: a property list on a component that does not animate
   const indicatorDots = useMemo(
     () =>
       [0, 1, 2].map((i) => (
@@ -34,8 +34,7 @@ export default function HydrationMotionTest() {
           height={8}
           bg={`${i === 1 ? 'color10' : 'color5'}`}
           rounded={100}
-          transition="quick"
-          animateOnly={['width', 'backgroundColor']}
+          transition={{ preset: 'quick', properties: 'width, backgroundColor' }}
         />
       )),
     []
@@ -89,9 +88,9 @@ export default function HydrationMotionTest() {
           inputStyle: {driver.inputStyle} | outputStyle: {driver.outputStyle}
         </Text>
 
-        {/* Test 1: animateOnly indicator dots */}
+        {/* Test 1: property-list indicator dots */}
         <YStack gap="2">
-          <Text fontSize="4">Test 1: animateOnly (indicator dots)</Text>
+          <Text fontSize="4">Test 1: property list (indicator dots)</Text>
           <XStack gap="2">{indicatorDots}</XStack>
         </YStack>
 

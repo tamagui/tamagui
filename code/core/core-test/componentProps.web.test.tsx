@@ -43,8 +43,10 @@ describe('animation props', () => {
     const view = tree.container.querySelector('#test-id') as HTMLElement
     expect(view.tagName).toBe('DIV')
     expect(view.className).toContain('is_View')
+    // `quick` is a spring (220ms, 0.3 bounce), so css gets its settle time and
+    // a linear() sampled from the same curve the js drivers run
     expect(view.style.transition).toBe(
-      'all cubic-bezier(0.215, 0.610, 0.355, 1.000) 400ms'
+      'all 282ms linear(0, 0.0184, 0.0668, 0.1362, 0.2189, 0.3088, 0.4009, 0.4915, 0.5777, 0.6576, 0.73, 0.794, 0.8496, 0.8968, 0.9361, 0.968, 0.9931, 1.0124, 1.0264, 1.0361, 1.0422, 1.0452, 1.046, 1.0449, 1.0425, 1.0392, 1.0354, 1.0312, 1.027, 1.0228, 1.0189, 1.0153, 1.012, 1.0091, 1.0066, 1.0045, 1.0027, 1.0013, 1.0002, 0.9993, 1)'
     )
     const style = getComputedStyle(view)
     expect(style.backgroundColor).toBe('red')

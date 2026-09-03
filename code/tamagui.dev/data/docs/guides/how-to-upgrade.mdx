@@ -488,7 +488,7 @@ Rules to verify:
 Search for removed APIs:
 
 ```bash
-rg "createStyledHOC|focusable|fullscreen|themeInverse|<Theme inverse|Sheet\.Frame|styleable\(|inlineWhenUnflattened|\$true|getTokenRelative|stepTokenUpOrDown|forceRemoveScrollEnabled|sizeAdjust|selectable=|Select\.Item.*index|enterVariant|exitVariant|enterExitVariant|delayMs|disableTransparencyHide|disableRootThemeClass|themeClassNameOnRoot|isWindowDefined|getExpandedShorthands|usePropsAndStyle|useProps|useStyle|backgroundActive|surface[1-4]|color12|defaultComponentThemes|@tamagui/config/v[3-5]|@tamagui/animations-moti|@tamagui/babel-plugin"
+rg "createStyledHOC|focusable|fullscreen|themeInverse|<Theme inverse|Sheet\.Frame|styleable\(|inlineWhenUnflattened|\$true|getTokenRelative|stepTokenUpOrDown|forceRemoveScrollEnabled|sizeAdjust|selectable=|Select\.Item.*index|enterVariant|exitVariant|enterExitVariant|delayMs|disableTransparencyHide|disableRootThemeClass|themeClassNameOnRoot|isWindowDefined|getExpandedShorthands|usePropsAndStyle|useProps|useStyle|backgroundActive|surface[1-4]|color12|defaultComponentThemes|@tamagui/config/v[3-5]|@tamagui/animations-moti|@tamagui/babel-plugin|animateOnly"
 ```
 
 Use these replacements:
@@ -520,6 +520,8 @@ Use these replacements:
 | `getExpandedShorthands` | `getExpandedShorthand(key, props)` when behavior code needs one authored prop and accepts configured shorthands |
 | `useProps`, `useStyle`, `usePropsAndStyle` | keep conditional values on styled Tamagui components; use `splitStyleProps` only when a wrapper must partition authored props |
 | `createCheckbox` `sizeAdjust` | explicit sizing math or component styles |
+| `animateOnly` | `properties` inside the transition, see [Migrate transition values](#13-migrate-transition-values) |
+| `transition` array form, `default`, per-property `type` | the [v3 transition grammar](#13-migrate-transition-values) |
 | `@tamagui/animations-moti` | `@tamagui/animations-reanimated` |
 | `@tamagui/config/reanimated` | `@tamagui/config/animations-reanimated` |
 | `accept` option in `styled()` | piece-typed props (e.g. `StylePiece`) or real style keys |
@@ -882,7 +884,7 @@ Component-specific notes:
 - Non-modal `Dialog.Content` no longer enables RemoveScroll while open.
 - Dialog, Popover, and Select parts own their presence lifecycles.
 - Animation drivers can now complete part-level exits through the typed
-  [`onTransition`](#12-update-animation-and-sheet-lifecycle-callbacks) lifecycle.
+  [`onTransition`](#14-update-animation-and-sheet-lifecycle-callbacks) lifecycle.
 - `Popover.Content forceMount` now matches Dialog semantics and disables part
   presence gating.
 - Removed legacy Popover and Select sheet-controller internals. If app code
@@ -1014,7 +1016,74 @@ Unsupported old lite/RNW props should be replaced:
 - `keyboardDismissMode`
 - any app-specific reliance on RNW's legacy style system
 
-## 13. Update animation and sheet lifecycle callbacks
+## 13. Migrate transition values
+
+V3 has one transition grammar: a CSS transition string, or an object whose keys
+are the same values under names. The v2 array form, the `default` key, the
+per-property `type` key, inline spring physics, and the `animateOnly` prop are
+all gone. The flat-values codemod rewrites every static site, so run it first
+and hand-migrate what it flags.
+
+| V2 | V3 |
+| --- | --- |
+| `transition={['quick', { opacity: 'lazy' }]}` | `transition={{ preset: 'quick', opacity: 'lazy' }}` |
+| `transition={{ default: 'quick' }}` | `transition="quick"` |
+| `transition={{ x: { type: 'bouncy' } }}` | `transition={{ x: 'bouncy' }}` |
+| `transition={{ x: { type: 'bouncy', overshootClamping: true } }}` | `transition={{ x: { preset: 'bouncy', spring: { overshootClamping: true } } }}` |
+| `transition={{ damping: 20, stiffness: 250 }}` | `transition={{ spring: { damping: 20, stiffness: 250 } }}` |
+| `transition={{ bounciness: 8, speed: 12 }}` | `transition={{ spring: { stiffness: 342.101, damping: 24.684 } }}` |
+| `animateOnly={['transform', 'opacity']}` | `properties: 'transform, opacity'` inside the transition |
+| `animateOnly={[]}` | `transition="none"` |
+
+The array form and `default` were two more ways to say "the base timing", which
+is what a bare string and the `preset` key already say. Per-property `type`
+meant a preset name in one place and a spring-or-timing mechanism in another;
+in v3 a preset name is always a preset name, and physics always live under
+`spring`.
+
+`bounciness`, `speed`, `tension`, and `friction` are removed. The codemod
+converts them with React Native's own Origami formulas, so a migrated spring
+keeps the motion it had.
+
+### animateOnly is now part of the transition
+
+`animateOnly` was an exclusive filter over the properties a transition named,
+which is what a CSS `transition-property` list already is. Name the properties
+in the transition itself:
+
+```tsx
+// before
+<Square transition="quick" animateOnly={['transform', 'opacity']} />
+```
+
+```tsx
+// after
+<Square transition={{ preset: 'quick', properties: 'transform, opacity' }} />
+// or, in string form
+<Square transition="transform 200ms, opacity 200ms" />
+```
+
+A property the transition does not name is set rather than animated, on every
+driver. `transition="none"` animates nothing and completes exits immediately,
+which is what an empty `animateOnly` array did.
+
+A standalone `transitionProperty` longhand narrows plain-CSS transitions in the
+browser, but it does not reach the animation drivers. Use `properties` inside
+the transition, or the property token in a transition string, so the list means
+the same thing on all four drivers.
+
+### Preset names and values changed
+
+Presets are springs now, defined once and identical on every driver. In v2 the
+same name was a different motion per driver: `bouncy` was a 350ms cubic-bezier
+on the web, a stiffness-120 spring on React Native, and a stiffness-90 spring on
+Motion. Expect timing to shift slightly and check screens where motion matters.
+
+The `'100ms'`-style preset names are removed. A duration is CSS in v3, so
+`transition="100ms"` and `transition="100ms ease-out"` work with nothing
+configured.
+
+## 14. Update animation and sheet lifecycle callbacks
 
 The untyped, enter-only `onDidAnimate` prop is gone. Every animated component now
 takes a typed [`onTransition`](/docs/core/animations#the-ontransition-lifecycle)
@@ -1071,7 +1140,7 @@ removed, not aliased.
 dim or its fade-in on open, set `opacity` (and an `open`-driven opacity) on your
 own `Sheet.Handle`.
 
-## 14. Update active-state background colors
+## 15. Update active-state background colors
 
 The V2 `backgroundActive` theme token was removed from v3 themes. Checkbox and
 Switch checked states, Tabs active tab, and Toggle Group active toggle used to
@@ -1097,7 +1166,7 @@ const themes = { light: { backgroundActive: '#ddd' } }
 const themes = { light: { 'background-press': '#ddd' } }
 ```
 
-## 15. Optional: adopt the Tailwind frontend
+## 16. Optional: adopt the Tailwind frontend
 
 Tailwind authoring is optional for v3. Select it by importing components from
 `@tamagui/tailwind`; there is no global config mode.
@@ -1123,7 +1192,7 @@ import { View as TailwindView } from '@tamagui/tailwind'
 Read [Tailwind for Tamagui](/blog/tailwind-mode) for current utility
 coverage and known gaps.
 
-## 16. Migrate createTamagui defaultProps
+## 17. Migrate createTamagui defaultProps
 
 `createTamagui({ defaultProps })` is deprecated in v3 and slated for removal.
 Each of its uses has a more direct replacement:
@@ -1153,7 +1222,7 @@ createTamagui({
 styled(View, { backgroundColor: 'squareBackground' })
 ```
 
-## 17. Migrate off the imperative Toast
+## 18. Migrate off the imperative Toast
 
 v3 removes the old imperative Toast. `@tamagui/toast` (and the `Toast` export from
 `tamagui`) is now the composable + `toast()` API, and it's the only Toast — there
@@ -1207,7 +1276,7 @@ function Save() {
 }
 ```
 
-## 18. Replace ThemeableStack and SizableStack
+## 19. Replace ThemeableStack and SizableStack
 
 `ThemeableStack` and `SizableStack` (and their `themeableVariants` /
 `themeableVariantStyles`) are removed from `@tamagui/stacks`. Their one good idea —
@@ -1241,7 +1310,7 @@ are unchanged.
   Facets read theme generics (`background`, `border-color`, …), never the color
   scale, so they restyle for free under any `level` or `theme` change.
 
-## 19. Verification checklist
+## 20. Verification checklist
 
 Run validation at the layer your app changed.
 
@@ -1365,6 +1434,7 @@ rg "\[0\] [!=]== '\\\$'|startsWith\('\\\$'\)"        # token detection by sigil
 rg "hoverStyle|pressStyle|focusStyle|enterStyle|exitStyle"  # conditions the codemod missed
 rg '\b(size|fontSize)="\$'                          # variants left with a sigil
 rg '`\$\{[^`]*undefined[^`]*\}`'                    # "undefined" interpolated into a value
+rg 'animateOnly|transition=\{\['                    # v2 transition spellings
 
 # duplicate package / lockfile scan
 npx tamagui check
@@ -1373,7 +1443,7 @@ npx tamagui check
 rg 'Sheet\.Frame'
 
 # removed APIs
-rg "createStyledHOC|focusable|fullscreen|themeInverse|<Theme inverse|Sheet\.Frame|styleable\(|inlineWhenUnflattened|\$true|getTokenRelative|stepTokenUpOrDown|forceRemoveScrollEnabled|sizeAdjust|selectable=|Select\.Item.*index|enterVariant|exitVariant|enterExitVariant|delayMs|disableTransparencyHide|disableRootThemeClass|themeClassNameOnRoot|isWindowDefined|getExpandedShorthands|usePropsAndStyle|useProps|useStyle|backgroundActive|surface[1-4]|color12|defaultComponentThemes|@tamagui/config/v[3-5]|@tamagui/animations-moti|@tamagui/babel-plugin"
+rg "createStyledHOC|focusable|fullscreen|themeInverse|<Theme inverse|Sheet\.Frame|styleable\(|inlineWhenUnflattened|\$true|getTokenRelative|stepTokenUpOrDown|forceRemoveScrollEnabled|sizeAdjust|selectable=|Select\.Item.*index|enterVariant|exitVariant|enterExitVariant|delayMs|disableTransparencyHide|disableRootThemeClass|themeClassNameOnRoot|isWindowDefined|getExpandedShorthands|usePropsAndStyle|useProps|useStyle|backgroundActive|surface[1-4]|color12|defaultComponentThemes|@tamagui/config/v[3-5]|@tamagui/animations-moti|@tamagui/babel-plugin|animateOnly"
 ```
 
 ## v1 to v3 path

@@ -91,12 +91,11 @@ export function PopoverHoverableScopedCase() {
           scope="nav"
           disableFocusScope
           animatePosition
-          transition="500ms"
+          transition={{ duration: '500ms', properties: 'transform, opacity' }}
           opacity="1 enter:0 exit:0"
           y="enter:-6px exit:4px"
           width={300}
           height={200}
-          animateOnly={['transform', 'opacity']}
         >
           {/* bounding wrapper so position:absolute panels don't escape to the portal root */}
           <YStack

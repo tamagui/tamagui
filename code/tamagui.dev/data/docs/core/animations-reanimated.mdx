@@ -27,27 +27,16 @@ import { createTamagui } from 'tamagui'
 
 export default createTamagui({
   animations: createAnimations({
-    fast: {
-      type: 'spring',
-      damping: 20,
-      mass: 1.2,
-      stiffness: 250,
-    },
-    medium: {
-      type: 'spring',
-      damping: 10,
-      mass: 0.9,
-      stiffness: 100,
-    },
-    slow: {
-      type: 'spring',
-      damping: 20,
-      stiffness: 60,
-    },
+    fast: { duration: 160, bounce: 0.25 },
+    medium: { duration: 300, bounce: 0.15 },
+    slow: { duration: 450, bounce: 0.1 },
   }),
   // ...
 })
 ```
+
+The config format is the same for all four drivers, so a name means the same
+motion whichever driver renders it.
 
 ## How it Works
 
@@ -63,28 +52,31 @@ Reanimated animations support both spring and timing (tween) animations:
 
 ```tsx
 {
-  type: 'spring',
-  damping: 10,     // Higher = less bouncy
-  mass: 0.9,       // Higher = more inertia
-  stiffness: 100,  // Higher = faster
+  duration: 400,  // the spring's undamped period, in milliseconds
+  bounce: 0.5,    // 0 is critically damped, toward 1 is loose, negative is sluggish
 }
 ```
+
+`stiffness`, `damping`, and `mass` still work for a config already tuned against
+them, and Reanimated's `velocity`, `overshootClamping`, and rest thresholds pass
+through.
 
 ### Timing Animations
 
 ```tsx
 {
   type: 'timing',
-  duration: 300,   // Duration in milliseconds
+  duration: 300,      // Duration in milliseconds
+  easing: 'ease-out', // any css timing function
 }
 ```
 
+A plain CSS string means the same thing: `'300ms ease-out'`.
+
 ### Delay
 
-You can add animation delays using the array syntax:
-
 ```tsx
-<Square transition={['bouncy', { delay: 200 }]} />
+<Square transition={{ preset: 'bouncy', delay: 200 }} />
 ```
 
 The delay is specified in milliseconds.
@@ -115,11 +107,7 @@ You can use Reanimated on native and a lighter driver on web:
 import { createAnimations } from '@tamagui/animations-reanimated'
 
 export const animations = createAnimations({
-  bouncy: {
-    type: 'spring',
-    damping: 10,
-    stiffness: 100,
-  },
+  bouncy: { duration: 400, bounce: 0.5 },
 })
 ```
 
@@ -128,11 +116,7 @@ export const animations = createAnimations({
 import { createAnimations } from '@tamagui/animations-motion'
 
 export const animations = createAnimations({
-  bouncy: {
-    type: 'spring',
-    damping: 10,
-    stiffness: 100,
-  },
+  bouncy: { duration: 400, bounce: 0.5 },
 })
 ```
 
@@ -149,18 +133,8 @@ import { createAnimations } from '@tamagui/animations-reanimated'
 import { YStack, createTamagui } from 'tamagui'
 
 const animations = createAnimations({
-  bouncy: {
-    type: 'spring',
-    damping: 10,
-    mass: 0.9,
-    stiffness: 100,
-  },
-  quick: {
-    type: 'spring',
-    damping: 20,
-    mass: 1.2,
-    stiffness: 250,
-  },
+  bouncy: { duration: 400, bounce: 0.5 },
+  quick: { duration: 220, bounce: 0.3 },
 })
 
 export default createTamagui({

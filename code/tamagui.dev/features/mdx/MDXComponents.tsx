@@ -809,12 +809,11 @@ const componentsIn = {
             <Link asChild href="/docs/intro/installation">
               <Card
                 render="a"
-                transition="quickest"
+                transition={{ preset: 'quickest', properties: 'transform' }}
                 flex={1}
                 flexBasis="auto"
                 y="0 hover:-2px press:2px"
                 bg="hover:background-hover press:color2"
-                animateOnly={['transform']}
               >
                 <Card.Header gap="2">
                   <H4 size="4" color="color8">

@@ -137,7 +137,10 @@ export const SeasonTogglePopover = (props: { children: any }) => {
         t="2"
         overflow="hidden"
         rounded="8"
-        transition={['medium', { opacity: { overshootClamping: true } }]}
+        transition={{
+          preset: 'medium',
+          opacity: { preset: 'medium', spring: { overshootClamping: true } },
+        }}
       >
         <YStack>
           {Object.keys(seasons).map((optionName) => {

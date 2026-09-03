@@ -146,4 +146,11 @@ test('Tamagui property spellings normalize to CSS names in the aligned output', 
 
   const custom = split({ transitionProperty: 'var(--x), x' })
   expect(emittedTransition(custom)).toContain('transition-property:var(--x), translate')
+
+  // the drivers file entries under canonicalTransitionProperty, so a raw css
+  // string has to reach the same names or the two disagree about what animates
+  const parts = split({ transition: 'translateX 200ms, rotateX 100ms' })
+  expect(emittedTransition(parts)).toContain(
+    'transition:translate 200ms, transform 100ms'
+  )
 })

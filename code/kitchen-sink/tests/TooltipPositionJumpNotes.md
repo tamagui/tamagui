@@ -235,7 +235,7 @@ frame-by-frame instrumentation against both local dev and the live prod site:
    PopperContent subtree in one commit (same-timestamp remove+add of the DOM
    node).
 4. The fresh PopperContent mounts with `needsMeasure=true` →
-   `disableAnimation` → `animateOnly: []`, so its first position write is a
+   `disableAnimation` → `transition: 'none'`, so its first position write is a
    direct inline style at the NEW anchor: a single-frame teleport (e.g.
    472→624px). The motion-value spring then seeds at the already-teleported
    position, so no glide happens.

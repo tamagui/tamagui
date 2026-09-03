@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test'
 import { setupPage } from './test-utils'
 
-// theme-dark + animateOnly fix was intentionally reverted (80d70ce595)
+// theme-dark + property-list fix was intentionally reverted (80d70ce595)
 test.skip()
 
 test.describe('Theme Media + Animation', () => {

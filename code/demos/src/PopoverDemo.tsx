@@ -93,7 +93,10 @@ export function Demo({
         y="enter:-10px exit:-10px"
         opacity="enter:0 exit:0"
         boxShadow="0px 4px 8px rgba(0,0,0,0.1), 0px 12px 32px rgba(0,0,0,0.08)"
-        transition={['quick', { opacity: { overshootClamping: true } }]}
+        transition={{
+          preset: 'quick',
+          opacity: { preset: 'quick', spring: { overshootClamping: true } },
+        }}
       >
         <Popover.Arrow
           backgroundColor="background"

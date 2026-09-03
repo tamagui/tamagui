@@ -21,7 +21,10 @@ export function ProgressFirstPaint() {
         <Progress.Indicator
           testID="progress-indicator"
           backgroundColor="color"
-          transition={['quicker', { transform: { overshootClamping: true } }]}
+          transition={{
+            preset: 'quicker',
+            transform: { preset: 'quicker', spring: { overshootClamping: true } },
+          }}
         />
       </Progress>
 

@@ -334,17 +334,14 @@ export function validateNativeTransition(
   }
 
   const diagnostics: NativeTransitionDiagnostic[] = []
-  if (transition.enter) {
-    appendDiagnostics(
-      diagnostics,
-      validateEntry(transition.enter, target, transitionedValues)
-    )
-  }
-  if (transition.exit) {
-    appendDiagnostics(
-      diagnostics,
-      validateEntry(transition.exit, target, transitionedValues)
-    )
+  for (const state of [transition.enter, transition.exit]) {
+    if (!state) continue
+    for (let index = 0; index < state.length; index++) {
+      appendDiagnostics(
+        diagnostics,
+        validateEntry(state[index], target, transitionedValues)
+      )
+    }
   }
   for (let index = 0; index < transition.entries.length; index++) {
     appendDiagnostics(

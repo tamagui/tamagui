@@ -88,7 +88,7 @@ export const AnimatePresence: FunctionComponent<
   // useInsertionEffect runs before ALL useLayoutEffects (including children's)
   // this ensures pendingPresentChildren and exitComplete are set before
   // animation drivers call sendExitComplete() in their layout effects
-  // (critical for immediate completions like animateOnly=[])
+  // (critical for immediate completions like `transition="none"`)
   useInsertionEffect(() => {
     isInitialRender.current = false
     pendingPresentChildren.current = presentChildren

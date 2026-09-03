@@ -421,7 +421,7 @@ const RULE_CONTROLS = [
   {
     rule: 5,
     message:
-      'Zero-runtime rule 5: animateOnly on View requires a component animation runtime. Use a static CSS transition or move this module to a full-runtime island.',
+      'Zero-runtime rule 5: the animation configured on View requires a component animation runtime. Use a static CSS transition or move this module to a full-runtime island.',
   },
   {
     rule: 6,

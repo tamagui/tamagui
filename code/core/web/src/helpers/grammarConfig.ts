@@ -1,3 +1,6 @@
+// leaf subpath on purpose: the barrel pulls in the transition parser, which
+// belongs to drivers and the compiler, not to every app that imports core
+import { canonicalTransitionProperty } from '@tamagui/animation-helpers/propertyNames'
 import { platformMatches } from '@tamagui/constants'
 import { simpleHash } from '@tamagui/helpers'
 import {
@@ -259,11 +262,10 @@ export function prepareConfigRevision(
           ) {
             return authored
           }
-          let property = config.shorthands[authored] || authored
-          if (property === 'x' || property === 'y') property = 'translate'
-          else if (property === 'scaleX' || property === 'scaleY') property = 'scale'
-          else if (propertyKind(property) === 5) property = 'transform'
-          return property.replace(/[A-Z]/g, '-$&').toLowerCase()
+          // the drivers file entries under the same names through
+          // canonicalTransitionProperty, so a raw css string and a resolved
+          // transition cannot disagree about what `y` or `rotateX` targets
+          return canonicalTransitionProperty(config.shorthands[authored] || authored)
         }
       )
       if (normalizedTransitions.size > 2048) normalizedTransitions.clear()

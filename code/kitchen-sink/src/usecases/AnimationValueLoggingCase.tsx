@@ -494,7 +494,7 @@ function AnimationConfigTest() {
       </Button>
       <View
         ref={squareRef as any}
-        transition={['quick', { damping: 15, stiffness: 40 }]}
+        transition={{ preset: 'quick', spring: { stiffness: 40, damping: 15 } }}
         height={60}
         width={expanded ? 150 : 60}
         backgroundColor="red10"

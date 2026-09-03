@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Button, Square, YStack, Paragraph } from 'tamagui'
 import { AnimatePresence } from '@tamagui/animate-presence'
 
-// test case: animateOnly=[] should complete exit immediately
+// test case: transition="none" should complete exit immediately
 // tests the useInsertionEffect fix for the race condition
 
 export function AnimatePresenceExitTest() {
@@ -34,7 +34,7 @@ export function AnimatePresenceExitTest() {
       </Paragraph>
 
       <Paragraph textAlign="center" maxWidth={300}>
-        animateOnly=[] should complete exit immediately
+        transition="none" should complete exit immediately
       </Paragraph>
 
       <Button onPress={handleToggle}>{visible ? 'Hide (trigger exit)' : 'Show'}</Button>
@@ -44,11 +44,10 @@ export function AnimatePresenceExitTest() {
           {visible && (
             <Square
               key="test-square"
-              transition="300ms"
+              transition="none"
               bg="blue10"
               opacity="exit:0"
               scale="exit:0.5"
-              animateOnly={[]}
               size={60}
             />
           )}

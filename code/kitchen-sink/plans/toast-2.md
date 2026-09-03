@@ -56,7 +56,7 @@ Revamp @tamagui/toast to v2, inspired by Sonner's excellent UX. Must be fully cr
 
 1. **Keep styles minimal in core** - demo can add more styles
 2. **No sonnerStyle close button** - keep it simple, inline close button is fine
-3. **Use animateOnly={['transform', 'opacity']}** in examples for performance
+3. **Use transition={{ ..., properties: 'transform, opacity' }}** in examples for performance
 4. **Export .Close component** - like Dialog, just wraps events without styling
 
 ---
@@ -333,7 +333,7 @@ Revamp @tamagui/toast to v2, inspired by Sonner's excellent UX. Must be fully cr
 ### Low Priority (Post-Demo)
 
 - [ ] Export .Close component (Dialog pattern)
-- [ ] Add animateOnly={['transform', 'opacity']} to examples
+- [ ] Add properties: 'transform, opacity' to the example transitions
 - [ ] All animation drivers tested
 - [ ] SVG icons instead of text characters
 - [ ] RTL support

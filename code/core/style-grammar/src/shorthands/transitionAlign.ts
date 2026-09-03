@@ -28,10 +28,20 @@ import {
   parseTransition,
   parseTransitionLonghands,
   type PresetTransitionTiming,
+  type SpringTransitionTiming,
   type TransitionEntry,
   type TransitionLonghands,
   type TransitionParseResult,
 } from './transition'
+
+/** an opaque timing atom: fills the duration+timingFunction pair, not decomposable */
+type FusedTiming = PresetTransitionTiming | SpringTransitionTiming
+
+function fusedLabel(fused: FusedTiming): string {
+  return fused.type === 'preset'
+    ? `"${fused.name}" preset`
+    : `spring(${fused.duration}, ${fused.bounce})`
+}
 
 export type TransitionLonghandName =
   | 'transitionProperty'
@@ -48,7 +58,7 @@ export interface TransitionContribution {
 
 interface MergeState {
   global: string | null
-  preset: PresetTransitionTiming | null
+  fused: FusedTiming | null
   /** each slot holds the LAST contribution's list text, or undefined = CSS default */
   lists: Partial<Record<TransitionLonghandName, string>>
 }
@@ -71,7 +81,7 @@ export function alignTransitionContributions(
   contributions: readonly TransitionContribution[],
   presetNames?: ReadonlySet<string>
 ): TransitionParseResult {
-  const state: MergeState = { global: null, preset: null, lists: {} }
+  const state: MergeState = { global: null, fused: null, lists: {} }
 
   for (const contribution of contributions) {
     if (contribution.prop === 'transition') {
@@ -80,7 +90,7 @@ export function alignTransitionContributions(
 
       // a shorthand resets everything that came before it
       state.global = null
-      state.preset = null
+      state.fused = null
       state.lists = {}
 
       if (parsed.value.kind === 'global') {
@@ -88,9 +98,9 @@ export function alignTransitionContributions(
         continue
       }
       const entries = parsed.value.entries
-      const presetEntry = entries.find((entry) => entry.timing.type === 'preset')
-      if (presetEntry) {
-        state.preset = presetEntry.timing as PresetTransitionTiming
+      const fusedEntry = entries.find((entry) => entry.timing.type !== 'css')
+      if (fusedEntry) {
+        state.fused = fusedEntry.timing as FusedTiming
         state.lists.transitionProperty = listText(entries.map((entry) => entry.property))
         state.lists.transitionDelay = listText(entries.map((entry) => entry.delay))
         state.lists.transitionBehavior = listText(entries.map((entry) => entry.behavior))
@@ -122,14 +132,14 @@ export function alignTransitionContributions(
         ],
       }
     }
-    if (state.preset && timingLonghands.has(contribution.prop)) {
+    if (state.fused && timingLonghands.has(contribution.prop)) {
       return {
         ok: false,
         diagnostics: [
           {
             code: 'transition-invalid-list',
             token: contribution.prop,
-            message: `"${contribution.prop}" cannot partially override the "${state.preset.name}" preset — a preset's timing is not decomposable into CSS components; restate \`transition\` with CSS timing or change the preset`,
+            message: `"${contribution.prop}" cannot partially override ${fusedLabel(state.fused)}: its timing is not decomposable into CSS components. restate \`transition\` with CSS timing, or change the ${state.fused.type}`,
           },
         ],
       }
@@ -144,19 +154,19 @@ export function alignTransitionContributions(
     }
   }
 
-  if (state.preset) {
+  if (state.fused) {
     // validate and zip the three CSS-shaped slots through the one owner, then
-    // transplant the preset timing onto every zipped entry
+    // transplant the fused timing onto every zipped entry
     const zipped = parseTransitionLonghands({
       transitionProperty: state.lists.transitionProperty,
       transitionDelay: state.lists.transitionDelay,
       transitionBehavior: state.lists.transitionBehavior,
     })
     if (!zipped.ok || zipped.value.kind !== 'transition') return zipped
-    const preset = state.preset
+    const fused = state.fused
     const entries: TransitionEntry[] = zipped.value.entries.map((entry) => ({
       ...entry,
-      timing: preset,
+      timing: fused,
     }))
     return { ok: true, value: { kind: 'transition', entries } }
   }

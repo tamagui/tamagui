@@ -1,3 +1,5 @@
+// leaf subpath on purpose, see grammarConfig
+import { getTransitionResolver } from '@tamagui/animation-helpers/transitionResolver'
 import { isAndroid, isClient, supportsDynamicColorIOS } from '@tamagui/constants'
 import {
   StyleObjectIdentifier,
@@ -733,18 +735,21 @@ function contributeProp(
     }
     if (keyInit === 'transition' && typeof valInit === 'string') {
       if (process.env.TAMAGUI_TARGET === 'native') return
-      const animationConfig = driverAnimations?.[valInit]
-      if (
-        animationConfig &&
-        driverOutputStyle === 'css' &&
-        process.env.IS_STATIC === 'is_static'
-      ) {
-        // css output needs no runtime component: lower its named transition
-        // to ordinary css so the compiler can keep flattening.
-        valInit = `all ${animationConfig}`
-      } else if (animationConfig) {
-        // animation drivers consume configured preset names directly
-        return
+      // the same grammar the compiler uses, so a value never means one thing
+      // here and another there. a transition made only of css timings needs no
+      // driver and falls through to the ordinary style path, and a bundle with
+      // no driver in it has no resolver because it has no presets to resolve.
+      const transitions = getTransitionResolver()
+      const resolved = transitions?.resolve(valInit, { animations: driverAnimations })
+      if (resolved?.fused) {
+        if (driverOutputStyle === 'css' && process.env.IS_STATIC === 'is_static') {
+          // css output needs no runtime component: springs lower to a
+          // `linear()` easing, so the compiler can keep flattening.
+          valInit = transitions!.toCSS(resolved) ?? valInit
+        } else {
+          // animation drivers consume the authored value directly
+          return
+        }
       }
     } else {
       return
@@ -896,10 +901,12 @@ function contributeProp(
   if (!isNativeInputColor && shouldCheckSkipProps && !neverSkipProps?.[keyInit]) {
     if (
       keyInit in skipProps &&
+      // a plain-css transition is a style, not a driver prop, so it must not be
+      // skipped here. same test as above: only a preset or spring needs a driver
       !(
         keyInit === 'transition' &&
         typeof valInit === 'string' &&
-        !driverAnimations?.[valInit]
+        !getTransitionResolver()?.resolve(valInit, { animations: driverAnimations }).fused
       )
     ) {
       if (process.env.NODE_ENV === 'development' && debug === 'verbose') {

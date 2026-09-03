@@ -241,7 +241,10 @@ const ImageGallery = () => {
         <Dialog.Content
           borderWidth={0.5}
           borderColor="border-color"
-          transition={['medium', { opacity: { overshootClamping: true } }]}
+          transition={{
+            preset: 'medium',
+            opacity: { preset: 'medium', spring: { overshootClamping: true } },
+          }}
           x="enter:0 exit:0"
           y="enter:-10px exit:10px"
           opacity="enter:0 exit:0"
