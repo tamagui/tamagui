@@ -8,6 +8,6 @@ export declare function noteTailwindTransform(sink: FrontendClassSink, entry: Fr
  * preserveRaw signal as resolveClassName.
  */
 export declare function tryCompose(candidate: string, config: GrammarConfigView, sink: FrontendClassSink): boolean | null | undefined;
-/** Record a claimed boxShadow so a later ring can stack instead of clobbering. */
+/** Record a claimed boxShadow so .resolve() can stack ring + shadow. */
 export declare function noteBoxShadow(sink: FrontendClassSink, value: unknown, modifiers?: readonly string[]): boolean;
 //# sourceMappingURL=compose.d.ts.map

@@ -1,21 +1,93 @@
 /**
  * Proof of concept: className-resolved variant props flow into .resolve()
- *
- * This test verifies the engine change that collects non-style-key props
- * from className resolution into styleState.classNameResolvedProps and
- * merges them into the props passed to .resolve() functions.
+ * and the composedResolver produces correct boxShadow/backgroundImage.
  */
 import { beforeAll, describe, expect, test } from 'vitest'
 import { createTamagui, styled, View, getConfig } from '@tamagui/web'
 import { getDefaultTamaguiConfig } from '../../../config-default/src'
+import { composedResolver } from '../composedResolver'
 
 beforeAll(() => {
   createTamagui(getDefaultTamaguiConfig() as any)
 })
 
-describe('classNameResolvedProps merges into .resolve()', () => {
-  test('.resolve() sees className-contributed non-style-key props', () => {
-    // Create a component with bare dynamic variants and a .resolve()
+describe('composedResolver produces correct styles', () => {
+  test('ring width + color → boxShadow', () => {
+    const result = composedResolver({ __ring: '2px', __ringColor: 'blue' }, {})
+    expect(result).toEqual({ boxShadow: '0 0 0 2px blue' })
+  })
+
+  test('ring width alone defaults color to currentColor', () => {
+    const result = composedResolver({ __ring: '3px' }, {})
+    expect(result).toEqual({ boxShadow: '0 0 0 3px currentColor' })
+  })
+
+  test('ring inset adds inset keyword', () => {
+    const result = composedResolver(
+      { __ring: '2px', __ringInset: true, __ringColor: 'red' },
+      {}
+    )
+    expect(result).toEqual({ boxShadow: 'inset 0 0 0 2px red' })
+  })
+
+  test('ring stacks with existing shadow', () => {
+    const result = composedResolver(
+      { __ring: '2px', __ringColor: 'blue', __existingShadow: '0 1px 2px red' },
+      {}
+    )
+    expect(result).toEqual({ boxShadow: '0 0 0 2px blue, 0 1px 2px red' })
+  })
+
+  test('no ring props → null (no-op)', () => {
+    const result = composedResolver({ padding: 4 }, {})
+    expect(result).toBeNull()
+  })
+
+  test('gradient from/via/to → backgroundImage', () => {
+    const result = composedResolver(
+      {
+        __gradientDirection: 'to right',
+        __gradientFrom: 'red',
+        __gradientVia: 'yellow',
+        __gradientTo: 'blue',
+      },
+      {}
+    )
+    expect(result).toEqual({
+      backgroundImage: 'linear-gradient(to right, red, yellow, blue)',
+    })
+  })
+
+  test('gradient without via → two-stop gradient', () => {
+    const result = composedResolver(
+      { __gradientDirection: 'to bottom', __gradientFrom: 'red', __gradientTo: 'blue' },
+      {}
+    )
+    expect(result).toEqual({
+      backgroundImage: 'linear-gradient(to bottom, red, blue)',
+    })
+  })
+
+  test('ring + gradient compose together', () => {
+    const result = composedResolver(
+      {
+        __ring: '2px',
+        __ringColor: 'blue',
+        __gradientDirection: 'to right',
+        __gradientFrom: 'red',
+        __gradientTo: 'green',
+      },
+      {}
+    )
+    expect(result).toEqual({
+      boxShadow: '0 0 0 2px blue',
+      backgroundImage: 'linear-gradient(to right, red, green)',
+    })
+  })
+})
+
+describe('.resolve() chain works on styled components', () => {
+  test('resolver is attached to the static config', () => {
     const RingView = styled(View, {
       variants: {
         ring: (styled as any).dynamic(),
@@ -23,38 +95,18 @@ describe('classNameResolvedProps merges into .resolve()', () => {
       },
     }).resolve((props: any, _env: any) => {
       if (props.ring != null) {
-        const color = props.ringColor ?? 'currentColor'
-        return { boxShadow: `0 0 0 ${props.ring}px ${color}` }
+        return { boxShadow: `0 0 0 ${props.ring}px ${props.ringColor ?? 'currentColor'}` }
       }
       return null
     })
 
     const staticConfig = (RingView as any).staticConfig
-
-    // Verify the resolver chain is set up
     expect(staticConfig.resolvers).toBeDefined()
     expect(staticConfig.resolvers.length).toBe(1)
 
-    // Test that .resolve() produces the right output when called directly
     const resolver = staticConfig.resolvers[0]
-    const result = resolver(
-      { ring: 2, ringColor: 'blue' },
-      { fonts: {}, tokens: {}, theme: {} }
-    )
-    expect(result).toEqual({ boxShadow: '0 0 0 2px blue' })
-
-    // Test with defaults
-    const resultDefault = resolver(
-      { ring: 3 },
-      { fonts: {}, tokens: {}, theme: {} }
-    )
-    expect(resultDefault).toEqual({ boxShadow: '0 0 0 3px currentColor' })
-
-    // Test without ring (no-op)
-    const resultNone = resolver(
-      {},
-      { fonts: {}, tokens: {}, theme: {} }
-    )
-    expect(resultNone).toBeNull()
+    expect(resolver({ ring: 2, ringColor: 'blue' }, {})).toEqual({
+      boxShadow: '0 0 0 2px blue',
+    })
   })
 })

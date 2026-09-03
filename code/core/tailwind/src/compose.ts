@@ -649,35 +649,30 @@ export function tryCompose(
     return false
   }
 
+  // ── Ring utilities → variant props for .resolve() ──────────────────
+  // Instead of composing boxShadow here, emit __ring/__ringColor/__ringInset
+  // as variant props. The tailwind View/Text's .resolve() composes them.
   if (core === 'ring') {
-    layer.ringWidth = '1px'
-    flush(sink, bag, modifiers)
-    if (modifiers.length === 0) flushDependents(sink, bag)
+    emit(sink, '__ring', '1px', modifiers)
     return false
   }
   if (core === 'ring-inset') {
-    layer.ringInset = true
-    flush(sink, bag, modifiers)
-    if (modifiers.length === 0) flushDependents(sink, bag)
+    emit(sink, '__ringInset', true, modifiers)
     return false
   }
   const raw = core.slice('ring-'.length)
   const width = ringWidth(raw)
   if (width != null) {
-    layer.ringWidth = width
-    flush(sink, bag, modifiers)
-    if (modifiers.length === 0) flushDependents(sink, bag)
+    emit(sink, '__ring', width, modifiers)
     return false
   }
   const color = resolveColor(raw, config)
   if (color == null) return true
-  layer.ringColor = color
-  flush(sink, bag, modifiers)
-  if (modifiers.length === 0) flushDependents(sink, bag)
+  emit(sink, '__ringColor', color, modifiers)
   return false
 }
 
-/** Record a claimed boxShadow so a later ring can stack instead of clobbering. */
+/** Record a claimed boxShadow so .resolve() can stack ring + shadow. */
 export function noteBoxShadow(
   sink: FrontendClassSink,
   value: unknown,
@@ -689,10 +684,14 @@ export function noteBoxShadow(
     return false
   }
   const bag = getBag(sink)
-  layerOf(bag, conditionKey(modifiers)).shadow = value === 'none' ? '' : value
+  const shadow = value === 'none' ? '' : value
+  layerOf(bag, conditionKey(modifiers)).shadow = shadow
+  // Emit the shadow as a variant prop so .resolve() can stack it with ring
+  if (shadow) {
+    emit(sink, '__existingShadow', shadow, modifiers)
+  }
   const layer = merged(bag, conditionKey(modifiers))
   if (
-    layer.ringWidth == null &&
     layer.insetRingWidth == null &&
     layer.insetShadow == null
   ) {
