@@ -21,8 +21,7 @@ import {
 import { Button } from '~/components/Button'
 import { authFetch } from '../../api/authFetch'
 import { defaultModel } from '../../api/generateModels'
-import { getActivePromo } from '../../site/purchase/promoConfig'
-import { purchaseModal } from '../../site/purchase/purchaseModalStore'
+import { useLoginLink } from '~/features/auth/useLoginLink'
 import { useUser } from '../../user/useUser'
 import { toastController } from '../ToastProvider'
 import { themeJSONToText } from './helpers/themeJSONToText'
@@ -64,7 +63,9 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
     inputRef.current?.focus()
   }, [id])
 
-  const hasAccess = user.data?.accessInfo.hasPro
+  // generation costs LLM spend, so it needs a logged in user
+  const isLoggedIn = !!user.data?.user
+  const { handleLogin } = useLoginLink()
 
   const username = user.data?.userDetails?.full_name
 
@@ -228,21 +229,16 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
                 opacity={isGenerating === 'new' ? 0.2 : 1}
                 pointerEvents={isGenerating === 'new' ? 'none' : 'auto'}
                 icon={isGenerating === 'new' ? <Spinner size="small" /> : null}
-                onPress={() => {
-                  if (hasAccess) {
+                onPress={(e) => {
+                  if (isLoggedIn) {
                     fetchUpdate('new')
                   } else {
-                    const activePromo = getActivePromo()
-                    if (activePromo) {
-                      purchaseModal.activePromo = activePromo
-                      purchaseModal.prefilledCouponCode = activePromo.code
-                    }
-                    purchaseModal.show = true
+                    handleLogin(e)
                   }
                 }}
                 size="4"
               >
-                {hasAccess ? (active ? 'Refine' : 'Generate') : 'Access'}
+                {isLoggedIn ? (active ? 'Refine' : 'Generate') : 'Login'}
               </Button>
 
               <RandomizeButton />
@@ -296,11 +292,11 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
               )
             })}
 
-            {!hasAccess && (
+            {!isLoggedIn && (
               <XStack flex={1} flexBasis="auto" overflow="hidden" items="center" px="4">
-                <Paragraph fontFamily="mono" size="3">
-                  Welcome to the Theme Builder! Pro members can build, save and refine
-                  themes using the generate input above.
+                <Paragraph size="3">
+                  Welcome to the Theme Builder! Log in to build, save and refine themes
+                  using the generate input above.
                 </Paragraph>
               </XStack>
             )}
@@ -329,7 +325,7 @@ const HistoryButton = ({
       <Button onPress={onPress} size="3" rounded="8" theme={active ? 'accent' : null}>
         <Button.Icon>{icon}</Button.Icon>
 
-        <Button.Text numberOfLines={1} maxW={200} fontFamily="mono">
+        <Button.Text numberOfLines={1} maxW={200}>
           {children}
         </Button.Text>
       </Button>

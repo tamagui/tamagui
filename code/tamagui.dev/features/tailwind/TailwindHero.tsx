@@ -56,13 +56,7 @@ export function TailwindHero() {
       />
 
       <ContainerLarge pt="13" pb="8" gap="6" items="center">
-        <Paragraph
-          fontFamily="mono"
-          color="accent7"
-          letterSpacing={1}
-          textTransform="uppercase"
-          size="3"
-        >
+        <Paragraph color="accent7" letterSpacing={1} textTransform="uppercase" size="3">
           Tamagui v3
         </Paragraph>
 
@@ -90,16 +84,10 @@ export function TailwindHero() {
             href={'/tailwind/intro/introduction' as Href}
             theme="accent"
             size="5"
-            fontFamily="mono"
           >
             Read the docs
           </ButtonLink>
-          <ButtonLink
-            href={'/tailwind/intro/styles' as Href}
-            variant="quiet"
-            size="5"
-            fontFamily="mono"
-          >
+          <ButtonLink href={'/tailwind/intro/styles' as Href} variant="quiet" size="5">
             How it works
           </ButtonLink>
         </XStack>

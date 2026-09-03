@@ -6,67 +6,55 @@ import {
   Showcase,
   ShowcaseChildWrapper as Wrapper,
 } from '~/components/bento-showcase/_Showcase'
-import {
-  type BentoShowcaseContext,
-  BentoShowcaseProvider,
-} from '~/components/bento-showcase/BentoProvider'
 
-export function list({ isProUser, showAppropriateModal }: BentoShowcaseContext) {
+export function list() {
   return (
-    <BentoShowcaseProvider
-      isProUser={isProUser}
-      showAppropriateModal={showAppropriateModal}
+    <YStack
+      paddingBottom="2 gtLg:0"
+      gap="12"
+      paddingTop="2 gtLg:0"
+      paddingRight="2 gtLg:0"
+      paddingLeft="2 gtLg:0"
     >
-      <YStack
-        paddingBottom="2 gtLg:0"
-        gap="12"
-        paddingTop="2 gtLg:0"
-        paddingRight="2 gtLg:0"
-        paddingLeft="2 gtLg:0"
-      >
-        <Showcase unlock fileName={Lists.HList.fileName} title="Horizontal Covers">
-          <Lists.HList />
-        </Showcase>
+      <Showcase fileName={Lists.HList.fileName} title="Horizontal Covers">
+        <Lists.HList />
+      </Showcase>
 
-        <Showcase fileName={Lists.Chat.fileName} title={Lists.Chat.fileName}>
-          <YStack flex={1} flexBasis="auto" items="center" maxH={700} position="relative">
-            <YStack theme="accent" bg="background" position="absolute" inset={0} />
-            <Lists.Chat />
-          </YStack>
-        </Showcase>
+      <Showcase fileName={Lists.Chat.fileName} title={Lists.Chat.fileName}>
+        <YStack flex={1} flexBasis="auto" items="center" maxH={700} position="relative">
+          <YStack theme="accent" bg="background" position="absolute" inset={0} />
+          <Lists.Chat />
+        </YStack>
+      </Showcase>
 
-        <Showcase fileName={Lists.ScrollProgress.fileName} title="Scroll Progress">
-          <Lists.ScrollProgress />
-        </Showcase>
+      <Showcase fileName={Lists.ScrollProgress.fileName} title="Scroll Progress">
+        <Lists.ScrollProgress />
+      </Showcase>
 
-        <Showcase fileName={Lists.WheelList.fileName} title="Wheel List">
-          <Lists.WheelList />
-        </Showcase>
+      <Showcase fileName={Lists.WheelList.fileName} title="Wheel List">
+        <Lists.WheelList />
+      </Showcase>
 
-        <Showcase fileName={Lists.ChatList.fileName} title="Chat List">
-          <Lists.ChatList />
-          <Hint>Scroll up to see more chats</Hint>
-        </Showcase>
-        <Showcase fileName={Lists.ItemValueList.fileName} title="Item Value List">
-          <Wrapper>
-            <Lists.ItemValueList />
-          </Wrapper>
-        </Showcase>
-        <Showcase
-          fileName={Lists.FlatGrid.fileName}
-          title="Performant Grid with FlatList"
-        >
-          <Lists.FlatGrid />
-        </Showcase>
-        <Showcase fileName={Lists.List.fileName} title="Phonebook List">
-          <Wrapper>
-            <Lists.List />
-          </Wrapper>
-        </Showcase>
-        <Showcase fileName={Lists.MasonryListExample.fileName} title="Masonry List">
-          <Lists.MasonryListExample />
-        </Showcase>
-      </YStack>
-    </BentoShowcaseProvider>
+      <Showcase fileName={Lists.ChatList.fileName} title="Chat List">
+        <Lists.ChatList />
+        <Hint>Scroll up to see more chats</Hint>
+      </Showcase>
+      <Showcase fileName={Lists.ItemValueList.fileName} title="Item Value List">
+        <Wrapper>
+          <Lists.ItemValueList />
+        </Wrapper>
+      </Showcase>
+      <Showcase fileName={Lists.FlatGrid.fileName} title="Performant Grid with FlatList">
+        <Lists.FlatGrid />
+      </Showcase>
+      <Showcase fileName={Lists.List.fileName} title="Phonebook List">
+        <Wrapper>
+          <Lists.List />
+        </Wrapper>
+      </Showcase>
+      <Showcase fileName={Lists.MasonryListExample.fileName} title="Masonry List">
+        <Lists.MasonryListExample />
+      </Showcase>
+    </YStack>
   )
 }

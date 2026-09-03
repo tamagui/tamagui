@@ -2,10 +2,6 @@ import { XStack, YStack, styled } from 'tamagui'
 
 import * as Pickers from '@tamagui/bento/component/elements/pickers'
 import { Showcase } from '~/components/bento-showcase/_Showcase'
-import {
-  type BentoShowcaseContext,
-  BentoShowcaseProvider,
-} from '~/components/bento-showcase/BentoProvider'
 
 const Wrapper = styled(XStack, {
   paddingRight: '4',
@@ -16,25 +12,20 @@ const Wrapper = styled(XStack, {
   items: 'center',
 })
 
-export function pickers({ isProUser, showAppropriateModal }: BentoShowcaseContext) {
+export function pickers() {
   return (
-    <BentoShowcaseProvider
-      isProUser={isProUser}
-      showAppropriateModal={showAppropriateModal}
-    >
-      <YStack pb="10" gap="16">
-        <Showcase unlock fileName={Pickers.ImagePicker.fileName} title="Image Picker">
-          <Wrapper>
-            <Pickers.ImagePicker />
-          </Wrapper>
-        </Showcase>
-        <Showcase fileName={Pickers.UploadFile.fileName} title="Upload File">
-          <Wrapper>
-            <Pickers.UploadFile />
-          </Wrapper>
-        </Showcase>
-      </YStack>
-    </BentoShowcaseProvider>
+    <YStack pb="10" gap="16">
+      <Showcase fileName={Pickers.ImagePicker.fileName} title="Image Picker">
+        <Wrapper>
+          <Pickers.ImagePicker />
+        </Wrapper>
+      </Showcase>
+      <Showcase fileName={Pickers.UploadFile.fileName} title="Upload File">
+        <Wrapper>
+          <Pickers.UploadFile />
+        </Wrapper>
+      </Showcase>
+    </YStack>
   )
 }
 

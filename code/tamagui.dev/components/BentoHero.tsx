@@ -2,15 +2,11 @@
 import { LocationNotification } from '@tamagui/bento/component/user/preferences/LocationNotification'
 import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
 import { Paragraph, Spacer, Theme, XStack, YStack } from 'tamagui'
-import { Button } from '~/components/Button'
 import { BentoLogo } from '../features/bento/BentoLogo'
 import { LoadCherryBomb } from '../features/site/fonts/LoadFonts'
-import { useSubscriptionModal } from '../features/site/purchase/useSubscriptionModal'
 import { ContainerLarge } from './Containers'
 
 export const BentoHero = () => {
-  const { showAppropriateModal } = useSubscriptionModal()
-
   return (
     <YStack position="relative" z={10}>
       <LoadCherryBomb />
@@ -48,7 +44,6 @@ export const BentoHero = () => {
             <YStack maxW="500px sm:400px" gap="7" mx="auto" px="sm:4">
               <XStack gap="6">
                 <Paragraph
-                  fontFamily="mono"
                   fontSize="22px md:22px"
                   text="center"
                   lineHeight="40px md:38px"
@@ -56,60 +51,7 @@ export const BentoHero = () => {
                   maxH={120}
                   mt="md:6"
                 >
-                  Copy-paste UI for React&nbsp;Native and&nbsp;React web, free and paid.
-                </Paragraph>
-              </XStack>
-              <XStack
-                justify="space-between"
-                items="center"
-                marginLeft="8 md:0px"
-                marginRight="4 md:0px"
-                flexDirection="md:column"
-                gap="md:3"
-              >
-                <Paragraph
-                  fontFamily="mono"
-                  color="color7"
-                  fontSize="md:3"
-                  lineHeight="md:3"
-                  size="5"
-                >
-                  One-time Purchase
-                </Paragraph>
-
-                <XStack items="center" justify="space-between">
-                  <Spacer />
-                  <Theme name="green">
-                    <Button
-                      className="box-3d all ease-in-out ms100"
-                      size="4"
-                      self="flex-end"
-                      mr="4"
-                      bg="color9 hover:color10 press:color9"
-                      outlineColor="background02 hover:background04 press:background06"
-                      borderColor="hover:color11"
-                      outlineOffset={2}
-                      outlineWidth={3}
-                      outlineStyle="solid"
-                      onPress={() => {
-                        showAppropriateModal()
-                      }}
-                    >
-                      <Button.Text fontFamily="mono" size="7" color="color1">
-                        Pro
-                      </Button.Text>
-                    </Button>
-                  </Theme>
-                </XStack>
-
-                <Paragraph
-                  fontFamily="mono"
-                  color="color7"
-                  fontSize="md:3"
-                  lineHeight="md:3"
-                  size="5"
-                >
-                  Lifetime rights
+                  Copy-paste UI for React&nbsp;Native and&nbsp;React web. Free, forever.
                 </Paragraph>
               </XStack>
             </YStack>

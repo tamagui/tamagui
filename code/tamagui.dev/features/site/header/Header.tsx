@@ -32,7 +32,6 @@ import { Link } from '~/components/Link'
 import { GithubIcon } from '~/features/icons/GithubIcon'
 import { seasons, SeasonTogglePopover } from '~/features/site/seasons/SeasonTogglePopover'
 import { ThemeToggle } from '~/features/site/theme/ThemeToggle'
-import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
 import { useLoginLink } from '../../auth/useLoginLink'
 import { useBentoStore } from '../../bento/BentoStore'
 import { useBentoTheme } from '../../bento/useBentoTheme'
@@ -42,10 +41,7 @@ import { AddEvenBrandIcon } from '../../icons/AddEvenBrandIcon'
 import { BentoIcon } from '../../icons/BentoIcon'
 import { TakeoutIcon } from '../../icons/TakeoutIcon'
 import { useUser } from '../../user/useUser'
-import { accountModal } from '../purchase/accountModalStore'
-import { PromoCardTheme } from './PromoCards'
 import { SearchButton } from './SearchButton'
-import { UpgradeToProPopover } from './UpgradeToProPopover'
 import { UserAvatar } from './UserAvatar'
 import type { HeaderProps } from './types'
 
@@ -181,8 +177,6 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
             </XStack>
           </XStack>
         </Link>
-
-        <UpgradeToProPopover />
       </XStack>
 
       <View flex={1} />
@@ -385,7 +379,7 @@ export const HeaderLink = (props: { id: ID; children: string; href: string }) =>
   return (
     <SlidingPopoverTarget id={props.id}>
       <Link asChild href={props.href as any}>
-        <HeadAnchor {...(isActive && { active: true })} display="sm:none">
+        <HeadAnchor {...(isActive && { active: true })} display="xs:none">
           {props.children}
         </HeadAnchor>
       </Link>
@@ -561,12 +555,7 @@ const HeaderLinksPopoverContent = React.memo((props: { active: ID | '' }) => {
 const getDocsSectionFromPath = (pathName: string): 'core' | 'ui' | null => {
   if (!pathName || pathName === '/' || pathName === '') return null
   if (pathName.startsWith('/ui/')) return 'ui'
-  if (
-    pathName.startsWith('/docs') ||
-    pathName.startsWith('/community') ||
-    pathName.startsWith('/blog')
-  )
-    return 'core'
+  if (pathName.startsWith('/docs') || pathName.startsWith('/blog')) return 'core'
   return null
 }
 
@@ -586,7 +575,6 @@ const ActivePageDocsMenuContents = () => {
 
 const HeaderMenuContents = (props: { id: ID }) => {
   const { data } = useUser()
-  const { updateGenerate } = useThemeBuilderStore()
   const bentoStore = useBentoStore()
   const themeHistories = data?.themeHistories || []
   const bentoTheme = useBentoTheme()
@@ -619,13 +607,11 @@ const HeaderMenuContents = (props: { id: ID }) => {
         <YStack flex={1} gap="2" flexBasis="auto">
           {!themeHistories.length ? (
             <>
-              <PromoCardTheme />
               <Paragraph
                 pointerEvents="none"
                 borderWidth={0.5}
                 bg="color6"
                 rounded="5"
-                fontFamily="mono"
                 opacity={0.5}
                 p="4"
                 size="4"
@@ -669,7 +655,7 @@ const HeaderMenuContents = (props: { id: ID }) => {
 
               <Separator mb="3" opacity={0.5} />
 
-              <SizableText size="3" fontFamily="mono" px="4" color="color9">
+              <SizableText size="3" px="4" color="color9">
                 Recent Themes
               </SizableText>
 
@@ -677,7 +663,13 @@ const HeaderMenuContents = (props: { id: ID }) => {
                 <HeadAnchor
                   key={history.id}
                   grid
-                  onPress={() => updateGenerate(history.theme_data)}
+                  onPress={async () => {
+                    // the theme builder store carries the whole editor, so only
+                    // pull it in once someone actually re-applies a saved theme
+                    const { themeBuilderStore } =
+                      await import('~/features/studio/theme/store/ThemeBuilderStore')
+                    themeBuilderStore.updateGenerate(history.theme_data)
+                  }}
                 >
                   <XStack items="center" justify="space-between">
                     <SizableText size="3" color="color11" ellipsis>
@@ -791,21 +783,17 @@ const HeaderMenuMoreContents = () => {
       )}
 
       {userSwr.data?.user && (
-        <HeadAnchor
-          grid
-          onPress={() => {
-            context.close()
-            accountModal.show = true
-          }}
-        >
-          <XStack items="center" justify="center">
-            <span>Account</span>
-            <YStack flex={10} />
-            <YStack display={'inline-block' as any} y={-2} my={-3} self="flex-end">
-              <UserAvatar size={22} />
-            </YStack>
-          </XStack>
-        </HeadAnchor>
+        <Link asChild href="/account" onPress={handlePress}>
+          <HeadAnchor grid render="a">
+            <XStack items="center" justify="center">
+              <span>Account</span>
+              <YStack flex={10} />
+              <YStack display={'inline-block' as any} y={-2} my={-3} self="flex-end">
+                <UserAvatar size={22} />
+              </YStack>
+            </XStack>
+          </HeadAnchor>
+        </Link>
       )}
 
       <Separator bg="color02" opacity={0.25} my="2" />
@@ -863,14 +851,6 @@ const HeaderMenuMoreContents = () => {
           <SizableText size="2" color="color9">
             Expert Consulting
           </SizableText>
-        </HeadAnchor>
-      </Link>
-
-      <Separator bg="color02" opacity={0.25} my="2" />
-
-      <Link asChild href="/community">
-        <HeadAnchor grid render="a">
-          Community
         </HeadAnchor>
       </Link>
 
@@ -946,7 +926,6 @@ const SeasonChooser = () => {
 
 const HeadAnchor = styled(Paragraph, {
   render: 'a',
-  fontFamily: 'mono',
   px: '4',
   py: '3',
   cursor: 'pointer',

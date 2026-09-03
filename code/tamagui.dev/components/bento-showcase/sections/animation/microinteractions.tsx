@@ -5,55 +5,39 @@ import {
   Showcase,
   ShowcaseChildWrapper as Wrapper,
 } from '~/components/bento-showcase/_Showcase'
-import {
-  type BentoShowcaseContext,
-  BentoShowcaseProvider,
-} from '~/components/bento-showcase/BentoProvider'
 
-export function microinteractions({
-  isProUser,
-  showAppropriateModal,
-}: BentoShowcaseContext) {
+export function microinteractions() {
   return (
-    <BentoShowcaseProvider
-      isProUser={isProUser}
-      showAppropriateModal={showAppropriateModal}
+    <YStack
+      paddingBottom="2 gtLg:0"
+      gap="12"
+      paddingTop="2 gtLg:0"
+      paddingRight="2 gtLg:0"
+      paddingLeft="2 gtLg:0"
     >
-      <YStack
-        paddingBottom="2 gtLg:0"
-        gap="12"
-        paddingTop="2 gtLg:0"
-        paddingRight="2 gtLg:0"
-        paddingLeft="2 gtLg:0"
+      <Showcase fileName={MicroInter.AnimatedNumbers.fileName} title="Number Slider">
+        <Wrapper>
+          <MicroInter.AnimatedNumbers />
+        </Wrapper>
+      </Showcase>
+
+      <Showcase
+        fileName={MicroInter.PaginationControl.fileName}
+        title="Pagination Control"
       >
-        <Showcase
-          unlock
-          fileName={MicroInter.AnimatedNumbers.fileName}
-          title="Number Slider"
-        >
-          <Wrapper>
-            <MicroInter.AnimatedNumbers />
-          </Wrapper>
-        </Showcase>
+        <Wrapper>
+          <MicroInter.PaginationControl />
+        </Wrapper>
+      </Showcase>
 
-        <Showcase
-          fileName={MicroInter.PaginationControl.fileName}
-          title="Pagination Control"
-        >
-          <Wrapper>
-            <MicroInter.PaginationControl />
-          </Wrapper>
-        </Showcase>
-
-        <Showcase
-          fileName={MicroInter.InteractiveCard.fileName}
-          title="Mouse Interactive 3D Cards"
-        >
-          <Wrapper>
-            <MicroInter.InteractiveCard />
-          </Wrapper>
-        </Showcase>
-      </YStack>
-    </BentoShowcaseProvider>
+      <Showcase
+        fileName={MicroInter.InteractiveCard.fileName}
+        title="Mouse Interactive 3D Cards"
+      >
+        <Wrapper>
+          <MicroInter.InteractiveCard />
+        </Wrapper>
+      </Showcase>
+    </YStack>
   )
 }

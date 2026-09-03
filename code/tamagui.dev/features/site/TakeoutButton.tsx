@@ -12,9 +12,7 @@ export const TakeoutButton = (props: ButtonProps) => {
       z="hover:100"
       {...props}
     >
-      <Button.Text fontFamily="silkscreen" fontSize={12}>
-        Starter Kit
-      </Button.Text>
+      <Button.Text fontSize={12}>Starter Kit</Button.Text>
       <Button.Icon>
         <TakeoutIcon scale={0.75} />
       </Button.Icon>

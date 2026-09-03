@@ -7,59 +7,49 @@ import {
   ShowcaseChildWrapper as Wrapper,
   usePhoneScale,
 } from '~/components/bento-showcase/_Showcase'
-import {
-  type BentoShowcaseContext,
-  BentoShowcaseProvider,
-} from '~/components/bento-showcase/BentoProvider'
 
-export function switches({ isProUser, showAppropriateModal }: BentoShowcaseContext) {
+export function switches() {
   return (
-    <BentoShowcaseProvider
-      isProUser={isProUser}
-      showAppropriateModal={showAppropriateModal}
+    <YStack
+      paddingBottom="2 gtLg:0"
+      gap="12"
+      paddingTop="2 gtLg:0"
+      paddingRight="2 gtLg:0"
+      paddingLeft="2 gtLg:0"
     >
-      <YStack
-        paddingBottom="2 gtLg:0"
-        gap="12"
-        paddingTop="2 gtLg:0"
-        paddingRight="2 gtLg:0"
-        paddingLeft="2 gtLg:0"
+      <Showcase
+        fileName={Switches.SwitchCustomIcons.fileName}
+        title="Switch with Custom Icons"
       >
-        <Showcase
-          unlock
-          fileName={Switches.SwitchCustomIcons.fileName}
-          title="Switch with Custom Icons"
-        >
-          <PhoneScaleAnimationFixer>
-            <Wrapper>
-              <WithSize>
-                <Switches.SwitchCustomIcons />
-              </WithSize>
-            </Wrapper>
-          </PhoneScaleAnimationFixer>
-        </Showcase>
-        <Showcase
-          fileName={Switches.IconTitleSwitch.fileName}
-          title="Switch with Icon and Title"
-        >
-          <Wrapper>
-            <Switches.IconTitleSwitch />
-          </Wrapper>
-        </Showcase>
-
-        <Showcase
-          defaultSize="7"
-          fileName={Switches.ThemeSwitch.fileName}
-          title={Switches.ThemeSwitch.title}
-        >
+        <PhoneScaleAnimationFixer>
           <Wrapper>
             <WithSize>
-              <Switches.ThemeSwitch />
+              <Switches.SwitchCustomIcons />
             </WithSize>
           </Wrapper>
-        </Showcase>
-      </YStack>
-    </BentoShowcaseProvider>
+        </PhoneScaleAnimationFixer>
+      </Showcase>
+      <Showcase
+        fileName={Switches.IconTitleSwitch.fileName}
+        title="Switch with Icon and Title"
+      >
+        <Wrapper>
+          <Switches.IconTitleSwitch />
+        </Wrapper>
+      </Showcase>
+
+      <Showcase
+        defaultSize="7"
+        fileName={Switches.ThemeSwitch.fileName}
+        title={Switches.ThemeSwitch.title}
+      >
+        <Wrapper>
+          <WithSize>
+            <Switches.ThemeSwitch />
+          </WithSize>
+        </Wrapper>
+      </Showcase>
+    </YStack>
   )
 }
 

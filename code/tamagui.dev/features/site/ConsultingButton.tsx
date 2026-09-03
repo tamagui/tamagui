@@ -12,9 +12,7 @@ export const ConsultingButton = (props: ButtonProps) => {
       z="hover:100"
       {...props}
     >
-      <Button.Text fontFamily="silkscreen" fontSize={12}>
-        Hire Us
-      </Button.Text>
+      <Button.Text fontSize={12}>Hire Us</Button.Text>
       <Button.Icon>
         <AddEvenBrandIcon scale={1} />
       </Button.Icon>

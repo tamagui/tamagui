@@ -5,10 +5,6 @@ import {
   Showcase,
   ShowcaseChildWrapper as Wrapper,
 } from '~/components/bento-showcase/_Showcase'
-import {
-  type BentoShowcaseContext,
-  BentoShowcaseProvider,
-} from '~/components/bento-showcase/BentoProvider'
 
 type Props = {
   codes: {
@@ -19,66 +15,57 @@ type Props = {
     HorizontalWithDescriptionCheckboxes: string
     VerticalWithDescriptionCheckboxes: string
   }
-} & BentoShowcaseContext
+}
 
-export function checkboxes({ isProUser, showAppropriateModal }: Props) {
+export function checkboxes() {
   return (
-    <BentoShowcaseProvider
-      isProUser={isProUser}
-      showAppropriateModal={showAppropriateModal}
+    <YStack
+      paddingBottom="2 gtLg:0"
+      gap="12"
+      paddingTop="2 gtLg:0"
+      paddingRight="2 gtLg:0"
+      paddingLeft="2 gtLg:0"
     >
-      <YStack
-        paddingBottom="2 gtLg:0"
-        gap="12"
-        paddingTop="2 gtLg:0"
-        paddingRight="2 gtLg:0"
-        paddingLeft="2 gtLg:0"
+      <Showcase fileName={Checkboxes.CheckboxCards.fileName} title="CheckBox Cards">
+        <Wrapper>
+          <Checkboxes.CheckboxCards />
+        </Wrapper>
+      </Showcase>
+      <Showcase fileName={Checkboxes.CheckboxList.fileName} title="Checkbox List">
+        <Wrapper px={2}>
+          <Checkboxes.CheckboxList />
+        </Wrapper>
+      </Showcase>
+      <Showcase fileName={Checkboxes.GroupedCheckbox.fileName} title="Grouped Checkbox">
+        <Wrapper px={2}>
+          <Checkboxes.GroupedCheckbox />
+        </Wrapper>
+      </Showcase>
+      <Showcase
+        fileName={Checkboxes.HorizontalCheckboxes.fileName}
+        title="Horizontal Checkboxes"
       >
-        <Showcase
-          unlock
-          fileName={Checkboxes.CheckboxCards.fileName}
-          title="CheckBox Cards"
-        >
-          <Wrapper>
-            <Checkboxes.CheckboxCards />
-          </Wrapper>
-        </Showcase>
-        <Showcase fileName={Checkboxes.CheckboxList.fileName} title="Checkbox List">
-          <Wrapper px={2}>
-            <Checkboxes.CheckboxList />
-          </Wrapper>
-        </Showcase>
-        <Showcase fileName={Checkboxes.GroupedCheckbox.fileName} title="Grouped Checkbox">
-          <Wrapper px={2}>
-            <Checkboxes.GroupedCheckbox />
-          </Wrapper>
-        </Showcase>
-        <Showcase
-          fileName={Checkboxes.HorizontalCheckboxes.fileName}
-          title="Horizontal Checkboxes"
-        >
-          <Wrapper>
-            <Checkboxes.HorizontalCheckboxes />
-          </Wrapper>
-        </Showcase>
-        <Showcase
-          fileName={Checkboxes.HorizontalWithDescriptionCheckboxes.fileName}
-          title="Horizontal with Description Checkboxes"
-        >
-          <Wrapper>
-            <Checkboxes.HorizontalWithDescriptionCheckboxes />
-          </Wrapper>
-        </Showcase>
-        <Showcase
-          fileName={Checkboxes.VerticalWithDescriptionCheckboxes.fileName}
-          title="Vertical with Description Checkboxes"
-        >
-          <Wrapper>
-            <Checkboxes.VerticalWithDescriptionCheckboxes />
-          </Wrapper>
-        </Showcase>
-      </YStack>
-    </BentoShowcaseProvider>
+        <Wrapper>
+          <Checkboxes.HorizontalCheckboxes />
+        </Wrapper>
+      </Showcase>
+      <Showcase
+        fileName={Checkboxes.HorizontalWithDescriptionCheckboxes.fileName}
+        title="Horizontal with Description Checkboxes"
+      >
+        <Wrapper>
+          <Checkboxes.HorizontalWithDescriptionCheckboxes />
+        </Wrapper>
+      </Showcase>
+      <Showcase
+        fileName={Checkboxes.VerticalWithDescriptionCheckboxes.fileName}
+        title="Vertical with Description Checkboxes"
+      >
+        <Wrapper>
+          <Checkboxes.VerticalWithDescriptionCheckboxes />
+        </Wrapper>
+      </Showcase>
+    </YStack>
   )
 }
 

@@ -26,7 +26,7 @@ export default function Blog() {
       <HeadInfo title="Blog — Tamagui" description="What's up with Tamagui." />
       <Spacer size="7" />
       <ContainerLarge mb="7">
-        <H2 size="8" color="color9" fontFamily="silkscreen">
+        <H2 size="8" color="color9">
           Blog
         </H2>
         <Spacer size="6" />

@@ -5,47 +5,34 @@ import {
   Showcase,
   ShowcaseChildWrapper as Wrapper,
 } from '~/components/bento-showcase/_Showcase'
-import {
-  type BentoShowcaseContext,
-  BentoShowcaseProvider,
-} from '~/components/bento-showcase/BentoProvider'
 
-type Props = ReturnType<typeof buttonsGetComponentCodes> & BentoShowcaseContext
+type Props = ReturnType<typeof buttonsGetComponentCodes>
 
-export function buttons({ isProUser, showAppropriateModal }: Props) {
+export function buttons() {
   return (
-    <BentoShowcaseProvider
-      isProUser={isProUser}
-      showAppropriateModal={showAppropriateModal}
+    <YStack
+      paddingBottom="2 gtLg:0"
+      gap="12"
+      paddingTop="2 gtLg:0"
+      paddingRight="2 gtLg:0"
+      paddingLeft="2 gtLg:0"
     >
-      <YStack
-        paddingBottom="2 gtLg:0"
-        gap="12"
-        paddingTop="2 gtLg:0"
-        paddingRight="2 gtLg:0"
-        paddingLeft="2 gtLg:0"
-      >
-        <Showcase
-          unlock
-          fileName={Buttons.ButtonLoading.fileName}
-          title="Loading Animation"
-        >
-          <Wrapper>
-            <Buttons.ButtonLoading />
-          </Wrapper>
-        </Showcase>
-        <Showcase fileName={Buttons.ButtonPulse.fileName} title="Press Animation">
-          <Wrapper>
-            <Buttons.ButtonPulse />
-          </Wrapper>
-        </Showcase>
-        <Showcase fileName={Buttons.IconCenterButton.fileName} title="Icon Animation">
-          <Wrapper>
-            <Buttons.IconCenterButton />
-          </Wrapper>
-        </Showcase>
-      </YStack>
-    </BentoShowcaseProvider>
+      <Showcase fileName={Buttons.ButtonLoading.fileName} title="Loading Animation">
+        <Wrapper>
+          <Buttons.ButtonLoading />
+        </Wrapper>
+      </Showcase>
+      <Showcase fileName={Buttons.ButtonPulse.fileName} title="Press Animation">
+        <Wrapper>
+          <Buttons.ButtonPulse />
+        </Wrapper>
+      </Showcase>
+      <Showcase fileName={Buttons.IconCenterButton.fileName} title="Icon Animation">
+        <Wrapper>
+          <Buttons.IconCenterButton />
+        </Wrapper>
+      </Showcase>
+    </YStack>
   )
 }
 

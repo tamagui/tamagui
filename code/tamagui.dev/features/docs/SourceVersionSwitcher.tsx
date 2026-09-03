@@ -55,7 +55,7 @@ export function SourceVersionSwitcher({
         borderColor="border-color"
         borderRadius={8}
       >
-        <Select.Value placeholder={versions[0]} fontFamily="mono" />
+        <Select.Value placeholder={versions[0]} />
         <Select.Icon marginLeft="auto">
           <ChevronDown size={14} />
         </Select.Icon>
@@ -113,7 +113,7 @@ export function SourceVersionSwitcher({
                 versions.map((version, i) => {
                   return (
                     <Select.Item key={version} value={version}>
-                      <Select.ItemText fontFamily="mono">{version}</Select.ItemText>
+                      <Select.ItemText>{version}</Select.ItemText>
                       <Select.ItemIndicator marginLeft="auto">
                         <Check size={16} />
                       </Select.ItemIndicator>

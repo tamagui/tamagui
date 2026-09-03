@@ -1,11 +1,10 @@
-import { Code, Eye, Info, Link, Lock, Minus, Plus } from '@tamagui/lucide-icons-2'
+import { Code, Eye, Info, Link, Minus, Plus } from '@tamagui/lucide-icons-2'
 import React, { forwardRef, useEffect, useRef, useState } from 'react'
 import type { SizeTokens, ThemeName } from 'tamagui'
 
 import useSWR from 'swr'
 import {
   H2,
-  Image,
   ScrollView,
   SizableText,
   Spinner,
@@ -44,8 +43,6 @@ import { useCurrentRouteParams } from '@tamagui/bento'
 import { useGroupMedia } from '@tamagui/bento/component/hooks/useGroupMedia'
 import { CodeWindow } from './CodeWindow'
 // import { ThemeButton } from './ThemeButton'
-import { authFetch } from '~/features/api/authFetch'
-import { useBentoShowcase } from './BentoProvider'
 import { type ShowcaseTheme, ShowcaseProvider } from './ShowcaseProvider'
 
 type Props = {
@@ -54,7 +51,6 @@ type Props = {
   fileName: string
   short?: boolean
   isInput?: boolean
-  unlock?: boolean
   theme?: ShowcaseTheme
   defaultSize?: SizeTokens
 }
@@ -71,24 +67,12 @@ export const Showcase = (props: Props) => {
 
 const ShowcaseView = forwardRef<any, Props>(
   (
-    {
-      children,
-      title,
-      short,
-      isInput,
-      fileName,
-      theme,
-      defaultSize = '3',
-      unlock = false,
-      ...rest
-    },
+    { children, title, short, isInput, fileName, theme, defaultSize = '3', ...rest },
     ref
   ) => {
     const [view, setView] = useState<'code' | 'preview'>('preview')
 
     const { section, part } = useCurrentRouteParams()
-
-    const { showAppropriateModal, isProUser } = useBentoShowcase('BentoShowcase')
 
     // @ts-expect-error - URLSearchParams type mismatch with object
     const codePath = `/api/bento/code?${new URLSearchParams({
@@ -97,15 +81,10 @@ const ShowcaseView = forwardRef<any, Props>(
       fileName,
     })}`
 
-    const approved = unlock || isProUser
-
     const fetcher = async (url: string) => {
-      const res = await authFetch(url)
+      const res = await fetch(url)
       if (!res.ok) {
-        const error = new Error('An error occurred while fetching the data.') as any
-        error.info = await res.json()
-        error.status = res.status
-        throw error
+        throw new Error(`Couldn't load source (${res.status})`)
       }
       return res.text()
     }
@@ -115,9 +94,6 @@ const ShowcaseView = forwardRef<any, Props>(
       fetcher,
       { shouldRetryOnError: false, revalidateOnFocus: false }
     )
-
-    const iDontHaveAccess = error?.status === 403 || error?.status === 401
-    const hasUnexpectedError = error && !iDontHaveAccess
 
     const minHeight = short ? 300 : 510
 
@@ -133,8 +109,7 @@ const ShowcaseView = forwardRef<any, Props>(
         >
           <XStack items="center" justify="space-between">
             <XStack items="center" flex={1} gap="3">
-              {!approved && <Lock size={16} opacity={0.3} />}
-              <H2 size="7" fontWeight="600" bg="background" fontFamily="mono" t="0" l="2">
+              <H2 size="7" fontWeight="600" bg="background" t="0" l="2">
                 {title}
               </H2>
             </XStack>
@@ -178,7 +153,7 @@ const ShowcaseView = forwardRef<any, Props>(
                     <XGroup.Item>
                       <Button
                         size="3"
-                        icon={approved ? <Code size={16} /> : <Lock size={16} />}
+                        icon={<Code size={16} />}
                         theme={view === 'code' ? 'accent' : null}
                       >
                         Code
@@ -220,28 +195,7 @@ const ShowcaseView = forwardRef<any, Props>(
               <View width="100%" justify="center" items="center">
                 <Spinner color="color" size="large" />
               </View>
-            ) : iDontHaveAccess ? (
-              <YStack gap="4" items="center">
-                <Image src="/avatar_pro.png" width={56} height={56} />
-
-                <Text fontSize="6" fontFamily="mono" fontWeight="bold">
-                  Tamagui Pro
-                </Text>
-
-                <Text
-                  text="center"
-                  color="green10"
-                  fontSize="@sm/window:2"
-                  gap="4"
-                  fontFamily="mono"
-                >
-                  Purchase the Bento package to access the code.
-                </Text>
-                <Button onPress={showAppropriateModal}>
-                  <Button.Text>Upgrade to Pro</Button.Text>
-                </Button>
-              </YStack>
-            ) : hasUnexpectedError ? (
+            ) : error ? (
               <Text text="center" color="red10" fontSize="@sm/window:2">
                 Source unavailable. Please try again later.
               </Text>

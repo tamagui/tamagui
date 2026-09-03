@@ -45,7 +45,6 @@ export function DataTable({
                   color="color"
                   fontWeight="700"
                   maxW={100}
-                  fontFamily="mono"
                   textTransform="none"
                   items="center"
                   justify="center"

@@ -5,48 +5,38 @@ import {
   Showcase,
   ShowcaseChildWrapper as Wrapper,
 } from '~/components/bento-showcase/_Showcase'
-import {
-  BentoShowcaseProvider,
-  type BentoShowcaseContext,
-} from '~/components/bento-showcase/BentoProvider'
 
-export function buttons({ isProUser, showAppropriateModal }: BentoShowcaseContext) {
+export function buttons() {
   return (
-    <BentoShowcaseProvider
-      isProUser={isProUser}
-      showAppropriateModal={showAppropriateModal}
+    <YStack
+      paddingBottom="2 gtLg:0"
+      gap="12"
+      paddingTop="2 gtLg:0"
+      paddingRight="2 gtLg:0"
+      paddingLeft="2 gtLg:0"
     >
-      <YStack
-        paddingBottom="2 gtLg:0"
-        gap="12"
-        paddingTop="2 gtLg:0"
-        paddingRight="2 gtLg:0"
-        paddingLeft="2 gtLg:0"
+      <Showcase
+        fileName={Buttons.ButtonsWithLeftIcons.fileName}
+        title="Buttons with Left Icons"
       >
-        <Showcase
-          unlock
-          fileName={Buttons.ButtonsWithLeftIcons.fileName}
-          title="Buttons with Left Icons"
-        >
-          <Wrapper>
-            <Buttons.ButtonsWithLeftIcons />
-          </Wrapper>
-        </Showcase>
-        <Showcase
-          fileName={Buttons.ButtonsWithLoaders.fileName}
-          title="Buttons with Loaders"
-        >
-          <Wrapper>
-            <Buttons.ButtonsWithLoaders />
-          </Wrapper>
-        </Showcase>
-        <Showcase fileName={Buttons.RoundedButtons.fileName} title="Rounded Buttons">
-          <Wrapper>
-            <Buttons.RoundedButtons />
-          </Wrapper>
-        </Showcase>
-      </YStack>
-    </BentoShowcaseProvider>
+        <Wrapper>
+          <Buttons.ButtonsWithLeftIcons />
+        </Wrapper>
+      </Showcase>
+      <Showcase
+        fileName={Buttons.ButtonsWithLoaders.fileName}
+        title="Buttons with Loaders"
+      >
+        <Wrapper>
+          <Buttons.ButtonsWithLoaders />
+        </Wrapper>
+      </Showcase>
+      <Showcase fileName={Buttons.RoundedButtons.fileName} title="Rounded Buttons">
+        <Wrapper>
+          <Buttons.RoundedButtons />
+        </Wrapper>
+      </Showcase>
+    </YStack>
   )
 }
 

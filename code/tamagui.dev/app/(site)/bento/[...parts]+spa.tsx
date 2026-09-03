@@ -23,7 +23,6 @@ import { HeadInfo } from '~/components/HeadInfo'
 import { BentoPageFrame } from '~/features/bento/BentoPageFrame'
 import { useBentoStore } from '~/features/bento/BentoStore'
 import { DropTamaguiConfig } from '~/features/bento/DropTamaguiConfig'
-import { useSubscriptionModal } from '~/features/site/purchase/useSubscriptionModal'
 
 export const generateStaticParams = async () => {
   return Data.paths.map((x) => ({
@@ -40,10 +39,6 @@ function useParts() {
 export default function BentoPage() {
   const { section, part } = useParts()
   const Comp = Sections?.[section]?.[part]
-
-  const { showAppropriateModal, subscriptionStatus, userData } = useSubscriptionModal()
-
-  const isProUser = userData?.accessInfo?.hasPro
 
   if (!Comp) {
     return null
@@ -88,7 +83,7 @@ export default function BentoPage() {
                         gap="2"
                         items="center"
                       >
-                        <Text fontFamily="mono" color="color12" text="right" px="2">
+                        <Text color="color12" text="right" px="2">
                           {sectionName[0].toUpperCase()}
                           {sectionName.slice(1)}
                         </Text>
@@ -113,7 +108,6 @@ export default function BentoPage() {
                                 flex={1}
                               >
                                 <Paragraph
-                                  fontFamily="mono"
                                   fontWeight="500"
                                   text="right"
                                   color={`${active ? 'accent-color' : 'color10'}`}
@@ -148,7 +142,7 @@ export default function BentoPage() {
               </View>
 
               <View flex={1} maxW="100%" width="100%">
-                <Comp showAppropriateModal={showAppropriateModal} isProUser={isProUser} />
+                <Comp />
               </View>
             </XStack>
           </ContainerBento>
@@ -168,7 +162,7 @@ export const DetailHeader = (props: { children: string }) => {
     <YStack t={0} gap="4" px="4" py="4">
       <YStack gap="4">
         <XStack items="center" justify="space-between" flexDirection="sm:column">
-          <H1 fontFamily="mono" fontSize="sm:9" lineHeight="sm:9" mb="sm:4" size="11">
+          <H1 fontSize="sm:9" lineHeight="sm:9" mb="sm:4" size="11">
             {props.children}
           </H1>
 
@@ -201,12 +195,7 @@ export const DetailHeader = (props: { children: string }) => {
 
         <XStack p={0.5} items="center" gap="2">
           <Link href="/bento/">
-            <Anchor
-              fontFamily="mono"
-              textTransform="capitalize"
-              color="color9"
-              render="span"
-            >
+            <Anchor textTransform="capitalize" color="color9" render="span">
               Bento
             </Anchor>
           </Link>
@@ -216,12 +205,7 @@ export const DetailHeader = (props: { children: string }) => {
           </SizableText>
 
           <Link href={`/bento#${category}`}>
-            <Anchor
-              fontFamily="mono"
-              textTransform="capitalize"
-              color="color9"
-              render="span"
-            >
+            <Anchor textTransform="capitalize" color="color9" render="span">
               {category}
             </Anchor>
           </Link>
@@ -231,12 +215,7 @@ export const DetailHeader = (props: { children: string }) => {
           </SizableText>
 
           <Link href={`/bento/${category}/${subCategory}`}>
-            <Anchor
-              fontFamily="mono"
-              textTransform="capitalize"
-              color="color9"
-              render="span"
-            >
+            <Anchor textTransform="capitalize" color="color9" render="span">
               {subCategory.replace('_', ' ').replace('#', '')}
             </Anchor>
           </Link>

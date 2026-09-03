@@ -1,5 +1,5 @@
 import { LogoIcon, useTint } from '@tamagui/logo'
-import { ArrowDown, Play } from '@tamagui/lucide-icons-2'
+import { Play } from '@tamagui/lucide-icons-2'
 import React, { memo, useEffect, useRef, useState } from 'react'
 import {
   ListItem,
@@ -12,11 +12,7 @@ import {
   useEvent,
 } from 'tamagui'
 import { Button } from '~/components/Button'
-import { ContainerLarge } from '~/components/Containers'
-import { Link } from '~/components/Link'
 import { useIsIntersecting } from '~/hooks/useOnIntersecting'
-import { CodeDemoPreParsed } from './CodeDemoPreParsed'
-import { HomeH2, HomeH3 } from './HomeHeaders'
 
 export const AnimationsDemo = (props) => {
   const { tint } = useTint()
@@ -57,93 +53,6 @@ const animationDescriptions = [
 ] as const
 
 let hasScrolledOnce = false
-
-export function HomeAnimations({ animationCode }: { animationCode: string }) {
-  const { tint } = useTint()
-  const [disableScrollPane, setDisableScrollPane] = useState(true)
-
-  return (
-    <YStack>
-      <ContainerLarge position="relative" gap="8">
-        <YStack z={1} gap="3">
-          <HomeH2 position="relative">
-            Universal <span className="rainbow clip-text">Animations</span>
-          </HomeH2>
-          <HomeH3>
-            Better platform targeting with animation drivers that can be changed without
-            changing code.
-          </HomeH3>
-        </YStack>
-
-        <XStack gap="4">
-          <YStack
-            flex={2}
-            minW="55%"
-            self="flex-start"
-            z={100}
-            rounded="4"
-            justify="center"
-            elevation="4"
-            theme={tint as any}
-          >
-            <ExampleAnimations />
-          </YStack>
-
-          <YStack
-            perspective={1000}
-            rotateY="-5deg"
-            display="sm:none"
-            position="relative"
-            rounded="8"
-            overflow="hidden"
-            elevation="5"
-          >
-            <YStack
-              pointerEvents={disableScrollPane ? 'auto' : 'none'}
-              opacity={disableScrollPane ? 1 : 0}
-              position="absolute"
-              inset={0}
-              items="center"
-              justify="center"
-            >
-              <YStack position="absolute" inset={0} t="60%" opacity={0.5} />
-              <Button
-                aria-label="View more"
-                y={200}
-                iconAfter={ArrowDown}
-                size="4"
-                theme="accent"
-                z={10}
-                onPress={() => setDisableScrollPane((prev) => !prev)}
-              >
-                View more
-              </Button>
-            </YStack>
-
-            <CodeDemoPreParsed
-              pointerEvents={disableScrollPane ? 'none' : 'auto'}
-              height={disableScrollPane ? 500 : 1250}
-              transition="quick"
-              maxW={530}
-              minW={530}
-              rounded="8"
-              language="tsx"
-              source={animationCode}
-            />
-          </YStack>
-        </XStack>
-
-        <XStack self="center" gap="3">
-          <Link href="/docs/core/animations">
-            <Button aria-label="Animation docs">
-              <Button.Text fontFamily="silkscreen">Docs &raquo;</Button.Text>
-            </Button>
-          </Link>
-        </XStack>
-      </ContainerLarge>
-    </YStack>
-  )
-}
 
 export const ExampleAnimations = memo(() => {
   const [animationI, setAnimationI] = useState(0)

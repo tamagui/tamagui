@@ -28,7 +28,7 @@ function Cell({ s }: { s: Support }) {
   const m = mark[s]
   return (
     <YStack width={92} items="center">
-      <Paragraph fontFamily="mono" color={m.color} size="2">
+      <Paragraph color={m.color} size="2">
         {m.glyph}
       </Paragraph>
     </YStack>
@@ -52,17 +52,13 @@ function Matrix({ title, rows }: { title: string; rows: CoverageRow[] }) {
       <YStack minWidth={520}>
         <XStack px="4" py="3" items="center" bg="color2">
           <YStack flex={1} minWidth={150}>
-            <Paragraph fontFamily="mono" color="color11" size="2">
+            <Paragraph color="color11" size="2">
               {title}
             </Paragraph>
           </YStack>
           {cols.map((c) => (
             <YStack key={c} width={92} items="center">
-              <Paragraph
-                fontFamily="mono"
-                color={`${c === 'tamagui' ? 'color12' : 'color10'}`}
-                size="2"
-              >
+              <Paragraph color={`${c === 'tamagui' ? 'color12' : 'color10'}`} size="2">
                 {colLabels[c]}
               </Paragraph>
             </YStack>
@@ -123,17 +119,13 @@ export function TailwindComparison() {
             borderColor="border-color"
             bg="color1"
           >
-            <Paragraph fontFamily="mono" color="color11" size="3">
+            <Paragraph color="color11" size="3">
               {f.name}
             </Paragraph>
-            <Paragraph fontFamily="mono" color="color12" size="9">
+            <Paragraph color="color12" size="9">
               {f.pct}%
             </Paragraph>
-            <Paragraph
-              fontFamily="mono"
-              color={`${f.cross ? 'green10' : 'color9'}`}
-              size="1"
-            >
+            <Paragraph color={`${f.cross ? 'green10' : 'color9'}`} size="1">
               {f.cross ? 'cross-platform' : 'web only'}
             </Paragraph>
           </YStack>
@@ -143,7 +135,7 @@ export function TailwindComparison() {
       <Matrix title="Utility" rows={coverageRows} />
       <Matrix title="Variants & states" rows={variantRows} />
 
-      <Paragraph fontFamily="mono" color="color9" self="center" size="1">
+      <Paragraph color="color9" self="center" size="1">
         ● full · ◐ partial · web web-only · – none
       </Paragraph>
       <Paragraph

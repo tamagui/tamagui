@@ -264,9 +264,7 @@ export function DocsQuickNav({ headings = [] }: { headings?: Heading[] }) {
               target="_blank"
               href={href(`${process.env.ONE_SERVER_URL}${pathname}.md` as any)}
             >
-              <SizableText size="3" fontFamily="mono">
-                .md
-              </SizableText>
+              <SizableText size="3">.md</SizableText>
             </Link>
 
             <Separator minH={20} vertical />
@@ -275,9 +273,7 @@ export function DocsQuickNav({ headings = [] }: { headings?: Heading[] }) {
               target="_blank"
               href={href(`${process.env.ONE_SERVER_URL}/llms.txt` as any)}
             >
-              <SizableText size="3" fontFamily="mono">
-                llms.txt
-              </SizableText>
+              <SizableText size="3">llms.txt</SizableText>
             </Link>
           </XStack>
 
@@ -291,13 +287,7 @@ export function DocsQuickNav({ headings = [] }: { headings?: Heading[] }) {
             display={headings.length === 0 ? 'none' : 'flex'}
             gap="2"
           >
-            <H4
-              fontFamily="mono"
-              mb="2"
-              color="color10"
-              size="5"
-              id="site-quick-nav-heading"
-            >
+            <H4 mb="2" color="color10" size="5" id="site-quick-nav-heading">
               Contents
             </H4>
 

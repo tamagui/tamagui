@@ -55,7 +55,6 @@ export const DocsRouteNavItem = function DocsRouteNavItem({
           />
         )}
         <SizableText
-          fontFamily="mono"
           letterSpacing={-0.5}
           lineHeight="4"
           cursor="pointer"

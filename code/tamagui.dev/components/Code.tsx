@@ -34,5 +34,7 @@ export const CodeInline = styled(Paragraph, {
   px: '0.6%',
   py: '0.45%',
   mx: '-0.1%',
-  whiteSpace: 'pre',
+  // inline code sits in prose, so it has to wrap rather than push the page wide
+  whiteSpace: 'pre-wrap',
+  overflowWrap: 'break-word',
 })

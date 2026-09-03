@@ -421,9 +421,7 @@ const componentsIn = {
 
   Notice,
 
-  h1: (props) => (
-    <H1 fontFamily="mono" width="max-content" mb="2" {...props} pos="relative" />
-  ),
+  h1: (props) => <H1 width="max-content" mb="2" {...props} pos="relative" />,
 
   h2: ({ children, ...props }) => (
     <H2
@@ -644,7 +642,6 @@ const componentsIn = {
         {...props}
       >
         <Paragraph
-          fontFamily="silkscreen"
           whiteSpace="revert"
           lineHeight="9"
           fontWeight="300"
@@ -696,9 +693,7 @@ const componentsIn = {
     return (
       <NoticeFrame theme="red">
         <YStack maxW="100%" gap="4">
-          <H4 color="color10" fontFamily="silkscreen">
-            👋 Hey! Listen!
-          </H4>
+          <H4 color="color10">👋 Hey! Listen!</H4>
           <YStack overflow="hidden" flex={1} flexBasis="auto" opacity={0.85} gap="4">
             <Paragraph>
               Tamagui is fully OSS, self-funded and built by{' '}

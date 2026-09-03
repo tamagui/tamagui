@@ -4,7 +4,6 @@ import { View, XStack, YStack } from 'tamagui'
 import { setCodeMode, type CodeMode } from './docsCodeMode'
 import { DocsMenuContents } from './DocsMenuContents'
 import { Footer } from '../site/Footer'
-import { ThemeNameEffect } from '../site/theme/ThemeNameEffect'
 
 export function DocsSyntaxLayout({
   children,
@@ -22,7 +21,6 @@ export function DocsSyntaxLayout({
 
   return (
     <>
-      <ThemeNameEffect colorKey="color1" />
       <YStack
         position="absolute"
         inset={0}

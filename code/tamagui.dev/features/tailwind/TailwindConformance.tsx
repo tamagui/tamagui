@@ -43,13 +43,13 @@ function ProofRow({ c, scale }: { c: ProofCase; scale: number }) {
       {proofLegs.map((leg, i) => (
         <XStack key={leg.key} items="center" gap="2">
           {i > 0 && (
-            <SizableText fontFamily="mono" color="color8" size="5">
+            <SizableText color="color8" size="5">
               =
             </SizableText>
           )}
           <YStack items="center" gap="2">
             <Specimen c={c} leg={leg.key} scale={scale} />
-            <Paragraph fontFamily="mono" color="color9" size="1">
+            <Paragraph color="color9" size="1">
               {leg.label}
             </Paragraph>
           </YStack>
@@ -63,7 +63,7 @@ function MatchChip({ diff }: { diff: number }) {
   return (
     <XStack items="center" gap="2" bg="green3" rounded={100} px={12} py={5}>
       <YStack width={7} height={7} rounded={100} bg="green9" />
-      <Paragraph fontFamily="mono" color="green11" size="1">
+      <Paragraph color="green11" size="1">
         {diff === 0 ? '0.0% diff' : `${diff}% diff`}
       </Paragraph>
     </XStack>
@@ -73,7 +73,7 @@ function MatchChip({ diff }: { diff: number }) {
 function Stat({ value, label }: { value: string; label: string }) {
   return (
     <YStack items="center" gap="1" px="6" py="3">
-      <SizableText fontFamily="mono" color="color12" size="10">
+      <SizableText color="color12" size="10">
         {value}
       </SizableText>
       <Paragraph size="2" color="color10">
@@ -175,7 +175,7 @@ export function TailwindConformance() {
           No fallbacks.
         </Paragraph>
         <ParagraphLink href={'/tailwind/intro/introduction' as Href}>
-          <SizableText fontFamily="mono" color="accent7" size="2">
+          <SizableText color="accent7" size="2">
             Read the docs
           </SizableText>
         </ParagraphLink>

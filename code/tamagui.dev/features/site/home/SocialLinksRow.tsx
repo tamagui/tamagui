@@ -17,9 +17,7 @@ export const SocialLinksRow = () => {
       >
         <Card width="33.33% sm:auto" justify="center" gap="2" p="5">
           <TwitterIcon />
-          <H4 cursor="pointer" fontFamily="silkscreen">
-            X
-          </H4>
+          <H4 cursor="pointer">X</H4>
           <Paragraph cursor="pointer" color="color9">
             Announcements and general updates.
           </Paragraph>
@@ -33,10 +31,7 @@ export const SocialLinksRow = () => {
       >
         <Card width="33.33% sm:auto" justify="center" gap="2" p="5">
           <DiscordIcon />
-          {/* TODO this uses the body font for other attributes, not silkscreen */}
-          <H4 cursor="pointer" fontFamily="silkscreen">
-            Discord
-          </H4>
+          <H4 cursor="pointer">Discord</H4>
           <Paragraph cursor="pointer" color="color9">
             Get involved and get questions answered.
           </Paragraph>
@@ -50,9 +45,7 @@ export const SocialLinksRow = () => {
       >
         <Card width="33.33% sm:auto" justify="center" gap="2" p="5">
           <GithubIcon />
-          <H4 cursor="pointer" fontFamily="silkscreen">
-            GitHub
-          </H4>
+          <H4 cursor="pointer">GitHub</H4>
           <Paragraph cursor="pointer" color="color9">
             Issues, feature requests, and contributing.
           </Paragraph>

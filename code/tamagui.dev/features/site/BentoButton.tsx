@@ -13,7 +13,7 @@ export const BentoButton = (props: ButtonProps) => {
       z="hover:100"
       {...props}
     >
-      <Button.Text fontFamily="silkscreen" fontSize={12}>
+      <Button.Text fontSize={12}>
         <Span display="sm:none">Copy-Paste </Span>UI
       </Button.Text>
       <Button.Icon>

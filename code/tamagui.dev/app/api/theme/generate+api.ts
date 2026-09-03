@@ -6,7 +6,6 @@ import { z } from 'zod'
 import { apiRoute } from '~/features/api/apiRoute'
 import { generateWithCloudflareWorkersAI } from '~/features/api/cloudflareWorkersAI'
 import { serverEnv } from '~/features/api/serverEnv'
-import { ensureAccess } from '~/features/api/ensureAccess'
 import { ensureAuth } from '~/features/api/ensureAuth'
 import { readBodyJSON } from '~/features/api/readBodyJSON'
 import { checkThemeGenerationRateLimit } from '~/features/api/rateLimit'
@@ -58,39 +57,8 @@ function convertToThemeSuiteItemData(
 }
 
 export default apiRoute(async (req) => {
+  // login is required here only because generation costs real LLM spend
   const { user } = await ensureAuth({ req })
-
-  try {
-    const { hasPro } = await ensureAccess({ user })
-
-    console.info(`[theme/generate] user=${user.email} hasPro=${hasPro}`)
-
-    if (!hasPro) {
-      console.info(`[theme/generate] user=${user.email} denied - no Pro access`)
-      throw Response.json(
-        {
-          error: `Must have Pro account`,
-        },
-        {
-          status: 400,
-        }
-      )
-    }
-  } catch (err) {
-    // re-throw Response errors as-is
-    if (err instanceof Response) {
-      throw err
-    }
-    console.error(`[theme/generate] user=${user.email} access check error:`, err)
-    throw Response.json(
-      {
-        error: `Must have Pro account`,
-      },
-      {
-        status: 400,
-      }
-    )
-  }
 
   const body = await readBodyJSON(req)
   const prompt = body.prompt?.trim()

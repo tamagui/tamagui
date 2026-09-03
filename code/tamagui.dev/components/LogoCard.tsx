@@ -25,7 +25,7 @@ export function LogoCard({ title, subtitle, img, icon, link, colorOffset, ...pro
         <Card.Header>
           <XStack justify="space-between">
             <YStack gap="2-5">
-              <H5 size="6" color="color9" fontFamily="silkscreen">
+              <H5 size="6" color="color9">
                 {title}
               </H5>
               <Paragraph width="19" lineHeight="1" color="color8">

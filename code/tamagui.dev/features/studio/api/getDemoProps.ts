@@ -57,10 +57,6 @@ export function getDemoProps(demosOptions: DemoOptions, hasAccent = false) {
         fontSize: 14,
       }),
 
-      ...(demosOptions.headingFontFamily == 'silkscreen' && {
-        fontSize: 14,
-      }),
-
       ...(demosOptions.headingFontFamily === 'mono' && {
         fontSize: 16,
       }),

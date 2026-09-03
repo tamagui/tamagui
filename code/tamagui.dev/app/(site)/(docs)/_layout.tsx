@@ -3,7 +3,6 @@ import { ScrollView } from 'react-native'
 import { View, XStack, YStack } from 'tamagui'
 import { DocsMenuContents } from '~/features/docs/DocsMenuContents'
 import { Footer } from '~/features/site/Footer'
-import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
 
 export default function DocsLayout() {
   // disabled route-based tint changes
@@ -11,7 +10,6 @@ export default function DocsLayout() {
 
   return (
     <>
-      <ThemeNameEffect colorKey="color1" />
       <YStack
         position="absolute"
         inset={0}

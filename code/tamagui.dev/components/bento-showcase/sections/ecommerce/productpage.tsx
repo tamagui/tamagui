@@ -5,33 +5,24 @@ import {
   Showcase,
   ShowcaseChildWrapper as Wrapper,
 } from '~/components/bento-showcase/_Showcase'
-import {
-  type BentoShowcaseContext,
-  BentoShowcaseProvider,
-} from '~/components/bento-showcase/BentoProvider'
 
-export function productpage({ isProUser, showAppropriateModal }: BentoShowcaseContext) {
+export function productpage() {
   return (
-    <BentoShowcaseProvider
-      isProUser={isProUser}
-      showAppropriateModal={showAppropriateModal}
+    <YStack
+      paddingBottom="2 gtLg:0"
+      gap="12"
+      paddingTop="2 gtLg:0"
+      paddingRight="2 gtLg:0"
+      paddingLeft="2 gtLg:0"
     >
-      <YStack
-        paddingBottom="2 gtLg:0"
-        gap="12"
-        paddingTop="2 gtLg:0"
-        paddingRight="2 gtLg:0"
-        paddingLeft="2 gtLg:0"
+      <Showcase
+        fileName={ProductPage.ProductWithReview.fileName}
+        title="Product with Review"
       >
-        <Showcase
-          fileName={ProductPage.ProductWithReview.fileName}
-          title="Product with Review"
-        >
-          <Wrapper p={0}>
-            <ProductPage.ProductWithReview />
-          </Wrapper>
-        </Showcase>
-      </YStack>
-    </BentoShowcaseProvider>
+        <Wrapper p={0}>
+          <ProductPage.ProductWithReview />
+        </Wrapper>
+      </Showcase>
+    </YStack>
   )
 }

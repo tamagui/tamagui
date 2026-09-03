@@ -1,59 +1,38 @@
 import { H1, YStack } from 'tamagui'
 import { useFontLoaded } from '~/features/site/fonts/LoadFonts'
 
-export const TAKEOUT = ({ fontSize = 320, lineHeight = fontSize * 0.73, ...props }) => (
-  <H1
-    select="none"
-    fontFamily="cherryBomb"
-    fontSize={fontSize}
-    lineHeight={lineHeight}
-    whiteSpace="nowrap"
-    minW={900}
-    scale="sm:0.5"
-    m="sm:-75px"
-    text="center"
-    {...props}
-  >
-    Take
-    <br />
-    <span style={{ display: 'inline-flex', transform: 'translateY(-65px)' }}>out</span>
-  </H1>
-)
-
-export const TakeoutLogo = (props: { scale?: number }) => {
+// the wordmark is a 900px-wide nowrap H1 scaled down by transform, so it sits absolutely
+// inside a sized box - otherwise its layout width overflows the page on small screens
+export const TakeoutLogo = () => {
   const fontLoaded = useFontLoaded('Cherry Bomb')
 
   return (
     <YStack
-      contain="paint"
+      width="100%"
+      height="430px md:350px sm:250px xs:180px xxs:140px"
+      items="center"
+      justify="center"
+      position="relative"
+      overflow="hidden"
       opacity={fontLoaded ? 1 : 0}
-      {...(typeof props.scale === 'number' && {
-        scale: props.scale,
-        margin: -(1 - props.scale) * 295,
-      })}
     >
-      {/* <YStack
-        position="absolute"
-        style={{
-          clipPath: `polygon(0% 0%, 0% 0%, 100% 100%, 100% 0%, 100% 0, 0% 100%)`,
-        }}
-      >
-        <ThemeTintAlt offset={-2}>
-          <TAKEOUT className="text-3d" zi={1000} color="color8" />
-        </ThemeTintAlt>
-      </YStack> */}
-
-      <YStack
-        mt={0}
-        z={0}
-        // className="mix-blend"
-        // style={{
-        //   clipPath: `polygon(0% 0%, 0% 100%, 100% 100%, 0% 0%, 100% 0, 0% 100%)`,
-        // }}
-      >
-        <>
-          <TAKEOUT zi={1000} />
-        </>
+      <YStack position="absolute">
+        <H1
+          select="none"
+          fontFamily="cherryBomb"
+          fontSize={320}
+          lineHeight={234}
+          whiteSpace="nowrap"
+          minW={900}
+          text="center"
+          scale="md:0.8 sm:0.55 xs:0.42 xxs:0.32"
+        >
+          Take
+          <br />
+          <span style={{ display: 'inline-flex', transform: 'translateY(-65px)' }}>
+            out
+          </span>
+        </H1>
       </YStack>
     </YStack>
   )

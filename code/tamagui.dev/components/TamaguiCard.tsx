@@ -16,7 +16,6 @@ export function TamaguiCard({ children, title, subTitle, ...props }) {
     >
       <H3
         render="span"
-        fontFamily="silkscreen"
         lineHeight="6"
         color="color"
         cursor="inherit"

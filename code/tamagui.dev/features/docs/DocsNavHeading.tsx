@@ -1,7 +1,6 @@
 import { H4, styled } from 'tamagui'
 
 export const DocsNavHeading = styled(H4, {
-  fontFamily: 'mono',
   px: '3',
   pt: '4',
   pb: '1',

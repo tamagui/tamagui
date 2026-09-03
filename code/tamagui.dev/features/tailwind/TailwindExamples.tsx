@@ -79,7 +79,7 @@ export function TailwindExamples() {
             >
               {pair.cls}
             </SizableText>
-            <SizableText fontFamily="mono" color="color8" size="2">
+            <SizableText color="color8" size="2">
               ≡
             </SizableText>
             <SizableText

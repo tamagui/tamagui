@@ -25,7 +25,7 @@ export const SponsorButton = (props: { tiny?: boolean }) => {
       variant={props.tiny ? 'quiet' : undefined}
       aria-label="Support OSS development of Tamagui"
     >
-      <Button.Text fontFamily="silkscreen">{props.tiny ? '' : 'Sponsor'}</Button.Text>
+      <Button.Text>{props.tiny ? '' : 'Sponsor'}</Button.Text>
     </Button>
   )
   return (

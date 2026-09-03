@@ -63,7 +63,7 @@ const Intermediate = () => {
           Customize to your design system, designed to be used independently.
         </IntermediateCard>
         <IntermediateCard Icon={Leaf} title="Free">
-          Expanding free components. Lifetime&nbsp;rights paid.
+          Every component, free and open source. No license, no&nbsp;account.
         </IntermediateCard>
       </XStack>
     </ContainerLarge>
@@ -82,13 +82,7 @@ const IntermediateCard = ({
   return (
     <XStack overflow="hidden" flex={1} gap="5" px="5" py="4" minHeight={80}>
       <YStack flex={1} gap="2">
-        <H4
-          opacity={0.5}
-          fontFamily="silkscreen"
-          color="color11"
-          className="text-glow"
-          size="2"
-        >
+        <H4 opacity={0.5} color="color11" className="text-glow" size="2">
           {title}
         </H4>
         <Paragraph mb={-5} color="color12" opacity={0.7} size="3">

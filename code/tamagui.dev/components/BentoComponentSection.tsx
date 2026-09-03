@@ -68,7 +68,6 @@ export const ComponentSection = () => {
                   <ContainerLarge>
                     <YStack py="4" px="3" position="relative">
                       <H3
-                        fontFamily="mono"
                         letterSpacing={3}
                         textTransform="uppercase"
                         color="color10"

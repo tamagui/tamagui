@@ -5,42 +5,29 @@ import {
   Showcase,
   ShowcaseChildWrapper as Wrapper,
 } from '~/components/bento-showcase/_Showcase'
-import {
-  type BentoShowcaseContext,
-  BentoShowcaseProvider,
-} from '~/components/bento-showcase/BentoProvider'
 
-export function avatars({ isProUser, showAppropriateModal }: BentoShowcaseContext) {
+export function avatars() {
   return (
-    <BentoShowcaseProvider
-      isProUser={isProUser}
-      showAppropriateModal={showAppropriateModal}
+    <YStack
+      paddingBottom="2 gtLg:0"
+      gap="12"
+      paddingTop="2 gtLg:0"
+      paddingRight="2 gtLg:0"
+      paddingLeft="2 gtLg:0"
     >
-      <YStack
-        paddingBottom="2 gtLg:0"
-        gap="12"
-        paddingTop="2 gtLg:0"
-        paddingRight="2 gtLg:0"
-        paddingLeft="2 gtLg:0"
+      <Showcase fileName={AnAvatars.AvatarsTooltip.fileName} title="Hoverable Avatars">
+        <Wrapper>
+          <AnAvatars.AvatarsTooltip />
+        </Wrapper>
+      </Showcase>
+      <Showcase
+        fileName={AnAvatars.AvatarsTooltipFancy.fileName}
+        title="Fancy Hoverable Avatars"
       >
-        <Showcase
-          unlock
-          fileName={AnAvatars.AvatarsTooltip.fileName}
-          title="Hoverable Avatars"
-        >
-          <Wrapper>
-            <AnAvatars.AvatarsTooltip />
-          </Wrapper>
-        </Showcase>
-        <Showcase
-          fileName={AnAvatars.AvatarsTooltipFancy.fileName}
-          title="Fancy Hoverable Avatars"
-        >
-          <Wrapper>
-            <AnAvatars.AvatarsTooltipFancy />
-          </Wrapper>
-        </Showcase>
-      </YStack>
-    </BentoShowcaseProvider>
+        <Wrapper>
+          <AnAvatars.AvatarsTooltipFancy />
+        </Wrapper>
+      </Showcase>
+    </YStack>
   )
 }

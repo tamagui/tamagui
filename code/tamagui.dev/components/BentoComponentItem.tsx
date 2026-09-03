@@ -87,11 +87,11 @@ export function ComponentItem({
         </YStack>
 
         <YStack flex={1} flexBasis="auto" p="4" position="relative">
-          <H4 fontFamily="mono" color="color12" size="5">
+          <H4 color="color12" size="5">
             {name}
           </H4>
 
-          <H5 opacity={0} fontFamily="mono" color="color10" letterSpacing={1} size="1">
+          <H5 opacity={0} color="color10" letterSpacing={1} size="1">
             {numberOfComponents} components
           </H5>
 

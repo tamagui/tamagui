@@ -5,36 +5,27 @@ import {
   Showcase,
   ShowcaseChildWrapper as Wrapper,
 } from '~/components/bento-showcase/_Showcase'
-import {
-  type BentoShowcaseContext,
-  BentoShowcaseProvider,
-} from '~/components/bento-showcase/BentoProvider'
 
-export function slide({ isProUser, showAppropriateModal }: BentoShowcaseContext) {
+export function slide() {
   return (
-    <BentoShowcaseProvider
-      isProUser={isProUser}
-      showAppropriateModal={showAppropriateModal}
+    <YStack
+      paddingBottom="2 gtLg:0"
+      gap="12"
+      paddingTop="2 gtLg:0"
+      paddingRight="2 gtLg:0"
+      paddingLeft="2 gtLg:0"
     >
-      <YStack
-        paddingBottom="2 gtLg:0"
-        gap="12"
-        paddingTop="2 gtLg:0"
-        paddingRight="2 gtLg:0"
-        paddingLeft="2 gtLg:0"
-      >
-        <Showcase unlock fileName={Slide.SlideInDemo.fileName} title="Slide In">
-          <Wrapper>
-            <Slide.SlideInDemo />
-          </Wrapper>
-        </Showcase>
-        <Showcase fileName={Slide.SlideOutDemo.fileName} title="Slide Out">
-          <Wrapper>
-            <Slide.SlideOutDemo />
-          </Wrapper>
-        </Showcase>
-      </YStack>
-    </BentoShowcaseProvider>
+      <Showcase fileName={Slide.SlideInDemo.fileName} title="Slide In">
+        <Wrapper>
+          <Slide.SlideInDemo />
+        </Wrapper>
+      </Showcase>
+      <Showcase fileName={Slide.SlideOutDemo.fileName} title="Slide Out">
+        <Wrapper>
+          <Slide.SlideOutDemo />
+        </Wrapper>
+      </Showcase>
+    </YStack>
   )
 }
 

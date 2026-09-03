@@ -7,7 +7,6 @@ import { EnsureFlexed, Paragraph, View, XStack, YStack } from 'tamagui'
 import type { Href } from 'one'
 import { Container } from '~/components/Containers'
 import { Link } from '~/components/Link'
-import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
 import { DocsMenuContents } from './DocsMenuContents'
 import { useDocsMenu } from './useDocsMenu'
 
@@ -22,9 +21,6 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
   const pageContents = React.useMemo(() => {
     return (
       <>
-        {/* capture all docs pages */}
-        <ThemeNameEffect colorKey="color1" />
-
         <YStack render="article">
           <Container position="relative">{children}</Container>
 

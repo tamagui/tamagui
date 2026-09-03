@@ -24,18 +24,12 @@ declare module 'one' {
         | `/(site)/bento`
         | `/(site)/bento/(home)`
         | `/(site)/blog`
-        | `/(site)/chat`
-        | `/(site)/community`
         | `/(site)/dpa`
         | `/(site)/draft`
         | `/(site)/login`
-        | `/(site)/payment-finished`
         | `/(site)/pop`
         | `/(site)/pop/accept-invite`
         | `/(site)/privacy`
-        | `/(site)/pro-license`
-        | `/(site)/pro-policy`
-        | `/(site)/pro/enable-v2-renewal`
         | `/(site)/tailwind`
         | `/(site)/takeout`
         | `/(site)/theme`
@@ -44,33 +38,18 @@ declare module 'one' {
         | `/(unstyled)`
         | `/_sitemap`
         | `/account`
-        | `/admin`
-        | `/admin/user`
         | `/auth`
         | `/bento`
         | `/bento/(home)`
         | `/blog`
-        | `/chat`
-        | `/community`
         | `/dpa`
         | `/draft`
-        | `/invoice`
         | `/login`
-        | `/payment-finished`
         | `/pop`
         | `/pop/accept-invite`
         | `/privacy`
-        | `/pro-license`
-        | `/pro-policy`
-        | `/pro/enable-v2-renewal`
-        | `/reproductions/motion-bug`
-        | `/reproductions/motion-bug/`
-        | `/responsive-demo`
-        | `/sandbox`
-        | `/sandbox2`
         | `/tailwind`
         | `/takeout`
-        | `/test`
         | `/theme`
         | `/theme/`
       DynamicRoutes:

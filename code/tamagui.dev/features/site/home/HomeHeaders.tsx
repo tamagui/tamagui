@@ -1,7 +1,6 @@
 import { H1, H2, H3, styled } from 'tamagui'
 
 export const HomeH1 = styled(H1, {
-  fontFamily: 'mono',
   mb: '2',
   color: 'color11',
   fontSize: 'gtSm:10',
@@ -26,7 +25,6 @@ export const HomeH2 = styled(H2, {
 
 export const HomeH3 = styled(H3, {
   className: 'word-break-keep-all',
-  fontFamily: 'mono',
   size: '8',
   text: 'center',
   color: 'color10 sm:color',
