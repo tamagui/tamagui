@@ -46,6 +46,7 @@ Owner session: Fable (r16625). Supersedes the execution state in
 | types | v3 typechecks 1.3-1.8x faster than v2; definition regression fixed | no completion-quality probe for object styles (keys, values, variant props) |
 | native runtime | native-registry Detox suite green in CI | not exercised on a fresh beta in a real app since 653.1 |
 | main sync | merge-base 2026-08-21 | 26 main commits (sheet keyboard, native media driver, ci) not in v3-beta |
+| portal teleport | teleport is opt-in behind `getPortal().type === 'teleport'`; the gorhom root host is back to `shouldAddRootHost = true` | two hosts named `root` register under teleport and the last one wins; when the unstyled gorhom host wins, a teleported Sheet lays out at zero height with its overlay still eating touches. See the 2026-09-03 log entry |
 
 ## Status log
 
@@ -181,6 +182,30 @@ Owner session: Fable (r16625). Supersedes the execution state in
   `outlineStyle` Fabric failure. Team-machine already carries 917.1
   (`git pull && cd gui && bun install && bun run sync:gpui`). Main-side
   `release.yml` docs-tolerant beta selection still waits for an explicit go.
+- 2026-09-03 (portal teleport root host, closed as deferred): the source change
+  from `92b62eac58` has now been reverted twice (`a756be9a5f`, `a4c49e8c3c`)
+  for the same reason, so `PortalTeleportRootHost.native.test.tsx` was deleted
+  on `v3/tailwind-compose-finish`. It was the last survivor of that commit and
+  the only thing keeping `components-test#test:native` red, and it asserted a
+  skip that is not coming back: dropping the gorhom root `PortalHost` leaves
+  the Android view hierarchy never settling and Detox hangs. Detox on a real
+  device beats the teleport case, which is opt-in.
+
+  **The bug it was written for is still real and still unfixed.** Under
+  teleport, `PortalProviderComponent` renders `<PortalHost name="root">`
+  (`GorhomPortal.tsx:268`), and `PortalHost` delegates to `NativePortalHost`
+  when `portalState.type === 'teleport'` (`GorhomPortal.tsx:310`). That whole
+  subtree is then wrapped in `<NativePortalProvider>` (`GorhomPortal.tsx:275`),
+  which registers its own absolute-fill `root` host. So two hosts share the
+  name `root` in one teleport registry and the last registration wins.
+  `Portal.native.tsx:36` sends content to `hostName="root"`, so when the
+  unstyled gorhom host wins, a teleported Sheet lays out at zero height while
+  its overlay still eats touches.
+
+  The fix has to make registration order deterministic rather than delete one
+  of the hosts, which is what the two reverts were. Out of scope for this
+  branch, and not a beta blocker while teleport stays opt-in behind
+  `getPortal().type === 'teleport'`.
 
 ## Plan
 
