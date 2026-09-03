@@ -59,7 +59,7 @@ function Row({ name, size }: { name: string; size?: (typeof CONTROL_SIZES)[numbe
         </Select.Trigger>
         <Select.Content>
           <Select.Viewport>
-            <Select.Item index={0} value="one">
+            <Select.Item value="one">
               <Select.ItemText>one</Select.ItemText>
             </Select.Item>
           </Select.Viewport>
