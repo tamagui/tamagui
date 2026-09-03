@@ -52,6 +52,7 @@
     "access": "public"
   },
   "scripts": {
+    "audit:coverage": "bun scripts/audit-coverage.ts",
     "build": "tamagui-build --exclude __tests__",
     "watch": "tamagui-build --exclude __tests__ --watch",
     "clean": "tamagui-build clean",
