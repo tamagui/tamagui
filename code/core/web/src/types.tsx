@@ -3020,6 +3020,10 @@ export type GetStyleState = {
   tokenProvenance?: Record<string, string>
   // Resolved animation driver (respects animatedBy prop)
   animationDriver?: AnimationDriver | null
+  // className-resolved non-style-key props (e.g. ring, ringColor from
+  // "ring-2 ring-blue-500"). Collected during the className walk so
+  // .resolve() can see them alongside regular props.
+  classNameResolvedProps?: Record<string, any>
 }
 
 export type StyleResolver<Response = PropMappedValue> = (

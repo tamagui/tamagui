@@ -46,6 +46,104 @@ describe('claimed candidates resolve to native style values', () => {
     expect(rotate).toBe('45deg')
   })
 
+  test('negative rotate zero remains a native-valid angle', () => {
+    expect(
+      styleOf(splitTailwindStyles(View, { className: '-rotate-0' })).transform
+    ).toEqual([{ rotate: '-0deg' }])
+  })
+
+  test('transform reset utilities emit equivalent native transform arrays', () => {
+    expect(
+      styleOf(splitTailwindStyles(View, { className: 'transform-none' })).transform
+    ).toEqual([])
+    expect(
+      styleOf(splitTailwindStyles(View, { className: 'translate-none' })).transform
+    ).toEqual([{ translateX: 0 }, { translateY: 0 }])
+    expect(
+      styleOf(splitTailwindStyles(View, { className: 'scale-none' })).transform
+    ).toEqual([{ scale: 1 }])
+    expect(
+      styleOf(splitTailwindStyles(View, { className: 'rotate-none' })).transform
+    ).toEqual([{ rotate: '0deg' }])
+  })
+
+  test('auto margins expand through native layout longhands', () => {
+    expect(styleOf(splitTailwindStyles(View, { className: 'mx-auto' }))).toMatchObject({
+      marginLeft: 'auto',
+      marginRight: 'auto',
+    })
+  })
+
+  test('native alignment values resolve without CSS-only aliases', () => {
+    expect(
+      styleOf(splitTailwindStyles(View, { className: 'content-evenly' }))
+    ).toMatchObject({
+      alignContent: 'space-evenly',
+    })
+    expect(
+      styleOf(splitTailwindStyles(View, { className: 'self-baseline' }))
+    ).toMatchObject({
+      alignSelf: 'baseline',
+    })
+  })
+
+  test('representable text shadow presets render with order-independent color', () => {
+    for (const className of [
+      'text-shadow-[red] text-shadow-xs',
+      'text-shadow-xs text-shadow-[red]',
+    ]) {
+      expect(styleOf(splitTailwindStyles(Text, { className }))).toMatchObject({
+        textShadowOffset: { width: 0, height: 1 },
+        textShadowRadius: 1,
+        textShadowColor: 'red',
+      })
+    }
+    expect(
+      styleOf(splitTailwindStyles(Text, { className: 'text-shadow-none' }))
+    ).toMatchObject({
+      textShadowOffset: { width: 0, height: 0 },
+      textShadowRadius: 0,
+      textShadowColor: 'transparent',
+    })
+    const gated = styleOf(
+      splitTailwindStyles(
+        Text,
+        { className: 'hover:text-shadow-xs' },
+        {
+          componentState: { hover: true },
+        }
+      )
+    )
+    expect(gated.textShadowOffset).toBeUndefined()
+    expect(gated.textShadowRadius).toBeUndefined()
+    expect(gated.textShadowColor).toBeUndefined()
+  })
+
+  test('inset ring and shadow utilities render as native inset box shadows', () => {
+    for (const className of [
+      'inset-ring-[red] inset-ring-2 inset-shadow-xs',
+      'inset-shadow-xs inset-ring-2 inset-ring-[red]',
+    ]) {
+      expect(styleOf(splitTailwindStyles(View, { className })).boxShadow).toEqual([
+        {
+          inset: true,
+          offsetX: 0,
+          offsetY: 1,
+          blurRadius: 1,
+          color: 'rgb(0 0 0 / 0.05)',
+        },
+        {
+          inset: true,
+          offsetX: 0,
+          offsetY: 0,
+          blurRadius: 0,
+          spreadDistance: 2,
+          color: 'red',
+        },
+      ])
+    }
+  })
+
   test('gradient classes resolve to a native backgroundImage string', () => {
     const styles = splitTailwindStyles(View, {
       className: 'bg-linear-to-r from-[red] to-[blue]',
@@ -82,12 +180,11 @@ describe('claimed candidates resolve to native style values', () => {
       className: 'outline-2 outline-solid outline-[red] outline-offset-2',
     })
     const space = getConfig().tokensParsed.space
-    const expectedWidth = space['2'].val
 
-    expect(styleOf(styles).outlineWidth).toBe(expectedWidth)
+    expect(styleOf(styles).outlineWidth).toBe(space['2'].val)
     expect(styleOf(styles).outlineStyle).toBe('solid')
     expect(styleOf(styles).outlineColor).toBe('red')
-    expect(styleOf(styles).outlineOffset).toBe(expectedWidth)
+    expect(styleOf(styles).outlineOffset).toBe(space['2'].val)
   })
 
   test('inset fractions become percentages', () => {
@@ -95,6 +192,32 @@ describe('claimed candidates resolve to native style values', () => {
 
     expect(styleOf(styles).top).toBe('50%')
     expect(styleOf(styles).left).toBe('50%')
+  })
+
+  test('negative position fractions and zero preserve their geometry', () => {
+    const styles = splitTailwindStyles(View, {
+      className: '-left-full -top-1/2 -m-0',
+    })
+
+    expect(styleOf(styles)).toMatchObject({
+      left: '-100%',
+      top: '-50%',
+      marginTop: 0,
+      marginRight: 0,
+      marginBottom: 0,
+      marginLeft: 0,
+    })
+  })
+
+  test('translate fractions preserve percentage geometry on native', () => {
+    const styles = splitTailwindStyles(View, {
+      className: '-translate-x-1/2 translate-y-full',
+    })
+
+    expect(styleOf(styles).transform).toEqual([
+      { translateX: '-50%' },
+      { translateY: '100%' },
+    ])
   })
 
   test('a px arbitrary becomes a number, which is what react native accepts', () => {
@@ -215,6 +338,63 @@ describe('claimed candidates resolve to native style values', () => {
     expect(styleOf(styles).color).toBe('#fff')
     expect(styleOf(styles).textAlign).toBeUndefined()
   })
+
+  test('decoration color and style resolve to native text styles', () => {
+    const styles = splitTailwindStyles(Text, {
+      className: 'underline decoration-dashed decoration-[red]',
+    })
+
+    expect(styleOf(styles)).toMatchObject({
+      textDecorationLine: 'underline',
+      textDecorationStyle: 'dashed',
+      textDecorationColor: 'red',
+    })
+  })
+
+  test('box sizing resolves to the React Native 0.86 style values', () => {
+    expect(styleOf(splitTailwindStyles(View, { className: 'box-border' }))).toMatchObject(
+      { boxSizing: 'border-box' }
+    )
+    expect(
+      styleOf(splitTailwindStyles(View, { className: 'box-content' }))
+    ).toMatchObject({ boxSizing: 'content-box' })
+  })
+
+  test('negative z-index and hidden outline resolve to native longhands', () => {
+    const styles = splitTailwindStyles(View, {
+      className: '-z-20 outline-hidden',
+    })
+
+    expect(styleOf(styles)).toMatchObject({
+      zIndex: -20,
+      outlineWidth: 2,
+      outlineStyle: 'solid',
+      outlineColor: 'transparent',
+      outlineOffset: 2,
+    })
+  })
+
+  test.each([
+    ['leading-0.5', 2],
+    ['leading-4', 16],
+    ['leading-96', 384],
+  ])('%s uses Tailwind spacing points', (className, expected) => {
+    expect(styleOf(splitTailwindStyles(Text, { className })).lineHeight).toBe(expected)
+  })
+
+  test('fractional flex shorthand resolves to native flex longhands', () => {
+    expect(styleOf(splitTailwindStyles(View, { className: 'flex-1/2' }))).toMatchObject({
+      flexGrow: 1,
+      flexShrink: 1,
+      flexBasis: '50%',
+    })
+  })
+
+  test('bg-none clears the native processed background image list', () => {
+    expect(styleOf(splitTailwindStyles(View, { className: 'bg-none' }))).toMatchObject({
+      experimental_backgroundImage: [],
+    })
+  })
 })
 
 // same rule as web: a restated shorthand applies at its authored position, so a
@@ -303,6 +483,31 @@ describe('web-only candidates', () => {
     expect(getTailwindClassPlan('grid-cols-3', getConfig())).toBeNull()
     expect(
       splitTailwindStyles(View, { className: 'grid-cols-3' }).viewProps.className
+    ).toBeUndefined()
+  })
+
+  test.each([
+    'grid',
+    'overflow-x-hidden',
+    'overflow-y-scroll',
+    'truncate',
+    'text-clip',
+    'object-cover',
+    'w-screen',
+    'h-fit',
+    'block',
+    'inline-flex',
+    'fixed',
+    'sticky',
+    'overflow-auto',
+    'order-3',
+    'order-first',
+    'visible',
+    'cursor-wait',
+  ])('%s is explicitly gated instead of silently no-oping', (candidate) => {
+    expect(getTailwindClassPlan(candidate, getConfig())).toBeNull()
+    expect(
+      splitTailwindStyles(View, { className: candidate }).viewProps.className
     ).toBeUndefined()
   })
 

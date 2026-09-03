@@ -127,6 +127,89 @@ describe('config-aware tokens (NATIVE) — class names follow runtime-owned valu
       style({ fontFamily: 'sans' }).fontFamily
     )
   })
+
+  test('outline and shadow use their prop-named token domains', () => {
+    expect(tokens.space['2']).toBe(8)
+    expect(tokens.outlineWidth['2']).toBe(2)
+    expect(style({ className: 'outline-2' }).outlineWidth).toBe(2)
+    expect(style({ className: 'shadow-sm' }).boxShadow).toEqual(
+      style({ boxShadow: 'sm' }).boxShadow
+    )
+    expect(style({ className: 'shadow-sm' }).boxShadow).toHaveLength(2)
+  })
+
+  test('named and none shadows compose with rings in either authored order on native', () => {
+    const shadowFirst = style({ className: 'shadow-sm ring-2 ring-[blue]' })
+    const ringFirst = style({ className: 'ring-2 ring-[blue] shadow-sm' })
+    const noShadow = style({ className: 'shadow-none ring-2 ring-[blue]' })
+
+    expect(shadowFirst.boxShadow).toEqual(ringFirst.boxShadow)
+    expect(shadowFirst.boxShadow).toHaveLength(3)
+    expect(shadowFirst.boxShadow[0]).toMatchObject({ spreadDistance: 2, color: 'blue' })
+    expect(noShadow.boxShadow).toEqual([
+      {
+        offsetX: 0,
+        offsetY: 0,
+        blurRadius: 0,
+        spreadDistance: 2,
+        color: 'blue',
+      },
+    ])
+  })
+
+  test('logical layout candidates reach the rendered native style', () => {
+    const fromClass = style({
+      className: 'block-4 inline-1/2 inset-s-4 -inset-be-2',
+    })
+
+    expect(fromClass.height).toBe(style({ blockSize: '4' }).height)
+    expect(fromClass.width).toBe('50%')
+    expect(fromClass.left).toBe(style({ insetInlineStart: '4' }).left)
+    expect(fromClass.bottom).toBe(style({ insetBlockEnd: '-2' }).bottom)
+  })
+
+  test('container sizes, zero radii, and transparent colors render on native', () => {
+    const fromClass = style({
+      className: 'w-2xl rounded-t-none bg-transparent',
+    })
+
+    expect(fromClass.width).toBe(672)
+    expect(fromClass.borderTopLeftRadius).toBe(0)
+    expect(fromClass.borderTopRightRadius).toBe(0)
+    expect(fromClass.backgroundColor).toBe('transparent')
+  })
+
+  test('3D transforms, origins, perspective, and order reach the rendered native style', () => {
+    const fromClass = style({
+      className: 'rotate-x-45 -rotate-y-12 skew-6 origin-top-right perspective-near',
+    })
+    const direct = style({
+      perspective: 'near',
+      rotateX: '45deg',
+      rotateY: '-12deg',
+      skewX: '6deg',
+      skewY: '6deg',
+      transformOrigin: '100% 0',
+    })
+
+    expect(fromClass).toEqual(direct)
+    expect(fromClass.transformOrigin).toBe('100% 0')
+    expect(fromClass.transform).toEqual([
+      { perspective: 300 },
+      { rotateX: '45deg' },
+      { rotateY: '-12deg' },
+      { skewX: '6deg' },
+      { skewY: '6deg' },
+    ])
+  })
+
+  test('3D transform matrix order is stable across class order on native', () => {
+    const rotateFirst = style({ className: 'rotate-x-45 skew-y-6' }).transform
+    const skewFirst = style({ className: 'skew-y-6 rotate-x-45' }).transform
+
+    expect(rotateFirst).toEqual(skewFirst)
+    expect(rotateFirst).toEqual([{ rotateX: '45deg' }, { skewY: '6deg' }])
+  })
 })
 
 describe('shared candidate semantics (NATIVE)', () => {

@@ -29,6 +29,8 @@ const textCases: [string, string, any][] = [
   ['underline', 'textDecorationLine', 'underline'],
   ['line-through', 'textDecorationLine', 'line-through'],
   ['no-underline', 'textDecorationLine', 'none'],
+  ['decoration-dashed', 'textDecorationStyle', 'dashed'],
+  ['decoration-red-500', 'textDecorationColor', 'var(--c-color-red-500)'],
 ]
 
 const viewCases: [string, string, any][] = [
@@ -38,6 +40,9 @@ const viewCases: [string, string, any][] = [
   ['sticky', 'position', 'sticky'],
   ['pointer-events-none', 'pointerEvents', 'none'],
   ['pointer-events-auto', 'pointerEvents', 'auto'],
+  ['box-border', 'boxSizing', 'border-box'],
+  ['box-content', 'boxSizing', 'content-box'],
+  ['bg-none', 'backgroundImage', 'none'],
 ]
 
 describe('tailwind standard utilities', () => {
@@ -62,6 +67,24 @@ describe('tailwind standard utilities', () => {
     const rules = (styles.rulesToInsert[styles.classNames.fontWeight]?.[4] ?? []).join('')
     expect(rules).toContain(':hover')
     expect(rules).toContain('700')
+  })
+
+  test('filter utilities compose in Tailwind order', () => {
+    const rule = ruleFor(View, 'sepia-50 brightness-105 blur-sm contrast-125', 'filter')
+
+    expect(rule[StyleObjectValue]).toBe(
+      'blur(8px) brightness(105%) contrast(125%) sepia(50%)'
+    )
+  })
+
+  test('drop-shadow utilities compose geometry and color in filter order', () => {
+    for (const className of [
+      'drop-shadow-[red] drop-shadow-md brightness-105',
+      'brightness-105 drop-shadow-md drop-shadow-[red]',
+    ]) {
+      const rule = ruleFor(View, className, 'filter')
+      expect(rule[StyleObjectValue]).toBe('brightness(105%) drop-shadow(0 3px 3px red)')
+    }
   })
 
   // font-* is fontFamily (font weights are separate, tested above)
@@ -133,6 +156,21 @@ describe('tailwind standard utilities', () => {
     expect(findRule(styles.rulesToInsert, 'top')).toBeNull()
   })
 
+  test('negative position fractions and zero preserve their geometry', () => {
+    const styles = splitTailwindStyles(View, {
+      className: '-left-full -top-1/2 -m-0',
+    } as any)
+    expect(findRule(styles.rulesToInsert, 'left')[StyleObjectValue]).toBe('-100%')
+    expect(findRule(styles.rulesToInsert, 'top')[StyleObjectValue]).toBe('-50%')
+    expect(findRule(styles.rulesToInsert, 'margin')[StyleObjectValue]).toBe('0px')
+  })
+
+  test('auto margins preserve Yoga-compatible auto values', () => {
+    const styles = splitTailwindStyles(View, { className: 'mx-auto' } as any)
+    expect(findRule(styles.rulesToInsert, 'marginLeft')[StyleObjectValue]).toBe('auto')
+    expect(findRule(styles.rulesToInsert, 'marginRight')[StyleObjectValue]).toBe('auto')
+  })
+
   test('logical spacing and gap axes emit browser-native logical properties', () => {
     const styles = splitTailwindStyles(View, {
       className: 'ps-4 pe-2 pbs-4 pbe-2 ms-2 me-4 mbs-2 mbe-4 gap-x-2 gap-y-4',
@@ -152,6 +190,51 @@ describe('tailwind standard utilities', () => {
     ]) {
       expect(findRule(styles.rulesToInsert, prop), prop).toBeTruthy()
     }
+  })
+
+  test('translate fractions and numeric leading emit Tailwind geometry', () => {
+    const translated = splitTailwindStyles(View, {
+      className: '-translate-x-1/2 translate-y-full',
+    } as any)
+    const xRules = translated.rulesToInsert[translated.classNames['--t-x']]?.[4] ?? []
+    const yRules = translated.rulesToInsert[translated.classNames['--t-y']]?.[4] ?? []
+    expect(xRules.join('')).toContain('--t-x:-50%')
+    expect(yRules.join('')).toContain('--t-y:100%')
+
+    const leading = ruleFor(Text, 'leading-4', 'lineHeight')
+    expect(leading[StyleObjectValue]).toBe('16px')
+  })
+
+  test('fractional flex shorthand emits all three CSS flex longhands', () => {
+    const styles = splitTailwindStyles(View, { className: 'flex-1/2' } as any)
+    expect(findRule(styles.rulesToInsert, 'flexGrow')[StyleObjectValue]).toBe('1')
+    expect(findRule(styles.rulesToInsert, 'flexShrink')[StyleObjectValue]).toBe('1')
+    expect(findRule(styles.rulesToInsert, 'flexBasis')[StyleObjectValue]).toBe('50%')
+  })
+
+  test('representable text shadow presets render with order-independent color', () => {
+    for (const className of [
+      'text-shadow-red-500 text-shadow-xs',
+      'text-shadow-xs text-shadow-red-500',
+    ]) {
+      const styles = splitTailwindStyles(Text, { className } as any)
+      const rules = (Object.values(styles.rulesToInsert) as any[])
+        .flatMap((rule) => rule[4] || [])
+        .join('')
+      expect(rules).toContain('text-shadow:')
+      expect(rules).toContain('red-500')
+      expect(rules).toContain('0px 1px 1px')
+    }
+  })
+
+  test('inset ring and shadow utilities compose in Tailwind order', () => {
+    const styles = splitTailwindStyles(View, {
+      className: 'inset-ring-[red] inset-ring-2 inset-shadow-xs',
+    } as any)
+    const rule = findRule(styles.rulesToInsert, 'boxShadow')
+    expect(rule[StyleObjectValue]).toBe(
+      'inset 0 1px 1px rgb(0 0 0 / 0.05), inset 0 0 0 2px red'
+    )
   })
 
   test('logical border sides emit browser-native logical properties', () => {

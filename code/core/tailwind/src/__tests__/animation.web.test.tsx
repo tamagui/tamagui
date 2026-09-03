@@ -28,6 +28,20 @@ function axisRuleText(className: string, axis: string): string {
 }
 
 describe('tailwind transform utilities', () => {
+  test('transform reset utilities emit equivalent web transform values', () => {
+    expect(transformRule('transform-none')[StyleObjectValue]).toBe('none')
+    expect(axisRuleText('translate-none', '--t-x')).toContain('--t-x:0px')
+    expect(axisRuleText('translate-none', '--t-y')).toContain('--t-y:0px')
+    expect(axisRuleText('scale-none', '--t-scale-x')).toContain('--t-scale-x:1')
+    expect(axisRuleText('scale-none', '--t-scale-y')).toContain('--t-scale-y:1')
+    expect(
+      findRule(
+        splitTailwindStyles(View, { className: 'rotate-none' }).rulesToInsert,
+        'rotate'
+      )[StyleObjectValue]
+    ).toBe('0deg')
+  })
+
   test('translate-y-[10px] → --t-y axis program', () => {
     expect(axisRuleText('translate-y-[10px]', '--t-y')).toContain('--t-y:10px')
   })

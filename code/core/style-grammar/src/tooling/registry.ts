@@ -3,7 +3,7 @@ import { modifierAliases } from '../runtime/stateModifiers'
 
 export { modifierAliases }
 
-export type TokenCategory =
+export type StandardTokenCategory =
   | 'space'
   | 'size'
   | 'radius'
@@ -15,25 +15,35 @@ export type TokenCategory =
   | 'lineHeight'
   | 'letterSpacing'
 
+export type TokenCategory = StandardTokenCategory | (string & {})
+
 export type Convenience =
   | 'alignment-alias'
+  | 'angle'
   | 'bare-border'
   | 'flex-bundle'
   | 'font-generic'
   | 'integer'
   | 'percentage'
   | 'sizing-keyword'
+  | 'zero'
 
 export interface GrammarEntry {
   prop: string
   prefix: string
   tokenCategory?: TokenCategory
   conveniences?: readonly Convenience[]
+  convert?: boolean
 }
 
 const grammarEntrySpecs = [
   { prop: 'backgroundColor', prefix: 'bg' },
-  { prop: 'width', prefix: 'w', conveniences: ['sizing-keyword'] },
+  {
+    prop: 'width',
+    prefix: 'w',
+    tokenCategory: 'width',
+    conveniences: ['sizing-keyword'],
+  },
   {
     prop: 'height',
     prefix: 'h',
@@ -42,11 +52,13 @@ const grammarEntrySpecs = [
   {
     prop: 'minWidth',
     prefix: 'min-w',
+    tokenCategory: 'minWidth',
     conveniences: ['sizing-keyword'],
   },
   {
     prop: 'maxWidth',
     prefix: 'max-w',
+    tokenCategory: 'maxWidth',
     conveniences: ['sizing-keyword'],
   },
   {
@@ -57,6 +69,27 @@ const grammarEntrySpecs = [
   {
     prop: 'maxHeight',
     prefix: 'max-h',
+    conveniences: ['sizing-keyword'],
+  },
+  { prop: 'blockSize', prefix: 'block', conveniences: ['sizing-keyword'] },
+  { prop: 'minBlockSize', prefix: 'min-block', conveniences: ['sizing-keyword'] },
+  { prop: 'maxBlockSize', prefix: 'max-block', conveniences: ['sizing-keyword'] },
+  {
+    prop: 'inlineSize',
+    prefix: 'inline',
+    tokenCategory: 'inlineSize',
+    conveniences: ['sizing-keyword'],
+  },
+  {
+    prop: 'minInlineSize',
+    prefix: 'min-inline',
+    tokenCategory: 'minInlineSize',
+    conveniences: ['sizing-keyword'],
+  },
+  {
+    prop: 'maxInlineSize',
+    prefix: 'max-inline',
+    tokenCategory: 'maxInlineSize',
     conveniences: ['sizing-keyword'],
   },
   { prop: 'padding', prefix: 'p' },
@@ -112,10 +145,10 @@ const grammarEntrySpecs = [
   { prop: 'borderEndStartRadius', prefix: 'rounded-es' },
   { prop: 'borderEndEndRadius', prefix: 'rounded-ee' },
   { prop: 'borderStyle', prefix: 'border' },
-  { prop: 'outlineWidth', prefix: 'outline' },
+  { prop: 'outlineWidth', prefix: 'outline', tokenCategory: 'outlineWidth' },
   { prop: 'outlineColor', prefix: 'outline' },
   { prop: 'outlineStyle', prefix: 'outline' },
-  { prop: 'outlineOffset', prefix: 'outline-offset' },
+  { prop: 'outlineOffset', prefix: 'outline-offset', tokenCategory: 'outlineOffset' },
   { prop: 'color', prefix: 'color' },
   { prop: 'fontSize', prefix: 'text' },
   // bound (2026-07-31 adjudication): the runtime resolves fontWeight through
@@ -133,6 +166,9 @@ const grammarEntrySpecs = [
   { prop: 'textAlign', prefix: 'text' },
   { prop: 'textTransform', prefix: '' },
   { prop: 'textDecorationLine', prefix: '' },
+  { prop: 'textDecorationColor', prefix: 'decoration' },
+  { prop: 'textDecorationStyle', prefix: '' },
+  { prop: 'boxSizing', prefix: '' },
   { prop: 'display', prefix: '' },
   { prop: 'position', prefix: '' },
   { prop: 'top', prefix: 'top' },
@@ -142,33 +178,94 @@ const grammarEntrySpecs = [
   { prop: 'inset', prefix: 'inset' },
   { prop: 'insetInlineStart', prefix: 'start' },
   { prop: 'insetInlineEnd', prefix: 'end' },
+  { prop: 'insetInlineStart', prefix: 'inset-s' },
+  { prop: 'insetInlineEnd', prefix: 'inset-e' },
+  { prop: 'insetBlockStart', prefix: 'inset-bs' },
+  { prop: 'insetBlockEnd', prefix: 'inset-be' },
   { prop: 'zIndex', prefix: 'z', conveniences: ['integer'] },
+  { prop: 'order', prefix: 'order', conveniences: ['integer'] },
   { prop: 'overflow', prefix: '' },
   { prop: 'flex', prefix: 'flex', conveniences: ['flex-bundle'] },
   { prop: 'flexDirection', prefix: 'flex' },
   { prop: 'flexWrap', prefix: 'flex' },
   { prop: 'flexGrow', prefix: 'grow' },
   { prop: 'flexShrink', prefix: 'shrink' },
-  { prop: 'flexBasis', prefix: 'basis' },
+  {
+    prop: 'flexBasis',
+    prefix: 'basis',
+    tokenCategory: 'flexBasis',
+    conveniences: ['sizing-keyword'],
+  },
   { prop: 'alignItems', prefix: 'items', conveniences: ['alignment-alias'] },
   { prop: 'alignContent', prefix: 'content', conveniences: ['alignment-alias'] },
   { prop: 'alignSelf', prefix: 'self', conveniences: ['alignment-alias'] },
   { prop: 'justifyContent', prefix: 'justify', conveniences: ['alignment-alias'] },
   { prop: 'opacity', prefix: 'opacity', conveniences: ['percentage'] },
-  { prop: 'boxShadow', prefix: 'shadow' },
+  { prop: 'boxShadow', prefix: 'shadow', tokenCategory: 'boxShadow' },
   { prop: 'pointerEvents', prefix: 'pointer-events' },
-  { prop: 'rotate', prefix: 'rotate' },
+  { prop: 'rotate', prefix: 'rotate', conveniences: ['angle'] },
+  { prop: 'rotateX', prefix: 'rotate-x', conveniences: ['angle'] },
+  { prop: 'rotateY', prefix: 'rotate-y', conveniences: ['angle'] },
+  { prop: 'rotateZ', prefix: 'rotate-z', conveniences: ['angle'] },
+  { prop: 'skewX', prefix: 'skew', conveniences: ['angle'] },
+  { prop: 'skewX', prefix: 'skew-x', conveniences: ['angle'] },
+  { prop: 'skewY', prefix: 'skew-y', conveniences: ['angle'] },
+  { prop: 'transformOrigin', prefix: 'origin' },
+  {
+    prop: 'perspective',
+    prefix: 'perspective',
+    tokenCategory: 'perspective',
+    convert: false,
+  },
   { prop: 'scale', prefix: 'scale', conveniences: ['percentage'] },
   { prop: 'scaleX', prefix: 'scale-x', conveniences: ['percentage'] },
   { prop: 'scaleY', prefix: 'scale-y', conveniences: ['percentage'] },
-  { prop: 'x', prefix: 'translate-x' },
-  { prop: 'y', prefix: 'translate-y' },
+  {
+    prop: 'x',
+    prefix: 'translate-x',
+    tokenCategory: 'space',
+    conveniences: ['sizing-keyword'],
+  },
+  {
+    prop: 'y',
+    prefix: 'translate-y',
+    tokenCategory: 'space',
+    conveniences: ['sizing-keyword'],
+  },
   { prop: 'aspectRatio', prefix: 'aspect' },
   { prop: 'objectFit', prefix: 'object' },
+  { prop: 'cursor', prefix: 'cursor' },
+  { prop: 'overflowX', prefix: 'overflow-x' },
+  { prop: 'overflowY', prefix: 'overflow-y' },
+  { prop: 'numberOfLines', prefix: 'line-clamp', conveniences: ['integer'] },
+  { prop: 'textOverflow', prefix: '' },
+  { prop: 'userSelect', prefix: 'select' },
+  { prop: 'visibility', prefix: '' },
+  /**
+   * CSS Grid utilities. Web-only by default — filtered out on native because
+   * Yoga has no stable CSS Grid support (facebook/yoga#1865). Set the
+   * `TAMAGUI_CSS_GRID=1` env var to opt in on native with an experimental
+   * Yoga build.
+   */
+  { prop: 'gridTemplateColumns', prefix: 'grid-cols' },
+  { prop: 'gridColumn', prefix: 'col-span' },
+  { prop: 'gridColumnStart', prefix: 'col-start' },
+  { prop: 'gridColumnEnd', prefix: 'col-end' },
+  { prop: 'gridRow', prefix: 'row-span' },
+  { prop: 'gridRowStart', prefix: 'row-start' },
+  { prop: 'gridRowEnd', prefix: 'row-end' },
+  // text shadow props (RN: textShadowColor, textShadowRadius)
+  { prop: 'textShadowColor', prefix: 'text-shadow' },
+  { prop: 'textShadowRadius', prefix: 'text-shadow-blur' },
+  // misc layout
+  { prop: 'backfaceVisibility', prefix: '' },
+  { prop: 'isolation', prefix: '' },
 ] as const
 
 export const grammarEntries: readonly GrammarEntry[] = grammarEntrySpecs.map((entry) => {
-  const tokenCategory = getTokenCategoryName(propToTokenCategoryCode[entry.prop])
+  const tokenCategory =
+    (entry as GrammarEntry).tokenCategory ||
+    getTokenCategoryName(propToTokenCategoryCode[entry.prop])
   return tokenCategory ? { ...entry, tokenCategory } : entry
 })
 
@@ -229,6 +326,16 @@ export const standaloneValueProps: Readonly<
     'line-through': 'line-through',
     none: 'no-underline',
   },
+  textDecorationStyle: {
+    solid: 'decoration-solid',
+    double: 'decoration-double',
+    dotted: 'decoration-dotted',
+    dashed: 'decoration-dashed',
+  },
+  boxSizing: {
+    'border-box': 'box-border',
+    'content-box': 'box-content',
+  },
   fontStyle: {
     italic: 'italic',
     normal: 'not-italic',
@@ -258,6 +365,7 @@ export const standaloneValueProps: Readonly<
     'flex-end': 'content-end',
     'space-between': 'content-between',
     'space-around': 'content-around',
+    'space-evenly': 'content-evenly',
     stretch: 'content-stretch',
   },
   alignSelf: {
@@ -265,6 +373,7 @@ export const standaloneValueProps: Readonly<
     center: 'self-center',
     'flex-start': 'self-start',
     'flex-end': 'self-end',
+    baseline: 'self-baseline',
     stretch: 'self-stretch',
   },
   justifyContent: {
@@ -301,6 +410,91 @@ export const standaloneValueProps: Readonly<
     fill: 'object-fill',
     none: 'object-none',
     'scale-down': 'object-scale-down',
+  },
+  cursor: {
+    auto: 'cursor-auto',
+    default: 'cursor-default',
+    pointer: 'cursor-pointer',
+    wait: 'cursor-wait',
+    text: 'cursor-text',
+    move: 'cursor-move',
+    help: 'cursor-help',
+    'not-allowed': 'cursor-not-allowed',
+    none: 'cursor-none',
+    'context-menu': 'cursor-context-menu',
+    progress: 'cursor-progress',
+    cell: 'cursor-cell',
+    crosshair: 'cursor-crosshair',
+    'vertical-text': 'cursor-vertical-text',
+    alias: 'cursor-alias',
+    copy: 'cursor-copy',
+    'no-drop': 'cursor-no-drop',
+    grab: 'cursor-grab',
+    grabbing: 'cursor-grabbing',
+    'all-scroll': 'cursor-all-scroll',
+    'col-resize': 'cursor-col-resize',
+    'row-resize': 'cursor-row-resize',
+    'n-resize': 'cursor-n-resize',
+    'e-resize': 'cursor-e-resize',
+    's-resize': 'cursor-s-resize',
+    'w-resize': 'cursor-w-resize',
+    'ne-resize': 'cursor-ne-resize',
+    'nw-resize': 'cursor-nw-resize',
+    'se-resize': 'cursor-se-resize',
+    'sw-resize': 'cursor-sw-resize',
+    'ew-resize': 'cursor-ew-resize',
+    'ns-resize': 'cursor-ns-resize',
+    'nesw-resize': 'cursor-nesw-resize',
+    'nwse-resize': 'cursor-nwse-resize',
+    'zoom-in': 'cursor-zoom-in',
+    'zoom-out': 'cursor-zoom-out',
+  },
+  overflowX: {
+    hidden: 'overflow-x-hidden',
+    scroll: 'overflow-x-scroll',
+    auto: 'overflow-x-auto',
+    visible: 'overflow-x-visible',
+    clip: 'overflow-x-clip',
+  },
+  overflowY: {
+    hidden: 'overflow-y-hidden',
+    scroll: 'overflow-y-scroll',
+    auto: 'overflow-y-auto',
+    visible: 'overflow-y-visible',
+    clip: 'overflow-y-clip',
+  },
+  textOverflow: {
+    clip: 'text-clip',
+  },
+  userSelect: {
+    none: 'select-none',
+    text: 'select-text',
+    all: 'select-all',
+    auto: 'select-auto',
+  },
+  visibility: {
+    visible: 'visible',
+    hidden: 'invisible',
+    collapse: 'collapse',
+  },
+  backfaceVisibility: {
+    visible: 'backface-visible',
+    hidden: 'backface-hidden',
+  },
+  isolation: {
+    isolate: 'isolate',
+    auto: 'isolation-auto',
+  },
+  transformOrigin: {
+    '50% 50%': 'origin-center',
+    '50% 0': 'origin-top',
+    '100% 0': 'origin-top-right',
+    '100% 50%': 'origin-right',
+    '100% 100%': 'origin-bottom-right',
+    '50% 100%': 'origin-bottom',
+    '0 100%': 'origin-bottom-left',
+    '0 50%': 'origin-left',
+    '0 0': 'origin-top-left',
   },
 })
 
@@ -350,9 +544,33 @@ export const wholeClassUtilities: Readonly<
   'line-clamp-4': { numberOfLines: 4 },
   'line-clamp-5': { numberOfLines: 5 },
   'line-clamp-6': { numberOfLines: 6 },
+  'line-clamp-none': { numberOfLines: 0 },
+  'scale-none': { scale: 1 },
+  'rotate-none': { rotate: '0deg' },
+  'translate-none': { x: 0, y: 0 },
+  'transform-none': { transform: 'none' },
+  'order-first': { order: -9999 },
+  'order-last': { order: 9999 },
+  'order-none': { order: 0 },
+  truncate: { overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' },
+  'grid-cols-none': { gridTemplateColumns: 'none' },
+  'grid-cols-subgrid': { gridTemplateColumns: 'subgrid' },
+  'col-auto': { gridColumn: 'auto' },
+  'col-span-full': { gridColumn: '1 / -1' },
+  'row-auto': { gridRow: 'auto' },
+  'row-span-full': { gridRow: '1 / -1' },
   contents: { display: 'contents' },
   border: { borderWidth: 1 },
   outline: { outlineWidth: 1 },
+  'outline-hidden': {
+    outlineWidth: 2,
+    outlineStyle: 'solid',
+    outlineColor: 'transparent',
+    outlineOffset: 2,
+  },
+  shadow: { boxShadow: 'sm' },
+  'shadow-none': { boxShadow: 'none' },
+  'bg-none': { backgroundImage: 'none' },
   'border-t': { borderTopWidth: 1 },
   'border-r': { borderRightWidth: 1 },
   'border-b': { borderBottomWidth: 1 },

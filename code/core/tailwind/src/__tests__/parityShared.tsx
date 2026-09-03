@@ -62,6 +62,12 @@ const SAMPLE: Record<string, { comp: any; attr: string } | null> = {
   maxWidth: { comp: View, attr: 'maxWidth={200}' },
   minHeight: { comp: View, attr: 'minHeight={20}' },
   maxHeight: { comp: View, attr: 'maxHeight={200}' },
+  blockSize: { comp: View, attr: 'blockSize={100}' },
+  minBlockSize: { comp: View, attr: 'minBlockSize={20}' },
+  maxBlockSize: { comp: View, attr: 'maxBlockSize={200}' },
+  inlineSize: { comp: View, attr: 'inlineSize={100}' },
+  minInlineSize: { comp: View, attr: 'minInlineSize={20}' },
+  maxInlineSize: { comp: View, attr: 'maxInlineSize={200}' },
   padding: { comp: View, attr: 'padding={10}' },
   paddingTop: { comp: View, attr: 'paddingTop={10}' },
   paddingRight: { comp: View, attr: 'paddingRight={10}' },
@@ -129,6 +135,9 @@ const SAMPLE: Record<string, { comp: any; attr: string } | null> = {
   textAlign: { comp: Text, attr: 'textAlign="center"' },
   textTransform: null, // standalone
   textDecorationLine: null, // standalone
+  textDecorationColor: { comp: Text, attr: 'textDecorationColor="red"' },
+  textDecorationStyle: null, // standalone
+  boxSizing: null, // standalone
   display: null, // standalone
   position: null, // standalone
   top: { comp: View, attr: 'top={5}' },
@@ -138,7 +147,10 @@ const SAMPLE: Record<string, { comp: any; attr: string } | null> = {
   inset: { comp: View, attr: 'inset={5}' },
   insetInlineStart: { comp: View, attr: 'insetInlineStart={5}' },
   insetInlineEnd: { comp: View, attr: 'insetInlineEnd={5}' },
+  insetBlockStart: { comp: View, attr: 'insetBlockStart={5}' },
+  insetBlockEnd: { comp: View, attr: 'insetBlockEnd={5}' },
   zIndex: { comp: View, attr: 'zIndex={5}' },
+  order: { comp: View, attr: 'order={3}' },
   overflow: null, // standalone
   flex: { comp: View, attr: 'flex={1}' },
   flexDirection: null, // standalone
@@ -154,6 +166,13 @@ const SAMPLE: Record<string, { comp: any; attr: string } | null> = {
   boxShadow: { comp: View, attr: 'boxShadow="0 1px 2px red"' },
   pointerEvents: { comp: View, attr: 'pointerEvents="box-none"' },
   rotate: { comp: View, attr: 'rotate="10deg"' },
+  rotateX: { comp: View, attr: 'rotateX="10deg"' },
+  rotateY: { comp: View, attr: 'rotateY="10deg"' },
+  rotateZ: { comp: View, attr: 'rotateZ="10deg"' },
+  skewX: { comp: View, attr: 'skewX="10deg"' },
+  skewY: { comp: View, attr: 'skewY="10deg"' },
+  transformOrigin: { comp: View, attr: 'transformOrigin="100% 0"' },
+  perspective: { comp: View, attr: 'perspective={300}' },
   scale: { comp: View, attr: 'scale={0.95}' },
   scaleX: { comp: View, attr: 'scaleX={0.95}' },
   scaleY: { comp: View, attr: 'scaleY={0.95}' },
@@ -161,6 +180,50 @@ const SAMPLE: Record<string, { comp: any; attr: string } | null> = {
   y: { comp: View, attr: 'y={10}' },
   aspectRatio: { comp: View, attr: 'aspectRatio={1.5}' },
   objectFit: null, // standalone
+  cursor: null, // standalone
+  overflowX: null, // standalone, web-only
+  overflowY: null, // standalone, web-only
+  numberOfLines: { comp: Text, attr: 'numberOfLines={3}' },
+  textOverflow: null, // standalone, web-only
+  userSelect: null, // standalone
+  visibility: null, // standalone
+  gridTemplateColumns: { comp: View, attr: 'gridTemplateColumns="none"' },
+  gridColumn: { comp: View, attr: 'gridColumn="span 2 / span 2"' },
+  gridColumnStart: { comp: View, attr: 'gridColumnStart={2}' },
+  gridColumnEnd: { comp: View, attr: 'gridColumnEnd={3}' },
+  gridRow: { comp: View, attr: 'gridRow="span 2 / span 2"' },
+  gridRowStart: { comp: View, attr: 'gridRowStart={2}' },
+  gridRowEnd: { comp: View, attr: 'gridRowEnd={3}' },
+  textShadowColor: { comp: Text, attr: 'textShadowColor="red"' },
+  textShadowRadius: { comp: Text, attr: 'textShadowRadius={4}' },
+  backfaceVisibility: null, // standalone
+  isolation: null, // standalone
+}
+
+const nativeGatedProps = new Set([
+  'gridTemplateColumns',
+  'gridColumn',
+  'gridColumnStart',
+  'gridColumnEnd',
+  'gridRow',
+  'gridRowStart',
+  'gridRowEnd',
+  'objectFit',
+  'order',
+  'overflowX',
+  'overflowY',
+  'textOverflow',
+  'visibility',
+])
+
+function isNativeGatedStandalone(prop: string, value: string): boolean {
+  return (
+    nativeGatedProps.has(prop) ||
+    (prop === 'display' && ['block', 'inline', 'inline-flex', 'grid'].includes(value)) ||
+    (prop === 'position' && ['fixed', 'sticky'].includes(value)) ||
+    (prop === 'overflow' && value === 'auto') ||
+    (prop === 'cursor' && value !== 'auto' && value !== 'pointer')
+  )
 }
 
 export function runParityGate(label: string) {
@@ -199,7 +262,7 @@ export function runParityGate(label: string) {
       test(`${prop} has a defined parity sample`, () => {
         expect(prop in SAMPLE).toBe(true)
       })
-      if (!sample) continue
+      if (!sample || (label === 'native' && nativeGatedProps.has(prop))) continue
       test(`${prop}: ${sample.attr}`, () => {
         const tag = sample.comp === Text ? 'Text' : 'View'
         const cls = classOf(convert(`<${tag} ${sample.attr} />`))
@@ -214,6 +277,7 @@ export function runParityGate(label: string) {
   describe(`parity gate [${label}] — standaloneValueProps: class === source prop`, () => {
     for (const [prop, valueMap] of Object.entries(standaloneValueProps)) {
       for (const value of Object.keys(valueMap)) {
+        if (label === 'native' && isNativeGatedStandalone(prop, value)) continue
         test(`${prop}="${value}"`, () => {
           const Comp = /^(text|font)/.test(prop) ? Text : View
           const tag = Comp === Text ? 'Text' : 'View'
@@ -235,13 +299,8 @@ export function runParityGate(label: string) {
       'backgroundRepeat',
       'backgroundClip',
       'objectPosition',
-      'overflowX',
-      'overflowY',
-      'textDecorationColor',
       'borderHorizontalWidth',
       'borderVerticalWidth',
-      'userSelect',
-      'cursor',
     ]
     for (const prop of removed) {
       test(`${prop} not mapped`, () => {

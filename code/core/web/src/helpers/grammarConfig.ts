@@ -204,6 +204,8 @@ export function prepareConfigRevision(
     borderRadius: 8,
   }
   const propertyKind = (property: string) => propertyKinds[property] || 0
+  const tokenCategory = (property: string): RuntimeTokenCategory | undefined =>
+    config.tokensParsed[property] ? property : getTokenCategoryForProperty(property)
   // transition strings are re-normalized on every render of every animated
   // element; the result only depends on this revision's shorthands
   const normalizedTransitions = new Map<string, string>()
@@ -212,7 +214,7 @@ export function prepareConfigRevision(
     modifiers,
     mediaQueries,
     resolveCondition,
-    tokenCategory: getTokenCategoryForProperty,
+    tokenCategory,
     expandSafeArea: expandSafeAreaValue,
     safeAreaVariable: resolveSafeAreaVariable,
     parseFlatValue,
@@ -334,7 +336,7 @@ export function getConfigRevisionSnapshot(
     for (const key of Object.keys(themes[name] || {})) themeKeys.add(key)
   }
   sections.themeVariables.push(`v:${[...themeKeys].sort().join(',')}`)
-  for (const category of ['color', 'space', 'size', 'radius', 'zIndex']) {
+  for (const category of Object.keys(tokensParsed).sort()) {
     const tokens = tokensParsed[category]
     sections.tokens.push(
       `${category}:${tokens ? Object.keys(tokens).sort().join(',') : ''}`

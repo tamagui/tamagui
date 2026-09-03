@@ -17,6 +17,13 @@ import {
 const tokenNames: Record<TokenCategory, readonly string[]> = {
   space: ['0', '1', '2', '4', '-1', '0-5', '-0-5', 'spaceOnly'],
   size: ['0', '4', '10', 'sizeOnly'],
+  width: ['0', '4', '10', 'sizeOnly', '2xl'],
+  minWidth: ['0', '4', '10', 'sizeOnly', '2xl'],
+  maxWidth: ['0', '4', '10', 'sizeOnly', '2xl'],
+  inlineSize: ['0', '4', '10', 'sizeOnly', '2xl'],
+  minInlineSize: ['0', '4', '10', 'sizeOnly', '2xl'],
+  maxInlineSize: ['0', '4', '10', 'sizeOnly', '2xl'],
+  flexBasis: ['0', '4', '10', 'sizeOnly', '2xl'],
   radius: ['0', '4', '8', 'xl', 'radiusOnly'],
   zIndex: ['4', 'modal'],
   color: ['color5', 'red-9', 'colorOnly', 'white'],
@@ -28,6 +35,10 @@ const tokenNames: Record<TokenCategory, readonly string[]> = {
   fontWeight: ['4', 'strong', 'bothNamed'],
   lineHeight: ['4', '8', 'lineOnly'],
   letterSpacing: ['1', '4', 'letterOnly'],
+  outlineWidth: ['0', '1', '2', '4'],
+  outlineOffset: ['-1', '0', '1', '2', '4'],
+  boxShadow: ['sm', 'md'],
+  perspective: ['near'],
 }
 
 const config: GrammarConfigView = {
@@ -68,8 +79,15 @@ describe('candidate grammar', () => {
     ['border-bs-2', 'borderBlockStartWidth', '2'],
     ['border-be-color5', 'borderBlockEndColor', 'color5'],
     ['size-10', 'width', '10'],
+    ['w-2xl', 'width', '2xl'],
     ['inset-x-0', 'left', '0'],
     ['inset-y-4', 'top', '4'],
+    ['block-4', 'blockSize', '4'],
+    ['inline-1/2', 'inlineSize', '1/2'],
+    ['min-block-full', 'minBlockSize', 'full'],
+    ['max-inline-screen', 'maxInlineSize', 'screen'],
+    ['inset-s-4', 'insetInlineStart', '4'],
+    ['-inset-be-1', 'insetBlockEnd', '1'],
     ['border-color5', 'borderColor', 'color5'],
     ['outline-2', 'outlineWidth', '2'],
     ['outline-color5', 'outlineColor', 'color5'],
@@ -84,6 +102,12 @@ describe('candidate grammar', () => {
     ['leading-8', 'lineHeight', '8'],
     ['tracking-1', 'letterSpacing', '1'],
     ['z-4', 'zIndex', '4'],
+    ['order-3', 'order', '3'],
+    ['rotate-x-45', 'rotateX', '45'],
+    ['-rotate-y-45', 'rotateY', '45'],
+    ['skew-4', 'skewX', '4'],
+    ['skew-y-4', 'skewY', '4'],
+    ['perspective-near', 'perspective', 'near'],
     ['tablet:hover:p-4', 'padding', '4'],
   ])('%s is claimed as %s', (candidate, prop, rawValue) => {
     const parsed = parseCandidate(candidate, config)
@@ -96,7 +120,10 @@ describe('candidate grammar', () => {
     expect(classifyCandidate('rounded-color5', config).kind).toBe('passthrough')
     expect(classifyCandidate('unknown:p-4', config).kind).toBe('passthrough')
     expect(classifyCandidate('md:p-4', config).kind).toBe('passthrough')
-    expect(classifyCandidate('grid-cols-3', config).kind).toBe('passthrough')
+    expect(classifyCandidate('custom-widget', config).kind).toBe('passthrough')
+    expect(classifyCandidate('h-sm', config).kind).toBe('passthrough')
+    expect(classifyCandidate('block-sm', config).kind).toBe('passthrough')
+    expect(classifyCandidate('size-sm', config).kind).toBe('passthrough')
     for (const candidate of [
       'items-garbage',
       'justify-nonsense',
@@ -104,7 +131,7 @@ describe('candidate grammar', () => {
       'object-foo',
       'flex-garbage',
       'basis-garbage',
-      'shadow-sm',
+      'shadow-missing',
     ]) {
       expect(classifyCandidate(candidate, config).kind, candidate).toBe('passthrough')
     }
@@ -270,6 +297,13 @@ describe('candidate grammar', () => {
     expect(parseCandidate('inset-1/2', config)?.convenience).toBe('sizing-keyword')
     expect(parseCandidate('top-full', config)?.convenience).toBe('sizing-keyword')
     expect(parseCandidate('rotate-45', config)?.convenience).toBe('angle')
+    expect(parseCandidate('rotate-x-45', config)?.convenience).toBe('angle')
+    expect(parseCandidate('-skew-y-4', config)?.convenience).toBe('angle')
+    expect(parseCandidate('-order-3', config)?.convenience).toBe('integer')
+    expect(parseCandidate('order-first', config)?.properties).toEqual({ order: -9999 })
+    expect(parseCandidate('order-last', config)?.properties).toEqual({ order: 9999 })
+    expect(parseCandidate('order-none', config)?.properties).toEqual({ order: 0 })
+    expect(parseCandidate('-order-[17]', config)?.entry?.prop).toBe('order')
     expect(parseCandidate('flex-2', config)?.convenience).toBe('flex-bundle')
     expect(parseCandidate('basis-full', config)?.convenience).toBe('sizing-keyword')
     expect(parseCandidate('scale-x-50', config)?.convenience).toBe('percentage')
@@ -293,7 +327,21 @@ describe('candidate grammar', () => {
       outlineStyle: 'none',
     })
     expect(parseCandidate('-outline-offset-1', config)?.entry?.prop).toBe('outlineOffset')
-    expect(parseCandidate('outline-hidden', config)).toBeNull()
+    expect(parseCandidate('outline-hidden', config)?.properties).toEqual({
+      outlineWidth: 2,
+      outlineStyle: 'solid',
+      outlineColor: 'transparent',
+      outlineOffset: 2,
+    })
+    expect(parseCandidate('rounded-none', config)?.convenience).toBe('zero')
+    expect(parseCandidate('rounded-t-none', config)?.convenience).toBe('zero')
+    expect(parseCandidate('bg-transparent', config)?.entry?.prop).toBe('backgroundColor')
+    expect(parseCandidate('border-s-transparent', config)?.entry?.prop).toBe(
+      'borderInlineStartColor'
+    )
+    expect(parseCandidate('origin-top-right', config)?.properties).toEqual({
+      transformOrigin: '100% 0',
+    })
     expect(parseCandidate('border-s', config)?.properties).toEqual({
       borderInlineStartWidth: 1,
     })

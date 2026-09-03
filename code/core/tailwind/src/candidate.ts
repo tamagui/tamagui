@@ -6,7 +6,8 @@ import {
   type FrontendClassSink,
   type StyleFrontendConfig,
 } from '@tamagui/core/internal-runtime'
-import { noteBoxShadow, tryCompose } from './compose'
+import { noteBoxShadow, noteTailwindTransform, tryCompose } from './compose'
+import { composedResolver } from './composedResolver'
 import {
   borderSideSuffix,
   configRevisionSymbol,
@@ -75,7 +76,7 @@ function arbitraryValue(inner: string): number | string {
 function tailwindSizingValue(prop: string, value: string): string | null {
   if (value === 'full') return '100%'
   if (value === 'auto') return 'auto'
-  if (value === 'screen') return /[Hh]eight/.test(prop) ? '100vh' : '100vw'
+  if (value === 'screen') return /[Hh]eight|[Bb]lock/.test(prop) ? '100vh' : '100vw'
   if (value === 'min') return 'min-content'
   if (value === 'max') return 'max-content'
   if (value === 'fit') return 'fit-content'
@@ -111,6 +112,7 @@ function expansionProps(parsed: ParsedCandidate): readonly string[] | null {
   if (!prefix) return null
   if (prefix === 'size') return sizeUtilityProps
   if (prefix === 'translate') return ['x', 'y']
+  if (prefix === 'skew') return ['skewX', 'skewY']
   if (prefix === 'inset-x' || prefix === 'inset-y') {
     return insetAxisProps[prefix.slice('inset-'.length)]
   }
@@ -146,11 +148,60 @@ function tailwindClassToFlatProp(
   const category = parsed.entry.tokenCategory
   let value: any = parsed.rawValue
 
-  if (prop === 'rotate' && parsed.valueKind === 'convenience') {
+  if (parsed.negative && value === '0' && parsed.convenience !== 'angle') {
+    return { key: prop, value: 0 }
+  }
+
+  if (parsed.convenience === 'zero') {
+    return { key: prop, value: 0 }
+  }
+
+  if (parsed.convenience === 'angle') {
     return {
-      key: 'rotate',
+      key: prop,
       value: `${parsed.negative ? '-' : ''}${value}deg`,
     }
+  }
+
+  // Tailwind's translate fractions and `full` are percentages, not configured
+  // spacing tokens. RN accepts percentage translate values, so preserve the
+  // exact CSS geometry for both axes and for negative candidates.
+  if ((prop === 'x' || prop === 'y') && parsed.valueKind !== 'token') {
+    const sized = tailwindSizingValue(prop, value)
+    if (sized != null) {
+      return {
+        key: prop,
+        value: parsed.negative && sized[0] !== '-' ? `-${sized}` : sized,
+      }
+    }
+  }
+
+  // Tailwind's numbered leading scale is the spacing scale (N * 0.25rem),
+  // represented as native points at the default 16px root size. Resolve it
+  // here instead of letting an application's same-named font token change the
+  // meaning of a Tailwind classname.
+  if (prop === 'lineHeight' && /^\d+(?:\.\d+)?$/.test(value)) {
+    return { key: prop, value: Number(value) * 4 }
+  }
+
+  // grid-cols-N → repeat(N, minmax(0, 1fr)), col-span-N → span N / span N
+  if (prop === 'gridTemplateColumns' && /^\d+$/.test(value)) {
+    return { key: prop, value: `repeat(${value}, minmax(0, 1fr))` }
+  }
+  if (prop === 'gridColumn' && /^\d+$/.test(value)) {
+    return { key: prop, value: `span ${value} / span ${value}` }
+  }
+  if (prop === 'gridRow' && /^\d+$/.test(value)) {
+    return { key: prop, value: `span ${value} / span ${value}` }
+  }
+  if (
+    (prop === 'gridColumnStart' ||
+      prop === 'gridColumnEnd' ||
+      prop === 'gridRowStart' ||
+      prop === 'gridRowEnd') &&
+    /^\d+$/.test(value)
+  ) {
+    return { key: prop, value: Number(value) }
   }
 
   if (prop.endsWith('Width') && parsed.prefix?.startsWith('border')) {
@@ -248,8 +299,20 @@ function tailwindClassToFlatProp(
     let resolved = arbitraryValue(inner)
     // rotate requires a unit-bearing string on native — a bare number from rotate-[45]
     // triggers a redbox. append deg when the arbitrary resolved to a unitless number.
-    if (prop === 'rotate' && typeof resolved === 'number') {
+    if (
+      (prop === 'rotate' ||
+        prop === 'rotateX' ||
+        prop === 'rotateY' ||
+        prop === 'rotateZ' ||
+        prop === 'skewX' ||
+        prop === 'skewY') &&
+      typeof resolved === 'number'
+    ) {
       resolved = `${resolved}deg`
+    }
+    if (parsed.negative) {
+      if (typeof resolved === 'number') resolved = -resolved
+      else if (resolved[0] !== '-') resolved = `-${resolved}`
     }
     return { key: prop, value: resolved }
   }
@@ -263,7 +326,10 @@ function tailwindClassToFlatProp(
   ) {
     const sized = tailwindSizingValue(prop, value)
     if (sized != null) {
-      return { key: prop, value: sized }
+      return {
+        key: prop,
+        value: parsed.negative && sized[0] !== '-' ? `-${sized}` : sized,
+      }
     }
   }
 
@@ -289,7 +355,7 @@ function tailwindClassToFlatProp(
     value = Number(value) / 100
   } else if (/^\d+(\.\d+)?$/.test(value)) {
     if (category === 'zIndex' && parsed.valueKind === 'convenience') {
-      value = Number(value)
+      value = Number(value) * (parsed.negative ? -1 : 1)
     } else if (category) {
       value = `${parsed.negative ? '-' : ''}${value}`
       if (grammarConfig) {
@@ -345,6 +411,61 @@ type TailwindParentPlan = {
 type CachedTailwindClassPlan = TailwindClassPlan | TailwindParentPlan
 
 const classPlanCache = new WeakMap<object, Map<string, CachedTailwindClassPlan>>()
+const nativeTarget = !isWeb || process.env.TAMAGUI_TARGET === 'native'
+const cssGridProps = new Set([
+  'gridTemplateColumns',
+  'gridColumn',
+  'gridColumnStart',
+  'gridColumnEnd',
+  'gridRow',
+  'gridRowStart',
+  'gridRowEnd',
+])
+const nativeUnsupportedProps = new Set([
+  'objectFit',
+  'order',
+  'overflowX',
+  'overflowY',
+  'textOverflow',
+  'whiteSpace',
+  'visibility',
+])
+const nativeUnsupportedSizingValues = new Set(['screen', 'min', 'max', 'fit'])
+const nativeUnsupportedDisplayValues = new Set(['block', 'inline', 'inline-flex'])
+const nativeUnsupportedPositionValues = new Set(['fixed', 'sticky'])
+
+function shouldGateNative(parsed: ParsedCandidate): boolean {
+  if (!nativeTarget) return false
+  const properties = parsed.properties || {}
+  if (
+    process.env.TAMAGUI_CSS_GRID !== '1' &&
+    ((parsed.entry && cssGridProps.has(parsed.entry.prop)) ||
+      properties.display === 'grid' ||
+      Object.keys(properties).some((prop) => cssGridProps.has(prop)))
+  ) {
+    return true
+  }
+  if (
+    (parsed.entry && nativeUnsupportedProps.has(parsed.entry.prop)) ||
+    Object.keys(properties).some((prop) => nativeUnsupportedProps.has(prop))
+  ) {
+    return true
+  }
+  if (
+    parsed.convenience === 'sizing-keyword' &&
+    nativeUnsupportedSizingValues.has(parsed.rawValue || '')
+  ) {
+    return true
+  }
+  return (
+    nativeUnsupportedDisplayValues.has(String(properties.display)) ||
+    nativeUnsupportedPositionValues.has(String(properties.position)) ||
+    properties.overflow === 'auto' ||
+    (properties.cursor !== undefined &&
+      properties.cursor !== 'auto' &&
+      properties.cursor !== 'pointer')
+  )
+}
 
 function getClassPlanCache(grammarConfig: object) {
   let cache = classPlanCache.get(grammarConfig)
@@ -501,13 +622,30 @@ function computeClassPlan(
     return isWeb ? 'raw' : null
   }
   const parsed = classification.parsed
+  if (!nativeTarget && parsed.entry?.prop === 'perspective') return 'raw'
+  if (shouldGateNative(parsed)) {
+    return null
+  }
+  if (parsed.entry?.prop === 'flex' && parsed.rawValue) {
+    const fraction = /^(\d+)\/(\d+)$/.exec(parsed.rawValue)
+    if (fraction && Number(fraction[2]) !== 0) {
+      const basis = `${(Number(fraction[1]) / Number(fraction[2])) * 100}%`
+      const entries = [
+        createPlanEntry('flexGrow', 1, parsed.modifiers),
+        createPlanEntry('flexShrink', 1, parsed.modifiers),
+        createPlanEntry('flexBasis', basis, parsed.modifiers),
+      ]
+      return entries.every(Boolean) ? (entries as TailwindPlanEntry[]) : 'raw'
+    }
+  }
   // named utilities first (flex-row, flex-1, hidden, …) — whole class → fixed prop(s).
   // these may emit multiple props and may have no dash, so handle before the generic parse.
   const util = parsed.kind === 'utility' ? parsed.properties : null
   if (util) {
     const entries: TailwindPlanEntry[] = []
     for (const p in util) {
-      const entry = createPlanEntry(p, util[p], parsed.modifiers)
+      const value = nativeTarget && p === 'transform' && util[p] === 'none' ? [] : util[p]
+      const entry = createPlanEntry(p, value, parsed.modifiers)
       if (!entry) return 'raw'
       entries.push(entry)
     }
@@ -570,7 +708,25 @@ export function resolveTailwindCandidate(
   const entries = parent ? parent.entries : plan
   for (let index = 0; index < entries.length; index++) {
     const entry = entries[index]
-    if (entry[0] === 'boxShadow' && noteBoxShadow(sink, entry[1], entry[3] || [])) {
+    const transformTokenCategory =
+      entry[0] === 'x' || entry[0] === 'y'
+        ? 'space'
+        : entry[0] === 'perspective'
+          ? 'perspective'
+          : null
+    const transformValue =
+      transformTokenCategory && typeof entry[1] === 'string'
+        ? ((config as any).tokensParsed?.[transformTokenCategory]?.[entry[1]]?.val ??
+          entry[1])
+        : entry[1]
+    if (noteTailwindTransform(sink, [entry[0], transformValue, entry[2], entry[3]])) {
+      continue
+    }
+    const shadowValue =
+      entry[0] === 'boxShadow' && typeof entry[1] === 'string'
+        ? ((config as any).tokensParsed?.boxShadow?.[entry[1]]?.val ?? entry[1])
+        : entry[1]
+    if (entry[0] === 'boxShadow' && noteBoxShadow(sink, shadowValue, entry[3] || [])) {
       continue
     }
     sink(entry)
@@ -621,6 +777,17 @@ export function resolveTailwindClassName(
       rawClassName = rawClassName ? `${rawClassName} ${candidate}` : candidate
     }
     start = index + 1
+  }
+  const composed = composedResolver(result, config)
+  if (composed) {
+    for (const key in composed) {
+      setInAuthoredOrder(result, key, composed[key])
+    }
+  }
+  for (const key in result) {
+    if (key.startsWith('__')) {
+      delete result[key]
+    }
   }
   if (rawClassName) result.className = rawClassName
   return result

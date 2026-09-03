@@ -28,22 +28,36 @@ const nonAnimatableTextOnlyProps = toObj(
   'textAlign textDecorationLine textDecorationStyle userSelect writingDirection'
 )
 
-const nonAnimatableUnitlessProps = toObj(
-  'WebkitLineClamp lineClamp gridTemplateColumns gridTemplateAreas'
+const nonAnimatableUnitlessProps = toObj('WebkitLineClamp lineClamp')
+
+/**
+ * CSS Grid layout props. Web-only by default — Yoga (React Native's layout
+ * engine) has no stable CSS Grid support (see facebook/yoga#1865).
+ *
+ * To enable on native with an experimental Yoga build, set the
+ * `TAMAGUI_CSS_GRID` environment variable to `"1"`.
+ */
+const cssGridProps = toObj(
+  'gridTemplateColumns gridTemplateAreas gridRow gridRowEnd gridRowGap gridRowStart gridColumn gridColumnEnd gridColumnGap gridColumnStart'
 )
+
+const enableCSSGrid =
+  process.env.TAMAGUI_TARGET === 'web' || process.env.TAMAGUI_CSS_GRID === '1'
 
 export const nonAnimatableStyleProps = toObj(
   nonAnimatableViewProps,
   nonAnimatableFontProps,
   nonAnimatableTextOnlyProps,
   nonAnimatableUnitlessProps,
+  enableCSSGrid ? cssGridProps : undefined,
   process.env.TAMAGUI_TARGET === 'web' ? nonAnimatableWebViewProps : undefined,
   process.env.TAMAGUI_TARGET === 'web' ? nonAnimatableWebTextProps : undefined
 )
 
 export const stylePropsUnitless = toObj(
   nonAnimatableUnitlessProps,
-  'animationIterationCount aspectRatio borderImageOutset borderImageSlice borderImageWidth columnCount flex flexGrow flexOrder flexPositive flexShrink flexNegative fontWeight gridRow gridRowEnd gridRowGap gridRowStart gridColumn gridColumnEnd gridColumnGap gridColumnStart opacity order orphans tabSize widows zIndex zoom scale scaleX scaleY scaleZ shadowOpacity'
+  enableCSSGrid ? cssGridProps : undefined,
+  'animationIterationCount aspectRatio borderImageOutset borderImageSlice borderImageWidth columnCount flex flexGrow flexOrder flexPositive flexShrink flexNegative fontWeight opacity order orphans tabSize widows zIndex zoom scale scaleX scaleY scaleZ shadowOpacity'
 )
 
 export const stylePropsTransform = toObj(

@@ -11,12 +11,23 @@
  */
 import { createFrontendViews } from '@tamagui/core/internal-runtime'
 import { tailwindStyleFrontend } from './frontend'
+import { composedResolver } from './composedResolver'
 import type { TailwindText, TailwindView } from './types'
 
 const frontendViews = createFrontendViews(tailwindStyleFrontend)
 
-export const View = frontendViews.View as unknown as TailwindView
-export const Text = frontendViews.Text as unknown as TailwindText
+/**
+ * The tailwind View: className-resolved composed utilities (ring, gradient,
+ * filter) are handled by variant props + `.resolve()` instead of imperative
+ * compose.ts logic.
+ */
+export const View = (frontendViews.View as any).resolve(
+  composedResolver
+) as unknown as TailwindView
+
+export const Text = (frontendViews.Text as any).resolve(
+  composedResolver
+) as unknown as TailwindText
 
 export { styled } from './styled'
 export { parseStaticStyle, tailwindStyleFrontend } from './frontend'

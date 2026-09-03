@@ -1,5 +1,10 @@
 export type StyleTokenCategory = 'size' | 'space' | 'radius' | 'zIndex' | 'fontSize'
-export type RuntimeTokenCategory = StyleTokenCategory | 'color' | 'font' | 'fontFamily'
+export type RuntimeTokenCategory =
+  | StyleTokenCategory
+  | 'color'
+  | 'font'
+  | 'fontFamily'
+  | (string & {})
 
 export function getTokenCategoryForProperty(
   property: string

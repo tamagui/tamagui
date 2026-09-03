@@ -4,6 +4,7 @@ import {
   fontWeightNames,
   insetAxisProps,
   prefixToEntries,
+  propToGrammarEntry,
   radiusCornerProps,
   sizeUtilityProps,
   standaloneValueProps,
@@ -98,11 +99,20 @@ const negativeTokenProps = new Set([
   'inset',
   'insetInlineStart',
   'insetInlineEnd',
+  'insetBlockStart',
+  'insetBlockEnd',
   'start',
   'end',
+  'zIndex',
   'x',
   'y',
   'rotate',
+  'rotateX',
+  'rotateY',
+  'rotateZ',
+  'skewX',
+  'skewY',
+  'order',
   'scale',
   'scaleX',
   'scaleY',
@@ -117,8 +127,23 @@ const positionSpaceProps = new Set([
   'inset',
   'insetInlineStart',
   'insetInlineEnd',
+  'insetBlockStart',
+  'insetBlockEnd',
   'start',
   'end',
+])
+const marginSpaceProps = new Set([
+  'margin',
+  'marginTop',
+  'marginRight',
+  'marginBottom',
+  'marginLeft',
+  'marginInlineStart',
+  'marginInlineEnd',
+  'marginBlockStart',
+  'marginBlockEnd',
+  'marginHorizontal',
+  'marginVertical',
 ])
 const borderWidthKeywords = new Set(['thin', 'medium', 'thick'])
 const ambiguousCssKeywords = new Set([
@@ -225,8 +250,28 @@ function normalizeModifiers(
   return normalized
 }
 
+const sizeCategoryFallbacks = new Set<TokenCategory>([
+  'width',
+  'minWidth',
+  'maxWidth',
+  'inlineSize',
+  'minInlineSize',
+  'maxInlineSize',
+  'flexBasis',
+])
+
+function tokenDomain(
+  config: GrammarConfigView,
+  category: TokenCategory
+): Names | undefined {
+  return (
+    config.tokenNames?.[category] ||
+    (sizeCategoryFallbacks.has(category) ? config.tokenNames?.size : undefined)
+  )
+}
+
 function hasTokenDomain(config: GrammarConfigView, category: TokenCategory): boolean {
-  return config.tokenNames?.[category] !== undefined
+  return tokenDomain(config, category) !== undefined
 }
 
 export function hasTokenName(
@@ -248,9 +293,10 @@ export function resolveTokenName(
   category: TokenCategory,
   name: string
 ): string | null {
-  if (hasName(config.tokenNames?.[category], name)) return name
+  const names = tokenDomain(config, category)
+  if (hasName(names, name)) return name
   const alias = decimalHalfTokenAlias(name)
-  return alias !== null && hasName(config.tokenNames?.[category], alias) ? alias : null
+  return alias !== null && hasName(names, alias) ? alias : null
 }
 
 function entriesForProps(props: readonly string[]): GrammarEntry[] {
@@ -279,7 +325,10 @@ function resolveEntries(
     )
   }
   if (prefix === 'size') {
-    return entriesForProps(sizeUtilityProps)
+    return entriesForProps(sizeUtilityProps).map((entry) => ({
+      ...entry,
+      tokenCategory: 'size',
+    }))
   }
   if (prefix === 'inset-x' || prefix === 'inset-y') {
     return entriesForProps(insetAxisProps[prefix.slice('inset-'.length)])
@@ -472,6 +521,9 @@ function chooseEntry(
       }
     }
     const color = entries.find((entry) => entry.prop === 'color')
+    if (color && rawValue === 'transparent') {
+      return { entry: color, valueKind: 'enum' }
+    }
     const colorName = tokenLookupName('color', rawValue)
     if (color && hasTokenName(config, 'color', colorName)) {
       return { entry: color, valueKind: 'token' }
@@ -503,7 +555,8 @@ function chooseEntry(
     const width = entries.find((entry) => entry.prop.endsWith('Width'))
     const color = entries.find((entry) => entry.prop.endsWith('Color'))
     const token = negative ? `-${rawValue}` : rawValue
-    const matchesWidth = width && hasTokenName(config, 'space', token)
+    const widthCategory = width?.tokenCategory || 'space'
+    const matchesWidth = width && hasTokenName(config, widthCategory, token)
     const colorName = tokenLookupName('color', rawValue)
     const matchesColor = color && hasTokenName(config, 'color', colorName)
     if (matchesWidth && matchesColor) return null
@@ -513,13 +566,23 @@ function chooseEntry(
     if (matchesColor) {
       return { entry: color, valueKind: 'token' }
     }
+    if (color && rawValue === 'transparent') {
+      return { entry: color, valueKind: 'enum' }
+    }
     return null
   }
 
+  if (prefix === 'flex' && fractionIsValid(rawValue)) {
+    const flex = entries.find((entry) => entry.prop === 'flex')
+    if (flex) {
+      return { entry: flex, valueKind: 'convenience', convenience: 'flex-bundle' }
+    }
+  }
+
   if (numericPattern.test(rawValue)) {
-    if (prefix === 'rotate') {
-      const rotate = entries.find((entry) => entry.prop === 'rotate')
-      if (rotate) return { entry: rotate, valueKind: 'convenience', convenience: 'angle' }
+    const angle = entries.find((entry) => entry.conveniences?.includes('angle'))
+    if (angle) {
+      return { entry: angle, valueKind: 'convenience', convenience: 'angle' }
     }
     if (prefix === 'flex') {
       const flex = entries.find((entry) => entry.prop === 'flex')
@@ -535,17 +598,56 @@ function chooseEntry(
       if (shrink)
         return { entry: shrink, valueKind: 'convenience', convenience: 'integer' }
     }
+    if (prefix === 'line-clamp') {
+      const clamp = entries.find((entry) => entry.prop === 'numberOfLines')
+      if (clamp) return { entry: clamp, valueKind: 'convenience', convenience: 'integer' }
+    }
+    if (prefix === 'leading') {
+      const lineHeight = entries.find((entry) => entry.prop === 'lineHeight')
+      if (
+        lineHeight &&
+        (!lineHeight.tokenCategory ||
+          !hasTokenName(config, lineHeight.tokenCategory, rawValue))
+      ) {
+        return {
+          entry: lineHeight,
+          valueKind: 'convenience',
+          convenience: 'integer',
+        }
+      }
+    }
+    // grid utilities: grid-cols-3, col-span-2, col-start-1, row-span-3, etc.
+    if (
+      prefix === 'grid-cols' ||
+      prefix === 'col-span' ||
+      prefix === 'col-start' ||
+      prefix === 'col-end' ||
+      prefix === 'row-span' ||
+      prefix === 'row-start' ||
+      prefix === 'row-end'
+    ) {
+      const entry = entries[0]
+      if (entry) return { entry, valueKind: 'convenience', convenience: 'integer' }
+    }
   }
 
   for (const entry of entries) {
     if (entry.tokenCategory) {
-      const name = negative ? `-${rawValue}` : rawValue
+      if (entry.tokenCategory === 'color' && rawValue === 'transparent') {
+        return { entry, valueKind: 'enum' }
+      }
+      if (entry.tokenCategory === 'radius' && rawValue === 'none') {
+        return { entry, valueKind: 'convenience', convenience: 'zero' }
+      }
+      // Negative zero has the same runtime value as zero. Tailwind emits these
+      // candidates, while token maps intentionally do not duplicate a `-0` key.
+      const name = negative && rawValue !== '0' ? `-${rawValue}` : rawValue
       const tokenName = tokenLookupName(entry.tokenCategory, name)
       if (hasTokenName(config, entry.tokenCategory, tokenName)) {
         return { entry, valueKind: 'token' }
       }
       if (
-        entry.tokenCategory === 'size' &&
+        entry.conveniences?.includes('sizing-keyword') &&
         (sizingConveniences.has(rawValue) || fractionIsValid(rawValue))
       ) {
         return { entry, valueKind: 'convenience', convenience: 'sizing-keyword' }
@@ -554,6 +656,9 @@ function chooseEntry(
         positionSpaceProps.has(entry.prop) &&
         (rawValue === 'full' || rawValue === 'auto' || fractionIsValid(rawValue))
       ) {
+        return { entry, valueKind: 'convenience', convenience: 'sizing-keyword' }
+      }
+      if (marginSpaceProps.has(entry.prop) && rawValue === 'auto') {
         return { entry, valueKind: 'convenience', convenience: 'sizing-keyword' }
       }
       if (entry.tokenCategory === 'zIndex' && numericPattern.test(rawValue)) {
@@ -573,6 +678,9 @@ function chooseEntry(
       continue
     }
     if (entry.prop === 'zIndex' && numericPattern.test(rawValue)) {
+      return { entry, valueKind: 'convenience', convenience: 'integer' }
+    }
+    if (entry.conveniences?.includes('integer') && numericPattern.test(rawValue)) {
       return { entry, valueKind: 'convenience', convenience: 'integer' }
     }
   }
@@ -608,8 +716,11 @@ export function parseCandidate(
         (!negative ||
           (negativeTokenProps.has(selected.entry.prop) &&
             (selected.valueKind === 'token' ||
+              (selected.valueKind === 'arbitrary' && selected.entry.prop === 'order') ||
               selected.convenience === 'angle' ||
-              selected.convenience === 'percentage')))
+              selected.convenience === 'percentage' ||
+              selected.convenience === 'sizing-keyword' ||
+              selected.convenience === 'integer')))
       ) {
         dynamic = { prefix, rawValue, selected }
         // An exact configured token owns its spelling before a reserved whole utility. Other
@@ -634,7 +745,11 @@ export function parseCandidate(
   }
 
   const direct = wholeClassUtilities[split.base]
-  if (!negative && direct) {
+  if (
+    !negative &&
+    direct &&
+    (split.base !== 'shadow' || hasTokenName(config, 'boxShadow', 'sm'))
+  ) {
     const convenience = wholeClassConveniences[split.base]
     return {
       candidate,
@@ -706,7 +821,7 @@ export function formatCandidate(
   { prop, value, valueKind, modifiers = [] }: FormatCandidateInput,
   config?: GrammarConfigView
 ): string | null {
-  const entry = grammarEntries.find((candidate) => candidate.prop === prop)
+  const entry = propToGrammarEntry[prop]
   if (!entry) return null
   if (valueKind === 'arbitrary' && value === '') return null
   const normalizedModifiers = normalizeModifiers(modifiers, config || {})

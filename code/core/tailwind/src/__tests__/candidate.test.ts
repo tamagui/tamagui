@@ -27,9 +27,20 @@ describe('claimed candidates become flat props', () => {
   test('rotate, flex-n, and inset fractions become native-capable values', () => {
     expect(tokenize('rotate-45')).toEqual({ rotate: '45deg' })
     expect(tokenize('-rotate-90')).toEqual({ rotate: '-90deg' })
+    expect(tokenize('-rotate-0')).toEqual({ rotate: '-0deg' })
     expect(tokenize('flex-2')).toEqual({ flex: 2 })
     expect(tokenize('inset-1/2')).toEqual({ inset: '50%' })
     expect(tokenize('line-clamp-2')).toEqual({ numberOfLines: 2 })
+    expect(tokenize('-z-20')).toEqual({ zIndex: -20 })
+    expect(tokenize('-m-0')).toEqual({ margin: 0 })
+    expect(tokenize('leading-4')).toEqual({ lineHeight: 16 })
+    expect(tokenize('leading-0.5')).toEqual({ lineHeight: 2 })
+    expect(tokenize('leading-96')).toEqual({ lineHeight: 384 })
+    expect(tokenize('flex-2/3')).toEqual({
+      flexGrow: 1,
+      flexShrink: 1,
+      flexBasis: `${(2 / 3) * 100}%`,
+    })
   })
 
   test('arbitrary rotate appends deg for unitless numbers', () => {
@@ -71,6 +82,9 @@ describe('claimed candidates become flat props', () => {
   test('sizing keywords and fractions lower to CSS', () => {
     expect(tokenize('w-full')).toEqual({ width: '100%' })
     expect(tokenize('w-1/2')).toEqual({ width: '50%' })
+    expect(tokenize('-translate-x-1/2')).toEqual({ x: '-50%' })
+    expect(tokenize('translate-y-full')).toEqual({ y: '100%' })
+    expect(tokenize('-left-full')).toEqual({ left: '-100%' })
   })
 
   test('a directional border expands to every affected longhand', () => {
@@ -87,6 +101,107 @@ describe('claimed candidates become flat props', () => {
     expect(tokenize('outline-solid')).toEqual({ outlineStyle: 'solid' })
     expect(tokenize('outline-offset-2')).toEqual({ outlineOffset: '2' })
     expect(tokenize('-outline-offset-2')).toEqual({ outlineOffset: '-2' })
+  })
+
+  test('native-capable alignment and transform resets resolve', () => {
+    expect(tokenize('content-evenly')).toEqual({ alignContent: 'space-evenly' })
+    expect(tokenize('self-baseline')).toEqual({ alignSelf: 'baseline' })
+    expect(tokenize('scale-none')).toEqual({ scale: 1 })
+    expect(tokenize('translate-none')).toEqual({ x: 0, y: 0 })
+    expect(tokenize('transform-none')).toEqual({ transform: 'none' })
+    expect(tokenize('rotate-none')).toEqual({ rotate: '0deg' })
+    expect(tokenize('m-auto')).toEqual({ margin: 'auto' })
+    expect(tokenize('mx-auto')).toEqual({ marginHorizontal: 'auto' })
+  })
+
+  test('representable text shadow presets compose with their color', () => {
+    expect(tokenize('text-shadow-xs')).toEqual({
+      textShadowOffset: { width: 0, height: 1 },
+      textShadowRadius: 1,
+      textShadowColor: 'rgb(0 0 0 / 0.2)',
+    })
+    expect(tokenize('text-shadow-[red] text-shadow-2xs')).toMatchObject({
+      textShadowOffset: { width: 0, height: 1 },
+      textShadowRadius: 0,
+      textShadowColor: 'red',
+    })
+  })
+
+  test('inset ring and shadow utilities compose with their colors', () => {
+    expect(tokenize('inset-ring-[red] inset-ring-2')).toEqual({
+      boxShadow: 'inset 0 0 0 2px red',
+    })
+    expect(tokenize('inset-shadow-sm inset-shadow-[blue]')).toEqual({
+      boxShadow: 'inset 0 2px 4px blue',
+    })
+  })
+
+  test('cursor classes resolve to cursor prop', () => {
+    expect(tokenize('cursor-pointer')).toEqual({ cursor: 'pointer' })
+    expect(tokenize('cursor-not-allowed')).toEqual({ cursor: 'not-allowed' })
+    expect(tokenize('cursor-grab')).toEqual({ cursor: 'grab' })
+  })
+
+  test('overflow-x and overflow-y resolve to their axis props', () => {
+    expect(tokenize('overflow-x-hidden')).toEqual({ overflowX: 'hidden' })
+    expect(tokenize('overflow-y-scroll')).toEqual({ overflowY: 'scroll' })
+    expect(tokenize('overflow-x-auto overflow-y-hidden')).toEqual({
+      overflowX: 'auto',
+      overflowY: 'hidden',
+    })
+  })
+
+  test('truncate sets overflow + textOverflow + whiteSpace', () => {
+    expect(tokenize('truncate')).toEqual({
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+      whiteSpace: 'nowrap',
+    })
+  })
+
+  test('select utilities resolve to userSelect', () => {
+    expect(tokenize('select-none')).toEqual({ userSelect: 'none' })
+    expect(tokenize('select-text')).toEqual({ userSelect: 'text' })
+    expect(tokenize('select-all')).toEqual({ userSelect: 'all' })
+  })
+
+  test('visibility classes resolve correctly', () => {
+    expect(tokenize('visible')).toEqual({ visibility: 'visible' })
+    expect(tokenize('invisible')).toEqual({ visibility: 'hidden' })
+  })
+
+  test('dynamic line-clamp resolves to numberOfLines', () => {
+    expect(tokenize('line-clamp-8')).toEqual({ numberOfLines: 8 })
+    expect(tokenize('line-clamp-none')).toEqual({ numberOfLines: 0 })
+  })
+
+  test('grid-cols-N resolves to repeat() template', () => {
+    expect(tokenize('grid-cols-3')).toEqual({
+      gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
+    })
+    expect(tokenize('grid-cols-12')).toEqual({
+      gridTemplateColumns: 'repeat(12, minmax(0, 1fr))',
+    })
+    expect(tokenize('grid-cols-none')).toEqual({ gridTemplateColumns: 'none' })
+    expect(tokenize('grid-cols-subgrid')).toEqual({ gridTemplateColumns: 'subgrid' })
+  })
+
+  test('col-span and row-span resolve to span syntax', () => {
+    expect(tokenize('col-span-2')).toEqual({ gridColumn: 'span 2 / span 2' })
+    expect(tokenize('col-span-full')).toEqual({ gridColumn: '1 / -1' })
+    expect(tokenize('col-auto')).toEqual({ gridColumn: 'auto' })
+    expect(tokenize('col-start-1')).toEqual({ gridColumnStart: 1 })
+    expect(tokenize('col-end-3')).toEqual({ gridColumnEnd: 3 })
+    expect(tokenize('row-span-2')).toEqual({ gridRow: 'span 2 / span 2' })
+    expect(tokenize('row-start-1')).toEqual({ gridRowStart: 1 })
+    expect(tokenize('row-auto')).toEqual({ gridRow: 'auto' })
+  })
+
+  test('backface-visibility and isolation resolve correctly', () => {
+    expect(tokenize('backface-visible')).toEqual({ backfaceVisibility: 'visible' })
+    expect(tokenize('backface-hidden')).toEqual({ backfaceVisibility: 'hidden' })
+    expect(tokenize('isolate')).toEqual({ isolation: 'isolate' })
+    expect(tokenize('isolation-auto')).toEqual({ isolation: 'auto' })
   })
 
   test('gradient composers emit one backgroundImage and ignore incomplete stops', () => {
@@ -128,6 +243,14 @@ describe('claimed candidates become flat props', () => {
       boxShadow: '0 0 0 2px blue, 0 1px 2px red',
     })
     expect(tokenize('ring-[blue]')).toEqual({})
+    expect(tokenize('ring-2 ring-inset')).toEqual({
+      boxShadow: 'inset 0 0 0 2px currentColor',
+    })
+    expect(tokenize('ring')).toEqual({ boxShadow: '0 0 0 1px currentColor' })
+  })
+
+  test('named shadows use the configured boxShadow token domain', () => {
+    expect(tokenize('shadow-none')).toEqual({ boxShadow: 'none' })
   })
 
   test('logical spacing and gap axes become native-capable props', () => {
@@ -226,12 +349,12 @@ describe('claimed candidates become flat props', () => {
 
 describe('unclaimed candidates', () => {
   test('an unknown class stays in className verbatim', () => {
-    expect(tokenize('grid-cols-3')).toEqual({ className: 'grid-cols-3' })
+    expect(tokenize('custom-widget')).toEqual({ className: 'custom-widget' })
   })
 
   test('unknown classes keep author order and claimed ones are removed', () => {
-    expect(tokenize('grid-cols-2 p-4 grid-cols-3')).toEqual({
-      className: 'grid-cols-2 grid-cols-3',
+    expect(tokenize('custom-a p-4 custom-b')).toEqual({
+      className: 'custom-a custom-b',
       padding: '4',
     })
   })

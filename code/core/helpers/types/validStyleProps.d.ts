@@ -58,6 +58,14 @@ export declare const nonAnimatableStyleProps: {
     fontFamily: true;
     fontStyle: true;
     fontVariant: true;
+    gridColumn: true;
+    gridColumnEnd: true;
+    gridColumnGap: true;
+    gridColumnStart: true;
+    gridRow: true;
+    gridRowEnd: true;
+    gridRowGap: true;
+    gridRowStart: true;
     gridTemplateAreas: true;
     gridTemplateColumns: true;
     isolation: true;

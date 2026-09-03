@@ -1,12 +1,14 @@
 import { modifierAliases } from "../runtime/stateModifiers";
 export { modifierAliases };
-export type TokenCategory = "space" | "size" | "radius" | "zIndex" | "color" | "fontFamily" | "fontSize" | "fontWeight" | "lineHeight" | "letterSpacing";
-export type Convenience = "alignment-alias" | "bare-border" | "flex-bundle" | "font-generic" | "integer" | "percentage" | "sizing-keyword";
+export type StandardTokenCategory = "space" | "size" | "radius" | "zIndex" | "color" | "fontFamily" | "fontSize" | "fontWeight" | "lineHeight" | "letterSpacing";
+export type TokenCategory = StandardTokenCategory | (string & {});
+export type Convenience = "alignment-alias" | "angle" | "bare-border" | "flex-bundle" | "font-generic" | "integer" | "percentage" | "sizing-keyword" | "zero";
 export interface GrammarEntry {
 	prop: string;
 	prefix: string;
 	tokenCategory?: TokenCategory;
 	conveniences?: readonly Convenience[];
+	convert?: boolean;
 }
 export declare const grammarEntries: readonly GrammarEntry[];
 export declare const propToGrammarEntry: Readonly<Record<string, GrammarEntry>>;
