@@ -24,7 +24,6 @@ import {
   YStack,
 } from 'tamagui'
 import { Button } from '~/components/Button'
-import { ThemeNameEffectNoTheme } from '~/features/site/theme/ThemeNameEffect'
 import { Dialogs } from '~/features/studio/components/Dialogs'
 import { StudioAIBar } from '~/features/studio/theme/StudioAIBar'
 import {
@@ -109,7 +108,6 @@ const PreviewTheme = (props: { children: any; noKey?: any }) => {
   return (
     <>
       <Theme name={baseStepThemeName}>
-        <ThemeNameEffectNoTheme />
         <YStack flex={1} flexBasis="auto">
           {props.children}
         </YStack>

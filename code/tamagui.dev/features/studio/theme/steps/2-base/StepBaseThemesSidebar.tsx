@@ -2,21 +2,19 @@ import { useState } from 'react'
 import type { ThemeName } from 'tamagui'
 import { Label, Separator, SizableText, Switch, Theme, XStack, YStack } from 'tamagui'
 
+import { useBentoStore } from '~/features/bento/BentoStore'
 import { useThemeBuilderStore } from '../../store/ThemeBuilderStore'
 import { StudioThemesQuickPreviewSection } from '../views/StudioThemesQuickPreviewSection'
 import { useBaseThemePreview } from './useBaseThemePreview'
 
 export function StepBaseThemesSidebar() {
-  const themeBuilder = useThemeBuilderStore()
+  const { themeSuiteVersion } = useBentoStore()
   const { name: themeNameBase } = useBaseThemePreview()
-
-  // force re-render on every change
-  themeBuilder.themeSuiteVersion
 
   return (
     <YStack flex={1} flexBasis="auto">
       {/* fixes some bug in updating first time */}
-      <Contents key={themeBuilder.themeSuiteVersion} themeNameBase={themeNameBase} />
+      <Contents key={themeSuiteVersion} themeNameBase={themeNameBase} />
     </YStack>
   )
 }

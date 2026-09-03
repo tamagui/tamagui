@@ -1,12 +1,15 @@
 import type { ThemeName } from 'tamagui'
 import { Separator, SizableText, Theme, XStack, YStack, useThemeName } from 'tamagui'
 
+import { useBentoStore } from '~/features/bento/BentoStore'
 import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
 import { StudioThemesQuickPreviewSection } from '../views/StudioThemesQuickPreviewSection'
 import { getStudioInternalThemeName } from '../../updatePreviewTheme'
 
 export function StepSubThemesSidebar() {
   const store = useThemeBuilderStore()
+  // force re-render on every theme suite change
+  useBentoStore().themeSuiteVersion
   const hasAccent = store.subThemes[0]?.type === 'theme' && !!store.subThemes[0]?.accent
   const currentThemeName = useThemeName()
   const themeNameBase = getStudioInternalThemeName(store.baseTheme.id)
@@ -14,9 +17,6 @@ export function StepSubThemesSidebar() {
 
   let topThemeName = themeNameBase
   let bottomThemeName = subThemeName as ThemeName
-
-  // force re-render on every change
-  store.themeSuiteVersion
 
   return (
     <YStack flex={1} pl={20}>

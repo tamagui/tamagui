@@ -1,5 +1,6 @@
 import { createStore, createUseStore } from '@tamagui/use-store'
 import { getAccessToken } from '~/features/auth/useSupabaseClient'
+import { bentoStore } from '~/features/bento/BentoStore'
 import { toastController } from '~/features/studio/ToastProvider'
 import { demoOptions, optionValues } from '~/features/studio/theme/demoOptions'
 import { getRandomElement } from '~/features/studio/theme/helpers/getRandomElement'
@@ -22,13 +23,7 @@ type AccentSetting = 'color' | 'inverse' | 'off'
 export class ThemeBuilderStore {
   loaded = false
   state: ThemeBuilderState | null = null
-  themeSuiteVersion = 0
   listeners = new Set<Function>()
-
-  // returns the current theme ID based on version
-  get themeSuiteUID() {
-    return this.themeSuiteVersion ? String(this.themeSuiteVersion) : ''
-  }
 
   // "working state" => directly derived from this.themeSuite values
   // never mutate `this.state`, instead mutate these and then `this.save` to persist it
@@ -53,12 +48,12 @@ export class ThemeBuilderStore {
   }
 
   private async sync(state: ThemeBuilderState) {
-    if (!this.themeSuiteUID) {
+    if (!bentoStore.themeSuiteUID) {
       console.warn(`Can't sync without themeSuiteUID`)
       return
     }
     this.state = state
-    const themeSuite = state.themeSuites[this.themeSuiteUID]
+    const themeSuite = state.themeSuites[bentoStore.themeSuiteUID]
     if (themeSuite) {
       await this.updateCurrentThemeSuite(themeSuite)
     }
@@ -69,16 +64,16 @@ export class ThemeBuilderStore {
     if (!this.state) {
       return {
         ...this.getWorkingThemeSuite(),
-        id: this.themeSuiteUID || '',
+        id: bentoStore.themeSuiteUID || '',
         createdAt: Date.now(),
         updatedAt: Date.now(),
         name: '',
       }
     }
 
-    return this.state && this.themeSuiteUID
+    return this.state && bentoStore.themeSuiteUID
       ? {
-          ...this.state.themeSuites[this.themeSuiteUID],
+          ...this.state.themeSuites[bentoStore.themeSuiteUID],
           ...this.getWorkingThemeSuite(),
         }
       : undefined
@@ -125,7 +120,7 @@ export class ThemeBuilderStore {
 
   // clears the active custom theme, returning to default tint system
   clearTheme() {
-    this.themeSuiteVersion = 0
+    bentoStore.themeSuiteVersion = 0
     this.currentThemeId = ''
     this.currentQuery = ''
     this.save()
@@ -228,7 +223,7 @@ export class ThemeBuilderStore {
 
     // increment version first to get a new unique theme ID
     // refreshThemeSuite will use this new ID to create the theme
-    this.themeSuiteVersion++
+    bentoStore.themeSuiteVersion++
 
     await this.refreshThemeSuite()
   }
@@ -292,7 +287,7 @@ export class ThemeBuilderStore {
     }
 
     await updatePreviewTheme({
-      id: this.themeSuiteUID,
+      id: bentoStore.themeSuiteUID,
       palettes,
       schemes: this.schemes,
     })

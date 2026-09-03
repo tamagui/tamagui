@@ -224,6 +224,21 @@ export default {
   },
 
   plugins: [
+    // vxrn aliases `react-native` to require.resolve('react-native-web'), which is
+    // the package `main`: a CJS bundle nothing can tree-shake. one
+    // `useWindowDimensions` import then pulls all 274kb of react-native-web into
+    // every page. vite's alias plugin runs ahead of every user plugin, so catch
+    // the already-resolved cjs entry and send it to the esm build instead.
+    {
+      name: 'react-native-web-esm',
+      enforce: 'pre',
+      resolveId(id: string) {
+        if (id.endsWith('/react-native-web/dist/cjs/index.js')) {
+          return resolve('react-native-web/dist/index.js')
+        }
+      },
+    },
+
     // Plugin to stub bento component imports when bento repo is not available
     !hasBento && {
       name: 'stub-bento-components',

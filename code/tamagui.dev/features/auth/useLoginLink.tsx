@@ -1,11 +1,10 @@
 import { toast } from 'tamagui'
 import { navigateToInternalPath } from '~/features/security/navigation'
 import { useUser } from '../user/useUser'
-import { useSupabaseClient } from './useSupabaseClient'
+import { getAuthClient } from './useSupabaseClient'
 
 export const useLoginLink = () => {
   const userSwr = useUser()
-  const supabaseClient = useSupabaseClient()
 
   return {
     handleLogin: async (e: any) => {
@@ -40,7 +39,8 @@ export const useLoginLink = () => {
 
         if (event.data.type === 'SUPABASE_AUTH_SUCCESS') {
           window.removeEventListener('message', handleMessage)
-          await supabaseClient.auth.refreshSession()
+          const supabase = await getAuthClient()
+          await supabase?.auth.refreshSession()
           userSwr.refresh()
         } else if (event.data.type === 'SUPABASE_AUTH_ERROR') {
           window.removeEventListener('message', handleMessage)
