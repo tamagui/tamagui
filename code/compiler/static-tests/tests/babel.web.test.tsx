@@ -386,9 +386,10 @@ test('flexBasis: 0 with responsive style extracts correctly', async () => {
   `
   )
 
-  // fb: 0 should extract as 0px, not auto
+  // fb: 0 should extract as 0px, not auto. the bare 1 is a size token: flexBasis
+  // is declared in the size category, and a bare `flex-basis:1` is not valid css
   expect(output?.styles).toMatch(
-    /(\._f-\d+)\{flex-basis:1\}@media \(min-width: 640px\) \{\1\{flex-basis:0px\}\}/
+    /(\._f-\d+)\{flex-basis:var\(--c-size-1\)\}@media \(min-width: 640px\) \{\1\{flex-basis:0px\}\}/
   )
   expect(output?.styles).not.toContain('auto')
   expect(output?.js).toMatchSnapshot()
@@ -443,7 +444,7 @@ test('group clauses on a CSS-animated element extract with its transition', asyn
   expect(output?.js).toContain('div')
   expect(output?.js).not.toContain('transition="bouncy"')
   expect(output?.js).not.toContain('group-hover/card:red')
-  expect(output?.styles).toContain('transition:all 350ms cubic-bezier')
+  expect(output?.styles).toContain('transition:all 693ms linear(')
   expect(output?.styles).toContain('.t_group_card:hover')
   expect(output?.styles).toContain('background-color:red')
 })
