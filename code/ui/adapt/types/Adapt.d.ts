@@ -35,16 +35,12 @@ export type AdaptTarget<State = unknown> = {
     handoff: AdaptTargetHandoff;
     state: State;
 };
+export type AdaptConfig = Pick<AdaptProps, 'when' | 'platform'>;
 export type AdaptParentContextI = {
     Contents: Component;
     scopeName: string;
-    platform: AdaptPlatform;
-    setPlatform: (when: AdaptPlatform) => any;
-    when: AdaptWhen;
-    setWhen: (when: AdaptWhen) => any;
     active: boolean;
-    rawActive: boolean;
-    setRawActive: (active: boolean) => void;
+    setAdaptConfig: (config: AdaptConfig | null) => void;
     portalName?: string;
     lastScope?: string;
     slot: AdaptSlotStore | null;
@@ -75,7 +71,7 @@ export type AdaptProps = {
     children: React.JSX.Element | ((contents: React.ReactNode, adapt: AdaptRenderState) => React.ReactNode);
 };
 type Component = (props: any) => any;
-export declare const AdaptContext: import("@tamagui/core").StyledContext<AdaptParentContextI, "Contents" | "active" | "handoff" | "platform" | "portalName" | "rawActive" | "registerContents" | "registerRenderCallback" | "registerTarget" | "scopeName" | "setPlatform" | "setRawActive" | "setWhen" | "slot" | "targetFullyHidden" | "unregisterContents" | "unregisterRenderCallback" | "unregisterTarget" | "when">;
+export declare const AdaptContext: import("@tamagui/core").StyledContext<AdaptParentContextI, "Contents" | "active" | "handoff" | "portalName" | "registerContents" | "registerRenderCallback" | "registerTarget" | "scopeName" | "setAdaptConfig" | "slot" | "targetFullyHidden" | "unregisterContents" | "unregisterRenderCallback" | "unregisterTarget">;
 export declare const ProvideAdaptContext: ({ children, ...context }: AdaptParentContextI & {
     children: any;
 }) => React.JSX.Element;
@@ -90,9 +86,6 @@ type AdaptParentProps = {
     open?: boolean;
     onOpenChange?: (open: boolean) => void;
     state?: unknown;
-    portal?: boolean | {
-        forwardProps?: any;
-    };
 };
 export declare const AdaptParent: ({ children, Contents, scope, open, onOpenChange, state, }: AdaptParentProps) => React.JSX.Element;
 export declare function AdaptContents({ scope, ...rest }: {
@@ -107,7 +100,6 @@ export declare const Adapt: ((props: AdaptProps) => React.JSX.Element) & {
 export declare const AdaptPortalContents: (props: {
     children: React.ReactNode;
     scope?: string;
-    passThrough?: boolean;
 }) => React.JSX.Element;
 export declare const useAdaptIsActive: (scope?: string) => boolean;
 export declare function useAdaptTarget<State = unknown>(scope?: string): AdaptTarget<State> | null;

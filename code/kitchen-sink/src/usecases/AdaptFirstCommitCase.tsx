@@ -1,0 +1,86 @@
+import { useCallback, useEffect, useState } from 'react'
+import { Adapt, Paragraph, YStack } from 'tamagui'
+import { Button } from '../components/Button'
+import { Select } from '../components/Select'
+import { Sheet } from '../components/Sheet'
+
+/**
+ * Adapt activation has to be correct on the first commit.
+ *
+ * SelectInner picks SelectSheetImpl or SelectInlineImpl from useAdaptIsActive.
+ * When the Adapt child publishes when/platform from a layout effect the first
+ * commit sees false, so the inline impl mounts and is immediately replaced by
+ * the sheet impl - the whole Select subtree, and everything the user put in it,
+ * mounts twice.
+ *
+ * MountProbe sits inside the Select so it remounts whenever that swap happens.
+ * `when={true}` forces the adapted path regardless of viewport or touch.
+ */
+const items = ['Apple', 'Pear', 'Blackberry']
+
+function MountProbe({ onMount }: { onMount: () => void }) {
+  useEffect(() => {
+    onMount()
+  }, [onMount])
+
+  return null
+}
+
+export function AdaptFirstCommitCase() {
+  const [open, setOpen] = useState(false)
+  const [value, setValue] = useState('apple')
+  const [mounts, setMounts] = useState(0)
+
+  const onProbeMount = useCallback(() => {
+    setMounts((count) => count + 1)
+  }, [])
+
+  return (
+    <YStack p="4" gap="4" items="center">
+      <Paragraph testID="impl-mount-count">{mounts}</Paragraph>
+
+      <Select open={open} onOpenChange={setOpen} value={value} onValueChange={setValue}>
+        <MountProbe onMount={onProbeMount} />
+
+        <Select.Trigger testID="open-select" width={220}>
+          <Select.Value placeholder="Select a fruit" />
+          <Select.Icon />
+        </Select.Trigger>
+
+        <Adapt when={true}>
+          <Sheet transition="medium" zIndex={250_000} modal snapPointsMode="fit">
+            <Sheet.Overlay bg="shadow6" opacity="enter:0 exit:0" />
+            <Sheet.Handle bg="color5" />
+            <Sheet.Container testID="sheet-frame" padding="4" gap="4">
+              <Sheet.Background bg="background" borderRadius="6" />
+              <Sheet.ScrollView>
+                <Adapt.Contents />
+              </Sheet.ScrollView>
+            </Sheet.Container>
+          </Sheet>
+        </Adapt>
+
+        <Select.Content>
+          <Select.Viewport minW={200}>
+            <Select.Group>
+              <Select.Label testID="select-content-marker">Fruits</Select.Label>
+              {items.map((item) => (
+                <Select.Item
+                  key={item}
+                  value={item.toLowerCase()}
+                  testID={`select-option-${item.toLowerCase()}`}
+                >
+                  <Select.ItemText>{item}</Select.ItemText>
+                </Select.Item>
+              ))}
+            </Select.Group>
+          </Select.Viewport>
+        </Select.Content>
+      </Select>
+
+      <Button testID="close-select" onPress={() => setOpen(false)}>
+        Close
+      </Button>
+    </YStack>
+  )
+}

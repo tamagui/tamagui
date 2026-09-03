@@ -88,16 +88,13 @@ export type AdaptTarget<State = unknown> = {
   state: State
 }
 
+export type AdaptConfig = Pick<AdaptProps, 'when' | 'platform'>
+
 export type AdaptParentContextI = {
   Contents: Component
   scopeName: string
-  platform: AdaptPlatform
-  setPlatform: (when: AdaptPlatform) => any
-  when: AdaptWhen
-  setWhen: (when: AdaptWhen) => any
   active: boolean
-  rawActive: boolean
-  setRawActive: (active: boolean) => void
+  setAdaptConfig: (config: AdaptConfig | null) => void
   portalName?: string
   lastScope?: string
   slot: AdaptSlotStore | null
@@ -139,13 +136,8 @@ const adaptContextKeys = [
   'Contents',
   'scopeName',
   'portalName',
-  'platform',
-  'setPlatform',
-  'when',
-  'setWhen',
   'active',
-  'rawActive',
-  'setRawActive',
+  'setAdaptConfig',
   'slot',
   'handoff',
   'targetFullyHidden',
@@ -165,13 +157,8 @@ export const AdaptContext = createStyledContext<
     Contents: null as any,
     scopeName: '',
     portalName: '',
-    platform: null as any,
-    setPlatform: (x: AdaptPlatform) => {},
-    when: null as any,
-    setWhen: () => {},
     active: false,
-    rawActive: false,
-    setRawActive: () => {},
+    setAdaptConfig: () => {},
     slot: null,
     handoff: {
       hidden: true,
@@ -231,12 +218,42 @@ type AdaptParentProps = {
   open?: boolean
   onOpenChange?: (open: boolean) => void
   state?: unknown
-  // unused, removed with the old paths in PRs B-E
-  portal?:
-    | boolean
-    | {
-        forwardProps?: any
+}
+
+// an <Adapt /> written into the adapting component's children is read off the
+// element tree during render. learning it from the child's layout effect left
+// every consumer seeing "inactive" on the first commit, so an adapted Select
+// mounted SelectInlineImpl and swapped it for SelectSheetImpl one commit later,
+// remounting the whole subtree. breadth-first so a nested adapting component's
+// own <Adapt /> can never shadow this one's. an <Adapt /> that a userland
+// component renders is not in this tree, so it reports itself from its effect
+// instead and still costs that extra commit.
+function findAdaptConfig(children: React.ReactNode, scope: string): AdaptConfig | null {
+  let level = React.Children.toArray(children)
+
+  while (level.length) {
+    const next: typeof level = []
+
+    for (const child of level) {
+      if (!React.isValidElement(child)) continue
+      const childProps = child.props as AdaptProps
+
+      if (child.type === Adapt) {
+        if (childProps.scope == null || childProps.scope === scope) {
+          return childProps
+        }
+        continue
       }
+
+      if (childProps.children && typeof childProps.children !== 'function') {
+        next.push(...React.Children.toArray(childProps.children))
+      }
+    }
+
+    level = next
+  }
+
+  return null
 }
 
 export const AdaptParent = ({
@@ -255,9 +272,23 @@ export const AdaptParent = ({
     slotRef.current = createAdaptSlotStore()
   }
 
-  const [when, setWhen] = React.useState<AdaptWhen>(null)
-  const [platform, setPlatform] = React.useState<AdaptPlatform>(null)
-  const [rawActive, setRawActive] = React.useState(false)
+  const staticConfig = React.useMemo(
+    () => findAdaptConfig(children, scope),
+    [children, scope]
+  )
+  const [publishedConfig, setPublishedConfig] = React.useState<AdaptConfig | null>(null)
+  const rawActive = useAdaptIsActiveGiven(staticConfig ?? publishedConfig)
+
+  // written during render because a child's layout effect calls setAdaptConfig
+  // before this component's own effects run
+  const staticConfigRef = React.useRef(staticConfig)
+  staticConfigRef.current = staticConfig
+
+  const setAdaptConfig = React.useCallback((config: AdaptConfig | null) => {
+    if (staticConfigRef.current) return
+    setPublishedConfig(config)
+  }, [])
+
   const [exiting, setExiting] = React.useState(false)
   const [present, setPresent] = React.useState(false)
   const [targetFullyHidden, setTargetFullyHidden] = React.useState(!open)
@@ -276,13 +307,6 @@ export const AdaptParent = ({
     rawActive && wasTargetHiddenRef.current && hasHadActiveTargetRef.current && open
   )
 
-  rawActiveRef.current = rawActive
-  openRef.current = open
-  if (rawActive) {
-    hasHadActiveTargetRef.current = true
-  }
-  wasTargetHiddenRef.current = targetHidden
-
   const releasePresenceLatch = React.useCallback(() => {
     setExiting(false)
     if (!rawActiveRef.current) {
@@ -297,6 +321,15 @@ export const AdaptParent = ({
   }, [shouldStartExit])
 
   useIsomorphicLayoutEffect(() => {
+    // committed snapshot: skipNextAnimation compares the next render against
+    // these, and onTransition reads them non-reactively
+    rawActiveRef.current = rawActive
+    openRef.current = open
+    if (rawActive) {
+      hasHadActiveTargetRef.current = true
+    }
+    wasTargetHiddenRef.current = targetHidden
+
     if (open && rawActive) {
       setTargetFullyHidden(false)
       return
@@ -308,7 +341,7 @@ export const AdaptParent = ({
     if (!open && !active) {
       setTargetFullyHidden(true)
     }
-  }, [active, open, rawActive])
+  }, [active, open, rawActive, targetHidden])
 
   useIsomorphicLayoutEffect(() => {
     if (rawActive) {
@@ -404,13 +437,8 @@ export const AdaptParent = ({
     <LastAdaptContextScope.Provider value={scope}>
       <ProvideAdaptContext
         Contents={FinalContents}
-        when={when}
-        platform={platform}
-        setPlatform={setPlatform}
-        setWhen={setWhen}
         active={active}
-        rawActive={rawActive}
-        setRawActive={setRawActive}
+        setAdaptConfig={setAdaptConfig}
         portalName={portalName}
         scopeName={scope}
         slot={slotRef.current}
@@ -464,24 +492,19 @@ AdaptContents.shouldForwardSpace = true
 
 export const Adapt = withStaticProperties(
   function Adapt(props: AdaptProps) {
-    const { platform, when, children, scope } = props
+    const { children, platform, scope, when } = props
     const context = useAdaptContext(scope)
-    const rawEnabled = useAdaptIsActiveGiven(props)
-    const enabled = rawEnabled || context.active
+    const enabled = context.active
     const isRenderCallback = typeof children === 'function'
 
+    // only reaches the parent when it could not read this element off its own
+    // children, i.e. a userland component renders the <Adapt />
     useIsomorphicLayoutEffect(() => {
-      context?.setWhen?.((when || rawEnabled) as AdaptWhen)
-      context?.setPlatform?.(platform || null)
-      context?.setRawActive?.(rawEnabled)
-    }, [
-      when,
-      platform,
-      rawEnabled,
-      context.setWhen,
-      context.setPlatform,
-      context.setRawActive,
-    ])
+      context.setAdaptConfig({ when, platform })
+      return () => {
+        context.setAdaptConfig(null)
+      }
+    }, [when, platform, context.setAdaptConfig])
 
     useIsomorphicLayoutEffect(() => {
       if (!enabled || !isRenderCallback) return
@@ -496,14 +519,6 @@ export const Adapt = withStaticProperties(
       context.registerRenderCallback,
       context.unregisterRenderCallback,
     ])
-
-    useIsomorphicLayoutEffect(() => {
-      return () => {
-        context?.setWhen?.(null)
-        context?.setPlatform?.(null)
-        context?.setRawActive?.(false)
-      }
-    }, [])
 
     let output: React.ReactNode
 
@@ -524,7 +539,6 @@ export const Adapt = withStaticProperties(
 export const AdaptPortalContents = (props: {
   children: React.ReactNode
   scope?: string
-  passThrough?: boolean
 }) => {
   const isActive = useAdaptIsActive(props.scope)
   const { slot } = useAdaptContext(props.scope)
@@ -557,19 +571,29 @@ function AdaptSlotPublisher({
   slot: AdaptSlotStore | null
   children: React.ReactNode
 }) {
-  const publishedRef = React.useRef(false)
+  const publishedRef = React.useRef<{
+    isActive: boolean
+    element: React.ReactNode
+  } | null>(null)
 
-  // Publish the live element value after every commit. Do not memoize this handoff:
-  // stale element deps caused the Sheet overlay-hoist regression this replaces.
+  // Publish the live element value after every commit. Do not memoize this handoff
+  // on a dep array: stale element deps caused the Sheet overlay-hoist regression
+  // this replaces. Comparing against what was actually published is safe, and
+  // keeps an unchanged element from re-rendering every slot consumer.
   useIsomorphicLayoutEffect(() => {
     if (!slot) return
 
+    const published = publishedRef.current
+    if (published && published.isActive === isActive && published.element === children) {
+      return
+    }
+
+    publishedRef.current = { isActive, element: children }
+
     if (isActive) {
       slot.publish(children)
-      publishedRef.current = true
     } else {
       slot.clear()
-      publishedRef.current = false
     }
 
     slot.notify()
@@ -577,11 +601,11 @@ function AdaptSlotPublisher({
 
   useIsomorphicLayoutEffect(() => {
     return () => {
-      if (publishedRef.current) {
+      if (publishedRef.current?.isActive) {
         slot?.clear()
         slot?.notify()
-        publishedRef.current = false
       }
+      publishedRef.current = null
     }
   }, [slot])
 
@@ -591,11 +615,10 @@ function AdaptSlotPublisher({
 const emptySubscribe = () => () => {}
 const emptySnapshot = () => 0
 
-const useAdaptIsActiveGiven = ({
-  when,
-  platform,
-}: Pick<AdaptProps, 'when' | 'platform'>) => {
+const useAdaptIsActiveGiven = (config: AdaptConfig | null) => {
   const media = useMedia()
+  const when = config?.when
+  const platform = config?.platform
 
   if (when == null && platform == null) {
     return false
@@ -625,9 +648,7 @@ const useAdaptIsActiveGiven = ({
 }
 
 export const useAdaptIsActive = (scope?: string) => {
-  const props = useAdaptContext(scope)
-  const isActiveGiven = useAdaptIsActiveGiven(props)
-  return props.active || isActiveGiven
+  return useAdaptContext(scope).active
 }
 
 export function useAdaptTarget<State = unknown>(

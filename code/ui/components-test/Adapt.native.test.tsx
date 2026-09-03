@@ -50,7 +50,7 @@ describe('Adapt native live slot contents', () => {
 
     function Harness({ label }: { label: string }) {
       return (
-        <AdaptParent scope={scope} portal>
+        <AdaptParent scope={scope}>
           <Adapt when>
             <Adapt.Contents />
           </Adapt>
