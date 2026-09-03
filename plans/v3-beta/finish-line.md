@@ -47,6 +47,7 @@ Owner session: Fable (r16625). Supersedes the execution state in
 | native runtime | native-registry Detox suite green in CI | not exercised on a fresh beta in a real app since 653.1 |
 | main sync | merge-base 2026-08-21 | 26 main commits (sheet keyboard, native media driver, ci) not in v3-beta |
 | portal teleport | teleport is opt-in behind `getPortal().type === 'teleport'`; the gorhom root host is back to `shouldAddRootHost = true` | two hosts named `root` register under teleport and the last one wins; when the unstyled gorhom host wins, a teleported Sheet lays out at zero height with its overlay still eating touches. See the 2026-09-03 log entry |
+| compiler fonts | runtime applies the default body font size; the compiler does not | an optimized build drops `fontSize` and `lineHeight` from every `size`-defaulted `SizableText`/`Paragraph`, on web and native, because the extractor resolves against a font ramp that has no named keys. `next-webpack` `exports.unit.test.ts` is red on it. See the 2026-09-03 log entry |
 
 ## Status log
 
@@ -206,6 +207,62 @@ Owner session: Fable (r16625). Supersedes the execution state in
   of the hosts, which is what the two reverts were. Out of scope for this
   branch, and not a beta blocker while teleport stays opt-in behind
   `getPortal().type === 'teleport'`.
+
+- 2026-09-03 (compiler drops the default body font size, open): `next-webpack`
+  `exports.unit.test.ts` is red on `web-optimized` and `web-optimized-single`.
+  The compiled `<p>` for `Paragraph` loses `_fs`, `_fw`, `_ls` and `_lh`, and
+  the generated `_screen.css` carries no font-size rule for it. This is not a
+  stale snapshot and refreshing it would bake the regression into the
+  expectations.
+
+  **RAN** the two controls. Web runtime, rendering `<Paragraph>` under
+  `createTamagui(defaultConfig)` from `@tamagui/config/v6`, emits
+  `._fs-1530165158{font-size:var(--f-size-sm)}` and
+  `._lh-1535282283{line-height:var(--f-lineHeight-sm)}`, which is 14 / 20 and
+  agrees with the native runtime reading `{"fontSize":14,"lineHeight":20}`. The
+  compiler emits neither, on web (`_screen.css` has only the H1's
+  `--f-size-10`) and on native (the flattened Paragraph style is
+  `{"fontFamily":"Inter","textAlign":"center"}`). So there is no web-versus-native
+  asymmetry here. Both platforms agree at runtime and both agree in the
+  compiler; the split is compiler against runtime.
+
+  **RAN** the cause, by logging the `env` that `getFontSized` receives during
+  `bun tamagui build`: `env.fonts.body.size` has keys `1`-`16` only. Since
+  `abe50158df`, `size: true` routes through `resolveSize`, which reads
+  `sizes.default` (`md`) and returns that recipe's `fontSize`, the **named** key
+  `sm`. `font.size['sm']` is undefined against a numeric-only ramp, as is every
+  sibling lookup, so the resolver contributes no font styles at all. `H1` is
+  unaffected because its size is the token `10`, which the numeric ramp has.
+  The config on disk is fine: `.tamagui/tamagui.config.web.cjs` applies
+  `withTailwindTypeScale` and node-requiring it shows `fontsParsed.body.size`
+  carrying `xs, sm, base, ...`. The truncated ramp comes from the separately
+  bundled components config, `.tamagui/tamagui-components.config.web.mjs`,
+  which calls `createTamagui` itself and contains no `withTailwindTypeScale`.
+  The fix is to make the extractor resolve against the installed config rather
+  than that bundle's own instance, the same problem `installTamaguiConfig`
+  already solves for the host copy in `bundleConfig.ts`.
+
+  **RAN** it is not this branch: reverting this branch's only three source
+  files (`createTamagui.ts`, `tailwind/candidate.ts`,
+  `codemod-flat-values/grammar.ts`) to `7565357623`, rebuilding all three
+  packages and confirming `stylePropsUnitless` had left `dist`, still produces
+  a Paragraph with no font classes. `abe50158df` is an ancestor of
+  `cf393b315b`, and the snapshot was last regenerated before it by
+  `addc91a5ea`, so `v3-beta` carries the same red.
+
+  Two smaller things fall out. The token ramps are asymmetric: `font.size` and
+  `font.lineHeight` carry the named keys, while `font.weight`,
+  `font.letterSpacing` and `font.transform` stop at `16`. So even once the
+  named lookup works, a `size`-defaulted text gets `fontSize` and `lineHeight`
+  and nothing else, which is why `fontWeight` and `letterSpacing` disappeared
+  from the native runtime snapshot in `7565357623`. That is a ramp design
+  question, not a divergence. And the run's "3 obsolete snapshots"
+  (`native-optimized`, `web-css`, `native-optimized-single`) are an artifact,
+  not orphans: each is asserted after a failing `toMatchSnapshot` in the same
+  `it`, so the throw stops them being written and vitest reports them unused.
+  All five keys still map to live assertions.
+
+  Out of scope for this branch, which does not own the size ramp.
 
 ## Plan
 
