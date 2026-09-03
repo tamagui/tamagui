@@ -72,6 +72,27 @@ if (process.env.TAMAGUI_TARGET === 'web') {
   }
 }
 
+// on web a responder event's pageX/pageY come straight off the DOM event and are
+// document-relative, while `measure` reports the track through getBoundingClientRect
+// and is viewport-relative. subtracting the cached offset therefore mixes origins and
+// the thumb lags the cursor by exactly the page scroll (#4146). locationX/locationY
+// are `client - track.getBoundingClientRect()`, read fresh on every event, so they
+// need no offset at all - which is why onSlideStart was already correct. that also
+// closes the window where the cached offset is stale: nothing re-measures on scroll,
+// only on resize, an IntersectionObserver threshold crossing, and a 1s interval.
+// native measures the track and the touch against the screen, so it keeps the offset.
+const getTrackPosition = (
+  event: GestureReponderEvent,
+  offset: number,
+  orientation: 'horizontal' | 'vertical'
+) => {
+  const { locationX, locationY, pageX, pageY } = event.nativeEvent
+  if (isWeb) {
+    return orientation === 'horizontal' ? locationX : locationY
+  }
+  return (orientation === 'horizontal' ? pageX : pageY) - offset
+}
+
 /* -------------------------------------------------------------------------------------------------
  * SliderHorizontal
  * -----------------------------------------------------------------------------------------------*/
@@ -136,13 +157,17 @@ const SliderHorizontal = React.forwardRef<View, SliderHorizontalProps>(
             }
           }}
           onSlideMove={(event) => {
-            const value = getValueFromPointer(event.nativeEvent.pageX - state.offset)
+            const value = getValueFromPointer(
+              getTrackPosition(event, state.offset, 'horizontal')
+            )
             if (value) {
               onSlideMove?.(value, event)
             }
           }}
           onSlideEnd={(event) => {
-            const value = getValueFromPointer(event.nativeEvent.pageX - state.offset)
+            const value = getValueFromPointer(
+              getTrackPosition(event, state.offset, 'horizontal')
+            )
             if (value) {
               onSlideEnd?.(event, value)
             }
@@ -276,13 +301,17 @@ const SliderVertical = React.forwardRef<View, SliderVerticalProps>(
             }
           }}
           onSlideMove={(event) => {
-            const value = getValueFromPointer(event.nativeEvent.pageY - state.offset)
+            const value = getValueFromPointer(
+              getTrackPosition(event, state.offset, 'vertical')
+            )
             if (value) {
               onSlideMove?.(value, event)
             }
           }}
           onSlideEnd={(event) => {
-            const value = getValueFromPointer(event.nativeEvent.pageY - state.offset)
+            const value = getValueFromPointer(
+              getTrackPosition(event, state.offset, 'vertical')
+            )
             onSlideEnd?.(event, value)
           }}
           onStepKeyDown={(event) => {
