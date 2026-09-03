@@ -1,6 +1,6 @@
 export { createRefComponent, type RefProp } from '@tamagui/compose-refs';
 export type * from '@tamagui/size';
-export { createSizeContext, createSizeTable, defaultTokenSizePolicy, resolveSizeToken, resolveTokenSize, SizeContext, } from '@tamagui/size';
+export { createSizeContext, oneSizeSmaller, resolveSize, SizeContext, } from '@tamagui/size';
 export * from '@tamagui/web';
 import type { StackNonStyleProps, StackStyleBase, TamaDefer, TamaguiComponent, TamaguiElement, TamaguiTextElement, TextNonStyleProps, TextProps, TextStylePropsBase } from '@tamagui/web';
 import type { RNTextProps, RNViewProps } from './reactNativeTypes';

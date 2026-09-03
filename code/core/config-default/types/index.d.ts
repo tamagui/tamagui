@@ -372,6 +372,21 @@ export declare function getDefaultTamaguiConfig(_platform?: 'native' | 'web'): {
             9.5: import("@tamagui/web").Variable<number>;
         };
     }, "color" | "radius" | "size" | "space" | "zIndex">;
+    sizes: {
+        readonly default: 'md';
+        readonly sm: {
+            readonly fontSize: '1';
+            readonly paddingX: '2';
+            readonly paddingY: '1';
+            readonly radius: '2';
+        };
+        readonly md: {
+            readonly fontSize: '4';
+            readonly paddingX: '4';
+            readonly paddingY: '2';
+            readonly radius: '4';
+        };
+    };
     media: {
         xs: {
             maxWidth: number;

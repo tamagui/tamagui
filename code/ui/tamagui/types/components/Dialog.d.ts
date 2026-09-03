@@ -7,8 +7,8 @@ export declare const dialogContentStyles: {
     readonly backgroundColor: 'background';
     readonly borderWidth: 1;
     readonly borderColor: 'border-color';
-    readonly padding: number | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString | (string & {});
-    readonly borderRadius: number | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString | (string & {});
+    readonly padding: '4';
+    readonly borderRadius: '4';
     readonly elevate: true;
 };
 export declare const DialogOverlay: React.FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {

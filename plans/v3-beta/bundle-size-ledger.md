@@ -352,3 +352,16 @@ instead of supplementing it, so `width` cannot declare only the container values
 Making that a fallback would drop those variables, but it changes token lookup
 for every prop-named domain in every user config and needs its own review.
 
+
+## Measurement, 2026-09-03: named control sizes (no baseline change)
+
+The `@tamagui/size` control ramp (a lookup of heights per size) became
+`resolveSize`: named recipes from `config.sizes` plus the v2 token-key path,
+with the size context and `oneSizeSmaller`. Every component that took `size`
+now goes through it. `styledDynamic` threads `conf.sizes` into the env.
+
+- **RAN** pinned Node 24.16.0: 28,797 gzip-9 against the 28,671 baseline
+  (+126, +0.44%), raw 76,796. Measured on the rebased tip after the tailwind
+  composed-utility trim, which was 28,793 on its own, so the sizes env field
+  costs 4 bytes in the styled-view fixture.
+- Under the 28,821 ceiling. Baseline left as recorded.

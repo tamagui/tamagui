@@ -1379,6 +1379,39 @@ export declare const defaultConfig: {
             };
         };
     };
+    sizes: {
+        readonly default: 'md';
+        readonly xs: {
+            readonly fontSize: 'xs';
+            readonly paddingX: '2';
+            readonly paddingY: '1';
+            readonly radius: 'sm';
+        };
+        readonly sm: {
+            readonly fontSize: 'sm';
+            readonly paddingX: '3';
+            readonly paddingY: '1.5';
+            readonly radius: 'md';
+        };
+        readonly md: {
+            readonly fontSize: 'sm';
+            readonly paddingX: '4';
+            readonly paddingY: '2';
+            readonly radius: 'md';
+        };
+        readonly lg: {
+            readonly fontSize: 'base';
+            readonly paddingX: '6';
+            readonly paddingY: '2';
+            readonly radius: 'md';
+        };
+        readonly xl: {
+            readonly fontSize: 'lg';
+            readonly paddingX: '8';
+            readonly paddingY: '2.5';
+            readonly radius: 'lg';
+        };
+    };
     selectionStyles: typeof import("./settings").selectionStyles;
     settings: {
         mediaQueryDefaultActive: {

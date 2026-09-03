@@ -21,7 +21,7 @@ export declare const elevated: {
 };
 export declare const rounded: {
     readonly true: {
-        readonly borderRadius: number | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString | (string & {});
+        readonly borderRadius: '4';
     };
 };
 export declare const interactive: {
@@ -58,7 +58,7 @@ export declare const facets: {
     };
     readonly rounded: {
         readonly true: {
-            readonly borderRadius: number | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString | (string & {});
+            readonly borderRadius: '4';
         };
     };
     readonly interactive: {
