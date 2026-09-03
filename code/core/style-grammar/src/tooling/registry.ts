@@ -546,6 +546,7 @@ export const wholeClassUtilities: Readonly<
   'line-clamp-6': { numberOfLines: 6 },
   'line-clamp-none': { numberOfLines: 0 },
   'scale-none': { scale: 1 },
+  'rotate-none': { rotate: '0deg' },
   'translate-none': { x: 0, y: 0 },
   'transform-none': { transform: 'none' },
   'order-first': { order: -9999 },

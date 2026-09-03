@@ -34,6 +34,12 @@ describe('tailwind transform utilities', () => {
     expect(axisRuleText('translate-none', '--t-y')).toContain('--t-y:0px')
     expect(axisRuleText('scale-none', '--t-scale-x')).toContain('--t-scale-x:1')
     expect(axisRuleText('scale-none', '--t-scale-y')).toContain('--t-scale-y:1')
+    expect(
+      findRule(
+        splitTailwindStyles(View, { className: 'rotate-none' }).rulesToInsert,
+        'rotate'
+      )[StyleObjectValue]
+    ).toBe('0deg')
   })
 
   test('translate-y-[10px] → --t-y axis program', () => {

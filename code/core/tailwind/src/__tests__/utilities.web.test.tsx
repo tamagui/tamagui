@@ -155,6 +155,12 @@ describe('tailwind standard utilities', () => {
     expect(findRule(styles.rulesToInsert, 'margin')[StyleObjectValue]).toBe('0px')
   })
 
+  test('auto margins preserve Yoga-compatible auto values', () => {
+    const styles = splitTailwindStyles(View, { className: 'mx-auto' } as any)
+    expect(findRule(styles.rulesToInsert, 'marginLeft')[StyleObjectValue]).toBe('auto')
+    expect(findRule(styles.rulesToInsert, 'marginRight')[StyleObjectValue]).toBe('auto')
+  })
+
   test('logical spacing and gap axes emit browser-native logical properties', () => {
     const styles = splitTailwindStyles(View, {
       className: 'ps-4 pe-2 pbs-4 pbe-2 ms-2 me-4 mbs-2 mbe-4 gap-x-2 gap-y-4',

@@ -132,6 +132,19 @@ const positionSpaceProps = new Set([
   'start',
   'end',
 ])
+const marginSpaceProps = new Set([
+  'margin',
+  'marginTop',
+  'marginRight',
+  'marginBottom',
+  'marginLeft',
+  'marginInlineStart',
+  'marginInlineEnd',
+  'marginBlockStart',
+  'marginBlockEnd',
+  'marginHorizontal',
+  'marginVertical',
+])
 const borderWidthKeywords = new Set(['thin', 'medium', 'thick'])
 const ambiguousCssKeywords = new Set([
   'auto',
@@ -639,6 +652,9 @@ function chooseEntry(
         positionSpaceProps.has(entry.prop) &&
         (rawValue === 'full' || rawValue === 'auto' || fractionIsValid(rawValue))
       ) {
+        return { entry, valueKind: 'convenience', convenience: 'sizing-keyword' }
+      }
+      if (marginSpaceProps.has(entry.prop) && rawValue === 'auto') {
         return { entry, valueKind: 'convenience', convenience: 'sizing-keyword' }
       }
       if (entry.tokenCategory === 'zIndex' && numericPattern.test(rawValue)) {

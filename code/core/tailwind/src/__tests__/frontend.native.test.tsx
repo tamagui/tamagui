@@ -62,6 +62,16 @@ describe('claimed candidates resolve to native style values', () => {
     expect(
       styleOf(splitTailwindStyles(View, { className: 'scale-none' })).transform
     ).toEqual([{ scale: 1 }])
+    expect(
+      styleOf(splitTailwindStyles(View, { className: 'rotate-none' })).transform
+    ).toEqual([{ rotate: '0deg' }])
+  })
+
+  test('auto margins expand through native layout longhands', () => {
+    expect(styleOf(splitTailwindStyles(View, { className: 'mx-auto' }))).toMatchObject({
+      marginLeft: 'auto',
+      marginRight: 'auto',
+    })
   })
 
   test('native alignment values resolve without CSS-only aliases', () => {

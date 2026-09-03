@@ -109,6 +109,9 @@ describe('claimed candidates become flat props', () => {
     expect(tokenize('scale-none')).toEqual({ scale: 1 })
     expect(tokenize('translate-none')).toEqual({ x: 0, y: 0 })
     expect(tokenize('transform-none')).toEqual({ transform: 'none' })
+    expect(tokenize('rotate-none')).toEqual({ rotate: '0deg' })
+    expect(tokenize('m-auto')).toEqual({ margin: 'auto' })
+    expect(tokenize('mx-auto')).toEqual({ marginHorizontal: 'auto' })
   })
 
   test('representable text shadow presets compose with their color', () => {

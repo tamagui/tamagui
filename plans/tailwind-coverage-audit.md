@@ -15,13 +15,13 @@ resolver accepts the part; runtime suites separately prove the complete multi-cl
 | Metric | Count |
 | --- | ---: |
 | Tailwind default-theme candidates | 23,286 |
-| Tamagui-owned candidates on web | 10,723 |
-| Official-engine web fallback | 12,563 |
-| Native-ready owned candidates | 10,455 |
+| Tamagui-owned candidates on web | 10,735 |
+| Official-engine web fallback | 12,551 |
+| Native-ready owned candidates | 10,467 |
 | Explicitly web-only / native-gated candidates | 273 |
 | Native-only lowerings | 5 |
 | Unsafe native-owned candidates | 0 |
-| Complete / partial / missing web families | 487 / 29 / 638 |
+| Complete / partial / missing web families | 499 / 29 / 626 |
 
 Web coverage is the full registry: Tamagui-owned candidates use the shared style runtime
 and every remainder stays in `className` for the official engine. Native intentionally
@@ -584,7 +584,7 @@ the candidate needs a native lowering or an explicit target gate.
 | `list-outside` | 1 | 0 | 0 | 0 | 0 | `list-outside` |
 | `lowercase` | 1 | 1 | 1 | 0 | 0 |  |
 | `m` | 34 | 34 | 34 | 0 | 0 |  |
-| `m-auto` | 1 | 0 | 0 | 0 | 0 | `m-auto` |
+| `m-auto` | 1 | 1 | 1 | 0 | 0 |  |
 | `m-px` | 1 | 1 | 1 | 0 | 0 |  |
 | `mask-add` | 1 | 0 | 0 | 0 | 0 | `mask-add` |
 | `mask-alpha` | 1 | 0 | 0 | 0 | 0 | `mask-alpha` |
@@ -714,16 +714,16 @@ the candidate needs a native lowering or an explicit target gate.
 | `max-w-svh` | 1 | 0 | 0 | 0 | 0 | `max-w-svh` |
 | `max-w-svw` | 1 | 0 | 0 | 0 | 0 | `max-w-svw` |
 | `mb` | 34 | 34 | 34 | 0 | 0 |  |
-| `mb-auto` | 1 | 0 | 0 | 0 | 0 | `mb-auto` |
+| `mb-auto` | 1 | 1 | 1 | 0 | 0 |  |
 | `mb-px` | 1 | 1 | 1 | 0 | 0 |  |
 | `mbe` | 34 | 34 | 34 | 0 | 0 |  |
-| `mbe-auto` | 1 | 0 | 0 | 0 | 0 | `mbe-auto` |
+| `mbe-auto` | 1 | 1 | 1 | 0 | 0 |  |
 | `mbe-px` | 1 | 1 | 1 | 0 | 0 |  |
 | `mbs` | 34 | 34 | 34 | 0 | 0 |  |
-| `mbs-auto` | 1 | 0 | 0 | 0 | 0 | `mbs-auto` |
+| `mbs-auto` | 1 | 1 | 1 | 0 | 0 |  |
 | `mbs-px` | 1 | 1 | 1 | 0 | 0 |  |
 | `me` | 34 | 34 | 34 | 0 | 0 |  |
-| `me-auto` | 1 | 0 | 0 | 0 | 0 | `me-auto` |
+| `me-auto` | 1 | 1 | 1 | 0 | 0 |  |
 | `me-px` | 1 | 1 | 1 | 0 | 0 |  |
 | `min-block` | 60 | 60 | 60 | 0 | 0 |  |
 | `min-block-auto` | 1 | 1 | 1 | 0 | 0 |  |
@@ -796,22 +796,22 @@ the candidate needs a native lowering or an explicit target gate.
 | `mix-blend-screen` | 1 | 0 | 0 | 0 | 0 | `mix-blend-screen` |
 | `mix-blend-soft-light` | 1 | 0 | 0 | 0 | 0 | `mix-blend-soft-light` |
 | `ml` | 34 | 34 | 34 | 0 | 0 |  |
-| `ml-auto` | 1 | 0 | 0 | 0 | 0 | `ml-auto` |
+| `ml-auto` | 1 | 1 | 1 | 0 | 0 |  |
 | `ml-px` | 1 | 1 | 1 | 0 | 0 |  |
 | `mr` | 34 | 34 | 34 | 0 | 0 |  |
-| `mr-auto` | 1 | 0 | 0 | 0 | 0 | `mr-auto` |
+| `mr-auto` | 1 | 1 | 1 | 0 | 0 |  |
 | `mr-px` | 1 | 1 | 1 | 0 | 0 |  |
 | `ms` | 34 | 34 | 34 | 0 | 0 |  |
-| `ms-auto` | 1 | 0 | 0 | 0 | 0 | `ms-auto` |
+| `ms-auto` | 1 | 1 | 1 | 0 | 0 |  |
 | `ms-px` | 1 | 1 | 1 | 0 | 0 |  |
 | `mt` | 34 | 34 | 34 | 0 | 0 |  |
-| `mt-auto` | 1 | 0 | 0 | 0 | 0 | `mt-auto` |
+| `mt-auto` | 1 | 1 | 1 | 0 | 0 |  |
 | `mt-px` | 1 | 1 | 1 | 0 | 0 |  |
 | `mx` | 34 | 34 | 34 | 0 | 0 |  |
-| `mx-auto` | 1 | 0 | 0 | 0 | 0 | `mx-auto` |
+| `mx-auto` | 1 | 1 | 1 | 0 | 0 |  |
 | `mx-px` | 1 | 1 | 1 | 0 | 0 |  |
 | `my` | 34 | 34 | 34 | 0 | 0 |  |
-| `my-auto` | 1 | 0 | 0 | 0 | 0 | `my-auto` |
+| `my-auto` | 1 | 1 | 1 | 0 | 0 |  |
 | `my-px` | 1 | 1 | 1 | 0 | 0 |  |
 | `no-underline` | 1 | 1 | 1 | 0 | 0 |  |
 | `normal-case` | 1 | 1 | 1 | 0 | 0 |  |
@@ -927,7 +927,7 @@ the candidate needs a native lowering or an explicit target gate.
 | `ring-inset` | 1 | 1 | 1 | 0 | 0 |  |
 | `ring-offset` | 296 | 0 | 0 | 0 | 0 | `ring-offset-0`, `ring-offset-1`, `ring-offset-2` |
 | `rotate` | 9 | 9 | 9 | 0 | 0 |  |
-| `rotate-none` | 1 | 0 | 0 | 0 | 0 | `rotate-none` |
+| `rotate-none` | 1 | 1 | 1 | 0 | 0 |  |
 | `rotate-x` | 9 | 9 | 9 | 0 | 0 |  |
 | `rotate-y` | 9 | 9 | 9 | 0 | 0 |  |
 | `rotate-z` | 9 | 9 | 9 | 0 | 0 |  |
