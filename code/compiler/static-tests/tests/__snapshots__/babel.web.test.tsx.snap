@@ -194,14 +194,14 @@ exports[`flexBasis: 0 with responsive style extracts correctly 1`] = `
     export function Test() {
       return (
         <div
-          className="is_View _f-1141083705"
+          className="is_View _f-2086791049"
         />
       )
     }
 "
 `;
 
-exports[`flexBasis: 0 with responsive style extracts correctly 2`] = `"._f-1141083705{flex-basis:var(--c-size-1)}@media (min-width: 640px) {._f-1141083705{flex-basis:0px}}"`;
+exports[`flexBasis: 0 with responsive style extracts correctly 2`] = `"._f-2086791049{flex-basis:var(--c-flexBasis-1)}@media (min-width: 640px) {._f-2086791049{flex-basis:0px}}"`;
 
 exports[`font_body class is present in BOTH ternary branches 1`] = `
 "const _cn2 = "is_Text font_body _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _ff-f-family ";

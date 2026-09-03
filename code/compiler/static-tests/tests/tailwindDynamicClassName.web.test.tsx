@@ -42,7 +42,8 @@ describe('dynamic className on a tailwind View', () => {
     expect(output.line).toMatch(
       /^<div className=\{\["is_View _w-\d+ _h-\d+ _br-\d+", \(\{"w-11 h-11 rounded-full bg-\[red\]":"_b-\d+","w-11 h-11 rounded-full bg-\[blue\]":"_b-\d+","w-11 h-11 rounded-full bg-\[pink\]":"_b-\d+","w-11 h-11 rounded-full bg-\[orange\]":"_b-\d+"\}\)\[`w-11 h-11 rounded-full \$\{heavyColors\[\(index \+ seed\) % heavyColors\.length\]\}`\]\]\.filter\(Boolean\)\.join\(" "\)\} style=\{\{ "width": \(80 \+ \(\(index \* 17\) % 60\)\) \}\} {2}\/>$/
     )
-    expect(output.css).toContain('width:var(--c-size-11)')
+    // width reads the v6 width scale; `11` there is the same length size holds
+    expect(output.css).toContain('width:var(--c-width-11)')
     expect(output.css).toContain('border-radius:var(--c-radius-full)')
     expect(output.css).toContain('background-color:orange')
   })
