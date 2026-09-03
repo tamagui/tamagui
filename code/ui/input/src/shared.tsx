@@ -1,4 +1,4 @@
-import { getVariableValue, isWeb, resolveTokenSize, styled } from '@tamagui/core'
+import { getVariableValue, isWeb, resolveSize, styled } from '@tamagui/core'
 import { getFontSized } from '@tamagui/get-font-sized'
 
 // Structural-only defaults for the unstyled Input behavior primitive.
@@ -15,57 +15,8 @@ export const defaultStyles = {
   minWidth: 0,
 } as const
 
-const resolveInputFrame = (val: any, env: Parameters<typeof getFontSized>[1]) =>
-  resolveTokenSize(val, { tokens: env.tokens, font: env.font! }).frame
-
-const inputSizeKeys = [
-  '0',
-  '0-25',
-  '0-5',
-  '0-75',
-  '1',
-  '1-5',
-  '2',
-  '2-5',
-  '3',
-  '3-5',
-  '4',
-  '4-5',
-  '5',
-  '6',
-  '7',
-  '8',
-  '9',
-  '10',
-  '11',
-  '12',
-  '13',
-  '14',
-  '15',
-  '16',
-  '17',
-  '18',
-  '19',
-  '20',
-] as const
-
-const getInputPadding = (
-  val: any,
-  env: Parameters<typeof getFontSized>[1],
-  steps: 1 | 2
-) => {
-  if (typeof val === 'number') {
-    return steps === 1
-      ? Math.max(0, Math.round(val * 0.6 - 12))
-      : Math.max(0, Math.round(val * 0.52 - 11.5))
-  }
-  const key = val === true ? '4' : val
-  const index = inputSizeKeys.indexOf(key)
-  return env.tokens.space[inputSizeKeys[Math.max(0, index - steps)]]
-}
-
 export const inputSizeVariant = styled.dynamic<any>((val = true, env) => {
-  const frame = resolveInputFrame(val, env)
+  const { frame } = resolveSize(val, env)
   const fontStyle = getFontSized(val as any, env)
   return {
     color: fontStyle?.color,
@@ -76,27 +27,13 @@ export const inputSizeVariant = styled.dynamic<any>((val = true, env) => {
     letterSpacing: fontStyle?.letterSpacing,
     lineHeight: isWeb ? fontStyle?.lineHeight : undefined,
     textTransform: fontStyle?.textTransform,
-    height: frame.size,
-    borderRadius: frame.radius,
-    paddingHorizontal: getInputPadding(val, env, 1),
+    ...frame,
   }
 })
 
 export const textAreaSizeVariant = styled.dynamic<any>((val = true, env) => {
-  const frame = resolveInputFrame(val, env)
-  const fontStyle = getFontSized(val as any, env)
   return {
-    borderRadius: frame.radius,
-    color: fontStyle?.color,
-    fontFamily: fontStyle?.fontFamily,
-    fontSize: fontStyle?.fontSize,
-    fontStyle: fontStyle?.fontStyle,
-    fontWeight: fontStyle?.fontWeight,
-    letterSpacing: fontStyle?.letterSpacing,
-    lineHeight: isWeb ? fontStyle?.lineHeight : undefined,
-    textTransform: fontStyle?.textTransform,
-    paddingVertical: getInputPadding(val, env, 2),
-    paddingHorizontal: getInputPadding(val, env, 1),
+    ...inputSizeVariant(val, env),
     height: 'auto',
   }
 })

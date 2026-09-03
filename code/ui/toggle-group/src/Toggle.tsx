@@ -1,6 +1,6 @@
 import { createRefComponent } from '@tamagui/compose-refs'
 import { composeEventHandlers } from '@tamagui/helpers'
-import { resolveSizeToken } from '@tamagui/size'
+import { resolveSize } from '@tamagui/size'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import type { GetProps, StylePiece, TamaguiElement } from '@tamagui/web'
 import { styled, View } from '@tamagui/web'
@@ -27,16 +27,17 @@ export const ToggleFrame = styled(View, {
   size: true,
   alignItems: 'center',
   justifyContent: 'center',
-  display: 'flex',
 
   variants: {
-    size: styled.dynamic<any>((val, { tokens }) => {
+    size: styled.dynamic<any>((val, env) => {
       if (!val) return
-      const sizeToken = resolveSizeToken(val, 'size')
-      const size = typeof sizeToken === 'number' ? sizeToken : tokens.size[sizeToken]
+      // a square hit target: the control height plus the skin's 1px border
+      const { frame, controlHeight } = resolveSize(val, env)
+      const side = controlHeight + 2
       return {
-        width: size,
-        height: size,
+        width: side,
+        height: side,
+        borderRadius: frame.borderRadius,
       }
     }),
 

@@ -12,8 +12,8 @@ test('uses button behavior without framework aesthetics', async ({ page }) => {
   await expect(button).toHaveAttribute('role', 'button')
   await expect(button).toHaveAttribute('tabindex', '0')
   await expect(button).toHaveAttribute('type', 'button')
-  // the opt-in size policy keeps the default control frame at 44px
-  await expect(button).toHaveCSS('height', '44px')
+  // the default named size (md): 20px line + 8px padding each side + 1px border
+  await expect(button).toHaveCSS('height', '38px')
   expect(await button.evaluate((element) => element.tagName)).toBe('BUTTON')
 
   await button.click()
@@ -95,24 +95,24 @@ test('plumbs leading and trailing icons around wrapped text', async ({ page }) =
 
   expect(leadingOrder).toEqual(['button-skin-leading-icon', 'Leading icon'])
   expect(trailingOrder).toEqual(['Trailing icon', 'button-skin-trailing-icon'])
-  // icon + text follow the font scale at the default size token ($4 -> 15 in v5)
-  await expect(page.getByTestId('button-skin-leading-icon')).toHaveCSS('width', '15px')
-  await expect(page.getByText('Wrapped string text')).toHaveCSS('font-size', '15px')
+  // md text is the `sm` font key (14px); the icon is that on the 4px grid
+  await expect(page.getByTestId('button-skin-leading-icon')).toHaveCSS('width', '16px')
+  await expect(page.getByText('Wrapped string text')).toHaveCSS('font-size', '14px')
   await expect(page.getByTestId('button-skin-explicit-text')).toHaveText(
     'Explicit text part'
   )
 })
 
-test('applies circular and explicit token sizes from the copied skin', async ({
+test('applies circular and explicit named sizes from the copied skin', async ({
   page,
 }) => {
   const circular = page.getByTestId('button-skin-circular')
   const wide = page.getByTestId('button-skin-wide')
 
-  // $5 -> size token 52; circular pins a square, icon follows font scale ($5 -> 16)
-  await expect(circular).toHaveCSS('height', '52px')
-  await expect(circular).toHaveCSS('width', '52px')
+  // lg: 24px line + 8px padding each side + 1px border; circular pins a square
+  await expect(circular).toHaveCSS('height', '42px')
+  await expect(circular).toHaveCSS('width', '42px')
   await expect(page.getByTestId('button-skin-circle-icon')).toHaveCSS('width', '16px')
-  await expect(wide).toHaveCSS('height', '52px')
+  await expect(wide).toHaveCSS('height', '42px')
   await expect(wide).toHaveCSS('min-width', '180px')
 })

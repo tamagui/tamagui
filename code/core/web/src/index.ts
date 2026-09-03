@@ -154,6 +154,7 @@ export type {
   Shorthands,
   Size,
   SizeKeys,
+  SizeName,
   SizeTokens,
   Space,
   SpaceTokens,

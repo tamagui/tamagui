@@ -5,15 +5,15 @@ import { isIos, isWeb } from '@tamagui/constants'
 import type {
   GestureReponderEvent,
   GetProps,
+  SizeResolverEnv,
   SizeTokens,
   TamaguiElement,
 } from '@tamagui/core'
 import {
   createStyledHOC,
   createRefComponent,
-  getTokens,
   getVariableValue,
-  resolveSizeToken,
+  resolveSize,
   styled,
   useConfiguration,
   useCreateShallowSetState,
@@ -436,13 +436,16 @@ const SliderActive = createStyledHOC(
  * SliderThumb
  * -----------------------------------------------------------------------------------------------*/
 
-// TODO make this customizable through tamagui
-// so we can accurately use it for estimatedSize below
-const getThumbSize = styled.dynamic<SizeTokens | number | true>((val) => {
-  const tokens = getTokens()
-  const sizeToken = resolveSizeToken(val ?? true, 'size')
-  const resolved = typeof sizeToken === 'number' ? sizeToken : tokens.size[sizeToken]
-  const size = typeof val === 'number' ? val : getVariableValue(resolved) * 0.86
+// the thumb is a line-height tall circle: 20px at md. without a styled env
+// (the SSR estimate below) it measures against the config's default font
+const thumbSize = (val: SizeTokens | number | true, env?: SizeResolverEnv) => {
+  if (typeof val === 'number') return val
+  const { text } = resolveSize(val, env)
+  return getVariableValue(text.lineHeight ?? text.fontSize) as number
+}
+
+const getThumbSize = styled.dynamic<SizeTokens | number | true>((val, env) => {
+  const size = thumbSize(val, env)
   return {
     width: size,
     height: size,
@@ -502,13 +505,8 @@ const SliderThumb = createStyledHOC(
       value === undefined ? 0 : convertValueToPercentage(value, context.min, context.max)
     const label = getLabel(index, context.values.length)
     const sizeIn = (sizeProp ?? context.size ?? true) as SizeTokens | number | true
-    const [size, setSize] = React.useState(() => {
-      // for SSR
-      const estimatedSize = getVariableValue(
-        getThumbSize(sizeIn, {} as any)?.width
-      ) as number
-      return estimatedSize
-    })
+    // for SSR
+    const [size, setSize] = React.useState(() => thumbSize(sizeIn))
 
     const thumbInBoundsOffset = size
       ? getThumbInBoundsOffset(size, percent, orientation.direction)

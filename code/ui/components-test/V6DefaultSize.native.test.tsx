@@ -51,33 +51,38 @@ describe('v6 default component size on native', () => {
     const input = rendered.root.find(
       (node) =>
         node.props.accessibilityLabel === 'Name' &&
-        typeof flattenStyle(node.props.style).height === 'number'
+        typeof flattenStyle(node.props.style).fontSize === 'number'
     )
     const buttonStyle = flattenStyle(button.props.style)
     const buttonTextStyle = flattenStyle(buttonText.props.style)
     const inputStyle = flattenStyle(input.props.style)
 
+    // the default named size (md) never sets a height: line-height plus padding
     expect({
       buttonHeight: buttonStyle.height,
       buttonPadding: buttonStyle.paddingLeft,
+      buttonPaddingBlock: buttonStyle.paddingTop,
       buttonRadius: buttonStyle.borderTopLeftRadius,
       buttonFontSize: buttonTextStyle.fontSize,
       buttonLineHeight: buttonTextStyle.lineHeight,
       inputHeight: inputStyle.height,
       inputPadding: inputStyle.paddingLeft,
+      inputPaddingBlock: inputStyle.paddingTop,
       inputRadius: inputStyle.borderTopLeftRadius,
       inputFontSize: inputStyle.fontSize,
       inputLineHeight: inputStyle.lineHeight,
     }).toEqual({
-      buttonHeight: 44,
+      buttonHeight: undefined,
       buttonPadding: 16,
-      buttonRadius: 9,
-      buttonFontSize: 17,
-      buttonLineHeight: 22,
-      inputHeight: 44,
-      inputPadding: 14,
-      inputRadius: 9,
-      inputFontSize: 17,
+      buttonPaddingBlock: 8,
+      buttonRadius: 6,
+      buttonFontSize: 14,
+      buttonLineHeight: 20,
+      inputHeight: undefined,
+      inputPadding: 16,
+      inputPaddingBlock: 8,
+      inputRadius: 6,
+      inputFontSize: 14,
       inputLineHeight: undefined,
     })
   })
@@ -102,7 +107,7 @@ describe('v6 default component size on native', () => {
     const input = rendered!.root.find(
       (node) =>
         node.props.accessibilityLabel === 'Explicit name' &&
-        typeof flattenStyle(node.props.style).height === 'number'
+        typeof flattenStyle(node.props.style).fontSize === 'number'
     )
     const buttonStyle = flattenStyle(button.props.style)
     const buttonTextStyle = flattenStyle(buttonText.props.style)

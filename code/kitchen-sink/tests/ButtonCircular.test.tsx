@@ -11,8 +11,8 @@ test(`copied skin default circular button is square`, async ({ page }) => {
     return window.getComputedStyle(el)
   })
 
-  // the opt-in size policy keeps the default control frame at 44px
-  expect(styles.width).toBe(`44px`)
+  // the default named size (md): 20px line + 8px padding each side + 1px border
+  expect(styles.width).toBe(`38px`)
   expect(styles.height).toBe(styles.width)
   expect(styles.borderRadius).toBe(`1000px`)
 })

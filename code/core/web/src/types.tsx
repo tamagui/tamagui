@@ -1041,7 +1041,9 @@ export type InferTamaguiConfig<Conf> =
         F extends GenericFonts ? F : EmptyFonts,
         H extends GenericTamaguiSettings ? H : EmptyTamaguiSettings,
         ExtractAnimationDriverKeys<E>
-      >
+      > &
+        // keep the literal size names so `size="md"` autocompletes
+        (Conf extends { sizes: infer S } ? { sizes: S } : {})
     : unknown
 
 // for use in creation functions so it doesnt get overwritten
@@ -1444,6 +1446,13 @@ export type CreateTamaguiProps = {
   settings?: Partial<GenericTamaguiSettings>
 
   /**
+   * Named control sizes (`xs sm md lg xl` in the default configs). Each is a
+   * recipe of token keys that every sized component reads; `default` names the
+   * one `size={true}` resolves to.
+   */
+  sizes?: GenericSizes
+
+  /**
    * Web-only: define text-selection CSS
    */
   selectionStyles?: (theme: Record<string, string>) => null | {
@@ -1500,6 +1509,27 @@ export type UnionableString = string & {}
 export type UnionableNumber = number & {}
 
 type GenericFontKey = string | number | symbol
+
+/** a named control size: a recipe of token keys, never a height */
+export type SizeSpec = {
+  /** font.size / font.lineHeight key, resolved against the component's font */
+  fontSize: string
+  /** tokens.space keys */
+  paddingX: string
+  paddingY: string
+  /** tokens.radius key */
+  radius: string
+  /** tokens.space key for the gap between icon and text; defaults to paddingY */
+  gap?: string
+  /** icon px override; defaults to the font size rounded up to the 4px grid */
+  icon?: number
+}
+
+export type GenericSizes = {
+  /** the name `size={true}` resolves to */
+  default: string
+  [name: string]: SizeSpec | string
+}
 
 export type GenericFont<Key extends GenericFontKey = GenericFontKey> = {
   size: { [key in Key]: number | Variable }
@@ -1794,9 +1824,15 @@ export type ThemeValueFallbackZIndex =
 
 export type GetTokenString<A> = A extends string | number ? `${A}` : string
 
+/** the names in `config.sizes` (`xs sm md lg xl` in the default configs) */
+export type SizeName = TamaguiConfig extends { sizes: infer S }
+  ? Exclude<Extract<keyof S, string>, 'default'>
+  : never
+
 export type Size =
   | ThemeValueFallbackSize
   | GetTokenString<keyof Tokens['size']>
+  | SizeName
   | (string & {})
   | true
 
@@ -3221,6 +3257,7 @@ export type StyledDynamicEnv = {
   theme: Themes extends { [key: string]: infer B } ? B : unknown
   fontFamily?: FontFamilyTokens
   font?: Font
+  sizes?: GenericSizes
 }
 
 /** bare `styled.dynamic<T>()`: a typed prop consumed by styling, given style by `.resolve` */

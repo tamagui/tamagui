@@ -41,8 +41,8 @@ export function SelectSkin() {
 
   return (
     <YStack padding="4" gap="5" items="center">
-      <XStack gap="4" flexWrap="wrap" justify="center">
-        <Select value={first} onValueChange={setFirst} size="3">
+      <XStack gap="4" flexWrap="wrap" justify="center" items="flex-start">
+        <Select value={first} onValueChange={setFirst} size="sm">
           <Select.Trigger
             testID="select-skin-default-trigger"
             width={190}
@@ -74,7 +74,7 @@ export function SelectSkin() {
           </Select.Content>
         </Select>
 
-        <AltSelect value={second} onValueChange={setSecond} size="5">
+        <AltSelect value={second} onValueChange={setSecond} size="lg">
           <AltSelect.Trigger testID="select-skin-alt-trigger" width={220}>
             <AltSelect.Value placeholder="Choose fruit" />
             <AltSelect.Icon />

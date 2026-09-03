@@ -1,20 +1,14 @@
 import {
-  resolveTokenSize,
+  resolveSize,
   styled,
   Tabs as TabsBehavior,
   withStaticProperties,
 } from '@tamagui/ui'
 
 const tabSizeVariant = styled.dynamic<any>((size, env) => {
-  const { frame } = resolveTokenSize(size, {
-    tokens: env.tokens,
-    font: env.font!,
-  })
-  return {
-    borderRadius: frame.radius,
-    height: frame.size,
-    paddingHorizontal: frame.space,
-  }
+  const { frame, text } = resolveSize(size, env)
+  // the tab label is a bare string child, so the frame carries its font
+  return { ...frame, ...text }
 })
 
 export const TabsFrame = styled(TabsBehavior, {

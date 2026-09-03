@@ -6,7 +6,6 @@
 import {
   Accordion as UiAccordion,
   createRefComponent,
-  defaultTokenSizePolicy,
   styled,
   type TamaguiElement,
   withStaticProperties,
@@ -18,12 +17,12 @@ export const AccordionTrigger = styled(UiAccordion.Trigger, {
   cursor: 'pointer',
   backgroundColor:
     'background hover:background-hover press:background-press focus:background-focus',
-  padding: defaultTokenSizePolicy.space,
+  padding: '4',
 })
 
 export const AccordionContent = styled(UiAccordion.Content, {
   displayName: 'AccordionContent',
-  padding: defaultTokenSizePolicy.space,
+  padding: '4',
   backgroundColor: 'background',
 })
 

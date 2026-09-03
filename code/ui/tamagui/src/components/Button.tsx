@@ -13,8 +13,7 @@ import {
   createStyledHOC,
   type GetProps,
   getThemedIconSize,
-  getVariableValue,
-  resolveTokenSize,
+  resolveSize,
   SizeContext,
   type SizeTokens,
   styled,
@@ -29,15 +28,8 @@ import {
 export type ButtonSize = SizeTokens
 
 const buttonFrameSizeVariant = styled.dynamic<ButtonSize>((val, env) => {
-  const { frame } = resolveTokenSize(val, {
-    tokens: env.tokens,
-    font: env.font!,
-  })
   return {
-    borderRadius: frame.radius,
-    gap: Math.round(getVariableValue(frame.size) * 0.2),
-    height: frame.size,
-    paddingHorizontal: frame.space,
+    ...resolveSize(val, env).frame,
     // `size` is a control preset, not square geometry. keep the frame's width
     // content-driven even if an outer styled layer also recognizes `size` as
     // the generic width/height shorthand.
@@ -46,14 +38,7 @@ const buttonFrameSizeVariant = styled.dynamic<ButtonSize>((val, env) => {
 })
 
 const buttonTextSizeVariant = styled.dynamic<ButtonSize>((val, env) => {
-  const { text } = resolveTokenSize(val, {
-    tokens: env.tokens,
-    font: env.font!,
-  })
-  return {
-    fontSize: text.fontSize,
-    lineHeight: text.lineHeight,
-  }
+  return resolveSize(val, env).text
 })
 
 const ButtonFrameBase = styled(ButtonBehaviorFrame, {
@@ -98,18 +83,16 @@ const ButtonFrameBase = styled(ButtonBehaviorFrame, {
 
 export const ButtonFrame = ButtonFrameBase.resolve((props, env) => {
   if (!props.circular) return
-  const { frame } = resolveTokenSize((props.size as ButtonSize) ?? true, {
-    tokens: env.tokens,
-    font: env.font!,
-  })
+  // the control height plus the frame's 1px border on each side
+  const side = resolveSize(props.size as ButtonSize, env).controlHeight + 2
   return {
     borderRadius: 1000,
     paddingHorizontal: 0,
-    height: frame.size,
-    maxHeight: frame.size,
-    maxWidth: frame.size,
-    minWidth: frame.size,
-    width: frame.size,
+    height: side,
+    maxHeight: side,
+    maxWidth: side,
+    minWidth: side,
+    width: side,
   }
 })
 

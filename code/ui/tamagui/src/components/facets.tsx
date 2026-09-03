@@ -22,8 +22,6 @@
 //
 // Nothing is on by default: every facet is opt-in at the use site.
 
-import { defaultTokenSizePolicy } from '@tamagui/ui'
-
 // chrome facets — one property family each, static styles only.
 
 export const filled = {
@@ -49,7 +47,7 @@ export const elevated = {
 
 export const rounded = {
   true: {
-    borderRadius: defaultTokenSizePolicy.radius,
+    borderRadius: '4',
   },
 } as const
 

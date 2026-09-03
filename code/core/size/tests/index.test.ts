@@ -2,116 +2,89 @@ import { describe, expect, test } from 'vitest'
 
 import {
   createSizeContext,
-  createSizeTable,
-  defaultTokenSizePolicy,
-  resolveSizeToken,
-  resolveTokenSize,
-  type SizeResolverExtras,
+  oneSizeSmaller,
+  resolveSize,
   SizeContext,
+  type SizeResolverEnv,
 } from '../src'
 
-describe('size primitives', () => {
-  test('resolves true through an explicit package-local policy', () => {
-    const extras = {
-      tokens: {
-        size: { 'frame-default': 40, 4: 44 },
-        space: { 'space-default': 12, 4: 14 },
-        radius: { 'radius-default': 8, 4: 10 },
-      },
-      font: {
-        size: { 'font-default': 16, 4: 18 },
-        lineHeight: { 'font-default': 22, 4: 24 },
-      },
-      policy: {
-        size: 'frame-default',
-        space: 'space-default',
-        radius: 'radius-default',
-        fontSize: 'font-default',
-      },
-    } as unknown as SizeResolverExtras
+const env = {
+  tokens: {
+    size: { 4: 16, 5: 20 },
+    space: { 1: 4, 2: 8, 3: 12, 4: 16, '1.5': 6 },
+    radius: { 4: 9, sm: 4, md: 6 },
+  },
+  font: {
+    size: { 4: 15, xs: 12, sm: 14, base: 16 },
+    lineHeight: { 4: 23, xs: 16, sm: 20, base: 24 },
+  },
+  sizes: {
+    default: 'md',
+    sm: { fontSize: 'sm', paddingX: '3', paddingY: '1.5', radius: 'md' },
+    md: { fontSize: 'sm', paddingX: '4', paddingY: '2', radius: 'md' },
+    lg: { fontSize: 'base', paddingX: '4', paddingY: '2', radius: 'md', icon: 24 },
+  },
+} as unknown as SizeResolverEnv
 
-    // space, radius and fontSize come from the policy; frame height does not -
-    // it is a control preset read off the `controlSizes` ramp, where `true` is
-    // the `4` step (44)
-    expect(resolveTokenSize(true, extras)).toEqual({
-      frame: {
-        size: 44,
-        space: 12,
-        radius: 8,
-      },
-      text: { fontSize: 16, lineHeight: 22 },
+describe('resolveSize', () => {
+  test('a named size is a recipe of tokens with no height', () => {
+    expect(resolveSize('md', env)).toEqual({
+      name: 'md',
+      fontSizeKey: 'sm',
+      frame: { paddingHorizontal: 16, paddingVertical: 8, gap: 8, borderRadius: 6 },
+      text: { fontSize: 14, lineHeight: 20 },
       icon: 16,
-    })
-    expect(resolveTokenSize('4', extras)).toEqual({
-      frame: { size: 44, space: 14, radius: 10 },
-      text: { fontSize: 18, lineHeight: 24 },
-      icon: 18,
-    })
-    expect(resolveTokenSize(24, extras)).toEqual({
-      frame: { size: 24, space: 24, radius: 24 },
-      text: { fontSize: 24, lineHeight: undefined },
-      icon: 24,
+      controlHeight: 36,
     })
   })
 
-  test('owns the default control policy without reading Tamagui settings', () => {
-    const extras = {
-      tokens: {
-        size: { 4: 16 },
-        space: { 4: 16 },
-        radius: { 4: 9 },
-      },
-      font: {
-        size: { 4: 15 },
-        lineHeight: { 4: 23 },
-      },
-    } as unknown as SizeResolverExtras
+  test('true and undefined resolve the default', () => {
+    expect(resolveSize(true, env)).toEqual(resolveSize('md', env))
+    expect(resolveSize(undefined, env)).toEqual(resolveSize('md', env))
+  })
 
-    expect(defaultTokenSizePolicy).toEqual({
-      size: 44,
-      space: '4',
-      radius: '4',
-      fontSize: '4',
-    })
-    expect(resolveSizeToken(true, 'size')).toBe(44)
-    expect(resolveTokenSize(true, extras)).toEqual({
-      frame: { size: 44, space: 16, radius: 9 },
+  test('icons round the font size up to the 4px grid unless the recipe sets one', () => {
+    expect(resolveSize('sm', env).icon).toBe(16)
+    expect(resolveSize('lg', env).icon).toBe(24)
+  })
+
+  test('a token key indexes every scale, with v2 minHeight semantics', () => {
+    // the icon is the font size as is: v2 sized icons to the font, not a grid
+    expect(resolveSize('$4', env)).toEqual({
+      name: '4',
+      fontSizeKey: '4',
+      frame: { paddingHorizontal: 16, gap: 3, borderRadius: 9, minHeight: 16 },
       text: { fontSize: 15, lineHeight: 23 },
       icon: 15,
+      controlHeight: 16,
     })
   })
 
-  test('creates independent named contexts and literal projections', () => {
-    const first = createSizeTable(
-      {
-        small: { frame: { height: 28 }, text: { fontSize: 13 }, icon: 14 },
-        large: { frame: { height: 44 }, text: { fontSize: 17 }, icon: 22 },
-      } as const,
-      'small'
-    )
-    const second = createSizeTable(
-      {
-        small: { frame: { height: 20 }, text: { fontSize: 11 }, icon: 10 },
-      } as const,
-      'small'
-    )
-
-    expect(first.Context).not.toBe(second.Context)
-    expect(first.Context.context).not.toBe(second.Context.context)
-    expect(first.Context.props).toEqual({ size: 'small' })
-    expect(second.Context.props).toEqual({ size: 'small' })
-    expect(first.resolve()).toBe(first.values.small)
-    expect(first.frame.small).toBe(first.values.small.frame)
-    expect(first.text.large).toBe(first.values.large.text)
-    expect(first.icon.small).toBe(14)
-    expect(second.frame.small).toEqual({ height: 20 })
+  test('a font missing the recipe key falls back to fonts.body', () => {
+    const resolved = resolveSize('md', {
+      ...env,
+      font: { size: { 4: 30 } },
+      fonts: { body: env.font },
+    })
+    expect(resolved.text).toEqual({ fontSize: 14, lineHeight: 20 })
   })
+})
 
+describe('oneSizeSmaller', () => {
+  test('steps through names, then numbers', () => {
+    expect(oneSizeSmaller('md', env.sizes)).toBe('sm')
+    expect(oneSizeSmaller('sm', env.sizes)).toBe('sm')
+    expect(oneSizeSmaller(true, env.sizes)).toBe('sm')
+    expect(oneSizeSmaller('4', env.sizes)).toBe('3')
+    expect(oneSizeSmaller('$1', env.sizes)).toBe('1')
+  })
+})
+
+describe('size context', () => {
   test('creates an optional generic context with an explicit default when requested', () => {
-    const defaulted = createSizeContext('4')
-
+    const defaulted = createSizeContext('md')
     expect(SizeContext.props).toEqual({ size: undefined })
-    expect(defaulted.props).toEqual({ size: '4' })
+    expect(defaulted.props).toEqual({ size: 'md' })
     expect(defaulted.context).not.toBe(SizeContext.context)
   })
 })

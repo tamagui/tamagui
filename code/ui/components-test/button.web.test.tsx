@@ -122,9 +122,10 @@ describe('Button sizing through context', () => {
       </TamaguiProvider>
     )
 
-    const height = (id: string) => getComputedStyle(getByTestId(id)).height
-    expect(height('from-context')).toBe(height('from-prop'))
-    expect(height('from-context')).not.toBe(height('default'))
+    // jsdom has no layout, so compare a property every size path sets
+    const padding = (id: string) => getComputedStyle(getByTestId(id)).paddingInline
+    expect(padding('from-context')).toBe(padding('from-prop'))
+    expect(padding('from-context')).not.toBe(padding('default'))
   })
 
   it('lets circular resolver geometry override the size dynamic', () => {

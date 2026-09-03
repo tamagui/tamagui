@@ -4,7 +4,7 @@ import {
   XStack,
   YStack,
   isWeb,
-  resolveTokenSize,
+  resolveSize,
   style,
   styled,
   withStaticProperties,
@@ -14,15 +14,7 @@ import { Tabs as TabsBehavior } from '@tamagui/tabs'
 const transparentActiveStyle = style({ backgroundColor: 'transparent' })
 
 const tabSizeVariant = styled.dynamic<any>((value, env) => {
-  const { frame } = resolveTokenSize(value, {
-    tokens: env.tokens,
-    font: env.font!,
-  })
-  return {
-    borderRadius: frame.radius,
-    height: frame.size,
-    paddingHorizontal: frame.space,
-  }
+  return resolveSize(value, env).frame
 })
 
 const demos = ['horizontal', 'vertical'] as const

@@ -3,9 +3,8 @@ import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { createContext } from '@tamagui/create-context'
 import { focusFocusable } from '@tamagui/focusable'
 import { getFontSized } from '@tamagui/get-font-sized'
-import { resolveSizeToken } from '@tamagui/size'
 import { SizableText } from '@tamagui/text'
-import type { FontSizeTokens, GetProps, SizeTokens } from '@tamagui/web'
+import type { GetProps } from '@tamagui/web'
 import { createStyledHOC, styled } from '@tamagui/web'
 import * as React from 'react'
 
@@ -19,23 +18,6 @@ type LabelContextValue = {
 const [LabelProvider, useLabelContextImpl] = createContext<LabelContextValue>(NAME, {
   id: undefined,
   controlRef: { current: null },
-})
-
-const labelSizeVariant = styled.dynamic<SizeTokens | true>((val, env) => {
-  const fontStyle = getFontSized(val as FontSizeTokens, env)
-  // line-height matches the control height at the same size token, so a Label
-  // sits flush next to the Input/Button it labels
-  const sizeKey = resolveSizeToken(val, 'size')
-  return {
-    color: fontStyle?.color,
-    fontFamily: fontStyle?.fontFamily,
-    fontSize: fontStyle?.fontSize,
-    fontStyle: fontStyle?.fontStyle,
-    fontWeight: fontStyle?.fontWeight,
-    letterSpacing: fontStyle?.letterSpacing,
-    lineHeight: typeof sizeKey === 'number' ? sizeKey : env.tokens.size[sizeKey],
-    textTransform: fontStyle?.textTransform,
-  }
 })
 
 // Unstyled Label frame: structural layout (label element, flex alignment,
@@ -53,7 +35,7 @@ export const LabelFrame = styled(SizableText, {
   cursor: 'default',
 
   variants: {
-    size: labelSizeVariant,
+    size: getFontSized,
   } as const,
 })
 

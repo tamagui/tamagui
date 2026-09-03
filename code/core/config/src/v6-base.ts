@@ -213,10 +213,25 @@ function themesWithColorScales<
   } as WithColorScales<Themes, Scales>
 }
 
+/**
+ * Named control sizes as recipes of tailwind token keys. Heights are never set:
+ * a control is line-height plus vertical padding tall, so at `md` a button is
+ * 20 + 8 + 8 = 36px, shadcn's `h-9 px-4 py-2 text-sm`.
+ */
+export const sizes = {
+  default: 'md',
+  xs: { fontSize: 'xs', paddingX: '2', paddingY: '1', radius: 'sm' },
+  sm: { fontSize: 'sm', paddingX: '3', paddingY: '1.5', radius: 'md' },
+  md: { fontSize: 'sm', paddingX: '4', paddingY: '2', radius: 'md' },
+  lg: { fontSize: 'base', paddingX: '6', paddingY: '2', radius: 'md' },
+  xl: { fontSize: 'lg', paddingX: '8', paddingY: '2.5', radius: 'lg' },
+} as const satisfies NonNullable<CreateTamaguiProps['sizes']>
+
 const alignedConfig = {
   media,
   shorthands,
   fonts,
+  sizes,
   selectionStyles,
   settings,
 }

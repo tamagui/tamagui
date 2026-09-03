@@ -135,6 +135,13 @@ export function getDefaultTamaguiConfig(_platform: 'native' | 'web' = 'web') {
     size,
   })
 
+  // the fonts only carry keys 1 and 4, so the recipes do too
+  const sizes = {
+    default: 'md',
+    sm: { fontSize: '1', paddingX: '2', paddingY: '1', radius: '2' },
+    md: { fontSize: '4', paddingX: '4', paddingY: '2', radius: '4' },
+  } as const
+
   const themes = {
     light: {
       background: tokens.color.white,
@@ -223,6 +230,7 @@ export function getDefaultTamaguiConfig(_platform: 'native' | 'web' = 'web') {
     fonts,
     themes,
     tokens,
+    sizes,
     media,
     settings: {
       shouldAddPrefersColorThemes: true,

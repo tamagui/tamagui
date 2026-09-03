@@ -3,10 +3,8 @@ export { createRefComponent, type RefProp } from '@tamagui/compose-refs'
 export type * from '@tamagui/size'
 export {
   createSizeContext,
-  createSizeTable,
-  defaultTokenSizePolicy,
-  resolveSizeToken,
-  resolveTokenSize,
+  oneSizeSmaller,
+  resolveSize,
   SizeContext,
 } from '@tamagui/size'
 export * from '@tamagui/web'

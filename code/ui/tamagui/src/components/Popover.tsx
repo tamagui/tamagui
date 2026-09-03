@@ -1,6 +1,5 @@
 import {
   createRefComponent,
-  defaultTokenSizePolicy,
   Popover as UiPopover,
   styled,
   withStaticProperties,
@@ -9,8 +8,8 @@ import * as React from 'react'
 
 export const PopoverContent = styled(UiPopover.Content, {
   displayName: 'PopoverContent',
-  padding: defaultTokenSizePolicy.space,
-  borderRadius: defaultTokenSizePolicy.radius,
+  padding: '4',
+  borderRadius: '4',
   backgroundColor: 'background',
   alignItems: 'center',
 })

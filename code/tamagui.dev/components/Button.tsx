@@ -7,7 +7,7 @@ import {
   createStyledHOC,
   type GetProps,
   getThemedIconSize,
-  resolveTokenSize,
+  resolveSize,
   SizeContext,
   type SizeTokens,
   styled,
@@ -21,34 +21,11 @@ import {
 export type ButtonSize = SizeTokens
 
 const buttonFrameSizeVariant = styled.dynamic<ButtonSize>((val, env) => {
-  const { frame } = resolveTokenSize(val, {
-    tokens: env.tokens,
-    font: env.font!,
-  })
-  return {
-    borderRadius: frame.radius,
-    gap: frame.radius,
-    height: frame.size,
-    paddingHorizontal: frame.space,
-  }
+  return resolveSize(val, env).frame
 })
 
 const buttonTextSizeVariant = styled.dynamic<ButtonSize>((val, env) => {
-  const isSilkscreen = env.fontFamily === 'silkscreen'
-  const { text } = resolveTokenSize(val, {
-    tokens: env.tokens,
-    font: env.font!,
-    policy: {
-      size: 44,
-      space: '4',
-      radius: '4',
-      fontSize: isSilkscreen ? '6' : '5',
-    },
-  })
-  return {
-    fontSize: text.fontSize,
-    lineHeight: 25,
-  }
+  return resolveSize(val, env).text
 })
 
 const ButtonFrameBase = styled(ButtonBehaviorFrame, {
@@ -91,27 +68,19 @@ const ButtonFrameBase = styled(ButtonBehaviorFrame, {
 })
 
 export const ButtonFrame = ButtonFrameBase.resolve((props, env) => {
-  const sized = buttonFrameSizeVariant((props.size as ButtonSize) ?? true, env)
   if (!props.circular) {
-    return {
-      borderRadius: sized?.borderRadius,
-      gap: sized?.gap,
-      height: sized?.height,
-      paddingHorizontal: sized?.paddingHorizontal,
-    }
+    return buttonFrameSizeVariant((props.size as ButtonSize) ?? true, env)
   }
-  const { frame } = resolveTokenSize((props.size as ButtonSize) ?? true, {
-    tokens: env.tokens,
-    font: env.font!,
-  })
+  // the control height plus the frame's 1px border on each side
+  const side = resolveSize(props.size as ButtonSize, env).controlHeight + 2
   return {
     borderRadius: 1000,
     paddingHorizontal: 0,
-    height: frame.size,
-    maxHeight: frame.size,
-    maxWidth: frame.size,
-    minWidth: frame.size,
-    width: frame.size,
+    height: side,
+    maxHeight: side,
+    maxWidth: side,
+    minWidth: side,
+    width: side,
   }
 })
 

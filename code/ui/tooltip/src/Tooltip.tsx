@@ -1,16 +1,11 @@
-import {
-  createStyledHOC,
-  createRefComponent,
-  defaultTokenSizePolicy,
-  styled,
-} from '@tamagui/core'
+import { createStyledHOC, createRefComponent, getConfig, styled } from '@tamagui/core'
 import '@tamagui/polyfill-dev'
 
 import { FloatingDelayGroup, useDelayGroupContext, type Delay } from '@tamagui/floating'
 import type { SizeTokens, TamaguiElement } from '@tamagui/core'
 import { useEvent } from '@tamagui/core'
 import { FloatingOverrideContext } from '@tamagui/floating'
-import { oneSizeTokenSmaller } from '@tamagui/get-token'
+import { oneSizeSmaller } from '@tamagui/size'
 import { withStaticProperties } from '@tamagui/helpers'
 import type {
   PopoverAnchorProps,
@@ -227,7 +222,7 @@ const TooltipComponent = createRefComponent(function Tooltip(
   const onCustomAnchorAdd = React.useCallback(() => setHasCustomAnchor(true), [])
   const onCustomAnchorRemove = React.useCallback(() => setHasCustomAnchor(false), [])
   const contentId = React.useId()
-  const smallerSize = oneSizeTokenSmaller(defaultTokenSizePolicy.fontSize)
+  const smallerSize = oneSizeSmaller(true, getConfig().sizes)
 
   const content = (
     <FloatingOverrideContext.Provider value={floatingContext}>

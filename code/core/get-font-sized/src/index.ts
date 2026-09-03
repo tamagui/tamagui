@@ -1,19 +1,15 @@
 import type { FontSizeTokens } from '@tamagui/web'
-import { resolveSizeToken } from '@tamagui/size'
+import { resolveSize } from '@tamagui/size'
 import { styled, Text } from '@tamagui/web'
 
 export const getFontSized = styled.dynamic<FontSizeTokens | number | true>(
-  (sizeTokenIn = true, { font, fontFamily }) => {
+  (sizeTokenIn = true, env) => {
+    const { font, fontFamily } = env
     if (!font) {
       return {
         fontSize: sizeTokenIn,
       }
     }
-
-    const sizeToken = resolveSizeToken(sizeTokenIn, 'fontSize') as Exclude<
-      FontSizeTokens,
-      true
-    >
 
     // A raw numeric size (e.g. `fontSize={32}`) is not a token key, so the
     // `font.size` / `font.lineHeight` maps have no entry for it and every lookup
@@ -21,12 +17,22 @@ export const getFontSized = styled.dynamic<FontSizeTokens | number | true>(
     // lineHeight unset, otherwise a stale default token lineHeight survives and
     // clips glyph tops on iOS (see #4028). We don't scale the lineHeight here,
     // leaving it to the platform default for the given font size.
-    if (typeof sizeToken === 'number') {
+    if (typeof sizeTokenIn === 'number') {
       return {
-        fontSize: sizeToken,
+        fontSize: sizeTokenIn,
         fontFamily,
       }
     }
+
+    // `true` and a named size (`md`) read the size recipe's font key, so text
+    // sized "md" matches the text inside a "md" control. any other value is a
+    // font.size key already (`sm`, `2xl`, `4`).
+    const key = String(sizeTokenIn).replace(/^\$/, '')
+    const sizeToken = (
+      sizeTokenIn === true || env.sizes?.[key] != null
+        ? resolveSize(sizeTokenIn, env).fontSizeKey
+        : key
+    ) as Exclude<FontSizeTokens, true>
 
     // size related, treat them as overrides
     const fontSize = font.size[sizeToken]

@@ -42,7 +42,7 @@ export const ButtonSkin = () => {
     <YStack gap="4" padding="4">
       <Text testID="button-skin-press-count">presses:{presses}</Text>
 
-      <XStack flexWrap="wrap" gap="3">
+      <XStack flexWrap="wrap" gap="3" items="flex-start">
         <Button
           testID="button-skin-default"
           onPress={() => setPresses((value) => value + 1)}
@@ -71,10 +71,10 @@ export const ButtonSkin = () => {
           aria-label="Circular button"
           circular
           icon={CircleIcon}
-          size="5"
+          size="lg"
         />
 
-        <Button testID="button-skin-wide" size="5" minWidth={180}>
+        <Button testID="button-skin-wide" size="lg" minWidth={180}>
           Custom wide size
         </Button>
       </XStack>
@@ -95,7 +95,7 @@ export const ButtonSkin = () => {
           Outer
           <Button
             testID="button-skin-nested-inner"
-            size="3"
+            size="sm"
             variant="quiet"
             onPress={() => setNestedInnerPresses((value) => value + 1)}
           >

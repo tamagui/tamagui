@@ -45,6 +45,17 @@ button,
   box-sizing: border-box;
 }
 
+/* `all: unset` above also unsets display, and this rule and the design
+   system's `:where(.is_View)` base are both zero specificity, so whichever
+   sheet loads last wins. Restate the base display so a tamagui-rendered
+   <button> or <p> keeps its layout however the sheets are ordered. */
+:where(.is_View) {
+  display: flex;
+}
+:where(.is_Text) {
+  display: inline;
+}
+
 a.tm-button,
 .tm-anchor:has(.tm-button) {
   text-decoration: none;

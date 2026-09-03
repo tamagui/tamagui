@@ -49,10 +49,15 @@ describe('v6 default component size on web', () => {
     const buttonTextStyle = getComputedStyle(buttonText)
     const inputStyle = getComputedStyle(input)
 
+    // the default named size (md) never sets a height: line-height plus padding
     expect({
-      buttonHeight: resolveRenderedValue(buttonStyle.height, config.tokensParsed.size),
+      buttonHeight: buttonStyle.height,
       buttonPadding: resolveRenderedValue(
         buttonStyle.paddingInline,
+        config.tokensParsed.space
+      ),
+      buttonPaddingBlock: resolveRenderedValue(
+        buttonStyle.paddingBlock,
         config.tokensParsed.space
       ),
       buttonRadius: resolveRenderedValue(
@@ -67,9 +72,13 @@ describe('v6 default component size on web', () => {
         buttonTextStyle.lineHeight,
         config.fontsParsed.body.lineHeight
       ),
-      inputHeight: resolveRenderedValue(inputStyle.height, config.tokensParsed.size),
+      inputHeight: inputStyle.height,
       inputPadding: resolveRenderedValue(
         inputStyle.paddingInline,
+        config.tokensParsed.space
+      ),
+      inputPaddingBlock: resolveRenderedValue(
+        inputStyle.paddingBlock,
         config.tokensParsed.space
       ),
       inputRadius: resolveRenderedValue(
@@ -85,16 +94,18 @@ describe('v6 default component size on web', () => {
         config.fontsParsed.body.lineHeight
       ),
     }).toEqual({
-      buttonHeight: 44,
+      buttonHeight: '',
       buttonPadding: 16,
-      buttonRadius: 9,
-      buttonFontSize: 15,
-      buttonLineHeight: 23,
-      inputHeight: 44,
-      inputPadding: 14,
-      inputRadius: 9,
-      inputFontSize: 15,
-      inputLineHeight: 23,
+      buttonPaddingBlock: 8,
+      buttonRadius: 6,
+      buttonFontSize: 14,
+      buttonLineHeight: 20,
+      inputHeight: '',
+      inputPadding: 16,
+      inputPaddingBlock: 8,
+      inputRadius: 6,
+      inputFontSize: 14,
+      inputLineHeight: 20,
     })
   })
 

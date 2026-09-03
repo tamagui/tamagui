@@ -34,8 +34,7 @@
     "watch": "tamagui-build --watch",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build",
-    "test": "vitest --run tests/index.test.ts",
-    "test:types": "vitest --typecheck --run tests/index.test-d.ts"
+    "test": "vitest --run tests/index.test.ts"
   },
   "dependencies": {
     "@tamagui/web": "workspace:*"

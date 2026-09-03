@@ -1,5 +1,5 @@
 import { RadioGroup as RadioGroupBehavior } from '@tamagui/radio-group'
-import { getVariableValue, resolveTokenSize, styled, withStaticProperties } from 'tamagui'
+import { resolveSize, styled, withStaticProperties } from 'tamagui'
 
 const RadioGroupItem = styled(RadioGroupBehavior.Item, {
   displayName: 'SiteRadioGroupItem',
@@ -14,11 +14,7 @@ const RadioGroupItem = styled(RadioGroupBehavior.Item, {
   outlineWidth: 'focus-visible:2px',
   variants: {
     size: styled.dynamic<any>((value, env) => {
-      const size = Math.round(
-        getVariableValue(
-          resolveTokenSize(value, { tokens: env.tokens, font: env.font! }).frame.size
-        ) * 0.5
-      )
+      const size = resolveSize(value, env).icon
       return {
         width: size,
         height: size,

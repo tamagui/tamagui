@@ -1,23 +1,28 @@
 import type { Variable, VariableValGeneric } from '@tamagui/web'
-import { resolveSizeToken } from '@tamagui/size'
-import { getTokens } from '@tamagui/web'
+import { resolveSize } from '@tamagui/size'
+import { getConfig, getTokens } from '@tamagui/web'
 
 // technically number | undefined just for compat with the generic VariableVal
 type GetTokenBase = Variable | string | number | boolean | undefined | VariableValGeneric
 
-// trivial same-key token resolver: token in, Variable out.
-// resolves `true` through the opt-in size policy, looks the key up in the
-// requested scale, and passes through numbers / unknown keys unchanged.
+// same-key token resolver: token in, Variable out. `true` and a named size
+// read the size recipe (its control height, horizontal padding, or radius);
+// numbers and unknown keys pass through unchanged.
 const resolveToken = (
   type: 'size' | 'space' | 'radius',
   input: GetTokenBase
 ): Variable<number> => {
+  if (input == null || typeof input === 'number') return input as any
   const tokens = getTokens()[type] as Record<string, Variable>
-  const resolved = resolveSizeToken(input, type)
-  if (resolved == null) return resolved as any
-  if (typeof resolved === 'number') return resolved as any
-  const key = typeof resolved === 'object' ? (resolved as Variable).key : String(resolved)
-  return (tokens[key] ?? resolved) as any
+  const key = typeof input === 'object' ? (input as Variable).key : String(input)
+  if (input === true || getConfig().sizes?.[key] != null) {
+    const resolved = resolveSize(input as any)
+    if (type === 'size') return resolved.controlHeight as any
+    return (
+      type === 'space' ? resolved.frame.paddingHorizontal : resolved.frame.borderRadius
+    ) as any
+  }
+  return (tokens[key] ?? input) as any
 }
 
 export const getSize = (size: GetTokenBase) => resolveToken('size', size)
@@ -25,12 +30,3 @@ export const getSize = (size: GetTokenBase) => resolveToken('size', size)
 export const getSpace = (space: GetTokenBase) => resolveToken('space', space)
 
 export const getRadius = (radius: GetTokenBase) => resolveToken('radius', radius)
-
-// returns the token key one whole step smaller (e.g. `4` -> `3`), clamped at
-// `1`. used where a component wants a slightly smaller size/font token (list
-// item subtitle, tooltip default size) without stepping through a sorted scale.
-export const oneSizeTokenSmaller = (token: GetTokenBase): string => {
-  const n = Number(String(token))
-  if (Number.isNaN(n)) return String(token)
-  return `${Math.max(1, Math.round(n) - 1)}`
-}

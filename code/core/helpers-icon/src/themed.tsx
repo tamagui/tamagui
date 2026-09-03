@@ -7,7 +7,7 @@ import {
   type ResolveVariableAs,
 } from '@tamagui/core'
 import { getFontSize } from '@tamagui/font-size'
-import { SizeContext } from '@tamagui/size'
+import { resolveSize, SizeContext } from '@tamagui/size'
 
 import type { FC } from 'react'
 import type { IconProps } from './IconProps'
@@ -66,16 +66,16 @@ export function themed(Component: FC<IconProps>, optsIn: Options = {}) {
 
     const color = getVariable(colorIn)
 
-    // v3: icon sizes resolve via the current font's size scale (font.size[token]),
-    // so icons visually align with text at each size. raw numbers stay literal.
-    // context size (for example from Button/ListItem) resolves the same way.
+    // an explicit string size is a font size key, so the icon matches text at
+    // that size. a context size (from Button, ListItem) is a control size and
+    // uses the recipe's icon px. raw numbers stay literal.
     const size =
       typeof sizeProp === 'number'
         ? sizeProp
         : typeof sizeProp === 'string'
           ? getFontSize(sizeProp as FontSizeTokens)
           : styledContext.size != null
-            ? getFontSize(styledContext.size as FontSizeTokens)
+            ? resolveSize(styledContext.size as any).icon
             : undefined
 
     const strokeWidth =

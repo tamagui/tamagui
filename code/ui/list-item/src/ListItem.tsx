@@ -1,18 +1,11 @@
 import { getFontSized } from '@tamagui/get-font-sized'
-import { oneSizeTokenSmaller } from '@tamagui/get-token'
 import { getThemedIconSize, useGetThemedIcon } from '@tamagui/helpers-tamagui'
-import { resolveSizeToken } from '@tamagui/size'
+import { oneSizeSmaller, resolveSize } from '@tamagui/size'
 import { YStack } from '@tamagui/stacks'
 import type { TextParentStyles } from '@tamagui/text'
 import { SizableText, textParentProps, wrapChildrenInText } from '@tamagui/text'
 import type { ColorTokens, FontSizeTokens, GetProps, SizeTokens } from '@tamagui/web'
-import {
-  createStyledContext,
-  getVariableValue,
-  splitStyleProps,
-  styled,
-  View,
-} from '@tamagui/web'
+import { createStyledContext, splitStyleProps, styled, View } from '@tamagui/web'
 import type { FunctionComponent, JSX, ReactNode } from 'react'
 
 type IconProp = JSX.Element | FunctionComponent<{ color?: any; size?: any }> | null
@@ -33,25 +26,18 @@ export const ListItemContext = createStyledContext<{
   color: undefined,
 })
 
-export const listItemSizeVariant = styled.dynamic<SizeTokens | true>(
-  (val, { tokens }) => {
-    const sizeToken = resolveSizeToken(val, 'size')
-    const spaceToken = resolveSizeToken(val, 'space')
-    const size = typeof sizeToken === 'number' ? sizeToken : tokens.size[sizeToken]
-    const sizeVal = getVariableValue(size) as number
-    return {
-      minHeight: size,
-      paddingHorizontal: tokens.space[spaceToken],
-      paddingVertical: Math.max(0, Math.round(sizeVal * 0.36 - 9)),
-      gap: getThemedIconSize(sizeToken, 0.4),
-    }
+export const listItemSizeVariant = styled.dynamic<SizeTokens | true>((val, env) => {
+  const { frame } = resolveSize(val, env)
+  return {
+    minHeight: frame.minHeight,
+    paddingHorizontal: frame.paddingHorizontal,
+    paddingVertical: frame.paddingVertical,
+    gap: frame.gap,
   }
-)
+})
 
 const listItemSubtitleSizeVariant = styled.dynamic<SizeTokens | true>((val, env) => {
-  const fontSizeToken = resolveSizeToken(val, 'fontSize')
-  const oneSmaller = oneSizeTokenSmaller(fontSizeToken)
-  return getFontSized(oneSmaller as FontSizeTokens, env)
+  return getFontSized(oneSizeSmaller(val, env.sizes) as FontSizeTokens, env)
 })
 
 // structural layout, the size mechanism, and the disabled pointer-event block.

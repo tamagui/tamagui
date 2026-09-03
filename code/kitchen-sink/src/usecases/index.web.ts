@@ -64,7 +64,7 @@ const loaders: Record<string, () => ComponentType<any>> = {
   CompilerExtraction: () => require('./CompilerExtraction').CompilerExtraction,
   CompilerTernaryActive: () => require('./CompilerTernaryActive').CompilerTernaryActive,
   ComplexVariants: () => require('./ComplexVariants').ComplexVariants,
-  ControlSizeRampCase: () => require('./ControlSizeRampCase').ControlSizeRampCase,
+  ControlSizesCase: () => require('./ControlSizesCase').ControlSizesCase,
   CrashAdaptSheet: () => require('./CrashAdaptSheet').CrashAdaptSheet,
   CustomStyledAnimatedPopover: () =>
     require('./CustomStyledAnimatedPopover').CustomStyledAnimatedPopover,

@@ -1,10 +1,5 @@
 import type { GetProps } from '@tamagui/core'
-import {
-  createStyledHOC,
-  mergeSlotStyleProps,
-  resolveSizeToken,
-  styled,
-} from '@tamagui/core'
+import { createStyledHOC, mergeSlotStyleProps, resolveSize, styled } from '@tamagui/core'
 import type { Scope } from '@tamagui/create-context'
 import { createContextScope } from '@tamagui/create-context'
 import { withStaticProperties } from '@tamagui/helpers'
@@ -23,10 +18,9 @@ type ScopedProps<P> = P & { __scopeGroup?: Scope }
 const [createGroupContext, createGroupScope] = createContextScope(GROUP_NAME)
 const [GroupProvider, useGroupContext] = createGroupContext<GroupContextValue>(GROUP_NAME)
 
-const groupSizeVariant = styled.dynamic<any>((val, { tokens }) => {
-  const radiusToken = resolveSizeToken(val, 'radius')
+const groupSizeVariant = styled.dynamic<any>((val, env) => {
   return {
-    borderRadius: tokens.radius[radiusToken] ?? radiusToken,
+    borderRadius: resolveSize(val, env).frame.borderRadius,
   }
 })
 
