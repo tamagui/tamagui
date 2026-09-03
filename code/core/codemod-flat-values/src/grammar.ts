@@ -34,7 +34,6 @@ export const {
   defaultMediaKeys,
   evaluateProgram,
   expandToLonghands,
-  grammarEntries,
   grammarPlatformNames,
   legacyPartComposite,
   mergeProgramValues,
@@ -78,9 +77,16 @@ export function convertLegacyConditionProp(
   return convertLegacyConditionPropLocal(propName, renameBuiltInTokens(value), options)
 }
 
-/** every prop spelling the codemod treats as carrying a style value */
+/**
+ * Every prop spelling the codemod treats as carrying a style value.
+ *
+ * Deliberately NOT derived from `grammarEntries`. That registry names the target
+ * of a utility prefix, and a target is not always a style: `line-clamp-2` targets
+ * `numberOfLines`, a Text variant. Reading style-ness off the registry would let
+ * the codemod rewrite `$sm={{ numberOfLines: 2 }}` into a flat value nothing
+ * honors, which is the one thing a migration must never do silently.
+ */
 export const styleProps: ReadonlySet<string> = new Set<string>([
-  ...grammarEntries.map((entry) => entry.prop),
   ...Object.keys(standaloneValueProps),
   ...Object.keys(stylePropsAll),
   ...Object.keys(shorthands),
