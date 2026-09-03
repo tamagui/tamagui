@@ -432,7 +432,8 @@ interface TextStyle {
   fontFamily?: string
   fontSize?: number
   fontStyle?: 'normal' | 'italic'
-  fontVariant?: FontVariantValue[]
+  // readonly so an `as const` style literal still assigns (#2787)
+  fontVariant?: readonly FontVariantValue[]
   fontWeight?:
     | 'normal'
     | 'bold'

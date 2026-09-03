@@ -2034,6 +2034,31 @@ const recordRetract = 4
 const recordDefault = 8
 const recordCSS = 16
 
+// react-native spells its RTL-aware props the way a dropped CSS draft did
+// (padding-start, border-end-color, border-top-start-radius, start/end). No
+// browser implements those, so the rules generated for them were inert and the
+// props did nothing on web. rename them onto the CSS logical properties that
+// are RTL-aware in exactly the same way (#3099)
+const webRTLRenames: Record<string, string> = {
+  paddingStart: 'paddingInlineStart',
+  paddingEnd: 'paddingInlineEnd',
+  marginStart: 'marginInlineStart',
+  marginEnd: 'marginInlineEnd',
+  borderStartWidth: 'borderInlineStartWidth',
+  borderEndWidth: 'borderInlineEndWidth',
+  borderStartColor: 'borderInlineStartColor',
+  borderEndColor: 'borderInlineEndColor',
+  borderStartStyle: 'borderInlineStartStyle',
+  borderEndStyle: 'borderInlineEndStyle',
+  // css orders these block-then-inline, so top-start is start-start
+  borderTopStartRadius: 'borderStartStartRadius',
+  borderTopEndRadius: 'borderStartEndRadius',
+  borderBottomStartRadius: 'borderEndStartRadius',
+  borderBottomEndRadius: 'borderEndEndRadius',
+  start: 'insetInlineStart',
+  end: 'insetInlineEnd',
+}
+
 // the property vocabulary is small and its strings are interned, so these
 // per-property classifications resolve once per process instead of running
 // their string tests on every value of every pass
@@ -2042,13 +2067,14 @@ function webStyleProperty(property: string) {
   let web = webStyleProperties.get(property)
   if (web === undefined) {
     web =
-      property === 'writingDirection'
+      webRTLRenames[property] ||
+      (property === 'writingDirection'
         ? 'direction'
         : property.endsWith('Horizontal')
           ? `${property.slice(0, -10)}Inline`
           : property.endsWith('Vertical')
             ? `${property.slice(0, -8)}Block`
-            : property
+            : property)
     webStyleProperties.set(property, web)
   }
   return web

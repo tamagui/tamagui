@@ -352,7 +352,7 @@ interface TextStyle {
     fontFamily?: string;
     fontSize?: number;
     fontStyle?: 'normal' | 'italic';
-    fontVariant?: FontVariantValue[];
+    fontVariant?: readonly FontVariantValue[];
     fontWeight?: 'normal' | 'bold' | '100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900' | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | 'ultralight' | 'thin' | 'light' | 'medium' | 'regular' | 'semibold' | 'condensedBold' | 'condensed' | 'heavy' | 'black';
     includeFontPadding?: boolean;
     letterSpacing?: number;
