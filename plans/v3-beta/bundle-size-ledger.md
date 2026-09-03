@@ -322,3 +322,33 @@ flip and the props spread in `getSplitStyles`.
 - Under the 28,821 ceiling with 28 bytes of headroom, so the baseline is unchanged.
   The fixture is one regular styled `View`, so it prices only the core-side change;
   the tailwind-package deletions do not appear in it.
+
+## Baseline update, 2026-09-03: zero-runtime starter, v6 token expansion
+
+The `codex/tailwind-coverage-audit` merge (`c4e1425d66`) added eleven token
+domains to `v6-base.ts` (`width`, `minWidth`, `maxWidth`, `inlineSize`,
+`minInlineSize`, `maxInlineSize`, `flexBasis`, `outlineWidth`, `outlineOffset`,
+`boxShadow`, `perspective`), taking the v6 pack from 138 configured tokens to
+528. Every configured token emits a CSS variable, so the starter's generated
+stylesheet grew on all three integrations at once. That merge had never been
+built by CI, so the growth first appeared on `63e0d3b258`.
+
+- **RAN** attribution, same machine and pinned Node, `c4e1425d66` (pre-trim)
+  against `63e0d3b258`: `jsGzip` identical in all six tiers, `cssGzip` identical
+  in all six tiers, `islandJsGzip` -19 vite, -7 next, +36 metro. The whole
+  +1,532 cssGzip belongs to the token expansion, not to the compose trim.
+- **RAN** the starter gate was `success` on `a4c49e8c3c`, the previous `v3-beta`
+  tip, so this is new red, not a carried-over failure.
+- Re-recorded from CI's `receipts.json` for `63e0d3b258`, not from a local run:
+  metro-web gzip differs between macOS and the Linux runner (locally 4,789 reads
+  4,435 and 367,166 reads 366,862), and the same practice is recorded for the
+  2026-09-02 metro-web island re-record. `jsGzip` is unchanged in every tier.
+
+Open cost, not addressed here: seven of the new domains each restate all 39
+`tailwindSize` entries next to their 13 container entries, so roughly 273 of the
+390 new tokens duplicate `size`. The duplication is forced by
+`grammarConfig.ts`, where a prop-named token domain replaces the category domain
+instead of supplementing it, so `width` cannot declare only the container values.
+Making that a fallback would drop those variables, but it changes token lookup
+for every prop-named domain in every user config and needs its own review.
+
