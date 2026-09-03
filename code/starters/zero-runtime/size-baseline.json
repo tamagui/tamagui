@@ -1,5 +1,5 @@
 {
-  "measuredAtCommit": "d041c9311afe337e0f2ab667c900c92911839c75",
+  "measuredAtCommit": "ad7b06fa7c7144fa3b6776481c6f529fb6aaffbd",
   "nodeVersion": "24.16.0",
   "compression": "Node gzipSync level 9; output depends on Node's bundled zlib",
   "thresholds": {

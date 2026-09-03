@@ -379,7 +379,7 @@ property now follows that property's own unit table, the one
   `e68de50ad7` at `vite-transition-differential.test.ts:226`,
   `prop-token-size base width` expecting `48px` and reading `484px`, because the
   dropped declaration let the probe div fill its 484px parent. The whole
-  `vite-transition` project passes on `d041c9311a`.
+  `vite-transition` project passes on `ad7b06fa7c`.
 - **RAN** pinned Node 24.16.0: cssGzip +14 on vite (4,064 -> 4,078 base,
   4,068 -> 4,082 islands) and +13 on next-webpack and metro-web base
   (4,083 -> 4,096, 4,088 -> 4,100, 4,083 -> 4,096). `jsGzip` is unchanged in
