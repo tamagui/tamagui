@@ -61,12 +61,12 @@ describe('valid-flat-values', () => {
     expect(result.messages.map(({ message }) => message)).toEqual([
       '"unknown" is not a registered modifier',
       '"hver" is not a registered modifier',
-      '"red-500" contributes to "backgroundColor", "borderColor", "borderTopColor", "borderRightColor", "borderBottomColor", "borderLeftColor", "borderInlineStartColor", "borderInlineEndColor", "borderBlockStartColor", "borderBlockEndColor", "color", not "fontSize"',
+      '"red-500" contributes to "backgroundColor", "borderColor", "borderTopColor", "borderRightColor", "borderBottomColor", "borderLeftColor", "borderInlineStartColor", "borderInlineEndColor", "borderBlockStartColor", "borderBlockEndColor", "outlineColor", "color", not "fontSize"',
       '"backgroundHover" is not a v6 built-in name; use "background-hover"',
       '"backgroundActive" was removed from the v6 built-in theme vocabulary',
       '"green red" holds 2 values but "backgroundColor" takes one. A value written after a conditional joins that conditional\'s payload — write the base value before the first conditional.',
-      '"red" contributes to "backgroundColor", "borderColor", "borderTopColor", "borderRightColor", "borderBottomColor", "borderLeftColor", "borderInlineStartColor", "borderInlineEndColor", "borderBlockStartColor", "borderBlockEndColor", "color", not "paddingRight"',
-      '"red" contributes to "backgroundColor", "borderColor", "borderTopColor", "borderRightColor", "borderBottomColor", "borderLeftColor", "borderInlineStartColor", "borderInlineEndColor", "borderBlockStartColor", "borderBlockEndColor", "color", not "paddingLeft"',
+      '"red" contributes to "backgroundColor", "borderColor", "borderTopColor", "borderRightColor", "borderBottomColor", "borderLeftColor", "borderInlineStartColor", "borderInlineEndColor", "borderBlockStartColor", "borderBlockEndColor", "outlineColor", "color", not "paddingRight"',
+      '"red" contributes to "backgroundColor", "borderColor", "borderTopColor", "borderRightColor", "borderBottomColor", "borderLeftColor", "borderInlineStartColor", "borderInlineEndColor", "borderBlockStartColor", "borderBlockEndColor", "outlineColor", "color", not "paddingLeft"',
     ])
     expect(result.messages.every(({ fix }) => fix === undefined)).toBe(true)
   })
