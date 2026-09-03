@@ -1,8 +1,7 @@
 import {
-  getVariableValue,
   type GetProps,
   RadioGroup as RadioGroupBehavior,
-  resolveTokenSize,
+  resolveSize,
   styled,
   withStaticProperties,
 } from '@tamagui/ui'
@@ -24,11 +23,8 @@ export const RadioGroupItem = styled(RadioGroupBehavior.Item, {
   outlineWidth: 'focus-visible:2px',
   variants: {
     size: styled.dynamic<any>((size, env) => {
-      const controlSize = Math.round(
-        getVariableValue(
-          resolveTokenSize(size, { tokens: env.tokens, font: env.font! }).frame.size
-        ) * 0.5
-      )
+      // the check is an icon, so the box is the size's icon square
+      const controlSize = resolveSize(size, env).icon
       return {
         width: controlSize,
         height: controlSize,

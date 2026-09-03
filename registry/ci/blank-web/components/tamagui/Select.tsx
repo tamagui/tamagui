@@ -11,7 +11,7 @@
 import {
   type GetProps,
   getVariableValue,
-  resolveTokenSize,
+  resolveSize,
   Select as SelectBehavior,
   SelectNativeComponentContext,
   type SelectProps as SelectBehaviorProps,
@@ -50,49 +50,27 @@ const Check = ({ size = 14 }: { size?: number }) => (
 export type SelectSize = SizeTokens
 
 const selectTriggerSizeVariant = styled.dynamic<SelectSize>((val, env) => {
-  const { frame } = resolveTokenSize(val, {
-    tokens: env.tokens,
-    font: env.font!,
-  })
-  return {
-    borderRadius: frame.radius,
-    gap: Math.round(getVariableValue(frame.size) * 0.2),
-    height: frame.size,
-    paddingHorizontal: frame.space,
-  }
+  return resolveSize(val, env).frame
 })
 
 const selectItemSizeVariant = styled.dynamic<SelectSize>((val, env) => {
-  const { frame } = resolveTokenSize(val, {
-    tokens: env.tokens,
-    font: env.font!,
-  })
+  const { frame } = resolveSize(val, env)
   return {
-    gap: Math.round(getVariableValue(frame.size) * 0.2),
-    height: frame.size,
-    paddingHorizontal: frame.space,
+    gap: frame.gap,
+    minHeight: frame.minHeight,
+    paddingHorizontal: frame.paddingHorizontal,
+    paddingVertical: frame.paddingVertical,
   }
 })
 
 const selectNativeSizeVariant = styled.dynamic<SelectSize>((val, env) => {
-  const resolved = resolveTokenSize(val, {
-    tokens: env.tokens,
-    font: env.font!,
-  })
-  const paddingVertical = Math.max(
-    0,
-    Math.round(getVariableValue(resolved.frame.size) * 0.36 - 9)
-  )
-  const lineHeight = getVariableValue(resolved.text.lineHeight ?? resolved.text.fontSize)
+  const { frame, controlHeight } = resolveSize(val, env)
   return {
-    paddingHorizontal: resolved.frame.space,
-    paddingVertical,
-    borderRadius: resolved.frame.radius,
-    height: Math.max(
-      getVariableValue(resolved.frame.size),
-      lineHeight + paddingVertical * 2 + 2
-    ),
-    paddingRight: getVariableValue(resolved.frame.space) + 20,
+    ...frame,
+    // a native <select> ignores line-height, so give it the control height
+    // plus its 1px border on each side, and room for the chevron
+    height: controlHeight + 2,
+    paddingRight: getVariableValue(frame.paddingHorizontal) + 20,
   }
 })
 
@@ -112,14 +90,7 @@ const SelectNative = styled(SizableText, {
 })
 
 const selectTextSizeVariant = styled.dynamic<SelectSize>((val, env) => {
-  const { text } = resolveTokenSize(val, {
-    tokens: env.tokens,
-    font: env.font!,
-  })
-  return {
-    fontSize: text.fontSize,
-    lineHeight: text.lineHeight,
-  }
+  return resolveSize(val, env).text
 })
 
 export const SelectTrigger = styled(SelectBehavior.Trigger, {
