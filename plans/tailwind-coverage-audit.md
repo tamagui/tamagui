@@ -15,13 +15,13 @@ resolver accepts the part; runtime suites separately prove the complete multi-cl
 | Metric | Count |
 | --- | ---: |
 | Tailwind default-theme candidates | 23,286 |
-| Tamagui-owned candidates on web | 11,327 |
-| Official-engine web fallback | 11,959 |
+| Tamagui-owned candidates on web | 11,625 |
+| Official-engine web fallback | 11,661 |
 | Native-ready owned candidates | 11,059 |
-| Explicitly web-only / native-gated candidates | 273 |
+| Explicitly web-only / native-gated candidates | 571 |
 | Native-only lowerings | 5 |
 | Unsafe native-owned candidates | 0 |
-| Complete / partial / missing web families | 501 / 29 / 624 |
+| Complete / partial / missing web families | 503 / 29 / 622 |
 
 Web coverage is the full registry: Tamagui-owned candidates use the shared style runtime
 and every remainder stays in `className` for the official engine. Native intentionally
@@ -402,8 +402,8 @@ the candidate needs a native lowering or an explicit target gate.
 | `divide-x-reverse` | 1 | 0 | 0 | 0 | 0 | `divide-x-reverse` |
 | `divide-y` | 5 | 0 | 0 | 0 | 0 | `divide-y`, `divide-y-0`, `divide-y-2` |
 | `divide-y-reverse` | 1 | 0 | 0 | 0 | 0 | `divide-y-reverse` |
-| `drop-shadow` | 297 | 0 | 0 | 0 | 0 | `drop-shadow-2xl`, `drop-shadow-amber-50`, `drop-shadow-amber-100` |
-| `drop-shadow-none` | 1 | 0 | 0 | 0 | 0 | `drop-shadow-none` |
+| `drop-shadow` | 297 | 297 | 0 | 297 | 0 | `drop-shadow-2xl (web-only)`, `drop-shadow-amber-50 (web-only)`, `drop-shadow-amber-100 (web-only)` |
+| `drop-shadow-none` | 1 | 1 | 0 | 1 | 0 | `drop-shadow-none (web-only)` |
 | `duration` | 8 | 0 | 0 | 0 | 0 | `duration-75`, `duration-100`, `duration-150` |
 | `duration-initial` | 1 | 0 | 0 | 0 | 0 | `duration-initial` |
 | `ease` | 5 | 0 | 0 | 0 | 0 | `ease-in`, `ease-in-out`, `ease-initial` |

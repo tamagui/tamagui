@@ -77,6 +77,18 @@ describe('tailwind standard utilities', () => {
     )
   })
 
+  test('drop-shadow utilities compose geometry and color in filter order', () => {
+    for (const className of [
+      'drop-shadow-[red] drop-shadow-md brightness-105',
+      'brightness-105 drop-shadow-md drop-shadow-[red]',
+    ]) {
+      const rule = ruleFor(View, className, 'filter')
+      expect(rule[StyleObjectValue]).toBe(
+        'brightness(105%) drop-shadow(0 3px 3px red)'
+      )
+    }
+  })
+
   // font-* is fontFamily (font weights are separate, tested above)
   const fontFamilyCases: [string, any][] = [
     ['font-mono', 'monospace'],

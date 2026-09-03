@@ -36,4 +36,29 @@ describe('native filter utilities', () => {
       'blur(8px) brightness(105%) contrast(125%) grayscale(50%) hue-rotate(15deg) invert(25%) saturate(150%) sepia(50%)'
     )
   })
+
+  test('drop-shadow presets and colors compose only on Android', () => {
+    const classNames = [
+      'drop-shadow-[red] drop-shadow-md',
+      'drop-shadow-md drop-shadow-[red]',
+    ]
+
+    if (!isAndroid) {
+      for (const className of classNames) {
+        const styles = splitTailwindStyles(View, { className })
+        expect(styleOf(styles).filter).toBeUndefined()
+        expect(styles.viewProps.className).toBeUndefined()
+      }
+      return
+    }
+
+    for (const className of classNames) {
+      expect(styleOf(splitTailwindStyles(View, { className })).filter).toBe(
+        'drop-shadow(0 3px 3px red)'
+      )
+    }
+    expect(
+      styleOf(splitTailwindStyles(View, { className: 'drop-shadow-none' })).filter
+    ).toBe('drop-shadow(0 0 0 transparent)')
+  })
 })

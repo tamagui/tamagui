@@ -43,6 +43,8 @@ type Layer = {
     defaultColor: string
   }
   textShadowColor?: string
+  dropShadow?: { geometry: string; defaultColor: string }
+  dropShadowColor?: string
 }
 
 type ComposerBag = {
@@ -72,6 +74,7 @@ const filterOrder = [
   'invert',
   'saturate',
   'sepia',
+  'drop-shadow',
 ] as const
 const nativeTarget = !isWeb || process.env.TAMAGUI_TARGET === 'native'
 
@@ -174,9 +177,11 @@ function composerKind(
   | 'inset-ring'
   | 'inset-shadow'
   | 'filter'
+  | 'drop-shadow'
   | 'text-shadow'
   | null {
   const first = core.charCodeAt(0)
+  if (first === 100) return core.startsWith('drop-shadow-') ? 'drop-shadow' : null
   if (first === 102) return core.startsWith('from-') ? 'from' : null
   if (first === 118) return core.startsWith('via-') ? 'via' : null
   if (first === 116) {
@@ -272,6 +277,31 @@ function noteFilter(
   }
 }
 
+function noteDropShadow(
+  sink: FrontendClassSink,
+  bag: ComposerBag,
+  modifiers: readonly string[]
+): void {
+  const key = conditionKey(modifiers)
+  const layer = merged(bag, key)
+  if (!layer.dropShadow) return
+  noteFilter(
+    sink,
+    bag,
+    [
+      'drop-shadow',
+      `${layer.dropShadow.geometry} ${layer.dropShadowColor || layer.dropShadow.defaultColor}`,
+    ],
+    modifiers
+  )
+}
+
+function flushDropShadowDependents(sink: FrontendClassSink, bag: ComposerBag): void {
+  for (const key of bag.variants.keys()) {
+    noteDropShadow(sink, bag, key.split(':'))
+  }
+}
+
 function resolveColor(raw: string, config: GrammarConfigView): string | null {
   if (raw.length > 1 && raw[0] === '[' && raw[raw.length - 1] === ']') {
     const inner = decodeArbitrary(raw.slice(1, -1))
@@ -341,6 +371,8 @@ function merged(bag: ComposerBag, key: string): Layer {
     insetShadowColor: variant.insetShadowColor ?? bag.base.insetShadowColor,
     textShadow: variant.textShadow ?? bag.base.textShadow,
     textShadowColor: variant.textShadowColor ?? bag.base.textShadowColor,
+    dropShadow: variant.dropShadow ?? bag.base.dropShadow,
+    dropShadowColor: variant.dropShadowColor ?? bag.base.dropShadowColor,
   }
 }
 
@@ -487,6 +519,34 @@ export function tryCompose(
     // explicitly instead of accepting a style that the host silently ignores.
     if (nativeTarget && part[0] !== 'brightness' && !isAndroid) return null
     noteFilter(sink, bag, part, modifiers)
+    return false
+  }
+
+  if (kind === 'drop-shadow') {
+    // React Native exposes drop-shadow() only on Android. Refuse the class on
+    // iOS rather than leaving a filter string that the host silently ignores.
+    if (nativeTarget && !isAndroid) return null
+    const raw = core.slice('drop-shadow-'.length)
+    const shadow = (
+      {
+        xs: { geometry: '0 1px 1px', defaultColor: 'rgb(0 0 0 / 0.05)' },
+        sm: { geometry: '0 1px 2px', defaultColor: 'rgb(0 0 0 / 0.15)' },
+        md: { geometry: '0 3px 3px', defaultColor: 'rgb(0 0 0 / 0.12)' },
+        lg: { geometry: '0 4px 4px', defaultColor: 'rgb(0 0 0 / 0.15)' },
+        xl: { geometry: '0 9px 7px', defaultColor: 'rgb(0 0 0 / 0.1)' },
+        '2xl': { geometry: '0 25px 25px', defaultColor: 'rgb(0 0 0 / 0.15)' },
+        none: { geometry: '0 0 0', defaultColor: 'transparent' },
+      } as const
+    )[raw as 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'none']
+    if (shadow) {
+      layer.dropShadow = shadow
+    } else {
+      const color = resolveColor(raw, config)
+      if (color == null) return undefined
+      layer.dropShadowColor = color
+    }
+    noteDropShadow(sink, bag, modifiers)
+    if (modifiers.length === 0) flushDropShadowDependents(sink, bag)
     return false
   }
 
