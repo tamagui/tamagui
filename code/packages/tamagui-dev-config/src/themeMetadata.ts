@@ -1,5 +1,7 @@
 const schemes = ['light', 'dark']
-const colors = ['black', 'white', 'gray', 'blue', 'red', 'yellow', 'green']
+// only the tint families in @tamagui/logo, since every color here costs 192 theme
+// names (and their selectors) in the render-blocking stylesheet
+const colors = ['gray', 'blue', 'red', 'yellow', 'green']
 const paletteColors = [
   'blue',
   'gray',

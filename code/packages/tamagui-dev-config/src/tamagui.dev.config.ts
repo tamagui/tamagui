@@ -1,9 +1,15 @@
 import { animationsCSS } from '@tamagui/config/animations-css'
 import { animationsMotion } from '@tamagui/config/animations-motion'
-import { defaultConfig } from '@tamagui/config/v5-subtle'
+// the pieces of the v5 default config the site keeps, each from its narrowest
+// entry point. `@tamagui/config/v5-subtle` re-exports a whole theme pack, and
+// `defaultConfig` holds another, so touching either ships ~250kb of theme values
+// to the browser that the `themes:` line below then replaces.
+import { selectionStyles, settings as defaultSettings } from '@tamagui/config/settings'
 import type { CreateTamaguiProps } from '@tamagui/core'
 import { setupDev } from '@tamagui/core'
-import { bodyFont, cherryBombFont, headingFont, monoFont, silkscreenFont } from './fonts'
+import { shorthands } from '@tamagui/shorthands/v4'
+import { tokens } from '@tamagui/themes/v5'
+import { bodyFont, cherryBombFont, headingFont, monoFont } from './fonts'
 import { media, mediaQueryDefaultActive } from './media'
 import { clientThemes } from './themeMetadata'
 import { themes } from './themes'
@@ -16,7 +22,6 @@ const fonts = {
   heading: headingFont,
   body: bodyFont,
   mono: monoFont,
-  silkscreen: silkscreenFont,
   cherryBomb: cherryBombFont,
 }
 
@@ -31,13 +36,15 @@ const configuredThemes =
     : themes
 
 export const config = {
-  ...defaultConfig,
+  shorthands,
+  tokens,
+  selectionStyles,
   themes: configuredThemes,
   fonts,
   animations,
   media,
   settings: {
-    ...defaultConfig.settings,
+    ...defaultSettings,
     mediaQueryDefaultActive,
     allowedStyleValues: 'somewhat-strict-web',
     // allow both shorthands and longhand names for flexibility
