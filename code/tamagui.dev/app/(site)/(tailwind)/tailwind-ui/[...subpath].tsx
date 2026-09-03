@@ -1,7 +1,7 @@
-// the docs ui route exports its page as the named `DocComponentsPage` (no default),
-// unlike the other docs routes — map it to default so this route renders the page.
+// re-export the components docs page. the layout sets tailwind mode. the page is
+// exported as the named `DocComponentsPage`, so map it to default here
 export {
   DocComponentsPage as default,
   loader,
   generateStaticParams,
-} from '~/app/(site)/(docs)/ui/[...subpath]'
+} from '~/features/docs/pages/ComponentsDocPage'

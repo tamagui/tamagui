@@ -1,5 +1,6 @@
+// re-export the intro docs page. the layout sets tailwind mode
 export {
-  default,
+  DocIntroPage as default,
   loader,
   generateStaticParams,
-} from '~/app/(site)/(docs)/docs/intro/[slug]'
+} from '~/features/docs/pages/IntroDocPage'

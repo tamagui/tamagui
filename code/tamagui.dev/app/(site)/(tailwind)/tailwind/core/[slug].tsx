@@ -1,6 +1,6 @@
-// re-export docs/core page — layout sets tailwind mode
+// re-export the core docs page. the layout sets tailwind mode
 export {
-  default,
+  DocCorePage as default,
   loader,
   generateStaticParams,
-} from '~/app/(site)/(docs)/docs/core/[slug]'
+} from '~/features/docs/pages/CoreDocPage'
