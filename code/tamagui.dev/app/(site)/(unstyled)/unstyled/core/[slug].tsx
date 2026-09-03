@@ -1,5 +1,6 @@
+// re-export the core docs page. the layout sets unstyled mode
 export {
-  default,
+  DocCorePage as default,
   loader,
   generateStaticParams,
-} from '~/app/(site)/(docs)/docs/core/[slug]'
+} from '~/features/docs/pages/CoreDocPage'

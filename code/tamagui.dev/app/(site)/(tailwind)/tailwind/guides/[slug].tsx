@@ -1,5 +1,6 @@
+// re-export the guides docs page. the layout sets tailwind mode
 export {
-  default,
+  DocGuidesPage as default,
   loader,
   generateStaticParams,
-} from '~/app/(site)/(docs)/docs/guides/[slug]'
+} from '~/features/docs/pages/GuidesDocPage'
