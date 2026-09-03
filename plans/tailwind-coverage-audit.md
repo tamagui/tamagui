@@ -15,9 +15,9 @@ resolver accepts the part; runtime suites separately prove the complete multi-cl
 | Metric | Count |
 | --- | ---: |
 | Tailwind default-theme candidates | 23,286 |
-| Tamagui-owned candidates on web | 10,693 |
-| Official-engine web fallback | 12,593 |
-| Native-ready owned candidates | 10,425 |
+| Tamagui-owned candidates on web | 10,713 |
+| Official-engine web fallback | 12,573 |
+| Native-ready owned candidates | 10,445 |
 | Explicitly web-only / native-gated candidates | 273 |
 | Native-only lowerings | 5 |
 | Unsafe native-owned candidates | 0 |
@@ -568,7 +568,7 @@ the candidate needs a native lowering or an explicit target gate.
 | `justify-self-stretch` | 1 | 0 | 0 | 0 | 0 | `justify-self-stretch` |
 | `justify-start` | 1 | 1 | 1 | 0 | 0 |  |
 | `justify-stretch` | 1 | 0 | 0 | 0 | 0 | `justify-stretch` |
-| `leading` | 40 | 14 | 14 | 0 | 0 | `leading-0`, `leading-0.5`, `leading-1.5` |
+| `leading` | 40 | 34 | 34 | 0 | 0 | `leading-loose`, `leading-none`, `leading-normal` |
 | `leading-px` | 1 | 0 | 0 | 0 | 0 | `leading-px` |
 | `left` | 60 | 60 | 60 | 0 | 0 |  |
 | `left-auto` | 1 | 1 | 1 | 0 | 0 |  |

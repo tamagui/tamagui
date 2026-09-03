@@ -276,10 +276,12 @@ describe('claimed candidates resolve to native style values', () => {
     })
   })
 
-  test('numeric leading uses Tailwind spacing points', () => {
-    expect(
-      styleOf(splitTailwindStyles(Text, { className: 'leading-4' })).lineHeight
-    ).toBe(16)
+  test.each([
+    ['leading-0.5', 2],
+    ['leading-4', 16],
+    ['leading-96', 384],
+  ])('%s uses Tailwind spacing points', (className, expected) => {
+    expect(styleOf(splitTailwindStyles(Text, { className })).lineHeight).toBe(expected)
   })
 
   test('fractional flex shorthand resolves to native flex longhands', () => {

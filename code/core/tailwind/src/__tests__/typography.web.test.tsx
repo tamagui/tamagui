@@ -80,6 +80,8 @@ describe('tailwind lineHeight (leading-*)', () => {
 
   test('leading-8 resolves through the Tailwind spacing scale', () => {
     expect(rule('leading-8', 'lineHeight')[StyleObjectValue]).toBe('32px')
+    expect(rule('leading-0.5', 'lineHeight')[StyleObjectValue]).toBe('2px')
+    expect(rule('leading-96', 'lineHeight')[StyleObjectValue]).toBe('384px')
   })
 
   test('unregistered leading aliases pass through', () => {
