@@ -217,6 +217,16 @@ describe('tailwind standard utilities', () => {
     }
   })
 
+  test('inset ring and shadow utilities compose in Tailwind order', () => {
+    const styles = splitTailwindStyles(View, {
+      className: 'inset-ring-[red] inset-ring-2 inset-shadow-xs',
+    } as any)
+    const rule = findRule(styles.rulesToInsert, 'boxShadow')
+    expect(rule[StyleObjectValue]).toBe(
+      'inset 0 1px 1px rgb(0 0 0 / 0.05), inset 0 0 0 2px red'
+    )
+  })
+
   test('logical border sides emit browser-native logical properties', () => {
     const styles = splitTailwindStyles(View, {
       className: 'border-s-2 border-e-white border-bs-2 border-be-white',

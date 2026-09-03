@@ -119,6 +119,31 @@ describe('claimed candidates resolve to native style values', () => {
     expect(gated.textShadowColor).toBeUndefined()
   })
 
+  test('inset ring and shadow utilities render as native inset box shadows', () => {
+    for (const className of [
+      'inset-ring-[red] inset-ring-2 inset-shadow-xs',
+      'inset-shadow-xs inset-ring-2 inset-ring-[red]',
+    ]) {
+      expect(styleOf(splitTailwindStyles(View, { className })).boxShadow).toEqual([
+        {
+          inset: true,
+          offsetX: 0,
+          offsetY: 1,
+          blurRadius: 1,
+          color: 'rgb(0 0 0 / 0.05)',
+        },
+        {
+          inset: true,
+          offsetX: 0,
+          offsetY: 0,
+          blurRadius: 0,
+          spreadDistance: 2,
+          color: 'red',
+        },
+      ])
+    }
+  })
+
   test('gradient classes resolve to a native backgroundImage string', () => {
     const styles = splitTailwindStyles(View, {
       className: 'bg-linear-to-r from-[red] to-[blue]',

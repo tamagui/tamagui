@@ -127,6 +127,15 @@ describe('claimed candidates become flat props', () => {
     })
   })
 
+  test('inset ring and shadow utilities compose with their colors', () => {
+    expect(tokenize('inset-ring-[red] inset-ring-2')).toEqual({
+      boxShadow: 'inset 0 0 0 2px red',
+    })
+    expect(tokenize('inset-shadow-sm inset-shadow-[blue]')).toEqual({
+      boxShadow: 'inset 0 2px 4px blue',
+    })
+  })
+
   test('cursor classes resolve to cursor prop', () => {
     expect(tokenize('cursor-pointer')).toEqual({ cursor: 'pointer' })
     expect(tokenize('cursor-not-allowed')).toEqual({ cursor: 'not-allowed' })

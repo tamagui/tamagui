@@ -15,13 +15,13 @@ resolver accepts the part; runtime suites separately prove the complete multi-cl
 | Metric | Count |
 | --- | ---: |
 | Tailwind default-theme candidates | 23,286 |
-| Tamagui-owned candidates on web | 10,735 |
-| Official-engine web fallback | 12,551 |
-| Native-ready owned candidates | 10,467 |
+| Tamagui-owned candidates on web | 11,327 |
+| Official-engine web fallback | 11,959 |
+| Native-ready owned candidates | 11,059 |
 | Explicitly web-only / native-gated candidates | 273 |
 | Native-only lowerings | 5 |
 | Unsafe native-owned candidates | 0 |
-| Complete / partial / missing web families | 499 / 29 / 626 |
+| Complete / partial / missing web families | 501 / 29 / 624 |
 
 Web coverage is the full registry: Tamagui-owned candidates use the shared style runtime
 and every remainder stays in `className` for the official engine. Native intentionally
@@ -515,12 +515,12 @@ the candidate needs a native lowering or an explicit target gate.
 | `inset-e-px` | 1 | 1 | 1 | 0 | 0 |  |
 | `inset-full` | 1 | 1 | 1 | 0 | 0 |  |
 | `inset-px` | 1 | 1 | 1 | 0 | 0 |  |
-| `inset-ring` | 297 | 0 | 0 | 0 | 0 | `inset-ring`, `inset-ring-0`, `inset-ring-1` |
+| `inset-ring` | 297 | 297 | 297 | 0 | 0 |  |
 | `inset-s` | 60 | 60 | 60 | 0 | 0 |  |
 | `inset-s-auto` | 1 | 1 | 1 | 0 | 0 |  |
 | `inset-s-full` | 1 | 1 | 1 | 0 | 0 |  |
 | `inset-s-px` | 1 | 1 | 1 | 0 | 0 |  |
-| `inset-shadow` | 295 | 0 | 0 | 0 | 0 | `inset-shadow-2xs`, `inset-shadow-amber-50`, `inset-shadow-amber-100` |
+| `inset-shadow` | 295 | 295 | 295 | 0 | 0 |  |
 | `inset-shadow-initial` | 1 | 0 | 0 | 0 | 0 | `inset-shadow-initial` |
 | `inset-x` | 60 | 60 | 60 | 0 | 0 |  |
 | `inset-x-auto` | 1 | 1 | 1 | 0 | 0 |  |

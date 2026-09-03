@@ -33,6 +33,10 @@ type Layer = {
   ringColor?: string
   ringInset?: boolean
   shadow?: string
+  insetRingWidth?: string
+  insetRingColor?: string
+  insetShadow?: { geometry: string; defaultColor: string }
+  insetShadowColor?: string
   textShadow?: {
     offset: { width: number; height: number }
     radius: number
@@ -161,7 +165,17 @@ function splitModifiers(candidate: string, colon: number): string[] {
 
 function composerKind(
   core: string
-): 'from' | 'via' | 'to' | 'image' | 'ring' | 'filter' | 'text-shadow' | null {
+):
+  | 'from'
+  | 'via'
+  | 'to'
+  | 'image'
+  | 'ring'
+  | 'inset-ring'
+  | 'inset-shadow'
+  | 'filter'
+  | 'text-shadow'
+  | null {
   const first = core.charCodeAt(0)
   if (first === 102) return core.startsWith('from-') ? 'from' : null
   if (first === 118) return core.startsWith('via-') ? 'via' : null
@@ -179,7 +193,13 @@ function composerKind(
     return core === 'grayscale' || core.startsWith('grayscale-') ? 'filter' : null
   if (first === 104) return core.startsWith('hue-rotate-') ? 'filter' : null
   if (first === 105)
-    return core === 'invert' || core.startsWith('invert-') ? 'filter' : null
+    return core.startsWith('inset-ring')
+      ? 'inset-ring'
+      : core.startsWith('inset-shadow-')
+        ? 'inset-shadow'
+        : core === 'invert' || core.startsWith('invert-')
+          ? 'filter'
+          : null
   if (first === 115) {
     return core.startsWith('saturate-') || core === 'sepia' || core.startsWith('sepia-')
       ? 'filter'
@@ -315,6 +335,10 @@ function merged(bag: ComposerBag, key: string): Layer {
     ringColor: variant.ringColor ?? bag.base.ringColor,
     ringInset: variant.ringInset ?? bag.base.ringInset,
     shadow: variant.shadow ?? bag.base.shadow,
+    insetRingWidth: variant.insetRingWidth ?? bag.base.insetRingWidth,
+    insetRingColor: variant.insetRingColor ?? bag.base.insetRingColor,
+    insetShadow: variant.insetShadow ?? bag.base.insetShadow,
+    insetShadowColor: variant.insetShadowColor ?? bag.base.insetShadowColor,
     textShadow: variant.textShadow ?? bag.base.textShadow,
     textShadowColor: variant.textShadowColor ?? bag.base.textShadowColor,
   }
@@ -337,9 +361,21 @@ function ringCss(layer: Layer): string | null {
 }
 
 function boxShadowCss(layer: Layer): string | null {
+  const shadows: string[] = []
+  if (layer.insetShadow?.geometry) {
+    shadows.push(
+      `${layer.insetShadow.geometry} ${layer.insetShadowColor || layer.insetShadow.defaultColor}`
+    )
+  }
+  if (layer.insetRingWidth != null) {
+    shadows.push(
+      `inset 0 0 0 ${layer.insetRingWidth} ${layer.insetRingColor || 'currentColor'}`
+    )
+  }
   const ring = ringCss(layer)
-  if (!ring) return layer.shadow || null
-  return layer.shadow ? `${ring}, ${layer.shadow}` : ring
+  if (ring) shadows.push(ring)
+  if (layer.shadow) shadows.push(layer.shadow)
+  return shadows.length > 0 ? shadows.join(', ') : null
 }
 
 /** Re-emit Tailwind's CSS-variable transform family in its fixed matrix order. */
@@ -384,7 +420,12 @@ function flush(
   const image = gradientCss(layer)
   if (image) emit(sink, 'backgroundImage', image, modifiers)
   const shadow = boxShadowCss(layer)
-  if (shadow && layer.ringWidth != null) emit(sink, 'boxShadow', shadow, modifiers)
+  if (
+    shadow &&
+    (layer.ringWidth != null || layer.insetRingWidth != null || layer.insetShadow != null)
+  ) {
+    emit(sink, 'boxShadow', shadow, modifiers)
+  }
   if (layer.textShadow) {
     emit(sink, 'textShadowOffset', layer.textShadow.offset, modifiers)
     emit(sink, 'textShadowRadius', layer.textShadow.radius, modifiers)
@@ -493,6 +534,43 @@ export function tryCompose(
     return false
   }
 
+  if (kind === 'inset-ring') {
+    const raw = core === 'inset-ring' ? '' : core.slice('inset-ring-'.length)
+    const width = raw === '' ? '1px' : ringWidth(raw)
+    if (width != null) {
+      layer.insetRingWidth = width
+    } else {
+      const color = resolveColor(raw, config)
+      if (color == null) return undefined
+      layer.insetRingColor = color
+    }
+    flush(sink, bag, modifiers)
+    if (modifiers.length === 0) flushDependents(sink, bag)
+    return false
+  }
+
+  if (kind === 'inset-shadow') {
+    const raw = core.slice('inset-shadow-'.length)
+    const shadow = (
+      {
+        '2xs': { geometry: 'inset 0 1px 0', defaultColor: 'rgb(0 0 0 / 0.05)' },
+        xs: { geometry: 'inset 0 1px 1px', defaultColor: 'rgb(0 0 0 / 0.05)' },
+        sm: { geometry: 'inset 0 2px 4px', defaultColor: 'rgb(0 0 0 / 0.05)' },
+        none: { geometry: '', defaultColor: 'transparent' },
+      } as const
+    )[raw as '2xs' | 'xs' | 'sm' | 'none']
+    if (shadow) {
+      layer.insetShadow = shadow
+    } else {
+      const color = resolveColor(raw, config)
+      if (color == null) return undefined
+      layer.insetShadowColor = color
+    }
+    flush(sink, bag, modifiers)
+    if (modifiers.length === 0) flushDependents(sink, bag)
+    return false
+  }
+
   if (kind === 'image') {
     const dir = linearTo[core.slice('bg-linear-to-'.length)]
     if (!dir) return true
@@ -553,7 +631,13 @@ export function noteBoxShadow(
   const bag = getBag(sink)
   layerOf(bag, conditionKey(modifiers)).shadow = value === 'none' ? '' : value
   const layer = merged(bag, conditionKey(modifiers))
-  if (layer.ringWidth == null) return false
+  if (
+    layer.ringWidth == null &&
+    layer.insetRingWidth == null &&
+    layer.insetShadow == null
+  ) {
+    return false
+  }
   emit(sink, 'boxShadow', boxShadowCss(layer)!, modifiers)
   return true
 }
