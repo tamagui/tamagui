@@ -15,10 +15,7 @@ export type GrammarSourceConfig = {
   media?: Names
   themes?: Readonly<Record<string, unknown>>
   tokensParsed?: Partial<
-    Record<
-      'space' | 'size' | 'radius' | 'zIndex' | 'color',
-      Readonly<Record<string, unknown>>
-    >
+    Record<string, Readonly<Record<string, unknown>>>
   >
   fontsParsed?: Readonly<Record<string, GrammarFontConfig | undefined>>
 }
@@ -107,7 +104,7 @@ export function createGrammarConfigView(
   config: GrammarSourceConfig,
   options: CreateGrammarConfigViewOptions = {}
 ): GrammarConfigView {
-  const tokenNames: Record<TokenCategory, Set<string>> = {
+  const tokenNames: Record<string, Set<string>> = {
     space: new Set(),
     size: new Set(),
     radius: new Set(),
@@ -120,9 +117,14 @@ export function createGrammarConfigView(
     letterSpacing: new Set(),
   }
 
-  for (const category of ['space', 'size', 'radius', 'zIndex', 'color'] as const) {
-    addNames(tokenNames[category], config.tokensParsed?.[category])
+  for (const category in config.tokensParsed) {
+    addNames((tokenNames[category] ||= new Set()), config.tokensParsed[category])
   }
+  // Legacy configs resolve outline dimensions through space. A prop-named
+  // token group takes precedence when present, but absence must preserve the
+  // long-standing fallback instead of making outline classes disappear.
+  tokenNames.outlineWidth ||= tokenNames.space
+  tokenNames.outlineOffset ||= tokenNames.space
 
   for (const themeName in config.themes) {
     const theme = config.themes[themeName]

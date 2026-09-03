@@ -4,6 +4,7 @@ import {
   fontWeightNames,
   insetAxisProps,
   prefixToEntries,
+  propToGrammarEntry,
   radiusCornerProps,
   sizeUtilityProps,
   standaloneValueProps,
@@ -98,11 +99,19 @@ const negativeTokenProps = new Set([
   'inset',
   'insetInlineStart',
   'insetInlineEnd',
+  'insetBlockStart',
+  'insetBlockEnd',
   'start',
   'end',
   'x',
   'y',
   'rotate',
+  'rotateX',
+  'rotateY',
+  'rotateZ',
+  'skewX',
+  'skewY',
+  'order',
   'scale',
   'scaleX',
   'scaleY',
@@ -117,6 +126,8 @@ const positionSpaceProps = new Set([
   'inset',
   'insetInlineStart',
   'insetInlineEnd',
+  'insetBlockStart',
+  'insetBlockEnd',
   'start',
   'end',
 ])
@@ -472,6 +483,9 @@ function chooseEntry(
       }
     }
     const color = entries.find((entry) => entry.prop === 'color')
+    if (color && rawValue === 'transparent') {
+      return { entry: color, valueKind: 'enum' }
+    }
     const colorName = tokenLookupName('color', rawValue)
     if (color && hasTokenName(config, 'color', colorName)) {
       return { entry: color, valueKind: 'token' }
@@ -503,7 +517,8 @@ function chooseEntry(
     const width = entries.find((entry) => entry.prop.endsWith('Width'))
     const color = entries.find((entry) => entry.prop.endsWith('Color'))
     const token = negative ? `-${rawValue}` : rawValue
-    const matchesWidth = width && hasTokenName(config, 'space', token)
+    const widthCategory = width?.tokenCategory || 'space'
+    const matchesWidth = width && hasTokenName(config, widthCategory, token)
     const colorName = tokenLookupName('color', rawValue)
     const matchesColor = color && hasTokenName(config, 'color', colorName)
     if (matchesWidth && matchesColor) return null
@@ -513,13 +528,16 @@ function chooseEntry(
     if (matchesColor) {
       return { entry: color, valueKind: 'token' }
     }
+    if (color && rawValue === 'transparent') {
+      return { entry: color, valueKind: 'enum' }
+    }
     return null
   }
 
   if (numericPattern.test(rawValue)) {
-    if (prefix === 'rotate') {
-      const rotate = entries.find((entry) => entry.prop === 'rotate')
-      if (rotate) return { entry: rotate, valueKind: 'convenience', convenience: 'angle' }
+    const angle = entries.find((entry) => entry.conveniences?.includes('angle'))
+    if (angle) {
+      return { entry: angle, valueKind: 'convenience', convenience: 'angle' }
     }
     if (prefix === 'flex') {
       const flex = entries.find((entry) => entry.prop === 'flex')
@@ -556,6 +574,12 @@ function chooseEntry(
 
   for (const entry of entries) {
     if (entry.tokenCategory) {
+      if (entry.tokenCategory === 'color' && rawValue === 'transparent') {
+        return { entry, valueKind: 'enum' }
+      }
+      if (entry.tokenCategory === 'radius' && rawValue === 'none') {
+        return { entry, valueKind: 'convenience', convenience: 'zero' }
+      }
       const name = negative ? `-${rawValue}` : rawValue
       const tokenName = tokenLookupName(entry.tokenCategory, name)
       if (hasTokenName(config, entry.tokenCategory, tokenName)) {
@@ -592,6 +616,9 @@ function chooseEntry(
     if (entry.prop === 'zIndex' && numericPattern.test(rawValue)) {
       return { entry, valueKind: 'convenience', convenience: 'integer' }
     }
+    if (entry.conveniences?.includes('integer') && numericPattern.test(rawValue)) {
+      return { entry, valueKind: 'convenience', convenience: 'integer' }
+    }
   }
   return null
 }
@@ -626,7 +653,8 @@ export function parseCandidate(
           (negativeTokenProps.has(selected.entry.prop) &&
             (selected.valueKind === 'token' ||
               selected.convenience === 'angle' ||
-              selected.convenience === 'percentage')))
+              selected.convenience === 'percentage' ||
+              selected.convenience === 'integer')))
       ) {
         dynamic = { prefix, rawValue, selected }
         // An exact configured token owns its spelling before a reserved whole utility. Other
@@ -651,7 +679,11 @@ export function parseCandidate(
   }
 
   const direct = wholeClassUtilities[split.base]
-  if (!negative && direct) {
+  if (
+    !negative &&
+    direct &&
+    (split.base !== 'shadow' || hasTokenName(config, 'boxShadow', 'sm'))
+  ) {
     const convenience = wholeClassConveniences[split.base]
     return {
       candidate,
@@ -723,7 +755,7 @@ export function formatCandidate(
   { prop, value, valueKind, modifiers = [] }: FormatCandidateInput,
   config?: GrammarConfigView
 ): string | null {
-  const entry = grammarEntries.find((candidate) => candidate.prop === prop)
+  const entry = propToGrammarEntry[prop]
   if (!entry) return null
   if (valueKind === 'arbitrary' && value === '') return null
   const normalizedModifiers = normalizeModifiers(modifiers, config || {})

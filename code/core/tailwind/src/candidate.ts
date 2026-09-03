@@ -75,7 +75,7 @@ function arbitraryValue(inner: string): number | string {
 function tailwindSizingValue(prop: string, value: string): string | null {
   if (value === 'full') return '100%'
   if (value === 'auto') return 'auto'
-  if (value === 'screen') return /[Hh]eight/.test(prop) ? '100vh' : '100vw'
+  if (value === 'screen') return /[Hh]eight|[Bb]lock/.test(prop) ? '100vh' : '100vw'
   if (value === 'min') return 'min-content'
   if (value === 'max') return 'max-content'
   if (value === 'fit') return 'fit-content'
@@ -111,6 +111,7 @@ function expansionProps(parsed: ParsedCandidate): readonly string[] | null {
   if (!prefix) return null
   if (prefix === 'size') return sizeUtilityProps
   if (prefix === 'translate') return ['x', 'y']
+  if (prefix === 'skew') return ['skewX', 'skewY']
   if (prefix === 'inset-x' || prefix === 'inset-y') {
     return insetAxisProps[prefix.slice('inset-'.length)]
   }
@@ -146,9 +147,13 @@ function tailwindClassToFlatProp(
   const category = parsed.entry.tokenCategory
   let value: any = parsed.rawValue
 
-  if (prop === 'rotate' && parsed.valueKind === 'convenience') {
+  if (parsed.convenience === 'zero') {
+    return { key: prop, value: 0 }
+  }
+
+  if (parsed.convenience === 'angle') {
     return {
-      key: 'rotate',
+      key: prop,
       value: `${parsed.negative ? '-' : ''}${value}deg`,
     }
   }
@@ -268,7 +273,15 @@ function tailwindClassToFlatProp(
     let resolved = arbitraryValue(inner)
     // rotate requires a unit-bearing string on native — a bare number from rotate-[45]
     // triggers a redbox. append deg when the arbitrary resolved to a unitless number.
-    if (prop === 'rotate' && typeof resolved === 'number') {
+    if (
+      (prop === 'rotate' ||
+        prop === 'rotateX' ||
+        prop === 'rotateY' ||
+        prop === 'rotateZ' ||
+        prop === 'skewX' ||
+        prop === 'skewY') &&
+      typeof resolved === 'number'
+    ) {
       resolved = `${resolved}deg`
     }
     return { key: prop, value: resolved }
@@ -365,6 +378,56 @@ type TailwindParentPlan = {
 type CachedTailwindClassPlan = TailwindClassPlan | TailwindParentPlan
 
 const classPlanCache = new WeakMap<object, Map<string, CachedTailwindClassPlan>>()
+const nativeTarget = !isWeb || process.env.TAMAGUI_TARGET === 'native'
+const cssGridProps = new Set([
+  'gridTemplateColumns',
+  'gridColumn',
+  'gridColumnStart',
+  'gridColumnEnd',
+  'gridRow',
+  'gridRowStart',
+  'gridRowEnd',
+])
+const nativeUnsupportedProps = new Set([
+  'objectFit',
+  'overflowX',
+  'overflowY',
+  'textOverflow',
+  'whiteSpace',
+])
+const nativeUnsupportedSizingValues = new Set(['screen', 'min', 'max', 'fit'])
+const nativeUnsupportedDisplayValues = new Set(['block', 'inline', 'inline-flex'])
+const nativeUnsupportedPositionValues = new Set(['fixed', 'sticky'])
+
+function shouldGateNative(parsed: ParsedCandidate): boolean {
+  if (!nativeTarget) return false
+  const properties = parsed.properties || {}
+  if (
+    process.env.TAMAGUI_CSS_GRID !== '1' &&
+    ((parsed.entry && cssGridProps.has(parsed.entry.prop)) ||
+      properties.display === 'grid' ||
+      Object.keys(properties).some((prop) => cssGridProps.has(prop)))
+  ) {
+    return true
+  }
+  if (
+    (parsed.entry && nativeUnsupportedProps.has(parsed.entry.prop)) ||
+    Object.keys(properties).some((prop) => nativeUnsupportedProps.has(prop))
+  ) {
+    return true
+  }
+  if (
+    parsed.convenience === 'sizing-keyword' &&
+    nativeUnsupportedSizingValues.has(parsed.rawValue || '')
+  ) {
+    return true
+  }
+  return (
+    nativeUnsupportedDisplayValues.has(String(properties.display)) ||
+    nativeUnsupportedPositionValues.has(String(properties.position)) ||
+    properties.overflow === 'auto'
+  )
+}
 
 function getClassPlanCache(grammarConfig: object) {
   let cache = classPlanCache.get(grammarConfig)
@@ -521,6 +584,9 @@ function computeClassPlan(
     return isWeb ? 'raw' : null
   }
   const parsed = classification.parsed
+  if (shouldGateNative(parsed)) {
+    return null
+  }
   // named utilities first (flex-row, flex-1, hidden, …) — whole class → fixed prop(s).
   // these may emit multiple props and may have no dash, so handle before the generic parse.
   const util = parsed.kind === 'utility' ? parsed.properties : null

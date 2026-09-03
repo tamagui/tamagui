@@ -3,7 +3,7 @@ import { modifierAliases } from '../runtime/stateModifiers'
 
 export { modifierAliases }
 
-export type TokenCategory =
+export type StandardTokenCategory =
   | 'space'
   | 'size'
   | 'radius'
@@ -15,14 +15,18 @@ export type TokenCategory =
   | 'lineHeight'
   | 'letterSpacing'
 
+export type TokenCategory = StandardTokenCategory | (string & {})
+
 export type Convenience =
   | 'alignment-alias'
+  | 'angle'
   | 'bare-border'
   | 'flex-bundle'
   | 'font-generic'
   | 'integer'
   | 'percentage'
   | 'sizing-keyword'
+  | 'zero'
 
 export interface GrammarEntry {
   prop: string
@@ -59,6 +63,12 @@ const grammarEntrySpecs = [
     prefix: 'max-h',
     conveniences: ['sizing-keyword'],
   },
+  { prop: 'blockSize', prefix: 'block', conveniences: ['sizing-keyword'] },
+  { prop: 'minBlockSize', prefix: 'min-block', conveniences: ['sizing-keyword'] },
+  { prop: 'maxBlockSize', prefix: 'max-block', conveniences: ['sizing-keyword'] },
+  { prop: 'inlineSize', prefix: 'inline', conveniences: ['sizing-keyword'] },
+  { prop: 'minInlineSize', prefix: 'min-inline', conveniences: ['sizing-keyword'] },
+  { prop: 'maxInlineSize', prefix: 'max-inline', conveniences: ['sizing-keyword'] },
   { prop: 'padding', prefix: 'p' },
   { prop: 'paddingTop', prefix: 'pt' },
   { prop: 'paddingRight', prefix: 'pr' },
@@ -112,10 +122,10 @@ const grammarEntrySpecs = [
   { prop: 'borderEndStartRadius', prefix: 'rounded-es' },
   { prop: 'borderEndEndRadius', prefix: 'rounded-ee' },
   { prop: 'borderStyle', prefix: 'border' },
-  { prop: 'outlineWidth', prefix: 'outline' },
+  { prop: 'outlineWidth', prefix: 'outline', tokenCategory: 'outlineWidth' },
   { prop: 'outlineColor', prefix: 'outline' },
   { prop: 'outlineStyle', prefix: 'outline' },
-  { prop: 'outlineOffset', prefix: 'outline-offset' },
+  { prop: 'outlineOffset', prefix: 'outline-offset', tokenCategory: 'outlineOffset' },
   { prop: 'color', prefix: 'color' },
   { prop: 'fontSize', prefix: 'text' },
   // bound (2026-07-31 adjudication): the runtime resolves fontWeight through
@@ -142,7 +152,12 @@ const grammarEntrySpecs = [
   { prop: 'inset', prefix: 'inset' },
   { prop: 'insetInlineStart', prefix: 'start' },
   { prop: 'insetInlineEnd', prefix: 'end' },
+  { prop: 'insetInlineStart', prefix: 'inset-s' },
+  { prop: 'insetInlineEnd', prefix: 'inset-e' },
+  { prop: 'insetBlockStart', prefix: 'inset-bs' },
+  { prop: 'insetBlockEnd', prefix: 'inset-be' },
   { prop: 'zIndex', prefix: 'z', conveniences: ['integer'] },
+  { prop: 'order', prefix: 'order', conveniences: ['integer'] },
   { prop: 'overflow', prefix: '' },
   { prop: 'flex', prefix: 'flex', conveniences: ['flex-bundle'] },
   { prop: 'flexDirection', prefix: 'flex' },
@@ -155,9 +170,17 @@ const grammarEntrySpecs = [
   { prop: 'alignSelf', prefix: 'self', conveniences: ['alignment-alias'] },
   { prop: 'justifyContent', prefix: 'justify', conveniences: ['alignment-alias'] },
   { prop: 'opacity', prefix: 'opacity', conveniences: ['percentage'] },
-  { prop: 'boxShadow', prefix: 'shadow' },
+  { prop: 'boxShadow', prefix: 'shadow', tokenCategory: 'boxShadow' },
   { prop: 'pointerEvents', prefix: 'pointer-events' },
-  { prop: 'rotate', prefix: 'rotate' },
+  { prop: 'rotate', prefix: 'rotate', conveniences: ['angle'] },
+  { prop: 'rotateX', prefix: 'rotate-x', conveniences: ['angle'] },
+  { prop: 'rotateY', prefix: 'rotate-y', conveniences: ['angle'] },
+  { prop: 'rotateZ', prefix: 'rotate-z', conveniences: ['angle'] },
+  { prop: 'skewX', prefix: 'skew', conveniences: ['angle'] },
+  { prop: 'skewX', prefix: 'skew-x', conveniences: ['angle'] },
+  { prop: 'skewY', prefix: 'skew-y', conveniences: ['angle'] },
+  { prop: 'transformOrigin', prefix: 'origin' },
+  { prop: 'perspective', prefix: 'perspective', tokenCategory: 'perspective' },
   { prop: 'scale', prefix: 'scale', conveniences: ['percentage'] },
   { prop: 'scaleX', prefix: 'scale-x', conveniences: ['percentage'] },
   { prop: 'scaleY', prefix: 'scale-y', conveniences: ['percentage'] },
@@ -194,7 +217,9 @@ const grammarEntrySpecs = [
 ] as const
 
 export const grammarEntries: readonly GrammarEntry[] = grammarEntrySpecs.map((entry) => {
-  const tokenCategory = getTokenCategoryName(propToTokenCategoryCode[entry.prop])
+  const tokenCategory =
+    (entry as GrammarEntry).tokenCategory ||
+    getTokenCategoryName(propToTokenCategoryCode[entry.prop])
   return tokenCategory ? { ...entry, tokenCategory } : entry
 })
 
@@ -402,6 +427,17 @@ export const standaloneValueProps: Readonly<
     isolate: 'isolate',
     auto: 'isolation-auto',
   },
+  transformOrigin: {
+    '50% 50%': 'origin-center',
+    '50% 0': 'origin-top',
+    '100% 0': 'origin-top-right',
+    '100% 50%': 'origin-right',
+    '100% 100%': 'origin-bottom-right',
+    '50% 100%': 'origin-bottom',
+    '0 100%': 'origin-bottom-left',
+    '0 50%': 'origin-left',
+    '0 0': 'origin-top-left',
+  },
 })
 
 export const fontWeightNames: Readonly<Record<string, string>> = Object.freeze({
@@ -451,6 +487,8 @@ export const wholeClassUtilities: Readonly<
   'line-clamp-5': { numberOfLines: 5 },
   'line-clamp-6': { numberOfLines: 6 },
   'line-clamp-none': { numberOfLines: 0 },
+  'order-first': { order: -9999 },
+  'order-last': { order: 9999 },
   truncate: { overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' },
   'grid-cols-none': { gridTemplateColumns: 'none' },
   'grid-cols-subgrid': { gridTemplateColumns: 'subgrid' },
@@ -461,6 +499,8 @@ export const wholeClassUtilities: Readonly<
   contents: { display: 'contents' },
   border: { borderWidth: 1 },
   outline: { outlineWidth: 1 },
+  shadow: { boxShadow: 'sm' },
+  'shadow-none': { boxShadow: 'none' },
   'border-t': { borderTopWidth: 1 },
   'border-r': { borderRightWidth: 1 },
   'border-b': { borderBottomWidth: 1 },

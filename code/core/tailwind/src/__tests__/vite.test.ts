@@ -57,37 +57,36 @@ describe('the official Tailwind scanner state', () => {
   test('builds only current unclaimed candidates without preflight', async () => {
     const root = await createRoot()
     const sourcePath = path.join(root, 'App.tsx')
-    await writeFile(sourcePath, '<View className="p-4 grid grid-cols-2" />')
+    await writeFile(sourcePath, '<View className="p-4 columns-2" />')
 
     const state = createTailwindScannerState()
     await state.configure(root, 0, { tokensParsed: { space: { 4: 16 } } }, () => {})
 
-    expect(state.css).toContain('.grid')
-    expect(state.css).toContain('.grid-cols-2')
+    expect(state.css).toContain('.columns-2')
     expect(state.candidateCount).toBe(2)
     expect(state.css).not.toMatch(/\.p-4(?:[,{:]|\s)/)
     expect(state.css).not.toContain('box-sizing: border-box;')
 
-    expect(await state.scanSource(sourcePath, '<View className="grid-cols-3" />')).toBe(
+    expect(await state.scanSource(sourcePath, '<View className="columns-3" />')).toBe(
       true
     )
-    expect(state.css).toContain('.grid-cols-3')
+    expect(state.css).toContain('.columns-3')
     expect(state.candidateCount).toBe(2)
-    expect(state.css).not.toContain('.grid-cols-2')
+    expect(state.css).not.toContain('.columns-2')
 
     expect(await state.removeSource(sourcePath)).toBe(true)
-    expect(state.css).not.toContain('.grid-cols-3')
+    expect(state.css).not.toContain('.columns-3')
 
-    expect(await state.scanSource(sourcePath, '<View className="grid-cols-2" />')).toBe(
+    expect(await state.scanSource(sourcePath, '<View className="columns-2" />')).toBe(
       true
     )
-    expect(state.css).toContain('.grid-cols-2')
+    expect(state.css).toContain('.columns-2')
   })
 
   test('registers scanner-owned sources and rebuilds them through watch changes', async () => {
     const root = await createRoot()
     const sourcePath = path.join(root, 'scanner-only.html')
-    await writeFile(sourcePath, '<div class="grid-cols-2" />')
+    await writeFile(sourcePath, '<div class="columns-2" />')
     const dependencies: string[] = []
     const sourceGlobs: string[] = []
     const state = createTailwindScannerState()
@@ -105,29 +104,29 @@ describe('the official Tailwind scanner state', () => {
 
     expect(dependencies).toContain(await realpath(sourcePath))
     expect(sourceGlobs.length).toBeGreaterThan(0)
-    expect(state.css).toContain('.grid-cols-2')
+    expect(state.css).toContain('.columns-2')
     const normalizedSourcePath = await realpath(sourcePath)
     const registeredGlobCount = sourceGlobs.length
 
-    await writeFile(sourcePath, '<div class="grid-cols-3" />')
+    await writeFile(sourcePath, '<div class="columns-3" />')
     expect(
       await updateTailwindForWatchChange(state, sourcePath, 'update', configure)
     ).toBe(true)
     expect(dependencies.filter((file) => file === normalizedSourcePath)).toHaveLength(1)
     expect(sourceGlobs).toHaveLength(registeredGlobCount)
-    expect(state.css).toContain('.grid-cols-3')
-    expect(state.css).not.toContain('.grid-cols-2')
+    expect(state.css).toContain('.columns-3')
+    expect(state.css).not.toContain('.columns-2')
 
     await rm(sourcePath)
     expect(
       await updateTailwindForWatchChange(state, sourcePath, 'delete', configure)
     ).toBe(true)
-    expect(state.css).not.toContain('.grid-cols-3')
+    expect(state.css).not.toContain('.columns-3')
   })
 
   test('stays off when Tamagui itself is disabled for the build', async () => {
     const root = await createRoot()
-    await writeFile(path.join(root, 'App.tsx'), '<View className="grid-cols-2" />')
+    await writeFile(path.join(root, 'App.tsx'), '<View className="columns-2" />')
     const state = createTailwindScannerState()
 
     expect(await state.configure(root, 0, null, () => {})).toBe(false)

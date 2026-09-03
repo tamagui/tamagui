@@ -129,6 +129,53 @@ export declare const tokens: {
         readonly '2-5': 10;
         readonly '3.5': 14;
         readonly '3-5': 14;
+        readonly '3xs': 256;
+        readonly '2xs': 288;
+        readonly xs: 320;
+        readonly sm: 384;
+        readonly md: 448;
+        readonly lg: 512;
+        readonly xl: 576;
+        readonly '2xl': 672;
+        readonly '3xl': 768;
+        readonly '4xl': 896;
+        readonly '5xl': 1024;
+        readonly '6xl': 1152;
+        readonly '7xl': 1280;
+    };
+    readonly outlineWidth: {
+        readonly 0: 0;
+        readonly 1: 1;
+        readonly 2: 2;
+        readonly 4: 4;
+        readonly 8: 8;
+    };
+    readonly outlineOffset: {
+        readonly 0: 0;
+        readonly 1: 1;
+        readonly 2: 2;
+        readonly 4: 4;
+        readonly 8: 8;
+        readonly '-1': -1;
+        readonly '-2': -2;
+        readonly '-4': -4;
+        readonly '-8': -8;
+    };
+    readonly boxShadow: {
+        readonly '2xs': '0 1px rgb(0 0 0 / 0.05)';
+        readonly xs: '0 1px 2px 0 rgb(0 0 0 / 0.05)';
+        readonly sm: '0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)';
+        readonly md: '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)';
+        readonly lg: '0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)';
+        readonly xl: '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)';
+        readonly '2xl': '0 25px 50px -12px rgb(0 0 0 / 0.25)';
+    };
+    readonly perspective: {
+        readonly dramatic: 100;
+        readonly near: 300;
+        readonly normal: 500;
+        readonly midrange: 800;
+        readonly distant: 1200;
     };
     readonly radius: {
         readonly xs: 2;

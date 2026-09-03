@@ -31,6 +31,8 @@ describe('createGrammarConfigView', () => {
           radius: { true: 8 },
           zIndex: { modal: 100 },
           color: { red9: '#f00' },
+          outlineWidth: { 2: 2 },
+          boxShadow: { sm: '0 1px 2px #0003' },
         },
         fontsParsed: {
           body: {
@@ -55,11 +57,20 @@ describe('createGrammarConfigView', () => {
     expect(view.tokenNames?.color).toEqual(
       new Set(['red9', 'color5', 'background', 'borderColor'])
     )
+    expect(view.tokenNames?.outlineWidth).toEqual(new Set(['2']))
+    expect(view.tokenNames?.boxShadow).toEqual(new Set(['sm']))
     expect(view.tokenNames?.fontFamily).toEqual(new Set(['body']))
     expect(view.tokenNames?.fontSize).toEqual(new Set(['4']))
     expect(view.tokenNames?.fontWeight).toEqual(new Set(['4', 'semibold']))
     expect(view.tokenNames?.lineHeight).toEqual(new Set(['4']))
     expect(view.tokenNames?.letterSpacing).toEqual(new Set(['tight']))
+  })
+
+  test('outline dimensions fall back to space for legacy configs', () => {
+    const view = createGrammarConfigView({ tokensParsed: { space: { 2: 8 } } })
+
+    expect(view.tokenNames?.outlineWidth).toBe(view.tokenNames?.space)
+    expect(view.tokenNames?.outlineOffset).toBe(view.tokenNames?.space)
   })
 
   test('unions theme value names across partial subthemes', () => {

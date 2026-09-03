@@ -198,6 +198,10 @@ describe('claimed candidates become flat props', () => {
     expect(tokenize('ring-[blue]')).toEqual({})
   })
 
+  test('named shadows use the configured boxShadow token domain', () => {
+    expect(tokenize('shadow-none')).toEqual({ boxShadow: 'none' })
+  })
+
   test('logical spacing and gap axes become native-capable props', () => {
     expect(
       tokenize('ps-4 pe-2 pbs-4 pbe-2 -ms-1 me-4 -mbs-1 mbe-4 gap-x-2 gap-y-4')

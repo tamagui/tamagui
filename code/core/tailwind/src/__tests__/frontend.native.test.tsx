@@ -82,12 +82,11 @@ describe('claimed candidates resolve to native style values', () => {
       className: 'outline-2 outline-solid outline-[red] outline-offset-2',
     })
     const space = getConfig().tokensParsed.space
-    const expectedWidth = space['2'].val
 
-    expect(styleOf(styles).outlineWidth).toBe(expectedWidth)
+    expect(styleOf(styles).outlineWidth).toBe(space['2'].val)
     expect(styleOf(styles).outlineStyle).toBe('solid')
     expect(styleOf(styles).outlineColor).toBe('red')
-    expect(styleOf(styles).outlineOffset).toBe(expectedWidth)
+    expect(styleOf(styles).outlineOffset).toBe(space['2'].val)
   })
 
   test('inset fractions become percentages', () => {
@@ -303,6 +302,27 @@ describe('web-only candidates', () => {
     expect(getTailwindClassPlan('grid-cols-3', getConfig())).toBeNull()
     expect(
       splitTailwindStyles(View, { className: 'grid-cols-3' }).viewProps.className
+    ).toBeUndefined()
+  })
+
+  test.each([
+    'grid',
+    'overflow-x-hidden',
+    'overflow-y-scroll',
+    'truncate',
+    'text-clip',
+    'object-cover',
+    'w-screen',
+    'h-fit',
+    'block',
+    'inline-flex',
+    'fixed',
+    'sticky',
+    'overflow-auto',
+  ])('%s is explicitly gated instead of silently no-oping', (candidate) => {
+    expect(getTailwindClassPlan(candidate, getConfig())).toBeNull()
+    expect(
+      splitTailwindStyles(View, { className: candidate }).viewProps.className
     ).toBeUndefined()
   })
 

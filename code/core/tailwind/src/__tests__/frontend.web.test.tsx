@@ -92,10 +92,18 @@ describe('tailwind components render through the shared renderer', () => {
   })
 
   test('an unknown class is passed through verbatim for official tailwind', () => {
-    const styles = splitTailwindStyles(View, { className: 'grid-cols-3 bg-[red]' })
+    const styles = splitTailwindStyles(View, { className: 'float-right bg-[red]' })
 
-    expect(styles.viewProps.className).toContain('grid-cols-3')
+    expect(styles.viewProps.className).toContain('float-right')
     expect(styles.style?.backgroundColor).toBe('red')
+  })
+
+  test('grid columns emit a real web grid-template rule', () => {
+    const styles = splitTailwindStyles(View, { className: 'grid-cols-3' })
+
+    expect(findRule(styles.rulesToInsert, 'gridTemplateColumns')[StyleObjectValue]).toBe(
+      'repeat(3, minmax(0, 1fr))'
+    )
   })
 
   test('an owned candidate before a passthrough candidate stays atomic', () => {
@@ -109,13 +117,13 @@ describe('tailwind components render through the shared renderer', () => {
 
   test('unknown classes keep their authored order', () => {
     const styles = splitTailwindStyles(View, {
-      className: 'grid-cols-2 p-4 grid-cols-3',
+      className: 'float-left p-4 float-right',
     })
 
     const passthrough = (styles.viewProps.className as string)
       .split(/\s+/)
-      .filter((cls) => cls.startsWith('grid-cols-'))
-    expect(passthrough).toEqual(['grid-cols-2', 'grid-cols-3'])
+      .filter((cls) => cls.startsWith('float-'))
+    expect(passthrough).toEqual(['float-left', 'float-right'])
   })
 
   test('Text carries the text-only style surface', () => {
@@ -228,14 +236,14 @@ describe('class-first styled()', () => {
   })
 
   test('unclaimed base classes are partitioned out of baseStyle', () => {
-    const Frame = styled(View, 'grid-cols-3 p-4 shadow-none')
+    const Frame = styled(View, 'float-right p-4 appearance-none')
     const normalized = tailwindStyleFrontend.normalizeStaticConfig!(
       Frame.staticConfig,
       getConfig()
     )
 
     expect(normalized.baseStyle).toEqual({ padding: '4' })
-    expect(normalized.passthroughClassName).toBe('grid-cols-3 shadow-none')
+    expect(normalized.passthroughClassName).toBe('float-right appearance-none')
   })
 
   test('a base with no unclaimed classes carries no passthrough', () => {

@@ -97,6 +97,61 @@ describe('config-aware tokens (WEB) — class names follow runtime-owned values'
       styleFlat({ fontFamily: 'sans' }).fontFamily
     )
   })
+
+  test('outline and shadow use their prop-named token domains', () => {
+    expect(tokens.space['2']).toBe(8)
+    expect(tokens.outlineWidth['2']).toBe(2)
+    expect(styleFlat({ className: 'outline-2' }).outlineWidth).toBe(
+      styleFlat({ outlineWidth: '2' }).outlineWidth
+    )
+    expect(styleFlat({ className: 'shadow-sm' }).boxShadow).toBe(
+      styleFlat({ boxShadow: 'sm' }).boxShadow
+    )
+  })
+
+  test('logical layout candidates reach the rendered web style', () => {
+    const fromClass = styleFlat({
+      className: 'block-4 inline-1/2 inset-s-4 -inset-be-2',
+    })
+
+    expect(fromClass.height).toBe(styleFlat({ blockSize: '4' }).height)
+    expect(fromClass.width).toBe('50%')
+    expect(fromClass.insetInlineStart).toBe(
+      styleFlat({ insetInlineStart: '4' }).insetInlineStart
+    )
+    expect(fromClass.bottom).toBe(styleFlat({ insetBlockEnd: '-2' }).bottom)
+  })
+
+  test('container sizes, zero radii, and transparent colors render on web', () => {
+    const fromClass = styleFlat({
+      className: 'w-2xl rounded-t-none bg-transparent',
+    })
+
+    expect(fromClass.width).toBe(styleFlat({ width: '2xl' }).width)
+    expect(fromClass.borderTopLeftRadius).toBe('0px')
+    expect(fromClass.borderTopRightRadius).toBe('0px')
+    expect(fromClass.backgroundColor).toBe('transparent')
+  })
+
+  test('3D transforms, origins, perspective, and order reach the rendered web style', () => {
+    const fromClass = styleFlat({
+      className:
+        'rotate-x-45 -rotate-y-12 skew-6 origin-top-right perspective-near -order-1',
+    })
+    const direct = styleFlat({
+      rotateX: '45deg',
+      rotateY: '-12deg',
+      skewX: '6deg',
+      skewY: '6deg',
+      transformOrigin: '100% 0',
+      perspective: 'near',
+      order: -1,
+    })
+
+    expect(fromClass).toMatchObject(direct)
+    expect(fromClass.transformOrigin).toBe('100% 0')
+    expect(String(fromClass.order)).toBe('-1')
+  })
 })
 
 describe('config-aware media (WEB) — a custom breakpoint round-trips', () => {
