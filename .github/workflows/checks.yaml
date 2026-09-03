@@ -48,7 +48,7 @@ jobs:
       # bumps of example/tooling deps (vite, undici, tar, react-router, etc.) -
       # run `bun audit` locally to review them.
       - name: Security audit
-        run: bun audit --audit-level critical
+        run: bun run check:advisories
 
       - name: Check
         run: bun run check
