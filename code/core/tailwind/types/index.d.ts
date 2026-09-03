@@ -1,8 +1,8 @@
 import type { TailwindText, TailwindView } from './types';
 /**
- * The tailwind View: className-resolved composed utilities (ring, gradient,
- * filter) are handled by variant props + `.resolve()` instead of imperative
- * compose.ts logic.
+ * The tailwind View and Text. Composed utilities (ring, gradient, filter,
+ * shadow, transform, text-shadow) are folded by the descriptor's `compose` hook
+ * during the className walk, so these carry no resolver of their own.
  */
 export declare const View: TailwindView;
 export declare const Text: TailwindText;

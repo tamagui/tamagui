@@ -5,6 +5,7 @@ import {
   type StyleFrontendConfig,
 } from '@tamagui/core/internal-runtime'
 import { resolveTailwindCandidate, resolveTailwindClassName } from './candidate'
+import { composedResolver } from './composedResolver'
 
 /**
  * The Tailwind frontend descriptor.
@@ -68,4 +69,5 @@ function normalizeTailwindStaticConfig(
 export const tailwindStyleFrontend: StyleFrontend = {
   resolveClassName: resolveTailwindCandidate,
   normalizeStaticConfig: normalizeTailwindStaticConfig,
+  compose: composedResolver,
 }

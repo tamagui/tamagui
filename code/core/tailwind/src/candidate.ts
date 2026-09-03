@@ -1,5 +1,6 @@
 import { isWeb } from '@tamagui/constants'
 import {
+  mergeFrontendCondition,
   plainValueToPayload,
   type FrontendClassPlan,
   type FrontendClassPlanEntry,
@@ -71,6 +72,15 @@ function arbitraryValue(inner: string): number | string {
   return inner
 }
 
+/** the same coercion for a raw value that may still be wrapped in `[]` */
+function unwrapArbitraryValue(raw: string): number | string {
+  return arbitraryValue(
+    raw.length > 1 && raw[0] === '[' && raw[raw.length - 1] === ']'
+      ? decodeArbitrary(raw.slice(1, -1))
+      : raw
+  )
+}
+
 // tailwind sizing keywords / fractions for width/height/min/max props.
 // returns a CSS value, or null if `value` isn't a sizing keyword (falls through to normal parse).
 function tailwindSizingValue(prop: string, value: string): string | null {
@@ -85,20 +95,6 @@ function tailwindSizingValue(prop: string, value: string): string | null {
     return `${(Number(frac[1]) / Number(frac[2])) * 100}%`
   }
   return null
-}
-
-// unwrap a possibly-arbitrary value ([2px] → "2px") and coerce a bare number / px length to
-// a NUMBER (2px → 2, 0.5 → 0.5) so borderWidth/radius match tamagui's numeric props; other
-// units (1em, calc(…)) stay strings.
-function borderDimValue(raw: string): number | string {
-  let inner = raw
-  if (raw.length > 1 && raw[0] === '[' && raw[raw.length - 1] === ']') {
-    inner = decodeArbitrary(raw.slice(1, -1))
-  }
-  const px = /^(-?\d*\.?\d+)px$/.exec(inner)
-  if (px) return Number.parseFloat(px[1])
-  if (/^-?\d*\.?\d+$/.test(inner)) return Number(inner)
-  return inner
 }
 
 /**
@@ -212,7 +208,7 @@ function tailwindClassToFlatProp(
           resolveTokenName(grammarConfig, parsed.entry.tokenCategory, value) ?? value
       }
     } else if (parsed.valueKind === 'arbitrary') {
-      value = borderDimValue(value)
+      value = unwrapArbitraryValue(value)
     } else {
       return null
     }
@@ -722,12 +718,12 @@ export function resolveTailwindCandidate(
     if (noteTailwindTransform(sink, [entry[0], transformValue, entry[2], entry[3]])) {
       continue
     }
-    const shadowValue =
-      entry[0] === 'boxShadow' && typeof entry[1] === 'string'
-        ? ((config as any).tokensParsed?.boxShadow?.[entry[1]]?.val ?? entry[1])
-        : entry[1]
-    if (entry[0] === 'boxShadow' && noteBoxShadow(sink, shadowValue, entry[3] || [])) {
-      continue
+    if (entry[0] === 'boxShadow' && typeof entry[1] === 'string') {
+      noteBoxShadow(
+        sink,
+        (config as any).tokensParsed?.boxShadow?.[entry[1]]?.val ?? entry[1],
+        entry[3] || []
+      )
     }
     sink(entry)
   }
@@ -739,20 +735,16 @@ export function resolveTailwindClassName(
   config: StyleFrontendConfig
 ): Record<string, any> {
   const result: Record<string, any> = {}
+  // composed utilities collect under `__`-prefixed keys and are folded once at the
+  // end, the same shape and the same order the runtime walk uses
+  let composedProps: Record<string, any> | null = null
   let rawClassName = ''
   const sink: FrontendClassSink = (entry) => {
     const [key, value, condition] = entry
-    const previous = result[key]
-    let next = value
-    if (condition !== undefined) {
-      next =
-        previous && typeof previous === 'object' && !Array.isArray(previous)
-          ? { ...previous, [condition]: value }
-          : previous === undefined
-            ? { [condition]: value }
-            : { default: previous, [condition]: value }
-    } else if (previous && typeof previous === 'object' && !Array.isArray(previous)) {
-      next = { ...previous, default: value }
+    if (key.charCodeAt(0) === 95 && key.charCodeAt(1) === 95) {
+      composedProps ||= {}
+      composedProps[key] = mergeFrontendCondition(composedProps[key], value, condition)
+      return
     }
     if (condition === undefined) {
       const resets = shorthandResets[key]
@@ -762,7 +754,7 @@ export function resolveTailwindClassName(
         }
       }
     }
-    setInAuthoredOrder(result, key, next)
+    setInAuthoredOrder(result, key, mergeFrontendCondition(result[key], value, condition))
   }
   let start = 0
   for (let index = 0; index <= className.length; index++) {
@@ -778,15 +770,10 @@ export function resolveTailwindClassName(
     }
     start = index + 1
   }
-  const composed = composedResolver(result, config)
-  if (composed) {
+  if (composedProps) {
+    const composed = composedResolver(composedProps)
     for (const key in composed) {
       setInAuthoredOrder(result, key, composed[key])
-    }
-  }
-  for (const key in result) {
-    if (key.startsWith('__')) {
-      delete result[key]
     }
   }
   if (rawClassName) result.className = rawClassName

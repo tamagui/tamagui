@@ -1,18 +1,18 @@
 /**
- * Composed resolver for variant-driven Tailwind utilities.
+ * Composes the N-to-1 Tailwind utilities into single style values.
  *
- * This replaces the imperative compose.ts ring/gradient/filter/shadow/transform
- * logic with a single, pure, declarative resolver function that runs after
- * all className-resolved variant props are collected.
+ * The class walk emits each part under a `__`-prefixed key and the frontend
+ * descriptor's `compose` hook calls this once, with only those keys, right after
+ * the walk. It is pure: same bag in, same styles out, no props and no env.
  *
- * It composes N-to-1 mappings:
  *   - ring + inset-ring + inset-shadow + shadow → boxShadow
  *   - bg-linear-to-* + from/via/to → backgroundImage
- *   - blur + brightness + contrast + ... + drop-shadow → filter
+ *   - blur + brightness + contrast + … + drop-shadow → filter
  *   - perspective + rotateX/Y/Z + skewX/Y → transform
  *   - text-shadow presets + colors → textShadow*
  *
- * Supports both scalar values and conditional modifier objects ({ default, hover, ... }).
+ * A part authored with modifiers (`hover:ring-4`) arrives as a condition object,
+ * so every composed value is built once per condition the parts mention.
  */
-export declare function composedResolver(props: Record<string, any>, _env?: any): Record<string, any> | null | undefined;
+export declare function composedResolver(props: Record<string, any>): Record<string, any> | null;
 //# sourceMappingURL=composedResolver.d.ts.map

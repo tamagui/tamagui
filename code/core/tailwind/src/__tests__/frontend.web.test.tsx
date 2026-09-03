@@ -378,3 +378,31 @@ describe('frontend isolation', () => {
     expect(View.staticConfig.styleFrontend).toBe(tailwindStyleFrontend)
   })
 })
+
+describe('a composed candidate does not change who wins an unrelated property', () => {
+  const Frame = (styled(View, 'bg-[red]') as any).resolve((props: Record<string, any>) =>
+    props.active ? { backgroundColor: 'green' } : null
+  )
+
+  test('a call-site className outranks a resolver', () => {
+    const styles = splitTailwindStyles(Frame, { active: true, className: 'bg-[blue]' })
+
+    expect(findRule(styles.rulesToInsert, 'backgroundColor')[StyleObjectValue]).toBe(
+      'blue'
+    )
+  })
+
+  test('adding an unrelated ring class keeps that ordering', () => {
+    const styles = splitTailwindStyles(Frame, {
+      active: true,
+      className: 'bg-[blue] ring-2',
+    })
+
+    expect(findRule(styles.rulesToInsert, 'backgroundColor')[StyleObjectValue]).toBe(
+      'blue'
+    )
+    expect(findRule(styles.rulesToInsert, 'boxShadow')[StyleObjectValue]).toBe(
+      '0 0 0 2px currentColor'
+    )
+  })
+})

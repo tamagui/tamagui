@@ -19,6 +19,7 @@ import {
   classifyCandidate,
   decodeArbitrary,
   hasTokenName,
+  splitCandidate,
   type GrammarConfigView,
 } from '@tamagui/style-grammar/tooling/candidate'
 import { isAndroid, isWeb } from '@tamagui/constants'
@@ -98,53 +99,6 @@ const filterPropMap: Record<string, string> = {
   invert: '__filter_invert',
   saturate: '__filter_saturate',
   sepia: '__filter_sepia',
-}
-
-function lastUnbracketedColon(candidate: string): number {
-  let colon = -1
-  let bracketDepth = 0
-  let escaped = false
-  for (let index = 0; index < candidate.length; index++) {
-    const char = candidate[index]
-    if (escaped) {
-      escaped = false
-      continue
-    }
-    if (char === '\\') {
-      escaped = true
-      continue
-    }
-    if (char === '[') bracketDepth++
-    else if (char === ']') bracketDepth--
-    else if (char === ':' && bracketDepth === 0) colon = index
-  }
-  return bracketDepth !== 0 ? -2 : colon
-}
-
-function splitModifiers(candidate: string, colon: number): string[] {
-  const modifiers: string[] = []
-  let start = 0
-  let bracketDepth = 0
-  let escaped = false
-  for (let index = 0; index < colon; index++) {
-    const char = candidate[index]
-    if (escaped) {
-      escaped = false
-      continue
-    }
-    if (char === '\\') {
-      escaped = true
-      continue
-    }
-    if (char === '[') bracketDepth++
-    else if (char === ']') bracketDepth--
-    else if (char === ':' && bracketDepth === 0) {
-      modifiers.push(canonicalClauseModifier(candidate.slice(start, index)))
-      start = index + 1
-    }
-  }
-  modifiers.push(canonicalClauseModifier(candidate.slice(start, colon)))
-  return modifiers
 }
 
 function composerKind(
@@ -285,14 +239,16 @@ export function tryCompose(
   config: GrammarConfigView,
   sink: FrontendClassSink
 ): boolean | null | undefined {
-  const colon = candidate.indexOf(':') === -1 ? -1 : lastUnbracketedColon(candidate)
-  if (colon === -2) return undefined
-  const core = colon === -1 ? candidate : candidate.slice(colon + 1)
+  // the common case has no modifier at all, so skip the split entirely
+  const modified = candidate.indexOf(':') !== -1
+  const split = modified ? splitCandidate(candidate) : null
+  if (modified && !split) return undefined
+  const core = split ? split.base : candidate
   if (!core) return undefined
   const kind = composerKind(core)
   if (kind == null) return undefined
 
-  const modifiers = colon === -1 ? [] : splitModifiers(candidate, colon)
+  const modifiers = split ? split.modifiers.map(canonicalClauseModifier) : []
 
   if (kind === 'filter') {
     const part = filterPart(core)
@@ -416,16 +372,22 @@ export function noteTailwindTransform(
   return true
 }
 
-/** Record a claimed boxShadow so composedResolver can stack ring + shadow. */
+/**
+ * Record a claimed boxShadow so `composedResolver` can stack ring + shadow.
+ *
+ * The shadow is still contributed directly by the caller, which is what keeps its
+ * token identity when nothing stacks onto it. `composedResolver` only emits a
+ * boxShadow of its own when a ring or inset is also present, and that supersedes
+ * the direct value at the same authored position.
+ */
 export function noteBoxShadow(
   sink: FrontendClassSink,
   value: unknown,
-  modifiers: readonly string[] = []
-): boolean {
-  if (typeof value !== 'string' || value === 'unset') return false
+  modifiers: readonly string[]
+): void {
+  if (typeof value !== 'string' || value === 'unset') return
   if (value.indexOf(' ') === -1 && value !== 'none' && !value.startsWith('inset')) {
-    return false
+    return
   }
-  emit(sink, '__shadow', value === 'none' ? 'none' : value, modifiers)
-  return false
+  emit(sink, '__shadow', value, modifiers)
 }
