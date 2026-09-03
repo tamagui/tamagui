@@ -1,10 +1,9 @@
-import React from 'react'
 import type { SwitchProps as SwitchHeadlessProps } from '@tamagui/switch-headless'
 import { useSwitch } from '@tamagui/switch-headless'
-
-import type { View } from 'react-native'
-import { Animated, Pressable } from 'react-native'
-import { Label, XStack, YStack } from 'tamagui'
+import React from 'react'
+import type { View as RNView } from 'react-native'
+import { Pressable } from 'react-native'
+import { Label, View, XStack, YStack } from 'tamagui'
 
 export function SwitchHeadlessDemo() {
   return (
@@ -17,31 +16,12 @@ export function SwitchHeadlessDemo() {
   )
 }
 
-const HeadlessSwitch = React.forwardRef<View, SwitchHeadlessProps>((props, ref) => {
+const HeadlessSwitch = React.forwardRef<RNView, SwitchHeadlessProps>((props, ref) => {
   const [checked, setChecked] = React.useState(props.defaultChecked || false)
   const { switchProps, switchRef, bubbleInput } = useSwitch(
     props,
     [checked, setChecked],
     ref
-  )
-
-  const [animation] = React.useState(() => new Animated.Value(0))
-
-  React.useEffect(() => {
-    Animated.timing(animation, {
-      toValue: checked ? 1 : 0,
-      duration: 100,
-      useNativeDriver: true,
-    }).start()
-  }, [checked, animation])
-
-  const translateX = React.useMemo(
-    () =>
-      animation.interpolate({
-        inputRange: [0, 1],
-        outputRange: [0, 20],
-      }),
-    [animation]
   )
 
   return (
@@ -56,18 +36,13 @@ const HeadlessSwitch = React.forwardRef<View, SwitchHeadlessProps>((props, ref) 
         ref={switchRef}
         {...switchProps}
       >
-        <Animated.View
-          style={[
-            {
-              backgroundColor: 'black',
-              borderRadius: 100,
-              width: 20,
-              height: 20,
-            },
-            {
-              transform: [{ translateX }],
-            },
-          ]}
+        <View
+          transition="quick"
+          width={20}
+          height={20}
+          rounded={100}
+          bg="black"
+          x={checked ? 20 : 0}
         />
       </Pressable>
       {bubbleInput}
