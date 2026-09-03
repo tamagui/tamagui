@@ -604,10 +604,7 @@ function contributeProp(
                 : prev === undefined
                   ? { [condition]: entry[1] }
                   : { default: prev, [condition]: entry[1] }
-            if (
-              !property.startsWith('__') &&
-              process.env.NODE_ENV === 'development'
-            ) {
+            if (!property.startsWith('__') && process.env.NODE_ENV === 'development') {
               console.warn(
                 `[tamagui] "${property}" is not a valid style on this component; the frontend value is dropped.`
               )

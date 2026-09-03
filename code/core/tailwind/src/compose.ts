@@ -377,7 +377,11 @@ export function tryCompose(
     const color = resolveColor(core.slice(kind.length + 1), config)
     if (color == null) return true
     const prop =
-      kind === 'from' ? '__gradientFrom' : kind === 'via' ? '__gradientVia' : '__gradientTo'
+      kind === 'from'
+        ? '__gradientFrom'
+        : kind === 'via'
+          ? '__gradientVia'
+          : '__gradientTo'
     emit(sink, prop, color, modifiers)
     return false
   }

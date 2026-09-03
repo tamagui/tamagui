@@ -44,7 +44,12 @@ function getAtCondition(value: any, condition: string): any {
 
 // ── Gradients ─────────────────────────────────────────────────────────
 
-function buildGradient(dir?: string, from?: string, via?: string, to?: string): string | null {
+function buildGradient(
+  dir?: string,
+  from?: string,
+  via?: string,
+  to?: string
+): string | null {
   if (!dir || (!from && !via && !to)) return null
   const f = from || 'transparent'
   const t = to || 'transparent'
