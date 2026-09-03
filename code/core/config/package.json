@@ -81,6 +81,15 @@
       "require": "./dist/cjs/v6-builder.cjs",
       "default": "./dist/esm/v6-builder.mjs"
     },
+    "./settings": {
+      "types": "./types/settings.d.ts",
+      "react-native": "./dist/esm/settings.native.js",
+      "browser": "./dist/esm/settings.mjs",
+      "module": "./dist/esm/settings.mjs",
+      "import": "./dist/esm/settings.mjs",
+      "require": "./dist/cjs/settings.cjs",
+      "default": "./dist/esm/settings.mjs"
+    },
     "./animations-css": {
       "types": "./types/animations-css.d.ts",
       "react-native": "./dist/esm/animations-css.native.js",
