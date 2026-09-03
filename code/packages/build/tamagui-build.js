@@ -840,8 +840,11 @@ async function compileTypeScript(fileNames, options) {
 
 const formatHost = {
   getCanonicalFileName: (path) => path,
-  getCurrentDirectory: ts.sys.getCurrentDirectory,
-  getNewLine: () => ts.sys.newLine,
+  // TypeScript 7 (the native compiler) ships no `ts.sys`. This object is built
+  // at module scope, so reading it unguarded throws before `--skip-types` can
+  // take effect and breaks JS-only builds.
+  getCurrentDirectory: ts.sys?.getCurrentDirectory ?? (() => process.cwd()),
+  getNewLine: () => ts.sys?.newLine ?? '\n',
 }
 
 function reportDiagnostics(diagnostics) {

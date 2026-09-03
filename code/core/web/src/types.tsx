@@ -14,6 +14,7 @@ import type {
   RefObject,
 } from 'react'
 import type {
+  FontVariant,
   PressableProps,
   Text as RNText,
   TextStyle as RNTextStyle,
@@ -2556,7 +2557,14 @@ export interface StackStyleBase
   extends Omit<ViewStyle, keyof ExtendedBaseProps | 'elevation'>, ExtendedBaseProps {}
 
 export interface TextStylePropsBase
-  extends Omit<RNTextStyle, keyof ExtendedBaseProps>, ExtendedBaseProps {
+  extends Omit<RNTextStyle, keyof ExtendedBaseProps | 'fontVariant'>, ExtendedBaseProps {
+  /**
+   * react-native types this as a mutable `FontVariant[]`, which an `as const` variant
+   * definition can't satisfy — and a variants object that misses its constraint is
+   * silently discarded whole, taking every variant on the component with it (#2787).
+   * react-native types `transform` as readonly for the same reason.
+   */
+  fontVariant?: readonly FontVariant[]
   ellipsis?: boolean
   numberOfLines?: number
   textDecorationDistance?: number

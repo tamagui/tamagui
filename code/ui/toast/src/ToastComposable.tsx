@@ -1163,7 +1163,6 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
       <ToastPositionWrapper
         ref={ref}
         testID={rest.testID}
-        accessibilityLabel={rest.accessibilityLabel}
         {...dataAttributes}
         transition={
           isDragging || ctx.reducedMotion ? undefined : removed ? '200ms' : '400ms'

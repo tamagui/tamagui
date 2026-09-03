@@ -1,4 +1,5 @@
 import { readFileSync } from 'node:fs'
+import { threadId } from 'node:worker_threads'
 import esbuild from 'esbuild'
 import * as FS from 'fs-extra'
 import type { TamaguiPlatform } from '../types'
@@ -284,6 +285,8 @@ function detectEntryFormat(entryPoint: string): esbuild.BuildOptions['format'] {
   }
 }
 
+let tmpFileId = 0
+
 export async function esbundleTamaguiConfig(
   props: Props,
   platform: TamaguiPlatform,
@@ -293,11 +296,20 @@ export async function esbundleTamaguiConfig(
 
   // build to memory first, then write atomically (temp file + rename)
   // to prevent other threads from reading partially-written files
-  const tmpFile = props.outfile + '.tmp.' + process.pid
-  const result = await esbuild.build({
-    ...config,
-    outfile: tmpFile,
-  })
+  // worker threads share the parent pid, so the name has to include the thread
+  // and a local counter or two concurrent bundles race on the same temp path
+  const tmpFile = `${props.outfile}.tmp.${process.pid}.${threadId}.${tmpFileId++}`
+
+  const result = await esbuild
+    .build({
+      ...config,
+      outfile: tmpFile,
+    })
+    .catch(async (err) => {
+      // a failed build can still leave a partial temp file behind
+      await FS.remove(tmpFile).catch(() => {})
+      throw err
+    })
 
   // atomic rename prevents other threads from reading partial files
   await FS.rename(tmpFile, props.outfile)

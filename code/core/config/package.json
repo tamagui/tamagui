@@ -1,6 +1,7 @@
 {
   "name": "@tamagui/config",
   "version": "2.7.7",
+  "license": "MIT",
   "type": "module",
   "sideEffects": false,
   "main": "dist/cjs",

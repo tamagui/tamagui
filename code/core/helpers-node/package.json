@@ -1,6 +1,7 @@
 {
   "name": "@tamagui/helpers-node",
   "version": "2.7.7",
+  "license": "MIT",
   "source": "src/index.ts",
   "files": [
     "src",
