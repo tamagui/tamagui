@@ -67,6 +67,33 @@ export type FrontendClassPlan =
 export type FrontendClassSink = (entry: FrontendClassPlanEntry) => void
 
 /**
+ * Fold one contribution into whatever a frontend already collected for the same
+ * property. A value already present becomes the `default` arm, so
+ * `ring-2 hover:ring-4` reads as `{ default, hover }`, and a later unconditional
+ * `ring-8` restates that `default` without dropping the `hover` arm.
+ *
+ * Both class-walk sinks use this: the one in `getSplitStyles` and the one the
+ * Tailwind frontend runs when it composes a class string statically.
+ */
+export function mergeFrontendCondition(
+  previous: unknown,
+  value: unknown,
+  condition: string | undefined
+): unknown {
+  const merged =
+    previous !== null && typeof previous === 'object' && !Array.isArray(previous)
+  if (condition === undefined) {
+    return merged ? { ...(previous as Record<string, unknown>), default: value } : value
+  }
+  if (merged) {
+    return { ...(previous as Record<string, unknown>), [condition]: value }
+  }
+  return previous === undefined
+    ? { [condition]: value }
+    : { default: previous, [condition]: value }
+}
+
+/**
  * A component's authoring syntax. It is chosen by the package the component was
  * imported from and frozen onto its static config when the component is created:
  * there is no global setting, no registry, and no runtime lookup.
@@ -95,6 +122,18 @@ export type StyleFrontend = {
     staticConfig: Config,
     config: StyleFrontendConfig
   ) => FrontendStaticConfigNormalization
+
+  /**
+   * Composes the N-to-1 utilities a class walk collected under `__`-prefixed keys
+   * (ring width plus ring color into one `boxShadow`, gradient stops into one
+   * `backgroundImage`, filter parts into one `filter`) into ordinary styles.
+   *
+   * Called once per pass and only when the walk actually collected such a key, so
+   * a component with no className, or none carrying a composed utility, never runs
+   * it. The output contributes at the className's own authored position, which is
+   * why an unrelated `ring-2` cannot change which layer owns `backgroundColor`.
+   */
+  compose?: (collected: Record<string, any>) => Record<string, any> | null | undefined
 }
 
 /**

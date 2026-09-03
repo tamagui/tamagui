@@ -61,7 +61,7 @@ import { fixStyles } from './expandStyles'
 import { getConfigRevisionState } from './grammarConfig'
 import { mediaState as globalMediaState, mediaKeyMatch } from './mediaState'
 import { getStyleStaticConfig, type StyleStaticConfig } from './styleStaticConfig'
-import type { FrontendClassSink } from './styleFrontend'
+import { mergeFrontendCondition, type FrontendClassSink } from './styleFrontend'
 import { nativeTextInputColorProps, normalizeNativeStyle } from './nativeStyleEngine'
 import { warnOnce, warnRefusedValue } from './warnOnce'
 
@@ -591,44 +591,38 @@ function contributeProp(
         return
       }
       const resolveClassName = styleFrontend?.resolveClassName
+      // composed utilities (ring width + ring color -> one boxShadow) arrive as
+      // `__`-prefixed keys the frontend folds together after the walk. only
+      // allocates when a class actually emits one.
+      let composedProps: Record<string, any> | null = null
       const sink: FrontendClassSink = (entry) => {
         const property = entry[0]
-        if (entry[2] !== undefined) {
-          if (isValidStyleKey(property, validStyles)) {
-            contributeValue(styleState, property, entry[1], undefined, false, entry[2])
-          } else {
-            const resolvedProps = (styleState.classNameResolvedProps ??= {})
-            const prev = resolvedProps[property]
-            const condition = entry[2]
-            resolvedProps[property] =
-              prev && typeof prev === 'object' && !Array.isArray(prev)
-                ? { ...prev, [condition]: entry[1] }
-                : prev === undefined
-                  ? { [condition]: entry[1] }
-                  : { default: prev, [condition]: entry[1] }
-            if (!property.startsWith('__') && process.env.NODE_ENV === 'development') {
-              console.warn(
-                `[tamagui] "${property}" is not a valid style on this component; the frontend value is dropped.`
-              )
-            }
-          }
-        } else {
-          if (property === 'group') pass[passFrontendGroup] = entry[1]
-          else if (property === 'container') pass[passFrontendContainer] = entry[1]
-          else if (property === 'containerType') {
-            pass[passFrontendContainerType] = entry[1]
-          }
-          // collect non-style-key props so .resolve() can see className-
-          // contributed variant values (e.g. ring, ringColor from
-          // "ring-2 ring-blue-500"). only allocates when needed.
-          if (!(property in validStyles)) {
-            ;(styleState.classNameResolvedProps ??= {})[property] = entry[1]
-          }
-          if (property.startsWith('__')) {
-            return
-          }
-          contributeProp(pass, property, entry[1])
+        const condition = entry[2]
+        if (property.charCodeAt(0) === 95 && property.charCodeAt(1) === 95) {
+          composedProps ||= {}
+          composedProps[property] = mergeFrontendCondition(
+            composedProps[property],
+            entry[1],
+            condition
+          )
+          return
         }
+        if (condition !== undefined) {
+          if (isValidStyleKey(property, validStyles)) {
+            contributeValue(styleState, property, entry[1], undefined, false, condition)
+          } else if (process.env.NODE_ENV === 'development') {
+            console.warn(
+              `[tamagui] "${property}" is not a valid style on this component; the frontend value is dropped.`
+            )
+          }
+          return
+        }
+        if (property === 'group') pass[passFrontendGroup] = entry[1]
+        else if (property === 'container') pass[passFrontendContainer] = entry[1]
+        else if (property === 'containerType') {
+          pass[passFrontendContainerType] = entry[1]
+        }
+        contributeProp(pass, property, entry[1])
       }
       let start = 0
       for (let index = 0; index <= valInit.length; index++) {
@@ -661,6 +655,14 @@ function contributeProp(
           }
         }
         start = index + 1
+      }
+      if (composedProps) {
+        // contributed at the className's own authored position, so composing a
+        // ring never moves an unrelated property to another precedence tier
+        const composed = styleFrontend!.compose?.(composedProps)
+        for (const property in composed) {
+          contributeProp(pass, property, composed[property])
+        }
       }
     }
     return
@@ -1326,29 +1328,16 @@ export const getSplitStyles: StyleSplitter = (
   const resolvers = staticConfig.resolvers
   if (resolvers && !noExpand) {
     const prevSourceLayer = pass[passSourceLayer]
-    if (styleState.classNameResolvedProps) {
-      pass[passSourceLayer] = sourceLayerProps
-    } else {
-      pass[passSourceLayer] = sourceLayerResolver
-    }
+    pass[passSourceLayer] = sourceLayerResolver
     const flagsBefore = pass[passFlags]
     // resolver output is styles only: never re-enter variant dispatch
     pass[passFlags] = flagsBefore | passNoExpandFlag
     const env = getDynamicEnv(styleState)
-    // merge className-contributed variant props (e.g. ring, ringColor) so
-    // .resolve() sees them alongside regular props. fast path: skip
-    // allocation when className didn't yield any non-style-key props.
-    const resolveProps = styleState.classNameResolvedProps
-      ? { ...processedProps, ...styleState.classNameResolvedProps }
-      : processedProps
     for (let index = 0; index < resolvers.length; index++) {
-      const resolved = resolvers[index](resolveProps, env)
+      const resolved = resolvers[index](processedProps, env)
       if (resolved) {
         for (const key in resolved) {
           if (resolved[key] == null) continue
-          if (styleState.classNameResolvedProps) {
-            clearDirectStyle(styleState, key)
-          }
           contributeProp(pass, key, resolved[key])
         }
       }

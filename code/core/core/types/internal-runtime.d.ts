@@ -1,3 +1,3 @@
-export { createFrontendStyled, createFrontendViews, plainValueToPayload, regularStyleFrontend, } from '@tamagui/web/internal-runtime';
+export { createFrontendStyled, createFrontendViews, mergeFrontendCondition, plainValueToPayload, regularStyleFrontend, } from '@tamagui/web/internal-runtime';
 export type { FrontendComponent, FrontendClassPlan, FrontendClassPlanEntry, FrontendClassSink, FrontendStaticConfig, StyleFrontend, StyleFrontendConfig, } from '@tamagui/web/internal-runtime';
 //# sourceMappingURL=internal-runtime.d.ts.map

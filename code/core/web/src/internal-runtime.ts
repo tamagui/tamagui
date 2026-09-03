@@ -31,7 +31,7 @@ import { TamaguiProvider as TamaguiProviderImpl } from './views/TamaguiProvider'
 import { textStaticConfig } from './views/Text'
 import { viewStaticConfig } from './views/View'
 
-export { regularStyleFrontend } from './helpers/styleFrontend'
+export { mergeFrontendCondition, regularStyleFrontend } from './helpers/styleFrontend'
 export type * from './internalRuntimeTypes'
 
 export const createVariables: (

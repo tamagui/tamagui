@@ -17,6 +17,7 @@ void platformSetup
 export {
   createFrontendStyled,
   createFrontendViews,
+  mergeFrontendCondition,
   plainValueToPayload,
   regularStyleFrontend,
 } from '@tamagui/web/internal-runtime'
