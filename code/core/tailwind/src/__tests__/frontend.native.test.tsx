@@ -214,6 +214,33 @@ describe('claimed candidates resolve to native style values', () => {
     expect(styleOf(styles).color).toBe('#fff')
     expect(styleOf(styles).textAlign).toBeUndefined()
   })
+
+  test('decoration color and style resolve to native text styles', () => {
+    const styles = splitTailwindStyles(Text, {
+      className: 'underline decoration-dashed decoration-[red]',
+    })
+
+    expect(styleOf(styles)).toMatchObject({
+      textDecorationLine: 'underline',
+      textDecorationStyle: 'dashed',
+      textDecorationColor: 'red',
+    })
+  })
+
+  test('box sizing resolves to the React Native 0.86 style values', () => {
+    expect(styleOf(splitTailwindStyles(View, { className: 'box-border' }))).toMatchObject(
+      { boxSizing: 'border-box' }
+    )
+    expect(styleOf(splitTailwindStyles(View, { className: 'box-content' }))).toMatchObject(
+      { boxSizing: 'content-box' }
+    )
+  })
+
+  test('bg-none clears the native processed background image list', () => {
+    expect(styleOf(splitTailwindStyles(View, { className: 'bg-none' }))).toMatchObject({
+      experimental_backgroundImage: [],
+    })
+  })
 })
 
 // same rule as web: a restated shorthand applies at its authored position, so a

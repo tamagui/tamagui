@@ -54,6 +54,11 @@ function gradientPosition(token: string): number | string | undefined {
 
 // parse "linear-gradient(direction, color1 pos1, color2 pos2, ...)"
 function parseBackgroundImage(css: string, tokenMap?: TokenMap): any[] | undefined {
+  // React Native represents `background-image: none` as an empty processed
+  // background list. Returning the list here also routes the Tailwind utility
+  // to RN's `experimental_backgroundImage` host key instead of leaking the web
+  // `backgroundImage` alias into native styles.
+  if (css.trim() === 'none') return []
   const match = css.match(/^linear-gradient\((.+)\)$/s)
   if (!match) return undefined
 

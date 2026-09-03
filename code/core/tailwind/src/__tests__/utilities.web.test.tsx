@@ -29,6 +29,8 @@ const textCases: [string, string, any][] = [
   ['underline', 'textDecorationLine', 'underline'],
   ['line-through', 'textDecorationLine', 'line-through'],
   ['no-underline', 'textDecorationLine', 'none'],
+  ['decoration-dashed', 'textDecorationStyle', 'dashed'],
+  ['decoration-red-500', 'textDecorationColor', 'var(--c-color-red-500)'],
 ]
 
 const viewCases: [string, string, any][] = [
@@ -38,6 +40,9 @@ const viewCases: [string, string, any][] = [
   ['sticky', 'position', 'sticky'],
   ['pointer-events-none', 'pointerEvents', 'none'],
   ['pointer-events-auto', 'pointerEvents', 'auto'],
+  ['box-border', 'boxSizing', 'border-box'],
+  ['box-content', 'boxSizing', 'content-box'],
+  ['bg-none', 'backgroundImage', 'none'],
 ]
 
 describe('tailwind standard utilities', () => {

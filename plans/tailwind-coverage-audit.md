@@ -15,13 +15,13 @@ resolver accepts the part; runtime suites separately prove the complete multi-cl
 | Metric | Count |
 | --- | ---: |
 | Tailwind default-theme candidates | 23,286 |
-| Tamagui-owned candidates on web | 9,824 |
-| Official-engine web fallback | 13,462 |
-| Native-ready owned candidates | 9,598 |
+| Tamagui-owned candidates on web | 10,120 |
+| Official-engine web fallback | 13,166 |
+| Native-ready owned candidates | 9,894 |
 | Explicitly web-only / native-gated candidates | 231 |
 | Native-only lowerings | 5 |
 | Unsafe native-owned candidates | 0 |
-| Complete / partial / missing web families | 416 / 58 / 680 |
+| Complete / partial / missing web families | 423 / 59 / 672 |
 
 Web coverage is the full registry: Tamagui-owned candidates use the shared style runtime
 and every remainder stays in `className` for the official engine. Native intentionally
@@ -222,7 +222,7 @@ the candidate needs a native lowering or an explicit target gate.
 | `bg-linear` | 20 | 8 | 8 | 0 | 0 | `bg-linear-0`, `bg-linear-30`, `bg-linear-60` |
 | `bg-local` | 1 | 0 | 0 | 0 | 0 | `bg-local` |
 | `bg-no-repeat` | 1 | 0 | 0 | 0 | 0 | `bg-no-repeat` |
-| `bg-none` | 1 | 0 | 0 | 0 | 0 | `bg-none` |
+| `bg-none` | 1 | 1 | 1 | 0 | 0 |  |
 | `bg-origin-border` | 1 | 0 | 0 | 0 | 0 | `bg-origin-border` |
 | `bg-origin-content` | 1 | 0 | 0 | 0 | 0 | `bg-origin-content` |
 | `bg-origin-padding` | 1 | 0 | 0 | 0 | 0 | `bg-origin-padding` |
@@ -279,8 +279,8 @@ the candidate needs a native lowering or an explicit target gate.
 | `bottom-auto` | 1 | 1 | 1 | 0 | 0 |  |
 | `bottom-full` | 1 | 1 | 1 | 0 | 0 |  |
 | `bottom-px` | 1 | 1 | 1 | 0 | 0 |  |
-| `box-border` | 1 | 0 | 0 | 0 | 0 | `box-border` |
-| `box-content` | 1 | 0 | 0 | 0 | 0 | `box-content` |
+| `box-border` | 1 | 1 | 1 | 0 | 0 |  |
+| `box-content` | 1 | 1 | 1 | 0 | 0 |  |
 | `box-decoration-clone` | 1 | 0 | 0 | 0 | 0 | `box-decoration-clone` |
 | `box-decoration-slice` | 1 | 0 | 0 | 0 | 0 | `box-decoration-slice` |
 | `break-after-all` | 1 | 0 | 0 | 0 | 0 | `break-after-all` |
@@ -382,13 +382,13 @@ the candidate needs a native lowering or an explicit target gate.
 | `cursor-wait` | 1 | 1 | 0 | 1 | 0 | `cursor-wait (web-only)` |
 | `cursor-zoom-in` | 1 | 1 | 0 | 1 | 0 | `cursor-zoom-in (web-only)` |
 | `cursor-zoom-out` | 1 | 1 | 0 | 1 | 0 | `cursor-zoom-out (web-only)` |
-| `decoration` | 294 | 0 | 0 | 0 | 0 | `decoration-0`, `decoration-1`, `decoration-2` |
+| `decoration` | 294 | 289 | 289 | 0 | 0 | `decoration-0`, `decoration-1`, `decoration-2` |
 | `decoration-auto` | 1 | 0 | 0 | 0 | 0 | `decoration-auto` |
-| `decoration-dashed` | 1 | 0 | 0 | 0 | 0 | `decoration-dashed` |
-| `decoration-dotted` | 1 | 0 | 0 | 0 | 0 | `decoration-dotted` |
-| `decoration-double` | 1 | 0 | 0 | 0 | 0 | `decoration-double` |
+| `decoration-dashed` | 1 | 1 | 1 | 0 | 0 |  |
+| `decoration-dotted` | 1 | 1 | 1 | 0 | 0 |  |
+| `decoration-double` | 1 | 1 | 1 | 0 | 0 |  |
 | `decoration-from-font` | 1 | 0 | 0 | 0 | 0 | `decoration-from-font` |
-| `decoration-solid` | 1 | 0 | 0 | 0 | 0 | `decoration-solid` |
+| `decoration-solid` | 1 | 1 | 1 | 0 | 0 |  |
 | `decoration-wavy` | 1 | 0 | 0 | 0 | 0 | `decoration-wavy` |
 | `delay` | 8 | 0 | 0 | 0 | 0 | `delay-75`, `delay-100`, `delay-150` |
 | `diagonal-fractions` | 1 | 0 | 0 | 0 | 0 | `diagonal-fractions` |

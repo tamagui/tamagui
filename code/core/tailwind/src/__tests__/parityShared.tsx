@@ -135,6 +135,9 @@ const SAMPLE: Record<string, { comp: any; attr: string } | null> = {
   textAlign: { comp: Text, attr: 'textAlign="center"' },
   textTransform: null, // standalone
   textDecorationLine: null, // standalone
+  textDecorationColor: { comp: Text, attr: 'textDecorationColor="red"' },
+  textDecorationStyle: null, // standalone
+  boxSizing: null, // standalone
   display: null, // standalone
   position: null, // standalone
   top: { comp: View, attr: 'top={5}' },
@@ -296,7 +299,6 @@ export function runParityGate(label: string) {
       'backgroundRepeat',
       'backgroundClip',
       'objectPosition',
-      'textDecorationColor',
       'borderHorizontalWidth',
       'borderVerticalWidth',
     ]
