@@ -69,6 +69,14 @@ describe('tailwind standard utilities', () => {
     expect(rules).toContain('700')
   })
 
+  test('filter utilities compose in Tailwind order', () => {
+    const rule = ruleFor(View, 'sepia-50 brightness-105 blur-sm contrast-125', 'filter')
+
+    expect(rule[StyleObjectValue]).toBe(
+      'blur(8px) brightness(105%) contrast(125%) sepia(50%)'
+    )
+  })
+
   // font-* is fontFamily (font weights are separate, tested above)
   const fontFamilyCases: [string, any][] = [
     ['font-mono', 'monospace'],

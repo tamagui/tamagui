@@ -21,6 +21,7 @@ import {
   hasTokenName,
   type GrammarConfigView,
 } from '@tamagui/style-grammar/tooling/candidate'
+import { isAndroid, isWeb } from '@tamagui/constants'
 
 type Layer = {
   direction?: string
@@ -38,6 +39,8 @@ type ComposerBag = {
   variants: Map<string, Layer>
   transforms: Map<string, Map<string, unknown>>
   transformModifiers: Map<string, readonly string[]>
+  filters: Map<string, Map<string, string>>
+  filterModifiers: Map<string, readonly string[]>
 }
 
 const transformOrder = [
@@ -49,6 +52,17 @@ const transformOrder = [
   'skewY',
 ] as const
 const transformProps = new Set<string>(transformOrder)
+const filterOrder = [
+  'blur',
+  'brightness',
+  'contrast',
+  'grayscale',
+  'hue-rotate',
+  'invert',
+  'saturate',
+  'sepia',
+] as const
+const nativeTarget = !isWeb || process.env.TAMAGUI_TARGET === 'native'
 
 const bags = new WeakMap<FrontendClassSink, ComposerBag>()
 
@@ -77,6 +91,8 @@ function createBag(): ComposerBag {
     variants: new Map(),
     transforms: new Map(),
     transformModifiers: new Map(),
+    filters: new Map(),
+    filterModifiers: new Map(),
   }
 }
 
@@ -136,14 +152,94 @@ function splitModifiers(candidate: string, colon: number): string[] {
   return modifiers
 }
 
-function composerKind(core: string): 'from' | 'via' | 'to' | 'image' | 'ring' | null {
+function composerKind(
+  core: string
+): 'from' | 'via' | 'to' | 'image' | 'ring' | 'filter' | null {
   const first = core.charCodeAt(0)
   if (first === 102) return core.startsWith('from-') ? 'from' : null
   if (first === 118) return core.startsWith('via-') ? 'via' : null
   if (first === 116) return core.startsWith('to-') ? 'to' : null
-  if (first === 98) return core.startsWith('bg-linear-to-') ? 'image' : null
+  if (first === 98) {
+    if (core.startsWith('bg-linear-to-')) return 'image'
+    return core.startsWith('blur-') || core.startsWith('brightness-') ? 'filter' : null
+  }
   if (first === 114) return core === 'ring' || core.startsWith('ring-') ? 'ring' : null
+  if (first === 99) return core.startsWith('contrast-') ? 'filter' : null
+  if (first === 103)
+    return core === 'grayscale' || core.startsWith('grayscale-') ? 'filter' : null
+  if (first === 104) return core.startsWith('hue-rotate-') ? 'filter' : null
+  if (first === 105)
+    return core === 'invert' || core.startsWith('invert-') ? 'filter' : null
+  if (first === 115) {
+    return core.startsWith('saturate-') || core === 'sepia' || core.startsWith('sepia-')
+      ? 'filter'
+      : null
+  }
   return null
+}
+
+function filterPart(core: string): [name: string, value: string] | null {
+  if (core.startsWith('blur-')) {
+    const value = (
+      {
+        none: 0,
+        xs: 4,
+        sm: 8,
+        md: 12,
+        lg: 16,
+        xl: 24,
+        '2xl': 40,
+        '3xl': 64,
+      } as const
+    )[core.slice(5)]
+    return value === undefined ? null : ['blur', `${value}px`]
+  }
+  for (const name of ['brightness', 'contrast', 'saturate'] as const) {
+    if (!core.startsWith(`${name}-`)) continue
+    const value = core.slice(name.length + 1)
+    if (!/^\d+$/.test(value)) return null
+    return [name, `${value}%`]
+  }
+  for (const name of ['grayscale', 'invert', 'sepia'] as const) {
+    if (core === name) return [name, '100%']
+    if (!core.startsWith(`${name}-`)) continue
+    const value = core.slice(name.length + 1)
+    if (!/^\d+$/.test(value)) return null
+    return [name, `${value}%`]
+  }
+  if (core.startsWith('hue-rotate-')) {
+    const value = core.slice('hue-rotate-'.length)
+    if (!/^\d+$/.test(value)) return null
+    return ['hue-rotate', `${value}deg`]
+  }
+  return null
+}
+
+function noteFilter(
+  sink: FrontendClassSink,
+  bag: ComposerBag,
+  part: [name: string, value: string],
+  modifiers: readonly string[]
+): void {
+  const key = conditionKey(modifiers)
+  let layer = bag.filters.get(key)
+  if (!layer) {
+    layer = new Map()
+    bag.filters.set(key, layer)
+  }
+  layer.set(part[0], part[1])
+  bag.filterModifiers.set(key, modifiers)
+
+  const base = bag.filters.get('')
+  for (const [condition, conditional] of bag.filters) {
+    const values = condition ? new Map(base) : new Map<string, string>()
+    for (const [name, value] of conditional) values.set(name, value)
+    const filter = filterOrder
+      .filter((name) => values.has(name))
+      .map((name) => `${name}(${values.get(name)})`)
+      .join(' ')
+    emit(sink, 'filter', filter, bag.filterModifiers.get(condition) || [])
+  }
 }
 
 function resolveColor(raw: string, config: GrammarConfigView): string | null {
@@ -306,7 +402,7 @@ export function tryCompose(
   candidate: string,
   config: GrammarConfigView,
   sink: FrontendClassSink
-): boolean | undefined {
+): boolean | null | undefined {
   const colon = candidate.indexOf(':') === -1 ? -1 : lastUnbracketedColon(candidate)
   if (colon === -2) return undefined
   const core = colon === -1 ? candidate : candidate.slice(colon + 1)
@@ -317,6 +413,17 @@ export function tryCompose(
   const modifiers = colon === -1 ? [] : splitModifiers(candidate, colon)
   const bag = getBag(sink)
   const layer = layerOf(bag, conditionKey(modifiers))
+
+  if (kind === 'filter') {
+    const part = filterPart(core)
+    if (!part) return true
+    // React Native 0.86 implements brightness on both native platforms. The
+    // remaining CSS filter functions are Android-only, so iOS drops the class
+    // explicitly instead of accepting a style that the host silently ignores.
+    if (nativeTarget && part[0] !== 'brightness' && !isAndroid) return null
+    noteFilter(sink, bag, part, modifiers)
+    return false
+  }
 
   if (kind === 'image') {
     const dir = linearTo[core.slice('bg-linear-to-'.length)]

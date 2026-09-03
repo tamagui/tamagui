@@ -15,13 +15,13 @@ resolver accepts the part; runtime suites separately prove the complete multi-cl
 | Metric | Count |
 | --- | ---: |
 | Tailwind default-theme candidates | 23,286 |
-| Tamagui-owned candidates on web | 10,120 |
-| Official-engine web fallback | 13,166 |
-| Native-ready owned candidates | 9,894 |
-| Explicitly web-only / native-gated candidates | 231 |
+| Tamagui-owned candidates on web | 10,173 |
+| Official-engine web fallback | 13,113 |
+| Native-ready owned candidates | 9,905 |
+| Explicitly web-only / native-gated candidates | 273 |
 | Native-only lowerings | 5 |
 | Unsafe native-owned candidates | 0 |
-| Complete / partial / missing web families | 423 / 59 / 672 |
+| Complete / partial / missing web families | 431 / 59 / 664 |
 
 Web coverage is the full registry: Tamagui-owned candidates use the shared style runtime
 and every remainder stays in `className` for the official engine. Native intentionally
@@ -249,7 +249,7 @@ the candidate needs a native lowering or an explicit target gate.
 | `block-px` | 1 | 1 | 1 | 0 | 0 |  |
 | `block-screen` | 1 | 1 | 0 | 1 | 0 | `block-screen (web-only)` |
 | `block-svh` | 1 | 0 | 0 | 0 | 0 | `block-svh` |
-| `blur` | 8 | 0 | 0 | 0 | 0 | `blur-2xl`, `blur-3xl`, `blur-lg` |
+| `blur` | 8 | 8 | 0 | 8 | 0 | `blur-2xl (web-only)`, `blur-3xl (web-only)`, `blur-lg (web-only)` |
 | `border` | 296 | 294 | 294 | 0 | 0 | `border-current`, `border-inherit` |
 | `border-b` | 296 | 294 | 294 | 0 | 0 | `border-b-current`, `border-b-inherit` |
 | `border-be` | 296 | 294 | 294 | 0 | 0 | `border-be-current`, `border-be-inherit` |
@@ -306,7 +306,7 @@ the candidate needs a native lowering or an explicit target gate.
 | `break-inside-avoid-page` | 1 | 0 | 0 | 0 | 0 | `break-inside-avoid-page` |
 | `break-keep` | 1 | 0 | 0 | 0 | 0 | `break-keep` |
 | `break-normal` | 1 | 0 | 0 | 0 | 0 | `break-normal` |
-| `brightness` | 11 | 0 | 0 | 0 | 0 | `brightness-0`, `brightness-50`, `brightness-75` |
+| `brightness` | 11 | 11 | 11 | 0 | 0 |  |
 | `capitalize` | 1 | 1 | 1 | 0 | 0 |  |
 | `caption-bottom` | 1 | 0 | 0 | 0 | 0 | `caption-bottom` |
 | `caption-top` | 1 | 0 | 0 | 0 | 0 | `caption-top` |
@@ -345,7 +345,7 @@ the candidate needs a native lowering or an explicit target gate.
 | `content-start` | 1 | 1 | 1 | 0 | 0 |  |
 | `content-stretch` | 1 | 1 | 1 | 0 | 0 |  |
 | `contents` | 1 | 1 | 1 | 0 | 0 |  |
-| `contrast` | 7 | 0 | 0 | 0 | 0 | `contrast-0`, `contrast-50`, `contrast-75` |
+| `contrast` | 7 | 7 | 0 | 7 | 0 | `contrast-0 (web-only)`, `contrast-50 (web-only)`, `contrast-75 (web-only)` |
 | `cursor-alias` | 1 | 1 | 0 | 1 | 0 | `cursor-alias (web-only)` |
 | `cursor-all-scroll` | 1 | 1 | 0 | 1 | 0 | `cursor-all-scroll (web-only)` |
 | `cursor-auto` | 1 | 1 | 1 | 0 | 0 |  |
@@ -452,7 +452,7 @@ the candidate needs a native lowering or an explicit target gate.
 | `gap-x-px` | 1 | 1 | 1 | 0 | 0 |  |
 | `gap-y` | 34 | 34 | 34 | 0 | 0 |  |
 | `gap-y-px` | 1 | 1 | 1 | 0 | 0 |  |
-| `grayscale` | 6 | 0 | 0 | 0 | 0 | `grayscale`, `grayscale-0`, `grayscale-25` |
+| `grayscale` | 6 | 6 | 0 | 6 | 0 | `grayscale (web-only)`, `grayscale-0 (web-only)`, `grayscale-25 (web-only)` |
 | `grid` | 1 | 1 | 0 | 1 | 0 | `grid (web-only)` |
 | `grid-cols` | 14 | 14 | 0 | 14 | 0 | `grid-cols-1 (web-only)`, `grid-cols-2 (web-only)`, `grid-cols-3 (web-only)` |
 | `grid-flow-col` | 1 | 0 | 0 | 0 | 0 | `grid-flow-col` |
@@ -478,7 +478,7 @@ the candidate needs a native lowering or an explicit target gate.
 | `h-svh` | 1 | 0 | 0 | 0 | 0 | `h-svh` |
 | `h-svw` | 1 | 0 | 0 | 0 | 0 | `h-svw` |
 | `hidden` | 1 | 1 | 1 | 0 | 0 |  |
-| `hue-rotate` | 6 | 0 | 0 | 0 | 0 | `hue-rotate-0`, `hue-rotate-15`, `hue-rotate-30` |
+| `hue-rotate` | 6 | 6 | 0 | 6 | 0 | `hue-rotate-0 (web-only)`, `hue-rotate-15 (web-only)`, `hue-rotate-30 (web-only)` |
 | `hyphens-auto` | 1 | 0 | 0 | 0 | 0 | `hyphens-auto` |
 | `hyphens-manual` | 1 | 0 | 0 | 0 | 0 | `hyphens-manual` |
 | `hyphens-none` | 1 | 0 | 0 | 0 | 0 | `hyphens-none` |
@@ -530,7 +530,7 @@ the candidate needs a native lowering or an explicit target gate.
 | `inset-y-auto` | 1 | 1 | 1 | 0 | 0 |  |
 | `inset-y-full` | 1 | 1 | 1 | 0 | 0 |  |
 | `inset-y-px` | 1 | 1 | 1 | 0 | 0 |  |
-| `invert` | 6 | 0 | 0 | 0 | 0 | `invert`, `invert-0`, `invert-25` |
+| `invert` | 6 | 6 | 0 | 6 | 0 | `invert (web-only)`, `invert-0 (web-only)`, `invert-25 (web-only)` |
 | `invisible` | 1 | 1 | 0 | 1 | 0 | `invisible (web-only)` |
 | `isolate` | 1 | 1 | 1 | 0 | 0 |  |
 | `isolation-auto` | 1 | 1 | 1 | 0 | 0 |  |
@@ -950,7 +950,7 @@ the candidate needs a native lowering or an explicit target gate.
 | `row-end` | 14 | 13 | 0 | 13 | 0 | `row-end-1 (web-only)`, `row-end-2 (web-only)`, `row-end-3 (web-only)` |
 | `row-span` | 13 | 13 | 0 | 13 | 0 | `row-span-1 (web-only)`, `row-span-2 (web-only)`, `row-span-3 (web-only)` |
 | `row-start` | 14 | 13 | 0 | 13 | 0 | `row-start-1 (web-only)`, `row-start-2 (web-only)`, `row-start-3 (web-only)` |
-| `saturate` | 5 | 0 | 0 | 0 | 0 | `saturate-0`, `saturate-50`, `saturate-100` |
+| `saturate` | 5 | 5 | 0 | 5 | 0 | `saturate-0 (web-only)`, `saturate-50 (web-only)`, `saturate-100 (web-only)` |
 | `scale` | 11 | 11 | 11 | 0 | 0 |  |
 | `scale-3d` | 1 | 0 | 0 | 0 | 0 | `scale-3d` |
 | `scale-none` | 1 | 0 | 0 | 0 | 0 | `scale-none` |
@@ -1030,7 +1030,7 @@ the candidate needs a native lowering or an explicit target gate.
 | `self-end-safe` | 1 | 0 | 0 | 0 | 0 | `self-end-safe` |
 | `self-start` | 1 | 1 | 1 | 0 | 0 |  |
 | `self-stretch` | 1 | 1 | 1 | 0 | 0 |  |
-| `sepia` | 4 | 0 | 0 | 0 | 0 | `sepia`, `sepia-0`, `sepia-50` |
+| `sepia` | 4 | 4 | 0 | 4 | 0 | `sepia (web-only)`, `sepia-0 (web-only)`, `sepia-50 (web-only)` |
 | `shadow` | 301 | 9 | 9 | 0 | 0 | `shadow-amber-50`, `shadow-amber-100`, `shadow-amber-200` |
 | `shadow-initial` | 1 | 0 | 0 | 0 | 0 | `shadow-initial` |
 | `shrink` | 2 | 2 | 2 | 0 | 0 |  |
