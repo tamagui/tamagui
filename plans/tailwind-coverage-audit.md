@@ -15,13 +15,13 @@ resolver accepts the part; runtime suites separately prove the complete multi-cl
 | Metric | Count |
 | --- | ---: |
 | Tailwind default-theme candidates | 23,286 |
-| Tamagui-owned candidates on web | 10,173 |
-| Official-engine web fallback | 13,113 |
-| Native-ready owned candidates | 9,905 |
+| Tamagui-owned candidates on web | 10,667 |
+| Official-engine web fallback | 12,619 |
+| Native-ready owned candidates | 10,399 |
 | Explicitly web-only / native-gated candidates | 273 |
 | Native-only lowerings | 5 |
 | Unsafe native-owned candidates | 0 |
-| Complete / partial / missing web families | 431 / 59 / 664 |
+| Complete / partial / missing web families | 481 / 30 / 643 |
 
 Web coverage is the full registry: Tamagui-owned candidates use the shared style runtime
 and every remainder stays in `className` for the official engine. Native intentionally
@@ -34,67 +34,67 @@ the candidate needs a native lowering or an explicit target gate.
 | --- | ---: | ---: | ---: | ---: | ---: | --- |
 | `-bg-conic` | 12 | 0 | 0 | 0 | 0 | `-bg-conic-0`, `-bg-conic-30`, `-bg-conic-60` |
 | `-bg-linear` | 12 | 0 | 0 | 0 | 0 | `-bg-linear-0`, `-bg-linear-30`, `-bg-linear-60` |
-| `-bottom` | 60 | 33 | 33 | 0 | 0 | `-bottom-0`, `-bottom-1/2`, `-bottom-1/3` |
-| `-bottom-full` | 1 | 0 | 0 | 0 | 0 | `-bottom-full` |
+| `-bottom` | 60 | 60 | 60 | 0 | 0 |  |
+| `-bottom-full` | 1 | 1 | 1 | 0 | 0 |  |
 | `-bottom-px` | 1 | 1 | 1 | 0 | 0 |  |
 | `-col-end` | 13 | 0 | 0 | 0 | 0 | `-col-end-1`, `-col-end-2`, `-col-end-3` |
 | `-col-start` | 13 | 0 | 0 | 0 | 0 | `-col-start-1`, `-col-start-2`, `-col-start-3` |
-| `-end-full` | 1 | 0 | 0 | 0 | 0 | `-end-full` |
+| `-end-full` | 1 | 1 | 1 | 0 | 0 |  |
 | `-end-px` | 1 | 1 | 1 | 0 | 0 |  |
 | `-indent` | 34 | 0 | 0 | 0 | 0 | `-indent-0`, `-indent-0.5`, `-indent-1` |
 | `-indent-px` | 1 | 0 | 0 | 0 | 0 | `-indent-px` |
-| `-inset` | 60 | 33 | 33 | 0 | 0 | `-inset-0`, `-inset-1/2`, `-inset-1/3` |
-| `-inset-be` | 60 | 33 | 33 | 0 | 0 | `-inset-be-0`, `-inset-be-1/2`, `-inset-be-1/3` |
-| `-inset-be-full` | 1 | 0 | 0 | 0 | 0 | `-inset-be-full` |
+| `-inset` | 60 | 60 | 60 | 0 | 0 |  |
+| `-inset-be` | 60 | 60 | 60 | 0 | 0 |  |
+| `-inset-be-full` | 1 | 1 | 1 | 0 | 0 |  |
 | `-inset-be-px` | 1 | 1 | 1 | 0 | 0 |  |
-| `-inset-bs` | 60 | 33 | 33 | 0 | 0 | `-inset-bs-0`, `-inset-bs-1/2`, `-inset-bs-1/3` |
-| `-inset-bs-full` | 1 | 0 | 0 | 0 | 0 | `-inset-bs-full` |
+| `-inset-bs` | 60 | 60 | 60 | 0 | 0 |  |
+| `-inset-bs-full` | 1 | 1 | 1 | 0 | 0 |  |
 | `-inset-bs-px` | 1 | 1 | 1 | 0 | 0 |  |
-| `-inset-e` | 60 | 33 | 33 | 0 | 0 | `-inset-e-0`, `-inset-e-1/2`, `-inset-e-1/3` |
-| `-inset-e-full` | 1 | 0 | 0 | 0 | 0 | `-inset-e-full` |
+| `-inset-e` | 60 | 60 | 60 | 0 | 0 |  |
+| `-inset-e-full` | 1 | 1 | 1 | 0 | 0 |  |
 | `-inset-e-px` | 1 | 1 | 1 | 0 | 0 |  |
-| `-inset-full` | 1 | 0 | 0 | 0 | 0 | `-inset-full` |
+| `-inset-full` | 1 | 1 | 1 | 0 | 0 |  |
 | `-inset-px` | 1 | 1 | 1 | 0 | 0 |  |
-| `-inset-s` | 60 | 33 | 33 | 0 | 0 | `-inset-s-0`, `-inset-s-1/2`, `-inset-s-1/3` |
-| `-inset-s-full` | 1 | 0 | 0 | 0 | 0 | `-inset-s-full` |
+| `-inset-s` | 60 | 60 | 60 | 0 | 0 |  |
+| `-inset-s-full` | 1 | 1 | 1 | 0 | 0 |  |
 | `-inset-s-px` | 1 | 1 | 1 | 0 | 0 |  |
-| `-inset-x` | 60 | 33 | 33 | 0 | 0 | `-inset-x-0`, `-inset-x-1/2`, `-inset-x-1/3` |
-| `-inset-x-full` | 1 | 0 | 0 | 0 | 0 | `-inset-x-full` |
+| `-inset-x` | 60 | 60 | 60 | 0 | 0 |  |
+| `-inset-x-full` | 1 | 1 | 1 | 0 | 0 |  |
 | `-inset-x-px` | 1 | 1 | 1 | 0 | 0 |  |
-| `-inset-y` | 60 | 33 | 33 | 0 | 0 | `-inset-y-0`, `-inset-y-1/2`, `-inset-y-1/3` |
-| `-inset-y-full` | 1 | 0 | 0 | 0 | 0 | `-inset-y-full` |
+| `-inset-y` | 60 | 60 | 60 | 0 | 0 |  |
+| `-inset-y-full` | 1 | 1 | 1 | 0 | 0 |  |
 | `-inset-y-px` | 1 | 1 | 1 | 0 | 0 |  |
-| `-left` | 60 | 33 | 33 | 0 | 0 | `-left-0`, `-left-1/2`, `-left-1/3` |
-| `-left-full` | 1 | 0 | 0 | 0 | 0 | `-left-full` |
+| `-left` | 60 | 60 | 60 | 0 | 0 |  |
+| `-left-full` | 1 | 1 | 1 | 0 | 0 |  |
 | `-left-px` | 1 | 1 | 1 | 0 | 0 |  |
-| `-m` | 34 | 33 | 33 | 0 | 0 | `-m-0` |
+| `-m` | 34 | 34 | 34 | 0 | 0 |  |
 | `-m-px` | 1 | 1 | 1 | 0 | 0 |  |
 | `-mask-conic` | 9 | 0 | 0 | 0 | 0 | `-mask-conic-0`, `-mask-conic-1`, `-mask-conic-2` |
 | `-mask-linear` | 9 | 0 | 0 | 0 | 0 | `-mask-linear-0`, `-mask-linear-1`, `-mask-linear-2` |
-| `-mb` | 34 | 33 | 33 | 0 | 0 | `-mb-0` |
+| `-mb` | 34 | 34 | 34 | 0 | 0 |  |
 | `-mb-px` | 1 | 1 | 1 | 0 | 0 |  |
-| `-mbe` | 34 | 33 | 33 | 0 | 0 | `-mbe-0` |
+| `-mbe` | 34 | 34 | 34 | 0 | 0 |  |
 | `-mbe-px` | 1 | 1 | 1 | 0 | 0 |  |
-| `-mbs` | 34 | 33 | 33 | 0 | 0 | `-mbs-0` |
+| `-mbs` | 34 | 34 | 34 | 0 | 0 |  |
 | `-mbs-px` | 1 | 1 | 1 | 0 | 0 |  |
-| `-me` | 34 | 33 | 33 | 0 | 0 | `-me-0` |
+| `-me` | 34 | 34 | 34 | 0 | 0 |  |
 | `-me-px` | 1 | 1 | 1 | 0 | 0 |  |
-| `-ml` | 34 | 33 | 33 | 0 | 0 | `-ml-0` |
+| `-ml` | 34 | 34 | 34 | 0 | 0 |  |
 | `-ml-px` | 1 | 1 | 1 | 0 | 0 |  |
-| `-mr` | 34 | 33 | 33 | 0 | 0 | `-mr-0` |
+| `-mr` | 34 | 34 | 34 | 0 | 0 |  |
 | `-mr-px` | 1 | 1 | 1 | 0 | 0 |  |
-| `-ms` | 34 | 33 | 33 | 0 | 0 | `-ms-0` |
+| `-ms` | 34 | 34 | 34 | 0 | 0 |  |
 | `-ms-px` | 1 | 1 | 1 | 0 | 0 |  |
-| `-mt` | 34 | 33 | 33 | 0 | 0 | `-mt-0` |
+| `-mt` | 34 | 34 | 34 | 0 | 0 |  |
 | `-mt-px` | 1 | 1 | 1 | 0 | 0 |  |
-| `-mx` | 34 | 33 | 33 | 0 | 0 | `-mx-0` |
+| `-mx` | 34 | 34 | 34 | 0 | 0 |  |
 | `-mx-px` | 1 | 1 | 1 | 0 | 0 |  |
-| `-my` | 34 | 33 | 33 | 0 | 0 | `-my-0` |
+| `-my` | 34 | 34 | 34 | 0 | 0 |  |
 | `-my-px` | 1 | 1 | 1 | 0 | 0 |  |
 | `-order` | 12 | 12 | 0 | 12 | 0 | `-order-1 (web-only)`, `-order-2 (web-only)`, `-order-3 (web-only)` |
-| `-outline-offset` | 5 | 4 | 4 | 0 | 0 | `-outline-offset-0` |
-| `-right` | 60 | 33 | 33 | 0 | 0 | `-right-0`, `-right-1/2`, `-right-1/3` |
-| `-right-full` | 1 | 0 | 0 | 0 | 0 | `-right-full` |
+| `-outline-offset` | 5 | 5 | 5 | 0 | 0 |  |
+| `-right` | 60 | 60 | 60 | 0 | 0 |  |
+| `-right-full` | 1 | 1 | 1 | 0 | 0 |  |
 | `-right-px` | 1 | 1 | 1 | 0 | 0 |  |
 | `-rotate` | 9 | 9 | 9 | 0 | 0 |  |
 | `-rotate-x` | 9 | 9 | 9 | 0 | 0 |  |
@@ -135,25 +135,25 @@ the candidate needs a native lowering or an explicit target gate.
 | `-space-x-px` | 1 | 0 | 0 | 0 | 0 | `-space-x-px` |
 | `-space-y` | 34 | 0 | 0 | 0 | 0 | `-space-y-0`, `-space-y-0.5`, `-space-y-1` |
 | `-space-y-px` | 1 | 0 | 0 | 0 | 0 | `-space-y-px` |
-| `-start-full` | 1 | 0 | 0 | 0 | 0 | `-start-full` |
+| `-start-full` | 1 | 1 | 1 | 0 | 0 |  |
 | `-start-px` | 1 | 1 | 1 | 0 | 0 |  |
-| `-top` | 60 | 33 | 33 | 0 | 0 | `-top-0`, `-top-1/2`, `-top-1/3` |
-| `-top-full` | 1 | 0 | 0 | 0 | 0 | `-top-full` |
+| `-top` | 60 | 60 | 60 | 0 | 0 |  |
+| `-top-full` | 1 | 1 | 1 | 0 | 0 |  |
 | `-top-px` | 1 | 1 | 1 | 0 | 0 |  |
 | `-tracking` | 6 | 0 | 0 | 0 | 0 | `-tracking-normal`, `-tracking-tight`, `-tracking-tighter` |
-| `-translate` | 60 | 33 | 33 | 0 | 0 | `-translate-0`, `-translate-1/2`, `-translate-1/3` |
-| `-translate-full` | 1 | 0 | 0 | 0 | 0 | `-translate-full` |
+| `-translate` | 60 | 60 | 60 | 0 | 0 |  |
+| `-translate-full` | 1 | 1 | 1 | 0 | 0 |  |
 | `-translate-px` | 1 | 1 | 1 | 0 | 0 |  |
-| `-translate-x` | 60 | 33 | 33 | 0 | 0 | `-translate-x-0`, `-translate-x-1/2`, `-translate-x-1/3` |
-| `-translate-x-full` | 1 | 0 | 0 | 0 | 0 | `-translate-x-full` |
+| `-translate-x` | 60 | 60 | 60 | 0 | 0 |  |
+| `-translate-x-full` | 1 | 1 | 1 | 0 | 0 |  |
 | `-translate-x-px` | 1 | 1 | 1 | 0 | 0 |  |
-| `-translate-y` | 60 | 33 | 33 | 0 | 0 | `-translate-y-0`, `-translate-y-1/2`, `-translate-y-1/3` |
-| `-translate-y-full` | 1 | 0 | 0 | 0 | 0 | `-translate-y-full` |
+| `-translate-y` | 60 | 60 | 60 | 0 | 0 |  |
+| `-translate-y-full` | 1 | 1 | 1 | 0 | 0 |  |
 | `-translate-y-px` | 1 | 1 | 1 | 0 | 0 |  |
 | `-translate-z` | 34 | 0 | 0 | 0 | 0 | `-translate-z-0`, `-translate-z-0.5`, `-translate-z-1` |
 | `-translate-z-px` | 1 | 0 | 0 | 0 | 0 | `-translate-z-px` |
 | `-underline-offset` | 5 | 0 | 0 | 0 | 0 | `-underline-offset-0`, `-underline-offset-1`, `-underline-offset-2` |
-| `-z` | 6 | 0 | 0 | 0 | 0 | `-z-0`, `-z-10`, `-z-20` |
+| `-z` | 6 | 6 | 6 | 0 | 0 |  |
 | `@container` | 2 | 0 | 0 | 0 | 0 | `@container`, `@container-normal` |
 | `absolute` | 1 | 1 | 1 | 0 | 0 |  |
 | `accent` | 291 | 0 | 0 | 0 | 0 | `accent-amber-50`, `accent-amber-100`, `accent-amber-200` |
@@ -833,7 +833,7 @@ the candidate needs a native lowering or an explicit target gate.
 | `outline-dashed` | 1 | 1 | 1 | 0 | 0 |  |
 | `outline-dotted` | 1 | 1 | 1 | 0 | 0 |  |
 | `outline-double` | 1 | 0 | 0 | 0 | 0 | `outline-double` |
-| `outline-hidden` | 1 | 0 | 0 | 0 | 0 | `outline-hidden` |
+| `outline-hidden` | 1 | 1 | 1 | 0 | 0 |  |
 | `outline-none` | 1 | 1 | 1 | 0 | 0 |  |
 | `outline-offset` | 5 | 5 | 5 | 0 | 0 |  |
 | `outline-solid` | 1 | 1 | 1 | 0 | 0 |  |
@@ -1137,16 +1137,16 @@ the candidate needs a native lowering or an explicit target gate.
 | `transition` | 7 | 0 | 0 | 0 | 0 | `transition`, `transition-all`, `transition-colors` |
 | `transition-discrete` | 1 | 0 | 0 | 0 | 0 | `transition-discrete` |
 | `transition-normal` | 1 | 0 | 0 | 0 | 0 | `transition-normal` |
-| `translate` | 60 | 34 | 34 | 0 | 0 | `translate-1/2`, `translate-1/3`, `translate-1/4` |
+| `translate` | 60 | 60 | 60 | 0 | 0 |  |
 | `translate-3d` | 1 | 0 | 0 | 0 | 0 | `translate-3d` |
-| `translate-full` | 1 | 0 | 0 | 0 | 0 | `translate-full` |
+| `translate-full` | 1 | 1 | 1 | 0 | 0 |  |
 | `translate-none` | 1 | 0 | 0 | 0 | 0 | `translate-none` |
 | `translate-px` | 1 | 1 | 1 | 0 | 0 |  |
-| `translate-x` | 60 | 34 | 34 | 0 | 0 | `translate-x-1/2`, `translate-x-1/3`, `translate-x-1/4` |
-| `translate-x-full` | 1 | 0 | 0 | 0 | 0 | `translate-x-full` |
+| `translate-x` | 60 | 60 | 60 | 0 | 0 |  |
+| `translate-x-full` | 1 | 1 | 1 | 0 | 0 |  |
 | `translate-x-px` | 1 | 1 | 1 | 0 | 0 |  |
-| `translate-y` | 60 | 34 | 34 | 0 | 0 | `translate-y-1/2`, `translate-y-1/3`, `translate-y-1/4` |
-| `translate-y-full` | 1 | 0 | 0 | 0 | 0 | `translate-y-full` |
+| `translate-y` | 60 | 60 | 60 | 0 | 0 |  |
+| `translate-y-full` | 1 | 1 | 1 | 0 | 0 |  |
 | `translate-y-px` | 1 | 1 | 1 | 0 | 0 |  |
 | `translate-z` | 34 | 0 | 0 | 0 | 0 | `translate-z-0`, `translate-z-0.5`, `translate-z-1` |
 | `translate-z-px` | 1 | 0 | 0 | 0 | 0 | `translate-z-px` |

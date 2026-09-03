@@ -146,6 +146,15 @@ describe('tailwind standard utilities', () => {
     expect(findRule(styles.rulesToInsert, 'top')).toBeNull()
   })
 
+  test('negative position fractions and zero preserve their geometry', () => {
+    const styles = splitTailwindStyles(View, {
+      className: '-left-full -top-1/2 -m-0',
+    } as any)
+    expect(findRule(styles.rulesToInsert, 'left')[StyleObjectValue]).toBe('-100%')
+    expect(findRule(styles.rulesToInsert, 'top')[StyleObjectValue]).toBe('-50%')
+    expect(findRule(styles.rulesToInsert, 'margin')[StyleObjectValue]).toBe('0px')
+  })
+
   test('logical spacing and gap axes emit browser-native logical properties', () => {
     const styles = splitTailwindStyles(View, {
       className: 'ps-4 pe-2 pbs-4 pbe-2 ms-2 me-4 mbs-2 mbe-4 gap-x-2 gap-y-4',
@@ -165,6 +174,19 @@ describe('tailwind standard utilities', () => {
     ]) {
       expect(findRule(styles.rulesToInsert, prop), prop).toBeTruthy()
     }
+  })
+
+  test('translate fractions and numeric leading emit Tailwind geometry', () => {
+    const translated = splitTailwindStyles(View, {
+      className: '-translate-x-1/2 translate-y-full',
+    } as any)
+    const xRules = translated.rulesToInsert[translated.classNames['--t-x']]?.[4] ?? []
+    const yRules = translated.rulesToInsert[translated.classNames['--t-y']]?.[4] ?? []
+    expect(xRules.join('')).toContain('--t-x:-50%')
+    expect(yRules.join('')).toContain('--t-y:100%')
+
+    const leading = ruleFor(Text, 'leading-4', 'lineHeight')
+    expect(leading[StyleObjectValue]).toBe('16px')
   })
 
   test('logical border sides emit browser-native logical properties', () => {

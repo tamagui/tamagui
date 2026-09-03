@@ -30,6 +30,9 @@ describe('claimed candidates become flat props', () => {
     expect(tokenize('flex-2')).toEqual({ flex: 2 })
     expect(tokenize('inset-1/2')).toEqual({ inset: '50%' })
     expect(tokenize('line-clamp-2')).toEqual({ numberOfLines: 2 })
+    expect(tokenize('-z-20')).toEqual({ zIndex: -20 })
+    expect(tokenize('-m-0')).toEqual({ margin: 0 })
+    expect(tokenize('leading-4')).toEqual({ lineHeight: 16 })
   })
 
   test('arbitrary rotate appends deg for unitless numbers', () => {
@@ -71,6 +74,9 @@ describe('claimed candidates become flat props', () => {
   test('sizing keywords and fractions lower to CSS', () => {
     expect(tokenize('w-full')).toEqual({ width: '100%' })
     expect(tokenize('w-1/2')).toEqual({ width: '50%' })
+    expect(tokenize('-translate-x-1/2')).toEqual({ x: '-50%' })
+    expect(tokenize('translate-y-full')).toEqual({ y: '100%' })
+    expect(tokenize('-left-full')).toEqual({ left: '-100%' })
   })
 
   test('a directional border expands to every affected longhand', () => {

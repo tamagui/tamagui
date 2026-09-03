@@ -103,6 +103,7 @@ const negativeTokenProps = new Set([
   'insetBlockEnd',
   'start',
   'end',
+  'zIndex',
   'x',
   'y',
   'rotate',
@@ -604,7 +605,9 @@ function chooseEntry(
       if (entry.tokenCategory === 'radius' && rawValue === 'none') {
         return { entry, valueKind: 'convenience', convenience: 'zero' }
       }
-      const name = negative ? `-${rawValue}` : rawValue
+      // Negative zero has the same runtime value as zero. Tailwind emits these
+      // candidates, while token maps intentionally do not duplicate a `-0` key.
+      const name = negative && rawValue !== '0' ? `-${rawValue}` : rawValue
       const tokenName = tokenLookupName(entry.tokenCategory, name)
       if (hasTokenName(config, entry.tokenCategory, tokenName)) {
         return { entry, valueKind: 'token' }
@@ -679,6 +682,7 @@ export function parseCandidate(
               (selected.valueKind === 'arbitrary' && selected.entry.prop === 'order') ||
               selected.convenience === 'angle' ||
               selected.convenience === 'percentage' ||
+              selected.convenience === 'sizing-keyword' ||
               selected.convenience === 'integer')))
       ) {
         dynamic = { prefix, rawValue, selected }

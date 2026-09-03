@@ -147,6 +147,10 @@ function tailwindClassToFlatProp(
   const category = parsed.entry.tokenCategory
   let value: any = parsed.rawValue
 
+  if (parsed.negative && value === '0') {
+    return { key: prop, value: 0 }
+  }
+
   if (parsed.convenience === 'zero') {
     return { key: prop, value: 0 }
   }
@@ -156,6 +160,27 @@ function tailwindClassToFlatProp(
       key: prop,
       value: `${parsed.negative ? '-' : ''}${value}deg`,
     }
+  }
+
+  // Tailwind's translate fractions and `full` are percentages, not configured
+  // spacing tokens. RN accepts percentage translate values, so preserve the
+  // exact CSS geometry for both axes and for negative candidates.
+  if ((prop === 'x' || prop === 'y') && parsed.valueKind !== 'token') {
+    const sized = tailwindSizingValue(prop, value)
+    if (sized != null) {
+      return {
+        key: prop,
+        value: parsed.negative && sized[0] !== '-' ? `-${sized}` : sized,
+      }
+    }
+  }
+
+  // Tailwind's numbered leading scale is the spacing scale (N * 0.25rem),
+  // represented as native points at the default 16px root size. Resolve it
+  // here instead of letting an application's same-named font token change the
+  // meaning of a Tailwind classname.
+  if (prop === 'lineHeight' && /^\d+(?:\.\d+)?$/.test(value)) {
+    return { key: prop, value: Number(value) * 4 }
   }
 
   // grid-cols-N → repeat(N, minmax(0, 1fr)), col-span-N → span N / span N
@@ -300,7 +325,10 @@ function tailwindClassToFlatProp(
   ) {
     const sized = tailwindSizingValue(prop, value)
     if (sized != null) {
-      return { key: prop, value: sized }
+      return {
+        key: prop,
+        value: parsed.negative && sized[0] !== '-' ? `-${sized}` : sized,
+      }
     }
   }
 
@@ -326,7 +354,7 @@ function tailwindClassToFlatProp(
     value = Number(value) / 100
   } else if (/^\d+(\.\d+)?$/.test(value)) {
     if (category === 'zIndex' && parsed.valueKind === 'convenience') {
-      value = Number(value)
+      value = Number(value) * (parsed.negative ? -1 : 1)
     } else if (category) {
       value = `${parsed.negative ? '-' : ''}${value}`
       if (grammarConfig) {

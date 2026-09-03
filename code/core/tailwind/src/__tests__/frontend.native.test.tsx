@@ -96,6 +96,32 @@ describe('claimed candidates resolve to native style values', () => {
     expect(styleOf(styles).left).toBe('50%')
   })
 
+  test('negative position fractions and zero preserve their geometry', () => {
+    const styles = splitTailwindStyles(View, {
+      className: '-left-full -top-1/2 -m-0',
+    })
+
+    expect(styleOf(styles)).toMatchObject({
+      left: '-100%',
+      top: '-50%',
+      marginTop: 0,
+      marginRight: 0,
+      marginBottom: 0,
+      marginLeft: 0,
+    })
+  })
+
+  test('translate fractions preserve percentage geometry on native', () => {
+    const styles = splitTailwindStyles(View, {
+      className: '-translate-x-1/2 translate-y-full',
+    })
+
+    expect(styleOf(styles).transform).toEqual([
+      { translateX: '-50%' },
+      { translateY: '100%' },
+    ])
+  })
+
   test('a px arbitrary becomes a number, which is what react native accepts', () => {
     const styles = splitTailwindStyles(View, { className: 'w-[400px]' })
 
@@ -231,9 +257,29 @@ describe('claimed candidates resolve to native style values', () => {
     expect(styleOf(splitTailwindStyles(View, { className: 'box-border' }))).toMatchObject(
       { boxSizing: 'border-box' }
     )
-    expect(styleOf(splitTailwindStyles(View, { className: 'box-content' }))).toMatchObject(
-      { boxSizing: 'content-box' }
-    )
+    expect(
+      styleOf(splitTailwindStyles(View, { className: 'box-content' }))
+    ).toMatchObject({ boxSizing: 'content-box' })
+  })
+
+  test('negative z-index and hidden outline resolve to native longhands', () => {
+    const styles = splitTailwindStyles(View, {
+      className: '-z-20 outline-hidden',
+    })
+
+    expect(styleOf(styles)).toMatchObject({
+      zIndex: -20,
+      outlineWidth: 2,
+      outlineStyle: 'solid',
+      outlineColor: 'transparent',
+      outlineOffset: 2,
+    })
+  })
+
+  test('numeric leading uses Tailwind spacing points', () => {
+    expect(
+      styleOf(splitTailwindStyles(Text, { className: 'leading-4' })).lineHeight
+    ).toBe(16)
   })
 
   test('bg-none clears the native processed background image list', () => {
