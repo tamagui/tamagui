@@ -1,3 +1,4 @@
+import { stylePropsAll, stylePropsUnitless } from '@tamagui/helpers'
 import { getConfigMaybe, setConfig, setTokens } from './config'
 import type { DeepVariableObject } from './createVariables'
 import { createVariables } from './createVariables'
@@ -50,14 +51,22 @@ const reservedCssIdentsLower: ReadonlySet<string> = new Set([
   'currentcolor',
 ])
 
-function shouldTokenCategoryHaveUnits(category: string): boolean {
-  // From TokenCategories type: 'color' | 'space' | 'size' | 'radius' | 'zIndex'
-  // These are the only predefined categories that should get px units
-  const UNIT_CATEGORIES = new Set(['size', 'space', 'radius'])
+// the built-in dimensional categories, which are not named after a style prop
+const unitTokenCategories: ReadonlySet<string> = new Set(['size', 'space', 'radius'])
 
-  // Only add px to predefined dimensional categories
-  // Custom categories (like 'opacity', 'customWidth') default to unitless
-  return UNIT_CATEGORIES.has(category)
+/**
+ * Whether a token category's numeric values are lengths and so need `px`.
+ *
+ * A category named after a style property follows that property's own unit rule,
+ * the same table `plainValueToPayload` uses. Without that, a config declaring a
+ * `width` or `flexBasis` scale emits the bare `--c-width-10:40`, and
+ * `width: var(--c-width-10)` is an invalid declaration the browser drops. A
+ * category that names no style property (`opacity`, `customWidth`) stays
+ * unitless, as does one the property table calls unitless (`zIndex`).
+ */
+function shouldTokenCategoryHaveUnits(category: string): boolean {
+  if (unitTokenCategories.has(category)) return true
+  return category in stylePropsAll && !stylePropsUnitless[category]
 }
 
 // code optimizers were causing issues by not calling both of these as esbuild had compiled them
