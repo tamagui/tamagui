@@ -310,3 +310,15 @@ Syncing `main` into `v3-beta` brought in:
 - **RAN** pinned Node 24.16.0: 28,347 -> 28,671 gzip-9 (+324, +1.14%), raw 75,266 -> 76,451 (+1,185).
 - Accepted as the necessary runtime cost of the ref handover fix and CSS logical property mappings.
 - Baseline re-recorded at 28,671, ceiling 28,821.
+
+## Measurement, 2026-09-03: tailwind composed-utility trim (no baseline change)
+
+The composed `__*` utilities moved off a per-component `.resolve()` chain onto the
+`StyleFrontend` descriptor's `compose` hook, which also deleted the source-layer
+flip and the props spread in `getSplitStyles`.
+
+- **RAN** pinned Node 24.16.0: 28,793 gzip-9 against the 28,671 baseline
+  (+122, +0.43%), raw 76,806.
+- Under the 28,821 ceiling with 28 bytes of headroom, so the baseline is unchanged.
+  The fixture is one regular styled `View`, so it prices only the core-side change;
+  the tailwind-package deletions do not appear in it.
