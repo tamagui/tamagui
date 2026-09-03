@@ -273,7 +273,7 @@ describe('@tamagui/language-service', () => {
       {
         code: 78711,
         message:
-          '"blue" contributes to "backgroundColor", "borderColor", "borderTopColor", "borderRightColor", "borderBottomColor", "borderLeftColor", "borderInlineStartColor", "borderInlineEndColor", "borderBlockStartColor", "borderBlockEndColor", "outlineColor", "color", not "padding"',
+          '"blue" contributes to "backgroundColor", "borderColor", "borderTopColor", "borderRightColor", "borderBottomColor", "borderLeftColor", "borderInlineStartColor", "borderInlineEndColor", "borderBlockStartColor", "borderBlockEndColor", "outlineColor", "color", "textDecorationColor", "textShadowColor", not "padding"',
         text: 'blue',
       },
     ])
