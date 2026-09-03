@@ -57,6 +57,30 @@ Values automatically resolve to tokens when they match a token name:
 <View className="bg-purple" />     // uses "purple" as raw CSS value
 ```
 
+#### The container scale is width-only
+
+Tailwind's `--container-*` scale (`3xs` through `7xl`, 256px to 1280px) is a
+reading-width scale. `max-w-3xl` is a utility; `h-3xl` is not. The v6 config
+follows that exactly: `width`, `minWidth`, `maxWidth`, `inlineSize`,
+`minInlineSize`, `maxInlineSize` and `flexBasis` carry the container scale, and
+no height or block-size domain does.
+
+That shows up in two places:
+
+```tsx
+// className: h-3xl is not a Tailwind utility, so it stays a raw class and
+// contributes no height at all
+<View className="w-3xl h-3xl" />   // width: 768, no height
+
+// props: width finds the container scale, height falls back to the shared
+// `size` scale, which has no 3xl, so the value stays unresolved
+<View width="$3xl" />              // 768
+<View height="$3xl" />             // unresolved, no height applied
+```
+
+For a vertical dimension at a container size, write the value
+(`height={768}`) or add your own `height` token group in your config.
+
 ### Modifiers
 
 #### Hover & Press States

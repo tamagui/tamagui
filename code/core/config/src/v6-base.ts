@@ -26,6 +26,14 @@ export { v6RemovedThemeNames, v6ThemeNameReplacements }
 export { toV6Themes, type V6Theme, type V6Themes } from './v6-themes'
 // space and size deliberately remain separate configured domains even though their default
 // values coincide. z-index is literal, so its identity scale is not configured as tokens.
+/**
+ * Tailwind's `--container-*` scale, which is width-only by design: `max-w-3xl` is a
+ * utility and `h-3xl` is not. It is spread into the width/inline-size domains below
+ * and deliberately NOT into any height or block-size domain, so `width="$3xl"` is 768
+ * while `height="$3xl"` finds nothing on the shared `size` scale and stays unresolved.
+ * Adding it to `height` would invent a Tamagui-only spelling the class path still
+ * rejects. Documented for users in `docs/tailwind-mode.md`.
+ */
 const tailwindContainerSize = {
   '3xs': 256,
   '2xs': 288,
