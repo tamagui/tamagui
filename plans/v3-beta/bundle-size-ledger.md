@@ -300,3 +300,13 @@ quiet-machine ABBA replay (80% idle, 15 rounds each) put its clause-string
 ratio at 1.13 and 1.06 against 1.13 and 1.12 without it, conditional objects
 and the total flat. No win to pay for, so it was reverted; the baseline stays
 at 28,347.
+
+## Baseline update, 2026-09-03: main sync (ref handover #4031, RTL logical properties #3099)
+
+Syncing `main` into `v3-beta` brought in:
+- Composed forwarded-ref handover for swapped ref identity (#4031, `createComponent.tsx`).
+- React Native RTL style prop renaming to CSS logical properties (#3099, `webRTLRenames` in `getSplitStyles.tsx`).
+
+- **RAN** pinned Node 24.16.0: 28,347 -> 28,671 gzip-9 (+324, +1.14%), raw 75,266 -> 76,451 (+1,185).
+- Accepted as the necessary runtime cost of the ref handover fix and CSS logical property mappings.
+- Baseline re-recorded at 28,671, ceiling 28,821.
