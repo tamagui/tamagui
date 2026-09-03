@@ -1,6 +1,7 @@
 {
   "name": "@tamagui/cli-color",
   "version": "2.7.7",
+  "license": "MIT",
   "type": "module",
   "files": [
     "src",

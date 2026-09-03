@@ -282,13 +282,20 @@ export async function esbundleTamaguiConfig(
   // build to memory first, then write atomically (temp file + rename)
   // to prevent other threads from reading partially-written files.
   // The suffix is per call, not per process: two bundles of the same config in
-  // one process shared a temp path, and whichever renamed first left the other
-  // renaming a file that no longer existed.
+  // one process (or one worker thread) shared a temp path, and whichever
+  // renamed first left the other renaming a file that no longer existed.
   const tmpFile = `${props.outfile}.tmp.${process.pid}-${randomBytes(6).toString('hex')}`
-  const result = await esbuild.build({
-    ...config,
-    outfile: tmpFile,
-  })
+
+  const result = await esbuild
+    .build({
+      ...config,
+      outfile: tmpFile,
+    })
+    .catch(async (err) => {
+      // a failed build can still leave a partial temp file behind
+      await FS.remove(tmpFile).catch(() => {})
+      throw err
+    })
 
   // atomic rename prevents other threads from reading partial files
   await FS.rename(tmpFile, props.outfile)

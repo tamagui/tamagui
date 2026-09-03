@@ -2,6 +2,7 @@
   "name": "tamagui-build-test-simple-tpackage",
   "private": true,
   "version": "2.0.0-rc.0-1769885482630",
+  "license": "MIT",
   "sideEffects": false,
   "main": "dist/cjs",
   "module": "dist/esm",

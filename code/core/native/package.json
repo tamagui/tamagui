@@ -1,6 +1,7 @@
 {
   "name": "@tamagui/native",
   "version": "2.7.7",
+  "license": "MIT",
   "description": "Native setup modules for Tamagui - portals, gesture handler, worklets, and more",
   "type": "module",
   "sideEffects": [

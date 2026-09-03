@@ -2,7 +2,7 @@ import type { StyleObject } from '@tamagui/helpers';
 import type { CoreStateModifierName, TransformAccumulator } from '@tamagui/style-grammar/runtime';
 import type { Properties } from 'csstype';
 import type { CSSProperties, ComponentType, Context, Dispatch, FunctionComponent, HTMLAttributes, ProviderExoticComponent, Ref as ReactRef, ReactNode, RefObject, SetStateAction } from 'react';
-import type { PressableProps, Text as RNText, TextStyle as RNTextStyle, TextProps as ReactTextProps, View, ViewProps, ViewStyle } from 'react-native';
+import type { FontVariant, PressableProps, Text as RNText, TextStyle as RNTextStyle, TextProps as ReactTextProps, View, ViewProps, ViewStyle } from 'react-native';
 import type { NativeStyleEngineLinkHandle } from './helpers/nativeStyleEngine';
 import type { StyleFrontend } from './helpers/styleFrontend';
 import type { CSSColorNames } from './interfaces/CSSColorNames';
@@ -318,6 +318,8 @@ export type TamaguiComponentStateRef = {
     optimizeForFirstRender?: boolean;
     host?: TamaguiElement;
     composedRef?: (x: TamaguiElement) => void;
+    composedForwardedRef?: React.Ref<TamaguiElement>;
+    attachedForwardedRef?: React.Ref<TamaguiElement>;
     willHydrate?: boolean;
     hasMeasured?: boolean;
     hasAnimated?: boolean;
@@ -1634,7 +1636,14 @@ interface ExtendedBaseProps extends TransformStyleProps, ExtendBaseTextProps, Ex
 }
 export interface StackStyleBase extends Omit<ViewStyle, keyof ExtendedBaseProps | 'elevation'>, ExtendedBaseProps {
 }
-export interface TextStylePropsBase extends Omit<RNTextStyle, keyof ExtendedBaseProps>, ExtendedBaseProps {
+export interface TextStylePropsBase extends Omit<RNTextStyle, keyof ExtendedBaseProps | 'fontVariant'>, ExtendedBaseProps {
+    /**
+     * react-native types this as a mutable `FontVariant[]`, which an `as const` variant
+     * definition can't satisfy — and a variants object that misses its constraint is
+     * silently discarded whole, taking every variant on the component with it (#2787).
+     * react-native types `transform` as readonly for the same reason.
+     */
+    fontVariant?: readonly FontVariant[];
     ellipsis?: boolean;
     numberOfLines?: number;
     textDecorationDistance?: number;

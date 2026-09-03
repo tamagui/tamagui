@@ -458,7 +458,24 @@ const applyAnimation = <T extends number | string>(
   // wrapper substitutes the seed for whatever start value reanimated passes.
   // color history gets the same treatment only when reanimated's own parser
   // rejects it, preserving valid in-flight values during interruption.
-  if (seedValue !== undefined || validateStartAsColor) {
+  //
+  // guard: when reanimated's IN_STYLE_UPDATER flag is stuck true (e.g. after
+  // a throw during initialUpdaterRun), withSpring/withTiming return the raw
+  // target value (number or string) instead of an animation descriptor.
+  // bail out instead of crashing on .onStart assignment. (#4193)
+  //
+  // note: we avoid `typeof x === 'object'` here because SWC's ES5 transform
+  // replaces it with a `_type_of()` helper that isn't a worklet — calling it
+  // on the UI Runtime crashes Reanimated 4. checking for known primitive types
+  // instead is safe because SWC leaves those comparisons as plain `typeof`.
+  const isAnimationDescriptor =
+    animatedValue !== null &&
+    typeof animatedValue !== 'number' &&
+    typeof animatedValue !== 'string' &&
+    typeof animatedValue !== 'boolean' &&
+    typeof animatedValue !== 'undefined'
+
+  if (isAnimationDescriptor && (seedValue !== undefined || validateStartAsColor)) {
     const innerOnStart = animatedValue.onStart
     animatedValue.onStart = (
       animation: unknown,
@@ -476,7 +493,7 @@ const applyAnimation = <T extends number | string>(
     }
   }
 
-  if (delay && delay > 0) {
+  if (isAnimationDescriptor && delay && delay > 0) {
     animatedValue = withDelay(delay, animatedValue)
   }
 

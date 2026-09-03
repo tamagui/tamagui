@@ -215,7 +215,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
       getThemesDeduped(themesIn, tokens.color, configIn.variables, {
         tokensParsed,
       })
-    const themes = proxyThemesToParents(dedupedThemes)
+    const themes = proxyThemesToParents(dedupedThemes, Object.keys(themesIn))
 
     return {
       themes,

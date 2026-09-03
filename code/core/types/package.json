@@ -1,6 +1,7 @@
 {
   "name": "@tamagui/types",
   "version": "2.7.7",
+  "license": "MIT",
   "files": [
     "types.ts",
     "types.d.ts"

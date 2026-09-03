@@ -1,6 +1,7 @@
 {
   "name": "@tamagui/create-system-font",
   "version": "2.7.7",
+  "license": "MIT",
   "files": [
     "src",
     "types",

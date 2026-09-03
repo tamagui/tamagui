@@ -1148,7 +1148,6 @@ const ToastItemInner = createStyledHOC(
       <ToastPositionWrapper
         ref={ref}
         testID={rest.testID}
-        aria-label={rest['aria-label']}
         {...dataAttributes}
         transition={
           isDragging || ctx.reducedMotion
