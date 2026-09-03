@@ -559,6 +559,13 @@ function chooseEntry(
     return null
   }
 
+  if (prefix === 'flex' && fractionIsValid(rawValue)) {
+    const flex = entries.find((entry) => entry.prop === 'flex')
+    if (flex) {
+      return { entry: flex, valueKind: 'convenience', convenience: 'flex-bundle' }
+    }
+  }
+
   if (numericPattern.test(rawValue)) {
     const angle = entries.find((entry) => entry.conveniences?.includes('angle'))
     if (angle) {

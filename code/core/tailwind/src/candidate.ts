@@ -625,6 +625,18 @@ function computeClassPlan(
   if (shouldGateNative(parsed)) {
     return null
   }
+  if (parsed.entry?.prop === 'flex' && parsed.rawValue) {
+    const fraction = /^(\d+)\/(\d+)$/.exec(parsed.rawValue)
+    if (fraction && Number(fraction[2]) !== 0) {
+      const basis = `${(Number(fraction[1]) / Number(fraction[2])) * 100}%`
+      const entries = [
+        createPlanEntry('flexGrow', 1, parsed.modifiers),
+        createPlanEntry('flexShrink', 1, parsed.modifiers),
+        createPlanEntry('flexBasis', basis, parsed.modifiers),
+      ]
+      return entries.every(Boolean) ? (entries as TailwindPlanEntry[]) : 'raw'
+    }
+  }
   // named utilities first (flex-row, flex-1, hidden, …) — whole class → fixed prop(s).
   // these may emit multiple props and may have no dash, so handle before the generic parse.
   const util = parsed.kind === 'utility' ? parsed.properties : null

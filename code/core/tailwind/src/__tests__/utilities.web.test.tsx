@@ -189,6 +189,13 @@ describe('tailwind standard utilities', () => {
     expect(leading[StyleObjectValue]).toBe('16px')
   })
 
+  test('fractional flex shorthand emits all three CSS flex longhands', () => {
+    const styles = splitTailwindStyles(View, { className: 'flex-1/2' } as any)
+    expect(findRule(styles.rulesToInsert, 'flexGrow')[StyleObjectValue]).toBe('1')
+    expect(findRule(styles.rulesToInsert, 'flexShrink')[StyleObjectValue]).toBe('1')
+    expect(findRule(styles.rulesToInsert, 'flexBasis')[StyleObjectValue]).toBe('50%')
+  })
+
   test('logical border sides emit browser-native logical properties', () => {
     const styles = splitTailwindStyles(View, {
       className: 'border-s-2 border-e-white border-bs-2 border-be-white',

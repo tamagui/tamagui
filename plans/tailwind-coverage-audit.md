@@ -15,13 +15,13 @@ resolver accepts the part; runtime suites separately prove the complete multi-cl
 | Metric | Count |
 | --- | ---: |
 | Tailwind default-theme candidates | 23,286 |
-| Tamagui-owned candidates on web | 10,667 |
-| Official-engine web fallback | 12,619 |
-| Native-ready owned candidates | 10,399 |
+| Tamagui-owned candidates on web | 10,693 |
+| Official-engine web fallback | 12,593 |
+| Native-ready owned candidates | 10,425 |
 | Explicitly web-only / native-gated candidates | 273 |
 | Native-only lowerings | 5 |
 | Unsafe native-owned candidates | 0 |
-| Complete / partial / missing web families | 481 / 30 / 643 |
+| Complete / partial / missing web families | 482 / 29 / 643 |
 
 Web coverage is the full registry: Tamagui-owned candidates use the shared style runtime
 and every remainder stays in `className` for the official engine. Native intentionally
@@ -415,7 +415,7 @@ the candidate needs a native lowering or an explicit target gate.
 | `fill` | 291 | 0 | 0 | 0 | 0 | `fill-amber-50`, `fill-amber-100`, `fill-amber-200` |
 | `fill-none` | 1 | 0 | 0 | 0 | 0 | `fill-none` |
 | `fixed` | 1 | 1 | 0 | 1 | 0 | `fixed (web-only)` |
-| `flex` | 39 | 13 | 13 | 0 | 0 | `flex-1/2`, `flex-1/3`, `flex-1/4` |
+| `flex` | 39 | 39 | 39 | 0 | 0 |  |
 | `flex-auto` | 1 | 1 | 1 | 0 | 0 |  |
 | `flex-col` | 1 | 1 | 1 | 0 | 0 |  |
 | `flex-col-reverse` | 1 | 1 | 1 | 0 | 0 |  |

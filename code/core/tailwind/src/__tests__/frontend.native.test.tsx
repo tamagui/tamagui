@@ -282,6 +282,14 @@ describe('claimed candidates resolve to native style values', () => {
     ).toBe(16)
   })
 
+  test('fractional flex shorthand resolves to native flex longhands', () => {
+    expect(styleOf(splitTailwindStyles(View, { className: 'flex-1/2' }))).toMatchObject({
+      flexGrow: 1,
+      flexShrink: 1,
+      flexBasis: '50%',
+    })
+  })
+
   test('bg-none clears the native processed background image list', () => {
     expect(styleOf(splitTailwindStyles(View, { className: 'bg-none' }))).toMatchObject({
       experimental_backgroundImage: [],

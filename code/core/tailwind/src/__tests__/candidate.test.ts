@@ -33,6 +33,11 @@ describe('claimed candidates become flat props', () => {
     expect(tokenize('-z-20')).toEqual({ zIndex: -20 })
     expect(tokenize('-m-0')).toEqual({ margin: 0 })
     expect(tokenize('leading-4')).toEqual({ lineHeight: 16 })
+    expect(tokenize('flex-2/3')).toEqual({
+      flexGrow: 1,
+      flexShrink: 1,
+      flexBasis: `${(2 / 3) * 100}%`,
+    })
   })
 
   test('arbitrary rotate appends deg for unitless numbers', () => {
