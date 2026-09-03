@@ -102,6 +102,7 @@ const loaders: Record<string, () => ComponentType<any>> = {
     require('./DialogSheetAdaptUnmountCase').DialogSheetAdaptUnmountCase,
   AdaptLiveSlotSpikeCase: () =>
     require('./AdaptLiveSlotSpikeCase').AdaptLiveSlotSpikeCase,
+  AdaptFirstCommitCase: () => require('./AdaptFirstCommitCase').AdaptFirstCommitCase,
   Example: () => require('./Example').Example,
   ExitCompletionCase: () => require('./ExitCompletionCase').ExitCompletionCase,
   OnTransitionCase: () => require('./OnTransitionCase').OnTransitionCase,

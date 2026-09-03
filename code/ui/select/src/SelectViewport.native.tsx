@@ -1,6 +1,6 @@
 import {
-  AdaptContext,
   AdaptPortalContents,
+  ProvideAdaptContext,
   useAdaptContext,
   useAdaptIsActive,
 } from '@tamagui/adapt'
@@ -26,17 +26,17 @@ export const SelectViewport = createStyledHOC(
     const context = useSelectContext(scope)
     const itemParentContext = useSelectItemParentContext(scope)
     const themeName = useThemeName()
-    const adaptContext = useAdaptContext()
+    const adaptContext = useAdaptContext(context.adaptScope)
     const isAdapted = useAdaptIsActive(context.adaptScope)
 
     const contents = (
       <Theme name={themeName}>
         <ForwardSelectContext itemContext={itemParentContext} context={context}>
-          <AdaptContext.Provider {...adaptContext}>
+          <ProvideAdaptContext {...adaptContext}>
             <SelectViewportFrame {...viewportProps} ref={forwardedRef}>
               {children}
             </SelectViewportFrame>
-          </AdaptContext.Provider>
+          </ProvideAdaptContext>
         </ForwardSelectContext>
       </Theme>
     )
