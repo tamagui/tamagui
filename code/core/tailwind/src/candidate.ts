@@ -1,4 +1,5 @@
 import { isWeb } from '@tamagui/constants'
+import { stylePropsAll } from '@tamagui/helpers'
 import {
   mergeFrontendCondition,
   plainValueToPayload,
@@ -478,6 +479,11 @@ function createPlanEntry(
   modifiers: readonly string[]
 ): TailwindPlanEntry | null {
   if (modifiers.length === 0) return [property, value]
+  // a modified entry has to become a flat-value payload, and only a style can carry
+  // one. `line-clamp-2` targets `numberOfLines`, a Text variant rather than a style,
+  // so `sm:line-clamp-2` stays a raw class instead of minting the `2px` the renderer
+  // would then drop. this is the only registered target that is not a style prop.
+  if (!stylePropsAll[property]) return null
   const payload = plainValueToPayload(value, property)
   if (payload === null) return null
   let condition = ''
