@@ -76,7 +76,6 @@ describe('claimed candidates become flat props', () => {
   test('underscores inside an arbitrary decode back to spaces', () => {
     expect(tokenize('shadow-[0_2px_8px_#0003]')).toEqual({
       boxShadow: '0 2px 8px #0003',
-      __existingShadow: '0 2px 8px #0003',
     })
   })
 
@@ -230,29 +229,24 @@ describe('claimed candidates become flat props', () => {
     })
   })
 
-  test('ring utilities emit variant props for .resolve() composition', () => {
-    // ring-2 emits the width as a variant prop
-    expect(tokenize('ring-2')).toEqual({ __ring: '2px' })
-    // ring-2 + ring-[blue] emits both width and color
-    expect(tokenize('ring-2 ring-[blue]')).toEqual({ __ring: '2px', __ringColor: 'blue' })
-    // outline is unrelated — ring emits variant props alongside
+  test('ring composers emit boxShadow and do not touch outline', () => {
+    expect(tokenize('ring-2')).toEqual({ boxShadow: '0 0 0 2px currentColor' })
+    expect(tokenize('ring-2 ring-[blue]')).toEqual({ boxShadow: '0 0 0 2px blue' })
     expect(tokenize('outline-2 ring-2')).toEqual({
       outlineWidth: '2',
-      __ring: '2px',
+      boxShadow: '0 0 0 2px currentColor',
     })
-    // shadow + ring: shadow emits boxShadow AND __existingShadow, ring emits __ring
     expect(tokenize('shadow-[0_1px_2px_red] ring-2 ring-[blue]')).toEqual({
-      boxShadow: '0 1px 2px red',
-      __existingShadow: '0 1px 2px red',
-      __ring: '2px',
-      __ringColor: 'blue',
+      boxShadow: '0 0 0 2px blue, 0 1px 2px red',
     })
-    // ring-[blue] alone is just a color (no width)
-    expect(tokenize('ring-[blue]')).toEqual({ __ringColor: 'blue' })
-    // ring-inset emits the inset flag
-    expect(tokenize('ring-2 ring-inset')).toEqual({ __ring: '2px', __ringInset: true })
-    // bare ring defaults to 1px
-    expect(tokenize('ring')).toEqual({ __ring: '1px' })
+    expect(tokenize('ring-2 ring-[blue] shadow-[0_1px_2px_red]')).toEqual({
+      boxShadow: '0 0 0 2px blue, 0 1px 2px red',
+    })
+    expect(tokenize('ring-[blue]')).toEqual({})
+    expect(tokenize('ring-2 ring-inset')).toEqual({
+      boxShadow: 'inset 0 0 0 2px currentColor',
+    })
+    expect(tokenize('ring')).toEqual({ boxShadow: '0 0 0 1px currentColor' })
   })
 
   test('named shadows use the configured boxShadow token domain', () => {

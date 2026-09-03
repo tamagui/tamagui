@@ -1,11 +1,10 @@
-// Tailwind-only multi-class composers. Not a public API.
+// Tailwind-only multi-class token mapper.
 //
-// from/via/to and ring-* are not CSS properties. They only make sense while
-// walking a Tailwind className. Regular Tamagui never imports this file.
+// Translates composed utility candidates (ring, gradient, filter, shadow,
+// transform, text-shadow) into variant props (__ring, __gradient*, __filter_*,
+// __transform_*, etc.) that are composed by `composedResolver`.
 //
-// Cost: one first-char check on a candidate with no colon (p-4, flex). A bag is
-// allocated only when a composer or a boxShadow class is actually seen, keyed
-// by the per-walk sink so nested getSplitStyles cannot clobber each other.
+// Fully stateless: no mutable bags or WeakMaps.
 
 import {
   plainValueToPayload,
@@ -24,38 +23,6 @@ import {
 } from '@tamagui/style-grammar/tooling/candidate'
 import { isAndroid, isWeb } from '@tamagui/constants'
 
-type Layer = {
-  direction?: string
-  from?: string
-  via?: string
-  to?: string
-  ringWidth?: string
-  ringColor?: string
-  ringInset?: boolean
-  shadow?: string
-  insetRingWidth?: string
-  insetRingColor?: string
-  insetShadow?: { geometry: string; defaultColor: string }
-  insetShadowColor?: string
-  textShadow?: {
-    offset: { width: number; height: number }
-    radius: number
-    defaultColor: string
-  }
-  textShadowColor?: string
-  dropShadow?: { geometry: string; defaultColor: string }
-  dropShadowColor?: string
-}
-
-type ComposerBag = {
-  base: Layer
-  variants: Map<string, Layer>
-  transforms: Map<string, Map<string, unknown>>
-  transformModifiers: Map<string, readonly string[]>
-  filters: Map<string, Map<string, string>>
-  filterModifiers: Map<string, readonly string[]>
-}
-
 const transformOrder = [
   'perspective',
   'rotateX',
@@ -65,20 +32,8 @@ const transformOrder = [
   'skewY',
 ] as const
 const transformProps = new Set<string>(transformOrder)
-const filterOrder = [
-  'blur',
-  'brightness',
-  'contrast',
-  'grayscale',
-  'hue-rotate',
-  'invert',
-  'saturate',
-  'sepia',
-  'drop-shadow',
-] as const
-const nativeTarget = !isWeb || process.env.TAMAGUI_TARGET === 'native'
 
-const bags = new WeakMap<FrontendClassSink, ComposerBag>()
+const nativeTarget = !isWeb || process.env.TAMAGUI_TARGET === 'native'
 
 const linearTo: Record<string, string> = {
   t: 'to top',
@@ -99,24 +54,50 @@ const colorKeywords: Record<string, string> = {
   white: 'white',
 }
 
-function createBag(): ComposerBag {
-  return {
-    base: {},
-    variants: new Map(),
-    transforms: new Map(),
-    transformModifiers: new Map(),
-    filters: new Map(),
-    filterModifiers: new Map(),
-  }
-}
+const dropShadowPresets = {
+  xs: { geometry: '0 1px 1px', defaultColor: 'rgb(0 0 0 / 0.05)' },
+  sm: { geometry: '0 1px 2px', defaultColor: 'rgb(0 0 0 / 0.15)' },
+  md: { geometry: '0 3px 3px', defaultColor: 'rgb(0 0 0 / 0.12)' },
+  lg: { geometry: '0 4px 4px', defaultColor: 'rgb(0 0 0 / 0.15)' },
+  xl: { geometry: '0 9px 7px', defaultColor: 'rgb(0 0 0 / 0.1)' },
+  '2xl': { geometry: '0 25px 25px', defaultColor: 'rgb(0 0 0 / 0.15)' },
+  none: { geometry: '0 0 0', defaultColor: 'transparent' },
+} as const
 
-function getBag(sink: FrontendClassSink): ComposerBag {
-  let bag = bags.get(sink)
-  if (!bag) {
-    bag = createBag()
-    bags.set(sink, bag)
-  }
-  return bag
+const textShadowPresets = {
+  '2xs': {
+    offset: { width: 0, height: 1 },
+    radius: 0,
+    defaultColor: 'rgb(0 0 0 / 0.15)',
+  },
+  xs: {
+    offset: { width: 0, height: 1 },
+    radius: 1,
+    defaultColor: 'rgb(0 0 0 / 0.2)',
+  },
+  none: {
+    offset: { width: 0, height: 0 },
+    radius: 0,
+    defaultColor: 'transparent',
+  },
+} as const
+
+const insetShadowPresets = {
+  '2xs': { geometry: 'inset 0 1px 0', defaultColor: 'rgb(0 0 0 / 0.05)' },
+  xs: { geometry: 'inset 0 1px 1px', defaultColor: 'rgb(0 0 0 / 0.05)' },
+  sm: { geometry: 'inset 0 2px 4px', defaultColor: 'rgb(0 0 0 / 0.05)' },
+  none: { geometry: '', defaultColor: 'transparent' },
+} as const
+
+const filterPropMap: Record<string, string> = {
+  blur: '__filter_blur',
+  brightness: '__filter_brightness',
+  contrast: '__filter_contrast',
+  grayscale: '__filter_grayscale',
+  'hue-rotate': '__filter_hueRotate',
+  invert: '__filter_invert',
+  saturate: '__filter_saturate',
+  sepia: '__filter_sepia',
 }
 
 function lastUnbracketedColon(candidate: string): number {
@@ -250,58 +231,6 @@ function filterPart(core: string): [name: string, value: string] | null {
   return null
 }
 
-function noteFilter(
-  sink: FrontendClassSink,
-  bag: ComposerBag,
-  part: [name: string, value: string],
-  modifiers: readonly string[]
-): void {
-  const key = conditionKey(modifiers)
-  let layer = bag.filters.get(key)
-  if (!layer) {
-    layer = new Map()
-    bag.filters.set(key, layer)
-  }
-  layer.set(part[0], part[1])
-  bag.filterModifiers.set(key, modifiers)
-
-  const base = bag.filters.get('')
-  for (const [condition, conditional] of bag.filters) {
-    const values = condition ? new Map(base) : new Map<string, string>()
-    for (const [name, value] of conditional) values.set(name, value)
-    const filter = filterOrder
-      .filter((name) => values.has(name))
-      .map((name) => `${name}(${values.get(name)})`)
-      .join(' ')
-    emit(sink, 'filter', filter, bag.filterModifiers.get(condition) || [])
-  }
-}
-
-function noteDropShadow(
-  sink: FrontendClassSink,
-  bag: ComposerBag,
-  modifiers: readonly string[]
-): void {
-  const key = conditionKey(modifiers)
-  const layer = merged(bag, key)
-  if (!layer.dropShadow) return
-  noteFilter(
-    sink,
-    bag,
-    [
-      'drop-shadow',
-      `${layer.dropShadow.geometry} ${layer.dropShadowColor || layer.dropShadow.defaultColor}`,
-    ],
-    modifiers
-  )
-}
-
-function flushDropShadowDependents(sink: FrontendClassSink, bag: ComposerBag): void {
-  for (const key of bag.variants.keys()) {
-    noteDropShadow(sink, bag, key.split(':'))
-  }
-}
-
 function resolveColor(raw: string, config: GrammarConfigView): string | null {
   if (raw.length > 1 && raw[0] === '[' && raw[raw.length - 1] === ']') {
     const inner = decodeArbitrary(raw.slice(1, -1))
@@ -326,156 +255,13 @@ function emit(
     sink([property, value])
     return
   }
-  const payload = plainValueToPayload(value, property)
+  const payload = plainValueToPayload(value, property) ?? (value as any)
   if (payload === null) return
   let condition = modifiers[0]
   for (let index = 1; index < modifiers.length; index++) {
     condition += `:${modifiers[index]}`
   }
   sink([property, payload, condition, modifiers])
-}
-
-function conditionKey(modifiers: readonly string[]): string {
-  if (modifiers.length === 0) return ''
-  let key = modifiers[0]
-  for (let index = 1; index < modifiers.length; index++) key += `:${modifiers[index]}`
-  return key
-}
-
-function layerOf(bag: ComposerBag, key: string): Layer {
-  if (!key) return bag.base
-  let layer = bag.variants.get(key)
-  if (!layer) {
-    layer = {}
-    bag.variants.set(key, layer)
-  }
-  return layer
-}
-
-function merged(bag: ComposerBag, key: string): Layer {
-  if (!key) return bag.base
-  const variant = bag.variants.get(key)
-  if (!variant) return bag.base
-  return {
-    direction: variant.direction ?? bag.base.direction,
-    from: variant.from ?? bag.base.from,
-    via: variant.via ?? bag.base.via,
-    to: variant.to ?? bag.base.to,
-    ringWidth: variant.ringWidth ?? bag.base.ringWidth,
-    ringColor: variant.ringColor ?? bag.base.ringColor,
-    ringInset: variant.ringInset ?? bag.base.ringInset,
-    shadow: variant.shadow ?? bag.base.shadow,
-    insetRingWidth: variant.insetRingWidth ?? bag.base.insetRingWidth,
-    insetRingColor: variant.insetRingColor ?? bag.base.insetRingColor,
-    insetShadow: variant.insetShadow ?? bag.base.insetShadow,
-    insetShadowColor: variant.insetShadowColor ?? bag.base.insetShadowColor,
-    textShadow: variant.textShadow ?? bag.base.textShadow,
-    textShadowColor: variant.textShadowColor ?? bag.base.textShadowColor,
-    dropShadow: variant.dropShadow ?? bag.base.dropShadow,
-    dropShadowColor: variant.dropShadowColor ?? bag.base.dropShadowColor,
-  }
-}
-
-function gradientCss(layer: Layer): string | null {
-  if (!layer.direction || !(layer.from || layer.via || layer.to)) return null
-  const from = layer.from || 'transparent'
-  const to = layer.to || 'transparent'
-  if (layer.via)
-    return `linear-gradient(${layer.direction}, ${from}, ${layer.via}, ${to})`
-  return `linear-gradient(${layer.direction}, ${from}, ${to})`
-}
-
-function ringCss(layer: Layer): string | null {
-  if (layer.ringWidth == null) return null
-  const color = layer.ringColor || 'currentColor'
-  const inset = layer.ringInset ? 'inset ' : ''
-  return `${inset}0 0 0 ${layer.ringWidth} ${color}`
-}
-
-function boxShadowCss(layer: Layer): string | null {
-  const shadows: string[] = []
-  if (layer.insetShadow?.geometry) {
-    shadows.push(
-      `${layer.insetShadow.geometry} ${layer.insetShadowColor || layer.insetShadow.defaultColor}`
-    )
-  }
-  if (layer.insetRingWidth != null) {
-    shadows.push(
-      `inset 0 0 0 ${layer.insetRingWidth} ${layer.insetRingColor || 'currentColor'}`
-    )
-  }
-  const ring = ringCss(layer)
-  if (ring) shadows.push(ring)
-  if (layer.shadow) shadows.push(layer.shadow)
-  return shadows.length > 0 ? shadows.join(', ') : null
-}
-
-/** Re-emit Tailwind's CSS-variable transform family in its fixed matrix order. */
-export function noteTailwindTransform(
-  sink: FrontendClassSink,
-  entry: FrontendClassPlanEntry
-): boolean {
-  if (!transformProps.has(entry[0])) return false
-  const bag = getBag(sink)
-  const key = entry[2] || ''
-  let layer = bag.transforms.get(key)
-  if (!layer) {
-    layer = new Map()
-    bag.transforms.set(key, layer)
-  }
-  layer.set(entry[0], entry[1])
-  bag.transformModifiers.set(key, entry[3] || [])
-
-  const base = bag.transforms.get('')
-  for (const [condition, conditional] of bag.transforms) {
-    const values = condition ? new Map(base) : new Map<string, unknown>()
-    for (const [property, value] of conditional) values.set(property, value)
-    const transform = transformOrder
-      .filter((property) => values.has(property))
-      .map((property) => {
-        const value = values.get(property)
-        return `${property}(${value})`
-      })
-      .join(' ')
-    emit(sink, 'transform', transform, bag.transformModifiers.get(condition) || [])
-  }
-  return true
-}
-
-function flush(
-  sink: FrontendClassSink,
-  bag: ComposerBag,
-  modifiers: readonly string[]
-): void {
-  const key = conditionKey(modifiers)
-  const layer = merged(bag, key)
-  const image = gradientCss(layer)
-  if (image) emit(sink, 'backgroundImage', image, modifiers)
-  const shadow = boxShadowCss(layer)
-  if (
-    shadow &&
-    (layer.ringWidth != null || layer.insetRingWidth != null || layer.insetShadow != null)
-  ) {
-    emit(sink, 'boxShadow', shadow, modifiers)
-  }
-  if (layer.textShadow) {
-    emit(sink, 'textShadowOffset', layer.textShadow.offset, modifiers)
-    emit(sink, 'textShadowRadius', layer.textShadow.radius, modifiers)
-    emit(
-      sink,
-      'textShadowColor',
-      layer.textShadowColor || layer.textShadow.defaultColor,
-      modifiers
-    )
-  } else if (layer.textShadowColor) {
-    emit(sink, 'textShadowColor', layer.textShadowColor, modifiers)
-  }
-}
-
-function flushDependents(sink: FrontendClassSink, bag: ComposerBag): void {
-  for (const key of bag.variants.keys()) {
-    flush(sink, bag, key.split(':'))
-  }
 }
 
 function ringWidth(raw: string): string | null {
@@ -491,9 +277,8 @@ function ringWidth(raw: string): string | null {
 }
 
 /**
- * Claim a from/via/to, bg-linear-to-*, or ring-* candidate. `undefined` means
- * this is not a composer (the existing class plan runs). A boolean is the same
- * preserveRaw signal as resolveClassName.
+ * Claim a from/via/to, bg-linear-to-*, filter, ring, inset, or drop-shadow candidate.
+ * Emits variant props to the sink so `composedResolver` can compose them.
  */
 export function tryCompose(
   candidate: string,
@@ -508,75 +293,37 @@ export function tryCompose(
   if (kind == null) return undefined
 
   const modifiers = colon === -1 ? [] : splitModifiers(candidate, colon)
-  const bag = getBag(sink)
-  const layer = layerOf(bag, conditionKey(modifiers))
 
   if (kind === 'filter') {
     const part = filterPart(core)
     if (!part) return true
-    // React Native 0.86 implements brightness on both native platforms. The
-    // remaining CSS filter functions are Android-only, so iOS drops the class
-    // explicitly instead of accepting a style that the host silently ignores.
     if (nativeTarget && part[0] !== 'brightness' && !isAndroid) return null
-    noteFilter(sink, bag, part, modifiers)
+    const prop = filterPropMap[part[0]]
+    if (prop) emit(sink, prop, part[1], modifiers)
     return false
   }
 
   if (kind === 'drop-shadow') {
-    // React Native exposes drop-shadow() only on Android. Refuse the class on
-    // iOS rather than leaving a filter string that the host silently ignores.
     if (nativeTarget && !isAndroid) return null
     const raw = core.slice('drop-shadow-'.length)
-    const shadow = (
-      {
-        xs: { geometry: '0 1px 1px', defaultColor: 'rgb(0 0 0 / 0.05)' },
-        sm: { geometry: '0 1px 2px', defaultColor: 'rgb(0 0 0 / 0.15)' },
-        md: { geometry: '0 3px 3px', defaultColor: 'rgb(0 0 0 / 0.12)' },
-        lg: { geometry: '0 4px 4px', defaultColor: 'rgb(0 0 0 / 0.15)' },
-        xl: { geometry: '0 9px 7px', defaultColor: 'rgb(0 0 0 / 0.1)' },
-        '2xl': { geometry: '0 25px 25px', defaultColor: 'rgb(0 0 0 / 0.15)' },
-        none: { geometry: '0 0 0', defaultColor: 'transparent' },
-      } as const
-    )[raw as 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'none']
+    const shadow = dropShadowPresets[raw as keyof typeof dropShadowPresets]
     if (shadow) {
-      layer.dropShadow = shadow
+      emit(sink, '__dropShadowGeometry', shadow.geometry, modifiers)
+      emit(sink, '__dropShadowDefaultColor', shadow.defaultColor, modifiers)
     } else {
       const color = resolveColor(raw, config)
       if (color == null) return undefined
-      layer.dropShadowColor = color
+      emit(sink, '__dropShadowColor', color, modifiers)
     }
-    noteDropShadow(sink, bag, modifiers)
-    if (modifiers.length === 0) flushDropShadowDependents(sink, bag)
     return false
   }
 
   if (kind === 'text-shadow') {
     const raw = core.slice('text-shadow-'.length)
-    const geometry = (
-      {
-        '2xs': {
-          offset: { width: 0, height: 1 },
-          radius: 0,
-          defaultColor: 'rgb(0 0 0 / 0.15)',
-        },
-        xs: {
-          offset: { width: 0, height: 1 },
-          radius: 1,
-          defaultColor: 'rgb(0 0 0 / 0.2)',
-        },
-        none: {
-          offset: { width: 0, height: 0 },
-          radius: 0,
-          defaultColor: 'transparent',
-        },
-      } as const
-    )[raw as '2xs' | 'xs' | 'none']
+    const geometry = textShadowPresets[raw as keyof typeof textShadowPresets]
     if (geometry) {
-      // Conditional object-valued textShadowOffset cannot be represented by
-      // the scalar native value program. Let Tailwind own web variants and
-      // explicitly reject them on native instead of emitting a partial shadow.
       if (modifiers.length > 0) return nativeTarget ? null : undefined
-      layer.textShadow = geometry
+      emit(sink, '__textShadow_preset', geometry, modifiers)
     } else {
       const resolved = resolveColor(raw, config)
       const classified = resolved == null ? classifyCandidate(core, config) : null
@@ -587,10 +334,8 @@ export function tryCompose(
           ? raw
           : null)
       if (color == null) return undefined
-      layer.textShadowColor = color
+      emit(sink, '__textShadow_color', color, modifiers)
     }
-    flush(sink, bag, modifiers)
-    if (modifiers.length === 0) flushDependents(sink, bag)
     return false
   }
 
@@ -598,60 +343,45 @@ export function tryCompose(
     const raw = core === 'inset-ring' ? '' : core.slice('inset-ring-'.length)
     const width = raw === '' ? '1px' : ringWidth(raw)
     if (width != null) {
-      layer.insetRingWidth = width
+      emit(sink, '__insetRingWidth', width, modifiers)
     } else {
       const color = resolveColor(raw, config)
       if (color == null) return undefined
-      layer.insetRingColor = color
+      emit(sink, '__insetRingColor', color, modifiers)
     }
-    flush(sink, bag, modifiers)
-    if (modifiers.length === 0) flushDependents(sink, bag)
     return false
   }
 
   if (kind === 'inset-shadow') {
     const raw = core.slice('inset-shadow-'.length)
-    const shadow = (
-      {
-        '2xs': { geometry: 'inset 0 1px 0', defaultColor: 'rgb(0 0 0 / 0.05)' },
-        xs: { geometry: 'inset 0 1px 1px', defaultColor: 'rgb(0 0 0 / 0.05)' },
-        sm: { geometry: 'inset 0 2px 4px', defaultColor: 'rgb(0 0 0 / 0.05)' },
-        none: { geometry: '', defaultColor: 'transparent' },
-      } as const
-    )[raw as '2xs' | 'xs' | 'sm' | 'none']
+    const shadow = insetShadowPresets[raw as keyof typeof insetShadowPresets]
     if (shadow) {
-      layer.insetShadow = shadow
+      emit(sink, '__insetShadowGeometry', shadow.geometry, modifiers)
+      emit(sink, '__insetShadowDefaultColor', shadow.defaultColor, modifiers)
     } else {
       const color = resolveColor(raw, config)
       if (color == null) return undefined
-      layer.insetShadowColor = color
+      emit(sink, '__insetShadowColor', color, modifiers)
     }
-    flush(sink, bag, modifiers)
-    if (modifiers.length === 0) flushDependents(sink, bag)
     return false
   }
 
   if (kind === 'image') {
     const dir = linearTo[core.slice('bg-linear-to-'.length)]
     if (!dir) return true
-    layer.direction = dir
-    flush(sink, bag, modifiers)
-    if (modifiers.length === 0) flushDependents(sink, bag)
+    emit(sink, '__gradientDirection', dir, modifiers)
     return false
   }
 
   if (kind === 'from' || kind === 'via' || kind === 'to') {
     const color = resolveColor(core.slice(kind.length + 1), config)
     if (color == null) return true
-    layer[kind] = color
-    flush(sink, bag, modifiers)
-    if (modifiers.length === 0) flushDependents(sink, bag)
+    const prop =
+      kind === 'from' ? '__gradientFrom' : kind === 'via' ? '__gradientVia' : '__gradientTo'
+    emit(sink, prop, color, modifiers)
     return false
   }
 
-  // ── Ring utilities → variant props for .resolve() ──────────────────
-  // Instead of composing boxShadow here, emit __ring/__ringColor/__ringInset
-  // as variant props. The tailwind View/Text's .resolve() composes them.
   if (core === 'ring') {
     emit(sink, '__ring', '1px', modifiers)
     return false
@@ -672,31 +402,26 @@ export function tryCompose(
   return false
 }
 
-/** Record a claimed boxShadow so .resolve() can stack ring + shadow. */
+/** Record transform properties as variant props for composedResolver. */
+export function noteTailwindTransform(
+  sink: FrontendClassSink,
+  entry: FrontendClassPlanEntry
+): boolean {
+  if (!transformProps.has(entry[0])) return false
+  emit(sink, `__transform_${entry[0]}`, entry[1], entry[3] || [])
+  return true
+}
+
+/** Record a claimed boxShadow so composedResolver can stack ring + shadow. */
 export function noteBoxShadow(
   sink: FrontendClassSink,
   value: unknown,
   modifiers: readonly string[] = []
 ): boolean {
   if (typeof value !== 'string' || value === 'unset') return false
-  // Unresolved named tokens are identifiers and cannot be stacked into a CSS list.
   if (value.indexOf(' ') === -1 && value !== 'none' && !value.startsWith('inset')) {
     return false
   }
-  const bag = getBag(sink)
-  const shadow = value === 'none' ? '' : value
-  layerOf(bag, conditionKey(modifiers)).shadow = shadow
-  // Emit the shadow as a variant prop so .resolve() can stack it with ring
-  if (shadow) {
-    emit(sink, '__existingShadow', shadow, modifiers)
-  }
-  const layer = merged(bag, conditionKey(modifiers))
-  if (
-    layer.insetRingWidth == null &&
-    layer.insetShadow == null
-  ) {
-    return false
-  }
-  emit(sink, 'boxShadow', boxShadowCss(layer)!, modifiers)
-  return true
+  emit(sink, '__shadow', value === 'none' ? 'none' : value, modifiers)
+  return false
 }

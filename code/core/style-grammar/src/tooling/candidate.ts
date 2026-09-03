@@ -604,7 +604,11 @@ function chooseEntry(
     }
     if (prefix === 'leading') {
       const lineHeight = entries.find((entry) => entry.prop === 'lineHeight')
-      if (lineHeight) {
+      if (
+        lineHeight &&
+        (!lineHeight.tokenCategory ||
+          !hasTokenName(config, lineHeight.tokenCategory, rawValue))
+      ) {
         return {
           entry: lineHeight,
           valueKind: 'convenience',

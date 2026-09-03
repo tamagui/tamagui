@@ -594,10 +594,24 @@ function contributeProp(
         if (entry[2] !== undefined) {
           if (isValidStyleKey(property, validStyles)) {
             contributeValue(styleState, property, entry[1], undefined, false, entry[2])
-          } else if (process.env.NODE_ENV === 'development') {
-            console.warn(
-              `[tamagui] "${property}" is not a valid style on this component; the frontend value is dropped.`
-            )
+          } else {
+            const resolvedProps = (styleState.classNameResolvedProps ??= {})
+            const prev = resolvedProps[property]
+            const condition = entry[2]
+            resolvedProps[property] =
+              prev && typeof prev === 'object' && !Array.isArray(prev)
+                ? { ...prev, [condition]: entry[1] }
+                : prev === undefined
+                  ? { [condition]: entry[1] }
+                  : { default: prev, [condition]: entry[1] }
+            if (
+              !property.startsWith('__') &&
+              process.env.NODE_ENV === 'development'
+            ) {
+              console.warn(
+                `[tamagui] "${property}" is not a valid style on this component; the frontend value is dropped.`
+              )
+            }
           }
         } else {
           if (property === 'group') pass[passFrontendGroup] = entry[1]
@@ -610,6 +624,9 @@ function contributeProp(
           // "ring-2 ring-blue-500"). only allocates when needed.
           if (!(property in validStyles)) {
             ;(styleState.classNameResolvedProps ??= {})[property] = entry[1]
+          }
+          if (property.startsWith('__')) {
+            return
           }
           contributeProp(pass, property, entry[1])
         }
@@ -1304,7 +1321,12 @@ export const getSplitStyles: StyleSplitter = (
   // later resolver in the chain wins within the tier
   const resolvers = staticConfig.resolvers
   if (resolvers && !noExpand) {
-    pass[passSourceLayer] = sourceLayerResolver
+    const prevSourceLayer = pass[passSourceLayer]
+    if (styleState.classNameResolvedProps) {
+      pass[passSourceLayer] = sourceLayerProps
+    } else {
+      pass[passSourceLayer] = sourceLayerResolver
+    }
     const flagsBefore = pass[passFlags]
     // resolver output is styles only: never re-enter variant dispatch
     pass[passFlags] = flagsBefore | passNoExpandFlag
@@ -1320,11 +1342,15 @@ export const getSplitStyles: StyleSplitter = (
       if (resolved) {
         for (const key in resolved) {
           if (resolved[key] == null) continue
+          if (styleState.classNameResolvedProps) {
+            clearDirectStyle(styleState, key)
+          }
           contributeProp(pass, key, resolved[key])
         }
       }
     }
     pass[passFlags] = flagsBefore
+    pass[passSourceLayer] = prevSourceLayer
   }
 
   className = pass[passClassName]

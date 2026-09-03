@@ -1,13 +1,12 @@
 import { type FrontendClassPlanEntry, type FrontendClassSink } from '@tamagui/core/internal-runtime';
 import { type GrammarConfigView } from '@tamagui/style-grammar/tooling/candidate';
-/** Re-emit Tailwind's CSS-variable transform family in its fixed matrix order. */
-export declare function noteTailwindTransform(sink: FrontendClassSink, entry: FrontendClassPlanEntry): boolean;
 /**
- * Claim a from/via/to, bg-linear-to-*, or ring-* candidate. `undefined` means
- * this is not a composer (the existing class plan runs). A boolean is the same
- * preserveRaw signal as resolveClassName.
+ * Claim a from/via/to, bg-linear-to-*, filter, ring, inset, or drop-shadow candidate.
+ * Emits variant props to the sink so `composedResolver` can compose them.
  */
 export declare function tryCompose(candidate: string, config: GrammarConfigView, sink: FrontendClassSink): boolean | null | undefined;
-/** Record a claimed boxShadow so .resolve() can stack ring + shadow. */
+/** Record transform properties as variant props for composedResolver. */
+export declare function noteTailwindTransform(sink: FrontendClassSink, entry: FrontendClassPlanEntry): boolean;
+/** Record a claimed boxShadow so composedResolver can stack ring + shadow. */
 export declare function noteBoxShadow(sink: FrontendClassSink, value: unknown, modifiers?: readonly string[]): boolean;
 //# sourceMappingURL=compose.d.ts.map

@@ -7,6 +7,7 @@ import {
   type StyleFrontendConfig,
 } from '@tamagui/core/internal-runtime'
 import { noteBoxShadow, noteTailwindTransform, tryCompose } from './compose'
+import { composedResolver } from './composedResolver'
 import {
   borderSideSuffix,
   configRevisionSymbol,
@@ -776,6 +777,17 @@ export function resolveTailwindClassName(
       rawClassName = rawClassName ? `${rawClassName} ${candidate}` : candidate
     }
     start = index + 1
+  }
+  const composed = composedResolver(result, config)
+  if (composed) {
+    for (const key in composed) {
+      setInAuthoredOrder(result, key, composed[key])
+    }
+  }
+  for (const key in result) {
+    if (key.startsWith('__')) {
+      delete result[key]
+    }
   }
   if (rawClassName) result.className = rawClassName
   return result
