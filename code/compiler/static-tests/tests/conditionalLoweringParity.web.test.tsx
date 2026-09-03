@@ -3,7 +3,11 @@ import { expect, test } from 'vitest'
 
 import { extractForWeb } from './lib/extract'
 
-window['React'] = React
+if (typeof window !== 'undefined') {
+  window['React'] = React
+} else {
+  ;(globalThis as any)['React'] = React
+}
 
 test('lowers logical AND expression on web', async () => {
   const output = await extractForWeb(
