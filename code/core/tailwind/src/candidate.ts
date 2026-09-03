@@ -1,4 +1,4 @@
-import { isAndroid, isWeb } from '@tamagui/constants'
+import { isWeb } from '@tamagui/constants'
 import {
   plainValueToPayload,
   type FrontendClassPlan,
@@ -401,7 +401,6 @@ const nativeUnsupportedProps = new Set([
   'whiteSpace',
   'visibility',
 ])
-const androidUnsupportedProps = new Set(['textDecorationColor', 'textDecorationStyle'])
 const nativeUnsupportedSizingValues = new Set(['screen', 'min', 'max', 'fit'])
 const nativeUnsupportedDisplayValues = new Set(['block', 'inline', 'inline-flex'])
 const nativeUnsupportedPositionValues = new Set(['fixed', 'sticky'])
@@ -414,13 +413,6 @@ function shouldGateNative(parsed: ParsedCandidate): boolean {
     ((parsed.entry && cssGridProps.has(parsed.entry.prop)) ||
       properties.display === 'grid' ||
       Object.keys(properties).some((prop) => cssGridProps.has(prop)))
-  ) {
-    return true
-  }
-  if (
-    isAndroid &&
-    ((parsed.entry && androidUnsupportedProps.has(parsed.entry.prop)) ||
-      Object.keys(properties).some((prop) => androidUnsupportedProps.has(prop)))
   ) {
     return true
   }
