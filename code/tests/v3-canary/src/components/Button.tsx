@@ -1,38 +1,28 @@
+// a custom skin over the button behavior primitives, sized by the config's
+// named sizes rather than a table of its own: `sm` and `md` are recipes of
+// tokens read through resolveSize, so the frame, text and icon agree.
 import {
   ButtonFrame as ButtonBehaviorFrame,
   ButtonText as ButtonBehaviorText,
   type ButtonBehaviorProps,
-  createSizeTable,
   createStyledHOC,
+  getThemedIconSize,
+  resolveSize,
+  SizeContext,
   styled,
   useButton,
   withStaticProperties,
 } from 'tamagui'
 
-export const buttonSizes = createSizeTable(
-  {
-    small: {
-      frame: { gap: 6, height: 30, paddingHorizontal: 10 },
-      text: { fontSize: 13, lineHeight: 18 },
-      icon: 14,
-    },
-    medium: {
-      frame: { gap: 8, height: 36, paddingHorizontal: 14 },
-      text: { fontSize: 15, lineHeight: 20 },
-      icon: 16,
-    },
-  } as const,
-  'medium'
-)
+import type { CanaryConfig } from '../../tamagui.config'
 
-type ButtonSize = keyof typeof buttonSizes.values
+type ButtonSize = Exclude<keyof CanaryConfig['sizes'], 'default'>
 
 const ButtonFrameBase = styled(ButtonBehaviorFrame, {
-  context: buttonSizes.Context,
+  context: SizeContext,
   displayName: 'CanaryButtonFrame',
   bg: 'canaryTheme',
   borderColor: 'canary-token',
-  rounded: 8,
   borderWidth: 1,
   cursor: 'web:pointer',
   opacity: 'hover:0.9 press:0.7',
@@ -40,53 +30,54 @@ const ButtonFrameBase = styled(ButtonBehaviorFrame, {
   outlineStyle: 'focus-visible:solid',
   outlineWidth: 'focus-visible:2px',
   variants: {
-    size: buttonSizes.frame,
+    size: styled.dynamic<ButtonSize>((val, env) => resolveSize(val, env).frame),
     circular: styled.dynamic<boolean>(),
     disabled: {
       true: { opacity: 0.35 },
     },
   } as const,
-  defaultVariants: { size: 'medium' },
+  defaultVariants: { size: 'md' },
 })
 
-export const ButtonFrame = ButtonFrameBase.resolve((props) => {
+export const ButtonFrame = ButtonFrameBase.resolve((props, env) => {
   if (!props.circular) return
-  const { height } = buttonSizes.resolve(
-    (props.size as ButtonSize | undefined) ?? buttonSizes.defaultSize
-  ).frame
+  // the control height plus the 1px border on each side
+  const side = resolveSize(props.size as ButtonSize | undefined, env).controlHeight + 2
   return {
     rounded: 1000,
     paddingHorizontal: 0,
-    height,
-    maxHeight: height,
-    maxWidth: height,
-    minWidth: height,
-    width: height,
+    height: side,
+    maxHeight: side,
+    maxWidth: side,
+    minWidth: side,
+    width: side,
   }
 })
 
 export const ButtonText = styled(ButtonBehaviorText, {
-  context: buttonSizes.Context,
+  context: SizeContext,
   displayName: 'CanaryButtonText',
   color: 'white',
   fontWeight: '600',
-  variants: { size: buttonSizes.text } as const,
-  defaultVariants: { size: 'medium' },
+  variants: {
+    size: styled.dynamic<ButtonSize>((val, env) => resolveSize(val, env).text),
+  } as const,
+  defaultVariants: { size: 'md' },
 })
 
 const ButtonComponent = createStyledHOC(
   ButtonFrame,
   function CanaryButton(props: ButtonBehaviorProps & { size?: ButtonSize }, ref) {
-    const size = (props.size ?? buttonSizes.defaultSize) as ButtonSize
+    const size = props.size ?? 'md'
     const { props: buttonProps } = useButton(
       { ...props, size },
-      { Text: ButtonText, iconSize: buttonSizes.resolve(size).icon }
+      { Text: ButtonText, iconSize: getThemedIconSize(size) }
     )
 
     return (
-      <buttonSizes.Context.Provider size={size}>
+      <SizeContext.Provider size={size}>
         <ButtonFrame ref={ref} {...buttonProps} />
-      </buttonSizes.Context.Provider>
+      </SizeContext.Provider>
     )
   }
 )

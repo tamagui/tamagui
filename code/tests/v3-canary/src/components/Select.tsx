@@ -1,64 +1,52 @@
+// a custom skin over the select behavior primitives, sized by the config's
+// named sizes read through resolveSize
 import {
   Select as SelectBehavior,
   type SelectProps as SelectBehaviorProps,
   type SelectScopedProps,
 } from '@tamagui/select'
-import { createSizeTable, styled, withStaticProperties } from 'tamagui'
+import { resolveSize, SizeContext, styled, withStaticProperties } from 'tamagui'
 
-const selectSizes = createSizeTable(
-  {
-    small: {
-      frame: { gap: 6, height: 32, paddingHorizontal: 10 },
-      text: { fontSize: 13, lineHeight: 18 },
-      icon: 14,
-    },
-    medium: {
-      frame: { gap: 8, height: 38, paddingHorizontal: 12 },
-      text: { fontSize: 15, lineHeight: 20 },
-      icon: 16,
-    },
-  } as const,
-  'medium'
-)
+import type { CanaryConfig } from '../../tamagui.config'
 
-type SelectSize = keyof typeof selectSizes.values
+type SelectSize = Exclude<keyof CanaryConfig['sizes'], 'default'>
+
+const frameSize = styled.dynamic<SelectSize>((val, env) => resolveSize(val, env).frame)
+const textSize = styled.dynamic<SelectSize>((val, env) => resolveSize(val, env).text)
 
 const SelectTrigger = styled(SelectBehavior.Trigger, {
-  context: selectSizes.Context,
+  context: SizeContext,
   displayName: 'CanarySelectTrigger',
   bg: 'background',
   borderColor: 'canary-token',
-  rounded: 8,
   borderWidth: 1,
   justify: 'space-between',
-  variants: { size: selectSizes.frame } as const,
-  defaultVariants: { size: 'medium' },
+  variants: { size: frameSize } as const,
+  defaultVariants: { size: 'md' },
 })
 
 const SelectValue = styled(SelectBehavior.Value, {
-  context: selectSizes.Context,
+  context: SizeContext,
   displayName: 'CanarySelectValue',
   color: 'color',
-  variants: { size: selectSizes.text } as const,
-  defaultVariants: { size: 'medium' },
+  variants: { size: textSize } as const,
+  defaultVariants: { size: 'md' },
 })
 
 const SelectItem = styled(SelectBehavior.Item, {
-  context: selectSizes.Context,
+  context: SizeContext,
   displayName: 'CanarySelectItem',
-  rounded: 6,
-  px: 10,
   bg: 'hover:background-hover focus:background-focus',
-  variants: { size: selectSizes.frame } as const,
-  defaultVariants: { size: 'medium' },
+  variants: { size: frameSize } as const,
+  defaultVariants: { size: 'md' },
 })
 
 const SelectItemText = styled(SelectBehavior.ItemText, {
-  context: selectSizes.Context,
+  context: SizeContext,
   displayName: 'CanarySelectItemText',
   color: 'color',
-  variants: { size: selectSizes.text } as const,
-  defaultVariants: { size: 'medium' },
+  variants: { size: textSize } as const,
+  defaultVariants: { size: 'md' },
 })
 
 const SelectViewport = styled(SelectBehavior.Viewport, {
@@ -81,11 +69,11 @@ type SelectRootProps<
 function SelectRoot<
   Value extends string = string,
   Multiple extends boolean | undefined = false,
->({ size = selectSizes.defaultSize, ...props }: SelectRootProps<Value, Multiple>) {
+>({ size = 'md', ...props }: SelectRootProps<Value, Multiple>) {
   return (
-    <selectSizes.Context.Provider size={size}>
+    <SizeContext.Provider size={size}>
       <SelectBehavior.Root<Value, Multiple> {...props} />
-    </selectSizes.Context.Provider>
+    </SizeContext.Provider>
   )
 }
 

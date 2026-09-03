@@ -7,131 +7,100 @@ import {
   createTamagui,
 } from '@tamagui/core'
 import { themed } from '@tamagui/helpers-icon'
-import {
-  SizeContext,
-  createSizeTable,
-  resolveTokenSize,
-  type CreatedSizeTable,
-} from '@tamagui/size'
+import { SizeContext } from '@tamagui/size'
 import { Tabs } from '@tamagui/tabs'
 import { render } from '@testing-library/react'
 import type { FC } from 'react'
-import { SizeContext as TamaguiSizeContext } from 'tamagui'
+import { Button, SizeContext as TamaguiSizeContext } from 'tamagui'
 import { describe, expect, test } from 'vitest'
 
 const config = createTamagui(defaultConfig)
 
-const first = createSizeTable(
-  {
-    small: { frame: { height: 28 }, text: { fontSize: 13 }, icon: 14 },
-    large: { frame: { height: 44 }, text: { fontSize: 17 }, icon: 22 },
-  } as const,
-  'small'
-)
-
-const second = createSizeTable(
-  {
-    small: { frame: { height: 20 }, text: { fontSize: 11 }, icon: 10 },
-    large: { frame: { height: 36 }, text: { fontSize: 15 }, icon: 18 },
-  } as const,
-  'small'
-)
-
-type AnyTable = CreatedSizeTable<any, any>
-
-function TableValue({ table, id }: { table: AnyTable; id: string }) {
-  const { size } = table.Context.useStyledContext()
-  const value = table.resolve(size)
-
-  return (
-    <output data-testid={id}>
-      {value.frame.height}:{value.text.fontSize}:{value.icon}
-    </output>
-  )
-}
-
-function IndependentTables({ firstSize }: { firstSize: 'small' | 'large' }) {
-  return (
-    <>
-      <first.Context.Provider size={firstSize}>
-        <TableValue table={first} id="first-sibling" />
-      </first.Context.Provider>
-      <second.Context.Provider size="small">
-        <TableValue table={second} id="second-sibling" />
-      </second.Context.Provider>
-
-      <first.Context.Provider size={firstSize}>
-        <TableValue table={first} id="first-outer" />
-        <second.Context.Provider size="small">
-          <TableValue table={first} id="first-through-second" />
-          <TableValue table={second} id="second-inner" />
-        </second.Context.Provider>
-      </first.Context.Provider>
-
-      <second.Context.Provider size="small">
-        <TableValue table={second} id="second-outer" />
-        <first.Context.Provider size={firstSize}>
-          <TableValue table={second} id="second-through-first" />
-          <TableValue table={first} id="first-inner" />
-        </first.Context.Provider>
-      </second.Context.Provider>
-    </>
-  )
+const tokenValue = (
+  value: string,
+  tokens: Record<string, { val: unknown; variable: string }>
+) => {
+  const configured = Object.values(tokens).find((token) => token.variable === value)
+  if (configured) return configured.val
+  const pixels = /^(-?\d+(?:\.\d+)?)px$/.exec(value)
+  return pixels ? Number(pixels[1]) : value
 }
 
 const CaptureIcon = themed(((props: any) => (
-  <output data-testid="tabs-icon" data-size={props.size} />
+  <output data-testid="icon" data-size={props.size} />
 )) as FC<any>)
 
-describe('opt-in size primitives on web', () => {
-  test('isolates same-name tables as siblings and nested in both directions', () => {
-    const rendered = render(<IndependentTables firstSize="small" />)
+function renderButton(size?: any) {
+  const rendered = render(
+    <TamaguiProvider config={config} defaultTheme="light">
+      <Button size={size} icon={CaptureIcon}>
+        Save
+      </Button>
+    </TamaguiProvider>
+  )
+  const button = rendered.getByRole('button')
+  const frame = getComputedStyle(button)
+  // jsdom's cascade loses the min-height class behind the base view reset, so
+  // read the rule the class points at
+  const minHeightClass = [...button.classList].find((name) => name.startsWith('_mh-'))
+  const minHeight = minHeightClass
+    ? [...document.styleSheets]
+        .flatMap((sheet) => [...sheet.cssRules])
+        .find((rule) => rule.cssText.startsWith(`.${minHeightClass} `))
+        ?.cssText.match(/min-height: ([^;]+);/)?.[1]
+    : undefined
+  const text = getComputedStyle(rendered.getByText('Save'))
+  const result = {
+    height: frame.height,
+    minHeight: minHeight && tokenValue(minHeight, config.tokensParsed.size),
+    paddingVertical: tokenValue(frame.paddingBlock, config.tokensParsed.space),
+    paddingHorizontal: tokenValue(frame.paddingInline, config.tokensParsed.space),
+    fontSize: tokenValue(text.fontSize, config.fontsParsed.body.size),
+    lineHeight: tokenValue(text.lineHeight, config.fontsParsed.body.lineHeight),
+    icon: Number(rendered.getByTestId('icon').dataset.size),
+  }
+  rendered.unmount()
+  return result
+}
 
-    expect(rendered.getByTestId('first-sibling')).toHaveTextContent('28:13:14')
-    expect(rendered.getByTestId('second-sibling')).toHaveTextContent('20:11:10')
-    expect(rendered.getByTestId('first-through-second')).toHaveTextContent('28:13:14')
-    expect(rendered.getByTestId('second-inner')).toHaveTextContent('20:11:10')
-    expect(rendered.getByTestId('second-through-first')).toHaveTextContent('20:11:10')
-    expect(rendered.getByTestId('first-inner')).toHaveTextContent('28:13:14')
-
-    rendered.rerender(<IndependentTables firstSize="large" />)
-
-    expect(rendered.getByTestId('first-sibling')).toHaveTextContent('44:17:22')
-    expect(rendered.getByTestId('first-through-second')).toHaveTextContent('44:17:22')
-    expect(rendered.getByTestId('first-inner')).toHaveTextContent('44:17:22')
-    expect(rendered.getByTestId('second-sibling')).toHaveTextContent('20:11:10')
-    expect(rendered.getByTestId('second-inner')).toHaveTextContent('20:11:10')
-    expect(rendered.getByTestId('second-through-first')).toHaveTextContent('20:11:10')
+describe('named control sizes on web', () => {
+  test('md is a recipe of tokens and never a height', () => {
+    expect(renderButton('md')).toEqual({
+      height: '',
+      minHeight: undefined,
+      paddingVertical: 8,
+      paddingHorizontal: 16,
+      fontSize: 14,
+      lineHeight: 20,
+      icon: 16,
+    })
+    expect(renderButton()).toEqual(renderButton('md'))
   })
 
-  test('projects true, explicit tokens, and raw numbers through active scales', () => {
-    const extras = { tokens: config.tokensParsed, font: config.fontsParsed.body }
-    const projected = resolveTokenSize(true, extras)
-
-    expect(projected.frame.size).toBe(44)
-    expect(projected.frame.space).toBe(config.tokensParsed.space['4'])
-    expect(projected.frame.radius).toBe(config.tokensParsed.radius['4'])
-    expect(projected.text.fontSize).toBe(config.fontsParsed.body.size['4'])
-    expect(projected.text.lineHeight).toBe(config.fontsParsed.body.lineHeight['4'])
-    expect(projected.icon).toBe(config.fontsParsed.body.size['4'])
-    expect(resolveTokenSize('4', extras)).toEqual({
-      frame: {
-        // a control's frame height comes from the control ramp, not the config's
-        // spacing scale. v2's `4` step, and the same value `true` resolves to.
-        size: 44,
-        space: config.tokensParsed.space['4'],
-        radius: config.tokensParsed.radius['4'],
-      },
-      text: {
-        fontSize: config.fontsParsed.body.size['4'],
-        lineHeight: config.fontsParsed.body.lineHeight['4'],
-      },
-      icon: config.fontsParsed.body.size['4'],
+  test('sm and lg follow the config table', () => {
+    expect(renderButton('sm')).toMatchObject({
+      height: '',
+      paddingVertical: 6,
+      paddingHorizontal: 12,
+      fontSize: 14,
+      lineHeight: 20,
+      icon: 16,
     })
-    expect(resolveTokenSize(24, extras)).toEqual({
-      frame: { size: 24, space: 24, radius: 24 },
-      text: { fontSize: 24, lineHeight: undefined },
-      icon: 24,
+    expect(renderButton('lg')).toMatchObject({
+      height: '',
+      paddingVertical: 8,
+      paddingHorizontal: 24,
+      fontSize: 16,
+      lineHeight: 24,
+      icon: 16,
+    })
+  })
+
+  test('a token key honestly indexes the config scales', () => {
+    expect(renderButton('$4')).toMatchObject({
+      minHeight: 16,
+      paddingHorizontal: config.tokensParsed.space['4'].val,
+      fontSize: config.fontsParsed.body.size['4'].val,
     })
   })
 
@@ -143,15 +112,12 @@ describe('opt-in size primitives on web', () => {
   test('passes the Tabs size context to themed icons', () => {
     const rendered = render(
       <TamaguiProvider config={config} defaultTheme="light">
-        <Tabs value="tab" size="4">
+        <Tabs value="tab" size="lg">
           <CaptureIcon />
         </Tabs>
       </TamaguiProvider>
     )
 
-    expect(rendered.getByTestId('tabs-icon')).toHaveAttribute(
-      'data-size',
-      `${config.fontsParsed.body.size['4'].val}`
-    )
+    expect(rendered.getByTestId('icon')).toHaveAttribute('data-size', '16')
   })
 })

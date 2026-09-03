@@ -70,7 +70,7 @@ export function CanaryTree() {
             testID="canary-button-circular"
             aria-label="small circular copied button"
             circular
-            size="small"
+            size="sm"
           />
           <Button testID="canary-sheet-open" onPress={() => setSheetOpen(true)}>
             Open sheet
@@ -82,7 +82,7 @@ export function CanaryTree() {
           onValueChange={(value) => {
             if (value === 'apple' || value === 'banana') setSelectedFruit(value)
           }}
-          size="small"
+          size="sm"
         >
           <Select.Trigger testID="canary-select-trigger" w={190}>
             <Select.Value placeholder="Choose fruit" />
