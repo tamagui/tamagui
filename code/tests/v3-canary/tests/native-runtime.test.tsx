@@ -79,8 +79,11 @@ describe('shared v3 canary on native', () => {
       paddingTop: 0,
       width: 32,
     })
-    expect(circular).toMatchObject({ height: 30, width: 30 })
-    expect(selectTrigger.height).toBe(32)
+    // sm is 20 line-height + 6 padding each side, plus the 1px border each side
+    expect(circular).toMatchObject({ height: 34, width: 34 })
+    // a named size never sets a height: the trigger is padding plus text tall
+    expect(selectTrigger.height).toBeUndefined()
+    expect(selectTrigger).toMatchObject({ paddingTop: 6, paddingBottom: 6 })
 
     await act(async () => {
       buttonResponder.props.onResponderGrant({})

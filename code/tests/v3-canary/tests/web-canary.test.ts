@@ -123,8 +123,8 @@ async function assertCanary(page: Page, url: string, child: ChildProcess) {
     await expect(page.getByTestId('canary-tailwind')).toHaveCSS('display', 'grid')
     await expect(page.getByTestId('canary-tailwind')).toHaveCSS('opacity', '0.75')
     await expect(page.getByTestId('canary-cross-file')).toHaveCSS('min-height', '12px')
-    await expect(page.getByTestId('canary-button-circular')).toHaveCSS('width', '30px')
-    await expect(page.getByTestId('canary-select-trigger')).toHaveCSS('height', '32px')
+    await expect(page.getByTestId('canary-button-circular')).toHaveCSS('width', '34px')
+    await expect(page.getByTestId('canary-select-trigger')).toHaveCSS('height', '34px')
 
     await page.getByTestId('canary-button').click()
     await expect(page.getByTestId('canary-button')).toContainText('presses:1')

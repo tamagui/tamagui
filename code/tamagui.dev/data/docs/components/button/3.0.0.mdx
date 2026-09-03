@@ -54,7 +54,7 @@ size together with the `size` prop.
 ```tsx
 import { Button } from 'tamagui'
 
-export default () => <Button size="6">Lorem ipsum</Button>
+export default () => <Button size="lg">Lorem ipsum</Button>
 ```
 
 Given your theme defines a size `6`, the button adjusts every property
@@ -67,7 +67,7 @@ frame reads it, so every button and its text and icons follow:
 import { Button, SizeContext, XStack } from 'tamagui'
 
 export default () => (
-  <SizeContext.Provider size="2">
+  <SizeContext.Provider size="sm">
     <XStack gap="2">
       <Button>One</Button>
       <Button>Two</Button>
@@ -112,10 +112,10 @@ import { Star } from '@tamagui/lucide-icons-2'
 
 export default () => (
   <>
-    <Button icon={Star} size="5">
+    <Button icon={Star} size="lg">
       Icon sized by Button
     </Button>
-    <Button icon={Star} iconSize="2" size="5">
+    <Button icon={Star} iconSize="2" size="lg">
       Icon sized explicitly
     </Button>
   </>
@@ -251,8 +251,8 @@ Buttons extend View, inheriting all the
     {
       name: 'size',
       required: false,
-      type: 'SizeTokens | number',
-      description: `Set a size from your theme's size tokens (e.g., "4") or a specific number. Adjusts padding, border radius, font size, and icon size. Published to Button.Text and Button.Icon through the styled context.`,
+      type: "'xs' | 'sm' | 'md' | 'lg' | 'xl' | SizeTokens",
+      description: `A named size ("xs" to "xl", default "md") is a recipe of tokens: padding, border radius, font size, and icon size, never a height. A token key ("$4") indexes every scale with that key. Published to Button.Text and Button.Icon through the styled context.`,
     },
     {
       name: 'variant',
