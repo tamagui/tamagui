@@ -27,6 +27,7 @@ describe('claimed candidates become flat props', () => {
   test('rotate, flex-n, and inset fractions become native-capable values', () => {
     expect(tokenize('rotate-45')).toEqual({ rotate: '45deg' })
     expect(tokenize('-rotate-90')).toEqual({ rotate: '-90deg' })
+    expect(tokenize('-rotate-0')).toEqual({ rotate: '-0deg' })
     expect(tokenize('flex-2')).toEqual({ flex: 2 })
     expect(tokenize('inset-1/2')).toEqual({ inset: '50%' })
     expect(tokenize('line-clamp-2')).toEqual({ numberOfLines: 2 })
@@ -100,6 +101,14 @@ describe('claimed candidates become flat props', () => {
     expect(tokenize('outline-solid')).toEqual({ outlineStyle: 'solid' })
     expect(tokenize('outline-offset-2')).toEqual({ outlineOffset: '2' })
     expect(tokenize('-outline-offset-2')).toEqual({ outlineOffset: '-2' })
+  })
+
+  test('native-capable alignment and transform resets resolve', () => {
+    expect(tokenize('content-evenly')).toEqual({ alignContent: 'space-evenly' })
+    expect(tokenize('self-baseline')).toEqual({ alignSelf: 'baseline' })
+    expect(tokenize('scale-none')).toEqual({ scale: 1 })
+    expect(tokenize('translate-none')).toEqual({ x: 0, y: 0 })
+    expect(tokenize('transform-none')).toEqual({ transform: 'none' })
   })
 
   test('cursor classes resolve to cursor prop', () => {

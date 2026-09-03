@@ -15,13 +15,13 @@ resolver accepts the part; runtime suites separately prove the complete multi-cl
 | Metric | Count |
 | --- | ---: |
 | Tailwind default-theme candidates | 23,286 |
-| Tamagui-owned candidates on web | 10,713 |
-| Official-engine web fallback | 12,573 |
-| Native-ready owned candidates | 10,445 |
+| Tamagui-owned candidates on web | 10,718 |
+| Official-engine web fallback | 12,568 |
+| Native-ready owned candidates | 10,450 |
 | Explicitly web-only / native-gated candidates | 273 |
 | Native-only lowerings | 5 |
 | Unsafe native-owned candidates | 0 |
-| Complete / partial / missing web families | 482 / 29 / 643 |
+| Complete / partial / missing web families | 487 / 29 / 638 |
 
 Web coverage is the full registry: Tamagui-owned candidates use the shared style runtime
 and every remainder stays in `className` for the official engine. Native intentionally
@@ -339,7 +339,7 @@ the candidate needs a native lowering or an explicit target gate.
 | `content-center-safe` | 1 | 0 | 0 | 0 | 0 | `content-center-safe` |
 | `content-end` | 1 | 1 | 1 | 0 | 0 |  |
 | `content-end-safe` | 1 | 0 | 0 | 0 | 0 | `content-end-safe` |
-| `content-evenly` | 1 | 0 | 0 | 0 | 0 | `content-evenly` |
+| `content-evenly` | 1 | 1 | 1 | 0 | 0 |  |
 | `content-none` | 1 | 0 | 0 | 0 | 0 | `content-none` |
 | `content-normal` | 1 | 0 | 0 | 0 | 0 | `content-normal` |
 | `content-start` | 1 | 1 | 1 | 0 | 0 |  |
@@ -953,7 +953,7 @@ the candidate needs a native lowering or an explicit target gate.
 | `saturate` | 5 | 5 | 0 | 5 | 0 | `saturate-0 (web-only)`, `saturate-50 (web-only)`, `saturate-100 (web-only)` |
 | `scale` | 11 | 11 | 11 | 0 | 0 |  |
 | `scale-3d` | 1 | 0 | 0 | 0 | 0 | `scale-3d` |
-| `scale-none` | 1 | 0 | 0 | 0 | 0 | `scale-none` |
+| `scale-none` | 1 | 1 | 1 | 0 | 0 |  |
 | `scale-x` | 11 | 11 | 11 | 0 | 0 |  |
 | `scale-y` | 11 | 11 | 11 | 0 | 0 |  |
 | `scale-z` | 11 | 0 | 0 | 0 | 0 | `scale-z-0`, `scale-z-50`, `scale-z-75` |
@@ -1022,7 +1022,7 @@ the candidate needs a native lowering or an explicit target gate.
 | `select-none` | 1 | 1 | 1 | 0 | 0 |  |
 | `select-text` | 1 | 1 | 1 | 0 | 0 |  |
 | `self-auto` | 1 | 1 | 1 | 0 | 0 |  |
-| `self-baseline` | 1 | 0 | 0 | 0 | 0 | `self-baseline` |
+| `self-baseline` | 1 | 1 | 1 | 0 | 0 |  |
 | `self-baseline-last` | 1 | 0 | 0 | 0 | 0 | `self-baseline-last` |
 | `self-center` | 1 | 1 | 1 | 0 | 0 |  |
 | `self-center-safe` | 1 | 0 | 0 | 0 | 0 | `self-center-safe` |
@@ -1131,7 +1131,7 @@ the candidate needs a native lowering or an explicit target gate.
 | `transform-fill` | 1 | 0 | 0 | 0 | 0 | `transform-fill` |
 | `transform-flat` | 1 | 0 | 0 | 0 | 0 | `transform-flat` |
 | `transform-gpu` | 1 | 0 | 0 | 0 | 0 | `transform-gpu` |
-| `transform-none` | 1 | 0 | 0 | 0 | 0 | `transform-none` |
+| `transform-none` | 1 | 1 | 1 | 0 | 0 |  |
 | `transform-stroke` | 1 | 0 | 0 | 0 | 0 | `transform-stroke` |
 | `transform-view` | 1 | 0 | 0 | 0 | 0 | `transform-view` |
 | `transition` | 7 | 0 | 0 | 0 | 0 | `transition`, `transition-all`, `transition-colors` |
@@ -1140,7 +1140,7 @@ the candidate needs a native lowering or an explicit target gate.
 | `translate` | 60 | 60 | 60 | 0 | 0 |  |
 | `translate-3d` | 1 | 0 | 0 | 0 | 0 | `translate-3d` |
 | `translate-full` | 1 | 1 | 1 | 0 | 0 |  |
-| `translate-none` | 1 | 0 | 0 | 0 | 0 | `translate-none` |
+| `translate-none` | 1 | 1 | 1 | 0 | 0 |  |
 | `translate-px` | 1 | 1 | 1 | 0 | 0 |  |
 | `translate-x` | 60 | 60 | 60 | 0 | 0 |  |
 | `translate-x-full` | 1 | 1 | 1 | 0 | 0 |  |

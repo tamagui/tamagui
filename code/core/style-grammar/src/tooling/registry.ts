@@ -365,6 +365,7 @@ export const standaloneValueProps: Readonly<
     'flex-end': 'content-end',
     'space-between': 'content-between',
     'space-around': 'content-around',
+    'space-evenly': 'content-evenly',
     stretch: 'content-stretch',
   },
   alignSelf: {
@@ -372,6 +373,7 @@ export const standaloneValueProps: Readonly<
     center: 'self-center',
     'flex-start': 'self-start',
     'flex-end': 'self-end',
+    baseline: 'self-baseline',
     stretch: 'self-stretch',
   },
   justifyContent: {
@@ -543,6 +545,9 @@ export const wholeClassUtilities: Readonly<
   'line-clamp-5': { numberOfLines: 5 },
   'line-clamp-6': { numberOfLines: 6 },
   'line-clamp-none': { numberOfLines: 0 },
+  'scale-none': { scale: 1 },
+  'translate-none': { x: 0, y: 0 },
+  'transform-none': { transform: 'none' },
   'order-first': { order: -9999 },
   'order-last': { order: 9999 },
   'order-none': { order: 0 },

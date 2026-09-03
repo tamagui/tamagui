@@ -46,6 +46,37 @@ describe('claimed candidates resolve to native style values', () => {
     expect(rotate).toBe('45deg')
   })
 
+  test('negative rotate zero remains a native-valid angle', () => {
+    expect(
+      styleOf(splitTailwindStyles(View, { className: '-rotate-0' })).transform
+    ).toEqual([{ rotate: '-0deg' }])
+  })
+
+  test('transform reset utilities emit equivalent native transform arrays', () => {
+    expect(
+      styleOf(splitTailwindStyles(View, { className: 'transform-none' })).transform
+    ).toEqual([])
+    expect(
+      styleOf(splitTailwindStyles(View, { className: 'translate-none' })).transform
+    ).toEqual([{ translateX: 0 }, { translateY: 0 }])
+    expect(
+      styleOf(splitTailwindStyles(View, { className: 'scale-none' })).transform
+    ).toEqual([{ scale: 1 }])
+  })
+
+  test('native alignment values resolve without CSS-only aliases', () => {
+    expect(
+      styleOf(splitTailwindStyles(View, { className: 'content-evenly' }))
+    ).toMatchObject({
+      alignContent: 'space-evenly',
+    })
+    expect(
+      styleOf(splitTailwindStyles(View, { className: 'self-baseline' }))
+    ).toMatchObject({
+      alignSelf: 'baseline',
+    })
+  })
+
   test('gradient classes resolve to a native backgroundImage string', () => {
     const styles = splitTailwindStyles(View, {
       className: 'bg-linear-to-r from-[red] to-[blue]',

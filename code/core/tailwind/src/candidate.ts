@@ -147,7 +147,7 @@ function tailwindClassToFlatProp(
   const category = parsed.entry.tokenCategory
   let value: any = parsed.rawValue
 
-  if (parsed.negative && value === '0') {
+  if (parsed.negative && value === '0' && parsed.convenience !== 'angle') {
     return { key: prop, value: 0 }
   }
 
@@ -643,7 +643,8 @@ function computeClassPlan(
   if (util) {
     const entries: TailwindPlanEntry[] = []
     for (const p in util) {
-      const entry = createPlanEntry(p, util[p], parsed.modifiers)
+      const value = nativeTarget && p === 'transform' && util[p] === 'none' ? [] : util[p]
+      const entry = createPlanEntry(p, value, parsed.modifiers)
       if (!entry) return 'raw'
       entries.push(entry)
     }
