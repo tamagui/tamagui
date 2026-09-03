@@ -8,7 +8,7 @@ import { bundleAttributionPlugin } from '../shared/bundleAttributionPlugin'
 const extract = process.env.EXTRACT === '1'
 const outputCSS = process.env.BENCH_OUTPUT_CSS
 
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
   plugins: [
     outputCSS && {
       name: 'benchmark-global-css-import',
@@ -32,4 +32,13 @@ export default defineConfig({
     }),
     bundleAttributionPlugin(process.env.BUNDLE_ATTRIBUTION_FILE, import.meta.dirname),
   ],
-})
+  build:
+    mode === 'size'
+      ? {
+          rollupOptions: {
+            input: resolve(import.meta.dirname, 'size.html'),
+            output: { entryFileNames: 'assets/index-[hash].js' },
+          },
+        }
+      : undefined,
+}))
