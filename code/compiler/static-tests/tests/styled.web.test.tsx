@@ -106,7 +106,10 @@ describe('styled() tests', () => {
       throw new Error(`No output`)
     }
 
-    expect(output.styles).toContain('width:var(--c-size-10)')
+    // v6 gives width its own token scale (so `w-3xl` reaches the container sizes)
+    // while height has none and still reads the shared size scale. Both `10`s hold
+    // the same 40px, so this pair is the same length under two variable names.
+    expect(output.styles).toContain('width:var(--c-width-10)')
     expect(output.styles).toContain('height:var(--c-size-10)')
     expect(output.styles).toContain('border-top-left-radius:var(--c-radius-xl)')
     expect(output.styles).toContain('border-top-right-radius:var(--c-radius-xl)')
