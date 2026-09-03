@@ -14,6 +14,9 @@ on:
       - 'v2-*'
       - v3
       - 'v3-*'
+      # a single * stops at a slash, so v3-* never matched v3/<topic> branches
+      # and every push to one ran with no lint, typecheck, unit tests or size gate
+      - 'v3/**'
 
 permissions:
   contents: read
