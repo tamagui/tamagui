@@ -14,9 +14,7 @@ export type GrammarSourceConfig = {
   shorthands?: Readonly<Record<string, string>>
   media?: Names
   themes?: Readonly<Record<string, unknown>>
-  tokensParsed?: Partial<
-    Record<string, Readonly<Record<string, unknown>>>
-  >
+  tokensParsed?: Partial<Record<string, Readonly<Record<string, unknown>>>>
   fontsParsed?: Readonly<Record<string, GrammarFontConfig | undefined>>
 }
 

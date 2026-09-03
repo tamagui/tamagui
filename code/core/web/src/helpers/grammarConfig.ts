@@ -202,9 +202,7 @@ export function prepareConfigRevision(
   }
   const propertyKind = (property: string) => propertyKinds[property] || 0
   const tokenCategory = (property: string): RuntimeTokenCategory | undefined =>
-    config.tokensParsed[property]
-      ? property
-      : getTokenCategoryForProperty(property)
+    config.tokensParsed[property] ? property : getTokenCategoryForProperty(property)
   // transition strings are re-normalized on every render of every animated
   // element; the result only depends on this revision's shorthands
   const normalizedTransitions = new Map<string, string>()

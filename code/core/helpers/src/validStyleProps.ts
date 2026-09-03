@@ -28,9 +28,7 @@ const nonAnimatableTextOnlyProps = toObj(
   'textAlign textDecorationLine textDecorationStyle userSelect writingDirection'
 )
 
-const nonAnimatableUnitlessProps = toObj(
-  'WebkitLineClamp lineClamp'
-)
+const nonAnimatableUnitlessProps = toObj('WebkitLineClamp lineClamp')
 
 /**
  * CSS Grid layout props. Web-only by default — Yoga (React Native's layout
