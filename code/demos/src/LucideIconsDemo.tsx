@@ -1,23 +1,31 @@
 import React from 'react'
-import * as LucideIcons from '@tamagui/lucide-icons-2'
 
 import { ScrollView } from 'react-native'
 import { Input, Paragraph, Spacer, YStack, useDebounceValue } from 'tamagui'
 
 import { Grid } from './Grid'
 
-const lucideIcons = Object.keys(
-  // vite tree shaking workaround
-  typeof LucideIcons !== 'undefined' ? LucideIcons : {}
-).map((name) => ({
-  key: name.toLowerCase(),
-  name,
-  Icon: LucideIcons[name],
-}))
+type IconEntry = { key: string; name: string; Icon: any }
 
 export function LucideIconsDemo() {
   const [searchRaw, setSearch] = React.useState('')
   const search = useDebounceValue(searchRaw, 400)
+
+  // the whole icon set is ~1mb, so it loads on demand. it has to come from the
+  // /all entry rather than the index: reading every key off the index namespace
+  // would make bundlers retain all 1700 icons for anyone importing even one.
+  const [lucideIcons, setLucideIcons] = React.useState<IconEntry[]>([])
+  React.useEffect(() => {
+    import('@tamagui/lucide-icons-2/all').then(({ allIcons }) => {
+      setLucideIcons(
+        Object.keys(allIcons).map((name) => ({
+          key: name.toLowerCase(),
+          name,
+          Icon: allIcons[name],
+        }))
+      )
+    })
+  }, [])
 
   const size = 100
 
@@ -42,7 +50,7 @@ export function LucideIconsDemo() {
             </Paragraph>
           </YStack>
         )),
-    [search]
+    [search, lucideIcons]
   )
 
   return (
