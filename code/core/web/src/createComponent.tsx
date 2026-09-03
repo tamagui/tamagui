@@ -1,4 +1,4 @@
-import { composeRefs } from '@tamagui/compose-refs'
+import { composeRefs, setRef } from '@tamagui/compose-refs'
 import {
   getPlatformDriver,
   isAndroid,
@@ -1178,16 +1178,43 @@ export function createComponent<
         stateRef.current.willHydrate
       ) || nonTamaguiProps
 
+    // the composed ref keeps one identity for the life of the component so react
+    // never detaches and reattaches the host mid-life. that means it can't close
+    // over forwardedRef, which would pin the first render's ref forever - read it
+    // off stateRef instead, and record what it actually attached to so a swapped
+    // ref can be handed the host below (#4031)
+    stateRef.current.composedForwardedRef = forwardedRef
+
     if (!stateRef.current.composedRef) {
       stateRef.current.composedRef = composeRefs<TamaguiElement>(
-        (x) => (stateRef.current.host = x as TamaguiElement),
-        forwardedRef,
+        (x) => {
+          stateRef.current.host = x as TamaguiElement
+          const current = stateRef.current.composedForwardedRef
+          stateRef.current.attachedForwardedRef = x ? current : undefined
+          setRef<TamaguiElement>(current, x as TamaguiElement)
+        },
         setElementProps,
         animatedRef
       )
     }
 
     viewProps.ref = stateRef.current.composedRef
+
+    // react only re-runs a ref callback when its identity changes, and ours never
+    // does, so hand the host over by hand when a parent swaps the forwarded ref -
+    // react-hook-form re-registering a field after reset() is the common case.
+    // the comparison reads what the ref callback attached, never a value written
+    // during render: a render-phase "previous" pointer reads back its own write
+    // on react's second pass and the handover silently no-ops under StrictMode
+    useIsomorphicLayoutEffect(() => {
+      const attached = stateRef.current.attachedForwardedRef
+      if (attached === forwardedRef) return
+      if (attached) setRef<TamaguiElement | null>(attached, null)
+      stateRef.current.attachedForwardedRef = forwardedRef
+      if (stateRef.current.host) {
+        setRef<TamaguiElement>(forwardedRef, stateRef.current.host)
+      }
+    }, [forwardedRef])
 
     // handle pointer events (native: maps to touch events, web: no-op)
     usePointerEvents(props, viewProps)

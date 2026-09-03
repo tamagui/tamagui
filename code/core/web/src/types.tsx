@@ -597,6 +597,12 @@ export type TamaguiComponentStateRef = {
 
   host?: TamaguiElement
   composedRef?: (x: TamaguiElement) => void
+  // the forwarded ref composedRef writes to right now, read at attach time so the
+  // cached callback never pins the first render's ref
+  composedForwardedRef?: React.Ref<TamaguiElement>
+  // the forwarded ref composedRef last handed the host to, so a swap can be
+  // detected without a render-phase "previous" pointer (see createComponent)
+  attachedForwardedRef?: React.Ref<TamaguiElement>
   willHydrate?: boolean
   hasMeasured?: boolean
   hasAnimated?: boolean
