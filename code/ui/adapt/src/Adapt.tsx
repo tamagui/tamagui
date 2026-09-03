@@ -213,6 +213,9 @@ export const useAdaptContext = (scope?: string) => {
 
 type AdaptParentProps = {
   children?: React.ReactNode
+  // the children the user gave the adapting component, where their <Adapt /> lives.
+  // AdaptParent's own children are that component's internals, one wrapper deep.
+  adaptChildren?: React.ReactNode
   Contents?: AdaptParentContextI['Contents']
   scope: string
   open?: boolean
@@ -224,33 +227,31 @@ type AdaptParentProps = {
 // element tree during render. learning it from the child's layout effect left
 // every consumer seeing "inactive" on the first commit, so an adapted Select
 // mounted SelectInlineImpl and swapped it for SelectSheetImpl one commit later,
-// remounting the whole subtree. breadth-first so a nested adapting component's
-// own <Adapt /> can never shadow this one's. an <Adapt /> that a userland
+// remounting the whole subtree. only direct children are scanned, descending
+// into fragments: any deeper and a nested adapting component's own <Adapt />
+// would adapt this one too. Children.toArray already flattens arrays and drops
+// false, so `{cond && <Adapt />}` still reads. an <Adapt /> that a userland
 // component renders is not in this tree, so it reports itself from its effect
 // instead and still costs that extra commit.
 function findAdaptConfig(children: React.ReactNode, scope: string): AdaptConfig | null {
-  let level = React.Children.toArray(children)
+  for (const child of React.Children.toArray(children)) {
+    if (!React.isValidElement(child)) continue
 
-  while (level.length) {
-    const next: typeof level = []
-
-    for (const child of level) {
-      if (!React.isValidElement(child)) continue
-      const childProps = child.props as AdaptProps
-
-      if (child.type === Adapt) {
-        if (childProps.scope == null || childProps.scope === scope) {
-          return childProps
-        }
-        continue
-      }
-
-      if (childProps.children && typeof childProps.children !== 'function') {
-        next.push(...React.Children.toArray(childProps.children))
-      }
+    if (child.type === React.Fragment) {
+      const found = findAdaptConfig(
+        (child.props as { children?: React.ReactNode }).children,
+        scope
+      )
+      if (found) return found
+      continue
     }
 
-    level = next
+    if (child.type === Adapt) {
+      const childProps = child.props as AdaptProps
+      if (childProps.scope == null || childProps.scope === scope) {
+        return childProps
+      }
+    }
   }
 
   return null
@@ -258,6 +259,7 @@ function findAdaptConfig(children: React.ReactNode, scope: string): AdaptConfig 
 
 export const AdaptParent = ({
   children,
+  adaptChildren,
   Contents,
   scope,
   open,
@@ -273,8 +275,8 @@ export const AdaptParent = ({
   }
 
   const staticConfig = React.useMemo(
-    () => findAdaptConfig(children, scope),
-    [children, scope]
+    () => findAdaptConfig(adaptChildren, scope) ?? findAdaptConfig(children, scope),
+    [adaptChildren, children, scope]
   )
   const [publishedConfig, setPublishedConfig] = React.useState<AdaptConfig | null>(null)
   const rawActive = useAdaptIsActiveGiven(staticConfig ?? publishedConfig)

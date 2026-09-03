@@ -1015,7 +1015,12 @@ export const Popover = withStaticProperties(
     }, [open, setOpen])
 
     return (
-      <AdaptParent scope={adaptScope} open={open} onOpenChange={setOpen}>
+      <AdaptParent
+        scope={adaptScope}
+        adaptChildren={props.children}
+        open={open}
+        onOpenChange={setOpen}
+      >
         <PopoverInner
           adaptScope={adaptScope}
           ref={ref}

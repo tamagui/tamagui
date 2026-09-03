@@ -393,7 +393,12 @@ export function SelectRoot<
   )
 
   return (
-    <AdaptParent scope={adaptScope} open={open} onOpenChange={handleAdaptOpenChange}>
+    <AdaptParent
+      scope={adaptScope}
+      adaptChildren={props.children}
+      open={open}
+      onOpenChange={handleAdaptOpenChange}
+    >
       <SelectInner
         {...(props as SelectScopedProps<SelectProps<string, boolean>>)}
         scope={props.scope}

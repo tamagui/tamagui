@@ -81,13 +81,14 @@ export declare const useAdaptContext: (scope?: string) => AdaptParentContextI;
  */
 type AdaptParentProps = {
     children?: React.ReactNode;
+    adaptChildren?: React.ReactNode;
     Contents?: AdaptParentContextI['Contents'];
     scope: string;
     open?: boolean;
     onOpenChange?: (open: boolean) => void;
     state?: unknown;
 };
-export declare const AdaptParent: ({ children, Contents, scope, open, onOpenChange, state, }: AdaptParentProps) => React.JSX.Element;
+export declare const AdaptParent: ({ children, adaptChildren, Contents, scope, open, onOpenChange, state, }: AdaptParentProps) => React.JSX.Element;
 export declare function AdaptContents({ scope, ...rest }: {
     scope?: string;
 }): React.FunctionComponentElement<any>;
