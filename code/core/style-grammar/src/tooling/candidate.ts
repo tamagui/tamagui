@@ -236,8 +236,28 @@ function normalizeModifiers(
   return normalized
 }
 
+const sizeCategoryFallbacks = new Set<TokenCategory>([
+  'width',
+  'minWidth',
+  'maxWidth',
+  'inlineSize',
+  'minInlineSize',
+  'maxInlineSize',
+  'flexBasis',
+])
+
+function tokenDomain(
+  config: GrammarConfigView,
+  category: TokenCategory
+): Names | undefined {
+  return (
+    config.tokenNames?.[category] ||
+    (sizeCategoryFallbacks.has(category) ? config.tokenNames?.size : undefined)
+  )
+}
+
 function hasTokenDomain(config: GrammarConfigView, category: TokenCategory): boolean {
-  return config.tokenNames?.[category] !== undefined
+  return tokenDomain(config, category) !== undefined
 }
 
 export function hasTokenName(
@@ -259,9 +279,10 @@ export function resolveTokenName(
   category: TokenCategory,
   name: string
 ): string | null {
-  if (hasName(config.tokenNames?.[category], name)) return name
+  const names = tokenDomain(config, category)
+  if (hasName(names, name)) return name
   const alias = decimalHalfTokenAlias(name)
-  return alias !== null && hasName(config.tokenNames?.[category], alias) ? alias : null
+  return alias !== null && hasName(names, alias) ? alias : null
 }
 
 function entriesForProps(props: readonly string[]): GrammarEntry[] {
@@ -290,7 +311,10 @@ function resolveEntries(
     )
   }
   if (prefix === 'size') {
-    return entriesForProps(sizeUtilityProps)
+    return entriesForProps(sizeUtilityProps).map((entry) => ({
+      ...entry,
+      tokenCategory: 'size',
+    }))
   }
   if (prefix === 'inset-x' || prefix === 'inset-y') {
     return entriesForProps(insetAxisProps[prefix.slice('inset-'.length)])
@@ -586,7 +610,7 @@ function chooseEntry(
         return { entry, valueKind: 'token' }
       }
       if (
-        entry.tokenCategory === 'size' &&
+        entry.conveniences?.includes('sizing-keyword') &&
         (sizingConveniences.has(rawValue) || fractionIsValid(rawValue))
       ) {
         return { entry, valueKind: 'convenience', convenience: 'sizing-keyword' }
@@ -652,6 +676,7 @@ export function parseCandidate(
         (!negative ||
           (negativeTokenProps.has(selected.entry.prop) &&
             (selected.valueKind === 'token' ||
+              (selected.valueKind === 'arbitrary' && selected.entry.prop === 'order') ||
               selected.convenience === 'angle' ||
               selected.convenience === 'percentage' ||
               selected.convenience === 'integer')))

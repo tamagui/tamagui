@@ -15,12 +15,13 @@ resolver accepts the part; runtime suites separately prove the complete multi-cl
 | Metric | Count |
 | --- | ---: |
 | Tailwind default-theme candidates | 23,286 |
-| Tamagui-owned candidates on web | 9,829 |
-| Official-engine web fallback | 13,457 |
-| Native-ready owned candidates | 9,661 |
-| Explicitly web-only / native-gated candidates | 168 |
+| Tamagui-owned candidates on web | 9,824 |
+| Official-engine web fallback | 13,462 |
+| Native-ready owned candidates | 9,598 |
+| Explicitly web-only / native-gated candidates | 231 |
+| Native-only lowerings | 5 |
 | Unsafe native-owned candidates | 0 |
-| Complete / partial / missing web families | 416 / 59 / 679 |
+| Complete / partial / missing web families | 416 / 58 / 680 |
 
 Web coverage is the full registry: Tamagui-owned candidates use the shared style runtime
 and every remainder stays in `className` for the official engine. Native intentionally
@@ -90,7 +91,7 @@ the candidate needs a native lowering or an explicit target gate.
 | `-mx-px` | 1 | 1 | 1 | 0 | 0 |  |
 | `-my` | 34 | 33 | 33 | 0 | 0 | `-my-0` |
 | `-my-px` | 1 | 1 | 1 | 0 | 0 |  |
-| `-order` | 12 | 12 | 12 | 0 | 0 |  |
+| `-order` | 12 | 12 | 0 | 12 | 0 | `-order-1 (web-only)`, `-order-2 (web-only)`, `-order-3 (web-only)` |
 | `-outline-offset` | 5 | 4 | 4 | 0 | 0 | `-outline-offset-0` |
 | `-right` | 60 | 33 | 33 | 0 | 0 | `-right-0`, `-right-1/2`, `-right-1/3` |
 | `-right-full` | 1 | 0 | 0 | 0 | 0 | `-right-full` |
@@ -320,7 +321,7 @@ the candidate needs a native lowering or an explicit target gate.
 | `col-end` | 14 | 13 | 0 | 13 | 0 | `col-end-1 (web-only)`, `col-end-2 (web-only)`, `col-end-3 (web-only)` |
 | `col-span` | 13 | 13 | 0 | 13 | 0 | `col-span-1 (web-only)`, `col-span-2 (web-only)`, `col-span-3 (web-only)` |
 | `col-start` | 14 | 13 | 0 | 13 | 0 | `col-start-1 (web-only)`, `col-start-2 (web-only)`, `col-start-3 (web-only)` |
-| `collapse` | 1 | 1 | 1 | 0 | 0 |  |
+| `collapse` | 1 | 1 | 0 | 1 | 0 | `collapse (web-only)` |
 | `columns` | 26 | 0 | 0 | 0 | 0 | `columns-1`, `columns-2`, `columns-2xl` |
 | `contain-content` | 1 | 0 | 0 | 0 | 0 | `contain-content` |
 | `contain-inline-size` | 1 | 0 | 0 | 0 | 0 | `contain-inline-size` |
@@ -345,42 +346,42 @@ the candidate needs a native lowering or an explicit target gate.
 | `content-stretch` | 1 | 1 | 1 | 0 | 0 |  |
 | `contents` | 1 | 1 | 1 | 0 | 0 |  |
 | `contrast` | 7 | 0 | 0 | 0 | 0 | `contrast-0`, `contrast-50`, `contrast-75` |
-| `cursor-alias` | 1 | 1 | 1 | 0 | 0 |  |
-| `cursor-all-scroll` | 1 | 1 | 1 | 0 | 0 |  |
+| `cursor-alias` | 1 | 1 | 0 | 1 | 0 | `cursor-alias (web-only)` |
+| `cursor-all-scroll` | 1 | 1 | 0 | 1 | 0 | `cursor-all-scroll (web-only)` |
 | `cursor-auto` | 1 | 1 | 1 | 0 | 0 |  |
-| `cursor-cell` | 1 | 1 | 1 | 0 | 0 |  |
-| `cursor-col-resize` | 1 | 1 | 1 | 0 | 0 |  |
-| `cursor-context-menu` | 1 | 1 | 1 | 0 | 0 |  |
-| `cursor-copy` | 1 | 1 | 1 | 0 | 0 |  |
-| `cursor-crosshair` | 1 | 1 | 1 | 0 | 0 |  |
-| `cursor-default` | 1 | 1 | 1 | 0 | 0 |  |
-| `cursor-e-resize` | 1 | 1 | 1 | 0 | 0 |  |
-| `cursor-ew-resize` | 1 | 1 | 1 | 0 | 0 |  |
-| `cursor-grab` | 1 | 1 | 1 | 0 | 0 |  |
-| `cursor-grabbing` | 1 | 1 | 1 | 0 | 0 |  |
-| `cursor-help` | 1 | 1 | 1 | 0 | 0 |  |
-| `cursor-move` | 1 | 1 | 1 | 0 | 0 |  |
-| `cursor-n-resize` | 1 | 1 | 1 | 0 | 0 |  |
-| `cursor-ne-resize` | 1 | 1 | 1 | 0 | 0 |  |
-| `cursor-nesw-resize` | 1 | 1 | 1 | 0 | 0 |  |
-| `cursor-no-drop` | 1 | 1 | 1 | 0 | 0 |  |
-| `cursor-none` | 1 | 1 | 1 | 0 | 0 |  |
-| `cursor-not-allowed` | 1 | 1 | 1 | 0 | 0 |  |
-| `cursor-ns-resize` | 1 | 1 | 1 | 0 | 0 |  |
-| `cursor-nw-resize` | 1 | 1 | 1 | 0 | 0 |  |
-| `cursor-nwse-resize` | 1 | 1 | 1 | 0 | 0 |  |
+| `cursor-cell` | 1 | 1 | 0 | 1 | 0 | `cursor-cell (web-only)` |
+| `cursor-col-resize` | 1 | 1 | 0 | 1 | 0 | `cursor-col-resize (web-only)` |
+| `cursor-context-menu` | 1 | 1 | 0 | 1 | 0 | `cursor-context-menu (web-only)` |
+| `cursor-copy` | 1 | 1 | 0 | 1 | 0 | `cursor-copy (web-only)` |
+| `cursor-crosshair` | 1 | 1 | 0 | 1 | 0 | `cursor-crosshair (web-only)` |
+| `cursor-default` | 1 | 1 | 0 | 1 | 0 | `cursor-default (web-only)` |
+| `cursor-e-resize` | 1 | 1 | 0 | 1 | 0 | `cursor-e-resize (web-only)` |
+| `cursor-ew-resize` | 1 | 1 | 0 | 1 | 0 | `cursor-ew-resize (web-only)` |
+| `cursor-grab` | 1 | 1 | 0 | 1 | 0 | `cursor-grab (web-only)` |
+| `cursor-grabbing` | 1 | 1 | 0 | 1 | 0 | `cursor-grabbing (web-only)` |
+| `cursor-help` | 1 | 1 | 0 | 1 | 0 | `cursor-help (web-only)` |
+| `cursor-move` | 1 | 1 | 0 | 1 | 0 | `cursor-move (web-only)` |
+| `cursor-n-resize` | 1 | 1 | 0 | 1 | 0 | `cursor-n-resize (web-only)` |
+| `cursor-ne-resize` | 1 | 1 | 0 | 1 | 0 | `cursor-ne-resize (web-only)` |
+| `cursor-nesw-resize` | 1 | 1 | 0 | 1 | 0 | `cursor-nesw-resize (web-only)` |
+| `cursor-no-drop` | 1 | 1 | 0 | 1 | 0 | `cursor-no-drop (web-only)` |
+| `cursor-none` | 1 | 1 | 0 | 1 | 0 | `cursor-none (web-only)` |
+| `cursor-not-allowed` | 1 | 1 | 0 | 1 | 0 | `cursor-not-allowed (web-only)` |
+| `cursor-ns-resize` | 1 | 1 | 0 | 1 | 0 | `cursor-ns-resize (web-only)` |
+| `cursor-nw-resize` | 1 | 1 | 0 | 1 | 0 | `cursor-nw-resize (web-only)` |
+| `cursor-nwse-resize` | 1 | 1 | 0 | 1 | 0 | `cursor-nwse-resize (web-only)` |
 | `cursor-pointer` | 1 | 1 | 1 | 0 | 0 |  |
-| `cursor-progress` | 1 | 1 | 1 | 0 | 0 |  |
-| `cursor-row-resize` | 1 | 1 | 1 | 0 | 0 |  |
-| `cursor-s-resize` | 1 | 1 | 1 | 0 | 0 |  |
-| `cursor-se-resize` | 1 | 1 | 1 | 0 | 0 |  |
-| `cursor-sw-resize` | 1 | 1 | 1 | 0 | 0 |  |
-| `cursor-text` | 1 | 1 | 1 | 0 | 0 |  |
-| `cursor-vertical-text` | 1 | 1 | 1 | 0 | 0 |  |
-| `cursor-w-resize` | 1 | 1 | 1 | 0 | 0 |  |
-| `cursor-wait` | 1 | 1 | 1 | 0 | 0 |  |
-| `cursor-zoom-in` | 1 | 1 | 1 | 0 | 0 |  |
-| `cursor-zoom-out` | 1 | 1 | 1 | 0 | 0 |  |
+| `cursor-progress` | 1 | 1 | 0 | 1 | 0 | `cursor-progress (web-only)` |
+| `cursor-row-resize` | 1 | 1 | 0 | 1 | 0 | `cursor-row-resize (web-only)` |
+| `cursor-s-resize` | 1 | 1 | 0 | 1 | 0 | `cursor-s-resize (web-only)` |
+| `cursor-se-resize` | 1 | 1 | 0 | 1 | 0 | `cursor-se-resize (web-only)` |
+| `cursor-sw-resize` | 1 | 1 | 0 | 1 | 0 | `cursor-sw-resize (web-only)` |
+| `cursor-text` | 1 | 1 | 0 | 1 | 0 | `cursor-text (web-only)` |
+| `cursor-vertical-text` | 1 | 1 | 0 | 1 | 0 | `cursor-vertical-text (web-only)` |
+| `cursor-w-resize` | 1 | 1 | 0 | 1 | 0 | `cursor-w-resize (web-only)` |
+| `cursor-wait` | 1 | 1 | 0 | 1 | 0 | `cursor-wait (web-only)` |
+| `cursor-zoom-in` | 1 | 1 | 0 | 1 | 0 | `cursor-zoom-in (web-only)` |
+| `cursor-zoom-out` | 1 | 1 | 0 | 1 | 0 | `cursor-zoom-out (web-only)` |
 | `decoration` | 294 | 0 | 0 | 0 | 0 | `decoration-0`, `decoration-1`, `decoration-2` |
 | `decoration-auto` | 1 | 0 | 0 | 0 | 0 | `decoration-auto` |
 | `decoration-dashed` | 1 | 0 | 0 | 0 | 0 | `decoration-dashed` |
@@ -530,7 +531,7 @@ the candidate needs a native lowering or an explicit target gate.
 | `inset-y-full` | 1 | 1 | 1 | 0 | 0 |  |
 | `inset-y-px` | 1 | 1 | 1 | 0 | 0 |  |
 | `invert` | 6 | 0 | 0 | 0 | 0 | `invert`, `invert-0`, `invert-25` |
-| `invisible` | 1 | 1 | 1 | 0 | 0 |  |
+| `invisible` | 1 | 1 | 0 | 1 | 0 | `invisible (web-only)` |
 | `isolate` | 1 | 1 | 1 | 0 | 0 |  |
 | `isolation-auto` | 1 | 1 | 1 | 0 | 0 |  |
 | `italic` | 1 | 1 | 1 | 0 | 0 |  |
@@ -825,7 +826,7 @@ the candidate needs a native lowering or an explicit target gate.
 | `object-scale-down` | 1 | 1 | 0 | 1 | 0 | `object-scale-down (web-only)` |
 | `oldstyle-nums` | 1 | 0 | 0 | 0 | 0 | `oldstyle-nums` |
 | `opacity` | 21 | 21 | 21 | 0 | 0 |  |
-| `order` | 14 | 14 | 14 | 0 | 0 |  |
+| `order` | 14 | 14 | 0 | 14 | 0 | `order-1 (web-only)`, `order-2 (web-only)`, `order-3 (web-only)` |
 | `ordinal` | 1 | 0 | 0 | 0 | 0 | `ordinal` |
 | `origin` | 9 | 9 | 9 | 0 | 0 |  |
 | `outline` | 297 | 295 | 295 | 0 | 0 | `outline-current`, `outline-inherit` |
@@ -871,7 +872,7 @@ the candidate needs a native lowering or an explicit target gate.
 | `pbs-px` | 1 | 1 | 1 | 0 | 0 |  |
 | `pe` | 34 | 34 | 34 | 0 | 0 |  |
 | `pe-px` | 1 | 1 | 1 | 0 | 0 |  |
-| `perspective` | 6 | 5 | 5 | 0 | 0 | `perspective-none` |
+| `perspective` | 6 | 0 | 5 | 0 | 0 | `perspective-distant`, `perspective-dramatic`, `perspective-midrange` |
 | `perspective-origin` | 9 | 0 | 0 | 0 | 0 | `perspective-origin-bottom`, `perspective-origin-bottom-left`, `perspective-origin-bottom-right` |
 | `pl` | 34 | 34 | 34 | 0 | 0 |  |
 | `pl-px` | 1 | 1 | 1 | 0 | 0 |  |
@@ -1155,7 +1156,7 @@ the candidate needs a native lowering or an explicit target gate.
 | `uppercase` | 1 | 1 | 1 | 0 | 0 |  |
 | `via` | 312 | 291 | 291 | 0 | 0 | `via-0%`, `via-5%`, `via-10%` |
 | `via-none` | 1 | 0 | 0 | 0 | 0 | `via-none` |
-| `visible` | 1 | 1 | 1 | 0 | 0 |  |
+| `visible` | 1 | 1 | 0 | 1 | 0 | `visible (web-only)` |
 | `w` | 73 | 73 | 73 | 0 | 0 |  |
 | `w-auto` | 1 | 1 | 1 | 0 | 0 |  |
 | `w-dvh` | 1 | 0 | 0 | 0 | 0 | `w-dvh` |

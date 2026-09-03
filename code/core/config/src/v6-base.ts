@@ -26,24 +26,35 @@ export { v6RemovedThemeNames, v6ThemeNameReplacements }
 export { toV6Themes, type V6Theme, type V6Themes } from './v6-themes'
 // space and size deliberately remain separate configured domains even though their default
 // values coincide. z-index is literal, so its identity scale is not configured as tokens.
+const tailwindContainerSize = {
+  '3xs': 256,
+  '2xs': 288,
+  xs: 320,
+  sm: 384,
+  md: 448,
+  lg: 512,
+  xl: 576,
+  '2xl': 672,
+  '3xl': 768,
+  '4xl': 896,
+  '5xl': 1024,
+  '6xl': 1152,
+  '7xl': 1280,
+} as const
+
 export const tokens = {
   space: tailwindSpace,
-  size: {
+  size: tailwindSize,
+  width: {
     ...tailwindSize,
-    '3xs': 256,
-    '2xs': 288,
-    xs: 320,
-    sm: 384,
-    md: 448,
-    lg: 512,
-    xl: 576,
-    '2xl': 672,
-    '3xl': 768,
-    '4xl': 896,
-    '5xl': 1024,
-    '6xl': 1152,
-    '7xl': 1280,
+    ...tailwindContainerSize,
   },
+  minWidth: { ...tailwindSize, ...tailwindContainerSize },
+  maxWidth: { ...tailwindSize, ...tailwindContainerSize },
+  inlineSize: { ...tailwindSize, ...tailwindContainerSize },
+  minInlineSize: { ...tailwindSize, ...tailwindContainerSize },
+  maxInlineSize: { ...tailwindSize, ...tailwindContainerSize },
+  flexBasis: { ...tailwindSize, ...tailwindContainerSize },
   outlineWidth: {
     0: 0,
     1: 1,

@@ -206,9 +206,11 @@ const nativeGatedProps = new Set([
   'gridRowStart',
   'gridRowEnd',
   'objectFit',
+  'order',
   'overflowX',
   'overflowY',
   'textOverflow',
+  'visibility',
 ])
 
 function isNativeGatedStandalone(prop: string, value: string): boolean {
@@ -216,7 +218,8 @@ function isNativeGatedStandalone(prop: string, value: string): boolean {
     nativeGatedProps.has(prop) ||
     (prop === 'display' && ['block', 'inline', 'inline-flex', 'grid'].includes(value)) ||
     (prop === 'position' && ['fixed', 'sticky'].includes(value)) ||
-    (prop === 'overflow' && value === 'auto')
+    (prop === 'overflow' && value === 'auto') ||
+    (prop === 'cursor' && value !== 'auto' && value !== 'pointer')
   )
 }
 

@@ -9,6 +9,7 @@
 
 import {
   plainValueToPayload,
+  type FrontendClassPlanEntry,
   type FrontendClassSink,
 } from '@tamagui/core/internal-runtime'
 import {
@@ -35,7 +36,19 @@ type Layer = {
 type ComposerBag = {
   base: Layer
   variants: Map<string, Layer>
+  transforms: Map<string, Map<string, unknown>>
+  transformModifiers: Map<string, readonly string[]>
 }
+
+const transformOrder = [
+  'perspective',
+  'rotateX',
+  'rotateY',
+  'rotateZ',
+  'skewX',
+  'skewY',
+] as const
+const transformProps = new Set<string>(transformOrder)
 
 const bags = new WeakMap<FrontendClassSink, ComposerBag>()
 
@@ -59,7 +72,12 @@ const colorKeywords: Record<string, string> = {
 }
 
 function createBag(): ComposerBag {
-  return { base: {}, variants: new Map() }
+  return {
+    base: {},
+    variants: new Map(),
+    transforms: new Map(),
+    transformModifiers: new Map(),
+  }
 }
 
 function getBag(sink: FrontendClassSink): ComposerBag {
@@ -216,6 +234,38 @@ function boxShadowCss(layer: Layer): string | null {
   return layer.shadow ? `${ring}, ${layer.shadow}` : ring
 }
 
+/** Re-emit Tailwind's CSS-variable transform family in its fixed matrix order. */
+export function noteTailwindTransform(
+  sink: FrontendClassSink,
+  entry: FrontendClassPlanEntry
+): boolean {
+  if (!transformProps.has(entry[0])) return false
+  const bag = getBag(sink)
+  const key = entry[2] || ''
+  let layer = bag.transforms.get(key)
+  if (!layer) {
+    layer = new Map()
+    bag.transforms.set(key, layer)
+  }
+  layer.set(entry[0], entry[1])
+  bag.transformModifiers.set(key, entry[3] || [])
+
+  const base = bag.transforms.get('')
+  for (const [condition, conditional] of bag.transforms) {
+    const values = condition ? new Map(base) : new Map<string, unknown>()
+    for (const [property, value] of conditional) values.set(property, value)
+    const transform = transformOrder
+      .filter((property) => values.has(property))
+      .map((property) => {
+        const value = values.get(property)
+        return `${property}(${value})`
+      })
+      .join(' ')
+    emit(sink, 'transform', transform, bag.transformModifiers.get(condition) || [])
+  }
+  return true
+}
+
 function flush(
   sink: FrontendClassSink,
   bag: ComposerBag,
@@ -321,13 +371,12 @@ export function noteBoxShadow(
   modifiers: readonly string[] = []
 ): boolean {
   if (typeof value !== 'string' || value === 'unset') return false
-  // named tokens are idents; stacking them into a CSS list is invalid until
-  // boxShadow tokens exist as CSS strings. Arbitrary shadows contain spaces.
+  // Unresolved named tokens are identifiers and cannot be stacked into a CSS list.
   if (value.indexOf(' ') === -1 && value !== 'none' && !value.startsWith('inset')) {
     return false
   }
   const bag = getBag(sink)
-  layerOf(bag, conditionKey(modifiers)).shadow = value
+  layerOf(bag, conditionKey(modifiers)).shadow = value === 'none' ? '' : value
   const layer = merged(bag, conditionKey(modifiers))
   if (layer.ringWidth == null) return false
   emit(sink, 'boxShadow', boxShadowCss(layer)!, modifiers)

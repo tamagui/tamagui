@@ -6,7 +6,7 @@ import {
   type FrontendClassSink,
   type StyleFrontendConfig,
 } from '@tamagui/core/internal-runtime'
-import { noteBoxShadow, tryCompose } from './compose'
+import { noteBoxShadow, noteTailwindTransform, tryCompose } from './compose'
 import {
   borderSideSuffix,
   configRevisionSymbol,
@@ -284,6 +284,10 @@ function tailwindClassToFlatProp(
     ) {
       resolved = `${resolved}deg`
     }
+    if (parsed.negative) {
+      if (typeof resolved === 'number') resolved = -resolved
+      else if (resolved[0] !== '-') resolved = `-${resolved}`
+    }
     return { key: prop, value: resolved }
   }
 
@@ -390,10 +394,12 @@ const cssGridProps = new Set([
 ])
 const nativeUnsupportedProps = new Set([
   'objectFit',
+  'order',
   'overflowX',
   'overflowY',
   'textOverflow',
   'whiteSpace',
+  'visibility',
 ])
 const nativeUnsupportedSizingValues = new Set(['screen', 'min', 'max', 'fit'])
 const nativeUnsupportedDisplayValues = new Set(['block', 'inline', 'inline-flex'])
@@ -425,7 +431,10 @@ function shouldGateNative(parsed: ParsedCandidate): boolean {
   return (
     nativeUnsupportedDisplayValues.has(String(properties.display)) ||
     nativeUnsupportedPositionValues.has(String(properties.position)) ||
-    properties.overflow === 'auto'
+    properties.overflow === 'auto' ||
+    (properties.cursor !== undefined &&
+      properties.cursor !== 'auto' &&
+      properties.cursor !== 'pointer')
   )
 }
 
@@ -584,6 +593,7 @@ function computeClassPlan(
     return isWeb ? 'raw' : null
   }
   const parsed = classification.parsed
+  if (!nativeTarget && parsed.entry?.prop === 'perspective') return 'raw'
   if (shouldGateNative(parsed)) {
     return null
   }
@@ -656,7 +666,25 @@ export function resolveTailwindCandidate(
   const entries = parent ? parent.entries : plan
   for (let index = 0; index < entries.length; index++) {
     const entry = entries[index]
-    if (entry[0] === 'boxShadow' && noteBoxShadow(sink, entry[1], entry[3] || [])) {
+    const transformTokenCategory =
+      entry[0] === 'x' || entry[0] === 'y'
+        ? 'space'
+        : entry[0] === 'perspective'
+          ? 'perspective'
+          : null
+    const transformValue =
+      transformTokenCategory && typeof entry[1] === 'string'
+        ? ((config as any).tokensParsed?.[transformTokenCategory]?.[entry[1]]?.val ??
+          entry[1])
+        : entry[1]
+    if (noteTailwindTransform(sink, [entry[0], transformValue, entry[2], entry[3]])) {
+      continue
+    }
+    const shadowValue =
+      entry[0] === 'boxShadow' && typeof entry[1] === 'string'
+        ? ((config as any).tokensParsed?.boxShadow?.[entry[1]]?.val ?? entry[1])
+        : entry[1]
+    if (entry[0] === 'boxShadow' && noteBoxShadow(sink, shadowValue, entry[3] || [])) {
       continue
     }
     sink(entry)

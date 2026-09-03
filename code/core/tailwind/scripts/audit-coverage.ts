@@ -130,7 +130,14 @@ async function writeReport(web: TargetAudit, native: TargetAudit) {
   const missingFamilies = familyNames.filter(
     (family) => web.families[family].owned === 0
   ).length
-  const gated = web.owned - native.owned
+  let gated = 0
+  let nativeOnly = 0
+  for (const family of familyNames) {
+    const webOwned = new Set(web.families[family].ownedCandidates)
+    const nativeOwned = new Set(native.families[family].ownedCandidates)
+    gated += [...webOwned].filter((candidate) => !nativeOwned.has(candidate)).length
+    nativeOnly += [...nativeOwned].filter((candidate) => !webOwned.has(candidate)).length
+  }
 
   const lines = [
     '# Tailwind utility coverage audit',
@@ -154,6 +161,7 @@ async function writeReport(web: TargetAudit, native: TargetAudit) {
     `| Official-engine web fallback | ${(web.registrySize - web.owned).toLocaleString('en-US')} |`,
     `| Native-ready owned candidates | ${native.nativeReady.toLocaleString('en-US')} |`,
     `| Explicitly web-only / native-gated candidates | ${gated.toLocaleString('en-US')} |`,
+    `| Native-only lowerings | ${nativeOnly.toLocaleString('en-US')} |`,
     `| Unsafe native-owned candidates | ${native.unsafeOwned.toLocaleString('en-US')} |`,
     `| Complete / partial / missing web families | ${completeFamilies} / ${partialFamilies} / ${missingFamilies} |`,
     '',
@@ -190,7 +198,7 @@ async function writeReport(web: TargetAudit, native: TargetAudit) {
 
   await Bun.write(reportPath, `${lines.join('\n')}\n`)
   console.log(
-    `Tailwind ${web.registrySize}: ${web.owned} web-owned, ${native.nativeReady} native-ready, ${gated} gated, ${native.unsafeOwned} unsafe; wrote ${path.relative(repositoryRoot, reportPath)}`
+    `Tailwind ${web.registrySize}: ${web.owned} web-owned, ${native.nativeReady} native-ready, ${gated} gated, ${nativeOnly} native-only, ${native.unsafeOwned} unsafe; wrote ${path.relative(repositoryRoot, reportPath)}`
   )
 }
 

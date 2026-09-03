@@ -33,11 +33,17 @@ export interface GrammarEntry {
   prefix: string
   tokenCategory?: TokenCategory
   conveniences?: readonly Convenience[]
+  convert?: boolean
 }
 
 const grammarEntrySpecs = [
   { prop: 'backgroundColor', prefix: 'bg' },
-  { prop: 'width', prefix: 'w', conveniences: ['sizing-keyword'] },
+  {
+    prop: 'width',
+    prefix: 'w',
+    tokenCategory: 'width',
+    conveniences: ['sizing-keyword'],
+  },
   {
     prop: 'height',
     prefix: 'h',
@@ -46,11 +52,13 @@ const grammarEntrySpecs = [
   {
     prop: 'minWidth',
     prefix: 'min-w',
+    tokenCategory: 'minWidth',
     conveniences: ['sizing-keyword'],
   },
   {
     prop: 'maxWidth',
     prefix: 'max-w',
+    tokenCategory: 'maxWidth',
     conveniences: ['sizing-keyword'],
   },
   {
@@ -66,9 +74,24 @@ const grammarEntrySpecs = [
   { prop: 'blockSize', prefix: 'block', conveniences: ['sizing-keyword'] },
   { prop: 'minBlockSize', prefix: 'min-block', conveniences: ['sizing-keyword'] },
   { prop: 'maxBlockSize', prefix: 'max-block', conveniences: ['sizing-keyword'] },
-  { prop: 'inlineSize', prefix: 'inline', conveniences: ['sizing-keyword'] },
-  { prop: 'minInlineSize', prefix: 'min-inline', conveniences: ['sizing-keyword'] },
-  { prop: 'maxInlineSize', prefix: 'max-inline', conveniences: ['sizing-keyword'] },
+  {
+    prop: 'inlineSize',
+    prefix: 'inline',
+    tokenCategory: 'inlineSize',
+    conveniences: ['sizing-keyword'],
+  },
+  {
+    prop: 'minInlineSize',
+    prefix: 'min-inline',
+    tokenCategory: 'minInlineSize',
+    conveniences: ['sizing-keyword'],
+  },
+  {
+    prop: 'maxInlineSize',
+    prefix: 'max-inline',
+    tokenCategory: 'maxInlineSize',
+    conveniences: ['sizing-keyword'],
+  },
   { prop: 'padding', prefix: 'p' },
   { prop: 'paddingTop', prefix: 'pt' },
   { prop: 'paddingRight', prefix: 'pr' },
@@ -164,7 +187,12 @@ const grammarEntrySpecs = [
   { prop: 'flexWrap', prefix: 'flex' },
   { prop: 'flexGrow', prefix: 'grow' },
   { prop: 'flexShrink', prefix: 'shrink' },
-  { prop: 'flexBasis', prefix: 'basis' },
+  {
+    prop: 'flexBasis',
+    prefix: 'basis',
+    tokenCategory: 'flexBasis',
+    conveniences: ['sizing-keyword'],
+  },
   { prop: 'alignItems', prefix: 'items', conveniences: ['alignment-alias'] },
   { prop: 'alignContent', prefix: 'content', conveniences: ['alignment-alias'] },
   { prop: 'alignSelf', prefix: 'self', conveniences: ['alignment-alias'] },
@@ -180,7 +208,12 @@ const grammarEntrySpecs = [
   { prop: 'skewX', prefix: 'skew-x', conveniences: ['angle'] },
   { prop: 'skewY', prefix: 'skew-y', conveniences: ['angle'] },
   { prop: 'transformOrigin', prefix: 'origin' },
-  { prop: 'perspective', prefix: 'perspective', tokenCategory: 'perspective' },
+  {
+    prop: 'perspective',
+    prefix: 'perspective',
+    tokenCategory: 'perspective',
+    convert: false,
+  },
   { prop: 'scale', prefix: 'scale', conveniences: ['percentage'] },
   { prop: 'scaleX', prefix: 'scale-x', conveniences: ['percentage'] },
   { prop: 'scaleY', prefix: 'scale-y', conveniences: ['percentage'] },
@@ -489,6 +522,7 @@ export const wholeClassUtilities: Readonly<
   'line-clamp-none': { numberOfLines: 0 },
   'order-first': { order: -9999 },
   'order-last': { order: 9999 },
+  'order-none': { order: 0 },
   truncate: { overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' },
   'grid-cols-none': { gridTemplateColumns: 'none' },
   'grid-cols-subgrid': { gridTemplateColumns: 'subgrid' },

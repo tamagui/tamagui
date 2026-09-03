@@ -1,5 +1,7 @@
-import { type FrontendClassSink } from '@tamagui/core/internal-runtime';
+import { type FrontendClassPlanEntry, type FrontendClassSink } from '@tamagui/core/internal-runtime';
 import { type GrammarConfigView } from '@tamagui/style-grammar/tooling/candidate';
+/** Re-emit Tailwind's CSS-variable transform family in its fixed matrix order. */
+export declare function noteTailwindTransform(sink: FrontendClassSink, entry: FrontendClassPlanEntry): boolean;
 /**
  * Claim a from/via/to, bg-linear-to-*, or ring-* candidate. `undefined` means
  * this is not a composer (the existing class plan runs). A boolean is the same

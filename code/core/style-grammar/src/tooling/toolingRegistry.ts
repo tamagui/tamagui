@@ -1,7 +1,11 @@
 import { grammarEntries } from './registry'
 
 export const propToTailwindPrefix: Readonly<Record<string, string>> = Object.freeze(
-  Object.fromEntries(grammarEntries.map(({ prop, prefix }) => [prop, prefix]))
+  Object.fromEntries(
+    grammarEntries
+      .filter(({ convert }) => convert !== false)
+      .map(({ prop, prefix }) => [prop, prefix])
+  )
 )
 
 export const defaultMediaKeys: readonly string[] = [

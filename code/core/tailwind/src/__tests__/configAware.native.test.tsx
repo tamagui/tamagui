@@ -138,6 +138,25 @@ describe('config-aware tokens (NATIVE) — class names follow runtime-owned valu
     expect(style({ className: 'shadow-sm' }).boxShadow).toHaveLength(2)
   })
 
+  test('named and none shadows compose with rings in either authored order on native', () => {
+    const shadowFirst = style({ className: 'shadow-sm ring-2 ring-[blue]' })
+    const ringFirst = style({ className: 'ring-2 ring-[blue] shadow-sm' })
+    const noShadow = style({ className: 'shadow-none ring-2 ring-[blue]' })
+
+    expect(shadowFirst.boxShadow).toEqual(ringFirst.boxShadow)
+    expect(shadowFirst.boxShadow).toHaveLength(3)
+    expect(shadowFirst.boxShadow[0]).toMatchObject({ spreadDistance: 2, color: 'blue' })
+    expect(noShadow.boxShadow).toEqual([
+      {
+        offsetX: 0,
+        offsetY: 0,
+        blurRadius: 0,
+        spreadDistance: 2,
+        color: 'blue',
+      },
+    ])
+  })
+
   test('logical layout candidates reach the rendered native style', () => {
     const fromClass = style({
       className: 'block-4 inline-1/2 inset-s-4 -inset-be-2',
@@ -162,29 +181,34 @@ describe('config-aware tokens (NATIVE) — class names follow runtime-owned valu
 
   test('3D transforms, origins, perspective, and order reach the rendered native style', () => {
     const fromClass = style({
-      className:
-        'rotate-x-45 -rotate-y-12 skew-6 origin-top-right perspective-near order-first',
+      className: 'rotate-x-45 -rotate-y-12 skew-6 origin-top-right perspective-near',
     })
     const direct = style({
+      perspective: 'near',
       rotateX: '45deg',
       rotateY: '-12deg',
       skewX: '6deg',
       skewY: '6deg',
       transformOrigin: '100% 0',
-      perspective: 'near',
-      order: -9999,
     })
 
     expect(fromClass).toEqual(direct)
     expect(fromClass.transformOrigin).toBe('100% 0')
-    expect(fromClass.order).toBe(-9999)
     expect(fromClass.transform).toEqual([
+      { perspective: 300 },
       { rotateX: '45deg' },
       { rotateY: '-12deg' },
       { skewX: '6deg' },
       { skewY: '6deg' },
-      { perspective: 300 },
     ])
+  })
+
+  test('3D transform matrix order is stable across class order on native', () => {
+    const rotateFirst = style({ className: 'rotate-x-45 skew-y-6' }).transform
+    const skewFirst = style({ className: 'skew-y-6 rotate-x-45' }).transform
+
+    expect(rotateFirst).toEqual(skewFirst)
+    expect(rotateFirst).toEqual([{ rotateX: '45deg' }, { skewY: '6deg' }])
   })
 })
 

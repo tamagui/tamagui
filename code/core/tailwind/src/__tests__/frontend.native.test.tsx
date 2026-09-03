@@ -319,6 +319,10 @@ describe('web-only candidates', () => {
     'fixed',
     'sticky',
     'overflow-auto',
+    'order-3',
+    'order-first',
+    'visible',
+    'cursor-wait',
   ])('%s is explicitly gated instead of silently no-oping', (candidate) => {
     expect(getTailwindClassPlan(candidate, getConfig())).toBeNull()
     expect(

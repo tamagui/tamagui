@@ -17,6 +17,13 @@ import {
 const tokenNames: Record<TokenCategory, readonly string[]> = {
   space: ['0', '1', '2', '4', '-1', '0-5', '-0-5', 'spaceOnly'],
   size: ['0', '4', '10', 'sizeOnly'],
+  width: ['0', '4', '10', 'sizeOnly', '2xl'],
+  minWidth: ['0', '4', '10', 'sizeOnly', '2xl'],
+  maxWidth: ['0', '4', '10', 'sizeOnly', '2xl'],
+  inlineSize: ['0', '4', '10', 'sizeOnly', '2xl'],
+  minInlineSize: ['0', '4', '10', 'sizeOnly', '2xl'],
+  maxInlineSize: ['0', '4', '10', 'sizeOnly', '2xl'],
+  flexBasis: ['0', '4', '10', 'sizeOnly', '2xl'],
   radius: ['0', '4', '8', 'xl', 'radiusOnly'],
   zIndex: ['4', 'modal'],
   color: ['color5', 'red-9', 'colorOnly', 'white'],
@@ -72,6 +79,7 @@ describe('candidate grammar', () => {
     ['border-bs-2', 'borderBlockStartWidth', '2'],
     ['border-be-color5', 'borderBlockEndColor', 'color5'],
     ['size-10', 'width', '10'],
+    ['w-2xl', 'width', '2xl'],
     ['inset-x-0', 'left', '0'],
     ['inset-y-4', 'top', '4'],
     ['block-4', 'blockSize', '4'],
@@ -113,6 +121,9 @@ describe('candidate grammar', () => {
     expect(classifyCandidate('unknown:p-4', config).kind).toBe('passthrough')
     expect(classifyCandidate('md:p-4', config).kind).toBe('passthrough')
     expect(classifyCandidate('custom-widget', config).kind).toBe('passthrough')
+    expect(classifyCandidate('h-sm', config).kind).toBe('passthrough')
+    expect(classifyCandidate('block-sm', config).kind).toBe('passthrough')
+    expect(classifyCandidate('size-sm', config).kind).toBe('passthrough')
     for (const candidate of [
       'items-garbage',
       'justify-nonsense',
@@ -291,6 +302,8 @@ describe('candidate grammar', () => {
     expect(parseCandidate('-order-3', config)?.convenience).toBe('integer')
     expect(parseCandidate('order-first', config)?.properties).toEqual({ order: -9999 })
     expect(parseCandidate('order-last', config)?.properties).toEqual({ order: 9999 })
+    expect(parseCandidate('order-none', config)?.properties).toEqual({ order: 0 })
+    expect(parseCandidate('-order-[17]', config)?.entry?.prop).toBe('order')
     expect(parseCandidate('flex-2', config)?.convenience).toBe('flex-bundle')
     expect(parseCandidate('basis-full', config)?.convenience).toBe('sizing-keyword')
     expect(parseCandidate('scale-x-50', config)?.convenience).toBe('percentage')

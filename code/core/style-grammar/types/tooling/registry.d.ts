@@ -8,6 +8,7 @@ export interface GrammarEntry {
 	prefix: string;
 	tokenCategory?: TokenCategory;
 	conveniences?: readonly Convenience[];
+	convert?: boolean;
 }
 export declare const grammarEntries: readonly GrammarEntry[];
 export declare const propToGrammarEntry: Readonly<Record<string, GrammarEntry>>;

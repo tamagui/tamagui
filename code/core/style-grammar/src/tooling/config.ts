@@ -123,6 +123,13 @@ export function createGrammarConfigView(
   // long-standing fallback instead of making outline classes disappear.
   tokenNames.outlineWidth ||= tokenNames.space
   tokenNames.outlineOffset ||= tokenNames.space
+  tokenNames.width ||= tokenNames.size
+  tokenNames.minWidth ||= tokenNames.size
+  tokenNames.maxWidth ||= tokenNames.size
+  tokenNames.inlineSize ||= tokenNames.size
+  tokenNames.minInlineSize ||= tokenNames.size
+  tokenNames.maxInlineSize ||= tokenNames.size
+  tokenNames.flexBasis ||= tokenNames.size
 
   for (const themeName in config.themes) {
     const theme = config.themes[themeName]
