@@ -49,6 +49,10 @@ function transformFile(file, options) {
         // See: https://github.com/swc-project/swc/blob/v1.7.14/crates/swc_ecma_compat_es2015/src/generator.rs#L703-L705
         'transform-async-to-generator',
         'transform-regenerator', // Similar to above
+        // all modern React Native JS engines (Hermes, JSC) natively support
+        // `typeof Symbol`. the _type_of helper SWC injects is a regular JS
+        // function that crashes Reanimated 4 worklets on the UI Runtime.
+        'transform-typeof-symbol',
       ],
     },
     jsc: {
