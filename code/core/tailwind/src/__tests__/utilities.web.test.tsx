@@ -196,6 +196,21 @@ describe('tailwind standard utilities', () => {
     expect(findRule(styles.rulesToInsert, 'flexBasis')[StyleObjectValue]).toBe('50%')
   })
 
+  test('representable text shadow presets render with order-independent color', () => {
+    for (const className of [
+      'text-shadow-red-500 text-shadow-xs',
+      'text-shadow-xs text-shadow-red-500',
+    ]) {
+      const styles = splitTailwindStyles(Text, { className } as any)
+      const rules = (Object.values(styles.rulesToInsert) as any[])
+        .flatMap((rule) => rule[4] || [])
+        .join('')
+      expect(rules).toContain('text-shadow:')
+      expect(rules).toContain('red-500')
+      expect(rules).toContain('0px 1px 1px')
+    }
+  })
+
   test('logical border sides emit browser-native logical properties', () => {
     const styles = splitTailwindStyles(View, {
       className: 'border-s-2 border-e-white border-bs-2 border-be-white',

@@ -111,6 +111,19 @@ describe('claimed candidates become flat props', () => {
     expect(tokenize('transform-none')).toEqual({ transform: 'none' })
   })
 
+  test('representable text shadow presets compose with their color', () => {
+    expect(tokenize('text-shadow-xs')).toEqual({
+      textShadowOffset: { width: 0, height: 1 },
+      textShadowRadius: 1,
+      textShadowColor: 'rgb(0 0 0 / 0.2)',
+    })
+    expect(tokenize('text-shadow-[red] text-shadow-2xs')).toMatchObject({
+      textShadowOffset: { width: 0, height: 1 },
+      textShadowRadius: 0,
+      textShadowColor: 'red',
+    })
+  })
+
   test('cursor classes resolve to cursor prop', () => {
     expect(tokenize('cursor-pointer')).toEqual({ cursor: 'pointer' })
     expect(tokenize('cursor-not-allowed')).toEqual({ cursor: 'not-allowed' })

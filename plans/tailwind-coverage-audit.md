@@ -15,9 +15,9 @@ resolver accepts the part; runtime suites separately prove the complete multi-cl
 | Metric | Count |
 | --- | ---: |
 | Tailwind default-theme candidates | 23,286 |
-| Tamagui-owned candidates on web | 10,718 |
-| Official-engine web fallback | 12,568 |
-| Native-ready owned candidates | 10,450 |
+| Tamagui-owned candidates on web | 10,723 |
+| Official-engine web fallback | 12,563 |
+| Native-ready owned candidates | 10,455 |
 | Explicitly web-only / native-gated candidates | 273 |
 | Native-only lowerings | 5 |
 | Unsafe native-owned candidates | 0 |
@@ -1103,7 +1103,7 @@ the candidate needs a native lowering or an explicit target gate.
 | `text-nowrap` | 1 | 0 | 0 | 0 | 0 | `text-nowrap` |
 | `text-pretty` | 1 | 0 | 0 | 0 | 0 | `text-pretty` |
 | `text-right` | 1 | 1 | 1 | 0 | 0 |  |
-| `text-shadow` | 297 | 289 | 289 | 0 | 0 | `text-shadow-2xs`, `text-shadow-current`, `text-shadow-inherit` |
+| `text-shadow` | 297 | 294 | 294 | 0 | 0 | `text-shadow-lg`, `text-shadow-md`, `text-shadow-sm` |
 | `text-shadow-initial` | 1 | 0 | 0 | 0 | 0 | `text-shadow-initial` |
 | `text-start` | 1 | 1 | 1 | 0 | 0 |  |
 | `text-wrap` | 1 | 0 | 0 | 0 | 0 | `text-wrap` |

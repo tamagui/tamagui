@@ -77,6 +77,38 @@ describe('claimed candidates resolve to native style values', () => {
     })
   })
 
+  test('representable text shadow presets render with order-independent color', () => {
+    for (const className of [
+      'text-shadow-[red] text-shadow-xs',
+      'text-shadow-xs text-shadow-[red]',
+    ]) {
+      expect(styleOf(splitTailwindStyles(Text, { className }))).toMatchObject({
+        textShadowOffset: { width: 0, height: 1 },
+        textShadowRadius: 1,
+        textShadowColor: 'red',
+      })
+    }
+    expect(
+      styleOf(splitTailwindStyles(Text, { className: 'text-shadow-none' }))
+    ).toMatchObject({
+      textShadowOffset: { width: 0, height: 0 },
+      textShadowRadius: 0,
+      textShadowColor: 'transparent',
+    })
+    const gated = styleOf(
+      splitTailwindStyles(
+        Text,
+        { className: 'hover:text-shadow-xs' },
+        {
+          componentState: { hover: true },
+        }
+      )
+    )
+    expect(gated.textShadowOffset).toBeUndefined()
+    expect(gated.textShadowRadius).toBeUndefined()
+    expect(gated.textShadowColor).toBeUndefined()
+  })
+
   test('gradient classes resolve to a native backgroundImage string', () => {
     const styles = splitTailwindStyles(View, {
       className: 'bg-linear-to-r from-[red] to-[blue]',

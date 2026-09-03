@@ -17,6 +17,7 @@ import {
   splitColorOpacitySuffix,
 } from '@tamagui/style-grammar/runtime'
 import {
+  classifyCandidate,
   decodeArbitrary,
   hasTokenName,
   type GrammarConfigView,
@@ -32,6 +33,12 @@ type Layer = {
   ringColor?: string
   ringInset?: boolean
   shadow?: string
+  textShadow?: {
+    offset: { width: number; height: number }
+    radius: number
+    defaultColor: string
+  }
+  textShadowColor?: string
 }
 
 type ComposerBag = {
@@ -154,11 +161,14 @@ function splitModifiers(candidate: string, colon: number): string[] {
 
 function composerKind(
   core: string
-): 'from' | 'via' | 'to' | 'image' | 'ring' | 'filter' | null {
+): 'from' | 'via' | 'to' | 'image' | 'ring' | 'filter' | 'text-shadow' | null {
   const first = core.charCodeAt(0)
   if (first === 102) return core.startsWith('from-') ? 'from' : null
   if (first === 118) return core.startsWith('via-') ? 'via' : null
-  if (first === 116) return core.startsWith('to-') ? 'to' : null
+  if (first === 116) {
+    if (core.startsWith('text-shadow-')) return 'text-shadow'
+    return core.startsWith('to-') ? 'to' : null
+  }
   if (first === 98) {
     if (core.startsWith('bg-linear-to-')) return 'image'
     return core.startsWith('blur-') || core.startsWith('brightness-') ? 'filter' : null
@@ -259,7 +269,7 @@ function resolveColor(raw: string, config: GrammarConfigView): string | null {
 function emit(
   sink: FrontendClassSink,
   property: string,
-  value: string,
+  value: unknown,
   modifiers: readonly string[]
 ): void {
   if (modifiers.length === 0) {
@@ -305,6 +315,8 @@ function merged(bag: ComposerBag, key: string): Layer {
     ringColor: variant.ringColor ?? bag.base.ringColor,
     ringInset: variant.ringInset ?? bag.base.ringInset,
     shadow: variant.shadow ?? bag.base.shadow,
+    textShadow: variant.textShadow ?? bag.base.textShadow,
+    textShadowColor: variant.textShadowColor ?? bag.base.textShadowColor,
   }
 }
 
@@ -373,6 +385,18 @@ function flush(
   if (image) emit(sink, 'backgroundImage', image, modifiers)
   const shadow = boxShadowCss(layer)
   if (shadow && layer.ringWidth != null) emit(sink, 'boxShadow', shadow, modifiers)
+  if (layer.textShadow) {
+    emit(sink, 'textShadowOffset', layer.textShadow.offset, modifiers)
+    emit(sink, 'textShadowRadius', layer.textShadow.radius, modifiers)
+    emit(
+      sink,
+      'textShadowColor',
+      layer.textShadowColor || layer.textShadow.defaultColor,
+      modifiers
+    )
+  } else if (layer.textShadowColor) {
+    emit(sink, 'textShadowColor', layer.textShadowColor, modifiers)
+  }
 }
 
 function flushDependents(sink: FrontendClassSink, bag: ComposerBag): void {
@@ -422,6 +446,50 @@ export function tryCompose(
     // explicitly instead of accepting a style that the host silently ignores.
     if (nativeTarget && part[0] !== 'brightness' && !isAndroid) return null
     noteFilter(sink, bag, part, modifiers)
+    return false
+  }
+
+  if (kind === 'text-shadow') {
+    const raw = core.slice('text-shadow-'.length)
+    const geometry = (
+      {
+        '2xs': {
+          offset: { width: 0, height: 1 },
+          radius: 0,
+          defaultColor: 'rgb(0 0 0 / 0.15)',
+        },
+        xs: {
+          offset: { width: 0, height: 1 },
+          radius: 1,
+          defaultColor: 'rgb(0 0 0 / 0.2)',
+        },
+        none: {
+          offset: { width: 0, height: 0 },
+          radius: 0,
+          defaultColor: 'transparent',
+        },
+      } as const
+    )[raw as '2xs' | 'xs' | 'none']
+    if (geometry) {
+      // Conditional object-valued textShadowOffset cannot be represented by
+      // the scalar native value program. Let Tailwind own web variants and
+      // explicitly reject them on native instead of emitting a partial shadow.
+      if (modifiers.length > 0) return nativeTarget ? null : undefined
+      layer.textShadow = geometry
+    } else {
+      const resolved = resolveColor(raw, config)
+      const classified = resolved == null ? classifyCandidate(core, config) : null
+      const color =
+        resolved ??
+        (classified?.kind === 'tamagui' &&
+        classified.parsed.entry?.prop === 'textShadowColor'
+          ? raw
+          : null)
+      if (color == null) return undefined
+      layer.textShadowColor = color
+    }
+    flush(sink, bag, modifiers)
+    if (modifiers.length === 0) flushDependents(sink, bag)
     return false
   }
 
