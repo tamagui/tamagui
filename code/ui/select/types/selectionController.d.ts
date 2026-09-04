@@ -23,6 +23,7 @@ export declare function createSelectItemRegistry(onChange?: () => void): {
     getItems: () => SelectRegisteredItem[];
     getItem: (value: string) => SelectRegisteredItem | undefined;
     getIndex: (value: string) => number;
+    getNodes: () => any[];
     firstEnabledIndex: () => number;
     nextEnabledIndex: (fromIndex: number | null, direction: 1 | -1) => number;
     findTypeaheadIndex: (search: string, fromIndex: number | null) => number;
@@ -43,6 +44,7 @@ export declare function createSelectSelectionController({ mode: initialMode, val
         getItems: () => SelectRegisteredItem[];
         getItem: (value: string) => SelectRegisteredItem | undefined;
         getIndex: (value: string) => number;
+        getNodes: () => any[];
         firstEnabledIndex: () => number;
         nextEnabledIndex: (fromIndex: number | null, direction: 1 | -1) => number;
         findTypeaheadIndex: (search: string, fromIndex: number | null) => number;

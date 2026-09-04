@@ -11,7 +11,7 @@ import {
 import type { GetProps } from '@tamagui/core'
 import { composeEventHandlers } from '@tamagui/helpers'
 import * as React from 'react'
-import { useSelectContext, useSelectItemParentContext } from './context'
+import { useSelectItemParentContext } from './context'
 import { getSelectOptionProps } from './selectionController'
 import type {
   SelectActiveChangeDetails,
@@ -67,12 +67,12 @@ export const SelectItem = createStyledHOC(
     } = props
     const disabled = disabledProp ?? ariaDisabled === true
 
+    // items read only the item parent context: the select context carries
+    // viewport state (position, scroll arrows) that must not re-render the list
     const context = useSelectItemParentContext(scope)
-    const selectContext = useSelectContext(scope)
-    const isAdapted = useAdaptIsActive(selectContext.adaptScope)
+    const isAdapted = useAdaptIsActive(context.adaptScope)
 
     const {
-      listRef,
       registry,
       mode,
       selectedValues,
@@ -82,9 +82,10 @@ export const SelectItem = createStyledHOC(
       allowMouseUpRef,
       allowSelectRef,
       selectTimeoutRef,
-      interactions,
+      getItemProps,
       shouldRenderWebNative,
-      setActiveIndexFast,
+      setActiveIndex,
+      lastPointerRef,
       moveActive,
       search,
     } = context
@@ -92,7 +93,6 @@ export const SelectItem = createStyledHOC(
     const isSelected = selectedValues.includes(value)
     const pendingMouseUpSelectionRef = React.useRef(false)
     const itemNodeRef = React.useRef<any>(null)
-    const [, rerenderRegistry] = React.useReducer((version) => version + 1, 0)
     const registrationRef = React.useRef<ReturnType<typeof registry.registerItem> | null>(
       null
     )
@@ -102,38 +102,13 @@ export const SelectItem = createStyledHOC(
       textValue: textValueProp,
     })
 
-    useIsomorphicLayoutEffect(
-      () => registry.subscribe(() => rerenderRegistry()),
-      [registry]
-    )
-
+    // the item never subscribes to the registry: its index is read at event
+    // time, and the owner mirrors the registry's nodes into the list ref
     useIsomorphicLayoutEffect(() => {
       const registration = registry.registerItem(initialRegistration.current)
       registrationRef.current = registration
-      const registeredNode = itemNodeRef.current
-      registration.setNode(registeredNode)
-      const registeredIndex = registry
-        .getItems()
-        .findIndex((item) => item.id === registration.id)
-      if (
-        isWeb &&
-        listRef &&
-        registeredIndex >= 0 &&
-        registeredNode instanceof HTMLElement
-      ) {
-        listRef.current[registeredIndex] = registeredNode
-      }
+      registration.setNode(itemNodeRef.current)
       return () => {
-        const currentIndex = registry
-          .getItems()
-          .findIndex((item) => item.id === registration.id)
-        if (
-          listRef &&
-          currentIndex >= 0 &&
-          listRef.current[currentIndex] === registeredNode
-        ) {
-          listRef.current[currentIndex] = null
-        }
         registrationRef.current = null
         registration.unregister()
       }
@@ -147,43 +122,41 @@ export const SelectItem = createStyledHOC(
       registrationRef.current?.setNode(itemNodeRef.current)
     })
 
-    const index = registry.getIndex(value)
+    // the only per-item state: this item is the active one. the active index
+    // itself is a ref plus an emitter, so a hover re-renders two items, not the list
+    const [isActive, setIsActive] = React.useState(false)
+    // every item hears every change; only the two whose state flips may set
+    // it, since a same-value set still renders once when updates are queued
+    const isActiveRef = React.useRef(false)
 
     React.useEffect(() => {
-      const handleActiveIndex = (i: number) => {
-        if (index === i) {
-          if (isWeb) {
-            // use rAF to focus after browser's click handling completes
-            // this prevents the trigger from stealing focus after we set it
-            requestAnimationFrame(() => {
-              listRef?.current[index]?.focus()
-            })
-          }
+      const handleActiveIndex = (i: number | null) => {
+        const next = i != null && registry.getIndex(value) === i
+        if (next !== isActiveRef.current) {
+          isActiveRef.current = next
+          setIsActive(next)
+        }
+        if (next && isWeb) {
+          // use rAF to focus after browser's click handling completes
+          // this prevents the trigger from stealing focus after we set it
+          requestAnimationFrame(() => {
+            itemNodeRef.current?.focus?.()
+          })
         }
       }
 
-      // check initial value (parent effect may have set it before we subscribed)
-      const currentActiveIndex = activeIndexRef?.current
-      if (currentActiveIndex !== null && currentActiveIndex !== undefined) {
-        handleActiveIndex(currentActiveIndex)
-      }
+      // the parent effect may have set it before we subscribed
+      handleActiveIndex(activeIndexRef?.current ?? null)
 
       return activeIndexSubscribe(handleActiveIndex)
-    }, [activeIndexRef, activeIndexSubscribe, index, listRef])
+    }, [activeIndexRef, activeIndexSubscribe, registry, value])
 
     const textId = React.useId()
 
-    const refCallback = React.useCallback(
-      (node) => {
-        itemNodeRef.current = node
-        registrationRef.current?.setNode(node)
-        if (!isWeb) return
-        if (listRef && index >= 0) {
-          listRef.current[index] = node instanceof HTMLElement ? node : null
-        }
-      },
-      [index, listRef]
-    )
+    const refCallback = React.useCallback((node) => {
+      itemNodeRef.current = node
+      registrationRef.current?.setNode(node)
+    }, [])
 
     const composedRefs = useComposedRefs(forwardedRef, refCallback)
 
@@ -203,6 +176,25 @@ export const SelectItem = createStyledHOC(
       [disabled, selectValue, value]
     )
 
+    const handleMouseMove = React.useCallback(
+      (event: any) => {
+        if (disabled) return
+        const index = registry.getIndex(value)
+        if (index < 0) return
+        const last = lastPointerRef.current
+        if (event.clientX === last.x && event.clientY === last.y) return
+        last.x = event.clientX
+        last.y = event.clientY
+        setActiveIndex(index, {
+          reason: 'item-hover',
+          event: event.nativeEvent || event,
+          trigger: event.currentTarget,
+          index,
+        } as SelectActiveChangeDetails)
+      },
+      [disabled, lastPointerRef, registry, setActiveIndex, value]
+    )
+
     const handleKeyDown = React.useCallback(
       (event: any) => {
         if (disabled) return
@@ -218,7 +210,7 @@ export const SelectItem = createStyledHOC(
           return
         }
         if (
-          !interactions &&
+          !getItemProps &&
           event.key?.length === 1 &&
           !event.metaKey &&
           !event.ctrlKey
@@ -229,11 +221,11 @@ export const SelectItem = createStyledHOC(
           allowSelectRef.current = true
         }
       },
-      [allowSelectRef, disabled, handleSelect, interactions, moveActive, search]
+      [allowSelectRef, disabled, handleSelect, getItemProps, moveActive, search]
     )
 
     const selectItemProps = React.useMemo(() => {
-      if (interactions) {
+      if (getItemProps) {
         const {
           onTouchMove,
           onTouchEnd,
@@ -244,7 +236,7 @@ export const SelectItem = createStyledHOC(
           onPress,
           ...itemProps
         } = restProps
-        const interactionProps = interactions.getItemProps({
+        const interactionProps = getItemProps({
           ...itemProps,
           onTouchMove() {
             allowSelectRef!.current = true
@@ -254,15 +246,7 @@ export const SelectItem = createStyledHOC(
             allowSelectRef!.current = false
             allowMouseUpRef!.current = true
           },
-          onMouseMove(event) {
-            if (disabled || index < 0) return
-            setActiveIndexFast?.(index, {
-              reason: 'item-hover',
-              event: event.nativeEvent || event,
-              trigger: event.currentTarget,
-              index,
-            } as SelectActiveChangeDetails)
-          },
+          onMouseMove: handleMouseMove,
           onKeyDown: handleKeyDown,
           onClick(event) {
             if (disabled) return
@@ -332,15 +316,7 @@ export const SelectItem = createStyledHOC(
       return {
         ...restProps,
         onKeyDown: composeEventHandlers(restProps.onKeyDown as any, handleKeyDown),
-        onMouseMove: composeEventHandlers(restProps.onMouseMove as any, (event: any) => {
-          if (disabled || index < 0) return
-          setActiveIndexFast?.(index, {
-            reason: 'item-hover',
-            event: event.nativeEvent || event,
-            trigger: event.currentTarget,
-            index,
-          } as SelectActiveChangeDetails)
-        }),
+        onMouseMove: composeEventHandlers(restProps.onMouseMove as any, handleMouseMove),
         onPress: composeEventHandlers(restProps.onPress as any, handleSelect),
       }
     }, [
@@ -348,12 +324,11 @@ export const SelectItem = createStyledHOC(
       allowSelectRef,
       disabled,
       handleKeyDown,
+      handleMouseMove,
       handleSelect,
-      index,
-      interactions,
+      getItemProps,
       restProps,
       selectTimeoutRef,
-      setActiveIndexFast,
     ])
 
     const accessibilityProps = getSelectOptionProps(
@@ -385,10 +360,10 @@ export const SelectItem = createStyledHOC(
             tabIndex={
               disabled
                 ? undefined
-                : isWeb && isAdapted
-                  ? index === (selectContext.activeIndex ?? selectContext.selectedIndex)
-                    ? 0
-                    : -1
+                : isWeb &&
+                    isAdapted &&
+                    (isActive || (activeIndexRef?.current == null && isSelected))
+                  ? 0
                   : -1
             }
             zIndex={100}

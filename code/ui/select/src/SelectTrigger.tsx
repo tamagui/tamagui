@@ -55,8 +55,8 @@ export const SelectTrigger = createStyledHOC(
       }
     }
     const interactionProps =
-      process.env.TAMAGUI_TARGET === 'web' && itemParentContext.interactions
-        ? itemParentContext.interactions.getReferenceProps({
+      process.env.TAMAGUI_TARGET === 'web' && context.interactions
+        ? context.interactions.getReferenceProps({
             ...triggerProps,
             onMouseDown: composeEventHandlers(triggerProps.onMouseDown as any, () =>
               context.floatingContext?.update?.()

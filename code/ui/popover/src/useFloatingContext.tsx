@@ -244,8 +244,8 @@ export const useFloatingContext = ({
       //
       // no memoization concern: this entire block runs inside the
       // useCallback factory which already produces fresh closures each
-      // call ('use no memo'), and getFloatingPropsInner from
-      // useInteractions is already a new reference each render.
+      // call ('use no memo'); getFloatingPropsInner is memoized on the
+      // interaction hooks' props, and wrapping it here keeps that.
       const getFloatingProps = currentHoverable
         ? (userProps?: Record<string, any>) => {
             const merged = getFloatingPropsInner(userProps)

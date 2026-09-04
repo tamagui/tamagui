@@ -68,7 +68,7 @@ const SelectScrollButtonImpl = React.memo(
       const { scope, dir, partClassName, ...scrollIndicatorProps } = props
       const { className, onPointerEnter, onPointerLeave, ...frameProps } =
         scrollIndicatorProps
-      const { open, fallback, setScrollTop, setInnerOffset, ...context } =
+      const { open, fallback, updateScrollArrows, setInnerOffset, ...context } =
         useSelectContext(scope)
       const floatingRef = context.floatingContext?.refs.floating
 
@@ -109,7 +109,7 @@ const SelectScrollButtonImpl = React.memo(
         if (fallback) {
           if (floating.current) {
             floating.current.scrollTop -= amount
-            flushSync(() => setScrollTop!(floating.current?.scrollTop ?? 0))
+            updateScrollArrows!()
           }
         } else {
           flushSync(() => setInnerOffset!((value) => value - amount))

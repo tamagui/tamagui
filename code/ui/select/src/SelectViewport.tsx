@@ -62,7 +62,7 @@ export const SelectViewport = createStyledHOC(
         activeItem?.focus()
       })
       return () => cancelAnimationFrame(frame)
-    }, [context.activeIndex, context.open, isAdapted, registeredItemCount])
+    }, [context.open, isAdapted, registeredItemCount])
 
     const composedRefs = useComposedRefs(
       // @ts-ignore react 19 ref type mismatch
@@ -115,16 +115,11 @@ export const SelectViewport = createStyledHOC(
       )
     }
 
-    if (!itemContext.interactions) {
+    if (!context.interactions) {
       return null
     }
 
-    const {
-      style,
-      // remove this, it was set to "Select" always
-      className,
-      ...floatingProps
-    } = itemContext.interactions.getFloatingProps()
+    const floatingProps = context.interactions.getFloatingProps()
 
     // FloatingFocusManager removed — SelectContent already wraps with FocusScope
     // that handles focus trapping and auto-focus
@@ -137,7 +132,10 @@ export const SelectViewport = createStyledHOC(
             }}
           />
         )}
-        <AnimatePresence>
+        {/* every styled item reads the presence context, and the default
+            (layout-affecting) presence hands out a new context per render, so
+            each viewport render would re-render the whole list */}
+        <AnimatePresence presenceAffectsLayout={false}>
           {context.open ? (
             <SelectViewportFrame
               key="select-viewport"
@@ -146,10 +144,11 @@ export const SelectViewport = createStyledHOC(
                 'data-state': context.open ? 'open' : 'closed',
               })}
               {...viewportProps}
-              {...style}
+              {...context.floatingPosition}
+              outlineWidth={0}
               {...floatingProps}
               {...getSelectListboxProps(itemContext.mode)}
-              overflowY={disableScroll ? undefined : (style.overflow ?? 'auto')}
+              overflowY={disableScroll ? undefined : 'auto'}
               ref={composedRefs}
             >
               {lazyMounted ? children : null}

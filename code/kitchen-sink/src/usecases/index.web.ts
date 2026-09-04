@@ -239,6 +239,7 @@ const loaders: Record<string, () => ComponentType<any>> = {
   SelectFocusScopeCase: () => require('./SelectFocusScopeCase').SelectFocusScopeCase,
   SelectMultipleCase: () => require('./SelectMultipleCase').SelectMultipleCase,
   SelectRemount: () => require('./SelectRemount').SelectRemount,
+  SelectRenderProbeCase: () => require('./SelectRenderProbeCase').SelectRenderProbeCase,
   SelectSkin: () => require('./SelectSkin').SelectSkin,
   Shadows: () => require('./Shadows').Shadows,
   ShorthandVariables: () => require('./ShorthandVariables').ShorthandVariables,

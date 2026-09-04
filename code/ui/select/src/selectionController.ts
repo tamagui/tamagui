@@ -43,7 +43,12 @@ export function createSelectItemRegistry(onChange?: () => void) {
   const itemNodes = new Map<symbol, any>()
   const listeners = new Set<() => void>()
 
+  // value -> first index, rebuilt after any change: items look themselves up
+  // on every active-index emit, so the lookup must not walk the list
+  let indexByValue: Map<string, number> | null = null
+
   const notify = () => {
+    indexByValue = null
     onChange?.()
     listeners.forEach((listener) => listener())
   }
@@ -52,7 +57,18 @@ export function createSelectItemRegistry(onChange?: () => void) {
 
   const getItem = (value: string) => items.find((item) => item.value === value)
 
-  const getIndex = (value: string) => items.findIndex((item) => item.value === value)
+  const getIndex = (value: string) => {
+    if (!indexByValue) {
+      indexByValue = new Map()
+      items.forEach((item, index) => {
+        if (!indexByValue!.has(item.value)) indexByValue!.set(item.value, index)
+      })
+    }
+    return indexByValue.get(value) ?? -1
+  }
+
+  /** the mounted nodes in item order; the owner mirrors this into its list ref */
+  const getNodes = () => items.map((item) => itemNodes.get(item.id) ?? null)
 
   const getRegisteredLabel = (value: string) => {
     const registrations = labelRegistrations.get(value)
@@ -78,7 +94,6 @@ export function createSelectItemRegistry(onChange?: () => void) {
   }
 
   const syncNodeOrder = () => {
-    const previousOrder = items.map((item) => item.id)
     items.sort((a, b) => {
       const aNode = itemNodes.get(a.id)
       const bNode = itemNodes.get(b.id)
@@ -90,9 +105,6 @@ export function createSelectItemRegistry(onChange?: () => void) {
       if (position & 2) return 1
       return 0
     })
-    if (items.some((item, index) => item.id !== previousOrder[index])) {
-      notify()
-    }
   }
 
   const registerItem = (
@@ -138,12 +150,14 @@ export function createSelectItemRegistry(onChange?: () => void) {
         notify()
       },
       setNode(node) {
+        if ((itemNodes.get(id) ?? null) === (node ?? null)) return
         if (node) {
           itemNodes.set(id, node)
           syncNodeOrder()
         } else {
           itemNodes.delete(id)
         }
+        notify()
       },
       unregister() {
         const index = items.findIndex((current) => current.id === id)
@@ -223,6 +237,7 @@ export function createSelectItemRegistry(onChange?: () => void) {
     getItems,
     getItem,
     getIndex,
+    getNodes,
     firstEnabledIndex,
     nextEnabledIndex,
     findTypeaheadIndex,

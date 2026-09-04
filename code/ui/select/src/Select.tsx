@@ -86,6 +86,14 @@ export const SelectValue = createStyledHOC(
     )
     const isEmptyValue = context.selectedValues.length === 0
 
+    // the label comes from the registry, which items fill in after mount and
+    // outside any context value, so this is the one registry subscriber
+    const [, rerender] = React.useReducer((version: number) => version + 1, 0)
+    useIsomorphicLayoutEffect(
+      () => itemParentContext.registry.subscribe(rerender),
+      [itemParentContext.registry]
+    )
+
     // renderValue is synchronous for ssr and lazy item mounting
     const registeredValue =
       context.mode === 'multiple'
@@ -184,7 +192,7 @@ export const SelectIndicator = createStyledHOC(
 
     const rafRef = React.useRef<any>(0)
 
-    React.useLayoutEffect(() => {
+    useIsomorphicLayoutEffect(() => {
       const update = (index: number | null) => {
         if (typeof index !== 'number') return
         cancelAnimationFrame(rafRef.current)
@@ -541,23 +549,28 @@ function SelectInner(
     })
   }, [props.id, requestOpenChange])
 
-  // activeIndex is stored in a ref to avoid re-renders on every hover
-  // we have two setters:
-  // - setActiveIndexFast: updates ref + emits to subscribers (no re-render) - use for hover/navigation
-  // - setActiveIndex: updates ref + emits + triggers re-render - use when UI needs to update
-  // initialize to null so floating-ui starts from selectedIndex on first open
+  // the active index is a ref plus an emitter, never React state: hover and
+  // arrow keys must not re-render the list. an item that has to react (focus,
+  // the roving tabindex) subscribes and updates only itself.
+  // null until first open so floating-ui starts from selectedIndex
   const activeIndexRef = React.useRef<number | null>(null)
-  const [activeIndex, setActiveIndexState] = React.useState<number | null>(null)
 
-  const [emitActiveIndex, activeIndexSubscribe] = useEmitter<number>()
+  const [emitActiveIndex, activeIndexSubscribe] = useEmitter<number | null>()
 
   const selectedIndexRef = React.useRef<number | null>(null)
+  // a focus-driven scroll makes the browser re-dispatch mousemove under a
+  // pointer that never moved; items compare against this to ignore it
+  const lastPointerRef = React.useRef({ x: -1, y: -1 })
   const listContentRef = React.useRef<string[]>([])
   const listRef = React.useRef<Array<HTMLElement | null>>([])
   const [valueNode, setValueNode] = React.useState<HTMLElement | null>(null)
   const selectedIndex = Math.max(0, controller.selectionAnchorIndex())
   listContentRef.current = registry.getTypeaheadLabels()
-  listRef.current.length = registry.getItems().length
+  // the registry re-renders this on every registration and node change, so
+  // the list ref (floating-ui's focus target array) mirrors it here
+  const itemNodes = registry.getNodes()
+  listRef.current.length = itemNodes.length
+  for (let i = 0; i < itemNodes.length; i++) listRef.current[i] = itemNodes[i]
 
   // Intentionally dependency-less: selectedIndexRef mirrors every render for non-reactive reads.
   useIsomorphicLayoutEffect(() => {
@@ -570,33 +583,20 @@ function SelectInner(
       native === 'web' ||
       (Array.isArray(native) && native.includes('web')))
 
-  // fast setter: updates ref + emits to subscribers without causing re-renders
-  // use this for mouse hover / keyboard navigation where we don't need parent re-renders
-  const setActiveIndexFast = React.useCallback(
+  const setActiveIndex = React.useCallback(
     (index: number | null, details?: SelectActiveChangeDetails) => {
-      if (activeIndexRef.current !== index) {
-        activeIndexRef.current = index
-        controller.setActiveIndex(index)
-        if (typeof index === 'number') {
-          emitActiveIndex(index)
-          const item = registry.getItems()[index]
-          if (item && details) {
-            onActiveChange?.(item.value, details)
-          }
+      if (activeIndexRef.current === index) return
+      activeIndexRef.current = index
+      controller.setActiveIndex(index)
+      emitActiveIndex(index)
+      if (typeof index === 'number') {
+        const item = registry.getItems()[index]
+        if (item && details) {
+          onActiveChange?.(item.value, details)
         }
       }
     },
     [controller, emitActiveIndex, onActiveChange, registry]
-  )
-
-  // slow setter: also triggers a re-render for components that need the state value
-  // use this sparingly, e.g., when controlled scrolling needs to scroll item into view
-  const setActiveIndex = React.useCallback(
-    (index: number | null, details?: SelectActiveChangeDetails) => {
-      setActiveIndexFast(index, details)
-      setActiveIndexState(index)
-    },
-    [setActiveIndexFast]
   )
 
   const activeDetails = React.useCallback(
@@ -657,8 +657,7 @@ function SelectInner(
         setActiveIndex(nextIndex, activeDetails('list-navigation', nextIndex))
       }
     } else {
-      setActiveIndexFast(null)
-      setActiveIndexState(null)
+      setActiveIndex(null)
     }
   }, [open, selectedIndex, registry.getItems().length])
 
@@ -721,7 +720,9 @@ function SelectInner(
       selectValue={selectValue}
       changeNativeValue={changeNativeValue}
       shouldRenderWebNative={shouldRenderWebNative}
-      setActiveIndexFast={setActiveIndexFast}
+      setActiveIndex={setActiveIndex}
+      selectedIndex={selectedIndex}
+      lastPointerRef={lastPointerRef}
       listRef={listRef}
       moveActive={moveActive}
       search={search}
@@ -736,17 +737,12 @@ function SelectInner(
         fallback={false}
         valueNode={valueNode}
         onValueNodeChange={setValueNode}
-        activeIndex={activeIndex}
         activeIndexRef={activeIndexRef}
         selectedIndex={selectedIndex}
         setActiveIndex={setActiveIndex}
         value={value}
         mode={mode}
         selectedValues={selectedValues}
-        activeItem={
-          activeIndex == null ? undefined : registry.getItems()[activeIndex]?.value
-        }
-        selectionAnchor={controller.selectionAnchor()?.value}
         open={open}
         native={native}
         renderValue={renderValue}
@@ -759,7 +755,6 @@ function SelectInner(
             activeIndexRef={activeIndexRef}
             listContentRef={listContentRef}
             selectedIndexRef={selectedIndexRef}
-            setActiveIndexFast={setActiveIndexFast}
             {...props}
             open={open}
             value={value}

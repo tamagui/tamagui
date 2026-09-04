@@ -31,8 +31,6 @@ export type SelectImplProps = SelectScopedProps<SelectProps<string, boolean>> & 
     activeIndexRef: any;
     selectedIndexRef: any;
     listContentRef: any;
-    /** fast setter: updates ref + emits to subscribers (no re-render) - use for hover/navigation */
-    setActiveIndexFast: (index: number | null) => void;
 };
 export interface SelectProps<Value extends string = string, Multiple extends boolean | undefined = false> {
     id?: string;
@@ -107,39 +105,40 @@ export interface SelectItemParentContextValue {
     requestOpenChange: (open: boolean, details: SelectOpenChangeDetails) => void;
     selectValue: (value: string, details: SelectValueChangeDetails) => void;
     changeNativeValue: (value: SelectSelection, event: unknown) => void;
-    activeIndexSubscribe: EmitterSubscriber<number>;
+    activeIndexSubscribe: EmitterSubscriber<number | null>;
     activeIndexRef?: MutableRefObject<number | null>;
     allowSelectRef?: MutableRefObject<boolean>;
     allowMouseUpRef?: MutableRefObject<boolean>;
     selectTimeoutRef?: MutableRefObject<any>;
     dataRef?: MutableRefObject<ContextData>;
-    interactions?: {
-        getReferenceProps: (userProps?: HTMLProps<Element> | undefined) => any;
-        getFloatingProps: (userProps?: HTMLProps<HTMLElement> | undefined) => any;
-        getItemProps: (userProps?: HTMLProps<HTMLElement> | undefined) => any;
-    };
+    /** web only: stable once the list mounts, so it can live beside the items */
+    getItemProps?: (userProps?: HTMLProps<HTMLElement> | undefined) => any;
     shouldRenderWebNative?: boolean;
     size?: SizeTokens | true;
-    /** fast setter: updates ref + emits to subscribers (no re-render) - use for keyboard navigation */
-    setActiveIndexFast?: (index: number | null, details?: SelectActiveChangeDetails) => void;
+    setActiveIndex: (index: number | null, details?: SelectActiveChangeDetails) => void;
+    selectedIndex: number;
+    lastPointerRef: MutableRefObject<{
+        x: number;
+        y: number;
+    }>;
     moveActive: (direction: 1 | -1, event?: unknown) => void;
     search: (text: string, event?: unknown) => void;
 }
 export interface SelectContextValue {
+    /** web only: the trigger and viewport prop getters; change with the floating element */
+    interactions?: {
+        getReferenceProps: (userProps?: HTMLProps<Element> | undefined) => any;
+        getFloatingProps: (userProps?: HTMLProps<HTMLElement> | undefined) => any;
+    };
     dir?: SelectDirection;
     scopeName: string;
     adaptScope: string;
     value: any;
     mode: SelectMode;
     selectedValues: string[];
-    activeItem?: string;
-    selectionAnchor?: string;
     selectedIndex: number;
-    /** current active index state - use for rendering, may lag behind ref */
-    activeIndex: number | null;
-    /** ref to current active index - always up to date, use for reads */
+    /** the active index is never state: read the ref, or subscribe through the item parent context */
     activeIndexRef: MutableRefObject<number | null>;
-    /** slow setter: updates ref + emits + triggers re-render */
     setActiveIndex: (index: number | null, details?: SelectActiveChangeDetails) => void;
     open: boolean;
     valueNode: Element | null;
@@ -148,12 +147,19 @@ export interface SelectContextValue {
     blockSelection: boolean;
     upArrowRef?: MutableRefObject<HTMLDivElement | null>;
     downArrowRef?: MutableRefObject<HTMLDivElement | null>;
-    setScrollTop?: Function;
+    /** re-reads the viewport and flips canScrollUp/Down when they change */
+    updateScrollArrows?: () => void;
     setInnerOffset?: Function;
     controlledScrolling?: boolean;
     canScrollUp?: boolean;
     canScrollDown?: boolean;
     floatingContext?: FloatingContext<ReferenceType>;
+    /** InlineImpl only: where floating-ui put the viewport */
+    floatingPosition?: {
+        position: 'absolute' | 'fixed';
+        top: number | '';
+        left: number | '';
+    };
     native?: NativeValue;
     disablePreventBodyScroll?: boolean;
     /** update floating-ui to recalculate */
