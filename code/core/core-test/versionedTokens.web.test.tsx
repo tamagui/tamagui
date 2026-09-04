@@ -23,6 +23,51 @@ describe('default token config', () => {
     }
   })
 
+  test('emits every numeric token category with a css unit', () => {
+    // outside quirks mode a unitless length is invalid, so the browser drops
+    // the whole declaration: `width:var(--c-width-10)` against
+    // `--c-width-10:40` leaves the element at auto width and the token silently
+    // does nothing. every numeric category has to be listed in UNIT_CATEGORIES
+    // in createTamagui; zIndex is the one that is unitless by definition.
+    const conf = createTamagui(defaultConfig)
+    const css: string = conf.getCSS()
+    const unitless: string[] = []
+    const seen = new Set<string>()
+
+    for (const [category, tokens] of Object.entries(conf.tokensParsed as any)) {
+      if (category === 'zIndex') continue
+      for (const variable of Object.values(tokens as any) as any[]) {
+        // 0 is valid unitless, so it cannot tell a missing unit from a good one
+        if (typeof variable?.val !== 'number' || variable.val === 0) continue
+        const decl = `--${variable.name}:`
+        const at = css.indexOf(decl)
+        if (at === -1) continue
+        seen.add(category)
+        // the last declaration in a block has no trailing `;`
+        const from = at + decl.length
+        const ends = [css.indexOf(';', from), css.indexOf('}', from)].filter(
+          (i) => i !== -1
+        )
+        const value = css.slice(from, Math.min(...ends)).trim()
+        if (!/^-?[\d.]+px$/.test(value)) unitless.push(`${decl}${value}`)
+      }
+    }
+
+    // the dimensional categories the tailwind scales added, named so this stays
+    // a real check rather than passing on a config that never had them
+    for (const category of [
+      'size',
+      'space',
+      'radius',
+      'width',
+      'maxWidth',
+      'flexBasis',
+    ]) {
+      expect(seen, `no ${category} tokens reached the css`).toContain(category)
+    }
+    expect(unitless).toEqual([])
+  })
+
   test('resolves boolean style tokens through the built-in key', () => {
     createTamagui(defaultConfig)
     let seenSize: unknown

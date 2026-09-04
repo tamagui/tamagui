@@ -106,6 +106,8 @@ describe('styled() tests', () => {
       throw new Error(`No output`)
     }
 
+    // width has its own token category (a superset of size that adds the
+    // container scale), height falls back to size
     expect(output.styles).toContain('width:var(--c-width-10)')
     expect(output.styles).toContain('height:var(--c-size-10)')
     expect(output.styles).toContain('border-top-left-radius:var(--c-radius-xl)')

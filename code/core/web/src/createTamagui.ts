@@ -50,13 +50,33 @@ const reservedCssIdentsLower: ReadonlySet<string> = new Set([
   'currentcolor',
 ])
 
-function shouldTokenCategoryHaveUnits(category: string): boolean {
-  // From TokenCategories type: 'color' | 'space' | 'size' | 'radius' | 'zIndex'
-  // These are the only predefined categories that should get px units
-  const UNIT_CATEGORIES = new Set(['size', 'space', 'radius'])
+// every built-in category whose values are bare numbers standing for a CSS
+// length. a unitless length is invalid CSS outside quirks mode, so the browser
+// drops the whole declaration: `width:var(--c-width-10)` against
+// `--c-width-10:40` leaves the element at auto width, silently. the tailwind
+// coverage work added the width/inline-size/flex-basis/outline/perspective
+// scales without adding them here, which made every one of those tokens a no-op
+// on web.
+// zIndex is unitless by definition, and color/boxShadow hold strings (which
+// variableToCSS passes through untouched), so none of them belong here. custom
+// categories still default to unitless.
+const UNIT_CATEGORIES: ReadonlySet<string> = new Set([
+  'size',
+  'space',
+  'radius',
+  'width',
+  'minWidth',
+  'maxWidth',
+  'inlineSize',
+  'minInlineSize',
+  'maxInlineSize',
+  'flexBasis',
+  'outlineWidth',
+  'outlineOffset',
+  'perspective',
+])
 
-  // Only add px to predefined dimensional categories
-  // Custom categories (like 'opacity', 'customWidth') default to unitless
+function shouldTokenCategoryHaveUnits(category: string): boolean {
   return UNIT_CATEGORIES.has(category)
 }
 

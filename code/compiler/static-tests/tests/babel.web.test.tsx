@@ -386,8 +386,9 @@ test('flexBasis: 0 with responsive style extracts correctly', async () => {
   `
   )
 
-  // fb: 0 should extract as 0px, not auto. the bare 1 is a size token: flexBasis
-  // is declared in the size category, and a bare `flex-basis:1` is not valid css
+  // fb: 0 should extract as 0px, not auto. the bare 1 is a token in flexBasis's
+  // own category, and a bare `flex-basis:1` is not valid css, so that variable
+  // has to carry px (see UNIT_CATEGORIES in createTamagui)
   expect(output?.styles).toMatch(
     /(\._f-\d+)\{flex-basis:var\(--c-flexBasis-1\)\}@media \(min-width: 640px\) \{\1\{flex-basis:0px\}\}/
   )
