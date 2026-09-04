@@ -113,7 +113,7 @@ async function waitForContent(page, port) {
     'grid-template-columns',
     /.+ .+ .+/
   )
-  await expect(page.locator('#hybrid-container-child')).toHaveCSS('transform', /13/)
+  await expect(page.locator('#hybrid-container-child')).toHaveCSS('translate', '13px')
   await expect(page.locator('#hybrid-scanner-owned')).toHaveCSS(
     'grid-template-columns',
     '77px'
@@ -288,8 +288,11 @@ test(`builds to prod same thing`, async ({ page }) => {
   }
   console.info(`D0 CSS metrics ${JSON.stringify(metrics)}`)
 
-  expect(css).toContain('.grid')
-  expect(css).toContain('.grid-cols-2')
+  // grid utilities are tamagui-owned; only the container-query variant stays
+  // with the tailwind engine
+  expect(css).toContain('grid-cols-3')
+  expect(css).not.toMatch(/\.grid(?:[,{:]|\s)/)
+  expect(css).not.toMatch(/\.grid-cols-2(?:[,{:]|\s)/)
   expect(css).not.toMatch(/\.p-4(?:[,{:]|\s)/)
   expect(css).not.toContain('box-sizing: border-box; border: 0 solid')
   expect(css).not.toMatch(/\*,\s*::before,\s*::after/)

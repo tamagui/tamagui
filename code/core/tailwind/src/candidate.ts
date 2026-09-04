@@ -1,4 +1,5 @@
 import { isWeb } from '@tamagui/constants'
+import { stylePropsUnitless } from '@tamagui/helpers'
 import {
   mergeFrontendCondition,
   plainValueToPayload,
@@ -65,9 +66,10 @@ export function isTokenValueProp(prop: string): boolean {
 // StyleSheetTypes types fontSize/lineHeight/letterSpacing as number). web accepts the number and
 // re-adds px via CSS. anything carrying a real unit/function (%, rem, vh, deg, calc(), var(),
 // #hex, colors) stays a STRING.
-function arbitraryValue(inner: string): number | string {
+function arbitraryValue(inner: string, prop?: string): number | string {
   const px = /^(-?\d*\.?\d+)px$/.exec(inner)
-  if (px) return Number(px[1])
+  // a unitless prop (grid-cols-[77px]) never gets px re-added, so the length stays a string
+  if (px) return prop && stylePropsUnitless[prop] ? inner : Number(px[1])
   if (/^-?\d*\.?\d+$/.test(inner)) return Number(inner)
   return inner
 }
@@ -292,7 +294,7 @@ function tailwindClassToFlatProp(
     if (inner === '') return null
     // px-length + unitless arbitraries become NUMBERS (native requires numbers, drops "Npx"
     // strings); unit/function values stay strings. one canonical rule (arbitraryValue).
-    let resolved = arbitraryValue(inner)
+    let resolved = arbitraryValue(inner, prop)
     // rotate requires a unit-bearing string on native — a bare number from rotate-[45]
     // triggers a redbox. append deg when the arbitrary resolved to a unitless number.
     if (

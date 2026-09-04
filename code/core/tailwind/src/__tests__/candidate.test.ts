@@ -186,6 +186,14 @@ describe('claimed candidates become flat props', () => {
     expect(tokenize('grid-cols-subgrid')).toEqual({ gridTemplateColumns: 'subgrid' })
   })
 
+  test('arbitrary grid lengths keep their unit: the grid props are unitless', () => {
+    expect(tokenize('grid-cols-[77px]')).toEqual({ gridTemplateColumns: '77px' })
+    expect(tokenize('grid-cols-[repeat(2,1fr)]')).toEqual({
+      gridTemplateColumns: 'repeat(2,1fr)',
+    })
+    expect(tokenize('w-[77px]')).toEqual({ width: 77 })
+  })
+
   test('col-span and row-span resolve to span syntax', () => {
     expect(tokenize('col-span-2')).toEqual({ gridColumn: 'span 2 / span 2' })
     expect(tokenize('col-span-full')).toEqual({ gridColumn: '1 / -1' })
