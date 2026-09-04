@@ -77,6 +77,8 @@ const configEnv = (): SizeResolverEnv => {
   }
 }
 
+let warnedNoDefault = false
+
 const px = (value: unknown) => {
   const n = Number.parseFloat(String(getVariableValue(value)))
   return Number.isFinite(n) ? n : 0
@@ -118,7 +120,8 @@ export const resolveSize = (
   }
 
   if (key == null) {
-    if (process.env.NODE_ENV === 'development') {
+    if (process.env.NODE_ENV === 'development' && !warnedNoDefault) {
+      warnedNoDefault = true
       console.error(
         `No default size: pass "sizes" to createTamagui (see @tamagui/config/v6 "sizes"). Falling back to token "4".`
       )

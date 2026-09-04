@@ -203,6 +203,25 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     )
   }
 
+  // a named size reads its font key from the component's font, falling back to
+  // the default font, so the default font must carry every recipe's key or
+  // text sized by name renders with no font size at all
+  if (process.env.NODE_ENV === 'development' && configIn.sizes && fontsParsed) {
+    const fontSizes = fontsParsed[defaultFontToken]?.size ?? {}
+    const missing = Object.entries(configIn.sizes).flatMap(([name, spec]) =>
+      typeof spec === 'object' && !(spec.fontSize in fontSizes)
+        ? [`${name} (fontSize "${spec.fontSize}")`]
+        : []
+    )
+    if (missing.length) {
+      console.error(
+        `fonts.${defaultFontToken} lacks the font size keys these named sizes use: ${missing.join(
+          ', '
+        )}. Wrap the font with withTailwindTypeScale from @tamagui/config/v6, or give "sizes" keys your fonts define.`
+      )
+    }
+  }
+
   const themeConfig = (() => {
     // CSS generation (tree-shaken when TAMAGUI_DID_OUTPUT_CSS is set)
     const declarations = createTokenCSS(tokens as any, shouldTokenCategoryHaveUnits)

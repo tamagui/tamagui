@@ -326,20 +326,20 @@ function __TamaguiNativeStyle6031() { return __TamaguiNativeStyle6031._ ?? (__Ta
 function __TamaguiNativeStyle6056() { return __TamaguiNativeStyle6056._ ?? (__TamaguiNativeStyle6056._ = {"fontFamily":"InterBold","marginTop":0,"marginRight":0,"marginBottom":0,"marginLeft":0,"fontSize":46,"letterSpacing":-3,"lineHeight":56,"textTransform":"none","textAlign":"center"}); } __TamaguiNativeStyle6056();
 const __TamaguiNativeText = require('react-native').Text;
 const __TamaguiStableText6056 = require('@tamagui/core')._withStableStyle(__TamaguiNativeText, (_theme, expressions) => [__TamaguiNativeStyle6056._ ?? __TamaguiNativeStyle6056(), { "color": _theme["color11"]?.get() }], true, false);
-function __TamaguiNativeStyle6143() { return __TamaguiNativeStyle6143._ ?? (__TamaguiNativeStyle6143._ = {"fontFamily":"Inter","fontSize":15,"letterSpacing":0,"lineHeight":27,"textAlign":"center"}); } __TamaguiNativeStyle6143();
+function __TamaguiNativeStyle6143() { return __TamaguiNativeStyle6143._ ?? (__TamaguiNativeStyle6143._ = {"fontFamily":"Inter","fontSize":14,"lineHeight":20,"textAlign":"center"}); } __TamaguiNativeStyle6143();
 const __TamaguiStableText6143 = require('@tamagui/core')._withStableStyle(__TamaguiNativeText, (_theme, expressions) => [__TamaguiNativeStyle6143._ ?? __TamaguiNativeStyle6143(), { "color": _theme["color10"]?.get() }], true, false);
 function __TamaguiNativeStyle6294() { return __TamaguiNativeStyle6294._ ?? (__TamaguiNativeStyle6294._ = {"flexShrink":0,"borderStyle":"solid","borderTopWidth":0,"borderRightWidth":0,"borderBottomWidth":1,"borderLeftWidth":0,"flex":1,"height":0,"maxHeight":0,"transform":[{"translateY":-0.5}]}); } __TamaguiNativeStyle6294();
 const __TamaguiStableView6294 = require('@tamagui/core')._withStableStyle(__TamaguiNativeView, (_theme, expressions) => [__TamaguiNativeStyle6294._ ?? __TamaguiNativeStyle6294(), { "borderTopColor": _theme["background-focus"]?.get(), "borderRightColor": _theme["background-focus"]?.get(), "borderBottomColor": _theme["background-focus"]?.get(), "borderLeftColor": _theme["background-focus"]?.get() }], true, false);
-function __TamaguiNativeStyle6316() { return __TamaguiNativeStyle6316._ ?? (__TamaguiNativeStyle6316._ = {"fontFamily":"Inter","fontSize":15,"letterSpacing":0,"lineHeight":27,"textAlign":"center"}); } __TamaguiNativeStyle6316();
+function __TamaguiNativeStyle6316() { return __TamaguiNativeStyle6316._ ?? (__TamaguiNativeStyle6316._ = {"fontFamily":"Inter","fontSize":14,"lineHeight":20,"textAlign":"center"}); } __TamaguiNativeStyle6316();
 const __TamaguiStableText6316 = require('@tamagui/core')._withStableStyle(__TamaguiNativeText, (_theme, expressions) => [__TamaguiNativeStyle6316._ ?? __TamaguiNativeStyle6316(), { "color": _theme["color"]?.get() }], true, false);
 function __TamaguiNativeStyle6441() { return __TamaguiNativeStyle6441._ ?? (__TamaguiNativeStyle6441._ = {"flexShrink":0,"borderStyle":"solid","borderTopWidth":0,"borderRightWidth":0,"borderBottomWidth":1,"borderLeftWidth":0,"flex":1,"height":0,"maxHeight":0,"transform":[{"translateY":-0.5}]}); } __TamaguiNativeStyle6441();
 const __TamaguiStableView6441 = require('@tamagui/core')._withStableStyle(__TamaguiNativeView, (_theme, expressions) => [__TamaguiNativeStyle6441._ ?? __TamaguiNativeStyle6441(), { "borderTopColor": _theme["background-focus"]?.get(), "borderRightColor": _theme["background-focus"]?.get(), "borderBottomColor": _theme["background-focus"]?.get(), "borderLeftColor": _theme["background-focus"]?.get() }], true, false);
 function __TamaguiNativeStyle7348() { return __TamaguiNativeStyle7348._ ?? (__TamaguiNativeStyle7348._ = {"flexDirection":"row","gap":8}); } __TamaguiNativeStyle7348();
-function __TamaguiNativeStyle7377() { return __TamaguiNativeStyle7377._ ?? (__TamaguiNativeStyle7377._ = {"fontFamily":"Inter","fontSize":15,"letterSpacing":0,"lineHeight":27,"textAlign":"center"}); } __TamaguiNativeStyle7377();
+function __TamaguiNativeStyle7377() { return __TamaguiNativeStyle7377._ ?? (__TamaguiNativeStyle7377._ = {"fontFamily":"Inter","fontSize":14,"lineHeight":20,"textAlign":"center"}); } __TamaguiNativeStyle7377();
 const __TamaguiStableText7377 = require('@tamagui/core')._withStableStyle(__TamaguiNativeText, (_theme, expressions) => [__TamaguiNativeStyle7377._ ?? __TamaguiNativeStyle7377(), { "color": _theme["color"]?.get() }], true, false);"
 `;
 
-exports[`Package.json exports support > should build app package for both web and native targets > web-css 1`] = `"._f-2057920087{flex-direction:column}._g-924523079{gap:var(--c-space-4)}._f-1841970073{flex-direction:row}._w-1646821508{width:100%}._ai-1055227096{align-items:center}._zi-496988513{z-index:10}._p-671726952{position:absolute}._i-1765874804._i-1765874804._i-1765874804._i-1765874804{right:0px}._i-1765874804._i-1765874804._i-1765874804._i-1765874804{top:0px}._i-1765874804._i-1765874804._i-1765874804._i-1765874804{bottom:0px}._jc-166379546{justify-content:center}._w-993787910{width:var(--c-size-4)}._pe-1461982632{pointer-events:none}._pe-1461982632>*{pointer-events:none}._f-549969169{flex-direction:column}._f-549969169._f-549969169._f-549969169._f-549969169{flex:1 0px}._g-924523203{gap:var(--c-space-8)}._p-1370393726{padding:var(--c-space-4)}._b-803444677{background-color:var(--background)}._f-27493358{flex-direction:row}._f-27493358._f-27493358._f-27493358._f-27493358{flex-wrap:wrap}._p-965320571{position:absolute}@media (min-width: 640px) {._p-965320571{position:relative}}._i-117282577{top:var(--c-space-6)}@media (min-width: 640px) {._i-117282577{top:0px}}._g-924523141{gap:var(--c-space-6)}._g-924523017{gap:var(--c-space-2)}._us-601593343{user-select:auto;-webkit-user-select:auto;}._ws-974065937{white-space:normal}._ff-163417665{font-family:var(--f-family)}._m-2017216831{margin:0px}._fs-1530099841{font-size:var(--f-size-10)}._fw-1746808431{font-weight:var(--f-weight-10)}._ls-1762537288{letter-spacing:var(--f-letterSpacing-10)}._lh-1535216966{line-height:var(--f-lineHeight-10)}._tt-2146345035{text-transform:var(--f-transform-10)}._ta-972680809{text-align:center}._c-1338525332{color:var(--color11)}._fs-2127568126{font-size:var(--f-size-4)}._fw-333443408{font-weight:var(--f-weight-4)}._ls-888140119{letter-spacing:var(--f-letterSpacing-4)}._lh-465165209{line-height:var(--f-lineHeight-4)}._c-1338525301{color:var(--color10)}:where(._t-compose){--t-x:0px;--t-y:0px}._t-compose{translate:var(--t-x, 0px) var(--t-y, 0px)}._f-1691251864{flex-shrink:0}._f-1691251864{flex:1 0px}._b-1161078938{border-style:solid}._b-1161078938{border-width:0px}._b-1161078938{border-bottom-style:solid}._b-1161078938{border-bottom-width:1px}._b-1161078938{border-color:var(--background-focus)}._h-1922296922{height:0px}._mh-519501952{max-height:0px}._ty-79275713{--t-y:-0.5px}._c-1996280471{color:var(--color)}"`;
+exports[`Package.json exports support > should build app package for both web and native targets > web-css 1`] = `"._f-2057920087{flex-direction:column}._g-924523079{gap:var(--c-space-4)}._f-1841970073{flex-direction:row}._w-1646821508{width:100%}._ai-1055227096{align-items:center}._zi-496988513{z-index:10}._p-671726952{position:absolute}._i-1765874804._i-1765874804._i-1765874804._i-1765874804{right:0px}._i-1765874804._i-1765874804._i-1765874804._i-1765874804{top:0px}._i-1765874804._i-1765874804._i-1765874804._i-1765874804{bottom:0px}._jc-166379546{justify-content:center}._w-1490276297{width:var(--c-width-4)}._pe-1461982632{pointer-events:none}._pe-1461982632>*{pointer-events:none}._f-549969169{flex-direction:column}._f-549969169._f-549969169._f-549969169._f-549969169{flex:1 0px}._g-924523203{gap:var(--c-space-8)}._p-1370393726{padding:var(--c-space-4)}._b-803444677{background-color:var(--background)}._f-27493358{flex-direction:row}._f-27493358._f-27493358._f-27493358._f-27493358{flex-wrap:wrap}._p-965320571{position:absolute}@media (min-width: 640px) {._p-965320571{position:relative}}._i-117282577{top:var(--c-space-6)}@media (min-width: 640px) {._i-117282577{top:0px}}._g-924523141{gap:var(--c-space-6)}._g-924523017{gap:var(--c-space-2)}._us-601593343{user-select:auto;-webkit-user-select:auto;}._ws-974065937{white-space:normal}._ff-163417665{font-family:var(--f-family)}._m-2017216831{margin:0px}._fs-1530099841{font-size:var(--f-size-10)}._fw-1746808431{font-weight:var(--f-weight-10)}._ls-1762537288{letter-spacing:var(--f-letterSpacing-10)}._lh-1535216966{line-height:var(--f-lineHeight-10)}._tt-2146345035{text-transform:var(--f-transform-10)}._ta-972680809{text-align:center}._c-1338525332{color:var(--color11)}._fs-1530165158{font-size:var(--f-size-sm)}._lh-1535282283{line-height:var(--f-lineHeight-sm)}._c-1338525301{color:var(--color10)}:where(._t-compose){--t-x:0px;--t-y:0px}._t-compose{translate:var(--t-x, 0px) var(--t-y, 0px)}._f-1691251864{flex-shrink:0}._f-1691251864{flex:1 0px}._b-1161078938{border-style:solid}._b-1161078938{border-width:0px}._b-1161078938{border-bottom-style:solid}._b-1161078938{border-bottom-width:1px}._b-1161078938{border-color:var(--background-focus)}._h-1922296922{height:0px}._mh-519501952{max-height:0px}._ty-79275713{--t-y:-0.5px}._c-1996280471{color:var(--color)}"`;
 
 exports[`Package.json exports support > should build app package for both web and native targets > web-optimized 1`] = `
 "import "./_screen.css"
@@ -473,7 +473,7 @@ export function SelectDemoItem(props: SelectProps & { trigger?: React.ReactNode 
           {/* Native gets an extra icon */}
           {props.native && (
             <div
-              className="is_View _f-2057920087 _p-671726952 _i-1765874804 _ai-1055227096 _jc-166379546 _w-993787910 _pe-1461982632"
+              className="is_View _f-2057920087 _p-671726952 _i-1765874804 _ai-1055227096 _jc-166379546 _w-1490276297 _pe-1461982632"
 
 
 
@@ -577,11 +577,11 @@ export function HomeScreen({ pagesMode = false }: { pagesMode?: boolean }) {
         <h1 className="is_Text font_heading tm-paragraph _us-601593343 _ws-974065937 _ff-163417665 _m-2017216831 _fs-1530099841 _fw-1746808431 _ls-1762537288 _lh-1535216966 _tt-2146345035 _ta-972680809 _c-1338525332" >
           Welcome to Tamagui.
         </h1>
-        <p className="is_Text font_body tm-paragraph _ff-163417665 _us-601593343 _ws-974065937 _fs-2127568126 _fw-333443408 _ls-888140119 _lh-465165209 _c-1338525301 _ta-972680809" >
+        <p className="is_Text font_body tm-paragraph _ff-163417665 _us-601593343 _ws-974065937 _fs-1530165158 _lh-1535282283 _c-1338525301 _ta-972680809" >
           Here's a basic starter to show navigating from one screen to another.
         </p>
         <div className="is_View _t-compose _f-1691251864 _b-1161078938 _h-1922296922 _mh-519501952 _ty-79275713" />
-        <p className="is_Text font_body tm-paragraph _ff-163417665 _us-601593343 _c-1996280471 _ws-974065937 _fs-2127568126 _fw-333443408 _ls-888140119 _lh-465165209 _ta-972680809">
+        <p className="is_Text font_body tm-paragraph _ff-163417665 _us-601593343 _c-1996280471 _ws-974065937 _fs-1530165158 _lh-1535282283 _ta-972680809">
           This screen uses the same code on Next.js and React Native.
         </p>
         <div className="is_View _t-compose _f-1691251864 _b-1161078938 _h-1922296922 _mh-519501952 _ty-79275713" />
@@ -623,7 +623,7 @@ function SheetDemo() {
         <Sheet.Container items="center" justify="center" gap="10">
           <Sheet.Background bg="color2" />
           <div className="is_View _f-1841970073 _g-924523017">
-            <p className="is_Text font_body tm-paragraph _ff-163417665 _us-601593343 _c-1996280471 _ws-974065937 _fs-2127568126 _fw-333443408 _ls-888140119 _lh-465165209 _ta-972680809">Made by</p>
+            <p className="is_Text font_body tm-paragraph _ff-163417665 _us-601593343 _c-1996280471 _ws-974065937 _fs-1530165158 _lh-1535282283 _ta-972680809">Made by</p>
             <Anchor color="blue10" href="https://twitter.com/natebirdman" target="_blank">
               @natebirdman,
             </Anchor>
@@ -982,16 +982,16 @@ function __TamaguiNativeStyle6031() { return __TamaguiNativeStyle6031._ ?? (__Ta
 function __TamaguiNativeStyle6056() { return __TamaguiNativeStyle6056._ ?? (__TamaguiNativeStyle6056._ = {"fontFamily":"InterBold","marginTop":0,"marginRight":0,"marginBottom":0,"marginLeft":0,"fontSize":46,"letterSpacing":-3,"lineHeight":56,"textTransform":"none","textAlign":"center"}); } __TamaguiNativeStyle6056();
 const __TamaguiNativeText = require('react-native').Text;
 const __TamaguiStableText6056 = require('@tamagui/core')._withStableStyle(__TamaguiNativeText, (_theme, expressions) => [__TamaguiNativeStyle6056._ ?? __TamaguiNativeStyle6056(), { "color": _theme["color11"]?.get() }], true, false);
-function __TamaguiNativeStyle6143() { return __TamaguiNativeStyle6143._ ?? (__TamaguiNativeStyle6143._ = {"fontFamily":"Inter","fontSize":15,"letterSpacing":0,"lineHeight":27,"textAlign":"center"}); } __TamaguiNativeStyle6143();
+function __TamaguiNativeStyle6143() { return __TamaguiNativeStyle6143._ ?? (__TamaguiNativeStyle6143._ = {"fontFamily":"Inter","fontSize":14,"lineHeight":20,"textAlign":"center"}); } __TamaguiNativeStyle6143();
 const __TamaguiStableText6143 = require('@tamagui/core')._withStableStyle(__TamaguiNativeText, (_theme, expressions) => [__TamaguiNativeStyle6143._ ?? __TamaguiNativeStyle6143(), { "color": _theme["color10"]?.get() }], true, false);
 function __TamaguiNativeStyle6294() { return __TamaguiNativeStyle6294._ ?? (__TamaguiNativeStyle6294._ = {"flexShrink":0,"borderStyle":"solid","borderTopWidth":0,"borderRightWidth":0,"borderBottomWidth":1,"borderLeftWidth":0,"flex":1,"height":0,"maxHeight":0,"transform":[{"translateY":-0.5}]}); } __TamaguiNativeStyle6294();
 const __TamaguiStableView6294 = require('@tamagui/core')._withStableStyle(__TamaguiNativeView, (_theme, expressions) => [__TamaguiNativeStyle6294._ ?? __TamaguiNativeStyle6294(), { "borderTopColor": _theme["background-focus"]?.get(), "borderRightColor": _theme["background-focus"]?.get(), "borderBottomColor": _theme["background-focus"]?.get(), "borderLeftColor": _theme["background-focus"]?.get() }], true, false);
-function __TamaguiNativeStyle6316() { return __TamaguiNativeStyle6316._ ?? (__TamaguiNativeStyle6316._ = {"fontFamily":"Inter","fontSize":15,"letterSpacing":0,"lineHeight":27,"textAlign":"center"}); } __TamaguiNativeStyle6316();
+function __TamaguiNativeStyle6316() { return __TamaguiNativeStyle6316._ ?? (__TamaguiNativeStyle6316._ = {"fontFamily":"Inter","fontSize":14,"lineHeight":20,"textAlign":"center"}); } __TamaguiNativeStyle6316();
 const __TamaguiStableText6316 = require('@tamagui/core')._withStableStyle(__TamaguiNativeText, (_theme, expressions) => [__TamaguiNativeStyle6316._ ?? __TamaguiNativeStyle6316(), { "color": _theme["color"]?.get() }], true, false);
 function __TamaguiNativeStyle6441() { return __TamaguiNativeStyle6441._ ?? (__TamaguiNativeStyle6441._ = {"flexShrink":0,"borderStyle":"solid","borderTopWidth":0,"borderRightWidth":0,"borderBottomWidth":1,"borderLeftWidth":0,"flex":1,"height":0,"maxHeight":0,"transform":[{"translateY":-0.5}]}); } __TamaguiNativeStyle6441();
 const __TamaguiStableView6441 = require('@tamagui/core')._withStableStyle(__TamaguiNativeView, (_theme, expressions) => [__TamaguiNativeStyle6441._ ?? __TamaguiNativeStyle6441(), { "borderTopColor": _theme["background-focus"]?.get(), "borderRightColor": _theme["background-focus"]?.get(), "borderBottomColor": _theme["background-focus"]?.get(), "borderLeftColor": _theme["background-focus"]?.get() }], true, false);
 function __TamaguiNativeStyle7348() { return __TamaguiNativeStyle7348._ ?? (__TamaguiNativeStyle7348._ = {"flexDirection":"row","gap":8}); } __TamaguiNativeStyle7348();
-function __TamaguiNativeStyle7377() { return __TamaguiNativeStyle7377._ ?? (__TamaguiNativeStyle7377._ = {"fontFamily":"Inter","fontSize":15,"letterSpacing":0,"lineHeight":27,"textAlign":"center"}); } __TamaguiNativeStyle7377();
+function __TamaguiNativeStyle7377() { return __TamaguiNativeStyle7377._ ?? (__TamaguiNativeStyle7377._ = {"fontFamily":"Inter","fontSize":14,"lineHeight":20,"textAlign":"center"}); } __TamaguiNativeStyle7377();
 const __TamaguiStableText7377 = require('@tamagui/core')._withStableStyle(__TamaguiNativeText, (_theme, expressions) => [__TamaguiNativeStyle7377._ ?? __TamaguiNativeStyle7377(), { "color": _theme["color"]?.get() }], true, false);"
 `;
 
@@ -1127,7 +1127,7 @@ export function SelectDemoItem(props: SelectProps & { trigger?: React.ReactNode 
           {/* Native gets an extra icon */}
           {props.native && (
             <div
-              className="is_View _f-2057920087 _p-671726952 _i-1765874804 _ai-1055227096 _jc-166379546 _w-993787910 _pe-1461982632"
+              className="is_View _f-2057920087 _p-671726952 _i-1765874804 _ai-1055227096 _jc-166379546 _w-1490276297 _pe-1461982632"
 
 
 
@@ -1231,11 +1231,11 @@ export function HomeScreen({ pagesMode = false }: { pagesMode?: boolean }) {
         <h1 className="is_Text font_heading tm-paragraph _us-601593343 _ws-974065937 _ff-163417665 _m-2017216831 _fs-1530099841 _fw-1746808431 _ls-1762537288 _lh-1535216966 _tt-2146345035 _ta-972680809 _c-1338525332" >
           Welcome to Tamagui.
         </h1>
-        <p className="is_Text font_body tm-paragraph _ff-163417665 _us-601593343 _ws-974065937 _fs-2127568126 _fw-333443408 _ls-888140119 _lh-465165209 _c-1338525301 _ta-972680809" >
+        <p className="is_Text font_body tm-paragraph _ff-163417665 _us-601593343 _ws-974065937 _fs-1530165158 _lh-1535282283 _c-1338525301 _ta-972680809" >
           Here's a basic starter to show navigating from one screen to another.
         </p>
         <div className="is_View _t-compose _f-1691251864 _b-1161078938 _h-1922296922 _mh-519501952 _ty-79275713" />
-        <p className="is_Text font_body tm-paragraph _ff-163417665 _us-601593343 _c-1996280471 _ws-974065937 _fs-2127568126 _fw-333443408 _ls-888140119 _lh-465165209 _ta-972680809">
+        <p className="is_Text font_body tm-paragraph _ff-163417665 _us-601593343 _c-1996280471 _ws-974065937 _fs-1530165158 _lh-1535282283 _ta-972680809">
           This screen uses the same code on Next.js and React Native.
         </p>
         <div className="is_View _t-compose _f-1691251864 _b-1161078938 _h-1922296922 _mh-519501952 _ty-79275713" />
@@ -1277,7 +1277,7 @@ function SheetDemo() {
         <Sheet.Container items="center" justify="center" gap="10">
           <Sheet.Background bg="color2" />
           <div className="is_View _f-1841970073 _g-924523017">
-            <p className="is_Text font_body tm-paragraph _ff-163417665 _us-601593343 _c-1996280471 _ws-974065937 _fs-2127568126 _fw-333443408 _ls-888140119 _lh-465165209 _ta-972680809">Made by</p>
+            <p className="is_Text font_body tm-paragraph _ff-163417665 _us-601593343 _c-1996280471 _ws-974065937 _fs-1530165158 _lh-1535282283 _ta-972680809">Made by</p>
             <Anchor color="blue10" href="https://twitter.com/natebirdman" target="_blank">
               @natebirdman,
             </Anchor>

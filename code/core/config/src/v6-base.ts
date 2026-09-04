@@ -115,7 +115,14 @@ export const tokens = {
   },
 } as const
 
-function withTailwindTypeScale<F extends { size: object; lineHeight: object }>(font: F) {
+/**
+ * Adds the tailwind type-scale keys (`xs sm base lg xl 2xl ...`) a font needs
+ * for the named sizes, which read `sizes.md.fontSize` and so on from the font.
+ * Wrap any font you pass to a v6 config with it.
+ */
+export function withTailwindTypeScale<F extends { size: object; lineHeight: object }>(
+  font: F
+) {
   return {
     ...font,
     size: { ...font.size, ...tailwindFontSize },

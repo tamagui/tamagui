@@ -567,6 +567,46 @@ export declare const tokens: {
         readonly 12: 50;
     };
 };
+/**
+ * Adds the tailwind type-scale keys (`xs sm base lg xl 2xl ...`) a font needs
+ * for the named sizes, which read `sizes.md.fontSize` and so on from the font.
+ * Wrap any font you pass to a v6 config with it.
+ */
+export declare function withTailwindTypeScale<F extends {
+    size: object;
+    lineHeight: object;
+}>(font: F): F & {
+    size: {
+        xs: 12;
+        sm: 14;
+        base: 16;
+        lg: 18;
+        xl: 20;
+        '2xl': 24;
+        '3xl': 30;
+        '4xl': 36;
+        '5xl': 48;
+        '6xl': 60;
+        '7xl': 72;
+        '8xl': 96;
+        '9xl': 128;
+    };
+    lineHeight: {
+        xs: 16;
+        sm: 20;
+        base: 24;
+        lg: 28;
+        xl: 28;
+        '2xl': 32;
+        '3xl': 36;
+        '4xl': 40;
+        '5xl': 48;
+        '6xl': 60;
+        '7xl': 72;
+        '8xl': 96;
+        '9xl': 128;
+    };
+};
 export declare const fonts: {
     body: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16> & {
         size: {
