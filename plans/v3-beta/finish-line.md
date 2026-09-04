@@ -262,6 +262,17 @@ Owner session: Fable (r16625). Supersedes the execution state in
   `it`, so the throw stops them being written and vitest reports them unused.
   All five keys still map to live assertions.
 
+  **RAN** a second red from the same commit, `static-tests`
+  `webpack.test.tsx` "15. extracts spacer (complex expansion)". The spec is
+  `<Spacer />` followed by `<Spacer flex={1} size={10} />`; the first span is
+  byte-identical and only the second moved its `_w`, `_h`, `_mw` and `_mh`
+  hashes. `resolveSize` now treats a **numeric** `size` as not a control size,
+  logs `size={10} is not a control size` in development and falls back to
+  `sizes.default`, so `size={10}` no longer resolves token 10. The same
+  three-file revert to `7565357623` reproduces the identical received hashes,
+  so this one is upstream as well. Regenerating it would ratify the numeric
+  fallback, which is the ramp owner's call, so the snapshot is left alone.
+
   Out of scope for this branch, which does not own the size ramp.
 
 ## Plan
