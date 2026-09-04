@@ -76,12 +76,18 @@ test.describe('Select rtl positioning', () => {
         await expect(viewport).toBeVisible()
         await expect(viewport.getByTestId('rtl-item-banana')).toBeFocused()
 
+        // the list anchors 4px past the trigger's leading edge; a scrollbar can
+        // only widen it away from that edge, so the far side just has to cover
         const viewportBox = (await viewport.boundingBox())!
-        expect(viewportBox.x).toBeCloseTo(triggerBox.x - 4, 0)
-        expect(viewportBox.x + viewportBox.width).toBeCloseTo(
-          triggerBox.x + triggerBox.width + 4,
-          0
-        )
+        const viewportRight = viewportBox.x + viewportBox.width
+        const triggerRight = triggerBox.x + triggerBox.width
+        if (dir === 'ltr') {
+          expect(viewportBox.x).toBeCloseTo(triggerBox.x - 4, 0)
+          expect(viewportRight).toBeGreaterThanOrEqual(triggerRight + 4)
+        } else {
+          expect(viewportRight).toBeCloseTo(triggerRight + 4, 0)
+          expect(viewportBox.x).toBeLessThanOrEqual(triggerBox.x - 4)
+        }
         expect(viewportBox.y).toBeLessThan(triggerBox.y + triggerBox.height)
         expect(viewportBox.y + viewportBox.height).toBeGreaterThan(triggerBox.y)
       })
