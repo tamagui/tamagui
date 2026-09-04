@@ -546,13 +546,14 @@ export const Fixture = () => (
   })
 
   test('a conditional non-style prop is reported, never dropped', () => {
+    // numberOfLines became a style prop with line-clamp, so testID stands in
     const site = only(
       run(`import { Text, TextInput, View, styled } from 'tamagui'
-export const Fixture = () => <Text $sm={{ numberOfLines: 2 }} width={200} />`)
+export const Fixture = () => <Text $sm={{ testID: 'small' }} width={200} />`)
     )
 
     expect(codes(site)).toEqual(['non-style-condition-entry'])
-    expect(site.after).toContain('$sm={{ numberOfLines: 2 }}')
+    expect(site.after).toContain("$sm={{ testID: 'small' }}")
   })
 
   test('a runtime spread inside a condition object is reported', () => {
