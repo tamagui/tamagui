@@ -104,7 +104,7 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
     middleware: [
       size({
         apply({ rects, elements }) {
-          // the list overhangs the trigger by 4px a side (with the -5 cross offset)
+          // the list overhangs the trigger by 4px a side (with the -4 cross offset)
           elements.floating.style.minWidth = `${rects.reference.width + 8}px`
         },
       }),
@@ -118,7 +118,7 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
         minItemsVisible: touch ? 10 : 4,
         referenceOverflowThreshold: 20,
       }),
-      offset({ crossAxis: -5 }),
+      offset({ crossAxis: -4 }),
     ],
   } as any)
 
