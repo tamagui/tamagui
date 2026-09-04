@@ -75,6 +75,9 @@ test.describe('Select rtl positioning', () => {
         const viewport = page.getByTestId(`${id}-viewport`)
         await expect(viewport).toBeVisible()
         await expect(viewport.getByTestId('rtl-item-banana')).toBeFocused()
+        // the scroll lock must not reflow the page: a gutter reserved where no
+        // scrollbar was moves right-anchored content by the scrollbar width
+        expect(await trigger.boundingBox()).toEqual(triggerBox)
 
         // the list anchors 4px past the trigger's leading edge; a scrollbar can
         // only widen it away from that edge, so the far side just has to cover
