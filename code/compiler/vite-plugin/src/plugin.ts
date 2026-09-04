@@ -17,6 +17,7 @@ import {
   resolveConfig,
 } from 'vite'
 import type {
+  DevEnvironment,
   EnvironmentOptions,
   EnvironmentModuleNode,
   Plugin,
@@ -939,6 +940,9 @@ export function createTamaguiPlugins({
     return environment?.name && environment.name !== 'client'
   }
 
+  const isDevEnvironment = (environment: Environment): environment is DevEnvironment =>
+    environment.mode === 'dev'
+
   function isNative(environment?: Environment) {
     return (
       environment?.name && (environment.name === 'ios' || environment.name === 'android')
@@ -1314,7 +1318,11 @@ export function createTamaguiPlugins({
                 const cssId = getAbsoluteVirtualFileId(`${invalidatedId}${virtualExt}`)
                 const cssModule = this.environment.moduleGraph.getModuleById(cssId)
                 if (cssModule) {
+                  // returned alongside its importer so vite sends a css-update with a
+                  // fresh timestamp; an invalidation alone leaves the browser on the
+                  // cached stylesheet while the new class hashes have no rules
                   this.environment.moduleGraph.invalidateModule(cssModule)
+                  affectedModules.add(cssModule)
                 }
               }
             }
@@ -1406,6 +1414,19 @@ export function createTamaguiPlugins({
       if (!shouldExtract) return
 
       const [validId] = id.split('?')
+      if (!validId.endsWith(virtualExt)) return
+      // the importer's transform is what fills this module's css. after a hot
+      // update the browser can fetch the css-update before it re-imports the
+      // component, so run (or join) that transform here instead of serving the
+      // rules of the previous edit
+      if (isDevEnvironment(this.environment)) {
+        const importer = this.environment.moduleGraph.getModuleById(
+          validId.slice(0, -virtualExt.length)
+        )
+        if (importer && importer.transformResult == null) {
+          await this.environment.transformRequest(importer.url)
+        }
+      }
       return cssMap.get(validId)
     },
   }
