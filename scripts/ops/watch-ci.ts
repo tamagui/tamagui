@@ -1,7 +1,10 @@
 // watches every github actions run for one sha to a terminal state.
 // exit 0: all runs completed successfully (or were skipped).
 // exit 1: any run failed, was cancelled, or timed out.
-// usage: bun scripts/ops/watch-ci.ts --sha <sha> [--repo tamagui/tamagui]
+// usage: bun scripts/ops/watch-ci.ts --sha <sha> [--repo tamagui/tamagui] [--wait-all]
+//
+// --wait-all keeps waiting once something has already failed, so a known red
+// does not hide the result of every job still running.
 //
 // polls the api once a minute inside this process so the caller can sleep
 // through it with `tm wait --exec` instead of burning turns.
@@ -14,8 +17,11 @@ const readFlag = (name: string) => {
 
 const sha = readFlag('sha')
 const repo = readFlag('repo') ?? 'tamagui/tamagui'
+const waitAll = args.includes('--wait-all')
 if (!sha) {
-  console.error('usage: bun scripts/ops/watch-ci.ts --sha <sha> [--repo owner/name]')
+  console.error(
+    'usage: bun scripts/ops/watch-ci.ts --sha <sha> [--repo owner/name] [--wait-all]'
+  )
   process.exit(2)
 }
 
@@ -56,13 +62,17 @@ while (true) {
   )
   const failed = runs.filter((run) => run.conclusion && bad.has(run.conclusion))
   const pending = runs.filter((run) => run.status !== 'completed')
-  if (failed.length > 0) {
+  if (failed.length > 0 && !waitAll) {
     for (const run of failed) console.error(`failed: ${run.name} (${run.conclusion})`)
     process.exit(1)
   }
   if (runs.length > 0 && pending.length === 0) {
-    for (const run of runs) console.log(`ok: ${run.name} (${run.conclusion})`)
-    process.exit(0)
+    for (const run of runs) {
+      const line = `${run.name} (${run.conclusion})`
+      if (run.conclusion && bad.has(run.conclusion)) console.error(`failed: ${line}`)
+      else console.log(`ok: ${line}`)
+    }
+    process.exit(failed.length > 0 ? 1 : 0)
   }
   console.log(`${runs.length - pending.length}/${runs.length} complete`)
   await new Promise((resolve) => setTimeout(resolve, 60_000))
