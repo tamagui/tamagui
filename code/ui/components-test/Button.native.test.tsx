@@ -1,5 +1,5 @@
 import { getDefaultTamaguiConfig } from '@tamagui/config-default'
-import { Button } from '@tamagui/button'
+import { Button } from 'tamagui'
 import { TamaguiProvider, View, createTamagui, styled } from '@tamagui/core'
 import {
   getGestureHandler,
@@ -10,6 +10,8 @@ import {
 import type { ReactNode } from 'react'
 import TestRenderer, { act } from 'react-test-renderer'
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest'
+
+import { Button as KitchenSinkButton } from '../../kitchen-sink/src/components/Button'
 
 const conf = createTamagui(getDefaultTamaguiConfig())
 const GESTURE_ENABLED_FREEZE_KEY = '__tamagui_gesture_enabled_freeze__'
@@ -112,57 +114,17 @@ afterEach(() => {
   setGestureHandlerEnabled(false)
 })
 
-describe('Button native text props', () => {
-  test('passes maxFontSizeMultiplier from root props to wrapped text', async () => {
-    const rendered = await renderButton(<Button maxFontSizeMultiplier={1}>HELLO</Button>)
-    expect(findWrappedText(rendered).props.maxFontSizeMultiplier).toBe(1)
-  })
-
-  test('passes zero maxFontSizeMultiplier to wrapped text', async () => {
-    const rendered = await renderButton(<Button maxFontSizeMultiplier={0}>HELLO</Button>)
-    expect(findWrappedText(rendered).props.maxFontSizeMultiplier).toBe(0)
-  })
-
-  test('lets textProps override root text props on wrapped text', async () => {
+describe('Button native text', () => {
+  test('passes root text styles and shorthands to wrapped text', async () => {
     const rendered = await renderButton(
-      <Button maxFontSizeMultiplier={2} textProps={{ maxFontSizeMultiplier: 1 }}>
+      <Button fow="700" fontStyle="italic">
         HELLO
       </Button>
     )
+    const style = flattenStyle(findWrappedText(rendered).props.style)
 
-    expect(findWrappedText(rendered).props.maxFontSizeMultiplier).toBe(1)
-  })
-
-  test('passes styled text defaults to wrapped text', async () => {
-    const CappedButton = styled(Button, {
-      maxFontSizeMultiplier: 1,
-    })
-
-    const rendered = await renderButton(<CappedButton>HELLO</CappedButton>)
-
-    expect(findWrappedText(rendered).props.maxFontSizeMultiplier).toBe(1)
-  })
-
-  test('passes root text props to explicit Button.Text children', async () => {
-    const rendered = await renderButton(
-      <Button maxFontSizeMultiplier={1}>
-        <Button.Text>HELLO</Button.Text>
-      </Button>
-    )
-
-    expect(findWrappedText(rendered).props.maxFontSizeMultiplier).toBe(1)
-  })
-
-  test('passes Button.Apply text props to explicit Button.Text children', async () => {
-    const rendered = await renderButton(
-      <Button.Apply maxFontSizeMultiplier={1}>
-        <Button>
-          <Button.Text>HELLO</Button.Text>
-        </Button>
-      </Button.Apply>
-    )
-
-    expect(findWrappedText(rendered).props.maxFontSizeMultiplier).toBe(1)
+    expect(style.fontWeight).toBe(700)
+    expect(style.fontStyle).toBe('italic')
   })
 
   test('does not pass cursor style to native text', async () => {
@@ -263,5 +225,57 @@ describe('Button native text props', () => {
     expect(onPressIn).not.toHaveBeenCalled()
     expect(onPress).not.toHaveBeenCalled()
     expect(onPressOut).not.toHaveBeenCalled()
+  })
+})
+
+describe('copied Button skin native behavior', () => {
+  test('handles a press and removes disabled press responders', async () => {
+    vi.useFakeTimers()
+    const onPress = vi.fn()
+    const rendered = await renderButton(
+      <KitchenSinkButton
+        testID="button-skin-native"
+        minPressDuration={0}
+        onPress={onPress}
+      >
+        HELLO
+      </KitchenSinkButton>
+    )
+    const responder = rendered.root.find(
+      (node) =>
+        typeof node.props.onStartShouldSetResponder === 'function' &&
+        node.props.onStartShouldSetResponder({}) === true &&
+        typeof node.props.onResponderGrant === 'function' &&
+        typeof node.props.onResponderRelease === 'function'
+    )
+
+    await act(async () => {
+      responder.props.onResponderGrant({})
+      responder.props.onResponderRelease({})
+      vi.runAllTimers()
+    })
+
+    expect(onPress).toHaveBeenCalledTimes(1)
+
+    const disabled = await renderButton(
+      <KitchenSinkButton
+        testID="button-skin-native-disabled"
+        disabled
+        minPressDuration={0}
+        onPress={onPress}
+      >
+        HELLO
+      </KitchenSinkButton>
+    )
+    const activeDisabledResponders = disabled.root.findAll((node) => {
+      return (
+        typeof node.props.onStartShouldSetResponder === 'function' &&
+        node.props.onStartShouldSetResponder({}) === true &&
+        typeof node.props.onResponderRelease === 'function'
+      )
+    })
+
+    expect(activeDisabledResponders).toHaveLength(0)
+    expect(onPress).toHaveBeenCalledTimes(1)
   })
 })

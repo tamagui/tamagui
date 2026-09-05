@@ -1,4 +1,3 @@
-import * as babel from '@babel/core'
 import * as React from 'react'
 import { expect, test } from 'vitest'
 
@@ -14,15 +13,8 @@ test('font family across media queries', async () => {
     export function Test(props) {
       return (
         <H2
-          ff="$silkscreen"
-          size="$12"
-          $lg={{
-            size: '$9',
-          }}
-          $sm={{
-            size: '$8',
-            ff: '$mono',
-          }}
+          fontFamily="silkscreen sm:mono"
+          fontSize="12 lg:9 sm:8"
         >
           Test
         </H2>
@@ -40,57 +32,61 @@ test('font family across media queries', async () => {
   expect(output?.js).toBeTruthy()
 })
 
-test('font family and size ternaries sharing a condition resolve together', async () => {
+const sizedText = (family: string) => `
+  import * as React from 'react'
+  import { SizableText } from 'tamagui'
+  export function Test() {
+    return <SizableText fontFamily="${family}" size="7">Go</SizableText>
+  }
+`
+
+// the v2 extractor baked a family-specific font size into each branch, so a
+// family and a size chosen by the same condition had to be resolved together
+// (fix(static): preserve conditional font variants). v3 emits the size as
+// var(--f-size-*) under a font_<family> class instead, so the two are
+// independent by construction — this pins that independence.
+test('font size lowers to a family-independent variable', async () => {
+  const heading = await extractForWeb(sizedText('heading'))
+  const body = await extractForWeb(sizedText('body'))
+
+  const classesOf = (js: string) => js.match(/className="([^"]+)"/)![1].split(' ')
+  const headingClasses = classesOf(heading.js)
+  const bodyClasses = classesOf(body.js)
+
+  expect(headingClasses).toContain('font_heading')
+  expect(bodyClasses).toContain('font_body')
+
+  // everything except the family marker is identical: the size never encodes
+  // which family it belongs to
+  expect(headingClasses.filter((c) => !c.startsWith('font_'))).toEqual(
+    bodyClasses.filter((c) => !c.startsWith('font_'))
+  )
+  expect(heading.styles).toContain('font-size:var(--f-size-7)')
+  expect(heading.styles).toEqual(body.styles)
+})
+
+// a conditional family with static branches lowers per-branch: every class
+// shared by both branches stays static, and because sizes are
+// family-independent variables the only thing that flips is the font marker
+test('a conditional font family lowers to a conditional font class', async () => {
   const output = await extractForWeb(`
     import * as React from 'react'
     import { SizableText } from 'tamagui'
-
     export function Test({ compact }) {
       return (
-        <SizableText
-          fontFamily={compact ? '$body' : '$heading'}
-          color="$color12"
-          size={compact ? '$5' : '$7'}
-        >
+        <SizableText fontFamily={compact ? 'body' : 'heading'} size="7">
           Go
         </SizableText>
       )
     }
   `)
 
-  expect(output).toBeTruthy()
-  if (!output) {
-    return
-  }
-
-  const compiled = await babel.transformAsync(output.js, {
-    plugins: [
-      '@babel/plugin-transform-modules-commonjs',
-      '@babel/plugin-transform-react-jsx',
-    ],
-  })
-  expect(compiled?.code).toBeTruthy()
-  if (!compiled?.code) {
-    return
-  }
-
-  const compiledModule = { exports: Object.create(null) }
-  new Function('module', 'exports', 'require', compiled.code)(
-    compiledModule,
-    compiledModule.exports,
-    (id: string) => (id === 'react' ? React : {})
-  )
-
-  const expanded = compiledModule.exports.Test({ compact: false })
-  const compact = compiledModule.exports.Test({ compact: true })
-
-  const expandedClasses = expanded.props.className.split(' ')
-  const compactClasses = compact.props.className.split(' ')
-
-  expect(expandedClasses.filter((name) => name.startsWith('font_'))).toEqual([
-    'font_heading',
-  ])
-  expect(expandedClasses).toContain('_fos-f-size-7')
-  expect(compactClasses.filter((name) => name.startsWith('font_'))).toEqual(['font_body'])
-  expect(compactClasses).toContain('_fos-f-size-5')
+  expect(output.stats.lowered).toBe(1)
+  expect(output.stats.flattened).toBe(1)
+  expect(output.diagnostics).toEqual([])
+  expect(output.js).toContain(`(compact) ? "font_body" : "font_heading"`)
+  // the size classes stay family-independent: they live in the static part,
+  // never inside the conditional segments
+  const conditional = output.js.match(/\(compact\)[^\]]*/)![0]
+  expect(conditional).not.toContain('_fs-')
 })

@@ -1,0 +1,35 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "checkbox",
+  "type": "registry:ui",
+  "title": "Checkbox",
+  "description": "v2-look Checkbox: token-based sizing, theme background/border/focus styling, disabled dimming, and a centered indicator over the unstyled @tamagui/ui Checkbox behavior.",
+  "files": [
+    {
+      "path": "components/tamagui/Checkbox.tsx",
+      "content": "import {\n  Checkbox as CheckboxBehavior,\n  type GetProps,\n  resolveSize,\n  styled,\n  withStaticProperties,\n} from '@tamagui/ui'\n\nexport const CheckboxFrame = styled(CheckboxBehavior, {\n  displayName: 'Checkbox',\n  alignItems: 'center',\n  justifyContent: 'center',\n  backgroundColor: 'background press:background-press',\n  borderColor: 'border-color hover:border-color-hover press:border-color-press',\n  borderWidth: 1,\n  outlineColor: 'focus-visible:outline-color',\n  outlineStyle: 'focus-visible:solid',\n  outlineWidth: 'focus-visible:2px',\n  variants: {\n    size: styled.dynamic<any>((size, env) => {\n      // the check is an icon, so the box is the size's icon square\n      const controlSize = resolveSize(size, env).icon\n      return {\n        width: controlSize,\n        height: controlSize,\n        borderRadius: Math.max(3, Math.round(controlSize / 5)),\n      }\n    }),\n\n    disabled: {\n      true: {\n        cursor: 'not-allowed',\n        opacity: 0.45,\n      },\n    },\n  } as const,\n})\n\nexport const CheckboxIndicator = styled(CheckboxBehavior.Indicator, {\n  displayName: 'CheckboxIndicator',\n  alignItems: 'center',\n  justifyContent: 'center',\n})\n\nexport const Checkbox = withStaticProperties(CheckboxFrame, {\n  Indicator: CheckboxIndicator,\n})\n\nexport type CheckboxProps = GetProps<typeof Checkbox>\n",
+      "type": "registry:ui",
+      "target": "components/tamagui/Checkbox.tsx"
+    }
+  ],
+  "dependencies": [
+    "@tamagui/ui"
+  ],
+  "categories": [
+    "form"
+  ],
+  "meta": {
+    "tokens": [
+      "background",
+      "background-press",
+      "border-color",
+      "border-color-hover",
+      "border-color-press",
+      "outline-color"
+    ],
+    "states": [
+      "disabled",
+      "pressed"
+    ]
+  }
+}

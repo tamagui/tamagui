@@ -1,6 +1,8 @@
 import { useState, useCallback, useRef, useEffect } from 'react'
 import { ScrollView as RNScrollView } from 'react-native'
-import { Button, Sheet, Text, YStack } from 'tamagui'
+import { Text, YStack } from 'tamagui'
+import { Button } from '../components/Button'
+import { Sheet } from '../components/Sheet'
 import { getGestureHandler } from '@tamagui/native'
 
 /**
@@ -35,15 +37,15 @@ export function SheetScrollableDrag() {
   }, [])
 
   return (
-    <YStack padding="$4" gap="$4" testID="sheet-scrollable-drag-screen">
-      <Text testID="sheet-scrollable-drag-title" fontSize="$5" fontWeight="bold">
+    <YStack padding="4" gap="4" testID="sheet-scrollable-drag-screen">
+      <Text testID="sheet-scrollable-drag-title" fontSize="5" fontWeight="bold">
         Sheet + ScrollView Drag Test (v4)
       </Text>
 
       <Text
         testID="sheet-scrollable-drag-rngh-status"
-        fontSize="$3"
-        color={rnghEnabled ? '$green10' : '$red10'}
+        fontSize="3"
+        color={`${rnghEnabled ? 'green10' : 'red10'}`}
         fontWeight="bold"
       >
         RNGH: {rnghEnabled ? '✓ enabled' : '✗ disabled'}
@@ -63,12 +65,12 @@ export function SheetScrollableDrag() {
         <Text style={{ padding: 8 }}>Scroll me to test (outside sheet) - 4</Text>
       </RNScrollView>
 
-      <Text testID="sheet-scrollable-drag-instructions" fontSize="$3" color="$gray11">
+      <Text testID="sheet-scrollable-drag-instructions" fontSize="3" color="gray11">
         Test smooth handoff: drag down then up to scroll, scroll up then drag down to drag
         sheet.
       </Text>
 
-      <YStack flexDirection="row" gap="$2">
+      <YStack flexDirection="row" gap="2">
         <Button
           testID="sheet-scrollable-drag-trigger"
           onPress={() => setOpen(true)}
@@ -93,7 +95,7 @@ export function SheetScrollableDrag() {
         </Button>
       </YStack>
 
-      <YStack gap="$2" padding="$3" bg="$backgroundHover" borderRadius="$2">
+      <YStack gap="2" padding="3" bg="background-hover" borderRadius="2">
         <Text testID="sheet-scrollable-drag-position">Sheet position: {position}</Text>
         <Text testID="sheet-scrollable-drag-scroll-y">
           ScrollView Y: {scrollY.toFixed(0)}
@@ -118,11 +120,11 @@ export function SheetScrollableDrag() {
         </Text>
       </YStack>
 
-      <YStack gap="$1" padding="$2" bg="$green3" borderRadius="$2">
-        <Text fontSize="$2" fontWeight="bold">
+      <YStack gap="1" padding="2" bg="green3" borderRadius="2">
+        <Text fontSize="2" fontWeight="bold">
           Smooth handoff test:
         </Text>
-        <Text fontSize="$2">
+        <Text fontSize="2">
           1. Drag sheet down → then up → hits top → starts scrolling{'\n'}
           2. Scroll down → drag up → hits scrollY=0 → starts dragging sheet
         </Text>
@@ -153,13 +155,12 @@ export function SheetScrollableDrag() {
         <Sheet.Overlay
           testID="sheet-scrollable-drag-overlay"
           transition="lazy"
-          bg="$color"
-          opacity={0.5}
-          enterStyle={{ opacity: 0 }}
-          exitStyle={{ opacity: 0 }}
+          bg="color"
+          opacity="0.5 enter:0 exit:0"
         />
         <Sheet.Handle testID="sheet-scrollable-drag-handle" />
-        <Sheet.Frame testID="sheet-scrollable-drag-frame">
+        <Sheet.Container testID="sheet-scrollable-drag-frame">
+          <Sheet.Background />
           <Sheet.ScrollView
             testID="sheet-scrollable-drag-scrollview"
             onScroll={(e) => {
@@ -185,19 +186,15 @@ export function SheetScrollableDrag() {
             }}
             scrollEventThrottle={16}
           >
-            <YStack gap="$3" padding="$4">
-              <Text
-                testID="sheet-scrollable-drag-snap-label"
-                fontSize="$3"
-                color="$gray11"
-              >
+            <YStack gap="3" padding="4">
+              <Text testID="sheet-scrollable-drag-snap-label" fontSize="3" color="gray11">
                 Snap: {position} | Scroll Y: {scrollY.toFixed(0)} | Items: {itemCount}
               </Text>
 
               <Text
                 testID="sheet-scrollable-drag-content-top"
                 fontWeight="bold"
-                fontSize="$4"
+                fontSize="4"
               >
                 ↕ Drag here to test handoff ↕
               </Text>
@@ -205,16 +202,15 @@ export function SheetScrollableDrag() {
               <Button
                 testID="sheet-scrollable-drag-add-items"
                 onPress={() => setItemCount((c) => c + 5)}
-                size="$3"
               >
                 Add 5 Items ({itemCount} total)
               </Button>
 
               <Text
                 testID="sheet-scrollable-drag-scroll-indicator"
-                padding="$2"
-                bg="$blue3"
-                borderRadius="$2"
+                padding="2"
+                bg="blue3"
+                borderRadius="2"
               >
                 Scroll Y: {scrollY.toFixed(0)}
               </Text>
@@ -223,11 +219,11 @@ export function SheetScrollableDrag() {
                 <YStack
                   key={i}
                   testID={`sheet-scrollable-drag-item-${i}`}
-                  padding="$3"
-                  bg="$background"
-                  borderRadius="$2"
+                  padding="3"
+                  bg="background"
+                  borderRadius="2"
                   borderWidth={1}
-                  borderColor="$borderColor"
+                  borderColor="border-color"
                 >
                   <Text>Item {i + 1}</Text>
                 </YStack>
@@ -236,13 +232,13 @@ export function SheetScrollableDrag() {
               <Button
                 testID="sheet-scrollable-drag-close"
                 onPress={() => setOpen(false)}
-                marginTop="$4"
+                marginTop="4"
               >
                 Close Sheet
               </Button>
             </YStack>
           </Sheet.ScrollView>
-        </Sheet.Frame>
+        </Sheet.Container>
       </Sheet>
     </YStack>
   )

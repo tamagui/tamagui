@@ -1,3 +1,4 @@
+import { createRefComponent } from '@tamagui/compose-refs'
 import { isWeb } from '@tamagui/constants'
 import { registerFocusable } from '@tamagui/focusable'
 import { withStaticProperties } from '@tamagui/helpers'
@@ -5,7 +6,7 @@ import { RovingFocusGroup } from '@tamagui/roving-focus'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import { useDirection } from '@tamagui/use-direction'
 import type { GetProps, TamaguiElement } from '@tamagui/web'
-import { createStyledContext, styled, View } from '@tamagui/web'
+import { createStyledHOC, createStyledContext, styled, View } from '@tamagui/web'
 import React from 'react'
 
 import type { ToggleProps } from './Toggle'
@@ -29,13 +30,16 @@ const { Provider: ToggleGroupContext, useStyledContext: useToggleGroupContext } 
   createStyledContext<ToggleGroupContextValue>({})
 
 type ToggleGroupItemProps = GetProps<typeof ToggleFrame> & {
+  activeStyle?: ToggleProps['activeStyle']
+  activeTheme?: ToggleProps['activeTheme']
   value: string
   id?: string
   disabled?: boolean
 }
 
-const ToggleGroupItem = ToggleFrame.styleable<ScopedProps<ToggleGroupItemProps>>(
-  (props, forwardedRef) => {
+const ToggleGroupItem = createStyledHOC(
+  ToggleFrame,
+  (props: ScopedProps<ToggleGroupItemProps>, forwardedRef) => {
     const valueContext = useToggleGroupValueContext(props.__scopeToggleGroup)
     const context = useToggleGroupContext(props.__scopeToggleGroup)
     const toggleContext = ToggleContext.useStyledContext(props.__scopeToggleGroup)
@@ -60,7 +64,7 @@ const ToggleGroupItem = ToggleFrame.styleable<ScopedProps<ToggleGroupItemProps>>
             <RovingFocusGroup.Item
               asChild="except-style"
               __scopeRovingFocusGroup={props.__scopeToggleGroup || TOGGLE_GROUP_CONTEXT}
-              focusable={!disabled}
+              tabIndex={disabled ? -1 : 0}
               active={active}
             >
               {inner}
@@ -81,7 +85,7 @@ type ToggleGroupItemImplProps = Omit<ToggleProps, 'defaultActive' | 'onActiveCha
   value: string
 }
 
-const ToggleGroupItemImpl = React.forwardRef<
+const ToggleGroupItemImpl = createRefComponent<
   TamaguiElement,
   ScopedProps<ToggleGroupItemImplProps>
 >((props, forwardedRef) => {
@@ -123,7 +127,7 @@ interface ToggleGroupMultipleProps extends ToggleGroupImplMultipleProps {
 type ToggleGroupProps = ToggleGroupSingleProps | ToggleGroupMultipleProps
 
 const ToggleGroup = withStaticProperties(
-  React.forwardRef<TamaguiElement, ScopedProps<ToggleGroupProps>>(
+  createRefComponent<TamaguiElement, ScopedProps<ToggleGroupProps>>(
     (props, forwardedRef) => {
       const { type, ...toggleGroupProps } = props
 
@@ -182,7 +186,7 @@ interface ToggleGroupImplSingleProps extends ToggleGroupImplProps {
   disableDeactivation?: boolean
 }
 
-const ToggleGroupImplSingle = React.forwardRef<
+const ToggleGroupImplSingle = createRefComponent<
   TamaguiElement,
   ScopedProps<ToggleGroupImplSingleProps>
 >((props: ScopedProps<ToggleGroupImplSingleProps>, forwardedRef) => {
@@ -230,7 +234,7 @@ interface ToggleGroupImplMultipleProps extends ToggleGroupImplProps {
   disableDeactivation?: never
 }
 
-const ToggleGroupImplMultiple = React.forwardRef<
+const ToggleGroupImplMultiple = createRefComponent<
   TamaguiElement,
   ToggleGroupImplMultipleProps
 >((props: ScopedProps<ToggleGroupImplMultipleProps>, forwardedRef) => {
@@ -286,7 +290,7 @@ type ToggleGroupContextValue = {
 type RovingFocusGroupProps = React.ComponentPropsWithoutRef<typeof RovingFocusGroup>
 
 const ToggleGroupFrame = styled(View, {
-  name: TOGGLE_GROUP_NAME,
+  displayName: TOGGLE_GROUP_NAME,
 })
 
 type ToggleGroupImplProps = GetProps<typeof ToggleGroupFrame> & {
@@ -297,7 +301,8 @@ type ToggleGroupImplProps = GetProps<typeof ToggleGroupFrame> & {
   color?: string
 }
 
-const ToggleGroupImpl = ToggleGroupFrame.styleable<TamaguiElement, ToggleGroupImplProps>(
+const ToggleGroupImpl = createStyledHOC(
+  ToggleGroupFrame,
   (props: ScopedProps<ToggleGroupImplProps>, forwardedRef) => {
     const {
       __scopeToggleGroup,

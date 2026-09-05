@@ -1,5 +1,6 @@
 import { useCallback, useRef, useState } from 'react'
-import { Button, Text, View, XStack, YStack } from 'tamagui'
+import { Text, View, XStack, YStack } from 'tamagui'
+import { Button } from '../components/Button'
 
 type LayoutEvent = any
 
@@ -49,26 +50,26 @@ export function OnLayoutCase() {
   }, [])
 
   return (
-    <YStack padding="$4" gap="$3">
+    <YStack padding="4" gap="3">
       {/* controls */}
-      <XStack gap="$2" flexWrap="wrap">
-        <Button testID="btn-move" size="$2" onPress={() => setMoved((v) => !v)}>
+      <XStack gap="2" flexWrap="wrap">
+        <Button testID="btn-move" size="3" onPress={() => setMoved((v) => !v)}>
           toggle move
         </Button>
-        <Button testID="btn-resize" size="$2" onPress={() => setResized((v) => !v)}>
+        <Button testID="btn-resize" size="3" onPress={() => setResized((v) => !v)}>
           toggle resize
         </Button>
         <Button
           testID="btn-parent-resize"
-          size="$2"
+          size="3"
           onPress={() => setParentResized((v) => !v)}
         >
           toggle parent
         </Button>
-        <Button testID="btn-toggle-mount" size="$2" onPress={() => setMounted((v) => !v)}>
+        <Button testID="btn-toggle-mount" size="3" onPress={() => setMounted((v) => !v)}>
           toggle mount
         </Button>
-        <Button testID="btn-swap" size="$2" onPress={() => setSwapped((v) => !v)}>
+        <Button testID="btn-swap" size="3" onPress={() => setSwapped((v) => !v)}>
           toggle swap
         </Button>
       </XStack>
@@ -86,7 +87,7 @@ export function OnLayoutCase() {
         testID="parent-a"
         width={parentResized ? 300 : 500}
         height={200}
-        backgroundColor="$backgroundHover"
+        backgroundColor="background-hover"
         position="relative"
       >
         {mounted &&
@@ -98,7 +99,7 @@ export function OnLayoutCase() {
               width={resized ? 180 : 120}
               height={resized ? 80 : 60}
               marginLeft={moved ? 100 : 0}
-              backgroundColor="$blue8"
+              backgroundColor="blue8"
             />
           ) : (
             <View
@@ -108,7 +109,7 @@ export function OnLayoutCase() {
               width={resized ? 180 : 120}
               height={resized ? 80 : 60}
               marginLeft={moved ? 100 : 0}
-              backgroundColor="$red8"
+              backgroundColor="red8"
             />
           ))}
       </View>
@@ -118,7 +119,7 @@ export function OnLayoutCase() {
         testID="parent-b"
         width={400}
         height={150}
-        backgroundColor="$backgroundHover"
+        backgroundColor="background-hover"
         position="relative"
       >
         <View
@@ -126,7 +127,7 @@ export function OnLayoutCase() {
           onLayout={handleLayoutB}
           width={200}
           height={50}
-          backgroundColor="$green8"
+          backgroundColor="green8"
         />
       </View>
     </YStack>

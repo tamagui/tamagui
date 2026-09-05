@@ -15,6 +15,7 @@
     "test:update": "bun run test:extract:web -- --update && bun run test:babel:native -- --update && bun run test:babel:web -- --update && bun run test:styled:web -- --update && bun run test:flatten:native -- --update && bun run test:webpack -- --update",
     "test:run": "INCLUDE_CSS_COLOR_NAMES=1 vitest --retry=2 --config ../../packages/vite-plugin-internal/src/vite.config.cjs.ts --run --dangerouslyIgnoreUnhandledErrors",
     "test:run:web": "DISABLE_NATIVE_TEST=1 bun run test:run --",
+    "test:bailout-metric": "BAILOUT_METRIC=1 TEST_ENVIRONMENT=./tests/lib/happyDomSsrEnvironment.ts NODE_ENV=production bun run test:run:web -- tests/bailoutMetric.web.test.tsx --reporter=verbose",
     "test:concatClassName": "bun run test:run -- tests/concatClassName.web.test.tsx",
     "test:webpack": "bun run pretest && bun run test:run -- tests/webpack.test.tsx --reporter=verbose --pool=forks",
     "test:flatten:native": "bun run test:run -- tests/flatten.native.test.tsx",
@@ -22,13 +23,15 @@
     "test:babel:web": "bun run test:run -- tests/babel.web.test.tsx",
     "test:extract:web": "bun run test:run:web -- tests/extract.web.test.tsx",
     "test:styled:web": "bun run test:run -- tests/styled.web.test.tsx",
-    "test:web": "bun run test:run:web -- tests/*.web.test.tsx && bun run test:webpack",
+    "test:web:files": "bun run test:run:web -- tests/*.web.test.ts*",
+    "test:web": "bun run test:web:files && bun run test:webpack",
     "test:native": "bun run test:run -- tests/*.native.test.tsx"
   },
   "devDependencies": {
     "@babel/plugin-syntax-typescript": "^7.25.4",
     "@babel/types": "^7.25.4",
     "@tamagui/sandbox-ui": "workspace:*",
+    "@tamagui/static": "workspace:*",
     "@tamagui/test-design-system": "workspace:*",
     "@testing-library/react": "^16.1.0",
     "@types/babel__generator": "^7.6.4",
@@ -45,8 +48,8 @@
     "react-native-web": "~0.21.0",
     "react-test-renderer": "19.2.3",
     "style-loader": "^3.3.3",
-    "typescript": "~5.9.2",
-    "vitest": "4.0.4",
+    "typescript": "~6.0.3",
+    "vitest": "4.1.0",
     "webpack": "^5.88.2"
   },
   "peerDependencies": {

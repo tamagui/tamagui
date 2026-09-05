@@ -4,7 +4,8 @@ import ActionSheet, {
   type ActionSheetRef,
   ScrollView as ActionScrollView,
 } from 'react-native-actions-sheet'
-import { Button, Sheet, Text, YStack } from 'tamagui'
+import { Sheet, Text, YStack } from 'tamagui'
+import { Button } from '../components/Button'
 
 /**
  * Side-by-side comparison of Tamagui Sheet vs react-native-actions-sheet
@@ -16,31 +17,31 @@ export function ActionsSheetComparison() {
   const actionsSheetRef = useRef<ActionSheetRef>(null)
 
   return (
-    <YStack padding="$4" gap="$4" flex={1}>
-      <Text fontSize="$6" fontWeight="bold">
+    <YStack padding="4" gap="4" flex={1}>
+      <Text fontSize="6" fontWeight="bold">
         Sheet Comparison
       </Text>
 
-      <Text fontSize="$3" color="$gray11">
+      <Text fontSize="3" color="gray11">
         Compare gesture smoothness between Tamagui Sheet and react-native-actions-sheet
       </Text>
 
-      <YStack gap="$3">
-        <Button onPress={() => actionsSheetRef.current?.show()} theme="blue" size="$5">
+      <YStack gap="3">
+        <Button onPress={() => actionsSheetRef.current?.show()} theme="blue" size="5">
           Open Actions Sheet (Reference)
         </Button>
 
-        <Button onPress={() => setTamaguiOpen(true)} theme="green" size="$5">
+        <Button onPress={() => setTamaguiOpen(true)} theme="green" size="5">
           Open Tamagui Sheet
         </Button>
       </YStack>
 
-      <YStack gap="$2" padding="$3" bg="$backgroundHover" borderRadius="$2">
+      <YStack gap="2" padding="3" bg="background-hover" borderRadius="2">
         <Text fontWeight="bold">Test instructions:</Text>
-        <Text fontSize="$2">1. Open each sheet</Text>
-        <Text fontSize="$2">2. Drag down to lower snap point</Text>
-        <Text fontSize="$2">3. Drag up - watch for jitter when sheet hits top</Text>
-        <Text fontSize="$2">
+        <Text fontSize="2">1. Open each sheet</Text>
+        <Text fontSize="2">2. Drag down to lower snap point</Text>
+        <Text fontSize="2">3. Drag up - watch for jitter when sheet hits top</Text>
+        <Text fontSize="2">
           4. Scroll content, then drag down - watch for jitter at scroll=0
         </Text>
       </YStack>
@@ -57,35 +58,36 @@ export function ActionsSheetComparison() {
         dismissOnSnapToBottom
         zIndex={100000}
       >
-        <Sheet.Overlay bg="$color" opacity={0.5} />
+        <Sheet.Overlay bg="color" opacity={0.5} />
         <Sheet.Handle />
-        <Sheet.Frame>
+        <Sheet.Container>
+          <Sheet.Background />
           <Sheet.ScrollView>
-            <YStack gap="$3" padding="$4">
-              <Text fontSize="$5" fontWeight="bold">
+            <YStack gap="3" padding="4">
+              <Text fontSize="5" fontWeight="bold">
                 Tamagui Sheet
               </Text>
-              <Text color="$gray11">Position: {tamaguiPosition}</Text>
+              <Text color="gray11">Position: {tamaguiPosition}</Text>
 
               {Array.from({ length: 30 }).map((_, i) => (
                 <YStack
                   key={i}
-                  padding="$3"
-                  bg="$background"
-                  borderRadius="$2"
+                  padding="3"
+                  bg="background"
+                  borderRadius="2"
                   borderWidth={1}
-                  borderColor="$borderColor"
+                  borderColor="border-color"
                 >
                   <Text>Item {i + 1}</Text>
                 </YStack>
               ))}
 
-              <Button onPress={() => setTamaguiOpen(false)} marginTop="$4">
+              <Button onPress={() => setTamaguiOpen(false)} marginTop="4">
                 Close
               </Button>
             </YStack>
           </Sheet.ScrollView>
-        </Sheet.Frame>
+        </Sheet.Container>
       </Sheet>
 
       {/* Actions Sheet - using their ScrollView component */}

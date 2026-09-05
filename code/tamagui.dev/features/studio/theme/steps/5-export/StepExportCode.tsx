@@ -3,24 +3,20 @@ import { Copy, Download } from '@tamagui/lucide-icons-2'
 import { useStore } from '@tamagui/use-store'
 import { useEffect } from 'react'
 import {
-  Button,
   Circle,
-  Fieldset,
-  Label,
   Paragraph,
   ScrollView,
   SizableText,
-  Switch,
   Tabs,
   Text,
   Theme,
   XStack,
   YStack,
 } from 'tamagui'
+import { Button } from '~/components/Button'
 
 import { themeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
 import { toastController } from '../../../ToastProvider'
-import { FieldsetWithLabel } from '../../views/FieldsetWithLabel'
 
 const platforms = ['vanilla'] as const
 
@@ -47,8 +43,6 @@ type Step = {
 }
 
 export class StepExportStore {
-  includeComponentThemes = true
-
   platformData: Record<
     Platform,
     {
@@ -58,23 +52,8 @@ export class StepExportStore {
     }
   > | null = null
 
-  setIncludeComponentThemes(newVal: boolean) {
-    this.includeComponentThemes = newVal
-    this.updateSteps()
-  }
-
-  includeSizeTokens = true
-
-  setIncludeSizeTokens(newVal: boolean) {
-    this.includeSizeTokens = newVal
-    this.updateSteps()
-  }
-
   getThemeBuilderConfig() {
-    return themeBuilderStore.getCode({
-      includeComponentThemes: this.includeComponentThemes,
-      includeSizeTokens: this.includeSizeTokens,
-    })
+    return themeBuilderStore.getCode()
   }
 
   async updateSteps() {
@@ -116,7 +95,7 @@ export class StepExportStore {
                   {
                     filename: 'tamagui.config.ts',
                     content: `import { themes } from './themes'
-import { defaultConfig } from '@tamagui/config/v5'
+import { defaultConfig } from '@tamagui/config/v6'
 
 export const config = createTamagui({
   ...defaultConfig,
@@ -157,54 +136,32 @@ export const StepExportCodeSidebar = () => {
   }
 
   return (
-    <ScrollView py="$2" pt="$4">
-      <YStack gap="$8" pt="$1" pb="$6" px="$3">
-        <FieldsetWithLabel label="Options">
-          <YStack gap="$1" p="$4">
-            <Fieldset flexDirection="row" items="center" gap="$3">
-              <YStack>
-                <Switch
-                  id="include-component-themes-switch"
-                  checked={store.includeComponentThemes}
-                  onCheckedChange={(newChecked) =>
-                    store.setIncludeComponentThemes(!!newChecked)
-                  }
-                  size="$2"
-                >
-                  <Switch.Thumb transition="quickest" />
-                </Switch>
-              </YStack>
-              <Label size="$3" htmlFor="include-component-themes-switch">
-                Include Component Themes
-              </Label>
-            </Fieldset>
-          </YStack>
-        </FieldsetWithLabel>
-
+    <ScrollView paddingBottom="2" pt="4">
+      <YStack gap="8" pt="1" pb="6" px="3">
         {platform.steps.map((step, idx) => (
-          <YStack key={idx} gap="$3">
-            <XStack gap="$3" items="center" ml="$3">
-              <Circle bg="$background" size={20} justify="center" items="center">
-                <SizableText text="center" fontFamily="$heading" size="$1" x={1}>
+          <YStack key={idx} gap="3">
+            <XStack gap="3" items="center" ml="3">
+              <Circle bg="background" justify="center" items="center" size={20}>
+                <SizableText text="center" fontFamily="heading" x={1} size="1">
                   {idx + 1}
                 </SizableText>
               </Circle>
               <SizableText
-                fontFamily="$heading"
-                size="$3"
-                color="$color11"
+                fontFamily="heading"
+                color="color11"
                 letterSpacing={1}
+                size="3"
               >
                 {step.name}
               </SizableText>
             </XStack>
 
-            <YStack gap="$4">
+            <YStack gap="4">
               {step.steps.map((subStep, _idx) => {
                 return (
-                  <XStack key={_idx} ml="$4" mr="$3">
+                  <XStack key={_idx} ml="4" mr="3">
                     {subStep.type === 'text' && (
-                      <Paragraph color="$color10" size="$4">
+                      <Paragraph color="color10" size="4">
                         {subStep.content}
                       </Paragraph>
                     )}
@@ -216,28 +173,27 @@ export const StepExportCodeSidebar = () => {
                         defaultValue={subStep.files[0].filename}
                         orientation="horizontal"
                         flexDirection="column"
-                        gap="$2"
+                        gap="2"
                         flex={1}
                       >
                         <Tabs.List
-                          bg="$color4"
+                          bg="color4"
                           self="flex-start"
-                          borderTopRightRadius="$3"
-                          borderTopLeftRadius="$3"
-                          mx="$3"
+                          borderTopRightRadius="3"
+                          borderTopLeftRadius="3"
+                          mx="3"
                         >
                           {subStep.files.map((file, i) => (
                             <Tabs.Tab
                               key={i}
-                              unstyled
-                              px="$3"
-                              pt="$2"
+                              px="3"
+                              pt="2"
                               mb={-22}
-                              pb="$4.5"
-                              bg="$color2"
+                              pb="4-5"
+                              bg="color2"
                               value={file.filename}
                             >
-                              <SizableText color="$color8" size="$2">
+                              <SizableText color="color8" size="2">
                                 {file.filename}
                               </SizableText>
                             </Tabs.Tab>
@@ -268,14 +224,14 @@ const Code = ({ content, downloadable, maxHeight, filename }: FileType) => {
       <ScrollView
         flex={1}
         flexBasis="auto"
-        horizontal
         maxH={maxHeight}
-        bg="$background"
-        py="$3"
-        px="$4"
-        rounded="$4"
+        bg="background"
+        py="3"
+        px="4"
+        rounded="4"
+        horizontal
       >
-        <Text fontFamily="$mono" fontSize="$2">
+        <Text fontFamily="mono" fontSize="2">
           {content}
         </Text>
       </ScrollView>
@@ -286,17 +242,17 @@ const Code = ({ content, downloadable, maxHeight, filename }: FileType) => {
           r={0}
           b={0}
           height={maxHeight}
-          colors={['$background', 'transparent']}
+          colors={['background', 'transparent']}
           start={[0, 1]}
           end={[0, 0]}
         />
       )}
-      <XStack position="absolute" r="$2.5" t={10} gap="$2" flexDirection="row-reverse">
+      <XStack position="absolute" r="2-5" t={10} gap="2" flexDirection="row-reverse">
         <Button
           onPress={() => {
             copyText(content)
           }}
-          size="$2"
+          size="3"
           icon={Copy}
         >
           Copy
@@ -305,7 +261,7 @@ const Code = ({ content, downloadable, maxHeight, filename }: FileType) => {
           <Theme name="green">
             <Button
               self="center"
-              size="$2"
+              size="2"
               icon={Download}
               onPress={() => {
                 downloadFile(filename, content)

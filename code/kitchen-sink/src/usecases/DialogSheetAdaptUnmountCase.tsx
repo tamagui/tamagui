@@ -9,18 +9,18 @@ import {
   YStack,
 } from 'tamagui'
 
-const CONTENT_RADIUS = '$6' as const
+const CONTENT_RADIUS = 16
 
 /**
  * Repro for the "content removes before animation on close" bug.
  *
  * Mirrors the three-punch-convo-app Dialog wrapper as closely as possible:
- * - Sheet.Frame with bg="$backgroundSurface" and *no* inner overlay/blur layer
+ * - Sheet.Container with bg="backgroundSurface" and *no* inner overlay/blur layer
  *   painted on top of the contents (which is what masks the bug in takeout).
- * - Adapt.Contents nested inside Sheet.ScrollView in Sheet.Frame.
+ * - Adapt.Contents nested inside Sheet.ScrollView in Sheet.Container.
  *
  * Note: 3PC uses `Adapt platform="touch"`, but `isTouchable` is false on
- * desktop chromium (no `ontouchstart`), so we use `when="maxMd"` here so the
+ * desktop chromium (no `ontouchstart`), so we use `when="max-md"` here so the
  * adapted path activates on a narrow viewport. The bug is not specific to
  * touch detection — it's about Dialog.open vs Sheet.open lifecycle.
  *
@@ -39,7 +39,7 @@ function ThreePunchDialog({
 }) {
   return (
     <TamaguiDialog modal open={open} onOpenChange={onOpenChange}>
-      <TamaguiDialog.Adapt when="maxMd">
+      <TamaguiDialog.Adapt when="max-md">
         <Sheet
           transition="medium"
           zIndex={250_000}
@@ -48,25 +48,22 @@ function ThreePunchDialog({
           dismissOnSnapToBottom
         >
           <Sheet.Overlay
-            bg="$shadow6"
-            enterStyle={{ opacity: 0 }}
-            exitStyle={{ opacity: 0 }}
+            bg="shadow6"
+            opacity="enter:0 exit:0"
             onPress={() => onOpenChange?.(false)}
           />
-          <Sheet.Handle bg="$color5" />
-          <Sheet.Frame
-            testID="sheet-frame"
-            padding="$4"
-            gap="$4"
-            borderRadius="$6"
-            borderBottomRightRadius={0}
-            borderBottomLeftRadius={0}
-            bg="$background"
-          >
+          <Sheet.Handle bg="color5" />
+          <Sheet.Container testID="sheet-frame" padding="4" gap="4">
+            <Sheet.Background
+              borderBottomRightRadius={0}
+              borderBottomLeftRadius={0}
+              bg="background"
+              borderRadius="6"
+            />
             <Sheet.ScrollView>
               <TamaguiDialog.Adapt.Contents />
             </Sheet.ScrollView>
-          </Sheet.Frame>
+          </Sheet.Container>
         </Sheet>
       </TamaguiDialog.Adapt>
 
@@ -86,7 +83,7 @@ function ThreePunchDialog({
           minWidth={400}
           borderRadius={CONTENT_RADIUS}
           overflow="hidden"
-          padding="$4"
+          padding="4"
         >
           {children}
         </DialogContent>
@@ -96,31 +93,26 @@ function ThreePunchDialog({
 }
 
 const DialogOverlay = styled(TamaguiDialog.Overlay, {
-  unstyled: true,
   transition: 'quick',
   position: 'absolute',
   inset: 0 as any,
-  opacity: 1,
-  bg: '$shadow6',
-  enterStyle: { opacity: 0 },
-  exitStyle: { opacity: 0 },
+  opacity: '1 enter:0 exit:0',
+  bg: 'shadow6',
 })
 
 const DialogContent = styled(TamaguiDialog.Content, {
-  unstyled: true,
   transition: 'quick',
   zIndex: 1_000_000,
-  bg: '$background',
+  bg: 'background',
   borderWidth: 0.5,
-  borderColor: '$color5',
+  borderColor: 'color5',
   position: 'relative',
   width: '90%',
   maxWidth: 550,
-  padding: '$4',
-  opacity: 1,
-  y: 0,
-  enterStyle: { y: -5, opacity: 0, scale: 0.985 },
-  exitStyle: { y: 5, opacity: 0 },
+  padding: '4',
+  opacity: '1 enter:0 exit:0',
+  y: '0 enter:-5px exit:5px',
+  scale: 'enter:0.985',
 })
 
 export function DialogSheetAdaptUnmountCase() {
@@ -137,19 +129,19 @@ export function DialogSheetAdaptUnmountCase() {
   }, [])
 
   return (
-    <YStack p="$4" gap="$4" items="center">
+    <YStack p="4" gap="4" items="center">
       <Button testID="open-dialog" onPress={() => setOpen(true)}>
         Open Dialog
       </Button>
 
       <ThreePunchDialog open={open} onOpenChange={setOpen}>
-        <YStack gap="$3">
-          <TamaguiDialog.Title size="$6">Three Punch Dialog</TamaguiDialog.Title>
+        <YStack gap="3">
+          <TamaguiDialog.Title size="6">Three Punch Dialog</TamaguiDialog.Title>
           <TamaguiDialog.Description>
             This body should remain visible while the sheet slides out.
           </TamaguiDialog.Description>
           <Paragraph testID="dialog-content-marker">unique-content-marker-3pc</Paragraph>
-          <XStack gap="$3" justify="flex-end">
+          <XStack gap="3" justify="flex-end">
             <TamaguiDialog.Close asChild displayWhenAdapted>
               <Button testID="close-dialog">Close</Button>
             </TamaguiDialog.Close>

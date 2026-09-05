@@ -1,461 +1,277 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`$group-* non-hover on native should de-opt (preserve as inline prop) 1`] = `
-"const __ReactNativeView = require('react-native').View;
-const __ReactNativeText = require('react-native').Text;
-import { YStack } from 'tamagui';
-export function Test() {
-  return <YStack group="row">
-          <YStack backgroundColor="red" $group-row-press={{
-      backgroundColor: 'green'
-    }} />
-        </YStack>;
-}"
+exports[`a hover clause on native stays on the runtime path 1`] = `
+"
+    import { YStack } from 'tamagui'
+    export function Test() {
+      return (
+        <YStack backgroundColor="red hover:green" />
+      )
+    }
+"
 `;
 
-exports[`$group-*-hover on native should drop dead hover work 1`] = `
-"const __ReactNativeStyleSheet = require('react-native').StyleSheet;
-const _sheet = __ReactNativeStyleSheet.create({
-  "0": {
-    "flexDirection": "column",
-    "backgroundColor": "red"
-  }
-});
-const __ReactNativeView = require('react-native').View;
-const __ReactNativeText = require('react-native').Text;
-import { YStack } from 'tamagui';
-export function Test() {
-  return <YStack group="row">
-          <__ReactNativeView style={_sheet["0"]} />
-        </YStack>;
-}"
+exports[`a named group hover clause on native stays on the runtime path 1`] = `
+"
+    import { YStack } from 'tamagui'
+    export function Test() {
+      return (
+        <YStack group="row">
+          <YStack
+            backgroundColor="red group-hover/row:green"
+          />
+        </YStack>
+      )
+    }
+"
 `;
 
-exports[`$gtMd only should NOT apply on small screens 1`] = `
-"const __ReactNativeStyleSheet = require('react-native').StyleSheet;
-const _sheet = __ReactNativeStyleSheet.create({
-  "0": {
-    "flexDirection": "column",
-    "height": 100,
-    "width": 100,
-    "borderTopColor": "red",
-    "borderRightColor": "red",
-    "borderBottomColor": "red",
-    "borderLeftColor": "red"
-  },
-  "1": {
-    "borderTopColor": "green",
-    "borderRightColor": "green",
-    "borderBottomColor": "green",
-    "borderLeftColor": "green"
-  }
-});
-import { _withStableStyle } from '@tamagui/core';
-const __ReactNativeView = require('react-native').View;
-const __ReactNativeText = require('react-native').Text;
-import { YStack } from 'tamagui';
-export function Test() {
-  return <_ReactNativeViewStyled0 _expressions={["gtMd"]} />;
-}
-const _ReactNativeViewStyled0 = _withStableStyle(__ReactNativeView, (theme, _expressions) => [_sheet["0"], _expressions[0] ? _sheet["1"] : null], false, true);"
+exports[`a named group press clause on native stays on the runtime path 1`] = `
+"
+    import { YStack } from 'tamagui'
+    export function Test() {
+      return (
+        <YStack group="row">
+          <YStack
+            backgroundColor="red group-press/row:green"
+          />
+        </YStack>
+      )
+    }
+"
 `;
 
-exports[`$md and $gtMd media queries should respect breakpoint boundaries 1`] = `
-"const __ReactNativeStyleSheet = require('react-native').StyleSheet;
-const _sheet = __ReactNativeStyleSheet.create({
-  "0": {
-    "flexDirection": "column",
-    "height": 100,
-    "width": 100,
-    "borderTopColor": "red",
-    "borderRightColor": "red",
-    "borderBottomColor": "red",
-    "borderLeftColor": "red"
-  },
-  "1": {
-    "borderTopColor": "yellow",
-    "borderRightColor": "yellow",
-    "borderBottomColor": "yellow",
-    "borderLeftColor": "yellow"
-  },
-  "2": {
-    "borderTopColor": "green",
-    "borderRightColor": "green",
-    "borderBottomColor": "green",
-    "borderLeftColor": "green"
-  }
-});
-import { _withStableStyle } from '@tamagui/core';
-const __ReactNativeView = require('react-native').View;
-const __ReactNativeText = require('react-native').Text;
-import { YStack } from 'tamagui';
-export function Test() {
-  return <_ReactNativeViewStyled0 _expressions={["md", "gtMd"]} />;
-}
-const _ReactNativeViewStyled0 = _withStableStyle(__ReactNativeView, (theme, _expressions) => [_sheet["0"], _expressions[0] ? _sheet["1"] : null, _expressions[1] ? _sheet["2"] : null], false, true);"
-`;
-
-exports[`$theme-* on native should de-opt (preserve as inline prop) 1`] = `
-"const __ReactNativeView = require('react-native').View;
-const __ReactNativeText = require('react-native').Text;
-import { YStack } from 'tamagui';
-export function Test() {
-  return <YStack backgroundColor="red" $theme-dark={{
-    backgroundColor: 'green'
-  }} />;
-}"
+exports[`a theme clause on native de-opts to the runtime path 1`] = `
+"
+    import { YStack } from 'tamagui'
+    export function Test() {
+      return (
+        <YStack backgroundColor="red dark:green" />
+      )
+    }
+"
 `;
 
 exports[`basic conditional extraction 1`] = `
-"const __ReactNativeStyleSheet = require('react-native').StyleSheet;
-const _sheet = __ReactNativeStyleSheet.create({
-  "0": {
-    "flexDirection": "column"
-  },
-  "1": {
-    "backgroundColor": "red"
-  },
-  "2": {
-    "backgroundColor": "blue"
-  },
-  "3": {
-    "flexDirection": "column"
-  },
-  "4": {
-    "backgroundColor": "red"
-  }
-});
-import { _withStableStyle } from '@tamagui/core';
-const __ReactNativeView = require('react-native').View;
-const __ReactNativeText = require('react-native').Text;
-import { YStack } from 'tamagui';
-let x = true;
-export function Test() {
-  return <>
-          <_ReactNativeViewStyled0 _expressions={[!!x]} />
-          <_ReactNativeViewStyled1 _expressions={[!!x]} />
-        </>;
-}
-const _ReactNativeViewStyled0 = _withStableStyle(__ReactNativeView, (theme, _expressions) => [_sheet["0"], _expressions[0] ? _sheet["1"] : _sheet["2"]], false, false);
-const _ReactNativeViewStyled1 = _withStableStyle(__ReactNativeView, (theme, _expressions) => [_sheet["3"], _expressions[0] ? _sheet["4"] : null], false, false);"
+"
+    import { YStack } from 'tamagui'
+    let x = true
+    export function Test() {
+      return (
+        <>
+          <__TamaguiStableView120 _expressions={[x]} />
+          <YStack {...x && { backgroundColor: 'red' }} />
+        </>
+      )
+    }
+
+function __TamaguiNativeStyle120() { return __TamaguiNativeStyle120._ ?? (__TamaguiNativeStyle120._ = {"flexDirection":"column"}); } __TamaguiNativeStyle120();
+const __TamaguiNativeView = require('react-native').View;
+const __TamaguiStableView120 = require('@tamagui/core')._withStableStyle(__TamaguiNativeView, (_theme, expressions) => [__TamaguiNativeStyle120._ ?? __TamaguiNativeStyle120(), expressions[0] ? {"backgroundColor":"red"} : {"backgroundColor":"blue"}], false, false);"
 `;
 
 exports[`basic extraction 1`] = `
-"const __ReactNativeStyleSheet = require('react-native').StyleSheet;
-const _sheet = __ReactNativeStyleSheet.create({
-  "0": {
-    "flexDirection": "column",
-    "backgroundColor": "red"
+"
+    import { YStack } from 'tamagui'
+    export function Test() {
+      return (
+        <__TamaguiNativeView style={__TamaguiNativeStyle90._ ?? __TamaguiNativeStyle90()} />
+      )
+    }
+
+function __TamaguiNativeStyle90() { return __TamaguiNativeStyle90._ ?? (__TamaguiNativeStyle90._ = {"flexDirection":"column","backgroundColor":"red"}); } __TamaguiNativeStyle90();
+const __TamaguiNativeView = require('react-native').View;"
+`;
+
+exports[`conditional font family lowers per-branch with per-family size resolution 1`] = `
+"
+  import { SizableText } from 'tamagui'
+  export function Test({ compact }) {
+    return (
+      <__TamaguiStableText98 _expressions={[compact]} >
+        Go
+      </__TamaguiStableText98>
+    )
   }
-});
-const __ReactNativeView = require('react-native').View;
-const __ReactNativeText = require('react-native').Text;
-import { YStack } from 'tamagui';
-export function Test() {
-  return <__ReactNativeView style={_sheet["0"]} />;
-}"
+
+function __TamaguiNativeStyle98() { return __TamaguiNativeStyle98._ ?? (__TamaguiNativeStyle98._ = {"fontFamily":"-apple-system, system-ui, BlinkMacSystemFont, \\"Segoe UI\\", Roboto, Helvetica, Arial, sans-serif","fontSize":22,"fontWeight":400,"letterSpacing":0,"lineHeight":33}); } __TamaguiNativeStyle98();
+const __TamaguiNativeText = require('react-native').Text;
+const __TamaguiStableText98 = require('@tamagui/core')._withStableStyle(__TamaguiNativeText, (_theme, expressions) => [__TamaguiNativeStyle98._ ?? __TamaguiNativeStyle98(), { "color": _theme["color"]?.get() }, expressions[0] ? {} : {"fontWeight":700,"lineHeight":30}], true, false);"
 `;
 
 exports[`do NOT flatten dynamic values with theme access 1`] = `
-"const __ReactNativeView = require('react-native').View;
-const __ReactNativeText = require('react-native').Text;
-import { YStack } from 'tamagui';
-export function Test(props) {
-  return <YStack bg='$color' height={props.height} />;
-}"
+"
+    import { YStack } from 'tamagui'
+    export function Test(props) {
+      return (
+        <YStack bg='color' height={props.height}/>
+      )
+    }
+"
 `;
 
 exports[`do NOT flatten dynamic values with theme access, dynamic values, and conditional 1`] = `
-"const __ReactNativeView = require('react-native').View;
-const __ReactNativeText = require('react-native').Text;
-import { YStack } from 'tamagui';
-export function Test(props) {
-  return <YStack bg={props.isLoading ? '$color' : 'red'} height={props.height} />;
-}"
+"
+    import { YStack } from 'tamagui'
+    export function Test(props) {
+      return (
+        <YStack bg={props.isLoading ? 'color' : 'red'} height={props.height}/>
+      )
+    }
+"
 `;
 
 exports[`do NOT flatten multiple dynamic values with theme access and conditional 1`] = `
-"const __ReactNativeView = require('react-native').View;
-const __ReactNativeText = require('react-native').Text;
-import { YStack } from 'tamagui';
-export function Test(props) {
-  return <YStack bg={props.isLoading ? '$color' : 'red'} height={props.height} width={props.width} />;
-}"
+"
+    import { YStack } from 'tamagui'
+    export function Test(props) {
+      return (
+        <YStack bg={props.isLoading ? 'color' : 'red'} height={props.height} width={props.width}/>
+      )
+    }
+"
+`;
+
+exports[`dynamic ternary lowers per-branch, only the test survives 1`] = `
+"
+  import { View } from 'tamagui'
+  export function Test(props) {
+    return (
+      <__TamaguiStableView85 _expressions={[props !== 123]} />
+    )
+  }
+
+function __TamaguiNativeStyle85() { return __TamaguiNativeStyle85._ ?? (__TamaguiNativeStyle85._ = {}); } __TamaguiNativeStyle85();
+const __TamaguiNativeView = require('react-native').View;
+const __TamaguiStableView85 = require('@tamagui/core')._withStableStyle(__TamaguiNativeView, (_theme, expressions) => [__TamaguiNativeStyle85._ ?? __TamaguiNativeStyle85(), expressions[0] ? {"marginBottom":12} : {"marginBottom":0}], false, false);"
 `;
 
 exports[`flat transform props 1`] = `
-"const __ReactNativeStyleSheet = require('react-native').StyleSheet;
-const _sheet = __ReactNativeStyleSheet.create({
-  "0": {
-    "flexDirection": "column",
-    "transform": [{
-      "translateY": 20
-    }, {
-      "translateX": 10
-    }, {
-      "rotate": "10deg"
-    }]
-  },
-  "1": {
-    "transform": [{
-      "scale": 1
-    }]
-  },
-  "2": {
-    "transform": [{
-      "scale": 2
-    }]
-  }
-});
-import { _withStableStyle } from '@tamagui/core';
-const __ReactNativeView = require('react-native').View;
-const __ReactNativeText = require('react-native').Text;
-import { YStack } from 'tamagui';
-export function Test(isLoading) {
-  return <_ReactNativeViewStyled0 _expressions={[!!isLoading]} />;
-}
-const _ReactNativeViewStyled0 = _withStableStyle(__ReactNativeView, (theme, _expressions) => [_sheet["0"], _expressions[0] ? _sheet["1"] : _sheet["2"]], false, false);"
+"
+    import { YStack } from 'tamagui'
+    export function Test(isLoading) {
+      return (
+        <__TamaguiStableView99
+          _expressions={[isLoading]}
+
+
+
+        />
+      )
+    }
+
+function __TamaguiNativeStyle99() { return __TamaguiNativeStyle99._ ?? (__TamaguiNativeStyle99._ = {"flexDirection":"column","transform":[{"translateX":10},{"translateY":20},{"rotate":"10deg"}]}); } __TamaguiNativeStyle99();
+const __TamaguiNativeView = require('react-native').View;
+const __TamaguiStableView99 = require('@tamagui/core')._withStableStyle(__TamaguiNativeView, (_theme, expressions) => [__TamaguiNativeStyle99._ ?? __TamaguiNativeStyle99(), expressions[0] ? {"transform":[{"scale":1},{"translateX":10},{"translateY":20},{"rotate":"10deg"}]} : {"transform":[{"scale":2},{"translateX":10},{"translateY":20},{"rotate":"10deg"}]}], false, false);"
 `;
 
 exports[`handles style order merge properly 1`] = `
-"const __ReactNativeView = require('react-native').View;
-const __ReactNativeText = require('react-native').Text;
-import { YStack } from 'tamagui';
-export function Test(props) {
-  return <YStack scale={props.isLoading ? 1 : 2} x={10} {...props} rotate="10deg" />;
-}"
-`;
-
-exports[`hoverStyle on native should drop dead hover work 1`] = `
-"const __ReactNativeStyleSheet = require('react-native').StyleSheet;
-const _sheet = __ReactNativeStyleSheet.create({
-  "0": {
-    "flexDirection": "column",
-    "backgroundColor": "red"
-  }
-});
-const __ReactNativeView = require('react-native').View;
-const __ReactNativeText = require('react-native').Text;
-import { YStack } from 'tamagui';
-export function Test() {
-  return <__ReactNativeView style={_sheet["0"]} />;
-}"
-`;
-
-exports[`multiple media query components should not conflict 1`] = `
-"const __ReactNativeStyleSheet = require('react-native').StyleSheet;
-const _sheet = __ReactNativeStyleSheet.create({
-  "0": {
-    "flexDirection": "column",
-    "borderTopColor": "red",
-    "borderRightColor": "red",
-    "borderBottomColor": "red",
-    "borderLeftColor": "red"
-  },
-  "1": {
-    "borderTopColor": "yellow",
-    "borderRightColor": "yellow",
-    "borderBottomColor": "yellow",
-    "borderLeftColor": "yellow"
-  },
-  "2": {
-    "flexDirection": "row",
-    "borderTopColor": "blue",
-    "borderRightColor": "blue",
-    "borderBottomColor": "blue",
-    "borderLeftColor": "blue"
-  },
-  "3": {
-    "borderTopColor": "green",
-    "borderRightColor": "green",
-    "borderBottomColor": "green",
-    "borderLeftColor": "green"
-  },
-  "4": {
-    "flexDirection": "column",
-    "borderTopColor": "purple",
-    "borderRightColor": "purple",
-    "borderBottomColor": "purple",
-    "borderLeftColor": "purple"
-  },
-  "5": {
-    "borderTopColor": "pink",
-    "borderRightColor": "pink",
-    "borderBottomColor": "pink",
-    "borderLeftColor": "pink"
-  }
-});
-import { _withStableStyle } from '@tamagui/core';
-const __ReactNativeView = require('react-native').View;
-const __ReactNativeText = require('react-native').Text;
-import { YStack, XStack } from 'tamagui';
-export function Test() {
-  return <>
-          <_ReactNativeViewStyled0 _expressions={["md"]} />
-          <_ReactNativeViewStyled1 _expressions={["gtMd"]} />
-          <_ReactNativeViewStyled2 _expressions={["sm"]} />
-        </>;
-}
-const _ReactNativeViewStyled0 = _withStableStyle(__ReactNativeView, (theme, _expressions) => [_sheet["0"], _expressions[0] ? _sheet["1"] : null], false, true);
-const _ReactNativeViewStyled1 = _withStableStyle(__ReactNativeView, (theme, _expressions) => [_sheet["2"], _expressions[0] ? _sheet["3"] : null], false, true);
-const _ReactNativeViewStyled2 = _withStableStyle(__ReactNativeView, (theme, _expressions) => [_sheet["4"], _expressions[0] ? _sheet["5"] : null], false, true);"
+"
+    import { YStack } from 'tamagui'
+    export function Test(props) {
+      return (
+        <YStack
+          scale={props.isLoading ? 1 : 2}
+          x={10}
+          {...props}
+          rotate="10deg"
+        />
+      )
+    }
+"
 `;
 
 exports[`normalize dynamic values with no theme access 1`] = `
-"const __ReactNativeView = require('react-native').View;
-const __ReactNativeText = require('react-native').Text;
-import { YStack } from 'tamagui';
-const height = 200;
-export function Test(props) {
-  return <YStack height={height} width={props.width} />;
-}"
+"
+    import { YStack } from 'tamagui'
+    const height = 200
+    export function Test(props) {
+      return (
+        <YStack height={height} width={props.width}/>
+      )
+    }
+"
 `;
 
 exports[`normalize dynamic values with theme access only 1`] = `
-"const __ReactNativeStyleSheet = require('react-native').StyleSheet;
-const _sheet = __ReactNativeStyleSheet.create({
-  "0": {
-    "flexDirection": "column"
-  }
-});
-import { _withStableStyle } from '@tamagui/core';
-const __ReactNativeView = require('react-native').View;
-const __ReactNativeText = require('react-native').Text;
-import { YStack } from 'tamagui';
-export function Test(props) {
-  return <_ReactNativeViewStyled0 />;
-}
-const _ReactNativeViewStyled0 = _withStableStyle(__ReactNativeView, (theme, _expressions) => [_sheet["0"], {
-  "backgroundColor": theme.color.get()
-}], true, false);"
-`;
+"
+    import { YStack } from 'tamagui'
+    export function Test(props) {
+      return (
+        <__TamaguiStableView95 />
+      )
+    }
 
-exports[`normalize ternaries flips the conditional properly 1`] = `
-"const __ReactNativeStyleSheet = require('react-native').StyleSheet;
-const _sheet = __ReactNativeStyleSheet.create({
-  "0": {
-    "marginBottom": 0
-  },
-  "1": {
-    "marginBottom": 12
-  }
-});
-const __ReactNativeView = require('react-native').View;
-const __ReactNativeText = require('react-native').Text;
-import { View } from 'tamagui';
-export function Test(props) {
-  return <__ReactNativeView style={props === 123 ? _sheet["0"] : _sheet["1"]} />;
-}"
+function __TamaguiNativeStyle95() { return __TamaguiNativeStyle95._ ?? (__TamaguiNativeStyle95._ = {"flexDirection":"column"}); } __TamaguiNativeStyle95();
+const __TamaguiNativeView = require('react-native').View;
+const __TamaguiStableView95 = require('@tamagui/core')._withStableStyle(__TamaguiNativeView, (_theme, expressions) => [__TamaguiNativeStyle95._ ?? __TamaguiNativeStyle95(), { "backgroundColor": _theme["color"]?.get() }], true, false);"
 `;
 
 exports[`normalize ternaries with the conditional dynamic values 1`] = `
-"const __ReactNativeView = require('react-native').View;
-const __ReactNativeText = require('react-native').Text;
-import { View } from 'tamagui';
-export function Test(props) {
-  return <View marginBottom={props !== 123 ? 12 : props.mb} />;
-}"
+"
+  import { View } from 'tamagui'
+  export function Test(props) {
+    return (
+      <View marginBottom={props !== 123 ? 12 : props.mb} />
+    )
+  }
+"
 `;
 
-exports[`string ternary test should not be confused with media key 1`] = `
-"const __ReactNativeStyleSheet = require('react-native').StyleSheet;
-const _sheet = __ReactNativeStyleSheet.create({
-  "0": {
-    "flexDirection": "column"
-  },
-  "1": {
-    "width": 24
-  },
-  "2": {
-    "width": 66
-  },
-  "3": {
-    "height": 30
-  }
-});
-import { _withStableStyle } from '@tamagui/core';
-const __ReactNativeView = require('react-native').View;
-const __ReactNativeText = require('react-native').Text;
-import { YStack } from 'tamagui';
-export function Test({
-  someString
-}) {
-  return <_ReactNativeViewStyled0 _expressions={[!!someString, "sm"]} />;
-}
-const _ReactNativeViewStyled0 = _withStableStyle(__ReactNativeView, (theme, _expressions) => [_sheet["0"], _expressions[0] ? _sheet["1"] : _sheet["2"], _expressions[1] ? _sheet["3"] : null], false, true);"
+exports[`string ternary and media prop remain distinct on the runtime component 1`] = `
+"
+    import { YStack } from 'tamagui'
+    export function Test({ someString }) {
+      return (
+        <YStack
+          width={someString ? 24 : 66}
+          height="sm:30px"
+        />
+      )
+    }
+"
 `;
 
 exports[`ternary with mixed theme-token and non-token values preserves all props 1`] = `
-"const __ReactNativeStyleSheet = require('react-native').StyleSheet;
-const _sheet = __ReactNativeStyleSheet.create({
-  "0": {
-    "fontSize": 13
-  },
-  "1": {
-    "fontWeight": "600"
-  },
-  "2": {
-    "fontWeight": "400"
-  }
-});
-import { _withStableStyle } from '@tamagui/core';
-const __ReactNativeView = require('react-native').View;
-const __ReactNativeText = require('react-native').Text;
-import { Text } from 'tamagui';
-export function Test({
-  isActive,
-  label
-}) {
-  return <_ReactNativeTextStyled0 _expressions={[!!isActive]}>
+"
+    import { Text } from 'tamagui'
+    export function Test({ isActive, label }) {
+      return (
+        <Text
+          fontSize="3"
+          fontWeight={isActive ? '600' : '400'}
+          color={isActive ? 'color12' : 'color11'}
+        >
           {label}
-        </_ReactNativeTextStyled0>;
-}
-const _ReactNativeTextStyled0 = _withStableStyle(__ReactNativeText, (theme, _expressions) => [_sheet["0"], {
-  "color": theme.color.get()
-}, _expressions[0] ? [_sheet["1"], {
-  "color": theme.color12.get()
-}] : [_sheet["2"], {
-  "color": theme.color11.get()
-}]], true, false);"
+        </Text>
+      )
+    }
+"
 `;
 
 exports[`theme value extraction should work when no theme variables used 1`] = `
-"const __ReactNativeStyleSheet = require('react-native').StyleSheet;
-const _sheet = __ReactNativeStyleSheet.create({
-  "0": {
-    "fontFamily": "Inter",
-    "letterSpacing": 0,
-    "fontSize": 14,
-    "lineHeight": 23,
-    "color": "red"
-  }
-});
-const __ReactNativeView = require('react-native').View;
-const __ReactNativeText = require('react-native').Text;
-import { Paragraph } from 'tamagui';
-export function Test() {
-  return <__ReactNativeText style={_sheet["0"]}>hello world</__ReactNativeText>;
-}"
+"
+    import { Paragraph } from 'tamagui'
+    export function Test() {
+      return (
+        <__TamaguiNativeText style={__TamaguiNativeStyle93._ ?? __TamaguiNativeStyle93()}>hello world</__TamaguiNativeText>
+      )
+    }
+
+function __TamaguiNativeStyle93() { return __TamaguiNativeStyle93._ ?? (__TamaguiNativeStyle93._ = {"fontFamily":"-apple-system, system-ui, BlinkMacSystemFont, \\"Segoe UI\\", Roboto, Helvetica, Arial, sans-serif","fontSize":14,"lineHeight":20,"color":"red"}); } __TamaguiNativeStyle93();
+const __TamaguiNativeText = require('react-native').Text;"
 `;
 
 exports[`theme value extraction should work when theme variables used 1`] = `
-"const __ReactNativeStyleSheet = require('react-native').StyleSheet;
-const _sheet = __ReactNativeStyleSheet.create({
-  "0": {
-    "fontFamily": "Inter",
-    "letterSpacing": 0,
-    "fontSize": 14,
-    "lineHeight": 23
-  }
-});
-import { _withStableStyle } from '@tamagui/core';
-const __ReactNativeView = require('react-native').View;
-const __ReactNativeText = require('react-native').Text;
-import { Paragraph } from 'tamagui';
-export function Test() {
-  return <_ReactNativeTextStyled0>hello world</_ReactNativeTextStyled0>;
-}
-const _ReactNativeTextStyled0 = _withStableStyle(__ReactNativeText, (theme, _expressions) => [_sheet["0"], {
-  "color": theme.color.get()
-}], true, false);"
+"
+    import { Paragraph } from 'tamagui'
+    export function Test() {
+      return (
+        <__TamaguiStableText93>hello world</__TamaguiStableText93>
+      )
+    }
+
+function __TamaguiNativeStyle93() { return __TamaguiNativeStyle93._ ?? (__TamaguiNativeStyle93._ = {"fontFamily":"-apple-system, system-ui, BlinkMacSystemFont, \\"Segoe UI\\", Roboto, Helvetica, Arial, sans-serif","fontSize":14,"lineHeight":20}); } __TamaguiNativeStyle93();
+const __TamaguiNativeText = require('react-native').Text;
+const __TamaguiStableText93 = require('@tamagui/core')._withStableStyle(__TamaguiNativeText, (_theme, expressions) => [__TamaguiNativeStyle93._ ?? __TamaguiNativeStyle93(), { "color": _theme["color"]?.get() }], true, false);"
 `;

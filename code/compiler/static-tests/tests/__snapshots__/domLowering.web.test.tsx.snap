@@ -1,0 +1,15 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`DOM elements lower to literal tags through every normalized element form 1`] = `
+"
+    import React, { createElement } from 'react'
+    import { jsx, jsxs } from 'react/jsx-runtime'
+    import { html as h } from '@tamagui/core'
+
+    export const JSXElement = <main className="_m-2017216831 _p-1943363302" id="main"><h1 className="_m-2017216831 _p-1943363302 _fs-1289474947 _fw-375620055">Title</h1></main>
+    export const JSXCall = jsx("section", { children: 'jsx' , className: "_m-2017216831 _p-1943363302" })
+    export const JSXSCall = jsxs("nav", { children: ['one', jsx("span", { children: 'two' , className: "_m-2017216831 _p-1943363302 _td-1861836084" })] , className: "_m-2017216831 _p-1943363302" })
+    export const CreateElementCall = createElement("article", { className: "_m-2017216831 _p-1943363302" }, 'named')
+    export const MemberCreateElementCall = React.createElement("footer", { className: "_m-2017216831 _p-1943363302" }, 'member')
+"
+`;

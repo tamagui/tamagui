@@ -46,7 +46,7 @@ export function TooltipStaticClobberCase() {
   }, [])
 
   return (
-    <YStack flex={1} items="center" justify="center" gap="$6" bg="$background">
+    <YStack flex={1} items="center" justify="center" gap="6" bg="background">
       <TooltipGroup delay={{ open: 0, close: 150 }}>
         <Tooltip scope="clobber-tooltip" offset={16} placement="bottom" open={!!label}>
           {/* triggers touch (like the promo row XGroup) so crossing never
@@ -61,12 +61,12 @@ export function TooltipStaticClobberCase() {
                   height={30}
                   items="center"
                   justify="center"
-                  bg="$color4"
-                  rounded="$2"
+                  bg="color4"
+                  rounded="2"
                   onMouseEnter={() => setLabel(l)}
                   onMouseLeave={() => setLabel((prev) => (prev === l ? '' : prev))}
                 >
-                  <Paragraph size="$1">{i}</Paragraph>
+                  <Paragraph size="1">{i}</Paragraph>
                 </YStack>
               </Tooltip.Trigger>
             ))}
@@ -74,12 +74,16 @@ export function TooltipStaticClobberCase() {
 
           <Tooltip.Content
             animatePosition
-            transition={{ default: 'quickest', enter: 'quickest', exit: '0ms' }}
-            animateOnly={['transform', 'opacity']}
-            enterStyle={{ y: -3, opacity: 0 }}
-            exitStyle={{ y: -3, opacity: 0 }}
+            transition={{
+              enter: 'quickest',
+              exit: '0ms',
+              preset: 'quickest',
+              properties: 'transform, opacity',
+            }}
+            y="0 enter:-3px exit:-3px"
+            opacity="1 enter:0 exit:0"
           >
-            <Paragraph size="$2">{label}</Paragraph>
+            <Paragraph size="2">{label}</Paragraph>
           </Tooltip.Content>
         </Tooltip>
       </TooltipGroup>

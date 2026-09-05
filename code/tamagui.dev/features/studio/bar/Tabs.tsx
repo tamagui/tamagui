@@ -39,24 +39,7 @@ export const BarTabs = memo(function HeaderTabs({
       prevActiveAt: tabRovingState.activeAt,
       activeAt,
     })
-  const { activeAt, intentAt, prevActiveAt } = tabRovingState
-
-  /**
-   * -1: from left
-   *  0: n/a
-   *  1: from right
-   */
-  //   const direction = (() => {
-  //     if (!activeAt || !prevActiveAt || activeAt.x === prevActiveAt.x) {
-  //       return 0
-  //     }
-  //     return activeAt.x > prevActiveAt.x ? -1 : 1
-  //   })()
-
-  //   const enterVariant =
-  //     direction === 1 ? 'isLeft' : direction === -1 ? 'isRight' : 'defaultFade'
-  //   const exitVariant =
-  //     direction === 1 ? 'isRight' : direction === -1 ? 'isLeft' : 'defaultFade'
+  const { activeAt, intentAt } = tabRovingState
 
   const handleOnInteraction: TabsTabProps['onInteraction'] = (type, layout) => {
     if (type === 'select') {
@@ -71,7 +54,7 @@ export const BarTabs = memo(function HeaderTabs({
       value={currentTab}
       onValueChange={setCurrentTab}
       orientation="horizontal"
-      size="$2"
+      size="2"
       flexDirection="column"
       activationMode="manual"
       position="relative"
@@ -100,13 +83,12 @@ export const BarTabs = memo(function HeaderTabs({
         )}
       </AnimatePresence>
 
-      <Tabs.List loop={false} aria-label="Manage your account" gap="$2" bg="transparent">
+      <Tabs.List loop={false} aria-label="Manage your account" gap="2" bg="transparent">
         {tabs.map(({ component, value, hasChanges }) => (
           <Tabs.Tab
             key={value}
-            unstyled
             borderColor="transparent"
-            px="$3"
+            px="3"
             value={value}
             onInteraction={handleOnInteraction}
           >
@@ -115,14 +97,12 @@ export const BarTabs = memo(function HeaderTabs({
                 <Circle
                   key={value}
                   transition="bouncy"
-                  opacity={1}
-                  scale={1}
-                  enterStyle={{ opacity: 0, scale: 0.4 }}
-                  exitStyle={{ opacity: 0, scale: 0.4 }}
+                  opacity="1 enter:0 exit:0"
+                  scale="1 enter:0.4 exit:0.4"
                   position="absolute"
                   r={2}
                   t={2}
-                  bg="$green8"
+                  bg="green8"
                   size={8}
                 />
               )}
@@ -141,19 +121,13 @@ const TabsRovingIndicator = ({
 }: { isActive?: boolean } & YStackProps) => {
   return (
     <YStack
-      rounded="$2"
+      rounded="2"
       position="absolute"
-      bg="$color6"
+      bg="color6"
       transition="quick"
-      enterStyle={{
-        opacity: 0,
-      }}
-      exitStyle={{
-        opacity: 0,
-      }}
-      opacity={0.5}
+      opacity="0.5 enter:0 exit:0"
       {...(isActive && {
-        backgroundColor: '$color8',
+        backgroundColor: 'color8',
         opacity: 0.6,
       })}
       {...props}

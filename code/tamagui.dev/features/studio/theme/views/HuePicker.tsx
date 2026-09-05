@@ -8,24 +8,24 @@ export const HuePicker = memo(
     const onChangeDelayed = useDebounce(useEvent(onChange), 500)
 
     return (
-      <XStack gap="$4" items="center">
+      <XStack gap="4" items="center">
         <XGroup>
-          <View width="$2" height="$2" overflow="hidden">
+          <View width="2" height="2" overflow="hidden">
             <YStack
               select="none"
               pointerEvents="none"
               position="absolute"
-              fullscreen
+              inset={0}
               items="center"
               justify="center"
             >
-              <YStack fullscreen bg={hsla(cur, 0.5, 0.5, 1) as any} />
+              <YStack position="absolute" inset={0} bg={hsla(cur, 0.5, 0.5, 1) as any} />
             </YStack>
           </View>
         </XGroup>
 
-        <XStack items="center" gap="$4" height="$3">
-          <YStack gap="$1">
+        <XStack items="center" gap="4" height="3">
+          <YStack gap="1">
             <Slider
               orientation="horizontal"
               min={0}
@@ -39,13 +39,13 @@ export const HuePicker = memo(
             >
               <Slider.Track
                 borderWidth={0.5}
-                borderColor="$color12"
+                borderColor="color11"
                 width={145}
                 style={{
                   background: hueLinearGradient,
                 }}
               ></Slider.Track>
-              <Slider.Thumb bg="$color1" size="$1" index={0} rounded="$10" elevate />
+              <Slider.Thumb bg="color1" rounded="10" size="1" index={0} elevate />
             </Slider>
           </YStack>
         </XStack>

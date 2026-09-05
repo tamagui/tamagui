@@ -8,7 +8,7 @@ import { Text, View, XStack, YStack, styled } from 'tamagui'
 // colored panel behind the label.
 
 const PillBackdrop = styled(View, {
-  name: 'PillBackdrop',
+  displayName: 'PillBackdrop',
   position: 'absolute',
   top: 0,
   right: 0,
@@ -22,14 +22,12 @@ const PillBackdrop = styled(View, {
 })
 
 const Pill = styled(View, {
-  name: 'Pill',
+  displayName: 'Pill',
   height: 36,
   paddingHorizontal: 16,
   alignItems: 'center',
   justifyContent: 'center',
-  pressStyle: {
-    backgroundColor: '#ff0000',
-  },
+  backgroundColor: 'press:#ff0000',
 })
 
 const PILLS = [
@@ -53,11 +51,11 @@ export function PressStyleScrollStuck() {
   const append = (line: string) => setLog((prev) => [line, ...prev].slice(0, 20))
 
   return (
-    <YStack flex={1} padding="$4" gap="$3" testID="press-scroll-stuck-root">
-      <Text fontSize="$5" fontWeight="bold">
+    <YStack flex={1} padding="4" gap="3" testID="press-scroll-stuck-root">
+      <Text fontSize="5" fontWeight="bold">
         Press + Horizontal Scroll
       </Text>
-      <Text fontSize="$2" color="$gray11">
+      <Text fontSize="2" color="color10">
         Press any pill, then drag sideways into a scroll. Pills should return to their
         rest color when the finger lifts.
       </Text>
@@ -88,34 +86,29 @@ export function PressStyleScrollStuck() {
         ))}
       </ScrollView>
 
-      <XStack gap="$2" flexWrap="wrap">
+      <XStack gap="2" flexWrap="wrap">
         {PILLS.map((name) => (
-          <Text key={name} testID={`pill-count-${name}`} fontSize="$2" color="$gray11">
+          <Text key={name} testID={`pill-count-${name}`} fontSize="2" color="color10">
             {name}: {pressed[name] ?? 0}
           </Text>
         ))}
       </XStack>
 
-      <XStack gap="$2" flexWrap="wrap">
+      <XStack gap="2" flexWrap="wrap">
         {PILLS.map((name) => (
-          <Text
-            key={name}
-            testID={`pill-out-count-${name}`}
-            fontSize="$2"
-            color="$gray11"
-          >
+          <Text key={name} testID={`pill-out-count-${name}`} fontSize="2" color="color10">
             {name} out: {pressedOut[name] ?? 0}
           </Text>
         ))}
       </XStack>
 
-      <YStack gap="$1">
-        <Text fontSize="$3" fontWeight="bold">
+      <YStack gap="1">
+        <Text fontSize="3" fontWeight="bold">
           Log
         </Text>
         <YStack testID="press-log" gap={2}>
           {log.map((line, i) => (
-            <Text key={i} fontSize="$1">
+            <Text key={i} fontSize="1">
               {line}
             </Text>
           ))}

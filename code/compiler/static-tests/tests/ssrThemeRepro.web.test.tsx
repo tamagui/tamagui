@@ -5,11 +5,11 @@ import { extractForWeb } from './lib/extract'
 
 window['React'] = React
 
-// regression for sandbox ssr-theme failure: tokens inside extracted
-// $theme-* / $group-* blocks must resolve to var(--x) references — a raw
-// "$color5" in the emitted CSS is an invalid declaration browsers drop,
+// Regression for sandbox ssr-theme failure: tokens inside extracted theme
+// clauses must resolve to var(--x) references — a raw
+// "color5" in the emitted CSS is an invalid declaration browsers drop,
 // so the theme style silently never applies.
-test('tokens inside $theme-* blocks resolve to CSS variables', async () => {
+test('tokens inside theme clauses resolve to CSS variables', async () => {
   const output = await extractForWeb(
     `
     import { View } from '@tamagui/core'
@@ -18,10 +18,7 @@ test('tokens inside $theme-* blocks resolve to CSS variables', async () => {
         <View
           width={100}
           height={100}
-          boxShadow="0 2px 4px $shadowColor"
-          $theme-light={{
-            boxShadow: '0 4px 8px $color5',
-          }}
+          boxShadow="0 2px 4px shadowColor light:0 4px 8px color5"
         />
       )
     }
@@ -37,12 +34,12 @@ test('tokens inside $theme-* blocks resolve to CSS variables', async () => {
   const styles = output?.styles ?? ''
   expect(styles).toContain('.t_light')
   expect(styles).toContain('var(--color5)')
-  expect(styles).not.toContain('$color5')
+  // the token must appear only as a variable reference; a bare `color5` as a
+  // declaration value is what browsers drop
+  expect(styles).not.toMatch(/(?<!--)color5/)
 })
 
-// nested media-like keys inside a theme block can't extract in one pass —
-// the whole prop must stay on the runtime path (kept as an inline JSX attr)
-test('nested media inside $theme-* deopts to runtime', async () => {
+test('chained theme and media clauses extract in one pass', async () => {
   const output = await extractForWeb(
     `
     import { View } from '@tamagui/core'
@@ -50,9 +47,7 @@ test('nested media inside $theme-* deopts to runtime', async () => {
       return (
         <View
           width={100}
-          $theme-dark={{
-            $sm: { backgroundColor: 'red' },
-          }}
+          backgroundColor="dark:sm:red"
         />
       )
     }
@@ -65,5 +60,6 @@ test('nested media inside $theme-* deopts to runtime', async () => {
     }
   )
 
-  expect(output?.js ?? '').toContain('$theme-dark')
+  expect(output?.styles ?? '').toContain('red')
+  expect(output?.js ?? '').not.toContain('dark:sm:red')
 })

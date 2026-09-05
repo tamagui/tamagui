@@ -1,0 +1,36 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "togglegroup",
+  "type": "registry:ui",
+  "title": "ToggleGroup",
+  "description": "v2-look ToggleGroup: theme palette, border, hover/press/focus color styling, and the default active (pressed-on) appearance on the unstyled @tamagui/ui ToggleGroup Item. The behavior keeps only structural layout + the size mechanism and emits aria-pressed/data-state.",
+  "files": [
+    {
+      "path": "components/tamagui/ToggleGroup.tsx",
+      "content": "// Styled ToggleGroup = the unstyled @tamagui/ui ToggleGroup behavior + the\n// default v2-look skin on its Item (theme palette, border, hover/press/focus\n// color styling, and the default active appearance). The behavior frame keeps\n// only structural layout + the size mechanism.\n// Single skin definition; the shadcn registry item is generated from this file.\nimport {\n  createRefComponent,\n  type GetProps,\n  styled,\n  type TamaguiElement,\n  ToggleGroup as UiToggleGroup,\n  withStaticProperties,\n} from '@tamagui/ui'\nimport type * as React from 'react'\n\nconst activeAppearance = {\n  backgroundColor: 'background-press hover:background-press focus:background-press',\n} as const\n\nexport const ToggleGroupItem = styled(UiToggleGroup.Item, {\n  displayName: 'ToggleGroupItem',\n  backgroundColor: 'background hover:background-hover press:background-press',\n  borderColor: 'border-color hover:border-color-hover press:border-color-press',\n  borderWidth: 1,\n  margin: -1,\n  outlineColor: 'focus-visible:outline-color',\n  outlineWidth: 'focus-visible:2px',\n  outlineStyle: 'focus-visible:solid',\n  zIndex: 'focus-visible:10',\n  variants: {\n    defaultActiveStyle: {\n      true: activeAppearance,\n    },\n  } as const,\n})\n\n// see Dialog.tsx: withStaticProperties assigns in place, so composing onto\n// UiToggleGroup would rewrite @tamagui/ui's own ToggleGroup.Item for every consumer\n// of the unstyled package.\nconst ToggleGroupRoot = createRefComponent<\n  TamaguiElement,\n  React.ComponentProps<typeof UiToggleGroup>\n>(function ToggleGroup(props, ref) {\n  return <UiToggleGroup {...props} ref={ref} />\n})\n\nexport const ToggleGroup = withStaticProperties(ToggleGroupRoot, {\n  Item: ToggleGroupItem,\n})\n\nexport type ToggleGroupItemProps = GetProps<typeof ToggleGroupItem>\n",
+      "type": "registry:ui",
+      "target": "components/tamagui/ToggleGroup.tsx"
+    }
+  ],
+  "dependencies": [
+    "@tamagui/ui"
+  ],
+  "categories": [
+    "form"
+  ],
+  "meta": {
+    "tokens": [
+      "background",
+      "background-hover",
+      "background-press",
+      "border-color",
+      "border-color-hover",
+      "border-color-press",
+      "outline-color"
+    ],
+    "states": [
+      "checked",
+      "pressed"
+    ]
+  }
+}

@@ -1,7 +1,8 @@
 import { ChevronRight } from '@tamagui/lucide-icons-2'
-import { Menu } from '@tamagui/menu'
 import React from 'react'
-import { Button, Text, YStack } from 'tamagui'
+import { Text, YStack } from 'tamagui'
+import { Button } from '../components/Button'
+import { Menu } from '../components/Menu'
 
 /**
  * Test case for menu focus leave behavior
@@ -13,7 +14,7 @@ export function MenuFocusLeaveCase() {
   const [subMenuOpen, setSubMenuOpen] = React.useState(false)
 
   return (
-    <YStack padding="$4" gap="$4" alignItems="flex-start">
+    <YStack padding="4" gap="4" alignItems="flex-start">
       <Text>Test: focus should clear when leaving menu entirely</Text>
 
       <Menu placement="bottom-start">
@@ -24,11 +25,11 @@ export function MenuFocusLeaveCase() {
         <Menu.Portal zIndex={100}>
           <Menu.Content
             data-testid="menu-content"
-            p="$2"
+            p="2"
             minWidth={220}
             borderWidth={1}
-            borderColor="$borderColor"
-            elevation="$3"
+            borderColor="border-color"
+            boxShadow="0 4px 12px shadow-color"
           >
             <Menu.Item data-testid="menu-item-1" key="item-1" textValue="Item One">
               <Menu.ItemTitle>Item One</Menu.ItemTitle>
@@ -46,18 +47,18 @@ export function MenuFocusLeaveCase() {
                 textValue="More Options"
               >
                 <Menu.ItemTitle>More Options (submenu 1)</Menu.ItemTitle>
-                <ChevronRight size={14} color="$color10" />
+                <ChevronRight size={14} color="color10" />
               </Menu.SubTrigger>
 
               <Menu.Portal zIndex={200}>
                 <Menu.SubContent
                   data-testid="submenu-content-1"
-                  bg="$background"
-                  p="$2"
+                  bg="background"
+                  p="2"
                   minWidth={180}
                   borderWidth={1}
-                  borderColor="$borderColor"
-                  elevation="$3"
+                  borderColor="border-color"
+                  boxShadow="0 4px 12px shadow-color"
                 >
                   <Menu.Item
                     data-testid="submenu-1-item-1"
@@ -86,18 +87,18 @@ export function MenuFocusLeaveCase() {
                 textValue="Another Submenu"
               >
                 <Menu.ItemTitle>Another Submenu (submenu 2)</Menu.ItemTitle>
-                <ChevronRight size={14} color="$color10" />
+                <ChevronRight size={14} color="color10" />
               </Menu.SubTrigger>
 
               <Menu.Portal zIndex={200}>
                 <Menu.SubContent
                   data-testid="submenu-content-2"
-                  bg="$background"
-                  p="$2"
+                  bg="background"
+                  p="2"
                   minWidth={180}
                   borderWidth={1}
-                  borderColor="$borderColor"
-                  elevation="$3"
+                  borderColor="border-color"
+                  boxShadow="0 4px 12px shadow-color"
                 >
                   <Menu.Item
                     data-testid="submenu-2-item-1"
@@ -124,9 +125,9 @@ export function MenuFocusLeaveCase() {
       {/* Area to move mouse to when leaving menu */}
       <YStack
         data-testid="outside-area"
-        padding="$4"
-        backgroundColor="$backgroundHover"
-        marginTop="$8"
+        padding="4"
+        backgroundColor="background-hover"
+        marginTop="8"
       >
         <Text>Move mouse here to leave menu</Text>
       </YStack>

@@ -12,9 +12,9 @@ describe('shorthand variables - native', () => {
   // on native, boxShadow/backgroundImage are parsed to RN object format
   // filter stays as string (no RN object equivalent)
 
-  test('boxShadow with $variable resolves token to object format', () => {
+  test('boxShadow with variable resolves token to object format', () => {
     const { style } = getSplitStylesFor({
-      boxShadow: '0 0 10px $white',
+      boxShadow: '0 0 10px white',
     })
 
     expect(style?.boxShadow).toEqual([
@@ -24,7 +24,7 @@ describe('shorthand variables - native', () => {
 
   test('boxShadow with multiple tokens resolves all to objects', () => {
     const { style } = getSplitStylesFor({
-      boxShadow: '0 0 10px $white, 0 0 20px $black',
+      boxShadow: '0 0 10px white, 0 0 20px black',
     })
 
     expect(style?.boxShadow).toEqual([
@@ -43,23 +43,22 @@ describe('shorthand variables - native', () => {
     ])
   })
 
-  test('boxShadow with unresolvable $variable keeps token string in object', () => {
+  test('boxShadow with unresolvable variable keeps token string in object', () => {
     const { style } = getSplitStylesFor({
-      boxShadow: '0 0 10px $nonexistent',
+      boxShadow: '0 0 10px nonexistent',
     })
 
     expect(style?.boxShadow).toEqual([
-      { offsetX: 0, offsetY: 0, blurRadius: 10, color: '$nonexistent' },
+      { offsetX: 0, offsetY: 0, blurRadius: 10, color: 'nonexistent' },
     ])
   })
 
-  test('filter with $variable resolves space token', () => {
+  test('filter with a migrated token value stays literal CSS', () => {
     const { style } = getSplitStylesFor({
-      filter: 'blur($2)',
+      filter: 'blur(7px)',
     })
 
-    // $2 in space = 7 (size 28 * 0.333 rounded)
-    expect(style?.filter).toBe('blur(7)')
+    expect(style?.filter).toBe('blur(7px)')
   })
 
   test('filter without variables passed through unchanged', () => {
@@ -72,9 +71,9 @@ describe('shorthand variables - native', () => {
 
   // backgroundImage - RN 0.76+ uses experimental_backgroundImage
   // on native, parsed to object array format
-  test('backgroundImage with $variable resolves tokens to object format', () => {
+  test('backgroundImage with variable resolves tokens to object format', () => {
     const { style } = getSplitStylesFor({
-      backgroundImage: 'linear-gradient(to bottom, $white, $black)',
+      backgroundImage: 'linear-gradient(to bottom, white, black)',
     })
 
     expect((style as any)?.experimental_backgroundImage).toEqual([
@@ -88,7 +87,7 @@ describe('shorthand variables - native', () => {
 
   test('backgroundImage with angle and multiple color stops', () => {
     const { style } = getSplitStylesFor({
-      backgroundImage: 'linear-gradient(45deg, $black 0%, $white 50%, $black 100%)',
+      backgroundImage: 'linear-gradient(45deg, black 0%, white 50%, black 100%)',
     })
 
     expect((style as any)?.experimental_backgroundImage).toEqual([
@@ -118,23 +117,23 @@ describe('shorthand variables - native', () => {
     ])
   })
 
-  test('backgroundImage with unresolvable $variable keeps token in object', () => {
+  test('backgroundImage with unresolvable variable keeps token in object', () => {
     const { style } = getSplitStylesFor({
-      backgroundImage: 'linear-gradient($nonexistent, $white)',
+      backgroundImage: 'linear-gradient(nonexistent, white)',
     })
 
-    // $nonexistent is not a valid direction, so parsed as color stop
+    // nonexistent is not a valid direction, so parsed as color stop
     expect((style as any)?.experimental_backgroundImage).toEqual([
       {
         type: 'linear-gradient',
-        colorStops: [{ color: '$nonexistent' }, { color: '#fff' }],
+        colorStops: [{ color: 'nonexistent' }, { color: '#fff' }],
       },
     ])
   })
 
-  test('backgroundImage with $token/NN opacity modifier resolves to concrete rgba', () => {
+  test('backgroundImage with token/NN opacity modifier resolves to concrete rgba', () => {
     const { style } = getSplitStylesFor({
-      backgroundImage: 'linear-gradient(180deg, $white/50, $white/0)',
+      backgroundImage: 'linear-gradient(180deg, white/50, white/0)',
     })
 
     expect((style as any)?.experimental_backgroundImage).toEqual([
@@ -170,9 +169,9 @@ describe('border shorthand - native', () => {
     expect(style?.borderLeftColor).toBe('red')
   })
 
-  test('border with $variable color resolves token', () => {
+  test('border with variable color resolves token', () => {
     const { style } = getSplitStylesFor({
-      border: '2px dashed $white',
+      border: '2px dashed white',
     })
 
     expect(style?.borderTopWidth).toBe(2)
@@ -206,6 +205,26 @@ describe('border shorthand - native', () => {
     expect(style?.borderStyle).toBe('dotted')
     expect(style?.borderTopColor).toBe('blue')
   })
+
+  test('border with color function keeps commas intact', () => {
+    const { style } = getSplitStylesFor({
+      border: '1px solid rgb(1, 2, 3)',
+    })
+
+    expect(style?.borderTopWidth).toBe(1)
+    expect(style?.borderStyle).toBe('solid')
+    expect(style?.borderTopColor).toBe('rgb(1, 2, 3)')
+  })
+
+  test('border with keyword width', () => {
+    const { style } = getSplitStylesFor({
+      border: 'thin solid red',
+    })
+
+    expect(style?.borderTopWidth).toBe(1)
+    expect(style?.borderStyle).toBe('solid')
+    expect(style?.borderTopColor).toBe('red')
+  })
 })
 
 describe('outline shorthand - native', () => {
@@ -221,9 +240,9 @@ describe('outline shorthand - native', () => {
     expect(style?.outlineColor).toBe('red')
   })
 
-  test('outline with $variable color resolves token', () => {
+  test('outline with variable color resolves token', () => {
     const { style } = getSplitStylesFor({
-      outline: '2px dashed $white',
+      outline: '2px dashed white',
     })
 
     expect(style?.outlineWidth).toBe(2)
@@ -231,13 +250,27 @@ describe('outline shorthand - native', () => {
     expect(style?.outlineColor).toBe('#fff')
   })
 
-  test('outline "none" sets outlineWidth to 0', () => {
-    const { style } = getSplitStylesFor({
-      outline: 'none',
-    })
-
-    expect(style?.outlineWidth).toBe(0)
-    expect(style?.outlineStyle).toBe('none')
+  test('outline "none" removes unsupported native outline props', () => {
+    for (const props of [
+      {
+        outline: 'none',
+        outlineWidth: 2,
+        outlineColor: 'red',
+        outlineOffset: 3,
+      },
+      {
+        outlineStyle: 'none' as const,
+        outlineWidth: 2,
+        outlineColor: 'red',
+        outlineOffset: 3,
+      },
+    ]) {
+      const { style } = getSplitStylesFor(props)
+      expect(style).not.toHaveProperty('outlineStyle')
+      expect(style).not.toHaveProperty('outlineWidth')
+      expect(style).not.toHaveProperty('outlineColor')
+      expect(style).not.toHaveProperty('outlineOffset')
+    }
   })
 
   test('outline with just width and style', () => {
@@ -248,11 +281,39 @@ describe('outline shorthand - native', () => {
     expect(style?.outlineWidth).toBe(1)
     expect(style?.outlineStyle).toBe('solid')
   })
+
+  test('outline with color function keeps commas intact', () => {
+    const { style } = getSplitStylesFor({
+      outline: '2px solid rgba(0, 0, 0, 0.5)',
+    })
+
+    expect(style?.outlineWidth).toBe(2)
+    expect(style?.outlineStyle).toBe('solid')
+    expect(style?.outlineColor).toBe('rgba(0, 0, 0, 0.5)')
+  })
+})
+
+test('web intrinsic sizes are removed from native styles', () => {
+  const { style } = getSplitStylesFor({
+    width: 'max-content',
+    height: 'min-content',
+    minWidth: 'fit-content',
+    minHeight: 'max-content',
+    maxWidth: 'min-content',
+    maxHeight: 'fit-content',
+  })
+
+  expect(style).not.toHaveProperty('width')
+  expect(style).not.toHaveProperty('height')
+  expect(style).not.toHaveProperty('minWidth')
+  expect(style).not.toHaveProperty('minHeight')
+  expect(style).not.toHaveProperty('maxWidth')
+  expect(style).not.toHaveProperty('maxHeight')
 })
 
 describe('border shorthand with media queries - native', () => {
-  test('border in $sm applies when media state sm is true', () => {
-    const { style } = getSplitStylesFor({ $sm: { border: '2px solid green' } }, View, {
+  test('border in sm applies when media state sm is true', () => {
+    const { style } = getSplitStylesFor({ border: 'sm:2px solid green' }, View, {
       mediaState: { sm: true },
     })
 
@@ -261,8 +322,8 @@ describe('border shorthand with media queries - native', () => {
     expect(style?.borderTopColor).toBe('green')
   })
 
-  test('border in $sm does not apply when media state sm is false', () => {
-    const { style } = getSplitStylesFor({ $sm: { border: '2px solid green' } }, View, {
+  test('border in sm does not apply when media state sm is false', () => {
+    const { style } = getSplitStylesFor({ border: 'sm:2px solid green' }, View, {
       mediaState: { sm: false },
     })
 
@@ -271,8 +332,8 @@ describe('border shorthand with media queries - native', () => {
     expect(style?.borderTopColor).toBeUndefined()
   })
 
-  test('border in $sm with token resolves when media matches', () => {
-    const { style } = getSplitStylesFor({ $sm: { border: '1px dashed $white' } }, View, {
+  test('border in sm with token resolves when media matches', () => {
+    const { style } = getSplitStylesFor({ border: 'sm:1px dashed white' }, View, {
       mediaState: { sm: true },
     })
 

@@ -1,46 +1,19 @@
 import { isWeb } from '@tamagui/constants'
 import type { CreateTamaguiProps, Variable } from '../types'
-import { getVariableVariable, isVariable } from '../createVariable'
-import { autoVariables, registerCSSVariable, variableToCSS } from './registerCSSVariable'
+import {
+  getAutoVariableCSS,
+  getVariableGeneration,
+  registerCSSVariable,
+  variableToCSS,
+} from './registerCSSVariable'
+import { getConfigMaybe } from '../config'
 import { getThemeCSSRules } from './getThemeCSSRules'
-import { getAllRules } from './insertStyleRule'
+import { getAllRules, wrapStyleRules } from './insertStyleRule'
 
 type ThemeConfig = {
   cssRuleSets: string[]
   getThemeRulesSets: () => string[]
 }
-
-// helper to get font property CSS declarations
-function getFontPropertyDeclarations(
-  fontParsed: any,
-  tokenKey: string = '$true'
-): string[] {
-  const props: string[] = ['font-family: var(--f-family)']
-
-  const getVarRef = (obj: any) => {
-    const val = obj?.[tokenKey]
-    if (isVariable(val)) {
-      return getVariableVariable(val)
-    }
-    return undefined
-  }
-
-  const letterSpacing = getVarRef(fontParsed.letterSpacing)
-  if (letterSpacing) props.push(`letter-spacing: ${letterSpacing}`)
-
-  const lineHeight = getVarRef(fontParsed.lineHeight)
-  if (lineHeight) props.push(`line-height: ${lineHeight}`)
-
-  const fontStyle = getVarRef(fontParsed.style)
-  if (fontStyle) props.push(`font-style: ${fontStyle}`)
-
-  const fontWeight = getVarRef(fontParsed.weight)
-  if (fontWeight) props.push(`font-weight: ${fontWeight}`)
-
-  return props
-}
-
-export { getFontPropertyDeclarations }
 
 /**
  * Generates CSS for tokens - registers CSS variables and builds declaration strings
@@ -97,7 +70,7 @@ export function createFontCSS(
       const [name, language] = key.includes('_') ? key.split('_') : [key]
       const fontVars = registerFontVariables(fontParsed)
       fontDeclarations[key] = {
-        name: name.slice(1),
+        name,
         declarations: fontVars,
         language,
         fontParsed,
@@ -118,7 +91,7 @@ export function buildCSSRuleSets(
     string,
     { name: string; declarations: string[]; language?: string; fontParsed: any }
   >,
-  defaultFontToken: string = '$true'
+  defaultFontToken = ''
 ): string[] {
   if (!process.env.TAMAGUI_DID_OUTPUT_CSS) {
     const cssRuleSets: string[] = []
@@ -148,16 +121,15 @@ export function buildCSSRuleSets(
     }
 
     // shared rule: all font_* classes + is_View apply font properties
-    // this resets fonts on Views like React Native does
+    // this resets fonts on Views like React Native does; the declarations must
+    // follow settings.defaultFont, never the sorted selector order
     if (fontSelectors.length) {
-      const firstFont = fontDeclarations[sortedFontDeclarationKeys[0]]
-      if (firstFont?.fontParsed) {
-        const fontProps = getFontPropertyDeclarations(
-          firstFont.fontParsed,
-          defaultFontToken
-        )
-        const sharedSelectors = [...fontSelectors, '.is_View'].join(', ')
-        cssRuleSets.push(`${sharedSelectors} {${fontProps.join('; ')}}`)
+      const defaultFont = fontDeclarations[defaultFontToken]
+      if (defaultFont?.fontParsed) {
+        // These are defaults, so an atomic style prop must be able to override
+        // them regardless of stylesheet insertion order.
+        const sharedSelectors = `:where(${[...fontSelectors, '.is_View'].join(', ')})`
+        cssRuleSets.push(`${sharedSelectors} {font-family: var(--f-family)}`)
       }
     }
 
@@ -194,6 +166,105 @@ export function createThemeCSS(
 }
 
 /**
+ * Everything `getCSS` emits ahead of the runtime rules. It is a pure function of
+ * the config, so a per-config slot holds it across calls and SSR stops
+ * regenerating every theme's variable block per request. It is NOT hoisted to
+ * `createTamagui` time: generating theme rules is what mints auto variables, so
+ * doing it eagerly would renumber them whenever a process builds more than one
+ * config, and the point of this cache is that nothing about the output moves.
+ */
+type StaticCSS = {
+  /** the variable generation these were built against */
+  generation: number
+  /** the config whose settings `getThemeCSSRules` read while building them */
+  config: unknown
+  /** keyed by separator and whether the theme rules are in the string */
+  byKey: Map<string, string>
+}
+
+export type GetCSSState = {
+  /** index into the sorted rule list that `sinceLastCall` slices from */
+  lastIndex: number
+  static: StaticCSS | null
+}
+
+// a request only ever asks for one or two shapes; anything past that is a caller
+// passing separators it makes up, and dropping the lot just costs a rebuild
+const MAX_STATIC_SHAPES = 8
+
+const getStaticCSS = (
+  themeConfig: ThemeConfig,
+  separator: string,
+  withThemes: boolean,
+  state: GetCSSState
+): string => {
+  const key = withThemes ? separator : `\u0000${separator}`
+  const config = getConfigMaybe()
+  let cached = state.static
+
+  if (
+    !cached ||
+    cached.generation !== getVariableGeneration() ||
+    cached.config !== config
+  ) {
+    cached = { generation: getVariableGeneration(), config, byKey: new Map() }
+    state.static = cached
+  }
+
+  const hit = cached.byKey.get(key)
+  if (hit !== undefined) {
+    return hit
+  }
+
+  // must run before getAutoVariableCSS: generating theme rules is what creates
+  // the auto variables that block declares
+  const themeRules = withThemes ? themeConfig.getThemeRulesSets().join(separator) : ''
+
+  // auto-generated vars from theme values not in tokens
+  const autoVariableCSS = getAutoVariableCSS()
+  const autoVarCSS = autoVariableCSS ? `:root{${autoVariableCSS}}` : ''
+
+  // notes:
+  // @scope (.is_Text) to (.is_View) - inherit text styles in nested Text without View boundary
+  // display: inline breaks css transform styles
+
+  // !important or else random css easily overrides, the prop is absolute (local-first styling)
+  const hideScrollBarsCSS = `._hsb-x::-webkit-scrollbar:horizontal { display: none !important; }
+._hsb-y::-webkit-scrollbar:vertical { display: none !important; }
+._hsb-x { scrollbar-width: none !important; }
+._hsb-y { scrollbar-width: none !important; }`
+  const pointerEventsCSS = `:root ._pe-boxonly>* {pointer-events:none;}
+:root ._pe-boxnone>* {pointer-events:auto;}`
+
+  const designSystem = `._ovs-contain {overscroll-behavior:contain;}
+.t_unmounted .is_View, .t_unmounted .is_Text { transition: none !important; }
+:where(.is_View) { display: flex; align-items: stretch; flex-direction: column; flex-basis: auto; box-sizing: border-box; min-height: 0; min-width: 0; flex-shrink: 0; }
+:where(.is_Text) { display: inline; box-sizing: border-box; word-wrap: break-word; white-space: pre-wrap; margin: 0; }
+@scope (.is_Text) to (.is_View) { :where(.is_Text) { white-space: inherit; word-wrap: inherit; } }
+._dsp_contents {display:contents;}
+._no_backdrop::backdrop {display: none;}
+${pointerEventsCSS}
+${hideScrollBarsCSS}
+${autoVarCSS}
+${themeConfig.cssRuleSets.join(separator)}`
+
+  const css = `${designSystem}\n${themeRules}\n`
+
+  // generating theme rules is what mints auto variables, so the generation this
+  // was built against is the one standing now, not the one read on the way in
+  if (cached.generation !== getVariableGeneration()) {
+    cached = { generation: getVariableGeneration(), config, byKey: new Map() }
+    state.static = cached
+  }
+  if (cached.byKey.size >= MAX_STATIC_SHAPES) {
+    cached.byKey.clear()
+  }
+  cached.byKey.set(key, css)
+
+  return css
+}
+
+/**
  * Gets all generated CSS - design system + runtime styles
  */
 export function getCSS(
@@ -203,62 +274,29 @@ export function getCSS(
     sinceLastCall?: boolean
     exclude?: 'themes' | 'design-system' | string | null
   } = {},
-  lastIndex: { value: number }
+  state: GetCSSState
 ): string {
   if (!process.env.TAMAGUI_DID_OUTPUT_CSS && process.env.TAMAGUI_TARGET === 'web') {
     const { separator = '\n', sinceLastCall, exclude } = opts
 
-    if (sinceLastCall && lastIndex.value >= 0) {
+    if (sinceLastCall && state.lastIndex >= 0) {
       const rules = getAllRules()
-      const newRules = rules.slice(lastIndex.value)
-      lastIndex.value = rules.length
-      return newRules.join(separator)
+      const newRules = rules.slice(state.lastIndex)
+      state.lastIndex = rules.length
+      return wrapStyleRules(newRules.join(separator))
     }
 
-    lastIndex.value = 0
+    state.lastIndex = 0
 
     const runtimeStyles = getAllRules().join(separator)
 
     if (exclude === 'design-system') {
-      return runtimeStyles
+      return wrapStyleRules(runtimeStyles)
     }
 
-    const themeRules = exclude ? '' : themeConfig.getThemeRulesSets().join(separator)
-
-    // auto-generated vars from theme values not in tokens
-    const autoVarCSS = autoVariables.length
-      ? `:root{${autoVariables.map((v) => `--${v.name}:${v.val}`).join(';')}}`
-      : ''
-
-    // notes:
-    // @scope (.is_Text) to (.is_View) - inherit text styles in nested Text without View boundary
-    // display: inline breaks css transform styles
-
-    // !important or else random css easily overrides, the prop is absolute (local-first styling)
-    const hideScrollBarsCSS = `._hsb-x::-webkit-scrollbar:horizontal { display: none !important; }
-._hsb-y::-webkit-scrollbar:vertical { display: none !important; }
-._hsb-x { scrollbar-width: none !important; }
-._hsb-y { scrollbar-width: none !important; }`
-    const pointerEventsCSS = `:root ._pe-boxonly>* {pointer-events:none;}
-:root ._pe-boxnone>* {pointer-events:auto;}`
-
-    const designSystem = `._ovs-contain {overscroll-behavior:contain;}
-.t_unmounted .is_View, .t_unmounted .is_Text { transition: none !important; }
-.is_View { display: flex; align-items: stretch; flex-direction: column; flex-basis: auto; box-sizing: border-box; min-height: 0; min-width: 0; flex-shrink: 0; }
-.is_Text { display: inline; box-sizing: border-box; word-wrap: break-word; white-space: pre-wrap; margin: 0; }
-@scope (.is_Text) to (.is_View) { .is_Text { white-space: inherit; word-wrap: inherit; } }
-._dsp_contents {display:contents;}
-._no_backdrop::backdrop {display: none;}
-.is_Input::selection, .is_TextArea::selection {background-color: var(--t_selectionColor);}
-.is_Input::placeholder, .is_TextArea::placeholder {color: var(--t_placeholderColor);}
-${pointerEventsCSS}
-${hideScrollBarsCSS}
-${autoVarCSS}
-${themeConfig.cssRuleSets.join(separator)}`
-
-    return `${designSystem}
-${themeRules}
-${runtimeStyles}`
+    return wrapStyleRules(
+      `${getStaticCSS(themeConfig, separator, !exclude, state)}${runtimeStyles}`
+    )
   }
   return ''
 }

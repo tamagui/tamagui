@@ -1,5 +1,6 @@
 import { useState, useRef, useCallback } from 'react'
-import { Button, Paragraph, Sheet, YStack, XStack } from 'tamagui'
+import { Paragraph, Sheet, YStack, XStack } from 'tamagui'
+import { Button } from '../components/Button'
 
 /**
  * Test case for Sheet animation configurations
@@ -7,7 +8,7 @@ import { Button, Paragraph, Sheet, YStack, XStack } from 'tamagui'
  */
 export function SheetAnimationCase() {
   return (
-    <YStack gap="$4" padding="$4" flex={1}>
+    <YStack gap="4" padding="4" flex={1}>
       {/* Test 1: animation prop only - "quick" */}
       <SheetTest testId="animation-quick" transition="quick" label='transition="quick"' />
 
@@ -91,9 +92,8 @@ function SheetTest({ testId, transition, transitionConfig, label }: SheetTestPro
   }, [open])
 
   return (
-    <XStack gap="$2" alignItems="center" flexWrap="wrap">
+    <XStack gap="2" alignItems="center" flexWrap="wrap">
       <Button
-        size="$3"
         onPress={handleOpen}
         testID={`${testId}-trigger`}
         data-testid={`${testId}-trigger`}
@@ -102,7 +102,7 @@ function SheetTest({ testId, transition, transitionConfig, label }: SheetTestPro
       </Button>
       {lastDuration !== null && (
         <Paragraph
-          size="$2"
+          size="2"
           testID={`${testId}-duration`}
           data-testid={`${testId}-duration`}
         >
@@ -119,24 +119,19 @@ function SheetTest({ testId, transition, transitionConfig, label }: SheetTestPro
         dismissOnSnapToBottom
         snapPoints={[40]}
       >
-        <Sheet.Overlay
-          transition={transition as any}
-          opacity={0.5}
-          enterStyle={{ opacity: 0 }}
-          exitStyle={{ opacity: 0 }}
-        />
-        <Sheet.Frame
-          padding="$4"
-          bg="$background"
+        <Sheet.Overlay transition={transition as any} opacity="0.5 enter:0 exit:0" />
+        <Sheet.Container
+          padding="4"
           testID={`${testId}-frame`}
           data-testid={`${testId}-frame`}
           onLayout={handleFrameLayout}
         >
-          <YStack gap="$4">
+          <Sheet.Background bg="background" />
+          <YStack gap="4">
             <Paragraph testID={`${testId}-label`} data-testid={`${testId}-label`}>
               {label}
             </Paragraph>
-            <Paragraph size="$2" color="$color10">
+            <Paragraph size="2" color="color10">
               Transition: {transition || 'none'}, Config:{' '}
               {transitionConfig ? JSON.stringify(transitionConfig) : 'none'}
             </Paragraph>
@@ -148,7 +143,7 @@ function SheetTest({ testId, transition, transitionConfig, label }: SheetTestPro
               Close
             </Button>
           </YStack>
-        </Sheet.Frame>
+        </Sheet.Container>
       </Sheet>
     </XStack>
   )

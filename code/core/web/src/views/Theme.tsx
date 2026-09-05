@@ -1,25 +1,47 @@
-import { isWeb } from '@tamagui/constants'
+import { createRefComponent } from '@tamagui/compose-refs'
+import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
+import { getThemeClassNames, reservedThemeProps } from '@tamagui/helpers'
 import type { MutableRefObject } from 'react'
-import React, { Children, cloneElement, forwardRef, isValidElement, useRef } from 'react'
-import { getSetting } from '../config'
+import React, { Children, cloneElement, isValidElement, useRef } from 'react'
 import { variableToString } from '../createVariable'
+import { formatDiagnostic } from '../helpers/formatDiagnostic'
+import {
+  removeNativeStyleScope,
+  updateNativeStyleScope,
+} from '../helpers/nativeStyleEngine'
+import { warnOnce } from '../helpers/warnOnce'
 import { useThemeWithState } from '../hooks/useTheme'
 import {
   getThemeState,
   hasThemeUpdatingProps,
   ThemeStateContext,
 } from '../hooks/useThemeState'
-import type { ThemeProps, ThemeState } from '../types'
+import type { ThemeProps, ThemeState, UseThemeWithStateProps } from '../types'
 import { ThemeDebug } from './ThemeDebug'
 
-type ThemeComponentPropsOnly = ThemeProps & { passThrough?: boolean; contain?: boolean }
+type ThemeComponentPropsOnly = UseThemeWithStateProps & { contain?: boolean }
 
-export const Theme = forwardRef(function Theme(props: ThemeComponentPropsOnly, ref) {
+export const Theme = createRefComponent(function Theme(
+  props: ThemeComponentPropsOnly,
+  ref
+) {
   'use no memo'
 
-  // @ts-expect-error only for internal views
   if (props.disable) {
     return props.children
+  }
+
+  if (process.env.NODE_ENV === 'development') {
+    for (const key in props) {
+      // bundler dev tooling stamps source locations onto every element
+      // (`data-one-source` on web, `srcloc` on native); those are not values
+      if (!reservedThemeProps[key] && key !== 'srcloc' && !key.startsWith('data-')) {
+        warnOnce(
+          `theme-update:${key}`,
+          `<Theme ${key}=...> no longer accepts inline values. Wrap the subtree in <ThemeUpdate ${key}=...> instead.`
+        )
+      }
+    }
   }
 
   const { passThrough } = props
@@ -30,6 +52,12 @@ export const Theme = forwardRef(function Theme(props: ThemeComponentPropsOnly, r
   // <Theme> pushes themeState.id into ThemeStateContext, so children subscribe
   // under this id and need to be notified when our propsKey changes.
   const [_, themeState] = useThemeWithState(props, isRoot, true)
+
+  useIsomorphicLayoutEffect(() => {
+    if (process.env.TAMAGUI_TARGET !== 'native') return
+    updateNativeStyleScope(themeState.id, themeState.name, themeState.theme)
+    return () => removeNativeStyleScope(themeState.id)
+  }, [themeState.id, themeState.name, themeState.theme])
 
   const disableDirectChildTheme = props['disable-child-theme']
 
@@ -128,7 +156,20 @@ export function getThemedChildren(
       const parentState = getThemeState(
         themeState.isNew ? themeState.id : themeState.parentId
       )
-      if (!parentState) throw new Error(`‼️010`)
+      if (!parentState) {
+        throw new Error(
+          process.env.NODE_ENV !== 'production'
+            ? formatDiagnostic(
+                '‼️010',
+                'Theme',
+                'parent theme state is missing for shallow rendering',
+                'Keep <Theme shallow> inside its mounted parent Theme',
+                'name,parentId',
+                { name: themeState.name, parentId: themeState.parentId }
+              )
+            : '❌ Error 014'
+        )
+      }
       children = Children.toArray(children).map((child) => {
         return isValidElement(child)
           ? passThrough
@@ -166,9 +207,13 @@ export function getThemedChildren(
       ? {}
       : getThemeClassNameAndColor(themeState, props, isRoot)
 
+    // ThemeUpdate values ride the anonymous Theme span it creates, and land
+    // even when the resolved theme name itself did not change
+    const inlineClassName = passThrough ? undefined : props._themeUpdate?.className
+
     children = (
       <span
-        className={`${className} is_Theme`}
+        className={`${className} is_Theme${inlineClassName ? ` ${inlineClassName}` : ''}`}
         style={passThrough ? baseStyle : { color, ...baseStyle }}
       >
         {children}
@@ -216,34 +261,5 @@ function getThemeClassNameAndColor(
   const themeColor =
     themeState?.theme && themeState.isNew ? variableToString(themeState.theme.color) : ''
 
-  const style = themeColor
-    ? {
-        color: themeColor,
-      }
-    : undefined
-
-  const themeClassName = themeState.name.replace(schemePrefix, '')
-
-  // Build full hierarchy of theme classes for CSS variable inheritance
-  // Examples:
-  // - "red_surface1" → "t_red t_red_surface1"
-  // - "green_active_Button" → "t_green t_green_active t_green_active_Button"
-  const themeNameParts = themeClassName.split('_')
-  let themeClasses = `t_${themeClassName}`
-
-  if (themeNameParts.length > 1) {
-    // Build full hierarchy for all multi-part themes (sub-themes, component themes, etc.)
-    // This enables CSS variable inheritance through all levels
-    const hierarchyClasses: string[] = []
-    for (let i = 1; i <= themeNameParts.length; i++) {
-      hierarchyClasses.push(`t_${themeNameParts.slice(0, i).join('_')}`)
-    }
-    themeClasses = hierarchyClasses.join(' ')
-  }
-
-  const className = `${isRoot ? '' : 't_sub_theme'} ${themeClasses}`
-
-  return { color: themeColor, className }
+  return { color: themeColor, className: getThemeClassNames(themeState.name, isRoot) }
 }
-
-const schemePrefix = /^(dark|light)_/

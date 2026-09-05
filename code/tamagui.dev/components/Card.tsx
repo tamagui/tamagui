@@ -1,22 +1,13 @@
 import { YStack, styled } from 'tamagui'
 
 export const Card = styled(YStack, {
-  name: 'Card',
+  displayName: 'Card',
   className: 'transition all ease-in ms100',
-  rounded: '$2',
+  rounded: '2',
   borderWidth: 2,
   borderColor: 'transparent',
-  bg: '$background',
+  bg: 'background hover:background-hover press:background-press',
   shrink: 1,
-  elevation: '$1',
-  hoverStyle: {
-    bg: '$backgroundHover',
-    elevation: '$3',
-    y: -4,
-  },
-  pressStyle: {
-    bg: '$backgroundPress',
-    elevation: '$0',
-    y: 0,
-  },
+  y: 'hover:-4px press:0px',
+  boxShadow: '0 6px 12px shadow-color hover:0 10px 20px shadow-color press:none',
 })

@@ -1,12 +1,6 @@
-import {
-  type BuildPalette,
-  createPalettes,
-  getThemeSuitePalettes,
-  type TemplateStrategy,
-  type ThemeSuiteItem,
-} from '@tamagui/theme-builder'
 import { createStore, createUseStore } from '@tamagui/use-store'
 import { getAccessToken } from '~/features/auth/useSupabaseClient'
+import { bentoStore } from '~/features/bento/BentoStore'
 import { toastController } from '~/features/studio/ToastProvider'
 import { demoOptions, optionValues } from '~/features/studio/theme/demoOptions'
 import { getRandomElement } from '~/features/studio/theme/helpers/getRandomElement'
@@ -14,7 +8,14 @@ import { steps } from '~/features/studio/theme/steps/steps'
 import type { SectionStep, ThemeStudioSection } from '~/features/studio/theme/types'
 import { generateThemeBuilderCode } from '../../api'
 import { defaultThemeSuiteItem } from '../defaultThemeSuiteItem'
-import type { BuildTheme, ThemeBuilderState, ThemeSuiteItemData } from '../types'
+import { createPalettes, getThemeSuitePalettes, normalizePalette } from '../palettes'
+import type {
+  BuildPalette,
+  BuildTheme,
+  ThemeBuilderState,
+  ThemeSuiteItem,
+  ThemeSuiteItemData,
+} from '../types'
 import { updatePreviewTheme } from '../updatePreviewTheme'
 
 type AccentSetting = 'color' | 'inverse' | 'off'
@@ -22,13 +23,7 @@ type AccentSetting = 'color' | 'inverse' | 'off'
 export class ThemeBuilderStore {
   loaded = false
   state: ThemeBuilderState | null = null
-  themeSuiteVersion = 0
   listeners = new Set<Function>()
-
-  // returns the current theme ID based on version
-  get themeSuiteUID() {
-    return this.themeSuiteVersion ? String(this.themeSuiteVersion) : ''
-  }
 
   // "working state" => directly derived from this.themeSuite values
   // never mutate `this.state`, instead mutate these and then `this.save` to persist it
@@ -39,7 +34,6 @@ export class ThemeBuilderStore {
   palettes: Record<string, BuildPalette> = defaultThemeSuiteItem.palettes
   schemes = defaultThemeSuiteItem.schemes
   accentSetting: AccentSetting = 'color'
-  templateStrategy: TemplateStrategy = 'base'
 
   // Sub-themes related properties
   subThemes: BuildTheme[] = []
@@ -53,18 +47,13 @@ export class ThemeBuilderStore {
     palette: 'base',
   }
 
-  // Component themes related properties
-  componentThemes: BuildTheme[] = []
-  selectedComponentTheme: string | null = null
-  componentParentTheme: string | null = null
-
   private async sync(state: ThemeBuilderState) {
-    if (!this.themeSuiteUID) {
+    if (!bentoStore.themeSuiteUID) {
       console.warn(`Can't sync without themeSuiteUID`)
       return
     }
     this.state = state
-    const themeSuite = state.themeSuites[this.themeSuiteUID]
+    const themeSuite = state.themeSuites[bentoStore.themeSuiteUID]
     if (themeSuite) {
       await this.updateCurrentThemeSuite(themeSuite)
     }
@@ -75,16 +64,16 @@ export class ThemeBuilderStore {
     if (!this.state) {
       return {
         ...this.getWorkingThemeSuite(),
-        id: this.themeSuiteUID || '',
+        id: bentoStore.themeSuiteUID || '',
         createdAt: Date.now(),
         updatedAt: Date.now(),
         name: '',
       }
     }
 
-    return this.state && this.themeSuiteUID
+    return this.state && bentoStore.themeSuiteUID
       ? {
-          ...this.state.themeSuites[this.themeSuiteUID],
+          ...this.state.themeSuites[bentoStore.themeSuiteUID],
           ...this.getWorkingThemeSuite(),
         }
       : undefined
@@ -105,7 +94,16 @@ export class ThemeBuilderStore {
     // sync to working data:
     for (const key in row) {
       if (key in defaultThemeSuiteItem) {
-        this[key] = row[key] || defaultThemeSuiteItem[key]
+        if (key === 'palettes') {
+          this.palettes = Object.fromEntries(
+            Object.entries(row.palettes).map(([name, palette]) => [
+              name,
+              normalizePalette(palette),
+            ])
+          )
+        } else {
+          this[key] = row[key] || defaultThemeSuiteItem[key]
+        }
       }
     }
     this.updateDisabledState()
@@ -117,13 +115,12 @@ export class ThemeBuilderStore {
     this.palettes = defaultThemeSuiteItem.palettes
     this.schemes = defaultThemeSuiteItem.schemes
     this.accentSetting = 'color'
-    this.templateStrategy = 'base'
     await this.refreshThemeSuite()
   }
 
   // clears the active custom theme, returning to default tint system
   clearTheme() {
-    this.themeSuiteVersion = 0
+    bentoStore.themeSuiteVersion = 0
     this.currentThemeId = ''
     this.currentQuery = ''
     this.save()
@@ -201,7 +198,6 @@ export class ThemeBuilderStore {
       name: this.name,
       palettes: this.palettes,
       schemes: this.schemes,
-      templateStrategy: this.templateStrategy,
     } satisfies ThemeSuiteItemData
   }
 
@@ -211,14 +207,15 @@ export class ThemeBuilderStore {
     themeId?: string | number,
     _username?: string | null
   ) {
-    this.palettes = themeSuite.palettes
+    this.palettes = Object.fromEntries(
+      Object.entries(themeSuite.palettes).map(([name, palette]) => [
+        name,
+        normalizePalette(palette),
+      ])
+    )
     if (themeSuite.schemes) {
       this.schemes = themeSuite.schemes
     }
-    if (themeSuite.templateStrategy) {
-      this.templateStrategy = themeSuite.templateStrategy
-    }
-
     if (query && themeId) {
       this.currentQuery = query
       this.currentThemeId = String(themeId)
@@ -226,7 +223,7 @@ export class ThemeBuilderStore {
 
     // increment version first to get a new unique theme ID
     // refreshThemeSuite will use this new ID to create the theme
-    this.themeSuiteVersion++
+    bentoStore.themeSuiteVersion++
 
     await this.refreshThemeSuite()
   }
@@ -290,10 +287,9 @@ export class ThemeBuilderStore {
     }
 
     await updatePreviewTheme({
-      id: this.themeSuiteUID,
+      id: bentoStore.themeSuiteUID,
       palettes,
       schemes: this.schemes,
-      templateStrategy: this.templateStrategy,
     })
 
     this.save()
@@ -359,10 +355,6 @@ export class ThemeBuilderStore {
       ...this.palettes,
       [palette.name]: palette,
     }
-  }
-
-  setSelectedComponentTheme(id: string) {
-    this.selectedComponentTheme = id
   }
 
   get sectionsFlat() {
@@ -468,20 +460,8 @@ export class ThemeBuilderStore {
     return createPalettes(this.palettes)
   }
 
-  async getCode(
-    {
-      includeComponentThemes = false,
-      includeSizeTokens = false,
-    }: { includeComponentThemes: boolean; includeSizeTokens: boolean } = {
-      includeComponentThemes: false,
-      includeSizeTokens: false,
-    }
-  ) {
-    return await generateThemeBuilderCode({
-      ...this.getWorkingThemeSuite(),
-      includeComponentThemes,
-      includeSizeTokens,
-    })
+  async getCode() {
+    return await generateThemeBuilderCode(this.getWorkingThemeSuite())
   }
 }
 

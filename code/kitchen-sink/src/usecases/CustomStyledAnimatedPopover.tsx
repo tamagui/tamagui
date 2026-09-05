@@ -3,25 +3,19 @@ import { Popover, View, Text, Theme, styled } from 'tamagui'
 export const Content = styled(Popover.Content, {
   padding: 0,
   zIndex: 1_000_000,
-  enterStyle: { x: 0, y: 5, opacity: 0, scale: 0.9 },
-  exitStyle: { x: 0, y: 5, opacity: 0, scale: 0.9 },
-  scale: 1,
-  x: 0,
-  y: 0,
-  opacity: 1,
-  transition: [
-    'quick',
-    {
-      opacity: {
-        overshootClamping: true,
-      },
-    },
-  ],
+  scale: '1 enter:0.9 exit:0.9',
+  x: '0 enter:0 exit:0',
+  y: '0 enter:5px exit:5px',
+  opacity: '1 enter:0 exit:0',
+  transition: {
+    preset: 'quick',
+    opacity: { preset: 'quick', spring: { overshootClamping: true } },
+  },
 })
 
 export function CustomStyledAnimatedPopover() {
   return (
-    <View flex={1} items="center" justify="center" gap="$5">
+    <View flex={1} items="center" justify="center" gap="5">
       <View theme="red">
         <Popover>
           <Popover.Trigger>
@@ -30,7 +24,7 @@ export function CustomStyledAnimatedPopover() {
 
           <Theme name="accent">
             <Content>
-              <Text theme="red" color="$color11">
+              <Text theme="red" color="color11">
                 Hey there!
               </Text>
             </Content>

@@ -3,6 +3,11 @@
   "version": "2.7.7",
   "license": "MIT",
   "type": "module",
+  "files": [
+    "src",
+    "types",
+    "dist"
+  ],
   "main": "dist/cjs",
   "module": "dist/esm",
   "types": "./types/index.d.ts",

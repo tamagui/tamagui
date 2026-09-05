@@ -1,5 +1,6 @@
 import { useRef, useState, useEffect } from 'react'
-import { Button, Paragraph, Square, XStack, YStack, View } from 'tamagui'
+import { Paragraph, Square, XStack, YStack, View } from 'tamagui'
+import { Button } from '../components/Button'
 
 /**
  * Test case for verifying animation values through console logging
@@ -11,9 +12,9 @@ import { Button, Paragraph, Square, XStack, YStack, View } from 'tamagui'
 
 export function AnimationValueLoggingCase() {
   return (
-    <YStack gap="$4" padding="$4" flex={1}>
+    <YStack gap="4" padding="4" flex={1}>
       <Paragraph>Animation Value Logging Tests</Paragraph>
-      <Paragraph size="$2" color="$color10">
+      <Paragraph size="2" color="color10">
         Open browser console to see [ANIM_LOG] entries
       </Paragraph>
 
@@ -87,9 +88,8 @@ function OpacityAnimationTest() {
   }, [])
 
   return (
-    <XStack gap="$4" alignItems="center">
+    <XStack gap="4" alignItems="center">
       <Button
-        size="$3"
         onPress={() => setFaded(!faded)}
         testID={`${testId}-trigger`}
         data-testid={`${testId}-trigger`}
@@ -99,13 +99,13 @@ function OpacityAnimationTest() {
       <Square
         ref={squareRef as any}
         transition="quick"
-        size={60}
-        backgroundColor="$blue10"
+        backgroundColor="blue10"
         opacity={faded ? 0.2 : 1}
+        size={60}
         testID={`${testId}-square`}
         data-testid={`${testId}-square`}
       />
-      <Paragraph size="$2" testID={`${testId}-state`} data-testid={`${testId}-state`}>
+      <Paragraph size="2" testID={`${testId}-state`} data-testid={`${testId}-state`}>
         {faded ? 'faded' : 'visible'}
       </Paragraph>
     </XStack>
@@ -170,9 +170,8 @@ function ScaleAnimationTest() {
   }, [])
 
   return (
-    <XStack gap="$4" alignItems="center">
+    <XStack gap="4" alignItems="center">
       <Button
-        size="$3"
         onPress={() => setScaled(!scaled)}
         testID={`${testId}-trigger`}
         data-testid={`${testId}-trigger`}
@@ -182,13 +181,13 @@ function ScaleAnimationTest() {
       <Square
         ref={squareRef as any}
         transition="quick"
-        size={60}
-        backgroundColor="$green10"
+        backgroundColor="green10"
         scale={scaled ? 1.5 : 1}
+        size={60}
         testID={`${testId}-square`}
         data-testid={`${testId}-square`}
       />
-      <Paragraph size="$2" testID={`${testId}-state`} data-testid={`${testId}-state`}>
+      <Paragraph size="2" testID={`${testId}-state`} data-testid={`${testId}-state`}>
         {scaled ? 'scaled' : 'normal'}
       </Paragraph>
     </XStack>
@@ -255,9 +254,8 @@ function TranslateAnimationTest() {
   }, [])
 
   return (
-    <XStack gap="$4" alignItems="center">
+    <XStack gap="4" alignItems="center">
       <Button
-        size="$3"
         onPress={() => setMoved(!moved)}
         testID={`${testId}-trigger`}
         data-testid={`${testId}-trigger`}
@@ -267,13 +265,13 @@ function TranslateAnimationTest() {
       <Square
         ref={squareRef as any}
         transition="quick"
-        size={60}
-        backgroundColor="$blue10"
+        backgroundColor="blue10"
         y={moved ? -30 : 0}
+        size={60}
         testID={`${testId}-square`}
         data-testid={`${testId}-square`}
       />
-      <Paragraph size="$2" testID={`${testId}-state`} data-testid={`${testId}-state`}>
+      <Paragraph size="2" testID={`${testId}-state`} data-testid={`${testId}-state`}>
         {moved ? 'moved' : 'normal'}
       </Paragraph>
     </XStack>
@@ -282,7 +280,7 @@ function TranslateAnimationTest() {
 
 /**
  * Test 4: Enter/Exit Animation with AnimatePresence
- * Tests enterStyle and exitStyle animations
+ * Tests enter clause and exit clause animations
  */
 function EnterExitAnimationTest() {
   const [visible, setVisible] = useState(true)
@@ -344,9 +342,8 @@ function EnterExitAnimationTest() {
   }, [])
 
   return (
-    <XStack gap="$4" alignItems="center" height={80}>
+    <XStack gap="4" alignItems="center" height={80}>
       <Button
-        size="$3"
         onPress={() => setVisible(!visible)}
         testID={`${testId}-trigger`}
         data-testid={`${testId}-trigger`}
@@ -357,21 +354,15 @@ function EnterExitAnimationTest() {
         <Square
           ref={squareRef as any}
           transition="bouncy"
+          backgroundColor="yellow10"
+          opacity="enter:0 exit:0"
+          scale="enter:0.5 exit:0.5"
           size={60}
-          backgroundColor="$yellow10"
-          enterStyle={{
-            opacity: 0,
-            scale: 0.5,
-          }}
-          exitStyle={{
-            opacity: 0,
-            scale: 0.5,
-          }}
           testID={`${testId}-square`}
           data-testid={`${testId}-square`}
         />
       )}
-      <Paragraph size="$2" testID={`${testId}-state`} data-testid={`${testId}-state`}>
+      <Paragraph size="2" testID={`${testId}-state`} data-testid={`${testId}-state`}>
         {visible ? 'visible' : 'hidden'}
       </Paragraph>
     </XStack>
@@ -424,9 +415,8 @@ function ColorAnimationTest() {
   }, [])
 
   return (
-    <XStack gap="$4" alignItems="center">
+    <XStack gap="4" alignItems="center">
       <Button
-        size="$3"
         onPress={() => setActive(!active)}
         testID={`${testId}-trigger`}
         data-testid={`${testId}-trigger`}
@@ -436,12 +426,12 @@ function ColorAnimationTest() {
       <Square
         ref={squareRef as any}
         transition="quick"
+        backgroundColor={`${active ? 'red10' : 'blue10'}`}
         size={60}
-        backgroundColor={active ? '$red10' : '$blue10'}
         testID={`${testId}-square`}
         data-testid={`${testId}-square`}
       />
-      <Paragraph size="$2" testID={`${testId}-state`} data-testid={`${testId}-state`}>
+      <Paragraph size="2" testID={`${testId}-state`} data-testid={`${testId}-state`}>
         {active ? 'red' : 'blue'}
       </Paragraph>
     </XStack>
@@ -494,9 +484,8 @@ function AnimationConfigTest() {
   }, [])
 
   return (
-    <XStack gap="$4" alignItems="center">
+    <XStack gap="4" alignItems="center">
       <Button
-        size="$3"
         onPress={() => setExpanded(!expanded)}
         testID={`${testId}-trigger`}
         data-testid={`${testId}-trigger`}
@@ -505,20 +494,14 @@ function AnimationConfigTest() {
       </Button>
       <View
         ref={squareRef as any}
-        transition="quick"
-        // @ts-ignore - animationConfig exists but may not be typed
-        animationConfig={{
-          type: 'spring',
-          damping: 15,
-          stiffness: 40, // Slow spring - should take longer than default
-        }}
+        transition={{ preset: 'quick', spring: { stiffness: 40, damping: 15 } }}
         height={60}
         width={expanded ? 150 : 60}
-        backgroundColor="$red10"
+        backgroundColor="red10"
         testID={`${testId}-square`}
         data-testid={`${testId}-square`}
       />
-      <Paragraph size="$2" testID={`${testId}-state`} data-testid={`${testId}-state`}>
+      <Paragraph size="2" testID={`${testId}-state`} data-testid={`${testId}-state`}>
         {expanded ? 'expanded' : 'collapsed'}
       </Paragraph>
     </XStack>

@@ -17,9 +17,9 @@ export function SliderScrollOffsetCase() {
   const [horizontal, setHorizontal] = useState([50])
 
   return (
-    <YStack padding="$4" gap="$4">
+    <YStack padding="4" gap="4">
       {/* pushes the sliders below the fold so the drag happens while scrolled */}
-      <YStack height={1200} backgroundColor="$color3" />
+      <YStack height={1200} backgroundColor="color3" />
 
       <Text id={TEST_IDS.sliderScrollVerticalValue}>{vertical[0]}</Text>
       <Slider
@@ -36,7 +36,7 @@ export function SliderScrollOffsetCase() {
         <Slider.Track>
           <Slider.TrackActive />
         </Slider.Track>
-        <Slider.Thumb index={0} circular size="$2" />
+        <Slider.Thumb index={0} circular size="2" />
       </Slider>
 
       {/* makes the document wider than the viewport so the horizontal slider can
@@ -60,7 +60,7 @@ export function SliderScrollOffsetCase() {
         <Slider.Track>
           <Slider.TrackActive />
         </Slider.Track>
-        <Slider.Thumb index={0} circular size="$2" />
+        <Slider.Thumb index={0} circular size="2" />
       </Slider>
 
       <YStack height={600} />

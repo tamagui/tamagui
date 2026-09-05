@@ -1,5 +1,6 @@
 import { CheckboxWithLabel, SelectDemoContents, SwitchWithLabel } from '@tamagui/demos'
-import { Button, H4, RadioGroup, Separator, Spacer, XStack, YStack } from 'tamagui'
+import { H4, RadioGroup, Separator, Spacer, XStack, YStack } from 'tamagui'
+import { Button } from '~/components/Button'
 import { AccentTheme } from '../../components/AccentTheme'
 import { useDemoProps } from '../hooks/useDemoProps'
 import { RadioGroupItemWithLabel } from '../views/RadioGroupItemWithLabel'
@@ -22,11 +23,11 @@ export const Components = () => {
       <XStack width="100%" {...demoProps.gapPropsLg} flexWrap="wrap">
         <XStack {...demoProps.gapPropsLg}>
           <AccentTheme>
-            <Button size="$3" {...demoProps.borderRadiusProps}>
+            <Button size="3" {...demoProps.borderRadiusProps}>
               Active
             </Button>
           </AccentTheme>
-          <Button size="$3" {...demoProps.borderRadiusProps}>
+          <Button size="3" {...demoProps.borderRadiusProps}>
             Subtle
           </Button>
         </XStack>
@@ -34,26 +35,26 @@ export const Components = () => {
         <Spacer flex={1} />
 
         <XStack {...demoProps.gapPropsLg} flex={1} flexBasis="auto" flexWrap="wrap">
-          <SelectDemoContents size="$3" />
+          <SelectDemoContents size="3" />
         </XStack>
       </XStack>
 
-      <XStack gap="$4" flexWrap="wrap">
-        <YStack flex={1} flexBasis="auto" gap="$2">
-          <CheckboxWithLabel defaultChecked size="$4" />
+      <XStack gap="4" flexWrap="wrap">
+        <YStack flex={1} flexBasis="auto" gap="2">
+          <CheckboxWithLabel defaultChecked size="4" />
 
           <RadioGroup defaultValue="1" name="form">
             <XStack>
-              <RadioGroupItemWithLabel size="$3" value="1" label="First" />
-              <RadioGroupItemWithLabel size="$3" value="2" label="Second" />
+              <RadioGroupItemWithLabel size="3" value="1" label="First" />
+              <RadioGroupItemWithLabel size="3" value="2" label="Second" />
             </XStack>
           </RadioGroup>
 
-          <SwitchWithLabel size="$3" />
+          <SwitchWithLabel size="3" />
         </YStack>
       </XStack>
 
-      <Spacer size="$2" />
+      <Spacer size="2" />
     </YStack>
   )
 }

@@ -1,9 +1,7 @@
 import {
   autoUpdate,
-  flip,
   inner,
   offset,
-  shift,
   size,
   useClick,
   useFloatingRaw as useFloatingDom,
@@ -16,38 +14,41 @@ import {
   type SideObject,
 } from '@tamagui/floating'
 import { useIsomorphicLayoutEffect } from '@tamagui/constants'
-import { useEvent, useIsTouchDevice } from '@tamagui/core'
+import { createChangeEventDetails, useEvent, useIsTouchDevice } from '@tamagui/core'
+import { composeEventHandlers } from '@tamagui/helpers'
 import * as React from 'react'
-import { flushSync } from 'react-dom'
-import { SCROLL_ARROW_THRESHOLD, WINDOW_PADDING } from './constants'
+import { SCROLL_ARROW_THRESHOLD } from './constants'
 import {
   SelectItemParentProvider,
   SelectProvider,
   useSelectContext,
   useSelectItemParentContext,
 } from './context'
-import type { SelectImplProps } from './types'
+import type {
+  SelectActiveChangeDetails,
+  SelectImplProps,
+  SelectOpenChangeDetails,
+} from './types'
 
-// TODO use id for focusing from label
 export const SelectInlineImpl = (props: SelectImplProps) => {
-  const { scope, children, open = false, listContentRef, setActiveIndexFast } = props
+  const { scope, children, open = false, listContentRef } = props
 
   const selectContext = useSelectContext(scope)
   const selectItemParentContext = useSelectItemParentContext(scope)
   const { setActiveIndex, selectedIndex, activeIndexRef } = selectContext
 
-  const { setOpen, setSelectedIndex } = selectItemParentContext
+  const { requestOpenChange, registry } = selectItemParentContext
 
-  const [scrollTop, setScrollTop] = React.useState(0)
   const touch = useIsTouchDevice()
 
-  const listItemsRef = React.useRef<Array<HTMLElement | null>>([])
+  const listItemsRef = selectItemParentContext.listRef!
   const overflowRef = React.useRef<null | SideObject>(null)
   const upArrowRef = React.useRef<HTMLDivElement | null>(null)
   const downArrowRef = React.useRef<HTMLDivElement | null>(null)
   const allowSelectRef = React.useRef(false)
   const allowMouseUpRef = React.useRef(true)
   const selectTimeoutRef = React.useRef<any>(null)
+  const latestKeyboardEventRef = React.useRef<Event | undefined>(undefined)
   const state = React.useRef({
     isMouseOutside: false,
     isTyping: false,
@@ -57,19 +58,15 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
   const [fallback, setFallback] = React.useState(false)
   const [innerOffset, setInnerOffset] = React.useState(0)
   const [blockSelection, setBlockSelection] = React.useState(false)
-  const floatingStyle = React.useRef({})
 
-  // sync activeIndex on open/close
   React.useEffect(() => {
-    if (open) {
-      setActiveIndexFast(selectedIndex ?? 0)
-    } else {
-      setScrollTop(0)
+    if (!open) {
+      setCanScrollUp(false)
+      setCanScrollDown(false)
       setFallback(false)
-      setActiveIndexFast(null)
       setControlledScrolling(false)
     }
-  }, [open, selectedIndex, setActiveIndexFast])
+  }, [open])
 
   // close when mouseup outside select
   if (process.env.TAMAGUI_TARGET === 'web') {
@@ -77,7 +74,10 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
       if (!open) return
       const mouseUp = (e: MouseEvent) => {
         if (state.current.isMouseOutside) {
-          setOpen(false)
+          requestOpenChange(
+            false,
+            createChangeEventDetails('outside-press', e) as SelectOpenChangeDetails
+          )
         }
       }
       document.addEventListener('mouseup', mouseUp)
@@ -98,103 +98,97 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
     open,
     placement: 'bottom-start',
     whileElementsMounted: autoUpdate,
-    // eslint-disable-next-line no-constant-condition
-    middleware: false
-      ? // this is the logic from floating-ui
-        // but i find it causes issues (open, drag select, close, then re-open its not positioned "over")
-        // https://github.com/floating-ui/floating-ui/blob/master/packages/react/test/visual/components/MacSelect.tsx
-        [
-          offset(5),
-          touch
-            ? shift({ crossAxis: true, padding: WINDOW_PADDING })
-            : flip({ padding: WINDOW_PADDING }),
-          size({
-            apply({ availableHeight, rects }) {
-              Object.assign(floatingStyle.current, {
-                maxHeight: `${availableHeight}px`,
-                minWidth: `${rects.reference.width}px`,
-              })
-              if (refs.floating.current) {
-                Object.assign(refs.floating.current.style, floatingStyle.current)
-              }
-            },
-            padding: 10,
-          }),
-        ]
-      : [
-          size({
-            apply({
-              rects: {
-                reference: { width },
-              },
-            }) {
-              Object.assign(floatingStyle.current, {
-                minWidth: width + 8,
-              })
-              if (refs.floating.current) {
-                Object.assign(refs.floating.current.style, floatingStyle.current)
-              }
-            },
-          }),
-          inner({
-            listRef: listItemsRef,
-            overflowRef,
-            index: selectedIndex,
-            offset: innerOffset,
-            onFallbackChange: setFallback,
-            padding: 10,
-            minItemsVisible: touch ? 10 : 4,
-            referenceOverflowThreshold: 20,
-          }),
-          offset({ crossAxis: -5 }),
-        ],
+    // The removed alternate stack was the logic from floating-ui,
+    // but it causes issues (open, drag select, close, then re-open its not positioned "over")
+    // https://github.com/floating-ui/floating-ui/blob/master/packages/react/test/visual/components/MacSelect.tsx
+    middleware: [
+      size({
+        apply({ rects, elements }) {
+          // the list overhangs the trigger by 4px a side (with the -4 cross offset)
+          elements.floating.style.minWidth = `${rects.reference.width + 8}px`
+        },
+      }),
+      inner({
+        listRef: listItemsRef,
+        overflowRef,
+        index: selectedIndex,
+        offset: innerOffset,
+        onFallbackChange: setFallback,
+        padding: 10,
+        minItemsVisible: touch ? 10 : 4,
+        referenceOverflowThreshold: 20,
+      }),
+      offset({ crossAxis: -4 }),
+    ],
   } as any)
 
-  const floatingRef = refs.floating
+  // the arrows are booleans that flip at a threshold, never the scroll offset
+  // itself, so a scroll event costs no render unless an arrow appears or goes
+  const [canScrollUp, setCanScrollUp] = React.useState(false)
+  const [canScrollDown, setCanScrollDown] = React.useState(false)
+  const updateScrollArrows = React.useCallback(() => {
+    const el = refs.floating.current
+    if (!el) return
+    setCanScrollUp(el.scrollTop > SCROLL_ARROW_THRESHOLD)
+    setCanScrollDown(
+      el.scrollTop < el.scrollHeight - el.clientHeight - SCROLL_ARROW_THRESHOLD
+    )
+  }, [refs])
 
-  const showUpArrow = open && scrollTop > SCROLL_ARROW_THRESHOLD
-  const showDownArrow =
-    open &&
-    floatingRef.current &&
-    scrollTop <
-      floatingRef.current.scrollHeight -
-        floatingRef.current.clientHeight -
-        SCROLL_ARROW_THRESHOLD
-
+  const showUpArrow = open && canScrollUp
+  const showDownArrow = open && canScrollDown
   const isScrollable = showDownArrow || showUpArrow
 
+  // autoUpdate handles resize and scroll while mounted; this covers the open
   useIsomorphicLayoutEffect(() => {
-    if (typeof window === 'undefined') return
-    window.addEventListener('resize', update)
-    if (open) {
-      update()
-    }
-    return () => window.removeEventListener('resize', update)
+    if (open) update()
   }, [update, open])
 
   const onMatch = useEvent((index: number) => {
-    const fn = open ? setActiveIndex : setSelectedIndex
-    return fn(index)
+    if (!open) return
+    setActiveIndex(index, {
+      reason: 'keyboard',
+      event: latestKeyboardEventRef.current,
+      trigger: undefined,
+      index,
+    } as SelectActiveChangeDetails)
   })
 
-  // construct interaction context for our custom hooks
+  // the interaction context for the floating hooks. every hook memoizes its
+  // props on this object, and those props sit in the item context, so a new
+  // identity here re-renders every item
   const dataRef = React.useRef<{ openEvent?: Event; placement?: string }>({})
   dataRef.current.placement = computedPlacement
-  const interactionContext: FloatingInteractionContext = {
-    open,
-    onOpenChange: (val) => setOpen(val),
-    refs: {
-      reference: refs.reference as any,
-      floating: refs.floating,
-      domReference: refs.reference as any,
-    },
-    elements: {
-      reference: (refs.reference?.current as Element) || null,
-      floating: refs.floating?.current || null,
-      domReference: (refs.reference?.current as Element) || null,
-    },
-    dataRef,
-  }
+  const onOpenChange = useEvent((nextOpen: boolean, event?: Event, reason?: string) => {
+    requestOpenChange(
+      nextOpen,
+      createChangeEventDetails(
+        reason === 'list-navigation' ? 'keyboard' : 'trigger-press',
+        event,
+        refs.reference.current
+      ) as SelectOpenChangeDetails
+    )
+  })
+  const referenceElement = (refs.reference.current as Element | null) || null
+  const floatingElement = refs.floating.current || null
+  const interactionContext: FloatingInteractionContext = React.useMemo(
+    () => ({
+      open,
+      onOpenChange,
+      refs: {
+        reference: refs.reference as any,
+        floating: refs.floating,
+        domReference: refs.reference as any,
+      },
+      elements: {
+        reference: referenceElement,
+        floating: floatingElement,
+        domReference: referenceElement,
+      },
+      dataRef,
+    }),
+    [open, onOpenChange, refs, referenceElement, floatingElement]
+  )
 
   const interactionsProps = [
     useClick(interactionContext, { event: 'mousedown', keyboardHandlers: false }),
@@ -208,20 +202,31 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
     }),
     useListNavigation(interactionContext, {
       listRef: listItemsRef,
-      activeIndex: selectContext.activeIndex ?? 0,
+      // items focus themselves from the active-index emitter, and the hook's
+      // own index syncs from item focus, so it never needs the value
+      activeIndex: null,
       selectedIndex,
       onNavigate: (index) => {
         if (index !== null) {
-          setActiveIndex(index)
+          setActiveIndex(index, {
+            reason: 'list-navigation',
+            event: latestKeyboardEventRef.current,
+            trigger: undefined,
+            index,
+          } as SelectActiveChangeDetails)
         }
       },
+      disabledIndices: registry.getDisabledIndices(),
       scrollItemIntoView: false,
+      // items own hover: the hook's leave handler would focus the viewport when
+      // a scroll moves the list under a still pointer, losing the keyboard position
+      focusItemOnHover: false,
     }),
     useTypeahead(interactionContext, {
       listRef: listContentRef,
       onMatch,
       selectedIndex,
-      activeIndex: selectContext.activeIndex,
+      activeIndex: null,
       onTypingChange: (e) => {
         state.current.isTyping = e
       },
@@ -234,39 +239,38 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
     }, interactionsProps)
   )
 
+  // the trigger and viewport getters. items get getItemProps alone, which is
+  // stable once the list mounts, so the floating element mounting (a new
+  // identity here) never re-renders the list
   const interactionsContext = React.useMemo(() => {
     return {
-      ...interactions,
-      getReferenceProps() {
+      getReferenceProps(props: Record<string, any> = {}) {
         return interactions.getReferenceProps({
-          ref: refs.reference as any,
-          className: 'SelectTrigger',
-          onKeyDown(event) {
+          ...props,
+          onKeyDown: composeEventHandlers(props.onKeyDown, (event: any) => {
+            latestKeyboardEventRef.current = event.nativeEvent || event
             if (
               event.key === 'Enter' ||
               event.code === 'Space' ||
               (event.key === ' ' && !state.current.isTyping)
             ) {
               event.preventDefault()
-              setOpen(true)
+              requestOpenChange(
+                true,
+                createChangeEventDetails(
+                  'keyboard',
+                  event.nativeEvent || event,
+                  refs.reference.current
+                ) as SelectOpenChangeDetails
+              )
             }
-          },
+          }),
         })
       },
       getFloatingProps(props) {
         return interactions.getFloatingProps({
           ref: refs.floating,
-          className: 'Select',
           ...props,
-          style: {
-            position: strategy,
-            top: y ?? '',
-            left: x ?? '',
-            outline: 0,
-            scrollbarWidth: 'none',
-            ...floatingStyle.current,
-            ...props?.style,
-          },
           onPointerEnter() {
             setControlledScrolling(false)
             state.current.isMouseOutside = false
@@ -278,21 +282,23 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
             state.current.isMouseOutside = false
             setControlledScrolling(false)
           },
-          onKeyDown() {
+          onKeyDown(event) {
+            latestKeyboardEventRef.current = event.nativeEvent || event
             setControlledScrolling(true)
           },
           onContextMenu(e) {
             e.preventDefault()
           },
-          onScroll(event) {
-            flushSync(() => {
-              setScrollTop(event.currentTarget.scrollTop)
-            })
-          },
+          onScroll: updateScrollArrows,
         })
       },
     }
-  }, [refs.reference.current, x, y, refs.floating.current, interactions])
+  }, [refs, interactions, requestOpenChange, updateScrollArrows])
+
+  const floatingPosition = React.useMemo(
+    () => ({ position: strategy, top: y ?? '', left: x ?? '' }),
+    [strategy, x, y]
+  )
 
   // effects
 
@@ -322,30 +328,6 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
     }
   }, [open])
 
-  // dismiss on outside pointer down (arrows are outside the floating DOM tree)
-  useIsomorphicLayoutEffect(() => {
-    function onPointerDown(e: PointerEvent) {
-      const target = e.target as Node
-      if (
-        !(
-          refs.floating.current?.contains(target) ||
-          upArrowRef.current?.contains(target) ||
-          downArrowRef.current?.contains(target)
-        )
-      ) {
-        setOpen(false)
-        setControlledScrolling(false)
-      }
-    }
-
-    if (open) {
-      document.addEventListener('pointerdown', onPointerDown)
-      return () => {
-        document.removeEventListener('pointerdown', onPointerDown)
-      }
-    }
-  }, [open, refs, setOpen])
-
   // scroll activeIndex into view during keyboard nav
   React.useEffect(() => {
     if (!open) return
@@ -354,13 +336,18 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
       if (controlledScrolling && index != null) {
         listItemsRef.current[index]?.scrollIntoView({ block: 'nearest' })
       }
-      setScrollTop(refs.floating.current?.scrollTop ?? 0)
+      updateScrollArrows()
     }
 
     scrollActiveIntoView(activeIndexRef.current)
 
     return selectItemParentContext.activeIndexSubscribe(scrollActiveIntoView)
-  }, [open, refs, controlledScrolling, selectItemParentContext.activeIndexSubscribe])
+  }, [
+    open,
+    controlledScrolling,
+    selectItemParentContext.activeIndexSubscribe,
+    updateScrollArrows,
+  ])
 
   React.useEffect(() => {
     if (open && fallback) {
@@ -389,10 +376,12 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
     <SelectProvider
       scope={scope}
       {...(selectContext as Required<typeof selectContext>)}
-      setScrollTop={setScrollTop}
+      updateScrollArrows={updateScrollArrows}
       setInnerOffset={setInnerOffset}
       fallback={fallback}
       floatingContext={floatingContext as any}
+      interactions={interactionsContext}
+      floatingPosition={floatingPosition}
       canScrollDown={!!showDownArrow}
       canScrollUp={!!showUpArrow}
       controlledScrolling={controlledScrolling}
@@ -407,7 +396,7 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
         allowMouseUpRef={allowMouseUpRef}
         allowSelectRef={allowSelectRef}
         dataRef={dataRef as any}
-        interactions={interactionsContext}
+        getItemProps={interactions.getItemProps}
         listRef={listItemsRef}
         selectTimeoutRef={selectTimeoutRef}
       >

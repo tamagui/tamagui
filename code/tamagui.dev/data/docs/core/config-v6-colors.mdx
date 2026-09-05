@@ -1,0 +1,200 @@
+---
+title: 'v6 Colors'
+description: Use the default Tailwind colors or generate v3 themes from your own palette
+---
+
+<IntroParagraph>
+  Config v6 keeps layout scales separate from color. The default color pack is
+  static and Tailwind-based. A custom pack is a `tokens.color` record and themes
+  generated from the same token names.
+</IntroParagraph>
+
+## Default colors
+
+`@tamagui/config/v6` includes Tailwind's `50` through `950` shades as absolute
+tokens and recipe-generated adaptive themes:
+
+```tsx fileName="tamagui.config.ts"
+import { defaultConfig } from '@tamagui/config/v6'
+import { createTamagui } from 'tamagui'
+
+export const config = createTamagui(defaultConfig)
+```
+
+```tsx
+<View backgroundColor="blue-500" borderColor="slate-200" />
+<Theme name="red">
+  <View backgroundColor="color2" color="color11" />
+</Theme>
+```
+
+`blue-500` is absolute. `color2` and `color11` adapt to the active scheme and
+palette. V3 has exactly 11 adaptive steps because Tailwind has exactly 11 named
+shades.
+
+## Color packs
+
+`createV6Config` composes the aligned config with any color pack:
+
+```tsx
+type V6Colors = {
+  themes: Record<string, Record<string, string>>
+  colorTokens?: Record<string, string>
+}
+```
+
+```tsx fileName="tamagui.config.ts"
+import { createV6Config } from '@tamagui/config/v6-base'
+import { createTamagui } from 'tamagui'
+import { themes, tokens } from './themes'
+
+export const config = createTamagui(
+  createV6Config({ themes, colorTokens: tokens.color })
+)
+```
+
+## Add color scales
+
+The `scales` option adds 12-step scales to the base `light` and `dark` themes.
+Each entry gives 12 light values and 12 dark values, faintest to strongest, and
+becomes theme keys `name1` through `name12` that adapt to the active scheme.
+Subthemes reach them through parent fallback.
+
+`@tamagui/themes/v5-color-scales` packs the classic v5 scales (`gray`, `blue`,
+`red`, `yellow`, `green`, `orange`, `pink`, `purple`, `teal`, `neutral`,
+`black`, `white`), so keeping the old colors while moving to v6 is two lines:
+
+```tsx fileName="tamagui.config.ts"
+import { colors, createV6Config } from '@tamagui/config/v6'
+import { v5ColorScales } from '@tamagui/themes/v5-color-scales'
+import { createTamagui } from 'tamagui'
+
+export const config = createTamagui(
+  createV6Config({
+    ...colors,
+    scales: {
+      ...v5ColorScales,
+      brand: {
+        light: ['#f0f9ff', /* ... */ '#082f49'],
+        dark: ['#082f49', /* ... */ '#f0f9ff'],
+      },
+    },
+  })
+)
+```
+
+```tsx
+<View backgroundColor="red10" />
+<Text color="brand11" />
+```
+
+These are theme values, so they also resolve inside flat values like
+`backgroundImage="linear-gradient(90deg, red10, orange11)"` and take opacity
+suffixes (`red10/50`).
+
+## Add a custom palette
+
+This example keeps all default tokens and scales, then adds an `ocean` palette
+and child theme:
+
+```tsx fileName="themes.ts"
+import {
+  createThemes,
+  fromShades,
+  levels,
+  ramp,
+  scales,
+  shades,
+  tokens as defaultTokens,
+  type GetThemeContext,
+  type Level,
+  type Scheme,
+  type Treatment,
+} from '@tamagui/themes/builder'
+
+const ocean = [
+  '#effcff', '#dff8ff', '#b8efff', '#7cdef9', '#35c4ed', '#0ba6d1',
+  '#0784aa', '#086a89', '#0b576f', '#0b495e', '#07303f',
+] as const
+
+export const tokens = {
+  color: {
+    ...defaultTokens.color,
+    ...Object.fromEntries(
+      shades.map((shade, index) => [`ocean-${shade}`, ocean[index]])
+    ),
+  },
+}
+
+type Recipe = {
+  scheme: Scheme
+  palette: string
+  treatment?: Treatment
+  level?: Level
+}
+
+export const tree = {
+  light: { scheme: 'light', palette: 'gray' },
+  dark: { scheme: 'dark', palette: 'gray' },
+  children: {
+    ...levels(),
+    ocean: {
+      palette: 'ocean',
+      treatment: 'tint',
+      children: levels(),
+    },
+  },
+} as const
+
+function getTheme({ recipe }: GetThemeContext<typeof tokens, Recipe>) {
+  const scale =
+    scales[recipe.treatment ?? 'normal'][recipe.scheme][recipe.level ?? 1]
+
+  return {
+    ...ramp(recipe.palette, recipe.scheme),
+    ...fromShades(recipe.palette, scale),
+  }
+}
+
+export const themes = createThemes(tokens, tree, { getTheme })
+```
+
+Now `theme="ocean"` uses the custom palette, and nested `theme="level2"`
+keeps that palette while raising its semantic background and border values.
+
+## Replace the default scales
+
+The default `normal`, `bold`, and `tint` scales are plain objects. Copy or extend
+them when your palette needs different contrast:
+
+```tsx
+const scales = {
+  normal: myNormalScales,
+  bold: myBoldScales,
+  tint: myTintScales,
+  outline: myOutlineScales,
+}
+```
+
+The generator only sees the recipe fields and the record returned by your
+resolver. Treatment names and shade choices are entirely yours.
+
+## Generate once for production
+
+Export the runtime result from an input file:
+
+```tsx fileName="themes.input.ts"
+export { themes } from './themes'
+```
+
+Then emit a flat module:
+
+```bash
+npx tamagui generate-themes ./themes.input.ts ./src/themes.generated.ts
+```
+
+Import `themes.generated.ts` from the config. The generated module retains the
+full inferred theme name and key types without shipping the authoring tree.
+
+The visual [Theme Studio](/theme) exports this same v3 scales-and-tree format.
+For the complete API, read [Creating Themes](/docs/guides/theme-builder).

@@ -43,8 +43,8 @@ export const NotSignedInWithGithub = () => {
 
 const ErrorContainer = ({ children }: { children: React.ReactNode }) => {
   return (
-    <YStack p="$2" items="center" gap="$4">
-      <Lock size="$10" />
+    <YStack p="2" items="center" gap="4">
+      <Lock size="10" />
       {children}
     </YStack>
   )

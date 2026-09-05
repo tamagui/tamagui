@@ -1,0 +1,400 @@
+// Request handlers: completion, hover, colours, diagnostics.
+//
+// Everything here resolves against a snapshot taken once per request, so a
+// config rebuild landing mid-request cannot make one response internally
+// inconsistent. The vocabulary is rebuilt lazily and only when the config
+// revision it was derived from has moved.
+
+use std::path::{Path, PathBuf};
+use std::sync::Arc;
+
+use lsp_types::*;
+use rustc_hash::FxHashMap;
+use tamagui_config::ConfigSnapshot;
+use tamagui_grammar::{CursorContext, EntryKind, ModifierKind, Vocabulary};
+
+use tamagui_lsp::{Document, Workspace};
+
+use crate::sites;
+
+pub struct State {
+    pub workspace: Workspace,
+    /// one vocabulary per project root.
+    ///
+    /// Keyed rather than single because a monorepo's apps have genuinely
+    /// different vocabularies, and editing a file in each in turn would
+    /// otherwise rebuild from scratch on every switch.
+    vocabularies: FxHashMap<PathBuf, Vocabulary>,
+}
+
+impl State {
+    pub fn new(workspace: Workspace) -> Self {
+        Self { workspace, vocabularies: FxHashMap::default() }
+    }
+
+    /// drop the cached vocabularies so the next request rebuilds them
+    pub fn invalidate_vocabulary(&mut self) {
+        self.vocabularies.clear();
+    }
+
+    /// Rebuild a project's vocabulary if its config revision has moved past the
+    /// one the cached copy was derived from.
+    ///
+    /// This is split from reading it so callers can hold an immutable borrow of
+    /// the vocabulary and the document at the same time; a single `&mut self`
+    /// accessor would keep the whole `State` mutably borrowed for the rest of
+    /// the request.
+    fn ensure_vocabulary(&mut self, root: &Path, config: &ConfigSnapshot) {
+        let stale = self
+            .vocabularies
+            .get(root)
+            .is_none_or(|v| v.revision != config.revision);
+        if stale {
+            self.vocabularies
+                .insert(root.to_path_buf(), Vocabulary::from_config(config));
+        }
+    }
+
+    /// The project root and live config for a document, or `None` when the file
+    /// belongs to no project in this workspace.
+    fn context(&self, uri: &str) -> Option<(PathBuf, Arc<ConfigSnapshot>)> {
+        let project = self.workspace.project_for(uri)?;
+        Some((project.root.clone(), project.config.snapshot()))
+    }
+
+    pub fn completion(&mut self, params: CompletionParams) -> Option<CompletionResponse> {
+        let uri = params.text_document_position.text_document.uri.to_string();
+        let position = params.text_document_position.position;
+        let (root, config) = self.context(&uri)?;
+
+        let document = self.workspace.get(&uri)?;
+        let text = document.to_string();
+        let offset = byte_offset(document, position)?;
+        let site = sites::at(&text, offset, &config.style_props)?;
+
+        self.ensure_vocabulary(&root, &config);
+        let vocabulary = self.vocabularies.get(&root)?;
+        let cursor = offset - site.value_start;
+        let category = config.prop_category(&site.prop);
+        let completions = tamagui_grammar::complete(vocabulary, &site.value, cursor, category);
+
+        let document = self.workspace.get(&uri)?;
+        let replace = lsp_range(
+            document,
+            site.value_start + completions.replace.start,
+            site.value_start + completions.replace.end,
+        )?;
+
+        let items = completions
+            .entries
+            .iter()
+            .map(|entry| {
+                let kind = match entry.kind {
+                    EntryKind::ThemeKey => CompletionItemKind::COLOR,
+                    EntryKind::Token => CompletionItemKind::VALUE,
+                    EntryKind::Modifier(_) => CompletionItemKind::KEYWORD,
+                };
+                CompletionItem {
+                    label: entry.name.to_string(),
+                    kind: Some(kind),
+                    detail: Some(entry.detail.to_string()),
+                    // without this a client sorts by label, which reads a scale
+                    // as `1, 10, 11, 2` and puts the negative half of the space
+                    // tokens above everything. the leading digit demotes
+                    // negatives; the rest is config order.
+                    sort_text: Some(format!(
+                        "{}{:05}",
+                        u8::from(entry.name.starts_with('-')),
+                        entry.order
+                    )),
+                    label_details: Some(CompletionItemLabelDetails {
+                        description: Some(match entry.kind {
+                            EntryKind::Modifier(kind) => {
+                                format!("Tamagui {}", modifier_label(kind))
+                            }
+                            _ => format!(
+                                "Tamagui {}",
+                                entry.category.as_deref().unwrap_or("value")
+                            ),
+                        }),
+                        ..Default::default()
+                    }),
+                    // an explicit edit over the clause span, never the whole
+                    // literal: that is what keeps sibling clauses intact
+                    text_edit: Some(CompletionTextEdit::Edit(TextEdit {
+                        range: replace,
+                        new_text: match completions.context {
+                            // completing a modifier keeps its colon
+                            CursorContext::Modifier => entry.name.to_string(),
+                            CursorContext::Value => entry.name.to_string(),
+                        },
+                    })),
+                    ..Default::default()
+                }
+            })
+            .collect::<Vec<_>>();
+
+        Some(CompletionResponse::List(CompletionList {
+            // the set depends on the typed prefix, so the client must re-ask
+            is_incomplete: true,
+            items,
+        }))
+    }
+
+    pub fn hover(&mut self, params: HoverParams) -> Option<Hover> {
+        let uri = params
+            .text_document_position_params
+            .text_document
+            .uri
+            .to_string();
+        let position = params.text_document_position_params.position;
+        let (root, config) = self.context(&uri)?;
+
+        let document = self.workspace.get(&uri)?;
+        let text = document.to_string();
+        let offset = byte_offset(document, position)?;
+        let site = sites::at(&text, offset, &config.style_props)?;
+        let cursor = offset - site.value_start;
+
+        self.ensure_vocabulary(&root, &config);
+        let vocabulary = self.vocabularies.get(&root)?;
+        let parsed = tamagui_grammar::value::parse(&site.value);
+
+        // a modifier under the cursor explains itself and its media query
+        if let Some(modifier) = parsed.modifier_at(cursor) {
+            let name = modifier.span.of(&site.value);
+            let entry = vocabulary.modifiers.get(name)?;
+            let body = match entry.kind {
+                EntryKind::Modifier(ModifierKind::Media) => {
+                    format!("**{name}** · Tamagui media\n\n```json\n{}\n```", entry.detail)
+                }
+                EntryKind::Modifier(kind) => {
+                    format!("**{name}** · Tamagui {}", modifier_label(kind))
+                }
+                _ => format!("**{name}**"),
+            };
+            let document = self.workspace.get(&uri)?;
+            let range = lsp_range(
+                document,
+                site.value_start + modifier.span.start,
+                site.value_start + modifier.span.end,
+            )?;
+            return Some(Hover {
+                contents: HoverContents::Markup(MarkupContent {
+                    kind: MarkupKind::Markdown,
+                    value: body,
+                }),
+                range: Some(range),
+            });
+        }
+
+        // otherwise the word under the cursor. A payload is a CSS component-value
+        // sequence, so `1px solid background` holds one name and two lengths,
+        // and hovering the whole payload found nothing at all.
+        let word = tamagui_grammar::value::word_at(&site.value, cursor);
+        let name = word.of(&site.value);
+        let entry = vocabulary.values.get(name)?;
+        let mut lines = Vec::new();
+        match entry.kind {
+            EntryKind::ThemeKey => {
+                lines.push(format!("**{name}** · Tamagui theme value"));
+                // the per-theme resolution is the thing Tailwind's hover has no
+                // analogue for, so it leads
+                for theme in config.themes.theme_names().take(64) {
+                    if theme.contains('_') {
+                        continue;
+                    }
+                    if let Some(value) = config.themes.value_by_name(theme, name) {
+                        lines.push(format!("- `{theme}`: `{}`", value.raw));
+                    }
+                    if lines.len() > 4 {
+                        break;
+                    }
+                }
+            }
+            EntryKind::Token => {
+                let category = entry.category.as_deref().unwrap_or("token");
+                lines.push(format!(
+                    "**{name}** · Tamagui {category} token = `{}`",
+                    entry.detail
+                ));
+            }
+            EntryKind::Modifier(_) => return None,
+        }
+
+        let document = self.workspace.get(&uri)?;
+        let range = lsp_range(
+            document,
+            site.value_start + word.start,
+            site.value_start + word.end,
+        )?;
+        Some(Hover {
+            contents: HoverContents::Markup(MarkupContent {
+                kind: MarkupKind::Markdown,
+                value: lines.join("\n"),
+            }),
+            range: Some(range),
+        })
+    }
+
+    /// Inline colour swatches, the feature Tailwind IntelliSense calls colour
+    /// decorators. Resolved against the first root theme, which is what an
+    /// editor gutter can meaningfully show for a theme-dependent value.
+    pub fn document_colors(&mut self, params: DocumentColorParams) -> Vec<ColorInformation> {
+        let uri = params.text_document.uri.to_string();
+        let Some((root, config)) = self.context(&uri) else { return Vec::new() };
+
+        let Some(document) = self.workspace.get(&uri) else { return Vec::new() };
+        let text = document.to_string();
+        self.ensure_vocabulary(&root, &config);
+        let Some(vocabulary) = self.vocabularies.get(&root) else { return Vec::new() };
+        let preview = config
+            .themes
+            .theme_names()
+            .find(|t| !t.contains('_'))
+            .map(str::to_string);
+
+        let mut out = Vec::new();
+        for site in sites::all(&text, &config.style_props) {
+            let parsed = tamagui_grammar::value::parse(&site.value);
+            // one swatch per WORD of the base and of every payload: a value
+            // like `1px solid background` names one colour and two lengths
+            let spans: Vec<_> = parsed
+                .payloads()
+                .flat_map(|payload| tamagui_grammar::value::words(&site.value, payload))
+                .collect();
+            for span in spans {
+                let name = span.of(&site.value);
+                if name.is_empty() || !vocabulary.values.contains(name) {
+                    continue;
+                }
+                let rgba = preview
+                    .as_deref()
+                    .and_then(|theme| config.themes.value_by_name(theme, name))
+                    .and_then(|v| v.rgba);
+                let Some(rgba) = rgba else { continue };
+
+                let Some(document) = self.workspace.get(&uri) else { continue };
+                let Some(range) = lsp_range(
+                    document,
+                    site.value_start + span.start,
+                    site.value_start + span.end,
+                ) else {
+                    continue;
+                };
+                out.push(ColorInformation {
+                    range,
+                    color: Color {
+                        red: rgba.r as f32 / 255.0,
+                        green: rgba.g as f32 / 255.0,
+                        blue: rgba.b as f32 / 255.0,
+                        alpha: rgba.alpha_f32(),
+                    },
+                });
+            }
+        }
+        out
+    }
+
+    pub fn diagnostics(&mut self, uri: &str) -> Vec<Diagnostic> {
+        let Some((root, config)) = self.context(uri) else { return Vec::new() };
+        // an empty config means the compiler has not run; reporting every value
+        // as unknown would bury the editor in noise that is not the user's fault
+        if config.themes.theme_count() == 0 {
+            return Vec::new();
+        }
+        let Some(document) = self.workspace.get(uri) else { return Vec::new() };
+        let text = document.to_string();
+        self.ensure_vocabulary(&root, &config);
+        let Some(vocabulary) = self.vocabularies.get(&root) else { return Vec::new() };
+
+        let mut found = Vec::new();
+        for site in sites::all(&text, &config.style_props) {
+            for diagnostic in tamagui_grammar::diagnose(vocabulary, &config, &site.value) {
+                found.push((
+                    site.value_start + diagnostic.span.start,
+                    site.value_start + diagnostic.span.end,
+                    diagnostic.message,
+                ));
+            }
+        }
+
+        let Some(document) = self.workspace.get(uri) else { return Vec::new() };
+        found
+            .into_iter()
+            .filter_map(|(start, end, message)| {
+                Some(Diagnostic {
+                    range: lsp_range(document, start, end)?,
+                    severity: Some(DiagnosticSeverity::WARNING),
+                    source: Some("tamagui".into()),
+                    message,
+                    ..Default::default()
+                })
+            })
+            .collect()
+    }
+
+    /// What the colour picker may write back over a swatch.
+    ///
+    /// Every swatch this server emits sits on a theme VALUE NAME (`background`),
+    /// never on a colour literal, because `document_colors` only resolves names
+    /// it found in the config. So the answer is always the text that is already
+    /// there: the swatch is a preview of what the theme resolves to, not an
+    /// editing surface. Handing VS Code the picked colour instead would let a
+    /// stray click replace `background` with `#ffffff` and silently unhook that
+    /// value from the theme.
+    pub fn color_presentation(
+        &mut self,
+        params: ColorPresentationParams,
+    ) -> Vec<ColorPresentation> {
+        let uri = params.text_document.uri.to_string();
+        let Some(document) = self.workspace.get(&uri) else {
+            return Vec::new();
+        };
+        let (Ok(start), Ok(end)) = (
+            document.byte_of(tamagui_lsp::Position {
+                line: params.range.start.line,
+                character: params.range.start.character,
+            }),
+            document.byte_of(tamagui_lsp::Position {
+                line: params.range.end.line,
+                character: params.range.end.character,
+            }),
+        ) else {
+            return Vec::new();
+        };
+        let text = document.to_string();
+        let Some(original) = text.get(start..end) else {
+            return Vec::new();
+        };
+        vec![ColorPresentation {
+            label: original.to_string(),
+            text_edit: None,
+            additional_text_edits: None,
+        }]
+    }
+}
+
+fn modifier_label(kind: ModifierKind) -> &'static str {
+    // the grammar names its own kinds, so a kind added there shows up here
+    // rather than needing a second table to be remembered
+    kind.as_str()
+}
+
+fn byte_offset(document: &Document, position: Position) -> Option<usize> {
+    document
+        .byte_of(tamagui_lsp::Position {
+            line: position.line,
+            character: position.character,
+        })
+        .ok()
+}
+
+fn lsp_range(document: &Document, start: usize, end: usize) -> Option<Range> {
+    let s = document.position_of_byte(start);
+    let e = document.position_of_byte(end);
+    Some(Range {
+        start: Position { line: s.line, character: s.character },
+        end: Position { line: e.line, character: e.character },
+    })
+}

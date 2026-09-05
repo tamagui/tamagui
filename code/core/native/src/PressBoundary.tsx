@@ -1,3 +1,4 @@
+import { createRefComponent } from '@tamagui/compose-refs'
 import React from 'react'
 import { View, type ViewProps } from 'react-native'
 import {
@@ -30,52 +31,54 @@ function composeLast<T extends (...args: any[]) => void>(theirs: T | undefined, 
   }
 }
 
-export const PressBoundary: React.ForwardRefExoticComponent<
-  PressBoundaryProps & React.RefAttributes<View>
-> = React.forwardRef<View, PressBoundaryProps>(function PressBoundary(
-  {
-    enabled,
-    stopPropagation,
-    debugName,
-    onTouchStart,
-    onTouchEnd,
-    onTouchCancel,
-    onResponderGrant,
-    onResponderRelease,
-    onResponderTerminate,
-    ...props
-  },
-  forwardedRef
-) {
-  const tokenRef = React.useRef<ExternalPressOwnershipToken | null>(null)
-  const isEnabled = enabled ?? stopPropagation ?? true
+export const PressBoundary: (
+  props: PressBoundaryProps & { ref?: React.Ref<View> }
+) => React.ReactNode = createRefComponent<View, PressBoundaryProps>(
+  function PressBoundary(
+    {
+      enabled,
+      stopPropagation,
+      debugName,
+      onTouchStart,
+      onTouchEnd,
+      onTouchCancel,
+      onResponderGrant,
+      onResponderRelease,
+      onResponderTerminate,
+      ...props
+    },
+    forwardedRef
+  ) {
+    const tokenRef = React.useRef<ExternalPressOwnershipToken | null>(null)
+    const isEnabled = enabled ?? stopPropagation ?? true
 
-  const claim = React.useCallback((): void => {
-    if (!isEnabled) return
-    if (tokenRef.current) {
+    const claim = React.useCallback((): void => {
+      if (!isEnabled) return
+      if (tokenRef.current) {
+        releaseExternalPressOwnership(tokenRef.current, debugName)
+      }
+      tokenRef.current = claimExternalPressOwnership(debugName)
+    }, [debugName, isEnabled])
+
+    const release = React.useCallback((): void => {
+      if (!tokenRef.current) return
       releaseExternalPressOwnership(tokenRef.current, debugName)
-    }
-    tokenRef.current = claimExternalPressOwnership(debugName)
-  }, [debugName, isEnabled])
+      tokenRef.current = null
+    }, [debugName])
 
-  const release = React.useCallback((): void => {
-    if (!tokenRef.current) return
-    releaseExternalPressOwnership(tokenRef.current, debugName)
-    tokenRef.current = null
-  }, [debugName])
+    React.useEffect(() => release, [release])
 
-  React.useEffect(() => release, [release])
-
-  return (
-    <View
-      ref={forwardedRef}
-      {...props}
-      onTouchStart={composeFirst(claim, onTouchStart)}
-      onTouchEnd={composeLast(onTouchEnd, release)}
-      onTouchCancel={composeLast(onTouchCancel, release)}
-      onResponderGrant={composeFirst(claim, onResponderGrant)}
-      onResponderRelease={composeLast(onResponderRelease, release)}
-      onResponderTerminate={composeLast(onResponderTerminate, release)}
-    />
-  )
-})
+    return (
+      <View
+        ref={forwardedRef}
+        {...props}
+        onTouchStart={composeFirst(claim, onTouchStart)}
+        onTouchEnd={composeLast(onTouchEnd, release)}
+        onTouchCancel={composeLast(onTouchCancel, release)}
+        onResponderGrant={composeFirst(claim, onResponderGrant)}
+        onResponderRelease={composeLast(onResponderRelease, release)}
+        onResponderTerminate={composeLast(onResponderTerminate, release)}
+      />
+    )
+  }
+)

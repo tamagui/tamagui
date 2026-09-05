@@ -3,7 +3,14 @@ import 'vitest-axe/extend-expect'
 
 import { Checkbox } from '@tamagui/checkbox'
 import { getDefaultTamaguiConfig } from '@tamagui/config-default'
-import { View, TamaguiProvider, createTamagui, getTokenValue } from '@tamagui/core'
+import {
+  View,
+  TamaguiProvider,
+  createTamagui,
+  style,
+  styled,
+  withStaticProperties,
+} from '@tamagui/core'
 import type { RenderResult } from '@testing-library/react'
 import { fireEvent, render } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vitest } from 'vitest'
@@ -11,13 +18,37 @@ import { axe } from 'vitest-axe'
 
 const conf = createTamagui(getDefaultTamaguiConfig())
 
+const CheckboxFrame = styled(Checkbox, {
+  displayName: 'CheckboxTestFrame',
+  width: 20,
+  height: 20,
+  borderRadius: 4,
+  borderWidth: 1,
+})
+
+const CheckboxIndicator = styled(Checkbox.Indicator, {
+  displayName: 'CheckboxTestIndicator',
+  width: 10,
+  height: 10,
+  backgroundColor: 'color',
+})
+
+const activeIndicatorStyle = style({ opacity: 0.5 })
+
+const CheckboxSkin = withStaticProperties(CheckboxFrame, {
+  Indicator: CheckboxIndicator,
+})
+
 function CheckboxTest(props: React.ComponentProps<typeof Checkbox>) {
   return (
     <TamaguiProvider config={conf} defaultTheme="light">
       <View>
-        <Checkbox {...props} aria-label="basic checkbox">
-          <Checkbox.Indicator data-testid={INDICATOR_TEST_ID} />
-        </Checkbox>
+        <CheckboxSkin {...props} aria-label="basic checkbox">
+          <CheckboxSkin.Indicator
+            activeStyle={activeIndicatorStyle}
+            data-testid={INDICATOR_TEST_ID}
+          />
+        </CheckboxSkin>
       </View>
     </TamaguiProvider>
   )
@@ -44,15 +75,15 @@ describe('given a default Checkbox', () => {
   let indicator: HTMLElement | null
 
   beforeEach(() => {
-    rendered = render(<CheckboxTest scaleSize={0} size="$true" />)
+    rendered = render(<CheckboxTest size={true} />)
     checkbox = rendered.getByRole(CHECKBOX_ROLE)
     indicator = rendered.queryByTestId(INDICATOR_TEST_ID)
   })
 
-  it('should have the correct width and height depending on the theme', async () => {
+  it('applies dimensions from the copied skin', async () => {
     expect(checkbox).toHaveStyle({
-      width: `${getTokenValue('$true', 'size')}px`,
-      height: `${getTokenValue('$true', 'size')}px`,
+      width: '20px',
+      height: '20px',
     })
   })
 
@@ -68,6 +99,7 @@ describe('given a default Checkbox', () => {
 
     it('should render a visible indicator', () => {
       expect(indicator).toBeVisible()
+      expect(indicator).toHaveStyle({ opacity: '0.5' })
     })
 
     describe('and clicking the checkbox again', () => {
@@ -91,6 +123,18 @@ describe('given a disabled Checkbox', () => {
 
   it('should have no accessibility violations', async () => {
     expect(await axe(rendered.container)).toHaveNoViolations()
+  })
+})
+
+describe('given a Checkbox with an onPress handler', () => {
+  it('calls the handler and still updates checked state', () => {
+    const onPress = vitest.fn()
+    const rendered = render(<CheckboxTest onPress={onPress} />)
+
+    fireEvent.click(rendered.getByRole(CHECKBOX_ROLE))
+
+    expect(onPress).toHaveBeenCalledOnce()
+    expect(rendered.getByTestId(INDICATOR_TEST_ID)).toBeVisible()
   })
 })
 

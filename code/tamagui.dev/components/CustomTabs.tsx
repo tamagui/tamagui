@@ -41,7 +41,6 @@ function TabsComponent(props: TabsProps) {
     <Tabs
       activationMode="manual"
       onValueChange={updateUrl}
-      unstyled
       orientation="horizontal"
       flexDirection="column"
       borderWidth={0}
@@ -57,28 +56,20 @@ const Tab = forwardRef(function Tab(props: TabsTabProps, ref) {
   return (
     <Tabs.Tab
       // disableActiveTheme
-      size="$3"
+      size="3"
       flex={1}
-      ref={ref as any}
-      px="$5"
+      px="5"
       pointerEvents="auto"
       {...props}
-      focusStyle={{
-        outlineColor: '$outlineColor',
-        outlineWidth: 2,
-        outlineStyle: 'solid',
-      }}
+      outlineColor="focus:outline-color"
+      outlineWidth="focus:2px"
+      outlineStyle="focus:solid"
       {...(isActive && {
-        bg: '$color4',
-        hoverStyle: {
-          bg: '$color4',
-        },
-        focusStyle: {
-          bg: '$color4',
-        },
+        bg: 'color4 hover:color4 focus:color4',
       })}
+      ref={ref as any}
     >
-      <Paragraph size="$3">{props.children}</Paragraph>
+      <Paragraph size="3">{props.children}</Paragraph>
     </Tabs.Tab>
   )
 })
@@ -88,25 +79,21 @@ const TabsListFrame = styled(XStack, {
   maxW: '50%',
   y: -130,
   justify: 'flex-end',
-  self: 'flex-end',
+  self: 'flex-end sm:stretch',
   t: 70,
   mr: 0,
   mb: 0,
   z: 10000,
   position: 'sticky' as any,
   r: 0,
-
-  $sm: {
-    minW: '100%',
-    self: 'stretch',
-    mt: 0,
-  },
+  minW: 'sm:100%',
+  mt: 'sm:0px',
 })
 
 const TabsList = (props) => {
   return (
     <TabsListFrame className="sticky">
-      <Tabs.List size="$4" width="100%" {...props} />
+      <Tabs.List size="4" width="100%" {...props} />
     </TabsListFrame>
   )
 }

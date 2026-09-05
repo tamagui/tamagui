@@ -23,13 +23,30 @@ import { createTamagui } from 'tamagui'
 
 export default createTamagui({
   animations: createAnimations({
-    fast: 'ease-in 150ms',
-    medium: 'ease-in 300ms',
+    fast: { duration: 150, bounce: 0.2 },
+    medium: { duration: 300, bounce: 0.15 },
     slow: 'ease-in 450ms',
   }),
   // ...
 })
 ```
+
+The config format is the same for all four drivers, so a name means the same
+motion whichever driver renders it. See
+[animations](/docs/core/animations#presets) for the shipped table.
+
+The root entry contains CSS component transitions only. If your app uses
+`useAnimatedNumber`, `useAnimatedNumberStyle`, `useAnimatedNumbersStyle`, or
+`useAnimatedNumberReaction`, import the same factory from the extras entry:
+
+```tsx
+import { createAnimations } from '@tamagui/animations-css/extras'
+```
+
+`Sheet` uses animated numbers for its position and `Toast` uses them for swipe
+gestures, so apps using either component with the CSS driver need the extras
+entry. The root entry keeps apps that only use CSS transitions from shipping
+the JavaScript spring and linked-style runtime.
 
 ## How it Works
 
@@ -39,27 +56,36 @@ benefits of prop removal and view flattening even when using animations.
 
 ## Animation Configuration
 
-CSS animations use CSS transition syntax:
+A config entry is a spring, written as `{ duration, bounce }`:
+
+```tsx
+createAnimations({
+  quick: { duration: 220, bounce: 0.3 },
+  bouncy: { duration: 400, bounce: 0.5 },
+})
+```
+
+Springs work under this driver: they compile to a `linear()` easing that traces
+the real spring curve, overshoot included, with no JavaScript running.
+
+An entry can also be a plain CSS timing string, in `<easing-function>
+<duration>` order or the CSS order:
 
 ```tsx
 createAnimations({
   quick: 'ease-out 100ms',
-  bouncy: 'cubic-bezier(0.68, -0.55, 0.265, 1.55) 300ms',
   slow: 'ease-in-out 500ms',
 })
 ```
 
-The format is: `<easing-function> <duration>`
-
 ### Delay
 
-You can add animation delays using the array syntax:
-
 ```tsx
-<Square transition={['quick', { delay: 200 }]} />
+<Square transition={{ preset: 'quick', delay: 200 }} />
 ```
 
-The delay (in milliseconds) is applied as CSS `transition-delay`.
+The delay (in milliseconds) is applied as CSS `transition-delay`. A CSS
+transition string spells it the CSS way, `transition="200ms ease-out 100ms"`.
 
 ### Supported Easing Functions
 
@@ -81,7 +107,8 @@ The delay (in milliseconds) is applied as CSS `transition-delay`.
 
 **Limitations:**
 
-- No spring physics (only easing curves)
+- Springs are sampled into a `linear()` easing up front, so they can't react to
+  an interruption mid-flight the way a running JS spring can
 - Limited to CSS animatable properties
 - Less control over animation lifecycle
 
@@ -92,8 +119,8 @@ import { createAnimations } from '@tamagui/animations-css'
 import { YStack, createTamagui } from 'tamagui'
 
 const animations = createAnimations({
-  quick: 'ease-out 150ms',
-  bouncy: 'cubic-bezier(0.68, -0.55, 0.265, 1.55) 400ms',
+  quick: { duration: 220, bounce: 0.3 },
+  bouncy: { duration: 400, bounce: 0.5 },
 })
 
 export default createTamagui({
@@ -105,9 +132,7 @@ export default createTamagui({
 export const MyComponent = () => (
   <YStack
     transition="quick"
-    hoverStyle={{
-      scale: 1.1,
-    }}
+    scale="hover:1.1"
   />
 )
 ```

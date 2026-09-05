@@ -36,13 +36,14 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
+    "@tamagui/font-size": "workspace:*",
     "@tamagui/get-font-sized": "workspace:*",
     "@tamagui/get-token": "workspace:*",
     "@tamagui/helpers": "workspace:*",
     "@tamagui/helpers-tamagui": "workspace:*",
+    "@tamagui/size": "workspace:*",
     "@tamagui/stacks": "workspace:*",
     "@tamagui/text": "workspace:*",
-    "@tamagui/font-size": "workspace:*",
     "@tamagui/web": "workspace:*"
   },
   "devDependencies": {

@@ -30,6 +30,7 @@ console.info(`Scanning`, lucideIconsDir)
 fs.mkdir(outDir, () => {})
 
 let iconExports = []
+const iconNames = []
 const packageJsonExports = {}
 
 const icons = globSync(`${lucideIconsDir}/*.svg`)
@@ -54,6 +55,7 @@ backwardsCompat.forEach((filePath) => {
   fs.writeFileSync(outLocation, wrapReact(name, out), 'utf-8')
 
   iconExports.push(`export { ${name} } from './icons/${name}'`)
+  iconNames.push(name)
   packageJsonExports[`./icons/${name}`] = createAlignedExport(
     `./dist/esm/icons/${name + '.mjs'}`
   )
@@ -162,6 +164,7 @@ icons.forEach((originalName) => {
   fs.writeFileSync(location, out, 'utf-8')
 
   iconExports.push(`export { ${cname} } from './icons/${fileName.replace('.tsx', '')}'`)
+  iconNames.push(cname)
 
   packageJsonExports[`./icons/${fileName.replace('.tsx', '')}`] = createAlignedExport(
     `./dist/esm/icons/${fileName.replace('.tsx', '.mjs')}`
@@ -173,12 +176,13 @@ setTimeout(() => {
   pkgJson.exports = {
     ...Object.fromEntries(
       Object.entries(pkgJson.exports).flatMap((entry) => {
-        if (entry[0].startsWith('./icon')) {
+        if (entry[0].startsWith('./icon') || entry[0] === './all') {
           return []
         }
         return [entry]
       })
     ),
+    './all': createAlignedExport('./dist/esm/all.mjs'),
     ...packageJsonExports,
   }
 
@@ -187,6 +191,23 @@ setTimeout(() => {
   })
 
   fs.writeFileSync(path.join(rootDir, 'src', 'index.ts'), iconExports.join('\n'), 'utf-8')
+
+  // a name -> component map of every icon. it lives apart from the index so that
+  // importing a handful of icons never retains the whole set: a bundler that sees
+  // `Object.keys(ns)` on the index has to keep all 1700 of them. only reach this
+  // through a dynamic import().
+  fs.writeFileSync(
+    path.join(rootDir, 'src', 'all.ts'),
+    `/* eslint-disable no-shadow-restricted-names */
+import type { IconProps } from '@tamagui/helpers-icon'
+${iconNames.map((name) => `import { ${name} } from './icons/${name}'`).join('\n')}
+
+export const allIcons: Record<string, (props: IconProps) => any> = {
+${iconNames.map((name) => `  ${name},`).join('\n')}
+}
+`,
+    'utf-8'
+  )
 
   // keep generated files aligned with repo tooling (OXC)
   require('child_process').execSync(`bunx oxfmt src`, { stdio: 'inherit' })

@@ -23,7 +23,6 @@
  *     tamagui-build --swap-exports -- pnpm publish --no-git-checks
  */
 
-const { transform } = require('@babel/core')
 const FSE = require('fs-extra')
 const esbuild = require('esbuild')
 const fastGlob = require('fast-glob')
@@ -34,11 +33,11 @@ const debounce = require('lodash.debounce')
 const { basename, dirname } = require('node:path')
 const { es5Plugin } = require('./esbuild-es5')
 const { transformSync: oxcTransformSync } = require('oxc-transform')
-const ts = require('typescript')
+const { getTsconfig } = require('get-tsconfig')
 const path = require('node:path')
 const childProcess = require('node:child_process')
+const { getTypeScriptNativePath } = require('./typescript-native')
 const {
-  printTypescriptDiagnostics,
   printEsbuildError,
   printBuildError,
   printTypescriptCompilationError,
@@ -73,14 +72,18 @@ function dceTamaguiTarget(contents, { format, jsx, platform }) {
     return contents
   }
 
-  const result = oxcTransformSync(`tamagui-target.${jsx === 'preserve' ? 'jsx' : 'js'}`, contents, {
-    lang: jsx === 'preserve' ? 'jsx' : 'js',
-    jsx: jsx === 'preserve' ? 'preserve' : undefined,
-    sourceType: format === 'cjs' ? 'commonjs' : 'module',
-    define: {
-      'process.env.TAMAGUI_TARGET': JSON.stringify(platform),
-    },
-  })
+  const result = oxcTransformSync(
+    `tamagui-target.${jsx === 'preserve' ? 'jsx' : 'js'}`,
+    contents,
+    {
+      lang: jsx === 'preserve' ? 'jsx' : 'js',
+      jsx: jsx === 'preserve' ? 'preserve' : undefined,
+      sourceType: format === 'cjs' ? 'commonjs' : 'module',
+      define: {
+        'process.env.TAMAGUI_TARGET': JSON.stringify(platform),
+      },
+    }
+  )
 
   if (result.errors?.length) {
     throw new Error(
@@ -270,6 +273,143 @@ async function pruneUnusedImports(contents, filePath) {
   }
 }
 
+function resolveOutputModuleSpecifier(
+  specifier,
+  filePath,
+  outputExtension,
+  outputPaths = new Set()
+) {
+  if (!specifier.startsWith('.') && !specifier.startsWith('/')) {
+    return specifier
+  }
+
+  const suffixIndex = specifier.search(/[?#]/)
+  const suffix = suffixIndex === -1 ? '' : specifier.slice(suffixIndex)
+  const pathname = suffixIndex === -1 ? specifier : specifier.slice(0, suffixIndex)
+
+  const targetPath = path.resolve(path.dirname(filePath), pathname)
+  if (
+    pathname.endsWith('.js') &&
+    (outputPaths.has(targetPath) || FSE.existsSync(targetPath))
+  ) {
+    const base = pathname.slice(0, -3)
+    const platformExtension = outputExtension.match(/^\.(native|web|ios|android)\./)?.[1]
+    return platformExtension && base.endsWith(`.${platformExtension}`)
+      ? `${base}.js${suffix}`
+      : `${base}${outputExtension}${suffix}`
+  }
+  if (outputPaths.has(`${targetPath}.js`) || FSE.existsSync(`${targetPath}.js`)) {
+    const platformExtension = outputExtension.match(/^\.(native|web|ios|android)\./)?.[1]
+    const explicitPlatformExtension = pathname.match(/\.(native|web|ios|android)$/)?.[1]
+    let extension = outputExtension
+    if (explicitPlatformExtension && outputExtension === '.mjs') {
+      extension = '.js'
+    } else if (platformExtension && pathname.endsWith(`.${platformExtension}`)) {
+      extension = outputExtension.replace(`.${platformExtension}`, '')
+    }
+    return `${pathname}${extension}${suffix}`
+  }
+
+  if (path.extname(pathname)) {
+    return specifier
+  }
+
+  if (
+    outputPaths.has(path.join(targetPath, 'index.js')) ||
+    (FSE.existsSync(targetPath) &&
+      FSE.lstatSync(targetPath).isDirectory() &&
+      FSE.existsSync(path.join(targetPath, 'index.js')))
+  ) {
+    return `${pathname.replace(/\/$/, '')}/index${outputExtension}${suffix}`
+  }
+
+  return specifier
+}
+
+async function fullySpecifyOutputs(
+  outputs,
+  { format, outputExtension, availableOutputPaths }
+) {
+  const jsOutputs = outputs.filter((file) => file?.path.endsWith('.js'))
+  if (!jsOutputs.length) {
+    return new Map()
+  }
+
+  const outputPaths = new Set([
+    ...Array.from(availableOutputPaths || [], (file) => path.resolve(file)),
+    ...jsOutputs.map((file) => path.resolve(file.path)),
+  ])
+  const transformed = new Map()
+
+  await Promise.all(
+    jsOutputs.map(async (file) => {
+      const bundle = await rolldown({
+        input: file.path,
+        platform: 'neutral',
+        treeshake: false,
+        plugins: [
+          {
+            name: 'tamagui-build-fully-specified',
+            resolveId(id, importer) {
+              if (!importer) return id
+              const resolved = resolveOutputModuleSpecifier(
+                id,
+                file.path,
+                outputExtension,
+                outputPaths
+              )
+              return {
+                id: resolved,
+                external: true,
+              }
+            },
+            load(id) {
+              if (id === file.path) return file.contents
+            },
+          },
+        ],
+      })
+
+      try {
+        const result = await bundle.generate({
+          format,
+          codeSplitting: false,
+          sourcemap: !shouldSkipSourceMaps,
+          comments: true,
+          minify: false,
+          polyfillRequire: false,
+        })
+        const chunk = result.output.find(
+          (output) => output.type === 'chunk' && output.facadeModuleId === file.path
+        )
+        if (!chunk) {
+          throw new Error(`rolldown did not emit ${file.path}`)
+        }
+
+        transformed.set(file.path, {
+          code: stripRolldownRegionComments(chunk.code).replace(
+            /\n?\/\/# sourceMappingURL=.*(?:\n|$)/g,
+            ''
+          ),
+          map: chunk.map || null,
+        })
+      } finally {
+        await bundle.close?.()
+      }
+    })
+  )
+
+  return transformed
+}
+
+function getFullySpecifiedOutput(outputs, filePath) {
+  const result = outputs.get(filePath)
+  if (!result) {
+    throw new Error(`rolldown did not emit ${filePath}`)
+  }
+  return result
+}
+
 function hasFlag(flag) {
   return process.argv.includes(flag)
 }
@@ -291,6 +431,7 @@ const reactCompilerPlugin = {
       const isTSX = args.path.endsWith('.tsx')
 
       try {
+        const { transform } = require('@babel/core')
         const result = transform(source, {
           filename: args.path,
           configFile: false,
@@ -342,18 +483,22 @@ const shouldSkipTypes = shouldSwapExports
   : !!(hasFlag('--skip-types') || process.env.SKIP_TYPES)
 
 const shouldSkipNative = hasFlag('--skip-native')
+// a package that hosts both platforms at runtime (the compiler evaluates
+// modules per-platform and saves/restores process.env.TAMAGUI_TARGET) must
+// keep its env reads live: inlining them turns its save/restore into an
+// unconditional env flip
+const shouldSkipTargetDCE = hasFlag('--keep-env-target')
 const shouldSkipMJS = hasFlag('--skip-mjs')
 const shouldSkipSourceMaps =
   hasFlag('--skip-sourcemaps') || getEnvFlag('TAMAGUI_BUILD_SKIP_SOURCEMAPS')
 // React Compiler is disabled by default - use --react-compiler to enable
-const shouldEnableCompiler = !!(
-  hasFlag('--react-compiler') || process.env.REACT_COMPILER
-)
+const shouldEnableCompiler = !!(hasFlag('--react-compiler') || process.env.REACT_COMPILER)
 const shouldBundleFlag = hasFlag('--bundle')
 const shouldBundleNodeModules = hasFlag('--bundle-modules')
 const shouldClean = !!process.argv.includes('clean')
 const shouldCleanBuildOnly = !!process.argv.includes('clean:build')
 const shouldWatch = hasFlag('--watch')
+const packageBuildLock = '.tamagui-build-lock'
 
 // get command after "--" to run with swapped exports
 const dashDashIndex = process.argv.indexOf('--')
@@ -368,7 +513,7 @@ const exludeIndex = process.argv.indexOf('--exclude')
 const baseUrl =
   baseUrlIndex > -1 && process.argv[baseUrlIndex + 1]
     ? process.argv[baseUrlIndex + 1]
-    : '.'
+    : null
 const tsProject =
   tsProjectIndex > -1 && process.argv[tsProjectIndex + 1]
     ? process.argv[tsProjectIndex + 1]
@@ -383,17 +528,25 @@ const pkgMain = pkg.main
 const pkgSource = pkg.source
 const pkgModule = pkg.module
 const pkgModuleJSX = pkg['module:jsx']
+const pkgBin = pkg.bin
 const pkgTypes = Boolean(pkg.types || pkg.typings)
 
 // build config from package.json
 const buildConfig = pkg['tamagui-build'] || {}
+const buildOutputs = new Set(buildConfig.outputs || [])
 // if bundleOnly is set, only bundle those packages (old behavior)
 // otherwise bundle ALL packages by default (new behavior)
 const bundleOnly = buildConfig.bundleOnly || null
 // if bundleExternal is set, always keep those packages external
 const bundleExternal = buildConfig.bundleExternal || null
 
-const flatOut = [pkgMain, pkgModule, pkgModuleJSX].filter(Boolean).length === 1
+const shouldBuildCJS = Boolean(pkgMain || buildOutputs.has('cjs'))
+const shouldBuildESM = Boolean(
+  pkgModule || buildOutputs.has('esm') || (!pkgMain && !pkgModuleJSX && pkgBin)
+)
+const shouldBuildTypes = Boolean(pkgTypes || buildOutputs.has('types'))
+const flatOut =
+  [shouldBuildCJS, shouldBuildESM, Boolean(pkgModuleJSX)].filter(Boolean).length === 1
 
 const avoidCJS = pkgMain?.endsWith('.js')
 const getJsEntryAliasPath = (entry) => {
@@ -407,9 +560,10 @@ const getJsEntryAliasPath = (entry) => {
   return null
 }
 const cjsMainAliasPath = getJsEntryAliasPath(pkgMain)
-const esmAliasPaths = [getJsEntryAliasPath(pkgModule), getJsEntryAliasPath(pkgModuleJSX)].filter(
-  Boolean
-)
+const esmAliasPaths = [
+  getJsEntryAliasPath(pkgModule),
+  getJsEntryAliasPath(pkgModuleJSX),
+].filter(Boolean)
 
 const replaceRNWeb = {
   esm: (content) =>
@@ -438,7 +592,7 @@ const getProcessLabel = () => {
   if (shouldSkipTypes) return labels.js
   if (!skipJS && !jsOnly) return labels.build
   if (jsOnly) return labels.js
-  if (!shouldSkipTypes && pkgTypes) return labels.tsc
+  if (!shouldSkipTypes && shouldBuildTypes) return labels.tsc
 
   return 'Unknown'
 }
@@ -453,7 +607,7 @@ async function clean() {
       //
       FSE.remove('.turbo'),
       FSE.remove('node_modules'),
-      FSE.remove('types'),
+      shouldSkipTypes ? null : FSE.remove('types'),
       FSE.remove('dist'),
     ])
   } catch {
@@ -480,12 +634,17 @@ if (shouldClean || shouldCleanBuildOnly) {
   if (shouldWatch) {
     process.env.IS_WATCHING = true
     process.env.DISABLE_AUTORUN = true
-    const rebuild = debounce(() => build({ cleanOutput: false }), 100)
+    let buildQueue = Promise.resolve()
+    const queueBuild = (options) => {
+      buildQueue = buildQueue.then(() => build(options))
+      return buildQueue
+    }
+    const rebuild = debounce(() => void queueBuild({ cleanOutput: false }), 100)
     const chokidar = require('chokidar')
 
     if (!process.env.SKIP_INITIAL_BUILD) {
       // do one js build but not types
-      build({
+      void queueBuild({
         skipTypes: true,
         cleanOutput: true,
       })
@@ -610,37 +769,112 @@ function swapExportsTypes(pkg, direction) {
   return swapped
 }
 
-async function build({ skipTypes, cleanOutput = !shouldWatch } = {}) {
+function processIsRunning(pid) {
+  try {
+    process.kill(pid, 0)
+    return true
+  } catch (error) {
+    return error?.code !== 'ESRCH'
+  }
+}
+
+async function withPackageBuildLock(run) {
+  while (true) {
+    try {
+      await FSE.mkdir(packageBuildLock)
+      await FSE.writeJSON(path.join(packageBuildLock, 'owner.json'), {
+        pid: process.pid,
+      })
+      break
+    } catch (error) {
+      if (error?.code !== 'EEXIST') throw error
+      const owner = await FSE.readJSON(path.join(packageBuildLock, 'owner.json')).catch(
+        () => null
+      )
+      if (owner?.pid && !processIsRunning(owner.pid)) {
+        await FSE.remove(packageBuildLock)
+        continue
+      }
+      const stat = await FSE.stat(packageBuildLock).catch(() => null)
+      if (!owner && stat && Date.now() - stat.mtimeMs > 30_000) {
+        await FSE.remove(packageBuildLock)
+        continue
+      }
+      await new Promise((resolve) => setTimeout(resolve, 25))
+    }
+  }
+
+  try {
+    return await run()
+  } finally {
+    await FSE.remove(packageBuildLock)
+  }
+}
+
+async function build(options) {
+  return withPackageBuildLock(() => buildUnlocked(options))
+}
+
+async function buildUnlocked({ skipTypes, cleanOutput = !shouldWatch } = {}) {
   if (process.env.DEBUG) console.info('🔹', pkg.name)
   try {
     const start = Date.now()
-    const isSkippingTypesForBuild = Boolean(skipTypes || shouldSkipTypes || !pkgTypes)
-
-    if (cleanOutput) {
-      await Promise.allSettled([
-        FSE.remove('dist'),
-        isSkippingTypesForBuild ? null : FSE.remove('types'),
-      ])
+    const distBuild = {
+      available: new Set(),
+      outputs: new Set(),
+      removals: new Set(),
+      writes: new Map(),
     }
 
+    // dist/ and types/ stay available while a build runs. Removing either up
+    // front breaks every concurrent consumer when an emit fails. Successful
+    // emits record their complete output set and prune stale files below.
+
     const allFiles = (await fastGlob(['src/**/*.(m)?[jt]s(x)?', 'src/**/*.css'])).filter(
-      (x) => !x.includes('.d.ts') && (exclude ? !x.match(exclude) : true)
+      (x) =>
+        !x.includes('.d.ts') &&
+        !/(?:^|\/)(?:__tests__|tests?)(?:\/|$)/.test(x) &&
+        !/\.(?:test-d|test|spec)\.[cm]?[jt]sx?$/.test(x) &&
+        (exclude ? !x.match(exclude) : true)
     )
 
-    await Promise.all([
+    const results = await Promise.allSettled([
       //
       skipTypes ? null : buildTsc(allFiles.filter((x) => /\.tsx?$/.test(x))),
-      buildJs(allFiles),
+      buildJs(allFiles, distBuild),
     ])
-
-    console.info('built', pkg.name, 'in', Date.now() - start, 'ms')
+    const failure = results.find((result) => result.status === 'rejected')
+    if (failure) {
+      throw failure.reason
+    }
 
     // Run afterBuild script if defined
     await runAfterBuild()
+
+    if (!skipJS) {
+      await Promise.all(
+        Array.from(distBuild.writes, ([filePath, contents]) =>
+          writeIfUnchanged(filePath, contents)
+        )
+      )
+      await Promise.all(
+        Array.from(distBuild.removals, (filePath) => FSE.remove(filePath))
+      )
+    }
+
+    if (cleanOutput && !skipJS) {
+      await pruneStaleOutputs(
+        'dist',
+        distBuild.outputs,
+        flatOut ? ['**/*'] : ['cjs/**/*', 'esm/**/*', 'jsx/**/*']
+      )
+    }
+
+    console.info('built', pkg.name, 'in', Date.now() - start, 'ms')
   } catch (error) {
     printBuildError(error, pkg.name, process.cwd())
     if (!shouldWatch) {
-      process.exit(1)
+      throw error
     }
   }
 }
@@ -668,7 +902,7 @@ async function runAfterBuild() {
 }
 
 async function buildTsc(allFiles) {
-  if (!pkgTypes || jsOnly || shouldSkipTypes) return
+  if (!shouldBuildTypes || jsOnly || shouldSkipTypes) return
   if (shouldSkipInitialTypes) {
     shouldSkipInitialTypes = false
     return
@@ -680,18 +914,6 @@ async function buildTsc(allFiles) {
   try {
     const { config, error } = await loadTsConfig()
     if (error) throw error
-
-    // much slower
-    // if (config.options.isolatedDeclarations) {
-    //   console.info(
-    //     childProcess
-    //       .execSync(`npx tsgo --project ./tsconfig.json --emitDeclarationOnly`)
-    //       .toString()
-    //   )
-    //   return
-    // }
-
-    const compilerOptions = createCompilerOptions(config.options, targetDir)
 
     if (config.options.isolatedDeclarations) {
       const oxc = await import('oxc-transform')
@@ -731,41 +953,147 @@ async function buildTsc(allFiles) {
 
       if (allErrors.length > 0) {
         printOxcErrors(allErrors)
-        if (!shouldWatch) {
-          process.exit(1)
-        }
+        throw new Error('isolated declaration emit failed')
       }
 
+      await pruneStaleDeclarations(targetDir, allFiles)
       return
     }
 
-    const { program, emitResult, diagnostics } = await compileTypeScript(
-      config.fileNames,
-      compilerOptions
-    )
-
-    // exit on errors
-    if (diagnostics.some((x) => x.code) && !shouldWatch) {
-      printTypescriptDiagnostics(diagnostics, ts)
-      if (shouldWatch) {
-        return
-      }
-      process.exit(1)
-    }
-
-    reportDiagnostics(diagnostics)
-
-    if (emitResult.emitSkipped) {
-      throw new Error('TypeScript compilation failed')
-    }
+    await emitDeclarationsWithTsgo(targetDir, allFiles)
+    await pruneStaleDeclarations(targetDir, allFiles)
   } catch (err) {
     printTypescriptCompilationError(err, pkg.name)
-    if (!shouldWatch) {
-      process.exit(1)
-    }
+    throw err
   } finally {
     await FSE.remove('tsconfig.tsbuildinfo')
   }
+}
+
+// dist/ and types/ are never wiped before a build, so successful emits prune
+// files that no longer belong to the source-derived output set.
+async function pruneStaleOutputs(targetDir, expected, patterns) {
+  const targetRoot = path.resolve(targetDir)
+  const normalize = (file) =>
+    path.relative(process.cwd(), path.resolve(file)).split(path.sep).join('/')
+  const dir = normalize(targetDir)
+  const normalizedExpected = new Set(Array.from(expected, normalize))
+  const existing = await fastGlob(
+    patterns.map((pattern) => `${dir}/${pattern}`),
+    {
+      dot: true,
+      followSymbolicLinks: false,
+      objectMode: true,
+      onlyFiles: false,
+    }
+  )
+  for (const entry of existing) {
+    if (!entry.dirent.isFile() && !entry.dirent.isSymbolicLink()) continue
+    const file = entry.path
+    if (!normalizedExpected.has(normalize(file))) {
+      const candidate = path.resolve(file)
+      if (candidate !== targetRoot && !candidate.startsWith(`${targetRoot}${path.sep}`)) {
+        throw new Error(`refusing to prune output outside ${targetDir}: ${file}`)
+      }
+      await FSE.unlink(candidate)
+    }
+  }
+}
+
+async function pruneStaleDeclarations(targetDir, allFiles) {
+  if (declarationToRoot) return
+  // fast-glob echoes the pattern's leading "./" back in its results, so both
+  // sides are normalized before comparison — mismatched prefixes here would
+  // prune every declaration in the package.
+  const normalize = (p) => p.replace(/^\.\//, '')
+  const dir = normalize(targetDir)
+  const expected = new Set()
+  for (const file of allFiles) {
+    const base = path.join(dir, ...file.split('/').slice(1)).replace(/\.tsx?$/, '')
+    expected.add(`${base}.d.ts`)
+    expected.add(`${base}.d.ts.map`)
+  }
+  await pruneStaleOutputs(dir, expected, ['**/*.d.ts', '**/*.d.ts.map'])
+}
+
+async function emitDeclarationsWithTsgo(targetDir, allFiles) {
+  const tsgoPath = getTypeScriptNativePath()
+  const declarationProject = `.tamagui-build-tsconfig-${process.pid}.json`
+  const sourceProject = path
+    .relative(process.cwd(), path.resolve(tsProject || 'tsconfig.json'))
+    .replaceAll(path.sep, '/')
+  await FSE.writeJSON(
+    declarationProject,
+    {
+      extends: sourceProject.startsWith('.') ? sourceProject : `./${sourceProject}`,
+      files: allFiles,
+      include: [],
+      exclude: [],
+    },
+    { spaces: 2 }
+  )
+  await FSE.remove('tsconfig.tsbuildinfo')
+  const args = [
+    '--project',
+    declarationProject,
+    '--declaration',
+    '--emitDeclarationOnly',
+    '--declarationMap',
+    String(!shouldSkipSourceMaps),
+    '--outDir',
+    targetDir,
+    '--rootDir',
+    'src',
+    '--tsBuildInfoFile',
+    'tsconfig.tsbuildinfo',
+  ]
+
+  if (declarationToRoot) {
+    args.push('--declarationDir', './')
+  }
+  if (!ignoreBaseUrl && baseUrl) {
+    args.push('--baseUrl', path.resolve(baseUrl))
+  }
+
+  try {
+    await new Promise((resolve, reject) => {
+      const child = childProcess.spawn(tsgoPath, args, { stdio: 'inherit' })
+      child.once('error', reject)
+      child.once('exit', (code, signal) => {
+        if (code === 0) {
+          resolve()
+          return
+        }
+        reject(
+          new Error(
+            signal
+              ? `TypeScript native declaration emit stopped by ${signal}`
+              : `TypeScript native declaration emit exited with code ${code}`
+          )
+        )
+      })
+    })
+  } finally {
+    await FSE.remove(declarationProject)
+  }
+
+  const declarationRoot = declarationToRoot ? '.' : targetDir
+  await Promise.all(
+    allFiles.map(async (file) => {
+      const relativeFile = path.relative(path.resolve('src'), path.resolve(file))
+      const declarationPath = path
+        .join(declarationRoot, relativeFile)
+        .replace(/\.tsx?$/, '.d.ts')
+      const output = await FSE.readFile(declarationPath, 'utf8')
+      const normalized = output.replace(
+        /(["'])@tamagui\/([^/"']+)\/types\1/g,
+        '$1@tamagui/$2$1'
+      )
+      if (normalized !== output) {
+        await writeIfUnchanged(declarationPath, normalized)
+      }
+    })
+  )
 }
 
 async function loadTsConfig() {
@@ -773,95 +1101,16 @@ async function loadTsConfig() {
     return cachedConfig
   }
 
-  const configPath = ts.findConfigFile(
-    './',
-    ts.sys.fileExists,
-    tsProject || 'tsconfig.json'
-  )
-  if (!configPath) {
+  const result = getTsconfig(process.cwd(), tsProject || 'tsconfig.json')
+  if (!result) {
     return { error: new Error("Could not find a valid 'tsconfig.json'.") }
   }
 
-  const configFile = ts.readConfigFile(configPath, ts.sys.readFile)
-  if (configFile.error) {
-    return {
-      error: new Error(`Error reading tsconfig.json: ${configFile.error.messageText}`),
-    }
-  }
-
-  const parsedCommandLine = ts.parseJsonConfigFileContent(
-    configFile.config,
-    ts.sys,
-    path.dirname(configPath)
-  )
-
-  if (parsedCommandLine.errors.length) {
-    return {
-      error: new Error(
-        `Error parsing tsconfig.json: ${ts.formatDiagnostics(parsedCommandLine.errors, formatHost)}`
-      ),
-    }
-  }
-
-  cachedConfig = { config: parsedCommandLine }
+  cachedConfig = { config: { options: result.config.compilerOptions || {} } }
   return cachedConfig
 }
 
-function createCompilerOptions(baseOptions, targetDir) {
-  const compilerOptions = {
-    ...baseOptions,
-    declaration: true,
-    emitDeclarationOnly: true,
-    declarationMap: !shouldSkipSourceMaps,
-    outDir: targetDir,
-    rootDir: 'src',
-    incremental: true,
-    tsBuildInfoFile: 'tsconfig.tsbuildinfo',
-  }
-
-  if (declarationToRoot) {
-    compilerOptions.declarationDir = './'
-  }
-
-  if (!ignoreBaseUrl) {
-    compilerOptions.baseUrl = baseUrl
-  }
-
-  return compilerOptions
-}
-
-async function compileTypeScript(fileNames, options) {
-  const program = ts.createProgram(fileNames, options)
-  const emitResult = program.emit()
-  const allDiagnostics = ts.getPreEmitDiagnostics(program).concat(emitResult.diagnostics)
-
-  return { program, emitResult, diagnostics: allDiagnostics }
-}
-
-const formatHost = {
-  getCanonicalFileName: (path) => path,
-  // TypeScript 7 (the native compiler) ships no `ts.sys`. This object is built
-  // at module scope, so reading it unguarded throws before `--skip-types` can
-  // take effect and breaks JS-only builds.
-  getCurrentDirectory: ts.sys?.getCurrentDirectory ?? (() => process.cwd()),
-  getNewLine: () => ts.sys?.newLine ?? '\n',
-}
-
-function reportDiagnostics(diagnostics) {
-  diagnostics.forEach((diagnostic) => {
-    let message = ts.flattenDiagnosticMessageText(diagnostic.messageText, '\n')
-    if (diagnostic.file && diagnostic.start !== undefined) {
-      const { line, character } = ts.getLineAndCharacterOfPosition(
-        diagnostic.file,
-        diagnostic.start
-      )
-      message = `${diagnostic.file.fileName} (${line + 1},${character + 1}): ${message}`
-    }
-    console.error(message)
-  })
-}
-
-async function buildJs(allFiles) {
+async function buildJs(allFiles, distBuild) {
   if (skipJS) {
     return
   }
@@ -969,38 +1218,42 @@ async function buildJs(allFiles) {
     }
   }
 
-  return await Promise.all([
+  const results = await Promise.allSettled([
     // web output to cjs
-    pkgMain
+    shouldBuildCJS
       ? esbuildWriteIfChanged(cjsConfigWeb, {
           platform: 'web',
           bundle: shouldBundleFlag,
           specifyCJS: !avoidCJS,
           keepJsOutput: avoidCJS,
           preserveJsPaths: [],
+          distBuild,
         })
       : null,
 
     // native output to cjs
-    pkgMain && !shouldSkipNative
+    shouldBuildCJS && !shouldSkipNative
       ? esbuildWriteIfChanged(cjsConfig, {
           platform: 'native',
+          distBuild,
         })
       : null,
 
     // web output to esm
-    pkgModule
+    shouldBuildESM
       ? esbuildWriteIfChanged(esmConfig, {
           platform: 'web',
           bundle: shouldBundleFlag,
           preserveJsPaths: esmAliasPaths,
+          distBuild,
         })
       : null,
 
     // native output to esm
-    pkgModule && !shouldSkipNative
+    shouldBuildESM && !shouldSkipNative
       ? esbuildWriteIfChanged(esmConfig, {
           platform: 'native',
+          distBuild,
         })
       : null,
 
@@ -1022,6 +1275,7 @@ async function buildJs(allFiles) {
           {
             platform: 'web',
             preserveJsPaths: esmAliasPaths,
+            distBuild,
           }
         )
       : null,
@@ -1043,16 +1297,20 @@ async function buildJs(allFiles) {
           },
           {
             platform: 'native',
+            distBuild,
           }
         )
       : null,
-  ]).then(() => {
-    if (process.env.DEBUG) {
-      console.info(`built js in ${Date.now() - start}ms`)
-    }
+  ])
 
-    void esbuild.stop()
-  })
+  void esbuild.stop()
+  const failure = results.find((result) => result.status === 'rejected')
+  if (failure) {
+    throw failure.reason
+  }
+  if (process.env.DEBUG) {
+    console.info(`built js in ${Date.now() - start}ms`)
+  }
 }
 
 /**
@@ -1063,12 +1321,18 @@ async function buildJs(allFiles) {
 async function esbuildWriteIfChanged(
   /** @type { import('esbuild').BuildOptions } */
   opts,
-  { platform, env, specifyCJS, keepJsOutput, preserveJsPaths } = {
+  { platform, env, specifyCJS, keepJsOutput, preserveJsPaths, distBuild } = {
     platform: '',
     specifyCJS: false,
     keepJsOutput: false,
     preserveJsPaths: [],
     env: '',
+    distBuild: {
+      available: new Set(),
+      outputs: new Set(),
+      removals: new Set(),
+      writes: new Map(),
+    },
   }
 ) {
   if (!platform) {
@@ -1166,9 +1430,7 @@ async function esbuildWriteIfChanged(
     built = await esbuild.build(buildSettings)
   } catch (err) {
     printEsbuildError(err)
-    if (!shouldWatch) {
-      process.exit(1)
-    }
+    throw err
   }
 
   if (!built.outputFiles) {
@@ -1179,6 +1441,7 @@ async function esbuildWriteIfChanged(
   const webFilesMap = {}
 
   for (const p of built.outputFiles) {
+    distBuild.available.add(p.path)
     if (p.path.includes('.native.js')) {
       nativeFilesMap[p.path] = true
     } else if (p.path.includes('.web.js')) {
@@ -1189,7 +1452,15 @@ async function esbuildWriteIfChanged(
   const cleanupNonMjsFiles = []
   const cleanupNonCjsFiles = []
 
-  const flush = writeIfUnchanged
+  const flush = (filePath, contents) => {
+    distBuild.outputs.add(filePath)
+    distBuild.removals.delete(filePath)
+    distBuild.writes.set(filePath, contents)
+  }
+  const remove = (filePath) => {
+    distBuild.writes.delete(filePath)
+    distBuild.removals.add(filePath)
+  }
 
   const outputs = (
     await Promise.all(
@@ -1247,23 +1518,24 @@ async function esbuildWriteIfChanged(
         }
 
         if (!isMap && path.endsWith('.js')) {
-          const hadTamaguiTarget = contents.includes('process.env.TAMAGUI_TARGET')
-          contents = dceTamaguiTarget(contents, {
-            format: opts.format,
-            jsx: opts.jsx,
-            platform,
-          })
+          const hadTamaguiTarget =
+            !shouldSkipTargetDCE && contents.includes('process.env.TAMAGUI_TARGET')
+          if (!shouldSkipTargetDCE) {
+            contents = dceTamaguiTarget(contents, {
+              format: opts.format,
+              jsx: opts.jsx,
+              platform,
+            })
+          }
 
           if (isESM && hadTamaguiTarget) {
             contents = await pruneUnusedImports(contents, path)
           }
 
-          // esbuild emits bare require() in esm output as a __require() shim that throws
-          // ("Dynamic require ... is not supported") under Metro's esm module scope. native
-          // always has a real require, so call it directly. this keeps the
-          // require('react-native')-behind-a-TAMAGUI_TARGET==='native' DCE guard working on
-          // native instead of crashing at runtime (e.g. toast PanResponder).
-          if (platform === 'native' && isESM) {
+          // expose esbuild's require shim so rolldown can resolve and rewrite local
+          // specifiers. rolldown restores the shim for web esm, while the native output
+          // below keeps a real require for metro.
+          if (isESM) {
             contents = contents.replaceAll('__require(', 'require(')
           }
         }
@@ -1320,6 +1592,14 @@ async function esbuildWriteIfChanged(
   )
 
   if (specifyCJS) {
+    const transformedOutputs = opts.bundle
+      ? new Map()
+      : await fullySpecifyOutputs(outputs, {
+          format: 'cjs',
+          outputExtension: platform === 'native' ? '.native.cjs' : '.cjs',
+          availableOutputPaths: distBuild.available,
+        })
+
     await Promise.all(
       outputs.map(async (file) => {
         if (!file) return
@@ -1328,19 +1608,7 @@ async function esbuildWriteIfChanged(
 
         const result = opts.bundle
           ? { code: contents }
-          : transform(contents, {
-              filename: path,
-              configFile: false,
-              sourceMap: !shouldSkipSourceMaps,
-              plugins: [
-                [
-                  require.resolve('@tamagui/babel-plugin-fully-specified/commonjs'),
-                  {
-                    esExtensionDefault: platform === 'native' ? '.native.cjs' : '.cjs',
-                  },
-                ],
-              ].filter(Boolean),
-            })
+          : getFullySpecifiedOutput(transformedOutputs, path)
 
         const shouldPreserveJsAlias =
           preserveJsPathSet.has(path) || preserveJsPathAbsoluteSet.has(path)
@@ -1358,7 +1626,7 @@ async function esbuildWriteIfChanged(
       })
     )
     if (cleanupNonCjsFiles.length) {
-      await Promise.all(cleanupNonCjsFiles.map(async (file) => FSE.remove(file)))
+      for (const file of cleanupNonCjsFiles) remove(file)
     }
     return
   }
@@ -1371,6 +1639,14 @@ async function esbuildWriteIfChanged(
   if (shouldSkipMJS) {
     return
   }
+
+  const transformedOutputs = opts.bundle
+    ? new Map()
+    : await fullySpecifyOutputs(outputs, {
+        format: isESM ? 'esm' : 'cjs',
+        outputExtension: platform === 'native' ? '.native.js' : '.mjs',
+        availableOutputPaths: distBuild.available,
+      })
 
   await Promise.all(
     outputs.map(async (file) => {
@@ -1387,22 +1663,15 @@ async function esbuildWriteIfChanged(
       // and babel is bad on huge bundled files
       const result = opts.bundle
         ? { code: contents }
-        : transform(contents, {
-            filename: newOutPath,
-            configFile: false,
-            sourceMap: !shouldSkipSourceMaps,
-            plugins: [
-              [
-                isESM
-                  ? require.resolve('@tamagui/babel-plugin-fully-specified')
-                  : require.resolve('@tamagui/babel-plugin-fully-specified/commonjs'),
-                {
-                  esExtensionDefault: platform === 'native' ? '.native.js' : '.mjs',
-                  esExtensions: platform === 'native' ? ['.js'] : ['.mjs'],
-                },
-              ],
-            ].filter(Boolean),
-          })
+        : getFullySpecifiedOutput(transformedOutputs, path)
+
+      if (platform === 'native' && isESM) {
+        result.code = result.code.replace(/\b__require(?:\$\d+)?\(/g, 'require(')
+      }
+
+      if (platform === 'native' && !isESM && !avoidCJS) {
+        await flush(path.replace(/\.js$/, '.cjs'), result.code)
+      }
 
       const shouldPreserveJsAlias =
         preserveJsPathSet.has(path) || preserveJsPathAbsoluteSet.has(path)
@@ -1423,7 +1692,7 @@ async function esbuildWriteIfChanged(
       if (result.map && !shouldSkipSourceMaps) {
         await flush(newOutPath + '.map', JSON.stringify(result.map))
       } else {
-        await FSE.remove(newOutPath + '.map')
+        remove(newOutPath + '.map')
       }
 
       if (shouldPreserveJsAlias) {
@@ -1437,7 +1706,7 @@ async function esbuildWriteIfChanged(
         if (result.map && !shouldSkipSourceMaps) {
           await flush(path + '.map', JSON.stringify(result.map))
         } else {
-          await FSE.remove(path + '.map')
+          remove(path + '.map')
         }
       }
     })
@@ -1445,10 +1714,6 @@ async function esbuildWriteIfChanged(
 
   // remove intermediary .js files once the final .mjs/.cjs outputs exist
   if (cleanupNonMjsFiles.length || cleanupNonCjsFiles.length) {
-    await Promise.all(
-      [...cleanupNonMjsFiles, ...cleanupNonCjsFiles].map(async (file) => {
-        await FSE.remove(file)
-      })
-    )
+    for (const file of [...cleanupNonMjsFiles, ...cleanupNonCjsFiles]) remove(file)
   }
 }

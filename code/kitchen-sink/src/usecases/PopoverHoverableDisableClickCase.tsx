@@ -21,8 +21,8 @@ export function PopoverHoverableDisableClickCase() {
   }
 
   return (
-    <YStack padding="$10" alignItems="center" gap="$4">
-      <SizableText size="$3" color="$color9">
+    <YStack padding="10" alignItems="center" gap="4">
+      <SizableText size="3" color="color9">
         Hoverable popover with disablePressTrigger - clicking should dismiss via onPressIn
         only
       </SizableText>
@@ -49,10 +49,10 @@ export function PopoverHoverableDisableClickCase() {
         >
           <XStack
             id="disableclick-trigger"
-            px="$4"
-            py="$2"
-            bg="$color3"
-            rounded="$4"
+            px="4"
+            py="2"
+            bg="color3"
+            rounded="4"
             cursor="pointer"
           >
             <SizableText>Hover me (disablePressTrigger)</SizableText>
@@ -61,15 +61,13 @@ export function PopoverHoverableDisableClickCase() {
         <Popover.Content
           id="disableclick-content"
           disableFocusScope
-          unstyled
-          transition="200ms"
-          animateOnly={['opacity', 'transform']}
-          enterStyle={{ opacity: 0, y: -4 }}
-          exitStyle={{ opacity: 0, y: -4 }}
-          bg="$color4"
-          rounded="$4"
-          px="$4"
-          py="$3"
+          transition={{ duration: '200ms', properties: 'opacity, transform' }}
+          opacity="enter:0 exit:0"
+          y="enter:-4px exit:-4px"
+          bg="color4"
+          rounded="4"
+          px="4"
+          py="3"
         >
           <SizableText>Popover content (disablePressTrigger test)</SizableText>
         </Popover.Content>
@@ -80,10 +78,10 @@ export function PopoverHoverableDisableClickCase() {
         <Popover.Trigger asChild>
           <XStack
             id="withclick-trigger"
-            px="$4"
-            py="$2"
-            bg="$color3"
-            rounded="$4"
+            px="4"
+            py="2"
+            bg="color3"
+            rounded="4"
             cursor="pointer"
           >
             <SizableText>Hover me (normal click)</SizableText>
@@ -92,23 +90,21 @@ export function PopoverHoverableDisableClickCase() {
         <Popover.Content
           id="withclick-content"
           disableFocusScope
-          unstyled
-          transition="200ms"
-          animateOnly={['opacity', 'transform']}
-          enterStyle={{ opacity: 0, y: -4 }}
-          exitStyle={{ opacity: 0, y: -4 }}
-          bg="$color4"
-          rounded="$4"
-          px="$4"
-          py="$3"
+          transition={{ duration: '200ms', properties: 'opacity, transform' }}
+          opacity="enter:0 exit:0"
+          y="enter:-4px exit:-4px"
+          bg="color4"
+          rounded="4"
+          px="4"
+          py="3"
         >
           <SizableText>Popover content (normal click)</SizableText>
         </Popover.Content>
       </Popover>
 
-      <YStack id="open-state-log" gap="$1" mt="$4">
+      <YStack id="open-state-log" gap="1" mt="4">
         {log.map((entry, i) => (
-          <SizableText key={i} size="$2" color="$color8" fontFamily="$mono">
+          <SizableText key={i} size="2" color="color8" fontFamily="monospace">
             {entry}
           </SizableText>
         ))}

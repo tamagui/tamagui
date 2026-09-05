@@ -1,0 +1,117 @@
+---
+title: Style Pieces
+description: Statically-shaped style fragments created with style()
+---
+
+Style pieces are static style fragments created with the `style()` helper. They are compiled once at definition time and applied via the `style` prop or piece-typed component props.
+
+```tsx
+import { View, style } from 'tamagui' // or '@tamagui/core'
+
+// define at module scope
+const cardActive = style({
+  backgroundColor: 'background-press',
+  borderColor: 'border-color-hover',
+  opacity: 0.9,
+})
+
+export function Card({ active }: { active?: boolean }) {
+  return <View style={[cardActive, active && { opacity: 1 }]} />
+}
+```
+
+## Module-scope definition
+
+Define style pieces at module scope. When defined at module scope, their CSS rules are resolved and inserted once during module evaluation.
+
+If `style()` is called during a component render, Tamagui emits a development warning:
+
+```
+[tamagui] style() was called during render. Define style pieces at module scope so their rules compile once.
+```
+
+For dynamic styles that depend on props, use `styled.dynamic` or a component `.resolve` callback instead.
+
+## The style prop
+
+Tamagui's `style` prop accepts a `StylePiece`, a plain style object, or an array containing both:
+
+```tsx
+const baseStyle = style({ padding: 16, borderRadius: 8 })
+const activeStyle = style({ backgroundColor: 'background-press' })
+
+// single piece
+<View style={baseStyle} />
+
+// array with conditional overrides (last wins)
+<View style={[baseStyle, isActive && activeStyle, { opacity: 0.8 }]} />
+```
+
+Array elements evaluate in order. Later pieces or style objects override earlier ones per property, following Tamagui's standard style precedence.
+
+## Static shape rule
+
+Style pieces follow the static shape rule. The object passed to `style()` must have statically-known property keys:
+
+```tsx
+// good: static keys, scalar values, and flat clauses
+const goodPiece = style({
+  backgroundColor: 'background',
+  padding: 16,
+  opacity: '1 hover:0.8',
+  shadowOffset: { width: 0, height: 2 },
+})
+
+// avoid: spreads and computed keys
+const dynamicKey = 'padding'
+const badPiece = style({
+  [dynamicKey]: 16,
+  ...someObject,
+})
+```
+
+Rules for conforming style pieces:
+- Static property keys only.
+- No object spreads into the definition literal.
+- No computed keys.
+- Structured leaf values (such as `shadowOffset`) are allowed.
+- Flat clause strings (such as `'1 hover:0.8'`) are allowed.
+
+Non-conforming pieces with dynamic spreads or computed keys deopt compiler extraction for that piece. The runtime remains unaffected and interprets the styles in JavaScript.
+
+## Native resolution
+
+On web, `style()` compiles each property to atomic CSS classes at module evaluation.
+
+On React Native and JavaScript drivers, the piece preserves its underlying style object. When rendered, Tamagui resolves the style object against the active theme and caches the resolved styles per `(piece, theme)` pair.
+
+## Piece-typed component props
+
+Several Tamagui components accept a `StylePiece` on dedicated style props:
+
+- `activeStyle` on `Checkbox`, `Toggle`, `ToggleGroup.Item`, and `Tabs.Tab`.
+- `contentContainerStyle` on `ScrollView`.
+
+```tsx
+import { Checkbox, ScrollView, style } from 'tamagui'
+
+const activeCheckboxStyle = style({
+  backgroundColor: 'blue-500',
+  borderColor: 'blue-600',
+})
+
+const scrollContainer = style({
+  padding: 20,
+  gap: 12,
+})
+
+export function Example() {
+  return (
+    <ScrollView contentContainerStyle={scrollContainer}>
+      <Checkbox activeStyle={activeCheckboxStyle} />
+    </ScrollView>
+  )
+}
+```
+
+These props replace the legacy `accept: 'style'` configuration option. Components forward the piece directly into their frame's `style` prop or resolve it against the active theme on native.

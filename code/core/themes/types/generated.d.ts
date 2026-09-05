@@ -1,0 +1,35 @@
+export type Theme = {
+    color1: string;
+    color2: string;
+    color3: string;
+    color4: string;
+    color5: string;
+    color6: string;
+    color7: string;
+    color8: string;
+    color9: string;
+    color10: string;
+    color11: string;
+    background: string;
+    'background-hover': string;
+    'background-press': string;
+    'background-focus': string;
+    'border-color': string;
+    'border-color-hover': string;
+    'border-color-press': string;
+    'border-color-focus': string;
+    color: string;
+    'color-hover': string;
+    'color-press': string;
+    'color-focus': string;
+    'placeholder-color': string;
+    'outline-color': string;
+    'shadow-color': string;
+    'accent-background': string;
+    'accent-color': string;
+};
+export declare const colors: string[];
+export type ThemeNames = 'light' | 'dark_inverse' | 'light_level2' | 'dark_inverse_level2' | 'light_level2_level2' | 'light_level3' | 'dark_inverse_level2_level2' | 'dark_inverse_level3' | 'light_level2_level2_level2' | 'light_level2_level2_level3' | 'light_level2_level2_level4' | 'light_level2_level3' | 'light_level2_level4' | 'light_level3_level2' | 'light_level3_level3' | 'light_level3_level4' | 'light_level4' | 'dark_inverse_level2_level2_level2' | 'dark_inverse_level2_level2_level3' | 'dark_inverse_level2_level2_level4' | 'dark_inverse_level2_level3' | 'dark_inverse_level2_level4' | 'dark_inverse_level3_level2' | 'dark_inverse_level3_level3' | 'dark_inverse_level3_level4' | 'dark_inverse_level4' | 'light_accent' | 'light_accent_level2' | 'light_accent_level2_level2' | 'light_accent_level3' | 'light_accent_level2_level2_level2' | 'light_accent_level2_level2_level3' | 'light_accent_level2_level2_level4' | 'light_accent_level2_level3' | 'light_accent_level2_level4' | 'light_accent_level3_level2' | 'light_accent_level3_level3' | 'light_accent_level3_level4' | 'light_accent_level4' | 'light_brand' | 'light_brand_level2' | 'light_brand_level2_level2' | 'light_brand_level3' | 'light_brand_level2_level2_level2' | 'light_brand_level2_level2_level3' | 'light_brand_level2_level2_level4' | 'light_brand_level2_level3' | 'light_brand_level2_level4' | 'light_brand_level3_level2' | 'light_brand_level3_level3' | 'light_brand_level3_level4' | 'light_brand_level4' | 'light_inverse' | 'dark' | 'light_inverse_level2' | 'dark_level2' | 'light_inverse_level2_level2' | 'light_inverse_level3' | 'dark_level2_level2' | 'dark_level3' | 'light_inverse_level2_level2_level2' | 'light_inverse_level2_level2_level3' | 'light_inverse_level2_level2_level4' | 'light_inverse_level2_level3' | 'light_inverse_level2_level4' | 'light_inverse_level3_level2' | 'light_inverse_level3_level3' | 'light_inverse_level3_level4' | 'light_inverse_level4' | 'dark_level2_level2_level2' | 'dark_level2_level2_level3' | 'dark_level2_level2_level4' | 'dark_level2_level3' | 'dark_level2_level4' | 'dark_level3_level2' | 'dark_level3_level3' | 'dark_level3_level4' | 'dark_level4' | 'light_red' | 'light_red_level2' | 'light_red_level3' | 'light_red_level4' | 'light_yellow' | 'light_yellow_level2' | 'light_yellow_level3' | 'light_yellow_level4' | 'light_green' | 'light_green_level2' | 'light_green_level3' | 'light_green_level4' | 'dark_accent' | 'dark_accent_level2' | 'dark_accent_level2_level2' | 'dark_accent_level3' | 'dark_accent_level2_level2_level2' | 'dark_accent_level2_level2_level3' | 'dark_accent_level2_level2_level4' | 'dark_accent_level2_level3' | 'dark_accent_level2_level4' | 'dark_accent_level3_level2' | 'dark_accent_level3_level3' | 'dark_accent_level3_level4' | 'dark_accent_level4' | 'dark_brand' | 'dark_brand_level2' | 'dark_brand_level2_level2' | 'dark_brand_level3' | 'dark_brand_level2_level2_level2' | 'dark_brand_level2_level2_level3' | 'dark_brand_level2_level2_level4' | 'dark_brand_level2_level3' | 'dark_brand_level2_level4' | 'dark_brand_level3_level2' | 'dark_brand_level3_level3' | 'dark_brand_level3_level4' | 'dark_brand_level4' | 'dark_red' | 'dark_red_level2' | 'dark_red_level3' | 'dark_red_level4' | 'dark_yellow' | 'dark_yellow_level2' | 'dark_yellow_level3' | 'dark_yellow_level4' | 'dark_green' | 'dark_green_level2' | 'dark_green_level3' | 'dark_green_level4';
+export type Themes = Record<ThemeNames, Theme>;
+export declare const themes: Themes;
+//# sourceMappingURL=generated.d.ts.map

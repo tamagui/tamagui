@@ -36,7 +36,7 @@ One really important and useful thing to note about Tamagui style properties: th
 Let's add some variants:
 
 ```tsx
-import { View, styled } from '@tamagui/core'
+import { type SizeTokens, View, styled } from '@tamagui/core'
 
 export const RoundedSquare = styled(View, {
   borderRadius: 20,
@@ -56,14 +56,10 @@ export const RoundedSquare = styled(View, {
       },
     },
 
-    size: {
-      '...size': (size, { tokens }) => {
-        return {
-          width: tokens.size[size] ?? size,
-          height: tokens.size[size] ?? size,
-        }
-      },
-    },
+    size: styled.dynamic<SizeTokens | number>((size, { tokens }) => ({
+      width: tokens.size[size] ?? size,
+      height: tokens.size[size] ?? size,
+    })),
   } as const,
 })
 ```
@@ -76,7 +72,7 @@ export const RoundedSquare = styled(View, {
 We can use these like so:
 
 ```tsx
-<RoundedSquare pin="top" centered size="$lg" />
+<RoundedSquare pin="top" centered size="lg" />
 ```
 
 To learn more about how to use them and all the special types, [see the docs on variants](/docs/core/variants).
@@ -111,13 +107,13 @@ Render as a specific HTML element on web while maintaining native View on mobile
 ```tsx
 const Button = styled(View, {
   render: 'button',
-  padding: '$4',
-  backgroundColor: '$background',
+  padding: '4',
+  backgroundColor: 'background',
 })
 
 const Anchor = styled(Text, {
   render: 'a',
-  color: '$blue10',
+  color: 'blue-500',
 })
 
 const Nav = styled(View, {
@@ -132,13 +128,13 @@ This is the recommended approach for semantic HTML and accessibility. String ren
 Pass a JSX element to clone with Tamagui's computed props:
 
 ```tsx
-<Stack
+<View
   render={<a href="/about" target="_blank" />}
-  padding="$4"
-  backgroundColor="$background"
+  padding="4"
+  backgroundColor="background"
 >
   About Page
-</Stack>
+</View>
 ```
 
 The JSX element's props are merged with Tamagui's computed styles, classNames, and event handlers. This is useful when you need to pass element-specific props like `href` or `target`.
@@ -153,15 +149,15 @@ For full control, pass a render function that receives props and component state
 
 ```tsx
 import { TamaguiComponentState } from '@tamagui/core'
-;<Stack
+;<View
   render={(props, state: TamaguiComponentState) => (
     <CustomButton {...props} isHovered={state.hover} isPressed={state.press} />
   )}
-  padding="$4"
-  hoverStyle={{ backgroundColor: '$blue5' }}
+  padding="4"
+  backgroundColor="hover:blue-200"
 >
   Custom Button
-</Stack>
+</View>
 ```
 
 The state object includes:
@@ -181,7 +177,7 @@ You can also override the render prop at runtime:
 
 ```tsx
 const Box = styled(View, {
-  padding: '$4',
+  padding: '4',
 })
 
 // Use as a button
@@ -191,11 +187,9 @@ const Box = styled(View, {
 <Box render="a" href="/about">About</Box>
 ```
 
-## styleable
+## createStyledHOC
 
-Any component created with `styled()` has a new static property on it called `.styleable()`.
-
-If you want a functional component that renders a Tamagui-styled component inside of it to _also_ be able to be `styled()`, you need to wrap it with `styleable`. This is a mouthful, let's see an example:
+If you want a functional component that renders a Tamagui-styled component inside of it to _also_ be able to be `styled()`, wrap it with `createStyledHOC`. This is a mouthful, let's see an example:
 
 ```tsx
 // 1. you create a `styled` component as usual:
@@ -215,13 +209,13 @@ const StyledHigherOrderStyledText = styled(HigherOrderStyledText, {
 
 The above code will generally cause weird issues, because Tamagui can't know that it needs to just forward some props down. Instead, Tamagui tries to "resolve" all the style props from `StyledHigherOrderStyledText` before passing them down to `HigherOrderStyledText`. But that causes problems, because now `HigherOrderStyledText` will merge things differently than you'd expect.
 
-The way to fix this is to add `.styleable()` around your `HigherOrderStyledText`. You'll also want to forward the ref, which is forwarded for you:
+The way to fix this is to wrap your `HigherOrderStyledText` with `createStyledHOC`. You'll also want to forward the ref, which is forwarded for you:
 
 ```tsx
 const StyledText = styled(Text)
 
-// note the styleable wrapper here:
-const HigherOrderStyledText = StyledText.styleable((props, ref) => (
+// note the createStyledHOC wrapper here:
+const HigherOrderStyledText = createStyledHOC(StyledText, (props, ref) => (
   <StyledText ref={ref} {...props} />
 ))
 
@@ -236,10 +230,10 @@ Now your component will handle everything properly, even if a theme is changed o
 
 A final note: you must pass all Tamagui style props given to `HigherOrderStyledText` down to a single `StyledText`, at least if you want everything to work fully correctly.
 
-And if you'd like to add new props on top of the existing props, you can pass them in for the first generic type argument of styleable:
+And if you'd like to add new props on top of the existing props, annotate the render function's props parameter. The annotated props merge over the wrapped component's props:
 
 ```tsx
-import { View, ViewProps } from '@tamagui/core'
+import { createStyledHOC, View, ViewProps } from '@tamagui/core'
 
 type ExtraProps = {
   someCustomProp: boolean
@@ -247,7 +241,7 @@ type ExtraProps = {
 
 export type CustomProps = ViewProps & ExtraProps
 
-const Custom = View.styleable<ExtraProps>((props) => {
+const Custom = createStyledHOC(View, (props: ExtraProps) => {
   // ...
   return null
 })
@@ -255,34 +249,106 @@ const Custom = View.styleable<ExtraProps>((props) => {
 
 ---
 
-## accept
+## Component Resolvers (.resolve)
 
-If you are wrapping something like an SVG, you may want it to accept theme and token values on certain props, for example `fill`. You can do so using `accept`:
+The `.resolve` method attaches a dynamic style resolver to a styled component. It receives the component's complete resolved props and the style environment:
 
 ```tsx
-const StyledSVG = styled(
-  SVG,
-  {},
-  {
-    accept: {
-      fill: 'color',
-    } as const,
-  }
-)
+import { View, styled } from 'tamagui' // or '@tamagui/core'
+
+export const AlertBox = styled(View, {
+  backgroundColor: 'background',
+  padding: '4',
+
+  variants: {
+    tone: styled.dynamic<'neutral' | 'critical'>(),
+    disabled: {
+      true: { opacity: 0.5 },
+    },
+  } as const,
+}).resolve((props, env) => ({
+  backgroundColor: props.tone === 'critical' ? env.theme.red10 : undefined,
+  borderColor: props.tone === 'critical' ? env.theme.red8 : undefined,
+}))
 ```
 
-Now your StyledSVG will properly type the `fill` property to accept token and theme values and will pass the resolved colors to the SVG component.
+### Complete props and environment
 
-You can also use `accept` to take in Tamagui style objects and output React Native style objects. This is useful for things like the `contentContainerStyle` prop on `ScrollView`, which expects a style object:
+The resolver callback receives two arguments:
+1. `props`: the complete styled component prop type, including base props and all declared variants.
+2. `env`: an object containing `{ theme, tokens, fonts, font, fontFamily }`.
+
+Because `props` includes the component's full prop types, `.resolve` replaces compound variants and sibling-prop inspection logic.
+
+### Immutable chaining
+
+Calling `.resolve` returns a new component. It never mutates the original component:
 
 ```tsx
-const MyScrollView = styled(
-  ScrollView,
-  {},
-  {
-    accept: {
-      contentContainerStyle: 'style', // or 'textStyle'
-    } as const,
-  }
-)
+const Original = styled(View, {})
+const Resolved = Original.resolve(() => ({ opacity: 0.5 }))
+
+// Original is unchanged; Resolved has the resolver attached
+```
+
+Each styled layer may attach one resolver. When extending a component with `styled()`, child components inherit their parent's resolver chain.
+
+### Parent-first execution
+
+The resolver chain executes in parent-first order. The child resolver runs after its parent resolver and overrides conflicting keys:
+
+```tsx
+const Parent = styled(View, {
+  variants: {
+    tone: styled.dynamic<'neutral' | 'critical'>(),
+  },
+}).resolve((props, env) => ({
+  backgroundColor: props.tone === 'critical' ? env.theme.red10 : undefined,
+  width: 100,
+}))
+
+const Child = styled(Parent, {}).resolve((props) => ({
+  width: props.tone === 'critical' ? 200 : undefined,
+}))
+```
+
+For `<Child tone="critical" />`, `width` is `200` (child resolver wins) and `backgroundColor` is `env.theme.red10` (parent resolver lands).
+
+### Precedence tiers
+
+Component resolvers sit at layer 2 in Tamagui's precedence hierarchy:
+
+```
+0 base styles < 1 variants < 2 component resolvers < 3 callsite style props < 4 style prop
+```
+
+Rules for resolution:
+- A resolver beats base styles and variants for the same property.
+- A callsite style prop (such as `<AlertBox width={50} />`) beats the resolver.
+- The `style` prop beats everything.
+- Setting a property to `undefined` in resolver output means absent. The value falls through to lower tiers (variants or base styles).
+
+### Static shape rule
+
+For compiler extraction, write resolver return objects with static keys and scalar expressions. Return `undefined` for inactive branches instead of spreading objects into the return literal:
+
+```tsx
+// good: static keys, undefined for inactive branch
+const Box = styled(View, {
+  variants: {
+    tone: styled.dynamic<'neutral' | 'critical'>(),
+  },
+}).resolve((props, env) => ({
+  backgroundColor: props.tone === 'critical' ? env.theme.red10 : undefined,
+  opacity: props.disabled ? 0.5 : undefined,
+}))
+
+// avoid: spreads and computed keys deopt compiler extraction
+const DeoptBox = styled(View, {
+  variants: {
+    tone: styled.dynamic<'neutral' | 'critical'>(),
+  },
+}).resolve((props) => ({
+  ...(props.tone === 'critical' && { backgroundColor: 'red' }),
+}))
 ```

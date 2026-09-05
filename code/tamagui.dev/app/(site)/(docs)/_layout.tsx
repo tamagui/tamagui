@@ -3,7 +3,6 @@ import { ScrollView } from 'react-native'
 import { View, XStack, YStack } from 'tamagui'
 import { DocsMenuContents } from '~/features/docs/DocsMenuContents'
 import { Footer } from '~/features/site/Footer'
-import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
 
 export default function DocsLayout() {
   // disabled route-based tint changes
@@ -11,16 +10,13 @@ export default function DocsLayout() {
 
   return (
     <>
-      <ThemeNameEffect colorKey="$color1" />
       <YStack
         position="absolute"
         inset={0}
         maxH={1000}
         z={0}
-        backgroundImage="linear-gradient($color3, $colorTransparent)"
+        backgroundImage="linear-gradient(color3, color-transparent)"
       />
-
-      {/* <YStack z={-1} fullscreen bg="$accent12" /> */}
 
       {/* main layout container */}
       <YStack minH="100vh" position="relative" z={1}>
@@ -29,20 +25,17 @@ export default function DocsLayout() {
           {/* left sidebar - sticky */}
           <View
             className="is-sticky"
-            display="none"
-            $gtMd={{
-              display: 'flex',
-              position: 'sticky',
-              t: 20,
-              height: 'calc(100vh - 20px)',
-              width: 245,
-              shrink: 0,
-              alignSelf: 'flex-start',
-              x: 20,
-            }}
+            display="none gtMd:flex"
+            position="gtMd:sticky"
+            t="gtMd:20px"
+            height="gtMd:calc(100vh - 20px)"
+            width="gtMd:245px"
+            shrink="gtMd:0px"
+            alignSelf="gtMd:flex-start"
+            x="gtMd:20px"
           >
             <ScrollView showsVerticalScrollIndicator={false}>
-              <YStack pt={55} pb="$18" px="$2">
+              <YStack pt={55} pb="18" px="2">
                 <DocsMenuContents />
               </YStack>
             </ScrollView>

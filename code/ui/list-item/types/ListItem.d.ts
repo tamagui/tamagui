@@ -1,95 +1,122 @@
-import type { ColorTokens, FontSizeTokens, GetProps, SizeTokens } from '@tamagui/web';
+import type { TextParentStyles } from '@tamagui/text';
+import { textParentProps } from '@tamagui/text';
+import type { ColorTokens, GetProps, SizeTokens } from '@tamagui/web';
 import type { FunctionComponent, JSX, ReactNode } from 'react';
 type IconProp = JSX.Element | FunctionComponent<{
     color?: any;
     size?: any;
 }> | null;
-type ListItemVariant = 'outlined';
-export type ListItemExtraProps = {
+/**
+ * The three props every part shares. A styled component that declares this
+ * context reads these from an ancestor and, for any it was passed directly,
+ * republishes them to its own descendants — which is the whole mechanism for
+ * getting size and color from a ListItem down to its text and icons.
+ */
+export declare const ListItemContext: import("@tamagui/web").StyledContext<{
+    size?: SizeTokens | true;
+    variant?: 'outlined';
+    color?: ColorTokens | string;
+}, "color" | "size" | "variant">;
+export declare const listItemSizeVariant: import("@tamagui/web/types/types").StyledDynamicFn<import("@tamagui/web").Size, Record<string, any>>;
+export declare const ListItemFrame: FunctionComponent<Omit<import("@tamagui/web").StackNonStyleProps, "disabled" | "size" | "variant" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
+    disabled?: boolean | undefined;
+    size?: import("@tamagui/web").Size | undefined;
+    variant?: "outlined" | undefined;
+}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
+    ref?: import("react").Ref<import("@tamagui/web").TamaguiElement> | undefined;
+}> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
+    disabled?: boolean | undefined;
+    size?: import("@tamagui/web").Size | undefined;
+    variant?: "outlined" | undefined;
+}, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
+    __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
+        disabled?: boolean | undefined;
+        size?: import("@tamagui/web").Size | undefined;
+        variant?: "outlined" | undefined;
+    }, import("@tamagui/web").StaticConfigPublic];
+};
+export declare const ListItemText: FunctionComponent<Omit<import("@tamagui/web").TextNonStyleProps, "size" | "variant" | keyof import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithFlatVariantValues<{
+    size?: import("@tamagui/web").FontSize | undefined;
+    variant?: "outlined" | undefined;
+}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>> & {
+    ref?: import("react").Ref<import("@tamagui/web").TamaguiTextElement> | undefined;
+}> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
+    size?: import("@tamagui/web").FontSize | undefined;
+    variant?: "outlined" | undefined;
+}, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
+    __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
+        size?: import("@tamagui/web").FontSize | undefined;
+        variant?: "outlined" | undefined;
+    }, import("@tamagui/web").StaticConfigPublic];
+};
+export declare const ListItemSubtitle: FunctionComponent<Omit<import("@tamagui/web").TextNonStyleProps, "size" | "variant" | keyof import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithFlatVariantValues<{
+    size?: string | number | true | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString | (string & {}) | undefined;
+    variant?: "outlined" | undefined;
+}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>> & {
+    ref?: import("react").Ref<import("@tamagui/web").TamaguiTextElement> | undefined;
+}> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
+    size?: string | number | true | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString | (string & {}) | undefined;
+    variant?: "outlined" | undefined;
+}, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
+    __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
+        size?: string | number | true | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString | (string & {}) | undefined;
+        variant?: "outlined" | undefined;
+    }, import("@tamagui/web").StaticConfigPublic];
+};
+export declare const ListItemTitle: FunctionComponent<Omit<import("@tamagui/web").TextNonStyleProps, "size" | "variant" | keyof import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithFlatVariantValues<{
+    size?: import("@tamagui/web").FontSize | undefined;
+    variant?: "outlined" | undefined;
+}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>> & {
+    ref?: import("react").Ref<import("@tamagui/web").TamaguiTextElement> | undefined;
+}> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
+    size?: import("@tamagui/web").FontSize | undefined;
+    variant?: "outlined" | undefined;
+}, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
+    __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
+        size?: import("@tamagui/web").FontSize | undefined;
+        variant?: "outlined" | undefined;
+    }, import("@tamagui/web").StaticConfigPublic];
+};
+export type ListItemIconProps = {
+    children: ReactNode;
+    size?: SizeTokens | true;
+    scaleIcon?: number;
+};
+export declare const ListItemIcon: ({ children, size, scaleIcon }: ListItemIconProps) => any;
+/**
+ * The props `useListItem` reads and replaces, so exactly what its result omits.
+ */
+type ListItemConsumedProps = {
+    children?: ReactNode;
     icon?: IconProp;
     iconAfter?: IconProp;
+    iconSize?: SizeTokens | true;
     scaleIcon?: number;
-    title?: ReactNode;
     subTitle?: ReactNode;
-    iconSize?: SizeTokens;
+    title?: ReactNode;
 };
-export type ListItemProps = GetProps<typeof ListItemFrame> & ListItemExtraProps;
-declare const ListItemFrame: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
-    size?: SizeTokens | undefined;
-    variant?: "outlined" | undefined;
-    disabled?: boolean | undefined;
-    unstyled?: boolean | undefined;
-    active?: boolean | undefined;
-}, import("@tamagui/web").StaticConfigPublic>;
-export declare const ListItem: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
-    size?: SizeTokens | undefined;
-    variant?: "outlined" | undefined;
-    disabled?: boolean | undefined;
-    unstyled?: boolean | undefined;
-    active?: boolean | undefined;
-}>, keyof ListItemExtraProps> & ListItemExtraProps & import("react").RefAttributes<import("@tamagui/web").TamaguiElement>> & import("@tamagui/web").StaticComponentObject<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
-    size?: SizeTokens | undefined;
-    variant?: "outlined" | undefined;
-    disabled?: boolean | undefined;
-    unstyled?: boolean | undefined;
-    active?: boolean | undefined;
-}>, keyof ListItemExtraProps> & ListItemExtraProps, import("@tamagui/web").TamaguiElement, import("@tamagui/web").StackNonStyleProps & ListItemExtraProps, import("@tamagui/web").StackStyleBase, {
-    size?: SizeTokens | undefined;
-    variant?: "outlined" | undefined;
-    disabled?: boolean | undefined;
-    unstyled?: boolean | undefined;
-    active?: boolean | undefined;
-}, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig" | "styleable"> & {
-    __tama: [Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
-        size?: SizeTokens | undefined;
-        variant?: "outlined" | undefined;
-        disabled?: boolean | undefined;
-        unstyled?: boolean | undefined;
-        active?: boolean | undefined;
-    }>, keyof ListItemExtraProps> & ListItemExtraProps, import("@tamagui/web").TamaguiElement, import("@tamagui/web").StackNonStyleProps & ListItemExtraProps, import("@tamagui/web").StackStyleBase, {
-        size?: SizeTokens | undefined;
-        variant?: "outlined" | undefined;
-        disabled?: boolean | undefined;
-        unstyled?: boolean | undefined;
-        active?: boolean | undefined;
-    }, import("@tamagui/web").StaticConfigPublic];
-} & {
-    Apply: import("react").Provider<{
-        size?: SizeTokens;
-        variant?: ListItemVariant;
-        color?: ColorTokens | string;
-    }> & import("react").ProviderExoticComponent<Partial<{
-        size?: SizeTokens;
-        variant?: ListItemVariant;
-        color?: ColorTokens | string;
-    }> & {
-        children?: ReactNode;
-        scope?: string;
-    }>;
-    Frame: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
-        size?: SizeTokens | undefined;
-        variant?: "outlined" | undefined;
-        disabled?: boolean | undefined;
-        unstyled?: boolean | undefined;
-        active?: boolean | undefined;
-    }, import("@tamagui/web").StaticConfigPublic>;
-    Text: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
-        size?: FontSizeTokens | undefined;
-        unstyled?: boolean | undefined;
-    }, import("@tamagui/web").StaticConfigPublic>;
-    Subtitle: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
-        size?: SizeTokens | FontSizeTokens | undefined;
-        unstyled?: boolean | undefined;
-    }, import("@tamagui/web").StaticConfigPublic>;
-    Icon: (props: {
-        children: React.ReactNode;
-        size?: SizeTokens;
-        scaleIcon?: number;
-    }) => any;
-    Title: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
-        size?: FontSizeTokens | undefined;
-        unstyled?: boolean | undefined;
-    }, import("@tamagui/web").StaticConfigPublic>;
+export type ListItemBehaviorProps = TextParentStyles & ListItemConsumedProps & {
+    color?: ColorTokens | string;
+    size?: SizeTokens | true;
 };
+/**
+ * What `useListItem` returns: the caller's props minus the ones it consumed.
+ * Spelled out rather than cast, so a skin that spreads the result onto a frame
+ * is type-checked on exactly what it will receive.
+ */
+export type UseListItemProps<Props extends ListItemBehaviorProps> = Omit<Omit<Props, keyof TextParentStyles | keyof typeof textParentProps>, keyof ListItemConsumedProps> & {
+    children: ReactNode;
+    color?: Props['color'];
+};
+/**
+ * ListItem behavior: theming the icon props and assembling title, subtitle, and
+ * children into the frame's single child. Flat text styles are handed directly
+ * to generated text, while size and color still reach the parts through the
+ * styled context.
+ */
+export declare function useListItem<Props extends ListItemBehaviorProps>(propsIn: Props): {
+    props: UseListItemProps<Props>;
+};
+export type ListItemFrameProps = GetProps<typeof ListItemFrame>;
 export {};
 //# sourceMappingURL=ListItem.d.ts.map

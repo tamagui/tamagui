@@ -14,10 +14,10 @@ export const AllTasks = () => {
       {...demoProps.borderRadiusOuterProps}
       {...demoProps.elevationProps}
       {...demoProps.panelPaddingProps}
-      bg="$background"
+      bg="background"
     >
-      <YStack borderBottomWidth="$0.25" borderBottomColor="$borderColor" pb="$4">
-        <H4 {...demoProps.headingFontFamilyProps} color="$color">
+      <YStack borderBottomWidth="0-25" borderBottomColor="border-color" pb="4">
+        <H4 {...demoProps.headingFontFamilyProps} color="color">
           Tasks
         </H4>
         <Paragraph {...demoProps.panelDescriptionProps}>
@@ -27,34 +27,34 @@ export const AllTasks = () => {
 
       <YStack flex={1} flexBasis="auto" {...demoProps.gapPropsMd}>
         <Task>
-          <Paragraph size="$5" lineHeight="$3">
+          <Paragraph size="5" lineHeight="3">
             Migrate to the new version
           </Paragraph>
-          <Paragraph color="$color10" size="$2" numberOfLines={1}>
+          <Paragraph color="color10" size="2" numberOfLines={1}>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum amet
           </Paragraph>
         </Task>
         <Task checked>
-          <Paragraph size="$5" lineHeight="$3" textDecorationLine="line-through">
+          <Paragraph size="5" lineHeight="3" textDecorationLine="line-through">
             Make a tabs component
           </Paragraph>
           <Paragraph
             textDecorationLine="line-through"
-            color="$color10"
-            size="$2"
+            color="color10"
+            size="2"
             numberOfLines={1}
           >
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum amet
           </Paragraph>
         </Task>
         <Task checked>
-          <Paragraph size="$5" lineHeight="$3" textDecorationLine="line-through">
+          <Paragraph size="5" lineHeight="3" textDecorationLine="line-through">
             Implement the design system
           </Paragraph>
           <Paragraph
             textDecorationLine="line-through"
-            color="$color10"
-            size="$2"
+            color="color10"
+            size="2"
             numberOfLines={1}
           >
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum amet
@@ -62,7 +62,7 @@ export const AllTasks = () => {
         </Task>
       </YStack>
 
-      <Spacer size="$2" />
+      <Spacer size="2" />
     </YStack>
   )
 }
@@ -77,30 +77,30 @@ const Task = ({
   const demoProps = useDemoProps()
   return (
     <ListItem
-      px="$2"
+      px="2"
       bg="transparent"
+      {...props}
       icon={
         <YStack
           theme="accent"
           self="flex-start"
-          mt="$1"
+          mt="1"
           {...(checked && {
-            bg: '$borderColor',
+            bg: 'border-color',
           })}
-          borderColor="$borderColor"
-          width="$1"
-          height="$1"
+          borderColor="border-color"
+          width="1"
+          height="1"
           justify="center"
           items="center"
           flexBasis="auto"
           {...demoProps.borderRadiusProps}
         >
-          {checked && <Check size={10} color="$color" />}
+          {checked && <Check size={10} color="color" />}
         </YStack>
       }
-      {...props}
     >
-      <YStack gap="$1" opacity={checked ? 0.3 : 1} items="flex-start" flex={1}>
+      <YStack gap="1" opacity={checked ? 0.3 : 1} items="flex-start" flex={1}>
         {children}
       </YStack>
     </ListItem>

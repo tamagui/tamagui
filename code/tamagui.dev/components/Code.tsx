@@ -1,40 +1,40 @@
 import { Paragraph, styled } from 'tamagui'
 
 export const Code = styled(Paragraph, {
-  name: 'Code',
+  displayName: 'Code',
   render: 'code',
-  fontFamily: '$mono',
-  size: '$3',
+  fontFamily: 'mono',
   lineHeight: 18,
   cursor: 'inherit',
   whiteSpace: 'pre',
-  p: '$1',
-  rounded: '$4',
-
+  p: '1',
+  rounded: '4',
+  size: '3',
   variants: {
     colored: {
       true: {
-        color: '$color',
-        backgroundColor: '$background',
+        color: 'color',
+        backgroundColor: 'background',
       },
     },
   } as const,
 })
 
+// @ts-ignore
 export const CodeInline = styled(Paragraph, {
-  name: 'CodeInline',
+  displayName: 'CodeInline',
   render: 'code',
-  fontFamily: '$mono',
-  color: '$color12',
-  backgroundColor: '$color2',
+  fontFamily: 'mono',
+  color: 'color12',
+  backgroundColor: 'color2',
   cursor: 'inherit',
-  rounded: '$3',
-  // @ts-ignore
+  rounded: '3',
   fontSize: '90%',
-  // @ts-ignore
   lineHeight: '70%',
   px: '0.6%',
   py: '0.45%',
   mx: '-0.1%',
-  whiteSpace: 'pre',
+  // inline code sits in prose, so it has to wrap rather than push the page wide
+  whiteSpace: 'pre-wrap',
+  overflowWrap: 'break-word',
 })

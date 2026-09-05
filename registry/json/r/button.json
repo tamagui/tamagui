@@ -1,0 +1,37 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "button",
+  "type": "registry:ui",
+  "title": "Button",
+  "description": "v2-look Button: token-based sizing through the opt-in @tamagui/size policy, circular and variant (outlined/quiet) skins, icon + text composition on the unstyled @tamagui/ui Button behavior.",
+  "files": [
+    {
+      "path": "components/tamagui/Button.tsx",
+      "content": "// Styled Button = @tamagui/ui's button behavior and parts + the default v2-look\n// skin, assembled here in `tamagui`. @tamagui/ui deliberately ships no Button of\n// its own: no two buttons are alike, so it exposes `useButton` and the frame,\n// text, and icon parts and lets a skin decide the rest. This is the single skin\n// definition — `tamagui` exports it as the default `Button`, and the shadcn\n// registry item is generated from this exact file.\nimport {\n  ButtonFrame as ButtonBehaviorFrame,\n  ButtonIcon as ButtonBehaviorIcon,\n  ButtonText as ButtonBehaviorText,\n  type ButtonBehaviorProps,\n  type ButtonIconProps as ButtonBehaviorIconProps,\n  createStyledHOC,\n  type GetProps,\n  getThemedIconSize,\n  resolveSize,\n  SizeContext,\n  type SizeTokens,\n  styled,\n  Theme,\n  type ThemeProps,\n  type TokenSize,\n  useButton,\n  withStaticProperties,\n} from '@tamagui/ui'\n\n// SizeTokens includes `true`, which resolves through @tamagui/size's opt-in policy.\nexport type ButtonSize = SizeTokens\n\nconst buttonFrameSizeVariant = styled.dynamic<ButtonSize>((val, env) => {\n  return {\n    ...resolveSize(val, env).frame,\n    // `size` is a control preset, not square geometry. keep the frame's width\n    // content-driven even if an outer styled layer also recognizes `size` as\n    // the generic width/height shorthand.\n    width: 'auto',\n  }\n})\n\nconst buttonTextSizeVariant = styled.dynamic<ButtonSize>((val, env) => {\n  return resolveSize(val, env).text\n})\n\nconst ButtonFrameBase = styled(ButtonBehaviorFrame, {\n  context: SizeContext,\n  displayName: 'ButtonFrame',\n  className: 'tm-button',\n  backgroundColor: 'background hover:background-hover press:background-press',\n  borderColor: 'border-color hover:border-color-hover',\n  borderStyle: 'solid',\n  borderWidth: 1,\n  cursor: 'web:pointer',\n  opacity: 'press:0.7',\n  outlineColor: 'focus-visible:outline-color',\n  outlineStyle: 'focus-visible:solid',\n  outlineWidth: 'focus-visible:2px',\n  variants: {\n    size: buttonFrameSizeVariant,\n\n    circular: styled.dynamic<boolean>(),\n\n    disabled: {\n      true: {\n        opacity: 0.35,\n      },\n    },\n\n    variant: {\n      outlined: {\n        backgroundColor: 'transparent',\n        borderColor: 'border-color',\n      },\n      quiet: {\n        backgroundColor: 'transparent',\n        borderColor: 'transparent',\n      },\n    },\n  } as const,\n  defaultVariants: {\n    size: true,\n  },\n})\n\nexport const ButtonFrame = ButtonFrameBase.resolve((props, env) => {\n  if (!props.circular) return\n  // the control height plus the frame's 1px border on each side\n  const side = resolveSize(props.size as ButtonSize, env).controlHeight + 2\n  return {\n    borderRadius: 1000,\n    paddingHorizontal: 0,\n    height: side,\n    maxHeight: side,\n    maxWidth: side,\n    minWidth: side,\n    width: side,\n  }\n})\n\nexport const ButtonText = styled(ButtonBehaviorText, {\n  context: SizeContext,\n  displayName: 'ButtonText',\n  color: 'color',\n  fontWeight: '600',\n  userSelect: 'none',\n  variants: {\n    size: buttonTextSizeVariant,\n  } as const,\n  defaultVariants: {\n    size: true,\n  },\n})\n\nexport const ButtonIcon = ({ size, ...props }: ButtonBehaviorIconProps) => {\n  const context = SizeContext.useStyledContext()\n\n  return (\n    <ButtonBehaviorIcon\n      {...props}\n      size={size ?? getThemedIconSize(context?.size ?? true)}\n    />\n  )\n}\n\nconst ButtonComponent = createStyledHOC(\n  ButtonFrame,\n  function Button(\n    props: ButtonBehaviorProps & { size?: ButtonSize; theme?: ThemeProps['name'] },\n    ref\n  ) {\n    const { theme, ...buttonBehaviorProps } = props\n    // ButtonFrame declares `context: SizeContext`, so passing `size` through to\n    // it is what publishes size to ButtonText and Button.Icon. The only reason\n    // to resolve it here is the `icon` prop, which is themed before the frame\n    // renders and so cannot read the context the frame is about to provide.\n    const size = ((buttonBehaviorProps.size as TokenSize | undefined) ??\n      SizeContext.useStyledContext()?.size ??\n      true) as ButtonSize\n    const { props: buttonProps } = useButton(buttonBehaviorProps, {\n      Text: ButtonText,\n      iconSize: getThemedIconSize(size),\n    })\n\n    const button = (\n      <Theme name=\"level2\">\n        <ButtonFrame ref={ref} {...buttonProps} />\n      </Theme>\n    )\n\n    return theme ? <Theme name={theme}>{button}</Theme> : button\n  },\n  { disableTheme: true }\n)\n\nexport const Button = withStaticProperties(ButtonComponent, {\n  Frame: ButtonFrame,\n  Icon: ButtonIcon,\n  Text: ButtonText,\n})\n\nexport type ButtonProps = GetProps<typeof ButtonComponent>\n",
+      "type": "registry:ui",
+      "target": "components/tamagui/Button.tsx"
+    }
+  ],
+  "dependencies": [
+    "@tamagui/ui"
+  ],
+  "categories": [
+    "form",
+    "buttons"
+  ],
+  "meta": {
+    "tokens": [
+      "background",
+      "background-hover",
+      "background-press",
+      "border-color",
+      "border-color-hover",
+      "outline-color",
+      "color"
+    ],
+    "states": [
+      "disabled",
+      "pressed"
+    ]
+  }
+}

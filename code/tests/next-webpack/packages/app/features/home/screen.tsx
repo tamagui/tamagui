@@ -25,15 +25,15 @@ import { useLink } from 'solito/navigation'
 
 export function SelectDemo() {
   return (
-    <YStack gap="$4">
-      <XStack width={'100%'} items="center" gap="$4">
+    <YStack gap="4">
+      <XStack width={'100%'} items="center" gap="4">
         <Label htmlFor="select-demo-1" flex={1} minW={80}>
           Custom
         </Label>
         <SelectDemoItem id="select-demo-1" />
       </XStack>
 
-      <XStack width={'100%'} items="center" gap="$4">
+      <XStack width={'100%'} items="center" gap="4">
         <Label htmlFor="select-demo-2" flex={1} minW={80}>
           Native
         </Label>
@@ -62,16 +62,16 @@ export function SelectDemoItem(props: SelectProps & { trigger?: React.ReactNode 
 
       <Adapt when="maxMd" platform="touch">
         <Sheet native={!!props.native} modal dismissOnSnapToBottom transition="medium">
-          <Sheet.Frame>
+          <Sheet.Container>
+            <Sheet.Background />
             <Sheet.ScrollView>
               <Adapt.Contents />
             </Sheet.ScrollView>
-          </Sheet.Frame>
+          </Sheet.Container>
           <Sheet.Overlay
-            backgroundColor="$shadowColor"
+            backgroundColor="shadow-color"
             transition="lazy"
-            enterStyle={{ opacity: 0 }}
-            exitStyle={{ opacity: 0 }}
+            opacity="enter:0 exit:0"
           />
         </Sheet>
       </Adapt>
@@ -82,7 +82,7 @@ export function SelectDemoItem(props: SelectProps & { trigger?: React.ReactNode 
           justify="center"
           position="relative"
           width="100%"
-          height="$3"
+          height="3"
         >
           <YStack z={10}>
             <ChevronUp size={20} />
@@ -90,17 +90,17 @@ export function SelectDemoItem(props: SelectProps & { trigger?: React.ReactNode 
           <LinearGradient
             start={[0, 0]}
             end={[0, 1]}
-            fullscreen
-            colors={['$background', 'transparent']}
+            position="absolute"
+            inset={0}
+            colors={['background', 'transparent']}
           />
         </Select.ScrollUpButton>
 
         <Select.Viewport
           // to do animations:
           // transition="quick"
-          // animateOnly={['transform', 'opacity']}
-          // enterStyle={{ o: 0, y: -10 }}
-          // exitStyle={{ o: 0, y: 10 }}
+          // opacity="enter:0 exit:0"
+          // y="enter:-10px exit:10px"
           minW={200}
         >
           <Select.Group>
@@ -134,12 +134,10 @@ export function SelectDemoItem(props: SelectProps & { trigger?: React.ReactNode 
               b={0}
               items="center"
               justify="center"
-              width={'$4'}
+              width="4"
               pointerEvents="none"
             >
-              <ChevronDown
-                size={getFontSize((props.size as FontSizeTokens) ?? '$true')}
-              />
+              <ChevronDown size={getFontSize((props.size as FontSizeTokens) ?? true)} />
             </YStack>
           )}
         </Select.Viewport>
@@ -149,7 +147,7 @@ export function SelectDemoItem(props: SelectProps & { trigger?: React.ReactNode 
           justify="center"
           position="relative"
           width="100%"
-          height="$3"
+          height="3"
         >
           <YStack z={10}>
             <ChevronDown size={20} />
@@ -157,8 +155,9 @@ export function SelectDemoItem(props: SelectProps & { trigger?: React.ReactNode 
           <LinearGradient
             start={[0, 0]}
             end={[0, 1]}
-            fullscreen
-            colors={['transparent', '$background']}
+            position="absolute"
+            inset={0}
+            colors={['transparent', 'background']}
           />
         </Select.ScrollDownButton>
       </Select.Content>
@@ -198,15 +197,14 @@ export function HomeScreen({ pagesMode = false }: { pagesMode?: boolean }) {
   })
 
   return (
-    <YStack flex={1} justify="center" items="center" gap="$8" p="$4" bg="$background">
+    <YStack flex={1} justify="center" items="center" gap="8" p="4" bg="background">
       <XStack
-        position="absolute"
+        position="absolute sm:relative"
         width="100%"
-        t="$6"
-        gap="$6"
+        t="6 sm:0px"
+        gap="6"
         justify="center"
         flexWrap="wrap"
-        $sm={{ position: 'relative', t: 0 }}
       >
         {Platform.OS === 'web' && (
           <>
@@ -218,9 +216,9 @@ export function HomeScreen({ pagesMode = false }: { pagesMode?: boolean }) {
 
       <SelectDemo />
 
-      <XStack gap="$2">
+      <XStack gap="2">
         <Button
-          size="$3"
+          size="3"
           iconAfter={
             <Button.Icon>
               <Activity />
@@ -230,11 +228,11 @@ export function HomeScreen({ pagesMode = false }: { pagesMode?: boolean }) {
           <Button.Text>Inverse</Button.Text>
         </Button>
       </XStack>
-      <YStack gap="$4">
-        <H1 text="center" color="$color12">
+      <YStack gap="4">
+        <H1 text="center" color="color11">
           Welcome to Tamagui.
         </H1>
-        <Paragraph color="$color10" text="center">
+        <Paragraph color="color10" text="center">
           Here's a basic starter to show navigating from one screen to another.
         </Paragraph>
         <Separator />
@@ -260,7 +258,7 @@ function SheetDemo() {
   return (
     <>
       <Button
-        size="$6"
+        size="6"
         icon={open ? ChevronDown : ChevronUp}
         circular
         onPress={() => setOpen((x) => !x)}
@@ -275,25 +273,17 @@ function SheetDemo() {
         onPositionChange={setPosition}
         dismissOnSnapToBottom
       >
-        <Sheet.Overlay
-          bg="$shadow4"
-          transition="lazy"
-          enterStyle={{ opacity: 0 }}
-          exitStyle={{ opacity: 0 }}
-        />
-        <Sheet.Handle bg="$color8" />
-        <Sheet.Frame items="center" justify="center" gap="$10" bg="$color2">
-          <XStack gap="$2">
+        <Sheet.Overlay bg="shadow4" transition="lazy" opacity="enter:0 exit:0" />
+        <Sheet.Handle bg="color8" />
+        <Sheet.Container items="center" justify="center" gap="10">
+          <Sheet.Background bg="color2" />
+          <XStack gap="2">
             <Paragraph text="center">Made by</Paragraph>
-            <Anchor
-              color="$blue10"
-              href="https://twitter.com/natebirdman"
-              target="_blank"
-            >
+            <Anchor color="blue10" href="https://twitter.com/natebirdman" target="_blank">
               @natebirdman,
             </Anchor>
             <Anchor
-              color="$blue10"
+              color="blue10"
               href="https://github.com/tamagui/tamagui"
               target="_blank"
               rel="noreferrer"
@@ -303,7 +293,7 @@ function SheetDemo() {
           </XStack>
 
           <Button
-            size="$6"
+            size="6"
             circular
             icon={ChevronDown}
             onPress={() => {
@@ -313,7 +303,7 @@ function SheetDemo() {
               })
             }}
           />
-        </Sheet.Frame>
+        </Sheet.Container>
       </Sheet>
     </>
   )

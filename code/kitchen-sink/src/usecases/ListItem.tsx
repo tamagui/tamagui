@@ -2,7 +2,7 @@ import { H5, ListItem, Separator, View, Theme } from 'tamagui'
 import { ChevronRight, Star, Trash } from '@tamagui/lucide-icons-2'
 
 export const ThemedListItem = () => (
-  <View gap="$4">
+  <View gap="4">
     <H5>Should change:</H5>
 
     <ListItem
@@ -10,18 +10,18 @@ export const ThemedListItem = () => (
       title="Default"
       subTitle="Default list item"
       icon={ChevronRight}
-      size="$3"
-      borderRadius="$3"
+      size="3"
+      borderRadius="3"
     />
 
     <Theme name="accent">
       <ListItem
         id="themed-list-item-accent"
         title="Accent"
-        subTitle="Accent (contrasting) list item"
+        subTitle="Accent brand tint list item"
         icon={ChevronRight}
-        size="$3"
-        borderRadius="$3"
+        size="3"
+        borderRadius="3"
       />
     </Theme>
 
@@ -35,8 +35,8 @@ export const ThemedListItem = () => (
         title='<Theme ="light"/>'
         subTitle="Forcing light theme"
         icon={ChevronRight}
-        size="$3"
-        borderRadius="$3"
+        size="3"
+        borderRadius="3"
         onPress={() => console.info('Light theme list item pressed')}
       />
     </Theme>
@@ -47,8 +47,8 @@ export const ThemedListItem = () => (
         title='<Theme ="dark"/>'
         subTitle="Forcing dark theme"
         icon={ChevronRight}
-        size="$3"
-        borderRadius="$3"
+        size="3"
+        borderRadius="3"
         onPress={() => console.info('Dark theme list item pressed')}
       />
     </Theme>
@@ -58,10 +58,10 @@ export const ThemedListItem = () => (
         <ListItem
           id="themed-list-item-light-accent"
           title='<Theme name="accent">'
-          subTitle="light + accent = light_accent (contrasting)"
+          subTitle="light + accent = light_accent brand tint"
           icon={ChevronRight}
-          size="$3"
-          borderRadius="$3"
+          size="3"
+          borderRadius="3"
           onPress={() => console.info('Light theme accent list item pressed')}
         />
       </Theme>
@@ -72,10 +72,10 @@ export const ThemedListItem = () => (
         <ListItem
           id="themed-list-item-dark-accent"
           title='<Theme name="accent">'
-          subTitle="dark + accent = dark_accent (contrasting)"
+          subTitle="dark + accent = dark_accent brand tint"
           icon={ChevronRight}
-          size="$3"
-          borderRadius="$3"
+          size="3"
+          borderRadius="3"
           onPress={() => console.info('Dark theme accent list item pressed')}
         />
       </Theme>
@@ -91,33 +91,49 @@ export const ThemedListItem = () => (
       title="Outlined"
       subTitle="Using variant prop"
       icon={Star}
-      size="$3"
-      borderRadius="$3"
+      size="3"
+      borderRadius="3"
     />
 
     <Separator />
 
     <H5>Apply (context):</H5>
 
-    <ListItem.Apply color="$red10">
+    <ListItem.Apply color="red-600">
       <ListItem
         id="themed-list-item-apply-color"
         title="With Apply color"
         subTitle="Icon inherits color from context"
         icon={Trash}
-        size="$3"
-        borderRadius="$3"
+        size="3"
+        borderRadius="3"
       />
     </ListItem.Apply>
 
-    <ListItem.Apply variant="outlined" size="$2">
+    <ListItem.Apply variant="outlined" size="2">
       <ListItem
         id="themed-list-item-apply-variant"
         title="With Apply variant"
         subTitle="Outlined via context"
         icon={Star}
-        borderRadius="$3"
+        borderRadius="3"
       />
     </ListItem.Apply>
+
+    <ListItem id="themed-list-item-child-icon" size="10" color="red-600" borderRadius="3">
+      <ListItem.Icon>
+        <Star />
+      </ListItem.Icon>
+      <ListItem.Text>Child icon inherits ListItem props</ListItem.Text>
+    </ListItem>
+
+    <ListItem
+      id="themed-list-item-explicit-spacing"
+      padding={0}
+      paddingHorizontal={0}
+      paddingVertical="3"
+    >
+      Explicit spacing
+    </ListItem>
   </View>
 )

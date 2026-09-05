@@ -24,7 +24,7 @@ npm install @tamagui/native
   `@tamagui/native` is a light setup package. When you use one of its optional
   integrations, make sure the matching native dependency is installed in your
   app as well, such as `react-native-gesture-handler`, `react-native-teleport`,
-  `zeego`, or `burnt`. In a monorepo, install those native packages in the
+  `@expo/ui`, `zeego`, or `burnt`. In a monorepo, install those native packages in the
   parent app or workspace root rather than a leaf package.
 </Notice>
 
@@ -142,18 +142,28 @@ integration.
 ### Setup
 
 ```bash
-npm install zeego @react-native-menu/menu react-native-ios-context-menu react-native-ios-utilities sf-symbols-typescript
+npm install @expo/ui
 ```
 
 ```tsx
 // App.tsx - before any Tamagui imports
-import '@tamagui/native/setup-zeego'
+import '@tamagui/native/setup-expo-ui-menu'
 ```
 
 Then use the `native` prop:
 
 ```tsx
 <Menu native>{/* menu content */}</Menu>
+```
+
+The Zeego adapter remains available for apps on compatible React Native versions:
+
+```bash
+npm install zeego @react-native-menu/menu react-native-ios-context-menu react-native-ios-utilities sf-symbols-typescript
+```
+
+```tsx
+import '@tamagui/native/setup-zeego'
 ```
 
 See [Menu docs](/docs/components/menu) and

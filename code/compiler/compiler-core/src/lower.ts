@@ -1,0 +1,435 @@
+import type { ResolvedModuleId, SourceSpan } from './contracts'
+import { localBailout, type BailoutReason } from './diagnostics'
+import type {
+  MaterializedElement,
+  MaterializedElementEntry,
+  MaterializedModule,
+  MaterializedStyledDefinition,
+} from './materialize'
+import {
+  sourceContentHash,
+  validateSourceEdits,
+  type ApplicableLoweredModulePlan,
+  type SourceEdit,
+} from './output'
+
+export const LOWERED_MODULE_PLAN_VERSION = 3
+
+export type CompilerTarget = 'web' | 'native'
+
+export interface LoweredModuleStats {
+  found: number
+  lowered: number
+  flattened: number
+  styled: number
+  bailed: number
+}
+
+export interface LoweringComponent {
+  /** Canonical resolved module id plus export name, supplied by the host registry. */
+  key: string
+  canFlatten: boolean
+  staticConfig: unknown
+}
+
+export interface LoweringCandidateInput {
+  id: ResolvedModuleId
+  source: string
+  target: CompilerTarget
+  module: MaterializedModule
+  element: MaterializedElement
+  styledDefinition: MaterializedStyledDefinition | null
+  component: LoweringComponent
+}
+
+export interface CandidateImport {
+  content: string
+  origin: SourceSpan
+}
+
+export type LoweringCandidateResult =
+  | {
+      ok: true
+      edits: SourceEdit[]
+      css: string[]
+      imports: CandidateImport[]
+      dependencies?: ResolvedModuleId[]
+      diagnostics?: BailoutReason[]
+      flattened?: boolean
+    }
+  | { ok: false; bailout: BailoutReason }
+
+/**
+ * Tamagui's static adapter supplies stable style primitives and registry data. It does
+ * not traverse modules, apply edits, commit partial candidates, or choose a fallback.
+ */
+export interface CompilerLoweringHost {
+  resolveComponent(
+    element: MaterializedElement,
+    styledDefinition: MaterializedStyledDefinition | null
+  ): LoweringComponent | null
+  isStyleProp(name: string, component: LoweringComponent): boolean
+  /** The host can retain this dynamic prop while committing other safe candidate edits. */
+  canLowerDynamicStyleProp?(
+    name: string,
+    component: LoweringComponent,
+    valueKind?: 'bailout' | 'conditional'
+  ): boolean
+  lowerCandidate(input: LoweringCandidateInput): LoweringCandidateResult
+  /** Development-only source instrumentation for an existing component debug channel. */
+  developmentDebugInstrumentation?(
+    input: LoweringCandidateInput,
+    result: LoweringCandidateResult
+  ): SourceEdit[] | undefined
+}
+
+export interface LowerModuleOptions {
+  projectGeneration: string
+}
+
+export interface StructuralModulePassResult {
+  module: MaterializedModule
+  edits: SourceEdit[]
+  imports: CandidateImport[]
+  diagnostics: BailoutReason[]
+  dependencies: ResolvedModuleId[]
+}
+
+export interface StructuralModulePass {
+  /** Stable implementation/data hash included in every lowerer cache identity. */
+  versionHash: string
+  transform(input: {
+    module: MaterializedModule
+    source: string
+    target: CompilerTarget
+  }): StructuralModulePassResult
+}
+
+export interface LoweredModulePlan extends ApplicableLoweredModulePlan {
+  version: typeof LOWERED_MODULE_PLAN_VERSION
+  target: CompilerTarget
+  inputHash: string
+  projectGeneration: string
+  structuralPassHash: string
+  edits: SourceEdit[]
+  css: string
+  diagnostics: BailoutReason[]
+  dependencies: ResolvedModuleId[]
+  stats: LoweredModuleStats
+}
+
+export interface LowerModuleInput {
+  module: MaterializedModule
+  source: string
+  target: CompilerTarget
+  host: CompilerLoweringHost
+  options: LowerModuleOptions
+  structuralPass?: StructuralModulePass
+}
+
+function compareCodeUnits(left: string, right: string): number {
+  return left < right ? -1 : left > right ? 1 : 0
+}
+
+/**
+ * A diagnostic that stopped its candidate from lowering. Zero mode reports
+ * exactly these; the ones recorded next to a successful lowering describe a
+ * dropped prop and leave no runtime behind.
+ */
+function blocking(reason: BailoutReason): BailoutReason {
+  return { ...reason, blocking: true }
+}
+
+function diagnostic(
+  code: Extract<BailoutReason['code'], `local/${string}`>,
+  element: MaterializedElement,
+  message: string,
+  prop?: string
+): BailoutReason {
+  return {
+    ...localBailout(code, element.span, message),
+    component: element.component.name,
+    specifier: element.component.provenance?.specifier,
+    prop,
+  }
+}
+
+function styledDefinitionFor(
+  module: MaterializedModule,
+  element: MaterializedElement
+): MaterializedStyledDefinition | null {
+  const definition = element.component.definition
+  if (!definition) return null
+  return (
+    module.styledDefinitions.find(
+      (candidate) => candidate.id === definition.id && candidate.name === definition.name
+    ) ?? null
+  )
+}
+
+function unsafeEntry(
+  element: MaterializedElement,
+  entry: MaterializedElementEntry,
+  component: LoweringComponent,
+  host: CompilerLoweringHost
+): BailoutReason | null {
+  if (entry.kind === 'spread' && entry.value.kind !== 'static') {
+    return diagnostic(
+      'local/unsafe-style-spread',
+      element,
+      'Unevaluated spread may change style and duplicate-prop precedence'
+    )
+  }
+  if (
+    entry.kind === 'prop' &&
+    host.isStyleProp(entry.name, component) &&
+    (entry.value.kind === 'bailout' || entry.value.kind === 'conditional') &&
+    !host.canLowerDynamicStyleProp?.(entry.name, component, entry.value.kind)
+  ) {
+    return diagnostic(
+      'local/dynamic-style-value',
+      element,
+      `Style prop ${entry.name} could not be evaluated`,
+      entry.name
+    )
+  }
+  // each dynamic member of a style object lowers like the direct prop of its name
+  if (entry.kind === 'prop' && entry.value.kind === 'object') {
+    for (const member of entry.value.members) {
+      if (member.value.kind !== 'bailout' && member.value.kind !== 'conditional') continue
+      if (
+        !host.isStyleProp(member.name, component) ||
+        !host.canLowerDynamicStyleProp?.(member.name, component, member.value.kind)
+      ) {
+        return diagnostic(
+          'local/dynamic-style-value',
+          element,
+          `Style prop ${member.name} could not be evaluated`,
+          member.name
+        )
+      }
+    }
+  }
+  return null
+}
+
+function editsAreCandidateLocal(
+  element: MaterializedElement,
+  edits: readonly SourceEdit[]
+): boolean {
+  return edits.every(
+    (edit) =>
+      edit.origin.id === element.id &&
+      edit.start >= element.span.start &&
+      edit.end <= element.span.end
+  )
+}
+
+function overlapsCommitted(
+  edits: readonly SourceEdit[],
+  committed: readonly SourceEdit[]
+) {
+  return edits.some((edit) =>
+    committed.some((existing) => {
+      if (edit.start === edit.end) {
+        return edit.start > existing.start && edit.start < existing.end
+      }
+      if (existing.start === existing.end) {
+        return existing.start > edit.start && existing.start < edit.end
+      }
+      return edit.start < existing.end && existing.start < edit.end
+    })
+  )
+}
+
+/** Builds one JSON-safe plan. Each recognized candidate commits all edits/CSS/imports or none. */
+export function lowerModule({
+  module,
+  source,
+  target,
+  host,
+  options,
+  structuralPass,
+}: LowerModuleInput): LoweredModulePlan {
+  const stats: LoweredModuleStats = {
+    found: 0,
+    lowered: 0,
+    flattened: 0,
+    styled: 0,
+    bailed: 0,
+  }
+  const structural = structuralPass
+    ? structuralPass.transform({ module, source, target })
+    : {
+        module,
+        edits: [],
+        imports: [],
+        diagnostics: [],
+        dependencies: [],
+      }
+  if (structural.module.id !== module.id) {
+    throw new Error(
+      `Structural pass changed module identity from ${module.id} to ${structural.module.id}`
+    )
+  }
+  if (structuralPass && !structuralPass.versionHash) {
+    throw new Error('Structural pass must provide a non-empty version hash')
+  }
+  module = structural.module
+  validateSourceEdits(source, structural.edits)
+  const edits: SourceEdit[] = [...structural.edits]
+  // One rule per identifier, first use wins, which is exactly what the runtime
+  // does: insertStyleRule's shouldInsertStyleRules skips an identifier already
+  // in the sheet (maxToInsert is 1) and appends the rest in first-use order.
+  // Emitting a rule once per element instead put the same
+  // `._t-1731853650{...}` into the output for every element that used it.
+  const css = new Set<string>()
+  const diagnostics = [...module.diagnostics, ...structural.diagnostics]
+  const dependencies = new Set([...module.dependencies, ...structural.dependencies])
+  const imports = new Map<string, CandidateImport>(
+    structural.imports.map((candidateImport) => [
+      candidateImport.content,
+      candidateImport,
+    ])
+  )
+
+  for (const element of module.elements) {
+    const styledDefinition = styledDefinitionFor(module, element)
+    const component = host.resolveComponent(element, styledDefinition)
+    if (!component) continue
+    stats.found++
+
+    const input: LoweringCandidateInput = {
+      id: module.id,
+      source,
+      target,
+      module,
+      element,
+      styledDefinition,
+      component,
+    }
+
+    const commitDevelopmentDebug = (result: LoweringCandidateResult) => {
+      const debugEdits = host.developmentDebugInstrumentation?.(input, result)
+      if (!debugEdits) return
+      validateSourceEdits(source, debugEdits)
+      if (
+        !editsAreCandidateLocal(element, debugEdits) ||
+        overlapsCommitted(debugEdits, edits)
+      ) {
+        throw new Error('Development debug instrumentation must stay candidate-local')
+      }
+      edits.push(...debugEdits)
+    }
+
+    if (!element.complete || (styledDefinition && !styledDefinition.complete)) {
+      const reasons = [
+        ...element.bailouts.map(blocking),
+        ...(styledDefinition?.bailouts ?? []).map(blocking),
+      ]
+      diagnostics.push(...reasons)
+      const reason = reasons[0]
+      if (reason) commitDevelopmentDebug({ ok: false, bailout: reason })
+      stats.bailed++
+      continue
+    }
+    const unsafe = element.entries
+      .map((entry) => unsafeEntry(element, entry, component, host))
+      .find((result): result is BailoutReason => result !== null)
+    if (unsafe) {
+      diagnostics.push(blocking(unsafe))
+      commitDevelopmentDebug({ ok: false, bailout: blocking(unsafe) })
+      stats.bailed++
+      continue
+    }
+
+    let result: LoweringCandidateResult
+    try {
+      result = host.lowerCandidate(input)
+    } catch (error) {
+      result = {
+        ok: false,
+        bailout: diagnostic(
+          'local/style-resolution-failed',
+          element,
+          `Style resolution failed: ${error instanceof Error ? error.message : String(error)}`
+        ),
+      }
+    }
+    if (!result.ok) {
+      diagnostics.push(blocking(result.bailout))
+      commitDevelopmentDebug(result)
+      stats.bailed++
+      continue
+    }
+    try {
+      validateSourceEdits(source, result.edits)
+    } catch (error) {
+      const reason = blocking(
+        diagnostic(
+          'local/overlapping-edit',
+          element,
+          error instanceof Error ? error.message : String(error)
+        )
+      )
+      diagnostics.push(reason)
+      commitDevelopmentDebug({ ok: false, bailout: reason })
+      stats.bailed++
+      continue
+    }
+    if (
+      !editsAreCandidateLocal(element, result.edits) ||
+      overlapsCommitted(result.edits, edits)
+    ) {
+      const reason = blocking(
+        diagnostic(
+          'local/overlapping-edit',
+          element,
+          'Candidate edits overlap another candidate or escape the element span'
+        )
+      )
+      diagnostics.push(reason)
+      commitDevelopmentDebug({ ok: false, bailout: reason })
+      stats.bailed++
+      continue
+    }
+
+    diagnostics.push(...(result.diagnostics ?? []))
+    edits.push(...result.edits)
+    commitDevelopmentDebug(result)
+    for (const rule of result.css) css.add(rule)
+    for (const candidateImport of result.imports) {
+      if (!imports.has(candidateImport.content)) {
+        imports.set(candidateImport.content, candidateImport)
+      }
+    }
+    for (const dependency of result.dependencies ?? []) dependencies.add(dependency)
+    stats.lowered++
+    if (result.flattened) stats.flattened++
+    if (styledDefinition) stats.styled++
+  }
+
+  for (const candidateImport of imports.values()) {
+    edits.push({
+      start: source.length,
+      end: source.length,
+      content: candidateImport.content,
+      origin: candidateImport.origin,
+    })
+  }
+
+  return {
+    version: LOWERED_MODULE_PLAN_VERSION,
+    id: module.id,
+    target,
+    inputHash: module.inputHash,
+    sourceHash: sourceContentHash(source),
+    projectGeneration: options.projectGeneration,
+    structuralPassHash: structuralPass?.versionHash ?? `${target}-noop-v1`,
+    edits,
+    css: [...css].join(''),
+    diagnostics,
+    dependencies: [...dependencies].sort(compareCodeUnits),
+    stats,
+  }
+}

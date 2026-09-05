@@ -1,24 +1,25 @@
 import { shorthands } from '@tamagui/shorthands'
 import { createFont, createTokens } from '@tamagui/web'
 import { animations } from './animations'
-import { animations as animationsNative } from './animations.native'
 
 // basic fallback theme just to have compiler load in decent tate
-export function getDefaultTamaguiConfig(platform: 'native' | 'web' = 'web') {
+export function getDefaultTamaguiConfig(_platform: 'native' | 'web' = 'web') {
   const headingFont = createFont({
     family: 'Heading',
     size: {
       1: 15,
+      4: 15,
     },
     lineHeight: {
       1: 15,
+      4: 15,
     },
     transform: {},
     weight: {
       1: '400',
     },
     color: {
-      1: '$color',
+      1: 'color',
     },
     letterSpacing: {
       1: 0,
@@ -29,16 +30,18 @@ export function getDefaultTamaguiConfig(platform: 'native' | 'web' = 'web') {
     family: 'System',
     size: {
       1: 15,
+      4: 15,
     },
     lineHeight: {
       1: 15,
+      4: 15,
     },
     transform: {},
     weight: {
       1: '400',
     },
     color: {
-      1: '$color',
+      1: 'color',
     },
     letterSpacing: {
       1: 0,
@@ -57,7 +60,6 @@ export function getDefaultTamaguiConfig(platform: 'native' | 'web' = 'web') {
     3: 36,
     3.5: 40,
     4: 44,
-    true: 44,
     4.5: 48,
     5: 52,
     5.5: 59,
@@ -132,6 +134,13 @@ export function getDefaultTamaguiConfig(platform: 'native' | 'web' = 'web') {
     space,
     size,
   })
+
+  // the fonts only carry keys 1 and 4, so the recipes do too
+  const sizes = {
+    default: 'md',
+    sm: { fontSize: '1', paddingX: '2', paddingY: '1', radius: '2' },
+    md: { fontSize: '4', paddingX: '4', paddingY: '2', radius: '4' },
+  } as const
 
   const themes = {
     light: {
@@ -216,11 +225,12 @@ export function getDefaultTamaguiConfig(platform: 'native' | 'web' = 'web') {
   }
 
   return {
-    animations: platform === 'web' ? animations : animationsNative,
+    animations,
     shorthands,
     fonts,
     themes,
     tokens,
+    sizes,
     media,
     settings: {
       shouldAddPrefersColorThemes: true,

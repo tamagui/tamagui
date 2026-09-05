@@ -28,6 +28,56 @@ npm, force-pushing, rotating credentials, or changing prod infra (Cloudflare,
 DNS, Railway settings): pause and confirm for those, and hand them back with the
 exact steps when they block you. Everything else, finish it.
 
+## Worktrees: create in one place, leave none behind
+
+Worktrees pile up. Measured 2026-09-01: the fleet held about 470 linked
+worktrees across five machines, most abandoned with no live session and nothing
+unpushed. Rules:
+
+- Create worktrees only under `~/.worktrees/tamagui-<slug>`, from a freshly
+  fetched base branch. Never in `/tmp`, a scratchpad, or inside the repo.
+- The session that creates a worktree owns it. When the task ends (merged,
+  handed off, or abandoned) either `git worktree remove <path>` from the primary
+  checkout, or leave it clean with every commit pushed to its branch, and say
+  which in your final report.
+- Uncommitted work in a worktree at session end is lost work. Commit it to the
+  branch and push, as a `wip:` commit if unfinished, before you stop.
+- A long task in the shared checkout that will not be committable for hours
+  belongs in a worktree so a co-tenant push cannot publish it half done.
+- Managers prune without asking: any worktree with no live owner, a clean tree,
+  and a HEAD reachable from `origin` is removed. `tm drift` is the audit.
+
+## Before you call anything done, run these two at the REPO ROOT
+
+```sh
+bun run lint     # oxfmt --check && oxlint. oxlint alone misses formatting
+bun run check    # deps, unused, tamagui, references, paths, dom-types, lsp-pins
+```
+
+Your package's own suite cannot see either one, and neither can `bun run
+typecheck`. Both are whole-workspace questions, so a change that is green in
+every test you ran can still be red here:
+
+- `bun run check` runs `knip`, which sees across package boundaries. It catches
+  an unreferenced file, a dependency nothing imports, and a second way to invoke
+  something that already has a declared script. A CI step written as
+  `bun scripts/whatever.ts --check` when the package already declares
+  `check:whatever` is a real finding, not a style nit.
+- `oxfmt` is separate from `oxlint`. A file committed unformatted passes lint
+  locally if you only ran the linter.
+
+Both were learned the expensive way: two of three CI cycles on the v3-beta wave
+B tip went red on exactly these, after every lane had reported its own suites
+green.
+
+In a shared checkout, both commands see the WHOLE worktree, including other
+agents' uncommitted and untracked files, so they can fail on a file you never
+opened. Read which files are named. Fix the ones that are yours; for anyone
+else's, say so in your report and leave them alone. Formatting a co-tenant's
+in-progress file is worse than the failure, because your edit lands inside their
+uncommitted work where they cannot see it. The rule asks that YOUR change not
+break the workspace, not that a tree five agents are editing is spotless.
+
 ---
 
 Please read ./CONTRIBUTING.md as well
@@ -75,7 +125,7 @@ The kitchen-sink package contains the main integration tests for Tamagui compone
    bun run test:web
    ```
 
-   This uses `run-tests-parallel.ts` which first runs `default` + `webkit` projects sequentially, then runs all four animated driver projects (`css`, `native`, `reanimated`, `motion`) in parallel against a single shared dev server.
+   This uses `run-tests-parallel.ts` which first runs `default` + `webkit` projects sequentially, then runs the three animated web driver projects (`css`, `reanimated`, `motion`) in parallel against a single shared dev server.
 
 3. **Run tests with a specific animation driver**:
 
@@ -84,7 +134,7 @@ The kitchen-sink package contains the main integration tests for Tamagui compone
    cd code/kitchen-sink
    NODE_ENV=test TAMAGUI_TEST_ANIMATION_DRIVER=css npx playwright test --project=animated-css
 
-   # Available projects: animated-css, animated-native, animated-reanimated, animated-motion
+   # Available projects: animated-css, animated-reanimated, animated-motion
    ```
 
 4. **Run a specific test file**:
@@ -110,9 +160,9 @@ The kitchen-sink package contains the main integration tests for Tamagui compone
 Tests are located in `code/kitchen-sink/tests/` and follow these naming conventions:
 
 - `ComponentName.test.tsx` - Standard tests that run ONCE with the default animation driver
-- `ComponentName.animated.test.tsx` - Animation-dependent tests that run with ALL animation drivers (css, native, reanimated, motion)
+- `ComponentName.animated.test.tsx` - Animation-dependent tests that run with all web animation drivers (css, reanimated, motion)
 
-This separation significantly speeds up the test suite since most tests don't need to run 4x across all animation drivers. Only use `.animated.test.tsx` for tests that specifically verify animation behavior across different drivers.
+This separation significantly speeds up the test suite since most tests don't need to run three times across all web animation drivers. Only use `.animated.test.tsx` for tests that specifically verify animation behavior across different drivers.
 
 ### Writing Tests
 

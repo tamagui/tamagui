@@ -12,7 +12,7 @@ export function DialogPointerEventsCase() {
   const [clickCount, setClickCount] = useState(0)
 
   return (
-    <YStack padding="$4" gap="$4">
+    <YStack padding="4" gap="4">
       <Button data-testid="background-button" onPress={() => setClickCount((c) => c + 1)}>
         Background Button (clicked: {clickCount})
       </Button>
@@ -24,23 +24,19 @@ export function DialogPointerEventsCase() {
           <Button data-testid="dialog-trigger">Open Dialog</Button>
         </Dialog.Trigger>
         <Dialog.Portal>
-          <Dialog.Overlay
-            key="overlay"
-            transition="lazy"
-            opacity={0.5}
-            enterStyle={{ opacity: 0 }}
-            exitStyle={{ opacity: 0 }}
-          />
+          <Dialog.Overlay key="overlay" transition="lazy" opacity="0.5 enter:0 exit:0" />
           <Dialog.Content
             key="content"
             bordered
             elevate
             transition="lazy"
-            enterStyle={{ x: 0, y: -20, opacity: 0, scale: 0.9 }}
-            exitStyle={{ x: 0, y: 10, opacity: 0, scale: 0.95 }}
+            x="enter:0 exit:0"
+            y="enter:-20px exit:10px"
+            opacity="enter:0 exit:0"
+            scale="enter:0.9 exit:0.95"
             width={400}
-            padding="$6"
-            gap="$4"
+            padding="6"
+            gap="4"
           >
             <Dialog.Title>Slow Animation Dialog</Dialog.Title>
             <Dialog.Description>

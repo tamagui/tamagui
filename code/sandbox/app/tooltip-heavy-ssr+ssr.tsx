@@ -51,15 +51,13 @@ function HeavyAnimatedContent() {
           position="absolute"
           width={80}
           height={80}
-          rounded="$10"
-          bg="$color5"
-          opacity={0.3}
+          rounded="10"
+          bg="color5"
+          opacity="0.3 enter:0 exit:0"
           x={item.x}
           y={item.y}
-          scale={item.scale}
+          scale={`${item.scale} enter:0.5 exit:0.5`}
           transition="slow"
-          enterStyle={{ opacity: 0, scale: 0.5 }}
-          exitStyle={{ opacity: 0, scale: 0.5 }}
         />
       ))}
     </AnimatePresence>
@@ -97,12 +95,12 @@ export default function TooltipHeavySSRTest() {
 
   return (
     <YStack
-      p="$4"
-      gap="$4"
-      id="tooltip-heavy-ssr-root"
-      data-hydrated={String(didHydrate)}
+      p="4"
+      gap="4"
       height="100vh"
       position="relative"
+      id="tooltip-heavy-ssr-root"
+      data-hydrated={String(didHydrate)}
     >
       {/* heavy animated background elements */}
       <YStack position="absolute" inset={0} overflow="hidden" pointerEvents="none">
@@ -117,14 +115,14 @@ export default function TooltipHeavySSRTest() {
       {/* promo links row tooltip pattern — the component under test */}
       <TooltipGroup delay={tooltipDelay}>
         <Tooltip scope="heavy-tip" offset={20} placement="bottom">
-          <XStack gap="$2" id="tip-triggers" justifyContent="center">
+          <XStack gap="2" justifyContent="center" id="tip-triggers">
             <Tooltip.Trigger
               scope="heavy-tip"
               asChild
               onMouseEnter={() => setLabel(LABELS.a)}
             >
               <XStack id="tip-trigger-a">
-                <Button size="$3">Starter Kit</Button>
+                <Button size="small">Starter Kit</Button>
               </XStack>
             </Tooltip.Trigger>
 
@@ -134,7 +132,7 @@ export default function TooltipHeavySSRTest() {
               onMouseEnter={() => setLabel(LABELS.b)}
             >
               <XStack id="tip-trigger-b">
-                <Button size="$3">Copy-Paste UI</Button>
+                <Button size="small">Copy-Paste UI</Button>
               </XStack>
             </Tooltip.Trigger>
 
@@ -144,7 +142,7 @@ export default function TooltipHeavySSRTest() {
               onMouseEnter={() => setLabel(LABELS.c)}
             >
               <XStack id="tip-trigger-c">
-                <Button size="$3">Hire Us</Button>
+                <Button size="small">Hire Us</Button>
               </XStack>
             </Tooltip.Trigger>
           </XStack>
@@ -154,16 +152,16 @@ export default function TooltipHeavySSRTest() {
             scope="heavy-tip"
             animatePosition
             transition="medium"
-            bg="$background"
-            elevation="$2"
-            rounded="$4"
-            px="$2.5"
-            py="$1"
-            enterStyle={{ y: -4, opacity: 0 }}
-            exitStyle={{ y: -4, opacity: 0 }}
+            bg="background"
+            rounded="4"
+            px="2.5"
+            py="1"
+            y="enter:-4px exit:-4px"
+            opacity="enter:0 exit:0"
+            elevation="2"
           >
             <Tooltip.Arrow scope="heavy-tip" id="tip-arrow" />
-            <Paragraph id="tip-label" size="$3">
+            <Paragraph id="tip-label" size="3">
               {label}
             </Paragraph>
           </Tooltip.Content>

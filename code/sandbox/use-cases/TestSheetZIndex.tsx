@@ -13,7 +13,7 @@ function SheetDemo() {
   return (
     <>
       <Button
-        size="$6"
+        size="6"
         onPress={() => {
           setOpen(true)
           // toast('This toast is covered by the ', {
@@ -49,15 +49,12 @@ const CustomSheet = ({ open, setOpen }) => {
         dismissOnSnapToBottom
         zIndex={100_000_000}
       >
-        <Sheet.Overlay
-          transition="lazy"
-          enterStyle={{ opacity: 0 }}
-          exitStyle={{ opacity: 0 }}
-        />
-        <Sheet.Handle bg="$gray8" />
-        <Sheet.Frame items="center" justify="center" gap="$10" bg="rgba(255,0,0,0.5)">
+        <Sheet.Overlay transition="lazy" opacity="enter:0 exit:0" />
+        <Sheet.Handle bg="gray8" />
+        <Sheet.Container items="center" justify="center" gap="10">
+          <Sheet.Background bg="rgba(255,0,0,0.5)" />
           <Button
-            size="$6"
+            size="6"
             onPress={() => {
               setChildOpen(true)
             }}
@@ -66,14 +63,14 @@ const CustomSheet = ({ open, setOpen }) => {
           </Button>
 
           <Button
-            size="$6"
+            size="6"
             circular
             icon={ChevronDown}
             onPress={() => {
               setOpen(false)
             }}
           />
-        </Sheet.Frame>
+        </Sheet.Container>
       </Sheet>
     </>
   )

@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Button, Square, YStack, Paragraph } from 'tamagui'
 import { AnimatePresence } from '@tamagui/animate-presence'
 
-// test case: animateOnly=[] should complete exit immediately
+// test case: transition="none" should complete exit immediately
 // tests the useInsertionEffect fix for the race condition
 
 export function AnimatePresenceExitTest() {
@@ -28,13 +28,13 @@ export function AnimatePresenceExitTest() {
   const passed = exitTime !== null && exitTime < 100
 
   return (
-    <YStack flex={1} alignItems="center" justifyContent="center" gap="$4" padding="$4">
-      <Paragraph size="$6" fontWeight="bold">
+    <YStack flex={1} alignItems="center" justifyContent="center" gap="4" padding="4">
+      <Paragraph size="6" fontWeight="bold">
         AnimatePresence Exit Test
       </Paragraph>
 
       <Paragraph textAlign="center" maxWidth={300}>
-        animateOnly=[] should complete exit immediately
+        transition="none" should complete exit immediately
       </Paragraph>
 
       <Button onPress={handleToggle}>{visible ? 'Hide (trigger exit)' : 'Show'}</Button>
@@ -44,21 +44,21 @@ export function AnimatePresenceExitTest() {
           {visible && (
             <Square
               key="test-square"
-              transition="300ms"
-              animateOnly={[]}
+              transition="none"
+              bg="blue10"
+              opacity="exit:0"
+              scale="exit:0.5"
               size={60}
-              bg="$blue10"
-              exitStyle={{ opacity: 0, scale: 0.5 }}
             />
           )}
         </AnimatePresence>
       </YStack>
 
-      <YStack gap="$2" alignItems="center">
+      <YStack gap="2" alignItems="center">
         <Paragraph>Exit count: {exitCount}</Paragraph>
         <Paragraph>Exit time: {exitTime !== null ? `${exitTime}ms` : 'N/A'}</Paragraph>
         <Paragraph
-          color={passed ? '$green10' : exitTime !== null ? '$red10' : '$gray10'}
+          color={`${passed ? 'green10' : exitTime !== null ? 'red10' : 'gray10'}`}
           fontWeight="bold"
         >
           {exitTime !== null ? (passed ? '✓ PASS' : '✗ FAIL') : 'Tap Hide to test'}

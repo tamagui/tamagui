@@ -28,7 +28,7 @@ if (typeof require !== 'undefined') {
 export function UseCases() {
   const [theme, setTheme] = React.useState('blue')
 
-  const memoized = React.useMemo(() => <Square size={100} bg="$background" />, [])
+  const memoized = React.useMemo(() => <Square size={100} bg="background" />, [])
 
   return (
     <Theme name={theme as any}>
@@ -54,7 +54,7 @@ const CustomButtonFrame = styled(Button.Frame, {
     backgrounded: {
       true: {
         // not intellisensing...
-        backgroundColor: '$background',
+        backgroundColor: 'background',
       },
     },
   } as const,
@@ -69,12 +69,7 @@ function AnimationChangeTest() {
   const [transition, setTransition] = React.useState<'lazy' | 'quick'>('lazy')
   return (
     <>
-      <Square
-        transition={transition}
-        size={100}
-        borderColor="red"
-        hoverStyle={{ scale: 2 }}
-      />
+      <Square transition={transition} borderColor="red" scale="hover:2" size={100} />
       <Button onPress={() => setTransition(transition === 'lazy' ? 'quick' : 'lazy')}>
         {transition}
       </Button>
@@ -83,7 +78,7 @@ function AnimationChangeTest() {
 }
 
 export const StyledSizableText = styled(SizableText, {
-  name: 'TextSizableText',
+  displayName: 'TextSizableText',
   variants: {
     muted: {
       true: {
@@ -146,19 +141,6 @@ export const Sandbox = () => {
 
           {/* <TooltipDemo /> */}
 
-          {/* <XStack
-             $gtSm={{
-               space: 50,
-             }}
-             $gtLg={{
-               space: 200,
-             }}
-            >
-             <Square size={100} bc="red" />
-             <Square size={100} bc="red" />
-             <Square size={100} bc="red" />
-            </XStack> */}
-
           {/* <AnimationsHoverDemo /> */}
 
           {/* <AnimationChangeTest /> */}
@@ -185,17 +167,6 @@ export const Sandbox = () => {
 
           {/* <Input  placeholder="hello" /> */}
 
-          {/* <>make sure enterStyle works without scale set on defaults</>
-            <Square
-             size={100}
-             bc="red"
-             transition="bouncy"
-             
-             // scale={1}
-             enterStyle={{
-               scale: 2,
-             }}
-            /> */}
           {/* <AnimationsPresenceDemo /> */}
           {/* <Square size={100} bc="red" transition="bouncy" /> */}
           {/* <AnimationsPresenceDemo /> */}
@@ -232,13 +203,6 @@ export const Sandbox = () => {
 
           {/* <SheetDemo /> */}
 
-          {/* space */}
-          {/* <YStack  gap="$2" $gtSm={{ gap: '$10' }}>
-             <Circle bc="red" size="$10" />
-             <Circle bc="red" size="$10" />
-             <Circle bc="red" size="$10" />
-            </YStack> */}
-
           {/* <LabelDemo /> */}
           {/* <SelectDemo /> */}
 
@@ -251,15 +215,9 @@ export const Sandbox = () => {
 
           {/* <SliderDemo /> */}
 
-          {/* <TestFontTokensInVariants type="H1" size="large">
+          {/* <TestFontTokensInVariants type="H1" size="5">
             Hello world
             </TestFontTokensInVariants> */}
-
-          {/* <Button size="$2" $sm={{ size: '$8' }} >
-            test
-            </Button> */}
-
-          {/* <Button pressStyle={{ backgroundColor: 'blue' }}>hi</Button> */}
 
           {/* <GroupDemo /> */}
 
@@ -271,27 +229,12 @@ export const Sandbox = () => {
           {/* <DialogDemo /> */}
           {/* <InputsDemo /> */}
           {/* <SelectDemo /> */}
-          {/* <ScrollView bc="yellow" p="$1" $gtXs={{ bg: 'blue', p: '$4' }} maxHeight={200}>
-            <Square bc="red" size={100} />
-            <Square bc="red" size={100} />
-            <Square bc="red" size={100} />
-            <Square bc="red" size={100} />
-            <Square bc="red" size={100} />
-            <Square bc="red" size={100} />
-            </ScrollView> */}
           {/* <PopoverDemo /> */}
           {/* <TooltipDemo /> */}
           {/* <SwitchDemo /> */}
           {/* <SheetDemo2 /> */}
           {/* <SheetDemo /> */}
           {/* <SwitchDemo /> */}
-          {/* <XStack gap="$4">
-            <Square size={50} bc="red" />
-            <Square $sm={{ display: 'none' }} size={50} bc="red" />
-            <Square size={50} bc="red" />
-            <Square disp="none" size={50} bc="red" />
-            <Square size={50} bc="red" />
-            </XStack> */}
         </div>
       </div>
     </TamaguiProvider>
@@ -305,11 +248,11 @@ export const Sandbox = () => {
 // function FontLanguageDemo() {
 //   return (
 //     <FontLanguage heading="default" body="cn">
-//       <Paragraph fos="$4" fontFamily="$body">
+//       <Paragraph fos="4" fontFamily="body">
 //         hello 🇨🇳
 //       </Paragraph>
 //       <FontLanguage body="default">
-//         <Paragraph fos="$4" fontFamily="$body">
+//         <Paragraph fos="4" fontFamily="body">
 //           hi again
 //         </Paragraph>
 //       </FontLanguage>
@@ -322,7 +265,7 @@ export const Sandbox = () => {
 //   const [position, setPosition] = useState(0)
 //   return (
 //     <>
-//       <Button size="$6" circular onPress={() => setOpen((x) => !x)} />
+//       <Button size="5" circular onPress={() => setOpen((x) => !x)} />
 //       <Sheet
 //         modal
 //         open={open}
@@ -333,16 +276,17 @@ export const Sandbox = () => {
 //         dismissOnSnapToBottom
 //       >
 //         <Sheet.Overlay />
-//         <Sheet.Frame ai="center" jc="center">
+//         <Sheet.Container ai="center" jc="center">
+//           <Sheet.Background />
 //           <Sheet.Handle />
 //           <Button
-//             size="$6"
+//             size="6"
 //             circular
 //             onPress={() => {
 //               setOpen(false)
 //             }}
 //           />
-//         </Sheet.Frame>
+//         </Sheet.Container>
 //       </Sheet>
 //     </>
 //   )
@@ -350,27 +294,17 @@ export const Sandbox = () => {
 
 // const Frame = styled(ButtonFrame, {
 //   variants: {
-//     square: {
-//       ':number': (size, { tokens }) => {
+//     square: styled.dynamic<number>((size, { tokens }) => {
 //         return {
 //           width: tokens.size[size] ?? size,
 //           p: 0,
 //         }
-//       },
-//     },
+//       }),
 //   } as const,
 // })
 
-// const StyledInput = styled(Input, {
-//   debug: 'verbose',
-//   backgroundColor: 'red',
-//   hoverStyle: {
-//     backgroundColor: 'blue',
-//   },
-// })
-
 // const StyledText = styled(Text, {
-//   fontFamily: '$alternative',
+//   fontFamily: 'alternative',
 
 //   variants: {
 //     cool: {
@@ -385,7 +319,7 @@ function PerformanceTest() {
   const [t, setT] = React.useState('pink' as any)
   return (
     <YStack theme={t}>
-      <Square onPress={() => setT('blue')} size={100} bg="$color10" />
+      <Square onPress={() => setT('blue')} size={100} bg="color10" />
     </YStack>
   )
 }
@@ -396,7 +330,7 @@ function UseThemeNameTest() {
   return (
     <Theme name={name as any}>
       <Button onPress={() => setname('red')}>Change</Button>
-      <Square accessibilityElementsHidden bg="$background" />
+      <Square accessibilityElementsHidden bg="background" />
       <UseThemeNameChildTest />
     </Theme>
   )

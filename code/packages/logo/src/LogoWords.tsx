@@ -86,16 +86,16 @@ export const LogoWords: React.MemoExoticComponent<
     <XStack
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      paddingVertical="$2"
-      data-tauri-drag-region
-      marginVertical="$-2"
+      paddingVertical="2"
+      marginVertical="-2"
       position="relative"
+      {...props}
+      data-tauri-drag-region
       className="logo-words"
       onLayout={(e) => {
         setLayout(e.nativeEvent.layout as any)
       }}
-      // @ts-ignore
-      onMouseMove={(e: MouseEvent) => {
+      onMouseMove={(e: React.MouseEvent<HTMLDivElement>) => {
         if (!layout) return
         const x = e.clientX - layout.pageX
         // Total width divided into 7 sections (one for each letter)
@@ -104,7 +104,6 @@ export const LogoWords: React.MemoExoticComponent<
         const section = Math.min(6, Math.floor(x / sectionWidth))
         Tint.setTintIndex(section)
       }}
-      {...props}
     >
       {animated && (
         <Circle
@@ -113,10 +112,9 @@ export const LogoWords: React.MemoExoticComponent<
           top={0}
           left={0}
           y={mounted === 'start' ? -30 : -4}
-          // the last i is less wide
           x={x}
-          size={4}
-          backgroundColor="$color12"
+          backgroundColor="color12"
+          style={{ width: 4, height: 4 }}
         />
       )}
 

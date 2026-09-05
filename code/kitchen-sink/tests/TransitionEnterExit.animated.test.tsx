@@ -7,7 +7,7 @@ import { setupPage } from './test-utils'
  * Tests the transition prop's enter/exit-specific animations using timing animations.
  * Supports syntax like: transition={{ enter: '500ms', exit: '100ms' }}
  *
- * These tests run across all animation drivers (css, native, reanimated, motion).
+ * These tests run across all web animation drivers (css, reanimated, motion).
  */
 
 const TOLERANCE = 0.2
@@ -41,9 +41,6 @@ function isIntermediate(
 // works in ci, flaky on local
 test.fixme('Enter/Exit Transition Props', () => {
   test.beforeEach(async ({ page }) => {
-    const driver = (test.info().project?.metadata as any)?.animationDriver
-    test.skip(driver === 'native', 'native driver has element detection issues on web')
-
     await setupPage(page, {
       name: 'AnimationComprehensiveCase',
       type: 'useCase',
@@ -244,7 +241,7 @@ test.fixme('Enter/Exit Transition Props', () => {
     // show - should have 200ms delay before enter animation starts
     await page.getByTestId('scenario-47-trigger').click()
 
-    // element appears but at 100ms (during delay), should still be at enterStyle values
+    // element appears but at 100ms (during delay), should still be at enter clause values
     await page.waitForTimeout(100)
     expect(
       await elementExists(page, 'scenario-47-target'),
@@ -252,8 +249,10 @@ test.fixme('Enter/Exit Transition Props', () => {
     ).toBe(true)
 
     const duringDelayOpacity = await getOpacity(page, 'scenario-47-target')
-    // during 200ms delay, opacity should be near 0 (enterStyle)
-    expect(duringDelayOpacity, 'During delay, should be at enterStyle').toBeLessThan(0.3)
+    // during 200ms delay, opacity should be near 0 (enter clause)
+    expect(duringDelayOpacity, 'During delay, should be at enter clause').toBeLessThan(
+      0.3
+    )
 
     // after delay + some animation time (200ms delay + ~150ms into 300ms animation)
     await page.waitForTimeout(250)

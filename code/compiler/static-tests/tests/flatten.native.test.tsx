@@ -1,5 +1,7 @@
+import { transform } from 'esbuild'
+import { createRequire } from 'node:module'
 import * as React from 'react'
-import * as t from '@babel/types'
+import TestRenderer, { act } from 'react-test-renderer'
 import { describe, expect, test } from 'vitest'
 
 import { extractForNative } from './lib/extract'
@@ -10,6 +12,61 @@ process.env.TAMAGUI_TARGET = 'native'
 window['React'] = React
 
 describe('flatten-tests', () => {
+  test('reuses a lowered static style across native renders', async () => {
+    const output = await extractForNative(`
+      import { View } from 'tamagui'
+
+      export function Test({ revision }) {
+        return (
+          <View
+            testID={revision ? 'after' : 'before'}
+            width={20}
+            height={20}
+            backgroundColor="rgb(1,2,3)"
+          />
+        )
+      }
+    `)
+    const executable = await transform(output.code, {
+      format: 'cjs',
+      jsx: 'automatic',
+      loader: 'tsx',
+      platform: 'node',
+      target: 'node20',
+    })
+    const compiledModule = { exports: {} as Record<string, unknown> }
+    const require = createRequire(import.meta.url)
+    new Function('require', 'module', 'exports', executable.code)(
+      require,
+      compiledModule,
+      compiledModule.exports
+    )
+    const Test = compiledModule.exports.Test as React.ComponentType<{
+      revision: number
+    }>
+    let rendered: TestRenderer.ReactTestRenderer
+    await act(async () => {
+      rendered = TestRenderer.create(<Test revision={0} />)
+    })
+    const before = rendered!.root.find((node) => node.type === 'View')
+    expect(before.props.style).toEqual({
+      width: 20,
+      height: 20,
+      backgroundColor: 'rgb(1,2,3)',
+    })
+    const beforeStyle = before.props.style
+
+    await act(async () => {
+      rendered!.update(<Test revision={1} />)
+    })
+    const after = rendered!.root.find((node) => node.type === 'View')
+    expect(after.props.style).toBe(beforeStyle)
+
+    await act(async () => {
+      rendered!.unmount()
+    })
+  })
+
   test(`flattened without extra attributes`, async () => {
     const output = await extractForNative(`
       import { YStack } from 'tamagui'
@@ -28,7 +85,11 @@ describe('flatten-tests', () => {
       }
     `)
 
-    expect(output?.code).toContain(`<__ReactNativeView style={_sheet["0"]} />`)
+    expect(output?.code).toContain('<__TamaguiNativeView')
+    // extraction uses the same authored-order accumulator as runtime
+    expect(output?.code).toContain(
+      '"transform":[{"translateY":10},{"translateX":20},{"rotate":"10deg"}]'
+    )
   })
 
   test('flattened media queries', async () => {
@@ -58,46 +119,9 @@ describe('flatten-tests', () => {
 
     expect(code).toMatchSnapshot()
 
-    const startStr = `ReactNativeStyleSheet.create(`
-    const start = code.indexOf(startStr)
-    const end = code.indexOf(`});`)
-    const defs = code.slice(start + startStr.length, end + 1)
-    const sheetStyles = JSON.parse(defs)
-
-    expect(sheetStyles['0']).toEqual({
-      transform: [
-        {
-          translateY: 10,
-        },
-        {
-          translateX: 20,
-        },
-        {
-          rotate: '10deg',
-        },
-      ],
-      flexDirection: 'column',
-    })
-
-    expect(sheetStyles['1']).toEqual({
-      borderTopLeftRadius: 10,
-      borderTopRightRadius: 10,
-      borderBottomRightRadius: 10,
-      borderBottomLeftRadius: 10,
-      transform: [
-        {
-          scale: 2,
-        },
-      ],
-    })
-
-    expect(sheetStyles['2']).toEqual({
-      backgroundColor: 'red',
-    })
-
-    expect(sheetStyles['3']).toEqual({
-      backgroundColor: 'blue',
-    })
+    expect(code).toContain('...media.sm &&')
+    expect(code).toContain("backgroundColor: isLoading ? 'red' : 'blue'")
+    expect(code).toContain('<YStack')
   })
 
   test(`work with experimentalFlattenThemesOnNative`, async () => {
@@ -110,7 +134,7 @@ describe('flatten-tests', () => {
             y={10}
             x={20}
             rotate="10deg"
-            backgroundColor="$background"
+            backgroundColor="background"
           />
         )
       }
@@ -125,7 +149,7 @@ describe('flatten-tests', () => {
 
       export function Test() {
         return (
-          <View backgroundColor={showBackground ? '$color1' : '$color2'} />
+          <View backgroundColor={showBackground ? 'color1' : 'color2'} />
         )
       }
     `)
@@ -138,42 +162,134 @@ describe('flatten-tests', () => {
         import { View } from 'tamagui'
         export function Test() {
           return (
-            <View backgroundColor='$invalid-identifier' />
+            <View backgroundColor='invalid-identifier' />
           )
         }
       `)
 
-    expect(output?.code).contains('theme["invalid-identifier"].get()')
+    expect(output?.code).toContain('<__TamaguiNativeView')
+    expect(output?.code).toContain('"backgroundColor":')
   })
 
-  test(`keeps static props on the runtime component after a dynamic deopt`, async () => {
+  test(`bails on runtime event handlers — a bare RN View ignores onPress`, async () => {
     const output = await extractForNative(`
       import { View } from 'tamagui'
-      export function Test({ color }) {
+      export function Test() {
         return (
           <View
-            bg="white"
-            m={16}
-            p={16}
-            borderWidth={4}
-            borderColor={color}
+            width={60}
+            backgroundColor="rgb(1,2,3)"
+            onPress={() => console.info('pressed')}
           />
         )
       }
     `)
+    const code = output?.code ?? ''
+    expect(code).toContain('onPress')
+    expect(code).toContain('<View')
+    expect(code).not.toContain('__TamaguiNativeView')
+  })
 
-    let attributeNames: string[] = []
-    t.traverseFast(output?.ast, (node) => {
-      if (t.isJSXOpeningElement(node) && t.isJSXIdentifier(node.name, { name: 'View' })) {
-        attributeNames = node.attributes.flatMap((attribute) =>
-          t.isJSXAttribute(attribute) && t.isJSXIdentifier(attribute.name)
-            ? [attribute.name.name]
-            : []
+  test(`bails on pointer event handlers — usePointerEvents maps them to touch at runtime`, async () => {
+    const output = await extractForNative(`
+      import { View } from 'tamagui'
+      export function Test() {
+        return (
+          <View
+            width={60}
+            backgroundColor="rgb(1,2,3)"
+            onPointerDown={() => console.info('down')}
+          />
         )
       }
-    })
+    `)
+    const code = output?.code ?? ''
+    expect(code).toContain('onPointerDown')
+    expect(code).toContain('<View')
+    expect(code).not.toContain('__TamaguiNativeView')
+  })
 
-    expect(attributeNames).toEqual(['bg', 'm', 'p', 'borderWidth', 'borderColor'])
+  test(`bails on asChild — the runtime renders a Slot, not a host view`, async () => {
+    const output = await extractForNative(`
+      import { View } from 'tamagui'
+      export function Test() {
+        return (
+          <View asChild width={60} backgroundColor="rgb(1,2,3)">
+            <View width={10} height={10} />
+          </View>
+        )
+      }
+    `)
+    const code = output?.code ?? ''
+    const outer = code.slice(code.indexOf('return ('))
+    expect(outer.match(/<(__TamaguiNativeView|View)\b/)?.[1]).toBe('View')
+    expect(code).toContain('asChild')
+  })
+
+  test(`bails on the container props — they provide the '@' context descendants read`, async () => {
+    for (const prop of [
+      'container',
+      'container="side"',
+      'containerName="side"',
+      'containerType="size"',
+    ]) {
+      const output = await extractForNative(`
+        import { View } from 'tamagui'
+        export function Test() {
+          return (
+            <View ${prop} width={60} backgroundColor="rgb(1,2,3)">
+              <View width={10} height={10} />
+            </View>
+          )
+        }
+      `)
+      const code = output?.code ?? ''
+      const outer = code.slice(code.indexOf('return ('))
+      expect(outer.match(/<(__TamaguiNativeView|View)\b/)?.[1]).toBe('View')
+    }
+  })
+
+  test(`preserves the complete runtime candidate on a state-clause bailout`, async () => {
+    const output = await extractForNative(`
+      import { View } from 'tamagui'
+      export function Test() {
+        return (
+          <View
+            width={60}
+            height={40}
+            backgroundColor="rgb(1,2,3)"
+            opacity="hover:0.5 press:0.8"
+          />
+        )
+      }
+    `)
+    const code = output?.code ?? ''
+    expect(code).toContain('width={60}')
+    expect(code).toContain('backgroundColor="rgb(1,2,3)"')
+    expect(code).toContain('hover:0.5 press:0.8')
+    expect(code).toContain('<View')
+    expect(code).not.toContain('__TamaguiNativeView')
+  })
+
+  test(`keeps theme tokens inline on a state-clause bailout`, async () => {
+    const output = await extractForNative(`
+      import { View } from 'tamagui'
+      export function Test() {
+        return (
+          <View
+            width={60}
+            height={40}
+            backgroundColor="gray2"
+            opacity="press:0.8"
+          />
+        )
+      }
+    `)
+    const code = output?.code ?? ''
+    expect(code).toContain('width={60}')
+    expect(code).toContain('backgroundColor="gray2"')
+    expect(code).toContain('press:0.8')
+    expect(code).not.toContain('__TamaguiNativeView')
   })
 
   // TODO make this work:
@@ -183,7 +299,7 @@ describe('flatten-tests', () => {
 
   //     export function Test() {
   //       return (
-  //         <View position="absolute" key={0} right="$2" top="$2" />
+  //         <View position="absolute" key={0} right="2" top="2" />
   //       )
   //     }
   //   `)

@@ -1,141 +1,152 @@
-export declare function getDefaultTamaguiConfig(platform?: 'native' | 'web'): {
-    animations: import("@tamagui/web").AnimationDriver<{
-        '100ms': {
-            type: "timing";
-            duration: number;
+export declare function getDefaultTamaguiConfig(_platform?: 'native' | 'web'): {
+    animations: import("@tamagui/web").AnimationDriverWithAnimatedNumbers<{
+        quickest: {
+            readonly duration: 120;
+            readonly bounce: 0.2;
         };
-        bouncy: {
-            damping: number;
-            mass: number;
-            stiffness: number;
+        quickestLessBouncy: {
+            readonly duration: 120;
+            readonly bounce: 0;
         };
-        lazy: {
-            damping: number;
-            stiffness: number;
+        quicker: {
+            readonly duration: 160;
+            readonly bounce: 0.25;
         };
-        medium: {
-            damping: number;
-            stiffness: number;
-            mass: number;
-        };
-        slow: {
-            damping: number;
-            stiffness: number;
+        quickerLessBouncy: {
+            readonly duration: 160;
+            readonly bounce: 0;
         };
         quick: {
-            damping: number;
-            mass: number;
-            stiffness: number;
+            readonly duration: 220;
+            readonly bounce: 0.3;
+        };
+        quickLessBouncy: {
+            readonly duration: 220;
+            readonly bounce: 0;
+        };
+        medium: {
+            readonly duration: 300;
+            readonly bounce: 0.15;
+        };
+        slow: {
+            readonly duration: 450;
+            readonly bounce: 0.1;
+        };
+        slowest: {
+            readonly duration: 700;
+            readonly bounce: 0.1;
+        };
+        lazy: {
+            readonly duration: 500;
+            readonly bounce: -0.2;
+        };
+        superLazy: {
+            readonly duration: 800;
+            readonly bounce: -0.3;
+        };
+        bouncy: {
+            readonly duration: 400;
+            readonly bounce: 0.5;
+        };
+        superBouncy: {
+            readonly duration: 400;
+            readonly bounce: 0.75;
         };
         tooltip: {
-            damping: number;
-            mass: number;
-            stiffness: number;
+            duration: number;
+            bounce: number;
         };
         select: {
-            damping: number;
-            mass: number;
-            stiffness: number;
+            duration: number;
+            bounce: number;
         };
-    }> | import("@tamagui/web").AnimationDriver<{
-        '75ms': string;
-        '100ms': string;
-        '200ms': string;
-        bouncy: string;
-        superBouncy: string;
-        lazy: string;
-        medium: string;
-        slow: string;
-        quick: string;
-        quicker: string;
-        quickest: string;
-        tooltip: string;
-        select: string;
     }>;
     shorthands: {
-        readonly ussel: "userSelect";
-        readonly cur: "cursor";
-        readonly pe: "pointerEvents";
-        readonly col: "color";
-        readonly ff: "fontFamily";
-        readonly fos: "fontSize";
-        readonly fost: "fontStyle";
-        readonly fow: "fontWeight";
-        readonly ls: "letterSpacing";
-        readonly lh: "lineHeight";
-        readonly ta: "textAlign";
-        readonly tt: "textTransform";
-        readonly ww: "wordWrap";
-        readonly ac: "alignContent";
-        readonly ai: "alignItems";
-        readonly als: "alignSelf";
-        readonly b: "bottom";
-        readonly bc: "backgroundColor";
-        readonly bg: "backgroundColor";
-        readonly bbc: "borderBottomColor";
-        readonly bblr: "borderBottomLeftRadius";
-        readonly bbrr: "borderBottomRightRadius";
-        readonly bbw: "borderBottomWidth";
-        readonly blc: "borderLeftColor";
-        readonly blw: "borderLeftWidth";
-        readonly boc: "borderColor";
-        readonly br: "borderRadius";
-        readonly bs: "borderStyle";
-        readonly brw: "borderRightWidth";
-        readonly brc: "borderRightColor";
-        readonly btc: "borderTopColor";
-        readonly btlr: "borderTopLeftRadius";
-        readonly btrr: "borderTopRightRadius";
-        readonly btw: "borderTopWidth";
-        readonly bw: "borderWidth";
-        readonly dsp: "display";
-        readonly f: "flex";
-        readonly fb: "flexBasis";
-        readonly fd: "flexDirection";
-        readonly fg: "flexGrow";
-        readonly fs: "flexShrink";
-        readonly fw: "flexWrap";
-        readonly h: "height";
-        readonly jc: "justifyContent";
-        readonly l: "left";
-        readonly m: "margin";
-        readonly mah: "maxHeight";
-        readonly maw: "maxWidth";
-        readonly mb: "marginBottom";
-        readonly mih: "minHeight";
-        readonly miw: "minWidth";
-        readonly ml: "marginLeft";
-        readonly mr: "marginRight";
-        readonly mt: "marginTop";
-        readonly mx: "marginHorizontal";
-        readonly my: "marginVertical";
-        readonly o: "opacity";
-        readonly ov: "overflow";
-        readonly p: "padding";
-        readonly pb: "paddingBottom";
-        readonly pl: "paddingLeft";
-        readonly pos: "position";
-        readonly pr: "paddingRight";
-        readonly pt: "paddingTop";
-        readonly px: "paddingHorizontal";
-        readonly py: "paddingVertical";
-        readonly r: "right";
-        readonly shac: "shadowColor";
-        readonly shar: "shadowRadius";
-        readonly shof: "shadowOffset";
-        readonly shop: "shadowOpacity";
-        readonly t: "top";
-        readonly w: "width";
-        readonly zi: "zIndex";
+        readonly ussel: 'userSelect';
+        readonly cur: 'cursor';
+        readonly pe: 'pointerEvents';
+        readonly col: 'color';
+        readonly ff: 'fontFamily';
+        readonly fos: 'fontSize';
+        readonly fost: 'fontStyle';
+        readonly fow: 'fontWeight';
+        readonly ls: 'letterSpacing';
+        readonly lh: 'lineHeight';
+        readonly ta: 'textAlign';
+        readonly tt: 'textTransform';
+        readonly ww: 'wordWrap';
+        readonly ac: 'alignContent';
+        readonly ai: 'alignItems';
+        readonly als: 'alignSelf';
+        readonly b: 'bottom';
+        readonly bc: 'backgroundColor';
+        readonly bg: 'backgroundColor';
+        readonly bbc: 'borderBottomColor';
+        readonly bblr: 'borderBottomLeftRadius';
+        readonly bbrr: 'borderBottomRightRadius';
+        readonly bbw: 'borderBottomWidth';
+        readonly blc: 'borderLeftColor';
+        readonly blw: 'borderLeftWidth';
+        readonly boc: 'borderColor';
+        readonly br: 'borderRadius';
+        readonly bs: 'borderStyle';
+        readonly brw: 'borderRightWidth';
+        readonly brc: 'borderRightColor';
+        readonly btc: 'borderTopColor';
+        readonly btlr: 'borderTopLeftRadius';
+        readonly btrr: 'borderTopRightRadius';
+        readonly btw: 'borderTopWidth';
+        readonly bw: 'borderWidth';
+        readonly dsp: 'display';
+        readonly f: 'flex';
+        readonly fb: 'flexBasis';
+        readonly fd: 'flexDirection';
+        readonly fg: 'flexGrow';
+        readonly fs: 'flexShrink';
+        readonly fw: 'flexWrap';
+        readonly h: 'height';
+        readonly jc: 'justifyContent';
+        readonly l: 'left';
+        readonly m: 'margin';
+        readonly mah: 'maxHeight';
+        readonly maw: 'maxWidth';
+        readonly mb: 'marginBottom';
+        readonly mih: 'minHeight';
+        readonly miw: 'minWidth';
+        readonly ml: 'marginLeft';
+        readonly mr: 'marginRight';
+        readonly mt: 'marginTop';
+        readonly mx: 'marginHorizontal';
+        readonly my: 'marginVertical';
+        readonly o: 'opacity';
+        readonly ov: 'overflow';
+        readonly p: 'padding';
+        readonly pb: 'paddingBottom';
+        readonly pl: 'paddingLeft';
+        readonly pos: 'position';
+        readonly pr: 'paddingRight';
+        readonly pt: 'paddingTop';
+        readonly px: 'paddingHorizontal';
+        readonly py: 'paddingVertical';
+        readonly r: 'right';
+        readonly shac: 'shadowColor';
+        readonly shar: 'shadowRadius';
+        readonly shof: 'shadowOffset';
+        readonly shop: 'shadowOpacity';
+        readonly t: 'top';
+        readonly w: 'width';
+        readonly zi: 'zIndex';
     };
     fonts: {
         heading: {
             family: string;
             size: {
                 1: number;
+                4: number;
             };
             lineHeight: {
                 1: number;
+                4: number;
             };
             transform: {};
             weight: {
@@ -152,9 +163,11 @@ export declare function getDefaultTamaguiConfig(platform?: 'native' | 'web'): {
             family: string;
             size: {
                 1: number;
+                4: number;
             };
             lineHeight: {
                 1: number;
+                4: number;
             };
             transform: {};
             weight: {
@@ -228,8 +241,8 @@ export declare function getDefaultTamaguiConfig(platform?: 'native' | 'web'): {
     };
     tokens: {
         color: {
-            white: import("@tamagui/web").Variable<string>;
             black: import("@tamagui/web").Variable<string>;
+            white: import("@tamagui/web").Variable<string>;
         };
         space: {
             [x: string]: import("@tamagui/web").Variable<number>;
@@ -241,12 +254,22 @@ export declare function getDefaultTamaguiConfig(platform?: 'native' | 'web'): {
             0.75: import("@tamagui/web").Variable<number>;
             1: import("@tamagui/web").Variable<number>;
             1.5: import("@tamagui/web").Variable<number>;
+            10: import("@tamagui/web").Variable<number>;
+            11: import("@tamagui/web").Variable<number>;
+            12: import("@tamagui/web").Variable<number>;
+            13: import("@tamagui/web").Variable<number>;
+            14: import("@tamagui/web").Variable<number>;
+            15: import("@tamagui/web").Variable<number>;
+            16: import("@tamagui/web").Variable<number>;
+            17: import("@tamagui/web").Variable<number>;
+            18: import("@tamagui/web").Variable<number>;
+            19: import("@tamagui/web").Variable<number>;
             2: import("@tamagui/web").Variable<number>;
             2.5: import("@tamagui/web").Variable<number>;
+            20: import("@tamagui/web").Variable<number>;
             3: import("@tamagui/web").Variable<number>;
             3.5: import("@tamagui/web").Variable<number>;
             4: import("@tamagui/web").Variable<number>;
-            true: import("@tamagui/web").Variable<number>;
             4.5: import("@tamagui/web").Variable<number>;
             5: import("@tamagui/web").Variable<number>;
             5.5: import("@tamagui/web").Variable<number>;
@@ -258,21 +281,13 @@ export declare function getDefaultTamaguiConfig(platform?: 'native' | 'web'): {
             8.5: import("@tamagui/web").Variable<number>;
             9: import("@tamagui/web").Variable<number>;
             9.5: import("@tamagui/web").Variable<number>;
-            10: import("@tamagui/web").Variable<number>;
-            11: import("@tamagui/web").Variable<number>;
-            12: import("@tamagui/web").Variable<number>;
-            13: import("@tamagui/web").Variable<number>;
-            14: import("@tamagui/web").Variable<number>;
-            15: import("@tamagui/web").Variable<number>;
-            16: import("@tamagui/web").Variable<number>;
-            17: import("@tamagui/web").Variable<number>;
-            18: import("@tamagui/web").Variable<number>;
-            19: import("@tamagui/web").Variable<number>;
-            20: import("@tamagui/web").Variable<number>;
         };
         radius: {
             0: import("@tamagui/web").Variable<number>;
             1: import("@tamagui/web").Variable<number>;
+            10: import("@tamagui/web").Variable<number>;
+            11: import("@tamagui/web").Variable<number>;
+            12: import("@tamagui/web").Variable<number>;
             2: import("@tamagui/web").Variable<number>;
             3: import("@tamagui/web").Variable<number>;
             4: import("@tamagui/web").Variable<number>;
@@ -281,9 +296,6 @@ export declare function getDefaultTamaguiConfig(platform?: 'native' | 'web'): {
             7: import("@tamagui/web").Variable<number>;
             8: import("@tamagui/web").Variable<number>;
             9: import("@tamagui/web").Variable<number>;
-            10: import("@tamagui/web").Variable<number>;
-            11: import("@tamagui/web").Variable<number>;
-            12: import("@tamagui/web").Variable<number>;
         };
         zIndex: {
             0: import("@tamagui/web").Variable<number>;
@@ -295,12 +307,15 @@ export declare function getDefaultTamaguiConfig(platform?: 'native' | 'web'): {
         };
     } & Omit<{
         color: {
-            white: import("@tamagui/web").Variable<string>;
             black: import("@tamagui/web").Variable<string>;
+            white: import("@tamagui/web").Variable<string>;
         };
         radius: {
             0: import("@tamagui/web").Variable<number>;
             1: import("@tamagui/web").Variable<number>;
+            10: import("@tamagui/web").Variable<number>;
+            11: import("@tamagui/web").Variable<number>;
+            12: import("@tamagui/web").Variable<number>;
             2: import("@tamagui/web").Variable<number>;
             3: import("@tamagui/web").Variable<number>;
             4: import("@tamagui/web").Variable<number>;
@@ -309,9 +324,6 @@ export declare function getDefaultTamaguiConfig(platform?: 'native' | 'web'): {
             7: import("@tamagui/web").Variable<number>;
             8: import("@tamagui/web").Variable<number>;
             9: import("@tamagui/web").Variable<number>;
-            10: import("@tamagui/web").Variable<number>;
-            11: import("@tamagui/web").Variable<number>;
-            12: import("@tamagui/web").Variable<number>;
         };
         zIndex: {
             0: import("@tamagui/web").Variable<number>;
@@ -331,12 +343,22 @@ export declare function getDefaultTamaguiConfig(platform?: 'native' | 'web'): {
             0.75: import("@tamagui/web").Variable<number>;
             1: import("@tamagui/web").Variable<number>;
             1.5: import("@tamagui/web").Variable<number>;
+            10: import("@tamagui/web").Variable<number>;
+            11: import("@tamagui/web").Variable<number>;
+            12: import("@tamagui/web").Variable<number>;
+            13: import("@tamagui/web").Variable<number>;
+            14: import("@tamagui/web").Variable<number>;
+            15: import("@tamagui/web").Variable<number>;
+            16: import("@tamagui/web").Variable<number>;
+            17: import("@tamagui/web").Variable<number>;
+            18: import("@tamagui/web").Variable<number>;
+            19: import("@tamagui/web").Variable<number>;
             2: import("@tamagui/web").Variable<number>;
             2.5: import("@tamagui/web").Variable<number>;
+            20: import("@tamagui/web").Variable<number>;
             3: import("@tamagui/web").Variable<number>;
             3.5: import("@tamagui/web").Variable<number>;
             4: import("@tamagui/web").Variable<number>;
-            true: import("@tamagui/web").Variable<number>;
             4.5: import("@tamagui/web").Variable<number>;
             5: import("@tamagui/web").Variable<number>;
             5.5: import("@tamagui/web").Variable<number>;
@@ -348,19 +370,23 @@ export declare function getDefaultTamaguiConfig(platform?: 'native' | 'web'): {
             8.5: import("@tamagui/web").Variable<number>;
             9: import("@tamagui/web").Variable<number>;
             9.5: import("@tamagui/web").Variable<number>;
-            10: import("@tamagui/web").Variable<number>;
-            11: import("@tamagui/web").Variable<number>;
-            12: import("@tamagui/web").Variable<number>;
-            13: import("@tamagui/web").Variable<number>;
-            14: import("@tamagui/web").Variable<number>;
-            15: import("@tamagui/web").Variable<number>;
-            16: import("@tamagui/web").Variable<number>;
-            17: import("@tamagui/web").Variable<number>;
-            18: import("@tamagui/web").Variable<number>;
-            19: import("@tamagui/web").Variable<number>;
-            20: import("@tamagui/web").Variable<number>;
         };
-    }, "color" | "space" | "size" | "radius" | "zIndex">;
+    }, "color" | "radius" | "size" | "space" | "zIndex">;
+    sizes: {
+        readonly default: 'md';
+        readonly sm: {
+            readonly fontSize: '1';
+            readonly paddingX: '2';
+            readonly paddingY: '1';
+            readonly radius: '2';
+        };
+        readonly md: {
+            readonly fontSize: '4';
+            readonly paddingX: '4';
+            readonly paddingY: '2';
+            readonly radius: '4';
+        };
+    };
     media: {
         xs: {
             maxWidth: number;

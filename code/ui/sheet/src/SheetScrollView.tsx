@@ -1,10 +1,9 @@
 import { composeRefs } from '@tamagui/compose-refs'
-import { isWeb, View, type GetRef } from '@tamagui/core'
-import type { ScrollViewProps } from '@tamagui/scroll-view'
+import { createStyledHOC, isWeb, style, View, type GetProps } from '@tamagui/core'
+import type { ScrollViewRef } from '@tamagui/scroll-view'
 import { ScrollView } from '@tamagui/scroll-view'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import React, { useEffect, useRef, useState } from 'react'
-import type { ScrollView as RNScrollView } from 'react-native'
 import { useGestureSheetContext } from './GestureSheetContext'
 import { getGestureHandlerState, isGestureHandlerEnabled } from './gestureState'
 import { useSheetContext } from './SheetContext'
@@ -19,22 +18,32 @@ import {
 } from './webViewport'
 
 const SHEET_SCROLL_VIEW_NAME = 'SheetScrollView'
+const sheetContentStyle = style({ minHeight: '100%' })
 
-export const SheetScrollView = React.forwardRef<
-  GetRef<typeof ScrollView>,
-  ScrollViewProps
->(
+type SheetScrollViewBaseProps = GetProps<typeof ScrollView>
+
+type SheetScrollViewProps = SheetScopedProps<
+  SheetScrollViewBaseProps & {
+    h?: SheetScrollViewBaseProps['height']
+    o?: SheetScrollViewBaseProps['opacity']
+    pos?: SheetScrollViewBaseProps['position']
+  }
+>
+
+export const SheetScrollView = createStyledHOC(
+  ScrollView,
   (
     {
-      __scopeSheet,
+      scope,
       children,
       onScroll,
       scrollEnabled: scrollEnabledProp,
+      style,
       ...props
-    }: SheetScopedProps<ScrollViewProps>,
+    }: SheetScrollViewProps,
     ref
   ) => {
-    const context = useSheetContext(SHEET_SCROLL_VIEW_NAME, __scopeSheet)
+    const context = useSheetContext(scope)
     const gestureContext = useGestureSheetContext()
     const { scrollBridge, setHasScrollView, hasFit, screenSize } = context
     const keyboardOccludedHeight = Math.max(0, context.keyboardOccludedHeight || 0)
@@ -50,7 +59,7 @@ export const SheetScrollView = React.forwardRef<
       prop: scrollEnabledProp,
       defaultProp: true,
     })
-    const scrollRef = React.useRef<RNScrollView | null>(null)
+    const scrollRef = React.useRef<ScrollViewRef | null>(null)
 
     const [hasScrollableContent, setHasScrollableContent] = useState(true)
     const parentHeight = useRef(0)
@@ -61,29 +70,33 @@ export const SheetScrollView = React.forwardRef<
     // closed), so the height now comes from the sheet, which doesn't remount.
     const frozenFrameHeight = Math.max(0, context.keyboardStableFrameHeight || 0)
 
-    // with snapPointsMode="fit", Frame is content-sized (flex: 0, flex-basis: auto, height: undefined).
-    // a flex: 1 child can't grow inside a content-sized parent, so the ScrollView (and the Frame
+    // with snapPointsMode="fit", Container is content-sized (flex: 0, flex-basis: auto, height: undefined).
+    // a flex: 1 child can't grow inside a content-sized parent, so the ScrollView (and the Container
     // around it) collapse to 0 height. instead, let the ScrollView size to its content and cap it
     // at the available viewport (screenSize / maxContentSize) so scrolling kicks in for tall content.
-    const fitSizingStyle = hasFit
+    const fitSizingProps = hasFit
       ? {
           flex: undefined as undefined,
           height: undefined as undefined,
           maxHeight: screenSize || undefined,
         }
       : { flex: 1 }
-    const contentContainerStyle = hasFit ? undefined : { minHeight: '100%' as const }
+    const contentContainerStyle = hasFit ? undefined : sheetContentStyle
 
     // when the keyboard is open, pin the scroll view to the sheet's pre-keyboard
     // frame height (frozenFrameHeight), overriding any consumer maxHeight. on web
     // that maxHeight is often tied to useWindowDimensions, which SHRINKS when the
     // keyboard opens and would otherwise collapse the sheet. holding the height
     // constant means the web frame can translate without resizing. applied
-    // AFTER {...props} so it wins.
+    // last in the ordered style array so it wins.
     const keyboardFrozenOverride =
       hasFit && isKeyboardVisible && frozenFrameHeight > 0
         ? { height: frozenFrameHeight, maxHeight: frozenFrameHeight }
         : null
+    const scrollViewStyle = [
+      ...(Array.isArray(style) ? style : [style]),
+      keyboardFrozenOverride,
+    ]
 
     const panGestureRef = gestureContext?.panGestureRef
     const { ScrollView: RNGHScrollView } = getGestureHandlerState()
@@ -281,7 +294,7 @@ export const SheetScrollView = React.forwardRef<
       return (
         <RNGHComponent
           ref={composeRefs(scrollRef as any, ref)}
-          style={fitSizingStyle}
+          style={[fitSizingProps, ...scrollViewStyle]}
           scrollEventThrottle={1}
           scrollEnabled={scrollEnabled}
           simultaneousHandlers={[panGestureRef]}
@@ -329,7 +342,6 @@ export const SheetScrollView = React.forwardRef<
           keyboardShouldPersistTaps="always"
           keyboardDismissMode="none"
           {...props}
-          {...keyboardFrozenOverride}
         >
           {contentWrapper}
         </RNGHComponent>
@@ -339,12 +351,12 @@ export const SheetScrollView = React.forwardRef<
     // fallback ScrollView with platform-specific gesture props
     return (
       <ScrollView
+        {...fitSizingProps}
         onLayout={(e) => {
           recordFitHeight(Math.ceil(e.nativeEvent.layout.height))
           updateScrollable()
         }}
         ref={composeRefs(scrollRef as any, ref)}
-        {...fitSizingStyle}
         scrollEventThrottle={1}
         className="_ovs-contain"
         scrollEnabled={scrollEnabled}
@@ -359,10 +371,14 @@ export const SheetScrollView = React.forwardRef<
         contentContainerStyle={contentContainerStyle}
         {...gestureProps}
         {...props}
-        {...keyboardFrozenOverride}
+        style={scrollViewStyle}
       >
         {contentWrapper}
       </ScrollView>
     )
+  },
+  {
+    disableTheme: true,
+    displayName: SHEET_SCROLL_VIEW_NAME,
   }
 )

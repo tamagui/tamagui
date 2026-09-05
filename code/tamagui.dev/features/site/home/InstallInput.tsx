@@ -1,56 +1,49 @@
-import { ThemeTint } from '@tamagui/logo'
 import { Check, Copy } from '@tamagui/lucide-icons-2'
 import { memo } from 'react'
-import { Button, Paragraph, Spacer, TooltipSimple, XStack, YStack } from 'tamagui'
+import { Paragraph, TooltipSimple, XStack } from 'tamagui'
+import { Button } from '~/components/Button'
 
 import { useClipboard } from '~/hooks/useClipboard'
 
 export const InstallInput = memo(() => {
-  const installScript = `npm create tamagui`
-  const { onCopy, hasCopied } = useClipboard(`${installScript}@latest`)
+  const installScript = 'npm create tamagui@latest'
+  const { onCopy, hasCopied } = useClipboard(installScript)
 
   return (
-    <ThemeTint>
-      <XStack
-        borderWidth={0.5}
-        borderColor="$color6"
-        overflow="hidden"
-        px="$7"
-        pl="$6"
-        height={48}
-        items="center"
-        self="center"
-        elevation="$3"
-        rounded="$10"
-        position="relative"
+    <XStack
+      borderWidth={1}
+      borderColor="color5"
+      bg="color2"
+      overflow="hidden"
+      paddingRight="2"
+      pl="4"
+      gap="3"
+      height={48}
+      items="center"
+      self="center"
+      rounded={10}
+      position="relative"
+    >
+      <Paragraph
+        text="center"
+        fontSize={12}
+        fontWeight="500"
+        fontFamily="mono"
+        lineHeight={20}
       >
-        <YStack bg="$color9" opacity={0.125} fullscreen backdropFilter="blur(50px)" />
-        <Paragraph
-          text="center"
-          size="$5"
-          fontWeight="500"
-          fontFamily="$mono"
-          letterSpacing={1}
-          $sm={{ size: '$3' }}
-        >
-          {installScript}
-        </Paragraph>
-        <Spacer size="$6" />
-        <TooltipSimple
-          placement="right"
-          label={hasCopied ? 'Copied' : 'Copy to clipboard'}
-        >
-          <Button
-            aria-label={installScript}
-            size="$3"
-            rounded="$8"
-            mr="$-6"
-            zIndex={1}
-            icon={hasCopied ? Check : Copy}
-            onPress={onCopy}
-          />
-        </TooltipSimple>
-      </XStack>
-    </ThemeTint>
+        {installScript}
+      </Paragraph>
+      <TooltipSimple placement="right" label={hasCopied ? 'Copied' : 'Copy to clipboard'}>
+        <Button
+          aria-label={hasCopied ? 'Install command copied' : 'Copy install command'}
+          size="sm"
+          circular
+          variant="quiet"
+          zIndex={1}
+          icon={hasCopied ? Check : Copy}
+          onPress={onCopy}
+        />
+      </TooltipSimple>
+    </XStack>
   )
 })

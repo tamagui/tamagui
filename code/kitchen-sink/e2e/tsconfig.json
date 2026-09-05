@@ -5,6 +5,7 @@
     "allowSyntheticDefaultImports": true,
     "module": "commonjs",
     "moduleResolution": "node",
+    "ignoreDeprecations": "6.0",
     "target": "es2022",
     "lib": ["es2022", "dom"],
     "skipLibCheck": true,

@@ -8,8 +8,8 @@ import {
   XStack,
   YStack,
   createStyledContext,
+  createStyledHOC,
   styled,
-  useProps,
   withStaticProperties,
 } from 'tamagui'
 
@@ -24,61 +24,46 @@ const Frame = styled(View, {
   alignItems: 'center',
   justifyContent: 'center',
   flexDirection: 'row',
-  gap: '$1',
+  gap: '1',
   width: 100,
   height: 100,
-  bg: '$blue10',
-
-  paddingVertical: '$2',
-  paddingHorizontal: '$4',
-
+  bg: 'blue10',
+  paddingVertical: '2',
+  paddingHorizontal: '4',
   outlineWidth: 0,
-
   // this fixes a flex bug where it overflows container
   minWidth: 0,
-
   borderWidth: 5,
-  borderRadius: '$10',
+  borderRadius: '10',
   variants: {
     isError: {
       true: {
-        borderColor: '$red10',
+        borderColor: 'red10 hover:red10',
         borderBottomRightRadius: 0,
         borderBottomLeftRadius: 0,
-        borderBottomWidth: 0,
-
-        hoverStyle: {
-          borderColor: '$red10',
-          borderBottomWidth: 0,
-        },
+        borderBottomWidth: '0px hover:0px',
       },
     },
 
     isInvalid: {
       true: {
-        borderColor: '$yellow10',
-        borderWidth: 5,
-
-        hoverStyle: {
-          borderColor: '$yellow10',
-          borderWidth: 5,
-        },
+        borderColor: 'yellow10 hover:yellow10',
+        borderWidth: '5px hover:5px',
       },
     },
 
     isFocused: {
       true: {
-        borderColor: '$green10',
+        borderColor: 'green10',
         borderWidth: 10,
       },
     },
   } as const,
 })
 
-const FrameContainer = Frame.styleable((propsIn, ref) => {
-  const props = useProps(propsIn)
-  return <Frame ref={ref} {...props} />
-})
+const FrameContainer = createStyledHOC(Frame, (props, ref) => (
+  <Frame ref={ref} {...props} />
+))
 
 const ForwardRefContainer = React.forwardRef<TamaguiElement, GetProps<typeof Frame>>(
   (propsIn, ref) => {
@@ -102,20 +87,28 @@ export function ComplexVariants() {
         [false, false, true],
         [true, true, true],
       ].map(([isFocus, isInvalid, isError], index) => (
-        <YStack mt="$8" key={index}>
+        <YStack mt="8" key={index}>
           <Separator />
-          <XStack gap="$4">
-            <Paragraph color="#fff" fontWeight="800" bg={isFocus ? '$green10' : '$red10'}>
+          <XStack gap="4">
+            <Paragraph
+              color="#fff"
+              fontWeight="800"
+              bg={`${isFocus ? 'green10' : 'red10'}`}
+            >
               isFocus
             </Paragraph>
             <Paragraph
               color="#fff"
               fontWeight="800"
-              bg={isInvalid ? '$green10' : '$red10'}
+              bg={`${isInvalid ? 'green10' : 'red10'}`}
             >
               isInvalid
             </Paragraph>
-            <Paragraph color="#fff" fontWeight="800" bg={isError ? '$green10' : '$red10'}>
+            <Paragraph
+              color="#fff"
+              fontWeight="800"
+              bg={`${isError ? 'green10' : 'red10'}`}
+            >
               isError
             </Paragraph>
           </XStack>

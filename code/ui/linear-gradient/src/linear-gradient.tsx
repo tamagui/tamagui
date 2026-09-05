@@ -6,7 +6,7 @@
  * Copyright (c) 2015-present 650 Industries, Inc. (aka Expo)
  */
 
-import { normalizeColor } from '@tamagui/core'
+import { View, normalizeColor } from '@tamagui/core'
 import type {
   LinearGradientPoint,
   LinearGradientProps,
@@ -16,7 +16,8 @@ import type {
 export type { LinearGradientPoint, LinearGradientProps } from 'expo-linear-gradient'
 
 import * as React from 'react'
-import { View } from 'react-native'
+
+const WebView = View as React.ComponentType<any>
 
 // check if start/end points require dimension-aware angle calculation
 function needsDimensionAwareAngle(
@@ -74,7 +75,7 @@ export function LinearGradient({
   // if we don't need dimension-aware angles, skip the onLayout overhead
   if (!needsLayout) {
     return (
-      <View
+      <WebView
         {...props}
         onLayout={props.onLayout}
         style={[
@@ -87,7 +88,7 @@ export function LinearGradient({
   }
 
   return (
-    <View
+    <WebView
       {...props}
       style={[
         props.style,

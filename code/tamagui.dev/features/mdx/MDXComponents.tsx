@@ -15,7 +15,6 @@ import { ScrollView } from 'react-native'
 import type { ImageProps, XStackProps } from 'tamagui'
 import {
   Adapt,
-  Button,
   Card,
   H1,
   H2,
@@ -36,6 +35,7 @@ import {
   YStack,
   styled,
 } from 'tamagui'
+import { Button } from '~/components/Button'
 import { LinearGradient } from '@tamagui/linear-gradient'
 import { Code, CodeInline } from '~/components/Code'
 import { CustomTabs } from '~/components/CustomTabs'
@@ -83,13 +83,11 @@ const IntroParagraph = ({ children, large, disableUnwrapText, ...props }: any) =
   return (
     <Paragraph
       render="p"
-      // ff="$mono"
-      size={large ? '$8' : '$7'}
-      mb="$4"
-      color="$accent1"
-      $sm={{
-        size: '$6',
-      }}
+      size={large ? '8' : '7'}
+      fontSize="sm:6"
+      lineHeight="sm:6"
+      mb="4"
+      color="accent1"
       {...props}
     >
       {disableUnwrapText ? children : unwrapText(children)}
@@ -99,17 +97,17 @@ const IntroParagraph = ({ children, large, disableUnwrapText, ...props }: any) =
 
 const TableFrame = styled(YStack, {
   borderWidth: 1,
-  borderColor: '$borderColor',
-  rounded: '$4',
+  borderColor: 'border-color',
+  rounded: '4',
   overflow: 'hidden',
-  my: '$4',
+  my: '4',
 })
 
 const Table = ({ heading, children, ...props }) => {
   return (
     <TableFrame className="no-scrollbar" overflow={'scroll' as any} {...props}>
       {!!heading && (
-        <TableCell size="$4" bg="$color1" fontWeight="500" color="$color9">
+        <TableCell size="4" bg="color1" fontWeight="500" color="color9">
           {heading}
         </TableCell>
       )}
@@ -137,7 +135,7 @@ const code = (props) => {
     return <CodeInline>{unwrapText(children)}</CodeInline>
   }
   return (
-    <YStack mt="$3">
+    <YStack mt="3">
       <DocCodeBlock
         isHighlightingLines={line !== undefined}
         className={className}
@@ -154,7 +152,7 @@ const code = (props) => {
 
 const TableCell = styled(Paragraph, {
   borderBottomWidth: 1,
-  borderBottomColor: '$borderColor',
+  borderBottomColor: 'border-color',
   flexDirection: 'row',
   items: 'center',
   position: 'relative',
@@ -162,21 +160,21 @@ const TableCell = styled(Paragraph, {
   flexBasis: 'auto',
   justify: 'center',
   text: 'center',
-  height: '$4',
-  p: '$2',
-  px: '$3',
-  size: '$5',
+  height: '4',
+  paddingTop: '2',
+  paddingBottom: '2',
+  px: '3',
+  size: '5',
   ellipsis: true,
-
   variants: {
     head: {
       true: {
-        bg: '$color1',
+        bg: 'color1',
       },
     },
     highlight: {
       true: {
-        bg: '$yellow2',
+        bg: 'yellow2',
       },
     },
   } as const,
@@ -184,7 +182,7 @@ const TableCell = styled(Paragraph, {
 
 const TableCol = styled(YStack, {
   borderRightWidth: 1,
-  borderRightColor: '$borderColor',
+  borderRightColor: 'border-color',
   flex: 1,
   flexBasis: 'auto',
   mr: -1,
@@ -192,8 +190,9 @@ const TableCol = styled(YStack, {
 })
 
 const TableHighlight = styled(YStack, {
-  fullscreen: true,
-  bg: '$yellow1',
+  position: 'absolute',
+  inset: 0,
+  bg: 'yellow1',
 })
 
 const componentsIn = {
@@ -201,16 +200,12 @@ const componentsIn = {
   InlineTabs: InlineTabs,
 
   SocialLinksRow: () => (
-    <YStack mt="$6" mx="$-4">
+    <YStack mt="6" mx="-4">
       <SocialLinksRow />
     </YStack>
   ),
 
-  Wide: (props) => (
-    <YStack mx="$-8" $sm={{ mx: '$-2' }}>
-      {props.children}
-    </YStack>
-  ),
+  Wide: (props) => <YStack mx="-8 sm:-2">{props.children}</YStack>,
 
   Adapt,
 
@@ -279,7 +274,7 @@ const componentsIn = {
     const CopyIcon2 = tamaguiCmdClip.hasCopied ? Check : Copy
 
     return (
-      <XStack flexWrap="wrap" items="center" gap="$4">
+      <XStack flexWrap="wrap" items="center" gap="4">
         {name && (
           <ThemeTint>
             <TooltipSimple
@@ -292,26 +287,19 @@ const componentsIn = {
             >
               <XStack
                 items="center"
-                gap="$2"
-                my="$1"
-                py="$1"
-                px="$2"
+                gap="2"
+                my="1"
+                py="1"
+                px="2"
                 self="flex-start"
-                bg="$color2"
-                rounded="$3"
+                bg="color2"
+                rounded="3"
                 cursor="pointer"
                 onPress={onCopy}
               >
-                <SizableText color="$color11">{transformedCommand}</SizableText>
+                <SizableText color="color11">{transformedCommand}</SizableText>
 
-                <CopyIcon
-                  p="$0.5"
-                  size={16}
-                  color="$color10"
-                  hoverStyle={{
-                    color: '$color2',
-                  }}
-                />
+                <CopyIcon p="0-5" size={16} color="color10 hover:color2" />
               </XStack>
             </TooltipSimple>
           </ThemeTint>
@@ -321,7 +309,7 @@ const componentsIn = {
           <>
             <TooltipSimple label="« Individually or all-in-one »">
               <XStack items="center">
-                <SizableText pointerEvents="none" size="$3">
+                <SizableText pointerEvents="none" size="3">
                   or
                 </SizableText>
                 <Asterisk size={12} y={-8} />
@@ -339,45 +327,35 @@ const componentsIn = {
               >
                 <XStack
                   items="center"
-                  gap="$2"
-                  my="$1"
-                  py="$1"
-                  px="$2"
+                  gap="2"
+                  my="1"
+                  py="1"
+                  px="2"
                   self="flex-start"
-                  bg="$color2"
-                  rounded="$3"
+                  bg="color2"
+                  rounded="3"
                   cursor="pointer"
                   onPress={tamaguiCmdClip.onCopy}
                 >
-                  <SizableText color="$color11">{tamaguiCommand}</SizableText>
+                  <SizableText color="color11">{tamaguiCommand}</SizableText>
 
-                  <CopyIcon2
-                    p="$0.5"
-                    size={16}
-                    color="$color10"
-                    hoverStyle={{
-                      color: '$color2',
-                    }}
-                  />
+                  <CopyIcon2 p="0-5" size={16} color="color10 hover:color2" />
                 </XStack>
               </TooltipSimple>
             </ThemeTintAlt>
           </>
         )}
 
-        <XStack gap="$2">
+        <XStack gap="2">
           {Object.keys(pkgCommands).map((c) => {
             const isActive = selectedPackageManager === c
             return (
               <SizableText
                 cursor="pointer"
+                color="color12"
+                opacity={`${isActive ? 0.8 : 0.5} hover:0.8`}
                 onPress={() => {
                   setPackageManager(c)
-                }}
-                color="$color12"
-                opacity={isActive ? 0.8 : 0.5}
-                hoverStyle={{
-                  opacity: 0.8,
                 }}
                 key={c}
               >
@@ -393,15 +371,15 @@ const componentsIn = {
   TLDR: (props) => {
     return (
       <YStack
-        $gtMd={{ mx: '$-4' }}
-        mt="$5"
-        mb="$3"
-        px="$6"
-        py="$2"
-        rounded="$6"
+        mx="gtMd:-4"
+        mt="5"
+        mb="3"
+        px="6"
+        py="2"
+        rounded="6"
         borderWidth={1}
         opacity={0.8}
-        borderColor="$borderColor"
+        borderColor="border-color"
         {...props}
       />
     )
@@ -413,7 +391,7 @@ const componentsIn = {
     <Button
       aria-label="Beta blog post"
       pointerEvents="none"
-      size="$2"
+      size="2"
       theme="yellow"
       position="absolute"
       t={-15}
@@ -433,29 +411,27 @@ const componentsIn = {
   NextJSRouterCard: (props) => {
     return (
       <LogoCard
-        icon={props.title.startsWith('Pages') ? <File size="$1" /> : <Box size="$1" />}
+        icon={props.title.startsWith('Pages') ? <File size="1" /> : <Box size="1" />}
         {...props}
       />
     )
   },
 
-  Note: (props) => <YStack render="aside" mt="$5" mb="$5" borderRadius="$3" {...props} />,
+  Note: (props) => <YStack render="aside" mt="5" mb="5" borderRadius="3" {...props} />,
 
   Notice,
 
-  h1: (props) => (
-    <H1 fontFamily="$mono" width="max-content" pos="relative" mb="$2" {...props} />
-  ),
+  h1: (props) => <H1 width="max-content" mb="2" {...props} pos="relative" />,
 
   h2: ({ children, ...props }) => (
     <H2
       position="relative"
       width={`fit-content` as any}
-      mt="$8"
-      mb="$4"
+      mt="8"
+      mb="4"
       data-heading
-      size="$9"
-      color="$color12"
+      size="9"
+      color="color12"
       {...props}
     >
       {children}
@@ -463,14 +439,14 @@ const componentsIn = {
   ),
 
   h3: ({ children, id, ...props }) => (
-    <LinkHeading data-heading mt="$6" mb="$2" id={id}>
+    <LinkHeading data-heading mt="6" mb="2" id={id}>
       <H3
         maxW="100%"
         position="relative"
         width={`fit-content` as any}
         id={id}
-        size="$8"
-        color="$color11"
+        size="8"
+        color="color11"
         fontWeight="600"
         {...props}
       >
@@ -484,25 +460,25 @@ const componentsIn = {
     <H4
       position="relative"
       width={`fit-content` as any}
-      mt="$8"
-      mb="$2"
-      size="$8"
-      color="$color8"
+      mt="8"
+      mb="2"
+      size="8"
+      color="color8"
       data-heading
       {...props}
       fontWeight="400"
     />
   ),
 
-  h5: (props) => <H5 size="$6" fontWeight="600" mt="$4" {...props} />,
+  h5: (props) => <H5 size="6" fontWeight="600" mt="4" {...props} />,
 
   p: (props) => (
     <Paragraph
       className="docs-paragraph"
       display="block"
-      size="$6"
-      my="$2"
-      color="$color11"
+      size="6"
+      my="2"
+      color="color11"
       {...props}
     />
   ),
@@ -512,16 +488,13 @@ const componentsIn = {
       <Link className="link" href={href as Href} asChild>
         <Paragraph
           render="a"
-          // @ts-ignore
           fontSize="inherit"
           display="inline"
           cursor="pointer"
-          focusVisibleStyle={{
-            outlineColor: '$outlineColor',
-            outlineWidth: 2,
-            outlineStyle: 'solid',
-            outlineOffset: 2,
-          }}
+          outlineColor="focus-visible:outline-color"
+          outlineWidth="focus-visible:2px"
+          outlineStyle="focus-visible:solid"
+          outlineOffset="focus-visible:2px"
           {...props}
         >
           {children}
@@ -548,20 +521,20 @@ const componentsIn = {
 
   ul: ({ children }) => {
     return (
-      <UL render="ul" my="$4">
+      <UL render="ul" my="4">
         {React.Children.toArray(children).map((x) => (typeof x === 'string' ? null : x))}
       </UL>
     )
   },
 
-  ol: (props) => <YStack {...props} render="ol" mb="$3" />,
+  ol: (props) => <YStack {...props} mb="3" render="ol" />,
 
   li: (props) => {
     return (
       <LI
         render="li"
-        size="$6"
-        mb="$1.5"
+        size="6"
+        mb="1-5"
         className="docs-paragraph"
         style={{
           listStyleType: 'disc',
@@ -577,7 +550,7 @@ const componentsIn = {
   ),
 
   img: ({ ...props }) => (
-    <YStack render="span" my="$6">
+    <YStack render="span" my="6">
       <YStack render="img" {...props} maxW="100%" />
     </YStack>
   ),
@@ -600,17 +573,17 @@ const componentsIn = {
         flex={1}
         flexBasis="auto"
         mx={0}
-        mb="$3"
+        mb="3"
         items="center"
         justify="center"
         overflow="hidden"
         {...(overlap && {
-          mt: '$-6',
+          mt: '-6',
         })}
       >
         <Image maxW="100%" {...props} />
         {!!children && (
-          <Text render="figcaption" lineHeight={23} color="$colorPress" mt="$2">
+          <Text render="figcaption" lineHeight={23} color="color-press" mt="2">
             {children}
           </Text>
         )}
@@ -639,7 +612,7 @@ const componentsIn = {
     size,
     ...props
   }) => (
-    <YStack render="figure" mx={0} my="$6">
+    <YStack render="figure" mx={0} my="6">
       <OffsetBox size={size}>
         <video
           src={src}
@@ -651,7 +624,7 @@ const componentsIn = {
           style={{ width: '100%', display: 'block' }}
         ></video>
       </OffsetBox>
-      <Text render="figcaption" lineHeight={23} mt="$2" color="$colorPress">
+      <Text render="figcaption" lineHeight={23} mt="2" color="color-press">
         {children}
       </Text>
     </YStack>
@@ -660,22 +633,21 @@ const componentsIn = {
   blockquote: ({ children, ...props }) => {
     return (
       <YStack
-        my="$4"
-        px="$6"
-        ml="$3"
+        my="4"
+        px="6"
+        ml="3"
         borderLeftWidth={1}
-        borderColor="$borderColor"
+        borderColor="border-color"
         justify="center"
         {...props}
       >
         <Paragraph
-          fontFamily="$silkscreen"
           whiteSpace="revert"
-          size="$8"
-          lineHeight="$9"
+          lineHeight="9"
           fontWeight="300"
-          color="$color"
+          color="color"
           opacity={0.65}
+          size="8"
         >
           {unwrapText(children)}
         </Paragraph>
@@ -684,7 +656,7 @@ const componentsIn = {
   },
 
   Preview: (props) => {
-    return <Preview {...props} mt="$5" />
+    return <Preview {...props} mt="5" />
   },
 
   MediaPlayerDemo: ({ theme, ...props }) => {
@@ -720,11 +692,9 @@ const componentsIn = {
   SponsorNotice: () => {
     return (
       <NoticeFrame theme="red">
-        <YStack maxW="100%" gap="$4">
-          <H4 color="$color10" fontFamily="$silkscreen">
-            👋 Hey! Listen!
-          </H4>
-          <YStack overflow="hidden" flex={1} flexBasis="auto" opacity={0.85} gap="$4">
+        <YStack maxW="100%" gap="4">
+          <H4 color="color10">👋 Hey! Listen!</H4>
+          <YStack overflow="hidden" flex={1} flexBasis="auto" opacity={0.85} gap="4">
             <Paragraph>
               Tamagui is fully OSS, self-funded and built by{' '}
               <a href="https://x.com/natebirdman" target="_blank" rel="noreferrer">
@@ -760,16 +730,16 @@ const componentsIn = {
 
   DocsIntro: () => {
     return (
-      <YStack gap="$1">
+      <YStack gap="1" pb="sm:30px">
         <ThemeTintAlt offset={2}>
-          <IntroParagraph large mt="$4">
+          <IntroParagraph large mt="4">
             Tamagui makes styling React on any platform a delight. All of its features
             work the same on both React Native and React web.
           </IntroParagraph>
 
-          <UL mt="$4" pl="$4" gap="$2">
+          <UL mt="4" pl="4" gap="2">
             <Theme name="gray">
-              <LI mb="$4" size="$6" color="$color11">
+              <LI mb="4" size="6" color="color11">
                 {/* @ts-ignore */}
                 <Link fontSize="inherit" href="/docs/core/configuration">
                   <CodeInline>
@@ -785,7 +755,7 @@ const componentsIn = {
             </Theme>
 
             <Theme name="gray">
-              <LI mb="$4" size="$6" color="$color11">
+              <LI mb="4" size="6" color="color11">
                 {/* @ts-ignore */}
                 <Link fontSize="inherit" href="/docs/intro/compiler-install">
                   <CodeInline>
@@ -806,17 +776,16 @@ const componentsIn = {
             </Theme>
 
             <Theme name="gray">
-              <LI mb="$4" size="$6" color="$color11">
+              <LI mb="4" size="6" color="color11">
                 {/* @ts-ignore */}
                 <Link fontSize="inherit" href="/ui/intro">
                   <CodeInline>
                     <span style={{ color: 'var(--color12)' }}>tamagui UI</span>
                   </CodeInline>
                 </Link>{' '}
-                is a bunch of unstyled and styled components for building common UI
-                elements. It's similar to Radix, but works on native and web, and has a
-                powerful Adapt primitive to shapeshift UI based on the platform or media
-                query.
+                provides composable components for building common UI elements. It's
+                similar to Radix, but works on native and web, and has a powerful Adapt
+                primitive to shapeshift UI based on the platform or media query.
               </LI>
             </Theme>
           </UL>
@@ -829,63 +798,60 @@ const componentsIn = {
     const clipBoard = useClipboard(`npm create tamagui@latest`)
 
     return (
-      <XStack gap="$4" flex={1} flexBasis="auto" flexWrap="wrap" pt="$3" my="$5">
+      <XStack gap="4" flex={1} flexBasis="auto" flexWrap="wrap" pt="3" my="5">
         <>
           <ThemeTint>
             <Link asChild href="/docs/intro/installation">
               <Card
                 render="a"
-                transition="quickest"
-                animateOnly={['transform']}
+                transition={{ preset: 'quickest', properties: 'transform' }}
                 flex={1}
                 flexBasis="auto"
-                y={0}
-                hoverStyle={{ y: -2, bg: '$backgroundHover' }}
-                pressStyle={{ y: 2, bg: '$color2' }}
+                y="0 hover:-2px press:2px"
+                bg="hover:background-hover press:color2"
               >
-                <Card.Header gap="$2">
-                  <H4 size="$4" color="$color8">
+                <Card.Header gap="2">
+                  <H4 size="4" color="color8">
                     Install
                   </H4>
-                  <Paragraph size="$6" color="$color9">
+                  <Paragraph size="6" color="color9">
                     Set up an app.
                   </Paragraph>
                 </Card.Header>
 
-                <Card.Footer>
-                  <ChevronRight position="absolute" b="$4" r="$4" color="$color11" />
+                <Card.Footer p={0}>
+                  <YStack position="absolute" b="4" r="4">
+                    <ChevronRight color="color11" />
+                  </YStack>
                 </Card.Footer>
               </Card>
             </Link>
 
             <Card flex={1} flexBasis="auto">
-              <Card.Header gap="$2">
-                <H4 size="$4" color="$color9">
+              <Card.Header gap="2">
+                <H4 size="4" color="color9">
                   Quick start
                 </H4>
-                <Paragraph size="$4" color="$color11">
+                <Paragraph size="4" color="color11">
                   Choose from a few starters:
                 </Paragraph>
               </Card.Header>
 
-              <Card.Footer p="$6" pt={0}>
-                <XStack position="relative" items="center" gap="$4" flex={1}>
-                  <Code flex={1} bg="$color4" p="$3" rounded="$4" size="$5">
+              <Card.Footer p="6" pt={0}>
+                <XStack position="relative" items="center" gap="4" flex={1}>
+                  <Code flex={1} bg="color4" p="3" rounded="4" size="5">
                     npm create tamagui@latest
                   </Code>
                   <Button
                     position="absolute"
                     aria-label="Copy code to clipboard"
-                    size="$2"
-                    r="$3"
-                    display="inline-flex"
+                    size="2"
+                    r="3"
                     icon={clipBoard.hasCopied ? CheckCircle : Copy}
                     onPress={() => {
                       clipBoard.onCopy()
                     }}
-                    $xs={{
-                      display: 'none',
-                    }}
+                    display="inline-flex xs:none"
                   >
                     Copy
                   </Button>
@@ -906,26 +872,26 @@ const componentsIn = {
     return (
       <YStack
         render="aside"
-        gap="$2"
-        rounded="$4"
-        p="$5"
-        mx="$-2"
-        mt="$2"
+        gap="2"
+        rounded="4"
+        p="5"
+        mx="-2"
+        mt="2"
         position="relative"
         {...(cutoff && {
-          my: '$4',
-          px: '$5',
+          my: '4',
+          px: '5',
           borderWidth: 1,
-          pb: '$10',
-          bg: '$color1',
-          borderColor: '$borderColor',
+          pb: '10',
+          bg: 'color1',
+          borderColor: 'border-color',
           maxH: 300,
           overflow: 'hidden',
         })}
         {...props}
       >
         {areChildrenString ? (
-          <Paragraph color="$color10" my="$-5">
+          <Paragraph color="color10" my="-5">
             {children}
           </Paragraph>
         ) : (
@@ -939,14 +905,14 @@ const componentsIn = {
             l={0}
             r={0}
             height={200}
-            colors={['$background0', '$background']}
+            colors={['background0', 'background']}
             z={1000}
           >
             <Spacer flex={1} />
             <Button onPress={() => setCutoff(!cutoff)} self="center">
               Show more
             </Button>
-            <Spacer size="$4" />
+            <Spacer size="4" />
           </LinearGradient>
         )}
       </YStack>
@@ -1004,15 +970,13 @@ export const components = Object.fromEntries(
 
 const LinkHeading = ({ id, children, ...props }: { id: string } & XStackProps) => (
   <XStack
-    render="a"
+    render={<a href={`#${id}`} />}
     data-heading
-    // @ts-expect-error
-    href={`#${id}`}
     id={id}
     data-id={id}
     display="inline-flex"
     items="center"
-    gap="$4"
+    gap="4"
     {...props}
   >
     {children}

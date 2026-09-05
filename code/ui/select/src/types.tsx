@@ -1,12 +1,17 @@
-import type { NativeValue, SizeTokens } from '@tamagui/core'
-import type { YStackProps } from '@tamagui/stacks'
 import type {
-  DispatchWithoutAction,
-  HTMLProps,
-  MutableRefObject,
-  ReactNode,
-  RefObject,
-} from 'react'
+  NativeValue,
+  SizeTokens,
+  TamaguiChangeEventDetails,
+  TamaguiEventDetails,
+  ViewProps,
+} from '@tamagui/core'
+import type { DismissableProps } from '@tamagui/dismissable'
+import type { HTMLProps, MutableRefObject, ReactNode, RefObject } from 'react'
+import type {
+  SelectItemRegistry,
+  SelectMode,
+  SelectSelection,
+} from './selectionController'
 
 // minimal types replacing @floating-ui/react imports
 type ContextData = Record<string, any>
@@ -30,27 +35,53 @@ export type SelectScopes = string
 
 export type SelectScopedProps<P> = P & { scope?: SelectScopes }
 
-export type SelectImplProps = SelectScopedProps<SelectProps> & {
+export type SelectValueForMode<
+  Value extends string = string,
+  Multiple extends boolean | undefined = false,
+> = Multiple extends true
+  ? Value[]
+  : Multiple extends false | undefined
+    ? Value
+    : Value | Value[]
+
+export type SelectValueChangeDetails = TamaguiChangeEventDetails<
+  'item-press' | 'keyboard' | 'native-change'
+>
+
+export type SelectOpenChangeDetails = TamaguiChangeEventDetails<
+  'trigger-press' | 'keyboard' | 'outside-press' | 'escape-key' | 'item-press'
+>
+
+export type SelectActiveChangeDetails = TamaguiEventDetails<
+  'item-hover' | 'list-navigation' | 'keyboard',
+  unknown,
+  { index: number }
+>
+
+export type SelectImplProps = SelectScopedProps<SelectProps<string, boolean>> & {
   activeIndexRef: any
   selectedIndexRef: any
   listContentRef: any
-  /** fast setter: updates ref + emits to subscribers (no re-render) - use for hover/navigation */
-  setActiveIndexFast: (index: number | null) => void
 }
 
-export interface SelectProps<Value extends string = string> {
+export interface SelectProps<
+  Value extends string = string,
+  Multiple extends boolean | undefined = false,
+> {
   id?: string
   children?: ReactNode
-  value?: Value
-  defaultValue?: Value
-  onValueChange?(value: Value): void
+  multiple?: Multiple
+  value?: SelectValueForMode<Value, Multiple>
+  defaultValue?: SelectValueForMode<Value, Multiple>
+  onValueChange?(
+    value: SelectValueForMode<Value, Multiple>,
+    details: SelectValueChangeDetails
+  ): void
   open?: boolean
   defaultOpen?: boolean
-  onOpenChange?(open: boolean): void
+  onOpenChange?(open: boolean, details: SelectOpenChangeDetails): void
   dir?: SelectDirection
-  name?: string
-  autoComplete?: string
-  size?: SizeTokens
+  size?: SizeTokens | true
   /**
    * If passed, will render a native component instead of the custom one. Currently only `web` is supported.
    */
@@ -64,7 +95,7 @@ export interface SelectProps<Value extends string = string> {
   /**
    * Called when an item is hovered by mouse or navigated to by keyboard.
    */
-  onActiveChange?(value: string, index: number): void
+  onActiveChange?(value: string, details: SelectActiveChangeDetails): void
 
   /**
    * Render function for the selected value. Use this for SSR support.
@@ -79,7 +110,13 @@ export interface SelectProps<Value extends string = string> {
    * >
    * ```
    */
-  renderValue?(value: Value): ReactNode
+  renderValue?(value: SelectValueForMode<Value, Multiple>): ReactNode
+
+  /** web form field name. inert on react native. */
+  name?: string
+
+  /** associates the web form control with an external form. inert on react native. */
+  form?: string
 
   /**
    * When true, defers mounting Select items until opened using startTransition.
@@ -106,64 +143,69 @@ export interface SelectItemParentContextValue {
   adaptScope: string
   scopeName: string
   id?: string
-  initialValue?: any
-  setSelectedIndex: (index: number) => void
+  name?: string
+  form?: string
+  mode: SelectMode
+  selectedValues: string[]
+  registry: SelectItemRegistry
   listRef?: MutableRefObject<Array<HTMLElement | null>>
-  setOpen: (open: boolean) => void
-  onChange: (value: string) => void
-  onActiveChange: (value: string, index: number) => void
-  activeIndexSubscribe: EmitterSubscriber<number>
+  requestOpenChange: (open: boolean, details: SelectOpenChangeDetails) => void
+  selectValue: (value: string, details: SelectValueChangeDetails) => void
+  changeNativeValue: (value: SelectSelection, event: unknown) => void
+  activeIndexSubscribe: EmitterSubscriber<number | null>
   activeIndexRef?: MutableRefObject<number | null>
-  valueSubscribe: EmitterSubscriber<any>
   allowSelectRef?: MutableRefObject<boolean>
   allowMouseUpRef?: MutableRefObject<boolean>
-  setValueAtIndex: (index: number, value: string) => void
   selectTimeoutRef?: MutableRefObject<any>
   dataRef?: MutableRefObject<ContextData>
-  interactions?: {
-    getReferenceProps: (userProps?: HTMLProps<Element> | undefined) => any
-    getFloatingProps: (userProps?: HTMLProps<HTMLElement> | undefined) => any
-    getItemProps: (userProps?: HTMLProps<HTMLElement> | undefined) => any
-  }
+  /** web only: stable once the list mounts, so it can live beside the items */
+  getItemProps?: (userProps?: HTMLProps<HTMLElement> | undefined) => any
   shouldRenderWebNative?: boolean
-  size?: SizeTokens
-  /** fast setter: updates ref + emits to subscribers (no re-render) - use for keyboard navigation */
-  setActiveIndexFast?: (index: number | null) => void
-  /** the rendered content of the currently selected item (for portaling to SelectValue) */
-  selectedItem: ReactNode
-  /** sets the selected item content */
-  setSelectedItem: (item: ReactNode) => void
+  size?: SizeTokens | true
+  setActiveIndex: (index: number | null, details?: SelectActiveChangeDetails) => void
+  selectedIndex: number
+  lastPointerRef: MutableRefObject<{ x: number; y: number }>
+  moveActive: (direction: 1 | -1, event?: unknown) => void
+  search: (text: string, event?: unknown) => void
 }
 
 export interface SelectContextValue {
+  /** web only: the trigger and viewport prop getters; change with the floating element */
+  interactions?: {
+    getReferenceProps: (userProps?: HTMLProps<Element> | undefined) => any
+    getFloatingProps: (userProps?: HTMLProps<HTMLElement> | undefined) => any
+  }
   dir?: SelectDirection
   scopeName: string
   adaptScope: string
   value: any
+  mode: SelectMode
+  selectedValues: string[]
   selectedIndex: number
-  /** current active index state - use for rendering, may lag behind ref */
-  activeIndex: number | null
-  /** ref to current active index - always up to date, use for reads */
+  /** the active index is never state: read the ref, or subscribe through the item parent context */
   activeIndexRef: MutableRefObject<number | null>
-  /** slow setter: updates ref + emits + triggers re-render */
-  setActiveIndex: (index: number | null) => void
+  setActiveIndex: (index: number | null, details?: SelectActiveChangeDetails) => void
   open: boolean
   valueNode: Element | null
   onValueNodeChange(node: HTMLElement): void
-  forceUpdate: DispatchWithoutAction
-  // SheetImpl only:
-  isInSheet?: boolean
   // InlineImpl only:
   fallback: boolean
   blockSelection: boolean
   upArrowRef?: MutableRefObject<HTMLDivElement | null>
   downArrowRef?: MutableRefObject<HTMLDivElement | null>
-  setScrollTop?: Function
+  /** re-reads the viewport and flips canScrollUp/Down when they change */
+  updateScrollArrows?: () => void
   setInnerOffset?: Function
   controlledScrolling?: boolean
   canScrollUp?: boolean
   canScrollDown?: boolean
   floatingContext?: FloatingContext<ReferenceType>
+  /** InlineImpl only: where floating-ui put the viewport */
+  floatingPosition?: {
+    position: 'absolute' | 'fixed'
+    top: number | ''
+    left: number | ''
+  }
   native?: NativeValue
   disablePreventBodyScroll?: boolean
   /** update floating-ui to recalculate */
@@ -175,24 +217,28 @@ export interface SelectContextValue {
 }
 
 export type SelectViewportExtraProps = SelectScopedProps<{
-  size?: SizeTokens
+  size?: SizeTokens | true
   disableScroll?: boolean
-  unstyled?: boolean
 }>
 
-export type SelectViewportProps = YStackProps & SelectViewportExtraProps
+export type SelectViewportProps = ViewProps & SelectViewportExtraProps
 
-export type SelectContentProps = SelectScopedProps<{
-  children?: React.ReactNode
-}>
+export type SelectContentProps = SelectScopedProps<
+  {
+    children?: React.ReactNode
+  } & Pick<
+    DismissableProps,
+    'onEscapeKeyDown' | 'onPointerDownOutside' | 'onFocusOutside' | 'onInteractOutside'
+  >
+>
 
-export type SelectScrollButtonImplProps = YStackProps &
+export type SelectScrollButtonImplProps = ViewProps &
   SelectScopedProps<{
     dir: 'up' | 'down'
-    componentName: string
+    partClassName: string
   }>
 
 export interface SelectScrollButtonProps extends Omit<
   SelectScrollButtonImplProps,
-  'dir' | 'componentName'
+  'dir' | 'partClassName'
 > {}

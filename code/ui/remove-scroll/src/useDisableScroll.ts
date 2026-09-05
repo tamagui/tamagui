@@ -55,8 +55,11 @@ export const useDisableBodyScroll = (enabled: boolean): void => {
           bodyOverscrollBehavior: body.style.overscrollBehavior,
         }
 
-        // apply scroll lock styles
-        html.style.scrollbarGutter = 'stable'
+        // keep the gutter only where a scrollbar was: reserving one on a page
+        // that had none shifts the content by the scrollbar width on every open
+        if (window.innerWidth > html.clientWidth) {
+          html.style.scrollbarGutter = 'stable'
+        }
         html.style.overflow = 'hidden'
 
         // prevent scroll chaining on all browsers

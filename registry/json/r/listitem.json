@@ -1,0 +1,37 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "listitem",
+  "type": "registry:ui",
+  "title": "ListItem",
+  "description": "v2-look ListItem: theme palette, border, cursor, hover/press color styling, text color, the outlined/active appearance, and disabled dimming, over the unstyled @tamagui/ui ListItem behavior (which keeps structural layout + the size mechanism + the disabled pointer-event block).",
+  "files": [
+    {
+      "path": "components/tamagui/ListItem.tsx",
+      "content": "// Styled ListItem = @tamagui/ui's list-item behavior and parts + the default\n// v2-look skin (theme palette, border, cursor, hover/press color, the outlined\n// and active appearances, disabled dimming). @tamagui/ui ships no ListItem of\n// its own: it exposes `useListItem` and the frame, text, title, subtitle, and\n// icon parts, and a skin decides the rest. This is the single skin definition —\n// the shadcn registry item is generated from this file.\nimport {\n  createStyledHOC,\n  type GetProps,\n  type ListItemBehaviorProps,\n  ListItemContext,\n  ListItemFrame as ListItemBehaviorFrame,\n  ListItemIcon,\n  ListItemSubtitle,\n  ListItemText,\n  ListItemTitle,\n  styled,\n  useListItem,\n  withStaticProperties,\n} from '@tamagui/ui'\n\n// the additive-border \"outlined\" appearance (formerly themeableVariantStyles.outlined\n// from ThemeableStack, now removed from the behavior package).\nconst outlined = {\n  backgroundColor: 'transparent hover:transparent press:transparent',\n  borderWidth: 1,\n  borderColor: 'border-color hover:border-color-hover press:border-color-press',\n} as const\n\nexport const ListItemFrame = styled(ListItemBehaviorFrame, {\n  context: ListItemContext,\n  displayName: 'ListItem',\n  backgroundColor: 'background hover:background-hover press:background-press',\n  borderColor: 'border-color hover:border-color-hover press:border-color-press',\n  color: 'color',\n  cursor: 'default',\n\n  variants: {\n    variant: {\n      outlined,\n    },\n\n    active: {\n      true: {\n        backgroundColor: 'hover:background',\n      },\n    },\n\n    disabled: {\n      true: {\n        opacity: 0.5,\n        pointerEvents: 'none',\n      },\n    },\n  } as const,\n})\n\nconst ListItemComponent = createStyledHOC(\n  ListItemFrame,\n  function ListItem(props: ListItemBehaviorProps, ref) {\n    const { props: listItemProps } = useListItem(props)\n    return <ListItemFrame ref={ref} {...listItemProps} />\n  }\n)\n\nexport const ListItem = withStaticProperties(ListItemComponent, {\n  Apply: ListItemContext.Provider,\n  Frame: ListItemFrame,\n  Icon: ListItemIcon,\n  Subtitle: ListItemSubtitle,\n  Text: ListItemText,\n  Title: ListItemTitle,\n})\n\nexport type ListItemProps = GetProps<typeof ListItemComponent>\n",
+      "type": "registry:ui",
+      "target": "components/tamagui/ListItem.tsx"
+    }
+  ],
+  "dependencies": [
+    "@tamagui/ui"
+  ],
+  "categories": [
+    "data-display"
+  ],
+  "meta": {
+    "tokens": [
+      "background",
+      "background-hover",
+      "background-press",
+      "border-color",
+      "border-color-hover",
+      "border-color-press",
+      "color"
+    ],
+    "states": [
+      "disabled",
+      "pressed",
+      "selected"
+    ]
+  }
+}

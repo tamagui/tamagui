@@ -1,17 +1,33 @@
-import { getEffectiveAnimation, normalizeTransition } from '@tamagui/animation-helpers'
+import {
+  easingToBezier,
+  forAnimationState,
+  getTransitionForKey,
+  resolveTransition,
+  type AnimationsConfig,
+  type ResolvedEntry,
+  type ResolvedTransition,
+} from '@tamagui/animation-helpers'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { ResetPresence, usePresence } from '@tamagui/use-presence'
 import type {
   AnimatedNumberStrategy,
-  AnimationDriver,
+  AnimationDriverWithAnimatedNumbers,
   TransitionProp,
   UniversalAnimatedNumber,
   UseAnimatedNumberReaction,
   UseAnimatedNumberStyle,
 } from '@tamagui/web'
-import { useEvent, useThemeWithState } from '@tamagui/web'
+import { useEvent } from '@tamagui/web'
+import { useThemeWithState } from '@tamagui/web/internal-runtime'
 import React from 'react'
-import { Animated, type Text, type View } from 'react-native'
+import {
+  Animated,
+  Easing,
+  processColor,
+  type ColorValue,
+  type Text,
+  type View,
+} from 'react-native'
 
 // detect Fabric (New Architecture) — Paper doesn't support native driver for all style keys
 const isFabric =
@@ -26,27 +42,17 @@ const resolveDynamicValue = (value: any, isDark: boolean): any => {
   return value
 }
 
-type AnimationsConfig<A extends object = any> = { [Key in keyof A]: AnimationConfig }
-
-type SpringConfig = { type?: 'spring' } & Partial<
-  Pick<
-    Animated.SpringAnimationConfig,
-    | 'delay'
-    | 'bounciness'
-    | 'damping'
-    | 'friction'
-    | 'mass'
-    | 'overshootClamping'
-    | 'speed'
-    | 'stiffness'
-    | 'tension'
-    | 'velocity'
-  >
->
-
-type TimingConfig = { type: 'timing' } & Partial<Animated.TimingAnimationConfig>
-
-type AnimationConfig = SpringConfig | TimingConfig
+/** what `getAnimationConfig` hands to `Animated.spring` / `Animated.timing` */
+type AnimationConfig =
+  | ({ type: 'spring'; delay?: number } & Partial<
+      Pick<
+        Animated.SpringAnimationConfig,
+        'damping' | 'mass' | 'overshootClamping' | 'stiffness' | 'velocity'
+      >
+    >)
+  | ({ type: 'timing'; delay?: number } & Partial<
+      Pick<Animated.TimingAnimationConfig, 'duration' | 'easing'>
+    >)
 
 const animatedStyleKey = {
   transform: true,
@@ -77,25 +83,21 @@ const layoutStyleKey = {
 function hasAnimatedLayoutKey(
   style: Record<string, any>,
   isDark: boolean,
-  animateOnly?: string[]
+  resolved: ResolvedTransition
 ) {
   for (const key in layoutStyleKey) {
-    if (animateOnly && !animateOnly.includes(key)) continue
+    if (!getTransitionForKey(resolved, key)) continue
     if (typeof resolveDynamicValue(style[key], isDark) === 'number') return true
   }
   return false
 }
 
-// a color string that RN's color interpolation can actually parse. var(...),
-// calc(...) and empty strings reach createInterpolationFromStringOutputRange /
-// mapStringToNumericComponents and throw ('.map of null' / 'outputRange must
-// contain color or value with numeric component'). those must be applied as a
-// static style instead of entering interpolation.
+// Only colors accepted by RN's own parser can enter interpolation. CSS-wide
+// keywords, unresolved tokens, var()/calc(), and empty strings otherwise reach
+// createInterpolationFromStringOutputRange / mapStringToNumericComponents and
+// throw. Those values must be applied as static styles.
 function isAnimatableColor(value: unknown): value is string {
-  if (typeof value !== 'string') return false
-  if (value === '') return false
-  if (value.includes('var(') || value.includes('calc(')) return false
-  return true
+  return typeof value === 'string' && processColor(value as ColorValue) != null
 }
 
 // these style keys are costly to animate and only work with native driver on Fabric
@@ -158,7 +160,12 @@ export function useAnimatedNumber(
         : undefined
 
       if (type === 'direct') {
+        state.current.composite?.stop()
+        state.current.composite = null
         val.setValue(next)
+        // a direct set finishes the moment it lands. not calling back stranded
+        // everything waiting on it (sheet snap, presence completion).
+        onFinish?.()
       } else if (type === 'spring') {
         state.current.composite?.stop()
         const composite = Animated.spring(val, {
@@ -204,7 +211,33 @@ export const useAnimatedNumberStyle: UseAnimatedNumberStyle<RNAnimatedNum> = (
   value,
   getStyle
 ) => {
-  return getStyle(value.getInstance())
+  const instance = value.getInstance()
+  const animatedStyle = getStyle(instance)
+  const usesAnimatedNode = hasAnimatedNode(animatedStyle)
+  const [current, setCurrent] = React.useState(value.getValue())
+
+  // preserve the native animated-node path for direct mappings. callbacks
+  // that do arithmetic require numeric values, so drive those through the
+  // value listener and render the computed style.
+  React.useEffect(() => {
+    if (usesAnimatedNode) return
+
+    const id = instance.addListener(({ value: next }) => {
+      setCurrent(next)
+    })
+    return () => {
+      instance.removeListener(id)
+    }
+  }, [instance, usesAnimatedNode])
+
+  return usesAnimatedNode ? animatedStyle : getStyle(current)
+}
+
+function hasAnimatedNode(value: unknown): boolean {
+  if (!value || typeof value !== 'object') return false
+  if (typeof (value as any).__getValue === 'function') return true
+  if (Array.isArray(value)) return value.some(hasAnimatedNode)
+  return Object.values(value).some(hasAnimatedNode)
 }
 
 export const useAnimatedNumbersStyle = (
@@ -217,11 +250,10 @@ export const useAnimatedNumbersStyle = (
 export function createAnimations<A extends AnimationsConfig>(
   animations: A,
   options?: CreateAnimationsOptions
-): AnimationDriver<A> {
+): AnimationDriverWithAnimatedNumbers<A> {
   const nativeDriver = options?.useNativeDriver ?? isFabric
 
   return {
-    isReactNative: true,
     inputStyle: 'value',
     outputStyle: 'inline',
     avoidReRenders: true,
@@ -237,16 +269,36 @@ export function createAnimations<A extends AnimationsConfig>(
     ResetPresence,
     useAnimations: ({
       props,
-      onDidAnimate,
+      onTransition,
       style,
       componentState,
       presence,
       stateRef,
+      styleState,
       useStyleEmitter,
     }) => {
       const isDisabled = isWeb && componentState.unmounted === true
       const isExiting = presence?.[0] === false
       const sendExitComplete = presence?.[1]
+      const onTransitionRef = React.useRef(onTransition)
+      onTransitionRef.current = onTransition
+      const emit = (
+        phase: 'start' | 'end',
+        cause: 'enter' | 'exit' | 'update',
+        finished?: boolean
+      ) => {
+        onTransitionRef.current?.(
+          phase === 'end' ? { phase, cause, finished } : { phase, cause }
+        )
+      }
+      // createComponent merges a colocated `transition` out of the active
+      // pseudo style (`enterStyle={{ opacity: 0, transition: '200ms' }}`), so
+      // this is the one that applies right now, not the base prop.
+      const effectiveTransition = (styleState?.effectiveTransition ?? props.transition) as
+        | TransitionProp
+        | null
+        | undefined
+
       const [, themeState] = useThemeWithState({})
       // Check scheme first, then fall back to checking theme name for 'dark'
       const isDark = themeState?.scheme === 'dark' || themeState?.name?.startsWith('dark')
@@ -272,6 +324,13 @@ export function createAnimations<A extends AnimationsConfig>(
       const exitCompletedRef = React.useRef(false)
       const wasExitingRef = React.useRef(false)
 
+      // onTransition lifecycle bookkeeping
+      const enterStartedRef = React.useRef(false)
+      const exitStartedRef = React.useRef(false)
+      const updateInFlightRef = React.useRef(false)
+      const updateCycleIdRef = React.useRef(0)
+      const prevStyleSigRef = React.useRef<string | null>(null)
+
       // detect transition into/out of exiting state
       const justStartedExiting = isExiting && !wasExitingRef.current
       const justStoppedExiting = !isExiting && wasExitingRef.current
@@ -286,9 +345,6 @@ export function createAnimations<A extends AnimationsConfig>(
         exitCycleIdRef.current++
       }
 
-      const animateOnly = (props.animateOnly as string[]) || []
-      const hasTransitionOnly = !!props.animateOnly
-
       // Track if we just finished entering (transition from entering to not entering)
       // must be declared before args array that uses justFinishedEntering
       const isEntering = !!componentState.unmounted
@@ -300,12 +356,12 @@ export function createAnimations<A extends AnimationsConfig>(
 
       const args = [
         JSON.stringify(style),
+        JSON.stringify(effectiveTransition),
         componentState,
         isExiting,
-        !!onDidAnimate,
+        !!onTransition,
         isDark,
         justFinishedEntering,
-        hasTransitionOnly,
       ]
 
       const res = React.useMemo(() => {
@@ -320,17 +376,19 @@ export function createAnimations<A extends AnimationsConfig>(
             ? 'enter'
             : 'default'
 
+        // which style keys animate at all is the transition's own decision, so
+        // a property list narrows this the same way it narrows css
+        const resolved = forAnimationState(
+          resolveTransition(effectiveTransition, { animations }),
+          animationState
+        )
+
         const nonAnimatedStyle = {}
         // animatedStyle owns every Animated.Value on the node. Fabric cannot mix
         // native- and JS-driven values inside that shared graph, so one layout
         // animation makes the whole node use the JS driver.
         const useNativeDriverForNode =
-          nativeDriver &&
-          !hasAnimatedLayoutKey(
-            style,
-            isDark,
-            hasTransitionOnly ? animateOnly : undefined
-          )
+          nativeDriver && !hasAnimatedLayoutKey(style, isDark, resolved)
 
         // track which animated keys/transforms the incoming style actually
         // carries this pass, so entries that left the style can be dropped
@@ -342,7 +400,7 @@ export function createAnimations<A extends AnimationsConfig>(
 
         for (const key in style) {
           const rawVal = style[key]
-          // Resolve dynamic theme values (like $theme-dark)
+          // Resolve dynamic theme values from flat theme clauses.
           const val = resolveDynamicValue(rawVal, isDark)
           if (val === undefined) continue
 
@@ -359,7 +417,10 @@ export function createAnimations<A extends AnimationsConfig>(
             continue
           }
 
-          if (hasTransitionOnly && !animateOnly.includes(key)) {
+          // `transform` is a container, not a property: its parts each resolve
+          // on their own below, and a part no entry covers gets `snapConfig`.
+          // the array cannot be split into animated and static halves here.
+          if (key !== 'transform' && !getTransitionForKey(resolved, key)) {
             nonAnimatedStyle[key] = val
             continue
           }
@@ -371,7 +432,7 @@ export function createAnimations<A extends AnimationsConfig>(
             continue
           }
 
-          // unparseable themed colors (var(), calc(), empty) crash RN
+          // unparseable colors crash RN
           // interpolation — apply them as a static style instead
           if (colorStyleKey[key] && !isAnimatableColor(val)) {
             nonAnimatedStyle[key] = val
@@ -493,7 +554,7 @@ export function createAnimations<A extends AnimationsConfig>(
             const animationConfig = getAnimationConfig(
               key,
               animations,
-              props.transition,
+              effectiveTransition,
               animationState
             )
 
@@ -506,22 +567,19 @@ export function createAnimations<A extends AnimationsConfig>(
             runners.push(() => {
               value.stopAnimation()
 
-              function getAnimation() {
-                return Animated[animationConfig.type || 'spring'](value, {
-                  toValue: animateToValue,
-                  ...animationConfig,
-                  useNativeDriver: useNativeDriverForNode,
-                })
-              }
+              // `delay` drives the sequence below, so it must not also ride
+              // along in the config or every delayed animation waits twice
+              const { type, delay, ...config } = animationConfig
+              const animation = Animated[type || 'spring'](value, {
+                toValue: animateToValue,
+                ...config,
+                useNativeDriver: useNativeDriverForNode,
+              })
+              const animation2 = delay
+                ? Animated.sequence([Animated.delay(delay), animation])
+                : animation
 
-              const animation = animationConfig.delay
-                ? Animated.sequence([
-                    Animated.delay(animationConfig.delay),
-                    getAnimation(),
-                  ])
-                : getAnimation()
-
-              animation.start(({ finished }) => {
+              animation2.start(({ finished }) => {
                 // always resolve during exit (element is leaving anyway)
                 // for non-exit, only resolve on successful completion
                 if (finished || isExiting) {
@@ -556,15 +614,74 @@ export function createAnimations<A extends AnimationsConfig>(
         wasExitingRef.current = isExiting
       })
 
+      // exit interrupted by a re-enter: report the exit as finished:false
+      useIsomorphicLayoutEffect(() => {
+        if (justStoppedExiting && exitStartedRef.current && !exitCompletedRef.current) {
+          exitStartedRef.current = false
+          emit('end', 'exit', false)
+        }
+      }, [justStoppedExiting])
+
       useIsomorphicLayoutEffect(() => {
         res.runners.forEach((r) => r())
 
         // capture current cycle id
         const cycleId = exitCycleIdRef.current
 
-        // handle zero-completion case immediately
+        const cause: 'enter' | 'exit' | 'update' = isExiting
+          ? 'exit'
+          : isEntering || justFinishedEntering
+            ? 'enter'
+            : 'update'
+
+        // interruptions: an enter or update still in flight when exit begins is
+        // reported as finished:false (its own completion promise won't resolve
+        // because the animation was stopped, not finished).
+        if (cause === 'exit') {
+          if (enterStartedRef.current) {
+            enterStartedRef.current = false
+            emit('end', 'enter', false)
+          }
+          if (updateInFlightRef.current) {
+            updateInFlightRef.current = false
+            updateCycleIdRef.current++
+            emit('end', 'update', false)
+          }
+        }
+
+        // in-place update: a genuine style change while mounted (not entering or
+        // exiting). guard on the style signature so lifecycle-only re-renders
+        // don't register as updates.
+        if (cause === 'update') {
+          const sig = args[0] as string
+          if (prevStyleSigRef.current === null || prevStyleSigRef.current === sig) {
+            prevStyleSigRef.current = sig
+            return
+          }
+          prevStyleSigRef.current = sig
+          if (res.completions.length === 0) return
+          if (updateInFlightRef.current) {
+            // superseded before finishing
+            emit('end', 'update', false)
+          }
+          updateInFlightRef.current = true
+          const uid = ++updateCycleIdRef.current
+          emit('start', 'update')
+          Promise.all(res.completions).then(() => {
+            if (uid !== updateCycleIdRef.current) return
+            updateInFlightRef.current = false
+            emit('end', 'update', true)
+          })
+          return
+        }
+
+        // keep the update signature current while entering/exiting
+        prevStyleSigRef.current = args[0] as string
+
+        // handle zero-completion case immediately (enter/exit report a pair)
         if (res.completions.length === 0) {
-          onDidAnimate?.()
+          emit('start', cause)
+          emit('end', cause, true)
           if (isExiting && !exitCompletedRef.current) {
             exitCompletedRef.current = true
             sendExitComplete?.()
@@ -572,40 +689,58 @@ export function createAnimations<A extends AnimationsConfig>(
           return
         }
 
-        let cancel = false
+        // enter/exit start (once per cycle; re-runs continue the same animation)
+        if (cause === 'enter' && !enterStartedRef.current) {
+          enterStartedRef.current = true
+          emit('start', 'enter')
+        }
+        if (cause === 'exit' && !exitStartedRef.current) {
+          exitStartedRef.current = true
+          emit('start', 'exit')
+        }
+
         Promise.all(res.completions).then(() => {
-          if (cancel) return
           // guard against stale cycle completion
           if (isExiting && cycleId !== exitCycleIdRef.current) return
           if (isExiting && exitCompletedRef.current) return
 
-          onDidAnimate?.()
           if (isExiting) {
+            if (exitStartedRef.current) {
+              exitStartedRef.current = false
+              // exit 'end' fires immediately before presence safeToRemove
+              emit('end', 'exit', true)
+            }
             exitCompletedRef.current = true
             sendExitComplete?.()
+          } else if (enterStartedRef.current) {
+            enterStartedRef.current = false
+            emit('end', 'enter', true)
           }
         })
-        return () => {
-          cancel = true
-        }
       }, args)
 
       // avoidReRenders: receive style changes imperatively from tamagui
       // and update Animated.Values directly without React re-renders
       // reuses the same update() + runner pattern as the useMemo path
-      useStyleEmitter?.((nextStyle, _effectiveTransition, pseudoActive) => {
+      useStyleEmitter?.((nextStyle, emittedTransition, pseudoActive) => {
         pseudoActiveRef.current = pseudoActive === true
         const runners: Function[] = []
         const seenAnimateKeys = new Set<string>()
         let transformCount = 0
         let animatedShapeChanged = false
+        // the emitter runs on a mounted node, so `default` is the state, but
+        // the transition is the one it was handed
+        const emittedResolved = forAnimationState(
+          resolveTransition(emittedTransition ?? effectiveTransition, { animations }),
+          'default'
+        )
         // nextStyle is the complete style for this node, so the emitter makes
         // the same single driver decision as the render path. include the
         // currently rendered graph because its stale keys are not removed until
         // the structural-change commit below.
         const useNativeDriverForNode =
           nativeDriver &&
-          !hasAnimatedLayoutKey(nextStyle, isDark) &&
+          !hasAnimatedLayoutKey(nextStyle, isDark, emittedResolved) &&
           !Object.keys(animateStyles.current).some((key) => layoutStyleKey[key])
 
         for (const key in nextStyle) {
@@ -703,23 +838,23 @@ export function createAnimations<A extends AnimationsConfig>(
             })
           }
 
+          // the emitter runs for pseudo-state changes on a mounted node, so
+          // `default` is the state, but the transition is the one it was handed
           const animationConfig = getAnimationConfig(
             key,
             animations,
-            props.transition,
+            emittedTransition ?? effectiveTransition,
             'default'
           )
           runners.push(() => {
             value.stopAnimation()
-            const anim = Animated[animationConfig.type || 'spring'](value, {
+            const { type, delay, ...config } = animationConfig
+            const anim = Animated[type || 'spring'](value, {
               toValue: animateToValue,
-              ...animationConfig,
+              ...config,
               useNativeDriver: useNativeDriverForNode,
             })
-            ;(animationConfig.delay
-              ? Animated.sequence([Animated.delay(animationConfig.delay), anim])
-              : anim
-            ).start()
+            ;(delay ? Animated.sequence([Animated.delay(delay), anim]) : anim).start()
           })
 
           return value
@@ -770,62 +905,70 @@ function getInterpolated(current: number, next: number, postfix = 'deg') {
   }
 }
 
-function getAnimationConfig(
-  key: string,
-  animations: AnimationsConfig,
-  transition?: TransitionProp,
-  animationState: 'enter' | 'exit' | 'default' = 'default'
-): AnimationConfig {
-  const normalized = normalizeTransition(transition)
-  const shortKey = transformShorthands[key]
+/**
+ * one resolved entry as a react-native Animated config.
+ *
+ * springs go in as stiffness/damping/mass, which is the parameterization RN
+ * actually integrates. `bounciness`/`speed` and `tension`/`friction` are older
+ * spellings of the same two numbers, so nothing is lost by not using them.
+ */
+function entryToRN(entry: ResolvedEntry): AnimationConfig {
+  const extra = entry.timing.kind === 'spring' ? entry.timing.extra : undefined
 
-  // Check for property-specific animation
-  const propAnimation = normalized.properties[key] ?? normalized.properties[shortKey]
-
-  let animationType: string | null = null
-  let extraConf: any = {}
-
-  if (typeof propAnimation === 'string') {
-    // Direct animation name: { x: 'quick' }
-    animationType = propAnimation
-  } else if (propAnimation && typeof propAnimation === 'object') {
-    // Config object: { x: { type: 'quick', delay: 100 } }
-    // Use effective animation based on state if no explicit type in config
-    animationType =
-      propAnimation.type || getEffectiveAnimation(normalized, animationState)
-    extraConf = propAnimation
-  } else {
-    // Fall back to effective animation based on state (enter/exit/default)
-    animationType = getEffectiveAnimation(normalized, animationState)
+  if (entry.timing.kind === 'spring') {
+    return {
+      type: 'spring',
+      stiffness: entry.timing.stiffness,
+      damping: entry.timing.damping,
+      mass: entry.timing.mass,
+      ...(typeof extra?.velocity === 'number' ? { velocity: extra.velocity } : null),
+      ...(typeof extra?.overshootClamping === 'boolean'
+        ? { overshootClamping: extra.overshootClamping }
+        : null),
+      ...(entry.delayMs ? { delay: entry.delayMs } : null),
+    }
   }
 
-  // Apply global delay if no property-specific delay
-  if (normalized.delay && !extraConf.delay) {
-    extraConf = { ...extraConf, delay: normalized.delay }
-  }
-
-  const found = animationType ? animations[animationType] : {}
+  const bezier = easingToBezier(entry.timing.easing)
   return {
-    ...found,
-    // Apply global spring config overrides (from transition={['bouncy', { stiffness: 1000 }]})
-    ...normalized.config,
-    // Property-specific config takes highest precedence
-    ...extraConf,
+    type: 'timing',
+    duration: entry.timing.durationMs,
+    // `linear()` and `steps()` have no bezier equivalent; RN's default easing
+    // is the honest answer rather than a curve we made up
+    ...(bezier
+      ? { easing: Easing.bezier(bezier[0], bezier[1], bezier[2], bezier[3]) }
+      : null),
+    ...(entry.delayMs ? { delay: entry.delayMs } : null),
   }
 }
 
-// try both combos
-const transformShorthands = {
-  x: 'translateX',
-  y: 'translateY',
-  translateX: 'x',
-  translateY: 'y',
+// a key the transition does not cover does not animate. snapping is what css
+// does for an unlisted property, so the drivers have to agree on it too.
+const snapConfig: AnimationConfig = { type: 'timing', duration: 0 }
+
+function getAnimationConfig(
+  key: string,
+  animations: AnimationsConfig,
+  transition?: TransitionProp | null,
+  animationState: 'enter' | 'exit' | 'default' = 'default'
+): AnimationConfig {
+  const resolved = forAnimationState(
+    resolveTransition(transition, { animations }),
+    animationState
+  )
+  const entry = getTransitionForKey(resolved, key)
+  return entry ? entryToRN(entry) : snapConfig
 }
 
 function getValue(input: number | string, isColor = false) {
   if (typeof input !== 'string') {
     return [input] as const
   }
-  const [_, number, after] = input.match(/([-0-9]+)(deg|%|px)/) ?? []
+  // the unit is optional: unitless numbers reach here as strings (scale, and
+  // any bare token value), and the number may be fractional. matching only
+  // `[-0-9]+` followed by a required unit read "1.5deg" as 5 and gave NaN for
+  // "0.95", and an Animated animation toward NaN never calls its completion
+  // callback, which strands whatever waits on it.
+  const [_, number, after] = input.match(/(-?(?:\d+\.?\d*|\.\d+))(deg|%|px)?/) ?? []
   return [+number, after] as const
 }

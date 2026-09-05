@@ -15,6 +15,16 @@
   "sideEffects": [
     "*.css"
   ],
+  "files": [
+    "src",
+    "types",
+    "dist",
+    "inject-styles",
+    "inject-styles.cjs",
+    "internal-runtime",
+    "static-resolve",
+    "reset.css"
+  ],
   "main": "dist/cjs",
   "module": "dist/esm",
   "types": "./types/index.d.ts",
@@ -29,6 +39,45 @@
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
       "default": "./dist/esm/index.mjs"
+    },
+    "./theme-update": {
+      "types": "./types/theme-update.d.ts",
+      "react-native": "./dist/esm/theme-update.native.js",
+      "browser": "./dist/esm/theme-update.mjs",
+      "module": "./dist/esm/theme-update.mjs",
+      "import": "./dist/esm/theme-update.mjs",
+      "require": "./dist/cjs/theme-update.cjs",
+      "default": "./dist/esm/theme-update.mjs"
+    },
+    "./dom": {
+      "react-native": {
+        "types": "./types/dom/index.native.d.ts",
+        "default": "./dist/esm/dom/index.native.js"
+      },
+      "types": "./types/dom/index.d.ts",
+      "browser": "./dist/esm/dom/index.mjs",
+      "module": "./dist/esm/dom/index.mjs",
+      "import": "./dist/esm/dom/index.mjs",
+      "require": "./dist/cjs/dom/index.cjs",
+      "default": "./dist/esm/dom/index.mjs"
+    },
+    "./internal-runtime": {
+      "types": "./types/internal-runtime.d.ts",
+      "react-native": "./dist/esm/internal-runtime.native.js",
+      "browser": "./dist/esm/internal-runtime.mjs",
+      "module": "./dist/esm/internal-runtime.mjs",
+      "import": "./dist/esm/internal-runtime.mjs",
+      "require": "./dist/cjs/internal-runtime.cjs",
+      "default": "./dist/esm/internal-runtime.mjs"
+    },
+    "./static-resolve": {
+      "types": "./types/static-resolve.d.ts",
+      "react-native": "./dist/esm/static-resolve.native.js",
+      "browser": "./dist/esm/static-resolve.mjs",
+      "module": "./dist/esm/static-resolve.mjs",
+      "import": "./dist/esm/static-resolve.mjs",
+      "require": "./dist/cjs/static-resolve.cjs",
+      "default": "./dist/esm/static-resolve.mjs"
     },
     "./inject-styles": {
       "types": "./types/inject-styles.d.ts",
@@ -51,12 +100,15 @@
     "test:web": "vitest --typecheck --run"
   },
   "dependencies": {
+    "@tamagui/animation-helpers": "workspace:*",
     "@tamagui/compose-refs": "workspace:*",
     "@tamagui/constants": "workspace:*",
+    "@tamagui/dom": "workspace:*",
     "@tamagui/helpers": "workspace:*",
     "@tamagui/is-equal-shallow": "workspace:*",
     "@tamagui/native": "workspace:*",
     "@tamagui/normalize-css-color": "workspace:*",
+    "@tamagui/style-grammar": "workspace:*",
     "@tamagui/timer": "workspace:*",
     "@tamagui/types": "workspace:*",
     "@tamagui/use-did-finish-ssr": "workspace:*",
@@ -70,8 +122,8 @@
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "react-native": "0.86.2",
-    "typescript": "~5.9.2",
-    "vitest": "4.0.4"
+    "typescript": "~6.0.3",
+    "vitest": "4.1.0"
   },
   "peerDependencies": {
     "react": ">=19",

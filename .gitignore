@@ -33,6 +33,18 @@ node_modules
 
 code/kitchen-sink/ios
 
+# published zero-runtime island bundles and CSS artifacts
+code/tests/zero-runtime/public
+code/tests/zero-runtime/.next-global*
+code/tests/zero-runtime/.next-report
+code/tests/zero-runtime/dist*
+code/tests/zero-runtime/public-metro
+code/starters/zero-runtime/public
+code/starters/zero-runtime/.next-base
+code/starters/zero-runtime/dist*
+code/starters/zero-runtime/public-metro
+code/starters/zero-runtime/receipts.json
+
 .tamagui
 
 .idea
@@ -67,3 +79,7 @@ code/studio/types/**
 .playwright-report/
 .playwright-results/
 test-results/
+.agentbus/
+
+# scratch type-perf fixtures generated into the checkout by measurement harnesses
+zz-typeperf*

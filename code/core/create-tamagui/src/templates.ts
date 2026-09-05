@@ -2,10 +2,11 @@ import type { ExtraSteps } from './steps/types'
 
 import chalk from 'chalk'
 
-import expoRouterSteps from './steps/expo-router'
 import remixSteps from './steps/remix'
 import starterFree from './steps/starter-free'
 import takeoutSteps from './steps/takeout'
+
+export const tamaguiStarterReleaseRef = 'starter/v3-beta.3'
 
 export const templates: Array<{
   title: string
@@ -13,7 +14,7 @@ export const templates: Array<{
   type: 'free' | 'premium' | 'included-in-monorepo'
   hidden: boolean
   packageManager: 'yarn' | 'npm' | 'pnpm' | 'bun'
-  repo: { url: string; sshFallback: string; dir: string[]; branch: string }
+  repo: { url: string; sshFallback: string; dir: string[]; ref: string }
   extraSteps?: ExtraSteps
 }> = [
   {
@@ -28,7 +29,7 @@ export const templates: Array<{
       url: `https://github.com/tamagui/takeout-free`,
       sshFallback: `git@github.com:tamagui/takeout-free.git`,
       dir: [],
-      branch: 'main',
+      ref: 'main',
     },
     extraSteps: starterFree,
   },
@@ -45,7 +46,7 @@ export const templates: Array<{
       url: `https://github.com/tamagui/takeout2`,
       sshFallback: `git@github.com:tamagui/takeout2.git`,
       dir: [],
-      branch: 'main',
+      ref: 'main',
     },
     extraSteps: takeoutSteps,
   },
@@ -62,24 +63,9 @@ export const templates: Array<{
       url: `https://github.com/tamagui/takeout`,
       sshFallback: `git@github.com:tamagui/takeout.git`,
       dir: [],
-      branch: 'main',
+      ref: 'main',
     },
     extraSteps: takeoutSteps,
-  },
-
-  {
-    title: `Expo Router - Expo with file-based routing`,
-    value: 'expo-router',
-    type: 'free',
-    hidden: false,
-    packageManager: 'bun',
-    repo: {
-      url: `https://github.com/tamagui/tamagui`,
-      sshFallback: `git@github.com:tamagui/tamagui.git`,
-      dir: ['code', 'starters', 'expo-router'],
-      branch: 'main',
-    },
-    extraSteps: expoRouterSteps,
   },
 
   {
@@ -92,7 +78,7 @@ export const templates: Array<{
       url: `https://github.com/tamagui/tamagui`,
       sshFallback: `git@github.com:tamagui/tamagui.git`,
       dir: ['code', 'starters', 'remix'],
-      branch: 'main',
+      ref: tamaguiStarterReleaseRef,
     },
     extraSteps: remixSteps,
   },
@@ -109,7 +95,7 @@ export const templates: Array<{
         `https://github.com/tamagui/starter-free.git`,
       sshFallback: `git@github.com:tamagui/starter-free.git`,
       dir: [],
-      branch: 'main',
+      ref: 'main',
     },
     extraSteps: starterFree,
   },

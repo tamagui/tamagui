@@ -3,56 +3,158 @@
  * Copyright (c) Nicolas Gallagher licensed under the MIT license.
  */
 
-import type { StyleObject } from '@tamagui/helpers'
-import { cssShorthandLonghands, simpleHash } from '@tamagui/helpers'
+import {
+  type StyleObject,
+  StyleObjectIdentifier,
+  StyleObjectRules,
+  cssShorthandLonghands,
+  simpleHash,
+} from '@tamagui/helpers'
 import { getConfigMaybe } from '../config'
-import { isMediaKey } from '../hooks/useMedia'
-import type { TamaguiInternalConfig, ViewStyleWithPseudos } from '../types'
-import { defaultOffset } from './defaultOffset'
-import { normalizeColor } from './normalizeColor'
+import type { GetStyleState, TamaguiInternalConfig, ViewStyleObject } from '../types'
+import { getConfigRevisionState } from './grammarConfig'
+import { shouldInsertStyleRules, updateRules } from './insertStyleRule'
 import { normalizeValueWithProperty } from './normalizeValueWithProperty'
-import type { PseudoDescriptor } from './pseudoDescriptors'
-import { pseudoDescriptors } from './pseudoDescriptors'
+import { styleToCSS } from './styleToCSS'
 import { transformsToString } from './transformsToString'
 
-// refactor this file away next...
+export { styleToCSS } from './styleToCSS'
 
-export function getCSSStylesAtomic(style: ViewStyleWithPseudos) {
+export const canGenerateCSS =
+  process.env.TAMAGUI_TARGET === 'web' && !process.env.TAMAGUI_DID_OUTPUT_CSS
+
+type DirectAtomicState = GetStyleState & {
+  flatAtomics?: Map<string, StyleObject>
+}
+
+export type AtomicSlotEntry = [
+  property: string,
+  value: any,
+  condition: number,
+  identity: string,
+  selector: string,
+  wrappers: readonly string[] | undefined,
+  original?: any,
+  flags?: number,
+]
+
+export type SlotIdentity = [
+  identifier: string,
+  rules: string[],
+  value: any,
+  styleObject?: unknown,
+]
+
+function directStyleSignature(property: string, value: unknown, conditionKey = '') {
+  return '\u001f' + property + '\u001f' + conditionKey + '\u001e' + String(value)
+}
+
+function getShortProp(key: string) {
+  let short = ''
+  for (let i = 0; i < key.length; i++) {
+    const code = key.charCodeAt(i)
+    if (
+      (i === 0 || (code >= 65 && code <= 90) || key.charCodeAt(i - 1) === 45) &&
+      ((code >= 65 && code <= 90) || (code >= 97 && code <= 122))
+    ) {
+      short += key[i].toLowerCase()
+    }
+  }
+  return short || 'x'
+}
+
+export function registerAtomicSlot(
+  state: DirectAtomicState,
+  atomicKey: string,
+  entries: readonly AtomicSlotEntry[]
+) {
+  let signature = ''
+  for (let index = 0; index < entries.length; index++) {
+    const entry = entries[index]
+    let value = entry[1]
+    if (entry[0] === 'transform' && Array.isArray(value)) {
+      value = transformsToString(value)
+    }
+    entry[1] = normalizeValueWithProperty(value, entry[0])
+    signature += directStyleSignature(
+      entry[0],
+      entry[1],
+      `${entry[3]}\u001d${entry[7]! >> 5}`
+    )
+  }
+  const built = buildAtomicSlotCSS(atomicKey, entries, signature)
+  if (!built) return
+  let styleObjectProperty = entries[0]![0]
+  for (let index = 1; index < entries.length; index++) {
+    if (entries[index]![0] !== styleObjectProperty) {
+      styleObjectProperty = atomicKey
+      break
+    }
+  }
+  const styleObject = (built[3] ||= [
+    styleObjectProperty,
+    built[2],
+    built[0],
+    undefined,
+    built[1],
+  ]) as StyleObject
+  ;(state.flatAtomics ||= new Map()).set(atomicKey, styleObject)
+  state.classNames[atomicKey] = built[0]
+}
+
+export function flushDirectStyles(state: GetStyleState, clear = false) {
+  if (!canGenerateCSS) {
+    if (clear) (state as DirectAtomicState).flatAtomics = undefined
+    return
+  }
+  const direct = state as DirectAtomicState
+  const atomics = direct.flatAtomics
+  if (!atomics) return
+  for (const styleObject of atomics.values()) {
+    const identifier = styleObject[StyleObjectIdentifier]
+    if (shouldInsertStyleRules(identifier)) {
+      const rules = styleObject[StyleObjectRules].slice()
+      styleObject[StyleObjectRules] = rules
+      updateRules(identifier, rules)
+      state.flatRulesToInsert![identifier] = styleObject
+    }
+  }
+  if (clear) direct.flatAtomics = undefined
+}
+
+export function addComposition(state: GetStyleState, property: 'translate' | 'scale') {
+  if (!canGenerateCSS || state.classNames[property]) return
+  const isTranslate = property === 'translate'
+  const identifier = isTranslate ? '_t-compose' : '_s-compose'
+  const value = isTranslate
+    ? 'var(--t-x, 0px) var(--t-y, 0px)'
+    : 'var(--t-scale-x, 1) var(--t-scale-y, 1)'
+  const defaults = isTranslate ? '--t-x:0px;--t-y:0px' : '--t-scale-x:1;--t-scale-y:1'
+  const rules = [
+    `:where(.${identifier}){${defaults}}`,
+    `.${identifier}{${property}:${value}}`,
+  ]
+  if (shouldInsertStyleRules(identifier)) {
+    updateRules(identifier, rules)
+    state.flatRulesToInsert![identifier] = [
+      property,
+      value,
+      identifier,
+      undefined,
+      rules,
+    ] as any
+  }
+  state.classNames[property] = identifier
+}
+
+export function getCSSStylesAtomic(style: ViewStyleObject) {
+  if (process.env.TAMAGUI_DID_OUTPUT_CSS) return []
   styleToCSS(style)
   const out: StyleObject[] = []
   for (const key in style) {
     if (key === '$$css') continue
     const val = style[key]
-    if (key in pseudoDescriptors) {
-      if (val) {
-        out.push(...getStyleAtomic(val, pseudoDescriptors[key]))
-      }
-    } else if (isMediaKey(key)) {
-      for (const subKey in val) {
-        const so = getStyleObject(val, subKey)
-        if (so) {
-          so[0] = key // set the property to be eg $platform-web so we can use it above
-          out.push(so)
-        }
-      }
-    } else {
-      const so = getStyleObject(style, key)
-      if (so) {
-        out.push(so)
-      }
-    }
-  }
-  return out
-}
-
-export const getStyleAtomic = (
-  style: ViewStyleWithPseudos,
-  pseudo?: PseudoDescriptor
-): StyleObject[] => {
-  styleToCSS(style)
-  const out: StyleObject[] = []
-  for (const key in style) {
-    const so = getStyleObject(style, key, pseudo)
+    const so = getStyleObject(val, key)
     if (so) {
       out.push(so)
     }
@@ -60,89 +162,143 @@ export const getStyleAtomic = (
   return out
 }
 
-let conf: TamaguiInternalConfig | null = null
-
-// this could be cached for performance?
-const getStyleObject = (
-  style: ViewStyleWithPseudos,
+export function getCSSStyleAtomic(
   key: string,
-  pseudo?: PseudoDescriptor
+  val: any,
+  condition = '',
+  wrappers?: readonly string[],
+  identity?: string,
+  direct = false,
+  identityKey = key,
+  classRepetitions = 1
+): StyleObject | undefined {
+  if (process.env.TAMAGUI_DID_OUTPUT_CSS) return
+  return getStyleObject(
+    val,
+    key,
+    condition,
+    wrappers,
+    identity,
+    direct,
+    identityKey,
+    classRepetitions
+  )
+}
+
+let conf: TamaguiInternalConfig | null = null
+let confRevision = 0
+
+const getStyleObject = (
+  val: any,
+  key: string,
+  condition = '',
+  wrappers?: readonly string[],
+  identity?: string,
+  direct: boolean | 2 = false,
+  identityKey = key,
+  classRepetitions = 1
 ): StyleObject | undefined => {
-  let val = style[key]
   if (val == null) return
-  // transform
-  if (key === 'transform' && Array.isArray(style.transform)) {
+  if (key === 'transform' && Array.isArray(val)) {
     val = transformsToString(val)
   }
   const value = normalizeValueWithProperty(val, key)
-  const hash = simpleHash(typeof value === 'string' ? value : `${value}`)
-  const pseudoPrefix = pseudo ? `0${pseudo.name}-` : ''
-  conf ||= getConfigMaybe()
-  const shortProp = conf?.inverseShorthands[key] || key
-  let identifier = `_${shortProp}-${pseudoPrefix}${hash}`
-  if (key === 'pointerEvents' && !pseudo) {
+  syncAtomicConfig()
+  const rawValue = typeof value === 'string' ? value : `${value}`
+  const hash = simpleHash(identity ?? rawValue, direct ? 'strict' : 10) || '0'
+  const shortProp = direct
+    ? getShortProp(identityKey)
+    : conf?.inverseShorthands[key] || key
+  let identifier = `_${shortProp}-${hash}`
+  if (key === 'pointerEvents' && !condition) {
     if (value === 'box-none') identifier = '_pe-boxnone'
     else if (value === 'box-only') identifier = '_pe-boxonly'
   }
-  const rules = createAtomicRules(identifier, key, value, pseudo)
-  return [
-    // array for performance
+  const rules = createAtomicRules(
+    identifier,
     key,
     value,
-    identifier,
-    pseudo?.name as any,
-    rules,
-  ]
+    condition,
+    wrappers,
+    direct,
+    classRepetitions
+  )
+  return [key, value, identifier, undefined, rules]
 }
 
-export function styleToCSS(style: Record<string, any>) {
-  // box-shadow
-  const { shadowOffset, shadowRadius, shadowColor, shadowOpacity } = style
-  if (
-    shadowRadius != null ||
-    shadowColor ||
-    shadowOffset != null ||
-    shadowOpacity != null
-  ) {
-    const offset = shadowOffset || defaultOffset
-    const width = normalizeValueWithProperty(offset.width)
-    const height = normalizeValueWithProperty(offset.height)
-    const radius = normalizeValueWithProperty(shadowRadius)
-    const color = normalizeColor(shadowColor, shadowOpacity)
-    if (color) {
-      const shadow = `${width} ${height} ${radius} ${color}`
-      style.boxShadow = style.boxShadow ? `${style.boxShadow}, ${shadow}` : shadow
-    }
-    delete style.shadowOffset
-    delete style.shadowRadius
-    delete style.shadowColor
-    delete style.shadowOpacity
-  }
+// atomic key -> signature -> identity. two levels so a pass never builds and
+// hashes one long combined key per slot
+const slotIdentities = new Map<string, Map<string, SlotIdentity>>()
+let slotIdentityCount = 0
 
-  // text-shadow
-  const { textShadowColor, textShadowOffset, textShadowRadius } = style
-  if (textShadowColor || textShadowOffset || textShadowRadius) {
-    const { height, width } = textShadowOffset || defaultOffset
-    const radius = textShadowRadius || 0
-    const color = normalizeValueWithProperty(textShadowColor, 'textShadowColor')
-    if (color && (height !== 0 || width !== 0 || radius !== 0)) {
-      const blurRadius = normalizeValueWithProperty(radius)
-      const offsetX = normalizeValueWithProperty(width)
-      const offsetY = normalizeValueWithProperty(height)
-      style.textShadow = `${offsetX} ${offsetY} ${blurRadius} ${color}`
-    }
-    delete style.textShadowColor
-    delete style.textShadowOffset
-    delete style.textShadowRadius
+function syncAtomicConfig() {
+  const nextConf = getConfigMaybe()
+  const nextRevision = nextConf ? getConfigRevisionState(nextConf).revision : 0
+  if (nextConf !== conf || nextRevision !== confRevision) {
+    conf = nextConf
+    confRevision = nextRevision
+    slotIdentities.clear()
+    slotIdentityCount = 0
   }
 }
 
-function createDeclarationBlock(style: [string, any][], important = false) {
-  let next = ''
-  for (const [key, value] of style) {
-    next += `${hyphenateStyleName(key)}:${value}${important ? ' !important' : ''};`
+export function buildAtomicSlotCSS(
+  atomicKey: string,
+  entries: readonly AtomicSlotEntry[],
+  signature: string
+): SlotIdentity | undefined {
+  if (process.env.TAMAGUI_DID_OUTPUT_CSS) return
+  syncAtomicConfig()
+  let bySignature = slotIdentities.get(atomicKey)
+  if (!bySignature) slotIdentities.set(atomicKey, (bySignature = new Map()))
+  const known = bySignature.get(signature)
+  if (known) return known
+
+  const hash = simpleHash(signature, 'strict') || '0'
+  const shortProp = getShortProp(atomicKey)
+  let identifier = `_${shortProp}-${hash}`
+  if (atomicKey === 'pointerEvents' && entries.length === 1 && !entries[0][2]) {
+    const value = entries[0][1]
+    if (value === 'box-none') identifier = '_pe-boxnone'
+    else if (value === 'box-only') identifier = '_pe-boxonly'
   }
-  return `{${next}}`
+
+  const rules: string[] = []
+  let lastValue: any
+  let layered = false
+  for (let index = 1; index < entries.length; index++) {
+    if (entries[index][0] !== entries[0][0]) {
+      layered = true
+      break
+    }
+  }
+  for (const entry of entries) {
+    const value = entry[1]
+    lastValue = value
+    const entryRules = createAtomicRules(
+      identifier,
+      entry[0],
+      value,
+      entry[4],
+      entry[5],
+      2,
+      Math.max(
+        layered ? 1 + (entry[7]! >> 5) : 1,
+        atomicKey === 'containerName' || atomicKey === 'containerType' ? 2 : 1
+      )
+    )
+    for (const rule of entryRules) rules.push(rule)
+  }
+
+  const built: SlotIdentity = [identifier, rules, lastValue]
+  if (slotIdentityCount > 10_000) {
+    slotIdentities.clear()
+    slotIdentityCount = 0
+    slotIdentities.set(atomicKey, (bySignature = new Map()))
+  }
+  slotIdentityCount++
+  bySignature.set(signature, built)
+  return built
 }
 
 const hcache = {}
@@ -154,110 +310,94 @@ const hyphenateStyleName = (key: string) => {
   return val
 }
 
-// adding one more :root so we always override react native web styles :/
-const selectorPriority = (() => {
-  const res: Record<string, string> = {}
-  for (const key in pseudoDescriptors) {
-    const pseudo = pseudoDescriptors[key]
-    res[pseudo.name] = `${[...Array(pseudo.priority)].map(() => ':root').join('')} `
-  }
-  return res
-})()
+function declaration(key: string, value: any, important = false) {
+  return `${hyphenateStyleName(key)}:${value}${important ? ' !important' : ''};`
+}
 
 function createAtomicRules(
   identifier: string,
   property: string,
   value: any,
-  pseudo?: PseudoDescriptor
+  condition = '',
+  wrappers?: readonly string[],
+  direct: boolean | 2 = false,
+  classRepetitions = 1
 ): string[] {
-  const pseudoIdPostfix = pseudo
-    ? pseudo.name === 'disabled'
-      ? `[aria-disabled]`
-      : `:${pseudo.name}`
-    : ''
-  const pseudoSelector = pseudo?.selector
-
-  // longhands get .cls.cls for higher specificity over shorthands
-  const cls =
-    property in cssShorthandLonghands ? `.${identifier}.${identifier}` : `.${identifier}`
-
-  let selector = pseudo
-    ? pseudoSelector
-      ? `${pseudoSelector} ${cls}`
-      : `${selectorPriority[pseudo.name]} ${cls}${pseudoIdPostfix}`
-    : `:root ${cls}`
-
-  // enter style on css driver needs both:
-  //   .t_unmounted .selector
-  //   .selector.t_unmounted
-  if (pseudoSelector === pseudoDescriptors.enterStyle.selector) {
-    selector = `${selector}, .${identifier}${pseudoSelector}`
-  }
-
-  const important = !!pseudo
+  const repetitions =
+    direct && classRepetitions > 1
+      ? classRepetitions
+      : !direct && property in cssShorthandLonghands
+        ? 2
+        : 1
+  const cls = `.${identifier}`.repeat(repetitions)
+  const selector = `${cls}${condition}`
 
   let rules: string[] = []
-
-  // Handle non-standard properties and object values that require multiple
-  // CSS rules to be created.
   switch (property) {
-    // Equivalent to using '::placeholder'
     case 'placeholderTextColor': {
-      const block = createDeclarationBlock(
-        [
-          ['color', value],
-          ['opacity', 1],
-        ],
-        important
+      rules.push(
+        `${selector}::placeholder{${declaration('color', value)}${declaration('opacity', 1)}}`
       )
-      rules.push(`${selector}::placeholder${block}`)
       break
     }
 
-    // all webkit prefixed rules
+    case 'selectionColor': {
+      rules.push(`${selector}::selection{${declaration('backgroundColor', value)}}`)
+      break
+    }
+
+    case 'cursorColor':
+    case 'selectionHandleColor': {
+      rules.push(`${selector}{${declaration('caretColor', value)}}`)
+      break
+    }
+
     case 'backgroundClip':
     case 'userSelect': {
       const propertyCapitalized = `${property[0].toUpperCase()}${property.slice(1)}`
       const webkitProperty = `Webkit${propertyCapitalized}`
-      const block = createDeclarationBlock(
-        [
-          [property, value],
-          [webkitProperty, value],
-        ],
-        important
+      rules.push(
+        `${selector}{${declaration(property, value)}${declaration(webkitProperty, value)}}`
       )
-      rules.push(`${selector}${block}`)
       break
     }
 
-    // Polyfill for additional 'pointer-events' values
     case 'pointerEvents': {
+      if (direct) {
+        const subject = value === 'none' || value === 'box-none' ? 'none' : 'auto'
+        const children = value === 'none' || value === 'box-only' ? 'none' : 'auto'
+        rules.push(
+          `${selector}{pointer-events:${subject}}`,
+          `${selector}>*{pointer-events:${children}}`
+        )
+        break
+      }
       let finalValue = value
       if (value === 'auto' || value === 'box-only') {
         finalValue = 'auto'
       } else if (value === 'none' || value === 'box-none') {
         finalValue = 'none'
       }
-      const block = createDeclarationBlock([['pointerEvents', finalValue]], true)
-      rules.push(`${selector}${block}`)
+      rules.push(`${selector}{${declaration('pointerEvents', finalValue, true)}}`)
       break
     }
 
     default: {
-      const block = createDeclarationBlock([[property, value]], important)
-      rules.push(`${selector}${block}`)
+      let output = declaration(property, value)
+      if (direct) output = output.slice(0, -1)
+      rules.push(`${selector}{${output}}`)
       break
     }
   }
 
-  // hover styles need to be conditional
-  // perhaps this can be generalized but for now lets just shortcut
-  // and hardcode for hover styles, if we need to later we can
-  // WEIRD SYNTAX, SEE:
-  //   https://stackoverflow.com/questions/40532204/media-query-for-devices-supporting-hover
-  if (pseudo?.name === 'hover') {
-    rules = rules.map((r) => `@media (hover) {${r}}`)
+  if (wrappers) {
+    for (let ruleIndex = 0; ruleIndex < rules.length; ruleIndex++) {
+      let rule = rules[ruleIndex]
+      for (let index = wrappers.length - 1; index >= 0; index--) {
+        rule = `${wrappers[index]} {${rule}}`
+      }
+      rules[ruleIndex] = rule
+    }
   }
-
   return rules
 }

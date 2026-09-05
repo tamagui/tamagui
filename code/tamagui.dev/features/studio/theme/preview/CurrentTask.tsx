@@ -24,37 +24,37 @@ export const CurrentTask = () => {
       {...demoProps.elevationProps}
       {...demoProps.panelPaddingProps}
     >
-      <YStack pb="$4" p="$0">
+      <YStack paddingBottom="0" paddingTop="0" paddingRight="0" paddingLeft="0">
         <H4 {...demoProps.headingFontFamilyProps}>Migrate to v2</H4>
       </YStack>
 
-      <Separator mb="$2" />
+      <Separator mb="2" />
 
-      <YStack flex={1} flexBasis="auto" gap="$4">
-        <YStack gap="$6">
+      <YStack flex={1} flexBasis="auto" gap="4">
+        <YStack gap="6">
           <XStack {...demoProps.gapPropsLg}>
             <XStack {...demoProps.gapPropsMd}>
-              <Avatar circular size="$3" {...demoProps.borderRadiusProps}>
+              <Avatar circular size="3" {...demoProps.borderRadiusProps}>
                 <Avatar.Image src="https://i.pravatar.cc/300?u=janeee" />
               </Avatar>
-              <Paragraph size="$3">Jane Doe</Paragraph>
+              <Paragraph size="3">Jane Doe</Paragraph>
             </XStack>
           </XStack>
 
           <TaskSection title="This Sprint">
-            <Paragraph size="$2" color="$color10">
+            <Paragraph size="2" color="color10">
               6/8 tasks done
             </Paragraph>
-            <Progress minW={100} size="$5" value={60}>
+            <Progress minW={100} size="5" value={60}>
               <Progress.Indicator bg={accentTokenName} transition="quick" />
             </Progress>
           </TaskSection>
 
           <TaskSection title="Upcoming Sprint">
-            <Paragraph size="$2" color="$color10">
+            <Paragraph size="2" color="color10">
               1/8 tasks done
             </Paragraph>
-            <Progress minW={100} size="$5" value={25}>
+            <Progress minW={100} size="5" value={25}>
               <Progress.Indicator bg={accentTokenName} transition="quick" />
             </Progress>
           </TaskSection>
@@ -78,7 +78,7 @@ const TaskSection = ({
 
   return (
     <YStack {...props} {...demoProps.gapPropsMd}>
-      <H6 {...demoProps.headingFontFamilyProps} color="$color9" size="$1" mb="$-2">
+      <H6 {...demoProps.headingFontFamilyProps} color="color9" mb="-2" size="1">
         {title}
       </H6>
       {children}

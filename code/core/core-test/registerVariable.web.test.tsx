@@ -17,16 +17,26 @@ test(`ensures unitless variables in CSS don't add px suffix`, () => {
 })
 
 test(`custom prefix is added to css variable`, () => {
-  process.env.TAMAGUI_CSS_VARIABLE_PREFIX = 'custom-'
+  const previousPrefix = process.env.TAMAGUI_CSS_VARIABLE_PREFIX
 
-  expect(
-    variableToCSS(
-      createVariable({
-        key: `zi`,
-        name: `zi`,
-        val: 1,
-      }),
-      true
-    )
-  ).toBe('--custom-zi:1')
+  try {
+    process.env.TAMAGUI_CSS_VARIABLE_PREFIX = 'custom-'
+
+    expect(
+      variableToCSS(
+        createVariable({
+          key: `zi`,
+          name: `zi`,
+          val: 1,
+        }),
+        true
+      )
+    ).toBe('--custom-zi:1')
+  } finally {
+    if (previousPrefix === undefined) {
+      delete process.env.TAMAGUI_CSS_VARIABLE_PREFIX
+    } else {
+      process.env.TAMAGUI_CSS_VARIABLE_PREFIX = previousPrefix
+    }
+  }
 })

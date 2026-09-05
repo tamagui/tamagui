@@ -44,21 +44,18 @@ export const BentoLogo = ({
       scale={scale}
       opacity={fontLoaded ? 1 : 0}
       {...(backgrounded && {
-        bg: '$background',
+        bg: 'background',
       })}
     >
       <XStack position="relative">
         <BentoLogoTheme offset={-1 + offsetAdjust}>
           <H1
-            componentName="span"
-            fontFamily="$cherryBomb"
-            px="$3"
-            mx="$-3"
+            className="is_span bento-shadow"
+            fontFamily="cherryBomb"
+            px="3"
+            mx="-3"
             whiteSpace="pre"
-            color="$color1"
-            $theme-dark={{
-              color: '$color10',
-            }}
+            color="color1 dark:color10"
             maxWidth="100%"
             flex={1}
             letterSpacing={-21}
@@ -67,7 +64,6 @@ export const BentoLogo = ({
             fontSize={180}
             userSelect="none"
             pointerEvents="none"
-            className="bento-shadow"
           >
             {children}&nbsp;
           </H1>
@@ -80,18 +76,16 @@ export const BentoLogo = ({
             x={2}
             l={0}
             zIndex={1100}
-            fontFamily="$cherryBomb"
-            px="$3"
-            mx="$-3"
+            fontFamily="cherryBomb"
+            px="3"
+            mx="-3"
             whiteSpace="pre"
-            color="$color8"
+            color="color8"
             maxWidth="100%"
             flex={1}
             letterSpacing={-21}
             lineHeight={280}
-            $theme-dark={{
-              opacity: 0.5,
-            }}
+            opacity="dark:0.5"
             my={-45}
             fontSize={180}
             userSelect="none"
@@ -114,9 +108,9 @@ export const BentoLogo = ({
             x={-1}
             l={0}
             zIndex={10}
-            fontFamily="$cherryBomb"
-            px="$3"
-            mx="$-3"
+            fontFamily="cherryBomb"
+            px="3"
+            mx="-3"
             whiteSpace="pre"
             maxWidth="100%"
             flex={1}
@@ -140,12 +134,11 @@ export const BentoLogo = ({
             x={1}
             opacity={0.5}
             zIndex={1100000000}
-            fontFamily="$cherryBomb"
-            px="$3"
-            mx="$-3"
+            fontFamily="cherryBomb"
+            px="3"
+            mx="-3"
             whiteSpace="pre"
-            color="$color8"
-            className="mix-blend-color-burn-dodge"
+            color="color8"
             maxWidth="100%"
             flex={1}
             letterSpacing={-21}
@@ -154,6 +147,7 @@ export const BentoLogo = ({
             fontSize={180}
             userSelect="none"
             pointerEvents="none"
+            className="mix-blend-color-burn-dodge"
             style={{
               maskImage: `linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0) 60%)`,
             }}

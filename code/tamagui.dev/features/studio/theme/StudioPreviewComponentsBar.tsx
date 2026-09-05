@@ -6,20 +6,24 @@ import {
   SizableText,
   Square,
   Switch,
-  ToggleGroup,
   Tooltip,
   TooltipGroup,
   XGroup,
   XStack,
   styled,
 } from 'tamagui'
+// Re-style the UNSTYLED ToggleGroup primitive: the studio fully custom-styles the
+// item, and re-styling the styled tamagui ToggleGroup.Item overflows TS's union
+// limit (TS2590). The tamagui ToggleGroup root is already the unstyled primitive,
+// so this is behavior-preserving at runtime.
+import { ToggleGroup } from 'tamagui/unstyled'
 import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
 import { optionValues } from './demoOptions'
 
 export const StudioPreviewComponentsBar = memo(({ scrollView }: { scrollView: any }) => {
   return (
     <XStack z={1000} mt={-10} data-tauri-drag-region className="all ease-in ms300">
-      <XStack flexWrap="nowrap" flex={1} flexBasis="auto" gap="$3">
+      <XStack flexWrap="nowrap" flex={1} flexBasis="auto" gap="3">
         <TooltipGroup delay={{ open: 0, close: 300 }}>
           <BorderRadiusInput />
 
@@ -47,15 +51,9 @@ export default StudioPreviewComponentsBar
 const ToggleGroupItem = styled(ToggleGroup.Item, {
   height: 28,
   width: 30,
-  borderRadius: '$4',
-
-  focusStyle: {
-    backgroundColor: '$color10',
-  },
-
-  focusVisibleStyle: {
-    outlineWidth: 0,
-  },
+  borderRadius: '4',
+  backgroundColor: 'focus:color10',
+  outlineWidth: 'focus-visible:0px',
 })
 
 export function BorderRadiusInput() {
@@ -88,7 +86,7 @@ export function BorderRadiusInput() {
                   value={optionValues.borderRadius[0] as any}
                   aria-label="No border radius"
                 >
-                  <Square size={11} bg="$color9" rounded={0} />
+                  <Square size={11} bg="color9" rounded={0} />
                 </ToggleGroupItem>
               </XGroup.Item>
             </XStack>
@@ -105,7 +103,7 @@ export function BorderRadiusInput() {
                   value={optionValues.borderRadius[1] as any}
                   aria-label="Small border radius"
                 >
-                  <Square size={11} bg="$color9" rounded={2} />
+                  <Square size={11} bg="color9" rounded={2} />
                 </ToggleGroupItem>
               </XGroup.Item>
             </XStack>
@@ -122,7 +120,7 @@ export function BorderRadiusInput() {
                   value={optionValues.borderRadius[2] as any}
                   aria-label="Medium border radius"
                 >
-                  <Square size={11} bg="$color9" rounded={3} />
+                  <Square size={11} bg="color9" rounded={3} />
                 </ToggleGroupItem>
               </XGroup.Item>
             </XStack>
@@ -139,7 +137,7 @@ export function BorderRadiusInput() {
                   value={optionValues.borderRadius[3] as any}
                   aria-label="Large border radius"
                 >
-                  <Square size={11} bg="$color9" rounded={4} />
+                  <Square size={11} bg="color9" rounded={4} />
                 </ToggleGroupItem>
               </XGroup.Item>
             </XStack>
@@ -156,7 +154,7 @@ export function BorderRadiusInput() {
                   value={optionValues.borderRadius[4] as any}
                   aria-label="Very large border radius"
                 >
-                  <Square size={11} bg="$color9" rounded={7} />
+                  <Square size={11} bg="color9" rounded={7} />
                 </ToggleGroupItem>
               </XGroup.Item>
             </XStack>
@@ -168,16 +166,20 @@ export function BorderRadiusInput() {
         scope="border-radius"
         animatePosition
         transition="quick"
-        bg="$background"
-        elevation="$2"
-        rounded="$4"
-        px="$2.5"
-        py="$1"
-        enterStyle={{ y: -4, opacity: 0 }}
-        exitStyle={{ y: -4, opacity: 0 }}
+        bg="background"
+        boxShadow="0 4px 12px shadow-color"
+        rounded="4"
+        px="2-5"
+        py="1"
+        y="enter:-4px exit:-4px"
+        opacity="enter:0 exit:0"
       >
-        <Tooltip.Arrow scope="border-radius" />
-        <Paragraph size="$3">{label}</Paragraph>
+        <Tooltip.Arrow
+          scope="border-radius"
+          backgroundColor="background"
+          borderColor="border-color"
+        />
+        <Paragraph size="3">{label}</Paragraph>
       </Tooltip.Content>
     </Tooltip>
   )
@@ -215,7 +217,7 @@ export function BorderWidthInput() {
                 >
                   <Square
                     size={11}
-                    borderColor="$color9"
+                    borderColor="color9"
                     borderWidth={0.5}
                     borderStyle="dotted"
                   />
@@ -235,7 +237,7 @@ export function BorderWidthInput() {
                   value={`${optionValues.borderWidth[1]}`}
                   aria-label="Slim border width"
                 >
-                  <Square size={11} borderColor="$color9" borderWidth={1} />
+                  <Square size={11} borderColor="color9" borderWidth={1} />
                 </ToggleGroupItem>
               </XGroup.Item>
             </XStack>
@@ -252,7 +254,7 @@ export function BorderWidthInput() {
                   value={`${optionValues.borderWidth[2]}`}
                   aria-label="Thick border width"
                 >
-                  <Square size={11} borderColor="$color9" borderWidth={2} />
+                  <Square size={11} borderColor="color9" borderWidth={2} />
                 </ToggleGroupItem>
               </XGroup.Item>
             </XStack>
@@ -264,16 +266,20 @@ export function BorderWidthInput() {
         scope="border-width"
         animatePosition
         transition="quick"
-        bg="$background"
-        elevation="$2"
-        rounded="$4"
-        px="$2.5"
-        py="$1"
-        enterStyle={{ y: -4, opacity: 0 }}
-        exitStyle={{ y: -4, opacity: 0 }}
+        bg="background"
+        boxShadow="0 4px 12px shadow-color"
+        rounded="4"
+        px="2-5"
+        py="1"
+        y="enter:-4px exit:-4px"
+        opacity="enter:0 exit:0"
       >
-        <Tooltip.Arrow scope="border-width" />
-        <Paragraph size="$3">{label}</Paragraph>
+        <Tooltip.Arrow
+          scope="border-width"
+          backgroundColor="background"
+          borderColor="border-color"
+        />
+        <Paragraph size="3">{label}</Paragraph>
       </Tooltip.Content>
     </Tooltip>
   )
@@ -309,7 +315,7 @@ export function FontFamilyInput() {
                 <XGroup.Item>
                   <ToggleGroupItem value={font as any} aria-label={`${font} Font`}>
                     <SizableText
-                      color="$color12"
+                      color="color11"
                       fontFamily={font as any}
                       fontSize={12}
                       textTransform="none"
@@ -331,16 +337,20 @@ export function FontFamilyInput() {
         scope="font-family"
         animatePosition
         transition="quick"
-        bg="$background"
-        elevation="$2"
-        rounded="$4"
-        px="$2.5"
-        py="$1"
-        enterStyle={{ y: -4, opacity: 0 }}
-        exitStyle={{ y: -4, opacity: 0 }}
+        bg="background"
+        boxShadow="0 4px 12px shadow-color"
+        rounded="4"
+        px="2-5"
+        py="1"
+        y="enter:-4px exit:-4px"
+        opacity="enter:0 exit:0"
       >
-        <Tooltip.Arrow scope="font-family" />
-        <Paragraph size="$3">{label}</Paragraph>
+        <Tooltip.Arrow
+          scope="font-family"
+          backgroundColor="background"
+          borderColor="border-color"
+        />
+        <Paragraph size="3">{label}</Paragraph>
       </Tooltip.Content>
     </Tooltip>
   )
@@ -375,10 +385,10 @@ export function FillStyleInput() {
                 <ToggleGroupItem value="filled" aria-label="Filled">
                   <Square
                     size={10}
-                    rounded="$4"
-                    bg="$color8"
+                    rounded="4"
+                    bg="color8"
                     borderWidth={1}
-                    borderColor="$color"
+                    borderColor="color"
                   />
                 </ToggleGroupItem>
               </XGroup.Item>
@@ -393,7 +403,7 @@ export function FillStyleInput() {
             <XStack>
               <XGroup.Item>
                 <ToggleGroupItem value="outlined" aria-label="Outlined">
-                  <Square size={10} rounded="$4" borderWidth={1} borderColor="$color" />
+                  <Square size={10} rounded="4" borderWidth={1} borderColor="color" />
                 </ToggleGroupItem>
               </XGroup.Item>
             </XStack>
@@ -405,16 +415,20 @@ export function FillStyleInput() {
         scope="fill-style"
         animatePosition
         transition="quick"
-        bg="$background"
-        elevation="$2"
-        rounded="$4"
-        px="$2.5"
-        py="$1"
-        enterStyle={{ y: -4, opacity: 0 }}
-        exitStyle={{ y: -4, opacity: 0 }}
+        bg="background"
+        boxShadow="0 4px 12px shadow-color"
+        rounded="4"
+        px="2-5"
+        py="1"
+        y="enter:-4px exit:-4px"
+        opacity="enter:0 exit:0"
       >
-        <Tooltip.Arrow scope="fill-style" />
-        <Paragraph size="$3">{label}</Paragraph>
+        <Tooltip.Arrow
+          scope="fill-style"
+          backgroundColor="background"
+          borderColor="border-color"
+        />
+        <Paragraph size="3">{label}</Paragraph>
       </Tooltip.Content>
     </Tooltip>
   )
@@ -447,8 +461,8 @@ export function ElevationInput() {
           >
             <XStack>
               <XGroup.Item>
-                <ToggleGroupItem value="$0" aria-label="No Shadow">
-                  <Square size={10} borderWidth={1} borderColor="$color" />
+                <ToggleGroupItem value="0" aria-label="No Shadow">
+                  <Square size={10} borderWidth={1} borderColor="color" />
                 </ToggleGroupItem>
               </XGroup.Item>
             </XStack>
@@ -461,14 +475,14 @@ export function ElevationInput() {
           >
             <XStack>
               <XGroup.Item>
-                <ToggleGroupItem value="$1" aria-label="Subtle Shadow">
+                <ToggleGroupItem value="1" aria-label="Subtle Shadow">
                   <Square size={10} y={-1} x={-1} position="relative">
-                    <Square size={10} position="absolute" bg="$color8" b={-2} r={-2} />
+                    <Square size={10} position="absolute" bg="color8" b={-2} r={-2} />
                     <Square
                       size={10}
                       position="absolute"
                       borderWidth={1}
-                      borderColor="$color"
+                      borderColor="color"
                     />
                   </Square>
                 </ToggleGroupItem>
@@ -483,14 +497,14 @@ export function ElevationInput() {
           >
             <XStack>
               <XGroup.Item>
-                <ToggleGroupItem value="$2" aria-label="Intense Shadow">
+                <ToggleGroupItem value="2" aria-label="Intense Shadow">
                   <Square size={10} y={-2} x={-2} position="relative">
-                    <Square size={12} position="absolute" bg="$color8" b={-4} r={-4} />
+                    <Square size={12} position="absolute" bg="color8" b={-4} r={-4} />
                     <Square
                       size={10}
                       position="absolute"
                       borderWidth={1}
-                      borderColor="$color"
+                      borderColor="color"
                     />
                   </Square>
                 </ToggleGroupItem>
@@ -504,16 +518,20 @@ export function ElevationInput() {
         scope="elevation"
         animatePosition
         transition="quick"
-        bg="$background"
-        elevation="$2"
-        rounded="$4"
-        px="$2.5"
-        py="$1"
-        enterStyle={{ y: -4, opacity: 0 }}
-        exitStyle={{ y: -4, opacity: 0 }}
+        bg="background"
+        boxShadow="0 4px 12px shadow-color"
+        rounded="4"
+        px="2-5"
+        py="1"
+        y="enter:-4px exit:-4px"
+        opacity="enter:0 exit:0"
       >
-        <Tooltip.Arrow scope="elevation" />
-        <Paragraph size="$3">{label}</Paragraph>
+        <Tooltip.Arrow
+          scope="elevation"
+          backgroundColor="background"
+          borderColor="border-color"
+        />
+        <Paragraph size="3">{label}</Paragraph>
       </Tooltip.Content>
     </Tooltip>
   )
@@ -547,13 +565,13 @@ export function SpacingInput() {
               <XGroup.Item>
                 <ToggleGroupItem value="sm" aria-label="Small Padding">
                   <Square
-                    rounded="$1"
-                    size={10}
-                    borderWidth="$0.5"
-                    borderColor="$color"
+                    rounded="1"
+                    borderWidth="0-5"
+                    borderColor="color"
                     position="relative"
+                    size={10}
                   >
-                    <Square size={6} position="absolute" bg="$color" />
+                    <Square size={6} position="absolute" bg="color" />
                   </Square>
                 </ToggleGroupItem>
               </XGroup.Item>
@@ -569,13 +587,13 @@ export function SpacingInput() {
               <XGroup.Item>
                 <ToggleGroupItem value="md" aria-label="Medium Padding">
                   <Square
-                    rounded="$1"
-                    size={10}
-                    borderWidth="$0.5"
-                    borderColor="$color"
+                    rounded="1"
+                    borderWidth="0-5"
+                    borderColor="color"
                     position="relative"
+                    size={10}
                   >
-                    <Square size={3} position="absolute" bg="$color" />
+                    <Square size={3} position="absolute" bg="color" />
                   </Square>
                 </ToggleGroupItem>
               </XGroup.Item>
@@ -591,13 +609,13 @@ export function SpacingInput() {
               <XGroup.Item>
                 <ToggleGroupItem value="lg" aria-label="Large Padding">
                   <Square
-                    rounded="$1"
-                    size={10}
-                    borderWidth="$0.5"
-                    borderColor="$color"
+                    rounded="1"
+                    borderWidth="0-5"
+                    borderColor="color"
                     position="relative"
+                    size={10}
                   >
-                    <Square size={1} position="absolute" bg="$color" />
+                    <Square size={1} position="absolute" bg="color" />
                   </Square>
                 </ToggleGroupItem>
               </XGroup.Item>
@@ -610,16 +628,20 @@ export function SpacingInput() {
         scope="spacing"
         animatePosition
         transition="quick"
-        bg="$background"
-        elevation="$2"
-        rounded="$4"
-        px="$2.5"
-        py="$1"
-        enterStyle={{ y: -4, opacity: 0 }}
-        exitStyle={{ y: -4, opacity: 0 }}
+        bg="background"
+        boxShadow="0 4px 12px shadow-color"
+        rounded="4"
+        px="2-5"
+        py="1"
+        y="enter:-4px exit:-4px"
+        opacity="enter:0 exit:0"
       >
-        <Tooltip.Arrow scope="spacing" />
-        <Paragraph size="$3">{label}</Paragraph>
+        <Tooltip.Arrow
+          scope="spacing"
+          backgroundColor="background"
+          borderColor="border-color"
+        />
+        <Paragraph size="3">{label}</Paragraph>
       </Tooltip.Content>
     </Tooltip>
   )
@@ -651,7 +673,7 @@ export function TextAccentInput() {
           >
             <XStack>
               <XGroup.Item>
-                <ToggleGroupItem value="low" aria-label="Text Low Contrast" p="$0">
+                <ToggleGroupItem value="low" aria-label="Text Low Contrast" p="0">
                   <XStack items="flex-end" opacity={0.4}>
                     <Heading size={10} />
                   </XStack>
@@ -667,7 +689,7 @@ export function TextAccentInput() {
           >
             <XStack>
               <XGroup.Item>
-                <ToggleGroupItem value="high" aria-label="Text High Contrast" p="$0">
+                <ToggleGroupItem value="high" aria-label="Text High Contrast" p="0">
                   <XStack items="flex-end">
                     <Heading size={10} />
                   </XStack>
@@ -682,16 +704,20 @@ export function TextAccentInput() {
         scope="text-accent"
         animatePosition
         transition="quick"
-        bg="$background"
-        elevation="$2"
-        rounded="$4"
-        px="$2.5"
-        py="$1"
-        enterStyle={{ y: -4, opacity: 0 }}
-        exitStyle={{ y: -4, opacity: 0 }}
+        bg="background"
+        boxShadow="0 4px 12px shadow-color"
+        rounded="4"
+        px="2-5"
+        py="1"
+        y="enter:-4px exit:-4px"
+        opacity="enter:0 exit:0"
       >
-        <Tooltip.Arrow scope="text-accent" />
-        <Paragraph size="$3">{label}</Paragraph>
+        <Tooltip.Arrow
+          scope="text-accent"
+          backgroundColor="background"
+          borderColor="border-color"
+        />
+        <Paragraph size="3">{label}</Paragraph>
       </Tooltip.Content>
     </Tooltip>
   )
@@ -723,9 +749,9 @@ export function BackgroundAccentInput() {
           >
             <XStack>
               <XGroup.Item>
-                <ToggleGroupItem value="high" aria-label="Soft Background Accent" p="$0">
-                  <XStack items="center" gap="$1">
-                    <Square size={8} bg="$color" opacity={0.5} />
+                <ToggleGroupItem value="high" aria-label="Soft Background Accent" p="0">
+                  <XStack items="center" gap="1">
+                    <Square size={8} bg="color" opacity={0.5} />
                   </XStack>
                 </ToggleGroupItem>
               </XGroup.Item>
@@ -739,9 +765,9 @@ export function BackgroundAccentInput() {
           >
             <XStack>
               <XGroup.Item>
-                <ToggleGroupItem value="low" aria-label="Normal Background Accent" p="$0">
-                  <XStack items="center" gap="$1">
-                    <Square size={8} bg="$color" />
+                <ToggleGroupItem value="low" aria-label="Normal Background Accent" p="0">
+                  <XStack items="center" gap="1">
+                    <Square size={8} bg="color" />
                   </XStack>
                 </ToggleGroupItem>
               </XGroup.Item>
@@ -754,16 +780,20 @@ export function BackgroundAccentInput() {
         scope="bg-accent"
         animatePosition
         transition="quick"
-        bg="$background"
-        elevation="$2"
-        rounded="$4"
-        px="$2.5"
-        py="$1"
-        enterStyle={{ y: -4, opacity: 0 }}
-        exitStyle={{ y: -4, opacity: 0 }}
+        bg="background"
+        boxShadow="0 4px 12px shadow-color"
+        rounded="4"
+        px="2-5"
+        py="1"
+        y="enter:-4px exit:-4px"
+        opacity="enter:0 exit:0"
       >
-        <Tooltip.Arrow scope="bg-accent" />
-        <Paragraph size="$3">{label}</Paragraph>
+        <Tooltip.Arrow
+          scope="bg-accent"
+          backgroundColor="background"
+          borderColor="border-color"
+        />
+        <Paragraph size="3">{label}</Paragraph>
       </Tooltip.Content>
     </Tooltip>
   )
@@ -773,9 +803,9 @@ export function InverseAccentInput() {
   const store = useThemeBuilderStore()
 
   return (
-    <XStack gap="$3" items="center">
+    <XStack gap="3" items="center">
       <Label
-        color="$color10"
+        color="color10"
         htmlFor="switch-accent-switch"
         onPress={() => {
           // for some reason id+htmlFor is not triggering - manually change the value here
@@ -789,7 +819,7 @@ export function InverseAccentInput() {
       </Label>
       <Switch
         id="switch-accent-switch"
-        size="$1"
+        size="1"
         checked={store.demosOptions.inverseAccent}
         onCheckedChange={(newVal) => {
           store.demosOptions = {

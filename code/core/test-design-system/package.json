@@ -3,7 +3,11 @@
   "version": "2.7.7",
   "license": "MIT",
   "source": "src/index.ts",
-  "files": [],
+  "files": [
+    "src",
+    "types",
+    "dist"
+  ],
   "sideEffects": false,
   "main": "dist/cjs/index.cjs",
   "module": "dist/esm/index.mjs",

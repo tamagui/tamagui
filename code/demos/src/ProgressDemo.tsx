@@ -9,37 +9,26 @@ export function ProgressDemo() {
 
   return (
     <>
-      <YStack height={60} items="center" gap="$4">
+      <YStack height={60} items="center" gap="4">
         <Paragraph height={30} opacity={0.5}>
           Progress: {progress}
         </Paragraph>
 
-        <Progress key={key} theme="surface2" value={progress}>
+        <Progress key={key} theme="level3" value={progress}>
           <Progress.Indicator
-            backgroundColor="$color"
-            transition={[
-              'quicker',
-              {
-                transform: {
-                  overshootClamping: true,
-                },
-              },
-            ]}
+            backgroundColor="color"
+            transition={{
+              preset: 'quicker',
+              transform: { preset: 'quicker', spring: { overshootClamping: true } },
+            }}
           />
         </Progress>
       </YStack>
 
-      <XStack
-        items="center"
-        gap="$2"
-        position="absolute"
-        b="$3"
-        l="$4"
-        $xxs={{ display: 'none' }}
-      >
+      <XStack items="center" gap="2" position="absolute" b="3" l="4" display="xxs:none">
         {/* <Slider
-          size="$2"
-          theme="surface2"
+          size="2"
+          theme="level3"
           width={130}
           value={slider}
           min={0}
@@ -50,19 +39,19 @@ export function ProgressDemo() {
             setSlider([val])
           }}
         >
-          <Slider.Track borderWidth={1} borderColor="$color5">
+          <Slider.Track borderWidth={1} borderColor="color5">
             <Slider.TrackActive />
           </Slider.Track>
           <Slider.Thumb theme="accent" circular index={0} />
         </Slider> */}
 
         <Button
-          size="$3"
+          size="3"
           icon={Play}
           onPress={() => setProgress((prev) => (prev + 20) % 100)}
         />
         <Button
-          size="$3"
+          size="3"
           icon={RotateCcw}
           onPress={() => {
             setKey(Math.random())

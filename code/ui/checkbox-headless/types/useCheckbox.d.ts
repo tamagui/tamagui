@@ -1,5 +1,5 @@
 import React from 'react';
-import type { PressableProps, View, ViewProps } from 'react-native';
+import type { PressableProps, ViewProps } from 'react-native';
 export type CheckedState = boolean | 'indeterminate';
 type CheckboxBaseProps = Omit<ViewProps, 'onFocus' | 'onBlur'> & Pick<PressableProps, 'onPress'>;
 export type CheckboxExtraProps = {
@@ -19,24 +19,25 @@ export type CheckboxExtraProps = {
     value?: string;
 };
 export type CheckboxProps = CheckboxBaseProps & CheckboxExtraProps;
-export declare function useCheckbox<R extends View, P extends CheckboxProps>(props: P, [checked, setChecked]: [
+type CheckboxBehaviorProps = CheckboxExtraProps & Pick<PressableProps, 'onPress'>;
+export declare function useCheckbox<R, P extends CheckboxBehaviorProps>(props: P, [checked, setChecked]: [
     CheckedState,
     React.Dispatch<React.SetStateAction<CheckedState>>
-], ref: React.Ref<R>): {
+], ref: React.Ref<R> | undefined): {
     bubbleInput: React.JSX.Element | null;
     checkboxRef: (node: R | null) => void;
     checkboxProps: {
         role: string;
         'aria-labelledby': string | undefined;
         'aria-checked': string | boolean;
-    } & Omit<P, "disabled" | "labelledBy" | "name" | "required" | "value" | "onCheckedChange"> & {
-        onPress: import("@tamagui/web").EventHandler<import("react-native").GestureResponderEvent> | undefined;
+    } & Omit<P, "disabled" | "labelledBy" | "name" | "onCheckedChange" | "required" | "value"> & {
         type?: string | undefined;
         value?: string | undefined;
         'data-state'?: string | undefined;
         'data-disabled'?: string | undefined;
         disabled?: boolean | undefined;
-        onKeyDown?: import("@tamagui/web").EventHandler<React.KeyboardEvent<HTMLButtonElement>> | undefined;
+        onKeyDown?: import("@tamagui/helpers").EventHandler<React.KeyboardEvent<HTMLButtonElement>> | undefined;
+        onPress: import("@tamagui/helpers").EventHandler<import("react-native").GestureResponderEvent> | undefined;
     };
 };
 export {};

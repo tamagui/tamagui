@@ -4,7 +4,7 @@
  * This test runs with RNGH disabled via launch args to verify that press handling
  * works correctly when falling back to the responder system.
  *
- * IMPORTANT: Detox sync must be enabled for tap/gesture actions on RN 0.83 Fabric.
+ * IMPORTANT: Detox sync must be enabled for tap and gesture actions on Fabric.
  * With sync disabled, Detox doesn't properly deliver touch events through the
  * responder system. We keep sync disabled for navigation (animation driver blocks
  * it) but enable it briefly around each interaction.
@@ -42,7 +42,7 @@ describe('PressStyleNative (no RNGH)', () => {
       .withTimeout(5000)
   })
 
-  describe('pressStyle without transition', () => {
+  describe('press clause without transition', () => {
     it('should fire pressIn and pressOut events on tap', async () => {
       await waitFor(element(by.id('simple-press-in-count')))
         .toHaveText('In: 0')
@@ -137,7 +137,7 @@ describe('PressStyleNative (no RNGH)', () => {
     })
   })
 
-  describe('pressStyle with transition (animation driver)', () => {
+  describe('press clause with transition (animation driver)', () => {
     it('should fire pressIn and pressOut events on animated pressable', async () => {
       await waitFor(element(by.id('animated-press-in-count')))
         .toHaveText('In: 0')

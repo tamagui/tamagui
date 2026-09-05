@@ -95,17 +95,23 @@ const QueueCardFrame = ({
         glow2.parentRef as any,
         glow3.parentRef as any
       )}
-      p="$4"
-      rounded="$4"
+      p="4"
+      rounded="4"
       borderWidth={4}
-      borderColor="$color2"
+      borderColor="color2"
       width={480}
       height={280}
       self="center"
       overflow="hidden"
-      elevation="$4"
+      elevation="4"
     >
-      <YStack fullscreen rounded={7} borderWidth={1} borderColor="$borderColor" />
+      <YStack
+        position="absolute"
+        inset={0}
+        rounded={7}
+        borderWidth={1}
+        borderColor="border-color"
+      />
 
       <YStack className="rotate-slow-right">{glow.Component()}</YStack>
       <YStack className="rotate-slow-left">{glow2.Component()}</YStack>
@@ -118,12 +124,12 @@ const QueueCardFrame = ({
           key={deg}
           position="absolute"
           rotate={`${deg}deg`}
-          t="$5"
-          l="$5"
-          r="$5"
-          b="$5"
-          rounded="$3"
-          borderColor="$color8"
+          t="5"
+          l="5"
+          r="5"
+          b="5"
+          rounded="3"
+          borderColor="color8"
           opacity={0.2}
           borderWidth={1}
           scale={1.3}
@@ -131,10 +137,10 @@ const QueueCardFrame = ({
       ))}
 
       <YStack>
-        <Paragraph size="$8">{teamName}</Paragraph>
-        <Paragraph size="$4">Studio Access</Paragraph>
+        <Paragraph size="8">{teamName}</Paragraph>
+        <Paragraph size="4">Studio Access</Paragraph>
 
-        <Paragraph color="$color9" size="$3">
+        <Paragraph color="color9" size="3">
           In queue for access {estimatedDate}
         </Paragraph>
       </YStack>
@@ -143,30 +149,30 @@ const QueueCardFrame = ({
 
       <Paragraph
         position="absolute"
-        size="$12"
-        b="$6"
-        l="$15"
+        b="6"
+        l="15"
         scale={4}
         opacity={0.015}
         fontWeight="900"
+        size="12"
       >
         {place}
       </Paragraph>
 
-      <XStack pb="$1" items="flex-end">
-        <Paragraph self="flex-start" mr="$1" size="$6" opacity={0.35} ml="$-1">
+      <XStack pb="1" items="flex-end">
+        <Paragraph self="flex-start" mr="1" opacity={0.35} ml="-1" size="6">
           #
         </Paragraph>
-        <Paragraph my="$-3" size="$12" fontWeight="900">
+        <Paragraph my="-3" fontWeight="900" size="12">
           {place}
         </Paragraph>
-        <Paragraph ml="$3" color="$color9">
+        <Paragraph ml="3" color="color9">
           in the {tierName ?? 'non-sponsor'} tier
         </Paragraph>
 
         <Spacer flex={1} />
 
-        <YStack pb="$2">
+        <YStack pb="2">
           <LogoIcon />
         </YStack>
       </XStack>

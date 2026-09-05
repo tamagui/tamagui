@@ -21,6 +21,113 @@ export default () => (
 )
 ```
 
+## Theme updates
+
+Use `<ThemeUpdate>` to override theme values for a subtree, much like redefining
+a CSS custom property on one node. Listed keys override and everything else
+inherits from the parent theme.
+
+```tsx
+import { ThemeUpdate, View } from 'tamagui'
+
+export default () => (
+  <ThemeUpdate background-hover="blue-500 dark:blue-300">
+    <View backgroundColor="background hover:background-hover" />
+  </ThemeUpdate>
+)
+```
+
+Values use the same flat grammar as style props. `<ThemeUpdate>` applies its values
+to a whole subtree, so it supports modifiers that describe a subtree:
+
+- **Theme:** `dark:`, `light:`, or any configured theme name. `blue:` applies
+  under `dark_blue`, `light_blue`, or a theme named `blue`.
+- **Platform:** `ios:`, `android:`, `web:`, and `native:`.
+
+Interaction states such as `hover:` and `press:`, and media queries such as
+`sm:`, describe an element rather than a subtree. They warn in development and
+are dropped here.
+
+A named theme and an update compose through nesting:
+
+```tsx
+<Theme name="dark">
+  <ThemeUpdate background="red">
+    {/* dark, with background overridden */}
+  </ThemeUpdate>
+</Theme>
+```
+
+Keys must be theme keys or [custom variables](#custom-variables) declared in
+the config. Unknown keys warn in development and are dropped so web and native
+behave the same. `<ThemeUpdate>` accepts children and typed theme or custom
+variable keys. Theme controls such as `name` and `shallow` stay on
+`<Theme>`.
+
+### Custom variables
+
+Declare design-system values in `createTamagui` to make them work anywhere a
+theme key works: style props, `useTheme()`, and `<ThemeUpdate>` values.
+
+```tsx
+const config = createTamagui({
+  // ...tokens, themes
+  variables: {
+    surfaceBorder: 'border-color',
+    disabledOpacity: 0.5,
+    focusRingColor: 'blue-500',
+    focusRingWidth: 2,
+    pressScale: 0.97,
+    accent: { light: '#005ac8', dark: '#78b4ff' },
+  },
+})
+```
+
+Use and redefine them like any other theme value:
+
+```tsx
+<View borderColor="surfaceBorder" />
+
+<ThemeUpdate surfaceBorder="red-500">
+  {/* this subtree sees the red surface border */}
+</ThemeUpdate>
+```
+
+### References and units
+
+Inline values can reference theme keys and tokens:
+
+- `background` finds the theme key or custom variable visible at the `<ThemeUpdate>`
+  node.
+- `size.4` and `color.blue-500` reference tokens by category.
+- A bare token name such as `blue-500` checks theme keys first, then scans color,
+  space, size, radius, and zIndex tokens. Use the qualified form when a name
+  exists in more than one category.
+
+References resolve at the `<ThemeUpdate>` node and descendants inherit the result.
+Chains are supported, while a reference cycle drops the involved keys on both
+platforms with a development warning.
+
+Numbers become `px` on web and stay numbers on native, matching numeric style
+props. Keys ending in `opacity`, `scale`, `zIndex`, `weight`, `flex`, `grow`,
+`shrink`, `ratio`, or `elevation` stay unitless. Use a string such as `"10px"`
+or `px(10)` for an explicit pixel value.
+
+### Nesting and updates
+
+ThemeUpdate layers stack, with the nearest definition winning per key. A `<Theme>`
+that resolves a new name resets keys defined by that theme. Put the ThemeUpdate
+inside that boundary when it should survive the switch. Custom variables are
+defined on base themes, so sub-themes inherit their updates.
+
+Changing update values leaves unrelated descendants alone. Tamagui tracks
+which keys each component reads, and only readers of a changed key update. On
+web, styled components restyle through CSS custom properties without a
+JavaScript render. JavaScript readers such as `useTheme()` and animation
+drivers see the same values on both platforms. With `settings.fastSchemeChange`
+on iOS, keys whose light and dark values are literals retain the
+`DynamicColorIOS` fast path.
+
 ## Defining Themes
 
 Themes live one level below tokens. Tokens are your static variables, where
@@ -29,9 +136,9 @@ themes are more dynamic like CSS variables.
 You can define themes however you want, but for the `tamagui` UI kit, the
 components default styling will use a set of pre-defined keys. Those keys are:
 
-- `background`, `backgroundHover`,`backgroundPress`, `backgroundFocus`
-- `borderColor`, `borderColorHover`,`borderColorPress`, `borderColorFocus`
-- `shadowColor`
+- `background`, `background-hover`, `background-press`, `background-focus`
+- `border-color`, `border-color-hover`, `border-color-press`, `border-color-focus`
+- `shadow-color`
 
 These are optional, as you can always set `unstyled` on any Tamagui component to
 use your own styles.
@@ -79,11 +186,11 @@ through a Styled Component like View or Text:
 
 ```tsx
 const P = styled(Text, {
-  color: '$color12'
+  color: 'color11'
 })
 
 // or directly
-<Text color="$color11" />
+<Text color="color11" />
 ```
 
 Because we defined sub-themes `light_pink` and `dark_pink`, the `Theme`
@@ -106,6 +213,6 @@ export default () => {
 
 Notice we just use the name `pink`, easy!
 
-For more on themes see our [advanced theme guide](/docs/guides/theme-builder)
-which also introduces the `createThemes` and `createThemeBuilder`, both of which
-help generate larger and richer, typed themes more easily.
+For more on themes see our [advanced theme guide](/docs/guides/theme-builder),
+which introduces `createThemes`, recipe trees, scales, and relative levels for
+larger typed theme suites.

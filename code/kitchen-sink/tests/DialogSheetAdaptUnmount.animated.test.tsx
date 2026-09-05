@@ -10,13 +10,13 @@ import { setupPage } from './test-utils'
  *   by Sheet.open. On close, Dialog tears its tree down immediately while the
  *   Sheet is still animating out, so the body of the sheet vanishes mid-slide.
  *
- *   In takeout this is masked by an opaque BlurView + $color5 layer painted on
- *   Sheet.Frame itself, so the empty contents area still looks "full" until
- *   the slide finishes. The 3PC Dialog is just bg="$backgroundSurface" with no
+ *   In takeout this is masked by an opaque BlurView + color5 layer painted on
+ *   Sheet.Container itself, so the empty contents area still looks "full" until
+ *   the slide finishes. The 3PC Dialog is just bg="backgroundSurface" with no
  *   inner cover, so the unmount is visible.
  *
  * What this test asserts:
- *   1. Open dialog at narrow viewport so Adapt platform="touch" + when="maxMd"
+ *   1. Open dialog at narrow viewport so Adapt platform="touch" + when="max-md"
  *      activates and Dialog.Adapt swaps in the Sheet.
  *   2. The marker text inside the body must be visible (it lives in the sheet).
  *   3. After clicking close, sample the marker for several frames during the
@@ -25,7 +25,7 @@ import { setupPage } from './test-utils'
  *   4. After the animation finishes, the marker should be gone.
  */
 test.describe('Dialog Sheet Adapt - body persists during exit animation', () => {
-  // narrow viewport so `when="maxMd"` triggers the adapted code path
+  // narrow viewport so `when="max-md"` triggers the adapted code path
   test.use({ viewport: { width: 600, height: 900 } })
 
   test.beforeEach(async ({ page }) => {
@@ -37,8 +37,6 @@ test.describe('Dialog Sheet Adapt - body persists during exit animation', () => 
 
   test('marker stays mounted while the sheet slides out', async ({ page }) => {
     const marker = page.getByTestId('dialog-content-marker')
-    const sheetFrame = page.locator('.is_Sheet[data-state]')
-
     // open the dialog (which adapts to a sheet on this viewport)
     await page.getByTestId('open-dialog').click()
 
@@ -51,7 +49,9 @@ test.describe('Dialog Sheet Adapt - body persists during exit animation', () => 
       .poll(
         async () =>
           page.evaluate(() =>
-            document.querySelector('.is_Sheet[data-state]')?.getAttribute('data-state')
+            document
+              .querySelector('[data-testid="sheet-frame"][data-state]')
+              ?.getAttribute('data-state')
           ),
         { timeout: 5000 }
       )
@@ -70,7 +70,7 @@ test.describe('Dialog Sheet Adapt - body persists during exit animation', () => 
     // the persistence assertions below are meaningless. start the sampler and
     // close in the same in-page task so playwright round-trip latency cannot
     // shift the samples past the short exit animation under parallel load.
-    type Sample = { t: number; exists: boolean; state: string | null }
+    type Sample = { t: number; exists: boolean; state: string | null; top: number | null }
     const samples: Sample[] = await page.evaluate(
       () =>
         new Promise<Sample[]>((resolve) => {
@@ -83,8 +83,12 @@ test.describe('Dialog Sheet Adapt - body persists during exit animation', () => 
               exists: !!document.querySelector('[data-testid="dialog-content-marker"]'),
               state:
                 document
-                  .querySelector('.is_Sheet[data-state]')
+                  .querySelector('[data-testid="sheet-frame"][data-state]')
                   ?.getAttribute('data-state') ?? null,
+              top:
+                document
+                  .querySelector('[data-testid="sheet-frame"][data-state]')
+                  ?.getBoundingClientRect().top ?? null,
             })
           }
 
@@ -112,16 +116,24 @@ test.describe('Dialog Sheet Adapt - body persists during exit animation', () => 
       'close call should flip the sheet data-state while sampling'
     ).toBeDefined()
 
-    // `medium` for the css driver is `ease-in 400ms`, so anything <250ms after
-    // the browser observes the closed state is solidly mid-slide. assert only
-    // that early window so we don't race the legitimate post-animation cleanup
-    // that the fix does when SheetController.onAnimationComplete fires (the css
-    // driver's completion signal is loose and can fire ~80ms before the visual
-    // transition ends).
+    // mid-slide window is empirical, not a fixed duration: with real spring
+    // rest detection the exit can complete almost instantly under CPU
+    // starvation (time-based physics + starved frames = the sheet really is
+    // done by the first frame we see). a sample counts as mid-animation only
+    // if the sheet had flipped to closed AND was still visibly short of its
+    // final resting position — if there are no such frames the exit was
+    // legitimately instant and there is nothing to assert mid-slide (the
+    // mount/unmount sanity checks below still run).
+    const finalTop = [...samples].reverse().find((s) => s.top != null)?.top
     const midAnimationSamples = samples.filter(
-      (s) => firstClosedAt != null && s.t >= firstClosedAt && s.t - firstClosedAt <= 250
+      (s) =>
+        firstClosedAt != null &&
+        s.t >= firstClosedAt &&
+        s.state === 'closed' &&
+        s.top != null &&
+        finalTop != null &&
+        Math.abs(s.top - finalTop) > 2
     )
-    expect(midAnimationSamples.length).toBeGreaterThan(0)
 
     // every early sample taken during the slide-out should still find the
     // marker DOM node. if the bug reproduces, the Adapt.Contents portal slot
@@ -145,7 +157,7 @@ test.describe('Dialog Sheet Adapt - body persists during exit animation', () => 
           page.evaluate(
             () =>
               document
-                .querySelector('.is_Sheet[data-state]')
+                .querySelector('[data-testid="sheet-frame"][data-state]')
                 ?.getAttribute('data-state') ?? 'gone'
           ),
         { timeout: 3000 }
@@ -154,8 +166,8 @@ test.describe('Dialog Sheet Adapt - body persists during exit animation', () => 
 
     // and after the slide-out completes, the marker SHOULD unmount —
     // this is the other half of the fix (no permanent mount / memory leak).
-    // SheetController.onAnimationComplete flips DialogAdaptHiddenContext to
-    // true, DialogContent then returns null, the portal slot empties.
+    // Adapt handoff onTransition (close-complete) marks the target fully hidden,
+    // DialogContent then returns null, and the live slot empties.
     await expect
       .poll(
         async () =>

@@ -15,12 +15,17 @@ module.exports = getDefaultConfig(__dirname)
 
 ## With Metro Plugin (Recommended)
 
-For better dev experience, use `@tamagui/metro-plugin` which loads your Tamagui
-config and watches for changes:
+For better dev experience, use the Metro plugin, which loads your Tamagui
+config and watches for changes. It ships inside `@tamagui/cli` along with the
+CLI and the other bundler integrations:
 
 ```bash
-yarn add @tamagui/metro-plugin
+yarn add -D @tamagui/cli
 ```
+
+If Metro is the only bundler this project will ever use, `yarn add
+@tamagui/metro-plugin` on its own is a smaller install and exports exactly the
+same things.
 
 If you have a `tamagui.build.ts` (recommended — see
 [compiler install docs](/docs/intro/compiler-install#configuration-with-tamaguibuildts)),
@@ -28,7 +33,7 @@ no options are needed:
 
 ```tsx fileName="metro.config.js"
 const { getDefaultConfig } = require('expo/metro-config')
-const { withTamagui } = require('@tamagui/metro-plugin')
+const { withTamagui } = require('@tamagui/cli/metro')
 
 const config = getDefaultConfig(__dirname)
 
@@ -40,7 +45,7 @@ Or pass options inline:
 
 ```tsx fileName="metro.config.js"
 const { getDefaultConfig } = require('expo/metro-config')
-const { withTamagui } = require('@tamagui/metro-plugin')
+const { withTamagui } = require('@tamagui/cli/metro')
 
 const config = getDefaultConfig(__dirname)
 
@@ -81,7 +86,7 @@ To debug the compiler output, add `// debug` at the top of a file:
 import { YStack } from 'tamagui'
 
 export function MyComponent() {
-  return <YStack flex={1} bg="$background" />
+  return <YStack flex={1} bg="background" />
 }
 ```
 

@@ -1,0 +1,211 @@
+---
+title: Tamagui Tailwind
+description: Tailwind CSS utility authoring for Tamagui web and native
+---
+
+Tamagui Tailwind allows you to write Tailwind utility classes in `className`. The compiler extracts utilities to atomic CSS on web and resolves them to React Native styles on iOS and Android.
+
+Tailwind CSS is a trademark of Tailwind Labs Inc.; Tamagui is not affiliated with or endorsed by Tailwind Labs.
+
+## Installation
+
+Install `@tamagui/tailwind` and `@tamagui/config`:
+
+```bash
+npm install @tamagui/tailwind @tamagui/config
+```
+
+## Basic Usage
+
+Import components directly from `@tamagui/tailwind`:
+
+```tsx
+import { Text, View } from '@tamagui/tailwind'
+
+export function Card() {
+  return (
+    <View className="flex flex-row items-center gap-3 p-4 rounded-lg bg-slate-100 dark:bg-slate-800">
+      <View className="w-10 h-10 rounded-full bg-blue-500" />
+      <Text className="text-base font-semibold text-slate-900 dark:text-slate-100">
+        Tamagui Tailwind
+      </Text>
+    </View>
+  )
+}
+```
+
+The styling frontend is selected by import path. There is no global configuration toggle.
+
+## Vite Integration
+
+Applications authoring with `@tamagui/tailwind` use the Vite plugin from `@tamagui/tailwind/vite`:
+
+```ts
+// vite.config.ts
+import { tamaguiPlugin } from '@tamagui/tailwind/vite'
+import { defineConfig } from 'vite'
+
+export default defineConfig({
+  plugins: [
+    tamaguiPlugin({
+      config: './tamagui.config.ts',
+      components: ['@tamagui/tailwind'],
+    }),
+  ],
+})
+```
+
+The plugin wraps the core Tamagui compiler and scans JSX sources for utility candidates.
+
+## Web and Native Resolution
+
+Tamagui Tailwind components render through the same core engine as standard Tamagui components:
+
+- **On web:** The compiler extracts claimed utilities into atomic CSS classes at build time.
+- **On native:** The shared renderer resolves the utility classes into React Native styles at runtime.
+
+Both platforms share the same config, design tokens, themes, media queries, accessibility props, and animation drivers.
+
+## Modifiers
+
+Tamagui Tailwind supports standard modifiers:
+
+### Pseudo states
+
+```tsx
+<View className="bg-blue-500 hover:bg-blue-600 press:bg-blue-700" />
+```
+
+Supported state modifiers include `hover:`, `press:`, `focus:`, `focus-visible:`, and `disabled:`.
+
+### Breakpoints
+
+```tsx
+<View className="p-4 sm:p-6 md:p-8 lg:p-10" />
+```
+
+Breakpoint prefixes (e.g. `sm:`, `md:`, `lg:`, `xl:`, `max-sm:`) map to the media query definitions in your Tamagui config.
+
+### Platform modifiers
+
+```tsx
+<View className="p-4 web:cursor-pointer native:opacity-90" />
+```
+
+Use `web:`, `native:`, `ios:`, and `android:` to apply platform-specific utilities.
+
+### Group and container queries
+
+```tsx
+<View className="group" container="card">
+  <View className="group-hover:bg-blue-600 @sm/card:flex-row" />
+</View>
+```
+
+Mark ancestors with `group` or `@container` / `container`, then apply `group-hover:` or `@sm:` on children.
+
+## Arbitrary Values
+
+Pass arbitrary values inside square brackets:
+
+```tsx
+<View className="p-[18px] w-[100px] bg-[#3b82f6] rotate-[-8deg] top-[10px]" />
+```
+
+Tamagui normalizes arbitrary values for cross-platform safety:
+- Unitless numbers (such as `z-[400]`) and pixel lengths (such as `p-[18px]`, `text-[14px]`) resolve to numeric values on native. React Native requires numbers for layout and typography props.
+- CSS units and functions (such as `%`, `rem`, `calc()`, `var()`, hex colors) stay strings.
+
+## Tokens and Color Opacity
+
+Utilities for color, radius, size, and spacing resolve against your Tamagui config tokens:
+
+- `bg-blue-500` resolves to the `blue500` color token.
+- `rounded-lg` resolves to the `lg` radius token.
+- `p-4` resolves to the `4` space token.
+
+Color utilities support opacity modifiers:
+
+```tsx
+<View className="bg-blue-500/50 border-slate-300/80" />
+```
+
+The opacity suffix lowers to CSS `color-mix` on web and RGBA colors on native.
+
+## Class-first styled()
+
+Use `styled()` from `@tamagui/tailwind` to create reusable components with class-based variants:
+
+```tsx
+import { View, styled } from '@tamagui/tailwind'
+
+export const Button = styled(View, 'px-4 py-2 rounded-md font-medium', {
+  variants: {
+    variant: {
+      primary: 'bg-blue-500 hover:bg-blue-600 text-white',
+      secondary: 'bg-slate-200 hover:bg-slate-300 text-slate-800',
+    },
+    size: {
+      small: 'text-sm py-1 px-2',
+      large: 'text-lg py-3 px-6',
+    },
+  },
+  defaultVariants: {
+    variant: 'primary',
+  },
+})
+```
+
+Variant values are class strings. The resulting component accepts `className` and its declared variant props.
+
+## Mixing with Tamagui Components
+
+You can mix `@tamagui/tailwind` components and standard `tamagui` components within the same application:
+
+```tsx
+import { View as TamaguiView } from 'tamagui'
+import { Text as TailwindText, View as TailwindView } from '@tamagui/tailwind'
+
+export function MixedTree() {
+  return (
+    <TamaguiView padding="4" backgroundColor="background">
+      <TailwindView className="flex flex-row items-center gap-2 p-2 rounded bg-blue-50">
+        <TailwindText className="text-blue-700 font-bold">Mixed Tree</TailwindText>
+      </TailwindView>
+    </TamaguiView>
+  )
+}
+```
+
+Each component retains its authoring syntax. Both resolve through the same runtime and theme context.
+
+## Utility Coverage
+
+Claimed utilities are parsed by `@tamagui/style-grammar`. They compile to atomic CSS on web and resolve to React Native styles on iOS and Android.
+
+### Claimed cross-platform utilities
+
+- **Sizing:** `w-*`, `h-*`, `size-*` (width and height), `min-w-*`, `max-w-*`, `min-h-*`, `max-h-*`, fractions (`w-1/2`), keywords (`full`, `auto`, `screen`, `min`, `max`, `fit`).
+- **Spacing:** `p`, `pt`, `pr`, `pb`, `pl`, `px`, `py`, `m`, `mt`, `mr`, `mb`, `ml`, `mx`, `my`, `gap-*`, `gap-x-*`, `gap-y-*`.
+- **Flex and Alignment:** `flex`, `flex-1`, `flex-auto`, `flex-initial`, `flex-none`, `flex-row`, `flex-col`, `flex-wrap`, `flex-wrap-reverse`, `grow`, `shrink`, `items-*`, `justify-*`, `content-*`, `self-*`.
+- **Typography:** `text-sm` (font size tokens), `text-white` (palette and theme colors), `text-center`/`left`/`right`/`justify`/`start`/`end` (alignment), `text-[14px]` (arbitrary size), `text-[#fff]` (arbitrary color), `font-bold` and named weights, `font-sans`/`serif`/`mono` and configured font families, `leading-*` (line height), `tracking-*` (letter spacing), `italic`/`not-italic`, `uppercase`/`lowercase`/`capitalize`/`normal-case`, `underline`/`line-through`/`no-underline`.
+- **Color:** `bg-*`, `color-*`, `text-*` (colors), `border-*` (color), opacity suffix `/50` (such as `bg-blue-500/50`).
+- **Radius:** `rounded-*`, `rounded-t/r/b/l-*`, `rounded-tl/tr/bl/br-*` (including `xl`, `lg`, `full`).
+- **Borders:** `border` (1px default), `border-4`, `border-t/r/b/l-*`, `border-x`/`border-y` (width and color).
+- **Positioning:** `relative`, `absolute`, `fixed`, `sticky`, `inset-*`, `inset-x-*`, `inset-y-*`, `top-*`, `right-*`, `bottom-*`, `left-*`, `z-*`.
+- **Transforms & Effects:** `opacity-*`, `overflow-*`, `object-fit`, `pointer-events-*`, `rotate-*`, `scale-*`, `translate-x-*`, `translate-y-*`, `aspect-*`, `shadow-[…]` (arbitrary shadow), group and container markers (`group`, `container="card"`, `@container`).
+
+`text-*` utilities resolve in strict order: configured `fontSize` token first, then alignment keywords, then configured palette color.
+
+### Web-only passthrough
+
+Classes that do not have a React Native style equivalent pass through to `className` on web. On native, unrecognized classes are dropped:
+
+- **CSS Grid & Columns:** `grid-*`, `col-*`, `row-*`, `auto-cols-*`, `auto-rows-*`, `columns-*`, `break-*`
+- **Filters & Blurs:** `backdrop-*`, `blur-*`, `brightness-*`, `contrast-*`, `grayscale-*`, `drop-shadow-*`
+- **Gradients & Blends:** `from-*`, `via-*`, `to-*`, `bg-gradient-*`, `mix-blend-*`
+- **Child & Sibling Selectors:** `space-x-*`, `space-y-*`, `divide-x-*`, `divide-y-*`
+- **Rings & Outlines:** `ring-*`, `ring-offset-*`, `outline-*` (use `shadow-[…]` for cross-platform shadow)
+- **Web Chrome & Pseudo Elements:** `cursor-*`, `select-*`, `appearance-*`, `resize-*`, `placeholder-*`, `caret-*`
+- **Arbitrary Selectors:** `peer-*`, `has-*`, `data-*`, `aria-*`, `[&>*]`
+- **Keyframe Animations:** `animate-*` (use Tamagui's `animation` prop instead)

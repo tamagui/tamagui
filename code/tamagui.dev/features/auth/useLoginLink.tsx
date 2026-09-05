@@ -1,12 +1,10 @@
-import { useToastController } from '@tamagui/toast'
+import { toast } from 'tamagui'
 import { navigateToInternalPath } from '~/features/security/navigation'
 import { useUser } from '../user/useUser'
-import { useSupabaseClient } from './useSupabaseClient'
+import { getAuthClient } from './useSupabaseClient'
 
 export const useLoginLink = () => {
   const userSwr = useUser()
-  const supabaseClient = useSupabaseClient()
-  const toast = useToastController()
 
   return {
     handleLogin: async (e: any) => {
@@ -27,7 +25,7 @@ export const useLoginLink = () => {
 
       if (!popup) {
         // popup was blocked, show toast and redirect after delay
-        toast.show('Popup blocked, redirecting to login...')
+        toast('Popup blocked, redirecting to login...')
         setTimeout(() => {
           navigateToInternalPath('/login')
         }, 2000)
@@ -41,12 +39,13 @@ export const useLoginLink = () => {
 
         if (event.data.type === 'SUPABASE_AUTH_SUCCESS') {
           window.removeEventListener('message', handleMessage)
-          await supabaseClient.auth.refreshSession()
+          const supabase = await getAuthClient()
+          await supabase?.auth.refreshSession()
           userSwr.refresh()
         } else if (event.data.type === 'SUPABASE_AUTH_ERROR') {
           window.removeEventListener('message', handleMessage)
-          toast.show('Login failed', {
-            message: event.data.error || 'Please try again.',
+          toast('Login failed', {
+            description: event.data.error || 'Please try again.',
           })
         }
       }

@@ -5,32 +5,32 @@ import { CheckCircle } from './CheckCircle'
 
 export const Features = ({ items, size, large, soon, ...props }: any) => {
   return (
-    <YStack mt="$4" mb="$6" {...props} gap="$3">
+    <YStack mt="4" mb="6" {...props} gap="3">
       {items.map((feature, i) => (
         <XStack render="li" key={i}>
           <YStack y={1} mt={large ? 1 : -2}>
             {soon ? (
               <YStack
-                bg="$backgroundHover"
+                bg="background-hover"
                 width={25}
                 height={25}
                 items="center"
                 justify="center"
                 rounded={100}
-                mr="$2.5"
+                mr="2-5"
               >
-                <Pencil size={12} color="var(--colorHover)" />
+                <Pencil size={12} color="var(--color-hover)" />
               </YStack>
             ) : (
               <CheckCircle />
             )}
           </YStack>
           <YStack flex={1}>
-            <Paragraph size={size ?? (large ? '$5' : '$4')} color="$gray11">
+            <Paragraph size={size ?? (large ? '5' : '4')} color="gray11">
               {feature}
             </Paragraph>
             {soon && (
-              <Paragraph size="$2" color="$color9">
+              <Paragraph size="2" color="color9">
                 In development
               </Paragraph>
             )}

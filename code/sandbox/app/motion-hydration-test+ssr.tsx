@@ -5,7 +5,7 @@ import { AnimatePresence, YStack, isClient, useDidFinishSSR } from 'tamagui'
  * Test case for motion hydration regression.
  * This mimics the HomeGlow pattern on tamagui.dev:
  * - AnimatePresence wrapping animated elements
- * - enterStyle for initial state
+ * - enter clause for initial state
  * - transition for animations
  * - positioned elements with x, y, scale
  * - KEY DIFFERENCE: keys that change after hydration (simulating useTint behavior)
@@ -24,24 +24,16 @@ export default function MotionHydrationTest() {
   // mimic HomeGlow structure with AnimatePresence
   const glows = useMemo(() => {
     return [
-      { id: 'glow-1', x: 400, y: 50, scale: 1.5, color: '$red10' },
-      { id: 'glow-2', x: -200, y: 150, scale: 2, color: '$blue10' },
-      { id: 'glow-3', x: 100, y: 100, scale: 3, color: '$green10' },
+      { id: 'glow-1', x: 400, y: 50, scale: 1.5, color: 'red10' },
+      { id: 'glow-2', x: -200, y: 150, scale: 2, color: 'blue10' },
+      { id: 'glow-3', x: 100, y: 100, scale: 3, color: 'green10' },
     ].map((glow, i) => (
       <YStack
         // use stable key like HomeGlow does: key={`${i}${tint}${tintAlt}`}
         key={`${i}${tint}`}
         data-testid={glow.id}
-        // enable debug to see motion driver logs
-        // debug
         transition="superLazy"
-        enterStyle={{
-          opacity: 0,
-        }}
-        exitStyle={{
-          opacity: 0,
-        }}
-        opacity={0.8}
+        opacity="0.8 enter:0 exit:0"
         position="absolute"
         width={200}
         height={200}
@@ -57,7 +49,7 @@ export default function MotionHydrationTest() {
   }, [tint])
 
   return (
-    <YStack f={1} position="relative" bg="$background" height="100vh" overflow="hidden">
+    <YStack f={1} position="relative" bg="background" height="100vh" overflow="hidden">
       <AnimatePresence>{glows}</AnimatePresence>
     </YStack>
   )

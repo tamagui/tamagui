@@ -85,8 +85,8 @@ either a variable on the web, or raw value on native. So if you define a size
 token with key `small` and value of `14`:
 
 ```tsx
-getToken('$size.small') // returns on web var(--size-small), native 14
-getToken('$small', 'size') // returns on web var(--size-small), native 14
+getToken('size.small') // returns on web var(--size-small), native 14
+getToken('small', 'size') // returns on web var(--size-small), native 14
 ```
 
 ### getTokenValue
@@ -99,18 +99,9 @@ Similar to getToken, but always returns the raw value rather than the variable
 name. If you define a size token with key `small` and value of `14`:
 
 ```tsx
-getTokenValue('$size.small') // returns 14
-getTokenValue('$small', 'size') // returns 14
+getTokenValue('size.small') // returns 14
+getTokenValue('small', 'size') // returns 14
 ```
-
-### themeable
-
-```tsx
-themeable<Comp extends ReactComponentLike>(component: Comp): Comp
-```
-
-A higher order component that accepts `theme` and `themeInverse`, rendering them
-onto `Theme` before rendering your component.
 
 ### getVariable
 
@@ -125,118 +116,64 @@ If given a `Variable` - which comes from a parsed theme or token returned from
 Calling `getVariable(useTheme().color)` returns `var(--color)` on the web, and
 `#fff` on other platforms.
 
-### setOnLayoutStrategy
+### splitStyleProps
 
-This is a low-level utility to control `onLayout` performance. By default,
-Tamagui `onLayout` on the web uses the `"async"` strategy (see below), which
-gives a good balance of accuracy and performance. For extremely accurate to
-native `onLayout`, you can use `"sync"`, but it can cause performance issues in
-typical usage.
+`splitStyleProps` partitions an object in one pass and returns
+`[selectedProps, remainingProps]`. With no options, the first object contains
+style props and the second contains everything else. Props keep their authored
+keys by default. It is exported from `@tamagui/core`, `@tamagui/ui`, and
+`tamagui`:
 
-Call `setOnLayoutStrategy` with a single string argument:
+```tsx
+import { splitStyleProps } from 'tamagui'
 
-- `"off"` will pause all `onLayout` callbacks from running.
-- `"sync"` will run every frame and update every frame if necessary.
-- `"async"` will use an async getBoundingClientRect strategy that avoids
-  repaints/reflows, and also waits 2 frames of debouncing before triggering the
-  callback.
+const [styleProps, regularProps] = splitStyleProps(props)
+```
 
-The `async` strategy generally has great performance on web, and it will also
-ensure to call `onLayout` sync on mount the first time, so you avoid jitters.
+Pass `expandShorthands: true` to write selected shorthand props under their
+canonical keys:
+
+```tsx
+const [styleProps, regularProps] = splitStyleProps(props, {
+  expandShorthands: true,
+})
+```
+
+A filter map selects only its canonical keys. Style props excluded by the map
+remain in the second object. This also lets a component intentionally select
+non-style behavior props:
+
+```tsx
+import { splitStyleProps, stylePropsTextOnly } from '@tamagui/core'
+
+const [textProps, frameProps] = splitStyleProps(props, {
+  expandShorthands: true,
+  filter: {
+    ...stylePropsTextOnly,
+    ellipsis: true,
+    numberOfLines: true,
+  },
+})
+```
+
+For dynamic rules, `filter` can be a callback. It receives the canonical key,
+the value, the original authored key, and whether the canonical key is a known
+style prop:
+
+```tsx
+const [selectedProps, remainingProps] = splitStyleProps(props, {
+  filter: (key, value, originalKey, isStyleProp) => {
+    return (isStyleProp && key.startsWith('font')) || originalKey === 'numberOfLines'
+  },
+})
+```
+
+Filter maps infer the selected keys precisely. A callback can return a type
+predicate on `originalKey` when its rule narrows to a known key union.
 
 ---
 
 ## Hooks
-
-### useProps
-
-Pass in props that include media styles and shorthands, get back a flat object
-of props with the current media styles merged and shorthands expanded. This is
-an advanced pattern that should be used sparingly, as it will trigger updates on
-every media query used in the props object. Helpful for more complex components
-that need to pass down props they are given to children (a common example being
-the `size` prop, if it's controlling children that also accept size).
-
-```tsx
-// if props is:
-//   { size: '$2', $sm: { size: '$4' } }
-// and $sm is active, activeProps will be:
-//   { size: '$4' }
-
-// if shorthands like m => margin, then m always expands to margin
-function MyButton(props) {
-  const activeProps = useProps(props)
-}
-```
-
-You can pass an option to disable the shorthands expansion, and another option
-to resolve any token strings into their respective theme or token value:
-
-```tsx
-function MyButton(props) {
-  const activeProps = useProps(props)
-}
-```
-
-useProps takes a second argument, which is the same as useStyle, documented in
-the next section.
-
-### useStyle
-
-Pass in props that include media styles and shorthands, get back a flat style
-object with the current media styles merged, shorthands expanded, and all
-theme/token values resolved (into CSS variables on the web or values on native
-by default). This will remove any non-style values and will by default expand
-all variants and resolve all values.
-
-```tsx
-// if props is:
-//   { color: '$background', $sm: { color: '$color' } }
-// and $sm is active, activeProps will be on web:
-//   { color: 'var(--color)' }
-// and on native will resolve to the actual theme or token value:
-//   { color: '#fff' }
-// this resolve behavior can be controlled, see the docs just below.
-
-// if shorthands like m => margin, then m expands to margin
-
-function MyButton(props) {
-  const style = useStyle(props)
-}
-```
-
-It can take a couple options to control how it resolves values and handles
-shorthands:
-
-```tsx
-function MyButton(props) {
-  const style = useStyle(props, {
-    // option to disable the shorthand expansion
-    disableExpandShorthands: true,
-    // option to change how values are resolved
-    // 'auto' (default) resolves to optimized value on all platforms (CSS variable on web, DynamicColor on iOS, not optimized on android)
-    // 'value' resolves to the raw theme/token string on all platforms (the same as useTheme()[name].val)
-    resolveValues: 'value',
-    // pass a Tamagui component to resolve any custom variants:
-    forComponent: CustomComponent,
-  })
-}
-```
-
-### usePropsAndStyle
-
-Similar to the above two hooks, this returns your fully resolved/merged/media
-query flattened styles, but instead of returning _just_ props or _just_ style,
-it returns both of them split out, as well as returning the result of useTheme()
-and useMedia() that it uses internally:
-
-```tsx
-function MyButton(props) {
-  const [props, style, theme, media] = usePropsAndStyle(props, opts)
-  // see useStyle to for documentation on opts
-  // we return theme, media as they are used internally already in the hook
-}
-```
 
 ### useWebRef
 

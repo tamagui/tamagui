@@ -10,6 +10,10 @@ description: Get Tamagui set up, step by step
 
 Use `npm create tamagui@latest` to pick one of our starter templates.
 
+If you are installing through a coding agent, hand it the brief instead of doing
+this by hand: [Set up with an agent](/docs/intro/agents) has a copy-paste prompt
+for a new project and another for upgrading an existing one.
+
 ## Requirements
 
 - **React Native 0.81+** with New Architecture enabled (for native apps)
@@ -67,7 +71,7 @@ import config from './tamagui.config' // your configuration
 export default function App() {
   return (
     <TamaguiProvider config={config} defaultTheme="light">
-      <View width={200} height={200} backgroundColor="$background" />
+      <View width={200} height={200} backgroundColor="background" />
     </TamaguiProvider>
   )
 }
@@ -83,7 +87,7 @@ You can use it like so:
 
 ```tsx fileName="App.tsx"
 import { TamaguiProvider, createTamagui } from '@tamagui/core'
-import { defaultConfig } from '@tamagui/config/v5'
+import { defaultConfig } from '@tamagui/config/v6'
 
 // you usually export this from a tamagui.config.ts file
 const config = createTamagui(defaultConfig)
@@ -156,7 +160,7 @@ plugins that help with that:
 
 <Spacer />
 
-<Grid gap="$4">
+<Grid gap="4">
   <LogoCard
     title="Next.js"
     img="/logos/next-js.svg"

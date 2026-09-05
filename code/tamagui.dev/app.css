@@ -2,18 +2,24 @@ html,
 body {
   max-width: 100vw;
   font-family:
-    Inter,
     -apple-system,
     BlinkMacSystemFont,
     'Segoe UI',
     Roboto,
-    Helvetica,
+    'Helvetica Neue',
     Arial,
     sans-serif,
     'Apple Color Emoji',
     'Segoe UI Emoji',
     'Segoe UI Symbol';
   scrollbar-color: #b1b1b1 transparent;
+}
+
+/* Preserve the v5 site's explicit default font metrics on the v3 runtime. */
+:where(.font_body, .font_cherryBomb, .font_heading, .font_mono, .is_View) {
+  letter-spacing: var(--f-letterSpacing-true, var(--f-letterSpacing-4));
+  line-height: var(--f-lineHeight-true, var(--f-lineHeight-4));
+  font-weight: var(--f-weight-true, var(--f-weight-4));
 }
 
 /* font flickering all the time on media query changes */
@@ -71,12 +77,22 @@ p a,
   text-decoration: underline;
 }
 
-:root:root .is_Paragraph a {
+.show-sm-inline {
+  display: none;
+}
+
+@media (max-width: 800px) {
+  .show-sm-inline {
+    display: inline;
+  }
+}
+
+:root:root .tm-paragraph a {
   text-decoration: underline;
   text-decoration-color: var(--color02);
 }
 
-:root:root .is_Paragraph a:hover {
+:root:root .tm-paragraph a:hover {
   text-decoration-thickness: 2px;
   text-decoration-color: var(--color04);
 }
@@ -86,7 +102,7 @@ a {
   font-weight: 300;
 }
 
-:is(.is_Paragraph a, .link a, article p a, footer a) {
+:is(.tm-paragraph a, .link a, article p a, footer a) {
   text-decoration: underline;
   text-underline-offset: 4px;
   text-decoration-thickness: 2px;
@@ -94,14 +110,14 @@ a {
   transition: text-decoration-thickness ease-in-out 100ms;
 }
 
-:is(.is_Paragraph a, .link a, article p a, footer a):hover {
+:is(.tm-paragraph a, .link a, article p a, footer a):hover {
   text-decoration: underline;
   cursor: pointer;
   text-decoration-thickness: 4px;
   text-decoration-color: var(--color8);
 }
 
-.is_Paragraph:has(> ul) {
+:where(.tm-paragraph:has(> ul)) {
   margin-bottom: 0;
 }
 
@@ -400,11 +416,11 @@ iframe {
 }
 
 .highlight-line:hover {
-  background-color: var(--backgroundHover);
+  background-color: var(--background-hover);
 }
 
 .highlight-line {
-  color: var(--colorPress);
+  color: var(--color-press);
 }
 
 .token.attr-value,
@@ -569,19 +585,19 @@ textarea {
   opacity: 0.88;
 }
 
-/* collapse margins between consecutive headings */
-[data-heading] + [data-heading] {
+/* Low-specificity content defaults: explicit Tamagui props still win. */
+:where([data-heading] + [data-heading]) {
   margin-top: 0;
   padding-top: var(--t-space-2);
 }
 
 /* collapse margins: notice followed by headings */
-.no-opacity-fade + [data-heading] {
+:where(.no-opacity-fade + [data-heading]) {
   margin-top: var(--t-space-4);
 }
 
 /* collapse margins: code blocks followed by headings */
-.DocCodeBlock + [data-heading] {
+:where(.DocCodeBlock + [data-heading]) {
   margin-top: var(--t-space-4);
 }
 
@@ -618,14 +634,8 @@ textarea {
   -webkit-font-smoothing: antialiased !important;
 }
 
-.font-smooth-none,
-.font_silkscreen {
+.font-smooth-none {
   -webkit-font-smoothing: none !important;
-}
-
-.hero-tag:hover,
-.hero-tag.active {
-  text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
 }
 
 .word-break-keep-all {

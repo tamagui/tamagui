@@ -9,7 +9,7 @@ To use with `@tamagui/core`, install and import `@tamagui/animate-presence`. It'
 
 ## Basic Usage
 
-Use `enterStyle` and `exitStyle` to define how components animate in and out:
+Use `enter:` and `exit:` clauses to define how each property animates in and out:
 
 ```tsx
 import { AnimatePresence, View } from 'tamagui'
@@ -22,16 +22,9 @@ export const MyComponent = ({ isVisible }) => (
         transition="bouncy"
         backgroundColor="green"
         size={50}
-        enterStyle={{
-          opacity: 0,
-          y: 10,
-          scale: 0.9,
-        }}
-        exitStyle={{
-          opacity: 0,
-          y: -10,
-          scale: 0.9,
-        }}
+        opacity="enter:0 exit:0"
+        y="enter:10px exit:-10px"
+        scale="enter:0.9 exit:0.9"
       />
     )}
   </AnimatePresence>
@@ -41,7 +34,7 @@ export const MyComponent = ({ isVisible }) => (
 <Notice theme="blue">
   Note you don't even need to set `opacity` on the base style. Tamagui knows to normalize
   styles like opacity and scale to 1 (and y to 0) if it's not defined on the base styles
-  but is defined on `enterStyle` or `exitStyle`.
+  but has an `enter:` or `exit:` clause.
 </Notice>
 
 Wrap one or more Tamagui components with AnimatePresence. The child components will animate on enter and exit.
@@ -64,35 +57,45 @@ export default ({ show }) => (
       <View
         key="panel"
         transition={{ enter: 'lazy', exit: 'quick' }}
-        enterStyle={{ opacity: 0, y: 20 }}
-        exitStyle={{ opacity: 0, y: -20 }}
+        opacity="enter:0 exit:0"
+        y="enter:20px exit:-20px"
       />
     )}
   </AnimatePresence>
 )
 ```
 
-The `enter` and `exit` keys accept any animation name from your config. You can also combine them with a `default` for property changes that happen while the element is mounted:
+`enter` and `exit` each take a whole transition value, so they accept a preset
+name, a CSS transition string, or an object. The rest of the transition is what
+property changes use while the element is mounted:
 
 ```tsx
-// enter slowly, exit quickly, property changes use medium speed
+// enter slowly, exit quickly, property changes use bouncy
 <View
-  transition={{ enter: 'lazy', exit: 'quick', default: 'bouncy' }}
-  enterStyle={{ opacity: 0 }}
-  exitStyle={{ opacity: 0 }}
+  transition={{ preset: 'bouncy', enter: 'lazy', exit: 'quick' }}
+  opacity="enter:0 exit:0"
 />
 ```
 
-Or use enter/exit with the array syntax to include delay and per-property animations:
+Because they are whole transition values, they can carry a delay and their own
+per-property entries:
 
 ```tsx
-// enter with lazy, exit with quick, delay 200ms, x uses its own animation
+// enter with lazy but move x slowly, exit with quick after 200ms
 <View
-  transition={['bouncy', { enter: 'lazy', exit: 'quick', delay: 200, x: 'slow' }]}
-  enterStyle={{ opacity: 0, x: -100 }}
-  exitStyle={{ opacity: 0, x: 100 }}
+  transition={{
+    preset: 'bouncy',
+    enter: { preset: 'lazy', x: 'slow' },
+    exit: { preset: 'quick', delay: 200 },
+  }}
+  opacity="enter:0 exit:0"
+  x="enter:-100px exit:100px"
 />
 ```
+
+An `enter` or `exit` value replaces the base while it applies rather than
+merging into it, the same way a later CSS `transition` declaration replaces an
+earlier one.
 
 This works with all four animation drivers (CSS, React Native, Reanimated, Motion).
 
@@ -118,23 +121,18 @@ const GalleryItem = styled(YStack, {
   zIndex: 1,
   x: 0,
   opacity: 1,
-  fullscreen: true,
+  position: 'absolute',
+  inset: 0,
 
   variants: {
     // 1 = right, 0 = nowhere, -1 = left
-    going: {
-      ':number': (going) => ({
-        enterStyle: {
-          x: going > 0 ? 1000 : -1000,
-          opacity: 0,
-        },
-        exitStyle: {
-          zIndex: 0,
-          x: going < 0 ? 1000 : -1000,
-          opacity: 0,
-        },
-      }),
-    },
+    going: styled.dynamic<number>((going) => ({
+        x: `0 enter:${going > 0 ? '1000px' : '-1000px'} exit:${
+          going < 0 ? '1000px' : '-1000px'
+        }`,
+        opacity: '1 enter:0 exit:0',
+        zIndex: '1 exit:0',
+      })),
   } as const,
 })
 
@@ -175,9 +173,9 @@ export function Demo() {
       <Button
         accessibilityLabel="Carousel left"
         icon={ArrowLeft}
-        size="$5"
+        size="5"
         position="absolute"
-        left="$4"
+        left="4"
         circular
         elevate
         onPress={() => paginate(-1)}
@@ -186,9 +184,9 @@ export function Demo() {
       <Button
         accessibilityLabel="Carousel right"
         icon={ArrowRight}
-        size="$5"
+        size="5"
         position="absolute"
-        right="$4"
+        right="4"
         circular
         elevate
         onPress={() => paginate(1)}
@@ -206,15 +204,15 @@ export function Demo() {
 - **`children`** - One or more Tamagui components with unique `key` props
 - **`initial`** - If `false`, children entering on initial mount won't animate (default: `true`)
 - **`custom`** - Pass data to children's variants for dynamic exit animations
-- **`exitBeforeEnter`** - If `true`, only one child renders at a time (default: `false`)
+- **`mode`** - Determines how entering and exiting children render. Use `"wait"` to render one child at a time.
 - **`onExitComplete`** - Callback fired when all exiting children have finished animating
 
 ### Component Props
 
 When used inside AnimatePresence:
 
-- **`enterStyle`** - Styles to animate from when mounting
-- **`exitStyle`** - Styles to animate to when unmounting
+- **`enter:` clauses** - Values to animate from when mounting
+- **`exit:` clauses** - Values to animate to when unmounting
 - **`transition`** - Animation configuration (can use `{ enter, exit }` syntax)
 - **`key`** - Required unique identifier for AnimatePresence tracking
 

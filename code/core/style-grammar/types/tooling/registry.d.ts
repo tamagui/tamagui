@@ -1,0 +1,28 @@
+import { modifierAliases } from "../runtime/stateModifiers";
+export { modifierAliases };
+export type StandardTokenCategory = "space" | "size" | "radius" | "zIndex" | "color" | "fontFamily" | "fontSize" | "fontWeight" | "lineHeight" | "letterSpacing";
+export type TokenCategory = StandardTokenCategory | (string & {});
+export type Convenience = "alignment-alias" | "angle" | "bare-border" | "flex-bundle" | "font-generic" | "integer" | "percentage" | "sizing-keyword" | "zero";
+export interface GrammarEntry {
+	prop: string;
+	prefix: string;
+	tokenCategory?: TokenCategory;
+	conveniences?: readonly Convenience[];
+	convert?: boolean;
+}
+export declare const grammarEntries: readonly GrammarEntry[];
+export declare const propToGrammarEntry: Readonly<Record<string, GrammarEntry>>;
+export declare function getTokenCategory(prop: string): TokenCategory | null;
+export declare const prefixToEntries: Readonly<Record<string, readonly GrammarEntry[]>>;
+export declare const standaloneValueProps: Readonly<Record<string, Readonly<Record<string, string>>>>;
+export declare const fontWeightNames: Readonly<Record<string, string>>;
+export declare const wholeClassUtilities: Readonly<Record<string, Readonly<Record<string, string | number>>>>;
+export declare const wholeClassConveniences: Readonly<Record<string, Convenience>>;
+export declare const borderSideSuffix: Readonly<Record<string, readonly string[]>>;
+export declare const radiusCornerProps: Readonly<Record<string, readonly string[]>>;
+export declare const sizeUtilityProps: readonly string[];
+export declare const insetAxisProps: Readonly<Record<string, readonly string[]>>;
+export declare const textAlignKeywords: ReadonlySet<string>;
+export declare const percentUtilityProps: ReadonlySet<string>;
+
+//# sourceMappingURL=registry.d.ts.map

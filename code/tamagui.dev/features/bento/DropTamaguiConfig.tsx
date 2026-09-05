@@ -1,15 +1,7 @@
 import { Paintbrush, X } from '@tamagui/lucide-icons-2'
 import React, { useEffect, useState } from 'react'
-import {
-  Button,
-  Dialog,
-  H2,
-  Paragraph,
-  ScrollView,
-  Theme,
-  TooltipSimple,
-  YStack,
-} from 'tamagui'
+import { Dialog, H2, Paragraph, ScrollView, Theme, TooltipSimple, YStack } from 'tamagui'
+import { Button } from '~/components/Button'
 import { Features } from '~/components/Features'
 import { Code, CodeInline } from '~/components/Code'
 import { useLocalStorageWatcher } from '~/hooks/useLocalStorageWatcher'
@@ -76,16 +68,14 @@ export const DropTamaguiConfig = () => {
         <Theme name={config ? 'green' : 'accent'}>
           <Button
             self="flex-end"
-            rounded="$10"
+            rounded="10"
             onPress={() => setShow(true)}
-            size="$3"
-            chromeless
-            $sm={{
-              display: 'none',
-            }}
+            size="4"
+            variant="quiet"
+            display="sm:none"
             icon={Paintbrush}
           >
-            <Button.Text color={config ? '$green12' : '$color12'}>
+            <Button.Text color={config ? 'green12' : 'color12'}>
               {config ? 'Customization enabled' : 'Customize'}
             </Button.Text>
           </Button>
@@ -97,38 +87,33 @@ export const DropTamaguiConfig = () => {
           <Dialog.Overlay
             key="overlay"
             transition="medium"
+            opacity="0.5 enter:0 exit:0"
+            bg="color1"
             className="blur-medium"
-            opacity={0.5}
-            bg="$color1"
-            enterStyle={{ opacity: 0 }}
-            exitStyle={{ opacity: 0 }}
           />
 
           <Dialog.Content
             bordered
             elevate
-            bg="$color2"
-            key="content"
-            transition={[
-              'quick',
-              {
-                opacity: {
-                  overshootClamping: true,
-                },
-              },
-            ]}
-            enterStyle={{ y: -10, opacity: 0, scale: 0.975 }}
-            exitStyle={{ y: 10, opacity: 0, scale: 0.975 }}
+            bg="color2"
+            transition={{
+              preset: 'quick',
+              opacity: { preset: 'quick', spring: { overshootClamping: true } },
+            }}
+            y="enter:-10px exit:10px"
+            opacity="enter:0 exit:0"
+            scale="enter:0.975 exit:0.975"
             width="95%"
             maxW={600}
-            p="$8"
+            p="8"
+            key="content"
           >
             <Dialog.Close asChild>
               <Button
                 position="absolute"
-                t="$4"
-                r="$4"
-                size="$2"
+                t="4"
+                r="4"
+                size="2"
                 circular
                 z={1000}
                 icon={X}
@@ -136,10 +121,11 @@ export const DropTamaguiConfig = () => {
             </Dialog.Close>
 
             <YStack
-              fullscreen
+              position="absolute"
+              inset={0}
               pointerEvents="none"
               opacity={dragging ? 1 : 0}
-              bg="$background06"
+              bg="background06"
               items="center"
               justify="center"
               z={1000}
@@ -148,13 +134,13 @@ export const DropTamaguiConfig = () => {
             </YStack>
 
             <ScrollView maxH="90vh">
-              <YStack gap="$4">
+              <YStack gap="4">
                 <Dialog.Title>Your Design System</Dialog.Title>
 
                 {config.storageItem && (
                   <>
-                    <Paragraph size="$4">Nice, we've got your config.</Paragraph>
-                    <Paragraph size="$4">
+                    <Paragraph size="4">Nice, we've got your config.</Paragraph>
+                    <Paragraph size="4">
                       You can now go copy code from any component and we will adapt the
                       copy-paste code to use your tokens.
                     </Paragraph>
@@ -171,16 +157,16 @@ export const DropTamaguiConfig = () => {
 
                 {!config.storageItem && (
                   <>
-                    <Paragraph size="$4">
+                    <Paragraph size="4">
                       Drag and drop your{' '}
                       <CodeInline>.tamagui/tamagui.config.json</CodeInline> here to
                       customize the code we generate to your design system!
                     </Paragraph>
-                    <Paragraph size="$4">
+                    <Paragraph size="4">
                       If you have a compiler plugin installed, this is done for you
                       automatically. If not, use the CLI.
                     </Paragraph>
-                    <Paragraph size="$4">
+                    <Paragraph size="4">
                       But first, set up a <CodeInline>tamagui.build.ts</CodeInline>:
                     </Paragraph>
 

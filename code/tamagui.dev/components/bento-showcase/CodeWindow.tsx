@@ -1,7 +1,6 @@
 import { AlertCircle, Copy, File } from '@tamagui/lucide-icons-2'
 import { lazy, useEffect, useMemo, useState } from 'react'
 import {
-  Button,
   Paragraph,
   ScrollView,
   SizableText,
@@ -10,11 +9,15 @@ import {
   Theme,
   XStack,
   YStack,
+  style,
 } from 'tamagui'
+import { Button } from '~/components/Button'
 import { useClipboard } from './hooks'
 import { useReplaceTokens } from './hooks/useReplaceTokens'
 import useTokenMapper from './hooks/useTokenMapper'
 import { useUserTamaguiConfig } from './hooks/useUserTamaguiConfig'
+
+const scrollContentStyle = style({ p: 12 })
 interface Props {
   code: string
   isLoading?: boolean
@@ -76,9 +79,9 @@ export function CodeWindow({ code, isLoading }: Props) {
       <XStack
         height={700}
         width="100%"
-        bg="$background"
+        bg="background"
         borderWidth={0.5}
-        borderColor="$borderColor"
+        borderColor="border-color"
         justify="center"
         items="center"
         minH={150}
@@ -103,17 +106,16 @@ export function CodeWindow({ code, isLoading }: Props) {
       onValueChange={setActiveTabIndex}
       orientation="horizontal"
       flexDirection="column"
-      bg="$background"
-      borderColor="$color3"
+      bg="background"
+      borderColor="color3"
       width="100%"
       overflow="hidden"
       p={0}
     >
       <Tabs.List
-        unstyled
         aria-label="Manage your account"
-        backgroundColor="$background"
-        borderColor="$borderColor"
+        backgroundColor="background"
+        borderColor="border-color"
         borderBottomWidth={0.5}
       >
         {tabs.map((tab, i) => {
@@ -121,26 +123,20 @@ export function CodeWindow({ code, isLoading }: Props) {
 
           return (
             <Tabs.Tab
-              bg={isActive ? '$color1' : '$color2'}
-              paddingVertical={'$4'}
-              key={tab.name}
+              bg={`${isActive ? 'color1' : 'color2'} hover:${isActive ? 'color2' : 'color3'} focus:${isActive ? 'color1' : 'color3'}`}
+              paddingVertical="4"
               flex={1}
-              value={String(i)}
-              hoverStyle={{
-                bg: isActive ? '$color2' : '$color3',
-              }}
-              focusStyle={{
-                bg: isActive ? '$color1' : '$color3',
-              }}
               alignItems="center"
               justifyContent="center"
-              gap="$2"
+              gap="2"
+              key={tab.name}
+              value={String(i)}
             >
-              <File size={16} color={isActive ? '$gray12' : '$gray10'} />
+              <File size={16} color={`${isActive ? 'gray12' : 'gray10'}`} />
               <SizableText
-                color={isActive ? '$gray12' : '$gray10'}
-                size="$3"
+                color={`${isActive ? 'gray12' : 'gray10'}`}
                 letterSpacing={1}
+                size="3"
               >
                 {tab.name}
               </SizableText>
@@ -161,13 +157,13 @@ export function CodeWindow({ code, isLoading }: Props) {
 function CopyCodeButton({ onCopy, hasCopied, oneTabLayout = false }) {
   return (
     <Button
-      rounded="$4"
+      rounded="4"
       theme="accent"
       position="absolute"
       t={oneTabLayout ? 16 : 48}
       r={0}
-      m="$4"
-      size="$3"
+      m="4"
+      size="3"
       onPress={onCopy}
     >
       <Button.Text>{hasCopied ? 'Copied' : 'Copy'}</Button.Text>
@@ -183,23 +179,23 @@ function CustomizationEnabledBanner() {
 
   if (!userTamaguiConfig) return null
   return (
-    <YStack mt="$3" ml="$3">
+    <YStack mt="3" ml="3">
       <Theme name="green">
-        <XStack minW="87%" maxW="87%" rounded="$4">
-          <YStack opacity={0.62} bg="$color10" fullscreen rounded="$4" />
-          <XStack py={14} px="$3" flex={1}>
-            <AlertCircle t="$3" l="$3" z={100} color="$color7" size={22} />
+        <XStack minW="87%" maxW="87%" rounded="4">
+          <YStack opacity={0.62} bg="color10" position="absolute" inset={0} rounded="4" />
+          <XStack py={14} px="3" flex={1}>
+            <AlertCircle t="3" l="3" z={100} color="color7" size={22} />
             <Paragraph
-              ml="$2.5"
-              size="$3"
+              ml="2-5"
               fontWeight="200"
-              lineHeight="$2"
-              color="$color1"
+              lineHeight="2"
+              color="color1"
               mr="auto"
+              size="3"
             >
               Customization enabled
             </Paragraph>
-            <Paragraph color="$color4" size="$3" lineHeight="$2">
+            <Paragraph color="color4" lineHeight="2" size="3">
               These components are customized to your tokens through the customize option.
             </Paragraph>
           </XStack>
@@ -221,9 +217,9 @@ function Content({
       width="100%"
       overflow="hidden"
       p={0}
-      bg="$background"
-      render="pre"
+      bg="background"
       minH={500}
+      render="pre"
       data-line-numbers={true}
     >
       <CustomizationEnabledBanner />
@@ -231,9 +227,7 @@ function Content({
         showsVerticalScrollIndicator={true}
         width="100%"
         maxH={700}
-        contentContainerStyle={{
-          p: 12,
-        }}
+        contentContainerStyle={scrollContentStyle}
       >
         {CodeBlock ? (
           <CodeBlock

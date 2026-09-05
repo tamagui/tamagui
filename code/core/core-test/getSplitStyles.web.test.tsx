@@ -10,16 +10,19 @@ import {
   createTamagui,
   styled,
 } from '../web/src'
-import { getGroupPropParts } from '../web/src/helpers/getGroupPropParts'
 import { getSplitStyles } from '../web/src'
 import { defaultComponentState } from '../web/src/defaultComponentState'
-import { simplifiedGetSplitStyles } from './utils'
+import { getStyleValue, rulesForProperty, simplifiedGetSplitStyles } from './utils'
 
 beforeAll(() => {
   createTamagui(config.getDefaultTamaguiConfig())
 })
 
 describe('getSplitStyles', () => {
+  test('Text does not register inlineWhenUnflattened', () => {
+    expect((Text as any).staticConfig.inlineWhenUnflattened).toBeUndefined()
+  })
+
   test(`styled with variants`, () => {
     const ViewVariants = styled(Text, {
       color: 'blue',
@@ -37,7 +40,58 @@ describe('getSplitStyles', () => {
       test: true,
     })
 
-    expect(styles.classNames).toEqual({ color: '_col-red' })
+    // variant strings run through the program engine: hashed program class,
+    // same declaration
+    const className = styles.classNames.color
+    expect(className).toMatch(/^_c-/)
+    expect((styles.rulesToInsert[className]?.[4] ?? []).join('')).toContain('color:red')
+  })
+
+  test.each([false, null, undefined])(
+    `%s style props clear styled base values`,
+    (value) => {
+      const StyledView = styled(View, { backgroundColor: 'green' })
+      const styles = simplifiedGetSplitStyles(StyledView, { backgroundColor: value })
+
+      expect(styles.classNames.backgroundColor).toBeUndefined()
+    }
+  )
+
+  test(`dynamic variants receive true for opt-in sizing policies`, () => {
+    let seenSize: unknown
+    const SizedView = styled(View, {
+      variants: {
+        size: styled.dynamic<any>((val) => {
+          seenSize = val
+          return {
+            width: val,
+          }
+        }),
+      } as const,
+    })
+
+    simplifiedGetSplitStyles(SizedView, {
+      size: true,
+    })
+
+    expect(seenSize).toBe(true)
+  })
+
+  test(`resolver-name keys are exact values, not type matchers`, () => {
+    const ExactOnly = styled(View, {
+      variants: {
+        kind: {
+          Size: { opacity: 0.42 },
+        },
+      } as const,
+    })
+
+    expect(
+      simplifiedGetSplitStyles(ExactOnly, { kind: '4' }).style?.opacity
+    ).toBeUndefined()
+    expect(
+      getStyleValue(simplifiedGetSplitStyles(ExactOnly, { kind: 'Size' }), 'opacity')
+    ).toBe('0.42')
   })
 
   test(`prop "aria-required" is passed through`, () => {
@@ -67,9 +121,43 @@ describe('getSplitStyles', () => {
     expect(Object.values(out.rulesToInsert)[0]?.[StyleObjectValue]).toEqual('10px')
   })
 
+  test(`prop "paddingTop" value "safe" becomes env(safe-area-inset-top)`, () => {
+    const out = simplifiedGetSplitStyles(View, { paddingTop: 'safe' })
+    expect(getStyleValue(out, 'paddingTop')).toEqual('env(safe-area-inset-top)')
+  })
+
+  test(`prop "padding" value "safe" expands to 4 per-side env() values`, () => {
+    const out = simplifiedGetSplitStyles(View, { padding: 'safe' })
+    expect(getStyleValue(out, 'paddingTop')).toEqual('env(safe-area-inset-top)')
+    expect(getStyleValue(out, 'paddingRight')).toEqual('env(safe-area-inset-right)')
+    expect(getStyleValue(out, 'paddingBottom')).toEqual('env(safe-area-inset-bottom)')
+    expect(getStyleValue(out, 'paddingLeft')).toEqual('env(safe-area-inset-left)')
+  })
+
+  test(`prop "inset" value "safe" expands to top/right/bottom/left env() values`, () => {
+    const out = simplifiedGetSplitStyles(View, { inset: 'safe' })
+    expect(getStyleValue(out, 'top')).toEqual('env(safe-area-inset-top)')
+    expect(getStyleValue(out, 'right')).toEqual('env(safe-area-inset-right)')
+    expect(getStyleValue(out, 'bottom')).toEqual('env(safe-area-inset-bottom)')
+    expect(getStyleValue(out, 'left')).toEqual('env(safe-area-inset-left)')
+  })
+
+  test(`shorthand "pt" value "safe" becomes paddingTop env(safe-area-inset-top)`, () => {
+    const out = simplifiedGetSplitStyles(View, { pt: 'safe' })
+    expect(getStyleValue(out, 'paddingTop')).toEqual('env(safe-area-inset-top)')
+  })
+
+  test(`prop "paddingHorizontal" value "safe" only emits left+right`, () => {
+    const out = simplifiedGetSplitStyles(View, { paddingHorizontal: 'safe' })
+    expect(getStyleValue(out, 'paddingLeft')).toEqual('env(safe-area-inset-left)')
+    expect(getStyleValue(out, 'paddingRight')).toEqual('env(safe-area-inset-right)')
+    expect(getStyleValue(out, 'paddingTop')).toBeUndefined()
+    expect(getStyleValue(out, 'paddingBottom')).toBeUndefined()
+  })
+
   test(`font props get the font family, regardless of the order`, () => {
     const styles = simplifiedGetSplitStyles(Text, {
-      fontSize: '$1',
+      fontSize: '1',
     }).rulesToInsert
 
     expect(
@@ -81,8 +169,8 @@ describe('getSplitStyles', () => {
     expect(
       Object.values(
         simplifiedGetSplitStyles(Text, {
-          fontSize: '$1',
-          fontFamily: '$body',
+          fontSize: '1',
+          fontFamily: 'body',
         }).rulesToInsert
       ).find((rule) => rule[StyleObjectProperty] === 'fontSize')?.[StyleObjectValue]
     ).toEqual('var(--f-size-1)')
@@ -90,8 +178,8 @@ describe('getSplitStyles', () => {
     expect(
       Object.values(
         simplifiedGetSplitStyles(Text, {
-          fontFamily: '$body',
-          fontSize: '$1',
+          fontFamily: 'body',
+          fontSize: '1',
         }).rulesToInsert
       ).find((rule) => rule[StyleObjectProperty] === 'fontSize')?.[StyleObjectValue]
     ).toEqual('var(--f-size-1)')
@@ -102,7 +190,7 @@ describe('getSplitStyles', () => {
       variants: {
         type: {
           myValue: {
-            fontFamily: '$body',
+            fontFamily: 'body',
           },
         },
       } as const,
@@ -111,7 +199,7 @@ describe('getSplitStyles', () => {
     expect(
       Object.values(
         simplifiedGetSplitStyles(CustomText, {
-          fontSize: '$1',
+          fontSize: '1',
           type: 'myValue',
         }).rulesToInsert
       ).find((rule) => rule[StyleObjectProperty] === 'fontSize')?.[StyleObjectValue]
@@ -121,24 +209,36 @@ describe('getSplitStyles', () => {
       Object.values(
         simplifiedGetSplitStyles(CustomText, {
           type: 'myValue',
-          fontSize: '$1',
+          fontSize: '1',
         }).rulesToInsert
       ).find((rule) => rule[StyleObjectProperty] === 'fontSize')?.[StyleObjectValue]
     ).toEqual('var(--f-size-1)')
   })
 
-  test(`$theme-light and $theme-dark styles generate the correct CSS selectors`, () => {
+  test(`background shorthand passes through to CSS on web`, () => {
+    const shorthand = simplifiedGetSplitStyles(View, {
+      background: '#fff url(x.png) no-repeat',
+    })
+    const rule = Object.values(shorthand.rulesToInsert).find(
+      (rule) => rule[StyleObjectProperty] === 'background'
+    )
+    expect(rule?.[StyleObjectValue]).toBe('#fff url(x.png) no-repeat')
+
+    // single color values normalize to backgroundColor
+    const color = simplifiedGetSplitStyles(View, { background: 'red' })
+    expect(getStyleValue(color, 'backgroundColor')).toBe('red')
+  })
+
+  test(`light and dark theme clauses generate the correct CSS selectors`, () => {
     // Test light theme styles
     const lightThemeStyles = simplifiedGetSplitStyles(View, {
-      '$theme-light': {
-        backgroundColor: 'white',
-        color: 'black',
-      },
+      backgroundColor: 'light:white',
+      color: 'light:black',
     })
 
     // Check the entire structure for expected values
     const lightThemeString = JSON.stringify(lightThemeStyles.rulesToInsert)
-    expect(lightThemeString).toContain('backgroundColor')
+    expect(lightThemeString).toContain('background-color')
     expect(lightThemeString).toContain('white')
     expect(lightThemeString).toContain('light')
 
@@ -154,15 +254,13 @@ describe('getSplitStyles', () => {
 
     // Test dark theme styles
     const darkThemeStyles = simplifiedGetSplitStyles(View, {
-      '$theme-dark': {
-        backgroundColor: 'black',
-        color: 'white',
-      },
+      backgroundColor: 'dark:black',
+      color: 'dark:white',
     })
 
     // Check the entire structure for expected values
     const darkThemeString = JSON.stringify(darkThemeStyles.rulesToInsert)
-    expect(darkThemeString).toContain('backgroundColor')
+    expect(darkThemeString).toContain('background-color')
     expect(darkThemeString).toContain('black')
     expect(darkThemeString).toContain('dark')
 
@@ -177,54 +275,44 @@ describe('getSplitStyles', () => {
     expect(darkBgRule || darkThemeString.includes('black')).toBeTruthy()
   })
 
-  test(`$theme-light and $theme-dark styles are combined in the same component`, () => {
+  test(`light and dark theme clauses combine in the same component`, () => {
     // Test both light and dark theme styles in the same component
     const combinedThemeStyles = simplifiedGetSplitStyles(View, {
-      '$theme-light': {
-        backgroundColor: 'white',
-        color: 'black',
-      },
-      '$theme-dark': {
-        backgroundColor: 'black',
-        color: 'white',
-      },
+      backgroundColor: 'light:white dark:black',
+      color: 'light:black dark:white',
     })
 
     // Check the entire structure for expected values
     const combinedThemeString = JSON.stringify(combinedThemeStyles.rulesToInsert)
-    expect(combinedThemeString).toContain('backgroundColor')
+    expect(combinedThemeString).toContain('background-color')
     expect(combinedThemeString).toContain('white')
     expect(combinedThemeString).toContain('black')
     expect(combinedThemeString).toContain('light')
     expect(combinedThemeString).toContain('dark')
   })
 
-  test(`$theme conditional styles work with nested theme names`, () => {
-    // Test more specific theme names like dark_blue
-    const nestedThemeStyles = simplifiedGetSplitStyles(View, {
-      '$theme-dark_blue': {
-        backgroundColor: 'darkblue',
-        color: 'lightblue',
+  test(`root theme clauses work within nested themes`, () => {
+    const nestedThemeStyles = simplifiedGetSplitStyles(
+      View,
+      {
+        backgroundColor: 'red dark:darkblue',
       },
-    })
+      {
+        noClass: true,
+        themeName: 'dark_blue',
+      }
+    )
 
-    // Check the entire structure for expected values
-    const nestedThemeString = JSON.stringify(nestedThemeStyles.rulesToInsert)
-    expect(nestedThemeString).toContain('backgroundColor')
-    expect(nestedThemeString).toContain('darkblue')
-    expect(nestedThemeString).toContain('dark_blue')
+    expect(nestedThemeStyles.style?.backgroundColor).toBe('darkblue')
   })
 
-  test(`$theme-dark de-opts to inline style with noClass animation driver`, () => {
-    // when using an inline animation driver (noClass: true), $theme-dark should
+  test(`a dark clause de-opts to inline style with a noClass animation driver`, () => {
+    // when using an inline animation driver (noClass: true), dark should
     // de-opt to inline styles rather than CSS classes, so the animation driver
     // manages the theme-appropriate value directly
     const darkResult = getSplitStyles(
       {
-        backgroundColor: 'red',
-        '$theme-dark': {
-          backgroundColor: 'blue',
-        },
+        backgroundColor: 'red dark:blue',
       },
       View.staticConfig,
       {} as any,
@@ -238,7 +326,7 @@ describe('getSplitStyles', () => {
       },
       {} as any,
       {
-        animationDriver: { isReactNative: false },
+        animationDriver: { inputStyle: 'value', outputStyle: 'inline' },
         groups: { state: {} },
       } as any,
       undefined,
@@ -246,7 +334,7 @@ describe('getSplitStyles', () => {
       true
     )!
 
-    // in dark theme, $theme-dark override should be applied inline
+    // in dark theme, the dark override should be applied inline
     expect(darkResult.style?.backgroundColor).toBe('blue')
 
     // no theme media CSS classes should be generated (de-opted to inline)
@@ -255,13 +343,10 @@ describe('getSplitStyles', () => {
     )
     expect(themeMediaKey).toBeUndefined()
 
-    // in light theme, $theme-dark should not apply
+    // in light theme, the dark clause should not apply
     const lightResult = getSplitStyles(
       {
-        backgroundColor: 'red',
-        '$theme-dark': {
-          backgroundColor: 'blue',
-        },
+        backgroundColor: 'red dark:blue',
       },
       View.staticConfig,
       {} as any,
@@ -275,7 +360,7 @@ describe('getSplitStyles', () => {
       },
       {} as any,
       {
-        animationDriver: { isReactNative: false },
+        animationDriver: { inputStyle: 'value', outputStyle: 'inline' },
         groups: { state: {} },
       } as any,
       undefined,
@@ -287,86 +372,32 @@ describe('getSplitStyles', () => {
     expect(lightResult.style?.backgroundColor).toBe('red')
   })
 
-  test.todo(
-    `$theme-dark keeps CSS classes when animateOnly is set and property is not animated`,
-    () => {
-      // when animateOnly is set, non-animated properties (like bg) should stay as
-      // CSS classes so theme media overrides work via specificity
-      const result = getSplitStyles(
-        {
-          backgroundColor: 'red',
-          animateOnly: ['transform'],
-          '$theme-dark': {
-            backgroundColor: 'blue',
-          },
-        },
-        View.staticConfig,
-        {} as any,
-        'dark',
-        defaultComponentState,
-        {
-          mediaState: undefined,
-          isAnimated: true,
-          noClass: true,
-          resolveValues: 'auto',
-        },
-        {} as any,
-        {
-          animationDriver: { isReactNative: false },
-          groups: { state: {} },
-        } as any,
-        undefined,
-        undefined,
-        true
-      )!
-
-      // backgroundColor should NOT be inline (it's not in animateOnly)
-      expect(result.style?.backgroundColor).toBeUndefined()
-
-      // backgroundColor should be promoted to CSS class
-      expect(result.classNames?.backgroundColor).toBeDefined()
-
-      // theme media CSS class should also exist
-      const themeMediaKey = Object.keys(result.classNames || {}).find((k) =>
-        k.includes('dark')
-      )
-      expect(themeMediaKey).toBeDefined()
-    }
-  )
-
   test(`perspective transform`, () => {
-    expect(
-      Object.values(
-        simplifiedGetSplitStyles(Text, {
-          perspective: 1000,
-        }).rulesToInsert
-      )
-    ).toMatchInlineSnapshot(`
-      [
-        [
-          "transform",
-          "perspective(1000px)",
-          "_tr-perspective1343953606",
-          undefined,
-          [
-            ":root ._tr-perspective1343953606{transform:perspective(1000px);}",
-          ],
-        ],
-      ]
-    `)
+    const rules = Object.values(
+      simplifiedGetSplitStyles(Text, {
+        perspective: 1000,
+      }).rulesToInsert
+    )
+    expect(rules).toHaveLength(1)
+    expect(rules[0][0]).toBe('transform')
+    expect(rules[0][1]).toBe('perspective(1000px)')
+    expect(rules[0][4].join('')).toContain('transform:perspective(1000px)')
   })
 
-  test(`z-index resolves to respective tokens`, () => {
-    const styles = simplifiedGetSplitStyles(Text, {
-      zIndex: '$1',
+  test(`z-index prefers an overlapping token and otherwise stays literal`, () => {
+    const token = simplifiedGetSplitStyles(Text, {
+      zIndex: '1',
     })
 
     expect(
-      Object.values(styles.rulesToInsert)[0][StyleObjectProperty] === 'zIndex'
+      Object.values(token.rulesToInsert)[0][StyleObjectProperty] === 'zIndex'
     ).toBeTruthy()
-    expect(Object.values(styles.rulesToInsert)[0][StyleObjectValue]).toEqual(
+    expect(Object.values(token.rulesToInsert)[0][StyleObjectValue]).toEqual(
       'var(--t-zIndex-1)'
     )
+
+    const literal = simplifiedGetSplitStyles(Text, { zIndex: '13' })
+    expect(Object.values(literal.rulesToInsert)[0][StyleObjectValue]).toEqual('13')
   })
 
   test(`shadowColor + shadowOpacity`, () => {
@@ -386,29 +417,29 @@ describe('getSplitStyles', () => {
 
   test(`group container queries generate @supports and @container`, () => {
     const styles = simplifiedGetSplitStyles(Text, {
-      '$group-testy-sm': {
-        color: 'red',
-      },
+      color: '@sm/testy:red',
     })
     const rule = Object.values(styles.rulesToInsert)[0][StyleObjectRules][0]
 
-    expect(rule).toMatchInlineSnapshot(
-      '"@supports (contain: inline-size) {@container testy (max-width: 800px){:root:root:root .t_group_testy  ._col-_grouptesty-sm_red{color:red;}}}"'
+    // the program engine lowers the named container clause straight to a
+    // container query on the group name: no @supports wrapper, no :root
+    // ladder, no group-descendant selector hop
+    expect(rule).toMatch(
+      /^@container testy \(max-width: 800px\) \{\._c-\d+\{color:red\}\}$/
     )
   })
 
   test(`group container queries with single-part media keys`, () => {
     // use sm which exists in the default config
     const styles = simplifiedGetSplitStyles(Text, {
-      '$group-frame-sm': {
-        paddingRight: 0,
-      },
+      paddingRight: '@sm/frame:0px',
     })
     const rule = Object.values(styles.rulesToInsert)[0][StyleObjectRules][0]
 
-    // should generate valid selector with t_group_frame
+    // converted to a program: a container query on the frame group, anchored
+    // on the subject's program class
     expect(rule).toContain('@container frame')
-    expect(rule).toContain('.t_group_frame')
+    expect(rule).toMatch(/\._p-\d+/)
     // should not have the media key as a pseudo selector
     expect(rule).not.toContain(':sm')
   })
@@ -416,9 +447,7 @@ describe('getSplitStyles', () => {
   test(`group container queries with multi-part pseudo like focus-visible`, () => {
     // test focus-visible pseudo which has a dash
     const styles = simplifiedGetSplitStyles(Text, {
-      '$group-frame-focus-visible': {
-        paddingRight: 0,
-      },
+      paddingRight: 'group-focus-visible/frame:0px',
     })
     const rule = Object.values(styles.rulesToInsert)[0][StyleObjectRules][0]
 
@@ -427,16 +456,7 @@ describe('getSplitStyles', () => {
     expect(rule).toContain('.t_group_frame')
   })
 
-  test(`boolean group $group-hover parses correctly as group-true-hover`, () => {
-    // $group-hover normalizes to $group-true-hover internally
-    // getGroupPropParts receives "group-true-hover" and should parse it correctly
-    const result = getGroupPropParts('group-true-hover')
-    expect(result.name).toBe('true')
-    expect(result.pseudo).toBe('hover')
-    expect(result.media).toBeUndefined()
-  })
-
-  test(`boolean group with $group-hover does not warn`, () => {
+  test(`an unnamed group hover clause does not warn`, () => {
     const origNodeEnv = process.env.NODE_ENV
     process.env.NODE_ENV = 'development'
     const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
@@ -452,7 +472,7 @@ describe('getSplitStyles', () => {
       },
     }
 
-    simplifiedGetSplitStyles(Text, { '$group-hover': { color: 'red' } }, { groupContext })
+    simplifiedGetSplitStyles(Text, { color: 'group-hover:red' }, { groupContext })
 
     expect(warnSpy).not.toHaveBeenCalled()
     warnSpy.mockRestore()
@@ -491,7 +511,7 @@ describe('getSplitStyles', () => {
   //   const baseline = runBaselineSpeedTest()
 
   //   const props = {
-  //     zIndex: '$1',
+  //     zIndex: '1',
   //     backgroundColor: 'red',
   //     margin: 20,
   //     scale: 2,
@@ -552,7 +572,7 @@ describe('getSplitStyles', () => {
   //     variants: {
   //       type: {
   //         myValue: {
-  //           fontFamily: '$body',
+  //           fontFamily: 'body',
   //         },
   //       },
   //     } as const,
@@ -561,9 +581,7 @@ describe('getSplitStyles', () => {
   //     CustomText,
   //     {
   //       type: 'myValue',
-  //       $xs: {
-  //         fontSize: '$1',
-  //       },
+  //       fontSize: 'xs:1',
   //     },
   //     'p',
   //     { xs: true }
@@ -574,26 +592,6 @@ describe('getSplitStyles', () => {
   //   )
 
   //   expect(fontSizeRule?.rules[0].includes('font-size:var(--f-size-1)')).toBeTruthy()
-  // })
-
-  // test(`prop "tabIndex" defaults to "0", overrides to "-1" when tag = button`, () => {
-  //   expect(
-  //     getSplitStylesStack(
-  //       {
-  //         focusable: true,
-  //       },
-  //       'button'
-  //     )['tabIndex']
-  //   ).toEqual('0')
-
-  //   expect(
-  //     getSplitStylesStack(
-  //       {
-  //         tabIndex: '-1',
-  //       },
-  //       'button'
-  //     )['tabIndex']
-  //   ).toEqual('-1')
   // })
 })
 
@@ -686,35 +684,45 @@ describe('getSplitStyles - asChild default props skipping', () => {
   })
 })
 
-describe('getSplitStyles - pseudo prop merging', () => {
+describe('getSplitStyles - flat clause merging', () => {
   const StyledButton = styled(View, {
-    name: 'StyledButton',
-    pressStyle: { backgroundColor: 'green' },
+    displayName: 'StyledButton',
+    backgroundColor: 'press:green',
     variants: {
       variant: {
         prim: {
-          pressStyle: { backgroundColor: 'blue' },
+          backgroundColor: 'press:blue',
         },
       },
     },
   })
 
-  test('inline pressStyle should override variant pressStyle', () => {
-    const { viewProps } = simplifiedGetSplitStyles(StyledButton, {
+  test('an inline press clause overrides the variant press clause', () => {
+    const styles = simplifiedGetSplitStyles(StyledButton, {
       variant: 'prim',
-      pressStyle: { backgroundColor: 'red' },
+      backgroundColor: 'press:red',
     })
-    expect(viewProps.className).toContain('_bg-0active-red')
+    // The inline restatement replaces the variant's clause.
+    const className = styles.classNames.backgroundColor
+    expect(className).toMatch(/^_b-/)
+    const rules = (styles.rulesToInsert[className]?.[StyleObjectRules] ?? []).join('')
+    expect(rules).toContain(':active')
+    expect(rules).toContain('red')
+    expect(rules).not.toContain('blue')
   })
 
-  test('variant pressStyle should be used if no inline pressStyle', () => {
-    const { viewProps } = simplifiedGetSplitStyles(StyledButton, {
+  test('the variant press clause is used when not restated inline', () => {
+    const styles = simplifiedGetSplitStyles(StyledButton, {
       variant: 'prim',
     })
-    expect(viewProps.className).toContain('_bg-0active-blue')
+    const className = styles.classNames.backgroundColor
+    expect(className).toMatch(/^_b-/)
+    const rules = (styles.rulesToInsert[className]?.[StyleObjectRules] ?? []).join('')
+    expect(rules).toContain(':active')
+    expect(rules).toContain('blue')
   })
 
-  test('default pressStyle should not generate a class if not used', () => {
+  test('the default press clause does not generate a class if not used', () => {
     const { viewProps } = simplifiedGetSplitStyles(StyledButton, {})
     // No press state simulated, so no class is generated
     expect(viewProps.className).not.toContain('_bg-0active-green')
@@ -737,15 +745,13 @@ describe('getSplitStyles - kebab-case media keys', () => {
 
   test('group container queries with kebab-case media key max-md', () => {
     const styles = simplifiedGetSplitStyles(Text, {
-      '$group-frame-max-md': {
-        paddingRight: 0,
-      },
+      paddingRight: '@max-md/frame:0px',
     })
     const rule = Object.values(styles.rulesToInsert)[0][StyleObjectRules][0]
 
-    // should generate valid @container query with frame container name
+    // converted to a program: a pure container query needs no group selector
     expect(rule).toContain('@container frame')
-    expect(rule).toContain('.t_group_frame')
+    expect(rule).toMatch(/\._p-\d+/)
     // should NOT have :max as a pseudo selector - this was the bug
     expect(rule).not.toContain(':max')
     expect(rule).not.toContain(':max-md')
@@ -753,9 +759,7 @@ describe('getSplitStyles - kebab-case media keys', () => {
 
   test('group container queries with kebab-case media key and pseudo', () => {
     const styles = simplifiedGetSplitStyles(Text, {
-      '$group-frame-max-md-hover': {
-        paddingRight: 0,
-      },
+      paddingRight: '@max-md/frame:group-hover/frame:0px',
     })
     const rule = Object.values(styles.rulesToInsert)[0][StyleObjectRules][0]
 
@@ -766,4 +770,50 @@ describe('getSplitStyles - kebab-case media keys', () => {
     expect(rule).not.toContain(':max-md')
     expect(rule).not.toContain(':max')
   })
+})
+
+test('raw container longhands emit without an implicit type', () => {
+  const out = simplifiedGetSplitStyles(View, {
+    style: { containerName: 'card' },
+  })
+  const rules = Object.values(out.rulesToInsert)
+    .flatMap((rule: any) => rule[StyleObjectRules] ?? [])
+    .join('\n')
+  expect(rules).toContain('container-name:card')
+  expect(rules).not.toContain('container-type')
+})
+
+test('group establishes state styling without container CSS', () => {
+  const out = simplifiedGetSplitStyles(View, { group: 'card' })
+  const rules = Object.values(out.rulesToInsert)
+    .flatMap((rule: any) => rule[StyleObjectRules] ?? [])
+    .join('\n')
+  expect(out.viewProps.className).toContain('t_group_card')
+  expect(rules).not.toContain('container-')
+})
+
+test('a named container query against a group-only parent warns with the fix', () => {
+  const originalNodeEnv = process.env.NODE_ENV
+  process.env.NODE_ENV = 'development'
+  const warning = vi.spyOn(console, 'warn').mockImplementation(() => {})
+  try {
+    simplifiedGetSplitStyles(
+      View,
+      { width: '100% @sm/checkpoint-one-card:50%' },
+      {
+        groupContext: {
+          'checkpoint-one-card': {
+            state: { pseudo: {} },
+            subscribe: () => () => {},
+          },
+        },
+      }
+    )
+    expect(warning).toHaveBeenCalledWith(
+      expect.stringContaining('container="checkpoint-one-card"')
+    )
+  } finally {
+    warning.mockRestore()
+    process.env.NODE_ENV = originalNodeEnv
+  }
 })

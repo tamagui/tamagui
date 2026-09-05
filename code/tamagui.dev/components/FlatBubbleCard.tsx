@@ -1,13 +1,12 @@
 import { YStack, styled } from 'tamagui'
 
 export const FlatBubbleCard = styled(YStack, {
-  p: '$6',
-  rounded: '$4',
-  borderColor: '$borderColor',
+  p: '6',
+  rounded: '4',
+  borderColor: 'border-color',
   borderWidth: 1,
   self: 'stretch',
   flex: 1,
-
   variants: {
     feature: {
       true: {
@@ -17,24 +16,19 @@ export const FlatBubbleCard = styled(YStack, {
 
     flat: {
       true: {
-        backgroundColor: '$gray1',
+        backgroundColor: 'gray1',
       },
     },
 
     hoverable: {
       true: {
-        backgroundColor: 'transparent',
-        hoverStyle: {
-          borderColor: '$gray5',
-          backgroundColor: '$gray2',
-        },
+        backgroundColor: 'transparent hover:gray2',
+        borderColor: 'hover:gray5',
       },
     },
 
-    highlight: {
-      '...': (val) => ({
-        backgroundColor: val,
-      }),
-    },
+    highlight: styled.dynamic<any>((val) => ({
+      backgroundColor: val,
+    })),
   } as const,
 })

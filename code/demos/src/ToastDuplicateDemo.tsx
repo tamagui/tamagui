@@ -1,13 +1,13 @@
 import { CheckCircle2 } from '@tamagui/lucide-icons-2'
-import { Toast, toast, useToasts } from '@tamagui/toast/v2'
-import { Button, XStack, YStack } from 'tamagui'
+import { toast, useToasts } from '@tamagui/toast'
+import { Button, Toast, XStack, YStack } from 'tamagui'
 
 /**
  *  IMPORTANT NOTE: if you're copy-pasting this demo into your code, make sure to add the Toast wrapper as well.
  */
 export const ToastDuplicateDemo = () => {
   return (
-    <Toast>
+    <Toast toasterId="duplicate-demo">
       <Toast.Viewport>
         <ToastList />
       </Toast.Viewport>
@@ -16,6 +16,7 @@ export const ToastDuplicateDemo = () => {
         <Button
           onPress={() => {
             toast('Successfully saved!', {
+              toasterId: 'duplicate-demo',
               description: "Don't worry... We've got your data.",
             })
           }}
@@ -34,7 +35,7 @@ const ToastList = () => {
     <>
       {toasts.map((t, index) => (
         <Toast.Item key={t.id} toast={t} index={index}>
-          <XStack gap="$4" items="center">
+          <XStack gap="4" items="center">
             <YStack>
               <CheckCircle2 />
             </YStack>

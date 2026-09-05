@@ -1,5 +1,12 @@
 import type { ColorTokens, GetProps, ThemeTokens } from '@tamagui/core'
-import { normalizeColor, styled, useProps, useTheme } from '@tamagui/core'
+import {
+  createStyledHOC,
+  getTokens,
+  getVariableValue,
+  normalizeColor,
+  styled,
+  useTheme,
+} from '@tamagui/core'
 import { YStack } from '@tamagui/stacks'
 import type { ViewStyle } from 'react-native'
 
@@ -15,28 +22,32 @@ export type LinearGradientExtraProps = {
 }
 
 const LinearGradientFrame = styled(YStack, {
-  name: 'LinearGradient',
+  displayName: 'LinearGradient',
   overflow: 'hidden',
   position: 'relative',
 })
 
-export const LinearGradient = LinearGradientFrame.styleable<LinearGradientExtraProps>(
-  (propsIn, ref) => {
-    const props = useProps(propsIn)
-
-    const { start, end, colors: colorsProp, locations, children, ...stackProps } = props
+export const LinearGradient = createStyledHOC(
+  LinearGradientFrame,
+  (
+    propsIn: Omit<GetProps<typeof LinearGradientFrame>, keyof LinearGradientExtraProps> &
+      LinearGradientExtraProps,
+    ref
+  ) => {
+    const { start, end, colors: colorsProp, locations, children, ...stackProps } = propsIn
     const theme = useTheme()
+    const colorTokens = getTokens().color
 
     let colors =
-      props.colors?.map((c) => {
-        return (theme[c]?.get('web') as string) ?? c
+      colorsProp?.map((c) => {
+        return (theme[c]?.get('web') as string) ?? getVariableValue(colorTokens[c]) ?? c
       }) || []
 
     if (process.env.NODE_ENV !== 'production') {
       if (
         colors.some((c) => {
           const normalized = normalizeColor(c)
-          if (!normalized || normalized.startsWith('$')) {
+          if (!normalized) {
             return true
           }
         })

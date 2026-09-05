@@ -53,7 +53,8 @@
     "@tamagui/text": "workspace:*",
     "@tamagui/use-callback-ref": "workspace:*",
     "@tamagui/use-direction": "workspace:*",
-    "@tamagui/web": "workspace:*"
+    "@tamagui/web": "workspace:*",
+    "sf-symbols-typescript": "^2.2.0"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",

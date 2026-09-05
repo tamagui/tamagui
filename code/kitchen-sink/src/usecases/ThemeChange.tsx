@@ -43,10 +43,10 @@ export function Inner({
     <YStack
       borderWidth={1}
       borderColor="red"
-      padding="$4"
+      padding="4"
       alignItems="center"
       justifyContent="center"
-      gap="$5"
+      gap="5"
     >
       <Text id={`${TEST_IDS.themeInfo}-${level}`}>
         <Text fontWeight="bold">Inner</Text> {JSON.stringify({ theme })}
@@ -64,7 +64,7 @@ export function Inner({
       <Theme name={theme}>
         <SandboxThemeChildStatic level={level} />
         <SandboxThemeChildDynamic level={level} />
-        <YStack gap="$2">
+        <YStack gap="2">
           <Theme name="accent">
             <Button>Accent</Button>
           </Theme>
@@ -82,7 +82,7 @@ const SandboxThemeChildStatic = React.memo(({ level }: { level: number }) => {
     <Square
       id={`${TEST_IDS.staticSquare}-${level}`}
       size={20}
-      backgroundColor="$color10"
+      backgroundColor="color10"
     />
   )
 })
@@ -91,10 +91,9 @@ const SandboxThemeChildDynamic = React.memo(({ level }: { level: number }) => {
   return (
     <Square
       id={`${TEST_IDS.dynamicSquare}-${level}`}
-      transition="bouncy"
+      transition={{ preset: 'bouncy', properties: 'backgroundColor' }}
+      backgroundColor="color10"
       size={20}
-      backgroundColor="$color10"
-      animateOnly={['backgroundColor']}
     />
   )
 })

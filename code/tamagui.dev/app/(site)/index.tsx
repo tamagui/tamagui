@@ -1,140 +1,190 @@
-import { setTintIndex } from '@tamagui/logo'
-import { useLoader } from 'one'
-import { useEffect } from 'react'
-import { YStack } from 'tamagui'
+import { TamaguiIconSvg } from '@tamagui/logo'
+import { H1, H2, Paragraph, Text, XStack, YStack } from 'tamagui'
+import { Button } from '~/components/Button'
 import { HeadInfo } from '~/components/HeadInfo'
-import { HomeAnimations } from '~/features/site/home/HomeAnimations'
-import { HomeCommunity } from '~/features/site/home/HomeCommunity'
-import { HomeExampleProps } from '~/features/site/home/HomeExampleProps'
-import { HomeExamples } from '~/features/site/home/HomeExamples'
-import { HomeFeaturesGrid } from '~/features/site/home/HomeFeaturesGrid'
-import { HomeGlow } from '~/features/site/home/HomeGlow'
-import { Hero } from '~/features/site/home/HomeHero'
-import { HomeHeroBelow } from '~/features/site/home/HomeHeroBelow'
-import { HomePerformance } from '~/features/site/home/HomePerformance'
-import { HomeResponsive } from '~/features/site/home/HomeResponsive'
-import { HomeThemes } from '~/features/site/home/HomeThemes'
-import { HomeTypography } from '~/features/site/home/HomeTypography'
-import { HomeSection, SectionTinted, TintSection } from '~/features/site/home/TintSection'
-import {
-  ThemeNameEffect,
-  ThemeNameEffectNoTheme,
-} from '~/features/site/theme/ThemeNameEffect'
-
-export async function loader() {
-  const { getCompilationExamples } = await import('~/features/mdx/getMDXBySlug')
-  return getCompilationExamples()
-}
+import { Link } from '~/components/Link'
+import { GithubIcon } from '~/features/icons/GithubIcon'
+import { InstallInput } from '~/features/site/home/InstallInput'
 
 export default function TamaguiHomePage() {
-  const { compilationExamples, animationCode } = useLoader(loader)
-
-  useEffect(() => {
-    setTintIndex(3)
-  }, [])
-
-  if (!compilationExamples) {
-    return null
-  }
-
   return (
     <>
       <HeadInfo
         title="Tamagui"
-        description="React Native style library and UI kit with the best web performance"
+        description="Type-safe styles for React and React Native, with an optimizing compiler and Tailwind compatibility."
       />
-
-      <ThemeNameEffect colorKey="$color3" />
-
-      <HomeGlow />
 
       <YStack
-        fullscreen
-        className="grain"
-        opacity={0.2}
-        style={{
-          maskImage: `linear-gradient(transparent, rgba(0, 0, 0, 1) 100px)`,
-        }}
-      />
+        render="main"
+        width="100%"
+        maxW={1080}
+        mx="auto"
+        px="5 gtMd:6"
+        pt="8 gtMd:12"
+        pb="8"
+        gap="8 gtMd:12"
+      >
+        <XStack flexDirection="column gtMd:row" items="center" gap="10">
+          <YStack flexGrow={1} flexShrink={1} gap="6" minW={0} width="100%">
+            <XStack items="center" gap="3">
+              <TamaguiIconSvg width={48} height={48} />
+              <Link asChild href="/blog/version-three">
+                <Text
+                  render="a"
+                  fontFamily="mono"
+                  fontSize={12}
+                  color="color11 hover:color12"
+                  letterSpacing={1}
+                >
+                  TAMAGUI / V3 BETA
+                </Text>
+              </Link>
+            </XStack>
 
-      <TintSection index={0} p={0}>
-        <Hero />
-      </TintSection>
-      <HomeHeroBelow />
-      <TintSection index={2} contain="paint layout" z={1000}>
-        <YStack
-          pointerEvents="none"
-          z={0}
-          fullscreen
-          className="bg-dot-grid"
-          style={{
-            maskImage: `linear-gradient(transparent, #000, transparent)`,
-          }}
-        />
-        <HomeExamples examples={compilationExamples} />
-      </TintSection>
-      <TintSection my={-50} index={3} contain="paint layout" position="relative" z={100}>
-        <YStack
-          pointerEvents="none"
-          z={0}
-          fullscreen
-          className="bg-dot-grid"
-          style={{
-            maskImage: `linear-gradient(transparent, #000, transparent)`,
-          }}
-        />
-        <HomeThemes />
-      </TintSection>
-      <TintSection index={4} mb={-120} z={100}>
-        <HomeResponsive />
-      </TintSection>
-      <TintSection index={5} p={0} z={0}>
-        <SectionTinted gradient bubble>
-          <HomePerformance />
-        </SectionTinted>
-      </TintSection>
-      <TintSection index={6} z={100}>
-        <YStack
-          fullscreen
-          className="bg-grid"
-          style={{
-            maskImage: `linear-gradient(transparent, #000, transparent)`,
-          }}
-        />
-        <HomeAnimations animationCode={animationCode} />
-      </TintSection>
-      <TintSection index={7} z={1}>
-        <HomeFeaturesGrid />
-        <YStack
-          pointerEvents="none"
-          z={2}
-          fullscreen
-          className="bg-dot-grid"
-          style={{
-            maskImage: `linear-gradient(transparent, #000, transparent)`,
-          }}
-        />
-      </TintSection>
-      <TintSection index={8} my="$-4" p={0} z={100}>
-        <SectionTinted z={1000} bubble gradient>
-          <HomeTypography />
-        </SectionTinted>
-      </TintSection>
-      <HomeSection z={10}>
-        <YStack
-          pointerEvents="none"
-          z={0}
-          fullscreen
-          className="bg-dot-grid"
-          style={{
-            maskImage: `linear-gradient(transparent, #000, transparent)`,
-          }}
-        />
-        <HomeExampleProps />
-      </HomeSection>
-      <HomeSection z={0}>
-        <HomeCommunity />
-      </HomeSection>
+            <H1
+              fontSize="40px gtXs:48px gtMd:60px"
+              lineHeight="44px gtXs:52px gtMd:64px"
+              fontWeight="600"
+              letterSpacing={-1.8}
+            >
+              Your style.
+              <br />
+              Every platform.
+            </H1>
+
+            <Paragraph fontSize={18} lineHeight={29} color="color11" maxW={460}>
+              Type-safe styles and customizable components for React and React Native,
+              with an optimizing compiler built in.
+            </Paragraph>
+
+            <XStack gap="3" items="center" flexWrap="wrap">
+              <Link asChild href="/docs/intro/introduction">
+                <Button
+                  render="a"
+                  size="lg"
+                  rounded={10}
+                  bg="color"
+                  color="background"
+                  aria-label="Get started (docs)"
+                >
+                  <Button.Text color="background" fontWeight="600">
+                    Get started ↗
+                  </Button.Text>
+                </Button>
+              </Link>
+              <Link asChild target="_blank" href="https://github.com/tamagui/tamagui">
+                <Button
+                  render="a"
+                  size="lg"
+                  rounded={10}
+                  variant="outlined"
+                  aria-label="GitHub"
+                >
+                  <GithubIcon width={18} />
+                  <Button.Text>GitHub</Button.Text>
+                </Button>
+              </Link>
+            </XStack>
+            <XStack gap="5" flexWrap="wrap">
+              <Link asChild href="/ui/button">
+                <Text render="a" fontSize={13} color="color11 hover:color12">
+                  Explore the components ↗
+                </Text>
+              </Link>
+              <Link asChild href="/docs/core/tailwind">
+                <Text render="a" fontSize={13} color="color11 hover:color12">
+                  Speaks Tailwind, too ↗
+                </Text>
+              </Link>
+            </XStack>
+          </YStack>
+
+          <YStack
+            width="100% gtMd:400px"
+            flexShrink={0}
+            bg="color2"
+            borderWidth={1}
+            borderColor="color5"
+            rounded={16}
+            overflow="hidden"
+          >
+            <XStack height={3} bg="#edd400" />
+            <XStack
+              px="5"
+              py="4"
+              borderBottomWidth={1}
+              borderColor="color5"
+              justify="space-between"
+            >
+              <Text fontFamily="mono" fontSize={12} color="color11">
+                Hello, Tamagui.
+              </Text>
+              <Text fontFamily="mono" fontSize={12} color="color10">
+                web + native
+              </Text>
+            </XStack>
+            <YStack px="4 gtMd:6" py="5 gtMd:6" gap="5">
+              <Text
+                render="pre"
+                margin={0}
+                fontFamily="mono"
+                fontSize={12}
+                lineHeight={24}
+                color="color12"
+              >
+                <Text color="purple10">import</Text>
+                {` { html } from `}
+                <Text color="green10">'tamagui'</Text>
+                {'\n\n'}
+                <Text color="blue10">{'<html.button'}</Text>
+                {'\n  padding='}
+                <Text color="green10">{'"3"'}</Text>
+                {'\n  rounded='}
+                <Text color="green10">{'"4"'}</Text>
+                {'\n  bg='}
+                <Text color="green10">{'"background"'}</Text>
+                {'\n  opacity='}
+                <Text color="green10">{'"1 hover:0.8"'}</Text>
+                {'\n'}
+                <Text color="blue10">{'>'}</Text>
+                {'\n  Make something yours\n'}
+                <Text color="blue10">{'</html.button>'}</Text>
+              </Text>
+              <YStack borderTopWidth={1} borderColor="color5" pt="5">
+                <Text fontSize={13} lineHeight={21} color="color11">
+                  Familiar HTML. Shared styles. Native primitives.
+                </Text>
+                <Link asChild href="/docs/core/html-primitives">
+                  <Text render="a" fontSize={13} color="color12" mt="3">
+                    Explore HTML primitives ↗
+                  </Text>
+                </Link>
+              </YStack>
+            </YStack>
+          </YStack>
+        </XStack>
+
+        <XStack
+          flexDirection="column gtMd:row"
+          gap="6"
+          justify="space-between"
+          items="center"
+          py="6"
+          borderTopWidth={1}
+          borderBottomWidth={1}
+          borderColor="color5"
+        >
+          <YStack gap="2">
+            <H2 fontSize={18} lineHeight={25} letterSpacing={-0.3}>
+              Start making it yours.
+            </H2>
+            <Paragraph fontSize={14} color="color11">
+              A fresh app, ready for web and native.
+            </Paragraph>
+          </YStack>
+          <InstallInput />
+        </XStack>
+      </YStack>
     </>
   )
 }

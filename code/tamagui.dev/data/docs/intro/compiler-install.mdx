@@ -66,7 +66,71 @@ at all — they'll pick up everything from `tamagui.build.ts`:
 You can still pass options directly to a plugin, and they'll be merged with
 (and override) the options from `tamagui.build.ts`.
 
+### Experimental native theme fast path
+
+V3 beta includes an opt-in native theme engine for React Native 0.82 and newer.
+It can update eligible Fabric views through a ShadowTree commit without
+re-rendering each view in React. The API and compiler output are experimental.
+
+Install the native engine and Nitro runtime:
+
+```sh
+bun add @tamagui/native-registry react-native-nitro-modules
+```
+
+Enable its compiler output in `tamagui.build.ts`:
+
+```ts
+import type { TamaguiBuildOptions } from 'tamagui'
+
+export default {
+  config: './tamagui.config.ts',
+  components: ['tamagui'],
+  experimental: {
+    nativeFastPath: true,
+  },
+} satisfies TamaguiBuildOptions
+```
+
+Install the engine before your themed application tree mounts:
+
+```ts
+import * as nativeRegistry from '@tamagui/native-registry'
+import { setNativeStyleEngine } from '@tamagui/core'
+
+if (nativeRegistry.isAvailable()) {
+  setNativeStyleEngine(nativeRegistry)
+}
+```
+
+Rebuild the iOS and Android applications after adding the packages. The flag
+defaults to `false`. When it is off, native compiler output is unchanged. When
+the compiler flag is on but the engine is unavailable, components use the
+existing theme hook and React render path. Web output is unchanged.
+
+The registry keeps the existing `DynamicColorIOS` optimization in place. It
+does not replace that path.
+
 ## Install
+
+The recommended install is one package. `@tamagui/cli` carries the CLI and the
+bundler integrations together, each behind a subpath:
+
+```bash
+yarn add -D @tamagui/cli
+```
+
+| Import               | Gives you                                   |
+| -------------------- | ------------------------------------------- |
+| `@tamagui/cli/vite`  | the same exports as `@tamagui/vite-plugin`  |
+| `@tamagui/cli/metro` | the same exports as `@tamagui/metro-plugin` |
+
+One dependency means one version to keep in sync, so the CLI and your bundler
+plugin can't drift apart on an upgrade.
+
+You can still install the standalone plugin instead, and if your project only
+ever uses one bundler that is the smaller install. Both packages stay published
+and the exports are identical, so the setup below is the same either way.
 
 There are plugins for a variety of bundlers, or you can use the `@tamagui/cli`
 to compile in-place:
@@ -94,9 +158,6 @@ const tamaguiOptions = {
   importsWhitelist: ['constants.js', 'colors.js'],
   logTimings: true,
   disableExtraction: process.env.NODE_ENV === 'development',
-  // optional advanced optimization of styled() definitions within your app itself, not just ones in your components option
-  // default is false
-  enableDynamicEvaluation: false,
 }
 
 module.exports = {
@@ -181,14 +242,14 @@ Some notes on the options:
 See the [Vite guide](/docs/guides/vite) for more complete setup.
 
 <Notice theme="yellow">
-  `@tamagui/vite-plugin` is ESM-only. Your project must have `"type": "module"` in its `package.json` (or use `.mjs`/`.mts` config files).
+  The Vite plugin is ESM-only. Your project must have `"type": "module"` in its `package.json` (or use `.mjs`/`.mts` config files).
 </Notice>
 
-Add `@tamagui/vite-plugin` and update your `vite.config.ts`. If you have a
-`tamagui.build.ts`, no options are needed:
+Update your `vite.config.ts`. If you have a `tamagui.build.ts`, no options are
+needed:
 
 ```tsx
-import { tamaguiPlugin } from '@tamagui/vite-plugin'
+import { tamaguiPlugin } from '@tamagui/cli/vite'
 
 export default defineConfig({
   plugins: [
@@ -198,10 +259,12 @@ export default defineConfig({
 })
 ```
 
+If you installed `@tamagui/vite-plugin` on its own, import from there instead.
+
 Or pass options inline:
 
 ```tsx
-import { tamaguiPlugin } from '@tamagui/vite-plugin'
+import { tamaguiPlugin } from '@tamagui/cli/vite'
 
 export default defineConfig({
   plugins: [
@@ -249,52 +312,41 @@ to "true" can fix issues with Tamagui being resolved incorrectly.
 See the [Next.js Guide](/docs/guides/next-js) for more details on setting up
 your app.
 
-### Babel / Metro
+### Metro
 
-Note that the `@tamagui/babel-plugin` is completely optional, and on native
-Tamagui doesn't optimize as much as on web, so leaving it out is actually
-recommended to start. If later on you feel the need for a bit more speed, you
-can try adding it.
+The Metro integration runs the same shared compiler used by the other bundler
+adapters after your configured Babel transformer.
 
-```bash
-yarn add @tamagui/babel-plugin
-```
-
-Add to your `babel.config.js`. With a `tamagui.build.ts`, you can pass no
-options:
+Wrap your existing Metro config. With a `tamagui.build.ts`, you can omit the
+inline options:
 
 ```js
-module.exports = {
-  plugins: [
-    // reads from tamagui.build.ts automatically
-    '@tamagui/babel-plugin',
-  ],
-}
+const { getDefaultConfig } = require('expo/metro-config')
+const { withTamagui } = require('@tamagui/cli/metro')
+
+module.exports = withTamagui(getDefaultConfig(__dirname))
 ```
+
+If you installed `@tamagui/metro-plugin` on its own, require from there instead.
 
 Or pass options inline:
 
 ```js
-module.exports = {
-  plugins: [
-    [
-      '@tamagui/babel-plugin',
-      {
-        components: ['tamagui'],
-        config: './tamagui.config.ts',
-        importsWhitelist: ['constants.js', 'colors.js'],
-        logTimings: true,
-        disableExtraction: process.env.NODE_ENV === 'development',
-      },
-    ],
-  ],
-}
+const { getDefaultConfig } = require('expo/metro-config')
+const { withTamagui } = require('@tamagui/cli/metro')
+
+module.exports = withTamagui(getDefaultConfig(__dirname), {
+  components: ['tamagui'],
+  config: './tamagui.config.ts',
+  logTimings: true,
+  disableExtraction: process.env.NODE_ENV === 'development',
+})
 ```
 
 ### Expo
 
 [Check out the Expo guide](/docs/guides/expo) for more information on setting up
-Expo. It's as simple as adding the babel plugin.
+Expo. It uses the same Metro integration shown above.
 
 ### CLI-Based In-Place Compilation
 
@@ -565,15 +617,6 @@ All compiler plugins accept the same options:
       description: 'Turns off tree-flattening.',
     },
     {
-      name: 'enableDynamicEvaluation',
-      required: false,
-      type: 'boolean',
-      typeSimple: 'enum',
-      default: 'false',
-      description:
-        '(Experimental) Enables further extracting of any styled component, even if not in your components. See below for more information.',
-    },
-    {
       name: 'outputCSS',
       required: false,
       type: 'string',
@@ -584,42 +627,24 @@ All compiler plugins accept the same options:
   ]}
 />
 
-### Dynamic Evaluation
+### Component discovery
 
-By default the Tamagui compiler only optimizes `styled` expressions found in the
-modules defined by your `components` config. This means if you do an inline
-`styled()` inside your actual app directory, it will default to runtime style
-insertion.
+The compiler resolves every component it meets. Components defined with
+`styled()` anywhere in your app are linked across files, and a component
+imported from any package is evaluated the first time a file uses it as a JSX
+element or as a `styled()` base. The result is cached for the life of the dev
+server or build, and a package bump invalidates the cached plans that lowered
+against it.
 
-This is typically Good Enough™️. As long as you define most of your common
-components there, you'll get a very high hit rate of compiled styles being used
-and runtime generation being skipped, as atomic styles with your design system
-tokens will be mostly pre-generated.
+`components` is an optional warm-up list. Listing a package evaluates it once
+when the project loads instead of on first use, which is worth doing for the
+package most of your files import from. Nothing else is needed for the
+compiler to optimize components from other packages.
 
-Tamagui has _experimental_ support for loading any component, even if it occurs
-somewhere outside your configured components modules. This is called "dynamic
-loading", for now. You can enable it with the setting `enableDynamicEvaluation`
-as seen above in the props table.
-
-The way it works is, when the compiler detects a styled() expression outside one
-of the defined component directories, it will run the following:
-
-1. First, read the file and use a custom `babel` transform to _force_ all
-   top-level variables to be exported.
-2. Then, run `esbuild` and bundle the entire file to a temporary file in the
-   same directory, something like `.tamagui-dynamic-eval-ComponentName.js`
-3. Now, read the file in and load all new definitions found.
-4. Finally, continue with optimization, using the newly optimized component.
-
-You may see why this is experimental. It's very convenient as a developer, but
-has a variety of edge cases that can be confusing or breaking, and we want to
-avoid installation woes. Though it does continue on error and work generally, it
-outputs warnings in Webpack currently due to our plugin not properly indicating
-to Webpack about the new files (a fixable bug), which causes big yellow warning
-output and a cache de-opt.
-
-We're leaving this feature under the environment variable while it matures. Let
-us know if you find it useful.
+A package that cannot run in Node during the build (one that touches native
+modules at import time, for example) is skipped with a debug message, and the
+elements that use it stay on the runtime path. Set `DEBUG=tamagui` to see which
+modules discovery skipped and why.
 
 ### Disabling the compiler
 

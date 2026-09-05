@@ -47,18 +47,14 @@ const Intermediate = () => {
   return (
     <ContainerLarge z={1000}>
       <XStack
-        gap="$4"
-        py="$6"
-        pt={20}
-        mb={-20}
+        gap="4"
+        paddingBottom="6"
+        pt="20px sm:4"
+        mb="-20px sm:0px"
         mx="auto"
         maxW={900}
-        $sm={{
-          flexDirection: 'column',
-          px: '$2',
-          pt: '$4',
-          mb: 0,
-        }}
+        flexDirection="sm:column"
+        px="sm:2"
       >
         <IntermediateCard Icon={Globe} title="Universal">
           Whether light or dark mode, native or web, or any screen size.
@@ -67,7 +63,7 @@ const Intermediate = () => {
           Customize to your design system, designed to be used independently.
         </IntermediateCard>
         <IntermediateCard Icon={Leaf} title="Free">
-          Expanding free components. Lifetime&nbsp;rights paid.
+          Every component, free and open source. No license, no&nbsp;account.
         </IntermediateCard>
       </XStack>
     </ContainerLarge>
@@ -84,31 +80,25 @@ const IntermediateCard = ({
   Icon?: any
 }) => {
   return (
-    <XStack overflow="hidden" flex={1} gap="$5" px="$5" py="$4" minHeight={80}>
-      <YStack flex={1} gap="$2">
-        <H4
-          opacity={0.5}
-          fontFamily="$silkscreen"
-          color="$color11"
-          className="text-glow"
-          size="$2"
-        >
+    <XStack overflow="hidden" flex={1} gap="5" px="5" py="4" minHeight={80}>
+      <YStack flex={1} gap="2">
+        <H4 opacity={0.5} color="color11" className="text-glow" size="2">
           {title}
         </H4>
-        <Paragraph mb={-5} size="$3" color="$color12" opacity={0.7}>
+        <Paragraph mb={-5} color="color12" opacity={0.7} size="3">
           {children}
         </Paragraph>
       </YStack>
       <Circle
-        outlineColor="$color02"
+        outlineColor="color02"
         outlineOffset={-4}
         outlineWidth={1}
         outlineStyle="solid"
-        size="$5"
-        elevation="$0.5"
         backdropFilter="blur(5px)"
+        size="5"
+        elevation="0-5"
       >
-        <Icon color="$color11" o={0.85} />
+        <Icon color="color11" o={0.85} />
       </Circle>
     </XStack>
   )

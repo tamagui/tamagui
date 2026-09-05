@@ -4,7 +4,7 @@ import { setupPage } from './test-utils'
 /**
  * Tests that clicking to close while an enter animation is still playing
  * doesn't cause a visual snap-back (the element shouldn't jump back to
- * its enterStyle values before starting the exit animation).
+ * its enter clause values before starting the exit animation).
  *
  * Bug: motion driver calls controls.stop() before the mid-flight capture,
  * causing the WAAPI animation to cancel and the element to snap back to
@@ -103,7 +103,7 @@ test('no opacity snap-back when exit triggered during enter animation', async ({
   // tolerance: 0.15 allows for minor animation interpolation variance
   expect(
     maxDip,
-    `Opacity had a snap-back dip of ${maxDip.toFixed(3)} - element jumped to enterStyle then back. Frames: ${JSON.stringify(frames.slice(0, 30).map((f) => +f.toFixed(2)))}`
+    `Opacity had a snap-back dip of ${maxDip.toFixed(3)} - element jumped to enter clause then back. Frames: ${JSON.stringify(frames.slice(0, 30).map((f) => +f.toFixed(2)))}`
   ).toBeLessThan(0.15)
 
   // there should be no significant increase after exit starts
@@ -152,7 +152,7 @@ test('no transform snap-back when exit triggered during enter animation', async 
     () => (window as any).__transformLog
   )
 
-  // check for Y-position jumps (snap-back to enterStyle y: -10)
+  // check for Y-position jumps (snap-back to enter clause y: -10)
   let maxYJump = 0
   for (let i = 1; i < frames.length; i++) {
     const jump = Math.abs(frames[i].y - frames[i - 1].y)
@@ -169,6 +169,6 @@ test('no transform snap-back when exit triggered during enter animation', async 
   // a snap-back would show a jump of 5+ pixels in one frame
   expect(
     maxYJump,
-    `Y position jumped ${maxYJump.toFixed(1)}px in one frame - indicates snap-back to enterStyle`
+    `Y position jumped ${maxYJump.toFixed(1)}px in one frame - indicates snap-back to enter clause`
   ).toBeLessThan(5)
 })

@@ -1,5 +1,4 @@
 import slugify from '@sindresorhus/slugify'
-import { Input } from '@tamagui/input'
 import { History, Moon, Plus, Sun, X } from '@tamagui/lucide-icons-2'
 import { animations } from '@tamagui/tamagui-dev-config'
 import { useStore } from '@tamagui/use-store'
@@ -8,8 +7,8 @@ import { router } from 'one'
 import { memo, useEffect, useLayoutEffect, useOptimistic, useRef, useState } from 'react'
 import useSWR, { mutate } from 'swr'
 import {
-  Button,
   Configuration,
+  Input,
   Paragraph,
   ScrollView,
   Spinner,
@@ -19,10 +18,10 @@ import {
   XStack,
   YStack,
 } from 'tamagui'
+import { Button } from '~/components/Button'
 import { authFetch } from '../../api/authFetch'
 import { defaultModel } from '../../api/generateModels'
-import { getActivePromo } from '../../site/purchase/promoConfig'
-import { purchaseModal } from '../../site/purchase/purchaseModalStore'
+import { useLoginLink } from '~/features/auth/useLoginLink'
 import { useUser } from '../../user/useUser'
 import { toastController } from '../ToastProvider'
 import { themeJSONToText } from './helpers/themeJSONToText'
@@ -64,7 +63,9 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
     inputRef.current?.focus()
   }, [id])
 
-  const hasAccess = user.data?.accessInfo.hasPro
+  // generation costs LLM spend, so it needs a logged in user
+  const isLoggedIn = !!user.data?.user
+  const { handleLogin } = useLoginLink()
 
   const username = user.data?.userDetails?.full_name
 
@@ -195,25 +196,20 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
   }
 
   return (
-    <XStack
-      z={1000}
-      data-tauri-drag-region
-      className="all ease-in ms300"
-      $lg={{ mr: '$6' }}
-    >
-      <YStack flex={1} flexBasis="auto" width="100%" gap="$4">
-        <XStack flexWrap="wrap" items="center" flex={1} flexBasis="auto" gap="$3">
+    <XStack z={1000} mr="lg:6" data-tauri-drag-region className="all ease-in ms300">
+      <YStack flex={1} flexBasis="auto" width="100%" gap="4">
+        <XStack flexWrap="wrap" items="center" flex={1} flexBasis="auto" gap="3">
           <XStack minW={300} flex={1} flexBasis="auto" position="relative">
             <Input
               ref={inputRef as any}
               flex={1}
-              placeholder={active ? `Refine this theme` : `Generate a theme`}
-              size="$6"
-              shadowColor="$shadow3"
-              bg="$color1"
+              shadowColor="shadow3"
+              bg="color1"
               shadowOffset={{ height: 2, width: 0 }}
               shadowRadius={10}
-              rounded="$8"
+              rounded="8"
+              placeholder={active ? `Refine this theme` : `Generate a theme`}
+              size="6"
               onSubmit={() => {
                 fetchUpdate(active ? 'reply' : 'new')
               }}
@@ -225,29 +221,24 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
             />
           </XStack>
 
-          <XStack gap="$3" items="center" justify="space-between">
+          <XStack gap="3" items="center" justify="space-between">
             <Theme name="accent">
               <Button
-                rounded="$10"
+                rounded="10"
                 disabled={isGenerating === 'new'}
                 opacity={isGenerating === 'new' ? 0.2 : 1}
                 pointerEvents={isGenerating === 'new' ? 'none' : 'auto'}
                 icon={isGenerating === 'new' ? <Spinner size="small" /> : null}
-                onPress={() => {
-                  if (hasAccess) {
+                onPress={(e) => {
+                  if (isLoggedIn) {
                     fetchUpdate('new')
                   } else {
-                    const activePromo = getActivePromo()
-                    if (activePromo) {
-                      purchaseModal.activePromo = activePromo
-                      purchaseModal.prefilledCouponCode = activePromo.code
-                    }
-                    purchaseModal.show = true
+                    handleLogin(e)
                   }
                 }}
-                size="$4"
+                size="4"
               >
-                {hasAccess ? (active ? 'Refine' : 'Generate') : 'Access'}
+                {isLoggedIn ? (active ? 'Refine' : 'Generate') : 'Login'}
               </Button>
 
               <RandomizeButton />
@@ -258,14 +249,14 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
         </XStack>
 
         <ScrollView
-          mx="$-6"
-          px="$6"
+          mx="-6"
+          px="6"
           flex={1}
           flexBasis="auto"
           horizontal
           showsHorizontalScrollIndicator={false}
         >
-          <XStack gap="$2" py="$2">
+          <XStack gap="2" py="2">
             <Link href="/theme">
               <HistoryButton icon={<Plus size={14} />}>New</HistoryButton>
             </Link>
@@ -301,11 +292,11 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
               )
             })}
 
-            {!hasAccess && (
-              <XStack flex={1} flexBasis="auto" overflow="hidden" items="center" px="$4">
-                <Paragraph fontFamily="$mono" size="$3">
-                  Welcome to the Theme Builder! Pro members can build, save and refine
-                  themes using the generate input above.
+            {!isLoggedIn && (
+              <XStack flex={1} flexBasis="auto" overflow="hidden" items="center" px="4">
+                <Paragraph size="3">
+                  Welcome to the Theme Builder! Log in to build, save and refine themes
+                  using the generate input above.
                 </Paragraph>
               </XStack>
             )}
@@ -331,10 +322,10 @@ const HistoryButton = ({
 }) => {
   return (
     <XStack group="item" containerType="normal" position="relative">
-      <Button onPress={onPress} size="$3" rounded="$8" theme={active ? 'accent' : null}>
+      <Button onPress={onPress} size="3" rounded="8" theme={active ? 'accent' : null}>
         <Button.Icon>{icon}</Button.Icon>
 
-        <Button.Text numberOfLines={1} maxW={200} fontFamily="$mono">
+        <Button.Text numberOfLines={1} maxW={200}>
           {children}
         </Button.Text>
       </Button>
@@ -342,10 +333,7 @@ const HistoryButton = ({
       {onDelete && (
         <YStack
           position="absolute"
-          opacity={0}
-          $group-item-hover={{
-            opacity: 1,
-          }}
+          opacity="0 group-hover/item:1"
           t={-5}
           r={-5}
           onPress={(e) => {
@@ -370,14 +358,14 @@ const ThemeToggle = () => {
   }, [userScheme.value === 'light'])
 
   return (
-    <XStack gap="$3" items="center">
+    <XStack gap="3" items="center">
       <Configuration animationDriver={animations.css}>
         <Switch
           checked={checked}
           outlineWidth={0}
           outlineStyle="solid"
           activeStyle={{
-            backgroundColor: '$accent10',
+            backgroundColor: 'accent10',
           }}
           onCheckedChange={(on) => {
             setChecked(on)
@@ -385,28 +373,28 @@ const ThemeToggle = () => {
               userScheme.set(on ? 'light' : 'dark')
             })
           }}
-          size="$3"
+          size="3"
         >
-          <Switch.Thumb transition="quickest" size="$3">
+          <Switch.Thumb transition="quickest" size="3">
             <YStack
               transition="bouncy"
-              fullscreen
+              position="absolute"
+              inset={0}
               items="center"
               justify="center"
-              opacity={1}
-              y={0}
-              $theme-light={{ opacity: 0, y: 3 }}
+              opacity="1 light:0"
+              y="0 light:3px"
             >
               <Moon size={14} />
             </YStack>
             <YStack
               transition="bouncy"
-              fullscreen
+              position="absolute"
+              inset={0}
               items="center"
               justify="center"
-              opacity={1}
-              y={0}
-              $theme-dark={{ opacity: 0, y: 3 }}
+              opacity="1 dark:0"
+              y="0 dark:3px"
             >
               <Sun size={14} />
             </YStack>

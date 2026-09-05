@@ -20,9 +20,9 @@ All Tamagui View-based components have Pressable-like functionality built in. Yo
 ```tsx
 <View
   onPress={() => console.log('pressed')}
-  onHoverIn={() => console.log('hovered')}
-  pressStyle={{ opacity: 0.8 }}
-  hoverStyle={{ backgroundColor: '$backgroundHover' }}
+  onPointerEnter={() => console.log('hovered')}
+  opacity="press:0.8"
+  backgroundColor="hover:background-hover"
 />
 ```
 
@@ -56,28 +56,6 @@ All Tamagui View-based components have Pressable-like functionality built in. Yo
         <span>
           Called when a press is held for longer than <code>delayLongPress</code> (default
           500ms).
-        </span>
-      ),
-    },
-    {
-      name: 'onHoverIn',
-      required: false,
-      type: '(e: MouseEvent) => void',
-      description: (
-        <span>
-          <strong>Web Only</strong>: Called when the mouse enters the element. Maps to{' '}
-          <code>onMouseEnter</code>.
-        </span>
-      ),
-    },
-    {
-      name: 'onHoverOut',
-      required: false,
-      type: '(e: MouseEvent) => void',
-      description: (
-        <span>
-          <strong>Web Only</strong>: Called when the mouse leaves the element. Maps to{' '}
-          <code>onMouseLeave</code>.
         </span>
       ),
     },
@@ -153,16 +131,6 @@ All Tamagui View-based components have Pressable-like functionality built in. Yo
       description: <span>Disables all press and hover interactions on the element.</span>,
     },
     {
-      name: 'focusable',
-      required: false,
-      type: 'boolean',
-      description: (
-        <span>
-          Whether the element can receive focus. On web, controls <code>tabIndex</code>.
-        </span>
-      ),
-    },
-    {
       name: 'hitSlop',
       required: false,
       type: `number | Insets`,
@@ -177,7 +145,7 @@ All Tamagui View-based components have Pressable-like functionality built in. Yo
   ]}
 />
 
-Use these events alongside style states like `pressStyle`, `hoverStyle`, and `focusStyle` to create interactive components. See the [Style API](/docs/intro/styles) for styling on interaction states.
+Use these events alongside `press:`, `hover:`, and `focus:` clauses to create interactive components. See the [Style API](/docs/intro/styles) for interaction styling.
 
 ## Other Props
 
@@ -199,23 +167,13 @@ Use these events alongside style states like `pressStyle`, `hoverStyle`, and `fo
     {
       name: 'transition',
       required: false,
-      type: 'string',
+      type: 'string | object',
       description: (
         <span>
-          Apply a transition animation as defined in your createTamagui configuration. See the{' '}
-          <a href="/docs/core/animations">Animations documentation</a> for more details on configuring animation drivers.
-        </span>
-      ),
-    },
-
-    {
-      name: 'animateOnly',
-      required: false,
-      type: 'string[]',
-      description: (
-        <span>
-          A list of properties to animate. Note that flat transforms can only be controlled via `transform`. Learn more in the{' '}
-          <a href="/docs/core/animations#granular-animations">Granular animations</a> section.
+          A CSS transition string (<code>"200ms ease-out"</code>), a preset name from your
+          createTamagui configuration (<code>"bouncy"</code>), or an object for per-property
+          control (<code>{`{ preset: 'bouncy', opacity: '100ms' }`}</code>). See the{' '}
+          <a href="/docs/core/animations">Animations documentation</a>.
         </span>
       ),
     },
@@ -226,18 +184,8 @@ Use these events alongside style states like `pressStyle`, `hoverStyle`, and `fo
       type: 'string',
       description: (
         <span>
-          Apply a theme or sub-theme to this component and the components below it.
-        </span>
-      ),
-    },
-
-    {
-      name: 'themeInverse',
-      required: false,
-      type: 'boolean',
-      description: (
-        <span>
-          Invert light or dark theme for the sub-tree.
+          Apply a theme or sub-theme, such as <code>theme="inverse"</code>, to
+          this component and the components below it.
         </span>
       ),
     },
@@ -276,23 +224,13 @@ Use these events alongside style states like `pressStyle`, `hoverStyle`, and `fo
     },
 
     {
-      name: 'componentName',
-      required: false,
-      type: 'string',
-      description: (
-        <span>
-          Equivalent to "name" property on styled() for automatically applying a theme.
-        </span>
-      ),
-    },
-
-    {
       name: 'className',
       required: false,
       type: 'string',
       description: (
         <span>
-          <strong>Web Only</strong>: An escape hatch to set className. This works fully with the compiler, which will concat your defined className with its generated ones.
+          Adds a className. In Tailwind mode, supported utility classes compile to
+          Tamagui styles on web and native. Unknown classes pass through on web.
         </span>
       ),
     },
@@ -304,45 +242,6 @@ Use these events alongside style states like `pressStyle`, `hoverStyle`, and `fo
       description: (
         <span>
           <strong>Web Only</strong>: Disables className output of styles, instead using only inline styles.
-        </span>
-      ),
-    },
-
-    {
-      name: 'tag',
-      required: false,
-      type: 'string',
-      description: (
-        <span>
-          <strong>Web Only</strong>: Renders the final element as the given tag. Note: React Native Web doesn't support tag and as such if using any animation driver except CSS the tag prop will stop working. We'd recommend using "role" for most cases.
-        </span>
-      ),
-    },
-
-    {
-      name: 'space',
-      required: false,
-      deprecated: true,
-      type: "boolean | string | TamaguiConfig['space']",
-      description: (
-        <span>
-          Use gap instead -
-          Spacing is built into Tamagui and can accept a number or Token.space value. This will
-          filter out any nullish child elements and insert a spacer components between the remaining
-          elements.
-        </span>
-      ),
-    },
-
-    {
-      name: 'spaceDirection',
-      required: false,
-      deprecated: true,
-      default: 'both',
-      type: `'horizontal' | 'vertical' | 'both'`,
-      description: (
-        <span>
-          By default the space inserted is a square, but if you set it to horizontal it will be 0px tall, vertical will be 0px wide.
         </span>
       ),
     },
@@ -388,7 +287,7 @@ Use these events alongside style states like `pressStyle`, `hoverStyle`, and `fo
       type: `string | number`,
       description: (
         <span>
-          Used for controlling the order of focus with keyboard or assistive device navigation.
+          Used for controlling keyboard and assistive device focus. This replaces the old <code>focusable</code> prop.
         </span>
       ),
     },

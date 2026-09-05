@@ -37,7 +37,9 @@ npm install @tamagui/toggle-group
 ToggleGroup handles the toggle state logic. For visual grouping with border radius, compose with `XGroup` or `YGroup`. Use `activeStyle` to customize the active state appearance:
 
 ```tsx
-import { ToggleGroup, XGroup } from 'tamagui'
+import { ToggleGroup, XGroup, style } from 'tamagui'
+
+const activeItemStyle = style({ backgroundColor: 'color5' })
 
 export default () => {
   return (
@@ -46,8 +48,8 @@ export default () => {
         <XGroup.Item>
           <ToggleGroup.Item
             value="foo"
-            borderRadius="$4"
-            activeStyle={{ backgroundColor: '$color5' }}
+            borderRadius="4"
+            activeStyle={activeItemStyle}
           >
             Foo
           </ToggleGroup.Item>
@@ -55,8 +57,8 @@ export default () => {
         <XGroup.Item>
           <ToggleGroup.Item
             value="bar"
-            borderRadius="$4"
-            activeStyle={{ backgroundColor: '$color5' }}
+            borderRadius="4"
+            activeStyle={activeItemStyle}
           >
             Bar
           </ToggleGroup.Item>
@@ -73,12 +75,12 @@ For vertical layouts, use `YGroup`:
 <ToggleGroup type="single" orientation="vertical">
   <YGroup>
     <YGroup.Item>
-      <ToggleGroup.Item value="top" borderRadius="$4">
+      <ToggleGroup.Item value="top" borderRadius="4">
         Top
       </ToggleGroup.Item>
     </YGroup.Item>
     <YGroup.Item>
-      <ToggleGroup.Item value="bottom" borderRadius="$4">
+      <ToggleGroup.Item value="bottom" borderRadius="4">
         Bottom
       </ToggleGroup.Item>
     </YGroup.Item>
@@ -90,7 +92,7 @@ For vertical layouts, use `YGroup`:
 
 ### ToggleGroup
 
-ToggleGroup manages toggle state and keyboard navigation. It does not render any visible element by default - use `XGroup`/`YGroup` for visual grouping.
+ToggleGroup manages toggle state and keyboard navigation. It does not render any visible element by default. Use `XGroup`/`YGroup` for visual grouping.
 
 <PropsTable
   data={[
@@ -149,7 +151,7 @@ ToggleGroup manages toggle state and keyboard navigation. It does not render any
 
 ### ToggleGroup.Item
 
-`ToggleGroup.Item` extends Stack views inheriting all the [Tamagui standard props](/docs/intro/props), plus:
+`ToggleGroup.Item` extends View inheriting all the [Tamagui standard props](/docs/intro/props), plus:
 
 <PropsTable
   data={[
@@ -166,8 +168,8 @@ ToggleGroup manages toggle state and keyboard navigation. It does not render any
     },
     {
       name: 'activeStyle',
-      type: 'StyleProp',
-      description: `Style object applied when the item is in its active/pressed state.`,
+      type: 'StylePiece',
+      description: `Style piece applied when the item is in its active/pressed state. Accepts a style() piece.`,
     },
     {
       name: 'activeTheme',
@@ -182,20 +184,18 @@ ToggleGroup manages toggle state and keyboard navigation. It does not render any
 Customize the active/pressed state using `activeStyle`:
 
 ```tsx
-// Inline usage
-;<ToggleGroup.Item
-  value="left"
-  activeStyle={{ backgroundColor: '$green9', color: '$yellow9' }}
->
+const greenActiveStyle = style({
+  backgroundColor: 'green-500',
+})
+
+// Usage on ToggleGroup.Item
+<ToggleGroup.Item value="left" activeStyle={greenActiveStyle}>
   Left
 </ToggleGroup.Item>
 
 // Or via styled()
 const GreenItem = styled(ToggleGroup.Item, {
-  activeStyle: {
-    backgroundColor: '$green9',
-    color: '$yellow9',
-  },
+  activeStyle: greenActiveStyle,
 })
 ```
 
@@ -216,7 +216,7 @@ import { useToggleGroupItem, ToggleGroup } from '@tamagui/toggle-group'
 
 function CustomLabel({ children }) {
   const { active, color } = useToggleGroupItem()
-  return <Text color={active ? '$green10' : '$color'}>{children}</Text>
+  return <Text color={active ? 'green10' : 'color'}>{children}</Text>
 }
 
 // Usage

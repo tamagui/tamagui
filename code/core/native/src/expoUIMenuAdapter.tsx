@@ -74,8 +74,7 @@ const warnedUnsupported = new Set<string>()
 // @expo/ui's MenuAction carries no subtitle, and its MenuView has no preview or
 // auxiliary view. these are decorations on a menu that is otherwise complete, so
 // drop them and warn once. throwing took down the whole app for an optional
-// embellishment, and an app that renders the same menu on zeego and on expo-ui
-// cannot avoid it without forking its markup per adapter.
+// embellishment. apps cannot avoid this without forking their markup per adapter.
 function warnUnsupported(feature: string) {
   if (warnedUnsupported.has(feature) || process.env.NODE_ENV === 'production') {
     return

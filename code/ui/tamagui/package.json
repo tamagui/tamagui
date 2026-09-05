@@ -14,6 +14,22 @@
   "sideEffects": [
     "setup.*"
   ],
+  "files": [
+    "src",
+    "types",
+    "dist",
+    "linear-gradient",
+    "native",
+    "native.cjs",
+    "native.d.ts",
+    "native-test",
+    "native-test.cjs",
+    "native-test.d.ts",
+    "react-native-web",
+    "react-native-web.cjs",
+    "web",
+    "web.cjs"
+  ],
   "main": "dist/cjs",
   "module": "dist/esm",
   "types": "./types/index.d.ts",
@@ -28,14 +44,17 @@
       "require": "./dist/cjs/index.cjs",
       "default": "./dist/esm/index.mjs"
     },
-    "./react-native-web": {
-      "types": "./types/index.d.ts",
-      "react-native": "./dist/esm/react-native-web.native.js",
-      "browser": "./dist/esm/react-native-web.mjs",
-      "module": "./dist/esm/react-native-web.mjs",
-      "import": "./dist/esm/react-native-web.mjs",
-      "require": "./dist/cjs/react-native-web.cjs",
-      "default": "./dist/esm/react-native-web.mjs"
+    "./dom": {
+      "react-native": {
+        "types": "./types/dom.native.d.ts",
+        "default": "./dist/esm/dom.native.js"
+      },
+      "types": "./types/dom.d.ts",
+      "browser": "./dist/esm/dom.mjs",
+      "module": "./dist/esm/dom.mjs",
+      "import": "./dist/esm/dom.mjs",
+      "require": "./dist/cjs/dom.cjs",
+      "default": "./dist/esm/dom.mjs"
     },
     "./web": {
       "types": "./types/index.d.ts",
@@ -49,12 +68,14 @@
     "./native": {
       "types": "./types/index.d.ts",
       "react-native": "./dist/native.cjs",
+      "browser": "./dist/native.cjs",
       "require": "./dist/native.cjs",
       "default": "./dist/native.cjs"
     },
     "./native-test": {
       "types": "./types/index.d.ts",
-      "react-native": "./dist/test.native.js",
+      "react-native": "./dist/test.cjs",
+      "browser": "./dist/test.cjs",
       "require": "./dist/test.cjs",
       "default": "./dist/test.cjs"
     },
@@ -66,6 +87,213 @@
       "import": "./dist/esm/linear-gradient.mjs",
       "require": "./dist/cjs/linear-gradient.cjs",
       "default": "./dist/esm/linear-gradient.mjs"
+    },
+    "./accordion": {
+      "types": "./types/components/Accordion.d.ts",
+      "react-native": "./dist/esm/components/Accordion.native.js",
+      "browser": "./dist/esm/components/Accordion.mjs",
+      "module": "./dist/esm/components/Accordion.mjs",
+      "import": "./dist/esm/components/Accordion.mjs",
+      "require": "./dist/cjs/components/Accordion.cjs",
+      "default": "./dist/esm/components/Accordion.mjs"
+    },
+    "./alert-dialog": {
+      "types": "./types/components/AlertDialog.d.ts",
+      "react-native": "./dist/esm/components/AlertDialog.native.js",
+      "browser": "./dist/esm/components/AlertDialog.mjs",
+      "module": "./dist/esm/components/AlertDialog.mjs",
+      "import": "./dist/esm/components/AlertDialog.mjs",
+      "require": "./dist/cjs/components/AlertDialog.cjs",
+      "default": "./dist/esm/components/AlertDialog.mjs"
+    },
+    "./button": {
+      "types": "./types/components/Button.d.ts",
+      "react-native": "./dist/esm/components/Button.native.js",
+      "browser": "./dist/esm/components/Button.mjs",
+      "module": "./dist/esm/components/Button.mjs",
+      "import": "./dist/esm/components/Button.mjs",
+      "require": "./dist/cjs/components/Button.cjs",
+      "default": "./dist/esm/components/Button.mjs"
+    },
+    "./card": {
+      "types": "./types/components/Card.d.ts",
+      "react-native": "./dist/esm/components/Card.native.js",
+      "browser": "./dist/esm/components/Card.mjs",
+      "module": "./dist/esm/components/Card.mjs",
+      "import": "./dist/esm/components/Card.mjs",
+      "require": "./dist/cjs/components/Card.cjs",
+      "default": "./dist/esm/components/Card.mjs"
+    },
+    "./checkbox": {
+      "types": "./types/components/Checkbox.d.ts",
+      "react-native": "./dist/esm/components/Checkbox.native.js",
+      "browser": "./dist/esm/components/Checkbox.mjs",
+      "module": "./dist/esm/components/Checkbox.mjs",
+      "import": "./dist/esm/components/Checkbox.mjs",
+      "require": "./dist/cjs/components/Checkbox.cjs",
+      "default": "./dist/esm/components/Checkbox.mjs"
+    },
+    "./dialog": {
+      "types": "./types/components/Dialog.d.ts",
+      "react-native": "./dist/esm/components/Dialog.native.js",
+      "browser": "./dist/esm/components/Dialog.mjs",
+      "module": "./dist/esm/components/Dialog.mjs",
+      "import": "./dist/esm/components/Dialog.mjs",
+      "require": "./dist/cjs/components/Dialog.cjs",
+      "default": "./dist/esm/components/Dialog.mjs"
+    },
+    "./input": {
+      "types": "./types/components/Input.d.ts",
+      "react-native": "./dist/esm/components/Input.native.js",
+      "browser": "./dist/esm/components/Input.mjs",
+      "module": "./dist/esm/components/Input.mjs",
+      "import": "./dist/esm/components/Input.mjs",
+      "require": "./dist/cjs/components/Input.cjs",
+      "default": "./dist/esm/components/Input.mjs"
+    },
+    "./label": {
+      "types": "./types/components/Label.d.ts",
+      "react-native": "./dist/esm/components/Label.native.js",
+      "browser": "./dist/esm/components/Label.mjs",
+      "module": "./dist/esm/components/Label.mjs",
+      "import": "./dist/esm/components/Label.mjs",
+      "require": "./dist/cjs/components/Label.cjs",
+      "default": "./dist/esm/components/Label.mjs"
+    },
+    "./list-item": {
+      "types": "./types/components/ListItem.d.ts",
+      "react-native": "./dist/esm/components/ListItem.native.js",
+      "browser": "./dist/esm/components/ListItem.mjs",
+      "module": "./dist/esm/components/ListItem.mjs",
+      "import": "./dist/esm/components/ListItem.mjs",
+      "require": "./dist/cjs/components/ListItem.cjs",
+      "default": "./dist/esm/components/ListItem.mjs"
+    },
+    "./popover": {
+      "types": "./types/components/Popover.d.ts",
+      "react-native": "./dist/esm/components/Popover.native.js",
+      "browser": "./dist/esm/components/Popover.mjs",
+      "module": "./dist/esm/components/Popover.mjs",
+      "import": "./dist/esm/components/Popover.mjs",
+      "require": "./dist/cjs/components/Popover.cjs",
+      "default": "./dist/esm/components/Popover.mjs"
+    },
+    "./progress": {
+      "types": "./types/components/Progress.d.ts",
+      "react-native": "./dist/esm/components/Progress.native.js",
+      "browser": "./dist/esm/components/Progress.mjs",
+      "module": "./dist/esm/components/Progress.mjs",
+      "import": "./dist/esm/components/Progress.mjs",
+      "require": "./dist/cjs/components/Progress.cjs",
+      "default": "./dist/esm/components/Progress.mjs"
+    },
+    "./radio-group": {
+      "types": "./types/components/RadioGroup.d.ts",
+      "react-native": "./dist/esm/components/RadioGroup.native.js",
+      "browser": "./dist/esm/components/RadioGroup.mjs",
+      "module": "./dist/esm/components/RadioGroup.mjs",
+      "import": "./dist/esm/components/RadioGroup.mjs",
+      "require": "./dist/cjs/components/RadioGroup.cjs",
+      "default": "./dist/esm/components/RadioGroup.mjs"
+    },
+    "./select": {
+      "types": "./types/components/Select.d.ts",
+      "react-native": "./dist/esm/components/Select.native.js",
+      "browser": "./dist/esm/components/Select.mjs",
+      "module": "./dist/esm/components/Select.mjs",
+      "import": "./dist/esm/components/Select.mjs",
+      "require": "./dist/cjs/components/Select.cjs",
+      "default": "./dist/esm/components/Select.mjs"
+    },
+    "./separator": {
+      "types": "./types/components/Separator.d.ts",
+      "react-native": "./dist/esm/components/Separator.native.js",
+      "browser": "./dist/esm/components/Separator.mjs",
+      "module": "./dist/esm/components/Separator.mjs",
+      "import": "./dist/esm/components/Separator.mjs",
+      "require": "./dist/cjs/components/Separator.cjs",
+      "default": "./dist/esm/components/Separator.mjs"
+    },
+    "./sheet": {
+      "types": "./types/components/Sheet.d.ts",
+      "react-native": "./dist/esm/components/Sheet.native.js",
+      "browser": "./dist/esm/components/Sheet.mjs",
+      "module": "./dist/esm/components/Sheet.mjs",
+      "import": "./dist/esm/components/Sheet.mjs",
+      "require": "./dist/cjs/components/Sheet.cjs",
+      "default": "./dist/esm/components/Sheet.mjs"
+    },
+    "./slider": {
+      "types": "./types/components/Slider.d.ts",
+      "react-native": "./dist/esm/components/Slider.native.js",
+      "browser": "./dist/esm/components/Slider.mjs",
+      "module": "./dist/esm/components/Slider.mjs",
+      "import": "./dist/esm/components/Slider.mjs",
+      "require": "./dist/cjs/components/Slider.cjs",
+      "default": "./dist/esm/components/Slider.mjs"
+    },
+    "./surface": {
+      "types": "./types/components/Surface.d.ts",
+      "react-native": "./dist/esm/components/Surface.native.js",
+      "browser": "./dist/esm/components/Surface.mjs",
+      "module": "./dist/esm/components/Surface.mjs",
+      "import": "./dist/esm/components/Surface.mjs",
+      "require": "./dist/cjs/components/Surface.cjs",
+      "default": "./dist/esm/components/Surface.mjs"
+    },
+    "./switch": {
+      "types": "./types/components/Switch.d.ts",
+      "react-native": "./dist/esm/components/Switch.native.js",
+      "browser": "./dist/esm/components/Switch.mjs",
+      "module": "./dist/esm/components/Switch.mjs",
+      "import": "./dist/esm/components/Switch.mjs",
+      "require": "./dist/cjs/components/Switch.cjs",
+      "default": "./dist/esm/components/Switch.mjs"
+    },
+    "./tabs": {
+      "types": "./types/components/Tabs.d.ts",
+      "react-native": "./dist/esm/components/Tabs.native.js",
+      "browser": "./dist/esm/components/Tabs.mjs",
+      "module": "./dist/esm/components/Tabs.mjs",
+      "import": "./dist/esm/components/Tabs.mjs",
+      "require": "./dist/cjs/components/Tabs.cjs",
+      "default": "./dist/esm/components/Tabs.mjs"
+    },
+    "./toast": {
+      "types": "./types/components/Toast.d.ts",
+      "react-native": "./dist/esm/components/Toast.native.js",
+      "browser": "./dist/esm/components/Toast.mjs",
+      "module": "./dist/esm/components/Toast.mjs",
+      "import": "./dist/esm/components/Toast.mjs",
+      "require": "./dist/cjs/components/Toast.cjs",
+      "default": "./dist/esm/components/Toast.mjs"
+    },
+    "./toggle-group": {
+      "types": "./types/components/ToggleGroup.d.ts",
+      "react-native": "./dist/esm/components/ToggleGroup.native.js",
+      "browser": "./dist/esm/components/ToggleGroup.mjs",
+      "module": "./dist/esm/components/ToggleGroup.mjs",
+      "import": "./dist/esm/components/ToggleGroup.mjs",
+      "require": "./dist/cjs/components/ToggleGroup.cjs",
+      "default": "./dist/esm/components/ToggleGroup.mjs"
+    },
+    "./facets": {
+      "types": "./types/components/facets.d.ts",
+      "react-native": "./dist/esm/components/facets.native.js",
+      "browser": "./dist/esm/components/facets.mjs",
+      "module": "./dist/esm/components/facets.mjs",
+      "import": "./dist/esm/components/facets.mjs",
+      "require": "./dist/cjs/components/facets.cjs",
+      "default": "./dist/esm/components/facets.mjs"
+    },
+    "./unstyled": {
+      "types": "./types/unstyled.d.ts",
+      "react-native": "./dist/esm/unstyled.native.js",
+      "browser": "./dist/esm/unstyled.mjs",
+      "module": "./dist/esm/unstyled.mjs",
+      "import": "./dist/esm/unstyled.mjs",
+      "require": "./dist/cjs/unstyled.cjs",
+      "default": "./dist/esm/unstyled.mjs"
     }
   },
   "scripts": {
@@ -98,9 +326,10 @@
     "@tamagui/element": "workspace:*",
     "@tamagui/elements": "workspace:*",
     "@tamagui/fake-react-native": "workspace:*",
+    "@tamagui/field": "workspace:*",
     "@tamagui/focusable": "workspace:*",
+    "@tamagui/font-size": "workspace:*",
     "@tamagui/form": "workspace:*",
-    "@tamagui/get-button-sized": "workspace:*",
     "@tamagui/get-font-sized": "workspace:*",
     "@tamagui/get-token": "workspace:*",
     "@tamagui/group": "workspace:*",
@@ -134,12 +363,12 @@
     "@tamagui/toast": "workspace:*",
     "@tamagui/toggle-group": "workspace:*",
     "@tamagui/tooltip": "workspace:*",
+    "@tamagui/ui": "workspace:*",
     "@tamagui/use-controllable-state": "workspace:*",
     "@tamagui/use-debounce": "workspace:*",
     "@tamagui/use-force-update": "workspace:*",
     "@tamagui/use-window-dimensions": "workspace:*",
     "@tamagui/visually-hidden": "workspace:*",
-    "@tamagui/font-size": "workspace:*",
     "@tamagui/z-index-stack": "workspace:*"
   },
   "devDependencies": {
@@ -149,7 +378,13 @@
     "react-native-web": "~0.21.0"
   },
   "peerDependencies": {
-    "react": ">=19"
+    "react": ">=19",
+    "react-native-safe-area-context": "*"
+  },
+  "peerDependenciesMeta": {
+    "react-native-safe-area-context": {
+      "optional": true
+    }
   },
   "alsoPublishAs_disabled": [
     "@tamagui/ui"

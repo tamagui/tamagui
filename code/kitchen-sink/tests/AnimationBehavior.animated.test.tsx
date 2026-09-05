@@ -1,11 +1,11 @@
 import { expect, test, type Page } from '@playwright/test'
-import { setupPage } from './test-utils'
+import { getComputedScale, getComputedTranslateX, setupPage } from './test-utils'
 
 /**
  * ANIMATION BEHAVIOR TESTS
  *
  * Tests animation behavior across all configured drivers.
- * Driver is determined by the playwright project (css, native, reanimated, motion).
+ * Driver is determined by the playwright project (css, reanimated, motion).
  * All tests verify start, intermediate, and end states.
  * Uses scenario-36 (1000ms timing) for reliable intermediate capture.
  */
@@ -21,25 +21,11 @@ async function getOpacity(page: Page, testId: string): Promise<number> {
 }
 
 async function getScale(page: Page, testId: string): Promise<number> {
-  return page.evaluate((id) => {
-    const el = document.querySelector(`[data-testid="${id}"]`)
-    if (!el) return -1
-    const transform = getComputedStyle(el).transform
-    if (transform === 'none') return 1
-    const match = transform.match(/matrix\(([^,]+),/)
-    return match ? Number.parseFloat(match[1]) : 1
-  }, testId)
+  return getComputedScale(page, `[data-testid="${testId}"]`)
 }
 
 async function getTranslateX(page: Page, testId: string): Promise<number> {
-  return page.evaluate((id) => {
-    const el = document.querySelector(`[data-testid="${id}"]`)
-    if (!el) return -1
-    const transform = getComputedStyle(el).transform
-    if (transform === 'none') return 0
-    const match = transform.match(/matrix\([^,]+,[^,]+,[^,]+,[^,]+,([^,]+),/)
-    return match ? Number.parseFloat(match[1]) : 0
-  }, testId)
+  return getComputedTranslateX(page, `[data-testid="${testId}"]`)
 }
 
 async function elementExists(page: Page, testId: string): Promise<boolean> {
@@ -62,10 +48,6 @@ function isIntermediate(
 
 test.describe('Animation Behavior', () => {
   test.beforeEach(async ({ page }) => {
-    // Skip native driver - it has issues with data-testid attributes on web
-    const driver = (test.info().project?.metadata as any)?.animationDriver
-    test.skip(driver === 'native', 'native driver has element detection issues on web')
-
     await setupPage(page, {
       name: 'AnimationComprehensiveCase',
       type: 'useCase',
@@ -132,9 +114,14 @@ test.describe('Animation Behavior', () => {
         const vals: number[] = []
         const start = performance.now()
         function tick() {
-          const t = getComputedStyle(el).transform
-          const m = t.match(/matrix\(([^,]+),/)
-          vals.push(m ? Number.parseFloat(m[1]) : 1)
+          const style = getComputedStyle(el)
+          vals.push(
+            style.scale !== 'none'
+              ? Number.parseFloat(style.scale)
+              : style.transform === 'none'
+                ? 1
+                : new DOMMatrixReadOnly(style.transform).a
+          )
           if (performance.now() - start < 800) requestAnimationFrame(tick)
           else resolve(vals)
         }
@@ -204,7 +191,7 @@ test.describe('Animation Behavior', () => {
     expect(endScale, 'End scale').toBeCloseTo(SCALE_END, 0)
   })
 
-  test('enterStyle animates on mount', async ({ page }) => {
+  test('enter clause animates on mount', async ({ page }) => {
     const trigger = page.getByTestId('scenario-21-trigger')
     await trigger.click() // Hide
     await page.waitForTimeout(1000)
@@ -219,7 +206,7 @@ test.describe('Animation Behavior', () => {
     expect(await getScale(page, 'scenario-21-target'), 'End scale').toBeCloseTo(1, 0)
   })
 
-  test('exitStyle has intermediate values during exit animation', async ({
+  test('exit clause has intermediate values during exit animation', async ({
     page,
   }, testInfo) => {
     const driver = (testInfo.project?.metadata as any)?.animationDriver
@@ -289,7 +276,7 @@ test.describe('Animation Behavior', () => {
     expect(endScale, 'End scale').toBeCloseTo(SCALE_END, 0)
   })
 
-  test('enterStyle with scaleX animates from 0 to 1', async ({ page }) => {
+  test('enter clause with scaleX animates from 0 to 1', async ({ page }) => {
     const END_SCALE_X = 1
     const END_OPACITY = 1
 
@@ -315,11 +302,10 @@ test.describe('Animation Behavior', () => {
       return page.evaluate(() => {
         const el = document.querySelector('[data-testid="scenario-37-target"]')
         if (!el) return -1
-        const transform = getComputedStyle(el).transform
-        if (transform === 'none') return 1
-        // matrix(a, b, c, d, tx, ty) - scaleX is in the 'a' position
-        const match = transform.match(/matrix\(([^,]+),/)
-        return match ? Number.parseFloat(match[1]) : 1
+        const style = getComputedStyle(el)
+        if (style.scale !== 'none') return Number.parseFloat(style.scale)
+        if (style.transform === 'none') return 1
+        return new DOMMatrixReadOnly(style.transform).a
       })
     }
 
@@ -337,7 +323,7 @@ test.describe('Animation Behavior', () => {
     page,
   }) => {
     // this tests the "animationClamped" pattern fix
-    // transition={['quick', { opacity: '200ms', backgroundColor: '200ms' }]}
+    // transition={{ preset: 'quick', opacity: '200ms', backgroundColor: '200ms' }}
     // scale and y are NOT in the per-property config but should still animate
     const OPACITY_END = 0.5
     const SCALE_END = 1.3
@@ -364,10 +350,10 @@ test.describe('Animation Behavior', () => {
     expect(endScale, 'End scale').toBeCloseTo(SCALE_END, 1)
   })
 
-  test('object format per-property config: unlisted properties still animate', async ({
+  test('css string per-property config: unlisted properties still animate', async ({
     page,
   }) => {
-    // same as above but using object format: { opacity: '200ms', default: 'quick' }
+    // same as above spelled as a string: "quick, opacity 200ms, background-color 200ms"
     const OPACITY_END = 0.5
     const SCALE_END = 1.3
 
@@ -418,7 +404,7 @@ test.describe('Animation Behavior', () => {
   test('per-property config with delay: both delay and per-property work together', async ({
     page,
   }) => {
-    // transition={['quick', { delay: 300, opacity: '500ms' }]}
+    // transition={{ preset: 'quick', delay: 300, opacity: '500ms' }}
     // 300ms delay, then opacity=500ms, scale=quick
     const OPACITY_START = 1,
       OPACITY_END = 0.5
@@ -447,7 +433,7 @@ test.describe('Animation Behavior', () => {
     expect(endScale, 'End scale').toBeCloseTo(SCALE_END, 1)
   })
 
-  test('animateOnly with exitStyle has intermediate values during exit animation', async ({
+  test('a property list with an exit clause has intermediate values during exit animation', async ({
     page,
   }, testInfo) => {
     const driver = (testInfo.project?.metadata as any)?.animationDriver
@@ -493,7 +479,7 @@ test.describe('Animation Behavior', () => {
     )
   })
 
-  test('animateOnly with enterStyle and exitStyle animates correctly', async ({
+  test('a property list with enter and exit clauses animates correctly', async ({
     page,
   }, testInfo) => {
     const driver = (testInfo.project?.metadata as any)?.animationDriver
@@ -502,7 +488,7 @@ test.describe('Animation Behavior', () => {
     // scroll to the element first
     await page.getByTestId('scenario-49-trigger').scrollIntoViewIfNeeded()
 
-    // element should be visible initially (after enterStyle animation completes)
+    // element should be visible initially (after enter clause animation completes)
     expect(await elementExists(page, 'scenario-49-target'), 'Initially visible').toBe(
       true
     )

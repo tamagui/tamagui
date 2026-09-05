@@ -1,33 +1,9 @@
-import { ToastViewport } from '@tamagui/toast'
-import { lazy, Suspense } from 'react'
-import { LoadProgressBar, Slot, usePathname } from 'one'
+import { Slot, usePathname } from 'one'
 import { Theme, YStack } from 'tamagui'
 import { Footer } from '~/features/site/Footer'
 import { Header } from '~/features/site/header/Header'
 import { useSiteTheme } from '~/features/site/theme/useSiteTheme'
 import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
-
-// lazy load modals to avoid loading stripe on initial page load
-const NewAccountModal = lazy(() =>
-  import('~/features/site/purchase/NewAccountModal').then((mod) => ({
-    default: mod.NewAccountModal,
-  }))
-)
-
-const NewPurchaseModal = lazy(() =>
-  import('~/features/site/purchase/NewPurchaseModal').then((mod) => ({
-    default: mod.NewPurchaseModal,
-  }))
-)
-
-function Modals() {
-  return (
-    <Suspense fallback={null}>
-      <NewPurchaseModal />
-      <NewAccountModal />
-    </Suspense>
-  )
-}
 
 export default function SiteLayout() {
   const path = usePathname()
@@ -59,23 +35,12 @@ export default function SiteLayout() {
       <script defer src="https://assets.onedollarstats.com/stonks.js" />
 
       {!hideHeader && <Header showAuth={showAuth} disableNew={disableNew} />}
-      <Modals />
-      <LoadProgressBar />
       <Theme name={customThemeName}>
-        <YStack inset={0} position="absolute" bg="$color1" z={-1} pointerEvents="none" />
-        <ThemeNameEffect colorKey="$color1" disableTint={customThemeActive} />
+        <YStack inset={0} position="absolute" bg="color1" z={-1} pointerEvents="none" />
+        <ThemeNameEffect colorKey="color1" disableTint={customThemeActive} />
         <Slot />
       </Theme>
       {!hideFooter && <Footer />}
-      <ToastViewport flexDirection="column-reverse" top="$2" left={0} right={0} />
-      <ToastViewport
-        multipleToasts
-        name="viewport-multiple"
-        flexDirection="column-reverse"
-        top="$2"
-        left={0}
-        right={0}
-      />
     </YStack>
   )
 }

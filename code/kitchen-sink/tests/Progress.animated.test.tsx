@@ -18,10 +18,18 @@ import { setupPage } from './test-utils'
 // 0 than -55% means it flashed toward full.
 const FULL_THRESHOLD_RATIO = -0.55
 
-function translateXPx(transform: string): number | null {
+function translateXPx(
+  translate: string,
+  transform: string,
+  width: number
+): number | null {
+  if (translate !== 'none') {
+    const x = translate.split(' ')[0]
+    return x.endsWith('%') ? (Number.parseFloat(x) / 100) * width : Number.parseFloat(x)
+  }
   if (!transform || transform === 'none') return 0
-  const m = transform.match(/matrix\(1, 0, 0, 1, (-?[\d.]+),/)
-  return m ? Number.parseFloat(m[1]) : null
+  const matrix = transform.match(/matrix\(([^)]+)\)/)
+  return matrix ? Number.parseFloat(matrix[1].split(',')[4]) : null
 }
 
 test.describe('Progress first paint (#4011)', () => {
@@ -36,20 +44,26 @@ test.describe('Progress first paint (#4011)', () => {
     // sample the indicator's transform across the first ~1.2s (covering the
     // post-mount re-render the usecase forces, where the flash used to appear).
     const samples = await page.evaluate(() => {
-      return new Promise<{ tx: string; w: number }[]>((resolve) => {
-        const out: { tx: string; w: number }[] = []
-        const start = performance.now()
-        const tick = () => {
-          const el = document.querySelector('[data-testid="progress-indicator"]')
-          if (el) {
-            const cs = getComputedStyle(el)
-            out.push({ tx: cs.transform, w: Number.parseFloat(cs.width) })
+      return new Promise<{ translate: string; transform: string; w: number }[]>(
+        (resolve) => {
+          const out: { translate: string; transform: string; w: number }[] = []
+          const start = performance.now()
+          const tick = () => {
+            const el = document.querySelector('[data-testid="progress-indicator"]')
+            if (el) {
+              const cs = getComputedStyle(el)
+              out.push({
+                translate: cs.translate,
+                transform: cs.transform,
+                w: Number.parseFloat(cs.width),
+              })
+            }
+            if (performance.now() - start < 1200) requestAnimationFrame(tick)
+            else resolve(out)
           }
-          if (performance.now() - start < 1200) requestAnimationFrame(tick)
-          else resolve(out)
+          requestAnimationFrame(tick)
         }
-        requestAnimationFrame(tick)
-      })
+      )
     })
 
     expect(samples.length, 'should have captured frames').toBeGreaterThan(0)
@@ -60,8 +74,11 @@ test.describe('Progress first paint (#4011)', () => {
 
     // every sampled frame must be at the value-based position, never near full
     for (const s of samples) {
-      const x = translateXPx(s.tx)
-      expect(x, `unexpected transform ${s.tx}`).not.toBeNull()
+      const x = translateXPx(s.translate, s.transform, s.w)
+      expect(
+        x,
+        `unexpected translate ${s.translate} / transform ${s.transform}`
+      ).not.toBeNull()
       expect(
         x!,
         `indicator flashed toward full: x=${x} (full threshold ${fullThreshold.toFixed(0)})`
@@ -69,7 +86,12 @@ test.describe('Progress first paint (#4011)', () => {
     }
 
     // and the final/initial resting position is the correct value (~-70%)
-    const finalX = translateXPx(samples[samples.length - 1].tx)!
+    const finalSample = samples[samples.length - 1]
+    const finalX = translateXPx(
+      finalSample.translate,
+      finalSample.transform,
+      finalSample.w
+    )!
     expect(finalX, `resting position should be ~${expectedX.toFixed(0)}px`).toBeCloseTo(
       expectedX,
       -1
@@ -87,10 +109,15 @@ test.describe('Progress first paint (#4011)', () => {
         const vals: (number | null)[] = []
         const start = performance.now()
         const read = () => {
-          const m = getComputedStyle(el).transform.match(
-            /matrix\(1, 0, 0, 1, (-?[\d.]+),/
-          )
-          return m ? Number.parseFloat(m[1]) : null
+          const style = getComputedStyle(el)
+          if (style.translate !== 'none') {
+            const x = style.translate.split(' ')[0]
+            return x.endsWith('%')
+              ? (Number.parseFloat(x) / 100) * Number.parseFloat(style.width)
+              : Number.parseFloat(x)
+          }
+          if (style.transform === 'none') return 0
+          return new DOMMatrixReadOnly(style.transform).e
         }
         const tick = () => {
           vals.push(read())

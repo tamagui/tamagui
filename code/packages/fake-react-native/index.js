@@ -18,24 +18,68 @@ const emtpyComponent = () => null
 // Mock usePressability for testing - returns empty event handlers
 const usePressabilityMock = () => ({})
 
+// real context: consumers (tamagui's useChildren) call React.useContext on it,
+// the proxyWorm fallback object would break that
+const TextAncestorContext = React.createContext(false)
+const Animated = {
+  createAnimatedComponent: (Component) => Component,
+}
+const Keyboard = {
+  addListener: () => ({ remove: () => {} }),
+  removeAllListeners: () => {},
+  dismiss: () => {},
+}
+const useWindowDimensions = () => ({
+  width: 1024,
+  height: 768,
+  scale: 2,
+  fontScale: 1,
+})
+const PanResponder = {
+  create: (handlers) => ({ panHandlers: handlers }),
+}
+const TurboModuleRegistry = {
+  get: () => null,
+}
+const PixelRatio = {
+  get: () => 2,
+  getFontScale: () => 1,
+  getPixelSizeForLayoutSize: (size) => Math.round(size * 2),
+  roundToNearestPixel: (size) => Math.round(size * 2) / 2,
+}
+const codegenNativeCommands = () => ({})
+const codegenNativeComponent = (name) => createMockComponent(name)
+
 function proxyWorm() {
   return new Proxy(
     {
       StyleSheet: {
         create() {},
       },
+      unstable_TextAncestorContext: TextAncestorContext,
       Platform: {
         OS: 'web',
+        select: (options) => options.web ?? options.default,
       },
       Image: emtpyComponent,
       View: createMockComponent('View'),
       Text: createMockComponent('Text'),
       TextInput: createMockComponent('TextInput'),
       ScrollView: createMockComponent('ScrollView'),
+      FlatList: createMockComponent('FlatList'),
+      Pressable: createMockComponent('Pressable'),
+      Animated,
+      NativeModules: {},
+      PanResponder,
+      TurboModuleRegistry,
+      PixelRatio,
+      processColor: (color) => color,
       Dimensions: {
-        get: () => ({ width: 1024, height: 768 }),
+        get: () => ({ width: 1024, height: 768, scale: 2, fontScale: 1 }),
         addEventListener: () => ({ remove: () => {} }),
       },
+      useWindowDimensions,
+      Keyboard,
       Appearance: {
         getColorScheme: () => 'light',
         addChangeListener: () => {},
@@ -73,5 +117,17 @@ module.exports.View = proxy.View
 module.exports.Text = proxy.Text
 module.exports.TextInput = proxy.TextInput
 module.exports.ScrollView = proxy.ScrollView
+module.exports.FlatList = proxy.FlatList
+module.exports.Pressable = proxy.Pressable
+module.exports.Animated = proxy.Animated
+module.exports.NativeModules = proxy.NativeModules
+module.exports.PanResponder = proxy.PanResponder
+module.exports.TurboModuleRegistry = proxy.TurboModuleRegistry
+module.exports.PixelRatio = PixelRatio
+module.exports.processColor = proxy.processColor
 module.exports.Dimensions = proxy.Dimensions
+module.exports.useWindowDimensions = useWindowDimensions
+module.exports.Keyboard = Keyboard
 module.exports.Appearance = proxy.Appearance
+module.exports.codegenNativeCommands = codegenNativeCommands
+module.exports.codegenNativeComponent = codegenNativeComponent

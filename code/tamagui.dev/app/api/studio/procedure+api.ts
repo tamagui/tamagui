@@ -1,17 +1,11 @@
 import { apiRoute } from '~/features/api/apiRoute'
-import { ensureAccess } from '~/features/api/ensureAccess'
 import { ensureAuth } from '~/features/api/ensureAuth'
 import { getQuery } from '~/features/api/getQuery'
 import { readBodyJSON } from '~/features/api/readBodyJSON'
 import * as APIs from '~/features/studio/api'
 
 export default apiRoute(async (req) => {
-  const { user } = await ensureAuth({ req })
-
-  const { hasPro } = await ensureAccess({ user })
-  if (!hasPro) {
-    return Response.json({ error: 'Must have Pro account' }, { status: 403 })
-  }
+  await ensureAuth({ req })
 
   const query = getQuery(req)
   const procedureName = query.procedure

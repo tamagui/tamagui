@@ -12,7 +12,7 @@ import type * as React from 'react'
 export function mergeRefs(
   ...args: ReadonlyArray<React.Ref<any>>
 ): (node: HTMLElement | null) => void {
-  return function forwardRef(node: HTMLElement | null) {
+  return function mergedRef(node: HTMLElement | null) {
     args.forEach((ref: React.Ref<any>) => {
       if (ref == null) {
         return

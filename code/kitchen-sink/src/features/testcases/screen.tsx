@@ -10,18 +10,22 @@ import { useCases as TestCases } from '../../usecases'
 export function TestCasesScreen() {
   return (
     <ScrollView testID="test-cases-scroll-view">
-      <YStack bg="$background" p="$3" pt="$6" pb="$8" flex={1} gap="$4">
+      <YStack
+        bg="background"
+        paddingRight="3"
+        paddingLeft="3"
+        pt="6"
+        pb="8"
+        flex={1}
+        gap="4"
+      >
         <H2>All Test Cases</H2>
-        <YStack gap="$4" maxW={600}>
-          <YGroup size="$4">
+        <YStack gap="4" maxW={600}>
+          <YGroup>
             {Object.keys(TestCases).map((page) => {
               return (
                 <YGroup.Item key={page}>
-                  <LinkListItem
-                    href={`/test/${page}`}
-                    size="$4"
-                    testID={`test-case-${page}`}
-                  >
+                  <LinkListItem href={`/test/${page}`} testID={`test-case-${page}`}>
                     {page}
                   </LinkListItem>
                 </YGroup.Item>
@@ -46,11 +50,11 @@ const LinkListItem = ({
   return (
     <ListItem
       {...linkProps}
-      backgroundColor="$color1"
+      backgroundColor="color1"
+      {...props}
       onPress={(e) => {
         linkProps.onPress(e)
       }}
-      {...props}
       iconAfter={ChevronRight}
     >
       {children}

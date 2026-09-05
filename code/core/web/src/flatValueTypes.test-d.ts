@@ -1,0 +1,66 @@
+import { describe, expectTypeOf, test } from 'vitest'
+
+import type {
+  FlatStyleObject,
+  FlatStyleValue,
+  FontFamilyTokens,
+  RootThemeName,
+  StackStyle,
+} from './types'
+
+declare const accepts: <T>(value: T) => void
+
+describe('flat value types', () => {
+  test('theme modifiers only include root theme names', () => {
+    type ConfigThemeName = 'light' | 'dark' | 'dark_blue' | 'dark_ProgressIndicator'
+
+    expectTypeOf<RootThemeName<ConfigThemeName>>().toEqualTypeOf<'light' | 'dark'>()
+  })
+
+  test('a loose theme record does not create an open modifier prefix', () => {
+    expectTypeOf<RootThemeName<string>>().toEqualTypeOf<never>()
+  })
+
+  test('flat objects keep their leaf value type at every condition', () => {
+    accepts<FlatStyleObject<'red' | 'blue'>>({
+      default: 'red',
+      hover: 'blue',
+      'hover:focus': 'red',
+      'web:hover:focus': 'blue',
+    })
+    accepts<FlatStyleValue<number>>({ default: 0, hover: 1, 'sm:hover': 0.5 })
+
+    // strings always pass, matching the clause string form's open payloads
+    accepts<FlatStyleObject<number>>({ hover: '1' })
+
+    // @ts-expect-error non-string payloads must match the property type
+    accepts<FlatStyleObject<'left' | 'right'>>({ hover: 5 })
+  })
+
+  test('container and named-group spellings are valid object keys', () => {
+    // with no user config MediaQueryKey is string, so unknown keys also pass
+    // here; key validation is the language service's and compiler's job
+    accepts<FlatStyleObject<number>>({
+      '@sm': 1,
+      '@sm/card': 2,
+      '@sm:hover': 3,
+      'group-hover/card': 4,
+      'group-press': 5,
+    })
+  })
+
+  test('native shadow props accept conditional strings', () => {
+    expectTypeOf<'dark:3 light:20'>().toMatchTypeOf<StackStyle['shadowRadius']>()
+    expectTypeOf<'dark:0.2 light:0.1'>().toMatchTypeOf<StackStyle['shadowOpacity']>()
+    expectTypeOf<'dark:shadow6 light:shadow4'>().toMatchTypeOf<
+      StackStyle['shadowColor']
+    >()
+    expectTypeOf<'dark:{width:0,height:2} light:{width:0,height:7}'>().toMatchTypeOf<
+      StackStyle['shadowOffset']
+    >()
+  })
+
+  test('font family tokens use their unprefixed v3 names', () => {
+    expectTypeOf<'mono'>().toMatchTypeOf<FontFamilyTokens>()
+  })
+})

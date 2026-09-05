@@ -6,7 +6,7 @@ import { Button, Text, Theme, YStack } from 'tamagui'
  * Tests that <Theme name="X"> correctly updates child styling when X changes.
  *
  * This is the simplest possible theme change scenario:
- * 1. View with bg="$color4" inside Theme
+ * 1. View with bg="color4" inside Theme
  * 2. Button to toggle theme between "red" and "blue"
  * 3. View color should change accordingly
  *
@@ -18,7 +18,7 @@ export function ThemeChangeBasic() {
   const [themeName, setThemeName] = useState<'red' | 'blue'>('red')
 
   return (
-    <YStack padding="$4" gap="$4" alignItems="center" testID="theme-change-basic-root">
+    <YStack padding="4" gap="4" alignItems="center" testID="theme-change-basic-root">
       <Text testID="theme-change-basic-label">Current theme: {themeName}</Text>
 
       <Button
@@ -31,7 +31,7 @@ export function ThemeChangeBasic() {
       <Theme name={themeName}>
         {/*
           This exact pattern was reported as broken with native/reanimated drivers.
-          The YStack's bg="$color4" should change color when theme changes.
+          The YStack's bg="color4" should change color when theme changes.
         */}
         <YStack
           testID="theme-change-basic-square"
@@ -39,10 +39,10 @@ export function ThemeChangeBasic() {
           height={200}
           alignItems="center"
           justifyContent="center"
-          backgroundColor="$color4"
+          backgroundColor="color4"
           borderRadius={14}
         >
-          <Text color="$color12" fontWeight="bold">
+          <Text color="color11" fontWeight="bold">
             {themeName.toUpperCase()}
           </Text>
         </YStack>

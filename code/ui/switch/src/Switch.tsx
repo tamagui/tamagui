@@ -1,91 +1,192 @@
-import type { SizeTokens } from '@tamagui/core'
-import { getVariableValue, styled } from '@tamagui/core'
-import { getSize } from '@tamagui/get-token'
-import { YStack } from '@tamagui/stacks'
+import type { GetProps } from '@tamagui/core'
+import {
+  composeEventHandlers,
+  createStyledHOC,
+  getVariableValue,
+  isWeb,
+  styled,
+  Theme,
+  type ThemeProps,
+  View,
+  withStaticProperties,
+} from '@tamagui/core'
+import { useSwitch } from '@tamagui/switch-headless'
+import { useControllableState } from '@tamagui/use-controllable-state'
+import * as React from 'react'
+import type { LayoutChangeEvent } from 'react-native'
+import { SwitchStyledContext } from './StyledContext'
+import type {
+  SwitchComponent as SwitchFrameComponent,
+  SwitchProps,
+  SwitchThumbComponent as SwitchThumbFrameComponent,
+  SwitchThumbProps,
+} from './types'
+import { useSwitchNative } from './useSwitchNative'
 
-export const SwitchThumb = styled(
-  YStack,
-  {
-    name: 'SwitchThumb',
+export const SwitchThumbFrame = styled(View, {
+  displayName: 'SwitchThumb',
+  context: SwitchStyledContext,
+})
 
-    variants: {
-      unstyled: {
-        false: {
-          size: '$true',
-          backgroundColor: '$background',
-          borderRadius: 1000,
-        },
-      },
+export const SwitchFrame = styled(View, {
+  displayName: 'Switch',
+  context: SwitchStyledContext,
+  render: 'button',
+  tabIndex: 0,
+})
 
-      size: {
-        '...size': (val) => {
-          const size = getSwitchHeight(val)
-          return {
-            height: size,
-            width: size,
-          }
-        },
-      },
-    } as const,
-
-    defaultVariants: {
-      unstyled: process.env.TAMAGUI_HEADLESS === '1',
-    },
-  },
-  {
-    accept: {
-      activeStyle: 'style',
-    } as const,
+export function createSwitch(createProps: {
+  Frame?: SwitchFrameComponent
+  Thumb?: SwitchThumbFrameComponent
+  componentThemes?: {
+    frame?: ThemeProps['name']
+    thumb?: ThemeProps['name']
   }
-)
+}) {
+  const Frame = (createProps.Frame ?? SwitchFrame) as typeof SwitchFrame
+  const Thumb = (createProps.Thumb ?? SwitchThumbFrame) as typeof SwitchThumbFrame
 
-const getSwitchHeight = (val: SizeTokens) =>
-  Math.round(getVariableValue(getSize(val)) * 0.65)
+  Frame.staticConfig.context = SwitchStyledContext
+  Thumb.staticConfig.context = SwitchStyledContext
 
-const getSwitchWidth = (val: SizeTokens) => getSwitchHeight(val) * 2
+  const SwitchThumbComponent = createStyledHOC(
+    Thumb,
+    function SwitchThumb(
+      props: Omit<GetProps<typeof Thumb>, keyof SwitchThumbProps> & SwitchThumbProps,
+      forwardedRef
+    ) {
+      const { size: sizeProp, activeStyle, theme, ...thumbProps } = props
+      const styledContext = SwitchStyledContext.useStyledContext()
+      const { size: sizeContext, active, disabled, frameWidth = 0 } = styledContext
+      const size = sizeProp ?? sizeContext ?? true
+      const initialChecked = React.useRef(active).current
+      const initialWidth = getVariableValue(props.width, 'size')
+      const [thumbWidth, setThumbWidth] = React.useState(
+        typeof initialWidth === 'number' ? initialWidth : 0
+      )
+      const distance = frameWidth - thumbWidth
+      const x = initialChecked ? (active ? 0 : -distance) : active ? distance : 0
 
-export const SwitchFrame = styled(
-  YStack,
-  {
-    name: 'Switch',
-    render: 'button',
-    tabIndex: 0,
+      const thumb = (
+        <Thumb
+          ref={forwardedRef}
+          size={size}
+          alignSelf={initialChecked ? 'flex-end' : 'flex-start'}
+          x={x}
+          onLayout={composeEventHandlers(props.onLayout, (event) => {
+            setThumbWidth(event.nativeEvent.layout.width)
+          })}
+          disabled={disabled}
+          {...thumbProps}
+          {...(active && activeStyle)}
+        />
+      )
 
-    variants: {
-      unstyled: {
-        false: {
-          borderRadius: 1000,
-          backgroundColor: '$background',
+      const themeName = theme ?? createProps.componentThemes?.thumb
+      return themeName ? <Theme name={themeName}>{thumb}</Theme> : thumb
+    }
+  )
 
-          focusVisibleStyle: {
-            outlineColor: '$outlineColor',
-            outlineStyle: 'solid',
-            outlineWidth: 2,
-          },
-        },
-      },
+  const SwitchComponent = createStyledHOC(
+    Frame,
+    function Switch(_props: SwitchProps, forwardedRef) {
+      const {
+        native,
+        nativeProps,
+        checked: checkedProp,
+        defaultChecked,
+        onCheckedChange,
+        activeStyle,
+        activeTheme,
+        theme,
+        ...props
+      } = _props
+      const [checked, setChecked] = useControllableState({
+        prop: checkedProp,
+        defaultProp: defaultChecked || false,
+        onChange: onCheckedChange,
+        transition: true,
+      })
+      const styledContext = React.useContext(SwitchStyledContext.context)
+      const [frameWidth, setFrameInnerWidth] = React.useState(0)
+      const { switchProps, bubbleInput, switchRef } = useSwitch(
+        props as any,
+        [checked, setChecked],
+        // @ts-ignore TODO tamagui react 19 type error
+        forwardedRef
+      )
+      const nativeSwitch = useSwitchNative({
+        id: props.id,
+        disabled: props.disabled,
+        native,
+        nativeProps,
+        checked,
+        setChecked,
+      })
 
-      size: {
-        '...size': (val, { props }) => {
-          if (props['unstyled']) return
-          const height = getSwitchHeight(val)
-          const width = getSwitchWidth(val)
-          return {
-            height,
-            minHeight: height,
-            width,
-          }
-        },
-      },
-    } as const,
+      if (nativeSwitch) {
+        return nativeSwitch
+      }
 
-    defaultVariants: {
-      unstyled: process.env.TAMAGUI_HEADLESS === '1',
+      const disabled = props.disabled
+      const size = styledContext.size ?? props.size ?? true
+
+      const handleLayout = (event: LayoutChangeEvent) => {
+        const next = event.nativeEvent.layout.width
+        if (next !== frameWidth) {
+          setFrameInnerWidth(next)
+        }
+      }
+
+      const frame = (
+        <Frame
+          ref={switchRef}
+          render="button"
+          {...(isWeb && { type: 'button' })}
+          size={size}
+          {...props}
+          {...(switchProps as any)}
+          disabled={disabled}
+          {...(checked && activeStyle)}
+        >
+          <View alignSelf="stretch" flex={1} onLayout={handleLayout}>
+            {props.children}
+          </View>
+        </Frame>
+      )
+
+      const frameTheme =
+        (checked ? activeTheme : undefined) ?? theme ?? createProps.componentThemes?.frame
+
+      return (
+        <>
+          <SwitchStyledContext.Provider
+            size={size}
+            active={checked}
+            disabled={disabled}
+            frameWidth={frameWidth}
+          >
+            {frameTheme ? <Theme name={frameTheme}>{frame}</Theme> : frame}
+          </SwitchStyledContext.Provider>
+
+          {bubbleInput}
+        </>
+      )
     },
-  },
-  {
-    accept: {
-      activeStyle: 'style',
-    } as const,
-  }
-)
+    {
+      disableTheme: true,
+    }
+  )
+
+  return withStaticProperties(SwitchComponent, {
+    Frame,
+    Thumb: SwitchThumbComponent,
+  })
+}
+
+export const Switch = createSwitch({
+  Frame: SwitchFrame,
+  Thumb: SwitchThumbFrame,
+})
+
+export const SwitchThumb = Switch.Thumb

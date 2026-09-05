@@ -12,6 +12,11 @@ on:
       - main
       - v2
       - 'v2-*'
+      - v3
+      - 'v3-*'
+      # a single * stops at a slash, so v3-* never matched v3/<topic> branches
+      # and every push to one ran with no lint, typecheck, unit tests or size gate
+      - 'v3/**'
 
 permissions:
   contents: read
@@ -25,7 +30,9 @@ concurrency:
 
 jobs:
   checks:
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository || github.head_ref != 'v3-beta'
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -41,7 +48,7 @@ jobs:
       # bumps of example/tooling deps (vite, undici, tar, react-router, etc.) -
       # run `bun audit` locally to review them.
       - name: Security audit
-        run: bun audit --audit-level critical
+        run: bun run check:advisories
 
       - name: Check
         run: bun run check
@@ -52,7 +59,52 @@ jobs:
       - name: Lint
         run: bun run lint
 
+      # The v3 engine rewrite recovered the runtime styled-view bundle
+      # (plans/v3-beta/bundle-size-ledger.md); this is what keeps it recovered.
+      # It is a ceiling, so an engine change that shrinks the bundle passes
+      # untouched. It lives in this job because the fixture links @tamagui/*
+      # from workspace dist and the install action has already built the whole
+      # workspace, and because Node here comes from .node-version, which is what
+      # the recorded gzip bytes were measured against.
+      - name: Styled-view runtime bundle size
+        run: node code/comparisons/check-styled-view-size.mts
+
+  grammar-conformance:
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository || github.head_ref != 'v3-beta'
+    # @tamagui/style-grammar owns what a flat value means, and the Rust LSP's
+    # tables and conformance vectors are GENERATED from it. This job is what
+    # makes that true rather than aspirational: it fails when the generated
+    # files on disk no longer match what the grammar would emit, and it runs the
+    # Rust suite that checks the parser against those vectors.
+    #
+    # It lives here rather than in lsp-build.yml on purpose. That workflow only
+    # triggers on `code/lsp/**`, so a change to the grammar would have moved the
+    # source of truth without ever running the check that the copy still agrees,
+    # which is exactly how the two forked the first time.
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Install
+        uses: ./.github/actions/install
+
+      - name: Install Rust
+        run: rustup toolchain install stable --profile minimal --no-self-update
+
+      - name: The generated Rust tables and vectors are current
+        working-directory: code/core/style-grammar
+        run: bun run check:rust
+
+      - name: The Rust parser passes the generated vectors
+        working-directory: code/lsp
+        run: cargo test --workspace
+
   playwright-browsers:
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository || github.head_ref != 'v3-beta'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     concurrency:
@@ -86,10 +138,13 @@ jobs:
       - name: Install Playwright browsers
         if: steps.playwright-cache.outputs.cache-hit != 'true'
         run: bunx -p @playwright/test@${{ steps.pw-version.outputs.version }} playwright install chromium webkit
+        timeout-minutes: 10
 
   unit-tests:
     needs: playwright-browsers
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository || github.head_ref != 'v3-beta'
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     env:
       NODE_OPTIONS: '--max-old-space-size=6144'
     steps:
@@ -113,6 +168,14 @@ jobs:
           path: ~/.cache/ms-playwright
           key: playwright-${{ runner.os }}-${{ steps.pw-version.outputs.version }}-chromium-webkit
 
+      - name: Check config defaults
+        working-directory: code/core/config
+        run: |
+          bun run check:v6-tailwind-defaults
+          bun run test:v5-entries
+          bun run test:v6-tailwind-defaults
+          bun run test:v6-entries
+
       - name: Restore Turbo cache
         uses: actions/cache@v4
         with:
@@ -128,7 +191,9 @@ jobs:
         run: bun turbo run test:native --filter=@tamagui/static-tests --filter=@tamagui/core-test --filter=@tamagui/components-test --concurrency=1
 
   changes:
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository || github.head_ref != 'v3-beta'
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     outputs:
       integration-relevant: ${{ steps.turbo-check.outputs.relevant }}
     steps:
@@ -152,6 +217,18 @@ jobs:
         run: |
           if [ "${{ github.event_name }}" = "pull_request" ]; then
             BASE="${{ github.event.pull_request.base.sha }}"
+            BASE_REF="${{ github.base_ref }}"
+            HEAD_REF="${{ github.head_ref }}"
+
+            if [ "$BASE_REF" = "v3-beta" ] || [[ "$BASE_REF" == v3-* ]] || [[ "$HEAD_REF" == v3-* ]]; then
+              echo "relevant=true" >> $GITHUB_OUTPUT
+              echo "::notice::Kitchen-sink integration forced for v3 PR ($HEAD_REF -> $BASE_REF)"
+              exit 0
+            fi
+          elif [ "${{ github.ref_name }}" = "v3-beta" ]; then
+            echo "relevant=true" >> $GITHUB_OUTPUT
+            echo "::notice::Kitchen-sink integration forced for v3-beta push"
+            exit 0
           else
             BASE="HEAD~1"
           fi
@@ -183,9 +260,12 @@ jobs:
 
   integration-tests:
     needs: [changes, playwright-browsers]
-    if: needs.changes.outputs.integration-relevant == 'true'
+    if: >-
+      (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository || github.head_ref != 'v3-beta') &&
+      needs.changes.outputs.integration-relevant == 'true'
     # gate is turbo's actual workspace dependency graph — no manual path list to maintain
     runs-on: ubuntu-latest
+    timeout-minutes: 45
     strategy:
       fail-fast: false
       matrix:
@@ -196,6 +276,66 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
+          ref: ${{ github.event_name == 'pull_request' && (github.base_ref == 'v3-beta' || startsWith(github.base_ref, 'v3-') || startsWith(github.head_ref, 'v3-')) && github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 1
+
+      - name: Install
+        uses: ./.github/actions/install
+
+      - name: Get Playwright version
+        id: pw-version
+        run: |
+          version=$(node -p "require('./package.json').devDependencies['@playwright/test']")
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ steps.pw-version.outputs.version }}-chromium-webkit
+
+      # no `playwright install-deps` here: these shards are chromium-only and
+      # chromium's libraries are already on the ubuntu-latest image. webkit is
+      # what needs the 181-package apt install, and it lives in its own job
+      # below so 1708 of the 1738 tests never touch apt.
+
+      - name: Restore Turbo cache
+        uses: actions/cache@v4
+        with:
+          path: .turbo/cache
+          key: turbo-${{ runner.os }}-${{ github.sha }}
+          restore-keys: |
+            turbo-${{ runner.os }}-
+
+      - name: Run kitchen-sink web + render-count tests (shard ${{ matrix.shard }})
+        run: |
+          cd code/kitchen-sink && NODE_ENV=test npx playwright test \
+            --shard=${{ matrix.shard }} \
+            --project=default \
+            --project=animated-css \
+            --project=animated-reanimated \
+            --project=animated-motion
+        timeout-minutes: 20
+
+  # The four webkit projects are 30 tests across 6 files, and they are the only
+  # reason anything in this workflow runs `playwright install-deps`. Splitting
+  # them out keeps that apt call, which intermittently hangs on a slow Azure
+  # mirror, off the 1708 chromium tests. Unsharded: 30 tests do not need three
+  # runners.
+  integration-tests-webkit:
+    needs: [changes, playwright-browsers]
+    if: >-
+      (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository || github.head_ref != 'v3-beta') &&
+      needs.changes.outputs.integration-relevant == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      NODE_OPTIONS: '--max-old-space-size=6144'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'pull_request' && (github.base_ref == 'v3-beta' || startsWith(github.base_ref, 'v3-') || startsWith(github.head_ref, 'v3-')) && github.event.pull_request.head.sha || github.sha }}
           fetch-depth: 1
 
       - name: Install
@@ -214,7 +354,22 @@ jobs:
           key: playwright-${{ runner.os }}-${{ steps.pw-version.outputs.version }}-chromium-webkit
 
       - name: Install Playwright system dependencies
-        run: bunx playwright install-deps chromium webkit
+        run: |
+          sudo tee /etc/apt/apt.conf.d/80-ci-retries > /dev/null <<'APT'
+          Acquire::Retries "3";
+          Acquire::http::Timeout "30";
+          Acquire::https::Timeout "30";
+          APT
+
+          for attempt in 1 2; do
+            if bunx playwright install-deps webkit; then
+              exit 0
+            fi
+            echo "::warning::Playwright dependency install failed (attempt $attempt/2)"
+            sleep 10
+          done
+          exit 1
+        timeout-minutes: 12
 
       - name: Restore Turbo cache
         uses: actions/cache@v4
@@ -224,6 +379,146 @@ jobs:
           restore-keys: |
             turbo-${{ runner.os }}-
 
-      - name: Run integration tests (shard ${{ matrix.shard }})
-        run: cd code/kitchen-sink && NODE_ENV=test npx playwright test --shard=${{ matrix.shard }}
+      - name: Run kitchen-sink webkit projects
+        run: |
+          cd code/kitchen-sink && NODE_ENV=test npx playwright test \
+            --project=webkit \
+            --project=webkit-programs \
+            --project=webkit-select-native \
+            --project=webkit-sheet
         timeout-minutes: 20
+
+  v3-ssr-hydration:
+    needs: playwright-browsers
+    if: >-
+      (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository || github.head_ref != 'v3-beta') &&
+      ((github.event_name == 'push' && github.ref_name == 'v3-beta') ||
+      (github.event_name == 'pull_request' && (github.base_ref == 'v3-beta' || startsWith(github.base_ref, 'v3-') || startsWith(github.head_ref, 'v3-'))))
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      NODE_OPTIONS: '--max-old-space-size=6144'
+    steps:
+      - name: Checkout tested source
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 1
+
+      - name: Install
+        uses: ./.github/actions/install
+
+      - name: Get Playwright version
+        id: pw-version
+        run: echo "version=$(bunx playwright --version | awk '{print $2}')" >> $GITHUB_OUTPUT
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ steps.pw-version.outputs.version }}-chromium-webkit
+
+      # no `playwright install-deps` here: chromium's libraries are already on
+      # the ubuntu-latest image, and the only thing the command adds is CJK,
+      # Thai and Cyrillic fallback fonts nothing in this job renders. It also
+      # runs a full apt-get update, which is the step that intermittently hangs
+      # the runner. integration-tests still needs it for webkit.
+
+      - name: Run SSR hydration checks
+        run: |
+          cd code/sandbox
+          TEST_MODE=prod NODE_ENV=test bunx playwright test \
+            hydration-drivers.test.ts \
+            motion-hydration.test.ts \
+            ssr-theme.test.ts \
+            tooltip-ssr.test.ts \
+            tooltip-heavy-ssr.test.ts
+        timeout-minutes: 20
+
+      - name: Upload SSR artifacts on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: v3-ssr-hydration-artifacts
+          path: |
+            code/sandbox/.playwright-report
+            code/sandbox/.playwright-results
+          retention-days: 7
+          include-hidden-files: true
+
+  # The zero-runtime fixture and starter were kept out of CI while the fixture
+  # was still moving. One runner each: the Metro receipts read the plan cache's
+  # options hash off the project's own sources, so a second integration building
+  # in the same root re-keys the cache mid-run, and core-test's
+  # motionDriverConversion and safeAreaVariables.native measure real time and go
+  # unreliable under CPU contention. Separate runners keep both apart.
+  v3-zero-runtime:
+    needs: playwright-browsers
+    if: >-
+      (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository || github.head_ref != 'v3-beta') &&
+      ((github.event_name == 'push' && startsWith(github.ref_name, 'v3')) ||
+      (github.event_name == 'pull_request' && (github.base_ref == 'v3-beta' || startsWith(github.base_ref, 'v3-') || startsWith(github.head_ref, 'v3-'))))
+    runs-on: ubuntu-latest
+    # ~8 minutes of bundling on a fast machine, and a CI runner has two cores
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # every gate, control and per-rule receipt across Vite, Next and Metro
+          - name: fixture
+            dir: code/tests/zero-runtime
+            build: bun run receipts
+          # the contract-compliant app, built six ways, with its size gate
+          - name: starter
+            dir: code/starters/zero-runtime
+            build: node scripts/measure.mjs
+    env:
+      NODE_OPTIONS: '--max-old-space-size=6144'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 1
+
+      - name: Install
+        uses: ./.github/actions/install
+
+      - name: Get Playwright version
+        id: pw-version
+        run: |
+          version=$(node -p "require('./package.json').devDependencies['@playwright/test']")
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ steps.pw-version.outputs.version }}-chromium-webkit
+
+      # no `playwright install-deps` here: chromium's libraries are already on
+      # the ubuntu-latest image, and the only thing the command adds is CJK,
+      # Thai and Cyrillic fallback fonts nothing in this job renders. It also
+      # runs a full apt-get update, which is the step that intermittently hangs
+      # the runner. integration-tests still needs it for webkit.
+
+      - name: Build every graph and record its receipts
+        working-directory: ${{ matrix.dir }}
+        run: ${{ matrix.build }}
+
+      - name: Run the browser contract
+        working-directory: ${{ matrix.dir }}
+        run: npx playwright test
+
+      - name: Upload receipts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: v3-zero-runtime-${{ matrix.name }}
+          path: |
+            ${{ matrix.dir }}/.tamagui/zero/*.json
+            ${{ matrix.dir }}/receipts.json
+            ${{ matrix.dir }}/test-results
+          retention-days: 7
+          include-hidden-files: true

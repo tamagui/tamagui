@@ -1,91 +1,38 @@
 import { ThemeTint, useTint } from '@tamagui/logo'
-import { memo, useEffect, useState } from 'react'
-import type { ColorTokens, ThemeName } from 'tamagui'
-import { YStack, isClient, useDidFinishSSR, useTheme } from 'tamagui'
+import { memo, useEffect } from 'react'
+import type { ColorTokens } from 'tamagui'
+import { useTheme } from 'tamagui'
 
 type Props = {
   colorKey?: ColorTokens
-  theme?: ThemeName | null
-  children?: any
-  disableTint?: boolean | number
-  debug?: boolean | 'visualize' | 'verbose'
+  disableTint?: boolean
 }
 
-export const ThemeNameEffect = memo((props: Props) => {
+// keeps the browser chrome color and the body background (what shows when you
+// overscroll) in sync with the active theme. the site layout renders exactly
+// one of these - pages must not add their own or they fight over document.body.
+export const ThemeNameEffect = memo(({ colorKey = 'color1', disableTint }: Props) => {
   const Tint = useTint()
 
   useEffect(() => {
-    if (!props.theme) {
-      Tint.setTintIndex(3)
-    } else {
-      Tint.setTintIndex(Tint.tints.findIndex((x) => x === props.theme))
-    }
-  }, [props.theme])
-
-  const disable =
-    typeof props.disableTint === 'number'
-      ? Tint.tintIndex === props.disableTint
-      : !!props.disableTint
+    Tint.setTintIndex(3)
+  }, [])
 
   return (
-    <ThemeTint debug={props.debug as any} disable={disable}>
-      <ThemeNameEffectNoTheme {...props} />
-      {props.children}
+    <ThemeTint disable={disableTint}>
+      <BodyColor colorKey={colorKey} />
     </ThemeTint>
   )
 })
 
-export const ThemeNameEffectNoTheme = ({
-  colorKey = '$color1',
-  theme: ssrTheme,
-}: Props) => {
-  const isHydrated = useDidFinishSSR()
-  const theme = useTheme()
-  // const themeName = useThemeName()
-  const [isActive, setIsActive] = useState(false)
+const BodyColor = ({ colorKey }: { colorKey: ColorTokens }) => {
+  const color = useTheme()[colorKey]?.val
 
-  const color = theme[colorKey]?.val
+  useEffect(() => {
+    if (!color) return
+    document.querySelector('#theme-color')?.setAttribute('content', color)
+    document.body.style.setProperty('background-color', color, 'important')
+  }, [color])
 
-  if (isClient) {
-    useEffect(() => {
-      if (!isHydrated) return
-      if (!isActive) return
-      document.querySelector('#theme-color')?.setAttribute('content', color)
-      document.body.style.setProperty('background-color', color, 'important')
-    }, [isHydrated, isActive, color])
-  }
-
-  return (
-    <>
-      <YStack
-        id={`theme-name-effect-${ssrTheme}`}
-        ref={() => {
-          setIsActive(true)
-        }}
-      />
-      <style>
-        {ssrTheme
-          ? `
-body:has(#theme-name-effect-red) {
-  background: var(--red${colorKey.replace('$color', '')}) !important;
-}
-body:has(#theme-name-effect-green) {
-  background: var(--green${colorKey.replace('$color', '')}) !important;
-}
-body:has(#theme-name-effect-blue) {
-  background: var(--blue${colorKey.replace('$color', '')}) !important;
-}
-  
-
-`
-          : `
-body {
-  background: var(--${colorKey.slice(1)}) !important;
-}
-
-
-`}
-      </style>
-    </>
-  )
+  return null
 }

@@ -26,7 +26,8 @@ export function concatClassName(_cn: Record<string, any> | null | undefined): st
       continue
     }
 
-    const names = Array.isArray(cns) ? cns : cns.split(' ')
+    const generatedIdentifiers = Array.isArray(cns)
+    const names = generatedIdentifiers ? cns : cns.split(' ')
     const numNames = names.length
     for (let i = numNames - 1; i >= 0; i--) {
       const name = names[i]
@@ -53,9 +54,12 @@ export function concatClassName(_cn: Record<string, any> | null | undefined): st
         continue
       }
 
-      const styleKey = name.slice(1, name.indexOf('-'))
-      const { mediaKey, pseudoKey } = getClassNameScope(name, splitIndex)
-      const uid = `${styleKey}${mediaKey ? `@${mediaKey}` : ''}${pseudoKey ? `:${pseudoKey}` : ''}`
+      const styleKey = name.slice(1, splitIndex)
+      let uid = name
+      if (!generatedIdentifiers) {
+        const { mediaKey, pseudoKey } = getClassNameScope(name, splitIndex)
+        uid = `${styleKey}${mediaKey ? `@${mediaKey}` : ''}${pseudoKey ? `:${pseudoKey}` : ''}`
+      }
 
       if (usedPrefixes.has(uid)) {
         // if (shouldDebug) console.log('debug exclude:', usedPrefixes, name)
@@ -68,12 +72,7 @@ export function concatClassName(_cn: Record<string, any> | null | undefined): st
       if (propName && propObjects) {
         if (
           propObjects.some((po) => {
-            if (pseudoKey) {
-              const propKey = pseudoInvert[pseudoKey]
-              return po && po[propKey] && propName in po[propKey] && po[propKey] !== null
-            }
-            const res = po && propName in po && po[propName] !== null
-            return res
+            return po && propName in po && po[propName] !== null
           })
         ) {
           // if (shouldDebug) console.log('debug exclude:', name)
@@ -114,17 +113,15 @@ function getClassNameScope(name: string, splitIndex: number) {
   return { mediaKey, pseudoKey }
 }
 
-const pseudoInvert = {
-  hover: 'hoverStyle',
-  active: 'pressStyle',
-  focus: 'focusStyle',
-  'focus-visible': 'focusVisibleStyle',
-  'focus-within': 'focusWithinStyle',
-  focusVisible: 'focusVisibleStyle',
-  focusWithin: 'focusWithinStyle',
-  disabled: 'disabledStyle',
-  enter: 'enterStyle',
-  exit: 'exitStyle',
-}
-
-const pseudoKeys = Object.keys(pseudoInvert).sort((a, b) => b.length - a.length)
+const pseudoKeys = [
+  'focus-visible',
+  'focus-within',
+  'focusVisible',
+  'focusWithin',
+  'disabled',
+  'active',
+  'hover',
+  'focus',
+  'enter',
+  'exit',
+]

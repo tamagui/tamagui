@@ -5,7 +5,7 @@ export declare function addTheme(props: {
     insertCSS?: boolean;
 }): {
     themeRaw: ThemeParsed;
-    theme: {};
+    theme: ThemeParsed;
     cssRules: string[];
 } | undefined;
 //# sourceMappingURL=addTheme.d.ts.map

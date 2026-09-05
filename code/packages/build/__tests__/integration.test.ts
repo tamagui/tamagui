@@ -1,7 +1,20 @@
 import { execSync, spawn } from 'node:child_process'
-import { existsSync, readFileSync, writeFileSync, statSync, readdirSync } from 'node:fs'
+import { createHash } from 'node:crypto'
+import { createRequire } from 'node:module'
+import {
+  existsSync,
+  mkdirSync,
+  readFileSync,
+  writeFileSync,
+  statSync,
+  readdirSync,
+  rmSync,
+  symlinkSync,
+  unlinkSync,
+} from 'node:fs'
 import { describe, it, expect, beforeAll, afterAll } from 'vitest'
 import { join } from 'node:path'
+import { pathToFileURL } from 'node:url'
 import { readFile } from 'node:fs/promises'
 
 const watchPackagePath = join(__dirname, 'fixtures', 'watch-package')
@@ -9,14 +22,20 @@ const watchDistPath = join(watchPackagePath, 'dist')
 const watchSrcFilePath = join(watchPackagePath, 'src', 'watch.ts')
 
 const simplePackagePath = join(__dirname, 'fixtures', 'simple-package')
+const simplePackageJsonPath = join(simplePackagePath, 'package.json')
 const distPath = join(simplePackagePath, 'dist')
 const srcFilePath = join(simplePackagePath, 'src', 'index.ts')
 const distCjsFilePath = join(distPath, 'cjs', 'index.cjs')
 const watchDistCjsFilePath = join(watchDistPath, 'cjs', 'watch.cjs')
 const distEsmFilePath = join(distPath, 'esm', 'index.mjs')
 const distTypesFilePath = join(simplePackagePath, 'types', 'index.d.ts')
+const temporaryFailureSourcePath = join(simplePackagePath, 'src', 'build-failure.ts')
+const temporaryStaleSourcePath = join(simplePackagePath, 'src', 'stale-output.ts')
 const jsMainPackagePath = join(__dirname, 'fixtures', 'js-main-package')
 const jsMainDistPath = join(jsMainPackagePath, 'dist')
+const subpathOnlyPackagePath = join(__dirname, 'fixtures', 'subpath-only-package')
+const subpathOnlyDistPath = join(subpathOnlyPackagePath, 'dist')
+const repositoryRoot = join(__dirname, '../../../..')
 // console.log({
 //   distCjsFilePath,
 //   distEsmFilePath,
@@ -26,14 +45,32 @@ const jsMainDistPath = join(jsMainPackagePath, 'dist')
 //   distPath,
 // })
 
+function outputManifest(root: string, prefix = ''): Record<string, string> {
+  const manifest: Record<string, string> = {}
+  for (const entry of readdirSync(join(root, prefix), { withFileTypes: true }).sort(
+    (left, right) => left.name.localeCompare(right.name)
+  )) {
+    const relativePath = join(prefix, entry.name)
+    if (entry.isDirectory()) {
+      Object.assign(manifest, outputManifest(root, relativePath))
+    } else if (entry.isFile()) {
+      manifest[relativePath] = createHash('sha256')
+        .update(readFileSync(join(root, relativePath)))
+        .digest('hex')
+    }
+  }
+  return manifest
+}
+
 describe('tamagui-build integration test', () => {
   beforeAll(() => {
     // Clean up dist directory before starting
     execSync('rm -rf dist && rm -rf types', { cwd: simplePackagePath })
     execSync('rm -rf dist', { cwd: jsMainPackagePath })
+    execSync('rm -rf dist && rm -rf types', { cwd: subpathOnlyPackagePath })
   })
 
-  it('should build the package correctly', () => {
+  it('should build the package correctly', async () => {
     execSync('bun run build', { cwd: simplePackagePath })
 
     // Check if the output files exist
@@ -46,10 +83,61 @@ describe('tamagui-build integration test', () => {
     const esmOutput = readFileSync(distEsmFilePath, 'utf-8')
     expect(cjsOutput).toContain('Hello,')
     expect(esmOutput).toContain('Hello,')
-    expect(esmOutput).toContain("./nested/index.mjs")
+    expect(esmOutput).toContain('./nested/index.mjs')
+    expect(esmOutput).toContain('./star.mjs')
+    expect(esmOutput).toContain('import("./lazy.mjs")')
+    expect(esmOutput).toContain('./common.mjs')
+    expect(readFileSync(join(distPath, 'esm', 'index.native.js'), 'utf-8')).toContain(
+      './nativeOnly.native.js'
+    )
+    expect(cjsOutput).toContain('require("./star.cjs")')
+    expect(cjsOutput).toContain('import("./lazy.cjs")')
+    expect(cjsOutput).toContain('require("./common.cjs")')
+    expect(cjsOutput).toContain('require("./explicit.native.cjs")')
+    expect(existsSync(join(distPath, 'cjs', 'explicit.native.cjs'))).toBe(true)
+    expect(readFileSync(join(distPath, 'cjs', 'index.native.js'), 'utf-8')).toContain(
+      'require("./explicit.native.js")'
+    )
+    expect(readFileSync(join(distPath, 'esm', 'index.native.js'), 'utf-8')).toContain(
+      'from "./explicit.native.js"'
+    )
+
+    const require = createRequire(import.meta.url)
+    const cjsModule = require(distCjsFilePath)
+    const esmModule = await import(pathToFileURL(distEsmFilePath).href)
+    expect(cjsModule.starMarker).toBe('star-marker')
+    expect(cjsModule.dottedNameMarker).toBe('dotted-name-marker')
+    expect(cjsModule.explicitNativeMarker).toBe('explicit-native-marker')
+    expect(cjsModule.loadCommon().commonMarker).toBe('common-marker')
+    expect((await cjsModule.loadLazy()).default.lazyMarker).toBe('lazy-marker')
+    expect(esmModule.starMarker).toBe('star-marker')
+    expect(esmModule.dottedNameMarker).toBe('dotted-name-marker')
+    expect((await esmModule.loadLazy()).lazyMarker).toBe('lazy-marker')
     expect(existsSync(join(distPath, 'cjs', 'index.cjs'))).toBe(true)
     expect(existsSync(join(distPath, 'esm', 'index.js'))).toBe(true)
     expect(existsSync(join(distPath, 'jsx', 'index.js'))).toBe(true)
+    expect(existsSync(join(distPath, 'cjs', 'ignored.test-d.cjs'))).toBe(false)
+    expect(existsSync(join(distPath, 'esm', 'ignored.test-d.mjs'))).toBe(false)
+    expect(existsSync(join(simplePackagePath, 'types', 'ignored.test-d.d.ts'))).toBe(
+      false
+    )
+    // spawns a real package build, which runs close to the 5s default on an idle
+    // machine and over it on a loaded one
+  }, 15000)
+
+  it('rebuilds declarations when incremental state outlives the output', () => {
+    execSync('bun run build', { cwd: simplePackagePath })
+    execSync(
+      'node ../../../tamagui-tsgo.js --project tsconfig.json --declaration --emitDeclarationOnly --declarationMap true --outDir types --rootDir src --tsBuildInfoFile tsconfig.tsbuildinfo',
+      { cwd: simplePackagePath }
+    )
+    expect(existsSync(join(simplePackagePath, 'tsconfig.tsbuildinfo'))).toBe(true)
+
+    rmSync(join(simplePackagePath, 'types'), { recursive: true, force: true })
+    execSync('bun run build', { cwd: simplePackagePath })
+
+    expect(existsSync(distTypesFilePath)).toBe(true)
+    expect(existsSync(join(simplePackagePath, 'tsconfig.tsbuildinfo'))).toBe(false)
   })
 
   it('should bundle the package correctly', () => {
@@ -108,7 +196,17 @@ describe('tamagui-build integration test', () => {
   })
 
   it('should rebuild the package on file change when --watch is used', async () => {
-    const watchProcess = spawn('bun', ['run', 'build:watch'], { cwd: watchPackagePath })
+    const watchProcess = spawn(
+      'node',
+      [
+        'code/packages/build/tamagui-build-workspace.js',
+        '--watch',
+        '--skip-types',
+        '--filter',
+        'tamagui-build-test-watch-package',
+      ],
+      { cwd: repositoryRoot }
+    )
 
     // Cache existing content
     const originalContent = readFileSync(watchSrcFilePath, 'utf-8')
@@ -286,22 +384,146 @@ describe('tamagui-build integration test', () => {
     )
   })
 
-  it('should clean stale outputs before building', () => {
-    execSync('bun run build', { cwd: simplePackagePath })
-
-    const staleFilePath = join(distPath, 'esm', 'stale.mjs')
+  it('prunes stale outputs only after a successful build', () => {
     const staleTypesPath = join(simplePackagePath, 'types', 'stale.d.ts')
-    writeFileSync(staleFilePath, 'stale')
-    writeFileSync(staleTypesPath, 'stale')
+    const staleCjsPath = join(distPath, 'cjs', 'stale-output.cjs')
+    const staleEsmPath = join(distPath, 'esm', 'stale-output.mjs')
 
-    expect(existsSync(staleFilePath)).toBe(true)
-    expect(existsSync(staleTypesPath)).toBe(true)
+    try {
+      writeFileSync(temporaryStaleSourcePath, 'export const staleOutput = true\n')
+      execSync('bun run build', { cwd: simplePackagePath })
 
+      expect(existsSync(staleCjsPath)).toBe(true)
+      expect(existsSync(staleEsmPath)).toBe(true)
+
+      writeFileSync(staleTypesPath, 'stale')
+      rmSync(temporaryStaleSourcePath)
+      execSync('bun run build', { cwd: simplePackagePath })
+
+      expect(existsSync(staleCjsPath)).toBe(false)
+      expect(existsSync(staleEsmPath)).toBe(false)
+      expect(existsSync(staleTypesPath)).toBe(false)
+      expect(readdirSync(join(distPath, 'esm'))).not.toContain('stale-output.mjs')
+    } finally {
+      rmSync(temporaryStaleSourcePath, { force: true })
+    }
+  })
+
+  it('keeps the previous dist loadable when a build fails', async () => {
     execSync('bun run build', { cwd: simplePackagePath })
+    const distBefore = outputManifest(distPath)
+    const cjsBefore = readFileSync(distCjsFilePath, 'utf-8')
+    const esmBefore = readFileSync(distEsmFilePath, 'utf-8')
+    let failed = false
 
-    expect(existsSync(staleFilePath)).toBe(false)
-    expect(existsSync(staleTypesPath)).toBe(false)
-    expect(readdirSync(join(distPath, 'esm'))).not.toContain('stale.mjs')
+    try {
+      writeFileSync(temporaryFailureSourcePath, 'export const buildFailure: string = 1\n')
+      try {
+        execSync('bun run build', {
+          cwd: simplePackagePath,
+          stdio: 'pipe',
+        })
+      } catch {
+        failed = true
+      }
+    } finally {
+      rmSync(temporaryFailureSourcePath, { force: true })
+    }
+
+    expect(failed).toBe(true)
+    expect(outputManifest(distPath)).toEqual(distBefore)
+    expect(
+      readdirSync(simplePackagePath).filter((file) =>
+        file.startsWith('.tamagui-build-tsconfig-')
+      )
+    ).toEqual([])
+    expect(existsSync(join(simplePackagePath, '.tamagui-build-lock'))).toBe(false)
+    expect(readFileSync(distCjsFilePath, 'utf-8')).toBe(cjsBefore)
+    expect(readFileSync(distEsmFilePath, 'utf-8')).toBe(esmBefore)
+
+    const require = createRequire(import.meta.url)
+    const resolvedCjs = require.resolve(distCjsFilePath)
+    delete require.cache[resolvedCjs]
+    expect(require(resolvedCjs).greet('failure')).toBe('Hello, failure!')
+
+    const cacheKey = `failed-build-${Date.now()}`
+    const esmModule = await import(`${pathToFileURL(distEsmFilePath).href}?${cacheKey}`)
+    expect(esmModule.greet('failure')).toBe('Hello, failure!')
+  })
+
+  it('keeps dist unchanged during a types-only build', () => {
+    execSync('bun run build', { cwd: simplePackagePath })
+    const cjsBefore = readFileSync(distCjsFilePath, 'utf-8')
+    const esmBefore = readFileSync(distEsmFilePath, 'utf-8')
+
+    execSync('bun run build', {
+      cwd: simplePackagePath,
+      env: { ...process.env, SKIP_JS: '1' },
+    })
+
+    expect(readFileSync(distCjsFilePath, 'utf-8')).toBe(cjsBefore)
+    expect(readFileSync(distEsmFilePath, 'utf-8')).toBe(esmBefore)
+  })
+
+  it('does not prune prior afterBuild artifacts when afterBuild fails', () => {
+    execSync('bun run build', { cwd: simplePackagePath })
+    const originalPackageJson = readFileSync(simplePackageJsonPath, 'utf-8')
+    const originalSource = readFileSync(srcFilePath, 'utf-8')
+    const afterBuildArtifact = join(distPath, 'after-build-marker.cjs')
+    writeFileSync(afterBuildArtifact, 'previous afterBuild output\n')
+    const distBefore = outputManifest(distPath)
+
+    try {
+      const packageJson = JSON.parse(originalPackageJson)
+      packageJson.scripts.afterBuild = 'node -e "process.exit(1)"'
+      writeFileSync(simplePackageJsonPath, `${JSON.stringify(packageJson, null, 2)}\n`)
+      writeFileSync(
+        srcFilePath,
+        originalSource.replace('Hello, ${name}!', 'Changed, ${name}!')
+      )
+
+      let failed = false
+      try {
+        execSync('bun run build', { cwd: simplePackagePath, stdio: 'pipe' })
+      } catch {
+        failed = true
+      }
+
+      expect(failed).toBe(true)
+      expect(outputManifest(distPath)).toEqual(distBefore)
+      expect(readFileSync(afterBuildArtifact, 'utf-8')).toBe(
+        'previous afterBuild output\n'
+      )
+    } finally {
+      writeFileSync(simplePackageJsonPath, originalPackageJson)
+      writeFileSync(srcFilePath, originalSource)
+      rmSync(afterBuildArtifact, { force: true })
+    }
+  })
+
+  it('does not follow symlinked directories while pruning dist', () => {
+    execSync('bun run build', { cwd: simplePackagePath })
+    const outsideDir = join(simplePackagePath, 'outside-dist-marker')
+    const outsideFile = join(outsideDir, 'keep.js')
+    const linkedDir = join(distPath, 'esm', 'linked-outside')
+
+    try {
+      mkdirSync(outsideDir)
+      writeFileSync(outsideFile, 'keep\n')
+      symlinkSync('../../outside-dist-marker', linkedDir, 'dir')
+
+      execSync('bun run build', { cwd: simplePackagePath })
+
+      expect(readFileSync(outsideFile, 'utf-8')).toBe('keep\n')
+      expect(existsSync(linkedDir)).toBe(false)
+    } finally {
+      try {
+        unlinkSync(linkedDir)
+      } catch (error) {
+        if ((error as NodeJS.ErrnoException).code !== 'ENOENT') throw error
+      }
+      rmSync(outsideDir, { force: true, recursive: true })
+    }
   })
 
   it('should keep only the required js aliases after postprocessing', () => {
@@ -333,9 +555,28 @@ describe('tamagui-build integration test', () => {
     expect(existsSync(join(jsMainDistPath, 'esm', 'index.mjs'))).toBe(true)
   })
 
+  it('builds subpath-only packages without advertising a root entry', () => {
+    execSync('bun run build', { cwd: subpathOnlyPackagePath })
+
+    expect(existsSync(join(subpathOnlyDistPath, 'cjs', 'feature.cjs'))).toBe(true)
+    expect(existsSync(join(subpathOnlyDistPath, 'esm', 'feature.mjs'))).toBe(true)
+    expect(existsSync(join(subpathOnlyPackagePath, 'types', 'feature.d.ts'))).toBe(
+      true
+    )
+
+    const packageJson = JSON.parse(
+      readFileSync(join(subpathOnlyPackagePath, 'package.json'), 'utf-8')
+    )
+    expect(packageJson).not.toHaveProperty('main')
+    expect(packageJson).not.toHaveProperty('module')
+    expect(packageJson).not.toHaveProperty('types')
+    expect(packageJson.exports['.']).toBeUndefined()
+  })
+
   afterAll(() => {
     // Clean up dist directory after tests
     execSync('rm -rf dist && rm -rf types', { cwd: simplePackagePath })
     execSync('rm -rf dist', { cwd: jsMainPackagePath })
+    execSync('rm -rf dist && rm -rf types', { cwd: subpathOnlyPackagePath })
   })
 })

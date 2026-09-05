@@ -2,7 +2,8 @@ import type { Provider } from '@supabase/auth-js'
 import { LogoIcon } from '@tamagui/logo'
 import type { FormEvent } from 'react'
 import { useEffect, useRef, useState } from 'react'
-import { Button, Input, Paragraph, Separator, Spinner, XStack, YStack } from 'tamagui'
+import { Input, Paragraph, Separator, Spinner, XStack, YStack } from 'tamagui'
+import { Button } from '~/components/Button'
 import { HeadInfo } from '~/components/HeadInfo'
 import { Notice } from '~/components/Notice'
 import { useSupabase } from '~/features/auth/useSupabaseClient'
@@ -151,23 +152,16 @@ function SignIn() {
 
   if (!user)
     return (
-      <YStack
-        flex={1}
-        minH="100vh"
-        items="center"
-        justify="center"
-        p="$2"
-        bg="$background"
-      >
+      <YStack flex={1} minH="100vh" items="center" justify="center" p="2" bg="background">
         <YStack
           minW={300}
           maxW={320}
           justify="space-between"
-          p="$2"
-          gap="$4"
+          p="2"
+          gap="4"
           items="center"
         >
-          <YStack mb="$4">
+          <YStack mb="4">
             <LogoIcon />
           </YStack>
 
@@ -182,7 +176,7 @@ function SignIn() {
             type="submit"
             disabled={loading}
             onClick={() => handleOAuthSignIn('github')}
-            size="$4"
+            size="4"
             icon={loading ? <Spinner size="small" /> : GithubIcon}
             opacity={loading ? 0.5 : 1}
           >
@@ -191,15 +185,15 @@ function SignIn() {
 
           {!emailAuthDisabledFlag && (
             <>
-              <XStack mx="$4" justify="center" gap="$4" items="center">
+              <XStack mx="4" justify="center" gap="4" items="center">
                 <Separator />
-                <Paragraph size="$2">Or</Paragraph>
+                <Paragraph size="2">Or</Paragraph>
                 <Separator />
               </XStack>
               <YStack>
                 {!showPasswordInput && (
                   <form onSubmit={handleSignin}>
-                    <YStack gap="$3">
+                    <YStack gap="3">
                       <Input
                         autoComplete="email"
                         inputMode="email"
@@ -223,7 +217,7 @@ function SignIn() {
 
                 {showPasswordInput && (
                   <form onSubmit={handleSignin}>
-                    <YStack gap="$2">
+                    <YStack gap="2">
                       <Input
                         autoComplete="email"
                         placeholder="Email"
@@ -262,9 +256,9 @@ function SignIn() {
                     b={-5}
                     items="center"
                     justify="center"
-                    rounded="$4"
+                    rounded="4"
                   >
-                    <Paragraph text="center" mt="$2" color="$color9">
+                    <Paragraph text="center" mt="2" color="color9">
                       Email auth is disabled at the moment.
                     </Paragraph>
                   </YStack>
@@ -272,11 +266,11 @@ function SignIn() {
               </YStack>
             </>
           )}
-          {/* <YStack gap="$2" >
+          {/* <YStack gap="2" >
             <Paragraph
               render="button"
               ta="center"
-              size="$2"
+              size="2"
               cursor="pointer"
               className="text-zinc-200 text-accent-9 hover:underline cursor-pointer"
               onPress={() => {
@@ -288,7 +282,7 @@ function SignIn() {
               Or sign in with {showPasswordInput ? 'magic link' : 'password'}
             </Paragraph>
 
-            <Paragraph color="$color9" ta="center" size="$2">
+            <Paragraph color="color9" ta="center" size="2">
               Don't have an account?
               {` `}
               <Link href="/signup" style={{ fontWeight: '800' }}>
@@ -303,10 +297,10 @@ function SignIn() {
   return (
     <YStack
       z={10000000}
-      bg="$background"
+      bg="background"
       justify="center"
       position="absolute"
-      fullscreen
+      inset={0}
       items="center"
     >
       <Spinner size="small" />

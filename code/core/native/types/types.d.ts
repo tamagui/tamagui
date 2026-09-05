@@ -34,6 +34,7 @@ export interface SafeAreaMetrics {
 	frame: SafeAreaFrame;
 }
 export interface SafeAreaState {
+	didSetup: boolean;
 	enabled: boolean;
 	useSafeAreaInsets: (() => SafeAreaInsets) | null;
 	useSafeAreaFrame: (() => SafeAreaFrame) | null;

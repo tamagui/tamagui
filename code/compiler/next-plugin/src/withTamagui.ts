@@ -5,7 +5,6 @@ import { getGlobalCssLoader } from 'next/dist/build/webpack/config/blocks/css/lo
 import path from 'node:path'
 import type { PluginOptions as LoaderPluginOptions } from 'tamagui-loader'
 import { TamaguiPlugin } from 'tamagui-loader'
-import webpack from 'webpack'
 
 const { loadTamaguiBuildConfigSync } = Static
 
@@ -34,12 +33,15 @@ export type WithTamaguiProps = LoaderPluginOptions & {
   disableOptimizeLucideIcons?: boolean
 }
 
+/**
+ * @deprecated Webpack-only compatibility adapter. For Next.js with Turbopack,
+ * run `tamagui build --target web <source> -- next dev` or `next build`.
+ */
 export const withTamagui = (tamaguiOptionsIn?: WithTamaguiProps) => {
   return (nextConfig: any = {}) => {
-    const tamaguiOptions = {
-      ...tamaguiOptionsIn,
-      ...loadTamaguiBuildConfigSync(tamaguiOptionsIn),
-    }
+    const tamaguiOptions = loadTamaguiBuildConfigSync(
+      tamaguiOptionsIn
+    ) as WithTamaguiProps
     const isAppDir = tamaguiOptions?.appDir || nextConfig.experimental?.appDir
 
     return {
@@ -49,7 +51,7 @@ export const withTamagui = (tamaguiOptionsIn?: WithTamaguiProps) => {
         'expo-linear-gradient',
       ],
       webpack: (webpackConfig: any, options: any) => {
-        const { dir, config, dev, isServer } = options
+        const { dir, config, dev, isServer, webpack } = options
 
         // @ts-ignore
         if (typeof globalThis['__DEV__'] === 'undefined') {
@@ -72,12 +74,35 @@ export const withTamagui = (tamaguiOptionsIn?: WithTamaguiProps) => {
           ...tamaguiOptions,
         })
 
+        const zeroMode = Static.resolveZeroRuntimeSync(
+          { platform: 'web', ...tamaguiOptions },
+          dir
+        ).mode
+
+        // The compiled-global-CSS tier. Derived, never author-set: TamaguiPlugin
+        // proves on the client compilation that the artifact exists, matches
+        // this build's config, and is imported, and fails the build otherwise.
+        // A dev compilation has no final graph to prove that against, so it
+        // keeps runtime CSS generation.
+        const claimsGlobalCSS =
+          !dev &&
+          !!Static.resolveGlobalCSSOwnership({ platform: 'web', ...tamaguiOptions }, dir)
+
         const defines = {
+          // An enforced zero entry gets 'zero' on both its client and its server
+          // compilation, so SSR never imports a runtime hydration removed. Config
+          // evaluation, report builds, and island child builds keep 'full'.
+          'process.env.TAMAGUI_RUNTIME': JSON.stringify(
+            zeroMode === 'enforce' ? 'zero' : 'full'
+          ),
           'process.env.IS_STATIC': JSON.stringify(''),
           'process.env.TAMAGUI_TARGET': '"web"',
           'process.env.TAMAGUI_IS_SERVER': JSON.stringify(isServer ? 'true' : ''),
           'process.env.TAMAGUI_ENVIRONMENT': JSON.stringify(isServer ? 'ssr' : 'client'),
           __DEV__: JSON.stringify(dev),
+          ...(claimsGlobalCSS && {
+            'process.env.TAMAGUI_DID_OUTPUT_CSS': JSON.stringify('1'),
+          }),
           ...(process.env.TAMAGUI_DOES_SSR_CSS && {
             'process.env.TAMAGUI_DOES_SSR_CSS': JSON.stringify(
               process.env.TAMAGUI_DOES_SSR_CSS

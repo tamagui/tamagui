@@ -1,6 +1,7 @@
 import { useRef, useState, useEffect, useCallback } from 'react'
 import { AnimatePresence } from '@tamagui/animate-presence'
-import { Button, Paragraph, Square, XStack, YStack, View, Text } from 'tamagui'
+import { Paragraph, Square, XStack, YStack, View, Text } from 'tamagui'
+import { Button } from '../components/Button'
 
 /**
  * COMPREHENSIVE ANIMATION TEST SUITE
@@ -113,11 +114,11 @@ const useAnimationLogger = (
 
 export function AnimationComprehensiveCase() {
   return (
-    <YStack gap="$2" padding="$2" flex={1} overflow="scroll">
-      <Paragraph fontWeight="bold" fontSize="$5">
+    <YStack gap="2" padding="2" flex={1} overflow="scroll">
+      <Paragraph fontWeight="bold" fontSize="5">
         Comprehensive Animation Test Suite (30+ Scenarios)
       </Paragraph>
-      <Paragraph size="$2" color="$color10">
+      <Paragraph size="2" color="color10">
         Open console to see [ANIM_FRAME] logs
       </Paragraph>
 
@@ -194,7 +195,7 @@ export function AnimationComprehensiveCase() {
       {/* SECTION 12: Per-Property with Transform (animationClamped fix) */}
       <SectionHeader>12. Per-Property with Transform</SectionHeader>
       <Scenario38_PerPropertyWithTransform />
-      <Scenario39_ObjectFormatPerProperty />
+      <Scenario39_StringFormatPerProperty />
       <Scenario40_ObjectFormatNoDefault />
       <Scenario41_PerPropertyWithDelay />
 
@@ -207,8 +208,8 @@ export function AnimationComprehensiveCase() {
       <Scenario46_TransitionEnterExitPerProperty />
       <Scenario47_TransitionEnterExitWithDelay />
 
-      {/* SECTION 14: animateOnly with Exit/Enter Styles */}
-      <SectionHeader>14. animateOnly with Exit/Enter Styles</SectionHeader>
+      {/* SECTION 14: property lists with Exit/Enter Styles */}
+      <SectionHeader>14. Property lists with Exit/Enter Styles</SectionHeader>
       <Scenario48_AnimateOnlyWithExitStyle />
       <Scenario49_AnimateOnlyWithEnterExitStyle />
 
@@ -222,7 +223,7 @@ export function AnimationComprehensiveCase() {
 }
 
 const SectionHeader = ({ children }: { children: string }) => (
-  <Paragraph fontWeight="bold" fontSize="$3" marginTop="$3" color="$blue10">
+  <Paragraph fontWeight="bold" fontSize="3" marginTop="3" color="blue10">
     {children}
   </Paragraph>
 )
@@ -238,9 +239,9 @@ function Scenario01_OpacityBasic() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center">
+    <XStack gap="2" alignItems="center">
       <Button
-        size="$2"
+        size="3"
         onPress={() => {
           startLogging()
           setActive(!active)
@@ -254,13 +255,13 @@ function Scenario01_OpacityBasic() {
       <Square
         ref={ref as any}
         transition="quick"
-        size={40}
-        bg="$blue10"
+        bg="blue10"
         opacity={active ? 0.2 : 1}
+        size={40}
         testID="scenario-01-target"
         data-testid="scenario-01-target"
       />
-      <Paragraph size="$1">{active ? '0.2' : '1'}</Paragraph>
+      <Paragraph size="1">{active ? '0.2' : '1'}</Paragraph>
     </XStack>
   )
 }
@@ -276,9 +277,9 @@ function Scenario02_ScaleBasic() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center">
+    <XStack gap="2" alignItems="center">
       <Button
-        size="$2"
+        size="3"
         onPress={() => {
           startLogging()
           setActive(!active)
@@ -292,13 +293,13 @@ function Scenario02_ScaleBasic() {
       <Square
         ref={ref as any}
         transition="quick"
-        size={40}
-        bg="$green10"
+        bg="green10"
         scale={active ? 1.5 : 1}
+        size={40}
         testID="scenario-02-target"
         data-testid="scenario-02-target"
       />
-      <Paragraph size="$1">{active ? '1.5' : '1'}</Paragraph>
+      <Paragraph size="1">{active ? '1.5' : '1'}</Paragraph>
     </XStack>
   )
 }
@@ -314,9 +315,9 @@ function Scenario03_TranslateX() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center">
+    <XStack gap="2" alignItems="center">
       <Button
-        size="$2"
+        size="3"
         onPress={() => {
           startLogging()
           setActive(!active)
@@ -330,13 +331,13 @@ function Scenario03_TranslateX() {
       <Square
         ref={ref as any}
         transition="quick"
-        size={40}
-        bg="$blue10"
+        bg="blue10"
         x={active ? 50 : 0}
+        size={40}
         testID="scenario-03-target"
         data-testid="scenario-03-target"
       />
-      <Paragraph size="$1">{active ? '50px' : '0'}</Paragraph>
+      <Paragraph size="1">{active ? '50px' : '0'}</Paragraph>
     </XStack>
   )
 }
@@ -352,9 +353,9 @@ function Scenario04_TranslateY() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center">
+    <XStack gap="2" alignItems="center">
       <Button
-        size="$2"
+        size="3"
         onPress={() => {
           startLogging()
           setActive(!active)
@@ -368,13 +369,13 @@ function Scenario04_TranslateY() {
       <Square
         ref={ref as any}
         transition="quick"
-        size={40}
-        bg="$yellow10"
+        bg="yellow10"
         y={active ? -30 : 0}
+        size={40}
         testID="scenario-04-target"
         data-testid="scenario-04-target"
       />
-      <Paragraph size="$1">{active ? '-30px' : '0'}</Paragraph>
+      <Paragraph size="1">{active ? '-30px' : '0'}</Paragraph>
     </XStack>
   )
 }
@@ -390,9 +391,9 @@ function Scenario05_Rotate() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center">
+    <XStack gap="2" alignItems="center">
       <Button
-        size="$2"
+        size="3"
         onPress={() => {
           startLogging()
           setActive(!active)
@@ -406,13 +407,13 @@ function Scenario05_Rotate() {
       <Square
         ref={ref as any}
         transition="quick"
-        size={40}
-        bg="$red10"
+        bg="red10"
         rotate={active ? '45deg' : '0deg'}
+        size={40}
         testID="scenario-05-target"
         data-testid="scenario-05-target"
       />
-      <Paragraph size="$1">{active ? '45deg' : '0'}</Paragraph>
+      <Paragraph size="1">{active ? '45deg' : '0'}</Paragraph>
     </XStack>
   )
 }
@@ -429,9 +430,9 @@ function Scenario06_MultipleTransforms() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center">
+    <XStack gap="2" alignItems="center">
       <Button
-        size="$2"
+        size="3"
         onPress={() => {
           startLogging()
           setActive(!active)
@@ -445,16 +446,16 @@ function Scenario06_MultipleTransforms() {
       <Square
         ref={ref as any}
         transition="quick"
-        size={40}
-        bg="$red10"
+        bg="red10"
         scale={active ? 1.2 : 1}
         x={active ? 20 : 0}
         rotate={active ? '15deg' : '0deg'}
         opacity={active ? 0.7 : 1}
+        size={40}
         testID="scenario-06-target"
         data-testid="scenario-06-target"
       />
-      <Paragraph size="$1">{active ? 'active' : 'default'}</Paragraph>
+      <Paragraph size="1">{active ? 'active' : 'default'}</Paragraph>
     </XStack>
   )
 }
@@ -468,9 +469,9 @@ function Scenario07_Width() {
   const { startLogging, stopLogging } = useAnimationLogger('07-width', ref, ['width'])
 
   return (
-    <XStack gap="$2" alignItems="center">
+    <XStack gap="2" alignItems="center">
       <Button
-        size="$2"
+        size="3"
         onPress={() => {
           startLogging()
           setActive(!active)
@@ -486,11 +487,11 @@ function Scenario07_Width() {
         transition="quick"
         height={40}
         width={active ? 150 : 40}
-        bg="$blue10"
+        bg="blue10"
         testID="scenario-07-target"
         data-testid="scenario-07-target"
       />
-      <Paragraph size="$1">{active ? '150px' : '40px'}</Paragraph>
+      <Paragraph size="1">{active ? '150px' : '40px'}</Paragraph>
     </XStack>
   )
 }
@@ -504,9 +505,9 @@ function Scenario08_Height() {
   const { startLogging, stopLogging } = useAnimationLogger('08-height', ref, ['height'])
 
   return (
-    <XStack gap="$2" alignItems="center">
+    <XStack gap="2" alignItems="center">
       <Button
-        size="$2"
+        size="3"
         onPress={() => {
           startLogging()
           setActive(!active)
@@ -522,11 +523,11 @@ function Scenario08_Height() {
         transition="quick"
         width={40}
         height={active ? 80 : 40}
-        bg="$green10"
+        bg="green10"
         testID="scenario-08-target"
         data-testid="scenario-08-target"
       />
-      <Paragraph size="$1">{active ? '80px' : '40px'}</Paragraph>
+      <Paragraph size="1">{active ? '80px' : '40px'}</Paragraph>
     </XStack>
   )
 }
@@ -543,9 +544,9 @@ function Scenario09_WidthAndHeight() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center">
+    <XStack gap="2" alignItems="center">
       <Button
-        size="$2"
+        size="3"
         onPress={() => {
           startLogging()
           setActive(!active)
@@ -561,11 +562,11 @@ function Scenario09_WidthAndHeight() {
         transition="quick"
         width={active ? 100 : 40}
         height={active ? 60 : 40}
-        bg="$blue10"
+        bg="blue10"
         testID="scenario-09-target"
         data-testid="scenario-09-target"
       />
-      <Paragraph size="$1">{active ? '100x60' : '40x40'}</Paragraph>
+      <Paragraph size="1">{active ? '100x60' : '40x40'}</Paragraph>
     </XStack>
   )
 }
@@ -581,9 +582,9 @@ function Scenario10_BorderRadius() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center">
+    <XStack gap="2" alignItems="center">
       <Button
-        size="$2"
+        size="3"
         onPress={() => {
           startLogging()
           setActive(!active)
@@ -599,12 +600,12 @@ function Scenario10_BorderRadius() {
         transition="quick"
         width={40}
         height={40}
-        bg="$yellow10"
+        bg="yellow10"
         borderRadius={active ? 20 : 0}
         testID="scenario-10-target"
         data-testid="scenario-10-target"
       />
-      <Paragraph size="$1">{active ? '20px' : '0'}</Paragraph>
+      <Paragraph size="1">{active ? '20px' : '0'}</Paragraph>
     </XStack>
   )
 }
@@ -620,9 +621,9 @@ function Scenario11_BackgroundColor() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center">
+    <XStack gap="2" alignItems="center">
       <Button
-        size="$2"
+        size="3"
         onPress={() => {
           startLogging()
           setActive(!active)
@@ -636,12 +637,12 @@ function Scenario11_BackgroundColor() {
       <Square
         ref={ref as any}
         transition="quick"
+        backgroundColor={`${active ? 'red10' : 'blue10'}`}
         size={40}
-        backgroundColor={active ? '$red10' : '$blue10'}
         testID="scenario-11-target"
         data-testid="scenario-11-target"
       />
-      <Paragraph size="$1">{active ? 'red' : 'blue'}</Paragraph>
+      <Paragraph size="1">{active ? 'red' : 'blue'}</Paragraph>
     </XStack>
   )
 }
@@ -657,9 +658,9 @@ function Scenario12_TextColor() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center">
+    <XStack gap="2" alignItems="center">
       <Button
-        size="$2"
+        size="3"
         onPress={() => {
           startLogging()
           setActive(!active)
@@ -673,15 +674,15 @@ function Scenario12_TextColor() {
       <Text
         ref={ref as any}
         transition="quick"
-        fontSize="$5"
+        fontSize="5"
         fontWeight="bold"
-        color={active ? '$red10' : '$blue10'}
+        color={`${active ? 'red10' : 'blue10'}`}
         testID="scenario-12-target"
         data-testid="scenario-12-target"
       >
         ABC
       </Text>
-      <Paragraph size="$1">{active ? 'red' : 'blue'}</Paragraph>
+      <Paragraph size="1">{active ? 'red' : 'blue'}</Paragraph>
     </XStack>
   )
 }
@@ -697,9 +698,9 @@ function Scenario13_BorderColor() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center">
+    <XStack gap="2" alignItems="center">
       <Button
-        size="$2"
+        size="3"
         onPress={() => {
           startLogging()
           setActive(!active)
@@ -713,14 +714,14 @@ function Scenario13_BorderColor() {
       <Square
         ref={ref as any}
         transition="quick"
-        size={40}
         bg="transparent"
         borderWidth={3}
-        borderColor={active ? '$red10' : '$blue10'}
+        borderColor={`${active ? 'red10' : 'blue10'}`}
+        size={40}
         testID="scenario-13-target"
         data-testid="scenario-13-target"
       />
-      <Paragraph size="$1">{active ? 'red' : 'blue'}</Paragraph>
+      <Paragraph size="1">{active ? 'red' : 'blue'}</Paragraph>
     </XStack>
   )
 }
@@ -736,9 +737,9 @@ function Scenario14_SpringBouncy() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center">
+    <XStack gap="2" alignItems="center">
       <Button
-        size="$2"
+        size="3"
         onPress={() => {
           startLogging()
           setActive(!active)
@@ -752,13 +753,13 @@ function Scenario14_SpringBouncy() {
       <Square
         ref={ref as any}
         transition="bouncy"
-        size={40}
-        bg="$blue10"
+        bg="blue10"
         scale={active ? 1.5 : 1}
+        size={40}
         testID="scenario-14-target"
         data-testid="scenario-14-target"
       />
-      <Paragraph size="$1">bouncy spring</Paragraph>
+      <Paragraph size="1">bouncy spring</Paragraph>
     </XStack>
   )
 }
@@ -774,9 +775,9 @@ function Scenario15_SpringLazy() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center">
+    <XStack gap="2" alignItems="center">
       <Button
-        size="$2"
+        size="3"
         onPress={() => {
           startLogging()
           setActive(!active)
@@ -790,13 +791,13 @@ function Scenario15_SpringLazy() {
       <Square
         ref={ref as any}
         transition="lazy"
-        size={40}
-        bg="$green10"
+        bg="green10"
         scale={active ? 1.5 : 1}
+        size={40}
         testID="scenario-15-target"
         data-testid="scenario-15-target"
       />
-      <Paragraph size="$1">lazy spring</Paragraph>
+      <Paragraph size="1">lazy spring</Paragraph>
     </XStack>
   )
 }
@@ -812,9 +813,9 @@ function Scenario16_SpringQuick() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center">
+    <XStack gap="2" alignItems="center">
       <Button
-        size="$2"
+        size="3"
         onPress={() => {
           startLogging()
           setActive(!active)
@@ -828,13 +829,13 @@ function Scenario16_SpringQuick() {
       <Square
         ref={ref as any}
         transition="quick"
-        size={40}
-        bg="$blue10"
+        bg="blue10"
         scale={active ? 1.5 : 1}
+        size={40}
         testID="scenario-16-target"
         data-testid="scenario-16-target"
       />
-      <Paragraph size="$1">quick spring</Paragraph>
+      <Paragraph size="1">quick spring</Paragraph>
     </XStack>
   )
 }
@@ -850,9 +851,9 @@ function Scenario17_SpringCustom() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center">
+    <XStack gap="2" alignItems="center">
       <Button
-        size="$2"
+        size="3"
         onPress={() => {
           startLogging()
           setActive(!active)
@@ -865,16 +866,17 @@ function Scenario17_SpringCustom() {
       </Button>
       <Square
         ref={ref as any}
-        transition="quick"
-        // @ts-ignore
-        animationConfig={{ type: 'spring', damping: 5, stiffness: 100, mass: 0.5 }}
-        size={40}
-        bg="$yellow10"
+        transition={{
+          preset: 'quick',
+          spring: { stiffness: 100, damping: 5, mass: 0.5 },
+        }}
+        bg="yellow10"
         scale={active ? 1.5 : 1}
+        size={40}
         testID="scenario-17-target"
         data-testid="scenario-17-target"
       />
-      <Paragraph size="$1">custom spring</Paragraph>
+      <Paragraph size="1">custom spring</Paragraph>
     </XStack>
   )
 }
@@ -890,9 +892,9 @@ function Scenario18_Timing100ms() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center">
+    <XStack gap="2" alignItems="center">
       <Button
-        size="$2"
+        size="3"
         onPress={() => {
           startLogging()
           setActive(!active)
@@ -906,13 +908,13 @@ function Scenario18_Timing100ms() {
       <Square
         ref={ref as any}
         transition="100ms"
-        size={40}
-        bg="$blue10"
+        bg="blue10"
         opacity={active ? 0.3 : 1}
+        size={40}
         testID="scenario-18-target"
         data-testid="scenario-18-target"
       />
-      <Paragraph size="$1">timing 100ms</Paragraph>
+      <Paragraph size="1">timing 100ms</Paragraph>
     </XStack>
   )
 }
@@ -928,9 +930,9 @@ function Scenario19_Timing200ms() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center">
+    <XStack gap="2" alignItems="center">
       <Button
-        size="$2"
+        size="3"
         onPress={() => {
           startLogging()
           setActive(!active)
@@ -944,13 +946,13 @@ function Scenario19_Timing200ms() {
       <Square
         ref={ref as any}
         transition="quick"
-        size={40}
-        bg="$green10"
+        bg="green10"
         opacity={active ? 0.3 : 1}
+        size={40}
         testID="scenario-19-target"
         data-testid="scenario-19-target"
       />
-      <Paragraph size="$1">quick spring</Paragraph>
+      <Paragraph size="1">quick spring</Paragraph>
     </XStack>
   )
 }
@@ -966,9 +968,9 @@ function Scenario20_TimingWithDelay() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center">
+    <XStack gap="2" alignItems="center">
       <Button
-        size="$2"
+        size="3"
         onPress={() => {
           startLogging()
           setActive(!active)
@@ -981,14 +983,14 @@ function Scenario20_TimingWithDelay() {
       </Button>
       <Square
         ref={ref as any}
-        transition={['quick', { delay: 300 }]}
-        size={40}
-        bg="$blue10"
+        transition={{ preset: 'quick', delay: 300 }}
+        bg="blue10"
         opacity={active ? 0.3 : 1}
+        size={40}
         testID="scenario-20-target"
         data-testid="scenario-20-target"
       />
-      <Paragraph size="$1">300ms delay</Paragraph>
+      <Paragraph size="1">300ms delay</Paragraph>
     </XStack>
   )
 }
@@ -1005,9 +1007,9 @@ function Scenario21_EnterStyle() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center" minHeight={50}>
+    <XStack gap="2" alignItems="center" minHeight={50}>
       <Button
-        size="$2"
+        size="3"
         onPress={() => {
           if (!visible) startLogging()
           setVisible(!visible)
@@ -1022,14 +1024,15 @@ function Scenario21_EnterStyle() {
         <Square
           ref={ref as any}
           transition="bouncy"
+          bg="blue10"
+          opacity="enter:0"
+          scale="enter:0.5"
           size={40}
-          bg="$blue10"
-          enterStyle={{ opacity: 0, scale: 0.5 }}
           testID="scenario-21-target"
           data-testid="scenario-21-target"
         />
       )}
-      <Paragraph size="$1">{visible ? 'visible' : 'hidden'}</Paragraph>
+      <Paragraph size="1">{visible ? 'visible' : 'hidden'}</Paragraph>
     </XStack>
   )
 }
@@ -1046,9 +1049,9 @@ function Scenario22_ExitStyle() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center" minHeight={50}>
+    <XStack gap="2" alignItems="center" minHeight={50}>
       <Button
-        size="$2"
+        size="3"
         onPress={() => {
           if (visible) startLogging()
           setVisible(!visible)
@@ -1065,15 +1068,16 @@ function Scenario22_ExitStyle() {
             key="exit-square"
             ref={ref as any}
             transition="bouncy"
+            bg="green10"
+            opacity="exit:0"
+            scale="exit:0.5"
             size={40}
-            bg="$green10"
-            exitStyle={{ opacity: 0, scale: 0.5 }}
             testID="scenario-22-target"
             data-testid="scenario-22-target"
           />
         )}
       </AnimatePresence>
-      <Paragraph size="$1">{visible ? 'visible' : 'hidden'}</Paragraph>
+      <Paragraph size="1">{visible ? 'visible' : 'hidden'}</Paragraph>
     </XStack>
   )
 }
@@ -1090,9 +1094,9 @@ function Scenario23_EnterExitCombined() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center" minHeight={50}>
+    <XStack gap="2" alignItems="center" minHeight={50}>
       <Button
-        size="$2"
+        size="3"
         onPress={() => {
           startLogging()
           setVisible(!visible)
@@ -1109,16 +1113,17 @@ function Scenario23_EnterExitCombined() {
             key="enter-exit-square"
             ref={ref as any}
             transition="bouncy"
+            bg="blue10"
+            opacity="enter:0 exit:0"
+            scale="enter:0.5 exit:0.5"
+            y="enter:-20px exit:20px"
             size={40}
-            bg="$blue10"
-            enterStyle={{ opacity: 0, scale: 0.5, y: -20 }}
-            exitStyle={{ opacity: 0, scale: 0.5, y: 20 }}
             testID="scenario-23-target"
             data-testid="scenario-23-target"
           />
         )}
       </AnimatePresence>
-      <Paragraph size="$1">{visible ? 'visible' : 'hidden'}</Paragraph>
+      <Paragraph size="1">{visible ? 'visible' : 'hidden'}</Paragraph>
     </XStack>
   )
 }
@@ -1148,9 +1153,9 @@ function Scenario24_RapidToggle() {
   }
 
   return (
-    <XStack gap="$2" alignItems="center">
+    <XStack gap="2" alignItems="center">
       <Button
-        size="$2"
+        size="3"
         onPress={handleRapidToggle}
         testID="scenario-24-trigger"
         data-testid="scenario-24-trigger"
@@ -1160,13 +1165,13 @@ function Scenario24_RapidToggle() {
       <Square
         ref={ref as any}
         transition="quick"
-        size={40}
-        bg="$yellow10"
+        bg="yellow10"
         scale={active ? 1.5 : 1}
+        size={40}
         testID="scenario-24-target"
         data-testid="scenario-24-target"
       />
-      <Paragraph size="$1">6 toggles @ 100ms</Paragraph>
+      <Paragraph size="1">6 toggles @ 100ms</Paragraph>
     </XStack>
   )
 }
@@ -1189,9 +1194,9 @@ function Scenario25_Interruption() {
   }
 
   return (
-    <XStack gap="$2" alignItems="center">
+    <XStack gap="2" alignItems="center">
       <Button
-        size="$2"
+        size="3"
         onPress={handleInterrupt}
         testID="scenario-25-trigger"
         data-testid="scenario-25-trigger"
@@ -1201,13 +1206,13 @@ function Scenario25_Interruption() {
       <Square
         ref={ref as any}
         transition="lazy"
-        size={40}
-        bg="$red10"
+        bg="red10"
         x={position === 0 ? 0 : position === 1 ? 50 : 100}
+        size={40}
         testID="scenario-25-target"
         data-testid="scenario-25-target"
       />
-      <Button size="$2" onPress={() => setPosition(0)}>
+      <Button size="3" onPress={() => setPosition(0)}>
         Reset
       </Button>
     </XStack>
@@ -1215,7 +1220,7 @@ function Scenario25_Interruption() {
 }
 
 // ============================================================================
-// SCENARIO 26: animateOnly prop
+// SCENARIO 26: a transition that names its properties
 // ============================================================================
 function Scenario26_AnimateOnly() {
   const [active, setActive] = useState(false)
@@ -1226,9 +1231,9 @@ function Scenario26_AnimateOnly() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center">
+    <XStack gap="2" alignItems="center">
       <Button
-        size="$2"
+        size="3"
         onPress={() => {
           startLogging()
           setActive(!active)
@@ -1241,16 +1246,15 @@ function Scenario26_AnimateOnly() {
       </Button>
       <Square
         ref={ref as any}
-        transition="quick"
-        animateOnly={['opacity']}
-        size={40}
-        bg="$blue10"
+        transition={{ preset: 'quick', properties: 'opacity' }}
+        bg="blue10"
         opacity={active ? 0.3 : 1}
         scale={active ? 1.5 : 1}
+        size={40}
         testID="scenario-26-target"
         data-testid="scenario-26-target"
       />
-      <Paragraph size="$1">only opacity</Paragraph>
+      <Paragraph size="1">only opacity</Paragraph>
     </XStack>
   )
 }
@@ -1266,9 +1270,9 @@ function Scenario27_AnimationConfig() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center">
+    <XStack gap="2" alignItems="center">
       <Button
-        size="$2"
+        size="3"
         onPress={() => {
           startLogging()
           setActive(!active)
@@ -1281,16 +1285,14 @@ function Scenario27_AnimationConfig() {
       </Button>
       <Square
         ref={ref as any}
-        transition="quick"
-        // @ts-ignore
-        animationConfig={{ type: 'spring', damping: 8, stiffness: 80 }}
-        size={40}
-        bg="$green10"
+        transition={{ preset: 'quick', spring: { stiffness: 80, damping: 8 } }}
+        bg="green10"
         scale={active ? 1.5 : 1}
+        size={40}
         testID="scenario-27-target"
         data-testid="scenario-27-target"
       />
-      <Paragraph size="$1">config override</Paragraph>
+      <Paragraph size="1">config override</Paragraph>
     </XStack>
   )
 }
@@ -1308,9 +1310,9 @@ function Scenario28_MultiProperty() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center">
+    <XStack gap="2" alignItems="center">
       <Button
-        size="$2"
+        size="3"
         onPress={() => {
           startLogging()
           setActive(!active)
@@ -1326,7 +1328,7 @@ function Scenario28_MultiProperty() {
         transition="bouncy"
         width={40}
         height={40}
-        bg="$blue10"
+        bg="blue10"
         opacity={active ? 0.5 : 1}
         scale={active ? 1.3 : 1}
         rotate={active ? '30deg' : '0deg'}
@@ -1334,7 +1336,7 @@ function Scenario28_MultiProperty() {
         testID="scenario-28-target"
         data-testid="scenario-28-target"
       />
-      <Paragraph size="$1">4 props</Paragraph>
+      <Paragraph size="1">4 props</Paragraph>
     </XStack>
   )
 }
@@ -1358,9 +1360,9 @@ function Scenario29_NestedAnimations() {
   )
 
   return (
-    <XStack gap="$2" alignItems="center">
+    <XStack gap="2" alignItems="center">
       <Button
-        size="$2"
+        size="3"
         onPress={() => {
           startOuter()
           startInner()
@@ -1379,22 +1381,22 @@ function Scenario29_NestedAnimations() {
         ref={outerRef as any}
         transition="quick"
         scale={active ? 1.2 : 1}
-        padding="$1"
-        bg="$blue5"
+        padding="1"
+        bg="blue5"
         testID="scenario-29-outer"
         data-testid="scenario-29-outer"
       >
         <Square
           ref={innerRef as any}
           transition="bouncy"
-          size={30}
-          bg="$blue10"
+          bg="blue10"
           opacity={active ? 0.5 : 1}
+          size={30}
           testID="scenario-29-inner"
           data-testid="scenario-29-inner"
         />
       </View>
-      <Paragraph size="$1">parent+child</Paragraph>
+      <Paragraph size="1">parent+child</Paragraph>
     </XStack>
   )
 }
@@ -1410,29 +1412,30 @@ function Scenario30_HoverAnimation() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center">
-      <Paragraph size="$1">30: Hover →</Paragraph>
+    <XStack gap="2" alignItems="center">
+      <Paragraph size="1">30: Hover →</Paragraph>
       <View
         ref={ref as any}
         transition="quick"
         width={40}
         height={40}
-        bg="$blue10"
-        hoverStyle={{ scale: 1.2, backgroundColor: '$green10' }}
+        bg="blue10"
+        scale="hover:1.2"
+        backgroundColor="hover:green10"
+        cursor="pointer"
         onMouseEnter={startLogging}
         onMouseLeave={() => setTimeout(stopLogging, 500)}
         testID="scenario-30-target"
         data-testid="scenario-30-target"
-        cursor="pointer"
       />
-      <Paragraph size="$1">hover me</Paragraph>
+      <Paragraph size="1">hover me</Paragraph>
     </XStack>
   )
 }
 
 // ============================================================================
 // SCENARIO 31: Per-Property Animation Configs
-// Tests: transition={['quick', { opacity: 'lazy', scale: 'bouncy' }]}
+// Tests: transition={{ preset: 'quick', opacity: 'lazy', scale: 'bouncy' }}
 // Each property should animate with its own timing/spring config
 // ============================================================================
 function Scenario31_PerPropertyConfigs() {
@@ -1444,9 +1447,9 @@ function Scenario31_PerPropertyConfigs() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center">
+    <XStack gap="2" alignItems="center">
       <Button
-        size="$2"
+        size="3"
         onPress={() => {
           startLogging()
           setActive(!active)
@@ -1459,15 +1462,15 @@ function Scenario31_PerPropertyConfigs() {
       </Button>
       <Square
         ref={ref as any}
-        transition={['quick', { opacity: 'lazy', scale: 'bouncy' }] as any}
-        size={40}
-        bg="$blue10"
+        transition={{ preset: 'quick', opacity: 'lazy', scale: 'bouncy' }}
+        bg="blue10"
         opacity={active ? 0.3 : 1}
         scale={active ? 1.5 : 1}
+        size={40}
         testID="scenario-31-target"
         data-testid="scenario-31-target"
       />
-      <Paragraph size="$1">opacity=lazy, scale=bouncy</Paragraph>
+      <Paragraph size="1">opacity=lazy, scale=bouncy</Paragraph>
     </XStack>
   )
 }
@@ -1493,9 +1496,9 @@ function Scenario32_PerPropertyWithInterruption() {
   }
 
   return (
-    <XStack gap="$2" alignItems="center">
+    <XStack gap="2" alignItems="center">
       <Button
-        size="$2"
+        size="3"
         onPress={handleInterrupt}
         testID="scenario-32-trigger"
         data-testid="scenario-32-trigger"
@@ -1504,19 +1507,19 @@ function Scenario32_PerPropertyWithInterruption() {
       </Button>
       <Square
         ref={ref as any}
-        transition={['quick', { opacity: 'lazy', scale: 'bouncy' }] as any}
-        size={40}
-        bg="$green10"
+        transition={{ preset: 'quick', opacity: 'lazy', scale: 'bouncy' }}
+        bg="green10"
         opacity={state === 0 ? 1 : state === 1 ? 0.5 : 0.2}
         scale={state === 0 ? 1 : state === 1 ? 1.3 : 1.6}
         x={state === 0 ? 0 : state === 1 ? 30 : 60}
+        size={40}
         testID="scenario-32-target"
         data-testid="scenario-32-target"
       />
-      <Button size="$2" onPress={() => setState(0)}>
+      <Button size="3" onPress={() => setState(0)}>
         Reset
       </Button>
-      <Paragraph size="$1">state={state}</Paragraph>
+      <Paragraph size="1">state={state}</Paragraph>
     </XStack>
   )
 }
@@ -1535,9 +1538,9 @@ function Scenario33_MixedSpringTiming() {
   )
 
   return (
-    <XStack gap="$2" alignItems="center">
+    <XStack gap="2" alignItems="center">
       <Button
-        size="$2"
+        size="3"
         onPress={() => {
           startLogging()
           setActive(!active)
@@ -1550,17 +1553,17 @@ function Scenario33_MixedSpringTiming() {
       </Button>
       <View
         ref={ref as any}
-        transition={['bouncy', { opacity: 'quick', borderRadius: 'lazy' }] as any}
+        transition={{ preset: 'bouncy', opacity: 'quick', borderRadius: 'lazy' }}
         width={40}
         height={40}
-        bg="$blue10"
+        bg="blue10"
         opacity={active ? 0.4 : 1}
         scale={active ? 1.4 : 1}
         borderRadius={active ? 20 : 4}
         testID="scenario-33-target"
         data-testid="scenario-33-target"
       />
-      <Paragraph size="$1">scale=bouncy, opacity=quick, radius=lazy</Paragraph>
+      <Paragraph size="1">scale=bouncy, opacity=quick, radius=lazy</Paragraph>
     </XStack>
   )
 }
@@ -1582,9 +1585,9 @@ function Scenario34_ComplexObjectManyProps() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center">
+    <XStack gap="2" alignItems="center">
       <Button
-        size="$2"
+        size="3"
         onPress={() => {
           startLogging()
           setActive(!active)
@@ -1597,22 +1600,18 @@ function Scenario34_ComplexObjectManyProps() {
       </Button>
       <View
         ref={ref as any}
-        transition={
-          [
-            'quick',
-            {
-              opacity: 'lazy',
-              scale: 'bouncy',
-              width: 'lazy',
-              height: 'lazy',
-              borderRadius: 'bouncy',
-              backgroundColor: '200ms',
-            },
-          ] as any
-        }
+        transition={{
+          preset: 'quick',
+          opacity: 'lazy',
+          scale: 'bouncy',
+          width: 'lazy',
+          height: 'lazy',
+          borderRadius: 'bouncy',
+          backgroundColor: '200ms',
+        }}
         width={active ? 80 : 40}
         height={active ? 60 : 40}
-        backgroundColor={active ? '$red10' : '$blue10'}
+        backgroundColor={`${active ? 'red10' : 'blue10'}`}
         opacity={active ? 0.7 : 1}
         scale={active ? 1.2 : 1}
         rotate={active ? '15deg' : '0deg'}
@@ -1620,7 +1619,7 @@ function Scenario34_ComplexObjectManyProps() {
         testID="scenario-34-target"
         data-testid="scenario-34-target"
       />
-      <Paragraph size="$1">7 props, 4 configs</Paragraph>
+      <Paragraph size="1">7 props, 4 configs</Paragraph>
     </XStack>
   )
 }
@@ -1653,9 +1652,9 @@ function Scenario35_RapidPerPropertyChanges() {
   }
 
   return (
-    <XStack gap="$2" alignItems="center">
+    <XStack gap="2" alignItems="center">
       <Button
-        size="$2"
+        size="3"
         onPress={handleRapid}
         testID="scenario-35-trigger"
         data-testid="scenario-35-trigger"
@@ -1664,16 +1663,16 @@ function Scenario35_RapidPerPropertyChanges() {
       </Button>
       <Square
         ref={ref as any}
-        transition={['quick', { opacity: 'lazy', scale: 'bouncy' }] as any}
-        size={40}
-        bg="$yellow10"
+        transition={{ preset: 'quick', opacity: 'lazy', scale: 'bouncy' }}
+        bg="yellow10"
         opacity={active ? 0.3 : 1}
         scale={active ? 1.5 : 1}
         x={active ? 40 : 0}
+        size={40}
         testID="scenario-35-target"
         data-testid="scenario-35-target"
       />
-      <Paragraph size="$1">8 toggles @ 150ms</Paragraph>
+      <Paragraph size="1">8 toggles @ 150ms</Paragraph>
     </XStack>
   )
 }
@@ -1691,9 +1690,9 @@ function Scenario36_TimingTest() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center">
+    <XStack gap="2" alignItems="center">
       <Button
-        size="$2"
+        size="3"
         onPress={() => {
           startLogging()
           setActive(!active)
@@ -1707,14 +1706,14 @@ function Scenario36_TimingTest() {
       <Square
         ref={ref as any}
         transition="500ms"
-        size={40}
-        bg="$blue10"
+        bg="blue10"
         opacity={active ? 0.2 : 1}
         scale={active ? 1.5 : 1}
+        size={40}
         testID="scenario-36-target"
         data-testid="scenario-36-target"
       />
-      <Paragraph size="$1">1000ms timing</Paragraph>
+      <Paragraph size="1">1000ms timing</Paragraph>
     </XStack>
   )
 }
@@ -1732,9 +1731,9 @@ function Scenario37_EnterStyleScaleX() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center" minHeight={50}>
+    <XStack gap="2" alignItems="center" minHeight={50}>
       <Button
-        size="$2"
+        size="3"
         onPress={() => {
           if (!visible) startLogging()
           setVisible(!visible)
@@ -1751,20 +1750,21 @@ function Scenario37_EnterStyleScaleX() {
           transition="lazy"
           width={100}
           height={20}
-          bg="$red10"
-          enterStyle={{ opacity: 0, scaleX: 0 }}
+          bg="red10"
+          opacity="enter:0"
+          scaleX="enter:0"
           testID="scenario-37-target"
           data-testid="scenario-37-target"
         />
       )}
-      <Paragraph size="$1">{visible ? 'visible' : 'hidden'}</Paragraph>
+      <Paragraph size="1">{visible ? 'visible' : 'hidden'}</Paragraph>
     </XStack>
   )
 }
 
 // ============================================================================
 // SCENARIO 38: Per-Property Config with Transform (animationClamped pattern)
-// Tests: transition={['quick', { opacity: '200ms', backgroundColor: '200ms' }]}
+// Tests: transition={{ preset: 'quick', opacity: '200ms', backgroundColor: '200ms' }}
 // The key test: scale/y should STILL animate with the default 'quick' animation
 // even though they're not explicitly listed in the per-property config
 // ============================================================================
@@ -1778,9 +1778,9 @@ function Scenario38_PerPropertyWithTransform() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center">
+    <XStack gap="2" alignItems="center">
       <Button
-        size="$2"
+        size="3"
         onPress={() => {
           startLogging()
           setActive(!active)
@@ -1793,28 +1793,26 @@ function Scenario38_PerPropertyWithTransform() {
       </Button>
       <Square
         ref={ref as any}
-        // this is the "animationClamped" pattern - opacity/backgroundColor have specific timing
-        // but scale/y should STILL animate with the default 'quick' animation
-        transition={['quick', { opacity: '200ms', backgroundColor: '200ms' }] as any}
-        size={40}
-        bg={active ? '$red10' : '$blue10'}
+        transition={{ preset: 'quick', opacity: '200ms', backgroundColor: '200ms' }}
+        bg={`${active ? 'red10' : 'blue10'}`}
         opacity={active ? 0.5 : 1}
         scale={active ? 1.3 : 1}
         y={active ? -10 : 0}
+        size={40}
         testID="scenario-38-target"
         data-testid="scenario-38-target"
       />
-      <Paragraph size="$1">opacity/bg=200ms, scale/y=quick</Paragraph>
+      <Paragraph size="1">opacity/bg=200ms, scale/y=quick</Paragraph>
     </XStack>
   )
 }
 
 // ============================================================================
-// SCENARIO 39: Object Format Per-Property with Transform
-// Tests: transition={{ opacity: '200ms', backgroundColor: '200ms', default: 'quick' }}
-// Same as 38 but using object format instead of array format
+// SCENARIO 39: CSS String Per-Property with Transform
+// Tests: transition="quick, opacity 200ms, background-color 200ms"
+// Same motion as 38, spelled as a css transition string instead of an object
 // ============================================================================
-function Scenario39_ObjectFormatPerProperty() {
+function Scenario39_StringFormatPerProperty() {
   const [active, setActive] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
   const { startLogging, stopLogging } = useAnimationLogger('39-object-per-prop', ref, [
@@ -1824,9 +1822,9 @@ function Scenario39_ObjectFormatPerProperty() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center">
+    <XStack gap="2" alignItems="center">
       <Button
-        size="$2"
+        size="3"
         onPress={() => {
           startLogging()
           setActive(!active)
@@ -1835,29 +1833,26 @@ function Scenario39_ObjectFormatPerProperty() {
         testID="scenario-39-trigger"
         data-testid="scenario-39-trigger"
       >
-        39: Object Format
+        39: String Format
       </Button>
       <Square
         ref={ref as any}
-        // object format - same as array but different syntax
-        transition={
-          { opacity: '200ms', backgroundColor: '200ms', default: 'quick' } as any
-        }
-        size={40}
-        bg={active ? '$red10' : '$blue10'}
+        transition="quick, opacity 200ms, background-color 200ms"
+        bg={`${active ? 'red10' : 'blue10'}`}
         opacity={active ? 0.5 : 1}
         scale={active ? 1.3 : 1}
         y={active ? -10 : 0}
+        size={40}
         testID="scenario-39-target"
         data-testid="scenario-39-target"
       />
-      <Paragraph size="$1">object: opacity/bg=200ms, default=quick</Paragraph>
+      <Paragraph size="1">string: opacity/bg=200ms, rest=quick</Paragraph>
     </XStack>
   )
 }
 
 // ============================================================================
-// SCENARIO 40: Object Format WITHOUT Default (only specified properties animate)
+// SCENARIO 40: Object Format with no base entry (only named properties animate)
 // Tests: transition={{ opacity: '200ms' }} - scale should NOT animate
 // ============================================================================
 function Scenario40_ObjectFormatNoDefault() {
@@ -1869,9 +1864,9 @@ function Scenario40_ObjectFormatNoDefault() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center">
+    <XStack gap="2" alignItems="center">
       <Button
-        size="$2"
+        size="3"
         onPress={() => {
           startLogging()
           setActive(!active)
@@ -1884,23 +1879,22 @@ function Scenario40_ObjectFormatNoDefault() {
       </Button>
       <Square
         ref={ref as any}
-        // NO default key - only opacity should animate, scale should snap instantly
-        transition={{ opacity: '500ms' } as any}
-        size={40}
-        bg="$blue10"
+        transition={{ opacity: '500ms' }}
+        bg="blue10"
         opacity={active ? 0.5 : 1}
         scale={active ? 1.3 : 1}
+        size={40}
         testID="scenario-40-target"
         data-testid="scenario-40-target"
       />
-      <Paragraph size="$1">only opacity animates (500ms)</Paragraph>
+      <Paragraph size="1">only opacity animates (500ms)</Paragraph>
     </XStack>
   )
 }
 
 // ============================================================================
 // SCENARIO 41: Per-Property Config with Delay
-// Tests: transition={['quick', { delay: 300, opacity: '500ms' }]}
+// Tests: transition={{ preset: 'quick', delay: 300, opacity: { duration: '500ms', delay: 300 } }}
 // Delay should apply to all properties, opacity uses custom timing
 // ============================================================================
 function Scenario41_PerPropertyWithDelay() {
@@ -1912,9 +1906,9 @@ function Scenario41_PerPropertyWithDelay() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center">
+    <XStack gap="2" alignItems="center">
       <Button
-        size="$2"
+        size="3"
         onPress={() => {
           startLogging()
           setActive(!active)
@@ -1927,16 +1921,19 @@ function Scenario41_PerPropertyWithDelay() {
       </Button>
       <Square
         ref={ref as any}
-        // delay + per-property: 300ms delay, then opacity=500ms, scale=quick
-        transition={['quick', { delay: 300, opacity: '500ms' }] as any}
-        size={40}
-        bg="$blue10"
+        transition={{
+          preset: 'quick',
+          delay: 300,
+          opacity: { duration: '500ms', delay: 300 },
+        }}
+        bg="blue10"
         opacity={active ? 0.5 : 1}
         scale={active ? 1.3 : 1}
+        size={40}
         testID="scenario-41-target"
         data-testid="scenario-41-target"
       />
-      <Paragraph size="$1">300ms delay, opacity=500ms, scale=quick</Paragraph>
+      <Paragraph size="1">300ms delay, opacity=500ms, scale=quick</Paragraph>
     </XStack>
   )
 }
@@ -1956,9 +1953,9 @@ function Scenario42_TransitionEnterExit() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center" minHeight={50}>
+    <XStack gap="2" alignItems="center" minHeight={50}>
       <Button
-        size="$2"
+        size="3"
         onPress={() => {
           startLogging()
           setVisible(!visible)
@@ -1974,18 +1971,17 @@ function Scenario42_TransitionEnterExit() {
           <Square
             key="enter-exit-42"
             ref={ref as any}
-            // enter=500ms (slow), exit=100ms (fast)
-            transition={{ enter: '500ms', exit: '100ms' } as any}
+            transition={{ enter: '500ms', exit: '100ms' }}
+            bg="blue10"
+            opacity="enter:0 exit:0"
+            scale="enter:0.5 exit:0.5"
             size={40}
-            bg="$blue10"
-            enterStyle={{ opacity: 0, scale: 0.5 }}
-            exitStyle={{ opacity: 0, scale: 0.5 }}
             testID="scenario-42-target"
             data-testid="scenario-42-target"
           />
         )}
       </AnimatePresence>
-      <Paragraph size="$1">
+      <Paragraph size="1">
         {visible ? 'visible' : 'hidden'} (enter=500ms, exit=100ms)
       </Paragraph>
     </XStack>
@@ -1994,7 +1990,7 @@ function Scenario42_TransitionEnterExit() {
 
 // ============================================================================
 // SCENARIO 43: Enter Transition Only (exit uses default)
-// Tests: transition={{ enter: '500ms', default: '100ms' }}
+// Tests: transition={{ duration: '100ms', enter: '500ms' }}
 // Enter uses 500ms (slow), exit/other uses default 100ms (fast)
 // Using timing animations for predictable test behavior across all drivers
 // ============================================================================
@@ -2007,9 +2003,9 @@ function Scenario43_TransitionEnterOnly() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center" minHeight={50}>
+    <XStack gap="2" alignItems="center" minHeight={50}>
       <Button
-        size="$2"
+        size="3"
         onPress={() => {
           startLogging()
           setVisible(!visible)
@@ -2025,18 +2021,17 @@ function Scenario43_TransitionEnterOnly() {
           <Square
             key="enter-only-43"
             ref={ref as any}
-            // enter=500ms, exit falls back to default=100ms
-            transition={{ enter: '500ms', default: '100ms' } as any}
+            transition={{ duration: '100ms', enter: '500ms' }}
+            bg="green10"
+            opacity="enter:0 exit:0"
+            scale="enter:0.5 exit:0.5"
             size={40}
-            bg="$green10"
-            enterStyle={{ opacity: 0, scale: 0.5 }}
-            exitStyle={{ opacity: 0, scale: 0.5 }}
             testID="scenario-43-target"
             data-testid="scenario-43-target"
           />
         )}
       </AnimatePresence>
-      <Paragraph size="$1">
+      <Paragraph size="1">
         {visible ? 'visible' : 'hidden'} (enter=500ms, default=100ms)
       </Paragraph>
     </XStack>
@@ -2045,7 +2040,7 @@ function Scenario43_TransitionEnterOnly() {
 
 // ============================================================================
 // SCENARIO 44: Exit Transition Only (enter uses default)
-// Tests: transition={{ exit: '500ms', default: '100ms' }}
+// Tests: transition={{ duration: '100ms', exit: '500ms' }}
 // Exit uses 500ms (slow), enter/other uses default 100ms (fast)
 // Using timing animations for predictable test behavior across all drivers
 // ============================================================================
@@ -2058,9 +2053,9 @@ function Scenario44_TransitionExitOnly() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center" minHeight={50}>
+    <XStack gap="2" alignItems="center" minHeight={50}>
       <Button
-        size="$2"
+        size="3"
         onPress={() => {
           startLogging()
           setVisible(!visible)
@@ -2076,18 +2071,17 @@ function Scenario44_TransitionExitOnly() {
           <Square
             key="exit-only-44"
             ref={ref as any}
-            // exit=500ms (slow), enter falls back to default=100ms (fast)
-            transition={{ exit: '500ms', default: '100ms' } as any}
+            transition={{ duration: '100ms', exit: '500ms' }}
+            bg="yellow10"
+            opacity="enter:0 exit:0"
+            scale="enter:0.5 exit:0.5"
             size={40}
-            bg="$yellow10"
-            enterStyle={{ opacity: 0, scale: 0.5 }}
-            exitStyle={{ opacity: 0, scale: 0.5 }}
             testID="scenario-44-target"
             data-testid="scenario-44-target"
           />
         )}
       </AnimatePresence>
-      <Paragraph size="$1">
+      <Paragraph size="1">
         {visible ? 'visible' : 'hidden'} (exit=500ms, default=100ms)
       </Paragraph>
     </XStack>
@@ -2096,7 +2090,7 @@ function Scenario44_TransitionExitOnly() {
 
 // ============================================================================
 // SCENARIO 45: Enter/Exit with Default Fallback
-// Tests: transition={{ enter: '300ms', exit: '100ms', default: '500ms' }}
+// Tests: transition={{ duration: '500ms', enter: '300ms', exit: '100ms' }}
 // Enter=300ms, exit=100ms, property changes while visible use 500ms
 // Using timing animations for predictable test behavior across all drivers
 // ============================================================================
@@ -2110,9 +2104,9 @@ function Scenario45_TransitionEnterExitWithDefault() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center" minHeight={50}>
+    <XStack gap="2" alignItems="center" minHeight={50}>
       <Button
-        size="$2"
+        size="3"
         onPress={() => {
           startLogging()
           setVisible(!visible)
@@ -2124,7 +2118,7 @@ function Scenario45_TransitionEnterExitWithDefault() {
         45: Toggle
       </Button>
       <Button
-        size="$2"
+        size="3"
         onPress={() => {
           startLogging()
           setActive(!active)
@@ -2140,19 +2134,17 @@ function Scenario45_TransitionEnterExitWithDefault() {
           <Square
             key="enter-exit-default-45"
             ref={ref as any}
-            // enter=300ms, exit=100ms, property changes while visible=500ms
-            transition={{ enter: '300ms', exit: '100ms', default: '500ms' } as any}
+            transition={{ duration: '500ms', enter: '300ms', exit: '100ms' }}
+            bg="red10"
+            opacity={`${active ? 0.5 : 1} enter:0 exit:0`}
+            scale="enter:0.5 exit:0.5"
             size={40}
-            bg="$red10"
-            opacity={active ? 0.5 : 1}
-            enterStyle={{ opacity: 0, scale: 0.5 }}
-            exitStyle={{ opacity: 0, scale: 0.5 }}
             testID="scenario-45-target"
             data-testid="scenario-45-target"
           />
         )}
       </AnimatePresence>
-      <Paragraph size="$1">
+      <Paragraph size="1">
         {visible ? 'visible' : 'hidden'} (enter=300ms, exit=100ms, default=500ms)
       </Paragraph>
     </XStack>
@@ -2175,9 +2167,9 @@ function Scenario46_TransitionEnterExitPerProperty() {
   )
 
   return (
-    <XStack gap="$2" alignItems="center" minHeight={50}>
+    <XStack gap="2" alignItems="center" minHeight={50}>
       <Button
-        size="$2"
+        size="3"
         onPress={() => {
           startLogging()
           setVisible(!visible)
@@ -2193,18 +2185,17 @@ function Scenario46_TransitionEnterExitPerProperty() {
           <Square
             key="enter-exit-per-prop-46"
             ref={ref as any}
-            // enter=300ms for scale, exit=100ms for scale, but opacity always=500ms
-            transition={{ enter: '300ms', exit: '100ms', opacity: '500ms' } as any}
+            transition={{ enter: '300ms', exit: '100ms', opacity: '500ms' }}
+            bg="blue10"
+            opacity="enter:0 exit:0"
+            scale="enter:0.5 exit:0.5"
             size={40}
-            bg="$blue10"
-            enterStyle={{ opacity: 0, scale: 0.5 }}
-            exitStyle={{ opacity: 0, scale: 0.5 }}
             testID="scenario-46-target"
             data-testid="scenario-46-target"
           />
         )}
       </AnimatePresence>
-      <Paragraph size="$1">
+      <Paragraph size="1">
         {visible ? 'visible' : 'hidden'} (enter=300ms, exit=100ms, opacity=500ms)
       </Paragraph>
     </XStack>
@@ -2226,9 +2217,9 @@ function Scenario47_TransitionEnterExitWithDelay() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center" minHeight={50}>
+    <XStack gap="2" alignItems="center" minHeight={50}>
       <Button
-        size="$2"
+        size="3"
         onPress={() => {
           startLogging()
           setVisible(!visible)
@@ -2244,17 +2235,17 @@ function Scenario47_TransitionEnterExitWithDelay() {
           <Square
             key="enter-exit-delay-47"
             ref={ref as any}
-            transition={{ enter: '300ms', exit: '100ms', delay: 200 } as any}
+            transition={{ enter: '300ms', exit: '100ms', delay: 200 }}
+            bg="color10"
+            opacity="enter:0 exit:0"
+            scale="enter:0.5 exit:0.5"
             size={40}
-            bg="$color10"
-            enterStyle={{ opacity: 0, scale: 0.5 }}
-            exitStyle={{ opacity: 0, scale: 0.5 }}
             testID="scenario-47-target"
             data-testid="scenario-47-target"
           />
         )}
       </AnimatePresence>
-      <Paragraph size="$1">
+      <Paragraph size="1">
         {visible ? 'visible' : 'hidden'} (enter=300ms, exit=100ms, delay=200ms)
       </Paragraph>
     </XStack>
@@ -2262,9 +2253,9 @@ function Scenario47_TransitionEnterExitWithDelay() {
 }
 
 // ============================================================================
-// SCENARIO 48: animateOnly with exitStyle
-// Tests: animateOnly={['opacity', 'transform']} combined with exitStyle
-// Exit animation should work correctly when animateOnly includes the exit properties
+// SCENARIO 48: a property list with an exit clause
+// Tests: properties: 'opacity, transform' combined with an exit clause
+// Exit animation should work when the list includes the exit properties
 // ============================================================================
 function Scenario48_AnimateOnlyWithExitStyle() {
   const [visible, setVisible] = useState(true)
@@ -2275,9 +2266,9 @@ function Scenario48_AnimateOnlyWithExitStyle() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center" minHeight={50}>
+    <XStack gap="2" alignItems="center" minHeight={50}>
       <Button
-        size="$2"
+        size="3"
         onPress={() => {
           if (visible) startLogging()
           setVisible(!visible)
@@ -2293,26 +2284,26 @@ function Scenario48_AnimateOnlyWithExitStyle() {
           <Square
             key="animate-only-exit-48"
             ref={ref as any}
-            transition="500ms"
-            animateOnly={['opacity', 'transform']}
+            transition={{ duration: '500ms', properties: 'opacity, transform' }}
+            bg="blue10"
+            opacity="exit:0"
+            scale="exit:0.5"
             size={40}
-            bg="$blue10"
-            exitStyle={{ opacity: 0, scale: 0.5 }}
             testID="scenario-48-target"
             data-testid="scenario-48-target"
           />
         )}
       </AnimatePresence>
-      <Paragraph size="$1">
-        {visible ? 'visible' : 'hidden'} (animateOnly=['opacity', 'transform'])
+      <Paragraph size="1">
+        {visible ? 'visible' : 'hidden'} (properties: 'opacity, transform')
       </Paragraph>
     </XStack>
   )
 }
 
 // ============================================================================
-// SCENARIO 49: animateOnly with enterStyle and exitStyle
-// Tests: animateOnly combined with both enter and exit animations
+// SCENARIO 49: a property list with enter and exit clauses
+// Tests: a property list combined with both enter and exit animations
 // Both should animate smoothly using only the specified properties
 // ============================================================================
 function Scenario49_AnimateOnlyWithEnterExitStyle() {
@@ -2325,9 +2316,9 @@ function Scenario49_AnimateOnlyWithEnterExitStyle() {
   )
 
   return (
-    <XStack gap="$2" alignItems="center" minHeight={50}>
+    <XStack gap="2" alignItems="center" minHeight={50}>
       <Button
-        size="$2"
+        size="3"
         onPress={() => {
           startLogging()
           setVisible(!visible)
@@ -2343,19 +2334,19 @@ function Scenario49_AnimateOnlyWithEnterExitStyle() {
           <Square
             key="animate-only-enter-exit-49"
             ref={ref as any}
-            transition="500ms"
-            animateOnly={['opacity', 'transform']}
+            transition={{ duration: '500ms', properties: 'opacity, transform' }}
+            bg="green10"
+            opacity="enter:0 exit:0"
+            scale="enter:0.5 exit:0.5"
+            y="exit:20px"
             size={40}
-            bg="$green10"
-            enterStyle={{ opacity: 0, scale: 0.5 }}
-            exitStyle={{ opacity: 0, scale: 0.5, y: 20 }}
             testID="scenario-49-target"
             data-testid="scenario-49-target"
           />
         )}
       </AnimatePresence>
-      <Paragraph size="$1">
-        {visible ? 'visible' : 'hidden'} (enter+exit with animateOnly)
+      <Paragraph size="1">
+        {visible ? 'visible' : 'hidden'} (enter+exit with a property list)
       </Paragraph>
     </XStack>
   )
@@ -2376,9 +2367,9 @@ function Scenario50_EnterTimingVerification() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center" minHeight={50}>
+    <XStack gap="2" alignItems="center" minHeight={50}>
       <Button
-        size="$2"
+        size="3"
         onPress={() => {
           startLogging()
           setVisible(!visible)
@@ -2394,18 +2385,17 @@ function Scenario50_EnterTimingVerification() {
           <Square
             key="enter-timing-50"
             ref={ref as any}
-            // enter should be 200ms (fast), exit should be 1000ms (slow)
-            transition={{ enter: '200ms', exit: '1000ms' } as any}
+            transition={{ enter: '200ms', exit: '1000ms' }}
+            bg="red10"
+            opacity="enter:0 exit:0"
+            scale="enter:0.5 exit:0.5"
             size={40}
-            bg="$red10"
-            enterStyle={{ opacity: 0, scale: 0.5 }}
-            exitStyle={{ opacity: 0, scale: 0.5 }}
             testID="scenario-50-target"
             data-testid="scenario-50-target"
           />
         )}
       </AnimatePresence>
-      <Paragraph size="$1">
+      <Paragraph size="1">
         {visible ? 'visible' : 'hidden'} (enter=200ms, exit=1000ms)
       </Paragraph>
     </XStack>
@@ -2414,7 +2404,7 @@ function Scenario50_EnterTimingVerification() {
 
 // ============================================================================
 // SCENARIO 51: Duration Normalization
-// Tests: transition={{ default: { duration: 1 } }}
+// Tests: transition={{ duration: 1 }}
 // BUG FIX TEST: duration: 1 should be 1ms, not 1 second
 // The animation should be instant (1ms), not slow (1 second)
 // ============================================================================
@@ -2427,9 +2417,9 @@ function Scenario51_DurationNormalization() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center" minHeight={50}>
+    <XStack gap="2" alignItems="center" minHeight={50}>
       <Button
-        size="$2"
+        size="3"
         onPress={() => {
           startLogging()
           setVisible(!visible)
@@ -2445,19 +2435,17 @@ function Scenario51_DurationNormalization() {
           <Square
             key="duration-norm-51"
             ref={ref as any}
-            // BUG: duration: 1 should mean 1ms (instant)
-            // but it's being treated as 1 second
-            transition={{ duration: 1 } as any}
+            transition={{ duration: 1 }}
+            bg="orange10"
+            opacity="enter:0 exit:0"
+            scale="enter:0.5 exit:0.5"
             size={40}
-            bg="$orange10"
-            enterStyle={{ opacity: 0, scale: 0.5 }}
-            exitStyle={{ opacity: 0, scale: 0.5 }}
             testID="scenario-51-target"
             data-testid="scenario-51-target"
           />
         )}
       </AnimatePresence>
-      <Paragraph size="$1">
+      <Paragraph size="1">
         {visible ? 'visible' : 'hidden'} (duration=1 should be 1ms)
       </Paragraph>
     </XStack>
@@ -2466,7 +2454,7 @@ function Scenario51_DurationNormalization() {
 
 // ============================================================================
 // SCENARIO 52: Duration Normalization with Inline Config
-// Tests: transition={{ default: '100ms', duration: 50 }}
+// Tests: transition={{ preset: 'medium', duration: 50 }}
 // BUG FIX TEST: Inline duration override should also be in milliseconds
 // ============================================================================
 function Scenario52_DurationNormalizationInlineConfig() {
@@ -2478,9 +2466,9 @@ function Scenario52_DurationNormalizationInlineConfig() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center" minHeight={50}>
+    <XStack gap="2" alignItems="center" minHeight={50}>
       <Button
-        size="$2"
+        size="3"
         onPress={() => {
           startLogging()
           setVisible(!visible)
@@ -2496,18 +2484,17 @@ function Scenario52_DurationNormalizationInlineConfig() {
           <Square
             key="duration-inline-52"
             ref={ref as any}
-            // uses '100ms' base but overrides with duration: 50 (should be 50ms)
-            transition={{ default: '100ms', duration: 50 } as any}
+            transition={{ preset: 'medium', duration: 50 }}
+            bg="purple10"
+            opacity="enter:0 exit:0"
+            scale="enter:0.5 exit:0.5"
             size={40}
-            bg="$purple10"
-            enterStyle={{ opacity: 0, scale: 0.5 }}
-            exitStyle={{ opacity: 0, scale: 0.5 }}
             testID="scenario-52-target"
             data-testid="scenario-52-target"
           />
         )}
       </AnimatePresence>
-      <Paragraph size="$1">
+      <Paragraph size="1">
         {visible ? 'visible' : 'hidden'} (base=100ms, override=50ms)
       </Paragraph>
     </XStack>

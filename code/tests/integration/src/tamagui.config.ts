@@ -1,10 +1,10 @@
 import { createTamagui } from 'tamagui'
 import { shorthands } from '@tamagui/shorthands'
+import { themes } from '@tamagui/themes'
 
 import { animations } from './animations'
 import { fonts } from './fonts'
 import { media } from './media'
-import { themes } from './themes'
 import { tokens } from './tokens'
 
 const config = createTamagui({
@@ -20,10 +20,8 @@ const config = createTamagui({
 
 type AppConfig = typeof config
 
-// declare module 'tamagui' {
-//   // overrides TamaguiCustomConfig so that custom types
-//   // work everywhere `tamagui` is imported
-//   interface TamaguiCustomConfig extends AppConfig {}
-// }
+declare module 'tamagui' {
+  interface TamaguiCustomConfig extends AppConfig {}
+}
 
 export default config

@@ -1,17 +1,10 @@
 import React from 'react'
-import { AnimatePresence, Button, Square, styled } from 'tamagui'
+import { AnimatePresence, Square, styled } from 'tamagui'
+import { Button } from './components/Button'
 
 function Demo1() {
   return (
-    <Square
-      size={200}
-      transition="bouncy"
-      bg="$red10"
-      pressStyle={{
-        bg: 'green',
-        scale: 1.2,
-      }}
-    />
+    <Square size={200} transition="bouncy" bg="red10 press:green" scale="press:1.2" />
   )
 }
 
@@ -24,17 +17,7 @@ function Demo2() {
     <>
       <Button onPress={() => setShow(!show)}>Toggle</Button>
       {show && (
-        <Square
-          size={200}
-          transition="bouncy"
-          bg="$red10"
-          enterStyle={{
-            opacity: 0,
-          }}
-          exitStyle={{
-            opacity: 0,
-          }}
-        />
+        <Square size={200} transition="bouncy" bg="red10" opacity="enter:0 exit:0" />
       )}
     </>
   )
@@ -49,23 +32,16 @@ const GalleryItem = styled(YStack, {
   zIndex: 1,
   x: 0,
   opacity: 1,
-  fullscreen: true,
+  position: 'absolute',
+  inset: 0,
 
   variants: {
     // 1 = right, 0 = nowhere, -1 = left
-    going: {
-      ':number': (going) => ({
-        enterStyle: {
-          x: going > 0 ? 1000 : -1000,
-          opacity: 0,
-        },
-        exitStyle: {
-          zIndex: 0,
-          x: going < 0 ? 1000 : -1000,
-          opacity: 0,
-        },
-      }),
-    },
+    going: styled.dynamic<number>((going) => ({
+      x: `enter:${going > 0 ? 1000 : -1000}px exit:${going < 0 ? 1000 : -1000}px`,
+      opacity: 'enter:0 exit:0',
+      zIndex: 'exit:0',
+    })),
   } as const,
 })
 
@@ -106,25 +82,25 @@ export function Demo3() {
       <Button
         aria-label="Carousel left"
         icon={ArrowLeft}
-        size="$5"
+        size="5"
         position="absolute"
-        left="$4"
-        circular
-        elevation="$4"
-        onPress={() => paginate(-1)}
+        left="4"
+        boxShadow="0 4px 10px rgba(0, 0, 0, 0.2)"
         z={100}
+        circular
+        onPress={() => paginate(-1)}
       />
 
       <Button
         aria-label="Carousel right"
         icon={ArrowRight}
-        size="$5"
+        size="5"
         position="absolute"
-        right="$4"
-        circular
-        elevation="$4"
-        onPress={() => paginate(1)}
+        right="4"
+        boxShadow="0 4px 10px rgba(0, 0, 0, 0.2)"
         z={100}
+        circular
+        onPress={() => paginate(1)}
       />
     </XStack>
   )

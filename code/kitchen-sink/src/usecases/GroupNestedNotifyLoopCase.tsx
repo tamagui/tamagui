@@ -10,9 +10,7 @@ function NestedGroup({ index, active }: { index: number; active: boolean }) {
     index === 0
       ? {}
       : {
-          [`$group-${parent}-press`]: {
-            opacity: active ? 0.96 : 0.95,
-          },
+          opacity: `group-press/${parent}:${active ? 0.96 : 0.95}`,
         }
 
   return (
@@ -33,7 +31,7 @@ export function GroupNestedNotifyLoopCase() {
     <YStack
       testID="nested-group-root"
       group="root"
-      pressStyle={{ opacity: 0.9 }}
+      opacity="press:0.9"
       onPress={() => setActive((x) => !x)}
     >
       <NestedGroup index={0} active={active} />

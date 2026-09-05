@@ -36,12 +36,12 @@ export function OnLayoutScaleCase() {
   const [triggerReLayout, setTriggerReLayout] = useState(0)
 
   return (
-    <YStack gap="$4" padding="$4">
+    <YStack gap="4" padding="4">
       {/* box without scale - should report 200x200 */}
       <Square
         testID="box-no-scale"
         size={200}
-        backgroundColor="$blue10"
+        backgroundColor="blue10"
         onLayout={handleLayoutWithoutScale}
         key={`no-scale-${triggerReLayout}`}
       />
@@ -57,7 +57,7 @@ export function OnLayoutScaleCase() {
       <Square
         testID="box-with-scale"
         size={200}
-        backgroundColor="$red10"
+        backgroundColor="red10"
         scale={0.5}
         onLayout={handleLayoutWithScale}
         key={`with-scale-${triggerReLayout}`}
@@ -75,11 +75,11 @@ export function OnLayoutScaleCase() {
       </Button>
 
       {/* debug info */}
-      <YStack gap="$2">
-        <Text fontSize="$3" color="$gray10">
+      <YStack gap="2">
+        <Text fontSize="3" color="gray10">
           Expected: Both boxes should report 200x200
         </Text>
-        <Text fontSize="$3" color="$gray10">
+        <Text fontSize="3" color="gray10">
           Bug: Scaled box may report 100x100 (transformed size)
         </Text>
       </YStack>

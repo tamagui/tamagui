@@ -51,6 +51,6 @@
     "@types/validate-npm-package-name": "3.0.0",
     "esbuild-register": "^3.6.0",
     "tempy": "^3.1.0",
-    "vitest": "4.0.4"
+    "vitest": "4.1.0"
   }
 }

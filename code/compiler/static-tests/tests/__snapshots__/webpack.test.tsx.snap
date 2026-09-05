@@ -3,30 +3,20 @@
 exports[`webpack-tests > 1. extracts to a div for simple views, flat transforms 1`] = `
 <div>
   <span
-    class="t_dark _dsp_contents"
+    class="_dsp_contents  font_body"
   >
-    <span
-      class=" t_dark is_Theme"
-      style="color: var(--color); display: contents;"
+    <div
+      class="is_View _s-compose _f-549969169 _br-591716819 _b-1356927054 _tsx-200462076 _tsy-1997413435 _bs-1333969377 test1"
     >
       <span
-        class="_dsp_contents  font_body"
+        class="is_Text _c-1996280471"
       >
-        <div
-          class="is_View _tr-0hover-scale21281 _fd-column _fg-1 _fs-1 _fb-0px _bg-red _bxsh-0px0px10px0946673987 test1"
-          rounded="100"
-        >
-          <span
-            class="is_Text _col-color"
-          >
-            hello world
-          </span>
-        </div>
-        <div
-          style="display: contents;"
-        />
+        hello world
       </span>
-    </span>
+    </div>
+    <div
+      style="display: contents;"
+    />
   </span>
 </div>
 `;
@@ -34,32 +24,23 @@ exports[`webpack-tests > 1. extracts to a div for simple views, flat transforms 
 exports[`webpack-tests > 2. extracts className for complex views but keeps other props 1`] = `
 <div>
   <span
-    class="t_dark _dsp_contents"
+    class="_dsp_contents  font_body"
   >
-    <span
-      class=" t_dark is_Theme"
-      style="color: var(--color); display: contents;"
+    <div
+      class="is_View _f-1841970073 _o-2052502900 who"
+    />
+    <div
+      class="is_View _f-1841970073 _b-882581922 _p-380778870 _i-1175693305 ease-in-out-top"
     >
       <span
-        class="_dsp_contents  font_body"
+        class="is_Text _c-1996280471"
       >
-        <div
-          class="is_View _fd-row _ox-hidden _oy-hidden who"
-        />
-        <div
-          class="is_View ease-in-out-top _fd-row _pt-2px _pb-2px _bg-fff35 _t--14px"
-        >
-          <span
-            class="is_Text _col-color"
-          >
-            hello world
-          </span>
-        </div>
-        <div
-          style="display: contents;"
-        />
+        hello world
       </span>
-    </span>
+    </div>
+    <div
+      style="display: contents;"
+    />
   </span>
 </div>
 `;
@@ -67,32 +48,23 @@ exports[`webpack-tests > 2. extracts className for complex views but keeps other
 exports[`webpack-tests > 2. extracts className for complex views but keeps other props 2`] = `
 <div>
   <span
-    class="t_dark _dsp_contents"
+    class="_dsp_contents  font_body"
   >
-    <span
-      class=" t_dark is_Theme"
-      style="color: var(--color); display: contents;"
+    <div
+      class="is_View _f-1841970073 _o-2052502900 who"
+    />
+    <div
+      class="is_View _f-1841970073 _b-882528300 _p-380778870 _i-291730777 ease-in-out-top"
     >
       <span
-        class="_dsp_contents  font_body"
+        class="is_Text _c-1996280471"
       >
-        <div
-          class="is_View _fd-row _ox-hidden _oy-hidden who"
-        />
-        <div
-          class="is_View _fd-row _bg-00035 _pt-2px _pb-2px _t-0px ease-in-out-top"
-        >
-          <span
-            class="is_Text _col-color"
-          >
-            hello world
-          </span>
-        </div>
-        <div
-          style="display: contents;"
-        />
+        hello world
       </span>
-    </span>
+    </div>
+    <div
+      style="display: contents;"
+    />
   </span>
 </div>
 `;
@@ -100,27 +72,18 @@ exports[`webpack-tests > 2. extracts className for complex views but keeps other
 exports[`webpack-tests > 5. spread conditional 1`] = `
 <div>
   <span
-    class="t_dark _dsp_contents"
+    class="_dsp_contents  font_body"
   >
-    <span
-      class=" t_dark is_Theme"
-      style="color: var(--color); display: contents;"
+    <div
+      class="is_View _f-2057920087 _o-2052502900 _b-884464985"
     >
-      <span
-        class="_dsp_contents  font_body"
-      >
-        <div
-          class="is_View _fd-column _ox-hidden _oy-hidden _bg-blue"
-        >
-          <div
-            class="is_View hello-world _fd-column _ox-hidden _oy-hidden _bg-blue"
-          />
-        </div>
-        <div
-          style="display: contents;"
-        />
-      </span>
-    </span>
+      <div
+        class="is_View _f-2057920087 _o-2052502900 _b-884464985 hello-world"
+      />
+    </div>
+    <div
+      style="display: contents;"
+    />
   </span>
 </div>
 `;
@@ -128,29 +91,20 @@ exports[`webpack-tests > 5. spread conditional 1`] = `
 exports[`webpack-tests > 6. spread ternary 1`] = `
 <div>
   <span
-    class="t_dark _dsp_contents"
+    class="_dsp_contents  font_body"
   >
-    <span
-      class=" t_dark is_Theme"
-      style="color: var(--color); display: contents;"
+    <div
+      class="is_View _f-2057920087 _o-2052502900 _b-884464985"
     >
       <span
-        class="_dsp_contents  font_body"
+        class="is_Text _c-1996280471"
       >
-        <div
-          class="is_View _fd-column _ox-hidden _oy-hidden _bg-blue"
-        >
-          <span
-            class="is_Text _col-color"
-          >
-            hello world
-          </span>
-        </div>
-        <div
-          style="display: contents;"
-        />
+        hello world
       </span>
-    </span>
+    </div>
+    <div
+      style="display: contents;"
+    />
   </span>
 </div>
 `;
@@ -158,29 +112,20 @@ exports[`webpack-tests > 6. spread ternary 1`] = `
 exports[`webpack-tests > 6. spread ternary 2`] = `
 <div>
   <span
-    class="t_dark _dsp_contents"
+    class="_dsp_contents  font_body"
   >
-    <span
-      class=" t_dark is_Theme"
-      style="color: var(--color); display: contents;"
+    <div
+      class="is_View _f-2057920087 _o-2052502900 _b-1356927054"
     >
       <span
-        class="_dsp_contents  font_body"
+        class="is_Text _c-1996280471"
       >
-        <div
-          class="is_View _fd-column _ox-hidden _oy-hidden _bg-red"
-        >
-          <span
-            class="is_Text _col-color"
-          >
-            hello world
-          </span>
-        </div>
-        <div
-          style="display: contents;"
-        />
+        hello world
       </span>
-    </span>
+    </div>
+    <div
+      style="display: contents;"
+    />
   </span>
 </div>
 `;
@@ -188,29 +133,18 @@ exports[`webpack-tests > 6. spread ternary 2`] = `
 exports[`webpack-tests > 7. ternary + data-is 1`] = `
 <div>
   <span
-    class="t_dark _dsp_contents"
+    class="_dsp_contents  font_body"
   >
-    <span
-      class=" t_dark is_Theme"
-      style="color: var(--color); display: contents;"
+    <div
+      class="is_View _f-2057920087 _p-375854071 _w-223966411 _mw-216954465 _mw-270440222"
     >
-      <span
-        class="_dsp_contents  font_body"
-      >
-        <div
-          class="is_View _fd-column _pr-11px _pl-11px _pb-10px _w-6637"
-          maxw="30%"
-          minw="500"
-        >
-          <div
-            class="is_View _fd-column _h-10px _w-10px"
-          />
-        </div>
-        <div
-          style="display: contents;"
-        />
-      </span>
-    </span>
+      <div
+        class="is_View _f-2057920087 _w-1646823575 _h-624193174"
+      />
+    </div>
+    <div
+      style="display: contents;"
+    />
   </span>
 </div>
 `;
@@ -218,31 +152,22 @@ exports[`webpack-tests > 7. ternary + data-is 1`] = `
 exports[`webpack-tests > 8. styleExpansions 1`] = `
 <div>
   <span
-    class="t_dark _dsp_contents"
+    class="_dsp_contents  font_body"
   >
-    <span
-      class=" t_dark is_Theme"
-      style="color: var(--color); display: contents;"
+    <div
+      class="is_View _f-2057920087 _i-297785135 _p-1610831171"
     >
-      <span
-        class="_dsp_contents  font_body"
+      <div
+        class="is_View _f-2057920087 _b-1356927054"
       >
         <div
-          class="is_View _fd-column _pos-relative _t-0px _r-0px _b-0px _l-0px"
-        >
-          <div
-            class="is_View _fd-column _bg-red"
-          >
-            <div
-              class="is_View _fd-column _pos-relative _t-0px _r-0px _b-0px _l-0px _bg-white _col-blue"
-            />
-          </div>
-        </div>
-        <div
-          style="display: contents;"
+          class="is_View _f-2057920087 _i-297785135 _p-1610831171 _b-1271940212"
         />
-      </span>
-    </span>
+      </div>
+    </div>
+    <div
+      style="display: contents;"
+    />
   </span>
 </div>
 `;
@@ -250,23 +175,14 @@ exports[`webpack-tests > 8. styleExpansions 1`] = `
 exports[`webpack-tests > 9. combines with classname 1`] = `
 <div>
   <span
-    class="t_dark _dsp_contents"
+    class="_dsp_contents  font_body"
   >
-    <span
-      class=" t_dark is_Theme"
-      style="color: var(--color); display: contents;"
-    >
-      <span
-        class="_dsp_contents  font_body"
-      >
-        <div
-          class="is_View _fd-column _pt-15px _pb-15px home-top-dish"
-        />
-        <div
-          style="display: contents;"
-        />
-      </span>
-    </span>
+    <div
+      class="is_View _f-2057920087 _p-1080843536 home-top-dish"
+    />
+    <div
+      style="display: contents;"
+    />
   </span>
 </div>
 `;
@@ -274,34 +190,24 @@ exports[`webpack-tests > 9. combines with classname 1`] = `
 exports[`webpack-tests > 10. extracts Text 1`] = `
 <div>
   <span
-    class="t_dark _dsp_contents"
+    class="_dsp_contents  font_body"
   >
     <span
-      class=" t_dark is_Theme"
-      style="color: var(--color); display: contents;"
+      class="is_Text _c-1996280471 _fs-553822623"
     >
       <span
-        class="_dsp_contents  font_body"
+        class="is_Text _c-1996280471 _us-515705890"
       >
         <span
-          class="is_Text _col-color _fos-10px"
+          class="is_Text _c-1703790598 _fs-553827428 _fw-291937703"
         >
-          <span
-            class="is_Text _col-color"
-            select="auto"
-          >
-            <span
-              class="is_Text _col-00035 _fos-15px _fow-600"
-            >
-              hello
-            </span>
-          </span>
+          hello
         </span>
-        <div
-          style="display: contents;"
-        />
       </span>
     </span>
+    <div
+      style="display: contents;"
+    />
   </span>
 </div>
 `;
@@ -309,23 +215,14 @@ exports[`webpack-tests > 10. extracts Text 1`] = `
 exports[`webpack-tests > 12. ternary multiple on same key 1`] = `
 <div>
   <span
-    class="t_dark _dsp_contents"
+    class="_dsp_contents  font_body"
   >
-    <span
-      class=" t_dark is_Theme"
-      style="color: var(--color); display: contents;"
-    >
-      <span
-        class="_dsp_contents  font_body"
-      >
-        <div
-          class="is_View _fd-column _tr- _o-1"
-        />
-        <div
-          style="display: contents;"
-        />
-      </span>
-    </span>
+    <div
+      class="is_View _f-2057920087 _o-1507267812 _t-210974122"
+    />
+    <div
+      style="display: contents;"
+    />
   </span>
 </div>
 `;
@@ -333,23 +230,14 @@ exports[`webpack-tests > 12. ternary multiple on same key 1`] = `
 exports[`webpack-tests > 14. extracts pseudo styles and evaluates constants 1`] = `
 <div>
   <span
-    class="t_dark _dsp_contents"
+    class="_dsp_contents  font_body"
   >
-    <span
-      class=" t_dark is_Theme"
-      style="color: var(--color); display: contents;"
-    >
-      <span
-        class="_dsp_contents  font_body"
-      >
-        <div
-          class="is_View _bg-0hover-red _bg-0active-blue _fd-column"
-        />
-        <div
-          style="display: contents;"
-        />
-      </span>
-    </span>
+    <div
+      class="is_View _f-2057920087 _b-1081224980"
+    />
+    <div
+      style="display: contents;"
+    />
   </span>
 </div>
 `;
@@ -357,26 +245,17 @@ exports[`webpack-tests > 14. extracts pseudo styles and evaluates constants 1`] 
 exports[`webpack-tests > 15. extracts spacer (complex expansion) 1`] = `
 <div>
   <span
-    class="t_dark _dsp_contents"
+    class="_dsp_contents  font_body"
   >
     <span
-      class=" t_dark is_Theme"
-      style="color: var(--color); display: contents;"
-    >
-      <span
-        class="_dsp_contents  font_body"
-      >
-        <span
-          class="is_Spacer is_View _pe-none _w-t-space-tru101 _h-t-space-tru101 _miw-t-space-tru101 _mih-t-space-tru101"
-        />
-        <span
-          class="is_Spacer is_View _pe-none _fg-1 _fs-1 _fb-0px _w-10px _h-10px _miw-10px _mih-10px"
-        />
-        <div
-          style="display: contents;"
-        />
-      </span>
-    </span>
+      class="is_View _pe-1547870085 _w-640548506 _h-2047729177 _mw-1042395974 _mh-1620098797"
+    />
+    <span
+      class="is_View _pe-1547870085 _w-1560936122 _h-538305721 _mw-356100762 _mh-1239704461 _f-1514526504"
+    />
+    <div
+      style="display: contents;"
+    />
   </span>
 </div>
 `;
@@ -384,23 +263,14 @@ exports[`webpack-tests > 15. extracts spacer (complex expansion) 1`] = `
 exports[`webpack-tests > 16. deopt when spreading multiple 1`] = `
 <div>
   <span
-    class="t_dark _dsp_contents"
+    class="_dsp_contents  font_body"
   >
-    <span
-      class=" t_dark is_Theme"
-      style="color: var(--color); display: contents;"
-    >
-      <span
-        class="_dsp_contents  font_body"
-      >
-        <div
-          class="is_View _fd-column _fg-1 _fs-1 _fb-0px _bg-red"
-        />
-        <div
-          style="display: contents;"
-        />
-      </span>
-    </span>
+    <div
+      class="is_View _f-549969169 _b-1356927054"
+    />
+    <div
+      style="display: contents;"
+    />
   </span>
 </div>
 `;
@@ -408,29 +278,21 @@ exports[`webpack-tests > 16. deopt when spreading multiple 1`] = `
 exports[`webpack-tests > 18. extracts flexWrap property 1`] = `
 <div>
   <span
-    class="t_dark _dsp_contents"
+    class="_dsp_contents  font_body"
   >
-    <span
-      class=" t_dark is_Theme"
-      style="color: var(--color); display: contents;"
+    <div
+      class="is_View _f-1538676587 _g-924523017"
+      data-testid="flex-wrap"
     >
       <span
-        class="_dsp_contents  font_body"
+        class="is_Text _c-1996280471"
       >
-        <div
-          class="is_View _fwr-wrap _fd-row _gap-t-space-2"
-        >
-          <span
-            class="is_Text _col-color"
-          >
-            hello world
-          </span>
-        </div>
-        <div
-          style="display: contents;"
-        />
+        hello world
       </span>
-    </span>
+    </div>
+    <div
+      style="display: contents;"
+    />
   </span>
 </div>
 `;
@@ -438,31 +300,21 @@ exports[`webpack-tests > 18. extracts flexWrap property 1`] = `
 exports[`webpack-tests > 19. extracts flexWrap with conditional 1`] = `
 <div>
   <span
-    class="t_dark _dsp_contents"
+    class="_dsp_contents  font_body"
   >
-    <span
-      class=" t_dark is_Theme"
-      style="color: var(--color); display: contents;"
+    <div
+      class="is_View _ai-1055227096 _jc-509505936 _f-1538676587"
+      data-testid="flex-wrap-conditional"
     >
       <span
-        class="_dsp_contents  font_body"
+        class="is_Text _c-1996280471"
       >
-        <div
-          class="is_View _fwr-wrap _fd-row"
-          items="center"
-          justify="space-between"
-        >
-          <span
-            class="is_Text _col-color"
-          >
-            hello world
-          </span>
-        </div>
-        <div
-          style="display: contents;"
-        />
+        hello world
       </span>
-    </span>
+    </div>
+    <div
+      style="display: contents;"
+    />
   </span>
 </div>
 `;
@@ -470,31 +322,21 @@ exports[`webpack-tests > 19. extracts flexWrap with conditional 1`] = `
 exports[`webpack-tests > 19. extracts flexWrap with conditional 2`] = `
 <div>
   <span
-    class="t_dark _dsp_contents"
+    class="_dsp_contents  font_body"
   >
-    <span
-      class=" t_dark is_Theme"
-      style="color: var(--color); display: contents;"
+    <div
+      class="is_View _ai-1055227096 _jc-509505936 _f-308923572"
+      data-testid="flex-wrap-conditional"
     >
       <span
-        class="_dsp_contents  font_body"
+        class="is_Text _c-1996280471"
       >
-        <div
-          class="is_View _fwr-nowrap _fd-row"
-          items="center"
-          justify="space-between"
-        >
-          <span
-            class="is_Text _col-color"
-          >
-            hello world
-          </span>
-        </div>
-        <div
-          style="display: contents;"
-        />
+        hello world
       </span>
-    </span>
+    </div>
+    <div
+      style="display: contents;"
+    />
   </span>
 </div>
 `;
@@ -502,29 +344,21 @@ exports[`webpack-tests > 19. extracts flexWrap with conditional 2`] = `
 exports[`webpack-tests > 20. extracts multiple flex properties together 1`] = `
 <div>
   <span
-    class="t_dark _dsp_contents"
+    class="_dsp_contents  font_body"
   >
-    <span
-      class=" t_dark is_Theme"
-      style="color: var(--color); display: contents;"
+    <div
+      class="is_View _f-1414769968 _ai-100157154 _jc-539327647 _ac-1733850890"
+      data-testid="flex-properties"
     >
       <span
-        class="_dsp_contents  font_body"
+        class="is_Text _c-1996280471"
       >
-        <div
-          class="is_View _fd-column _fwr-wrap _fg-1 _fs-0 _fb-auto _ai-stretch _jc-flex-start _ac-flex-start"
-        >
-          <span
-            class="is_Text _col-color"
-          >
-            hello world
-          </span>
-        </div>
-        <div
-          style="display: contents;"
-        />
+        hello world
       </span>
-    </span>
+    </div>
+    <div
+      style="display: contents;"
+    />
   </span>
 </div>
 `;
@@ -532,36 +366,24 @@ exports[`webpack-tests > 20. extracts multiple flex properties together 1`] = `
 exports[`webpack-tests > 21. complex real-world case - flexWrap with many conditionals and media queries 1`] = `
 <div>
   <span
-    class="t_dark _dsp_contents"
+    class="_dsp_contents  font_body"
   >
-    <span
-      class=" t_dark is_Theme"
-      style="color: var(--color); display: contents;"
+    <div
+      class="is_View _f-2140124617 _br-1889339995 _mw-206346914 _o-2052502900 _p-1700019270 _w-487036092 _b-695440369 _c-958205817"
     >
-      <span
-        class="_dsp_contents  font_body"
+      <div
+        class="is_View _f-1791708213 _g-1913998404 _jc-539327647"
       >
-        <div
-          class="is_View _pr-_sm_t-space-0 _pl-_sm_t-space-0 _cur-0hover-pointer _bg-0hover-backgroundH3423444 _fd-row _fb-10037 _ox-hidden _oy-hidden _pt-4px _pr-4px _pb-4px _pl-4px _w-10037 _bg-background"
-          maxw="100%"
-          rounded="$0"
+        <span
+          class="is_Text _c-1996280471"
         >
-          <div
-            class="is_View _fd-column _fwr-wrap _gap-0px"
-            justify="flex-start"
-          >
-            <span
-              class="is_Text _col-color"
-            >
-              hello world
-            </span>
-          </div>
-        </div>
-        <div
-          style="display: contents;"
-        />
-      </span>
-    </span>
+          hello world
+        </span>
+      </div>
+    </div>
+    <div
+      style="display: contents;"
+    />
   </span>
 </div>
 `;
@@ -569,36 +391,24 @@ exports[`webpack-tests > 21. complex real-world case - flexWrap with many condit
 exports[`webpack-tests > 21. complex real-world case - flexWrap with many conditionals and media queries 2`] = `
 <div>
   <span
-    class="t_dark _dsp_contents"
+    class="_dsp_contents  font_body"
   >
-    <span
-      class=" t_dark is_Theme"
-      style="color: var(--color); display: contents;"
+    <div
+      class="is_View _f-2141623076 _br-1889339995 _mw-206346914 _o-2052502900 _p-1700019270 _w-487036092 _b-695440369 _c-958205817"
     >
-      <span
-        class="_dsp_contents  font_body"
+      <div
+        class="is_View _f-1791708213 _g-1913998404 _jc-166379546"
       >
-        <div
-          class="is_View _pr-_sm_t-space-0 _pl-_sm_t-space-0 _cur-0hover-pointer _bg-0hover-backgroundH3423444 _fd-row _fb-auto _ox-hidden _oy-hidden _pt-4px _pr-4px _pb-4px _pl-4px _w-10037 _bg-background"
-          maxw="100%"
-          rounded="$0"
+        <span
+          class="is_Text _c-1996280471"
         >
-          <div
-            class="is_View _fd-column _fwr-wrap _gap-0px"
-            justify="center"
-          >
-            <span
-              class="is_Text _col-color"
-            >
-              hello world
-            </span>
-          </div>
-        </div>
-        <div
-          style="display: contents;"
-        />
-      </span>
-    </span>
+          hello world
+        </span>
+      </div>
+    </div>
+    <div
+      style="display: contents;"
+    />
   </span>
 </div>
 `;
@@ -606,29 +416,42 @@ exports[`webpack-tests > 21. complex real-world case - flexWrap with many condit
 exports[`webpack-tests > 22. flexWrap with media query conditionals 1`] = `
 <div>
   <span
-    class="t_dark _dsp_contents"
+    class="_dsp_contents  font_body"
   >
-    <span
-      class=" t_dark is_Theme"
-      style="color: var(--color); display: contents;"
+    <div
+      class="is_View _g-924523017 _p-1046123992 _f-1757441471"
+      data-testid="flex-wrap-media"
     >
       <span
-        class="_dsp_contents  font_body"
+        class="is_Text _c-1996280471"
       >
-        <div
-          class="is_View _fwr-_sm_nowrap _pt-_sm_t-space-4 _pr-_sm_t-space-4 _pb-_sm_t-space-4 _pl-_sm_t-space-4 _fwr-wrap _gap-t-space-2 _fd-row"
-        >
-          <span
-            class="is_Text _col-color"
-          >
-            hello world
-          </span>
-        </div>
-        <div
-          style="display: contents;"
-        />
+        hello world
       </span>
-    </span>
+    </div>
+    <div
+      style="display: contents;"
+    />
+  </span>
+</div>
+`;
+
+exports[`webpack-tests > 23. inert animatedBy selector flattens with group styles 1`] = `
+<div>
+  <span
+    class="_dsp_contents  font_body"
+  >
+    <div
+      class="is_View t_group_animated _f-2057920087"
+      data-testid="animated-group"
+    >
+      <div
+        class="is_View _f-2057920087 _w-488138359 _b-553628758"
+        data-testid="animated-group-child"
+      />
+    </div>
+    <div
+      style="display: contents;"
+    />
   </span>
 </div>
 `;

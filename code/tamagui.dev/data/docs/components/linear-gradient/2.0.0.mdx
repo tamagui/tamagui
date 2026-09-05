@@ -77,14 +77,14 @@ See the [expo docs](https://docs.expo.dev/versions/latest/sdk/linear-gradient/) 
 For most gradients, use the [`backgroundImage` style prop](/docs/intro/styles#backgroundimage):
 
 ```tsx
-<View backgroundImage="linear-gradient(to bottom, $background, $color)" />
+<View backgroundImage="linear-gradient(to bottom, background, color)" />
 ```
 
 Use `<LinearGradient>` for precise color stop control.
 
 ---
 
-LinearGradient extends YStack, inheriting [Stack props](/docs/components/stacks) and therefore the [Tamagui standard props](/docs/intro/props), plus:
+LinearGradient extends YStack, inheriting `View` props and therefore the [Tamagui standard props](/docs/intro/props), plus:
 
 <PropsTable
   data={[

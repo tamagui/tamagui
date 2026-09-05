@@ -4,7 +4,7 @@ import type { GestureReponderEvent } from '@tamagui/web'
 import { composeEventHandlers } from '@tamagui/helpers'
 import { useLabelContext } from '@tamagui/label'
 import React, { useMemo } from 'react'
-import type { PressableProps, View, ViewProps } from 'react-native'
+import type { PressableProps, ViewProps } from 'react-native'
 
 import { BubbleInput } from './BubbleInput'
 import { getState, isIndeterminate } from './utils'
@@ -33,13 +33,15 @@ export type CheckboxExtraProps = {
 
 export type CheckboxProps = CheckboxBaseProps & CheckboxExtraProps
 
-export function useCheckbox<R extends View, P extends CheckboxProps>(
+type CheckboxBehaviorProps = CheckboxExtraProps & Pick<PressableProps, 'onPress'>
+
+export function useCheckbox<R, P extends CheckboxBehaviorProps>(
   props: P,
   [checked, setChecked]: [
     CheckedState,
     React.Dispatch<React.SetStateAction<CheckedState>>,
   ],
-  ref: React.Ref<R>
+  ref: React.Ref<R> | undefined
 ) {
   const {
     labelledBy: ariaLabelledby,

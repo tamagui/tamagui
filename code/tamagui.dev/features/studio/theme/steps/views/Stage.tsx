@@ -1,17 +1,19 @@
 import { Store, useStore } from '@tamagui/use-store'
-import { ScrollView, XStack, YStack, styled } from 'tamagui'
+import { ScrollView, XStack, YStack, style, styled } from 'tamagui'
 
 import { ToggleButton } from './ToggleButton'
 
+const stepContentStyle = style({ minH: '100%' })
+
 export function Stage({ steps, current }: { current: number; steps: any[] }) {
   return (
-    <YStack fullscreen>
+    <YStack position="absolute" inset={0}>
       {steps.map((step, index) => {
         const isLeft = current > index
         const isRight = current < index
         return (
           <Section isLeft={isLeft} isRight={isRight} key={index}>
-            <ScrollView contentContainerStyle={{ minH: '100%' }} flex={1}>
+            <ScrollView contentContainerStyle={stepContentStyle} flex={1}>
               {step}
             </ScrollView>
           </Section>
@@ -23,7 +25,7 @@ export function Stage({ steps, current }: { current: number; steps: any[] }) {
 
 export function StageButtonBar({ steps }: { steps: UseSteps }) {
   return (
-    <XStack z={100} borderBottomWidth={1} borderColor="$color5">
+    <XStack z={100} borderBottomWidth={1} borderColor="color5">
       <ToggleButton active={steps.index === 0} onPress={() => steps.setPage(0)}>
         Palettes
       </ToggleButton>
@@ -35,11 +37,10 @@ export function StageButtonBar({ steps }: { steps: UseSteps }) {
 }
 
 const Section = styled(YStack, {
-  fullscreen: true,
-
+  position: 'absolute',
+  inset: 0,
   t: 33,
-  px: '$2',
-
+  px: '2',
   variants: {
     isLeft: { true: { x: -30, opacity: 0, pe: 'none' } },
     isRight: { true: { x: 30, opacity: 0, pe: 'none' } },

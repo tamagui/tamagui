@@ -1,11 +1,6 @@
 import { useRef, useState } from 'react'
 import { Button, SizableText, XStack, YStack, Text } from 'tamagui'
-import {
-  toast,
-  Toast,
-  requestNotificationPermission,
-  type ToastT,
-} from '@tamagui/toast/v2'
+import { toast, Toast, requestNotificationPermission, type ToastT } from '@tamagui/toast'
 
 export function ToastNativeNotificationCase() {
   const [permission, setPermission] = useState<string>(
@@ -31,13 +26,13 @@ export function ToastNativeNotificationCase() {
         />
       </Toast.Viewport>
 
-      <YStack gap="$4" padding="$4" maxWidth={420}>
-        <Text fontWeight="700" fontSize="$5">
+      <YStack gap="4" padding="4" maxWidth={420}>
+        <Text fontWeight="700" fontSize="5">
           Native Web Notifications
         </Text>
 
-        <YStack gap="$2">
-          <Text fontSize="$3" color="$color11">
+        <YStack gap="2">
+          <Text fontSize="3" color="color11">
             Permission: {permission}
           </Text>
 
@@ -53,7 +48,7 @@ export function ToastNativeNotificationCase() {
           </Button>
         </YStack>
 
-        <YStack gap="$2">
+        <YStack gap="2">
           <Button
             testID="show-native-toast"
             onPress={() => {
@@ -91,7 +86,7 @@ export function ToastNativeNotificationCase() {
           </Button>
         </YStack>
 
-        <SizableText size="$2" color="$color9">
+        <SizableText size="2" color="color9">
           When permission is granted, toasts go to the OS notification center. Otherwise
           they fall back to in-app toasts.
         </SizableText>
@@ -106,16 +101,16 @@ function ToastContent({ toast: t }: { toast: ToastT }) {
     typeof t.description === 'function' ? t.description() : t.description
 
   return (
-    <XStack gap="$3" alignItems="flex-start">
+    <XStack gap="3" alignItems="flex-start">
       <Toast.Icon />
-      <YStack flex={1} gap="$0.5">
+      <YStack flex={1} gap={1}>
         {title && (
-          <Toast.Title fontWeight="600" size="$3">
+          <Toast.Title fontWeight="600" size="3">
             {title}
           </Toast.Title>
         )}
         {description && (
-          <Toast.Description color="$color9" size="$2">
+          <Toast.Description color="color9" size="2">
             {description}
           </Toast.Description>
         )}
