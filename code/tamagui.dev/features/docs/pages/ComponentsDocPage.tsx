@@ -104,7 +104,7 @@ export function DocComponentsPage() {
 
       <HomeH1>{nbspLastWord(frontmatter.title)}</HomeH1>
 
-      <SubTitle>{nbspLastWord(frontmatter.description || '')}</SubTitle>
+      <SubTitle>{frontmatter.description || ''}</SubTitle>
 
       <MDXProvider frontmatter={frontmatter}>
         <DocsThemeTint>

@@ -10,7 +10,7 @@ import {
   Link as LinkIcon,
 } from '@tamagui/lucide-icons-2'
 import type { Href } from 'one'
-import React, { useState } from 'react'
+import React, { isValidElement, useState } from 'react'
 import { ScrollView } from 'react-native'
 import type { ImageProps, XStackProps } from 'tamagui'
 import {
@@ -118,7 +118,13 @@ const Table = ({ heading, children, ...props }) => {
   )
 }
 
-const code = (props) => {
+const inlineCode = (props) => <CodeInline>{unwrapText(props.children)}</CodeInline>
+
+// markdown gives every fenced block a <pre> wrapping a <code>, so <pre> renders
+// the block and <code> is only ever inline. a fence with no language has no
+// className, which used to fall through to CodeInline and render as squished
+// overlapping monospace
+const codeBlock = (props) => {
   const {
     showMore,
     hero,
@@ -131,17 +137,15 @@ const code = (props) => {
     collapsible,
     ...rest
   } = props
-  if (!className) {
-    return <CodeInline>{unwrapText(children)}</CodeInline>
-  }
   return (
     <YStack mt="3">
       <DocCodeBlock
         isHighlightingLines={line !== undefined}
-        className={className}
+        className={className || 'language-txt'}
         isHero={hero !== undefined}
         showMore={showMore}
         showLineNumbers={showLineNumbers !== undefined}
+        id={id}
         {...rest}
       >
         {children}
@@ -555,9 +559,9 @@ const componentsIn = {
     </YStack>
   ),
 
-  pre: ({ children }) => <>{children}</>,
+  pre: ({ children }) => codeBlock(isValidElement(children) ? children.props : {}),
 
-  code,
+  code: inlineCode,
 
   Image: ({
     children,
@@ -798,55 +802,49 @@ const componentsIn = {
     const clipBoard = useClipboard(`npm create tamagui@latest`)
 
     return (
-      <XStack gap="4" flex={1} flexBasis="auto" flexWrap="wrap" pt="3" my="5">
-        <>
-          <ThemeTint>
+      <ThemeTint>
+        <YStack gap="5" pt="3" my="5">
+          <XStack gap="4" flexWrap="wrap">
             <Link asChild href="/docs/intro/installation">
               <Card
                 render="a"
                 transition={{ preset: 'quickest', properties: 'transform' }}
                 flex={1}
-                flexBasis="auto"
+                flexBasis={280}
                 y="0 hover:-2px press:2px"
                 bg="hover:background-hover press:color2"
               >
                 <Card.Header gap="2">
-                  <H4 size="4" color="color8">
-                    Install
-                  </H4>
-                  <Paragraph size="6" color="color9">
-                    Set up an app.
+                  <XStack items="center" gap="2">
+                    <H4 size="4" color="color8">
+                      Install
+                    </H4>
+                    <ChevronRight size={14} color="color9" />
+                  </XStack>
+                  <Paragraph size="4" color="color11">
+                    Add Tamagui to an app you already have: the config, the provider, and
+                    the plugin for your bundler.
                   </Paragraph>
                 </Card.Header>
-
-                <Card.Footer p={0}>
-                  <YStack position="absolute" b="4" r="4">
-                    <ChevronRight color="color11" />
-                  </YStack>
-                </Card.Footer>
               </Card>
             </Link>
 
-            <Card flex={1} flexBasis="auto">
+            <Card flex={1} flexBasis={280}>
               <Card.Header gap="2">
-                <H4 size="4" color="color9">
+                <H4 size="4" color="color8">
                   Quick start
                 </H4>
                 <Paragraph size="4" color="color11">
-                  Choose from a few starters:
+                  Start from a template with everything already wired up.
                 </Paragraph>
-              </Card.Header>
 
-              <Card.Footer p="6" pt={0}>
-                <XStack position="relative" items="center" gap="4" flex={1}>
-                  <Code flex={1} bg="color4" p="3" rounded="4" size="5">
+                <XStack items="center" gap="2" mt="2">
+                  <Code flex={1} bg="color4" p="3" rounded="4" size="4">
                     npm create tamagui@latest
                   </Code>
                   <Button
-                    position="absolute"
                     aria-label="Copy code to clipboard"
                     size="2"
-                    r="3"
                     icon={clipBoard.hasCopied ? CheckCircle : Copy}
                     onPress={() => {
                       clipBoard.onCopy()
@@ -856,11 +854,24 @@ const componentsIn = {
                     Copy
                   </Button>
                 </XStack>
-              </Card.Footer>
+              </Card.Header>
             </Card>
-          </ThemeTint>
-        </>
-      </XStack>
+          </XStack>
+
+          <XStack gap="5" flexWrap="wrap">
+            <Link asChild href="/docs/guides/how-to-upgrade">
+              <Text render="a" fontSize={14} color="color11 hover:color12">
+                Upgrading from v1 or v2 ↗
+              </Text>
+            </Link>
+            <Link asChild href="/docs/intro/agents">
+              <Text render="a" fontSize={14} color="color11 hover:color12">
+                Setting up with a coding agent ↗
+              </Text>
+            </Link>
+          </XStack>
+        </YStack>
+      </ThemeTint>
     )
   },
 
@@ -989,7 +1000,7 @@ const LinkHeading = ({ id, children, ...props }: { id: string } & XStackProps) =
 const getNonTextChildren = (children) => {
   return React.Children.map(children, (x) => {
     if (typeof x === 'string') return null
-    if (x['type'] === code) return null
+    if (x['type'] === inlineCode) return null
     return x
   }).flat()
 }

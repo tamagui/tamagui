@@ -43,6 +43,7 @@ export function DocsPageFrame({
                 justify="space-between"
                 gap="4"
               >
+                {!previous && <YStack flex={1} />}
                 {previous && (
                   <Link href={previous.route as Href} asChild>
                     <XStack
@@ -114,6 +115,7 @@ export function DocsPageFrame({
                     </XStack>
                   </Link>
                 )}
+                {!next && <YStack flex={1} />}
               </XStack>
             )}
           </Container>

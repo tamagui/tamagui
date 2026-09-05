@@ -77,7 +77,7 @@ export function DocIntroPage() {
         }}
       />
       <HomeH1>{nbspLastWord(frontmatter.title)}</HomeH1>
-      <SubTitle>{nbspLastWord(frontmatter.description || '')}</SubTitle>
+      <SubTitle>{frontmatter.description || ''}</SubTitle>
       <ThemeTint>
         <TamaguiExamples.Provider value={examples}>
           <Component components={components as any} />

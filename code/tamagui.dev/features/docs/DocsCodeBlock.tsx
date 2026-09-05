@@ -172,6 +172,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
               justify="center"
               bg="color2"
               position="relative"
+              group="code"
             >
               {showFileName && (
                 <XStack
@@ -214,6 +215,13 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
                     t={showFileName ? '6' : '3'}
                     r="3"
                     display="inline-flex"
+                    // it floats over the code, so keep it out of the way until the
+                    // pointer is here. touch has no hover, so small screens keep it
+                    {...(!showFileName &&
+                      !showTabs && {
+                        opacity: '0 sm:1 group-hover/code:1',
+                        transition: 'quickest',
+                      })}
                     icon={hasCopied ? CheckCircle : Copy}
                     onPress={() => {
                       onCopy()
