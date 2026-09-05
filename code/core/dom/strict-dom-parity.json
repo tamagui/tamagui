@@ -676,7 +676,8 @@
         "code/core/style-grammar/src/shorthands/transformFamily.ts:1-579",
         "code/core/style-grammar/src/shorthands/transition.ts:1-553",
         "code/core/web/src/helpers/getSplitStyles.tsx:2425-2576",
-        "code/core/web/src/helpers/getSplitStyles.tsx:2815-2829"
+        "code/core/web/src/helpers/getSplitStyles.tsx:2710-2721",
+        "code/core/web/src/helpers/getSplitStyles.tsx:2818-2828"
       ],
       "tamaguiTests": [
         "code/compiler/static-tests/tests/flatValues.web.test.tsx",
