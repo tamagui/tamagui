@@ -5,9 +5,6 @@
   },
   "references": [
     {
-      "path": "../../packages/element"
-    },
-    {
       "path": "../../core/core"
     },
     {
@@ -20,7 +17,13 @@
       "path": "../../core/helpers-tamagui"
     },
     {
+      "path": "../../core/react-native-types"
+    },
+    {
       "path": "../../core/web"
+    },
+    {
+      "path": "../../packages/element"
     },
     {
       "path": "../focusable"

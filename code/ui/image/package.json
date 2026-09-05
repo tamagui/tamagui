@@ -37,6 +37,7 @@
   "dependencies": {
     "@tamagui/constants": "workspace:*",
     "@tamagui/core": "workspace:*",
+    "@tamagui/react-native-types": "workspace:*",
     "@tamagui/web": "workspace:*"
   },
   "devDependencies": {

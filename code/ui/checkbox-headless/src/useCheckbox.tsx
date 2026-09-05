@@ -4,7 +4,7 @@ import type { GestureReponderEvent } from '@tamagui/web'
 import { composeEventHandlers } from '@tamagui/helpers'
 import { useLabelContext } from '@tamagui/label'
 import React, { useMemo } from 'react'
-import type { PressableProps, ViewProps } from 'react-native'
+import type { PressableProps, ViewProps } from '@tamagui/react-native-types'
 
 import { BubbleInput } from './BubbleInput'
 import { getState, isIndeterminate } from './utils'

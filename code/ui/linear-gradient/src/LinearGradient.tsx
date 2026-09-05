@@ -8,7 +8,7 @@ import {
   useTheme,
 } from '@tamagui/core'
 import { YStack } from '@tamagui/stacks'
-import type { ViewStyle } from 'react-native'
+import type { ViewStyle } from '@tamagui/react-native-types'
 
 import type { LinearGradientPoint } from './linear-gradient'
 import { LinearGradient as ExpoLinearGradient } from './linear-gradient'

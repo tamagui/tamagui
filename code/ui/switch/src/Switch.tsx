@@ -13,7 +13,7 @@ import {
 import { useSwitch } from '@tamagui/switch-headless'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
-import type { LayoutChangeEvent } from 'react-native'
+import type { LayoutChangeEvent } from '@tamagui/react-native-types'
 import { SwitchStyledContext } from './StyledContext'
 import type {
   SwitchComponent as SwitchFrameComponent,

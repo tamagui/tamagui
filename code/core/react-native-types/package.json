@@ -1,0 +1,33 @@
+{
+  "name": "@tamagui/react-native-types",
+  "version": "2.7.7",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": false,
+  "source": "src/index.ts",
+  "types": "./src/index.ts",
+  "files": [
+    "src"
+  ],
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./src/index.ts"
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "generate": "bun scripts/generate.ts",
+    "test:web": "vitest --typecheck --run"
+  },
+  "dependencies": {},
+  "peerDependencies": {
+    "react": ">=19"
+  },
+  "devDependencies": {
+    "react-native": "0.86.2",
+    "typescript": "~6.0.3"
+  }
+}

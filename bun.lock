@@ -895,6 +895,7 @@
       "version": "2.7.7",
       "dependencies": {
         "@tamagui/helpers": "workspace:*",
+        "@tamagui/react-native-types": "workspace:*",
         "@tamagui/size": "workspace:*",
         "@tamagui/web": "workspace:*",
       },
@@ -1051,6 +1052,17 @@
         "react-native-web": "*",
       },
     },
+    "code/core/react-native-types": {
+      "name": "@tamagui/react-native-types",
+      "version": "2.7.7",
+      "devDependencies": {
+        "react-native": "0.86.2",
+        "typescript": "~6.0.3",
+      },
+      "peerDependencies": {
+        "react": ">=19",
+      },
+    },
     "code/core/react-native-use-pressable": {
       "name": "@tamagui/react-native-use-pressable",
       "version": "2.7.7",
@@ -1154,6 +1166,7 @@
         "@tamagui/constants": "workspace:*",
         "@tamagui/core": "workspace:*",
         "@tamagui/helpers": "workspace:*",
+        "@tamagui/react-native-types": "workspace:*",
         "@tamagui/style-grammar": "workspace:*",
         "@tamagui/vite-plugin": "workspace:*",
       },
@@ -1409,6 +1422,7 @@
       "version": "2.7.7",
       "dependencies": {
         "@tamagui/constants": "workspace:*",
+        "@tamagui/react-native-types": "workspace:*",
       },
       "devDependencies": {
         "@tamagui/build": "workspace:*",
@@ -1431,6 +1445,7 @@
         "@tamagui/is-equal-shallow": "workspace:*",
         "@tamagui/native": "workspace:*",
         "@tamagui/normalize-css-color": "workspace:*",
+        "@tamagui/react-native-types": "workspace:*",
         "@tamagui/style-grammar": "workspace:*",
         "@tamagui/timer": "workspace:*",
         "@tamagui/types": "workspace:*",
@@ -1801,6 +1816,7 @@
       "version": "2.7.7",
       "dependencies": {
         "@tamagui/compose-refs": "workspace:*",
+        "@tamagui/react-native-types": "workspace:*",
       },
       "devDependencies": {
         "@tamagui/build": "workspace:*",
@@ -2612,6 +2628,7 @@
         "@tamagui/focusable": "workspace:*",
         "@tamagui/helpers": "workspace:*",
         "@tamagui/label": "workspace:*",
+        "@tamagui/react-native-types": "workspace:*",
         "@tamagui/use-controllable-state": "workspace:*",
         "@tamagui/use-previous": "workspace:*",
         "@tamagui/web": "workspace:*",
@@ -2721,6 +2738,7 @@
         "@tamagui/popover": "workspace:*",
         "@tamagui/popper": "workspace:*",
         "@tamagui/portal": "workspace:*",
+        "@tamagui/react-native-types": "workspace:*",
         "@tamagui/remove-scroll": "workspace:*",
         "@tamagui/roving-focus": "workspace:*",
         "@tamagui/text": "workspace:*",
@@ -2915,6 +2933,7 @@
       "dependencies": {
         "@tamagui/constants": "workspace:*",
         "@tamagui/core": "workspace:*",
+        "@tamagui/react-native-types": "workspace:*",
         "@tamagui/web": "workspace:*",
       },
       "devDependencies": {
@@ -2938,6 +2957,7 @@
         "@tamagui/get-font-sized": "workspace:*",
         "@tamagui/helpers": "workspace:*",
         "@tamagui/helpers-tamagui": "workspace:*",
+        "@tamagui/react-native-types": "workspace:*",
         "@tamagui/stacks": "workspace:*",
         "@tamagui/text": "workspace:*",
         "@tamagui/web": "workspace:*",
@@ -2980,6 +3000,7 @@
       "dependencies": {
         "@tamagui/core": "workspace:*",
         "@tamagui/native": "workspace:*",
+        "@tamagui/react-native-types": "workspace:*",
         "@tamagui/stacks": "workspace:*",
       },
       "devDependencies": {
@@ -3164,6 +3185,7 @@
         "@tamagui/focusable": "workspace:*",
         "@tamagui/helpers": "workspace:*",
         "@tamagui/label": "workspace:*",
+        "@tamagui/react-native-types": "workspace:*",
         "@tamagui/use-controllable-state": "workspace:*",
         "@tamagui/use-previous": "workspace:*",
         "@tamagui/web": "workspace:*",
@@ -3327,6 +3349,7 @@
         "@tamagui/helpers": "workspace:*",
         "@tamagui/native": "workspace:*",
         "@tamagui/portal": "workspace:*",
+        "@tamagui/react-native-types": "workspace:*",
         "@tamagui/remove-scroll": "workspace:*",
         "@tamagui/scroll-view": "workspace:*",
         "@tamagui/stacks": "workspace:*",
@@ -3361,6 +3384,7 @@
         "@tamagui/create-context": "workspace:*",
         "@tamagui/get-token": "workspace:*",
         "@tamagui/helpers": "workspace:*",
+        "@tamagui/react-native-types": "workspace:*",
         "@tamagui/stacks": "workspace:*",
         "@tamagui/use-controllable-state": "workspace:*",
         "@tamagui/use-debounce": "workspace:*",
@@ -3430,6 +3454,7 @@
       "dependencies": {
         "@tamagui/core": "workspace:*",
         "@tamagui/focusable": "workspace:*",
+        "@tamagui/react-native-types": "workspace:*",
         "@tamagui/switch-headless": "workspace:*",
         "@tamagui/use-controllable-state": "workspace:*",
       },
@@ -3450,6 +3475,7 @@
         "@tamagui/constants": "workspace:*",
         "@tamagui/helpers": "workspace:*",
         "@tamagui/label": "workspace:*",
+        "@tamagui/react-native-types": "workspace:*",
         "@tamagui/use-previous": "workspace:*",
       },
       "devDependencies": {
@@ -3469,6 +3495,7 @@
         "@tamagui/constants": "workspace:*",
         "@tamagui/core": "workspace:*",
         "@tamagui/helpers": "workspace:*",
+        "@tamagui/react-native-types": "workspace:*",
         "@tamagui/roving-focus": "workspace:*",
         "@tamagui/size": "workspace:*",
         "@tamagui/tabs-headless": "workspace:*",
@@ -3544,6 +3571,7 @@
         "@tamagui/progress": "workspace:*",
         "@tamagui/radio-group": "workspace:*",
         "@tamagui/react-native-media-driver": "workspace:*",
+        "@tamagui/react-native-types": "workspace:*",
         "@tamagui/scroll-view": "workspace:*",
         "@tamagui/select": "workspace:*",
         "@tamagui/separator": "workspace:*",
@@ -5706,6 +5734,8 @@
     "@tamagui/react-native-media-driver": ["@tamagui/react-native-media-driver@workspace:code/core/react-native-media-driver"],
 
     "@tamagui/react-native-svg": ["@tamagui/react-native-svg@workspace:code/packages/react-native-svg"],
+
+    "@tamagui/react-native-types": ["@tamagui/react-native-types@workspace:code/core/react-native-types"],
 
     "@tamagui/react-native-use-pressable": ["@tamagui/react-native-use-pressable@workspace:code/core/react-native-use-pressable"],
 

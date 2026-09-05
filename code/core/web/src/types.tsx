@@ -26,7 +26,7 @@ import type {
   View,
   ViewProps,
   ViewStyle,
-} from 'react-native'
+} from '@tamagui/react-native-types'
 
 import type { NativeStyleEngineLinkHandle } from './helpers/nativeStyleEngine'
 import type { StyleFrontend } from './helpers/styleFrontend'

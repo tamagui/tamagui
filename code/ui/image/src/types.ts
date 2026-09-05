@@ -4,7 +4,7 @@ import type {
   ImageSourcePropType,
   Image as RNImage,
   ImageProps as RNImageProps,
-} from 'react-native'
+} from '@tamagui/react-native-types'
 
 type RNImageType = typeof RNImage
 

@@ -48,6 +48,7 @@
     "@tamagui/popover": "workspace:*",
     "@tamagui/popper": "workspace:*",
     "@tamagui/portal": "workspace:*",
+    "@tamagui/react-native-types": "workspace:*",
     "@tamagui/remove-scroll": "workspace:*",
     "@tamagui/roving-focus": "workspace:*",
     "@tamagui/text": "workspace:*",

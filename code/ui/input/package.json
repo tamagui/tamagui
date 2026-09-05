@@ -44,6 +44,7 @@
     "@tamagui/get-font-sized": "workspace:*",
     "@tamagui/helpers": "workspace:*",
     "@tamagui/helpers-tamagui": "workspace:*",
+    "@tamagui/react-native-types": "workspace:*",
     "@tamagui/stacks": "workspace:*",
     "@tamagui/text": "workspace:*",
     "@tamagui/web": "workspace:*"

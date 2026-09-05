@@ -23,6 +23,9 @@
       "path": "../../core/helpers"
     },
     {
+      "path": "../../core/react-native-types"
+    },
+    {
       "path": "../../core/use-controllable-state"
     },
     {

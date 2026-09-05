@@ -41,6 +41,7 @@
     "@tamagui/create-context": "workspace:*",
     "@tamagui/get-token": "workspace:*",
     "@tamagui/helpers": "workspace:*",
+    "@tamagui/react-native-types": "workspace:*",
     "@tamagui/stacks": "workspace:*",
     "@tamagui/use-controllable-state": "workspace:*",
     "@tamagui/use-debounce": "workspace:*",

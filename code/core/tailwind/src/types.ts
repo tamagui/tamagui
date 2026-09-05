@@ -17,7 +17,7 @@ import type {
   View as ReactNativeView,
   ViewProps as ReactNativeViewProps,
   ViewStyle,
-} from 'react-native'
+} from '@tamagui/react-native-types'
 
 type WebEventProps = {
   onMouseEnter?: HTMLAttributes<HTMLDivElement>['onMouseEnter']

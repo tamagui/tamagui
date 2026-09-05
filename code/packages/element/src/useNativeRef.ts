@@ -1,6 +1,6 @@
 import { useComposedRefs } from '@tamagui/compose-refs'
 import * as React from 'react'
-import type { TextInput } from 'react-native'
+import type { TextInput } from '@tamagui/react-native-types'
 import type { TamaguiNativeElement } from './types'
 
 /**

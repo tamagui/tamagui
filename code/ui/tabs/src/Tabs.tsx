@@ -8,7 +8,7 @@ import { useTab, useTabContent, useTabs, useTabsList } from '@tamagui/tabs-headl
 import type { GetProps, StylePiece, TamaguiElement } from '@tamagui/web'
 import { useEvent } from '@tamagui/web'
 import * as React from 'react'
-import type { LayoutRectangle } from 'react-native'
+import type { LayoutRectangle } from '@tamagui/react-native-types'
 import { TabsProvider, useTabsContext } from './StyledContext'
 
 const TABS_CONTEXT = 'TabsContext'

@@ -1,6 +1,6 @@
 import { createStyledHOC, getTokenValue, styled } from '@tamagui/web'
 import type { ComponentType } from 'react'
-import type { ImageResizeMode } from 'react-native'
+import type { ImageResizeMode } from '@tamagui/react-native-types'
 import type { ImageProps, ImageType } from './types'
 
 type GetProps<T> = T extends ComponentType<infer P> ? P : never

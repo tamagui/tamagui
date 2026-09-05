@@ -21,6 +21,9 @@
       "path": "../normalize-css-color"
     },
     {
+      "path": "../react-native-types"
+    },
+    {
       "path": "../style-grammar"
     },
     {

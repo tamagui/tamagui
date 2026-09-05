@@ -42,6 +42,9 @@
       "path": "../../core/react-native-media-driver"
     },
     {
+      "path": "../../core/react-native-types"
+    },
+    {
       "path": "../../core/theme"
     },
     {

@@ -23,7 +23,7 @@ import { YStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import { useDirection } from '@tamagui/use-direction'
 import * as React from 'react'
-import type { View } from 'react-native'
+import type { View } from '@tamagui/react-native-types'
 
 import {
   ARROW_KEYS,

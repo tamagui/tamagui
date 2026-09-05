@@ -3,7 +3,7 @@ import type {
   LayoutChangeEvent,
   TextLayoutEventData,
   NativeSyntheticEvent,
-} from 'react-native'
+} from '@tamagui/react-native-types'
 
 type OnLayout = ((event: LayoutChangeEvent) => void) | undefined
 type OnTextLayout =

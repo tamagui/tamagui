@@ -347,6 +347,7 @@
     "@tamagui/progress": "workspace:*",
     "@tamagui/radio-group": "workspace:*",
     "@tamagui/react-native-media-driver": "workspace:*",
+    "@tamagui/react-native-types": "workspace:*",
     "@tamagui/scroll-view": "workspace:*",
     "@tamagui/select": "workspace:*",
     "@tamagui/separator": "workspace:*",

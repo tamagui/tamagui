@@ -1,6 +1,9 @@
 import type { GetProps, NativeValue, SizeTokens, ViewProps } from '@tamagui/core'
 import type { SwitchExtraProps as HeadlessSwitchExtraProps } from '@tamagui/switch-headless'
-import type { SwitchProps as NativeSwitchProps, ViewStyle } from 'react-native'
+import type {
+  SwitchProps as NativeSwitchProps,
+  ViewStyle,
+} from '@tamagui/react-native-types'
 import type { SwitchThumbFrame } from './Switch'
 
 export type SwitchSharedProps = {

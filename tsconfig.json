@@ -206,6 +206,9 @@
       "path": "code/core/react-native-web-internals"
     },
     {
+      "path": "code/core/react-native-types"
+    },
+    {
       "path": "code/core/shorthands"
     },
     {

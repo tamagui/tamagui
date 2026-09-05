@@ -37,6 +37,7 @@
   "dependencies": {
     "@tamagui/core": "workspace:*",
     "@tamagui/focusable": "workspace:*",
+    "@tamagui/react-native-types": "workspace:*",
     "@tamagui/switch-headless": "workspace:*",
     "@tamagui/use-controllable-state": "workspace:*"
   },

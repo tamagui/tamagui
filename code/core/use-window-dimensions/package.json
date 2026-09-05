@@ -35,7 +35,8 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/constants": "workspace:*"
+    "@tamagui/constants": "workspace:*",
+    "@tamagui/react-native-types": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",

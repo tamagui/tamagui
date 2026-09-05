@@ -7,7 +7,7 @@ import { useControllableState } from '@tamagui/use-controllable-state'
 import type { ViewProps } from '@tamagui/web'
 import type { ReactElement } from 'react'
 import { useContext, useEffect, useRef, useState } from 'react'
-import type { GestureResponderEvent } from 'react-native'
+import type { GestureResponderEvent } from '@tamagui/react-native-types'
 import { BubbleInput } from './BubbleInput'
 import { getState } from './utils'
 

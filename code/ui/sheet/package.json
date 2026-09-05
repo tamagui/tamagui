@@ -53,6 +53,7 @@
     "@tamagui/helpers": "workspace:*",
     "@tamagui/native": "workspace:*",
     "@tamagui/portal": "workspace:*",
+    "@tamagui/react-native-types": "workspace:*",
     "@tamagui/remove-scroll": "workspace:*",
     "@tamagui/scroll-view": "workspace:*",
     "@tamagui/stacks": "workspace:*",
