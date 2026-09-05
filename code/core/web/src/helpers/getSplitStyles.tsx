@@ -2807,7 +2807,18 @@ function emitResolved(
   originalValue: any,
   contextOnly: boolean
 ) {
-  let value = configuredValue(state, property, raw, true)
+  emitProperty(
+    state,
+    property,
+    resolveValue(state, property, raw),
+    cursor,
+    originalValue,
+    contextOnly
+  )
+}
+
+function resolveValue(state: GetStyleState, property: string, raw: any) {
+  let value = typeof raw === 'string' ? configuredValue(state, property, raw, true) : raw
   if (
     (process.env.TAMAGUI_TARGET === 'native' || !state.flatShouldDoClasses) &&
     typeof value === 'string'
@@ -2819,7 +2830,7 @@ function emitResolved(
       value = Number(value)
     }
   }
-  emitProperty(state, property, value, cursor, originalValue, contextOnly)
+  return value
 }
 
 function shadowUnit(part: any) {
@@ -3082,22 +3093,7 @@ function emitValue(
     return
   }
 
-  let value: any = raw
-  if (typeof raw === 'string') {
-    value = configuredValue(state, property, raw, true)
-  }
-
-  if (
-    (process.env.TAMAGUI_TARGET === 'native' || !state.flatShouldDoClasses) &&
-    typeof value === 'string'
-  ) {
-    const unitValue = numericUnitValue(value, 'px', 'dp')
-    if (Number.isFinite(unitValue)) {
-      value = unitValue
-    } else if (value !== '' && Number.isFinite(Number(value))) {
-      value = Number(value)
-    }
-  }
+  let value: any = resolveValue(state, property, raw)
   if (
     canGenerateCSS &&
     state.flatShouldDoClasses &&
@@ -3217,13 +3213,44 @@ function emitValue(
   }
 }
 
+type ConditionalValueSink = (payload: any, condition: unknown, source: any) => void
+
+function emitConditionalValue(
+  state: GetStyleState,
+  property: string,
+  payload: any,
+  condition: Condition | null,
+  source: any,
+  sink: ConditionalValueSink | null,
+  mode: number,
+  contextOnly: boolean
+) {
+  if (sink) {
+    sink(payload, condition, source)
+  } else if (condition) {
+    emitUnderCondition(
+      state,
+      property,
+      payload,
+      condition,
+      mode === 2 ? payload : undefined,
+      contextOnly,
+      mode,
+      source
+    )
+  } else {
+    emitValue(state, property, payload, null, payload, contextOnly)
+  }
+}
+
 export function walkConditionalValue(
   state: GetStyleState,
   property: string,
   value: any,
   parent: unknown,
-  sink: (payload: any, condition: unknown, source: any) => void,
-  warnMode = 0
+  sink: ConditionalValueSink | null,
+  warnMode = 0,
+  contextOnly = false
 ) {
   const parentCondition = (parent as Condition) || null
   let hasBase = false
@@ -3256,7 +3283,16 @@ export function walkConditionalValue(
       if (start === end) continue
       if (flags & 2) {
         const payload = (slices[index] ??= value.slice(start, end))
-        sink(payload, parentCondition, payload)
+        emitConditionalValue(
+          state,
+          property,
+          payload,
+          parentCondition,
+          payload,
+          sink,
+          warnMode,
+          contextOnly
+        )
         hasBase = true
       } else if (
         process.env.NODE_ENV !== 'production' &&
@@ -3264,7 +3300,16 @@ export function walkConditionalValue(
         !chainCount &&
         (failure === 'invalid-character' || failure === 'stray-comment-close')
       ) {
-        sink(value, parentCondition, value)
+        emitConditionalValue(
+          state,
+          property,
+          value,
+          parentCondition,
+          value,
+          sink,
+          warnMode,
+          contextOnly
+        )
         hasBase = true
       } else if (warnMode) {
         warnScanFailure(property, value, failure, failureIndex)
@@ -3294,7 +3339,16 @@ export function walkConditionalValue(
       )
       conditions |= cursor[conditionValue]
       if (cursor[conditionValue] & conditionResolvedFlag || warnMode) {
-        sink((slices[index] ??= value.slice(start, end)), cursor, value)
+        emitConditionalValue(
+          state,
+          property,
+          (slices[index] ??= value.slice(start, end)),
+          cursor,
+          value,
+          sink,
+          warnMode,
+          contextOnly
+        )
       }
     }
     if (process.env.NODE_ENV !== 'production') lastPayload = value.slice(lastPayloadStart)
@@ -3309,7 +3363,16 @@ export function walkConditionalValue(
       return false
     }
     if (value.default != null) {
-      sink(value.default, parentCondition, value.default)
+      emitConditionalValue(
+        state,
+        property,
+        value.default,
+        parentCondition,
+        value.default,
+        sink,
+        warnMode,
+        contextOnly
+      )
       hasBase = true
     }
     for (const key in value) {
@@ -3317,7 +3380,16 @@ export function walkConditionalValue(
       const cursor = conditionFromKey(state, key, parentCondition)
       conditions |= cursor[conditionValue]
       if (cursor[conditionValue] & conditionResolvedFlag || warnMode) {
-        sink(value[key], cursor, value[key])
+        emitConditionalValue(
+          state,
+          property,
+          value[key],
+          cursor,
+          value[key],
+          sink,
+          warnMode,
+          contextOnly
+        )
       }
     }
   }
@@ -3353,7 +3425,16 @@ export function walkConditionalValue(
             ? 0
             : null
     if (resting !== null && !(state as DirectState).flatPropertyLayers?.has(property)) {
-      sink(resting, parentCondition, resting)
+      emitConditionalValue(
+        state,
+        property,
+        resting,
+        parentCondition,
+        resting,
+        sink,
+        warnMode,
+        contextOnly
+      )
     }
   }
   return true
@@ -3386,24 +3467,7 @@ function contributeValue(
     }
     if (
       typeof value !== 'string' &&
-      walkConditionalValue(
-        state,
-        property,
-        value,
-        effective,
-        (payload, cursor, source) =>
-          emitUnderCondition(
-            state,
-            property,
-            payload,
-            cursor as Condition,
-            payload,
-            contextOnly,
-            2,
-            source
-          ),
-        2
-      )
+      walkConditionalValue(state, property, value, effective, null, 2, contextOnly)
     ) {
       return true
     }
@@ -3450,28 +3514,7 @@ function contributeValue(
   }
   const parent =
     ((state as DirectState).flatPass?.[passParentCursor] as Condition) || null
-  if (
-    walkConditionalValue(
-      state,
-      property,
-      value,
-      parent,
-      (payload, cursor, source) =>
-        cursor
-          ? emitUnderCondition(
-              state,
-              property,
-              payload,
-              cursor as Condition,
-              undefined,
-              contextOnly,
-              1,
-              source
-            )
-          : emitValue(state, property, payload, null, payload, contextOnly),
-      1
-    )
-  )
+  if (walkConditionalValue(state, property, value, parent, null, 1, contextOnly))
     return true
   if (value != null) {
     emitAtParentCondition(state, property, value, originalValue ?? value, contextOnly)
