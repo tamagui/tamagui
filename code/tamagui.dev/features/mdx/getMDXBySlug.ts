@@ -209,12 +209,13 @@ export const getMDXBySlug = async (
   } as GetMDXOptions)
 
   // mdx-rust compiles source metadata but does not retain its filename. Docs
-  // use the resolved filename, including component versions, for edit links.
+  // use sourcePath for edit links; blog routes need the base-relative slug.
   return {
     ...result,
     frontmatter: {
       ...result.frontmatter,
-      slug: path.posix.join(basePath, resolvedSlug),
+      slug: resolvedSlug,
+      sourcePath: path.posix.join(basePath, resolvedSlug),
     },
   }
 }
