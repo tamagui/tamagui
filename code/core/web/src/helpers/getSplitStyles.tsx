@@ -669,13 +669,28 @@ function contributeProp(
   }
 
   if (keyInit === HOC_CLASSNAME_MARKER) {
-    if (valInit && typeof valInit === 'object') {
+    if (valInit) {
+      const [hocClassNames, hocSlots] = valInit as HOCClassNames
       const direct = styleState as DirectState
       const layers = (direct.flatPropertyLayers ||= new Map())
-      for (const property in valInit) {
+      for (const property in hocClassNames) {
+        if (hocSlots?.has(property)) continue
         clearDirectStyle(styleState, property)
-        styleState.classNames[property] = valInit[property]
+        styleState.classNames[property] = hocClassNames[property]
         layers.set(property, pass[passSourceLayer])
+      }
+      // a slot class (flex, border, padding...) covers several properties, so
+      // the outer styled's entries merge per property with this frame's own
+      // slot instead of replacing it: styled(Hoc, { flexWrap }) keeps the
+      // frame's flexDirection
+      if (hocSlots) {
+        const slots = (direct.flatSlots ||= new Map())
+        for (const [slot, entries] of hocSlots) {
+          for (const entry of entries) {
+            if (!ownsSourceLayer(styleState, entry[0], !!entry[2])) continue
+            writeCapturedStyleRecord(slots, slot, entry, pass[passSourceLayer])
+          }
+        }
       }
     }
     return
@@ -1607,7 +1622,10 @@ export const getSplitStyles: StyleSplitter = (
         if (groupClassName) finalClassName += ` ${groupClassName}`
         if (className) finalClassName += ` ${className}`
         if (isHOC && hasPropertyClassNames) {
-          viewProps[HOC_CLASSNAME_MARKER] = classNames
+          viewProps[HOC_CLASSNAME_MARKER] = [
+            classNames,
+            (styleState as DirectState).flatCapturedSlots,
+          ] satisfies HOCClassNames
         }
         if (finalClassName) {
           viewProps.className = finalClassName
@@ -2029,6 +2047,11 @@ export type MergeStyle = (
   originalValue?: any
 ) => void
 
+type HOCClassNames = [
+  classNames: ClassNamesObject,
+  slots: Map<string, AtomicSlotEntry[]> | undefined,
+]
+
 type DirectState = GetStyleState & {
   flatValueScope?: ValueScopeCache
   flatValueScopeKind?: any
@@ -2037,6 +2060,8 @@ type DirectState = GetStyleState & {
   flatPass?: StylePass
   flatStyleStaticConfig?: StyleStaticConfig
   flatSlots?: Map<string, AtomicSlotEntry[]>
+  // a styled HOC hands its class slot entries to the frame it renders
+  flatCapturedSlots?: Map<string, AtomicSlotEntry[]>
   flatPropertyLayers?: Map<string, number>
   flatCallerVariantKeys?: Set<string>
   flatAtomics?: Map<string, any>
@@ -2253,6 +2278,9 @@ function completeResolvedStyles(state: GetStyleState, merge: MergeStyle = mergeS
   const slots = direct.flatSlots
   if (!slots) return
 
+  const capture = state.staticConfig.isHOC
+    ? (direct.flatCapturedSlots ||= new Map())
+    : undefined
   for (const [property, entries] of slots) {
     let cssEntries: AtomicSlotEntry[] | undefined
     let inlineWinner: AtomicSlotEntry | undefined
@@ -2287,7 +2315,15 @@ function completeResolvedStyles(state: GetStyleState, merge: MergeStyle = mergeS
         }
       }
     }
-    if (cssEntries) registerAtomicSlot(direct, property, cssEntries)
+    if (cssEntries) {
+      registerAtomicSlot(direct, property, cssEntries)
+      if (capture) {
+        // flagged css so the receiving frame keeps them as classes even when
+        // it renders its own styles inline
+        for (const entry of cssEntries) entry[7] = entry[7]! | recordCSS
+        capture.set(property, cssEntries)
+      }
+    }
     if (inlineWinner) {
       if (inlineWinner[7]! & recordRetract) {
         if (state.style) delete state.style[inlineWinner[0]]
