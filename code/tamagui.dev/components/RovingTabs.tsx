@@ -7,10 +7,7 @@ import { useBashCommand, PACKAGE_MANAGERS } from '~/hooks/useBashCommand'
 import { Image } from '@tamagui/image'
 import { ScrollView } from 'react-native'
 
-export function RovingTabs({ className, children, code, size, ...rest }) {
-  const { showTabs, transformedCommand, selectedPackageManager, setPackageManager } =
-    useBashCommand(code || children, className)
-
+export function useRovingTabs() {
   const [tabState, setTabState] = useState<{
     intentAt: TabLayout | null
     activeAt: TabLayout | null
@@ -21,26 +18,65 @@ export function RovingTabs({ className, children, code, size, ...rest }) {
     prevActiveAt: null,
   })
 
-  const { activeAt, intentAt } = tabState
-
-  const handleOnInteraction: TabsTabProps['onInteraction'] = useCallback(
-    (type, layout) => {
-      setTabState((previous) => {
-        if (type === 'select') {
-          if (layoutsEqual(previous.activeAt, layout)) return previous
-          return {
-            ...previous,
-            prevActiveAt: previous.activeAt,
-            activeAt: layout,
-          }
+  const onInteraction: TabsTabProps['onInteraction'] = useCallback((type, layout) => {
+    setTabState((previous) => {
+      if (type === 'select') {
+        if (layoutsEqual(previous.activeAt, layout)) return previous
+        return {
+          ...previous,
+          prevActiveAt: previous.activeAt,
+          activeAt: layout,
         }
+      }
 
-        if (layoutsEqual(previous.intentAt, layout)) return previous
-        return { ...previous, intentAt: layout }
-      })
-    },
-    []
+      if (layoutsEqual(previous.intentAt, layout)) return previous
+      return { ...previous, intentAt: layout }
+    })
+  }, [])
+
+  return { ...tabState, onInteraction }
+}
+
+export function RovingTabIndicators({
+  activeAt,
+  intentAt,
+}: {
+  activeAt: TabLayout | null
+  intentAt: TabLayout | null
+}) {
+  return (
+    <>
+      <AnimatePresence initial={false}>
+        {intentAt && (
+          <TabIndicator
+            width={intentAt.width}
+            height={intentAt.height}
+            x={intentAt.x}
+            y={intentAt.y}
+          />
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence initial={false}>
+        {activeAt && (
+          <TabIndicator
+            bg="color6"
+            width={activeAt.width}
+            height={activeAt.height}
+            x={activeAt.x}
+            y={activeAt.y}
+          />
+        )}
+      </AnimatePresence>
+    </>
   )
+}
+
+export function RovingTabs({ className, children, code, size, ...rest }) {
+  const { showTabs, transformedCommand, selectedPackageManager, setPackageManager } =
+    useBashCommand(code || children, className)
+
+  const { activeAt, intentAt, onInteraction } = useRovingTabs()
 
   const codeContent = (
     <ScrollView
@@ -84,28 +120,7 @@ export function RovingTabs({ className, children, code, size, ...rest }) {
         >
           <YStack width="100%">
             <YStack p="1-5" m="2" mb={0} rounded="5">
-              <AnimatePresence initial={false}>
-                {intentAt && (
-                  <TabIndicator
-                    width={intentAt.width}
-                    height={intentAt.height}
-                    x={intentAt.x}
-                    y={intentAt.y}
-                  />
-                )}
-              </AnimatePresence>
-
-              <AnimatePresence initial={false}>
-                {activeAt && (
-                  <TabIndicator
-                    bg="color6"
-                    width={activeAt.width}
-                    height={activeAt.height}
-                    x={activeAt.x}
-                    y={activeAt.y}
-                  />
-                )}
-              </AnimatePresence>
+              <RovingTabIndicators activeAt={activeAt} intentAt={intentAt} />
 
               <Tabs.List loop={false} aria-label="package manager" gap="2">
                 <>
@@ -114,7 +129,7 @@ export function RovingTabs({ className, children, code, size, ...rest }) {
                       key={pkgManager}
                       active={selectedPackageManager === pkgManager}
                       pkgManager={pkgManager}
-                      onInteraction={handleOnInteraction}
+                      onInteraction={onInteraction}
                     />
                   ))}
                 </>

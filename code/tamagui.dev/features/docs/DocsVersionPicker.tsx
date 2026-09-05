@@ -126,7 +126,7 @@ export function DocsVersionPicker({
   }
 
   return (
-    <XStack gap="2" items="center" position="absolute" left={230} display="sm:none">
+    <XStack gap="2" items="center" width="100%">
       <PickerSelect
         label="Version"
         value={state.productVersion}
@@ -185,6 +185,7 @@ function PickerSelect({
     >
       <Select.Trigger
         testID={testID}
+        flex={1}
         height={28}
         paddingHorizontal="2"
         gap="1"
@@ -192,7 +193,7 @@ function PickerSelect({
         borderWidth={1}
         borderColor="border-color"
         borderRadius="4"
-        minW={label === 'Version' ? 72 : 100}
+        minW={label === 'Version' ? 64 : 88}
       >
         <Select.Value placeholder={label} fontSize="1" />
         <Select.Icon marginLeft="auto">

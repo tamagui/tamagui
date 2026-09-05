@@ -10,14 +10,6 @@ export default function DocsLayout() {
 
   return (
     <>
-      <YStack
-        position="absolute"
-        inset={0}
-        maxH={1000}
-        z={0}
-        backgroundImage="linear-gradient(color3, color-transparent)"
-      />
-
       {/* main layout container */}
       <YStack minH="100vh" position="relative" z={1}>
         {/* content row with sidebar */}
@@ -35,7 +27,8 @@ export default function DocsLayout() {
             x="gtMd:20px"
           >
             <ScrollView showsVerticalScrollIndicator={false}>
-              <YStack pt={55} pb="18" px="2">
+              <YStack pt={55} pb="18" px="2" gap="4">
+                <View id="docs-version-picker-slot" px="2" />
                 <DocsMenuContents />
               </YStack>
             </ScrollView>
