@@ -43,6 +43,22 @@ describe('resolveSize', () => {
     expect(resolveSize(undefined, env)).toEqual(resolveSize('md', env))
   })
 
+  test('unknown names and numeric control sizes resolve the configured default', () => {
+    const expected = resolveSize('md', env)
+    expect(resolveSize('missing' as any, env)).toEqual(expected)
+    expect(resolveSize(44, env)).toEqual(expected)
+    expect(resolveSize(null, env)).toEqual(expected)
+    const custom = { ...env, sizes: { ...env.sizes!, default: 'lg' } }
+    expect(resolveSize('missing' as any, custom)).toEqual(resolveSize('lg', custom))
+  })
+
+  test('a missing or invalid default falls back to token 4 without recursion', () => {
+    const withoutSizes = { ...env, sizes: undefined }
+    expect(resolveSize('missing' as any, withoutSizes)).toEqual(resolveSize('4', env))
+    const invalid = { ...env, sizes: { ...env.sizes!, default: 'missing' } }
+    expect(resolveSize(undefined, invalid)).toEqual(resolveSize('4', env))
+  })
+
   test('icons round the font size up to the 4px grid unless the recipe sets one', () => {
     expect(resolveSize('sm', env).icon).toBe(16)
     expect(resolveSize('lg', env).icon).toBe(24)
