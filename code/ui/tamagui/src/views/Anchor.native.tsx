@@ -1,6 +1,7 @@
 import { createStyledHOC, styled } from '@tamagui/core'
 import type { SizableTextProps } from '@tamagui/text'
 import { SizableText } from '@tamagui/text'
+import { Linking } from 'react-native'
 
 export interface AnchorExtraProps {
   href?: string
@@ -20,9 +21,17 @@ const AnchorFrame = styled(SizableText, {
 export const Anchor = createStyledHOC(
   AnchorFrame,
   ({ href, target, rel, ...props }: AnchorProps, ref) => {
-    // the frame renders an `a`, but `styled` types it from SizableText, which
-    // does not carry the anchor attributes
-    const anchorAttributes = { href, target, rel } as AnchorProps
-    return <AnchorFrame {...props} {...anchorAttributes} ref={ref as any} />
+    return (
+      <AnchorFrame
+        {...props}
+        onPress={(event) => {
+          props.onPress?.(event)
+          if (href !== undefined) {
+            Linking.openURL(href)
+          }
+        }}
+        ref={ref as any}
+      />
+    )
   }
 )

@@ -39,7 +39,8 @@ import {
 import { getSize } from '@tamagui/get-token'
 import { startTransition } from '@tamagui/start-transition'
 import * as React from 'react'
-import { Keyboard, useWindowDimensions } from 'react-native'
+
+import { useRepositionOnNative } from './useRepositionOnNative'
 
 type ShiftProps = typeof shift extends (options: infer Opts) => void ? Opts : never
 type FlipProps = typeof flip extends (options: infer Opts) => void ? Opts : never
@@ -484,37 +485,7 @@ export function Popper(props: PopperProps) {
 
   const { middlewareData } = floating
 
-  if (process.env.TAMAGUI_TARGET === 'native') {
-    // On Native there's no autoupdate so we call update() when necessary
-
-    // Subscribe to window dimensions (orientation, scale, etc...)
-    const dimensions = useWindowDimensions()
-
-    // Subscribe to keyboard state
-    const [keyboardOpen, setKeyboardOpen] = React.useState(false)
-    React.useEffect(() => {
-      const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
-        startTransition(() => {
-          setKeyboardOpen(true)
-        })
-      })
-      const hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
-        startTransition(() => {
-          setKeyboardOpen(false)
-        })
-      })
-
-      return () => {
-        showSubscription.remove()
-        hideSubscription.remove()
-      }
-    }, [])
-
-    useIsomorphicLayoutEffect(() => {
-      if (passThrough) return
-      floating.update()
-    }, [passThrough, dimensions, keyboardOpen])
-  }
+  useRepositionOnNative(floating.update, passThrough)
 
   const popperContext = React.useMemo(() => {
     return {

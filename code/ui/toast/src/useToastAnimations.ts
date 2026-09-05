@@ -22,7 +22,6 @@ import {
   View as TamaguiView,
 } from '@tamagui/core'
 import * as React from 'react'
-import type { Animated } from 'react-native'
 
 export interface UseToastAnimationsOptions {
   /**
@@ -50,8 +49,8 @@ export interface ToastAnimationValues {
   stop: () => void
   /** the animated style to spread on the AnimatedView (for motion/reanimated drivers) */
   animatedStyle: any
-  /** the animated view component from the driver */
-  AnimatedView: typeof Animated.View
+  /** the animated view component from the driver, whose props are driver-specific */
+  AnimatedView: React.ComponentType<any>
   /** ref to attach to the drag wrapper element (for CSS driver direct DOM updates) */
   dragRef: React.RefObject<HTMLDivElement | null>
 }
@@ -160,7 +159,7 @@ export function useToastAnimations(
   const { onExitComplete, reducedMotion } = options
 
   const animationDriver = useAnimationDriver()
-  const AnimatedView = (animationDriver.View ?? TamaguiView) as typeof Animated.View
+  const AnimatedView = (animationDriver.View ?? TamaguiView) as React.ComponentType<any>
 
   // ref for direct DOM manipulation during web pointer moves
   const dragRef = React.useRef<HTMLDivElement>(null)

@@ -9,9 +9,9 @@ import { getVariableValue, styled } from '@tamagui/core'
 import { getSize } from '@tamagui/get-token'
 import { YStack } from '@tamagui/stacks'
 import * as React from 'react'
-import { View } from 'react-native'
 
 import { ARROW_KEYS, PAGE_KEYS, SLIDER_NAME, useSliderContext } from './constants'
+import { SliderResponder } from './SliderResponder'
 import type { ScopedProps, SliderImplProps } from './types'
 
 const SliderFrameBase = styled(YStack, {
@@ -44,7 +44,7 @@ export const SliderFrame = SliderFrameBase.resolve((props) => {
   }
 })
 
-export const SliderImpl = createRefComponent<View, SliderImplProps>(
+export const SliderImpl = createRefComponent<TamaguiElement, SliderImplProps>(
   (props: ScopedProps<SliderImplProps>, forwardedRef) => {
     const {
       __scopeSlider,
@@ -104,8 +104,6 @@ export const SliderImpl = createRefComponent<View, SliderImplProps>(
     )
 
     return (
-      // wrap with plain RN View for responder events - tamagui views no longer handle responder events on web
-
       <SliderFrame
         size="4"
         ref={forwardedRef as any}
@@ -129,18 +127,13 @@ export const SliderImpl = createRefComponent<View, SliderImplProps>(
           },
         })}
       >
-        <View
-          onMoveShouldSetResponderCapture={() => true}
-          onMoveShouldSetResponder={() => true}
-          onStartShouldSetResponder={() => true}
-          onResponderTerminationRequest={() => false}
+        <SliderResponder
           onResponderGrant={handleResponderGrant}
           onResponderMove={handleResponderMove}
           onResponderRelease={handleResponderRelease}
-          style={{ inset: 0, position: 'absolute' }}
         >
           {children}
-        </View>
+        </SliderResponder>
       </SliderFrame>
     )
   }

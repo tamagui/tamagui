@@ -90,3 +90,10 @@ export type SliderContextValue = {
   thumbs: Map<TamaguiElement, number>
   orientation: SliderProps['orientation']
 }
+
+export type SliderResponderProps = {
+  onResponderGrant: (event: any) => void
+  onResponderMove: (event: any) => void
+  onResponderRelease: (event: any) => void
+  children?: React.ReactNode
+}
