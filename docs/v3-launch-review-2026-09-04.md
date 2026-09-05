@@ -484,3 +484,21 @@ final acceptance; the previous revision's successful jobs are not substituted
 for the new run.
 Updating `v3-beta` crosses the npm publication boundary and still needs the
 owner's explicit confirmation. Main integration remains PR #4124.
+
+### Final migration-guide consistency pass
+
+The guide's two general API scans no longer flag supported Config v5 imports,
+retained palette names, or the optional `config-v5` builder export
+`defaultComponentThemes`. Those design changes belong to the separate v6
+follow-up. The config replacement table now explicitly distinguishes adopting
+v6 defaults from preserving resolved values for the intermediate checkpoint.
+The required builder-package replacement points to freezing values or the
+compatibility package, and half-step guidance no longer claims that v5 and v6
+resolve to identical values. Astra reviewed these checkpoint corrections.
+
+At `7cd2a82b69`, both Checks workflows, Registry, both Maestro workflows, and
+both Detox workflows passed. The exact deployed revision passed all 16 homepage
+and docs browser checks at normal timeouts on a hosted runner in 39.4 seconds:
+[deployed browser verification](https://github.com/tamagui/tamagui/actions/runs/33958859429).
+This final documentation correction has its own PR checks; use the PR for the
+current revision's status.
