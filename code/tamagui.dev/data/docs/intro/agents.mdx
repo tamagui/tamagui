@@ -33,13 +33,37 @@ Use this when the project already runs Tamagui.
 
 ```
 Upgrade this project to Tamagui v3. Run `npx tamagui@beta migrate --from v2` and
-follow the brief it prints. Run the flat-values codemod in dry-run first, show me the
-report, and wait for me to read it before you write anything. Tell me every site the
-codemod refused and why.
+follow the brief it prints. Aim for the intermediate checkpoint: V3 APIs with my
+existing design values. Identify the package version and config version separately.
+If I use Config v5 or v5-subtle, keep it; do not move to Config v6, remap its colors
+or scales, or convert the whole app to html.* or Tailwind in this pass.
+
+Run the flat-values codemod in dry-run first, show me the report, and wait for me to
+read it before you write anything. Tell me every site the codemod refused and why.
+After the required API changes, compare the same screens and interactions against
+the baseline. A working V3 app on Config v5 is a completed upgrade. List optional
+Config v6 or frontend changes separately; do not begin them automatically.
 ```
 
 Use `--from v1` if the project is still on v1; the brief will sequence the v1-to-v2
 pass before the v2-to-v3 one.
+
+### Already on V3 with Config v5
+
+Config v5 is a supported checkpoint, not unfinished V3 work. Use this narrower
+brief when an agent is resuming an upgrade:
+
+```
+This app already uses Tamagui V3 with Config v5. Check what remains of the API
+migration before changing anything. Keep Config v5 and our current resolved design
+values. Do not rerun completed codemods or adopt Config v6 by default. Validate the
+remaining changes in real screens, and report any optional design migration as a
+separate follow-up.
+```
+
+If you later choose Config v6, start a separate change with its own visual baseline.
+The same token name can resolve to a different spacing, font, or color value, and
+breakpoint names can change meaning. See [the staged config migration](/docs/guides/how-to-upgrade#recommended-defer-config-v6-to-its-own-migration).
 
 The codemod converts only what it can prove, and on real codebases roughly a third of
 sites need a person. Measured on two apps: 80% converted cleanly on the Bento corpus

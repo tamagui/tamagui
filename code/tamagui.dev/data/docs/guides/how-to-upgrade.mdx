@@ -15,6 +15,25 @@ behavior should be verified in real screens.
   5+ baseline.
 </Notice>
 
+## Start with a smaller, complete upgrade
+
+The runtime version and config version are separate. **V3 APIs with your existing
+design values is the recommended first checkpoint.**
+
+- **From V2:** migrate the packages and required APIs while preserving your token,
+  theme, font, media, and animation values. Do not replace a custom config with
+  v6 defaults as part of the syntax conversion.
+- **From Config v5 or v5-subtle:** keep that supported config through the API
+  migration. Keep its 12-step colors and physical scales; the v6 remaps later in
+  this guide are for a separate design migration.
+- **Already on V3 with Config v5:** check the remaining API work and validate it.
+  You do not need to adopt Config v6 to finish upgrading to V3.
+
+Record representative screens before editing. Finish with typecheck, build, report
+review, and the same browser/native interactions and screenshots. Defer Config v6,
+wholesale `html.*` conversion, and Tailwind adoption unless you chose them as
+separate work. The [agent briefs](/docs/intro/agents) make this checkpoint explicit.
+
 ## Required: migrate tokens and conditional styles
 
 V3 accepts bare token and theme names and flat property clauses only. There is
@@ -268,8 +287,9 @@ and color across the whole application, and no tool can tell you whether the
 result is right.
 
 Stacking them means every visual difference has two possible causes and none of
-them can be bisected. Staying on v5 makes the flat-values conversion
-value-neutral, so anything that moves is a bug rather than a decision.
+them can be bisected. Staying on v5 preserves the scales while you convert syntax. Component API changes
+can still affect layout, so compare actual controls and interactions against the
+baseline rather than accepting visual changes automatically.
 
 Adopt v6 afterwards, piece by piece, when there is budget for the visual review.
 
