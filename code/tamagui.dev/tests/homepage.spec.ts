@@ -8,11 +8,31 @@ async function hydratedHome(page: Page) {
   })
 }
 
-for (const [name, path, heading] of [
-  ['Get started (docs)', '/docs/intro/introduction', 'Introduction'],
-  ['Explore HTML primitives ↗', '/docs/core/html-primitives', 'HTML primitives'],
-  ['Explore the components ↗', '/ui/button', 'Button'],
-  ['Speaks Tailwind, too ↗', '/docs/core/tailwind', 'Tamagui Tailwind'],
+for (const [name, path, heading, source] of [
+  [
+    'Get started (docs)',
+    '/docs/intro/introduction',
+    'Introduction',
+    'data/docs/intro/introduction',
+  ],
+  [
+    'Explore HTML primitives ↗',
+    '/docs/core/html-primitives',
+    'HTML primitives',
+    'data/docs/core/html-primitives',
+  ],
+  [
+    'Explore the components ↗',
+    '/ui/button',
+    'Button',
+    'data/docs/components/button/3.0.0',
+  ],
+  [
+    'Speaks Tailwind, too ↗',
+    '/docs/core/tailwind',
+    'Tamagui Tailwind',
+    'data/docs/core/tailwind',
+  ],
 ] as const) {
   test(`homepage navigates to ${path} without a document reload`, async ({ page }) => {
     const errors: string[] = []
@@ -30,6 +50,12 @@ for (const [name, path, heading] of [
       page.getByRole('heading', { name: heading, exact: true }).first()
     ).toBeVisible()
     expect(await page.evaluate(() => (window as any).__launchNavigationMarker)).toBe(true)
+    await expect(
+      page.getByRole('link', { name: 'Edit this page on GitHub.' })
+    ).toHaveAttribute(
+      'href',
+      `https://github.com/tamagui/tamagui/edit/main/code/tamagui.dev/${source}.mdx`
+    )
     expect(errors).toEqual([])
   })
 }

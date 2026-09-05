@@ -185,14 +185,18 @@ type TamaguiGetMDXOptions = GetMDXOptions & {
 // tamagui.dev keeps its native <DocCodeBlock> (copy button, hero collapse, tabs),
 // so we compile with satteri but skip Expressive Code and feed DocCodeBlock the
 // same prism-tokenized output + meta props it got from the old rehype pipeline.
-export const getMDXBySlug = (
+export const getMDXBySlug = async (
   basePath: string,
   slug: string,
   options: TamaguiGetMDXOptions = {}
 ) => {
   const { mode = 'styled', mdastPlugins, hastPlugins, ...rest } = options
 
-  return getMDXBySlugBase(basePath, slug, {
+  const resolvedSlug =
+    !slug.includes('.') && basePath.includes('components')
+      ? `${slug}/${getAllVersionsFromPath(path.join(basePath, slug))[0]}`
+      : slug
+  const result = await getMDXBySlugBase(basePath, resolvedSlug, {
     ...rest,
     expressiveCode: false,
     mdastPlugins: [heroTemplate, ...(mdastPlugins ?? [])],
@@ -203,4 +207,14 @@ export const getMDXBySlug = (
       ...(hastPlugins ?? []),
     ],
   } as GetMDXOptions)
+
+  // mdx-rust compiles source metadata but does not retain its filename. Docs
+  // use the resolved filename, including component versions, for edit links.
+  return {
+    ...result,
+    frontmatter: {
+      ...result.frontmatter,
+      slug: path.posix.join(basePath, resolvedSlug),
+    },
+  }
 }

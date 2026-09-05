@@ -70,7 +70,7 @@ export function DocComponentsPage() {
 
   const GITHUB_URL = 'https://github.com'
   const REPO_NAME = 'tamagui/tamagui'
-  const editUrl = `${GITHUB_URL}/${REPO_NAME}/edit/master/code/tamagui.dev/${frontmatter.slug}.mdx`
+  const editUrl = `${GITHUB_URL}/${REPO_NAME}/edit/main/code/tamagui.dev/${frontmatter.slug}.mdx`
 
   return (
     <DocsPageFrame
