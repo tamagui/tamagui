@@ -11,6 +11,27 @@ import { expect, test } from '@playwright/test'
 
 const PAGE = '/docs/guides/how-to-upgrade'
 
+for (const syntax of ['tailwind', 'unstyled']) {
+  test(`${syntax} docs navigate between pages without reloading the document`, async ({
+    page,
+  }) => {
+    const errors: string[] = []
+    page.on('pageerror', (error) => errors.push(error.message))
+    await page.goto(`/${syntax}/intro/introduction`)
+    await expect(page.getByTestId('docs-syntax')).toBeVisible()
+    await page.evaluate(() => {
+      ;(window as any).__docsNavigationMarker = true
+    })
+    await page.getByRole('link', { name: '@tamagui/core', exact: true }).click()
+    await expect(page).toHaveURL(new RegExp(`/${syntax}/core/configuration$`))
+    await expect(
+      page.getByRole('heading', { name: 'Configuration', exact: true })
+    ).toBeVisible()
+    expect(await page.evaluate(() => (window as any).__docsNavigationMarker)).toBe(true)
+    expect(errors).toEqual([])
+  })
+}
+
 async function codeText(page: import('@playwright/test').Page) {
   return (await page.locator('pre').allInnerTexts()).join('\n---\n')
 }

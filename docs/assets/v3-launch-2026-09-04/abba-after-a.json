@@ -1,0 +1,707 @@
+{
+  "label": "after-a",
+  "scenario": "clause-string",
+  "fixtureScenario": "flat",
+  "extract": "0",
+  "scale": 200,
+  "iterations": 40,
+  "warmups": 3,
+  "cpuSamplingUs": 100,
+  "heapSamplingBytes": 1024,
+  "commit": "110ae39aaa",
+  "hostsPerMount": 200,
+  "rendersPerIteration": 400,
+  "timings": {
+    "mountMedianMs": 5.5,
+    "mountMinMs": 4.8,
+    "updateMedianMs": 8.4,
+    "updateMinMs": 6.2,
+    "raw": [
+      {
+        "mount": 6.6,
+        "update": 11.9
+      },
+      {
+        "mount": 5.7,
+        "update": 10.1
+      },
+      {
+        "mount": 5.7,
+        "update": 10.3
+      },
+      {
+        "mount": 4.9,
+        "update": 8.7
+      },
+      {
+        "mount": 6.1,
+        "update": 8.1
+      },
+      {
+        "mount": 5.7,
+        "update": 8.3
+      },
+      {
+        "mount": 5.8,
+        "update": 9.1
+      },
+      {
+        "mount": 5.6,
+        "update": 8
+      },
+      {
+        "mount": 6.2,
+        "update": 8.2
+      },
+      {
+        "mount": 5.5,
+        "update": 8.6
+      },
+      {
+        "mount": 5.2,
+        "update": 7.4
+      },
+      {
+        "mount": 6,
+        "update": 8.4
+      },
+      {
+        "mount": 5.2,
+        "update": 7.5
+      },
+      {
+        "mount": 6.2,
+        "update": 9.8
+      },
+      {
+        "mount": 5,
+        "update": 7.2
+      },
+      {
+        "mount": 5.2,
+        "update": 8.4
+      },
+      {
+        "mount": 6.4,
+        "update": 9.4
+      },
+      {
+        "mount": 5.8,
+        "update": 8.3
+      },
+      {
+        "mount": 5.1,
+        "update": 9.4
+      },
+      {
+        "mount": 5.3,
+        "update": 9.2
+      },
+      {
+        "mount": 5.1,
+        "update": 7.7
+      },
+      {
+        "mount": 5.2,
+        "update": 7.6
+      },
+      {
+        "mount": 5.8,
+        "update": 9.6
+      },
+      {
+        "mount": 7.4,
+        "update": 8
+      },
+      {
+        "mount": 5.6,
+        "update": 8.6
+      },
+      {
+        "mount": 5.5,
+        "update": 7.5
+      },
+      {
+        "mount": 6.8,
+        "update": 9.2
+      },
+      {
+        "mount": 5.4,
+        "update": 11.2
+      },
+      {
+        "mount": 5,
+        "update": 8.2
+      },
+      {
+        "mount": 5,
+        "update": 9.7
+      },
+      {
+        "mount": 5,
+        "update": 8
+      },
+      {
+        "mount": 4.8,
+        "update": 8.9
+      },
+      {
+        "mount": 5.1,
+        "update": 7.4
+      },
+      {
+        "mount": 4.9,
+        "update": 7.7
+      },
+      {
+        "mount": 5.1,
+        "update": 7.3
+      },
+      {
+        "mount": 5.5,
+        "update": 7.1
+      },
+      {
+        "mount": 5.6,
+        "update": 6.2
+      },
+      {
+        "mount": 5.5,
+        "update": 9.6
+      },
+      {
+        "mount": 5.9,
+        "update": 11.8
+      },
+      {
+        "mount": 6.3,
+        "update": 8.7
+      }
+    ]
+  },
+  "allocation": {
+    "totalSampledBytes": 236810780,
+    "bytesPerIteration": 5920270,
+    "bytesPerRender": 14800.7,
+    "bySourceBytesPerIteration": [
+      {
+        "name": "code/core/web/dist/esm/helpers/getSplitStyles.mjs",
+        "value": 2206173.9
+      },
+      {
+        "name": "node_modules/react-dom/cjs/react-dom-client.production.js",
+        "value": 1106175.7
+      },
+      {
+        "name": "code/core/web/dist/esm/createComponent.mjs",
+        "value": 616568.8
+      },
+      {
+        "name": "code/core/web/dist/esm/hooks/useComponentState.mjs",
+        "value": 310024.8
+      },
+      {
+        "name": "code/core/web/dist/esm/hooks/useThemeState.mjs",
+        "value": 134385.9
+      },
+      {
+        "name": "code/core/web/dist/esm/hooks/useMedia.mjs",
+        "value": 94499.7
+      },
+      {
+        "name": "code/core/core/dist/esm/runtime.mjs",
+        "value": 85966.7
+      },
+      {
+        "name": "node_modules/react/cjs/react.production.js",
+        "value": 85014.6
+      },
+      {
+        "name": "code/core/web/dist/esm/helpers/grammarConfig.mjs",
+        "value": 71549.1
+      },
+      {
+        "name": "code/core/web/dist/esm/helpers/setElementProps.mjs",
+        "value": 34902.8
+      },
+      {
+        "name": "code/comparisons/tamagui-bench/src/index.tsx",
+        "value": 24223.7
+      },
+      {
+        "name": "code/core/web/dist/esm/hooks/useTheme.mjs",
+        "value": 22857.6
+      },
+      {
+        "name": "code/core/web/dist/esm/eventHandling.mjs",
+        "value": 14701.2
+      },
+      {
+        "name": "code/core/web/dist/esm/helpers/mergeProps.mjs",
+        "value": 14040.8
+      },
+      {
+        "name": "node_modules/react/cjs/react-jsx-runtime.production.js",
+        "value": 13106
+      },
+      {
+        "name": "code/core/web/dist/esm/helpers/styleStaticConfigCore.mjs",
+        "value": 12251.4
+      },
+      {
+        "name": "code/core/web/dist/esm/views/Theme.mjs",
+        "value": 11167.9
+      },
+      {
+        "name": "code/core/use-presence/dist/esm/usePresence.mjs",
+        "value": 5813.5
+      },
+      {
+        "name": "node_modules/scheduler/cjs/scheduler.production.js",
+        "value": 1171.4
+      },
+      {
+        "name": "code/core/use-element-layout/dist/esm/index.mjs",
+        "value": 829.5
+      },
+      {
+        "name": "code/comparisons/shared/bench.ts",
+        "value": 594.6
+      },
+      {
+        "name": "code/core/web/dist/esm/hooks/useSplitStyles.mjs",
+        "value": 27
+      }
+    ],
+    "byFrameBytesPerIteration": [
+      {
+        "name": "code/core/web/dist/esm/createComponent.mjs:173 u",
+        "value": 567135
+      },
+      {
+        "name": "code/core/web/dist/esm/helpers/getSplitStyles.mjs:1059 lo",
+        "value": 409257.2
+      },
+      {
+        "name": "code/core/web/dist/esm/helpers/getSplitStyles.mjs:500 Va",
+        "value": 377694.2
+      },
+      {
+        "name": "code/core/web/dist/esm/helpers/getSplitStyles.mjs:243 Ba",
+        "value": 309668.8
+      },
+      {
+        "name": "code/core/web/dist/esm/hooks/useComponentState.mjs:10 es",
+        "value": 295901.9
+      },
+      {
+        "name": "code/core/web/dist/esm/helpers/getSplitStyles.mjs:72 ca",
+        "value": 284299.9
+      },
+      {
+        "name": "code/core/web/dist/esm/helpers/getSplitStyles.mjs:43 aa",
+        "value": 273205.4
+      },
+      {
+        "name": "push <native>",
+        "value": 249568.7
+      },
+      {
+        "name": "code/core/web/dist/esm/helpers/getSplitStyles.mjs:1183 W",
+        "value": 248700.3
+      },
+      {
+        "name": "set <native>",
+        "value": 228144.6
+      },
+      {
+        "name": "node_modules/react-dom/cjs/react-dom-client.production.js:5509 useLayoutEffect",
+        "value": 172443.6
+      },
+      {
+        "name": "Map <native>",
+        "value": 153625.7
+      },
+      {
+        "name": "node_modules/react-dom/cjs/react-dom-client.production.js:5128 ps",
+        "value": 136692.8
+      },
+      {
+        "name": "code/core/web/dist/esm/helpers/getSplitStyles.mjs:1097 H",
+        "value": 131968.5
+      },
+      {
+        "name": "Set <native>",
+        "value": 117413.1
+      },
+      {
+        "name": "code/core/web/dist/esm/helpers/getSplitStyles.mjs:1357 Do",
+        "value": 93107.6
+      },
+      {
+        "name": "code/core/core/dist/esm/runtime.mjs:28 usePropsTransform",
+        "value": 85966.7
+      },
+      {
+        "name": "node_modules/react/cjs/react.production.js:409 e.createElement",
+        "value": 85014.6
+      },
+      {
+        "name": "node_modules/react-dom/cjs/react-dom-client.production.js:5097 cs",
+        "value": 84402
+      },
+      {
+        "name": "node_modules/react-dom/cjs/react-dom-client.production.js:5100 ls",
+        "value": 81907.2
+      },
+      {
+        "name": "code/core/web/dist/esm/hooks/useThemeState.mjs:42 _r",
+        "value": 78265.2
+      },
+      {
+        "name": "code/core/web/dist/esm/hooks/useMedia.mjs:184 Bn",
+        "value": 75350.5
+      },
+      {
+        "name": "code/core/web/dist/esm/helpers/grammarConfig.mjs:157 compositeValue",
+        "value": 71549.1
+      },
+      {
+        "name": "node_modules/react-dom/cjs/react-dom-client.production.js:4685 Ro",
+        "value": 61872.3
+      },
+      {
+        "name": "node_modules/react-dom/cjs/react-dom-client.production.js:5530 useReducer",
+        "value": 53865.4
+      },
+      {
+        "name": "code/core/web/dist/esm/helpers/getSplitStyles.mjs:1460 ko",
+        "value": 53056.5
+      },
+      {
+        "name": "(V8 API) <native>",
+        "value": 51613.6
+      },
+      {
+        "name": "node_modules/react-dom/cjs/react-dom-client.production.js:5559 useRef",
+        "value": 49814.4
+      },
+      {
+        "name": "node_modules/react-dom/cjs/react-dom-client.production.js:9129 ol",
+        "value": 45340
+      },
+      {
+        "name": "assign <native>",
+        "value": 43599.8
+      },
+      {
+        "name": "node_modules/react-dom/cjs/react-dom-client.production.js:2521 di",
+        "value": 43131.4
+      },
+      {
+        "name": "node_modules/react-dom/cjs/react-dom-client.production.js:5071 os",
+        "value": 42724.8
+      },
+      {
+        "name": "code/core/web/dist/esm/helpers/setElementProps.mjs:3 zo",
+        "value": 34902.8
+      },
+      {
+        "name": "join <native>",
+        "value": 33654.4
+      },
+      {
+        "name": "bind <native>",
+        "value": 31964.4
+      },
+      {
+        "name": "node_modules/react-dom/cjs/react-dom-client.production.js:12957 $",
+        "value": 29246.9
+      },
+      {
+        "name": "node_modules/react-dom/cjs/react-dom-client.production.js:3365 l",
+        "value": 27852.9
+      },
+      {
+        "name": "node_modules/react-dom/cjs/react-dom-client.production.js:5068 as",
+        "value": 25586.4
+      },
+      {
+        "name": "code/core/web/dist/esm/helpers/getSplitStyles.mjs:158 ua",
+        "value": 25159.5
+      },
+      {
+        "name": "keys <native>",
+        "value": 23665
+      }
+    ]
+  },
+  "cpu": {
+    "totalSampledMs": 9524.23,
+    "msPerIteration": 238.106,
+    "bySourceMsPerIteration": [
+      {
+        "name": "code/core/web/dist/esm/helpers/getSplitStyles.mjs",
+        "value": 4.905
+      },
+      {
+        "name": "node_modules/react-dom/cjs/react-dom-client.production.js",
+        "value": 3.806
+      },
+      {
+        "name": "code/core/web/dist/esm/createComponent.mjs",
+        "value": 1.21
+      },
+      {
+        "name": "code/core/web/dist/esm/hooks/useThemeState.mjs",
+        "value": 0.486
+      },
+      {
+        "name": "code/core/web/dist/esm/eventHandling.mjs",
+        "value": 0.447
+      },
+      {
+        "name": "code/core/use-element-layout/dist/esm/index.mjs",
+        "value": 0.317
+      },
+      {
+        "name": "code/core/core/dist/esm/runtime.mjs",
+        "value": 0.309
+      },
+      {
+        "name": "code/core/web/dist/esm/hooks/useComponentState.mjs",
+        "value": 0.304
+      },
+      {
+        "name": "code/core/web/dist/esm/hooks/useMedia.mjs",
+        "value": 0.291
+      },
+      {
+        "name": "code/core/use-presence/dist/esm/usePresence.mjs",
+        "value": 0.189
+      },
+      {
+        "name": "code/core/use-did-finish-ssr/dist/esm/index.mjs",
+        "value": 0.133
+      },
+      {
+        "name": "node_modules/react/cjs/react.production.js",
+        "value": 0.111
+      },
+      {
+        "name": "code/core/web/dist/esm/helpers/mergeProps.mjs",
+        "value": 0.081
+      },
+      {
+        "name": "code/core/compose-refs/dist/esm/compose-refs.mjs",
+        "value": 0.056
+      },
+      {
+        "name": "code/comparisons/shared/bench.ts",
+        "value": 0.054
+      },
+      {
+        "name": "code/core/web/dist/esm/helpers/grammarConfig.mjs",
+        "value": 0.052
+      },
+      {
+        "name": "code/core/web/dist/esm/hooks/useTheme.mjs",
+        "value": 0.04
+      },
+      {
+        "name": "code/core/web/dist/esm/hooks/getThemeProxied.mjs",
+        "value": 0.037
+      },
+      {
+        "name": "code/comparisons/tamagui-bench/src/index.tsx",
+        "value": 0.032
+      },
+      {
+        "name": "code/core/web/dist/esm/helpers/subscribeToContextGroup.mjs",
+        "value": 0.03
+      },
+      {
+        "name": "code/core/style-grammar/dist/esm/runtime/scanFlatValue.mjs",
+        "value": 0.029
+      },
+      {
+        "name": "code/core/web/dist/esm/helpers/styledDynamic.mjs",
+        "value": 0.023
+      },
+      {
+        "name": "node_modules/scheduler/cjs/scheduler.production.js",
+        "value": 0.021
+      },
+      {
+        "name": "code/core/web/dist/esm/config.mjs",
+        "value": 0.016
+      },
+      {
+        "name": "node_modules/react/cjs/react-jsx-runtime.production.js",
+        "value": 0.015
+      }
+    ],
+    "byFrameMsPerIteration": [
+      {
+        "name": "(idle) <native>",
+        "value": 213.615
+      },
+      {
+        "name": "(program) <native>",
+        "value": 7.702
+      },
+      {
+        "name": "code/core/web/dist/esm/helpers/getSplitStyles.mjs:1357 Do",
+        "value": 1.176
+      },
+      {
+        "name": "(anonymous) <native>",
+        "value": 1.124
+      },
+      {
+        "name": "code/core/web/dist/esm/createComponent.mjs:173 u",
+        "value": 1.072
+      },
+      {
+        "name": "(garbage collector) <native>",
+        "value": 0.785
+      },
+      {
+        "name": "node_modules/react-dom/cjs/react-dom-client.production.js:1273 Kt",
+        "value": 0.663
+      },
+      {
+        "name": "code/core/web/dist/esm/helpers/getSplitStyles.mjs:500 Va",
+        "value": 0.66
+      },
+      {
+        "name": "node_modules/react-dom/cjs/react-dom-client.production.js:8593 Vc",
+        "value": 0.569
+      },
+      {
+        "name": "code/core/web/dist/esm/helpers/getSplitStyles.mjs:1296 xo",
+        "value": 0.52
+      },
+      {
+        "name": "code/core/web/dist/esm/helpers/getSplitStyles.mjs:1059 lo",
+        "value": 0.509
+      },
+      {
+        "name": "code/core/web/dist/esm/eventHandling.mjs:1 Nr",
+        "value": 0.447
+      },
+      {
+        "name": "code/core/web/dist/esm/helpers/getSplitStyles.mjs:1183 W",
+        "value": 0.327
+      },
+      {
+        "name": "code/core/core/dist/esm/runtime.mjs:28 usePropsTransform",
+        "value": 0.309
+      },
+      {
+        "name": "code/core/web/dist/esm/helpers/getSplitStyles.mjs:243 Ba",
+        "value": 0.292
+      },
+      {
+        "name": "code/core/web/dist/esm/helpers/getSplitStyles.mjs:1159 fo",
+        "value": 0.281
+      },
+      {
+        "name": "code/core/web/dist/esm/hooks/useComponentState.mjs:10 es",
+        "value": 0.244
+      },
+      {
+        "name": "node_modules/react-dom/cjs/react-dom-client.production.js:8725 qc",
+        "value": 0.222
+      },
+      {
+        "name": "previewNode <native>",
+        "value": 0.205
+      },
+      {
+        "name": "node_modules/react-dom/cjs/react-dom-client.production.js:8571 Bc",
+        "value": 0.197
+      },
+      {
+        "name": "node_modules/react-dom/cjs/react-dom-client.production.js:11524 Ru",
+        "value": 0.196
+      },
+      {
+        "name": "code/core/use-presence/dist/esm/usePresence.mjs:4 Ol",
+        "value": 0.189
+      },
+      {
+        "name": "node_modules/react-dom/cjs/react-dom-client.production.js:2707 Ai",
+        "value": 0.184
+      },
+      {
+        "name": "code/core/web/dist/esm/hooks/useThemeState.mjs:42 _r",
+        "value": 0.171
+      },
+      {
+        "name": "code/core/web/dist/esm/helpers/getSplitStyles.mjs:72 ca",
+        "value": 0.17
+      },
+      {
+        "name": "code/core/web/dist/esm/helpers/getSplitStyles.mjs:1531 Ao",
+        "value": 0.168
+      },
+      {
+        "name": "code/core/use-element-layout/dist/esm/index.mjs:228 cl",
+        "value": 0.163
+      },
+      {
+        "name": "node_modules/react-dom/cjs/react-dom-client.production.js:5053 is",
+        "value": 0.158
+      },
+      {
+        "name": "code/core/web/dist/esm/helpers/getSplitStyles.mjs:158 ua",
+        "value": 0.156
+      },
+      {
+        "name": "code/core/use-element-layout/dist/esm/index.mjs:199 sl",
+        "value": 0.154
+      },
+      {
+        "name": "code/core/web/dist/esm/hooks/useThemeState.mjs:79 (anonymous)",
+        "value": 0.152
+      },
+      {
+        "name": "code/core/web/dist/esm/helpers/getSplitStyles.mjs:1455 Oo",
+        "value": 0.137
+      },
+      {
+        "name": "query <native>",
+        "value": 0.132
+      },
+      {
+        "name": "code/core/web/dist/esm/hooks/useThemeState.mjs:150 xr",
+        "value": 0.129
+      },
+      {
+        "name": "removeAttribute <native>",
+        "value": 0.129
+      },
+      {
+        "name": "code/core/use-did-finish-ssr/dist/esm/index.mjs:7 Qo",
+        "value": 0.126
+      },
+      {
+        "name": "node_modules/react-dom/cjs/react-dom-client.production.js:4455 ko",
+        "value": 0.126
+      },
+      {
+        "name": "code/core/web/dist/esm/helpers/getSplitStyles.mjs:1460 ko",
+        "value": 0.116
+      },
+      {
+        "name": "(anonymous) <unmapped>",
+        "value": 0.115
+      },
+      {
+        "name": "node_modules/react/cjs/react.production.js:409 e.createElement",
+        "value": 0.111
+      }
+    ]
+  }
+}
