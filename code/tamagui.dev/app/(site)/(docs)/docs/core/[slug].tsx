@@ -1,10 +1,16 @@
-// the page body lives outside the route tree so this route module is a pure
-// re-export, same as its tailwind and unstyled mirrors. a route that both holds
-// the implementation and is imported by another route gets merged into a shared
-// chunk with aliased export names, and One reads generateStaticParams off the
-// built chunk by name, so the build fails with "Missing generateStaticParams"
-export {
-  DocCorePage as default,
-  loader,
-  generateStaticParams,
+import {
+  loader as loadPage,
+  generateStaticParams as pageParams,
 } from '~/features/docs/pages/CoreDocPage'
+
+export { DocCorePage as default } from '~/features/docs/pages/CoreDocPage'
+
+// One replaces inline route loaders with client stubs. Re-exporting a loader
+// leaves its export in the generated data module, producing a duplicate export.
+export function loader(props: Parameters<typeof loadPage>[0]) {
+  return loadPage(props)
+}
+
+export function generateStaticParams() {
+  return pageParams()
+}
