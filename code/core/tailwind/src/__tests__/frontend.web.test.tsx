@@ -372,6 +372,17 @@ describe('class-first styled()', () => {
 })
 
 describe('frontend isolation', () => {
+  test('ordinary class names preserve Unicode whitespace at every position', () => {
+    const styles = splitTailwindStyles(CoreView, {
+      className: ' first\tsecond\nnon\u00a0breaking  last ',
+    })
+    expect(styles.viewProps.className).toContain('first second non\u00a0breaking last')
+    const unicode = splitTailwindStyles(CoreView, {
+      className: '\u00a0custom\u00a0',
+    })
+    expect(unicode.viewProps.className).toContain('\u00a0custom\u00a0')
+  })
+
   test('the regular View is a different component object with no descriptor', () => {
     expect(CoreView).not.toBe(View)
     expect((CoreView.staticConfig as any).styleFrontend).toBeUndefined()

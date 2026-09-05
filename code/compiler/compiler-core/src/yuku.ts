@@ -53,12 +53,11 @@ class YukuCandidate implements AnalyzerCandidate {
   #definitionSite(symbol: YukuSymbol): DefinitionSite | null {
     const declaration = symbol.declarations[0]
     if (!declaration) return null
-    const program = asAstNode(symbol.module.ast, `${symbol.module.path} program`)
     return definitionFromDeclaration(
       symbol.module.path,
       symbol.name,
-      program,
-      asAstNode(declaration, `${symbol.name} declaration`)
+      asAstNode(declaration, `${symbol.name} declaration`),
+      (node) => symbol.module.parentOf(node as any) as AstNode | null
     )
   }
 

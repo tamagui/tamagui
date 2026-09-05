@@ -26,6 +26,14 @@ describe('tamagui migrate', () => {
     expect(result.stdout).toContain('`getExpandedShorthand(key, props)`')
     expect(result.stdout).toContain('`splitStyleProps(props)`')
     expect(result.stdout).toContain('### 15. Verification')
+    const [required, optional] = result.stdout.split(
+      '### Optional follow-up: Config v6, only when separately requested'
+    )
+    expect(required).toContain('V3 API, existing design values')
+    expect(required).toContain('Already running V3 with Config v5')
+    expect(required).toContain('A validated V3 app on Config v5 is a completed migration')
+    expect(required).not.toContain('`color12` -> `color11`')
+    expect(optional).toContain('`color12` -> `color11`')
   })
 
   it('prints the v1 to v3 migration prompt with a v1 to v2 pass first', () => {
@@ -45,6 +53,9 @@ describe('tamagui migrate', () => {
     expect(result.stdout).toContain('`animation` -> `transition`')
     expect(result.stdout).toContain('After the v1 to v2 pass is complete')
     expect(result.stdout).toContain('## v2 -> v3 migration prompt')
+    const initialPass = result.stdout.split('## v2 -> v3 migration prompt')[0]
+    expect(initialPass).toContain("Preserve the app's existing token, theme, font")
+    expect(initialPass).not.toContain('Move to `@tamagui/config/v6`')
   })
 
   it('prints concise command help', () => {

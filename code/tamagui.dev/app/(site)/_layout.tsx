@@ -1,5 +1,5 @@
 import { Slot, usePathname } from 'one'
-import { Theme, Toast, YStack } from 'tamagui'
+import { Theme, YStack } from 'tamagui'
 import { Footer } from '~/features/site/Footer'
 import { Header } from '~/features/site/header/Header'
 import { useSiteTheme } from '~/features/site/theme/useSiteTheme'
@@ -41,11 +41,6 @@ export default function SiteLayout() {
         <Slot />
       </Theme>
       {!hideFooter && <Footer />}
-      <Toast>
-        <Toast.Viewport>
-          <Toast.List />
-        </Toast.Viewport>
-      </Toast>
     </YStack>
   )
 }

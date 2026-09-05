@@ -6,7 +6,7 @@ description: |
   condition objects to flat values, running the flat-values codemod, or fixing v3
   breaking changes. Triggers: "upgrade tamagui", "migrate to v3", "flat values",
   "$ tokens", "hoverStyle", "codemod", "tamagui v3 breaking changes".
-version: 1.0.0
+version: 1.1.0
 ---
 
 # Upgrading to Tamagui v3
@@ -30,7 +30,7 @@ The rules that make v3 readable once you know them:
   numbers are raw.
 - A value is `base? clause*`. Clause modifiers match Tailwind spelling:
   `hover:`, `press:`, `dark:`, `sm:`, `web:`, `group-hover/card:`, `@sm/card:`.
-  The last matching clause wins; `dark:hover:x` requires both.
+  More-specific matching conditions win; authored order breaks equal-specificity ties. `dark:hover:x` requires both.
 - Multi-word built-in names are kebab-case: `$backgroundHover` is now
   `background-hover`. User-defined token names keep their authored spelling.
 - A configured name wins over a same-spelled CSS literal; anything not in the
@@ -64,19 +64,31 @@ The flagged third is where apps break, and it is what most of this skill is
 about. The section below on silent value drift is where they break WITHOUT
 being flagged, which is worse.
 
-## Gate 1: can this app take v3 at all?
+## First checkpoint: V3 APIs, existing design values
 
-Check this before inventory, because a yes here means the app cannot take v3 at
-all yet and everything below is wasted effort:
+Record the runtime version and config version separately. For a V2 app, migrate
+required APIs while preserving its resolved token, theme, font, media, and
+animation values. For an app on Config v5 or v5-subtle, keep that config. If the
+app already runs V3 with Config v5, inventory remaining API work before applying
+codemods; this is a supported checkpoint, not a failed upgrade.
+
+Finish this checkpoint with the report reviewed, typecheck/build passing, and real
+screens and interactions compared with their baseline. Do not automatically begin
+Config v6, wholesale `html.*` conversion, Tailwind adoption, or a redesign after
+those checks pass. List optional changes as separate follow-ups. Preserve custom
+configs too; an unsupported old import is not permission to substitute v6 values.
+
+## Gate 1: preserve generated v5 themes
+
+Check the theme-generation imports before editing:
 
 ```bash
 rg "createV5Theme|subtleChildrenThemes|@tamagui/theme-builder|themes/v5-builder|v5-subtle-builder"
 ```
 
-V3 keeps the v5 output packs as frozen static themes but removed the DYNAMIC
-generation API that produced them. If the app generates its own v5 themes, the
-upgrade guide's position is that it migrates that generation to the v6 recipe
-API or stays on v2.
+V3 keeps the v5 output packs as frozen static themes. The old dynamic generation
+imports moved out of the default packages. An app that generates v5 themes can
+still reach the intermediate checkpoint without rebuilding its design on v6.
 
 Three ways out, cheapest first:
 
@@ -91,13 +103,15 @@ Three ways out, cheapest first:
    builders published as a separate opt-in package so they stay out of the
    default install.
 3. **Rebuild on the v6 recipe API** (`createThemes`, `levels`, scales,
-   treatments from `@tamagui/themes/builder`). The real destination, and the
-   place to express what `childrenThemes` and `componentThemes` used to do.
+   treatments from `@tamagui/themes/builder`), when a v6 design migration is
+   separately requested. This is where a v6 app expresses what
+   `childrenThemes` and `componentThemes` used to do.
 
 Do not combine 3 with the flat-values migration. A theme rebuild and a syntax
 rewrite in one diff leaves nothing to bisect when the app looks wrong.
 
-If the app also reads the adaptive ramp, note that v6 has 11 steps where v5 had
+Only in the separately chosen v6 migration, if the app reads the adaptive ramp,
+note that v6 has 11 steps where v5 had
 12. `npx tamagui migrate --from v2` prints the approximate remap; the endpoints
 are exact and `color6`/`color7` merge into `color6`, so everything from
 `color8` up shifts down one. Inspect contrast in the compressed middle rather
@@ -150,8 +164,8 @@ costs a visible shift in spacing, sizing and color across the whole app, with no
 tool that can tell you whether the result is right. Only your eyes can.
 
 Stacking them means every visual difference has two possible causes and you
-cannot bisect. Keeping v5 makes the flat-values conversion genuinely
-value-neutral, so any visual change is a bug rather than a decision.
+cannot bisect. Keeping v5 preserves the scales; changed component APIs can still affect layout.
+Compare controls and interactions with the baseline and investigate visual changes.
 
 Do v3 first. There is already plenty to figure out. Decide about v6 later, on
 its own, when you have budget for the visual review it deserves. The nice
@@ -167,7 +181,8 @@ hooks, and Sheet throws when it tries to animate its position.
 Migrate in dependency order, never leaf-first:
 
 1. Config and themes first (the `tamagui migrate` prompt's config step,
-   including renaming reserved token names and resolving palette-step names).
+   including required reserved-key spelling changes while preserving values;
+   do not apply v6 palette-step remaps while keeping v5).
    Include runtime theme code: `mutateThemes` palettes and any generated theme
    sets migrate with the config, not after it.
 2. The shared primitive layer second: the app's Button, Dialog, Sheet,

@@ -13,7 +13,8 @@ export type StyleSplitter = (props: {
 export declare function isValidStyleKey(key: string, validStyles: Record<string, boolean>): boolean;
 export declare const getSplitStyles: StyleSplitter;
 export type MergeStyle = (state: GetStyleState, key: string, value: any, disableNormalize?: boolean, originalValue?: any) => void;
-export declare function walkConditionalValue(state: GetStyleState, property: string, value: any, parent: unknown, sink: (payload: any, condition: unknown, source: any) => void, warnMode?: number): boolean;
+type ConditionalValueSink = (payload: any, condition: unknown, source: any) => void;
+export declare function walkConditionalValue(state: GetStyleState, property: string, value: any, parent: unknown, sink: ConditionalValueSink | null, warnMode?: number, contextOnly?: boolean): boolean;
 export declare function emitVariantStyle(state: GetStyleState, key: string, value: any, original: any, condition: unknown, disabled: boolean): void;
 export declare function getFontFamilyFromNameOrVariable(input: any, conf: TamaguiInternalConfig): string | undefined;
 export * from './tokenCategories';

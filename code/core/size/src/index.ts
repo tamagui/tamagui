@@ -129,7 +129,30 @@ export const resolveSize = (
     key = '4'
   }
 
-  const spec = key === 'default' ? undefined : sizes?.[key]
+  let spec = key === 'default' ? undefined : sizes?.[key]
+  // Try the authored key, then the configured default, then token 4. Reuse
+  // one validity check and bound retries even when the default is invalid.
+  for (
+    let attempt = 0;
+    attempt < 2 &&
+    !(spec && typeof spec === 'object') &&
+    tokens.size[key] == null &&
+    fontIn?.size[key] == null &&
+    fonts?.body?.size[key] == null;
+    attempt++
+  ) {
+    if (process.env.NODE_ENV === 'development' && attempt === 0) {
+      console.error(
+        `Unknown size "${key}": not a named size (${
+          Object.keys(sizes ?? {})
+            .filter((k) => k !== 'default')
+            .join(', ') || 'none configured'
+        }) and not a token key. Falling back to the default.`
+      )
+    }
+    key = attempt === 0 ? sizes?.default || '4' : '4'
+    spec = key === 'default' ? undefined : sizes?.[key]
+  }
 
   if (spec && typeof spec === 'object') {
     const font = fontIn?.size[spec.fontSize] != null ? fontIn : fonts?.body
@@ -157,17 +180,6 @@ export const resolveSize = (
   const size = tokens.size[key]
   const font = fontIn?.size[key] != null ? fontIn : fonts?.body
   const fontSize = font?.size[key]
-  if (process.env.NODE_ENV === 'development') {
-    if (size == null && fontSize == null) {
-      console.error(
-        `Unknown size "${key}": not a named size (${
-          Object.keys(sizes ?? {})
-            .filter((k) => k !== 'default')
-            .join(', ') || 'none configured'
-        }) and not a token key.`
-      )
-    }
-  }
   const sizePx = px(size)
   return {
     name: key,

@@ -54,8 +54,8 @@ function finalizeElement(
 export function definitionFromDeclaration(
   id: string,
   name: string,
-  program: AstNode,
-  declaration: AstNode
+  declaration: AstNode,
+  parentOf: (node: AstNode) => AstNode | null
 ): DefinitionSite {
   let identifier = declaration
   let initializer: AstNode | null = null
@@ -64,33 +64,17 @@ export function definitionFromDeclaration(
   if (declaration.type === 'VariableDeclarator') {
     identifier = childNode(declaration, 'id') ?? declaration
     initializer = childNode(declaration, 'init')
-    constant = !!findAstNode(
-      program,
-      (node) =>
-        node.type === 'VariableDeclaration' &&
-        node.kind === 'const' &&
-        childNodes(node, 'declarations').some(
-          (candidate) => candidate.start === declaration.start
-        )
-    )
+    const parent = parentOf(declaration)
+    constant = parent?.type === 'VariableDeclaration' && parent.kind === 'const'
   } else if (declaration.type === 'Identifier') {
-    const declarator = findAstNode(
-      program,
-      (node) =>
-        node.type === 'VariableDeclarator' &&
-        childNode(node, 'id')?.start === declaration.start
-    )
-    if (declarator) {
+    const declarator = parentOf(declaration)
+    if (
+      declarator?.type === 'VariableDeclarator' &&
+      childNode(declarator, 'id')?.start === declaration.start
+    ) {
       initializer = childNode(declarator, 'init')
-      constant = !!findAstNode(
-        program,
-        (node) =>
-          node.type === 'VariableDeclaration' &&
-          node.kind === 'const' &&
-          childNodes(node, 'declarations').some(
-            (candidate) => candidate.start === declarator.start
-          )
-      )
+      const parent = parentOf(declarator)
+      constant = parent?.type === 'VariableDeclaration' && parent.kind === 'const'
     }
   }
 
@@ -838,7 +822,10 @@ export function normalizeElements(
 }
 
 export function nodeAtSpan(program: AstNode, start: number, end: number): AstNode | null {
-  return findAstNode(program, (node) => node.start === start && node.end === end)
+  return findAstNode(program, (node) => node.start === start && node.end === end, {
+    start,
+    end,
+  })
 }
 
 export function asAstNode(value: unknown, label: string): AstNode {

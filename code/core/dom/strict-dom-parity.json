@@ -577,7 +577,7 @@
       ],
       "tamaguiSources": [
         "code/core/web/src/dom/standalone.ts:1-73",
-        "code/compiler/compiler-core/src/normalize.ts:632-756",
+        "code/compiler/compiler-core/src/normalize.ts:628-689",
         "code/compiler/static/src/domStructuralPass.ts:143-160",
         "code/compiler/static/src/compilerHost.ts:1564-1640"
       ],
@@ -601,7 +601,7 @@
       ],
       "tamaguiSources": [
         "code/compiler/compiler-core/src/ir.ts:17-31",
-        "code/compiler/compiler-core/src/normalize.ts:704-756",
+        "code/compiler/compiler-core/src/normalize.ts:691-728",
         "code/compiler/static/src/compilerHost.ts:1564-1640"
       ],
       "tamaguiTests": [
@@ -675,7 +675,9 @@
         "code/core/style-grammar/src/ast/valueParser.ts:1-169",
         "code/core/style-grammar/src/shorthands/transformFamily.ts:1-579",
         "code/core/style-grammar/src/shorthands/transition.ts:1-553",
-        "code/core/web/src/helpers/getSplitStyles.tsx:861-872"
+        "code/core/web/src/helpers/getSplitStyles.tsx:2425-2576",
+        "code/core/web/src/helpers/getSplitStyles.tsx:2710-2721",
+        "code/core/web/src/helpers/getSplitStyles.tsx:2818-2828"
       ],
       "tamaguiTests": [
         "code/compiler/static-tests/tests/flatValues.web.test.tsx",
@@ -696,7 +698,8 @@
         "packages/react-strict-dom/tests/babel-test.node.js:1-158"
       ],
       "tamaguiSources": [
-        "code/compiler/compiler-core/src/normalize.ts:632-846",
+        "code/compiler/compiler-core/src/normalize.ts:449-533",
+        "code/compiler/compiler-core/src/normalize.ts:730-822",
         "code/compiler/static/src/compiler.ts:1-216"
       ],
       "tamaguiTests": [

@@ -2422,8 +2422,6 @@ const parsedSlices = new WeakMap<object, (string | undefined)[]>()
 // value alone, and memoizes that result. it is a regex replace over most string
 // values, so repeating it every render of every element is the single largest
 // cost on this path.
-const fontProperties = new Map<string, boolean>()
-
 function configuredValue(
   state: GetStyleState,
   property: string,
@@ -2448,48 +2446,45 @@ function configuredValue(
     return safeArea
   }
 
-  let fontProperty = fontProperties.get(property)
-  if (fontProperty === undefined) {
-    fontProperty =
-      property.startsWith('font') ||
-      property === 'lineHeight' ||
-      property === 'letterSpacing'
-    fontProperties.set(property, fontProperty)
-  }
-  const revision = grammar.revision
-  if (state.conf !== valueCacheConf || revision !== valueCacheRevision) {
-    valueCacheConf = state.conf
-    valueCacheRevision = revision
-    valueCaches = new WeakMap()
-    valueCacheEntries = 0
-    ;(state as DirectState).flatValueScope = undefined
-  }
+  const fontProperty =
+    property.startsWith('font') ||
+    property === 'lineHeight' ||
+    property === 'letterSpacing'
   const resolveValues =
     process.env.TAMAGUI_TARGET === 'web' &&
     !state.flatShouldDoClasses &&
     state.styleProps.resolveValues === 'auto'
       ? 'value'
       : state.styleProps.resolveValues
-  // the scope (theme identity, name, resolveValues) is fixed for a pass apart
-  // from the class/inline flip, so resolve it once and key the per-value lookups
-  // off interned property and raw strings instead of joining them into a key
-  const direct = state as DirectState
-  let scope = direct.flatValueScope
-  if (scope === undefined || direct.flatValueScopeKind !== resolveValues) {
-    const themeObject =
-      state.theme && typeof state.theme === 'object' ? state.theme : valueCacheRoot
-    let byScope = valueCaches.get(themeObject)
-    if (!byScope) valueCaches.set(themeObject, (byScope = new Map()))
-    const scopeKey = `${state.flatThemeName || ''}\u001f${resolveValues}`
-    scope = byScope.get(scopeKey)
-    if (!scope) byScope.set(scopeKey, (scope = new Map()))
-    direct.flatValueScope = scope
-    direct.flatValueScopeKind = resolveValues
-  }
-  let maps = scope.get(property)
-  if (maps === undefined) scope.set(property, (maps = { direct: new Map() }))
-  const byRaw = embedded ? (maps.embedded ||= new Map()) : maps.direct
+  let byRaw: Map<string, any> | undefined
   if (!fontProperty) {
+    const revision = grammar.revision
+    if (state.conf !== valueCacheConf || revision !== valueCacheRevision) {
+      valueCacheConf = state.conf
+      valueCacheRevision = revision
+      valueCaches = new WeakMap()
+      valueCacheEntries = 0
+      ;(state as DirectState).flatValueScope = undefined
+    }
+    // the scope (theme identity, name, resolveValues) is fixed for a pass apart
+    // from the class/inline flip, so resolve it once and key the per-value lookups
+    // off interned property and raw strings instead of joining them into a key
+    const direct = state as DirectState
+    let scope = direct.flatValueScope
+    if (scope === undefined || direct.flatValueScopeKind !== resolveValues) {
+      const themeObject =
+        state.theme && typeof state.theme === 'object' ? state.theme : valueCacheRoot
+      let byScope = valueCaches.get(themeObject)
+      if (!byScope) valueCaches.set(themeObject, (byScope = new Map()))
+      const scopeKey = `${state.flatThemeName || ''}\u001f${resolveValues}`
+      scope = byScope.get(scopeKey)
+      if (!scope) byScope.set(scopeKey, (scope = new Map()))
+      direct.flatValueScope = scope
+      direct.flatValueScopeKind = resolveValues
+    }
+    let maps = scope.get(property)
+    if (maps === undefined) scope.set(property, (maps = { direct: new Map() }))
+    byRaw = embedded ? (maps.embedded ||= new Map()) : maps.direct
     const known = byRaw.get(raw)
     if (known !== undefined || byRaw.has(raw)) return known
   }
@@ -2574,7 +2569,7 @@ function configuredValue(
       valueCacheEntries = 0
     } else {
       valueCacheEntries++
-      byRaw.set(raw, out)
+      byRaw!.set(raw, out)
     }
   }
   return out
@@ -2712,14 +2707,17 @@ function emitProperty(
   streamWriteInline(state, property, value, cursor, originalValue)
 }
 
-function numericUnitValue(value: string, first: string, second?: string): number {
-  const unitLength =
-    value.endsWith(first) || (second !== undefined && value.endsWith(second))
-      ? first.length
-      : 0
-  if (!unitLength || value.length === unitLength) return Number.NaN
-  const numeric = Number(value.slice(0, value.length - unitLength))
-  return Number.isFinite(numeric) ? numeric : Number.NaN
+function numericUnitValue(value: string, first: string, second: string): number {
+  return value.length > first.length && (value.endsWith(first) || value.endsWith(second))
+    ? +value.slice(0, -first.length)
+    : Number.NaN
+}
+
+function resolveNumericValue(value: string): string | number {
+  const unitValue = numericUnitValue(value, 'px', 'dp')
+  if (Number.isFinite(unitValue)) return unitValue
+  const numeric = +value
+  return Number.isFinite(numeric) ? numeric : value
 }
 
 function emitBorder(
@@ -2807,19 +2805,26 @@ function emitResolved(
   originalValue: any,
   contextOnly: boolean
 ) {
-  let value = configuredValue(state, property, raw, true)
+  emitProperty(
+    state,
+    property,
+    resolveValue(state, property, raw),
+    cursor,
+    originalValue,
+    contextOnly
+  )
+}
+
+function resolveValue(state: GetStyleState, property: string, raw: any) {
+  let value = typeof raw === 'string' ? configuredValue(state, property, raw, true) : raw
   if (
     (process.env.TAMAGUI_TARGET === 'native' || !state.flatShouldDoClasses) &&
-    typeof value === 'string'
+    typeof value === 'string' &&
+    value !== ''
   ) {
-    const unitValue = numericUnitValue(value, 'px', 'dp')
-    if (Number.isFinite(unitValue)) {
-      value = unitValue
-    } else if (value !== '' && Number.isFinite(Number(value))) {
-      value = Number(value)
-    }
+    value = resolveNumericValue(value)
   }
-  emitProperty(state, property, value, cursor, originalValue, contextOnly)
+  return value
 }
 
 function shadowUnit(part: any) {
@@ -3030,12 +3035,7 @@ function emitValue(
         }
         return
       }
-      const unitValue = numericUnitValue(value, 'px', 'dp')
-      if (Number.isFinite(unitValue)) {
-        value = unitValue
-      } else if (Number.isFinite(Number(value))) {
-        value = Number(value)
-      }
+      value = resolveNumericValue(value)
     }
     if (!canGenerateCSS || !state.flatShouldDoClasses) {
       emitProperty(state, property, value, cursor, originalValue, contextOnly)
@@ -3082,22 +3082,7 @@ function emitValue(
     return
   }
 
-  let value: any = raw
-  if (typeof raw === 'string') {
-    value = configuredValue(state, property, raw, true)
-  }
-
-  if (
-    (process.env.TAMAGUI_TARGET === 'native' || !state.flatShouldDoClasses) &&
-    typeof value === 'string'
-  ) {
-    const unitValue = numericUnitValue(value, 'px', 'dp')
-    if (Number.isFinite(unitValue)) {
-      value = unitValue
-    } else if (value !== '' && Number.isFinite(Number(value))) {
-      value = Number(value)
-    }
-  }
+  let value: any = resolveValue(state, property, raw)
   if (
     canGenerateCSS &&
     state.flatShouldDoClasses &&
@@ -3217,13 +3202,44 @@ function emitValue(
   }
 }
 
+type ConditionalValueSink = (payload: any, condition: unknown, source: any) => void
+
+function emitConditionalValue(
+  state: GetStyleState,
+  property: string,
+  payload: any,
+  condition: Condition | null,
+  source: any,
+  sink: ConditionalValueSink | null,
+  mode: number,
+  contextOnly: boolean
+) {
+  if (sink) {
+    sink(payload, condition, source)
+  } else if (condition) {
+    emitUnderCondition(
+      state,
+      property,
+      payload,
+      condition,
+      mode === 2 ? payload : undefined,
+      contextOnly,
+      mode,
+      source
+    )
+  } else {
+    emitValue(state, property, payload, null, payload, contextOnly)
+  }
+}
+
 export function walkConditionalValue(
   state: GetStyleState,
   property: string,
   value: any,
   parent: unknown,
-  sink: (payload: any, condition: unknown, source: any) => void,
-  warnMode = 0
+  sink: ConditionalValueSink | null,
+  warnMode = 0,
+  contextOnly = false
 ) {
   const parentCondition = (parent as Condition) || null
   let hasBase = false
@@ -3256,7 +3272,16 @@ export function walkConditionalValue(
       if (start === end) continue
       if (flags & 2) {
         const payload = (slices[index] ??= value.slice(start, end))
-        sink(payload, parentCondition, payload)
+        emitConditionalValue(
+          state,
+          property,
+          payload,
+          parentCondition,
+          payload,
+          sink,
+          warnMode,
+          contextOnly
+        )
         hasBase = true
       } else if (
         process.env.NODE_ENV !== 'production' &&
@@ -3264,7 +3289,16 @@ export function walkConditionalValue(
         !chainCount &&
         (failure === 'invalid-character' || failure === 'stray-comment-close')
       ) {
-        sink(value, parentCondition, value)
+        emitConditionalValue(
+          state,
+          property,
+          value,
+          parentCondition,
+          value,
+          sink,
+          warnMode,
+          contextOnly
+        )
         hasBase = true
       } else if (warnMode) {
         warnScanFailure(property, value, failure, failureIndex)
@@ -3294,7 +3328,16 @@ export function walkConditionalValue(
       )
       conditions |= cursor[conditionValue]
       if (cursor[conditionValue] & conditionResolvedFlag || warnMode) {
-        sink((slices[index] ??= value.slice(start, end)), cursor, value)
+        emitConditionalValue(
+          state,
+          property,
+          (slices[index] ??= value.slice(start, end)),
+          cursor,
+          value,
+          sink,
+          warnMode,
+          contextOnly
+        )
       }
     }
     if (process.env.NODE_ENV !== 'production') lastPayload = value.slice(lastPayloadStart)
@@ -3309,7 +3352,16 @@ export function walkConditionalValue(
       return false
     }
     if (value.default != null) {
-      sink(value.default, parentCondition, value.default)
+      emitConditionalValue(
+        state,
+        property,
+        value.default,
+        parentCondition,
+        value.default,
+        sink,
+        warnMode,
+        contextOnly
+      )
       hasBase = true
     }
     for (const key in value) {
@@ -3317,7 +3369,16 @@ export function walkConditionalValue(
       const cursor = conditionFromKey(state, key, parentCondition)
       conditions |= cursor[conditionValue]
       if (cursor[conditionValue] & conditionResolvedFlag || warnMode) {
-        sink(value[key], cursor, value[key])
+        emitConditionalValue(
+          state,
+          property,
+          value[key],
+          cursor,
+          value[key],
+          sink,
+          warnMode,
+          contextOnly
+        )
       }
     }
   }
@@ -3353,7 +3414,16 @@ export function walkConditionalValue(
             ? 0
             : null
     if (resting !== null && !(state as DirectState).flatPropertyLayers?.has(property)) {
-      sink(resting, parentCondition, resting)
+      emitConditionalValue(
+        state,
+        property,
+        resting,
+        parentCondition,
+        resting,
+        sink,
+        warnMode,
+        contextOnly
+      )
     }
   }
   return true
@@ -3386,24 +3456,7 @@ function contributeValue(
     }
     if (
       typeof value !== 'string' &&
-      walkConditionalValue(
-        state,
-        property,
-        value,
-        effective,
-        (payload, cursor, source) =>
-          emitUnderCondition(
-            state,
-            property,
-            payload,
-            cursor as Condition,
-            payload,
-            contextOnly,
-            2,
-            source
-          ),
-        2
-      )
+      walkConditionalValue(state, property, value, effective, null, 2, contextOnly)
     ) {
       return true
     }
@@ -3450,28 +3503,7 @@ function contributeValue(
   }
   const parent =
     ((state as DirectState).flatPass?.[passParentCursor] as Condition) || null
-  if (
-    walkConditionalValue(
-      state,
-      property,
-      value,
-      parent,
-      (payload, cursor, source) =>
-        cursor
-          ? emitUnderCondition(
-              state,
-              property,
-              payload,
-              cursor as Condition,
-              undefined,
-              contextOnly,
-              1,
-              source
-            )
-          : emitValue(state, property, payload, null, payload, contextOnly),
-      1
-    )
-  )
+  if (walkConditionalValue(state, property, value, parent, null, 1, contextOnly))
     return true
   if (value != null) {
     emitAtParentCondition(state, property, value, originalValue ?? value, contextOnly)

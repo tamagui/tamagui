@@ -463,6 +463,17 @@ type AliasOptions = {
 
 type AliasEntry = { find: string | RegExp; replacement: string }
 
+function svgWebEntry() {
+  // A linked workspace dependency is served directly during development.
+  // require.resolve selects CJS, whose named exports browsers cannot import.
+  return normalizePath(
+    path.join(
+      path.dirname(resolve('@tamagui/react-native-svg/package.json')),
+      'dist/esm/index.mjs'
+    )
+  )
+}
+
 /**
  * returns vite-compatible aliases for tamagui
  * use this when you need control over alias ordering in your config
@@ -473,7 +484,7 @@ export function tamaguiAliases(options: AliasOptions = {}): AliasEntry[] {
   if (options.svg) {
     aliases.push({
       find: 'react-native-svg',
-      replacement: resolve('@tamagui/react-native-svg'),
+      replacement: svgWebEntry(),
     })
   }
 
@@ -1080,7 +1091,7 @@ export function createTamaguiPlugins({
                       resolve('@tamagui/proxy-worm'),
                     'react-native/Libraries/Utilities/codegenNativeComponent':
                       resolve('@tamagui/proxy-worm'),
-                    'react-native-svg': resolve('@tamagui/react-native-svg'),
+                    'react-native-svg': svgWebEntry(),
                     ...(!useReactNativeWebLite && {
                       'react-native': resolve('react-native-web'),
                     }),

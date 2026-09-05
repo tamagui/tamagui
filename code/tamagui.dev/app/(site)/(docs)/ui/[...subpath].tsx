@@ -1,9 +1,16 @@
-// see the note in docs/core/[slug].tsx: the body lives outside the route tree so
-// this module stays a pure re-export and keeps its export names in the build.
-// this one exports the page as the named `DocComponentsPage` with no default,
-// which is what it did before the body moved
-export {
-  DocComponentsPage,
-  loader,
-  generateStaticParams,
+import {
+  loader as loadPage,
+  generateStaticParams as pageParams,
 } from '~/features/docs/pages/ComponentsDocPage'
+
+export { DocComponentsPage as default } from '~/features/docs/pages/ComponentsDocPage'
+
+// One replaces inline route loaders with client stubs. Re-exporting a loader
+// leaves its export in the generated data module, producing a duplicate export.
+export function loader(props: Parameters<typeof loadPage>[0]) {
+  return loadPage(props)
+}
+
+export function generateStaticParams() {
+  return pageParams()
+}

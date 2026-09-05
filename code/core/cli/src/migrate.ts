@@ -48,6 +48,26 @@ Work like a careful coding agent:
 
 const v2ToV3Prompt = `## v2 -> v3 migration prompt
 
+### 0. Choose the intermediate checkpoint before editing
+
+The Tamagui package version and the config version are separate. Tamagui V3
+supports Config v5; upgrading the runtime does not require Config v6.
+
+- Coming from V2: first reach V3 packages and APIs with the app's existing token, theme, font, media, and animation values. Keep custom config values. If an old config entry is no longer exported, preserve its resolved values in an app-owned config; do not substitute v6 defaults.
+- Coming from Config v5 or v5-subtle: keep that config during the V3 API upgrade. Keep the 12-step adaptive colors, spacing, radii, font scales, and breakpoint meanings. Do not remap them to the v6 scale.
+- Already running V3 with Config v5: this intermediate checkpoint is valid. Inventory remaining V2 APIs before applying codemods; do not repeat completed work or treat Config v5 as an upgrade failure.
+- Do not combine this pass with wholesale \`html.*\` adoption, Tailwind conversion, new skins, or a theme redesign unless separately requested.
+
+Record the starting package/config versions and representative light/dark,
+responsive, and native screenshots. Name the intended checkpoint in the plan:
+"V3 API, existing design values." Visual changes during this pass need an
+explanation or a fix, not automatic screenshot acceptance.
+
+The checkpoint is complete when the required API migration, report review,
+typecheck/build, and real app checks in step 15 pass. Leave Config v6 and other
+optional design changes in a separate follow-up; do not start them just because
+the V3 API work is finished.
+
 ### 1. Update dependencies
 
 - Bump every \`tamagui\` and \`@tamagui/*\` package together to v3.
@@ -86,46 +106,22 @@ becomes:
 Resolve every report row and rerun until the app has no V2 authoring. Do not
 add a compatibility setting or restore condition-object parsing.
 
-### 3. Migrate config and themes
+### 3. Preserve config values while migrating required APIs
 
-- New applications should use \`defaultConfig\` from \`@tamagui/config/v6\`.
-- Existing V5 applications can keep \`@tamagui/config/v5\` or \`/v5-subtle\` while migrating incrementally. These are frozen static compatibility packs, so they preserve the V5 token and theme values but will not receive new theme-builder features.
+- Existing Config v5 applications should keep \`@tamagui/config/v5\` or \`/v5-subtle\` while migrating incrementally. These are frozen static compatibility packs, so they preserve the V5 token and theme values but will not receive new theme-builder features.
 - Import animations from \`@tamagui/config/animations-css\`, \`animations-rn\`, \`animations-reanimated\`, or \`animations-motion\`.
 - Apps using Sheet or animated-number hooks with the CSS driver must import \`createAnimations\` from \`@tamagui/animations-css/extras\`. The root entry omits those hooks.
-- Remove \`@tamagui/theme-builder\` and any V5 builder imports. Static \`@tamagui/themes/v5\`, \`/v5-subtle\`, and \`/v5-tokens\` imports remain supported.
-- An app that GENERATES its v5 themes (\`createV5Theme\`, \`subtleChildrenThemes\`, \`createPalettes\`) has two ways to stay on v5 for this migration: run the builder once and serialize the result to a static literal, or import the same builders from \`@tamagui/config-v5\` (and \`@tamagui/config-v5/builder\`), the opt-in package that carries them. Take one of those when the themes are built from values the app only knows at runtime; the v6 recipe move below is a separate migration.
-- Use \`createThemes\`, \`levels\`, scales, and the other recipe helpers from \`@tamagui/themes/builder\`.
-- Remove \`componentThemes\`, \`templates\`, \`masks\`, \`childrenThemes\`, and \`grandChildrenThemes\`. Express hierarchy in the recipe tree, semantic values in scales, and exact one-theme overrides in \`values\`.
+- Remove \`@tamagui/theme-builder\` and V5 builder imports from packages that no longer export them. Static \`@tamagui/themes/v5\`, \`/v5-subtle\`, and \`/v5-tokens\` imports remain supported.
+- An app that GENERATES its v5 themes (\`createV5Theme\`, \`subtleChildrenThemes\`, \`createPalettes\`) has two ways to stay on v5 for this migration: run the builder once and serialize the result to a static literal, or import the same builders from \`@tamagui/config-v5\` (and \`@tamagui/config-v5/builder\`), the opt-in package that carries them. Take one of those when the themes are built from values the app only knows at runtime; the optional v6 recipe move in the appendix is a separate migration.
 - Component names no longer select uppercase theme segments automatically. Replace component themes with explicit normal theme or \`level2\` boundaries in component skins.
 
-Rename the adaptive 12-step ramp approximately:
-
-- \`color1\` -> \`color1\`
-- \`color2\` -> \`color2\`
-- \`color3\` -> \`color3\`
-- \`color4\` -> \`color4\`
-- \`color5\` -> \`color5\`
-- \`color6\` and \`color7\` -> \`color6\`
-- \`color8\` -> \`color7\`
-- \`color9\` -> \`color8\`
-- \`color10\` -> \`color9\`
-- \`color11\` -> \`color10\`
-- \`color12\` -> \`color11\`
-
-The endpoints are exact; inspect contrast in the compressed middle. Replace
-\`surface1\` with \`level2\`, \`surface2\` with \`level3\`, and \`surface3\`
-or \`surface4\` with \`level4\`. Levels are relative and preserve a surrounding
-color theme when nested.
-
-Search the config and application together:
-
-\`\`\`bash
-rg "@tamagui/theme-builder|v5-builder|createV5Theme|componentThemes|grandChildrenThemes|surface[1-4]|color12"
-\`\`\`
+Do not apply the v6 color remap or recipe conversion in the optional appendix
+while keeping Config v5. Reserved API/theme-key spelling changes still apply;
+preserve the resolved values behind the renamed keys.
 
 ### 4. Migrate Sheet anatomy
 
-The flat-values codemod from step 1 rewrites every provable \`Sheet.Frame\` to
+The flat-values codemod from step 2 rewrites every provable \`Sheet.Frame\` to
 \`Sheet.Container\` with a \`Sheet.Background\` first child carrying the surface
 props, and reports spreads and \`styled(Sheet.Frame, …)\` targets for review.
 Check each rewritten callsite against these rules:
@@ -299,6 +295,9 @@ Replace unsupported old web/lite usage such as momentum events, \`snapTo*\`, and
 
 ### 14. Optional Tailwind frontend
 
+Skip this in the intermediate V3 API checkpoint unless Tailwind adoption was
+separately requested. It does not require changing the whole app to Config v6.
+
 Tailwind authoring is selected by the component package, with no global config:
 
 \`\`\`tsx
@@ -317,7 +316,51 @@ same component; choose the import whose styling language that component uses.
 - Test Adapt breakpoints where popovers/selects/dialogs become sheets.
 - Verify keyboard focus, Escape, outside click, scroll locking, and close animations.
 - Inspect icon alignment next to text at each app size token.
-- If the Tailwind frontend is used, compare web and native output for the classes used.`
+- If the Tailwind frontend is used, compare web and native output for the classes used.
+- Compare the same screens and resolved control dimensions with the baseline. Keeping Config v5 preserves the scales, but does not prove that changed component APIs preserve every layout.
+- Report the final package version, retained config, manual fixes, runtime evidence, and deferred optional work. A validated V3 app on Config v5 is a completed migration.
+
+### Optional follow-up: Config v6, only when separately requested
+
+This appendix is not part of the intermediate V3 API checkpoint. Start a new
+reviewable change after that checkpoint is validated. Record new visual
+acceptance criteria before changing design values.
+
+- New apps can start with \`defaultConfig\` from \`@tamagui/config/v6\`.
+- For an existing app, inventory and compare resolved spacing, size, radius, font, icon, and media values. Map by resolved value when preserving appearance; the same token name can mean a different number in v6.
+- Preserve breakpoint meaning: changing a max-width key to a min-width key can invert responsive behavior.
+
+- Use \`createThemes\`, \`levels\`, scales, and the other recipe helpers from \`@tamagui/themes/builder\`.
+- Remove \`componentThemes\`, \`templates\`, \`masks\`, \`childrenThemes\`, and \`grandChildrenThemes\`. Express hierarchy in the recipe tree, semantic values in scales, and exact one-theme overrides in \`values\`.
+
+Rename the adaptive 12-step ramp approximately:
+
+- \`color1\` -> \`color1\`
+- \`color2\` -> \`color2\`
+- \`color3\` -> \`color3\`
+- \`color4\` -> \`color4\`
+- \`color5\` -> \`color5\`
+- \`color6\` and \`color7\` -> \`color6\`
+- \`color8\` -> \`color7\`
+- \`color9\` -> \`color8\`
+- \`color10\` -> \`color9\`
+- \`color11\` -> \`color10\`
+- \`color12\` -> \`color11\`
+
+The endpoints are exact; inspect contrast in the compressed middle. Replace
+\`surface1\` with \`level2\`, \`surface2\` with \`level3\`, and \`surface3\`
+or \`surface4\` with \`level4\`. Levels are relative and preserve a surrounding
+color theme when nested.
+
+Search the config and application together:
+
+\`\`\`bash
+rg "@tamagui/theme-builder|v5-builder|createV5Theme|componentThemes|grandChildrenThemes|surface[1-4]|color12"
+\`\`\`
+
+Validate the config change separately with light/dark screenshots, responsive
+layouts, text and icon alignment, and every platform the app ships. Do not
+accept visual drift merely because the codemod and typecheck are green.`
 
 const v1ToV2Prompt = `## v1 -> v2 migration pass
 
@@ -331,12 +374,12 @@ Bring the app to the v2 baseline before applying v3 changes.
 
 ### Config
 
-- Move to \`@tamagui/config/v6\`.
+- Preserve the app's existing token, theme, font, and breakpoint values while reaching the v2 API baseline. Keep supported Config v5 imports or serialize the old generated config into app-owned values when an entry is no longer exported. Config v6 is a separate optional migration after the v3 checkpoint below.
 - Import animations separately from \`@tamagui/config/animations-css\`, \`animations-rn\`, \`animations-reanimated\`, or \`animations-motion\`.
 - Move root \`createTamagui\` settings into \`settings\`.
 - Account for the defaults \`flexBasis: 0\` and \`position: static\`. Use \`styleCompat: 'legacy'\` or explicit props if needed.
 - Rename media queries: \`$2xl\` -> \`$xxl\`, \`$2xs\` -> \`$xxs\`, and max queries to kebab-case such as \`$max-md\`.
-- Update colors and themes to the v3 recipe helpers in \`@tamagui/themes/builder\`.
+- Preserve resolved colors and themes; defer v6 recipe conversion to the optional follow-up below.
 
 ### v1 prop and API changes
 

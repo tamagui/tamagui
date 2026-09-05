@@ -15,6 +15,25 @@ behavior should be verified in real screens.
   5+ baseline.
 </Notice>
 
+## Start with a smaller, complete upgrade
+
+The runtime version and config version are separate. **V3 APIs with your existing
+design values is the recommended first checkpoint.**
+
+- **From V2:** migrate the packages and required APIs while preserving your token,
+  theme, font, media, and animation values. Do not replace a custom config with
+  v6 defaults as part of the syntax conversion.
+- **From Config v5 or v5-subtle:** keep that supported config through the API
+  migration. Keep its 12-step colors and physical scales; the v6 remaps later in
+  this guide are for a separate design migration.
+- **Already on V3 with Config v5:** check the remaining API work and validate it.
+  You do not need to adopt Config v6 to finish upgrading to V3.
+
+Record representative screens before editing. Finish with typecheck, build, report
+review, and the same browser/native interactions and screenshots. Defer Config v6,
+wholesale `html.*` conversion, and Tailwind adoption unless you chose them as
+separate work. The [agent briefs](/docs/intro/agents) make this checkpoint explicit.
+
 ## Required: migrate tokens and conditional styles
 
 V3 accepts bare token and theme names and flat property clauses only. There is
@@ -148,7 +167,7 @@ Remove tooling packages that no longer exist in v3:
 | `@tamagui/sizable-context` | Use `SizeContext` from `@tamagui/size`.                                                                        |
 | `@tamagui/static-sync`     | Remove direct imports. Compiler sessions are owned by the supported bundler adapters.                         |
 | `@tamagui/static-worker`   | Remove direct imports. Metro owns its graph/cache workers through `@tamagui/cli/metro`.                       |
-| `@tamagui/theme-builder`   | Use `createThemes` and the recipe helpers from `@tamagui/themes/builder`.                                     |
+| `@tamagui/theme-builder`   | Freeze the generated themes or use `@tamagui/config-v5` for the intermediate checkpoint. Adopt `@tamagui/themes/builder` recipes only in a separate v6 migration. |
 
 ### Config and theme compatibility
 
@@ -190,7 +209,13 @@ paths are preferred for new code.
 | `@tamagui/theme-builder` | recipe helpers from `@tamagui/themes/builder` |
 | `@tamagui/colors/legacy` (the pre-v2 Radix ramps: `blue`/`blueDark`, `gray`/`grayDark`, …) | `@tamagui/colors`, which exports the same names from the current Radix scales |
 
-For example:
+The v6 replacements above adopt new design defaults. For the intermediate
+checkpoint, retain `@tamagui/config/v5` or `/v5-subtle` and import
+`defaultConfig` from that entry. If coming from older config entries or custom
+builders, freeze their resolved tokens and themes before replacing the removed
+imports; switching to v5 or v6 by name does not preserve those values.
+
+For example, when separately adopting v6:
 
 ```tsx
 // before
@@ -268,8 +293,9 @@ and color across the whole application, and no tool can tell you whether the
 result is right.
 
 Stacking them means every visual difference has two possible causes and none of
-them can be bisected. Staying on v5 makes the flat-values conversion
-value-neutral, so anything that moves is a bug rather than a decision.
+them can be bisected. Staying on v5 preserves the scales while you convert syntax. Component API changes
+can still affect layout, so compare actual controls and interactions against the
+baseline rather than accepting visual changes automatically.
 
 Adopt v6 afterwards, piece by piece, when there is budget for the visual review.
 
@@ -485,10 +511,13 @@ Rules to verify:
 
 ## 3. Replace removed props and aliases
 
-Search for removed APIs:
+Search for APIs that need migration or review. This scan deliberately excludes
+the supported Config v5 entries and their retained palette names. `color12`,
+`surface1`–`surface4`, and builders imported from `@tamagui/config-v5` do not
+require a v6 theme migration to complete this checkpoint.
 
 ```bash
-rg "createStyledHOC|focusable|fullscreen|themeInverse|<Theme inverse|Sheet\.Frame|styleable\(|inlineWhenUnflattened|\$true|getTokenRelative|stepTokenUpOrDown|forceRemoveScrollEnabled|sizeAdjust|selectable=|Select\.Item.*index|enterVariant|exitVariant|enterExitVariant|delayMs|disableTransparencyHide|disableRootThemeClass|themeClassNameOnRoot|isWindowDefined|getExpandedShorthands|usePropsAndStyle|useProps|useStyle|backgroundActive|surface[1-4]|color12|defaultComponentThemes|@tamagui/config/v[3-5]|@tamagui/animations-moti|@tamagui/babel-plugin|animateOnly"
+rg "createStyledHOC|focusable|fullscreen|themeInverse|<Theme inverse|Sheet\.Frame|styleable\(|inlineWhenUnflattened|\$true|getTokenRelative|stepTokenUpOrDown|forceRemoveScrollEnabled|sizeAdjust|selectable=|Select\.Item.*index|enterVariant|exitVariant|enterExitVariant|delayMs|disableTransparencyHide|disableRootThemeClass|themeClassNameOnRoot|isWindowDefined|getExpandedShorthands|usePropsAndStyle|useProps|useStyle|backgroundActive|@tamagui/config/v[34]|@tamagui/animations-moti|@tamagui/babel-plugin|animateOnly"
 ```
 
 Use these replacements:
@@ -1182,9 +1211,11 @@ own `Sheet.Handle`.
 
 ## 15. Update active-state background colors
 
-The V2 `backgroundActive` theme token was removed from v3 themes. Checkbox and
-Switch checked states, Tabs active tab, and Toggle Group active toggle used to
-default to it. They now use the V3 `background-press` name.
+Checkbox and Switch checked states, Tabs active tab, and Toggle Group active
+toggle used to default to `backgroundActive`. V3 components now read
+`background-press`. The frozen v5 themes still retain `backgroundActive`, so
+audit the component behavior even when keeping Config v5; the presence of the
+old token alone does not mean the config must be migrated to v6.
 
 Each of these components applies its default active background only when you do
 not pass `activeStyle`, and a supplied `activeStyle` wins because it is applied
@@ -1443,8 +1474,9 @@ a token value keeps its `$` spelling, and it typechecks while resolving to
 nothing, so grep for `="$` after the run.
 
 **Half steps are renamed, not removed.** `$0.5` becomes `0-5` and `$1.5` becomes
-`1-5`, with identical values in both packs, so it is a spelling change with no
-visual effect.
+`1-5`. Keeping the same v5 scale preserves the resolved values through this
+spelling change. Moving from v5 to v6 also changes the scale values; it needs
+separate mapping and visual review, even when a token has the same name.
 
 **`undefined` inside an interpolated value.** A conditional whose false branch is
 `undefined` becomes the literal string `"undefined"` once it is wrapped in a
@@ -1482,8 +1514,8 @@ npx tamagui check
 # Sheet anatomy still requiring migration
 rg 'Sheet\.Frame'
 
-# removed APIs
-rg "createStyledHOC|focusable|fullscreen|themeInverse|<Theme inverse|Sheet\.Frame|styleable\(|inlineWhenUnflattened|\$true|getTokenRelative|stepTokenUpOrDown|forceRemoveScrollEnabled|sizeAdjust|selectable=|Select\.Item.*index|enterVariant|exitVariant|enterExitVariant|delayMs|disableTransparencyHide|disableRootThemeClass|themeClassNameOnRoot|isWindowDefined|getExpandedShorthands|usePropsAndStyle|useProps|useStyle|backgroundActive|surface[1-4]|color12|defaultComponentThemes|@tamagui/config/v[3-5]|@tamagui/animations-moti|@tamagui/babel-plugin|animateOnly"
+# APIs requiring migration or review (Config v5 remains supported)
+rg "createStyledHOC|focusable|fullscreen|themeInverse|<Theme inverse|Sheet\.Frame|styleable\(|inlineWhenUnflattened|\$true|getTokenRelative|stepTokenUpOrDown|forceRemoveScrollEnabled|sizeAdjust|selectable=|Select\.Item.*index|enterVariant|exitVariant|enterExitVariant|delayMs|disableTransparencyHide|disableRootThemeClass|themeClassNameOnRoot|isWindowDefined|getExpandedShorthands|usePropsAndStyle|useProps|useStyle|backgroundActive|@tamagui/config/v[34]|@tamagui/animations-moti|@tamagui/babel-plugin|animateOnly"
 ```
 
 ## v1 to v3 path
