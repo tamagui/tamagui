@@ -894,8 +894,8 @@
       "name": "@tamagui/helpers-tamagui",
       "version": "2.7.7",
       "dependencies": {
-        "@tamagui/font-size": "workspace:*",
         "@tamagui/helpers": "workspace:*",
+        "@tamagui/size": "workspace:*",
         "@tamagui/web": "workspace:*",
       },
       "devDependencies": {
@@ -1970,7 +1970,6 @@
         "@tamagui/core": "workspace:*",
         "@tamagui/font-cherry-bomb": "workspace:*",
         "@tamagui/font-inter": "workspace:*",
-        "@tamagui/font-silkscreen": "workspace:*",
         "@tamagui/shorthands": "workspace:*",
         "@tamagui/themes": "workspace:*",
       },
