@@ -366,6 +366,13 @@ them. Those routes now declare small forwarding functions and keep shared page
 implementations outside the route tree. The styled UI route also supplies the
 page's default export. No dependency patch was required.
 
+The deployed preview exposed another metadata gap: mdx-rust returns compiled
+frontmatter without its source filename, so docs edit links ended in
+`undefined.mdx`. The site wrapper now attaches the resolved path, including the
+actual component version, and edit links use the repository's `main` branch.
+Direct compilation checks cover intro, upgrade-guide, current Button, and archived
+Button sources; homepage navigation tests also assert their destination edit links.
+
 The default local Bento checkout still imports a removed V3 hook. An isolated
 checkout at the Dockerfile's pinned Bento SHA
 `50432b85cc47de443b640bee0bcf5decd119231e`, resolving this worktree's dependencies,
@@ -402,15 +409,23 @@ regression in the subsequently rejected frontend experiment and no blocking issu
 in the retained numeric conversion or final bounded sizing fallback.
 The review requested final rebuilt tests and mirrored docs navigation checks.
 
-Validation for this pass is recorded below as it completes. A starting-candidate
-CI success is not evidence for the later edits.
+Validation receipts below name the assembled revision where it matters. The full
+workspace suites and six starter size gates passed at `a78461b46e`; the bounded
+size fallback at `e34ac235ad` then passed its 9 unit tests and 5 browser checks.
+The production site build and 16 browser checks initially passed at `fadf9a92b4`,
+before the frontend experiment was reverted. The retained core and sizing changes
+are covered by their later package and browser checks. A further production
+rebuild and exact-revision CI are tracked in the PR; earlier successes are not
+substituted for those runs.
 
 - Full root build: 171 packages successful, including rebuilt reverse dependencies.
 - Root lint and workspace checks passed; the fresh worktree needed a second frozen
   install after building to create the CLI bin link. The root style-vocabulary
   check skips when no root config artifact is present.
-- Root lint and workspace checks passed again after the retained numeric
-  conversion and bounded size fallback; final typecheck is tracked with the PR checks.
+- Root lint and workspace checks passed locally after the retained numeric
+  conversion and bounded size fallback. CI at `41b148e941` passed checks, typecheck,
+  lint, and the styled-view size gate. The redundant local typecheck was stopped
+  during severe host memory pressure; its interrupted log is not counted as a pass.
 - Core web: 624 passed, 3 skipped. A heavily parallel run first hit two timing
   limits; an isolated full rerun passed without changing the tests.
 - Core native: 339 passed, 7 expected failures, 9 skipped.
@@ -431,13 +446,16 @@ CI success is not evidence for the later edits.
 - Production API authentication is not validated locally: required Supabase and
   Postmark environment settings are absent. This does not affect the recorded
   public-page checks.
-- Final production build: 883 static pages, using the Dockerfile-pinned Bento checkout.
-- Final pinned-Node styled-view gate: 28,732 gzip bytes; unchanged ceiling 28,821.
+- Production build at `fadf9a92b4`: 883 static pages, using the Dockerfile-pinned Bento checkout.
+- Pinned-Node styled-view gate at `e34ac235ad`: 28,732 gzip bytes; unchanged ceiling 28,821.
 - Full CI-equivalent workspace web run: 166 successful tasks. Native correctness
   run: 118 successful tasks. These include cached unchanged package prerequisites.
-- Zero-runtime starter: all six browser bundle gates passed on pinned Node without
-  changing any baseline or tolerance. Twelve browser checks passed across Vite,
-  webpack, and Metro web, including themes and loading an interactive island.
+- Zero-runtime starter: CI at `41b148e941` passed all six browser bundle gates on
+  pinned Node without changing any baseline or tolerance, plus all 12 browser checks.
+  The [exact CI receipt](assets/v3-launch-2026-09-04/starter-web-ci-final.json) records
+  Vite/webpack/Metro web islands at 92,470 / 92,439 / 367,018 gzip bytes. The Metro
+  web ceiling remains 367,022. The slower duplicate local size run was stopped
+  after this independent CI success; it is not counted as a completed run.
 - Independent Astra-medium technical review: no blocking findings in retained
   changes, including the final bounded size fallback. Fable was unavailable; the
   root agent handled continuation.
@@ -452,7 +470,17 @@ optional frontend experiment increased the Metro web starter island. Citations
 now point to the actual final symbols; the frontend experiment was reverted.
 Numeric and size-fallback simplifications retain smaller web bundles.
 
-Final source is being submitted for a new exact-revision CI run. Local validation
-and the earlier candidate's successful jobs do not substitute for that run.
+Both push and PR Checks at `41b148e941` passed completely, including unit tests,
+all web integration shards, WebKit, both zero-runtime jobs, SSR hydration,
+typecheck, lint, and size gates. Registry also passed. The Railway preview was
+confirmed to run this exact commit at
+<https://tamagui-tamagui-pr-4205.up.railway.app/>. The redundant local production
+rebuild was stopped during severe host memory pressure after confirming that
+independent production deployment.
+
+The subsequent docs edit-link correction and evidence update are being submitted
+for their own exact-revision CI and deployed browser checks. The PR tracks that
+final acceptance; the previous revision's successful jobs are not substituted
+for the new run.
 Updating `v3-beta` crosses the npm publication boundary and still needs the
 owner's explicit confirmation. Main integration remains PR #4124.
