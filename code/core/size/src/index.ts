@@ -130,13 +130,18 @@ export const resolveSize = (
   }
 
   let spec = key === 'default' ? undefined : sizes?.[key]
-  if (
+  // Try the authored key, then the configured default, then token 4. Reuse
+  // one validity check and bound retries even when the default is invalid.
+  for (
+    let attempt = 0;
+    attempt < 2 &&
     !(spec && typeof spec === 'object') &&
     tokens.size[key] == null &&
     fontIn?.size[key] == null &&
-    fonts?.body?.size[key] == null
+    fonts?.body?.size[key] == null;
+    attempt++
   ) {
-    if (process.env.NODE_ENV === 'development') {
+    if (process.env.NODE_ENV === 'development' && attempt === 0) {
       console.error(
         `Unknown size "${key}": not a named size (${
           Object.keys(sizes ?? {})
@@ -145,17 +150,7 @@ export const resolveSize = (
         }) and not a token key. Falling back to the default.`
       )
     }
-    // Resolve the fallback once. A misspelled default must not recurse back
-    // into itself; use the same token fallback as a config without sizes.
-    const defaultKey = sizes?.default
-    key =
-      defaultKey &&
-      (typeof sizes?.[defaultKey] === 'object' ||
-        tokens.size[defaultKey] != null ||
-        fontIn?.size[defaultKey] != null ||
-        fonts?.body?.size[defaultKey] != null)
-        ? defaultKey
-        : '4'
+    key = attempt === 0 ? sizes?.default || '4' : '4'
     spec = key === 'default' ? undefined : sizes?.[key]
   }
 

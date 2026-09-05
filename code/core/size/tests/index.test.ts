@@ -50,6 +50,8 @@ describe('resolveSize', () => {
     expect(resolveSize(null, env)).toEqual(expected)
     const custom = { ...env, sizes: { ...env.sizes!, default: 'lg' } }
     expect(resolveSize('missing' as any, custom)).toEqual(resolveSize('lg', custom))
+    const tokenDefault = { ...env, sizes: { ...env.sizes!, default: '5' } }
+    expect(resolveSize('missing' as any, tokenDefault)).toEqual(resolveSize('5', env))
   })
 
   test('a missing or invalid default falls back to token 4 without recursion', () => {
@@ -57,6 +59,11 @@ describe('resolveSize', () => {
     expect(resolveSize('missing' as any, withoutSizes)).toEqual(resolveSize('4', env))
     const invalid = { ...env, sizes: { ...env.sizes!, default: 'missing' } }
     expect(resolveSize(undefined, invalid)).toEqual(resolveSize('4', env))
+    const nullRecipe = {
+      ...env,
+      sizes: { ...env.sizes!, md: null },
+    } as unknown as SizeResolverEnv
+    expect(resolveSize('missing' as any, nullRecipe)).toEqual(resolveSize('4', env))
   })
 
   test('icons round the font size up to the 4px grid unless the recipe sets one', () => {
