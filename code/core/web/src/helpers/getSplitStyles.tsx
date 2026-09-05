@@ -593,7 +593,10 @@ function contributeProp(
       const walkClassName = styleFrontend?.walkClassName
       if (!walkClassName) {
         pass[passClassName] =
-          `${pass[passClassName]} ${valInit.replace(/[\x00-\x20]+/g, ' ')}`.trim()
+          `${pass[passClassName]} ${valInit.replace(/[\x00-\x20]+/g, ' ')}`.replace(
+            /^ +| +$/g,
+            ''
+          )
         return
       }
       const sink: FrontendClassSink = (entry) => {

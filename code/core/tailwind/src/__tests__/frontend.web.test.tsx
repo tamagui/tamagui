@@ -378,6 +378,10 @@ describe('frontend isolation', () => {
       className: ' first\tsecond\nnon\u00a0breaking  last ',
     })
     expect(styles.viewProps.className).toContain('first second non\u00a0breaking last')
+    const unicode = splitTailwindStyles(CoreView, {
+      className: '\u00a0custom\u00a0',
+    })
+    expect(unicode.viewProps.className).toContain('\u00a0custom\u00a0')
   })
 
   test('preparing a frozen candidate descriptor preserves authored emission order', () => {
