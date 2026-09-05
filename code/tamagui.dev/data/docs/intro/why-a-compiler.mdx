@@ -8,13 +8,13 @@ description: Why Tamagui uses an optimizing compiler
   development trilemma**, a choose-two-of-three best shown as a diagram:
 </IntroParagraph>
 
-<YStack w="100%" mih={500} als="center" my="gtMd:4">
+<YStack width="100%" items="center" my="gtMd:4">
   <Image
     title="The Frontend Trilemma: Choose two of: A native-feeling app, Deploying to native and web, and share code between the two apps."
     src="/trilemma.svg"
     size="hero"
-    height={270 * 2}
-    width={320 * 2}
+    height={540}
+    width={640}
     objectFit="contain"
   />
 </YStack>
@@ -46,13 +46,16 @@ second one [Tamagui UI](/docs/components/stacks) is working towards slowly.
 **The idea is to make another "bump" towards properly native-experience apps
 with shared code, much like how React Native Web made one:**
 
-<YStack w="100%" mih={220} my="4 gtMd:100px" als="center" scale="gtMd:1.5">
+{/* sized rather than scaled: a transform on a `size="hero"` figure, which already
+    bleeds wider than the text column, pushed the page past the viewport */}
+
+<YStack width="100%" items="center" my="4 gtMd:8">
   <Image
     title="How possible it is to share more code: a lot more with React Native, and again with React Native Web"
     src="/code-sharing2.svg"
     size="hero"
-    height={220}
-    width={380}
+    height={330}
+    width={570}
     objectFit="contain"
   />
 </YStack>

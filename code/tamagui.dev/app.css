@@ -136,8 +136,16 @@ span._display-1adg3ll > span._display-xoduu5 {
   display: inline;
 }
 
-.paragraph-parent .paragraph {
+/* a notice body is one Paragraph div holding whatever mdx put inside it, so
+   paragraphs nested in one take the notice's type instead of docs body type */
+.paragraph-parent .docs-paragraph {
   margin: 0;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+.paragraph-parent .docs-paragraph + .docs-paragraph {
+  margin-top: 10px;
 }
 
 /*  */

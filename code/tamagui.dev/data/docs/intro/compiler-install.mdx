@@ -666,20 +666,14 @@ export default () => <View disableOptimization />
 
 ### Web-only apps
 
-This only applies to web-only apps. Native and universal apps already have
-`react-native` installed. For web-only apps, you still need `react-native`
-types in the parent project or workspace root for prop typing and autocomplete.
-You can either install `react-native` directly:
+Native and universal apps already have `react-native` installed. Web-only apps
+need it as a dev dependency:
 
 ```bash
-yarn add react-native
+yarn add -D react-native
 ```
 
-Or, if you only want the types:
-
-```bash
-yarn add react-native@0.0.0 @types/react-native
-```
-
-Tamagui's web runtime doesn't require `react-native` at runtime, but current
-prop typing and autocomplete rely on the `react-native` types being present.
+Nothing imports it at runtime on web, but Tamagui's prop types reference React
+Native's, so without it you lose typing and autocomplete. React Native ships its
+own types, so there's no separate `@types` package. In a monorepo, put it in the
+app or the workspace root rather than a leaf package.

@@ -1,8 +1,6 @@
 import { H3, Paragraph, XStack, YStack, styled } from 'tamagui'
 import { AlertTriangle, Info, CheckCircle } from '@tamagui/lucide-icons-2'
 
-import { unwrapText } from '~/helpers/unwrapText'
-
 const getIcon = (theme: string) => {
   switch (theme) {
     case 'blue':
@@ -19,13 +17,11 @@ type NoticeTheme = 'yellow' | 'blue' | 'green'
 export const Notice = ({
   children,
   theme = 'yellow',
-  disableUnwrap,
   title,
   ...props
 }: {
   children: React.ReactNode
   theme?: NoticeTheme
-  disableUnwrap?: boolean
   title?: string
 } & any) => {
   const IconComponent = getIcon(theme)
@@ -42,6 +38,10 @@ export const Notice = ({
               {title}
             </H3>
           )}
+          {/* a div, so mdx block content (paragraphs, code fences, lists) can
+              nest inside it while single-line inline notices still pick up the
+              type below. `paragraph-parent` folds nested mdx paragraphs into
+              this size, see app.css */}
           <Paragraph
             render="div"
             py="2"
@@ -51,7 +51,7 @@ export const Notice = ({
             className="paragraph-parent"
             size="5"
           >
-            {disableUnwrap ? children : unwrapText(children)}
+            {children}
           </Paragraph>
         </YStack>
       </XStack>
