@@ -12,11 +12,13 @@ setupPopper({
   disableRTL: true,
 })
 
-// body and headings use the OS UI font, so the only webfont the site loads is
-// the mono face for code. it's a subset variable font (~19kb, latin + punctuation,
-// weights 100-800 from one file) and it's inlined here rather than linked so it
-// costs no extra round-trip before first paint.
+// two webfonts, both subset variable files that cover every weight the site
+// asks for from a single request: Inter 4.1 for text (~54kb, latin + latin-1 +
+// punctuation, optical size pinned to 14) and JetBrains Mono for code (~19kb).
+// inlined here rather than linked so they cost no extra round-trip before first
+// paint, and swapped so text renders in the OS UI face until they land.
 const fontFaceCss = `
+@font-face{font-family:'Inter';src:url('/fonts/inter.woff2') format('woff2-variations');font-weight:200 900;font-style:normal;font-display:swap}
 @font-face{font-family:'JetBrains Mono';src:url('/fonts/jetbrains-mono.woff2') format('woff2-variations');font-weight:100 800;font-style:normal;font-display:swap}`
 
 export default function Layout() {
@@ -42,6 +44,13 @@ export default function Layout() {
         <meta name="twitter:creator" content="@natebirdman" />
         <meta name="robots" content="index,follow" />
 
+        <link
+          rel="preload"
+          href="/fonts/inter.woff2"
+          as="font"
+          crossOrigin="anonymous"
+          type="font/woff2"
+        />
         <link
           rel="preload"
           href="/fonts/jetbrains-mono.woff2"

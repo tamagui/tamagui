@@ -41,7 +41,7 @@ export function BlogArticleHeader({ frontmatter }: BlogPost) {
           </ThemeTint>
         </YStack>
 
-        <H1 letterSpacing={-1} mt="5" mb="2" color="color11">
+        <H1 mt="5" mb="2" color="color11">
           {frontmatter.title}
         </H1>
 

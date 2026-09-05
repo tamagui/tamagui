@@ -24,7 +24,7 @@ export function StudioPaletteBar({
               size="1"
               fontSize={11}
               lineHeight={18}
-              letterSpacing={-1}
+              letterSpacing={0}
               flex={1}
               flexBasis={0}
               text="center"
@@ -61,7 +61,7 @@ export function StudioPaletteBar({
                 <Paragraph
                   size="1"
                   fontSize={11}
-                  letterSpacing={-1}
+                  letterSpacing={0}
                   color={readableColor(color) as any}
                 >
                   {i}
@@ -79,7 +79,7 @@ export function StudioPaletteBar({
               size="1"
               fontSize={11}
               lineHeight={18}
-              letterSpacing={-1}
+              letterSpacing={0}
               flex={1}
               flexBasis={0}
               text="center"

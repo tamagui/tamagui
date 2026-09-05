@@ -4,7 +4,7 @@ import type { Palette, Scale } from '../state/types'
 import { colorToHex } from './helpers'
 
 const OffsetIndicator = styled(SizableText, {
-  letterSpacing: -1,
+  letterSpacing: 0,
   size: '1',
   flex: 1,
   text: 'center',

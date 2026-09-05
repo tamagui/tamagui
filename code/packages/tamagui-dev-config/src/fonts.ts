@@ -4,10 +4,11 @@ import { createGenericFont } from './createGenericFont'
 
 const isWeb = process.env.TAMAGUI_TARGET === 'web'
 
-// the site ships no webfont for text: body and heading render in the OS UI face,
-// so first paint has zero font requests and no swap. only code loads a webfont.
-const systemFamily = isWeb
-  ? '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+// Inter 4.1, subset to latin + latin-1 + punctuation as a variable font (~54kb),
+// covering weights 200-900 from one file. it's font-display: swap behind the OS
+// UI face, so first paint never waits on it.
+const interFamily = isWeb
+  ? '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
   : 'System'
 
 // JetBrains Mono, subset to latin + punctuation as a variable font (~19kb), is
@@ -34,7 +35,7 @@ export const cherryBombFont = createCherryBombFont({
 
 export const headingFont = createInterFont(
   {
-    family: systemFamily,
+    family: interFamily,
     size: {
       true: 14,
       5: 13,
@@ -59,12 +60,12 @@ export const headingFont = createInterFont(
       6: 1,
       7: 0,
       8: 0,
-      9: -0.1,
-      10: -0.25,
-      11: -0.5,
-      12: -0.75,
-      14: -1,
-      15: -2,
+      9: 0,
+      10: 0,
+      11: 0,
+      12: 0,
+      14: 0,
+      15: 0,
     },
   },
   { sizeLineHeight: (size) => Math.round(size * 1.1 + (size < 30 ? 10 : 5)) }
@@ -72,7 +73,7 @@ export const headingFont = createInterFont(
 
 export const bodyFont = createInterFont(
   {
-    family: systemFamily,
+    family: interFamily,
     size: {
       true: 14,
     },
