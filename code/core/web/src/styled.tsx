@@ -5,7 +5,11 @@ import { componentDisplayName } from './helpers/componentDisplayName'
 import { mergeVariants } from './helpers/mergeVariants'
 import { resolveVariantStyle } from './helpers/resolveVariantStyle'
 import { styledDynamic } from './helpers/styledDynamic'
-import type { FrontendComponent, StyleFrontend } from './helpers/styleFrontend'
+import {
+  createStyleFrontend,
+  type FrontendComponent,
+  type StyleFrontend,
+} from './helpers/styleFrontend'
 import { warnOnce } from './helpers/warnOnce'
 import type { GetRef } from './interfaces/GetRef'
 import { getReactNativeConfig } from './setupReactNative'
@@ -214,6 +218,7 @@ export function createFrontendStyled(
   configOrOptions?: any,
   maybeConfig?: any
 ) => FrontendComponent {
+  frontend = createStyleFrontend(frontend)
   return (ComponentIn, optionsOrBaseClassName, configOrOptions, maybeConfig) =>
     styledImpl(
       frontend,

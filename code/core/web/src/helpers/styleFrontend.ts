@@ -1,5 +1,6 @@
 import type { GrammarSourceConfig } from '@tamagui/style-grammar/runtime'
 import type { FunctionComponent } from 'react'
+import { warnOnce } from './warnOnce'
 
 /**
  * The configuration a style frontend reads. It is the shared grammar's own
@@ -72,8 +73,8 @@ export type FrontendClassSink = (entry: FrontendClassPlanEntry) => void
  * `ring-2 hover:ring-4` reads as `{ default, hover }`, and a later unconditional
  * `ring-8` restates that `default` without dropping the `hover` arm.
  *
- * Both class-walk sinks use this: the one in `getSplitStyles` and the one the
- * Tailwind frontend runs when it composes a class string statically.
+ * Both the prepared frontend class walk and the static Tailwind class resolver
+ * use this; ordinary core components do not need class composition.
  */
 export function mergeFrontendCondition(
   previous: unknown,
@@ -93,6 +94,52 @@ export function mergeFrontendCondition(
     : { default: previous, [condition]: value }
 }
 
+/** Prepare optional class syntax once, outside the ordinary style render path. */
+export function createStyleFrontend(frontend: StyleFrontend): StyleFrontend {
+  if (frontend.walkClassName || !frontend.resolveClassName) return frontend
+  return {
+    ...frontend,
+    walkClassName(source, config, sink, raw) {
+      let composed: Record<string, any> | undefined
+      const contribute: FrontendClassSink = (entry) => {
+        const [property, value, condition] = entry
+        if (property.startsWith('__')) {
+          composed ||= {}
+          composed[property] = mergeFrontendCondition(
+            composed[property],
+            value,
+            condition
+          )
+        } else {
+          sink(entry)
+        }
+      }
+      let start = 0
+      for (let index = 0; index <= source.length; index++) {
+        if (index !== source.length && source.charCodeAt(index) > 32) continue
+        if (index !== start) {
+          const candidate = source.slice(start, index)
+          const preserve = frontend.resolveClassName!(candidate, config, contribute)
+          if (preserve === null) {
+            if (process.env.NODE_ENV === 'development') {
+              warnOnce(
+                `[tamagui] frontend candidate "${candidate}" is unavailable on this platform and was dropped.`
+              )
+            }
+          } else if (preserve) {
+            raw(candidate)
+          }
+        }
+        start = index + 1
+      }
+      if (composed) {
+        const styles = frontend.compose?.(composed)
+        for (const property in styles) sink([property, styles[property]])
+      }
+    },
+  }
+}
+
 /**
  * A component's authoring syntax. It is chosen by the package the component was
  * imported from and frozen onto its static config when the component is created:
@@ -106,6 +153,14 @@ export function mergeFrontendCondition(
  * contribution, merging, web lowering, and native evaluation all stay in core.
  */
 export type StyleFrontend = {
+  /** Prepared class-string traversal; raw classes emit at their authored position. */
+  walkClassName?: (
+    source: string,
+    config: StyleFrontendConfig,
+    sink: FrontendClassSink,
+    raw: (candidate: string) => void
+  ) => void
+
   /** resolves one class candidate and sends claimed entries to the shared cursor */
   resolveClassName?: (
     candidate: string,

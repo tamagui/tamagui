@@ -1,4 +1,5 @@
 import {
+  createStyleFrontend,
   type FrontendStaticConfig,
   type FrontendStaticConfigNormalization,
   type StyleFrontend,
@@ -10,7 +11,7 @@ import { composedResolver } from './composedResolver'
 /**
  * The Tailwind frontend descriptor.
  *
- * The shared style cursor tokenizes `className` once and asks this descriptor to
+ * The prepared frontend tokenizes `className` once and asks its candidate resolver to
  * emit the entries for each candidate. Everything after this point — value programs,
  * per-longhand forward merging, web lowering, native evaluation — is shared.
  *
@@ -66,8 +67,8 @@ function normalizeTailwindStaticConfig(
   return { baseStyle, passthroughClassName, variants }
 }
 
-export const tailwindStyleFrontend: StyleFrontend = {
+export const tailwindStyleFrontend: StyleFrontend = createStyleFrontend({
   resolveClassName: resolveTailwindCandidate,
   normalizeStaticConfig: normalizeTailwindStaticConfig,
   compose: composedResolver,
-}
+})

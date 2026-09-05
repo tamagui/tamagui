@@ -7,6 +7,7 @@ import {
   updateConfig,
 } from '@tamagui/web'
 import { StyleObjectRules, StyleObjectValue } from '@tamagui/helpers'
+import { createFrontendViews, createStyleFrontend } from '@tamagui/web/internal-runtime'
 import { safeAreaVariableNames } from '@tamagui/style-grammar/runtime'
 import { beforeAll, describe, expect, test } from 'vitest'
 
@@ -372,6 +373,34 @@ describe('class-first styled()', () => {
 })
 
 describe('frontend isolation', () => {
+  test('ordinary class names normalize ASCII separators without splitting Unicode names', () => {
+    const styles = splitTailwindStyles(CoreView, {
+      className: ' first\tsecond\nnon\u00a0breaking  last ',
+    })
+    expect(styles.viewProps.className).toContain('first second non\u00a0breaking last')
+  })
+
+  test('preparing a frozen candidate descriptor preserves authored emission order', () => {
+    const descriptor = Object.freeze({
+      resolveClassName(candidate: string, _config: unknown, sink: any) {
+        if (candidate === 'owned') {
+          sink(['backgroundColor', 'red'])
+          return false
+        }
+        return true
+      },
+    })
+    const prepared = createStyleFrontend(descriptor)
+    expect(createStyleFrontend(prepared)).toBe(prepared)
+    expect('walkClassName' in descriptor).toBe(false)
+    const { View: CustomView } = createFrontendViews(descriptor)
+    const before = splitTailwindStyles(CustomView, { className: 'owned user' })
+    const after = splitTailwindStyles(CustomView, { className: 'user owned' })
+    expect(before.classNames.background).toBeTruthy()
+    expect(before.style?.backgroundColor).toBeUndefined()
+    expect(after.style?.backgroundColor).toBe('red')
+  })
+
   test('the regular View is a different component object with no descriptor', () => {
     expect(CoreView).not.toBe(View)
     expect((CoreView.staticConfig as any).styleFrontend).toBeUndefined()

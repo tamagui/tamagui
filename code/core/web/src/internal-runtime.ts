@@ -1,3 +1,4 @@
+import { createStyleFrontend } from './helpers/styleFrontend'
 /**
  * Private implementation boundary shared by Tamagui workspace packages. Not public
  * API: never reexport it from `@tamagui/web`, `@tamagui/core`, `tamagui`, or
@@ -118,6 +119,7 @@ export function createFrontendViews(frontend: StyleFrontend): {
   View: FrontendComponent
   Text: FrontendComponent
 } {
+  frontend = createStyleFrontend(frontend)
   return {
     View: createComponent({
       ...viewStaticConfig,
@@ -131,3 +133,5 @@ export function createFrontendViews(frontend: StyleFrontend): {
     }),
   }
 }
+
+export { createStyleFrontend }

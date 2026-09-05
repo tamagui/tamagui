@@ -18,6 +18,7 @@ export {
   createFrontendStyled,
   createFrontendViews,
   mergeFrontendCondition,
+  createStyleFrontend,
   plainValueToPayload,
   regularStyleFrontend,
 } from '@tamagui/web/internal-runtime'

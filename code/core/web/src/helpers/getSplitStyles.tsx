@@ -61,7 +61,7 @@ import { fixStyles } from './expandStyles'
 import { getConfigRevisionState } from './grammarConfig'
 import { mediaState as globalMediaState, mediaKeyMatch } from './mediaState'
 import { getStyleStaticConfig, type StyleStaticConfig } from './styleStaticConfig'
-import { mergeFrontendCondition, type FrontendClassSink } from './styleFrontend'
+import type { FrontendClassSink } from './styleFrontend'
 import { nativeTextInputColorProps, normalizeNativeStyle } from './nativeStyleEngine'
 import { warnOnce, warnRefusedValue } from './warnOnce'
 
@@ -584,29 +584,21 @@ function contributeProp(
     if (
       typeof valInit === 'string' &&
       valInit &&
-      (process.env.TAMAGUI_TARGET === 'web' || styleFrontend?.resolveClassName)
+      (process.env.TAMAGUI_TARGET === 'web' || styleFrontend?.walkClassName)
     ) {
       if (noMergeStyle) {
         viewProps.className = valInit
         return
       }
-      const resolveClassName = styleFrontend?.resolveClassName
-      // composed utilities (ring width + ring color -> one boxShadow) arrive as
-      // `__`-prefixed keys the frontend folds together after the walk. only
-      // allocates when a class actually emits one.
-      let composedProps: Record<string, any> | null = null
+      const walkClassName = styleFrontend?.walkClassName
+      if (!walkClassName) {
+        pass[passClassName] =
+          `${pass[passClassName]} ${valInit.replace(/[\x00-\x20]+/g, ' ')}`.trim()
+        return
+      }
       const sink: FrontendClassSink = (entry) => {
         const property = entry[0]
         const condition = entry[2]
-        if (property.charCodeAt(0) === 95 && property.charCodeAt(1) === 95) {
-          composedProps ||= {}
-          composedProps[property] = mergeFrontendCondition(
-            composedProps[property],
-            entry[1],
-            condition
-          )
-          return
-        }
         if (condition !== undefined) {
           if (isValidStyleKey(property, validStyles)) {
             contributeValue(styleState, property, entry[1], undefined, false, condition)
@@ -624,46 +616,17 @@ function contributeProp(
         }
         contributeProp(pass, property, entry[1])
       }
-      let start = 0
-      for (let index = 0; index <= valInit.length; index++) {
-        if (index !== valInit.length && valInit.charCodeAt(index) > 32) continue
-        if (index === start) {
-          start = index + 1
-          continue
+      walkClassName(valInit, conf, sink, (candidate) => {
+        pass[passClassName] = pass[passClassName]
+          ? `${pass[passClassName]} ${candidate}`
+          : candidate
+        if (pass[passShouldDoClasses]) {
+          completeResolvedStyles(styleState)
+          flushDirectStyles(styleState, true)
         }
-        const candidate = valInit.slice(start, index)
-        const preserveRaw = resolveClassName
-          ? resolveClassName(candidate, conf, sink)
-          : true
-        if (preserveRaw === null) {
-          if (process.env.NODE_ENV === 'development') {
-            warnOnce(
-              `[tamagui] frontend candidate "${candidate}" is unavailable on this platform and was dropped.`
-            )
-          }
-        } else if (preserveRaw) {
-          pass[passClassName] = pass[passClassName]
-            ? `${pass[passClassName]} ${candidate}`
-            : candidate
-          if (resolveClassName) {
-            if (pass[passShouldDoClasses]) {
-              completeResolvedStyles(styleState)
-              flushDirectStyles(styleState, true)
-            }
-            pass[passShouldDoClasses] = false
-            styleState.flatShouldDoClasses = false
-          }
-        }
-        start = index + 1
-      }
-      if (composedProps) {
-        // contributed at the className's own authored position, so composing a
-        // ring never moves an unrelated property to another precedence tier
-        const composed = styleFrontend!.compose?.(composedProps)
-        for (const property in composed) {
-          contributeProp(pass, property, composed[property])
-        }
-      }
+        pass[passShouldDoClasses] = false
+        styleState.flatShouldDoClasses = false
+      })
     }
     return
   }

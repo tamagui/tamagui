@@ -57,10 +57,12 @@ export type FrontendClassSink = (entry: FrontendClassPlanEntry) => void;
  * `ring-2 hover:ring-4` reads as `{ default, hover }`, and a later unconditional
  * `ring-8` restates that `default` without dropping the `hover` arm.
  *
- * Both class-walk sinks use this: the one in `getSplitStyles` and the one the
- * Tailwind frontend runs when it composes a class string statically.
+ * Both the prepared frontend class walk and the static Tailwind class resolver
+ * use this; ordinary core components do not need class composition.
  */
 export declare function mergeFrontendCondition(previous: unknown, value: unknown, condition: string | undefined): unknown;
+/** Prepare optional class syntax once, outside the ordinary style render path. */
+export declare function createStyleFrontend(frontend: StyleFrontend): StyleFrontend;
 /**
  * A component's authoring syntax. It is chosen by the package the component was
  * imported from and frozen onto its static config when the component is created:
@@ -74,6 +76,8 @@ export declare function mergeFrontendCondition(previous: unknown, value: unknown
  * contribution, merging, web lowering, and native evaluation all stay in core.
  */
 export type StyleFrontend = {
+    /** Prepared class-string traversal; raw classes emit at their authored position. */
+    walkClassName?: (source: string, config: StyleFrontendConfig, sink: FrontendClassSink, raw: (candidate: string) => void) => void;
     /** resolves one class candidate and sends claimed entries to the shared cursor */
     resolveClassName?: (candidate: string, config: StyleFrontendConfig, sink: FrontendClassSink) => boolean | null;
     /**
