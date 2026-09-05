@@ -1,7 +1,7 @@
 import type { LinkHandle, RegistryStats, ViewSlots, ViewStateSnapshot, ViewStateTableUpdate, ViewStateUpdate } from "./types";
 export type { LinkHandle, RegistryStats, Unlink, ViewSlots, ViewStateSnapshot, ViewStateTableUpdate, ViewStateUpdate } from "./types";
 export { ROOT_SCOPE, getMirroredStateName } from "./mirror";
-export { processStyleColors } from "./processStyleColors";
+export { processStyleColors } from "./processStyleColors.native";
 export declare function isAvailable(): boolean;
 /**
 * Link a mounted view to the engine. Captures the ShadowNode once, returns

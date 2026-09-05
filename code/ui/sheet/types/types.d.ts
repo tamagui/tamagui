@@ -1,5 +1,6 @@
 import type { AnimatedNumberStrategy, TransitionProp } from '@tamagui/core';
 import type { PortalProps } from '@tamagui/portal';
+import type { PanResponderConfig } from '@tamagui/react-native-pan-responder';
 import type { RemoveScroll } from '@tamagui/remove-scroll';
 import type { ReactNode } from 'react';
 import type React from 'react';
@@ -163,5 +164,19 @@ export interface KeyboardControllerSheetResult {
      */
     flushPendingHide: () => void;
 }
+export type SheetDragSurfaceProps = {
+    /** react-native-gesture-handler is set up and owns the drag (native only) */
+    gestureHandlerEnabled: boolean;
+    /** the `Gesture.Pan` to attach when gesture handler owns the drag */
+    panGesture: any;
+    /** the PanResponder config to drive the drag with otherwise, null when dragging is off */
+    panConfig: PanResponderConfig | null;
+    children?: ReactNode;
+};
+export type SheetNativePlatforms = 'ios';
+export type SheetNativeModal = {
+    ModalSheetView: any;
+    ModalSheetViewMainContent: any;
+};
 export {};
 //# sourceMappingURL=types.d.ts.map

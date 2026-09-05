@@ -83,3 +83,6 @@ test-results/
 
 # scratch type-perf fixtures generated into the checkout by measurement harnesses
 zz-typeperf*
+
+# tamagui-build writes these per build and removes them on exit; an interrupted build leaves one behind
+.tamagui-build-tsconfig-*.json

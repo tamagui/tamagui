@@ -1,5 +1,5 @@
 /**
- * Generates `src/generated.ts` — the react-native type surface Tamagui uses on
+ * Generates `src/generated.d.ts` — the react-native type surface Tamagui uses on
  * web, inlined so no non-`.native` file has to import react-native.
  *
  * It walks react-native's shipped `.d.ts` from a fixed set of root type names
@@ -32,8 +32,8 @@ const RN = dirname(createRequire(import.meta.url).resolve('react-native/package.
 /**
  * Every react-native type reached from a non-`.native` file in the workspace.
  * Derived by grepping `import type ... from 'react-native'` and dropping the
- * ones only `.native` files and type tests use (`ScrollView`,
- * `PanResponderGestureState`), which keep importing react-native directly.
+ * ones only `.native` files and type tests use (`ScrollView`), which keep
+ * importing react-native directly.
  *
  * Adding a root here is cheap; the closure walk pulls whatever it needs.
  */
@@ -48,6 +48,7 @@ const ROOTS = [
   'LayoutChangeEvent',
   'LayoutRectangle',
   'NativeSyntheticEvent',
+  'PanResponderGestureState',
   'PressableProps',
   'ScaledSize',
   'StyleProp',
@@ -495,7 +496,7 @@ import type * as React from 'react'
 `
 
 mkdirSync(join(PKG, 'src'), { recursive: true })
-const out = join(PKG, 'src/generated.ts')
+const out = join(PKG, 'src/generated.d.ts')
 writeFileSync(out, `${header}\n${body}\n`)
 
 // react-native's own formatting is not the repo's, and a file that lands
@@ -505,6 +506,6 @@ execFileSync(resolve(PKG, '../../../node_modules/.bin/oxfmt'), [out], {
 })
 
 console.info(
-  `✓ wrote src/generated.ts — ${collected.size} declarations from react-native ${version} ` +
+  `✓ wrote src/generated.d.ts — ${collected.size} declarations from react-native ${version} ` +
     `(${body.split('\n').length} lines)`
 )

@@ -2,7 +2,7 @@ import type { StyleObject } from '@tamagui/helpers';
 import type { CoreStateModifierName, TransformAccumulator } from '@tamagui/style-grammar/runtime';
 import type { Properties } from 'csstype';
 import type { CSSProperties, ComponentType, Context, Dispatch, FunctionComponent, HTMLAttributes, ProviderExoticComponent, Ref as ReactRef, ReactNode, RefObject, SetStateAction } from 'react';
-import type { FontVariant, PressableProps, Text as RNText, TextStyle as RNTextStyle, TextProps as ReactTextProps, View, ViewProps, ViewStyle } from 'react-native';
+import type { FontVariant, PressableProps, Text as RNText, TextStyle as RNTextStyle, TextProps as ReactTextProps, View, ViewProps, ViewStyle } from '@tamagui/react-native-types';
 import type { NativeStyleEngineLinkHandle } from './helpers/nativeStyleEngine';
 import type { StyleFrontend } from './helpers/styleFrontend';
 import type { CSSColorNames } from './interfaces/CSSColorNames';

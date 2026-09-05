@@ -1,5 +1,5 @@
 import React from 'react';
-import type { PressableProps, ViewProps } from 'react-native';
+import type { PressableProps, ViewProps } from '@tamagui/react-native-types';
 export type CheckedState = boolean | 'indeterminate';
 type CheckboxBaseProps = Omit<ViewProps, 'onFocus' | 'onBlur'> & Pick<PressableProps, 'onPress'>;
 export type CheckboxExtraProps = {
@@ -37,7 +37,7 @@ export declare function useCheckbox<R, P extends CheckboxBehaviorProps>(props: P
         'data-disabled'?: string | undefined;
         disabled?: boolean | undefined;
         onKeyDown?: import("@tamagui/helpers").EventHandler<React.KeyboardEvent<HTMLButtonElement>> | undefined;
-        onPress: import("@tamagui/helpers").EventHandler<import("react-native").GestureResponderEvent> | undefined;
+        onPress: import("@tamagui/helpers").EventHandler<import("@tamagui/react-native-types").GestureResponderEvent> | undefined;
     };
 };
 export {};

@@ -136,7 +136,7 @@ declare const Accordion: ((props: ScopedProps<AccordionMultipleProps | Accordion
     }, TamaguiElement, import("@tamagui/core").StackNonStyleProps & import("@tamagui/collapsible").CollapsibleContentProps & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/collapsible").CollapsibleContentProps, keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
         __scopeAccordion?: string;
     }, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic>;
-    Item: import("@tamagui/compose-refs").RefComponent<import("react-native").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), AccordionItemProps>;
+    Item: import("@tamagui/compose-refs").RefComponent<import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), AccordionItemProps>;
     HeightAnimator: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}, {}>;
 };
 export { Accordion };

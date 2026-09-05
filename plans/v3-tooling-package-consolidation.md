@@ -194,15 +194,23 @@ unresolved import silently degrades `StyleDefinition` to `any`, so
 consumer-side error to rely on here at all.
 
 So the real check is a transitive import walk over the emitted `.d.ts` files, and
-it now lives in the repo as `bun run check:dom-types`
-(`scripts/check-dom-types-standalone.ts`), part of `bun run check` and so part of
-CI. It walks all three published entries — `tamagui/dom`, `@tamagui/core/dom`,
-`@tamagui/web/dom`, default and `react-native` conditions — following relative
-imports and workspace package specifiers, and fails if react-native appears
-anywhere in the closure. Like `check:paths` next to it, it self-tests against
-in-memory fixtures of the leak's real shape before it will claim the repo is
-clean. Run against the pre-change types it exits 1 and names `types/types.d.ts`
-as the source.
+it now lives in the repo as `bun run check:web-types`
+(`scripts/check-web-types-react-native.ts`), part of `bun run check` and so part
+of CI. It reads the `types` target of every published workspace entry from its
+own `exports` map — 2074 of them, wildcard subpaths expanded — skipping the
+`react-native` condition, which is allowed to name react-native because it only
+resolves where react-native is installed. From each it follows relative imports
+and workspace package specifiers, and fails if react-native appears anywhere in
+the closure. Like `check:paths` next to it, it self-tests against in-memory
+fixtures of the leak's real shape before it will claim the repo is clean, and it
+refuses to pass on a suspiciously small entry list or closure, so a broken
+enumeration reads as a failure rather than as a green run. Run against the
+pre-change types it exits 1 and names `types/types.d.ts` as the source.
+
+There is an `ALLOWED` map for entries whose web types describe react-native on
+purpose. It is empty, which is the state worth holding: every published entry in
+the repo, the react-native-facing packages included, resolves with react-native
+absent.
 
 The same treatment is still available for `ViewProps`/`PressableProps` on the
 regular entry if that peer is ever worth dropping, but the owner's bar was "so

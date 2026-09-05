@@ -1,5 +1,5 @@
 import type { ComponentType } from 'react';
-import type { ImageResizeMode } from 'react-native';
+import type { ImageResizeMode } from '@tamagui/react-native-types';
 import type { ImageProps } from './types';
 type GetProps<T> = T extends ComponentType<infer P> ? P : never;
 export type CreateImageOptions<C extends ComponentType<any>> = {
@@ -60,15 +60,15 @@ export type CreateImageOptions<C extends ComponentType<any>> = {
  * />
  */
 export declare function createImage<C extends ComponentType<any>>(options: CreateImageOptions<C>): import("react").FC<Partial<ImageProps>> & {
-    getSize: typeof import("react-native").Image.getSize;
-    getSizeWithHeaders: typeof import("react-native").Image.getSizeWithHeaders;
-    prefetch: typeof import("react-native").Image.prefetch;
-    prefetchWithMetadata: typeof import("react-native").Image.prefetchWithMetadata;
-    abortPrefetch: typeof import("react-native").Image.abortPrefetch | undefined;
-    queryCache: typeof import("react-native").Image.queryCache | undefined;
-} & import("react").FC<import("@tamagui/web").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & Omit<import("react-native").ImageProps, "resizeMode" | "source" | keyof import("@tamagui/web").StackNonStyleProps | keyof import("@tamagui/web").StackStyleBase> & {
+    getSize: typeof import("@tamagui/react-native-types").Image.getSize;
+    getSizeWithHeaders: typeof import("@tamagui/react-native-types").Image.getSizeWithHeaders;
+    prefetch: typeof import("@tamagui/react-native-types").Image.prefetch;
+    prefetchWithMetadata: typeof import("@tamagui/react-native-types").Image.prefetchWithMetadata;
+    abortPrefetch: typeof import("@tamagui/react-native-types").Image.abortPrefetch | undefined;
+    queryCache: typeof import("@tamagui/react-native-types").Image.queryCache | undefined;
+} & import("react").FC<import("@tamagui/web").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & Omit<import("@tamagui/react-native-types").ImageProps, "resizeMode" | "source" | keyof import("@tamagui/web").StackNonStyleProps | keyof import("@tamagui/web").StackStyleBase> & {
     src?: string | number;
-    source?: import("react-native").ImageSourcePropType;
+    source?: import("@tamagui/react-native-types").ImageSourcePropType;
     resizeMode?: ImageResizeMode;
     objectFit?: React.CSSProperties['objectFit'];
     objectPosition?: React.CSSProperties['objectPosition'];

@@ -17,7 +17,7 @@ vi.mock('react-native', () => ({
   },
 }))
 
-const { processStyleColors } = await import('../processStyleColors')
+const { processStyleColors } = await import('../processStyleColors.native')
 
 describe('processStyleColors', () => {
   // two bugs this guards. handed to fabric as a packed int, the alpha byte was

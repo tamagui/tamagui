@@ -1,4 +1,4 @@
-import { View } from 'react-native';
+import type { View } from '@tamagui/react-native-types';
 import type { SheetProps } from './types';
 export declare const SheetImplementationCustom: import("@tamagui/compose-refs").RefComponent<View, SheetProps>;
 export declare function isSheetOverlayComponent(type: unknown): boolean;

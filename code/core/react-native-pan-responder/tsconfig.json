@@ -1,0 +1,19 @@
+{
+  "extends": "../../../tsconfig.json",
+  "compilerOptions": {
+    "composite": true
+  },
+  "references": [
+    {
+      "path": "../react-native-types"
+    },
+    {
+      "path": "../react-native-use-responder-events"
+    }
+  ],
+  "exclude": [
+    "types",
+    "dist",
+    "**/__tests__"
+  ]
+}

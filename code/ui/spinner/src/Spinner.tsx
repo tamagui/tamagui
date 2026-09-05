@@ -50,7 +50,13 @@ export const Spinner = createStyledHOC(YStack, (props: SpinnerProps, ref) => {
   const px = sizes[size]
 
   return (
-    <YStack ref={ref} role="progressbar" items="center" justify="center" {...stackProps}>
+    <YStack
+      ref={ref}
+      role="progressbar"
+      alignItems="center"
+      justifyContent="center"
+      {...stackProps}
+    >
       <svg ref={svg} width={px} height={px} viewBox="0 0 32 32">
         <circle
           cx="16"

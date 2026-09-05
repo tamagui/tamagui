@@ -29,6 +29,8 @@ import {
   type View,
 } from 'react-native'
 
+import type { CreateAnimationsOptions } from './types'
+
 // detect Fabric (New Architecture) — Paper doesn't support native driver for all style keys
 const isFabric =
   !isWeb && typeof global !== 'undefined' && !!global.__nativeFabricUIManager
@@ -113,11 +115,6 @@ const costlyToAnimateStyleKey = {
   borderTopWidth: true,
   borderBottomWidth: true,
   ...colorStyleKey,
-}
-
-type CreateAnimationsOptions = {
-  // override native driver detection (default: auto-detect Fabric)
-  useNativeDriver?: boolean
 }
 
 export const AnimatedView: Animated.AnimatedComponent<typeof View> = Animated.View

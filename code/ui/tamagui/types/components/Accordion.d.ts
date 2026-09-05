@@ -46,7 +46,7 @@ export declare const Accordion: ((props: (((import("@tamagui/ui").AccordionMulti
     }> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>> & {
         ref?: import("react").Ref<import("@tamagui/ui").TamaguiTextElement> | undefined;
     }, "ref">>;
-    Item: import("@tamagui/ui").RefComponent<import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/ui").AccordionItemProps>;
+    Item: import("@tamagui/ui").RefComponent<import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/ui").AccordionItemProps>;
     HeightAnimator: import("@tamagui/ui").TamaguiComponent<import("@tamagui/web").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {}, {}>;
     Trigger: React.FunctionComponent<Omit<import("@tamagui/ui").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
         __scopeCollapsible?: string;

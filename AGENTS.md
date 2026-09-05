@@ -51,7 +51,7 @@ unpushed. Rules:
 
 ```sh
 bun run lint     # oxfmt --check && oxlint. oxlint alone misses formatting
-bun run check    # deps, unused, tamagui, references, paths, dom-types, lsp-pins
+bun run check    # deps, unused, tamagui, references, paths, web-types, lsp-pins
 ```
 
 Your package's own suite cannot see either one, and neither can `bun run

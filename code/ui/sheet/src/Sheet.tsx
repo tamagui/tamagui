@@ -18,7 +18,6 @@ import { StackZIndexContext } from '@tamagui/z-index-stack'
 import type { FunctionComponent, Ref } from 'react'
 import { useContext, useEffect, useMemo, useRef } from 'react'
 import type { View as RNView } from '@tamagui/react-native-types'
-import { Platform } from 'react-native'
 import {
   SHEET_BACKGROUND_NAME,
   SHEET_CONTAINER_NAME,
@@ -304,13 +303,12 @@ export const SheetRoot = createRefComponent<RNView, SheetProps>(
 
     let SheetImplementation = SheetImplementationCustom
 
-    if (props.native && Platform.OS === 'ios') {
-      if (process.env.TAMAGUI_TARGET === 'native') {
-        const impl = getNativeSheet('ios')
-        if (impl) {
-          // @ts-expect-error accepting external sheet implementation
-          SheetImplementation = impl
-        }
+    if (props.native) {
+      // null unless this is ios and the app registered a native sheet
+      const impl = getNativeSheet('ios')
+      if (impl) {
+        // @ts-expect-error accepting external sheet implementation
+        SheetImplementation = impl
       }
     }
 

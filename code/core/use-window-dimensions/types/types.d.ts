@@ -1,4 +1,4 @@
-import type { ScaledSize } from "react-native";
+import type { ScaledSize } from "@tamagui/react-native-types";
 export type Size = {
 	width: number;
 	height: number;

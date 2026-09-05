@@ -1,3 +1,4 @@
+import type { ViewProps } from "@tamagui/react-native-types";
 import type { ReactNode } from "react";
 export type NativePortalState = {
 	enabled: boolean;
@@ -68,6 +69,15 @@ export interface KeyboardControllerState {
 	KeyboardController: any;
 	KeyboardEvents: any;
 	KeyboardStickyView: any;
+}
+export interface PressBoundaryProps extends ViewProps {
+	enabled?: boolean;
+	/**
+	* Alias for enabling the boundary. The behavior is limited to Tamagui's
+	* shared press ownership and does not patch arbitrary RN bubbling.
+	*/
+	stopPropagation?: boolean;
+	debugName?: string | null;
 }
 
 //# sourceMappingURL=types.d.ts.map

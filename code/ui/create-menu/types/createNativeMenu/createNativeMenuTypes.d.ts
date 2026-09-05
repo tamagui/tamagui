@@ -1,4 +1,4 @@
-import type { ImageProps } from 'react-native';
+import type { ImageProps } from '@tamagui/react-native-types';
 import type { SFSymbol } from 'sf-symbols-typescript';
 type ImageOptions = {
     tint?: string;

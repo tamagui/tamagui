@@ -60,7 +60,7 @@ export declare const ContextMenu: import("react").FC<import("./createNonNativeCo
         ref?: import("react").Ref<import("@tamagui/web").TamaguiElement> | undefined;
     }, "ref"> & {
         scope?: string;
-    } & import("@tamagui/compose-refs").RefProp<import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods)> & Partial<Omit<unknown, "ref" | "scope" | keyof import("@tamagui/create-menu").MenuRadioGroupProps>>>;
+    } & import("@tamagui/compose-refs").RefProp<import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods)> & Partial<Omit<unknown, "ref" | "scope" | keyof import("@tamagui/create-menu").MenuRadioGroupProps>>>;
     RadioItem: import("react").FC<Omit<Omit<import("@tamagui/web").ViewProps, "scope" | keyof import("@tamagui/create-menu").MenuRadioItemProps> & import("@tamagui/create-menu").MenuRadioItemProps & {
         scope?: string;
     } & {
@@ -122,14 +122,14 @@ export declare const ContextMenu: import("react").FC<import("./createNonNativeCo
     ItemIcon: React.FC<Omit<Omit<import("@tamagui/web").ViewProps, keyof import("@tamagui/web").StackNonStyleProps | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
         ref?: import("react").Ref<import("@tamagui/web").TamaguiElement> | undefined;
     }, "ref"> & import("@tamagui/create-menu").NativeMenuItemCommonProps>;
-    ItemImage: import("react").FC<import("@tamagui/web").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & Omit<import("react-native").ImageProps, "resizeMode" | "source" | keyof import("@tamagui/web").StackNonStyleProps | keyof import("@tamagui/web").StackStyleBase> & {
+    ItemImage: import("react").FC<import("@tamagui/web").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & Omit<import("@tamagui/react-native-types/src").ImageProps, "resizeMode" | "source" | keyof import("@tamagui/web").StackNonStyleProps | keyof import("@tamagui/web").StackStyleBase> & {
         src?: string | number;
-        source?: import("react-native").ImageSourcePropType;
-        resizeMode?: import("react-native").ImageResizeMode;
+        source?: import("@tamagui/react-native-types/src").ImageSourcePropType;
+        resizeMode?: import("@tamagui/react-native-types/src").ImageResizeMode;
         objectFit?: React.CSSProperties['objectFit'];
         objectPosition?: React.CSSProperties['objectPosition'];
     } & Omit<import("react").ImgHTMLAttributes<HTMLImageElement>, "src" | keyof import("@tamagui/web").StackNonStyleProps | keyof import("@tamagui/web").StackStyleBase> & Omit<import("react").ImgHTMLAttributes<HTMLImageElement>, "height" | "src" | "style" | "width"> & import("@tamagui/compose-refs").RefProp<import("@tamagui/web").TamaguiElement> & Partial<Omit<import("@tamagui/create-menu").NativeMenuItemCommonProps & {
-        source: import("react-native").ImageProps['source'];
+        source: import("@tamagui/react-native-types/src").ImageProps['source'];
         ios?: {
             style?: {
                 tint?: string;

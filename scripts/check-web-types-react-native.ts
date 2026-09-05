@@ -1,20 +1,23 @@
 /**
- * Rejects a `react-native` edge in the published types of the standalone DOM
- * entries — `tamagui/dom`, `@tamagui/core/dom`, `@tamagui/web/dom`.
+ * Rejects a `react-native` edge in the published web types of every workspace
+ * package.
  *
- * Those three exist so an app can use `html.*` and `style()` with no
- * react-native installed at all. Everything else in Tamagui may depend on
- * react-native's types; these may not.
+ * Tamagui's props are typed against react-native's, but on web nothing should
+ * need react-native to be installed for `tsc` to resolve them. The types it does
+ * need are inlined in `@tamagui/react-native-types`, so anything genuinely
+ * native belongs in a `.native` file, which the published `types` entry never
+ * reaches. `ALLOWED` below is the list of entries that are exceptions, each with
+ * the reason.
  *
- * A `grep -rl react-native types/dom/` does NOT check this, and reading it as a
- * check is how the leak survived: the actual edge was
+ * A `grep -rl react-native types/` does NOT check this, and reading it as a
+ * check is how the first leak survived: the actual edge was
  * `types/dom/standalone.d.ts` importing `../types`, which imports react-native
  * one file further out. The grep came back clean the whole time. So this walks
  * the transitive `.d.ts` closure from each published entry instead, following
  * both relative imports and workspace package specifiers.
  *
- * `skipLibCheck: true` is why the leak was silent rather than loud. Nearly every
- * consumer sets it, and it suppresses the unresolved import instead of
+ * `skipLibCheck: true` is why such a leak is silent rather than loud. Nearly
+ * every consumer sets it, and it suppresses the unresolved import instead of
  * surfacing it — `StyleDefinition` quietly degraded to `any`, so
  * `style({ notAStyleProperty: 1, padding: true })` typechecked. There is no
  * consumer-side error to rely on here. This gate is the only thing that sees it.
@@ -27,26 +30,23 @@ const REPO_ROOT = resolve(import.meta.dirname, '..')
 const SKIP_DIRS = new Set(['node_modules', '.git', 'dist', 'build', '.next', '.turbo'])
 
 /**
- * The published entries, by package and export subpath. Read from each
- * package.json's `exports` rather than hardcoded, so renaming an entry moves the
- * check with it instead of leaving it pointed at a file nobody ships.
+ * Entries whose web types may reach react-native, and why. Keyed by package
+ * name for the whole package, or `name#subpath` for one entry of it.
  *
- * The `react-native` condition is checked alongside the default one even though
- * a consumer only resolves it when react-native IS installed. Everything it adds
- * over the default entry is the compiler-injected native primitives, and those
- * are typed against `./contract` rather than react-native today. If one of them
- * ever genuinely needs a react-native type, this list is the place to say so.
+ * Empty, and that is the state worth keeping: every published entry in the repo
+ * resolves with react-native absent, the react-native-facing packages included.
+ * An exception here should be a package whose web types describe react-native
+ * itself, never a package that has not been split into a `.native` sibling yet.
  */
-const ENTRIES = [
-  { pkg: 'tamagui', subpath: './dom' },
-  { pkg: '@tamagui/core', subpath: './dom' },
-  { pkg: '@tamagui/web', subpath: './dom' },
-]
+const ALLOWED: Record<string, string> = {}
 
 const FORBIDDEN = 'react-native'
 
 /** a closure smaller than this means the walker broke, not that the repo is clean */
 const MIN_FILES_IN_CLOSURE = 5
+
+/** and this many entries, so a broken enumeration cannot pass either */
+const MIN_ENTRIES = 50
 
 type PackageInfo = { dir: string; json: any }
 
@@ -74,14 +74,15 @@ function readWorkspacePackages(): Map<string, PackageInfo> {
   return packages
 }
 
-/** the `types` target of an exports entry, for the default and react-native conditions */
-export function typesTargets(exportValue: any): string[] {
-  if (!exportValue || typeof exportValue !== 'object') return []
-  const targets: string[] = []
-  if (typeof exportValue.types === 'string') targets.push(exportValue.types)
-  const rn = exportValue['react-native']
-  if (rn && typeof rn === 'object' && typeof rn.types === 'string') targets.push(rn.types)
-  return targets
+/**
+ * The `types` target of an exports entry.
+ *
+ * Only the default condition is read. The `react-native` condition resolves
+ * exclusively where react-native IS installed, so it is allowed to name it.
+ */
+export function typesTarget(exportValue: any): string | null {
+  if (!exportValue || typeof exportValue !== 'object') return null
+  return typeof exportValue.types === 'string' ? exportValue.types : null
 }
 
 /**
@@ -103,7 +104,7 @@ function makeResolver(packages: Map<string, PackageInfo>) {
     const subpath = parts.slice(scoped ? 2 : 1).join('/')
     const key = subpath ? `./${subpath}` : '.'
     const target =
-      typesTargets(pkg.json?.exports?.[key])[0] ?? (key === '.' && pkg.json.types)
+      typesTarget(pkg.json?.exports?.[key]) ?? (key === '.' && pkg.json.types)
     if (typeof target !== 'string') return null
     const file = resolve(pkg.dir, target)
     return existsSync(file) ? file : null
@@ -198,7 +199,7 @@ function selfTest() {
   }
 
   if (failures.length) {
-    console.error('\n❌ check-dom-types-standalone is broken — it can no longer detect')
+    console.error('\n❌ check-web-types-react-native is broken — it can no longer detect')
     console.error(
       '   the leak it exists to catch, so its "clean" result means nothing:\n'
     )
@@ -210,70 +211,124 @@ function selfTest() {
 selfTest()
 
 const packages = readWorkspacePackages()
-const entryFiles: string[] = []
-const missing: string[] = []
 
-for (const { pkg, subpath } of ENTRIES) {
-  const info = packages.get(pkg)
-  if (!info) {
-    missing.push(`${pkg} is not a workspace package`)
-    continue
-  }
-  const targets = typesTargets(info.json?.exports?.[subpath])
-  if (!targets.length) {
-    missing.push(`${pkg} has no "types" under exports["${subpath}"]`)
-    continue
-  }
-  for (const target of targets) {
+/**
+ * Every published entry that declares web types, as `name#subpath`.
+ *
+ * Read from each package.json's `exports` rather than hardcoded, so a new
+ * package or a renamed entry is covered the day it lands instead of the day
+ * someone remembers to add it here.
+ */
+/** every file a single-`*` types target like `./types/*.d.ts` stands for */
+function expandWildcard(pkgDir: string, target: string): string[] {
+  const parts = target.split('*')
+  if (parts.length !== 2) return []
+  const [prefix, suffix] = parts
+  const slash = prefix.lastIndexOf('/')
+  const dir = resolve(pkgDir, prefix.slice(0, slash + 1))
+  const base = prefix.slice(slash + 1)
+  if (!existsSync(dir)) return []
+  return readdirSync(dir, { withFileTypes: true })
+    .filter(
+      (entry) =>
+        entry.isFile() && entry.name.startsWith(base) && entry.name.endsWith(suffix)
+    )
+    .map((entry) => join(dir, entry.name))
+}
+
+type Entry = { id: string; pkg: string; file: string }
+const entries: Entry[] = []
+const unbuilt: string[] = []
+
+for (const [name, info] of packages) {
+  if (info.json.private === true) continue
+  if (ALLOWED[name]) continue
+  const exportMap = info.json.exports
+  if (!exportMap || typeof exportMap !== 'object') continue
+  for (const [subpath, value] of Object.entries(exportMap)) {
+    if (subpath === './package.json') continue
+    const id = subpath === '.' ? name : `${name}${subpath.slice(1)}`
+    if (ALLOWED[`${name}#${subpath}`]) continue
+    const target = typesTarget(value)
+    if (!target) continue
+    // a wildcard subpath (`./demo/*` -> `./types/*.d.ts`) is one entry per file
+    if (target.includes('*')) {
+      const matches = expandWildcard(info.dir, target)
+      if (!matches.length) unbuilt.push(`${id} -> ${target}`)
+      for (const file of matches) {
+        entries.push({ id: `${id} (${relative(info.dir, file)})`, pkg: name, file })
+      }
+      continue
+    }
     const file = resolve(info.dir, target)
-    if (existsSync(file)) entryFiles.push(file)
-    else missing.push(`${pkg}${subpath.slice(1)} -> ${target} (run \`bun run build\`)`)
+    if (existsSync(file)) entries.push({ id, pkg: name, file })
+    else unbuilt.push(`${id} -> ${target}`)
   }
 }
 
-if (missing.length) {
-  console.error('\n❌ cannot check the standalone DOM entries, so nothing was checked:\n')
-  for (const detail of missing) console.error(`  - ${detail}`)
+if (unbuilt.length) {
+  console.error(
+    `\n❌ ${unbuilt.length} published entr${unbuilt.length === 1 ? 'y has' : 'ies have'} no types on disk, so nothing was checked.` +
+      `\n   Run \`bun run build\` first:\n`
+  )
+  for (const detail of unbuilt.slice(0, 20)) console.error(`  - ${detail}`)
+  if (unbuilt.length > 20) console.error(`  ... and ${unbuilt.length - 20} more`)
   console.error('')
   process.exit(1)
 }
 
-const closure = walkTypeClosure(entryFiles, {
-  readFile: (file) => readFileSync(file, 'utf8'),
-  resolve: makeResolver(packages),
-})
-
-if (closure.files.size < MIN_FILES_IN_CLOSURE) {
+if (entries.length < MIN_ENTRIES) {
   console.error(
-    `\n❌ the closure reached only ${closure.files.size} declaration file(s) from ${entryFiles.length} entries.` +
+    `\n❌ found only ${entries.length} published entries to check, which is too few to be real.` +
+      `\n   The enumeration is broken, so a clean result proves nothing.`
+  )
+  process.exit(1)
+}
+
+const resolveSpec = makeResolver(packages)
+const failed: { entry: Entry; found: [string, string][] }[] = []
+let filesSeen = 0
+
+for (const entry of entries) {
+  const closure = walkTypeClosure([entry.file], {
+    readFile: (file) => readFileSync(file, 'utf8'),
+    resolve: resolveSpec,
+  })
+  filesSeen += closure.files.size
+  const found = leaks(closure)
+  if (found.length) failed.push({ entry, found })
+}
+
+if (filesSeen < MIN_FILES_IN_CLOSURE) {
+  console.error(
+    `\n❌ the closures reached only ${filesSeen} declaration file(s) from ${entries.length} entries.` +
       `\n   That is too few to be real — the walker is broken, so a clean result proves nothing.`
   )
   process.exit(1)
 }
 
-const found = leaks(closure)
-
-if (found.length) {
+if (failed.length) {
   console.error(
-    `\n❌ the standalone DOM types reach react-native, so \`tamagui/dom\` and` +
-      `\n   \`@tamagui/core/dom\` no longer resolve without react-native installed:\n`
+    `\n❌ ${failed.length} published entr${failed.length === 1 ? 'y' : 'ies'} reach react-native from their web types,` +
+      `\n   so they no longer resolve without react-native installed:\n`
   )
-  for (const [spec, file] of found) {
-    console.error(`  ${relative(REPO_ROOT, file)}`)
-    console.error(`    imports '${spec}'`)
+  for (const { entry, found } of failed) {
+    console.error(`  ${entry.id}`)
+    for (const [spec, file] of found) {
+      console.error(`    ${relative(REPO_ROOT, file)} imports '${spec}'`)
+    }
   }
   console.error(
-    `\n  The edge is almost never in dom/ itself — it is transitive, and by far the` +
-      `\n  most likely cause is a new \`import ... from '../types'\` in a dom/ file.` +
-      `\n  types.tsx imports react-native, so importing any name from it drags the` +
-      `\n  whole thing in. Define what you need in dom/styleTypes.ts instead, and add` +
-      `\n  the matching assertion to dom/styleTypes.test-d.ts so it stays honest.\n`
+    `\n  The edge is usually transitive: one file in the closure imports a module` +
+      `\n  that names react-native several hops out. Move the value behind a` +
+      `\n  \`.native\` sibling, or take the type from @tamagui/react-native-types,` +
+      `\n  which inlines the same declarations react-native ships.` +
+      `\n  If the entry genuinely is about react-native, add it to ALLOWED with a reason.\n`
   )
   process.exit(1)
 }
 
 console.info(
-  `✓ standalone DOM types resolve without react-native ` +
-    `(${closure.files.size} declaration files from ${entryFiles.length} entries; ` +
-    `external: ${[...closure.external.keys()].sort().join(', ')})`
+  `✓ ${entries.length} published entries resolve without react-native ` +
+    `(${filesSeen} declaration files walked, ${Object.keys(ALLOWED).length} allowed exceptions)`
 )

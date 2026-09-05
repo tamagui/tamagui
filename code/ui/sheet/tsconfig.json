@@ -21,7 +21,13 @@
       "path": "../../core/helpers"
     },
     {
+      "path": "../../core/react-native-pan-responder"
+    },
+    {
       "path": "../../core/react-native-types"
+    },
+    {
+      "path": "../../core/react-native-use-responder-events"
     },
     {
       "path": "../../core/use-constant"

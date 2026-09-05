@@ -2,7 +2,7 @@ import { type RovingFocusGroupProps } from '@tamagui/roving-focus';
 import { type TokenSize } from '@tamagui/size';
 import type { GetProps, StylePiece, TamaguiElement } from '@tamagui/web';
 import * as React from 'react';
-import type { LayoutRectangle } from 'react-native';
+import type { LayoutRectangle } from '@tamagui/react-native-types';
 export declare const TabsFrame: React.FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
     size?: TokenSize | undefined;
 }> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {

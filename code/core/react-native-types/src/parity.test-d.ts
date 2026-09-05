@@ -127,6 +127,9 @@ export type _gestureResponderEvent = Assert<
 export type _gestureResponderHandlers = Assert<
   SameKeys<Ours.GestureResponderHandlers, RN.GestureResponderHandlers>
 >
+export type _panResponderGestureState = Assert<
+  SameValues<Ours.PanResponderGestureState, RN.PanResponderGestureState>
+>
 export type _textLayoutEventData = Assert<
   SameKeys<Ours.TextLayoutEventData, RN.TextLayoutEventData>
 >

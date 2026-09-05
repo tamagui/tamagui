@@ -1,4 +1,4 @@
 import "./polyfill";
-export * from "./createAnimations";
+export * from "./createAnimations.native";
 
 //# sourceMappingURL=index.native.d.ts.map

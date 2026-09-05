@@ -4,15 +4,14 @@
   "license": "MIT",
   "type": "module",
   "sideEffects": false,
-  "source": "src/index.ts",
-  "types": "./src/index.ts",
+  "types": "./src/index.d.ts",
   "files": [
     "src"
   ],
   "exports": {
     "./package.json": "./package.json",
     ".": {
-      "types": "./src/index.ts"
+      "types": "./src/index.d.ts"
     }
   },
   "publishConfig": {

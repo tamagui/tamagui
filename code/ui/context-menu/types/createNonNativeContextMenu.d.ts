@@ -81,7 +81,7 @@ export declare function createNonNativeContextMenu(): {
     } & {
         ref?: React.Ref<TamaguiElement> | undefined;
     }, "ref">>>;
-    RadioGroup: import("@tamagui/compose-refs").RefComponent<import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), ScopedProps<Omit<Omit<ViewProps, "scope" | keyof BaseMenuTypes.MenuRadioGroupProps> & BaseMenuTypes.MenuRadioGroupProps & {
+    RadioGroup: import("@tamagui/compose-refs").RefComponent<import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), ScopedProps<Omit<Omit<ViewProps, "scope" | keyof BaseMenuTypes.MenuRadioGroupProps> & BaseMenuTypes.MenuRadioGroupProps & {
         scope?: string;
     } & {
         ref?: React.Ref<TamaguiElement> | undefined;

@@ -11,7 +11,7 @@
  * Anything genuinely native-only stays where it is: `.native.ts` files keep
  * importing react-native directly, because they only ever run where it exists.
  *
- * `generated.ts` is regenerated wholesale and must not be hand-edited. Put
+ * `generated.d.ts` is regenerated wholesale and must not be hand-edited. Put
  * Tamagui-owned types here instead.
  */
 

@@ -13,7 +13,6 @@
  * every event. Native uses the public animated-number hooks and driver view.
  */
 import * as React from 'react';
-import type { Animated } from 'react-native';
 export interface UseToastAnimationsOptions {
     /**
      * Called when exit animation completes
@@ -35,8 +34,8 @@ export interface ToastAnimationValues {
     stop: () => void;
     /** the animated style to spread on the AnimatedView (for motion/reanimated drivers) */
     animatedStyle: any;
-    /** the animated view component from the driver */
-    AnimatedView: typeof Animated.View;
+    /** the animated view component from the driver, whose props are driver-specific */
+    AnimatedView: React.ComponentType<any>;
     /** ref to attach to the drag wrapper element (for CSS driver direct DOM updates) */
     dragRef: React.RefObject<HTMLDivElement | null>;
 }

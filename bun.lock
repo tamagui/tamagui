@@ -947,6 +947,7 @@
       "version": "2.7.7",
       "dependencies": {
         "@tamagui/compose-refs": "workspace:*",
+        "@tamagui/react-native-types": "workspace:*",
       },
       "devDependencies": {
         "@expo/ui": "~57.0.12",
@@ -1050,6 +1051,21 @@
       },
       "peerDependencies": {
         "react-native-web": "*",
+      },
+    },
+    "code/core/react-native-pan-responder": {
+      "name": "@tamagui/react-native-pan-responder",
+      "version": "2.7.7",
+      "dependencies": {
+        "@tamagui/react-native-types": "workspace:*",
+        "@tamagui/react-native-use-responder-events": "workspace:*",
+      },
+      "devDependencies": {
+        "@tamagui/build": "workspace:*",
+        "react": "19.2.3",
+      },
+      "peerDependencies": {
+        "react": ">=19",
       },
     },
     "code/core/react-native-types": {
@@ -3349,7 +3365,9 @@
         "@tamagui/helpers": "workspace:*",
         "@tamagui/native": "workspace:*",
         "@tamagui/portal": "workspace:*",
+        "@tamagui/react-native-pan-responder": "workspace:*",
         "@tamagui/react-native-types": "workspace:*",
+        "@tamagui/react-native-use-responder-events": "workspace:*",
         "@tamagui/remove-scroll": "workspace:*",
         "@tamagui/scroll-view": "workspace:*",
         "@tamagui/stacks": "workspace:*",
@@ -3385,6 +3403,7 @@
         "@tamagui/get-token": "workspace:*",
         "@tamagui/helpers": "workspace:*",
         "@tamagui/react-native-types": "workspace:*",
+        "@tamagui/react-native-use-responder-events": "workspace:*",
         "@tamagui/stacks": "workspace:*",
         "@tamagui/use-controllable-state": "workspace:*",
         "@tamagui/use-debounce": "workspace:*",
@@ -5732,6 +5751,8 @@
     "@tamagui/radio-headless": ["@tamagui/radio-headless@workspace:code/ui/radio-headless"],
 
     "@tamagui/react-native-media-driver": ["@tamagui/react-native-media-driver@workspace:code/core/react-native-media-driver"],
+
+    "@tamagui/react-native-pan-responder": ["@tamagui/react-native-pan-responder@workspace:code/core/react-native-pan-responder"],
 
     "@tamagui/react-native-svg": ["@tamagui/react-native-svg@workspace:code/packages/react-native-svg"],
 

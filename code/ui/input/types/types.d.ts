@@ -1,5 +1,5 @@
 import type { ColorTokens, TextStyle, TamaguiElementMethods } from '@tamagui/web';
-import type { TextInput } from 'react-native';
+import type { TextInput } from '@tamagui/react-native-types';
 import type { InputNativeProps } from './InputNativeProps';
 /**
  * Extra props that Input adds on top of the base styled component.

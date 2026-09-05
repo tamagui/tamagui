@@ -1,4 +1,4 @@
-import type { GestureResponderHandlers, LayoutChangeEvent, TextLayoutEventData, NativeSyntheticEvent } from 'react-native';
+import type { GestureResponderHandlers, LayoutChangeEvent, TextLayoutEventData, NativeSyntheticEvent } from '@tamagui/react-native-types';
 type OnLayout = ((event: LayoutChangeEvent) => void) | undefined;
 type OnTextLayout = ((event: NativeSyntheticEvent<TextLayoutEventData>) => void) | undefined;
 export interface RNExtraProps {

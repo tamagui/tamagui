@@ -112,16 +112,16 @@ export declare const SheetBackground: import("react").FunctionComponent<Omit<imp
     }, import("@tamagui/web").StaticConfigPublic];
 };
 export declare const SheetScrollView: import("react").FunctionComponent<Omit<import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/ui").ScrollViewRef> & Omit<Omit<import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/ui").ScrollViewRef>, keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-    h?: import("@tamagui/web").FlatStyleValue<number | "unset" | import("react-native").Animated.AnimatedNode | import("@tamagui/ui").GetThemeValueForKey<"height"> | null | undefined>;
-    o?: import("@tamagui/web").FlatStyleValue<"unset" | import("react-native").AnimatableNumericValue | import("@tamagui/ui").GetThemeValueForKey<"opacity"> | undefined>;
+    h?: import("@tamagui/web").FlatStyleValue<number | "unset" | import("@tamagui/react-native-types/src").AnimatedNode | import("@tamagui/ui").GetThemeValueForKey<"height"> | null | undefined>;
+    o?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/react-native-types/src").AnimatableNumericValue | import("@tamagui/ui").GetThemeValueForKey<"opacity"> | undefined>;
     pos?: import("@tamagui/web").FlatStyleValue<"absolute" | "fixed" | "relative" | "static" | "sticky" | "unset" | undefined>;
 }, "scope"> & {
     scope?: import("@tamagui/ui").SheetScopes;
 }, keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
     ref?: import("react").Ref<import("@tamagui/ui").ScrollViewRef> | undefined;
 }> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/ui").ScrollViewRef, import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/ui").ScrollViewRef> & Omit<Omit<import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/ui").ScrollViewRef>, keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-    h?: import("@tamagui/web").FlatStyleValue<number | "unset" | import("react-native").Animated.AnimatedNode | import("@tamagui/ui").GetThemeValueForKey<"height"> | null | undefined>;
-    o?: import("@tamagui/web").FlatStyleValue<"unset" | import("react-native").AnimatableNumericValue | import("@tamagui/ui").GetThemeValueForKey<"opacity"> | undefined>;
+    h?: import("@tamagui/web").FlatStyleValue<number | "unset" | import("@tamagui/react-native-types/src").AnimatedNode | import("@tamagui/ui").GetThemeValueForKey<"height"> | null | undefined>;
+    o?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/react-native-types/src").AnimatableNumericValue | import("@tamagui/ui").GetThemeValueForKey<"opacity"> | undefined>;
     pos?: import("@tamagui/web").FlatStyleValue<"absolute" | "fixed" | "relative" | "static" | "sticky" | "unset" | undefined>;
 }, "scope"> & {
     scope?: import("@tamagui/ui").SheetScopes;
@@ -133,8 +133,8 @@ export declare const SheetScrollView: import("react").FunctionComponent<Omit<imp
     neverFlatten: true;
 } & import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
     __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/ui").ScrollViewRef, import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/ui").ScrollViewRef> & Omit<Omit<import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/ui").ScrollViewRef>, keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-        h?: import("@tamagui/web").FlatStyleValue<number | "unset" | import("react-native").Animated.AnimatedNode | import("@tamagui/ui").GetThemeValueForKey<"height"> | null | undefined>;
-        o?: import("@tamagui/web").FlatStyleValue<"unset" | import("react-native").AnimatableNumericValue | import("@tamagui/ui").GetThemeValueForKey<"opacity"> | undefined>;
+        h?: import("@tamagui/web").FlatStyleValue<number | "unset" | import("@tamagui/react-native-types/src").AnimatedNode | import("@tamagui/ui").GetThemeValueForKey<"height"> | null | undefined>;
+        o?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/react-native-types/src").AnimatableNumericValue | import("@tamagui/ui").GetThemeValueForKey<"opacity"> | undefined>;
         pos?: import("@tamagui/web").FlatStyleValue<"absolute" | "fixed" | "relative" | "static" | "sticky" | "unset" | undefined>;
     }, "scope"> & {
         scope?: import("@tamagui/ui").SheetScopes;
@@ -143,8 +143,8 @@ export declare const SheetScrollView: import("react").FunctionComponent<Omit<imp
         neverFlatten: true;
     } & import("@tamagui/web").StaticConfigPublic];
 };
-export declare const SheetRoot: import("@tamagui/ui").RefComponent<import("react-native").View, SheetProps>;
-export declare const SheetControlled: ((props: Omit<SheetProps, "onOpenChange" | "open"> & import("@tamagui/ui").RefProp<import("react-native").View>) => import("react").ReactNode) & {
+export declare const SheetRoot: import("@tamagui/ui").RefComponent<import("@tamagui/react-native-types/src").View, SheetProps>;
+export declare const SheetControlled: ((props: Omit<SheetProps, "onOpenChange" | "open"> & import("@tamagui/ui").RefProp<import("@tamagui/react-native-types/src").View>) => import("react").ReactNode) & {
     displayName?: string;
     propTypes?: any;
 } & {
@@ -261,16 +261,16 @@ export declare const SheetControlled: ((props: Omit<SheetProps, "onOpenChange" |
         open?: boolean | undefined;
     }>>;
     ScrollView: import("react").FunctionComponent<Omit<import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/ui").ScrollViewRef> & Omit<Omit<import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/ui").ScrollViewRef>, keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-        h?: import("@tamagui/web").FlatStyleValue<number | "unset" | import("react-native").Animated.AnimatedNode | import("@tamagui/ui").GetThemeValueForKey<"height"> | null | undefined>;
-        o?: import("@tamagui/web").FlatStyleValue<"unset" | import("react-native").AnimatableNumericValue | import("@tamagui/ui").GetThemeValueForKey<"opacity"> | undefined>;
+        h?: import("@tamagui/web").FlatStyleValue<number | "unset" | import("@tamagui/react-native-types/src").AnimatedNode | import("@tamagui/ui").GetThemeValueForKey<"height"> | null | undefined>;
+        o?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/react-native-types/src").AnimatableNumericValue | import("@tamagui/ui").GetThemeValueForKey<"opacity"> | undefined>;
         pos?: import("@tamagui/web").FlatStyleValue<"absolute" | "fixed" | "relative" | "static" | "sticky" | "unset" | undefined>;
     }, "scope"> & {
         scope?: import("@tamagui/ui").SheetScopes;
     }, keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
         ref?: import("react").Ref<import("@tamagui/ui").ScrollViewRef> | undefined;
     }> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/ui").ScrollViewRef, import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/ui").ScrollViewRef> & Omit<Omit<import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/ui").ScrollViewRef>, keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-        h?: import("@tamagui/web").FlatStyleValue<number | "unset" | import("react-native").Animated.AnimatedNode | import("@tamagui/ui").GetThemeValueForKey<"height"> | null | undefined>;
-        o?: import("@tamagui/web").FlatStyleValue<"unset" | import("react-native").AnimatableNumericValue | import("@tamagui/ui").GetThemeValueForKey<"opacity"> | undefined>;
+        h?: import("@tamagui/web").FlatStyleValue<number | "unset" | import("@tamagui/react-native-types/src").AnimatedNode | import("@tamagui/ui").GetThemeValueForKey<"height"> | null | undefined>;
+        o?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/react-native-types/src").AnimatableNumericValue | import("@tamagui/ui").GetThemeValueForKey<"opacity"> | undefined>;
         pos?: import("@tamagui/web").FlatStyleValue<"absolute" | "fixed" | "relative" | "static" | "sticky" | "unset" | undefined>;
     }, "scope"> & {
         scope?: import("@tamagui/ui").SheetScopes;
@@ -282,8 +282,8 @@ export declare const SheetControlled: ((props: Omit<SheetProps, "onOpenChange" |
         neverFlatten: true;
     } & import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
         __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/ui").ScrollViewRef, import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/ui").ScrollViewRef> & Omit<Omit<import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/ui").ScrollViewRef>, keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-            h?: import("@tamagui/web").FlatStyleValue<number | "unset" | import("react-native").Animated.AnimatedNode | import("@tamagui/ui").GetThemeValueForKey<"height"> | null | undefined>;
-            o?: import("@tamagui/web").FlatStyleValue<"unset" | import("react-native").AnimatableNumericValue | import("@tamagui/ui").GetThemeValueForKey<"opacity"> | undefined>;
+            h?: import("@tamagui/web").FlatStyleValue<number | "unset" | import("@tamagui/react-native-types/src").AnimatedNode | import("@tamagui/ui").GetThemeValueForKey<"height"> | null | undefined>;
+            o?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/react-native-types/src").AnimatableNumericValue | import("@tamagui/ui").GetThemeValueForKey<"opacity"> | undefined>;
             pos?: import("@tamagui/web").FlatStyleValue<"absolute" | "fixed" | "relative" | "static" | "sticky" | "unset" | undefined>;
         }, "scope"> & {
             scope?: import("@tamagui/ui").SheetScopes;
@@ -322,7 +322,7 @@ export declare const Sheet: ((props: Omit<{
     onTransition?: (e: import("@tamagui/ui").SheetTransitionEvent) => void;
 }, "scope"> & {
     scope?: import("@tamagui/ui").SheetScopes;
-} & import("@tamagui/ui").RefProp<import("react-native").View>) => import("react").ReactNode) & {
+} & import("@tamagui/ui").RefProp<import("@tamagui/react-native-types/src").View>) => import("react").ReactNode) & {
     displayName?: string;
     propTypes?: any;
 } & {
@@ -439,16 +439,16 @@ export declare const Sheet: ((props: Omit<{
         open?: boolean | undefined;
     }>>;
     ScrollView: import("react").FunctionComponent<Omit<import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/ui").ScrollViewRef> & Omit<Omit<import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/ui").ScrollViewRef>, keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-        h?: import("@tamagui/web").FlatStyleValue<number | "unset" | import("react-native").Animated.AnimatedNode | import("@tamagui/ui").GetThemeValueForKey<"height"> | null | undefined>;
-        o?: import("@tamagui/web").FlatStyleValue<"unset" | import("react-native").AnimatableNumericValue | import("@tamagui/ui").GetThemeValueForKey<"opacity"> | undefined>;
+        h?: import("@tamagui/web").FlatStyleValue<number | "unset" | import("@tamagui/react-native-types/src").AnimatedNode | import("@tamagui/ui").GetThemeValueForKey<"height"> | null | undefined>;
+        o?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/react-native-types/src").AnimatableNumericValue | import("@tamagui/ui").GetThemeValueForKey<"opacity"> | undefined>;
         pos?: import("@tamagui/web").FlatStyleValue<"absolute" | "fixed" | "relative" | "static" | "sticky" | "unset" | undefined>;
     }, "scope"> & {
         scope?: import("@tamagui/ui").SheetScopes;
     }, keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
         ref?: import("react").Ref<import("@tamagui/ui").ScrollViewRef> | undefined;
     }> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/ui").ScrollViewRef, import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/ui").ScrollViewRef> & Omit<Omit<import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/ui").ScrollViewRef>, keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-        h?: import("@tamagui/web").FlatStyleValue<number | "unset" | import("react-native").Animated.AnimatedNode | import("@tamagui/ui").GetThemeValueForKey<"height"> | null | undefined>;
-        o?: import("@tamagui/web").FlatStyleValue<"unset" | import("react-native").AnimatableNumericValue | import("@tamagui/ui").GetThemeValueForKey<"opacity"> | undefined>;
+        h?: import("@tamagui/web").FlatStyleValue<number | "unset" | import("@tamagui/react-native-types/src").AnimatedNode | import("@tamagui/ui").GetThemeValueForKey<"height"> | null | undefined>;
+        o?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/react-native-types/src").AnimatableNumericValue | import("@tamagui/ui").GetThemeValueForKey<"opacity"> | undefined>;
         pos?: import("@tamagui/web").FlatStyleValue<"absolute" | "fixed" | "relative" | "static" | "sticky" | "unset" | undefined>;
     }, "scope"> & {
         scope?: import("@tamagui/ui").SheetScopes;
@@ -460,8 +460,8 @@ export declare const Sheet: ((props: Omit<{
         neverFlatten: true;
     } & import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
         __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/ui").ScrollViewRef, import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/ui").ScrollViewRef> & Omit<Omit<import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/ui").ScrollViewRef>, keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-            h?: import("@tamagui/web").FlatStyleValue<number | "unset" | import("react-native").Animated.AnimatedNode | import("@tamagui/ui").GetThemeValueForKey<"height"> | null | undefined>;
-            o?: import("@tamagui/web").FlatStyleValue<"unset" | import("react-native").AnimatableNumericValue | import("@tamagui/ui").GetThemeValueForKey<"opacity"> | undefined>;
+            h?: import("@tamagui/web").FlatStyleValue<number | "unset" | import("@tamagui/react-native-types/src").AnimatedNode | import("@tamagui/ui").GetThemeValueForKey<"height"> | null | undefined>;
+            o?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/react-native-types/src").AnimatableNumericValue | import("@tamagui/ui").GetThemeValueForKey<"opacity"> | undefined>;
             pos?: import("@tamagui/web").FlatStyleValue<"absolute" | "fixed" | "relative" | "static" | "sticky" | "unset" | undefined>;
         }, "scope"> & {
             scope?: import("@tamagui/ui").SheetScopes;
@@ -470,8 +470,8 @@ export declare const Sheet: ((props: Omit<{
             neverFlatten: true;
         } & import("@tamagui/web").StaticConfigPublic];
     };
-    Root: import("@tamagui/ui").RefComponent<import("react-native").View, SheetProps>;
-    Controlled: ((props: Omit<SheetProps, "onOpenChange" | "open"> & import("@tamagui/ui").RefProp<import("react-native").View>) => import("react").ReactNode) & {
+    Root: import("@tamagui/ui").RefComponent<import("@tamagui/react-native-types/src").View, SheetProps>;
+    Controlled: ((props: Omit<SheetProps, "onOpenChange" | "open"> & import("@tamagui/ui").RefProp<import("@tamagui/react-native-types/src").View>) => import("react").ReactNode) & {
         displayName?: string;
         propTypes?: any;
     } & {
@@ -588,16 +588,16 @@ export declare const Sheet: ((props: Omit<{
             open?: boolean | undefined;
         }>>;
         ScrollView: import("react").FunctionComponent<Omit<import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/ui").ScrollViewRef> & Omit<Omit<import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/ui").ScrollViewRef>, keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-            h?: import("@tamagui/web").FlatStyleValue<number | "unset" | import("react-native").Animated.AnimatedNode | import("@tamagui/ui").GetThemeValueForKey<"height"> | null | undefined>;
-            o?: import("@tamagui/web").FlatStyleValue<"unset" | import("react-native").AnimatableNumericValue | import("@tamagui/ui").GetThemeValueForKey<"opacity"> | undefined>;
+            h?: import("@tamagui/web").FlatStyleValue<number | "unset" | import("@tamagui/react-native-types/src").AnimatedNode | import("@tamagui/ui").GetThemeValueForKey<"height"> | null | undefined>;
+            o?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/react-native-types/src").AnimatableNumericValue | import("@tamagui/ui").GetThemeValueForKey<"opacity"> | undefined>;
             pos?: import("@tamagui/web").FlatStyleValue<"absolute" | "fixed" | "relative" | "static" | "sticky" | "unset" | undefined>;
         }, "scope"> & {
             scope?: import("@tamagui/ui").SheetScopes;
         }, keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
             ref?: import("react").Ref<import("@tamagui/ui").ScrollViewRef> | undefined;
         }> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/ui").ScrollViewRef, import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/ui").ScrollViewRef> & Omit<Omit<import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/ui").ScrollViewRef>, keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-            h?: import("@tamagui/web").FlatStyleValue<number | "unset" | import("react-native").Animated.AnimatedNode | import("@tamagui/ui").GetThemeValueForKey<"height"> | null | undefined>;
-            o?: import("@tamagui/web").FlatStyleValue<"unset" | import("react-native").AnimatableNumericValue | import("@tamagui/ui").GetThemeValueForKey<"opacity"> | undefined>;
+            h?: import("@tamagui/web").FlatStyleValue<number | "unset" | import("@tamagui/react-native-types/src").AnimatedNode | import("@tamagui/ui").GetThemeValueForKey<"height"> | null | undefined>;
+            o?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/react-native-types/src").AnimatableNumericValue | import("@tamagui/ui").GetThemeValueForKey<"opacity"> | undefined>;
             pos?: import("@tamagui/web").FlatStyleValue<"absolute" | "fixed" | "relative" | "static" | "sticky" | "unset" | undefined>;
         }, "scope"> & {
             scope?: import("@tamagui/ui").SheetScopes;
@@ -609,8 +609,8 @@ export declare const Sheet: ((props: Omit<{
             neverFlatten: true;
         } & import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
             __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/ui").ScrollViewRef, import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/ui").ScrollViewRef> & Omit<Omit<import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/ui").ScrollViewRef>, keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-                h?: import("@tamagui/web").FlatStyleValue<number | "unset" | import("react-native").Animated.AnimatedNode | import("@tamagui/ui").GetThemeValueForKey<"height"> | null | undefined>;
-                o?: import("@tamagui/web").FlatStyleValue<"unset" | import("react-native").AnimatableNumericValue | import("@tamagui/ui").GetThemeValueForKey<"opacity"> | undefined>;
+                h?: import("@tamagui/web").FlatStyleValue<number | "unset" | import("@tamagui/react-native-types/src").AnimatedNode | import("@tamagui/ui").GetThemeValueForKey<"height"> | null | undefined>;
+                o?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/react-native-types/src").AnimatableNumericValue | import("@tamagui/ui").GetThemeValueForKey<"opacity"> | undefined>;
                 pos?: import("@tamagui/web").FlatStyleValue<"absolute" | "fixed" | "relative" | "static" | "sticky" | "unset" | undefined>;
             }, "scope"> & {
                 scope?: import("@tamagui/ui").SheetScopes;

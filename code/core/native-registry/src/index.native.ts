@@ -20,7 +20,7 @@ import {
   removeMirroredScope,
   setMirroredStateName,
 } from './mirror'
-import { processStyleColors } from './processStyleColors'
+import { processStyleColors } from './processStyleColors.native'
 
 export type {
   LinkHandle,
@@ -32,7 +32,7 @@ export type {
   ViewStateUpdate,
 } from './types'
 export { ROOT_SCOPE, getMirroredStateName } from './mirror'
-export { processStyleColors } from './processStyleColors'
+export { processStyleColors } from './processStyleColors.native'
 
 /** Full engine surface: typed Nitro methods plus the raw-JSI methods. */
 interface Engine extends TamaguiRegistry {

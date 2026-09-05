@@ -41,11 +41,11 @@ export declare const AlertDialogOverlay: React.FunctionComponent<Omit<import("@t
 export declare const AlertDialogContent: React.FunctionComponent<Omit<import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<Omit<import("@tamagui/ui").DialogContentProps, "onInteractOutside" | "onPointerDownOutside">, "scope"> & {
     scope?: import("@tamagui/ui").AlertDialogScopes;
 } & import("@tamagui/ui").RefProp<TamaguiElement>, keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-    ref?: React.Ref<import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods)> | undefined;
-}> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<Omit<import("@tamagui/ui").DialogContentProps, "onInteractOutside" | "onPointerDownOutside">, "scope"> & {
+    ref?: React.Ref<import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods)> | undefined;
+}> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<Omit<import("@tamagui/ui").DialogContentProps, "onInteractOutside" | "onPointerDownOutside">, "scope"> & {
     scope?: import("@tamagui/ui").AlertDialogScopes;
 } & import("@tamagui/ui").RefProp<TamaguiElement>, import("@tamagui/web").StackStyleBase, {}, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
-    __tama: [import("@tamagui/web").TamaDefer, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<Omit<import("@tamagui/ui").DialogContentProps, "onInteractOutside" | "onPointerDownOutside">, "scope"> & {
+    __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<Omit<import("@tamagui/ui").DialogContentProps, "onInteractOutside" | "onPointerDownOutside">, "scope"> & {
         scope?: import("@tamagui/ui").AlertDialogScopes;
     } & import("@tamagui/ui").RefProp<TamaguiElement>, import("@tamagui/web").StackStyleBase, {}, import("@tamagui/web").StaticConfigPublic];
 };
@@ -129,11 +129,11 @@ export declare const AlertDialog: ((props: Omit<import("@tamagui/ui").DialogProp
     Content: React.FunctionComponent<Omit<import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<Omit<import("@tamagui/ui").DialogContentProps, "onInteractOutside" | "onPointerDownOutside">, "scope"> & {
         scope?: import("@tamagui/ui").AlertDialogScopes;
     } & import("@tamagui/ui").RefProp<TamaguiElement>, keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-        ref?: React.Ref<import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods)> | undefined;
-    }> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<Omit<import("@tamagui/ui").DialogContentProps, "onInteractOutside" | "onPointerDownOutside">, "scope"> & {
+        ref?: React.Ref<import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods)> | undefined;
+    }> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<Omit<import("@tamagui/ui").DialogContentProps, "onInteractOutside" | "onPointerDownOutside">, "scope"> & {
         scope?: import("@tamagui/ui").AlertDialogScopes;
     } & import("@tamagui/ui").RefProp<TamaguiElement>, import("@tamagui/web").StackStyleBase, {}, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
-        __tama: [import("@tamagui/web").TamaDefer, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<Omit<import("@tamagui/ui").DialogContentProps, "onInteractOutside" | "onPointerDownOutside">, "scope"> & {
+        __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<Omit<import("@tamagui/ui").DialogContentProps, "onInteractOutside" | "onPointerDownOutside">, "scope"> & {
             scope?: import("@tamagui/ui").AlertDialogScopes;
         } & import("@tamagui/ui").RefProp<TamaguiElement>, import("@tamagui/web").StackStyleBase, {}, import("@tamagui/web").StaticConfigPublic];
     };

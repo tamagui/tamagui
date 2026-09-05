@@ -17,4 +17,4 @@ export declare class NativeMediaQueryList implements MediaQueryList {
 }
 export {};
 
-//# sourceMappingURL=mediaQueryList.d.ts.map
+//# sourceMappingURL=mediaQueryList.native.d.ts.map

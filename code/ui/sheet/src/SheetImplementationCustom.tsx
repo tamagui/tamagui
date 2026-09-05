@@ -18,17 +18,18 @@ import {
 } from '@tamagui/core'
 import { needsPortalRepropagation, Portal } from '@tamagui/portal'
 import React, { useState } from 'react'
+import type { PanResponderConfig } from '@tamagui/react-native-pan-responder'
 import type {
-  Animated,
   GestureResponderEvent,
   LayoutChangeEvent,
   PanResponderGestureState,
-} from 'react-native'
-import { Dimensions, PanResponder, View } from 'react-native'
+  View,
+} from '@tamagui/react-native-types'
 import { ParentSheetContext, SheetInsideSheetContext } from './contexts'
 import { SHEET_OVERLAY_MARKER } from './constants'
-import { GestureDetectorWrapper } from './GestureDetectorWrapper'
 import { getGestureHandlerState } from './gestureState'
+import { SheetDragSurface } from './SheetDragSurface'
+import { getStableViewportHeight } from './stableViewportHeight'
 import { GestureSheetProvider } from './GestureSheetContext'
 import { resisted } from './helpers'
 import {
@@ -39,7 +40,6 @@ import {
 import {
   getWebKeyboardResizeHeight,
   getMaxViewportHeight,
-  getStableLayoutViewportHeight,
   getWebVisualViewportOffsetTop,
   MIN_KEYBOARD_HEIGHT,
 } from './webViewport'
@@ -76,22 +76,6 @@ let sheetHiddenStyleSheet: HTMLStyleElement | null = null
 // pushed on open (child sheets mount their effect after the parent, so the
 // deepest sheet sits last), popped on close/unmount.
 const sheetEscapeLayers: object[] = []
-
-// on web we are always relative to window, on to screen
-const relativeDimensionTo = isWeb ? 'window' : 'screen'
-
-// height of the viewport the sheet positions against. on web this MUST be the
-// stable layout viewport and NOT Dimensions.get('window') — react-native-web's
-// Dimensions tracks visualViewport, which shrinks by the soft keyboard. capping
-// frameSize / maxContentSize against that shrinking value corrupts the fit-mode
-// math (translateY = screenSize - frameSize), detaching the sheet's bottom from
-// the screen edge when the keyboard opens. NOTE: window.innerHeight is NOT
-// stable on real iOS Safari (it shrinks with the keyboard too), so we use the
-// self-correcting baseline from webViewport instead. see getStableLayoutViewportHeight.
-function getStableViewportHeight(): number {
-  if (isWeb && typeof window !== 'undefined') return getStableLayoutViewportHeight()
-  return Dimensions.get(relativeDimensionTo).height
-}
 
 export const SheetImplementationCustom = createRefComponent<View, SheetProps>(
   function SheetImplementationCustom(props, forwardedRef) {
@@ -358,7 +342,7 @@ export const SheetImplementationCustom = createRefComponent<View, SheetProps>(
           ? preKeyboardFrameSize.current
           : 0
 
-    const AnimatedView = (animationDriver.View ?? TamaguiView) as typeof Animated.View
+    const AnimatedView = (animationDriver.View ?? TamaguiView) as React.ComponentType<any>
 
     useIsomorphicLayoutEffect(() => {
       if (!(sheetInsideSheet && open)) return
@@ -672,10 +656,12 @@ export const SheetImplementationCustom = createRefComponent<View, SheetProps>(
     const themeName = useThemeName()
     const [blockPan, setBlockPan] = React.useState(false)
 
-    const panResponder = React.useMemo(() => {
-      if (disableDrag) return
-      if (!frameSize) return
-      if (isShowingInnerSheet) return
+    // the drag surface turns this into a PanResponder. it is built here because
+    // the handlers close over the sheet's live drag state and the scroll bridge.
+    const panConfig = React.useMemo((): PanResponderConfig | null => {
+      if (disableDrag) return null
+      if (!frameSize) return null
+      if (isShowingInnerSheet) return null
 
       // use keyboard-adjusted positions (matches the RNGH path): when the
       // keyboard is open the sheet sits at activePositions[0], so clamping drags
@@ -759,7 +745,7 @@ export const SheetImplementationCustom = createRefComponent<View, SheetProps>(
           // touch is on the ScrollView node — the web scroll-view gesture hook
           // owns it and drives drag/release through scrollBridge directly (it
           // re-baselines via scrollBridge.startPanDrag on each pan handoff). if
-          // we also granted here, RNW's PanResponder would set the animated
+          // we also granted here, the PanResponder would set the animated
           // position from a second, differently-based offset every move and the
           // sheet would jitter/jump. defer entirely to the hook.
           if (scrollBridge.scrollNodeTouched) {
@@ -842,7 +828,7 @@ export const SheetImplementationCustom = createRefComponent<View, SheetProps>(
         animateTo(positionIndex)
       }
 
-      return PanResponder.create({
+      return {
         onMoveShouldSetPanResponder: onMoveShouldSet,
         // once we own the drag, don't yield it to another responder
         // (re-renders during the drag were cooperatively terminating it under
@@ -866,7 +852,7 @@ export const SheetImplementationCustom = createRefComponent<View, SheetProps>(
         onPanResponderEnd: finish,
         onPanResponderTerminate: finish,
         onPanResponderRelease: finish,
-      })
+      }
     }, [
       disableDrag,
       isShowingInnerSheet,
@@ -1115,16 +1101,11 @@ export const SheetImplementationCustom = createRefComponent<View, SheetProps>(
                 </SheetOverlayLayerContext.Provider>
 
                 {snapPointsMode !== 'percent' && (
-                  <View
-                    style={{
-                      opacity: 0,
-                      position: 'absolute',
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                      bottom: 0,
-                      pointerEvents: 'none',
-                    }}
+                  <TamaguiView
+                    opacity={0}
+                    position="absolute"
+                    inset={0}
+                    pointerEvents="none"
                     onLayout={handleMaxContentViewLayout}
                   />
                 )}
@@ -1152,19 +1133,13 @@ export const SheetImplementationCustom = createRefComponent<View, SheetProps>(
                     animatedStyle,
                   ]}
                 >
-                  {/* wrap children with plain RN View for panResponder - tamagui views no longer handle responder events on web */}
-                  {gestureHandlerEnabled && panGesture ? (
-                    <GestureDetectorWrapper gesture={panGesture} style={{ flex: 1 }}>
-                      {animatedChildren}
-                    </GestureDetectorWrapper>
-                  ) : (
-                    <View
-                      {...panResponder?.panHandlers}
-                      style={{ flex: 1, width: '100%', height: '100%' }}
-                    >
-                      {animatedChildren}
-                    </View>
-                  )}
+                  <SheetDragSurface
+                    gestureHandlerEnabled={gestureHandlerEnabled}
+                    panGesture={panGesture}
+                    panConfig={panConfig}
+                  >
+                    {animatedChildren}
+                  </SheetDragSurface>
                 </AnimatedView>
               </SheetAnimatedPositionContext.Provider>
             </GestureSheetProvider>

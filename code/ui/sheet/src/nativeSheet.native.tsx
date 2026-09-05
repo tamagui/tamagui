@@ -1,25 +1,24 @@
 import { YStack } from '@tamagui/stacks'
 import type { FunctionComponent } from 'react'
 import { useEffect, useRef } from 'react'
-import { View } from 'react-native'
+import { Platform, View } from 'react-native'
 import { SheetNativeSystemContext, SheetProvider } from './SheetContext'
-import type { SheetProps } from './types'
+import type { SheetNativeModal, SheetNativePlatforms, SheetProps } from './types'
 import { useSheetOpenState } from './useSheetOpenState'
 import { useSheetProviderProps } from './useSheetProviderProps'
-
-type SheetNativePlatforms = 'ios'
 
 const nativeSheets: Record<SheetNativePlatforms, FunctionComponent<SheetProps> | null> = {
   ios: null,
 }
 
 export function getNativeSheet(platform: SheetNativePlatforms) {
+  if (Platform.OS !== platform) return null
   return nativeSheets[platform]
 }
 
 export function setupNativeSheet(
   platform: SheetNativePlatforms,
-  RNIOSModal: { ModalSheetView: any; ModalSheetViewMainContent: any }
+  RNIOSModal: SheetNativeModal
 ) {
   const { ModalSheetView, ModalSheetViewMainContent } = RNIOSModal
 

@@ -1,4 +1,4 @@
-import type { View } from 'react-native';
+import type { View } from '@tamagui/react-native-types';
 type MeasureOnSuccessCallback = (x: number, y: number, width: number, height: number, pageX: number, pageY: number) => void;
 type MeasureInWindowOnSuccessCallback = (x: number, y: number, width: number, height: number) => void;
 type MeasureLayoutOnSuccessCallback = (left: number, top: number, width: number, height: number) => void;

@@ -197,6 +197,9 @@
       "path": "code/core/react-native-media-driver"
     },
     {
+      "path": "code/core/react-native-pan-responder"
+    },
+    {
       "path": "code/core/react-native-use-pressable"
     },
     {
