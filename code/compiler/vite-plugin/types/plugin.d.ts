@@ -5,7 +5,7 @@ import { type ZeroIslandBuildContext } from './zeroRuntime';
 type AliasOptions = {
     /** use @tamagui/react-native-web-lite, 'without-animated' for smaller bundle */
     rnwLite?: boolean | 'without-animated';
-    /** alias react-native-svg to @tamagui/react-native-svg */
+    /** alias react-native-svg to @tamagui/react-native-svg's web entry */
     svg?: boolean;
 };
 type AliasEntry = {

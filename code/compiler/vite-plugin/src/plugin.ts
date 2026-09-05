@@ -457,7 +457,7 @@ function addIfInstalled(
 type AliasOptions = {
   /** use @tamagui/react-native-web-lite, 'without-animated' for smaller bundle */
   rnwLite?: boolean | 'without-animated'
-  /** alias react-native-svg to @tamagui/react-native-svg */
+  /** alias react-native-svg to @tamagui/react-native-svg's web entry */
   svg?: boolean
 }
 
@@ -482,10 +482,13 @@ export function tamaguiAliases(options: AliasOptions = {}): AliasEntry[] {
   const aliases: AliasEntry[] = []
 
   if (options.svg) {
-    aliases.push({
-      find: 'react-native-svg',
-      replacement: svgWebEntry(),
-    })
+    // both spellings, because a bare-specifier alias leaves the cjs entry
+    // reachable and vite serves that file to the browser untransformed.
+    const svg = svgWebEntry()
+    aliases.push(
+      { find: 'react-native-svg', replacement: svg },
+      { find: '@tamagui/react-native-svg', replacement: svg }
+    )
   }
 
   if (options.rnwLite) {
@@ -1092,6 +1095,7 @@ export function createTamaguiPlugins({
                     'react-native/Libraries/Utilities/codegenNativeComponent':
                       resolve('@tamagui/proxy-worm'),
                     'react-native-svg': svgWebEntry(),
+                    '@tamagui/react-native-svg': svgWebEntry(),
                     ...(!useReactNativeWebLite && {
                       'react-native': resolve('react-native-web'),
                     }),

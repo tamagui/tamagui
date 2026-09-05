@@ -99,7 +99,6 @@ const include = [
   'react-native-safe-area-context',
   '@hookform/resolvers/zod',
   'react-native-reanimated',
-  '@tamagui/react-native-svg',
   'react-native-gesture-handler',
   '@tanstack/react-table',
   '@tamagui/focus-scope',
@@ -147,10 +146,10 @@ export default {
         find: /^~\//,
         replacement: `${import.meta.dirname}/`,
       },
-      {
-        find: 'react-native-svg',
-        replacement: '@tamagui/react-native-svg',
-      },
+      // resolves to @tamagui/react-native-svg's esm entry. aliasing to the bare
+      // package name instead leaves the cjs entry reachable, and vite serves
+      // that file to the browser as-is, where its named exports do not exist.
+      ...tamaguiAliases({ svg: true }),
 
       {
         find: 'react-native/Libraries/Core/ReactNativeVersion',
@@ -189,7 +188,6 @@ export default {
       ...(process.env.RNW_LITE
         ? tamaguiAliases({
             rnwLite: true,
-            svg: true,
           })
         : []),
     ],
@@ -200,7 +198,6 @@ export default {
       'react-hook-form',
       'react-native',
       'react-native-web',
-      'react-native-svg',
       ...include,
     ],
   },
