@@ -140,7 +140,8 @@ not be compared to the v6 table without accounting for the config.
   token-key sizing keeps the font size itself.
 - A malformed name must not silently collapse a control. The new regression
   covers missing names, numeric controls, custom defaults, and an invalid
-  default that would otherwise invite recursive fallback.
+  default that would otherwise invite recursive fallback. Token-key defaults and
+  malformed null recipes are covered too.
 - Text scaling, long translated labels, multiline buttons, larger custom
   line-heights, and native hit targets remain visual acceptance cases. A
   named-size unit test cannot prove any of them.
@@ -256,30 +257,39 @@ much to support a reliable speedup claim. The styled-view fixture fell from
 10-byte gzip reduction, without changing the 28,821-byte ceiling. These are the
 first-pass numbers.
 
-Two further retained changes move optional class-string traversal/composition
-behind the frontend descriptor and skip cache setup for font properties that
-are deliberately never cached. Factories prepare descriptors once without
-mutating them. Ordinary core retains its own class passthrough and the shared
-style renderer; Tailwind still contributes at each candidate's authored position.
-No additional style parse or cache was introduced.
+Two further retained changes skip cache setup for font properties that are
+never cached and share numeric conversion across ordinary values and transforms.
+The numeric helper avoids duplicate conversion and finite-number checks. Six
+regression cases and an independent 152-input comparison cover fractions,
+scientific notation, whitespace, invalid suffixes, and non-finite values.
 
-The final fixture is **76,367 raw / 28,641 gzip-9 bytes**, a **159-byte gzip
+The final styled fixture is **76,614 raw / 28,732 gzip-9 bytes**, a **68-byte gzip
 reduction** from this session's 28,800-byte starting artifact. The 28,821-byte
-ceiling and recorded baseline were not changed. This is a modest gain, not the
-0.5–4 kB opportunity the owner hoped might exist. The simpler ownership and
-removed allocations are useful independently of the byte count.
+ceiling and recorded baseline were not changed. This is smaller than the
+0.5–4 kB opportunity the owner hoped might exist; it is the measured retained
+result, with no feature removal. The [final size receipt](assets/v3-launch-2026-09-04/core-web-size-final.json)
+records both the session baseline and the older ledger baseline. The owner clarified that **only web bundle size
+is an optimization target**. Native correctness remains a validation requirement.
 
-Interleaved after/before/before/after class-renderer checks cover ordinary,
+An optional-frontend traversal experiment reduced this fixture by 159 gzip bytes,
+but the first candidate's CI showed the Metro **web** starter island growing from
+367,022 to 367,156 bytes. That experiment was reverted. Class traversal and
+frontend descriptors retain their original structure. Astra also caught a Unicode
+class-name boundary regression in that experiment; its focused regression test
+is retained even though the implementation was reverted.
+
+Interleaved after/before/before/after class-renderer checks covered ordinary,
 owned, composed, and mixed raw classes, with a separate typography scenario for
-the cache cleanup: 3,000 renders per sample, three warmups and seven measured
-samples per case. Serialized outputs match across every arm. Timing varies and
-does not establish a stable additional speedup. Raw `frontend-*.json` and
-`font-*.json` receipts are included alongside the Chromium profiles.
+the font-cache cleanup: 3,000 renders per sample, three warmups and seven measured
+samples per case. Serialized outputs matched across every arm. Timing varied and
+did not establish an additional speedup. Raw `frontend-*.json` receipts document
+the rejected experiment; `font-*.json` receipts measure the incremental cache
+change on that experimental base. Neither represents a final retained timing claim.
 
-Astra's independent review caught Unicode whitespace at a class-name boundary
-being removed by JavaScript `trim()`. ASCII-only normalization and a boundary
-regression now preserve it. Frozen custom frontend descriptors and raw/owned
-class ordering also have focused coverage.
+The size resolver also shares one validity predicate across a bounded fallback
+loop: authored name, configured default, then token `4`. This removes duplicate
+checks, preserves valid token/font defaults, and handles a malformed null recipe.
+The loop has no recursion and emits at most one development warning.
 
 The [four raw profiles](assets/v3-launch-2026-09-04/) identify the source baseline
 as `110ae39aaa`; the after arms include the changes committed in `6378b814c9`.
@@ -387,8 +397,9 @@ independent scale. No removal has been implemented.
 After the difficult engineering work, the owner requested a Fable-medium review,
 then Astra-medium final review. Fable is not exposed in this session's tools, so
 the root agent handled the continuation and Astra medium performed an independent
-technical review. Its only proven regression was the Unicode class-name boundary
-case above; it found no remaining blocking correctness issue after that fix.
+technical review. It found the Unicode class-name boundary
+regression in the subsequently rejected frontend experiment and no blocking issue
+in the retained numeric conversion or final bounded sizing fallback.
 The review requested final rebuilt tests and mirrored docs navigation checks.
 
 Validation for this pass is recorded below as it completes. A starting-candidate
@@ -398,15 +409,18 @@ CI success is not evidence for the later edits.
 - Root lint and workspace checks passed; the fresh worktree needed a second frozen
   install after building to create the CLI bin link. The root style-vocabulary
   check skips when no root config artifact is present.
-- Root typecheck and lint passed again after the Unicode boundary correction and mirrored docs navigation tests.
+- Root lint and workspace checks passed again after the retained numeric
+  conversion and bounded size fallback; final typecheck is tracked with the PR checks.
 - Core web: 624 passed, 3 skipped. A heavily parallel run first hit two timing
   limits; an isolated full rerun passed without changing the tests.
-- Core native: 333 passed, 7 expected failures, 9 skipped.
+- Core native: 339 passed, 7 expected failures, 9 skipped.
 - Compiler web: 267 passed, 2 skipped; webpack: 20 passed.
 - Compiler native: 109 passed, 1 expected failure.
-- Tailwind web/native: 734 / 460 passed, including frontend descriptor coverage.
+- Tailwind web/native: 733 / 460 passed, including the retained Unicode class regression.
 - UI component web/native: 56 / 38 passed.
 - Size regression: two red cases before the fix, 9 tests green afterwards.
+  The final bounded-loop version also passed all 9 tests and 5 control-size
+  browser checks against the rebuilt kitchen sink.
 - Vite plugin: 17 passed.
 - Site unit tests: 62 passed.
 - Site production Playwright: 11 docs mode checks and 5 homepage checks passed, including document-marker assertions for Tailwind and unstyled client navigation.
@@ -418,10 +432,27 @@ CI success is not evidence for the later edits.
   Postmark environment settings are absent. This does not affect the recorded
   public-page checks.
 - Final production build: 883 static pages, using the Dockerfile-pinned Bento checkout.
-- Final pinned-Node styled-view gate: 28,641 gzip bytes; unchanged ceiling 28,821.
-- Independent Astra-medium technical review: no remaining blocking findings after
-  the Unicode correction. Fable was unavailable; the root agent handled continuation.
-- Implementation through `1c893e7bfb` is locally validated. This report and the two
-  additional mirrored-navigation tests are prepared for the topic PR. Remote CI
-  and landing are tracked in that PR. Updating v3-beta crosses the npm publication
-  boundary and still needs the owner's explicit confirmation.
+- Final pinned-Node styled-view gate: 28,732 gzip bytes; unchanged ceiling 28,821.
+- Full CI-equivalent workspace web run: 166 successful tasks. Native correctness
+  run: 118 successful tasks. These include cached unchanged package prerequisites.
+- Zero-runtime starter: all six browser bundle gates passed on pinned Node without
+  changing any baseline or tolerance. Twelve browser checks passed across Vite,
+  webpack, and Metro web, including themes and loading an interactive island.
+- Independent Astra-medium technical review: no blocking findings in retained
+  changes, including the final bounded size fallback. Fable was unavailable; the
+  root agent handled continuation.
+
+### Topic PR and CI corrections
+
+[PR #4205](https://github.com/tamagui/tamagui/pull/4205) targets `v3-beta`. The first
+pushed candidate passed web integration shards, WebKit, grammar, checks, SSR
+hydration, the zero-runtime fixture, and Registry. Two checks exposed follow-up
+work: compiler/runtime edits had made DOM parity source citations stale, and the
+optional frontend experiment increased the Metro web starter island. Citations
+now point to the actual final symbols; the frontend experiment was reverted.
+Numeric and size-fallback simplifications retain smaller web bundles.
+
+Final source is being submitted for a new exact-revision CI run. Local validation
+and the earlier candidate's successful jobs do not substitute for that run.
+Updating `v3-beta` crosses the npm publication boundary and still needs the
+owner's explicit confirmation. Main integration remains PR #4124.
