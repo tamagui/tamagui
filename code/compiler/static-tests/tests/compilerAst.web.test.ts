@@ -30,6 +30,24 @@ describe('compiler AST lookup', () => {
     expect(findAstNode(root, (node) => node.type === 'Identifier')).toBe(match)
   })
 
+  test('does not decode ignored metadata while walking', () => {
+    const root: AstNode = {
+      type: 'Program',
+      start: 0,
+      end: 0,
+      body: [],
+      get comments() {
+        throw new Error('ignored comments must stay unread')
+      },
+      get tokens() {
+        throw new Error('ignored tokens must stay unread')
+      },
+    }
+    const seen: AstNode[] = []
+    walkAst(root, (node) => seen.push(node))
+    expect(seen).toEqual([root])
+  })
+
   test('preserves depth-first order and parent/key arguments', () => {
     const root = parseModuleAst('const first = 1; const second = 2')
     const seen: string[] = []

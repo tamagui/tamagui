@@ -20,8 +20,9 @@ export function walkAst(
 ): void {
   visitor(node, parent, key)
 
-  for (const [childKey, value] of Object.entries(node)) {
+  for (const childKey of Object.keys(node)) {
     if (ignoredKeys.has(childKey)) continue
+    const value = node[childKey]
     if (isAstNode(value)) {
       walkAst(value, visitor, node, childKey)
     } else if (Array.isArray(value)) {
