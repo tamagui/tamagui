@@ -1,4 +1,3 @@
-import { createStyleFrontend } from './helpers/styleFrontend';
 /**
  * Private implementation boundary shared by Tamagui workspace packages. Not public
  * API: never reexport it from `@tamagui/web`, `@tamagui/core`, `tamagui`, or
@@ -44,5 +43,4 @@ export declare function createFrontendViews(frontend: StyleFrontend): {
     View: FrontendComponent;
     Text: FrontendComponent;
 };
-export { createStyleFrontend };
 //# sourceMappingURL=internal-runtime.d.ts.map

@@ -61,7 +61,7 @@ import { fixStyles } from './expandStyles'
 import { getConfigRevisionState } from './grammarConfig'
 import { mediaState as globalMediaState, mediaKeyMatch } from './mediaState'
 import { getStyleStaticConfig, type StyleStaticConfig } from './styleStaticConfig'
-import type { FrontendClassSink } from './styleFrontend'
+import { mergeFrontendCondition, type FrontendClassSink } from './styleFrontend'
 import { nativeTextInputColorProps, normalizeNativeStyle } from './nativeStyleEngine'
 import { warnOnce, warnRefusedValue } from './warnOnce'
 
@@ -584,24 +584,29 @@ function contributeProp(
     if (
       typeof valInit === 'string' &&
       valInit &&
-      (process.env.TAMAGUI_TARGET === 'web' || styleFrontend?.walkClassName)
+      (process.env.TAMAGUI_TARGET === 'web' || styleFrontend?.resolveClassName)
     ) {
       if (noMergeStyle) {
         viewProps.className = valInit
         return
       }
-      const walkClassName = styleFrontend?.walkClassName
-      if (!walkClassName) {
-        pass[passClassName] =
-          `${pass[passClassName]} ${valInit.replace(/[\x00-\x20]+/g, ' ')}`.replace(
-            /^ +| +$/g,
-            ''
-          )
-        return
-      }
+      const resolveClassName = styleFrontend?.resolveClassName
+      // composed utilities (ring width + ring color -> one boxShadow) arrive as
+      // `__`-prefixed keys the frontend folds together after the walk. only
+      // allocates when a class actually emits one.
+      let composedProps: Record<string, any> | null = null
       const sink: FrontendClassSink = (entry) => {
         const property = entry[0]
         const condition = entry[2]
+        if (property.charCodeAt(0) === 95 && property.charCodeAt(1) === 95) {
+          composedProps ||= {}
+          composedProps[property] = mergeFrontendCondition(
+            composedProps[property],
+            entry[1],
+            condition
+          )
+          return
+        }
         if (condition !== undefined) {
           if (isValidStyleKey(property, validStyles)) {
             contributeValue(styleState, property, entry[1], undefined, false, condition)
@@ -619,17 +624,46 @@ function contributeProp(
         }
         contributeProp(pass, property, entry[1])
       }
-      walkClassName(valInit, conf, sink, (candidate) => {
-        pass[passClassName] = pass[passClassName]
-          ? `${pass[passClassName]} ${candidate}`
-          : candidate
-        if (pass[passShouldDoClasses]) {
-          completeResolvedStyles(styleState)
-          flushDirectStyles(styleState, true)
+      let start = 0
+      for (let index = 0; index <= valInit.length; index++) {
+        if (index !== valInit.length && valInit.charCodeAt(index) > 32) continue
+        if (index === start) {
+          start = index + 1
+          continue
         }
-        pass[passShouldDoClasses] = false
-        styleState.flatShouldDoClasses = false
-      })
+        const candidate = valInit.slice(start, index)
+        const preserveRaw = resolveClassName
+          ? resolveClassName(candidate, conf, sink)
+          : true
+        if (preserveRaw === null) {
+          if (process.env.NODE_ENV === 'development') {
+            warnOnce(
+              `[tamagui] frontend candidate "${candidate}" is unavailable on this platform and was dropped.`
+            )
+          }
+        } else if (preserveRaw) {
+          pass[passClassName] = pass[passClassName]
+            ? `${pass[passClassName]} ${candidate}`
+            : candidate
+          if (resolveClassName) {
+            if (pass[passShouldDoClasses]) {
+              completeResolvedStyles(styleState)
+              flushDirectStyles(styleState, true)
+            }
+            pass[passShouldDoClasses] = false
+            styleState.flatShouldDoClasses = false
+          }
+        }
+        start = index + 1
+      }
+      if (composedProps) {
+        // contributed at the className's own authored position, so composing a
+        // ring never moves an unrelated property to another precedence tier
+        const composed = styleFrontend!.compose?.(composedProps)
+        for (const property in composed) {
+          contributeProp(pass, property, composed[property])
+        }
+      }
     }
     return
   }
@@ -2673,14 +2707,17 @@ function emitProperty(
   streamWriteInline(state, property, value, cursor, originalValue)
 }
 
-function numericUnitValue(value: string, first: string, second?: string): number {
-  const unitLength =
-    value.endsWith(first) || (second !== undefined && value.endsWith(second))
-      ? first.length
-      : 0
-  if (!unitLength || value.length === unitLength) return Number.NaN
-  const numeric = Number(value.slice(0, value.length - unitLength))
-  return Number.isFinite(numeric) ? numeric : Number.NaN
+function numericUnitValue(value: string, first: string, second: string): number {
+  return value.length > first.length && (value.endsWith(first) || value.endsWith(second))
+    ? +value.slice(0, -first.length)
+    : Number.NaN
+}
+
+function resolveNumericValue(value: string): string | number {
+  const unitValue = numericUnitValue(value, 'px', 'dp')
+  if (Number.isFinite(unitValue)) return unitValue
+  const numeric = +value
+  return Number.isFinite(numeric) ? numeric : value
 }
 
 function emitBorder(
@@ -2782,14 +2819,10 @@ function resolveValue(state: GetStyleState, property: string, raw: any) {
   let value = typeof raw === 'string' ? configuredValue(state, property, raw, true) : raw
   if (
     (process.env.TAMAGUI_TARGET === 'native' || !state.flatShouldDoClasses) &&
-    typeof value === 'string'
+    typeof value === 'string' &&
+    value !== ''
   ) {
-    const unitValue = numericUnitValue(value, 'px', 'dp')
-    if (Number.isFinite(unitValue)) {
-      value = unitValue
-    } else if (value !== '' && Number.isFinite(Number(value))) {
-      value = Number(value)
-    }
+    value = resolveNumericValue(value)
   }
   return value
 }
@@ -3002,12 +3035,7 @@ function emitValue(
         }
         return
       }
-      const unitValue = numericUnitValue(value, 'px', 'dp')
-      if (Number.isFinite(unitValue)) {
-        value = unitValue
-      } else if (Number.isFinite(Number(value))) {
-        value = Number(value)
-      }
+      value = resolveNumericValue(value)
     }
     if (!canGenerateCSS || !state.flatShouldDoClasses) {
       emitProperty(state, property, value, cursor, originalValue, contextOnly)

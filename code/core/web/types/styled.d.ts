@@ -1,5 +1,5 @@
 import { styledDynamic } from './helpers/styledDynamic';
-import { type FrontendComponent, type StyleFrontend } from './helpers/styleFrontend';
+import type { FrontendComponent, StyleFrontend } from './helpers/styleFrontend';
 import type { GetRef } from './interfaces/GetRef';
 import type { GetBaseStyles, GetNonStyledProps, GetProps, GetStaticConfig, GetStyledVariants, InferStyledProps, StaticConfigPublic, StylableComponent, StyledContext, StyledDynamicFn, StyledDynamicProp, TamaDefer, TamaguiComponent, VariantDefinitions } from './types';
 type AreVariantsUndefined<Variants> = Required<Variants> extends {

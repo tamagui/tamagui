@@ -407,6 +407,24 @@ test('px payloads become unitless numbers', () => {
   expect(result.style?.marginTop).toBe(10)
 })
 
+test.each([
+  ['-2.5px', -2.5],
+  ['.375dp', 0.375],
+  ['1e2px', 100],
+  ['1.125', 1.125],
+])('ordinary and transform values share numeric conversion for %s', (value, expected) => {
+  const result = split({ marginTop: value, x: value })
+  expect(result.style?.marginTop).toBe(expected)
+  expect(result.style?.transform).toEqual([{ translateX: expected }])
+})
+
+test.each(['Infinitydeg', '1e309rad'])(
+  'non-finite rotation %s stays refused',
+  (rotate) => {
+    expect(split({ rotate }).style?.transform).toBeUndefined()
+  }
+)
+
 test('exit clauses source from isExiting', () => {
   const normal = split({ opacity: '1 exit:0' })
   expect(normal.style?.opacity).toBe(1)

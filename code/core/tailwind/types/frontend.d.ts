@@ -2,7 +2,7 @@ import { type StyleFrontend, type StyleFrontendConfig } from '@tamagui/core/inte
 /**
  * The Tailwind frontend descriptor.
  *
- * The prepared frontend tokenizes `className` once and asks its candidate resolver to
+ * The shared style cursor tokenizes `className` once and asks this descriptor to
  * emit the entries for each candidate. Everything after this point — value programs,
  * per-longhand forward merging, web lowering, native evaluation — is shared.
  *
