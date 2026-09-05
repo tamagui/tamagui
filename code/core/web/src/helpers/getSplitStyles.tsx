@@ -2385,8 +2385,6 @@ const parsedSlices = new WeakMap<object, (string | undefined)[]>()
 // value alone, and memoizes that result. it is a regex replace over most string
 // values, so repeating it every render of every element is the single largest
 // cost on this path.
-const fontProperties = new Map<string, boolean>()
-
 function configuredValue(
   state: GetStyleState,
   property: string,
@@ -2411,48 +2409,45 @@ function configuredValue(
     return safeArea
   }
 
-  let fontProperty = fontProperties.get(property)
-  if (fontProperty === undefined) {
-    fontProperty =
-      property.startsWith('font') ||
-      property === 'lineHeight' ||
-      property === 'letterSpacing'
-    fontProperties.set(property, fontProperty)
-  }
-  const revision = grammar.revision
-  if (state.conf !== valueCacheConf || revision !== valueCacheRevision) {
-    valueCacheConf = state.conf
-    valueCacheRevision = revision
-    valueCaches = new WeakMap()
-    valueCacheEntries = 0
-    ;(state as DirectState).flatValueScope = undefined
-  }
+  const fontProperty =
+    property.startsWith('font') ||
+    property === 'lineHeight' ||
+    property === 'letterSpacing'
   const resolveValues =
     process.env.TAMAGUI_TARGET === 'web' &&
     !state.flatShouldDoClasses &&
     state.styleProps.resolveValues === 'auto'
       ? 'value'
       : state.styleProps.resolveValues
-  // the scope (theme identity, name, resolveValues) is fixed for a pass apart
-  // from the class/inline flip, so resolve it once and key the per-value lookups
-  // off interned property and raw strings instead of joining them into a key
-  const direct = state as DirectState
-  let scope = direct.flatValueScope
-  if (scope === undefined || direct.flatValueScopeKind !== resolveValues) {
-    const themeObject =
-      state.theme && typeof state.theme === 'object' ? state.theme : valueCacheRoot
-    let byScope = valueCaches.get(themeObject)
-    if (!byScope) valueCaches.set(themeObject, (byScope = new Map()))
-    const scopeKey = `${state.flatThemeName || ''}\u001f${resolveValues}`
-    scope = byScope.get(scopeKey)
-    if (!scope) byScope.set(scopeKey, (scope = new Map()))
-    direct.flatValueScope = scope
-    direct.flatValueScopeKind = resolveValues
-  }
-  let maps = scope.get(property)
-  if (maps === undefined) scope.set(property, (maps = { direct: new Map() }))
-  const byRaw = embedded ? (maps.embedded ||= new Map()) : maps.direct
+  let byRaw: Map<string, any> | undefined
   if (!fontProperty) {
+    const revision = grammar.revision
+    if (state.conf !== valueCacheConf || revision !== valueCacheRevision) {
+      valueCacheConf = state.conf
+      valueCacheRevision = revision
+      valueCaches = new WeakMap()
+      valueCacheEntries = 0
+      ;(state as DirectState).flatValueScope = undefined
+    }
+    // the scope (theme identity, name, resolveValues) is fixed for a pass apart
+    // from the class/inline flip, so resolve it once and key the per-value lookups
+    // off interned property and raw strings instead of joining them into a key
+    const direct = state as DirectState
+    let scope = direct.flatValueScope
+    if (scope === undefined || direct.flatValueScopeKind !== resolveValues) {
+      const themeObject =
+        state.theme && typeof state.theme === 'object' ? state.theme : valueCacheRoot
+      let byScope = valueCaches.get(themeObject)
+      if (!byScope) valueCaches.set(themeObject, (byScope = new Map()))
+      const scopeKey = `${state.flatThemeName || ''}\u001f${resolveValues}`
+      scope = byScope.get(scopeKey)
+      if (!scope) byScope.set(scopeKey, (scope = new Map()))
+      direct.flatValueScope = scope
+      direct.flatValueScopeKind = resolveValues
+    }
+    let maps = scope.get(property)
+    if (maps === undefined) scope.set(property, (maps = { direct: new Map() }))
+    byRaw = embedded ? (maps.embedded ||= new Map()) : maps.direct
     const known = byRaw.get(raw)
     if (known !== undefined || byRaw.has(raw)) return known
   }
@@ -2537,7 +2532,7 @@ function configuredValue(
       valueCacheEntries = 0
     } else {
       valueCacheEntries++
-      byRaw.set(raw, out)
+      byRaw!.set(raw, out)
     }
   }
   return out
