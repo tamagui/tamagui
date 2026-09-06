@@ -223,6 +223,15 @@ export const TabsTab = createStyledHOC(
       updateTriggerSize()
       const observer = new ResizeObserver(updateTriggerSize)
       observer.observe(element)
+      // x and y are offsets within the offsetParent, so they go stale whenever
+      // that box changes even though the tab itself never resizes. a window
+      // resize that only reflows the list is exactly that case, and it left a
+      // roving indicator sitting at the old position until something unrelated
+      // happened to resize a tab.
+      const offsetParent = element.offsetParent
+      if (offsetParent) {
+        observer.observe(offsetParent)
+      }
 
       return () => observer.disconnect()
     }, [context.triggersCount])
