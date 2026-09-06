@@ -1161,7 +1161,10 @@ const ToastItemInner = createStyledHOC(
         y={
           ctx.reducedMotion
             ? stackY
-            : `${stackY} enter:${isTop ? -80 : 80}px exit:${
+            : // every value needs an explicit `px` — a bare number inside a
+              // transition string is a string, so `-14` would resolve as the
+              // space token `-14` (= -56px) instead of -14 pixels
+              `${stackY}px enter:${isTop ? -80 : 80}px exit:${
                 swipeOut ? (swipeExitYRef.current ?? stackY) : stackY
               }px`
         }
