@@ -216,7 +216,7 @@ import { useToggleGroupItem, ToggleGroup } from '@tamagui/toggle-group'
 
 function CustomLabel({ children }) {
   const { active, color } = useToggleGroupItem()
-  return <Text color={active ? 'green10' : 'color'}>{children}</Text>
+  return <html.span color={active ? 'green10' : 'color'}>{children}</html.span>
 }
 
 // Usage

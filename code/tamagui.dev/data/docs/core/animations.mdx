@@ -111,25 +111,25 @@ thing, so pick whichever reads better at the site:
 
 ```tsx
 // a css transition, exactly as css writes it
-<View transition="200ms" />
-<View transition="200ms ease-out" />
-<View transition="transform 200ms, opacity 100ms 50ms" />
+<html.div transition="200ms" />
+<html.div transition="200ms ease-out" />
+<html.div transition="transform 200ms, opacity 100ms 50ms" />
 
 // a configured preset name, anywhere a timing goes
-<View transition="quick" />
-<View transition="transform quick, opacity 100ms" />
+<html.div transition="quick" />
+<html.div transition="transform quick, opacity 100ms" />
 
 // a spring, inline
-<View transition="spring(400ms, 0.5)" />
+<html.div transition="spring(400ms, 0.5)" />
 
 // nothing transitions
-<View transition="none" />
+<html.div transition="none" />
 ```
 
 The object form takes the same values under names:
 
 ```tsx
-<View
+<html.div
   transition={{
     preset: 'quick',
     delay: 100,
@@ -151,14 +151,14 @@ A per-property key wins for that property, the same way a later entry wins in a
 CSS transition list. These two are the same transition:
 
 ```tsx
-<View transition="all 200ms, opacity 100ms" />
-<View transition={{ duration: 200, opacity: 100 }} />
+<html.div transition="all 200ms, opacity 100ms" />
+<html.div transition={{ duration: 200, opacity: 100 }} />
 ```
 
 Per-property values take a preset name, a CSS timing, or an object:
 
 ```tsx
-<View
+<html.div
   transition={{
     preset: 'bouncy',
     // a preset name
@@ -181,8 +181,8 @@ point.
 A spring is `duration` plus `bounce`:
 
 ```tsx
-<View transition={{ duration: 400, bounce: 0.5 }} />
-<View transition="spring(400ms, 0.5)" />
+<html.div transition={{ duration: 400, bounce: 0.5 }} />
+<html.div transition="spring(400ms, 0.5)" />
 ```
 
 `duration` is the spring's period, which is what "how fast does this feel"
@@ -197,7 +197,7 @@ curve, overshoot included, with no JavaScript running.
 When you need the physics directly, `spring` is the escape hatch:
 
 ```tsx
-<View transition={{ spring: { stiffness: 250, damping: 20, mass: 1.2 } }} />
+<html.div transition={{ spring: { stiffness: 250, damping: 20, mass: 1.2 } }} />
 ```
 
 It takes `stiffness`, `damping`, `mass`, `velocity`, `overshootClamping`,
@@ -211,7 +211,7 @@ A preset is a name from your config's `animations`. Any name works where a
 timing goes, and `preset` in the object form takes overrides:
 
 ```tsx
-<View transition={{ preset: 'bouncy', duration: 250 }} />
+<html.div transition={{ preset: 'bouncy', duration: 250 }} />
 ```
 
 Overriding `duration` or `bounce` re-solves the spring, so the preset keeps
@@ -262,12 +262,12 @@ and style change animations.
 This is useful when elements should enter slowly and leave quickly:
 
 ```tsx
-import { AnimatePresence, View } from 'tamagui'
+import { AnimatePresence, html } from 'tamagui'
 
 export default ({ show }) => (
   <AnimatePresence>
     {show && (
-      <View
+      <html.div
         key="panel"
         transition={{ enter: 'lazy', exit: 'quick' }}
         opacity="enter:0 exit:0"
@@ -283,7 +283,7 @@ per-property timings, and the base still applies to changes while mounted:
 
 ```tsx
 // enter slowly, exit quickly, changes while mounted use 200ms
-<View
+<html.div
   transition={{
     duration: 200,
     enter: { preset: 'lazy', delay: 100 },
@@ -322,7 +322,7 @@ In this example:
 This works with all pseudo styles:
 
 ```tsx
-<View
+<html.div
   transition="slow hover:quick press:bouncy focus:quick"
   scale="hover:1.1 press:0.95"
   borderColor="focus:blue-500"
@@ -332,13 +332,13 @@ This works with all pseudo styles:
 And with group pseudo states:
 
 ```tsx
-<View group="card">
+<html.div group="card">
   <Square
     size={50}
     bg="color5 group-hover/card:color10"
     transition="1000ms group-hover/card:200ms"
   />
-</View>
+</html.div>
 ```
 
 Priority follows CSS specificity intuition: press > hover > focus. This works with all animation drivers.
@@ -386,7 +386,7 @@ type TransitionEvent = {
   finished?: boolean                 // on 'end': false when interrupted
 }
 
-<View transition="quick" onTransition={(e) => { ... }} />
+<html.div transition="quick" onTransition={(e) => { ... }} />
 ```
 
 `cause` is `enter` when the component mounts into an [AnimatePresence](/docs/core/animate-presence),
@@ -396,10 +396,10 @@ interrupted, for example an exit canceled by a re-enter, or an update
 superseded by another before it settled.
 
 ```tsx
-import { View } from 'tamagui'
+import { html } from 'tamagui'
 
 export default ({ on }) => (
-  <View
+  <html.div
     transition="300ms"
     opacity={on ? 0.5 : 1}
     onTransition={(e) => {
@@ -519,7 +519,7 @@ should keep `transition` always set on the component props. You can disable it
 like so:
 
 ```tsx
-<View transition={condition ? 'animation-name' : null} />
+<html.div transition={condition ? 'animation-name' : null} />
 ```
 
 Note that because of this constraint, you may see an error if you add the

@@ -144,7 +144,7 @@ import { useClientValue } from '@tamagui/use-did-finish-ssr'
 function WindowInfo() {
   const width = useClientValue(() => window.innerWidth)
 
-  return <Text>{width ? `${width}px` : 'Loading...'}</Text>
+  return <html.span>{width ? `${width}px` : 'Loading...'}</html.span>
 }
 ```
 

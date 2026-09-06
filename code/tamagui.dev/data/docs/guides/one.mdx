@@ -99,12 +99,12 @@ export default function Layout() {
 Now you can use Tamagui components in your One app:
 
 ```tsx fileName="app/index.tsx"
-import { Button, Text, YStack } from 'tamagui'
+import { Button, YStack, html } from 'tamagui'
 
 export default function Home() {
   return (
     <YStack flex={1} justify="center" items="center" p="4" gap="4">
-      <Text fontSize="6">Welcome to Tamagui with One!</Text>
+      <html.h1 fontSize="6">Welcome to Tamagui with One!</html.h1>
       <Button>Click me</Button>
     </YStack>
   )

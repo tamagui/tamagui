@@ -6,7 +6,7 @@ description: Statically-shaped style fragments created with style()
 Style pieces are static style fragments created with the `style()` helper. They are compiled once at definition time and applied via the `style` prop or piece-typed component props.
 
 ```tsx
-import { View, style } from 'tamagui' // or '@tamagui/core'
+import { html, style } from 'tamagui' // or '@tamagui/core'
 
 // define at module scope
 const cardActive = style({
@@ -16,7 +16,7 @@ const cardActive = style({
 })
 
 export function Card({ active }: { active?: boolean }) {
-  return <View style={[cardActive, active && { opacity: 1 }]} />
+  return <html.div style={[cardActive, active && { opacity: 1 }]} />
 }
 ```
 
@@ -41,10 +41,10 @@ const baseStyle = style({ padding: 16, borderRadius: 8 })
 const activeStyle = style({ backgroundColor: 'background-press' })
 
 // single piece
-<View style={baseStyle} />
+<html.div style={baseStyle} />
 
 // array with conditional overrides (last wins)
-<View style={[baseStyle, isActive && activeStyle, { opacity: 0.8 }]} />
+<html.div style={[baseStyle, isActive && activeStyle, { opacity: 0.8 }]} />
 ```
 
 Array elements evaluate in order. Later pieces or style objects override earlier ones per property, following Tamagui's standard style precedence.

@@ -156,12 +156,12 @@ export default () => {
 For advanced use cases, pass a function to get access to focus props:
 
 ```tsx
-import { FocusScope, View } from 'tamagui'
+import { FocusScope, html } from 'tamagui'
 
 export default () => (
   <FocusScope loop>
     {({ onKeyDown, tabIndex, ref }) => (
-      <View
+      <html.div
         ref={ref}
         tabIndex={tabIndex}
         onKeyDown={onKeyDown}
@@ -170,7 +170,7 @@ export default () => (
         borderColor="border-color"
       >
         Custom focus container
-      </View>
+      </html.div>
     )}
   </FocusScope>
 )

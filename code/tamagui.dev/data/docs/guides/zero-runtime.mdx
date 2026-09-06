@@ -86,17 +86,17 @@ stylesheet.
 
 ```tsx
 import { useState } from 'react'
-import { Theme, Text, View } from 'tamagui'
+import { Theme, html } from 'tamagui'
 
 export function Page() {
   const [dark, setDark] = useState(false)
 
   return (
     <Theme name={dark ? 'dark' : 'light'}>
-      <View backgroundColor="background" padding="6">
-        <Text color="color">This component tree lowers completely.</Text>
+      <html.div backgroundColor="background" padding="6">
+        <html.p color="color">This component tree lowers completely.</html.p>
         <button onClick={() => setDark((value) => !value)}>toggle theme</button>
-      </View>
+      </html.div>
     </Theme>
   )
 }

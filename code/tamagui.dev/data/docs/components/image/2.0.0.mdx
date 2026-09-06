@@ -57,14 +57,14 @@ Image styles. Remote images must resolve to a nonzero layout size, so use fixed
 dimensions or place percentage-sized images inside a parent with defined dimensions:
 
 ```tsx
-<View width={320} height={200}>
+<html.div width={320} height={200}>
   <Image
     src="https://example.com/photo.jpg"
     width="100%"
     height="100%"
     objectFit="cover"
   />
-</View>
+</html.div>
 ```
 
 Tamagui converts a string `src` to `source={{ uri: src }}` on native. Layout

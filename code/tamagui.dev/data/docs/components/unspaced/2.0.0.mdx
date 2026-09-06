@@ -13,18 +13,18 @@ When using the `space` style prop, you may want some children to not be spaced. 
 ## Usage
 
 ```tsx
-import { Text, Unspaced, View } from '@tamagui/core'
+import { Unspaced, html } from '@tamagui/core'
 
 export default () => (
-  <View position="relative" space>
-    <View width={20} height={20} />
+  <html.div position="relative" space>
+    <html.div width={20} height={20} />
     {/* space */}
-    <View width={20} height={20} />
+    <html.div width={20} height={20} />
     {/* no */}
     <Unspaced>
-      <Text position="absolute">Some absolute positioned text</Text>
+      <html.span position="absolute">Some absolute positioned text</html.span>
     </Unspaced>
-  </View>
+  </html.div>
 )
 ```
 

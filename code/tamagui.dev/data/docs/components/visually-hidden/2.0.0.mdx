@@ -28,11 +28,11 @@ npm install @tamagui/visually-hidden
 Simply wrap the content you want hidden in VisuallyHidden:
 
 ```tsx
-import { Text, VisuallyHidden } from 'tamagui'
+import { VisuallyHidden, html } from 'tamagui'
 
 export default () => (
   <VisuallyHidden>
-    <Text>Add annotations here</Text>
+    <html.span>Add annotations here</html.span>
   </VisuallyHidden>
 )
 ```
@@ -40,14 +40,14 @@ export default () => (
 When using with the `space` property, it will avoid double-spacing:
 
 ```tsx
-import { H1, Text, VisuallyHidden, YStack } from 'tamagui'
+import { H1, VisuallyHidden, YStack, html } from 'tamagui'
 
 export default () => (
   <YStack space>
     <H1>Title</H1>
 
     <VisuallyHidden>
-      <Text>Add annotations here</Text>
+      <html.span>Add annotations here</html.span>
     </VisuallyHidden>
   </YStack>
 )

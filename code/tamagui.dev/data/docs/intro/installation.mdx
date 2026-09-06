@@ -60,13 +60,13 @@ Next, you'll want to set up your [configuration](/docs/core/configuration) and
 provide it with `TamaguiProvider`:
 
 ```tsx fileName="App.tsx"
-import { TamaguiProvider, View } from '@tamagui/core'
+import { TamaguiProvider, html } from '@tamagui/core'
 import config from './tamagui.config' // your configuration
 
 export default function App() {
   return (
     <TamaguiProvider config={config} defaultTheme="light">
-      <View width={200} height={200} backgroundColor="background" />
+      <html.div width={200} height={200} backgroundColor="background" />
     </TamaguiProvider>
   )
 }

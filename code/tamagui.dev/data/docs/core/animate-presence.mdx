@@ -12,12 +12,12 @@ To use with `@tamagui/core`, install and import `@tamagui/animate-presence`. It'
 Use `enter:` and `exit:` clauses to define how each property animates in and out:
 
 ```tsx
-import { AnimatePresence, View } from 'tamagui'
+import { AnimatePresence, html } from 'tamagui'
 
 export const MyComponent = ({ isVisible }) => (
   <AnimatePresence>
     {isVisible && (
-      <View
+      <html.div
         key="my-square"
         transition="bouncy"
         backgroundColor="green"
@@ -49,12 +49,12 @@ Wrap one or more Tamagui components with AnimatePresence. The child components w
 You can specify different animations for enter (mount) and exit (unmount) transitions. This is useful when you want elements to enter slowly but exit quickly, or vice versa:
 
 ```tsx
-import { AnimatePresence, View } from 'tamagui'
+import { AnimatePresence, html } from 'tamagui'
 
 export default ({ show }) => (
   <AnimatePresence>
     {show && (
-      <View
+      <html.div
         key="panel"
         transition={{ enter: 'lazy', exit: 'quick' }}
         opacity="enter:0 exit:0"
@@ -71,7 +71,7 @@ property changes use while the element is mounted:
 
 ```tsx
 // enter slowly, exit quickly, property changes use bouncy
-<View
+<html.div
   transition={{ preset: 'bouncy', enter: 'lazy', exit: 'quick' }}
   opacity="enter:0 exit:0"
 />
@@ -82,7 +82,7 @@ per-property entries:
 
 ```tsx
 // enter with lazy but move x slowly, exit with quick after 200ms
-<View
+<html.div
   transition={{
     preset: 'bouncy',
     enter: { preset: 'lazy', x: 'slow' },

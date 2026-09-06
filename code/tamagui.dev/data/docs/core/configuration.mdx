@@ -91,7 +91,7 @@ export const config = createTamagui({
   },
 
   shorthands: {
-    // <View px={20} />
+    // <html.div px={20} />
     px: 'paddingHorizontal',
   },
 
@@ -120,12 +120,12 @@ Finally, pass your `config` export to a `<TamaguiProvider />` at the root of
 your app:
 
 ```tsx
-import { TamaguiProvider, View } from 'tamagui'
+import { TamaguiProvider, html } from 'tamagui'
 import { config } from './tamagui.config.ts'
 
 export default () => (
   <TamaguiProvider config={config}>
-    <View margin="sm" />
+    <html.div margin="sm" />
   </TamaguiProvider>
 )
 ```
@@ -231,7 +231,7 @@ const config = createTamagui({
   },
 
   // Shorthands
-  // Adds <View m={10} /> to <View margin={10} />
+  // Adds <html.div m={10} /> to <html.div margin={10} />
   // See Settings section on this page to only allow shorthands
   // Be sure to have `as const` at the end
   shorthands: {
@@ -520,9 +520,9 @@ tokens to use based on the style property you use.
 
 ```tsx
 const App = () => (
-  <Text fontSize="lg" lineHeight="lg" fontFamily="body" color="white">
+  <html.span fontSize="lg" lineHeight="lg" fontFamily="body" color="white">
     Hello world
-  </Text>
+  </html.span>
 )
 ```
 
@@ -708,7 +708,7 @@ export default createTamagui({
 Which will enable usage like:
 
 ```tsx
-<View br="myToken" />
+<html.div br="myToken" />
 ```
 
 where `br` expands into `borderRadius`.

@@ -254,7 +254,7 @@ Let's start with an example of inline styling with a subset of the
 configuration:
 
 ```tsx
-import { TamaguiProvider, createTokens, createTamagui, View, Theme } from 'tamagui'
+import { TamaguiProvider, createTokens, createTamagui, html, Theme } from 'tamagui'
 
 const tokens = createTokens({
   color: {
@@ -278,9 +278,9 @@ const config = createTamagui({
 
 export const App = () => (
   <TamaguiProvider config={config} defaultTheme="light">
-    <View backgroundColor="red" />
+    <html.div backgroundColor="red" />
     <Theme name="dark">
-      <View backgroundColor="red" />
+      <html.div backgroundColor="red" />
     </Theme>
   </TamaguiProvider>
 )

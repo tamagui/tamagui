@@ -7,7 +7,7 @@ V3 puts every condition in the value of the property it changes. Tokens and
 theme values are bare names, and condition-object styling has no runtime path.
 
 ```tsx
-<View
+<html.div
   bg="background hover:background-hover dark:blue-500"
   p="4 sm:6"
   opacity="disabled:0.5"
@@ -27,7 +27,7 @@ The base and each payload are ordinary property values. A registered modifier
 chain starts a new clause; the last matching clause wins.
 
 ```tsx
-<View
+<html.div
   p="4 sm:6"
   backgroundColor="red hover:blue dark:hover:navy"
   width="100% md:42rem"
@@ -44,7 +44,7 @@ Do not put clauses in the raw `transform` prop. Use the flattened transform
 family instead:
 
 ```tsx
-<View scale="1 hover:1.05" rotate="0deg hover:5deg" />
+<html.div scale="1 hover:1.05" rotate="0deg hover:5deg" />
 ```
 
 ## Token and theme lookup
@@ -54,7 +54,7 @@ variable wins; a miss remains literal text so CSS keywords and custom values
 pass through.
 
 ```tsx
-<View
+<html.div
   p="4"
   bg="background"
   borderColor="border-color"
@@ -65,14 +65,14 @@ pass through.
 Use a qualified token when the same name exists in more than one category:
 
 ```tsx
-<View width="size.4" color="color.blue-500" />
+<html.div width="size.4" color="color.blue-500" />
 ```
 
 A raw number remains a platform value:
 
 ```tsx
-<View p="4" />  // configured space token
-<View p={4} />   // 4 CSS pixels on web, 4 points on native
+<html.div p="4" />  // configured space token
+<html.div p={4} />   // 4 CSS pixels on web, 4 points on native
 ```
 
 Built-in multi-part V3 names are kebab-case. The runtime does not guess aliases:
@@ -109,10 +109,10 @@ Shorthands and longhands merge one property program at a time. A later base
 replaces the earlier base without erasing unrelated clauses:
 
 ```tsx
-<View backgroundColor="gray hover:blue" bg="red" />
+<html.div backgroundColor="gray hover:blue" bg="red" />
 // backgroundColor is red; hover is blue
 
-<View p="4 sm:6" px="2" />
+<html.div p="4 sm:6" px="2" />
 // left and right bases are 2; their sm clauses remain 6
 ```
 
@@ -121,17 +121,17 @@ replaces the earlier base without erasing unrelated clauses:
 A group exposes parent state. A query container supplies dimensions.
 
 ```tsx
-<View group>
-  <Text color="gray group-hover:black" />
-</View>
+<html.div group>
+  <html.span color="gray group-hover:black" />
+</html.div>
 
-<View container>
-  <Text width="100% @sm:50%" />
-</View>
+<html.div container>
+  <html.span width="100% @sm:50%" />
+</html.div>
 
-<View group="card" container="card">
-  <Text color="gray @sm/card:group-hover/card:black" />
-</View>
+<html.div group="card" container="card">
+  <html.span color="gray @sm/card:group-hover/card:black" />
+</html.div>
 ```
 
 Plain `sm:` is a viewport query. `@sm:` measures the nearest query container.

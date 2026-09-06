@@ -28,11 +28,11 @@ a CSS custom property on one node. Listed keys override and everything else
 inherits from the parent theme.
 
 ```tsx
-import { ThemeUpdate, View } from 'tamagui'
+import { ThemeUpdate, html } from 'tamagui'
 
 export default () => (
   <ThemeUpdate background-hover="blue-500 dark:blue-300">
-    <View backgroundColor="background hover:background-hover" />
+    <html.div backgroundColor="background hover:background-hover" />
   </ThemeUpdate>
 )
 ```
@@ -86,7 +86,7 @@ const config = createTamagui({
 Use and redefine them like any other theme value:
 
 ```tsx
-<View borderColor="surfaceBorder" />
+<html.div borderColor="surfaceBorder" />
 
 <ThemeUpdate surfaceBorder="red-500">
   {/* this subtree sees the red surface border */}
