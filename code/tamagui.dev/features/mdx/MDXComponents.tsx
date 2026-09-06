@@ -72,7 +72,6 @@ import { VersionSwitcher } from '../docs/VersionSwitcher'
 import * as Demos from '../docs/demos'
 import { ExampleAnimations } from '../site/home/HomeAnimations'
 import { TabsTabProps } from 'tamagui'
-import { Tab } from '~/components/RovingTabs'
 import { SimpleTable } from './SimpleTable'
 
 if (!React.version.startsWith('19')) {
@@ -434,7 +433,7 @@ const componentsIn = {
       mt="8"
       mb="4"
       data-heading
-      size="9"
+      size="8"
       fontWeight="500"
       color="color12"
       {...props}
@@ -450,7 +449,7 @@ const componentsIn = {
         position="relative"
         width={`fit-content` as any}
         id={id}
-        size="8"
+        size="7"
         color="color11"
         fontWeight="500"
         {...props}
@@ -467,7 +466,7 @@ const componentsIn = {
       width={`fit-content` as any}
       mt="8"
       mb="2"
-      size="8"
+      size="7"
       color="color8"
       data-heading
       {...props}
@@ -482,7 +481,7 @@ const componentsIn = {
       className="docs-paragraph"
       display="block"
       size="6"
-      my="2"
+      my="3"
       color="color11"
       {...props}
     />

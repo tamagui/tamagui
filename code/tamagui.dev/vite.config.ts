@@ -1,4 +1,4 @@
-import { existsSync } from 'node:fs'
+import { existsSync, readdirSync, readFileSync } from 'node:fs'
 import { execSync } from 'node:child_process'
 import { createRequire } from 'node:module'
 import { resolve as pathResolve } from 'node:path'
@@ -49,6 +49,31 @@ const { hasBento, bentoPath } = generateBentoProxy({
 if (hasBento) {
   console.info(`Using bento at ${bentoPath}`)
 }
+
+// bento is a sibling checkout with its own node_modules holding a full set of
+// published @tamagui packages. anything resolved from inside it finds those
+// first, so a v2 copy of a package can shadow the workspace one and get bundled
+// into the same chunk: v2 `helpers-icon` calling the removed `usePropsAndStyle`
+// took down every page that rendered an icon. name every workspace package so
+// resolution always lands on this checkout, whoever imported it.
+const tamaguiPackagesDir = pathResolve(import.meta.dirname, '../../node_modules/@tamagui')
+const workspaceTamaguiPackages = readdirSync(tamaguiPackagesDir, {
+  withFileTypes: true,
+})
+  .filter((entry) => entry.isSymbolicLink() || entry.isDirectory())
+  .map((entry) => entry.name)
+  // vite feeds every deduped id through the dep optimizer, which resolves the
+  // root entry, so a package with no runtime one fails the whole dev server on
+  // startup: @tamagui/config publishes subpaths only, and the two type packages
+  // export a `.` that carries nothing but `types`.
+  .filter((name) => {
+    const manifest = pathResolve(tamaguiPackagesDir, name, 'package.json')
+    if (!existsSync(manifest)) return false
+    const root = JSON.parse(readFileSync(manifest, 'utf8')).exports?.['.']
+    if (!root) return false
+    return typeof root === 'string' || Boolean(root.import || root.default)
+  })
+  .map((name) => `@tamagui/${name}`)
 
 // use createRequire instead of import.meta.resolve for bun compatibility in vite config
 const require = createRequire(import.meta.url)
@@ -198,6 +223,7 @@ export default {
       'react-hook-form',
       'react-native',
       'react-native-web',
+      ...workspaceTamaguiPackages,
       ...include,
     ],
   },

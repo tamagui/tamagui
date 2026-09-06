@@ -31,7 +31,7 @@ export function DocsPageFrame({
     <>
       <DocsVersionPickerPortal frontmatter={frontmatter} initialSearch={initialSearch} />
       {/* main content */}
-      <YStack flex={1} flexBasis="auto" py="8" px="4">
+      <YStack flex={1} flexBasis="auto" py="9" px="4 gtSm:6">
         <YStack render="article">
           <Container position="relative">{children}</Container>
 

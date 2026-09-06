@@ -16,11 +16,11 @@ export const SponsorButton = (props: { tiny?: boolean }) => {
         />
       }
       self="center"
-      boxShadow="0 4px 10px rgba(0, 0, 0, 0.2)"
+      boxShadow="0 1px 3px rgba(0, 0, 0, 0.04)"
       borderWidth={props.tiny ? 0 : 1}
       borderColor="border-color"
       size={props.tiny ? 'small' : 'medium'}
-      rounded="10"
+      rounded="5"
       circular={props.tiny ? true : false}
       variant={props.tiny ? 'quiet' : undefined}
       aria-label="Support OSS development of Tamagui"

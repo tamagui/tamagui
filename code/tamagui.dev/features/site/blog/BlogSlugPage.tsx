@@ -21,15 +21,7 @@ export function BlogArticleHeader({ frontmatter }: BlogPost) {
   const pathname = usePathname()
   const isDraft = pathname.startsWith('/draft')
   return (
-    <YStack mt="-10" pt="12" mb="4" position="relative">
-      <YStack
-        position="absolute"
-        inset={0}
-        maxH={1000}
-        z={0}
-        backgroundImage="linear-gradient(color5, color-transparent)"
-      />
-
+    <YStack mt="-8" pt="12" mb="4" position="relative">
       <Container>
         <YStack mt="2" items="flex-start">
           <ThemeTint>

@@ -1,6 +1,7 @@
 import { TamaguiIconSvg } from '@tamagui/logo'
 import { H1, Paragraph, Text, XStack, YStack } from 'tamagui'
 import { Button } from '~/components/Button'
+import { PAGE_MAX_WIDTH } from '~/components/Containers'
 import { HeadInfo } from '~/components/HeadInfo'
 import { Link } from '~/components/Link'
 import { GithubIcon } from '~/features/icons/GithubIcon'
@@ -18,32 +19,50 @@ export default function TamaguiHomePage() {
       <YStack
         render="main"
         width="100%"
-        maxW={1080}
+        maxW={PAGE_MAX_WIDTH}
         mx="auto"
-        px="5 gtMd:6"
+        px="4"
         pt="8 gtMd:12"
         pb="8"
         gap="8 gtMd:12"
+        minH="calc(100vh - 100px)"
+        justify="center"
       >
-        <XStack flexDirection="column gtMd:row" items="center" gap="10">
-          <YStack flexGrow={1} flexShrink={1} gap="6" minW={0} width="100%">
-            <TamaguiIconSvg width={48} height={48} />
+        {/* the text column caps at the width its own copy wants, so the code
+            sample sits next to the paragraphs instead of across a gap the
+            growing column left behind */}
+        <XStack flexDirection="column gtMd:row" items="center" justify="center" gap="8">
+          <YStack
+            flexGrow={1}
+            flexShrink={1}
+            gap="6"
+            minW={0}
+            width="100%"
+            maxW="gtMd:540px"
+          >
+            <TamaguiIconSvg width={24} height={24} />
 
             <H1
               fontSize="28px gtXs:32px gtMd:38px"
               lineHeight="34px gtXs:40px gtMd:46px"
               fontWeight="600"
               letterSpacing={0}
-              maxW={520}
             >
-              The style engine that feels native on native and web.
+              The style engine that feels great on native and web.
             </H1>
 
-            <Paragraph fontSize={16} lineHeight={26} color="color11" maxW={520}>
-              Tamagui v3 simplifies the core and adds Tailwind support. It's got a Rust
-              powered optimizing compiler for best-in-class performance, and a new native
-              runtime for best-in-class native runtime performance, too.
-            </Paragraph>
+            <YStack gap="4">
+              <Paragraph size="5" color="color11">
+                Tamagui is the only style library that gets you platform-native feel while
+                going cross platform, now with Tailwind mode.
+              </Paragraph>
+
+              <Paragraph size="5" color="color11">
+                Version 3 gets faster and simpler with React Strict DOM, a new Rust
+                optimizing compiler, and a 0-render native runtime. It's the fastest style
+                engine there is on web or native.
+              </Paragraph>
+            </YStack>
 
             <XStack gap="3" items="center" flexWrap="wrap">
               <Link asChild href="/docs/intro/introduction">
@@ -90,7 +109,7 @@ export default function TamaguiHomePage() {
             </XStack>
           </YStack>
 
-          <YStack width="100% gtMd:400px" flexShrink={0}>
+          <YStack width="100% gtMd:460px" flexShrink={0}>
             <HomeStyleToggle />
           </YStack>
         </XStack>

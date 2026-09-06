@@ -1,5 +1,12 @@
 import { YStack, styled } from 'tamagui'
 
+/**
+ * The width every top-level page frame lines up to: the header, the homepage
+ * hero, and the docs shell. They had each picked their own number, so the logo,
+ * the hero and a docs page all started at a different left edge.
+ */
+export const PAGE_MAX_WIDTH = 1280
+
 const variants = {
   hide: {
     true: {

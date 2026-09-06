@@ -12,8 +12,8 @@ export const DocsTitle = ({ children }: { children: string }) => {
     <H1
       mb="2"
       color="color12"
-      fontSize={36}
-      lineHeight={42}
+      fontSize={32}
+      lineHeight={38}
       fontWeight="600"
       maxW="gtSm:90%"
       className="word-break-keep-all"

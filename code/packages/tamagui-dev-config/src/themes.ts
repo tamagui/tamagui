@@ -38,4 +38,47 @@ for (const themeName of themeNames) {
   }
 }
 
-export const themes = toV6Themes(selectedThemes)
+// V5's light gray ramp puts `border-color` on color4, twelve lightness points
+// below a 97% background, so every card, input and code block on the site is
+// outlined in #d9d9d9. Colored light themes already sit within six points of
+// their background and read fine, so rather than repaint the pack, cap how far
+// a light theme's border may fall below its own background. Dark themes are
+// left alone: a border there has to climb away from the background to show up.
+const MAX_LIGHT_BORDER_GAP = 8
+
+const hsla = /^hsla\(\s*([\d.]+)\s*,\s*([\d.]+)%\s*,\s*([\d.]+)%\s*,\s*([\d.]+)\s*\)$/
+
+const softenLightBorder = <Theme extends Record<string, any>>(theme: Theme): Theme => {
+  const background = hsla.exec(theme.background)
+  const border = hsla.exec(theme['border-color'])
+  if (!background || !border) return theme
+
+  const backgroundLightness = Number(background[3])
+  const borderLightness = Number(border[3])
+  if (backgroundLightness <= 50) return theme
+
+  const gap = backgroundLightness - borderLightness
+  if (gap <= MAX_LIGHT_BORDER_GAP) return theme
+
+  const lightness = backgroundLightness - MAX_LIGHT_BORDER_GAP
+  return {
+    ...theme,
+    'border-color': `hsla(${border[1]}, ${border[2]}%, ${lightness}%, ${border[4]})`,
+  }
+}
+
+const v6Themes = toV6Themes(selectedThemes)
+
+// several names alias one object above, so keep that sharing through the edit
+const softened = new Map<object, object>()
+
+export const themes = Object.fromEntries(
+  Object.entries(v6Themes).map(([themeName, theme]) => {
+    let next = softened.get(theme)
+    if (!next) {
+      next = softenLightBorder(theme)
+      softened.set(theme, next)
+    }
+    return [themeName, next]
+  })
+) as typeof v6Themes

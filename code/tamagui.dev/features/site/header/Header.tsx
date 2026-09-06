@@ -28,6 +28,7 @@ import {
   type PopoverProps,
 } from 'tamagui'
 import { Button } from '~/components/Button'
+import { PAGE_MAX_WIDTH } from '~/components/Containers'
 import { Link } from '~/components/Link'
 import { GithubIcon } from '~/features/icons/GithubIcon'
 import { seasons, SeasonTogglePopover } from '~/features/site/seasons/SeasonTogglePopover'
@@ -76,7 +77,12 @@ export function Header(props: HeaderProps) {
         px="gtSm:1"
         className="all ease-out s1"
       >
-        <XStack pointerEvents="auto" width="100%" maxW={1200} position="relative">
+        <XStack
+          pointerEvents="auto"
+          width="100%"
+          maxW={PAGE_MAX_WIDTH}
+          position="relative"
+        >
           <XStack
             className="ease-out all ms300"
             py="1-5 sm:2"
@@ -377,7 +383,13 @@ export const HeaderLink = (props: { id: ID; children: string; href: string }) =>
   return (
     <SlidingPopoverTarget id={props.id}>
       <Link asChild href={props.href as any}>
-        <HeadAnchor {...(isActive && { active: true })} display="xs:none">
+        <HeadAnchor
+          fontFamily="mono"
+          fontSize={13}
+          color="color9 hover:color12"
+          {...(isActive && { active: true })}
+          display="xs:none"
+        >
           {props.children}
         </HeadAnchor>
       </Link>

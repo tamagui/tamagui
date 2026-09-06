@@ -21,7 +21,7 @@ import { Button } from '~/components/Button'
 import { LinearGradient } from '@tamagui/linear-gradient'
 import { ErrorBoundary } from '~/components/ErrorBoundary'
 import { Pre } from '~/components/Pre'
-import { RovingTabs } from '~/components/RovingTabs'
+import { CodeBlockTabs } from '~/components/CodeBlockTabs'
 import { useBashCommand } from '~/hooks/useBashCommand'
 import { useClipboard } from '~/hooks/useClipboard'
 import { toggleDocsTinted } from './docsTint'
@@ -197,7 +197,9 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
               position="relative"
               group="code"
             >
-              {showFileName && (
+              {/* with tabs the picker row already carries the copy button, so a
+                  separate "Terminal" row would just be a second header */}
+              {showFileName && !showTabs && (
                 <XStack
                   items="center"
                   gap="2"
@@ -222,16 +224,17 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
                 </XStack>
               )}
 
-              <RovingTabs
+              <CodeBlockTabs
                 className={className}
                 size={size}
                 {...rest}
                 {...(showTabs && {
                   width: '100%',
+                  headerRight: copyButton,
                 })}
               >
                 {children}
-              </RovingTabs>
+              </CodeBlockTabs>
 
               {!showFileName && copyButton && (
                 <XStack position="absolute" t="3" r="3">

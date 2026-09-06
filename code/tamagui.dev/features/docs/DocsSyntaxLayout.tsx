@@ -1,6 +1,7 @@
 import { useEffect, type ReactNode } from 'react'
 import { ScrollView } from 'react-native'
 import { View, XStack, YStack } from 'tamagui'
+import { PAGE_MAX_WIDTH } from '~/components/Containers'
 import { setCodeMode, type CodeMode } from './docsCodeMode'
 import { DocsMenuContents } from './DocsMenuContents'
 import { Footer } from '../site/Footer'
@@ -30,7 +31,7 @@ export function DocsSyntaxLayout({
       />
 
       <YStack minH="100vh" position="relative" z={1}>
-        <XStack mx="auto" maxW={1400} width="100%">
+        <XStack mx="auto" maxW={PAGE_MAX_WIDTH} width="100%">
           <View
             className="is-sticky"
             display="none gtMd:flex"
@@ -40,7 +41,6 @@ export function DocsSyntaxLayout({
             width="gtMd:245px"
             shrink="gtMd:0px"
             alignSelf="gtMd:flex-start"
-            x="gtMd:20px"
           >
             <ScrollView showsVerticalScrollIndicator={false}>
               <YStack pt={55} pb="18" px="2">

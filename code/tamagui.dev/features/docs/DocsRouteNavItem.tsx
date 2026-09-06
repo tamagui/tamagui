@@ -1,9 +1,16 @@
 import type { Href } from 'one'
-import { createElement, useRef } from 'react'
+import { createElement, type ReactNode, useRef } from 'react'
 import { SizableText, Spacer, XStack, YStack } from 'tamagui'
 import { Link } from '~/components/Link'
 import { ExternalIcon } from '~/features/icons/ExternalIcon'
-import type { NavItemProps } from './DocsPage'
+
+type NavItemProps = {
+  children: ReactNode
+  active?: boolean
+  href: string
+  pending?: boolean
+  external?: boolean
+}
 
 export const DocsRouteNavItem = function DocsRouteNavItem({
   children,

@@ -6,9 +6,9 @@ export const TakeoutButton = (props: ButtonProps) => {
     <Button
       theme="red"
       borderColor="color6"
-      boxShadow="0 4px 10px rgba(0, 0, 0, 0.2)"
+      boxShadow="0 1px 3px rgba(0, 0, 0, 0.04)"
       size="3"
-      rounded="10"
+      rounded="5"
       z="hover:100"
       {...props}
     >

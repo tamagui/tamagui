@@ -36,6 +36,37 @@ export function Card() {
 
 The styling frontend is selected by import path. There is no global configuration toggle.
 
+## Semantic Elements
+
+`@tamagui/tailwind` also exports `html`, the same set of semantic elements as `html` from `tamagui`, built on the Tailwind frontend. Same tags, same element defaults, and a class string rather than style props as the styling input:
+
+```tsx
+import { html } from '@tamagui/tailwind'
+
+export function Cta() {
+  return (
+    <html.button className="px-4 py-2 rounded-lg bg-blue-500 hover:bg-blue-600">
+      <html.span className="text-white">Ship it</html.span>
+    </html.button>
+  )
+}
+```
+
+Every tag renders a real element on web and its React Native equivalent on native, exactly as the `tamagui` `html` does. It composes with `styled()` too:
+
+```tsx
+import { html, styled } from '@tamagui/tailwind'
+
+export const Button = styled(html.button, 'px-4 py-2 rounded-lg', {
+  variants: {
+    tone: {
+      solid: 'bg-blue-500 hover:bg-blue-600',
+      ghost: 'hover:bg-blue-50',
+    },
+  },
+})
+```
+
 ## Vite Integration
 
 Applications authoring with `@tamagui/tailwind` use the Vite plugin from `@tamagui/tailwind/vite`:
