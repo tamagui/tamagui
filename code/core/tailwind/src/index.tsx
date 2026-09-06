@@ -9,9 +9,9 @@
  * This entry is runtime-only. The official Tailwind scanner and build integration
  * live behind `@tamagui/tailwind/vite` and are never reachable from here.
  */
-import { createFrontendViews } from '@tamagui/core/internal-runtime'
+import { createFrontendHTML, createFrontendViews } from '@tamagui/core/internal-runtime'
 import { tailwindStyleFrontend } from './frontend'
-import type { TailwindText, TailwindView } from './types'
+import type { TailwindHTML, TailwindText, TailwindView } from './types'
 
 const frontendViews = createFrontendViews(tailwindStyleFrontend)
 
@@ -23,6 +23,12 @@ const frontendViews = createFrontendViews(tailwindStyleFrontend)
 export const View = frontendViews.View as unknown as TailwindView
 
 export const Text = frontendViews.Text as unknown as TailwindText
+
+/**
+ * The semantic elements. Identical to `html` from `tamagui` down to the element
+ * defaults, differing only in that a class string is the styling input.
+ */
+export const html = createFrontendHTML(tailwindStyleFrontend) as unknown as TailwindHTML
 
 export { styled } from './styled'
 export { parseStaticStyle, tailwindStyleFrontend } from './frontend'

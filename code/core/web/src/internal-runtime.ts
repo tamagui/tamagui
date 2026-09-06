@@ -9,8 +9,10 @@
  */
 import type { FunctionComponent } from 'react'
 import { stylePropsUnitless } from '@tamagui/helpers'
+import type { TagName } from '@tamagui/dom'
 import { createComponent } from './createComponent'
 import { createVariables as createVariablesImpl } from './createVariables'
+import { html } from './dom/html'
 import { fixStyles as fixStylesImpl } from './helpers/expandStyles'
 import { styleToCSS as styleToCSSImpl } from './helpers/styleToCSS'
 import { getThemeCSSRules as getThemeCSSRulesImpl } from './helpers/getThemeCSSRules'
@@ -130,4 +132,38 @@ export function createFrontendViews(frontend: StyleFrontend): {
       displayName: 'Text',
     }),
   }
+}
+
+/** the tags `createFrontendHTML` builds, which is every tag of the DOM contract */
+export type FrontendHTMLTag = TagName
+
+/**
+ * The DOM contract's elements rebuilt on another style frontend: same tags, same
+ * element defaults, same runtime, only the authoring syntax differs. Mirrors
+ * `createFrontendViews`, and is safe for the same reason: the regular singletons
+ * keep their own config objects and `createComponent` never mutates one.
+ */
+export function createFrontendHTML(
+  frontend: StyleFrontend
+): Record<FrontendHTMLTag, FrontendComponent> {
+  const out = {} as Record<FrontendHTMLTag, FrontendComponent>
+  for (const tag in html) {
+    const source = html[tag] as FrontendComponent & {
+      rebindDOMTag?: (next: FrontendComponent) => FrontendComponent
+    }
+    // a tag native does not support is a thrower with nothing to rebuild
+    if (!source.staticConfig) {
+      out[tag] = source
+      continue
+    }
+    const rebuilt = createComponent({
+      ...source.staticConfig,
+      styleFrontend: frontend,
+      displayName: tag,
+    })
+    // on native the styling component is wrapped in the dom prop mapping, which
+    // the rebuild has to keep
+    out[tag] = source.rebindDOMTag ? source.rebindDOMTag(rebuilt) : rebuilt
+  }
+  return out
 }

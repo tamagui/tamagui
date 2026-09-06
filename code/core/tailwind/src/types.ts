@@ -1,6 +1,10 @@
-import type { FrontendStaticConfig } from '@tamagui/core/internal-runtime'
+import type {
+  FrontendHTMLTag,
+  FrontendStaticConfig,
+} from '@tamagui/core/internal-runtime'
 import type {
   AriaAttributes,
+  ComponentPropsWithoutRef,
   CSSProperties,
   FunctionComponent,
   HTMLAttributes,
@@ -219,3 +223,27 @@ export type TailwindText = TailwindComponent<
 
 export type TailwindViewProps = TailwindViewNonStyleProps & TailwindStyleProps
 export type TailwindTextProps = TailwindTextNonStyleProps & TailwindStyleProps
+
+/**
+ * One tag's props: the element's own DOM contract plus the shared Tamagui
+ * behavior props, with `className` the only styling input. Tamagui non-style
+ * props win where both name the same thing, matching the regular `html`.
+ */
+type TailwindHTMLProps<Tag extends FrontendHTMLTag> = Omit<
+  ComponentPropsWithoutRef<Tag>,
+  'className' | 'style' | keyof TailwindCommonProps
+> &
+  TailwindCommonProps & {
+    style?: StyleProp<LooseCombinedObjects<CSSProperties, ViewStyle>>
+  }
+
+/**
+ * The semantic elements, authored in Tailwind classes. Same tags and same
+ * element defaults as `html` from `tamagui`; only the styling syntax differs.
+ */
+export type TailwindHTML = {
+  [Tag in FrontendHTMLTag]: TailwindComponent<
+    HTMLElementTagNameMap[Tag],
+    TailwindHTMLProps<Tag>
+  >
+}

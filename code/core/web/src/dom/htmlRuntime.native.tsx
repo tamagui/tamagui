@@ -205,6 +205,11 @@ export function createDOMTagFactory(tables: DOMPropTables) {
       jsx(Component, resolveDOMProps(props, tag, spec, tables))
     Tag.displayName = tag
     ;(Tag as any)[componentDisplayName] = tag
+    // the styling component sits inside this wrapper on native, so another style
+    // frontend reads its config here and re-wraps its rebuild with the same dom
+    // prop mapping. see `createFrontendHTML`.
+    ;(Tag as any).staticConfig = (Component as any).staticConfig
+    ;(Tag as any).rebindDOMTag = (next: ComponentType<any>) => domTag(tag, next, spec)
     return Tag as unknown as Frame
   }
 }

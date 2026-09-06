@@ -8,6 +8,7 @@
  * reconnecting the regular root barrel.
  */
 import type { FunctionComponent } from 'react';
+import type { TagName } from '@tamagui/dom';
 import type { FrontendComponent, StyleFrontend } from './helpers/styleFrontend';
 export { mergeFrontendCondition, regularStyleFrontend } from './helpers/styleFrontend';
 export type * from './internalRuntimeTypes';
@@ -43,4 +44,13 @@ export declare function createFrontendViews(frontend: StyleFrontend): {
     View: FrontendComponent;
     Text: FrontendComponent;
 };
+/** the tags `createFrontendHTML` builds, which is every tag of the DOM contract */
+export type FrontendHTMLTag = TagName;
+/**
+ * The DOM contract's elements rebuilt on another style frontend: same tags, same
+ * element defaults, same runtime, only the authoring syntax differs. Mirrors
+ * `createFrontendViews`, and is safe for the same reason: the regular singletons
+ * keep their own config objects and `createComponent` never mutates one.
+ */
+export declare function createFrontendHTML(frontend: StyleFrontend): Record<FrontendHTMLTag, FrontendComponent>;
 //# sourceMappingURL=internal-runtime.d.ts.map

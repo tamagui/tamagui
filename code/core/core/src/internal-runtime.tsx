@@ -15,6 +15,7 @@ import { createTamagui as platformSetup } from './runtime'
 void platformSetup
 
 export {
+  createFrontendHTML,
   createFrontendStyled,
   createFrontendViews,
   mergeFrontendCondition,
@@ -23,6 +24,7 @@ export {
 } from '@tamagui/web/internal-runtime'
 export type {
   FrontendComponent,
+  FrontendHTMLTag,
   FrontendClassPlan,
   FrontendClassPlanEntry,
   FrontendClassSink,
