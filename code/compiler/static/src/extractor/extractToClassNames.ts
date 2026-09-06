@@ -421,6 +421,9 @@ export async function extractToClassNames({
         // merge the base style forward into both sides
         return {
           ...ternary,
+          // the base as it stands *here* - a style declared after this ternary
+          // was never merged into its arms and must not be merged in later
+          baseStyle: mergeForwardBaseStyle ? { ...mergeForwardBaseStyle } : {},
           alternate: mergedAlternate,
           consequent: mergedConsequent,
         }
@@ -485,80 +488,78 @@ export async function extractToClassNames({
         // normalize tests to reduce duplicates
         const normalizedTernaries = normalizeTernaries(onlyTernaries)
 
+        // both arms of a ternary arrive already merged with the base style, so
+        // merging one arm over another lets the second arm's *inherited* base
+        // values overwrite what the first arm actually set. combine the arms by
+        // what they each actually change, and put the base back underneath the
+        // result below - that way the base can never outrank an arm.
+        const ownStyleOf = (arm: object | null | undefined, base: object) => {
+          const own: Record<string, any> = {}
+          if (arm) {
+            for (const key in arm) {
+              if (base[key] !== arm[key]) {
+                own[key] = arm[key]
+              }
+            }
+            forwardFontFamilyName(arm, own)
+          }
+          return own
+        }
+
+        // build the full cross product of every ternary's two arms: one branch
+        // per combination of conditions, carrying exactly the styles that
+        // combination asks for. an arm the source omits contributes an empty
+        // style, so the branches always partition the whole condition space -
+        // 2^n mutually exclusive, exhaustive branches whose test order cannot
+        // select the wrong one.
+        let branches: { tests: t.Expression[]; style: object }[] = [
+          { tests: [], style: {} },
+        ]
+        // the base every branch sits on: each ternary's own snapshot, merged in
+        // source order, so a later style still beats an earlier one
+        let branchBase: object = {}
+
         for (const ternary of normalizedTernaries) {
-          if (!expandedTernaries.length) {
-            expandTernary(ternary)
-            continue
+          const base = ternary.baseStyle || {}
+          branchBase = mergeProps(branchBase, base)
+          const arms = [
+            [ternary.test, ownStyleOf(ternary.consequent, base)],
+            [t.unaryExpression('!', ternary.test), ownStyleOf(ternary.alternate, base)],
+          ] as const
+          const next: typeof branches = []
+          for (const branch of branches) {
+            for (const [test, arm] of arms) {
+              const style = mergeProps(branch.style, arm)
+              forwardFontFamilyName(arm, style, getFontFamilyNameFromProps(branch.style))
+              next.push({
+                // clone so no test node is aliased into the output twice
+                tests: [...branch.tests, t.cloneNode(test, true)],
+                style,
+              })
+            }
           }
-          // snapshot current array before iterating - expandTernary mutates expandedTernaries
-          const prevTernaries = [...expandedTernaries]
-          for (const prev of prevTernaries) {
-            expandTernary(ternary, prev)
-          }
-        }
-      }
-
-      function expandTernary(ternary: Ternary, prev?: Ternary) {
-        // need to diverge into two (or four if alternate)
-        if (ternary.consequent && Object.keys(ternary.consequent).length) {
-          const fontFamily = getFontFamilyNameFromProps(ternary.consequent)
-
-          expandedTernaries.push({
-            fontFamily,
-            // prevTest && test: merge consequent
-            test: prev
-              ? t.logicalExpression('&&', prev.test, ternary.test)
-              : ternary.test,
-            consequent: prev
-              ? mergeProps(prev.consequent!, ternary.consequent)
-              : ternary.consequent,
-            remove,
-            alternate: null,
-          })
-
-          if (prev) {
-            expandedTernaries.push({
-              fontFamily,
-              // !prevTest && test: just consequent
-              test: t.logicalExpression(
-                '&&',
-                t.unaryExpression('!', prev.test),
-                ternary.test
-              ),
-              consequent: ternary.consequent,
-              alternate: null,
-              remove,
-            })
-          }
+          branches = next
         }
 
-        if (ternary.alternate && Object.keys(ternary.alternate).length) {
-          const fontFamily = getFontFamilyNameFromProps(ternary.alternate)
-          const negated = t.unaryExpression('!', ternary.test)
+        for (const branch of branches) {
+          // a combination that changes nothing off the base renders exactly the
+          // chain's fallback - and because the branches partition the condition
+          // space, dropping one just falls through to it
+          if (!Object.keys(branch.style).length) continue
+          // a branch replaces the whole className, so it has to carry the base
+          // too: the base is only emitted ahead of it when it is a plain string
+          // literal, not when it is a runtime expression
+          const consequent = mergeProps(branchBase, branch.style)
+          forwardFontFamilyName(branch.style, consequent, baseFontFamily)
           expandedTernaries.push({
-            fontFamily,
-            // prevTest && !test: merge alternate
-            test: prev ? t.logicalExpression('&&', prev.test, negated) : negated,
-            consequent: prev
-              ? mergeProps(prev.alternate!, ternary.alternate)
-              : ternary.alternate,
-            remove,
+            fontFamily: getFontFamilyNameFromProps(consequent),
+            test: branch.tests.reduce((left, right) =>
+              t.logicalExpression('&&', left, right)
+            ),
+            consequent,
             alternate: null,
+            remove,
           })
-
-          if (prev) {
-            expandedTernaries.push({
-              fontFamily,
-              test: t.logicalExpression(
-                '&&',
-                t.unaryExpression('!', prev.test),
-                ternary.test
-              ),
-              consequent: ternary.alternate,
-              remove,
-              alternate: null,
-            })
-          }
         }
       }
 
