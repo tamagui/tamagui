@@ -92,6 +92,29 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
     onCommandChange()
   }, [transformedCommand, isPreVisible, onCommandChange])
 
+  const copyButton = disableCopy ? null : (
+    <TooltipSimple label={hasCopied ? 'Copied' : 'Copy to clipboard'}>
+      <Button
+        aria-label="Copy code to clipboard"
+        size="2"
+        display="inline-flex"
+        // with no title row it floats over the code, so keep it out of the way
+        // until the pointer is here. touch has no hover, so small screens keep it
+        {...(!showFileName &&
+          !showTabs && {
+            opacity: '0 sm:1 group-hover/code:1',
+            transition: 'quickest',
+          })}
+        icon={hasCopied ? CheckCircle : Copy}
+        onPress={() => {
+          onCopy()
+        }}
+      >
+        Copy
+      </Button>
+    </TooltipSimple>
+  )
+
   return (
     <YStack
       ref={ref}
@@ -179,6 +202,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
                   items="center"
                   gap="2"
                   pl="4"
+                  pr="3"
                   height="5"
                   py="4"
                   borderBottomWidth="0-5"
@@ -192,6 +216,9 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
                   <Paragraph color="color11">
                     {isTerminalCommand ? 'Terminal' : fileName}
                   </Paragraph>
+                  {/* in the title row it sits in the flow, so it centers on the
+                      title instead of hanging over the row's bottom border */}
+                  <XStack ml="auto">{copyButton}</XStack>
                 </XStack>
               )}
 
@@ -206,30 +233,10 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
                 {children}
               </RovingTabs>
 
-              {!disableCopy && (
-                <TooltipSimple label={hasCopied ? 'Copied' : 'Copy to clipboard'}>
-                  <Button
-                    position="absolute"
-                    aria-label="Copy code to clipboard"
-                    size="2"
-                    t={showFileName ? '6' : '3'}
-                    r="3"
-                    display="inline-flex"
-                    // it floats over the code, so keep it out of the way until the
-                    // pointer is here. touch has no hover, so small screens keep it
-                    {...(!showFileName &&
-                      !showTabs && {
-                        opacity: '0 sm:1 group-hover/code:1',
-                        transition: 'quickest',
-                      })}
-                    icon={hasCopied ? CheckCircle : Copy}
-                    onPress={() => {
-                      onCopy()
-                    }}
-                  >
-                    Copy
-                  </Button>
-                </TooltipSimple>
+              {!showFileName && copyButton && (
+                <XStack position="absolute" t="3" r="3">
+                  {copyButton}
+                </XStack>
               )}
             </Pre>
 

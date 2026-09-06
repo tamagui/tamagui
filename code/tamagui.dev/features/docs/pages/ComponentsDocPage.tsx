@@ -12,8 +12,8 @@ import { useDocsMenu } from '~/features/docs/useDocsMenu'
 import { useIsDocsTinted } from '~/features/docs/docsTint'
 import { components } from '~/features/mdx/MDXComponents'
 import { getOgUrl } from '~/features/site/getOgUrl'
-import { nbspLastWord, SubTitle } from '~/components/SubTitle'
-import { HomeH1 } from '~/features/site/home/HomeHeaders'
+import { SubTitle } from '~/components/SubTitle'
+import { DocsTitle } from '~/components/DocsTitle'
 
 export async function generateStaticParams() {
   const { getAllFrontmatter } = await import('~/features/mdx/getMDXBySlug')
@@ -102,7 +102,7 @@ export function DocComponentsPage() {
         }}
       />
 
-      <HomeH1>{nbspLastWord(frontmatter.title)}</HomeH1>
+      <DocsTitle>{frontmatter.title}</DocsTitle>
 
       <SubTitle>{frontmatter.description || ''}</SubTitle>
 

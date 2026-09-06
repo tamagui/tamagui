@@ -435,6 +435,7 @@ const componentsIn = {
       mb="4"
       data-heading
       size="9"
+      fontWeight="500"
       color="color12"
       {...props}
     >
@@ -451,7 +452,7 @@ const componentsIn = {
         id={id}
         size="8"
         color="color11"
-        fontWeight="600"
+        fontWeight="500"
         {...props}
       >
         {children}
@@ -474,7 +475,7 @@ const componentsIn = {
     />
   ),
 
-  h5: (props) => <H5 size="6" fontWeight="600" mt="4" {...props} />,
+  h5: (props) => <H5 size="6" fontWeight="500" mt="4" {...props} />,
 
   p: (props) => (
     <Paragraph

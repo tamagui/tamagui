@@ -29,6 +29,7 @@ export const SubTitle = ({ children, ...props }) => {
       color="accent7"
       width="100% gtSm:max-content"
       size="7"
+      fontWeight="400"
       pb="3"
       mb="3"
       textWrap="web:balance"

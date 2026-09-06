@@ -3,12 +3,12 @@ import { getMDXComponent } from '@vxrn/mdx-rust/client'
 import { useMemo } from 'react'
 import { useLoader } from 'one'
 import { HeadInfo } from '~/components/HeadInfo'
-import { SubTitle, nbspLastWord } from '~/components/SubTitle'
+import { SubTitle } from '~/components/SubTitle'
+import { DocsTitle } from '~/components/DocsTitle'
 import { DocsPageFrame } from '~/features/docs/DocsPageFrame'
 import { useDocsMenu } from '~/features/docs/useDocsMenu'
 import { components } from '~/features/mdx/MDXComponents'
 import { getOgUrl } from '~/features/site/getOgUrl'
-import { HomeH1 } from '~/features/site/home/HomeHeaders'
 
 export async function generateStaticParams() {
   const { getAllFrontmatter } = await import('~/features/mdx/getMDXBySlug')
@@ -68,7 +68,7 @@ export function DocCorePage() {
           ],
         }}
       />
-      <HomeH1>{nbspLastWord(frontmatter.title)}</HomeH1>
+      <DocsTitle>{frontmatter.title}</DocsTitle>
       <SubTitle>{frontmatter.description || ''}</SubTitle>
       <ThemeTint>
         <Component components={components as any} />

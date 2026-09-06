@@ -3,13 +3,13 @@ import { getMDXComponent } from '@vxrn/mdx-rust/client'
 import { useLoader } from 'one'
 import { useMemo } from 'react'
 import { HeadInfo } from '~/components/HeadInfo'
-import { SubTitle, nbspLastWord } from '~/components/SubTitle'
+import { SubTitle } from '~/components/SubTitle'
+import { DocsTitle } from '~/components/DocsTitle'
 import { TamaguiExamples } from '~/components/TamaguiExamples'
 import { DocsPageFrame } from '~/features/docs/DocsPageFrame'
 import { useDocsMenu } from '~/features/docs/useDocsMenu'
 import { components } from '~/features/mdx/MDXComponents'
 import { getOgUrl } from '~/features/site/getOgUrl'
-import { HomeH1 } from '~/features/site/home/HomeHeaders'
 
 export async function generateStaticParams() {
   const { getAllFrontmatter } = await import('~/features/mdx/getMDXBySlug')
@@ -76,7 +76,7 @@ export function DocIntroPage() {
           ],
         }}
       />
-      <HomeH1>{nbspLastWord(frontmatter.title)}</HomeH1>
+      <DocsTitle>{frontmatter.title}</DocsTitle>
       <SubTitle>{frontmatter.description || ''}</SubTitle>
       <ThemeTint>
         <TamaguiExamples.Provider value={examples}>
