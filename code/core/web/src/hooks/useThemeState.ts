@@ -8,6 +8,7 @@ import {
   useRef,
   type MutableRefObject,
 } from 'react'
+import { getThemeScheme as getScheme } from '@tamagui/helpers'
 import { getConfig, getSetting } from '../config'
 import { MISSING_THEME_MESSAGE } from '../constants/constants'
 import type {
@@ -283,6 +284,7 @@ const getSnapshotImpl = (r: SnapshotRef): ThemeState => {
     if (
       parentState &&
       (local as any)._parentName === parentState.name &&
+      (local as any)._parentSchemeAuthored === parentState.schemeAuthored &&
       (local as any)._propsKey === propsKey
     ) {
       return local
@@ -351,6 +353,8 @@ const getSnapshotImpl = (r: SnapshotRef): ThemeState => {
     local.id = id
   }
   ;(local as any)._parentName = parentState?.name
+  // scheme intent can change while the resolved name stays the same.
+  ;(local as any)._parentSchemeAuthored = parentState?.schemeAuthored
   ;(local as any)._propsKey = propsKey
   states.set(id, next)
 
@@ -383,20 +387,39 @@ const getNextState = (
           props,
           pendingUpdate === 'force' ? true : !!needsUpdate
         )
-  const isSameAsParent = Boolean(parentState && (!name || name === parentState.name))
+  // explicit schemes pin even when resolution reuses the parent's theme name.
+  const authoredName = props.name
+  const parentSchemeAuthored = !!parentState?.schemeAuthored
+  const schemeAuthored = isRoot
+    ? !!props.forceClassName
+    : parentSchemeAuthored ||
+      !!(authoredName && getScheme(authoredName) && authoredName in themes)
+  const intentChanged = schemeAuthored !== parentSchemeAuthored
+  const resolvedName = name || parentState?.name
+  const sameAsLast =
+    lastState &&
+    lastState.name === resolvedName &&
+    !!lastState.schemeAuthored === schemeAuthored
+
+  const isSameAsParent = Boolean(
+    parentState && resolvedName === parentState.name && !intentChanged
+  )
   const shouldRerender = Boolean(
     pendingUpdate === 'force' ||
-    (needsUpdate && (pendingUpdate || lastState?.name !== parentState?.name))
+    (needsUpdate &&
+      (pendingUpdate ||
+        lastState?.name !== parentState?.name ||
+        !!lastState?.schemeAuthored !== schemeAuthored))
   )
 
   if (isSameAsParent) {
-    if (!shouldRerender && lastState && lastState.name === parentState!.name) {
+    if (!shouldRerender && sameAsLast) {
       return [false, lastState]
     }
     return [shouldRerender, { ...parentState!, isNew: false }]
   }
 
-  if (!name) {
+  if (!resolvedName) {
     const next = lastState ??
       parentState ??
       rootThemeState ?? {
@@ -412,20 +435,22 @@ const getNextState = (
     return [false, next]
   }
 
-  const scheme = getScheme(name)
+  // a same-name pin still introduces its own scope.
+  const scheme = getScheme(resolvedName)
   const parentInverses = parentState?.inverses ?? 0
   const isInverse = Boolean(parentState && scheme !== parentState.scheme)
   const inverses = parentInverses + (isInverse ? 1 : 0)
 
   const nextState: ThemeState = {
     id,
-    name,
-    theme: themes[name],
+    name: resolvedName,
+    theme: themes[resolvedName],
     scheme,
     parentId,
     parentName: parentState?.name,
     inverses,
     isInverse,
+    schemeAuthored,
     isNew: true,
   }
 
@@ -433,17 +458,7 @@ const getNextState = (
     rootThemeState = nextState
   }
 
-  if (pendingUpdate !== 'force' && lastState && lastState.name === name) {
-    return [false, nextState]
-  }
-
-  const shouldAvoidRerender =
-    pendingUpdate !== 'force' &&
-    lastState &&
-    !needsUpdate &&
-    nextState.name === lastState.name
-
-  return [!shouldAvoidRerender, nextState]
+  return [pendingUpdate === 'force' || !sameAsLast, nextState]
 }
 
 function scheduleUpdate(id: string) {
@@ -466,15 +481,6 @@ function scheduleUpdate(id: string) {
   visited.forEach((childId) => {
     allListeners.get(childId)?.()
   })
-}
-
-const validSchemes = {
-  light: 'light',
-  dark: 'dark',
-} as const
-
-function getScheme(name: string) {
-  return validSchemes[name.split('_')[0]]
 }
 
 export function getNewThemeName(
@@ -534,7 +540,7 @@ export function resolveThemeName(
     }
   }
 
-  if (!forceUpdate && found === parentName && !validSchemes[found]) {
+  if (!forceUpdate && found === parentName && found !== 'light' && found !== 'dark') {
     return null
   }
 

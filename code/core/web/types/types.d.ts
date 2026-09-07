@@ -221,6 +221,7 @@ export type ThemeState = {
     isNew?: boolean;
     parentId?: string;
     scheme?: 'light' | 'dark';
+    schemeAuthored?: boolean;
 };
 export interface Variable<A = any> {
     isVar: true;

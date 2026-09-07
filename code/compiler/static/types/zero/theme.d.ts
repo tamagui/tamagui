@@ -44,6 +44,8 @@ export interface ThemeBranch {
     test: string | null;
     name: string;
     isNew: boolean;
+    /** mirrors ThemeState.schemeAuthored: a scheme this node named outright. */
+    schemeAuthored: boolean;
 }
 /**
  * Every theme name an element's `<Theme>` ancestry can resolve to.

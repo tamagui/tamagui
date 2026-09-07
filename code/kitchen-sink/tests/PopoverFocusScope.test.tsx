@@ -239,4 +239,30 @@ test.describe('Popover Focus Scope', () => {
     // Wait for popover to close (Playwright auto-retries until timeout)
     await expect(popoverContent).not.toBeVisible({ timeout: 5000 })
   })
+  test('keyboard focus can reopen after blur, while Escape stays closed', async ({
+    page,
+  }) => {
+    const trigger = page.getByTestId('focus-return-trigger')
+    const content = page.getByTestId('focus-return-content')
+    const after = page.getByTestId('focus-return-after')
+    await page.getByTestId('focus-return-before').focus()
+    await page.keyboard.press('Tab')
+    await expect(trigger).toBeFocused()
+    await expect(content).toBeVisible()
+
+    await page.keyboard.press('Tab')
+    await expect(after).toBeFocused()
+    await expect(content).not.toBeVisible()
+    await page.keyboard.press('Shift+Tab')
+    await expect(trigger).toBeFocused()
+    await expect(content).toBeVisible()
+
+    await page.keyboard.press('Escape')
+    await expect(content).not.toBeVisible()
+    await expect(trigger).toBeFocused()
+    await page.keyboard.press('Tab')
+    await expect(after).toBeFocused()
+    await page.keyboard.press('Shift+Tab')
+    await expect(content).toBeVisible()
+  })
 })

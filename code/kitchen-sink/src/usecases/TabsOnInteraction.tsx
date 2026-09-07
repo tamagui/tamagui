@@ -23,6 +23,7 @@ export function TabsOnInteraction() {
     >
       <Tabs
         defaultValue="tab1"
+        size="4"
         orientation="horizontal"
         flexDirection="column"
         width={350}
@@ -38,7 +39,8 @@ export function TabsOnInteraction() {
               setLayout(tabLayout)
             }}
           >
-            <SizableText>Tab 1</SizableText>
+            {'Tab '}
+            {1}
           </Tabs.Tab>
           <Tabs.Tab
             flex={1}

@@ -1,3 +1,4 @@
+import type { OpenChangeReason } from '@tamagui/floating'
 import { createStyledHOC, createRefComponent, getConfig, styled } from '@tamagui/core'
 import '@tamagui/polyfill-dev'
 
@@ -168,6 +169,7 @@ const TooltipComponent = createRefComponent(function Tooltip(
     ...restProps
   } = props
   const triggerRef = React.useRef<HTMLButtonElement>(null)
+  const closeReasonRef = React.useRef<OpenChangeReason | undefined>(undefined)
   const [hasCustomAnchor, setHasCustomAnchor] = React.useState(false)
   const { delay: delayGroup, setCurrentId } = useDelayGroupContext()
   // Use delayProp if explicitly provided, otherwise fall back to group delay or default 400
@@ -209,6 +211,7 @@ const TooltipComponent = createRefComponent(function Tooltip(
   const floatingContext = useFloatingContext({
     open,
     setOpen: onOpenChange,
+    closeReasonRef,
     disable: false,
     disableFocus: false,
     hoverable: true,
@@ -241,6 +244,7 @@ const TooltipComponent = createRefComponent(function Tooltip(
           triggerRef={triggerRef}
           open={open}
           onOpenChange={setOpen}
+          closeReasonRef={closeReasonRef}
           onOpenToggle={voidFn}
           hasCustomAnchor={hasCustomAnchor}
           onCustomAnchorAdd={onCustomAnchorAdd}

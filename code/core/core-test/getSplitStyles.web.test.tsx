@@ -8,6 +8,8 @@ import {
   StyleObjectValue,
   Text,
   createTamagui,
+  createVariable,
+  getConfig,
   styled,
 } from '../web/src'
 import { getSplitStyles } from '../web/src'
@@ -19,6 +21,40 @@ beforeAll(() => {
 })
 
 describe('getSplitStyles', () => {
+  test.each(['background', 'variable'] as const)(
+    'inline %s keeps CSS theme variables unless literal values are requested',
+    (input) => {
+      const theme = getConfig().themes.light!
+      const background = theme.background!
+      for (const resolveValues of ['auto', 'value'] as const) {
+        const result = getSplitStyles(
+          { backgroundColor: input === 'variable' ? background : '$background' },
+          View.staticConfig,
+          theme,
+          'light',
+          defaultComponentState,
+          { noClass: true, resolveValues }
+        )!
+        expect(result.style?.backgroundColor).toBe(
+          resolveValues === 'auto' ? background.variable : background.val
+        )
+      }
+    }
+  )
+
+  test('inline rotation preserves CSS variables', () => {
+    const angle = createVariable({ key: 'angle', name: 'angle', val: '45deg' })
+    const result = getSplitStyles(
+      { rotate: angle },
+      View.staticConfig,
+      {},
+      'light',
+      defaultComponentState,
+      { noClass: true, resolveValues: 'auto' }
+    )!
+    expect(result.style?.transform).toBe(`rotate(${angle.variable})`)
+  })
+
   test('Text does not register inlineWhenUnflattened', () => {
     expect((Text as any).staticConfig.inlineWhenUnflattened).toBeUndefined()
   })

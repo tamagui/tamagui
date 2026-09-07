@@ -1932,6 +1932,8 @@ export function createComponent<
             onMouseDown,
             onMouseEnter,
             onMouseLeave,
+            onFocus,
+            onBlur,
           },
           webStyleEvents
         )

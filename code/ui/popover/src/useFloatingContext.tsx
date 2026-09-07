@@ -1,5 +1,5 @@
 import React from 'react'
-import type { Delay, UseFloatingOptions } from '@tamagui/floating'
+import type { Delay, OpenChangeReason, UseFloatingOptions } from '@tamagui/floating'
 import {
   createFloatingEvents,
   safePolygon,
@@ -45,6 +45,7 @@ export type UseFloatingContextOptions = {
   delay?: Delay
   // explicit restMs override
   restMs?: number
+  closeReasonRef?: { current?: OpenChangeReason }
 }
 
 export const useFloatingContext = ({
@@ -58,6 +59,7 @@ export const useFloatingContext = ({
   groupId,
   delay: delayProp,
   restMs: restMsProp,
+  closeReasonRef,
 }: UseFloatingContextOptions) => {
   'use no memo'
 
@@ -84,8 +86,13 @@ export const useFloatingContext = ({
   const triggerElements = React.useMemo(() => new PopupTriggerMap(), [])
 
   React.useEffect(() => {
-    events.emit('openchange', { open })
-  }, [open, events])
+    // prevent focus restoration from reopening a deliberately dismissed popup.
+    const reason = closeReasonRef?.current
+    if (closeReasonRef) {
+      closeReasonRef.current = undefined
+    }
+    events.emit('openchange', { open, reason: open ? undefined : reason })
+  }, [open, events, closeReasonRef])
 
   return React.useCallback(
     (props?: UseFloatingOptions) => {
@@ -103,7 +110,7 @@ export const useFloatingContext = ({
         }
       }, [])
 
-      const onOpenChange = (val: boolean, event?: Event) => {
+      const onOpenChange = (val: boolean, event?: Event, reason?: OpenChangeReason) => {
         // block useHover's mouseenter opens — we handle open timing via onHoverReference
         if (val && event?.type === 'mouseenter') {
           return
@@ -123,6 +130,7 @@ export const useFloatingContext = ({
           event?.type === 'mouseleave'
             ? 'hover'
             : 'press'
+        if (closeReasonRef) closeReasonRef.current = reason
         setOpen(val, type)
       }
 
@@ -341,6 +349,6 @@ export const useFloatingContext = ({
           : undefined,
       }
     },
-    [setOpen]
+    [setOpen, closeReasonRef]
   )
 }

@@ -1,6 +1,6 @@
 import '@tamagui/polyfill-dev'
 
-import type { UseHoverProps } from '@tamagui/floating'
+import type { OpenChangeReason, UseHoverProps } from '@tamagui/floating'
 import {
   Adapt,
   AdaptParent,
@@ -151,6 +151,8 @@ type PopoverContextValue = {
   anchorTo?: Rect
   // scoped branches Set for DismissableBranch/Dismissable to share
   branches: Set<HTMLElement>
+  // carry dismissal intent through focus restoration.
+  closeReasonRef?: React.RefObject<OpenChangeReason | undefined>
 }
 
 type PopoverTriggerStateSetter = React.Dispatch<React.SetStateAction<boolean>>
@@ -260,6 +262,7 @@ export type PopoverContextProviderProps = {
   keepChildrenMounted?: boolean | 'lazy'
   disableDismissable?: boolean
   hoverable?: boolean | object
+  closeReasonRef?: React.RefObject<OpenChangeReason | undefined>
 }
 
 /**
@@ -285,6 +288,7 @@ export const PopoverContextProvider = React.memo(
     keepChildrenMounted,
     disableDismissable,
     hoverable,
+    closeReasonRef,
   }: PopoverContextProviderProps) => {
     const [branches] = React.useState(() => new Set<HTMLElement>())
     const { setActiveTrigger, registerTrigger, unregisterTrigger } =
@@ -310,6 +314,7 @@ export const PopoverContextProvider = React.memo(
         keepChildrenMounted={keepChildrenMounted}
         disableDismissable={disableDismissable}
         hoverable={hoverable}
+        closeReasonRef={closeReasonRef}
       >
         <PopoverTriggerContext.Provider
           scope={scope}
@@ -812,9 +817,16 @@ const PopoverContentImpl = createRefComponent<
     <ResetPresence disable={context.breakpointActive}>{children}</ResetPresence>
   )
 
-  const handleDismiss = React.useCallback(() => {
-    context.onOpenChange(false, 'press')
-  }, [context])
+  const handleDismiss = React.useCallback<NonNullable<DismissableProps['onDismiss']>>(
+    (details) => {
+      if (context.closeReasonRef) {
+        context.closeReasonRef.current =
+          details.reason === 'escape-key' ? 'escape-key' : 'dismiss'
+      }
+      context.onOpenChange(false, 'press')
+    },
+    [context]
+  )
 
   // i want to avoid reparenting but react-remove-scroll makes it hard
   // TODO its removed now so we can probable do it now
@@ -989,6 +1001,7 @@ export const Popover = withStaticProperties(
     const adaptScope = `PopoverAdapt${scope}`
     const { open: openProp, defaultOpen, onOpenChange } = props
     const viaRef = React.useRef<PopoverVia>(undefined)
+    const closeReasonRef = React.useRef<OpenChangeReason | undefined>(undefined)
 
     // open state lives here (above AdaptParent) so the Adapt handoff can drive
     // the adapted Sheet's open/close and unmount timing directly, mirroring Dialog
@@ -1029,6 +1042,7 @@ export const Popover = withStaticProperties(
           open={open}
           setOpen={setOpen}
           handleOpenChange={handleOpenChange}
+          closeReasonRef={closeReasonRef}
           {...props}
         />
       </AdaptParent>
@@ -1054,6 +1068,7 @@ const PopoverInner = createRefComponent<
     open: boolean
     setOpen: React.Dispatch<React.SetStateAction<boolean>>
     handleOpenChange: (open: boolean, via?: PopoverVia) => void
+    closeReasonRef: React.RefObject<OpenChangeReason | undefined>
   }
 >(function PopoverInner(props, forwardedRef) {
   const {
@@ -1072,6 +1087,7 @@ const PopoverInner = createRefComponent<
     open,
     setOpen,
     handleOpenChange,
+    closeReasonRef,
     ...restProps
   } = props
 
@@ -1090,6 +1106,7 @@ const PopoverInner = createRefComponent<
     open,
     // floating passes a string via ('hover'), widen at this boundary
     setOpen: handleOpenChange as (val: boolean, type?: string) => void,
+    closeReasonRef,
     disable: isAdapted,
     hoverable,
     disableFocus: disableFocus,
@@ -1115,6 +1132,7 @@ const PopoverInner = createRefComponent<
     if (open && isAdapted) {
       return
     }
+    closeReasonRef.current = open ? 'reference-press' : undefined
     setOpen(!open)
   })
 
@@ -1140,6 +1158,7 @@ const PopoverInner = createRefComponent<
         keepChildrenMounted={keepChildrenMounted}
         disableDismissable={disableDismissable}
         hoverable={hoverable}
+        closeReasonRef={closeReasonRef}
       >
         {children}
       </PopoverContextProvider>
