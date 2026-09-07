@@ -1,42 +1,23 @@
 # V3 beta site readiness
 
 Surveyed 2026-09-07 against `af69016eaac955ee6068f5e5fd1c339f13350d92`.
-The site fixes in this change are ready for review; the branch still needs its Sheet
-CI failures resolved before a release recommendation.
+The assembled candidate fixes the observed site, SSR, keyboard, and Sheet failures.
+The user authorized the beta release, upgrading Team Machine to that exact version,
+and publishing its OTA. Merge after the candidate passes CI. The active release
+workflow publishes automatically when Checks succeeds for a push to `v3-beta`.
 
-## Remaining release work
+## Release boundary
 
-1. Fix the current Sheet failures and obtain green Checks on the assembled candidate.
-   [Checks 34007826277](https://github.com/tamagui/tamagui/actions/runs/34007826277)
-   failed on the surveyed SHA. The readiness worker read failures in:
-   - `code/sandbox/tests/sheet-late-open.test.ts`
-   - `code/sandbox/tests/sheet-unmount-when-hidden.test.ts`
-   - `code/kitchen-sink/tests/SheetWebKeyboard.test.tsx`
-   - `code/kitchen-sink/tests/SheetWebKeyboardAutoFocus.test.tsx`
-   - `code/kitchen-sink/tests/SheetDragResist.animated.test.tsx`
-
-   These are CI observations, not a diagnosis that the tests or Sheet implementation
-   is at fault. Reproduce them before choosing a fix. Do not relax the assertions.
-   [Detox](https://github.com/tamagui/tamagui/actions/runs/34007826463),
-   [Maestro](https://github.com/tamagui/tamagui/actions/runs/34007826416),
-   [Registry](https://github.com/tamagui/tamagui/actions/runs/34007826275), and
-   [LSP Binaries](https://github.com/tamagui/tamagui/actions/runs/34007828715)
-   passed on the same SHA.
-
-2. Complete the separate LSP release if it is part of the beta promise.
-   `npm view @tamagui/lsp version --json` returned E404 at survey time;
-   `@tamagui/lsp-darwin-arm64` returned `0.0.0-bootstrap.0`. This only verifies
-   that one platform leaf, not the other seven. `.github/workflows/lsp-build.yml`
-   owns the release order: all eight platform packages, then the umbrella.
-   It requires an explicit dispatch with `publish: yes`, and user release approval.
-
-3. Cut the beta after the assembled candidate passes Checks. The user authorized
-   the beta release, upgrading Team Machine to it, and publishing the resulting OTA.
-   The active `.github/workflows/release.yml` publishes automatically when Checks
-   succeeds for a push to `v3-beta`. Validate fixes on a review branch first.
+The LSP has a separate release workflow if it is part of a later release promise.
+At survey time `@tamagui/lsp` returned E404 and `@tamagui/lsp-darwin-arm64` returned
+`0.0.0-bootstrap.0`; the other seven leaves were not checked. Its workflow publishes
+all eight platform packages before the umbrella. This beta does not include that
+separate release.
 
 ## Fixes in this change
 
+- Keep the web Sheet drag surface at `flexBasis="auto"` so fit-height content is
+  measured instead of collapsing to zero and remaining offscreen.
 - Point SVG package metadata at the built ESM/CJS files and resolve sibling Bento
   imports through the site's declared dependency roots.
 - Give all docs syntax modes the same shell and picker. Use URLs as syntax authority,
@@ -63,10 +44,6 @@ state during provider rendering. That suggests a possible concurrent SSR request
 but no concurrent-request probe was run and this site does not pass `forceScheme`.
 Test it upstream in One before adopting that API for request-specific themes.
 
-Prefer the concrete CI and package-release work above to another broad refactor before
-beta. The docs navigation now has one source of syntax authority, and the engine fixes
-address the observed SSR and keyboard failures directly.
-
 ## Local validation
 
 - Root `bun run lint`, `bun run check`, and `bun run typecheck` pass.
@@ -84,6 +61,7 @@ address the observed SSR and keyboard failures directly.
   28,821-byte ceiling. The corrected implementation also removes a redundant resolver
   cache check and avoids splitting a theme name repeatedly for wrapper classes.
 
-The worker's broad default kitchen-sink run still had 14 Sheet failures, one SelectSkin
-retry, 5 skips, and 689 passes. It used the earlier popup fix; the final focused suites
-above validate the corrected dismissal behavior. The Sheet failures remain release work.
+- Sheet fix: the two sandbox regressions passed after failing on the baseline;
+  14 WebKit Sheet checks, 94 default/CSS checks, and 117 Reanimated/Motion checks
+  passed with retries disabled. The suites retained their existing skips.
+- Registry generation and strict drift validation pass for all 44 blank-app copies.
