@@ -7,10 +7,8 @@ import {
   CardFooter,
   CardFrame as UiCardFrame,
   CardHeader,
-  type GetProps,
-  styled,
-  withStaticProperties,
-} from '@tamagui/ui'
+} from '@tamagui/card'
+import { type GetProps, styled, withStaticProperties } from '@tamagui/core'
 
 export const CardFrame = styled(UiCardFrame, {
   displayName: 'Card',

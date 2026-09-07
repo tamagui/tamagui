@@ -22,13 +22,12 @@ import {
 } from '@tamagui/toast'
 import {
   createRefComponent,
-  SizableText,
   styled,
   type TamaguiElement,
   withStaticProperties,
-  XStack,
-  YStack,
-} from '@tamagui/ui'
+} from '@tamagui/core'
+import { SizableText } from '@tamagui/text'
+import { XStack, YStack } from '@tamagui/stacks'
 
 /* -------------------------------------------------------------------------------------------------
  * Styled parts — the default skin over the unstyled @tamagui/toast primitives.

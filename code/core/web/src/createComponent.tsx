@@ -91,7 +91,6 @@ const avoidReRenderKeys = new Set([
   'focus',
   'focusWithin',
   'media',
-  'group',
 ])
 
 const groupPseudoKeys = [

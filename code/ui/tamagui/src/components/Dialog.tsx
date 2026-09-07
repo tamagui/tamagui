@@ -10,11 +10,11 @@
 // static background/border/padding/radius.
 import {
   createRefComponent,
-  Dialog as UiDialog,
   styled,
   type TamaguiElement,
   withStaticProperties,
-} from '@tamagui/ui'
+} from '@tamagui/core'
+import { Dialog as UiDialog } from '@tamagui/dialog'
 import type * as React from 'react'
 
 export const dialogOverlayStyles = {

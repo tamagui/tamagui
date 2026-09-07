@@ -5,12 +5,10 @@ import {
   createRefComponent,
   type GetProps,
   type GetRef,
-  Sheet as SheetBehavior,
-  type SheetProps,
   styled,
-  useSheetContext,
   withStaticProperties,
-} from '@tamagui/ui'
+} from '@tamagui/core'
+import { Sheet as SheetBehavior, type SheetProps, useSheetContext } from '@tamagui/sheet'
 
 const SheetHandleFrame = styled(SheetBehavior.Handle, {
   displayName: 'SheetHandle',

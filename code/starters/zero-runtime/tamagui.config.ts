@@ -1,6 +1,6 @@
 import { animationsCSS } from '@tamagui/config/animations-css'
 import { createV6Config } from '@tamagui/config/v6'
-import { createTamagui } from 'tamagui'
+import { createTamagui } from '@tamagui/core'
 
 /**
  * A narrowed config, which is the whole CSS-size lever the mode gives an app.

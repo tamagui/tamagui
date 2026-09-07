@@ -12,16 +12,18 @@ import {
   type GetProps,
   getVariableValue,
   resolveSize,
-  Select as SelectBehavior,
-  SelectNativeComponentContext,
-  type SelectProps as SelectBehaviorProps,
-  type SelectScopedProps,
-  SizableText,
   SizeContext,
   type SizeTokens,
   styled,
   withStaticProperties,
-} from '@tamagui/ui'
+} from '@tamagui/core'
+import {
+  Select as SelectBehavior,
+  SelectNativeComponentContext,
+  type SelectProps as SelectBehaviorProps,
+  type SelectScopedProps,
+} from '@tamagui/select'
+import { SizableText } from '@tamagui/text'
 
 const IconGlyph = styled(SizableText, {
   displayName: 'SelectIconGlyph',

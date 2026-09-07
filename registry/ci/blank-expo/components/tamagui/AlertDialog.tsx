@@ -1,10 +1,10 @@
+import { AlertDialog as UiAlertDialog } from '@tamagui/alert-dialog'
 import {
-  AlertDialog as UiAlertDialog,
   createRefComponent,
   styled,
   type TamaguiElement,
   withStaticProperties,
-} from '@tamagui/ui'
+} from '@tamagui/core'
 import type * as React from 'react'
 import { dialogContentStyles, dialogOverlayStyles } from './Dialog'
 

@@ -8,9 +8,9 @@ import {
   type GetProps,
   styled,
   type TamaguiElement,
-  ToggleGroup as UiToggleGroup,
   withStaticProperties,
-} from '@tamagui/ui'
+} from '@tamagui/core'
+import { ToggleGroup as UiToggleGroup } from '@tamagui/toggle-group'
 import type * as React from 'react'
 
 const activeAppearance = {

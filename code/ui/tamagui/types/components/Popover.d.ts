@@ -1,18 +1,18 @@
-import { Popover as UiPopover } from '@tamagui/ui';
+import { Popover as UiPopover } from '@tamagui/popover';
 import * as React from 'react';
-export declare const PopoverContent: React.FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & import("@tamagui/ui").PopoverContentTypeProps, keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-    ref?: React.Ref<import("@tamagui/ui").TamaguiElement> | undefined;
-}> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & import("@tamagui/ui").PopoverContentTypeProps, import("@tamagui/web").StackStyleBase, {}, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
-    __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & import("@tamagui/ui").PopoverContentTypeProps, import("@tamagui/web").StackStyleBase, {}, import("@tamagui/web").StaticConfigPublic];
+export declare const PopoverContent: React.FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & import("@tamagui/popover").PopoverContentTypeProps, keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+    ref?: React.Ref<import("@tamagui/core").TamaguiElement> | undefined;
+}> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & import("@tamagui/popover").PopoverContentTypeProps, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
+    __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & import("@tamagui/popover").PopoverContentTypeProps, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic];
 };
-export declare const PopoverArrow: React.FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & import("@tamagui/ui").PopperArrowExtraProps, keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-    ref?: React.Ref<import("@tamagui/ui").TamaguiElement> | undefined;
-}> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & import("@tamagui/ui").PopperArrowExtraProps, import("@tamagui/web").StackStyleBase, {}, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
-    __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & import("@tamagui/ui").PopperArrowExtraProps, import("@tamagui/web").StackStyleBase, {}, import("@tamagui/web").StaticConfigPublic];
+export declare const PopoverArrow: React.FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & import("@tamagui/popper").PopperArrowExtraProps, keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+    ref?: React.Ref<import("@tamagui/core").TamaguiElement> | undefined;
+}> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & import("@tamagui/popper").PopperArrowExtraProps, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
+    __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & import("@tamagui/popper").PopperArrowExtraProps, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic];
 };
 export type Popover = UiPopover;
-export declare const Popover: ((props: Omit<import("@tamagui/ui").PopperProps, "scope"> & {
-    scope?: import("@tamagui/ui").PopoverScopes;
+export declare const Popover: ((props: Omit<import("@tamagui/popper").PopperProps, "scope"> & {
+    scope?: import("@tamagui/popover").PopoverScopes;
 } & {
     open?: boolean;
     defaultOpen?: boolean;
@@ -22,33 +22,33 @@ export declare const Popover: ((props: Omit<import("@tamagui/ui").PopperProps, "
     disableFocus?: boolean;
     disableDismissable?: boolean;
     zIndex?: number;
-} & import("@tamagui/ui").RefProp<UiPopover>) => React.ReactNode) & {
+} & import("@tamagui/core").RefProp<UiPopover>) => React.ReactNode) & {
     displayName?: string;
     propTypes?: any;
 } & {
-    Anchor: React.NamedExoticComponent<Omit<import("@tamagui/ui").YStackProps, "scope"> & {
-        scope?: import("@tamagui/ui").PopoverScopes;
-    } & import("@tamagui/ui").RefProp<import("@tamagui/ui").TamaguiElement>>;
-    Arrow: React.FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & import("@tamagui/ui").PopperArrowExtraProps, keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-        ref?: React.Ref<import("@tamagui/ui").TamaguiElement> | undefined;
-    }> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & import("@tamagui/ui").PopperArrowExtraProps, import("@tamagui/web").StackStyleBase, {}, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
-        __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & import("@tamagui/ui").PopperArrowExtraProps, import("@tamagui/web").StackStyleBase, {}, import("@tamagui/web").StaticConfigPublic];
+    Anchor: React.NamedExoticComponent<Omit<import("@tamagui/stacks").YStackProps, "scope"> & {
+        scope?: import("@tamagui/popover").PopoverScopes;
+    } & import("@tamagui/core").RefProp<import("@tamagui/core").TamaguiElement>>;
+    Arrow: React.FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & import("@tamagui/popper").PopperArrowExtraProps, keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+        ref?: React.Ref<import("@tamagui/core").TamaguiElement> | undefined;
+    }> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & import("@tamagui/popper").PopperArrowExtraProps, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
+        __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & import("@tamagui/popper").PopperArrowExtraProps, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic];
     };
-    Trigger: React.NamedExoticComponent<Omit<import("@tamagui/ui").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
+    Trigger: React.NamedExoticComponent<Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
         disablePressTrigger?: boolean;
     }, "scope"> & {
-        scope?: import("@tamagui/ui").PopoverScopes;
-    } & import("@tamagui/ui").RefProp<import("@tamagui/ui").TamaguiElement>>;
-    Content: React.FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & import("@tamagui/ui").PopoverContentTypeProps, keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-        ref?: React.Ref<import("@tamagui/ui").TamaguiElement> | undefined;
-    }> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & import("@tamagui/ui").PopoverContentTypeProps, import("@tamagui/web").StackStyleBase, {}, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
-        __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & import("@tamagui/ui").PopoverContentTypeProps, import("@tamagui/web").StackStyleBase, {}, import("@tamagui/web").StaticConfigPublic];
+        scope?: import("@tamagui/popover").PopoverScopes;
+    } & import("@tamagui/core").RefProp<import("@tamagui/core").TamaguiElement>>;
+    Content: React.FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & import("@tamagui/popover").PopoverContentTypeProps, keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+        ref?: React.Ref<import("@tamagui/core").TamaguiElement> | undefined;
+    }> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & import("@tamagui/popover").PopoverContentTypeProps, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
+        __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & import("@tamagui/popover").PopoverContentTypeProps, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic];
     };
-    Close: import("@tamagui/ui").RefComponent<import("@tamagui/ui").TamaguiElement, import("@tamagui/ui").PopoverCloseProps>;
-    Adapt: ((props: import("@tamagui/ui").AdaptProps) => React.JSX.Element) & {
-        Contents: typeof import("@tamagui/ui").AdaptContents;
+    Close: import("@tamagui/core").RefComponent<import("@tamagui/core").TamaguiElement, import("@tamagui/popover").PopoverCloseProps>;
+    Adapt: ((props: import("@tamagui/adapt").AdaptProps) => React.JSX.Element) & {
+        Contents: typeof import("@tamagui/adapt").AdaptContents;
     };
-    ScrollView: import("@tamagui/ui").RefComponent<import("@tamagui/ui").ScrollViewRef, import("@tamagui/ui").PopoverScrollViewProps>;
+    ScrollView: import("@tamagui/core").RefComponent<import("@tamagui/scroll-view").ScrollViewRef, import("@tamagui/popover").PopoverScrollViewProps>;
     FocusScope: (props: import("@tamagui/focus-scope/types/types").ScopedProps<import("@tamagui/focus-scope").FocusScopeControllerProps>) => React.JSX.Element;
 };
 //# sourceMappingURL=Popover.d.ts.map

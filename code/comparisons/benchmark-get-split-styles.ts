@@ -1,7 +1,9 @@
 #!/usr/bin/env bun
 /**
- * replays statically harvested real app props through the core-test
- * getSplitStyles harness.
+ * replays statically harvested real app props through the runtime getSplitStyles call.
+ * node has no document, so CSS rules are collected on every pass. these are
+ * server-side timings, not browser rerender timings. use Node with tsx: Bun
+ * can resolve the v2 control through the workspace tsconfig aliases.
  *
  * usage:
  *   npm ci --workspaces=false --prefix code/comparisons/v2-control
@@ -358,6 +360,7 @@ const report = {
 console.log(
   `getSplitStyles corpus benchmark: ${rounds} rounds, ${warmups} warmups, Node ${process.version}`
 )
+console.log('Environment: Node without document; measures server-side CSS collection.')
 console.log(
   'scenario                 elements   props/op    V3 median    V2 median   V3/V2'
 )

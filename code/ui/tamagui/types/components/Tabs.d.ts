@@ -1,254 +1,254 @@
-export declare const TabsFrame: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
-    size?: import("@tamagui/ui").TokenSize | undefined;
-}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
+export declare const TabsFrame: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
+    size?: import("@tamagui/core").TokenSize | undefined;
+}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
     __scopeTabs?: string;
 } & {
     value?: string;
     defaultValue?: string | undefined;
     onValueChange?: ((value: string) => void) | undefined;
-    size?: import("@tamagui/ui").TokenSize;
+    size?: import("@tamagui/core").TokenSize;
     orientation?: import("@tamagui/roving-focus").RovingFocusGroupProps['orientation'];
     dir?: import("@tamagui/roving-focus").RovingFocusGroupProps['dir'];
     activationMode?: 'automatic' | 'manual';
-}, "size" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
-    size?: import("@tamagui/ui").TokenSize | undefined;
-}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-    ref?: import("react").Ref<import("@tamagui/ui").TamaguiElement> | undefined;
-}> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
-    size?: import("@tamagui/ui").TokenSize | undefined;
-}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
+}, "size" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
+    size?: import("@tamagui/core").TokenSize | undefined;
+}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+    ref?: import("react").Ref<import("@tamagui/core").TamaguiElement> | undefined;
+}> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
+    size?: import("@tamagui/core").TokenSize | undefined;
+}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
     __scopeTabs?: string;
 } & {
     value?: string;
     defaultValue?: string | undefined;
     onValueChange?: ((value: string) => void) | undefined;
-    size?: import("@tamagui/ui").TokenSize;
+    size?: import("@tamagui/core").TokenSize;
     orientation?: import("@tamagui/roving-focus").RovingFocusGroupProps['orientation'];
     dir?: import("@tamagui/roving-focus").RovingFocusGroupProps['dir'];
     activationMode?: 'automatic' | 'manual';
-}, import("@tamagui/web").StackStyleBase, {
-    size?: import("@tamagui/ui").TokenSize | undefined;
-}, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
-    __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
-        size?: import("@tamagui/ui").TokenSize | undefined;
-    }> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
+}, import("@tamagui/core").StackStyleBase, {
+    size?: import("@tamagui/core").TokenSize | undefined;
+}, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
+    __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
+        size?: import("@tamagui/core").TokenSize | undefined;
+    }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
         __scopeTabs?: string;
     } & {
         value?: string;
         defaultValue?: string | undefined;
         onValueChange?: ((value: string) => void) | undefined;
-        size?: import("@tamagui/ui").TokenSize;
+        size?: import("@tamagui/core").TokenSize;
         orientation?: import("@tamagui/roving-focus").RovingFocusGroupProps['orientation'];
         dir?: import("@tamagui/roving-focus").RovingFocusGroupProps['dir'];
         activationMode?: 'automatic' | 'manual';
-    }, import("@tamagui/web").StackStyleBase, {
-        size?: import("@tamagui/ui").TokenSize | undefined;
-    }, import("@tamagui/web").StaticConfigPublic];
+    }, import("@tamagui/core").StackStyleBase, {
+        size?: import("@tamagui/core").TokenSize | undefined;
+    }, import("@tamagui/core").StaticConfigPublic];
 };
-export declare const TabsList: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
-    size?: import("@tamagui/ui").TokenSize | undefined;
-}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
+export declare const TabsList: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
+    size?: import("@tamagui/core").TokenSize | undefined;
+}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
     __scopeTabs?: string;
 } & {
     loop?: boolean;
     disabled?: boolean;
-}, "size" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
-    size?: import("@tamagui/ui").TokenSize | undefined;
-}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-    ref?: import("react").Ref<import("@tamagui/ui").TamaguiElement> | undefined;
-}> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
-    size?: import("@tamagui/ui").TokenSize | undefined;
-}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
+}, "size" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
+    size?: import("@tamagui/core").TokenSize | undefined;
+}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+    ref?: import("react").Ref<import("@tamagui/core").TamaguiElement> | undefined;
+}> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
+    size?: import("@tamagui/core").TokenSize | undefined;
+}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
     __scopeTabs?: string;
 } & {
     loop?: boolean;
     disabled?: boolean;
-}, import("@tamagui/web").StackStyleBase, {
-    size?: import("@tamagui/ui").TokenSize | undefined;
-}, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
-    __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
-        size?: import("@tamagui/ui").TokenSize | undefined;
-    }> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
+}, import("@tamagui/core").StackStyleBase, {
+    size?: import("@tamagui/core").TokenSize | undefined;
+}, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
+    __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
+        size?: import("@tamagui/core").TokenSize | undefined;
+    }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
         __scopeTabs?: string;
     } & {
         loop?: boolean;
         disabled?: boolean;
-    }, import("@tamagui/web").StackStyleBase, {
-        size?: import("@tamagui/ui").TokenSize | undefined;
-    }, import("@tamagui/web").StaticConfigPublic];
+    }, import("@tamagui/core").StackStyleBase, {
+        size?: import("@tamagui/core").TokenSize | undefined;
+    }, import("@tamagui/core").StaticConfigPublic];
 };
-export declare const TabsTab: import("@tamagui/ui").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "disabled" | "size" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
+export declare const TabsTab: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "disabled" | "size" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
     disabled?: boolean | undefined;
-    size?: import("@tamagui/ui").TokenSize | undefined;
-}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
+    size?: import("@tamagui/core").TokenSize | undefined;
+}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
     __scopeTabs?: string;
 } & {
     value: string;
-    onInteraction?: (type: import("@tamagui/ui").InteractionType, layout: import("@tamagui/ui").TabLayout | null) => void;
-    activeStyle?: import("@tamagui/web").StylePiece;
+    onInteraction?: (type: import("@tamagui/tabs").InteractionType, layout: import("@tamagui/tabs").TabLayout | null) => void;
+    activeStyle?: import("@tamagui/core").StylePiece;
     activeTheme?: string | null;
-}, import("@tamagui/web").StackStyleBase, {
+}, import("@tamagui/core").StackStyleBase, {
     disabled?: boolean | undefined;
     size?: any;
     unstyled?: boolean | undefined;
-}, import("@tamagui/web").StaticConfigPublic>;
-export declare const TabsContent: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
-    size?: import("@tamagui/ui").TokenSize | undefined;
-}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
+}, import("@tamagui/core").StaticConfigPublic>;
+export declare const TabsContent: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
+    size?: import("@tamagui/core").TokenSize | undefined;
+}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
     __scopeTabs?: string;
 } & {
     value: string;
     forceMount?: boolean;
-}, "size" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
-    size?: import("@tamagui/ui").TokenSize | undefined;
-}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-    ref?: import("react").Ref<import("@tamagui/ui").TamaguiElement> | undefined;
-}> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
-    size?: import("@tamagui/ui").TokenSize | undefined;
-}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
+}, "size" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
+    size?: import("@tamagui/core").TokenSize | undefined;
+}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+    ref?: import("react").Ref<import("@tamagui/core").TamaguiElement> | undefined;
+}> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
+    size?: import("@tamagui/core").TokenSize | undefined;
+}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
     __scopeTabs?: string;
 } & {
     value: string;
     forceMount?: boolean;
-}, import("@tamagui/web").StackStyleBase, {
-    size?: import("@tamagui/ui").TokenSize | undefined;
-}, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
-    __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
-        size?: import("@tamagui/ui").TokenSize | undefined;
-    }> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
+}, import("@tamagui/core").StackStyleBase, {
+    size?: import("@tamagui/core").TokenSize | undefined;
+}, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
+    __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
+        size?: import("@tamagui/core").TokenSize | undefined;
+    }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
         __scopeTabs?: string;
     } & {
         value: string;
         forceMount?: boolean;
-    }, import("@tamagui/web").StackStyleBase, {
-        size?: import("@tamagui/ui").TokenSize | undefined;
-    }, import("@tamagui/web").StaticConfigPublic];
+    }, import("@tamagui/core").StackStyleBase, {
+        size?: import("@tamagui/core").TokenSize | undefined;
+    }, import("@tamagui/core").StaticConfigPublic];
 };
-export declare const Tabs: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
-    size?: import("@tamagui/ui").TokenSize | undefined;
-}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
+export declare const Tabs: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
+    size?: import("@tamagui/core").TokenSize | undefined;
+}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
     __scopeTabs?: string;
 } & {
     value?: string;
     defaultValue?: string | undefined;
     onValueChange?: ((value: string) => void) | undefined;
-    size?: import("@tamagui/ui").TokenSize;
+    size?: import("@tamagui/core").TokenSize;
     orientation?: import("@tamagui/roving-focus").RovingFocusGroupProps['orientation'];
     dir?: import("@tamagui/roving-focus").RovingFocusGroupProps['dir'];
     activationMode?: 'automatic' | 'manual';
-}, "size" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
-    size?: import("@tamagui/ui").TokenSize | undefined;
-}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-    ref?: import("react").Ref<import("@tamagui/ui").TamaguiElement> | undefined;
-}> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
-    size?: import("@tamagui/ui").TokenSize | undefined;
-}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
+}, "size" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
+    size?: import("@tamagui/core").TokenSize | undefined;
+}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+    ref?: import("react").Ref<import("@tamagui/core").TamaguiElement> | undefined;
+}> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
+    size?: import("@tamagui/core").TokenSize | undefined;
+}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
     __scopeTabs?: string;
 } & {
     value?: string;
     defaultValue?: string | undefined;
     onValueChange?: ((value: string) => void) | undefined;
-    size?: import("@tamagui/ui").TokenSize;
+    size?: import("@tamagui/core").TokenSize;
     orientation?: import("@tamagui/roving-focus").RovingFocusGroupProps['orientation'];
     dir?: import("@tamagui/roving-focus").RovingFocusGroupProps['dir'];
     activationMode?: 'automatic' | 'manual';
-}, import("@tamagui/web").StackStyleBase, {
-    size?: import("@tamagui/ui").TokenSize | undefined;
-}, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
-    __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
-        size?: import("@tamagui/ui").TokenSize | undefined;
-    }> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
+}, import("@tamagui/core").StackStyleBase, {
+    size?: import("@tamagui/core").TokenSize | undefined;
+}, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
+    __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
+        size?: import("@tamagui/core").TokenSize | undefined;
+    }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
         __scopeTabs?: string;
     } & {
         value?: string;
         defaultValue?: string | undefined;
         onValueChange?: ((value: string) => void) | undefined;
-        size?: import("@tamagui/ui").TokenSize;
+        size?: import("@tamagui/core").TokenSize;
         orientation?: import("@tamagui/roving-focus").RovingFocusGroupProps['orientation'];
         dir?: import("@tamagui/roving-focus").RovingFocusGroupProps['dir'];
         activationMode?: 'automatic' | 'manual';
-    }, import("@tamagui/web").StackStyleBase, {
-        size?: import("@tamagui/ui").TokenSize | undefined;
-    }, import("@tamagui/web").StaticConfigPublic];
+    }, import("@tamagui/core").StackStyleBase, {
+        size?: import("@tamagui/core").TokenSize | undefined;
+    }, import("@tamagui/core").StaticConfigPublic];
 } & {
-    List: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
-        size?: import("@tamagui/ui").TokenSize | undefined;
-    }> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
+    List: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
+        size?: import("@tamagui/core").TokenSize | undefined;
+    }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
         __scopeTabs?: string;
     } & {
         loop?: boolean;
         disabled?: boolean;
-    }, "size" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
-        size?: import("@tamagui/ui").TokenSize | undefined;
-    }> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-        ref?: import("react").Ref<import("@tamagui/ui").TamaguiElement> | undefined;
-    }> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
-        size?: import("@tamagui/ui").TokenSize | undefined;
-    }> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
+    }, "size" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
+        size?: import("@tamagui/core").TokenSize | undefined;
+    }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+        ref?: import("react").Ref<import("@tamagui/core").TamaguiElement> | undefined;
+    }> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
+        size?: import("@tamagui/core").TokenSize | undefined;
+    }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
         __scopeTabs?: string;
     } & {
         loop?: boolean;
         disabled?: boolean;
-    }, import("@tamagui/web").StackStyleBase, {
-        size?: import("@tamagui/ui").TokenSize | undefined;
-    }, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
-        __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
-            size?: import("@tamagui/ui").TokenSize | undefined;
-        }> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
+    }, import("@tamagui/core").StackStyleBase, {
+        size?: import("@tamagui/core").TokenSize | undefined;
+    }, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
+        __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
+            size?: import("@tamagui/core").TokenSize | undefined;
+        }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
             __scopeTabs?: string;
         } & {
             loop?: boolean;
             disabled?: boolean;
-        }, import("@tamagui/web").StackStyleBase, {
-            size?: import("@tamagui/ui").TokenSize | undefined;
-        }, import("@tamagui/web").StaticConfigPublic];
+        }, import("@tamagui/core").StackStyleBase, {
+            size?: import("@tamagui/core").TokenSize | undefined;
+        }, import("@tamagui/core").StaticConfigPublic];
     };
-    Tab: import("@tamagui/ui").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "disabled" | "size" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
+    Tab: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "disabled" | "size" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
         disabled?: boolean | undefined;
-        size?: import("@tamagui/ui").TokenSize | undefined;
-    }> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
+        size?: import("@tamagui/core").TokenSize | undefined;
+    }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
         __scopeTabs?: string;
     } & {
         value: string;
-        onInteraction?: (type: import("@tamagui/ui").InteractionType, layout: import("@tamagui/ui").TabLayout | null) => void;
-        activeStyle?: import("@tamagui/web").StylePiece;
+        onInteraction?: (type: import("@tamagui/tabs").InteractionType, layout: import("@tamagui/tabs").TabLayout | null) => void;
+        activeStyle?: import("@tamagui/core").StylePiece;
         activeTheme?: string | null;
-    }, import("@tamagui/web").StackStyleBase, {
+    }, import("@tamagui/core").StackStyleBase, {
         disabled?: boolean | undefined;
         size?: any;
         unstyled?: boolean | undefined;
-    }, import("@tamagui/web").StaticConfigPublic>;
-    Content: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
-        size?: import("@tamagui/ui").TokenSize | undefined;
-    }> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
+    }, import("@tamagui/core").StaticConfigPublic>;
+    Content: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
+        size?: import("@tamagui/core").TokenSize | undefined;
+    }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
         __scopeTabs?: string;
     } & {
         value: string;
         forceMount?: boolean;
-    }, "size" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
-        size?: import("@tamagui/ui").TokenSize | undefined;
-    }> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-        ref?: import("react").Ref<import("@tamagui/ui").TamaguiElement> | undefined;
-    }> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
-        size?: import("@tamagui/ui").TokenSize | undefined;
-    }> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
+    }, "size" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
+        size?: import("@tamagui/core").TokenSize | undefined;
+    }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+        ref?: import("react").Ref<import("@tamagui/core").TamaguiElement> | undefined;
+    }> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
+        size?: import("@tamagui/core").TokenSize | undefined;
+    }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
         __scopeTabs?: string;
     } & {
         value: string;
         forceMount?: boolean;
-    }, import("@tamagui/web").StackStyleBase, {
-        size?: import("@tamagui/ui").TokenSize | undefined;
-    }, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
-        __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
-            size?: import("@tamagui/ui").TokenSize | undefined;
-        }> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
+    }, import("@tamagui/core").StackStyleBase, {
+        size?: import("@tamagui/core").TokenSize | undefined;
+    }, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
+        __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
+            size?: import("@tamagui/core").TokenSize | undefined;
+        }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
             __scopeTabs?: string;
         } & {
             value: string;
             forceMount?: boolean;
-        }, import("@tamagui/web").StackStyleBase, {
-            size?: import("@tamagui/ui").TokenSize | undefined;
-        }, import("@tamagui/web").StaticConfigPublic];
+        }, import("@tamagui/core").StackStyleBase, {
+            size?: import("@tamagui/core").TokenSize | undefined;
+        }, import("@tamagui/core").StaticConfigPublic];
     };
 };
 //# sourceMappingURL=Tabs.d.ts.map

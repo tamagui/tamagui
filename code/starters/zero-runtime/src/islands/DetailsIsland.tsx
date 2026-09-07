@@ -1,6 +1,7 @@
 import { Sheet } from '@tamagui/sheet'
 import { useState } from 'react'
-import { Button, styled, Text, View } from 'tamagui'
+import { styled, Text, View } from '@tamagui/core'
+import { Button } from 'tamagui/button'
 
 const RuntimeFrame = styled(View, {})
 
@@ -25,14 +26,14 @@ export default function DetailsIsland() {
         transition="quick"
       >
         <Sheet.Overlay />
-        <Sheet.Container data-testid="island-frame" backgroundColor="$background">
+        <Sheet.Container data-testid="island-frame" backgroundColor="background">
           <RuntimeFrame
             data-testid="island-runtime-inline"
             width={`${runtimeWidth}px hover:${runtimeWidth + 10}px`}
             padding={20}
             gap={8}
           >
-            <Text data-testid="island-text" color="$color">
+            <Text data-testid="island-text" color="color">
               this subtree runs the full Tamagui runtime
             </Text>
             <Button data-testid="island-close" onPress={() => setOpen(false)}>

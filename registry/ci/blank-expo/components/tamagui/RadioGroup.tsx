@@ -1,10 +1,5 @@
-import {
-  type GetProps,
-  RadioGroup as RadioGroupBehavior,
-  resolveSize,
-  styled,
-  withStaticProperties,
-} from '@tamagui/ui'
+import { type GetProps, resolveSize, styled, withStaticProperties } from '@tamagui/core'
+import { RadioGroup as RadioGroupBehavior } from '@tamagui/radio-group'
 
 export const RadioGroupFrame = styled(RadioGroupBehavior, {
   displayName: 'RadioGroup',

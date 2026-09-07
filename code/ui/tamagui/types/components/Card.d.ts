@@ -1,70 +1,70 @@
-import { type GetProps } from '@tamagui/ui';
-export declare const CardFrame: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | "size" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
-    elevation?: number | false | import("@tamagui/web").Size | undefined;
-    size?: import("@tamagui/web").Size | undefined;
-}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-    ref?: import("react").Ref<import("@tamagui/ui").TamaguiElement> | undefined;
-}> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
-    elevation?: number | false | import("@tamagui/web").Size | undefined;
-    size?: import("@tamagui/web").Size | undefined;
-}, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
-    __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
-        elevation?: number | false | import("@tamagui/web").Size | undefined;
-        size?: import("@tamagui/web").Size | undefined;
-    }, import("@tamagui/web").StaticConfigPublic];
+import { type GetProps } from '@tamagui/core';
+export declare const CardFrame: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | "size" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
+    elevation?: number | false | import("@tamagui/core").Size | undefined;
+    size?: import("@tamagui/core").Size | undefined;
+}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+    ref?: import("react").Ref<import("@tamagui/core").TamaguiElement> | undefined;
+}> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+    elevation?: number | false | import("@tamagui/core").Size | undefined;
+    size?: import("@tamagui/core").Size | undefined;
+}, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
+    __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+        elevation?: number | false | import("@tamagui/core").Size | undefined;
+        size?: import("@tamagui/core").Size | undefined;
+    }, import("@tamagui/core").StaticConfigPublic];
 };
-export declare const Card: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | "size" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
-    elevation?: number | false | import("@tamagui/web").Size | undefined;
-    size?: import("@tamagui/web").Size | undefined;
-}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-    ref?: import("react").Ref<import("@tamagui/ui").TamaguiElement> | undefined;
-}> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
-    elevation?: number | false | import("@tamagui/web").Size | undefined;
-    size?: import("@tamagui/web").Size | undefined;
-}, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
-    __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
-        elevation?: number | false | import("@tamagui/web").Size | undefined;
-        size?: import("@tamagui/web").Size | undefined;
-    }, import("@tamagui/web").StaticConfigPublic];
+export declare const Card: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | "size" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
+    elevation?: number | false | import("@tamagui/core").Size | undefined;
+    size?: import("@tamagui/core").Size | undefined;
+}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+    ref?: import("react").Ref<import("@tamagui/core").TamaguiElement> | undefined;
+}> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+    elevation?: number | false | import("@tamagui/core").Size | undefined;
+    size?: import("@tamagui/core").Size | undefined;
+}, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
+    __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+        elevation?: number | false | import("@tamagui/core").Size | undefined;
+        size?: import("@tamagui/core").Size | undefined;
+    }, import("@tamagui/core").StaticConfigPublic];
 } & {
-    Header: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | "size" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
-        elevation?: number | false | import("@tamagui/web").Size | undefined;
-        size?: import("@tamagui/web").Size | undefined;
-    }> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-        ref?: import("react").Ref<import("@tamagui/ui").TamaguiElement> | undefined;
-    }> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
-        elevation?: number | false | import("@tamagui/web").Size | undefined;
-        size?: import("@tamagui/web").Size | undefined;
-    }, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
-        __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
-            elevation?: number | false | import("@tamagui/web").Size | undefined;
-            size?: import("@tamagui/web").Size | undefined;
-        }, import("@tamagui/web").StaticConfigPublic];
+    Header: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | "size" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
+        elevation?: number | false | import("@tamagui/core").Size | undefined;
+        size?: import("@tamagui/core").Size | undefined;
+    }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+        ref?: import("react").Ref<import("@tamagui/core").TamaguiElement> | undefined;
+    }> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+        elevation?: number | false | import("@tamagui/core").Size | undefined;
+        size?: import("@tamagui/core").Size | undefined;
+    }, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
+        __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+            elevation?: number | false | import("@tamagui/core").Size | undefined;
+            size?: import("@tamagui/core").Size | undefined;
+        }, import("@tamagui/core").StaticConfigPublic];
     };
-    Footer: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | "size" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
-        elevation?: number | false | import("@tamagui/web").Size | undefined;
-        size?: import("@tamagui/web").Size | undefined;
-    }> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-        ref?: import("react").Ref<import("@tamagui/ui").TamaguiElement> | undefined;
-    }> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
-        elevation?: number | false | import("@tamagui/web").Size | undefined;
-        size?: import("@tamagui/web").Size | undefined;
-    }, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
-        __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
-            elevation?: number | false | import("@tamagui/web").Size | undefined;
-            size?: import("@tamagui/web").Size | undefined;
-        }, import("@tamagui/web").StaticConfigPublic];
+    Footer: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | "size" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
+        elevation?: number | false | import("@tamagui/core").Size | undefined;
+        size?: import("@tamagui/core").Size | undefined;
+    }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+        ref?: import("react").Ref<import("@tamagui/core").TamaguiElement> | undefined;
+    }> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+        elevation?: number | false | import("@tamagui/core").Size | undefined;
+        size?: import("@tamagui/core").Size | undefined;
+    }, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
+        __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+            elevation?: number | false | import("@tamagui/core").Size | undefined;
+            size?: import("@tamagui/core").Size | undefined;
+        }, import("@tamagui/core").StaticConfigPublic];
     };
-    Background: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
-        elevation?: number | false | import("@tamagui/web").Size | undefined;
-    }> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-        ref?: import("react").Ref<import("@tamagui/ui").TamaguiElement> | undefined;
-    }> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
-        elevation?: number | false | import("@tamagui/web").Size | undefined;
-    }, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
-        __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
-            elevation?: number | false | import("@tamagui/web").Size | undefined;
-        }, import("@tamagui/web").StaticConfigPublic];
+    Background: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
+        elevation?: number | false | import("@tamagui/core").Size | undefined;
+    }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+        ref?: import("react").Ref<import("@tamagui/core").TamaguiElement> | undefined;
+    }> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+        elevation?: number | false | import("@tamagui/core").Size | undefined;
+    }, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
+        __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+            elevation?: number | false | import("@tamagui/core").Size | undefined;
+        }, import("@tamagui/core").StaticConfigPublic];
     };
 };
 export type CardProps = GetProps<typeof CardFrame>;

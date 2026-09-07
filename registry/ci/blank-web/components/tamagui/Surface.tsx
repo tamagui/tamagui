@@ -16,7 +16,8 @@
 // Generics-only: never references the color scale (colorN) directly, so it
 // restyles under any re-bound level. Single definition; the registry item is
 // generated from this file.
-import { type GetProps, styled, Theme, YStack } from '@tamagui/ui'
+import { type GetProps, styled, Theme } from '@tamagui/core'
+import { YStack } from '@tamagui/stacks'
 import { forwardRef } from 'react'
 
 import { elevated, filled, interactive, outlined, rounded } from './facets'

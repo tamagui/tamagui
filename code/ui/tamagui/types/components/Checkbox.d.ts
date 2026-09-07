@@ -1,173 +1,173 @@
-import { type GetProps } from '@tamagui/ui';
-export declare const CheckboxFrame: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "active" | "disabled" | "size" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
+import { type GetProps } from '@tamagui/core';
+export declare const CheckboxFrame: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "active" | "disabled" | "size" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
     active?: boolean | undefined;
     disabled?: boolean | undefined;
-    size?: import("@tamagui/web").Size | undefined;
-}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/checkbox-headless").CheckboxExtraProps & {
-    native?: import("@tamagui/ui").NativeValue<'web'>;
+    size?: import("@tamagui/core").Size | undefined;
+}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/checkbox-headless").CheckboxExtraProps & {
+    native?: import("@tamagui/core").NativeValue<'web'>;
 } & {
-    size?: import("@tamagui/ui").SizeTokens | true;
+    size?: import("@tamagui/core").SizeTokens | true;
 } & {
-    activeStyle?: import("@tamagui/web").StylePiece;
+    activeStyle?: import("@tamagui/core").StylePiece;
     activeTheme?: string | null;
-}, "active" | "disabled" | "size" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
+}, "active" | "disabled" | "size" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
     active?: boolean | undefined;
     disabled?: boolean | undefined;
     size?: any;
-}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-    ref?: import("react").Ref<import("@tamagui/ui").TamaguiElement> | undefined;
-}> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "active" | "disabled" | "size" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
+}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+    ref?: import("react").Ref<import("@tamagui/core").TamaguiElement> | undefined;
+}> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "active" | "disabled" | "size" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
     active?: boolean | undefined;
     disabled?: boolean | undefined;
-    size?: import("@tamagui/web").Size | undefined;
-}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/checkbox-headless").CheckboxExtraProps & {
-    native?: import("@tamagui/ui").NativeValue<'web'>;
+    size?: import("@tamagui/core").Size | undefined;
+}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/checkbox-headless").CheckboxExtraProps & {
+    native?: import("@tamagui/core").NativeValue<'web'>;
 } & {
-    size?: import("@tamagui/ui").SizeTokens | true;
+    size?: import("@tamagui/core").SizeTokens | true;
 } & {
-    activeStyle?: import("@tamagui/web").StylePiece;
+    activeStyle?: import("@tamagui/core").StylePiece;
     activeTheme?: string | null;
-}, import("@tamagui/web").StackStyleBase, {
+}, import("@tamagui/core").StackStyleBase, {
     active?: boolean | undefined;
     disabled?: boolean | undefined;
     size?: any;
-}, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
-    __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "active" | "disabled" | "size" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
+}, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
+    __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "active" | "disabled" | "size" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
         active?: boolean | undefined;
         disabled?: boolean | undefined;
-        size?: import("@tamagui/web").Size | undefined;
-    }> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/checkbox-headless").CheckboxExtraProps & {
-        native?: import("@tamagui/ui").NativeValue<'web'>;
+        size?: import("@tamagui/core").Size | undefined;
+    }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/checkbox-headless").CheckboxExtraProps & {
+        native?: import("@tamagui/core").NativeValue<'web'>;
     } & {
-        size?: import("@tamagui/ui").SizeTokens | true;
+        size?: import("@tamagui/core").SizeTokens | true;
     } & {
-        activeStyle?: import("@tamagui/web").StylePiece;
+        activeStyle?: import("@tamagui/core").StylePiece;
         activeTheme?: string | null;
-    }, import("@tamagui/web").StackStyleBase, {
+    }, import("@tamagui/core").StackStyleBase, {
         active?: boolean | undefined;
         disabled?: boolean | undefined;
         size?: any;
-    }, import("@tamagui/web").StaticConfigPublic];
+    }, import("@tamagui/core").StaticConfigPublic];
 };
-export declare const CheckboxIndicator: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "active" | "size" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
+export declare const CheckboxIndicator: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "active" | "size" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
     active?: boolean | undefined;
-    size?: import("@tamagui/web").Size | undefined;
-}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
+    size?: import("@tamagui/core").Size | undefined;
+}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
     forceMount?: boolean;
 } & {
-    activeStyle?: import("@tamagui/web").StylePiece;
-}, "active" | "size" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
+    activeStyle?: import("@tamagui/core").StylePiece;
+}, "active" | "size" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
     active?: boolean | undefined;
-    size?: import("@tamagui/web").Size | undefined;
-}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-    ref?: import("react").Ref<import("@tamagui/ui").TamaguiElement> | undefined;
-}> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "active" | "size" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
+    size?: import("@tamagui/core").Size | undefined;
+}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+    ref?: import("react").Ref<import("@tamagui/core").TamaguiElement> | undefined;
+}> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "active" | "size" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
     active?: boolean | undefined;
-    size?: import("@tamagui/web").Size | undefined;
-}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
+    size?: import("@tamagui/core").Size | undefined;
+}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
     forceMount?: boolean;
 } & {
-    activeStyle?: import("@tamagui/web").StylePiece;
-}, import("@tamagui/web").StackStyleBase, {
+    activeStyle?: import("@tamagui/core").StylePiece;
+}, import("@tamagui/core").StackStyleBase, {
     active?: boolean | undefined;
-    size?: import("@tamagui/web").Size | undefined;
-}, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
-    __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "active" | "size" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
+    size?: import("@tamagui/core").Size | undefined;
+}, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
+    __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "active" | "size" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
         active?: boolean | undefined;
-        size?: import("@tamagui/web").Size | undefined;
-    }> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
+        size?: import("@tamagui/core").Size | undefined;
+    }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
         forceMount?: boolean;
     } & {
-        activeStyle?: import("@tamagui/web").StylePiece;
-    }, import("@tamagui/web").StackStyleBase, {
+        activeStyle?: import("@tamagui/core").StylePiece;
+    }, import("@tamagui/core").StackStyleBase, {
         active?: boolean | undefined;
-        size?: import("@tamagui/web").Size | undefined;
-    }, import("@tamagui/web").StaticConfigPublic];
+        size?: import("@tamagui/core").Size | undefined;
+    }, import("@tamagui/core").StaticConfigPublic];
 };
-export declare const Checkbox: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "active" | "disabled" | "size" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
+export declare const Checkbox: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "active" | "disabled" | "size" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
     active?: boolean | undefined;
     disabled?: boolean | undefined;
-    size?: import("@tamagui/web").Size | undefined;
-}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/checkbox-headless").CheckboxExtraProps & {
-    native?: import("@tamagui/ui").NativeValue<'web'>;
+    size?: import("@tamagui/core").Size | undefined;
+}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/checkbox-headless").CheckboxExtraProps & {
+    native?: import("@tamagui/core").NativeValue<'web'>;
 } & {
-    size?: import("@tamagui/ui").SizeTokens | true;
+    size?: import("@tamagui/core").SizeTokens | true;
 } & {
-    activeStyle?: import("@tamagui/web").StylePiece;
+    activeStyle?: import("@tamagui/core").StylePiece;
     activeTheme?: string | null;
-}, "active" | "disabled" | "size" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
+}, "active" | "disabled" | "size" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
     active?: boolean | undefined;
     disabled?: boolean | undefined;
     size?: any;
-}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-    ref?: import("react").Ref<import("@tamagui/ui").TamaguiElement> | undefined;
-}> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "active" | "disabled" | "size" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
+}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+    ref?: import("react").Ref<import("@tamagui/core").TamaguiElement> | undefined;
+}> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "active" | "disabled" | "size" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
     active?: boolean | undefined;
     disabled?: boolean | undefined;
-    size?: import("@tamagui/web").Size | undefined;
-}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/checkbox-headless").CheckboxExtraProps & {
-    native?: import("@tamagui/ui").NativeValue<'web'>;
+    size?: import("@tamagui/core").Size | undefined;
+}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/checkbox-headless").CheckboxExtraProps & {
+    native?: import("@tamagui/core").NativeValue<'web'>;
 } & {
-    size?: import("@tamagui/ui").SizeTokens | true;
+    size?: import("@tamagui/core").SizeTokens | true;
 } & {
-    activeStyle?: import("@tamagui/web").StylePiece;
+    activeStyle?: import("@tamagui/core").StylePiece;
     activeTheme?: string | null;
-}, import("@tamagui/web").StackStyleBase, {
+}, import("@tamagui/core").StackStyleBase, {
     active?: boolean | undefined;
     disabled?: boolean | undefined;
     size?: any;
-}, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
-    __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "active" | "disabled" | "size" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
+}, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
+    __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "active" | "disabled" | "size" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
         active?: boolean | undefined;
         disabled?: boolean | undefined;
-        size?: import("@tamagui/web").Size | undefined;
-    }> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/checkbox-headless").CheckboxExtraProps & {
-        native?: import("@tamagui/ui").NativeValue<'web'>;
+        size?: import("@tamagui/core").Size | undefined;
+    }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/checkbox-headless").CheckboxExtraProps & {
+        native?: import("@tamagui/core").NativeValue<'web'>;
     } & {
-        size?: import("@tamagui/ui").SizeTokens | true;
+        size?: import("@tamagui/core").SizeTokens | true;
     } & {
-        activeStyle?: import("@tamagui/web").StylePiece;
+        activeStyle?: import("@tamagui/core").StylePiece;
         activeTheme?: string | null;
-    }, import("@tamagui/web").StackStyleBase, {
+    }, import("@tamagui/core").StackStyleBase, {
         active?: boolean | undefined;
         disabled?: boolean | undefined;
         size?: any;
-    }, import("@tamagui/web").StaticConfigPublic];
+    }, import("@tamagui/core").StaticConfigPublic];
 } & {
-    Indicator: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "active" | "size" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
+    Indicator: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "active" | "size" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
         active?: boolean | undefined;
-        size?: import("@tamagui/web").Size | undefined;
-    }> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
+        size?: import("@tamagui/core").Size | undefined;
+    }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
         forceMount?: boolean;
     } & {
-        activeStyle?: import("@tamagui/web").StylePiece;
-    }, "active" | "size" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
+        activeStyle?: import("@tamagui/core").StylePiece;
+    }, "active" | "size" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
         active?: boolean | undefined;
-        size?: import("@tamagui/web").Size | undefined;
-    }> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-        ref?: import("react").Ref<import("@tamagui/ui").TamaguiElement> | undefined;
-    }> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "active" | "size" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
+        size?: import("@tamagui/core").Size | undefined;
+    }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+        ref?: import("react").Ref<import("@tamagui/core").TamaguiElement> | undefined;
+    }> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "active" | "size" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
         active?: boolean | undefined;
-        size?: import("@tamagui/web").Size | undefined;
-    }> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
+        size?: import("@tamagui/core").Size | undefined;
+    }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
         forceMount?: boolean;
     } & {
-        activeStyle?: import("@tamagui/web").StylePiece;
-    }, import("@tamagui/web").StackStyleBase, {
+        activeStyle?: import("@tamagui/core").StylePiece;
+    }, import("@tamagui/core").StackStyleBase, {
         active?: boolean | undefined;
-        size?: import("@tamagui/web").Size | undefined;
-    }, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
-        __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "active" | "size" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
+        size?: import("@tamagui/core").Size | undefined;
+    }, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
+        __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "active" | "size" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
             active?: boolean | undefined;
-            size?: import("@tamagui/web").Size | undefined;
-        }> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
+            size?: import("@tamagui/core").Size | undefined;
+        }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
             forceMount?: boolean;
         } & {
-            activeStyle?: import("@tamagui/web").StylePiece;
-        }, import("@tamagui/web").StackStyleBase, {
+            activeStyle?: import("@tamagui/core").StylePiece;
+        }, import("@tamagui/core").StackStyleBase, {
             active?: boolean | undefined;
-            size?: import("@tamagui/web").Size | undefined;
-        }, import("@tamagui/web").StaticConfigPublic];
+            size?: import("@tamagui/core").Size | undefined;
+        }, import("@tamagui/core").StaticConfigPublic];
     };
 };
 export type CheckboxProps = GetProps<typeof Checkbox>;

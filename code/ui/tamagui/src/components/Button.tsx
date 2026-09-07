@@ -10,9 +10,11 @@ import {
   ButtonText as ButtonBehaviorText,
   type ButtonBehaviorProps,
   type ButtonIconProps as ButtonBehaviorIconProps,
+  useButton,
+} from '@tamagui/button'
+import {
   createStyledHOC,
   type GetProps,
-  getThemedIconSize,
   resolveSize,
   SizeContext,
   type SizeTokens,
@@ -20,9 +22,9 @@ import {
   Theme,
   type ThemeProps,
   type TokenSize,
-  useButton,
   withStaticProperties,
-} from '@tamagui/ui'
+} from '@tamagui/core'
+import { getThemedIconSize } from '@tamagui/helpers-tamagui'
 
 // SizeTokens includes `true`, which resolves through @tamagui/size's opt-in policy.
 export type ButtonSize = SizeTokens

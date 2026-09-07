@@ -3,11 +3,11 @@ import {
   resolveSize,
   SizeContext,
   Text,
-  wrapChildrenInText,
   styled,
-  Tabs as TabsBehavior,
   withStaticProperties,
-} from '@tamagui/ui'
+} from '@tamagui/core'
+import { wrapChildrenInText } from '@tamagui/text'
+import { Tabs as TabsBehavior } from '@tamagui/tabs'
 
 const tabSizeVariant = styled.dynamic<any>((size, env) => {
   return resolveSize(size, env).frame

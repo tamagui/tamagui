@@ -294,6 +294,15 @@
       "import": "./dist/esm/unstyled.mjs",
       "require": "./dist/cjs/unstyled.cjs",
       "default": "./dist/esm/unstyled.mjs"
+    },
+    "./provider": {
+      "types": "./types/views/TamaguiProvider.d.ts",
+      "react-native": "./dist/esm/views/TamaguiProvider.native.js",
+      "browser": "./dist/esm/views/TamaguiProvider.mjs",
+      "module": "./dist/esm/views/TamaguiProvider.mjs",
+      "import": "./dist/esm/views/TamaguiProvider.mjs",
+      "require": "./dist/cjs/views/TamaguiProvider.cjs",
+      "default": "./dist/esm/views/TamaguiProvider.mjs"
     }
   },
   "scripts": {

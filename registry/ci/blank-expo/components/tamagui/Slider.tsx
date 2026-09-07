@@ -5,11 +5,11 @@
 // definition; the shadcn registry item is generated from this file.
 import {
   createRefComponent,
-  Slider as UiSlider,
   styled,
   type TamaguiElement,
   withStaticProperties,
-} from '@tamagui/ui'
+} from '@tamagui/core'
+import { Slider as UiSlider } from '@tamagui/slider'
 import type * as React from 'react'
 
 export const SliderTrackFrame = styled(UiSlider.Track, {

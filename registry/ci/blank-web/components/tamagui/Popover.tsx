@@ -1,9 +1,5 @@
-import {
-  createRefComponent,
-  Popover as UiPopover,
-  styled,
-  withStaticProperties,
-} from '@tamagui/ui'
+import { createRefComponent, styled, withStaticProperties } from '@tamagui/core'
+import { Popover as UiPopover } from '@tamagui/popover'
 import * as React from 'react'
 
 export const PopoverContent = styled(UiPopover.Content, {

@@ -365,3 +365,25 @@ now goes through it. `styledDynamic` threads `conf.sizes` into the env.
   composed-utility trim, which was 28,793 on its own, so the sizes env field
   costs 4 bytes in the styled-view fixture.
 - Under the 28,821 ceiling. Baseline left as recorded.
+
+## Quality pass, 2026-09-07: component and island import boundaries
+
+- **RAN** untouched-tip control at `770f204ac0`, rebuilt from source with pinned
+  Node 24.16.0: Metro island 228,222 gzip-9 bytes; Vite 71,664; Next 71,869.
+  These fresh local numbers supersede the older local comparison for this pass.
+- **RAN** direct skin imports, a `tamagui/provider` subpath, and a generated
+  island wrapper that imports that provider: Metro 120,772 (-107,450, -47.1%);
+  Vite 71,929 (+265); Next 71,853 (-16). All six starter size gates pass
+  without changing their ceilings. Generated registry copies use the same imports.
+- **TESTED** all 12 starter Playwright cases across Vite, Next, and Metro,
+  asserting first paint, CSS transitions, theme switching, and mounted island
+  interaction. The first candidate exposed a scanner/modifier import cycle in
+  Metro; moving canonicalization to the existing state-modifier module fixed it.
+- **RAN** styled-view: 76,703 raw / 28,820 gzip-9, against 76,731 / 28,801
+  before the pass. The 28,821 ceiling is unchanged. Removing a duplicate Set
+  entry recovered two gzip bytes after the import graph changed minifier ordering.
+- **RAN** Node corpus replay, 11 rounds and 3 warmups, checksum 29,124,914:
+  the CSS-copy/serialization experiment moved total v3/v2 from 1.732 to 1.751
+  under concurrent builds. It did not establish a performance win and was
+  reverted. No render-speed improvement is claimed. The harness now labels
+  Node's server-side CSS-collection environment explicitly.

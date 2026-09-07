@@ -7,6 +7,10 @@
 import {
   createStyledHOC,
   type GetProps,
+  styled,
+  withStaticProperties,
+} from '@tamagui/core'
+import {
   type ListItemBehaviorProps,
   ListItemContext,
   ListItemFrame as ListItemBehaviorFrame,
@@ -14,10 +18,8 @@ import {
   ListItemSubtitle,
   ListItemText,
   ListItemTitle,
-  styled,
   useListItem,
-  withStaticProperties,
-} from '@tamagui/ui'
+} from '@tamagui/list-item'
 
 // the additive-border "outlined" appearance (formerly themeableVariantStyles.outlined
 // from ThemeableStack, now removed from the behavior package).

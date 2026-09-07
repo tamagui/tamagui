@@ -1,296 +1,296 @@
-import { type SheetProps } from '@tamagui/ui';
-export declare const SheetHandle: import("@tamagui/ui").RefComponent<import("@tamagui/ui").TamaguiElement, import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/ui").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-    h?: import("@tamagui/ui").ViewProps['height'];
-    o?: import("@tamagui/ui").ViewProps['opacity'];
-    pos?: import("@tamagui/ui").ViewProps['position'];
+import { type SheetProps } from '@tamagui/sheet';
+export declare const SheetHandle: import("@tamagui/core").RefComponent<import("@tamagui/core").TamaguiElement, import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+    h?: import("@tamagui/core").ViewProps['height'];
+    o?: import("@tamagui/core").ViewProps['opacity'];
+    pos?: import("@tamagui/core").ViewProps['position'];
 }, "scope"> & {
-    scope?: import("@tamagui/ui").SheetScopes;
-}, import("@tamagui/web").StackStyleBase, {
-    elevation?: number | false | import("@tamagui/web").Size | undefined;
+    scope?: import("@tamagui/sheet").SheetScopes;
+}, import("@tamagui/core").StackStyleBase, {
+    elevation?: number | false | import("@tamagui/core").Size | undefined;
     open?: boolean | undefined;
 }>>;
-export declare const SheetOverlay: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/ui").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-    h?: import("@tamagui/ui").ViewProps['height'];
-    o?: import("@tamagui/ui").ViewProps['opacity'];
-    pos?: import("@tamagui/ui").ViewProps['position'];
+export declare const SheetOverlay: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+    h?: import("@tamagui/core").ViewProps['height'];
+    o?: import("@tamagui/core").ViewProps['opacity'];
+    pos?: import("@tamagui/core").ViewProps['position'];
 }, "scope"> & {
-    scope?: import("@tamagui/ui").SheetScopes;
-}, "elevation" | "open" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
-    elevation?: number | false | import("@tamagui/web").Size | undefined;
+    scope?: import("@tamagui/sheet").SheetScopes;
+}, "elevation" | "open" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
+    elevation?: number | false | import("@tamagui/core").Size | undefined;
     open?: boolean | undefined;
-}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-    ref?: import("react").Ref<import("@tamagui/ui").TamaguiElement> | undefined;
-}> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/ui").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-    h?: import("@tamagui/ui").ViewProps['height'];
-    o?: import("@tamagui/ui").ViewProps['opacity'];
-    pos?: import("@tamagui/ui").ViewProps['position'];
+}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+    ref?: import("react").Ref<import("@tamagui/core").TamaguiElement> | undefined;
+}> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+    h?: import("@tamagui/core").ViewProps['height'];
+    o?: import("@tamagui/core").ViewProps['opacity'];
+    pos?: import("@tamagui/core").ViewProps['position'];
 }, "scope"> & {
-    scope?: import("@tamagui/ui").SheetScopes;
-}, import("@tamagui/web").StackStyleBase, {
-    elevation?: number | false | import("@tamagui/web").Size | undefined;
+    scope?: import("@tamagui/sheet").SheetScopes;
+}, import("@tamagui/core").StackStyleBase, {
+    elevation?: number | false | import("@tamagui/core").Size | undefined;
     open?: boolean | undefined;
-}, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
-    __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/ui").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-        h?: import("@tamagui/ui").ViewProps['height'];
-        o?: import("@tamagui/ui").ViewProps['opacity'];
-        pos?: import("@tamagui/ui").ViewProps['position'];
+}, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
+    __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+        h?: import("@tamagui/core").ViewProps['height'];
+        o?: import("@tamagui/core").ViewProps['opacity'];
+        pos?: import("@tamagui/core").ViewProps['position'];
     }, "scope"> & {
-        scope?: import("@tamagui/ui").SheetScopes;
-    }, import("@tamagui/web").StackStyleBase, {
-        elevation?: number | false | import("@tamagui/web").Size | undefined;
+        scope?: import("@tamagui/sheet").SheetScopes;
+    }, import("@tamagui/core").StackStyleBase, {
+        elevation?: number | false | import("@tamagui/core").Size | undefined;
         open?: boolean | undefined;
-    }, import("@tamagui/web").StaticConfigPublic];
+    }, import("@tamagui/core").StaticConfigPublic];
 };
-export declare const SheetContainer: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/ui").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-    h?: import("@tamagui/ui").ViewProps['height'];
-    o?: import("@tamagui/ui").ViewProps['opacity'];
-    pos?: import("@tamagui/ui").ViewProps['position'];
+export declare const SheetContainer: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+    h?: import("@tamagui/core").ViewProps['height'];
+    o?: import("@tamagui/core").ViewProps['opacity'];
+    pos?: import("@tamagui/core").ViewProps['position'];
 } & {
     adjustPaddingForOffscreenContent?: boolean;
 }, "scope"> & {
-    scope?: import("@tamagui/ui").SheetScopes;
-}, "elevation" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
-    elevation?: number | false | import("@tamagui/web").Size | undefined;
-}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-    ref?: import("react").Ref<import("@tamagui/ui").TamaguiElement> | undefined;
-}> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/ui").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-    h?: import("@tamagui/ui").ViewProps['height'];
-    o?: import("@tamagui/ui").ViewProps['opacity'];
-    pos?: import("@tamagui/ui").ViewProps['position'];
+    scope?: import("@tamagui/sheet").SheetScopes;
+}, "elevation" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
+    elevation?: number | false | import("@tamagui/core").Size | undefined;
+}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+    ref?: import("react").Ref<import("@tamagui/core").TamaguiElement> | undefined;
+}> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+    h?: import("@tamagui/core").ViewProps['height'];
+    o?: import("@tamagui/core").ViewProps['opacity'];
+    pos?: import("@tamagui/core").ViewProps['position'];
 } & {
     adjustPaddingForOffscreenContent?: boolean;
 }, "scope"> & {
-    scope?: import("@tamagui/ui").SheetScopes;
-}, import("@tamagui/web").StackStyleBase, {
-    elevation?: number | false | import("@tamagui/web").Size | undefined;
-}, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
-    __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/ui").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-        h?: import("@tamagui/ui").ViewProps['height'];
-        o?: import("@tamagui/ui").ViewProps['opacity'];
-        pos?: import("@tamagui/ui").ViewProps['position'];
+    scope?: import("@tamagui/sheet").SheetScopes;
+}, import("@tamagui/core").StackStyleBase, {
+    elevation?: number | false | import("@tamagui/core").Size | undefined;
+}, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
+    __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+        h?: import("@tamagui/core").ViewProps['height'];
+        o?: import("@tamagui/core").ViewProps['opacity'];
+        pos?: import("@tamagui/core").ViewProps['position'];
     } & {
         adjustPaddingForOffscreenContent?: boolean;
     }, "scope"> & {
-        scope?: import("@tamagui/ui").SheetScopes;
-    }, import("@tamagui/web").StackStyleBase, {
-        elevation?: number | false | import("@tamagui/web").Size | undefined;
-    }, import("@tamagui/web").StaticConfigPublic];
+        scope?: import("@tamagui/sheet").SheetScopes;
+    }, import("@tamagui/core").StackStyleBase, {
+        elevation?: number | false | import("@tamagui/core").Size | undefined;
+    }, import("@tamagui/core").StaticConfigPublic];
 };
-export declare const SheetBackground: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/ui").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-    h?: import("@tamagui/ui").ViewProps['height'];
-    o?: import("@tamagui/ui").ViewProps['opacity'];
-    pos?: import("@tamagui/ui").ViewProps['position'];
+export declare const SheetBackground: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+    h?: import("@tamagui/core").ViewProps['height'];
+    o?: import("@tamagui/core").ViewProps['opacity'];
+    pos?: import("@tamagui/core").ViewProps['position'];
 } & {
     disableHideBottomOverflow?: boolean;
 }, "scope"> & {
-    scope?: import("@tamagui/ui").SheetScopes;
-}, "elevation" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
-    elevation?: number | false | import("@tamagui/web").Size | undefined;
-}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-    ref?: import("react").Ref<import("@tamagui/ui").TamaguiElement> | undefined;
-}> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/ui").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-    h?: import("@tamagui/ui").ViewProps['height'];
-    o?: import("@tamagui/ui").ViewProps['opacity'];
-    pos?: import("@tamagui/ui").ViewProps['position'];
+    scope?: import("@tamagui/sheet").SheetScopes;
+}, "elevation" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
+    elevation?: number | false | import("@tamagui/core").Size | undefined;
+}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+    ref?: import("react").Ref<import("@tamagui/core").TamaguiElement> | undefined;
+}> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+    h?: import("@tamagui/core").ViewProps['height'];
+    o?: import("@tamagui/core").ViewProps['opacity'];
+    pos?: import("@tamagui/core").ViewProps['position'];
 } & {
     disableHideBottomOverflow?: boolean;
 }, "scope"> & {
-    scope?: import("@tamagui/ui").SheetScopes;
-}, import("@tamagui/web").StackStyleBase, {
-    elevation?: number | false | import("@tamagui/web").Size | undefined;
-}, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
-    __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/ui").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-        h?: import("@tamagui/ui").ViewProps['height'];
-        o?: import("@tamagui/ui").ViewProps['opacity'];
-        pos?: import("@tamagui/ui").ViewProps['position'];
+    scope?: import("@tamagui/sheet").SheetScopes;
+}, import("@tamagui/core").StackStyleBase, {
+    elevation?: number | false | import("@tamagui/core").Size | undefined;
+}, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
+    __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+        h?: import("@tamagui/core").ViewProps['height'];
+        o?: import("@tamagui/core").ViewProps['opacity'];
+        pos?: import("@tamagui/core").ViewProps['position'];
     } & {
         disableHideBottomOverflow?: boolean;
     }, "scope"> & {
-        scope?: import("@tamagui/ui").SheetScopes;
-    }, import("@tamagui/web").StackStyleBase, {
-        elevation?: number | false | import("@tamagui/web").Size | undefined;
-    }, import("@tamagui/web").StaticConfigPublic];
+        scope?: import("@tamagui/sheet").SheetScopes;
+    }, import("@tamagui/core").StackStyleBase, {
+        elevation?: number | false | import("@tamagui/core").Size | undefined;
+    }, import("@tamagui/core").StaticConfigPublic];
 };
-export declare const SheetScrollView: import("react").FunctionComponent<Omit<import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/ui").ScrollViewRef> & Omit<Omit<import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/ui").ScrollViewRef>, keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-    h?: import("@tamagui/web").FlatStyleValue<number | "unset" | import("@tamagui/react-native-types/src").AnimatedNode | import("@tamagui/ui").GetThemeValueForKey<"height"> | null | undefined>;
-    o?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/react-native-types/src").AnimatableNumericValue | import("@tamagui/ui").GetThemeValueForKey<"opacity"> | undefined>;
-    pos?: import("@tamagui/web").FlatStyleValue<"absolute" | "fixed" | "relative" | "static" | "sticky" | "unset" | undefined>;
+export declare const SheetScrollView: import("react").FunctionComponent<Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef> & Omit<Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>, keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+    h?: import("@tamagui/core").FlatStyleValue<number | "unset" | import("@tamagui/react-native-types/src").AnimatedNode | import("@tamagui/core").GetThemeValueForKey<"height"> | null | undefined>;
+    o?: import("@tamagui/core").FlatStyleValue<"unset" | import("@tamagui/react-native-types/src").AnimatableNumericValue | import("@tamagui/core").GetThemeValueForKey<"opacity"> | undefined>;
+    pos?: import("@tamagui/core").FlatStyleValue<"absolute" | "fixed" | "relative" | "static" | "sticky" | "unset" | undefined>;
 }, "scope"> & {
-    scope?: import("@tamagui/ui").SheetScopes;
-}, keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-    ref?: import("react").Ref<import("@tamagui/ui").ScrollViewRef> | undefined;
-}> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/ui").ScrollViewRef, import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/ui").ScrollViewRef> & Omit<Omit<import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/ui").ScrollViewRef>, keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-    h?: import("@tamagui/web").FlatStyleValue<number | "unset" | import("@tamagui/react-native-types/src").AnimatedNode | import("@tamagui/ui").GetThemeValueForKey<"height"> | null | undefined>;
-    o?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/react-native-types/src").AnimatableNumericValue | import("@tamagui/ui").GetThemeValueForKey<"opacity"> | undefined>;
-    pos?: import("@tamagui/web").FlatStyleValue<"absolute" | "fixed" | "relative" | "static" | "sticky" | "unset" | undefined>;
+    scope?: import("@tamagui/sheet").SheetScopes;
+}, keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+    ref?: import("react").Ref<import("@tamagui/scroll-view").ScrollViewRef> | undefined;
+}> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/scroll-view").ScrollViewRef, import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef> & Omit<Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>, keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+    h?: import("@tamagui/core").FlatStyleValue<number | "unset" | import("@tamagui/react-native-types/src").AnimatedNode | import("@tamagui/core").GetThemeValueForKey<"height"> | null | undefined>;
+    o?: import("@tamagui/core").FlatStyleValue<"unset" | import("@tamagui/react-native-types/src").AnimatableNumericValue | import("@tamagui/core").GetThemeValueForKey<"opacity"> | undefined>;
+    pos?: import("@tamagui/core").FlatStyleValue<"absolute" | "fixed" | "relative" | "static" | "sticky" | "unset" | undefined>;
 }, "scope"> & {
-    scope?: import("@tamagui/ui").SheetScopes;
-}, import("@tamagui/web").StackStyleBase, {}, {
+    scope?: import("@tamagui/sheet").SheetScopes;
+}, import("@tamagui/core").StackStyleBase, {}, {
     acceptsClassName: true;
     neverFlatten: true;
-} & import("@tamagui/web").StaticConfigPublic> & Omit<{
+} & import("@tamagui/core").StaticConfigPublic> & Omit<{
     acceptsClassName: true;
     neverFlatten: true;
-} & import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
-    __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/ui").ScrollViewRef, import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/ui").ScrollViewRef> & Omit<Omit<import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/ui").ScrollViewRef>, keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-        h?: import("@tamagui/web").FlatStyleValue<number | "unset" | import("@tamagui/react-native-types/src").AnimatedNode | import("@tamagui/ui").GetThemeValueForKey<"height"> | null | undefined>;
-        o?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/react-native-types/src").AnimatableNumericValue | import("@tamagui/ui").GetThemeValueForKey<"opacity"> | undefined>;
-        pos?: import("@tamagui/web").FlatStyleValue<"absolute" | "fixed" | "relative" | "static" | "sticky" | "unset" | undefined>;
+} & import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
+    __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/scroll-view").ScrollViewRef, import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef> & Omit<Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>, keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+        h?: import("@tamagui/core").FlatStyleValue<number | "unset" | import("@tamagui/react-native-types/src").AnimatedNode | import("@tamagui/core").GetThemeValueForKey<"height"> | null | undefined>;
+        o?: import("@tamagui/core").FlatStyleValue<"unset" | import("@tamagui/react-native-types/src").AnimatableNumericValue | import("@tamagui/core").GetThemeValueForKey<"opacity"> | undefined>;
+        pos?: import("@tamagui/core").FlatStyleValue<"absolute" | "fixed" | "relative" | "static" | "sticky" | "unset" | undefined>;
     }, "scope"> & {
-        scope?: import("@tamagui/ui").SheetScopes;
-    }, import("@tamagui/web").StackStyleBase, {}, {
+        scope?: import("@tamagui/sheet").SheetScopes;
+    }, import("@tamagui/core").StackStyleBase, {}, {
         acceptsClassName: true;
         neverFlatten: true;
-    } & import("@tamagui/web").StaticConfigPublic];
+    } & import("@tamagui/core").StaticConfigPublic];
 };
-export declare const SheetRoot: import("@tamagui/ui").RefComponent<import("@tamagui/react-native-types/src").View, SheetProps>;
-export declare const SheetControlled: ((props: Omit<SheetProps, "onOpenChange" | "open"> & import("@tamagui/ui").RefProp<import("@tamagui/react-native-types/src").View>) => import("react").ReactNode) & {
+export declare const SheetRoot: import("@tamagui/core").RefComponent<import("@tamagui/react-native-types/src").View, SheetProps>;
+export declare const SheetControlled: ((props: Omit<SheetProps, "onOpenChange" | "open"> & import("@tamagui/core").RefProp<import("@tamagui/react-native-types/src").View>) => import("react").ReactNode) & {
     displayName?: string;
     propTypes?: any;
 } & {
-    Container: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/ui").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-        h?: import("@tamagui/ui").ViewProps['height'];
-        o?: import("@tamagui/ui").ViewProps['opacity'];
-        pos?: import("@tamagui/ui").ViewProps['position'];
+    Container: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+        h?: import("@tamagui/core").ViewProps['height'];
+        o?: import("@tamagui/core").ViewProps['opacity'];
+        pos?: import("@tamagui/core").ViewProps['position'];
     } & {
         adjustPaddingForOffscreenContent?: boolean;
     }, "scope"> & {
-        scope?: import("@tamagui/ui").SheetScopes;
-    }, "elevation" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
-        elevation?: number | false | import("@tamagui/web").Size | undefined;
-    }> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-        ref?: import("react").Ref<import("@tamagui/ui").TamaguiElement> | undefined;
-    }> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/ui").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-        h?: import("@tamagui/ui").ViewProps['height'];
-        o?: import("@tamagui/ui").ViewProps['opacity'];
-        pos?: import("@tamagui/ui").ViewProps['position'];
+        scope?: import("@tamagui/sheet").SheetScopes;
+    }, "elevation" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
+        elevation?: number | false | import("@tamagui/core").Size | undefined;
+    }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+        ref?: import("react").Ref<import("@tamagui/core").TamaguiElement> | undefined;
+    }> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+        h?: import("@tamagui/core").ViewProps['height'];
+        o?: import("@tamagui/core").ViewProps['opacity'];
+        pos?: import("@tamagui/core").ViewProps['position'];
     } & {
         adjustPaddingForOffscreenContent?: boolean;
     }, "scope"> & {
-        scope?: import("@tamagui/ui").SheetScopes;
-    }, import("@tamagui/web").StackStyleBase, {
-        elevation?: number | false | import("@tamagui/web").Size | undefined;
-    }, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
-        __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/ui").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-            h?: import("@tamagui/ui").ViewProps['height'];
-            o?: import("@tamagui/ui").ViewProps['opacity'];
-            pos?: import("@tamagui/ui").ViewProps['position'];
+        scope?: import("@tamagui/sheet").SheetScopes;
+    }, import("@tamagui/core").StackStyleBase, {
+        elevation?: number | false | import("@tamagui/core").Size | undefined;
+    }, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
+        __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+            h?: import("@tamagui/core").ViewProps['height'];
+            o?: import("@tamagui/core").ViewProps['opacity'];
+            pos?: import("@tamagui/core").ViewProps['position'];
         } & {
             adjustPaddingForOffscreenContent?: boolean;
         }, "scope"> & {
-            scope?: import("@tamagui/ui").SheetScopes;
-        }, import("@tamagui/web").StackStyleBase, {
-            elevation?: number | false | import("@tamagui/web").Size | undefined;
-        }, import("@tamagui/web").StaticConfigPublic];
+            scope?: import("@tamagui/sheet").SheetScopes;
+        }, import("@tamagui/core").StackStyleBase, {
+            elevation?: number | false | import("@tamagui/core").Size | undefined;
+        }, import("@tamagui/core").StaticConfigPublic];
     };
-    Background: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/ui").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-        h?: import("@tamagui/ui").ViewProps['height'];
-        o?: import("@tamagui/ui").ViewProps['opacity'];
-        pos?: import("@tamagui/ui").ViewProps['position'];
+    Background: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+        h?: import("@tamagui/core").ViewProps['height'];
+        o?: import("@tamagui/core").ViewProps['opacity'];
+        pos?: import("@tamagui/core").ViewProps['position'];
     } & {
         disableHideBottomOverflow?: boolean;
     }, "scope"> & {
-        scope?: import("@tamagui/ui").SheetScopes;
-    }, "elevation" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
-        elevation?: number | false | import("@tamagui/web").Size | undefined;
-    }> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-        ref?: import("react").Ref<import("@tamagui/ui").TamaguiElement> | undefined;
-    }> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/ui").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-        h?: import("@tamagui/ui").ViewProps['height'];
-        o?: import("@tamagui/ui").ViewProps['opacity'];
-        pos?: import("@tamagui/ui").ViewProps['position'];
+        scope?: import("@tamagui/sheet").SheetScopes;
+    }, "elevation" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
+        elevation?: number | false | import("@tamagui/core").Size | undefined;
+    }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+        ref?: import("react").Ref<import("@tamagui/core").TamaguiElement> | undefined;
+    }> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+        h?: import("@tamagui/core").ViewProps['height'];
+        o?: import("@tamagui/core").ViewProps['opacity'];
+        pos?: import("@tamagui/core").ViewProps['position'];
     } & {
         disableHideBottomOverflow?: boolean;
     }, "scope"> & {
-        scope?: import("@tamagui/ui").SheetScopes;
-    }, import("@tamagui/web").StackStyleBase, {
-        elevation?: number | false | import("@tamagui/web").Size | undefined;
-    }, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
-        __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/ui").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-            h?: import("@tamagui/ui").ViewProps['height'];
-            o?: import("@tamagui/ui").ViewProps['opacity'];
-            pos?: import("@tamagui/ui").ViewProps['position'];
+        scope?: import("@tamagui/sheet").SheetScopes;
+    }, import("@tamagui/core").StackStyleBase, {
+        elevation?: number | false | import("@tamagui/core").Size | undefined;
+    }, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
+        __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+            h?: import("@tamagui/core").ViewProps['height'];
+            o?: import("@tamagui/core").ViewProps['opacity'];
+            pos?: import("@tamagui/core").ViewProps['position'];
         } & {
             disableHideBottomOverflow?: boolean;
         }, "scope"> & {
-            scope?: import("@tamagui/ui").SheetScopes;
-        }, import("@tamagui/web").StackStyleBase, {
-            elevation?: number | false | import("@tamagui/web").Size | undefined;
-        }, import("@tamagui/web").StaticConfigPublic];
+            scope?: import("@tamagui/sheet").SheetScopes;
+        }, import("@tamagui/core").StackStyleBase, {
+            elevation?: number | false | import("@tamagui/core").Size | undefined;
+        }, import("@tamagui/core").StaticConfigPublic];
     };
-    Overlay: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/ui").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-        h?: import("@tamagui/ui").ViewProps['height'];
-        o?: import("@tamagui/ui").ViewProps['opacity'];
-        pos?: import("@tamagui/ui").ViewProps['position'];
+    Overlay: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+        h?: import("@tamagui/core").ViewProps['height'];
+        o?: import("@tamagui/core").ViewProps['opacity'];
+        pos?: import("@tamagui/core").ViewProps['position'];
     }, "scope"> & {
-        scope?: import("@tamagui/ui").SheetScopes;
-    }, "elevation" | "open" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
-        elevation?: number | false | import("@tamagui/web").Size | undefined;
+        scope?: import("@tamagui/sheet").SheetScopes;
+    }, "elevation" | "open" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
+        elevation?: number | false | import("@tamagui/core").Size | undefined;
         open?: boolean | undefined;
-    }> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-        ref?: import("react").Ref<import("@tamagui/ui").TamaguiElement> | undefined;
-    }> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/ui").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-        h?: import("@tamagui/ui").ViewProps['height'];
-        o?: import("@tamagui/ui").ViewProps['opacity'];
-        pos?: import("@tamagui/ui").ViewProps['position'];
+    }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+        ref?: import("react").Ref<import("@tamagui/core").TamaguiElement> | undefined;
+    }> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+        h?: import("@tamagui/core").ViewProps['height'];
+        o?: import("@tamagui/core").ViewProps['opacity'];
+        pos?: import("@tamagui/core").ViewProps['position'];
     }, "scope"> & {
-        scope?: import("@tamagui/ui").SheetScopes;
-    }, import("@tamagui/web").StackStyleBase, {
-        elevation?: number | false | import("@tamagui/web").Size | undefined;
+        scope?: import("@tamagui/sheet").SheetScopes;
+    }, import("@tamagui/core").StackStyleBase, {
+        elevation?: number | false | import("@tamagui/core").Size | undefined;
         open?: boolean | undefined;
-    }, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
-        __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/ui").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-            h?: import("@tamagui/ui").ViewProps['height'];
-            o?: import("@tamagui/ui").ViewProps['opacity'];
-            pos?: import("@tamagui/ui").ViewProps['position'];
+    }, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
+        __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+            h?: import("@tamagui/core").ViewProps['height'];
+            o?: import("@tamagui/core").ViewProps['opacity'];
+            pos?: import("@tamagui/core").ViewProps['position'];
         }, "scope"> & {
-            scope?: import("@tamagui/ui").SheetScopes;
-        }, import("@tamagui/web").StackStyleBase, {
-            elevation?: number | false | import("@tamagui/web").Size | undefined;
+            scope?: import("@tamagui/sheet").SheetScopes;
+        }, import("@tamagui/core").StackStyleBase, {
+            elevation?: number | false | import("@tamagui/core").Size | undefined;
             open?: boolean | undefined;
-        }, import("@tamagui/web").StaticConfigPublic];
+        }, import("@tamagui/core").StaticConfigPublic];
     };
-    Handle: import("@tamagui/ui").RefComponent<import("@tamagui/ui").TamaguiElement, import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/ui").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-        h?: import("@tamagui/ui").ViewProps['height'];
-        o?: import("@tamagui/ui").ViewProps['opacity'];
-        pos?: import("@tamagui/ui").ViewProps['position'];
+    Handle: import("@tamagui/core").RefComponent<import("@tamagui/core").TamaguiElement, import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+        h?: import("@tamagui/core").ViewProps['height'];
+        o?: import("@tamagui/core").ViewProps['opacity'];
+        pos?: import("@tamagui/core").ViewProps['position'];
     }, "scope"> & {
-        scope?: import("@tamagui/ui").SheetScopes;
-    }, import("@tamagui/web").StackStyleBase, {
-        elevation?: number | false | import("@tamagui/web").Size | undefined;
+        scope?: import("@tamagui/sheet").SheetScopes;
+    }, import("@tamagui/core").StackStyleBase, {
+        elevation?: number | false | import("@tamagui/core").Size | undefined;
         open?: boolean | undefined;
     }>>;
-    ScrollView: import("react").FunctionComponent<Omit<import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/ui").ScrollViewRef> & Omit<Omit<import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/ui").ScrollViewRef>, keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-        h?: import("@tamagui/web").FlatStyleValue<number | "unset" | import("@tamagui/react-native-types/src").AnimatedNode | import("@tamagui/ui").GetThemeValueForKey<"height"> | null | undefined>;
-        o?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/react-native-types/src").AnimatableNumericValue | import("@tamagui/ui").GetThemeValueForKey<"opacity"> | undefined>;
-        pos?: import("@tamagui/web").FlatStyleValue<"absolute" | "fixed" | "relative" | "static" | "sticky" | "unset" | undefined>;
+    ScrollView: import("react").FunctionComponent<Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef> & Omit<Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>, keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+        h?: import("@tamagui/core").FlatStyleValue<number | "unset" | import("@tamagui/react-native-types/src").AnimatedNode | import("@tamagui/core").GetThemeValueForKey<"height"> | null | undefined>;
+        o?: import("@tamagui/core").FlatStyleValue<"unset" | import("@tamagui/react-native-types/src").AnimatableNumericValue | import("@tamagui/core").GetThemeValueForKey<"opacity"> | undefined>;
+        pos?: import("@tamagui/core").FlatStyleValue<"absolute" | "fixed" | "relative" | "static" | "sticky" | "unset" | undefined>;
     }, "scope"> & {
-        scope?: import("@tamagui/ui").SheetScopes;
-    }, keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-        ref?: import("react").Ref<import("@tamagui/ui").ScrollViewRef> | undefined;
-    }> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/ui").ScrollViewRef, import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/ui").ScrollViewRef> & Omit<Omit<import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/ui").ScrollViewRef>, keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-        h?: import("@tamagui/web").FlatStyleValue<number | "unset" | import("@tamagui/react-native-types/src").AnimatedNode | import("@tamagui/ui").GetThemeValueForKey<"height"> | null | undefined>;
-        o?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/react-native-types/src").AnimatableNumericValue | import("@tamagui/ui").GetThemeValueForKey<"opacity"> | undefined>;
-        pos?: import("@tamagui/web").FlatStyleValue<"absolute" | "fixed" | "relative" | "static" | "sticky" | "unset" | undefined>;
+        scope?: import("@tamagui/sheet").SheetScopes;
+    }, keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+        ref?: import("react").Ref<import("@tamagui/scroll-view").ScrollViewRef> | undefined;
+    }> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/scroll-view").ScrollViewRef, import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef> & Omit<Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>, keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+        h?: import("@tamagui/core").FlatStyleValue<number | "unset" | import("@tamagui/react-native-types/src").AnimatedNode | import("@tamagui/core").GetThemeValueForKey<"height"> | null | undefined>;
+        o?: import("@tamagui/core").FlatStyleValue<"unset" | import("@tamagui/react-native-types/src").AnimatableNumericValue | import("@tamagui/core").GetThemeValueForKey<"opacity"> | undefined>;
+        pos?: import("@tamagui/core").FlatStyleValue<"absolute" | "fixed" | "relative" | "static" | "sticky" | "unset" | undefined>;
     }, "scope"> & {
-        scope?: import("@tamagui/ui").SheetScopes;
-    }, import("@tamagui/web").StackStyleBase, {}, {
+        scope?: import("@tamagui/sheet").SheetScopes;
+    }, import("@tamagui/core").StackStyleBase, {}, {
         acceptsClassName: true;
         neverFlatten: true;
-    } & import("@tamagui/web").StaticConfigPublic> & Omit<{
+    } & import("@tamagui/core").StaticConfigPublic> & Omit<{
         acceptsClassName: true;
         neverFlatten: true;
-    } & import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
-        __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/ui").ScrollViewRef, import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/ui").ScrollViewRef> & Omit<Omit<import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/ui").ScrollViewRef>, keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-            h?: import("@tamagui/web").FlatStyleValue<number | "unset" | import("@tamagui/react-native-types/src").AnimatedNode | import("@tamagui/ui").GetThemeValueForKey<"height"> | null | undefined>;
-            o?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/react-native-types/src").AnimatableNumericValue | import("@tamagui/ui").GetThemeValueForKey<"opacity"> | undefined>;
-            pos?: import("@tamagui/web").FlatStyleValue<"absolute" | "fixed" | "relative" | "static" | "sticky" | "unset" | undefined>;
+    } & import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
+        __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/scroll-view").ScrollViewRef, import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef> & Omit<Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>, keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+            h?: import("@tamagui/core").FlatStyleValue<number | "unset" | import("@tamagui/react-native-types/src").AnimatedNode | import("@tamagui/core").GetThemeValueForKey<"height"> | null | undefined>;
+            o?: import("@tamagui/core").FlatStyleValue<"unset" | import("@tamagui/react-native-types/src").AnimatableNumericValue | import("@tamagui/core").GetThemeValueForKey<"opacity"> | undefined>;
+            pos?: import("@tamagui/core").FlatStyleValue<"absolute" | "fixed" | "relative" | "static" | "sticky" | "unset" | undefined>;
         }, "scope"> & {
-            scope?: import("@tamagui/ui").SheetScopes;
-        }, import("@tamagui/web").StackStyleBase, {}, {
+            scope?: import("@tamagui/sheet").SheetScopes;
+        }, import("@tamagui/core").StackStyleBase, {}, {
             acceptsClassName: true;
             neverFlatten: true;
-        } & import("@tamagui/web").StaticConfigPublic];
+        } & import("@tamagui/core").StaticConfigPublic];
     };
 };
 export declare const Sheet: ((props: Omit<{
@@ -300,324 +300,324 @@ export declare const Sheet: ((props: Omit<{
     position?: number;
     defaultPosition?: number;
     snapPoints?: (string | number)[];
-    snapPointsMode?: import("@tamagui/ui").SnapPointsMode;
-    onPositionChange?: import("@tamagui/ui").PositionChangeHandler;
+    snapPointsMode?: import("@tamagui/sheet").SnapPointsMode;
+    onPositionChange?: import("@tamagui/sheet").PositionChangeHandler;
     children?: import("react").ReactNode;
     dismissOnOverlayPress?: boolean;
     dismissOnSnapToBottom?: boolean;
     disableRemoveScroll?: boolean;
-    transitionConfig?: import("@tamagui/ui").AnimatedNumberStrategy;
+    transitionConfig?: import("@tamagui/core").AnimatedNumberStrategy;
     preferAdaptParentOpenState?: boolean;
     unmountChildrenWhenHidden?: boolean;
     disableHideWhenClosed?: boolean;
     native?: 'ios'[] | boolean;
-    transition?: import("@tamagui/ui").TransitionProp;
+    transition?: import("@tamagui/core").TransitionProp;
     handleDisableScroll?: boolean;
     disableDrag?: boolean;
     modal?: boolean;
     zIndex?: number;
-    portalProps?: import("@tamagui/ui").PortalProps;
+    portalProps?: import("@tamagui/portal").PortalProps;
     moveOnKeyboardChange?: boolean;
     containerComponent?: React.ComponentType<any>;
-    onTransition?: (e: import("@tamagui/ui").SheetTransitionEvent) => void;
+    onTransition?: (e: import("@tamagui/sheet").SheetTransitionEvent) => void;
 }, "scope"> & {
-    scope?: import("@tamagui/ui").SheetScopes;
-} & import("@tamagui/ui").RefProp<import("@tamagui/react-native-types/src").View>) => import("react").ReactNode) & {
+    scope?: import("@tamagui/sheet").SheetScopes;
+} & import("@tamagui/core").RefProp<import("@tamagui/react-native-types/src").View>) => import("react").ReactNode) & {
     displayName?: string;
     propTypes?: any;
 } & {
-    Container: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/ui").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-        h?: import("@tamagui/ui").ViewProps['height'];
-        o?: import("@tamagui/ui").ViewProps['opacity'];
-        pos?: import("@tamagui/ui").ViewProps['position'];
+    Container: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+        h?: import("@tamagui/core").ViewProps['height'];
+        o?: import("@tamagui/core").ViewProps['opacity'];
+        pos?: import("@tamagui/core").ViewProps['position'];
     } & {
         adjustPaddingForOffscreenContent?: boolean;
     }, "scope"> & {
-        scope?: import("@tamagui/ui").SheetScopes;
-    }, "elevation" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
-        elevation?: number | false | import("@tamagui/web").Size | undefined;
-    }> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-        ref?: import("react").Ref<import("@tamagui/ui").TamaguiElement> | undefined;
-    }> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/ui").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-        h?: import("@tamagui/ui").ViewProps['height'];
-        o?: import("@tamagui/ui").ViewProps['opacity'];
-        pos?: import("@tamagui/ui").ViewProps['position'];
+        scope?: import("@tamagui/sheet").SheetScopes;
+    }, "elevation" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
+        elevation?: number | false | import("@tamagui/core").Size | undefined;
+    }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+        ref?: import("react").Ref<import("@tamagui/core").TamaguiElement> | undefined;
+    }> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+        h?: import("@tamagui/core").ViewProps['height'];
+        o?: import("@tamagui/core").ViewProps['opacity'];
+        pos?: import("@tamagui/core").ViewProps['position'];
     } & {
         adjustPaddingForOffscreenContent?: boolean;
     }, "scope"> & {
-        scope?: import("@tamagui/ui").SheetScopes;
-    }, import("@tamagui/web").StackStyleBase, {
-        elevation?: number | false | import("@tamagui/web").Size | undefined;
-    }, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
-        __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/ui").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-            h?: import("@tamagui/ui").ViewProps['height'];
-            o?: import("@tamagui/ui").ViewProps['opacity'];
-            pos?: import("@tamagui/ui").ViewProps['position'];
+        scope?: import("@tamagui/sheet").SheetScopes;
+    }, import("@tamagui/core").StackStyleBase, {
+        elevation?: number | false | import("@tamagui/core").Size | undefined;
+    }, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
+        __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+            h?: import("@tamagui/core").ViewProps['height'];
+            o?: import("@tamagui/core").ViewProps['opacity'];
+            pos?: import("@tamagui/core").ViewProps['position'];
         } & {
             adjustPaddingForOffscreenContent?: boolean;
         }, "scope"> & {
-            scope?: import("@tamagui/ui").SheetScopes;
-        }, import("@tamagui/web").StackStyleBase, {
-            elevation?: number | false | import("@tamagui/web").Size | undefined;
-        }, import("@tamagui/web").StaticConfigPublic];
+            scope?: import("@tamagui/sheet").SheetScopes;
+        }, import("@tamagui/core").StackStyleBase, {
+            elevation?: number | false | import("@tamagui/core").Size | undefined;
+        }, import("@tamagui/core").StaticConfigPublic];
     };
-    Background: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/ui").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-        h?: import("@tamagui/ui").ViewProps['height'];
-        o?: import("@tamagui/ui").ViewProps['opacity'];
-        pos?: import("@tamagui/ui").ViewProps['position'];
+    Background: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+        h?: import("@tamagui/core").ViewProps['height'];
+        o?: import("@tamagui/core").ViewProps['opacity'];
+        pos?: import("@tamagui/core").ViewProps['position'];
     } & {
         disableHideBottomOverflow?: boolean;
     }, "scope"> & {
-        scope?: import("@tamagui/ui").SheetScopes;
-    }, "elevation" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
-        elevation?: number | false | import("@tamagui/web").Size | undefined;
-    }> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-        ref?: import("react").Ref<import("@tamagui/ui").TamaguiElement> | undefined;
-    }> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/ui").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-        h?: import("@tamagui/ui").ViewProps['height'];
-        o?: import("@tamagui/ui").ViewProps['opacity'];
-        pos?: import("@tamagui/ui").ViewProps['position'];
+        scope?: import("@tamagui/sheet").SheetScopes;
+    }, "elevation" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
+        elevation?: number | false | import("@tamagui/core").Size | undefined;
+    }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+        ref?: import("react").Ref<import("@tamagui/core").TamaguiElement> | undefined;
+    }> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+        h?: import("@tamagui/core").ViewProps['height'];
+        o?: import("@tamagui/core").ViewProps['opacity'];
+        pos?: import("@tamagui/core").ViewProps['position'];
     } & {
         disableHideBottomOverflow?: boolean;
     }, "scope"> & {
-        scope?: import("@tamagui/ui").SheetScopes;
-    }, import("@tamagui/web").StackStyleBase, {
-        elevation?: number | false | import("@tamagui/web").Size | undefined;
-    }, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
-        __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/ui").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-            h?: import("@tamagui/ui").ViewProps['height'];
-            o?: import("@tamagui/ui").ViewProps['opacity'];
-            pos?: import("@tamagui/ui").ViewProps['position'];
+        scope?: import("@tamagui/sheet").SheetScopes;
+    }, import("@tamagui/core").StackStyleBase, {
+        elevation?: number | false | import("@tamagui/core").Size | undefined;
+    }, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
+        __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+            h?: import("@tamagui/core").ViewProps['height'];
+            o?: import("@tamagui/core").ViewProps['opacity'];
+            pos?: import("@tamagui/core").ViewProps['position'];
         } & {
             disableHideBottomOverflow?: boolean;
         }, "scope"> & {
-            scope?: import("@tamagui/ui").SheetScopes;
-        }, import("@tamagui/web").StackStyleBase, {
-            elevation?: number | false | import("@tamagui/web").Size | undefined;
-        }, import("@tamagui/web").StaticConfigPublic];
+            scope?: import("@tamagui/sheet").SheetScopes;
+        }, import("@tamagui/core").StackStyleBase, {
+            elevation?: number | false | import("@tamagui/core").Size | undefined;
+        }, import("@tamagui/core").StaticConfigPublic];
     };
-    Overlay: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/ui").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-        h?: import("@tamagui/ui").ViewProps['height'];
-        o?: import("@tamagui/ui").ViewProps['opacity'];
-        pos?: import("@tamagui/ui").ViewProps['position'];
+    Overlay: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+        h?: import("@tamagui/core").ViewProps['height'];
+        o?: import("@tamagui/core").ViewProps['opacity'];
+        pos?: import("@tamagui/core").ViewProps['position'];
     }, "scope"> & {
-        scope?: import("@tamagui/ui").SheetScopes;
-    }, "elevation" | "open" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
-        elevation?: number | false | import("@tamagui/web").Size | undefined;
+        scope?: import("@tamagui/sheet").SheetScopes;
+    }, "elevation" | "open" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
+        elevation?: number | false | import("@tamagui/core").Size | undefined;
         open?: boolean | undefined;
-    }> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-        ref?: import("react").Ref<import("@tamagui/ui").TamaguiElement> | undefined;
-    }> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/ui").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-        h?: import("@tamagui/ui").ViewProps['height'];
-        o?: import("@tamagui/ui").ViewProps['opacity'];
-        pos?: import("@tamagui/ui").ViewProps['position'];
+    }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+        ref?: import("react").Ref<import("@tamagui/core").TamaguiElement> | undefined;
+    }> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+        h?: import("@tamagui/core").ViewProps['height'];
+        o?: import("@tamagui/core").ViewProps['opacity'];
+        pos?: import("@tamagui/core").ViewProps['position'];
     }, "scope"> & {
-        scope?: import("@tamagui/ui").SheetScopes;
-    }, import("@tamagui/web").StackStyleBase, {
-        elevation?: number | false | import("@tamagui/web").Size | undefined;
+        scope?: import("@tamagui/sheet").SheetScopes;
+    }, import("@tamagui/core").StackStyleBase, {
+        elevation?: number | false | import("@tamagui/core").Size | undefined;
         open?: boolean | undefined;
-    }, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
-        __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/ui").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-            h?: import("@tamagui/ui").ViewProps['height'];
-            o?: import("@tamagui/ui").ViewProps['opacity'];
-            pos?: import("@tamagui/ui").ViewProps['position'];
+    }, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
+        __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+            h?: import("@tamagui/core").ViewProps['height'];
+            o?: import("@tamagui/core").ViewProps['opacity'];
+            pos?: import("@tamagui/core").ViewProps['position'];
         }, "scope"> & {
-            scope?: import("@tamagui/ui").SheetScopes;
-        }, import("@tamagui/web").StackStyleBase, {
-            elevation?: number | false | import("@tamagui/web").Size | undefined;
+            scope?: import("@tamagui/sheet").SheetScopes;
+        }, import("@tamagui/core").StackStyleBase, {
+            elevation?: number | false | import("@tamagui/core").Size | undefined;
             open?: boolean | undefined;
-        }, import("@tamagui/web").StaticConfigPublic];
+        }, import("@tamagui/core").StaticConfigPublic];
     };
-    Handle: import("@tamagui/ui").RefComponent<import("@tamagui/ui").TamaguiElement, import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/ui").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-        h?: import("@tamagui/ui").ViewProps['height'];
-        o?: import("@tamagui/ui").ViewProps['opacity'];
-        pos?: import("@tamagui/ui").ViewProps['position'];
+    Handle: import("@tamagui/core").RefComponent<import("@tamagui/core").TamaguiElement, import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+        h?: import("@tamagui/core").ViewProps['height'];
+        o?: import("@tamagui/core").ViewProps['opacity'];
+        pos?: import("@tamagui/core").ViewProps['position'];
     }, "scope"> & {
-        scope?: import("@tamagui/ui").SheetScopes;
-    }, import("@tamagui/web").StackStyleBase, {
-        elevation?: number | false | import("@tamagui/web").Size | undefined;
+        scope?: import("@tamagui/sheet").SheetScopes;
+    }, import("@tamagui/core").StackStyleBase, {
+        elevation?: number | false | import("@tamagui/core").Size | undefined;
         open?: boolean | undefined;
     }>>;
-    ScrollView: import("react").FunctionComponent<Omit<import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/ui").ScrollViewRef> & Omit<Omit<import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/ui").ScrollViewRef>, keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-        h?: import("@tamagui/web").FlatStyleValue<number | "unset" | import("@tamagui/react-native-types/src").AnimatedNode | import("@tamagui/ui").GetThemeValueForKey<"height"> | null | undefined>;
-        o?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/react-native-types/src").AnimatableNumericValue | import("@tamagui/ui").GetThemeValueForKey<"opacity"> | undefined>;
-        pos?: import("@tamagui/web").FlatStyleValue<"absolute" | "fixed" | "relative" | "static" | "sticky" | "unset" | undefined>;
+    ScrollView: import("react").FunctionComponent<Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef> & Omit<Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>, keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+        h?: import("@tamagui/core").FlatStyleValue<number | "unset" | import("@tamagui/react-native-types/src").AnimatedNode | import("@tamagui/core").GetThemeValueForKey<"height"> | null | undefined>;
+        o?: import("@tamagui/core").FlatStyleValue<"unset" | import("@tamagui/react-native-types/src").AnimatableNumericValue | import("@tamagui/core").GetThemeValueForKey<"opacity"> | undefined>;
+        pos?: import("@tamagui/core").FlatStyleValue<"absolute" | "fixed" | "relative" | "static" | "sticky" | "unset" | undefined>;
     }, "scope"> & {
-        scope?: import("@tamagui/ui").SheetScopes;
-    }, keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-        ref?: import("react").Ref<import("@tamagui/ui").ScrollViewRef> | undefined;
-    }> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/ui").ScrollViewRef, import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/ui").ScrollViewRef> & Omit<Omit<import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/ui").ScrollViewRef>, keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-        h?: import("@tamagui/web").FlatStyleValue<number | "unset" | import("@tamagui/react-native-types/src").AnimatedNode | import("@tamagui/ui").GetThemeValueForKey<"height"> | null | undefined>;
-        o?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/react-native-types/src").AnimatableNumericValue | import("@tamagui/ui").GetThemeValueForKey<"opacity"> | undefined>;
-        pos?: import("@tamagui/web").FlatStyleValue<"absolute" | "fixed" | "relative" | "static" | "sticky" | "unset" | undefined>;
+        scope?: import("@tamagui/sheet").SheetScopes;
+    }, keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+        ref?: import("react").Ref<import("@tamagui/scroll-view").ScrollViewRef> | undefined;
+    }> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/scroll-view").ScrollViewRef, import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef> & Omit<Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>, keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+        h?: import("@tamagui/core").FlatStyleValue<number | "unset" | import("@tamagui/react-native-types/src").AnimatedNode | import("@tamagui/core").GetThemeValueForKey<"height"> | null | undefined>;
+        o?: import("@tamagui/core").FlatStyleValue<"unset" | import("@tamagui/react-native-types/src").AnimatableNumericValue | import("@tamagui/core").GetThemeValueForKey<"opacity"> | undefined>;
+        pos?: import("@tamagui/core").FlatStyleValue<"absolute" | "fixed" | "relative" | "static" | "sticky" | "unset" | undefined>;
     }, "scope"> & {
-        scope?: import("@tamagui/ui").SheetScopes;
-    }, import("@tamagui/web").StackStyleBase, {}, {
+        scope?: import("@tamagui/sheet").SheetScopes;
+    }, import("@tamagui/core").StackStyleBase, {}, {
         acceptsClassName: true;
         neverFlatten: true;
-    } & import("@tamagui/web").StaticConfigPublic> & Omit<{
+    } & import("@tamagui/core").StaticConfigPublic> & Omit<{
         acceptsClassName: true;
         neverFlatten: true;
-    } & import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
-        __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/ui").ScrollViewRef, import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/ui").ScrollViewRef> & Omit<Omit<import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/ui").ScrollViewRef>, keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-            h?: import("@tamagui/web").FlatStyleValue<number | "unset" | import("@tamagui/react-native-types/src").AnimatedNode | import("@tamagui/ui").GetThemeValueForKey<"height"> | null | undefined>;
-            o?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/react-native-types/src").AnimatableNumericValue | import("@tamagui/ui").GetThemeValueForKey<"opacity"> | undefined>;
-            pos?: import("@tamagui/web").FlatStyleValue<"absolute" | "fixed" | "relative" | "static" | "sticky" | "unset" | undefined>;
+    } & import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
+        __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/scroll-view").ScrollViewRef, import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef> & Omit<Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>, keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+            h?: import("@tamagui/core").FlatStyleValue<number | "unset" | import("@tamagui/react-native-types/src").AnimatedNode | import("@tamagui/core").GetThemeValueForKey<"height"> | null | undefined>;
+            o?: import("@tamagui/core").FlatStyleValue<"unset" | import("@tamagui/react-native-types/src").AnimatableNumericValue | import("@tamagui/core").GetThemeValueForKey<"opacity"> | undefined>;
+            pos?: import("@tamagui/core").FlatStyleValue<"absolute" | "fixed" | "relative" | "static" | "sticky" | "unset" | undefined>;
         }, "scope"> & {
-            scope?: import("@tamagui/ui").SheetScopes;
-        }, import("@tamagui/web").StackStyleBase, {}, {
+            scope?: import("@tamagui/sheet").SheetScopes;
+        }, import("@tamagui/core").StackStyleBase, {}, {
             acceptsClassName: true;
             neverFlatten: true;
-        } & import("@tamagui/web").StaticConfigPublic];
+        } & import("@tamagui/core").StaticConfigPublic];
     };
-    Root: import("@tamagui/ui").RefComponent<import("@tamagui/react-native-types/src").View, SheetProps>;
-    Controlled: ((props: Omit<SheetProps, "onOpenChange" | "open"> & import("@tamagui/ui").RefProp<import("@tamagui/react-native-types/src").View>) => import("react").ReactNode) & {
+    Root: import("@tamagui/core").RefComponent<import("@tamagui/react-native-types/src").View, SheetProps>;
+    Controlled: ((props: Omit<SheetProps, "onOpenChange" | "open"> & import("@tamagui/core").RefProp<import("@tamagui/react-native-types/src").View>) => import("react").ReactNode) & {
         displayName?: string;
         propTypes?: any;
     } & {
-        Container: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/ui").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-            h?: import("@tamagui/ui").ViewProps['height'];
-            o?: import("@tamagui/ui").ViewProps['opacity'];
-            pos?: import("@tamagui/ui").ViewProps['position'];
+        Container: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+            h?: import("@tamagui/core").ViewProps['height'];
+            o?: import("@tamagui/core").ViewProps['opacity'];
+            pos?: import("@tamagui/core").ViewProps['position'];
         } & {
             adjustPaddingForOffscreenContent?: boolean;
         }, "scope"> & {
-            scope?: import("@tamagui/ui").SheetScopes;
-        }, "elevation" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
-            elevation?: number | false | import("@tamagui/web").Size | undefined;
-        }> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-            ref?: import("react").Ref<import("@tamagui/ui").TamaguiElement> | undefined;
-        }> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/ui").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-            h?: import("@tamagui/ui").ViewProps['height'];
-            o?: import("@tamagui/ui").ViewProps['opacity'];
-            pos?: import("@tamagui/ui").ViewProps['position'];
+            scope?: import("@tamagui/sheet").SheetScopes;
+        }, "elevation" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
+            elevation?: number | false | import("@tamagui/core").Size | undefined;
+        }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+            ref?: import("react").Ref<import("@tamagui/core").TamaguiElement> | undefined;
+        }> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+            h?: import("@tamagui/core").ViewProps['height'];
+            o?: import("@tamagui/core").ViewProps['opacity'];
+            pos?: import("@tamagui/core").ViewProps['position'];
         } & {
             adjustPaddingForOffscreenContent?: boolean;
         }, "scope"> & {
-            scope?: import("@tamagui/ui").SheetScopes;
-        }, import("@tamagui/web").StackStyleBase, {
-            elevation?: number | false | import("@tamagui/web").Size | undefined;
-        }, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
-            __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/ui").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-                h?: import("@tamagui/ui").ViewProps['height'];
-                o?: import("@tamagui/ui").ViewProps['opacity'];
-                pos?: import("@tamagui/ui").ViewProps['position'];
+            scope?: import("@tamagui/sheet").SheetScopes;
+        }, import("@tamagui/core").StackStyleBase, {
+            elevation?: number | false | import("@tamagui/core").Size | undefined;
+        }, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
+            __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+                h?: import("@tamagui/core").ViewProps['height'];
+                o?: import("@tamagui/core").ViewProps['opacity'];
+                pos?: import("@tamagui/core").ViewProps['position'];
             } & {
                 adjustPaddingForOffscreenContent?: boolean;
             }, "scope"> & {
-                scope?: import("@tamagui/ui").SheetScopes;
-            }, import("@tamagui/web").StackStyleBase, {
-                elevation?: number | false | import("@tamagui/web").Size | undefined;
-            }, import("@tamagui/web").StaticConfigPublic];
+                scope?: import("@tamagui/sheet").SheetScopes;
+            }, import("@tamagui/core").StackStyleBase, {
+                elevation?: number | false | import("@tamagui/core").Size | undefined;
+            }, import("@tamagui/core").StaticConfigPublic];
         };
-        Background: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/ui").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-            h?: import("@tamagui/ui").ViewProps['height'];
-            o?: import("@tamagui/ui").ViewProps['opacity'];
-            pos?: import("@tamagui/ui").ViewProps['position'];
+        Background: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+            h?: import("@tamagui/core").ViewProps['height'];
+            o?: import("@tamagui/core").ViewProps['opacity'];
+            pos?: import("@tamagui/core").ViewProps['position'];
         } & {
             disableHideBottomOverflow?: boolean;
         }, "scope"> & {
-            scope?: import("@tamagui/ui").SheetScopes;
-        }, "elevation" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
-            elevation?: number | false | import("@tamagui/web").Size | undefined;
-        }> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-            ref?: import("react").Ref<import("@tamagui/ui").TamaguiElement> | undefined;
-        }> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/ui").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-            h?: import("@tamagui/ui").ViewProps['height'];
-            o?: import("@tamagui/ui").ViewProps['opacity'];
-            pos?: import("@tamagui/ui").ViewProps['position'];
+            scope?: import("@tamagui/sheet").SheetScopes;
+        }, "elevation" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
+            elevation?: number | false | import("@tamagui/core").Size | undefined;
+        }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+            ref?: import("react").Ref<import("@tamagui/core").TamaguiElement> | undefined;
+        }> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+            h?: import("@tamagui/core").ViewProps['height'];
+            o?: import("@tamagui/core").ViewProps['opacity'];
+            pos?: import("@tamagui/core").ViewProps['position'];
         } & {
             disableHideBottomOverflow?: boolean;
         }, "scope"> & {
-            scope?: import("@tamagui/ui").SheetScopes;
-        }, import("@tamagui/web").StackStyleBase, {
-            elevation?: number | false | import("@tamagui/web").Size | undefined;
-        }, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
-            __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/ui").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-                h?: import("@tamagui/ui").ViewProps['height'];
-                o?: import("@tamagui/ui").ViewProps['opacity'];
-                pos?: import("@tamagui/ui").ViewProps['position'];
+            scope?: import("@tamagui/sheet").SheetScopes;
+        }, import("@tamagui/core").StackStyleBase, {
+            elevation?: number | false | import("@tamagui/core").Size | undefined;
+        }, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
+            __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+                h?: import("@tamagui/core").ViewProps['height'];
+                o?: import("@tamagui/core").ViewProps['opacity'];
+                pos?: import("@tamagui/core").ViewProps['position'];
             } & {
                 disableHideBottomOverflow?: boolean;
             }, "scope"> & {
-                scope?: import("@tamagui/ui").SheetScopes;
-            }, import("@tamagui/web").StackStyleBase, {
-                elevation?: number | false | import("@tamagui/web").Size | undefined;
-            }, import("@tamagui/web").StaticConfigPublic];
+                scope?: import("@tamagui/sheet").SheetScopes;
+            }, import("@tamagui/core").StackStyleBase, {
+                elevation?: number | false | import("@tamagui/core").Size | undefined;
+            }, import("@tamagui/core").StaticConfigPublic];
         };
-        Overlay: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/ui").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-            h?: import("@tamagui/ui").ViewProps['height'];
-            o?: import("@tamagui/ui").ViewProps['opacity'];
-            pos?: import("@tamagui/ui").ViewProps['position'];
+        Overlay: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+            h?: import("@tamagui/core").ViewProps['height'];
+            o?: import("@tamagui/core").ViewProps['opacity'];
+            pos?: import("@tamagui/core").ViewProps['position'];
         }, "scope"> & {
-            scope?: import("@tamagui/ui").SheetScopes;
-        }, "elevation" | "open" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
-            elevation?: number | false | import("@tamagui/web").Size | undefined;
+            scope?: import("@tamagui/sheet").SheetScopes;
+        }, "elevation" | "open" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
+            elevation?: number | false | import("@tamagui/core").Size | undefined;
             open?: boolean | undefined;
-        }> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-            ref?: import("react").Ref<import("@tamagui/ui").TamaguiElement> | undefined;
-        }> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/ui").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-            h?: import("@tamagui/ui").ViewProps['height'];
-            o?: import("@tamagui/ui").ViewProps['opacity'];
-            pos?: import("@tamagui/ui").ViewProps['position'];
+        }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+            ref?: import("react").Ref<import("@tamagui/core").TamaguiElement> | undefined;
+        }> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+            h?: import("@tamagui/core").ViewProps['height'];
+            o?: import("@tamagui/core").ViewProps['opacity'];
+            pos?: import("@tamagui/core").ViewProps['position'];
         }, "scope"> & {
-            scope?: import("@tamagui/ui").SheetScopes;
-        }, import("@tamagui/web").StackStyleBase, {
-            elevation?: number | false | import("@tamagui/web").Size | undefined;
+            scope?: import("@tamagui/sheet").SheetScopes;
+        }, import("@tamagui/core").StackStyleBase, {
+            elevation?: number | false | import("@tamagui/core").Size | undefined;
             open?: boolean | undefined;
-        }, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
-            __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/ui").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-                h?: import("@tamagui/ui").ViewProps['height'];
-                o?: import("@tamagui/ui").ViewProps['opacity'];
-                pos?: import("@tamagui/ui").ViewProps['position'];
+        }, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
+            __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+                h?: import("@tamagui/core").ViewProps['height'];
+                o?: import("@tamagui/core").ViewProps['opacity'];
+                pos?: import("@tamagui/core").ViewProps['position'];
             }, "scope"> & {
-                scope?: import("@tamagui/ui").SheetScopes;
-            }, import("@tamagui/web").StackStyleBase, {
-                elevation?: number | false | import("@tamagui/web").Size | undefined;
+                scope?: import("@tamagui/sheet").SheetScopes;
+            }, import("@tamagui/core").StackStyleBase, {
+                elevation?: number | false | import("@tamagui/core").Size | undefined;
                 open?: boolean | undefined;
-            }, import("@tamagui/web").StaticConfigPublic];
+            }, import("@tamagui/core").StaticConfigPublic];
         };
-        Handle: import("@tamagui/ui").RefComponent<import("@tamagui/ui").TamaguiElement, import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/ui").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-            h?: import("@tamagui/ui").ViewProps['height'];
-            o?: import("@tamagui/ui").ViewProps['opacity'];
-            pos?: import("@tamagui/ui").ViewProps['position'];
+        Handle: import("@tamagui/core").RefComponent<import("@tamagui/core").TamaguiElement, import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+            h?: import("@tamagui/core").ViewProps['height'];
+            o?: import("@tamagui/core").ViewProps['opacity'];
+            pos?: import("@tamagui/core").ViewProps['position'];
         }, "scope"> & {
-            scope?: import("@tamagui/ui").SheetScopes;
-        }, import("@tamagui/web").StackStyleBase, {
-            elevation?: number | false | import("@tamagui/web").Size | undefined;
+            scope?: import("@tamagui/sheet").SheetScopes;
+        }, import("@tamagui/core").StackStyleBase, {
+            elevation?: number | false | import("@tamagui/core").Size | undefined;
             open?: boolean | undefined;
         }>>;
-        ScrollView: import("react").FunctionComponent<Omit<import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/ui").ScrollViewRef> & Omit<Omit<import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/ui").ScrollViewRef>, keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-            h?: import("@tamagui/web").FlatStyleValue<number | "unset" | import("@tamagui/react-native-types/src").AnimatedNode | import("@tamagui/ui").GetThemeValueForKey<"height"> | null | undefined>;
-            o?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/react-native-types/src").AnimatableNumericValue | import("@tamagui/ui").GetThemeValueForKey<"opacity"> | undefined>;
-            pos?: import("@tamagui/web").FlatStyleValue<"absolute" | "fixed" | "relative" | "static" | "sticky" | "unset" | undefined>;
+        ScrollView: import("react").FunctionComponent<Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef> & Omit<Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>, keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+            h?: import("@tamagui/core").FlatStyleValue<number | "unset" | import("@tamagui/react-native-types/src").AnimatedNode | import("@tamagui/core").GetThemeValueForKey<"height"> | null | undefined>;
+            o?: import("@tamagui/core").FlatStyleValue<"unset" | import("@tamagui/react-native-types/src").AnimatableNumericValue | import("@tamagui/core").GetThemeValueForKey<"opacity"> | undefined>;
+            pos?: import("@tamagui/core").FlatStyleValue<"absolute" | "fixed" | "relative" | "static" | "sticky" | "unset" | undefined>;
         }, "scope"> & {
-            scope?: import("@tamagui/ui").SheetScopes;
-        }, keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-            ref?: import("react").Ref<import("@tamagui/ui").ScrollViewRef> | undefined;
-        }> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/ui").ScrollViewRef, import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/ui").ScrollViewRef> & Omit<Omit<import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/ui").ScrollViewRef>, keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-            h?: import("@tamagui/web").FlatStyleValue<number | "unset" | import("@tamagui/react-native-types/src").AnimatedNode | import("@tamagui/ui").GetThemeValueForKey<"height"> | null | undefined>;
-            o?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/react-native-types/src").AnimatableNumericValue | import("@tamagui/ui").GetThemeValueForKey<"opacity"> | undefined>;
-            pos?: import("@tamagui/web").FlatStyleValue<"absolute" | "fixed" | "relative" | "static" | "sticky" | "unset" | undefined>;
+            scope?: import("@tamagui/sheet").SheetScopes;
+        }, keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+            ref?: import("react").Ref<import("@tamagui/scroll-view").ScrollViewRef> | undefined;
+        }> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/scroll-view").ScrollViewRef, import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef> & Omit<Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>, keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+            h?: import("@tamagui/core").FlatStyleValue<number | "unset" | import("@tamagui/react-native-types/src").AnimatedNode | import("@tamagui/core").GetThemeValueForKey<"height"> | null | undefined>;
+            o?: import("@tamagui/core").FlatStyleValue<"unset" | import("@tamagui/react-native-types/src").AnimatableNumericValue | import("@tamagui/core").GetThemeValueForKey<"opacity"> | undefined>;
+            pos?: import("@tamagui/core").FlatStyleValue<"absolute" | "fixed" | "relative" | "static" | "sticky" | "unset" | undefined>;
         }, "scope"> & {
-            scope?: import("@tamagui/ui").SheetScopes;
-        }, import("@tamagui/web").StackStyleBase, {}, {
+            scope?: import("@tamagui/sheet").SheetScopes;
+        }, import("@tamagui/core").StackStyleBase, {}, {
             acceptsClassName: true;
             neverFlatten: true;
-        } & import("@tamagui/web").StaticConfigPublic> & Omit<{
+        } & import("@tamagui/core").StaticConfigPublic> & Omit<{
             acceptsClassName: true;
             neverFlatten: true;
-        } & import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
-            __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/ui").ScrollViewRef, import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/ui").ScrollViewRef> & Omit<Omit<import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/ui").ScrollViewRef>, keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-                h?: import("@tamagui/web").FlatStyleValue<number | "unset" | import("@tamagui/react-native-types/src").AnimatedNode | import("@tamagui/ui").GetThemeValueForKey<"height"> | null | undefined>;
-                o?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/react-native-types/src").AnimatableNumericValue | import("@tamagui/ui").GetThemeValueForKey<"opacity"> | undefined>;
-                pos?: import("@tamagui/web").FlatStyleValue<"absolute" | "fixed" | "relative" | "static" | "sticky" | "unset" | undefined>;
+        } & import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
+            __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/scroll-view").ScrollViewRef, import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef> & Omit<Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>, keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+                h?: import("@tamagui/core").FlatStyleValue<number | "unset" | import("@tamagui/react-native-types/src").AnimatedNode | import("@tamagui/core").GetThemeValueForKey<"height"> | null | undefined>;
+                o?: import("@tamagui/core").FlatStyleValue<"unset" | import("@tamagui/react-native-types/src").AnimatableNumericValue | import("@tamagui/core").GetThemeValueForKey<"opacity"> | undefined>;
+                pos?: import("@tamagui/core").FlatStyleValue<"absolute" | "fixed" | "relative" | "static" | "sticky" | "unset" | undefined>;
             }, "scope"> & {
-                scope?: import("@tamagui/ui").SheetScopes;
-            }, import("@tamagui/web").StackStyleBase, {}, {
+                scope?: import("@tamagui/sheet").SheetScopes;
+            }, import("@tamagui/core").StackStyleBase, {}, {
                 acceptsClassName: true;
                 neverFlatten: true;
-            } & import("@tamagui/web").StaticConfigPublic];
+            } & import("@tamagui/core").StaticConfigPublic];
         };
     };
     useAnimatedPosition: typeof import("@tamagui/sheet/types/SheetContext").useAnimatedPosition;

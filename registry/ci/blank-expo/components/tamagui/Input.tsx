@@ -6,12 +6,11 @@
 import {
   createStyledHOC,
   type GetProps,
-  Input as UiInput,
   styled,
-  TextArea as UiTextArea,
   Theme,
   type ThemeProps,
-} from '@tamagui/ui'
+} from '@tamagui/core'
+import { Input as UiInput, TextArea as UiTextArea } from '@tamagui/input'
 
 const inputSkin = {
   fontFamily: 'body',
