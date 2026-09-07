@@ -1412,7 +1412,6 @@ export declare const defaultConfig: {
             readonly radius: 'lg';
         };
     };
-    selectionStyles: typeof import("./settings").selectionStyles;
     settings: {
         mediaQueryDefaultActive: {
             touchable: boolean;
@@ -1440,6 +1439,7 @@ export declare const defaultConfig: {
             'height-md': boolean;
             'height-lg': boolean;
         };
+        selectionStyles: typeof import("./settings").selectionStyles;
         defaultFont: string;
         fastSchemeChange: true;
         shouldAddPrefersColorThemes: true;

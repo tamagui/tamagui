@@ -71,16 +71,12 @@ export const getSetting = <Key extends keyof GenericTamaguiSettings>(
   if (process.env.NODE_ENV === 'development') {
     if (!config) throw new Error(haventCalledErrorMessage)
   }
-  return (
-    config!.settings[key] ??
-    // @ts-expect-error
-    config[key]
-  )
+  return config!.settings[key]
 }
 
 export function getStyleCompat(): StyleCompat {
   const config = getConfigFromGlobalOrLocal()
-  return (config?.settings.styleCompat ?? (config as any)?.styleCompat) || 'web'
+  return config?.settings?.styleCompat || 'web'
 }
 
 export const setConfig = (next: TamaguiInternalConfig) => {

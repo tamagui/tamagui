@@ -11,6 +11,7 @@ export const selectionStyles = (theme) =>
 
 export const settings = {
   mediaQueryDefaultActive,
+  selectionStyles,
   defaultFont: 'body',
   fastSchemeChange: true,
   shouldAddPrefersColorThemes: true,

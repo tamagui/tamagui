@@ -33,7 +33,6 @@ export type V5DefaultConfig = {
   themes: V5Themes
   tokens: V5Tokens
   fonts: V5Fonts
-  selectionStyles: typeof selectionStyles
   settings: V5Settings
   sizes: typeof sizes
 }
@@ -46,6 +45,5 @@ export const defaultConfig: V5DefaultConfig = {
   tokens,
   fonts,
   sizes,
-  selectionStyles,
   settings,
 }

@@ -29,6 +29,7 @@ export declare const settings: {
         'height-md': boolean;
         'height-lg': boolean;
     };
+    selectionStyles: typeof selectionStyles;
     defaultFont: string;
     fastSchemeChange: true;
     shouldAddPrefersColorThemes: true;

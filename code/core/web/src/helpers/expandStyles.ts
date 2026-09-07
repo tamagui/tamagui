@@ -11,7 +11,6 @@ export function fixStyles(style: Record<string, any>) {
     }
   }
 
-  // TODO deprecate for web-style shadows
   if (
     style.shadowRadius != null ||
     style.shadowColor ||
@@ -38,5 +37,10 @@ const borderDefaults = {
   borderTopWidth: nativeStyle || 'borderTopStyle',
   borderLeftWidth: nativeStyle || 'borderLeftStyle',
   borderRightWidth: nativeStyle || 'borderRightStyle',
-  // TODO: need to add borderBlock and borderInline here, but they are alot and might impact performance
+  borderBlockWidth: nativeStyle || 'borderBlockStyle',
+  borderBlockStartWidth: nativeStyle || 'borderBlockStartStyle',
+  borderBlockEndWidth: nativeStyle || 'borderBlockEndStyle',
+  borderInlineWidth: nativeStyle || 'borderInlineStyle',
+  borderInlineStartWidth: nativeStyle || 'borderInlineStartStyle',
+  borderInlineEndWidth: nativeStyle || 'borderInlineEndStyle',
 }

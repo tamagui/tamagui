@@ -10,7 +10,7 @@ import type {
 } from '../types'
 
 // only cache tamagui styles
-// TODO merge totalSelectorsInserted and allSelectors?
+// kept separate: allSelectors stores rule text for inspection, totalSelectorsInserted counts stylesheet insertions
 const scannedCache = new WeakMap<CSSStyleSheet, string>()
 const totalSelectorsInserted = new Map<string, number>()
 const allSelectors: Record<string, string> = {}

@@ -69,14 +69,8 @@ export const Theme = createRefComponent(function Theme(
       )
     : props.children
 
-  if (ref) {
-    try {
-      React.Children.only(finalChildren)
-      // TODO deprecate react 18 and then avoid clone here and just pass prop
-      finalChildren = cloneElement(finalChildren, { ref })
-    } catch {
-      //ok
-    }
+  if (ref && isValidElement(finalChildren)) {
+    finalChildren = cloneElement(finalChildren, { ref } as any)
   }
 
   const stateRef = useRef({

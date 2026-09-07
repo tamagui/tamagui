@@ -239,7 +239,6 @@ const alignedConfig = {
   shorthands,
   fonts,
   sizes,
-  selectionStyles,
   settings,
 }
 

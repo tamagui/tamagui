@@ -2,7 +2,7 @@ import type { Shorthands } from '@tamagui/shorthands/v4';
 import type { V5Themes, V5Tokens } from '@tamagui/themes/v5';
 import type { V5Fonts } from './v5-fonts';
 import type { Media as V5Media } from './media';
-import { selectionStyles, sizes } from './settings';
+import { sizes } from './settings';
 import type { Settings as V5Settings } from './settings';
 export { shorthands } from '@tamagui/shorthands/v4';
 export { sizes } from './settings';
@@ -19,7 +19,6 @@ export type V5DefaultConfig = {
     themes: V5Themes;
     tokens: V5Tokens;
     fonts: V5Fonts;
-    selectionStyles: typeof selectionStyles;
     settings: V5Settings;
     sizes: typeof sizes;
 };

@@ -42,7 +42,6 @@ const configuredThemes =
 export const config = {
   shorthands,
   tokens,
-  selectionStyles,
   sizes,
   themes: configuredThemes,
   fonts,
@@ -50,6 +49,7 @@ export const config = {
   media,
   settings: {
     ...defaultSettings,
+    selectionStyles,
     mediaQueryDefaultActive,
     allowedStyleValues: 'somewhat-strict-web',
     // allow both shorthands and longhand names for flexibility

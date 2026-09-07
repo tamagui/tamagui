@@ -16,7 +16,13 @@ const UNIT_RE = /^([+-]?\s*\d*\.?\d+)(px|rem|em|vw|vh|vmin|vmax|cqi|cqw|cqh|cqb)
 export function isDynamicUnitValue(value: unknown): boolean {
   if (typeof value !== 'string') return false
   const trimmed = value.trim()
-  if (trimmed.startsWith('clamp(') || trimmed.startsWith('CLAMP(')) return true
+  if (
+    trimmed.startsWith('clamp(') ||
+    trimmed.startsWith('CLAMP(') ||
+    trimmed.startsWith('calc(') ||
+    trimmed.startsWith('CALC(')
+  )
+    return true
   // a unit suffix only counts when a number precedes it. matching the suffix
   // alone turns every word ending in one into a length: 'System' ends in `em`
   // and resolved to 0, wiping out fontFamily
@@ -107,6 +113,65 @@ export function resolveSingleUnit(val: string, ctx: UnitContext): number {
   }
 }
 
+export function evaluateCalc(expr: string, ctx: UnitContext): number {
+  let s = expr.trim()
+  if (s.toLowerCase().startsWith('calc(') && s.endsWith(')')) {
+    s = s.slice(5, -1).trim()
+  }
+
+  const tokens = s.match(/[()*/+-]|[^\s()*/+-]+/g) || []
+  let pos = 0
+  const peek = () => tokens[pos]
+  const consume = () => tokens[pos++]
+
+  function parseExpression(): number {
+    let left = parseTerm()
+    while (peek() === '+' || peek() === '-') {
+      const op = consume()
+      const right = parseTerm()
+      if (op === '+') left += right
+      else left -= right
+    }
+    return left
+  }
+
+  function parseTerm(): number {
+    let left = parseFactor()
+    while (peek() === '*' || peek() === '/') {
+      const op = consume()
+      const right = parseFactor()
+      if (op === '*') left *= right
+      else left = right !== 0 ? left / right : 0
+    }
+    return left
+  }
+
+  function parseFactor(): number {
+    if (peek() === '+') {
+      consume()
+      return parseFactor()
+    }
+    if (peek() === '-') {
+      consume()
+      return -parseFactor()
+    }
+    return parsePrimary()
+  }
+
+  function parsePrimary(): number {
+    if (peek() === '(') {
+      consume()
+      const val = parseExpression()
+      if (peek() === ')') consume()
+      return val
+    }
+    const token = consume()
+    return token ? resolveSingleUnit(token, ctx) : 0
+  }
+
+  return parseExpression()
+}
+
 export function resolveClamp(val: string, ctx: UnitContext): number {
   // Extract content between first '(' and last ')'
   const start = val.indexOf('(')
@@ -119,25 +184,7 @@ export function resolveClamp(val: string, ctx: UnitContext): number {
 
   const min = resolveSingleUnit(args[0], ctx)
   const max = resolveSingleUnit(args[2], ctx)
-
-  // Preferred expression: strip optional calc() wrapper
-  let prefStr = args[1].trim()
-  if (prefStr.toLowerCase().startsWith('calc(') && prefStr.endsWith(')')) {
-    prefStr = prefStr.slice(5, -1).trim()
-  }
-
-  // Split into signed terms (e.g. "2.18cqi + 9.82px" or "2cqi - 5px")
-  // TODO: this regex only handles addition/subtraction terms. Multiplication (*)
-  // and division (/) in raw user calc() expressions are not supported yet.
-  let pref = 0
-  const terms = prefStr.match(/([+-]?\s*[^+-]+)/g)
-  if (terms && terms.length > 0) {
-    for (const term of terms) {
-      pref += resolveSingleUnit(term, ctx)
-    }
-  } else {
-    pref = resolveSingleUnit(prefStr, ctx)
-  }
+  const pref = evaluateCalc(args[1], ctx)
 
   const lower = Math.min(min, max)
   const upper = Math.max(min, max)
@@ -181,6 +228,10 @@ export function resolveNativeUnits(key: string, value: any, styleState?: any): a
 
   if (trimmed.startsWith('clamp(') || trimmed.startsWith('CLAMP(')) {
     return resolveClamp(trimmed, ctx)
+  }
+
+  if (trimmed.startsWith('calc(') || trimmed.startsWith('CALC(')) {
+    return evaluateCalc(trimmed, ctx)
   }
 
   return resolveSingleUnit(trimmed, ctx)

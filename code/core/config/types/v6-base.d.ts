@@ -700,6 +700,7 @@ export declare const settings: {
         'height-md': boolean;
         'height-lg': boolean;
     };
+    selectionStyles: typeof selectionStyles;
     defaultFont: string;
     fastSchemeChange: true;
     shouldAddPrefersColorThemes: true;
@@ -1017,7 +1018,6 @@ declare const alignedConfig: {
             readonly radius: 'lg';
         };
     };
-    selectionStyles: typeof selectionStyles;
     settings: {
         mediaQueryDefaultActive: {
             touchable: boolean;
@@ -1045,6 +1045,7 @@ declare const alignedConfig: {
             'height-md': boolean;
             'height-lg': boolean;
         };
+        selectionStyles: typeof selectionStyles;
         defaultFont: string;
         fastSchemeChange: true;
         shouldAddPrefersColorThemes: true;
