@@ -29,7 +29,11 @@ export function SheetDragSurface({ panConfig, children }: SheetDragSurfaceProps)
   const domProps = { onClickCapture } as Record<string, unknown>
 
   return (
-    <View ref={ref} {...domProps} flex={1} width="100%" height="100%">
+    // flexBasis auto, like the container frame: under the web style compat
+    // `flex={1}` means a basis of 0, which collapses this surface inside the
+    // animated wrapper (that wrapper has no height of its own in fit mode), and
+    // a collapsed surface leaves the frame unmeasured and parked off-screen
+    <View ref={ref} {...domProps} flex={1} flexBasis="auto" width="100%" height="100%">
       {children}
     </View>
   )
