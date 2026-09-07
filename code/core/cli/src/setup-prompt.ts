@@ -1,15 +1,72 @@
-// The agent brief for setting Tamagui up in a project that has never had it.
+// the agent brief for setting tamagui up in a project that has never had it.
 // `tamagui migrate --from v2` is the sibling for projects that already run v2.
 //
-// Both are printed by the CLI rather than kept only in docs so that whatever
+// both are printed by the cli rather than kept only in docs so that whatever
 // version a user installs describes itself, instead of an agent reading a docs
 // page written against a different release.
 
-export function printSetupPrompt() {
-  process.stdout.write(getSetupPrompt())
+import prompts from 'prompts'
+
+export async function resolveStyleValueSyntax(
+  setting?: 'string' | 'object' | 'both'
+): Promise<'string' | 'object' | 'both'> {
+  if (setting === 'string' || setting === 'object' || setting === 'both') {
+    return setting
+  }
+  if (!process.stdin.isTTY) {
+    return 'both'
+  }
+  const response = await prompts({
+    type: 'select',
+    name: 'syntax',
+    message: 'Which style value syntax would you like to document?',
+    choices: [
+      { title: 'both - document both string and object syntax', value: 'both' },
+      { title: 'string - e.g. bg="red hover:blue"', value: 'string' },
+      { title: 'object - e.g. bg={{ default: "red", hover: "blue" }}', value: 'object' },
+    ],
+    initial: 0,
+  })
+  return response.syntax || 'both'
 }
 
-export function getSetupPrompt() {
+export async function setupPrompt(options?: any) {
+  const syntax = await resolveStyleValueSyntax(options?.styleValueSyntax)
+  const { generatePrompt } = require('./generate-prompt')
+  return await generatePrompt({
+    ...options,
+    styleValueSyntax: syntax,
+  })
+}
+
+export function printSetupPrompt(syntax?: 'string' | 'object' | 'both') {
+  if (syntax) {
+    process.stdout.write(getSetupPrompt(syntax))
+    return
+  }
+  if (!process.stdin.isTTY) {
+    process.stdout.write(getSetupPrompt('both'))
+    return
+  }
+  resolveStyleValueSyntax().then((chosen) => {
+    process.stdout.write(getSetupPrompt(chosen))
+  })
+}
+
+export function getSetupPrompt(syntax: 'string' | 'object' | 'both' = 'both') {
+  const styleExample =
+    syntax === 'string'
+      ? '```tsx\n<View bg="background hover:background-hover" p="4 sm:6" />\n```'
+      : syntax === 'object'
+        ? "```tsx\n<View bg={{ default: 'background', hover: 'background-hover' }} p={{ default: '4', sm: '6' }} />\n```"
+        : `\`\`\`tsx
+// string form
+<View bg="background hover:background-hover" p="4 sm:6" />
+
+// object form
+<View bg={{ default: 'background', hover: 'background-hover' }} p={{ default: '4', sm: '6' }} />
+\`\`\``
+
   return `You are adding Tamagui v3 to a project that does not use it yet.
 
 Work like a careful coding agent:
@@ -69,7 +126,7 @@ import { config } from './tamagui.config'
 export default function App() {
   return (
     <TamaguiProvider config={config} defaultTheme="light">
-      <View width={200} height={200} bg="background" />
+      <View w={200} h={200} bg="background" />
     </TamaguiProvider>
   )
 }
@@ -95,9 +152,7 @@ first.
 This is the part most likely to be written as if it were v2. In v3, token and
 theme names are bare, and conditions are flat clauses inside the value:
 
-\`\`\`tsx
-<View bg="background hover:background-hover" p="4 sm:6" />
-\`\`\`
+${styleExample}
 
 - No \`$\` sigils: \`bg="background"\`, not \`bg="$background"\`.
 - No condition objects: there is no \`hoverStyle={{ ... }}\` and no \`$sm={{ ... }}\`.

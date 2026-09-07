@@ -35,7 +35,7 @@ import { View, Text } from 'tamagui'
 import { Button } from 'tamagui'
 
 <Button>Default</Button>
-<Button size="4">Sized</Button>
+<Button size="md">Sized</Button>
 <Button theme="blue">Themed</Button>
 <Button variant="outlined">Outlined</Button>
 <Button circular icon={Plus} />
@@ -48,7 +48,7 @@ import { Button } from 'tamagui'
 import { Input } from 'tamagui'
 
 <Input placeholder="Enter text" />
-<Input size="4" />
+<Input size="md" />
 <Input secureTextEntry />  {/* password */}
 <Input keyboardType="email-address" />
 ```
@@ -213,10 +213,10 @@ import { Select } from 'tamagui'
   </Select.Trigger>
   <Select.Content>
     <Select.Viewport>
-      <Select.Item value="a" index={0}>
+      <Select.Item value="a">
         <Select.ItemText>Option A</Select.ItemText>
       </Select.Item>
-      <Select.Item value="b" index={1}>
+      <Select.Item value="b">
         <Select.ItemText>Option B</Select.ItemText>
       </Select.Item>
     </Select.Viewport>

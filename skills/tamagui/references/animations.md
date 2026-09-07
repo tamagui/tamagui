@@ -119,23 +119,21 @@ import { AnimatePresence } from 'tamagui'
 ### Per-Property Transition
 
 Override the transition for specific properties, or set distinct enter/exit
-transitions. Both the array and object forms work:
+transitions using the v3 TransitionConfig object:
 
 ```tsx
 <View
-  transition={[
-    'fast',
-    {
-      opacity: { type: 'timing', duration: 500 },
-      scale: { overshootClamping: true },
-    },
-  ]}
+  transition={{
+    preset: 'fast',
+    opacity: { duration: 500 },
+    scale: 'fast',
+  }}
   opacity={1}
   scale={1}
 />
 
 <View
-  transition={{ default: 'fast', enter: 'medium', exit: 'quick', delay: 100 }}
+  transition={{ preset: 'fast', enter: 'medium', exit: 'quick', delay: 100 }}
 />
 ```
 
@@ -235,7 +233,7 @@ const AnimatedCard = styled(View, {
 
 ```tsx
 <Dialog.Content
-  transition={['medium', { opacity: { overshootClamping: true } }]}
+  transition={{ preset: 'medium', opacity: 'fast' }}
   opacity="1 enter:0 exit:0"
   y="0 enter:-20px exit:10px"
   scale="1 enter:0.95 exit:0.98"

@@ -765,6 +765,13 @@ You can pass a `settings` object to `createTamagui`:
       description: `Will remove the type for the long-form versions of any shorthands you define.`,
     },
     {
+      name: 'styleValueSyntax',
+      required: false,
+      type: `'string' | 'object'`,
+      default: `undefined`,
+      description: `Restrict conditional style values to one syntax. Flat values accept both the string form (bg="red hover:blue") and the object form (bg={{ base: 'red', hover: 'blue' }}); set this to keep one of them, which narrows the types, makes the runtime warn on the other in development, and tells tamagui generate-prompt and the skills to only show that form.`,
+    },
+    {
       name: `allowedStyleValues`,
       required: false,
       type: 'AllowedStyleValuesSetting',
