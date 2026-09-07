@@ -139,7 +139,7 @@ export function SheetWebKeyboardAutoFocusCase() {
                 items="center"
                 justify="center"
               >
-                <Text color="gray11">filler content</Text>
+                <Text color="gray-700">filler content</Text>
               </YStack>
 
               <XStack gap="3" justify="flex-end">

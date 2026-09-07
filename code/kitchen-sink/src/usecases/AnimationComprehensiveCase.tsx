@@ -223,7 +223,7 @@ export function AnimationComprehensiveCase() {
 }
 
 const SectionHeader = ({ children }: { children: string }) => (
-  <Paragraph fontWeight="bold" fontSize="3" marginTop="3" color="blue10">
+  <Paragraph fontWeight="bold" fontSize="3" marginTop="3" color="blue-600">
     {children}
   </Paragraph>
 )
@@ -255,7 +255,7 @@ function Scenario01_OpacityBasic() {
       <Square
         ref={ref as any}
         transition="quick"
-        bg="blue10"
+        bg="blue-600"
         opacity={active ? 0.2 : 1}
         size={40}
         testID="scenario-01-target"
@@ -293,7 +293,7 @@ function Scenario02_ScaleBasic() {
       <Square
         ref={ref as any}
         transition="quick"
-        bg="green10"
+        bg="green-600"
         scale={active ? 1.5 : 1}
         size={40}
         testID="scenario-02-target"
@@ -331,7 +331,7 @@ function Scenario03_TranslateX() {
       <Square
         ref={ref as any}
         transition="quick"
-        bg="blue10"
+        bg="blue-600"
         x={active ? 50 : 0}
         size={40}
         testID="scenario-03-target"
@@ -369,7 +369,7 @@ function Scenario04_TranslateY() {
       <Square
         ref={ref as any}
         transition="quick"
-        bg="yellow10"
+        bg="yellow-600"
         y={active ? -30 : 0}
         size={40}
         testID="scenario-04-target"
@@ -407,7 +407,7 @@ function Scenario05_Rotate() {
       <Square
         ref={ref as any}
         transition="quick"
-        bg="red10"
+        bg="red-600"
         rotate={active ? '45deg' : '0deg'}
         size={40}
         testID="scenario-05-target"
@@ -446,7 +446,7 @@ function Scenario06_MultipleTransforms() {
       <Square
         ref={ref as any}
         transition="quick"
-        bg="red10"
+        bg="red-600"
         scale={active ? 1.2 : 1}
         x={active ? 20 : 0}
         rotate={active ? '15deg' : '0deg'}
@@ -487,7 +487,7 @@ function Scenario07_Width() {
         transition="quick"
         height={40}
         width={active ? 150 : 40}
-        bg="blue10"
+        bg="blue-600"
         testID="scenario-07-target"
         data-testid="scenario-07-target"
       />
@@ -523,7 +523,7 @@ function Scenario08_Height() {
         transition="quick"
         width={40}
         height={active ? 80 : 40}
-        bg="green10"
+        bg="green-600"
         testID="scenario-08-target"
         data-testid="scenario-08-target"
       />
@@ -562,7 +562,7 @@ function Scenario09_WidthAndHeight() {
         transition="quick"
         width={active ? 100 : 40}
         height={active ? 60 : 40}
-        bg="blue10"
+        bg="blue-600"
         testID="scenario-09-target"
         data-testid="scenario-09-target"
       />
@@ -600,7 +600,7 @@ function Scenario10_BorderRadius() {
         transition="quick"
         width={40}
         height={40}
-        bg="yellow10"
+        bg="yellow-600"
         borderRadius={active ? 20 : 0}
         testID="scenario-10-target"
         data-testid="scenario-10-target"
@@ -637,7 +637,7 @@ function Scenario11_BackgroundColor() {
       <Square
         ref={ref as any}
         transition="quick"
-        backgroundColor={`${active ? 'red10' : 'blue10'}`}
+        backgroundColor={`${active ? 'red-600' : 'blue-600'}`}
         size={40}
         testID="scenario-11-target"
         data-testid="scenario-11-target"
@@ -676,7 +676,7 @@ function Scenario12_TextColor() {
         transition="quick"
         fontSize="5"
         fontWeight="bold"
-        color={`${active ? 'red10' : 'blue10'}`}
+        color={`${active ? 'red-600' : 'blue-600'}`}
         testID="scenario-12-target"
         data-testid="scenario-12-target"
       >
@@ -716,7 +716,7 @@ function Scenario13_BorderColor() {
         transition="quick"
         bg="transparent"
         borderWidth={3}
-        borderColor={`${active ? 'red10' : 'blue10'}`}
+        borderColor={`${active ? 'red-600' : 'blue-600'}`}
         size={40}
         testID="scenario-13-target"
         data-testid="scenario-13-target"
@@ -753,7 +753,7 @@ function Scenario14_SpringBouncy() {
       <Square
         ref={ref as any}
         transition="bouncy"
-        bg="blue10"
+        bg="blue-600"
         scale={active ? 1.5 : 1}
         size={40}
         testID="scenario-14-target"
@@ -791,7 +791,7 @@ function Scenario15_SpringLazy() {
       <Square
         ref={ref as any}
         transition="lazy"
-        bg="green10"
+        bg="green-600"
         scale={active ? 1.5 : 1}
         size={40}
         testID="scenario-15-target"
@@ -829,7 +829,7 @@ function Scenario16_SpringQuick() {
       <Square
         ref={ref as any}
         transition="quick"
-        bg="blue10"
+        bg="blue-600"
         scale={active ? 1.5 : 1}
         size={40}
         testID="scenario-16-target"
@@ -870,7 +870,7 @@ function Scenario17_SpringCustom() {
           preset: 'quick',
           spring: { stiffness: 100, damping: 5, mass: 0.5 },
         }}
-        bg="yellow10"
+        bg="yellow-600"
         scale={active ? 1.5 : 1}
         size={40}
         testID="scenario-17-target"
@@ -908,7 +908,7 @@ function Scenario18_Timing100ms() {
       <Square
         ref={ref as any}
         transition="100ms"
-        bg="blue10"
+        bg="blue-600"
         opacity={active ? 0.3 : 1}
         size={40}
         testID="scenario-18-target"
@@ -946,7 +946,7 @@ function Scenario19_Timing200ms() {
       <Square
         ref={ref as any}
         transition="quick"
-        bg="green10"
+        bg="green-600"
         opacity={active ? 0.3 : 1}
         size={40}
         testID="scenario-19-target"
@@ -984,7 +984,7 @@ function Scenario20_TimingWithDelay() {
       <Square
         ref={ref as any}
         transition={{ preset: 'quick', delay: 300 }}
-        bg="blue10"
+        bg="blue-600"
         opacity={active ? 0.3 : 1}
         size={40}
         testID="scenario-20-target"
@@ -1024,7 +1024,7 @@ function Scenario21_EnterStyle() {
         <Square
           ref={ref as any}
           transition="bouncy"
-          bg="blue10"
+          bg="blue-600"
           opacity="enter:0"
           scale="enter:0.5"
           size={40}
@@ -1068,7 +1068,7 @@ function Scenario22_ExitStyle() {
             key="exit-square"
             ref={ref as any}
             transition="bouncy"
-            bg="green10"
+            bg="green-600"
             opacity="exit:0"
             scale="exit:0.5"
             size={40}
@@ -1113,7 +1113,7 @@ function Scenario23_EnterExitCombined() {
             key="enter-exit-square"
             ref={ref as any}
             transition="bouncy"
-            bg="blue10"
+            bg="blue-600"
             opacity="enter:0 exit:0"
             scale="enter:0.5 exit:0.5"
             y="enter:-20px exit:20px"
@@ -1165,7 +1165,7 @@ function Scenario24_RapidToggle() {
       <Square
         ref={ref as any}
         transition="quick"
-        bg="yellow10"
+        bg="yellow-600"
         scale={active ? 1.5 : 1}
         size={40}
         testID="scenario-24-target"
@@ -1206,7 +1206,7 @@ function Scenario25_Interruption() {
       <Square
         ref={ref as any}
         transition="lazy"
-        bg="red10"
+        bg="red-600"
         x={position === 0 ? 0 : position === 1 ? 50 : 100}
         size={40}
         testID="scenario-25-target"
@@ -1247,7 +1247,7 @@ function Scenario26_AnimateOnly() {
       <Square
         ref={ref as any}
         transition={{ preset: 'quick', properties: 'opacity' }}
-        bg="blue10"
+        bg="blue-600"
         opacity={active ? 0.3 : 1}
         scale={active ? 1.5 : 1}
         size={40}
@@ -1286,7 +1286,7 @@ function Scenario27_AnimationConfig() {
       <Square
         ref={ref as any}
         transition={{ preset: 'quick', spring: { stiffness: 80, damping: 8 } }}
-        bg="green10"
+        bg="green-600"
         scale={active ? 1.5 : 1}
         size={40}
         testID="scenario-27-target"
@@ -1328,7 +1328,7 @@ function Scenario28_MultiProperty() {
         transition="bouncy"
         width={40}
         height={40}
-        bg="blue10"
+        bg="blue-600"
         opacity={active ? 0.5 : 1}
         scale={active ? 1.3 : 1}
         rotate={active ? '30deg' : '0deg'}
@@ -1382,14 +1382,14 @@ function Scenario29_NestedAnimations() {
         transition="quick"
         scale={active ? 1.2 : 1}
         padding="1"
-        bg="blue5"
+        bg="blue-200"
         testID="scenario-29-outer"
         data-testid="scenario-29-outer"
       >
         <Square
           ref={innerRef as any}
           transition="bouncy"
-          bg="blue10"
+          bg="blue-600"
           opacity={active ? 0.5 : 1}
           size={30}
           testID="scenario-29-inner"
@@ -1419,9 +1419,9 @@ function Scenario30_HoverAnimation() {
         transition="quick"
         width={40}
         height={40}
-        bg="blue10"
+        bg="blue-600"
         scale="hover:1.2"
-        backgroundColor="hover:green10"
+        backgroundColor="hover:green-600"
         cursor="pointer"
         onMouseEnter={startLogging}
         onMouseLeave={() => setTimeout(stopLogging, 500)}
@@ -1463,7 +1463,7 @@ function Scenario31_PerPropertyConfigs() {
       <Square
         ref={ref as any}
         transition={{ preset: 'quick', opacity: 'lazy', scale: 'bouncy' }}
-        bg="blue10"
+        bg="blue-600"
         opacity={active ? 0.3 : 1}
         scale={active ? 1.5 : 1}
         size={40}
@@ -1508,7 +1508,7 @@ function Scenario32_PerPropertyWithInterruption() {
       <Square
         ref={ref as any}
         transition={{ preset: 'quick', opacity: 'lazy', scale: 'bouncy' }}
-        bg="green10"
+        bg="green-600"
         opacity={state === 0 ? 1 : state === 1 ? 0.5 : 0.2}
         scale={state === 0 ? 1 : state === 1 ? 1.3 : 1.6}
         x={state === 0 ? 0 : state === 1 ? 30 : 60}
@@ -1556,7 +1556,7 @@ function Scenario33_MixedSpringTiming() {
         transition={{ preset: 'bouncy', opacity: 'quick', borderRadius: 'lazy' }}
         width={40}
         height={40}
-        bg="blue10"
+        bg="blue-600"
         opacity={active ? 0.4 : 1}
         scale={active ? 1.4 : 1}
         borderRadius={active ? 20 : 4}
@@ -1611,7 +1611,7 @@ function Scenario34_ComplexObjectManyProps() {
         }}
         width={active ? 80 : 40}
         height={active ? 60 : 40}
-        backgroundColor={`${active ? 'red10' : 'blue10'}`}
+        backgroundColor={`${active ? 'red-600' : 'blue-600'}`}
         opacity={active ? 0.7 : 1}
         scale={active ? 1.2 : 1}
         rotate={active ? '15deg' : '0deg'}
@@ -1664,7 +1664,7 @@ function Scenario35_RapidPerPropertyChanges() {
       <Square
         ref={ref as any}
         transition={{ preset: 'quick', opacity: 'lazy', scale: 'bouncy' }}
-        bg="yellow10"
+        bg="yellow-600"
         opacity={active ? 0.3 : 1}
         scale={active ? 1.5 : 1}
         x={active ? 40 : 0}
@@ -1706,7 +1706,7 @@ function Scenario36_TimingTest() {
       <Square
         ref={ref as any}
         transition="500ms"
-        bg="blue10"
+        bg="blue-600"
         opacity={active ? 0.2 : 1}
         scale={active ? 1.5 : 1}
         size={40}
@@ -1750,7 +1750,7 @@ function Scenario37_EnterStyleScaleX() {
           transition="lazy"
           width={100}
           height={20}
-          bg="red10"
+          bg="red-600"
           opacity="enter:0"
           scaleX="enter:0"
           testID="scenario-37-target"
@@ -1794,7 +1794,7 @@ function Scenario38_PerPropertyWithTransform() {
       <Square
         ref={ref as any}
         transition={{ preset: 'quick', opacity: '200ms', backgroundColor: '200ms' }}
-        bg={`${active ? 'red10' : 'blue10'}`}
+        bg={`${active ? 'red-600' : 'blue-600'}`}
         opacity={active ? 0.5 : 1}
         scale={active ? 1.3 : 1}
         y={active ? -10 : 0}
@@ -1838,7 +1838,7 @@ function Scenario39_StringFormatPerProperty() {
       <Square
         ref={ref as any}
         transition="quick, opacity 200ms, background-color 200ms"
-        bg={`${active ? 'red10' : 'blue10'}`}
+        bg={`${active ? 'red-600' : 'blue-600'}`}
         opacity={active ? 0.5 : 1}
         scale={active ? 1.3 : 1}
         y={active ? -10 : 0}
@@ -1880,7 +1880,7 @@ function Scenario40_ObjectFormatNoDefault() {
       <Square
         ref={ref as any}
         transition={{ opacity: '500ms' }}
-        bg="blue10"
+        bg="blue-600"
         opacity={active ? 0.5 : 1}
         scale={active ? 1.3 : 1}
         size={40}
@@ -1926,7 +1926,7 @@ function Scenario41_PerPropertyWithDelay() {
           delay: 300,
           opacity: { duration: '500ms', delay: 300 },
         }}
-        bg="blue10"
+        bg="blue-600"
         opacity={active ? 0.5 : 1}
         scale={active ? 1.3 : 1}
         size={40}
@@ -1972,7 +1972,7 @@ function Scenario42_TransitionEnterExit() {
             key="enter-exit-42"
             ref={ref as any}
             transition={{ enter: '500ms', exit: '100ms' }}
-            bg="blue10"
+            bg="blue-600"
             opacity="enter:0 exit:0"
             scale="enter:0.5 exit:0.5"
             size={40}
@@ -2022,7 +2022,7 @@ function Scenario43_TransitionEnterOnly() {
             key="enter-only-43"
             ref={ref as any}
             transition={{ duration: '100ms', enter: '500ms' }}
-            bg="green10"
+            bg="green-600"
             opacity="enter:0 exit:0"
             scale="enter:0.5 exit:0.5"
             size={40}
@@ -2072,7 +2072,7 @@ function Scenario44_TransitionExitOnly() {
             key="exit-only-44"
             ref={ref as any}
             transition={{ duration: '100ms', exit: '500ms' }}
-            bg="yellow10"
+            bg="yellow-600"
             opacity="enter:0 exit:0"
             scale="enter:0.5 exit:0.5"
             size={40}
@@ -2135,7 +2135,7 @@ function Scenario45_TransitionEnterExitWithDefault() {
             key="enter-exit-default-45"
             ref={ref as any}
             transition={{ duration: '500ms', enter: '300ms', exit: '100ms' }}
-            bg="red10"
+            bg="red-600"
             opacity={`${active ? 0.5 : 1} enter:0 exit:0`}
             scale="enter:0.5 exit:0.5"
             size={40}
@@ -2186,7 +2186,7 @@ function Scenario46_TransitionEnterExitPerProperty() {
             key="enter-exit-per-prop-46"
             ref={ref as any}
             transition={{ enter: '300ms', exit: '100ms', opacity: '500ms' }}
-            bg="blue10"
+            bg="blue-600"
             opacity="enter:0 exit:0"
             scale="enter:0.5 exit:0.5"
             size={40}
@@ -2285,7 +2285,7 @@ function Scenario48_AnimateOnlyWithExitStyle() {
             key="animate-only-exit-48"
             ref={ref as any}
             transition={{ duration: '500ms', properties: 'opacity, transform' }}
-            bg="blue10"
+            bg="blue-600"
             opacity="exit:0"
             scale="exit:0.5"
             size={40}
@@ -2335,7 +2335,7 @@ function Scenario49_AnimateOnlyWithEnterExitStyle() {
             key="animate-only-enter-exit-49"
             ref={ref as any}
             transition={{ duration: '500ms', properties: 'opacity, transform' }}
-            bg="green10"
+            bg="green-600"
             opacity="enter:0 exit:0"
             scale="enter:0.5 exit:0.5"
             y="exit:20px"
@@ -2386,7 +2386,7 @@ function Scenario50_EnterTimingVerification() {
             key="enter-timing-50"
             ref={ref as any}
             transition={{ enter: '200ms', exit: '1000ms' }}
-            bg="red10"
+            bg="red-600"
             opacity="enter:0 exit:0"
             scale="enter:0.5 exit:0.5"
             size={40}
@@ -2436,7 +2436,7 @@ function Scenario51_DurationNormalization() {
             key="duration-norm-51"
             ref={ref as any}
             transition={{ duration: 1 }}
-            bg="orange10"
+            bg="orange-600"
             opacity="enter:0 exit:0"
             scale="enter:0.5 exit:0.5"
             size={40}
@@ -2485,7 +2485,7 @@ function Scenario52_DurationNormalizationInlineConfig() {
             key="duration-inline-52"
             ref={ref as any}
             transition={{ preset: 'medium', duration: 50 }}
-            bg="purple10"
+            bg="purple-600"
             opacity="enter:0 exit:0"
             scale="enter:0.5 exit:0.5"
             size={40}

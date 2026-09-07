@@ -22,7 +22,7 @@ export function ActionsSheetComparison() {
         Sheet Comparison
       </Text>
 
-      <Text fontSize="3" color="gray11">
+      <Text fontSize="3" color="gray-700">
         Compare gesture smoothness between Tamagui Sheet and react-native-actions-sheet
       </Text>
 
@@ -67,7 +67,7 @@ export function ActionsSheetComparison() {
               <Text fontSize="5" fontWeight="bold">
                 Tamagui Sheet
               </Text>
-              <Text color="gray11">Position: {tamaguiPosition}</Text>
+              <Text color="gray-700">Position: {tamaguiPosition}</Text>
 
               {Array.from({ length: 30 }).map((_, i) => (
                 <YStack

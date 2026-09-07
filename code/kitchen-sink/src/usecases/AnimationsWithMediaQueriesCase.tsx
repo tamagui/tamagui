@@ -30,7 +30,7 @@ export function AnimationsWithMediaQueriesCase() {
             testID="test-scale"
             data-testid="test-scale"
             size={100}
-            bg="blue10 max-sm:green10"
+            bg="blue-600 max-sm:green-600"
             scale="1 max-sm:0.75"
             transition="quick"
           />
@@ -54,13 +54,13 @@ export function AnimationsWithMediaQueriesCase() {
             top={0}
             bottom={0}
             width={1}
-            bg="red10"
+            bg="red-600"
           />
           <Square
             testID="test-translate"
             data-testid="test-translate"
             size={100}
-            bg="purple10 max-sm:orange10"
+            bg="purple-600 max-sm:orange-600"
             x="10px max-sm:50px"
             transition="quick"
           />

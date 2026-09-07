@@ -401,7 +401,7 @@ function PerfBenchmark() {
                   accessibilityLabel={`${scenario}:pct:${pctDiff.toFixed(2)}`}
                   fontSize="2"
                   fontWeight="bold"
-                  color={`${pctDiff > 0 ? 'green10' : 'red10'}`}
+                  color={`${pctDiff > 0 ? 'green-600' : 'red-600'}`}
                 >
                   {scenario}:{' '}
                   {pctDiff > 0

@@ -104,7 +104,7 @@ export function ExitCompletionCase() {
 }
 
 const SectionHeader = ({ children }: { children: string }) => (
-  <Paragraph fontWeight="bold" fontSize="3" marginTop="3" color="blue10">
+  <Paragraph fontWeight="bold" fontSize="3" marginTop="3" color="blue-600">
     {children}
   </Paragraph>
 )
@@ -134,7 +134,7 @@ function Scenario01_BasicExit() {
           <Square
             key="basic-exit"
             transition="300ms"
-            bg="blue10"
+            bg="blue-600"
             opacity="exit:0"
             scale="exit:0.5"
             size={40}
@@ -176,7 +176,7 @@ function Scenario02_ZeroDuration() {
           <Square
             key="zero-duration"
             transition="0ms"
-            bg="green10"
+            bg="green-600"
             opacity="exit:0"
             size={40}
             testID="exit-02-target"
@@ -214,7 +214,7 @@ function Scenario03_VeryShortDuration() {
           <Square
             key="short-duration"
             transition="30ms"
-            bg="yellow10"
+            bg="yellow-600"
             opacity="exit:0"
             scale="exit:0.8"
             size={40}
@@ -261,7 +261,7 @@ function Scenario04_RapidToggle() {
           <Square
             key="rapid-toggle"
             transition="200ms"
-            bg="red10"
+            bg="red-600"
             opacity="exit:0"
             scale="exit:0.5"
             size={40}
@@ -310,7 +310,7 @@ function Scenario05_ReRenderDuringExit() {
           <Square
             key="rerender-exit"
             transition="300ms"
-            bg="blue10"
+            bg="blue-600"
             opacity="exit:0"
             y="exit:20px"
             size={40}
@@ -360,7 +360,7 @@ function Scenario06_MultipleChildren() {
           <Square
             key={`multi-${id}`}
             transition="200ms"
-            bg="green10"
+            bg="green-600"
             opacity="exit:0"
             scale="exit:0.5"
             size={30}
@@ -400,7 +400,7 @@ function Scenario07_LongAnimation() {
           <Square
             key="long-anim"
             transition="500ms"
-            bg="yellow10"
+            bg="yellow-600"
             opacity="exit:0"
             scale="exit:0.5"
             y="exit:30px"
@@ -449,7 +449,7 @@ function Scenario08_InterruptedExit() {
           <Square
             key="interrupted"
             transition="300ms"
-            bg="red10"
+            bg="red-600"
             opacity="exit:0"
             scale="exit:0.5"
             size={40}
@@ -501,7 +501,7 @@ function Scenario09_CanceledAndRestarted() {
           <Square
             key="stress"
             transition="200ms"
-            bg="blue10"
+            bg="blue-600"
             opacity="exit:0"
             x="exit:-20px"
             size={40}
@@ -544,7 +544,7 @@ function Scenario10_PerPropertyExit() {
           <Square
             key="per-prop"
             transition={{ duration: '100ms', scale: '500ms' }}
-            bg="green10"
+            bg="green-600"
             opacity="exit:0"
             scale="exit:0.5"
             size={40}
@@ -585,7 +585,7 @@ function Scenario11_MixedDurationExit() {
           <Square
             key="mixed"
             transition={{ duration: '400ms', opacity: '100ms', scale: '400ms' }}
-            bg="yellow10"
+            bg="yellow-600"
             opacity="exit:0"
             scale="exit:0.5"
             y="exit:20px"
@@ -628,7 +628,7 @@ function Scenario51_AnimateOnlyExclusion() {
           <Square
             key="animateonly-exclusion"
             transition={{ duration: '500ms', opacity: '100ms', properties: 'opacity' }}
-            bg="purple10"
+            bg="purple-600"
             opacity="exit:0"
             scale="exit:0.5"
             size={40}
@@ -669,7 +669,7 @@ function Scenario53_TransformSubKeySplitDurations() {
           <Square
             key="transform-subkeys"
             transition={{ duration: '100ms', scale: '100ms', y: '500ms' }}
-            bg="orange10"
+            bg="orange-600"
             scale="exit:0.5"
             y="exit:50px"
             size={40}
@@ -711,7 +711,7 @@ function Scenario55_ZeroAnimatableExitProps() {
           <Square
             key="zero-animatable"
             transition="none"
-            bg="gray10"
+            bg="gray-600"
             opacity="exit:0"
             scale="exit:0.5"
             size={40}

@@ -40,7 +40,7 @@ export function NestedPressExclusive() {
         <Text fontSize="5" fontWeight="bold">
           Nested Press Exclusivity
         </Text>
-        <Text fontSize="3" color="gray11">
+        <Text fontSize="3" color="gray-700">
           Tapping the button should only fire child onPress, not parent.
         </Text>
 

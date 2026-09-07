@@ -16,7 +16,7 @@ import { YStack, XStack, Text, Square, styled } from 'tamagui'
 // Styled component with transform in media query definition
 const TransformBox = styled(Square, {
   size: 100,
-  bg: 'blue10 max-sm:green10',
+  bg: 'blue-600 max-sm:green-600',
   // at max-sm: should be shifted right 50px (OVERWRITE, not cumulative)
   x: '-100px max-sm:50px',
 })
@@ -45,7 +45,14 @@ export function TransformMediaQueryMerge() {
           justifyContent="center"
           position="relative"
         >
-          <YStack position="absolute" left={0} top={0} bottom={0} width={1} bg="red10" />
+          <YStack
+            position="absolute"
+            left={0}
+            top={0}
+            bottom={0}
+            width={1}
+            bg="red-600"
+          />
           <Text position="absolute" left={5} top={5} fontSize="1">
             x=0 line
           </Text>
@@ -73,7 +80,7 @@ export function TransformMediaQueryMerge() {
             top={0}
             bottom={0}
             width={1}
-            bg="red10"
+            bg="red-600"
           />
           <Text position="absolute" left={5} top={5} fontSize="1">
             center line
@@ -82,7 +89,7 @@ export function TransformMediaQueryMerge() {
             testID="test3"
             data-testid="test3"
             size={100}
-            bg="red10 max-sm:blue10"
+            bg="red-600 max-sm:blue-600"
             x="-75px max-sm:75px"
           />
         </XStack>

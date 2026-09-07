@@ -43,7 +43,7 @@ function ViewportHUD() {
       l={0}
       r={0}
       z={9_999_999}
-      bg="red10"
+      bg="red-600"
       px="3"
       py="2"
       pointerEvents="none"
@@ -152,7 +152,7 @@ export function SheetWebKeyboardCase() {
                 items="center"
                 justify="center"
               >
-                <Text color="gray11">filler content</Text>
+                <Text color="gray-700">filler content</Text>
               </YStack>
 
               <Input

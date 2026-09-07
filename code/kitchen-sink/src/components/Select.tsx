@@ -52,8 +52,8 @@ function AltSelectRoot<
 
 const AltTrigger = styled(SelectTrigger, {
   displayName: 'KitchenAltSelectTrigger',
-  backgroundColor: 'purple3',
-  borderColor: 'purple8',
+  backgroundColor: 'purple-100',
+  borderColor: 'purple-400',
   variants: {
     pill: {
       true: {
@@ -68,19 +68,19 @@ const AltTrigger = styled(SelectTrigger, {
 
 const AltValue = styled(SelectValue, {
   displayName: 'KitchenAltSelectValue',
-  color: 'purple11',
+  color: 'purple-700',
   fontFamily: 'monospace',
 })
 
 const AltItem = styled(SelectItem, {
   displayName: 'KitchenAltSelectItem',
   borderRadius: 1000,
-  backgroundColor: 'hover:purple4 focus:purple5',
+  backgroundColor: 'hover:purple-200 focus:purple-200',
 })
 
 const AltItemText = styled(SelectItemText, {
   displayName: 'KitchenAltSelectItemText',
-  color: 'purple11',
+  color: 'purple-700',
   fontFamily: 'monospace',
 })
 
@@ -91,19 +91,19 @@ const AltItemIndicator = styled(SelectItemIndicator, {
 
 const AltViewport = styled(SelectViewport, {
   displayName: 'KitchenAltSelectViewport',
-  backgroundColor: 'purple2',
-  borderColor: 'purple8',
+  backgroundColor: 'purple-100',
+  borderColor: 'purple-400',
   borderRadius: 22,
 })
 
 const AltScrollUpButton = styled(SelectScrollUpButton, {
   displayName: 'KitchenAltSelectScrollUpButton',
-  backgroundColor: 'purple3',
+  backgroundColor: 'purple-100',
 })
 
 const AltScrollDownButton = styled(SelectScrollDownButton, {
   displayName: 'KitchenAltSelectScrollDownButton',
-  backgroundColor: 'purple3',
+  backgroundColor: 'purple-100',
 })
 
 export const AltSelect = withStaticProperties(AltSelectRoot, {

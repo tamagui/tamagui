@@ -113,7 +113,7 @@ export function DialogSheetAdaptHandoffCase() {
           >
             <Sheet.Overlay
               testID="dialog-adapt-sheet-overlay"
-              bg="shadow6"
+              bg="shadow-6"
               opacity="enter:0 exit:0"
             />
             <Sheet.Container
@@ -140,7 +140,7 @@ export function DialogSheetAdaptHandoffCase() {
           <Dialog.Overlay
             key="overlay"
             testID="dialog-adapt-dialog-overlay"
-            bg="shadow6"
+            bg="shadow-6"
             opacity="enter:0 exit:0"
           />
           <Dialog.Content

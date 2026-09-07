@@ -123,7 +123,7 @@ export function SheetPressRegressionCase() {
                 hitSlop={10}
                 onPress={() => setNestedViewCount((c) => c + 1)}
               >
-                <Text color="blue10" fontWeight="600">
+                <Text color="blue-600" fontWeight="600">
                   + Add option (count: {nestedViewCount})
                 </Text>
               </View>

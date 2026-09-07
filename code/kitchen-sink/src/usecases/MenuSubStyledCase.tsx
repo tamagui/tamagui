@@ -42,7 +42,7 @@ export function MenuSubStyledCase() {
         <Text id="last-action" color="color10">
           Last action: {lastAction || 'None'}
         </Text>
-        <Text id="submenu-state" color={`${subMenuOpen ? 'green10' : 'red10'}`}>
+        <Text id="submenu-state" color={`${subMenuOpen ? 'green-600' : 'red-600'}`}>
           Submenu: {subMenuOpen ? 'Open' : 'Closed'}
         </Text>
       </YStack>

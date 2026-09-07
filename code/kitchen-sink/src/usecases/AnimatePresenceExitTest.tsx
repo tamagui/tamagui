@@ -45,7 +45,7 @@ export function AnimatePresenceExitTest() {
             <Square
               key="test-square"
               transition="none"
-              bg="blue10"
+              bg="blue-600"
               opacity="exit:0"
               scale="exit:0.5"
               size={60}
@@ -58,7 +58,7 @@ export function AnimatePresenceExitTest() {
         <Paragraph>Exit count: {exitCount}</Paragraph>
         <Paragraph>Exit time: {exitTime !== null ? `${exitTime}ms` : 'N/A'}</Paragraph>
         <Paragraph
-          color={`${passed ? 'green10' : exitTime !== null ? 'red10' : 'gray10'}`}
+          color={`${passed ? 'green-600' : exitTime !== null ? 'red-600' : 'gray-600'}`}
           fontWeight="bold"
         >
           {exitTime !== null ? (passed ? '✓ PASS' : '✗ FAIL') : 'Tap Hide to test'}

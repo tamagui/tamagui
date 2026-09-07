@@ -92,7 +92,7 @@ function NoScrollViewSheet() {
           </Paragraph>
           <Paragraph
             data-testid="no-scroll-drag-indicator"
-            bg="blue3"
+            bg="blue-100"
             padding="2"
             borderRadius="2"
           >
@@ -186,7 +186,7 @@ function NonScrollableContentSheet() {
                 This content FITS in the sheet (not scrollable). Dragging should move the
                 SHEET, not scroll.
               </Paragraph>
-              <YStack bg="yellow3" padding="3" borderRadius="2">
+              <YStack bg="yellow-100" padding="3" borderRadius="2">
                 <Text fontWeight="bold">Expected behavior:</Text>
                 <Text>• Dragging down: sheet moves to next snap point</Text>
                 <Text>• Dragging up: sheet resists at top</Text>
@@ -194,7 +194,7 @@ function NonScrollableContentSheet() {
               </YStack>
               <Paragraph
                 data-testid="non-scrollable-status"
-                bg="blue3"
+                bg="blue-100"
                 padding="2"
                 borderRadius="2"
               >
@@ -304,7 +304,7 @@ function ScrollableContentSheet() {
               </Paragraph>
               <Paragraph
                 data-testid="scrollable-status"
-                bg="blue3"
+                bg="blue-100"
                 padding="2"
                 borderRadius="2"
               >
@@ -321,7 +321,7 @@ function ScrollableContentSheet() {
                 This content IS scrollable. When at the top of scroll and top snap point,
                 dragging UP should show resistance.
               </Paragraph>
-              <YStack bg="green3" padding="3" borderRadius="2">
+              <YStack bg="green-100" padding="3" borderRadius="2">
                 <Text fontWeight="bold">Expected behavior:</Text>
                 <Text>• Scroll down in content: normal scroll</Text>
                 <Text>• At scroll top, drag up: resistance effect</Text>

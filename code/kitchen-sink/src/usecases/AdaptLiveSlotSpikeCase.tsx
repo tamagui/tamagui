@@ -225,7 +225,7 @@ function LiveSlotSheetTouchProof() {
           p="3"
           gap="3"
           borderWidth={1}
-          borderColor="green8"
+          borderColor="green-400"
           rounded="4"
           data-sheet-slot-target="true"
         >
@@ -258,7 +258,7 @@ function LiveSlotSheetTouchProof() {
           p="3"
           gap="3"
           borderWidth={1}
-          borderColor="blue8"
+          borderColor="blue-400"
           rounded="4"
           data-sheet-slot-source="true"
         >
@@ -331,7 +331,7 @@ function LiveSlotProof({ active, revision }: { active: boolean; revision: number
           p="3"
           gap="3"
           borderWidth={1}
-          borderColor="green8"
+          borderColor="green-400"
           rounded="4"
           data-slot-target="true"
         >
@@ -348,7 +348,7 @@ function LiveSlotProof({ active, revision }: { active: boolean; revision: number
           p="3"
           gap="3"
           borderWidth={1}
-          borderColor="blue8"
+          borderColor="blue-400"
           rounded="4"
           data-slot-source="true"
         >
@@ -441,7 +441,7 @@ function MeasuredV2StateBaselinePanel() {
       p="3"
       gap="3"
       borderWidth={1}
-      borderColor="orange8"
+      borderColor="orange-400"
       rounded="4"
       flex={1}
       minW={140}
@@ -466,7 +466,7 @@ function SlotStatePanel({ adapted }: { adapted: boolean }) {
       p="3"
       gap="3"
       borderWidth={1}
-      borderColor="purple8"
+      borderColor="purple-400"
       rounded="4"
       flex={1}
       minW={140}

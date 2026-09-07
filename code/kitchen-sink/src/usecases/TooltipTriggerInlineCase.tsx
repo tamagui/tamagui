@@ -9,7 +9,7 @@ export function TooltipTriggerInlineCase() {
           <Tooltip.Trigger display="inline" data-testid="inline-tooltip-trigger">
             <Text
               data-testid="inline-tooltip-text"
-              color="blue10"
+              color="blue-600"
               textDecorationLine="underline"
             >
               inline tooltip triggers
@@ -26,7 +26,7 @@ export function TooltipTriggerInlineCase() {
         <Text>Words:</Text>
         <Tooltip>
           <Tooltip.Trigger display="inline" data-testid="inline-word-1">
-            <Text color="green10" textDecorationLine="underline">
+            <Text color="green-600" textDecorationLine="underline">
               hover
             </Text>
           </Tooltip.Trigger>
@@ -36,7 +36,7 @@ export function TooltipTriggerInlineCase() {
         </Tooltip>
         <Tooltip>
           <Tooltip.Trigger display="inline" data-testid="inline-word-2">
-            <Text color="red10" textDecorationLine="underline">
+            <Text color="red-600" textDecorationLine="underline">
               over
             </Text>
           </Tooltip.Trigger>
@@ -46,7 +46,7 @@ export function TooltipTriggerInlineCase() {
         </Tooltip>
         <Tooltip>
           <Tooltip.Trigger display="inline" data-testid="inline-word-3">
-            <Text color="blue10" textDecorationLine="underline">
+            <Text color="blue-600" textDecorationLine="underline">
               these
             </Text>
           </Tooltip.Trigger>

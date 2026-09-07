@@ -22,10 +22,10 @@ import {
 import * as React from 'react'
 
 const toastIcons = {
-  success: <CircleCheck size={18} color="green10" />,
-  error: <CircleX size={18} color="red10" />,
-  warning: <AlertTriangle size={18} color="yellow10" />,
-  info: <Info size={18} color="blue10" />,
+  success: <CircleCheck size={18} color="green-600" />,
+  error: <CircleX size={18} color="red-600" />,
+  warning: <AlertTriangle size={18} color="yellow-600" />,
+  info: <Info size={18} color="blue-600" />,
   loading: <LoaderCircle size={18} color="color11" />,
 }
 
@@ -76,7 +76,7 @@ export function ToastMultipleCase() {
               <Button
                 key={pos}
                 size="3"
-                backgroundColor={`${position === pos ? 'color8' : undefined}`}
+                backgroundColor={position === pos ? 'color8' : undefined}
                 onPress={() => setPosition(pos)}
               >
                 {pos}
@@ -90,19 +90,19 @@ export function ToastMultipleCase() {
         {/* Options */}
         <XStack gap="4" flexWrap="wrap">
           <Button
-            backgroundColor={`${closeButton ? 'color8' : undefined}`}
+            backgroundColor={closeButton ? 'color8' : undefined}
             onPress={() => setCloseButton(!closeButton)}
           >
             Close Button: {closeButton ? 'On' : 'Off'}
           </Button>
           <Button
-            backgroundColor={`${expand ? 'color8' : undefined}`}
+            backgroundColor={expand ? 'color8' : undefined}
             onPress={() => setExpand(!expand)}
           >
             Always Expand: {expand ? 'On' : 'Off'}
           </Button>
           <Button
-            backgroundColor={`${useNative ? 'color8' : undefined}`}
+            backgroundColor={useNative ? 'color8' : undefined}
             onPress={() => setUseNative(!useNative)}
           >
             Native Toast: {useNative ? 'On' : 'Off'}

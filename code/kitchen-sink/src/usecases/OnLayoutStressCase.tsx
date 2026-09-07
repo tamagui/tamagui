@@ -57,7 +57,7 @@ const DeepChild = memo(
           onLayout={handleLayout}
           width={20 + (parseInt(id.split('-')[1] || '0') % 5) * 10}
           height={15}
-          backgroundColor="blue5"
+          backgroundColor="blue-200"
         />
       )
     }

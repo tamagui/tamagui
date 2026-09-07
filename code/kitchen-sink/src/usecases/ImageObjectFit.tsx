@@ -23,7 +23,7 @@ export function ImageObjectFit() {
         {fits.map((fit) => (
           <YStack key={fit} width={140} alignItems="center" gap="2">
             <Text fontSize="2">{fit}</Text>
-            <View width={140} height={140} backgroundColor="gray5" overflow="hidden">
+            <View width={140} height={140} backgroundColor="gray-200" overflow="hidden">
               <Image
                 id={`fit-${fit}`}
                 src={TEST_IMAGE_WIDE}
@@ -44,7 +44,7 @@ export function ImageObjectFit() {
         {positions.map((pos) => (
           <YStack key={pos} width={140} alignItems="center" gap="2">
             <Text fontSize="2">{pos}</Text>
-            <View width={140} height={140} backgroundColor="gray5" overflow="hidden">
+            <View width={140} height={140} backgroundColor="gray-200" overflow="hidden">
               <Image
                 id={`pos-${pos}`}
                 src={TEST_IMAGE_WIDE}

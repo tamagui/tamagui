@@ -142,7 +142,9 @@ export function AccentAndColorThemes() {
                 testID={`palette-accent-${i}`}
                 width={40}
                 height={40}
-                backgroundColor={`${`color${i}`}`}
+                backgroundColor={
+                  `color${i}` as `color${1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11}`
+                }
                 borderRadius="2"
                 alignItems="center"
                 justifyContent="center"

@@ -29,8 +29,8 @@ export function ExitStyleNewKeyCase() {
               id="exit-new-key-target"
               testID="exit-new-key-target"
               transition="300ms"
-              bg="blue10"
-              borderColor="red10"
+              bg="blue-600"
+              borderColor="red-600"
               transform={[{ matrix: [1, 0, 0, 1, 0, 0] }]}
               borderWidth="exit:10px"
               y="exit:40px"

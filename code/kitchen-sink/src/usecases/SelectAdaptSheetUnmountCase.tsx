@@ -45,7 +45,7 @@ export function SelectAdaptSheetUnmountCase() {
             dismissOnSnapToBottom
           >
             <Sheet.Overlay
-              bg="shadow6"
+              bg="shadow-6"
               opacity="enter:0 exit:0"
               onPress={() => setOpen(false)}
             />

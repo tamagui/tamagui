@@ -4,7 +4,7 @@ import { YStack, XStack, Text, Square, styled } from 'tamagui'
 const StyledBox = styled(YStack, {
   width: 100,
   height: 100,
-  bg: 'purple10',
+  bg: 'purple-600',
   scale: 1,
   transformOrigin: 'left top',
 })
@@ -13,7 +13,7 @@ const StyledBox = styled(YStack, {
 const StyledBoxWithMedia = styled(YStack, {
   width: 100,
   height: 100,
-  bg: 'yellow10',
+  bg: 'yellow-600',
   scale: 1,
   transformOrigin: 'left top',
 } as const)
@@ -27,7 +27,7 @@ const ContainerLarge = styled(YStack, {
   width: '100%',
   position: 'relative',
   maxWidth: 1200,
-  bg: 'blue10',
+  bg: 'blue-600',
 })
 
 /**
@@ -57,7 +57,7 @@ export function HeightMediaQueryOverrideCase() {
             testID="test-height-scale"
             data-testid="test-height-scale"
             size={100}
-            bg="red10"
+            bg="red-600"
             scale="1 height-sm:2"
             transformOrigin="left top"
           />
@@ -73,7 +73,7 @@ export function HeightMediaQueryOverrideCase() {
             testID="test-height-scale-no-base"
             data-testid="test-height-scale-no-base"
             size={100}
-            bg="blue10"
+            bg="blue-600"
             transformOrigin="left top"
             scale="height-lg:2"
           />
@@ -92,7 +92,7 @@ export function HeightMediaQueryOverrideCase() {
             testID="test-width-scale"
             data-testid="test-width-scale"
             size={100}
-            bg="blue10 sm:orange10"
+            bg="blue-600 sm:orange-600"
             scale="0.8 sm:1.5"
             transformOrigin="center center"
           />
@@ -108,7 +108,7 @@ export function HeightMediaQueryOverrideCase() {
             testID="test-styled-scale"
             data-testid="test-styled-scale"
             scale="height-sm:2"
-            bg="height-sm:green10"
+            bg="height-sm:green-600"
           />
         </XStack>
       </YStack>
@@ -124,7 +124,7 @@ export function HeightMediaQueryOverrideCase() {
             testID="test-styled-media-override"
             data-testid="test-styled-media-override"
             scale="height-sm:2"
-            bg="height-sm:green10"
+            bg="height-sm:green-600"
           />
         </XStack>
       </YStack>
@@ -144,7 +144,7 @@ export function HeightMediaQueryOverrideCase() {
             transformOrigin="left top"
             scale="1 height-sm:2"
           >
-            <Square size={50} bg="red10" />
+            <Square size={50} bg="red-600" />
           </ContainerLarge>
         </XStack>
       </YStack>

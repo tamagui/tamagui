@@ -130,7 +130,7 @@ export function NativePortalTest() {
             width={12}
             height={12}
             borderRadius={6}
-            bg={`${portalState.type === 'teleport' ? 'green10' : portalState.type === 'legacy' ? 'yellow10' : 'red10'}`}
+            bg={`${portalState.type === 'teleport' ? 'green-600' : portalState.type === 'legacy' ? 'yellow-600' : 'red-600'}`}
           />
           <Text testID="portal-status">
             {portalState.type === 'teleport'

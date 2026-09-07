@@ -4,7 +4,7 @@ import { Button } from './components/Button'
 
 function Demo1() {
   return (
-    <Square size={200} transition="bouncy" bg="red10 press:green" scale="press:1.2" />
+    <Square size={200} transition="bouncy" bg="red-600 press:green" scale="press:1.2" />
   )
 }
 
@@ -17,7 +17,7 @@ function Demo2() {
     <>
       <Button onPress={() => setShow(!show)}>Toggle</Button>
       {show && (
-        <Square size={200} transition="bouncy" bg="red10" opacity="enter:0 exit:0" />
+        <Square size={200} transition="bouncy" bg="red-600" opacity="enter:0 exit:0" />
       )}
     </>
   )

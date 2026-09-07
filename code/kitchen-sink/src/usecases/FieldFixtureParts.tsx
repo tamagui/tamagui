@@ -16,7 +16,7 @@ export const FixtureFieldDescription = styled(Field.Description, {
 })
 
 export const FixtureFieldError = styled(Field.Error, {
-  color: 'red10',
+  color: 'red-600',
   fontSize: '2',
 })
 
@@ -26,7 +26,7 @@ const FixtureInputFrame = styled(Input, {
   variants: {
     invalid: {
       true: {
-        borderColor: 'red9',
+        borderColor: 'red-500',
       },
     },
   } as const,

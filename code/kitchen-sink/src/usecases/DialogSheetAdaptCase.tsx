@@ -91,7 +91,7 @@ function TakeoutStyleDialog({
       <Dialog.Portal z={500_000}>
         <DialogOverlay
           key="overlay"
-          bg="shadow6"
+          bg="shadow-6"
           transition="quick"
           opacity="enter:0 exit:0"
           onPress={() => {
@@ -148,7 +148,7 @@ const DialogContent = styled(Dialog.Content, {
   borderColor: 'color3',
   position: 'relative',
   backdropFilter: 'blur(25px)',
-  shadowColor: 'shadow3',
+  shadowColor: 'shadow-3',
   shadowRadius: 20,
   shadowOffset: { height: 20, width: 0 },
   maxH: 600,

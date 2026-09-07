@@ -45,7 +45,7 @@ export function SheetScrollableDrag() {
       <Text
         testID="sheet-scrollable-drag-rngh-status"
         fontSize="3"
-        color={`${rnghEnabled ? 'green10' : 'red10'}`}
+        color={`${rnghEnabled ? 'green-600' : 'red-600'}`}
         fontWeight="bold"
       >
         RNGH: {rnghEnabled ? '✓ enabled' : '✗ disabled'}
@@ -65,7 +65,7 @@ export function SheetScrollableDrag() {
         <Text style={{ padding: 8 }}>Scroll me to test (outside sheet) - 4</Text>
       </RNScrollView>
 
-      <Text testID="sheet-scrollable-drag-instructions" fontSize="3" color="gray11">
+      <Text testID="sheet-scrollable-drag-instructions" fontSize="3" color="gray-700">
         Test smooth handoff: drag down then up to scroll, scroll up then drag down to drag
         sheet.
       </Text>
@@ -120,7 +120,7 @@ export function SheetScrollableDrag() {
         </Text>
       </YStack>
 
-      <YStack gap="1" padding="2" bg="green3" borderRadius="2">
+      <YStack gap="1" padding="2" bg="green-100" borderRadius="2">
         <Text fontSize="2" fontWeight="bold">
           Smooth handoff test:
         </Text>
@@ -187,7 +187,11 @@ export function SheetScrollableDrag() {
             scrollEventThrottle={16}
           >
             <YStack gap="3" padding="4">
-              <Text testID="sheet-scrollable-drag-snap-label" fontSize="3" color="gray11">
+              <Text
+                testID="sheet-scrollable-drag-snap-label"
+                fontSize="3"
+                color="gray-700"
+              >
                 Snap: {position} | Scroll Y: {scrollY.toFixed(0)} | Items: {itemCount}
               </Text>
 
@@ -209,7 +213,7 @@ export function SheetScrollableDrag() {
               <Text
                 testID="sheet-scrollable-drag-scroll-indicator"
                 padding="2"
-                bg="blue3"
+                bg="blue-100"
                 borderRadius="2"
               >
                 Scroll Y: {scrollY.toFixed(0)}

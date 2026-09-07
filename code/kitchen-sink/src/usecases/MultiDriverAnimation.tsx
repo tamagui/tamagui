@@ -24,7 +24,7 @@ export function MultiDriverAnimation() {
             testID="driver-default"
             animatedBy="default"
             size={80}
-            backgroundColor={`${active ? 'blue10' : 'red10'}`}
+            backgroundColor={`${active ? 'blue-600' : 'red-600'}`}
             opacity={active ? 1 : 0.3}
             transition="200ms"
           />
@@ -37,7 +37,7 @@ export function MultiDriverAnimation() {
             testID="driver-css"
             animatedBy="css"
             size={80}
-            backgroundColor={`${active ? 'green10' : 'purple10'}`}
+            backgroundColor={`${active ? 'green-600' : 'purple-600'}`}
             opacity={active ? 1 : 0.3}
             transition="200ms"
           />
@@ -49,7 +49,7 @@ export function MultiDriverAnimation() {
           <Square
             testID="driver-none"
             size={80}
-            backgroundColor={`${active ? 'orange10' : 'pink10'}`}
+            backgroundColor={`${active ? 'orange-600' : 'pink-600'}`}
             opacity={active ? 1 : 0.3}
             transition="200ms"
           />
@@ -70,13 +70,13 @@ export function MultiDriverAnimation() {
           testID="group-motion"
           group="motionGroup"
           padding="4"
-          backgroundColor="gray5"
+          backgroundColor="gray-200"
           borderRadius="4"
         >
           <Square
             testID="group-motion-child"
             size={60}
-            backgroundColor="blue10"
+            backgroundColor="blue-600"
             opacity="0.5 group-hover/motionGroup:1"
             transition="500ms group-hover/motionGroup:100ms"
             scale="group-hover/motionGroup:1.1"
@@ -88,7 +88,7 @@ export function MultiDriverAnimation() {
           testID="group-css"
           group="cssGroup"
           padding="4"
-          backgroundColor="gray5"
+          backgroundColor="gray-200"
           borderRadius="4"
           animatedBy="css"
         >
@@ -96,7 +96,7 @@ export function MultiDriverAnimation() {
             testID="group-css-child"
             animatedBy="css"
             size={60}
-            backgroundColor="green10"
+            backgroundColor="green-600"
             opacity="0.5 group-hover/cssGroup:1"
             transition="500ms group-hover/cssGroup:100ms"
             scale="group-hover/cssGroup:1.1"

@@ -58,8 +58,8 @@ const StyledCard = styled(Card, {
   variants: {
     highlighted: {
       true: {
-        backgroundColor: 'blue2',
-        borderColor: 'blue6',
+        backgroundColor: 'blue-100',
+        borderColor: 'blue-300',
       },
     },
     size: {
@@ -80,17 +80,17 @@ const Badge = styled(View, {
   paddingHorizontal: '2',
   paddingVertical: '1',
   borderRadius: '10',
-  backgroundColor: 'blue4',
+  backgroundColor: 'blue-200',
   variants: {
     color: {
       green: {
-        backgroundColor: 'green4',
+        backgroundColor: 'green-200',
       },
       red: {
-        backgroundColor: 'red4',
+        backgroundColor: 'red-200',
       },
       orange: {
-        backgroundColor: 'orange4',
+        backgroundColor: 'orange-200',
       },
     },
   } as const,
@@ -165,7 +165,7 @@ function ItemRow({ item }: { item: (typeof items)[0] }) {
       borderBottomWidth={1}
       backgroundColor="hover:background-hover"
     >
-      <View width={40} height={40} borderRadius="10" backgroundColor="blue5" />
+      <View width={40} height={40} borderRadius="10" backgroundColor="blue-200" />
       <YStack flex={1} gap="1">
         <SizableText fontWeight="600" size="4">
           {item.title}

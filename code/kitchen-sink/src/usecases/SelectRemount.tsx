@@ -123,7 +123,7 @@ export function SelectRemount() {
             width={10}
             height={10}
             borderRadius={5}
-            bg={`${mounted ? 'green10' : 'red10'}`}
+            bg={`${mounted ? 'green-600' : 'red-600'}`}
           />
           <Text>{mounted ? `Mounted (key: ${key})` : 'Unmounted'}</Text>
         </XStack>

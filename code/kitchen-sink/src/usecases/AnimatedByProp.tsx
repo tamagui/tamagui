@@ -15,7 +15,7 @@ export function AnimatedByProp() {
         testID="explicit-default"
         animatedBy="default"
         size={100}
-        backgroundColor={`${active ? 'blue10' : 'red10'}`}
+        backgroundColor={`${active ? 'blue-600' : 'red-600'}`}
         opacity={active ? 1 : 0.5}
         scale={active ? 1.2 : 1}
         transition="bouncy"
@@ -25,7 +25,7 @@ export function AnimatedByProp() {
       <Square
         testID="context-driver"
         size={100}
-        backgroundColor={`${active ? 'green10' : 'purple10'}`}
+        backgroundColor={`${active ? 'green-600' : 'purple-600'}`}
         opacity={active ? 1 : 0.5}
         scale={active ? 1.2 : 1}
         transition="bouncy"

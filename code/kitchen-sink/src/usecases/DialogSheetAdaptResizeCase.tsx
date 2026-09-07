@@ -34,7 +34,7 @@ export function DialogSheetAdaptResizeCase() {
                 <Dialog.Adapt.Contents />
               </Sheet.ScrollView>
             </Sheet.Container>
-            <Sheet.Overlay bg="shadow4" transition="lazy" opacity="enter:0 exit:0" />
+            <Sheet.Overlay bg="shadow-4" transition="lazy" opacity="enter:0 exit:0" />
           </Sheet>
         </Dialog.Adapt>
 

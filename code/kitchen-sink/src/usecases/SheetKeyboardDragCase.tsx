@@ -71,7 +71,7 @@ export function SheetKeyboardDragCase() {
         <Text
           testID="sheet-keyboard-drag-rngh-status"
           fontSize="2"
-          color={`${rnghEnabled ? 'green10' : 'red10'}`}
+          color={`${rnghEnabled ? 'green-600' : 'red-600'}`}
           fontWeight="bold"
         >
           RNGH: {rnghEnabled ? '✓' : '✗'}
@@ -79,14 +79,14 @@ export function SheetKeyboardDragCase() {
         <Text
           testID="sheet-keyboard-drag-kbc-status"
           fontSize="2"
-          color={`${kbcEnabled ? 'green10' : 'yellow10'}`}
+          color={`${kbcEnabled ? 'green-600' : 'yellow-600'}`}
           fontWeight="bold"
         >
           KBC: {kbcEnabled ? '✓' : '○'}
         </Text>
       </XStack>
 
-      <Text testID="sheet-keyboard-drag-instructions" fontSize="3" color="gray11">
+      <Text testID="sheet-keyboard-drag-instructions" fontSize="3" color="gray-700">
         Test keyboard + sheet interaction: tap input to show keyboard, drag sheet while
         keyboard is open.
       </Text>
@@ -131,7 +131,7 @@ export function SheetKeyboardDragCase() {
         </Text>
       </YStack>
 
-      <YStack gap="1" padding="2" bg="blue3" borderRadius="2">
+      <YStack gap="1" padding="2" bg="blue-100" borderRadius="2">
         <Text fontSize="2" fontWeight="bold">
           Expected behavior:
         </Text>
@@ -229,14 +229,14 @@ export function SheetKeyboardDragCase() {
               {/* spacer for testing scroll + keyboard */}
               <YStack
                 height={300}
-                bg="gray3"
+                bg="gray-100"
                 borderRadius="2"
                 padding="4"
                 justifyContent="center"
                 alignItems="center"
               >
-                <Text color="gray11">Spacer area</Text>
-                <Text color="gray11" fontSize="2">
+                <Text color="gray-700">Spacer area</Text>
+                <Text color="gray-700" fontSize="2">
                   Drag here to test sheet drag
                 </Text>
               </YStack>
@@ -263,7 +263,7 @@ export function SheetKeyboardDragCase() {
             <Text fontSize="5" fontWeight="bold">
               ActionSheet (Reference)
             </Text>
-            <Text fontSize="3" color="gray11">
+            <Text fontSize="3" color="gray-700">
               Compare keyboard + drag behavior
             </Text>
 
@@ -308,14 +308,14 @@ export function SheetKeyboardDragCase() {
             {/* spacer for testing scroll + keyboard */}
             <YStack
               height={300}
-              bg="gray3"
+              bg="gray-100"
               borderRadius="2"
               padding="4"
               justifyContent="center"
               alignItems="center"
             >
-              <Text color="gray11">Spacer area</Text>
-              <Text color="gray11" fontSize="2">
+              <Text color="gray-700">Spacer area</Text>
+              <Text color="gray-700" fontSize="2">
                 Drag here to test sheet drag
               </Text>
             </YStack>

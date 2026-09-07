@@ -39,7 +39,7 @@ export function SelectAndroidOnPress() {
         Select Android onPress Test (#3436)
       </Text>
 
-      <Text testID="select-android-instructions" fontSize="3" color="gray11">
+      <Text testID="select-android-instructions" fontSize="3" color="gray-700">
         Tap the select, then tap an item. On physical Android devices, the selection may
         not work due to onPress not firing.
       </Text>
@@ -98,7 +98,7 @@ export function SelectAndroidOnPress() {
         <Text testID="select-android-last-action">Last action: {lastAction}</Text>
       </YStack>
 
-      <YStack gap="1" padding="2" bg="yellow3" borderRadius="2">
+      <YStack gap="1" padding="2" bg="yellow-100" borderRadius="2">
         <Text fontSize="2" fontWeight="bold">
           Expected behavior:
         </Text>
@@ -108,7 +108,7 @@ export function SelectAndroidOnPress() {
         </Text>
       </YStack>
 
-      <YStack gap="1" padding="2" bg="red3" borderRadius="2">
+      <YStack gap="1" padding="2" bg="red-100" borderRadius="2">
         <Text fontSize="2" fontWeight="bold">
           Bug behavior (physical Android):
         </Text>

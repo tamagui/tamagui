@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { styled, Button, YStack } from 'tamagui'
 
 const StyledInput = styled(Input, {
-  borderColor: 'blue8',
+  borderColor: 'blue-400',
   borderWidth: 2,
 })
 

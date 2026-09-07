@@ -23,13 +23,13 @@ export function GroupPseudoVariantOverride() {
   return (
     <View gap="4" padding="4">
       {/* base: press should get opacity 0.6 */}
-      <View group="testy" padding="4" backgroundColor="gray5" id="base-group">
+      <View group="testy" padding="4" backgroundColor="gray-200" id="base-group">
         <Overlay id="base-overlay" />
         <View height={40} />
       </View>
 
       {/* action variant: press should get opacity 1 (overriding base 0.6) */}
-      <View group="testy" padding="4" backgroundColor="gray5" id="action-group">
+      <View group="testy" padding="4" backgroundColor="gray-200" id="action-group">
         <Overlay id="action-overlay" variant="action" />
         <View height={40} />
       </View>

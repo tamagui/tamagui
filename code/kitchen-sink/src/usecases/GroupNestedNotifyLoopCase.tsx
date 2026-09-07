@@ -6,15 +6,11 @@ const DEPTH = 64
 function NestedGroup({ index, active }: { index: number; active: boolean }) {
   const group = `nested-${index}` as `nested-${number}`
   const parent = index === 0 ? 'root' : `nested-${index - 1}`
-  const groupProps =
-    index === 0
-      ? {}
-      : {
-          opacity: `group-press/${parent}:${active ? 0.96 : 0.95}`,
-        }
-
   return (
-    <YStack group={group} {...groupProps}>
+    <YStack
+      group={group}
+      opacity={index === 0 ? undefined : `group-press/${parent}:${active ? 0.96 : 0.95}`}
+    >
       {index >= DEPTH ? (
         <Text testID="nested-group-ready">{active ? 'active' : 'idle'}</Text>
       ) : (

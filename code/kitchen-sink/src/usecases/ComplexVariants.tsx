@@ -27,7 +27,7 @@ const Frame = styled(View, {
   gap: '1',
   width: 100,
   height: 100,
-  bg: 'blue10',
+  bg: 'blue-600',
   paddingVertical: '2',
   paddingHorizontal: '4',
   outlineWidth: 0,
@@ -38,7 +38,7 @@ const Frame = styled(View, {
   variants: {
     isError: {
       true: {
-        borderColor: 'red10 hover:red10',
+        borderColor: 'red-600 hover:red-600',
         borderBottomRightRadius: 0,
         borderBottomLeftRadius: 0,
         borderBottomWidth: '0px hover:0px',
@@ -47,14 +47,14 @@ const Frame = styled(View, {
 
     isInvalid: {
       true: {
-        borderColor: 'yellow10 hover:yellow10',
+        borderColor: 'yellow-600 hover:yellow-600',
         borderWidth: '5px hover:5px',
       },
     },
 
     isFocused: {
       true: {
-        borderColor: 'green10',
+        borderColor: 'green-600',
         borderWidth: 10,
       },
     },
@@ -93,21 +93,21 @@ export function ComplexVariants() {
             <Paragraph
               color="#fff"
               fontWeight="800"
-              bg={`${isFocus ? 'green10' : 'red10'}`}
+              bg={`${isFocus ? 'green-600' : 'red-600'}`}
             >
               isFocus
             </Paragraph>
             <Paragraph
               color="#fff"
               fontWeight="800"
-              bg={`${isInvalid ? 'green10' : 'red10'}`}
+              bg={`${isInvalid ? 'green-600' : 'red-600'}`}
             >
               isInvalid
             </Paragraph>
             <Paragraph
               color="#fff"
               fontWeight="800"
-              bg={`${isError ? 'green10' : 'red10'}`}
+              bg={`${isError ? 'green-600' : 'red-600'}`}
             >
               isError
             </Paragraph>

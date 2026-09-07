@@ -81,7 +81,7 @@ function EnterExitScenario() {
             testID="enterexit-box"
             data-testid="enterexit-box"
             size={60}
-            bg="blue10"
+            bg="blue-600"
             transition="300ms"
             opacity="1 enter:0 exit:0"
             scale="enter:0.8 exit:0.8"
@@ -110,7 +110,7 @@ function UpdateScenario() {
         testID="update-box"
         data-testid="update-box"
         size={60}
-        bg="green10"
+        bg="green-600"
         transition="300ms"
         opacity={on ? 0.5 : 1}
         scale={on ? 0.8 : 1}
@@ -147,7 +147,7 @@ function InterruptScenario() {
         testID="interrupt-box"
         data-testid="interrupt-box"
         size={60}
-        bg="red10"
+        bg="red-600"
         transition="500ms"
         scale={scale}
         onTransition={(e) => log('interrupt', e)}

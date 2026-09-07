@@ -85,7 +85,7 @@ export function HomeScreen() {
           Kitchen Sink
         </Paragraph>
 
-        <Paragraph size="1" color={`${gestureHandlerEnabled ? 'green10' : 'red10'}`}>
+        <Paragraph size="1" color={`${gestureHandlerEnabled ? 'green-600' : 'red-600'}`}>
           RNGH: {gestureHandlerEnabled ? '✓ enabled' : '✗ disabled'}
         </Paragraph>
 
@@ -96,7 +96,7 @@ export function HomeScreen() {
         <YGroup>
           <YGroup.Item>
             <LinkListItem
-              bg="blue3 press:blue4"
+              bg="blue-100 press:blue-200"
               href="/test/SheetScrollableDrag"
               size="5"
               testID="home-sheet-scroll-test"
@@ -106,7 +106,7 @@ export function HomeScreen() {
           </YGroup.Item>
           <YGroup.Item>
             <LinkListItem
-              bg="green3 press:green4"
+              bg="green-100 press:green-200"
               href="/test/SheetKeyboardDragCase"
               size="5"
               testID="home-sheet-keyboard-test"
@@ -116,7 +116,7 @@ export function HomeScreen() {
           </YGroup.Item>
           <YGroup.Item>
             <LinkListItem
-              bg="green3 press:green4"
+              bg="green-100 press:green-200"
               href="/test/SheetKeyboardFitContentCase"
               size="5"
               testID="home-sheet-keyboard-fit-test"
@@ -126,7 +126,7 @@ export function HomeScreen() {
           </YGroup.Item>
           <YGroup.Item>
             <LinkListItem
-              bg="purple3 press:purple4"
+              bg="purple-100 press:purple-200"
               href="/test/ActionsSheetComparison"
               size="5"
             >
@@ -135,7 +135,7 @@ export function HomeScreen() {
           </YGroup.Item>
           <YGroup.Item>
             <LinkListItem
-              bg="green3 press:orange4"
+              bg="green-100 press:orange-200"
               href="/test/ToastMultipleCase"
               size="5"
             >

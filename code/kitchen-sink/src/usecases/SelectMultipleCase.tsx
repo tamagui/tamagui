@@ -199,7 +199,7 @@ function AdaptedMultiple() {
               <Sheet modal snapPoints={[70]} dismissOnSnapToBottom zIndex={250_000}>
                 <Sheet.Overlay
                   testID="multiple-adapt-overlay"
-                  backgroundColor="shadow6"
+                  backgroundColor="shadow-6"
                 />
                 <Sheet.Handle testID="multiple-adapt-handle" />
                 <Sheet.Container testID="multiple-adapt-sheet">

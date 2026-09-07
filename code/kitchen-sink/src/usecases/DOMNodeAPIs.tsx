@@ -122,14 +122,14 @@ export function DOMNodeAPIs() {
           id="dom-node-childA"
           width={100}
           height={50}
-          backgroundColor="blue5"
+          backgroundColor="blue-200"
         />
         <View
           ref={childBRef as any}
           id="dom-node-childB"
           width={100}
           height={50}
-          backgroundColor="red5"
+          backgroundColor="red-200"
         />
         <Text ref={textRef as any} id="dom-node-text">
           hello dom

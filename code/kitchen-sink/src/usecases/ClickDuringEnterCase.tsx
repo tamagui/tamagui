@@ -34,7 +34,7 @@ export function ClickDuringEnterCase() {
               key="click-enter-square"
               testID="click-enter-target"
               transition={{ preset: 'medium', properties: 'transform, opacity' }}
-              bg="blue10"
+              bg="blue-600"
               opacity="1 enter:0 exit:0"
               scale="1 enter:0.93 exit:0.93"
               y="0 enter:-10px exit:5px"

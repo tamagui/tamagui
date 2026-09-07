@@ -99,7 +99,7 @@ function OpacityAnimationTest() {
       <Square
         ref={squareRef as any}
         transition="quick"
-        backgroundColor="blue10"
+        backgroundColor="blue-600"
         opacity={faded ? 0.2 : 1}
         size={60}
         testID={`${testId}-square`}
@@ -181,7 +181,7 @@ function ScaleAnimationTest() {
       <Square
         ref={squareRef as any}
         transition="quick"
-        backgroundColor="green10"
+        backgroundColor="green-600"
         scale={scaled ? 1.5 : 1}
         size={60}
         testID={`${testId}-square`}
@@ -265,7 +265,7 @@ function TranslateAnimationTest() {
       <Square
         ref={squareRef as any}
         transition="quick"
-        backgroundColor="blue10"
+        backgroundColor="blue-600"
         y={moved ? -30 : 0}
         size={60}
         testID={`${testId}-square`}
@@ -354,7 +354,7 @@ function EnterExitAnimationTest() {
         <Square
           ref={squareRef as any}
           transition="bouncy"
-          backgroundColor="yellow10"
+          backgroundColor="yellow-600"
           opacity="enter:0 exit:0"
           scale="enter:0.5 exit:0.5"
           size={60}
@@ -426,7 +426,7 @@ function ColorAnimationTest() {
       <Square
         ref={squareRef as any}
         transition="quick"
-        backgroundColor={`${active ? 'red10' : 'blue10'}`}
+        backgroundColor={`${active ? 'red-600' : 'blue-600'}`}
         size={60}
         testID={`${testId}-square`}
         data-testid={`${testId}-square`}
@@ -497,7 +497,7 @@ function AnimationConfigTest() {
         transition={{ preset: 'quick', spring: { stiffness: 40, damping: 15 } }}
         height={60}
         width={expanded ? 150 : 60}
-        backgroundColor="red10"
+        backgroundColor="red-600"
         testID={`${testId}-square`}
         data-testid={`${testId}-square`}
       />

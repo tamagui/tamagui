@@ -99,7 +99,7 @@ export function OnLayoutCase() {
               width={resized ? 180 : 120}
               height={resized ? 80 : 60}
               marginLeft={moved ? 100 : 0}
-              backgroundColor="blue8"
+              backgroundColor="blue-400"
             />
           ) : (
             <View
@@ -109,7 +109,7 @@ export function OnLayoutCase() {
               width={resized ? 180 : 120}
               height={resized ? 80 : 60}
               marginLeft={moved ? 100 : 0}
-              backgroundColor="red8"
+              backgroundColor="red-400"
             />
           ))}
       </View>
@@ -127,7 +127,7 @@ export function OnLayoutCase() {
           onLayout={handleLayoutB}
           width={200}
           height={50}
-          backgroundColor="green8"
+          backgroundColor="green-400"
         />
       </View>
     </YStack>

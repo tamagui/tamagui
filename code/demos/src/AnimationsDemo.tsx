@@ -63,4 +63,4 @@ export const positions = [
     scale: '1 hover:1.1 press:0.9',
     rotate: '180deg',
   },
-]
+] as const

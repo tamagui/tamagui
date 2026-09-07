@@ -49,7 +49,7 @@ export function ImageTokenStyle() {
           </YStack>
 
           <YStack width={130} alignItems="center" overflow="hidden">
-            <View id={`view-ref-${i}`} backgroundColor="blue10" {...c.props} />
+            <View id={`view-ref-${i}`} backgroundColor="blue-600" {...c.props} />
           </YStack>
         </XStack>
       ))}

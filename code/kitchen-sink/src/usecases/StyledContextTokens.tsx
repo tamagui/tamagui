@@ -42,7 +42,7 @@ const GridChildBase = styled(View, {
   displayName: 'GridChild',
   context: GridContext,
   height: 50,
-  backgroundColor: 'blue10',
+  backgroundColor: 'blue-600',
   variants: {
     columns: styled.dynamic<number>(),
   } as const,
@@ -74,7 +74,7 @@ function DebugDisplay({ id }: { id: string }) {
   const isToken = context.gap ? ['2', '4', '8'].includes(context.gap) : false
 
   return (
-    <View id={id} padding="2" backgroundColor={`${isToken ? 'green5' : 'red5'}`}>
+    <View id={id} padding="2" backgroundColor={`${isToken ? 'green-200' : 'red-200'}`}>
       <DebugInfo>gap: {context.gap}</DebugInfo>
       <DebugInfo>isToken: {String(isToken)}</DebugInfo>
       <DebugInfo id={`${id}-gap-value`}>{context.gap}</DebugInfo>
@@ -120,7 +120,7 @@ export function StyledContextTokens() {
       </View>
 
       {/* Show current media state for debugging */}
-      <View padding="2" backgroundColor="gray5">
+      <View padding="2" backgroundColor="gray-200">
         <Text fontSize={10}>
           Media: sm={String(media.sm)} md={String(media.md)} lg={String(media.lg)}
         </Text>

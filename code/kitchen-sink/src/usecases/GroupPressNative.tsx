@@ -19,7 +19,7 @@ const GroupPressChild = styled(View, {
   displayName: 'GroupPressChild',
   width: 150,
   height: 60,
-  backgroundColor: 'blue10 group-press:red10',
+  backgroundColor: 'blue-600 group-press:red-600',
   alignItems: 'center',
   justifyContent: 'center',
 })
@@ -29,7 +29,7 @@ const GroupPressChildAnimated = styled(View, {
   displayName: 'GroupPressChildAnimated',
   width: 150,
   height: 60,
-  backgroundColor: 'blue10 group-press:red10',
+  backgroundColor: 'blue-600 group-press:red-600',
   alignItems: 'center',
   justifyContent: 'center',
   transition: 'quick',
@@ -40,7 +40,7 @@ const NamedGroupPressChild = styled(View, {
   displayName: 'NamedGroupPressChild',
   width: 150,
   height: 60,
-  backgroundColor: 'blue10 group-press/testy:red10',
+  backgroundColor: 'blue-600 group-press/testy:red-600',
   alignItems: 'center',
   justifyContent: 'center',
 })
@@ -50,7 +50,7 @@ const NamedGroupPressChildAnimated = styled(View, {
   displayName: 'NamedGroupPressChildAnimated',
   width: 150,
   height: 60,
-  backgroundColor: 'blue10 group-press/testy:red10',
+  backgroundColor: 'blue-600 group-press/testy:red-600',
   alignItems: 'center',
   justifyContent: 'center',
   transition: 'quick',
@@ -73,7 +73,7 @@ export function GroupPressNative() {
         <Text fontSize="2">1. Group (no transition)</Text>
         <YStack
           group
-          backgroundColor="gray5"
+          backgroundColor="gray-200"
           padding="2"
           testID="group-no-transition"
           onPressIn={() =>
@@ -101,7 +101,7 @@ export function GroupPressNative() {
         <Text fontSize="2">2. Group (with transition)</Text>
         <YStack
           group
-          backgroundColor="gray5"
+          backgroundColor="gray-200"
           padding="2"
           testID="group-with-transition"
           onPressIn={() =>
@@ -129,7 +129,7 @@ export function GroupPressNative() {
         <Text fontSize="2">3. Named group (no transition)</Text>
         <YStack
           group="testy"
-          backgroundColor="gray5"
+          backgroundColor="gray-200"
           padding="2"
           testID="named-group-no-transition"
           onPressIn={() =>
@@ -157,7 +157,7 @@ export function GroupPressNative() {
         <Text fontSize="2">4. Named group (with transition)</Text>
         <YStack
           group="testy"
-          backgroundColor="gray5"
+          backgroundColor="gray-200"
           padding="2"
           testID="named-group-with-transition"
           onPressIn={() =>

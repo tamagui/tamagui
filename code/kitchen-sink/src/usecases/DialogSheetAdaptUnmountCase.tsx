@@ -48,7 +48,7 @@ function ThreePunchDialog({
           dismissOnSnapToBottom
         >
           <Sheet.Overlay
-            bg="shadow6"
+            bg="shadow-6"
             opacity="enter:0 exit:0"
             onPress={() => onOpenChange?.(false)}
           />
@@ -97,7 +97,7 @@ const DialogOverlay = styled(TamaguiDialog.Overlay, {
   position: 'absolute',
   inset: 0 as any,
   opacity: '1 enter:0 exit:0',
-  bg: 'shadow6',
+  bg: 'shadow-6',
 })
 
 const DialogContent = styled(TamaguiDialog.Content, {
