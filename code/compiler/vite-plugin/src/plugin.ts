@@ -1573,7 +1573,7 @@ export function createTamaguiPlugins({
             Static.mergeIslandBridges(zero.bridges, zeroResult.bridges)
             const moduleCSS = [
               wrapExtractedCSS(result.plan.css),
-              ...[...zeroResult.bridgeCSS.values()],
+              ...zeroResult.bridgeCSS.values(),
             ]
               .filter(Boolean)
               .join('\n')

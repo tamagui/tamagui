@@ -140,14 +140,6 @@ function componentKey(resolvedId: string, exportName: string): string {
   return `${resolvedId}#${exportName}`
 }
 
-function cssFromRules(rules: Record<string, any>): string[] {
-  return Object.values(rules).flatMap((styleObject: any) => {
-    const identifier = styleObject?.[StyleObjectIdentifier]
-    const styleRules = styleObject?.[StyleObjectRules]
-    return identifier && Array.isArray(styleRules) ? styleRules : []
-  })
-}
-
 function jsxClassName(value: string): string {
   return `className=${JSON.stringify(value)}`
 }
@@ -215,7 +207,16 @@ function extractedStyleArtifacts(
       ? viewClassName.slice(0, -callerClassName.length).trimEnd()
       : viewClassName
   const rules = split.rulesToInsert ?? {}
-  const mediaNames = new Set(Object.keys(config.media ?? {}))
+  const mediaNames = Object.keys(config.media ?? {})
+  const rulesByIdentifier = new Map<string, string[]>()
+  for (const styleObject of Object.values(rules) as any[]) {
+    const identifier = styleObject?.[StyleObjectIdentifier]
+    const styleRules = styleObject?.[StyleObjectRules]
+    if (typeof identifier !== 'string' || !Array.isArray(styleRules)) continue
+    const existing = rulesByIdentifier.get(identifier)
+    if (existing) existing.push(...styleRules)
+    else rulesByIdentifier.set(identifier, [...styleRules])
+  }
   const pseudoNames = [
     'hover',
     'press',
@@ -244,21 +245,14 @@ function extractedStyleArtifacts(
   ])
   for (const identifier of identifiers) {
     const key = classKeys.get(identifier) ?? ''
-    const css = cssFromRules(
-      Object.fromEntries(
-        Object.entries(rules).filter(
-          ([, styleObject]: [string, any]) =>
-            styleObject?.[StyleObjectIdentifier] === identifier
-        )
-      )
-    ).join('')
+    const css = (rulesByIdentifier.get(identifier) ?? []).join('')
     if (identifier.startsWith('t_group_')) {
       buckets.group.push(identifier)
     } else if (pseudoNames.some((name) => key.endsWith(`-${name}`))) {
       buckets.pseudo.push(identifier)
     } else if (css.includes('.t_')) {
       buckets.theme.push(identifier)
-    } else if ([...mediaNames].some((name) => key.endsWith(`-${name}`))) {
+    } else if (mediaNames.some((name) => key.endsWith(`-${name}`))) {
       buckets.media.push(identifier)
     } else {
       buckets.normal.push(identifier)
@@ -279,14 +273,7 @@ function extractedStyleArtifacts(
         .join(' ')
     : ''
   const css = orderedIdentifiers.flatMap((identifier) => {
-    const identifierRules = cssFromRules(
-      Object.fromEntries(
-        Object.entries(rules).filter(
-          ([, styleObject]: [string, any]) =>
-            styleObject?.[StyleObjectIdentifier] === identifier
-        )
-      )
-    )
+    const identifierRules = rulesByIdentifier.get(identifier) ?? []
     // The legacy static theme-block path adds one root specificity level after
     // resolving tokens. Keep that output contract until the legacy oracle is removed.
     return buckets.theme.includes(identifier)
