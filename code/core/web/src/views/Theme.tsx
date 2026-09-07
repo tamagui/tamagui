@@ -131,7 +131,7 @@ export function getThemedChildren(
     </ThemeStateContext.Provider>
   )
 
-  const { isInverse, name } = themeState
+  const { isInverse } = themeState
   const requiresExtraWrapper = isInverse || forceClassName
 
   // it only ever progresses from false => true => 'wrapped'
@@ -222,12 +222,9 @@ export function getThemedChildren(
 
     // to prevent tree structure changes always render this if inverse is true or false
     if (state.hasEverThemed === 'wrapped') {
-      // but still calculate if we need the classnames
-      const className = requiresExtraWrapper
-        ? `${
-            name.startsWith('light') ? 't_light' : name.startsWith('dark') ? 't_dark' : ''
-          } _dsp_contents`
-        : `_dsp_contents`
+      const scheme =
+        requiresExtraWrapper && themeState.schemeAuthored && themeState.scheme
+      const className = scheme ? `t_${scheme} _dsp_contents` : '_dsp_contents'
       children = <span className={className}>{children}</span>
     }
 
@@ -251,7 +248,7 @@ const empty = { className: '', color: undefined }
 function getThemeClassNameAndColor(
   themeState: ThemeState,
   props: ThemeProps,
-  isRoot = false
+  isRoot?: boolean
 ) {
   if (!themeState.isNew && !props.forceClassName) {
     return empty
@@ -261,5 +258,8 @@ function getThemeClassNameAndColor(
   const themeColor =
     themeState?.theme && themeState.isNew ? variableToString(themeState.theme.color) : ''
 
-  return { color: themeColor, className: getThemeClassNames(themeState.name, isRoot) }
+  return {
+    color: themeColor,
+    className: getThemeClassNames(themeState.name, isRoot, themeState.schemeAuthored),
+  }
 }

@@ -2054,7 +2054,6 @@ type HOCClassNames = [
 
 type DirectState = GetStyleState & {
   flatValueScope?: ValueScopeCache
-  flatValueScopeKind?: any
   flatConditions?: Map<string, Condition>
   flatConditionsClassed?: boolean
   flatPass?: StylePass
@@ -2486,12 +2485,7 @@ function configuredValue(
     property.startsWith('font') ||
     property === 'lineHeight' ||
     property === 'letterSpacing'
-  const resolveValues =
-    process.env.TAMAGUI_TARGET === 'web' &&
-    !state.flatShouldDoClasses &&
-    state.styleProps.resolveValues === 'auto'
-      ? 'value'
-      : state.styleProps.resolveValues
+  const resolveValues = state.styleProps.resolveValues
   let byRaw: Map<string, any> | undefined
   if (!fontProperty) {
     const revision = grammar.revision
@@ -2502,12 +2496,12 @@ function configuredValue(
       valueCacheEntries = 0
       ;(state as DirectState).flatValueScope = undefined
     }
-    // the scope (theme identity, name, resolveValues) is fixed for a pass apart
-    // from the class/inline flip, so resolve it once and key the per-value lookups
+    // the scope (theme identity, name, resolveValues) is fixed for a pass,
+    // so resolve it once and key the per-value lookups
     // off interned property and raw strings instead of joining them into a key
     const direct = state as DirectState
     let scope = direct.flatValueScope
-    if (scope === undefined || direct.flatValueScopeKind !== resolveValues) {
+    if (scope === undefined) {
       const themeObject =
         state.theme && typeof state.theme === 'object' ? state.theme : valueCacheRoot
       let byScope = valueCaches.get(themeObject)
@@ -2516,7 +2510,6 @@ function configuredValue(
       scope = byScope.get(scopeKey)
       if (!scope) byScope.set(scopeKey, (scope = new Map()))
       direct.flatValueScope = scope
-      direct.flatValueScopeKind = resolveValues
     }
     let maps = scope.get(property)
     if (maps === undefined) scope.set(property, (maps = { direct: new Map() }))
@@ -2907,15 +2900,7 @@ function emitValue(
   }
 
   if (isVariable(raw)) {
-    raw = resolveVariableValue(
-      property,
-      raw,
-      process.env.TAMAGUI_TARGET === 'web' &&
-        !state.flatShouldDoClasses &&
-        state.styleProps.resolveValues === 'auto'
-        ? 'value'
-        : state.styleProps.resolveValues
-    )
+    raw = resolveVariableValue(property, raw, state.styleProps.resolveValues)
   }
 
   if (
@@ -3058,7 +3043,8 @@ function emitValue(
     ) {
       if (
         property === 'rotate' &&
-        !Number.isFinite(numericUnitValue(value, 'deg', 'rad'))
+        !Number.isFinite(numericUnitValue(value, 'deg', 'rad')) &&
+        (process.env.TAMAGUI_TARGET === 'native' || !startsValueFunction(value))
       ) {
         if (process.env.NODE_ENV === 'development') {
           warnOnce(

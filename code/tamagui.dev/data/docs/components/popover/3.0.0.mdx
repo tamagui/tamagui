@@ -211,6 +211,12 @@ Contains every component for the popover.
       description: `Allows hovering on the trigger to open the popover. See UseFloatingProps from floating-ui: accepts boolean or object of { delay: number, restMs: number, handleClose: Function, mouseOnly: boolean, move: boolean }`,
     },
     {
+      name: 'disableFocus',
+      type: 'boolean',
+      default: '!hoverable',
+      description: 'Disable opening when the trigger receives keyboard focus. Ordinary popovers open on click, Enter, or Space. Set false to open on focus; hoverable popovers enable this behavior by default.',
+    },
+    {
       name: 'resize',
       type: 'SizeProps | boolean',
       required: false,

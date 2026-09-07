@@ -1,14 +1,16 @@
 import {
+  createStyledHOC,
   resolveSize,
+  SizeContext,
+  Text,
+  wrapChildrenInText,
   styled,
   Tabs as TabsBehavior,
   withStaticProperties,
 } from '@tamagui/ui'
 
 const tabSizeVariant = styled.dynamic<any>((size, env) => {
-  const { frame, text } = resolveSize(size, env)
-  // the tab label is a bare string child, so the frame carries its font
-  return { ...frame, ...text }
+  return resolveSize(size, env).frame
 })
 
 export const TabsFrame = styled(TabsBehavior, {
@@ -53,9 +55,32 @@ const TabsTabBase = styled(TabsBehavior.Tab, {
   },
 })
 
-export const TabsTab = TabsTabBase.resolve((props, env) => {
+const TabsTabFrame = TabsTabBase.resolve((props, env) => {
   if (props.unstyled) return
   return tabSizeVariant(props.size ?? true, env)
+})
+
+const TabsTabText = styled(Text, {
+  context: SizeContext,
+  fontFamily: 'body',
+  color: 'color',
+  variants: {
+    size: styled.dynamic<any>((size, env) => resolveSize(size, env).text),
+  },
+  defaultVariants: {
+    size: true,
+  },
+})
+
+export const TabsTab = createStyledHOC(TabsTabFrame, function TabsTab(props, ref) {
+  const { children, ...frameProps } = props
+  const contextSize = SizeContext.useStyledContext()?.size
+  const size = props.size ?? contextSize ?? true
+  return (
+    <TabsTabFrame {...frameProps} ref={ref}>
+      {wrapChildrenInText(TabsTabText, { children, size })}
+    </TabsTabFrame>
+  )
 })
 
 export const TabsContent = styled(TabsBehavior.Content, {

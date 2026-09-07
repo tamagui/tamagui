@@ -8,7 +8,7 @@ import {
   type SourceEdit,
   type ZeroViolation,
 } from '@tamagui/compiler-core'
-import { getThemeClassNames, reservedThemeProps } from '@tamagui/helpers'
+import { getThemeClassNames, getThemeScheme, reservedThemeProps } from '@tamagui/helpers'
 import {
   resolveThemeName,
   variableToString,
@@ -160,6 +160,8 @@ export interface ThemeBranch {
   test: string | null
   name: string
   isNew: boolean
+  /** mirrors ThemeState.schemeAuthored: a scheme this node named outright. */
+  schemeAuthored: boolean
 }
 
 /**
@@ -175,7 +177,9 @@ export function resolveThemeChain(
   rootThemeName: string,
   config: TamaguiInternalConfig
 ): ThemeBranch[] {
-  let branches: ThemeBranch[] = [{ test: null, name: rootThemeName, isNew: false }]
+  let branches: ThemeBranch[] = [
+    { test: null, name: rootThemeName, isNew: false, schemeAuthored: false },
+  ]
   for (const node of chain) {
     const next: typeof branches = []
     for (const parent of branches) {
@@ -185,11 +189,28 @@ export function resolveThemeChain(
           option.name,
           config.themes as Record<string, any>
         )
+        // the AUTHORED name pins the scheme, and it is valid when the config
+        // has that theme, independent of what resolveThemeName returned (which
+        // is null whenever it lands on the name the parent already carries).
+        // same rule as useThemeState, and it has to stay identical: a compiled
+        // span that spells its classes differently than the runtime would swap
+        // values under it on hydration.
+        const schemeAuthored =
+          parent.schemeAuthored ||
+          Boolean(
+            option.name &&
+            getThemeScheme(option.name) &&
+            option.name in (config.themes as Record<string, any>)
+          )
         const tests = [parent.test, option.test].filter(Boolean)
         next.push({
           test: tests.length ? tests.join(' && ') : null,
           name: resolved ?? parent.name,
-          isNew: resolved !== null,
+          // a node that pins a scheme its parent had only inherited is its own
+          // scope even when the resolved name is unchanged, because it is the
+          // node that emits the pinned class
+          isNew: resolved !== null || schemeAuthored !== parent.schemeAuthored,
+          schemeAuthored,
         })
       }
     }
@@ -455,7 +476,11 @@ export function lowerStaticTheme(
   const classBranches = branches.map((branch) => ({
     test: branch.test,
     value: JSON.stringify(
-      [branch.isNew ? getThemeClassNames(branch.name) : '', 'is_Theme', inlineClass]
+      [
+        branch.isNew ? getThemeClassNames(branch.name, false, branch.schemeAuthored) : '',
+        'is_Theme',
+        inlineClass,
+      ]
         .filter(Boolean)
         .join(' ')
         .replace(/\s+/g, ' ')

@@ -3,7 +3,7 @@ import { DocsSyntaxLayout } from '~/features/docs/DocsSyntaxLayout'
 
 export default function UnstyledDocsLayout() {
   return (
-    <DocsSyntaxLayout mode="unstyled">
+    <DocsSyntaxLayout>
       <Slot />
     </DocsSyntaxLayout>
   )

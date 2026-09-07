@@ -1,5 +1,5 @@
 import '@tamagui/polyfill-dev';
-import type { UseHoverProps } from '@tamagui/floating';
+import type { OpenChangeReason, UseHoverProps } from '@tamagui/floating';
 import type { SizeTokens, TamaguiElement, ViewProps } from '@tamagui/core';
 import { type DismissableProps } from '@tamagui/dismissable';
 import type { FocusScopeProps } from '@tamagui/focus-scope';
@@ -30,7 +30,8 @@ export type PopoverProps = ScopedPopoverProps<PopperProps> & {
      */
     hoverable?: boolean | UseHoverProps;
     /**
-     * Disable focusing behavior on open
+     * disable opening when the trigger receives keyboard focus.
+     * defaults to true unless hoverable is enabled.
      */
     disableFocus?: boolean;
     /**
@@ -70,6 +71,7 @@ type PopoverContextValue = {
     hoverable?: boolean | object;
     anchorTo?: Rect;
     branches: Set<HTMLElement>;
+    closeReasonRef?: React.RefObject<OpenChangeReason | undefined>;
 };
 type PopoverTriggerStateSetter = React.Dispatch<React.SetStateAction<boolean>>;
 type PopoverTriggerContextValue = {
@@ -118,12 +120,13 @@ export type PopoverContextProviderProps = {
     keepChildrenMounted?: boolean | 'lazy';
     disableDismissable?: boolean;
     hoverable?: boolean | object;
+    closeReasonRef?: React.RefObject<OpenChangeReason | undefined>;
 };
 /**
  * Provider that sets up both PopoverContext and PopoverTriggerContext.
  * Use this in Tooltip or other components that need popover trigger behavior.
  */
-export declare const PopoverContextProvider: React.MemoExoticComponent<({ scope, children, open, onOpenChange, onOpenToggle, triggerRef, id, contentId, hasCustomAnchor, onCustomAnchorAdd, onCustomAnchorRemove, anchorTo, adaptScope, breakpointActive, keepChildrenMounted, disableDismissable, hoverable, }: PopoverContextProviderProps) => React.JSX.Element>;
+export declare const PopoverContextProvider: React.MemoExoticComponent<({ scope, children, open, onOpenChange, onOpenToggle, triggerRef, id, contentId, hasCustomAnchor, onCustomAnchorAdd, onCustomAnchorRemove, anchorTo, adaptScope, breakpointActive, keepChildrenMounted, disableDismissable, hoverable, closeReasonRef, }: PopoverContextProviderProps) => React.JSX.Element>;
 export type PopoverAnchorProps = ScopedPopoverProps<YStackProps>;
 export declare const PopoverAnchor: React.NamedExoticComponent<Omit<YStackProps, "scope"> & {
     scope?: PopoverScopes;
@@ -233,7 +236,8 @@ export declare const Popover: ((props: Omit<PopperProps, "scope"> & {
      */
     hoverable?: boolean | UseHoverProps;
     /**
-     * Disable focusing behavior on open
+     * disable opening when the trigger receives keyboard focus.
+     * defaults to true unless hoverable is enabled.
      */
     disableFocus?: boolean;
     /**

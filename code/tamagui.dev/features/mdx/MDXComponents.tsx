@@ -430,10 +430,11 @@ const componentsIn = {
     <H2
       position="relative"
       width={`fit-content` as any}
-      mt="8"
-      mb="4"
+      mt={32}
+      mb={12}
       data-heading
-      size="8"
+      fontSize={28}
+      lineHeight={36}
       fontWeight="500"
       color="color12"
       {...props}
@@ -443,13 +444,14 @@ const componentsIn = {
   ),
 
   h3: ({ children, id, ...props }) => (
-    <LinkHeading data-heading mt="6" mb="2" id={id}>
+    <LinkHeading data-heading mt={24} mb={8} id={id}>
       <H3
         maxW="100%"
         position="relative"
         width={`fit-content` as any}
         id={id}
-        size="7"
+        fontSize={23}
+        lineHeight={30}
         color="color11"
         fontWeight="500"
         {...props}
@@ -464,9 +466,10 @@ const componentsIn = {
     <H4
       position="relative"
       width={`fit-content` as any}
-      mt="8"
-      mb="2"
-      size="7"
+      mt={24}
+      mb={8}
+      fontSize={20}
+      lineHeight={28}
       color="color8"
       data-heading
       {...props}
@@ -480,8 +483,10 @@ const componentsIn = {
     <Paragraph
       className="docs-paragraph"
       display="block"
-      size="6"
-      my="3"
+      fontSize={16}
+      lineHeight={27}
+      mt={0}
+      mb={16}
       color="color11"
       {...props}
     />
@@ -525,7 +530,7 @@ const componentsIn = {
 
   ul: ({ children }) => {
     return (
-      <UL render="ul" my="4">
+      <UL render="ul" mt={0} mb={16}>
         {React.Children.toArray(children).map((x) => (typeof x === 'string' ? null : x))}
       </UL>
     )
@@ -537,8 +542,10 @@ const componentsIn = {
     return (
       <LI
         render="li"
-        size="6"
-        mb="1-5"
+        fontSize={16}
+        lineHeight={27}
+        pb={0}
+        mb={4}
         className="docs-paragraph"
         style={{
           listStyleType: 'disc',

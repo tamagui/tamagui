@@ -9,6 +9,7 @@ import type { ComponentType } from 'react'
 
 const loaders: Record<string, () => ComponentType<any>> = {
   SurfaceCase: () => require('./SurfaceCase').SurfaceCase,
+  RovingFocusCase: () => require('./RovingFocusCase').RovingFocusCase,
   IOS26StatusBarPortalCase: () =>
     require('./IOS26StatusBarPortalCase').IOS26StatusBarPortalCase,
   ThemeUpdateNativeCase: () => require('./ThemeUpdateNativeCase').ThemeUpdateNativeCase,

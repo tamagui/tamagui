@@ -7,7 +7,7 @@ import {
   TerminalSquare,
 } from '@tamagui/lucide-icons-2'
 import { useStore } from '@tamagui/use-store'
-import { forwardRef, useEffect, useId, useRef, useState } from 'react'
+import { forwardRef, useId, useState } from 'react'
 import {
   AnimatePresence,
   Paragraph,
@@ -15,7 +15,6 @@ import {
   TooltipSimple,
   XStack,
   YStack,
-  useEvent,
 } from 'tamagui'
 import { Button } from '~/components/Button'
 import { LinearGradient } from '@tamagui/linear-gradient'
@@ -37,9 +36,6 @@ class CollapseStore {
     this.isCollapsed = val
   }
 }
-
-// all of the code around useClipboard useBashCommand codeElement.innerText.replace
-// was written by a junior dev and could be way simpler and cleaner
 
 export const DocCodeBlock = forwardRef((props: any, ref) => {
   const {
@@ -63,34 +59,15 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
   const { isCollapsed, setIsCollapsed } = store
   const isLong = lines > 22
   const [isCutoff, setIsCutoff] = useState(isLong && !showMore)
-  const [code, setCode] = useState<string | undefined>(undefined)
-  const preRef = useRef<any>(null)
-  const { hasCopied, onCopy } = useClipboard(code)
   const showLineNumbers = showLineNumbersIn ?? lines > 10
 
-  const { isTerminalCommand, showTabs, transformedCommand } = useBashCommand(
-    children,
-    className
-  )
+  const command = useBashCommand(children, className)
+  const { isTerminalCommand, showTabs, transformedCommand } = command
+  const { hasCopied, onCopy } = useClipboard(transformedCommand)
 
   const showFileName = fileName || isTerminalCommand
 
   const isPreVisible = !isCollapsed || !isCollapsible
-
-  const onCommandChange = useEvent(() => {
-    try {
-      const codeElement = preRef.current?.querySelector('code')
-      if (codeElement) {
-        setCode(transformedCommand)
-      }
-    } catch (err) {
-      console.warn('err', err)
-    }
-  })
-
-  useEffect(() => {
-    onCommandChange()
-  }, [transformedCommand, isPreVisible, onCommandChange])
 
   const copyButton = disableCopy ? null : (
     <TooltipSimple label={hasCopied ? 'Copied' : 'Copy to clipboard'}>
@@ -185,7 +162,6 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
             )}
 
             <Pre
-              ref={preRef}
               data-invert-line-highlight={isHighlightingLines}
               data-line-numbers={showLineNumbers}
               className={className}
@@ -225,6 +201,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
               )}
 
               <CodeBlockTabs
+                command={command}
                 className={className}
                 size={size}
                 {...rest}
@@ -236,7 +213,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
                 {children}
               </CodeBlockTabs>
 
-              {!showFileName && copyButton && (
+              {!showFileName && !showTabs && copyButton && (
                 <XStack position="absolute" t="3" r="3">
                   {copyButton}
                 </XStack>

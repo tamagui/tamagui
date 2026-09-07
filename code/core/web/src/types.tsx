@@ -485,6 +485,12 @@ export type ThemeState = {
   isNew?: boolean
   parentId?: string
   scheme?: 'light' | 'dark'
+  // true when a `<Theme name="light_blue">` at or above this state named its
+  // scheme outright, rather than inheriting the scheme from the root. Only such
+  // a state may emit the scheme-qualified `t_light_blue` class; everything else
+  // stays scheme-relative so server output renders correctly under either root
+  // scheme. Cumulative: once an ancestor pins, descendants stay pinned.
+  schemeAuthored?: boolean
 }
 
 export interface Variable<A = any> {

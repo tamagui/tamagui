@@ -1,4 +1,5 @@
 import { createMiddleware } from 'one'
+import { getDocsLinkHref } from '~/features/docs/docsVersion'
 import fs from 'node:fs'
 import path from 'node:path'
 
@@ -80,6 +81,14 @@ initializeVersionCache()
 
 export default createMiddleware(async ({ request, next }) => {
   const url = new URL(request.url)
+
+  if (url.searchParams.has('syntax')) {
+    const href = `${url.pathname}${url.search}`
+    const canonicalHref = getDocsLinkHref(href, 'styled')
+    if (canonicalHref !== href) {
+      return Response.redirect(new URL(canonicalHref, url.origin), 307)
+    }
+  }
 
   // handle llms.txt - serve full docs directly (no redirect)
   if (

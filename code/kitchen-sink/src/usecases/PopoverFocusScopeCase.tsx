@@ -150,6 +150,20 @@ export function PopoverFocusScopeCase() {
           </YStack>
         </Popover.Content>
       </Popover>
+      <Button data-testid="focus-return-before">Before focus popover</Button>
+      <Popover disableFocus={false}>
+        <Popover.Trigger asChild>
+          <Button data-testid="focus-return-trigger">Focus popover</Button>
+        </Popover.Trigger>
+        <Popover.Content
+          trapFocus={false}
+          onOpenAutoFocus={(details) => details.cancel()}
+          onCloseAutoFocus={(details) => details.cancel()}
+        >
+          <YStack data-testid="focus-return-content">Keyboard focus content</YStack>
+        </Popover.Content>
+      </Popover>
+      <Button data-testid="focus-return-after">After focus popover</Button>
     </YStack>
   )
 }

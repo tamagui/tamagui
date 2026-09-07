@@ -7,14 +7,12 @@ import {
   docsProductVersions,
   docsSyntaxes,
   docsSyntaxLabels,
-  getDocsSyntaxPath,
   getDocsVersionHref,
   getDocsVersionState,
   type DocsProductVersion,
   type DocsSyntax,
   type DocsVersionFrontmatter,
 } from './docsVersion'
-import { cookieCodeMode, writeSyntaxCookie } from './syntaxCookie'
 
 export function DocsVersionPicker({
   frontmatter,
@@ -32,69 +30,11 @@ export function DocsVersionPicker({
     setHydrated(true)
   }, [])
 
-  const cookieMode =
-    hydrated && typeof document !== 'undefined'
-      ? cookieCodeMode(document.cookie)
-      : 'styled'
-
-  const state = React.useMemo(() => {
-    const next = getDocsVersionState({
-      pathname,
-      search: new URLSearchParams(searchString),
-      frontmatter,
-    })
-    // sticky cookie applies when the url doesn't say otherwise
-    if (cookieMode !== 'styled' && !new URLSearchParams(searchString).get('syntax')) {
-      next.syntax = cookieMode
-    }
-    return next
-  }, [frontmatter, pathname, searchString, cookieMode])
-
-  // docs are statically generated, so each syntax has its own route. when a
-  // sticky cookie meets a canonical styled route, move to that static variant.
-  React.useEffect(() => {
-    if (!hydrated || state.syntax === 'styled') return
-    const params = new URLSearchParams(window.location.search)
-    const pathname = getDocsSyntaxPath(window.location.pathname, state.syntax)
-    if (pathname === window.location.pathname && !params.has('syntax')) return
-    params.delete('syntax')
-    const search = params.toString()
-    window.location.replace(
-      `${pathname}${search ? `?${search}` : ''}${window.location.hash}`
-    )
-  }, [hydrated, pathname, state.syntax])
-
-  React.useEffect(() => {
-    if (state.syntax === 'styled') return
-    const onClick = (event: MouseEvent) => {
-      if (
-        event.defaultPrevented ||
-        event.metaKey ||
-        event.ctrlKey ||
-        event.shiftKey ||
-        event.altKey ||
-        event.button !== 0
-      ) {
-        return
-      }
-      const anchor = (event.target as HTMLElement).closest?.('a')
-      if (!anchor || anchor.target === '_blank' || anchor.hasAttribute('download')) {
-        return
-      }
-      const href = anchor.getAttribute('href')
-      if (!href || !href.startsWith('/')) return
-      const url = new URL(href, window.location.origin)
-      const nextPath = getDocsSyntaxPath(url.pathname, state.syntax)
-      if (nextPath === url.pathname) return
-      url.pathname = nextPath
-      url.searchParams.delete('syntax')
-      event.preventDefault()
-      event.stopPropagation()
-      router.push(`${url.pathname}${url.search}${url.hash}` as Href)
-    }
-    document.addEventListener('click', onClick, true)
-    return () => document.removeEventListener('click', onClick, true)
-  }, [state.syntax])
+  const state = getDocsVersionState({
+    pathname,
+    search: new URLSearchParams(searchString),
+    frontmatter,
+  })
 
   const isDocsPath =
     state.canonicalPath.startsWith('/docs/') || state.canonicalPath.startsWith('/ui/')
@@ -111,18 +51,7 @@ export function DocsVersionPicker({
   }
 
   const setSyntax = (syntax: string) => {
-    writeSyntaxCookie(syntax as DocsSyntax)
-    const href = getDocsVersionHref({
-      state,
-      syntax: syntax as DocsSyntax,
-    })
-
-    if (typeof window !== 'undefined') {
-      window.location.href = href
-      return
-    }
-
-    router.push(href as Href)
+    router.push(getDocsVersionHref({ state, syntax: syntax as DocsSyntax }) as Href)
   }
 
   return (

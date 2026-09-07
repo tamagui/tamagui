@@ -42,7 +42,7 @@ export const DocsRouteNavItem = function DocsRouteNavItem({
         items="center"
         justify="flex-start"
         px="4"
-        py="2 sm:2"
+        py="1-5"
         opacity={pending ? 0.25 : 1}
         bg="hover:background06 press:background04"
         pointerEvents={pending ? 'none' : ('inherit' as any)}
@@ -62,7 +62,7 @@ export const DocsRouteNavItem = function DocsRouteNavItem({
           />
         )}
         <SizableText
-          lineHeight="4"
+          lineHeight={22}
           cursor="pointer"
           select="none"
           opacity={`${active ? 1 : 0.65} hover:0.85`}
@@ -71,7 +71,7 @@ export const DocsRouteNavItem = function DocsRouteNavItem({
             fontWeight: '700',
             opacity: 1,
           })}
-          size="5"
+          size="3"
           style={{ textAlign: 'left' }}
         >
           {children}

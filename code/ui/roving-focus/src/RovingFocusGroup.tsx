@@ -71,11 +71,17 @@ const RovingFocusGroupImpl = createRefComponent<
     },
   })
   const [isTabbingBackOut, setIsTabbingBackOut] = React.useState(false)
+  // registrations are unknown during ssr; keep an entry stop until effects settle.
+  const [hasMounted, setHasMounted] = React.useState(false)
   const handleEntryFocus = useEvent(onEntryFocus)
   const getItems = useCollection(__scopeRovingFocusGroup || ROVING_FOCUS_GROUP_CONTEXT)
   const isClickFocusRef = React.useRef(false)
   const pendingFocusDetailsRef = React.useRef<RovingFocusChangeDetails | null>(null)
   const [focusableItemsCount, setFocusableItemsCount] = React.useState(0)
+
+  React.useEffect(() => {
+    setHasMounted(true)
+  }, [])
 
   const Comp = (asChild ? Slot : View) as typeof View
 
@@ -111,7 +117,7 @@ const RovingFocusGroupImpl = createRefComponent<
       )}
     >
       <Comp
-        tabIndex={isTabbingBackOut || focusableItemsCount === 0 ? -1 : 0}
+        tabIndex={isTabbingBackOut || (hasMounted && focusableItemsCount === 0) ? -1 : 0}
         data-orientation={orientation}
         {...groupProps}
         ref={composedRefs}
@@ -185,8 +191,8 @@ const RovingFocusGroupItem = createRefComponent<
     tabIndex: tabIndexProp,
     ...itemProps
   } = props
-  const tabIndex = tabIndexProp ?? 0
-  const focusable = Number(tabIndex) >= 0
+  // authored tabindex controls eligibility; the group selects the single tab stop.
+  const focusable = Number(tabIndexProp ?? 0) >= 0
   const autoId = React.useId()
   const id = tabStopId || autoId
   const context = useRovingFocusContext(__scopeRovingFocusGroup)
@@ -211,7 +217,7 @@ const RovingFocusGroupItem = createRefComponent<
       active={active}
     >
       <View
-        tabIndex={tabIndex}
+        tabIndex={focusable && isCurrentTabStop ? 0 : -1}
         data-orientation={context.orientation}
         {...itemProps}
         ref={forwardedRef}

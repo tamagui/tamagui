@@ -50,7 +50,11 @@ const ToggleGroupItem = createStyledHOC(
     const inner = (
       <ToggleGroupItemImpl
         ref={forwardedRef}
-        tabIndex={disabled ? -1 : 0}
+        // on the roving path the group owns the tab order, so the item carries no
+        // tabIndex of its own: Slot overlays child props over the roving Item's,
+        // so a tabIndex here wins the merge and puts every toggle back in the tab
+        // order. off that path nothing else makes the toggle focusable.
+        {...(context.rovingFocus ? null : { tabIndex: disabled ? -1 : 0 })}
         {...(props as any)}
         active={active}
         disabled={disabled}
