@@ -243,25 +243,25 @@ export declare const Toast: ((props: ToastRootProps & import("@tamagui/core").Re
         elevation?: number | false | import("@tamagui/core").Size | undefined;
     }, import("@tamagui/core").StaticConfigPublic>;
     Title: React.FunctionComponent<Omit<import("@tamagui/core").TextNonStyleProps, "size" | keyof import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithFlatVariantValues<{
-        size?: import("@tamagui/core").FontSize | undefined;
+        size?: import("@tamagui/get-font-sized").GetFontSizedInput | undefined;
     }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & {
         ref?: React.Ref<import("@tamagui/core").TamaguiTextElement> | undefined;
     }> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
-        size?: import("@tamagui/core").FontSize | undefined;
+        size?: import("@tamagui/get-font-sized").GetFontSizedInput | undefined;
     }, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
         __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
-            size?: import("@tamagui/core").FontSize | undefined;
+            size?: import("@tamagui/get-font-sized").GetFontSizedInput | undefined;
         }, import("@tamagui/core").StaticConfigPublic];
     };
     Description: React.FunctionComponent<Omit<import("@tamagui/core").TextNonStyleProps, "size" | keyof import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithFlatVariantValues<{
-        size?: import("@tamagui/core").FontSize | undefined;
+        size?: import("@tamagui/get-font-sized").GetFontSizedInput | undefined;
     }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & {
         ref?: React.Ref<import("@tamagui/core").TamaguiTextElement> | undefined;
     }> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
-        size?: import("@tamagui/core").FontSize | undefined;
+        size?: import("@tamagui/get-font-sized").GetFontSizedInput | undefined;
     }, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
         __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
-            size?: import("@tamagui/core").FontSize | undefined;
+            size?: import("@tamagui/get-font-sized").GetFontSizedInput | undefined;
         }, import("@tamagui/core").StaticConfigPublic];
     };
     Close: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {

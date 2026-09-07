@@ -186,53 +186,53 @@ type DialogContentImplExtraProps = Omit<DismissableProps, 'onDismiss'> & {
 };
 type DialogContentImplProps = DialogContentFrameProps & DialogContentImplExtraProps;
 declare const DialogTitleFrame: React.FunctionComponent<Omit<import("@tamagui/core").TextNonStyleProps, "size" | "unstyled" | keyof import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithFlatVariantValues<{
-    size?: import("@tamagui/core").FontSize | undefined;
+    size?: import("@tamagui/get-font-sized").GetFontSizedInput | undefined;
     unstyled?: boolean | undefined;
 }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & {
     ref?: React.Ref<import("@tamagui/core").TamaguiTextElement> | undefined;
 }> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
-    size?: import("@tamagui/core").FontSize | undefined;
+    size?: import("@tamagui/get-font-sized").GetFontSizedInput | undefined;
     unstyled?: boolean | undefined;
 }, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
     __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
-        size?: import("@tamagui/core").FontSize | undefined;
+        size?: import("@tamagui/get-font-sized").GetFontSizedInput | undefined;
         unstyled?: boolean | undefined;
     }, import("@tamagui/core").StaticConfigPublic];
 };
 type DialogTitleExtraProps = ScopedProps<{}>;
 type DialogTitleProps = DialogTitleExtraProps & GetProps<typeof DialogTitleFrame>;
 declare const DialogTitle: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
-    size?: import("@tamagui/core").FontSize | undefined;
+    size?: import("@tamagui/get-font-sized").GetFontSizedInput | undefined;
     unstyled?: boolean | undefined;
 }>, "scope"> & {
     scope?: DialogScopes;
 }, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps & {
     scope?: DialogScopes;
 }, import("@tamagui/core").TextStylePropsBase, {
-    size?: import("@tamagui/core").FontSize | undefined;
+    size?: import("@tamagui/get-font-sized").GetFontSizedInput | undefined;
     unstyled?: boolean | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
 declare const DialogDescriptionFrame: React.FunctionComponent<Omit<import("@tamagui/core").TextNonStyleProps, "size" | keyof import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithFlatVariantValues<{
-    size?: import("@tamagui/core").FontSize | undefined;
+    size?: import("@tamagui/get-font-sized").GetFontSizedInput | undefined;
 }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & {
     ref?: React.Ref<import("@tamagui/core").TamaguiTextElement> | undefined;
 }> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
-    size?: import("@tamagui/core").FontSize | undefined;
+    size?: import("@tamagui/get-font-sized").GetFontSizedInput | undefined;
 }, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
     __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
-        size?: import("@tamagui/core").FontSize | undefined;
+        size?: import("@tamagui/get-font-sized").GetFontSizedInput | undefined;
     }, import("@tamagui/core").StaticConfigPublic];
 };
 type DialogDescriptionExtraProps = ScopedProps<{}>;
 type DialogDescriptionProps = DialogDescriptionExtraProps & GetProps<typeof DialogDescriptionFrame>;
 declare const DialogDescription: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
-    size?: import("@tamagui/core").FontSize | undefined;
+    size?: import("@tamagui/get-font-sized").GetFontSizedInput | undefined;
 }>, "scope"> & {
     scope?: DialogScopes;
 }, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps & {
     scope?: DialogScopes;
 }, import("@tamagui/core").TextStylePropsBase, {
-    size?: import("@tamagui/core").FontSize | undefined;
+    size?: import("@tamagui/get-font-sized").GetFontSizedInput | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
 declare const DialogCloseFrame: React.FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
     ref?: React.Ref<TamaguiElement> | undefined;
@@ -334,24 +334,24 @@ declare const Dialog: ((props: {
         elevation?: number | false | import("@tamagui/core").Size | undefined;
     }, import("@tamagui/core").StaticConfigPublic>;
     Title: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
-        size?: import("@tamagui/core").FontSize | undefined;
+        size?: import("@tamagui/get-font-sized").GetFontSizedInput | undefined;
         unstyled?: boolean | undefined;
     }>, "scope"> & {
         scope?: DialogScopes;
     }, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps & {
         scope?: DialogScopes;
     }, import("@tamagui/core").TextStylePropsBase, {
-        size?: import("@tamagui/core").FontSize | undefined;
+        size?: import("@tamagui/get-font-sized").GetFontSizedInput | undefined;
         unstyled?: boolean | undefined;
     }, import("@tamagui/core").StaticConfigPublic>;
     Description: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
-        size?: import("@tamagui/core").FontSize | undefined;
+        size?: import("@tamagui/get-font-sized").GetFontSizedInput | undefined;
     }>, "scope"> & {
         scope?: DialogScopes;
     }, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps & {
         scope?: DialogScopes;
     }, import("@tamagui/core").TextStylePropsBase, {
-        size?: import("@tamagui/core").FontSize | undefined;
+        size?: import("@tamagui/get-font-sized").GetFontSizedInput | undefined;
     }, import("@tamagui/core").StaticConfigPublic>;
     Close: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}>, "displayWhenAdapted" | "scope" | keyof import("@tamagui/core").RNTamaguiViewNonStyleProps | keyof import("@tamagui/core").StackStyleBase> & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
         displayWhenAdapted?: boolean;

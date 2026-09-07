@@ -126,7 +126,7 @@ declare const Accordion: ((props: ScopedProps<AccordionMultipleProps | Accordion
         __scopeAccordion?: string;
     }, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic>;
     Header: import("@tamagui/compose-refs").RefComponent<import("@tamagui/core").TamaguiTextElement, Omit<Omit<import("@tamagui/core").TextNonStyleProps, "size" | "unstyled" | keyof import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithFlatVariantValues<{
-        size?: import("@tamagui/core").FontSize | undefined;
+        size?: import("@tamagui/get-font-sized").GetFontSizedInput | undefined;
         unstyled?: boolean | undefined;
     }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & {
         ref?: import("react").Ref<import("@tamagui/core").TamaguiTextElement> | undefined;
