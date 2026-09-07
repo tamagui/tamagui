@@ -346,6 +346,25 @@ describe('G1 tarball audits', () => {
         exports: { '.': { types: './types.d.ts', import: './index.mjs' } },
       })
     ).toBe(true)
+    // packages self-export ./package.json as metadata. counting that string as a
+    // runtime entry makes a type-only package look runtime-capable, and the esm
+    // probe then demands a main it deliberately does not have.
+    expect(
+      hasRuntimeExport({
+        exports: {
+          './package.json': './package.json',
+          '.': { types: './src/index.d.ts' },
+        },
+      })
+    ).toBe(false)
+    expect(
+      hasRuntimeExport({
+        exports: {
+          './package.json': './package.json',
+          '.': { types: './src/index.d.ts', default: './index.js' },
+        },
+      })
+    ).toBe(true)
   })
 
   test('declares native runtime integrations with required and optional peer intent', async () => {

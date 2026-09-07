@@ -714,7 +714,11 @@ export function hasRuntimeExport(manifest: PackageManifest): boolean {
     if (!value || typeof value !== 'object') return false
     if (Array.isArray(value)) return value.some((child) => visit(child, key))
     return Object.entries(value as JsonObject).some(([childKey, child]) =>
-      visit(child, childKey)
+      // a package self-exporting ./package.json is exposing metadata, not a
+      // runtime entry. counting it makes every type-only package look
+      // runtime-capable, and the esm probe then demands a main it has no reason
+      // to define.
+      childKey === './package.json' ? false : visit(child, childKey)
     )
   }
   return visit(manifest.exports)
