@@ -6,7 +6,8 @@
   "sideEffects": false,
   "types": "./src/index.d.ts",
   "files": [
-    "src"
+    "src",
+    "!src/**/*.test-d.*"
   ],
   "exports": {
     "./package.json": "./package.json",
