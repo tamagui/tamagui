@@ -108,6 +108,22 @@ or both, have the types and checker reject the other form, and have
 are always accepted (RAN, grep of `web/src/types.tsx` settings). Same Opus
 task, same package.
 
+### Outcome (landed 2026-09-07, commits 96a3e3e39b..382eefc635)
+
+Everything in the next section is done except the Soot migration itself.
+The strict single-token types shipped gated on `allowedStyleValues` (any
+string or per-category setting; booleans and no setting stay loose), so a
+value with no space and no `:` has to be a token, theme value, or a value the
+setting allows. RAN: forced kitchen-sink build 37s user CPU against the 46s
+baseline, so the arm costs nothing measurable. The first pass rejected
+`col="color11"` only because v6 shorthands have no `col`; the real leak was
+`(string & {})` inside `Color`, `Size`, and the `background` prop, plus the
+`GenericSizes` index signature folding `SizeName` into `string`. Turning it on
+surfaced 300 kitchen-sink and demo values still written as v5 palette names
+(`red10`, `gray5`, `shadow6`) that resolved to nothing in v6; they are migrated
+in the same wave. `settings.styleValueSyntax: 'string' | 'object'` narrows the
+types, warns at runtime, and drives `generate-prompt` and the skill.
+
 ## Fix before Soot, in order
 
 1. **Runtime dev warnings for the four silent classes.** In `warnRefusedValue`
