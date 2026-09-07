@@ -1,6 +1,4 @@
-import type { CodeMode } from './syntaxCookie'
-
-export type DocsSyntax = CodeMode
+export type DocsSyntax = 'styled' | 'unstyled' | 'tailwind'
 export type DocsProductVersion = 'v3' | 'v2' | 'v1'
 
 export const docsProductVersions: DocsProductVersion[] = ['v3', 'v2', 'v1']
@@ -55,14 +53,30 @@ export function getDocsSyntaxPath(pathname: string, syntax: DocsSyntax) {
   return canonicalPath
 }
 
-export function getDocsSyntax(pathname: string, search: URLSearchParams): DocsSyntax {
-  const param = search.get('syntax')
+export function getDocsSyntax(pathname: string, search?: URLSearchParams): DocsSyntax {
+  const param = search?.get('syntax')
   if (param === 'tailwind') return 'tailwind'
   if (param === 'unstyled') return 'unstyled'
   if (param === 'styled' || param === 'tamagui') return 'styled'
   if (pathname.startsWith('/tailwind')) return 'tailwind'
   if (pathname.startsWith('/unstyled')) return 'unstyled'
   return 'styled'
+}
+
+// resolve before navigation so copied links and new tabs load the same document.
+export function getDocsLinkHref(href: string, syntax: DocsSyntax) {
+  if (!href.startsWith('/') || href.startsWith('//')) return href
+  const url = new URL(href, 'https://tamagui.dev')
+  if (url.pathname.endsWith('.md')) return href
+  const canonical = getCanonicalDocsPath(url.pathname)
+  if (!canonical.startsWith('/docs/') && !canonical.startsWith('/ui/')) return href
+  const explicitSyntax = url.searchParams.has('syntax') || canonical !== url.pathname
+  url.pathname = getDocsSyntaxPath(
+    url.pathname,
+    explicitSyntax ? getDocsSyntax(url.pathname, url.searchParams) : syntax
+  )
+  url.searchParams.delete('syntax')
+  return `${url.pathname}${url.search}${url.hash}`
 }
 
 export function getDocsVersionState({

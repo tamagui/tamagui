@@ -3,7 +3,7 @@ import { DocsSyntaxLayout } from '~/features/docs/DocsSyntaxLayout'
 
 export default function TailwindDocsLayout() {
   return (
-    <DocsSyntaxLayout mode="tailwind">
+    <DocsSyntaxLayout>
       <Slot />
     </DocsSyntaxLayout>
   )

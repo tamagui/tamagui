@@ -1,45 +1,10 @@
 import { Slot } from 'one'
-import { ScrollView } from 'react-native'
-import { View, XStack, YStack } from 'tamagui'
-import { PAGE_MAX_WIDTH } from '~/components/Containers'
-import { DocsMenuContents } from '~/features/docs/DocsMenuContents'
-import { Footer } from '~/features/site/Footer'
+import { DocsSyntaxLayout } from '~/features/docs/DocsSyntaxLayout'
 
 export default function DocsLayout() {
-  // disabled route-based tint changes
-  // const themeName = useThemeName()
-
   return (
-    <>
-      {/* main layout container */}
-      <YStack minH="100vh" position="relative" z={1}>
-        {/* content row with sidebar */}
-        <XStack mx="auto" maxW={PAGE_MAX_WIDTH} width="100%">
-          {/* left sidebar - sticky */}
-          <View
-            className="is-sticky"
-            display="none gtMd:flex"
-            position="gtMd:sticky"
-            t="gtMd:20px"
-            height="gtMd:calc(100vh - 20px)"
-            width="gtMd:245px"
-            shrink="gtMd:0px"
-            alignSelf="gtMd:flex-start"
-          >
-            <ScrollView showsVerticalScrollIndicator={false}>
-              <YStack pt={55} pb="18" px="2" gap="4">
-                <View id="docs-version-picker-slot" px="2" />
-                <DocsMenuContents />
-              </YStack>
-            </ScrollView>
-          </View>
-
-          <Slot />
-        </XStack>
-      </YStack>
-
-      {/* footer outside the main layout */}
-      <Footer />
-    </>
+    <DocsSyntaxLayout>
+      <Slot />
+    </DocsSyntaxLayout>
   )
 }

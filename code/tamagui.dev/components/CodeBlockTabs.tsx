@@ -1,12 +1,19 @@
 import { SizableText, Tabs, XStack, YStack } from 'tamagui'
 import { Code } from './Code'
-import { useBashCommand, PACKAGE_MANAGERS } from '~/hooks/useBashCommand'
+import { PACKAGE_MANAGERS } from '~/hooks/useBashCommand'
 import { Image } from '@tamagui/image'
 import { ScrollView } from 'react-native'
 
-export function CodeBlockTabs({ className, children, code, size, headerRight, ...rest }) {
+export function CodeBlockTabs({
+  className,
+  children,
+  command,
+  size,
+  headerRight,
+  ...rest
+}) {
   const { showTabs, transformedCommand, selectedPackageManager, setPackageManager } =
-    useBashCommand(code || children, className)
+    command
 
   const codeContent = (
     <ScrollView
@@ -94,9 +101,11 @@ function Tab({
   const imageName = logo ?? pkgManager
   return (
     <Tabs.Tab
+      height={28}
+      minH={28}
       pl="2"
       pr="2-5"
-      py="1"
+      py={0}
       gap="1-5"
       items="center"
       bg={active ? 'color1' : 'transparent'}

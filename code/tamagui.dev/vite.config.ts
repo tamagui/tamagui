@@ -85,6 +85,8 @@ const include = [
   // pre-bundle common web deps to avoid mid-navigation optimization in dev mode
   'react-native',
   'react-dom',
+  'react/jsx-runtime',
+  'react/jsx-dev-runtime',
   'zod',
   '@stripe/react-stripe-js',
   '@stripe/stripe-js',
@@ -223,6 +225,10 @@ export default {
       'react-hook-form',
       'react-native',
       'react-native-web',
+      // sibling bento imports must use the app's installed dependency versions.
+      '@vxrn/color-scheme',
+      '@ngneat/falso',
+      '@hookform/resolvers',
       ...workspaceTamaguiPackages,
       ...include,
     ],

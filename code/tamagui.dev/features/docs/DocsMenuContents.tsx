@@ -254,13 +254,13 @@ const AccordionSection = ({
         {({ open }) => {
           return (
             <XStack
-              paddingVertical="3"
+              paddingVertical="2"
               paddingHorizontal="3"
               justifyContent="space-between"
               alignItems="center"
               width="100%"
             >
-              <Paragraph size="5" fontWeight="600" color="color12">
+              <Paragraph size="3" fontWeight="600" color="color12">
                 {section.title}
               </Paragraph>
 

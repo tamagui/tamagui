@@ -31,11 +31,13 @@ export function DocsPageFrame({
     <>
       <DocsVersionPickerPortal frontmatter={frontmatter} initialSearch={initialSearch} />
       {/* main content */}
-      <YStack flex={1} flexBasis="auto" py="9" px="4 gtSm:6">
+      <YStack flex={1} minW={0} flexBasis="auto" py="7" px="4 gtSm:6">
         <YStack render="article">
-          <Container position="relative">{children}</Container>
+          <Container px={0} maxW={860} position="relative">
+            {children}
+          </Container>
 
-          <Container>
+          <Container px={0} maxW={860}>
             {(previous || next) && (
               <XStack
                 aria-label="Pagination navigation"
@@ -121,7 +123,7 @@ export function DocsPageFrame({
           </Container>
 
           {editUrl && (
-            <Container my="3">
+            <Container px={0} maxW={860} my="3">
               <Link
                 href={editUrl as Href}
                 rel="noopener noreferrer"
