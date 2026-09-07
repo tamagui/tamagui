@@ -31,12 +31,8 @@ export async function resolveStyleValueSyntax(
 }
 
 export async function setupPrompt(options?: any) {
-  const syntax = await resolveStyleValueSyntax(options?.styleValueSyntax)
   const { generatePrompt } = require('./generate-prompt')
-  return await generatePrompt({
-    ...options,
-    styleValueSyntax: syntax,
-  })
+  return await generatePrompt(options)
 }
 
 export function printSetupPrompt(syntax?: 'string' | 'object' | 'both') {
@@ -107,8 +103,10 @@ import { createTamagui } from 'tamagui'
 
 export const config = createTamagui(defaultConfig)
 
+type AppConfig = typeof config
+
 declare module 'tamagui' {
-  interface TamaguiCustomConfig extends typeof config {}
+  interface TamaguiCustomConfig extends AppConfig {}
 }
 \`\`\`
 
@@ -158,7 +156,7 @@ ${styleExample}
 - No condition objects: there is no \`hoverStyle={{ ... }}\` and no \`$sm={{ ... }}\`.
 - Modifiers chain left to right and read as prefixes: \`hover:sm:small\`.
 - Clauses work on variant props too, not just style props, so
-  \`size="large sm:small"\` selects a different variant value per condition.
+  \`size="lg sm:sm"\` selects a different variant value per condition.
 - When two clauses both apply, the winner is decided by specificity, not by
   source order: first by platform (\`ios:\` beats \`native:\` beats unprefixed),
   then by how many conditions the clause carries, then by category
@@ -169,15 +167,15 @@ ${styleExample}
 ## 7. Verify before reporting success
 
 \`\`\`bash
-npx tamagui check
+npx tamagui check --strict
 \`\`\`
 
-\`tamagui check\` reports version mismatches, duplicate installs, lockfile
+\`tamagui check --strict\` reports version mismatches, duplicate installs, lockfile
 problems, a missing config, and any v2 style syntax left in source. Then run the
 project's own typecheck and build, and start the app and confirm a Tamagui
 component renders with its styles applied. A passing typecheck is not sufficient:
-flat values are strings, so a misspelled token compiles cleanly and only shows up
-at runtime.
+single-token values are checked when \`settings.allowedStyleValues\` is enabled,
+but conditional payloads also need the strict checker.
 
 ## 8. Give the agent the project's own vocabulary
 

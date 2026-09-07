@@ -449,7 +449,11 @@ function isKnownPropertyValue(
   const contributions = candidates.get(payload)
   if (
     contributions &&
-    resolveCandidateTarget(targetProperty, payload, contributions).ok
+    resolveCandidateTarget(
+      targetProperty === 'background' ? 'backgroundColor' : targetProperty,
+      payload,
+      contributions
+    ).ok
   ) {
     return true
   }
@@ -470,7 +474,14 @@ function isKnownPropertyValue(
       const opacity = payload.slice(slash + 1)
       if (/^\d+(?:\.\d+)?$/.test(opacity)) {
         const baseContribs = candidates.get(base)
-        if (baseContribs && resolveCandidateTarget(targetProperty, base, baseContribs).ok)
+        if (
+          baseContribs &&
+          resolveCandidateTarget(
+            targetProperty === 'background' ? 'backgroundColor' : targetProperty,
+            base,
+            baseContribs
+          ).ok
+        )
           return true
         if (
           namedCssColors.has(base.toLowerCase()) ||
@@ -504,7 +515,19 @@ function isKnownPropertyValue(
     return true
   }
 
-  if (targetProperty === 'boxShadow' && payload === 'none') return true
+  if (
+    targetProperty === 'background' &&
+    /^(?:repeat|repeat-x|repeat-y|no-repeat|space|round|scroll|fixed|local|border-box|padding-box|content-box|left|right|top|bottom|center|cover|contain)$/.test(
+      payload
+    )
+  )
+    return true
+
+  if (
+    (targetProperty === 'boxShadow' || targetProperty === 'background') &&
+    payload === 'none'
+  )
+    return true
 
   return false
 }
@@ -650,11 +673,13 @@ export function diagnoseStyleValue(
 
     diagnoseSegment(payload, span.start)
 
-    if (options.strictPayloads && targetIsKnown) {
+    if (options.strictPayloads && (targetIsKnown || targetProperty === 'background')) {
       if (candidates.has(payload)) continue
       if (!isSingleBareToken(payload)) continue
       const category =
-        propToGrammarEntry[targetProperty]?.tokenCategory ||
+        (targetProperty === 'background'
+          ? 'color'
+          : propToGrammarEntry[targetProperty]?.tokenCategory) ||
         (getTokenCategoryName(
           propToTokenCategoryCode[targetProperty]
         ) as TokenCategory) ||
@@ -672,11 +697,14 @@ export function diagnoseStyleValue(
       )
         continue
 
-      const completions = completeStyleValue(property, {
-        ...options,
-        strictPayloads: false,
-        candidates,
-      })
+      const completions = completeStyleValue(
+        targetProperty === 'background' ? 'backgroundColor' : property,
+        {
+          ...options,
+          strictPayloads: false,
+          candidates,
+        }
+      )
       const suggestion = findNearestCompletion(payload, completions)
       const message = suggestion
         ? `unknown value "${payload}" for ${property}; did you mean "${suggestion}"?`

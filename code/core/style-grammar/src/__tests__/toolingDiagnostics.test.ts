@@ -401,72 +401,81 @@ describe('tooling diagnostics', () => {
     ])
   })
 
-  test('strict payload check catches typos with did-you-mean suggestions', () => {
-    const themeConfig: GrammarConfigView = {
-      ...config,
-      tokenNames: {
-        ...config.tokenNames,
-        color: ['red', 'blue', 'background'],
-      },
-    }
-    const themeRegistry = createModifierRegistry(themeConfig).registry
-    const themeCandidates = createCandidatePropertyVocabulary(themeConfig)
-    const strictOptions = {
-      config: themeConfig,
-      registry: themeRegistry,
-      candidates: themeCandidates,
-      strictPayloads: true,
-    }
-
-    expect(diagnoseStyleValue('bg', 'backgroun', strictOptions)).toEqual([
-      {
-        code: 'unknown-payload-value',
-        index: 0,
-        start: 0,
-        end: 9,
-        property: 'bg',
-        candidate: 'backgroun',
-        replacement: 'background',
-        message: 'unknown value "backgroun" for bg; did you mean "background"?',
-      },
-    ])
-
-    // non-strict default emits no diagnostic for single-token payload
-    expect(
-      diagnoseStyleValue('bg', 'backgroun', {
+  test.each(['backgroundColor', 'background'])(
+    'strict payload checks %s aliases',
+    (backgroundProperty) => {
+      const themeConfig: GrammarConfigView = {
+        ...config,
+        shorthands: { ...config.shorthands, bg: backgroundProperty },
+        tokenNames: {
+          ...config.tokenNames,
+          color: ['red', 'blue', 'background'],
+        },
+      }
+      const themeRegistry = createModifierRegistry(themeConfig).registry
+      const themeCandidates = createCandidatePropertyVocabulary(themeConfig)
+      const strictOptions = {
         config: themeConfig,
         registry: themeRegistry,
         candidates: themeCandidates,
-      })
-    ).toEqual([])
+        strictPayloads: true,
+      }
 
-    // valid tokens, plain numbers, CSS keywords, and units produce no diagnostic under strict mode
-    expect(diagnoseStyleValue('bg', 'background', strictOptions)).toEqual([])
-    expect(diagnoseStyleValue('bg', 'red', strictOptions)).toEqual([])
-    expect(diagnoseStyleValue('bg', 'transparent', strictOptions)).toEqual([])
-    expect(diagnoseStyleValue('bg', '#fff', strictOptions)).toEqual([])
-    expect(diagnoseStyleValue('bg', 'rgba(0, 0, 0, 0.5)', strictOptions)).toEqual([])
-    expect(diagnoseStyleValue('bg', 'red/50', strictOptions)).toEqual([])
-    expect(diagnoseStyleValueProgram('p', '4 6', strictOptions)).toEqual([])
-    expect(diagnoseStyleValueProgram('p', '4 $6', strictOptions)).toEqual([
-      {
-        code: 'v2-dollar-prefix',
-        index: 2,
-        start: 2,
-        end: 4,
-        property: 'paddingRight',
-        replacement: '6',
-        message: 'v3 tokens have no "$" prefix, write "6" not "$6"',
-      },
-      {
-        code: 'v2-dollar-prefix',
-        index: 2,
-        start: 2,
-        end: 4,
-        property: 'paddingLeft',
-        replacement: '6',
-        message: 'v3 tokens have no "$" prefix, write "6" not "$6"',
-      },
-    ])
-  })
+      expect(diagnoseStyleValue('bg', 'backgroun', strictOptions)).toEqual([
+        {
+          code: 'unknown-payload-value',
+          index: 0,
+          start: 0,
+          end: 9,
+          property: 'bg',
+          candidate: 'backgroun',
+          replacement: 'background',
+          message: 'unknown value "backgroun" for bg; did you mean "background"?',
+        },
+      ])
+
+      // non-strict default emits no diagnostic for single-token payload
+      expect(
+        diagnoseStyleValue('bg', 'backgroun', {
+          config: themeConfig,
+          registry: themeRegistry,
+          candidates: themeCandidates,
+        })
+      ).toEqual([])
+
+      // valid tokens, plain numbers, CSS keywords, and units produce no diagnostic under strict mode
+      expect(diagnoseStyleValue('bg', 'background', strictOptions)).toEqual([])
+      expect(diagnoseStyleValue('bg', 'red', strictOptions)).toEqual([])
+      expect(diagnoseStyleValue('bg', 'transparent', strictOptions)).toEqual([])
+      expect(diagnoseStyleValue('bg', '#fff', strictOptions)).toEqual([])
+      expect(diagnoseStyleValue('bg', 'rgba(0, 0, 0, 0.5)', strictOptions)).toEqual([])
+      expect(diagnoseStyleValue('bg', 'red/50', strictOptions)).toEqual([])
+      if (backgroundProperty === 'background') {
+        for (const value of ['none', 'no-repeat', 'center', 'fixed']) {
+          expect(diagnoseStyleValue('bg', value, strictOptions)).toEqual([])
+        }
+      }
+      expect(diagnoseStyleValueProgram('p', '4 6', strictOptions)).toEqual([])
+      expect(diagnoseStyleValueProgram('p', '4 $6', strictOptions)).toEqual([
+        {
+          code: 'v2-dollar-prefix',
+          index: 2,
+          start: 2,
+          end: 4,
+          property: 'paddingRight',
+          replacement: '6',
+          message: 'v3 tokens have no "$" prefix, write "6" not "$6"',
+        },
+        {
+          code: 'v2-dollar-prefix',
+          index: 2,
+          start: 2,
+          end: 4,
+          property: 'paddingLeft',
+          replacement: '6',
+          message: 'v3 tokens have no "$" prefix, write "6" not "$6"',
+        },
+      ])
+    }
+  )
 })

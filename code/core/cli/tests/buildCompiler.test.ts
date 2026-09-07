@@ -1,5 +1,5 @@
 import { spawnSync } from 'node:child_process'
-import { mkdtemp, readFile, rm } from 'node:fs/promises'
+import { mkdtemp, readFile, rm, symlink, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join, resolve } from 'node:path'
 
@@ -58,6 +58,59 @@ describe('CLI shared compiler runtime', () => {
       expect(css).toContain('flex-direction:column')
     } finally {
       await rm(output, { recursive: true, force: true })
+    }
+  })
+})
+
+describe('strict project checking', () => {
+  it('builds a fresh config, rejects a typo, and checks subsequent edits', async () => {
+    const root = await mkdtemp(join(tmpdir(), 'tamagui-strict-project-'))
+    const cli = resolve(repositoryRoot, 'code/core/cli/dist/index.cjs')
+    try {
+      await symlink(join(repositoryRoot, 'node_modules'), join(root, 'node_modules'))
+      await writeFile(
+        join(root, 'package.json'),
+        JSON.stringify({ name: 'strict-project', private: true })
+      )
+      await writeFile(
+        join(root, 'tamagui.config.ts'),
+        `import { createTamagui } from '@tamagui/core'
+import { defaultConfig } from '@tamagui/config/v6'
+export default createTamagui(defaultConfig)`
+      )
+      await writeFile(
+        join(root, 'tamagui.build.ts'),
+        `export default { config: './tamagui.config.ts', components: ['@tamagui/core'] }`
+      )
+      for (const [value, status] of [
+        ['backgroun', 1],
+        ['background', 0],
+      ] as const) {
+        await writeFile(
+          join(root, 'App.tsx'),
+          `import { View } from '@tamagui/core'; export const App = () => <View bg="${value}" />`
+        )
+        const result = spawnSync(
+          process.execPath,
+          [cli, 'check', '--strict', '--styles-only'],
+          { cwd: root, encoding: 'utf8' }
+        )
+        expect(result.status, result.stdout + result.stderr).toBe(status)
+        if (status === 1)
+          expect(result.stdout).toContain(
+            'unknown value "backgroun" for bg; did you mean "background"?'
+          )
+        else expect(result.stdout).toContain('1 files, no flat value problems')
+      }
+      await rm(join(root, 'tamagui.config.ts'))
+      const missing = spawnSync(
+        process.execPath,
+        [cli, 'check', '--strict', '--styles-only'],
+        { cwd: root, encoding: 'utf8' }
+      )
+      expect(missing.status, missing.stdout + missing.stderr).toBe(1)
+    } finally {
+      await rm(root, { recursive: true, force: true })
     }
   })
 })

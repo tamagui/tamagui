@@ -21,12 +21,27 @@ const COMMAND_MAP = {
       const { _, ...flags } = arg(this.flags)
       const options = await getOptions({
         debug: flags['--debug'] ? (flags['--verbose'] ? 'verbose' : true) : false,
+        loadTamaguiOptions: flags['--strict'] && !flags['--deps-only'],
       })
       if (!flags['--styles-only']) {
         const { checkDeps } = require('@tamagui/static/checkDeps')
         await checkDeps(options.paths.root)
       }
       if (flags['--deps-only']) return
+      if (flags['--strict']) {
+        if (!options.tamaguiOptions.config) {
+          throw new Error('Strict style checking requires a Tamagui config.')
+        }
+        const { loadTamagui } = require('@tamagui/static/loadTamagui')
+        process.env.TAMAGUI_KEEP_THEMES = '1'
+        const loaded = await loadTamagui(
+          { ...options.tamaguiOptions, platform: 'web' },
+          true
+        )
+        if (!loaded?.tamaguiConfig) {
+          throw new Error('Unable to load the Tamagui config for strict style checking.')
+        }
+      }
       const { checkStyleFiles, formatCheckResults, MissingConfigArtifactError } =
         require('@tamagui/language-service/check') as typeof import('@tamagui/language-service/check')
       try {
@@ -38,7 +53,7 @@ const COMMAND_MAP = {
         console.info(formatCheckResults(result))
         if (result.diagnosticCount > 0) process.exitCode = 1
       } catch (error) {
-        if (error instanceof MissingConfigArtifactError) {
+        if (error instanceof MissingConfigArtifactError && !flags['--strict']) {
           console.warn(chalk.yellow(`skipping flat value check: ${error.message}`))
           return
         }

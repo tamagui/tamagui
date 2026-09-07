@@ -1,5 +1,6 @@
 import chalk from 'chalk'
-import { execSync } from 'node:child_process'
+import { execFileSync } from 'node:child_process'
+import { globSync } from 'glob'
 import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 
@@ -67,37 +68,15 @@ function parseVersionSpecifier(version: string): {
 }
 
 /**
- * Find all package.json files in the workspace
- */
-function findPackageJsonFiles(root: string): string[] {
-  const files: string[] = []
-
-  // Check root package.json
-  const rootPkgPath = join(root, 'package.json')
-  if (existsSync(rootPkgPath)) {
-    files.push(rootPkgPath)
-  }
-
-  // Use find command to locate all package.json files
-  try {
-    const result = execSync(
-      `find "${root}" -name "package.json" -not -path "*/node_modules/*" -not -path "*/.git/*" 2>/dev/null`,
-      { encoding: 'utf-8', maxBuffer: 10 * 1024 * 1024 }
-    )
-    const foundFiles = result.trim().split('\n').filter(Boolean)
-    files.push(...foundFiles.filter((f) => !files.includes(f)))
-  } catch {
-    // Fallback: just use root
-  }
-
-  return files
-}
-
-/**
  * Find all tamagui packages in the workspace
  */
 function findTamaguiPackages(root: string): PackageInfo[] {
-  const packageJsonFiles = findPackageJsonFiles(root)
+  const packageJsonFiles = globSync('**/package.json', {
+    cwd: root,
+    absolute: true,
+    nodir: true,
+    ignore: ['**/node_modules/**', '**/.git/**', '**/dist/**', '**/build/**'],
+  })
   const packages: PackageInfo[] = []
 
   for (const filePath of packageJsonFiles) {
@@ -141,7 +120,9 @@ function findTamaguiPackages(root: string): PackageInfo[] {
  */
 async function getLatestVersion(): Promise<string> {
   try {
-    const result = execSync('npm view tamagui version', { encoding: 'utf-8' })
+    const result = execFileSync('npm', ['view', 'tamagui', 'version'], {
+      encoding: 'utf-8',
+    })
     return result.trim()
   } catch (err) {
     throw new Error('Failed to fetch latest tamagui version from npm')
@@ -222,7 +203,7 @@ function getChangelogFromGit(
   try {
     // Try to fetch tags first
     try {
-      execSync('git fetch --tags 2>/dev/null', { encoding: 'utf-8', stdio: 'pipe' })
+      execFileSync('git', ['fetch', '--tags'], { encoding: 'utf-8', stdio: 'pipe' })
     } catch {
       // Ignore fetch errors
     }
@@ -237,8 +218,15 @@ function getChangelogFromGit(
 
     let result: string
     try {
-      result = execSync(
-        `git log ${fromTag}..${toTag} --pretty=format:"%H|%ad|%s" --date=short 2>/dev/null`,
+      result = execFileSync(
+        'git',
+        [
+          'log',
+          `${fromTag}..${toTag}`,
+          '--pretty=format:%H|%ad|%s',
+          '--date=short',
+          '--',
+        ],
         { encoding: 'utf-8', maxBuffer: 10 * 1024 * 1024 }
       )
     } catch {
@@ -529,6 +517,15 @@ export async function upgrade(options: UpgradeOptions = {}): Promise<void> {
   console.log(chalk.gray(`  Current version: ${chalk.white(fromVersion)}`))
   console.log(chalk.gray(`  Target version:  ${chalk.white(toVersion)}`))
   console.log('')
+
+  if (fromVersion.startsWith('2.') && toVersion.startsWith('3.')) {
+    console.log(
+      chalk.yellow(
+        'Run `tamagui migrate --from v2` for the required API and configuration migration.'
+      )
+    )
+    console.log('')
+  }
 
   // Show package summary (unless changelog only with no packages)
   if (packages.length > 0 && !changelogOnly) {

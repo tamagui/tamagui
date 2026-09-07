@@ -13,10 +13,7 @@ export async function generatePrompt(options: GeneratePromptOptions) {
   // regenerate the config first
   const { loadTamagui } = require('@tamagui/static/loadTamagui')
   process.env.TAMAGUI_KEEP_THEMES = '1'
-  await loadTamagui({
-    ...options.tamaguiOptions,
-    platform: 'web',
-  })
+  await loadTamagui({ ...options.tamaguiOptions, platform: 'web' }, true)
 
   // read the generated config
   const configPath = join(paths.dotDir, 'tamagui.config.json')
@@ -134,23 +131,14 @@ export function generateMarkdown(config: any, options?: GenerateMarkdownOptions)
     }
   }
 
-  const platform = settings.platform || settings.defaultProps?.platform
-  if (platform) {
-    sections.push(`### Platform Mode: \`${platform}\`\n\n`)
-    if (platform === 'web') {
-      sections.push('This project is configured for **web only**.\n\n')
-    } else if (platform === 'native') {
-      sections.push('This project is configured for **React Native only**.\n\n')
-    }
-  }
-
-  const configString = JSON.stringify(config.tamaguiConfig)
-  if (configString.includes('semi-strict-web')) {
-    sections.push('### Mode: `semi-strict-web`\n\n')
-    sections.push('This configuration uses semi-strict-web mode, which:\n')
-    sections.push('- Optimizes for web performance\n')
-    sections.push('- May have limited React Native API support\n')
-    sections.push('- Focuses on web-first development\n\n')
+  if (settings.allowedStyleValues) {
+    sections.push('### Allowed Style Values\n\n')
+    sections.push(
+      `Type validation: \`${JSON.stringify(settings.allowedStyleValues)}\`.\n\n`
+    )
+    sections.push(
+      'Single-token values are type-checked. Run `tamagui check --strict` to also validate conditional payloads.\n\n'
+    )
   }
 
   // flat value grammar section
@@ -218,7 +206,7 @@ export function generateMarkdown(config: any, options?: GenerateMarkdownOptions)
   if (sizes && typeof sizes === 'object') {
     sections.push('## Named Control Sizes\n\n')
     sections.push(
-      'Control components (Button, Input, etc.) use named sizes (`xs`, `sm`, `md`, `lg`, `xl`). Default is `md`.\n\n'
+      `Control components (Button, Input, etc.) use the configured names below. Default is \`${sizes.default ?? 'md'}\`.\n\n`
     )
     sections.push('| Size | Configuration |\n')
     sections.push('|---|---|\n')
@@ -237,128 +225,16 @@ export function generateMarkdown(config: any, options?: GenerateMarkdownOptions)
   const themes = config.tamaguiConfig?.themes || {}
   const themeNames = Object.keys(themes).sort()
 
-  interface ThemeHierarchy {
-    level1: Set<string>
-    level2: Set<string>
-    level3: Set<string>
-    components: Set<string>
-  }
-
-  const hierarchy: ThemeHierarchy = {
-    level1: new Set(),
-    level2: new Set(),
-    level3: new Set(),
-    components: new Set(),
-  }
-
-  for (const themeName of themeNames) {
-    const parts = themeName.split('_')
-    if (parts[0] === 'light' || parts[0] === 'dark') {
-      hierarchy.level1.add(parts[0])
-      if (
-        parts.length > 1 &&
-        parts[1] &&
-        !parts[1].startsWith('alt') &&
-        parts[1] !== 'active'
-      ) {
-        if (parts[1][0] === parts[1][0].toLowerCase()) {
-          hierarchy.level2.add(parts[1])
-        }
-      }
-      for (const part of parts) {
-        if (part.startsWith('alt') || part === 'active') {
-          hierarchy.level3.add(part)
-        }
-      }
-      for (const part of parts) {
-        if (
-          part[0] &&
-          part[0] === part[0].toUpperCase() &&
-          part[0] !== part[0].toLowerCase()
-        ) {
-          hierarchy.components.add(part)
-        }
-      }
-    } else {
-      if (parts.length === 1) {
-        hierarchy.level1.add(themeName)
-      }
-    }
-  }
-
-  sections.push('Themes are organized hierarchically and can be combined:\n\n')
-
-  if (hierarchy.level1.size > 0) {
-    sections.push('**Level 1 (Base):**\n\n')
-    sections.push(
-      Array.from(hierarchy.level1)
-        .sort()
-        .map((name) => `- ${name}`)
-        .join('\n')
-    )
-    sections.push('\n\n')
-  }
-
-  if (hierarchy.level2.size > 0) {
-    sections.push('**Level 2 (Color Schemes):**\n\n')
-    sections.push(
-      Array.from(hierarchy.level2)
-        .sort()
-        .map((name) => `- ${name}`)
-        .join('\n')
-    )
-    sections.push('\n\n')
-  }
-
-  if (hierarchy.level3.size > 0) {
-    sections.push('**Level 3 (Variants):**\n\n')
-    sections.push(
-      Array.from(hierarchy.level3)
-        .sort()
-        .map((name) => `- ${name}`)
-        .join('\n')
-    )
-    sections.push('\n\n')
-  }
-
-  if (hierarchy.components.size > 0) {
-    sections.push('**Component Themes:**\n\n')
-    sections.push(
-      Array.from(hierarchy.components)
-        .sort()
-        .map((name) => `- ${name}`)
-        .join('\n')
-    )
-    sections.push('\n\n')
-  }
-
-  // theme usage
-  sections.push('### Theme Usage\n\n')
+  sections.push(themeNames.map((name) => `- \`${name}\``).join('\n'))
   sections.push(
-    'Themes are combined hierarchically. For example, `light_blue_alt1_Button` combines:\n'
+    '\n\nTheme names above are exact configured names. Nested themes resolve relative to their parent. Use an explicit theme boundary in a component skin.\n\n'
   )
-  sections.push('- Base: `light`\n')
-  sections.push('- Color: `blue`\n')
-  sections.push('- Variant: `alt1`\n')
-  sections.push('- Component: `Button`\n\n')
-
-  sections.push('**Basic usage:**\n\n')
-  sections.push('```tsx\n')
-  sections.push('// Apply a theme to components\n')
-  sections.push('export default () => (\n')
-  sections.push('  <Theme name="dark">\n')
-  sections.push("    <Button>I'm a dark button</Button>\n")
-  sections.push('  </Theme>\n')
-  sections.push(')\n\n')
-  sections.push('// Themes nest and combine automatically\n')
-  sections.push('export default () => (\n')
-  sections.push('  <Theme name="dark">\n')
-  sections.push('    <Theme name="blue">\n')
-  sections.push('      <Button>Uses dark_blue theme</Button>\n')
-  sections.push('    </Theme>\n')
-  sections.push('  </Theme>\n')
-  sections.push(')\n')
-  sections.push('```\n\n')
+  if (themeNames.length) {
+    sections.push('### Theme Usage\n\n')
+    sections.push(
+      `\`\`\`tsx\n<Theme name=${JSON.stringify(themeNames[0])}>\n  <Button>Uses this theme</Button>\n</Theme>\n\`\`\`\n\n`
+    )
+  }
 
   sections.push('**Accessing theme values:**\n\n')
   sections.push('Components access theme values by their bare names:\n\n')
@@ -390,7 +266,6 @@ export function generateMarkdown(config: any, options?: GenerateMarkdownOptions)
 
   sections.push('**Special props:**\n\n')
   sections.push('- `theme="inverse"`: Uses the opposite light or dark sub-theme\n')
-  sections.push('- `reset`: Reverts to grandparent theme\n\n')
 
   // tokens
   sections.push('## Tokens\n\n')
@@ -541,6 +416,9 @@ export function generateMarkdown(config: any, options?: GenerateMarkdownOptions)
   const widthProp = getPropName('width')
   const heightProp = getPropName('height')
   const radiusProp = getPropName('borderRadius')
+  const sampleRadius = tokens.radius?.md
+    ? 'md'
+    : Object.keys(tokens.radius || {})[0] || '0px'
 
   if (syntaxChoice === 'string') {
     sections.push('```tsx\n')
@@ -553,7 +431,9 @@ export function generateMarkdown(config: any, options?: GenerateMarkdownOptions)
     sections.push(
       `// Color tokens - for colors and backgrounds\n<View ${bgProp}="${sampleColorBg} hover:${sampleColorBg}" ${colorProp}="${sampleColorText}" />\n\n`
     )
-    sections.push(`// Radius tokens - for border-radius\n<View ${radiusProp}="4" />\n`)
+    sections.push(
+      `// Radius tokens - for border-radius\n<View ${radiusProp}="${sampleRadius}" />\n`
+    )
     sections.push('```\n\n')
   } else if (syntaxChoice === 'object') {
     sections.push('```tsx\n')
@@ -566,7 +446,9 @@ export function generateMarkdown(config: any, options?: GenerateMarkdownOptions)
     sections.push(
       `// Color tokens - for colors and backgrounds\n<View ${bgProp}={{ default: '${sampleColorBg}', hover: '${sampleColorBg}' }} ${colorProp}={{ default: '${sampleColorText}' }} />\n\n`
     )
-    sections.push(`// Radius tokens - for border-radius\n<View ${radiusProp}="4" />\n`)
+    sections.push(
+      `// Radius tokens - for border-radius\n<View ${radiusProp}="${sampleRadius}" />\n`
+    )
     sections.push('```\n\n')
   } else {
     sections.push('```tsx\n')
@@ -579,7 +461,7 @@ export function generateMarkdown(config: any, options?: GenerateMarkdownOptions)
       `<View ${paddingProp}={{ default: '4', sm: '6' }} ${widthProp}={{ default: '10', sm: '12' }} ${bgProp}={{ default: '${sampleColorBg}' }} />\n\n`
     )
     sections.push(
-      `// Space and radius tokens\n<View ${gapProp}="2" ${marginProp}="3" ${heightProp}="6" ${radiusProp}="4" />\n`
+      `// Space and radius tokens\n<View ${gapProp}="2" ${marginProp}="3" ${heightProp}="6" ${radiusProp}="${sampleRadius}" />\n`
     )
     sections.push('```\n\n')
   }
@@ -721,42 +603,10 @@ export function generateMarkdown(config: any, options?: GenerateMarkdownOptions)
     return true
   })
 
-  // group subcomponents
-  const componentGroups = new Map<string, Set<string>>()
-  const processed = new Set<string>()
-  const sortedComponents = [...allComponents].sort((a, b) => a.length - b.length)
-
-  for (const name of sortedComponents) {
-    if (processed.has(name)) continue
-    const children = allComponents.filter(
-      (other) =>
-        other !== name && other.startsWith(name) && other[name.length]?.match(/[A-Z]/)
-    )
-    if (children.length > 0) {
-      componentGroups.set(name, new Set(children))
-      processed.add(name)
-      children.forEach((child) => processed.add(child))
-    }
-  }
-
-  const standaloneComponents = allComponents.filter((name) => !processed.has(name))
-  const allBaseComponents = [
-    ...standaloneComponents,
-    ...Array.from(componentGroups.keys()),
-  ].sort()
-
   componentsSection.push('## Components\n\n')
-  componentsSection.push('The following components are available:\n\n')
-
-  for (const name of allBaseComponents) {
+  componentsSection.push('Available named exports (import these names directly):\n\n')
+  for (const name of allComponents.sort()) {
     componentsSection.push(`- ${name}\n`)
-    if (componentGroups.has(name)) {
-      const children = Array.from(componentGroups.get(name)!).sort()
-      for (const child of children) {
-        const suffix = child.slice(name.length)
-        componentsSection.push(`  - ${name}.${suffix}\n`)
-      }
-    }
   }
   componentsSection.push('\n')
 

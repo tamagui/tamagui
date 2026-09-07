@@ -308,9 +308,19 @@ Keep importing regular Tamagui components from \`tamagui\` or
 \`@tamagui/core\`. Do not mix utility classes and Tamagui style props on the
 same component; choose the import whose styling language that component uses.
 
+### Required API follow-ups
+
+- Transition values: replace arrays with \`{ preset: 'quick', opacity: 'lazy' }\`, rename the transition object's \`default\` to \`preset\`, and place physics under \`spring\`. Move \`animateOnly\` into \`transition.properties\`. Read the upgrade guide's transition section before converting driver-specific options.
+- Groups and containers: \`group="card"\` enables \`group-hover/card:\` and other group states. Size queries require \`container="card"\` and use \`@sm/card:\`; a group alone no longer enables container measurement.
+- Control sizes: Config v6 uses \`xs | sm | md | lg | xl\` (default \`md\`). Keep numeric token keys while retaining Config v5, then map control sizes when separately adopting v6. Shape and icon geometry still uses size tokens or numbers.
+- Remove top-level \`createTamagui({ defaultProps })\`. Put default styles in \`styled()\` definitions and inherited non-style defaults in \`Component.Props\`.
+- Toast: replace \`useToastController().show(title, { message })\` with \`toast(title, { description: message })\`. Import \`Toast\` and \`toast\` from \`tamagui/toast\`; mount \`Toast.Root\` and \`Toast.List\` with the desired parts once in the app. The old provider/controller API is removed.
+- Replace \`ThemeableStack\` and \`SizableStack\` with \`YStack\` or \`XStack\` plus explicit styles; use \`elevation\` for elevation and border width/color for borders.
+- Checked/selected states: Checkbox, Switch, Tabs and ToggleGroup read \`background-press\`; customize \`activeStyle\` to override it per instance. Audit the resulting active background against the previous app and customize its theme or skin where needed.
+
 ### 15. Verification
 
-- Run \`npx tamagui check\`.
+- Run \`npx tamagui check --strict\`.
 - Run typecheck and build.
 - Start the app and manually test screens using Sheet, Dialog, Popover, Select, FocusScope, icons, and ScrollView.
 - Test Adapt breakpoints where popovers/selects/dialogs become sheets.
