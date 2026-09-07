@@ -47,4 +47,10 @@ describe('checkStyleFiles', () => {
       MissingConfigArtifactError
     )
   })
+
+  test('strict mode passes through to diagnostics', () => {
+    const nonStrict = checkStyleFiles({ root: projectRoot, configPath })
+    const strict = checkStyleFiles({ root: projectRoot, configPath, strict: true })
+    expect(strict.diagnosticCount).toBe(nonStrict.diagnosticCount)
+  })
 })

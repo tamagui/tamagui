@@ -6,6 +6,8 @@ export interface CheckStyleFilesOptions {
 	configPath?: string;
 	/** explicit files to check instead of walking the root */
 	files?: readonly string[];
+	/** validate clause payloads strictly against token and keyword vocabularies */
+	strict?: boolean;
 }
 export interface CheckedFile {
 	/** root-relative display path */

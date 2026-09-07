@@ -122,4 +122,40 @@ export function NoncanonicalFlatValues() {
     const [rechecked] = await eslint.lintText(fixed.output, { filePath: fixturePath })
     expect(rechecked.messages).toEqual([])
   })
+
+  test('reports unknown values when strictPayloads is enabled', async () => {
+    const strictEslint = new ESLint({
+      overrideConfigFile: true,
+      overrideConfig: [
+        {
+          files: ['**/*.tsx'],
+          languageOptions: {
+            parser,
+            parserOptions: {
+              ecmaFeatures: { jsx: true },
+              sourceType: 'module',
+            },
+          },
+          plugins: {
+            tamagui: plugin,
+          },
+          rules: {
+            'tamagui/valid-flat-values': ['error', { config, strictPayloads: true }],
+          },
+        },
+      ],
+    })
+
+    const source = `import { View } from 'tamagui'
+export const Fixture = () => (
+  <View bg="redd" p="$4" animation="quick" />
+)
+`
+    const [result] = await strictEslint.lintText(source, { filePath: 'strict.tsx' })
+    expect(result.messages.map(({ message }) => message)).toEqual([
+      'unknown value "redd" for bg; did you mean "red"?',
+      'v3 tokens have no "$" prefix, write "4" not "$4"',
+      '"animation" was removed in v3; use "transition=" instead',
+    ])
+  })
 })

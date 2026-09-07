@@ -51,6 +51,14 @@ export interface DocumentCompletions extends StyleValueCursorCompletions {
   site: StyleSite
 }
 
+export interface DocumentDiagnosticOptions {
+  strictPayloads?: boolean
+}
+
+export interface DocumentStyleToolingOptions {
+  strictPayloads?: boolean
+}
+
 export interface DocumentStyleTooling {
   sites(source: string, fileName?: string): readonly StyleSite[]
   /** completions at a file offset, spans mapped to file offsets */
@@ -60,7 +68,11 @@ export interface DocumentStyleTooling {
     fileName?: string
   ): DocumentCompletions | null
   /** every diagnostic in the file, spans mapped to file offsets */
-  diagnostics(source: string, fileName?: string): readonly DocumentDiagnostic[]
+  diagnostics(
+    source: string,
+    fileName?: string,
+    options?: DocumentDiagnosticOptions
+  ): readonly DocumentDiagnostic[]
   /** hover at a file offset, span mapped to file offsets */
   hoverAt(source: string, offset: number, fileName?: string): DocumentHover | null
   /** every color swatch in the file, spans mapped to file offsets */
@@ -69,7 +81,8 @@ export interface DocumentStyleTooling {
 
 export function createDocumentStyleTooling(
   tooling: StyleTooling,
-  extract: ExtractStyleSites
+  extract: ExtractStyleSites,
+  toolingOptions?: DocumentStyleToolingOptions
 ): DocumentStyleTooling {
   const siteAt = (sites: readonly StyleSite[], offset: number): StyleSite | undefined =>
     sites.find((site) => offset >= site.start && offset <= site.end)
@@ -93,10 +106,14 @@ export function createDocumentStyleTooling(
       }
     },
 
-    diagnostics(source, fileName) {
+    diagnostics(source, fileName, diagnosticOptions) {
       const results: DocumentDiagnostic[] = []
+      const strictPayloads =
+        diagnosticOptions?.strictPayloads ?? toolingOptions?.strictPayloads
       for (const site of extract(source, fileName)) {
-        for (const diagnostic of tooling.diagnostics(site.property, site.value)) {
+        for (const diagnostic of tooling.diagnostics(site.property, site.value, {
+          strictPayloads,
+        })) {
           results.push({
             ...diagnostic,
             index: site.start + diagnostic.index,

@@ -148,7 +148,11 @@ export interface StyleTooling {
     cursor: number
   ): StyleValueCursorCompletions | null
   /** the complete static verdict for one authored value */
-  diagnostics(property: string, value: string): readonly StyleValueDiagnostic[]
+  diagnostics(
+    property: string,
+    value: string,
+    options?: { strictPayloads?: boolean }
+  ): readonly StyleValueDiagnostic[]
   /** classified spans: modifiers, tokens, keywords, literals */
   annotations(property: string, value: string): readonly StyleValueAnnotation[]
   /** hover content for the annotation under `offset`, or null */
@@ -161,7 +165,14 @@ export interface StyleTooling {
   previewThemes: readonly string[]
 }
 
-export function createStyleTooling(file: SerializedConfigFile): StyleTooling | null {
+export interface StyleToolingOptions {
+  strictPayloads?: boolean
+}
+
+export function createStyleTooling(
+  file: SerializedConfigFile,
+  toolingOptions?: StyleToolingOptions
+): StyleTooling | null {
   const serialized = file.tamaguiConfig
   if (!serialized) return null
 
@@ -171,7 +182,12 @@ export function createStyleTooling(file: SerializedConfigFile): StyleTooling | n
   )
   const registry = createModifierRegistry(config).registry
   const candidates = createCandidatePropertyVocabulary(config)
-  const engine: DiagnoseStyleValueOptions = { config, registry, candidates }
+  const engine: DiagnoseStyleValueOptions = {
+    config,
+    registry,
+    candidates,
+    strictPayloads: toolingOptions?.strictPayloads,
+  }
   const styleProps = createStylePropSet(config)
 
   // themes and tokens keep their VALUES here; the grammar view keeps names only
@@ -252,9 +268,12 @@ export function createStyleTooling(file: SerializedConfigFile): StyleTooling | n
       return completeStyleValueAtCursor(property, value, cursor, engine)
     },
 
-    diagnostics(property, value) {
+    diagnostics(property, value, diagnosticOptions) {
       if (!styleProps.has(property)) return []
-      return diagnoseStyleValueProgram(property, value, engine)
+      return diagnoseStyleValueProgram(property, value, {
+        ...engine,
+        strictPayloads: diagnosticOptions?.strictPayloads ?? engine.strictPayloads,
+      })
     },
 
     annotations,

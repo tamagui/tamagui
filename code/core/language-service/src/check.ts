@@ -39,6 +39,8 @@ export interface CheckStyleFilesOptions {
   configPath?: string
   /** explicit files to check instead of walking the root */
   files?: readonly string[]
+  /** validate clause payloads strictly against token and keyword vocabularies */
+  strict?: boolean
 }
 
 export interface CheckedFile {
@@ -90,12 +92,15 @@ export function checkStyleFiles(options: CheckStyleFilesOptions): CheckStyleFile
   } catch {
     throw new MissingConfigArtifactError(configPath)
   }
-  const tooling = createStyleTooling(JSON.parse(contents) as SerializedConfigFile)
+  const tooling = createStyleTooling(JSON.parse(contents) as SerializedConfigFile, {
+    strictPayloads: options.strict,
+  })
   if (!tooling) throw new MissingConfigArtifactError(configPath)
 
   const document = createDocumentStyleTooling(
     tooling,
-    createProjectExtractor((name) => tooling.isStyleProp(name))
+    createProjectExtractor((name) => tooling.isStyleProp(name)),
+    { strictPayloads: options.strict }
   )
 
   let files: string[]
@@ -118,7 +123,9 @@ export function checkStyleFiles(options: CheckStyleFilesOptions): CheckStyleFile
     }
     let diagnostics: readonly DocumentDiagnostic[]
     try {
-      diagnostics = document.diagnostics(source)
+      diagnostics = document.diagnostics(source, undefined, {
+        strictPayloads: options.strict,
+      })
     } catch {
       // a file sucrase cannot parse is a syntax error the real compiler will
       // report; the style checker stays quiet about it

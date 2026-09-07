@@ -51,7 +51,9 @@ export interface StyleTooling {
 	*/
 	completions(property: string, value: string, cursor: number): StyleValueCursorCompletions | null;
 	/** the complete static verdict for one authored value */
-	diagnostics(property: string, value: string): readonly StyleValueDiagnostic[];
+	diagnostics(property: string, value: string, options?: {
+		strictPayloads?: boolean;
+	}): readonly StyleValueDiagnostic[];
 	/** classified spans: modifiers, tokens, keywords, literals */
 	annotations(property: string, value: string): readonly StyleValueAnnotation[];
 	/** hover content for the annotation under `offset`, or null */
@@ -63,6 +65,9 @@ export interface StyleTooling {
 	/** root theme names, preview themes first */
 	previewThemes: readonly string[];
 }
-export declare function createStyleTooling(file: SerializedConfigFile): StyleTooling | null;
+export interface StyleToolingOptions {
+	strictPayloads?: boolean;
+}
+export declare function createStyleTooling(file: SerializedConfigFile, toolingOptions?: StyleToolingOptions): StyleTooling | null;
 
 //# sourceMappingURL=core.d.ts.map

@@ -1,5 +1,5 @@
-export { validFlatValues } from "./validFlatValues";
 import type { Rule } from "eslint";
+export declare const validFlatValues: Rule.RuleModule;
 export interface TamaguiEslintRules {
 	"valid-flat-values": Rule.RuleModule;
 }

@@ -15,6 +15,7 @@ const COMMAND_MAP = {
       '--verbose': Boolean,
       '--styles-only': Boolean,
       '--deps-only': Boolean,
+      '--strict': Boolean,
     },
     async run() {
       const { _, ...flags } = arg(this.flags)
@@ -32,6 +33,7 @@ const COMMAND_MAP = {
         const result = checkStyleFiles({
           root: options.paths.root,
           configPath: options.paths.conf,
+          strict: flags['--strict'],
         })
         console.info(formatCheckResults(result))
         if (result.diagnosticCount > 0) process.exitCode = 1

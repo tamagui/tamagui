@@ -51,6 +51,15 @@ describe('createStyleTooling', () => {
     expect(tooling.diagnostics('bg', 'blue/150')).toMatchObject([
       { code: 'opacity-out-of-range', start: 0, end: 8 },
     ])
+    expect(
+      tooling.diagnostics('bg', 'backgroun', { strictPayloads: true })
+    ).toMatchObject([{ code: 'unknown-payload-value', candidate: 'backgroun' }])
+    expect(tooling.diagnostics('padding', '$4')).toMatchObject([
+      { code: 'v2-dollar-prefix', replacement: '4' },
+    ])
+    expect(tooling.diagnostics('animation', 'quick')).toMatchObject([
+      { code: 'v2-removed-prop' },
+    ])
     // unknown props never diagnose
     expect(tooling.diagnostics('onPress', 'whatever')).toEqual([])
   })

@@ -7,6 +7,7 @@ import {
   createGrammarConfigViewFromSerializedConfig,
   createModifierRegistry,
   diagnoseStyleValue,
+  diagnoseStyleValueProgram,
   parseValue,
   type GrammarConfigView,
 } from '../tooling'
@@ -350,5 +351,122 @@ describe('tooling diagnostics', () => {
         { value: 'hover', kind: 'modifier', insertText: 'hover:' },
       ]),
     })
+  })
+
+  test('flags v2 dollar-prefix payloads even in non-strict mode', () => {
+    expect(diagnose('p', '$4')).toEqual([
+      {
+        code: 'v2-dollar-prefix',
+        index: 0,
+        start: 0,
+        end: 2,
+        property: 'p',
+        replacement: '4',
+        message: 'v3 tokens have no "$" prefix, write "4" not "$4"',
+      },
+    ])
+    expect(diagnose('bg', 'hover:$blue')).toEqual([
+      {
+        code: 'v2-dollar-prefix',
+        index: 6,
+        start: 6,
+        end: 11,
+        property: 'bg',
+        replacement: 'blue',
+        message: 'v3 tokens have no "$" prefix, write "blue" not "$blue"',
+      },
+    ])
+  })
+
+  test('flags removed v2 prop names', () => {
+    expect(diagnose('animation', 'quick')).toEqual([
+      {
+        code: 'v2-removed-prop',
+        index: 0,
+        start: 0,
+        end: 5,
+        property: 'animation',
+        message: '"animation" was removed in v3; use "transition=" instead',
+      },
+    ])
+    expect(diagnose('hoverStyle', 'red')).toEqual([
+      {
+        code: 'v2-removed-prop',
+        index: 0,
+        start: 0,
+        end: 3,
+        property: 'hoverStyle',
+        message: '"hoverStyle" was removed in v3; use "hover:" clauses instead',
+      },
+    ])
+  })
+
+  test('strict payload check catches typos with did-you-mean suggestions', () => {
+    const themeConfig: GrammarConfigView = {
+      ...config,
+      tokenNames: {
+        ...config.tokenNames,
+        color: ['red', 'blue', 'background'],
+      },
+    }
+    const themeRegistry = createModifierRegistry(themeConfig).registry
+    const themeCandidates = createCandidatePropertyVocabulary(themeConfig)
+    const strictOptions = {
+      config: themeConfig,
+      registry: themeRegistry,
+      candidates: themeCandidates,
+      strictPayloads: true,
+    }
+
+    expect(diagnoseStyleValue('bg', 'backgroun', strictOptions)).toEqual([
+      {
+        code: 'unknown-payload-value',
+        index: 0,
+        start: 0,
+        end: 9,
+        property: 'bg',
+        candidate: 'backgroun',
+        replacement: 'background',
+        message: 'unknown value "backgroun" for bg; did you mean "background"?',
+      },
+    ])
+
+    // non-strict default emits no diagnostic for single-token payload
+    expect(
+      diagnoseStyleValue('bg', 'backgroun', {
+        config: themeConfig,
+        registry: themeRegistry,
+        candidates: themeCandidates,
+      })
+    ).toEqual([])
+
+    // valid tokens, plain numbers, CSS keywords, and units produce no diagnostic under strict mode
+    expect(diagnoseStyleValue('bg', 'background', strictOptions)).toEqual([])
+    expect(diagnoseStyleValue('bg', 'red', strictOptions)).toEqual([])
+    expect(diagnoseStyleValue('bg', 'transparent', strictOptions)).toEqual([])
+    expect(diagnoseStyleValue('bg', '#fff', strictOptions)).toEqual([])
+    expect(diagnoseStyleValue('bg', 'rgba(0, 0, 0, 0.5)', strictOptions)).toEqual([])
+    expect(diagnoseStyleValue('bg', 'red/50', strictOptions)).toEqual([])
+    expect(diagnoseStyleValueProgram('p', '4 6', strictOptions)).toEqual([])
+    expect(diagnoseStyleValueProgram('p', '4 $6', strictOptions)).toEqual([
+      {
+        code: 'v2-dollar-prefix',
+        index: 2,
+        start: 2,
+        end: 4,
+        property: 'paddingRight',
+        replacement: '6',
+        message: 'v3 tokens have no "$" prefix, write "6" not "$6"',
+      },
+      {
+        code: 'v2-dollar-prefix',
+        index: 2,
+        start: 2,
+        end: 4,
+        property: 'paddingLeft',
+        replacement: '6',
+        message: 'v3 tokens have no "$" prefix, write "6" not "$6"',
+      },
+    ])
   })
 })

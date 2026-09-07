@@ -18,6 +18,7 @@ import {
 import {
   fontWeightNames,
   grammarEntries,
+  propToGrammarEntry,
   standaloneValueProps,
   type TokenCategory,
 } from './registry'
@@ -33,6 +34,9 @@ import type {
   ValueParseErrorCode,
 } from '../ast/valueTypes'
 import { v6RemovedThemeNames, v6ThemeNameReplacements } from '../v6ThemeNames'
+import { namedCssColors } from '../runtime/namedCssColors'
+import { getTokenCategoryName, propToTokenCategoryCode } from '../runtime/tokenCategories'
+import { hasTokenName } from './candidate'
 
 type Names = readonly string[] | ReadonlySet<string> | Readonly<Record<string, unknown>>
 
@@ -49,6 +53,9 @@ export type StyleValueDiagnosticCode =
   | 'legacy-part-conditional'
   | 'v6-theme-name-replaced'
   | 'v6-theme-name-removed'
+  | 'v2-dollar-prefix'
+  | 'v2-removed-prop'
+  | 'unknown-payload-value'
 
 export interface StyleValueDiagnostic {
   code: StyleValueDiagnosticCode
@@ -68,6 +75,7 @@ export interface DiagnoseStyleValueOptions {
   config: GrammarConfigView
   registry: ModifierRegistryView
   candidates?: CandidatePropertyVocabulary
+  strictPayloads?: boolean
 }
 
 export interface SerializedGrammarSourceConfig {
@@ -285,6 +293,222 @@ type CandidateSighting = {
   resolved: PayloadReference | undefined
 }
 
+export const removedV2Props: Readonly<Record<string, string>> = Object.freeze({
+  animation: 'transition=',
+  hoverStyle: 'hover:',
+  pressStyle: 'press:',
+  focusStyle: 'focus:',
+  enterStyle: 'enter:',
+  exitStyle: 'exit:',
+})
+
+const globalCssKeywords: ReadonlySet<string> = new Set([
+  'inherit',
+  'initial',
+  'unset',
+  'revert',
+  'revert-layer',
+])
+
+const spaceKeywords: ReadonlySet<string> = new Set(['auto', 'normal', 'safe'])
+
+const sizeKeywords: ReadonlySet<string> = new Set([
+  'auto',
+  'fit-content',
+  'max-content',
+  'min-content',
+  'none',
+  'full',
+  'screen',
+  'min',
+  'max',
+  'fit',
+  'intrinsic',
+  'content',
+])
+
+const radiusKeywords: ReadonlySet<string> = new Set(['none'])
+
+const zIndexKeywords: ReadonlySet<string> = new Set(['auto'])
+
+const borderWidthKeywordsSet: ReadonlySet<string> = new Set(['thin', 'medium', 'thick'])
+
+const fontKeywords: ReadonlySet<string> = new Set([
+  'normal',
+  'sans-serif',
+  'serif',
+  'monospace',
+  'cursive',
+  'fantasy',
+  'system-ui',
+  'ui-sans-serif',
+  'ui-serif',
+  'ui-monospace',
+  'ui-rounded',
+  'emoji',
+  'math',
+  'fangsong',
+  'sans',
+  'serif',
+  'mono',
+])
+
+const sizeCategoryFallbacks: ReadonlySet<TokenCategory> = new Set([
+  'width',
+  'minWidth',
+  'maxWidth',
+  'inlineSize',
+  'minInlineSize',
+  'maxInlineSize',
+  'flexBasis',
+])
+
+function editDistance(a: string, b: string): number {
+  const previous = Array.from({ length: b.length + 1 }, (_, index) => index)
+  for (let aIndex = 0; aIndex < a.length; aIndex++) {
+    let diagonal = previous[0]!
+    previous[0] = aIndex + 1
+    for (let bIndex = 0; bIndex < b.length; bIndex++) {
+      const above = previous[bIndex + 1]!
+      previous[bIndex + 1] = Math.min(
+        previous[bIndex]! + 1,
+        above + 1,
+        diagonal + (a[aIndex] === b[bIndex] ? 0 : 1)
+      )
+      diagonal = above
+    }
+  }
+  return previous[b.length]!
+}
+
+function findNearestCompletion(
+  payload: string,
+  completions: readonly StyleValueCompletion[]
+): string | undefined {
+  let bestCandidate: string | undefined
+  let bestDistance = Number.POSITIVE_INFINITY
+  const maxAllowedDistance = Math.max(3, Math.floor(payload.length * 0.6))
+
+  for (const completion of completions) {
+    const val = completion.value
+    if (Math.abs(val.length - payload.length) > maxAllowedDistance) continue
+    const distance = editDistance(payload, val)
+    if (distance < bestDistance && distance <= maxAllowedDistance) {
+      bestDistance = distance
+      bestCandidate = val
+    }
+  }
+  return bestCandidate
+}
+
+function isSingleBareToken(payload: string): boolean {
+  if (/\s/.test(payload)) return false
+  if (payload.includes('(') || payload.includes(')')) return false
+  if (payload.startsWith('"') || payload.startsWith("'")) return false
+  if (/^#[0-9a-fA-F]{3,8}$/.test(payload)) return false
+  if (/^-?(?:\d+|\d*\.\d+)(?:%|[a-zA-Z]+)$/.test(payload)) return false
+  return true
+}
+
+function hasTokenVocabulary(
+  config: GrammarConfigView,
+  category: TokenCategory | undefined,
+  targetProperty: string,
+  candidates: CandidatePropertyVocabulary
+): boolean {
+  if (category) {
+    const domain =
+      config.tokenNames?.[category] ||
+      (sizeCategoryFallbacks.has(category) ? config.tokenNames?.size : undefined)
+    if (domain) {
+      if (Array.isArray(domain) && domain.length > 0) return true
+      if (domain instanceof Set && domain.size > 0) return true
+      if (typeof domain === 'object' && Object.keys(domain).length > 0) return true
+    }
+  }
+  for (const [, contributions] of candidates) {
+    for (const contribution of contributions) {
+      if (contribution.property === targetProperty) return true
+    }
+  }
+  return false
+}
+
+function isKnownPropertyValue(
+  payload: string,
+  targetProperty: string,
+  category: TokenCategory | undefined,
+  config: GrammarConfigView,
+  candidates: CandidatePropertyVocabulary
+): boolean {
+  if (/^-?(?:\d+|\d*\.\d+)$/.test(payload)) return true
+  if (globalCssKeywords.has(payload)) return true
+  if (standaloneValueProps[targetProperty]?.[payload] !== undefined) return true
+  if (targetProperty === 'fontWeight' && payload in fontWeightNames) return true
+
+  const contributions = candidates.get(payload)
+  if (
+    contributions &&
+    resolveCandidateTarget(targetProperty, payload, contributions).ok
+  ) {
+    return true
+  }
+
+  if (category && hasTokenName(config, category, payload)) return true
+
+  if (category === 'color') {
+    if (
+      payload === 'transparent' ||
+      payload === 'currentColor' ||
+      payload === 'currentcolor'
+    )
+      return true
+    if (namedCssColors.has(payload.toLowerCase())) return true
+    if (payload.includes('/')) {
+      const slash = payload.lastIndexOf('/')
+      const base = payload.slice(0, slash)
+      const opacity = payload.slice(slash + 1)
+      if (/^\d+(?:\.\d+)?$/.test(opacity)) {
+        const baseContribs = candidates.get(base)
+        if (baseContribs && resolveCandidateTarget(targetProperty, base, baseContribs).ok)
+          return true
+        if (
+          namedCssColors.has(base.toLowerCase()) ||
+          base === 'transparent' ||
+          base === 'currentColor'
+        )
+          return true
+      }
+    }
+  }
+
+  if (category === 'space' && spaceKeywords.has(payload)) return true
+
+  if (
+    (category === 'size' || (category && sizeCategoryFallbacks.has(category))) &&
+    sizeKeywords.has(payload)
+  ) {
+    return true
+  }
+
+  if (category === 'radius' && radiusKeywords.has(payload)) return true
+  if (category === 'zIndex' && zIndexKeywords.has(payload)) return true
+  if (targetProperty.endsWith('Width') && borderWidthKeywordsSet.has(payload)) return true
+
+  if (
+    (category === 'fontFamily' ||
+      category === 'lineHeight' ||
+      category === 'letterSpacing') &&
+    fontKeywords.has(payload)
+  ) {
+    return true
+  }
+
+  if (targetProperty === 'boxShadow' && payload === 'none') return true
+
+  return false
+}
+
 /**
  * Returns the diagnostics every static frontend must agree on for one authored
  * style value. Source tools locate the value; this function owns its meaning.
@@ -294,6 +518,23 @@ export function diagnoseStyleValue(
   input: string,
   options: DiagnoseStyleValueOptions
 ): readonly StyleValueDiagnostic[] {
+  const removedReplacement = removedV2Props[property]
+  if (removedReplacement) {
+    return [
+      {
+        code: 'v2-removed-prop',
+        index: 0,
+        start: 0,
+        end: input.length,
+        property,
+        message:
+          property === 'animation'
+            ? `"${property}" was removed in v3; use "transition=" instead`
+            : `"${property}" was removed in v3; use "${removedReplacement}" clauses instead`,
+      },
+    ]
+  }
+
   const { result, spans } = parseValueWithSourceSpans(input, options.registry)
   if (!result.ok) {
     return result.errors.map((error) => {
@@ -392,7 +633,65 @@ export function diagnoseStyleValue(
   for (const span of spans) {
     if (span.kind !== 'base' && span.kind !== 'payload') continue
     if (span.start >= span.end) continue
-    diagnoseSegment(input.slice(span.start, span.end), span.start)
+    const payload = input.slice(span.start, span.end)
+
+    if (payload.startsWith('$')) {
+      const stripped = payload.slice(1)
+      push(`v2-dollar-prefix:${span.start}`, {
+        code: 'v2-dollar-prefix',
+        start: span.start,
+        end: span.end,
+        property,
+        replacement: stripped,
+        message: `v3 tokens have no "$" prefix, write "${stripped}" not "${payload}"`,
+      })
+      continue
+    }
+
+    diagnoseSegment(payload, span.start)
+
+    if (options.strictPayloads && targetIsKnown) {
+      if (candidates.has(payload)) continue
+      if (!isSingleBareToken(payload)) continue
+      const category =
+        propToGrammarEntry[targetProperty]?.tokenCategory ||
+        (getTokenCategoryName(
+          propToTokenCategoryCode[targetProperty]
+        ) as TokenCategory) ||
+        undefined
+      if (!hasTokenVocabulary(options.config, category, targetProperty, candidates))
+        continue
+      if (
+        isKnownPropertyValue(
+          payload,
+          targetProperty,
+          category,
+          options.config,
+          candidates
+        )
+      )
+        continue
+
+      const completions = completeStyleValue(property, {
+        ...options,
+        strictPayloads: false,
+        candidates,
+      })
+      const suggestion = findNearestCompletion(payload, completions)
+      const message = suggestion
+        ? `unknown value "${payload}" for ${property}; did you mean "${suggestion}"?`
+        : `unknown value "${payload}" for ${property}`
+
+      push(`unknown-payload-value:${span.start}:${payload}`, {
+        code: 'unknown-payload-value',
+        start: span.start,
+        end: span.end,
+        property,
+        candidate: payload,
+        replacement: suggestion,
+        message,
+      })
+    }
   }
 
   return diagnostics
@@ -432,6 +731,7 @@ export function createStylePropSet(config: GrammarConfigView): ReadonlySet<strin
   const styleProps = new Set([
     ...grammarEntries.map((entry) => entry.prop),
     ...Object.keys(legacyPartComposite),
+    ...Object.keys(removedV2Props),
   ])
   for (const shorthand in config.shorthands) {
     styleProps.add(shorthand)
@@ -538,7 +838,10 @@ function diagnoseStyleValueProgramSlot(
 ): readonly StyleValueDiagnostic[] {
   const slotDiagnostics = diagnoseStyleValue(property, payload, options)
   return slotDiagnostics.filter(
-    (diagnostic) => diagnostic.code === 'candidate-property-mismatch'
+    (diagnostic) =>
+      diagnostic.code === 'candidate-property-mismatch' ||
+      diagnostic.code === 'unknown-payload-value' ||
+      diagnostic.code === 'v2-dollar-prefix'
   )
 }
 
