@@ -77,6 +77,30 @@ describe('production/checked flat value parser conformance', () => {
     for (const source of edgeCases) conformanceCheck(source)
   })
 
+  test('over-deep clause with six modifiers drops that clause, keeps red, and produces one failure', () => {
+    const source = 'red a:b:c:d:e:f:blue'
+    const [checkedSegments, failure, failureIndex] = parseFlatValueChecked(source)
+
+    expect(failure).toBe('over-deep-clause')
+    expect(failureIndex).toBe(source.indexOf('f:'))
+
+    // segment 0 is red: base kept (validity bits set)
+    expect(checkedSegments[4] & 1).toBe(1)
+    expect(checkedSegments[4] & 2).toBe(2)
+
+    // segment 1 is blue: clause dropped (chain validity cleared)
+    expect(checkedSegments[9] & 4).toBe(0)
+
+    const [prodSegments, prodFailure, prodFailureIndex] = parseFlatValueProduction(source)
+    expect(prodFailure).toBeNull()
+    expect(prodFailureIndex).toBe(-1)
+    expect(prodSegments[4] & 1).toBe(1)
+    expect(prodSegments[4] & 2).toBe(2)
+    expect(prodSegments[9] & 4).toBe(0)
+
+    conformanceCheck(source)
+  })
+
   test('constructed corpus, 3,000 cases', () => {
     const random = mulberry32(0xf1a7c0de)
     for (let caseIndex = 0; caseIndex < 3_000; caseIndex++) {

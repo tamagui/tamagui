@@ -3,7 +3,7 @@ import {
   evaluateProgram,
   parseValue,
   splitBackgroundValue,
-} from '../src/index.ts'
+} from '../src/tooling.ts'
 
 const inputs = {
   plain: 'red',

@@ -36,6 +36,10 @@ describe('payload shape validation', () => {
     expect(
       validatePayloadShape('transform', 'skewX(10deg) rotate(3deg)', false)
     ).toBeNull()
+    expect(validatePayloadShape('transformOrigin', 'left top', false)).toBeNull()
+    expect(validatePayloadShape('flex', '1 1 auto', false)).toBeNull()
+    expect(validatePayloadShape('aspectRatio', '16 / 9', false)).toBeNull()
+    expect(validatePayloadShape('perspectiveOrigin', 'center bottom', false)).toBeNull()
     expect(
       validatePayloadShape('fontFamily', '"Helvetica Neue", serif', false)
     ).toBeNull()

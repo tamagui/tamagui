@@ -6,7 +6,7 @@ import { type PayloadResolveErrorCode, type ReferenceKind } from "../ast/resolve
 import { type ValueSourceSpan } from "../ast/valueParser";
 import type { ModifierRegistryView, ParsedValue, ValueParseError, ValueParseErrorCode } from "../ast/valueTypes";
 export type CandidatePropertyVocabulary = ReadonlyMap<string, readonly CandidateContribution[]>;
-export type StyleValueDiagnosticCode = ValueParseErrorCode | PayloadResolveErrorCode | CandidatePropertyMismatch["code"] | PayloadShapeDiagnostic["code"] | "legacy-part-conditional" | "v6-theme-name-replaced" | "v6-theme-name-removed";
+export type StyleValueDiagnosticCode = ValueParseErrorCode | PayloadResolveErrorCode | CandidatePropertyMismatch["code"] | PayloadShapeDiagnostic["code"] | "legacy-part-conditional" | "v6-theme-name-replaced" | "v6-theme-name-removed" | "v2-dollar-prefix" | "v2-removed-prop" | "unknown-payload-value";
 export interface StyleValueDiagnostic {
 	code: StyleValueDiagnosticCode;
 	/** kept for compatibility; always equals `start` */
@@ -24,6 +24,7 @@ export interface DiagnoseStyleValueOptions {
 	config: GrammarConfigView;
 	registry: ModifierRegistryView;
 	candidates?: CandidatePropertyVocabulary;
+	strictPayloads?: boolean;
 }
 export interface SerializedGrammarSourceConfig {
 	shorthands?: GrammarSourceConfig["shorthands"];
@@ -75,6 +76,7 @@ export declare function createGrammarConfigViewFromSerializedConfig(config: Seri
 * color (so opacity suffixes keep their authored meaning), else the first.
 */
 export declare function referenceKindFor(contributions: readonly CandidateContribution[], targetProperty: string): ReferenceKind;
+export declare const removedV2Props: Readonly<Record<string, string>>;
 /**
 * Returns the diagnostics every static frontend must agree on for one authored
 * style value. Source tools locate the value; this function owns its meaning.

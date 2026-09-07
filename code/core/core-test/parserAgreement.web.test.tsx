@@ -379,13 +379,15 @@ describe('agreement', () => {
     expect(propValue(duplicateChain, ['hover'])).toBe('red')
     expect(variantValue(duplicateChain, ['hover'])).toBe('red')
 
-    const tooDeep = 'hover:focus:disabled:sm:md:dark:red'
-    expect(() => propValue(tooDeep, ['hover', 'focus', 'disabled', 'sm', 'md'])).toThrow(
-      'at most 5 non-platform conditions'
+    // an over-deep clause is dropped (and warned about in development) rather
+    // than thrown, so a typo-grade mistake never crashes a render
+    const tooDeep = 'blue hover:focus:disabled:sm:md:dark:red'
+    expect(propValue(tooDeep, ['hover', 'focus', 'disabled', 'sm', 'md', 'dark'])).toBe(
+      'blue'
     )
-    expect(() =>
-      variantValue(tooDeep, ['hover', 'focus', 'disabled', 'sm', 'md'])
-    ).toThrow('at most 5 non-platform conditions')
+    expect(
+      variantValue(tooDeep, ['hover', 'focus', 'disabled', 'sm', 'md', 'dark'])
+    ).toBe('blue')
   })
 })
 

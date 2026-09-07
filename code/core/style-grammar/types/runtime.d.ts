@@ -1,7 +1,8 @@
 export { canonicalClauseModifier, isModifierName, reduceFlatValueIdentity, type ClauseIdentityErrorCode, type ClauseIdentityHandler } from "./runtime/clauseIdentity";
-export { clauseSubjectClassRepetitions, createClausePrecedenceOrder, getClausePrecedenceKeyFromKinds, type ClausePrecedenceKey, type ClausePrecedenceOrder } from "./runtime/clausePrecedence";
+export { clauseSubjectClassRepetitions, createClausePrecedenceOrder, getClausePrecedenceKeyFromKinds, grammarMaxNonPlatformDepth, type ClausePrecedenceKey, type ClausePrecedenceOrder } from "./runtime/clausePrecedence";
 export { createGrammarConfigView, grammarPlatformNames, isContainerSizeQueryText, type GrammarSourceConfig } from "./tooling/config";
 export { mergeFlatValues } from "./runtime/mergeFlatValues";
+export { namedCssColors } from "./runtime/namedCssColors";
 export { compileModifierVocabulary, configRevisionSymbol, isRootThemeName, modifierKindMedia, modifierKindPlatform, modifierKindState, modifierKindTheme, type CompiledModifierKind, type CompiledModifierVocabulary } from "./runtime/modifierVocabulary";
 export { borderSideSuffix, getTokenCategory, insetAxisProps, percentUtilityProps, radiusCornerProps, sizeUtilityProps } from "./tooling/registry";
 export { splitColorOpacitySuffix, type ColorOpacitySuffix } from "./runtime/colorOpacity";

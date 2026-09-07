@@ -1,5 +1,5 @@
 export type FlatScanErrorCode = "invalid-character" | "unterminated-string" | "unterminated-function" | "unterminated-comment" | "stray-comment-close";
-export type FlatScanFailure = FlatScanErrorCode | "refused-chain";
+export type FlatScanFailure = FlatScanErrorCode | "refused-chain" | "over-deep-clause";
 export interface FlatValueHandler<Context> {
 	modifier?(ctx: Context, start: number, end: number, valid: boolean, first: boolean, source: string, a: any, b: any, c: any, d: any): boolean | void;
 	segment(ctx: Context, start: number, end: number, isBase: boolean, valid: boolean, source: string, chainStart: number, chainEnd: number, chainValid: boolean, chainCount: number, result: number, failure: FlatScanFailure | null, failureIndex: number, a: any, b: any, c: any, d: any): number | void;

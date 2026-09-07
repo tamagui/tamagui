@@ -9,6 +9,7 @@ export {
   clauseSubjectClassRepetitions,
   createClausePrecedenceOrder,
   getClausePrecedenceKeyFromKinds,
+  grammarMaxNonPlatformDepth,
   type ClausePrecedenceKey,
   type ClausePrecedenceOrder,
 } from './runtime/clausePrecedence'
@@ -19,6 +20,7 @@ export {
   type GrammarSourceConfig,
 } from './tooling/config'
 export { mergeFlatValues } from './runtime/mergeFlatValues'
+export { namedCssColors } from './runtime/namedCssColors'
 export {
   compileModifierVocabulary,
   configRevisionSymbol,

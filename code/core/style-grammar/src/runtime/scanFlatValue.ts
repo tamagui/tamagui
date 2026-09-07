@@ -1,3 +1,7 @@
+import { grammarMaxNonPlatformDepth } from '../ast/valueTypes'
+import { grammarPlatformNames } from '../tooling/config'
+import { canonicalClauseModifier } from './clauseIdentity'
+
 export type FlatScanErrorCode =
   | 'invalid-character'
   | 'unterminated-string'
@@ -5,7 +9,7 @@ export type FlatScanErrorCode =
   | 'unterminated-comment'
   | 'stray-comment-close'
 
-export type FlatScanFailure = FlatScanErrorCode | 'refused-chain'
+export type FlatScanFailure = FlatScanErrorCode | 'refused-chain' | 'over-deep-clause'
 
 export interface FlatValueHandler<Context> {
   modifier?(
@@ -120,7 +124,8 @@ export function scanFlatValue<Context>(
     lastColon = -1,
     modifierStart = -1,
     wordErrorMin = length,
-    wordErrorMax = -1
+    wordErrorMax = -1,
+    chainNonPlatformModifiers: Set<string> | null = null
 
   const report = (code: FlatScanErrorCode, at: number) => {
     if (failureIndex === -1) failureIndex = at
@@ -176,6 +181,7 @@ export function scanFlatValue<Context>(
     if (lastColon === -1 && wordErrorMax !== -1) segmentValid = false
     wordStart = lastColon = modifierStart = wordErrorMax = -1
     wordErrorMin = length
+    chainNonPlatformModifiers = null
     return true
   }
 
@@ -247,7 +253,25 @@ export function scanFlatValue<Context>(
     } else if (code === 58) {
       const first = modifierStart === -1
       const start = first ? wordStart : modifierStart
-      if (first) closeSegment(wordStart)
+      if (first) {
+        closeSegment(wordStart)
+        chainNonPlatformModifiers = new Set()
+      }
+      if (start < index) {
+        const canonical = canonicalClauseModifier(source.slice(start, index))
+        if (!grammarPlatformNames.has(canonical)) {
+          chainNonPlatformModifiers?.add(canonical)
+          if (
+            chainNonPlatformModifiers &&
+            chainNonPlatformModifiers.size > grammarMaxNonPlatformDepth
+          ) {
+            if (failureIndex === -1) failureIndex = start
+            failure ??= 'over-deep-clause'
+            if (start < wordErrorMin) wordErrorMin = start
+            if (start > wordErrorMax) wordErrorMax = start
+          }
+        }
+      }
       if (
         handler.modifier?.(
           ctx,
@@ -324,13 +348,22 @@ export function parseFlatValueProduction(source: string): ParsedFlatValue {
     quote = 0,
     comment = false,
     depth = 0,
-    valid = true
+    valid = true,
+    clauseChainValid = true,
+    currentChainValid = true,
+    chainNonPlatformModifiers: Set<string> | null = null
 
   const close = (end: number) => {
     let start = segmentStart
     while (start < end && source.charCodeAt(start) <= 32) start++
     while (end > start && source.charCodeAt(end - 1) <= 32) end--
-    segments.push(start, end, chainStart, chainEnd, (!sawChain ? 1 : 0) | 6)
+    segments.push(
+      start,
+      end,
+      chainStart,
+      chainEnd,
+      (!sawChain ? 1 : 0) | (clauseChainValid ? 6 : 0)
+    )
   }
   const flush = () => {
     if (wordStart !== -1 && lastColon !== -1) {
@@ -338,8 +371,11 @@ export function parseFlatValueProduction(source: string): ParsedFlatValue {
       chainEnd = lastColon
       sawChain = true
       segmentStart = lastColon + 1
+      clauseChainValid = currentChainValid
     }
     wordStart = lastColon = -1
+    currentChainValid = true
+    chainNonPlatformModifiers = null
   }
 
   for (let index = 0; index < length; index++) {
@@ -389,7 +425,25 @@ export function parseFlatValueProduction(source: string): ParsedFlatValue {
     if (wordStart === -1) wordStart = index
     if (code === 59 || code === 123 || code === 125) valid = false
     else if (code === 58) {
-      if (lastColon === -1) close(wordStart)
+      if (lastColon === -1) {
+        close(wordStart)
+        clauseChainValid = true
+        currentChainValid = true
+        chainNonPlatformModifiers = new Set()
+      }
+      const modStart = lastColon === -1 ? wordStart : lastColon + 1
+      if (modStart < index && currentChainValid) {
+        const canonical = canonicalClauseModifier(source.slice(modStart, index))
+        if (!grammarPlatformNames.has(canonical)) {
+          chainNonPlatformModifiers?.add(canonical)
+          if (
+            chainNonPlatformModifiers &&
+            chainNonPlatformModifiers.size > grammarMaxNonPlatformDepth
+          ) {
+            currentChainValid = false
+          }
+        }
+      }
       lastColon = index
     }
   }
@@ -424,9 +478,10 @@ export function parseFlatValueChecked(source: string): ParsedFlatValue {
     wordStart = -1,
     lastColon = -1,
     wordErrorMin = length,
-    wordErrorMax = -1
+    wordErrorMax = -1,
+    chainNonPlatformModifiers: Set<string> | null = null
 
-  const report = (code: FlatScanErrorCode, index: number) => {
+  const report = (code: FlatScanFailure, index: number) => {
     if (failureIndex === -1) failureIndex = index
     failure ??= code
     wordErrorMin = Math.min(wordErrorMin, index)
@@ -457,6 +512,7 @@ export function parseFlatValueChecked(source: string): ParsedFlatValue {
     }
     wordStart = lastColon = wordErrorMax = -1
     wordErrorMin = length
+    chainNonPlatformModifiers = null
   }
 
   for (let index = 0; index < length; index++) {
@@ -516,7 +572,23 @@ export function parseFlatValueChecked(source: string): ParsedFlatValue {
     if (code === 59 || code === 123 || code === 125) {
       report('invalid-character', index)
     } else if (code === 58) {
-      if (lastColon === -1) close(wordStart)
+      if (lastColon === -1) {
+        close(wordStart)
+        chainNonPlatformModifiers = new Set()
+      }
+      const modStart = lastColon === -1 ? wordStart : lastColon + 1
+      if (modStart < index) {
+        const canonical = canonicalClauseModifier(source.slice(modStart, index))
+        if (!grammarPlatformNames.has(canonical)) {
+          chainNonPlatformModifiers?.add(canonical)
+          if (
+            chainNonPlatformModifiers &&
+            chainNonPlatformModifiers.size > grammarMaxNonPlatformDepth
+          ) {
+            report('over-deep-clause', modStart)
+          }
+        }
+      }
       lastColon = index
     }
   }

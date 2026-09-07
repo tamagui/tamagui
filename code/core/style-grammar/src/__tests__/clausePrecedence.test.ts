@@ -88,15 +88,11 @@ describe('CSS specificity encoding', () => {
     )
   })
 
-  test('chains above the documented CSS emitter depth cap fail consistently', () => {
-    expect(() => key('sm', 'md', 'lg', 'dark', '@sm', 'hover')).toThrow(
-      `at most ${grammarMaxNonPlatformDepth} non-platform conditions`
-    )
+  test('chains above the documented CSS emitter depth cap return 0 consistently', () => {
+    expect(key('sm', 'md', 'lg', 'dark', '@sm', 'hover')).toBe(0)
     // the cap counts non-platform conditions only: a platform modifier neither
     // consumes depth nor rescues a chain already over the cap
-    expect(() => key('native', 'sm', 'md', 'lg', 'dark', '@sm', 'hover')).toThrow(
-      `at most ${grammarMaxNonPlatformDepth} non-platform conditions`
-    )
+    expect(key('native', 'sm', 'md', 'lg', 'dark', '@sm', 'hover')).toBe(0)
     expect(key('native', 'sm', 'md', 'lg', 'dark', '@sm')).toBe(
       packClausePrecedence(1, [1, 2, 3, 65, 129])
     )
