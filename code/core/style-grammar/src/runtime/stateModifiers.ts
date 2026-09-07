@@ -61,3 +61,33 @@ export const modifierAliases: Readonly<Record<string, string>> = Object.freeze(
     ending: 'exit',
   })
 )
+
+/** the shared identifier rule for parameterized modifier names */
+export function isModifierName(text: string, start: number, end: number): boolean {
+  if (start >= end) return false
+  for (let index = start; index < end; index++) {
+    const code = text.charCodeAt(index)
+    if (
+      !(code >= 97 && code <= 122) &&
+      !(code >= 65 && code <= 90) &&
+      !(code >= 48 && code <= 57) &&
+      code !== 45 &&
+      code !== 95
+    ) {
+      return false
+    }
+  }
+  return true
+}
+
+/** canonical spelling used by every clause identity and matching consumer */
+export function canonicalClauseModifier(name: string): string {
+  const direct = modifierAliases[name]
+  if (direct) return direct
+  if (!name.startsWith('group-')) return name
+  const slash = name.indexOf('/')
+  if (slash !== -1 && !isModifierName(name, slash + 1, name.length)) return name
+  const state = modifierAliases[name.slice(6, slash === -1 ? name.length : slash)]
+  if (!state || state === 'enter' || state === 'exit') return name
+  return slash === -1 ? `group-${state}` : `group-${state}${name.slice(slash)}`
+}

@@ -3,7 +3,14 @@ import {
   type FlatScanErrorCode,
   type FlatValueHandler,
 } from './scanFlatValue'
-import { coreStateModifierNames, modifierAliases } from './stateModifiers'
+import {
+  canonicalClauseModifier,
+  coreStateModifierNames,
+  isModifierName,
+  modifierAliases,
+} from './stateModifiers'
+
+export { canonicalClauseModifier, isModifierName } from './stateModifiers'
 
 export type ClauseIdentityErrorCode =
   | FlatScanErrorCode
@@ -38,24 +45,6 @@ export const stateModifierNames: readonly string[] = Object.freeze([
 
 const stateModifierSet: ReadonlySet<string> = new Set(stateModifierNames)
 
-/** the shared identifier rule for parameterized modifier names */
-export function isModifierName(text: string, start: number, end: number): boolean {
-  if (start >= end) return false
-  for (let index = start; index < end; index++) {
-    const code = text.charCodeAt(index)
-    if (
-      !(code >= 97 && code <= 122) &&
-      !(code >= 65 && code <= 90) &&
-      !(code >= 48 && code <= 57) &&
-      code !== 45 &&
-      code !== 95
-    ) {
-      return false
-    }
-  }
-  return true
-}
-
 /** returns the end offset of a valid container size, or -1 for another spelling */
 export function containerModifierSizeEnd(name: string): number {
   if (name.charCodeAt(0) !== 64 /* @ */) return -1
@@ -76,18 +65,6 @@ export function parseGroupModifier(name: string): GroupModifier | null {
   const canonicalState = modifierAliases[state] || state
   if (canonicalState === 'enter' || canonicalState === 'exit') return null
   return { state, group: slash === -1 ? null : name.slice(slash + 1) }
-}
-
-/** canonical spelling used by every clause identity and matching consumer */
-export function canonicalClauseModifier(name: string): string {
-  const direct = modifierAliases[name]
-  if (direct) return direct
-  if (!name.startsWith('group-')) return name
-  const slash = name.indexOf('/')
-  if (slash !== -1 && !isModifierName(name, slash + 1, name.length)) return name
-  const state = modifierAliases[name.slice(6, slash === -1 ? name.length : slash)]
-  if (!state || state === 'enter' || state === 'exit') return name
-  return slash === -1 ? `group-${state}` : `group-${state}${name.slice(slash)}`
 }
 
 function canonicalConditionSetKey(modifiers: string[]): string {

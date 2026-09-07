@@ -12,5 +12,9 @@ export declare const stateModifierSelectors: readonly string[];
 * calls all four aliases, so the two tables agree.
 */
 export declare const modifierAliases: Readonly<Record<string, string>>;
+/** the shared identifier rule for parameterized modifier names */
+export declare function isModifierName(text: string, start: number, end: number): boolean;
+/** canonical spelling used by every clause identity and matching consumer */
+export declare function canonicalClauseModifier(name: string): string;
 
 //# sourceMappingURL=stateModifiers.d.ts.map

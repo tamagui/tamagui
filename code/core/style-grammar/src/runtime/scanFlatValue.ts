@@ -1,6 +1,6 @@
 import { grammarMaxNonPlatformDepth } from '../ast/valueTypes'
 import { grammarPlatformNames } from '../tooling/config'
-import { canonicalClauseModifier } from './clauseIdentity'
+import { canonicalClauseModifier } from './stateModifiers'
 
 export type FlatScanErrorCode =
   | 'invalid-character'
