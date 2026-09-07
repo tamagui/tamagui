@@ -155,7 +155,7 @@ interface LayoutStyle {
     maxWidth?: DimensionValue;
     minHeight?: DimensionValue;
     minWidth?: DimensionValue;
-    overflow?: 'visible' | 'hidden' | 'scroll';
+    overflow?: 'visible' | 'hidden' | 'scroll' | 'auto' | 'clip';
     padding?: DimensionValue;
     paddingBottom?: DimensionValue;
     paddingEnd?: DimensionValue;

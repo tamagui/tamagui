@@ -1038,18 +1038,23 @@ export type InferTamaguiConfig<Conf> =
     infer H,
     infer V
   >
-    ? TamaguiInternalConfig<
-        A extends GenericTokens ? A : EmptyTokens,
-        B extends GenericThemes ? ThemesWithVariables<B, V> : EmptyThemes,
-        C extends GenericShorthands ? C : EmptyShorthands,
-        D extends GenericMedia ? D : EmptyMedia,
-        ExtractAnimationConfig<E>,
-        F extends GenericFonts ? F : EmptyFonts,
-        H extends GenericTamaguiSettings ? H : EmptyTamaguiSettings,
-        ExtractAnimationDriverKeys<E>
+    ? Omit<
+        TamaguiInternalConfig<
+          A extends GenericTokens ? A : EmptyTokens,
+          B extends GenericThemes ? ThemesWithVariables<B, V> : EmptyThemes,
+          C extends GenericShorthands ? C : EmptyShorthands,
+          D extends GenericMedia ? D : EmptyMedia,
+          ExtractAnimationConfig<E>,
+          F extends GenericFonts ? F : EmptyFonts,
+          H extends GenericTamaguiSettings ? H : EmptyTamaguiSettings,
+          ExtractAnimationDriverKeys<E>
+        >,
+        'sizes'
       > &
-        // keep the literal size names so `size="md"` autocompletes
-        (Conf extends { sizes: infer S } ? { sizes: S } : {})
+        // keep the literal size names so `size="md"` autocompletes and
+        // `SizeName` stays a union: intersecting with the GenericSizes index
+        // signature would fold the names back into string
+        (Conf extends { sizes: infer S } ? { sizes: S } : { sizes?: GenericSizes })
     : unknown
 
 // for use in creation functions so it doesnt get overwritten
@@ -1316,6 +1321,18 @@ export interface GenericTamaguiSettings {
   onlyAllowShorthands?: boolean | undefined
 
   /**
+   * Restrict conditional style values to one syntax. Flat values accept both
+   * the string form (`bg="red hover:blue"`) and the object form
+   * (`bg={{ base: 'red', hover: 'blue' }}`); set this to keep one of them,
+   * which narrows the types, makes the runtime warn on the other in
+   * development, and tells `tamagui generate-prompt` and the skills to only
+   * show that form.
+   *
+   * @default undefined - both forms are allowed
+   */
+  styleValueSyntax?: 'string' | 'object' | undefined
+
+  /**
    * Define a default font, for better types and default font on Text
    */
   defaultFont?: string
@@ -1457,14 +1474,6 @@ export type CreateTamaguiProps = {
    * one `size={true}` resolves to.
    */
   sizes?: GenericSizes
-
-  /**
-   * Web-only: define text-selection CSS
-   */
-  selectionStyles?: (theme: Record<string, string>) => null | {
-    backgroundColor?: any
-    color?: any
-  }
 }
 
 export type GetCSS = (opts?: {
@@ -1739,6 +1748,37 @@ type UserAllowedStyleValuesSetting = Exclude<
   undefined
 >
 
+/**
+ * A flat value string that carries a clause (`red hover:blue`, `dark:red`)
+ * or a multi-token payload (`1px solid red`). Its grammar is validated by the
+ * language service and the runtime, not by the type system. With
+ * `styleValueSyntax: 'object'` the `:` arm is dropped, so a clause-only
+ * string like `hover:red` is a type error (a clause after a space still
+ * passes through the multi-token arm).
+ */
+export type FlatClauseString =
+  | `${string} ${string}`
+  | (StyleValueSyntaxSetting extends 'object' ? never : `${string}:${string}`)
+
+type StyleValueSyntaxSetting = TamaguiSettings extends { styleValueSyntax: infer S }
+  ? S
+  : undefined
+
+/**
+ * The open string arm every style value carries. With no `allowedStyleValues`
+ * setting (or a boolean one) it is `string & {}`, so any string is accepted.
+ * With a strictness setting, a single-token string (no space, no `:`) has to
+ * be a token, theme value, or a value the setting allows, so a typo like
+ * `bg="backgroun"` is a type error; only clause strings stay open.
+ */
+export type OpenStyleString = TamaguiSettings extends {
+  allowedStyleValues: infer Setting
+}
+  ? Setting extends boolean
+    ? UnionableString
+    : FlatClauseString
+  : UnionableString
+
 export type GetThemeValueSettingForCategory<
   Cat extends keyof AllowedStyleValuesSettingPerCategory,
 > = UserAllowedStyleValuesSetting extends AllowedValueSettingBase | undefined
@@ -1832,14 +1872,16 @@ export type GetTokenString<A> = A extends string | number ? `${A}` : string
 
 /** the names in `config.sizes` (`xs sm md lg xl` in the default configs) */
 export type SizeName = TamaguiConfig extends { sizes: infer S }
-  ? Exclude<Extract<keyof S, string>, 'default'>
+  ? string extends keyof S
+    ? never
+    : Exclude<Extract<keyof S, string>, 'default'>
   : never
 
 export type Size =
   | ThemeValueFallbackSize
   | GetTokenString<keyof Tokens['size']>
   | SizeName
-  | (string & {})
+  | OpenStyleString
   | true
 
 export type SizeTokens = Size
@@ -1864,7 +1906,7 @@ export type Color =
   | TokenWithOpacity
   // clause-bearing values are intentionally open-ended; the language service
   // validates the grammar without materializing a combinatorial type union
-  | (string & {})
+  | OpenStyleString
 
 export type ColorTokens = Color
 
@@ -1916,6 +1958,20 @@ export type GetTokenFontKeysFor<
 > = keyof TamaguiConfig['fonts']['body'][A]
 
 export type FontTokens = GetTokenString<keyof TamaguiConfig['fonts']>
+/** generic css families, valid as a single-token fontFamily without a config font */
+export type GenericFontFamily =
+  | 'serif'
+  | 'sans-serif'
+  | 'monospace'
+  | 'cursive'
+  | 'fantasy'
+  | 'system-ui'
+  | 'ui-serif'
+  | 'ui-sans-serif'
+  | 'ui-monospace'
+  | 'ui-rounded'
+  | 'math'
+  | 'inherit'
 export type FontFamilyTokens = FontTokens
 export type FontSize =
   | GetTokenString<GetTokenFontKeysFor<'size'>>
@@ -2008,7 +2064,7 @@ export type ThemeValueGet<K extends string | number | symbol> = K extends 'theme
   : K extends SizeKeys
     ? SizeTokens
     : K extends FontKeys
-      ? FontTokens
+      ? FontTokens | GenericFontFamily
       : K extends FontSizeKeys
         ? FontSizeTokens
         : K extends `${`border${string | ''}Radius`}`
@@ -2112,19 +2168,22 @@ type FlatClauseName =
  * string members ('unset', a fallback union) stop being assignable across
  * package boundaries.
  */
-export type FlatStyleObject<T> = { default?: T | (string & {}) } & {
-  [K in FlatClauseName]?: T | (string & {})
+export type FlatStyleObject<T> = { default?: T | OpenStyleString } & {
+  [K in FlatClauseName]?: T | OpenStyleString
 }
 
 /**
- * The string arm stays at base values only: `(string & {})` admits every
+ * The string arm stays at base values only: `OpenStyleString` admits every
  * clause string, and structured clause completion comes from the object
  * form's keys (and the language-service plugin for strings). A per-prop
  * `${modifier}:` prefix union used to ride along for first-prefix
  * completion; it multiplied across the whole component prop graph and the
  * object form made it redundant.
  */
-export type FlatStyleValue<T> = T | FlatStyleObject<T> | (string & {})
+export type FlatStyleValue<T> =
+  | T
+  | (StyleValueSyntaxSetting extends 'string' ? never : FlatStyleObject<T>)
+  | OpenStyleString
 
 export type WithThemeValues<T extends object> = {
   [K in keyof T]:
@@ -2351,11 +2410,22 @@ interface ExtraStyleProps {
    * The v6 shorthands map `bg` here rather than to `backgroundColor`, because
    * the background family splits a value like `url(x.png) color1` across
    * backgroundImage and backgroundColor. Color tokens lead the union so `bg`
-   * completes them; `Properties['background']` keeps the CSS shorthand
-   * keywords. Adding this key to `ColorKeys` instead would erase that second
-   * arm, since that path runs the value type through `Exclude<T[K], string>`.
+   * completes them; the CSS keywords and the function forms (`url()`,
+   * gradients) keep the CSS shorthand, and multi-part values reach
+   * `OpenStyleString` through their spaces. Adding this key to `ColorKeys`
+   * instead would erase the CSS arm, since that path runs the value type
+   * through `Exclude<T[K], string>`.
    */
-  background?: ColorTokens | Properties['background']
+  background?:
+    | ColorTokens
+    | Exclude<ThemeValueFallbackColor, number>
+    | 'none'
+    | 'inherit'
+    | 'initial'
+    | 'unset'
+    | 'revert'
+    | `${string}(${string})`
+    | OpenStyleString
   /**
    * Web-only style property. Will be omitted on native.
    */
@@ -2412,6 +2482,8 @@ interface ExtraStyleProps {
    * Web-only style property. Will be omitted on native.
    */
   resize?: Properties['resize']
+  /** react-native stops at visible/hidden/scroll; web also accepts auto and clip */
+  overflow?: 'visible' | 'hidden' | 'scroll' | 'auto' | 'clip'
   /**
    * Web-only style property. Will be omitted on native.
    */

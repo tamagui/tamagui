@@ -1,8 +1,17 @@
-import type { FontSizeTokens } from '@tamagui/web'
+import type { FontSizeTokens, SizeTokens } from '@tamagui/web'
 import { resolveSize } from '@tamagui/size'
 import { styled, Text } from '@tamagui/web'
 
-export const getFontSized = styled.dynamic<FontSizeTokens | number | true>(
+/**
+ * A control's size token is accepted too, so a Label sized like the control
+ * next to it shares the same value: `true` and a named size read the size
+ * recipe's font key, anything else is a font.size key already. Exported by
+ * name so the built types keep the alias and resolve it against the user's
+ * config, instead of baking the config-less `string` into the .d.ts.
+ */
+export type GetFontSizedInput = FontSizeTokens | SizeTokens | number | true
+
+export const getFontSized = styled.dynamic<GetFontSizedInput>(
   (sizeTokenIn = true, env) => {
     const { font, fontFamily } = env
     if (!font) {
