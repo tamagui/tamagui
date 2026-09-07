@@ -30,7 +30,8 @@ export type PopoverProps = ScopedPopoverProps<PopperProps> & {
      */
     hoverable?: boolean | UseHoverProps;
     /**
-     * Disable focusing behavior on open
+     * disable opening when the trigger receives keyboard focus.
+     * defaults to true unless hoverable is enabled.
      */
     disableFocus?: boolean;
     /**
@@ -235,7 +236,8 @@ export declare const Popover: ((props: Omit<PopperProps, "scope"> & {
      */
     hoverable?: boolean | UseHoverProps;
     /**
-     * Disable focusing behavior on open
+     * disable opening when the trigger receives keyboard focus.
+     * defaults to true unless hoverable is enabled.
      */
     disableFocus?: boolean;
     /**

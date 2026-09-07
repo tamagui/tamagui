@@ -29,7 +29,8 @@ separate release.
 - Restore roving focus across Tabs, ToggleGroup, and RadioGroup, including the missing
   `asChild` focus/blur forwarding. Server HTML exposes the group as the entry stop.
   Preserve actual popup dismissal reasons so Escape stays closed and ordinary keyboard
-  focus can reopen popovers and tooltips.
+  focus can reopen popovers and tooltips. Ordinary popovers open on activation;
+  hoverable popovers and explicit `disableFocus={false}` retain focus-open behavior.
 - Let inherited theme scopes follow the document scheme before hydration. Explicitly
   authored schemes remain scoped, including nested same-scheme themes. Runtime and
   compiler-generated theme classes follow the same rule.
@@ -65,3 +66,6 @@ Test it upstream in One before adopting that API for request-specific themes.
   14 WebKit Sheet checks, 94 default/CSS checks, and 117 Reanimated/Motion checks
   passed with retries disabled. The suites retained their existing skips.
 - Registry generation and strict drift validation pass for all 44 blank-app copies.
+- Popover keyboard follow-up: 54 Popover/Tooltip checks pass across the web
+  animation drivers; Enter and Space assert the closed, focused state before opening.
+  A runtime probe also verifies Tooltip keyboard focus, Escape, and focus reentry.

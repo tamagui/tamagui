@@ -105,7 +105,8 @@ export type PopoverProps = ScopedPopoverProps<PopperProps> & {
   hoverable?: boolean | UseHoverProps
 
   /**
-   * Disable focusing behavior on open
+   * disable opening when the trigger receives keyboard focus.
+   * defaults to true unless hoverable is enabled.
    */
   disableFocus?: boolean
 
@@ -1079,7 +1080,7 @@ const PopoverInner = createRefComponent<
     scope = DEFAULT_SCOPE,
     keepChildrenMounted: keepChildrenMountedProp,
     hoverable,
-    disableFocus,
+    disableFocus = !hoverable,
     disableDismissable,
     zIndex,
     id,
@@ -1109,7 +1110,7 @@ const PopoverInner = createRefComponent<
     closeReasonRef,
     disable: isAdapted,
     hoverable,
-    disableFocus: disableFocus,
+    disableFocus,
   })
 
   const [anchorTo, setAnchorToRaw] = React.useState<Rect>()

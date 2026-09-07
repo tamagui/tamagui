@@ -151,7 +151,7 @@ export function PopoverFocusScopeCase() {
         </Popover.Content>
       </Popover>
       <Button data-testid="focus-return-before">Before focus popover</Button>
-      <Popover>
+      <Popover disableFocus={false}>
         <Popover.Trigger asChild>
           <Button data-testid="focus-return-trigger">Focus popover</Button>
         </Popover.Trigger>
