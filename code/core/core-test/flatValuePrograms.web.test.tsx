@@ -426,7 +426,7 @@ test('variant props accept the flat object spelling', () => {
   expect(fn.style?.paddingInline).toBe(12)
 })
 
-test('an unknown bare lookup miss stays literal on web', () => {
+test('an unknown bare lookup miss stays literal on web and warns once', () => {
   const warnings: string[] = []
   const original = console.warn
   const previousNodeEnv = process.env.NODE_ENV
@@ -439,7 +439,8 @@ test('an unknown bare lookup miss stays literal on web', () => {
       `.${className}{background-color:missing-web-base}`,
       `@media (hover: hover) {.${className}:where(:hover){background-color:var(--c-black)}}`,
     ])
-    expect(warnings).toEqual([])
+    expect(warnings).toHaveLength(1)
+    expect(warnings[0]).toContain('unknown color "missing-web-base"')
   } finally {
     console.warn = original
     process.env.NODE_ENV = previousNodeEnv

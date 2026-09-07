@@ -16,9 +16,11 @@ import {
   createTransformAccumulator,
   finalizeTransformAccumulator,
   getTransformPartKeys,
+  grammarMaxNonPlatformDepth,
+  namedCssColors,
   removeTransformValue,
 } from '@tamagui/style-grammar/runtime'
-import { getConfig, getConfigMaybe, getFont } from '../config'
+import { getConfig, getConfigMaybe, getFont, getSetting } from '../config'
 import { isDevTools } from '../constants/isDevTools'
 import { defaultComponentStateMounted } from '../defaultComponentState'
 import { isVariable } from '../createVariable'
@@ -794,6 +796,27 @@ function contributeProp(
   }
 
   let isValidStyleKeyInit = isValidStyleKey(keyInit, validStyles)
+
+  if (process.env.NODE_ENV === 'development') {
+    if (!isValidStyleKeyInit && (!variants || !(keyInit in variants))) {
+      let replacement: string | undefined
+      if (keyInit === 'animation') replacement = 'transition='
+      else if (keyInit === 'hoverStyle') replacement = 'hover: clause'
+      else if (keyInit === 'pressStyle') replacement = 'press: clause'
+      else if (keyInit === 'focusStyle') replacement = 'focus: clause'
+      else if (keyInit === 'enterStyle') replacement = 'enter: clause'
+      else if (keyInit === 'exitStyle') replacement = 'exit: clause'
+      else if (keyInit.charCodeAt(0) === 36 && keyInit.length > 1) {
+        replacement = `${keyInit.slice(1)}: clause`
+      }
+      if (replacement) {
+        warnOnce(
+          `v2-prop:${keyInit}`,
+          `prop "${keyInit}" was removed in v3; use ${replacement}`
+        )
+      }
+    }
+  }
 
   // this is all for partially optimized (not flattened)... maybe worth removing?
   if (process.env.TAMAGUI_TARGET === 'web') {
@@ -2419,7 +2442,9 @@ const formatScanFailure = (
         ? 'an unterminated "/*" comment'
         : failure === 'stray-comment-close'
           ? 'a stray "*/"'
-          : 'an unterminated "("'
+          : failure === 'over-deep-clause'
+            ? `a clause with more than ${grammarMaxNonPlatformDepth} non-platform conditions`
+            : 'an unterminated "("'
 
 const warnScanFailure = (
   property: string,
@@ -2452,6 +2477,16 @@ let valueCaches = new WeakMap<object, Map<string, ValueScopeCache>>()
 let valueCacheEntries = 0
 const valueCacheRoot = {}
 const parsedSlices = new WeakMap<object, (string | undefined)[]>()
+
+const cssWideColorKeywords = new Set([
+  'inherit',
+  'initial',
+  'unset',
+  'revert',
+  'revert-layer',
+  'currentcolor',
+  'transparent',
+])
 
 // `embedded` also runs the embedded-token pass when the direct lookup leaves the
 // value alone, and memoizes that result. it is a regex replace over most string
@@ -2568,9 +2603,112 @@ function configuredValue(
   }
 
   if (process.env.NODE_ENV === 'development') {
-    const category = grammar.tokenCategory(property)
+    const category =
+      grammar.tokenCategory(property) ||
+      grammar.tokenCategory(state.conf.shorthands[property] || property)
     if (category && category !== 'color' && state.conf.tokensParsed.color?.[name]) {
       warnOnce(`"${name}" contributes to "color", not "${property}"`)
+    }
+
+    if (!value && !fontProperty) {
+      if (name.charCodeAt(0) === 36 || raw.charCodeAt(0) === 36) {
+        const suggested = name.charCodeAt(0) === 36 ? name.slice(1) : raw.slice(1)
+        warnOnce(
+          `v2-token:${property}=${raw}`,
+          `${property}="${raw}": v3 tokens have no "$" prefix, did you mean "${suggested}"?`
+        )
+      } else if (
+        (category === 'size' ||
+          category === 'space' ||
+          category === 'radius' ||
+          category === 'zIndex') &&
+        /^-?\d+(?:\.\d+)?$/.test(name)
+      ) {
+        let nearest: string | undefined
+        let minDistance = Infinity
+        const rawNum = Number(name)
+        const tokens = category ? state.conf.tokensParsed[category] : undefined
+        if (tokens && Number.isFinite(rawNum)) {
+          for (const key in tokens) {
+            const keyNum = Number(key)
+            if (Number.isFinite(keyNum)) {
+              const dist = Math.abs(keyNum - rawNum)
+              if (dist < minDistance) {
+                minDistance = dist
+                nearest = key
+              }
+            } else {
+              const val = tokens[key]?.val
+              const valNum = typeof val === 'number' ? val : Number(val)
+              if (Number.isFinite(valNum)) {
+                const dist = Math.abs(valNum - rawNum)
+                if (dist < minDistance) {
+                  minDistance = dist
+                  nearest = key
+                }
+              }
+            }
+          }
+        }
+        warnOnce(
+          `numeric-token:${property}=${raw}`,
+          `${property}="${raw}" was passed to CSS as-is with px units${
+            nearest ? `; nearest token is "${nearest}"` : ''
+          }`
+        )
+      } else if (
+        category === 'color' &&
+        /^[a-zA-Z0-9-]+$/.test(name) &&
+        /[a-zA-Z]/.test(name)
+      ) {
+        const lower = name.toLowerCase()
+        if (!namedCssColors.has(lower) && !cssWideColorKeywords.has(lower)) {
+          const themeKeys: string[] = []
+          if (state.theme && typeof state.theme === 'object') {
+            for (const k in state.theme) themeKeys.push(k)
+          }
+          if (state.conf.themes) {
+            const active = state.conf.themes[state.flatThemeName || '']
+            if (active) {
+              for (const k in active) themeKeys.push(k)
+            } else {
+              for (const t in state.conf.themes) {
+                for (const k in state.conf.themes[t]) themeKeys.push(k)
+              }
+            }
+          }
+          let bestMatch: string | undefined
+          let minDistance = 3
+          for (const key of themeKeys) {
+            if (Math.abs(key.length - name.length) > 2) continue
+            const m = name.length
+            const n = key.length
+            const d: number[] = []
+            for (let i = 0; i <= m; i++) d[i] = i
+            for (let j = 1; j <= n; j++) {
+              let prev = d[0]
+              d[0] = j
+              for (let i = 1; i <= m; i++) {
+                const temp = d[i]
+                d[i] =
+                  name[i - 1] === key[j - 1] ? prev : Math.min(prev, d[i], d[i - 1]) + 1
+                prev = temp
+              }
+            }
+            const dist = d[m]
+            if (dist <= 2 && dist < minDistance) {
+              minDistance = dist
+              bestMatch = key
+            }
+          }
+          warnOnce(
+            `unknown-color:${property}=${raw}`,
+            bestMatch
+              ? `unknown color "${name}", did you mean "${bestMatch}"?`
+              : `unknown color "${name}"`
+          )
+        }
+      }
     }
   }
   let out = raw
@@ -3270,6 +3408,21 @@ export function walkConditionalValue(
   if (typeof value === 'string') {
     const parsed = getConfigRevisionState(state.conf).parseFlatValue(value)
     const [segments, failure, failureIndex] = parsed
+    if (process.env.NODE_ENV === 'development') {
+      const syntax = getSetting('styleValueSyntax')
+      if (syntax === 'object') {
+        const hasClause =
+          segments.length > 5 ||
+          (segments.length >= 5 && segments[2] !== -1) ||
+          value.includes(':')
+        if (hasClause) {
+          warnOnce(
+            `syntax:string:${property}=${value}`,
+            `string syntax is disabled by config (styleValueSyntax: 'object'); received "${property}=${value}"`
+          )
+        }
+      }
+    }
     // the parse result is cached per authored string, so its payload and chain
     // substrings can be too. without this every render of every element re-slices
     // the same pieces out of the same value
@@ -3372,6 +3525,15 @@ export function walkConditionalValue(
       !classifyConditionalObject(value, state)
     ) {
       return false
+    }
+    if (process.env.NODE_ENV === 'development') {
+      const syntax = getSetting('styleValueSyntax')
+      if (syntax === 'string') {
+        warnOnce(
+          `syntax:object:${property}=${JSON.stringify(value)}`,
+          `object-form conditional syntax is disabled by config (styleValueSyntax: 'string'); received "${property}"`
+        )
+      }
     }
     if (value.default != null) {
       emitConditionalValue(

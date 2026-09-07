@@ -1,4 +1,5 @@
 export declare function warnOnce(key: string, message?: string): void;
+export declare function resetWarned(): void;
 /**
  * A value the flat-value scanner refused, reported where the author can act on
  * it. Item 5b left refusal silent, matching the clause scanner, so an author

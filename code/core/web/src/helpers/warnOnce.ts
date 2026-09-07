@@ -22,6 +22,12 @@ export function warnOnce(key: string, message = key) {
   }
 }
 
+export function resetWarned() {
+  if (process.env.NODE_ENV !== 'production') {
+    warned?.clear()
+  }
+}
+
 /**
  * A value the flat-value scanner refused, reported where the author can act on
  * it. Item 5b left refusal silent, matching the clause scanner, so an author

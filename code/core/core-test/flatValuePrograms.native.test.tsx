@@ -328,7 +328,7 @@ test('bare configured tokens resolve in both program positions on native', () =>
   expect(clause.style?.backgroundColor).toBe('#000')
 })
 
-test('an unknown bare lookup miss stays literal on native', () => {
+test('an unknown bare lookup miss stays literal on native and warns once', () => {
   const warnings: string[] = []
   const original = console.warn
   const previousNodeEnv = process.env.NODE_ENV
@@ -343,7 +343,9 @@ test('an unknown bare lookup miss stays literal on native', () => {
 
     const base = split({ backgroundColor: 'missing-native-base press:black' })
     expect(base.style?.backgroundColor).toBe('missing-native-base')
-    expect(warnings).toEqual([])
+    expect(warnings).toHaveLength(2)
+    expect(warnings[0]).toContain('unknown color "missing-native"')
+    expect(warnings[1]).toContain('unknown color "missing-native-base"')
   } finally {
     console.warn = original
     process.env.NODE_ENV = previousNodeEnv
