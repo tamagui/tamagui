@@ -80,6 +80,8 @@ export interface Ternary {
     alternate: object | null;
     fontFamily?: string;
     inlineMediaQuery?: string;
+    /** the base style as it stood when this ternary's arms were merged */
+    baseStyle?: object;
 }
 export type ClassNameToStyleObj = {
     [key: string]: StyleObject;
