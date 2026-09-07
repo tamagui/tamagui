@@ -45,12 +45,14 @@ test('arrow keys move within a group and skip a disabled item', async ({ page })
   await page.getByTestId('tab-a').focus()
   await expect(page.getByTestId('tab-a')).toHaveAttribute('tabindex', '0')
 
+  // arrow navigation focuses out of the keydown handler, so wait on the element
+  // rather than reading activeElement in the next task
   // tab-b is disabled, so ArrowRight lands on tab-c
   await page.keyboard.press('ArrowRight')
-  expect(await focused(page)).toBe('tab-c')
+  await expect(page.getByTestId('tab-c')).toBeFocused()
 
   await page.keyboard.press('ArrowLeft')
-  expect(await focused(page)).toBe('tab-a')
+  await expect(page.getByTestId('tab-a')).toBeFocused()
 })
 
 test('only the current item carries the tab stop', async ({ page }) => {

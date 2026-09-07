@@ -15,8 +15,6 @@ test.describe('Select render budget', () => {
     page,
   }) => {
     const itemRenders = () => page.evaluate(() => window.__selectRenders.items)
-    const focused = () =>
-      page.evaluate(() => document.activeElement?.getAttribute('data-testid'))
 
     // items mount hidden before the first open (the trigger portals the value)
     let before = await itemRenders()
@@ -34,7 +32,7 @@ test.describe('Select render budget', () => {
       await page.getByTestId(`probe-item-${i}`).hover()
       await page.waitForTimeout(30)
     }
-    expect(await focused()).toBe('probe-item-8')
+    await expect(page.getByTestId('probe-item-8')).toBeFocused()
     // two per hover: the item losing active and the one gaining it
     expect((await itemRenders()) - before).toBeLessThanOrEqual(10)
 
@@ -53,20 +51,20 @@ test.describe('Select render budget', () => {
       await page.keyboard.press('ArrowDown')
       await page.waitForTimeout(30)
     }
-    expect(await focused()).toBe('probe-item-13')
+    await expect(page.getByTestId('probe-item-13')).toBeFocused()
     // four per press: active flips on two items plus their focus styles
     expect((await itemRenders()) - before).toBeLessThanOrEqual(20)
 
     before = await itemRenders()
     await page.keyboard.press('End')
     await page.waitForTimeout(100)
-    expect(await focused()).toBe('probe-item-39')
+    await expect(page.getByTestId('probe-item-39')).toBeFocused()
     await page.keyboard.press('Home')
     await page.waitForTimeout(100)
-    expect(await focused()).toBe('probe-item-0')
+    await expect(page.getByTestId('probe-item-0')).toBeFocused()
     await page.keyboard.type('item-2', { delay: 20 })
     await page.waitForTimeout(100)
-    expect(await focused()).toBe('probe-item-20')
+    await expect(page.getByTestId('probe-item-20')).toBeFocused()
     // End, Home and typeahead re-render the impl, never the list
     expect((await itemRenders()) - before).toBeLessThanOrEqual(24)
 
