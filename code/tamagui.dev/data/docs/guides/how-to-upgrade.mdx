@@ -1265,12 +1265,12 @@ coverage and known gaps.
 
 ## 17. Migrate createTamagui defaultProps
 
-`createTamagui({ defaultProps })` is deprecated in v3 and slated for removal.
+`createTamagui({ defaultProps })` is removed in v3.
 Each of its uses has a more direct replacement:
 
-- **Styling defaults** move to [theme values](/docs/core/theme#inline-values): declare
+- **Styling defaults** move to [theme updates](/docs/core/theme#theme-updates): declare
   the value once in `variables`, read it in your component styles, and
-  redefine it per subtree on `<Theme>` instead of forcing props onto every
+  redefine it per subtree on `<ThemeUpdate>` instead of forcing props onto every
   instance of a component.
 - **A component's default look** belongs in the component itself — v3
   components are behavior primitives plus styles you own, so edit your copied

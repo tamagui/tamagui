@@ -385,10 +385,11 @@ in string or object form:
 const SizedText = styled(Text, {
   variants: {
     size: {
+      sm: { fontSize: 'sm' },
       md: {
-        fontSize: 'sm gtMd:md gt2xl:lg',
+        fontSize: 'sm md:base xl:lg',
         // equivalent:
-        // fontSize: { default: 'sm', gtMd: 'md', gt2xl: 'lg' },
+        // fontSize: { default: 'sm', md: 'base', xl: 'lg' },
       },
     },
   } as const,
@@ -399,8 +400,8 @@ The variant prop itself accepts conditions too, so a variant can change per
 state or breakpoint:
 
 ```tsx
-<SizedText size="sm gtMd:md" />
-<SizedText size={{ default: 'sm', gtMd: 'md' }} />
+<SizedText size="sm md:md" />
+<SizedText size={{ default: 'sm', md: 'md' }} />
 ```
 
 ### Variants and Parent Variants

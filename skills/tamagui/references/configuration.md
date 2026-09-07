@@ -244,11 +244,16 @@ settings: {
   shouldAddPrefersColorThemes: true,  // auto light/dark CSS
   allowedStyleValues: 'somewhat-strict-web',
   onlyAllowShorthands: false,  // allow both short and long names
+  styleValueSyntax: 'string',  // omit to allow string and object forms
+  selectionStyles: (theme) => ({
+    backgroundColor: theme.color5,
+    color: theme.color11,
+  }),
   mediaQueryDefaultActive: {
     // SSR: assume these queries are true initially (v6 sets this for you)
     'max-md': true,
     'max-sm': true,
-    xs: true,
+
   },
 }
 ```

@@ -11,12 +11,12 @@ component.
 Change themes anywhere in your app like so:
 
 ```tsx
-import { Square, Theme } from 'tamagui' // or '@tamagui/core'
+import { Button, Theme } from 'tamagui'
 
 export default () => (
   <Theme name="dark">
     <Button>I'm a dark button</Button>
-    <Button theme="subtle">I'm using dark_subtle theme</Button>
+    <Button theme="level2">I'm using dark_level2 theme</Button>
   </Theme>
 )
 ```
@@ -32,7 +32,7 @@ import { ThemeUpdate, html } from 'tamagui'
 
 export default () => (
   <ThemeUpdate background-hover="blue-500 dark:blue-300">
-    <html.div backgroundColor="background hover:background-hover" />
+    <html.div bg="background hover:background-hover" />
   </ThemeUpdate>
 )
 ```

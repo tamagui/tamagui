@@ -748,7 +748,7 @@ You can pass a `settings` object to `createTamagui`:
       required: false,
       type: '(theme) => ({ backgroundColor: Variable | string; color: Variable | string })',
       default: false,
-      description: `On the web, will generate ::selection styles for text selection.`,
+      description: `Set settings.selectionStyles to generate ::selection styles for text selection on the web.`,
     },
     {
       name: 'shouldAddPrefersColorThemes',
@@ -769,13 +769,13 @@ You can pass a `settings` object to `createTamagui`:
       required: false,
       type: `'string' | 'object'`,
       default: `undefined`,
-      description: `Restrict conditional style values to one syntax. Flat values accept both the string form (bg="red hover:blue") and the object form (bg={{ base: 'red', hover: 'blue' }}); set this to keep one of them, which narrows the types, makes the runtime warn on the other in development, and tells tamagui generate-prompt and the skills to only show that form.`,
+      description: `Restrict conditional style values to one syntax. Flat values accept both the string form (bg="red hover:blue") and the object form (bg={{ default: 'red', hover: 'blue' }}); set this to keep one of them, which narrows the types, makes the runtime warn on the other in development, and tells tamagui generate-prompt and the skills to only show that form.`,
     },
     {
       name: `allowedStyleValues`,
       required: false,
       type: 'AllowedStyleValuesSetting',
-      description: `Set up allowed values on style props, this is only a type-level validation (see below).`,
+      description: `Controls type validation of single-token style values (see below). Run tamagui check --strict to validate conditional payloads against the project config too.`,
     },
     {
       name: 'fastSchemeChange',

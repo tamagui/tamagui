@@ -1,12 +1,13 @@
 ---
 name: tamagui
 description: Universal React UI framework for web and native with flat conditional values. Use when building cross-platform apps with Tamagui, writing styled components, or applying tokens, themes, animations, and media queries.
-version: 3.0.0
+metadata:
+  version: 3.0.0
 ---
 
 # Tamagui Skill
 
-Universal React UI framework for web and native. In v3, conditions are flat clauses in the style value, tokens and themes are bare names, and condition objects are removed.
+Universal React UI framework for web and native. In v3, conditions are flat clauses in the style value, tokens and themes are bare names, and nested condition props such as `hoverStyle` are removed.
 
 ## 1. Project Configuration First
 
@@ -28,7 +29,7 @@ clause := modifier(:modifier)*:payload
 ```
 
 - Modifiers chain left-to-right: `dark:hover:navy` applies when both dark and hover match.
-- Payloads extend to the next registered modifier or end of string.
+- Payloads extend to the next top-level clause or end of string.
 - An empty payload is invalid. Clear a property with `none`, `transparent`, `initial`, or `unset`.
 - Do not author raw `transform` strings with clauses; use atomic transform props (`scale`, `rotate`, `x`, `y`).
 
@@ -52,10 +53,11 @@ clause := modifier(:modifier)*:payload
    - Condition count (more conditions win)
    - Category rank: media (1) < container (65) < theme (129) < group (161) < state (225)
    - Authored order breaks exact ties only.
+   - A chain supports at most five distinct non-platform conditions.
 
 ## 3. Style Value Syntax
 
-Tamagui supports both string and object syntax. Projects can configure `styleValueSyntax` to enforce one form.
+Tamagui supports both string and object syntax. Projects can configure `settings.styleValueSyntax` to enforce one form.
 
 ### String Form
 
@@ -110,7 +112,7 @@ Check `onlyAllowShorthands` in `tamagui-prompt.md`. Under stock v6 it is `true`,
 
 ## 5. Control Sizes
 
-Controls (Button, Input, Select, etc.) accept named sizes: `xs`, `sm`, `md`, `lg`, `xl`. The default is `md`.
+With the v6 config, controls (Button, Input, Select, etc.) accept named sizes: `xs`, `sm`, `md`, `lg`, `xl`. The default is `md`.
 
 ```tsx
 import { Button, YStack } from 'tamagui'
@@ -126,7 +128,7 @@ export function Buttons() {
 }
 ```
 
-Do not pass numeric sizes like `size="4"` or `size="large"` to controls; numeric sizes are for shapes and icons.
+Use named recipes for control sizes. Legacy token keys such as `size="4"` remain supported, but use the old height-based sizing model. `Spinner` has its own `small` and `large` sizes.
 
 ## 6. Groups and Containers
 
@@ -157,8 +159,8 @@ export function Fade({ visible }: { visible: boolean }) {
       {visible && (
         <View
           key="fade-box"
-          opacity="0 enter:1 exit:0"
-          scale="0.9 enter:1 exit:0.9"
+          opacity="1 enter:0 exit:0"
+          scale="1 enter:0.9 exit:0.9"
           transition="quick"
         />
       )}
@@ -194,7 +196,9 @@ export function Fade({ visible }: { visible: boolean }) {
 Verify styles and syntax with:
 
 ```bash
-npx tamagui check
+npx tamagui check --strict
 ```
 
-Flat values are strings, so TypeScript cannot catch invalid token names or unrecognized modifiers. Always run `tamagui check` before calling tasks done.
+`settings.allowedStyleValues` controls type validation of single-token values. Conditional payloads and modifiers also need `tamagui check --strict`, which loads the project config on a fresh project.
+
+For detailed APIs, read [configuration](references/configuration.md), [components](references/components.md), and [animations](references/animations.md).
