@@ -45,7 +45,8 @@ export const webPropsToSkip = {
   onChange: 1,
   onInput: 1,
   onBeforeInput: 1,
-  onScroll: 1,
+  // onScroll is not listed here: it is a real React Native prop on
+  // ScrollView, FlatList and TextInput, so skipping it breaks them.
   onCopy: 1,
   onCut: 1,
   onPaste: 1,

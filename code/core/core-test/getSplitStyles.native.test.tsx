@@ -351,6 +351,19 @@ describe('getSplitStyles', () => {
     expect(style?.padding).toBeUndefined()
     expect(style?.paddingTop).toBeUndefined()
   })
+
+  test('onScroll is forwarded on native', () => {
+    const onScroll = () => {}
+    const { viewProps } = getSplitStylesFor({ onScroll })
+    expect(viewProps.onScroll).toBe(onScroll)
+  })
+
+  test('onScroll survives a styled() wrapper on native', () => {
+    const StyledView = styled(View, { backgroundColor: 'red' })
+    const onScroll = () => {}
+    const { viewProps } = getSplitStylesFor({ onScroll }, StyledView)
+    expect(viewProps.onScroll).toBe(onScroll)
+  })
 })
 
 describe.skip('getSplitStyles - pseudo prop merging', () => {
