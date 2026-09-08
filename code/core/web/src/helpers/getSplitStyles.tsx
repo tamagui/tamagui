@@ -578,7 +578,14 @@ export const getSplitStyles: StyleSplitter = (
       //   }
       // }
 
-      passDownProp(viewProps, keyInit, valInit, isMediaOrPseudo)
+      passDownProp(
+        viewProps,
+        keyInit,
+        isHOC && isMediaOrPseudo
+          ? expandOwnVariantsInSubStyle(styleState, valInit)
+          : valInit,
+        isMediaOrPseudo
+      )
 
       if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
         console.groupEnd()
@@ -1675,6 +1682,29 @@ function recordStyleTokenProvenance(
   } else if (styleState.tokenProvenance && key in styleState.tokenProvenance) {
     delete styleState.tokenProvenance[key]
   }
+}
+
+// styled() on top of a styleable() HOC does not merge our variants into the child
+// (see the isNonStyledHOC branch in styled.tsx), so a variant nested inside a pseudo
+// or media object would never resolve down there. Expand our own variants to plain
+// style keys before passing the object down. Fixes #3047
+function expandOwnVariantsInSubStyle(styleState: GetStyleState, styleIn: any) {
+  const { variants } = styleState.staticConfig
+  if (!variants || !styleIn || typeof styleIn !== 'object') return styleIn
+  const out: Record<string, any> = {}
+  let didExpand = false
+  for (const key in styleIn) {
+    const val = styleIn[key]
+    if (!(key in variants)) {
+      out[key] = val
+      continue
+    }
+    propMapper(key, val, styleState, false, (expandedKey, expandedVal) => {
+      didExpand ||= expandedKey !== key
+      out[expandedKey] = expandedVal
+    })
+  }
+  return didExpand ? out : styleIn
 }
 
 export const getSubStyle = (
