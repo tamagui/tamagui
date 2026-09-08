@@ -161,7 +161,7 @@ export const DialogPortalFrame = styled(YStack, {
   inset: 0,
   borderWidth: 'web:0px',
   backgroundColor: 'web:transparent',
-  color: 'web:inherit',
+  style: isWeb ? { color: 'inherit' } : undefined,
   maxInlineSize: 'web:none',
   margin: 'web:0px',
   width: 'web:auto',

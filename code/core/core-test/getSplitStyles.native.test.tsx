@@ -1,5 +1,6 @@
 import { View, Text, createTamagui, getSplitStyles, styled } from '@tamagui/core'
-import { beforeAll, describe, expect, test } from 'vitest'
+import { DialogPortalFrame } from '@tamagui/dialog'
+import { beforeAll, describe, expect, test, vi } from 'vitest'
 
 import config from '../config-default'
 
@@ -8,6 +9,26 @@ beforeAll(() => {
 })
 
 describe('getSplitStyles', () => {
+  test('an adapted dialog portal resolves native layout without text style warnings', () => {
+    const originalNodeEnv = process.env.NODE_ENV
+    process.env.NODE_ENV = 'development'
+    const warning = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    try {
+      const result = getSplitStylesFor(
+        DialogPortalFrame.staticConfig.defaultProps,
+        DialogPortalFrame,
+        { resolveValues: 'value' }
+      )
+
+      expect(result.style).toMatchObject({ position: 'absolute', alignItems: 'center' })
+      expect(result.style?.color).toBeUndefined()
+      expect(warning).not.toHaveBeenCalled()
+    } finally {
+      warning.mockRestore()
+      process.env.NODE_ENV = originalNodeEnv
+    }
+  })
+
   test('Input color styles lower to native TextInput props', () => {
     const InputFrame = styled(Text, {}, { isInput: true })
     const result = getSplitStylesFor(

@@ -1,10 +1,23 @@
 import { TamaguiProvider, View, createTamagui, styled } from '@tamagui/core'
+import { DialogPortalFrame } from '@tamagui/dialog'
 import { render } from '@testing-library/react'
 import { describe, expect, test } from 'vitest'
 
 import { getDefaultTamaguiConfig } from '../config-default'
 
 const config = createTamagui(getDefaultTamaguiConfig('web'))
+
+test('a dialog portal keeps the inherited web text color', () => {
+  const tree = render(
+    <TamaguiProvider config={config} defaultTheme="light">
+      <DialogPortalFrame data-testid="portal-frame" />
+    </TamaguiProvider>
+  )
+
+  const frame = tree.getByTestId('portal-frame')
+  expect(frame.tagName).toBe('DIALOG')
+  expect(getComputedStyle(frame).color).toBe('inherit')
+})
 
 test('styled displayName sets React identity while name remains a host prop', () => {
   const NamedButton = styled(View, {
