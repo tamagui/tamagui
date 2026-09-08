@@ -178,18 +178,22 @@ const Icon = (props: {
   children: React.ReactNode
   scaleIcon?: number
   size?: SizeTokens
+  style?: GetProps<typeof SizableText>['style']
 }) => {
-  const { children, scaleIcon = 1, size } = props
+  const { children, scaleIcon = 1, size, style } = props
   const styledContext = context.useStyledContext()
   if (!styledContext) {
     throw new Error('Button.Icon must be used within a Button')
   }
 
   const sizeToken = size ?? styledContext.size
+  // a styled() wrapper around Button.Icon resolves its own variants and hands
+  // the result down as a style object, so prefer that over the Button context
+  const styleColor =
+    style && typeof style === 'object' && !Array.isArray(style) ? style.color : undefined
+  const colorProp = styleColor ?? styledContext.color
   const iconColorProp =
-    styledContext.color === 'unset' || typeof styledContext.color === 'number'
-      ? undefined
-      : styledContext.color
+    colorProp === 'unset' || typeof colorProp === 'number' ? undefined : colorProp
   const iconColor = useCurrentColor(iconColorProp)
 
   const iconSize =
