@@ -1691,20 +1691,49 @@ function recordStyleTokenProvenance(
 function expandOwnVariantsInSubStyle(styleState: GetStyleState, styleIn: any) {
   const { variants } = styleState.staticConfig
   if (!variants || !styleIn || typeof styleIn !== 'object') return styleIn
-  const out: Record<string, any> = {}
-  let didExpand = false
-  for (const key in styleIn) {
-    const val = styleIn[key]
-    if (!(key in variants)) {
-      out[key] = val
-      continue
+
+  let out: Record<string, any> | undefined
+  const parentProps = styleState.props
+  // spread and functional variants read sibling keys off extras.props, and getSubStyle
+  // scopes those to the sub-object, so resolve them against the same view of the props
+  styleState.props = { ...parentProps, ...styleIn }
+
+  try {
+    for (const key in styleIn) {
+      const val = styleIn[key]
+
+      if (!(key in variants)) {
+        // media inside pseudo (and the reverse) nests arbitrarily, so keep walking
+        if (val && typeof val === 'object') {
+          if (key in validPseudoKeys || getMediaKey(key)) {
+            const nested = expandOwnVariantsInSubStyle(styleState, val)
+            if (nested !== val) {
+              ;(out ||= { ...styleIn })[key] = nested
+            }
+          }
+        }
+        continue
+      }
+
+      let expanded: Record<string, any> | undefined
+      propMapper(key, val, styleState, false, (expandedKey, expandedVal) => {
+        ;(expanded ||= {})[expandedKey] = expandedVal
+      })
+
+      // with no matching value of ours propMapper hands the key back, and emits nothing
+      // at all when the value resolves to nullish. both mean the value belongs to the
+      // wrapped component, so leave it exactly as the caller wrote it for it to resolve
+      if (!expanded || key in expanded) continue
+
+      const next = (out ||= { ...styleIn })
+      delete next[key]
+      Object.assign(next, expanded)
     }
-    propMapper(key, val, styleState, false, (expandedKey, expandedVal) => {
-      didExpand ||= expandedKey !== key
-      out[expandedKey] = expandedVal
-    })
+  } finally {
+    styleState.props = parentProps
   }
-  return didExpand ? out : styleIn
+
+  return out || styleIn
 }
 
 export const getSubStyle = (
