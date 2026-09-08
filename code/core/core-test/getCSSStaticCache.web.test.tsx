@@ -59,8 +59,8 @@ const referenceGetCSS = (
 ._hsb-y::-webkit-scrollbar:vertical { display: none !important; }
 ._hsb-x { scrollbar-width: none !important; }
 ._hsb-y { scrollbar-width: none !important; }`
-  const pointerEventsCSS = `:root ._pe-boxonly>* {pointer-events:none;}
-:root ._pe-boxnone>* {pointer-events:auto;}`
+  const pointerEventsCSS = `:where(._pe-boxonly)>* {pointer-events:none;}
+:where(._pe-boxnone)>* {pointer-events:auto;}`
 
   const designSystem = `._ovs-contain {overscroll-behavior:contain;}
 .t_unmounted .is_View, .t_unmounted .is_Text { transition: none !important; }

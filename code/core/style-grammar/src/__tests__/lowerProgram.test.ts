@@ -136,7 +136,7 @@ describe('React Native pointer-events modes', () => {
     const cls = lowered.className
     expect(lowered.rules).toEqual([
       `.${cls}{pointer-events:none}`,
-      `.${cls}>*{pointer-events:auto}`,
+      `:where(.${cls})>*{pointer-events:auto}`,
     ])
   })
 
@@ -145,11 +145,11 @@ describe('React Native pointer-events modes', () => {
     const cls = lowered.className
     expect(lowered.rules).toEqual([
       `.${cls}{pointer-events:none}`,
-      `.${cls}>*{pointer-events:auto}`,
+      `:where(.${cls})>*{pointer-events:auto}`,
       `@media (hover: hover) {.${cls}:hover{pointer-events:auto}}`,
-      `@media (hover: hover) {.${cls}:hover>*{pointer-events:none}}`,
+      `@media (hover: hover) {:where(.${cls}:hover)>*{pointer-events:none}}`,
       `.${cls}:active{pointer-events:none}`,
-      `.${cls}:active>*{pointer-events:none}`,
+      `:where(.${cls}:active)>*{pointer-events:none}`,
     ])
   })
 })

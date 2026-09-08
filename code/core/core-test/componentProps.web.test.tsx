@@ -19,6 +19,30 @@ test('a dialog portal keeps the inherited web text color', () => {
   expect(getComputedStyle(frame).color).toBe('inherit')
 })
 
+test('nested box-none views remain pointer-transparent', () => {
+  const tree = render(
+    <TamaguiProvider config={config} defaultTheme="light">
+      <View pointerEvents="box-none">
+        <View data-testid="nested-box-none" pointerEvents="box-none">
+          <View data-testid="interactive-child" pointerEvents="auto" />
+        </View>
+        <View data-testid="disabled-child" pointerEvents="none" />
+        <View data-testid="nested-box-only" pointerEvents="box-only">
+          <View data-testid="box-only-child" />
+        </View>
+      </View>
+    </TamaguiProvider>
+  )
+
+  expect(getComputedStyle(tree.getByTestId('nested-box-none')).pointerEvents).toBe('none')
+  expect(getComputedStyle(tree.getByTestId('interactive-child')).pointerEvents).toBe(
+    'auto'
+  )
+  expect(getComputedStyle(tree.getByTestId('disabled-child')).pointerEvents).toBe('none')
+  expect(getComputedStyle(tree.getByTestId('nested-box-only')).pointerEvents).toBe('auto')
+  expect(getComputedStyle(tree.getByTestId('box-only-child')).pointerEvents).toBe('none')
+})
+
 test('styled displayName sets React identity while name remains a host prop', () => {
   const NamedButton = styled(View, {
     displayName: 'NamedButton',

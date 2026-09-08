@@ -212,7 +212,10 @@ export function lowerProgram(
         wrapAtRules(`${selector}{${declaration}:${pointerEvents.subject}}`, wrappers)
       )
       rules.push(
-        wrapAtRules(`${selector}>*{${declaration}:${pointerEvents.children}}`, wrappers)
+        wrapAtRules(
+          `:where(${selector})>*{${declaration}:${pointerEvents.children}}`,
+          wrappers
+        )
       )
       return
     }

@@ -368,7 +368,7 @@ function createAtomicRules(
         const children = value === 'none' || value === 'box-only' ? 'none' : 'auto'
         rules.push(
           `${selector}{pointer-events:${subject}}`,
-          `${selector}>*{pointer-events:${children}}`
+          `:where(${selector})>*{pointer-events:${children}}`
         )
         break
       }
