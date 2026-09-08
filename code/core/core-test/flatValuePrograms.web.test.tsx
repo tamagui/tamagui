@@ -500,6 +500,29 @@ test('a configured name wins over the same-spelled CSS literal', () => {
   )
 })
 
+test('composite shadows resolve embedded color tokens without category warnings', () => {
+  const base = config.getDefaultTamaguiConfig()
+  createTamagui({
+    ...base,
+    tokens: { ...base.tokens, boxShadow: { small: '0 1px 2px black' } },
+  })
+  const previousNodeEnv = process.env.NODE_ENV
+  process.env.NODE_ENV = 'development'
+  const warning = vi.spyOn(console, 'warn').mockImplementation(() => {})
+  try {
+    const result = split({ boxShadow: '0 8px 24px white' })
+    const className = result.classNames.boxShadow
+    expect(rulesFor(result, className)).toEqual([
+      `.${className}{box-shadow:0 8px 24px var(--white)}`,
+    ])
+    expect(warning).not.toHaveBeenCalled()
+  } finally {
+    warning.mockRestore()
+    process.env.NODE_ENV = previousNodeEnv
+    createTamagui(base)
+  }
+})
+
 test('an overloaded-family mismatch warns without blocking theme resolution', () => {
   // `width="black"`: 'black' lives in the color category, width binds size,
   // and the active theme also defines black. development diagnoses the authored

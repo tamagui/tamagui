@@ -2606,7 +2606,14 @@ function configuredValue(
     const category =
       grammar.tokenCategory(property) ||
       grammar.tokenCategory(state.conf.shorthands[property] || property)
-    if (category && category !== 'color' && state.conf.tokensParsed.color?.[name]) {
+    // shadow recipes contain color tokens alongside their lengths.
+    if (
+      category &&
+      category !== 'color' &&
+      category !== 'boxShadow' &&
+      category !== 'textShadow' &&
+      state.conf.tokensParsed.color?.[name]
+    ) {
       warnOnce(`"${name}" contributes to "color", not "${property}"`)
     }
 
