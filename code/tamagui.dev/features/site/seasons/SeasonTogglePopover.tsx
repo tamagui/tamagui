@@ -16,7 +16,7 @@ const seasonColors = {
   valentine: '#ff3333', // red
   halloween: '#ECD20A', // yellow
   stpatricks: '#22c55e', // green
-}
+} as const
 
 export const seasons = {
   tamagui: '🐤',

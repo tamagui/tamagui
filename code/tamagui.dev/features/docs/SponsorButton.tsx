@@ -19,7 +19,7 @@ export const SponsorButton = (props: { tiny?: boolean }) => {
       boxShadow="0 1px 3px rgba(0, 0, 0, 0.04)"
       borderWidth={props.tiny ? 0 : 1}
       borderColor="border-color"
-      size={props.tiny ? 'small' : 'medium'}
+      size={props.tiny ? 'sm' : 'md'}
       rounded="5"
       circular={props.tiny ? true : false}
       variant={props.tiny ? 'quiet' : undefined}

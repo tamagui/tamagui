@@ -34,9 +34,8 @@ export const AlertBox = styled(View, {
     },
   } as const,
 }).resolve((props, env) => ({
-  backgroundColor:
-    props.tone === 'critical' ? (env.theme.red10?.val ?? 'red') : undefined,
-  borderColor: props.tone === 'critical' ? (env.theme.red8?.val ?? 'red') : undefined,
+  backgroundColor: props.tone === 'critical' ? env.theme.red10 : undefined,
+  borderColor: props.tone === 'critical' ? env.theme.red8 : undefined,
   opacity: props.disabled ? 0.5 : undefined,
 }))
 
@@ -88,8 +87,7 @@ const ResolverParent = styled(View, {
     tone: styled.dynamic<'neutral' | 'critical'>(),
   },
 }).resolve((props, env) => ({
-  backgroundColor:
-    props.tone === 'critical' ? (env.theme.red10?.val ?? 'red') : undefined,
+  backgroundColor: props.tone === 'critical' ? env.theme.red10 : undefined,
   width: 100,
 }))
 
@@ -117,8 +115,8 @@ export function CardUsage({ active }: { active?: boolean }) {
 
 // § Style pieces: piece-typed component props
 const activeCheckboxStyle = style({
-  backgroundColor: 'blue-500',
-  borderColor: 'blue-600',
+  backgroundColor: 'background-press',
+  borderColor: 'border-color',
 })
 
 const scrollContainer = style({

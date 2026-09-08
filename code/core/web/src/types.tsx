@@ -2059,6 +2059,14 @@ export type LineHeightKeys = 'lineHeight'
 export type ZIndexKeys = 'zIndex'
 export type OpacityKeys = 'opacity'
 
+type FontStyleValueFallback = GetThemeValueFallbackFor<
+  AllowedValueSettingSize,
+  never,
+  never,
+  never,
+  WebStyleValueUniversal | `${number}%`
+>
+
 export type ThemeValueGet<K extends string | number | symbol> = K extends 'theme'
   ? ThemeTokens
   : K extends SizeKeys
@@ -2066,7 +2074,7 @@ export type ThemeValueGet<K extends string | number | symbol> = K extends 'theme
     : K extends FontKeys
       ? FontTokens | GenericFontFamily
       : K extends FontSizeKeys
-        ? FontSizeTokens
+        ? FontSizeTokens | FontStyleValueFallback
         : K extends `${`border${string | ''}Radius`}`
           ? RadiusTokens
           : K extends SpaceKeys
@@ -2078,7 +2086,7 @@ export type ThemeValueGet<K extends string | number | symbol> = K extends 'theme
               : K extends ZIndexKeys
                 ? ZIndexTokens
                 : K extends LineHeightKeys
-                  ? FontLineHeightTokens
+                  ? FontLineHeightTokens | FontStyleValueFallback
                   : K extends FontWeightKeys
                     ? FontWeightTokens
                     : K extends FontLetterSpacingKeys

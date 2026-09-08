@@ -1188,10 +1188,11 @@ export type FontLetterSpacingKeys = 'letterSpacing';
 export type LineHeightKeys = 'lineHeight';
 export type ZIndexKeys = 'zIndex';
 export type OpacityKeys = 'opacity';
-export type ThemeValueGet<K extends string | number | symbol> = K extends 'theme' ? ThemeTokens : K extends SizeKeys ? SizeTokens : K extends FontKeys ? FontTokens | GenericFontFamily : K extends FontSizeKeys ? FontSizeTokens : K extends `${`border${string | ''}Radius`}` ? RadiusTokens : K extends SpaceKeys ? K extends 'shadowOffset' ? {
+type FontStyleValueFallback = GetThemeValueFallbackFor<AllowedValueSettingSize, never, never, never, WebStyleValueUniversal | `${number}%`>;
+export type ThemeValueGet<K extends string | number | symbol> = K extends 'theme' ? ThemeTokens : K extends SizeKeys ? SizeTokens : K extends FontKeys ? FontTokens | GenericFontFamily : K extends FontSizeKeys ? FontSizeTokens | FontStyleValueFallback : K extends `${`border${string | ''}Radius`}` ? RadiusTokens : K extends SpaceKeys ? K extends 'shadowOffset' ? {
     width: SpaceTokens;
     height: SpaceTokens;
-} : SpaceTokens : K extends ColorKeys ? ColorTokens | ThemeValueFallbackColor : K extends ZIndexKeys ? ZIndexTokens : K extends LineHeightKeys ? FontLineHeightTokens : K extends FontWeightKeys ? FontWeightTokens : K extends FontLetterSpacingKeys ? FontLetterSpacingTokens : K extends OpacityKeys ? ThemeValueFallback : never;
+} : SpaceTokens : K extends ColorKeys ? ColorTokens | ThemeValueFallbackColor : K extends ZIndexKeys ? ZIndexTokens : K extends LineHeightKeys ? FontLineHeightTokens | FontStyleValueFallback : K extends FontWeightKeys ? FontWeightTokens : K extends FontLetterSpacingKeys ? FontLetterSpacingTokens : K extends OpacityKeys ? ThemeValueFallback : never;
 export type GetThemeValueForKey<K extends string | symbol | number> = ThemeValueGet<K> | ThemeValueFallback;
 export type SafeAreaValueKeys = 'padding' | 'paddingTop' | 'paddingBottom' | 'paddingLeft' | 'paddingRight' | 'paddingHorizontal' | 'paddingVertical' | 'paddingStart' | 'paddingEnd' | 'paddingBlock' | 'paddingInline' | 'paddingBlockStart' | 'paddingBlockEnd' | 'paddingInlineStart' | 'paddingInlineEnd' | 'margin' | 'marginTop' | 'marginBottom' | 'marginLeft' | 'marginRight' | 'marginHorizontal' | 'marginVertical' | 'marginStart' | 'marginEnd' | 'marginBlock' | 'marginInline' | 'marginBlockStart' | 'marginBlockEnd' | 'marginInlineStart' | 'marginInlineEnd' | 'inset' | 'top' | 'bottom' | 'left' | 'right' | 'start' | 'end';
 /**

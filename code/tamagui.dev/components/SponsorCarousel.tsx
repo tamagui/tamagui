@@ -1,7 +1,14 @@
+import type { YStackProps } from 'tamagui'
 import { H2, H5, Paragraph, styled, XStack, YStack, Image } from 'tamagui'
 import { Link } from '~/components/Link'
 
-const sponsors = [
+const sponsors: {
+  id: string
+  name: string
+  link: string
+  image?: string
+  gradient?: YStackProps['background']
+}[] = [
   {
     id: 'uniswap',
     name: 'Uniswap',

@@ -99,3 +99,19 @@ static web/native and Vite suites validate the assembled extraction behavior.
   command includes declaration edges. This advisory remains failing; no check
   exclusions or type architecture changes were added to silence it. Runtime
   initialization is independently exercised by the three starter integrations.
+
+## CI repair before publication
+
+The first push passed the starter size/browser and SSR jobs, but CI's full
+`bun run typecheck` found site errors that the requested kitchen-sink build did
+not cover. **RAN** the same full command locally and reproduced them.
+
+- Restore percentage font sizes/line heights and inherited font values for web
+  strictness settings without opening arbitrary single-token strings.
+- Preserve the literal types of site gradients, seasonal colors and animation
+  positions; migrate the sponsor button to `sm`/`md`.
+- Keep theme Variables intact in the compiled docs fixture and use semantic
+  colors supported by both the site config and stock v6.
+- **TESTED** web types (92), site suite (62), language service (22), ESLint
+  plugin (7), plus a stock-v6 type probe accepting the valid font forms and
+  requiring misspelled font/color values to remain type errors.
