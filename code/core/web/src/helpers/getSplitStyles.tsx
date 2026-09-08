@@ -578,7 +578,14 @@ export const getSplitStyles: StyleSplitter = (
       //   }
       // }
 
-      passDownProp(viewProps, keyInit, valInit, isMediaOrPseudo)
+      passDownProp(
+        viewProps,
+        keyInit,
+        isHOC && isMediaOrPseudo
+          ? expandOwnVariantsInSubStyle(styleState, valInit)
+          : valInit,
+        isMediaOrPseudo
+      )
 
       if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
         console.groupEnd()
@@ -1675,6 +1682,58 @@ function recordStyleTokenProvenance(
   } else if (styleState.tokenProvenance && key in styleState.tokenProvenance) {
     delete styleState.tokenProvenance[key]
   }
+}
+
+// styled() on top of a styleable() HOC does not merge our variants into the child
+// (see the isNonStyledHOC branch in styled.tsx), so a variant nested inside a pseudo
+// or media object would never resolve down there. Expand our own variants to plain
+// style keys before passing the object down. Fixes #3047
+function expandOwnVariantsInSubStyle(styleState: GetStyleState, styleIn: any) {
+  const { variants } = styleState.staticConfig
+  if (!variants || !styleIn || typeof styleIn !== 'object') return styleIn
+
+  let out: Record<string, any> | undefined
+  const parentProps = styleState.props
+  // spread and functional variants read sibling keys off extras.props, and getSubStyle
+  // scopes those to the sub-object, so resolve them against the same view of the props
+  styleState.props = { ...parentProps, ...styleIn }
+
+  try {
+    for (const key in styleIn) {
+      const val = styleIn[key]
+
+      if (!(key in variants)) {
+        // media inside pseudo (and the reverse) nests arbitrarily, so keep walking
+        if (val && typeof val === 'object') {
+          if (key in validPseudoKeys || getMediaKey(key)) {
+            const nested = expandOwnVariantsInSubStyle(styleState, val)
+            if (nested !== val) {
+              ;(out ||= { ...styleIn })[key] = nested
+            }
+          }
+        }
+        continue
+      }
+
+      let expanded: Record<string, any> | undefined
+      propMapper(key, val, styleState, false, (expandedKey, expandedVal) => {
+        ;(expanded ||= {})[expandedKey] = expandedVal
+      })
+
+      // with no matching value of ours propMapper hands the key back, and emits nothing
+      // at all when the value resolves to nullish. both mean the value belongs to the
+      // wrapped component, so leave it exactly as the caller wrote it for it to resolve
+      if (!expanded || key in expanded) continue
+
+      const next = (out ||= { ...styleIn })
+      delete next[key]
+      Object.assign(next, expanded)
+    }
+  } finally {
+    styleState.props = parentProps
+  }
+
+  return out || styleIn
 }
 
 export const getSubStyle = (
