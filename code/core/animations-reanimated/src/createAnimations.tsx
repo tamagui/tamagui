@@ -147,17 +147,34 @@ type AnimationCallback = (finished?: boolean) => void
 
 type MapperState = {
   emitted: Record<string, boolean>
+  // static keys a style emitter has written through the mapper. nothing else
+  // may emit statics: reanimated snapshots this worklet's first-render output
+  // per style handle and re-applies that snapshot under every later style
+  // prop, so a static emitted on mount (a disabled mount's pointerEvents:
+  // 'none', its opacity) would outlive the render that removed it. render
+  // statics reach the view through the staticStyles element instead.
+  ownedStatics: Record<string, boolean>
 }
 
 const updateMapperState = isWeb
-  ? (state: SharedValue<MapperState>, emitted: Record<string, boolean>) => {
+  ? (
+      state: SharedValue<MapperState>,
+      emitted: Record<string, boolean>,
+      ownedStatics: Record<string, boolean>
+    ) => {
       state.value.emitted = emitted
+      state.value.ownedStatics = ownedStatics
     }
-  : (state: SharedValue<MapperState>, emitted: Record<string, boolean>) => {
+  : (
+      state: SharedValue<MapperState>,
+      emitted: Record<string, boolean>,
+      ownedStatics: Record<string, boolean>
+    ) => {
       'worklet'
       if (!globalThis._WORKLET) return
       state.modify((current) => {
         current.emitted = emitted
+        current.ownedStatics = ownedStatics
         return current
       }, false)
     }
@@ -1613,6 +1630,7 @@ export function createAnimations<A extends AnimationsConfig>(
       // the mapper doesn't react to its own history write.
       const mapperStateRef = useSharedValue<MapperState>({
         emitted: {},
+        ownedStatics: {},
       })
       // Create animated style
       const animatedStyle = useAnimatedStyle(
@@ -1624,12 +1642,14 @@ export function createAnimations<A extends AnimationsConfig>(
           if (config.disableAnimation || config.isHydrating) {
             // the empty return wipes reanimated's per-key history, so ours
             // resets with it
-            updateMapperState(mapperStateRef, {})
+            updateMapperState(mapperStateRef, {}, {})
             return {}
           }
 
           const previouslyEmitted = mapperState.emitted
           const emitted: Record<string, boolean> = {}
+          const previouslyOwned = mapperState.ownedStatics
+          const ownedStatics: Record<string, boolean> = {}
 
           const result: Record<string, any> = {}
 
@@ -1638,11 +1658,11 @@ export function createAnimations<A extends AnimationsConfig>(
           const snapshot = emitterSnapshot ?? renderSnapshotRef.value
 
           // Use emitter values if available, otherwise use the committed render snapshot.
-          // statics must fall back to the render's staticStyles (not {}): once an
-          // emitter snapshot has applied static keys, reanimated never unsets
-          // them, so after the latch drops a stale emitted value (e.g. a border
-          // color that could not animate) would keep painting over the fresh
-          // style prop forever
+          // statics fall back to the render's staticStyles for keys the mapper
+          // owns (see MapperState): once an emitter snapshot has applied a
+          // static key, reanimated never unsets it, so after the latch drops a
+          // stale emitted value (e.g. a border color that could not animate)
+          // would keep painting over the fresh style prop forever
           const animatedValues = snapshot.animated
           const staticValues = snapshot.statics
 
@@ -1654,8 +1674,11 @@ export function createAnimations<A extends AnimationsConfig>(
           const currentlyCompletingUpdate = isCompletingUpdateRef.value
           const currentUpdateCycleId = updateCycleIdShared.value
 
-          // Include static values from emitter (for hover/press style changes)
+          // Include static values from emitter (for hover/press style changes).
+          // a render snapshot only refreshes keys an emitter already wrote.
           for (const key in staticValues) {
+            if (!emitterSnapshot && !previouslyOwned[key]) continue
+            ownedStatics[key] = true
             result[key] = staticValues[key]
           }
           for (const key in snapshot.removedKeys) {
@@ -1744,7 +1767,7 @@ export function createAnimations<A extends AnimationsConfig>(
             }
           }
 
-          updateMapperState(mapperStateRef, emitted)
+          updateMapperState(mapperStateRef, emitted, ownedStatics)
 
           return result
         },
