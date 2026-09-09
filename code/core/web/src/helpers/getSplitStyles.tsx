@@ -690,7 +690,32 @@ function contributeProp(
         for (const [slot, entries] of hocSlots) {
           for (const entry of entries) {
             if (!ownsSourceLayer(styleState, entry[0], !!entry[2])) continue
-            writeCapturedStyleRecord(slots, slot, entry, pass[passSourceLayer])
+            if (
+              !isHOC &&
+              styleState.styleProps.isAnimated &&
+              !styleState.flatShouldDoClasses &&
+              !(entry[0] in nonAnimatableStyleProps)
+            ) {
+              // the host owns lifecycle and driver state; HOC classes cannot
+              // animate properties on behalf of an inline animation driver.
+              const condition = entry[3] ? conditionFromKey(styleState, entry[3]) : null
+              const property =
+                entry[0] === '--t-x'
+                  ? 'x'
+                  : entry[0] === '--t-y'
+                    ? 'y'
+                    : entry[0] === '--t-scale-x'
+                      ? 'scaleX'
+                      : entry[0] === '--t-scale-y'
+                        ? 'scaleY'
+                        : entry[0]
+              if (condition && condition[conditionValue] & 4) {
+                styleState.flatHasEnterStyle = true
+              }
+              emitValue(styleState, property, entry[1], condition, entry[6], false)
+            } else {
+              writeCapturedStyleRecord(slots, slot, entry, pass[passSourceLayer])
+            }
           }
         }
       }

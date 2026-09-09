@@ -1189,6 +1189,16 @@ export function createAnimations<A extends AnimationsConfig>(
       // see the styles memo below
       const carryRef = useRef<Record<string, unknown>>({})
 
+      // commits during exit must keep the predecessor from before exit began,
+      // even if they publish again before the UI mapper consumes the first one.
+      const exitSeedRef = useRef<Record<string, unknown> | null>(null)
+      const paintedPredecessor = isExiting
+        ? (exitSeedRef.current ?? lastPaintedRef.current)
+        : lastPaintedRef.current
+      useIsomorphicLayoutEffect(() => {
+        exitSeedRef.current = isExiting ? paintedPredecessor : null
+      }, [isExiting, paintedPredecessor])
+
       // Separate styles into animated and static
       const { animatedStyles, staticStyles, nextCarry } = useMemo(() => {
         const { animated, statics } = splitAnimationStyles(
@@ -1214,13 +1224,39 @@ export function createAnimations<A extends AnimationsConfig>(
         }
         for (const key in animated) {
           if (!(key in nextCarry)) {
-            nextCarry[key] = cloneAnimationValue(animated[key])
+            const target = animated[key]
+            if (isExiting && key === 'transform') {
+              nextCarry[key] = getAnimatedTransforms(target).map((transform) => {
+                const initial = cloneStyleRecord(transform)
+                for (const part in initial) {
+                  const value = initial[part]
+                  if (typeof value === 'number' || typeof value === 'string') {
+                    initial[part] =
+                      paintedPredecessor[`transform:${part}`] ??
+                      getImplicitDefault(part, value)
+                  }
+                }
+                return initial
+              })
+            } else {
+              nextCarry[key] = cloneAnimationValue(
+                isExiting && (typeof target === 'number' || typeof target === 'string')
+                  ? (paintedPredecessor[key] ?? getImplicitDefault(key, target))
+                  : target
+              )
+            }
           }
           statics[key] = nextCarry[key]
         }
 
         return { animatedStyles: animated, staticStyles: statics, nextCarry }
-      }, [disableAnimation, style, isDark])
+      }, [
+        disableAnimation,
+        style,
+        isDark,
+        isExiting,
+        isExiting ? paintedPredecessor : null,
+      ])
 
       const renderSnapshot = useMemo(
         () =>
@@ -1229,9 +1265,9 @@ export function createAnimations<A extends AnimationsConfig>(
             staticStyles,
             getAnimatedTransforms(animatedStyles.transform),
             committedRenderKeysRef.current,
-            lastPaintedRef.current
+            paintedPredecessor
           ),
-        [animatedStyles, staticStyles]
+        [animatedStyles, staticStyles, isExiting ? paintedPredecessor : null]
       )
       const renderSnapshotRef = useSharedValue<AnimationSnapshot>({
         animated: {},
