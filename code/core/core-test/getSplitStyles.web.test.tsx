@@ -342,6 +342,25 @@ describe('getSplitStyles', () => {
     expect(nestedThemeStyles.style?.backgroundColor).toBe('darkblue')
   })
 
+  test(`a bare numeric lineHeight string stays unitless on the inline path`, () => {
+    // css reads "0.65" as a multiplier while a number normalizes to px, so the
+    // inline path (compiled css output, animated styles) must keep the string
+    // exactly like the class path does
+    const inline = simplifiedGetSplitStyles(
+      Text,
+      { style: { lineHeight: '0.65' } },
+      { noClass: true }
+    )
+    expect(inline.style?.lineHeight).toBe('0.65')
+    expect(
+      simplifiedGetSplitStyles(Text, { lineHeight: '12px' }, { noClass: true }).style
+        ?.lineHeight
+    ).toBe('12px')
+    expect(
+      getStyleValue(simplifiedGetSplitStyles(Text, { lineHeight: '0.65' }), 'lineHeight')
+    ).toBe('0.65')
+  })
+
   test(`a dark clause de-opts to inline style with a noClass animation driver`, () => {
     // when using an inline animation driver (noClass: true), dark should
     // de-opt to inline styles rather than CSS classes, so the animation driver

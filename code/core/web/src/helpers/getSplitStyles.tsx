@@ -3038,6 +3038,13 @@ function resolveValue(state: GetStyleState, property: string, raw: any) {
     typeof value === 'string' &&
     value !== ''
   ) {
+    // a bare numeric lineHeight string is a unitless css multiplier. it is the
+    // one unitful property where css accepts a bare number, and mergeStyle turns
+    // a number into px, so keep the string as the class path does
+    if (process.env.TAMAGUI_TARGET === 'web' && property === 'lineHeight') {
+      const unitValue = numericUnitValue(value, 'px', 'dp')
+      return Number.isFinite(unitValue) ? unitValue : value
+    }
     value = resolveNumericValue(value)
   }
   return value
