@@ -70,10 +70,10 @@ function PresenceScenario({
   const transformProps =
     transformCase === 'family'
       ? {
-          x: '0px exit:40px',
-          y: '0px exit:20px',
-          scale: '1 exit:0.8',
-          rotate: '0deg exit:45deg',
+          x: '0px exit:40px' as const,
+          y: '0px exit:20px' as const,
+          scale: '1 exit:0.8' as const,
+          rotate: '0deg exit:45deg' as const,
         }
       : axisValues
         ? {
@@ -160,8 +160,16 @@ function PresenceScenario({
         padding="4"
         transition="1000ms"
         opacity={explicitMounted ? '1 enter:0 exit:0' : 'enter:0 exit:0'}
-        y={explicitMounted ? '0px enter:-20px exit:20px' : 'enter:-20px exit:20px'}
-        scale={explicitMounted ? '1 enter:0.96 exit:0.96' : 'enter:0.96 exit:0.96'}
+        y={
+          explicitMounted
+            ? ('0px enter:-20px exit:20px' as const)
+            : ('enter:-20px exit:20px' as const)
+        }
+        scale={
+          explicitMounted
+            ? ('1 enter:0.96 exit:0.96' as const)
+            : ('enter:0.96 exit:0.96' as const)
+        }
         {...transformProps}
         onTransition={handleTransition}
       >

@@ -697,7 +697,6 @@ function contributeProp(
             ) {
               // the host owns lifecycle and driver state, including CSS lifecycle
               // metadata and selected transition clauses.
-              const condition = entry[3] ? conditionFromKey(styleState, entry[3]) : null
               const property =
                 entry[0] === '--t-x'
                   ? 'x'
@@ -708,10 +707,16 @@ function contributeProp(
                       : entry[0] === '--t-scale-y'
                         ? 'scaleY'
                         : entry[0]
-              if (condition && condition[conditionValue] & 4) {
-                styleState.flatHasEnterStyle = true
-              }
-              emitValue(styleState, property, entry[1], condition, entry[6], false)
+              entry[3]
+                ? contributeValue(
+                    styleState,
+                    property,
+                    entry[1],
+                    entry[6],
+                    false,
+                    entry[3]
+                  )
+                : emitValue(styleState, property, entry[1], null, entry[6], false)
             } else {
               writeCapturedStyleRecord(slots, slot, entry, pass[passSourceLayer])
             }
@@ -2881,9 +2886,11 @@ function emitProperty(
     return
   }
 
-  // drivers need the selected transition even when destination styles use classes.
+  // a lifecycle transition must outrank a base transition class while the
+  // enter or exit clause is active. pseudo transitions stay class-selected.
   if (
     property === 'transition' &&
+    condition & 12 &&
     !state.staticConfig.isHOC &&
     state.styleProps.isAnimated
   ) {
