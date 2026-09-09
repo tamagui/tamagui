@@ -757,15 +757,44 @@ function contributeProp(
         ? styleOriginalValues.get(style)
         : undefined
       for (const key in style) {
-        if (style[key] == null) continue
+        const value = style[key]
+        if (value == null) continue
+        // the style prop is the inline style attribute, as in react: a plain
+        // value never becomes an atomic class, so element.style reads it back
+        // and it can change every frame without inserting a rule. a value that
+        // carries conditions can only exist as css, so those still compile
+        let inline = !styleState.styleProps.stylePieceEntries
         if (process.env.TAMAGUI_TARGET === 'web') {
           if (key === 'containerName') {
-            pass[passContainerName] = style[key]
+            pass[passContainerName] = value
+            inline = false
           } else if (key === 'containerType') {
-            pass[passContainerType] = style[key]
+            pass[passContainerType] = value
+            inline = false
           }
         }
-        contributeValue(styleState, key, style[key], styleOriginals?.[key])
+        if (inline) {
+          if (typeof value === 'string') {
+            const [segments] = getConfigRevisionState(conf).parseFlatValue(value)
+            for (let index = 4; index < segments.length; index += 5) {
+              if (!(segments[index] & 1)) {
+                inline = false
+                break
+              }
+            }
+          } else if (
+            value &&
+            typeof value === 'object' &&
+            !Array.isArray(value) &&
+            !isVariable(value) &&
+            classifyConditionalObject(value, styleState) !== 0
+          ) {
+            inline = false
+          }
+        }
+        ;(styleState as DirectState).flatInlineStyleProp = inline
+        contributeValue(styleState, key, value, styleOriginals?.[key])
+        ;(styleState as DirectState).flatInlineStyleProp = false
       }
     }
     pass[passSourceLayer] = layerBeforeStyle
@@ -1926,6 +1955,16 @@ function writeCapturedStyleRecord(
       (entryFlags & (recordInline | recordCSS)) !==
       (flags & (recordInline | recordCSS))
     ) {
+      // a piece landing after a plain style value replaces its inline record
+      if (
+        sourceLayer === sourceLayerStyle &&
+        entry[7]! >> 5 === sourceLayerStyle &&
+        entry[0] === source[0] &&
+        !condition &&
+        !entry[2]
+      ) {
+        list.splice(index--, 1)
+      }
       continue
     }
     if (entry[0] !== source[0]) continue
@@ -2100,6 +2139,8 @@ type HOCClassNames = [
 ]
 
 type DirectState = GetStyleState & {
+  // set while a plain style prop value contributes, so its record stays inline
+  flatInlineStyleProp?: boolean
   flatValueScope?: ValueScopeCache
   flatConditions?: Map<string, Condition>
   flatConditionsClassed?: boolean
@@ -2224,6 +2265,8 @@ function writeStyleRecord(
   const identity = cursor ? cursor[conditionKey] : ''
   const direct = state as DirectState
   const slots = (direct.flatSlots ||= new Map())
+  const sourceLayer = direct.flatPass?.[passSourceLayer] || 0
+  if (direct.flatInlineStyleProp) flags |= recordInline
   const slot =
     process.env.TAMAGUI_TARGET === 'web' &&
     canGenerateCSS &&
@@ -2241,6 +2284,17 @@ function writeStyleRecord(
       (entryFlags & (recordInline | recordCSS)) !==
       (flags & (recordInline | recordCSS))
     ) {
+      // a style array is last-wins per property even across a piece (a class)
+      // and a plain value (inline), which would otherwise never meet
+      if (
+        sourceLayer === sourceLayerStyle &&
+        entryFlags >> 5 === sourceLayerStyle &&
+        entry[0] === property &&
+        !condition &&
+        !entry[2]
+      ) {
+        list.splice(index--, 1)
+      }
       continue
     }
     if (entry[0] !== property) continue
@@ -2263,7 +2317,7 @@ function writeStyleRecord(
     cursor ? cursor[conditionSelector] : '',
     cursor ? cursor[conditionWrappers] : undefined,
     original,
-    flags | (((state as DirectState).flatPass?.[passSourceLayer] || 0) << 5),
+    flags | (sourceLayer << 5),
   ])
 }
 
@@ -3756,6 +3810,7 @@ function contributeValue(
 
 function clearDirectStyle(state: GetStyleState, property: string) {
   const direct = state as DirectState
+  if (direct.flatDynamicColors) delete direct.flatDynamicColors[property]
   if (process.env.TAMAGUI_TARGET === 'web') property = webStyleProperty(property)
   const propertyKind = getConfigRevisionState(state.conf).propertyKind(property)
   const atomicKey = property.startsWith('transition')

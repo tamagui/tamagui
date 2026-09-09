@@ -686,15 +686,14 @@ test('web platform clauses sort after conditional clauses', () => {
   expect(rules[1].match(new RegExp(`\\.${className}`, 'g'))).toHaveLength(1)
 })
 
-test('the style prop replaces a direct property program', () => {
+test('a plain style prop value stays inline over a direct property program', () => {
   const result = split({
     backgroundColor: 'red hover:blue',
     style: { backgroundColor: 'green' },
   })
-  const className = result.classNames.backgroundColor
-  expect(className).toMatch(/^_b-/)
-  const rules = rulesFor(result, className)
-  expect(rules).toEqual([`.${className}{background-color:green}`])
+  // the inline value owns the property, so the program's classes are dropped
+  expect(result.classNames.backgroundColor).toBeUndefined()
+  expect(result.viewProps.style?.backgroundColor).toBe('green')
 })
 
 test('direct properties replace styled and variant property programs', () => {
@@ -777,28 +776,26 @@ test('Input colors route into their real CSS selectors', () => {
   expect(rulesFor(result, result.classNames.cursorColor)[0]).toContain('caret-color')
 })
 
-test('a multi-value shorthand expands per side when a program takes one side', () => {
-  // S9a: style={{padding:'10px 20px'}} + paddingTop program must keep the
-  // other three sides
+test('a multi-value style prop shorthand stays inline beside a longhand program', () => {
   const result = split({
     style: { padding: '10px 20px' },
     paddingTop: '4 hover:8',
   })
+  expect(result.viewProps.style?.padding).toBe('10px 20px')
   expect(result.classNames.paddingTop).toMatch(/^_p-/)
-  const rules = rulesFor(result, result.classNames.padding)
-  expect(rules.some((rule) => rule.includes('padding:10px 20px'))).toBe(true)
+  const rules = rulesFor(result, result.classNames.paddingTop)
   expect(rules.some((rule) => rule.includes('padding-top:var(--t-space-4)'))).toBe(true)
 })
 
-test('the style layer owns its expanded longhands', () => {
+test('a style prop shorthand stays inline over direct longhands', () => {
   const result = split({
     style: { padding: 10 },
     paddingLeft: 100,
     paddingTop: '4 hover:8',
   })
-  const left = result.classNames.paddingLeft
-  const rules = rulesFor(result, left)
-  expect(rules.at(-1)).toContain('padding:10px')
+  expect(result.viewProps.style?.padding).toBe(10)
+  expect(result.classNames.paddingLeft).toMatch(/^_p-/)
+  expect(JSON.stringify(result.rulesToInsert ?? {})).not.toContain('padding:10px')
 })
 
 test('container clauses lower to @container queries', () => {

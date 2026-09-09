@@ -45,16 +45,19 @@ describe('style() pieces on web', () => {
   })
 
   test('style arrays stay last-wins per property', () => {
+    // a plain value is inline and a piece is a class, so last-wins has to
+    // drop the earlier record instead of leaving both to fight in the browser
     const plainLast = simplifiedGetSplitStyles(View, {
       style: [card, { width: 20 }],
     })
-    expect(getStyleValue(plainLast, 'width')).toBe('20px')
-    expect(plainLast.classNames.width).not.toBe(card[stylePieceSymbol].byKey.width)
+    expect(getStyleValue(plainLast, 'width')).toBe(20)
+    expect(plainLast.classNames.width).toBeUndefined()
 
     const pieceLast = simplifiedGetSplitStyles(View, {
       style: [{ width: 20 }, card],
     })
     expect(pieceLast.classNames.width).toBe(card[stylePieceSymbol].byKey.width)
+    expect(pieceLast.style?.width).toBeUndefined()
   })
 
   test('resolves its authored object for inline JS style paths', () => {

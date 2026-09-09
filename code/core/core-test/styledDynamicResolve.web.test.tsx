@@ -169,7 +169,7 @@ describe('bare styled.dynamic props and component resolvers', () => {
       width: 50,
       style: { width: 77 },
     })
-    expect(getStyleValue(result, 'width')).toBe('77px')
+    expect(getStyleValue(result, 'width')).toBe(77)
   })
 
   test('resolve returns a new component and never mutates the original', () => {
