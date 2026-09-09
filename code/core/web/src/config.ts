@@ -37,7 +37,7 @@ const getConfigFromGlobalOrLocal = (): TamaguiInternalConfig | null => {
     // if it never runs, it's a true duplicate (warn)
     if (
       process.env.NODE_ENV === 'development' &&
-      !globalThis.__tamaguiEvaluationConfigs?.has(globalThis.__tamaguiConfig) &&
+      globalThis.__tamaguiEvaluationConfig !== globalThis.__tamaguiConfig &&
       !globalThis.__tamaguiHasWarnedGlobalFallback &&
       !globalThis.__tamaguiPendingCheck
     ) {
@@ -89,7 +89,7 @@ export const setConfig = (next: TamaguiInternalConfig) => {
   conf = next
   globalThis.__tamaguiConfig = next
   if (process.env.TAMAGUI_ENVIRONMENT === 'tamagui') {
-    ;(globalThis.__tamaguiEvaluationConfigs ||= new WeakSet()).add(next)
+    globalThis.__tamaguiEvaluationConfig = next
   }
 }
 

@@ -19,7 +19,6 @@ import {
   grammarMaxNonPlatformDepth,
   namedCssColors,
   removeTransformValue,
-  validatePayloadShape,
 } from '@tamagui/style-grammar/runtime'
 import { getConfig, getConfigMaybe, getFont, getSetting } from '../config'
 import { isDevTools } from '../constants/isDevTools'
@@ -2014,8 +2013,8 @@ function recordStyleTokenProvenance(
   let tokenName = typeof originalVal === 'string' ? originalVal : ''
   if (tokenName) {
     const slash = tokenName.lastIndexOf('/')
-    const opacity = slash === -1 ? NaN : Number(tokenName.slice(slash + 1))
-    if (Number.isInteger(opacity) && opacity >= 0 && opacity <= 100) {
+    const opacity = slash === -1 ? NaN : +tokenName.slice(slash + 1)
+    if (opacity % 1 === 0 && opacity >= 0 && opacity <= 100) {
       tokenName = tokenName.slice(0, slash)
     }
   }
@@ -2534,8 +2533,8 @@ function configuredValue(
   let opacity: number | undefined
   const slash = raw.lastIndexOf('/')
   if (slash > 0) {
-    const amount = Number(raw.slice(slash + 1))
-    if (Number.isInteger(amount) && amount >= 0 && amount <= 100) {
+    const amount = +raw.slice(slash + 1)
+    if (amount % 1 === 0 && amount >= 0 && amount <= 100) {
       name = raw.slice(0, slash)
       opacity = amount
     }
@@ -2666,10 +2665,8 @@ function configuredValue(
         let minDistance = Infinity
         const rawNum = Number(name)
         const tokens = category ? state.conf.tokensParsed[category] : undefined
-        let hasTokens = false
         if (tokens && Number.isFinite(rawNum)) {
           for (const key in tokens) {
-            hasTokens = true
             const val = tokens[key]?.val
             const valNum = typeof val === 'number' ? val : Number(val)
             if (Number.isFinite(valNum)) {
@@ -2681,7 +2678,7 @@ function configuredValue(
             }
           }
         }
-        if (hasTokens) {
+        if (nearest) {
           warnOnce(
             `numeric-token:${property}=${raw}`,
             `${property}="${raw}" was passed to CSS as-is${
@@ -2928,14 +2925,12 @@ function emitProperty(
 function numericUnitValue(value: string, first: string, second: string): number {
   return value.length > first.length && (value.endsWith(first) || value.endsWith(second))
     ? +value.slice(0, -first.length)
-    : Number.NaN
+    : NaN
 }
 
 function resolveNumericValue(value: string): string | number {
-  const unitValue = numericUnitValue(value, 'px', 'dp')
-  if (Number.isFinite(unitValue)) return unitValue
-  const numeric = +value
-  return Number.isFinite(numeric) ? numeric : value
+  let numeric = numericUnitValue(value, 'px', 'dp')
+  return isFinite(numeric) ? numeric : isFinite((numeric = +value)) ? numeric : value
 }
 
 function emitBorder(
@@ -3038,15 +3033,9 @@ function resolveValue(state: GetStyleState, property: string, raw: any) {
   if (
     (process.env.TAMAGUI_TARGET === 'native' || !state.flatShouldDoClasses) &&
     typeof value === 'string' &&
-    value !== ''
+    value !== '' &&
+    (process.env.TAMAGUI_TARGET === 'native' || property !== 'lineHeight')
   ) {
-    // a bare numeric lineHeight string is a unitless css multiplier. it is the
-    // one unitful property where css accepts a bare number, and mergeStyle turns
-    // a number into px, so keep the string as the class path does
-    if (process.env.TAMAGUI_TARGET === 'web' && property === 'lineHeight') {
-      const unitValue = numericUnitValue(value, 'px', 'dp')
-      return Number.isFinite(unitValue) ? unitValue : value
-    }
     value = resolveNumericValue(value)
   }
   return value
@@ -3243,7 +3232,7 @@ function emitValue(
     ) {
       if (
         property === 'rotate' &&
-        !Number.isFinite(numericUnitValue(value, 'deg', 'rad')) &&
+        !isFinite(numericUnitValue(value, 'deg', 'rad')) &&
         (process.env.TAMAGUI_TARGET === 'native' || !startsValueFunction(value))
       ) {
         if (process.env.NODE_ENV === 'development') {
@@ -3494,9 +3483,9 @@ export function walkConditionalValue(
     if (slices === undefined) parsedSlices.set(parsed, (slices = []))
     const chainCount = segments.length / 5 - 1
     if (property === 'aspectRatio' && chainCount === 1) {
-      const left = Number(value.slice(segments[7], segments[8]))
-      const right = Number(value.slice(segments[5], segments[6]))
-      if (left > 0 && right > 0 && Number.isFinite(left) && Number.isFinite(right)) {
+      const left = +value.slice(segments[7], segments[8])
+      const right = +value.slice(segments[5], segments[6])
+      if (left > 0 && right > 0 && isFinite(left) && isFinite(right)) {
         return false
       }
     }
@@ -3631,17 +3620,23 @@ export function walkConditionalValue(
     }
   }
 
-  const payloadShapeDiagnostic =
+  if (
     warnMode &&
     process.env.NODE_ENV === 'development' &&
     typeof value === 'string' &&
     !hasBase &&
     conditions &&
-    getConfigRevisionState(state.conf).tokenCategory(property)
-      ? validatePayloadShape(property, lastPayload, false)
-      : null
-  if (payloadShapeDiagnostic) {
-    warnOnce(`${property}="${value}": ${payloadShapeDiagnostic.message}`)
+    getConfigRevisionState(state.conf).tokenCategory(property) &&
+    getConfigRevisionState(state.conf).propertyKind(property) !== 8 &&
+    property !== 'boxShadow' &&
+    property !== 'textShadow' &&
+    property !== 'fontFamily' &&
+    property !== 'gap' &&
+    splitComponents(lastPayload).length > 1
+  ) {
+    warnOnce(
+      `${property}="${value}" has multiple values after its first conditional. Write the base value before the first conditional.`
+    )
   }
   if (
     warnMode === 1 &&
@@ -3761,7 +3756,6 @@ function contributeValue(
 
 function clearDirectStyle(state: GetStyleState, property: string) {
   const direct = state as DirectState
-  if (direct.flatDynamicColors) delete direct.flatDynamicColors[property]
   if (process.env.TAMAGUI_TARGET === 'web') property = webStyleProperty(property)
   const propertyKind = getConfigRevisionState(state.conf).propertyKind(property)
   const atomicKey = property.startsWith('transition')

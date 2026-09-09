@@ -62,12 +62,12 @@ describe('v3 flat-value typo warnings', () => {
     process.env.NODE_ENV = 'development'
     vi.useFakeTimers()
     const previousConfig = globalThis.__tamaguiConfig
-    const previousEvaluationConfigs = globalThis.__tamaguiEvaluationConfigs
+    const previousEvaluationConfig = globalThis.__tamaguiEvaluationConfig
     const previousWarned = globalThis.__tamaguiHasWarnedGlobalFallback
     const previousPending = globalThis.__tamaguiPendingCheck
 
     try {
-      delete globalThis.__tamaguiEvaluationConfigs
+      delete globalThis.__tamaguiEvaluationConfig
       delete globalThis.__tamaguiHasWarnedGlobalFallback
       delete globalThis.__tamaguiPendingCheck
       globalThis.__tamaguiConfig = conf
@@ -85,7 +85,7 @@ describe('v3 flat-value typo warnings', () => {
       vi.resetModules()
       const evaluationInstance = await import('../config')
       evaluationInstance.setConfig(conf)
-      expect(globalThis.__tamaguiEvaluationConfigs?.has(conf)).toBe(true)
+      expect(globalThis.__tamaguiEvaluationConfig).toBe(conf)
 
       process.env.TAMAGUI_ENVIRONMENT = originalTamaguiEnvironment
       vi.resetModules()
@@ -95,7 +95,7 @@ describe('v3 flat-value typo warnings', () => {
       expect(warnSpy).not.toHaveBeenCalled()
     } finally {
       globalThis.__tamaguiConfig = previousConfig
-      globalThis.__tamaguiEvaluationConfigs = previousEvaluationConfigs
+      globalThis.__tamaguiEvaluationConfig = previousEvaluationConfig
       globalThis.__tamaguiHasWarnedGlobalFallback = previousWarned
       globalThis.__tamaguiPendingCheck = previousPending
     }
