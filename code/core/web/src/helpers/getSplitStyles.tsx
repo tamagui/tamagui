@@ -3770,15 +3770,20 @@ function clearDirectStyle(state: GetStyleState, property: string) {
   const slot = process.env.TAMAGUI_TARGET === 'web' ? styleSlot(atomicKey) : atomicKey
   direct.flatAtomics?.delete(slot)
   if (direct.flatSlots) {
-    if (slot !== atomicKey) {
+    // a slot groups related properties under one atomic class. clearing a
+    // longhand removes only its records, and so does clearing `flex`, which
+    // shares its slot with flexDirection and flexWrap: <XStack flex={undefined} />
+    // keeps the styled row
+    if (slot !== atomicKey || atomicKey === 'flex') {
       const entries = direct.flatSlots.get(slot)
       if (entries) {
         for (let index = entries.length; index--; ) {
           if (entries[index][0] === atomicKey) entries.splice(index, 1)
         }
+        if (!entries.length) direct.flatSlots.delete(slot)
       }
     }
-    direct.flatSlots.delete(atomicKey)
+    if (atomicKey !== 'flex') direct.flatSlots.delete(atomicKey)
   }
   if (atomicKey === 'transform') state.transformAccumulator = undefined
   if (state.style) delete state.style[atomicKey]
