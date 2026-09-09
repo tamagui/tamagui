@@ -77,7 +77,7 @@ const animations = createAnimations({
 
 ```tsx
 <View
-  animation="medium"
+  transition="medium"
   opacity={isVisible ? 1 : 0}
   y={isVisible ? 0 : 10}
 />
@@ -87,7 +87,7 @@ const animations = createAnimations({
 
 ```tsx
 <View
-  animation="fast"
+  transition="fast"
   enterStyle={{
     opacity: 0,
     y: -20,
@@ -115,7 +115,7 @@ import { AnimatePresence } from 'tamagui'
   {show && (
     <View
       key="unique-key"  // key is required
-      animation="medium"
+      transition="medium"
       enterStyle={{ opacity: 0 }}
       exitStyle={{ opacity: 0 }}
       opacity={1}
@@ -130,7 +130,7 @@ Override animation for specific properties:
 
 ```tsx
 <View
-  animation={[
+  transition={[
     'fast',
     {
       opacity: { type: 'timing', duration: 500 },
@@ -160,7 +160,7 @@ State-based animations:
 
 ```tsx
 <Button
-  animation="fast"
+  transition="fast"
   hoverStyle={{
     scale: 1.05,
     backgroundColor: '$blue9',
@@ -201,7 +201,7 @@ const AnimatedCard = styled(View, {
 
 ```tsx
 <View
-  animation="medium"
+  transition="medium"
   enterStyle={{ opacity: 0 }}
   opacity={1}
 />
@@ -211,7 +211,7 @@ const AnimatedCard = styled(View, {
 
 ```tsx
 <View
-  animation="fast"
+  transition="fast"
   enterStyle={{ opacity: 0, y: 20 }}
   opacity={1}
   y={0}
@@ -222,7 +222,7 @@ const AnimatedCard = styled(View, {
 
 ```tsx
 <View
-  animation="bouncy"
+  transition="bouncy"
   enterStyle={{ opacity: 0, scale: 0.8 }}
   opacity={1}
   scale={1}
@@ -233,7 +233,7 @@ const AnimatedCard = styled(View, {
 
 ```tsx
 <Dialog.Overlay
-  animation="fast"
+  transition="fast"
   enterStyle={{ opacity: 0 }}
   exitStyle={{ opacity: 0 }}
   opacity={0.5}
@@ -244,7 +244,7 @@ const AnimatedCard = styled(View, {
 
 ```tsx
 <Dialog.Content
-  animation={['medium', { opacity: { overshootClamping: true } }]}
+  transition={['medium', { opacity: { overshootClamping: true } }]}
   enterStyle={{ opacity: 0, y: -20, scale: 0.95 }}
   exitStyle={{ opacity: 0, y: 10, scale: 0.98 }}
   opacity={1}

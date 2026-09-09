@@ -53,8 +53,7 @@ const Card = styled(View, {
     },
     elevated: {
       true: {
-        shadowColor: '$shadowColor',
-        shadowRadius: 10,
+        boxShadow: '0 8px 24px $shadow4',
       },
     },
   } as const,  // required for type inference
@@ -149,7 +148,7 @@ import { AnimatePresence } from 'tamagui'
   {show && (
     <YStack
       key="modal"  // key required for exit animations
-      animation="quick"
+      transition="quick"
       enterStyle={{ opacity: 0, y: -20 }}
       exitStyle={{ opacity: 0, y: 20 }}
       opacity={1}
@@ -242,14 +241,14 @@ import { Dialog, Sheet, Adapt, Button } from 'tamagui'
   <Dialog.Portal>
     <Dialog.Overlay
       key="overlay"
-      animation="quick"
+      transition="quick"
       opacity={0.5}
       enterStyle={{ opacity: 0 }}
       exitStyle={{ opacity: 0 }}
     />
     <Dialog.Content
       key="content"
-      animation="quick"
+      transition="quick"
       enterStyle={{ opacity: 0, scale: 0.95 }}
       exitStyle={{ opacity: 0, scale: 0.95 }}
     >
@@ -289,6 +288,46 @@ import { Input, Label, YStack, XStack, Button } from 'tamagui'
 ---
 
 ## Anti-Patterns
+
+### ❌ The `animation` prop
+
+There is no `animation` prop. It is the most commonly invented one. The prop is
+`transition`, and its value is a `TransitionProp`: a configured animation name,
+an object, or an array. A CSS transition string is not one.
+
+```tsx
+// bad - no such prop
+<View animation="quick" />
+
+// bad - a CSS string is not a TransitionProp
+<View transition="all 0.2s ease" />
+
+// good - a name the config registers under `animations`
+<View transition="quick" />
+```
+
+Use `animatedBy="<driver>"` only when the config registers more than one driver.
+
+### ❌ Assuming modern style props are web-only
+
+`backdropFilter`, `mixBlendMode`, `boxShadow`, `filter`, `backgroundImage`,
+`transition`, `cursor`, and `userSelect` are first-class typed props that React
+Native's New Architecture implements natively. `backdropFilter` is a real native
+gaussian backdrop blur, so frosting a surface needs no separate blur view
+package. Treating one of these as a no-op on iOS is a stale assumption.
+
+```tsx
+// bad - the legacy RN shadow group splits web and native
+<View shadowColor="$shadowColor" shadowOffset={{ width: 0, height: 8 }} shadowRadius={10} />
+
+// good - one tokenized path for both
+<View boxShadow="0 8px 24px $shadow4" />
+```
+
+Tamagui is moving this way itself: a config setting removes the border, outline,
+and shadow longhands from the type system in favor of the combined `border`,
+`outline`, and `boxShadow` props, because mixing shorthand and longhand fights
+over atomic CSS specificity.
 
 ### ❌ Hardcoded values instead of tokens
 
@@ -426,7 +465,7 @@ interface ExtendedProps extends MyComponentProps {
 | Color scale | `color="$color11"` (high contrast text) |
 | Responsive | `$gtSm={{ padding: '$6' }}` |
 | Variant | `<Button size="large" variant="outlined" />` |
-| Animation | `animation="quick" enterStyle={{ opacity: 0 }}` |
+| Animation | `transition="quick" enterStyle={{ opacity: 0 }}` |
 | Theme switch | `<Theme name="dark"><Theme name="blue">` |
 | Compound | `<Card><Card.Title>` with `createStyledContext` |
 
