@@ -6,7 +6,7 @@ type DialogPresenceEvent = {
   elapsed: number
   /**
    * frames between the open change and the completion callback. a driver that
-   * reports completion itself lands within a frame or two of the state change
+   * drops the authored animation completes within a frame or two of the state change
    * no matter how loaded the machine is, while a driver waiting out a 1000ms
    * transition takes tens of frames. milliseconds cannot tell those apart on a
    * busy machine, and `elapsed` is only a reliable LOWER bound.
@@ -53,6 +53,45 @@ function PresenceScenario({
   modal?: boolean
   portal?: boolean
 }) {
+  const searchParams =
+    typeof window === 'undefined' ? null : new URLSearchParams(window.location.search)
+  const transformCase = searchParams?.get('transformCase')
+  const explicitMounted = !!transformCase || searchParams?.has('explicitEnter')
+  const axisOptions: Record<string, string[]> = {
+    translateZ: ['0px', '40px'],
+    rotateX: ['0deg', '20deg'],
+    rotateY: ['0deg', '30deg'],
+    rotateZ: ['0deg', '15deg'],
+    skewX: ['0deg', '10deg'],
+    skewY: ['0deg', '5deg'],
+    perspective: ['600px', '400px'],
+  }
+  const axisValues = axisOptions[transformCase || '']
+  const transformProps =
+    transformCase === 'family'
+      ? {
+          x: '0px exit:40px',
+          y: '0px exit:20px',
+          scale: '1 exit:0.8',
+          rotate: '0deg exit:45deg',
+        }
+      : axisValues
+        ? {
+            y: undefined,
+            scale: undefined,
+            transform: {
+              default: `${transformCase}(${axisValues[0]})`,
+              exit: `${transformCase}(${axisValues[1]})`,
+            },
+          }
+        : transformCase === 'composition'
+          ? {
+              y: undefined,
+              scale: undefined,
+              transition: 'none exit:1000ms',
+              transform: { default: 'rotate(30deg) scale(1)', exit: 'scale(0.7)' },
+            }
+          : {}
   const [open, setOpen] = useState(false)
   const [eventCount, setEventCount] = useState(0)
   const transitionStartedAt = useRef(0)
@@ -120,9 +159,10 @@ function PresenceScenario({
         gap="3"
         padding="4"
         transition="1000ms"
-        opacity="enter:0 exit:0"
-        y="enter:-20px exit:20px"
-        scale="enter:0.96 exit:0.96"
+        opacity={explicitMounted ? '1 enter:0 exit:0' : 'enter:0 exit:0'}
+        y={explicitMounted ? '0px enter:-20px exit:20px' : 'enter:-20px exit:20px'}
+        scale={explicitMounted ? '1 enter:0.96 exit:0.96' : 'enter:0.96 exit:0.96'}
+        {...transformProps}
         onTransition={handleTransition}
       >
         <Dialog.Title>{label} dialog</Dialog.Title>

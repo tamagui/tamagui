@@ -693,11 +693,10 @@ function contributeProp(
             if (
               !isHOC &&
               styleState.styleProps.isAnimated &&
-              !styleState.flatShouldDoClasses &&
               !(entry[0] in nonAnimatableStyleProps)
             ) {
-              // the host owns lifecycle and driver state; HOC classes cannot
-              // animate properties on behalf of an inline animation driver.
+              // the host owns lifecycle and driver state, including CSS lifecycle
+              // metadata and selected transition clauses.
               const condition = entry[3] ? conditionFromKey(styleState, entry[3]) : null
               const property =
                 entry[0] === '--t-x'
@@ -2882,6 +2881,16 @@ function emitProperty(
     return
   }
 
+  // drivers need the selected transition even when destination styles use classes.
+  if (
+    property === 'transition' &&
+    !state.staticConfig.isHOC &&
+    state.styleProps.isAnimated
+  ) {
+    streamWriteInline(state, property, value, cursor, originalValue, false, -1, true)
+    return
+  }
+
   const shouldPromoteAnimatedStyle =
     canGenerateCSS &&
     !condition &&
@@ -3158,7 +3167,11 @@ function emitValue(
     if (canGenerateCSS && state.flatShouldDoClasses && Array.isArray(raw)) {
       raw = transformsToString(raw)
     }
-    if (process.env.TAMAGUI_TARGET === 'native' && typeof raw === 'string') {
+    if (
+      typeof raw === 'string' &&
+      (process.env.TAMAGUI_TARGET === 'native' ||
+        (!state.flatShouldDoClasses && state.animationDriver?.inputStyle === 'value'))
+    ) {
       const transform = parseNativeTransform(raw)
       if (transform) {
         emitProperty(state, property, transform, cursor, originalValue, contextOnly)

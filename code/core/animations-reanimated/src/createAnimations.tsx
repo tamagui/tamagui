@@ -357,7 +357,7 @@ const buildSnapshot = (
     ...snapshotAnimated,
   }
   const staticTransforms = getAnimatedTransforms(snapshotStatics.transform)
-  delete painted.transform
+  painted.transform = snapshotTransforms.length ? snapshotTransforms : staticTransforms
   for (const transform of staticTransforms) {
     const key = Object.keys(transform)[0]
     if (key) painted[`transform:${key}`] = transform[key]
@@ -1206,6 +1206,23 @@ export function createAnimations<A extends AnimationsConfig>(
           isDark,
           disableAnimation
         )
+
+        // retain the predecessor's composition when exit only targets some transforms.
+        if (isExiting && animated.transform) {
+          const remaining = getAnimatedTransforms(animated.transform).map(
+            cloneStyleRecord
+          )
+          const previous = getAnimatedTransforms(paintedPredecessor.transform)
+          if (previous.length) {
+            animated.transform = previous
+              .map((entry) => {
+                const key = Object.keys(entry)[0]
+                const index = remaining.findIndex((target) => key in target)
+                return index < 0 ? cloneStyleRecord(entry) : remaining.splice(index, 1)[0]
+              })
+              .concat(remaining)
+          }
+        }
 
         // every animated key keeps its FIRST animated value in React's style for
         // as long as it stays animated. the value never changes across renders,

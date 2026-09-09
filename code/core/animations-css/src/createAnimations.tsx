@@ -88,6 +88,8 @@ function getLifecycleCSSProperties(keys: Set<string> | undefined): string[] {
   if (!keys?.size) return emptyProperties
   const properties = new Set<string>()
   for (const key of keys) {
+    // timing clauses configure the transition, not its destination properties.
+    if (key === 'transition' || key === 'transitionProperty') continue
     for (const property of getCSSProperties(key)) {
       properties.add(hyphenateProperty(property))
     }

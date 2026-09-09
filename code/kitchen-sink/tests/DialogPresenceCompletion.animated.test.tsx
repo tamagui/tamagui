@@ -50,32 +50,31 @@ for (const id of ['portal', 'inline']) {
   test(`${id} dialog reports enter completion from the animation driver once`, async ({
     page,
   }) => {
-    const driver = (test.info().project.metadata as any).animationDriver as string
-    await page.getByTestId(`${id}-open`).click()
-
-    if (driver !== 'motion') {
-      await page.waitForTimeout(500)
-      expect(
-        (await getEvents(page, id)).filter((event) => event.open),
-        'enter should not complete before the 1000ms animation'
-      ).toHaveLength(0)
-    }
-
+    await setupPage(page, {
+      name: 'DialogPresenceCompletionCase',
+      type: 'useCase',
+      searchParams: { explicitEnter: 'true' },
+    })
+    await expect(page.getByTestId(`${id}-open`)).toBeVisible()
+    const frames = await page.evaluate(async (scenarioId) => {
+      const samples: number[] = []
+      ;(
+        document.querySelector(`[data-testid="${scenarioId}-open"]`) as HTMLElement
+      ).click()
+      while (!window.__dialogPresenceEvents[scenarioId]?.some((event) => event.open)) {
+        await new Promise(requestAnimationFrame)
+        const node = document.querySelector(`[data-testid="${scenarioId}-content"]`)
+        if (node) samples.push(Number(getComputedStyle(node).opacity))
+      }
+      return samples
+    }, id)
+    expect(
+      frames.some((opacity) => opacity > 0 && opacity < 1),
+      'enter must visibly interpolate'
+    ).toBe(true)
     const event = await waitForTransitionEvent(page, id, true)
-    if (driver !== 'motion') {
-      expect(event.elapsed).toBeGreaterThanOrEqual(850)
-      // the same counter the branch below reads, proving it counts: css waits
-      // out the whole 1000ms transition, so it spends frames rather than none
-      expect(event.frames).toBeGreaterThan(4)
-    } else {
-      // a driver that reports completion itself lands within a frame or two of
-      // the state change. a millisecond budget cannot say that on a loaded
-      // machine, where the same two frames take 120ms.
-      expect(
-        event.frames,
-        `${driver} has no changing driver-owned style in this fixture, so completion should not wait frames (elapsed ${event.elapsed}ms)`
-      ).toBeLessThanOrEqual(2)
-    }
+    expect(event.elapsed).toBeGreaterThanOrEqual(850)
+    expect(event.frames).toBeGreaterThan(4)
     await expectExactlyOneTransitionEvent(page, id, true)
     expect(await getUserEventCount(page, id)).toBe(1)
   })
@@ -137,5 +136,98 @@ for (const id of ['portal', 'inline']) {
     ).toBe(true)
     await expect(page.getByTestId(`${id}-state`)).toHaveText('closed')
     await expect(page.getByTestId(`${id}-content`)).toHaveCount(0)
+  })
+}
+
+const axisTargets: Record<string, [number, number]> = {
+  translateZ: [14, 40],
+  rotateX: [6, Math.sin((20 * Math.PI) / 180)],
+  rotateY: [8, Math.sin((30 * Math.PI) / 180)],
+  rotateZ: [1, Math.sin((15 * Math.PI) / 180)],
+  skewX: [4, Math.tan((10 * Math.PI) / 180)],
+  skewY: [1, Math.tan((5 * Math.PI) / 180)],
+  perspective: [11, -1 / 400],
+}
+
+for (const transformCase of ['family', ...Object.keys(axisTargets), 'composition']) {
+  test(`portal ${transformCase} transforms animate during exit`, async ({ page }) => {
+    await setupPage(page, {
+      name: 'DialogPresenceCompletionCase',
+      type: 'useCase',
+      searchParams: { transformCase },
+    })
+    await page.getByTestId('portal-open').click()
+    await waitForTransitionEvent(page, 'portal', true)
+    await expect(page.getByTestId('portal-content')).toBeVisible()
+    await expect(page.getByTestId('portal-content')).toHaveCSS('opacity', '1')
+    const frames = await page.evaluate(async () => {
+      const node = document.querySelector('[data-testid="portal-content"]')!
+      const sample = () => {
+        const style = getComputedStyle(node)
+        const matrix = new DOMMatrix(
+          style.transform === 'none' ? undefined : style.transform
+        )
+        return {
+          x: matrix.m41 + (style.translate === 'none' ? 0 : parseFloat(style.translate)),
+          y:
+            matrix.m42 +
+            (style.translate === 'none'
+              ? 0
+              : Number.parseFloat(style.translate.split(' ')[1] || '0')),
+          scaleY:
+            Math.hypot(matrix.c, matrix.d) *
+            (style.scale === 'none'
+              ? 1
+              : Number.parseFloat(style.scale.split(' ')[1] || style.scale)),
+          scale:
+            Math.hypot(matrix.a, matrix.b) *
+            (style.scale === 'none' ? 1 : parseFloat(style.scale)),
+          angle:
+            (Math.atan2(matrix.b, matrix.a) * 180) / Math.PI +
+            (style.rotate === 'none' ? 0 : parseFloat(style.rotate)),
+          matrix: Array.from(matrix.toFloat64Array()),
+        }
+      }
+      const samples = [sample()]
+      document.dispatchEvent(
+        new KeyboardEvent('keydown', { key: 'Escape', bubbles: true })
+      )
+      while (node.isConnected) {
+        await new Promise(requestAnimationFrame)
+        if (node.isConnected) samples.push(sample())
+      }
+      return samples
+    })
+    expect(frames.length).toBeGreaterThan(2)
+    if (transformCase === 'family') {
+      expect(frames.some((frame) => frame.x > 0 && frame.x < 40)).toBe(true)
+      expect(frames.some((frame) => frame.y > 0 && frame.y < 20)).toBe(true)
+      expect(frames.some((frame) => frame.scaleY > 0.8 && frame.scaleY < 0.99)).toBe(true)
+      expect(frames.some((frame) => frame.scale > 0.8 && frame.scale < 0.99)).toBe(true)
+      expect(frames.some((frame) => frame.angle > 1 && frame.angle < 44)).toBe(true)
+    } else if (transformCase in axisTargets) {
+      const [axis, target] = axisTargets[transformCase]
+      const initial = frames[0].matrix[axis]
+      const intermediate = frames.filter((frame) => {
+        const progress = (frame.matrix[axis] - initial) / (target - initial)
+        return progress > 0.05 && progress < 0.95
+      })
+      expect(
+        new Set(intermediate.map((frame) => frame.matrix[axis])).size,
+        `${transformCase} must visibly interpolate, not jump to its target`
+      ).toBeGreaterThan(2)
+    } else {
+      expect(frames[0].angle).toBeCloseTo(30, 1)
+      expect(
+        frames[1].angle,
+        'rotation must survive the first exit frame'
+      ).toBeGreaterThan(25)
+      expect(
+        frames.some(
+          (frame) => frame.angle > 1 && frame.scale > 0.71 && frame.scale < 0.99
+        )
+      ).toBe(true)
+    }
+    await expect(page.getByTestId('portal-content')).toHaveCount(0)
   })
 }
