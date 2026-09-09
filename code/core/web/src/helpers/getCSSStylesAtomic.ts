@@ -36,6 +36,7 @@ export type AtomicSlotEntry = [
   wrappers: readonly string[] | undefined,
   original?: any,
   flags?: number,
+  lifecycle?: boolean,
 ]
 
 export type SlotIdentity = [

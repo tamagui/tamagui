@@ -693,10 +693,10 @@ function contributeProp(
             if (
               !isHOC &&
               styleState.styleProps.isAnimated &&
+              (slot === 'transition' || entry[8]) &&
               !(entry[0] in nonAnimatableStyleProps)
             ) {
-              // the host owns lifecycle and driver state, including CSS lifecycle
-              // metadata and selected transition clauses.
+              // the host owns lifecycle destinations and their transition.
               const property =
                 entry[0] === '--t-x'
                   ? 'x'
@@ -707,16 +707,11 @@ function contributeProp(
                       : entry[0] === '--t-scale-y'
                         ? 'scaleY'
                         : entry[0]
+              const value =
+                styleState.animationDriver?.inputStyle === 'value' ? entry[6] : entry[1]
               entry[3]
-                ? contributeValue(
-                    styleState,
-                    property,
-                    entry[1],
-                    entry[6],
-                    false,
-                    entry[3]
-                  )
-                : emitValue(styleState, property, entry[1], null, entry[6], false)
+                ? contributeValue(styleState, property, value, entry[6], false, entry[3])
+                : emitValue(styleState, property, value, null, entry[6], false)
             } else {
               writeCapturedStyleRecord(slots, slot, entry, pass[passSourceLayer])
             }
@@ -2371,7 +2366,13 @@ function completeResolvedStyles(state: GetStyleState, merge: MergeStyle = mergeS
       if (capture) {
         // flagged css so the receiving frame keeps them as classes even when
         // it renders its own styles inline
-        for (const entry of cssEntries) entry[7] = entry[7]! | recordCSS
+        for (const entry of cssEntries) {
+          entry[7] = entry[7]! | recordCSS
+          if (!(entry[2] & 12)) continue
+          for (const sibling of cssEntries) {
+            if (sibling[0] === entry[0]) sibling[8] = true
+          }
+        }
         capture.set(property, cssEntries)
       }
     }
@@ -3434,7 +3435,9 @@ function emitConditionalValue(
       property,
       payload,
       condition,
-      mode === 2 ? payload : undefined,
+      mode === 2 || state.staticConfig.isHOC || state.styleProps.stylePieceEntries
+        ? payload
+        : undefined,
       contextOnly,
       mode,
       source

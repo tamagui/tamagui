@@ -17,7 +17,8 @@ export type AtomicSlotEntry = [
     selector: string,
     wrappers: readonly string[] | undefined,
     original?: any,
-    flags?: number
+    flags?: number,
+    lifecycle?: boolean
 ];
 export type SlotIdentity = [
     identifier: string,

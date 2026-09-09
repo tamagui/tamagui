@@ -411,3 +411,24 @@ zero-runtime starter records framework chunks as part of the page JavaScript.
 - **TESTED** all six graphs built with zero compiler violations and no forbidden
   modules. The re-record also captures the already-qualified island reductions
   and tightens CSS values to the current Linux receipts.
+
+## Baseline update, 2026-09-09: HOC animation lifecycle handoff
+
+Animated host frames now receive the transition and enter or exit destinations
+authored on styled HOC layers. Static layout and visual styles remain CSS classes,
+so value drivers do not register properties that cannot complete. Conditional leaf
+values are retained for value drivers, including tokenized transforms, and the
+Reanimated exit seed preserves the predecessor transform composition.
+
+- **RAN** the pinned styled-view fixture after a complete workspace JS build:
+  28,824 -> 29,342 gzip-9 (+518, +1.80%), raw 76,711 -> 78,095 (+1,384).
+- **RAN** the zero-runtime island cost is +54 bytes in Vite, +51 in Next, and
+  +55 in Metro. Base JavaScript and all generated CSS are unchanged. The Metro
+  CSS receipt keeps the Linux value because macOS produces a smaller artifact.
+- Accepted as the runtime cost of handing HOC-authored lifecycle styles to CSS,
+  Reanimated, and Motion drivers. Dialog portal exits now stay mounted for their
+  authored animation, report completion once, and preserve composed transforms.
+- **TESTED** 70 active Dialog lifecycle and pseudo-transition cases across the
+  three animation drivers with retries disabled. The Reanimated Dialog, pointer
+  events, and Sheet set passed 21 active cases with one existing skip.
+- Baseline re-recorded at 29,342, ceiling 29,492.
