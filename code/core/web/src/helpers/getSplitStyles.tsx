@@ -80,7 +80,7 @@ import {
 import { log } from './log'
 import { normalizeColor } from './normalizeColor'
 import { normalizeValueWithProperty } from './normalizeValueWithProperty'
-import { parseNativeStyle } from './parseNativeStyle.native'
+import { parseNativeStyle } from './parseNativeStyle'
 import { parseNativeTransform } from './parseNativeTransform.native'
 import { isRemValue, resolveRem } from './resolveRem'
 import { resolveNativeUnits } from './resolveNativeUnits'

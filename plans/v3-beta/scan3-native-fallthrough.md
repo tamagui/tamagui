@@ -47,7 +47,7 @@ content = React.createElement(elementType, viewProps, content || children)
 ```
 
 *(Note on related files)*:
-- **[`code/core/web/src/helpers/parseNativeStyle.native.ts:14-29`](file:///Users/n8/tamagui/code/core/web/src/helpers/parseNativeStyle.native.ts#L14-L29)** [READ]: Only handles string-to-RN-object parsing for `backgroundImage`, `boxShadow`, and `textShadow`.
+- **[`code/core/web/src/helpers/parseNativeStyle.ts:16-31`](file:///Users/n8/tamagui/code/core/web/src/helpers/parseNativeStyle.ts#L16-L31)** [READ]: Only handles string-to-RN-object parsing for `backgroundImage`, `boxShadow`, and `textShadow`.
 - **[`code/core/web/src/helpers/setElementProps.native.tsx:1-9`](file:///Users/n8/tamagui/code/core/web/src/helpers/setElementProps.native.tsx#L1-L9)** [READ]: Attaches a polyfilled `getBoundingClientRect` to the native element ref via `composeRefs` (`createComponent.tsx:1484`).
 - **[`code/core/web/src/helpers/nativeStyleEngine.ts:886-926, 1013-1028`](file:///Users/n8/tamagui/code/core/web/src/helpers/nativeStyleEngine.ts#L886-L926)** [READ]: Handles the experimental native fast path for direct ShadowTree commits.
 - **[`code/core/web/src/helpers/useRenderElement.tsx:20-73`](file:///Users/n8/tamagui/code/core/web/src/helpers/useRenderElement.tsx#L20-L73)** [READ]: Implements `evaluateRenderProp` for slot/render prop evaluation (at `createComponent.tsx:1952`, `getCustomRender` is called).

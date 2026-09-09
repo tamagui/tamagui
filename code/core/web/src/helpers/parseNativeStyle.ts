@@ -9,6 +9,8 @@
  * so this code is dead-code-eliminated on web builds.
  */
 
+import { normalizeColor } from './normalizeColor'
+
 type TokenMap = Map<string, any>
 
 export function parseNativeStyle(
@@ -32,7 +34,7 @@ function resolveColor(raw: string, tokenMap?: TokenMap): any {
   if (tokenMap && tokenMap.has(raw)) {
     return tokenMap.get(raw)
   }
-  return raw
+  return raw.includes('(') && !raw.includes(',') ? normalizeColor(raw) : raw
 }
 
 // the direction grammar React Native itself accepts, sourced from

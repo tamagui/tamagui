@@ -21,7 +21,9 @@ export const normalizeColor = (color?: string | null, opacity?: number) => {
 export const getRgba = (color: string) => {
   // handle dynamic color objects
   if (typeof color !== 'string') return
-  const colorNum = normalizeCSSColor(color)
+  // RN accepts the alpha forms with a slash, but requires the `a` function name.
+  const nativeColor = color.replace(/^(rgb|hsl)\((?=[^)]*\/)/, '$1a(')
+  const colorNum = normalizeCSSColor(nativeColor)
   if (colorNum != null) {
     return rgba(colorNum)
   }

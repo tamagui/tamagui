@@ -1,5 +1,11 @@
 import type { GetStyleResult } from '@tamagui/web'
-import { View, createTamagui, getSplitStyles } from '@tamagui/core'
+import {
+  View,
+  createTamagui,
+  createVariable,
+  getSplitStyles,
+  styled,
+} from '@tamagui/core'
 import { beforeAll, describe, expect, test } from 'vitest'
 
 import config from '../config-default'
@@ -51,6 +57,51 @@ describe('shorthand variables - native', () => {
     expect(style?.boxShadow).toEqual([
       { offsetX: 0, offsetY: 0, blurRadius: 10, color: 'nonexistent' },
     ])
+  })
+
+  test('styled static and animated shadows resolve embedded tokens', () => {
+    const Panel = styled(View, {
+      boxShadow: '0 8px 28px white',
+    })
+    const ToolButton = styled(View, {
+      boxShadow: '0 4px 12px white',
+      transition: { preset: 'quick', properties: 'transform' },
+      scale: 'press:0.92',
+    })
+
+    expect(getSplitStylesFor({}, Panel).style?.boxShadow).toEqual([
+      { offsetX: 0, offsetY: 8, blurRadius: 28, color: '#fff' },
+    ])
+    expect(getSplitStylesFor({}, ToolButton).style?.boxShadow).toEqual([
+      { offsetX: 0, offsetY: 4, blurRadius: 12, color: '#fff' },
+    ])
+  })
+
+  test('embedded theme colors stay literal across native theme changes', () => {
+    for (const color of ['rgba(0,0,0,0.12)', 'rgba(255,255,255,0.2)']) {
+      const shade = Object.assign(
+        createVariable({ key: 'shade', name: 'shade', val: color }),
+        {
+          get: () => ({ dynamic: { light: '#000', dark: '#fff' } }),
+        }
+      )
+      const { style } = getSplitStylesFor({ boxShadow: '0 4px 12px shade' }, View, {
+        theme: { shade },
+        resolveValues: 'auto',
+      })
+      expect(style?.boxShadow).toEqual([
+        { offsetX: 0, offsetY: 4, blurRadius: 12, color },
+      ])
+    }
+  })
+
+  test('modern shadow color functions are emitted in native color syntax', () => {
+    for (const color of ['rgb(0 0 0 / 0.5)', 'hsl(0 0% 0% / 0.5)']) {
+      const { style } = getSplitStylesFor({ boxShadow: `0 4px 6px ${color}` })
+      expect(style?.boxShadow).toEqual([
+        { offsetX: 0, offsetY: 4, blurRadius: 6, color: `rgba(0,0,0,${128 / 255})` },
+      ])
+    }
   })
 
   test('filter with a migrated token value stays literal CSS', () => {
@@ -346,12 +397,16 @@ describe('border shorthand with media queries - native', () => {
 function getSplitStylesFor(
   props: Record<string, unknown>,
   Component: { staticConfig: Parameters<typeof getSplitStyles>[1] } = View,
-  options?: { mediaState?: Record<string, boolean> }
+  options?: {
+    mediaState?: Record<string, boolean>
+    theme?: Parameters<typeof getSplitStyles>[2]
+    resolveValues?: 'auto' | 'value'
+  }
 ): GetStyleResult {
   return getSplitStyles(
     props,
     Component.staticConfig,
-    {} as any,
+    options?.theme ?? {},
     '',
     {
       hover: false,
@@ -364,7 +419,7 @@ function getSplitStylesFor(
     },
     {
       isAnimated: false,
-      resolveValues: 'value',
+      resolveValues: options?.resolveValues ?? 'value',
       mediaState: options?.mediaState,
     },
     undefined,
