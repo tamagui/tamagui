@@ -197,10 +197,13 @@ export function createStudioThemes({ palettes }: BuildThemeSuiteProps) {
   } as const
 
   const themes = createThemes(tokens, tree, {
-    getTheme: ({ recipe }: { recipe: StudioRecipe }) => ({
-      ...ramp(recipe.palette, recipe.scheme),
-      ...fromShades(recipe.palette, studioScales[recipe.scheme][recipe.level ?? 1]),
-    }),
+    getTheme: ({ recipe }: { recipe: StudioRecipe }) => {
+      const scale = studioScales[recipe.scheme][recipe.level ?? 1]
+      return {
+        ...ramp(recipe.palette, recipe.scheme, scale),
+        ...fromShades(recipe.palette, scale),
+      }
+    },
   })
 
   return { themes, tokens }

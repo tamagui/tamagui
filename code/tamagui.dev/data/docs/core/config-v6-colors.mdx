@@ -151,7 +151,7 @@ function getTheme({ recipe }: GetThemeContext<typeof tokens, Recipe>) {
     scales[recipe.treatment ?? 'normal'][recipe.scheme][recipe.level ?? 1]
 
   return {
-    ...ramp(recipe.palette, recipe.scheme),
+    ...ramp(recipe.palette, recipe.scheme, scale),
     ...fromShades(recipe.palette, scale),
   }
 }

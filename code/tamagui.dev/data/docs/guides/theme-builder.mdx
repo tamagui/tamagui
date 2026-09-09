@@ -104,14 +104,16 @@ export function getTheme({ recipe }: GetThemeContext<typeof tokens, DefaultRecip
     scales[recipe.treatment ?? 'normal'][recipe.scheme][recipe.level ?? 1]
 
   return {
-    ...ramp(recipe.palette, recipe.scheme),
+    ...ramp(recipe.palette, recipe.scheme, scale),
     ...fromShades(recipe.palette, scale),
   }
 }
 ```
 
 `ramp()` emits the adaptive `color1` through `color11` keys. `color1` is nearest
-the background and `color11` is nearest the foreground in both schemes.
+the background and `color11` is nearest the foreground in every theme. Pass the
+scale so a bold light theme, whose background is deeper than its type, runs its
+ramp deep to pale; without it the direction follows the scheme alone.
 `fromShades()` maps numeric shades in a semantic scale to the active palette and
 passes exact token names or color literals through.
 

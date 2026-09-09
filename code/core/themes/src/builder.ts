@@ -234,11 +234,25 @@ export type Ramp<PaletteName extends string = Palette> = Record<
   `${PaletteName}-${Shade}`
 >
 
+// color1 sits nearest the background and color11 nearest the type in every
+// theme. the scheme alone gets that wrong for a scale whose background is
+// deeper than its type (bold in light), so when the scale is given it decides
+// the direction and the scheme is only the fallback for values off the ladder.
+export function rampReversed(scheme: Scheme, scale?: ThemeScale<string>): boolean {
+  if (scale) {
+    const background = ladder.indexOf(scale.background as (typeof ladder)[number])
+    const color = ladder.indexOf(scale.color as (typeof ladder)[number])
+    if (background !== -1 && color !== -1) return background > color
+  }
+  return scheme === 'dark'
+}
+
 export function ramp<const PaletteName extends string>(
   palette: PaletteName,
-  scheme: Scheme
+  scheme: Scheme,
+  scale?: ThemeScale<string>
 ): Ramp<PaletteName> {
-  const ordered = scheme === 'light' ? shades : [...shades].reverse()
+  const ordered = rampReversed(scheme, scale) ? [...shades].reverse() : shades
   return Object.fromEntries(
     ordered.map((shade, index) => [`color${index + 1}`, `${palette}-${shade}`])
   ) as Ramp<PaletteName>
@@ -259,7 +273,7 @@ export function fromShades<const PaletteName extends string, TokenName extends s
 export function getTheme({ recipe }: GetThemeContext<typeof tokens, DefaultRecipe>) {
   const scale = scales[recipe.treatment ?? 'normal'][recipe.scheme][recipe.level ?? 1]
   return {
-    ...ramp(recipe.palette, recipe.scheme),
+    ...ramp(recipe.palette, recipe.scheme, scale),
     ...fromShades(recipe.palette, scale),
   }
 }

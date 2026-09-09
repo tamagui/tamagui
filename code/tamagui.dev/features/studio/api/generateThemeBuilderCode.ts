@@ -72,9 +72,10 @@ export const tree = {
 } as const
 
 export function getTheme({ recipe }: GetThemeContext<typeof tokens, Recipe>) {
+  const scale = scales[recipe.scheme][recipe.level ?? 1]
   return {
-    ...ramp(recipe.palette, recipe.scheme),
-    ...fromShades(recipe.palette, scales[recipe.scheme][recipe.level ?? 1]),
+    ...ramp(recipe.palette, recipe.scheme, scale),
+    ...fromShades(recipe.palette, scale),
   }
 }
 

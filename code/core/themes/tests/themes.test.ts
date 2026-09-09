@@ -42,6 +42,12 @@ describe('v6 themes', () => {
       color11: 'red-950',
     })
     expect(ramp('red', 'dark').color1).toBe('red-950')
+    // a bold light scale paints deep under pale type, so its ramp runs deep to pale
+    expect(ramp('brand', 'light', scales.bold.light[1]).color1).toBe('brand-950')
+    expect(ramp('brand', 'light', scales.tint.light[1]).color1).toBe('brand-50')
+    expect(ramp('brand', 'dark', scales.bold.dark[1]).color1).toBe('brand-950')
+    expect(themes.light_brand.color1).toBe(tokens.color['brand-950'])
+    expect(themes.light_brand.color11).toBe(tokens.color['brand-50'])
     expect(fromShades('red', scales.tint.light[1]).background).toBe('red-100')
     expect(themes.light_red_level2.background).toBe(tokens.color['red-50'])
   })
