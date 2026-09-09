@@ -85,17 +85,19 @@ export interface ResolvePayloadOptions {
    */
   resolveNumbers?: boolean
   /**
-   * tooling hook: receives every top-level candidate the resolver considered —
+   * tooling hook: receives every candidate the resolver considered —
    * idents and hex colors always, bare numbers when `resolveNumbers` is set —
    * with its payload offsets and resolution. Skipped positions (strings, url()
-   * bodies, function names, custom properties) never report. The runtime path
-   * never passes this.
+   * bodies, function names, custom properties) never report. `functionDepth`
+   * distinguishes identifiers inside CSS functions from bare payload slots.
+   * The runtime path never passes this.
    */
   onCandidate?(
     start: number,
     end: number,
     name: string,
-    resolved: PayloadReference | undefined
+    resolved: PayloadReference | undefined,
+    functionDepth?: number
   ): void
 }
 
@@ -185,6 +187,7 @@ export function resolvePayload(
   let errors: PayloadResolveError[] | null = null
   // start of the static run not yet pushed
   let staticStart = 0
+  let functionDepth = 0
 
   const codeAt = (index: number): number =>
     index >= 0 && index < length ? payload.charCodeAt(index) : -1
@@ -219,7 +222,7 @@ export function resolvePayload(
       const start = index
       index++
       while (index < length && isIdentPart(payload.charCodeAt(index))) index++
-      onCandidate?.(start, index, payload.slice(start, index), undefined)
+      onCandidate?.(start, index, payload.slice(start, index), undefined, functionDepth)
       continue
     }
 
@@ -235,7 +238,12 @@ export function resolvePayload(
       // a function name is never a candidate, and an unquoted url() body never
       // resolves, so skip the whole call
       if (codeAt(end) === CHAR_PAREN_OPEN) {
-        index = name.toLowerCase() === 'url' ? skipParens(payload, end) : end + 1
+        if (name.toLowerCase() === 'url') {
+          index = skipParens(payload, end)
+        } else {
+          functionDepth++
+          index = end + 1
+        }
         continue
       }
 
@@ -265,7 +273,7 @@ export function resolvePayload(
             name,
             opacity: Number(payload.slice(end + 1, suffix.end)),
           })
-          onCandidate?.(start, suffix.end, name, { ...resolved })
+          onCandidate?.(start, suffix.end, name, { ...resolved }, functionDepth)
           index = suffix.end
           continue
         }
@@ -275,7 +283,7 @@ export function resolvePayload(
             ? { ...resolved }
             : { ...resolved, opacity: suffix.percentage }
         pushReference(start, suffix.end, reference)
-        onCandidate?.(start, suffix.end, name, reference)
+        onCandidate?.(start, suffix.end, name, reference, functionDepth)
         index = suffix.end
         continue
       }
@@ -293,7 +301,13 @@ export function resolvePayload(
           name,
           opacity: suffix.percentage,
         })
-        onCandidate?.(start, end, name, resolved ? { ...resolved } : undefined)
+        onCandidate?.(
+          start,
+          end,
+          name,
+          resolved ? { ...resolved } : undefined,
+          functionDepth
+        )
         index = suffix.end
         continue
       }
@@ -301,14 +315,14 @@ export function resolvePayload(
       // no suffix, or a malformed one after an ident that is not a color token,
       // which is ordinary CSS such as `font: bold small/1.2 serif`
       if (!resolved) {
-        onCandidate?.(start, end, name, undefined)
+        onCandidate?.(start, end, name, undefined, functionDepth)
         index = end
         continue
       }
 
       const reference = { ...resolved }
       pushReference(start, end, reference)
-      onCandidate?.(start, end, name, reference)
+      onCandidate?.(start, end, name, reference, functionDepth)
       index = end
       continue
     }
@@ -363,14 +377,15 @@ export function resolvePayload(
       if (resolved) {
         const reference = { ...resolved }
         pushReference(start, numberEnd, reference)
-        onCandidate?.(start, numberEnd, name, reference)
+        onCandidate?.(start, numberEnd, name, reference, functionDepth)
       } else {
-        onCandidate?.(start, numberEnd, name, undefined)
+        onCandidate?.(start, numberEnd, name, undefined, functionDepth)
       }
       index = numberEnd
       continue
     }
 
+    if (code === CHAR_PAREN_CLOSE && functionDepth > 0) functionDepth--
     index++
   }
 

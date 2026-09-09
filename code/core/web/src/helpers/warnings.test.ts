@@ -5,6 +5,7 @@ import { resetWarned } from './warnOnce'
 
 describe('v3 flat-value typo warnings', () => {
   const originalEnv = process.env.NODE_ENV
+  const originalTamaguiEnvironment = process.env.TAMAGUI_ENVIRONMENT
   let warnSpy: ReturnType<typeof vi.spyOn>
 
   const conf = createTamagui({
@@ -33,6 +34,8 @@ describe('v3 flat-value typo warnings', () => {
       space: {
         4: 16,
         8: 32,
+        11: 44,
+        44: 176,
       },
       radius: {
         4: 4,
@@ -50,7 +53,52 @@ describe('v3 flat-value typo warnings', () => {
 
   afterEach(() => {
     process.env.NODE_ENV = originalEnv
+    process.env.TAMAGUI_ENVIRONMENT = originalTamaguiEnvironment
+    vi.useRealTimers()
     warnSpy.mockRestore()
+  })
+
+  it('keeps Vite evaluation config fallback quiet without hiding real duplicates', async () => {
+    process.env.NODE_ENV = 'development'
+    vi.useFakeTimers()
+    const previousConfig = globalThis.__tamaguiConfig
+    const previousEvaluationConfigs = globalThis.__tamaguiEvaluationConfigs
+    const previousWarned = globalThis.__tamaguiHasWarnedGlobalFallback
+    const previousPending = globalThis.__tamaguiPendingCheck
+
+    try {
+      delete globalThis.__tamaguiEvaluationConfigs
+      delete globalThis.__tamaguiHasWarnedGlobalFallback
+      delete globalThis.__tamaguiPendingCheck
+      globalThis.__tamaguiConfig = conf
+      vi.resetModules()
+      const unmarkedDuplicate = await import('../config')
+      unmarkedDuplicate.getConfigMaybe()
+      await vi.advanceTimersByTimeAsync(501)
+      expect(warnSpy).toHaveBeenCalledTimes(1)
+
+      warnSpy.mockClear()
+      delete globalThis.__tamaguiConfig
+      delete globalThis.__tamaguiHasWarnedGlobalFallback
+      delete globalThis.__tamaguiPendingCheck
+      process.env.TAMAGUI_ENVIRONMENT = 'tamagui'
+      vi.resetModules()
+      const evaluationInstance = await import('../config')
+      evaluationInstance.setConfig(conf)
+      expect(globalThis.__tamaguiEvaluationConfigs?.has(conf)).toBe(true)
+
+      process.env.TAMAGUI_ENVIRONMENT = originalTamaguiEnvironment
+      vi.resetModules()
+      const runtimeDuplicate = await import('../config')
+      runtimeDuplicate.getConfigMaybe()
+      await vi.advanceTimersByTimeAsync(501)
+      expect(warnSpy).not.toHaveBeenCalled()
+    } finally {
+      globalThis.__tamaguiConfig = previousConfig
+      globalThis.__tamaguiEvaluationConfigs = previousEvaluationConfigs
+      globalThis.__tamaguiHasWarnedGlobalFallback = previousWarned
+      globalThis.__tamaguiPendingCheck = previousPending
+    }
   })
 
   describe('1. v2 dollar-prefixed tokens', () => {
@@ -97,16 +145,16 @@ describe('v3 flat-value typo warnings', () => {
     it('warns once in development and names nearest token', () => {
       process.env.NODE_ENV = 'development'
       getSplitStyles(
-        { w: '10' },
-        { validStyles: { width: true } } as any,
+        { gap: '46' },
+        { validStyles: { gap: true } } as any,
         conf.themes.light,
         'light',
         {} as any,
         {} as any
       )
       getSplitStyles(
-        { w: '10' },
-        { validStyles: { width: true } } as any,
+        { gap: '46' },
+        { validStyles: { gap: true } } as any,
         conf.themes.light,
         'light',
         {} as any,
@@ -115,7 +163,7 @@ describe('v3 flat-value typo warnings', () => {
 
       expect(warnSpy).toHaveBeenCalledTimes(1)
       expect(warnSpy.mock.calls[0][0]).toContain('passed to CSS as-is with px units')
-      expect(warnSpy.mock.calls[0][0]).toContain('nearest token is "8"')
+      expect(warnSpy.mock.calls[0][0]).toContain('nearest token is "11"')
     })
 
     it('does not warn for valid tokens', () => {
@@ -142,6 +190,58 @@ describe('v3 flat-value typo warnings', () => {
         {} as any
       )
       expect(warnSpy).not.toHaveBeenCalled()
+    })
+
+    it('does not warn for a token-less category', () => {
+      process.env.NODE_ENV = 'development'
+      const confWithoutZIndexTokens = createTamagui({
+        themes: { light: { background: '#fff', color: '#000' } },
+        tokens: {
+          color: {},
+          size: {},
+          space: {},
+          radius: {},
+          zIndex: {},
+        },
+      })
+
+      getSplitStyles(
+        { zIndex: '1' },
+        { validStyles: { zIndex: true } } as any,
+        confWithoutZIndexTokens.themes.light,
+        'light',
+        {} as any,
+        {} as any
+      )
+
+      expect(warnSpy).not.toHaveBeenCalled()
+    })
+
+    it('does not describe unitless zIndex values as pixels', () => {
+      process.env.NODE_ENV = 'development'
+      const confWithZIndexTokens = createTamagui({
+        themes: { light: { background: '#fff', color: '#000' } },
+        tokens: {
+          color: {},
+          size: {},
+          space: {},
+          radius: {},
+          zIndex: { 1: 1 },
+        },
+      })
+
+      getSplitStyles(
+        { zIndex: '2' },
+        { validStyles: { zIndex: true } } as any,
+        confWithZIndexTokens.themes.light,
+        'light',
+        {} as any,
+        {} as any
+      )
+
+      expect(warnSpy).toHaveBeenCalledTimes(1)
+      expect(warnSpy.mock.calls[0][0]).toContain('nearest token is "1"')
+      expect(warnSpy.mock.calls[0][0]).not.toContain('px')
     })
   })
 

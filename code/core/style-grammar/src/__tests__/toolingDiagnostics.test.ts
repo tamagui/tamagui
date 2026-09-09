@@ -409,7 +409,7 @@ describe('tooling diagnostics', () => {
         shorthands: { ...config.shorthands, bg: backgroundProperty },
         tokenNames: {
           ...config.tokenNames,
-          color: ['red', 'blue', 'background'],
+          color: ['red', 'blue', 'background', 'color8', 'shadow-3'],
         },
       }
       const themeRegistry = createModifierRegistry(themeConfig).registry
@@ -455,6 +455,62 @@ describe('tooling diagnostics', () => {
           expect(diagnoseStyleValue('bg', value, strictOptions)).toEqual([])
         }
       }
+      expect(
+        diagnoseStyleValueProgram(
+          'boxShadow',
+          'hover:0 16px 50px shadow-3',
+          strictOptions
+        )
+      ).toEqual([])
+      expect(
+        diagnoseStyleValueProgram('boxShadow', 'hover:0 16px 50px shadw-3', strictOptions)
+      ).toEqual([
+        {
+          code: 'unknown-payload-value',
+          index: 18,
+          start: 18,
+          end: 25,
+          property: 'boxShadow',
+          candidate: 'shadw-3',
+          replacement: 'shadow-3',
+          message: 'unknown value "shadw-3" for boxShadow; did you mean "shadow-3"?',
+        },
+      ])
+      expect(
+        diagnoseStyleValueProgram(
+          'boxShadow',
+          '0 1px 3px color(display-p3 1 0 0)',
+          strictOptions
+        )
+      ).toEqual([])
+      expect(
+        diagnoseStyleValueProgram(
+          'boxShadow',
+          '0 1px 3px color-mix(in srgb, red, blue)',
+          strictOptions
+        )
+      ).toEqual([])
+      expect(
+        diagnoseStyleValueProgram(
+          'outline',
+          'focus-visible:2px solid color8',
+          strictOptions
+        )
+      ).toEqual([])
+      expect(
+        diagnoseStyleValueProgram(
+          'outline',
+          'focus-visible:2px solid colr8',
+          strictOptions
+        )
+      ).toMatchObject([
+        {
+          code: 'unknown-payload-value',
+          property: 'outline',
+          candidate: 'colr8',
+          replacement: 'color8',
+        },
+      ])
       expect(diagnoseStyleValueProgram('p', '4 6', strictOptions)).toEqual([])
       expect(diagnoseStyleValueProgram('p', '4 $6', strictOptions)).toEqual([
         {

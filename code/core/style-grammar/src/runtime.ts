@@ -76,6 +76,7 @@ export {
   type TransformAccumulator,
 } from './runtime/transformAccumulator'
 export { unitlessNumberProperties } from './runtime/unitlessNumbers'
+export { validatePayloadShape, type PayloadShapeDiagnostic } from './ast/payloadShape'
 export {
   getTokenCategoryName,
   propToTokenCategoryCode,

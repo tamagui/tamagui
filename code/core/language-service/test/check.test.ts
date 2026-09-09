@@ -1,5 +1,6 @@
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { rmSync, writeFileSync } from 'node:fs'
 
 import { describe, expect, test } from 'vitest'
 
@@ -17,6 +18,7 @@ describe('checkStyleFiles', () => {
   test('reports every diagnostic in a project with positions', () => {
     const result = checkStyleFiles({ root: projectRoot, configPath })
     expect(result.checkedFileCount).toBe(1)
+    expect(result.skippedProjects).toEqual(['nested'])
     expect(result.diagnosticCount).toBe(3)
 
     const [file] = result.files
@@ -52,5 +54,17 @@ describe('checkStyleFiles', () => {
     const nonStrict = checkStyleFiles({ root: projectRoot, configPath })
     const strict = checkStyleFiles({ root: projectRoot, configPath, strict: true })
     expect(strict.diagnosticCount).toBe(nonStrict.diagnosticCount)
+  })
+
+  test('honors gitignore while walking a repository', () => {
+    const ignored = join(projectRoot, 'ignored.tsx')
+    writeFileSync(ignored, `export const ignored = { bg: 'hver:red' }\n`)
+    try {
+      const result = checkStyleFiles({ root: projectRoot, configPath })
+      expect(result.checkedFileCount).toBe(1)
+      expect(result.files.map((file) => file.file)).not.toContain('ignored.tsx')
+    } finally {
+      rmSync(ignored)
+    }
   })
 })

@@ -523,6 +523,32 @@ test('composite shadows resolve embedded color tokens without category warnings'
   }
 })
 
+test('conditional-only composite shadows emit their rule without a shape warning', () => {
+  const base = config.getDefaultTamaguiConfig()
+  createTamagui({
+    ...base,
+    themes: {
+      ...base.themes,
+      light: { ...base.themes.light, 'shadow-3': '#333' },
+    },
+  })
+  const previousNodeEnv = process.env.NODE_ENV
+  process.env.NODE_ENV = 'development'
+  const warning = vi.spyOn(console, 'warn').mockImplementation(() => {})
+  try {
+    const result = split({ boxShadow: 'hover:0 16px 50px shadow-3' })
+    const className = result.classNames.boxShadow
+    expect(rulesFor(result, className)).toEqual([
+      `@media (hover: hover) {.${className}:where(:hover){box-shadow:0 16px 50px var(--shadow-3)}}`,
+    ])
+    expect(warning).not.toHaveBeenCalled()
+  } finally {
+    warning.mockRestore()
+    process.env.NODE_ENV = previousNodeEnv
+    createTamagui(base)
+  }
+})
+
 test('an overloaded-family mismatch warns without blocking theme resolution', () => {
   // `width="black"`: 'black' lives in the color category, width binds size,
   // and the active theme also defines black. development diagnoses the authored

@@ -4,8 +4,9 @@
 // value site with the sucrase tokenizer, and reports the same diagnostics the
 // editor plugin and eslint rule produce, formatted as readable code frames.
 
-import { readdirSync, readFileSync } from 'node:fs'
-import { join, relative } from 'node:path'
+import { existsSync, readdirSync, readFileSync } from 'node:fs'
+import { dirname, join, relative, resolve } from 'node:path'
+import { spawnSync } from 'node:child_process'
 // deep paths, spelled down to the file: sucrase publishes no `exports` map, and
 // a bare `sucrase/dist/parser` is a directory import that ESM cannot resolve
 import { parse } from 'sucrase/dist/parser/index.js'
@@ -31,6 +32,13 @@ const skippedDirectories = new Set([
   '.expo',
   '.tamagui',
 ])
+const projectMarkers = [
+  'tamagui.build.ts',
+  'tamagui.build.tsx',
+  'tamagui.build.js',
+  'tamagui.build.mjs',
+  'tamagui.build.cjs',
+]
 
 export interface CheckStyleFilesOptions {
   /** project root; file discovery and relative display paths anchor here */
@@ -54,6 +62,8 @@ export interface CheckStyleFilesResult {
   files: readonly CheckedFile[]
   checkedFileCount: number
   diagnosticCount: number
+  /** root-relative Tamagui projects omitted because they own another config */
+  skippedProjects: readonly string[]
 }
 
 export class MissingConfigArtifactError extends Error {
@@ -65,12 +75,24 @@ export class MissingConfigArtifactError extends Error {
   }
 }
 
-function walkSourceFiles(directory: string, results: string[]): void {
+function walkSourceFiles(
+  directory: string,
+  root: string,
+  results: string[],
+  skippedProjects: string[]
+): void {
   for (const entry of readdirSync(directory, { withFileTypes: true })) {
     if (entry.isDirectory()) {
-      if (!skippedDirectories.has(entry.name) && !entry.name.startsWith('.')) {
-        walkSourceFiles(join(directory, entry.name), results)
+      if (skippedDirectories.has(entry.name) || entry.name.startsWith('.')) continue
+      const child = join(directory, entry.name)
+      if (
+        projectMarkers.some((marker) => existsSync(join(child, marker))) ||
+        existsSync(join(child, '.tamagui', 'tamagui.config.json'))
+      ) {
+        skippedProjects.push(relative(root, child))
+        continue
       }
+      walkSourceFiles(child, root, results, skippedProjects)
       continue
     }
     if (sourceExtensions.test(entry.name)) results.push(join(directory, entry.name))
@@ -84,8 +106,8 @@ export function createProjectExtractor(
 }
 
 export function checkStyleFiles(options: CheckStyleFilesOptions): CheckStyleFilesResult {
-  const configPath =
-    options.configPath ?? join(options.root, '.tamagui', 'tamagui.config.json')
+  const root = resolve(options.root)
+  const configPath = options.configPath ?? join(root, '.tamagui', 'tamagui.config.json')
   let contents: string
   try {
     contents = readFileSync(configPath, 'utf8')
@@ -104,12 +126,77 @@ export function checkStyleFiles(options: CheckStyleFilesOptions): CheckStyleFile
   )
 
   let files: string[]
+  const skippedProjects: string[] = []
   if (options.files) {
     files = [...options.files]
   } else {
     files = []
-    walkSourceFiles(options.root, files)
+    const insideGit = spawnSync('git', ['rev-parse', '--is-inside-work-tree'], {
+      cwd: root,
+      encoding: 'utf8',
+    })
+    if (insideGit.status === 0) {
+      const listed = spawnSync(
+        'git',
+        [
+          'ls-files',
+          '--cached',
+          '--others',
+          '--exclude-standard',
+          '-z',
+          '--',
+          '*.tsx',
+          '*.jsx',
+        ],
+        {
+          cwd: root,
+          encoding: 'utf8',
+          maxBuffer: 64 * 1024 * 1024,
+        }
+      )
+      if (listed.error) throw listed.error
+      if (listed.status !== 0) {
+        throw new Error(listed.stderr.trim() || 'git ls-files failed')
+      }
+      const skipped = new Set<string>()
+      const projectByDirectory = new Map<string, string | null>()
+      for (const relativeFile of listed.stdout.split('\0')) {
+        if (!relativeFile) continue
+        const file = join(root, relativeFile)
+        if (!existsSync(file)) continue
+        let directory = dirname(file)
+        let nestedProject: string | null = null
+        const visited: string[] = []
+        while (directory !== root) {
+          if (projectByDirectory.has(directory)) {
+            nestedProject = projectByDirectory.get(directory) ?? null
+            break
+          }
+          visited.push(directory)
+          if (
+            projectMarkers.some((marker) => existsSync(join(directory, marker))) ||
+            existsSync(join(directory, '.tamagui', 'tamagui.config.json'))
+          ) {
+            nestedProject = directory
+            break
+          }
+          directory = dirname(directory)
+        }
+        for (const visitedDirectory of visited) {
+          projectByDirectory.set(visitedDirectory, nestedProject)
+        }
+        if (nestedProject) {
+          skipped.add(relative(root, nestedProject))
+        } else {
+          files.push(file)
+        }
+      }
+      skippedProjects.push(...skipped)
+    } else {
+      walkSourceFiles(root, root, files, skippedProjects)
+    }
     files.sort()
+    skippedProjects.sort()
   }
 
   const checked: CheckedFile[] = []
@@ -133,10 +220,15 @@ export function checkStyleFiles(options: CheckStyleFilesOptions): CheckStyleFile
     }
     if (diagnostics.length === 0) continue
     diagnosticCount += diagnostics.length
-    checked.push({ file: relative(options.root, file), source, diagnostics })
+    checked.push({ file: relative(root, file), source, diagnostics })
   }
 
-  return { files: checked, checkedFileCount: files.length, diagnosticCount }
+  return {
+    files: checked,
+    checkedFileCount: files.length,
+    diagnosticCount,
+    skippedProjects,
+  }
 }
 
 const ansi = {
@@ -200,6 +292,12 @@ export function formatCheckResults(
       )
       output.push('')
     }
+  }
+
+  if (result.skippedProjects.length > 0) {
+    output.push(
+      paint.dim(`Skipped nested Tamagui projects: ${result.skippedProjects.join(', ')}`)
+    )
   }
 
   const summary =

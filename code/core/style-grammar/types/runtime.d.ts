@@ -13,6 +13,7 @@ export type { NativeTransitionTarget } from "./shorthands/transitionNative";
 export { bounceToDampingRatio, dampingRatioToBounce, springFromDurationBounce, springPosition, springSettleTime, springToDurationBounce, springToLinearEasing, type SpringCanonical, type SpringPhysics } from "./runtime/spring";
 export { addTransformValue, cloneTransformAccumulator, createTransformAccumulator, finalizeTransformAccumulator, getTransformPartKeys, removeTransformValue, type TransformAccumulator } from "./runtime/transformAccumulator";
 export { unitlessNumberProperties } from "./runtime/unitlessNumbers";
+export { validatePayloadShape, type PayloadShapeDiagnostic } from "./ast/payloadShape";
 export { getTokenCategoryName, propToTokenCategoryCode, tokenCategoryColor, tokenCategoryFontFamily, tokenCategoryFontSize, tokenCategoryFontWeight, tokenCategoryLetterSpacing, tokenCategoryLineHeight, tokenCategoryNames, tokenCategoryRadius, tokenCategorySize, tokenCategorySpace, tokenCategoryZIndex, type TokenCategoryCode, type TokenCategoryName } from "./runtime/tokenCategories";
 export type { ModifierKind, ParsedValue } from "./ast/valueTypes";
 

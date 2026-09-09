@@ -70,12 +70,14 @@ describe('legacy condition payloads', () => {
       convert('hoverStyle', {
         color: '$red',
         width: 4,
+        gap: 46,
         opacity: 0.5,
         rotate: 45,
       })?.contributions
     ).toEqual([
       { prop: 'color', clause: { modifiers: ['hover'], payload: 'red' } },
       { prop: 'width', clause: { modifiers: ['hover'], payload: '4px' } },
+      { prop: 'gap', clause: { modifiers: ['hover'], payload: '46px' } },
       { prop: 'opacity', clause: { modifiers: ['hover'], payload: '0.5' } },
       { prop: 'rotate', clause: { modifiers: ['hover'], payload: '45deg' } },
     ])

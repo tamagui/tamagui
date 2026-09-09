@@ -19,6 +19,8 @@ export interface CheckStyleFilesResult {
 	files: readonly CheckedFile[];
 	checkedFileCount: number;
 	diagnosticCount: number;
+	/** root-relative Tamagui projects omitted because they own another config */
+	skippedProjects: readonly string[];
 }
 export declare class MissingConfigArtifactError extends Error {
 	constructor(configPath: string);

@@ -401,6 +401,16 @@ export const Fixture = () => <View gap="$1.5" bg="$blue10" hoverStyle={{ bg: 're
     // two runs in one test: each spawns the CLI over a fresh ts-morph project
   }, 30_000)
 
+  test('adds units to numeric gap values before merging clauses', () => {
+    const site = only(
+      run(`import { View } from 'tamagui'
+export const Fixture = () => <View gap={32} $lg={{ gap: 46 }} />`)
+    )
+
+    expect(programs(site)).toEqual({ gap: '32px lg:46px' })
+    expect(site.after).toContain('gap="32px lg:46px"')
+  })
+
   test('a non-numeric dot-path token is still reported', () => {
     // nothing can derive what `$brand.primary` was meant to become, so it
     // stays the author's call.

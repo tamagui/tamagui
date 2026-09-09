@@ -3,6 +3,18 @@
 Filed from ~/soot by the v3 migration health session (r23359). Evidence labels:
 RAN = executed here, INFERRED = follows from what ran.
 
+## Resolution
+
+All seven gaps are resolved in Tamagui:
+
+- strict diagnostics validate embedded color names in compound values;
+- the project checker reports and skips nested Tamagui projects;
+- Git-backed project checks honor ignored files;
+- the codemod preserves numeric gap values as CSS lengths when merging clauses;
+- runtime numeric warnings compare token values and handle unitless or empty categories;
+- conditional-only list values share the grammar's payload-shape validation;
+- Vite evaluation configs do not trigger the duplicate-instance fallback warning.
+
 ## 1. Multi-token payloads are never validated
 
 RAN: `@tamagui/style-grammar/dist/esm/tooling/toolingDiagnostics.mjs` gates

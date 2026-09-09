@@ -6,6 +6,7 @@ import {
 } from './candidateTarget'
 import { createGrammarConfigView, type GrammarSourceConfig } from './config'
 import { splitGeometricShorthandValue } from '../shorthands/geometricShorthand'
+import { borderFamilyTargets, splitBorderValue } from '../shorthands/borderFamily'
 import { formatParsedValue } from './toolingFormat'
 import { validatePayloadShape, type PayloadShapeDiagnostic } from '../ast/payloadShape'
 import { legacyPartComposite, programEligibility } from '../programs/programEligibility'
@@ -291,6 +292,7 @@ type CandidateSighting = {
   end: number
   name: string
   resolved: PayloadReference | undefined
+  functionDepth: number
 }
 
 export const removedV2Props: Readonly<Record<string, string>> = Object.freeze({
@@ -332,6 +334,42 @@ const radiusKeywords: ReadonlySet<string> = new Set(['none'])
 const zIndexKeywords: ReadonlySet<string> = new Set(['auto'])
 
 const borderWidthKeywordsSet: ReadonlySet<string> = new Set(['thin', 'medium', 'thick'])
+
+const compoundColorKeywords: ReadonlySet<string> = new Set([
+  'auto',
+  'border-box',
+  'bottom',
+  'center',
+  'contain',
+  'content-box',
+  'cover',
+  'dashed',
+  'dotted',
+  'double',
+  'fixed',
+  'groove',
+  'hidden',
+  'inset',
+  'left',
+  'local',
+  'medium',
+  'no-repeat',
+  'none',
+  'outset',
+  'padding-box',
+  'repeat',
+  'repeat-x',
+  'repeat-y',
+  'ridge',
+  'right',
+  'round',
+  'scroll',
+  'solid',
+  'space',
+  'thick',
+  'thin',
+  'top',
+])
 
 const fontKeywords: ReadonlySet<string> = new Set([
   'normal',
@@ -584,7 +622,10 @@ export function diagnoseStyleValue(
     diagnostics.push({ index: diagnostic.start, ...diagnostic })
   }
 
-  const diagnoseSegment = (payload: string, offset: number): void => {
+  const diagnoseSegment = (
+    payload: string,
+    offset: number
+  ): readonly CandidateSighting[] => {
     const sightings: CandidateSighting[] = []
     const resolved = resolvePayload(payload, {
       lookup(name) {
@@ -592,8 +633,14 @@ export function diagnoseStyleValue(
         if (!contributions) return undefined
         return { name, kind: referenceKindFor(contributions, targetProperty) }
       },
-      onCandidate(start, end, name, reference) {
-        sightings.push({ start, end, name, resolved: reference })
+      onCandidate(start, end, name, reference, functionDepth) {
+        sightings.push({
+          start,
+          end,
+          name,
+          resolved: reference,
+          functionDepth: functionDepth ?? 0,
+        })
         if (reference) return
 
         const replacement =
@@ -639,18 +686,19 @@ export function diagnoseStyleValue(
       resolved.segments.length === 1 && typeof resolved.segments[0] !== 'string'
         ? resolved.segments[0].name
         : null
-    if (candidate === null || !targetIsKnown) return
+    if (candidate === null || !targetIsKnown) return sightings
     const contributions = candidates.get(candidate)
-    if (!contributions) return
+    if (!contributions) return sightings
 
     const target = resolveCandidateTarget(targetProperty, candidate, contributions)
-    if (target.ok) return
+    if (target.ok) return sightings
     const sighting = sightings.find((entry) => entry.name === candidate && entry.resolved)
     push(`${target.diagnostic.code}:${candidate}:${targetProperty}`, {
       ...target.diagnostic,
       start: offset + (sighting?.start ?? 0),
       end: offset + (sighting?.end ?? payload.length),
     })
+    return sightings
   }
 
   for (const span of spans) {
@@ -671,54 +719,95 @@ export function diagnoseStyleValue(
       continue
     }
 
-    diagnoseSegment(payload, span.start)
+    const sightings = diagnoseSegment(payload, span.start)
 
-    if (options.strictPayloads && (targetIsKnown || targetProperty === 'background')) {
-      if (candidates.has(payload)) continue
-      if (!isSingleBareToken(payload)) continue
-      const category =
-        (targetProperty === 'background'
-          ? 'color'
-          : propToGrammarEntry[targetProperty]?.tokenCategory) ||
-        (getTokenCategoryName(
-          propToTokenCategoryCode[targetProperty]
-        ) as TokenCategory) ||
-        undefined
-      if (!hasTokenVocabulary(options.config, category, targetProperty, candidates))
+    const carriesCompoundColor =
+      targetProperty === 'background' ||
+      targetProperty === 'boxShadow' ||
+      targetProperty === 'textShadow' ||
+      targetProperty in borderFamilyTargets
+    if (
+      options.strictPayloads &&
+      (targetIsKnown || targetProperty === 'background' || carriesCompoundColor)
+    ) {
+      const single = isSingleBareToken(payload)
+      const compoundColor = !single && carriesCompoundColor
+      if (!single && !compoundColor) continue
+
+      const strictSightings = single
+        ? [
+            {
+              start: 0,
+              end: payload.length,
+              name: payload,
+              resolved: undefined,
+              functionDepth: 0,
+            },
+          ]
+        : sightings
+      const validationProperty = compoundColor ? 'color' : targetProperty
+      const category = compoundColor
+        ? 'color'
+        : (targetProperty === 'background'
+            ? 'color'
+            : propToGrammarEntry[targetProperty]?.tokenCategory) ||
+          (getTokenCategoryName(
+            propToTokenCategoryCode[targetProperty]
+          ) as TokenCategory) ||
+          undefined
+      if (!hasTokenVocabulary(options.config, category, validationProperty, candidates))
         continue
-      if (
-        isKnownPropertyValue(
-          payload,
-          targetProperty,
-          category,
-          options.config,
-          candidates
+
+      for (const sighting of strictSightings) {
+        const candidate = sighting.name
+        if (sighting.functionDepth > 0) continue
+        if (single && candidates.has(candidate)) continue
+        if (
+          compoundColor &&
+          (compoundColorKeywords.has(candidate.toLowerCase()) ||
+            /^#[0-9a-fA-F]{3,8}$/.test(candidate))
         )
-      )
-        continue
+          continue
+        if (
+          isKnownPropertyValue(
+            candidate,
+            validationProperty,
+            category,
+            options.config,
+            candidates
+          )
+        )
+          continue
 
-      const completions = completeStyleValue(
-        targetProperty === 'background' ? 'backgroundColor' : property,
-        {
-          ...options,
-          strictPayloads: false,
-          candidates,
-        }
-      )
-      const suggestion = findNearestCompletion(payload, completions)
-      const message = suggestion
-        ? `unknown value "${payload}" for ${property}; did you mean "${suggestion}"?`
-        : `unknown value "${payload}" for ${property}`
+        const completions = completeStyleValue(
+          compoundColor
+            ? 'color'
+            : targetProperty === 'background'
+              ? 'backgroundColor'
+              : property,
+          {
+            ...options,
+            strictPayloads: false,
+            candidates,
+          }
+        )
+        const suggestion = findNearestCompletion(candidate, completions)
+        const message = suggestion
+          ? `unknown value "${candidate}" for ${property}; did you mean "${suggestion}"?`
+          : `unknown value "${candidate}" for ${property}`
+        const start = span.start + sighting.start
+        const end = span.start + sighting.end
 
-      push(`unknown-payload-value:${span.start}:${payload}`, {
-        code: 'unknown-payload-value',
-        start: span.start,
-        end: span.end,
-        property,
-        candidate: payload,
-        replacement: suggestion,
-        message,
-      })
+        push(`unknown-payload-value:${start}:${candidate}`, {
+          code: 'unknown-payload-value',
+          start,
+          end,
+          property,
+          candidate,
+          replacement: suggestion,
+          message,
+        })
+      }
     }
   }
 
@@ -817,10 +906,21 @@ export function diagnoseStyleValueProgram(
   const results: StyleValueDiagnostic[] = []
   const reported = new Set<string>()
   const geometric = splitGeometricShorthandValue(targetProperty, parsed.value)
+  let border: ReturnType<typeof splitBorderValue> | null = null
+  if (borderFamilyTargets[targetProperty]) {
+    const colorNames = options.config.tokenNames?.color
+    const colorTokens = colorNames instanceof Set ? colorNames : new Set<string>()
+    if (!(colorNames instanceof Set)) {
+      forEachName(colorNames, (name) => colorTokens.add(name))
+    }
+    border = splitBorderValue(targetProperty, parsed.value, colorTokens)
+  }
   const programs =
     geometric && geometric.errors.length === 0
       ? geometric.entries
-      : [{ property: targetProperty, value: parsed.value }]
+      : border && border.errors.length === 0
+        ? border.entries
+        : [{ property: targetProperty, value: parsed.value }]
 
   for (const program of programs) {
     const { base, clauses } = program.value

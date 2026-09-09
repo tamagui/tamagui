@@ -19,6 +19,7 @@ import {
   grammarMaxNonPlatformDepth,
   namedCssColors,
   removeTransformValue,
+  validatePayloadShape,
 } from '@tamagui/style-grammar/runtime'
 import { getConfig, getConfigMaybe, getFont, getSetting } from '../config'
 import { isDevTools } from '../constants/isDevTools'
@@ -2665,34 +2666,29 @@ function configuredValue(
         let minDistance = Infinity
         const rawNum = Number(name)
         const tokens = category ? state.conf.tokensParsed[category] : undefined
+        let hasTokens = false
         if (tokens && Number.isFinite(rawNum)) {
           for (const key in tokens) {
-            const keyNum = Number(key)
-            if (Number.isFinite(keyNum)) {
-              const dist = Math.abs(keyNum - rawNum)
+            hasTokens = true
+            const val = tokens[key]?.val
+            const valNum = typeof val === 'number' ? val : Number(val)
+            if (Number.isFinite(valNum)) {
+              const dist = Math.abs(valNum - rawNum)
               if (dist < minDistance) {
                 minDistance = dist
                 nearest = key
               }
-            } else {
-              const val = tokens[key]?.val
-              const valNum = typeof val === 'number' ? val : Number(val)
-              if (Number.isFinite(valNum)) {
-                const dist = Math.abs(valNum - rawNum)
-                if (dist < minDistance) {
-                  minDistance = dist
-                  nearest = key
-                }
-              }
             }
           }
         }
-        warnOnce(
-          `numeric-token:${property}=${raw}`,
-          `${property}="${raw}" was passed to CSS as-is with px units${
-            nearest ? `; nearest token is "${nearest}"` : ''
-          }`
-        )
+        if (hasTokens) {
+          warnOnce(
+            `numeric-token:${property}=${raw}`,
+            `${property}="${raw}" was passed to CSS as-is${
+              category === 'zIndex' ? '' : ' with px units'
+            }${nearest ? `; nearest token is "${nearest}"` : ''}`
+          )
+        }
       } else if (
         category === 'color' &&
         /^[a-zA-Z0-9-]+$/.test(name) &&
@@ -3629,18 +3625,17 @@ export function walkConditionalValue(
     }
   }
 
-  if (
+  const payloadShapeDiagnostic =
     warnMode &&
     process.env.NODE_ENV === 'development' &&
     typeof value === 'string' &&
     !hasBase &&
     conditions &&
-    getConfigRevisionState(state.conf).tokenCategory(property) &&
-    splitComponents(lastPayload).length > 1
-  ) {
-    warnOnce(
-      `${property}="${value}" has multiple values after its first conditional. Write the base value before the first conditional.`
-    )
+    getConfigRevisionState(state.conf).tokenCategory(property)
+      ? validatePayloadShape(property, lastPayload, false)
+      : null
+  if (payloadShapeDiagnostic) {
+    warnOnce(`${property}="${value}": ${payloadShapeDiagnostic.message}`)
   }
   if (
     warnMode === 1 &&

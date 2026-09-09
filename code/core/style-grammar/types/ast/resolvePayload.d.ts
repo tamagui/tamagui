@@ -42,13 +42,14 @@ export interface ResolvePayloadOptions {
 	*/
 	resolveNumbers?: boolean;
 	/**
-	* tooling hook: receives every top-level candidate the resolver considered —
+	* tooling hook: receives every candidate the resolver considered —
 	* idents and hex colors always, bare numbers when `resolveNumbers` is set —
 	* with its payload offsets and resolution. Skipped positions (strings, url()
-	* bodies, function names, custom properties) never report. The runtime path
-	* never passes this.
+	* bodies, function names, custom properties) never report. `functionDepth`
+	* distinguishes identifiers inside CSS functions from bare payload slots.
+	* The runtime path never passes this.
 	*/
-	onCandidate?(start: number, end: number, name: string, resolved: PayloadReference | undefined): void;
+	onCandidate?(start: number, end: number, name: string, resolved: PayloadReference | undefined, functionDepth?: number): void;
 }
 export declare function resolvePayload(payload: string, options: ResolvePayloadOptions): ResolvedPayload;
 export { splitColorOpacitySuffix, type ColorOpacitySuffix } from "../runtime/colorOpacity";
