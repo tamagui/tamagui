@@ -1,19 +1,58 @@
-import { TamaguiProvider, Theme, View, createTamagui } from '@tamagui/core'
+import { TamaguiProvider, Theme, View, createTamagui, styled } from '@tamagui/core'
 import { render } from '@testing-library/react-native'
-import { describe, expect, test } from 'vitest'
+import { createRequire } from 'node:module'
+import { describe, expect, test, vi } from 'vitest'
 import { getDefaultTamaguiConfig } from '../config-default'
 
+// the native test bundle loads react-native through commonjs.
+const { Appearance } = createRequire(import.meta.url)('react-native')
 const defaultConfig = getDefaultTamaguiConfig('native')
 
 const config = createTamagui({
   ...defaultConfig,
+  themes: {
+    ...defaultConfig.themes,
+    light: { ...defaultConfig.themes.light, canvas: '#ededed', raised: '#e5e5e5' },
+    dark: { ...defaultConfig.themes.dark, canvas: '#111111', raised: '#171717' },
+  },
   settings: {
     ...defaultConfig.settings,
     fastSchemeChange: true,
   },
 })
 
+const ConditionalBackground = styled(View, {
+  backgroundColor: 'canvas dark:raised',
+})
+
 describe('useTheme', () => {
+  test.each(['light', 'dark'] as const)(
+    'scheme override preserves the base and resolves token colors in %s appearance',
+    (scheme) => {
+      const appearance = vi.spyOn(Appearance, 'getColorScheme').mockReturnValue(scheme)
+      const tree = render(
+        <TamaguiProvider defaultTheme={scheme} config={config}>
+          <ConditionalBackground testID="conditional-background" />
+        </TamaguiProvider>
+      )
+
+      try {
+        expect(tree.toJSON()).toMatchObject({
+          type: 'View',
+          props: {
+            testID: 'conditional-background',
+            style: {
+              backgroundColor: { dynamic: { light: '#ededed', dark: '#171717' } },
+            },
+          },
+        })
+      } finally {
+        tree.unmount()
+        appearance.mockRestore()
+      }
+    }
+  )
+
   test(`nested non-changing scheme with fast scheme change doesn't de-opt`, () => {
     const tree = render(
       <TamaguiProvider defaultTheme="light" config={config}>

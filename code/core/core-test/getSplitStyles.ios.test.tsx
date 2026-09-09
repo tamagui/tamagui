@@ -94,8 +94,8 @@ describe('getSplitStyles iOS specific', () => {
     // Assert - on iOS with fastSchemeChange, colors should be wrapped with dynamic object
     expect(result?.style?.backgroundColor).toEqual({
       dynamic: {
-        light: 'white',
-        dark: 'black',
+        light: '#fff',
+        dark: '#000',
       },
     })
   })
@@ -113,8 +113,8 @@ describe('getSplitStyles iOS specific', () => {
     // Assert - on iOS with fastSchemeChange, colors should be wrapped with dynamic object
     expect(result?.style?.backgroundColor).toEqual({
       dynamic: {
-        light: 'white',
-        dark: 'black',
+        light: '#fff',
+        dark: '#000',
       },
     })
   })
@@ -283,8 +283,8 @@ describe('DynamicColorIOS preserved in object format', () => {
     // backgroundColor is a color key, should have DynamicColorIOS wrapper
     expect(result?.style?.backgroundColor).toEqual({
       dynamic: {
-        light: 'white',
-        dark: 'black',
+        light: '#fff',
+        dark: '#000',
       },
     })
   })

@@ -70,7 +70,7 @@ import { warnOnce, warnRefusedValue } from './warnOnce'
 
 export { getStyleStaticConfig }
 
-import { isColorStyleKey } from './getDynamicVal'
+import { extractValueFromDynamic, isColorStyleKey } from './getDynamicVal'
 import { getDynamicEnv } from './styledDynamic'
 import {
   getRulesForIdentifier,
@@ -2836,11 +2836,17 @@ function emitProperty(
   const theme = cursor ? cursor[conditionTheme] : ''
   if (process.env.TAMAGUI_TARGET === 'native' && theme) {
     if (supportsDynamicColorIOS && isColorStyleKey(property)) {
-      const schemes = ((direct.flatDynamicColors ||= {})[property] ||= {})
-      schemes[theme] =
-        typeof originalValue === 'string' && /^[a-z]+$/i.test(originalValue)
-          ? originalValue
-          : value
+      const colors = (direct.flatDynamicColors ||= {})
+      let schemes = colors[property]
+      if (!schemes) {
+        schemes = colors[property] = {}
+        const base = direct.flatSlots?.get(property)?.find((entry) => !entry[2])?.[1]
+        if (base !== undefined) {
+          schemes.light = extractValueFromDynamic(base, 'light')
+          schemes.dark = extractValueFromDynamic(base, 'dark')
+        }
+      }
+      schemes[theme] = extractValueFromDynamic(value, theme)
       streamWriteInline(
         state,
         property,
@@ -3755,6 +3761,7 @@ function contributeValue(
 
 function clearDirectStyle(state: GetStyleState, property: string) {
   const direct = state as DirectState
+  if (direct.flatDynamicColors) delete direct.flatDynamicColors[property]
   if (process.env.TAMAGUI_TARGET === 'web') property = webStyleProperty(property)
   const propertyKind = getConfigRevisionState(state.conf).propertyKind(property)
   const atomicKey = property.startsWith('transition')
