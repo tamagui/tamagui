@@ -187,6 +187,7 @@
     "lodash": "4.18.1",
     "lodash-es": "4.18.1",
     "motion": "12.37.0",
+    "next": "16.3.4",
     "node-forge": "1.4.0",
     "picomatch": "4.0.4",
     "postcss": "8.5.15",
