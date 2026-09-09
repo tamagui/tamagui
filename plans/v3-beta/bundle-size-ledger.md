@@ -387,3 +387,27 @@ now goes through it. `styledDynamic` threads `conf.sizes` into the env.
   under concurrent builds. It did not establish a performance win and was
   reverted. No render-speed improvement is claimed. The harness now labels
   Node's server-side CSS-collection environment explicitly.
+
+## Baseline update, 2026-09-08: nested pointer events and patched Next
+
+Nested `box-none` and `box-only` views need their own pointer mode to beat the
+parent's direct-child rule. The child selector now wraps the parent selector in
+`:where()`, giving the child rule zero specificity without adding runtime work.
+
+- **RAN** the untouched parent at `5769fe54e4` after a complete workspace JS
+  build: 76,703 raw / 28,820 gzip-9.
+- **RAN** the pointer fix after the same build on pinned Node 24.16.0: 76,711
+  raw / 28,824 gzip-9. The correctness fix costs 8 raw bytes and 4 gzip bytes.
+- The previous 28,821 ceiling had one byte of headroom before this fix. Accepted
+  as the cost of preserving nested pointer-event overrides. Baseline re-recorded
+  at 28,824, ceiling 28,974.
+
+The root Next override moved from 16.2.11 to the patched 16.3.4 release. The
+zero-runtime starter records framework chunks as part of the page JavaScript.
+
+- **RAN** Linux CI receipts after a complete workspace JS build: Next Webpack
+  base 140,860 -> 141,308 gzip-9 and islands 141,879 -> 142,327, exactly +448
+  bytes in both tiers. Vite and Metro page JavaScript stayed byte-identical.
+- **TESTED** all six graphs built with zero compiler violations and no forbidden
+  modules. The re-record also captures the already-qualified island reductions
+  and tightens CSS values to the current Linux receipts.

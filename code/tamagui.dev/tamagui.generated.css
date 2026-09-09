@@ -5,8 +5,8 @@
 @scope (.is_Text) to (.is_View) { :where(.is_Text) { white-space: inherit; word-wrap: inherit; } }
 ._dsp_contents {display:contents;}
 ._no_backdrop::backdrop {display: none;}
-:root ._pe-boxonly>* {pointer-events:none;}
-:root ._pe-boxnone>* {pointer-events:auto;}
+:where(._pe-boxonly)>* {pointer-events:none;}
+:where(._pe-boxnone)>* {pointer-events:auto;}
 ._hsb-x::-webkit-scrollbar:horizontal { display: none !important; }
 ._hsb-y::-webkit-scrollbar:vertical { display: none !important; }
 ._hsb-x { scrollbar-width: none !important; }
