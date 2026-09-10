@@ -109,7 +109,7 @@ const lightScale = {
   'color-focus': 950,
   'placeholder-color': 500,
   'outline-color': 400,
-  'shadow-color': 'rgba(0,0,0,0.18)',
+  'shadow-color': 'shadow-4',
   'accent-background': 'accent-light-600',
   'accent-color': 'accent-light-50',
 } as const satisfies ThemeScale<string>
@@ -128,7 +128,6 @@ const darkScale = {
   'color-hover': 50,
   'color-press': 50,
   'color-focus': 50,
-  'shadow-color': 'rgba(0,0,0,0.48)',
   'accent-background': 'accent-dark-500',
   'accent-color': 'accent-dark-950',
 } as const satisfies ThemeScale<string>

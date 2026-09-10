@@ -15,6 +15,20 @@ import { TEST_IDS } from '../constants/test-ids'
  *
  * Open in browser: http://localhost:9000/?test=AccentAndColorThemes
  */
+const ACCENT_RAMP = [
+  'color-1',
+  'color-2',
+  'color-3',
+  'color-4',
+  'color-5',
+  'color-6',
+  'color-7',
+  'color-8',
+  'color-9',
+  'color-10',
+  'color-11',
+] as const
+
 export function AccentAndColorThemes() {
   return (
     <YStack gap="6" padding="6" backgroundColor="background">
@@ -136,21 +150,19 @@ export function AccentAndColorThemes() {
         </Paragraph>
         <Theme name="accent">
           <XStack gap="1">
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((i) => (
+            {ACCENT_RAMP.map((name, index) => (
               <YStack
-                key={i}
-                testID={`palette-accent-${i}`}
+                key={name}
+                testID={`palette-accent-${index + 1}`}
                 width={40}
                 height={40}
-                backgroundColor={
-                  `color${i}` as `color${1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11}`
-                }
+                backgroundColor={name}
                 borderRadius="2"
                 alignItems="center"
                 justifyContent="center"
               >
-                <Text fontSize={10} color={i > 6 ? 'color-1' : 'color-11'}>
-                  {i}
+                <Text fontSize={10} color={index > 5 ? 'color-1' : 'color-11'}>
+                  {index + 1}
                 </Text>
               </YStack>
             ))}
