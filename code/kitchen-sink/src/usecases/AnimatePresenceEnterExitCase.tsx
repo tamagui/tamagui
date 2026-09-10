@@ -1,6 +1,6 @@
 import { useState, useRef, useCallback } from 'react'
 import { AnimatePresence } from '@tamagui/animate-presence'
-import { Button, Circle, Paragraph, Square, Text, XStack, YStack } from 'tamagui'
+import { Button, Circle, Paragraph, Popover, Square, Text, XStack, YStack } from 'tamagui'
 
 /**
  * Tests that enter clause/exit clause actually animate (opacity changes)
@@ -57,6 +57,8 @@ export function AnimatePresenceEnterExitCase() {
       <Scenario01_BasicEnterExit />
       <Scenario02_CircleBadge />
       <Scenario03_InitialFalse />
+      <Scenario04_ExitScale />
+      <Scenario05_PopoverExitScale />
     </YStack>
   )
 }
@@ -233,6 +235,135 @@ function Scenario02_CircleBadge() {
           ) : null}
         </AnimatePresence>
       </XStack>
+    </YStack>
+  )
+}
+
+/**
+ * Scenario 04: exit clauses on transform props. `scale` and `y` are emitted
+ * as the individual css `scale` and `translate` properties, so an exit has
+ * to animate those, not only opacity and `transform`.
+ */
+function Scenario04_ExitScale() {
+  const [show, setShow] = useState(true)
+  const rafRef = useRef<number>(0)
+
+  const handleToggle = () => {
+    if (typeof window !== 'undefined') {
+      window.__enterExitFrames['04-scale'] = []
+      window.__enterExitFrames['04-translate'] = []
+      const track = () => {
+        const el = document.querySelector('[data-testid="enter-exit-04-target"]')
+        if (el) {
+          // effective values: the individual `scale` / `translate` properties
+          // composed with whatever the `transform` matrix carries
+          const computed = getComputedStyle(el)
+          const matrix = computed.transform.match(/matrix\(([^)]+)\)/)
+          const m = matrix ? matrix[1].split(',').map(Number) : [1, 0, 0, 1, 0, 0]
+          const scale = (parseFloat(computed.scale) || 1) * m[0]
+          const translate = computed.translate.split(' ')[1] ?? computed.translate
+          window.__enterExitFrames['04-scale'].push(scale)
+          window.__enterExitFrames['04-translate'].push(
+            (parseFloat(translate) || 0) + m[5]
+          )
+        }
+        rafRef.current = requestAnimationFrame(track)
+      }
+      rafRef.current = requestAnimationFrame(track)
+    }
+    setShow((v) => !v)
+    setTimeout(() => {
+      cancelAnimationFrame(rafRef.current)
+      if (typeof window !== 'undefined') {
+        window.__enterExitReady['04'] = true
+      }
+    }, 1000)
+  }
+
+  return (
+    <YStack gap="2">
+      <Paragraph size="2">Scenario 04: exit scale and translate</Paragraph>
+      <Button testID="enter-exit-04-trigger" onPress={handleToggle}>
+        Toggle
+      </Button>
+      <XStack height={80} items="center">
+        <AnimatePresence>
+          {show ? (
+            <Square
+              key="test-square"
+              testID="enter-exit-04-target"
+              transition={{ preset: 'medium', properties: 'transform, opacity' }}
+              bg="blue-600"
+              opacity="1 exit:0"
+              y="enter:-8px exit:4px"
+              scale="enter:0.95 exit:0.95"
+              size={60}
+            />
+          ) : null}
+        </AnimatePresence>
+      </XStack>
+    </YStack>
+  )
+}
+
+/**
+ * Scenario 05: the same exit clauses on a positioned Popover.Content, whose
+ * popper drives translate itself
+ */
+function Scenario05_PopoverExitScale() {
+  const [open, setOpen] = useState(false)
+  const rafRef = useRef<number>(0)
+
+  const track = () => {
+    if (typeof window === 'undefined') return
+    window.__enterExitFrames['05-scale'] = []
+    const step = () => {
+      const el = document.querySelector('[data-testid="enter-exit-05-target"]')
+      if (el) {
+        const computed = getComputedStyle(el)
+        const matrix = computed.transform.match(/matrix\(([^)]+)\)/)
+        const m = matrix ? matrix[1].split(',').map(Number) : [1, 0, 0, 1, 0, 0]
+        window.__enterExitFrames['05-scale'].push(
+          (parseFloat(computed.scale) || 1) * m[0]
+        )
+      }
+      rafRef.current = requestAnimationFrame(step)
+    }
+    rafRef.current = requestAnimationFrame(step)
+    setTimeout(() => {
+      cancelAnimationFrame(rafRef.current)
+      window.__enterExitReady['05'] = true
+    }, 1000)
+  }
+
+  return (
+    <YStack gap="2">
+      <Paragraph size="2">Scenario 05: popover exit scale</Paragraph>
+      <Popover open={open} onOpenChange={setOpen}>
+        <Popover.Trigger asChild>
+          <Button
+            testID="enter-exit-05-trigger"
+            onPress={() => {
+              if (open) track()
+              setOpen(!open)
+            }}
+          >
+            Toggle popover
+          </Button>
+        </Popover.Trigger>
+        <Popover.Content
+          testID="enter-exit-05-target"
+          animatePosition
+          transition={{ preset: 'medium', properties: 'transform, opacity' }}
+          opacity="1 exit:0"
+          y="enter:-8px exit:4px"
+          scale="enter:0.95 exit:0.95"
+          bg="blue-600"
+          p="4"
+        >
+          <Text>content</Text>
+        </Popover.Content>
+      </Popover>
     </YStack>
   )
 }

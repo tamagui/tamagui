@@ -174,3 +174,49 @@ test('scenario 02: circle badge exit animation', async ({ page }) => {
 
   expect(await waitForRemoval(page, 'enter-exit-02-target')).toBe(true)
 })
+
+test('scenario 04: exit animates scale and translate, not only opacity', async ({
+  page,
+}) => {
+  expect(await elementExists(page, 'enter-exit-04-target')).toBe(true)
+
+  await page.getByTestId('enter-exit-04-trigger').click()
+  await page.waitForFunction(() => window.__enterExitReady?.['04'] === true)
+
+  const frames = await page.evaluate(() => ({
+    scale: window.__enterExitFrames['04-scale'],
+    translate: window.__enterExitFrames['04-translate'],
+  }))
+  expect(frames.scale.length).toBeGreaterThan(5)
+  // a real transition passes through values strictly between the ends
+  const midScale = frames.scale.filter((v) => v > 0.951 && v < 0.999)
+  const midTranslate = frames.translate.filter((v) => v > 0.1 && v < 3.9)
+  expect(midScale.length, `scale frames: ${frames.scale.join(',')}`).toBeGreaterThan(1)
+  expect(
+    midTranslate.length,
+    `translate frames: ${frames.translate.join(',')}`
+  ).toBeGreaterThan(1)
+  expect(await waitForRemoval(page, 'enter-exit-04-target')).toBe(true)
+})
+
+test('scenario 05: a positioned popover animates its exit scale', async ({
+  page,
+}, testInfo) => {
+  // known defect: the reanimated web driver starts a positioned popover's exit
+  // scale at its target instead of the painted 1, so it snaps
+  test.fail(
+    testInfo.project.metadata.animationDriver === 'reanimated',
+    'reanimated web driver snaps a positioned popover exit scale'
+  )
+  await page.getByTestId('enter-exit-05-trigger').click()
+  await expect(page.getByTestId('enter-exit-05-target')).toBeVisible()
+  await page.waitForTimeout(600)
+
+  await page.getByTestId('enter-exit-05-trigger').click()
+  await page.waitForFunction(() => window.__enterExitReady?.['05'] === true)
+
+  const frames: number[] = await page.evaluate(() => window.__enterExitFrames['05-scale'])
+  const mid = frames.filter((v) => v > 0.951 && v < 0.999)
+  expect(mid.length, `scale frames: ${frames.join(',')}`).toBeGreaterThan(1)
+  expect(await waitForRemoval(page, 'enter-exit-05-target')).toBe(true)
+})
