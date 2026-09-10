@@ -9,8 +9,8 @@ import {
   splitTailwindStyles,
 } from '../tailwind/src/__tests__/utils'
 
-// the tailwind frontend should resolve semantic theme-value color names (color1-11,
-// background, border-color, …) to their theme css var (var(--color5)), theme-aware
+// the tailwind frontend should resolve semantic theme-value color names (color-1-11,
+// background, border-color, …) to their theme css var (var(--color-5)), theme-aware
 // and never as a dead literal through the shared property-scoped lookup.
 beforeAll(() => {
   createTamagui(defaultConfig)
@@ -28,16 +28,16 @@ function colorRule(className: string, prop: string) {
 }
 
 describe('tailwind theme-value color classes', () => {
-  test('bg-color5 resolves to var(--color5) (theme-aware, not literal)', () => {
-    const rule = colorRule('bg-color5', 'backgroundColor')
+  test('bg-color-5 resolves to var(--color-5) (theme-aware, not literal)', () => {
+    const rule = colorRule('bg-color-5', 'backgroundColor')
     expect(rule).toBeTruthy()
-    expect(rule[StyleObjectValue]).toBe('var(--color5)')
+    expect(rule[StyleObjectValue]).toBe('var(--color-5)')
   })
 
-  test('color-color10 resolves to var(--color10)', () => {
-    const rule = colorRule('color-color10', 'color')
+  test('color-color-10 resolves to var(--color-10)', () => {
+    const rule = colorRule('color-color-10', 'color')
     expect(rule).toBeTruthy()
-    expect(rule[StyleObjectValue]).toBe('var(--color10)')
+    expect(rule[StyleObjectValue]).toBe('var(--color-10)')
   })
 
   test('border-border-color resolves to var(--border-color)', () => {

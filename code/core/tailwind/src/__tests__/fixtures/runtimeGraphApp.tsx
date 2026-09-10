@@ -10,6 +10,6 @@ export function RuntimeGraphApp() {
   return createElement(
     TamaguiProvider,
     { config, defaultTheme: 'light' },
-    createElement(ThemeUpdate, null, createElement(View, { className: 'dark:bg-blue4' }))
+    createElement(ThemeUpdate, null, createElement(View, { className: 'dark:bg-blue-4' }))
   )
 }

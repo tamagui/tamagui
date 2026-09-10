@@ -149,7 +149,7 @@ describe('flatten-tests', () => {
 
       export function Test() {
         return (
-          <View backgroundColor={showBackground ? 'color1' : 'color2'} />
+          <View backgroundColor={showBackground ? 'color-1' : 'color-2'} />
         )
       }
     `)
@@ -279,7 +279,7 @@ describe('flatten-tests', () => {
           <View
             width={60}
             height={40}
-            backgroundColor="gray2"
+            backgroundColor="gray-2"
             opacity="press:0.8"
           />
         )
@@ -287,7 +287,7 @@ describe('flatten-tests', () => {
     `)
     const code = output?.code ?? ''
     expect(code).toContain('width={60}')
-    expect(code).toContain('backgroundColor="gray2"')
+    expect(code).toContain('backgroundColor="gray-2"')
     expect(code).toContain('press:0.8')
     expect(code).not.toContain('__TamaguiNativeView')
   })

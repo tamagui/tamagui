@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'vitest'
 import { splitBorderValue, type ParsedValue } from '../tooling'
 
-const colorTokens = new Set(['primary', 'color5'])
+const colorTokens = new Set(['primary', 'color-5'])
 
 const value = (
   base: string | null,
@@ -106,7 +106,7 @@ describe('the border family', () => {
   test('bare width and color tokens classify before resolution', () => {
     const { entries, errors } = splitBorderValue(
       'borderTop',
-      value('4 solid primary', [{ modifiers: ['hover'], payload: '8 dashed color5' }]),
+      value('4 solid primary', [{ modifiers: ['hover'], payload: '8 dashed color-5' }]),
       colorTokens
     )
     expect(errors).toEqual([])
@@ -119,7 +119,7 @@ describe('the border family', () => {
     })
     expect(byProp.borderTopColor).toEqual({
       base: 'primary',
-      clauses: [{ modifiers: ['hover'], payload: 'color5' }],
+      clauses: [{ modifiers: ['hover'], payload: 'color-5' }],
     })
   })
 

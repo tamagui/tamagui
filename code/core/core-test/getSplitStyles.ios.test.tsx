@@ -122,7 +122,7 @@ describe('getSplitStyles iOS specific', () => {
   test('dynamic color works with theme tokens', () => {
     // Arrange
     const props = {
-      backgroundColor: 'light:blue10 dark:red10',
+      backgroundColor: 'light:blue-10 dark:red-10',
       color: 'light:blue dark:red',
     }
 

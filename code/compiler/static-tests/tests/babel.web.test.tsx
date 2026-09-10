@@ -663,9 +663,9 @@ test('Text with a hover clause and conditional spread preserves ternary', async 
       return (
         <Text
           cursor="pointer"
-          color="hover:color12"
+          color="hover:color-12"
           {...(isActive && {
-            color: 'color12',
+            color: 'color-12',
             fontWeight: '800',
           })}
         >
@@ -695,7 +695,7 @@ test('a conditional theme-token color lowers to conditional var classes', async 
     export function Test({ isActive, label }) {
       return (
         <Text
-          color={isActive ? 'color' : 'color11'}
+          color={isActive ? 'color' : 'color-11'}
         >
           {label}
         </Text>
@@ -713,7 +713,7 @@ test('a conditional theme-token color lowers to conditional var classes', async 
   // both branches are theme tokens; on web they resolve to css variables so
   // the conditional classes stay theme-live
   expect(output?.styles).toContain('color:var(--color)')
-  expect(output?.styles).toContain('color:var(--color11)')
+  expect(output?.styles).toContain('color:var(--color-11)')
   expect(output?.js).toContain('(isActive) ?')
 })
 
@@ -750,7 +750,7 @@ test('ternary with mixed theme-token and non-token values lowers conditional cla
         <Text
           fontSize="3"
           fontWeight={isActive ? '600' : '400'}
-          color={isActive ? 'color12' : 'color11'}
+          color={isActive ? 'color-12' : 'color-11'}
         >
           {label}
         </Text>
@@ -768,8 +768,8 @@ test('ternary with mixed theme-token and non-token values lowers conditional cla
   expect(output?.styles).toContain('font-size:var(--f-size-3)')
   expect(output?.styles).toContain('font-weight:600')
   expect(output?.styles).toContain('font-weight:400')
-  expect(output?.styles).toContain('color:color12')
-  expect(output?.styles).toContain('color:var(--color11)')
+  expect(output?.styles).toContain('color:color-12')
+  expect(output?.styles).toContain('color:var(--color-11)')
   expect(output?.js).not.toContain('fontSize="3"')
   expect(output?.js).not.toContain('<Text')
   expect(output?.js).toContain('<span')

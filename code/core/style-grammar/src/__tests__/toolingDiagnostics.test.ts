@@ -409,7 +409,7 @@ describe('tooling diagnostics', () => {
         shorthands: { ...config.shorthands, bg: backgroundProperty },
         tokenNames: {
           ...config.tokenNames,
-          color: ['red', 'blue', 'background', 'color8', 'shadow-3'],
+          color: ['red', 'blue', 'background', 'color-8', 'shadow-3'],
         },
       }
       const themeRegistry = createModifierRegistry(themeConfig).registry
@@ -493,7 +493,7 @@ describe('tooling diagnostics', () => {
       expect(
         diagnoseStyleValueProgram(
           'outline',
-          'focus-visible:2px solid color8',
+          'focus-visible:2px solid color-8',
           strictOptions
         )
       ).toEqual([])
@@ -508,7 +508,7 @@ describe('tooling diagnostics', () => {
           code: 'unknown-payload-value',
           property: 'outline',
           candidate: 'colr8',
-          replacement: 'color8',
+          replacement: 'color-8',
         },
       ])
       expect(diagnoseStyleValueProgram('p', '4 6', strictOptions)).toEqual([])

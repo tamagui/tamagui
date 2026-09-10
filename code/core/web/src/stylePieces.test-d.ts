@@ -7,7 +7,7 @@ import { View } from './views/View'
 describe('style() pieces', () => {
   test('returns a StylePiece accepted by the style prop', () => {
     const piece = style({
-      backgroundColor: 'red10',
+      backgroundColor: 'red-10',
       padding: 4,
       opacity: '1 sm:0.5',
     })

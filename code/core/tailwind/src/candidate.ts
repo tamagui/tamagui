@@ -129,7 +129,7 @@ function expansionProps(parsed: ParsedCandidate): readonly string[] | null {
 /**
  * Adapt a registry-parsed candidate into the ordinary props shared rendering consumes.
  * Examples:
- *   "hover:bg-blue5" → backgroundColor + a `hover:blue5` program
+ *   "hover:bg-blue-5" → backgroundColor + a `hover:blue-5` program
  *   "sm:p-4" → padding + an `sm:4` program
  *   "bg-[red]" → { key: "backgroundColor", value: "red" }
  *   "w-100" → { key: "width", value: 100 }
@@ -287,7 +287,7 @@ function tailwindClassToFlatProp(
   }
 
   // arbitrary values: p-[4px], w-[100px], rounded-[8px], min-h-[100vh], rotate-[-8deg],
-  // h-[calc(100%-2px)], bg-[var(--color5)], bg-[#fff]. use the bracketed value directly as
+  // h-[calc(100%-2px)], bg-[var(--color-5)], bg-[#fff]. use the bracketed value directly as
   // CSS — no scaling/token resolution. tailwind encodes spaces inside [] as underscores.
   if (value.length > 2 && value[0] === '[' && value[value.length - 1] === ']') {
     const inner = decodeArbitrary(value.slice(1, -1))

@@ -78,19 +78,21 @@ describe('tamaguiToTailwind', () => {
     })
 
     test('a config-less bare name stays a literal arbitrary value', () => {
-      const input = `<View backgroundColor="blue5" />`
+      const input = `<View backgroundColor="blue-5" />`
       const output = tamaguiToTailwind(input)
-      expect(output).toContain('bg-[blue5]')
+      expect(output).toContain('bg-[blue-5]')
     })
 
     test('text color uses color-* utility, not text-* (text is textAlign in v6)', () => {
-      expect(tamaguiToTailwind(`<Text color="color8" />`)).toContain('color-[color8]')
-      expect(tamaguiToTailwind(`<Text color="color8/50" />`)).toContain(
-        'color-[color8/50]'
+      expect(tamaguiToTailwind(`<Text color="color-8" />`)).toContain('color-[color-8]')
+      expect(tamaguiToTailwind(`<Text color="color-8/50" />`)).toContain(
+        'color-[color-8/50]'
       )
       expect(tamaguiToTailwind(`<Text color="red" />`)).toContain('color-[red]')
       // must not emit the text-* form for color, which would set textAlign
-      expect(tamaguiToTailwind(`<Text color="color8" />`)).not.toMatch(/text-\[color8\]/)
+      expect(tamaguiToTailwind(`<Text color="color-8" />`)).not.toMatch(
+        /text-\[color-8\]/
+      )
     })
 
     test('unit-bearing and negative string values become arbitrary [..] classes', () => {
@@ -103,8 +105,8 @@ describe('tamaguiToTailwind', () => {
       )
       // config-less bare names stay literal; mapped percentages are unchanged
       expect(tamaguiToTailwind(`<View width="50%" />`)).toContain('w-1/2')
-      expect(tamaguiToTailwind(`<View backgroundColor="blue5" />`)).toContain(
-        'bg-[blue5]'
+      expect(tamaguiToTailwind(`<View backgroundColor="blue-5" />`)).toContain(
+        'bg-[blue-5]'
       )
     })
 
@@ -416,11 +418,11 @@ describe('tamaguiToTailwind', () => {
 
     test('configured color and font tokens stay dynamic (names, never baked to px)', () => {
       const options = {
-        tokens: { color: { color5: '#fff' } },
+        tokens: { color: { 'color-5': '#fff' } },
         fonts: { body: { size: { 5: 16 } } },
       }
-      expect(tamaguiToTailwind(`<View backgroundColor="color5" />`, options)).toContain(
-        'bg-color5'
+      expect(tamaguiToTailwind(`<View backgroundColor="color-5" />`, options)).toContain(
+        'bg-color-5'
       )
       expect(tamaguiToTailwind(`<Text fontSize="5" />`, options)).toContain('text-5')
     })
@@ -532,7 +534,7 @@ describe('tamaguiToTailwind', () => {
   backgroundColor="background hover:background-hover"
 >
   <Text fontSize={18} fontWeight="700" color="color">Title</Text>
-  <Text fontSize={14} color="color8">Description</Text>
+  <Text fontSize={14} color="color-8">Description</Text>
 </YStack>`
       const output = tamaguiToTailwind(input)
       expect(output).toContain('flex flex-col')

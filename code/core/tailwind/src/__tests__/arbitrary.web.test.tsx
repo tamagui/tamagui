@@ -26,7 +26,7 @@ const cases: [string, string, any][] = [
   ['max-h-[50vh]', 'maxHeight', '50vh'],
   ['gap-[8px]', 'gap', '8px'],
   ['top-[-4px]', 'top', '-4px'],
-  ['bg-[var(--color5)]', 'backgroundColor', 'var(--color5)'],
+  ['bg-[var(--color-5)]', 'backgroundColor', 'var(--color-5)'],
   ['bg-[#fff]', 'backgroundColor', '#fff'],
   ['h-[calc(100%-2px)]', 'height', 'calc(100%-2px)'],
 ]

@@ -7,7 +7,7 @@ window['React'] = React
 
 // Regression for sandbox ssr-theme failure: tokens inside extracted theme
 // clauses must resolve to var(--x) references — a raw
-// "color5" in the emitted CSS is an invalid declaration browsers drop,
+// "color-5" in the emitted CSS is an invalid declaration browsers drop,
 // so the theme style silently never applies.
 test('tokens inside theme clauses resolve to CSS variables', async () => {
   const output = await extractForWeb(
@@ -18,7 +18,7 @@ test('tokens inside theme clauses resolve to CSS variables', async () => {
         <View
           width={100}
           height={100}
-          boxShadow="0 2px 4px shadowColor light:0 4px 8px color5"
+          boxShadow="0 2px 4px shadowColor light:0 4px 8px color-5"
         />
       )
     }
@@ -33,10 +33,10 @@ test('tokens inside theme clauses resolve to CSS variables', async () => {
 
   const styles = output?.styles ?? ''
   expect(styles).toContain('.t_light')
-  expect(styles).toContain('var(--color5)')
-  // the token must appear only as a variable reference; a bare `color5` as a
+  expect(styles).toContain('var(--color-5)')
+  // the token must appear only as a variable reference; a bare `color-5` as a
   // declaration value is what browsers drop
-  expect(styles).not.toMatch(/(?<!--)color5/)
+  expect(styles).not.toMatch(/(?<!--)color-5/)
 })
 
 test('chained theme and media clauses extract in one pass', async () => {

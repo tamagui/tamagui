@@ -8,9 +8,9 @@ exports[`Text with a hover clause and conditional spread preserves ternary 1`] =
       return (
         <Text
           cursor="pointer"
-          color="hover:color12"
+          color="hover:color-12"
           {...(isActive && {
-            color: 'color12',
+            color: 'color-12',
             fontWeight: '800',
           })}
         >
@@ -319,7 +319,7 @@ exports[`ternary with mixed theme-token and non-token values lowers conditional 
     export function Test({ isActive, label }) {
       return (
         <span
-          className={["is_Text _fs-1892529890", (isActive) ? "_fw-291937703" : "_fw-291935781", (isActive) ? "_c-1170471721" : "_c-1338525332"].filter(Boolean).join(" ")}
+          className={["is_Text _fs-1892529890", (isActive) ? "_fw-291937703" : "_fw-291935781", (isActive) ? "_c-1924888808" : "_c-1455506543"].filter(Boolean).join(" ")}
 
 
         >
@@ -330,7 +330,7 @@ exports[`ternary with mixed theme-token and non-token values lowers conditional 
 "
 `;
 
-exports[`ternary with mixed theme-token and non-token values lowers conditional classes 2`] = `"._fs-1892529890{font-size:var(--f-size-3)}._fw-291937703{font-weight:600}._fw-291935781{font-weight:400}._c-1170471721{color:color12}._c-1338525332{color:var(--color11)}"`;
+exports[`ternary with mixed theme-token and non-token values lowers conditional classes 2`] = `"._fs-1892529890{font-size:var(--f-size-3)}._fw-291937703{font-weight:600}._fw-291935781{font-weight:400}._c-1924888808{color:color-12}._c-1455506543{color:var(--color-11)}"`;
 
 exports[`theme + media queries + conditionals extract 1`] = `
 "

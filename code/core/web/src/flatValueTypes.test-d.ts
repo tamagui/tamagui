@@ -52,7 +52,7 @@ describe('flat value types', () => {
   test('native shadow props accept conditional strings', () => {
     expectTypeOf<'dark:3 light:20'>().toMatchTypeOf<StackStyle['shadowRadius']>()
     expectTypeOf<'dark:0.2 light:0.1'>().toMatchTypeOf<StackStyle['shadowOpacity']>()
-    expectTypeOf<'dark:shadow6 light:shadow4'>().toMatchTypeOf<
+    expectTypeOf<'dark:shadow-6 light:shadow-4'>().toMatchTypeOf<
       StackStyle['shadowColor']
     >()
     expectTypeOf<'dark:{width:0,height:2} light:{width:0,height:7}'>().toMatchTypeOf<

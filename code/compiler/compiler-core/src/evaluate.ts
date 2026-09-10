@@ -700,7 +700,7 @@ function mapBranchLeaves(
 
 /**
  * A template literal is a decision tree once every value it interpolates is:
- * `${active ? 'red10' : 'blue10'}` names the same two strings the bare ternary
+ * `${active ? 'red-10' : 'blue-10'}` names the same two strings the bare ternary
  * does, and the quasis around it are constants. Each interpolated tree
  * multiplies the leaves, so every step spends a level of the shared depth
  * budget and a wide template refuses instead of expanding.

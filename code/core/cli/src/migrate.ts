@@ -345,17 +345,17 @@ acceptance criteria before changing design values.
 
 Rename the adaptive 12-step ramp approximately:
 
-- \`color1\` -> \`color1\`
-- \`color2\` -> \`color2\`
-- \`color3\` -> \`color3\`
-- \`color4\` -> \`color4\`
-- \`color5\` -> \`color5\`
-- \`color6\` and \`color7\` -> \`color6\`
-- \`color8\` -> \`color7\`
-- \`color9\` -> \`color8\`
-- \`color10\` -> \`color9\`
-- \`color11\` -> \`color10\`
-- \`color12\` -> \`color11\`
+- \`color1\` -> \`color-1\`
+- \`color2\` -> \`color-2\`
+- \`color3\` -> \`color-3\`
+- \`color4\` -> \`color-4\`
+- \`color5\` -> \`color-5\`
+- \`color6\` and \`color7\` -> \`color-6\`
+- \`color8\` -> \`color-7\`
+- \`color9\` -> \`color-8\`
+- \`color10\` -> \`color-9\`
+- \`color11\` -> \`color-10\`
+- \`color12\` -> \`color-11\`
 
 The endpoints are exact; inspect contrast in the compressed middle. Replace
 \`surface1\` with \`level2\`, \`surface2\` with \`level3\`, and \`surface3\`

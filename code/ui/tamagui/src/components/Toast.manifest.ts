@@ -8,20 +8,20 @@ export const manifest = {
     'background',
     'border-color',
     'color',
-    'color3',
-    'color4',
-    'color5',
-    'color6',
-    'color7',
-    'color8',
-    'color10',
-    'color11',
-    'color11',
+    'color-3',
+    'color-4',
+    'color-5',
+    'color-6',
+    'color-7',
+    'color-8',
+    'color-10',
+    'color-11',
+    'color-11',
   ],
   native: [
     'requires a Portal provider at the app root for the toast viewport to mount above content',
   ],
-  // grandfathered: the toast card/buttons use palette steps color3..color11
+  // grandfathered: the toast card/buttons use palette steps color-3..color-11
   // for their layered light/dark surface look.
   genericsOnly: false,
 } satisfies SkinManifest

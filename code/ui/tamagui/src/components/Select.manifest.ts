@@ -13,11 +13,11 @@ export const manifest = {
     'border-color-hover',
     'outline-color',
     'color',
-    'color10',
+    'color-10',
   ],
   native: [
     'requires a Portal/Adapt provider at the app root; on native the Select adapts to a Sheet, so the Sheet native peer requirements apply when adaptation is used',
   ],
-  // grandfathered: the active-item indicator uses palette step color10.
+  // grandfathered: the active-item indicator uses palette step color-10.
   genericsOnly: false,
 } satisfies SkinManifest

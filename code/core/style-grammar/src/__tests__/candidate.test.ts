@@ -26,7 +26,7 @@ const tokenNames: Record<TokenCategory, readonly string[]> = {
   flexBasis: ['0', '4', '10', 'sizeOnly', '2xl'],
   radius: ['0', '4', '8', 'xl', 'radiusOnly'],
   zIndex: ['4', 'modal'],
-  color: ['color5', 'red-9', 'colorOnly', 'white'],
+  color: ['color-5', 'red-9', 'colorOnly', 'white'],
   fontFamily: ['body', 'heading', 'familyOnly', 'bothNamed'],
   fontSize: ['4', '5', 'fontSizeOnly', 'sm'],
   // 'strong' not 'semibold': a configured weight sharing a generated
@@ -75,9 +75,9 @@ describe('candidate grammar', () => {
     ['border-t-4', 'borderTopWidth', '4'],
     ['border-x-2', 'borderLeftWidth', '2'],
     ['border-s-2', 'borderInlineStartWidth', '2'],
-    ['border-e-color5', 'borderInlineEndColor', 'color5'],
+    ['border-e-color-5', 'borderInlineEndColor', 'color-5'],
     ['border-bs-2', 'borderBlockStartWidth', '2'],
-    ['border-be-color5', 'borderBlockEndColor', 'color5'],
+    ['border-be-color-5', 'borderBlockEndColor', 'color-5'],
     ['size-10', 'width', '10'],
     ['w-2xl', 'width', '2xl'],
     ['inset-x-0', 'left', '0'],
@@ -88,14 +88,14 @@ describe('candidate grammar', () => {
     ['max-inline-screen', 'maxInlineSize', 'screen'],
     ['inset-s-4', 'insetInlineStart', '4'],
     ['-inset-be-1', 'insetBlockEnd', '1'],
-    ['border-color5', 'borderColor', 'color5'],
+    ['border-color-5', 'borderColor', 'color-5'],
     ['outline-2', 'outlineWidth', '2'],
-    ['outline-color5', 'outlineColor', 'color5'],
+    ['outline-color-5', 'outlineColor', 'color-5'],
     ['outline-offset-4', 'outlineOffset', '4'],
-    ['bg-color5', 'backgroundColor', 'color5'],
+    ['bg-color-5', 'backgroundColor', 'color-5'],
     ['text-5', 'fontSize', '5'],
     ['text-sm', 'fontSize', 'sm'],
-    ['text-color5', 'color', 'color5'],
+    ['text-color-5', 'color', 'color-5'],
     ['text-white', 'color', 'white'],
     ['font-strong', 'fontWeight', 'strong'],
     ['font-4', 'fontWeight', '4'],
@@ -117,7 +117,7 @@ describe('candidate grammar', () => {
 
   test('missing category tokens and unknown modifiers pass through', () => {
     expect(classifyCandidate('p-999', config).kind).toBe('passthrough')
-    expect(classifyCandidate('rounded-color5', config).kind).toBe('passthrough')
+    expect(classifyCandidate('rounded-color-5', config).kind).toBe('passthrough')
     expect(classifyCandidate('unknown:p-4', config).kind).toBe('passthrough')
     expect(classifyCandidate('md:p-4', config).kind).toBe('passthrough')
     expect(classifyCandidate('custom-widget', config).kind).toBe('passthrough')
@@ -184,10 +184,10 @@ describe('candidate grammar', () => {
 
   test('group modifiers are registry-backed, named, chainable, and collision-safe', () => {
     for (const candidate of [
-      'group-hover:bg-color5',
-      'group-hover/card:bg-color5',
-      'group-press/card:bg-color5',
-      'tablet:dark:group-hover/card:bg-color5',
+      'group-hover:bg-color-5',
+      'group-hover/card:bg-color-5',
+      'group-press/card:bg-color-5',
+      'tablet:dark:group-hover/card:bg-color-5',
     ]) {
       expect(classifyCandidate(candidate, config).kind, candidate).toBe('tamagui')
     }
@@ -201,11 +201,11 @@ describe('candidate grammar', () => {
     expect(collision.diagnostics).toEqual([
       'modifier "group-hover" is not registered: the "group-" prefix is reserved for group state modifiers; rename this media name so it does not begin with "group-"',
     ])
-    expect(classifyCandidate('group-hover:bg-color5', collisionConfig).kind).toBe(
+    expect(classifyCandidate('group-hover:bg-color-5', collisionConfig).kind).toBe(
       'tamagui'
     )
 
-    for (const candidate of ['group-unknown:bg-color5', 'group/card', '@container']) {
+    for (const candidate of ['group-unknown:bg-color-5', 'group/card', '@container']) {
       expect(classifyCandidate(candidate, config).kind, candidate).toBe('passthrough')
     }
   })
@@ -217,17 +217,17 @@ describe('candidate grammar', () => {
       containerSizeNames: ['tablet'],
     }
     for (const candidate of [
-      '@tablet:bg-color5',
-      '@tablet/layout:bg-color5',
-      'tablet:dark:@tablet/layout:bg-color5',
+      '@tablet:bg-color-5',
+      '@tablet/layout:bg-color-5',
+      'tablet:dark:@tablet/layout:bg-color-5',
     ]) {
       expect(classifyCandidate(candidate, containerConfig).kind, candidate).toBe(
         'tamagui'
       )
     }
     for (const candidate of [
-      '@hoverNone:bg-color5',
-      '@missing:bg-color5',
+      '@hoverNone:bg-color-5',
+      '@missing:bg-color-5',
       '@container',
     ]) {
       expect(classifyCandidate(candidate, containerConfig).kind, candidate).toBe(
@@ -276,9 +276,9 @@ describe('candidate grammar', () => {
     })
     expect(parseCandidate('text-sm', config)?.entry?.prop).toBe('fontSize')
     expect(parseCandidate('text-white', config)?.entry?.prop).toBe('color')
-    expect(parseCandidate('text-color5/50', config)).toMatchObject({
+    expect(parseCandidate('text-color-5/50', config)).toMatchObject({
       valueKind: 'token',
-      rawValue: 'color5/50',
+      rawValue: 'color-5/50',
       entry: { prop: 'color', tokenCategory: 'color' },
     })
   })
@@ -390,7 +390,7 @@ describe('candidate grammar', () => {
       ['padding', '4'],
       ['width', '10'],
       ['borderRadius', '8'],
-      ['backgroundColor', 'color5'],
+      ['backgroundColor', 'color-5'],
       ['fontFamily', 'body'],
       ['fontSize', '5'],
       ['lineHeight', '8'],
@@ -413,17 +413,17 @@ describe('candidate grammar', () => {
       )
     ).toBe('hover:z-4')
     expect(
-      formatCandidate({ prop: 'color', value: 'color5/50', valueKind: 'token' })
-    ).toBe('color-color5/50')
-    expect(parseCandidate('color-color5/50', config)).toMatchObject({
+      formatCandidate({ prop: 'color', value: 'color-5/50', valueKind: 'token' })
+    ).toBe('color-color-5/50')
+    expect(parseCandidate('color-color-5/50', config)).toMatchObject({
       valueKind: 'token',
-      rawValue: 'color5/50',
+      rawValue: 'color-5/50',
       entry: { prop: 'color', tokenCategory: 'color' },
     })
     for (const invalid of ['50.5', '150', '-1', '+3']) {
-      expect(parseCandidate(`color-color5/${invalid}`, config)).toMatchObject({
+      expect(parseCandidate(`color-color-5/${invalid}`, config)).toMatchObject({
         valueKind: 'token',
-        rawValue: `color5/${invalid}`,
+        rawValue: `color-5/${invalid}`,
         entry: { prop: 'color', tokenCategory: 'color' },
       })
     }

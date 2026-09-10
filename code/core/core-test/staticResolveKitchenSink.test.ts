@@ -44,7 +44,7 @@ describe('kitchen-sink static-resolve benchmark & validation', () => {
           borderColor: '$borderColor',
           borderWidth: 1,
           hoverStyle: {
-            borderColor: '$color8',
+            borderColor: '$color-8',
             scale: 1.02,
           },
           pressStyle: {
@@ -55,20 +55,20 @@ describe('kitchen-sink static-resolve benchmark & validation', () => {
       {
         id: 'ks-button',
         props: {
-          backgroundColor: '$color8',
-          color: '$color1',
+          backgroundColor: '$color-8',
+          color: '$color-1',
           paddingVertical: '$2',
           paddingHorizontal: '$4',
           borderRadius: '$2',
           hoverStyle: {
-            backgroundColor: '$color9',
+            backgroundColor: '$color-9',
           },
         },
       },
       {
         id: 'ks-heading',
         props: {
-          color: '$color12',
+          color: '$color-12',
           fontSize: '$8',
           lineHeight: '$8',
           fontWeight: '700',
@@ -110,8 +110,8 @@ describe('kitchen-sink static-resolve benchmark & validation', () => {
       },
       {
         props: {
-          backgroundColor: '$color5',
-          hoverStyle: { backgroundColor: '$color6' },
+          backgroundColor: '$color-5',
+          hoverStyle: { backgroundColor: '$color-6' },
           pressStyle: { opacity: 0.8 },
           width: 200,
           height: 50,
@@ -127,7 +127,7 @@ describe('kitchen-sink static-resolve benchmark & validation', () => {
       },
       {
         props: {
-          backgroundColor: '$color2',
+          backgroundColor: '$color-2',
           borderColor: '$borderColor',
           borderWidth: 2,
           borderRadius: '$5',

@@ -21,7 +21,7 @@ describe('tamagui migrate', () => {
     expect(result.stdout).toContain('Sheet.Frame')
     expect(result.stdout).toContain('FocusScope')
     expect(result.stdout).toContain('Select.Separator')
-    expect(result.stdout).toContain('`color12` -> `color11`')
+    expect(result.stdout).toContain('`color12` -> `color-11`')
     expect(result.stdout).toContain('`useProps`, `useStyle`, and `usePropsAndStyle`')
     expect(result.stdout).toContain('`getExpandedShorthand(key, props)`')
     expect(result.stdout).toContain('`splitStyleProps(props)`')
@@ -32,8 +32,8 @@ describe('tamagui migrate', () => {
     expect(required).toContain('V3 API, existing design values')
     expect(required).toContain('Already running V3 with Config v5')
     expect(required).toContain('A validated V3 app on Config v5 is a completed migration')
-    expect(required).not.toContain('`color12` -> `color11`')
-    expect(optional).toContain('`color12` -> `color11`')
+    expect(required).not.toContain('`color12` -> `color-11`')
+    expect(optional).toContain('`color12` -> `color-11`')
   })
 
   it('prints the v1 to v3 migration prompt with a v1 to v2 pass first', () => {

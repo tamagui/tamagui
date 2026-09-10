@@ -1090,7 +1090,7 @@ type SomewhatSpecificSizeValue = 'auto' | PercentString | RemString | UnionableN
 type SomewhatSpecificSpaceValue = 'auto' | PercentString | RemString | UnionableNumber;
 type VariableString = `var(${string})`;
 export type SomewhatSpecificColorValue = CSSColorNames | 'transparent' | (`rgba(${string})` & {}) | (`rgb(${string})` & {}) | (`hsl(${string})` & {}) | (`hsla(${string})` & {}) | (`#${string}` & {});
-type WebOnlySizeValue = `${number}vw` | `${number}dvw` | `${number}lvw` | `${number}svw` | `${number}vh` | `${number}dvh` | `${number}lvh` | `${number}svh` | `calc(${string})` | `min(${string})` | `max(${string})` | 'max-content' | 'min-content';
+type WebOnlySizeValue = `${number}px` | `${number}em` | `${number}ch` | `${number}vmin` | `${number}vmax` | `${number}vw` | `${number}dvw` | `${number}lvw` | `${number}svw` | `${number}vh` | `${number}dvh` | `${number}lvh` | `${number}svh` | `calc(${string})` | `min(${string})` | `max(${string})` | 'max-content' | 'min-content';
 type UserAllowedStyleValuesSetting = Exclude<TamaguiSettings['allowedStyleValues'], undefined>;
 /**
  * A flat value string that carries a clause (`red hover:blue`, `dark:red`)
@@ -1258,13 +1258,13 @@ type PxOrPct = Px | `${string | number}%`;
 type TwoValueTransformOrigin = `${PxOrPct | 'left' | 'center' | 'right'} ${PxOrPct | 'top' | 'center' | 'bottom'}`;
 export interface TransformStyleProps {
     /**
-     * Maps to translateX
+     * Maps to translateX. A percent string is relative to the element's own width.
      */
-    x?: number;
+    x?: number | `${number}%`;
     /**
-     * Maps to translateY
+     * Maps to translateY. A percent string is relative to the element's own height.
      */
-    y?: number;
+    y?: number | `${number}%`;
     perspective?: number;
     scale?: number;
     scaleX?: number;
@@ -1341,7 +1341,7 @@ interface ExtraStyleProps {
      * backgroundColor and drops url()/gradient/multi-part values it can't express.
      *
      * The v6 shorthands map `bg` here rather than to `backgroundColor`, because
-     * the background family splits a value like `url(x.png) color1` across
+     * the background family splits a value like `url(x.png) color-1` across
      * backgroundImage and backgroundColor. Color tokens lead the union so `bg`
      * completes them; the CSS keywords and the function forms (`url()`,
      * gradients) keep the CSS shorthand, and multi-part values reach
@@ -1700,7 +1700,7 @@ interface ExtraBaseProps {
     passThrough?: boolean;
 }
 interface ExtendedBaseProps extends TransformStyleProps, ExtendBaseTextProps, ExtendBaseStackProps, ExtraStyleProps, ExtraBaseProps {
-    display?: 'inherit' | 'none' | 'inline' | 'block' | 'contents' | 'flex' | 'inline-flex';
+    display?: 'inherit' | 'none' | 'inline' | 'block' | 'inline-block' | 'contents' | 'flex' | 'inline-flex' | 'grid' | 'inline-grid';
     position?: 'absolute' | 'relative' | 'fixed' | 'static' | 'sticky';
 }
 export interface StackStyleBase extends Omit<ViewStyle, keyof ExtendedBaseProps | 'elevation'>, ExtendedBaseProps {

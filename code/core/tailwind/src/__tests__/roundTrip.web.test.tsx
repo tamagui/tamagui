@@ -239,16 +239,16 @@ describe('PASS 2 — directional borders + corner radius', () => {
     expect(f.borderBottomColor).toBeUndefined()
   })
 
-  test('border-r-color2 → borderRightColor resolved (string), no borderRightWidth', () => {
-    const cls = convertedClassName(`<View borderRightColor="color2" />`)
+  test('border-r-color-2 → borderRightColor resolved (string), no borderRightWidth', () => {
+    const cls = convertedClassName(`<View borderRightColor="color-2" />`)
     const f = flat(cls)
     expect(typeof f.borderRightColor).toBe('string')
-    expect(f.borderRightColor).toBe('color2')
+    expect(f.borderRightColor).toBe('color-2')
     expect(f.borderRightWidth).toBeUndefined()
     // and it resolves to the same theme var as the source prop through the full pipeline
-    expect(classStyle(cls).borderRightColor).toBe('var(--color2)')
+    expect(classStyle(cls).borderRightColor).toBe('var(--color-2)')
     expect(classStyle(cls).borderRightColor).toBe(
-      styleOf({ borderRightColor: 'color2' }).borderRightColor
+      styleOf({ borderRightColor: 'color-2' }).borderRightColor
     )
   })
 

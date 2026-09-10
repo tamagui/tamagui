@@ -22,7 +22,7 @@ describe('createGrammarConfigView', () => {
         shorthands: { p: 'padding' },
         media: { tablet: { maxWidth: 900 } },
         themes: {
-          light: { color5: '#fff', background: '#000' },
+          light: { 'color-5': '#fff', background: '#000' },
           light_alt: { borderColor: '#ccc' },
         },
         tokensParsed: {
@@ -30,7 +30,7 @@ describe('createGrammarConfigView', () => {
           size: { 10: 40 },
           radius: { true: 8 },
           zIndex: { modal: 100 },
-          color: { red9: '#f00' },
+          color: { 'red-9': '#f00' },
           outlineWidth: { 2: 2 },
           boxShadow: { sm: '0 1px 2px #0003' },
         },
@@ -55,7 +55,7 @@ describe('createGrammarConfigView', () => {
     expect(view.tokenNames?.radius).toEqual(new Set(['true']))
     expect(view.tokenNames?.zIndex).toEqual(new Set(['modal']))
     expect(view.tokenNames?.color).toEqual(
-      new Set(['red9', 'color5', 'background', 'borderColor'])
+      new Set(['red-9', 'color-5', 'background', 'borderColor'])
     )
     expect(view.tokenNames?.outlineWidth).toEqual(new Set(['2']))
     expect(view.tokenNames?.boxShadow).toEqual(new Set(['sm']))
@@ -76,11 +76,11 @@ describe('createGrammarConfigView', () => {
   test('unions theme value names across partial subthemes', () => {
     const view = createGrammarConfigView({
       themes: {
-        dark: { color1: '#000' },
-        dark_blue: { color10: '#00f' },
+        dark: { 'color-1': '#000' },
+        dark_blue: { 'color-10': '#00f' },
       },
     })
 
-    expect(view.tokenNames?.color).toEqual(new Set(['color1', 'color10']))
+    expect(view.tokenNames?.color).toEqual(new Set(['color-1', 'color-10']))
   })
 })

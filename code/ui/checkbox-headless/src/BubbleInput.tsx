@@ -54,7 +54,7 @@ export const BubbleInput = (props: BubbleInputProps) => {
             }
           : {
               appearance: 'auto',
-              accentColor: 'var(--color6)',
+              accentColor: 'var(--color-6)',
             }),
 
         ...props.style,

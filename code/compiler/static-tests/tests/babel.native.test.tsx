@@ -323,7 +323,7 @@ test('ternary with mixed theme-token and non-token values preserves all props', 
         <Text
           fontSize="3"
           fontWeight={isActive ? '600' : '400'}
-          color={isActive ? 'color12' : 'color11'}
+          color={isActive ? 'color-12' : 'color-11'}
         >
           {label}
         </Text>

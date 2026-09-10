@@ -19,7 +19,7 @@ describe('v3 flat-value typo warnings', () => {
       light: {
         background: '#ffffff',
         color: '#000000',
-        color11: '#111111',
+        'color-11': '#111111',
       },
     },
     tokens: {

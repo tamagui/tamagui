@@ -934,7 +934,7 @@ test('heading caller spacing survives the inherited size variant chain', () => {
     {
       mt: '8',
       mb: '2',
-      color: 'color8',
+      color: 'color-8',
       fontWeight: '400',
       size: '8',
     },

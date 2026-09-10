@@ -2421,7 +2421,7 @@ interface ExtraStyleProps {
    * backgroundColor and drops url()/gradient/multi-part values it can't express.
    *
    * The v6 shorthands map `bg` here rather than to `backgroundColor`, because
-   * the background family splits a value like `url(x.png) color1` across
+   * the background family splits a value like `url(x.png) color-1` across
    * backgroundImage and backgroundColor. Color tokens lead the union so `bg`
    * completes them; the CSS keywords and the function forms (`url()`,
    * gradients) keep the CSS shorthand, and multi-part values reach

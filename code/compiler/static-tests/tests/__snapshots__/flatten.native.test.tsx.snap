@@ -30,7 +30,7 @@ exports[`flatten-tests > work with experimentalFlattenThemesOnNative + ternary 1
 
       export function Test() {
         return (
-          <View backgroundColor={showBackground ? 'color1' : 'color2'} />
+          <View backgroundColor={showBackground ? 'color-1' : 'color-2'} />
         )
       }
 "

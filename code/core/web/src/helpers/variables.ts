@@ -417,7 +417,7 @@ export const getInlineValuesKey = (inline: InlineValues): string => {
   return key
 }
 
-// ---- flat theme-value props: <ThemeUpdate background-hover="blue4 dark:blue2"> ----
+// ---- flat theme-value props: <ThemeUpdate background-hover="blue-4 dark:blue-2"> ----
 
 /**
  * One authored theme-value clause the parser could not use. The runtime warns

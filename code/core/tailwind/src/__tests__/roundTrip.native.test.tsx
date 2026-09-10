@@ -183,15 +183,15 @@ describe('native — named enum: fontWeight', () => {
 })
 
 describe('native — directional borders + per-edge radii (converter-driven)', () => {
-  test('borderRightWidth={1} + borderRightColor="color2"', () => {
+  test('borderRightWidth={1} + borderRightColor="color-2"', () => {
     const s = nativeStyle(
       View,
-      toClass(`<View borderRightWidth={1} borderRightColor="color2" />`)
+      toClass(`<View borderRightWidth={1} borderRightColor="color-2" />`)
     )
     expect(s.borderRightWidth).toBe(1)
     expect(typeof s.borderRightWidth).toBe('number')
     expect(s.borderRightColor).toBeTruthy()
-    expect(s.borderRightColor).not.toBe('color2')
+    expect(s.borderRightColor).not.toBe('color-2')
   })
   test('configured rounded-tl-lg radius token round-trips and is consumed', () => {
     expect(CFG.tokensParsed.radius).toHaveProperty('lg')

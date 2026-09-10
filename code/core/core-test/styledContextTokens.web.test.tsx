@@ -54,7 +54,7 @@ describe('styled context token preservation', () => {
         },
         accent: {
           true: {
-            color: 'red10',
+            color: 'red-10',
           },
         },
       } as const,
@@ -62,7 +62,7 @@ describe('styled context token preservation', () => {
 
     const parentStyles = simplifiedGetSplitStyles(GridParent, {
       spacing: 'large', // sets gap: '8'
-      accent: true, // sets color: 'red10'
+      accent: true, // sets color: 'red-10'
     })
 
     // Check that overriddenContextProps preserves the token strings
@@ -74,8 +74,8 @@ describe('styled context token preservation', () => {
     expect(overridden!.gap).toBe('8')
     expect(overridden!.gap).not.toMatch(/^var\(/)
 
-    // color should be "red10" not "var(--color-red10)" or similar
-    expect(overridden!.color).toBe('red10')
+    // color should be "red-10" not "var(--color-red-10)" or similar
+    expect(overridden!.color).toBe('red-10')
     expect(overridden!.color).not.toMatch(/^var\(/)
   })
 

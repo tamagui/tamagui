@@ -22,20 +22,20 @@ test(`concatClassName - leave media`, () => {
 })
 
 test(`concatClassName - keeps base and pseudo styles for the same property`, () => {
-  expect(concatClassName(`_col-0hover-color _col-color11`)).toEqual(
-    `_col-0hover-color _col-color11`
+  expect(concatClassName(`_col-0hover-color _col-color-11`)).toEqual(
+    `_col-0hover-color _col-color-11`
   )
 })
 
 test(`concatClassName - merges duplicate pseudo styles for the same property`, () => {
-  expect(concatClassName(`_col-0hover-color11 _col-0hover-color12`)).toEqual(
-    `_col-0hover-color12`
+  expect(concatClassName(`_col-0hover-color-11 _col-0hover-color-12`)).toEqual(
+    `_col-0hover-color-12`
   )
 })
 
 test(`concatClassName - scopes pseudo styles inside media queries`, () => {
-  expect(concatClassName(`_col-_sm_0hover-color11 _col-_sm_color12`)).toEqual(
-    `_col-_sm_0hover-color11 _col-_sm_color12`
+  expect(concatClassName(`_col-_sm_0hover-color-11 _col-_sm_color-12`)).toEqual(
+    `_col-_sm_0hover-color-11 _col-_sm_color-12`
   )
 })
 

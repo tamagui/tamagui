@@ -130,7 +130,7 @@ interface LayoutStyle {
     columnGap?: number | string;
     direction?: 'inherit' | 'ltr' | 'rtl';
     /** extends react-native's `display` with the web values */
-    display?: 'inherit' | 'none' | 'inline' | 'block' | 'contents' | 'flex' | 'inline-flex';
+    display?: 'inherit' | 'none' | 'inline' | 'block' | 'inline-block' | 'contents' | 'flex' | 'inline-flex' | 'grid' | 'inline-grid';
     end?: DimensionValue;
     flex?: number;
     flexBasis?: DimensionValue;
@@ -400,18 +400,18 @@ interface TransformStyle {
     transform?: string | readonly TransformFunction[];
     transformOrigin?: PxOrPct | 'left' | 'center' | 'right' | 'top' | 'bottom' | TwoValueTransformOrigin | `${TwoValueTransformOrigin} ${Px}`;
     transformStyle?: Properties['transformStyle'];
-    /** maps to `translateX` */
-    x?: number;
-    /** maps to `translateY` */
-    y?: number;
+    /** maps to `translateX`; a percent string is relative to the element's own width */
+    x?: number | `${number}%`;
+    /** maps to `translateY`; a percent string is relative to the element's own height */
+    y?: number | `${number}%`;
     /** @deprecated use `matrix` in `transform` */
     transformMatrix?: number[];
     /** @deprecated use `rotate` */
     rotation?: number;
     /** @deprecated use `x` */
-    translateX?: number;
+    translateX?: number | `${number}%`;
     /** @deprecated use `y` */
-    translateY?: number;
+    translateY?: number | `${number}%`;
 }
 /**
  * Web-only properties with no react-native equivalent, plus the interaction and

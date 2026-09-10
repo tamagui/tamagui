@@ -229,7 +229,7 @@ describe('static-resolve entry', () => {
       { color: '$color', fontSize: '$4', fontWeight: '600' },
       { width: 200, height: 100, borderRadius: '$2', hoverStyle: { opacity: 0.9 } },
       { display: 'flex', flexDirection: 'column', gap: '$3', alignItems: 'center' },
-      { borderWidth: 1, borderColor: '$borderColor', backgroundColor: '$color2' },
+      { borderWidth: 1, borderColor: '$borderColor', backgroundColor: '$color-2' },
     ]
 
     const elements: StaticResolveElementPlan[] = []

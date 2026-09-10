@@ -391,7 +391,7 @@ function legacyTokenWarnings(prop: string, values: readonly string[]): Flag[] {
     .join(', ')
   warnings.push({
     code: 'legacy-palette-token',
-    detail: `${prop} preserves ${formatted}, which @tamagui/config/v6 does not define; choose an absolute palette token or an adaptive colorN value`,
+    detail: `${prop} preserves ${formatted}, which @tamagui/config/v6 does not define; choose an absolute palette token or an adaptive color-N value`,
   })
   return warnings
 }

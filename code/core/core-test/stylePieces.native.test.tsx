@@ -10,7 +10,7 @@ createTamagui(getDefaultTamaguiConfig('native'))
 
 describe('style() pieces on native', () => {
   test('resolve the authored shape through the active native style path', () => {
-    const piece = style({ width: 10, padding: 4, backgroundColor: 'red10' })
+    const piece = style({ width: 10, padding: 4, backgroundColor: 'red-10' })
     const conf = getConfig()
     const result = simplifiedGetSplitStyles(
       View,

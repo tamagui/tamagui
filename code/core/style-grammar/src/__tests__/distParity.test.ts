@@ -9,7 +9,7 @@ const config = {
   mediaNames: ['sm'],
   tokenNames: {
     space: ['4'],
-    color: ['color5'],
+    color: ['color-5'],
   },
 }
 
