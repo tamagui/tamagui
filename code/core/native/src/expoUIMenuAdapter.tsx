@@ -3,7 +3,7 @@ import React from 'react'
 
 import type { NativeMenuAdapter, NativeMenuModule } from './nativeMenuState'
 
-type ExpoMenuAction = {
+export type ExpoMenuAction = {
   id: string
   title: string
   image?: unknown
@@ -17,7 +17,7 @@ type ExpoMenuAction = {
   displayInline?: boolean
 }
 
-type ExpoMenuViewProps = {
+export type ExpoMenuViewProps = {
   actions: ExpoMenuAction[]
   title?: string
   shouldOpenOnLongPress?: boolean
