@@ -363,6 +363,11 @@ async function createOwnedEvaluationConfig(
     configuredEvaluationPackages
   )
   const { createEnvironment: _createEnvironment, ...dev } = environment.dev
+  // vite fills `optimizeDeps.esbuildOptions` in itself while resolving, then
+  // warns about the deprecated option when it sees it on the way back in. drop
+  // it so re-resolving an already-resolved environment stays quiet; rolldown
+  // reads `rolldownOptions`, which passes through untouched.
+  const { esbuildOptions: _esbuildOptions, ...optimizeDeps } = environment.optimizeDeps
 
   // ModuleRunner needs Vite's serve-time core pipeline (especially import
   // analysis), but user plugin selection must remain the already-resolved
@@ -384,7 +389,7 @@ async function createOwnedEvaluationConfig(
           keepProcessEnv: environment.keepProcessEnv,
           define: environment.define,
           resolve,
-          optimizeDeps: environment.optimizeDeps,
+          optimizeDeps,
           dev: {
             ...dev,
             moduleRunnerTransform: true,
