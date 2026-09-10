@@ -55,7 +55,7 @@ const TamaguiRootProvider = ({ children }: { children: React.ReactNode }) => {
   const userScheme = useUserScheme()
 
   return (
-    <TamaguiProvider disableInjectCSS config={config} defaultTheme={userScheme.value}>
+    <TamaguiProvider config={config} defaultTheme={userScheme.value}>
       {children}
     </TamaguiProvider>
   )
