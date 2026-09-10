@@ -155,7 +155,7 @@ export const StudioPreviewComponentsSkeleton = memo(() => {
 })
 
 const Skeleton = styled(YStack, {
-  bg: 'color2',
+  bg: 'color-2',
 })
 
 const ComponentSkeleton = ({ index }) => {

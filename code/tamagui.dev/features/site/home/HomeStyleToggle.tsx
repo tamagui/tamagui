@@ -28,15 +28,15 @@ export function HomeStyleToggle() {
                   rounded="4"
                   cursor="pointer"
                   transition="quickest"
-                  // the selected tab inverts: a solid color12 capsule with the
+                  // the selected tab inverts: a solid color-12 capsule with the
                   // label flipped onto it. it is the tab's own style rather than
                   // a measured overlay, so it is right in the server render and
                   // cannot go stale when the row reflows.
-                  bg={active ? 'color12' : 'transparent hover:color4'}
+                  bg={active ? 'color-12' : 'transparent hover:color-4'}
                 >
                   <SizableText
                     size="2"
-                    color={active ? 'color1' : 'color10'}
+                    color={active ? 'color-1' : 'color-10'}
                     textTransform="capitalize"
                   >
                     {value}
@@ -55,7 +55,7 @@ export function HomeStyleToggle() {
             fontFamily="mono"
             fontSize={12}
             lineHeight={18}
-            color="color12"
+            color="color-12"
           >
             {mode === 'tailwind' ? tailwind : tamagui}
           </Text>
@@ -65,10 +65,10 @@ export function HomeStyleToggle() {
   )
 }
 
-const keyword = 'purple10'
-const str = 'green10'
-const tag = 'blue10'
-const dim = 'color10'
+const keyword = 'purple-10'
+const str = 'green-10'
+const tag = 'blue-10'
+const dim = 'color-10'
 
 const tamagui = (
   <>
@@ -84,7 +84,7 @@ const tamagui = (
     {'\n  rounded='}
     <Text color={str}>{'"4"'}</Text>
     {'\n  bg='}
-    <Text color={str}>{'"blue9 hover:blue10"'}</Text>
+    <Text color={str}>{'"blue-9 hover:blue-10"'}</Text>
     {'\n'}
     <Text color={tag}>{'>'}</Text>
     {'\n  '}
@@ -111,9 +111,9 @@ const tamagui = (
     <Text color={str}>{"'4'"}</Text>
     {',\n  bg: {'}
     {'\n    default: '}
-    <Text color={str}>{"'blue9'"}</Text>
+    <Text color={str}>{"'blue-9'"}</Text>
     {',\n    hover: '}
-    <Text color={str}>{"'blue10'"}</Text>
+    <Text color={str}>{"'blue-10'"}</Text>
     {',\n  },\n})'}
   </>
 )

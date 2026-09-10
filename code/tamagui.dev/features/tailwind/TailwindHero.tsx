@@ -15,7 +15,7 @@ function HeroCode() {
       rounded="6"
       borderWidth={1}
       borderColor="border-color"
-      bg="color1"
+      bg="color-1"
       overflow="hidden"
     >
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
@@ -27,14 +27,14 @@ function HeroCode() {
           py="4"
           size="4"
         >
-          <Text color="color9">{'<'}</Text>
-          <Text color="color11">View</Text>
-          <Text color="blue10"> className</Text>
-          <Text color="color9">=</Text>
-          <Text color="green10">
+          <Text color="color-9">{'<'}</Text>
+          <Text color="color-11">View</Text>
+          <Text color="blue-10"> className</Text>
+          <Text color="color-9">=</Text>
+          <Text color="green-10">
             "flex-row items-center gap-3 p-4 rounded-xl bg-indigo-500"
           </Text>
-          <Text color="color9">{' />'}</Text>
+          <Text color="color-9">{' />'}</Text>
         </SizableText>
       </ScrollView>
     </YStack>
@@ -51,12 +51,12 @@ export function TailwindHero() {
         b="auto"
         height={620}
         z={-1}
-        backgroundImage="linear-gradient(color3, color-transparent)"
+        backgroundImage="linear-gradient(color-3, color-transparent)"
         opacity={0.6}
       />
 
       <ContainerLarge pt="13" pb="8" gap="6" items="center">
-        <Paragraph color="accent7" letterSpacing={1} textTransform="uppercase" size="3">
+        <Paragraph color="accent-7" letterSpacing={1} textTransform="uppercase" size="3">
           Tamagui v3
         </Paragraph>
 
@@ -69,7 +69,7 @@ export function TailwindHero() {
           self="center"
           maxW={680}
           lineHeight="8"
-          color="color10"
+          color="color-10"
           size="6"
         >
           Write Tailwind utility classes. The Tamagui compiler renders them on iOS and

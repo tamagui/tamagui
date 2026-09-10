@@ -92,7 +92,7 @@ export function Header(props: HeaderProps) {
             width="100%"
             bg="transparent"
             rounded="10 sm:0"
-            borderColor={isScrolled ? 'transparent gtSm:color5' : 'transparent'}
+            borderColor={isScrolled ? 'transparent gtSm:color-5' : 'transparent'}
             borderWidth="0.5px sm:0px"
           >
             <YStack
@@ -110,7 +110,7 @@ export function Header(props: HeaderProps) {
               opacity={isScrolled ? 0.6 : 0}
               position="absolute"
               inset={0}
-              bg="color2"
+              bg="color-2"
               className={`ease-out all ms300`}
             />
             <YStack mx="auto" px="4" width="100%">
@@ -126,7 +126,7 @@ export function Header(props: HeaderProps) {
             rounded="10"
             position="absolute"
             inset={0}
-            boxShadow="0 8px 20px shadow3"
+            boxShadow="0 8px 20px shadow-3"
             opacity={isScrolled ? '0 gtSm:1' : 0}
             py={isScrolled ? 'gtSm:2' : undefined}
             y={isScrolled ? 'gtSm:5px' : undefined}
@@ -171,7 +171,7 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
               <>
                 <SizableText
                   display="xl:none"
-                  color="color12"
+                  color="color-12"
                   opacity="0.5 group-hover:0.8"
                   size="3"
                 >
@@ -259,7 +259,7 @@ const HeaderMenuButton = () => {
           size="5"
           circular
           my={-1}
-          bg="transparent hover:shadow1"
+          bg="transparent hover:shadow-1"
           borderWidth={0}
           onPress={(e) => {
             if (isTouchable) {
@@ -365,7 +365,7 @@ export const HeaderLinksPopover = (props: PopoverProps) => {
               <Adapt.Contents />
             </Sheet.ScrollView>
           </Sheet.Container>
-          <Sheet.Overlay z={100} bg="shadow4" />
+          <Sheet.Overlay z={100} bg="shadow-4" />
         </Sheet>
       </Adapt>
     </Popover>
@@ -386,7 +386,7 @@ export const HeaderLink = (props: { id: ID; children: string; href: string }) =>
         <HeadAnchor
           fontFamily="mono"
           fontSize={13}
-          color="color9 hover:color12"
+          color="color-9 hover:color-12"
           {...(isActive && { active: true })}
           display="xs:none"
         >
@@ -527,7 +527,7 @@ const HeaderLinksPopoverContent = React.memo((props: { active: ID | '' }) => {
       }}
       animatePosition
       transition="medium"
-      bg="background06"
+      bg="background-06"
       backdropFilter="blur(40px)"
       maxH="90vh"
       maxW={360}
@@ -538,7 +538,7 @@ const HeaderLinksPopoverContent = React.memo((props: { active: ID | '' }) => {
       opacity="1 enter:0 exit:0"
       y="0 enter:3px exit:5px"
     >
-      <Popover.Arrow transition="medium" bg="background06" animatePosition size="4" />
+      <Popover.Arrow transition="medium" bg="background-06" animatePosition size="4" />
 
       {pointerFine ? (
         <YStack
@@ -577,7 +577,7 @@ const ActivePageDocsMenuContents = () => {
 
   return (
     <>
-      <Separator bg="color02" opacity={0.25} my="4" />
+      <Separator bg="color-02" opacity={0.25} my="4" />
       <DocsMenuContents inMenu section={section} />
     </>
   )
@@ -600,11 +600,11 @@ const HeaderMenuContents = (props: { id: ID }) => {
       return (
         <>
           <HeaderMenuMoreContents />
-          <Separator borderColor="color02" opacity={0.25} my="2" />
+          <Separator borderColor="color-02" opacity={0.25} my="2" />
           {isOnlyShowingMenu && (
             <>
               <ActivePageDocsMenuContents />
-              <Separator borderColor="color02" opacity={0.25} my="2" />
+              <Separator borderColor="color-02" opacity={0.25} my="2" />
             </>
           )}
           <SeasonChooser />
@@ -620,7 +620,7 @@ const HeaderMenuContents = (props: { id: ID }) => {
               <Paragraph
                 pointerEvents="none"
                 borderWidth={0.5}
-                bg="color6"
+                bg="color-6"
                 rounded="5"
                 opacity={0.5}
                 p="4"
@@ -643,7 +643,7 @@ const HeaderMenuContents = (props: { id: ID }) => {
                     bentoStore.disableCustomTheme = !bentoStore.disableCustomTheme
                   }}
                 >
-                  <SizableText size="3" color="color11" ellipsis>
+                  <SizableText size="3" color="color-11" ellipsis>
                     Enabled
                   </SizableText>
 
@@ -655,7 +655,7 @@ const HeaderMenuContents = (props: { id: ID }) => {
                     bentoStore.disableTint = !bentoStore.disableTint
                   }}
                 >
-                  <SizableText size="3" color="color11" ellipsis>
+                  <SizableText size="3" color="color-11" ellipsis>
                     Tint
                   </SizableText>
 
@@ -665,7 +665,7 @@ const HeaderMenuContents = (props: { id: ID }) => {
 
               <Separator mb="3" opacity={0.5} />
 
-              <SizableText size="3" px="4" color="color9">
+              <SizableText size="3" px="4" color="color-9">
                 Recent Themes
               </SizableText>
 
@@ -682,7 +682,7 @@ const HeaderMenuContents = (props: { id: ID }) => {
                   }}
                 >
                   <XStack items="center" justify="space-between">
-                    <SizableText size="3" color="color11" ellipsis>
+                    <SizableText size="3" color="color-11" ellipsis>
                       {history.search_query}
                     </SizableText>
                   </XStack>
@@ -691,7 +691,7 @@ const HeaderMenuContents = (props: { id: ID }) => {
 
               {themeHistories.length === 0 && (
                 <YStack p="4" items="center">
-                  <SizableText size="2" color="color9">
+                  <SizableText size="2" color="color-9">
                     {data?.user ? 'No theme history yet' : 'Login to save themes'}
                   </SizableText>
                 </YStack>
@@ -752,7 +752,7 @@ const HeaderMenuMoreContents = () => {
         <Link asChild href="/">
           <HeadAnchor grid>Home</HeadAnchor>
         </Link>
-        <Separator bg="color02" opacity={0.25} my="2" />
+        <Separator bg="color-02" opacity={0.25} my="2" />
       </YStack>
 
       <XStack flex={1} flexBasis="auto" flexWrap="wrap" gap="2" width="100%">
@@ -781,13 +781,13 @@ const HeaderMenuMoreContents = () => {
         </Link>
       </XStack>
 
-      <Separator bg="color02" opacity={0.25} my="2" />
+      <Separator bg="color-02" opacity={0.25} my="2" />
 
       {!userSwr.data?.user && (
         <HeadAnchor grid onPress={handleLogin}>
           <span>Login</span>
           <YStack display={'inline-block' as any} y={2} x={10} self="flex-end">
-            <LogIn color="color10" size={14} />
+            <LogIn color="color-10" size={14} />
           </YStack>
         </HeadAnchor>
       )}
@@ -806,7 +806,7 @@ const HeaderMenuMoreContents = () => {
         </Link>
       )}
 
-      <Separator bg="color02" opacity={0.25} my="2" />
+      <Separator bg="color-02" opacity={0.25} my="2" />
 
       <Link asChild href="/takeout">
         <HeadAnchor grid render="a">
@@ -816,7 +816,7 @@ const HeaderMenuMoreContents = () => {
               <TakeoutIcon scale={0.65} />
             </YStack>
           </XStack>
-          <SizableText size="2" color="color9">
+          <SizableText size="2" color="color-9">
             Starter Kit
           </SizableText>
         </HeadAnchor>
@@ -837,7 +837,7 @@ const HeaderMenuMoreContents = () => {
               <BentoIcon scale={0.65} />
             </YStack>
           </XStack>
-          <SizableText size="2" color="color9">
+          <SizableText size="2" color="color-9">
             Copy-paste UI
           </SizableText>
         </HeadAnchor>
@@ -858,13 +858,13 @@ const HeaderMenuMoreContents = () => {
               <AddEvenBrandIcon scale={0.65} />
             </YStack>
           </XStack>
-          <SizableText size="2" color="color9">
+          <SizableText size="2" color="color-9">
             Expert Consulting
           </SizableText>
         </HeadAnchor>
       </Link>
 
-      <Separator borderColor="color02" opacity={0.25} my="2" />
+      <Separator borderColor="color-02" opacity={0.25} my="2" />
 
       <Link asChild href="https://github.com/tamagui/tamagui">
         <HeadAnchor target="_blank" grid>
@@ -919,7 +919,7 @@ const SeasonChooser = () => {
             justify="center"
             bg={
               isActive
-                ? 'color5 hover:color5 press:color5'
+                ? 'color-5 hover:color-5 press:color-5'
                 : 'hover:background-hover press:background-press'
             }
             onPress={() => {
@@ -941,7 +941,7 @@ const HeadAnchor = styled(Paragraph, {
   cursor: 'pointer',
   fontSize: 18,
   lineHeight: 25,
-  color: 'color11 hover:color',
+  color: 'color-11 hover:color',
   rounded: 'hover:3',
   outlineColor: 'focus-visible:outline-color',
   outlineWidth: 'focus-visible:2px',
@@ -951,7 +951,7 @@ const HeadAnchor = styled(Paragraph, {
   variants: {
     active: {
       true: {
-        color: 'color12',
+        color: 'color-12',
       },
     },
 
@@ -965,7 +965,7 @@ const HeadAnchor = styled(Paragraph, {
         paddingTop: '2',
         paddingBottom: '2',
         px: '4',
-        backgroundColor: 'hover:color-mix(in srgb, var(--color8) 10%, transparent 50%)',
+        backgroundColor: 'hover:color-mix(in srgb, var(--color-8) 10%, transparent 50%)',
       },
     },
 

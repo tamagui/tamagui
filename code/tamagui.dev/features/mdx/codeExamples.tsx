@@ -7,7 +7,7 @@ export default () => {
       <Square
         transition="bouncy"
         size={110}
-        bg="red10"
+        bg="red-10"
         br="9"
         scale="hover:1.1 press:0.9"
         {...positions[positionI]}

@@ -50,7 +50,7 @@ const QueueCardFrame = ({
     size: 500,
     strategy: 'blur',
     blurPct: 100,
-    color: 'var(--color10)',
+    color: 'var(--color-10)',
     opacity: 0.3,
     background: 'transparent',
     offset: {
@@ -65,7 +65,7 @@ const QueueCardFrame = ({
     size: 500,
     strategy: 'blur',
     blurPct: 100,
-    color: 'var(--blue10)',
+    color: 'var(--blue-10)',
     opacity: 0.3,
     background: 'transparent',
     offset: {
@@ -79,7 +79,7 @@ const QueueCardFrame = ({
     size: 500,
     strategy: 'blur',
     blurPct: 100,
-    color: 'var(--green10)',
+    color: 'var(--green-10)',
     opacity: 0.3,
     background: 'transparent',
     offset: {
@@ -98,7 +98,7 @@ const QueueCardFrame = ({
       p="4"
       rounded="4"
       borderWidth={4}
-      borderColor="color2"
+      borderColor="color-2"
       width={480}
       height={280}
       self="center"
@@ -129,7 +129,7 @@ const QueueCardFrame = ({
           r="5"
           b="5"
           rounded="3"
-          borderColor="color8"
+          borderColor="color-8"
           opacity={0.2}
           borderWidth={1}
           scale={1.3}
@@ -140,7 +140,7 @@ const QueueCardFrame = ({
         <Paragraph size="8">{teamName}</Paragraph>
         <Paragraph size="4">Studio Access</Paragraph>
 
-        <Paragraph color="color9" size="3">
+        <Paragraph color="color-9" size="3">
           In queue for access {estimatedDate}
         </Paragraph>
       </YStack>
@@ -166,7 +166,7 @@ const QueueCardFrame = ({
         <Paragraph my="-3" fontWeight="900" size="12">
           {place}
         </Paragraph>
-        <Paragraph ml="3" color="color9">
+        <Paragraph ml="3" color="color-9">
           in the {tierName ?? 'non-sponsor'} tier
         </Paragraph>
 

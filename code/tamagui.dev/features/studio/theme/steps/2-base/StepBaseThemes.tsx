@@ -585,7 +585,7 @@ export const StepThemeHoverablePalette = memo((props: PaletteProps) => {
         flexBasis="auto"
         rounded={borderRadius}
         borderWidth={1}
-        borderColor="color7"
+        borderColor="color-7"
       >
         {colors.map((color, i) => {
           return (
@@ -715,25 +715,25 @@ const PaletteColor = memo(
         position="relative"
         {...(hoveredColor === index && {
           z: 10000,
-          outlineColor: 'accent10',
+          outlineColor: 'accent-10',
           outlineStyle: 'solid',
           outlineWidth: 1.5,
-          shadowColor: 'blue10',
+          shadowColor: 'blue-10',
           shadowRadius: 5,
           shadowOpacity: 1,
         })}
         {...((isAnchor || selectedColor === index) && {
           z: 10000,
-          outlineColor: 'accent10',
+          outlineColor: 'accent-10',
           outlineStyle: 'solid',
           outlineWidth: 2,
         })}
         {...(selectedColor === index && {
-          outlineColor: 'accent1',
+          outlineColor: 'accent-1',
         })}
         {...(selectedColor === hoveredColor &&
           hoveredColor === index && {
-            shadowColor: 'blue10',
+            shadowColor: 'blue-10',
             shadowRadius: 10,
             shadowOpacity: 1,
             z: 100000,
@@ -784,7 +784,7 @@ const PaletteIndices = () => (
               opacity={0.6}
               scale={0.65}
               fontFamily="mono"
-              color="color11"
+              color="color-11"
               self="center"
               text="center"
               key={i}

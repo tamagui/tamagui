@@ -75,7 +75,7 @@ export const DropTamaguiConfig = () => {
             display="sm:none"
             icon={Paintbrush}
           >
-            <Button.Text color={config ? 'green12' : 'color12'}>
+            <Button.Text color={config ? 'green-12' : 'color-12'}>
               {config ? 'Customization enabled' : 'Customize'}
             </Button.Text>
           </Button>
@@ -88,14 +88,14 @@ export const DropTamaguiConfig = () => {
             key="overlay"
             transition="medium"
             opacity="0.5 enter:0 exit:0"
-            bg="color1"
+            bg="color-1"
             className="blur-medium"
           />
 
           <Dialog.Content
             bordered
             elevate
-            bg="color2"
+            bg="color-2"
             transition={{
               preset: 'quick',
               opacity: { preset: 'quick', spring: { overshootClamping: true } },
@@ -125,7 +125,7 @@ export const DropTamaguiConfig = () => {
               inset={0}
               pointerEvents="none"
               opacity={dragging ? 1 : 0}
-              bg="background06"
+              bg="background-06"
               items="center"
               justify="center"
               z={1000}

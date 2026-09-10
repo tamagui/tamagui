@@ -87,7 +87,7 @@ export function CodeBlockTabs({
 
 /**
  * A package manager chip: level with the code block's copy button, and marked
- * by a solid `color1` pill against the block's `color2` field.
+ * by a solid `color-1` pill against the block's `color-2` field.
  */
 function Tab({
   active,
@@ -108,7 +108,7 @@ function Tab({
       py={0}
       gap="1-5"
       items="center"
-      bg={active ? 'color1' : 'transparent'}
+      bg={active ? 'color-1' : 'transparent'}
       opacity={active ? 1 : 0.5}
       rounded="4"
       cursor="pointer"
@@ -121,7 +121,7 @@ function Tab({
           scale={imageName === 'pnpm' ? 0.7 : 0.8}
           src={`/logos/${imageName}.svg`}
         />
-        <SizableText y={-0.5} color={active ? 'color12' : 'color11'} size="2">
+        <SizableText y={-0.5} color={active ? 'color-12' : 'color-11'} size="2">
           {pkgManager}
         </SizableText>
       </XStack>

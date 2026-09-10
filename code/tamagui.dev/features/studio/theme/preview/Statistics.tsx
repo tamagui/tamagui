@@ -12,7 +12,7 @@ export const StatisticsBarScreen = memo(() => {
       {...demoProps.borderRadiusOuterProps}
       {...demoProps.elevationProps}
       {...demoProps.panelPaddingProps}
-      borderColor="color3"
+      borderColor="color-3"
     >
       <YStack
         borderBottomWidth="0-25"
@@ -24,7 +24,7 @@ export const StatisticsBarScreen = memo(() => {
       >
         <XStack justify="space-between">
           <YStack gap="2">
-            <H4 {...demoProps.headingFontFamilyProps} mt="0" color="color11">
+            <H4 {...demoProps.headingFontFamilyProps} mt="0" color="color-11">
               New user sign-ups
             </H4>
             <H4 size="10">+1,200</H4>

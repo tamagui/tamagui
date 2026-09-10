@@ -44,7 +44,7 @@ export const DocsRouteNavItem = function DocsRouteNavItem({
         px="4"
         py="1-5"
         opacity={pending ? 0.25 : 1}
-        bg="hover:background06 press:background04"
+        bg="hover:background-06 press:background-04"
         pointerEvents={pending ? 'none' : ('inherit' as any)}
         position="relative"
       >
@@ -94,7 +94,7 @@ export const DocsRouteNavItem = function DocsRouteNavItem({
           <>
             <XStack flex={1} />
             <SizableText
-              color="color9"
+              color="color-9"
               px="2"
               py="1"
               bg="background"

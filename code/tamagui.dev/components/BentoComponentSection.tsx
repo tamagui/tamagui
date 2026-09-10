@@ -45,7 +45,7 @@ export const ComponentSection = () => {
           }}
         />
       }
-      bg="color2"
+      bg="color-2"
       position="relative"
       contain="paint"
       pb={200}
@@ -70,7 +70,7 @@ export const ComponentSection = () => {
                       <H3
                         letterSpacing={3}
                         textTransform="uppercase"
-                        color="color10"
+                        color="color-10"
                         flex={2}
                         size="3"
                       >

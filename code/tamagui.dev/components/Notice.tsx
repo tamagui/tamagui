@@ -42,7 +42,7 @@ export const Notice = ({
           <Paragraph
             render="div"
             py="2"
-            color="color11"
+            color="color-11"
             mt={-3}
             mb={-3}
             className="paragraph-parent"
@@ -54,7 +54,7 @@ export const Notice = ({
         {/* the icon reads as a marker, not as a first column: leading it pushed
             every line of the note in by 32px */}
         <YStack mt={5} width={20} height={20} opacity={0.5}>
-          <IconComponent size={20} color="color10" />
+          <IconComponent size={20} color="color-10" />
         </YStack>
       </XStack>
     </NoticeFrame>
@@ -68,7 +68,7 @@ export const NoticeFrame = styled(YStack, {
   paddingRight: '4',
   paddingLeft: '4',
   py: '3',
-  bg: 'color2',
+  bg: 'color-2',
   rounded: '4',
   gap: '3',
   my: '4',

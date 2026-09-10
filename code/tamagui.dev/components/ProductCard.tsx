@@ -32,7 +32,7 @@ export function ProductCard({ product, children, ...props }) {
         position="relative"
         group="card"
         transition="quickest"
-        bg="background hover:color7 press:color5"
+        bg="background hover:color-7 press:color-5"
         flex={1}
         items="center"
         justify="center"
@@ -54,7 +54,7 @@ export function ProductCard({ product, children, ...props }) {
             z={0}
             rounded="4"
             style={{
-              background: `linear-gradient(transparent, var(--color04))`,
+              background: `linear-gradient(transparent, var(--color-04))`,
               mixBlendMode: 'color',
             }}
           />
@@ -75,7 +75,7 @@ export function ProductCard({ product, children, ...props }) {
           <Card.Header>
             <YStack items="center" gap="5" p="5">
               <H3>{title}</H3>
-              <Paragraph size="5" color="color10">
+              <Paragraph size="5" color="color-10">
                 {childText}
               </Paragraph>
             </YStack>
@@ -88,7 +88,7 @@ export function ProductCard({ product, children, ...props }) {
               mb="-5"
               b="4"
               r="4"
-              color="color11"
+              color="color-11"
             />
           </Card.Footer>
         </Card>

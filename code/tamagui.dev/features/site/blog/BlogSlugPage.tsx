@@ -33,13 +33,13 @@ export function BlogArticleHeader({ frontmatter }: BlogPost) {
           </ThemeTint>
         </YStack>
 
-        <H1 mt="5" mb="2" color="color11">
+        <H1 mt="5" mb="2" color="color-11">
           {frontmatter.title}
         </H1>
 
         <H2
           opacity={0.5}
-          color="color11"
+          color="color-11"
           fontWeight="500"
           fontFamily="body"
           mb="1"
@@ -54,7 +54,7 @@ export function BlogArticleHeader({ frontmatter }: BlogPost) {
             rel="noopener noreferrer"
             target="_blank"
           >
-            <Paragraph size="3" color="color10" whiteSpace="nowrap">
+            <Paragraph size="3" color="color-10" whiteSpace="nowrap">
               {authors?.[frontmatter.by || '']?.name}
             </Paragraph>
           </Link>
@@ -63,7 +63,7 @@ export function BlogArticleHeader({ frontmatter }: BlogPost) {
 
           <Paragraph
             opacity={0.4}
-            color="color10"
+            color="color-10"
             whiteSpace="nowrap"
             render="time"
             size="3"
@@ -78,7 +78,7 @@ export function BlogArticleHeader({ frontmatter }: BlogPost) {
           <Separator vertical mx="2" />
 
           <YStack items="center" display="none gtSm:flex">
-            <Paragraph opacity={0.4} color="color10" size="3">
+            <Paragraph opacity={0.4} color="color-10" size="3">
               {frontmatter.readingTime?.text}
             </Paragraph>
 

@@ -152,7 +152,7 @@ export const SeasonTogglePopover = (props: { children: any }) => {
                 height="sm:5"
                 bg={
                   name === optionName
-                    ? 'color5 hover:color5 press:color5'
+                    ? 'color-5 hover:color-5 press:color-5'
                     : 'hover:background-hover press:background-press'
                 }
                 onPress={(e) => {

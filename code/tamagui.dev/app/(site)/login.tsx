@@ -258,7 +258,7 @@ function SignIn() {
                     justify="center"
                     rounded="4"
                   >
-                    <Paragraph text="center" mt="2" color="color9">
+                    <Paragraph text="center" mt="2" color="color-9">
                       Email auth is disabled at the moment.
                     </Paragraph>
                   </YStack>
@@ -282,7 +282,7 @@ function SignIn() {
               Or sign in with {showPasswordInput ? 'magic link' : 'password'}
             </Paragraph>
 
-            <Paragraph color="color9" ta="center" size="2">
+            <Paragraph color="color-9" ta="center" size="2">
               Don't have an account?
               {` `}
               <Link href="/signup" style={{ fontWeight: '800' }}>

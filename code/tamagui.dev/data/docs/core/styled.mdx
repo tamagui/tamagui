@@ -267,8 +267,8 @@ export const AlertBox = styled(View, {
     },
   } as const,
 }).resolve((props, env) => ({
-  backgroundColor: props.tone === 'critical' ? env.theme.red10 : undefined,
-  borderColor: props.tone === 'critical' ? env.theme.red8 : undefined,
+  backgroundColor: props.tone === 'critical' ? env.theme['red-10'] : undefined,
+  borderColor: props.tone === 'critical' ? env.theme['red-8'] : undefined,
 }))
 ```
 
@@ -303,7 +303,7 @@ const Parent = styled(View, {
     tone: styled.dynamic<'neutral' | 'critical'>(),
   },
 }).resolve((props, env) => ({
-  backgroundColor: props.tone === 'critical' ? env.theme.red10 : undefined,
+  backgroundColor: props.tone === 'critical' ? env.theme['red-10'] : undefined,
   width: 100,
 }))
 
@@ -312,7 +312,7 @@ const Child = styled(Parent, {}).resolve((props) => ({
 }))
 ```
 
-For `<Child tone="critical" />`, `width` is `200` (child resolver wins) and `backgroundColor` is `env.theme.red10` (parent resolver lands).
+For `<Child tone="critical" />`, `width` is `200` (child resolver wins) and `backgroundColor` is `env.theme['red-10']` (parent resolver lands).
 
 ### Precedence tiers
 
@@ -339,7 +339,7 @@ const Box = styled(View, {
     tone: styled.dynamic<'neutral' | 'critical'>(),
   },
 }).resolve((props, env) => ({
-  backgroundColor: props.tone === 'critical' ? env.theme.red10 : undefined,
+  backgroundColor: props.tone === 'critical' ? env.theme['red-10'] : undefined,
   opacity: props.disabled ? 0.5 : undefined,
 }))
 

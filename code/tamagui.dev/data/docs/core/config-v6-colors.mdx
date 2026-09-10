@@ -24,13 +24,15 @@ export const config = createTamagui(defaultConfig)
 ```tsx
 <html.div backgroundColor="blue-500" borderColor="slate-200" />
 <Theme name="red">
-  <html.div backgroundColor="color2" color="color11" />
+  <html.div backgroundColor="color-2" color="color-11" />
 </Theme>
 ```
 
-`blue-500` is absolute. `color2` and `color11` adapt to the active scheme and
-palette. V3 has exactly 11 adaptive steps because Tailwind has exactly 11 named
-shades.
+`blue-500` is absolute. `color-2` and `color-11` adapt to the active scheme and
+palette. The adaptive ramp is `color-1` through `color-11`, and a scale added
+through `scales` gives twelve. Either way the number is a step relative to the
+active theme's own scheme, not a Tailwind shade such as `50` or `950`. Only the
+spelling changed when the ramp became hyphenated.
 
 ## Color packs
 
@@ -57,7 +59,7 @@ export const config = createTamagui(
 
 The `scales` option adds 12-step scales to the base `light` and `dark` themes.
 Each entry gives 12 light values and 12 dark values, faintest to strongest, and
-becomes theme keys `name1` through `name12` that adapt to the active scheme.
+becomes theme keys `name-1` through `name-12` that adapt to the active scheme.
 Subthemes reach them through parent fallback.
 
 `@tamagui/themes/v5-color-scales` packs the classic v5 scales (`gray`, `blue`,
@@ -84,13 +86,21 @@ export const config = createTamagui(
 ```
 
 ```tsx
-<html.div backgroundColor="red10" />
-<html.span color="brand11" />
+<html.div backgroundColor="red-10" />
+<html.span color="brand-11" />
 ```
 
 These are theme values, so they also resolve inside flat values like
-`backgroundImage="linear-gradient(90deg, red10, orange11)"` and take opacity
-suffixes (`red10/50`).
+`backgroundImage="linear-gradient(90deg, red-10, orange-11)"` and take opacity
+suffixes (`red-10/50`).
+
+## Shadows
+
+Shadows are theme values again, as they were in v5. Each theme owns `shadow-1`
+through `shadow-7`, so dark themes can use stronger shadows than light themes.
+`boxShadow="0 8px 24px shadow-4"` resolves `shadow-4` from the active theme
+instead of reading an absolute color token, and `shadow-color` is the theme's
+`shadow-3`.
 
 ## Add a custom palette
 

@@ -32,7 +32,7 @@ export const MediaPlayer = memo(
             overflow="visible"
             borderWidth={1}
             borderColor="border-color"
-            bg="color1"
+            bg="color-1"
             rounded="7"
             pointerEvents={pointerEvents}
             p={0}
@@ -47,10 +47,10 @@ export const MediaPlayer = memo(
 
               <YStack items="center" y={-3} minW={165} justify="center">
                 <Paragraph fontWeight="700">The Less I Know the Better</Paragraph>
-                <Paragraph color="color11" size="3">
+                <Paragraph color="color-11" size="3">
                   Tame Impala
                 </Paragraph>
-                <Paragraph color="color11" opacity={0.65} size="3">
+                <Paragraph color="color-11" opacity={0.65} size="3">
                   Currents
                 </Paragraph>
               </YStack>

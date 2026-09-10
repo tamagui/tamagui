@@ -16,14 +16,14 @@ export const FlatBubbleCard = styled(YStack, {
 
     flat: {
       true: {
-        backgroundColor: 'gray1',
+        backgroundColor: 'gray-1',
       },
     },
 
     hoverable: {
       true: {
-        backgroundColor: 'transparent hover:gray2',
-        borderColor: 'hover:gray5',
+        backgroundColor: 'transparent hover:gray-2',
+        borderColor: 'hover:gray-5',
       },
     },
 

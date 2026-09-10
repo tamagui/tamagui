@@ -21,7 +21,7 @@ export const Header = () => {
           size="9"
           mx="2"
           bg="background-focus @sm/content:red"
-          borderColor="color5"
+          borderColor="color-5"
           {...demoProps.borderRadiusOuterProps}
           width="lg:100%"
           maxW="lg:100%"

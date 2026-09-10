@@ -11,7 +11,7 @@ type Props = {
 // keeps the browser chrome color and the body background (what shows when you
 // overscroll) in sync with the active theme. the site layout renders exactly
 // one of these - pages must not add their own or they fight over document.body.
-export const ThemeNameEffect = memo(({ colorKey = 'color1', disableTint }: Props) => {
+export const ThemeNameEffect = memo(({ colorKey = 'color-1', disableTint }: Props) => {
   const Tint = useTint()
 
   useEffect(() => {

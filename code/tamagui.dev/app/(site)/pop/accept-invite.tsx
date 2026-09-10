@@ -63,11 +63,11 @@ export default function AcceptInvitePage() {
           borderRadius="6"
           borderWidth={1}
           borderColor="border-color"
-          backgroundColor="color2"
+          backgroundColor="color-2"
         >
           {status === 'loading' && (
             <>
-              <Spinner size="large" color="color10" />
+              <Spinner size="large" color="color-10" />
               <H2 size="7" textAlign="center">
                 Checking invite status...
               </H2>
@@ -79,7 +79,7 @@ export default function AcceptInvitePage() {
               <H2 size="7" textAlign="center">
                 You already have access
               </H2>
-              <Paragraph textAlign="center" color="color11">
+              <Paragraph textAlign="center" color="color-11">
                 Your GitHub account is already a member of the Tamagui team.
               </Paragraph>
               <Button
@@ -103,7 +103,7 @@ export default function AcceptInvitePage() {
               <H2 size="7" textAlign="center">
                 Invited to Tamagui GitHub
               </H2>
-              <Paragraph textAlign="center" color="color11">
+              <Paragraph textAlign="center" color="color-11">
                 The invite should be in your inbox now.
               </Paragraph>
               <Button
@@ -119,7 +119,7 @@ export default function AcceptInvitePage() {
               >
                 Click here to accept
               </Button>
-              <Paragraph size="3" textAlign="center" color="color9">
+              <Paragraph size="3" textAlign="center" color="color-9">
                 If you don't see it, check your GitHub notifications or spam folder.
               </Paragraph>
             </>
@@ -130,10 +130,10 @@ export default function AcceptInvitePage() {
               <H2 size="7" textAlign="center">
                 Something went wrong
               </H2>
-              <Paragraph textAlign="center" color="red10">
+              <Paragraph textAlign="center" color="red-10">
                 {error}
               </Paragraph>
-              <Paragraph size="3" textAlign="center" color="color9">
+              <Paragraph size="3" textAlign="center" color="color-9">
                 Need help? <Link href="mailto:team@tamagui.dev">team@tamagui.dev</Link>
               </Paragraph>
             </>

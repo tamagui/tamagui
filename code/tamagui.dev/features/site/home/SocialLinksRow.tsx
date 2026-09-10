@@ -18,7 +18,7 @@ export const SocialLinksRow = () => {
         <Card width="33.33% sm:auto" justify="center" gap="2" p="5">
           <TwitterIcon />
           <H4 cursor="pointer">X</H4>
-          <Paragraph cursor="pointer" color="color9">
+          <Paragraph cursor="pointer" color="color-9">
             Announcements and general updates.
           </Paragraph>
         </Card>
@@ -32,7 +32,7 @@ export const SocialLinksRow = () => {
         <Card width="33.33% sm:auto" justify="center" gap="2" p="5">
           <DiscordIcon />
           <H4 cursor="pointer">Discord</H4>
-          <Paragraph cursor="pointer" color="color9">
+          <Paragraph cursor="pointer" color="color-9">
             Get involved and get questions answered.
           </Paragraph>
         </Card>
@@ -46,7 +46,7 @@ export const SocialLinksRow = () => {
         <Card width="33.33% sm:auto" justify="center" gap="2" p="5">
           <GithubIcon />
           <H4 cursor="pointer">GitHub</H4>
-          <Paragraph cursor="pointer" color="color9">
+          <Paragraph cursor="pointer" color="color-9">
             Issues, feature requests, and contributing.
           </Paragraph>
         </Card>

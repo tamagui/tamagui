@@ -4,23 +4,23 @@ const getBarColor = (name: string) => {
   switch (name) {
     case 'Tamagui (No Compiler)':
     case 'Tamagui':
-      return 'red9'
+      return 'red-9'
     case 'Stitches':
-      return 'yellow9'
+      return 'yellow-9'
     case 'Stitches 0.1.9':
-      return 'yellow4'
+      return 'yellow-4'
     case 'Styled Components':
     case 'SC':
-      return 'gray9'
+      return 'gray-9'
     case 'react-native-web':
     case 'RN':
     case 'RNW':
     case 'React Native':
-      return 'blue9'
+      return 'blue-9'
     case 'Emotion':
-      return 'green9'
+      return 'green-9'
     case 'Dripsy':
-      return 'blue9'
+      return 'blue-9'
     default:
       return 'gray'
   }

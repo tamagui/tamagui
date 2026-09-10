@@ -51,7 +51,7 @@ export function DocsPageFrame({
                     <XStack
                       render="a"
                       group="card"
-                      borderColor="border-color hover:color5"
+                      borderColor="border-color hover:color-5"
                       flex={1}
                       width="50%"
                       p="5"
@@ -67,14 +67,14 @@ export function DocsPageFrame({
                         x="-2 group-hover/card:0"
                         transition="quickest"
                       >
-                        <ChevronLeft color="color11" />
+                        <ChevronLeft color="color-11" />
                       </View>
 
                       <YStack x="-4 group-hover/card:0" transition="quicker">
-                        <Paragraph select="none" color="color10" size="5">
+                        <Paragraph select="none" color="color-10" size="5">
                           Previous
                         </Paragraph>
-                        <Paragraph select="none" color="gray10" size="3">
+                        <Paragraph select="none" color="gray-10" size="3">
                           {previous.title}
                         </Paragraph>
                       </YStack>
@@ -86,7 +86,7 @@ export function DocsPageFrame({
                     <XStack
                       render="a"
                       group="card"
-                      borderColor="border-color hover:color5"
+                      borderColor="border-color hover:color-5"
                       flex={1}
                       width="50%"
                       p="5"
@@ -99,10 +99,10 @@ export function DocsPageFrame({
                       aria-label={`Next page: ${next.title}`}
                     >
                       <YStack x="4 group-hover/card:0" transition="quicker">
-                        <Paragraph select="none" color="color10" size="5">
+                        <Paragraph select="none" color="color-10" size="5">
                           Next
                         </Paragraph>
-                        <Paragraph select="none" color="gray10" size="3">
+                        <Paragraph select="none" color="gray-10" size="3">
                           {next.title}
                         </Paragraph>
                       </YStack>
@@ -112,7 +112,7 @@ export function DocsPageFrame({
                         x="2 group-hover/card:0"
                         transition="quickest"
                       >
-                        <ChevronRight color="color11" />
+                        <ChevronRight color="color-11" />
                       </View>
                     </XStack>
                   </Link>

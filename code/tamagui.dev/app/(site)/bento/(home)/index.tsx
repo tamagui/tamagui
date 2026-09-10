@@ -82,15 +82,15 @@ const IntermediateCard = ({
   return (
     <XStack overflow="hidden" flex={1} gap="5" px="5" py="4" minHeight={80}>
       <YStack flex={1} gap="2">
-        <H4 opacity={0.5} color="color11" className="text-glow" size="2">
+        <H4 opacity={0.5} color="color-11" className="text-glow" size="2">
           {title}
         </H4>
-        <Paragraph mb={-5} color="color12" opacity={0.7} size="3">
+        <Paragraph mb={-5} color="color-12" opacity={0.7} size="3">
           {children}
         </Paragraph>
       </YStack>
       <Circle
-        outlineColor="color02"
+        outlineColor="color-02"
         outlineOffset={-4}
         outlineWidth={1}
         outlineStyle="solid"
@@ -98,7 +98,7 @@ const IntermediateCard = ({
         size="5"
         elevation="0-5"
       >
-        <Icon color="color11" o={0.85} />
+        <Icon color="color-11" o={0.85} />
       </Circle>
     </XStack>
   )

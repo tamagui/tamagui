@@ -58,10 +58,10 @@ export function ComponentItem({
           height={192}
           rounded="8"
           overflow="hidden"
-          shadowColor="shadow2"
+          shadowColor="shadow-2"
           shadowRadius={30}
           shadowOffset={{ height: 16, width: 0 }}
-          bg="hover:color4 dark:color3"
+          bg="hover:color-4 dark:color-3"
           y="press:2px"
           scale="press:0.99"
           className="relative"
@@ -81,22 +81,22 @@ export function ComponentItem({
             inset={0}
             start={[0, 0.5]}
             end={[0.5, 0]}
-            colors={['transparent', 'background04']}
+            colors={['transparent', 'background-04']}
             z={1}
           />
         </YStack>
 
         <YStack flex={1} flexBasis="auto" p="4" position="relative">
-          <H4 color="color12" size="5">
+          <H4 color="color-12" size="5">
             {name}
           </H4>
 
-          <H5 opacity={0} color="color10" letterSpacing={1} size="1">
+          <H5 opacity={0} color="color-10" letterSpacing={1} size="1">
             {numberOfComponents} components
           </H5>
 
           <YStack position="absolute" t="4" r="4" rotate="20deg" p="2" opacity={0.4}>
-            <Icon size={20} color="color12" />
+            <Icon size={20} color="color-12" />
           </YStack>
         </YStack>
       </YStack>

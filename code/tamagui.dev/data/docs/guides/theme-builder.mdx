@@ -110,12 +110,16 @@ export function getTheme({ recipe }: GetThemeContext<typeof tokens, DefaultRecip
 }
 ```
 
-`ramp()` emits the adaptive `color1` through `color11` keys. `color1` is nearest
-the background and `color11` is nearest the foreground in every theme. Pass the
+`ramp()` emits the adaptive `color-1` through `color-11` keys. `color-1` is nearest
+the background and `color-11` is nearest the foreground in every theme. Pass the
 scale so a bold light theme, whose background is deeper than its type, runs its
 ramp deep to pale; without it the direction follows the scheme alone.
 `fromShades()` maps numeric shades in a semantic scale to the active palette and
 passes exact token names or color literals through.
+
+These numbers describe steps relative to the theme's own scheme. They are not
+Tailwind's absolute `50` through `950` scale. Only the hyphenated spelling
+changed.
 
 All generated values resolve against `tokens.color` immediately. A misspelled
 token or unsupported value fails generation and reports the nearest token name.

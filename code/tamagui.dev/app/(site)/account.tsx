@@ -61,9 +61,9 @@ export default function AccountPage() {
 
           <YStack flex={1} gap="1">
             {userDetails?.full_name && <H3 size="6">{userDetails.full_name}</H3>}
-            <Paragraph color="color10">{user.email}</Paragraph>
+            <Paragraph color="color-10">{user.email}</Paragraph>
             {githubUsername && (
-              <Paragraph color="color9" size="2">
+              <Paragraph color="color-9" size="2">
                 GitHub: @{githubUsername}
               </Paragraph>
             )}
@@ -76,7 +76,7 @@ export default function AccountPage() {
           <>
             <Separator />
             <YStack gap="4">
-              <Paragraph color="color10" size="3">
+              <Paragraph color="color-10" size="3">
                 Tamagui is free — everything on this site is open to everyone. These are
                 subscriptions from before that change, kept here so you can cancel them.
               </Paragraph>
@@ -129,7 +129,7 @@ const SubscriptionRow = ({ subscription }: { subscription: Subscription }) => {
     <YStack
       gap="2"
       p="4"
-      bg="color2"
+      bg="color-2"
       rounded="4"
       borderWidth={1}
       borderColor="border-color"
@@ -137,7 +137,7 @@ const SubscriptionRow = ({ subscription }: { subscription: Subscription }) => {
       <XStack items="center" justify="space-between" gap="4">
         <Paragraph fontWeight="600">{subscription.status}</Paragraph>
         {endsAt && (
-          <Paragraph color="color10" size="2">
+          <Paragraph color="color-10" size="2">
             {subscription.cancel_at_period_end ? 'ends' : 'renews'} {endsAt}
           </Paragraph>
         )}

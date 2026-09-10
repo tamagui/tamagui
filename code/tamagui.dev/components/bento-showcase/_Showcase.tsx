@@ -172,7 +172,7 @@ const ShowcaseView = forwardRef<any, Props>(
                   width="100%"
                   bg="background"
                   borderWidth={0.5}
-                  borderColor="color3"
+                  borderColor="color-3"
                   justify="center"
                   items="center"
                   minH={minHeight}
@@ -196,7 +196,7 @@ const ShowcaseView = forwardRef<any, Props>(
                 <Spinner color="color" size="large" />
               </View>
             ) : error ? (
-              <Text text="center" color="red10" fontSize="@sm/window:2">
+              <Text text="center" color="red-10" fontSize="@sm/window:2">
                 Source unavailable. Please try again later.
               </Text>
             ) : data ? (
@@ -221,20 +221,20 @@ const MessagesFrame = (props: {
       width="100%"
       position="relative"
       minH={minHeight}
-      bg="color1"
+      bg="color-1"
       rounded="4"
       overflow="hidden"
       borderWidth={1}
       borderColor="border-color"
     >
       <XStack
-        bg="color1"
+        bg="color-1"
         borderBottomWidth={1}
-        borderColor="border-color light:gray6"
+        borderColor="border-color light:gray-6"
         p="2"
         gap="2"
       >
-        {['red10', 'yellow10', 'green10'].map((color, index) => (
+        {['red-10', 'yellow-10', 'green-10'].map((color, index) => (
           <View
             bg={color as any}
             height={10}
@@ -247,7 +247,7 @@ const MessagesFrame = (props: {
 
       <ResizableBox hideDragHandle={props.hideDragHandle}>
         <YStack
-          bg="color1"
+          bg="color-1"
           borderColor="border-color"
           width="100%"
           height="100%"
@@ -273,7 +273,7 @@ const PhoneFrame = (props: any) => {
       borderRadius={43}
       height={600}
       width={292}
-      backgroundColor="color1"
+      backgroundColor="color-1"
       overflow="hidden"
       position="absolute"
       right={100}
@@ -426,7 +426,7 @@ const ResizableBox = createStyledHOC(
             <View
               maxH="50%"
               width={8}
-              bg="background04 hover:background06 press:background06"
+              bg="background-04 hover:background-06 press:background-06"
               self="center"
               rounded={1000_000}
             />
@@ -434,7 +434,7 @@ const ResizableBox = createStyledHOC(
               height="3 group-hover:4"
               width={8}
               l={-2}
-              bg="background04"
+              bg="background-04"
               rounded="5"
             />
           </YStack>
@@ -452,7 +452,7 @@ export function Hint({ children }: { children: React.ReactNode }) {
       l={12}
       borderWidth={1}
       borderColor="border-color"
-      bg="color1"
+      bg="color-1"
       paddingTop="2"
       paddingBottom="2"
       px="3"
@@ -578,7 +578,7 @@ const PhoneSVG = () => (
   <svg width="100%" height="100%" viewBox="0 0 715 1467">
     <path
       d="M0 166.4C0 108.155 0 79.0318 11.3353 56.785C21.3062 37.2161 37.2161 21.3062 56.785 11.3353C79.0318 0 108.155 0 166.4 0H548.6C606.845 0 635.968 0 658.215 11.3353C677.784 21.3062 693.694 37.2161 703.665 56.785C715 79.0318 715 108.155 715 166.4V1300.6C715 1358.85 715 1387.97 703.665 1410.21C693.694 1429.78 677.784 1445.69 658.215 1455.66C635.968 1467 606.845 1467 548.6 1467H166.4C108.155 1467 79.0318 1467 56.785 1455.66C37.2161 1445.69 21.3062 1429.78 11.3353 1410.21C0 1387.97 0 1358.85 0 1300.6V166.4Z"
-      fill="var(--color2)"
+      fill="var(--color-2)"
       style={{
         outline: `0 0 10px #000`,
       }}
@@ -602,11 +602,11 @@ const PhoneSVG = () => (
     </g>
     <path
       d="M319 55C319 51.134 322.134 48 326 48H390C393.866 48 397 51.134 397 55C397 58.866 393.866 62 390 62H326C322.134 62 319 58.866 319 55Z"
-      fill="var(--color6)"
+      fill="var(--color-6)"
     />
     <path
       d="M413 55C413 47.268 419.268 41 427 41C434.732 41 441 47.268 441 55C441 62.732 434.732 69 427 69C419.268 69 413 62.732 413 55Z"
-      fill="var(--color6)"
+      fill="var(--color-6)"
     />
     <defs>
       <clipPath id="clip0_2_131">

@@ -18,10 +18,10 @@ const colLabels: Record<(typeof cols)[number], string> = {
 }
 
 const mark: Record<Support, { glyph: string; color: ColorTokens }> = {
-  full: { glyph: '●', color: 'green10' },
-  partial: { glyph: '◐', color: 'yellow10' },
-  web: { glyph: 'web', color: 'blue10' },
-  none: { glyph: '–', color: 'color7' },
+  full: { glyph: '●', color: 'green-10' },
+  partial: { glyph: '◐', color: 'yellow-10' },
+  web: { glyph: 'web', color: 'blue-10' },
+  none: { glyph: '–', color: 'color-7' },
 }
 
 function Cell({ s }: { s: Support }) {
@@ -44,21 +44,21 @@ function Matrix({ title, rows }: { title: string; rows: CoverageRow[] }) {
       rounded="6"
       borderWidth={1}
       borderColor="border-color"
-      bg="color1"
+      bg="color-1"
       overflow="hidden"
       minWidth={0}
       style={{ overflowX: 'auto' }}
     >
       <YStack minWidth={520}>
-        <XStack px="4" py="3" items="center" bg="color2">
+        <XStack px="4" py="3" items="center" bg="color-2">
           <YStack flex={1} minWidth={150}>
-            <Paragraph color="color11" size="2">
+            <Paragraph color="color-11" size="2">
               {title}
             </Paragraph>
           </YStack>
           {cols.map((c) => (
             <YStack key={c} width={92} items="center">
-              <Paragraph color={`${c === 'tamagui' ? 'color12' : 'color10'}`} size="2">
+              <Paragraph color={`${c === 'tamagui' ? 'color-12' : 'color-10'}`} size="2">
                 {colLabels[c]}
               </Paragraph>
             </YStack>
@@ -70,7 +70,7 @@ function Matrix({ title, rows }: { title: string; rows: CoverageRow[] }) {
             {i > 0 && <Separator opacity={0.5} />}
             <XStack px="4" py="3" items="center">
               <YStack flex={1} minWidth={150}>
-                <Paragraph fontFamily="mono" color="color11" size="2">
+                <Paragraph fontFamily="mono" color="color-11" size="2">
                   {row.utility}
                 </Paragraph>
               </YStack>
@@ -117,15 +117,15 @@ export function TailwindComparison() {
             rounded="6"
             borderWidth={1}
             borderColor="border-color"
-            bg="color1"
+            bg="color-1"
           >
-            <Paragraph color="color11" size="3">
+            <Paragraph color="color-11" size="3">
               {f.name}
             </Paragraph>
-            <Paragraph color="color12" size="9">
+            <Paragraph color="color-12" size="9">
               {f.pct}%
             </Paragraph>
-            <Paragraph color={`${f.cross ? 'green10' : 'color9'}`} size="1">
+            <Paragraph color={`${f.cross ? 'green-10' : 'color-9'}`} size="1">
               {f.cross ? 'cross-platform' : 'web only'}
             </Paragraph>
           </YStack>
@@ -135,14 +135,14 @@ export function TailwindComparison() {
       <Matrix title="Utility" rows={coverageRows} />
       <Matrix title="Variants & states" rows={variantRows} />
 
-      <Paragraph color="color9" self="center" size="1">
+      <Paragraph color="color-9" self="center" size="1">
         ● full · ◐ partial · web web-only · – none
       </Paragraph>
       <Paragraph
         self="center"
         maxW={680}
         text="center"
-        color="color10"
+        color="color-10"
         lineHeight="5"
         size="3"
       >

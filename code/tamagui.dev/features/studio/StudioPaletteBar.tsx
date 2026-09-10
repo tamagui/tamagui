@@ -35,7 +35,7 @@ export function StudioPaletteBar({
           ))}
         </XStack>
       )}
-      <XStack overflow="hidden" rounded="4" borderWidth={0.5} borderColor="color3">
+      <XStack overflow="hidden" rounded="4" borderWidth={0.5} borderColor="color-3">
         {colors.map((color, i) => (
           <XStack
             key={color + i}

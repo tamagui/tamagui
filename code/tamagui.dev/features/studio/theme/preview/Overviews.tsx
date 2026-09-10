@@ -75,7 +75,7 @@ export const OverviewCard = ({
       backgroundColor="transparent"
       {...props}
       {...(alternative && {
-        bg: 'color8',
+        bg: 'color-8',
         m: -10,
         p: 10,
       })}
@@ -90,9 +90,9 @@ export const OverviewCard = ({
           {...demoProps.headingFontFamilyProps}
           fontWeight="400"
           mb="-2"
-          color="color11"
+          color="color-11"
           {...(alternative && {
-            color: 'accent12',
+            color: 'accent-12',
           })}
         >
           {title}
@@ -100,7 +100,7 @@ export const OverviewCard = ({
         <H4
           size="9"
           {...(alternative && {
-            color: 'accent12',
+            color: 'accent-12',
           })}
         >
           {value}
@@ -111,7 +111,7 @@ export const OverviewCard = ({
               size="2"
               px="2"
               {...(alternative && {
-                color: 'accent12',
+                color: 'accent-12',
               })}
             >
               {badgeText}

@@ -16,7 +16,7 @@ export const XLabeledItem = ({ label, children }: { label: any; children: any })
         maxW={50}
         minW={40}
         justify="flex-end"
-        color="color10"
+        color="color-10"
         size="1"
       >
         {label}

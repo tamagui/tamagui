@@ -41,7 +41,7 @@ export const PageThemeCarousel = () => {
             }}
             className="ease-out ms200 all"
           >
-            <ChevronLeft size={24} color="color12" />
+            <ChevronLeft size={24} color="color-12" />
           </YStack>
           <YStack
             p="3"
@@ -54,7 +54,7 @@ export const PageThemeCarousel = () => {
             }}
             className="ease-out ms200 all"
           >
-            <ChevronRight size={24} color="color12" />
+            <ChevronRight size={24} color="color-12" />
           </YStack>
         </XStack>
       </XStack>

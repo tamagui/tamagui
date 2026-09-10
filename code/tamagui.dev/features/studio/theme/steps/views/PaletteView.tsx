@@ -513,7 +513,7 @@ export const StepThemeHoverablePalette = memo((props: PaletteProps) => {
 
   return (
     <TooltipGroup delay={0}>
-      <XStack flex={1} rounded={borderRadius} borderWidth={1} borderColor="color7">
+      <XStack flex={1} rounded={borderRadius} borderWidth={1} borderColor="color-7">
         {colors.map((color, i) => {
           return <PaletteColor {...props} color={color} index={i} key={i} />
         })}
@@ -609,25 +609,25 @@ const PaletteColor = memo(
         position="relative"
         {...(hoveredColor === index && {
           z: 10000,
-          outlineColor: 'accent10',
+          outlineColor: 'accent-10',
           outlineStyle: 'solid',
           outlineWidth: 1.5,
-          shadowColor: 'blue10',
+          shadowColor: 'blue-10',
           shadowRadius: 5,
           shadowOpacity: 1,
         })}
         {...((isAnchor || selectedColor === index) && {
           zi: 10000,
-          outlineColor: 'accent10',
+          outlineColor: 'accent-10',
           outlineStyle: 'solid',
           outlineWidth: 2,
         })}
         {...(selectedColor === index && {
-          outlineColor: 'accent1',
+          outlineColor: 'accent-1',
         })}
         {...(selectedColor === hoveredColor &&
           hoveredColor === index && {
-            shadowColor: 'blue10',
+            shadowColor: 'blue-10',
             shadowRadius: 10,
             shadowOpacity: 1,
             zi: 100000,
@@ -675,7 +675,7 @@ const PaletteIndices = () => (
             <SizableText
               width={`${1 / 12}%`}
               flex={1}
-              color="color9"
+              color="color-9"
               fontFamily="mono"
               self="center"
               text="center"

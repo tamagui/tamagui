@@ -138,7 +138,7 @@ const AnimationControl = () => {
             animationDriverToggler.setDriverName(val ? 'motion' : 'css')
           }
           activeStyle={{
-            backgroundColor: 'color8',
+            backgroundColor: 'color-8',
           }}
         >
           <Switch.Thumb transition="medium" />

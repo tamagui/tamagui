@@ -47,7 +47,7 @@ export const BentoHero = () => {
                   fontSize="22px md:22px"
                   text="center"
                   lineHeight="40px md:38px"
-                  color="color11"
+                  color="color-11"
                   maxH={120}
                   mt="md:6"
                 >

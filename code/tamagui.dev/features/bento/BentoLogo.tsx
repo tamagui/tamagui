@@ -55,7 +55,7 @@ export const BentoLogo = ({
             px="3"
             mx="-3"
             whiteSpace="pre"
-            color="color1 dark:color10"
+            color="color-1 dark:color-10"
             maxWidth="100%"
             flex={1}
             letterSpacing={-21}
@@ -80,7 +80,7 @@ export const BentoLogo = ({
             px="3"
             mx="-3"
             whiteSpace="pre"
-            color="color8"
+            color="color-8"
             maxWidth="100%"
             flex={1}
             letterSpacing={-21}
@@ -92,8 +92,8 @@ export const BentoLogo = ({
             pointerEvents="none"
             className="clip-text mask-gradient-down"
             style={{
-              backgroundImage: 'linear-gradient(var(--color5), transparent)',
-              textShadow: `0 0 10px var(--color025), 0 0 8px rgba(255,255,255,0.44)`,
+              backgroundImage: 'linear-gradient(var(--color-5), transparent)',
+              textShadow: `0 0 10px var(--color-025), 0 0 8px rgba(255,255,255,0.44)`,
               maskImage: `linear-gradient(transparent 20%, rgba(0, 0, 0, 1))`,
             }}
           >
@@ -138,7 +138,7 @@ export const BentoLogo = ({
             px="3"
             mx="-3"
             whiteSpace="pre"
-            color="color8"
+            color="color-8"
             maxWidth="100%"
             flex={1}
             letterSpacing={-21}

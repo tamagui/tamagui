@@ -12,7 +12,7 @@ export const SponsorButton = (props: { tiny?: boolean }) => {
         <Heart
           style={{ marginBottom: -1 }}
           size={props.tiny ? 12 : 14}
-          color="var(--red10)"
+          color="var(--red-10)"
         />
       }
       self="center"

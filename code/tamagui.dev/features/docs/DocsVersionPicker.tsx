@@ -118,7 +118,7 @@ function PickerSelect({
         height={28}
         paddingHorizontal="2"
         gap="1"
-        backgroundColor="color2"
+        backgroundColor="color-2"
         borderWidth={1}
         borderColor="border-color"
         borderRadius="4"
@@ -126,7 +126,7 @@ function PickerSelect({
       >
         <Select.Value placeholder={label} fontSize="1" />
         <Select.Icon marginLeft="auto">
-          <ChevronDown size={12} color="color9" />
+          <ChevronDown size={12} color="color-9" />
         </Select.Icon>
       </Select.Trigger>
 
@@ -141,7 +141,7 @@ function PickerSelect({
           boxShadow="0 12px 28px rgba(0, 0, 0, 0.18)"
         >
           <Select.Group>
-            <Select.Label fontSize="2" color="color9">
+            <Select.Label fontSize="2" color="color-9">
               {label}
             </Select.Label>
             {items.map((item) => (

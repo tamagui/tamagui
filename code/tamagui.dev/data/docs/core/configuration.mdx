@@ -556,7 +556,7 @@ const config = createTamagui({
       'color-hover': tokens.color['gray-800'],
       'color-press': tokens.color['gray-700'],
       // ...
-      color1: tokens.color['gray-50'],
+      'color-1': tokens.color['gray-50'],
     },
     dark: {
       background: '#000',
@@ -574,11 +574,11 @@ through a Styled Component like View or Text:
 
 ```tsx
 const P = styled(Text, {
-  color: 'color11'
+  color: 'color-11'
 })
 
 // or directly
-<Text color="color11" />
+<Text color="color-11" />
 ```
 
 One of the more powerful features in Tamagui is nesting themes, you just define
@@ -588,11 +588,11 @@ them like so:
 const config = createTamagui({
   themes: {
     light: {
-      color1: '#fff',
+      'color-1': '#fff',
       // ...
     },
     dark: {
-      color1: '#000',
+      'color-1': '#000',
       // ...
     },
 

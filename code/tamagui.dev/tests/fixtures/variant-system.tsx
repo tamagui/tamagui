@@ -34,8 +34,8 @@ export const AlertBox = styled(View, {
     },
   } as const,
 }).resolve((props, env) => ({
-  backgroundColor: props.tone === 'critical' ? env.theme.red10 : undefined,
-  borderColor: props.tone === 'critical' ? env.theme.red8 : undefined,
+  backgroundColor: props.tone === 'critical' ? env.theme['red-10'] : undefined,
+  borderColor: props.tone === 'critical' ? env.theme['red-8'] : undefined,
   opacity: props.disabled ? 0.5 : undefined,
 }))
 
@@ -87,7 +87,7 @@ const ResolverParent = styled(View, {
     tone: styled.dynamic<'neutral' | 'critical'>(),
   },
 }).resolve((props, env) => ({
-  backgroundColor: props.tone === 'critical' ? env.theme.red10 : undefined,
+  backgroundColor: props.tone === 'critical' ? env.theme['red-10'] : undefined,
   width: 100,
 }))
 
@@ -135,7 +135,7 @@ export function PieceTypedPropsUsage() {
 }
 
 // § Component docs: ToggleGroup with style()
-const activeToggleStyle = style({ backgroundColor: 'color5' })
+const activeToggleStyle = style({ backgroundColor: 'color-5' })
 
 export function ToggleGroupUsage() {
   return (

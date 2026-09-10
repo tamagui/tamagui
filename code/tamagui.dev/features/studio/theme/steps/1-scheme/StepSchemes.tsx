@@ -13,7 +13,7 @@ export function StepSchemes() {
     <YStack flex={1} my="4" gap="4">
       <H4>Dark and light schemes</H4>
 
-      <Paragraph size="5" color="color10">
+      <Paragraph size="5" color="color-10">
         At the base of your themes we recommend a light and dark theme, but you can choose
         just one.
       </Paragraph>
@@ -77,8 +77,8 @@ const Option = ({
       p="3"
       display="flex"
       borderWidth={1}
-      bg={`${active ? 'color3' : 'color2'}`}
-      borderColor={`${active ? 'color6' : 'color7'} hover:${active ? 'color6' : 'color8'}`}
+      bg={`${active ? 'color-3' : 'color-2'}`}
+      borderColor={`${active ? 'color-6' : 'color-7'} hover:${active ? 'color-6' : 'color-8'}`}
       rounded="5"
       gap="4"
       items="center"
@@ -93,7 +93,7 @@ const Option = ({
         value={value}
       >
         <Checkbox.Indicator
-        // backgroundColor={active ? 'color8' : 'color1'}
+        // backgroundColor={active ? 'color-8' : 'color-1'}
         >
           <Check />
         </Checkbox.Indicator>
@@ -102,7 +102,7 @@ const Option = ({
       <YStack gap="2" flex={1}>
         <Paragraph size="5">{label}</Paragraph>
         {!!description && (
-          <Paragraph size="3" lineHeight="1" color="color9">
+          <Paragraph size="3" lineHeight="1" color="color-9">
             {description}
           </Paragraph>
         )}

@@ -65,7 +65,7 @@ const Tab = forwardRef(function Tab(props: TabsTabProps, ref) {
       outlineWidth="focus:2px"
       outlineStyle="focus:solid"
       {...(isActive && {
-        backgroundColor: 'color7 hover:color7 focus:color7',
+        backgroundColor: 'color-7 hover:color-7 focus:color-7',
       })}
       ref={ref as any}
     >
@@ -86,7 +86,7 @@ const TabsListFrame = styled(XStack, {
   position: 'sticky' as any,
   px: '2',
   items: 'center',
-  borderColor: 'color4',
+  borderColor: 'color-4',
   borderBottomWidth: '1',
   rounded: '2',
   minW: 'sm:100%',

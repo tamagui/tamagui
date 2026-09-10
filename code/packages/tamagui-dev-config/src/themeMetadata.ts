@@ -29,7 +29,7 @@ export const componentThemes = [
 ]
 
 const numbered = (prefix: string, count: number) =>
-  Array.from({ length: count }, (_, index) => `${prefix}${index + 1}`)
+  Array.from({ length: count }, (_, index) => `${prefix}-${index + 1}`)
 
 const baseThemeNames = schemes.flatMap((scheme) => [
   scheme,
@@ -82,7 +82,7 @@ export const themeVariableNames = [
   'background-focus',
   'background-hover',
   'background-press',
-  ...alphaSteps.map((step) => `background${step}`),
+  ...alphaSteps.map((step) => `background-${step}`),
   'border-color',
   'border-color-focus',
   'border-color-hover',
@@ -92,18 +92,18 @@ export const themeVariableNames = [
   'color-hover',
   'color-press',
   'color-transparent',
-  ...alphaSteps.map((step) => `color${step}`),
+  ...alphaSteps.map((step) => `color-${step}`),
   ...numbered('color', 12),
   'outline-color',
   'placeholder-color',
   'shadow-color',
   ...['black', 'white'].flatMap((color) => [
     color,
-    `${color}0`,
-    `${color}02`,
-    `${color}04`,
-    `${color}06`,
-    `${color}08`,
+    `${color}-0`,
+    `${color}-02`,
+    `${color}-04`,
+    `${color}-06`,
+    `${color}-08`,
     ...numbered(color, 12),
   ]),
   ...paletteColors.flatMap((color) => numbered(color, 12)),

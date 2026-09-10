@@ -5,7 +5,7 @@ export const CodeInline = styled(Paragraph, {
   displayName: 'CodeInline',
   render: 'code',
   fontFamily: 'mono',
-  backgroundColor: 'color2',
+  backgroundColor: 'color-2',
   cursor: 'inherit',
   rounded: '3',
   fontSize: '85%',

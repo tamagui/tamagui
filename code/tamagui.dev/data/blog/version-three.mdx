@@ -168,10 +168,10 @@ props can change the result, including in the Tailwind class pipeline.
 
 ```tsx
 // bg-blue-500 wins: it is authored after backgroundColor
-<View backgroundColor="red9" className="bg-blue-500" />
+<View backgroundColor="red-9" className="bg-blue-500" />
 
-// red9 wins: it is authored after the class
-<View className="bg-blue-500" backgroundColor="red9" />
+// red-9 wins: it is authored after the class
+<View className="bg-blue-500" backgroundColor="red-9" />
 ```
 
 This is about which *contribution* wins, and it stops at the prop boundary. Inside
@@ -216,7 +216,7 @@ const CardBase = styled(View, {
 
 // 3. Props to style piece: component resolver
 export const Card = CardBase.resolve((props, env) => ({
-  backgroundColor: props.tone === 'critical' ? env.theme.red10 : undefined,
+  backgroundColor: props.tone === 'critical' ? env.theme['red-10'] : undefined,
   opacity: props.disabled ? 0.5 : undefined,
 }))
 ```
@@ -735,7 +735,7 @@ Themes are tables keyed by name, while local adjustments use `<ThemeUpdate>`:
 ```tsx
 import { ThemeUpdate } from 'tamagui'
 
-<ThemeUpdate background-hover="blue4 dark:blue2">
+<ThemeUpdate background-hover="blue-4 dark:blue-2">
   <SettingsPanel />
 </ThemeUpdate>
 ```
@@ -760,7 +760,7 @@ You can also declare your own variables in config:
 ```tsx
 createTamagui({
   variables: {
-    focusRingColor: 'blue10',
+    focusRingColor: 'blue-10',
     focusRingWidth: 2,
     disabledOpacity: 0.5,
     pressScale: 0.97,

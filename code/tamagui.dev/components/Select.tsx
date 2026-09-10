@@ -85,7 +85,7 @@ const SelectComponent = (
             position="absolute"
             inset={0}
             rounded="4"
-            colors={['background', 'background0']}
+            colors={['background', 'background-0']}
           />
         </TamaguiSelect.ScrollUpButton>
 
@@ -120,7 +120,7 @@ const SelectComponent = (
             position="absolute"
             inset={0}
             rounded="4"
-            colors={['background0', 'background']}
+            colors={['background-0', 'background']}
           />
         </TamaguiSelect.ScrollDownButton>
       </TamaguiSelect.Content>

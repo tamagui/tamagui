@@ -26,7 +26,7 @@ export default function Blog() {
       <HeadInfo title="Blog — Tamagui" description="What's up with Tamagui." />
       <Spacer size="7" />
       <ContainerLarge mb="7">
-        <H2 size="8" color="color9">
+        <H2 size="8" color="color-9">
           Blog
         </H2>
         <Spacer size="6" />
@@ -42,7 +42,7 @@ export default function Blog() {
                 flex="md:unset sm:unset"
                 flexShrink="md:0 sm:0"
                 subTitle={
-                  <Paragraph opacity={0.5} cursor="inherit" color="color10" size="3">
+                  <Paragraph opacity={0.5} cursor="inherit" color="color-10" size="3">
                     {Intl.DateTimeFormat('en-US', {
                       month: 'short',
                       year: 'numeric',

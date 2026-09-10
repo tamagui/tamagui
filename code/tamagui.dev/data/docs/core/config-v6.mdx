@@ -30,9 +30,15 @@ export const config = createTamagui(defaultConfig)
 - `w` and `h` are width and height shorthands.
 - `tokens.color` contains the full Tailwind palette with names such as
   `blue-500` and `slate-200`.
-- Themes provide adaptive `color1` through `color11`, semantic generics,
+- Themes provide adaptive `color-1` through `color-11`, semantic generics,
   relative `level2` through `level4`, `inverse`, `accent`, `brand`, `red`,
   `yellow`, and `green`.
+- Adaptive ramp numbers are steps relative to the active theme's own scheme.
+  They are not Tailwind's absolute `50` through `950` shades. Only the spelling
+  changed when these keys became hyphenated.
+- Shadows are per-theme values named `shadow-1` through `shadow-7`, as in v5.
+  Dark themes use stronger shadows than light themes, and
+  `boxShadow="0 8px 24px shadow-4"` reads `shadow-4` from the active theme.
 - Z-index has no configured token scale. Bare values resolve a matching token
   only when an application adds one; otherwise the literal unitless value is
   preserved.

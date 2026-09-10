@@ -121,7 +121,7 @@ export const ExampleAnimations = memo(() => {
       <Separator vertical />
 
       <YStack position="relative" display="sm:none" width="40%">
-        <YStack flex={1} bg="color1">
+        <YStack flex={1} bg="color-1">
           {animationDescriptions.map((item, i) => {
             const isActive = item === animation
             return (
@@ -130,7 +130,7 @@ export const ExampleAnimations = memo(() => {
                 theme={isActive ? 'accent' : null}
                 px="4"
                 py="2"
-                bg={isActive ? 'var(--color2)' : 'var(--color1)'}
+                bg={isActive ? 'var(--color-2)' : 'var(--color-1)'}
                 borderColor="var(--border-color)"
                 cursor="pointer"
                 title={item.name}
@@ -188,7 +188,7 @@ export function AnimationsDemoBase(props) {
         borderColor="border-color"
         borderWidth={1}
         rounded="9"
-        bg="color9"
+        bg="color-9"
         {...position}
         onPress={onPress}
         size={104}

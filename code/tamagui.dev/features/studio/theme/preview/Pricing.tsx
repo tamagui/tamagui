@@ -43,7 +43,7 @@ export const PricingCards = () => {
         <H4 {...demoProps.headingFontFamilyProps} size="4" text="center">
           Subscribe
         </H4>
-        <Paragraph color="color9" text="center" size="4">
+        <Paragraph color="color-9" text="center" size="4">
           Select a plan
         </Paragraph>
       </YStack>
@@ -59,7 +59,7 @@ export const PricingCards = () => {
                 flex={1}
                 p="4"
                 display="flex"
-                bg="color2 hover:color3"
+                bg="color-2 hover:color-3"
                 gap="4"
                 items="center"
                 {...demoProps.borderRadiusProps}
@@ -73,7 +73,7 @@ export const PricingCards = () => {
                   <Paragraph size="6" mb={-3}>
                     {price.title}
                   </Paragraph>
-                  <Paragraph size="3" color="color11">
+                  <Paragraph size="3" color="color-11">
                     {price.description}
                   </Paragraph>
                 </YStack>
@@ -84,7 +84,7 @@ export const PricingCards = () => {
       </YStack>
 
       <YStack mt="4" gap="4">
-        <Paragraph size="3" text="center" color="color10">
+        <Paragraph size="3" text="center" color="color-10">
           Have a coupon?{' '}
           <Paragraph render="span" textDecorationLine="underline">
             Click here

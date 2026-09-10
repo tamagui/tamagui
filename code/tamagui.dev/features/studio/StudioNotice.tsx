@@ -53,7 +53,7 @@ const Panel = ({
               {icon}
             </XStack>
           </XStack>
-          <Separator borderColor="color5" />
+          <Separator borderColor="color-5" />
         </>
       )}
 
@@ -81,11 +81,11 @@ export const StudioNotice = ({ children, steps, ...props }: PanelProps) => {
   }
   return (
     <Panel
-      icon={<Lightbulb size="1" color="color7" />}
+      icon={<Lightbulb size="1" color="color-7" />}
       afterTitle={
         !steps ? null : (
           <XStack gap="2" items="center">
-            <Paragraph mr="2" color="color9" size="2">
+            <Paragraph mr="2" color="color-9" size="2">
               {index + 1}/{total}
             </Paragraph>
 
@@ -315,19 +315,19 @@ const YStackEnterable = styled(YStack, {
 })
 
 export const StudioSuccess = (props: PanelProps) => {
-  return <Panel theme="green" icon={<Check size="1" color="color7" />} {...props} />
+  return <Panel theme="green" icon={<Check size="1" color="color-7" />} {...props} />
 }
 
 export const NoticeParagraph = styled(Paragraph, {
   pr: '4',
-  color: 'color11',
+  color: 'color-11',
   size: '3',
 })
 
 const NoticeFrame = styled(YStack, {
   className: 'no-opacity-fade',
   borderWidth: 2,
-  borderColor: 'color6',
+  borderColor: 'color-6',
   paddingRight: '4',
   paddingLeft: '4',
   py: '3',

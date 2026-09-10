@@ -203,8 +203,8 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
             <Input
               ref={inputRef as any}
               flex={1}
-              shadowColor="shadow3"
-              bg="color1"
+              shadowColor="shadow-3"
+              bg="color-1"
               shadowOffset={{ height: 2, width: 0 }}
               shadowRadius={10}
               rounded="8"
@@ -365,7 +365,7 @@ const ThemeToggle = () => {
           outlineWidth={0}
           outlineStyle="solid"
           activeStyle={{
-            backgroundColor: 'accent10',
+            backgroundColor: 'accent-10',
           }}
           onCheckedChange={(on) => {
             setChecked(on)

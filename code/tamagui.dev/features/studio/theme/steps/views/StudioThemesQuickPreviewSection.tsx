@@ -35,7 +35,7 @@ export const StudioThemesQuickPreviewSection = memo(
     const checkId = `accept-check-${scheme}`
     return (
       <ScrollView
-        bg={`${subtleBg ? 'color2' : 'color1'}`}
+        bg={`${subtleBg ? 'color-2' : 'color-1'}`}
         flex={1}
         rounded="6"
         borderWidth={1}
@@ -48,7 +48,7 @@ export const StudioThemesQuickPreviewSection = memo(
         <YStack gap="3" height="100%" flex={1} pt="4" px="4" justify="space-between">
           <YStack gap="2">
             <H3>Preview</H3>
-            <Paragraph color="color11">
+            <Paragraph color="color-11">
               This is just an example, your actual components can use any values from the
               palette.
             </Paragraph>
@@ -89,7 +89,7 @@ export const StudioThemesQuickPreviewSection = memo(
                 <Label htmlFor={checkId}>Use subtle background</Label>
               </XStack>
             </XStack>
-            <Separator borderColor="color2" />
+            <Separator borderColor="color-2" />
             <XStack gap="4">
               <Button flex={1}>Cancel</Button>
 

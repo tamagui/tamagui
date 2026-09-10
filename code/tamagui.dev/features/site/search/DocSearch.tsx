@@ -39,11 +39,11 @@ const docSearchCSS = `
 }
 
 .DocSearch-Container {
-  background-color: var(--background06)
+  background-color: var(--background-06)
 }
 
 .DocSearch-Modal {
-  background-color: var(--color2);
+  background-color: var(--color-2);
 }
 
 .DocSearch-Hit a {
@@ -52,7 +52,7 @@ const docSearchCSS = `
 }
 
 .DocSearch-Hit[aria-selected=true] a {
-  background: var(--color3);
+  background: var(--color-3);
 }
 
 .DocSearch-Modal {
@@ -93,7 +93,7 @@ const docSearchCSS = `
 .DocSearch-NoResults,
 .DocSearch-Footer,
 .DocSearch-Reset {
-  color: var(--color9);
+  color: var(--color-9);
 }
 
 .DocSearch-Hit-source {
@@ -129,7 +129,7 @@ const docSearchCSS = `
 }
 
 .DocSearch-Hit[aria-selected="true"] .DocSearch-Hit-action, .DocSearch-Hit[aria-selected="true"] .DocSearch-Hit-icon, .DocSearch-Hit[aria-selected="true"] .DocSearch-Hit-path, .DocSearch-Hit[aria-selected="true"] .DocSearch-Hit-text, .DocSearch-Hit[aria-selected="true"] .DocSearch-Hit-title, .DocSearch-Hit[aria-selected="true"] .DocSearch-Hit-Tree, .DocSearch-Hit[aria-selected="true"] mark {
-  color: var(--color12) !important;
+  color: var(--color-12) !important;
 }
 
 .DocSearch-Hit-title {

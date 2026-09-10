@@ -145,7 +145,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
                 l={0}
                 r={0}
                 height={200}
-                colors={['background0', 'background']}
+                colors={['background-0', 'background']}
                 z={1000}
               >
                 <Spacer flex={1} />
@@ -169,7 +169,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
               mb={0}
               id={id}
               justify="center"
-              bg="color2"
+              bg="color-2"
               position="relative"
               group="code"
             >
@@ -184,14 +184,14 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
                   height="5"
                   py="4"
                   borderBottomWidth="0-5"
-                  borderBottomColor="color3"
+                  borderBottomColor="color-3"
                 >
                   {isTerminalCommand ? (
-                    <TerminalSquare size="1" color="color11" />
+                    <TerminalSquare size="1" color="color-11" />
                   ) : (
-                    <FileCode2 size="1" color="color11" />
+                    <FileCode2 size="1" color="color-11" />
                   )}
-                  <Paragraph color="color11">
+                  <Paragraph color="color-11">
                     {isTerminalCommand ? 'Terminal' : fileName}
                   </Paragraph>
                   {/* in the title row it sits in the flow, so it centers on the

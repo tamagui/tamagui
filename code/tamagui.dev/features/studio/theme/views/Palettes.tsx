@@ -19,7 +19,7 @@ export function Palettes({
     <YStack
       rounded="4"
       overflow="hidden"
-      borderColor="color8"
+      borderColor="color-8"
       borderWidth={0.5}
       elevation="1"
     >

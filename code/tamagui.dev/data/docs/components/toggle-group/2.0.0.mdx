@@ -39,7 +39,7 @@ ToggleGroup handles the toggle state logic. For visual grouping with border radi
 ```tsx
 import { ToggleGroup, XGroup, style } from 'tamagui'
 
-const activeItemStyle = style({ backgroundColor: 'color5' })
+const activeItemStyle = style({ backgroundColor: 'color-5' })
 
 export default () => {
   return (
@@ -216,7 +216,7 @@ import { useToggleGroupItem, ToggleGroup } from '@tamagui/toggle-group'
 
 function CustomLabel({ children }) {
   const { active, color } = useToggleGroupItem()
-  return <html.span color={active ? 'green10' : 'color'}>{children}</html.span>
+  return <html.span color={active ? 'green-10' : 'color'}>{children}</html.span>
 }
 
 // Usage

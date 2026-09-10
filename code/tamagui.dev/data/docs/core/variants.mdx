@@ -305,7 +305,7 @@ export const AlertBox = styled(View, {
     tone: styled.dynamic<'neutral' | 'critical'>(),
   },
 }).resolve((props, env) => ({
-  backgroundColor: props.tone === 'critical' ? env.theme.red10 : undefined,
+  backgroundColor: props.tone === 'critical' ? env.theme['red-10'] : undefined,
   opacity: props.disabled ? 0.5 : undefined,
 }))
 ```

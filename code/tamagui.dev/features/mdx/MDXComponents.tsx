@@ -86,7 +86,7 @@ const IntroParagraph = ({ children, large, disableUnwrapText, ...props }: any) =
       fontSize="sm:6"
       lineHeight="sm:6"
       mb="4"
-      color="accent1"
+      color="accent-1"
       {...props}
     >
       {disableUnwrapText ? children : unwrapText(children)}
@@ -106,7 +106,7 @@ const Table = ({ heading, children, ...props }) => {
   return (
     <TableFrame className="no-scrollbar" overflow={'scroll' as any} {...props}>
       {!!heading && (
-        <TableCell size="4" bg="color1" fontWeight="500" color="color9">
+        <TableCell size="4" bg="color-1" fontWeight="500" color="color-9">
           {heading}
         </TableCell>
       )}
@@ -172,12 +172,12 @@ const TableCell = styled(Paragraph, {
   variants: {
     head: {
       true: {
-        bg: 'color1',
+        bg: 'color-1',
       },
     },
     highlight: {
       true: {
-        bg: 'yellow2',
+        bg: 'yellow-2',
       },
     },
   } as const,
@@ -195,7 +195,7 @@ const TableCol = styled(YStack, {
 const TableHighlight = styled(YStack, {
   position: 'absolute',
   inset: 0,
-  bg: 'yellow1',
+  bg: 'yellow-1',
 })
 
 const componentsIn = {
@@ -295,14 +295,14 @@ const componentsIn = {
                 py="1"
                 px="2"
                 self="flex-start"
-                bg="color2"
+                bg="color-2"
                 rounded="3"
                 cursor="pointer"
                 onPress={onCopy}
               >
-                <SizableText color="color11">{transformedCommand}</SizableText>
+                <SizableText color="color-11">{transformedCommand}</SizableText>
 
-                <CopyIcon p="0-5" size={16} color="color10 hover:color2" />
+                <CopyIcon p="0-5" size={16} color="color-10 hover:color-2" />
               </XStack>
             </TooltipSimple>
           </ThemeTint>
@@ -335,14 +335,14 @@ const componentsIn = {
                   py="1"
                   px="2"
                   self="flex-start"
-                  bg="color2"
+                  bg="color-2"
                   rounded="3"
                   cursor="pointer"
                   onPress={tamaguiCmdClip.onCopy}
                 >
-                  <SizableText color="color11">{tamaguiCommand}</SizableText>
+                  <SizableText color="color-11">{tamaguiCommand}</SizableText>
 
-                  <CopyIcon2 p="0-5" size={16} color="color10 hover:color2" />
+                  <CopyIcon2 p="0-5" size={16} color="color-10 hover:color-2" />
                 </XStack>
               </TooltipSimple>
             </ThemeTintAlt>
@@ -355,7 +355,7 @@ const componentsIn = {
             return (
               <SizableText
                 cursor="pointer"
-                color="color12"
+                color="color-12"
                 opacity={`${isActive ? 0.8 : 0.5} hover:0.8`}
                 onPress={() => {
                   setPackageManager(c)
@@ -436,7 +436,7 @@ const componentsIn = {
       fontSize={28}
       lineHeight={36}
       fontWeight="500"
-      color="color12"
+      color="color-12"
       {...props}
     >
       {children}
@@ -452,7 +452,7 @@ const componentsIn = {
         id={id}
         fontSize={23}
         lineHeight={30}
-        color="color11"
+        color="color-11"
         fontWeight="500"
         {...props}
       >
@@ -470,7 +470,7 @@ const componentsIn = {
       mb={8}
       fontSize={20}
       lineHeight={28}
-      color="color8"
+      color="color-8"
       data-heading
       {...props}
       fontWeight="400"
@@ -487,7 +487,7 @@ const componentsIn = {
       lineHeight={27}
       mt={0}
       mb={16}
-      color="color11"
+      color="color-11"
       {...props}
     />
   ),
@@ -704,7 +704,7 @@ const componentsIn = {
     return (
       <NoticeFrame theme="red">
         <YStack maxW="100%" gap="4">
-          <H4 color="color10">👋 Hey! Listen!</H4>
+          <H4 color="color-10">👋 Hey! Listen!</H4>
           <YStack overflow="hidden" flex={1} flexBasis="auto" opacity={0.85} gap="4">
             <Paragraph>
               Tamagui is fully OSS, self-funded and built by{' '}
@@ -750,11 +750,11 @@ const componentsIn = {
 
           <UL mt="4" pl="4" gap="2">
             <Theme name="gray">
-              <LI mb="4" size="6" color="color11">
+              <LI mb="4" size="6" color="color-11">
                 {/* @ts-ignore */}
                 <Link fontSize="inherit" href="/docs/core/configuration">
                   <CodeInline>
-                    <span style={{ color: 'var(--color12)' }}>@tamagui/core</span>
+                    <span style={{ color: 'var(--color-12)' }}>@tamagui/core</span>
                   </CodeInline>
                 </Link>
                 &nbsp; is the base style library, it expands on the React Native style API
@@ -766,11 +766,11 @@ const componentsIn = {
             </Theme>
 
             <Theme name="gray">
-              <LI mb="4" size="6" color="color11">
+              <LI mb="4" size="6" color="color-11">
                 {/* @ts-ignore */}
                 <Link fontSize="inherit" href="/docs/intro/compiler-install">
                   <CodeInline>
-                    <span style={{ color: 'var(--color12)' }}>@tamagui/static</span>
+                    <span style={{ color: 'var(--color-12)' }}>@tamagui/static</span>
                   </CodeInline>
                 </Link>{' '}
                 is an optimizing compiler that{' '}
@@ -787,11 +787,11 @@ const componentsIn = {
             </Theme>
 
             <Theme name="gray">
-              <LI mb="4" size="6" color="color11">
+              <LI mb="4" size="6" color="color-11">
                 {/* @ts-ignore */}
                 <Link fontSize="inherit" href="/ui/intro">
                   <CodeInline>
-                    <span style={{ color: 'var(--color12)' }}>tamagui UI</span>
+                    <span style={{ color: 'var(--color-12)' }}>tamagui UI</span>
                   </CodeInline>
                 </Link>{' '}
                 provides composable components for building common UI elements. It's
@@ -819,16 +819,16 @@ const componentsIn = {
                 flex={1}
                 flexBasis={280}
                 y="0 hover:-2px press:2px"
-                bg="hover:background-hover press:color2"
+                bg="hover:background-hover press:color-2"
               >
                 <Card.Header gap="2">
                   <XStack items="center" gap="2">
-                    <H4 size="4" color="color8">
+                    <H4 size="4" color="color-8">
                       Install
                     </H4>
-                    <ChevronRight size={14} color="color9" />
+                    <ChevronRight size={14} color="color-9" />
                   </XStack>
-                  <Paragraph size="4" color="color11">
+                  <Paragraph size="4" color="color-11">
                     Add Tamagui to an app you already have: the config, the provider, and
                     the plugin for your bundler.
                   </Paragraph>
@@ -838,15 +838,15 @@ const componentsIn = {
 
             <Card flex={1} flexBasis={280}>
               <Card.Header gap="2">
-                <H4 size="4" color="color8">
+                <H4 size="4" color="color-8">
                   Quick start
                 </H4>
-                <Paragraph size="4" color="color11">
+                <Paragraph size="4" color="color-11">
                   Start from a template with everything already wired up.
                 </Paragraph>
 
                 <XStack items="center" gap="2" mt="2">
-                  <Code flex={1} bg="color4" p="3" rounded="4" size="4">
+                  <Code flex={1} bg="color-4" p="3" rounded="4" size="4">
                     npm create tamagui@latest
                   </Code>
                   <Button
@@ -867,12 +867,12 @@ const componentsIn = {
 
           <XStack gap="5" flexWrap="wrap">
             <Link asChild href="/docs/guides/how-to-upgrade">
-              <Text render="a" fontSize={14} color="color11 hover:color12">
+              <Text render="a" fontSize={14} color="color-11 hover:color-12">
                 Upgrading from v1 or v2 ↗
               </Text>
             </Link>
             <Link asChild href="/docs/intro/agents">
-              <Text render="a" fontSize={14} color="color11 hover:color12">
+              <Text render="a" fontSize={14} color="color-11 hover:color-12">
                 Setting up with a coding agent ↗
               </Text>
             </Link>
@@ -901,7 +901,7 @@ const componentsIn = {
           px: '5',
           borderWidth: 1,
           pb: '10',
-          bg: 'color1',
+          bg: 'color-1',
           borderColor: 'border-color',
           maxH: 300,
           overflow: 'hidden',
@@ -909,7 +909,7 @@ const componentsIn = {
         {...props}
       >
         {areChildrenString ? (
-          <Paragraph color="color10" my="-5">
+          <Paragraph color="color-10" my="-5">
             {children}
           </Paragraph>
         ) : (
@@ -923,7 +923,7 @@ const componentsIn = {
             l={0}
             r={0}
             height={200}
-            colors={['background0', 'background']}
+            colors={['background-0', 'background']}
             z={1000}
           >
             <Spacer flex={1} />

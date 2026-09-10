@@ -86,7 +86,7 @@ const CreateThemeDialog = (props: CreateThemeDialogProps) => {
       <YStack gap="4">
         <YStack gap="2">
           <Dialog.Title size="7">Create Theme</Dialog.Title>
-          <Dialog.Description size="3" color="color9">
+          <Dialog.Description size="3" color="color-9">
             Create a new theme in scope {props.category}.
           </Dialog.Description>
         </YStack>
@@ -112,7 +112,7 @@ const ConfirmDeleteDialog = (props: ConfirmDeleteDialogProps) => {
       <YStack gap="6" p="2">
         <YStack gap="2">
           <Dialog.Title size="7">Delete {props.thingName}?</Dialog.Title>
-          <Dialog.Description size="3" color="color9">
+          <Dialog.Description size="3" color="color-9">
             Are you sure you want to delete {props.thingName}?
           </Dialog.Description>
         </YStack>
@@ -139,7 +139,7 @@ const AlertDialog = (props: StudioAlertDialogProps) => {
       <YStack gap="6" p="2">
         <YStack gap="2">
           <Dialog.Title size="7">{props.title}</Dialog.Title>
-          <Dialog.Description size="3" color="color9">
+          <Dialog.Description size="3" color="color-9">
             {props.message}
           </Dialog.Description>
         </YStack>

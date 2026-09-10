@@ -52,7 +52,7 @@ const ToggleGroupItem = styled(ToggleGroup.Item, {
   height: 28,
   width: 30,
   borderRadius: '4',
-  backgroundColor: 'focus:color10',
+  backgroundColor: 'focus:color-10',
   outlineWidth: 'focus-visible:0px',
 })
 
@@ -86,7 +86,7 @@ export function BorderRadiusInput() {
                   value={optionValues.borderRadius[0] as any}
                   aria-label="No border radius"
                 >
-                  <Square size={11} bg="color9" rounded={0} />
+                  <Square size={11} bg="color-9" rounded={0} />
                 </ToggleGroupItem>
               </XGroup.Item>
             </XStack>
@@ -103,7 +103,7 @@ export function BorderRadiusInput() {
                   value={optionValues.borderRadius[1] as any}
                   aria-label="Small border radius"
                 >
-                  <Square size={11} bg="color9" rounded={2} />
+                  <Square size={11} bg="color-9" rounded={2} />
                 </ToggleGroupItem>
               </XGroup.Item>
             </XStack>
@@ -120,7 +120,7 @@ export function BorderRadiusInput() {
                   value={optionValues.borderRadius[2] as any}
                   aria-label="Medium border radius"
                 >
-                  <Square size={11} bg="color9" rounded={3} />
+                  <Square size={11} bg="color-9" rounded={3} />
                 </ToggleGroupItem>
               </XGroup.Item>
             </XStack>
@@ -137,7 +137,7 @@ export function BorderRadiusInput() {
                   value={optionValues.borderRadius[3] as any}
                   aria-label="Large border radius"
                 >
-                  <Square size={11} bg="color9" rounded={4} />
+                  <Square size={11} bg="color-9" rounded={4} />
                 </ToggleGroupItem>
               </XGroup.Item>
             </XStack>
@@ -154,7 +154,7 @@ export function BorderRadiusInput() {
                   value={optionValues.borderRadius[4] as any}
                   aria-label="Very large border radius"
                 >
-                  <Square size={11} bg="color9" rounded={7} />
+                  <Square size={11} bg="color-9" rounded={7} />
                 </ToggleGroupItem>
               </XGroup.Item>
             </XStack>
@@ -217,7 +217,7 @@ export function BorderWidthInput() {
                 >
                   <Square
                     size={11}
-                    borderColor="color9"
+                    borderColor="color-9"
                     borderWidth={0.5}
                     borderStyle="dotted"
                   />
@@ -237,7 +237,7 @@ export function BorderWidthInput() {
                   value={`${optionValues.borderWidth[1]}`}
                   aria-label="Slim border width"
                 >
-                  <Square size={11} borderColor="color9" borderWidth={1} />
+                  <Square size={11} borderColor="color-9" borderWidth={1} />
                 </ToggleGroupItem>
               </XGroup.Item>
             </XStack>
@@ -254,7 +254,7 @@ export function BorderWidthInput() {
                   value={`${optionValues.borderWidth[2]}`}
                   aria-label="Thick border width"
                 >
-                  <Square size={11} borderColor="color9" borderWidth={2} />
+                  <Square size={11} borderColor="color-9" borderWidth={2} />
                 </ToggleGroupItem>
               </XGroup.Item>
             </XStack>
@@ -315,7 +315,7 @@ export function FontFamilyInput() {
                 <XGroup.Item>
                   <ToggleGroupItem value={font as any} aria-label={`${font} Font`}>
                     <SizableText
-                      color="color11"
+                      color="color-11"
                       fontFamily={font as any}
                       fontSize={12}
                       textTransform="none"
@@ -386,7 +386,7 @@ export function FillStyleInput() {
                   <Square
                     size={10}
                     rounded="4"
-                    bg="color8"
+                    bg="color-8"
                     borderWidth={1}
                     borderColor="color"
                   />
@@ -477,7 +477,7 @@ export function ElevationInput() {
               <XGroup.Item>
                 <ToggleGroupItem value="1" aria-label="Subtle Shadow">
                   <Square size={10} y={-1} x={-1} position="relative">
-                    <Square size={10} position="absolute" bg="color8" b={-2} r={-2} />
+                    <Square size={10} position="absolute" bg="color-8" b={-2} r={-2} />
                     <Square
                       size={10}
                       position="absolute"
@@ -499,7 +499,7 @@ export function ElevationInput() {
               <XGroup.Item>
                 <ToggleGroupItem value="2" aria-label="Intense Shadow">
                   <Square size={10} y={-2} x={-2} position="relative">
-                    <Square size={12} position="absolute" bg="color8" b={-4} r={-4} />
+                    <Square size={12} position="absolute" bg="color-8" b={-4} r={-4} />
                     <Square
                       size={10}
                       position="absolute"
@@ -805,7 +805,7 @@ export function InverseAccentInput() {
   return (
     <XStack gap="3" items="center">
       <Label
-        color="color10"
+        color="color-10"
         htmlFor="switch-accent-switch"
         onPress={() => {
           // for some reason id+htmlFor is not triggering - manually change the value here

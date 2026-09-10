@@ -21,7 +21,7 @@ export const UserDropdown = () => {
           <XStack items="center" flex={1} flexBasis="auto" justify="space-between">
             <YStack>
               <H4 {...demoProps.headingFontFamilyProps}>John Doe</H4>
-              <Paragraph color="color10" size="3">
+              <Paragraph color="color-10" size="3">
                 johndoe@acme.co
               </Paragraph>
             </YStack>
@@ -31,7 +31,7 @@ export const UserDropdown = () => {
 
       <YStack flex={1} flexBasis="auto" mx="-2" gap="2">
         <ListItem
-          bg="transparent hover:color3"
+          bg="transparent hover:color-3"
           {...demoProps.borderRadiusProps}
           scaleIcon={1.5}
           icon={<Cog opacity={0.75} />}
@@ -43,7 +43,7 @@ export const UserDropdown = () => {
         <ListItem
           {...demoProps.borderRadiusProps}
           borderWidth={0}
-          bg="transparent hover:color3"
+          bg="transparent hover:color-3"
           scaleIcon={1.5}
           icon={<Bell opacity={0.75} />}
           iconAfter={<ChevronRight opacity={0.2} size={15} />}
@@ -54,7 +54,7 @@ export const UserDropdown = () => {
         <ListItem
           {...demoProps.borderRadiusProps}
           borderWidth={0}
-          bg="transparent hover:color3"
+          bg="transparent hover:color-3"
           scaleIcon={1.5}
           icon={<Workflow opacity={0.75} />}
           iconAfter={<ChevronRight opacity={0.2} size={15} />}
@@ -65,7 +65,7 @@ export const UserDropdown = () => {
         <ListItem
           {...demoProps.borderRadiusProps}
           borderWidth={0}
-          bg="transparent hover:color3"
+          bg="transparent hover:color-3"
           scaleIcon={1.5}
           icon={<Boxes opacity={0.75} />}
           iconAfter={<ChevronRight opacity={0.2} size={15} />}

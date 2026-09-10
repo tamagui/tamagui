@@ -329,45 +329,50 @@ a real value rather than a rename, and a raw number is often the honest answer.
 You can defer this section while using the frozen v5 compatibility packs. Apply
 it when moving the application's values and themes to Config v6.
 
-V3's adaptive ramp has 11 keys, matching Tailwind's `50` through `950` shades.
-Rename the v2 12-step ramp approximately as follows:
+V3's default adaptive ramp has 11 keys, and every key is hyphenated. The numbers
+still mean steps relative to the active theme's own scheme, not Tailwind's
+absolute `50` through `950` shades; the hyphen is the only spelling change.
+Because the ramp is one step shorter, the middle of a V2 12-step ramp compresses:
 
 | V2 | V3 | V2 | V3 |
 | --- | --- | --- | --- |
-| `color1` | `color1` | `color7` | `color6` |
-| `color2` | `color2` | `color8` | `color7` |
-| `color3` | `color3` | `color9` | `color8` |
-| `color4` | `color4` | `color10` | `color9` |
-| `color5` | `color5` | `color11` | `color10` |
-| `color6` | `color6` | `color12` | `color11` |
+| `color1` | `color-1` | `color7` | `color-6` |
+| `color2` | `color-2` | `color8` | `color-7` |
+| `color3` | `color-3` | `color9` | `color-8` |
+| `color4` | `color-4` | `color10` | `color-9` |
+| `color5` | `color-5` | `color11` | `color-10` |
+| `color6` | `color-6` | `color12` | `color-11` |
 
-The endpoints map exactly. The middle compresses one step, so inspect contrast
-where `color6` and `color7` used to be distinct. This table applies to the
-adaptive theme ramp. Replace palette-specific uses such as `blue9` with an
-absolute token such as `blue-500`, or enter `theme="blue"` and use an adaptive
-`colorN` value from that theme.
+The endpoints map exactly. `color6` and `color7` both land on `color-6`, so
+inspect contrast where those two used to be distinct.
 
-The v6 config does not define the old palette-step names such as `blue10` or
-`red10`. A missing color value is dropped without an error or warning, and the
-web and native renderers can expose different fallback colors underneath it.
-The flat-values codemod cannot choose the intended replacement because custom
+Palette-specific steps such as `blue9` are a separate migration. The default v6
+config does not define `blue-9` or any other palette step; it defines absolute
+Tailwind tokens such as `blue-500`. Either replace the old name with an absolute
+token, enter `theme="blue"` and use an adaptive `color-N` value from that theme,
+or opt into 12-step scales with `createV6Config({ scales })`, which adds
+`blue-1` through `blue-12` to the base themes.
+
+A missing color value is dropped without an error or warning, and the web and
+native renderers can expose different fallback colors underneath it. The
+flat-values codemod cannot choose the intended replacement, because custom
 configs may still define those names and the closest Tailwind shade depends on
 the design. It preserves `$blue10` as `blue10` and emits a non-blocking
 `legacy-palette-token` configuration warning for every old palette name it
 finds. Write mode still applies the safe syntax conversion, so resolve every
 warning before running the converted application. This search also finds old
-palette names in source the flat-values codemod does not need to edit:
+ramp and palette names in source the flat-values codemod does not need to edit:
 
 ```bash
-rg '\b(gray|mauve|slate|sage|olive|sand|tomato|red|ruby|crimson|pink|plum|purple|violet|iris|indigo|blue|cyan|teal|jade|green|grass|bronze|gold|brown|orange|amber|yellow|lime|mint|sky)[0-9]{1,2}\b' src
+rg '\b(color|shadow|gray|mauve|slate|sage|olive|sand|tomato|red|ruby|crimson|pink|plum|purple|violet|iris|indigo|blue|cyan|teal|jade|green|grass|bronze|gold|brown|orange|amber|yellow|lime|mint|sky)[0-9]{1,2}\b' src
 ```
 
 ```tsx
 // before: adaptive ramp
 <Text color="color12" />
 
-// after: adaptive ramp
-<Text color="color11" />
+// after: the compressed, hyphenated step
+<Text color="color-11" />
 
 // palette-specific names are a separate migration
 // before
@@ -376,6 +381,12 @@ rg '\b(gray|mauve|slate|sage|olive|sand|tomato|red|ruby|crimson|pink|plum|purple
 // after: choose the absolute shade that preserves the intended contrast
 <Text color="blue-500" />
 ```
+
+Shadows are per-theme values again, as in v5: `shadow1` through `shadow6`
+become `shadow-1` through `shadow-6`, and the default themes carry a seventh
+step. Dark themes use stronger shadows than light themes, `shadow-color` is the
+active theme's `shadow-3`, and `boxShadow="0 8px 24px shadow-4"` reads
+`shadow-4` from the active theme rather than a fixed token.
 
 Replace old surface themes with relative levels:
 
@@ -448,7 +459,7 @@ normal `level2` boundary in its own skin.
 Search configuration and application code together:
 
 ```bash
-rg "@tamagui/theme-builder|defaultComponentThemes|themes/v5-builder|config/v[34]|createV5Theme|componentThemes|grandChildrenThemes|surface[1-4]|color12"
+rg "@tamagui/theme-builder|defaultComponentThemes|themes/v5-builder|config/v[34]|createV5Theme|componentThemes|grandChildrenThemes|surface[1-4]|color-12"
 ```
 
 See [Creating Themes](/docs/guides/theme-builder) for the recipe API and
@@ -512,7 +523,7 @@ Rules to verify:
 ## 3. Replace removed props and aliases
 
 Search for APIs that need migration or review. This scan deliberately excludes
-the supported Config v5 entries and their retained palette names. `color12`,
+the supported Config v5 entries and their retained palette names. `color-12`,
 `surface1`–`surface4`, and builders imported from `@tamagui/config-v5` do not
 require a v6 theme migration to complete this checkpoint.
 
@@ -1469,9 +1480,10 @@ garbage clauses.
 **Variants that look like style props.** The codemod converts style props and
 the size-typed variant props `size`, `elevation`, and `iconSize`, since v3 reads
 those values as size-scale keys. On one element it rewrites `color="$color12"`
-to `color="color12"` and `size="$2"` to `size="2"`. A custom variant that takes
-a token value keeps its `$` spelling, and it typechecks while resolving to
-nothing, so grep for `="$` after the run.
+to `color="color12"` and `size="$2"` to `size="2"`. It drops the sigil without
+renaming the ramp, so apply the hyphen table above afterwards. A custom variant
+that takes a token value keeps its `$` spelling, and it typechecks while
+resolving to nothing, so grep for `="$` after the run.
 
 **Half steps are renamed, not removed.** `$0.5` becomes `0-5` and `$1.5` becomes
 `1-5`. Keeping the same v5 scale preserves the resolved values through this

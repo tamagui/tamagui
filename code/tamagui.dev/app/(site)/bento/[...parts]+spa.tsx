@@ -83,7 +83,7 @@ export default function BentoPage() {
                         gap="2"
                         items="center"
                       >
-                        <Text color="color12" text="right" px="2">
+                        <Text color="color-12" text="right" px="2">
                           {sectionName[0].toUpperCase()}
                           {sectionName.slice(1)}
                         </Text>
@@ -110,7 +110,7 @@ export default function BentoPage() {
                                 <Paragraph
                                   fontWeight="500"
                                   text="right"
-                                  color={`${active ? 'accent-color' : 'color10'}`}
+                                  color={`${active ? 'accent-color' : 'color-10'}`}
                                   px="2"
                                 >
                                   {name}
@@ -195,27 +195,27 @@ export const DetailHeader = (props: { children: string }) => {
 
         <XStack p={0.5} items="center" gap="2">
           <Link href="/bento/">
-            <Anchor textTransform="capitalize" color="color9" render="span">
+            <Anchor textTransform="capitalize" color="color-9" render="span">
               Bento
             </Anchor>
           </Link>
 
-          <SizableText color="color9" select="none" render="span" size="2">
+          <SizableText color="color-9" select="none" render="span" size="2">
             &raquo;
           </SizableText>
 
           <Link href={`/bento#${category}`}>
-            <Anchor textTransform="capitalize" color="color9" render="span">
+            <Anchor textTransform="capitalize" color="color-9" render="span">
               {category}
             </Anchor>
           </Link>
 
-          <SizableText color="color9" select="none" render="span" size="2">
+          <SizableText color="color-9" select="none" render="span" size="2">
             &raquo;
           </SizableText>
 
           <Link href={`/bento/${category}/${subCategory}`}>
-            <Anchor textTransform="capitalize" color="color9" render="span">
+            <Anchor textTransform="capitalize" color="color-9" render="span">
               {subCategory.replace('_', ' ').replace('#', '')}
             </Anchor>
           </Link>

@@ -192,14 +192,14 @@ const ToggleAllButton = ({
         my="-3"
         variant="quiet"
         opacity="hover:1 press:0.8"
-        backgroundColor="hover:color3 press:color2"
+        backgroundColor="hover:color-3 press:color-2"
         onPress={onPress}
         aria-label={expanded ? 'Collapse all sections' : 'Expand all sections'}
       >
         {expanded ? (
-          <ChevronsDownUp size={14} color="color10" />
+          <ChevronsDownUp size={14} color="color-10" />
         ) : (
-          <ChevronsUpDown size={14} color="color10" />
+          <ChevronsUpDown size={14} color="color-10" />
         )}
       </Button>
     </TooltipSimple>
@@ -246,7 +246,7 @@ const AccordionSection = ({
     <Accordion.Item value={section.title}>
       <Accordion.Trigger
         padding={0}
-        backgroundColor="transparent hover:color2 press:color1"
+        backgroundColor="transparent hover:color-2 press:color-1"
         borderWidth={0}
         borderRadius="4"
         marginHorizontal="2"
@@ -260,7 +260,7 @@ const AccordionSection = ({
               alignItems="center"
               width="100%"
             >
-              <Paragraph size="3" fontWeight="600" color="color12">
+              <Paragraph size="3" fontWeight="600" color="color-12">
                 {section.title}
               </Paragraph>
 
@@ -268,7 +268,7 @@ const AccordionSection = ({
                 transition={{ preset: 'quick', properties: 'transform' }}
                 rotate={open ? '180deg' : '0deg'}
               >
-                <ChevronDown color="color8" size="1" />
+                <ChevronDown color="color-8" size="1" />
               </YStack>
             </XStack>
           )

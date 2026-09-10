@@ -19,7 +19,7 @@ export function LogoCard({ title, subtitle, img, icon, link, colorOffset, ...pro
           maxW="100%"
           minH={150}
           y="0 hover:-2px press:2px"
-          bg="hover:background-hover press:color2"
+          bg="hover:background-hover press:color-2"
           {...(props as any)}
           onMouseEnter={() => setHovered(true)}
           onMouseLeave={() => setHovered(false)}
@@ -27,10 +27,10 @@ export function LogoCard({ title, subtitle, img, icon, link, colorOffset, ...pro
           <Card.Header>
             <XStack justify="space-between" gap="3">
               <YStack flex={1} minW={0} gap="2-5">
-                <H5 size="6" color="color9">
+                <H5 size="6" color="color-9">
                   {title}
                 </H5>
-                <Paragraph lineHeight={21} color="color8">
+                <Paragraph lineHeight={21} color="color-8">
                   {subtitle}
                 </Paragraph>
               </YStack>
@@ -41,22 +41,22 @@ export function LogoCard({ title, subtitle, img, icon, link, colorOffset, ...pro
                   justify="center"
                   height="3"
                   width="3"
-                  bg="color6"
+                  bg="color-6"
                   rounded="4"
                 >
                   {icon}
                 </View>
               ) : (
-                <Avatar rounded="4" p="3" bg="color6" size="3">
+                <Avatar rounded="4" p="3" bg="color-6" size="3">
                   <Avatar.Image scale={0.6} src={img} />
-                  <Avatar.Fallback bg="color6" borderColor="color8" />
+                  <Avatar.Fallback bg="color-6" borderColor="color-8" />
                 </Avatar>
               )}
             </XStack>
           </Card.Header>
 
           <Card.Footer transition="quicker" x={isHovered ? 5 : 0}>
-            <ChevronRight size="1" position="absolute" b="4" r="4" color="color11" />
+            <ChevronRight size="1" position="absolute" b="4" r="4" color="color-11" />
           </Card.Footer>
         </Card>
       </Link>

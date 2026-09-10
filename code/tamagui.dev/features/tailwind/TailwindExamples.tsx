@@ -9,7 +9,7 @@ function ClassLine({ line }: { line: string }) {
     <SizableText
       fontFamily="mono"
       whiteSpace="pre-wrap"
-      color="color11"
+      color="color-11"
       lineHeight="5"
       size="3"
     >
@@ -39,9 +39,9 @@ export function TailwindExamples() {
             rounded="6"
             borderWidth={1}
             borderColor="border-color"
-            bg="color1"
+            bg="color-1"
           >
-            <Paragraph size="5" color="color12">
+            <Paragraph size="5" color="color-12">
               {group.title}
             </Paragraph>
             <YStack gap="2">
@@ -63,28 +63,28 @@ export function TailwindExamples() {
         rounded="6"
         borderWidth={1}
         borderColor="border-color"
-        bg="color1"
+        bg="color-1"
       >
-        <Paragraph size="3" color="color10">
+        <Paragraph size="3" color="color-10">
           The same class, as a prop. One system, not two.
         </Paragraph>
         {classToProp.map((pair) => (
           <XStack key={pair.cls} items="center" gap="3" flexWrap="wrap">
             <SizableText
               fontFamily="mono"
-              color="green10"
+              color="green-10"
               flex={1}
               minWidth={220}
               size="2"
             >
               {pair.cls}
             </SizableText>
-            <SizableText color="color8" size="2">
+            <SizableText color="color-8" size="2">
               ≡
             </SizableText>
             <SizableText
               fontFamily="mono"
-              color="blue10"
+              color="blue-10"
               flex={1}
               minWidth={200}
               size="2"

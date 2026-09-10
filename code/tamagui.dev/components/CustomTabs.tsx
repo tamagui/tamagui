@@ -65,7 +65,7 @@ const Tab = forwardRef(function Tab(props: TabsTabProps, ref) {
       outlineWidth="focus:2px"
       outlineStyle="focus:solid"
       {...(isActive && {
-        bg: 'color4 hover:color4 focus:color4',
+        bg: 'color-4 hover:color-4 focus:color-4',
       })}
       ref={ref as any}
     >

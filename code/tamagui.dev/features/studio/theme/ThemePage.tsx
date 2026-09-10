@@ -153,12 +153,12 @@ const ThemeBuilderModal = memo(() => {
         borderTopLeftRadius="6"
         borderBottomLeftRadius="6"
         borderWidth={0.5}
-        borderColor="color6"
+        borderColor="color-6"
         bg="background"
         backdropFilter="blur(60px)"
         {...(hide && {
           borderColor: 'transparent',
-          bg: 'color3',
+          bg: 'color-3',
         })}
         ref={ref}
         elevation="5"

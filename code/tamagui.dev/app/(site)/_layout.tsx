@@ -36,8 +36,8 @@ export default function SiteLayout() {
 
       {!hideHeader && <Header showAuth={showAuth} disableNew={disableNew} />}
       <Theme name={customThemeName}>
-        <YStack inset={0} position="absolute" bg="color1" z={-1} pointerEvents="none" />
-        <ThemeNameEffect colorKey="color1" disableTint={customThemeActive} />
+        <YStack inset={0} position="absolute" bg="color-1" z={-1} pointerEvents="none" />
+        <ThemeNameEffect colorKey="color-1" disableTint={customThemeActive} />
         <Slot />
       </Theme>
       {!hideFooter && <Footer />}

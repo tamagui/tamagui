@@ -28,8 +28,12 @@ describe('studio v6 themes', () => {
 
   it('creates recipe levels and accent themes from the edited palettes', () => {
     const { themes } = createStudioThemes(themeSuite)
-    expect(themes.light.color1).toBe(getThemeSuitePalettes(defaultPalettes.base).light[0])
-    expect(themes.dark.color1).toBe(getThemeSuitePalettes(defaultPalettes.base).dark[0])
+    expect(themes.light['color-1']).toBe(
+      getThemeSuitePalettes(defaultPalettes.base).light[0]
+    )
+    expect(themes.dark['color-1']).toBe(
+      getThemeSuitePalettes(defaultPalettes.base).dark[0]
+    )
     expect(themes.light_level2).toBeDefined()
     expect(themes.light_accent_level2).toBeDefined()
     expect(themes.light_inverse).toBe(themes.dark)

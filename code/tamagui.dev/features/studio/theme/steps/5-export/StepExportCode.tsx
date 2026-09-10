@@ -148,7 +148,7 @@ export const StepExportCodeSidebar = () => {
               </Circle>
               <SizableText
                 fontFamily="heading"
-                color="color11"
+                color="color-11"
                 letterSpacing={1}
                 size="3"
               >
@@ -161,7 +161,7 @@ export const StepExportCodeSidebar = () => {
                 return (
                   <XStack key={_idx} ml="4" mr="3">
                     {subStep.type === 'text' && (
-                      <Paragraph color="color10" size="4">
+                      <Paragraph color="color-10" size="4">
                         {subStep.content}
                       </Paragraph>
                     )}
@@ -177,7 +177,7 @@ export const StepExportCodeSidebar = () => {
                         flex={1}
                       >
                         <Tabs.List
-                          bg="color4"
+                          bg="color-4"
                           self="flex-start"
                           borderTopRightRadius="3"
                           borderTopLeftRadius="3"
@@ -190,10 +190,10 @@ export const StepExportCodeSidebar = () => {
                               pt="2"
                               mb={-22}
                               pb="4-5"
-                              bg="color2"
+                              bg="color-2"
                               value={file.filename}
                             >
-                              <SizableText color="color8" size="2">
+                              <SizableText color="color-8" size="2">
                                 {file.filename}
                               </SizableText>
                             </Tabs.Tab>

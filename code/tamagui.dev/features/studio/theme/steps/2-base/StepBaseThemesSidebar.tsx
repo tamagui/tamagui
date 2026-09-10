@@ -57,7 +57,7 @@ const Contents = ({ themeNameBase }: { themeNameBase: string }) => {
               <YStack height="50%" gap="3" items="center" justify="center" px="4" pl={60}>
                 <XStack items="center" gap="4">
                   <Separator />
-                  <SizableText size="2" color="color10" select="none">
+                  <SizableText size="2" color="color-10" select="none">
                     {showAccent ? 'Accent' : 'Base'} Light Theme
                   </SizableText>
                   <Separator />
@@ -78,7 +78,7 @@ const Contents = ({ themeNameBase }: { themeNameBase: string }) => {
               <YStack height="50%" gap="3" items="center" justify="center" px="4" pl={60}>
                 <XStack items="center" gap="4">
                   <Separator />
-                  <SizableText size="2" color="color10" select="none">
+                  <SizableText size="2" color="color-10" select="none">
                     {showAccent ? 'Accent' : 'Base'} Dark Theme
                   </SizableText>
                   <Separator />

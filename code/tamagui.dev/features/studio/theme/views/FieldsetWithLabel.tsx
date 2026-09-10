@@ -31,7 +31,7 @@ export const FieldsetWithLabel = ({
     <YStack
       render="fieldset"
       rounded="4"
-      borderColor={`${isActive ? 'color9' : 'color6'}`}
+      borderColor={`${isActive ? 'color-9' : 'color-6'}`}
       borderWidth={0}
       px="3"
       position="relative"
@@ -75,7 +75,7 @@ export const FieldsetWithLabel = ({
         ) : (
           <Heading
             select="none"
-            color="color11"
+            color="color-11"
             text="center"
             {...(tooltip && {
               pr: '6',
@@ -104,7 +104,7 @@ export const FieldsetWithLabel = ({
                   circular
                   rounded={100}
                   variant="quiet"
-                  icon={<Info color="color9" />}
+                  icon={<Info color="color-9" />}
                   position="absolute"
                   t={0}
                   r={8}
@@ -116,7 +116,7 @@ export const FieldsetWithLabel = ({
       </YStack>
 
       {!!afterLabel && (
-        <XStack position="absolute" t={0} r="4" z={200} bg="color2" rounded="4" px="2">
+        <XStack position="absolute" t={0} r="4" z={200} bg="color-2" rounded="4" px="2">
           {afterLabel}
         </XStack>
       )}

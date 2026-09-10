@@ -26,7 +26,7 @@ export const SubTitle = ({ children, ...props }) => {
     <H3
       position="relative"
       maxW="100%"
-      color="accent7"
+      color="accent-7"
       width="100% gtSm:max-content"
       size="7"
       fontWeight="400"

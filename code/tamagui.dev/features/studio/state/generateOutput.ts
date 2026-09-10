@@ -8,7 +8,7 @@ const generateColorConfig = (input: ColorsStore) => {
     for (const scale of Object.values(palette.scales)) {
       let idx = 0
       for (const color of scale.colors) {
-        const colorKey = [`${scale.name}${idx + 1}`]
+        const colorKey = [`${scale.name}-${idx + 1}`]
         const key = `${colorKey}${palette.name}`
         colors[key] = `hsl(${color.hue}, ${color.saturation}%, ${color.lightness}%)`
         idx++

@@ -59,7 +59,7 @@ export const HomeExamples = memo(
             <XGroup
               borderWidth={1}
               borderColor="border-color"
-              bg="color2"
+              bg="color-2"
               maxW="100%"
               self="center"
               overflow="hidden"

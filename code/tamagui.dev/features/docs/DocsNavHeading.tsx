@@ -5,7 +5,7 @@ export const DocsNavHeading = styled(H4, {
   pt: '4',
   pb: '1',
   letterSpacing: 2,
-  color: 'gray9',
+  color: 'gray-9',
   size: '2',
   variants: {
     inMenu: {

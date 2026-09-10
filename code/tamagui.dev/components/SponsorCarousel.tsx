@@ -159,7 +159,7 @@ export function SponsorCarousel() {
           <H2 size="10" text="center" color="color">
             Our Sponsors
           </H2>
-          <Paragraph text="center" color="color10" mt="2" size="5">
+          <Paragraph text="center" color="color-10" mt="2" size="5">
             Sponsors who made Tamagui possible
           </Paragraph>
         </YStack>
@@ -181,7 +181,7 @@ function SponsorCard({ link, image, gradient, name }: (typeof sponsors)[0]) {
       <SponsorCardStyled
         background={gradient || 'background'}
         borderWidth={isIndividual ? 1 : 0}
-        borderColor={`${isIndividual ? 'gray6' : 'transparent'}`}
+        borderColor={`${isIndividual ? 'gray-6' : 'transparent'}`}
       >
         <SponsorContent>
           <LogoContainer>

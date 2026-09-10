@@ -39,13 +39,13 @@ export const HuePicker = memo(
             >
               <Slider.Track
                 borderWidth={0.5}
-                borderColor="color11"
+                borderColor="color-11"
                 width={145}
                 style={{
                   background: hueLinearGradient,
                 }}
               ></Slider.Track>
-              <Slider.Thumb bg="color1" rounded="10" size="1" index={0} elevate />
+              <Slider.Thumb bg="color-1" rounded="10" size="1" index={0} elevate />
             </Slider>
           </YStack>
         </XStack>

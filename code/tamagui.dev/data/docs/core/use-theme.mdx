@@ -21,7 +21,7 @@ import { YStack, useTheme } from 'tamagui'
 const App = () => {
   const theme = useTheme()
 
-  return <YStack backgroundColor={theme.color1.val} />
+  return <YStack backgroundColor={theme['color-1'].val} />
 }
 ```
 
@@ -203,7 +203,7 @@ export default () => {
   // access the value
   console.log(theme.bg.val)
 
-  return <html.div backgroundColor={theme.color1} />
+  return <html.div backgroundColor={theme['color-1']} />
 }
 ```
 

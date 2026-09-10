@@ -11,7 +11,7 @@ export const ActiveCircle = (props: CircleProps & { isActive?: boolean }) => {
       rounded="10"
       borderWidth={1}
       mx="1"
-      borderColor={isActive ? 'color' : 'transparent hover:color5'}
+      borderColor={isActive ? 'color' : 'transparent hover:color-5'}
       {...rest}
     >
       <YStack

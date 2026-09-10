@@ -23,15 +23,15 @@ export const BuildThemeItem = memo((props: BuildThemeItemProps) => {
       theme={isActive ? 'accent' : undefined}
       onPress={onPress}
       borderWidth={1}
-      borderColor={isActive ? 'color8' : 'color5'}
-      bg={isActive ? 'color3 press:color2' : 'color1 press:color2'}
+      borderColor={isActive ? 'color-8' : 'color-5'}
+      bg={isActive ? 'color-3 press:color-2' : 'color-1 press:color-2'}
     >
       <XStack flex={1} items="center" justify="space-between" gap="3">
         <YStack flex={1} items="flex-start">
           <SizableText size="3" fontWeight="600">
             {label}
           </SizableText>
-          <SizableText size="2" color="color10">
+          <SizableText size="2" color="color-10">
             {theme.type === 'theme' ? `Palette: ${theme.palette}` : 'Mask theme'}
           </SizableText>
         </YStack>

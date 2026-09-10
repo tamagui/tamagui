@@ -96,7 +96,7 @@ export const Themes = memo(() => {
 
       {!store.subThemes.length && (
         <YStack flex={1} items="center" justify="center" gap="4">
-          <Paragraph color="color10">Add a theme to get started</Paragraph>
+          <Paragraph color="color-10">Add a theme to get started</Paragraph>
           <Button
             theme="accent"
             size="4"
@@ -297,7 +297,7 @@ export function BaseThemesStepPreview() {
     <YStack py="4" gap="4">
       <H4>Alright, thats our base and sub-themes&nbsp;&nbsp;🙌</H4>
 
-      <Paragraph color="color10" size="5">
+      <Paragraph color="color-10" size="5">
         We've made the foundation of our theme suite.
       </Paragraph>
 
@@ -340,17 +340,17 @@ export function BaseThemesStepPreview2() {
     <YStack py="4" gap="3">
       <H4>The full list, so far:</H4>
 
-      <Paragraph size="5" color="color10">
+      <Paragraph size="5" color="color-10">
         Congrats! That's the core of your theme suite.
       </Paragraph>
 
-      <Paragraph size="5" color="color10">
+      <Paragraph size="5" color="color-10">
         In the future, we'll allow customizing component themes as well, but for now this
         gives you everything you need. You can of course manually override the component
         styles very easily inline.
       </Paragraph>
 
-      <Paragraph size="5" color="color10">
+      <Paragraph size="5" color="color-10">
         We've now generated the following themes:
       </Paragraph>
 

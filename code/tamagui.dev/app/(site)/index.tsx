@@ -52,12 +52,12 @@ export default function TamaguiHomePage() {
             </H1>
 
             <YStack gap="4">
-              <Paragraph size="5" color="color11">
+              <Paragraph size="5" color="color-11">
                 Tamagui is the only style library that gets you platform-native feel while
                 going cross platform, now with Tailwind mode.
               </Paragraph>
 
-              <Paragraph size="5" color="color11">
+              <Paragraph size="5" color="color-11">
                 Version 3 gets faster and simpler with React Strict DOM, a new Rust
                 optimizing compiler, and a 0-render native runtime. It's the fastest style
                 engine there is on web or native.
@@ -97,12 +97,12 @@ export default function TamaguiHomePage() {
 
             <XStack gap="5" flexWrap="wrap">
               <Link asChild href="/ui/button">
-                <Text render="a" fontSize={13} color="color11 hover:color12">
+                <Text render="a" fontSize={13} color="color-11 hover:color-12">
                   Explore the components ↗
                 </Text>
               </Link>
               <Link asChild href="/docs/core/tailwind">
-                <Text render="a" fontSize={13} color="color11 hover:color12">
+                <Text render="a" fontSize={13} color="color-11 hover:color-12">
                   Speaks Tailwind, too ↗
                 </Text>
               </Link>

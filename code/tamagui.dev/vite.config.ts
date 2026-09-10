@@ -296,7 +296,7 @@ export default function BentoComponentStub() {
     { p: '4', bc: 'border-color', br: '4' },
     createElement(
       Paragraph,
-      { size: '2', color: 'color10' },
+      { size: '2', color: 'color-10' },
       'Bento component not available'
     )
   )

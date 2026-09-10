@@ -10,11 +10,11 @@ const oneRadiusLarger = (radius: DemoOptions['borderRadius']) => {
 }
 
 export function getDemoProps(demosOptions: DemoOptions, hasAccent = false) {
-  const accentToken = hasAccent ? accentTokenName : 'color9'
+  const accentToken = hasAccent ? accentTokenName : 'color-9'
   const isOutlined = demosOptions.fillStyle === 'outlined'
 
-  const accentColor = hasAccent ? 'accent-color' : 'color1'
-  const accentBackground = hasAccent ? accentToken : ('color11' as const)
+  const accentColor = hasAccent ? 'accent-color' : 'color-1'
+  const accentBackground = hasAccent ? accentToken : ('color-11' as const)
   const accentBorder = isOutlined
     ? hasAccent
       ? accentToken
@@ -23,7 +23,7 @@ export function getDemoProps(demosOptions: DemoOptions, hasAccent = false) {
 
   const accentStyle = {
     backgroundColor: isOutlined ? 'transparent' : accentToken,
-    color: isOutlined ? 'color2' : accentColor,
+    color: isOutlined ? 'color-2' : accentColor,
   } as const
 
   return {
@@ -48,9 +48,9 @@ export function getDemoProps(demosOptions: DemoOptions, hasAccent = false) {
       fontSize: 25,
       color:
         demosOptions.textAccent === 'high'
-          ? 'color11'
+          ? 'color-11'
           : demosOptions.textAccent === 'low'
-            ? 'color11'
+            ? 'color-11'
             : 'color',
 
       ...(demosOptions.headingFontFamily == 'heading' && {
@@ -64,13 +64,13 @@ export function getDemoProps(demosOptions: DemoOptions, hasAccent = false) {
 
     buttonOutlineProps: {
       variant: isOutlined ? ('outlined' as const) : (undefined as any),
-      color: isOutlined ? 'color10' : undefined,
+      color: isOutlined ? 'color-10' : undefined,
       // ...(hasAccent && accentStyle),
       borderColor: hasAccent ? accentBorder : 'border-color',
     } as ButtonProps,
 
     stackOutlineProps: {
-      backgroundColor: demosOptions.backgroundAccent === 'low' ? 'color1' : 'color2',
+      backgroundColor: demosOptions.backgroundAccent === 'low' ? 'color-1' : 'color-2',
     } as const,
 
     chatFrameProps: {
@@ -78,8 +78,8 @@ export function getDemoProps(demosOptions: DemoOptions, hasAccent = false) {
       backgroundColor: isOutlined
         ? undefined
         : demosOptions.backgroundAccent === 'high'
-          ? 'color3'
-          : 'color2',
+          ? 'color-3'
+          : 'color-2',
     } as const,
 
     chatFrameActiveProps: {
@@ -90,11 +90,11 @@ export function getDemoProps(demosOptions: DemoOptions, hasAccent = false) {
     chatTextProps: {} as const,
 
     chatTextActiveProps: {
-      color: isOutlined ? 'color1' : 'color2',
+      color: isOutlined ? 'color-1' : 'color-2',
     } as const,
 
     outlineTextProps: {
-      color: isOutlined ? 'color11' : 'color1',
+      color: isOutlined ? 'color-11' : 'color-1',
     } as const,
 
     elevationProps: {
@@ -132,7 +132,7 @@ export function getDemoProps(demosOptions: DemoOptions, hasAccent = false) {
     panelProps: {
       shadowColor: 'rgba(0,0,0,0.2)',
       borderWidth: 0.5,
-      borderColor: 'color3',
+      borderColor: 'color-3',
       gap: '3',
       py: '4',
       width: '100%',
@@ -140,7 +140,7 @@ export function getDemoProps(demosOptions: DemoOptions, hasAccent = false) {
     } as const,
 
     panelDescriptionProps: {
-      color: 'color10',
+      color: 'color-10',
       size: '4',
     } as const,
   }

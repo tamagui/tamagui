@@ -107,7 +107,7 @@ export function CodeWindow({ code, isLoading }: Props) {
       orientation="horizontal"
       flexDirection="column"
       bg="background"
-      borderColor="color3"
+      borderColor="color-3"
       width="100%"
       overflow="hidden"
       p={0}
@@ -123,7 +123,7 @@ export function CodeWindow({ code, isLoading }: Props) {
 
           return (
             <Tabs.Tab
-              bg={`${isActive ? 'color1' : 'color2'} hover:${isActive ? 'color2' : 'color3'} focus:${isActive ? 'color1' : 'color3'}`}
+              bg={`${isActive ? 'color-1' : 'color-2'} hover:${isActive ? 'color-2' : 'color-3'} focus:${isActive ? 'color-1' : 'color-3'}`}
               paddingVertical="4"
               flex={1}
               alignItems="center"
@@ -132,9 +132,9 @@ export function CodeWindow({ code, isLoading }: Props) {
               key={tab.name}
               value={String(i)}
             >
-              <File size={16} color={`${isActive ? 'gray12' : 'gray10'}`} />
+              <File size={16} color={`${isActive ? 'gray-12' : 'gray-10'}`} />
               <SizableText
-                color={`${isActive ? 'gray12' : 'gray10'}`}
+                color={`${isActive ? 'gray-12' : 'gray-10'}`}
                 letterSpacing={1}
                 size="3"
               >
@@ -182,20 +182,26 @@ function CustomizationEnabledBanner() {
     <YStack mt="3" ml="3">
       <Theme name="green">
         <XStack minW="87%" maxW="87%" rounded="4">
-          <YStack opacity={0.62} bg="color10" position="absolute" inset={0} rounded="4" />
+          <YStack
+            opacity={0.62}
+            bg="color-10"
+            position="absolute"
+            inset={0}
+            rounded="4"
+          />
           <XStack py={14} px="3" flex={1}>
-            <AlertCircle t="3" l="3" z={100} color="color7" size={22} />
+            <AlertCircle t="3" l="3" z={100} color="color-7" size={22} />
             <Paragraph
               ml="2-5"
               fontWeight="200"
               lineHeight="2"
-              color="color1"
+              color="color-1"
               mr="auto"
               size="3"
             >
               Customization enabled
             </Paragraph>
-            <Paragraph color="color4" lineHeight="2" size="3">
+            <Paragraph color="color-4" lineHeight="2" size="3">
               These components are customized to your tokens through the customize option.
             </Paragraph>
           </XStack>

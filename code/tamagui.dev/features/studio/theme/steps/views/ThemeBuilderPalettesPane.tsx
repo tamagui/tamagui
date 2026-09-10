@@ -12,7 +12,7 @@ export const ThemeBuilderPalettesPane = memo(() => {
     <YStack flex={1} gap="4" p="4">
       <YStack gap="2">
         <H4>Color Palettes</H4>
-        <Paragraph color="color10" size="3">
+        <Paragraph color="color-10" size="3">
           These are the available color palettes for your themes
         </Paragraph>
       </YStack>
@@ -26,13 +26,13 @@ export const ThemeBuilderPalettesPane = memo(() => {
             p="3"
             rounded="4"
             borderWidth={1}
-            borderColor="color5 hover:color7"
-            bg="hover:color2"
+            borderColor="color-5 hover:color-7"
+            bg="hover:color-2"
           >
             <ColorThemeIndicator size={40} primary={palette} />
             <YStack flex={1}>
               <Paragraph fontWeight="600">{name}</Paragraph>
-              <Paragraph size="2" color="color10">
+              <Paragraph size="2" color="color-10">
                 {palette.anchors.length} anchor points
               </Paragraph>
             </YStack>
@@ -41,7 +41,7 @@ export const ThemeBuilderPalettesPane = memo(() => {
 
         {palettes.length === 0 && (
           <YStack flex={1} items="center" justify="center" gap="4">
-            <Paragraph color="color10">No palettes defined yet</Paragraph>
+            <Paragraph color="color-10">No palettes defined yet</Paragraph>
             <Button theme="accent" size="3">
               Add Palette
             </Button>

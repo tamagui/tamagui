@@ -102,7 +102,7 @@ export const BarTabs = memo(function HeaderTabs({
                   position="absolute"
                   r={2}
                   t={2}
-                  bg="green8"
+                  bg="green-8"
                   size={8}
                 />
               )}
@@ -123,11 +123,11 @@ const TabsRovingIndicator = ({
     <YStack
       rounded="2"
       position="absolute"
-      bg="color6"
+      bg="color-6"
       transition="quick"
       opacity="0.5 enter:0 exit:0"
       {...(isActive && {
-        backgroundColor: 'color8',
+        backgroundColor: 'color-8',
         opacity: 0.6,
       })}
       {...props}

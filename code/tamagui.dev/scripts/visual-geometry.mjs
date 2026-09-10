@@ -94,7 +94,7 @@ try {
     snapshots[`${target.name}RootVariables`] = await page.evaluate(() => {
       const style = getComputedStyle(document.documentElement)
       return Object.fromEntries(
-        ['--c-space-8', '--t-space-8', '--c-color8', '--t-color8'].map((name) => [
+        ['--c-space-8', '--t-space-8', '--c-color-8', '--t-color-8'].map((name) => [
           name,
           style.getPropertyValue(name),
         ])

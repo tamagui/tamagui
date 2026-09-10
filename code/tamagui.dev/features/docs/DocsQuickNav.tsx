@@ -123,13 +123,13 @@ const NavLineIndicator = ({
       }}
     >
       {/* Background path (gray) */}
-      <path d={path} fill="none" stroke="var(--color4)" strokeWidth="1" />
+      <path d={path} fill="none" stroke="var(--color-4)" strokeWidth="1" />
 
       {/* Active indicator (animated along path) */}
       <path
         d={path}
         fill="none"
-        stroke="var(--color9)"
+        stroke="var(--color-9)"
         strokeWidth="2"
         strokeLinecap="round"
         strokeDasharray={`${segmentHalf * 2} ${totalLength}`}
@@ -287,7 +287,7 @@ export function DocsQuickNav({ headings = [] }: { headings?: Heading[] }) {
             display={headings.length === 0 ? 'none' : 'flex'}
             gap="2"
           >
-            <H4 mb="2" color="color10" size="5" id="site-quick-nav-heading">
+            <H4 mb="2" color="color-10" size="5" id="site-quick-nav-heading">
               Contents
             </H4>
 
@@ -320,7 +320,7 @@ export function DocsQuickNav({ headings = [] }: { headings?: Heading[] }) {
                         <Paragraph
                           render="span"
                           size={level === 2 ? '3' : '2'}
-                          color={`${index === activeIndex ? 'color12' : level === 2 ? 'color11' : 'color10'} hover:color12`}
+                          color={`${index === activeIndex ? 'color-12' : level === 2 ? 'color-11' : 'color-10'} hover:color-12`}
                           cursor="pointer"
                           fontWeight={level === 2 ? '500' : '400'}
                         >

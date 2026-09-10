@@ -41,8 +41,8 @@ export const InstallInput = memo(() => {
     <XStack gap="3" items="center" flexWrap="wrap">
       <XStack
         borderWidth={1}
-        borderColor="color5"
-        bg="color2"
+        borderColor="color-5"
+        bg="color-2"
         overflow="hidden"
         paddingRight="2"
         pl="4"

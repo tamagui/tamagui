@@ -6,25 +6,25 @@ import { useTint } from './useTint'
 
 // T A M A G U I
 // default: white white white white red green blue
-// hover: yellow yellow yellow color12 red green blue
+// hover: yellow yellow yellow color-12 red green blue
 const defaultColors = [
-  'var(--color12)',
-  'var(--color12)',
-  'var(--color12)',
-  'var(--color12)',
-  'var(--red9)',
-  'var(--green9)',
-  'var(--blue9)',
+  'var(--color-12)',
+  'var(--color-12)',
+  'var(--color-12)',
+  'var(--color-12)',
+  'var(--red-9)',
+  'var(--green-9)',
+  'var(--blue-9)',
 ]
 
 const hoveredColors = [
-  'var(--yellow9)',
-  'var(--yellow9)',
-  'var(--yellow9)',
-  'var(--color12)',
-  'var(--red9)',
-  'var(--green9)',
-  'var(--blue9)',
+  'var(--yellow-9)',
+  'var(--yellow-9)',
+  'var(--yellow-9)',
+  'var(--color-12)',
+  'var(--red-9)',
+  'var(--green-9)',
+  'var(--blue-9)',
 ]
 
 export const LogoWords: React.MemoExoticComponent<
@@ -72,7 +72,7 @@ export const LogoWords: React.MemoExoticComponent<
   }, [Tint])
 
   const getColor = (i: number) => {
-    if (hovered) return `var(--${Tint.tints[i]}9)`
+    if (hovered) return `var(--${Tint.tints[i]}-9)`
     return defaultColors[i]
   }
 
@@ -113,7 +113,7 @@ export const LogoWords: React.MemoExoticComponent<
           left={0}
           y={mounted === 'start' ? -30 : -4}
           x={x}
-          backgroundColor="color12"
+          backgroundColor="color-12"
           style={{ width: 4, height: 4 }}
         />
       )}

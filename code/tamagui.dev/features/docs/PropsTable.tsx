@@ -36,7 +36,7 @@ export function PropsTable({
       aria-label={hasAriaLabel ? ariaLabel : 'Component Props'}
       aria-labelledby={ariaLabelledBy}
     >
-      <XStack items="center" py="2" px="4" bg="color1">
+      <XStack items="center" py="2" px="4" bg="color-1">
         <H3 size="3">{title}</H3>
       </XStack>
       {data.map(
@@ -50,9 +50,9 @@ export function PropsTable({
             paddingBottom="3"
             gap={0}
             borderBottomWidth={1}
-            borderBottomColor="color4"
+            borderBottomColor="color-4"
             pointerEvents="none"
-            bg={`${i % 2 === 1 ? 'color0025' : 'transparent'}`}
+            bg={`${i % 2 === 1 ? 'color-0025' : 'transparent'}`}
           >
             <YStack width="100%">
               <XStack position="relative" py="1" px="4" flexDirection="sm:column">
@@ -126,7 +126,7 @@ export function PropsTable({
                           <View
                             width="8"
                             items="center"
-                            bg="red2"
+                            bg="red-2"
                             borderWidth={1}
                             rounded="2"
                             theme="red"

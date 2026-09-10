@@ -11,7 +11,7 @@ export const DocsTitle = ({ children }: { children: string }) => {
   return (
     <H1
       mb="2"
-      color="color12"
+      color="color-12"
       fontSize={32}
       lineHeight={38}
       fontWeight="600"
