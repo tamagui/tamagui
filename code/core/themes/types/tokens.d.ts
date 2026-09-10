@@ -300,13 +300,6 @@ export declare const colorTokens: {
     readonly 'brand-800': string;
     readonly 'brand-900': string;
     readonly 'brand-950': string;
-    readonly 'shadow-1': 'rgba(0, 0, 0, 0.05)';
-    readonly 'shadow-2': 'rgba(0, 0, 0, 0.08)';
-    readonly 'shadow-3': 'rgba(0, 0, 0, 0.12)';
-    readonly 'shadow-4': 'rgba(0, 0, 0, 0.16)';
-    readonly 'shadow-5': 'rgba(0, 0, 0, 0.2)';
-    readonly 'shadow-6': 'rgba(0, 0, 0, 0.25)';
-    readonly 'shadow-7': 'rgba(0, 0, 0, 0.3)';
 };
 export declare const tokens: {
     readonly color: {
@@ -609,13 +602,6 @@ export declare const tokens: {
         readonly 'brand-800': string;
         readonly 'brand-900': string;
         readonly 'brand-950': string;
-        readonly 'shadow-1': 'rgba(0, 0, 0, 0.05)';
-        readonly 'shadow-2': 'rgba(0, 0, 0, 0.08)';
-        readonly 'shadow-3': 'rgba(0, 0, 0, 0.12)';
-        readonly 'shadow-4': 'rgba(0, 0, 0, 0.16)';
-        readonly 'shadow-5': 'rgba(0, 0, 0, 0.2)';
-        readonly 'shadow-6': 'rgba(0, 0, 0, 0.25)';
-        readonly 'shadow-7': 'rgba(0, 0, 0, 0.3)';
     };
 };
 export type ColorTokenName = keyof typeof colorTokens;

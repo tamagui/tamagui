@@ -1,11 +1,9 @@
 import { shorthands } from '@tamagui/shorthands/v6';
 import type { CreateTamaguiProps } from '@tamagui/web';
-import { selectionStyles } from './settings';
 import { v6RemovedThemeNames, v6ThemeNameReplacements } from '@tamagui/style-grammar/v6-themes';
 export { shorthands };
 export { createSystemFont } from './fonts';
 export { breakpoints, media, mediaQueryDefaultActive } from './media';
-export { selectionStyles };
 export { tailwindSource } from './v6-tailwind-scales.generated';
 export { v6RemovedThemeNames, v6ThemeNameReplacements };
 export { toV6Themes, type V6Theme, type V6Themes } from './v6-themes';
@@ -673,6 +671,11 @@ export declare const fonts: {
         };
     };
 };
+/** v6 theme keys are hyphenated, so the v5 spelling in ./settings does not apply */
+export declare const selectionStyles: (theme: any) => {
+    backgroundColor: any;
+    color: any;
+} | null;
 export declare const settings: {
     mediaQueryDefaultActive: {
         touchable: boolean;
@@ -700,7 +703,6 @@ export declare const settings: {
         'height-md': boolean;
         'height-lg': boolean;
     };
-    selectionStyles: typeof selectionStyles;
     defaultFont: string;
     fastSchemeChange: true;
     shouldAddPrefersColorThemes: true;
@@ -708,6 +710,7 @@ export declare const settings: {
     addThemeClassName: "html";
     onlyAllowShorthands: true;
     styleCompat: "web";
+    selectionStyles: typeof selectionStyles;
 };
 export type V6Settings = typeof settings;
 /**
@@ -735,7 +738,7 @@ type Twelve<Value> = readonly [
     Value,
     Value
 ];
-/** one 12-step scale, light and dark values from step 1 (faintest) to 12 (strongest) */
+/** one 12-step scale, light and dark values from step 1 (faintest) to 12 (strongest), keyed `${name}-${step}` */
 export type V6ColorScale = {
     light: Twelve<string>;
     dark: Twelve<string>;
@@ -743,7 +746,7 @@ export type V6ColorScale = {
 export type V6ColorScales = Record<string, V6ColorScale>;
 type ScaleStep = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
 type ColorScaleThemeKeys<Scales extends V6ColorScales> = {
-    [Name in keyof Scales & string as `${Name}${ScaleStep}`]: string;
+    [Name in keyof Scales & string as `${Name}-${ScaleStep}`]: string;
 };
 type WithColorScales<Themes extends Record<string, object>, Scales extends V6ColorScales> = {
     [Name in keyof Themes]: Name extends 'light' | 'dark' ? Themes[Name] & ColorScaleThemeKeys<Scales> : Themes[Name];
@@ -1045,7 +1048,6 @@ declare const alignedConfig: {
             'height-md': boolean;
             'height-lg': boolean;
         };
-        selectionStyles: typeof selectionStyles;
         defaultFont: string;
         fastSchemeChange: true;
         shouldAddPrefersColorThemes: true;
@@ -1053,6 +1055,7 @@ declare const alignedConfig: {
         addThemeClassName: "html";
         onlyAllowShorthands: true;
         styleCompat: "web";
+        selectionStyles: typeof selectionStyles;
     };
 };
 /** Compose the aligned v6 base with a colors pack into a createTamagui-ready config. */

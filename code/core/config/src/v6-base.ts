@@ -4,7 +4,7 @@ import { shorthands } from '@tamagui/shorthands/v6'
 import type { CreateTamaguiProps } from '@tamagui/web'
 import { fonts as systemFonts } from './fonts'
 import { media } from './media'
-import { selectionStyles, settings as baseSettings } from './settings'
+import { settings as baseSettings } from './settings'
 import {
   tailwindFontSize,
   tailwindLineHeight,
@@ -20,7 +20,6 @@ import {
 export { shorthands }
 export { createSystemFont } from './fonts'
 export { breakpoints, media, mediaQueryDefaultActive } from './media'
-export { selectionStyles }
 export { tailwindSource } from './v6-tailwind-scales.generated'
 export { v6RemovedThemeNames, v6ThemeNameReplacements }
 export { toV6Themes, type V6Theme, type V6Themes } from './v6-themes'
@@ -135,8 +134,18 @@ export const fonts = {
   heading: withTailwindTypeScale(systemFonts.heading),
 } satisfies NonNullable<CreateTamaguiProps['fonts']>
 
+/** v6 theme keys are hyphenated, so the v5 spelling in ./settings does not apply */
+export const selectionStyles = (theme) =>
+  theme['color-5']
+    ? {
+        backgroundColor: theme['color-5'],
+        color: theme['color-11'],
+      }
+    : null
+
 export const settings = {
   ...baseSettings,
+  selectionStyles,
 } satisfies CreateTamaguiProps['settings']
 
 export type V6Settings = typeof settings
@@ -168,7 +177,7 @@ type Twelve<Value> = readonly [
   Value,
 ]
 
-/** one 12-step scale, light and dark values from step 1 (faintest) to 12 (strongest) */
+/** one 12-step scale, light and dark values from step 1 (faintest) to 12 (strongest), keyed `${name}-${step}` */
 export type V6ColorScale = {
   light: Twelve<string>
   dark: Twelve<string>
@@ -179,7 +188,7 @@ export type V6ColorScales = Record<string, V6ColorScale>
 type ScaleStep = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12
 
 type ColorScaleThemeKeys<Scales extends V6ColorScales> = {
-  [Name in keyof Scales & string as `${Name}${ScaleStep}`]: string
+  [Name in keyof Scales & string as `${Name}-${ScaleStep}`]: string
 }
 
 type WithColorScales<
@@ -207,10 +216,10 @@ function themesWithColorScales<
       )
     }
     scale.light.forEach((value, index) => {
-      light[`${name}${index + 1}`] = value
+      light[`${name}-${index + 1}`] = value
     })
     scale.dark.forEach((value, index) => {
-      dark[`${name}${index + 1}`] = value
+      dark[`${name}-${index + 1}`] = value
     })
   }
   return {

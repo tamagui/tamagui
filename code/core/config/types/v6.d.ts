@@ -305,13 +305,6 @@ export declare const colors: {
         readonly 'brand-800': string;
         readonly 'brand-900': string;
         readonly 'brand-950': string;
-        readonly 'shadow-1': 'rgba(0, 0, 0, 0.05)';
-        readonly 'shadow-2': 'rgba(0, 0, 0, 0.08)';
-        readonly 'shadow-3': 'rgba(0, 0, 0, 0.12)';
-        readonly 'shadow-4': 'rgba(0, 0, 0, 0.16)';
-        readonly 'shadow-5': 'rgba(0, 0, 0, 0.2)';
-        readonly 'shadow-6': 'rgba(0, 0, 0, 0.25)';
-        readonly 'shadow-7': 'rgba(0, 0, 0, 0.3)';
     };
 };
 export declare const tokens: {
@@ -1171,13 +1164,6 @@ export declare const tokens: {
         readonly 'brand-800': string;
         readonly 'brand-900': string;
         readonly 'brand-950': string;
-        readonly 'shadow-1': 'rgba(0, 0, 0, 0.05)';
-        readonly 'shadow-2': 'rgba(0, 0, 0, 0.08)';
-        readonly 'shadow-3': 'rgba(0, 0, 0, 0.12)';
-        readonly 'shadow-4': 'rgba(0, 0, 0, 0.16)';
-        readonly 'shadow-5': 'rgba(0, 0, 0, 0.2)';
-        readonly 'shadow-6': 'rgba(0, 0, 0, 0.25)';
-        readonly 'shadow-7': 'rgba(0, 0, 0, 0.3)';
     };
 };
 export declare const defaultConfig: {
@@ -1439,7 +1425,6 @@ export declare const defaultConfig: {
             'height-md': boolean;
             'height-lg': boolean;
         };
-        selectionStyles: typeof import("./settings").selectionStyles;
         defaultFont: string;
         fastSchemeChange: true;
         shouldAddPrefersColorThemes: true;
@@ -1447,6 +1432,7 @@ export declare const defaultConfig: {
         addThemeClassName: "html";
         onlyAllowShorthands: true;
         styleCompat: "web";
+        selectionStyles: typeof import("./v6-base").selectionStyles;
     };
 } & {
     themes: {
@@ -2437,13 +2423,6 @@ export declare const defaultConfig: {
             readonly 'brand-800': string;
             readonly 'brand-900': string;
             readonly 'brand-950': string;
-            readonly 'shadow-1': 'rgba(0, 0, 0, 0.05)';
-            readonly 'shadow-2': 'rgba(0, 0, 0, 0.08)';
-            readonly 'shadow-3': 'rgba(0, 0, 0, 0.12)';
-            readonly 'shadow-4': 'rgba(0, 0, 0, 0.16)';
-            readonly 'shadow-5': 'rgba(0, 0, 0, 0.2)';
-            readonly 'shadow-6': 'rgba(0, 0, 0, 0.25)';
-            readonly 'shadow-7': 'rgba(0, 0, 0, 0.3)';
         };
     };
 };

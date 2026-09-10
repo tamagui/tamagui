@@ -15,13 +15,6 @@ export const colorTokens = {
   'brand-800': tailwindColors['blue-800'],
   'brand-900': tailwindColors['blue-900'],
   'brand-950': tailwindColors['blue-950'],
-  'shadow-1': 'rgba(0, 0, 0, 0.05)',
-  'shadow-2': 'rgba(0, 0, 0, 0.08)',
-  'shadow-3': 'rgba(0, 0, 0, 0.12)',
-  'shadow-4': 'rgba(0, 0, 0, 0.16)',
-  'shadow-5': 'rgba(0, 0, 0, 0.2)',
-  'shadow-6': 'rgba(0, 0, 0, 0.25)',
-  'shadow-7': 'rgba(0, 0, 0, 0.3)',
 } as const
 
 export const tokens = { color: colorTokens } as const

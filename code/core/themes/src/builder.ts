@@ -14,6 +14,31 @@ export { colorTokens, tailwindColors, tokens } from './tokens'
 
 export const shades = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950] as const
 
+// shadows are theme values, not tokens: a shadow that reads at all on a light
+// surface disappears on a dark one, so each scheme carries its own ladder.
+export const shadows = {
+  light: {
+    'shadow-1': 'rgba(0, 0, 0, 0.04)',
+    'shadow-2': 'rgba(0, 0, 0, 0.08)',
+    'shadow-3': 'rgba(0, 0, 0, 0.12)',
+    'shadow-4': 'rgba(0, 0, 0, 0.22)',
+    'shadow-5': 'rgba(0, 0, 0, 0.33)',
+    'shadow-6': 'rgba(0, 0, 0, 0.44)',
+    'shadow-7': 'rgba(0, 0, 0, 0.6)',
+  },
+  dark: {
+    'shadow-1': 'rgba(0, 0, 0, 0.15)',
+    'shadow-2': 'rgba(0, 0, 0, 0.23)',
+    'shadow-3': 'rgba(0, 0, 0, 0.33)',
+    'shadow-4': 'rgba(0, 0, 0, 0.45)',
+    'shadow-5': 'rgba(0, 0, 0, 0.65)',
+    'shadow-6': 'rgba(0, 0, 0, 0.8)',
+    'shadow-7': 'rgba(0, 0, 0, 0.9)',
+  },
+} as const
+
+export type ShadowName = keyof (typeof shadows)['light']
+
 export type Shade = (typeof shades)[number]
 
 type PaletteFromToken<Token> = Token extends `${infer Name}-${Shade}` ? Name : never
@@ -44,9 +69,9 @@ export const semanticThemeKeys = [
 
 export type SemanticThemeKey = (typeof semanticThemeKeys)[number]
 export type ThemeScale<TokenName extends string = ColorTokenName> = Record<
-  SemanticThemeKey,
+  Exclude<SemanticThemeKey, 'shadow-color'>,
   Shade | TokenName
->
+> & { 'shadow-color': ShadowName }
 
 const light = {
   background: 'white',
@@ -82,7 +107,7 @@ const dark = {
   'color-hover': 50,
   'color-press': 50,
   'color-focus': 50,
-  'shadow-color': 'shadow-6',
+  'shadow-color': 'shadow-3',
 } as const satisfies ThemeScale
 
 const boldLight = {
@@ -115,7 +140,7 @@ const boldDark = {
   'border-color-hover': 500,
   'border-color-press': 600,
   'border-color-focus': 500,
-  'shadow-color': 'shadow-6',
+  'shadow-color': 'shadow-3',
 } as const satisfies ThemeScale
 
 const tintLight = {
@@ -154,7 +179,7 @@ const tintDark = {
   'color-focus': 200,
   'placeholder-color': 500,
   'outline-color': 600,
-  'shadow-color': 'shadow-6',
+  'shadow-color': 'shadow-3',
 } as const satisfies ThemeScale
 
 const ladder = ['white', ...shades, 'black'] as const
@@ -230,11 +255,11 @@ export type DefaultRecipe = {
 }
 
 export type Ramp<PaletteName extends string = Palette> = Record<
-  `color${Level | 5 | 6 | 7 | 8 | 9 | 10 | 11}`,
+  `color-${Level | 5 | 6 | 7 | 8 | 9 | 10 | 11}`,
   `${PaletteName}-${Shade}`
 >
 
-// color1 sits nearest the background and color11 nearest the type in every
+// color-1 sits nearest the background and color-11 nearest the type in every
 // theme. the scheme alone gets that wrong for a scale whose background is
 // deeper than its type (bold in light), so when the scale is given it decides
 // the direction and the scheme is only the fallback for values off the ladder.
@@ -254,7 +279,7 @@ export function ramp<const PaletteName extends string>(
 ): Ramp<PaletteName> {
   const ordered = rampReversed(scheme, scale) ? [...shades].reverse() : shades
   return Object.fromEntries(
-    ordered.map((shade, index) => [`color${index + 1}`, `${palette}-${shade}`])
+    ordered.map((shade, index) => [`color-${index + 1}`, `${palette}-${shade}`])
   ) as Ramp<PaletteName>
 }
 
@@ -272,9 +297,13 @@ export function fromShades<const PaletteName extends string, TokenName extends s
 
 export function getTheme({ recipe }: GetThemeContext<typeof tokens, DefaultRecipe>) {
   const scale = scales[recipe.treatment ?? 'normal'][recipe.scheme][recipe.level ?? 1]
+  const schemeShadows = shadows[recipe.scheme]
   return {
     ...ramp(recipe.palette, recipe.scheme, scale),
     ...fromShades(recipe.palette, scale),
+    ...schemeShadows,
+    // the scale names a step on the ladder; the scheme decides what it is worth
+    'shadow-color': schemeShadows[scale['shadow-color']],
   }
 }
 

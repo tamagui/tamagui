@@ -48,9 +48,11 @@ describe('v5 compatibility config', () => {
 
     expect(converted.light['background-hover']).toBe(themes.light.backgroundHover)
     expect(converted.light['border-color']).toBe(themes.light.borderColor)
-    expect(converted.light.color11).toBe(themes.light.color11)
+    // the ramp keeps its v5 step numbers and values; only the spelling moves
+    expect(converted.light['color-11']).toBe(themes.light.color11)
     expect(converted.light).not.toHaveProperty('backgroundHover')
-    expect(converted.light.color12).toBe(themes.light.color12)
+    expect(converted.light).not.toHaveProperty('color11')
+    expect(converted.light['color-12']).toBe(themes.light.color12)
     expect(converted.light_alias).toBe(converted.light)
   })
 })
