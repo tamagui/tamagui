@@ -304,6 +304,7 @@ const loaders: Record<string, () => ComponentType<any>> = {
   ThemeComponentResolution: () =>
     require('./ThemeComponentResolution').ThemeComponentResolution,
   ThemeMutation: () => require('./ThemeMutation').ThemeMutation,
+  ThemeInverse: () => require('./ThemeInverse').ThemeInverse,
   ThemeLevels: () => require('./ThemeLevels').ThemeLevels,
   ThemeNested: () => require('./ThemeNested').ThemeNested,
   ThemeShallowCase: () => require('./ThemeShallowCase').ThemeShallowCase,

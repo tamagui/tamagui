@@ -60,6 +60,7 @@ export function getThemeCSSRules(props: {
     const isLightBase = themeName === 'light'
     const baseSelectors = names.map((name) => `${CNP}${name}`)
     const selectorsSet = new Set(isDarkBase || isLightBase ? baseSelectors : [])
+    const selectorScheme = new Map<string, 'light' | 'dark'>()
 
     // The full resolved name is authoritative. `:not(#t_theme_full_name)` is
     // an always-matching specificity anchor: a bounded relative selector for
@@ -78,8 +79,16 @@ export function getThemeCSSRules(props: {
       const maxDepth = 2
 
       for (const subName of names) {
-        const isDark = isDarkBase || subName.startsWith('dark_')
-        const isLight = !isDark && (isLightBase || subName.startsWith('light_'))
+        // identical themes dedupe into one canonical name, and an alias can carry
+        // the opposite scheme to the name it deduped into: light_inverse IS dark,
+        // so it arrives here under themeName "dark". its own prefix therefore
+        // decides its scheme, and the base only answers for an unprefixed name.
+        // reading the base first pointed every cross-scheme alias at the wrong
+        // parent, which silently made <Theme name="inverse"> a no-op.
+        const hasDarkPrefix = subName === 'dark' || subName.startsWith('dark_')
+        const hasLightPrefix = subName === 'light' || subName.startsWith('light_')
+        const isDark = hasDarkPrefix || (!hasLightPrefix && isDarkBase)
+        const isLight = hasLightPrefix || (!hasDarkPrefix && isLightBase)
 
         if (!(isDark || isLight)) {
           // neither light nor dark subtheme, just generate one selector with :root:root which
@@ -117,7 +126,12 @@ export function getThemeCSSRules(props: {
 
           // for light/dark/light:
           const parentSelectorString = parentSelectors.join(' ')
-          selectorsSet.add(`${parentSelectorString} ${nextChildSelector}`)
+          const selector = `${parentSelectorString} ${nextChildSelector}`
+          selectorsSet.add(selector)
+          // remember which scheme's root this selector was built for, so the
+          // prefers-color-scheme pass below can route it. a theme carrying
+          // aliases from both schemes has to reach both media blocks.
+          selectorScheme.set(selector, isDark ? 'dark' : 'light')
         }
       }
     }
@@ -139,38 +153,55 @@ export function getThemeCSSRules(props: {
     cssRuleSets.push(css)
 
     if (getSetting('shouldAddPrefersColorThemes')) {
-      const isDark = themeName.startsWith('dark')
-      const baseName = isDark ? 'dark' : 'light'
-      const lessSpecificSelectors = selectors
-        .map((x) => {
-          if (x == darkSelector || x === lightSelector) return `:root`
-          if (
-            (isDark && x.startsWith(lightSelector)) ||
-            (!isDark && x.startsWith(darkSelector))
-          ) {
-            return
-          }
-          return x.replace(/^\.t_(dark|light) /, '').trim()
-        })
-        .filter(Boolean)
-        .join(', ')
-
-      // only emit body background/color for base themes, not every sub-theme
-      const isBase = !themeName.includes('_')
-      let bodyRulesString = ''
-      if (isBase) {
-        const bgString = theme.background
-          ? `background:${variableToString(theme.background)};`
-          : ''
-        const fgString = theme.color ? `color:${variableToString(theme.color)}` : ''
-        bodyRulesString = bgString || fgString ? `body{${bgString}${fgString}}\n    ` : ''
+      // inside a media block the root carries no theme class, so the leading
+      // `.t_light `/`.t_dark ` is stripped and the block itself stands in for it.
+      // a theme reached under BOTH roots therefore has to emit into both blocks:
+      // light_inverse dedupes into dark, so the dark values it holds are what an
+      // implicitly-light root must serve, while dark's own values serve the dark
+      // one. keying the whole set off themeName dropped one of the two.
+      const schemeOf = (x: string) => {
+        if (x === darkSelector) return 'dark'
+        if (x === lightSelector) return 'light'
+        if (x.startsWith(`${darkSelector} `)) return 'dark'
+        if (x.startsWith(`${lightSelector} `)) return 'light'
+        return selectorScheme.get(x)
       }
 
-      const themeRules = `${lessSpecificSelectors} {${vars}}`
-      const prefersMediaSelectors = `@media(prefers-color-scheme:${baseName}){
-    ${bodyRulesString}${themeRules}
-  }`
-      cssRuleSets.push(prefersMediaSelectors)
+      for (const baseName of lightDark) {
+        const lessSpecificSelectors = selectors
+          .map((x) => {
+            if (x === darkSelector || x === lightSelector) {
+              return schemeOf(x) === baseName ? ':root' : undefined
+            }
+            // a selector rooted in the other scheme is unreachable here: that
+            // root would have to carry an explicit class, which the non-media
+            // rules above already cover at higher specificity.
+            const scheme = schemeOf(x)
+            if (scheme && scheme !== baseName) return
+            return x.replace(/^\.t_(dark|light) /, '').trim()
+          })
+          .filter(Boolean)
+          .join(', ')
+
+        if (!lessSpecificSelectors) continue
+
+        // only emit body background/color for base themes, not every sub-theme,
+        // and only for the scheme this theme actually grounds
+        const isBase = !themeName.includes('_')
+        let bodyRulesString = ''
+        if (isBase && themeName === baseName) {
+          const bgString = theme.background
+            ? `background:${variableToString(theme.background)};`
+            : ''
+          const fgString = theme.color ? `color:${variableToString(theme.color)}` : ''
+          bodyRulesString =
+            bgString || fgString ? `body{${bgString}${fgString}}\n    ` : ''
+        }
+
+        cssRuleSets.push(`@media(prefers-color-scheme:${baseName}){
+    ${bodyRulesString}${lessSpecificSelectors} {${vars}}
+  }`)
+      }
     }
 
     const selectionStyles = getSetting('selectionStyles')
