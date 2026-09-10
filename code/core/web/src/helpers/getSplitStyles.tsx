@@ -2306,7 +2306,10 @@ function writeStyleRecord(
   const slots = (direct.flatSlots ||= new Map())
   const sourceLayer = direct.flatPass?.[passSourceLayer] || 0
   if (direct.flatInlineStyleProp) flags |= recordInline
-  const slot =
+  // css records share a slot per shorthand group so one class covers the
+  // group; an inline record keeps its own property slot because the emitter
+  // merges exactly one inline winner per slot
+  const cssSlot =
     process.env.TAMAGUI_TARGET === 'web' &&
     canGenerateCSS &&
     (state.flatShouldDoClasses || flags & recordCSS)
@@ -2314,8 +2317,30 @@ function writeStyleRecord(
       : property.startsWith('transition')
         ? 'transition'
         : property
+  const slot = flags & recordInline && cssSlot !== property ? property : cssSlot
   let list = slots.get(slot)
   if (!list) slots.set(slot, (list = []))
+  // a style array is last-wins per property even across a piece (a class) and
+  // a plain value (inline), which otherwise never meet
+  if (sourceLayer === sourceLayerStyle && !condition) {
+    const other =
+      slot === cssSlot ? list : slots.get(flags & recordInline ? cssSlot : property)
+    if (other) {
+      for (let index = 0; index < other.length; index++) {
+        const entry = other[index]
+        const entryFlags = entry[7]!
+        if (
+          entry[0] === property &&
+          !entry[2] &&
+          entryFlags >> 5 === sourceLayerStyle &&
+          (entryFlags & (recordInline | recordCSS)) !==
+            (flags & (recordInline | recordCSS))
+        ) {
+          other.splice(index--, 1)
+        }
+      }
+    }
+  }
   for (let index = 0; index < list.length; index++) {
     const entry = list[index]
     const entryFlags = entry[7]!
@@ -2323,17 +2348,6 @@ function writeStyleRecord(
       (entryFlags & (recordInline | recordCSS)) !==
       (flags & (recordInline | recordCSS))
     ) {
-      // a style array is last-wins per property even across a piece (a class)
-      // and a plain value (inline), which would otherwise never meet
-      if (
-        sourceLayer === sourceLayerStyle &&
-        entryFlags >> 5 === sourceLayerStyle &&
-        entry[0] === property &&
-        !condition &&
-        !entry[2]
-      ) {
-        list.splice(index--, 1)
-      }
       continue
     }
     if (entry[0] !== property) continue
@@ -2619,7 +2633,8 @@ function configuredValue(
   state: GetStyleState,
   property: string,
   raw: string,
-  embedded = false
+  embedded = false,
+  nativeColors?: Map<string, unknown>
 ): any {
   const grammar = getConfigRevisionState(state.conf)
   let name = raw
@@ -2645,7 +2660,7 @@ function configuredValue(
     property === 'letterSpacing'
   const resolveValues = state.styleProps.resolveValues
   let byRaw: Map<string, any> | undefined
-  if (!fontProperty) {
+  if (!fontProperty && !nativeColors) {
     const revision = grammar.revision
     if (state.conf !== valueCacheConf || revision !== valueCacheRevision) {
       valueCacheConf = state.conf
@@ -2839,7 +2854,7 @@ function configuredValue(
     out =
       resolveValues === 'except-theme' && fromTheme
         ? `${THEME_REF_PREFIX}${lookupName}${opacity !== undefined ? `/${opacity}` : ''}`
-        : resolveVariableValue(property, value, resolveValues)
+        : resolveVariableValue(nativeColors ? 'color' : property, value, resolveValues)
     if (opacity !== undefined) {
       out =
         process.env.TAMAGUI_TARGET === 'web'
@@ -2847,13 +2862,20 @@ function configuredValue(
           : (normalizeColor(out, opacity / 100) ?? out)
     }
   }
+  if (nativeColors && out && typeof out === 'object') {
+    const reference = `__tamagui_native_color_${nativeColors.size}`
+    nativeColors.set(reference, out)
+    out = reference
+  }
   if (embedded && out === raw) {
     const usedSafeArea = state.flatUsesSafeArea
-    out = grammar.embeddedTokens(raw, (word) => configuredValue(state, property, word))
+    out = grammar.embeddedTokens(raw, (word) =>
+      configuredValue(state, property, word, false, nativeColors)
+    )
     // a safe-area token flips state as it resolves, so a cached hit would lose it
     if (!usedSafeArea && state.flatUsesSafeArea) return out
   }
-  if (!fontProperty && !fromTheme) {
+  if (!fontProperty && !fromTheme && !nativeColors) {
     if (valueCacheEntries > 8192) {
       valueCaches = new WeakMap()
       valueCacheEntries = 0
@@ -3121,8 +3143,16 @@ function emitResolved(
   )
 }
 
-function resolveValue(state: GetStyleState, property: string, raw: any) {
-  let value = typeof raw === 'string' ? configuredValue(state, property, raw, true) : raw
+function resolveValue(
+  state: GetStyleState,
+  property: string,
+  raw: any,
+  nativeColors?: Map<string, unknown>
+) {
+  let value =
+    typeof raw === 'string'
+      ? configuredValue(state, property, raw, true, nativeColors)
+      : raw
   if (
     (process.env.TAMAGUI_TARGET === 'native' || !state.flatShouldDoClasses) &&
     typeof value === 'string' &&
@@ -3390,7 +3420,15 @@ function emitValue(
     return
   }
 
-  let value: any = resolveValue(state, property, raw)
+  const nativeColors =
+    process.env.TAMAGUI_TARGET === 'native' &&
+    typeof raw === 'string' &&
+    (property === 'backgroundImage' ||
+      property === 'boxShadow' ||
+      property === 'textShadow')
+      ? new Map<string, unknown>()
+      : undefined
+  let value: any = resolveValue(state, property, raw, nativeColors)
   if (
     canGenerateCSS &&
     state.flatShouldDoClasses &&
@@ -3408,7 +3446,7 @@ function emitValue(
       property === 'boxShadow' ||
       property === 'textShadow')
   ) {
-    const parsed = parseNativeStyle(property, value)
+    const parsed = parseNativeStyle(property, value, nativeColors)
     if (parsed) {
       if (property === 'textShadow') {
         for (const [key, parsedValue] of parsed) {

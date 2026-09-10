@@ -46,8 +46,27 @@ export function processStyleColors(
 ): Record<string, unknown> {
   let out: Record<string, unknown> | null = null
   for (const key in props) {
-    if (!COLOR_PROPS.has(key)) continue
     const value = props[key]
+    if (
+      (key === 'boxShadow' ||
+        key === 'experimental_backgroundImage' ||
+        key === 'colorStops') &&
+      Array.isArray(value)
+    ) {
+      let changed = false
+      const next = []
+      for (const entry of value) {
+        const processed = processStyleColors(entry)
+        if (processed !== entry) changed = true
+        next.push(processed)
+      }
+      if (changed) {
+        out ??= { ...props }
+        out[key] = next
+      }
+      continue
+    }
+    if (!COLOR_PROPS.has(key)) continue
     // a style may already carry the packed int form RN accepts (`processColor`
     // output written straight into a style), and that form is misread the same
     // way, so it converts here too rather than only css strings

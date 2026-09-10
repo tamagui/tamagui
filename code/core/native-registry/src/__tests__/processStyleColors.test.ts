@@ -82,4 +82,41 @@ describe('processStyleColors', () => {
     const props = { flexDirection: 'row', width: 10, color: 'nonsense' }
     expect(processStyleColors(props)).toEqual(props)
   })
+
+  it('normalizes colors inside shadow and gradient arrays for Fabric commits', () => {
+    const dynamic = { dynamic: { light: 'white', dark: 'black' } }
+    const props = {
+      boxShadow: [{ offsetX: 0, offsetY: 2, blurRadius: 4, color: dynamic }],
+      experimental_backgroundImage: [
+        {
+          type: 'linear-gradient',
+          direction: 'to bottom',
+          colorStops: [{ color: 'half-red', position: '0%' }, { color: dynamic }],
+        },
+      ],
+    }
+
+    expect(processStyleColors(props)).toEqual({
+      boxShadow: [
+        {
+          offsetX: 0,
+          offsetY: 2,
+          blurRadius: 4,
+          color: { dynamic: { light: 0xffffffff, dark: 0xff000000 } },
+        },
+      ],
+      experimental_backgroundImage: [
+        {
+          type: 'linear-gradient',
+          direction: 'to bottom',
+          colorStops: [
+            { color: { space: 'srgb', r: 1, g: 0, b: 0, a: 0x80 / 255 }, position: '0%' },
+            { color: { dynamic: { light: 0xffffffff, dark: 0xff000000 } } },
+          ],
+        },
+      ],
+    })
+    expect(props.boxShadow[0].color).toBe(dynamic)
+    expect(props.experimental_backgroundImage[0].colorStops[0].color).toBe('half-red')
+  })
 })

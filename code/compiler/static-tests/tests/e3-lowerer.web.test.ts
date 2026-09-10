@@ -952,14 +952,15 @@ const Frame = styled(View, {
 })
 export const App = () => <Frame ${props} />
 `
+    // the style prop stays inline and still wins over the variant class
     const variantLast = compile(source('style={{ opacity: 0.2 }} tone="active"'))
     expect(codes(variantLast.plan)).toEqual([])
-    expect(compactCss(variantLast.plan.css)).toContain('opacity:0.2')
+    expect(variantLast.output.code).toContain('style={{"opacity":0.2}}')
     expect(compactCss(variantLast.plan.css)).not.toContain('opacity:0.5')
 
     const styleLast = compile(source('tone="active" style={{ opacity: 0.2 }}'))
     expect(codes(styleLast.plan)).toEqual([])
-    expect(compactCss(styleLast.plan.css)).toContain('opacity:0.2')
+    expect(styleLast.output.code).toContain('style={{"opacity":0.2}}')
     expect(compactCss(styleLast.plan.css)).not.toContain('opacity:0.5')
   })
 
