@@ -699,6 +699,61 @@ function isSerializableNativeStyle(value: unknown): boolean {
   return Object.values(value).every(isSerializableNativeStyle)
 }
 
+/**
+ * native host styles contain only completed pixel metrics. this compact record
+ * retains the authored text metric long enough for a DOM primitive or runtime
+ * Text descendant to apply it against its effective font size.
+ */
+type NativeTextMetrics = {
+  fontSize?: number
+  lineHeight?: number | `${number}px` | 'normal'
+}
+
+function nativeTextMetrics(result: unknown): NativeTextMetrics | null {
+  const value = (result as { nativeTextMetrics?: unknown } | null)?.nativeTextMetrics
+  if (!staticObject(value)) return null
+  const { fontSize, lineHeight } = value
+  if (
+    (fontSize !== undefined && typeof fontSize !== 'number') ||
+    (lineHeight !== undefined &&
+      typeof lineHeight !== 'number' &&
+      typeof lineHeight !== 'string')
+  ) {
+    return null
+  }
+  return fontSize === undefined && lineHeight === undefined
+    ? null
+    : (value as NativeTextMetrics)
+}
+
+function mergeNativeTextMetrics(
+  current: NativeTextMetrics | null,
+  next: NativeTextMetrics | null
+): NativeTextMetrics | null {
+  if (!current) return next
+  if (!next) return current
+  return {
+    fontSize: next.fontSize ?? current.fontSize,
+    lineHeight: next.lineHeight ?? current.lineHeight,
+  }
+}
+
+function hasChildThatMayRenderReactNode(element: MaterializedElement): boolean {
+  return element.entries.some((entry) => {
+    if (entry.kind !== 'child' || entry.value.kind === 'empty') return false
+    if (entry.value.kind === 'element') return true
+    if (entry.value.kind === 'bailout') return entry.value.dynamic === null
+    if (entry.value.kind === 'conditional') {
+      return collectLeaves(entry.value.tree).some(
+        ({ value }) =>
+          value === undefined || (value !== null && typeof value === 'object')
+      )
+    }
+    if (entry.value.kind !== 'static') return true
+    return entry.value.value !== null && typeof entry.value.value === 'object'
+  })
+}
+
 function unusedIdentifier(source: string, base: string): string {
   let candidate = base
   let suffix = 0
@@ -1037,6 +1092,7 @@ export function createTamaguiCompilerHost(
     !options.tamaguiConfig.animationDrivers
       ? configuredAnimationDriver
       : null
+  const nativeTextMetricsByElement = new WeakMap<MaterializedElement, NativeTextMetrics>()
   const resolveStaticCssTransition = (
     value: unknown,
     transitionPresets: Record<string, unknown>
@@ -1167,6 +1223,7 @@ export function createTamaguiCompilerHost(
       displayName: tag,
       staticConfig: normalizeStaticConfig({
         ...base,
+        isDOM: true,
         isInput: row.backing === 'textinput',
         // CSS text properties may be authored on any element and inherited by
         // descendant text, including from a View-backed tag on native.
@@ -2445,6 +2502,52 @@ export function createTamaguiCompilerHost(
           'getSplitStyles returned no static result'
         )
       }
+      const nativeMetrics = platform === 'native' ? nativeTextMetrics(split) : null
+      if (nativeMetrics) nativeTextMetricsByElement.set(input.element, nativeMetrics)
+      const hasDynamicFontSize = dynamicStyleEntries.some((entry) => {
+        const name = directStyleName(entry.name, component)
+        return name === 'fontFamily' || name === 'fontSize'
+      })
+      const hasUnresolvedNativeLineHeight =
+        typeof nativeMetrics?.lineHeight === 'number' &&
+        nativeMetrics.fontSize === undefined &&
+        !hasDynamicFontSize
+      const hasDynamicTextMetric = dynamicStyleEntries.some((entry) => {
+        const name = directStyleName(entry.name, component)
+        return (
+          name === 'fontFamily' ||
+          name === 'fontSize' ||
+          name === 'lineHeight' ||
+          (name === null && !!component.staticConfig.variants?.[entry.name])
+        )
+      })
+      const changesInheritedNativeFontSize =
+        nativeMetrics?.fontSize !== undefined && nativeMetrics.lineHeight === undefined
+      // flattened core Text goes straight to react-native Text, which cannot
+      // carry this semantic record to a runtime child. the component path
+      // completes it once through the shared metric context.
+      if (
+        platform === 'native' &&
+        component.staticConfig.isText &&
+        !component.domTag &&
+        (hasUnresolvedNativeLineHeight ||
+          changesInheritedNativeFontSize ||
+          (hasChildThatMayRenderReactNode(input.element) &&
+            (nativeMetrics !== null || hasDynamicTextMetric)) ||
+          input.module.elements.some(
+            (ancestor) =>
+              ancestor !== input.element &&
+              ancestor.span.start < input.element.span.start &&
+              ancestor.span.end > input.element.span.end &&
+              nativeTextMetricsByElement.has(ancestor)
+          ))
+      ) {
+        return bailout(
+          input,
+          'local/unsupported-target',
+          'Native text metrics need the runtime Text provider for this subtree'
+        )
+      }
       if (
         split.programLifecycleStyleKeys?.enter?.size ||
         split.programLifecycleStyleKeys?.exit?.size
@@ -2686,6 +2789,7 @@ export function createTamaguiCompilerHost(
           }
           styleEntries = [...new Set([...styleEntries, ...propsResult.consumed])]
           let nativeDOMStyleSource = nativeStyleSource
+          let nativeDOMMetrics = nativeMetrics
           let runtimeStyleSource: string | null = null
           if (
             domStyleProgram?.kind === 'prop' &&
@@ -2749,6 +2853,10 @@ export function createTamaguiCompilerHost(
                     item.value.span
                   )
                 }
+                nativeDOMMetrics = mergeNativeTextMetrics(
+                  nativeDOMMetrics,
+                  nativeTextMetrics(itemSplit)
+                )
                 value = JSON.stringify(itemStyle ?? {})
               }
               const condition = item.condition
@@ -2772,6 +2880,11 @@ export function createTamaguiCompilerHost(
               ? input.element.form === 'jsx'
                 ? `__styles={${runtimeStyleSource}}`
                 : `__styles: ${runtimeStyleSource}`
+              : '',
+            nativeDOMMetrics
+              ? serializedProps(input.element.form, [
+                  ['__textMetrics', JSON.stringify(nativeDOMMetrics)],
+                ])
               : '',
             serializedProps(input.element.form, propsResult.additions),
           ]

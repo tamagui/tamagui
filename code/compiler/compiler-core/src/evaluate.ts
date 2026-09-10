@@ -481,8 +481,8 @@ function evaluateDynamicNode(
     }
   }
 
-  // a template whose every interpolation takes finitely many primitives takes
-  // finitely many strings: `w-6 ${colors[index % 2]}` is two class strings
+  // templates always produce strings. retain the finite values when every
+  // interpolation is bounded: `w-6 ${colors[index % 2]}` is two class strings.
   if (node.type === 'TemplateLiteral') {
     const quasis = childNodes(node, 'quasis')
     const expressions = childNodes(node, 'expressions')
@@ -493,7 +493,7 @@ function evaluateDynamicNode(
       const expression = expressions[position]
       if (!expression) continue
       const part = evaluateDynamicNode(resolver, id, expression, state)
-      if (!part?.values) return null
+      if (!part?.values) return { type: 'string' }
       const next: string[] = []
       for (const value of values) {
         for (const primitive of part.values) {
@@ -501,7 +501,7 @@ function evaluateDynamicNode(
           if (!next.includes(joined)) next.push(joined)
         }
       }
-      if (next.length > 32) return null
+      if (next.length > 32) return { type: 'string' }
       values = next
     }
     return { type: 'string', values }

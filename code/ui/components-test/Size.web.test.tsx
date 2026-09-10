@@ -13,6 +13,7 @@ import { render } from '@testing-library/react'
 import type { FC } from 'react'
 import { Button, SizeContext as TamaguiSizeContext } from 'tamagui'
 import { describe, expect, test } from 'vitest'
+import { resolveTextAreaSize } from '../input/src/shared'
 
 const config = createTamagui(defaultConfig)
 
@@ -64,6 +65,29 @@ function renderButton(size?: any) {
 }
 
 describe('named control sizes on web', () => {
+  test('textarea rows use relative font leading and explicit font overrides', () => {
+    const font = {
+      ...config.fontsParsed.body,
+      lineHeight: { ...config.fontsParsed.body.lineHeight, sm: '1.5' },
+    }
+    const env = {
+      font,
+      fonts: { body: font },
+      fontFamily: 'body',
+      sizes: config.sizes,
+      tokens: config.tokensParsed,
+      theme: {},
+    } as any
+    expect(resolveTextAreaSize({ rows: 3 }, env).height).toBe(63)
+    expect(resolveTextAreaSize({ rows: 3, fontSize: 20 }, env).height).toBe(90)
+    expect(
+      resolveTextAreaSize({ rows: 3, fontSize: 20, lineHeight: '24px' }, env).height
+    ).toBe(72)
+    expect(
+      resolveTextAreaSize({ rows: 3, fontSize: 20, lineHeight: 2 }, env).height
+    ).toBe(120)
+  })
+
   test('md is a recipe of tokens and never a height', () => {
     expect(renderButton('md')).toEqual({
       height: '',

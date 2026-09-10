@@ -275,6 +275,7 @@ function htmlNativeSource(): string {
       `  >({`,
       `    ...${base},`,
       `    validStyles: domValidStyles,`,
+      `    isDOM: true,`,
       `    neverSkipProps: domEventProps,`,
       `    Component: primitive(${NATIVE_BACKING[backing].primitive}),`,
       // a text-entry control takes the text style props and the native input path

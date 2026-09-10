@@ -12,13 +12,17 @@ import {
   ScriptTarget,
   SyntaxKind,
   ts,
+  type CallExpression,
   type Expression,
+  type JsxOpeningElement,
+  type JsxSelfClosingElement,
   type ObjectLiteralExpression,
+  type PropertyAssignment,
   type SourceFile,
 } from 'ts-morph'
 import { planContainers, type ContainerPlan } from './containers'
 import { convertJsxSite, convertStyleObject, type SiteReport } from './convert'
-import { compact, unwrapExpression } from './expressions'
+import { compact, numericValue, runtimeType, unwrapExpression } from './expressions'
 import {
   addFunctionalVariantTypeImports,
   convertFunctionalVariants,
@@ -38,8 +42,408 @@ import { createProvenance } from './provenance'
 import { renderReport, type FileReport } from './report'
 import { convertSheetFrames } from './sheetAnatomy'
 import { convertTransitions } from './transition'
+import { isLegacyConditionName } from './legacyNames'
 
 type Provenance = ReturnType<typeof createProvenance>
+type SourceSemantics = 'v2-pixels' | 'v3-ratios'
+
+interface SourceEdit {
+  start: number
+  end: number
+  text: string
+  dynamic: boolean
+}
+
+function propertyName(node: Node): string | null {
+  if (
+    Node.isIdentifier(node) ||
+    Node.isStringLiteral(node) ||
+    Node.isNumericLiteral(node)
+  ) {
+    return node.getText().replace(/^['"]|['"]$/g, '')
+  }
+  return null
+}
+
+function isLineHeightName(name: string | null): boolean {
+  return name === 'lineHeight' || name === 'lh'
+}
+
+function extractedTokenValue(expression: Expression): boolean {
+  const nodes = [expression, ...expression.getDescendants()]
+  return nodes.some(
+    (node) =>
+      (Node.isPropertyAccessExpression(node) && node.getName() === 'val') ||
+      (Node.isCallExpression(node) &&
+        Node.isIdentifier(node.getExpression()) &&
+        node.getExpression().getText() === 'getVariableValue')
+  )
+}
+
+function pixelReplacement(
+  expression: Expression
+): { text: string; dynamic: boolean } | { flag: SiteReport['flags'][number] } | null {
+  const current = unwrapExpression(expression)
+  const number = numericValue(current)
+  if (number !== null) return { text: JSON.stringify(`${number}px`), dynamic: false }
+  const type = runtimeType(current)
+  if (type.kind === 'string') return null
+
+  if (extractedTokenValue(current)) {
+    return {
+      flag: {
+        code: 'ambiguous-line-height-token-value',
+        detail: `lineHeight value "${compact(current.getText())}" extracts a token value whose units are no longer visible; replace it with an explicit ratio or px length by hand`,
+      },
+    }
+  }
+
+  if (type.kind === 'number') {
+    return { text: `\`\${${current.getText()}}px\``, dynamic: true }
+  }
+  return {
+    flag: {
+      code: 'ambiguous-line-height-expression',
+      detail: `lineHeight value "${compact(current.getText())}" has no provable numeric type; replace old pixel semantics with an explicit px length by hand`,
+    },
+  }
+}
+
+function declarationContainsNumericLineHeight(expression: Expression): boolean {
+  const symbol = expression.getSymbol()
+  if (!symbol) return false
+  for (const declaration of symbol.getDeclarations()) {
+    for (const property of [
+      ...(Node.isPropertyAssignment(declaration) ? [declaration] : []),
+      ...declaration.getDescendantsOfKind(SyntaxKind.PropertyAssignment),
+    ]) {
+      if (!isLineHeightName(propertyName(property.getNameNode()))) continue
+      const initializer = property.getInitializer()
+      if (!initializer) continue
+      const value = unwrapExpression(initializer)
+      if (numericValue(value) !== null || runtimeType(value).kind === 'number')
+        return true
+    }
+  }
+  return false
+}
+
+function lineHeightValueIsUnmigrated(expression: Expression): boolean {
+  const current = unwrapExpression(expression)
+  if (Node.isObjectLiteralExpression(current)) {
+    return current.getProperties().some((property) => {
+      if (!Node.isPropertyAssignment(property)) return false
+      const initializer = property.getInitializer()
+      return initializer !== undefined && lineHeightValueIsUnmigrated(initializer)
+    })
+  }
+  if (Node.isConditionalExpression(current)) {
+    return (
+      lineHeightValueIsUnmigrated(current.getWhenTrue()) ||
+      lineHeightValueIsUnmigrated(current.getWhenFalse())
+    )
+  }
+  return pixelReplacement(current) !== null
+}
+
+function replaceWithin(
+  source: string,
+  sourceStart: number,
+  edits: readonly SourceEdit[]
+): string {
+  let output = source
+  for (const edit of [...edits].sort((left, right) => right.start - left.start)) {
+    output =
+      output.slice(0, edit.start - sourceStart) +
+      edit.text +
+      output.slice(edit.end - sourceStart)
+  }
+  return output
+}
+
+function migrateLegacyLineHeights(
+  sourceFile: SourceFile,
+  provenance: Provenance
+): SiteReport[] {
+  const edits: SourceEdit[] = []
+  const claimed = new Set<number>()
+  const reports: SiteReport[] = []
+
+  const scanLineHeightExpression = (
+    expression: Expression,
+    contextEdits: SourceEdit[],
+    flags: SiteReport['flags']
+  ) => {
+    const current = unwrapExpression(expression)
+    if (Node.isObjectLiteralExpression(current)) {
+      for (const property of current.getProperties()) {
+        if (!Node.isPropertyAssignment(property)) continue
+        const initializer = property.getInitializer()
+        if (initializer) scanLineHeightExpression(initializer, contextEdits, flags)
+      }
+      return
+    }
+    if (Node.isConditionalExpression(current)) {
+      scanLineHeightExpression(current.getWhenTrue(), contextEdits, flags)
+      scanLineHeightExpression(current.getWhenFalse(), contextEdits, flags)
+      return
+    }
+    if (claimed.has(current.getStart())) return
+    const replacement = pixelReplacement(current)
+    if (!replacement) return
+    claimed.add(current.getStart())
+    if ('flag' in replacement) {
+      flags.push(replacement.flag)
+      return
+    }
+    const edit = {
+      start: current.getStart(),
+      end: current.getEnd(),
+      text: replacement.text,
+      dynamic: replacement.dynamic,
+    }
+    edits.push(edit)
+    contextEdits.push(edit)
+  }
+
+  const scanProperty = (
+    property: PropertyAssignment,
+    contextEdits: SourceEdit[],
+    flags: SiteReport['flags']
+  ) => {
+    if (!isLineHeightName(propertyName(property.getNameNode()))) return
+    const initializer = property.getInitializer()
+    if (initializer) scanLineHeightExpression(initializer, contextEdits, flags)
+  }
+
+  const scanObject = (
+    object: ObjectLiteralExpression,
+    contextEdits: SourceEdit[],
+    flags: SiteReport['flags']
+  ) => {
+    for (const property of object.getDescendantsOfKind(SyntaxKind.PropertyAssignment)) {
+      scanProperty(property, contextEdits, flags)
+    }
+    for (const property of object.getProperties()) {
+      if (Node.isPropertyAssignment(property)) scanProperty(property, contextEdits, flags)
+    }
+  }
+
+  const addReport = (
+    node: Node,
+    kind: SiteReport['kind'],
+    label: string,
+    contextEdits: SourceEdit[],
+    flags: SiteReport['flags']
+  ) => {
+    if (!contextEdits.length && !flags.length) return
+    const before = compact(node.getText())
+    reports.push({
+      kind,
+      label,
+      line: sourceFile.getLineAndColumnAtPos(node.getStart()).line,
+      before,
+      after: compact(replaceWithin(node.getText(), node.getStart(), contextEdits)),
+      programs: contextEdits.map((edit) => ({
+        name: 'lineHeight',
+        value: edit.text,
+        dynamic: edit.dynamic,
+      })),
+      assessments: [],
+      assessmentVerdict: 'clean',
+      warnings: [],
+      flags,
+      inventory: [],
+      pending: [],
+      notes: [
+        contextEdits.length
+          ? 'numeric lineHeight used V2 pixel semantics and now carries an explicit px unit'
+          : 'lineHeight was left authored for a manual unit decision',
+      ],
+      legacyLeft: flags.length,
+    })
+  }
+
+  const scanJsx = (opening: JsxOpeningElement | JsxSelfClosingElement) => {
+    const contextEdits: SourceEdit[] = []
+    const flags: SiteReport['flags'] = []
+    for (const attribute of opening.getAttributes()) {
+      if (Node.isJsxSpreadAttribute(attribute)) {
+        const expression = unwrapExpression(attribute.getExpression())
+        if (Node.isObjectLiteralExpression(expression)) {
+          scanObject(expression, contextEdits, flags)
+        } else if (declarationContainsNumericLineHeight(expression)) {
+          flags.push({
+            code: 'ambiguous-shared-line-height-style',
+            detail: `spread "${compact(expression.getText())}" contains numeric lineHeight and may also be consumed outside Tamagui; migrate it at this Tamagui boundary by hand`,
+          })
+        }
+        continue
+      }
+      if (!Node.isJsxAttribute(attribute)) continue
+      const nameNode = attribute.getNameNode()
+      const name = Node.isIdentifier(nameNode) ? nameNode.getText() : null
+      const initializer = attribute.getInitializer()
+      if (isLineHeightName(name)) {
+        if (!Node.isJsxExpression(initializer)) continue
+        const expression = initializer.getExpression()
+        if (!expression) continue
+        const current = unwrapExpression(expression)
+        const number = numericValue(current)
+        if (number !== null && !claimed.has(current.getStart())) {
+          claimed.add(current.getStart())
+          const edit = {
+            start: initializer.getStart(),
+            end: initializer.getEnd(),
+            text: JSON.stringify(`${number}px`),
+            dynamic: false,
+          }
+          edits.push(edit)
+          contextEdits.push(edit)
+        } else {
+          scanLineHeightExpression(current, contextEdits, flags)
+        }
+        continue
+      }
+      if (isLegacyConditionName(name || '') && Node.isJsxExpression(initializer)) {
+        const expression = initializer.getExpression()
+        if (expression) {
+          const current = unwrapExpression(expression)
+          for (const object of [
+            ...(Node.isObjectLiteralExpression(current) ? [current] : []),
+            ...current.getDescendantsOfKind(SyntaxKind.ObjectLiteralExpression),
+          ]) {
+            scanObject(object, contextEdits, flags)
+          }
+        }
+        continue
+      }
+      if (name !== 'style' || !Node.isJsxExpression(initializer)) continue
+      const expression = initializer.getExpression()
+      if (!expression) continue
+      const current = unwrapExpression(expression)
+      const objects = [
+        ...(Node.isObjectLiteralExpression(current) ? [current] : []),
+        ...current.getDescendantsOfKind(SyntaxKind.ObjectLiteralExpression),
+      ]
+      if (objects.length) {
+        for (const object of objects) scanObject(object, contextEdits, flags)
+      } else if (declarationContainsNumericLineHeight(current)) {
+        flags.push({
+          code: 'ambiguous-shared-line-height-style',
+          detail: `style "${compact(current.getText())}" contains numeric lineHeight and may also be consumed by React Native or Restyle; migrate it at this Tamagui boundary by hand`,
+        })
+      }
+    }
+    addReport(
+      opening,
+      'jsx',
+      `<${opening.getTagNameNode().getText()}> lineHeight`,
+      contextEdits,
+      flags
+    )
+  }
+
+  const scanCall = (call: CallExpression, label: string) => {
+    const contextEdits: SourceEdit[] = []
+    const flags: SiteReport['flags'] = []
+    for (const argument of call.getArguments()) {
+      for (const object of [
+        ...(Node.isObjectLiteralExpression(argument) ? [argument] : []),
+        ...argument.getDescendantsOfKind(SyntaxKind.ObjectLiteralExpression),
+      ]) {
+        scanObject(object, contextEdits, flags)
+      }
+    }
+    addReport(call, 'styled', label, contextEdits, flags)
+  }
+
+  const wrapperCache = new Map<Node, boolean>()
+  for (const opening of [
+    ...sourceFile.getDescendantsOfKind(SyntaxKind.JsxOpeningElement),
+    ...sourceFile.getDescendantsOfKind(SyntaxKind.JsxSelfClosingElement),
+  ]) {
+    if (provenance.isTamaguiElement(opening)) {
+      scanJsx(opening)
+      continue
+    }
+    const hasLegacyValue = opening.getAttributes().some((attribute) => {
+      if (!Node.isJsxAttribute(attribute)) return false
+      const name = propertyName(attribute.getNameNode())
+      const initializer = attribute.getInitializer()
+      if (!initializer || !Node.isJsxExpression(initializer)) return false
+      const expression = initializer.getExpression()
+      if (!expression) return false
+      if (isLineHeightName(name)) return lineHeightValueIsUnmigrated(expression)
+      if (name !== 'style') return false
+      const current = unwrapExpression(expression)
+      const properties = current.getDescendantsOfKind(SyntaxKind.PropertyAssignment)
+      return properties.length
+        ? properties.some((property) => {
+            const value = property.getInitializer()
+            return (
+              isLineHeightName(propertyName(property.getNameNode())) &&
+              value !== undefined &&
+              lineHeightValueIsUnmigrated(value)
+            )
+          })
+        : declarationContainsNumericLineHeight(current)
+    })
+    if (!hasLegacyValue) continue
+
+    const tag = opening.getTagNameNode()
+    const symbol = tag.getSymbol()
+    if (!symbol) continue
+    const declarations = (symbol.getAliasedSymbol() ?? symbol).getDeclarations()
+    const isLocalWrapper = declarations.some((declaration) => {
+      const cached = wrapperCache.get(declaration)
+      if (cached !== undefined) return cached
+      const file = declaration.getSourceFile()
+      const filePath = file.getFilePath()
+      const local =
+        !file.isDeclarationFile() &&
+        !filePath.includes('/node_modules/') &&
+        !relative(projectRoot, filePath).startsWith('..')
+      const wrapsTamagui =
+        local &&
+        [
+          ...declaration.getDescendantsOfKind(SyntaxKind.JsxOpeningElement),
+          ...declaration.getDescendantsOfKind(SyntaxKind.JsxSelfClosingElement),
+        ].some((child) => provenance.isTamaguiElement(child))
+      wrapperCache.set(declaration, wrapsTamagui)
+      return wrapsTamagui
+    })
+    if (!isLocalWrapper) continue
+    addReport(
+      opening,
+      'jsx',
+      `<${tag.getText()}> lineHeight`,
+      [],
+      [
+        {
+          code: 'ambiguous-wrapper-line-height',
+          detail: `local wrapper <${tag.getText()}> renders Tamagui JSX, so numeric lineHeight may still be V2 pixels, but the wrapper may transform units; migrate this call site by hand`,
+        },
+      ]
+    )
+  }
+
+  for (const call of sourceFile.getDescendantsOfKind(SyntaxKind.CallExpression)) {
+    if (provenance.isTamaguiStyledCall(call)) {
+      scanCall(
+        call,
+        `styled(${compact(call.getArguments()[0]?.getText() ?? 'unknown')}, …) lineHeight`
+      )
+    } else if (provenance.isTamaguiStyleCall(call)) {
+      scanCall(call, `${compact(call.getExpression().getText())}(…) lineHeight`)
+    }
+  }
+
+  if (edits.length) {
+    sourceFile.replaceWithText(replaceWithin(sourceFile.getFullText(), 0, edits))
+  }
+  return reports
+}
 
 // every path is resolved against the directory the codemod is invoked from, so it
 // migrates the project you are standing in whether that is an app or this repo
@@ -358,8 +762,23 @@ function inspectFile(
   sourceFile: SourceFile,
   registry: ModifierRegistryView,
   provenance: Provenance,
+  sourceSemantics: SourceSemantics,
+  lineHeightOnly: boolean,
   write: boolean
 ): FileReport {
+  const lineHeightSites =
+    sourceSemantics === 'v2-pixels'
+      ? migrateLegacyLineHeights(sourceFile, provenance)
+      : []
+  if (lineHeightOnly) {
+    return {
+      file: relative(projectRoot, sourceFile.getFilePath()),
+      sites: lineHeightSites,
+      functionalVariants: [],
+      sheetFrames: [],
+      transitions: [],
+    }
+  }
   // the anatomy rewrite runs first so the Background it adds, and the surface
   // props it moves there, go through the flat-value conversion below
   const sheetFrames = convertSheetFrames(sourceFile, provenance, write)
@@ -368,7 +787,7 @@ function inspectFile(
   const transitions = convertTransitions(sourceFile, provenance, write)
   const containers = planContainers(sourceFile, registry)
   const targets = conversionTargets(sourceFile.getFilePath())
-  const sites: SiteReport[] = []
+  const sites: SiteReport[] = [...lineHeightSites]
   const functionalVariants: FunctionalVariantReport[] = []
   const requiredTypeImports: RequiredTypeImport[] = []
   const styledCalls = sourceFile
@@ -445,6 +864,10 @@ const usage = `Converts Tamagui style syntax to V3 flat property values and repo
   )})
   --json <path>     also write the machine-readable report
   --write           rewrite every statically safe conversion in place
+  --source-semantics <v2-pixels|v3-ratios>
+                     interpret numeric Tamagui lineHeight from that source contract
+                     (default: v3-ratios)
+  --line-height-only apply and report only the selected lineHeight source migration
   --help            print this
 
 Run it from your project root, which is where paths and the tsconfig resolve from.
@@ -455,11 +878,15 @@ function parseArguments(argv: readonly string[]): {
   jsonPath: string | null
   inputs: string[]
   write: boolean
+  sourceSemantics: SourceSemantics
+  lineHeightOnly: boolean
 } {
   const inputs: string[] = []
   let reportPath = defaultReportPath
   let jsonPath: string | null = null
   let write = false
+  let sourceSemantics: SourceSemantics = 'v3-ratios'
+  let lineHeightOnly = false
 
   for (let index = 0; index < argv.length; index++) {
     const argument = argv[index]
@@ -469,6 +896,20 @@ function parseArguments(argv: readonly string[]): {
     }
     if (argument === '--write') {
       write = true
+      continue
+    }
+    if (argument === '--line-height-only') {
+      lineHeightOnly = true
+      continue
+    }
+    if (argument === '--source-semantics') {
+      const next = argv[index + 1]
+      if (next !== 'v2-pixels' && next !== 'v3-ratios') {
+        console.error(`${argument} requires v2-pixels or v3-ratios\n\n${usage}`)
+        process.exit(2)
+      }
+      sourceSemantics = next
+      index++
       continue
     }
     if (argument === '--report' || argument === '--json') {
@@ -498,10 +939,11 @@ function parseArguments(argv: readonly string[]): {
     process.exit(2)
   }
 
-  return { reportPath, jsonPath, inputs, write }
+  return { reportPath, jsonPath, inputs, write, sourceSemantics, lineHeightOnly }
 }
 
-const { reportPath, jsonPath, inputs, write } = parseArguments(process.argv.slice(2))
+const { reportPath, jsonPath, inputs, write, sourceSemantics, lineHeightOnly } =
+  parseArguments(process.argv.slice(2))
 const { sourceFiles, ignoredFiles } = collectFiles(inputs)
 for (const sourceFile of sourceFiles) {
   const diagnostics = (
@@ -525,7 +967,14 @@ const modifierRegistry = createModifierRegistry({
 })
 const provenance = createProvenance()
 const files = sourceFiles.map((sourceFile) =>
-  inspectFile(sourceFile, modifierRegistry.registry, provenance, write)
+  inspectFile(
+    sourceFile,
+    modifierRegistry.registry,
+    provenance,
+    sourceSemantics,
+    lineHeightOnly,
+    write
+  )
 )
 if (write) {
   for (const sourceFile of sourceFiles) {

@@ -434,7 +434,7 @@ const componentsIn = {
       mb={12}
       data-heading
       fontSize={28}
-      lineHeight={36}
+      lineHeight="36px"
       fontWeight="500"
       color="color12"
       {...props}
@@ -451,7 +451,7 @@ const componentsIn = {
         width={`fit-content` as any}
         id={id}
         fontSize={23}
-        lineHeight={30}
+        lineHeight="30px"
         color="color11"
         fontWeight="500"
         {...props}
@@ -469,7 +469,7 @@ const componentsIn = {
       mt={24}
       mb={8}
       fontSize={20}
-      lineHeight={28}
+      lineHeight="28px"
       color="color8"
       data-heading
       {...props}
@@ -484,7 +484,7 @@ const componentsIn = {
       className="docs-paragraph"
       display="block"
       fontSize={16}
-      lineHeight={27}
+      lineHeight="27px"
       mt={0}
       mb={16}
       color="color11"
@@ -594,7 +594,7 @@ const componentsIn = {
       >
         <Image maxW="100%" {...props} />
         {!!children && (
-          <Text render="figcaption" lineHeight={23} color="color-press" mt="2">
+          <Text render="figcaption" lineHeight="23px" color="color-press" mt="2">
             {children}
           </Text>
         )}
@@ -635,7 +635,7 @@ const componentsIn = {
           style={{ width: '100%', display: 'block' }}
         ></video>
       </OffsetBox>
-      <Text render="figcaption" lineHeight={23} mt="2" color="color-press">
+      <Text render="figcaption" lineHeight="23px" mt="2" color="color-press">
         {children}
       </Text>
     </YStack>

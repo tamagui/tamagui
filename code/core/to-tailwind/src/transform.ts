@@ -735,11 +735,12 @@ function formatStringValue(ctx: Ctx, prop: string, value: string): FormattedValu
     return { value, valueKind: 'convenience' }
   }
 
-  // a NUMERIC-LOOKING STRING literal ("10", "0.5") is NOT a number — reinterpreting it as the
-  // Tailwind scale or a token would diverge from the source string (which tamagui keeps verbatim,
-  // quirks and all). it's also not a valid unit-bearing CSS value → RETAIN. (fontWeight handled
-  // above; percentages/units carry a suffix and are handled below.)
-  if (/^-?\d+(\.\d+)?$/.test(value)) return null
+  // a numeric-looking lineHeight string is a V3 ratio after configured token names have had
+  // first refusal. Other numeric-looking strings stay authored because reinterpreting them as a
+  // Tailwind scale or token would diverge from the source string.
+  if (/^-?\d+(\.\d+)?$/.test(value)) {
+    return prop === 'lineHeight' ? { value, valueKind: 'arbitrary' } : null
+  }
 
   // percentages: NAMED fraction ONLY when string-exact (50/25/75/100); an inexact value like
   // 33.333% must stay the EXACT arbitrary (1/3 resolves to 33.3333…% ≠ source).
@@ -843,7 +844,6 @@ const pxLengthProps = new Set([
   'borderEndEndRadius',
   'fontSize',
   'letterSpacing',
-  'lineHeight',
 ])
 
 function formatNumericValue(prop: string, value: number): FormattedValue | null {
@@ -858,7 +858,9 @@ function formatNumericValue(prop: string, value: number): FormattedValue | null 
   }
 
   // UNITLESS number → [N] (no px): number on both platforms
-  if (prop === 'aspectRatio') return { value: String(value), valueKind: 'arbitrary' }
+  if (prop === 'aspectRatio' || prop === 'lineHeight') {
+    return { value: String(value), valueKind: 'arbitrary' }
+  }
   if (prop === 'scale' || prop === 'scaleX' || prop === 'scaleY') {
     if (value === 0) return { value: '0', valueKind: 'convenience' }
     if (value === 1) return { value: '100', valueKind: 'convenience' }

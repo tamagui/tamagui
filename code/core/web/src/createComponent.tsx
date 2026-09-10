@@ -21,6 +21,8 @@ import { defaultComponentStateMounted } from './defaultComponentState'
 import { getWebEvents, useEvents, wrapWithGestureDetector } from './eventHandling'
 import { componentDisplayName } from './helpers/componentDisplayName'
 import { getSplitStyles } from './helpers/getSplitStyles'
+import { isTamaguiElement } from './helpers/isTamaguiElement'
+import { NativeTextBinding } from './helpers/NativeTextBinding'
 import { getConfigRevisionState } from './helpers/grammarConfig'
 import { getStyleStaticConfig, type StyleStaticConfig } from './helpers/styleStaticConfig'
 import {
@@ -1150,7 +1152,10 @@ export function createComponent<
         useStyleListener(
           (nextStyles?.style || {}) as any,
           effectiveTransition,
-          hasActivePseudo
+          hasActivePseudo,
+          process.env.TAMAGUI_TARGET === 'native'
+            ? nextStyles?.nativeTextMetrics
+            : undefined
         )
       }
 
@@ -1367,6 +1372,14 @@ export function createComponent<
     // once you set animation prop don't remove it, you can set to undefined/false
     // reason is animations are heavy - no way around it, and must be run inline here (🙅 loading as a sub-component)
     let animationStyles: any
+    let animatedText =
+      process.env.TAMAGUI_TARGET === 'native'
+        ? isText &&
+          splitStyles?.nativeTextMetrics &&
+          !splitStyles.nativeTextMetrics.inheritsFontSize
+          ? null
+          : componentContext.animatedText
+        : null
     const shouldUseAnimation =
       // if it supports css vars we run it on server too to get matching initial style
       (inputStyle === 'css' ? willBeAnimatedClient : willBeAnimated) &&
@@ -1397,6 +1410,11 @@ export function createComponent<
       stateRef.current.prevPseudoState = extractPseudoState(state)
 
       const animations = useAnimations({
+        ...(process.env.TAMAGUI_TARGET === 'native' && {
+          inheritedText: splitStyles?.nativeTextMetrics?.inheritsFontSize
+            ? componentContext.animatedText
+            : null,
+        }),
         props: propsWithAnimation,
         // clone style to prevent animation driver mutations from leaking to viewProps
         // during SSR/pre-hydration (CSS driver mutates style.transition in place)
@@ -1414,6 +1432,7 @@ export function createComponent<
       })
 
       if (animations) {
+        if (process.env.TAMAGUI_TARGET === 'native') animatedText = animations.textChannel
         if (animations.ref) {
           // @ts-ignore
           animatedRef = animations.ref
@@ -2009,6 +2028,26 @@ export function createComponent<
         }
 
         content = React.createElement(elementType, viewProps, content || children)
+        if (
+          process.env.TAMAGUI_TARGET === 'native' &&
+          !shouldUseAnimation &&
+          !isHOC &&
+          !staticConfig.isDOM &&
+          !asChild &&
+          splitStyles?.nativeTextMetrics?.inheritsFontSize &&
+          componentContext.animatedText &&
+          animationDriver?.useTextMetrics
+        ) {
+          content = (
+            <NativeTextBinding
+              element={content as ReactElement<any>}
+              useTextMetrics={animationDriver.useTextMetrics}
+              inheritedText={componentContext.animatedText}
+              lineHeight={splitStyles.nativeTextMetrics.lineHeight}
+              isInput={staticConfig.isInput}
+            />
+          )
+        }
       }
 
       if (process.env.NODE_ENV === 'development' && time) time`use-children`
@@ -2056,7 +2095,7 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development' && time) time`create-element`
 
-    if (conditionalStates?.has('focus-within')) {
+    if (process.env.TAMAGUI_TARGET === 'web' && conditionalStates?.has('focus-within')) {
       content = (
         <ComponentContext.Provider
           {...componentContext}
@@ -2076,7 +2115,43 @@ export function createComponent<
       )
     }
 
-    // Text components set inText context for children so nested Text can inherit styles
+    if (process.env.TAMAGUI_TARGET === 'native') {
+      const textMetrics =
+        !staticConfig.isDOM &&
+        !isHOC &&
+        isText &&
+        !(asChild && isTamaguiElement(children))
+          ? splitStyles?.nativeTextMetrics
+          : undefined
+      const provideText =
+        !!textMetrics &&
+        children !== null &&
+        typeof children === 'object' &&
+        (!componentContext.inText ||
+          textMetrics.fontSize !== componentContext.parentFontSize ||
+          textMetrics.lineHeight !== componentContext.parentLineHeight ||
+          animatedText !== componentContext.animatedText)
+      const provideFocus = conditionalStates?.has('focus-within')
+      if (provideText || provideFocus) {
+        content = (
+          <ComponentContext.Provider
+            {...componentContext}
+            inText={provideText || componentContext.inText}
+            parentFontSize={textMetrics?.fontSize ?? componentContext.parentFontSize}
+            parentLineHeight={
+              textMetrics ? textMetrics.lineHeight : componentContext.parentLineHeight
+            }
+            animatedText={animatedText}
+            setParentFocusState={
+              provideFocus ? setStateShallow : componentContext.setParentFocusState
+            }
+          >
+            {content}
+          </ComponentContext.Provider>
+        )
+      }
+    }
+
     if (process.env.TAMAGUI_TARGET === 'web' && !asChild && isText && !hasTextAncestor) {
       content = (
         <ComponentContext.Provider {...componentContext} inText={true}>

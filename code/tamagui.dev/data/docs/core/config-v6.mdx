@@ -27,6 +27,7 @@ export const config = createTamagui(defaultConfig)
   are included.
 - Radius tokens include Tailwind names from `xs` through `4xl` and `full`.
 - Font size and line height include Tailwind names from `xs` through `9xl`.
+  Their existing numeric font-config line heights remain absolute pixels.
 - `w` and `h` are width and height shorthands.
 - `tokens.color` contains the full Tailwind palette with names such as
   `blue-500` and `slate-200`.
@@ -39,6 +40,11 @@ export const config = createTamagui(defaultConfig)
 
 The config does not choose a global component size. Styled controls get their
 defaults from the optional policy in `@tamagui/size`.
+
+This font-config behavior is distinct from V3 style authoring. A numeric
+Tamagui `lineHeight` prop is a ratio on web and native. Font configuration uses
+a numeric string such as `"1.5"` for a ratio and `"24px"` for an explicit
+absolute length. No value changes meaning based on its magnitude.
 
 ## Package entries
 
@@ -87,6 +93,16 @@ export function Notice() {
 Regular components imported from `tamagui` continue to use Tamagui style props.
 The shared v6 color tokens make absolute utilities such as `bg-blue-500`
 resolve to the same values on web and native.
+
+Tailwind leading utilities preserve the same distinction on both platforms.
+Spacing-scale leading and px arbitraries stay absolute, while unitless
+arbitraries are ratios:
+
+```tsx
+<Text className="leading-8" />       {/* 32px */}
+<Text className="leading-[24px]" />  {/* 24px */}
+<Text className="leading-[1.25]" />  {/* 1.25 times the font size */}
+```
 
 Read [v6 Colors](/docs/core/config-v6-colors) to customize the palette and
 [Creating Themes](/docs/guides/theme-builder) to customize the tree and scales.

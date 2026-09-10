@@ -7,11 +7,9 @@ export { createSystemFont }
 const headingLineHeight = (size: number) =>
   Math.round(isNative ? size * 1.2 : size * 1.12 + 5)
 
-// pin the v5 font size + lineHeight scales to exact "Npx" strings. numbers are
-// reserved for the v6 multiplier semantics; px strings mean "exact pixels" and
-// are normalized back to numbers (with a needsPx flag) at token creation, so
-// rendering is identical to the previous numeric config. the numeric type is
-// preserved via cast to avoid widening every font-size consumer.
+// keep v5 font scales explicitly absolute. numeric font definitions also retain
+// pixel units in v3; only authored numeric styles and numeric-string font values
+// express line-height ratios. token creation preserves numeric values for arithmetic.
 const toPxScale = <T extends Record<string, number>>(obj: T): T =>
   Object.fromEntries(
     Object.entries(obj).map(([k, v]) => [k, typeof v === 'number' ? `${v}px` : v])

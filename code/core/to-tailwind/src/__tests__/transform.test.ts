@@ -151,6 +151,15 @@ describe('tamaguiToTailwind', () => {
       ).toContain('leading-8')
     })
 
+    test('lineHeight ratios stay unitless and explicit pixels stay absolute', () => {
+      expect(tamaguiToTailwind(`<Text lineHeight={1.5} />`)).toContain('leading-[1.5]')
+      expect(tamaguiToTailwind(`<Text lineHeight="1.5" />`)).toContain('leading-[1.5]')
+      expect(tamaguiToTailwind(`<Text lineHeight="24px" />`)).toContain('leading-[24px]')
+      expect(tamaguiToTailwind(`<Text fontSize={20} width={24} />`)).toContain(
+        'text-[20px] w-[24px]'
+      )
+    })
+
     test('negative values in flat clauses are not dropped', () => {
       const out = tamaguiToTailwind(`<View opacity="hover:0.5" y="hover:-2px" />`)
       expect(out).toContain('hover:opacity-50')
@@ -455,7 +464,7 @@ describe('tamaguiToTailwind', () => {
       )
       expect(output).toContain('p-4')
       expect(output).toContain(
-        'w-[missing] rounded-[missing] z-[missing] color-[missing] font-[body] text-[5px] leading-[5px] tracking-[5px]'
+        'w-[missing] rounded-[missing] z-[missing] color-[missing] font-[body] text-[5px] leading-[5] tracking-[5px]'
       )
     })
 

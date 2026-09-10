@@ -57,6 +57,7 @@ export type StyleValueDiagnosticCode =
   | 'v2-dollar-prefix'
   | 'v2-removed-prop'
   | 'unknown-payload-value'
+  | 'invalid-line-height'
 
 export interface StyleValueDiagnostic {
   code: StyleValueDiagnosticCode
@@ -705,6 +706,23 @@ export function diagnoseStyleValue(
     if (span.kind !== 'base' && span.kind !== 'payload') continue
     if (span.start >= span.end) continue
     const payload = input.slice(span.start, span.end)
+
+    if (
+      targetProperty === 'lineHeight' &&
+      !hasTokenName(options.config, 'lineHeight', payload) &&
+      /^(?:[+-]?(?:\d+\.?\d*|\.\d+)(?:e[+-]?\d+)?|[+-]?Infinity|NaN)$/i.test(payload) &&
+      (!Number.isFinite(+payload) || +payload < 0)
+    ) {
+      push(`invalid-line-height:${span.start}`, {
+        code: 'invalid-line-height',
+        start: span.start,
+        end: span.end,
+        property,
+        message:
+          'lineHeight ratios must be finite and non-negative; write "24px" for an absolute length',
+      })
+      continue
+    }
 
     if (payload.startsWith('$')) {
       const stripped = payload.slice(1)

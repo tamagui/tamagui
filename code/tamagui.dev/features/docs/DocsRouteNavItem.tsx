@@ -62,7 +62,7 @@ export const DocsRouteNavItem = function DocsRouteNavItem({
           />
         )}
         <SizableText
-          lineHeight={22}
+          lineHeight="22px"
           cursor="pointer"
           select="none"
           opacity={`${active ? 1 : 0.65} hover:0.85`}

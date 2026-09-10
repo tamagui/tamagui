@@ -6,7 +6,7 @@ import { type PayloadResolveErrorCode, type ReferenceKind } from "../ast/resolve
 import { type ValueSourceSpan } from "../ast/valueParser";
 import type { ModifierRegistryView, ParsedValue, ValueParseError, ValueParseErrorCode } from "../ast/valueTypes";
 export type CandidatePropertyVocabulary = ReadonlyMap<string, readonly CandidateContribution[]>;
-export type StyleValueDiagnosticCode = ValueParseErrorCode | PayloadResolveErrorCode | CandidatePropertyMismatch["code"] | PayloadShapeDiagnostic["code"] | "legacy-part-conditional" | "v6-theme-name-replaced" | "v6-theme-name-removed" | "v2-dollar-prefix" | "v2-removed-prop" | "unknown-payload-value";
+export type StyleValueDiagnosticCode = ValueParseErrorCode | PayloadResolveErrorCode | CandidatePropertyMismatch["code"] | PayloadShapeDiagnostic["code"] | "legacy-part-conditional" | "v6-theme-name-replaced" | "v6-theme-name-removed" | "v2-dollar-prefix" | "v2-removed-prop" | "unknown-payload-value" | "invalid-line-height";
 export interface StyleValueDiagnostic {
 	code: StyleValueDiagnosticCode;
 	/** kept for compatibility; always equals `start` */

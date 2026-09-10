@@ -33,6 +33,7 @@ import type {
   DebugProp,
   GetStyleResult,
   GetStyleState,
+  NativeTextMetrics,
   RulesToInsert,
   SplitStyleProps,
   StaticConfig,
@@ -80,6 +81,8 @@ import {
 import { log } from './log'
 import { normalizeColor } from './normalizeColor'
 import { normalizeValueWithProperty } from './normalizeValueWithProperty'
+import { resolveTextMetrics } from './nativeTextMetrics'
+import { isTamaguiElement } from './isTamaguiElement'
 import { parseNativeStyle } from './parseNativeStyle'
 import { parseNativeTransform } from './parseNativeTransform.native'
 import { isRemValue, resolveRem } from './resolveRem'
@@ -1586,6 +1589,7 @@ export const getSplitStyles: StyleSplitter = (
     flushDirectStyles(styleState)
   }
 
+  let nativeTextMetrics: NativeTextMetrics | undefined
   // native: swap out the right family based on weight/style
   if (process.env.TAMAGUI_TARGET === 'native') {
     // set accessible when tabIndex is 0 (issue #3350)
@@ -1593,6 +1597,31 @@ export const getSplitStyles: StyleSplitter = (
       viewProps.accessible ??= true
     }
 
+    if (
+      (isText || isInput || staticConfig.isDOM) &&
+      !isHOC &&
+      (styleState.nativeLineHeight !== undefined ||
+        styleState.style?.fontSize !== undefined ||
+        componentContext?.parentFontSize !== undefined ||
+        componentContext?.parentLineHeight !== undefined)
+    ) {
+      const style = (styleState.style ||= {})
+      let lineHeight =
+        styleState.nativeLineHeight ?? parentSplitStyles?.nativeTextMetrics?.lineHeight
+      if (typeof lineHeight === 'string') {
+        const length = resolveNativeUnits('lineHeight', lineHeight, styleState)
+        if (typeof length === 'number') lineHeight = `${length}px`
+      }
+      nativeTextMetrics = resolveTextMetrics(
+        style,
+        lineHeight,
+        componentContext,
+        styleProps.isStatic,
+        !staticConfig.isDOM &&
+          !(processedProps.asChild && isTamaguiElement(processedProps.children))
+      )
+      if (staticConfig.isDOM) viewProps.__textMetrics = nativeTextMetrics
+    }
     const style = styleState.style
     if (style?.fontFamily) {
       const faceInfo = getFont(style.fontFamily as string)?.face
@@ -1654,6 +1683,8 @@ export const getSplitStyles: StyleSplitter = (
     mediaGroups,
     overriddenContextProps: styleState.overriddenContextProps,
   }
+  if (process.env.TAMAGUI_TARGET === 'native' && nativeTextMetrics)
+    result.nativeTextMetrics = nativeTextMetrics
   if (effectiveTransition != null) result.effectiveTransition = effectiveTransition
   if (conditionalStates) result.programStates = conditionalStates
   if (usesSafeArea) result.usesSafeArea = true
@@ -2015,7 +2046,15 @@ function mergeStyle(
     const shouldNormalize =
       process.env.TAMAGUI_TARGET === 'web' && !disableNormalize && !styleProps.noNormalize
     let out = shouldNormalize ? normalizeValueWithProperty(val, key) : val
-    if (process.env.TAMAGUI_TARGET === 'native' && typeof out === 'string') {
+    if (process.env.TAMAGUI_TARGET === 'native' && key === 'lineHeight') {
+      // resolved variant records retain the font Variable as their original value.
+      styleState.nativeLineHeight =
+        typeof out === 'number' &&
+        isVariable(originalVal) &&
+        typeof originalVal.val === 'number'
+          ? `${out}px`
+          : out
+    } else if (process.env.TAMAGUI_TARGET === 'native' && typeof out === 'string') {
       if (out.includes('cqi') || out.includes('cqw')) {
         ;(styleState.flatGroupKeys ||= new Set()).add('@')
         ;(styleState.flatGroupMedia ||= new Set()).add('@')
@@ -3088,7 +3127,7 @@ function resolveValue(state: GetStyleState, property: string, raw: any) {
     (process.env.TAMAGUI_TARGET === 'native' || !state.flatShouldDoClasses) &&
     typeof value === 'string' &&
     value !== '' &&
-    (process.env.TAMAGUI_TARGET === 'native' || property !== 'lineHeight')
+    property !== 'lineHeight'
   ) {
     value = resolveNumericValue(value)
   }
@@ -3140,6 +3179,10 @@ function emitValue(
 
   if (isVariable(raw)) {
     raw = resolveVariableValue(property, raw, state.styleProps.resolveValues)
+    if (property === 'lineHeight') {
+      emitProperty(state, property, raw, cursor, originalValue, contextOnly)
+      return
+    }
   }
 
   if (
@@ -3809,6 +3852,8 @@ function contributeValue(
 }
 
 function clearDirectStyle(state: GetStyleState, property: string) {
+  if (process.env.TAMAGUI_TARGET === 'native' && property === 'lineHeight')
+    state.nativeLineHeight = undefined
   const direct = state as DirectState
   if (direct.flatDynamicColors) delete direct.flatDynamicColors[property]
   if (process.env.TAMAGUI_TARGET === 'web') property = webStyleProperty(property)
